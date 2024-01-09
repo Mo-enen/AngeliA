@@ -214,6 +214,7 @@ namespace AngeliaFramework {
 
 
 	[RequireSprite("{1}.HairFFL", "{1}.HairFFR", "{1}.HairFB", "{1}.HairBF")]
+	[RequireLanguage("{1}.Hair")]
 	public abstract class Hair : BodyGadget {
 
 

@@ -139,7 +139,7 @@ namespace AngeliaFramework {
 
 			// Cape
 			BodyCloth.DrawCape(character, BodyId);
-		
+
 			// Shoulder
 			if (ShoulderID != 0 && CellRenderer.TryGetSprite(ShoulderID, out var shoulderSprite)) {
 				Cloth.AttachClothOn(character.ShoulderL, shoulderSprite, 1000, 1000, 16);
@@ -226,9 +226,7 @@ namespace AngeliaFramework {
 					type = genericArgs[0];
 					totalProgress++;
 					progressive++;
-#if UNITY_EDITOR
-					if (safe == 1023) Game.LogWarning($"Armor {armorType} is having a progressive loop.");
-#endif
+					if (Game.IsEdittime && safe == 1023) Game.LogWarning($"Armor {armorType} is having a progressive loop.");
 				}
 				// Forward
 				type = armorType;
@@ -237,9 +235,7 @@ namespace AngeliaFramework {
 					if (genericArgs.Length < 2 || genericArgs[1] == type) break;
 					type = genericArgs[1];
 					totalProgress++;
-#if UNITY_EDITOR
-					if (safe == 1023) Game.LogWarning($"Armor {armorType} is having a progressive loop.");
-#endif
+					if (Game.IsEdittime && safe == 1023) Game.LogWarning($"Armor {armorType} is having a progressive loop.");
 				}
 				return progressive;
 			}

@@ -477,6 +477,10 @@ namespace AngeliaForUnity {
 			}
 		}
 
+		protected override string _GetClipboardText () => GUIUtility.systemCopyBuffer;
+
+		protected override void _SetClipboardText (string text) => GUIUtility.systemCopyBuffer = text;
+
 
 		#endregion
 

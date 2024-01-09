@@ -17,7 +17,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public new static SheetEditor Instance => GlobalEditorUI.Instance as SheetEditor;
-		public new static bool IsActived => Instance != null && Instance.Active;
+		public static bool IsActived => Instance != null && Instance.Active;
 
 		// Data
 

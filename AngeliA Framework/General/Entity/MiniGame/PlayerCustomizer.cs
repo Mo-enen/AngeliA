@@ -48,14 +48,14 @@ namespace AngeliaFramework {
 
 		// Const
 		private const int EDITOR_BASIC_Z = 60;
-		private static readonly int ICON_UP_CODE = "Icon TriangleUp".AngeHash();
-		private static readonly int ICON_DOWN_CODE = "Icon TriangleDown".AngeHash();
-		private static readonly int BUTTON_CODE = "UI.DarkButton".AngeHash();
-		private static readonly int BUTTON_DOWN_CODE = "UI.DarkButtonDown".AngeHash();
+		private static readonly int ICON_UP_CODE = BuiltInIcon.ICON_TRIANGLE_UP;
+		private static readonly int ICON_DOWN_CODE = BuiltInIcon.ICON_TRIANGLE_DOWN;
+		private static readonly int BUTTON_CODE = BuiltInIcon.UI_DARK_BUTTON;
+		private static readonly int BUTTON_DOWN_CODE = BuiltInIcon.UI_DARK_BUTTON_DOWN;
 		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
+		private static readonly int SELECTION_MARK = BuiltInIcon.CHECK_MARK_16;
 		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
 		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
-		private static readonly int SELECTION_MARK = "CheckMark16".AngeHash();
 		private static readonly int[] MAIN_MENU_LABELS = {
 			"UI.BodyPart.Head".AngeHash(),
 			"UI.BodyPart.Body".AngeHash(),
@@ -77,24 +77,24 @@ namespace AngeliaFramework {
 			"UI.BodyPart.Height".AngeHash(),
 		};
 		private static readonly int[] MAIN_MENU_ICONS = {
-			"Icon.BodyPart.Head".AngeHash(),
-			"Icon.BodyPart.Body".AngeHash(),
-			"Icon.BodyPart.ArmHand".AngeHash(),
-			"Icon.BodyPart.LegFoot".AngeHash(),
-			"Icon.BodyPart.Face".AngeHash(),
-			"Icon.BodyPart.Hair".AngeHash(),
-			"Icon.BodyPart.Ear".AngeHash(),
-			"Icon.BodyPart.Tail".AngeHash(),
-			"Icon.BodyPart.Wing".AngeHash(),
-			"Icon.BodyPart.Horn".AngeHash(),
-			"Icon.BodyPart.SkinColor".AngeHash(),
-			"Icon.BodyPart.HairColor".AngeHash(),
-			"Icon.Suit.Hat".AngeHash(),
-			"Icon.Suit.Bodysuit".AngeHash(),
-			"Icon.Suit.Pants".AngeHash(),
-			"Icon.Suit.Glove".AngeHash(),
-			"Icon.Suit.Shoes".AngeHash(),
-			"Icon.BodyPart.Height".AngeHash(),
+			BuiltInIcon.ICON_BODY_PART_HEAD,
+			BuiltInIcon.ICON_BODY_PART_BODY,
+			BuiltInIcon.ICON_BODY_PART_ARM_HAND,
+			BuiltInIcon.ICON_BODY_PART_LEG_FOOT,
+			BuiltInIcon.ICON_BODY_PART_FACE,
+			BuiltInIcon.ICON_BODY_PART_HAIR,
+			BuiltInIcon.ICON_BODY_PART_EAR,
+			BuiltInIcon.ICON_BODY_PART_TAIL,
+			BuiltInIcon.ICON_BODY_PART_WING,
+			BuiltInIcon.ICON_BODY_PART_HORN,
+			BuiltInIcon.ICON_BODY_PART_SKIN_COLOR,
+			BuiltInIcon.ICON_BODY_PART_HAIR_COLOR,
+			BuiltInIcon.ICON_SUIT_HAT,
+			BuiltInIcon.ICON_SUIT_BODYSUIT,
+			BuiltInIcon.ICON_SUIT_PANTS,
+			BuiltInIcon.ICON_SUIT_GLOVE,
+			BuiltInIcon.ICON_SUIT_SHOES,
+			BuiltInIcon.ICON_BODYPART_HEIGHT,
 		};
 
 		// Api

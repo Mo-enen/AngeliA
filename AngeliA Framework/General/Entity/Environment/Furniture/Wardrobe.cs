@@ -31,6 +31,7 @@ namespace AngeliaFramework {
 	}
 
 
+	[RequireLanguageFromField]
 	public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 
 
@@ -41,11 +42,11 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly int FRAME = BuiltInIcon.FRAME_16;
-		private static readonly int TRIANGLE_RIGHT = "TriangleRight13".AngeHash();
-		private static readonly int HINT_ADJUST = "CtrlHint.Adjust".AngeHash();
-		private static readonly int HINT_TYPE = "CtrlHint.Wardrobe.Type".AngeHash();
-		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
-		private static readonly int UI_NONE = "UI.None".AngeHash();
+		private static readonly int TRIANGLE_RIGHT = BuiltInIcon.TRIANGLE_RIGHT_13;
+		private static readonly LanguageCode HINT_ADJUST = "CtrlHint.Adjust";
+		private static readonly LanguageCode HINT_TYPE = "CtrlHint.Wardrobe.Type";
+		private static readonly LanguageCode HINT_USE = "CtrlHint.Use";
+		private static readonly LanguageCode UI_NONE = "UI.None";
 		private static readonly int[] SUIT_TYPE_ICONS = {
 			"Icon.Suit.Hat".AngeHash(),
 			"Icon.Suit.Bodysuit".AngeHash(),

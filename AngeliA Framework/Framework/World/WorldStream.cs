@@ -111,9 +111,9 @@ namespace AngeliaFramework {
 
 		public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int value) {
 			if (Readonly) {
-#if UNITY_EDITOR
-				Game.LogError("Can not write block data when the world stream is readonly.");
-#endif
+				if (Game.IsEdittime) {
+					Game.LogError("Can not write block data when the world stream is readonly.");
+				}
 				return;
 			}
 			int worldX = unitX.UDivide(Const.MAP);
@@ -143,9 +143,9 @@ namespace AngeliaFramework {
 
 		public void SetBlocksAt (int unitX, int unitY, int z, int entity, int level, int background, int element) {
 			if (Readonly) {
-#if UNITY_EDITOR
-				Game.LogError("Can not write block data when the world stream is readonly.");
-#endif
+				if (Game.IsEdittime) {
+					Game.LogError("Can not write block data when the world stream is readonly.");
+				}
 				return;
 			}
 			int worldX = unitX.UDivide(Const.MAP);

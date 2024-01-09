@@ -23,6 +23,8 @@ namespace AngeliaFramework {
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.MapEditorGroup("MiniGame")]
 	[RequireSpriteFromField]
+	[RequireLanguageFromField]
+	[RequireLanguage("{0}")]
 	public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
@@ -72,13 +74,13 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg".AngeHash();
-		protected static readonly int UI_QUIT = "UI.Quit".AngeHash();
-		protected static readonly int UI_BACK = "UI.Back".AngeHash();
-		protected static readonly int UI_RESTART = "UI.Restart".AngeHash();
-		protected static readonly int UI_NONE = "UI.None".AngeHash();
-		protected static readonly int UI_OK = "UI.OK".AngeHash();
-		protected static readonly int UI_GAMEOVER = "UI.GameOver".AngeHash();
+		private static readonly LanguageCode MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg";
+		protected static readonly LanguageCode UI_QUIT = "UI.Quit";
+		protected static readonly LanguageCode UI_BACK = "UI.Back";
+		protected static readonly LanguageCode UI_RESTART = "UI.Restart";
+		protected static readonly LanguageCode UI_NONE = "UI.None";
+		protected static readonly LanguageCode UI_OK = "UI.OK";
+		protected static readonly LanguageCode UI_GAMEOVER = "UI.GameOver";
 		private static readonly SpriteCode[] DEFAULT_BADGE_CODES = { "MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold", };
 
 		// Api

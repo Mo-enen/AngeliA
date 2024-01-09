@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireSpriteFromField]
+	[RequireLanguageFromField]
 	public class MiniGameTetris : MiniGame {
 
 
@@ -74,12 +75,12 @@ namespace AngeliaFramework {
 		private static readonly int LINE_V_CODE = BuiltInIcon.SOFT_LINE_V;
 		private static readonly SpriteCode BLOCK_CODE = "Tetris Block";
 		private static readonly SpriteCode BLOCK_EMPTY_CODE = "Tetris Block Empty";
-		private static readonly int UI_HOLDING = "UI.Tetris.Holding".AngeHash();
-		private static readonly int UI_CLR_LINE = "UI.Tetris.ClearedLine".AngeHash();
-		private static readonly int HINT_MOVE = "Hint.Tetris.Move".AngeHash();
-		private static readonly int HINT_ROTATE = "Hint.Tetris.Rotate".AngeHash();
-		private static readonly int HINT_HOLD = "Hint.Tetris.Hold".AngeHash();
-		private static readonly int HINT_DROP = "Hint.Tetris.Drop".AngeHash();
+		private static readonly LanguageCode UI_HOLDING = "UI.Tetris.Holding";
+		private static readonly LanguageCode UI_CLR_LINE = "UI.Tetris.ClearedLine";
+		private static readonly LanguageCode HINT_MOVE = "Hint.Tetris.Move";
+		private static readonly LanguageCode HINT_ROTATE = "Hint.Tetris.Rotate";
+		private static readonly LanguageCode HINT_HOLD = "Hint.Tetris.Hold";
+		private static readonly LanguageCode HINT_DROP = "Hint.Tetris.Drop";
 		private const int WIDTH = 10;
 		private const int HEIGHT = 40;
 		private const int STAGE_HEIGHT = 20;

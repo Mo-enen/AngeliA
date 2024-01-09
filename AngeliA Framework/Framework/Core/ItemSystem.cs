@@ -80,14 +80,14 @@ namespace AngeliaFramework {
 		// Const
 		private const string UNLOCK_NAME = "UnlockedItem";
 		private static readonly int[] ITEM_TYPE_ICONS = {
-			"ItemIcon.Weapon".AngeHash(),
-			"ItemIcon.Armor".AngeHash(),
-			"ItemIcon.Helmet".AngeHash(),
-			"ItemIcon.Shoes".AngeHash(),
-			"ItemIcon.Gloves".AngeHash(),
-			"ItemIcon.Jewelry".AngeHash(),
-			"ItemIcon.Food".AngeHash(),
-			"ItemIcon.Item".AngeHash(),
+			BuiltInIcon.ITEM_ICON_WEAPON,
+			BuiltInIcon.ITEM_ICON_ARMOR,
+			BuiltInIcon.ITEM_ICON_HELMET,
+			BuiltInIcon.ITEM_ICON_SHOES,
+			BuiltInIcon.ITEM_ICON_GLOVES,
+			BuiltInIcon.ITEM_ICON_JEWELRY,
+			BuiltInIcon.ITEM_ICON_FOOD,
+			BuiltInIcon.ITEM_ICON_ITEM,
 		};
 
 		// Data
@@ -218,18 +218,18 @@ namespace AngeliaFramework {
 		) {
 
 			if (result == 0 || resultCount <= 0) {
-#if UNITY_EDITOR
-				if (result == 0) Game.LogWarning("Result of combination should not be zero.");
-				if (resultCount == 0) Game.LogWarning("ResultCount of combination should not be zero.");
-#endif
+				if (Game.IsEdittime) {
+					if (result == 0) Game.LogWarning("Result of combination should not be zero.");
+					if (resultCount == 0) Game.LogWarning("ResultCount of combination should not be zero.");
+				}
 				return;
 			}
 
 			var from = GetSortedCombination(item0, item1, item2, item3);
 			if (CombinationPool.ContainsKey(from)) {
-#if UNITY_EDITOR
-				Game.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
-#endif
+				if (Game.IsEdittime) {
+					Game.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
+				}
 				return;
 			}
 

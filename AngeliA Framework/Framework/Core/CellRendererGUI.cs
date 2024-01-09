@@ -123,6 +123,9 @@ namespace AngeliaFramework {
 		private static readonly Cell EMPTY_CELL = new() { Sprite = null, TextSprite = null, };
 		private static readonly string[] NUMBER_CACHE = new string[100];
 		private const int MAX_INPUT_CHAR = 256;
+		private const char CONTROL_CUT = (char)24;
+		private const char CONTROL_COPY = (char)3;
+		private const char CONTROL_PASTE = (char)22;
 
 		// Api
 		public static bool IsTyping => TypingTextFieldID != 0;
@@ -201,7 +204,7 @@ namespace AngeliaFramework {
 		public static void CancelTyping () {
 			TypingTextFieldID = 0;
 			TypingTextFieldRect = default;
-			if (TypingBuilder.Length > 0) TypingBuilder.Clear();
+			TypingBuilder.Clear();
 			BeamIndex = 0;
 			BeamLength = 0;
 		}
@@ -507,28 +510,52 @@ namespace AngeliaFramework {
 
 				for (int i = 0; i < TypingBuilder.Length; i++) {
 					char c = TypingBuilder[i];
-					if (c == '\b') {
-						// Backspace
-						if (BeamLength == 0) {
-							int removeIndex = BeamIndex - 1;
-							if (removeIndex >= 0 && removeIndex < text.Text.Length) {
-								text.Text = text.Text.Remove(removeIndex, 1);
-								BeamIndex--;
+					switch (c) {
+						case '\b':
+							// Backspace
+							if (BeamLength == 0) {
+								int removeIndex = BeamIndex - 1;
+								if (removeIndex >= 0 && removeIndex < text.Text.Length) {
+									text.Text = text.Text.Remove(removeIndex, 1);
+									BeamIndex--;
+									changed = true;
+								}
+							} else {
+								RemoveSelection();
 								changed = true;
 							}
-						} else {
-							RemoveSelection();
+							break;
+						case '\r':
+							// Enter
+							CancelTyping();
+							break;
+						case CONTROL_COPY:
+						case CONTROL_CUT:
+							if (BeamLength == 0) break;
+							int beamStart = Util.Min(BeamIndex, BeamIndex + BeamLength);
+							int beamEnd = Util.Max(BeamIndex, BeamIndex + BeamLength);
+							Game.SetClipboardText(text.Text[beamStart..beamEnd]);
+							if (c == CONTROL_CUT) {
+								RemoveSelection();
+								changed = true;
+							}
+							break;
+						case CONTROL_PASTE:
+							string clipboardText = Game.GetClipboardText();
+							if (string.IsNullOrEmpty(clipboardText)) break;
+							if (BeamLength != 0) RemoveSelection();
+							text.Text = text.Text.Insert(BeamIndex, clipboardText);
+							BeamIndex += clipboardText.Length;
 							changed = true;
-						}
-					} else if (c == '\r') {
-						// Enter
-						CancelTyping();
-					} else if (text.Text.Length < MAX_INPUT_CHAR) {
-						// Append Char
-						if (BeamLength != 0) RemoveSelection();
-						text.Text = text.Text.Insert(BeamIndex, c.ToString());
-						BeamIndex++;
-						changed = true;
+							break;
+						default:
+							if (text.Text.Length >= MAX_INPUT_CHAR) break;
+							// Append Char
+							if (BeamLength != 0) RemoveSelection();
+							text.Text = text.Text.Insert(BeamIndex, c.ToString());
+							BeamIndex++;
+							changed = true;
+							break;
 					}
 				}
 
@@ -537,9 +564,11 @@ namespace AngeliaFramework {
 					int removeIndex = BeamIndex;
 					if (removeIndex >= 0 && removeIndex < text.Text.Length) {
 						if (BeamLength == 0) {
+							// Delete One Char
 							text.Text = text.Text.Remove(removeIndex, 1);
 							changed = true;
 						} else {
+							// Delete Selection
 							RemoveSelection();
 							changed = true;
 						}
@@ -736,7 +765,19 @@ namespace AngeliaFramework {
 
 
 		public static void OnTextInput (char c) {
-			if (c != '\b' && c != '\r' && char.IsControl(c)) return;
+			if (!IsTyping) return;
+			if (char.IsControl(c)) {
+				switch (c) {
+					case '\b':
+					case '\r':
+					case CONTROL_CUT:
+					case CONTROL_COPY:
+					case CONTROL_PASTE:
+						break;
+					default:
+						return;
+				}
+			}
 			TypingBuilder.Append(c);
 		}
 

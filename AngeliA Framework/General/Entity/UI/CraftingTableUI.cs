@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireSprite("CraftingTableFrame")]
+	[RequireLanguageFromField]
 	public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 
@@ -20,7 +21,7 @@ namespace AngeliaFramework {
 		private static readonly int ARROW_CODE = BuiltInIcon.TRIANGLE_RIGHT_13;
 		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
 		private static readonly int ITEM_FRAME_CODE = BuiltInIcon.UI_ITEM_FRAME;
-		private static readonly int HINT_CRAFT = "CtrlHint.Craft".AngeHash();
+		private static readonly LanguageCode HINT_CRAFT = "CtrlHint.Craft";
 
 		// Api
 		public static readonly CraftingTableUI Instance = new();

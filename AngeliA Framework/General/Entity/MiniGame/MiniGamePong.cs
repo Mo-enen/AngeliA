@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireLanguageFromField]
 	public class MiniGamePong : MiniGame {
 
 
@@ -12,7 +13,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int HINT_MOVE = "Hint.Pong.Move".AngeHash();
+		private static readonly LanguageCode HINT_MOVE = "Hint.Pong.Move";
 		private const int PADDLE_SPEED = 32;
 		private const int PADDLE_LEN = 200;
 		private const int PADDLE_X = 50;

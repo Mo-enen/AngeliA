@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(
 				TypeID,
 				X + Width / 2, Y + Height / 2,
-				500, 500, (Game.SettleFrame * 6).UMod(360),
+				500, 500, (Game.SettleFrame * 12).UMod(360),
 				Const.CEL, Const.CEL
 			);
 		}

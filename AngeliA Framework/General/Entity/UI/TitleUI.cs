@@ -16,6 +16,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.MapEditorGroup("System")]
+	[RequireSprite("{0}")]
 	public abstract class TitleUI : Entity {
 
 

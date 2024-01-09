@@ -2,6 +2,7 @@
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
+CtrlHint.EditLanguage:Edit Language
 CtrlHint.EditMap:Edit Map
 CtrlHint.EditSheet:Edit Sheet
 CtrlHint.EnterDoor:Enter
@@ -19,8 +20,7 @@ CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
 CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
-CtrlHint.QuitEditing:Stop Editing Map
-CtrlHint.QuitEditingSheet:Quit Editing Sheet
+CtrlHint.QuitEditing:Stop Editing
 CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.Skip:Skip
@@ -30,12 +30,23 @@ CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
+Hint.Pong.Move:Move
+Hint.Sokoban.Move:Move
+Hint.Tetris.Drop:Drop
+Hint.Tetris.Hold:Hold
+Hint.Tetris.Move:Move
+Hint.Tetris.Rotate:Rotate
+iDes.WizardHat:Wizard's Hat
+iName.WizardHat:Wizard Hat
 Language.Creator:楠瓜Moenen
 MEDT.BackgroundOnly:Background Only
 MEDT.CancelDrop:Cancel Drop
 MEDT.Drop:Mouse Left Button to Drop
 MEDT.EntityOnly:Entity Only
 MEDT.LevelOnly:Level Only
+Menu.Gomoku.Draw:Draw
+Menu.Gomoku.Lose:You Lose
+Menu.Gomoku.Win:You Win !!
 Menu.KeySetter.ConfirmMessage:Save the changes?
 Menu.KeySetter.Gamepad:Gamepad
 Menu.KeySetter.GamepadMessage:Press F1 key to reset
@@ -53,6 +64,8 @@ Menu.MEDT.SetAsListCover:Set as List Cover
 Menu.MEDTSetting.AutoZoom:Fixed Scene Range
 Menu.MEDTSetting.PlayerDrop:Quick Player Drop
 Menu.MEDTSetting.ShowState:Show State Info
+Menu.MiniGame.QuitMsg:Quit mini game?
+Menu.MiniGame.Restart:Retart Game?
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.MEDTSetting:Editor Setting
 Menu.Pause.QuitEditMessage:Stop Editing?
@@ -68,7 +81,7 @@ Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.SaveSlot:Save Slot
 Menu.Setting.ShowFPS:Show FPS
 Menu.Setting.SoundVolume:Sound Volume
-Menu.Setting.UseControlHint:Show Control Hint
+Menu.Setting.UseControlHint:Show Control Hint When Playing
 Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
 Menu.Setting.VSync:V-Sync
 Menu.SheetEditor.CreateAtlas:Create Atlas
@@ -77,6 +90,11 @@ Menu.SheetEditor.DeleteAtlasMSG:Delete atlas ? This will also delete files insid
 Menu.SheetEditor.DeleteUnitMSG:Delete unit?
 Menu.SheetEditor.NewAtlasName:New Atlas
 Menu.SheetEditor.NewSpriteName:New Sprite
+Menu.Sokoban.AllCleared:Congratulations!! All levels has been cleared!
+MiniGameGomoku:Gomoku
+MiniGamePong:Pong
+MiniGameSokoban:Sokoban
+MiniGameTetris:Tetris
 Notify.MapGeneratedNotify:Level Generated
 Palette.Background:Background
 Palette.Character:Character
@@ -95,6 +113,7 @@ Palette.Platform:Platform
 Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
+PlayerCustomizerAngelia:Customize
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body
@@ -135,6 +154,8 @@ UI.GameKey.Select:Select
 UI.GameKey.Start:Start
 UI.GameKey.Up:Up
 UI.GameOver:Game Over
+UI.Gomoku.Place:Place
+UI.Gomoku.YouAre:You are:
 UI.Left:Left
 UI.No:No
 UI.None:None
@@ -151,6 +172,7 @@ UI.Save:Save
 UI.Setting:Setting
 UI.SheetTab.File:File
 UI.SheetTab.Palette:Palette
+UI.Sokoban.Level:Level:
 UI.Stop:Stop
 UI.StopEdit:Stop Edit
 UI.Suit.Bodysuit:Cloth
@@ -164,5 +186,7 @@ UI.SuitSuffix.Hand: Gloves
 UI.SuitSuffix.Head: Hat
 UI.SuitSuffix.Hip: Pants
 UI.SuitSuffix.Skirt: Skirt
+UI.Tetris.ClearedLine:Lines:
+UI.Tetris.Holding:Holding
 UI.Up:Up
 UI.Yes:Yes

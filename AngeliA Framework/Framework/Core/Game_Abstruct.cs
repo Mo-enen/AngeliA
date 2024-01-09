@@ -170,6 +170,12 @@ namespace AngeliaFramework {
 		internal static void RequestStringForFont (int layerIndex, int textSize, char[] content) => Instance._RequestStringForFont(layerIndex, textSize, content);
 		protected abstract void _RequestStringForFont (int layerIndex, int textSize, char[] content);
 
+		public static string GetClipboardText () => Instance?._GetClipboardText();
+		protected abstract string _GetClipboardText ();
+
+		public static void SetClipboardText (string text) => Instance?._SetClipboardText(text);
+		protected abstract void _SetClipboardText (string text);
+
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);

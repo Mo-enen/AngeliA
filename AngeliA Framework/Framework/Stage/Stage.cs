@@ -664,9 +664,9 @@ namespace AngeliaFramework {
 					StagedEntityHash.Contains(globalUnitPos)
 				) return null;
 				if (!EntityPool.TryGetValue(typeID, out var eMeta)) {
-#if UNITY_EDITOR
-					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) Game.LogWarning($"Invalid Entity Type ID {typeID}");
-#endif
+					if (Game.IsEdittime) {
+						if (typeID != 0 && !EntityPool.ContainsKey(typeID)) Game.LogWarning($"Invalid Entity Type ID {typeID}");
+					}
 					return null;
 				}
 				if (!EntityPool.TryGetValue(typeID, out var stack)) return null;

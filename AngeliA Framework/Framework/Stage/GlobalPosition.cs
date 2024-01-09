@@ -55,9 +55,10 @@ namespace AngeliaFramework {
 				AllGlobalPositionID.TryAdd(type.AngeHash());
 			}
 			ReloadPool();
-#if UNITY_EDITOR
-			CreateMetaFileFromMapsAsync(AngePath.BuiltInMapRoot);
-#endif
+			if (Game.IsEdittime) {
+				CreateMetaFileFromMapsAsync(AngePath.BuiltInMapRoot);
+			}
+
 		}
 
 

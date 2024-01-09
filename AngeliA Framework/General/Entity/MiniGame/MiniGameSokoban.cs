@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireSpriteFromField]
+	[RequireLanguageFromField]
 	public class MiniGameSokoban : MiniGame {
 
 
@@ -70,9 +71,9 @@ namespace AngeliaFramework {
 			new Level("##########", "#    #####", "# B   B  #", "# B  . B #", "#  .  PB #", "  .B  B  #", "  .B.B.  #", "##  ... ##", "##########"),
 			new Level("##  ######", "##     ###", "#  BBBB ##", "# B P... #", "##   ... #", "##. . #B##", "# .B  B ##", "# B . #B##", "##  #   ##", "##########"),
 		};
-		private static readonly int MENU_ALL_CLEAR = "Menu.Sokoban.AllCleared".AngeHash();
-		private static readonly int UI_Level = "UI.Sokoban.Level".AngeHash();
-		private static readonly int UI_MOVE = "Hint.Sokoban.Move".AngeHash();
+		private static readonly LanguageCode MENU_ALL_CLEAR = "Menu.Sokoban.AllCleared";
+		private static readonly LanguageCode UI_Level = "UI.Sokoban.Level";
+		private static readonly LanguageCode UI_MOVE = "Hint.Sokoban.Move";
 
 		// Api
 		protected override bool RequireMouseCursor => false;

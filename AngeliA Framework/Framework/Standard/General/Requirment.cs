@@ -11,15 +11,49 @@ namespace AngeliaFramework {
 	#region --- Language ---
 
 
-	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
 	public class RequireLanguageAttribute : RequireNameAttribute {
 		public RequireLanguageAttribute (params string[] names) : base(names) { }
 	}
 
 
-	[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
 	public class RequireGlobalLanguageAttribute : RequireGlobalNameAttribute {
 		public RequireGlobalLanguageAttribute (params string[] names) : base(names) { }
+	}
+
+
+	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+	public class RequireLanguageFromField : System.Attribute {
+		private static readonly System.Type TYPE = typeof(RequireLanguageFromField);
+		public static IEnumerable<string> ForAllRequirement () {
+			foreach (var type in Util.AllTypes) {
+				if (GetCustomAttribute(type, TYPE) == null) continue;
+				foreach (var name in ForAllRequiredSpriteNames(type)) {
+					yield return name;
+				}
+			}
+		}
+		public static IEnumerable<string> ForAllRequiredSpriteNames (System.Type type) {
+			foreach (var value in type.ForAllStaticFieldValue<LanguageCode>()) {
+				yield return value.Name;
+			}
+			foreach (var value in type.ForAllStaticFieldValue<LanguageCode[]>()) {
+				foreach (var name in value) {
+					yield return name.Name;
+				}
+			}
+		}
+	}
+
+
+	public class LanguageCode {
+		public readonly string Name;
+		public readonly int ID;
+		public LanguageCode (string name) {
+			Name = name;
+			ID = name.AngeHash();
+		}
+		public static implicit operator LanguageCode (string value) => new(value);
+		public static implicit operator int (LanguageCode code) => code.ID;
 	}
 
 

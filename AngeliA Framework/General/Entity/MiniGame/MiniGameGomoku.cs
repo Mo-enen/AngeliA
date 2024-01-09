@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	////////////////////// UI //////////////////////
+	[RequireLanguageFromField]
 	public class MiniGameGomoku : MiniGame {
 
 
@@ -15,21 +16,21 @@ namespace AngeliaFramework {
 		// Const
 		private const int GRID_THICKNESS = 2;
 		private const int STAGE_SIZE = 21;
-		private static readonly int STONE_CODE = "Circle16".AngeHash();
+		private static readonly int STONE_CODE = BuiltInIcon.CIRCLE_16;
 		private static readonly int LINE_H_CODE = BuiltInIcon.SOFT_LINE_H;
-		private static readonly int LINE_V_CODE = "Soft Line V".AngeHash();
+		private static readonly int LINE_V_CODE = BuiltInIcon.SOFT_LINE_V;
 		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
 		private static readonly Byte4 BACKGROUND_TINT = new(196, 120, 50, 255);
 		private static readonly Byte4 GRID_TINT = new(16, 16, 16, 255);
 		private static readonly Byte4 BLACK_STONE_TINT = new(16, 16, 16, 255);
 		private static readonly Byte4 WHITE_STONE_TINT = new(230, 230, 230, 255);
 		private static readonly Byte4 LAST_PLACED = new(255, 255, 0, 255);
-		private static readonly int GOMOKU_YOU_ARE = "UI.Gomoku.YouAre".AngeHash();
-		private static readonly int GOMOKU_PLACE = "UI.Gomoku.Place".AngeHash();
-		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
-		private static readonly int MENU_GOMOKU_WIN = "Menu.Gomoku.Win".AngeHash();
-		private static readonly int MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose".AngeHash();
-		private static readonly int MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw".AngeHash();
+		private static readonly LanguageCode GOMOKU_YOU_ARE = "UI.Gomoku.YouAre";
+		private static readonly LanguageCode GOMOKU_PLACE = "UI.Gomoku.Place";
+		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
+		private static readonly LanguageCode MENU_GOMOKU_WIN = "Menu.Gomoku.Win";
+		private static readonly LanguageCode MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose";
+		private static readonly LanguageCode MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw";
 
 		// Api
 		protected override Int2 WindowSize => new(618, 618);

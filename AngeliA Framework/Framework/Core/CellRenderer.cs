@@ -435,6 +435,10 @@ namespace AngeliaFramework {
 		public static Cell Draw (int globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
 		public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => TryGetSprite(globalID, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : EMPTY_CELL;
+		public static Cell Draw (SpriteCode globalID, IRect rect, int z = int.MinValue) => Draw(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Const.WHITE, z);
+		public static Cell Draw (SpriteCode globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell Draw (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
+		public static Cell Draw (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => TryGetSprite(globalID.ID, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : EMPTY_CELL;
 		public static Cell Draw (AngeSprite sprite, IRect rect, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Const.WHITE, z);
 		public static Cell Draw (AngeSprite sprite, IRect rect, Byte4 color, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 		public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
@@ -540,6 +544,26 @@ namespace AngeliaFramework {
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
 		public static Cell[] Draw_9Slice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Byte4 color, int z = int.MinValue) {
 			TryGetSprite(globalID, out var sprite);
+			return Draw_9Slice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, partIgnore, color, z);
+		}
+		public static Cell[] Draw_9Slice (SpriteCode globalID, IRect rect) => Draw_9Slice(globalID.ID, rect, Const.WHITE);
+		public static Cell[] Draw_9Slice (SpriteCode globalID, IRect rect, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+		public static Cell[] Draw_9Slice (SpriteCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Const.WHITE, z);
+		public static Cell[] Draw_9Slice (SpriteCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
+		public static Cell[] Draw_9Slice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw_9Slice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, Const.WHITE, z);
+		public static Cell[] Draw_9Slice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) {
+			var border = TryGetSprite(globalID.ID, out var sprite) ? sprite.GlobalBorder : default;
+			return Draw_9Slice(
+				sprite, x, y, pivotX, pivotY, rotation, width, height,
+				border.left, border.right,
+				border.down, border.up,
+				color, z
+			);
+		}
+		public static Cell[] Draw_9Slice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => Draw_9Slice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Const.WHITE, z);
+		public static Cell[] Draw_9Slice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => Draw_9Slice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
+		public static Cell[] Draw_9Slice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Byte4 color, int z = int.MinValue) {
+			TryGetSprite(globalID.ID, out var sprite);
 			return Draw_9Slice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, partIgnore, color, z);
 		}
 		public static Cell[] Draw_9Slice (AngeSprite sprite, IRect rect) => Draw_9Slice(sprite, rect, Const.WHITE);
@@ -746,6 +770,22 @@ namespace AngeliaFramework {
 			);
 			SetLayer(oldLayer);
 		}
+
+
+		// Error
+		//public static Cell Draw (LanguageCode globalID, IRect rect, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell Draw (LanguageCode globalID, IRect rect, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell Draw (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell Draw (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
 
 
 		// Sprite Data

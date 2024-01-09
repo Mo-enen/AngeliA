@@ -2,6 +2,7 @@
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
+CtrlHint.EditLanguage:编辑语言
 CtrlHint.EditMap:编辑地图
 CtrlHint.EditSheet:编辑贴图
 CtrlHint.EnterDoor:进门
@@ -19,8 +20,7 @@ CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
 CtrlHint.PlayerMenu.Take:拾取
 CtrlHint.PlayerMenu.TakeUse:拾取（长按使用）
-CtrlHint.QuitEditing:停止地图编辑
-CtrlHint.QuitEditingSheet:退出编辑贴图
+CtrlHint.QuitEditing:停止编辑
 CtrlHint.Restart:重新开始
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.Skip:跳过
@@ -30,12 +30,23 @@ CtrlHint.Transfer:转移
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 CtrlHint.Wardrobe.Type:服饰类型
+Hint.Pong.Move:移动
+Hint.Sokoban.Move:移动
+Hint.Tetris.Drop:掉落
+Hint.Tetris.Hold:保留
+Hint.Tetris.Move:移动
+Hint.Tetris.Rotate:旋转
+iDes.WizardHat:巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子
+iName.WizardHat:巫师帽
 Language.Creator:楠瓜Moenen
 MEDT.BackgroundOnly:仅背景
 MEDT.CancelDrop:取消放下
 MEDT.Drop:鼠标左键放下
 MEDT.EntityOnly:仅实体
 MEDT.LevelOnly:仅关卡
+Menu.Gomoku.Draw:平局
+Menu.Gomoku.Lose:你输喽，笨蛋
+Menu.Gomoku.Win:你赢啦，耶~~
 Menu.KeySetter.ConfirmMessage:是否保存修改？
 Menu.KeySetter.Gamepad:手柄
 Menu.KeySetter.GamepadMessage:按下F1键重置手柄设置
@@ -53,6 +64,8 @@ Menu.MEDT.SetAsListCover:设为列表封面
 Menu.MEDTSetting.AutoZoom:固定场景范围
 Menu.MEDTSetting.PlayerDrop:快速放下玩家
 Menu.MEDTSetting.ShowState:显示状态信息
+Menu.MiniGame.QuitMsg:退出迷你游戏？
+Menu.MiniGame.Restart:重新开始游戏吗？
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.MEDTSetting:编辑器设置
 Menu.Pause.QuitEditMessage:停止编辑？
@@ -68,7 +81,7 @@ Menu.Setting.MusicVolume:音乐音量
 Menu.Setting.SaveSlot:存档位
 Menu.Setting.ShowFPS:显示帧数
 Menu.Setting.SoundVolume:音效音量
-Menu.Setting.UseControlHint:显示操作提示
+Menu.Setting.UseControlHint:游戏中显示操作提示
 Menu.Setting.UseGamepadHint:显示左下角手柄
 Menu.Setting.VSync:垂直同步
 Menu.SheetEditor.CreateAtlas:创建图集
@@ -77,6 +90,11 @@ Menu.SheetEditor.DeleteAtlasMSG:删除图集吗？图集中的图块也会被删
 Menu.SheetEditor.DeleteUnitMSG:删除图块？
 Menu.SheetEditor.NewAtlasName:新图集
 Menu.SheetEditor.NewSpriteName:新图块
+Menu.Sokoban.AllCleared:恭喜通关！
+MiniGameGomoku:五子棋
+MiniGamePong:乓
+MiniGameSokoban:推箱子
+MiniGameTetris:俄罗斯方块
 Notify.MapGeneratedNotify:关卡已生成
 Palette.Background:背景
 Palette.Character:角色
@@ -95,6 +113,7 @@ Palette.Platform:平台
 Palette.System:系统
 Palette.Vegetation:植被
 Palette.Wallpaper:壁纸
+PlayerCustomizerAngelia:自定义样貌
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
 UI.BodyPart.Body:身体
@@ -135,6 +154,8 @@ UI.GameKey.Select:选择
 UI.GameKey.Start:开始
 UI.GameKey.Up:上
 UI.GameOver:游戏结束
+UI.Gomoku.Place:落子
+UI.Gomoku.YouAre:您是：
 UI.Left:左
 UI.No:否
 UI.None:无
@@ -151,6 +172,7 @@ UI.Save:保存
 UI.Setting:设置
 UI.SheetTab.File:文件
 UI.SheetTab.Palette:颜色
+UI.Sokoban.Level:关卡：
 UI.Stop:停止
 UI.StopEdit:停止编辑
 UI.Suit.Bodysuit:衣服
@@ -164,5 +186,7 @@ UI.SuitSuffix.Hand:手套
 UI.SuitSuffix.Head:帽子
 UI.SuitSuffix.Hip:裤子
 UI.SuitSuffix.Skirt:裙子
+UI.Tetris.ClearedLine:行数:
+UI.Tetris.Holding:保留
 UI.Up:上
 UI.Yes:是

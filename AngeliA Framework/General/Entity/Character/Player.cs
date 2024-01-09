@@ -11,6 +11,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDrawBehind]
 	[RequireGlobalSprite("Player")]
+	[RequireLanguageFromField]
 	public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, IActionTarget {
 
 
@@ -37,14 +38,14 @@ namespace AngeliaFramework {
 		// Const
 		private const int RUSH_TAPPING_GAP = 16;
 		private const int ACTION_SCAN_RANGE = Const.HALF;
-		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
-		private static readonly int HINT_JUMP = "CtrlHint.Jump".AngeHash();
-		private static readonly int HINT_SHOW_MENU = "CtrlHint.ShowMenu".AngeHash();
-		private static readonly int HINT_ATTACK = "CtrlHint.Attack".AngeHash();
-		private static readonly int HINT_SWITCH_PLAYER = "CtrlHint.SwitchPlayer".AngeHash();
-		private static readonly int HINT_WAKE = "CtrlHint.WakeUp".AngeHash();
-		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
-		private static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
+		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
+		private static readonly LanguageCode HINT_JUMP = "CtrlHint.Jump";
+		private static readonly LanguageCode HINT_SHOW_MENU = "CtrlHint.ShowMenu";
+		private static readonly LanguageCode HINT_ATTACK = "CtrlHint.Attack";
+		private static readonly LanguageCode HINT_SWITCH_PLAYER = "CtrlHint.SwitchPlayer";
+		private static readonly LanguageCode HINT_WAKE = "CtrlHint.WakeUp";
+		private static readonly LanguageCode HINT_USE = "CtrlHint.Use";
+		private static readonly LanguageCode UI_CONTINUE = "UI.Continue";
 
 		// Api
 		public static Player Selecting { get; set; } = null;

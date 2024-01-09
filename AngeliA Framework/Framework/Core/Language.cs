@@ -36,8 +36,8 @@ namespace AngeliaFramework {
 
 			// Get All Language from Disk
 			var allLanguages = new List<string>();
-			foreach (var folderPath in Util.EnumerateFolders(AngePath.LanguageRoot, true, "*")) {
-				allLanguages.Add(Util.GetNameWithoutExtension(folderPath));
+			foreach (var path in Util.EnumerateFiles(AngePath.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
+				allLanguages.Add(Util.GetNameWithoutExtension(path));
 			}
 			AllLanguages = allLanguages.ToArray();
 
@@ -51,10 +51,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static string Get (int id, string failback = "") => Map.TryGetValue(id, out string value) ? value : failback;
+		public static string Get (int id, string failback = "") => Map.TryGetValue(id, out string value) && !string.IsNullOrEmpty(value) ? value : failback;
+		public static string Get (LanguageCode code, string failback = "") => Map.TryGetValue(code.ID, out string value) && !string.IsNullOrEmpty(value) ? value : failback;
 
-
-		public static bool Has (int id) => Map.ContainsKey(id);
+		// Error
+		//public static string Get (SpriteCode code, string failback = "") => throw new System.Exception("Using sprite code for language.");
 
 
 		public static string GetLanguageAt (int index) => AllLanguages[index];
@@ -71,21 +72,17 @@ namespace AngeliaFramework {
 		}
 
 
-		// LGC
 		private static bool LoadFromDisk (string languageRoot, string language) {
-			string rootPath = Util.CombinePaths(languageRoot, language);
 			Map.Clear();
 			string key, value;
-			foreach (var path in Util.EnumerateFiles(rootPath, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
-				foreach (var line in Util.ForAllLines(path, Encoding.UTF8)) {
-					if (string.IsNullOrWhiteSpace(line)) continue;
-					int colon = line.IndexOf(':');
-					if (colon <= 0) continue;
-					key = line[..colon];
-					value = colon + 1 < line.Length ? line[(colon + 1)..] : "";
-					if (string.IsNullOrWhiteSpace(key)) continue;
-					Map.TryAdd(key.AngeHash(), value.Replace("\\n", "\n"));
-				}
+			foreach (var line in Util.ForAllLines(Util.CombinePaths(languageRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}"), Encoding.UTF8)) {
+				if (string.IsNullOrWhiteSpace(line)) continue;
+				int colon = line.IndexOf(':');
+				if (colon <= 0) continue;
+				key = line[..colon];
+				value = colon + 1 < line.Length ? line[(colon + 1)..] : "";
+				if (string.IsNullOrWhiteSpace(key)) continue;
+				Map.TryAdd(key.AngeHash(), value.Replace("\\n", "\n"));
 			}
 			return true;
 		}

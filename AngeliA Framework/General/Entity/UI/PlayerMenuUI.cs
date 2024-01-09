@@ -39,6 +39,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[RequireSpriteFromField]
+	[RequireLanguageFromField]
 	public class PlayerMenuUI : EntityUI {
 
 
@@ -52,20 +53,20 @@ namespace AngeliaFramework {
 		private static readonly int ITEM_FRAME_CODE = BuiltInIcon.UI_ITEM_FRAME;
 		private static readonly SpriteCode ARMOR_ICON = "ArmorIcon";
 		private static readonly SpriteCode ARMOR_EMPTY_ICON = "ArmorEmptyIcon";
-		private static readonly int HINT_HIDE_MENU = "CtrlHint.HideMenu".AngeHash();
-		private static readonly int HINT_TAKE = "CtrlHint.PlayerMenu.Take".AngeHash();
-		private static readonly int HINT_DROP = "CtrlHint.Drop".AngeHash();
-		private static readonly int HINT_THROW = "CtrlHint.Throw".AngeHash();
-		private static readonly int HINT_HUSE = "CtrlHint.HoldToUse".AngeHash();
-		private static readonly int HINT_TRANSFER = "CtrlHint.Transfer".AngeHash();
-		private static readonly int HINT_EQUIP = "CtrlHint.Equip".AngeHash();
-		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
-		private static readonly int UI_HELMET = "UI.Equipment.Helmet".AngeHash();
-		private static readonly int UI_WEAPON = "UI.Equipment.Weapon".AngeHash();
-		private static readonly int UI_SHOES = "UI.Equipment.Shoes".AngeHash();
-		private static readonly int UI_GLOVES = "UI.Equipment.Gloves".AngeHash();
-		private static readonly int UI_BODYSUIT = "UI.Equipment.Bodysuit".AngeHash();
-		private static readonly int UI_JEWELRY = "UI.Equipment.Jewelry".AngeHash();
+		private static readonly LanguageCode HINT_HIDE_MENU = "CtrlHint.HideMenu";
+		private static readonly LanguageCode HINT_TAKE = "CtrlHint.PlayerMenu.Take";
+		private static readonly LanguageCode HINT_DROP = "CtrlHint.Drop";
+		private static readonly LanguageCode HINT_THROW = "CtrlHint.Throw";
+		private static readonly LanguageCode HINT_HUSE = "CtrlHint.HoldToUse";
+		private static readonly LanguageCode HINT_TRANSFER = "CtrlHint.Transfer";
+		private static readonly LanguageCode HINT_EQUIP = "CtrlHint.Equip";
+		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
+		private static readonly LanguageCode UI_HELMET = "UI.Equipment.Helmet";
+		private static readonly LanguageCode UI_WEAPON = "UI.Equipment.Weapon";
+		private static readonly LanguageCode UI_SHOES = "UI.Equipment.Shoes";
+		private static readonly LanguageCode UI_GLOVES = "UI.Equipment.Gloves";
+		private static readonly LanguageCode UI_BODYSUIT = "UI.Equipment.Bodysuit";
+		private static readonly LanguageCode UI_JEWELRY = "UI.Equipment.Jewelry";
 		private const int WINDOW_PADDING = 12;
 		private const int HOLD_KEY_DURATION = 26;
 		private const int ANIMATION_DURATION = 12;

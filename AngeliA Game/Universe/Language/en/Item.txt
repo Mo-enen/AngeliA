@@ -1,2 +1,0 @@
-iDes.WizardHat:Wizard's Hat
-iName.WizardHat:Wizard Hat

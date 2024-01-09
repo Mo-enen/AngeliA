@@ -10,7 +10,6 @@ namespace AngeliaFramework {
 
 		// Api
 		public static GlobalEditorUI Instance { get; private set; } = null;
-		public static bool IsActived => Instance != null && Instance.Active;
 		private static System.Action RestartGameImmediately;
 
 

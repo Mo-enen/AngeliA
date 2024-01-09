@@ -18,11 +18,12 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
+	[RequireLanguageFromField]
 	public abstract class Door : EnvironmentEntity {
 
 
 		// Const
-		private static readonly int HINT_ENTER = "CtrlHint.EnterDoor".AngeHash();
+		private static readonly LanguageCode HINT_ENTER = "CtrlHint.EnterDoor";
 
 		// Api
 		public virtual bool IsFrontDoor => false;

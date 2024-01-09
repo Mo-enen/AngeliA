@@ -1,23 +1,50 @@
 namespace AngeliaFramework {
 
 
-	public class MapEditorEntranceWood : MapEditorEntrance { }
+
+	[RequireLanguageFromField]
+	public class LanguageEditorEntranceWood : GlobalEditorEntrance<LanguageEditor> {
+		private static readonly LanguageCode HINT_START = "CtrlHint.EditLanguage";
+		protected override int StartHint => HINT_START;
+		protected override bool IsEditing => LanguageEditor.IsActived;
+	}
 
 
+	[RequireLanguageFromField]
+	public class SheetEditorEntranceWood : GlobalEditorEntrance<SheetEditor> {
+		private static readonly LanguageCode HINT_START = "CtrlHint.EditSheet";
+		protected override int StartHint => HINT_START;
+		protected override bool IsEditing => SheetEditor.IsActived;
+	}
+
+
+	[RequireLanguageFromField]
+	public class MapEditorEntranceWood : GlobalEditorEntrance<MapEditor> {
+		private static readonly LanguageCode HINT_START = "CtrlHint.EditMap";
+		protected override int StartHint => HINT_START.ID;
+		protected override bool IsEditing => MapEditor.IsActived;
+	}
+
+
+	// Entrance
 	[EntityAttribute.Capacity(1, 0)]
-	public abstract class MapEditorEntrance : Furniture, IActionTarget {
+	[RequireLanguageFromField]
+	public abstract class GlobalEditorEntrance<E> : Furniture, IActionTarget where E : GlobalEditorUI {
 
-		private static readonly int HINT_START = "CtrlHint.EditMap".AngeHash();
-		private static readonly int HINT_QUIT = "CtrlHint.QuitEditing".AngeHash();
+		protected abstract int StartHint { get; }
+		protected abstract bool IsEditing { get; }
+		private static readonly LanguageCode HINT_QUIT = "CtrlHint.QuitEditing";
+		private readonly int TargetTypeID = 0;
+
+		public GlobalEditorEntrance () => TargetTypeID = typeof(E).AngeHash();
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
 			// Draw Hint
 			if ((this as IActionTarget).IsHighlighted) {
-				bool editing = MapEditor.Instance != null && MapEditor.Instance.Active;
 				ControlHintUI.DrawGlobalHint(
 					X, Y + Height + Const.CEL * 2, Gamekey.Action,
-					editing ? Language.Get(HINT_QUIT, "Quit Editing Map") : Language.Get(HINT_START, "Edit Map"), true
+					IsEditing ? Language.Get(HINT_QUIT, "Quit Editing") : Language.Get(StartHint, "Edit Map"), true
 				);
 			}
 
@@ -25,11 +52,10 @@ namespace AngeliaFramework {
 
 		void IActionTarget.Invoke () {
 			if (FrameTask.HasTask()) return;
-			bool editing = MapEditor.Instance != null && MapEditor.Instance.Active;
-			if (editing) {
+			if (IsEditing) {
 				GlobalEditorUI.CloseEditorSmoothly();
 			} else {
-				GlobalEditorUI.OpenEditorSmoothly(MapEditor.TYPE_ID);
+				GlobalEditorUI.OpenEditorSmoothly(TargetTypeID);
 			}
 		}
 

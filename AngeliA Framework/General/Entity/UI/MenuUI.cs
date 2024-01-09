@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireLanguageFromField]
 	public abstract class MenuUI : EntityUI {
 
 
@@ -12,9 +13,9 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int HINT_ADJUST = "CtrlHint.Adjust".AngeHash();
-		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
-		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
+		private static readonly LanguageCode HINT_ADJUST = "CtrlHint.Adjust";
+		private static readonly LanguageCode HINT_USE = "CtrlHint.Use";
+		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
 
 		// Api
 		public bool SelectionAdjustable { get; private set; } = false;
@@ -36,7 +37,7 @@ namespace AngeliaFramework {
 		protected Int4 ContentPadding = new(32, 32, 46, 46);
 		protected Int2 SelectionMarkSize = new(32, 32);
 		protected Int2 SelectionArrowMarkSize = new(24, 24);
-		protected Int2 MoreMarkSize = new(16, 16);
+		protected Int2 MoreMarkSize = new(28, 28);
 		protected Byte4 ScreenTint = new(0, 0, 0, 0);
 		protected Byte4 BackgroundTint = new(0, 0, 0, 255);
 		protected Byte4 SelectionMarkTint = new(255, 255, 255, 255);
@@ -63,6 +64,7 @@ namespace AngeliaFramework {
 			Wrap = true,
 		};
 		private readonly CellContent ItemLabel = new();
+		private IRect BackgroundRect;
 
 
 		#endregion
@@ -85,7 +87,7 @@ namespace AngeliaFramework {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			if (FrameInput.AnyMouseButtonHolding && !Rect.MouseInside()) {
+			if (FrameInput.AnyMouseButtonHolding && !BackgroundRect.MouseInside()) {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseMouseKey(1);
 				FrameInput.UseMouseKey(2);
@@ -147,6 +149,7 @@ namespace AngeliaFramework {
 					(AnimationDuration * AnimationDuration) - (AnimationDuration - AnimationFrame) * (AnimationDuration - AnimationFrame)
 				));
 			}
+			BackgroundRect = bgRect;
 			CellRenderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint);
 
 			// Message
@@ -215,10 +218,11 @@ namespace AngeliaFramework {
 				// U
 				markRectU = new IRect(
 					windowRect.x + (windowRect.width - moreMarkSize.x) / 2,
-					windowRect.yMax + contentPadding.up - moreMarkSize.y - MarkPingPongFrame.PingPong(46),
+					windowRect.yMax + contentPadding.up - moreMarkSize.y,
 					moreMarkSize.x, moreMarkSize.y
-				);
-				CellRenderer.Draw(MoreItemMarkCode, markRectU.Shift(0, MarkPingPongFrame.PingPong(46)), MoreMarkTint);
+				).Shift(0, MarkPingPongFrame.PingPong(46));
+				CellRenderer.Draw(MoreItemMarkCode, markRectU, MoreMarkTint);
+				CursorSystem.SetCursorAsHand(markRectU);
 			}
 			if (ScrollY < ItemCount - TargetItemCount) {
 				// D
@@ -226,15 +230,19 @@ namespace AngeliaFramework {
 					windowRect.x + (windowRect.width - moreMarkSize.x) / 2,
 					windowRect.yMin - contentPadding.down + moreMarkSize.y,
 					moreMarkSize.x, -moreMarkSize.y
-				);
-				CellRenderer.Draw(MoreItemMarkCode, markRectD.Shift(0, MarkPingPongFrame.PingPong(46)), MoreMarkTint);
+				).Shift(0, MarkPingPongFrame.PingPong(46));
+				CellRenderer.Draw(MoreItemMarkCode, markRectD, MoreMarkTint);
+				CursorSystem.SetCursorAsHand(markRectD);
 			}
 
 			// Click on Mark
 			if (FrameInput.MouseLeftButtonDown) {
+				markRectD.FlipNegative();
+				markRectU.FlipNegative();
 				if (markRectD.Expand(Unify(12)).MouseInside()) {
 					ScrollY++;
-				} else if (markRectU.Expand(Unify(12)).MouseInside()) {
+				}
+				if (markRectU.Expand(Unify(12)).MouseInside()) {
 					ScrollY--;
 				}
 			}

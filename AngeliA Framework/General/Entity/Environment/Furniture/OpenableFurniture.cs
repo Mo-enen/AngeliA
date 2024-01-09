@@ -50,10 +50,11 @@ namespace AngeliaFramework {
 
 
 
+	[RequireLanguageFromField]
 	public abstract class OpenableFurniture : Furniture, IActionTarget {
 
 
-		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
 		public bool Open { get; private set; } = false;
 		bool IActionTarget.LockInput => Open;
 		bool IActionTarget.IsHighlighted => !Open && GetIsHighlighted();
@@ -68,7 +69,7 @@ namespace AngeliaFramework {
 					BlinkCellAsFurniture(cell);
 				}
 			}
-			
+
 			if (Open) {
 				// Cancel
 				if (FrameInput.GameKeyUp(Gamekey.Select)) {

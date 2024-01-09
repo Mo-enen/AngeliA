@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireSprite("{1}.Tail")]
+	[RequireLanguage("{1}.Tail")]
 	public abstract class Tail : BodyGadget {
 
 

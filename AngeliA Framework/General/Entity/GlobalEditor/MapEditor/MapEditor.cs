@@ -4,6 +4,7 @@ using GeorgeMamaladze;
 
 
 namespace AngeliaFramework {
+	[RequireLanguageFromField]
 	public sealed partial class MapEditor : GlobalEditorUI {
 
 
@@ -73,21 +74,21 @@ namespace AngeliaFramework {
 		private static readonly Byte4 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Byte4 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 		private static readonly Byte4 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
-		private static readonly int MEDT_DROP = "MEDT.Drop".AngeHash();
-		private static readonly int MEDT_CANCEL_DROP = "MEDT.CancelDrop".AngeHash();
-		private static readonly int MEDT_ENTITY_ONLY = "MEDT.EntityOnly".AngeHash();
-		private static readonly int MEDT_LEVEL_ONLY = "MEDT.LevelOnly".AngeHash();
-		private static readonly int MEDT_BG_ONLY = "MEDT.BackgroundOnly".AngeHash();
-		private static readonly int HINT_MEDT_SWITCH_EDIT = "CtrlHint.MEDT.SwitchMode.Edit".AngeHash();
-		private static readonly int HINT_MEDT_SWITCH_PLAY = "CtrlHint.MEDT.SwitchMode.Play".AngeHash();
-		private static readonly int HINT_MEDT_PLAY_FROM_BEGIN = "CtrlHint.MEDT.PlayFromBegin".AngeHash();
-		private static readonly int HINT_MEDT_NAV = "CtrlHint.MEDT.Nav".AngeHash();
-		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
-		private static readonly int UI_DELETE = "UI.Delete".AngeHash();
+		private static readonly LanguageCode MEDT_DROP = "MEDT.Drop";
+		private static readonly LanguageCode MEDT_CANCEL_DROP = "MEDT.CancelDrop";
+		private static readonly LanguageCode MEDT_ENTITY_ONLY = "MEDT.EntityOnly";
+		private static readonly LanguageCode MEDT_LEVEL_ONLY = "MEDT.LevelOnly";
+		private static readonly LanguageCode MEDT_BG_ONLY = "MEDT.BackgroundOnly";
+		private static readonly LanguageCode HINT_MEDT_SWITCH_EDIT = "CtrlHint.MEDT.SwitchMode.Edit";
+		private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = "CtrlHint.MEDT.SwitchMode.Play";
+		private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = "CtrlHint.MEDT.PlayFromBegin";
+		private static readonly LanguageCode HINT_MEDT_NAV = "CtrlHint.MEDT.Nav";
+		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
+		private static readonly LanguageCode UI_DELETE = "UI.Delete";
 
 		// Api
 		public new static MapEditor Instance => GlobalEditorUI.Instance as MapEditor;
-		public new static bool IsActived => Instance != null && Instance.Active;
+		public static bool IsActived => Instance != null && Instance.Active;
 		public static bool IsEditing => IsActived && !Instance.PlayingGame;
 		public static bool IsPlaying => IsActived && Instance.PlayingGame;
 		public bool QuickPlayerDrop {
@@ -118,10 +119,10 @@ namespace AngeliaFramework {
 		private readonly List<PaletteItem> SearchResult = new();
 		private readonly List<int> CheckAltarIDs = new();
 		private readonly Trie<PaletteItem> PaletteTrie = new();
-		private readonly UndoRedoEcho<MapUndoItem> UndoRedo = null;
 		private readonly MapUndoData[] UndoData = new MapUndoData[131072];
 		private readonly Dictionary<int, MapEditorGizmos> GizmosPool = new();
-		private readonly MapEditorMeta EditorMeta = new();
+		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
+		private MapEditorMeta EditorMeta = new();
 
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
@@ -167,11 +168,100 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public MapEditor () {
-			UndoRedo = new(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
-			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
-				Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
-			);
+		// Active
+		public override void OnActivated () {
+			base.OnActivated();
+			// Init
+			if (InitializedFrame < 0) {
+				InitializedFrame = Game.GlobalFrame;
+				UndoRedo = new(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
+				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
+					Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
+				);
+				Initialize_Pool();
+				Initialize_Palette();
+				Initialize_Nav();
+			}
+			// Cache
+			PastingBuffer.Clear();
+			CopyBuffer.Clear();
+			UndoRedo.Reset();
+			System.Array.Clear(UndoData, 0, UndoData.Length);
+			DroppingPlayer = false;
+			SelectingPaletteItem = null;
+			MouseDownPosition = null;
+			SelectionUnitRect = null;
+			DraggingUnitRect = null;
+			PaintingThumbnailStartIndex = 0;
+			PaintingThumbnailRect = default;
+			MouseInSelection = false;
+			MouseDownInSelection = false;
+			Pasting = false;
+			UndoDataIndex = 0;
+			MouseDownOutsideBoundary = false;
+			MouseOutsideBoundary = false;
+			PaletteScrollY = 0;
+			SearchResult.Clear();
+			PanelOffsetX = 0;
+			SearchingText = "";
+			PaletteSearchScrollY = 0;
+			SetNavigating(false);
+			ToolbarOffsetX = 0;
+			PerformingUndoQueue = new();
+
+			// Start
+			if (Game.GlobalFrame == 0) {
+				SetEditorMode(true);
+				Game.RestartGame();
+				CellRenderer.DrawBlackCurtain(1000);
+			} else {
+				SetEditorMode(false);
+			}
+			if (Player.Selecting != null) {
+				Player.Selecting.Active = false;
+			}
+
+			// View
+			ResetCamera(true);
+
+			// Panel
+			PanelRect.width = Unify(PANEL_WIDTH);
+			PanelOffsetX = -PanelRect.width;
+			PanelRect.x = CellRenderer.CameraRect.x - PanelRect.width;
+
+			System.GC.Collect();
+
+		}
+
+
+		public override void OnInactivated () {
+			base.OnInactivated();
+
+			if (!PlayingGame) {
+				ApplyPaste();
+				Save();
+			}
+
+			JsonUtil.SaveJson(EditorMeta, Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot);
+			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
+			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
+			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
+			WorldSquad.SpawnEntity = true;
+			WorldSquad.ShowElement = false;
+			WorldSquad.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
+
+			IsNavigating = false;
+			PastingBuffer.Clear();
+			CopyBuffer.Clear();
+			UndoRedo.Reset();
+			System.Array.Clear(UndoData, 0, UndoData.Length);
+			PerformingUndoQueue = null;
+			IsDirty = false;
+			MouseDownOutsideBoundary = false;
+			SearchResult.Clear();
+
+			System.GC.Collect();
+
 		}
 
 
@@ -268,99 +358,6 @@ namespace AngeliaFramework {
 			foreach (var type in typeof(CheckAltar<>).AllChildClass()) {
 				CheckAltarIDs.Add(type.AngeHash());
 			}
-
-		}
-
-
-		// Active
-		public override void OnActivated () {
-			base.OnActivated();
-			// Init
-			if (InitializedFrame < 0) {
-				InitializedFrame = Game.GlobalFrame;
-				Initialize_Pool();
-				Initialize_Palette();
-				Initialize_Nav();
-			}
-			// Cache
-			PastingBuffer.Clear();
-			CopyBuffer.Clear();
-			UndoRedo.Reset();
-			System.Array.Clear(UndoData, 0, UndoData.Length);
-			DroppingPlayer = false;
-			SelectingPaletteItem = null;
-			MouseDownPosition = null;
-			SelectionUnitRect = null;
-			DraggingUnitRect = null;
-			PaintingThumbnailStartIndex = 0;
-			PaintingThumbnailRect = default;
-			MouseInSelection = false;
-			MouseDownInSelection = false;
-			Pasting = false;
-			UndoDataIndex = 0;
-			MouseDownOutsideBoundary = false;
-			MouseOutsideBoundary = false;
-			PaletteScrollY = 0;
-			SearchResult.Clear();
-			PanelOffsetX = 0;
-			SearchingText = "";
-			PaletteSearchScrollY = 0;
-			SetNavigating(false);
-			ToolbarOffsetX = 0;
-			PerformingUndoQueue = new();
-
-			// Start
-			if (Game.GlobalFrame == 0) {
-				SetEditorMode(true);
-				Game.RestartGame();
-				CellRenderer.DrawBlackCurtain(1000);
-			} else {
-				SetEditorMode(false);
-			}
-			if (Player.Selecting != null) {
-				Player.Selecting.Active = false;
-			}
-
-			// View
-			ResetCamera(true);
-
-			// Panel
-			PanelRect.width = Unify(PANEL_WIDTH);
-			PanelOffsetX = -PanelRect.width;
-			PanelRect.x = CellRenderer.CameraRect.x - PanelRect.width;
-
-			System.GC.Collect();
-
-		}
-
-
-		public override void OnInactivated () {
-			base.OnInactivated();
-
-			if (!PlayingGame) {
-				ApplyPaste();
-				Save();
-			}
-
-			JsonUtil.SaveJson(EditorMeta, Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot);
-			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
-			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
-			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
-			WorldSquad.SpawnEntity = true;
-			WorldSquad.ShowElement = false;
-			WorldSquad.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
-
-			IsNavigating = false;
-			PastingBuffer.Clear();
-			CopyBuffer.Clear();
-			UndoRedo.Reset();
-			System.Array.Clear(UndoData, 0, UndoData.Length);
-			PerformingUndoQueue = null;
-			IsDirty = false;
-			MouseDownOutsideBoundary = false;
-			SearchResult.Clear();
-
-			System.GC.Collect();
 
 		}
 

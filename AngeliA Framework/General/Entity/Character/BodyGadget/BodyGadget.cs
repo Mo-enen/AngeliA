@@ -60,14 +60,8 @@ namespace AngeliaFramework {
 
 
 		public string GetDisplayName () {
-			string baseName = GadgetType.ToString();
-			string smartTypeName = GetType().AngeName();
-			if (smartTypeName.EndsWith(baseName) && smartTypeName.Length > baseName.Length) {
-				smartTypeName = smartTypeName[..^baseName.Length];
-			}
-			int smartID = $"Pat.{smartTypeName}".AngeHash();
-			string suffix = Language.Get($"UI.GadgetSuffix.{baseName}".AngeHash(), $" {baseName}");
-			return $"{Language.Get(smartID, Util.GetDisplayName(smartTypeName))}{suffix}";
+			string name = (GetType().DeclaringType ?? GetType()).AngeName();
+			return Language.Get($"{name}.{GadgetType}".AngeHash(), Util.GetDisplayName(name));
 		}
 
 

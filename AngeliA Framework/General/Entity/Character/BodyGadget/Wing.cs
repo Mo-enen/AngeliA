@@ -11,6 +11,7 @@ namespace AngeliaFramework {
 
 
 	[RequireSprite("{1}.Wing")]
+	[RequireLanguage("{1}.Wing")]
 	public abstract class Wing : BodyGadget {
 
 

@@ -14,6 +14,7 @@ namespace AngeliaFramework {
 
 
 	[RequireSprite("{1}.HeadSuit")]
+	[RequireLanguage("{1}.Head")]
 	public abstract class HeadCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Head;
@@ -101,6 +102,7 @@ namespace AngeliaFramework {
 
 
 	[RequireSprite("{1}.BodySuit", "{1}.BodySuitL", "{1}.BodySuitR", "{1}.ShoulderSuit", "{1}.UpperArmSuit", "{1}.LowerArmSuit")]
+	[RequireLanguage("{1}.Body")]
 	public abstract class BodyCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Body;
@@ -263,9 +265,10 @@ namespace AngeliaFramework {
 
 		public static void DrawCape (PoseCharacter character, int capeID, int motionAmount = 1000) {
 			if (capeID == 0) return;
+			if (!CellRenderer.TryGetSpriteGroup(capeID, out var group) || group.Length < 4) return;
+			var sprite = group[character.Body.FrontSide ? 2 : 3];
 			var animatedPoseType = character.AnimationType;
 			if (
-				!CellRenderer.TryGetSpriteFromGroup(capeID, character.Body.FrontSide ? 2 : 3, out var sprite, false, true) ||
 				animatedPoseType == CharacterAnimationType.SquatIdle ||
 				animatedPoseType == CharacterAnimationType.SquatMove ||
 				animatedPoseType == CharacterAnimationType.Dash ||
@@ -320,16 +323,14 @@ namespace AngeliaFramework {
 			}
 		}
 
-
 	}
 
 
 
 	[RequireSprite("{1}.HipSuit", "{1}.SkirtSuit", "{1}.UpperLegSuit", "{1}.LowerLegSuit")]
+	[RequireLanguage("{1}.Hip")]
 	public abstract class HipCloth : Cloth {
 
-		private static readonly int SKIRT_SUIT_SUFFIX = "UI.SuitSuffix.Skirt".AngeHash();
-		protected override string DisplayNameSuffix => SpriteIdSkirt != 0 ? Language.Get(SKIRT_SUIT_SUFFIX, " Skirt") : base.DisplayNameSuffix;
 		protected sealed override ClothType ClothType => ClothType.Hip;
 		protected virtual bool CoverLegs => true;
 		private int SpriteIdHip { get; init; }
@@ -561,6 +562,7 @@ namespace AngeliaFramework {
 
 
 	[RequireSprite("{1}.HandSuit")]
+	[RequireLanguage("{1}.Hand")]
 	public abstract class HandCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Hand;
@@ -600,6 +602,7 @@ namespace AngeliaFramework {
 
 
 	[RequireSprite("{1}.FootSuit")]
+	[RequireLanguage("{1}.Foot")]
 	public abstract class FootCloth : Cloth {
 
 		protected sealed override ClothType ClothType => ClothType.Foot;
@@ -669,23 +672,10 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly Cell[] SINGLE_CELL = { CellRenderer.EMPTY_CELL };
-		private static readonly int HEAD_SUIT_SUFFIX = "UI.SuitSuffix.Head".AngeHash();
-		private static readonly int BODY_SUIT_SUFFIX = "UI.SuitSuffix.Body".AngeHash();
-		private static readonly int HIP_SUIT_SUFFIX = "UI.SuitSuffix.Hip".AngeHash();
-		private static readonly int HAND_SUIT_SUFFIX = "UI.SuitSuffix.Hand".AngeHash();
-		private static readonly int FOOT_SUIT_SUFFIX = "UI.SuitSuffix.Foot".AngeHash();
 
 		// Api
 		public int TypeID { get; init; }
 		protected abstract ClothType ClothType { get; }
-		protected virtual string DisplayNameSuffix => ClothType switch {
-			ClothType.Head => Language.Get(HEAD_SUIT_SUFFIX, " Hat"),
-			ClothType.Body => Language.Get(BODY_SUIT_SUFFIX, " Cloth"),
-			ClothType.Hand => Language.Get(HAND_SUIT_SUFFIX, " Gloves"),
-			ClothType.Hip => Language.Get(HIP_SUIT_SUFFIX, " Pants"),
-			ClothType.Foot => Language.Get(FOOT_SUIT_SUFFIX, " Shoes"),
-			_ => "",
-		};
 
 		// Data
 		protected static readonly Dictionary<int, Cloth> Pool = new();
@@ -811,48 +801,8 @@ namespace AngeliaFramework {
 
 
 		public string GetDisplayName () {
-
-			string typeName = GetType().AngeName();
-
-			switch (ClothType) {
-				case ClothType.Head:
-					if (typeName.EndsWith("HeadSuit", System.StringComparison.OrdinalIgnoreCase)) {
-						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
-						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
-						return $"{name}{DisplayNameSuffix}";
-					}
-					break;
-				case ClothType.Body:
-					if (typeName.EndsWith("BodySuit", System.StringComparison.OrdinalIgnoreCase)) {
-						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
-						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
-						return $"{name}{DisplayNameSuffix}";
-					}
-					break;
-				case ClothType.Hand:
-					if (typeName.EndsWith("HandSuit", System.StringComparison.OrdinalIgnoreCase)) {
-						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
-						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
-						return $"{name}{DisplayNameSuffix}";
-					}
-					break;
-				case ClothType.Hip:
-					if (typeName.EndsWith("HipSuit", System.StringComparison.OrdinalIgnoreCase)) {
-						string smartName = typeName.Length > 7 ? typeName[..^7] : typeName;
-						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
-						return $"{name}{DisplayNameSuffix}";
-					}
-					break;
-				case ClothType.Foot:
-					if (typeName.EndsWith("FootSuit", System.StringComparison.OrdinalIgnoreCase)) {
-						string smartName = typeName.Length > 8 ? typeName[..^8] : typeName;
-						string name = Language.Get($"Pat.{smartName}".AngeHash(), Util.GetDisplayName(smartName));
-						return $"{name}{DisplayNameSuffix}";
-					}
-					break;
-			}
-			return $"{Language.Get($"Pat.{typeName}".AngeHash(), Util.GetDisplayName(typeName))}";
-
+			string typeName = (GetType().DeclaringType ?? GetType()).AngeName();
+			return $"{Language.Get($"{typeName}.{ClothType}".AngeHash(), Util.GetDisplayName(typeName))}";
 		}
 
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
+	[RequireLanguageFromField]
 	public class PlayerQuickMenuUI : EntityUI {
 
 
@@ -34,7 +35,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
+		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
 
 		// Api
 		public static PlayerQuickMenuUI Instance { get; private set; } = null;

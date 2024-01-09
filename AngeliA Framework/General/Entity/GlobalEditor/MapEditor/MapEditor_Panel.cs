@@ -11,6 +11,7 @@ namespace AngeliaFramework {
 		"PaletteCover.LevelFront",
 		"PaletteCover.Default"
 	)]
+	[RequireSpriteFromField]
 	public partial class MapEditor {
 
 
@@ -50,26 +51,26 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int UI_DEFAULT_LIST_COVER = "PaletteCover.Default".AngeHash();
-		private static readonly int UI_TAB = "UI.Tab".AngeHash();
-		private static readonly int UI_TAB_ICON_PINNED = "Icon.Star".AngeHash();
-		private static readonly int UI_TAB_ICON_ALL = "Icon.Menu".AngeHash();
-		private static readonly int BUTTON_DARK = "UI.DarkButton".AngeHash();
-		private static readonly int BUTTON_DARK_DOWN = "UI.DarkButtonDown".AngeHash();
-		private static readonly int ITEM_FRAME = "UI.ItemFrame".AngeHash();
-		private static readonly int SEARCH_ICON = "Icon.Search".AngeHash();
-		private static readonly int GAMEPAD_ICON = "Icon Gamepad".AngeHash();
-		private static readonly int MAP_ICON = "Icon Map".AngeHash();
-		private static readonly int BRUSH_ICON = "Icon Brush".AngeHash();
-		private static readonly int UI_TAB_PINNED = "UI.PaletteTab.Pinned".AngeHash();
-		private static readonly int UI_TAB_ALL = "UI.PaletteTab.All".AngeHash();
-		private static readonly int MENU_PALETTE_ADD_TO_LIST = "Menu.MEDT.AddToList".AngeHash();
-		private static readonly int MENU_PALETTE_ADD_TO_NEW_LIST = "Menu.MEDT.AddToNewList".AngeHash();
-		private static readonly int MENU_PALETTE_REMOVE_FROM_LIST = "Menu.MEDT.RemoveFromList".AngeHash();
-		private static readonly int MENU_PALETTE_CREATE_LIST = "Menu.MEDT.CreateList".AngeHash();
-		private static readonly int MENU_PALETTE_DELETE_LIST = "Menu.MEDT.DeleteList".AngeHash();
-		private static readonly int MENU_PALETTE_DELETE_LIST_MSG = "Menu.MEDT.DeleteListMSG".AngeHash();
-		private static readonly int MENU_PALETTE_SET_LIST_COVER = "Menu.MEDT.SetAsListCover".AngeHash();
+		private static readonly SpriteCode UI_DEFAULT_LIST_COVER = "PaletteCover.Default";
+		private static readonly int UI_TAB = BuiltInIcon.UI_TAB;
+		private static readonly int UI_TAB_ICON_PINNED = BuiltInIcon.ICON_STAR;
+		private static readonly int UI_TAB_ICON_ALL = BuiltInIcon.ICON_MENU;
+		private static readonly int BUTTON_DARK = BuiltInIcon.UI_DARK_BUTTON;
+		private static readonly int BUTTON_DARK_DOWN = BuiltInIcon.UI_DARK_BUTTON_DOWN;
+		private static readonly int ITEM_FRAME = BuiltInIcon.UI_ITEM_FRAME;
+		private static readonly int SEARCH_ICON = BuiltInIcon.ICON_SEARCH;
+		private static readonly int GAMEPAD_ICON = BuiltInIcon.ICON_GAMEPAD;
+		private static readonly int MAP_ICON = BuiltInIcon.ICON_MAP;
+		private static readonly int BRUSH_ICON = BuiltInIcon.ICON_BRUSH;
+		private static readonly LanguageCode UI_TAB_PINNED = "UI.PaletteTab.Pinned";
+		private static readonly LanguageCode UI_TAB_ALL = "UI.PaletteTab.All";
+		private static readonly LanguageCode MENU_PALETTE_ADD_TO_LIST = "Menu.MEDT.AddToList";
+		private static readonly LanguageCode MENU_PALETTE_ADD_TO_NEW_LIST = "Menu.MEDT.AddToNewList";
+		private static readonly LanguageCode MENU_PALETTE_REMOVE_FROM_LIST = "Menu.MEDT.RemoveFromList";
+		private static readonly LanguageCode MENU_PALETTE_CREATE_LIST = "Menu.MEDT.CreateList";
+		private static readonly LanguageCode MENU_PALETTE_DELETE_LIST = "Menu.MEDT.DeleteList";
+		private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = "Menu.MEDT.DeleteListMSG";
+		private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = "Menu.MEDT.SetAsListCover";
 		private const int TOOL_BAR_HEIGHT = 54;
 
 		// UI

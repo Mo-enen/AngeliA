@@ -8,6 +8,8 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDrawBehind]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.MapEditorGroup("Wallpaper")]
+	[RequireSprite("{0}")]
+	[RequireGlobalSprite("Wallpaper")]
 	public abstract class Wallpaper : Entity {
 
 

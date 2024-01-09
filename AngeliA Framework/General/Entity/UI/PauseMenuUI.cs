@@ -6,6 +6,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(1, 1)]
+	[RequireLanguageFromField]
 	public class PauseMenuUI : MenuUI {
 
 
@@ -26,56 +27,56 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int MENU_QUIT_MESSAGE = "Menu.Pause.QuitMessage".AngeHash();
-		private static readonly int MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage".AngeHash();
-		private static readonly int MENU_KEYSETTER_KEYBOARD_MESSAGE = "Menu.KeySetter.KeyboardMessage".AngeHash();
-		private static readonly int MENU_KEYSETTER_CONFIRM_MESSAGE = "Menu.KeySetter.ConfirmMessage".AngeHash();
-		private static readonly int MENU_KEY_SETTER = "Menu.Pause.KeySetter".AngeHash();
-		private static readonly int MENU_SETTER_KEYBOARD = "Menu.KeySetter.Keyboard".AngeHash();
-		private static readonly int MENU_SETTER_GAMEPAD = "Menu.KeySetter.Gamepad".AngeHash();
-		private static readonly int MENU_SETTER_RECORD = "Menu.KeySetter.Record".AngeHash();
-		private static readonly int MENU_MUSIC_VOLUME = "Menu.Setting.MusicVolume".AngeHash();
-		private static readonly int MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume".AngeHash();
-		private static readonly int MENU_FRAMERATE = "Menu.Setting.Framerate".AngeHash();
-		private static readonly int MENU_LANGUAGE = "Menu.Setting.Language".AngeHash();
-		private static readonly int MENU_SAVE_SLOT = "Menu.Setting.SaveSlot".AngeHash();
-		private static readonly int MENU_SHOW_FPS = "Menu.Setting.ShowFPS".AngeHash();
-		private static readonly int MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack".AngeHash();
-		private static readonly int MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0".AngeHash();
-		private static readonly int MENU_FULLSCREEN_1 = "Menu.Setting.Fullscreen.1".AngeHash();
-		private static readonly int MENU_FULLSCREEN_2 = "Menu.Setting.Fullscreen.2".AngeHash();
-		private static readonly int MENU_FULLSCREEN_LABEL = "Menu.Setting.Fullscreen.Label".AngeHash();
-		private static readonly int MENU_VSYNC = "Menu.Setting.VSync".AngeHash();
-		private static readonly int MENU_CONTROL_HINT = "Menu.Setting.UseControlHint".AngeHash();
-		private static readonly int MENU_GAMEPAD_HINT = "Menu.Setting.UseGamepadHint".AngeHash();
-		private static readonly int MENU_ALLOW_GAMEPAD = "Menu.Setting.AllowGamepad".AngeHash();
-		private static readonly int MENU_MEDT_SETTING = "Menu.Pause.MEDTSetting".AngeHash();
-		private static readonly int MENU_MEDT_AUTO_ZOOM = "Menu.MEDTSetting.AutoZoom".AngeHash();
-		private static readonly int MENU_MEDT_PLAYER_DROP = "Menu.MEDTSetting.PlayerDrop".AngeHash();
-		private static readonly int MENU_MEDT_STATE = "Menu.MEDTSetting.ShowState".AngeHash();
-		private static readonly int UI_CONTINUE = "UI.Continue".AngeHash();
-		private static readonly int UI_SETTING = "UI.Setting".AngeHash();
-		private static readonly int UI_QUIT = "UI.Quit".AngeHash();
-		private static readonly int UI_QUIT_GAME = "UI.QuitGame".AngeHash();
-		private static readonly int UI_STOP_EDIT = "UI.StopEdit".AngeHash();
-		private static readonly int UI_BACK = "UI.Back".AngeHash();
-		private static readonly int UI_ON = "UI.ON".AngeHash();
-		private static readonly int UI_OFF = "UI.OFF".AngeHash();
-		private static readonly int UI_YES = "UI.Yes".AngeHash();
-		private static readonly int UI_SAVE = "UI.Save".AngeHash();
-		private static readonly int UI_DONT_SAVE = "UI.DontSave".AngeHash();
-		private static readonly int UI_NO = "UI.No".AngeHash();
-		private static readonly int UI_CANCEL = "UI.Cancel".AngeHash();
+		private static readonly LanguageCode MENU_QUIT_MESSAGE = "Menu.Pause.QuitMessage";
+		private static readonly LanguageCode MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage";
+		private static readonly LanguageCode MENU_KEYSETTER_KEYBOARD_MESSAGE = "Menu.KeySetter.KeyboardMessage";
+		private static readonly LanguageCode MENU_KEYSETTER_CONFIRM_MESSAGE = "Menu.KeySetter.ConfirmMessage";
+		private static readonly LanguageCode MENU_KEY_SETTER = "Menu.Pause.KeySetter";
+		private static readonly LanguageCode MENU_SETTER_KEYBOARD = "Menu.KeySetter.Keyboard";
+		private static readonly LanguageCode MENU_SETTER_GAMEPAD = "Menu.KeySetter.Gamepad";
+		private static readonly LanguageCode MENU_SETTER_RECORD = "Menu.KeySetter.Record";
+		private static readonly LanguageCode MENU_MUSIC_VOLUME = "Menu.Setting.MusicVolume";
+		private static readonly LanguageCode MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume";
+		private static readonly LanguageCode MENU_FRAMERATE = "Menu.Setting.Framerate";
+		private static readonly LanguageCode MENU_LANGUAGE = "Menu.Setting.Language";
+		private static readonly LanguageCode MENU_SAVE_SLOT = "Menu.Setting.SaveSlot";
+		private static readonly LanguageCode MENU_SHOW_FPS = "Menu.Setting.ShowFPS";
+		private static readonly LanguageCode MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack";
+		private static readonly LanguageCode MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0";
+		private static readonly LanguageCode MENU_FULLSCREEN_1 = "Menu.Setting.Fullscreen.1";
+		private static readonly LanguageCode MENU_FULLSCREEN_2 = "Menu.Setting.Fullscreen.2";
+		private static readonly LanguageCode MENU_FULLSCREEN_LABEL = "Menu.Setting.Fullscreen.Label";
+		private static readonly LanguageCode MENU_VSYNC = "Menu.Setting.VSync";
+		private static readonly LanguageCode MENU_CONTROL_HINT = "Menu.Setting.UseControlHint";
+		private static readonly LanguageCode MENU_GAMEPAD_HINT = "Menu.Setting.UseGamepadHint";
+		private static readonly LanguageCode MENU_ALLOW_GAMEPAD = "Menu.Setting.AllowGamepad";
+		private static readonly LanguageCode MENU_MEDT_SETTING = "Menu.Pause.MEDTSetting";
+		private static readonly LanguageCode MENU_MEDT_AUTO_ZOOM = "Menu.MEDTSetting.AutoZoom";
+		private static readonly LanguageCode MENU_MEDT_PLAYER_DROP = "Menu.MEDTSetting.PlayerDrop";
+		private static readonly LanguageCode MENU_MEDT_STATE = "Menu.MEDTSetting.ShowState";
+		private static readonly LanguageCode UI_CONTINUE = "UI.Continue";
+		private static readonly LanguageCode UI_SETTING = "UI.Setting";
+		private static readonly LanguageCode UI_QUIT = "UI.Quit";
+		private static readonly LanguageCode UI_QUIT_GAME = "UI.QuitGame";
+		private static readonly LanguageCode UI_STOP_EDIT = "UI.StopEdit";
+		private static readonly LanguageCode UI_BACK = "UI.Back";
+		private static readonly LanguageCode UI_ON = "UI.ON";
+		private static readonly LanguageCode UI_OFF = "UI.OFF";
+		private static readonly LanguageCode UI_YES = "UI.Yes";
+		private static readonly LanguageCode UI_SAVE = "UI.Save";
+		private static readonly LanguageCode UI_DONT_SAVE = "UI.DontSave";
+		private static readonly LanguageCode UI_NO = "UI.No";
+		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
 		private readonly string[] SLOT_NAMES = { };
-		private static readonly int[] GAMEKEY_UI_CODES = new int[8] {
-			$"UI.GameKey.{Gamekey.Left}".AngeHash(),
-			$"UI.GameKey.{Gamekey.Right}".AngeHash(),
-			$"UI.GameKey.{Gamekey.Down}".AngeHash(),
-			$"UI.GameKey.{Gamekey.Up}".AngeHash(),
-			$"UI.GameKey.{Gamekey.Action}".AngeHash(),
-			$"UI.GameKey.{Gamekey.Jump}".AngeHash(),
-			$"UI.GameKey.{Gamekey.Start}".AngeHash(),
-			$"UI.GameKey.{Gamekey.Select}".AngeHash(),
+		private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
+			$"UI.GameKey.{Gamekey.Left}",
+			$"UI.GameKey.{Gamekey.Right}",
+			$"UI.GameKey.{Gamekey.Down}",
+			$"UI.GameKey.{Gamekey.Up}",
+			$"UI.GameKey.{Gamekey.Action}",
+			$"UI.GameKey.{Gamekey.Jump}",
+			$"UI.GameKey.{Gamekey.Start}",
+			$"UI.GameKey.{Gamekey.Select}",
 		};
 
 		// Data

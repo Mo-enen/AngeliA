@@ -18,6 +18,7 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode FRAME_16 = "Frame16";
 		public static readonly SpriteCode MENU_SELECTION_MARK = "Menu Selection Mark";
 		public static readonly SpriteCode SOFT_LINE_H = "Soft Line H";
+		public static readonly SpriteCode SOFT_LINE_V = "Soft Line V";
 		public static readonly SpriteCode GAMEPAD_START = "k_Gamepad Start";
 		public static readonly SpriteCode GAMEPAD_SELECT = "k_Gamepad Select";
 		public static readonly SpriteCode ITEM_ICON_ITEM = "ItemIcon.Item";
@@ -26,7 +27,6 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode ICON_BODY_PART_HAIR = "Icon.BodyPart.Hair";
 		public static readonly SpriteCode ICON_BODY_PART_ARM_HAND = "Icon.BodyPart.ArmHand";
 		public static readonly SpriteCode ICON_SUIT_BODYSUIT = "Icon.Suit.Bodysuit";
-		public static readonly SpriteCode SOFT_LINE_V = "Soft Line V";
 		public static readonly SpriteCode DOTTED_LINE_16_SMOOTH = "DottedLine16Smooth";
 		public static readonly SpriteCode DOTTED_LINE_16 = "DottedLine16";
 		public static readonly SpriteCode FRAME_HOLLOW_16 = "FrameHollow16";
@@ -36,7 +36,7 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode ITEM_ICON_HELMET = "ItemIcon.Helmet";
 		public static readonly SpriteCode ITEM_ICON_SHOES = "ItemIcon.Shoes";
 		public static readonly SpriteCode ITEM_ICON_FOOD = "ItemIcon.Food";
-		public static readonly SpriteCode ICON_BODY_PART_LEGFOOT = "Icon.BodyPart.LegFoot";
+		public static readonly SpriteCode ICON_BODY_PART_LEG_FOOT = "Icon.BodyPart.LegFoot";
 		public static readonly SpriteCode ICON_BODY_PART_BODY = "Icon.BodyPart.Body";
 		public static readonly SpriteCode ICON_SUIT_HAT = "Icon.Suit.Hat";
 		public static readonly SpriteCode ICON_BODY_PART_HORN = "Icon.BodyPart.Horn";
@@ -61,11 +61,11 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode GAMEPAD_HINT_UP = "GamePad Hint Up";
 		public static readonly SpriteCode GAMEPAD_HINT_RIGHT = "GamePad Hint Right";
 		public static readonly SpriteCode GAMEPAD_HINT_START = "GamePad Hint Start";
-		public static readonly SpriteCode GAMEPAD_A = "GamePad A";
-		public static readonly SpriteCode GAMEPAD_B = "GamePad B";
+		public static readonly SpriteCode GAMEPAD_HINT_A = "GamePad Hint A";
+		public static readonly SpriteCode GAMEPAD_HINT_B = "GamePad Hint B";
 		public static readonly SpriteCode GAMEPAD_HINT_DOWN = "GamePad Hint Down";
 		public static readonly SpriteCode CIRCLE_16 = "Circle16";
-		public static readonly SpriteCode ICON_BODYPART_EAR = "Icon.BodyPart.Ear";
+		public static readonly SpriteCode ICON_BODY_PART_EAR = "Icon.BodyPart.Ear";
 		public static readonly SpriteCode ICON_SUIT_GLOVE = "Icon.Suit.Glove";
 		public static readonly SpriteCode ICON_SUIT_PANTS = "Icon.Suit.Pants";
 		public static readonly SpriteCode ICON_BODY_PART_SKIN_COLOR = "Icon.BodyPart.SkinColor";
@@ -85,17 +85,7 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode MENU_ARROW_MARK = "Menu Arrow Mark";
 		public static readonly SpriteCode MENU_MORE_MARK = "Menu More Mark";
 		public static readonly SpriteCode ICON_REFRESH = "Icon Refresh";
-		public static readonly SpriteCode NUMBER_0 = "Number0";
-		public static readonly SpriteCode NUMBER_1 = "Number1";
 		public static readonly SpriteCode ICON_GAMEPAD = "Icon Gamepad";
-		public static readonly SpriteCode NUMBER_2 = "Number2";
-		public static readonly SpriteCode NUMBER_3 = "Number3";
-		public static readonly SpriteCode NUMBER_4 = "Number4";
-		public static readonly SpriteCode NUMBER_5 = "Number5";
-		public static readonly SpriteCode NUMBER_6 = "Number6";
-		public static readonly SpriteCode NUMBER_7 = "Number7";
-		public static readonly SpriteCode NUMBER_8 = "Number8";
-		public static readonly SpriteCode NUMBER_9 = "Number9";
 		public static readonly SpriteCode CHECK_MARK_32 = "CheckMark32";
 		public static readonly SpriteCode CHECK_MARK_16 = "CheckMark16";
 		public static readonly SpriteCode ICON_BODYPART_HEIGHT = "Icon.BodyPart.Height";
@@ -103,33 +93,13 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode GAMEPAD_RIGHT_TRIGGER = "k_Gamepad RightTrigger";
 		public static readonly SpriteCode GAMEPAD_LEFT_SHOULDER = "k_Gamepad LeftShoulder";
 		public static readonly SpriteCode GAMEPAD_RIGHT_SHOULDER = "k_Gamepad RightShoulder";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_TOP_LEFT = "CameraAutoScrollTopLeft";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_TOP_RIGHT = "CameraAutoScrollTopRight";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_BOTTOM_LEFT = "CameraAutoScrollBottomLeft";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_BOTTOM_RIGHT = "CameraAutoScrollBottomRight";
-		public static readonly SpriteCode CAMERA_GATE_UP = "CameraGateUp";
-		public static readonly SpriteCode CAMERA_GATE_LEFT = "CameraGateLeft";
-		public static readonly SpriteCode CAMERA_GATE_RIGHT = "CameraGateRight";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_STOP = "CameraAutoScrollStop";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_LEFT = "CameraAutoScrollLeft";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_RIGHT = "CameraAutoScrollRight";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_BOTTOM = "CameraAutoScrollBottom";
-		public static readonly SpriteCode CAMERA_AUTO_SCROLL_TOP = "CameraAutoScrollTop";
-		public static readonly SpriteCode CAMERA_GATE_DOWN = "CameraGateDown";
-		public static readonly SpriteCode WALLPAPER = "Wallpaper";
-		public static readonly SpriteCode ACTIVE_TITLE_UI = "ActiveTitleUI";
-		public static readonly SpriteCode PASS_TITLE_UI = "PassTitleUI";
 		public static readonly SpriteCode UI_TAB = "UI.Tab";
 		public static readonly SpriteCode ICON_STAR = "Icon.Star";
 		public static readonly SpriteCode ICON_MENU = "Icon.Menu";
-		public static readonly SpriteCode ROOM_TUNNEL = "RoomTunnel";
-		public static readonly SpriteCode ROOM_CONNECTOR = "RoomConnector";
-		public static readonly SpriteCode ROOM_WALL = "RoomWall";
-		public static readonly SpriteCode EXPLOSION = "Explosion";
 		public static readonly SpriteCode ICON_PALETTE = "Icon.Palette";
 		public static readonly SpriteCode ICON_FILE = "Icon.File";
 		public static readonly SpriteCode ICON_ATLAS = "Icon.Atlas";
 		public static readonly SpriteCode ICON_SPRITE = "Icon.Sprite";
-
+		
 	}
 }

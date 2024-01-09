@@ -77,6 +77,7 @@ namespace AngeliaFramework {
 
 	[EntityAttribute.MapEditorGroup("Item")]
 	[RequireSprite("{0}")]
+	[RequireLanguage("iDes.{0}", "iName.{0}")]
 	public abstract class Item : IMapItem {
 
 

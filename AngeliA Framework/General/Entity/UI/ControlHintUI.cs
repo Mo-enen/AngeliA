@@ -10,16 +10,16 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int HINT_BUTTON_CODE = "Hint Button".AngeHash();
-		private static readonly int BodyCode = "GamePad Body".AngeHash();
-		private static readonly int DPadDownCode = "GamePad Down".AngeHash();
-		private static readonly int DPadUpCode = "GamePad Up".AngeHash();
-		private static readonly int DPadLeftCode = "GamePad Left".AngeHash();
-		private static readonly int DPadRightCode = "GamePad Right".AngeHash();
-		private static readonly int ButtonACode = "GamePad A".AngeHash();
-		private static readonly int ButtonBCode = "GamePad B".AngeHash();
-		private static readonly int ButtonSelectCode = "GamePad Select".AngeHash();
-		private static readonly int ButtonStartCode = "GamePad Start".AngeHash();
+		private static readonly int HINT_BUTTON_CODE = BuiltInIcon.HINT_BUTTON;
+		private static readonly int BodyCode = BuiltInIcon.GAMEPAD_BODY;
+		private static readonly int DPadDownCode = BuiltInIcon.GAMEPAD_HINT_DOWN;
+		private static readonly int DPadUpCode = BuiltInIcon.GAMEPAD_HINT_UP;
+		private static readonly int DPadLeftCode = BuiltInIcon.GAMEPAD_HINT_LEFT;
+		private static readonly int DPadRightCode = BuiltInIcon.GAMEPAD_HINT_RIGHT;
+		private static readonly int ButtonACode = BuiltInIcon.GAMEPAD_HINT_A;
+		private static readonly int ButtonBCode = BuiltInIcon.GAMEPAD_HINT_B;
+		private static readonly int ButtonSelectCode = BuiltInIcon.GAMEPAD_HINT_SELECT;
+		private static readonly int ButtonStartCode = BuiltInIcon.GAMEPAD_HINT_START;
 		private static readonly Byte4 DirectionTint = new(255, 255, 0, 255);
 		private static readonly Byte4 PressingTint = new(0, 255, 0, 255);
 		private static readonly Byte4 DarkButtonTint = new(0, 0, 0, 255);

@@ -329,6 +329,19 @@ namespace AngeliaFramework {
 		}
 
 
+		public static IEnumerable<string> ForAllLanguageKeyRequirements () {
+			foreach (var name in RequireLanguageFromField.ForAllRequirement()) {
+				yield return name;
+			}
+			foreach (var name in RequireGlobalNameAttribute.ForAllRequirement<RequireGlobalLanguageAttribute>()) {
+				yield return name;
+			}
+			foreach (var name in RequireNameAttribute.ForAllRequirement<RequireLanguageAttribute>()) {
+				yield return name;
+			}
+		}
+
+
 		// Random
 		public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 		public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();

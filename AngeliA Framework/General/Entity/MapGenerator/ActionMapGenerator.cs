@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+	[RequireLanguageFromField]
 	public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 
 
@@ -12,10 +13,10 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly int HINT_ENTER = "CtrlHint.MapGenerator.Enter".AngeHash();
-		private static readonly int HINT_GENERATE = "CtrlHint.MapGenerator.Generate".AngeHash();
-		private static readonly int HINT_GENERATING = "CtrlHint.MapGenerator.Generating".AngeHash();
-		private static readonly int HINT_NOTIFY = "Notify.MapGeneratedNotify".AngeHash();
+		private static readonly LanguageCode HINT_ENTER = "CtrlHint.MapGenerator.Enter";
+		private static readonly LanguageCode HINT_GENERATE = "CtrlHint.MapGenerator.Generate";
+		private static readonly LanguageCode HINT_GENERATING = "CtrlHint.MapGenerator.Generating";
+		private static readonly LanguageCode HINT_NOTIFY = "Notify.MapGeneratedNotify";
 
 		// Api
 		protected virtual bool ShowGeneratingHint => true;

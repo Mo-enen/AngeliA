@@ -167,10 +167,10 @@ namespace AngeliaFramework {
 		public const int ORIGINAL_SIZE = int.MaxValue;
 		public const int ORIGINAL_SIZE_NEGATAVE = int.MinValue;
 		public const int PIXEL = 11254534;//"Pixel".AngeHash();
-		public static readonly int MENU_SELECTION_CODE = "Menu Selection Mark".AngeHash();
-		public static readonly int MENU_MORE_CODE = "Menu More Mark".AngeHash();
-		public static readonly int MENU_ARROW_MARK = "Menu Arrow Mark".AngeHash();
-		public static readonly int CIRCLE_16 = "Circle16".AngeHash();
+		public static readonly int MENU_SELECTION_CODE = BuiltInIcon.MENU_SELECTION_MARK;
+		public static readonly int MENU_MORE_CODE = BuiltInIcon.MENU_MORE_MARK;
+		public static readonly int MENU_ARROW_MARK = BuiltInIcon.MENU_ARROW_MARK;
+		public static readonly int CIRCLE_16 = BuiltInIcon.CIRCLE_16;
 		public static readonly Byte4 WHITE = new(255, 255, 255, 255);
 		public static readonly Byte4 WHITE_128 = new(255, 255, 255, 128);
 		public static readonly Byte4 WHITE_96 = new(255, 255, 255, 96);
@@ -215,20 +215,20 @@ namespace AngeliaFramework {
 		public static int GAMEPAD_JUMP_HINT_CODE => GAMEPAD_CODE.TryGetValue(FrameInput.GetGamepadMap(Gamekey.Jump), out int _value0) ? _value0 : 0;
 
 		internal static readonly Dictionary<GamepadKey, int> GAMEPAD_CODE = new() {
-			{ GamepadKey.DpadLeft, "k_Gamepad Left".AngeHash()},
-			{ GamepadKey.DpadRight, "k_Gamepad Right".AngeHash()},
-			{ GamepadKey.DpadUp, "k_Gamepad Up".AngeHash()},
-			{ GamepadKey.DpadDown, "k_Gamepad Down".AngeHash()},
-			{ GamepadKey.South, "k_Gamepad South".AngeHash()},
-			{ GamepadKey.North, "k_Gamepad North".AngeHash()},
-			{ GamepadKey.East, "k_Gamepad East".AngeHash()},
-			{ GamepadKey.West, "k_Gamepad West".AngeHash()},
-			{ GamepadKey.Select, "k_Gamepad Select".AngeHash()},
-			{ GamepadKey.Start, "k_Gamepad Start".AngeHash()},
-			{ GamepadKey.LeftTrigger, "k_Gamepad LeftTrigger".AngeHash()},
-			{ GamepadKey.RightTrigger, "k_Gamepad RightTrigger".AngeHash()},
-			{ GamepadKey.LeftShoulder, "k_Gamepad LeftShoulder".AngeHash()},
-			{ GamepadKey.RightShoulder, "k_Gamepad RightShoulder".AngeHash()},
+			{ GamepadKey.DpadLeft, BuiltInIcon.GAMEPAD_LEFT},
+			{ GamepadKey.DpadRight, BuiltInIcon.GAMEPAD_RIGHT},
+			{ GamepadKey.DpadUp, BuiltInIcon.GAMEPAD_UP},
+			{ GamepadKey.DpadDown,BuiltInIcon.GAMEPAD_DOWN },
+			{ GamepadKey.South,BuiltInIcon.GAMEPAD_SOUTH},
+			{ GamepadKey.North,BuiltInIcon.GAMEPAD_NORTH},
+			{ GamepadKey.East, BuiltInIcon.GAMEPAD_EAST},
+			{ GamepadKey.West, BuiltInIcon.GAMEPAD_WEST},
+			{ GamepadKey.Select, BuiltInIcon.GAMEPAD_SELECT},
+			{ GamepadKey.Start, BuiltInIcon.GAMEPAD_START},
+			{ GamepadKey.LeftTrigger, BuiltInIcon.GAMEPAD_LEFT_TRIGGER},
+			{ GamepadKey.RightTrigger, BuiltInIcon.GAMEPAD_RIGHT_TRIGGER},
+			{ GamepadKey.LeftShoulder, BuiltInIcon.GAMEPAD_LEFT_SHOULDER},
+			{ GamepadKey.RightShoulder, BuiltInIcon.GAMEPAD_RIGHT_SHOULDER},
 		};
 
 		// Misc

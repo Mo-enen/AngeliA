@@ -33,6 +33,7 @@ namespace AngeliaFramework {
 		private static readonly SpriteCode BTN_PROFILER = "DeveloperToolbox.Profiler";
 		private static readonly SpriteCode BTN_MAP = "DeveloperToolbox.Map";
 		private static readonly SpriteCode BTN_SHEET = "DeveloperToolbox.Sheet";
+		private static readonly SpriteCode BTN_LANGUAGE = "DeveloperToolbox.Language";
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 
 		// Data
@@ -93,7 +94,7 @@ namespace AngeliaFramework {
 			int oldLayer = CellRenderer.CurrentLayerIndex;
 			CellRenderer.SetLayerToUI();
 
-			int panelWidth = CellRendererGUI.Unify(256);
+			int panelWidth = CellRendererGUI.Unify(38 * 6 + 6 + (Game.ShowFPS ? 40 : 0));
 			var panelRect = new IRect(CellRenderer.CameraRect.xMax - panelWidth, CellRenderer.CameraRect.yMax, panelWidth, 0);
 			int panelYMax = panelRect.y;
 
@@ -333,6 +334,23 @@ namespace AngeliaFramework {
 			}
 			CursorSystem.SetCursorAsHand(rect);
 			rect.x -= rect.width + padding;
+
+			// Language
+			if (LanguageEditor.IsActived) {
+				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
+			}
+			if (CellRendererGUI.Button(rect, BTN_LANGUAGE, BTN_LANGUAGE, BTN_LANGUAGE, 0, 0, 0, int.MaxValue)) {
+				if (LanguageEditor.IsActived) {
+					GlobalEditorUI.CloseEditorSmoothly();
+				} else {
+					GlobalEditorUI.OpenEditorSmoothly(LanguageEditor.TYPE_ID);
+				}
+				FrameInput.UseMouseKey(0);
+				FrameInput.UseGameKey(Gamekey.Action);
+			}
+			CursorSystem.SetCursorAsHand(rect);
+			rect.x -= rect.width + padding;
+
 
 			// Final
 			if (ShowCollider) DrawColliderFrame = Game.GlobalFrame;

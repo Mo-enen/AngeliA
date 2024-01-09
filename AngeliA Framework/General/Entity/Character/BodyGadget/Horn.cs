@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireSprite("{1}.HornL", "{1}.HornR", "{1}.HornLB", "{1}.HornRB")]
+	[RequireLanguage("{1}.Horn")]
 	public abstract class Horn : BodyGadget {
 
 		// VAR
