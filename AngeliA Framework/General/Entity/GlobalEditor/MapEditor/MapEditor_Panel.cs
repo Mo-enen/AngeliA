@@ -35,6 +35,7 @@ namespace AngeliaFramework {
 			public string GroupName;
 			public int DisplayNameID;
 			public int CoverID;
+			public AtlasType AtlasType;
 			public List<PaletteItem> Items;
 		}
 
@@ -110,8 +111,6 @@ namespace AngeliaFramework {
 			int spriteCount = CellRenderer.SpriteCount;
 			int groupCount = CellRenderer.GroupCount;
 			var palGroupPool = new Dictionary<string, PaletteGroup>();
-			int[] coverKeywords = { 0, "PaletteCover.Level".AngeHash(), "PaletteCover.Background".AngeHash() };
-			int[] nameKeywords = { 0, "Palette.Level".AngeHash(), "Palette.Background".AngeHash() };
 
 			// For all Sprite Groups
 			for (int index = 0; index < groupCount; index++) {
@@ -127,8 +126,9 @@ namespace AngeliaFramework {
 					palGroupPool.Add(atlasName, palGroup = new PaletteGroup() {
 						Items = new List<PaletteItem>(),
 						GroupName = atlasName,
-						CoverID = coverKeywords[(int)atlasType],
-						DisplayNameID = nameKeywords[(int)atlasType],
+						AtlasType = atlasType,
+						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
+						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
 					});
 				}
 				palGroup.Items.Add(new PaletteItem() {
@@ -156,8 +156,9 @@ namespace AngeliaFramework {
 					palGroupPool.Add(atlasName, group = new PaletteGroup() {
 						Items = new List<PaletteItem>(),
 						GroupName = atlasName,
-						CoverID = coverKeywords[(int)atlasType],
-						DisplayNameID = nameKeywords[(int)atlasType],
+						AtlasType = atlasType,
+						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
+						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
 					});
 				}
 				group.Items.Add(new PaletteItem() {
@@ -180,7 +181,8 @@ namespace AngeliaFramework {
 				"Entity",
 				new PaletteGroup() {
 					Items = new List<PaletteItem>(),
-					GroupName = "Entity",
+					AtlasType = AtlasType.General,
+					GroupName = "_Entity",
 					DisplayNameID = "Palette.Entity".AngeHash(),
 					CoverID = "PaletteCover.Entity".AngeHash(),
 				}
@@ -203,6 +205,7 @@ namespace AngeliaFramework {
 					entityGroupPool.Add(groupName, new PaletteGroup() {
 						Items = new List<PaletteItem>(),
 						GroupName = groupName,
+						AtlasType = AtlasType.General,
 						CoverID = $"PaletteCover.{groupName}".AngeHash(),
 						DisplayNameID = $"Palette.{groupName}".AngeHash(),
 					});
@@ -226,14 +229,10 @@ namespace AngeliaFramework {
 			}
 
 			// Sort Groups
-			PaletteGroups.Sort((a, b) =>
-				a.GroupName == b.GroupName ? 0 :
-				a.GroupName == "Entity" ? -1 :
-				b.GroupName == "Entity" ? 1 :
-				a.GroupName == "System" ? -1 :
-				b.GroupName == "System" ? 1 :
-				a.GroupName.CompareTo(b.GroupName)
-			);
+			PaletteGroups.Sort((a, b) => {
+				int result = a.AtlasType.CompareTo(b.AtlasType);
+				return result != 0 ? result : a.GroupName.CompareTo(b.GroupName);
+			});
 
 			// Palette Pool
 			for (int i = 0; i < PaletteGroups.Count; i++) {

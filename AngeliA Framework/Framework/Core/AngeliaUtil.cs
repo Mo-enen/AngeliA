@@ -16,9 +16,11 @@ namespace AngeliaFramework {
 		public static void CreateAngeFolders () {
 			Util.CreateFolder(AngePath.UniverseRoot);
 			Util.CreateFolder(AngePath.DialogueRoot);
-			Util.CreateFolder(AngePath.LanguageRoot);
+			Util.CreateFolder(AngePath.BuiltInLanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
+			Util.CreateFolder(AngePath.UserSheetRoot);
+			Util.CreateFolder(AngePath.UserLanguageRoot);
 		}
 
 

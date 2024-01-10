@@ -54,16 +54,19 @@ namespace AngeliaFramework {
 		public static string BuiltInMapRoot => _BuiltInMapRoot ??= Util.CombinePaths(UniverseRoot, "Map");
 		private static string _BuiltInMapRoot = null;
 
-		public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
-		private static string _LanguageRoot = null;
+		public static string BuiltInLanguageRoot => _BuiltInLanguageRoot ??= Util.CombinePaths(UniverseRoot, "Language");
+		private static string _BuiltInLanguageRoot = null;
 
 
 		// Persistent
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(PersistentDataPath, "Item Customization");
 		private static string _ItemSaveDataRoot = null;
 
-		public static string UserSheetRoot => _UserSheetRoot ??= Util.CombinePaths(PersistentDataPath, "User Sheet");
+		public static string UserSheetRoot => _UserSheetRoot ??= Util.CombinePaths(PersistentDataPath, "Sheet");
 		private static string _UserSheetRoot = null;
+
+		public static string UserLanguageRoot => _UserLanguageRoot ??= Util.CombinePaths(PersistentDataPath, "Language");
+		private static string _UserLanguageRoot = null;
 
 
 		// Slot

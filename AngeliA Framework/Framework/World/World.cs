@@ -195,6 +195,13 @@ namespace AngeliaFramework {
 					}
 				}
 
+				// Empty Check
+				if (stream.Position == 0 && Util.FileExists(path)) {
+					stream.Close();
+					writer.Close();
+					Util.DeleteFile(path);
+				}
+
 			}
 		}
 

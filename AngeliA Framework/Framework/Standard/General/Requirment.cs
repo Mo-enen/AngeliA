@@ -125,7 +125,7 @@ namespace AngeliaFramework {
 		public string[] Names;
 		public RequireNameAttribute (params string[] names) => Names = names;
 		public static IEnumerable<string> ForAllRequirement<A> () where A : RequireNameAttribute {
-			foreach (var (baseType, _) in Util.AllClassWithAttribute<RequireNameAttribute>(ignoreAbstract: false)) {
+			foreach (var (baseType, _) in Util.AllClassWithAttribute<A>(ignoreAbstract: false)) {
 				if (baseType.IsAbstract) {
 					foreach (var type in baseType.AllChildClass()) {
 						foreach (string name in ForAllRequiredNames<A>(type)) {
@@ -168,7 +168,7 @@ namespace AngeliaFramework {
 					}
 				}
 			}
-			foreach (var (_, att) in Util.AllClassWithAttribute<RequireGlobalNameAttribute>(ignoreAbstract: false)) {
+			foreach (var (_, att) in Util.AllClassWithAttribute<A>(ignoreAbstract: false)) {
 				foreach (var name in att.Names) {
 					yield return name;
 				}

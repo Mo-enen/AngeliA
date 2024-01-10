@@ -1,46 +1,46 @@
-﻿@GuaGua:Gua Gua
-@SlimeRed:Red Slime
-@Yaya:Yaya
-AngelWing.Wing:Angel Wing
-CtrlHint.Adjust:Adjust
-CtrlHint.Attack:Attack
-CtrlHint.Craft:Craft
-CtrlHint.Drop:Drop
-CtrlHint.EditLanguage:Edit Language
-CtrlHint.EditMap:Edit Map
-CtrlHint.EditSheet:Edit Sheet
-CtrlHint.EnterDoor:Enter
-CtrlHint.Equip:Equip
-CtrlHint.HideMenu:Hide Menu
-CtrlHint.HoldToUse:Hold to Use
-CtrlHint.Jump:Jump
-CtrlHint.MapGenerator.Enter:Enter Level
-CtrlHint.MapGenerator.Generate:Generate Level
-CtrlHint.MapGenerator.Generating:Generating Level
-CtrlHint.MEDT.Nav:Overlook
-CtrlHint.MEDT.PlayFromBegin:Play from Start
-CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
-CtrlHint.MEDT.SwitchMode.Play:Play
-CtrlHint.Move:Move
-CtrlHint.PlayerMenu.Take:Take
-CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
-CtrlHint.QuitEditing:Stop Editing
-CtrlHint.Restart:Restart
-CtrlHint.ShowMenu:Show Menu
-CtrlHint.Skip:Skip
-CtrlHint.SwitchPlayer:Switch Character
-CtrlHint.Throw:Throw
-CtrlHint.Transfer:Transfer
-CtrlHint.Use:Use
-CtrlHint.WakeUp:Wake Up
-CtrlHint.Wardrobe.Type:Suit Type
-DevilWing.Wing:Devil Wing
-Hint.Pong.Move:Move
-Hint.Sokoban.Move:Move
-Hint.Tetris.Drop:Drop
-Hint.Tetris.Hold:Hold
-Hint.Tetris.Move:Move
-Hint.Tetris.Rotate:Rotate
+﻿@GuaGua:瓜瓜
+@SlimeRed:红色史莱姆
+@Yaya:丫丫
+AngelWing.Wing:天使翅膀
+CtrlHint.Adjust:调整
+CtrlHint.Attack:攻击
+CtrlHint.Craft:合成
+CtrlHint.Drop:放下
+CtrlHint.EditLanguage:编辑语言
+CtrlHint.EditMap:编辑地图
+CtrlHint.EditSheet:编辑贴图
+CtrlHint.EnterDoor:进门
+CtrlHint.Equip:装备
+CtrlHint.HideMenu:隐藏菜单
+CtrlHint.HoldToUse:长按使用
+CtrlHint.Jump:跳跃
+CtrlHint.MapGenerator.Enter:进入关卡
+CtrlHint.MapGenerator.Generate:生成关卡
+CtrlHint.MapGenerator.Generating:正在生成关卡
+CtrlHint.MEDT.Nav:俯瞰
+CtrlHint.MEDT.PlayFromBegin:从头开始游戏
+CtrlHint.MEDT.SwitchMode.Edit:返回编辑
+CtrlHint.MEDT.SwitchMode.Play:开始游戏
+CtrlHint.Move:移动
+CtrlHint.PlayerMenu.Take:拾取
+CtrlHint.PlayerMenu.TakeUse:拾取（长按使用）
+CtrlHint.QuitEditing:停止编辑
+CtrlHint.Restart:重新开始
+CtrlHint.ShowMenu:显示菜单
+CtrlHint.Skip:跳过
+CtrlHint.SwitchPlayer:切换角色
+CtrlHint.Throw:丢弃
+CtrlHint.Transfer:转移
+CtrlHint.Use:使用
+CtrlHint.WakeUp:起床
+CtrlHint.Wardrobe.Type:服饰类型
+DevilWing.Wing:恶魔翅膀
+Hint.Pong.Move:移动
+Hint.Sokoban.Move:移动
+Hint.Tetris.Drop:掉落
+Hint.Tetris.Hold:保留
+Hint.Tetris.Move:移动
+Hint.Tetris.Rotate:旋转
 iDes.ABC:
 iDes.AlarmClock:
 iDes.Alcohol:
@@ -808,7 +808,7 @@ iDes.WatchLegend:
 iDes.Watermelon:
 iDes.WatermelonCut:
 iDes.Wheel:
-iDes.WizardHat:Wizard's Hat
+iDes.WizardHat:巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子巫师的帽子
 iDes.WizardHatBroken:
 iDes.WoodenClogs:
 iDes.WoodenClogsBroken:
@@ -1582,7 +1582,7 @@ iName.WatchLegend:
 iName.Watermelon:
 iName.WatermelonCut:
 iName.Wheel:
-iName.WizardHat:Wizard Hat
+iName.WizardHat:巫师帽
 iName.WizardHatBroken:
 iName.WoodenClogs:
 iName.WoodenClogsBroken:
@@ -1590,161 +1590,161 @@ iName.WuXingHook:
 iName.Yarn:
 iName.Zongzi:
 Language.Creator:楠瓜Moenen
-MEDT.BackgroundOnly:Background Only
-MEDT.CancelDrop:Cancel Drop
-MEDT.Drop:Mouse Left Button to Drop
-MEDT.EntityOnly:Entity Only
-MEDT.LevelOnly:Level Only
-Menu.Gomoku.Draw:Draw
-Menu.Gomoku.Lose:You Lose
-Menu.Gomoku.Win:You Win !!
-Menu.KeySetter.ConfirmMessage:Save the changes?
-Menu.KeySetter.Gamepad:Gamepad
-Menu.KeySetter.GamepadMessage:Press F1 key to reset
-Menu.KeySetter.Keyboard:Keyboard
-Menu.KeySetter.KeyboardMessage:Press F1 key to reset
-Menu.KeySetter.Record:Press key u want
-Menu.KeySetter.SaveAndBack:Save and Back
-Menu.MEDT.AddToList:Add to List:
-Menu.MEDT.AddToNewList:Add to New List
-Menu.MEDT.CreateList:Create List
-Menu.MEDT.DeleteList:Delete List
-Menu.MEDT.DeleteListMSG:Delete List 
-Menu.MEDT.RemoveFromList:Remove from List:
-Menu.MEDT.SetAsListCover:Set as List Cover
-Menu.MEDTSetting.AutoZoom:Fixed Scene Range
-Menu.MEDTSetting.PlayerDrop:Quick Player Drop
-Menu.MEDTSetting.ShowState:Show State Info
-Menu.MiniGame.QuitMsg:Quit mini game?
-Menu.MiniGame.Restart:Retart Game?
-Menu.Pause.KeySetter:Key Assignment
-Menu.Pause.MEDTSetting:Editor Setting
-Menu.Pause.QuitEditMessage:Stop Editing?
-Menu.Pause.QuitMessage:Quit game now？
-Menu.Pause.RestartMessage:Restart Game ?
-Menu.Setting.AllowGamepad:Allow Gamepad
-Menu.Setting.Framerate:Framerate
-Menu.Setting.Fullscreen.0:Windowed
-Menu.Setting.Fullscreen.1:Fullscreen
-Menu.Setting.Fullscreen.2:Fullscreen (Low)
-Menu.Setting.Fullscreen.Label:Display
-Menu.Setting.Language:Language
-Menu.Setting.MusicVolume:Music Volume
-Menu.Setting.SaveSlot:Save Slot
-Menu.Setting.ShowFPS:Show FPS
-Menu.Setting.SoundVolume:Sound Volume
-Menu.Setting.UseControlHint:Show Control Hint When Playing
-Menu.Setting.UseGamepadHint:Show Bottom Left Gamepad
-Menu.Setting.VSync:V-Sync
-Menu.SheetEditor.CreateAtlas:Create Atlas
-Menu.SheetEditor.CreateUnit:Create Sprite
-Menu.SheetEditor.DeleteAtlasMSG:Delete atlas ? This will also delete files inside the atlas.
-Menu.SheetEditor.DeleteUnitMSG:Delete unit?
-Menu.SheetEditor.NewAtlasName:New Atlas
-Menu.SheetEditor.NewSpriteName:New Sprite
-Menu.Sokoban.AllCleared:Congratulations!! All levels has been cleared!
-MiniGameGomoku:Gomoku
-MiniGamePong:Pong
-MiniGameSokoban:Sokoban
-MiniGameTetris:Tetris
-Notify.MapGeneratedNotify:Level Generated
-Palette.Background:Background
-Palette.Character:Character
-Palette.CheckPoint:CheckPoint
-Palette.Collectable:Collectable
-Palette.Entity:Entity
-Palette.Furniture:Furniture
-Palette.Item:Item
-Palette.ItemEquipment:Equipment
-Palette.ItemFood:Food
-Palette.ItemWeapon:Weapon
-Palette.LevelBack:LevelBack
-Palette.LevelFront:LevelFront
-Palette.MiniGame:Mini Game
-Palette.Platform:Platform
-Palette.System:System
-Palette.Vegetation:Vegetation
-Palette.Wallpaper:Wallpaper
-PlayerCustomizerAngelia:Customize
-PropellerWing.Wing:Propeller Wing
-UI.Back:Back
-UI.BodyPart.ArmHand:Arm
-UI.BodyPart.Body:Body
-UI.BodyPart.Ear:Ear
-UI.BodyPart.Face:Face
-UI.BodyPart.Hair:Hair
-UI.BodyPart.HairColor:Hair Color
-UI.BodyPart.Head:Head
-UI.BodyPart.Height:Height
-UI.BodyPart.Horn:Horn
-UI.BodyPart.LegFoot:Leg
-UI.BodyPart.SkinColor:Skin Color
-UI.BodyPart.Tail:Tail
-UI.BodyPart.Wing:Wing
-UI.Cancel:Cancel
-UI.Continue:Continue
-UI.Default:Default
-UI.Delete:Delete
-UI.DontSave:Don't Save
-UI.Down:Down
-UI.Equipment.Bodysuit:Armor
-UI.Equipment.Gloves:Gloves
-UI.Equipment.Helmet:Helmet
-UI.Equipment.Jewelry:Jewelry
-UI.Equipment.Shoes:Boots
-UI.Equipment.Weapon:Weapon
-UI.GameKey.Action:Action/Attack
-UI.GameKey.Down:Down
-UI.GameKey.Jump:Cancel/Jump
-UI.GameKey.Left:Left
-UI.GameKey.Right:Right
-UI.GameKey.Select:Select
-UI.GameKey.Start:Start
-UI.GameKey.Up:Up
-UI.GameOver:Game Over
-UI.Gomoku.Place:Place
-UI.Gomoku.YouAre:You are:
-UI.LanguageEditor.AddKey:+ Key
-UI.LanguageEditor.AddLanguage:+ Language
-UI.Left:Left
-UI.No:No
-UI.None:None
-UI.OFF:OFF
-UI.OK:OK
-UI.ON:ON
-UI.PaletteTab.All:All
-UI.PaletteTab.Pinned:List
-UI.Quit:Quit
-UI.QuitGame:Quit Game
-UI.Restart:Restart
-UI.Right:Right
-UI.Save:Save
-UI.Setting:Setting
-UI.SheetTab.File:File
-UI.SheetTab.Palette:Palette
-UI.Sokoban.Level:Level:
-UI.Stop:Stop
-UI.StopEdit:Stop Edit
-UI.Suit.Bodysuit:Cloth
-UI.Suit.Glove:Gloves
-UI.Suit.Hat:Hat
-UI.Suit.Pants:Pants
-UI.Suit.Shoes:Shoes
-UI.SuitSuffix.Body: Cloth
-UI.SuitSuffix.Foot: Shoes
-UI.SuitSuffix.Hand: Gloves
-UI.SuitSuffix.Head: Hat
-UI.SuitSuffix.Hip: Pants
-UI.SuitSuffix.Skirt: Skirt
-UI.Tetris.ClearedLine:Lines:
-UI.Tetris.Holding:Holding
-UI.Up:Up
-UI.Yes:Yes
-Yaya.Body:Yaya's body
-Yaya.Ear:Yaya's cat ear
-Yaya.Face:Yaya's face
-Yaya.Foot:Yaya's foot
-Yaya.Hair:Yaya's hair
-Yaya.Hip:Yaya's hip
-Yaya.Tail:Yaya's cat tail
-Yaya.Wing:Yaya's wing
+MEDT.BackgroundOnly:仅背景
+MEDT.CancelDrop:取消放下
+MEDT.Drop:鼠标左键放下
+MEDT.EntityOnly:仅实体
+MEDT.LevelOnly:仅关卡
+Menu.Gomoku.Draw:平局
+Menu.Gomoku.Lose:你输喽，笨蛋
+Menu.Gomoku.Win:你赢啦，耶~~
+Menu.KeySetter.ConfirmMessage:是否保存修改？
+Menu.KeySetter.Gamepad:手柄
+Menu.KeySetter.GamepadMessage:按下F1键重置手柄设置
+Menu.KeySetter.Keyboard:键盘
+Menu.KeySetter.KeyboardMessage:按下F1键重置键盘设置
+Menu.KeySetter.Record:按想要的按键
+Menu.KeySetter.SaveAndBack:保存并返回
+Menu.MEDT.AddToList:添加到
+Menu.MEDT.AddToNewList:添加到新建列表
+Menu.MEDT.CreateList:新建列表
+Menu.MEDT.DeleteList:删除列表
+Menu.MEDT.DeleteListMSG:是否删除列表
+Menu.MEDT.RemoveFromList:移除自
+Menu.MEDT.SetAsListCover:设为列表封面
+Menu.MEDTSetting.AutoZoom:固定场景范围
+Menu.MEDTSetting.PlayerDrop:快速放下玩家
+Menu.MEDTSetting.ShowState:显示状态信息
+Menu.MiniGame.QuitMsg:退出迷你游戏？
+Menu.MiniGame.Restart:重新开始游戏吗？
+Menu.Pause.KeySetter:按键分配
+Menu.Pause.MEDTSetting:编辑器设置
+Menu.Pause.QuitEditMessage:停止编辑？
+Menu.Pause.QuitMessage:是否要退出游戏？
+Menu.Pause.RestartMessage:重新开始游戏？
+Menu.Setting.AllowGamepad:允许连接手柄
+Menu.Setting.Framerate:帧频率
+Menu.Setting.Fullscreen.0:窗口
+Menu.Setting.Fullscreen.1:全屏
+Menu.Setting.Fullscreen.2:全屏（低清）
+Menu.Setting.Fullscreen.Label:显示
+Menu.Setting.Language:语言
+Menu.Setting.MusicVolume:音乐音量
+Menu.Setting.SaveSlot:存档位
+Menu.Setting.ShowFPS:显示帧数
+Menu.Setting.SoundVolume:音效音量
+Menu.Setting.UseControlHint:游戏中显示操作提示
+Menu.Setting.UseGamepadHint:显示左下角手柄
+Menu.Setting.VSync:垂直同步
+Menu.SheetEditor.CreateAtlas:创建图集
+Menu.SheetEditor.CreateUnit:创建图块
+Menu.SheetEditor.DeleteAtlasMSG:删除图集吗？图集中的图块也会被删除。
+Menu.SheetEditor.DeleteUnitMSG:删除图块？
+Menu.SheetEditor.NewAtlasName:新图集
+Menu.SheetEditor.NewSpriteName:新图块
+Menu.Sokoban.AllCleared:恭喜通关！
+MiniGameGomoku:五子棋
+MiniGamePong:乓
+MiniGameSokoban:推箱子
+MiniGameTetris:俄罗斯方块
+Notify.MapGeneratedNotify:关卡已生成
+Palette.Background:背景
+Palette.Character:角色
+Palette.CheckPoint:存档点
+Palette.Collectable:可收集
+Palette.Entity:实体
+Palette.Furniture:家具
+Palette.Item:物品
+Palette.ItemEquipment:装备
+Palette.ItemFood:食物
+Palette.ItemWeapon:武器
+Palette.LevelBack:关卡
+Palette.LevelFront:关卡-前景
+Palette.MiniGame:迷你游戏
+Palette.Platform:平台
+Palette.System:系统
+Palette.Vegetation:植被
+Palette.Wallpaper:壁纸
+PlayerCustomizerAngelia:自定义样貌
+PropellerWing.Wing:螺旋桨
+UI.Back:返回
+UI.BodyPart.ArmHand:手臂
+UI.BodyPart.Body:身体
+UI.BodyPart.Ear:兽耳
+UI.BodyPart.Face:面部
+UI.BodyPart.Hair:头发
+UI.BodyPart.HairColor:发色
+UI.BodyPart.Head:头部
+UI.BodyPart.Height:身高
+UI.BodyPart.Horn:犄角
+UI.BodyPart.LegFoot:腿部
+UI.BodyPart.SkinColor:肤色
+UI.BodyPart.Tail:尾巴
+UI.BodyPart.Wing:翅膀
+UI.Cancel:取消
+UI.Continue:继续
+UI.Default:默认
+UI.Delete:删除
+UI.DontSave:不保存
+UI.Down:下
+UI.Equipment.Bodysuit:盔甲
+UI.Equipment.Gloves:手套
+UI.Equipment.Helmet:头盔
+UI.Equipment.Jewelry:首饰
+UI.Equipment.Shoes:鞋
+UI.Equipment.Weapon:武器
+UI.GameKey.Action:确定/攻击
+UI.GameKey.Down:下
+UI.GameKey.Jump:取消/跳跃
+UI.GameKey.Left:左
+UI.GameKey.Right:右
+UI.GameKey.Select:选择
+UI.GameKey.Start:开始
+UI.GameKey.Up:上
+UI.GameOver:游戏结束
+UI.Gomoku.Place:落子
+UI.Gomoku.YouAre:您是：
+UI.LanguageEditor.AddKey:+关键字
+UI.LanguageEditor.AddLanguage:+ 语言
+UI.Left:左
+UI.No:否
+UI.None:无
+UI.OFF:关闭
+UI.OK:确定
+UI.ON:开启
+UI.PaletteTab.All:全部
+UI.PaletteTab.Pinned:收藏
+UI.Quit:退出
+UI.QuitGame:退出游戏
+UI.Restart:重新开始
+UI.Right:右
+UI.Save:保存
+UI.Setting:设置
+UI.SheetTab.File:文件
+UI.SheetTab.Palette:颜色
+UI.Sokoban.Level:关卡：
+UI.Stop:停止
+UI.StopEdit:停止编辑
+UI.Suit.Bodysuit:衣服
+UI.Suit.Glove:手套
+UI.Suit.Hat:帽子
+UI.Suit.Pants:裤子
+UI.Suit.Shoes:鞋
+UI.SuitSuffix.Body:衣服
+UI.SuitSuffix.Foot:鞋
+UI.SuitSuffix.Hand:手套
+UI.SuitSuffix.Head:帽子
+UI.SuitSuffix.Hip:裤子
+UI.SuitSuffix.Skirt:裙子
+UI.Tetris.ClearedLine:行数:
+UI.Tetris.Holding:保留
+UI.Up:上
+UI.Yes:是
+Yaya.Body:丫丫身体
+Yaya.Ear:丫丫猫耳
+Yaya.Face:丫丫面孔
+Yaya.Foot:丫丫脚
+Yaya.Hair:丫丫头发
+Yaya.Hip:丫丫胯部
+Yaya.Tail:丫丫猫尾
+Yaya.Wing:丫丫螺旋桨

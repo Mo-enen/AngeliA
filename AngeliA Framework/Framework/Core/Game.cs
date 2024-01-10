@@ -219,6 +219,15 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void StopGame () {
+			WorldSquad.Enable = false;
+			Stage.DespawnAllEntitiesFromWorld();
+			if (Player.Selecting != null) Player.Selecting.Active = false;
+			Player.Selecting = null;
+
+		}
+
+
 		public static bool TryGetResource<T> (int id, out T resource) {
 			if (ResourcePool.TryGetValue(id, out object obj) && obj is T tObj) {
 				resource = tObj;
@@ -238,6 +247,8 @@ namespace AngeliaFramework {
 
 
 		private static void RestartGameLogic () {
+
+			WorldSquad.Enable = true;
 
 			// Select New Player
 			int playerID = RequireRestartWithPlayerID ?? 0;

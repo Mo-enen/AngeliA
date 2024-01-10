@@ -103,6 +103,8 @@ namespace AngeliaFramework {
 			get => s_ShowState.Value;
 			set => s_ShowState.Value = value;
 		}
+		protected override bool StopGameOnActive => false;
+		protected override Byte4? ForceSkyColor => null;
 
 		// Pools
 		private readonly Dictionary<int, AngeSprite> SpritePool = new();
@@ -243,8 +245,8 @@ namespace AngeliaFramework {
 			}
 
 			JsonUtil.SaveJson(EditorMeta, Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot);
-			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
 			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
+			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
 			WorldSquad.ShowElement = false;

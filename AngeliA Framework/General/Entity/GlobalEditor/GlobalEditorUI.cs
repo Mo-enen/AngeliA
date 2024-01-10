@@ -11,6 +11,9 @@ namespace AngeliaFramework {
 		// Api
 		public static GlobalEditorUI Instance { get; private set; } = null;
 		private static System.Action RestartGameImmediately;
+		public static bool HaveActiveInstance => Instance != null && Instance.Active;
+		protected virtual bool StopGameOnActive => true;
+		protected virtual Byte4? ForceSkyColor => new Byte4(32, 33, 37, 255);
 
 
 		// MSG
@@ -28,6 +31,17 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			if (Instance != null && Instance != this) Instance.Active = false;
 			Instance = this;
+			if (StopGameOnActive) Game.StopGame();
+		}
+
+
+		public override void BeforePhysicsUpdate () {
+			base.BeforePhysicsUpdate();
+			ControlHintUI.ForceShowHint();
+			ControlHintUI.ForceHideGamepad();
+			if (ForceSkyColor.HasValue) {
+				Skybox.ForceSkyboxTint(ForceSkyColor.Value, ForceSkyColor.Value);
+			}
 		}
 
 

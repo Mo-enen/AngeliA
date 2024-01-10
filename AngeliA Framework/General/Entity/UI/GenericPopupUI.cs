@@ -40,7 +40,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static GenericPopupUI Instance;
-		private readonly Item[] Items = new Item[64];
+		private readonly Item[] Items = new Item[128];
 		private int ItemCount = 0;
 		private int OffsetX = 0;
 		private int OffsetY = 0;
@@ -96,16 +96,26 @@ namespace AngeliaFramework {
 			int panelWidth = Unify(200);
 			int itemHeight = Unify(30);
 			int separatorHeight = Unify(6);
+			var cameraRect = CellRenderer.CameraRect;
 			var panelRect = new IRect(
-				CellRenderer.CameraRect.x + OffsetX,
-				CellRenderer.CameraRect.y + OffsetY,
+				cameraRect.x + OffsetX,
+				cameraRect.y + OffsetY,
 				panelWidth,
 				itemHeight * (ItemCount - separatorCount) + separatorHeight * separatorCount
 			);
-			if (CellRenderer.CameraRect.y + OffsetY > CellRenderer.CameraRect.CenterY()) {
+			if (cameraRect.y + OffsetY > cameraRect.CenterY()) {
 				panelRect.y -= itemHeight * ItemCount;
 			}
-			panelRect.ClampPositionInside(CellRenderer.CameraRect);
+			if (panelRect.height < cameraRect.height) {
+				panelRect.ClampPositionInside(cameraRect);
+			} else {
+				int padding = Unify(42);
+				panelRect.y = Util.RemapUnclamped(
+					cameraRect.y + padding, cameraRect.yMax - padding,
+					cameraRect.y, cameraRect.y - panelRect.height + cameraRect.height,
+					FrameInput.MouseGlobalPosition.y
+				);
+			}
 
 			// Items
 			Cell highlightCell = null;

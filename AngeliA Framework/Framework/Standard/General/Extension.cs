@@ -653,7 +653,16 @@ namespace AngeliaFramework {
 			var tType = typeof(T);
 			foreach (var field in type.GetFields(binding)) {
 				if (field.FieldType == tType || (inherited && field.FieldType.IsSubclassOf(tType))) {
-					yield return (T)field.GetValue(null);
+					if (type.ContainsGenericParameters) {
+						var args = type.GetGenericArguments();
+						var gTypes = new System.Type[args.Length];
+						for (int i = 0; i < args.Length; i++) gTypes[i] = args[i].BaseType;
+						var newType = type.MakeGenericType(gTypes);
+						var newField = newType.GetField(field.Name, binding);
+						yield return (T)newField.GetValue(null);
+					} else {
+						yield return (T)field.GetValue(null);
+					}
 				}
 			}
 		}

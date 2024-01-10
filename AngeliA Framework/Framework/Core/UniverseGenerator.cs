@@ -341,7 +341,7 @@ namespace AngeliaFramework {
 
 			// Final
 			var sheet = new Sheet(
-				spriteList.ToArray(), groups.ToArray(), atlases.ToArray(), 
+				spriteList.ToArray(), groups.ToArray(), atlases.ToArray(),
 				Game.GetTextureFromPixels(texturePixels, textureWidth, textureHeight)
 			);
 			FillSummaryForSheet(sheet.Sprites, textureWidth, textureHeight, texturePixels);
@@ -391,7 +391,7 @@ namespace AngeliaFramework {
 					if (trimedLine[0] == '>') {
 						// Switch Language
 						string iso = trimedLine[1..];
-						if (trimedLine.Length > 1 && iso.Length == 2 && currentIso != iso) {
+						if (trimedLine.Length > 1 && Util.IsSupportedLanguageISO(iso) && currentIso != iso) {
 							// Make File
 							string targetPath = Util.CombinePaths(
 								conFolderPath,

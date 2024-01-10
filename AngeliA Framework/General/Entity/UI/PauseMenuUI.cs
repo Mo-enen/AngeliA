@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		private enum MenuMode { Pause, Setting, EditorSetting, KeySetter, Quit, Setter_Keyboard, Setter_Gamepad }
+		private enum MenuMode { Pause, Setting, EditorSetting, KeySetter, Restart, Quit, Setter_Keyboard, Setter_Gamepad }
 
 
 		#endregion
@@ -28,6 +28,7 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly LanguageCode MENU_QUIT_MESSAGE = "Menu.Pause.QuitMessage";
+		private static readonly LanguageCode MENU_RESTART_MESSAGE = "Menu.Pause.RestartMessage";
 		private static readonly LanguageCode MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage";
 		private static readonly LanguageCode MENU_KEYSETTER_KEYBOARD_MESSAGE = "Menu.KeySetter.KeyboardMessage";
 		private static readonly LanguageCode MENU_KEYSETTER_CONFIRM_MESSAGE = "Menu.KeySetter.ConfirmMessage";
@@ -57,6 +58,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_CONTINUE = "UI.Continue";
 		private static readonly LanguageCode UI_SETTING = "UI.Setting";
 		private static readonly LanguageCode UI_QUIT = "UI.Quit";
+		private static readonly LanguageCode UI_RESTART = "UI.Restart";
 		private static readonly LanguageCode UI_QUIT_GAME = "UI.QuitGame";
 		private static readonly LanguageCode UI_STOP_EDIT = "UI.StopEdit";
 		private static readonly LanguageCode UI_BACK = "UI.Back";
@@ -190,6 +192,9 @@ namespace AngeliaFramework {
 				case MenuMode.EditorSetting:
 					MenuMapEditorSetting();
 					break;
+				case MenuMode.Restart:
+					MenuRestart();
+					break;
 				case MenuMode.Quit:
 					MenuQuit();
 					break;
@@ -226,15 +231,21 @@ namespace AngeliaFramework {
 				SetSelection(0);
 			}
 
-			// 3-Map Editor Setting
-			if (MapEditor.IsPlaying || MapEditor.IsEditing) {
+			if (MapEditor.IsActived) {
+				// 3-Map Editor Setting
 				if (DrawItem(Language.Get(MENU_MEDT_SETTING, "Editor Setting"))) {
 					RequireMode = MenuMode.EditorSetting;
 					SetSelection(0);
 				}
+			} else if (!GlobalEditorUI.HaveActiveInstance) {
+				// 3-Restart Game
+				if (DrawItem(Language.Get(UI_RESTART, "Restart"))) {
+					RequireMode = MenuMode.Restart;
+					SetSelection(0);
+				}
 			}
 
-			// 4-Quit
+			// 3/4-Quit
 			if (DrawItem(Language.Get(UI_QUIT, "Quit"), Const.RED_BETTER)) {
 				RequireMode = MenuMode.Quit;
 				SetSelection(0);
@@ -445,11 +456,32 @@ namespace AngeliaFramework {
 		}
 
 
+		private void MenuRestart () {
+
+			Message = Language.Get(MENU_RESTART_MESSAGE, "Restart Game?");
+
+			// Continue
+			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+				RequireMode = MenuMode.Pause;
+				SetSelection(3);
+			}
+
+			// Restart
+			if (DrawItem(Language.Get(UI_RESTART, "Restart"))) {
+				Game.IsPlaying = true;
+				Active = false;
+				FrameInput.UseAllHoldingKeys();
+				Game.RestartGame();
+			}
+
+		}
+
+
 		private void MenuQuit () {
 
 			bool editing = GlobalEditorUI.Instance != null && GlobalEditorUI.Instance.Active;
 
-			Message = Language.Get(MENU_QUIT_MESSAGE, "Quit Now?");
+			Message = Language.Get(MENU_QUIT_MESSAGE, "Quit Game?");
 
 			// Continue
 			if (DrawItem(Language.Get(UI_CONTINUE, "Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {

@@ -423,14 +423,23 @@ namespace AngeliaFramework {
 
 
 		// Button
+		public static bool Button (IRect rect, string label, int z) => Button(rect, label, z, Const.WHITE);
+		public static bool Button (IRect rect, string label, int z, Byte4 labelTint) {
+			Label(CellContent.Get(label, labelTint, ReverseUnify(rect.height * 4 / 10)), rect);
+			return Button(rect, 0, Const.PIXEL, 0, 0, 0, 0, z, Const.WHITE_12, default);
+		}
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE);
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Byte4 buttonTint, Byte4 iconTint) {
 			bool hover = rect.MouseInside();
 			bool down = hover && FrameInput.MouseLeftButton;
-			CellRenderer.Draw_9Slice(
-				down ? spriteDown : hover ? spriteHover : sprite,
-				rect, buttonBorder, buttonBorder, buttonBorder, buttonBorder, buttonTint, z
-			);
+			// Button
+			int spriteID = down ? spriteDown : hover ? spriteHover : sprite;
+			if (spriteID != 0) {
+				CellRenderer.Draw_9Slice(
+					spriteID, rect, buttonBorder, buttonBorder, buttonBorder, buttonBorder, buttonTint, z
+				);
+			}
+			// Icon
 			if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
 				CellRenderer.Draw(
 					iconSprite,

@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.MapEditorGroup("Character")]
 	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.Layer(EntityLayer.CHARACTER)]
-	[RequireSprite("{2}")]
+	[RequireSprite("{0}")]
 	[RequireGlobalSprite(
 		"DefaultCharacter.Head",
 		"DefaultCharacter.Body",
@@ -29,6 +29,7 @@ namespace AngeliaFramework {
 		"DefaultCharacter.UpperLeg",
 		"DefaultCharacter.Foot"
 	)]
+	[RequireLanguage("@{0}")]
 	public abstract partial class Character : Rigidbody {
 
 

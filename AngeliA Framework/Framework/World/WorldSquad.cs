@@ -411,21 +411,6 @@ namespace AngeliaFramework {
 			if (CullingCameraRect.Overlaps(rect)) {
 				CellRenderer.Draw(id, rect);
 			}
-			// Collider for Oneway
-			if (CellRenderer.TryGetSprite(id, out var sp) && AngeUtil.IsOnewayTag(sp.Tag)) {
-				CellPhysics.FillBlock(
-					PhysicsLayer.LEVEL, id,
-					new IRect(
-						unitX * Const.CEL,
-						unitY * Const.CEL,
-						Const.CEL,
-						Const.CEL
-					).Shrink(
-						sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
-					),
-					true, sp.Tag
-				);
-			}
 		}
 
 
