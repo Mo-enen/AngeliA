@@ -22,7 +22,6 @@ namespace AngeliaFramework {
 		public void CopyFrom (Cell other) {
 			Sprite = other.Sprite;
 			TextSprite = other.TextSprite;
-			Order = other.Order;
 			X = other.X;
 			Y = other.Y;
 			Z = other.Z;
@@ -408,6 +407,8 @@ namespace AngeliaFramework {
 		[OnGameUpdate(-512)]
 		public static void BeginDraw () {
 			IsDrawing = true;
+			EMPTY_CELL.Sprite = null;
+			EMPTY_CELL.TextSprite = null;
 			SetLayerToDefault();
 			for (int i = 0; i < Layers.Length; i++) {
 				var layer = Layers[i];
@@ -465,6 +466,7 @@ namespace AngeliaFramework {
 
 			// Cell
 			cell.Sprite = sprite;
+			cell.TextSprite = null;
 			cell.Order = layer.FocusedCell;
 			cell.X = x;
 			cell.Y = y;
@@ -488,21 +490,21 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Cell DrawChar (int globalID, int x, int y, int width, int height, Byte4 color) {
+		public static Cell DrawChar (char c, int x, int y, int width, int height, Byte4 color) {
 
 			if (!IsDrawing) return EMPTY_CELL;
 
 			var tLayer = TextLayers[CurrentTextLayerIndex];
-			if (!tLayer.TextIDMap.TryGetValue(globalID, out var tSprite)) {
+			if (!tLayer.TextIDMap.TryGetValue(c, out var tSprite)) {
 				return EMPTY_CELL;
 			}
 
 			var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
-			if (Game.IsPausing && !layer.UiLayer) return EMPTY_CELL;
 			if (layer.FocusedCell < 0) return EMPTY_CELL;
 			var cell = layer.Cells[layer.FocusedCell];
 
 			cell.Z = 0;
+			cell.Sprite = null;
 			cell.TextSprite = tSprite;
 			cell.Order = layer.FocusedCell;
 			cell.X = x;
@@ -521,7 +523,7 @@ namespace AngeliaFramework {
 			if (layer.FocusedCell >= layer.CellCount) {
 				layer.FocusedCell = -1;
 			}
-			LastDrawnID = globalID;
+			LastDrawnID = c;
 			return cell;
 		}
 
@@ -856,10 +858,22 @@ namespace AngeliaFramework {
 
 
 		// Clamp
-		public static void ClampTextCells (IRect rect, int startIndex, int endIndex) => ClampCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
-		public static void ClampTextCells (int layerIndex, IRect rect, int startIndex, int endIndex) => ClampCellsLogic(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
-		public static void ClampCells (IRect rect, int startIndex, int endIndex) => ClampCellsLogic(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
-		public static void ClampCells (int layerIndex, IRect rect, int startIndex, int endIndex) => ClampCellsLogic(Layers[layerIndex].Cells, rect, startIndex, endIndex);
+		public static void ClampCells (IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetUsedCellCount(CurrentLayerIndex);
+			ClampCellsLogic(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
+		}
+		public static void ClampCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
+			ClampCellsLogic(Layers[layerIndex].Cells, rect, startIndex, endIndex);
+		}
+		public static void ClampTextCells (IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetTextUsedCellCount(CurrentTextLayerIndex);
+			ClampCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
+		}
+		public static void ClampTextCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetTextUsedCellCount(layerIndex);
+			ClampCellsLogic(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
+		}
 		public static void ClampCells (Cell[] cells, IRect rect) => ClampCellsLogic(cells, rect, 0, cells.Length);
 		private static void ClampCellsLogic (Cell[] cells, IRect rect, int startIndex, int endIndex) {
 			var cellRect = new IRect();
@@ -905,6 +919,122 @@ namespace AngeliaFramework {
 						cell.Shift.up = cellU - rect.y - rect.height;
 					} else {
 						cell.Shift.down = cellU - rect.y - rect.height;
+					}
+				}
+			}
+		}
+
+
+		// Exclude
+		public static void ExcludeCellsForAllLayers (IRect rect, int startIndex, int endIndex = -1) {
+			int count = LayerCount;
+			for (int i = 0; i < count; i++) {
+				if (endIndex < 0) endIndex = GetUsedCellCount(i);
+				ExcludeCellsLogic(Layers[i].Cells, i, rect, startIndex, endIndex);
+			}
+		}
+		public static void ExcludeCells (IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetUsedCellCount(CurrentLayerIndex);
+			ExcludeCellsLogic(Layers[CurrentLayerIndex].Cells, CurrentLayerIndex, rect, startIndex, endIndex);
+		}
+		public static void ExcludeCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
+			ExcludeCellsLogic(Layers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
+		}
+		public static void ExcludeTextCellsForAllLayers (IRect rect, int startIndex, int endIndex = -1) {
+			int count = TextLayerCount;
+			for (int i = 0; i < count; i++) {
+				if (endIndex < 0) endIndex = GetTextUsedCellCount(i);
+				ExcludeCellsLogic(TextLayers[i].Cells, i, rect, startIndex, endIndex);
+			}
+		}
+		public static void ExcludeTextCells (IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetTextUsedCellCount(CurrentTextLayerIndex);
+			ExcludeCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, CurrentTextLayerIndex, rect, startIndex, endIndex);
+		}
+		public static void ExcludeTextCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
+			if (endIndex < 0) endIndex = GetTextUsedCellCount(layerIndex);
+			ExcludeCellsLogic(TextLayers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
+		}
+		private static void ExcludeCellsLogic (Cell[] cells, int layerIndex, IRect rect, int startIndex, int endIndex) {
+			var cellRect = new IRect();
+			for (int i = startIndex; i < endIndex; i++) {
+				var cell = cells[i];
+				cellRect.x = cell.X - (int)(cell.Width * cell.PivotX);
+				cellRect.y = cell.Y - (int)(cell.Height * cell.PivotY);
+				cellRect.width = cell.Width;
+				cellRect.height = cell.Height;
+				cellRect.FlipNegative();
+				if (cellRect.Overlaps(rect)) {
+
+					// Inside
+					if (
+						cellRect.x > rect.x && cellRect.xMax < rect.xMax &&
+						cellRect.y > rect.y && cellRect.yMax < rect.yMax
+					) {
+						cell.Color = Const.CLEAR;
+						continue;
+					}
+
+					// L
+					var newCellRect = cellRect;
+					if (cellRect.x < rect.x) {
+						MakeCell(
+							cell, cellRect, cellRect.EdgeInside(Direction4.Left, rect.x - cellRect.x),
+							layerIndex
+						);
+						newCellRect = newCellRect.EdgeInside(Direction4.Right, cellRect.xMax - rect.x);
+					}
+					// R
+					if (cellRect.xMax > rect.xMax) {
+						MakeCell(
+							cell, cellRect, cellRect.EdgeInside(Direction4.Right, cellRect.xMax - rect.xMax),
+							layerIndex
+						);
+						newCellRect = newCellRect.EdgeInside(Direction4.Left, rect.xMax - cellRect.x);
+					}
+
+					// D
+					if (cellRect.y < rect.y) {
+						MakeCell(
+							cell, cellRect, newCellRect.EdgeInside(Direction4.Down, rect.y - cellRect.y),
+							layerIndex
+						);
+					}
+					// U
+					if (cellRect.yMax > rect.yMax) {
+						MakeCell(
+							cell, cellRect, newCellRect.EdgeInside(Direction4.Up, cellRect.yMax - rect.yMax),
+							layerIndex
+						);
+					}
+					cell.Color = Const.CLEAR;
+
+					// Func
+					static void MakeCell (Cell source, IRect originalRect, IRect targetRect, int layerIndex) {
+						Cell target;
+						if (source.Sprite != null) {
+							int oldLayer = CurrentLayerIndex;
+							SetLayer(layerIndex);
+							target = Draw(Const.PIXEL, default, 0);
+							SetLayer(oldLayer);
+						} else {
+							int oldLayer = CurrentTextLayerIndex;
+							SetTextLayer(layerIndex);
+							target = DrawChar(' ', 0, 0, 1, 1, Const.WHITE);
+							SetTextLayer(oldLayer);
+						}
+						target.CopyFrom(source);
+						target.X = originalRect.x;
+						target.Y = originalRect.y;
+						target.Width = originalRect.width;
+						target.Height = originalRect.height;
+						target.PivotX = 0;
+						target.PivotY = 0;
+						target.Shift.left = Util.Max(0, targetRect.x - originalRect.x);
+						target.Shift.right = Util.Max(0, originalRect.xMax - targetRect.xMax);
+						target.Shift.down = Util.Max(0, targetRect.y - originalRect.y);
+						target.Shift.up = Util.Max(0, originalRect.yMax - targetRect.yMax);
 					}
 				}
 			}

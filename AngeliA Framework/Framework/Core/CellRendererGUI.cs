@@ -129,7 +129,16 @@ namespace AngeliaFramework {
 
 		// Api
 		public static bool IsTyping => TypingTextFieldID != 0;
-		public static int TypingTextFieldID { get; private set; } = 0;
+		public static int TypingTextFieldID {
+			get => _TypingTextFieldID;
+			private set {
+				if (_TypingTextFieldID != value) {
+					_TypingTextFieldID = value;
+					Game.SetImeCompositionMode(value != 0);
+				}
+			}
+		}
+		public static int _TypingTextFieldID = 0;
 
 		// UI
 		private static readonly CellContent InputLabel = new() {
@@ -469,11 +478,16 @@ namespace AngeliaFramework {
 
 			changed = false;
 			bool startTyping = false;
-			bool mouseInRect = rect.MouseInside();
-			bool mouseDragging = FrameInput.MouseLeftButton && mouseInRect;
+			bool mouseDownPosInRect = rect.Contains(FrameInput.MouseLeftDownGlobalPosition);
+			bool mouseDragging = FrameInput.MouseLeftButton && mouseDownPosInRect;
+			bool inCamera = rect.Overlaps(CellRenderer.CameraRect);
+			bool interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
+			if (interactable) CursorSystem.SetCursorAsBeam(rect);
+
+			if (!inCamera && TypingTextFieldID == controlID) TypingTextFieldID = 0;
 
 			// Start Typing
-			if (FrameInput.MouseLeftButtonDown && mouseInRect) {
+			if (interactable && inCamera && FrameInput.MouseLeftButtonDown && mouseDownPosInRect) {
 				TypingTextFieldID = controlID;
 				BeamBlinkFrame = Game.PauselessFrame;
 				startTyping = true;
@@ -481,12 +495,14 @@ namespace AngeliaFramework {
 			}
 
 			// Typing 
-			bool typing = TypingTextFieldID == controlID;
+			bool typing = interactable && TypingTextFieldID == controlID;
+			int beamIndex = typing ? BeamIndex : 0;
+			int beamLength = typing ? BeamLength : 0;
 			if (typing) {
 
 				// Clear
 				if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
-					BeamIndex = 0;
+					beamIndex = BeamIndex = 0;
 					CancelTyping();
 					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 					FrameInput.UseGameKey(Gamekey.Start);
@@ -494,26 +510,26 @@ namespace AngeliaFramework {
 
 				// Move Beam
 				if (FrameInput.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
-					if (BeamLength == 0) {
-						BeamIndex--;
-					} else if (BeamLength < 0) {
-						BeamIndex += BeamLength;
+					if (beamLength == 0) {
+						beamIndex = BeamIndex = beamIndex - 1;
+					} else if (beamLength < 0) {
+						beamIndex = BeamIndex = beamIndex + beamLength;
 					}
-					BeamLength = 0;
+					beamLength = BeamLength = 0;
 					BeamBlinkFrame = Game.PauselessFrame;
 				}
 				if (FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow)) {
-					if (BeamLength == 0) {
-						BeamIndex++;
-					} else if (BeamLength > 0) {
-						BeamIndex += BeamLength;
+					if (beamLength == 0) {
+						beamIndex = BeamIndex = beamIndex + 1;
+					} else if (beamLength > 0) {
+						beamIndex = BeamIndex = beamIndex + beamLength;
 					}
-					BeamLength = 0;
+					beamLength = BeamLength = 0;
 					BeamBlinkFrame = Game.PauselessFrame;
 				}
 
-				BeamIndex = BeamIndex.Clamp(0, text.Text.Length);
-				BeamLength = BeamLength.Clamp(-BeamIndex, text.Text.Length - BeamIndex);
+				beamIndex = BeamIndex = beamIndex.Clamp(0, text.Text.Length);
+				beamLength = BeamLength = beamLength.Clamp(-beamIndex, text.Text.Length - beamIndex);
 				TypingTextFieldRect = rect;
 				TypingUpdateFrame = Game.PauselessFrame;
 
@@ -522,11 +538,11 @@ namespace AngeliaFramework {
 					switch (c) {
 						case '\b':
 							// Backspace
-							if (BeamLength == 0) {
-								int removeIndex = BeamIndex - 1;
+							if (beamLength == 0) {
+								int removeIndex = beamIndex - 1;
 								if (removeIndex >= 0 && removeIndex < text.Text.Length) {
 									text.Text = text.Text.Remove(removeIndex, 1);
-									BeamIndex--;
+									beamIndex = BeamIndex = beamIndex - 1;
 									changed = true;
 								}
 							} else {
@@ -540,9 +556,9 @@ namespace AngeliaFramework {
 							break;
 						case CONTROL_COPY:
 						case CONTROL_CUT:
-							if (BeamLength == 0) break;
-							int beamStart = Util.Min(BeamIndex, BeamIndex + BeamLength);
-							int beamEnd = Util.Max(BeamIndex, BeamIndex + BeamLength);
+							if (beamLength == 0) break;
+							int beamStart = Util.Min(beamIndex, beamIndex + beamLength);
+							int beamEnd = Util.Max(beamIndex, beamIndex + beamLength);
 							Game.SetClipboardText(text.Text[beamStart..beamEnd]);
 							if (c == CONTROL_CUT) {
 								RemoveSelection();
@@ -552,17 +568,17 @@ namespace AngeliaFramework {
 						case CONTROL_PASTE:
 							string clipboardText = Game.GetClipboardText();
 							if (string.IsNullOrEmpty(clipboardText)) break;
-							if (BeamLength != 0) RemoveSelection();
-							text.Text = text.Text.Insert(BeamIndex, clipboardText);
-							BeamIndex += clipboardText.Length;
+							if (beamLength != 0) RemoveSelection();
+							text.Text = text.Text.Insert(beamIndex, clipboardText);
+							beamIndex = BeamIndex = beamIndex + clipboardText.Length;
 							changed = true;
 							break;
 						default:
 							if (text.Text.Length >= MAX_INPUT_CHAR) break;
 							// Append Char
-							if (BeamLength != 0) RemoveSelection();
-							text.Text = text.Text.Insert(BeamIndex, c.ToString());
-							BeamIndex++;
+							if (beamLength != 0) RemoveSelection();
+							text.Text = text.Text.Insert(beamIndex, c.ToString());
+							beamIndex = BeamIndex = beamIndex + 1;
 							changed = true;
 							break;
 					}
@@ -570,9 +586,9 @@ namespace AngeliaFramework {
 
 				// Delete
 				if (FrameInput.KeyboardDownGUI(KeyboardKey.Delete)) {
-					int removeIndex = BeamIndex;
+					int removeIndex = beamIndex;
 					if (removeIndex >= 0 && removeIndex < text.Text.Length) {
-						if (BeamLength == 0) {
+						if (beamLength == 0) {
 							// Delete One Char
 							text.Text = text.Text.Remove(removeIndex, 1);
 							changed = true;
@@ -586,10 +602,10 @@ namespace AngeliaFramework {
 				}
 				// Func
 				void RemoveSelection () {
-					int newBeamIndex = Util.Min(BeamIndex, BeamIndex + BeamLength);
-					text.Text = text.Text.Remove(newBeamIndex, BeamLength.Abs());
-					BeamIndex = newBeamIndex;
-					BeamLength = 0;
+					int newBeamIndex = Util.Min(beamIndex, beamIndex + beamLength);
+					text.Text = text.Text.Remove(newBeamIndex, beamLength.Abs());
+					beamIndex = BeamIndex = newBeamIndex;
+					beamLength = BeamLength = 0;
 				}
 			}
 
@@ -605,12 +621,12 @@ namespace AngeliaFramework {
 
 			// Draw Text
 			if (!string.IsNullOrEmpty(text.Text)) {
-				Label(text, labelRect, BeamIndex, 0, false, out _, out beamRect, out _);
+				Label(text, labelRect, beamIndex, 0, false, out _, out beamRect, out _);
 			}
 
 			// Draw Beam
 			Cell beamCell = null;
-			if (typing && (Game.PauselessFrame - BeamBlinkFrame) % 56 < 28) {
+			if (!startTyping && typing && (Game.PauselessFrame - BeamBlinkFrame) % 56 < 28) {
 				beamRect.y = labelRect.y + beamShrink;
 				beamRect.height = labelRect.height - beamShrink * 2;
 				beamCell = CellRenderer.Draw(Const.PIXEL, beamRect, Const.WHITE, int.MaxValue);
@@ -620,7 +636,7 @@ namespace AngeliaFramework {
 			if (startCellIndex != endCellIndex && CellRenderer.GetTextCells(out var cells, out int count)) {
 
 				// Scroll X from Beam 
-				int beamCellIndex = (BeamIndex + startCellIndex).Clamp(startCellIndex, endCellIndex - 1);
+				int beamCellIndex = typing ? (beamIndex + startCellIndex).Clamp(startCellIndex, endCellIndex - 1) : startCellIndex;
 				var beamCharCell = cells[beamCellIndex];
 
 				// Shift for Beam Out
@@ -649,16 +665,16 @@ namespace AngeliaFramework {
 				}
 
 				// Get Beam Selection Rect
-				if (typing && BeamLength != 0) {
-					int beamSelectionStartIndex = Util.Min(BeamIndex, BeamIndex + BeamLength);
-					int beamSelectionEndIndex = Util.Max(BeamIndex, BeamIndex + BeamLength);
+				if (!startTyping && typing && beamLength != 0) {
+					int beamSelectionStartIndex = Util.Min(beamIndex, beamIndex + beamLength);
+					int beamSelectionEndIndex = Util.Max(beamIndex, beamIndex + beamLength);
 					var startCell = cells[(startCellIndex + beamSelectionStartIndex).Clamp(startCellIndex, endCellIndex - 1)];
 					var endCell = cells[(startCellIndex + beamSelectionEndIndex - 1).Clamp(startCellIndex, endCellIndex - 1)];
-					var selectionRect = new IRect(
-						startCell.X,
-						labelRect.y + beamShrink,
-						endCell.X + endCell.Width - startCell.X,
-						labelRect.height - beamShrink * 2
+					var selectionRect = IRect.MinMaxRect(
+						Util.Max(startCell.X, rect.x),
+						Util.Max(labelRect.y + beamShrink, rect.y),
+						Util.Min(endCell.X + endCell.Width, rect.xMax),
+						Util.Min(labelRect.yMax - beamShrink, rect.yMax)
 					);
 					CellRenderer.Draw(Const.PIXEL, selectionRect, Const.ORANGE, int.MaxValue - 1);
 				}
@@ -678,13 +694,13 @@ namespace AngeliaFramework {
 					}
 					// Set Beam on Click
 					if (startTyping) {
-						BeamIndex = mouseBeamIndex;
-						BeamLength = 0;
+						beamIndex = BeamIndex = mouseBeamIndex;
+						beamLength = BeamLength = 0;
 					}
 					// Set Selection on Drag
 					if (mouseDragging) {
-						BeamLength += BeamIndex - mouseBeamIndex;
-						BeamIndex = mouseBeamIndex;
+						beamLength = BeamLength = beamLength + beamIndex - mouseBeamIndex;
+						beamIndex = BeamIndex = mouseBeamIndex;
 					}
 				}
 			}

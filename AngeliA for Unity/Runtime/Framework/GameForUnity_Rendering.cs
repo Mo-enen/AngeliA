@@ -368,6 +368,7 @@ namespace AngeliaForUnity {
 			}
 		}
 
+
 		// Texture
 		protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
 			if (width * height == 0) {
@@ -480,6 +481,8 @@ namespace AngeliaForUnity {
 		protected override string _GetClipboardText () => GUIUtility.systemCopyBuffer;
 
 		protected override void _SetClipboardText (string text) => GUIUtility.systemCopyBuffer = text;
+
+		protected override void _SetImeCompositionMode (bool on) => Input.imeCompositionMode = on ? IMECompositionMode.On : IMECompositionMode.Off;
 
 
 		#endregion

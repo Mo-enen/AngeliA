@@ -134,7 +134,7 @@ namespace AngeliaFramework {
 
 
 		// GL
-		public static void DrawFrame (IRect rect, Byte4 color, int thickness) {
+		public static void DrawLineFrame (IRect rect, Byte4 color, int thickness) {
 			Instance._DrawRect(rect.EdgeInside(Direction4.Down, thickness), color);
 			Instance._DrawRect(rect.EdgeInside(Direction4.Up, thickness), color);
 			Instance._DrawRect(rect.EdgeInside(Direction4.Left, thickness), color);
@@ -176,6 +176,9 @@ namespace AngeliaFramework {
 		public static void SetClipboardText (string text) => Instance?._SetClipboardText(text);
 		protected abstract void _SetClipboardText (string text);
 
+		public static void SetImeCompositionMode (bool on) => Instance?._SetImeCompositionMode(on);
+		protected abstract void _SetImeCompositionMode (bool on);
+		
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);

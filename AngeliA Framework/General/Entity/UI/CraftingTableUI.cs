@@ -279,8 +279,7 @@ namespace AngeliaFramework {
 			}
 
 			// Clamp
-			int endIndex = CellRenderer.GetUsedCellCount();
-			CellRenderer.ClampCells(docRect, startIndex, endIndex);
+			CellRenderer.ClampCells(docRect, startIndex);
 
 			// Tip
 			if (tipID != 0) {

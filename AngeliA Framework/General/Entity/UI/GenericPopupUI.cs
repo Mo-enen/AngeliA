@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[EntityAttribute.StageOrder(-1024)]
+	[EntityAttribute.StageOrder(4096)]
 	public class GenericPopupUI : EntityUI {
 
 
@@ -187,13 +187,16 @@ namespace AngeliaFramework {
 			if (highlightCell != null) highlightCell.Width = panelRect.width;
 
 			// BG
+			var bgRect = panelRect.Expand(Unify(8));
 			CellRenderer.Draw(
-				Const.PIXEL, panelRect.Expand(Unify(8)), new Byte4(249, 249, 249, 255), int.MaxValue - 2
+				Const.PIXEL, bgRect, new Byte4(249, 249, 249, 255), int.MaxValue - 2
 			);
 
 			// Clamp Text
-			int textEnd = CellRenderer.GetTextUsedCellCount();
-			CellRenderer.ClampTextCells(panelRect, textStart, textEnd);
+			CellRenderer.ClampTextCells(panelRect, textStart);
+
+			// Exclude Text
+			CellRenderer.ExcludeTextCellsForAllLayers(bgRect, 0, textStart);
 
 			// Cancel
 			if (FrameInput.AnyMouseButtonDown || FrameInput.AnyKeyDown) {

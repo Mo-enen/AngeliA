@@ -1,4 +1,4 @@
-﻿@GuaGua:Gua Gua
+﻿@GuaGua:GuaGua
 @SlimeRed:Red Slime
 @Yaya:Yaya
 AngelWing.Wing:Angel Wing
@@ -23,11 +23,8 @@ CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
-CtrlHint.PlayerMenu.TakeUse:Take (Hold to Use)
 CtrlHint.QuitEditing:Stop Editing
-CtrlHint.Restart:Restart
 CtrlHint.ShowMenu:Show Menu
-CtrlHint.Skip:Skip
 CtrlHint.SwitchPlayer:Switch Character
 CtrlHint.Throw:Throw
 CtrlHint.Transfer:Transfer
@@ -342,7 +339,7 @@ iDes.Garlic:
 iDes.GarlicCut:
 iDes.GasMask:
 iDes.GasMaskBroken:
-iDes.Gem:
+iDes.Gem:Gem
 iDes.GemBlue:
 iDes.GemGreen:
 iDes.GemOrange:
@@ -1616,10 +1613,8 @@ Menu.MEDTSetting.AutoZoom:Fixed Scene Range
 Menu.MEDTSetting.PlayerDrop:Quick Player Drop
 Menu.MEDTSetting.ShowState:Show State Info
 Menu.MiniGame.QuitMsg:Quit mini game?
-Menu.MiniGame.Restart:Retart Game?
 Menu.Pause.KeySetter:Key Assignment
 Menu.Pause.MEDTSetting:Editor Setting
-Menu.Pause.QuitEditMessage:Stop Editing?
 Menu.Pause.QuitMessage:Quit game now？
 Menu.Pause.RestartMessage:Restart Game ?
 Menu.Setting.AllowGamepad:Allow Gamepad
@@ -1683,10 +1678,8 @@ UI.BodyPart.Tail:Tail
 UI.BodyPart.Wing:Wing
 UI.Cancel:Cancel
 UI.Continue:Continue
-UI.Default:Default
 UI.Delete:Delete
 UI.DontSave:Don't Save
-UI.Down:Down
 UI.Equipment.Bodysuit:Armor
 UI.Equipment.Gloves:Gloves
 UI.Equipment.Helmet:Helmet
@@ -1706,7 +1699,8 @@ UI.Gomoku.Place:Place
 UI.Gomoku.YouAre:You are:
 UI.LanguageEditor.AddKey:+ Key
 UI.LanguageEditor.AddLanguage:+ Language
-UI.Left:Left
+UI.LanguageEditor.DeleteMsg:Delete Language {0}?
+UI.LanguageEditor.Key:Key
 UI.No:No
 UI.None:None
 UI.OFF:OFF
@@ -1717,28 +1711,19 @@ UI.PaletteTab.Pinned:List
 UI.Quit:Quit
 UI.QuitGame:Quit Game
 UI.Restart:Restart
-UI.Right:Right
 UI.Save:Save
 UI.Setting:Setting
 UI.SheetTab.File:File
 UI.SheetTab.Palette:Palette
 UI.Sokoban.Level:Level:
-UI.Stop:Stop
 UI.StopEdit:Stop Edit
 UI.Suit.Bodysuit:Cloth
 UI.Suit.Glove:Gloves
 UI.Suit.Hat:Hat
 UI.Suit.Pants:Pants
 UI.Suit.Shoes:Shoes
-UI.SuitSuffix.Body: Cloth
-UI.SuitSuffix.Foot: Shoes
-UI.SuitSuffix.Hand: Gloves
-UI.SuitSuffix.Head: Hat
-UI.SuitSuffix.Hip: Pants
-UI.SuitSuffix.Skirt: Skirt
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.Holding:Holding
-UI.Up:Up
 UI.Yes:Yes
 Yaya.Body:Yaya's body
 Yaya.Ear:Yaya's cat ear

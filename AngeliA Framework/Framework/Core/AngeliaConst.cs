@@ -195,6 +195,7 @@ namespace AngeliaFramework {
 		public static readonly Byte4 PURPLE_BETTER = new(176, 94, 196, 255);
 		public static readonly Byte4 CLEAR = new(0, 0, 0, 0);
 		public static readonly Byte4 GREY_230 = new(230, 230, 230, 255);
+		public static readonly Byte4 GREY_216 = new(216, 216, 216, 255);
 		public static readonly Byte4 GREY_196 = new(196, 196, 196, 255);
 		public static readonly Byte4 GREY_128 = new(128, 128, 128, 255);
 		public static readonly Byte4 GREY_96 = new(96, 96, 96, 255);
@@ -202,6 +203,7 @@ namespace AngeliaFramework {
 		public static readonly Byte4 GREY_56 = new(56, 56, 56, 255);
 		public static readonly Byte4 GREY_42 = new(42, 42, 42, 255);
 		public static readonly Byte4 GREY_32 = new(32, 32, 32, 255);
+		public static readonly Byte4 GREY_20 = new(20, 20, 20, 255);
 		public static readonly Byte4 GREY_12 = new(12, 12, 12, 255);
 		public static readonly Byte4 SKIN_YELLOW = new(245, 217, 196, 255);
 		public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };

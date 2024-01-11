@@ -21,6 +21,7 @@ namespace AngeliaFramework {
 		public bool SelectionAdjustable { get; private set; } = false;
 		public int SelectionIndex { get; private set; } = 0;
 		public string Message { get; set; } = "";
+		protected IRect BackgroundRect { get; private set; }
 
 		// Config
 		protected int BackgroundCode = Const.PIXEL;
@@ -64,7 +65,6 @@ namespace AngeliaFramework {
 			Wrap = true,
 		};
 		private readonly CellContent ItemLabel = new();
-		private IRect BackgroundRect;
 
 
 		#endregion
@@ -139,7 +139,7 @@ namespace AngeliaFramework {
 
 			// BG
 			if (ScreenTint.a > 0) {
-				CellRenderer.Draw(Const.PIXEL, CellRenderer.CameraRect, ScreenTint, int.MinValue + 1);
+				CellRenderer.Draw(Const.PIXEL, CellRenderer.CameraRect, ScreenTint, int.MaxValue - 6);
 			}
 			var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? msgHeight : 0);
 			if (animating) {
@@ -150,7 +150,7 @@ namespace AngeliaFramework {
 				));
 			}
 			BackgroundRect = bgRect;
-			CellRenderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint);
+			CellRenderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
 
 			// Message
 			if (hasMsg) {
@@ -221,7 +221,7 @@ namespace AngeliaFramework {
 					windowRect.yMax + contentPadding.up - moreMarkSize.y,
 					moreMarkSize.x, moreMarkSize.y
 				).Shift(0, MarkPingPongFrame.PingPong(46));
-				CellRenderer.Draw(MoreItemMarkCode, markRectU, MoreMarkTint);
+				CellRenderer.Draw(MoreItemMarkCode, markRectU, MoreMarkTint, int.MaxValue - 4);
 				CursorSystem.SetCursorAsHand(markRectU);
 			}
 			if (ScrollY < ItemCount - TargetItemCount) {
@@ -231,7 +231,7 @@ namespace AngeliaFramework {
 					windowRect.yMin - contentPadding.down + moreMarkSize.y,
 					moreMarkSize.x, -moreMarkSize.y
 				).Shift(0, MarkPingPongFrame.PingPong(46));
-				CellRenderer.Draw(MoreItemMarkCode, markRectD, MoreMarkTint);
+				CellRenderer.Draw(MoreItemMarkCode, markRectD, MoreMarkTint, int.MaxValue - 4);
 				CursorSystem.SetCursorAsHand(markRectD);
 			}
 
@@ -358,7 +358,7 @@ namespace AngeliaFramework {
 					if (!useArrows) {
 						mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
 						if (mouseHoverLabel && FrameInput.LastActionFromMouse) {
-							CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, 0);
+							CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
 						}
 					}
 
@@ -379,7 +379,7 @@ namespace AngeliaFramework {
 					if (!useArrows) {
 						mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
 						if (mouseHoverLabel && FrameInput.LastActionFromMouse) {
-							CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, 0);
+							CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
 						}
 					}
 
@@ -395,7 +395,7 @@ namespace AngeliaFramework {
 							CellRenderer.Draw(
 								icon,
 								secLabelRect.Fit(iconSprite),
-								1
+								int.MaxValue - 2
 							);
 						}
 					} else {
@@ -405,7 +405,7 @@ namespace AngeliaFramework {
 							CellRenderer.Draw(
 								icon,
 								new IRect(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
-								1
+								int.MaxValue - 2
 							);
 						}
 					}
@@ -444,18 +444,18 @@ namespace AngeliaFramework {
 					// Draw Hover
 					if (FrameInput.LastActionFromMouse) {
 						if (mouseHoverArrowL && useLeftArrow) {
-							CellRenderer.Draw(Const.PIXEL, rectL_H, MouseHighlightTint, 0);
+							CellRenderer.Draw(Const.PIXEL, rectL_H, MouseHighlightTint, int.MaxValue - 3);
 						}
 						if (mouseHoverArrowR && useRightArrow) {
-							CellRenderer.Draw(Const.PIXEL, rectR_H, MouseHighlightTint, 0);
+							CellRenderer.Draw(Const.PIXEL, rectR_H, MouseHighlightTint, int.MaxValue - 3);
 						}
 					}
 
 					// L Arrow
-					if (useLeftArrow) CellRenderer.Draw(ArrowMarkCode, rectL, whiteTint);
+					if (useLeftArrow) CellRenderer.Draw(ArrowMarkCode, rectL, whiteTint, int.MaxValue - 2);
 
 					// R Arrow
-					if (useRightArrow) CellRenderer.Draw(ArrowMarkCode, rectR, whiteTint);
+					if (useRightArrow) CellRenderer.Draw(ArrowMarkCode, rectR, whiteTint, int.MaxValue - 2);
 
 				}
 
@@ -471,7 +471,8 @@ namespace AngeliaFramework {
 						markSize.x,
 						markSize.y
 					),
-					SelectionMarkTint
+					SelectionMarkTint,
+					int.MaxValue - 3
 				);
 				// Invoke
 				if (Interactable) {

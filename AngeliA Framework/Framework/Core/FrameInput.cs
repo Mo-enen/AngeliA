@@ -118,6 +118,9 @@ namespace AngeliaFramework {
 		public static Int2 MouseScreenPositionDelta { get; private set; } = default;
 		public static Int2 MouseGlobalPosition { get; private set; } = default;
 		public static Int2 MouseGlobalPositionDelta { get; private set; } = default;
+		public static Int2 MouseLeftDownGlobalPosition { get; private set; } = default;
+		public static Int2 MouseRightDownGlobalPosition { get; private set; } = default;
+		public static Int2 MouseMidDownGlobalPosition { get; private set; } = default;
 		public static bool MouseMove { get; private set; } = false;
 		public static bool MouseLeftButton => !MouseLeftState.Ignored && MouseLeftState.Holding;
 		public static bool MouseRightButton => !MouseRightState.Ignored && MouseRightState.Holding;
@@ -318,6 +321,10 @@ namespace AngeliaFramework {
 				RefreshState(MouseRightState, Game.IsMouseRightHolding);
 				RefreshState(MouseMidState, Game.IsMouseMidHolding);
 
+				MouseLeftDownGlobalPosition = MouseLeftButtonDown ? newGlobalPos : MouseLeftDownGlobalPosition;
+				MouseRightDownGlobalPosition = MouseRightButtonDown ? newGlobalPos : MouseRightDownGlobalPosition;
+				MouseMidDownGlobalPosition = MouseMidButtonDown ? newGlobalPos : MouseMidDownGlobalPosition;
+
 				MouseWheelDelta = Game.MouseScrollDelta;
 
 			} else {
@@ -325,6 +332,9 @@ namespace AngeliaFramework {
 				MouseGlobalPositionDelta = default;
 				MouseScreenPosition = default;
 				MouseGlobalPosition = default;
+				MouseLeftDownGlobalPosition = default;
+				MouseRightDownGlobalPosition = default;
+				MouseMidDownGlobalPosition = default;
 				RefreshState(MouseLeftState, false);
 				RefreshState(MouseRightState, false);
 				RefreshState(MouseMidState, false);

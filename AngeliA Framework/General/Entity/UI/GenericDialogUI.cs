@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[EntityAttribute.StageOrder(-1024)]
+	[EntityAttribute.StageOrder(4097)]
 	public class GenericDialogUI : MenuUI {
 
 
@@ -31,6 +31,14 @@ namespace AngeliaFramework {
 		public override void OnActivated () {
 			base.OnActivated();
 			ContentPadding = new(32, 32, 46, 12);
+		}
+
+
+		public override void UpdateUI () {
+			// Exclude Text
+			CellRenderer.ExcludeTextCellsForAllLayers(BackgroundRect, 0);
+			// Update
+			base.UpdateUI();
 		}
 
 

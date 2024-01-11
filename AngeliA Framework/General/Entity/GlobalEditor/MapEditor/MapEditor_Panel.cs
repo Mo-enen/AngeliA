@@ -5,12 +5,7 @@ using GeorgeMamaladze;
 
 
 namespace AngeliaFramework {
-	[RequireGlobalSprite(
-		"PaletteCover.Background",
-		"PaletteCover.LevelBack",
-		"PaletteCover.LevelFront",
-		"PaletteCover.Default"
-	)]
+	[RequireGlobalSprite("PaletteCover.Background", "PaletteCover.LevelBack", "PaletteCover.LevelFront", "PaletteCover.Default")]
 	[RequireSpriteFromField]
 	public partial class MapEditor {
 
@@ -741,8 +736,7 @@ namespace AngeliaFramework {
 				if (rect.y + rect.height < searchRect.y) break;
 
 			}
-			int clampEndIndex = CellRenderer.GetTextUsedCellCount();
-			CellRenderer.ClampTextCells(searchRect, clampStartIndex, clampEndIndex);
+			CellRenderer.ClampTextCells(searchRect, clampStartIndex);
 
 			PaletteSearchScrollY = CellRendererGUI.ScrollBar(
 				new IRect(
@@ -909,9 +903,6 @@ namespace AngeliaFramework {
 			int ITEM_SIZE = searchPanel.height;
 			int BORDER = Unify(2);
 			const int SEARCH_ID = 3983472;
-			bool interactable = !TaskingRoute && !IsNavigating;
-			bool mouseInBar = interactable && searchPanel.MouseInside();
-			if (mouseInBar) CursorSystem.SetCursorAsBeam();
 			CellRenderer.Draw_9Slice(
 				BuiltInIcon.FRAME_16, searchPanel, BORDER, BORDER, BORDER, BORDER, Const.GREY_96, PANEL_Z - 5
 			);

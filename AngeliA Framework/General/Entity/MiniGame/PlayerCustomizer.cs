@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(1, 0)]
+	[RequireLanguageFromField]
 	public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
@@ -54,27 +55,27 @@ namespace AngeliaFramework {
 		private static readonly int BUTTON_DOWN_CODE = BuiltInIcon.UI_DARK_BUTTON_DOWN;
 		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
 		private static readonly int SELECTION_MARK = BuiltInIcon.CHECK_MARK_16;
-		private static readonly int HINT_USE = "CtrlHint.Use".AngeHash();
-		private static readonly int HINT_MOVE = "CtrlHint.Move".AngeHash();
-		private static readonly int[] MAIN_MENU_LABELS = {
-			"UI.BodyPart.Head".AngeHash(),
-			"UI.BodyPart.Body".AngeHash(),
-			"UI.BodyPart.ArmHand".AngeHash(),
-			"UI.BodyPart.LegFoot".AngeHash(),
-			"UI.BodyPart.Face".AngeHash(),
-			"UI.BodyPart.Hair".AngeHash(),
-			"UI.BodyPart.Ear".AngeHash(),
-			"UI.BodyPart.Tail".AngeHash(),
-			"UI.BodyPart.Wing".AngeHash(),
-			"UI.BodyPart.Horn".AngeHash(),
-			"UI.BodyPart.SkinColor".AngeHash(),
-			"UI.BodyPart.HairColor".AngeHash(),
-			"UI.Suit.Hat".AngeHash(),
-			"UI.Suit.Bodysuit".AngeHash(),
-			"UI.Suit.Pants".AngeHash(),
-			"UI.Suit.Glove".AngeHash(),
-			"UI.Suit.Shoes".AngeHash(),
-			"UI.BodyPart.Height".AngeHash(),
+		private static readonly LanguageCode HINT_USE = "CtrlHint.Use";
+		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
+		private static readonly LanguageCode[] MAIN_MENU_LABELS = {
+			"UI.BodyPart.Head",
+			"UI.BodyPart.Body",
+			"UI.BodyPart.ArmHand",
+			"UI.BodyPart.LegFoot",
+			"UI.BodyPart.Face",
+			"UI.BodyPart.Hair",
+			"UI.BodyPart.Ear",
+			"UI.BodyPart.Tail",
+			"UI.BodyPart.Wing",
+			"UI.BodyPart.Horn",
+			"UI.BodyPart.SkinColor",
+			"UI.BodyPart.HairColor",
+			"UI.Suit.Hat",
+			"UI.Suit.Bodysuit",
+			"UI.Suit.Pants",
+			"UI.Suit.Glove",
+			"UI.Suit.Shoes",
+			"UI.BodyPart.Height",
 		};
 		private static readonly int[] MAIN_MENU_ICONS = {
 			BuiltInIcon.ICON_BODY_PART_HEAD,
@@ -959,11 +960,9 @@ namespace AngeliaFramework {
 
 			}
 
-			int cellEnd = CellRenderer.GetUsedCellCount();
-			int cellTextEnd = CellRenderer.GetTextUsedCellCount();
 			var clampRect = patternRect.Expand(itemHeight * 6, scrollBarWidth, 0, 0);
-			CellRenderer.ClampCells(CellRenderer.CurrentLayerIndex, clampRect, cellStart, cellEnd);
-			CellRenderer.ClampTextCells(CellRenderer.CurrentTextLayerIndex, clampRect, cellTextStart, cellTextEnd);
+			CellRenderer.ClampCells(CellRenderer.CurrentLayerIndex, clampRect, cellStart);
+			CellRenderer.ClampTextCells(CellRenderer.CurrentTextLayerIndex, clampRect, cellTextStart);
 
 			// Cursor
 			if (cursorRect.width > 0) {

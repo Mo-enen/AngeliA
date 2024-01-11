@@ -195,8 +195,8 @@ namespace AngeliaFramework {
 			);
 
 			int BORDER = Unify(1);
-			Game.DrawFrame(rect, Const.WHITE, BORDER);
-			Game.DrawFrame(rect.Expand(BORDER), Const.BLACK, BORDER);
+			Game.DrawLineFrame(rect, Const.WHITE, BORDER);
+			Game.DrawLineFrame(rect.Expand(BORDER), Const.BLACK, BORDER);
 
 			// Click Camera Rect
 			bool hoverRect = rect.MouseInside();
