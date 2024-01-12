@@ -19,7 +19,7 @@ namespace AngeliaFramework {
 			Util.CreateFolder(AngePath.BuiltInLanguageRoot);
 			Util.CreateFolder(AngePath.MetaRoot);
 			Util.CreateFolder(AngePath.BuiltInMapRoot);
-			Util.CreateFolder(AngePath.UserSheetRoot);
+			Util.CreateFolder(AngePath.UserAtlasSheetRoot);
 			Util.CreateFolder(AngePath.UserLanguageRoot);
 		}
 
@@ -76,6 +76,114 @@ namespace AngeliaFramework {
 			}
 			direction = default;
 			return false;
+		}
+
+
+		public static void TryCompileDialogueFiles (string workspace, bool forceCompile) {
+
+			var ignoreDelete = new HashSet<string>();
+
+			// For all Editable Conversation Files
+			foreach (var path in Util.EnumerateFiles(workspace, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
+
+				string globalName = Util.GetNameWithoutExtension(path);
+				string conFolderPath = Util.CombinePaths(AngePath.DialogueRoot, globalName);
+				ignoreDelete.TryAdd(globalName);
+
+				// Check Dirty
+				long modTime = Util.GetFileModifyDate(path);
+				long creationTime = Util.GetFileCreationDate(path);
+				if (!forceCompile && modTime == creationTime && Util.FolderExists(conFolderPath)) continue;
+				Util.SetFileModifyDate(path, creationTime);
+
+				// Delete Existing for All Languages
+				Util.DeleteFolder(conFolderPath);
+				Util.CreateFolder(conFolderPath);
+
+				// Compile
+				var builder = new StringBuilder();
+				string currentIso = "en";
+				bool contentFlag0 = false;
+				bool contentFlag1 = false;
+				foreach (string line in Util.ForAllLines(path, Encoding.UTF8)) {
+
+					string trimedLine = line.TrimStart(' ', '\t');
+
+					// Empty
+					if (string.IsNullOrWhiteSpace(trimedLine)) {
+						if (contentFlag1) {
+							contentFlag0 = contentFlag1;
+							contentFlag1 = false;
+						}
+						continue;
+					}
+
+					if (trimedLine[0] == '>') {
+						// Switch Language
+						string iso = trimedLine[1..];
+						if (trimedLine.Length > 1 && Util.IsSupportedLanguageISO(iso) && currentIso != iso) {
+							// Make File
+							string targetPath = Util.CombinePaths(
+								conFolderPath,
+								$"{currentIso}.{AngePath.CONVERSATION_FILE_EXT}"
+							);
+							Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
+							builder.Clear();
+							currentIso = iso;
+						}
+						contentFlag0 = false;
+						contentFlag1 = false;
+					} else {
+						// Line
+						if (trimedLine.StartsWith("\\>")) {
+							trimedLine = trimedLine[1..];
+						}
+						if (trimedLine.Length > 0) {
+							// Add Gap
+							if (trimedLine[0] == '@') {
+								contentFlag0 = false;
+								contentFlag1 = false;
+							} else {
+								if (contentFlag0 && !contentFlag1) {
+									builder.Append('\n');
+								}
+								contentFlag0 = contentFlag1;
+								contentFlag1 = true;
+							}
+							// Append Line
+							if (builder.Length != 0) builder.Append('\n');
+							builder.Append(trimedLine);
+						}
+					}
+				}
+
+				// Make File for Last Language 
+				if (builder.Length != 0) {
+					string targetPath = Util.CombinePaths(
+						conFolderPath,
+						$"{currentIso}.{AngePath.CONVERSATION_FILE_EXT}"
+					);
+					Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
+					builder.Clear();
+				}
+
+			}
+
+			// Delete Useless Old Files
+			if (ignoreDelete != null) {
+				List<string> deleteList = null;
+				foreach (var path in Util.EnumerateFolders(AngePath.DialogueRoot, true, "*")) {
+					if (ignoreDelete.Contains(Util.GetNameWithoutExtension(path))) continue;
+					deleteList ??= new List<string>();
+					deleteList.Add(path);
+				}
+				if (deleteList != null) {
+					foreach (var path in deleteList) {
+						Util.DeleteFolder(path);
+						Util.DeleteFile(path + ".meta");
+					}
+				}
+			}
 		}
 
 
@@ -318,15 +426,15 @@ namespace AngeliaFramework {
 		}
 
 
-		public static IEnumerable<string> ForAllSpriteNameRequirements () {
-			foreach (var name in RequireSpriteFromField.ForAllRequirement()) {
-				yield return name;
+		public static IEnumerable<KeyValuePair<string, string>> ForAllSpriteNameRequirements () {
+			foreach (var pair in RequireSpriteFromField.ForAllRequirement()) {
+				yield return pair;
 			}
-			foreach (var name in RequireGlobalNameAttribute.ForAllRequirement<RequireGlobalSpriteAttribute>()) {
-				yield return name;
+			foreach (var pair in RequireGlobalSpriteAttribute.ForAllRequirement()) {
+				yield return pair;
 			}
-			foreach (var name in RequireNameAttribute.ForAllRequirement<RequireSpriteAttribute>()) {
-				yield return name;
+			foreach (var pair in RequireSpriteAttribute.ForAllRequirement()) {
+				yield return pair;
 			}
 		}
 
@@ -335,10 +443,10 @@ namespace AngeliaFramework {
 			foreach (var name in RequireLanguageFromField.ForAllRequirement()) {
 				yield return name;
 			}
-			foreach (var name in RequireGlobalNameAttribute.ForAllRequirement<RequireGlobalLanguageAttribute>()) {
+			foreach (var name in RequireGlobalLanguageAttribute.ForAllRequirement()) {
 				yield return name;
 			}
-			foreach (var name in RequireNameAttribute.ForAllRequirement<RequireLanguageAttribute>()) {
+			foreach (var name in RequireLanguageAttribute.ForAllRequirement()) {
 				yield return name;
 			}
 		}

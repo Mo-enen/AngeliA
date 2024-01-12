@@ -4,6 +4,8 @@ using System.Text;
 using System.Linq;
 using System.Globalization;
 
+[assembly: AngeliaFramework.RequireGlobalLanguage("Language.Creator")]
+
 
 namespace AngeliaFramework {
 
@@ -12,7 +14,6 @@ namespace AngeliaFramework {
 	public class OnLanguageChangedAttribute : System.Attribute { }
 
 
-	[RequireGlobalLanguage("Language.Creator")]
 	public static class Language {
 
 

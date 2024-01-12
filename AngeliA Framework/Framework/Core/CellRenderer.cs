@@ -202,9 +202,6 @@ namespace AngeliaFramework {
 		private static TextLayer[] TextLayers = new TextLayer[0];
 		private static bool IsDrawing = false;
 
-		// Saving
-		private static readonly SavingString UserSheetName = new("CellRenderer.UserSheetName", "");
-
 
 		#endregion
 
@@ -246,12 +243,10 @@ namespace AngeliaFramework {
 				Game.OnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
 			}
 
-			// Load Built-in Sheet
+			// Load Sheet
 			BuiltInSheet.LoadFromDisk(AngePath.SheetPath);
 			Game.SetBuiltInTextureForRenderer(BuiltInSheet.Texture);
-
-			// Load User Sheet
-			LoadUserSheet(UserSheetName.Value, forceLoad: true);
+			ReloadUserSheet();
 
 			// Func
 			static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
@@ -348,23 +343,12 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void LoadUserSheet (string name, bool forceLoad = false) {
-
-			if (string.IsNullOrEmpty(name)) return;
-
-			string prevName = UserSheetName.Value;
-			if (!forceLoad && name == prevName) return;
-			UserSheetName.Value = name;
+		public static void ReloadUserSheet () {
 			UserSheet.Clear();
-
-			string sheetFilePath = Util.CombinePaths(AngePath.UserSheetRoot, $"{name}.{AngePath.SHEET_FILE_EXT}");
-			if (!Util.FileExists(sheetFilePath)) return;
-
-			// Load Sheet
-			UserSheet.LoadFromDisk(sheetFilePath);
+			if (!Util.FileExists(AngePath.UserSheetPath)) return;
+			UserSheet.LoadFromDisk(AngePath.UserSheetPath);
 			UserSheet.ShiftUvToUserSpace();
 			Game.SetUserTextureForRenderer(UserSheet.Texture);
-
 		}
 
 

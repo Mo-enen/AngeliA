@@ -2,6 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "Character",
+	"DefaultCharacterFace",
+	"DefaultCharacterFace.Face.Normal",
+	"DefaultCharacterFace.Face.Blink",
+	"DefaultCharacterFace.Face.Sleep",
+	"DefaultCharacterFace.Face.Attack",
+	"DefaultCharacterFace.Face.Suffer",
+	"DefaultCharacterFace.Face.PassOut",
+	"DefaultCharacterFace.Face.Damage"
+)]
+
+
 namespace AngeliaFramework {
 
 
@@ -53,16 +65,6 @@ namespace AngeliaFramework {
 	}
 
 
-	[RequireGlobalSprite(
-		"DefaultCharacterFace",
-		"DefaultCharacterFace.Face.Normal",
-		"DefaultCharacterFace.Face.Blink",
-		"DefaultCharacterFace.Face.Sleep",
-		"DefaultCharacterFace.Face.Attack",
-		"DefaultCharacterFace.Face.Suffer",
-		"DefaultCharacterFace.Face.PassOut",
-		"DefaultCharacterFace.Face.Damage"
-	)]
 	[RequireSprite("{1}.Face.Attack", "{1}.Face.Blink", "{1}.Face.Damage", "{1}.Face.Normal", "{1}.Face.PassOut", "{1}.Face.Sleep", "{1}.Face.Suffer")]
 	[RequireLanguage("{1}.Face")]
 	public abstract class Face : BodyGadget {

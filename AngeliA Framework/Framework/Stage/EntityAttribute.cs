@@ -19,13 +19,10 @@ namespace AngeliaFramework {
 		public class ExcludeInMapEditorAttribute : System.Attribute { }
 
 
-		[System.AttributeUsage(System.AttributeTargets.Class)]
-		public class MapEditorGroupAttribute : RequireSpriteAttribute {
+		[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+		public class MapEditorGroupAttribute : System.Attribute {
 			public string GroupName = "";
-			public MapEditorGroupAttribute (string groupName) {
-				GroupName = groupName;
-				Names = new string[] { $"PaletteCover.{groupName}", $"Palette.{groupName}" };
-			}
+			public MapEditorGroupAttribute (string groupName) => GroupName = groupName;
 		}
 
 

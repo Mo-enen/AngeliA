@@ -98,8 +98,7 @@ namespace AngeliaFramework {
 	public abstract class Flail<B> : Flail where B : MeleeBullet {
 		public Flail () => BulletID = typeof(B).AngeHash();
 	}
-	[RequireSprite("{0}.Head")]
-	[RequireSprite("{0}.Chain")]
+	[RequireSprite("{0}.Head", "{0}.Chain")]
 	public abstract class Flail : MeleeWeapon {
 
 		public sealed override WeaponType WeaponType => WeaponType.Flail;

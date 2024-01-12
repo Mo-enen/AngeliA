@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "Character", "Player")]
+
+
 namespace AngeliaFramework {
 	[EntityAttribute.Capacity(1, 1)]
 	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
@@ -10,7 +13,6 @@ namespace AngeliaFramework {
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDrawBehind]
-	[RequireGlobalSprite("Player")]
 	[RequireLanguageFromField]
 	public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, IActionTarget {
 

@@ -226,18 +226,18 @@ namespace AngeliaFramework {
 				(!ignoreAbstract || !type.IsAbstract) &&
 				(!ignoreInterface || !type.IsInterface))
 			) {
-				foreach (var att in target.GetCustomAttributes(attribute, false)) {
+				foreach (var att in target.GetCustomAttributes(attribute, inherit: false)) {
 					yield return (target, att as System.Attribute);
 				}
 			}
 		}
-		public static IEnumerable<(System.Type, A)> AllClassWithAttribute<A> (bool ignoreAbstract = true, bool ignoreInterface = true) where A : System.Attribute {
+		public static IEnumerable<(System.Type, A)> AllClassWithAttribute<A> (bool ignoreAbstract = true, bool ignoreInterface = true, bool inherit = false) where A : System.Attribute {
 			var typeofA = typeof(A);
 			foreach (var target in AllTypes.Where(type =>
 				(!ignoreAbstract || !type.IsAbstract) &&
 				(!ignoreInterface || !type.IsInterface))
 			) {
-				foreach (var att in target.GetCustomAttributes<A>(false)) {
+				foreach (var att in target.GetCustomAttributes<A>(inherit)) {
 					yield return (target, att);
 				}
 			}

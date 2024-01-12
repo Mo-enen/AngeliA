@@ -13,12 +13,11 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace AngeliaGame {
 	public static class AngeliA {
 
-		//[OnGameInitialize]
-		//public static void I () {
-		//	
-		//
-		//
-		//}
+		[OnGameInitialize]
+		public static void I () {
+
+
+		}
 
 
 

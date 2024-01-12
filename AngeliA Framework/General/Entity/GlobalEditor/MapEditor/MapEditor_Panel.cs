@@ -4,8 +4,30 @@ using System.Linq;
 using GeorgeMamaladze;
 
 
+[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "UI",
+	"PaletteCover.Background",
+	"PaletteCover.LevelBack",
+	"PaletteCover.LevelFront",
+	"PaletteCover.Character",
+	"PaletteCover.CheckPoint",
+	"PaletteCover.Collectable",
+	"PaletteCover.Default",
+	"PaletteCover.Entity",
+	"PaletteCover.Furniture",
+	"PaletteCover.Item",
+	"PaletteCover.ItemEquipment",
+	"PaletteCover.ItemFood",
+	"PaletteCover.ItemWeapon",
+	"PaletteCover.MapGenerator",
+	"PaletteCover.MiniGame",
+	"PaletteCover.Platform",
+	"PaletteCover.System",
+	"PaletteCover.Vegetation",
+	"PaletteCover.Wallpaper"
+)]
+
+
 namespace AngeliaFramework {
-	[RequireGlobalSprite("PaletteCover.Background", "PaletteCover.LevelBack", "PaletteCover.LevelFront", "PaletteCover.Default")]
 	[RequireSpriteFromField]
 	public partial class MapEditor {
 

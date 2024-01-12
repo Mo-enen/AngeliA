@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
+
+
 namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
@@ -9,7 +12,6 @@ namespace AngeliaFramework {
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.MapEditorGroup("Wallpaper")]
 	[RequireSprite("{0}")]
-	[RequireGlobalSprite("Wallpaper")]
 	public abstract class Wallpaper : Entity {
 
 

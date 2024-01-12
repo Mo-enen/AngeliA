@@ -5,7 +5,7 @@ namespace AngeliaFramework {
 
 
 		public const string UNIVERSE_NAME = "Universe";
-		public const string BUILT_IN_SHEET_FILE_NAME = "BuiltInSheet.sheet";
+		public const string SHEET_FILE_NAME = "Sheet.sheet";
 		public const string COMBINATION_FILE_NAME = "Item Combination.txt";
 		public const int SAVE_SLOT_COUNT = 4;
 
@@ -42,7 +42,7 @@ namespace AngeliaFramework {
 		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(ApplicationDataPath, UNIVERSE_NAME);
 		private static string _UniverseRoot = null;
 
-		public static string SheetPath => _SheetPath ??= Util.CombinePaths(UniverseRoot, BUILT_IN_SHEET_FILE_NAME);
+		public static string SheetPath => _SheetPath ??= Util.CombinePaths(UniverseRoot, SHEET_FILE_NAME);
 		private static string _SheetPath = null;
 
 		public static string DialogueRoot => _DialogueRoot ??= Util.CombinePaths(UniverseRoot, "Dialogue");
@@ -62,8 +62,11 @@ namespace AngeliaFramework {
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(PersistentDataPath, "Item Customization");
 		private static string _ItemSaveDataRoot = null;
 
-		public static string UserSheetRoot => _UserSheetRoot ??= Util.CombinePaths(PersistentDataPath, "Sheet");
-		private static string _UserSheetRoot = null;
+		public static string UserAtlasSheetRoot => _UserAtlasSheetRoot ??= Util.CombinePaths(PersistentDataPath, "Atlas Sheet");
+		private static string _UserAtlasSheetRoot = null;
+
+		public static string UserSheetPath => _UserSheetPath ??= Util.CombinePaths(PersistentDataPath, SHEET_FILE_NAME);
+		private static string _UserSheetPath = null;
 
 		public static string UserLanguageRoot => _UserLanguageRoot ??= Util.CombinePaths(PersistentDataPath, "Language");
 		private static string _UserLanguageRoot = null;

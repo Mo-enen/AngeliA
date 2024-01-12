@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 
@@ -211,6 +212,101 @@ namespace AngeliaFramework {
 
 
 		// Combination
+		public static void CreateItemCombinationFiles () {
+
+			// Create User Combination Template
+			string combineFilePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME);
+			if (!Util.FileExists(combineFilePath)) {
+				Util.TextToFile(@"
+#
+# Custom Item Combination Formula
+# 
+#
+# Remove '#' for the lines below will change
+# 'TreeTrunk' to 'ItemCoin' for making chess pieces
+# 
+# Item names can be found in the helper file next to
+# this file
+#
+# Example:
+#
+# ItemCoin + RuneWater + RuneFire = ChessPawn
+# ItemCoin + RuneFire + RuneLightning = ChessKnight
+# ItemCoin + RunePoison + RuneFire = ChessBishop
+# ItemCoin + RuneWater + RuneLightning = ChessRook
+# ItemCoin + RuneWater + RunePoison = ChessQueen
+# ItemCoin + RunePoison + RuneLightning = ChessKing
+#
+#
+#", combineFilePath);
+			}
+
+			// Create Item Name Helper
+			string helperPath = Util.CombinePaths(AngePath.ItemSaveDataRoot, "Item Name Helper.txt");
+			if (!Util.FileExists(helperPath)) {
+				var builder = new StringBuilder();
+				foreach (var type in typeof(Item).AllChildClass()) {
+					builder.AppendLine(type.AngeName());
+				}
+				Util.TextToFile(builder.ToString(), helperPath);
+			}
+
+			// Create Built-in Combination File
+			{
+				string builtInPath = Util.CombinePaths(AngePath.MetaRoot, AngePath.COMBINATION_FILE_NAME);
+				var builder = new StringBuilder();
+				foreach (var type in typeof(Item).AllChildClass()) {
+					string result = type.AngeName();
+					var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
+					if (iComs == null) continue;
+					foreach (var com in iComs) {
+						if (com.Count <= 0) continue;
+						if (
+							com.ItemA == null && com.ItemB == null &&
+							com.ItemC == null && com.ItemD == null
+						) continue;
+						if (com.ItemA != null) {
+							if (!com.ConsumeA) builder.Append('^');
+							builder.Append(com.ItemA.AngeName());
+						}
+						if (com.ItemB != null) {
+							builder.Append(' ');
+							builder.Append('+');
+							builder.Append(' ');
+							if (!com.ConsumeB) builder.Append('^');
+							builder.Append(com.ItemB.AngeName());
+						}
+						if (com.ItemC != null) {
+							builder.Append(' ');
+							builder.Append('+');
+							builder.Append(' ');
+							if (!com.ConsumeC) builder.Append('^');
+							builder.Append(com.ItemC.AngeName());
+						}
+						if (com.ItemD != null) {
+							builder.Append(' ');
+							builder.Append('+');
+							builder.Append(' ');
+							if (!com.ConsumeD) builder.Append('^');
+							builder.Append(com.ItemD.AngeName());
+						}
+						builder.Append(' ');
+						builder.Append('=');
+						if (com.Count > 1) {
+							builder.Append(' ');
+							builder.Append(com.Count);
+						}
+						builder.Append(' ');
+						builder.Append(result);
+						builder.Append('\n');
+					}
+				}
+				Util.TextToFile(builder.ToString(), builtInPath);
+			}
+
+		}
+
+
 		public static void AddCombination (
 			int item0, int item1, int item2, int item3,
 			int result, int resultCount,

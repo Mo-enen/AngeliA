@@ -16,13 +16,13 @@ namespace AngeliaForUnity.Editor {
 
 	public partial class AsepriteUtil {
 
-		public static List<(TextureData data, UniverseGenerator.FlexSprite[] flexs)> CreateSprites (string[] assetPaths, string ignoreTag = "") {
+		public static List<(TextureData data, FlexSprite[] flexs)> CreateSprites (string[] assetPaths, string ignoreTag = "") {
 
 			bool hasError = false;
 			string errorMsg = "";
 			int successCount = 0;
 			int currentTaskCount = 0;
-			var textureResults = new List<(TextureData data, UniverseGenerator.FlexSprite[] flexs)>();
+			var textureResults = new List<(TextureData data, FlexSprite[] flexs)>();
 
 			// Do Task
 			foreach (var path in assetPaths) {
@@ -99,7 +99,7 @@ namespace AngeliaForUnity.Editor {
 			}
 		}
 
-		private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out TextureData TextureResult, out UniverseGenerator.FlexSprite[] SpriteResults) {
+		private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out TextureData TextureResult, out FlexSprite[] SpriteResults) {
 			TextureResult = null;
 			SpriteResults = null;
 			if (result == null) return;
@@ -107,10 +107,10 @@ namespace AngeliaForUnity.Editor {
 			TextureResult = new TextureData(result.Width, result.Height, result.Pixels, AseName);
 			// Get Sprites
 			var metas = result.Sprites;
-			var flexs = new UniverseGenerator.FlexSprite[metas.Length];
+			var flexs = new FlexSprite[metas.Length];
 			for (int i = 0; i < metas.Length; i++) {
 				var m = metas[i];
-				flexs[i] = new UniverseGenerator.FlexSprite() {
+				flexs[i] = new FlexSprite() {
 					Border = m.border.ToAngelia(),
 					Name = m.name,
 					AtlasName = AseName,

@@ -2,6 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "Character",
+	"DefaultCharacter.Head",
+	"DefaultCharacter.Body",
+	"DefaultCharacter.Hip",
+	"DefaultCharacter.Shoulder",
+	"DefaultCharacter.UpperArm",
+	"DefaultCharacter.LowerArm",
+	"DefaultCharacter.Hand",
+	"DefaultCharacter.LowerLeg",
+	"DefaultCharacter.UpperLeg",
+	"DefaultCharacter.Foot"
+)]
+
+
 namespace AngeliaFramework {
 
 
@@ -17,18 +31,6 @@ namespace AngeliaFramework {
 	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.Layer(EntityLayer.CHARACTER)]
 	[RequireSprite("{0}")]
-	[RequireGlobalSprite(
-		"DefaultCharacter.Head",
-		"DefaultCharacter.Body",
-		"DefaultCharacter.Hip",
-		"DefaultCharacter.Shoulder",
-		"DefaultCharacter.UpperArm",
-		"DefaultCharacter.LowerArm",
-		"DefaultCharacter.Hand",
-		"DefaultCharacter.LowerLeg",
-		"DefaultCharacter.UpperLeg",
-		"DefaultCharacter.Foot"
-	)]
 	[RequireLanguage("@{0}")]
 	public abstract partial class Character : Rigidbody {
 

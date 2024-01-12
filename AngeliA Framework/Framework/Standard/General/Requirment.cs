@@ -13,40 +13,35 @@ namespace AngeliaFramework {
 
 	public class RequireLanguageAttribute : RequireNameAttribute {
 		public RequireLanguageAttribute (params string[] names) : base(names) { }
+		public static IEnumerable<string> ForAllRequirement () {
+			foreach (var (name, _) in ForAllRequirement<RequireLanguageAttribute>()) {
+				yield return name;
+			}
+		}
 	}
 
 
 	public class RequireGlobalLanguageAttribute : RequireGlobalNameAttribute {
 		public RequireGlobalLanguageAttribute (params string[] names) : base(names) { }
-	}
-
-
-	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-	public class RequireLanguageFromField : System.Attribute {
-		private static readonly System.Type TYPE = typeof(RequireLanguageFromField);
 		public static IEnumerable<string> ForAllRequirement () {
-			foreach (var type in Util.AllTypes) {
-				if (GetCustomAttribute(type, TYPE) == null) continue;
-				foreach (var name in ForAllRequiredSpriteNames(type)) {
-					yield return name;
-				}
-			}
-		}
-		public static IEnumerable<string> ForAllRequiredSpriteNames (System.Type type) {
-			foreach (var value in type.ForAllStaticFieldValue<LanguageCode>()) {
-				yield return value.Name;
-			}
-			foreach (var value in type.ForAllStaticFieldValue<LanguageCode[]>()) {
-				foreach (var name in value) {
-					yield return name.Name;
-				}
+			foreach (var (name, _) in ForAllRequirement<RequireGlobalLanguageAttribute>()) {
+				yield return name;
 			}
 		}
 	}
 
 
-	public class LanguageCode {
-		public readonly string Name;
+	public class RequireLanguageFromField : RequireNameFromField {
+		public static IEnumerable<string> ForAllRequirement () {
+			foreach (var (name, _) in ForAllRequirement<RequireLanguageFromField, LanguageCode>()) {
+				yield return name;
+			}
+		}
+	}
+
+
+	public class LanguageCode : RequireNameFromField.INameCode {
+		public string Name { get; }
 		public readonly int ID;
 		public LanguageCode (string name) {
 			Name = name;
@@ -67,40 +62,50 @@ namespace AngeliaFramework {
 
 	public class RequireSpriteAttribute : RequireNameAttribute {
 		public RequireSpriteAttribute (params string[] names) : base(names) { }
+		public static IEnumerable<KeyValuePair<string, string>> ForAllRequirement () {
+			string atlasName = string.Empty;
+			System.Type prevType = null;
+			foreach (var (name, type) in ForAllRequirement<RequireSpriteAttribute>()) {
+				if (type != prevType) {
+					atlasName = type.GetCustomAttribute<EntityAttribute.MapEditorGroupAttribute>(true) is EntityAttribute.MapEditorGroupAttribute att ? att.GroupName : string.Empty;
+					atlasName = string.IsNullOrEmpty(atlasName) ? type.AngeName() : atlasName;
+					prevType = type;
+				}
+				yield return new(name, atlasName);
+			}
+		}
 	}
 
 
 	public class RequireGlobalSpriteAttribute : RequireGlobalNameAttribute {
-		public RequireGlobalSpriteAttribute (params string[] names) : base(names) { }
-	}
-
-
-	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-	public class RequireSpriteFromField : System.Attribute {
-		private static readonly System.Type TYPE = typeof(RequireSpriteFromField);
-		public static IEnumerable<string> ForAllRequirement () {
-			foreach (var type in Util.AllTypes) {
-				if (GetCustomAttribute(type, TYPE) == null) continue;
-				foreach (var name in ForAllRequiredSpriteNames(type)) {
-					yield return name;
-				}
-			}
-		}
-		public static IEnumerable<string> ForAllRequiredSpriteNames (System.Type type) {
-			foreach (var value in type.ForAllStaticFieldValue<SpriteCode>()) {
-				yield return value.Name;
-			}
-			foreach (var value in type.ForAllStaticFieldValue<SpriteCode[]>()) {
-				foreach (var name in value) {
-					yield return name.Name;
-				}
+		public string Atlas = "";
+		public RequireGlobalSpriteAttribute (string atlas, params string[] names) : base(names) => Atlas = atlas;
+		public static IEnumerable<KeyValuePair<string, string>> ForAllRequirement () {
+			foreach (var (name, att) in ForAllRequirement<RequireGlobalSpriteAttribute>()) {
+				yield return new(name, att.Atlas);
 			}
 		}
 	}
 
 
-	public class SpriteCode {
-		public readonly string Name;
+	public class RequireSpriteFromField : RequireNameFromField {
+		public static IEnumerable<KeyValuePair<string, string>> ForAllRequirement () {
+			string atlasName = string.Empty;
+			System.Type prevType = null;
+			foreach (var (name, type) in ForAllRequirement<RequireSpriteFromField, SpriteCode>()) {
+				if (type != prevType) {
+					atlasName = type.GetCustomAttribute<EntityAttribute.MapEditorGroupAttribute>(true) is EntityAttribute.MapEditorGroupAttribute att ? att.GroupName : string.Empty;
+					atlasName = string.IsNullOrEmpty(atlasName) ? type.AngeName() : atlasName;
+					prevType = type;
+				}
+				yield return new(name, atlasName);
+			}
+		}
+	}
+
+
+	public class SpriteCode : RequireNameFromField.INameCode {
+		public string Name { get; }
 		public readonly int ID;
 		public SpriteCode (string name) {
 			Name = name;
@@ -119,62 +124,65 @@ namespace AngeliaFramework {
 	#region --- Name ---
 
 
-	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
 	public abstract class RequireNameAttribute : System.Attribute {
-		private static readonly System.Type TYPE = typeof(RequireNameAttribute);
-		public string[] Names;
+		protected string[] Names;
 		public RequireNameAttribute (params string[] names) => Names = names;
-		public static IEnumerable<string> ForAllRequirement<A> () where A : RequireNameAttribute {
-			foreach (var (baseType, _) in Util.AllClassWithAttribute<A>(ignoreAbstract: false)) {
-				if (baseType.IsAbstract) {
-					foreach (var type in baseType.AllChildClass()) {
-						foreach (string name in ForAllRequiredNames<A>(type)) {
-							yield return name;
-						}
+		protected static IEnumerable<KeyValuePair<string, System.Type>> ForAllRequirement<A> () where A : RequireNameAttribute {
+			foreach (var (baseType, _) in Util.AllClassWithAttribute<A>(inherit: true)) {
+				var dType = baseType.DeclaringType;
+				string arg0 = baseType.AngeName();
+				string arg1 = dType != null ? dType.AngeName() : arg0;
+				string arg2 = dType != null ? string.Empty : arg0;
+				if (baseType.GetCustomAttribute<A>() is A rAtt) {
+					foreach (var name in rAtt.Names) {
+						string result = string.Format(name, arg0, arg1, arg2);
+						if (string.IsNullOrEmpty(result)) continue;
+						yield return new(result, baseType);
 					}
-				} else {
-					foreach (string name in ForAllRequiredNames<A>(baseType)) {
-						yield return name;
-					}
-				}
-			}
-		}
-		public static IEnumerable<string> ForAllRequiredNames<A> (System.Type targetType) where A : RequireNameAttribute {
-			var dType = targetType.DeclaringType;
-			string arg0 = targetType.AngeName();
-			string arg1 = dType != null ? dType.AngeName() : arg0;
-			string arg2 = dType != null ? string.Empty : arg0;
-			foreach (var att in targetType.GetCustomAttributes(TYPE, true)) {
-				if (att is not A rAtt) continue;
-				foreach (var name in rAtt.Names) {
-					string result = string.Format(name, arg0, arg1, arg2);
-					if (string.IsNullOrEmpty(result)) continue;
-					yield return result;
 				}
 			}
 		}
 	}
 
 
-	[System.AttributeUsage(System.AttributeTargets.Assembly | System.AttributeTargets.Class, AllowMultiple = true)]
+
+	[System.AttributeUsage(System.AttributeTargets.Assembly, Inherited = false, AllowMultiple = true)]
 	public abstract class RequireGlobalNameAttribute : System.Attribute {
-		public string[] Names;
+		protected string[] Names;
 		public RequireGlobalNameAttribute (params string[] names) => Names = names;
-		public static IEnumerable<string> ForAllRequirement<A> () where A : RequireGlobalNameAttribute {
+		protected static IEnumerable<KeyValuePair<string, A>> ForAllRequirement<A> () where A : RequireGlobalNameAttribute {
 			foreach (var assembly in Util.AllAssemblies) {
 				foreach (var att in assembly.GetCustomAttributes<A>()) {
 					foreach (var name in att.Names) {
-						yield return name;
+						yield return new(name, att);
 					}
-				}
-			}
-			foreach (var (_, att) in Util.AllClassWithAttribute<A>(ignoreAbstract: false)) {
-				foreach (var name in att.Names) {
-					yield return name;
 				}
 			}
 		}
 	}
+
+
+
+	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+	public abstract class RequireNameFromField : System.Attribute {
+		public interface INameCode { public string Name { get; } }
+		protected static IEnumerable<KeyValuePair<string, System.Type>> ForAllRequirement<AllFieldAttribute, NameCode> () where NameCode : INameCode where AllFieldAttribute : RequireNameFromField {
+			var typeofFieldAtt = typeof(AllFieldAttribute);
+			foreach (var type in Util.AllTypes) {
+				if (GetCustomAttribute(type, typeofFieldAtt) == null) continue;
+				foreach (var value in type.ForAllStaticFieldValue<NameCode>()) {
+					yield return new(value.Name, type);
+				}
+				foreach (var value in type.ForAllStaticFieldValue<NameCode[]>()) {
+					foreach (var name in value) {
+						yield return new(name.Name, type);
+					}
+				}
+			}
+		}
+	}
+
 
 
 	#endregion
