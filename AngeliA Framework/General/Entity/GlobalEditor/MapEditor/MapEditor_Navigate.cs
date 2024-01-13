@@ -162,10 +162,10 @@ namespace AngeliaFramework {
 						if (rect.xMax > navPanelRect.xMax) {
 							rect = rect.Shrink(navPanelRect.xMax - rect.xMin, 0, 0, 0);
 							var uv = new FRect(1f - (float)rect.width / slotRectWidth, 0f, (float)rect.width / slotRectWidth, 1f);
-							Game.DrawTexture(rect, uv, slot.Texture);
+							Game.DrawGizmosTexture(rect, uv, slot.Texture);
 						}
 					} else {
-						Game.DrawTexture(rect, slot.Texture);
+						Game.DrawGizmosTexture(rect, slot.Texture);
 					}
 				}
 			}
@@ -195,8 +195,8 @@ namespace AngeliaFramework {
 			);
 
 			int BORDER = Unify(1);
-			Game.DrawLineFrame(rect, Const.WHITE, BORDER);
-			Game.DrawLineFrame(rect.Expand(BORDER), Const.BLACK, BORDER);
+			Game.DrawGizmosFrame(rect, Const.WHITE, BORDER);
+			Game.DrawGizmosFrame(rect.Expand(BORDER), Const.BLACK, BORDER);
 
 			// Click Camera Rect
 			bool hoverRect = rect.MouseInside();

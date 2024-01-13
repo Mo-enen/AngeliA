@@ -199,22 +199,22 @@ namespace AngeliaFramework {
 			// Func
 			static void DrawGizmosRectAsLine (IRect rect, Byte4 color, bool horizontal) {
 				if (!rect.Overlaps(PanelRect)) {
-					Game.DrawRect(rect, color);
+					Game.DrawGizmosRect(rect, color);
 				} else if (horizontal) {
 					if (rect.x > PanelRect.x && rect.xMax < PanelRect.xMax) return;
 					if (rect.x < PanelRect.x) {
-						Game.DrawRect(new IRect(rect.x, rect.y, PanelRect.x - rect.x, rect.height), color);
+						Game.DrawGizmosRect(new IRect(rect.x, rect.y, PanelRect.x - rect.x, rect.height), color);
 					}
 					if (rect.xMax > PanelRect.xMax) {
-						Game.DrawRect(new IRect(PanelRect.xMax, rect.y, rect.xMax - PanelRect.xMax, rect.height), color);
+						Game.DrawGizmosRect(new IRect(PanelRect.xMax, rect.y, rect.xMax - PanelRect.xMax, rect.height), color);
 					}
 				} else {
 					if (rect.y > PanelRect.y && rect.yMax < PanelRect.yMax) return;
 					if (rect.y < PanelRect.y) {
-						Game.DrawRect(new IRect(rect.x, rect.y, rect.width, PanelRect.y - rect.y), color);
+						Game.DrawGizmosRect(new IRect(rect.x, rect.y, rect.width, PanelRect.y - rect.y), color);
 					}
 					if (rect.yMax > PanelRect.yMax) {
-						Game.DrawRect(new IRect(rect.x, PanelRect.yMax, rect.width, rect.yMax - PanelRect.yMax), color);
+						Game.DrawGizmosRect(new IRect(rect.x, PanelRect.yMax, rect.width, rect.yMax - PanelRect.yMax), color);
 					}
 				}
 			}
@@ -222,25 +222,25 @@ namespace AngeliaFramework {
 
 			static void DrawGizmosRect (IRect rect, Byte4 color) {
 				if (!rect.Overlaps(PanelRect)) {
-					Game.DrawRect(rect, color);
+					Game.DrawGizmosRect(rect, color);
 				} else {
 					// Left Part
 					if (rect.x < PanelRect.x) {
-						Game.DrawRect(rect.Shrink(0, rect.xMax - PanelRect.x, 0, 0), color);
+						Game.DrawGizmosRect(rect.Shrink(0, rect.xMax - PanelRect.x, 0, 0), color);
 						rect = rect.Shrink(PanelRect.x - rect.x, 0, 0, 0);
 					}
 					// Right Part
 					if (rect.xMax > PanelRect.xMax) {
-						Game.DrawRect(rect.Shrink(PanelRect.xMax - rect.x, 0, 0, 0), color);
+						Game.DrawGizmosRect(rect.Shrink(PanelRect.xMax - rect.x, 0, 0, 0), color);
 						rect = rect.Shrink(0, rect.xMax - PanelRect.xMax, 0, 0);
 					}
 					// Bottom Part
 					if (rect.y < PanelRect.y) {
-						Game.DrawRect(rect.Shrink(0, 0, 0, rect.yMax - PanelRect.y), color);
+						Game.DrawGizmosRect(rect.Shrink(0, 0, 0, rect.yMax - PanelRect.y), color);
 					}
 					// Top Part
 					if (rect.yMax > PanelRect.yMax) {
-						Game.DrawRect(rect.Shrink(0, 0, PanelRect.yMax - rect.y, 0), color);
+						Game.DrawGizmosRect(rect.Shrink(0, 0, PanelRect.yMax - rect.y, 0), color);
 					}
 				}
 			}

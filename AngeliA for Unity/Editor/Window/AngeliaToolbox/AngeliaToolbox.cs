@@ -181,7 +181,7 @@ namespace AngeliaForUnity.Editor {
 			// Texture
 			var texture = SheetThumbnail.image as Texture2D;
 			if (texture == null || forceRefresh) {
-				SheetThumbnail.image = texture = Sheet.LoadTextureInSheet(AngePath.SheetPath) as Texture2D;
+				SheetThumbnail.image = texture = Sheet.LoadTextureInSheet(AngePath.BuiltInSheetPath) as Texture2D;
 			}
 
 			// Label

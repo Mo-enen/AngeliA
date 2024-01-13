@@ -35,6 +35,7 @@ namespace AngeliaFramework {
 		public int PivotX;
 		public int PivotY;
 		public int SortingZ;
+		public int LocalZ;
 		public Int4 GlobalBorder;
 
 		public FRect UvRect;
@@ -71,8 +72,8 @@ namespace AngeliaFramework {
 				PivotX = reader.ReadInt16();
 				PivotY = reader.ReadInt16();
 
-				// Sorting Z
-				SortingZ = reader.ReadInt32();
+				// Local Z
+				LocalZ = reader.ReadInt32();
 
 				// Global Border
 				GlobalBorder = new Int4(
@@ -96,10 +97,6 @@ namespace AngeliaFramework {
 					uvMinX / UV_SCALE, uvMinY / UV_SCALE,
 					uvMaxX / UV_SCALE, uvMaxY / UV_SCALE
 				);
-				//UvBottomRight = new(uvMaxX / UV_SCALE, uvMinY / UV_SCALE);
-				//UvTopLeft = new(uvMinX / UV_SCALE, uvMaxY / UV_SCALE);
-				//UvBottomLeft = new(uvMinX / UV_SCALE, uvMinY / UV_SCALE);
-				//UvTopRight = new(uvMaxX / UV_SCALE, uvMaxY / UV_SCALE);
 				UvBorder = new(uvBorderL / UV_SCALE, uvBorderD / UV_SCALE, uvBorderR / UV_SCALE, uvBorderU / UV_SCALE);
 
 				// Atlas Index
@@ -145,8 +142,8 @@ namespace AngeliaFramework {
 				writer.Write((short)PivotX);
 				writer.Write((short)PivotY);
 
-				// Sorting Z
-				writer.Write((int)SortingZ);
+				// Local Z
+				writer.Write((int)LocalZ);
 
 				// Global Border
 				writer.Write((ushort)GlobalBorder.x);
@@ -264,6 +261,7 @@ namespace AngeliaFramework {
 		private static readonly StringBuilder CacheBuilder = new(256);
 		public string Name;
 		public AtlasType Type;
+		public int AtlasZ;
 
 		public void LoadFromBinary_v0 (BinaryReader reader) {
 			uint byteLen = reader.ReadUInt32();
@@ -280,8 +278,8 @@ namespace AngeliaFramework {
 				// Type
 				Type = (AtlasType)reader.ReadByte();
 
-
-
+				// Z
+				AtlasZ = reader.ReadInt32();
 
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			reader.BaseStream.Position = endPos;
@@ -301,6 +299,10 @@ namespace AngeliaFramework {
 
 				// Type
 				writer.Write((byte)Type);
+
+				// Z
+				writer.Write((int)AtlasZ);
+
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			long endPos = writer.BaseStream.Position;
 			writer.BaseStream.Position = markPos;
@@ -320,28 +322,31 @@ namespace AngeliaFramework {
 		public AngeSprite[] Sprites { get; private set; } = System.Array.Empty<AngeSprite>();
 		public SpriteGroup[] Groups { get; private set; } = System.Array.Empty<SpriteGroup>();
 		public AtlasInfo[] AtlasInfo { get; private set; } = System.Array.Empty<AtlasInfo>();
-		public object Texture { get; private set; } = null;
+		public object Texture { get; set; } = null;
 		public Dictionary<int, AngeSprite> SpritePool { get; } = new();
 		public Dictionary<int, SpriteGroup> GroupPool { get; } = new();
 
 		// MSG
 		public Sheet () { }
 		public Sheet (string path) => LoadFromDisk(path);
-		public Sheet (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo, object texture) {
-			Sprites = sprites;
-			Groups = groups;
-			AtlasInfo = atlasInfo;
+		public Sheet (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo, object texture) => SetData(sprites, groups, atlasInfo, texture);
+
+		// API
+		public void SetData (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo, object texture) {
+			Sprites = sprites ?? System.Array.Empty<AngeSprite>();
+			Groups = groups ?? System.Array.Empty<SpriteGroup>();
+			AtlasInfo = atlasInfo ?? System.Array.Empty<AtlasInfo>();
 			Texture = texture;
 			ApplyData();
 			SpritePool.Clear();
 			GroupPool.Clear();
 		}
 
-		// API
-		public void LoadFromDisk (string path) {
+		public bool LoadFromDisk (string path) {
 
 			Clear();
-			if (!Util.FileExists(path)) return;
+
+			if (!Util.FileExists(path)) return false;
 
 			// Load Meta Data
 			using var stream = new FileStream(path, FileMode.Open);
@@ -353,7 +358,7 @@ namespace AngeliaFramework {
 					break;
 				default:
 					Game.LogError($"Can not handle sheet version {fileVersion}. Expect: version-0");
-					break;
+					return false;
 			}
 
 			// Load Texture
@@ -366,18 +371,10 @@ namespace AngeliaFramework {
 			// Apply Instance
 			ApplyData();
 
-			// Fill Sprites
-			for (int i = 0; i < Sprites.Length; i++) {
-				var sp = Sprites[i];
-				SpritePool.TryAdd(sp.GlobalID, Sprites[i]);
-			}
+			// Fill Pool
+			FillPool();
 
-			// Fill Groups
-			for (int i = 0; i < Groups.Length; i++) {
-				var group = Groups[i];
-				GroupPool.TryAdd(group.ID, group);
-			}
-
+			return true;
 		}
 
 		public void SaveToDisk (string path) {
@@ -408,6 +405,20 @@ namespace AngeliaFramework {
 		public void ShiftUvToUserSpace () {
 			for (int i = 0; i < Sprites.Length; i++) {
 				Sprites[i].UvRect.x += 1f;
+			}
+		}
+
+		public void FillPool () {
+			// Fill Sprites
+			for (int i = 0; i < Sprites.Length; i++) {
+				var sp = Sprites[i];
+				SpritePool.TryAdd(sp.GlobalID, Sprites[i]);
+			}
+
+			// Fill Groups
+			for (int i = 0; i < Groups.Length; i++) {
+				var group = Groups[i];
+				GroupPool.TryAdd(group.ID, group);
 			}
 		}
 
@@ -451,6 +462,7 @@ namespace AngeliaFramework {
 			for (int i = 0; i < Sprites.Length; i++) {
 				var sp = Sprites[i];
 				sp.Atlas = AtlasInfo[sp.AtlasIndex];
+				sp.SortingZ = sp.Atlas.AtlasZ * 1024 + sp.LocalZ;
 			}
 			for (int i = 0; i < Groups.Length; i++) {
 				var group = Groups[i];

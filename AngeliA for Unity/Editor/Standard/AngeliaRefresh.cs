@@ -109,7 +109,7 @@ namespace AngeliaForUnity.Editor {
 				}
 
 				// Check Sheet not Exist
-				if (!Util.FileExists(AngePath.SheetPath)) {
+				if (!Util.FileExists(AngePath.BuiltInSheetPath)) {
 					goto _Refresh_;
 				}
 
@@ -201,7 +201,7 @@ namespace AngeliaForUnity.Editor {
 
 					// Flex Sprites >> Sheet
 					var sheet = CreateSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
-					sheet?.SaveToDisk(AngePath.SheetPath);
+					sheet?.SaveToDisk(AngePath.BuiltInSheetPath);
 
 					// Maps
 					AngeUtil.DeleteAllEmptyMaps(AngePath.BuiltInMapRoot);
@@ -430,6 +430,7 @@ namespace AngeliaForUnity.Editor {
 					atlases.Add(new AtlasInfo() {
 						Name = flex.AtlasName,
 						Type = flex.AtlasType,
+						AtlasZ = flex.AtlasZ,
 					});
 				}
 
@@ -443,6 +444,7 @@ namespace AngeliaForUnity.Editor {
 					GlobalHeight = globalHeight,
 					UvBorder = uvBorder,// ldru
 					GlobalBorder = globalBorder,
+					LocalZ = offsetZ,
 					SortingZ = flex.AtlasZ * 1024 + offsetZ,
 					PivotX = pivotX ?? flex.AngePivot.x,
 					PivotY = pivotY ?? flex.AngePivot.y,

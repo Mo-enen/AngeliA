@@ -53,12 +53,12 @@ namespace AngeliaFramework {
 			var rect = new IRect(cRect.xMin, 0, r - l, size);
 			for (int y = d; y <= u; y += Const.CEL) {
 				rect.y = y - size / 2;
-				Game.DrawRect(rect, TINT);
+				Game.DrawGizmosRect(rect, TINT);
 			}
 			rect = new IRect(0, d, size, u - d);
 			for (int x = l; x <= r; x += Const.CEL) {
 				rect.x = x - size / 2;
-				Game.DrawRect(rect, TINT);
+				Game.DrawGizmosRect(rect, TINT);
 			}
 
 		}

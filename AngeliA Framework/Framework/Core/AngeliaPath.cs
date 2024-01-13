@@ -42,8 +42,11 @@ namespace AngeliaFramework {
 		public static string UniverseRoot => _UniverseRoot ??= Util.CombinePaths(ApplicationDataPath, UNIVERSE_NAME);
 		private static string _UniverseRoot = null;
 
-		public static string SheetPath => _SheetPath ??= Util.CombinePaths(UniverseRoot, SHEET_FILE_NAME);
-		private static string _SheetPath = null;
+		public static string BuiltInSheetPath => _BuiltInSheetPath ??= Util.CombinePaths(UniverseRoot, SHEET_FILE_NAME);
+		private static string _BuiltInSheetPath = null;
+
+		public static string BuiltInAtlasSheetRoot => _BuiltInAtlasSheetPath ??= Util.CombinePaths(UniverseRoot, "Built In Atlas");
+		private static string _BuiltInAtlasSheetPath = null;
 
 		public static string DialogueRoot => _DialogueRoot ??= Util.CombinePaths(UniverseRoot, "Dialogue");
 		private static string _DialogueRoot = null;
@@ -62,7 +65,7 @@ namespace AngeliaFramework {
 		public static string ItemSaveDataRoot => _ItemSaveDataRoot ??= Util.CombinePaths(PersistentDataPath, "Item Customization");
 		private static string _ItemSaveDataRoot = null;
 
-		public static string UserAtlasSheetRoot => _UserAtlasSheetRoot ??= Util.CombinePaths(PersistentDataPath, "Atlas Sheet");
+		public static string UserAtlasSheetRoot => _UserAtlasSheetRoot ??= Util.CombinePaths(PersistentDataPath, "User Atlas");
 		private static string _UserAtlasSheetRoot = null;
 
 		public static string UserSheetPath => _UserSheetPath ??= Util.CombinePaths(PersistentDataPath, SHEET_FILE_NAME);

@@ -257,7 +257,7 @@ namespace AngeliaFramework {
 			}
 
 			// Load Sheet
-			BuiltInSheet.LoadFromDisk(AngePath.SheetPath);
+			BuiltInSheet.LoadFromDisk(AngePath.BuiltInSheetPath);
 			Game.SetBuiltInTextureForRenderer(BuiltInSheet.Texture);
 			ReloadUserSheet();
 
@@ -760,7 +760,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawBlackCurtain (int amount) => Game.DrawRect(CameraRect.Expand(16), new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, 1000, 0, 255, amount).Clamp(0, 255)));
+		public static void DrawBlackCurtain (int amount) => Game.DrawGizmosRect(CameraRect.Expand(16), new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, 1000, 0, 255, amount).Clamp(0, 255)));
 
 
 		// Sprite Data

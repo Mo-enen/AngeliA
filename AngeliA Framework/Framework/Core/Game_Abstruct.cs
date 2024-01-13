@@ -133,19 +133,19 @@ namespace AngeliaFramework {
 		protected abstract byte[] _TextureToPngBytes (object texture);
 
 
-		// GL
-		public static void DrawLineFrame (IRect rect, Byte4 color, int thickness) {
-			Instance._DrawRect(rect.EdgeInside(Direction4.Down, thickness), color);
-			Instance._DrawRect(rect.EdgeInside(Direction4.Up, thickness), color);
-			Instance._DrawRect(rect.EdgeInside(Direction4.Left, thickness), color);
-			Instance._DrawRect(rect.EdgeInside(Direction4.Right, thickness), color);
+		// GL Gizmos
+		public static void DrawGizmosFrame (IRect rect, Byte4 color, int thickness) {
+			Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Down, thickness), color);
+			Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Up, thickness), color);
+			Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Left, thickness), color);
+			Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Right, thickness), color);
 		}
-		public static void DrawRect (IRect rect, Byte4 color) => Instance._DrawRect(rect, color);
-		protected abstract void _DrawRect (IRect rect, Byte4 color);
+		public static void DrawGizmosRect (IRect rect, Byte4 color) => Instance._DrawGizmosRect(rect, color);
+		protected abstract void _DrawGizmosRect (IRect rect, Byte4 color);
 
-		public static void DrawTexture (IRect rect, object texture) => Instance._DrawTexture(rect, new FRect(0f, 0f, 1f, 1f), texture);
-		public static void DrawTexture (IRect rect, FRect uv, object texture) => Instance._DrawTexture(rect, uv, texture);
-		protected abstract void _DrawTexture (IRect rect, FRect uv, object texture);
+		public static void DrawGizmosTexture (IRect rect, object texture) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture);
+		public static void DrawGizmosTexture (IRect rect, FRect uv, object texture) => Instance._DrawGizmosTexture(rect, uv, texture);
+		protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture);
 
 
 		// Text

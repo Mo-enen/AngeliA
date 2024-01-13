@@ -83,7 +83,7 @@ namespace AngeliaForUnity {
 			}
 
 			// Pixel Renderer
-			UnityCamera.gameObject.AddComponent<GLRenderer>();
+			UnityCamera.gameObject.AddComponent<GizmosRenderer>();
 
 		}
 
@@ -423,9 +423,9 @@ namespace AngeliaForUnity {
 
 
 		// GL
-		protected override void _DrawRect (IRect rect, Byte4 color) => GLRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
+		protected override void _DrawGizmosRect (IRect rect, Byte4 color) => GizmosRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
 
-		protected override void _DrawTexture (IRect rect, FRect uv, object texture) => GLRenderer.DrawTexture(rect.ToUnity(), uv.ToUnity(), texture as Texture2D);
+		protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture) => GizmosRenderer.DrawTexture(rect.ToUnity(), uv.ToUnity(), texture as Texture2D);
 
 
 		// Text

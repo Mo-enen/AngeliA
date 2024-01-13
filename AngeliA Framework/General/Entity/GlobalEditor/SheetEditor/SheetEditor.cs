@@ -63,6 +63,26 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		[OnGameInitialize]
+		public static void CreateAtlasFiles () {
+			string root = Game.IsEdittime ? AngePath.BuiltInAtlasSheetRoot : AngePath.UserAtlasSheetRoot;
+			CreateFileIfNotExists(root, "LevelFront", AtlasType.Level, 16);
+			CreateFileIfNotExists(root, "LevelBack", AtlasType.Level, -35);
+			CreateFileIfNotExists(root, "Background", AtlasType.Background, -64);
+			// Func
+			static void CreateFileIfNotExists (string root, string targetAtlasName, AtlasType targetAtlasType, int targetAtlasZ) {
+				string path = Util.CombinePaths(root, $"{targetAtlasName}.{AngePath.SHEET_FILE_EXT}");
+				if (Util.FileExists(path)) return;
+				var sheet = new Sheet(null, null, new AtlasInfo[] { new() {
+					Name = targetAtlasName,
+					Type = targetAtlasType,
+					AtlasZ = targetAtlasZ,
+				} }, null);
+				sheet.SaveToDisk(path);
+			}
+		}
+
+
 		public override void OnActivated () {
 			base.OnActivated();
 			CurrentAtlasSheet.Clear();
@@ -187,17 +207,32 @@ namespace AngeliaFramework {
 		}
 
 
-		private void LoadAtlasSheetFromDisk (string atlasName) {
-			CurrentAtlasName = atlasName;
-			string filePath = Util.CombinePaths(AngePath.UserAtlasSheetRoot, $"{atlasName}.{AngePath.SHEET_FILE_EXT}");
-			CurrentAtlasSheet.LoadFromDisk(filePath);
+		private void LoadAtlasSheetFromDisk (Sheet atlasSheet, string atlasName) {
+			// Load from Disk
+			string path = Util.CombinePaths(
+				Game.IsEdittime ? AngePath.BuiltInAtlasSheetRoot : AngePath.UserAtlasSheetRoot,
+				$"{atlasName}.{AngePath.SHEET_FILE_EXT}"
+			);
+			bool loaded = atlasSheet.LoadFromDisk(path);
+			// Create New Atlas if File Not Exists
+			if (
+				!loaded &&
+				!Util.FileExists(path) &&
+				AtlasRequirements.TryGetValue(atlasName.AngeHash(), out var require)
+			) {
+				atlasSheet.SetData(null, null, new AtlasInfo[] { new() {
+					Name = atlasName,
+					Type = AtlasType.General,
+				} }, null);
+			}
 		}
 
 
-		private void SaveAtlasSheetToDisk (Sheet atlasSheet, string atlasName) {
-			string filePath = Util.CombinePaths(AngePath.UserAtlasSheetRoot, $"{atlasName}.{AngePath.SHEET_FILE_EXT}");
-			CurrentAtlasSheet.SaveToDisk(filePath);
-		}
+		private void SaveAtlasSheetToDisk (Sheet atlasSheet, string atlasName) =>
+			atlasSheet.SaveToDisk(Util.CombinePaths(
+				Game.IsEdittime ? AngePath.BuiltInAtlasSheetRoot : AngePath.UserAtlasSheetRoot,
+				$"{atlasName}.{AngePath.SHEET_FILE_EXT}"
+			));
 
 
 		#endregion

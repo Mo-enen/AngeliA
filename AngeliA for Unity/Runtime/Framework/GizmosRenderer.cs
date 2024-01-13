@@ -5,7 +5,7 @@ using AngeliaFramework;
 
 
 namespace AngeliaForUnity {
-	public class GLRenderer : MonoBehaviour {
+	public class GizmosRenderer : MonoBehaviour {
 
 		public struct RectCell {
 			public RectInt Rect;
