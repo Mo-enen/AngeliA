@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[RequireSprite("CraftingTableFrame")]
+	[RequireSpriteFromField]
 	[RequireLanguageFromField]
 	public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
@@ -14,7 +14,7 @@ namespace AngeliaFramework {
 		// Const
 		private const int DOC_ITEM_HEIGHT = 32;
 		private const int DOC_ITEM_PADDING = 6;
-		private static readonly int CRAFTING_FRAME_CODE = "CraftingTableFrame".AngeHash();
+		private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
 		private static readonly int QUESTION_MARK_CODE = BuiltInIcon.QUESTION_MARK_16;
 		private static readonly int PLUS_CODE = BuiltInIcon.PLUS_16;
 		private static readonly int EQUAL_CODE = BuiltInIcon.EQUAL_16;
@@ -47,6 +47,7 @@ namespace AngeliaFramework {
 
 
 		public override void DrawPanel (IRect panelRect) {
+			base.DrawPanel(panelRect);
 			int sidePanelGap = Unify(64);
 			int docPanelSize = panelRect.height;
 			int resultPanelSize = panelRect.height;
@@ -54,6 +55,7 @@ namespace AngeliaFramework {
 			var resultItemRect = new IRect(resultRect.xMax - resultPanelSize, resultRect.y, resultPanelSize, resultPanelSize);
 			var docRect = new IRect(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize + sidePanelGap, docPanelSize);
 			var docItemRect = new IRect(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize, docPanelSize);
+			BackgroundRect = panelRect.Expand(docItemRect.width, resultPanelSize, 0, 0);
 			Update_Cache();
 			DocumentPageSize = panelRect.height / Unify(DOC_ITEM_HEIGHT + DOC_ITEM_PADDING);
 			var action = Update_Action(docItemRect, resultItemRect);
@@ -344,7 +346,6 @@ namespace AngeliaFramework {
 		}
 
 
-		// Action
 		private void Craft (CraftActionType action) {
 
 			if (action == CraftActionType.None) return;

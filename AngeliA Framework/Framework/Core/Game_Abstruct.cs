@@ -98,8 +98,8 @@ namespace AngeliaFramework {
 		internal static void OnCameraUpdate () => Instance._OnCameraUpdate();
 		protected abstract void _OnCameraUpdate ();
 
-		internal static void OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance._OnLayerUpdate(layerIndex, isTextLayer, cells, cellCount, ref prevCellCount);
-		protected abstract void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount);
+		internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, isTextLayer, cells, cellCount, ref prevCellCount);
+		protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount);
 
 		internal static void SetSkyboxTint (Byte4 top, Byte4 bottom) => Instance._SetSkyboxTint(top, bottom);
 		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
@@ -178,7 +178,7 @@ namespace AngeliaFramework {
 
 		public static void SetImeCompositionMode (bool on) => Instance?._SetImeCompositionMode(on);
 		protected abstract void _SetImeCompositionMode (bool on);
-		
+
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);

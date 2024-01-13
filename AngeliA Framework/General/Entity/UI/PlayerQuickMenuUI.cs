@@ -6,7 +6,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[RequireLanguageFromField]
-	public class PlayerQuickMenuUI : EntityUI {
+	public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 
 
@@ -41,6 +41,7 @@ namespace AngeliaFramework {
 		public static PlayerQuickMenuUI Instance { get; private set; } = null;
 		public static bool ShowingUI => Instance != null && Instance.Active;
 		public bool IsDirty { get; private set; } = false;
+		public IRect BackgroundRect { get; private set; } = default;
 
 		// Data
 		private static readonly Weapon[] WeaponList = new Weapon[Player.INVENTORY_ROW * Player.INVENTORY_COLUMN + 1];
@@ -189,15 +190,14 @@ namespace AngeliaFramework {
 			int basicX = player.X - CurrentSlotIndex * ITEM_SIZE - ITEM_SIZE / 2;
 			int basicY = player.Y - ITEM_SIZE - PADDING + offsetY - Const.HALF;
 			var rect = new IRect(0, basicY, ITEM_SIZE, ITEM_SIZE);
+			var bgRect = rect;
 			for (int i = 0; i < WeaponCount; i++) {
 
 				var weapon = WeaponList[i];
 				if (weapon is null) continue;
 
 				rect.x = basicX + i * ITEM_SIZE;
-
-				// BG
-				CellRenderer.Draw(Const.PIXEL, rect.Expand(PADDING), Const.BLACK, int.MinValue + 1);
+				bgRect.width += i * ITEM_SIZE;
 
 				// Cursoring
 				if (i == CurrentSlotIndex) {
@@ -221,6 +221,10 @@ namespace AngeliaFramework {
 				DrawItemIcon(rect, weapon.TypeID, Const.WHITE, int.MinValue + 10);
 
 			}
+
+			// BG
+			BackgroundRect = bgRect.Expand(PADDING);
+			CellRenderer.Draw(Const.PIXEL, BackgroundRect, Const.BLACK, int.MinValue + 1);
 
 		}
 

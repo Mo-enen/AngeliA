@@ -9,18 +9,20 @@ namespace AngeliaFramework {
 		public static readonly InventoryPartnerUI Instance = new();
 		public int AvatarIcon = 0;
 		public override void DrawPanel (IRect panelRect) {
+			base.DrawPanel(panelRect);
 			PlayerMenuUI.DrawTopInventory(InventoryID, Column, Row);
 		}
 	}
 
 
-	public abstract class PlayerMenuPartnerUI {
+	public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
 
 		public int InventoryID { get; private set; } = 0;
 		public int Column { get; private set; } = 1;
 		public int Row { get; private set; } = 1;
 		public int ItemSize { get; private set; } = PlayerMenuUI.ITEM_SIZE;
 		public bool MouseInPanel { get; set; } = false;
+		public IRect BackgroundRect { get; protected set; } = default;
 
 		public virtual void EnablePanel (int inventoryID, int column, int row, int itemSize = PlayerMenuUI.ITEM_SIZE) {
 			InventoryID = inventoryID;
@@ -29,7 +31,7 @@ namespace AngeliaFramework {
 			ItemSize = itemSize;
 		}
 
-		public abstract void DrawPanel (IRect panelRect);
+		public virtual void DrawPanel (IRect panelRect) => BackgroundRect = panelRect;
 
 		protected static int Unify (int value) => CellRendererGUI.Unify(value);
 
@@ -475,13 +477,11 @@ namespace AngeliaFramework {
 			int x = FrameInput.MouseGlobalPosition.x;
 			int y = FrameInput.MouseGlobalPosition.y;
 			int size = Unify(ITEM_SIZE);
-			CellRenderer.SetLayerToTopUI();
 			CellRenderer.Draw(
 				TakingID,
 				x, y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
 				size, size, Const.WHITE, int.MaxValue
 			);
-			CellRenderer.SetLayerToUI();
 		}
 
 
@@ -621,16 +621,14 @@ namespace AngeliaFramework {
 				CellRendererGUI.HighlightCursor(FRAME_CODE, itemRect, int.MinValue + 4);
 				// Taking Item
 				if (TakingID != 0) {
-					CellRenderer.SetLayerToTopUI();
 					CellRenderer.Draw(
 						TakingID,
 						itemRect.x + itemRect.width / 2,
 						itemRect.y + itemRect.height / 2,
 						500, 500, Game.GlobalFrame.PingPong(30) - 15,
 						itemRect.width * 3 / 2, itemRect.height * 3 / 2,
-						Const.WHITE, int.MaxValue - 1
+						Const.WHITE, int.MaxValue
 					);
-					CellRenderer.SetLayerToUI();
 				}
 			}
 

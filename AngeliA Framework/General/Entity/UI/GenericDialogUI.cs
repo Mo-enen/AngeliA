@@ -16,6 +16,8 @@ namespace AngeliaFramework {
 
 		// Api
 		public static bool ShowingDialog => Instance != null && Instance.Active;
+		protected override bool BlockMouseEvent => true;
+		protected override bool BlockKeyboardEvent => true;
 
 		// Data
 		private static GenericDialogUI Instance;

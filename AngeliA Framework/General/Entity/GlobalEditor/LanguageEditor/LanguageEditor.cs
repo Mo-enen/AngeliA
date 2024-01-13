@@ -95,7 +95,7 @@ namespace AngeliaFramework {
 			int fieldWidth = Util.Clamp(cameraRect.width / column, 0, Unify(300));
 			cameraRect.x += (cameraRect.width - fieldWidth * column) / 2;
 			cameraRect.width = fieldWidth * column;
-			bool interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
+			bool interactable = true;
 			Update_Bar(cameraRect.EdgeInside(Direction4.Up, Unify(84)), interactable);
 			Update_Content(cameraRect.EdgeInside(Direction4.Down, CellRenderer.CameraRect.height - Unify(84)), interactable);
 		}

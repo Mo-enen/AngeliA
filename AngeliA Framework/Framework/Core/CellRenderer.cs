@@ -131,13 +131,23 @@ namespace AngeliaFramework {
 
 		private class CellComparer : IComparer<Cell> {
 			public static readonly CellComparer Instance = new();
-			public int Compare (Cell a, Cell b) {
-				if (a.Z < b.Z) return -1;
-				if (a.Z > b.Z) return 1;
-				if (a.Order < b.Order) return -1;
-				if (a.Order > b.Order) return 1;
-				return 0;
-			}
+			public int Compare (Cell a, Cell b) =>
+				a.Z < b.Z ? -1 :
+				a.Z > b.Z ? 1 :
+				a.Order < b.Order ? -1 :
+				a.Order > b.Order ? 1 :
+				0;
+		}
+
+
+		private class ReversedCellComparer : IComparer<Cell> {
+			public static readonly ReversedCellComparer Instance = new();
+			public int Compare (Cell a, Cell b) =>
+				a.Z < b.Z ? 1 :
+				a.Z > b.Z ? -1 :
+				a.Order < b.Order ? 1 :
+				a.Order > b.Order ? -1 :
+				0;
 		}
 
 
@@ -161,7 +171,10 @@ namespace AngeliaFramework {
 			public void ZSort (bool fromStart = false) {
 				if (fromStart) SortedIndex = 0;
 				if (SortedIndex < Count - 1) {
-					Util.QuickSort(Cells, SortedIndex, Count - 1, CellComparer.Instance);
+					Util.QuickSort(
+						Cells, SortedIndex, Count - 1,
+						UiLayer ? ReversedCellComparer.Instance : CellComparer.Instance
+					);
 					SortedIndex = Count;
 				}
 			}
@@ -219,8 +232,8 @@ namespace AngeliaFramework {
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
 				int capacity = RenderLayer.CAPACITY[i];
 				string name = RenderLayer.NAMES[i];
-				int order = i == RenderLayer.TOP_UI ? 2048 : i;
-				bool uiLayer = i == RenderLayer.UI || i == RenderLayer.TOP_UI;
+				int order = i;
+				bool uiLayer = i == RenderLayer.UI;
 				Layers[i] = CreateLayer(name, uiLayer, order, capacity, textLayer: false);
 				Game.OnRenderingLayerCreated(i, name, order, capacity);
 			}
@@ -321,14 +334,14 @@ namespace AngeliaFramework {
 					var layer = Layers[i];
 					layer.ZSort();
 					int prevCellCount = layer.PrevCellCount;
-					Game.OnLayerUpdate(i, false, layer.Cells, layer.Count, ref prevCellCount);
+					Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count, ref prevCellCount);
 					layer.PrevCellCount = prevCellCount;
 				}
 				for (int i = 0; i < TextLayers.Length; i++) {
 					var layer = TextLayers[i];
 					layer.ZSort();
 					int prevCellCount = layer.PrevCellCount;
-					Game.OnLayerUpdate(i, true, layer.Cells, layer.Count, ref prevCellCount);
+					Game.OnLayerUpdate(i, layer.UiLayer, true, layer.Cells, layer.Count, ref prevCellCount);
 					layer.PrevCellCount = prevCellCount;
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
@@ -369,7 +382,9 @@ namespace AngeliaFramework {
 		public static void SetLayerToMultiply () => CurrentLayerIndex = RenderLayer.MULT;
 		public static void SetLayerToAdditive () => CurrentLayerIndex = RenderLayer.ADD;
 		public static void SetLayerToUI () => CurrentLayerIndex = RenderLayer.UI;
-		public static void SetLayerToTopUI () => CurrentLayerIndex = RenderLayer.TOP_UI;
+
+
+		public static void SortLayer (int layerIndex) => Layers[layerIndex].ZSort();
 
 
 		public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Name : "";
@@ -745,33 +760,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawBlackCurtain (int amount) {
-			int oldLayer = CurrentLayerIndex;
-			SetLayerToTopUI();
-			Draw(
-				Const.PIXEL,
-				CameraRect.Expand(Const.HALF),
-				new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, 1000, 0, 255, amount).Clamp(0, 255)),
-				int.MaxValue
-			);
-			SetLayer(oldLayer);
-		}
-
-
-		// Error
-		//public static Cell Draw (LanguageCode globalID, IRect rect, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell Draw (LanguageCode globalID, IRect rect, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell Draw (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell Draw (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
-		//public static Cell[] Draw_9Slice (LanguageCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Byte4 color, int z = int.MinValue) => throw new System.Exception("Using language code for sprite.");
+		public static void DrawBlackCurtain (int amount) => Game.DrawRect(CameraRect.Expand(16), new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, 1000, 0, 255, amount).Clamp(0, 255)));
 
 
 		// Sprite Data

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[EntityAttribute.StageOrder(4096)]
-	public class GenericPopupUI : EntityUI {
+	public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 
 
@@ -37,6 +37,9 @@ namespace AngeliaFramework {
 		// Api
 		public static bool ShowingPopup => Instance != null && Instance.Active;
 		public static int CurrentItemCount => Instance != null ? Instance.ItemCount : 0;
+		protected override bool BlockMouseEvent => true;
+		protected override bool BlockKeyboardEvent => true;
+		public IRect BackgroundRect { get; private set; }
 
 		// Data
 		private static GenericPopupUI Instance;
@@ -187,16 +190,13 @@ namespace AngeliaFramework {
 			if (highlightCell != null) highlightCell.Width = panelRect.width;
 
 			// BG
-			var bgRect = panelRect.Expand(Unify(8));
+			BackgroundRect = panelRect.Expand(Unify(8));
 			CellRenderer.Draw(
-				Const.PIXEL, bgRect, new Byte4(249, 249, 249, 255), int.MaxValue - 2
+				Const.PIXEL, BackgroundRect, new Byte4(249, 249, 249, 255), int.MaxValue - 2
 			);
 
 			// Clamp Text
 			CellRenderer.ClampTextCells(panelRect, textStart);
-
-			// Exclude Text
-			CellRenderer.ExcludeTextCellsForAllLayers(bgRect, 0, textStart);
 
 			// Cancel
 			if (FrameInput.AnyMouseButtonDown || FrameInput.AnyKeyDown) {

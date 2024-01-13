@@ -21,22 +21,25 @@ namespace AngeliaFramework {
 
 		private class EntityComparer : IComparer<Entity> {
 			public static readonly EntityComparer Instance = new();
-			public int Compare (Entity a, Entity b) {
-				int result = b.Active.CompareTo(a.Active);
-				if (result != 0) return result;
-				result = a.Order.CompareTo(b.Order);
-				if (result != 0) return result;
-				result = a.TypeID.CompareTo(b.TypeID);
-				if (result != 0) return result;
-				result = a.SpawnFrame.CompareTo(b.SpawnFrame);
-				if (result != 0) return result;
-				result = a.X.CompareTo(b.X);
-				if (result != 0) return result;
-				result = a.Y.CompareTo(b.Y);
-				if (result != 0) return result;
-				result = a.InstanceOrder.CompareTo(b.InstanceOrder);
-				return result;
-			}
+			public int Compare (Entity a, Entity b) =>
+				a.Active != b.Active ? b.Active.CompareTo(a.Active) :
+				a.Order != b.Order ? a.Order.CompareTo(b.Order) :
+				a.TypeID != b.TypeID ? a.TypeID.CompareTo(b.TypeID) :
+				a.SpawnFrame != b.SpawnFrame ? a.SpawnFrame.CompareTo(b.SpawnFrame) :
+				a.X != b.X ? a.X.CompareTo(b.X) :
+				a.Y != b.Y ? a.Y.CompareTo(b.Y) :
+				a.InstanceOrder.CompareTo(b.InstanceOrder);
+		}
+		private class ReversedEntityComparer : IComparer<Entity> {
+			public static readonly ReversedEntityComparer Instance = new();
+			public int Compare (Entity b, Entity a) =>
+				a.Active != b.Active ? a.Active.CompareTo(b.Active) :
+				a.Order != b.Order ? a.Order.CompareTo(b.Order) :
+				a.TypeID != b.TypeID ? a.TypeID.CompareTo(b.TypeID) :
+				a.SpawnFrame != b.SpawnFrame ? a.SpawnFrame.CompareTo(b.SpawnFrame) :
+				a.X != b.X ? a.X.CompareTo(b.X) :
+				a.Y != b.Y ? a.Y.CompareTo(b.Y) :
+				a.InstanceOrder.CompareTo(b.InstanceOrder);
 		}
 
 
@@ -643,7 +646,10 @@ namespace AngeliaFramework {
 			}
 
 			// Sort
-			Util.QuickSort(entities, 0, count - 1, EntityComparer.Instance);
+			Util.QuickSort(
+				entities, 0, count - 1,
+				layer == EntityLayer.UI ? ReversedEntityComparer.Instance : EntityComparer.Instance
+			);
 
 			// Remove Inactive
 			while (count > 0) {

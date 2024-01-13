@@ -15,13 +15,12 @@ namespace AngeliaFramework {
 		public const int MULT = 5;
 		public const int ADD = 6;
 		public const int UI = 7;
-		public const int TOP_UI = 8;
 
-		public const int COUNT = 9;
+		public const int COUNT = 8;
 
 
 		public static readonly string[] NAMES = new string[COUNT] {
-			"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI", "TopUI",
+			"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
 		};
 
 		public static readonly int[] CAPACITY = {

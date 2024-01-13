@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireLanguageFromField]
-	public abstract class MenuUI : EntityUI {
+	public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 
@@ -21,7 +21,7 @@ namespace AngeliaFramework {
 		public bool SelectionAdjustable { get; private set; } = false;
 		public int SelectionIndex { get; private set; } = 0;
 		public string Message { get; set; } = "";
-		protected IRect BackgroundRect { get; private set; }
+		public IRect BackgroundRect { get; private set; }
 
 		// Config
 		protected int BackgroundCode = Const.PIXEL;

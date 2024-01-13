@@ -31,7 +31,7 @@ namespace AngeliaFramework {
 
 
 	[EntityAttribute.Capacity(1, 1)]
-	public abstract class DialogueUI : EntityUI {
+	public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 
 
 
@@ -49,6 +49,7 @@ namespace AngeliaFramework {
 		protected virtual int RollingSpeed => 16; // Character per Frame
 		protected virtual Byte4 NameTint => Const.WHITE;
 		protected virtual Byte4 ContentTint => Const.WHITE;
+		public IRect BackgroundRect { get; private set; }
 
 		// Data
 		private int UpdatedFrame = int.MinValue;
@@ -106,6 +107,7 @@ namespace AngeliaFramework {
 			var nameRect = NameRect;
 
 			// BG
+			BackgroundRect = panelRect;
 			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK, 0);
 
 			// Content

@@ -41,7 +41,6 @@ namespace AngeliaForUnity {
 			Shader.Find("Angelia/Mult"),	// Mult
 			Shader.Find("Angelia/Add"),		// Add
 			Shader.Find("Angelia/Cell"),	// UI
-			Shader.Find("Angelia/Cell"),	// TopUI
 		};
 		private static readonly int SKYBOX_TOP = Shader.PropertyToID("_ColorA");
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
@@ -155,7 +154,7 @@ namespace AngeliaForUnity {
 			);
 		}
 
-		protected override void _OnLayerUpdate (int layerIndex, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
+		protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
 
 			var viewRect = CellRenderer.ViewRect;
 			var a = Float3.zero;
@@ -176,7 +175,7 @@ namespace AngeliaForUnity {
 
 			for (int i = 0; i < cellCount; i++) {
 
-				var cell = cells[i];
+				var cell = cells[isUiLayer ? cellCount - i - 1 : i];
 				if (isTextLayer && cell.TextSprite == null) continue;
 				if (!isTextLayer && cell.Sprite == null) continue;
 

@@ -66,7 +66,6 @@ namespace AngeliaFramework {
 					if (
 						layer == RenderLayer.WALLPAPER ||
 						layer == RenderLayer.UI ||
-						layer == RenderLayer.TOP_UI ||
 						layer == RenderLayer.BEHIND
 					) continue;
 					if (CellRenderer.GetCells(layer, out cells, out count)) {
