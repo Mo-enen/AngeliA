@@ -91,13 +91,15 @@ namespace AngeliaFramework {
 		private int ActionKeyDownFrame = int.MinValue;
 		private int CancelKeyDownFrame = int.MinValue;
 		private int HoveringItemID = 0;
+		private int MouseHoveringItemIndex = 0;
+		private int EquipFlashStartFrame = int.MinValue;
+		private int PrevCursorIndex = -1;
 		private bool TakingFromBottomPanel = false;
 		private bool MouseInPanel = false;
 		private bool RenderingBottomPanel = false;
 		private bool HoveringItemField = false;
-		private int EquipFlashStartFrame = int.MinValue;
-		private int PrevCursorIndex = -1;
 		private bool PrevCursorInBottomPanel = true;
+		private bool UsingMouseMode = false;
 		private EquipmentType EquipFlashType = EquipmentType.BodyArmor;
 		private IRect TopPanelRect = default;
 		private IRect BottomPanelRect = default;
@@ -130,6 +132,8 @@ namespace AngeliaFramework {
 			EquipFlashStartFrame = int.MinValue;
 			CursorInBottomPanel = true;
 			PrevCursorInBottomPanel = true;
+			UsingMouseMode = false;
+			MouseHoveringItemIndex = int.MaxValue;
 			FlashingField = new(-1, 0, 0);
 			X = CellRenderer.CameraRect.CenterX();
 			Y = CellRenderer.CameraRect.CenterY();
@@ -198,6 +202,7 @@ namespace AngeliaFramework {
 			}
 
 			if (!HoveringItemField) {
+				MouseHoveringItemIndex = int.MaxValue;
 				if (FrameInput.MouseLeftButtonDown) {
 					FrameInput.UseGameKey(Gamekey.Action);
 				}
@@ -305,23 +310,26 @@ namespace AngeliaFramework {
 
 			if (FrameInput.DirectionX == Direction3.None && FrameInput.DirectionY == Direction3.None) return;
 
-			int column = CursorInBottomPanel ? Player.INVENTORY_COLUMN : TopPanelColumn;
-			int row = CursorInBottomPanel ? Player.INVENTORY_ROW : TopPanelRow;
+			int column = CursorInBottomPanel ? Character.INVENTORY_COLUMN : TopPanelColumn;
+			int row = CursorInBottomPanel ? Character.INVENTORY_ROW : TopPanelRow;
 			int x = CursorIndex % column;
 			int y = CursorIndex / column;
 
 			// Left
 			if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
 				x = Util.Max(x - 1, 0);
+				UsingMouseMode = false;
 			}
 
 			// Right
 			if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
 				x = Util.Min(x + 1, column - 1);
+				UsingMouseMode = false;
 			}
 
 			// Down
 			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+				UsingMouseMode = false;
 				if (!CursorInBottomPanel && y == 0) {
 					CursorInBottomPanel = true;
 					if (Partner == null) {
@@ -339,6 +347,7 @@ namespace AngeliaFramework {
 
 			// Up
 			if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+				UsingMouseMode = false;
 				if (CursorInBottomPanel && y == row - 1) {
 					CursorInBottomPanel = false;
 					if (Partner == null) {
@@ -462,7 +471,7 @@ namespace AngeliaFramework {
 
 
 		private void DrawTakingItemMouseCursor () {
-			if (!FrameInput.LastActionFromMouse || TakingID == 0) return;
+			if (!UsingMouseMode || TakingID == 0) return;
 			int x = FrameInput.MouseGlobalPosition.x;
 			int y = FrameInput.MouseGlobalPosition.y;
 			int size = Unify(ITEM_SIZE);
@@ -564,9 +573,9 @@ namespace AngeliaFramework {
 			if (itemCount <= 0) itemID = 0;
 			bool actionHolding = FrameInput.GameKeyHolding(Gamekey.Action);
 			bool cancelHolding = FrameInput.GameKeyHolding(Gamekey.Jump);
-			bool hovering = interactable && itemRect.MouseInside();
+			bool mouseHovering = interactable && itemRect.MouseInside();
 			int cursorIndex = RenderingBottomPanel == CursorInBottomPanel ? CursorIndex : -1;
-			HoveringItemField = HoveringItemField || hovering;
+			HoveringItemField = HoveringItemField || mouseHovering;
 
 			// Frame
 			int frameBorder = Unify(1);
@@ -584,9 +593,14 @@ namespace AngeliaFramework {
 			// Count
 			DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
 
-			// Hover
-			if (hovering) {
-				if (FrameInput.LastActionFromMouse) {
+			// Mouse Hovering
+			if (mouseHovering) {
+				if (MouseHoveringItemIndex != uiIndex) {
+					// Mouse Hovering Change
+					UsingMouseMode = true;
+					MouseHoveringItemIndex = uiIndex;
+				}
+				if (UsingMouseMode) {
 					HoveringItemID = itemID;
 					// Move UI Cursor from Mouse
 					cursorIndex = CursorIndex = uiIndex;
@@ -601,7 +615,7 @@ namespace AngeliaFramework {
 			}
 
 			// UI Cursor
-			if (!FrameInput.LastActionFromMouse && cursorIndex == uiIndex) {
+			if (!UsingMouseMode && cursorIndex == uiIndex) {
 				HoveringItemID = itemID;
 				// Cursor
 				CellRendererGUI.HighlightCursor(FRAME_CODE, itemRect, int.MinValue + 4);
@@ -743,6 +757,8 @@ namespace AngeliaFramework {
 			bool cancelDown = interactable && FrameInput.GameKeyDown(Gamekey.Jump);
 			var enableTint = Const.WHITE;
 			var equipAvailable = Player.Selecting.EquipmentAvailable(type);
+			bool mouseHovering = interactable && rect.MouseInside();
+			HoveringItemField = HoveringItemField || mouseHovering;
 			if (TakingID != 0 && ItemSystem.IsEquipment(TakingID, out var takingType) && type != takingType) {
 				enableTint.a = 96;
 				interactable = false;
@@ -805,9 +821,17 @@ namespace AngeliaFramework {
 
 			bool highlighting = false;
 
+			if (mouseHovering) {
+				int uiIndex = int.MinValue + index;
+				if (MouseHoveringItemIndex != uiIndex) {
+					MouseHoveringItemIndex = uiIndex;
+					UsingMouseMode = true;
+				}
+			}
+
 			// Highlight
-			if (FrameInput.LastActionFromMouse) {
-				if (interactable && rect.MouseInside()) {
+			if (UsingMouseMode) {
+				if (mouseHovering) {
 					CursorIndex = index;
 					CursorInBottomPanel = false;
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_32, int.MinValue + 1);
