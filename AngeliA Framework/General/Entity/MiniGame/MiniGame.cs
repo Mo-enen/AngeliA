@@ -143,7 +143,7 @@ namespace AngeliaFramework {
 							CloseGame();
 						}
 					}
-					ControlHintUI.AddHint(Gamekey.Start, Language.Get(UI_QUIT, "Quit"));
+					ControlHintUI.AddHint(Gamekey.Start, UI_QUIT.Get("Quit"));
 				}
 				if (RequireMouseCursor) CursorSystem.RequireCursor(-1);
 			}
@@ -239,16 +239,16 @@ namespace AngeliaFramework {
 		private void OpenQuitDialog () {
 			if (ShowRestartOption) {
 				GenericDialogUI.SpawnDialog(
-					Language.Get(MENU_QUIT_MINI_GAME, "Quit mini game?"),
-					Language.Get(UI_BACK, "Back"), Const.EmptyMethod,
-					Language.Get(UI_RESTART, "Restart"), RestartGame,
-					Language.Get(UI_QUIT, "Quit"), CloseGame
+					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
+					UI_BACK.Get("Back"), Const.EmptyMethod,
+					UI_RESTART.Get("Restart"), RestartGame,
+					UI_QUIT.Get("Quit"), CloseGame
 				);
 			} else {
 				GenericDialogUI.SpawnDialog(
-					Language.Get(MENU_QUIT_MINI_GAME, "Quit mini game?"),
-					Language.Get(UI_BACK, "Back"), Const.EmptyMethod,
-					Language.Get(UI_QUIT, "Quit"), CloseGame
+					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
+					UI_BACK.Get("Back"), Const.EmptyMethod,
+					UI_QUIT.Get("Quit"), CloseGame
 				);
 			}
 		}

@@ -54,6 +54,9 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void SetCursorAsNormal (int priority = 0) => SetCursor(-1, priority);
+
+
 		public static void SetCursorAsHand (int priority = 0) => SetCursor(Const.CURSOR_HAND, priority);
 		public static void SetCursorAsHand (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_HAND, mouseRange, priority);
 
@@ -64,6 +67,9 @@ namespace AngeliaFramework {
 
 		public static void SetCursorAsMove (int priority = 0) => SetCursor(Const.CURSOR_MOVE, priority);
 		public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_MOVE, mouseRange, priority);
+
+
+		public static void SetCursorPriority (int priority) => CursorPriority = priority;
 
 
 	}

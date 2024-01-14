@@ -605,7 +605,7 @@ namespace AngeliaFramework {
 					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 					FrameInput.UseGameKey(Gamekey.Start);
 				}
-				ControlHintUI.AddHint(Gamekey.Start, Language.Get(MEDT_CANCEL_DROP, "Cancel Drop"));
+				ControlHintUI.AddHint(Gamekey.Start, MEDT_CANCEL_DROP.Get("Cancel Drop"));
 			}
 
 			// Editing Only
@@ -622,7 +622,7 @@ namespace AngeliaFramework {
 						}
 						ControlHintUI.AddHint(
 							KeyboardKey.Space,
-							Language.Get(HINT_MEDT_SWITCH_PLAY, "Play")
+							HINT_MEDT_SWITCH_PLAY.Get("Play")
 						);
 					}
 
@@ -659,7 +659,7 @@ namespace AngeliaFramework {
 						FrameInput.UseKeyboardKey(KeyboardKey.Tab);
 						SetNavigating(!IsNavigating);
 					}
-					ControlHintUI.AddHint(KeyboardKey.Tab, Language.Get(HINT_MEDT_NAV, "Overlook"));
+					ControlHintUI.AddHint(KeyboardKey.Tab, HINT_MEDT_NAV.Get("Overlook"));
 
 					// Move Selecting Blocks
 					if (SelectionUnitRect.HasValue) {
@@ -739,7 +739,7 @@ namespace AngeliaFramework {
 						FrameInput.UseAllHoldingKeys();
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
-					ControlHintUI.AddHint(KeyboardKey.Space, Language.Get(HINT_MEDT_PLAY_FROM_BEGIN, "Play from Start"));
+					ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_PLAY_FROM_BEGIN.Get("Play from Start"));
 					// Reset Camera
 					if (FrameInput.KeyboardDown(KeyboardKey.R)) {
 						ResetCamera();
@@ -770,7 +770,7 @@ namespace AngeliaFramework {
 					}
 					ControlHintUI.AddHint(
 						KeyboardKey.Escape,
-						Language.Get(HINT_MEDT_SWITCH_EDIT, "Back to Edit")
+						HINT_MEDT_SWITCH_EDIT.Get("Back to Edit")
 					);
 				}
 
@@ -812,7 +812,7 @@ namespace AngeliaFramework {
 			}
 
 			if (!QuickPlayerDrop) {
-				DropHintLabel.Text = Language.Get(MEDT_DROP, "Mouse Left Button to Drop");
+				DropHintLabel.Text = MEDT_DROP.Get("Mouse Left Button to Drop");
 				CellRendererGUI.Label(DropHintLabel, new IRect(
 					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
 					FrameInput.MouseGlobalPosition.y + Const.HALF,
@@ -912,6 +912,7 @@ namespace AngeliaFramework {
 			// Squad  
 			if (WorldSquad.Channel != MapChannel.BuiltIn) {
 				WorldSquad.SetMapChannel(MapChannel.BuiltIn);
+				MapGenerator.DeleteAllGeneratedMapFiles();
 			}
 			WorldSquad.SpawnEntity = toPlayMode;
 			WorldSquad.ShowElement = !toPlayMode;

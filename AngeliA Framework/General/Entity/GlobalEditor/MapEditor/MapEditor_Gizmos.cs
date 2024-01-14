@@ -389,19 +389,19 @@ namespace AngeliaFramework {
 			if (Modify_EntityOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
 				CellRendererGUI.Label(
-					CursorEraseLabel.SetText(Language.Get(MEDT_ENTITY_ONLY, "Entity Only")),
+					CursorEraseLabel.SetText(MEDT_ENTITY_ONLY.Get("Entity Only")),
 					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			} else if (Modify_LevelOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
 				CellRendererGUI.Label(
-					CursorEraseLabel.SetText(Language.Get(MEDT_LEVEL_ONLY, "Level Only")),
+					CursorEraseLabel.SetText(MEDT_LEVEL_ONLY.Get("Level Only")),
 					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			} else if (Modify_BackgroundOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
 				CellRendererGUI.Label(
-					CursorEraseLabel.SetText(Language.Get(MEDT_BG_ONLY, "Background Only")),
+					CursorEraseLabel.SetText(MEDT_BG_ONLY.Get("Background Only")),
 					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			}

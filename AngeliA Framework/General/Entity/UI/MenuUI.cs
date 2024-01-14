@@ -22,6 +22,8 @@ namespace AngeliaFramework {
 		public int SelectionIndex { get; private set; } = 0;
 		public string Message { get; set; } = "";
 		public IRect BackgroundRect { get; private set; }
+		protected override bool BlockMouseEvent => true;
+		protected override bool BlockKeyboardEvent => true;
 
 		// Config
 		protected int BackgroundCode = Const.PIXEL;
@@ -179,11 +181,11 @@ namespace AngeliaFramework {
 
 			// Hint
 			if (SelectionAdjustable) {
-				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_ADJUST, "Adjust"));
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_ADJUST.Get("Adjust"));
 			} else {
-				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"));
+				ControlHintUI.AddHint(Gamekey.Action, HINT_USE.Get("Use"));
 			}
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
 
 			// Menu
 			DrawMenu();

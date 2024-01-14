@@ -202,7 +202,7 @@ namespace AngeliaFramework {
 				if (FrameInput.GameKeyDown(Gamekey.Jump)) {
 					CurrentSubMenu = null;
 				}
-				ControlHintUI.AddHint(Gamekey.Jump, Language.Get(UI_BACK, "Back"));
+				ControlHintUI.AddHint(Gamekey.Jump, UI_BACK.Get("Back"));
 			}
 
 			if (!CurrentSubMenu.HasValue) {
@@ -231,9 +231,9 @@ namespace AngeliaFramework {
 				}
 				mainHighlightIndex = mainHighlightIndex.Clamp(0, menuItemCount - 1);
 				HighlightingMainIndex = mainHighlightIndex;
-				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
-				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
-				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"));
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE.Get("Move"));
+				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
+				ControlHintUI.AddHint(Gamekey.Action, HINT_USE.Get("Use"));
 			}
 
 			if (CurrentSubMenu.HasValue) {
@@ -357,7 +357,7 @@ namespace AngeliaFramework {
 					(i % 2) * (fieldRect.width + fieldPadding);
 				fieldRect.y = panelRect.yMax - panelPadding - fieldHeight -
 					(i / 2) * (fieldHeight + fieldPadding);
-				string label = Language.Get(MAIN_MENU_LABELS[(int)_menuType], _menuType.ToString());
+				string label = MAIN_MENU_LABELS[(int)_menuType].Get(_menuType.ToString());
 				bool mouseInField = fieldRect.MouseInside();
 
 				// Icon
@@ -439,7 +439,7 @@ namespace AngeliaFramework {
 					}
 				}
 				CellRendererGUI.Label(
-					CellContent.Get(Language.Get(UI_BACK, "Back"), 28, Alignment.MidMid),
+					CellContent.Get(UI_BACK.Get("Back"), 28, Alignment.MidMid),
 					buttonRect, out var bounds
 				);
 				CursorSystem.SetCursorAsHand(buttonRect, 1);
@@ -839,8 +839,8 @@ namespace AngeliaFramework {
 			int deltaRow = 0;
 			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) deltaRow = 1;
 			if (FrameInput.GameKeyDownGUI(Gamekey.Up)) deltaRow = -1;
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
-			ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Action, HINT_USE.Get("Use"));
 
 			// Fix when Highlighting on Label
 			int newRow = (HighlightingPatternRow + deltaRow).Clamp(0, row - 1);
@@ -907,7 +907,7 @@ namespace AngeliaFramework {
 					if (isEmpty) {
 						// Empty Name
 						CellRendererGUI.Label(
-							CellContent.Get(Language.Get(UI_NONE, "None"), Const.WHITE),
+							CellContent.Get(UI_NONE.Get("None"), Const.WHITE),
 							rect.Shift(contentPadding * 2, 0)
 						);
 					} else {

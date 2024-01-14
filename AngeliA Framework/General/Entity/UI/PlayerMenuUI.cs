@@ -300,14 +300,14 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Select, Language.Get(HINT_HIDE_MENU, "Hide Menu"));
+			ControlHintUI.AddHint(Gamekey.Select, HINT_HIDE_MENU.Get("Hide Menu"));
 		}
 
 
 		private void Update_MoveCursor () {
 
-			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
+			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
 			ControlHintUI.AddHint(Gamekey.Action, "", int.MinValue + 2);
 
 			if (FrameInput.DirectionX == Direction3.None && FrameInput.DirectionY == Direction3.None) return;
@@ -434,19 +434,19 @@ namespace AngeliaFramework {
 							UseAtCursor();
 						}
 						bool cursoringEquip = ItemSystem.IsEquipment(cursorID);
-						ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_TAKE, "Take"), int.MinValue + 3);
+						ControlHintUI.AddHint(Gamekey.Action, HINT_TAKE.Get("Take"), int.MinValue + 3);
 						if (Partner != null) {
 							// Has Partner
 							if (Partner.InventoryID != 0) {
-								ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_TRANSFER, "Transfer"), int.MinValue + 3);
+								ControlHintUI.AddHint(Gamekey.Jump, HINT_TRANSFER.Get("Transfer"), int.MinValue + 3);
 							}
 						} else if (cursoringEquip) {
 							// Equip
-							ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_EQUIP, "Equip"), int.MinValue + 3);
+							ControlHintUI.AddHint(Gamekey.Jump, HINT_EQUIP.Get("Equip"), int.MinValue + 3);
 						} else {
 							// Use
 							if (ItemSystem.CanUseItem(cursorID, Player.Selecting)) {
-								ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_HUSE, "Hold to Use"), int.MinValue + 3);
+								ControlHintUI.AddHint(Gamekey.Jump, HINT_HUSE.Get("Hold to Use"), int.MinValue + 3);
 							}
 						}
 					}
@@ -463,8 +463,8 @@ namespace AngeliaFramework {
 					// Throw to Ground
 					ThrowTakingToGround();
 				}
-				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_DROP, "Drop"), int.MinValue + 3);
-				ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_THROW, "Throw"), int.MinValue + 3);
+				ControlHintUI.AddHint(Gamekey.Action, HINT_DROP.Get("Drop"), int.MinValue + 3);
+				ControlHintUI.AddHint(Gamekey.Jump, HINT_THROW.Get("Throw"), int.MinValue + 3);
 			}
 
 			CursorIndex = oldCursorIndex;
@@ -715,27 +715,27 @@ namespace AngeliaFramework {
 			int top = panelRect.yMax;
 			DrawEquipmentItem(
 				0, interactable && player.JewelryAvailable, new IRect(left, top - itemHeight * 3, width, itemHeight),
-				EquipmentType.Jewelry, Language.Get(UI_JEWELRY, "Jewelry")
+				EquipmentType.Jewelry, UI_JEWELRY.Get("Jewelry")
 			);
 			DrawEquipmentItem(
 				1, interactable && player.ShoesAvailable, new IRect(left + width, top - itemHeight * 3, width, itemHeight),
-				EquipmentType.Shoes, Language.Get(UI_SHOES, "Boots")
+				EquipmentType.Shoes, UI_SHOES.Get("Boots")
 			);
 			DrawEquipmentItem(
 				2, interactable && player.GlovesAvailable, new IRect(left, top - itemHeight * 2, width, itemHeight),
-				EquipmentType.Gloves, Language.Get(UI_GLOVES, "Gloves")
+				EquipmentType.Gloves, UI_GLOVES.Get("Gloves")
 			);
 			DrawEquipmentItem(
 				3, interactable && player.BodySuitAvailable, new IRect(left + width, top - itemHeight * 2, width, itemHeight),
-				EquipmentType.BodyArmor, Language.Get(UI_BODYSUIT, "Armor")
+				EquipmentType.BodyArmor, UI_BODYSUIT.Get("Armor")
 			);
 			DrawEquipmentItem(
 				4, interactable && player.WeaponAvailable, new IRect(left, top - itemHeight * 1, width, itemHeight),
-				EquipmentType.Weapon, Language.Get(UI_WEAPON, "Weapon")
+				EquipmentType.Weapon, UI_WEAPON.Get("Weapon")
 			);
 			DrawEquipmentItem(
 				5, interactable && player.HelmetAvailable, new IRect(left + width, top - itemHeight * 1, width, itemHeight),
-				EquipmentType.Helmet, Language.Get(UI_HELMET, "Helmet")
+				EquipmentType.Helmet, UI_HELMET.Get("Helmet")
 			);
 
 			// Hashtag
@@ -878,14 +878,14 @@ namespace AngeliaFramework {
 					// Hints
 					if (TakingID == 0) {
 						if (itemID != 0) {
-							ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_TAKE, "Take"), int.MinValue + 3);
+							ControlHintUI.AddHint(Gamekey.Action, HINT_TAKE.Get("Take"), int.MinValue + 3);
 						}
 					} else {
-						ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_EQUIP, "Equip"), int.MinValue + 3);
-						ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_THROW, "Throw"), int.MinValue + 3);
+						ControlHintUI.AddHint(Gamekey.Action, HINT_EQUIP.Get("Equip"), int.MinValue + 3);
+						ControlHintUI.AddHint(Gamekey.Jump, HINT_THROW.Get("Throw"), int.MinValue + 3);
 					}
 					if (itemID != 0) {
-						ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_TRANSFER, "Transfer"), int.MinValue + 3);
+						ControlHintUI.AddHint(Gamekey.Jump, HINT_TRANSFER.Get("Transfer"), int.MinValue + 3);
 					}
 				}
 			}

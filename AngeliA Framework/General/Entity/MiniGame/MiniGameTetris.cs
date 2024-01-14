@@ -251,10 +251,10 @@ namespace AngeliaFramework {
 			if (FrameInput.GameKeyDown(Gamekey.Select)) Hold();
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, Language.Get(HINT_MOVE, "Move"));
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_DROP, "Drop"));
-			ControlHintUI.AddHint(Gamekey.Select, Language.Get(HINT_HOLD, "Hold"));
-			ControlHintUI.AddHint(Gamekey.Action, Gamekey.Jump, Language.Get(HINT_ROTATE, "Rotate"));
+			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_DROP.Get("Drop"));
+			ControlHintUI.AddHint(Gamekey.Select, HINT_HOLD.Get("Hold"));
+			ControlHintUI.AddHint(Gamekey.Action, Gamekey.Jump, HINT_ROTATE.Get("Rotate"));
 		}
 
 
@@ -268,7 +268,7 @@ namespace AngeliaFramework {
 				labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 				labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
-				CellRendererGUI.Label(CellContent.Get(Language.Get(UI_GAMEOVER, "Game Over")), labelRect);
+				CellRendererGUI.Label(CellContent.Get(UI_GAMEOVER.Get("Game Over")), labelRect);
 			}
 
 			int blockSize = stageRect.width / WIDTH;
@@ -387,7 +387,7 @@ namespace AngeliaFramework {
 				);
 				// Label
 				CellRendererGUI.Label(
-					CellContent.Get(Language.Get(UI_HOLDING, "Holding"), ReverseUnify(holdingBlockSize)),
+					CellContent.Get(UI_HOLDING.Get("Holding"), ReverseUnify(holdingBlockSize)),
 					new IRect(
 						stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 						stageRect.yMax - 4 * holdingBlockSize,
@@ -408,7 +408,7 @@ namespace AngeliaFramework {
 
 			// Lines
 			CellRendererGUI.Label(CellContent.Get(
-				Language.Get(UI_CLR_LINE, "Lines:"),
+				UI_CLR_LINE.Get("Lines:"),
 				CHAR_SIZE, Alignment.MidLeft
 			), stateRect, out var lineBounds);
 			CellRendererGUI.Label(CellContent.Get(
@@ -666,10 +666,10 @@ namespace AngeliaFramework {
 
 		// Menu
 		private void OpenGameOverDialog () => GenericDialogUI.SpawnDialog(
-			Language.Get(UI_GAMEOVER, "Game Over"),
-			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
-			Language.Get(UI_RESTART, "Restart"), StartGame,
-			Language.Get(UI_QUIT, "Quit"), CloseGame
+			UI_GAMEOVER.Get("Game Over"),
+			UI_OK.Get("OK"), Const.EmptyMethod,
+			UI_RESTART.Get("Restart"), StartGame,
+			UI_QUIT.Get("Quit"), CloseGame
 		);
 
 

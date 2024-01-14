@@ -55,7 +55,7 @@ namespace AngeliaFramework {
 					// Hint
 					ControlHintUI.DrawGlobalHint(
 						X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action,
-						HasMapInDisk ? Language.Get(HINT_ENTER, "Enter Level") : Language.Get(HINT_GENERATE, "Generate Level"),
+						HasMapInDisk ? HINT_ENTER.Get("Enter Level") : HINT_GENERATE.Get("Generate Level"),
 						true
 					);
 				}
@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 				// Generating
 				if (ShowGeneratingHint) {
 					CellRendererGUI.Label(
-						HintContent.SetText(Language.Get(HINT_GENERATING, "Generating")),
+						HintContent.SetText(HINT_GENERATING.Get("Generating")),
 						new IRect(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL)
 					);
 				}
@@ -73,7 +73,7 @@ namespace AngeliaFramework {
 
 		protected override void AfterMapGenerate () {
 			base.AfterMapGenerate();
-			NotificationUI.SpawnNotification(Language.Get(HINT_NOTIFY, "Map Generated"), TypeID);
+			NotificationUI.SpawnNotification(HINT_NOTIFY.Get("Map Generated"), TypeID);
 		}
 
 

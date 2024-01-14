@@ -43,12 +43,12 @@ namespace AngeliaFramework {
 	public class LanguageCode : RequireNameFromField.INameCode {
 		public string Name { get; }
 		public readonly int ID;
+		public string Get (string defaultValue = "") => Language.Get(ID, defaultValue);
 		public LanguageCode (string name) {
 			Name = name;
 			ID = name.AngeHash();
 		}
 		public static implicit operator LanguageCode (string value) => new(value);
-		public static implicit operator int (LanguageCode code) => code.ID;
 	}
 
 

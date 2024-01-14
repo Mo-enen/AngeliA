@@ -5,7 +5,7 @@ namespace AngeliaFramework {
 	[RequireLanguageFromField]
 	public class LanguageEditorEntranceWood : GlobalEditorEntrance<LanguageEditor> {
 		private static readonly LanguageCode HINT_START = "CtrlHint.EditLanguage";
-		protected override int StartHint => HINT_START;
+		protected override int StartHint => HINT_START.ID;
 		protected override bool IsEditing => LanguageEditor.IsActived;
 	}
 
@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 	[RequireLanguageFromField]
 	public class SheetEditorEntranceWood : GlobalEditorEntrance<SheetEditor> {
 		private static readonly LanguageCode HINT_START = "CtrlHint.EditSheet";
-		protected override int StartHint => HINT_START;
+		protected override int StartHint => HINT_START.ID;
 		protected override bool IsEditing => SheetEditor.IsActived;
 	}
 
@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 			if ((this as IActionTarget).IsHighlighted) {
 				ControlHintUI.DrawGlobalHint(
 					X, Y + Height + Const.CEL * 2, Gamekey.Action,
-					IsEditing ? Language.Get(HINT_QUIT, "Quit Editing") : Language.Get(StartHint, "Edit Map"), true
+					IsEditing ? HINT_QUIT.Get("Quit Editing") : Language.Get(StartHint, "Edit Map"), true
 				);
 			}
 

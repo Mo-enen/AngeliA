@@ -90,7 +90,7 @@ namespace AngeliaFramework {
 				playerPaddleSpeed = PADDLE_SPEED;
 			}
 			PlayerPaddleY = PlayerPaddleY.Clamp(PADDLE_LEN / 2, 1000 - PADDLE_LEN / 2);
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, Language.Get(HINT_MOVE, "Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
 
 			// Bot Paddle Movement
 			int botPaddleSpeed = GetBotPaddleSpeedY();

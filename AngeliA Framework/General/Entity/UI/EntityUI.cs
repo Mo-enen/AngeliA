@@ -46,6 +46,7 @@ namespace AngeliaFramework {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseMouseKey(1);
 				FrameInput.UseMouseKey(2);
+				CursorSystem.SetCursorPriority(int.MaxValue);
 			}
 			if (BlockKeyboardEvent) {
 				FrameInput.UseAllHoldingKeys(true);

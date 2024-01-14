@@ -330,7 +330,7 @@ namespace AngeliaFramework {
 				// Label
 				CellRendererGUI.Label(
 					CellContent.Get(
-						i == 0 ? Language.Get(UI_TAB_PINNED, "List") : Language.Get(UI_TAB_ALL, "All"),
+						i == 0 ? UI_TAB_PINNED.Get("List") : UI_TAB_ALL.Get("All"),
 						Const.WHITE,
 						alignment: Alignment.MidMid, charSize: 22
 					),
@@ -966,16 +966,16 @@ namespace AngeliaFramework {
 			if (list != null) {
 				// Click on List
 				// Delete List
-				GenericPopupUI.AddItem(Language.Get(MENU_PALETTE_DELETE_LIST, "Delete List"), () =>
+				GenericPopupUI.AddItem(MENU_PALETTE_DELETE_LIST.Get("Delete List"), () =>
 					GenericDialogUI.SpawnDialog(
-						$"{Language.Get(MENU_PALETTE_DELETE_LIST_MSG, "Delete List ")} \"{(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")}\"?",
-						Language.Get(UI_DELETE, "Delete"), () => EditorMeta.PinnedLists.Remove(list),
-						Language.Get(UI_CANCEL, "Cancel"), Const.EmptyMethod
+						$"{MENU_PALETTE_DELETE_LIST_MSG.Get("Delete List ")} \"{(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")}\"?",
+						UI_DELETE.Get("Delete"), () => EditorMeta.PinnedLists.Remove(list),
+						UI_CANCEL.Get("Cancel"), Const.EmptyMethod
 				), enabled: EditorMeta.PinnedLists.Count > 1);
 			} else {
 				// Click on Empty
 				// Create List
-				GenericPopupUI.AddItem(Language.Get(MENU_PALETTE_CREATE_LIST, "Create List"), () => {
+				GenericPopupUI.AddItem(MENU_PALETTE_CREATE_LIST.Get("Create List"), () => {
 					EditorMeta.PinnedLists.Add(new PinnedList() {
 						Icon = UI_DEFAULT_LIST_COVER,
 						Items = new List<int>(),
@@ -997,8 +997,8 @@ namespace AngeliaFramework {
 				bool hasItem = list.Items.Contains(pal.ID);
 				GenericPopupUI.AddItem(
 					!hasItem ?
-						Language.Get(MENU_PALETTE_ADD_TO_LIST, "Add to List:") :
-						Language.Get(MENU_PALETTE_REMOVE_FROM_LIST, "Remove from List:"),
+						MENU_PALETTE_ADD_TO_LIST.Get("Add to List:") :
+						MENU_PALETTE_REMOVE_FROM_LIST.Get("Remove from List:"),
 					list.Icon, Direction2.Right,
 					() => {
 						if (!hasItem) {
@@ -1018,7 +1018,7 @@ namespace AngeliaFramework {
 
 			// Add to New List
 			GenericPopupUI.AddItem(
-				Language.Get(MENU_PALETTE_ADD_TO_NEW_LIST, "Add to New List"), () => {
+				MENU_PALETTE_ADD_TO_NEW_LIST.Get("Add to New List"), () => {
 					EditorMeta.PinnedLists.Add(new PinnedList() {
 						Icon = pal.ArtworkID,
 						Items = new List<int>() { pal.ID },
@@ -1032,7 +1032,7 @@ namespace AngeliaFramework {
 					// Cover Icon
 					GenericPopupUI.AddSeparator();
 					GenericPopupUI.AddItem(
-						Language.Get(MENU_PALETTE_SET_LIST_COVER, "Set as List Cover"), () => {
+						MENU_PALETTE_SET_LIST_COVER.Get("Set as List Cover"), () => {
 							selectingList.Icon = pal.ArtworkID;
 						}, selectingList.Icon != pal.ArtworkID
 					);

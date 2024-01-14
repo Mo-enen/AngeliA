@@ -75,6 +75,7 @@ namespace AngeliaFramework {
 			int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
 			int zLeft = character.HandL.Z - 1;
 			int zRight = character.HandR.Z - 1;
+			int facingSign = character.FacingRight ? 1 : -1;
 
 			if (character.EquippingWeaponType == WeaponType.Claw) {
 				grabScaleL = grabScaleL * 700 / 1000;
@@ -97,18 +98,18 @@ namespace AngeliaFramework {
 					int facingFrame = Game.GlobalFrame - character.LastFacingChangeFrame;
 					if (facingFrame < 30) {
 						moveDeltaX += (int)Util.LerpUnclamped(
-							character.FacingRight ? SHIFT_X * 2 : -SHIFT_X * 2, 0,
+							facingSign * SHIFT_X * 2, 0,
 							Ease.OutBack(facingFrame / 30f)
 						);
 					}
 					DrawWeaponSprite(
 						character,
-						character.X + (character.FacingRight ? -SHIFT_X : SHIFT_X) + moveDeltaX,
+						character.X + (facingSign * -SHIFT_X) + moveDeltaX,
 						character.Y + Const.CEL * character.CharacterHeight / 263 + Game.GlobalFrame.PingPong(240) / 4 + moveDeltaY,
 						sprite.GlobalWidth,
 						sprite.GlobalHeight,
 						0,
-						attacking ? grabScaleL : 700,
+						(sprite.IsTrigger ? facingSign : 1) * (attacking ? grabScaleL : 700),
 						sprite,
 						36
 					);
@@ -135,7 +136,7 @@ namespace AngeliaFramework {
 						} else {
 							grabRotation = Util.RemapUnclamped(
 								0, character.AttackDuration,
-								character.FacingRight ? 90 : -90, 0,
+								facingSign * 90, 0,
 								Game.GlobalFrame - character.LastAttackFrame
 							);
 						}
@@ -236,7 +237,7 @@ namespace AngeliaFramework {
 						}
 						DrawWeaponSprite(
 							character, center.x, center.y, width, height,
-							0, character.FacingRight ? 1000 : -1000,
+							0, facingSign * 1000,
 							sprite, character.FacingRight ? zRight : zLeft
 						);
 					} else {

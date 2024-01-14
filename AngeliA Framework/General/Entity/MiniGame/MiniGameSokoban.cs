@@ -61,15 +61,15 @@ namespace AngeliaFramework {
 		private static readonly SpriteCode GOAL_CODE = "Sokoban Goal";
 		private static readonly SpriteCode PLAYER_CODE = "Sokoban Player";
 		private static readonly Level[] Levels = new Level[LEVEL_COUNT]{
-			new Level("#####  ", "#P  #  ", "# #B###", "# B ..#", "#######"),
-			new Level("##########", "#   .#.###", "# P    B #", "# B# #   #", "# .B   ###", "#####  ###", "##########"),
-			new Level("########", "###  ###", "### B#.#", "#    B #", "#B # B #", "#.   P #", "#  #####", "#..#####", "########"),
-			new Level("##########", "#   ##  ##", "# B   B ##", "##.  # .##", "###.   B #", "### ##   #", "###. P  ##", "###.B B ##", "###  #####", "##########"),
-			new Level("#########", "######  #", "# .P##B #", "#.B.  B #", "#   ### #", "#B# .   #", "#  .#BB #", "#.      #", "#########"),
-			new Level("#########", "##    ###", "# BBB   #", "# B B. .#", "##.P  . #", "#    ...#", "# B     #", "####B  ##", "####  ###", "#########"),
-			new Level("##########", "###     ##", "#  B#P#B##", "# B..   ##", "## ..B  ##", "##....   #", "#### B   #", "####BB B##", "####    ##", "##########"),
-			new Level("##########", "#    #####", "# B   B  #", "# B  . B #", "#  .  PB #", "  .B  B  #", "  .B.B.  #", "##  ... ##", "##########"),
-			new Level("##  ######", "##     ###", "#  BBBB ##", "# B P... #", "##   ... #", "##. . #B##", "# .B  B ##", "# B . #B##", "##  #   ##", "##########"),
+			new ("#####  ", "#P  #  ", "# #B###", "# B ..#", "#######"),
+			new ("##########", "#   .#.###", "# P    B #", "# B# #   #", "# .B   ###", "#####  ###", "##########"),
+			new ("########", "###  ###", "### B#.#", "#    B #", "#B # B #", "#.   P #", "#  #####", "#..#####", "########"),
+			new ("##########", "#   ##  ##", "# B   B ##", "##.  # .##", "###.   B #", "### ##   #", "###. P  ##", "###.B B ##", "###  #####", "##########"),
+			new ("#########", "######  #", "# .P##B #", "#.B.  B #", "#   ### #", "#B# .   #", "#  .#BB #", "#.      #", "#########"),
+			new ("#########", "##    ###", "# BBB   #", "# B B. .#", "##.P  . #", "#    ...#", "# B     #", "####B  ##", "####  ###", "#########"),
+			new ("##########", "###     ##", "#  B#P#B##", "# B..   ##", "## ..B  ##", "##....   #", "#### B   #", "####BB B##", "####    ##", "##########"),
+			new ("##########", "#    #####", "# B   B  #", "# B  . B #", "#  .  PB #", "  .B  B  #", "  .B.B.  #", "##  ... ##", "##########"),
+			new ("##  ######", "##     ###", "#  BBBB ##", "# B P... #", "##   ... #", "##. . #B##", "# .B  B ##", "# B . #B##", "##  #   ##", "##########"),
 		};
 		private static readonly LanguageCode MENU_ALL_CLEAR = "Menu.Sokoban.AllCleared";
 		private static readonly LanguageCode UI_Level = "UI.Sokoban.Level";
@@ -105,7 +105,7 @@ namespace AngeliaFramework {
 
 		[OnLanguageChanged]
 		public static void OnLanguageChanged () {
-			LevelLabelToString = new(Language.Get(UI_Level, "Level:"));
+			LevelLabelToString = new(UI_Level.Get("Level:"));
 		}
 
 
@@ -182,7 +182,7 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			string hintMove = Language.Get(UI_MOVE, "Move");
+			string hintMove = UI_MOVE.Get("Move");
 			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, hintMove);
 			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, hintMove);
 
@@ -309,9 +309,9 @@ namespace AngeliaFramework {
 
 
 		private void ShowAllClearedDialog () => GenericDialogUI.SpawnDialog(
-			Language.Get(MENU_ALL_CLEAR, "You Win"),
-			Language.Get(UI_OK, "OK"), Const.EmptyMethod,
-			Language.Get(UI_QUIT, "Quit"), CloseGame
+			MENU_ALL_CLEAR.Get("You Win"),
+			UI_OK.Get("OK"), Const.EmptyMethod,
+			UI_QUIT.Get("Quit"), CloseGame
 		);
 
 

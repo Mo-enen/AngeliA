@@ -58,11 +58,7 @@ namespace AngeliaFramework {
 
 
 		public static string Get (int id, string failback = "") => Pool.TryGetValue(id, out string value) && !string.IsNullOrEmpty(value) ? value : failback;
-		public static string Get (LanguageCode code, string failback = "") => Pool.TryGetValue(code.ID, out string value) && !string.IsNullOrEmpty(value) ? value : failback;
-
-		// Error
-		//public static string Get (SpriteCode code, string failback = "") => throw new System.Exception("Using sprite code for language.");
-
+		
 
 		public static string GetLanguageAt (int index) => AllLanguages[index];
 

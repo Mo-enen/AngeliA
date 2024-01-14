@@ -76,7 +76,7 @@ namespace AngeliaFramework {
 					SetOpen(false);
 					FrameInput.UseGameKey(Gamekey.Select);
 				}
-				ControlHintUI.AddHint(Gamekey.Select, Language.Get(UI_CANCEL, "Cancel"), int.MinValue + 1);
+				ControlHintUI.AddHint(Gamekey.Select, UI_CANCEL.Get("Cancel"), int.MinValue + 1);
 			}
 		}
 

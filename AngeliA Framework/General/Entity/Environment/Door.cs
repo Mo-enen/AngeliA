@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 					if (FrameInput.GameKeyHolding(Gamekey.Up)) {
 						Invoke(player);
 					}
-					ControlHintUI.AddHint(Gamekey.Up, Language.Get(HINT_ENTER, "Entre"));
+					ControlHintUI.AddHint(Gamekey.Up, HINT_ENTER.Get("Entre"));
 				}
 				if (InputLock && !FrameInput.GameKeyHolding(Gamekey.Up)) {
 					InputLock = false;

@@ -127,7 +127,7 @@ namespace AngeliaFramework {
 			_ => EdgeDown,
 		};
 
-		public override string ToString () => $"<color=#FFCC33>{ID}</color> {(TypeID != 0 ? "<size=75%>Ⓣ</size> " : "")}{ContentWidth}×{ContentHeight}<color=#888888FF>{(Tunnels.Length > 0 ? " " + new string('t', Tunnels.Length) : "")}{(Teleporters.Length > 0 ? " " + new string('d', Teleporters.Length) : "")}</color>";
+		public override string ToString () => $"<color=#FFCC33>{ID}</color> {(TypeID != 0 ? "<size=75%>Ⓣ</size> " : "")}{ContentWidth}×{ContentHeight}<color=#888888FF>{(Tunnels?.Length > 0 ? " " + new string('t', Tunnels.Length) : "")}{(Teleporters?.Length > 0 ? " " + new string('d', Teleporters.Length) : "")}</color>";
 
 	}
 }

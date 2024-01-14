@@ -194,40 +194,40 @@ namespace AngeliaFramework {
 		private void MenuPause () {
 
 			// 0-Continue
-			if (DrawItem(Language.Get(UI_CONTINUE, "Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(UI_CONTINUE.Get("Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				Game.IsPlaying = true;
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
 			}
 
 			// 1-Key Setter
-			if (DrawItem(Language.Get(MENU_KEY_SETTER, "Key Assignment"))) {
+			if (DrawItem(MENU_KEY_SETTER.Get("Key Assignment"))) {
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(0);
 			}
 
 			// 2-Setting
-			if (DrawItem(Language.Get(UI_SETTING, "Setting"))) {
+			if (DrawItem(UI_SETTING.Get("Setting"))) {
 				RequireMode = MenuMode.Setting;
 				SetSelection(0);
 			}
 
 			if (MapEditor.IsActived) {
 				// 3-Map Editor Setting
-				if (DrawItem(Language.Get(MENU_MEDT_SETTING, "Editor Setting"))) {
+				if (DrawItem(MENU_MEDT_SETTING.Get("Editor Setting"))) {
 					RequireMode = MenuMode.EditorSetting;
 					SetSelection(0);
 				}
 			} else if (!GlobalEditorUI.HaveActiveInstance) {
 				// 3-Restart Game
-				if (DrawItem(Language.Get(UI_RESTART, "Restart"))) {
+				if (DrawItem(UI_RESTART.Get("Restart"))) {
 					RequireMode = MenuMode.Restart;
 					SetSelection(0);
 				}
 			}
 
 			// 3/4-Quit
-			if (DrawItem(Language.Get(UI_QUIT, "Quit"), Const.RED_BETTER)) {
+			if (DrawItem(UI_QUIT.Get("Quit"), Const.RED_BETTER)) {
 				RequireMode = MenuMode.Quit;
 				SetSelection(0);
 			}
@@ -237,7 +237,7 @@ namespace AngeliaFramework {
 
 		private void MenuKeySetterHub () {
 
-			if (DrawItem(Language.Get(MENU_SETTER_KEYBOARD, "Keyboard"))) {
+			if (DrawItem(MENU_SETTER_KEYBOARD.Get("Keyboard"))) {
 				RequireMode = MenuMode.Setter_Keyboard;
 				SetSelection(0);
 				RecordingKey = -1;
@@ -249,7 +249,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			if (DrawItem(Language.Get(MENU_SETTER_GAMEPAD, "Gamepad"))) {
+			if (DrawItem(MENU_SETTER_GAMEPAD.Get("Gamepad"))) {
 				RequireMode = MenuMode.Setter_Gamepad;
 				SetSelection(0);
 				RecordingKey = -1;
@@ -261,7 +261,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(1);
 			}
@@ -272,7 +272,7 @@ namespace AngeliaFramework {
 
 			// Music Volume
 			if (DrawArrowItem(
-				Language.Get(MENU_MUSIC_VOLUME, "Music Volume"),
+				MENU_MUSIC_VOLUME.Get("Music Volume"),
 				CellContent.Get(MusicVolumeCache.GetChars(Game.MusicVolume / 100)),
 				Game.MusicVolume > 0, Game.MusicVolume < 1000, out int delta
 			)) {
@@ -281,7 +281,7 @@ namespace AngeliaFramework {
 
 			// Sound Volume
 			if (DrawArrowItem(
-				Language.Get(MENU_SOUND_VOLUME, "Sound Volume"),
+				MENU_SOUND_VOLUME.Get("Sound Volume"),
 				CellContent.Get(SoundVolumeCache.GetChars(Game.SoundVolume / 100)),
 				Game.SoundVolume > 0, Game.SoundVolume < 1000, out delta
 			)) {
@@ -291,7 +291,7 @@ namespace AngeliaFramework {
 			// Framerate
 			int currentFramerate = Game.GraphicFramerate;
 			if (DrawArrowItem(
-				Language.Get(MENU_FRAMERATE, "Framerate"),
+				MENU_FRAMERATE.Get("Framerate"),
 				CellContent.Get(FramerateCache.GetChars(currentFramerate)),
 				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
@@ -300,29 +300,29 @@ namespace AngeliaFramework {
 
 			// Show FPS 
 			if (DrawItem(
-				Language.Get(MENU_SHOW_FPS),
-				CellContent.Get(Game.ShowFPS ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				MENU_SHOW_FPS.Get("Show FPS"),
+				CellContent.Get(Game.ShowFPS ? UI_ON.Get("ON") : UI_OFF.Get("OFF"))
 			)) {
 				Game.ShowFPS = !Game.ShowFPS;
 			}
 
 			// VSync
 			if (DrawItem(
-				Language.Get(MENU_VSYNC),
-				CellContent.Get(Game.VSync ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				MENU_VSYNC.Get("V-Sync"),
+				CellContent.Get(Game.VSync ? UI_ON.Get("ON") : UI_OFF.Get("OFF"))
 			)) {
 				Game.VSync = !Game.VSync;
 			}
 
 			// Fullscreen
 			if (DrawArrowItem(
-				Language.Get(MENU_FULLSCREEN_LABEL, "Fullscreen"),
+				MENU_FULLSCREEN_LABEL.Get("Fullscreen"),
 				CellContent.Get(
 					Game.FullscreenMode switch {
-						FullscreenMode.Window => Language.Get(MENU_FULLSCREEN_0, "Windowed"),
-						FullscreenMode.Fullscreen => Language.Get(MENU_FULLSCREEN_1, "Fullscreen"),
-						FullscreenMode.FullscreenLow => Language.Get(MENU_FULLSCREEN_2, "Fullscreen (Low)"),
-						_ => Language.Get(MENU_FULLSCREEN_0, "Windowed"),
+						FullscreenMode.Window => MENU_FULLSCREEN_0.Get("Windowed"),
+						FullscreenMode.Fullscreen => MENU_FULLSCREEN_1.Get("Fullscreen"),
+						FullscreenMode.FullscreenLow => MENU_FULLSCREEN_2.Get("Fullscreen (Low)"),
+						_ => MENU_FULLSCREEN_0.Get("Windowed"),
 					}
 				),
 				Game.FullscreenMode != FullscreenMode.Window,
@@ -342,7 +342,7 @@ namespace AngeliaFramework {
 				}
 			}
 			if (DrawArrowItem(
-				Language.Get(MENU_LANGUAGE, "Language"),
+				MENU_LANGUAGE.Get("Language"),
 				CellContent.Get(Language.CurrentLanguageDisplayName),
 				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 			) {
@@ -355,30 +355,30 @@ namespace AngeliaFramework {
 
 			// Allow Gamepad
 			if (DrawItem(
-			Language.Get(MENU_ALLOW_GAMEPAD, "Allow Gamepad"),
-				CellContent.Get(FrameInput.AllowGamepad ? Language.Get(UI_YES, "YES") : Language.Get(UI_NO, "NO"))
+			MENU_ALLOW_GAMEPAD.Get("Allow Gamepad"),
+				CellContent.Get(FrameInput.AllowGamepad ? UI_YES.Get("YES") : UI_NO.Get("NO"))
 			)) {
 				FrameInput.AllowGamepad = !FrameInput.AllowGamepad;
 			}
 
 			// Control Hint
 			if (DrawItem(
-				Language.Get(MENU_CONTROL_HINT, "Show Control Hint"),
-				CellContent.Get(ControlHintUI.UseControlHint ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				MENU_CONTROL_HINT.Get("Show Control Hint"),
+				CellContent.Get(ControlHintUI.UseControlHint ? UI_ON.Get("ON") : UI_OFF.Get("OFF"))
 			)) {
 				ControlHintUI.UseControlHint = !ControlHintUI.UseControlHint;
 			}
 
 			// Gamepad Hint
 			if (DrawItem(
-				Language.Get(MENU_GAMEPAD_HINT, "Show Gamepad Hint"),
-				CellContent.Get(ControlHintUI.UseGamePadHint ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+				MENU_GAMEPAD_HINT.Get("Show Gamepad Hint"),
+				CellContent.Get(ControlHintUI.UseGamePadHint ? UI_ON.Get("ON") : UI_OFF.Get("OFF"))
 			)) {
 				ControlHintUI.UseGamePadHint = !ControlHintUI.UseGamePadHint;
 			}
 
 			// Back
-			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(2);
 			}
@@ -392,31 +392,31 @@ namespace AngeliaFramework {
 
 				// Auto Zoom
 				if (DrawItem(
-					Language.Get(MENU_MEDT_AUTO_ZOOM, "Auto Zoom"),
-					CellContent.Get(mapEditor.AutoZoom ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+					MENU_MEDT_AUTO_ZOOM.Get("Auto Zoom"),
+					CellContent.Get(mapEditor.AutoZoom ? UI_ON.Get("ON") : UI_OFF.Get("OFF"))
 				)) {
 					mapEditor.AutoZoom = !mapEditor.AutoZoom;
 				}
 
 				// Drop Player
 				if (DrawItem(
-					Language.Get(MENU_MEDT_PLAYER_DROP, "Quick Player Drop"),
-					CellContent.Get(mapEditor.QuickPlayerDrop ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+					MENU_MEDT_PLAYER_DROP.Get("Quick Player Drop"),
+					CellContent.Get(mapEditor.QuickPlayerDrop ? UI_ON.Get("ON") : UI_OFF.Get("OFF"))
 				)) {
 					mapEditor.QuickPlayerDrop = !mapEditor.QuickPlayerDrop;
 				}
 
 				// Show State
 				if (DrawItem(
-					Language.Get(MENU_MEDT_STATE, "Show State Info"),
-					CellContent.Get(mapEditor.ShowState ? Language.Get(UI_ON, "ON") : Language.Get(UI_OFF, "OFF"))
+					MENU_MEDT_STATE.Get("Show State Info"),
+					CellContent.Get(mapEditor.ShowState ? UI_ON.Get("ON") : UI_OFF.Get("OFF"))
 				)) {
 					mapEditor.ShowState = !mapEditor.ShowState;
 				}
 			}
 
 			// Back
-			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(3);
 			}
@@ -425,16 +425,16 @@ namespace AngeliaFramework {
 
 		private void MenuRestart () {
 
-			Message = Language.Get(MENU_RESTART_MESSAGE, "Restart Game?");
+			Message = MENU_RESTART_MESSAGE.Get("Restart Game?");
 
 			// Continue
-			if (DrawItem(Language.Get(UI_BACK, "Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(3);
 			}
 
 			// Restart
-			if (DrawItem(Language.Get(UI_RESTART, "Restart"))) {
+			if (DrawItem(UI_RESTART.Get("Restart"))) {
 				Game.IsPlaying = true;
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
@@ -448,16 +448,16 @@ namespace AngeliaFramework {
 
 			bool editing = GlobalEditorUI.Instance != null && GlobalEditorUI.Instance.Active;
 
-			Message = Language.Get(MENU_QUIT_MESSAGE, "Quit Game?");
+			Message = MENU_QUIT_MESSAGE.Get("Quit Game?");
 
 			// Continue
-			if (DrawItem(Language.Get(UI_CONTINUE, "Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(UI_CONTINUE.Get("Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(1024);
 			}
 
 			// Stop Edit
-			if (editing && DrawItem(Language.Get(UI_STOP_EDIT, "Stop Editing"))) {
+			if (editing && DrawItem(UI_STOP_EDIT.Get("Stop Editing"))) {
 				Game.IsPlaying = true;
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
@@ -465,7 +465,7 @@ namespace AngeliaFramework {
 			}
 
 			// Quit Game
-			if (DrawItem(Language.Get(UI_QUIT_GAME, "Quit Game"), Const.RED_BETTER)) {
+			if (DrawItem(UI_QUIT_GAME.Get("Quit Game"), Const.RED_BETTER)) {
 				Game.QuitApplication();
 			}
 
@@ -476,31 +476,28 @@ namespace AngeliaFramework {
 
 			// Confirming
 			if (KeySetterConfirming) {
-				Message = Language.Get(MENU_KEYSETTER_CONFIRM_MESSAGE, "Save the changes?");
-				if (DrawItem(Language.Get(UI_SAVE, "Save"))) {
+				Message = MENU_KEYSETTER_CONFIRM_MESSAGE.Get("Save the changes?");
+				if (DrawItem(UI_SAVE.Get("Save"))) {
 					RequireMode = MenuMode.KeySetter;
 					SetSelection(forGamepad ? 1 : 0);
 					SaveKeySetting(forGamepad);
 				}
-				if (DrawItem(Language.Get(UI_DONT_SAVE, "Don't Save"))) {
+				if (DrawItem(UI_DONT_SAVE.Get("Don't Save"))) {
 					RequireMode = MenuMode.KeySetter;
 					SetSelection(forGamepad ? 1 : 0);
 				}
-				if (DrawItem(Language.Get(UI_CANCEL, "Cancel"))) {
+				if (DrawItem(UI_CANCEL.Get("Cancel"))) {
 					KeySetterConfirming = false;
 				}
 				return;
 			}
 
 			// Key Setter
-			Message = Language.Get(
-				forGamepad ? MENU_KEYSETTER_GAMEPAD_MESSAGE : MENU_KEYSETTER_KEYBOARD_MESSAGE,
-				"Press F1 key to reset"
-			);
+			Message = (forGamepad ? MENU_KEYSETTER_GAMEPAD_MESSAGE : MENU_KEYSETTER_KEYBOARD_MESSAGE).Get("Press F1 key to reset");
 
 			// All Game Keys
 			for (int i = 0; i < GAMEKEY_UI_CODES.Length; i++) {
-				int code = GAMEKEY_UI_CODES[i];
+				int code = GAMEKEY_UI_CODES[i].ID;
 				CellContent valueLabel;
 				int iconID = 0;
 				if (RecordingKey != i) {
@@ -513,7 +510,7 @@ namespace AngeliaFramework {
 				} else {
 					// Recording
 					KeySetterLabel.Tint = Game.PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE;
-					KeySetterLabel.Text = Language.Get(MENU_SETTER_RECORD, "Press key u want");
+					KeySetterLabel.Text = MENU_SETTER_RECORD.Get("Press key u want");
 					KeySetterLabel.BackgroundTint = Game.PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
 					valueLabel = KeySetterLabel;
 				}
@@ -527,7 +524,7 @@ namespace AngeliaFramework {
 			}
 
 			// Save & Back
-			if (RecordDirty && DrawItem(Language.Get(MENU_KEYSETTER_SAVE_BACK, "Save and Back"), Const.GREEN)) {
+			if (RecordDirty && DrawItem(MENU_KEYSETTER_SAVE_BACK.Get("Save and Back"), Const.GREEN)) {
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(forGamepad ? 1 : 0);
 				SaveKeySetting(forGamepad);
@@ -535,7 +532,7 @@ namespace AngeliaFramework {
 
 			// Back
 			if (
-				DrawItem(Language.Get(UI_BACK, "Back")) ||
+				DrawItem(UI_BACK.Get("Back")) ||
 				(RecordingKey < 0 && FrameInput.GameKeyUp(Gamekey.Jump))
 			) {
 				if (RecordDirty) {

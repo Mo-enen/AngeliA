@@ -191,11 +191,11 @@ namespace AngeliaFramework {
 			CurrentPatternIndex = CurrentPatternIndex.Clamp(0, currentPattern.Count - 1);
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, Language.Get(HINT_ADJUST, "Adjust"), 0);
-			ControlHintUI.AddHint(Gamekey.Right, Language.Get(HINT_ADJUST, "Adjust"), 0);
-			ControlHintUI.AddHint(Gamekey.Down, Language.Get(HINT_TYPE, "Suit Type"), 0);
-			ControlHintUI.AddHint(Gamekey.Up, Language.Get(HINT_TYPE, "Suit Type"), 0);
-			ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_USE, "Use"), 0);
+			ControlHintUI.AddHint(Gamekey.Left, HINT_ADJUST.Get("Adjust"), 0);
+			ControlHintUI.AddHint(Gamekey.Right, HINT_ADJUST.Get("Adjust"), 0);
+			ControlHintUI.AddHint(Gamekey.Down, HINT_TYPE.Get("Suit Type"), 0);
+			ControlHintUI.AddHint(Gamekey.Up, HINT_TYPE.Get("Suit Type"), 0);
+			ControlHintUI.AddHint(Gamekey.Action, HINT_USE.Get("Use"), 0);
 
 		}
 
@@ -275,7 +275,7 @@ namespace AngeliaFramework {
 			} else {
 				// None Label
 				CellRendererGUI.Label(
-					CellContent.Get(Language.Get(UI_NONE, "None"), Const.WHITE),
+					CellContent.Get(UI_NONE.Get("None"), Const.WHITE),
 					windowRect
 				);
 			}

@@ -180,8 +180,9 @@ namespace AngeliaFramework {
 			}
 			// Hint
 			if (CombineResultID != 0 && CursorInResult) {
-				ControlHintUI.AddHint(Gamekey.Action, Language.Get(HINT_CRAFT, "Craft"), 0);
-				ControlHintUI.AddHint(Gamekey.Jump, Language.Get(HINT_CRAFT, "Craft"), 0);
+				string hint = HINT_CRAFT.Get("Craft");
+				ControlHintUI.AddHint(Gamekey.Action, hint, 0);
+				ControlHintUI.AddHint(Gamekey.Jump, hint, 0);
 			}
 			return action;
 		}
