@@ -7,6 +7,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(1, 1)]
 	[RequireLanguageFromField]
+	[EntityAttribute.StageOrder(4096)]
 	public class PauseMenuUI : MenuUI {
 
 
@@ -26,7 +27,7 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Const
+		// Const 
 		private static readonly LanguageCode MENU_QUIT_MESSAGE = "Menu.Pause.QuitMessage";
 		private static readonly LanguageCode MENU_RESTART_MESSAGE = "Menu.Pause.RestartMessage";
 		private static readonly LanguageCode MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage";
@@ -40,7 +41,6 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume";
 		private static readonly LanguageCode MENU_FRAMERATE = "Menu.Setting.Framerate";
 		private static readonly LanguageCode MENU_LANGUAGE = "Menu.Setting.Language";
-		private static readonly LanguageCode MENU_SAVE_SLOT = "Menu.Setting.SaveSlot";
 		private static readonly LanguageCode MENU_SHOW_FPS = "Menu.Setting.ShowFPS";
 		private static readonly LanguageCode MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack";
 		private static readonly LanguageCode MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0";
@@ -69,7 +69,6 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_DONT_SAVE = "UI.DontSave";
 		private static readonly LanguageCode UI_NO = "UI.No";
 		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
-		private readonly string[] SLOT_NAMES = { };
 		private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
 			$"UI.GameKey.{Gamekey.Left}",
 			$"UI.GameKey.{Gamekey.Right}",
@@ -92,7 +91,6 @@ namespace AngeliaFramework {
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
 		private int RecordingKey = -1;
-		private int RequireNewSaveSlot = -1;
 		private bool RecordLock = true;
 		private bool RecordDirty = false;
 		private bool KeySetterConfirming = false;
@@ -106,13 +104,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public PauseMenuUI () {
-			Instance = this;
-			SLOT_NAMES = new string[AngePath.SAVE_SLOT_COUNT];
-			for (int i = 0; i < AngePath.SAVE_SLOT_COUNT; i++) {
-				SLOT_NAMES[i] = ((char)(i + 'A')).ToString();
-			}
-		}
+		public PauseMenuUI () => Instance = this;
 
 
 		[OnGameTryingToQuit]
@@ -140,24 +132,13 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			ScreenTint = new(0, 0, 0, 128);
 			BackgroundTint = new(0, 0, 0, 255);
-			RequireNewSaveSlot = -1;
 			MaxItemCount = 11;
 		}
 
 
 		public override void OnInactivated () {
 			base.OnInactivated();
-			// Unpause
 			if (Game.IsPausing) Game.IsPlaying = true;
-			// Set Save Slot
-			if (
-				RequireNewSaveSlot >= 0 &&
-				RequireNewSaveSlot < AngePath.SAVE_SLOT_COUNT &&
-				RequireNewSaveSlot != AngePath.CurrentSaveSlot
-			) {
-				AngePath.CurrentSaveSlot = RequireNewSaveSlot;
-				Game.RestartGame();
-			}
 		}
 
 
@@ -369,20 +350,6 @@ namespace AngeliaFramework {
 				newIndex = newIndex.Clamp(0, Language.LanguageCount - 1);
 				if (newIndex != currentLanguageIndex) {
 					Language.SetLanguage(Language.GetLanguageAt(newIndex));
-				}
-			}
-
-			// Save Slot
-			int settedSaveSlot = RequireNewSaveSlot < 0 ? AngePath.CurrentSaveSlot : RequireNewSaveSlot;
-			if (DrawArrowItem(
-				Language.Get(MENU_SAVE_SLOT, "Save Slot"),
-				CellContent.Get(SLOT_NAMES[settedSaveSlot]),
-				settedSaveSlot > 0, settedSaveSlot < AngePath.SAVE_SLOT_COUNT - 1, out delta)
-			) {
-				int newIndex = settedSaveSlot + delta;
-				newIndex = newIndex.Clamp(0, AngePath.SAVE_SLOT_COUNT - 1);
-				if (newIndex != settedSaveSlot) {
-					RequireNewSaveSlot = newIndex;
 				}
 			}
 

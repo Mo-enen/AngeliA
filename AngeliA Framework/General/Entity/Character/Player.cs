@@ -95,8 +95,8 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnSlotChanged(2048)]
-		public static void OnSlotChanged () {
+		[OnProjectOpen]
+		public static void OnProjectOpen () {
 			LoadGameDataFromFile();
 			foreach (var type in typeof(Player).AllChildClass()) {
 				Inventory.SetUnlockInside(type.AngeHash(), true);
@@ -630,7 +630,7 @@ namespace AngeliaFramework {
 
 
 		private static void LoadGameDataFromFile () {
-			var data = JsonUtil.LoadOrCreateJson<PlayerGameData>(AngePath.UserDataRoot);
+			var data = JsonUtil.LoadOrCreateJson<PlayerGameData>(Project.CurrentProject.SavingMetaRoot);
 			HomeUnitPosition =
 				data.HomeUnitPositionX != int.MinValue &&
 				data.HomeUnitPositionY != int.MinValue &&
@@ -644,7 +644,7 @@ namespace AngeliaFramework {
 				HomeUnitPositionX = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.x : int.MinValue,
 				HomeUnitPositionY = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.y : int.MinValue,
 				HomeUnitPositionZ = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.z : int.MinValue,
-			}, AngePath.UserDataRoot);
+			}, Project.CurrentProject.SavingMetaRoot);
 		}
 
 

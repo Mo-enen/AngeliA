@@ -111,6 +111,8 @@ namespace AngeliaFramework {
 		private int IgnoreFaceFrame = -1;
 		private int IgnoreHornFrame = -1;
 		private int IgnoreWingFrame = -1;
+		private static int CachedConfigVersion = 0;
+		private int LoadedConfigVersion = 0;
 
 
 		#endregion
@@ -121,8 +123,11 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitialize(-65)]
-		public static void OnGameInitialize_Pose () {
+		[OnProjectOpen(32)]
+		public static void OnProjectOpen_Pose () {
+
+			// Require Reload
+			CachedConfigVersion++;
 
 			// Config Pool
 			BodyPartConfigPool.Clear();
@@ -176,68 +181,19 @@ namespace AngeliaFramework {
 
 
 		public PoseCharacter () {
-
 			int len = DEFAULT_BODY_PART_ID.Length;
 			if (BodyParts == null || BodyParts.Length != len) {
 				BodyParts = new BodyPart[len];
 			}
+		}
 
-			if (BodyPartConfigPool.TryGetValue(TypeID, out var config) && config != null) {
 
-				// Body Part
-				for (int i = 0; i < len; i++) {
-					var bodyPartID = config.BodyParts[i];
-					BodyParts[i] = new BodyPart(
-						bodyPartID,
-						i == 9 || i == 10 || i == 15 || i == 16,
-						(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
-					);
-				}
-
-				// Gadget
-				FaceID = config.FaceID;
-				HairID = config.HairID;
-				EarID = config.EarID;
-				TailID = config.TailID;
-				WingID = config.WingID;
-				HornID = config.HornID;
-
-				// Suit
-				Suit_Head = config.SuitHead;
-				Suit_Body = config.SuitBody;
-				Suit_Hip = config.SuitHip;
-				Suit_Hand = config.SuitHand;
-				Suit_Foot = config.SuitFoot;
-
-			} else {
-				// Load Default Bodypart
-				for (int i = 0; i < len; i++) {
-					BodyParts[i] = new BodyPart(
-						DEFAULT_BODY_PART_ID[i],
-						i == 9 || i == 10 || i == 15 || i == 16,
-						(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
-					);
-				}
+		public override void OnActivated () {
+			base.OnActivated();
+			if (CachedConfigVersion != LoadedConfigVersion) {
+				LoadedConfigVersion = CachedConfigVersion;
+				LoadCharacterFromConfigPool();
 			}
-
-			Head = BodyParts[0];
-			Body = BodyParts[1];
-			Hip = BodyParts[2];
-			ShoulderL = BodyParts[3];
-			ShoulderR = BodyParts[4];
-			UpperArmL = BodyParts[5];
-			UpperArmR = BodyParts[6];
-			LowerArmL = BodyParts[7];
-			LowerArmR = BodyParts[8];
-			HandL = BodyParts[9];
-			HandR = BodyParts[10];
-			UpperLegL = BodyParts[11];
-			UpperLegR = BodyParts[12];
-			LowerLegL = BodyParts[13];
-			LowerLegR = BodyParts[14];
-			FootL = BodyParts[15];
-			FootR = BodyParts[16];
-
 		}
 
 
@@ -714,6 +670,67 @@ namespace AngeliaFramework {
 				part.GlobalX = X + PoseRootX + part.X;
 				part.GlobalY = Y + PoseRootY + part.Y;
 			}
+		}
+
+
+		private void LoadCharacterFromConfigPool () {
+			int len = DEFAULT_BODY_PART_ID.Length;
+			if (BodyPartConfigPool.TryGetValue(TypeID, out var config) && config != null) {
+
+				// Body Part
+				for (int i = 0; i < len; i++) {
+					var bodyPartID = config.BodyParts[i];
+					BodyParts[i] = new BodyPart(
+						bodyPartID,
+						i == 9 || i == 10 || i == 15 || i == 16,
+						(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
+					);
+				}
+
+				// Gadget
+				FaceID = config.FaceID;
+				HairID = config.HairID;
+				EarID = config.EarID;
+				TailID = config.TailID;
+				WingID = config.WingID;
+				HornID = config.HornID;
+
+				// Suit
+				Suit_Head = config.SuitHead;
+				Suit_Body = config.SuitBody;
+				Suit_Hip = config.SuitHip;
+				Suit_Hand = config.SuitHand;
+				Suit_Foot = config.SuitFoot;
+
+			} else {
+				// Load Default Bodypart
+				for (int i = 0; i < len; i++) {
+					BodyParts[i] = new BodyPart(
+						DEFAULT_BODY_PART_ID[i],
+						i == 9 || i == 10 || i == 15 || i == 16,
+						(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
+					);
+				}
+			}
+
+			// Final
+			Head = BodyParts[0];
+			Body = BodyParts[1];
+			Hip = BodyParts[2];
+			ShoulderL = BodyParts[3];
+			ShoulderR = BodyParts[4];
+			UpperArmL = BodyParts[5];
+			UpperArmR = BodyParts[6];
+			LowerArmL = BodyParts[7];
+			LowerArmR = BodyParts[8];
+			HandL = BodyParts[9];
+			HandR = BodyParts[10];
+			UpperLegL = BodyParts[11];
+			UpperLegR = BodyParts[12];
+			LowerLegL = BodyParts[13];
+			LowerLegR = BodyParts[14];
+			FootL = BodyParts[15];
+			FootR = BodyParts[16];
 		}
 
 

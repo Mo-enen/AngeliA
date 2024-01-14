@@ -88,7 +88,7 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitializeLater]
-		public static void OnGameInitialize () {
+		public static void OnGameInitialize_Room () {
 			foreach (var type in typeof(Door).AllChildClass()) {
 				if (System.Activator.CreateInstance(type) is not Door door) continue;
 				TelePool.TryAdd(type.AngeHash(), new TeleInfo(door.IsFrontDoor, false));

@@ -3,7 +3,6 @@ Shader "Angelia/Cell"
 	Properties
 	{
 		[HideInInspector] _MainTex("Texture", 2D) = "white" {}
-		[HideInInspector] _UserTex("Texture", 2D) = "white" {}
 	}
 
 		SubShader
@@ -27,7 +26,6 @@ Shader "Angelia/Cell"
 			#pragma fragment frag
 			#include "UnityCG.cginc"
 			sampler2D _MainTex;
-            sampler2D _UserTex;
 
 
 			struct appdata
@@ -57,11 +55,8 @@ Shader "Angelia/Cell"
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-                if (i.uv.x < 1){
                     return i.color * tex2D(_MainTex, i.uv);
-                }else{
-                    return i.color * tex2D(_UserTex, i.uv);
-                }
+               
 			}
 		ENDCG
 		}

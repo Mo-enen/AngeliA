@@ -200,16 +200,15 @@ namespace AngeliaFramework {
 		public static float CameraRestrictionRate { get; private set; } = 1f;
 		public static int LastDrawnID { get; private set; } = 0;
 		public static int LayerCount => Layers.Length;
-		public static int SpriteCount => BuiltInSheet.Sprites.Length;
-		public static int GroupCount => BuiltInSheet.Groups.Length;
+		public static int SpriteCount => Sheet.Sprites.Length;
+		public static int GroupCount => Sheet.Groups.Length;
 		public static int TextLayerCount => TextLayers.Length;
 		public static int CurrentLayerIndex { get; private set; } = 0;
 		public static int CurrentTextLayerIndex { get; private set; } = 0;
 		public static bool TextReady => TextLayers.Length > 0;
 
 		// Data
-		private static readonly Sheet BuiltInSheet = new();
-		private static readonly Sheet UserSheet = new();
+		private static readonly Sheet Sheet = new();
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 		private static TextLayer[] TextLayers = new TextLayer[0];
@@ -257,9 +256,8 @@ namespace AngeliaFramework {
 			}
 
 			// Load Sheet
-			BuiltInSheet.LoadFromDisk(AngePath.BuiltInSheetPath);
-			Game.SetBuiltInTextureForRenderer(BuiltInSheet.Texture);
-			ReloadUserSheet();
+			Sheet.LoadFromDisk(Project.CurrentProject.SheetPath);
+			Game.SetTextureForRenderer(Sheet.Texture);
 
 			// Func
 			static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
@@ -285,6 +283,14 @@ namespace AngeliaFramework {
 
 
 		// Update
+		[OnProjectOpen]
+		internal static void OnProjectOpen () {
+			if (Game.GlobalFrame == 0) return;
+			Sheet.LoadFromDisk(Project.CurrentProject.SheetPath);
+			Game.SetTextureForRenderer(Sheet.Texture);
+		}
+
+
 		[OnGameUpdate(-2048)]
 		internal static void CameraUpdate () {
 
@@ -354,15 +360,6 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
-
-
-		public static void ReloadUserSheet () {
-			UserSheet.Clear();
-			if (!Util.FileExists(AngePath.UserSheetPath)) return;
-			UserSheet.LoadFromDisk(AngePath.UserSheetPath);
-			UserSheet.ShiftUvToUserSpace();
-			Game.SetUserTextureForRenderer(UserSheet.Texture);
-		}
 
 
 		// Layer
@@ -764,9 +761,7 @@ namespace AngeliaFramework {
 
 
 		// Sprite Data
-		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) =>
-			(UserSheet.NotEmpty && TryGetSprite(UserSheet, globalID, out sprite, ignoreAnimation)) ||
-			TryGetSprite(BuiltInSheet, globalID, out sprite, ignoreAnimation);
+		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) => TryGetSprite(Sheet, globalID, out sprite, ignoreAnimation);
 		public static bool TryGetSprite (Sheet sheet, int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
 			if (sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
 			if (!ignoreAnimation && sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
@@ -779,10 +774,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool HasSpriteGroup (int groupID) => (UserSheet.NotEmpty && HasSpriteGroup(UserSheet, groupID)) || HasSpriteGroup(BuiltInSheet, groupID);
+		public static bool HasSpriteGroup (int groupID) => HasSpriteGroup(Sheet, groupID);
 		public static bool HasSpriteGroup (Sheet sheet, int groupID) => sheet.GroupPool.ContainsKey(groupID);
 
-		public static bool HasSpriteGroup (int groupID, out int groupLength) => (UserSheet.NotEmpty && HasSpriteGroup(UserSheet, groupID, out groupLength)) || HasSpriteGroup(BuiltInSheet, groupID, out groupLength);
+		public static bool HasSpriteGroup (int groupID, out int groupLength) => HasSpriteGroup(Sheet, groupID, out groupLength);
 		public static bool HasSpriteGroup (Sheet sheet, int groupID, out int groupLength) {
 			if (sheet.GroupPool.TryGetValue(groupID, out var values)) {
 				groupLength = values.Length;
@@ -794,13 +789,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => (UserSheet.NotEmpty && TryGetSpriteGroup(UserSheet, groupID, out group)) || TryGetSpriteGroup(BuiltInSheet, groupID, out group);
+		public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => TryGetSpriteGroup(Sheet, groupID, out group);
 		public static bool TryGetSpriteGroup (Sheet sheet, int groupID, out SpriteGroup group) => sheet.GroupPool.TryGetValue(groupID, out group);
 
 
-		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) =>
-			(UserSheet.NotEmpty && TryGetSpriteFromGroup(UserSheet, groupID, index, out sprite, loopIndex, clampIndex)) ||
-			TryGetSpriteFromGroup(BuiltInSheet, groupID, index, out sprite, loopIndex, clampIndex);
+		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) => TryGetSpriteFromGroup(Sheet, groupID, index, out sprite, loopIndex, clampIndex);
 		public static bool TryGetSpriteFromGroup (Sheet sheet, int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
 			if (sheet.GroupPool.TryGetValue(groupID, out var sprites)) {
 				if (loopIndex) index = index.UMod(sprites.Length);
@@ -816,14 +809,14 @@ namespace AngeliaFramework {
 		}
 
 
-		public static bool HasSprite (int globalID) => (UserSheet.NotEmpty && HasSprite(UserSheet, globalID)) || HasSprite(BuiltInSheet, globalID);
+		public static bool HasSprite (int globalID) => HasSprite(Sheet, globalID);
 		public static bool HasSprite (Sheet sheet, int globalID) => sheet.SpritePool.ContainsKey(globalID);
 
 
-		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < BuiltInSheet.Sprites.Length ? BuiltInSheet.Sprites[index] : null;
+		public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Sheet.Sprites.Length ? Sheet.Sprites[index] : null;
 
 
-		public static SpriteGroup GetGroupAt (int index) => index >= 0 && index < BuiltInSheet.Groups.Length ? BuiltInSheet.Groups[index] : null;
+		public static SpriteGroup GetGroupAt (int index) => index >= 0 && index < Sheet.Groups.Length ? Sheet.Groups[index] : null;
 
 
 		// Misc

@@ -106,7 +106,7 @@ namespace AngeliaFramework {
 
 
 		[OnGameInitialize(-128)]
-		internal static void BeforeGameInitialize () {
+		internal static void OnGameInitialize () {
 			ItemPool.Clear();
 			foreach (var type in typeof(Item).AllChildClass()) {
 				if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -119,10 +119,17 @@ namespace AngeliaFramework {
 					item.MaxStackCount.Clamp(1, 256)
 				));
 			}
-			// Combination
+		}
+
+
+		[OnProjectOpen(1024)]
+		public static void OnProjectOpen () {
+			CreateItemCombinationHelperFiles();
+			CreateCombinationFileFromCode(false);
 			CombinationPool.Clear();
-			LoadCombinationFromFile(Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME));
-			LoadCombinationFromFile(Util.CombinePaths(AngePath.MetaRoot, AngePath.COMBINATION_FILE_NAME));
+			LoadCombinationFromFile(Util.CombinePaths(Project.CurrentProject.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME));
+			LoadCombinationFromFile(Util.CombinePaths(Project.CurrentProject.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME));
+			LoadUnlockDataFromFile();
 		}
 
 
@@ -134,10 +141,6 @@ namespace AngeliaFramework {
 				SaveUnlockDataToFile();
 			}
 		}
-
-
-		[OnSlotChanged(256)]
-		internal static void OnSlotChanged () => LoadUnlockDataFromFile();
 
 
 		#endregion
@@ -212,10 +215,10 @@ namespace AngeliaFramework {
 
 
 		// Combination
-		public static void CreateItemCombinationFiles () {
+		public static void CreateItemCombinationHelperFiles () {
 
 			// Create User Combination Template
-			string combineFilePath = Util.CombinePaths(AngePath.ItemSaveDataRoot, AngePath.COMBINATION_FILE_NAME);
+			string combineFilePath = Util.CombinePaths(Project.CurrentProject.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME);
 			if (!Util.FileExists(combineFilePath)) {
 				Util.TextToFile(@"
 #
@@ -242,7 +245,7 @@ namespace AngeliaFramework {
 			}
 
 			// Create Item Name Helper
-			string helperPath = Util.CombinePaths(AngePath.ItemSaveDataRoot, "Item Name Helper.txt");
+			string helperPath = Util.CombinePaths(Project.CurrentProject.ItemCustomizationRoot, "Item Name Helper.txt");
 			if (!Util.FileExists(helperPath)) {
 				var builder = new StringBuilder();
 				foreach (var type in typeof(Item).AllChildClass()) {
@@ -251,59 +254,62 @@ namespace AngeliaFramework {
 				Util.TextToFile(builder.ToString(), helperPath);
 			}
 
-			// Create Built-in Combination File
-			{
-				string builtInPath = Util.CombinePaths(AngePath.MetaRoot, AngePath.COMBINATION_FILE_NAME);
-				var builder = new StringBuilder();
-				foreach (var type in typeof(Item).AllChildClass()) {
-					string result = type.AngeName();
-					var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
-					if (iComs == null) continue;
-					foreach (var com in iComs) {
-						if (com.Count <= 0) continue;
-						if (
-							com.ItemA == null && com.ItemB == null &&
-							com.ItemC == null && com.ItemD == null
-						) continue;
-						if (com.ItemA != null) {
-							if (!com.ConsumeA) builder.Append('^');
-							builder.Append(com.ItemA.AngeName());
-						}
-						if (com.ItemB != null) {
-							builder.Append(' ');
-							builder.Append('+');
-							builder.Append(' ');
-							if (!com.ConsumeB) builder.Append('^');
-							builder.Append(com.ItemB.AngeName());
-						}
-						if (com.ItemC != null) {
-							builder.Append(' ');
-							builder.Append('+');
-							builder.Append(' ');
-							if (!com.ConsumeC) builder.Append('^');
-							builder.Append(com.ItemC.AngeName());
-						}
-						if (com.ItemD != null) {
-							builder.Append(' ');
-							builder.Append('+');
-							builder.Append(' ');
-							if (!com.ConsumeD) builder.Append('^');
-							builder.Append(com.ItemD.AngeName());
-						}
-						builder.Append(' ');
-						builder.Append('=');
-						if (com.Count > 1) {
-							builder.Append(' ');
-							builder.Append(com.Count);
-						}
-						builder.Append(' ');
-						builder.Append(result);
-						builder.Append('\n');
-					}
-				}
-				Util.TextToFile(builder.ToString(), builtInPath);
-			}
+		}
 
+
+		public static void CreateCombinationFileFromCode (bool forceCreate) {
+
+			string builtInPath = Util.CombinePaths(Project.CurrentProject.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME);
+			if (!forceCreate && Util.FileExists(builtInPath)) return;
+
+			var builder = new StringBuilder();
+			foreach (var type in typeof(Item).AllChildClass()) {
+				string result = type.AngeName();
+				var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
+				if (iComs == null) continue;
+				foreach (var com in iComs) {
+					if (com.Count <= 0) continue;
+					if (
+						com.ItemA == null && com.ItemB == null &&
+						com.ItemC == null && com.ItemD == null
+					) continue;
+					if (com.ItemA != null) {
+						if (!com.ConsumeA) builder.Append('^');
+						builder.Append(com.ItemA.AngeName());
+					}
+					if (com.ItemB != null) {
+						builder.Append(' ');
+						builder.Append('+');
+						builder.Append(' ');
+						if (!com.ConsumeB) builder.Append('^');
+						builder.Append(com.ItemB.AngeName());
+					}
+					if (com.ItemC != null) {
+						builder.Append(' ');
+						builder.Append('+');
+						builder.Append(' ');
+						if (!com.ConsumeC) builder.Append('^');
+						builder.Append(com.ItemC.AngeName());
+					}
+					if (com.ItemD != null) {
+						builder.Append(' ');
+						builder.Append('+');
+						builder.Append(' ');
+						if (!com.ConsumeD) builder.Append('^');
+						builder.Append(com.ItemD.AngeName());
+					}
+					builder.Append(' ');
+					builder.Append('=');
+					if (com.Count > 1) {
+						builder.Append(' ');
+						builder.Append(com.Count);
+					}
+					builder.Append(' ');
+					builder.Append(result);
+					builder.Append('\n');
+				}
+			}
+			Util.TextToFile(builder.ToString(), builtInPath);
 		}
 
 
@@ -470,7 +476,7 @@ namespace AngeliaFramework {
 
 		// Unlock
 		private static void LoadUnlockDataFromFile () {
-			string unlockPath = Util.CombinePaths(AngePath.UserDataRoot, UNLOCK_NAME);
+			string unlockPath = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, UNLOCK_NAME);
 			if (!Util.FileExists(unlockPath)) return;
 			foreach (var (_, data) in ItemPool) data.Unlocked = false;
 			var bytes = Util.FileToByte(unlockPath);
@@ -488,7 +494,7 @@ namespace AngeliaFramework {
 
 
 		private static void SaveUnlockDataToFile () {
-			string unlockPath = Util.CombinePaths(AngePath.UserDataRoot, UNLOCK_NAME);
+			string unlockPath = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, UNLOCK_NAME);
 			Util.CreateFolder(Util.GetParentPath(unlockPath));
 			var fs = new FileStream(unlockPath, FileMode.Create, FileAccess.Write);
 			foreach (var (id, data) in ItemPool) {

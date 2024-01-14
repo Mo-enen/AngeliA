@@ -177,9 +177,7 @@ namespace AngeliaFramework {
 			if (InitializedFrame < 0) {
 				InitializedFrame = Game.GlobalFrame;
 				UndoRedo = new(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
-				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(
-					Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot
-				);
+				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(Project.CurrentProject.MapRoot);
 				Initialize_Pool();
 				Initialize_Palette();
 				Initialize_Nav();
@@ -244,9 +242,9 @@ namespace AngeliaFramework {
 				Save();
 			}
 
-			JsonUtil.SaveJson(EditorMeta, Game.IsEdittime ? AngePath.BuiltInMapRoot : AngePath.UserMapRoot);
-			AngeUtil.DeleteAllEmptyMaps(WorldSquad.MapRoot);
-			IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
+			JsonUtil.SaveJson(EditorMeta, Project.CurrentProject.MapRoot);
+			AngeUtil.DeleteAllEmptyMaps(Project.CurrentProject.MapRoot);
+			IGlobalPosition.CreateMetaFileFromMapsAsync(Project.CurrentProject.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
 			WorldSquad.ShowElement = false;
@@ -907,14 +905,13 @@ namespace AngeliaFramework {
 			Stage.ClearGlobalAntiSpawn();
 			Player.RespawnCpUnitPosition = null;
 			if (toPlayMode) {
-				IGlobalPosition.CreateMetaFileFromMapsAsync(WorldSquad.MapRoot);
+				IGlobalPosition.CreateMetaFileFromMapsAsync(Project.CurrentProject.MapRoot);
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			// Squad  
-			var targetChannel = Game.IsEdittime ? MapChannel.BuiltIn : MapChannel.User;
-			if (WorldSquad.Channel != targetChannel) {
-				WorldSquad.SetMapChannel(targetChannel);
+			if (WorldSquad.Channel != MapChannel.BuiltIn) {
+				WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			}
 			WorldSquad.SpawnEntity = toPlayMode;
 			WorldSquad.ShowElement = !toPlayMode;

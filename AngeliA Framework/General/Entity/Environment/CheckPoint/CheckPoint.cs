@@ -5,8 +5,8 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 	[EntityAttribute.ExcludeInMapEditor]
 	public class ProcedureCheckPoint : CheckPoint {
-		[OnSlotChanged(1024)]
-		public static void OnGameInitialize () {
+		[OnGameInitialize(1024)]
+		public static void OnGameInitialize_PCP () {
 			Unlock(typeof(ProcedureCheckPoint).AngeHash());
 		}
 		protected override bool TryGetAltarPosition (out Int3 altarUnitPos) {
@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 		public static int LastTriggeredCheckPointID { get; private set; } = 0;
 
 		// Short
-		private static string UnlockFolderPath => Util.CombinePaths(AngePath.UserDataRoot, "Unlocked CP");
+		private static string UnlockFolderPath => Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Unlocked CP");
 
 		// Data
 		private static readonly HashSet<int> UnlockedCheckPoint = new();
@@ -48,8 +48,8 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnSlotChanged]
-		public static void OnSlotChanged () => LoadUnlockFromFile();
+		[OnProjectOpen]
+		public static void OnGameInitialize () => LoadUnlockFromFile();
 
 
 		[OnGameRestart]

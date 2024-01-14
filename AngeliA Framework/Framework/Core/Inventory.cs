@@ -76,10 +76,15 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnSlotChanged(1024)]
-		public static void OnSlotChanged () {
-			LoadAllFromDisk();
-			UpdateAllItemUnlocked();
+		[OnProjectOpen(-32)]
+		public static void OnProjectOpen () => LoadAllFromDisk();
+
+
+		[OnProjectOpen(32)]
+		public static void OnProjectOpenLater () {
+			foreach (var (_, data) in Pool) {
+				UpdateItemUnlocked(data);
+			}
 		}
 
 
@@ -383,7 +388,7 @@ namespace AngeliaFramework {
 		private static void LoadAllFromDisk () {
 			IsPoolDirty = false;
 			Pool.Clear();
-			string root = Util.CombinePaths(AngePath.UserDataRoot, "Inventory");
+			string root = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Inventory");
 			if (!Util.FolderExists(root)) return;
 			foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{CHAR_INV_EXT}")) {
 				try {
@@ -415,7 +420,7 @@ namespace AngeliaFramework {
 
 		private static void SaveAllToDisk (bool forceSave) {
 			IsPoolDirty = false;
-			string root = Util.CombinePaths(AngePath.UserDataRoot, "Inventory");
+			string root = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Inventory");
 			foreach (var (_, data) in Pool) {
 				if (!forceSave && !data.IsDirty) continue;
 				data.IsDirty = false;
@@ -423,13 +428,6 @@ namespace AngeliaFramework {
 				string path = Util.CombinePaths(root, $"{data.Name}.{(data is CharacterInventoryData ? CHAR_INV_EXT : INV_EXT)}");
 				JsonUtil.SaveJsonToPath(data, path, false);
 				// Update Item Unlocked
-				UpdateItemUnlocked(data);
-			}
-		}
-
-
-		private static void UpdateAllItemUnlocked () {
-			foreach (var (_, data) in Pool) {
 				UpdateItemUnlocked(data);
 			}
 		}

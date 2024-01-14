@@ -19,8 +19,6 @@ namespace AngeliaFramework {
 
 		// Api
 		public static int LanguageCount => AllLanguages.Length;
-		public static int BuiltInLanguageCount => AllBuiltInLanguages.Length;
-		public static int UserLanguageCount => AllUserLanguages.Length;
 		public static string CurrentLanguage => _LoadedLanguage.Value;
 		public static string CurrentLanguageDisplayName { get; private set; } = "";
 
@@ -29,8 +27,6 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, string> Pool = new();
 		private static readonly StringBuilder CacheBuilder = new();
 		private static string[] AllLanguages = new string[0];
-		private static string[] AllBuiltInLanguages = new string[0];
-		private static string[] AllUserLanguages = new string[0];
 
 		// Saving
 		private static readonly SavingString _LoadedLanguage = new("Game.Language", "");
@@ -39,21 +35,19 @@ namespace AngeliaFramework {
 		// API
 		[OnGameInitialize(-128)]
 		public static void Initialize () {
-
 			Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
+		}
+
+
+		[OnProjectOpen]
+		public static void OnProjectOpen () {
 
 			// Get All Language from Disk
-			var allBuiltInLanguages = new List<string>();
-			var allUserLanguages = new List<string>();
-			foreach (var path in Util.EnumerateFiles(AngePath.BuiltInLanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
-				allBuiltInLanguages.Add(Util.GetNameWithoutExtension(path));
+			var allLanguages = new List<string>();
+			foreach (var path in Util.EnumerateFiles(Project.CurrentProject.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
+				allLanguages.Add(Util.GetNameWithoutExtension(path));
 			}
-			foreach (var path in Util.EnumerateFiles(AngePath.UserLanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
-				allUserLanguages.Add(Util.GetNameWithoutExtension(path));
-			}
-			AllBuiltInLanguages = allBuiltInLanguages.ToArray();
-			AllUserLanguages = allUserLanguages.ToArray();
-			AllLanguages = allBuiltInLanguages.Concat(allUserLanguages).Distinct().ToArray();
+			AllLanguages = allLanguages.ToArray();
 
 			// Load Current Language
 			var targetLanguage = string.IsNullOrEmpty(_LoadedLanguage.Value) ? GetSystemLanguageISO() : _LoadedLanguage.Value;
@@ -71,16 +65,11 @@ namespace AngeliaFramework {
 
 
 		public static string GetLanguageAt (int index) => AllLanguages[index];
-		public static string GetBuiltInLanguageAt (int index) => AllBuiltInLanguages[index];
-		public static string GetUserLanguageAt (int index) => AllUserLanguages[index];
 
 
 		public static bool SetLanguage (string language) {
 			Pool.Clear();
-			foreach (var (key, value) in LoadAllPairsFromDisk(AngePath.UserLanguageRoot, language)) {
-				Pool.TryAdd(key.AngeHash(), value);
-			}
-			foreach (var (key, value) in LoadAllPairsFromDisk(AngePath.BuiltInLanguageRoot, language)) {
+			foreach (var (key, value) in LoadAllPairsFromDisk(Project.CurrentProject.LanguageRoot, language)) {
 				Pool.TryAdd(key.AngeHash(), value);
 			}
 			if (Pool.Count <= 0) return false;

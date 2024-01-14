@@ -104,11 +104,8 @@ namespace AngeliaFramework {
 		internal static void SetSkyboxTint (Byte4 top, Byte4 bottom) => Instance._SetSkyboxTint(top, bottom);
 		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
 
-		internal static void SetBuiltInTextureForRenderer (object texture) => Instance._SetBuiltInTextureForRenderer(texture);
-		protected abstract void _SetBuiltInTextureForRenderer (object texture);
-
-		internal static void SetUserTextureForRenderer (object texture) => Instance._SetUserTextureForRenderer(texture);
-		protected abstract void _SetUserTextureForRenderer (object texture);
+		internal static void SetTextureForRenderer (object texture) => Instance._SetTextureForRenderer(texture);
+		protected abstract void _SetTextureForRenderer (object texture);
 
 		// Texture
 		public static object GetTextureFromPixels (Byte4[] pixels, int width, int height) => Instance._GetTextureFromPixels(pixels, width, height);

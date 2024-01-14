@@ -58,7 +58,6 @@ namespace AngeliaFramework {
 			bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0,
 			int motionAmount = 1000, bool selfMotion = true
 		) {
-
 			if (spriteIdLeft == 0 && spriteIdRight == 0) return;
 
 			int leftEarID = spriteIdLeft;

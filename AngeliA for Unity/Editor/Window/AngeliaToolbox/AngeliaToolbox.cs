@@ -181,7 +181,11 @@ namespace AngeliaForUnity.Editor {
 			// Texture
 			var texture = SheetThumbnail.image as Texture2D;
 			if (texture == null || forceRefresh) {
-				SheetThumbnail.image = texture = Sheet.LoadTextureInSheet(AngePath.BuiltInSheetPath) as Texture2D;
+				Project.OpenProject(new Project(
+					Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"),
+					Util.CombinePaths(AngePath.PersistentDataPath, "Built In Saving")
+				), ignoreCallback: true);
+				SheetThumbnail.image = texture = Sheet.LoadTextureInSheet(Project.CurrentProject.SheetPath) as Texture2D;
 			}
 
 			// Label
@@ -263,7 +267,7 @@ namespace AngeliaForUnity.Editor {
 			root.Query<Button>(className: "Link").ForEach((btn) => {
 				switch (btn.name) {
 					case "Universe":
-						btn.clicked += () => EditorUtility.OpenWithDefaultApp(AngePath.UniverseRoot);
+						btn.clicked += () => EditorUtility.OpenWithDefaultApp(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"));
 						break;
 					case "Persis":
 						btn.clicked += () => EditorUtility.OpenWithDefaultApp(AngePath.PersistentDataPath);

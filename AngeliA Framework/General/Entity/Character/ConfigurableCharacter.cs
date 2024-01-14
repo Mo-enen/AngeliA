@@ -52,27 +52,16 @@ namespace AngeliaFramework {
 
 		// VAR
 		public CharacterConfig Config { get; set; }
-		public int LoadedSlot { get; set; }
 
 
 		// API
 		public CharacterConfig CreateNewConfig () => new();
 
 
-		public sealed void ReloadConfig () {
-			if (LoadedSlot != AngePath.CurrentSaveSlot) {
-				LoadConfigFromFile();
-			} else {
-				LoadCharacterFromConfig();
-			}
-		}
-
-
 		public sealed void LoadConfigFromFile () {
-			LoadedSlot = AngePath.CurrentSaveSlot;
 			Config ??= CreateNewConfig() ?? new();
 			string name = GetType().AngeName();
-			string path = Util.CombinePaths(AngePath.UserDataRoot, "Character Config");
+			string path = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Character Config");
 			bool overrided = JsonUtil.OverrideJson(path, Config, name);
 			if (!overrided) Config = CreateNewConfig();
 			LoadCharacterFromConfig();
@@ -83,7 +72,7 @@ namespace AngeliaFramework {
 			Config ??= CreateNewConfig();
 			if (Config == null) return;
 			SaveCharacterToConfig();
-			string path = Util.CombinePaths(AngePath.UserDataRoot, "Character Config");
+			string path = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Character Config");
 			JsonUtil.SaveJson(Config, path, GetType().AngeName(), prettyPrint: true);
 		}
 

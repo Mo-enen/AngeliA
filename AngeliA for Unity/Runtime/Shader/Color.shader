@@ -3,7 +3,6 @@ Shader"Angelia/Color"
 	Properties
 	{
 		[HideInInspector] _MainTex("Texture", 2D) = "white" {}
-		[HideInInspector] _UserTex("Texture", 2D) = "white" {}
 	}
 
 		SubShader
@@ -27,7 +26,6 @@ Blend SrcAlpha OneMinusSrcAlpha
 			#pragma fragment frag
 #include "UnityCG.cginc"
 sampler2D _MainTex;
-sampler2D _UserTex;
 
 
 struct appdata
@@ -57,18 +55,10 @@ v2f vert(appdata v)
 
 fixed4 frag(v2f i) : SV_Target
 {
-    if (i.uv.x < 1)
-    {
         fixed4 tColor = i.color;
         tColor.a *= tex2D(_MainTex, i.uv).a;
         return tColor;
-    }
-    else
-    {
-        fixed4 tColor = i.color;
-        tColor.a *= tex2D(_UserTex, i.uv).a;
-        return tColor;
-    }
+    
                 
 }
 		ENDCG

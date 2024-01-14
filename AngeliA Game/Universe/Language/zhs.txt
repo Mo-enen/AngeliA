@@ -1625,7 +1625,6 @@ Menu.Setting.Fullscreen.2:全屏（低清）
 Menu.Setting.Fullscreen.Label:显示
 Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
-Menu.Setting.SaveSlot:存档位
 Menu.Setting.ShowFPS:显示帧数
 Menu.Setting.SoundVolume:音效音量
 Menu.Setting.UseControlHint:游戏中显示操作提示

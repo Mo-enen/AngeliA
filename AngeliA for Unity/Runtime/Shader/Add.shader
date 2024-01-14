@@ -3,7 +3,6 @@ Shader "Angelia/Add"
 	Properties
 	{
 		[HideInInspector] _MainTex("Texture", 2D) = "white" {}
-		[HideInInspector] _UserTex("Texture", 2D) = "white" {}
 		[HideInInspector] _Color("Tint", Color) = (1,1,1,1)
 		[HideInInspector] _RendererColor("RendererColor", Color) = (1,1,1,1)
 		[HideInInspector] _Flip("Flip", Vector) = (1,1,1,1)
@@ -33,7 +32,6 @@ Shader "Angelia/Add"
 
 
 sampler2D _MainTex;
-sampler2D _UserTex;
 
 
 struct appdata
@@ -63,14 +61,7 @@ v2f vert(appdata v)
 
 fixed4 frag(v2f i) : SV_Target
 {
-    if (i.uv.x < 1)
-    {
-        return i.color * tex2D(_MainTex, i.uv);
-    }
-    else
-    {
-        return i.color * tex2D(_UserTex, i.uv);
-    }
+     return i.color * tex2D(_MainTex, i.uv);
 }
 
 

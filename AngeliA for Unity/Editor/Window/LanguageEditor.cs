@@ -39,6 +39,10 @@ namespace AngeliaForUnity.Editor {
 
 		private void OnEnable () {
 			try {
+				Project.OpenProject(new Project(
+					Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"),
+					Util.CombinePaths(AngePath.PersistentDataPath, "Built In Saving")
+				), ignoreCallback: true);
 				SearchingText = "";
 				Loaded = Load();
 			} catch (System.Exception ex) {
@@ -220,7 +224,7 @@ namespace AngeliaForUnity.Editor {
 			Keys.Clear();
 			Languages.Clear();
 			var keyMap = new Dictionary<string, int>();
-			foreach (var filePath in Util.EnumerateFiles(AngePath.BuiltInLanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
+			foreach (var filePath in Util.EnumerateFiles(Project.CurrentProject.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 				// Add Language
 				string lan = Util.GetNameWithoutExtension(filePath);
 				Languages.Add(lan);
@@ -242,7 +246,7 @@ namespace AngeliaForUnity.Editor {
 
 			// Get Contents
 			Contents = new string[Languages.Count, Keys.Count];
-			foreach (var filePath in Util.EnumerateFiles(AngePath.BuiltInLanguageRoot, true, "*")) {
+			foreach (var filePath in Util.EnumerateFiles(Project.CurrentProject.LanguageRoot, true, "*")) {
 				string key, value;
 				string lan = Util.GetNameWithoutExtension(filePath);
 				int lanIndex = Languages.IndexOf(lan);
@@ -269,7 +273,7 @@ namespace AngeliaForUnity.Editor {
 
 			for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 				var language = Languages[lanIndex];
-				string path = Util.CombinePaths(AngePath.BuiltInLanguageRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}");
+				string path = Util.CombinePaths(Project.CurrentProject.LanguageRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}");
 				var builder = new StringBuilder();
 				for (int keyIndex = 0; keyIndex < Keys.Count; keyIndex++) {
 					string key = Keys[keyIndex];
@@ -299,7 +303,7 @@ namespace AngeliaForUnity.Editor {
 						if (EditorUtil.Dialog(
 							"", $"Delete Language {Util.GetLanguageDisplayName(language)}?\nFile will move to recycle bin.", "Delete", "Cancel"
 						)) {
-							string path = Util.CombinePaths(AngePath.BuiltInLanguageRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}");
+							string path = Util.CombinePaths(Project.CurrentProject.LanguageRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}");
 							EditorUtil.MoveFileOrFolderToTrash(path, path + ".meta");
 						}
 					} else {
@@ -311,7 +315,7 @@ namespace AngeliaForUnity.Editor {
 						}
 						Util.TextToFile(
 							builder.ToString(),
-							Util.CombinePaths(AngePath.BuiltInLanguageRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}")
+							Util.CombinePaths(Project.CurrentProject.LanguageRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}")
 						);
 					}
 					EditorApplication.delayCall += () => Load();

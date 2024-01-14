@@ -23,9 +23,7 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotChangedAttribute : OrderedAttribute { public OnSlotChangedAttribute (int order = 0) : base(order) { } }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSlotCreatedAttribute : System.Attribute { }
-
+	
 
 	public abstract partial class Game {
 
@@ -79,8 +77,6 @@ namespace AngeliaFramework {
 		private static event System.Action OnGameUpdate;
 		private static event System.Action OnGameUpdateLater;
 		private static event System.Action OnGameUpdatePauseless;
-		private static event System.Action OnSlotChanged;
-		private static event System.Action OnSlotCreated;
 
 		// Data
 		private static readonly Dictionary<int, object> ResourcePool = new();
@@ -92,7 +88,6 @@ namespace AngeliaFramework {
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
 		private static readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
-		private static readonly SavingInt _CurrentSaveSlot = new("Game.CurrentSaveSlot", 0);
 		private static readonly SavingBool _VSync = new("Game.VSync", false);
 		private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 		private static readonly SavingInt _MusicVolume = new("Audio.MusicVolume", 500);
@@ -116,32 +111,25 @@ namespace AngeliaFramework {
 				GlobalFrame = 0;
 				GameWatch = Stopwatch.StartNew();
 
-				AngePath.CurrentSaveSlot = _CurrentSaveSlot.Value;
-
 				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 				Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
 				Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(typeof(Game), nameof(OnGameTryingToQuit));
 				Util.LinkEventWithAttribute<OnGameQuittingAttribute>(typeof(Game), nameof(OnGameQuitting));
 				Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
-				Util.LinkEventWithAttribute<OnSlotChangedAttribute>(typeof(Game), nameof(OnSlotChanged));
-				Util.LinkEventWithAttribute<OnSlotCreatedAttribute>(typeof(Game), nameof(OnSlotCreated));
-
+				
 				_AddGameTryingToQuitListener(OnTryingToQuit);
 				_AddGameQuittingListener(OnGameQuitting);
 				_AddTextInputListener(CellRendererGUI.OnTextInput);
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
-				OnSlotChanged?.Invoke();
-
+				
 				SetDebugEnable(_GetIsEdittime());
 				_SetGraphicFramerate(GraphicFramerate);
 				_SetVSync(_VSync.Value);
 				_SetFullscreenMode((FullscreenMode)_FullscreenMode.Value);
 				_SetMusicVolume(MusicVolume);
 				_SetSoundVolume(SoundVolume);
-
-				AngeUtil.CreateAngeFolders();
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeLaterAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
@@ -179,13 +167,6 @@ namespace AngeliaFramework {
 
 				// Answer Game Restart Require
 				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic();
-
-				// Slot Change Detect
-				if (_CurrentSaveSlot.Value != AngePath.CurrentSaveSlot) {
-					_CurrentSaveSlot.Value = AngePath.CurrentSaveSlot;
-					if (!Util.FolderExists(AngePath.SaveSlotRoot)) OnSlotCreated?.Invoke();
-					OnSlotChanged?.Invoke();
-				}
 
 				// Grow Frame
 				if (!IsPausing) GlobalFrame++;

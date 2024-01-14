@@ -12,29 +12,6 @@ namespace AngeliaFramework {
 		private static readonly System.Random GlobalRandom = new(2334768);
 
 
-		// File
-		public static void CreateAngeFolders () {
-			Util.CreateFolder(AngePath.UniverseRoot);
-			Util.CreateFolder(AngePath.DialogueRoot);
-			Util.CreateFolder(AngePath.MetaRoot);
-			Util.CreateFolder(AngePath.BuiltInMapRoot);
-			Util.CreateFolder(AngePath.BuiltInLanguageRoot);
-			Util.CreateFolder(AngePath.BuiltInAtlasSheetRoot);
-			Util.CreateFolder(AngePath.UserLanguageRoot);
-			Util.CreateFolder(AngePath.UserAtlasSheetRoot);
-		}
-
-
-		[OnSlotCreated]
-		public static void CreateSlotFolders () {
-			Util.CreateFolder(AngePath.SaveSlotRoot);
-			Util.CreateFolder(AngePath.UserMapRoot);
-			Util.CreateFolder(AngePath.UserDataRoot);
-			Util.CreateFolder(AngePath.ProcedureMapRoot);
-			Util.CreateFolder(AngePath.DownloadMapRoot);
-		}
-
-
 		// API
 		public static string GetBlockRealName (string name) {
 			int hashIndex = name.IndexOf('#');
@@ -80,7 +57,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void TryCompileDialogueFiles (string workspace, bool forceCompile) {
+		public static void TryCompileDialogueFiles (string workspace, string exportRoot, bool forceCompile) {
 
 			var ignoreDelete = new HashSet<string>();
 
@@ -88,7 +65,7 @@ namespace AngeliaFramework {
 			foreach (var path in Util.EnumerateFiles(workspace, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
 
 				string globalName = Util.GetNameWithoutExtension(path);
-				string conFolderPath = Util.CombinePaths(AngePath.DialogueRoot, globalName);
+				string conFolderPath = Util.CombinePaths(exportRoot, globalName);
 				ignoreDelete.TryAdd(globalName);
 
 				// Check Dirty
@@ -173,7 +150,7 @@ namespace AngeliaFramework {
 			// Delete Useless Old Files
 			if (ignoreDelete != null) {
 				List<string> deleteList = null;
-				foreach (var path in Util.EnumerateFolders(AngePath.DialogueRoot, true, "*")) {
+				foreach (var path in Util.EnumerateFolders(exportRoot, true, "*")) {
 					if (ignoreDelete.Contains(Util.GetNameWithoutExtension(path))) continue;
 					deleteList ??= new List<string>();
 					deleteList.Add(path);
@@ -427,6 +404,7 @@ namespace AngeliaFramework {
 		}
 
 
+		// Requirement
 		public static IEnumerable<KeyValuePair<string, string>> ForAllSpriteNameRequirements () {
 			foreach (var pair in RequireSpriteFromField.ForAllRequirement()) {
 				yield return pair;

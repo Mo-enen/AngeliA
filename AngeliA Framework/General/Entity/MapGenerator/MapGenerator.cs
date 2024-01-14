@@ -23,14 +23,13 @@ namespace AngeliaFramework {
 		public bool IsGenerating => GenerateMapTask != null && GenerateMapTask.Status == TaskStatus.Running;
 		public bool HasMapInDisk {
 			get {
-				if (!_HasMapInDisk.HasValue || _CheckedSlot != AngePath.CurrentSaveSlot) {
+				if (!_HasMapInDisk.HasValue) {
 					_HasMapInDisk = Util.HasFileIn(MapRoot, true, "*");
-					_CheckedSlot = AngePath.CurrentSaveSlot;
 				}
 				return _HasMapInDisk.Value;
 			}
 		}
-		protected string MapRoot => Util.CombinePaths(AngePath.ProcedureMapRoot, GetType().Name);
+		protected string MapRoot => Util.CombinePaths(Project.CurrentProject.ProcedureMapRoot, GetType().Name);
 		protected string TempMapRoot => Util.CombinePaths(AngePath.ProcedureMapTempRoot, GetType().Name);
 		protected WorldStream SampleReader { get; private set; } = null;
 		protected WorldStream ResultWriter { get; private set; } = null;
@@ -39,7 +38,6 @@ namespace AngeliaFramework {
 		private readonly CancellationTokenSource GenerateMapToken = new();
 		private Task GenerateMapTask = null;
 		private bool? _HasMapInDisk = null;
-		private int _CheckedSlot = -1;
 
 
 		#endregion
@@ -50,14 +48,14 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnSlotChanged]
-		public static void OnSlotChanged () {
-			Util.DeleteFolder(AngePath.ProcedureMapRoot);
-			Util.CreateFolder(AngePath.ProcedureMapRoot);
+		[OnProjectOpen]
+		public static void OnGameInitialize () {
+			Util.DeleteFolder(Project.CurrentProject.ProcedureMapRoot);
+			Util.CreateFolder(Project.CurrentProject.ProcedureMapRoot);
 			Util.DeleteFolder(AngePath.ProcedureMapTempRoot);
 			Util.CreateFolder(AngePath.ProcedureMapTempRoot);
 			foreach (var type in typeof(MapGenerator).AllChildClass()) {
-				Util.CreateFolder(Util.CombinePaths(AngePath.ProcedureMapRoot, type.Name));
+				Util.CreateFolder(Util.CombinePaths(Project.CurrentProject.ProcedureMapRoot, type.Name));
 				Util.CreateFolder(Util.CombinePaths(AngePath.ProcedureMapTempRoot, type.Name));
 			}
 		}
@@ -86,7 +84,7 @@ namespace AngeliaFramework {
 				generator.CancelAsyncGeneration();
 			}
 			// Delete Files
-			foreach (string path in Util.EnumerateFolders(AngePath.ProcedureMapRoot, true)) {
+			foreach (string path in Util.EnumerateFolders(Project.CurrentProject.ProcedureMapRoot, true)) {
 				Util.DeleteFolder(path);
 				Util.CreateFolder(path);
 			}

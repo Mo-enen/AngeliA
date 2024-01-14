@@ -46,7 +46,6 @@ namespace AngeliaForUnity {
 		private static readonly int SKYBOX_BOTTOM = Shader.PropertyToID("_ColorB");
 		private static readonly Shader SKYBOX_SHADER = Shader.Find("Angelia/Skybox");
 		private static readonly int MAIN_TEX_ID = Shader.PropertyToID("_MainTex");
-		private static readonly int USER_TEX_ID = Shader.PropertyToID("_UserTex");
 
 		// Data
 		private static readonly Color32[] CacheFillPixelsForMap = new Color32[Const.MAP * Const.MAP];
@@ -351,19 +350,11 @@ namespace AngeliaForUnity {
 			Skybox.SetColor(SKYBOX_BOTTOM, bottom.ToUnityColor());
 		}
 
-		protected override void _SetBuiltInTextureForRenderer (object texture) {
+		protected override void _SetTextureForRenderer (object texture) {
 			var builtIn = texture as Texture2D;
 			foreach (var layer in RenderingLayers) {
 				var mat = layer.Renderer.sharedMaterial;
 				mat.SetTexture(MAIN_TEX_ID, builtIn);
-			}
-		}
-
-		protected override void _SetUserTextureForRenderer (object texture) {
-			var user = texture as Texture2D;
-			foreach (var layer in RenderingLayers) {
-				var mat = layer.Renderer.sharedMaterial;
-				mat.SetTexture(USER_TEX_ID, user);
 			}
 		}
 

@@ -202,13 +202,6 @@ namespace AngeliaFramework {
 		[OnGameInitialize(-128)]
 		public static void BeforeGameInitialize () {
 
-			// Load Config
-			var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(AngePath.PersistentDataPath);
-			for (int i = 0; i < 8; i++) {
-				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
-			}
-			KeyMap[Gamekey.Start] = new Int2((int)KeyboardKey.Escape, (int)GamepadKey.Start);
-
 			// Add Keys for Keyboard
 			var values = System.Enum.GetValues(typeof(KeyboardKey));
 			AllKeyboardKeys = new KeyboardKey[values.Length];
@@ -247,6 +240,17 @@ namespace AngeliaFramework {
 				}
 			}
 
+		}
+
+
+		[OnProjectOpen]
+		public static void OnProjectOpen () {
+			// Load Config
+			var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(Project.CurrentProject.SavingMetaRoot);
+			for (int i = 0; i < 8; i++) {
+				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
+			}
+			KeyMap[Gamekey.Start] = new Int2((int)KeyboardKey.Escape, (int)GamepadKey.Start);
 		}
 
 

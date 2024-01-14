@@ -65,7 +65,7 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize]
 		public static void CreateAtlasFiles () {
-			string root = Game.IsEdittime ? AngePath.BuiltInAtlasSheetRoot : AngePath.UserAtlasSheetRoot;
+			string root = Project.CurrentProject.AtlasRoot;
 			CreateFileIfNotExists(root, "LevelFront", AtlasType.Level, 16);
 			CreateFileIfNotExists(root, "LevelBack", AtlasType.Level, -35);
 			CreateFileIfNotExists(root, "Background", AtlasType.Background, -64);
@@ -161,7 +161,7 @@ namespace AngeliaFramework {
 			AllRequiredAtlasNames.Clear();
 
 			// Load Requirement From File
-			foreach (var path in Util.EnumerateFiles(AngePath.UserAtlasSheetRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(Project.CurrentProject.AtlasRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
 				string atlasName = Util.GetNameWithoutExtension(path);
 				int nameID = atlasName.AngeHash();
 				if (!AtlasRequirements.ContainsKey(nameID)) {
@@ -210,7 +210,7 @@ namespace AngeliaFramework {
 		private void LoadAtlasSheetFromDisk (Sheet atlasSheet, string atlasName) {
 			// Load from Disk
 			string path = Util.CombinePaths(
-				Game.IsEdittime ? AngePath.BuiltInAtlasSheetRoot : AngePath.UserAtlasSheetRoot,
+				Project.CurrentProject.AtlasRoot,
 				$"{atlasName}.{AngePath.SHEET_FILE_EXT}"
 			);
 			bool loaded = atlasSheet.LoadFromDisk(path);
@@ -230,7 +230,7 @@ namespace AngeliaFramework {
 
 		private void SaveAtlasSheetToDisk (Sheet atlasSheet, string atlasName) =>
 			atlasSheet.SaveToDisk(Util.CombinePaths(
-				Game.IsEdittime ? AngePath.BuiltInAtlasSheetRoot : AngePath.UserAtlasSheetRoot,
+				Project.CurrentProject.AtlasRoot,
 				$"{atlasName}.{AngePath.SHEET_FILE_EXT}"
 			));
 

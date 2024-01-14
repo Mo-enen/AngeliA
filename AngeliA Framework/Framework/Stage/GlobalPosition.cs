@@ -54,11 +54,15 @@ namespace AngeliaFramework {
 			foreach (var type in typeof(IGlobalPosition).AllClassImplemented()) {
 				AllGlobalPositionID.TryAdd(type.AngeHash());
 			}
+		}
+
+
+		[OnProjectOpen]
+		public static void OnProjectOpen () {
 			ReloadPool();
 			if (Game.IsEdittime) {
-				CreateMetaFileFromMapsAsync(AngePath.BuiltInMapRoot);
+				CreateMetaFileFromMapsAsync(Project.CurrentProject.MapRoot);
 			}
-
 		}
 
 

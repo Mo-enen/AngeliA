@@ -402,12 +402,6 @@ namespace AngeliaFramework {
 			Texture = null;
 		}
 
-		public void ShiftUvToUserSpace () {
-			for (int i = 0; i < Sprites.Length; i++) {
-				Sprites[i].UvRect.x += 1f;
-			}
-		}
-
 		public void FillPool () {
 			// Fill Sprites
 			for (int i = 0; i < Sprites.Length; i++) {

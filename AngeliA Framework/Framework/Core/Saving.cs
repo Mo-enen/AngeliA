@@ -15,18 +15,9 @@ namespace AngeliaFramework {
 		public static bool IsDirty = true;
 
 
-		[OnGameInitialize(int.MinValue)]
+		[OnGameInitialize(int.MinValue + 1)]
 		public static void OnGameInitialize () {
-			SavingPath = Util.CombinePaths(AngePath.UserDataRoot, "Saving.txt");
-			LoadFromFile();
-		}
-
-
-		[OnSlotChanged]
-		public static void OnSlotChanged () {
-			if (Game.GlobalFrame == 0) return;
-			SavingPath = Util.CombinePaths(AngePath.UserDataRoot, "Saving.txt");
-			if (FileLoaded && IsDirty) SaveToFile();
+			SavingPath = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Saving.txt");
 			LoadFromFile();
 		}
 

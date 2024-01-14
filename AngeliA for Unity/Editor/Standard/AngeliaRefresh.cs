@@ -108,36 +108,9 @@ namespace AngeliaForUnity.Editor {
 					lastSyncTickValue = 0;
 				}
 
-				// Check Sheet not Exist
-				if (!Util.FileExists(AngePath.BuiltInSheetPath)) {
-					goto _Refresh_;
-				}
-
 				// Check for Ase Files
 				foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles()) {
 					if (Util.GetFileModifyDate(filePath) > lastSyncTickValue) {
-						goto _Refresh_;
-					}
-				}
-
-				// Check for Maps
-				foreach (var path in Util.EnumerateFiles(AngePath.BuiltInMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
-					if (Util.GetFileModifyDate(path) > lastSyncTickValue) {
-						goto _Refresh_;
-					}
-				}
-				foreach (var path in Util.EnumerateFiles(AngePath.UserMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
-					if (Util.GetFileModifyDate(path) > lastSyncTickValue) {
-						goto _Refresh_;
-					}
-				}
-
-				// Check for Conversations
-				foreach (var path in Util.EnumerateFiles(ConversationWorkspace, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
-					if (Util.GetFileModifyDate(path) != Util.GetFileCreationDate(path)) {
-						goto _Refresh_;
-					}
-					if (!Util.FolderExists(Util.CombinePaths(AngePath.DialogueRoot, Util.GetNameWithoutExtension(path)))) {
 						goto _Refresh_;
 					}
 				}
@@ -156,11 +129,11 @@ namespace AngeliaForUnity.Editor {
 			// Refresh
 			Refresh(true);
 			// Copy Universe
-			string universePath = AngePath.UniverseRoot;
+			string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
 			if (Util.FolderExists(universePath)) {
 				string newUniversePath = Util.CombinePaths(
 					Util.GetParentPath(report.summary.outputPath),
-					AngePath.UNIVERSE_NAME
+					"Universe"
 				);
 				Util.CopyFolder(universePath, newUniversePath, true, true);
 			}
@@ -180,7 +153,10 @@ namespace AngeliaForUnity.Editor {
 				try {
 					EditorUtil.ProgressBar("Refreshing", "Refreshing...", 0.5f);
 
-					AngeUtil.CreateAngeFolders();
+					Project.OpenProject(new Project(
+						Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"),
+						Util.CombinePaths(AngePath.PersistentDataPath, "Built In Saving")
+					), ignoreCallback: true);
 
 					// Aseprite Files >> Flex Sprites & Texture
 					var tResults = AsepriteUtil.CreateSprites(AsepriteUtil.ForAllAsepriteFiles().Select(
@@ -201,16 +177,15 @@ namespace AngeliaForUnity.Editor {
 
 					// Flex Sprites >> Sheet
 					var sheet = CreateSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
-					sheet?.SaveToDisk(AngePath.BuiltInSheetPath);
+					sheet?.SaveToDisk(Project.CurrentProject.SheetPath);
 
 					// Maps
-					AngeUtil.DeleteAllEmptyMaps(AngePath.BuiltInMapRoot);
-					AngeUtil.DeleteAllEmptyMaps(AngePath.UserMapRoot);
-					AngeUtil.DeleteAllEmptyMaps(AngePath.DownloadMapRoot);
+					AngeUtil.DeleteAllEmptyMaps(Project.CurrentProject.MapRoot);
 
 					// Final
-					ItemSystem.CreateItemCombinationFiles();
-					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, forceRefresh);
+					ItemSystem.CreateItemCombinationHelperFiles();
+					ItemSystem.CreateCombinationFileFromCode(true);
+					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, Project.CurrentProject.DialogueRoot, forceRefresh);
 
 					// For Unity
 					if (forceRefresh) AddAlwaysIncludeShaders();

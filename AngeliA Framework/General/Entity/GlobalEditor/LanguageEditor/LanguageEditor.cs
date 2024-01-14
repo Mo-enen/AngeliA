@@ -300,11 +300,11 @@ namespace AngeliaFramework {
 		private void LoadFromDisk () {
 			IsDirty = false;
 			Lines.Clear();
-			string targetRoot = Game.IsEdittime ? AngePath.BuiltInLanguageRoot : AngePath.UserLanguageRoot;
-			int count = Game.IsEdittime ? Language.BuiltInLanguageCount : Language.UserLanguageCount;
+			string targetRoot = Project.CurrentProject.LanguageRoot;
+			int count = Language.LanguageCount;
 			// Load Language
 			for (int languageIndex = 0; languageIndex < count; languageIndex++) {
-				Languages.Add(Game.IsEdittime ? Language.GetBuiltInLanguageAt(languageIndex) : Language.GetUserLanguageAt(languageIndex));
+				Languages.Add(Language.GetLanguageAt(languageIndex));
 			}
 			Languages.Sort();
 			// Load Contents
@@ -349,7 +349,7 @@ namespace AngeliaFramework {
 
 		private void SaveToDisk () {
 			IsDirty = false;
-			string targetRoot = Game.IsEdittime ? AngePath.BuiltInLanguageRoot : AngePath.UserLanguageRoot;
+			string targetRoot = Project.CurrentProject.LanguageRoot;
 			var list = new List<KeyValuePair<string, string>>();
 			for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
 				string lan = Languages[languageIndex];
@@ -394,7 +394,7 @@ namespace AngeliaFramework {
 				string.Format(Language.Get(DELETE_MSG, "Delete Language {0}?"), lanName),
 				Language.Get(UI_DELETE, "Delete"),
 				() => {
-					string targetRoot = Game.IsEdittime ? AngePath.BuiltInLanguageRoot : AngePath.UserLanguageRoot;
+					string targetRoot = Project.CurrentProject.LanguageRoot;
 					string path = Language.GetLanguageFilePath(targetRoot, Languages[lanIndex]);
 					Util.DeleteFile(path);
 					Languages.RemoveAt(lanIndex);

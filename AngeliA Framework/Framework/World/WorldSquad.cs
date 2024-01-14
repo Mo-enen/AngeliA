@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 
-	public enum MapChannel { BuiltIn, User, Procedure, Download, }
+	public enum MapChannel { BuiltIn, Procedure, }
 
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapChannelChangedAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
@@ -65,6 +65,8 @@ namespace AngeliaFramework {
 			Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 			Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
 			SetMapChannel(MapChannel.BuiltIn);
+			Front.ForceReloadDelay();
+			Behind.ForceReloadDelay();
 		}
 
 
@@ -72,13 +74,6 @@ namespace AngeliaFramework {
 		public static void OnGameUpdate () {
 			Front.DrawAllBlocks(false);
 			Behind.DrawAllBlocks(true);
-		}
-
-
-		[OnSlotChanged]
-		public static void OnSlotChanged () {
-			Front.ForceReloadDelay();
-			Behind.ForceReloadDelay();
 		}
 
 
@@ -126,7 +121,7 @@ namespace AngeliaFramework {
 
 			if (RequireReload || !midZone.Contains(viewPos) || z != LoadedZ) {
 				// Reload All Worlds in Squad
-				if (Channel == MapChannel.User && SaveBeforeReload && !isBehind) {
+				if (SaveBeforeReload && !isBehind) {
 					SaveToFile();
 				}
 				LoadSquadFromDisk(
@@ -259,11 +254,9 @@ namespace AngeliaFramework {
 			if (SaveBeforeReload) Front.SaveToFile();
 
 			MapRoot = newChannel switch {
-				MapChannel.BuiltIn => AngePath.BuiltInMapRoot,
-				MapChannel.User => AngePath.UserMapRoot,
-				MapChannel.Procedure => Util.CombinePaths(AngePath.ProcedureMapRoot, folderName),
-				MapChannel.Download => Util.CombinePaths(AngePath.DownloadMapRoot, folderName),
-				_ => AngePath.BuiltInMapRoot,
+				MapChannel.BuiltIn => Project.CurrentProject.MapRoot,
+				MapChannel.Procedure => Util.CombinePaths(Project.CurrentProject.ProcedureMapRoot, folderName),
+				_ => Project.CurrentProject.MapRoot,
 			};
 			Channel = newChannel;
 
