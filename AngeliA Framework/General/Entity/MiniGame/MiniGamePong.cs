@@ -37,6 +37,7 @@ namespace AngeliaFramework {
 		// Data
 		private readonly IntToChars PlayerScoreString = new();
 		private readonly IntToChars BotScoreString = new();
+		private readonly BadgesSaveData Saving = new(2);
 		private int ScorePlayer = 0;
 		private int ScoreBot = 0;
 		private int PlayerPaddleY = 500;
@@ -58,6 +59,7 @@ namespace AngeliaFramework {
 
 
 		protected override void StartGame () {
+			LoadGameDataFromFile(Saving);
 			ScorePlayer = 0;
 			ScoreBot = 0;
 			PlayerPaddleY = 500;
@@ -147,14 +149,16 @@ namespace AngeliaFramework {
 				ServeBall(true);
 			} else if (BallX > 1000 - BALL_SIZE / 2) {
 				ScorePlayer++;
-				if (ScorePlayer % 20 == 0) {
-					if (ScorePlayer % 60 == 0) {
-						SpawnBadge(2);
-					} else {
-						SpawnBadge(1);
-					}
-				}
 				ServeBall(false);
+				// Badget
+				if (ScorePlayer >= 10 && Saving.GetBadge(0) == 0) {
+					Saving.SetBadge(0, 1);
+					SaveGameDataToFile(Saving);
+				}
+				if (ScorePlayer >= 50 && Saving.GetBadge(1) == 0) {
+					Saving.SetBadge(1, 2);
+					SaveGameDataToFile(Saving);
+				}
 			}
 
 		}
@@ -167,6 +171,10 @@ namespace AngeliaFramework {
 
 			// BG
 			CellRenderer.Draw(Const.PIXEL, windowRect, Const.BLACK, int.MinValue);
+
+			// Badgets
+			int badgetSize = Unify(30);
+			DrawBadges(Saving, windowRect.x, windowRect.yMax - badgetSize, 0, badgetSize);
 
 			// Mid Line
 			const int LINE_DOT_COUNT = 12;

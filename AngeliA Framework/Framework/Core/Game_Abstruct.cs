@@ -107,6 +107,39 @@ namespace AngeliaFramework {
 		internal static void SetTextureForRenderer (object texture) => Instance._SetTextureForRenderer(texture);
 		protected abstract void _SetTextureForRenderer (object texture);
 
+
+		// Effect
+		internal static bool GetEffectEnable (int effectIndex) => Instance._GetEffectEnable(effectIndex);
+		protected abstract bool _GetEffectEnable (int effectIndex);
+
+		internal static void SetEffectEnable (int effectIndex, bool enable) => Instance._SetEffectEnable(effectIndex, enable);
+		protected abstract void _SetEffectEnable (int effectIndex, bool enable);
+
+		internal static void Effect_SetDarkenAmount (float amount, float step = 8) => Instance._Effect_SetDarkenAmount(amount, step);
+		protected abstract void _Effect_SetDarkenAmount (float amount, float step = 8);
+
+		internal static void Effect_SetLightenAmount (float amount, float step = 8) => Instance._Effect_SetLightenAmount(amount, step);
+		protected abstract void _Effect_SetLightenAmount (float amount, float step = 8);
+
+		internal static void Effect_SetTint (Byte4 color) => Instance._Effect_SetTint(color);
+		protected abstract void _Effect_SetTint (Byte4 color);
+
+		internal static void Effect_SetVignetteRadius (float radius) => Instance._Effect_SetVignetteRadius(radius);
+		protected abstract void _Effect_SetVignetteRadius (float radius);
+
+		internal static void Effect_SetVignetteFeather (float feather) => Instance._Effect_SetVignetteFeather(feather);
+		protected abstract void _Effect_SetVignetteFeather (float feather);
+
+		internal static void Effect_SetVignetteOffsetX (float offsetX) => Instance._Effect_SetVignetteOffsetX(offsetX);
+		protected abstract void _Effect_SetVignetteOffsetX (float offsetX);
+
+		internal static void Effect_SetVignetteOffsetY (float offsetY) => Instance._Effect_SetVignetteOffsetY(offsetY);
+		protected abstract void _Effect_SetVignetteOffsetY (float offsetY);
+
+		internal static void Effect_SetVignetteRound (float round) => Instance._Effect_SetVignetteRound(round);
+		protected abstract void _Effect_SetVignetteRound (float round);
+
+
 		// Texture
 		public static object GetTextureFromPixels (Byte4[] pixels, int width, int height) => Instance._GetTextureFromPixels(pixels, width, height);
 		protected abstract object _GetTextureFromPixels (Byte4[] pixels, int width, int height);

@@ -89,15 +89,28 @@ namespace AngeliaFramework {
 
 		public override void UpdateUI () {
 			base.UpdateUI();
+
 			int padding = Unify(32);
 			var cameraRect = CellRenderer.CameraRect.Shrink(padding, padding, 0, 0);
 			int column = Languages.Count + 1;
 			int fieldWidth = Util.Clamp(cameraRect.width / column, 0, Unify(300));
+			int verticalPadding = Unify(24);
+
 			cameraRect.x += (cameraRect.width - fieldWidth * column) / 2;
 			cameraRect.width = fieldWidth * column;
+			cameraRect.y += verticalPadding;
+			cameraRect.height -= verticalPadding * 2;
+
+			int frameThickness = Unify(2);
+			CellRenderer.Draw_9Slice(
+				BuiltInIcon.FRAME_16, cameraRect.Expand(frameThickness),
+				frameThickness, frameThickness, frameThickness, frameThickness,
+				Const.GREY_12, int.MinValue
+			);
+
 			bool interactable = true;
 			Update_Bar(cameraRect.EdgeInside(Direction4.Up, Unify(84)), interactable);
-			Update_Content(cameraRect.EdgeInside(Direction4.Down, CellRenderer.CameraRect.height - Unify(84)), interactable);
+			Update_Content(cameraRect.EdgeInside(Direction4.Down, cameraRect.height - Unify(84)), interactable);
 		}
 
 

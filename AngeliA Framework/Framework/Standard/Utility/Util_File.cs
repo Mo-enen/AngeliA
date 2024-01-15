@@ -221,9 +221,7 @@ namespace AngeliaFramework {
 			// Get the subdirectories for the specified directory.
 			DirectoryInfo dir = new(from);
 
-			if (!dir.Exists) {
-				return false;
-			}
+			if (!dir.Exists) return false;
 
 			DirectoryInfo[] dirs = dir.GetDirectories();
 			// If the destination directory doesn't exist, create it.

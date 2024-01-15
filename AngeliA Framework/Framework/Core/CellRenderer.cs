@@ -343,6 +343,8 @@ namespace AngeliaFramework {
 					Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count, ref prevCellCount);
 					layer.PrevCellCount = prevCellCount;
 				}
+			} catch (System.Exception ex) { Game.LogException(ex); }
+			try {
 				for (int i = 0; i < TextLayers.Length; i++) {
 					var layer = TextLayers[i];
 					layer.ZSort();
@@ -925,6 +927,7 @@ namespace AngeliaFramework {
 		private static void ExcludeCellsLogic (Cell[] cells, int layerIndex, IRect rect, int startIndex, int endIndex) {
 			var cellRect = new IRect();
 			for (int i = startIndex; i < endIndex; i++) {
+
 				var cell = cells[i];
 				cellRect.x = cell.X - (int)(cell.Width * cell.PivotX);
 				cellRect.y = cell.Y - (int)(cell.Height * cell.PivotY);
@@ -990,6 +993,7 @@ namespace AngeliaFramework {
 							target = DrawChar(' ', 0, 0, 1, 1, Const.WHITE);
 							SetTextLayer(oldLayer);
 						}
+						if (target.Sprite == null && target.TextSprite == null) return;
 						target.CopyFrom(source);
 						target.X = originalRect.x;
 						target.Y = originalRect.y;
@@ -997,12 +1001,13 @@ namespace AngeliaFramework {
 						target.Height = originalRect.height;
 						target.PivotX = 0;
 						target.PivotY = 0;
-						target.Shift.left = Util.Max(0, targetRect.x - originalRect.x);
-						target.Shift.right = Util.Max(0, originalRect.xMax - targetRect.xMax);
-						target.Shift.down = Util.Max(0, targetRect.y - originalRect.y);
-						target.Shift.up = Util.Max(0, originalRect.yMax - targetRect.yMax);
+						target.Shift.left = Util.Max(source.Shift.left, targetRect.x - originalRect.x);
+						target.Shift.right = Util.Max(source.Shift.right, originalRect.xMax - targetRect.xMax);
+						target.Shift.down = Util.Max(source.Shift.down, targetRect.y - originalRect.y);
+						target.Shift.up = Util.Max(source.Shift.up, originalRect.yMax - targetRect.yMax);
 					}
 				}
+
 			}
 		}
 

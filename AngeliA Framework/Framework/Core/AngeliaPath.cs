@@ -34,11 +34,15 @@ namespace AngeliaFramework {
 		);
 		private static string _TempDataPath = null;
 
+		// Framework
 		public static string WorkspaceRoot => _WorkspaceRoot ??= Util.CombinePaths(PersistentDataPath, "Workspace");
 		private static string _WorkspaceRoot = null;
 
 		public static string DownloadRoot => _DownloadRoot ??= Util.CombinePaths(PersistentDataPath, "Download");
 		private static string _DownloadRoot = null;
+
+		public static string ProjectTemplateRoot => _ProjectTemplateRoot ??= Util.CombinePaths(ApplicationDataPath, "Project Template");
+		private static string _ProjectTemplateRoot = null;
 
 		// Temp
 		public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(TempDataPath, "Generating Map");

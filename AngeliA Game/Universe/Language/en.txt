@@ -31,6 +31,9 @@ CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
+DeveloperToolbox.Label.LanguageEditor:Language
+DeveloperToolbox.Label.MapEditor:Map
+DeveloperToolbox.Label.SheetEditor:Sheet
 DevilWing.Wing:Devil Wing
 Hint.Pong.Move:Move
 Hint.Sokoban.Move:Move
@@ -1660,6 +1663,7 @@ Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
 PlayerCustomizerAngelia:Customize
+Project.NewProjectName:
 PropellerWing.Wing:Propeller Wing
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm

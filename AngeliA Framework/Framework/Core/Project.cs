@@ -138,17 +138,21 @@ namespace AngeliaFramework {
 		}
 
 
-		public static Project CreateProject (string projectFolder) {
-			var project = new Project(projectFolder);
-			// Info
+		public static Project CreateProject (string projectFolderPath) {
+			// Copy Template Files
+			if (Util.FolderExists(AngePath.ProjectTemplateRoot)) {
+				Util.CopyFolder(
+					AngePath.ProjectTemplateRoot,
+					projectFolderPath,
+					copySubDirs: true,
+					ignoreHidden: true
+				);
+			}
+			// Create Project Object
+			var project = new Project(projectFolderPath);
 			project.Info.ProjectName = NEW_PROJECT_NAME.Get("New Project");
 			project.Info.Creator = "";
 			project.SaveProjectInfoToDisk();
-			// 
-
-
-
-
 			return project;
 		}
 

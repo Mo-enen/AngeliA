@@ -444,9 +444,13 @@ namespace AngeliaFramework {
 			// Button
 			int spriteID = down ? spriteDown : hover ? spriteHover : sprite;
 			if (spriteID != 0) {
-				CellRenderer.Draw_9Slice(
-					spriteID, rect, buttonBorder, buttonBorder, buttonBorder, buttonBorder, buttonTint, z
-				);
+				if (buttonBorder > 0) {
+					CellRenderer.Draw_9Slice(
+						spriteID, rect, buttonBorder, buttonBorder, buttonBorder, buttonBorder, buttonTint, z
+					);
+				} else {
+					CellRenderer.Draw_9Slice(spriteID, rect, buttonTint, z);
+				}
 			}
 			// Icon
 			if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {

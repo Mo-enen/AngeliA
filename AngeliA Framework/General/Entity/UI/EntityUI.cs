@@ -16,7 +16,6 @@ namespace AngeliaFramework {
 				if (e is not EntityUI ui) continue;
 				CellRenderer.ExcludeTextCellsForAllLayers(window.BackgroundRect, ui.TextCellEndIndex);
 			}
-
 		}
 	}
 
@@ -36,12 +35,19 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
+
 			CellRenderer.SetLayerToUI();
+
 			TextCellStartIndex = CellRenderer.GetTextUsedCellCount();
+
 			UpdateUI();
+
 			TextCellEndIndex = CellRenderer.GetTextUsedCellCount();
+
 			CellRenderer.SetLayerToDefault();
+
 			CellRenderer.SortLayer(RenderLayer.UI);
+
 			if (BlockMouseEvent) {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseMouseKey(1);

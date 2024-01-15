@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 	[RequireLanguageFromField]
 	[RequireLanguage("{0}")]
 	public abstract class MiniGame : EnvironmentEntity, IActionTarget {
-
+		
 
 
 

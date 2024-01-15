@@ -82,7 +82,7 @@ namespace AngeliaForUnity {
 			}
 
 			// Pixel Renderer
-			UnityCamera.gameObject.AddComponent<GizmosRenderer>();
+			UnityCamera.gameObject.AddComponent<PostRenderer>();
 
 		}
 
@@ -180,10 +180,10 @@ namespace AngeliaForUnity {
 
 				bool shifted = !cell.Shift.IsZero;
 				if (shifted) {
-					shiftL = ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
-					shiftR = ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
-					shiftD = ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
-					shiftU = ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
+					shiftL = cell.Width == 0 ? 0f : ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
+					shiftR = cell.Width == 0 ? 0f : ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
+					shiftD = cell.Height == 0 ? 0f : ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
+					shiftU = cell.Height == 0 ? 0f : ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
 				} else {
 					shiftL = 0;
 					shiftR = 0;
@@ -359,6 +359,19 @@ namespace AngeliaForUnity {
 		}
 
 
+		// Effect
+		protected override bool _GetEffectEnable (int effectIndex) => PostRenderer.GetEffectEnable(effectIndex);
+		protected override void _SetEffectEnable (int effectIndex, bool enable) => PostRenderer.SetEffectEnable(effectIndex, enable);
+		protected override void _Effect_SetDarkenAmount (float amount, float step = 8) => PostRenderer.SetDarkenAmount(amount, step);
+		protected override void _Effect_SetLightenAmount (float amount, float step = 8) => PostRenderer.SetLightenAmount(amount, step);
+		protected override void _Effect_SetTint (Byte4 color) => PostRenderer.SetTint(color.ToUnityColor());
+		protected override void _Effect_SetVignetteRadius (float radius) => PostRenderer.SetVignetteRadius(radius);
+		protected override void _Effect_SetVignetteFeather (float feather) => PostRenderer.SetVignetteFeather(feather);
+		protected override void _Effect_SetVignetteOffsetX (float offsetX) => PostRenderer.SetVignetteOffsetX(offsetX);
+		protected override void _Effect_SetVignetteOffsetY (float offsetY) => PostRenderer.SetVignetteOffsetY(offsetY);
+		protected override void _Effect_SetVignetteRound (float round) => PostRenderer.SetVignetteRound(round);
+
+
 		// Texture
 		protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
 			if (width * height == 0) {
@@ -414,9 +427,9 @@ namespace AngeliaForUnity {
 
 
 		// GL
-		protected override void _DrawGizmosRect (IRect rect, Byte4 color) => GizmosRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
+		protected override void _DrawGizmosRect (IRect rect, Byte4 color) => PostRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());
 
-		protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture) => GizmosRenderer.DrawTexture(rect.ToUnity(), uv.ToUnity(), texture as Texture2D);
+		protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture) => PostRenderer.DrawTexture(rect.ToUnity(), uv.ToUnity(), texture as Texture2D);
 
 
 		// Text

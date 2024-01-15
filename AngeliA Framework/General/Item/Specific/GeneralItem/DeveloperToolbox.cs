@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireSpriteFromField]
+	[RequireLanguageFromField]
 	public class iDeveloperToolbox : Item {
 
 
@@ -28,12 +29,27 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly SpriteCode BTN_COL = "DeveloperToolbox.Collider";
-		private static readonly SpriteCode BTN_BOUND = "DeveloperToolbox.Bound";
-		private static readonly SpriteCode BTN_PROFILER = "DeveloperToolbox.Profiler";
-		private static readonly SpriteCode BTN_MAP = "DeveloperToolbox.Map";
-		private static readonly SpriteCode BTN_SHEET = "DeveloperToolbox.Sheet";
-		private static readonly SpriteCode BTN_LANGUAGE = "DeveloperToolbox.Language";
+		private static readonly SpriteCode[] BTN_SPRITES = {
+			"DeveloperToolbox.Collider",
+			"DeveloperToolbox.Bound",
+			"DeveloperToolbox.Profiler",
+			"DeveloperToolbox.Editor",
+			"DeveloperToolbox.Effect",
+		};
+		private static readonly SpriteCode[] EDITOR_ICON = {
+			"DeveloperToolbox.MapEditor",
+			"DeveloperToolbox.SheetEditor",
+			"DeveloperToolbox.LanguageEditor",
+		};
+		private static readonly LanguageCode[] EDITOR_LABEL = {
+			"DeveloperToolbox.Label.MapEditor",
+			"DeveloperToolbox.Label.SheetEditor",
+			"DeveloperToolbox.Label.LanguageEditor",
+		};
+		private static readonly string[] EDITOR_LABEL_DEF = { "Map", "Sheet", "Language", };
+		private static readonly int[] EDITOR_ID = {
+			MapEditor.TYPE_ID, SheetEditor.TYPE_ID, LanguageEditor.TYPE_ID,
+		};
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 
 		// Data
@@ -45,9 +61,7 @@ namespace AngeliaFramework {
 		private static int RequireDataFrame = int.MinValue;
 		private static int DrawColliderFrame = int.MinValue;
 		private static int DrawBoundFrame = int.MinValue;
-		private static bool ShowCollider = false;
-		private static bool ShowBound = false;
-		private static bool ShowProfiler = false;
+		private static int SelectingPanelIndex = -1;
 		private static IRect PanelRect;
 
 
@@ -88,23 +102,72 @@ namespace AngeliaFramework {
 
 		[OnGameUpdateLater(-4097)]
 		public static void DrawToolboxUI () {
+
 			if (Game.GlobalFrame > RequireToolboxFrame + 1) return;
 
 			CursorSystem.RequireCursor();
 			int oldLayer = CellRenderer.CurrentLayerIndex;
 			CellRenderer.SetLayerToUI();
 
-			int panelWidth = CellRendererGUI.Unify(38 * 6 + 6 + (Game.ShowFPS ? 40 : 0));
-			var panelRect = new IRect(CellRenderer.CameraRect.xMax - panelWidth, CellRenderer.CameraRect.yMax, panelWidth, 0);
+			var panelRect = new IRect(CellRenderer.CameraRect.xMax, CellRenderer.CameraRect.yMax, 0, 0);
 			int panelYMax = panelRect.y;
 
 			// Tool Buttons
-			DrawToolButtons(ref panelRect);
+			int buttonSize = CellRendererGUI.Unify(32);
+			int padding = CellRendererGUI.Unify(6);
+			panelRect.height = buttonSize + padding * 2;
+			panelRect.y -= panelRect.height;
 
-			// Profiler
-			if (ShowProfiler) {
-				panelRect.height = 0;
-				DrawProfiler(ref panelRect);
+			var rect = new IRect(panelRect.xMax - buttonSize - padding, panelRect.y + padding, buttonSize, buttonSize);
+
+			// Dodge FPS Label
+			if (Game.ShowFPS) rect.x -= CellRendererGUI.Unify(32);
+
+			// Draw All Buttons
+			for (int i = 0; i < BTN_SPRITES.Length; i++) {
+				if (SelectingPanelIndex == i) {
+					CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
+				}
+				int spriteCode = BTN_SPRITES[i];
+				if (CellRendererGUI.Button(rect, spriteCode, spriteCode, spriteCode, 0, 0, 0, int.MaxValue)) {
+					if (i == 4 || SelectingPanelIndex == 4) {
+						// Disable all Effects
+						for (int j = 0; j < Const.SCREEN_EFFECT_COUNT; j++) {
+							Game.SetEffectEnable(j, false);
+						}
+					}
+					SelectingPanelIndex = SelectingPanelIndex != i ? i : -1;
+					FrameInput.UseMouseKey(0);
+					FrameInput.UseGameKey(Gamekey.Action);
+				}
+				CursorSystem.SetCursorAsHand(rect);
+				rect.x -= i == BTN_SPRITES.Length - 1 ? padding : rect.width + padding;
+			}
+			panelRect.width = panelRect.x - rect.x;
+			panelRect.x = rect.x;
+
+			// Show Toolbox Panel
+			switch (SelectingPanelIndex) {
+				case 0:
+					// Colliders
+					DrawColliderFrame = Game.GlobalFrame;
+					break;
+				case 1:
+					// Bounds
+					DrawBoundFrame = Game.GlobalFrame;
+					break;
+				case 2:
+					// Profiler
+					DrawProfilerPanel(ref panelRect);
+					break;
+				case 3:
+					// Editor
+					DrawEditorPanel(ref panelRect);
+					break;
+				case 4:
+					// Effect
+					DrawEffectPanel(ref panelRect);
+					break;
 			}
 
 			// BG
@@ -122,7 +185,7 @@ namespace AngeliaFramework {
 
 
 		[OnGameUpdateLater(4096)]
-		public static void UpdateGizmos () {
+		public static void OnGameUpdateLater () {
 
 			if (Game.GlobalFrame > RequireToolboxFrame + 1) return;
 
@@ -253,113 +316,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void DrawToolButtons (ref IRect panelRect) {
-
-			int buttonSize = CellRendererGUI.Unify(32);
-			int padding = CellRendererGUI.Unify(6);
-			panelRect.height = buttonSize + padding * 2;
-			panelRect.y -= panelRect.height;
-
-			var rect = new IRect(panelRect.xMax - buttonSize - padding, panelRect.y + padding, buttonSize, buttonSize);
-
-			// Dodge FPS Label
-			if (Game.ShowFPS) {
-				rect.x -= CellRendererGUI.Unify(40);
-			}
-
-			// Collider
-			if (ShowCollider) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
-			}
-			if (CellRendererGUI.Button(rect, BTN_COL, BTN_COL, BTN_COL, 0, 0, 0, int.MaxValue)) {
-				ShowCollider = !ShowCollider;
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseGameKey(Gamekey.Action);
-			}
-			CursorSystem.SetCursorAsHand(rect);
-			rect.x -= rect.width + padding;
-
-			// Bounds
-			if (ShowBound) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
-			}
-			if (CellRendererGUI.Button(rect, BTN_BOUND, BTN_BOUND, BTN_BOUND, 0, 0, 0, int.MaxValue)) {
-				ShowBound = !ShowBound;
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseGameKey(Gamekey.Action);
-			}
-			CursorSystem.SetCursorAsHand(rect);
-			rect.x -= rect.width + padding;
-
-			// Profiler
-			if (ShowProfiler) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
-			}
-			if (CellRendererGUI.Button(rect, BTN_PROFILER, BTN_PROFILER, BTN_PROFILER, 0, 0, 0, int.MaxValue)) {
-				ShowProfiler = !ShowProfiler;
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseGameKey(Gamekey.Action);
-			}
-			CursorSystem.SetCursorAsHand(rect);
-			rect.x -= rect.width + padding;
-
-			// Map
-			if (MapEditor.IsActived) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
-			}
-			if (CellRendererGUI.Button(rect, BTN_MAP, BTN_MAP, BTN_MAP, 0, 0, 0, int.MaxValue)) {
-				if (MapEditor.IsActived) {
-					GlobalEditorUI.CloseEditorSmoothly();
-				} else {
-					GlobalEditorUI.OpenEditorSmoothly(MapEditor.TYPE_ID);
-				}
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseGameKey(Gamekey.Action);
-			}
-			CursorSystem.SetCursorAsHand(rect);
-			rect.x -= rect.width + padding;
-
-			// Sheet
-			if (SheetEditor.IsActived) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
-			}
-			if (CellRendererGUI.Button(rect, BTN_SHEET, BTN_SHEET, BTN_SHEET, 0, 0, 0, int.MaxValue)) {
-				if (SheetEditor.IsActived) {
-					GlobalEditorUI.CloseEditorSmoothly();
-				} else {
-					GlobalEditorUI.OpenEditorSmoothly(SheetEditor.TYPE_ID);
-				}
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseGameKey(Gamekey.Action);
-			}
-			CursorSystem.SetCursorAsHand(rect);
-			rect.x -= rect.width + padding;
-
-			// Language
-			if (LanguageEditor.IsActived) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
-			}
-			if (CellRendererGUI.Button(rect, BTN_LANGUAGE, BTN_LANGUAGE, BTN_LANGUAGE, 0, 0, 0, int.MaxValue)) {
-				if (LanguageEditor.IsActived) {
-					GlobalEditorUI.CloseEditorSmoothly();
-				} else {
-					GlobalEditorUI.OpenEditorSmoothly(LanguageEditor.TYPE_ID);
-				}
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseGameKey(Gamekey.Action);
-			}
-			CursorSystem.SetCursorAsHand(rect);
-			rect.x -= rect.width + padding;
-
-
-			// Final
-			if (ShowCollider) DrawColliderFrame = Game.GlobalFrame;
-			if (ShowBound) DrawBoundFrame = Game.GlobalFrame;
-
-		}
-
-
-		private static void DrawProfiler (ref IRect panelRect) {
+		private static void DrawProfilerPanel (ref IRect panelRect) {
 
 			RequireDataFrame = Game.GlobalFrame;
 			int barHeight = CellRendererGUI.Unify(24);
@@ -399,6 +356,111 @@ namespace AngeliaFramework {
 					}
 				}
 			}
+		}
+
+
+		private static void DrawEditorPanel (ref IRect panelRect) {
+			int editorCount = EDITOR_ICON.Length;
+			int itemHeight = CellRendererGUI.Unify(48);
+			int padding = CellRendererGUI.Unify(8);
+			int buttonShrink = CellRendererGUI.Unify(10);
+			int openingMarkSize = CellRendererGUI.Unify(12);
+			panelRect.height = editorCount * (itemHeight + padding) + padding;
+			panelRect.y -= panelRect.height;
+			var rect = new IRect(panelRect.x, panelRect.yMax, panelRect.width, itemHeight);
+			for (int i = 0; i < editorCount; i++) {
+
+				rect.y -= itemHeight + padding;
+				int editorID = EDITOR_ID[i];
+				bool editorActived = GlobalEditorUI.HaveActiveInstance && GlobalEditorUI.Instance.TypeID == editorID;
+
+				var buttonRect = rect.Shrink(buttonShrink, buttonShrink, buttonShrink / 2, buttonShrink / 2);
+
+				CursorSystem.SetCursorAsHand(buttonRect);
+
+				// Button
+				if (CellRendererGUI.Button(
+					buttonRect,
+					BuiltInIcon.UI_DARK_BUTTON, BuiltInIcon.UI_DARK_BUTTON, BuiltInIcon.UI_DARK_BUTTON_DOWN,
+					0, -1, 0, int.MaxValue - 9
+				)) {
+					if (editorActived) {
+						GlobalEditorUI.CloseEditorSmoothly();
+					} else {
+						GlobalEditorUI.OpenEditorSmoothly(editorID);
+					}
+					FrameInput.UseMouseKey(0);
+					FrameInput.UseGameKey(Gamekey.Action);
+				}
+
+				// Icon
+				CellRenderer.Draw(
+					EDITOR_ICON[i],
+					buttonRect.EdgeInside(Direction4.Left, buttonRect.height),
+					int.MaxValue - 8
+				);
+
+				// Label
+				CellRendererGUI.Label(
+					CellContent.Get(EDITOR_LABEL[i].Get(EDITOR_LABEL_DEF[i]), charSize: 20, alignment: Alignment.MidLeft),
+					buttonRect.Shrink(itemHeight + padding, 0, 0, 0)
+				);
+
+				// Mark
+				if (editorActived) {
+					CellRenderer.Draw(
+						BuiltInIcon.CIRCLE_16,
+						buttonRect.EdgeInside(Direction4.Right, openingMarkSize).Fit(1, 1).Shift(-openingMarkSize, 0),
+						Const.GREEN, int.MaxValue - 4
+					);
+				}
+
+			}
+		}
+
+
+		private static void DrawEffectPanel (ref IRect panelRect) {
+			int itemHeight = CellRendererGUI.Unify(28);
+			int itemPadding = CellRendererGUI.Unify(8);
+			panelRect.height = Const.SCREEN_EFFECT_COUNT * (itemHeight + itemPadding) + itemPadding;
+			panelRect.y -= panelRect.height;
+			var rect = new IRect(panelRect.x + itemPadding, panelRect.yMax, panelRect.width - itemPadding * 2, itemHeight);
+			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+
+				rect.y -= itemHeight + itemPadding;
+
+				// Label
+				string name = Const.SCREEN_EFFECT_NAMES[i];
+				CellRendererGUI.Label(CellContent.Get(
+					name, Const.GREY_216, charSize: 18, alignment: Alignment.MidLeft
+				), rect);
+
+				// Enable Button
+				var enableRect = rect.EdgeInside(Direction4.Right, itemHeight);
+				bool enable = Game.GetEffectEnable(i);
+				if (CellRendererGUI.Button(
+					enableRect,
+					BuiltInIcon.CIRCLE_16, BuiltInIcon.CIRCLE_16, BuiltInIcon.CIRCLE_16,
+					enable ? BuiltInIcon.CHECK_MARK_16 : 0,
+					0, itemHeight / 5, z: int.MaxValue - 8,
+					Const.GREY_32, Const.WHITE
+				)) {
+					Game.SetEffectEnable(i, !enable);
+				}
+				CursorSystem.SetCursorAsHand(enableRect);
+			}
+
+			// Update Values
+			if (Game.GetEffectEnable(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
+				Game.Effect_SetDarkenAmount(Game.GlobalFrame.PingPong(60) / 60f);
+			}
+			if (Game.GetEffectEnable(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
+				Game.Effect_SetLightenAmount(Game.GlobalFrame.PingPong(60) / 60f);
+			}
+			if (Game.GetEffectEnable(Const.SCREEN_EFFECT_TINT)) {
+				Game.Effect_SetTint(Byte4.LerpUnclamped(new Byte4(255, 128, 196, 255), new Byte4(128, 255, 64, 255), Game.GlobalFrame.PingPong(120) / 120f));
+			}
+
 		}
 
 

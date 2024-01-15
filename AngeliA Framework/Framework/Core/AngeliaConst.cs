@@ -207,6 +207,25 @@ namespace AngeliaFramework {
 		public static readonly Byte4 SKIN_YELLOW = new(245, 217, 196, 255);
 		public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };
 
+		// Screen Effect
+		public const int SCREEN_EFFECT_CHROMATIC_ABERRATION = 0;
+		public const int SCREEN_EFFECT_TINT = 1;
+		public const int SCREEN_EFFECT_RETRO_DARKEN = 2;
+		public const int SCREEN_EFFECT_RETRO_LIGHTEN = 3;
+		public const int SCREEN_EFFECT_VIGNETTE = 4;
+		public const int SCREEN_EFFECT_GREYSCALE = 5;
+		public const int SCREEN_EFFECT_INVERT = 6;
+		public const int SCREEN_EFFECT_COUNT = 7;
+		public static readonly string[] SCREEN_EFFECT_NAMES = new string[SCREEN_EFFECT_COUNT] {
+			"Chromatic Aberration",
+			"Tint",
+			"Retro Darken",
+			"Retro Lighten",
+			"Vignette",
+			"Greyscale",
+			"Invert",
+		};
+
 		// Cursor
 		public const int CURSOR_HAND = 0;
 		public const int CURSOR_MOVE = 1;
