@@ -160,6 +160,7 @@ namespace AngeliaForUnity.Editor {
 			// Wheel
 			if (Event.current.isScrollWheel) {
 				ScrollValue += Event.current.delta.y;
+				GUI.FocusControl("");
 				Repaint();
 			}
 
@@ -173,6 +174,9 @@ namespace AngeliaForUnity.Editor {
 					ScrollBarSize,
 					panelRect.height
 				);
+				if (Event.current.type == EventType.MouseDown && scrollRect.Contains(Event.current.mousePosition)) {
+					GUI.FocusControl("");
+				}
 				ScrollValue = GUI.VerticalScrollbar(
 					scrollRect,
 					ScrollValue, pageSize * extendedKeyCount / extendedContentHeight, 0, extendedKeyCount
