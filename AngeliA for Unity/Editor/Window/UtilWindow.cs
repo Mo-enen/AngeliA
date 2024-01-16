@@ -17,6 +17,7 @@ namespace AngeliaForUnity.Editor {
 		private Vector2 MasterScrollPos = default;
 		protected virtual bool ScrollHorizontal => false;
 		protected virtual bool ScrollVertical => true;
+		protected virtual bool UseScrollView => true;
 
 
 		// API
@@ -39,15 +40,18 @@ namespace AngeliaForUnity.Editor {
 		// MSG
 		protected virtual void OnGUI () {
 			BeforeWindowGUI();
-			using (var scroll = new GUILayout.ScrollViewScope(
-				MasterScrollPos,
-				ScrollHorizontal ? GUI.skin.horizontalScrollbar : GUIStyle.none,
-				ScrollVertical ? GUI.skin.verticalScrollbar : GUIStyle.none
-			)) {
+			if (UseScrollView) {
+				using var scroll = new GUILayout.ScrollViewScope(
+					MasterScrollPos,
+					ScrollHorizontal ? GUI.skin.horizontalScrollbar : GUIStyle.none,
+					ScrollVertical ? GUI.skin.verticalScrollbar : GUIStyle.none
+				);
 				MasterScrollPos = scroll.scrollPosition;
 				using (new GUILayout.VerticalScope(MasterStyle)) {
 					OnWindowGUI();
 				}
+			} else {
+				OnWindowGUI();
 			}
 			AfterWindowGUI();
 			MGUI.CancelFocusOnClick(this);

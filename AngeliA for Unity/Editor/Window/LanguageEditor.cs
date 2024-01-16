@@ -17,7 +17,8 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		// Data
+		// VAR
+		protected override bool UseScrollView => false;
 		private readonly List<bool> KeyVisibility = new();
 		private readonly List<string> Keys = new();
 		private readonly List<string> Languages = new();
@@ -26,6 +27,7 @@ namespace AngeliaForUnity.Editor {
 		private bool IsDirty = false;
 		private bool Loaded = false;
 		private string SearchingText = "";
+		private float ScrollValue = 0f;
 
 
 		// MSG
@@ -44,6 +46,7 @@ namespace AngeliaForUnity.Editor {
 					Util.CombinePaths(AngePath.PersistentDataPath, "Built In Saving")
 				), ignoreCallback: true);
 				SearchingText = "";
+				ScrollValue = 0;
 				Loaded = Load();
 			} catch (System.Exception ex) {
 				Loaded = false;
@@ -141,46 +144,75 @@ namespace AngeliaForUnity.Editor {
 
 			if (Keys.Count == 0 || Languages.Count == 0) return;
 
+			const int ScrollBarSize = 18;
+			const int TOOLBAR_HEIGHT = 20;
+			const int ITEM_HEIGHT = 18;
+			const int LABEL_HEIGHT = 18;
+			const int ITEM_PADDING = 2;
+			var panelRect = position;
+			float scrollBarOffstY = TOOLBAR_HEIGHT + LABEL_HEIGHT + ITEM_PADDING;
+			panelRect.height -= scrollBarOffstY;
+			panelRect.x = 0;
+			panelRect.y = scrollBarOffstY;
+			int extendedKeyCount = Keys.Count + 6;
+			float extendedContentHeight = ITEM_HEIGHT * extendedKeyCount;
+
+			// Wheel
+			if (Event.current.isScrollWheel) {
+				ScrollValue += Event.current.delta.y;
+				Repaint();
+			}
+
+			// Scrollbar
+			float pageSize = panelRect.height;
+			int pageItemCount = (pageSize / (ITEM_HEIGHT + ITEM_PADDING)).CeilToInt();
+			if (extendedContentHeight > pageSize) {
+				var scrollRect = new Rect(
+					panelRect.xMax - ScrollBarSize,
+					panelRect.y,
+					ScrollBarSize,
+					panelRect.height
+				);
+				ScrollValue = GUI.VerticalScrollbar(
+					scrollRect,
+					ScrollValue, pageSize * extendedKeyCount / extendedContentHeight, 0, extendedKeyCount
+				);
+			} else {
+				GUI.VerticalScrollbar(default, 0, 1, 0, 1);
+				ScrollValue = 0f;
+			}
+
 			// Labels
 			using (new GUILayout.HorizontalScope()) {
-				GUI.Label(MGUI.Rect(0, 18), "key", MGUI.MiniGreyLabel);
+				GUI.Label(MGUI.Rect(0, LABEL_HEIGHT), "key", MGUI.MiniGreyLabel);
 				MGUI.Space(2);
 				for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 					string lan = Languages[lanIndex];
 					GUI.Label(
-						MGUI.Rect(0, 18),
+						MGUI.Rect(0, LABEL_HEIGHT),
 						$"{Util.GetLanguageDisplayName(lan)} <color=#CC9900>{lan}</color>",
 						MGUI.RichMiniGreyLabel
 					);
 					MGUI.Space(2);
 				}
+				MGUI.Space(ScrollBarSize);
 			}
-			MGUI.Space(2);
+			MGUI.Space(ITEM_PADDING);
 
 			// Contents
-			string prevLabel = "";
 			using var change = new EditorGUI.ChangeCheckScope();
-			for (int keyIndex = 0; keyIndex < Keys.Count; keyIndex++) {
+			int startIndex = (int)Mathf.Max(ScrollValue, 0);
+			int endIndex = Mathf.Min(startIndex + pageItemCount, Keys.Count);
+
+			for (int keyIndex = startIndex; keyIndex < endIndex; keyIndex++) {
+
 				string oldKey = Keys[keyIndex];
 				if (keyIndex >= 0 && keyIndex < KeyVisibility.Count && !KeyVisibility[keyIndex]) continue;
-				// Mini Label
-				string label = oldKey;
-				int dotIndex = label.IndexOf('.');
-				if (dotIndex > 0) {
-					label = label[..dotIndex];
-				} else if (label.Length > 0) {
-					label = label[..1];
-				}
-				if (label != prevLabel) {
-					prevLabel = label;
-					if (keyIndex > 0) {
-						GUI.Label(MGUI.Rect(0, 18), label, MGUI.MiniGreyLabel);
-					}
-				}
+
 				using (new GUILayout.HorizontalScope()) {
+
 					// Key
-					//string newKey = EditorGUI.DelayedTextField(MGUI.Rect(0, 18), oldKey);
-					string newKey = EditorGUI.TextField(MGUI.Rect(0, 18), oldKey);
+					string newKey = EditorGUI.TextField(MGUI.Rect(0, ITEM_HEIGHT), oldKey);
 					if (!newKey.Equals(oldKey)) {
 						newKey = newKey.Replace(":", "");
 						if (string.IsNullOrEmpty(newKey) || !Keys.Contains(newKey)) {
@@ -191,12 +223,14 @@ namespace AngeliaForUnity.Editor {
 					// Languages
 					for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 						Contents[lanIndex, keyIndex] = EditorGUI.TextField(
-							MGUI.Rect(0, 18), Contents[lanIndex, keyIndex]
+							MGUI.Rect(0, ITEM_HEIGHT), Contents[lanIndex, keyIndex]
 						);
 						MGUI.Space(2);
 					}
+					// Bar
+					MGUI.Space(ScrollBarSize);
 				}
-				MGUI.Space(2);
+				MGUI.Space(ITEM_PADDING);
 			}
 			if (change.changed) IsDirty = true;
 
