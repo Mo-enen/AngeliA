@@ -83,11 +83,13 @@ namespace AngeliaFramework {
 			// when Z Changed
 			if (PrevZ != Stage.ViewZ) {
 				PrevZ = Stage.ViewZ;
-				X = Owner.X;
-				Y = Owner.Y;
-				ResetNavigation();
-				NavigationState = CharacterNavigationState.Operation;
-				RequireAimRefresh = true;
+				if (CharacterState != CharacterState.Sleep) {
+					X = Owner.X;
+					Y = Owner.Y;
+					ResetNavigation();
+					NavigationState = CharacterNavigationState.Operation;
+					RequireAimRefresh = true;
+				}
 			}
 
 			base.PhysicsUpdate();
@@ -97,6 +99,7 @@ namespace AngeliaFramework {
 
 		public override void FrameUpdate () {
 			if (!Active) return;
+
 			// Check Item Exists
 			if (
 				Owner != null &&

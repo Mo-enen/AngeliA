@@ -123,7 +123,7 @@ namespace AngeliaFramework {
 				WorldSquad.Behind.ForceReloadDelay();
 				Stage.SetViewZ(Stage.ViewZ);
 
-				IGlobalPosition.CreateMetaFileFromMaps(mapRoot);
+				IGlobalPosition.SaveToDisk(tempMapRoot);
 
 				AfterMapGenerate();
 			} catch (System.Exception ex) {

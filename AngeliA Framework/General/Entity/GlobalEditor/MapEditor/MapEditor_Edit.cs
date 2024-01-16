@@ -136,6 +136,7 @@ namespace AngeliaFramework {
 			if (!SelectionUnitRect.HasValue) return;
 			var unitRect = SelectionUnitRect.Value;
 			bool undoRegistered = false;
+			int z = Stage.ViewZ;
 			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 					if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
@@ -146,6 +147,7 @@ namespace AngeliaFramework {
 					WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
 					WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
 					WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
+					IGlobalPosition.RemovePosition(new Int3(i, j, z));
 				}
 			}
 			RedirectForRule(unitRect);
@@ -191,31 +193,46 @@ namespace AngeliaFramework {
 			bool undoRegistered = false;
 			int id = paint ? SelectingPaletteItem.ID : 0;
 			var type = paint ? SelectingPaletteItem.BlockType : default;
+			int stageZ = Stage.ViewZ;
+			bool idGlobalPosEntity = IGlobalPosition.IsGlobalPositionEntity(id);
 
 			for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
 				for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
 					if (paint) {
-						// Paint
-						if (
-							SelectingPaletteItem.GroupType == GroupType.Random &&
-							SelectingPaletteItem.Group != null &&
-							IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
-							idChain.Length > 0
-						) {
+						// Paint Block
+						if (idGlobalPosEntity) {
+							// Global Pos
+							IGlobalPosition.SetPosition(id, new Int3(i, j, stageZ));
+						} else {
 							// Redirect for Random
-							id = idChain[PaintingRan.Next(0, idChain.Length)];
+							if (
+								SelectingPaletteItem.GroupType == GroupType.Random &&
+								SelectingPaletteItem.Group != null &&
+								IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
+								idChain.Length > 0
+							) {
+								id = idChain[PaintingRan.Next(0, idChain.Length)];
+							}
+							// Regist Undo
+							if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j, type) != id) {
+								RegisterUndo_Begin(unitRect);
+								undoRegistered = true;
+							}
+							// Set Data
+							WorldSquad.Front.SetBlockAt(i, j, type, id);
 						}
-						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j, type) != id) {
-							RegisterUndo_Begin(unitRect);
-							undoRegistered = true;
-						}
-						WorldSquad.Front.SetBlockAt(i, j, type, id);
+
 					} else if (mouseDownUnitPos == mouseUnitPos) {
 						// Single Erase
 						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
 							RegisterUndo_Begin(unitRect);
 							undoRegistered = true;
 						}
+
+						// Global Pos
+						IGlobalPosition.RemovePosition(new Int3(i, j, stageZ));
+
+						// Block
 						if (!Modify_BackgroundOnly && !Modify_EntityOnly && !Modify_LevelOnly) {
 							// Normal
 							if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0) {
@@ -243,13 +260,17 @@ namespace AngeliaFramework {
 						}
 					} else {
 						// Range Erase
+
 						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
 							RegisterUndo_Begin(unitRect);
 							undoRegistered = true;
 						}
 						if (!Modify_LevelOnly && !Modify_EntityOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
 						if (!Modify_BackgroundOnly && !Modify_EntityOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
-						if (!Modify_LevelOnly && !Modify_BackgroundOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
+						if (!Modify_LevelOnly && !Modify_BackgroundOnly) {
+							WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
+							IGlobalPosition.RemovePosition(new Int3(i, j, stageZ));
+						}
 						if (!Modify_LevelOnly && !Modify_BackgroundOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
 					}
 				}
@@ -277,8 +298,13 @@ namespace AngeliaFramework {
 				// Pick
 				ApplyPaste();
 				SelectionUnitRect = null;
-				int id = WorldSquad.Front.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y);
-				id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
+				int id;
+				if (IGlobalPosition.TryGetIdFromPosition(new Int3(mouseUnitPos.x, mouseUnitPos.y, Stage.ViewZ), out int globalID)) {
+					id = globalID;
+				} else {
+					id = WorldSquad.Front.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y);
+					id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
+				}
 				if (!PalettePool.TryGetValue(id, out SelectingPaletteItem)) {
 					SelectingPaletteItem = null;
 				}
@@ -326,21 +352,40 @@ namespace AngeliaFramework {
 			if (undoRegistered) RegisterUndo_End(unitRect, true);
 			// Func
 			void AddToList (int i, int j, BlockType type) {
-				int id = WorldSquad.Front.GetBlockAt(i, j, type);
-				if (id == 0) return;
-				if (removeOriginal) {
-					if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
-						RegisterUndo_Begin(unitRect);
-						undoRegistered = true;
+				// GlobalPos
+				var unitPos = new Int3(i, j, Stage.ViewZ);
+				if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
+					unitPos, out int _gID
+				)) {
+					if (removeOriginal) {
+						IGlobalPosition.RemovePosition(unitPos);
 					}
-					WorldSquad.Front.SetBlockAt(i, j, type, 0);
+					CopyBuffer.Add(new BlockBuffer() {
+						ID = _gID,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = true,
+					});
 				}
-				CopyBuffer.Add(new BlockBuffer() {
-					ID = id,
-					LocalUnitX = i - unitRect.x,
-					LocalUnitY = j - unitRect.y,
-					Type = type,
-				});
+				// Block
+				int id = WorldSquad.Front.GetBlockAt(i, j, type);
+				if (id != 0) {
+					if (removeOriginal) {
+						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
+							RegisterUndo_Begin(unitRect);
+							undoRegistered = true;
+						}
+						WorldSquad.Front.SetBlockAt(i, j, type, 0);
+					}
+					CopyBuffer.Add(new BlockBuffer() {
+						ID = id,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = false,
+					});
+				}
 			}
 		}
 
@@ -377,11 +422,17 @@ namespace AngeliaFramework {
 			foreach (var buffer in PastingBuffer) {
 				int unitX = buffer.LocalUnitX + unitRect.x;
 				int unitY = buffer.LocalUnitY + unitRect.y;
-				if (!undoRegistered && WorldSquad.Front.GetBlockAt(unitX, unitY) != buffer.ID) {
-					RegisterUndo_Begin(unitRect);
-					undoRegistered = true;
+				if (buffer.IsGlobalPos) {
+					// Global Pos
+					IGlobalPosition.SetPosition(buffer.ID, new Int3(unitX, unitY, Stage.ViewZ));
+				} else {
+					// Block
+					if (!undoRegistered && WorldSquad.Front.GetBlockAt(unitX, unitY) != buffer.ID) {
+						RegisterUndo_Begin(unitRect);
+						undoRegistered = true;
+					}
+					WorldSquad.Front.SetBlockAt(unitX, unitY, buffer.Type, buffer.ID);
 				}
-				WorldSquad.Front.SetBlockAt(unitX, unitY, buffer.Type, buffer.ID);
 			}
 			RedirectForRule(unitRect);
 			IsDirty = true;
@@ -420,21 +471,40 @@ namespace AngeliaFramework {
 			if (undoRegistered) RegisterUndo_End(unitRect, false);
 			// Func
 			void AddToList (int i, int j, BlockType type) {
-				int id = WorldSquad.Front.GetBlockAt(i, j, type);
-				if (id == 0) return;
-				if (removeOriginal) {
-					if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
-						RegisterUndo_Begin(unitRect);
-						undoRegistered = true;
+				// Global Pos
+				var unitPos = new Int3(i, j, Stage.ViewZ);
+				if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
+					unitPos, out int _gID
+				)) {
+					if (removeOriginal) {
+						IGlobalPosition.RemovePosition(unitPos);
 					}
-					WorldSquad.Front.SetBlockAt(i, j, type, 0);
+					PastingBuffer.Add(new BlockBuffer() {
+						ID = _gID,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = true,
+					});
 				}
-				PastingBuffer.Add(new BlockBuffer() {
-					ID = id,
-					LocalUnitX = i - unitRect.x,
-					LocalUnitY = j - unitRect.y,
-					Type = type,
-				});
+				// Block
+				int id = WorldSquad.Front.GetBlockAt(i, j, type);
+				if (id != 0) {
+					if (removeOriginal) {
+						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
+							RegisterUndo_Begin(unitRect);
+							undoRegistered = true;
+						}
+						WorldSquad.Front.SetBlockAt(i, j, type, 0);
+					}
+					PastingBuffer.Add(new BlockBuffer() {
+						ID = id,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = false,
+					});
+				}
 			}
 		}
 

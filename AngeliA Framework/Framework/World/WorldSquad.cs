@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 			Util.LinkEventWithAttribute<OnMapChannelChangedAttribute>(typeof(WorldSquad), nameof(OnMapChannelChanged));
 			Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 			Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
-			SetMapChannel(MapChannel.BuiltIn);
+			SetMapChannel(MapChannel.BuiltIn, forceOperate: true);
 			Front.ForceReloadDelay();
 			Behind.ForceReloadDelay();
 		}
@@ -72,14 +72,13 @@ namespace AngeliaFramework {
 
 		[OnGameUpdate(-64)]
 		public static void OnGameUpdate () {
+			if (!Enable) return;
 			Front.DrawAllBlocks(false);
 			Behind.DrawAllBlocks(true);
 		}
 
 
 		private void DrawAllBlocks (bool isBehind) {
-
-			if (!Enable) return;
 
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
 			if (isBehind) {
@@ -190,20 +189,46 @@ namespace AngeliaFramework {
 					int d = System.Math.Max(unitRect_Entity.y, worldUnitRect.y);
 					int u = System.Math.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
 
-					// Entity
-					for (int j = d; j < u; j++) {
-						int localY = j - worldUnitRect.y;
-						int index = localY * Const.MAP + (l - worldUnitRect.x);
-						for (int i = l; i < r; i++, index++) {
-							var entityID = world.Entities[index];
-							if (entityID != 0) {
-								if (!isBehind) {
-									DrawEntity(entityID, i, j, z);
-								} else if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
+					if (!isBehind) {
+						// Entity
+						for (int j = d; j < u; j++) {
+							int localY = j - worldUnitRect.y;
+							int index = localY * Const.MAP + (l - worldUnitRect.x);
+							for (int i = l; i < r; i++, index++) {
+								var entityID = world.Entities[index];
+								if (entityID == 0) continue;
+								DrawEntity(entityID, i, j, z);
+							}
+						}
+					} else {
+						// Behind
+						for (int j = d; j < u; j++) {
+							int localY = j - worldUnitRect.y;
+							int index = localY * Const.MAP + (l - worldUnitRect.x);
+							for (int i = l; i < r; i++, index++) {
+								var entityID = world.Entities[index];
+								if (entityID == 0) continue;
+								if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
 									Draw_Behind(entityID, i, j, true);
 								}
 							}
+						}
+					}
 
+					// Global Pos Entity
+					if (IGlobalPosition.TryGetPositionList(world.WorldPosition, out var list)) {
+						foreach (var posData in list) {
+							int unitPosX = posData.UnitPositionX;
+							int unitPosY = posData.UnitPositionY;
+							if (unitPosX >= l && unitPosX < r && unitPosY >= d && unitPosY < u) {
+								if (!isBehind) {
+									DrawEntity(posData.ID, unitPosX, unitPosY, z);
+								} else {
+									if (Stage.RequireDrawEntityBehind(posData.ID, unitPosX, unitPosY, z)) {
+										Draw_Behind(posData.ID, unitPosX, unitPosY, true);
+									}
+								}
+							}
 						}
 					}
 
@@ -223,9 +248,8 @@ namespace AngeliaFramework {
 				}
 			}
 
-			if (isBehind) {
-				CellRenderer.SetLayerToDefault();
-			}
+			// Final
+			if (isBehind) CellRenderer.SetLayerToDefault();
 
 		}
 
@@ -249,7 +273,9 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SetMapChannel (MapChannel newChannel, string folderName = "") {
+		public static void SetMapChannel (MapChannel newChannel, string folderName = "", bool forceOperate = false) {
+
+			if (!forceOperate && newChannel == Channel) return;
 
 			if (SaveBeforeReload) Front.SaveToFile();
 

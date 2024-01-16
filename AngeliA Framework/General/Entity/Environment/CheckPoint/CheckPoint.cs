@@ -174,7 +174,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected virtual bool TryGetAltarPosition (out Int3 altarUnitPos) => IGlobalPosition.TryGetPosition(LinkedAltarID, out altarUnitPos);
+		protected virtual bool TryGetAltarPosition (out Int3 altarUnitPos) => IGlobalPosition.TryGetPositionFromID(LinkedAltarID, out altarUnitPos);
 
 
 		#endregion

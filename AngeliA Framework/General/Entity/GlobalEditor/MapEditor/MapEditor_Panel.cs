@@ -881,7 +881,7 @@ namespace AngeliaFramework {
 			for (int i = QuickLaneScrollY * COLUMN; i < CheckAltarIDs.Count; i++, index++) {
 
 				int id = CheckAltarIDs[i];
-				bool interactable = IGlobalPosition.TryGetPosition(id, out var globalUnitPos) && !hasTask;
+				bool interactable = IGlobalPosition.TryGetPositionFromID(id, out var globalUnitPos) && !hasTask;
 
 				// Button
 				var btnRect = new IRect(

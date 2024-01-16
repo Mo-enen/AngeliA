@@ -152,7 +152,7 @@ namespace AngeliaFramework {
 					Player.HomeUnitPosition.Value.y,
 					Player.HomeUnitPosition.Value.z
 				);
-			} else if (IGlobalPosition.TryGetPosition(Player.Selecting.TypeID, out var mapUnitPosition)) {
+			} else if (IGlobalPosition.TryGetPositionFromID(Player.Selecting.TypeID, out var mapUnitPosition)) {
 				// Global Map Pos
 				startUnitPosition = mapUnitPosition;
 			} else {

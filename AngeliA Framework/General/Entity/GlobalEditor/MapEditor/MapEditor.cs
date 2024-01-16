@@ -18,6 +18,7 @@ namespace AngeliaFramework {
 			public BlockType Type;
 			public int LocalUnitX;
 			public int LocalUnitY;
+			public bool IsGlobalPos;
 		}
 
 
@@ -36,6 +37,7 @@ namespace AngeliaFramework {
 			public int BackgroundID;
 			public int LevelID;
 			public int EntityID;
+			public int GlobalPosID;
 			public int UnitX;
 			public int UnitY;
 		}
@@ -244,7 +246,7 @@ namespace AngeliaFramework {
 
 			JsonUtil.SaveJson(EditorMeta, Project.CurrentProject.MapRoot);
 			AngeUtil.DeleteAllEmptyMaps(Project.CurrentProject.MapRoot);
-			IGlobalPosition.CreateMetaFileFromMapsAsync(Project.CurrentProject.MapRoot);
+			IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
 			WorldSquad.ShowElement = false;
@@ -905,7 +907,7 @@ namespace AngeliaFramework {
 			Stage.ClearGlobalAntiSpawn();
 			Player.RespawnCpUnitPosition = null;
 			if (toPlayMode) {
-				IGlobalPosition.CreateMetaFileFromMapsAsync(Project.CurrentProject.MapRoot);
+				IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
@@ -1081,6 +1083,7 @@ namespace AngeliaFramework {
 			int dataLength = 0;
 			for (int i = unitRange.x; i < unitRange.x + unitRange.width; i++) {
 				for (int j = unitRange.y; j < unitRange.y + unitRange.height; j++) {
+					// Block
 					int index = (startIndex + dataLength) % DATA_LEN;
 					ref var data = ref UndoData[index];
 					data.Step = CURRENT_STEP;
@@ -1089,6 +1092,7 @@ namespace AngeliaFramework {
 					data.LevelID = quadID.y;
 					data.BackgroundID = quadID.z;
 					data.ElementID = quadID.w;
+					data.GlobalPosID = 0;
 					data.UnitX = i;
 					data.UnitY = j;
 					dataLength++;
@@ -1150,10 +1154,17 @@ namespace AngeliaFramework {
 				int index = (item.DataIndex + i) % UndoData.Length;
 				var data = UndoData[index];
 				if (data.Step != item.Step) break;
-				WorldSquad.Front.SetBlockAt(
-					data.UnitX, data.UnitY,
-					data.EntityID, data.LevelID, data.BackgroundID, data.ElementID
-				);
+
+				if (data.GlobalPosID != 0) {
+					// Global Pos
+					IGlobalPosition.SetPosition(data.GlobalPosID, new Int3(data.UnitX, data.UnitY, data.EntityID));
+				} else {
+					// Block
+					WorldSquad.Front.SetBlockAt(
+						data.UnitX, data.UnitY,
+						data.EntityID, data.LevelID, data.BackgroundID, data.ElementID
+					);
+				}
 				minX = Util.Min(minX, data.UnitX);
 				minY = Util.Min(minY, data.UnitY);
 				maxX = Util.Max(maxX, data.UnitX);
