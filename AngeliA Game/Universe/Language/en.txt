@@ -6,9 +6,6 @@ CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drop:Drop
-CtrlHint.EditLanguage:Edit Language
-CtrlHint.EditMap:Edit Map
-CtrlHint.EditSheet:Edit Sheet
 CtrlHint.EnterDoor:Enter
 CtrlHint.Equip:Equip
 CtrlHint.HideMenu:Hide Menu
@@ -23,7 +20,6 @@ CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
 CtrlHint.MEDT.SwitchMode.Play:Play
 CtrlHint.Move:Move
 CtrlHint.PlayerMenu.Take:Take
-CtrlHint.QuitEditing:Stop Editing
 CtrlHint.ShowMenu:Show Menu
 CtrlHint.SwitchPlayer:Switch Character
 CtrlHint.Throw:Throw

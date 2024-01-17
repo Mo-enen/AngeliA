@@ -49,7 +49,7 @@ namespace AngeliaFramework {
 			if (Target == player) {
 				// Curtain
 				if (RequireRestartGame) {
-					CellRenderer.DrawBlackCurtain((Game.GlobalFrame - player.SleepStartFrame) * 1000 / FULL_SLEEP_DURATION);
+					Game.PassEffect_RetroDarken((float)(Game.GlobalFrame - player.SleepStartFrame) / FULL_SLEEP_DURATION);
 				}
 				// Restart Game
 				if (RequireRestartGame && Game.GlobalFrame - player.SleepStartFrame >= FULL_SLEEP_DURATION) {

@@ -6,9 +6,6 @@ CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:合成
 CtrlHint.Drop:放下
-CtrlHint.EditLanguage:编辑语言
-CtrlHint.EditMap:编辑地图
-CtrlHint.EditSheet:编辑贴图
 CtrlHint.EnterDoor:进门
 CtrlHint.Equip:装备
 CtrlHint.HideMenu:隐藏菜单
@@ -23,7 +20,6 @@ CtrlHint.MEDT.SwitchMode.Edit:返回编辑
 CtrlHint.MEDT.SwitchMode.Play:开始游戏
 CtrlHint.Move:移动
 CtrlHint.PlayerMenu.Take:拾取
-CtrlHint.QuitEditing:停止编辑
 CtrlHint.ShowMenu:显示菜单
 CtrlHint.SwitchPlayer:切换角色
 CtrlHint.Throw:丢弃

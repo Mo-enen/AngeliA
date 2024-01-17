@@ -6,6 +6,11 @@ namespace AngeliaFramework {
 	public partial class Game {
 
 
+		// VAR
+		private static int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
+
+
+
 		// System
 		public static bool IsEdittime => Instance._GetIsEdittime();
 		protected abstract bool _GetIsEdittime ();
@@ -126,35 +131,49 @@ namespace AngeliaFramework {
 
 
 		// Effect
-		internal static bool GetEffectEnable (int effectIndex) => Instance._GetEffectEnable(effectIndex);
+		[OnGameUpdatePauseless(4096)]
+		internal static void ScreenEffectUpdate () {
+			var ins = Instance;
+			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+				int frame = ScreenEffectEnableFrames[i];
+				bool enable = PauselessFrame <= frame;
+				if (enable != ins._GetEffectEnable(i)) {
+					ins._SetEffectEnable(i, enable);
+				}
+			}
+		}
+		public static void PassEffect (int effectIndex, int duration = 0) => ScreenEffectEnableFrames[effectIndex] = PauselessFrame + duration;
+		public static void PassEffect_ChromaticAberration (int duration = 0) {
+			ScreenEffectEnableFrames[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION] = PauselessFrame + duration;
+		}
+		public static void PassEffect_Tint (Byte4 color, int duration = 0) {
+			ScreenEffectEnableFrames[Const.SCREEN_EFFECT_TINT] = PauselessFrame + duration;
+			Instance._Effect_SetTintParams(color);
+		}
+		public static void PassEffect_RetroDarken (float amount, float step = 8, int duration = 0) {
+			ScreenEffectEnableFrames[Const.SCREEN_EFFECT_RETRO_DARKEN] = PauselessFrame + duration;
+			Instance._Effect_SetDarkenParams(amount, step);
+		}
+		public static void PassEffect_RetroLighten (float amount, float step = 8, int duration = 0) {
+			ScreenEffectEnableFrames[Const.SCREEN_EFFECT_RETRO_LIGHTEN] = PauselessFrame + duration;
+			Instance._Effect_SetLightenParams(amount, step);
+		}
+		public static void PassEffect_Vignette (float radius, float feather, float offsetX, float offsetY, float round, int duration = 0) {
+			ScreenEffectEnableFrames[Const.SCREEN_EFFECT_VIGNETTE] = PauselessFrame + duration;
+			Instance._Effect_SetVignetteParams(radius, feather, offsetX, offsetY, round);
+		}
+		public static void PassEffect_Greyscale (int duration = 0) {
+			ScreenEffectEnableFrames[Const.SCREEN_EFFECT_GREYSCALE] = PauselessFrame + duration;
+		}
+		public static void PassEffect_Invert (int duration = 0) {
+			ScreenEffectEnableFrames[Const.SCREEN_EFFECT_INVERT] = PauselessFrame + duration;
+		}
 		protected abstract bool _GetEffectEnable (int effectIndex);
-
-		internal static void SetEffectEnable (int effectIndex, bool enable) => Instance._SetEffectEnable(effectIndex, enable);
 		protected abstract void _SetEffectEnable (int effectIndex, bool enable);
-
-		internal static void Effect_SetDarkenAmount (float amount, float step = 8) => Instance._Effect_SetDarkenAmount(amount, step);
-		protected abstract void _Effect_SetDarkenAmount (float amount, float step = 8);
-
-		internal static void Effect_SetLightenAmount (float amount, float step = 8) => Instance._Effect_SetLightenAmount(amount, step);
-		protected abstract void _Effect_SetLightenAmount (float amount, float step = 8);
-
-		internal static void Effect_SetTint (Byte4 color) => Instance._Effect_SetTint(color);
-		protected abstract void _Effect_SetTint (Byte4 color);
-
-		internal static void Effect_SetVignetteRadius (float radius) => Instance._Effect_SetVignetteRadius(radius);
-		protected abstract void _Effect_SetVignetteRadius (float radius);
-
-		internal static void Effect_SetVignetteFeather (float feather) => Instance._Effect_SetVignetteFeather(feather);
-		protected abstract void _Effect_SetVignetteFeather (float feather);
-
-		internal static void Effect_SetVignetteOffsetX (float offsetX) => Instance._Effect_SetVignetteOffsetX(offsetX);
-		protected abstract void _Effect_SetVignetteOffsetX (float offsetX);
-
-		internal static void Effect_SetVignetteOffsetY (float offsetY) => Instance._Effect_SetVignetteOffsetY(offsetY);
-		protected abstract void _Effect_SetVignetteOffsetY (float offsetY);
-
-		internal static void Effect_SetVignetteRound (float round) => Instance._Effect_SetVignetteRound(round);
-		protected abstract void _Effect_SetVignetteRound (float round);
+		protected abstract void _Effect_SetDarkenParams (float amount, float step);
+		protected abstract void _Effect_SetLightenParams (float amount, float step);
+		protected abstract void _Effect_SetTintParams (Byte4 color);
+		protected abstract void _Effect_SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round);
 
 
 		// Texture

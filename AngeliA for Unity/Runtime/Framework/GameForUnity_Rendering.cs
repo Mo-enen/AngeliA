@@ -362,14 +362,10 @@ namespace AngeliaForUnity {
 		// Effect
 		protected override bool _GetEffectEnable (int effectIndex) => PostRenderer.GetEffectEnable(effectIndex);
 		protected override void _SetEffectEnable (int effectIndex, bool enable) => PostRenderer.SetEffectEnable(effectIndex, enable);
-		protected override void _Effect_SetDarkenAmount (float amount, float step = 8) => PostRenderer.SetDarkenAmount(amount, step);
-		protected override void _Effect_SetLightenAmount (float amount, float step = 8) => PostRenderer.SetLightenAmount(amount, step);
-		protected override void _Effect_SetTint (Byte4 color) => PostRenderer.SetTint(color.ToUnityColor());
-		protected override void _Effect_SetVignetteRadius (float radius) => PostRenderer.SetVignetteRadius(radius);
-		protected override void _Effect_SetVignetteFeather (float feather) => PostRenderer.SetVignetteFeather(feather);
-		protected override void _Effect_SetVignetteOffsetX (float offsetX) => PostRenderer.SetVignetteOffsetX(offsetX);
-		protected override void _Effect_SetVignetteOffsetY (float offsetY) => PostRenderer.SetVignetteOffsetY(offsetY);
-		protected override void _Effect_SetVignetteRound (float round) => PostRenderer.SetVignetteRound(round);
+		protected override void _Effect_SetDarkenParams (float amount, float step) => PostRenderer.SetDarkenAmount(amount, step);
+		protected override void _Effect_SetLightenParams (float amount, float step = 8) => PostRenderer.SetLightenAmount(amount, step);
+		protected override void _Effect_SetTintParams (Byte4 color) => PostRenderer.SetTint(color.ToUnityColor());
+		protected override void _Effect_SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round) => PostRenderer.SetVignetteParams(radius, feather, offsetX, offsetY, round);
 
 
 		// Texture

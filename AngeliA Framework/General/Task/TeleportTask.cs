@@ -81,9 +81,7 @@ namespace AngeliaFramework {
 					float radius = Util.RemapUnclamped(0, WaitDuration - 1, 1f, 0f, LocalFrame);
 					float offsetX = Util.RemapUnclamped(cameraRect.xMin, cameraRect.xMax, -1f, 1f, TeleportFrom.x);
 					float offsetY = Util.RemapUnclamped(cameraRect.yMin, cameraRect.yMax, -1f, 1f, TeleportFrom.y);
-					//VignetteEffect.SetRadius(radius * radius);
-					//VignetteEffect.SetOffsetX(offsetX);
-					//VignetteEffect.SetOffsetY(offsetY);
+					Game.PassEffect_Vignette(radius * radius, 0f, offsetX, offsetY, 1f);
 					return TaskResult.Continue;
 				} else if (LocalFrame < Duration) {
 					float t01 = Util.RemapUnclamped(WaitDuration, Duration - 1, 0f, 1f, LocalFrame);
@@ -92,11 +90,12 @@ namespace AngeliaFramework {
 					radius *= 2f;
 					float offsetX = Util.RemapUnclamped(cameraRect.xMin, cameraRect.xMax, -1f, 1f, TeleportTo.x);
 					float offsetY = Util.RemapUnclamped(cameraRect.yMin, cameraRect.yMax, -1f, 1f, TeleportTo.y);
-					//VignetteEffect.SetRadius(radius);
-					//VignetteEffect.SetFeather(Mathf.Lerp(0f, VigFeather, t01));
-					//VignetteEffect.SetRound(Mathf.Lerp(1f, VigRound, t01));
-					//VignetteEffect.SetOffsetX(Mathf.Lerp(offsetX, 0f, t01));
-					//VignetteEffect.SetOffsetY(Mathf.Lerp(offsetY, 0f, t01));
+					Game.PassEffect_Vignette(
+						radius, 0f,
+						Util.Lerp(offsetX, 0f, t01),
+						Util.Lerp(offsetY, 0f, t01),
+						1f
+					);
 					return TaskResult.Continue;
 				} else {
 					return TaskResult.End;
@@ -124,8 +123,6 @@ namespace AngeliaFramework {
 				svTask.ChannelName = channelName;
 				var player = Player.Selecting;
 				if (player != null) {
-					player.X = fromX;
-					player.Y = fromY;
 					player.Stop();
 					player.EnterTeleportState(svTask.Duration, Stage.ViewZ > toZ, withPortal);
 					player.VelocityX = 0;

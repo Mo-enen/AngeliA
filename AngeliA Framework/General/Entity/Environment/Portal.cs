@@ -162,24 +162,26 @@ namespace AngeliaFramework {
 			var player = Player.Selecting;
 			if (player != null && player.Rect.Overlaps(Rect)) {
 				if (!player.LockingInput && !player.Teleporting && CooldownFrame > 2) {
-					Invoke();
+					Invoke(player);
 				}
 				CooldownFrame = 0;
 			} else {
 				CooldownFrame++;
 			}
 		}
-		public virtual bool Invoke () {
+		public virtual bool Invoke (Player player) {
 			if (FrameTask.HasTask()) return false;
 			if (DontSpawnAfterUsed) Stage.MarkAsGlobalAntiSpawn(this);
 			TeleportTask.Teleport(
-				X + Width / 2, Y,
+				X + Width / 2, Y + Height / 2,
 				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z,
 				waitDuration: 30,
 				duration: 60,
 				useVignette: true,
 				withPortal: true
 			);
+			player.X = X + Width / 2;
+			player.Y = Y;
 			return true;
 		}
 

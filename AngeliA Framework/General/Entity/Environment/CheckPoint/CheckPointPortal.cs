@@ -42,8 +42,8 @@ namespace AngeliaFramework {
 			}
 		}
 
-		public override bool Invoke () {
-			bool result = base.Invoke();
+		public override bool Invoke (Player player) {
+			bool result = base.Invoke(player);
 			if (result) {
 				InvokeFrame = Game.GlobalFrame;
 			}

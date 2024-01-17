@@ -57,6 +57,7 @@ namespace AngeliaFramework {
 		private static readonly BarData[] EntityUsages = new BarData[EntityLayer.COUNT];
 		private static BarData[] TextUsages = new BarData[0];
 		private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
+		private static readonly bool[] EffectsEnabled = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
 		private static int RequireToolboxFrame = int.MinValue;
 		private static int RequireDataFrame = int.MinValue;
 		private static int DrawColliderFrame = int.MinValue;
@@ -130,13 +131,8 @@ namespace AngeliaFramework {
 				}
 				int spriteCode = BTN_SPRITES[i];
 				if (CellRendererGUI.Button(rect, spriteCode, spriteCode, spriteCode, 0, 0, 0, int.MaxValue)) {
-					if (i == 4 || SelectingPanelIndex == 4) {
-						// Disable all Effects
-						for (int j = 0; j < Const.SCREEN_EFFECT_COUNT; j++) {
-							Game.SetEffectEnable(j, false);
-						}
-					}
 					SelectingPanelIndex = SelectingPanelIndex != i ? i : -1;
+					EffectsEnabled.FillWithValue(false);
 					FrameInput.UseMouseKey(0);
 					FrameInput.UseGameKey(Gamekey.Action);
 				}
@@ -437,7 +433,7 @@ namespace AngeliaFramework {
 
 				// Enable Button
 				var enableRect = rect.EdgeInside(Direction4.Right, itemHeight);
-				bool enable = Game.GetEffectEnable(i);
+				bool enable = EffectsEnabled[i];
 				if (CellRendererGUI.Button(
 					enableRect,
 					BuiltInIcon.CIRCLE_16, BuiltInIcon.CIRCLE_16, BuiltInIcon.CIRCLE_16,
@@ -445,20 +441,25 @@ namespace AngeliaFramework {
 					0, itemHeight / 5, z: int.MaxValue - 8,
 					Const.GREY_32, Const.WHITE
 				)) {
-					Game.SetEffectEnable(i, !enable);
+					EffectsEnabled[i] = !enable;
 				}
 				CursorSystem.SetCursorAsHand(enableRect);
 			}
 
 			// Update Values
-			if (Game.GetEffectEnable(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
-				Game.Effect_SetDarkenAmount(Game.GlobalFrame.PingPong(60) / 60f);
+			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+				if (EffectsEnabled[i]) {
+					Game.PassEffect(i);
+				}
 			}
-			if (Game.GetEffectEnable(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
-				Game.Effect_SetLightenAmount(Game.GlobalFrame.PingPong(60) / 60f);
+			if (EffectsEnabled[Const.SCREEN_EFFECT_RETRO_DARKEN]) {
+				Game.PassEffect_RetroDarken(Game.GlobalFrame.PingPong(60) / 60f);
 			}
-			if (Game.GetEffectEnable(Const.SCREEN_EFFECT_TINT)) {
-				Game.Effect_SetTint(Byte4.LerpUnclamped(new Byte4(255, 128, 196, 255), new Byte4(128, 255, 64, 255), Game.GlobalFrame.PingPong(120) / 120f));
+			if (EffectsEnabled[Const.SCREEN_EFFECT_RETRO_LIGHTEN]) {
+				Game.PassEffect_RetroLighten(Game.GlobalFrame.PingPong(60) / 60f);
+			}
+			if (EffectsEnabled[Const.SCREEN_EFFECT_TINT]) {
+				Game.PassEffect_Tint(Byte4.LerpUnclamped(new Byte4(255, 128, 196, 255), new Byte4(128, 255, 64, 255), Game.GlobalFrame.PingPong(120) / 120f));
 			}
 
 		}

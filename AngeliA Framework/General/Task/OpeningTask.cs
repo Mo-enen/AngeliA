@@ -35,7 +35,7 @@ namespace AngeliaFramework {
 			PlayerSpawnY = TargetViewY;
 			TargetViewY += Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
 			if (FadeOut) {
-				CellRenderer.DrawBlackCurtain(1000);
+				Game.PassEffect_RetroDarken(1f);
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace AngeliaFramework {
 				if (localFrame < FADE_OUT_DURATION) {
 					var view = Stage.ViewRect;
 					Stage.SetViewPositionDelay(view.x, view.y, 1000, 0);
-					CellRenderer.DrawBlackCurtain(localFrame * 1000 / FADE_OUT_DURATION);
+					Game.PassEffect_RetroDarken((float)localFrame / FADE_OUT_DURATION);
 					return TaskResult.Continue;
 				} else {
 					localFrame -= FADE_OUT_DURATION;
@@ -57,7 +57,7 @@ namespace AngeliaFramework {
 			}
 
 			if (FadeOut && localFrame < 2) {
-				CellRenderer.DrawBlackCurtain(1000);
+				Game.PassEffect_RetroDarken(1f);
 			}
 
 			// Frame 1
@@ -102,7 +102,7 @@ namespace AngeliaFramework {
 				}
 				// Black FadeIn
 				if (localFrame <= BLACK_DURATION) {
-					CellRenderer.DrawBlackCurtain(1000 - localFrame * 1000 / BLACK_DURATION);
+					Game.PassEffect_RetroDarken(1f - (float)localFrame / BLACK_DURATION);
 				}
 				if (localFrame < DURATION) {
 					// Camera Down

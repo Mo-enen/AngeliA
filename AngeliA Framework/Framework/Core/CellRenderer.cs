@@ -759,9 +759,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void DrawBlackCurtain (int amount) => Game.DrawGizmosRect(CameraRect.Expand(16), new Byte4(0, 0, 0, (byte)Util.RemapUnclamped(0, 1000, 0, 255, amount).Clamp(0, 255)));
-
-
 		// Sprite Data
 		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) => TryGetSprite(Sheet, globalID, out sprite, ignoreAnimation);
 		public static bool TryGetSprite (Sheet sheet, int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {

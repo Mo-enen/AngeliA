@@ -119,11 +119,10 @@ namespace AngeliaFramework {
 
 				Util.DeleteFolder(mapRoot);
 				Util.MoveFolder(tempMapRoot, mapRoot);
+				IGlobalPosition.SaveToDisk(mapRoot);
 				WorldSquad.Front.ForceReloadDelay();
 				WorldSquad.Behind.ForceReloadDelay();
 				Stage.SetViewZ(Stage.ViewZ);
-
-				IGlobalPosition.SaveToDisk(tempMapRoot);
 
 				AfterMapGenerate();
 			} catch (System.Exception ex) {

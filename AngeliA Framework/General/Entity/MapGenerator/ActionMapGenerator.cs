@@ -93,11 +93,10 @@ namespace AngeliaFramework {
 
 
 		private void Enter () {
-			var player = Player.Selecting;
 			if (FrameTask.HasTask()) return;
 			TeleportTask.Teleport(
-				player.X,
-				player.Y,
+				X + Width / 2,
+				Y + Height / 2,
 				0, 0, 0,
 				waitDuration: 30,
 				duration: 60,

@@ -215,7 +215,7 @@ namespace AngeliaFramework {
 			if (Game.GlobalFrame == 0) {
 				SetEditorMode(true);
 				Game.RestartGame();
-				CellRenderer.DrawBlackCurtain(1000);
+				Game.PassEffect_RetroDarken(1f);
 			} else {
 				SetEditorMode(false);
 			}

@@ -224,11 +224,14 @@ namespace AngeliaForUnity {
 			);
 		}
 		public static void SetTint (Color color) => Effects[Const.SCREEN_EFFECT_TINT].Materal.SetColor(TINT_CODE, color);
-		public static void SetVignetteRadius (float radius) => Effects[Const.SCREEN_EFFECT_VIGNETTE].Materal.SetFloat(RADIUS_CODE, radius);
-		public static void SetVignetteFeather (float feather) => Effects[Const.SCREEN_EFFECT_VIGNETTE].Materal.SetFloat(FEATHER_CODE, feather);
-		public static void SetVignetteOffsetX (float offsetX) => Effects[Const.SCREEN_EFFECT_VIGNETTE].Materal.SetFloat(OFFSET_X_CODE, offsetX);
-		public static void SetVignetteOffsetY (float offsetY) => Effects[Const.SCREEN_EFFECT_VIGNETTE].Materal.SetFloat(OFFSET_Y_CODE, offsetY);
-		public static void SetVignetteRound (float round) => Effects[Const.SCREEN_EFFECT_VIGNETTE].Materal.SetFloat(ROUND_CODE, round);
+		public static void SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round) {
+			var mat = Effects[Const.SCREEN_EFFECT_VIGNETTE].Materal;
+			mat.SetFloat(RADIUS_CODE, radius);
+			mat.SetFloat(FEATHER_CODE, feather);
+			mat.SetFloat(OFFSET_X_CODE, offsetX);
+			mat.SetFloat(OFFSET_Y_CODE, offsetY);
+			mat.SetFloat(ROUND_CODE, round);
+		}
 
 
 		// Gizmos

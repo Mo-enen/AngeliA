@@ -3,7 +3,7 @@ namespace AngeliaFramework {
 		public static readonly int TYPE_ID = typeof(FadeInTask).AngeHash();
 		private int Duration => UserData is int i ? i : 20;
 		public override TaskResult FrameUpdate () {
-			CellRenderer.DrawBlackCurtain(1000 - LocalFrame * 1000 / Duration);
+			Game.PassEffect_RetroDarken(1f - (float)LocalFrame / Duration);
 			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.Follow;
 		}
 	}
@@ -13,7 +13,7 @@ namespace AngeliaFramework {
 		public static readonly int TYPE_ID = typeof(FadeOutTask).AngeHash();
 		private int Duration => UserData is int i ? i : 20;
 		public override TaskResult FrameUpdate () {
-			CellRenderer.DrawBlackCurtain(LocalFrame * 1000 / Duration);
+			Game.PassEffect_RetroDarken((float)LocalFrame / Duration);
 			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.Follow;
 		}
 	}

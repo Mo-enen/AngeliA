@@ -58,7 +58,7 @@ namespace AngeliaFramework {
 				FrameTask.AddToLast(FadeInTask.TYPE_ID, 50);
 			} else {
 				// On Game Start
-				CellRenderer.DrawBlackCurtain(1000);
+				Game.PassEffect_RetroDarken(1f);
 				if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
 					task.EntityID = typeID;
 					task.X = 0;
