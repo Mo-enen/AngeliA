@@ -148,12 +148,7 @@ namespace AngeliaFramework {
 		public const int LEVEL_SPAWN_PADDING = LEVEL_SPAWN_PADDING_UNIT * CEL;
 		public const int SPAWN_PADDING = SPAWN_PADDING_UNIT * CEL;
 		public const int ANTI_SPAWN_PADDING = ANTI_SPAWN_PADDING_UNIT * CEL;
-		public const int SQUAD_BEHIND_PARALLAX = 1300;
-		public const int DEFAULT_VIEW_HEIGHT = 26 * CEL;
-		public const int MIN_VIEW_HEIGHT = 16 * CEL;
-		public const int MAX_VIEW_HEIGHT = 60 * CEL;
 		public const int VIEW_RATIO = 2000; // width / height * 1000
-		public const byte SQUAD_BEHIND_ALPHA = 64;
 
 		// Team
 		public const int TEAM_ENVIRONMENT = 0b1;

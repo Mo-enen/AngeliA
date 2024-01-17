@@ -87,7 +87,6 @@ namespace AngeliaFramework {
 					player?.Heal(player.MaxHP);
 					if (player != null && GotoBed && Stage.TryGetEntity<Bed>(out var bed)) {
 						bed.GetTargetOnBed(Player.Selecting);
-						player.SetAsFullAsleep();
 						TargetViewX = player.Rect.CenterX();
 						TargetViewY = player.Y + Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
 						SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
@@ -165,7 +164,7 @@ namespace AngeliaFramework {
 				FrameTask.TryAddToLast(TYPE_ID, out var task) &&
 				task is OpeningTask oTask
 			) {
-				Stage.SetViewSizeDelay(Const.DEFAULT_VIEW_HEIGHT, 1000, int.MaxValue);
+				Stage.SetViewSizeDelay(Game.DEFAULT_VIEW_HEIGHT, 1000, int.MaxValue);
 				oTask.TargetViewX = startUnitPosition.x.ToGlobal();
 				oTask.TargetViewY = startUnitPosition.y.ToGlobal();
 				oTask.TargetViewZ = startUnitPosition.z;

@@ -850,15 +850,13 @@ namespace AngeliaFramework {
 
 		public static void DeleteAllEmptyMaps (string mapRoot) {
 			var world = new World();
-			lock (World.FILE_STREAMING_LOCK) {
-				foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
-					try {
-						if (!world.LoadFromDisk(path)) continue;
-						if (world.EmptyCheck()) {
-							Util.DeleteFile(path);
-						}
-					} catch (System.Exception ex) { Game.LogException(ex); }
-				}
+			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
+				try {
+					if (!world.LoadFromDisk(path)) continue;
+					if (world.EmptyCheck()) {
+						Util.DeleteFile(path);
+					}
+				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
 

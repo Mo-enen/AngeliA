@@ -134,10 +134,9 @@ namespace AngeliaFramework {
 
 				var chain = CellRenderer.GetGroupAt(index);
 				var firstSprite = chain.Sprites[0];
-				var chainType = chain.Type;
 				var atlasType = firstSprite.Atlas.Type;
 				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
-
+				
 				string atlasName = firstSprite.Atlas.Name;
 				if (!palGroupPool.TryGetValue(atlasName, out var palGroup)) {
 					palGroupPool.Add(atlasName, palGroup = new PaletteGroup() {
@@ -166,7 +165,7 @@ namespace AngeliaFramework {
 
 				var atlasType = sp.Atlas.Type;
 				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
-				if (sp.GroupType != GroupType.General) continue;
+				if (sp.GroupType != null) continue;
 
 				string atlasName = sp.Atlas.Name;
 				if (!palGroupPool.TryGetValue(atlasName, out var group)) {

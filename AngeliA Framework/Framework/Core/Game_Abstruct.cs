@@ -90,6 +90,23 @@ namespace AngeliaFramework {
 		protected abstract float _GetCameraOrthographicSize ();
 
 
+		// View
+		public static int DEFAULT_VIEW_HEIGHT => Instance._DEFAULT_VIEW_HEIGHT;
+		protected virtual int _DEFAULT_VIEW_HEIGHT => 26 * Const.CEL;
+
+		public static int MIN_VIEW_HEIGHT => Instance._MIN_VIEW_HEIGHT;
+		protected virtual int _MIN_VIEW_HEIGHT => 16 * Const.CEL;
+
+		public static int MAX_VIEW_HEIGHT => Instance._MAX_VIEW_HEIGHT;
+		protected virtual int _MAX_VIEW_HEIGHT => 60 * Const.CEL;
+
+		public static int WORLD_BEHIND_PARALLAX => Instance._WORLD_BEHIND_PARALLAX;
+		protected virtual int _WORLD_BEHIND_PARALLAX => 1300;
+
+		public static byte WORLD_BEHIND_ALPHA => Instance._WORLD_BEHIND_ALPHA;
+		protected virtual byte _WORLD_BEHIND_ALPHA => 64;
+
+
 		// Render
 		internal static void OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnRenderingLayerCreated(index, name, sortingOrder, capacity);
 		protected abstract void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity);

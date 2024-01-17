@@ -20,9 +20,6 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Const
-		public static readonly object FILE_STREAMING_LOCK = new();
-
 		// Api
 		public Int3 WorldPosition { get; set; } = default;
 		public int[] Backgrounds { get; set; } = null;
@@ -88,52 +85,47 @@ namespace AngeliaFramework {
 
 
 		public static void ForAllEntities (string filePath, System.Action<int, int, int> callback) {
-			lock (FILE_STREAMING_LOCK) {
-				if (!Util.FileExists(filePath)) return;
-				using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-				using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
-				int SIZE = Const.MAP;
-				while (reader.NotEnd()) {
-					int id = reader.ReadInt32();
-					int x = reader.ReadByte();
-					int y = reader.ReadByte();
-					if (x < Const.MAP) {
-						// Entity x y
-						if (x < 0 || x >= SIZE || y < 0 || y >= SIZE || id == 0) continue;
-						callback.Invoke(id, x, y);
-					}
+			if (!Util.FileExists(filePath)) return;
+			using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+			using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+			int SIZE = Const.MAP;
+			while (reader.NotEnd()) {
+				int id = reader.ReadInt32();
+				int x = reader.ReadByte();
+				int y = reader.ReadByte();
+				if (x < Const.MAP) {
+					// Entity x y
+					if (x < 0 || x >= SIZE || y < 0 || y >= SIZE || id == 0) continue;
+					callback.Invoke(id, x, y);
 				}
 			}
 		}
 
 
 		public static bool LoadMapIntoTexture (string mapFolder, int worldX, int worldY, int worldZ, object texture) {
-			lock (CacheMapPixels) {
-				lock (FILE_STREAMING_LOCK) {
-					string filePath = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
-					System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
-					if (!Util.FileExists(filePath)) {
-						Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-						return false;
-					}
-					using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-					using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
-					int SIZE = Const.MAP;
-					while (reader.NotEnd()) {
-						int id = reader.ReadInt32();
-						int x = reader.ReadByte();
-						int y = reader.ReadByte();
-						if (x < SIZE && y >= SIZE) continue;
-						if (CellRenderer.TryGetSprite(id, out var sprite)) {
-							if (x >= SIZE) x -= SIZE;
-							if (y >= SIZE) y -= SIZE;
-							CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
-						}
-					}
-				}
+			string filePath = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
+			System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
+			if (!Util.FileExists(filePath)) {
 				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-				return true;
+				return false;
 			}
+			using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+			using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+			int SIZE = Const.MAP;
+			while (reader.NotEnd()) {
+				int id = reader.ReadInt32();
+				int x = reader.ReadByte();
+				int y = reader.ReadByte();
+				if (x < SIZE && y >= SIZE) continue;
+				if (CellRenderer.TryGetSprite(id, out var sprite)) {
+					if (x >= SIZE) x -= SIZE;
+					if (y >= SIZE) y -= SIZE;
+					CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
+				}
+			}
+			Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+			return true;
+
 		}
 
 
@@ -143,66 +135,63 @@ namespace AngeliaFramework {
 
 		public void SaveToDisk (string mapFolder, int worldX, int worldY, int worldZ) {
 
-			lock (FILE_STREAMING_LOCK) {
+			// Save
+			const int SIZE = Const.MAP;
+			string path = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
+			using var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+			using var writer = new BinaryWriter(stream, System.Text.Encoding.ASCII);
 
-				// Save
-				const int SIZE = Const.MAP;
-				string path = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
-				using var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
-				using var writer = new BinaryWriter(stream, System.Text.Encoding.ASCII);
-
-				// Background
-				for (int y = 0; y < SIZE; y++) {
-					for (int x = 0; x < SIZE; x++) {
-						int id = Backgrounds[y * SIZE + x];
-						if (id == 0) continue;
-						writer.Write((int)id);
-						writer.Write((byte)(x + SIZE));
-						writer.Write((byte)(y + SIZE));
-					}
+			// Background
+			for (int y = 0; y < SIZE; y++) {
+				for (int x = 0; x < SIZE; x++) {
+					int id = Backgrounds[y * SIZE + x];
+					if (id == 0) continue;
+					writer.Write((int)id);
+					writer.Write((byte)(x + SIZE));
+					writer.Write((byte)(y + SIZE));
 				}
-
-				// Level
-				for (int y = 0; y < SIZE; y++) {
-					for (int x = 0; x < SIZE; x++) {
-						int id = Levels[y * SIZE + x];
-						if (id == 0) continue;
-						writer.Write((int)id);
-						writer.Write((byte)(x + SIZE));
-						writer.Write((byte)y);
-					}
-				}
-
-				// Entity
-				for (int y = 0; y < SIZE; y++) {
-					for (int x = 0; x < SIZE; x++) {
-						int id = Entities[y * SIZE + x];
-						if (id == 0) continue;
-						writer.Write((int)id);
-						writer.Write((byte)x);
-						writer.Write((byte)y);
-					}
-				}
-
-				// Element
-				for (int y = 0; y < SIZE; y++) {
-					for (int x = 0; x < SIZE; x++) {
-						int id = Elements[y * SIZE + x];
-						if (id == 0) continue;
-						writer.Write((int)id);
-						writer.Write((byte)x);
-						writer.Write((byte)(y + SIZE));
-					}
-				}
-
-				// Empty Check
-				if (stream.Position == 0 && Util.FileExists(path)) {
-					stream.Close();
-					writer.Close();
-					Util.DeleteFile(path);
-				}
-
 			}
+
+			// Level
+			for (int y = 0; y < SIZE; y++) {
+				for (int x = 0; x < SIZE; x++) {
+					int id = Levels[y * SIZE + x];
+					if (id == 0) continue;
+					writer.Write((int)id);
+					writer.Write((byte)(x + SIZE));
+					writer.Write((byte)y);
+				}
+			}
+
+			// Entity
+			for (int y = 0; y < SIZE; y++) {
+				for (int x = 0; x < SIZE; x++) {
+					int id = Entities[y * SIZE + x];
+					if (id == 0) continue;
+					writer.Write((int)id);
+					writer.Write((byte)x);
+					writer.Write((byte)y);
+				}
+			}
+
+			// Element
+			for (int y = 0; y < SIZE; y++) {
+				for (int x = 0; x < SIZE; x++) {
+					int id = Elements[y * SIZE + x];
+					if (id == 0) continue;
+					writer.Write((int)id);
+					writer.Write((byte)x);
+					writer.Write((byte)(y + SIZE));
+				}
+			}
+
+			// Empty Check
+			if (stream.Position == 0 && Util.FileExists(path)) {
+				stream.Close();
+				writer.Close();
+				Util.DeleteFile(path);
+			}
+
 		}
 
 
@@ -276,64 +265,61 @@ namespace AngeliaFramework {
 
 			bool success = false;
 
-			lock (FILE_STREAMING_LOCK) {
+			try {
 
-				try {
+				System.Array.Clear(Levels, 0, Levels.Length);
+				System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
+				System.Array.Clear(Entities, 0, Entities.Length);
+				System.Array.Clear(Elements, 0, Elements.Length);
 
-					System.Array.Clear(Levels, 0, Levels.Length);
-					System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
-					System.Array.Clear(Entities, 0, Entities.Length);
-					System.Array.Clear(Elements, 0, Elements.Length);
+				WorldPosition = new(worldX, worldY, worldZ);
 
-					WorldPosition = new(worldX, worldY, worldZ);
+				if (!Util.FileExists(filePath)) return success;
 
-					if (!Util.FileExists(filePath)) return success;
+				using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+				using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
 
-					using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-					using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
-
-					// Load Content
-					while (reader.NotEnd()) {
-						try {
-							int id = reader.ReadInt32();
-							int x = reader.ReadByte();
-							int y = reader.ReadByte();
-							if (x < Const.MAP) {
-								if (y < Const.MAP) {
-									// Entity x y
-									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Entities[y * Const.MAP + x] != 0) continue;
-									Entities[y * Const.MAP + x] = id;
-								} else {
-									// Element x yy
-									y -= Const.MAP;
-									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Elements[y * Const.MAP + x] != 0) continue;
-									Elements[y * Const.MAP + x] = id;
-								}
+				// Load Content
+				while (reader.NotEnd()) {
+					try {
+						int id = reader.ReadInt32();
+						int x = reader.ReadByte();
+						int y = reader.ReadByte();
+						if (x < Const.MAP) {
+							if (y < Const.MAP) {
+								// Entity x y
+								if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+								if (Entities[y * Const.MAP + x] != 0) continue;
+								Entities[y * Const.MAP + x] = id;
 							} else {
-								if (y < Const.MAP) {
-									// Level xx y
-									x -= Const.MAP;
-									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Levels[y * Const.MAP + x] != 0) continue;
-									Levels[y * Const.MAP + x] = id;
-								} else {
-									// Background xx yy
-									x -= Const.MAP;
-									y -= Const.MAP;
-									if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-									if (Backgrounds[y * Const.MAP + x] != 0) continue;
-									Backgrounds[y * Const.MAP + x] = id;
-								}
+								// Element x yy
+								y -= Const.MAP;
+								if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+								if (Elements[y * Const.MAP + x] != 0) continue;
+								Elements[y * Const.MAP + x] = id;
 							}
-						} catch (System.Exception ex) { Game.LogException(ex); }
-					}
-				} catch (System.Exception ex) { Game.LogException(ex); }
+						} else {
+							if (y < Const.MAP) {
+								// Level xx y
+								x -= Const.MAP;
+								if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+								if (Levels[y * Const.MAP + x] != 0) continue;
+								Levels[y * Const.MAP + x] = id;
+							} else {
+								// Background xx yy
+								x -= Const.MAP;
+								y -= Const.MAP;
+								if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+								if (Backgrounds[y * Const.MAP + x] != 0) continue;
+								Backgrounds[y * Const.MAP + x] = id;
+							}
+						}
+					} catch (System.Exception ex) { Game.LogException(ex); }
+				}
+			} catch (System.Exception ex) { Game.LogException(ex); }
 
-				// Final
-				success = true;
-			}
+			// Final
+			success = true;
 			return success;
 		}
 

@@ -41,7 +41,6 @@ namespace AngeliaFramework {
 
 
 		// Const
-		public const int FULL_SLEEP_DURATION = 90;
 		private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
 		private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 		public const int INVENTORY_COLUMN = 6;
@@ -50,7 +49,6 @@ namespace AngeliaFramework {
 		// Api
 		public delegate void CharacterEventHandler (Character character);
 		public static event CharacterEventHandler OnSleeping;
-		public static event CharacterEventHandler OnSleeped;
 		public static event CharacterEventHandler OnFootStepped;
 		public static event CharacterEventHandler OnJump;
 		public static event CharacterEventHandler OnFly;
@@ -65,7 +63,6 @@ namespace AngeliaFramework {
 		public WeaponHandheld EquippingWeaponHeld { get; set; } = WeaponHandheld.Float;
 		public bool IsPassOut => HealthPoint == 0;
 		public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
-		public int SleepFrame { get; private set; } = 0;
 		public bool Teleporting => Game.GlobalFrame < TeleportEndFrame;
 		public bool TeleportWithPortal => _TeleportDuration < 0;
 		public bool TeleportToFrontSide => _TeleportEndFrame > 0;
@@ -73,6 +70,8 @@ namespace AngeliaFramework {
 		public int TeleportDuration => _TeleportDuration.Abs();
 		public int CurrentAnimationFrame { get; set; } = 0;
 		public int CurrentRenderingBounce { get; private set; } = 1000;
+		public int SleepStartFrame { get; private set; } = int.MinValue;
+		public int PassOutFrame { get; private set; } = int.MinValue;
 		protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
 		protected override int AirDragX => 0;
 		protected override int AirDragY => 0;
@@ -88,7 +87,6 @@ namespace AngeliaFramework {
 		private static readonly HashSet<int> RenderWithSheetPool = new();
 		protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 		protected int LastRequireBounceFrame = int.MinValue;
-		private int PassOutFrame = int.MinValue;
 		private int _TeleportEndFrame = 0;
 		private int _TeleportDuration = 0;
 		private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
@@ -203,7 +201,6 @@ namespace AngeliaFramework {
 					Height = Const.CEL;
 					OffsetX = -Const.HALF;
 					OffsetY = 0;
-					if (!IsFullHealth && SleepFrame >= FULL_SLEEP_DURATION) SetHealth(MaxHP);
 					break;
 
 				case CharacterState.PassOut:
@@ -343,12 +340,6 @@ namespace AngeliaFramework {
 				if (Game.GlobalFrame % 42 == 0) {
 					InvokeCharacterEvent(OnSleeping);
 				}
-				// Full Sleep Particle
-				if (SleepFrame == FULL_SLEEP_DURATION) {
-					InvokeCharacterEvent(OnSleeped);
-				}
-				// ++
-				SleepFrame++;
 			}
 		}
 
@@ -411,6 +402,7 @@ namespace AngeliaFramework {
 			if (CharacterState == state) return;
 
 			PassOutFrame = int.MinValue;
+			SleepStartFrame = int.MinValue;
 			CharacterState = state;
 			ResetNavigation();
 
@@ -425,9 +417,9 @@ namespace AngeliaFramework {
 					break;
 
 				case CharacterState.Sleep:
-					SleepFrame = 0;
 					VelocityX = 0;
 					VelocityY = 0;
+					SleepStartFrame = Game.GlobalFrame;
 					break;
 
 				case CharacterState.PassOut:
@@ -443,13 +435,6 @@ namespace AngeliaFramework {
 		public void EnterTeleportState (int duration, bool front, bool withPortal) {
 			_TeleportEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
 			_TeleportDuration = withPortal ? -duration : duration;
-		}
-
-
-		public void SetAsFullAsleep () {
-			if (CharacterState == CharacterState.Sleep) {
-				SleepFrame = FULL_SLEEP_DURATION;
-			}
 		}
 
 

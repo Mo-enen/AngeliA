@@ -276,6 +276,7 @@ namespace AngeliaFramework {
 				animatedPoseType == CharacterAnimationType.Spin ||
 				animatedPoseType == CharacterAnimationType.Fly ||
 				animatedPoseType == CharacterAnimationType.Sleep ||
+				animatedPoseType == CharacterAnimationType.Crash ||
 				animatedPoseType == CharacterAnimationType.PassOut
 			) return;
 			DrawCape(character, sprite, motionAmount);

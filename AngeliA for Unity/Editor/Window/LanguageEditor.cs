@@ -206,9 +206,9 @@ namespace AngeliaForUnity.Editor {
 			// Contents
 			using var change = new EditorGUI.ChangeCheckScope();
 			int startIndex = (int)Mathf.Max(ScrollValue, 0);
-			int endIndex = Mathf.Min(startIndex + pageItemCount, Keys.Count);
+			int lineCount = 0;
 
-			for (int keyIndex = startIndex; keyIndex < endIndex; keyIndex++) {
+			for (int keyIndex = startIndex; keyIndex < Keys.Count && lineCount < pageItemCount; keyIndex++) {
 
 				string oldKey = Keys[keyIndex];
 				if (keyIndex >= 0 && keyIndex < KeyVisibility.Count && !KeyVisibility[keyIndex]) continue;
@@ -224,6 +224,7 @@ namespace AngeliaForUnity.Editor {
 						}
 					}
 					MGUI.Space(2);
+
 					// Languages
 					for (int lanIndex = 0; lanIndex < Languages.Count; lanIndex++) {
 						Contents[lanIndex, keyIndex] = EditorGUI.TextField(
@@ -235,7 +236,9 @@ namespace AngeliaForUnity.Editor {
 					MGUI.Space(ScrollBarSize);
 				}
 				MGUI.Space(ITEM_PADDING);
+				lineCount++;
 			}
+
 			if (change.changed) IsDirty = true;
 
 			MGUI.Space(64);

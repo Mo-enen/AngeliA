@@ -14,12 +14,59 @@ namespace AngeliaFramework {
 
 	public abstract class Bed : Furniture, IActionTarget {
 
+
+		private const int FULL_SLEEP_DURATION = 90;
 		protected override Direction3 ModuleType => Direction3.Horizontal;
+		private Character Target = null;
+		private bool RequireRestartGame = false;
+
+
+		public override void OnActivated () {
+			base.OnActivated();
+			RequireRestartGame = false;
+		}
+
+		public override void OnInactivated () {
+			base.OnInactivated();
+			RequireRestartGame = false;
+		}
+
+		public override void PhysicsUpdate () {
+			base.PhysicsUpdate();
+			UpdateForTarget();
+		}
+
+		private void UpdateForTarget () {
+
+			// Target Leave
+			if (Target != null && (!Target.Active || Target.CharacterState != CharacterState.Sleep)) {
+				Target = null;
+				return;
+			}
+
+			// Update for Selecting Player
+			var player = Player.Selecting;
+			if (Target == player) {
+				// Curtain
+				if (RequireRestartGame) {
+					CellRenderer.DrawBlackCurtain((Game.GlobalFrame - player.SleepStartFrame) * 1000 / FULL_SLEEP_DURATION);
+				}
+				// Restart Game
+				if (RequireRestartGame && Game.GlobalFrame - player.SleepStartFrame >= FULL_SLEEP_DURATION) {
+					RequireRestartGame = false;
+					player.MakeHome(new Int3(player.X.ToUnit(), player.Y.ToUnit(), Stage.ViewZ));
+					Player.RespawnCpUnitPosition = null;
+					Game.RestartGame(player.TypeID, immediately: true);
+				}
+			}
+
+		}
 
 		public void GetTargetOnBed (Character target) {
 
 			if (target == null) return;
 			target.SetCharacterState(CharacterState.Sleep);
+			Target = target;
 
 			// Get Bed Left and Right
 			int xMin = X;
@@ -51,7 +98,7 @@ namespace AngeliaFramework {
 		void IActionTarget.Invoke () {
 			if (Player.Selecting == null) return;
 			GetTargetOnBed(Player.Selecting);
-			Player.Selecting.RestartOnFullAsleep = true;
+			RequireRestartGame = true;
 		}
 
 		bool IActionTarget.AllowInvoke () => Player.Selecting != null;

@@ -30,7 +30,7 @@ namespace AngeliaFramework {
 		public static bool Enable { get; set; } = true;
 		public static bool SpawnEntity { get; set; } = true;
 		public static bool ShowElement { get; set; } = false;
-		public static byte BehindAlpha { get; set; } = Const.SQUAD_BEHIND_ALPHA;
+		public static byte BehindAlpha { get; set; } = Game.WORLD_BEHIND_ALPHA;
 		public static bool SaveBeforeReload { get; set; } = false;
 		public World this[int i, int j] => Worlds[i, j];
 
@@ -92,7 +92,7 @@ namespace AngeliaFramework {
 			CameraRect = CellRenderer.CameraRect;
 			var cullingPadding = Stage.GetCameraCullingPadding();
 			CullingCameraRect = CameraRect.Expand(cullingPadding);
-			const float PARA_01 = Const.SQUAD_BEHIND_PARALLAX / 1000f;
+			float PARA_01 = Game.WORLD_BEHIND_PARALLAX / 1000f;
 
 			if (!isBehind) {
 				// Current
@@ -173,7 +173,7 @@ namespace AngeliaFramework {
 			}
 			if (!isBehind) AfterLevelRendered?.Invoke();
 
-			// Entity & Element
+			// Entity & Element & Global Pos
 			for (int worldI = 0; worldI < 3; worldI++) {
 				for (int worldJ = 0; worldJ < 3; worldJ++) {
 					var world = Worlds[worldI, worldJ];
@@ -195,9 +195,15 @@ namespace AngeliaFramework {
 							int localY = j - worldUnitRect.y;
 							int index = localY * Const.MAP + (l - worldUnitRect.x);
 							for (int i = l; i < r; i++, index++) {
+								// Entity
 								var entityID = world.Entities[index];
-								if (entityID == 0) continue;
-								DrawEntity(entityID, i, j, z);
+								if (entityID != 0) {
+									DrawEntity(entityID, i, j, z);
+								}
+								// Global Pos
+								if (IGlobalPosition.TryGetIdFromPosition(new Int3(i, j, z), out int gID)) {
+									DrawEntity(gID, i, j, z);
+								}
 							}
 						}
 					} else {
@@ -206,27 +212,17 @@ namespace AngeliaFramework {
 							int localY = j - worldUnitRect.y;
 							int index = localY * Const.MAP + (l - worldUnitRect.x);
 							for (int i = l; i < r; i++, index++) {
+								// Entity
 								var entityID = world.Entities[index];
-								if (entityID == 0) continue;
-								if (Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
+								if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
 									Draw_Behind(entityID, i, j, true);
 								}
-							}
-						}
-					}
-
-					// Global Pos Entity
-					if (IGlobalPosition.TryGetPositionList(world.WorldPosition, out var list)) {
-						foreach (var posData in list) {
-							int unitPosX = posData.UnitPositionX;
-							int unitPosY = posData.UnitPositionY;
-							if (unitPosX >= l && unitPosX < r && unitPosY >= d && unitPosY < u) {
-								if (!isBehind) {
-									DrawEntity(posData.ID, unitPosX, unitPosY, z);
-								} else {
-									if (Stage.RequireDrawEntityBehind(posData.ID, unitPosX, unitPosY, z)) {
-										Draw_Behind(posData.ID, unitPosX, unitPosY, true);
-									}
+								// Global Pos
+								if (
+									IGlobalPosition.TryGetIdFromPosition(new Int3(i, j, z), out int gID) &&
+									Stage.RequireDrawEntityBehind(gID, i, j, z)
+								) {
+									Draw_Behind(gID, i, j, true);
 								}
 							}
 						}

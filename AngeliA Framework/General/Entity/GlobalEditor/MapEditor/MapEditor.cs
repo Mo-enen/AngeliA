@@ -250,7 +250,7 @@ namespace AngeliaFramework {
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
 			WorldSquad.ShowElement = false;
-			WorldSquad.BehindAlpha = Const.SQUAD_BEHIND_ALPHA;
+			WorldSquad.BehindAlpha = Game.WORLD_BEHIND_ALPHA;
 
 			IsNavigating = false;
 			PastingBuffer.Clear();
@@ -472,7 +472,7 @@ namespace AngeliaFramework {
 			}
 
 			// Squad Behind Tint
-			WorldSquad.BehindAlpha = (byte)((int)Const.SQUAD_BEHIND_ALPHA).MoveTowards(
+			WorldSquad.BehindAlpha = (byte)((int)Game.WORLD_BEHIND_ALPHA).MoveTowards(
 				PlayingGame ? 64 : 12, 1
 			);
 			if (IsEditing) WorldSquad.Enable = !IsNavigating;
@@ -505,7 +505,7 @@ namespace AngeliaFramework {
 
 			// Playing
 			if (IsPlaying) {
-				int newHeight = Const.DEFAULT_VIEW_HEIGHT;
+				int newHeight = Game.DEFAULT_VIEW_HEIGHT;
 				var viewRect = Stage.ViewRect;
 				if (viewRect.height != newHeight) {
 					if (Stage.DelayingViewX.HasValue) viewRect.x = Stage.DelayingViewX.Value;
@@ -532,8 +532,6 @@ namespace AngeliaFramework {
 			}
 			if (delta.x != 0 || delta.y != 0) {
 				var cRect = CellRenderer.CameraRect;
-				//Game.Log(CellRenderer.CameraRestrictionRate);
-
 				delta.x = (delta.x * cRect.width / (CellRenderer.CameraRestrictionRate * Game.ScreenWidth)).RoundToInt();
 				delta.y = delta.y * cRect.height / Game.ScreenHeight;
 				TargetViewRect.x -= delta.x;
@@ -543,7 +541,7 @@ namespace AngeliaFramework {
 			// Zoom
 			if (AutoZoom) {
 				// Auto
-				int newHeight = Const.DEFAULT_VIEW_HEIGHT * 3 / 2;
+				int newHeight = Game.DEFAULT_VIEW_HEIGHT * 3 / 2;
 				if (TargetViewRect.height != newHeight) {
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 					TargetViewRect.x -= (newWidth - TargetViewRect.width) / 2;
@@ -562,7 +560,7 @@ namespace AngeliaFramework {
 					TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 
 					int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
-						Const.MIN_VIEW_HEIGHT, Const.MAX_VIEW_HEIGHT
+						Game.MIN_VIEW_HEIGHT, Game.MAX_VIEW_HEIGHT
 					);
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
@@ -1009,7 +1007,7 @@ namespace AngeliaFramework {
 		private void ResetCamera (bool immediately = false) {
 			if (!IsNavigating) {
 				// Editing
-				int viewHeight = Const.DEFAULT_VIEW_HEIGHT * 3 / 2;
+				int viewHeight = Game.DEFAULT_VIEW_HEIGHT * 3 / 2;
 				int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = -viewWidth / 2;
 				TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
@@ -1022,7 +1020,7 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Navigating
-				int viewHeight = Const.DEFAULT_VIEW_HEIGHT * 3 / 2;
+				int viewHeight = Game.DEFAULT_VIEW_HEIGHT * 3 / 2;
 				int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = -viewWidth / 2;
 				TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);

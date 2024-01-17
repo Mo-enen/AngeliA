@@ -63,7 +63,6 @@ namespace AngeliaFramework {
 		public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 		public bool LockingInput => Game.GlobalFrame <= LockInputFrame;
 		public int LockInputFrame { get; private set; } = -1;
-		public bool RestartOnFullAsleep { get; set; } = false;
 		public int AimViewX { get; private set; } = 0;
 		public int AimViewY { get; private set; } = 0;
 		public IActionTarget TargetActionEntity { get; private set; } = null;
@@ -401,34 +400,7 @@ namespace AngeliaFramework {
 
 			TargetActionEntity = null;
 
-			// Full Slept
-			if (SleepFrame == FULL_SLEEP_DURATION) {
-
-				// Reset View
-				Stage.SetViewZ(Stage.ViewZ);
-				RespawnCpUnitPosition = null;
-
-				// UpdateHome Position
-				var newHomePos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-				if (newHomePos != HomeUnitPosition) {
-					HomeUnitPosition = newHomePos;
-					SaveGameDataToFile();
-				}
-
-				// Restart Game
-				if (RestartOnFullAsleep) {
-					RestartOnFullAsleep = false;
-					Game.RestartGame(TypeID, immediately: true);
-					return;
-				}
-			}
-
 			if (FrameTask.HasTask()) return;
-
-			// Dark
-			if (RestartOnFullAsleep) {
-				CellRenderer.DrawBlackCurtain(SleepFrame * 1000 / FULL_SLEEP_DURATION);
-			}
 
 			// Wake up on Press Action
 			if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.GameKeyDown(Gamekey.Jump)) {
@@ -577,6 +549,14 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
+
+
+		public void MakeHome (Int3 unitPosition) {
+			if (unitPosition != HomeUnitPosition) {
+				HomeUnitPosition = unitPosition;
+				SaveGameDataToFile();
+			}
+		}
 
 
 		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
