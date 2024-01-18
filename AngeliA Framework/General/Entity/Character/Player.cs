@@ -103,10 +103,6 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameRestart]
-		public static void OnGameRestart () => RespawnCpUnitPosition = null;
-
-
 		public override void OnActivated () {
 			base.OnActivated();
 			PrevZ = Stage.ViewZ;

@@ -71,18 +71,7 @@ namespace AngeliaFramework {
 
 
 
-	[RequireSprite(
-		"{0}.Body",
-		"{0}.BodyL",
-		"{0}.BodyR",
-		"{0}.Hip",
-		"{0}.Skirt",
-		"{0}.Shoulder",
-		"{0}.UpperArm",
-		"{0}.LowerArm",
-		"{0}.UpperLeg",
-		"{0}.LowerLeg"
-	)]
+	[RequireSprite("{0}.Body", "{0}.BodyL", "{0}.BodyR", "{0}.Hip", "{0}.Skirt", "{0}.Shoulder", "{0}.UpperArm", "{0}.LowerArm", "{0}.UpperLeg", "{0}.LowerLeg")]
 	public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 		public sealed override EquipmentType EquipmentType => EquipmentType.BodyArmor;
 		private int BodyId { get; init; } = 0;
@@ -284,14 +273,14 @@ namespace AngeliaFramework {
 			base.OnSquat(holder);
 			if ((this as IProgressiveItem).NextItemID == 0) return;
 			foreach (var materialID in RepairMaterialsID) {
-				if (OnRepair(holder, materialID)) {
+				if (Repair(holder, materialID)) {
 					break;
 				}
 			}
 		}
 
 
-		public virtual bool OnRepair (Entity holder, int materialID) {
+		public virtual bool Repair (Entity holder, int materialID) {
 			if (materialID == 0) return false;
 			int tookCount = Inventory.FindAndTakeItem(holder.TypeID, materialID, 1);
 			if (tookCount <= 0) return false;

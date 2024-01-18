@@ -128,7 +128,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		protected override void StartGame () {
+		protected override void StartMiniGame () {
 			for (int i = 0; i < WIDTH; i++) {
 				for (int j = 0; j < HEIGHT; j++) {
 					StagedBlocks[i, j] = -1;
@@ -668,8 +668,8 @@ namespace AngeliaFramework {
 		private void OpenGameOverDialog () => GenericDialogUI.SpawnDialog(
 			UI_GAMEOVER.Get("Game Over"),
 			UI_OK.Get("OK"), Const.EmptyMethod,
-			UI_RESTART.Get("Restart"), StartGame,
-			UI_QUIT.Get("Quit"), CloseGame
+			UI_RESTART.Get("Restart"), StartMiniGame,
+			UI_QUIT.Get("Quit"), CloseMiniGame
 		);
 
 

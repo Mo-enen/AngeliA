@@ -37,8 +37,6 @@ namespace AngeliaFramework {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
-			ControlHintUI.ForceShowHint();
-			ControlHintUI.ForceHideGamepad();
 			if (ForceSkyColor.HasValue) {
 				Skybox.ForceSkyboxTint(ForceSkyColor.Value, ForceSkyColor.Value);
 			}

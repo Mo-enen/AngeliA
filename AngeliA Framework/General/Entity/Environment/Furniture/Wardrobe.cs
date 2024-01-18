@@ -112,7 +112,7 @@ namespace AngeliaFramework {
 		protected override void OnUiClose () {
 			base.OnUiClose();
 			if (Player.Selecting is IConfigurableCharacter cPlayer) {
-				cPlayer.SaveConfigToFile();
+				cPlayer.SaveCharacterToConfig();
 			}
 		}
 

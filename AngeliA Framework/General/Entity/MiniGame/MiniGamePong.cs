@@ -58,7 +58,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		protected override void StartGame () {
+		protected override void StartMiniGame () {
 			LoadGameDataFromFile(Saving);
 			ScorePlayer = 0;
 			ScoreBot = 0;

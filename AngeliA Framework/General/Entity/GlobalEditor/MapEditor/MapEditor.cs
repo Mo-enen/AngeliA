@@ -953,6 +953,12 @@ namespace AngeliaFramework {
 				// Despawn Player
 				if (Player.Selecting != null) {
 					Player.Selecting.Active = false;
+					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Helmet);
+					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.BodyArmor);
+					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Gloves);
+					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Shoes);
+					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Jewelry);
+					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Weapon);
 				}
 
 				// Fix View Pos

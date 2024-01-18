@@ -193,7 +193,7 @@ namespace AngeliaFramework {
 
 			// Quit
 			if (FrameInput.GameKeyDown(Gamekey.Select)) {
-				CloseGame();
+				CloseMiniGame();
 				return;
 			}
 
@@ -289,14 +289,14 @@ namespace AngeliaFramework {
 
 
 		// Game
-		protected override void StartGame () {
+		protected override void StartMiniGame () {
 			var player = Player.Selecting;
 			if (player is not IConfigurableCharacter cPlayer) {
-				CloseGame();
+				CloseMiniGame();
 				return;
 			}
 			LoadPatternsFromFile();
-			cPlayer.LoadConfigFromFile();
+			cPlayer.LoadCharacterFromConfig();
 			PlayerFacingRight = player.FacingRight;
 			HighlightingMainIndex = 0;
 			HighlightingPatternRow = 0;
@@ -307,10 +307,10 @@ namespace AngeliaFramework {
 		}
 
 
-		protected override void CloseGame () {
-			base.CloseGame();
+		protected override void CloseMiniGame () {
+			base.CloseMiniGame();
 			if (Player.Selecting is IConfigurableCharacter player) {
-				player.SaveConfigToFile();
+				player.SaveCharacterToConfig();
 			}
 			// Clear Patterns
 			Patterns_Head.Clear();

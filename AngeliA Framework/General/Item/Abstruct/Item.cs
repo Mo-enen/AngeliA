@@ -12,6 +12,13 @@ namespace AngeliaFramework {
 		int PrevItemID { get; set; }
 		int NextItemID { get; set; }
 
+		public static void RepairEquipment (Entity holder, EquipmentType type) {
+			int itemID = Inventory.GetEquipment(holder.TypeID, type);
+			if (itemID == 0 || ItemSystem.GetItem(itemID) is not IProgressiveItem progressive) return;
+			if (progressive.NextItemID == itemID || progressive.NextItemID == 0) return;
+			Inventory.SetEquipment(holder.TypeID, type, progressive.NextItemID);
+		}
+
 	}
 
 

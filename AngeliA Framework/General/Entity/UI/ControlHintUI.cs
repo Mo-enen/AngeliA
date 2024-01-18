@@ -92,6 +92,17 @@ namespace AngeliaFramework {
 					)
 				);
 			}
+			// Draw Hints
+			if (Instance != null) {
+				if (Instance.GamepadVisible) Instance.DrawGamePad();
+				if (Instance.HintVisible) Instance.DrawHints();
+				CurrentHintOffsetY = 0;
+				if (Instance.OffsetResetFrame != int.MinValue && Game.PauselessFrame >= Instance.OffsetResetFrame) {
+					Instance.OffsetResetFrame = int.MinValue;
+					Instance.OffsetX = 0;
+					Instance.OffsetY = 0;
+				}
+			}
 		}
 
 
@@ -105,18 +116,6 @@ namespace AngeliaFramework {
 				ButtonBorder.right = (int)(sprite.GlobalBorder.right * ((float)KEYSIZE / sprite.GlobalWidth));
 				ButtonBorder.down = (int)(sprite.GlobalBorder.down * ((float)KEYSIZE / sprite.GlobalHeight));
 				ButtonBorder.up = (int)(sprite.GlobalBorder.up * ((float)KEYSIZE / sprite.GlobalHeight));
-			}
-		}
-
-
-		public override void UpdateUI () {
-			if (GamepadVisible) DrawGamePad();
-			if (HintVisible) DrawHints();
-			CurrentHintOffsetY = 0;
-			if (OffsetResetFrame != int.MinValue && Game.PauselessFrame >= OffsetResetFrame) {
-				OffsetResetFrame = int.MinValue;
-				OffsetX = 0;
-				OffsetY = 0;
 			}
 		}
 
@@ -138,6 +137,9 @@ namespace AngeliaFramework {
 			var ButtonBPosition = new IRect(Unify(86), Unify(18), Unify(12), Unify(12));
 
 			var screenRect = CellRenderer.CameraRect;
+
+			int oldLayer = CellRenderer.CurrentLayerIndex;
+			CellRenderer.SetLayerToUI();
 
 			// Body
 			CellRenderer.Draw(BodyCode, rect.Shift(screenRect.x, screenRect.y));
@@ -168,13 +170,13 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Action) ? PressingTint : ColorfulButtonTint);
 			CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Jump) ? PressingTint : ColorfulButtonTint);
 
+			CellRenderer.SetLayer(oldLayer);
 		}
 
 
 		private void DrawHints () {
 
-			int hintPositionY =
-				CurrentHintOffsetY + OffsetY + CellRenderer.CameraRect.y + Unify(GamepadVisible ? 78 : 12);
+			int hintPositionY = CurrentHintOffsetY + OffsetY + CellRenderer.CameraRect.y + Unify(GamepadVisible ? 78 : 12);
 
 			// Draw
 			int x = CellRenderer.CameraRect.x + OffsetX + Unify(12);
@@ -337,9 +339,9 @@ namespace AngeliaFramework {
 			// Button A
 			if (keyIdA != 0) {
 				CellRenderer.Draw_9Slice(
-					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
+					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
 				);
-				CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyTint);
+				CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
 				KeyLabel.Text = keyTextA;
 				CellRendererGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
@@ -357,9 +359,9 @@ namespace AngeliaFramework {
 				rect.width = widthB;
 				if (keyIdB != 0) {
 					CellRenderer.Draw_9Slice(
-						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
 					);
-					CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyTint);
+					CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 				} else {
 					KeyLabel.Text = keyTextB;
 					CellRendererGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);

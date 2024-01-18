@@ -114,7 +114,7 @@ namespace AngeliaFramework {
 
 		public override void OnInactivated () {
 			base.OnInactivated();
-			if (IsPlaying) CloseGame();
+			if (IsPlaying) CloseMiniGame();
 		}
 
 
@@ -140,7 +140,7 @@ namespace AngeliaFramework {
 						if (RequireQuitConfirm) {
 							OpenQuitDialog();
 						} else {
-							CloseGame();
+							CloseMiniGame();
 						}
 					}
 					ControlHintUI.AddHint(Gamekey.Start, UI_QUIT.Get("Quit"));
@@ -182,15 +182,15 @@ namespace AngeliaFramework {
 				task.MiniGame = this;
 			}
 			FrameInput.UseAllHoldingKeys();
-			StartGame();
+			StartMiniGame();
 		}
 
 
-		protected abstract void StartGame ();
+		protected abstract void StartMiniGame ();
 
-		protected virtual void RestartGame () => StartGame();
+		protected virtual void RestartGame () => StartMiniGame();
 
-		protected virtual void CloseGame () {
+		protected virtual void CloseMiniGame () {
 			if (FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
 				task.MiniGame = null;
 			}
@@ -242,13 +242,13 @@ namespace AngeliaFramework {
 					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
 					UI_BACK.Get("Back"), Const.EmptyMethod,
 					UI_RESTART.Get("Restart"), RestartGame,
-					UI_QUIT.Get("Quit"), CloseGame
+					UI_QUIT.Get("Quit"), CloseMiniGame
 				);
 			} else {
 				GenericDialogUI.SpawnDialog(
 					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
 					UI_BACK.Get("Back"), Const.EmptyMethod,
-					UI_QUIT.Get("Quit"), CloseGame
+					UI_QUIT.Get("Quit"), CloseMiniGame
 				);
 			}
 		}

@@ -377,7 +377,7 @@ namespace AngeliaFramework {
 				// Button
 				if (CellRendererGUI.Button(
 					buttonRect,
-					BuiltInIcon.UI_DARK_BUTTON, BuiltInIcon.UI_DARK_BUTTON, BuiltInIcon.UI_DARK_BUTTON_DOWN,
+					BuiltInIcon.UI_BUTTON, BuiltInIcon.UI_BUTTON, BuiltInIcon.UI_BUTTON_DOWN,
 					0, -1, 0, int.MaxValue - 9
 				)) {
 					if (editorActived) {
@@ -389,17 +389,20 @@ namespace AngeliaFramework {
 					FrameInput.UseGameKey(Gamekey.Action);
 				}
 
-				// Icon
-				CellRenderer.Draw(
-					EDITOR_ICON[i],
-					buttonRect.EdgeInside(Direction4.Left, buttonRect.height),
-					int.MaxValue - 8
-				);
-
 				// Label
 				CellRendererGUI.Label(
-					CellContent.Get(EDITOR_LABEL[i].Get(EDITOR_LABEL_DEF[i]), charSize: 20, alignment: Alignment.MidLeft),
-					buttonRect.Shrink(itemHeight + padding, 0, 0, 0)
+					CellContent.Get(
+						EDITOR_LABEL[i].Get(EDITOR_LABEL_DEF[i]),
+						tint: Const.GREY_32, charSize: 20, alignment: Alignment.MidMid
+					), buttonRect, out var labelBounds
+				);
+
+				// Icon
+				int iconSize = buttonRect.height;
+				CellRenderer.Draw(
+					EDITOR_ICON[i],
+					new IRect(labelBounds.x - iconSize - iconSize / 5, buttonRect.y, iconSize, iconSize),
+					int.MaxValue - 8
 				);
 
 				// Mark

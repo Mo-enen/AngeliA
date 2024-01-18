@@ -109,7 +109,7 @@ namespace AngeliaFramework {
 		}
 
 
-		protected override void StartGame () {
+		protected override void StartMiniGame () {
 			LoadGameDataFromFile(Saving);
 			LoadLevel(0);
 			PlayerMovedFrame = int.MinValue;
@@ -311,7 +311,7 @@ namespace AngeliaFramework {
 		private void ShowAllClearedDialog () => GenericDialogUI.SpawnDialog(
 			MENU_ALL_CLEAR.Get("You Win"),
 			UI_OK.Get("OK"), Const.EmptyMethod,
-			UI_QUIT.Get("Quit"), CloseGame
+			UI_QUIT.Get("Quit"), CloseMiniGame
 		);
 
 

@@ -68,7 +68,7 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		protected override void StartGame () {
+		protected override void StartMiniGame () {
 			BlackTurn = true;
 			PlayerIsBlack = AngeUtil.RandomFloat01() > 0.5f;
 			System.Array.Clear(Stones, 0, Stones.Length);
@@ -319,8 +319,8 @@ namespace AngeliaFramework {
 		private void OpenGameOverDialog (bool blackWin) => GenericDialogUI.SpawnDialog(
 			blackWin == PlayerIsBlack ? MENU_GOMOKU_WIN.Get("You Win") : MENU_GOMOKU_LOSE.Get("You Lose"),
 			UI_OK.Get("OK"), Const.EmptyMethod,
-			UI_RESTART.Get("Restart"), StartGame,
-			UI_QUIT.Get("Quit"), CloseGame
+			UI_RESTART.Get("Restart"), StartMiniGame,
+			UI_QUIT.Get("Quit"), CloseMiniGame
 		);
 
 
