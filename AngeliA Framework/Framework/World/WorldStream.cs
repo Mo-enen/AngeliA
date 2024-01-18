@@ -15,6 +15,7 @@ namespace AngeliaFramework {
 		private class WorldData {
 			public World World;
 			public int LastReadWriteFrame;
+			public bool IsDirty;
 		}
 
 
@@ -60,14 +61,20 @@ namespace AngeliaFramework {
 
 
 		public void Dispose () {
-			// Save Worlds
-			if (!Readonly) {
-				foreach (var pair in Pool) {
-					pair.Value?.World?.SaveToDisk(MapRoot);
+			SaveAllDirty();
+			Pool.Clear();
+		}
+
+
+		public void SaveAllDirty () {
+			if (Readonly) return;
+			foreach (var pair in Pool) {
+				var data = pair.Value;
+				if (data != null && data.IsDirty) {
+					data.World?.SaveToDisk(MapRoot);
+					data.IsDirty = false;
 				}
 			}
-			// Clear Pool
-			Pool.Clear();
 		}
 
 
@@ -123,6 +130,7 @@ namespace AngeliaFramework {
 				var world = worldData.World;
 				int localX = unitX.UMod(Const.MAP);
 				int localY = unitY.UMod(Const.MAP);
+				worldData.IsDirty = true;
 				switch (type) {
 					case BlockType.Entity:
 						world.Entities[localY * Const.MAP + localX] = value;
@@ -160,6 +168,7 @@ namespace AngeliaFramework {
 				world.Levels[index] = level;
 				world.Backgrounds[index] = background;
 				world.Elements[index] = element;
+				worldData.IsDirty = true;
 			}
 		}
 
@@ -178,6 +187,7 @@ namespace AngeliaFramework {
 				worldData = new WorldData {
 					World = new World(pos),
 					LastReadWriteFrame = InternalFrame++,
+					IsDirty = false,
 				};
 				bool loaded = worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ);
 				if (!loaded && !createNew) worldData = null;
@@ -199,7 +209,10 @@ namespace AngeliaFramework {
 			CacheReleaseList.Sort((a, b) => b.Value.LastReadWriteFrame.CompareTo(a.Value.LastReadWriteFrame));
 			for (int i = CacheReleaseList.Count - 1; i >= END_RELEASE_COUNT; i--) {
 				if (Pool.Remove(CacheReleaseList[i].Key, out var worldData)) {
-					if (!Readonly) worldData.World.SaveToDisk(MapRoot);
+					if (!Readonly && worldData.IsDirty) {
+						worldData.World.SaveToDisk(MapRoot);
+						worldData.IsDirty = false;
+					}
 				}
 				CurrentValidMapCount--;
 			}

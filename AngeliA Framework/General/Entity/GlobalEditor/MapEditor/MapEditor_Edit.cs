@@ -11,6 +11,9 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+		// Const
+		private static readonly int BLOCK_TYPE_COUNT = typeof(BlockType).EnumLength();
+
 		// Short
 		private bool Modify_EntityOnly => ShiftHolding && !AltHolding;
 		private bool Modify_LevelOnly => !ShiftHolding && AltHolding;
@@ -43,7 +46,7 @@ namespace AngeliaFramework {
 
 			DraggingUnitRect = null;
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute || PerformingUndoQueue.Count != 0 || CellRendererGUI.IsTyping) {
+			if (IsPlaying || DroppingPlayer || TaskingRoute || CellRendererGUI.IsTyping) {
 				MouseDownPosition = null;
 				MouseDownOutsideBoundary = false;
 				MouseOutsideBoundary = false;
@@ -135,25 +138,19 @@ namespace AngeliaFramework {
 		private void DeleteSelection () {
 			if (!SelectionUnitRect.HasValue) return;
 			var unitRect = SelectionUnitRect.Value;
-			bool undoRegistered = false;
 			int z = Stage.ViewZ;
 			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
-					if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
-						RegisterUndo_Begin(unitRect);
-						undoRegistered = true;
+					for (int blockTypeIndex = 0; blockTypeIndex < BLOCK_TYPE_COUNT; blockTypeIndex++) {
+						var type = (BlockType)blockTypeIndex;
+						UserEraseBlock(i, j, z, type);
 					}
-					WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
-					WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
-					WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
-					WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
-					IGlobalPosition.RemovePosition(new Int3(i, j, z));
+					UserEraseGlobalPosition(i, j, z);
 				}
 			}
 			RedirectForRule(unitRect);
 			SelectionUnitRect = null;
 			IsDirty = true;
-			if (undoRegistered) RegisterUndo_End(unitRect, true);
 		}
 
 
@@ -190,10 +187,9 @@ namespace AngeliaFramework {
 				(Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
 			);
 			bool paint = SelectingPaletteItem != null;
-			bool undoRegistered = false;
 			int id = paint ? SelectingPaletteItem.ID : 0;
 			var type = paint ? SelectingPaletteItem.BlockType : default;
-			int stageZ = Stage.ViewZ;
+			int z = Stage.ViewZ;
 			bool idGlobalPosEntity = IGlobalPosition.IsGlobalPositionEntity(id);
 
 			for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
@@ -202,7 +198,7 @@ namespace AngeliaFramework {
 						// Paint Block
 						if (idGlobalPosEntity) {
 							// Global Pos
-							IGlobalPosition.SetPosition(id, new Int3(i, j, stageZ));
+							UserSetGlobalPosition(i, j, z, id);
 						} else {
 							// Redirect for Random
 							if (
@@ -213,71 +209,52 @@ namespace AngeliaFramework {
 							) {
 								id = idChain[PaintingRan.Next(0, idChain.Length)];
 							}
-							// Regist Undo
-							if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j, type) != id) {
-								RegisterUndo_Begin(unitRect);
-								undoRegistered = true;
-							}
 							// Set Data
-							WorldSquad.Front.SetBlockAt(i, j, type, id);
+							UserSetBlock(i, j, z, type, id);
 						}
 
 					} else if (mouseDownUnitPos == mouseUnitPos) {
 						// Single Erase
-						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
-							RegisterUndo_Begin(unitRect);
-							undoRegistered = true;
-						}
 
 						// Global Pos
-						IGlobalPosition.RemovePosition(new Int3(i, j, stageZ));
+						UserEraseGlobalPosition(i, j, z);
 
 						// Block
 						if (!Modify_BackgroundOnly && !Modify_EntityOnly && !Modify_LevelOnly) {
-							// Normal
-							if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0) {
-								WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
-							} else if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Entity) != 0) {
-								WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
-							} else if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Level) != 0) {
-								WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
-							} else {
-								WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
+							// In Order
+							for (int blockTypeIndex = 0; blockTypeIndex < BLOCK_TYPE_COUNT; blockTypeIndex++) {
+								var blockType = (BlockType)((blockTypeIndex + 3) % BLOCK_TYPE_COUNT);
+								if (UserEraseBlock(i, j, z, blockType)) {
+									break;
+								}
 							}
 						} else {
 							// Single Type
-							if (Modify_BackgroundOnly) {
-								WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
-							} else if (Modify_EntityOnly) {
-								if (WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0) {
-									WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
-								} else {
-									WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
-								}
-							} else if (Modify_LevelOnly) {
-								WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
-							}
+							var requiredType =
+								Modify_BackgroundOnly ? BlockType.Background :
+								Modify_EntityOnly ? WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0 ? BlockType.Element : BlockType.Entity :
+								Modify_LevelOnly ? BlockType.Level :
+								BlockType.Entity;
+							UserEraseBlock(i, j, z, requiredType);
 						}
 					} else {
 						// Range Erase
-
-						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
-							RegisterUndo_Begin(unitRect);
-							undoRegistered = true;
+						if (!Modify_LevelOnly && !Modify_EntityOnly) {
+							UserEraseBlock(i, j, z, BlockType.Background);
 						}
-						if (!Modify_LevelOnly && !Modify_EntityOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Background, 0);
-						if (!Modify_BackgroundOnly && !Modify_EntityOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Level, 0);
+						if (!Modify_BackgroundOnly && !Modify_EntityOnly) {
+							UserEraseBlock(i, j, z, BlockType.Level);
+						}
 						if (!Modify_LevelOnly && !Modify_BackgroundOnly) {
-							WorldSquad.Front.SetBlockAt(i, j, BlockType.Entity, 0);
-							IGlobalPosition.RemovePosition(new Int3(i, j, stageZ));
+							UserEraseBlock(i, j, z, BlockType.Entity);
+							UserEraseBlock(i, j, z, BlockType.Element);
+							UserEraseGlobalPosition(i, j, z);
 						}
-						if (!Modify_LevelOnly && !Modify_BackgroundOnly) WorldSquad.Front.SetBlockAt(i, j, BlockType.Element, 0);
 					}
 				}
 			}
 			SpawnBlinkParticle(unitRect.ToGlobal(), id);
 			RedirectForRule(unitRect);
-			if (undoRegistered) RegisterUndo_End(unitRect, true);
 			IsDirty = true;
 		}
 
@@ -335,13 +312,13 @@ namespace AngeliaFramework {
 			var unitRect = SelectionUnitRect.Value;
 			CopyBuffer.Clear();
 			CopyBufferOriginalUnitRect = unitRect;
-			bool undoRegistered = false;
+			int z = Stage.ViewZ;
 			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
-					AddToList(i, j, BlockType.Background);
-					AddToList(i, j, BlockType.Level);
-					AddToList(i, j, BlockType.Entity);
-					AddToList(i, j, BlockType.Element);
+					AddToList(i, j, z, BlockType.Background);
+					AddToList(i, j, z, BlockType.Level);
+					AddToList(i, j, z, BlockType.Entity);
+					AddToList(i, j, z, BlockType.Element);
 				}
 			}
 			if (removeOriginal) {
@@ -349,16 +326,15 @@ namespace AngeliaFramework {
 				RedirectForRule(unitRect);
 				IsDirty = true;
 			}
-			if (undoRegistered) RegisterUndo_End(unitRect, true);
 			// Func
-			void AddToList (int i, int j, BlockType type) {
+			void AddToList (int i, int j, int z, BlockType type) {
 				// GlobalPos
 				var unitPos = new Int3(i, j, Stage.ViewZ);
 				if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
 					unitPos, out int _gID
 				)) {
 					if (removeOriginal) {
-						IGlobalPosition.RemovePosition(unitPos);
+						UserEraseGlobalPosition(i, j, z);
 					}
 					CopyBuffer.Add(new BlockBuffer() {
 						ID = _gID,
@@ -372,11 +348,7 @@ namespace AngeliaFramework {
 				int id = WorldSquad.Front.GetBlockAt(i, j, type);
 				if (id != 0) {
 					if (removeOriginal) {
-						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
-							RegisterUndo_Begin(unitRect);
-							undoRegistered = true;
-						}
-						WorldSquad.Front.SetBlockAt(i, j, type, 0);
+						UserEraseBlock(i, j, z, type);
 					}
 					CopyBuffer.Add(new BlockBuffer() {
 						ID = id,
@@ -418,27 +390,22 @@ namespace AngeliaFramework {
 			Pasting = false;
 			if (!SelectionUnitRect.HasValue || PastingBuffer.Count <= 0) return;
 			var unitRect = SelectionUnitRect.Value;
-			bool undoRegistered = false;
+			int z = Stage.ViewZ;
 			foreach (var buffer in PastingBuffer) {
 				int unitX = buffer.LocalUnitX + unitRect.x;
 				int unitY = buffer.LocalUnitY + unitRect.y;
 				if (buffer.IsGlobalPos) {
 					// Global Pos
-					IGlobalPosition.SetPosition(buffer.ID, new Int3(unitX, unitY, Stage.ViewZ));
+					UserSetGlobalPosition(unitX, unitY, z, buffer.ID, ignoreStep: true);
 				} else {
 					// Block
-					if (!undoRegistered && WorldSquad.Front.GetBlockAt(unitX, unitY) != buffer.ID) {
-						RegisterUndo_Begin(unitRect);
-						undoRegistered = true;
-					}
-					WorldSquad.Front.SetBlockAt(unitX, unitY, buffer.Type, buffer.ID);
+					UserSetBlock(unitX, unitY, z, buffer.Type, buffer.ID, ignoreStep: true);
 				}
 			}
 			RedirectForRule(unitRect);
 			IsDirty = true;
 			SelectionUnitRect = null;
 			PastingBuffer.Clear();
-			if (undoRegistered) RegisterUndo_End(unitRect, true);
 		}
 
 
@@ -455,29 +422,28 @@ namespace AngeliaFramework {
 			var unitRect = SelectionUnitRect.Value;
 			PastingBuffer.Clear();
 			Pasting = true;
-			bool undoRegistered = false;
+			int z = Stage.ViewZ;
 			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
-					if (!Modify_EntityOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Background);
-					if (!Modify_EntityOnly && !Modify_BackgroundOnly) AddToList(i, j, BlockType.Level);
-					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Entity);
-					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, BlockType.Element);
+					if (!Modify_EntityOnly && !Modify_LevelOnly) AddToList(i, j, z, BlockType.Background);
+					if (!Modify_EntityOnly && !Modify_BackgroundOnly) AddToList(i, j, z, BlockType.Level);
+					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, z, BlockType.Entity);
+					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, z, BlockType.Element);
 				}
 			}
 			if (removeOriginal) {
 				RedirectForRule(unitRect);
 				IsDirty = true;
 			}
-			if (undoRegistered) RegisterUndo_End(unitRect, false);
 			// Func
-			void AddToList (int i, int j, BlockType type) {
+			void AddToList (int i, int j, int z, BlockType type) {
 				// Global Pos
 				var unitPos = new Int3(i, j, Stage.ViewZ);
 				if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
 					unitPos, out int _gID
 				)) {
 					if (removeOriginal) {
-						IGlobalPosition.RemovePosition(unitPos);
+						UserEraseGlobalPosition(i, j, z);
 					}
 					PastingBuffer.Add(new BlockBuffer() {
 						ID = _gID,
@@ -491,11 +457,7 @@ namespace AngeliaFramework {
 				int id = WorldSquad.Front.GetBlockAt(i, j, type);
 				if (id != 0) {
 					if (removeOriginal) {
-						if (!undoRegistered && WorldSquad.Front.GetBlockAt(i, j) != 0) {
-							RegisterUndo_Begin(unitRect);
-							undoRegistered = true;
-						}
-						WorldSquad.Front.SetBlockAt(i, j, type, 0);
+						UserEraseBlock(i, j, z, type);
 					}
 					PastingBuffer.Add(new BlockBuffer() {
 						ID = id,
@@ -551,6 +513,92 @@ namespace AngeliaFramework {
 			int newID = idChain[ruleIndex];
 			if (newID == oldID) return;
 			WorldSquad.Front.SetBlockAt(i, j, type, newID);
+		}
+
+
+		// User CMD
+		private bool UserEraseBlock (int unitX, int unitY, int z, BlockType type, bool ignoreStep = false) {
+			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
+			if (blockID != 0) {
+				WorldSquad.Front.SetBlockAt(unitX, unitY, type, 0);
+				RegisterUndo(new BlockUndoItem() {
+					FromID = blockID,
+					ToID = 0,
+					Type = type,
+					UnitX = unitX,
+					UnitY = unitY,
+				}, ignoreStep);
+				return true;
+			}
+			return false;
+		}
+
+
+		private void UserSetBlock (int unitX, int unitY, int z, BlockType type, int id, bool ignoreStep = false) {
+			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
+			if (blockID != id) {
+				// Set Data
+				WorldSquad.Front.SetBlockAt(unitX, unitY, type, id);
+				// Regist Undo
+				RegisterUndo(new BlockUndoItem() {
+					FromID = blockID,
+					ToID = id,
+					Type = type,
+					UnitX = unitX,
+					UnitY = unitY,
+				}, ignoreStep);
+			}
+		}
+
+
+		private bool UserEraseGlobalPosition (int unitX, int unitY, int z, bool ignoreStep = false) {
+			var pos = new Int3(unitX, unitY, z);
+			if (IGlobalPosition.TryGetIdFromPosition(pos, out int oldGlobalID)) {
+				IGlobalPosition.RemovePosition(pos);
+				RegisterUndo(new GlobalPosUndoItem() {
+					FromID = oldGlobalID,
+					ToID = 0,
+					FromUnitPos = pos,
+					ToUnitPos = pos,
+				}, ignoreStep);
+				return true;
+			}
+			return false;
+		}
+
+
+		private void UserSetGlobalPosition (int unitX, int unitY, int z, int id, bool ignoreStep = false) {
+			var pos = new Int3(unitX, unitY, z);
+			if (IGlobalPosition.TryGetIdFromPosition(pos, out int gID)) {
+				// Have Global Pos Entity at Pos 
+				if (gID != id) {
+					IGlobalPosition.RemoveID(gID);
+					RegisterUndo(new GlobalPosUndoItem() {
+						FromID = gID,
+						ToID = 0,
+						FromUnitPos = pos,
+						ToUnitPos = pos,
+					}, ignoreStep);
+				}
+			} else {
+				// Target Pos Is Empty
+				if (IGlobalPosition.TryGetPositionFromID(id, out var oldPos)) {
+					RegisterUndo(new GlobalPosUndoItem() {
+						FromID = id,
+						ToID = id,
+						FromUnitPos = oldPos,
+						ToUnitPos = pos,
+					}, ignoreStep);
+				} else {
+					RegisterUndo(new GlobalPosUndoItem() {
+						FromID = 0,
+						ToID = id,
+						FromUnitPos = pos,
+						ToUnitPos = pos,
+					}, ignoreStep);
+				}
+				IGlobalPosition.SetPosition(id, pos);
+			}
 		}
 
 

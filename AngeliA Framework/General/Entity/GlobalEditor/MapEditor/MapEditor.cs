@@ -13,6 +13,30 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
+		// Undo
+		private struct ViewUndoItem : IUndoItem {
+			public int Step { get; set; }
+			public IRect ViewRect;
+			public int ViewZ;
+		}
+		private struct BlockUndoItem : IUndoItem {
+			public int Step { get; set; }
+			public int FromID;
+			public int ToID;
+			public BlockType Type;
+			public int UnitX;
+			public int UnitY;
+		}
+		private struct GlobalPosUndoItem : IUndoItem {
+			public int Step { get; set; }
+			public int FromID;
+			public int ToID;
+			public Int3 FromUnitPos;
+			public Int3 ToUnitPos;
+		}
+
+
+		// Misc
 		private struct BlockBuffer {
 			public int ID;
 			public BlockType Type;
@@ -22,26 +46,6 @@ namespace AngeliaFramework {
 		}
 
 
-		// Undo
-		private class MapUndoItem : UndoItem {
-			public IRect ViewRect;
-			public int ViewZ;
-			public int DataIndex;
-			public int DataLength;
-		}
-
-
-		private struct MapUndoData {
-			public int Step;
-			public int ElementID;
-			public int BackgroundID;
-			public int LevelID;
-			public int EntityID;
-			public int GlobalPosID;
-			public int UnitX;
-			public int UnitY;
-		}
-
 
 		private class PinnedList {
 			public int Icon = 0;
@@ -49,8 +53,9 @@ namespace AngeliaFramework {
 		}
 
 
+
 		private class MapEditorMeta : IJsonSerializationCallback {
-			public List<PinnedList> PinnedLists;
+			public List<PinnedList> PinnedLists = new();
 			void IJsonSerializationCallback.OnBeforeSaveToDisk () {
 				PinnedLists ??= new();
 			}
@@ -58,6 +63,7 @@ namespace AngeliaFramework {
 				PinnedLists ??= new();
 			}
 		}
+
 
 
 		#endregion
@@ -123,14 +129,12 @@ namespace AngeliaFramework {
 		private readonly List<PaletteItem> SearchResult = new();
 		private readonly List<int> CheckAltarIDs = new();
 		private readonly Trie<PaletteItem> PaletteTrie = new();
-		private readonly MapUndoData[] UndoData = new MapUndoData[131072];
 		private readonly Dictionary<int, MapEditorGizmos> GizmosPool = new();
-		private UndoRedoEcho<MapUndoItem> UndoRedo = null;
+		private UndoRedo UndoRedo = null;
 		private MapEditorMeta EditorMeta = new();
 
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
-		private Queue<MapUndoItem> PerformingUndoQueue = null;
 		private Int3 PlayerDropPos = default;
 		private IRect TargetViewRect = default;
 		private IRect CopyBufferOriginalUnitRect = default;
@@ -148,7 +152,6 @@ namespace AngeliaFramework {
 		private bool AltHolding = false;
 		private bool IgnoreQuickPlayerDropThisTime = false;
 		private int DropHintWidth = Const.CEL;
-		private int UndoDataIndex = 0;
 		private int TooltipDuration = 0;
 		private int PanelOffsetX = 0;
 		private int ToolbarOffsetX = 0;
@@ -157,11 +160,15 @@ namespace AngeliaFramework {
 		private readonly IntToChars StateXLabelToString = new("x:");
 		private readonly IntToChars StateYLabelToString = new("y:");
 		private readonly IntToChars StateZLabelToString = new("z:");
+		private int LastUndoRegisterFrame = -1;
+		private int LastUndoPerformedFrame = -1;
+		private Int2 CurrentUndoRuleMin = default;
+		private Int2 CurrentUndoRuleMax = default;
 
 		// Saving
-		private static readonly SavingBool s_QuickPlayerDrop = new("eMapEditor.QuickPlayerDrop", false);
-		private static readonly SavingBool s_AutoZoom = new("eMapEditor.AutoZoom", true);
-		private static readonly SavingBool s_ShowState = new("eMapEditor.ShowState", true);
+		private static readonly SavingBool s_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
+		private static readonly SavingBool s_AutoZoom = new("MapEditor.AutoZoom", true);
+		private static readonly SavingBool s_ShowState = new("MapEditor.ShowState", false);
 
 
 		#endregion
@@ -178,7 +185,7 @@ namespace AngeliaFramework {
 			// Init
 			if (InitializedFrame < 0) {
 				InitializedFrame = Game.GlobalFrame;
-				UndoRedo = new(128, OnUndoRedoPerformed, OnUndoRedoPerformed);
+				UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
 				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(Project.CurrentProject.MapRoot);
 				Initialize_Pool();
 				Initialize_Palette();
@@ -188,7 +195,6 @@ namespace AngeliaFramework {
 			PastingBuffer.Clear();
 			CopyBuffer.Clear();
 			UndoRedo.Reset();
-			System.Array.Clear(UndoData, 0, UndoData.Length);
 			DroppingPlayer = false;
 			SelectingPaletteItem = null;
 			MouseDownPosition = null;
@@ -199,7 +205,6 @@ namespace AngeliaFramework {
 			MouseInSelection = false;
 			MouseDownInSelection = false;
 			Pasting = false;
-			UndoDataIndex = 0;
 			MouseDownOutsideBoundary = false;
 			MouseOutsideBoundary = false;
 			PaletteScrollY = 0;
@@ -207,9 +212,10 @@ namespace AngeliaFramework {
 			PanelOffsetX = 0;
 			SearchingText = "";
 			PaletteSearchScrollY = 0;
+			LastUndoRegisterFrame = -1;
+			LastUndoPerformedFrame = -1;
 			SetNavigating(false);
 			ToolbarOffsetX = 0;
-			PerformingUndoQueue = new();
 
 			// Start
 			if (Game.GlobalFrame == 0) {
@@ -256,8 +262,6 @@ namespace AngeliaFramework {
 			PastingBuffer.Clear();
 			CopyBuffer.Clear();
 			UndoRedo.Reset();
-			System.Array.Clear(UndoData, 0, UndoData.Length);
-			PerformingUndoQueue = null;
 			IsDirty = false;
 			MouseDownOutsideBoundary = false;
 			SearchResult.Clear();
@@ -366,8 +370,8 @@ namespace AngeliaFramework {
 
 		// Update
 		public override void UpdateUI () {
-			if (Active == false || Game.IsPausing || WorldSquad.Front == null || Game.GlobalFrame < InitializedFrame + 2) return;
-			Update_Misc();
+			if (Active == false || Game.IsPausing) return;
+			Update_Before();
 			Update_ScreenUI();
 			if (!IsNavigating) {
 				// Map Editing
@@ -403,21 +407,14 @@ namespace AngeliaFramework {
 					SetNavigating(false);
 				}
 			}
-			LateUpdate_Misc();
+			Update_Final();
 		}
 
 
-		private void Update_Misc () {
+		private void Update_Before () {
 
 			// Cursor
 			if (!IsPlaying) CursorSystem.RequireCursor(int.MinValue);
-
-			// Undo
-			if (PerformingUndoQueue.Count > 0) {
-				if (PerformWaitingUndoRedo(PerformingUndoQueue.Peek())) {
-					PerformingUndoQueue.Dequeue();
-				}
-			}
 
 			// Search
 			if (IsPlaying || DroppingPlayer) {
@@ -490,7 +487,31 @@ namespace AngeliaFramework {
 		}
 
 
-		private void LateUpdate_Misc () {
+		private void Update_Final () {
+
+			// End Undo Perform for Current Frame
+			if (LastUndoPerformedFrame == Game.PauselessFrame) {
+				LastUndoPerformedFrame = -1;
+				if (CurrentUndoRuleMin.x <= CurrentUndoRuleMax.x) {
+					RedirectForRule(IRect.MinMaxRect(
+						CurrentUndoRuleMin.x - 1, CurrentUndoRuleMin.y - 1,
+						CurrentUndoRuleMax.x + 2, CurrentUndoRuleMax.y + 2
+					));
+				}
+				CurrentUndoRuleMin = default;
+				CurrentUndoRuleMax = default;
+			}
+
+			// End Undo Register for Current Frame
+			if (LastUndoRegisterFrame == Game.PauselessFrame) {
+				LastUndoRegisterFrame = -1;
+				UndoRedo.Register(new ViewUndoItem() {
+					ViewRect = TargetViewRect,
+					ViewZ = Stage.ViewZ,
+				});
+			}
+
+			// Mouse Event
 			if (!FrameInput.MouseLeftButton) {
 				DraggingForReorderPaletteItem = -1;
 				DraggingForReorderPaletteGroup = -1;
@@ -500,7 +521,7 @@ namespace AngeliaFramework {
 
 		private void Update_View () {
 
-			if (TaskingRoute || DroppingPlayer || PerformingUndoQueue.Count != 0 || CellRendererGUI.IsTyping) return;
+			if (TaskingRoute || DroppingPlayer || CellRendererGUI.IsTyping) return;
 			if (MouseDownOutsideBoundary) goto END;
 
 			// Playing
@@ -595,7 +616,7 @@ namespace AngeliaFramework {
 
 		private void Update_Hotkey () {
 
-			if (TaskingRoute || PerformingUndoQueue.Count != 0 || CellRendererGUI.IsTyping) return;
+			if (TaskingRoute || CellRendererGUI.IsTyping) return;
 			if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 
 			// Cancel Drop
@@ -781,7 +802,7 @@ namespace AngeliaFramework {
 
 		private void Update_DropPlayer () {
 
-			if (IsPlaying || !DroppingPlayer || Player.Selecting == null || TaskingRoute || PerformingUndoQueue.Count != 0) return;
+			if (IsPlaying || !DroppingPlayer || Player.Selecting == null || TaskingRoute) return;
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			var player = Player.Selecting;
@@ -1067,113 +1088,72 @@ namespace AngeliaFramework {
 
 
 		// Undo
-		private void RegisterUndo_Begin (IRect unitRange) => RegisterUndoLogic(unitRange, true, false);
-		private void RegisterUndo_End (IRect unitRange, bool growStep = true) => RegisterUndoLogic(unitRange, false, growStep);
-		private void RegisterUndoLogic (IRect unitRange, bool begin, bool growStep) {
+		private void RegisterUndo (IUndoItem item, bool ignoreStep) {
 
-			int DATA_LEN = UndoData.Length;
-			int CURRENT_STEP = UndoRedo.CurrentStep;
-
-			if (unitRange.width * unitRange.height > DATA_LEN) return;
-
-			// Fill Data
-			int startIndex = UndoDataIndex;
-			int dataLength = 0;
-			for (int i = unitRange.x; i < unitRange.x + unitRange.width; i++) {
-				for (int j = unitRange.y; j < unitRange.y + unitRange.height; j++) {
-					// Block
-					int index = (startIndex + dataLength) % DATA_LEN;
-					ref var data = ref UndoData[index];
-					data.Step = CURRENT_STEP;
-					var quadID = WorldSquad.Front.GetTriBlockAt(i, j);
-					data.EntityID = quadID.x;
-					data.LevelID = quadID.y;
-					data.BackgroundID = quadID.z;
-					data.ElementID = quadID.w;
-					data.GlobalPosID = 0;
-					data.UnitX = i;
-					data.UnitY = j;
-					dataLength++;
-				}
+			// Register View Info if Need
+			if (LastUndoRegisterFrame != Game.PauselessFrame) {
+				LastUndoRegisterFrame = Game.PauselessFrame;
+				if (!ignoreStep) UndoRedo.GrowStep();
+				UndoRedo.Register(new ViewUndoItem() {
+					ViewRect = TargetViewRect,
+					ViewZ = Stage.ViewZ,
+				});
 			}
-			UndoDataIndex = (startIndex + dataLength) % DATA_LEN;
 
-			// Register Item
-			var undoItem = new MapUndoItem() {
-				DataIndex = startIndex,
-				DataLength = dataLength,
-				ViewRect = Stage.ViewRect,
-				ViewZ = Stage.ViewZ,
-			};
-			if (begin) {
-				UndoRedo.RegisterBegin(undoItem);
-			} else {
-				UndoRedo.RegisterEnd(undoItem, growStep);
-			}
+			// Register
+			UndoRedo.Register(item);
 		}
 
 
-		private bool PerformWaitingUndoRedo (MapUndoItem item) {
-			if (item == null || item.DataIndex < 0 || item.DataIndex >= UndoData.Length || item.Step == 0) return true;
-			Instance.TargetViewRect = item.ViewRect;
-			if (Stage.ViewRect != item.ViewRect || Stage.ViewZ != item.ViewZ) {
-				Stage.SetViewPositionDelay(item.ViewRect.x, item.ViewRect.y, 1000, int.MaxValue);
-				Stage.SetViewSizeDelay(item.ViewRect.height, 1000, int.MaxValue);
-				if (Stage.ViewZ != item.ViewZ) Stage.SetViewZ(item.ViewZ);
-				return false;
-			}
-			int oldCount = PerformingUndoQueue.Count;
-			OnUndoRedoPerformed(item);
-			if (PerformingUndoQueue.Count > oldCount) {
-				PerformingUndoQueue.Dequeue();
-			}
-			return true;
-		}
+		private void OnUndoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, true);
+		private void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, false);
+		private void OnUndoRedoPerformed (IUndoItem item, bool reversed) {
 
-
-		private void OnUndoRedoPerformed (MapUndoItem item) {
-
-			if (item == null || item.DataIndex < 0 || item.DataIndex >= UndoData.Length || item.Step == 0) return;
-			TargetViewRect = item.ViewRect;
-
-			if (Stage.ViewRect != item.ViewRect || Stage.ViewZ != item.ViewZ) {
-				Stage.SetViewPositionDelay(item.ViewRect.x, item.ViewRect.y, 1000, int.MaxValue);
-				Stage.SetViewSizeDelay(item.ViewRect.height, 1000, int.MaxValue);
-				if (Stage.ViewZ != item.ViewZ) Stage.SetViewZ(item.ViewZ);
-				PerformingUndoQueue.Enqueue(item);
-				return;
+			// Start Undo Perform for Current Frame
+			if (LastUndoPerformedFrame != Game.PauselessFrame) {
+				LastUndoPerformedFrame = Game.PauselessFrame;
+				CurrentUndoRuleMin.x = int.MaxValue;
+				CurrentUndoRuleMin.y = int.MaxValue;
+				CurrentUndoRuleMax.x = int.MinValue;
+				CurrentUndoRuleMax.y = int.MinValue;
 			}
 
-			int minX = int.MaxValue;
-			int minY = int.MaxValue;
-			int maxX = int.MinValue;
-			int maxY = int.MinValue;
-			for (int i = 0; i < item.DataLength; i++) {
-				int index = (item.DataIndex + i) % UndoData.Length;
-				var data = UndoData[index];
-				if (data.Step != item.Step) break;
-
-				if (data.GlobalPosID != 0) {
-					// Global Pos
-					IGlobalPosition.SetPosition(data.GlobalPosID, new Int3(data.UnitX, data.UnitY, data.EntityID));
-				} else {
+			// Perform
+			switch (item) {
+				case BlockUndoItem blockItem:
 					// Block
 					WorldSquad.Front.SetBlockAt(
-						data.UnitX, data.UnitY,
-						data.EntityID, data.LevelID, data.BackgroundID, data.ElementID
+						blockItem.UnitX, blockItem.UnitY, blockItem.Type,
+						reversed ? blockItem.FromID : blockItem.ToID
 					);
-				}
-				minX = Util.Min(minX, data.UnitX);
-				minY = Util.Min(minY, data.UnitY);
-				maxX = Util.Max(maxX, data.UnitX);
-				maxY = Util.Max(maxY, data.UnitY);
-			}
-			if (minX != int.MaxValue) {
-				IsDirty = true;
-				var unitRect = new IRect(minX, minY, maxX - minX + 1, maxY - minY + 1);
-				RedirectForRule(unitRect);
-				SpawnBlinkParticle(unitRect.ToGlobal(), 0, BuiltInIcon.FRAME_16);
-				Save();
+					if (blockItem.Type == BlockType.Level || blockItem.Type == BlockType.Background) {
+						CurrentUndoRuleMin.x = Util.Min(CurrentUndoRuleMin.x, blockItem.UnitX);
+						CurrentUndoRuleMin.y = Util.Min(CurrentUndoRuleMin.y, blockItem.UnitY);
+						CurrentUndoRuleMax.x = Util.Max(CurrentUndoRuleMax.x, blockItem.UnitX);
+						CurrentUndoRuleMax.y = Util.Max(CurrentUndoRuleMax.y, blockItem.UnitY);
+					}
+					break;
+				case GlobalPosUndoItem globalPosItem:
+					// Global Pos
+					int targetID = reversed ? globalPosItem.FromID : globalPosItem.ToID;
+					if (targetID == 0) {
+						int targetIdAlt = reversed ? globalPosItem.ToID : globalPosItem.FromID;
+						IGlobalPosition.RemoveID(targetIdAlt);
+					} else {
+						var targetPos = reversed ? globalPosItem.FromUnitPos : globalPosItem.ToUnitPos;
+						IGlobalPosition.SetPosition(targetID, targetPos);
+					}
+					break;
+				case ViewUndoItem viewItem:
+					// View
+					if (Stage.ViewZ != viewItem.ViewZ) {
+						Stage.SetViewZ(viewItem.ViewZ);
+					}
+					TargetViewRect = viewItem.ViewRect;
+					Stage.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
+					Stage.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
+					WorldSquad.Front.UpdateWorldDataImmediately(viewItem.ViewRect, viewItem.ViewZ);
+					break;
 			}
 		}
 

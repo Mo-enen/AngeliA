@@ -54,7 +54,7 @@ namespace AngeliaFramework {
 
 
 
-		#region --- API ---
+		#region --- MSG ---
 
 
 		[OnGameInitialize(-128)]
@@ -73,26 +73,57 @@ namespace AngeliaFramework {
 		[OnGameUpdate(-64)]
 		public static void OnGameUpdate () {
 			if (!Enable) return;
-			Front.DrawAllBlocks(false);
-			Behind.DrawAllBlocks(true);
+			Front.Update_Data(Stage.ViewRect, Stage.ViewZ);
+			Front.Update_Rendering();
+			Behind.Update_Data(Stage.ViewRect, Stage.ViewZ + 1);
+			Behind.Update_Rendering();
 		}
 
 
-		private void DrawAllBlocks (bool isBehind) {
+		private void Update_Data (IRect viewRect, int z) {
 
+			bool isBehind = this == Behind;
+			var center = viewRect.CenterInt();
+
+			// View & World
+			var midZone = new IRect(
+				(Int2)Worlds[1, 1].WorldPosition * Const.MAP * Const.CEL,
+				new Int2(Const.MAP * Const.CEL, Const.MAP * Const.CEL)
+			).Expand(Const.MAP * Const.HALF);
+
+			if (RequireReload || !midZone.Contains(center) || z != LoadedZ) {
+				// Reload All Worlds in Squad
+				if (SaveBeforeReload && !isBehind) {
+					SaveToFile();
+				}
+				LoadSquadFromDisk(
+					center.x.UDivide(Const.MAP * Const.CEL),
+					center.y.UDivide(Const.MAP * Const.CEL),
+					z,
+					RequireReload
+				);
+				RequireReload = false;
+			}
+
+		}
+
+
+		private void Update_Rendering () {
+
+			bool isBehind = this == Behind;
 			int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
 			if (isBehind) {
 				CellRenderer.SetLayerToBehind();
 			} else {
 				CellRenderer.SetLayerToDefault();
 			}
-			var viewPos = Stage.SpawnRect.CenterInt();
+
 			IRect unitRect_Entity;
 			IRect unitRect_Level;
 			CameraRect = CellRenderer.CameraRect;
 			var cullingPadding = Stage.GetCameraCullingPadding();
 			CullingCameraRect = CameraRect.Expand(cullingPadding);
-			float PARA_01 = Game.WORLD_BEHIND_PARALLAX / 1000f;
+			float para01 = Game.WORLD_BEHIND_PARALLAX / 1000f;
 
 			if (!isBehind) {
 				// Current
@@ -100,8 +131,8 @@ namespace AngeliaFramework {
 				unitRect_Level = unitRect_Entity.Expand(Const.LEVEL_SPAWN_PADDING_UNIT);
 			} else {
 				// Behind
-				BackgroundBlockSize = (Const.CEL / PARA_01).CeilToInt();
-				var parallax = ((Float2)CameraRect.size * ((PARA_01 - 1f) / 2f)).CeilToInt();
+				BackgroundBlockSize = (Const.CEL / para01).CeilToInt();
+				var parallax = ((Float2)CameraRect.size * ((para01 - 1f) / 2f)).CeilToInt();
 				ParallaxRect = CameraRect.Expand(parallax.x, parallax.x, parallax.y, parallax.y);
 				var parallaxUnitRect = ParallaxRect.Expand(cullingPadding).ToUnit();
 				parallaxUnitRect.width += 2;
@@ -110,26 +141,6 @@ namespace AngeliaFramework {
 				parallaxUnitRect.y--;
 				unitRect_Entity = parallaxUnitRect.Expand(1);
 				unitRect_Level = parallaxUnitRect;
-			}
-
-			// View & World
-			var midZone = new IRect(
-				(Int2)Worlds[1, 1].WorldPosition * Const.MAP * Const.CEL,
-				new Int2(Const.MAP * Const.CEL, Const.MAP * Const.CEL)
-			).Expand(Const.MAP * Const.HALF);
-
-			if (RequireReload || !midZone.Contains(viewPos) || z != LoadedZ) {
-				// Reload All Worlds in Squad
-				if (SaveBeforeReload && !isBehind) {
-					SaveToFile();
-				}
-				LoadSquadFromDisk(
-					viewPos.x.UDivide(Const.MAP * Const.CEL),
-					viewPos.y.UDivide(Const.MAP * Const.CEL),
-					z,
-					RequireReload
-				);
-				RequireReload = false;
 			}
 
 			// BG-Level
@@ -154,7 +165,7 @@ namespace AngeliaFramework {
 							var bg = world.Backgrounds[index];
 							if (bg != 0) {
 								if (isBehind) {
-									Draw_Behind(bg, i, j, false);
+									DrawBehind(bg, i, j, false);
 								} else {
 									DrawBackgroundBlock(bg, i, j);
 								}
@@ -162,7 +173,7 @@ namespace AngeliaFramework {
 							var lv = world.Levels[index];
 							if (lv != 0) {
 								if (isBehind) {
-									Draw_Behind(lv, i, j, false);
+									DrawBehind(lv, i, j, false);
 								} else {
 									DrawLevelBlock(lv, i, j, isBehind);
 								}
@@ -215,14 +226,14 @@ namespace AngeliaFramework {
 								// Entity
 								var entityID = world.Entities[index];
 								if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
-									Draw_Behind(entityID, i, j, true);
+									DrawBehind(entityID, i, j, true);
 								}
 								// Global Pos
 								if (
 									IGlobalPosition.TryGetIdFromPosition(new Int3(i, j, z), out int gID) &&
 									Stage.RequireDrawEntityBehind(gID, i, j, z)
 								) {
-									Draw_Behind(gID, i, j, true);
+									DrawBehind(gID, i, j, true);
 								}
 							}
 						}
@@ -246,8 +257,51 @@ namespace AngeliaFramework {
 
 			// Final
 			if (isBehind) CellRenderer.SetLayerToDefault();
-
 		}
+
+
+		#endregion
+
+
+
+
+		#region --- API ---
+
+
+		public static void SetMapChannel (MapChannel newChannel, string folderName = "", bool forceOperate = false) {
+
+			if (!forceOperate && newChannel == Channel) return;
+
+			if (SaveBeforeReload) Front.SaveToFile();
+
+			MapRoot = newChannel switch {
+				MapChannel.BuiltIn => Project.CurrentProject.MapRoot,
+				MapChannel.Procedure => Util.CombinePaths(Project.CurrentProject.ProcedureMapRoot, folderName),
+				_ => Project.CurrentProject.MapRoot,
+			};
+			Channel = newChannel;
+
+			var center = Stage.ViewRect.CenterInt();
+			Front.LoadSquadFromDisk(
+				center.x.UDivide(Const.MAP * Const.CEL),
+				center.y.UDivide(Const.MAP * Const.CEL),
+				Stage.ViewZ,
+				true
+			);
+			Behind.LoadSquadFromDisk(
+				center.x.UDivide(Const.MAP * Const.CEL),
+				center.y.UDivide(Const.MAP * Const.CEL),
+				Stage.ViewZ,
+				true
+			);
+			Front.RequireReload = false;
+			Behind.RequireReload = false;
+
+			OnMapChannelChanged?.Invoke(newChannel);
+		}
+
+
+		public void UpdateWorldDataImmediately (IRect viewRect, int z) => Update_Data(viewRect, z);
 
 
 		public void ForceReloadDelay () => RequireReload = true;
@@ -269,41 +323,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void SetMapChannel (MapChannel newChannel, string folderName = "", bool forceOperate = false) {
-
-			if (!forceOperate && newChannel == Channel) return;
-
-			if (SaveBeforeReload) Front.SaveToFile();
-
-			MapRoot = newChannel switch {
-				MapChannel.BuiltIn => Project.CurrentProject.MapRoot,
-				MapChannel.Procedure => Util.CombinePaths(Project.CurrentProject.ProcedureMapRoot, folderName),
-				_ => Project.CurrentProject.MapRoot,
-			};
-			Channel = newChannel;
-
-			var viewPos = Stage.SpawnRect.CenterInt();
-			Front.LoadSquadFromDisk(
-				viewPos.x.UDivide(Const.MAP * Const.CEL),
-				viewPos.y.UDivide(Const.MAP * Const.CEL),
-				Stage.ViewZ,
-				true
-			);
-			Behind.LoadSquadFromDisk(
-				viewPos.x.UDivide(Const.MAP * Const.CEL),
-				viewPos.y.UDivide(Const.MAP * Const.CEL),
-				Stage.ViewZ,
-				true
-			);
-			Front.RequireReload = false;
-			Behind.RequireReload = false;
-
-			OnMapChannelChanged?.Invoke(newChannel);
-		}
-
-
 		// Get Set Block
-		public Int4 GetTriBlockAt (int unitX, int unitY) {
+		public Int4 GetBlocksAt (int unitX, int unitY) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -370,7 +391,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public void SetBlockAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, int elementID) {
+		public void SetBlocksAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, int elementID) {
 			var position00 = Worlds[0, 0].WorldPosition;
 			int worldX = unitX.UDivide(Const.MAP) - position00.x;
 			int worldY = unitY.UDivide(Const.MAP) - position00.y;
@@ -487,7 +508,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void Draw_Behind (int id, int unitX, int unitY, bool fixRatio) {
+		private void DrawBehind (int id, int unitX, int unitY, bool fixRatio) {
 			var cameraRect = CameraRect;
 			var rect = new IRect(
 				Util.RemapUnclamped(ParallaxRect.xMin, ParallaxRect.xMax, cameraRect.xMin, cameraRect.xMax, unitX * Const.CEL),
@@ -529,7 +550,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void LoadSquadFromDisk (int worldX, int worldY, int worldZ, bool forceLoad) {
+		private void LoadSquadFromDisk (int centerWorldX, int centerWorldY, int z, bool forceLoad) {
 
 			// Clear Buffer
 			for (int i = 0; i < 9; i++) {
@@ -537,14 +558,14 @@ namespace AngeliaFramework {
 				WorldBufferAlt[i] = null;
 			}
 
-			if (!forceLoad && LoadedZ == worldZ) {
+			if (!forceLoad && LoadedZ == z) {
 				// Worlds >> Buffer
 				int alt = 0;
 				for (int j = 0; j < 3; j++) {
 					for (int i = 0; i < 3; i++) {
 						var world = Worlds[i, j];
-						int localX = world.WorldPosition.x - worldX;
-						int localY = world.WorldPosition.y - worldY;
+						int localX = world.WorldPosition.x - centerWorldX;
+						int localY = world.WorldPosition.y - centerWorldY;
 						if (localX >= -1 && localX <= 1 && localY >= -1 && localY <= 1) {
 							WorldBuffer[localX + 1, localY + 1] = world;
 						} else {
@@ -579,12 +600,12 @@ namespace AngeliaFramework {
 			for (int j = 0; j < 3; j++) {
 				for (int i = 0; i < 3; i++) {
 					var world = Worlds[i, j];
-					var pos = new Int3(worldX + i - 1, worldY + j - 1, worldZ);
+					var pos = new Int3(centerWorldX + i - 1, centerWorldY + j - 1, z);
 					if (!forceLoad && world.WorldPosition == pos) continue;
 					world.LoadFromDisk(MapRoot, pos.x, pos.y, pos.z);
 				}
 			}
-			LoadedZ = worldZ;
+			LoadedZ = z;
 
 		}
 
