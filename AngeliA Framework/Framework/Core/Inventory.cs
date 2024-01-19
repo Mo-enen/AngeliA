@@ -90,7 +90,9 @@ namespace AngeliaFramework {
 
 		[OnGameUpdate]
 		public static void FrameUpdate () {
-			if (IsPoolDirty) SaveAllToDisk(false);
+			if (IsPoolDirty) {
+				SaveAllToDisk(false);
+			}
 		}
 
 
@@ -102,7 +104,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void AddNewInventoryData (string inventoryName, int itemCount) {
+		public static void AddNewInventoryData (string inventoryName, int itemCount, bool unlockItemInside = false) {
 			if (itemCount <= 0) return;
 			int inventoryID = inventoryName.AngeHash();
 			if (Pool.ContainsKey(inventoryID)) return;
@@ -110,12 +112,14 @@ namespace AngeliaFramework {
 				Items = new int[itemCount],
 				Counts = new int[itemCount],
 				IsDirty = true,
+				Name = inventoryName,
+				UnlockItemInside = unlockItemInside,
 			});
 			IsPoolDirty = true;
 		}
 
 
-		public static void AddNewCharacterInventoryData (string inventoryName, int itemCount) {
+		public static void AddNewCharacterInventoryData (string inventoryName, int itemCount, bool unlockItemInside = false) {
 			if (itemCount <= 0) return;
 			int inventoryID = inventoryName.AngeHash();
 			if (Pool.ContainsKey(inventoryID)) return;
@@ -123,6 +127,8 @@ namespace AngeliaFramework {
 				Items = new int[itemCount],
 				Counts = new int[itemCount],
 				IsDirty = true,
+				Name = inventoryName,
+				UnlockItemInside = unlockItemInside,
 			});
 			IsPoolDirty = true;
 		}
@@ -148,9 +154,10 @@ namespace AngeliaFramework {
 		public static int GetInventoryCapacity (int inventoryID) => Pool.TryGetValue(inventoryID, out var data) ? data.Items.Length : 0;
 
 
-		public static void SetUnlockInside (int inventoryID, bool unlock) {
-			if (!Pool.TryGetValue(inventoryID, out var data)) return;
-			data.UnlockItemInside = unlock;
+		public static void SetUnlockItemsInside (int inventoryID, bool newUnlokInside) {
+			if (Pool.TryGetValue(inventoryID, out var data)) {
+				data.UnlockItemInside = newUnlokInside;
+			}
 		}
 
 
@@ -201,8 +208,10 @@ namespace AngeliaFramework {
 			int _count = data.Counts[itemIndex];
 			int delta = Util.Min(count, ItemSystem.GetItemMaxStackCount(itemID) - _count);
 			data.Counts[itemIndex] = _count + delta;
-			data.IsDirty = true;
-			IsPoolDirty = true;
+			if (delta != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
 			return delta;
 		}
 
@@ -220,9 +229,12 @@ namespace AngeliaFramework {
 				count -= delta;
 				if (count <= 0) break;
 			}
-			data.IsDirty = true;
-			IsPoolDirty = true;
-			return oldCount - count;
+			int result = oldCount - count;
+			if (result != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
+			return result;
 		}
 
 
@@ -243,8 +255,10 @@ namespace AngeliaFramework {
 			if (newCount <= 0) {
 				data.Items[itemIndex] = 0;
 			}
-			data.IsDirty = true;
-			IsPoolDirty = true;
+			if (delta != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
 			return delta;
 		}
 
@@ -263,9 +277,12 @@ namespace AngeliaFramework {
 				if (_count <= 0) data.Items[i] = 0;
 				if (count <= 0) break;
 			}
-			data.IsDirty = true;
-			IsPoolDirty = true;
-			return oldCount - count;
+			int result = oldCount - count;
+			if (result != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
+			return result;
 		}
 
 
@@ -288,8 +305,6 @@ namespace AngeliaFramework {
 					count -= delta;
 					_count += delta;
 					data.Counts[i] = _count;
-					data.IsDirty = true;
-					IsPoolDirty = true;
 					collectIndex = i;
 				}
 				if (count <= 0) break;
@@ -304,12 +319,15 @@ namespace AngeliaFramework {
 				count -= delta;
 				data.Items[i] = item;
 				data.Counts[i] = delta;
-				data.IsDirty = true;
-				IsPoolDirty = true;
 				collectIndex = i;
 				if (count <= 0) break;
 			}
-			return oldCount - count;
+			int result = oldCount - count;
+			if (result != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
+			return result;
 		}
 
 

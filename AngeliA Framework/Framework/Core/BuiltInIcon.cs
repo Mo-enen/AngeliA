@@ -80,6 +80,7 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode UI_DARK_BUTTON = "UI.DarkButton";
 		public static readonly SpriteCode UI_DARK_BUTTON_DOWN = "UI.DarkButtonDown";
 		public static readonly SpriteCode UI_BUTTON = "UI.Button";
+		public static readonly SpriteCode UI_HOLO_BUTTON = "UI.HoloButton";
 		public static readonly SpriteCode UI_BUTTON_DOWN = "UI.ButtonDown";
 		public static readonly SpriteCode ICON_SEARCH = "Icon.Search";
 		public static readonly SpriteCode MENU_ARROW_MARK = "Menu Arrow Mark";
@@ -100,6 +101,6 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode ICON_FILE = "Icon.File";
 		public static readonly SpriteCode ICON_ATLAS = "Icon.Atlas";
 		public static readonly SpriteCode ICON_SPRITE = "Icon.Sprite";
-		
+
 	}
 }

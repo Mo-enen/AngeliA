@@ -164,7 +164,7 @@ namespace AngeliaFramework {
 				FrameTask.TryAddToLast(TYPE_ID, out var task) &&
 				task is OpeningTask oTask
 			) {
-				Stage.SetViewSizeDelay(Game.DEFAULT_VIEW_HEIGHT, 1000, int.MaxValue);
+				Stage.SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
 				oTask.TargetViewX = startUnitPosition.x.ToGlobal();
 				oTask.TargetViewY = startUnitPosition.y.ToGlobal();
 				oTask.TargetViewZ = startUnitPosition.z;

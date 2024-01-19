@@ -29,41 +29,37 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly SpriteCode[] BTN_SPRITES = {
-			"DeveloperToolbox.Collider",
-			"DeveloperToolbox.Bound",
-			"DeveloperToolbox.Profiler",
-			"DeveloperToolbox.Editor",
-			"DeveloperToolbox.Effect",
-		};
-		private static readonly SpriteCode[] EDITOR_ICON = {
-			"DeveloperToolbox.MapEditor",
-			"DeveloperToolbox.SheetEditor",
-			"DeveloperToolbox.LanguageEditor",
-		};
-		private static readonly LanguageCode[] EDITOR_LABEL = {
-			"DeveloperToolbox.Label.MapEditor",
-			"DeveloperToolbox.Label.SheetEditor",
-			"DeveloperToolbox.Label.LanguageEditor",
-		};
-		private static readonly string[] EDITOR_LABEL_DEF = { "Map", "Sheet", "Language", };
-		private static readonly int[] EDITOR_ID = {
-			MapEditor.TYPE_ID, SheetEditor.TYPE_ID, LanguageEditor.TYPE_ID,
-		};
+		private static readonly SpriteCode[] BTN_SPRITES = { "DeveloperToolbox.Collider", "DeveloperToolbox.Bound", "DeveloperToolbox.Profiler", "DeveloperToolbox.Effect", "DeveloperToolbox.Editor", };
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
+		private static readonly LanguageCode PROJECT_NAME = "DeveloperToolbox.ProjectName";
+		private static readonly LanguageCode CREATE_PROJECT = "DeveloperToolbox.CreateProject";
+		private static readonly LanguageCode PROJECT_SELECTOR_MSG = "DeveloperToolbox.ProjectSelectorMsg";
+		private static readonly LanguageCode UI_CREATE = "UI.Create";
+		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
+		private static readonly LanguageCode NEW_PROJECT_NAME = "Project.NewProjectName";
+
+		// Api
+		public override int MaxStackCount => 1;
 
 		// Data
-		private static readonly BarData[] RenderingUsages = new BarData[RenderLayer.COUNT];
-		private static readonly BarData[] EntityUsages = new BarData[EntityLayer.COUNT];
-		private static BarData[] TextUsages = new BarData[0];
-		private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
-		private static readonly bool[] EffectsEnabled = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
-		private static int RequireToolboxFrame = int.MinValue;
-		private static int RequireDataFrame = int.MinValue;
-		private static int DrawColliderFrame = int.MinValue;
-		private static int DrawBoundFrame = int.MinValue;
-		private static int SelectingPanelIndex = -1;
-		private static IRect PanelRect;
+		private static iDeveloperToolbox Instance;
+		private static System.Action OpenProjectCallback = null;
+		private static System.Action RestartGameCallback = null;
+		private readonly BarData[] RenderingUsages = new BarData[RenderLayer.COUNT];
+		private readonly BarData[] EntityUsages = new BarData[EntityLayer.COUNT];
+		private BarData[] TextUsages = new BarData[0];
+		private readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
+		private readonly bool[] EffectsEnabled = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
+		private int RequireToolboxFrame = int.MinValue;
+		private int RequireDataFrame = int.MinValue;
+		private int DrawColliderFrame = int.MinValue;
+		private int DrawBoundFrame = int.MinValue;
+		private int SelectingPanelIndex = -1;
+		private IRect PanelRect;
+		private bool CreatingNewProject = false;
+		private bool DataInitialized = false;
+		private string CreatingNewProjectName = "";
+		private int ProjectSelectorScrollIndex = 0;
 
 
 		#endregion
@@ -74,35 +70,26 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		[OnGameInitializeLater(1024)]
-		public static void OnGameInitialize () {
-			TextUsages = new BarData[CellRenderer.TextLayerCount];
-			for (int i = 0; i < RenderingUsages.Length; i++) {
-				int capa = CellRenderer.GetLayerCapacity(i);
-				RenderingUsages[i] = new BarData() {
-					Capacity = capa,
-					I2C = new IntToChars($"{CellRenderer.GetLayerName(i)}  ", $" / {capa}"),
-				};
-			}
-			for (int i = 0; i < TextUsages.Length; i++) {
-				int capa = CellRenderer.GetTextLayerCapacity(i);
-				TextUsages[i] = new BarData() {
-					Capacity = capa,
-					I2C = new IntToChars($"{CellRenderer.GetTextLayerName(i)}  ", $" / {capa}"),
-				};
-			}
-			for (int i = 0; i < EntityUsages.Length; i++) {
-				int capa = Stage.Entities[i].Length;
-				EntityUsages[i] = new BarData() {
-					Capacity = capa,
-					I2C = new IntToChars($"{EntityLayer.LAYER_NAMES[i]}  ", $" / {capa}"),
-				};
-			}
+		public iDeveloperToolbox () {
+			Instance = this;
+			DataInitialized = false;
+			if (RestartGameCallback == null) RestartGameCallback += () => Game.RestartGame(immediately: true);
 		}
 
 
+		[OnProjectOpen]
+		public static void OnProjectOpen () => OpenProjectCallback = null;
+
+
 		[OnGameUpdateLater(-4097)]
-		public static void DrawToolboxUI () {
+		public static void OnGameUpdateLaterMin () => Instance?.DrawToolboxUI();
+
+
+		[OnGameUpdateLater(4096)]
+		public static void OnGameUpdateLaterMax () => Instance?.DrawToolboxGizmos();
+
+
+		private void DrawToolboxUI () {
 
 			if (Game.GlobalFrame > RequireToolboxFrame + 1) return;
 
@@ -132,11 +119,11 @@ namespace AngeliaFramework {
 				int spriteCode = BTN_SPRITES[i];
 				if (CellRendererGUI.Button(rect, spriteCode, spriteCode, spriteCode, 0, 0, 0, int.MaxValue)) {
 					SelectingPanelIndex = SelectingPanelIndex != i ? i : -1;
+					CreatingNewProject = false;
+					CreatingNewProjectName = "";
+					ProjectSelectorScrollIndex = 0;
 					EffectsEnabled.FillWithValue(false);
-					FrameInput.UseMouseKey(0);
-					FrameInput.UseGameKey(Gamekey.Action);
 				}
-				CursorSystem.SetCursorAsHand(rect);
 				rect.x -= i == BTN_SPRITES.Length - 1 ? padding : rect.width + padding;
 			}
 			panelRect.width = panelRect.x - rect.x;
@@ -157,12 +144,16 @@ namespace AngeliaFramework {
 					DrawProfilerPanel(ref panelRect);
 					break;
 				case 3:
-					// Editor
-					DrawEditorPanel(ref panelRect);
-					break;
-				case 4:
 					// Effect
 					DrawEffectPanel(ref panelRect);
+					break;
+				case 4:
+					// Editor
+					if (CreatingNewProject) {
+						DrawNewProjectPanel(ref panelRect);
+					} else {
+						DrawProjectSelectorPanel(ref panelRect);
+					}
 					break;
 			}
 
@@ -176,14 +167,37 @@ namespace AngeliaFramework {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseGameKey(Gamekey.Action);
 			}
-
 		}
 
 
-		[OnGameUpdateLater(4096)]
-		public static void OnGameUpdateLater () {
-
+		private void DrawToolboxGizmos () {
 			if (Game.GlobalFrame > RequireToolboxFrame + 1) return;
+
+			if (!DataInitialized) {
+				DataInitialized = true;
+				TextUsages = new BarData[CellRenderer.TextLayerCount];
+				for (int i = 0; i < RenderingUsages.Length; i++) {
+					int capa = CellRenderer.GetLayerCapacity(i);
+					RenderingUsages[i] = new BarData() {
+						Capacity = capa,
+						I2C = new IntToChars($"{CellRenderer.GetLayerName(i)}  ", $" / {capa}"),
+					};
+				}
+				for (int i = 0; i < TextUsages.Length; i++) {
+					int capa = CellRenderer.GetTextLayerCapacity(i);
+					TextUsages[i] = new BarData() {
+						Capacity = capa,
+						I2C = new IntToChars($"{CellRenderer.GetTextLayerName(i)}  ", $" / {capa}"),
+					};
+				}
+				for (int i = 0; i < EntityUsages.Length; i++) {
+					int capa = Stage.Entities[i].Length;
+					EntityUsages[i] = new BarData() {
+						Capacity = capa,
+						I2C = new IntToChars($"{EntityLayer.LAYER_NAMES[i]}  ", $" / {capa}"),
+					};
+				}
+			}
 
 			// Collect Data
 			if (Game.GlobalFrame <= RequireDataFrame + 1) {
@@ -229,10 +243,10 @@ namespace AngeliaFramework {
 											var cell = cells[x, y, d];
 											if (cell.Frame != CellPhysics.CurrentFrame) break;
 											if (!cell.Rect.Overlaps(cameraRect)) continue;
-											DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Down, thick), tint, true);
-											DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Up, thick), tint, true);
-											DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Left, thick), tint, false);
-											DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Right, thick), tint, false);
+											DrawGizmosRectAsLine(PanelRect, cell.Rect.EdgeInside(Direction4.Down, thick), tint, true);
+											DrawGizmosRectAsLine(PanelRect, cell.Rect.EdgeInside(Direction4.Up, thick), tint, true);
+											DrawGizmosRectAsLine(PanelRect, cell.Rect.EdgeInside(Direction4.Left, thick), tint, false);
+											DrawGizmosRectAsLine(PanelRect, cell.Rect.EdgeInside(Direction4.Right, thick), tint, false);
 										}
 									}
 								}
@@ -249,57 +263,57 @@ namespace AngeliaFramework {
 						for (int i = 0; i < count; i++) {
 							var e = entities[i];
 							if (!e.Active) continue;
-							DrawGizmosRect(e.GlobalBounds, Const.BLUE_BETTER.WithNewA(64));
+							DrawGizmosRect(PanelRect, e.GlobalBounds, Const.BLUE_BETTER.WithNewA(64));
 						}
 					}
 				}
 			}
 
 			// Func
-			static void DrawGizmosRectAsLine (IRect rect, Byte4 color, bool horizontal) {
-				if (!rect.Overlaps(PanelRect)) {
+			static void DrawGizmosRectAsLine (IRect panelRect, IRect rect, Byte4 color, bool horizontal) {
+				if (!rect.Overlaps(panelRect)) {
 					Game.DrawGizmosRect(rect, color);
 				} else if (horizontal) {
-					if (rect.x > PanelRect.x && rect.xMax < PanelRect.xMax) return;
-					if (rect.x < PanelRect.x) {
-						Game.DrawGizmosRect(new IRect(rect.x, rect.y, PanelRect.x - rect.x, rect.height), color);
+					if (rect.x > panelRect.x && rect.xMax < panelRect.xMax) return;
+					if (rect.x < panelRect.x) {
+						Game.DrawGizmosRect(new IRect(rect.x, rect.y, panelRect.x - rect.x, rect.height), color);
 					}
-					if (rect.xMax > PanelRect.xMax) {
-						Game.DrawGizmosRect(new IRect(PanelRect.xMax, rect.y, rect.xMax - PanelRect.xMax, rect.height), color);
+					if (rect.xMax > panelRect.xMax) {
+						Game.DrawGizmosRect(new IRect(panelRect.xMax, rect.y, rect.xMax - panelRect.xMax, rect.height), color);
 					}
 				} else {
-					if (rect.y > PanelRect.y && rect.yMax < PanelRect.yMax) return;
-					if (rect.y < PanelRect.y) {
-						Game.DrawGizmosRect(new IRect(rect.x, rect.y, rect.width, PanelRect.y - rect.y), color);
+					if (rect.y > panelRect.y && rect.yMax < panelRect.yMax) return;
+					if (rect.y < panelRect.y) {
+						Game.DrawGizmosRect(new IRect(rect.x, rect.y, rect.width, panelRect.y - rect.y), color);
 					}
-					if (rect.yMax > PanelRect.yMax) {
-						Game.DrawGizmosRect(new IRect(rect.x, PanelRect.yMax, rect.width, rect.yMax - PanelRect.yMax), color);
+					if (rect.yMax > panelRect.yMax) {
+						Game.DrawGizmosRect(new IRect(rect.x, panelRect.yMax, rect.width, rect.yMax - panelRect.yMax), color);
 					}
 				}
 			}
 
 
-			static void DrawGizmosRect (IRect rect, Byte4 color) {
-				if (!rect.Overlaps(PanelRect)) {
+			static void DrawGizmosRect (IRect panelRect, IRect rect, Byte4 color) {
+				if (!rect.Overlaps(panelRect)) {
 					Game.DrawGizmosRect(rect, color);
 				} else {
 					// Left Part
-					if (rect.x < PanelRect.x) {
-						Game.DrawGizmosRect(rect.Shrink(0, rect.xMax - PanelRect.x, 0, 0), color);
-						rect = rect.Shrink(PanelRect.x - rect.x, 0, 0, 0);
+					if (rect.x < panelRect.x) {
+						Game.DrawGizmosRect(rect.Shrink(0, rect.xMax - panelRect.x, 0, 0), color);
+						rect = rect.Shrink(panelRect.x - rect.x, 0, 0, 0);
 					}
 					// Right Part
-					if (rect.xMax > PanelRect.xMax) {
-						Game.DrawGizmosRect(rect.Shrink(PanelRect.xMax - rect.x, 0, 0, 0), color);
-						rect = rect.Shrink(0, rect.xMax - PanelRect.xMax, 0, 0);
+					if (rect.xMax > panelRect.xMax) {
+						Game.DrawGizmosRect(rect.Shrink(panelRect.xMax - rect.x, 0, 0, 0), color);
+						rect = rect.Shrink(0, rect.xMax - panelRect.xMax, 0, 0);
 					}
 					// Bottom Part
-					if (rect.y < PanelRect.y) {
-						Game.DrawGizmosRect(rect.Shrink(0, 0, 0, rect.yMax - PanelRect.y), color);
+					if (rect.y < panelRect.y) {
+						Game.DrawGizmosRect(rect.Shrink(0, 0, 0, rect.yMax - panelRect.y), color);
 					}
 					// Top Part
-					if (rect.yMax > PanelRect.yMax) {
-						Game.DrawGizmosRect(rect.Shrink(0, 0, PanelRect.yMax - rect.y, 0), color);
+					if (rect.yMax > panelRect.yMax) {
+						Game.DrawGizmosRect(rect.Shrink(0, 0, panelRect.yMax - rect.y, 0), color);
 					}
 				}
 			}
@@ -312,7 +326,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void DrawProfilerPanel (ref IRect panelRect) {
+		private void DrawProfilerPanel (ref IRect panelRect) {
 
 			RequireDataFrame = Game.GlobalFrame;
 			int barHeight = CellRendererGUI.Unify(24);
@@ -355,70 +369,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void DrawEditorPanel (ref IRect panelRect) {
-			int editorCount = EDITOR_ICON.Length;
-			int itemHeight = CellRendererGUI.Unify(48);
-			int padding = CellRendererGUI.Unify(8);
-			int buttonShrink = CellRendererGUI.Unify(10);
-			int openingMarkSize = CellRendererGUI.Unify(12);
-			panelRect.height = editorCount * (itemHeight + padding) + padding;
-			panelRect.y -= panelRect.height;
-			var rect = new IRect(panelRect.x, panelRect.yMax, panelRect.width, itemHeight);
-			for (int i = 0; i < editorCount; i++) {
-
-				rect.y -= itemHeight + padding;
-				int editorID = EDITOR_ID[i];
-				bool editorActived = GlobalEditorUI.HaveActiveInstance && GlobalEditorUI.Instance.TypeID == editorID;
-
-				var buttonRect = rect.Shrink(buttonShrink, buttonShrink, buttonShrink / 2, buttonShrink / 2);
-
-				CursorSystem.SetCursorAsHand(buttonRect);
-
-				// Button
-				if (CellRendererGUI.Button(
-					buttonRect,
-					BuiltInIcon.UI_BUTTON, BuiltInIcon.UI_BUTTON, BuiltInIcon.UI_BUTTON_DOWN,
-					0, -1, 0, int.MaxValue - 9
-				)) {
-					if (editorActived) {
-						GlobalEditorUI.CloseEditorSmoothly();
-					} else {
-						GlobalEditorUI.OpenEditorSmoothly(editorID);
-					}
-					FrameInput.UseMouseKey(0);
-					FrameInput.UseGameKey(Gamekey.Action);
-				}
-
-				// Label
-				CellRendererGUI.Label(
-					CellContent.Get(
-						EDITOR_LABEL[i].Get(EDITOR_LABEL_DEF[i]),
-						tint: Const.GREY_32, charSize: 20, alignment: Alignment.MidMid
-					), buttonRect, out var labelBounds
-				);
-
-				// Icon
-				int iconSize = buttonRect.height;
-				CellRenderer.Draw(
-					EDITOR_ICON[i],
-					new IRect(labelBounds.x - iconSize - iconSize / 5, buttonRect.y, iconSize, iconSize),
-					int.MaxValue - 8
-				);
-
-				// Mark
-				if (editorActived) {
-					CellRenderer.Draw(
-						BuiltInIcon.CIRCLE_16,
-						buttonRect.EdgeInside(Direction4.Right, openingMarkSize).Fit(1, 1).Shift(-openingMarkSize, 0),
-						Const.GREEN, int.MaxValue - 4
-					);
-				}
-
-			}
-		}
-
-
-		private static void DrawEffectPanel (ref IRect panelRect) {
+		private void DrawEffectPanel (ref IRect panelRect) {
 			int itemHeight = CellRendererGUI.Unify(28);
 			int itemPadding = CellRendererGUI.Unify(8);
 			panelRect.height = Const.SCREEN_EFFECT_COUNT * (itemHeight + itemPadding) + itemPadding;
@@ -465,6 +416,149 @@ namespace AngeliaFramework {
 				Game.PassEffect_Tint(Byte4.LerpUnclamped(new Byte4(255, 128, 196, 255), new Byte4(128, 255, 64, 255), Game.GlobalFrame.PingPong(120) / 120f));
 			}
 
+		}
+
+
+		private void DrawNewProjectPanel (ref IRect panelRect) {
+
+			int itemHeight = CellRendererGUI.Unify(48);
+			int itemShrink = CellRendererGUI.Unify(10);
+			int padding = CellRendererGUI.Unify(8);
+			int border = CellRendererGUI.Unify(1.5f);
+			int buttonShrink = CellRendererGUI.Unify(6);
+			int labelWidth = CellRendererGUI.Unify(72);
+
+			var rect = new IRect(panelRect.x, panelRect.y, panelRect.width, itemHeight);
+
+			// Label
+			rect.y -= itemHeight + padding;
+			CellRendererGUI.Label(
+				CellContent.Get(PROJECT_NAME.Get("Name"), tint: Const.GREY_196, charSize: 18, alignment: Alignment.MidLeft),
+				rect.EdgeInside(Direction4.Left, labelWidth).Shrink(itemShrink, 0, 0, 0)
+			);
+
+			// Field
+			var fieldRect = rect.EdgeInside(Direction4.Right, rect.width - labelWidth).Shrink(0, 0, itemShrink, itemShrink);
+			CreatingNewProjectName = CellRendererGUI.TextField(83474, fieldRect, CreatingNewProjectName);
+			CellRenderer.Draw_9Slice(
+				BuiltInIcon.FRAME_16, fieldRect, border, border, border, border,
+				Const.GREY_128, int.MaxValue - 6
+			);
+
+			// Create 
+			rect.y -= itemHeight + padding;
+			if (CellRendererGUI.Button(
+				rect.EdgeInside(Direction4.Left, rect.width / 2).Shrink(buttonShrink / 2, buttonShrink / 2, buttonShrink, buttonShrink),
+				BuiltInIcon.UI_BUTTON,
+				UI_CREATE.Get("Create"),
+				z: int.MaxValue - 9,
+				Const.WHITE, Const.GREY_32
+			)) {
+
+
+				CreatingNewProject = false;
+				CreatingNewProjectName = string.Empty;
+			}
+
+			// Cancel
+			if (CellRendererGUI.Button(
+				rect.EdgeInside(Direction4.Right, rect.width / 2).Shrink(buttonShrink / 2, buttonShrink / 2, buttonShrink, buttonShrink),
+				BuiltInIcon.UI_BUTTON,
+				UI_CANCEL.Get("Cancel"),
+				z: int.MaxValue - 9,
+				Const.WHITE, Const.GREY_32
+			)) {
+				CreatingNewProject = false;
+				CreatingNewProjectName = string.Empty;
+			}
+
+			// Final
+			panelRect.height = panelRect.y - rect.y + padding;
+			panelRect.y = rect.y - padding;
+		}
+
+
+		private void DrawProjectSelectorPanel (ref IRect panelRect) {
+
+			int itemHeight = CellRendererGUI.Unify(48);
+			int itemShrink = CellRendererGUI.Unify(10);
+			int padding = CellRendererGUI.Unify(8);
+
+			var rect = new IRect(panelRect.x, panelRect.y, panelRect.width, itemHeight);
+
+			// Message
+			if (Project.UserProjects.Count == 0) {
+				int msgHeight = CellRendererGUI.Unify(48);
+				rect.y -= msgHeight + padding;
+				CellRendererGUI.Label(CellContent.Get(
+					PROJECT_SELECTOR_MSG.Get("Create a new project and make your own level!"),
+					tint: Const.GREY_128, charSize: 16, alignment: Alignment.TopMid, true
+				), rect.Shrink(itemShrink, itemShrink, 0, 0));
+			}
+
+			// New Project Button
+			rect.y -= itemHeight + padding;
+			var buttonRect = rect.Shrink(itemShrink, itemShrink, itemShrink / 2, itemShrink / 2);
+			if (CellRendererGUI.Button(
+				buttonRect, BuiltInIcon.FRAME_16, CREATE_PROJECT.Get("Create Project"),
+				z: int.MaxValue - 9, Const.GREY_196, Const.GREY_196
+			)) {
+				CreatingNewProject = true;
+				CreatingNewProjectName = NEW_PROJECT_NAME.Get("New Project");
+			}
+
+			// All Projects
+			int startCellIndex = CellRenderer.GetUsedCellCount();
+			int startTextCellIndex = CellRenderer.GetTextUsedCellCount();
+			int pageHeight = rect.y - CellRenderer.CameraRect.y;
+			int pageItemCount = pageHeight / (itemHeight + padding);
+			if (Project.UserProjects.Count > pageItemCount) {
+				int scrollBarWidth = CellRendererGUI.Unify(24);
+				rect.width -= scrollBarWidth;
+				ProjectSelectorScrollIndex -= FrameInput.MouseWheelDelta * 2;
+				ProjectSelectorScrollIndex = ProjectSelectorScrollIndex.Clamp(0, Project.UserProjects.Count - pageItemCount + 6);
+				ProjectSelectorScrollIndex = CellRendererGUI.ScrollBar(
+					new IRect(rect.xMax, rect.y, scrollBarWidth, pageHeight),
+					z: int.MaxValue - 3,
+					ProjectSelectorScrollIndex, Project.UserProjects.Count + 6, pageItemCount
+				);
+			} else {
+				ProjectSelectorScrollIndex = 0;
+			}
+			for (int i = ProjectSelectorScrollIndex; i < Project.UserProjects.Count; i++) {
+				rect.y -= itemHeight + padding;
+				if (rect.yMax < CellRenderer.CameraRect.y) break;
+				var project = Project.UserProjects[i];
+				bool isCurrent = project == Project.CurrentProject;
+				if (CellRendererGUI.Button(
+					rect.Shrink(itemShrink, itemShrink, itemShrink / 2, itemShrink / 2),
+					isCurrent ? BuiltInIcon.UI_BUTTON : BuiltInIcon.UI_BUTTON_DOWN, project.Info.ProjectName,
+					z: int.MaxValue - 4, Const.WHITE, Const.GREY_32
+				) && !FrameTask.HasTask() && !isCurrent) {
+					FrameTask.EndAllTask();
+					OpenProjectCallback += () => Project.OpenProject(project);
+					FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
+					if (GlobalEditorUI.HaveActiveInstance) {
+						FrameTask.AddToLast(DespawnEntityTask.TYPE_ID, GlobalEditorUI.Instance);
+					}
+					FrameTask.AddToLast(MethodTask.TYPE_ID, OpenProjectCallback);
+					FrameTask.AddToLast(MethodTask.TYPE_ID, RestartGameCallback);
+					FrameTask.AddToLast(DelayTask.TYPE_ID, 1);
+					if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
+						task.EntityID = MapEditor.TYPE_ID;
+						task.X = 0;
+						task.Y = 0;
+					}
+				}
+			}
+
+			// Final
+			panelRect.height = panelRect.y - rect.y + padding;
+			panelRect.y = rect.y - padding;
+			if (Project.UserProjects.Count > pageItemCount) {
+				CellRenderer.ClampCells(panelRect, startCellIndex);
+				CellRenderer.ClampTextCells(panelRect, startTextCellIndex);
+			}
 		}
 
 

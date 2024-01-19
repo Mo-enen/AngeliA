@@ -13,11 +13,12 @@ namespace AngeliaFramework {
 
 	// Player Chest
 	public class PlayerItemChest : InventoryChest, ICombustible {
+		private static readonly int TYPE_ID = typeof(PlayerItemChest).AngeHash();
 		protected override int InventoryColumn => 10;
 		protected override int InventoryRow => 8;
 		int ICombustible.BurnStartFrame { get; set; }
-		[OnGameInitialize(2048)]
-		public static void OnGameInitialize () => Inventory.SetUnlockInside(typeof(PlayerItemChest).AngeHash(), true);
+		[OnProjectOpen(32)]
+		public static void OnGameInitialize () => Inventory.SetUnlockItemsInside(TYPE_ID, true);
 	}
 
 

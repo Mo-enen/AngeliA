@@ -181,11 +181,9 @@ namespace AngeliaForUnity.Editor {
 			// Texture
 			var texture = SheetThumbnail.image as Texture2D;
 			if (texture == null || forceRefresh) {
-				Project.OpenProject(new Project(
-					Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"),
-					Util.CombinePaths(AngePath.PersistentDataPath, "Built In Saving")
-				), ignoreCallback: true);
-				SheetThumbnail.image = texture = Sheet.LoadTextureInSheet(Project.CurrentProject.SheetPath) as Texture2D;
+				SheetThumbnail.image = texture = Sheet.LoadTextureInSheet(
+					Project.GetSheetPath(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"))
+				) as Texture2D;
 			}
 
 			// Label

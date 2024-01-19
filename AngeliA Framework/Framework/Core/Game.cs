@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : OrderedAttribute { public OnGameRestartAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
-	
+
 
 	public abstract partial class Game {
 
@@ -69,6 +69,12 @@ namespace AngeliaFramework {
 		public static float ScaledSoundVolume => GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 		public static int ProcedureAudioVolume { get; set; } = 1000;
 		public static float CurrentFPS { get; private set; } = 1f;
+		public static int GameMajorVersion { get; private set; } = -1;
+		public static int GameMinorVersion { get; private set; } = -1;
+		public static int GamePatchVersion { get; private set; } = -1;
+		public static ReleaseLifeCycle GameLifeCycle { get; private set; } = ReleaseLifeCycle.Release;
+		public static string GameTitle { get; private set; } = "";
+		public static string GameDeveloper { get; private set; } = "";
 
 		// Event
 		private static event System.Action OnGameRestart;
@@ -108,6 +114,13 @@ namespace AngeliaFramework {
 		public virtual void Initialize () {
 			try {
 
+				GameTitle = AngeliaGameTitleAttribute.GetTitle();
+				GameDeveloper = AngeliaGameDeveloperAttribute.GetDeveloper();
+				AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out var cycle);
+				GameMajorVersion = major;
+				GameMinorVersion = minor;
+				GamePatchVersion = patch;
+				GameLifeCycle = cycle;
 				GlobalFrame = 0;
 				GameWatch = Stopwatch.StartNew();
 
@@ -117,13 +130,13 @@ namespace AngeliaFramework {
 				Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(typeof(Game), nameof(OnGameTryingToQuit));
 				Util.LinkEventWithAttribute<OnGameQuittingAttribute>(typeof(Game), nameof(OnGameQuitting));
 				Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
-				
-				_AddGameTryingToQuitListener(OnTryingToQuit);
-				_AddGameQuittingListener(OnGameQuitting);
-				_AddTextInputListener(CellRendererGUI.OnTextInput);
+
+				_AddGameTryingToQuitCallback(OnTryingToQuit);
+				_AddGameQuittingCallback(OnGameQuitting);
+				_AddTextInputCallback(CellRendererGUI.OnTextInput);
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
-				
+
 				SetDebugEnable(_GetIsEdittime());
 				_SetGraphicFramerate(GraphicFramerate);
 				_SetVSync(_VSync.Value);

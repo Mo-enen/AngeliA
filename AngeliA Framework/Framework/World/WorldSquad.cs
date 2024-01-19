@@ -30,7 +30,7 @@ namespace AngeliaFramework {
 		public static bool Enable { get; set; } = true;
 		public static bool SpawnEntity { get; set; } = true;
 		public static bool ShowElement { get; set; } = false;
-		public static byte BehindAlpha { get; set; } = Game.WORLD_BEHIND_ALPHA;
+		public static byte BehindAlpha { get; set; } = Game.WorldBehindAlpha;
 		public static bool SaveBeforeReload { get; set; } = false;
 		public World this[int i, int j] => Worlds[i, j];
 
@@ -64,6 +64,14 @@ namespace AngeliaFramework {
 			Util.LinkEventWithAttribute<OnMapChannelChangedAttribute>(typeof(WorldSquad), nameof(OnMapChannelChanged));
 			Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 			Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
+			SetMapChannel(MapChannel.BuiltIn, forceOperate: true);
+			Front.ForceReloadDelay();
+			Behind.ForceReloadDelay();
+		}
+
+
+		[OnProjectOpen]
+		public static void OnProjectOpen () {
 			SetMapChannel(MapChannel.BuiltIn, forceOperate: true);
 			Front.ForceReloadDelay();
 			Behind.ForceReloadDelay();
@@ -123,7 +131,7 @@ namespace AngeliaFramework {
 			CameraRect = CellRenderer.CameraRect;
 			var cullingPadding = Stage.GetCameraCullingPadding();
 			CullingCameraRect = CameraRect.Expand(cullingPadding);
-			float para01 = Game.WORLD_BEHIND_PARALLAX / 1000f;
+			float para01 = Game.WorldBehindParallax / 1000f;
 
 			if (!isBehind) {
 				// Current

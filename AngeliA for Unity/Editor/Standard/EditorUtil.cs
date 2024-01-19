@@ -285,9 +285,7 @@ namespace AngeliaForUnity.Editor {
 				arrayProp.InsertArrayElementAtIndex(arrayIndex);
 				var arrayElem = arrayProp.GetArrayElementAtIndex(arrayIndex);
 				arrayElem.objectReferenceValue = shader;
-
 				serializedObject.ApplyModifiedProperties();
-
 			}
 
 		}

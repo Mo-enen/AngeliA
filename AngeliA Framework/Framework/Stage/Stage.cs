@@ -145,8 +145,8 @@ namespace AngeliaFramework {
 		public static void OnGameInitialize () {
 			ViewRect = new(
 				0, 0,
-				Const.VIEW_RATIO * Game.DEFAULT_VIEW_HEIGHT.Clamp(Game.MIN_VIEW_HEIGHT, Game.MAX_VIEW_HEIGHT) / 1000,
-				Game.DEFAULT_VIEW_HEIGHT.Clamp(Game.MIN_VIEW_HEIGHT, Game.MAX_VIEW_HEIGHT)
+				Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000,
+				Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight)
 			);
 			Entities = new Entity[EntityLayer.COUNT][];
 			for (int i = 0; i < EntityLayer.COUNT; i++) {
@@ -209,7 +209,7 @@ namespace AngeliaFramework {
 
 		[OnGameRestart]
 		public static void OnGameRestart () {
-			SetViewSizeDelay(Game.DEFAULT_VIEW_HEIGHT, 1000, int.MaxValue);
+			SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
 		}
 
 
@@ -218,7 +218,7 @@ namespace AngeliaFramework {
 
 			// Move View Rect
 			if (ViewDelayX.value.HasValue || ViewDelayY.value.HasValue || ViewDelayHeight.value.HasValue) {
-				int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(Game.MIN_VIEW_HEIGHT, Game.MAX_VIEW_HEIGHT);
+				int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(Game.MinViewHeight, Game.MaxViewHeight);
 				var viewRectDelay = new IRect(
 					ViewDelayX.value ?? ViewRect.x,
 					ViewDelayY.value ?? ViewRect.y,
@@ -619,7 +619,7 @@ namespace AngeliaFramework {
 
 
 		public static Int4 GetCameraCullingPadding () {
-			int expand = CellRenderer.CameraRect.width * (Game.WORLD_BEHIND_PARALLAX - 1000) / 2000;
+			int expand = CellRenderer.CameraRect.width * (Game.WorldBehindParallax - 1000) / 2000;
 			return FrameTask.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
 		}
 

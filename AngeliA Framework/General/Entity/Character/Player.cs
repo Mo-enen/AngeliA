@@ -74,7 +74,8 @@ namespace AngeliaFramework {
 		public virtual bool WeaponAvailable => true;
 		public virtual bool AllowPlayerMenuUI => true;
 		public virtual bool AllowQuickPlayerMenuUI => true;
-		protected override bool UseInventory => Game.GlobalFrame > IgnoreInventoryFrame;
+		protected override bool IsCharacterWithInventory => true;
+		protected override bool InventoryCurrentAvailable => Game.GlobalFrame > IgnoreInventoryFrame;
 		int IDamageReceiver.Team => Const.TEAM_PLAYER;
 
 		// Data
@@ -95,12 +96,7 @@ namespace AngeliaFramework {
 
 
 		[OnProjectOpen]
-		public static void OnProjectOpen () {
-			LoadGameDataFromFile();
-			foreach (var type in typeof(Player).AllChildClass()) {
-				Inventory.SetUnlockInside(type.AngeHash(), true);
-			}
-		}
+		public static void OnProjectOpen_Player () => LoadGameDataFromFile();
 
 
 		public override void OnActivated () {
@@ -108,6 +104,7 @@ namespace AngeliaFramework {
 			PrevZ = Stage.ViewZ;
 			LockInputFrame = -1;
 			TargetActionEntity = null;
+			Inventory.SetUnlockItemsInside(TypeID, true);
 		}
 
 
@@ -151,15 +148,15 @@ namespace AngeliaFramework {
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
 
-					bool taskFree = !FrameTask.HasTask();
+					bool allowGamePlay = !FrameTask.HasTask() && !CellRendererGUI.IsTyping;
 
-					if (taskFree) {
+					if (allowGamePlay) {
 						if (PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI) {
 							LockInput(0);
 						}
 					}
 
-					if (taskFree && !LockingInput) {
+					if (allowGamePlay && !LockingInput) {
 
 						// Move
 						Move(FrameInput.DirectionX, FrameInput.DirectionY);
@@ -178,7 +175,7 @@ namespace AngeliaFramework {
 						Stop();
 					}
 
-					if (taskFree) {
+					if (allowGamePlay) {
 						Update_Action();
 						Update_Attack();
 						Update_InventoryUI();

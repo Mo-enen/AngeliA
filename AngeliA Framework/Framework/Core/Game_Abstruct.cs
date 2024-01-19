@@ -7,8 +7,7 @@ namespace AngeliaFramework {
 
 
 		// VAR
-		private static int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
-
+		private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
 
 
 		// System
@@ -53,11 +52,20 @@ namespace AngeliaFramework {
 
 		protected abstract IEnumerable<KeyValuePair<int, object>> _ForAllAudioClips ();
 
+		public static void OnProjectBuild (string exePath) {
+			// Copy Universe
+			string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
+			if (Util.FolderExists(universePath)) {
+				string newUniversePath = Util.CombinePaths(Util.GetParentPath(exePath), "Universe");
+				Util.CopyFolder(universePath, newUniversePath, true, true);
+			}
+		}
+
 
 		// Listener
-		protected abstract void _AddGameQuittingListener (System.Action callback);
-		protected abstract void _AddGameTryingToQuitListener (System.Func<bool> callback);
-		protected abstract void _AddTextInputListener (System.Action<char> callback);
+		protected abstract void _AddGameQuittingCallback (System.Action callback);
+		protected abstract void _AddGameTryingToQuitCallback (System.Func<bool> callback);
+		protected abstract void _AddTextInputCallback (System.Action<char> callback);
 
 
 		// Debug
@@ -96,20 +104,20 @@ namespace AngeliaFramework {
 
 
 		// View
-		public static int DEFAULT_VIEW_HEIGHT => Instance._DEFAULT_VIEW_HEIGHT;
-		protected virtual int _DEFAULT_VIEW_HEIGHT => 26 * Const.CEL;
+		public static int DefaultViewHeight => Instance._DefaultViewHeight;
+		protected virtual int _DefaultViewHeight => 26 * Const.CEL;
 
-		public static int MIN_VIEW_HEIGHT => Instance._MIN_VIEW_HEIGHT;
-		protected virtual int _MIN_VIEW_HEIGHT => 16 * Const.CEL;
+		public static int MinViewHeight => Instance._MinViewHeight;
+		protected virtual int _MinViewHeight => 16 * Const.CEL;
 
-		public static int MAX_VIEW_HEIGHT => Instance._MAX_VIEW_HEIGHT;
-		protected virtual int _MAX_VIEW_HEIGHT => 60 * Const.CEL;
+		public static int MaxViewHeight => Instance._MaxViewHeight;
+		protected virtual int _MaxViewHeight => 60 * Const.CEL;
 
-		public static int WORLD_BEHIND_PARALLAX => Instance._WORLD_BEHIND_PARALLAX;
-		protected virtual int _WORLD_BEHIND_PARALLAX => 1300;
+		public static int WorldBehindParallax => Instance._WorldBehindParallax;
+		protected virtual int _WorldBehindParallax => 1300;
 
-		public static byte WORLD_BEHIND_ALPHA => Instance._WORLD_BEHIND_ALPHA;
-		protected virtual byte _WORLD_BEHIND_ALPHA => 64;
+		public static byte WorldBehindAlpha => Instance._WorldBehindAlpha;
+		protected virtual byte _WorldBehindAlpha => 64;
 
 
 		// Render

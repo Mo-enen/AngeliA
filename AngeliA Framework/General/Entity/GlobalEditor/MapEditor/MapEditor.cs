@@ -256,7 +256,7 @@ namespace AngeliaFramework {
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
 			WorldSquad.ShowElement = false;
-			WorldSquad.BehindAlpha = Game.WORLD_BEHIND_ALPHA;
+			WorldSquad.BehindAlpha = Game.WorldBehindAlpha;
 
 			IsNavigating = false;
 			PastingBuffer.Clear();
@@ -418,7 +418,6 @@ namespace AngeliaFramework {
 
 			// Search
 			if (IsPlaying || DroppingPlayer) {
-				CellRendererGUI.CancelTyping();
 				SearchingText = "";
 				SearchResult.Clear();
 			}
@@ -469,7 +468,7 @@ namespace AngeliaFramework {
 			}
 
 			// Squad Behind Tint
-			WorldSquad.BehindAlpha = (byte)((int)Game.WORLD_BEHIND_ALPHA).MoveTowards(
+			WorldSquad.BehindAlpha = (byte)((int)Game.WorldBehindAlpha).MoveTowards(
 				PlayingGame ? 64 : 12, 1
 			);
 			if (IsEditing) WorldSquad.Enable = !IsNavigating;
@@ -482,6 +481,18 @@ namespace AngeliaFramework {
 			// Nav
 			if (IsNavigating && (IsPlaying || TaskingRoute || DroppingPlayer)) {
 				SetNavigating(false);
+			}
+
+			// Detail Fix
+			if (IsEditing) {
+				// Disable Player
+				if (Player.Selecting != null && Player.Selecting.Active) {
+					Player.Selecting.Active = false;
+				}
+				// No Opening Task
+				if (FrameTask.IsTasking<OpeningTask>()) {
+					FrameTask.EndAllTask();
+				}
 			}
 
 		}
@@ -526,7 +537,7 @@ namespace AngeliaFramework {
 
 			// Playing
 			if (IsPlaying) {
-				int newHeight = Game.DEFAULT_VIEW_HEIGHT;
+				int newHeight = Game.DefaultViewHeight;
 				var viewRect = Stage.ViewRect;
 				if (viewRect.height != newHeight) {
 					if (Stage.DelayingViewX.HasValue) viewRect.x = Stage.DelayingViewX.Value;
@@ -562,7 +573,7 @@ namespace AngeliaFramework {
 			// Zoom
 			if (AutoZoom) {
 				// Auto
-				int newHeight = Game.DEFAULT_VIEW_HEIGHT * 3 / 2;
+				int newHeight = Game.DefaultViewHeight * 3 / 2;
 				if (TargetViewRect.height != newHeight) {
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 					TargetViewRect.x -= (newWidth - TargetViewRect.width) / 2;
@@ -581,7 +592,7 @@ namespace AngeliaFramework {
 					TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 
 					int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
-						Game.MIN_VIEW_HEIGHT, Game.MAX_VIEW_HEIGHT
+						Game.MinViewHeight, Game.MaxViewHeight
 					);
 					int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
@@ -929,6 +940,7 @@ namespace AngeliaFramework {
 				IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
+			CellRendererGUI.CancelTyping();
 
 			// Squad  
 			if (WorldSquad.Channel != MapChannel.BuiltIn) {
@@ -1034,7 +1046,7 @@ namespace AngeliaFramework {
 		private void ResetCamera (bool immediately = false) {
 			if (!IsNavigating) {
 				// Editing
-				int viewHeight = Game.DEFAULT_VIEW_HEIGHT * 3 / 2;
+				int viewHeight = Game.DefaultViewHeight * 3 / 2;
 				int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = -viewWidth / 2;
 				TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
@@ -1047,7 +1059,7 @@ namespace AngeliaFramework {
 				}
 			} else {
 				// Navigating
-				int viewHeight = Game.DEFAULT_VIEW_HEIGHT * 3 / 2;
+				int viewHeight = Game.DefaultViewHeight * 3 / 2;
 				int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = -viewWidth / 2;
 				TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);

@@ -126,17 +126,8 @@ namespace AngeliaForUnity.Editor {
 
 
 		public void OnPreprocessBuild (BuildReport report) {
-			// Refresh
-			Refresh(true);
-			// Copy Universe
-			string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
-			if (Util.FolderExists(universePath)) {
-				string newUniversePath = Util.CombinePaths(
-					Util.GetParentPath(report.summary.outputPath),
-					"Universe"
-				);
-				Util.CopyFolder(universePath, newUniversePath, true, true);
-			}
+			Refresh(forceRefresh: true);
+			Game.OnProjectBuild(report.summary.outputPath);
 		}
 
 
@@ -153,10 +144,7 @@ namespace AngeliaForUnity.Editor {
 				try {
 					EditorUtil.ProgressBar("Refreshing", "Refreshing...", 0.5f);
 
-					Project.OpenProject(new Project(
-						Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"),
-						Util.CombinePaths(AngePath.PersistentDataPath, "Built In Saving")
-					), ignoreCallback: true);
+					string universeRoot = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
 
 					// Aseprite Files >> Flex Sprites & Texture
 					var tResults = AsepriteUtil.CreateSprites(AsepriteUtil.ForAllAsepriteFiles().Select(
@@ -177,18 +165,21 @@ namespace AngeliaForUnity.Editor {
 
 					// Flex Sprites >> Sheet
 					var sheet = CreateSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
-					sheet?.SaveToDisk(Project.CurrentProject.SheetPath);
+					sheet?.SaveToDisk(Project.GetSheetPath(universeRoot));
 
 					// Maps
-					AngeUtil.DeleteAllEmptyMaps(Project.CurrentProject.MapRoot);
+					AngeUtil.DeleteAllEmptyMaps(Project.GetMapRoot(universeRoot));
 
 					// Final
 					ItemSystem.CreateItemCombinationHelperFiles();
 					ItemSystem.CreateCombinationFileFromCode(true);
-					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, Project.CurrentProject.DialogueRoot, forceRefresh);
+					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, Project.GetDialogueRoot(universeRoot), forceRefresh);
 
 					// For Unity
-					if (forceRefresh) AddAlwaysIncludeShaders();
+					if (forceRefresh) {
+						AddAlwaysIncludeShaders();
+						SyncProjectInfo();
+					}
 					AngeliaToolbox.RefreshSheetThumbnail(true);
 					PlayerSettings.colorSpace = ColorSpace.Gamma;
 					AssetDatabase.Refresh();
@@ -216,6 +207,19 @@ namespace AngeliaForUnity.Editor {
 			}
 			// Final
 			AssetDatabase.SaveAssets();
+		}
+
+
+		private static void SyncProjectInfo () {
+			if (AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out _)) {
+				PlayerSettings.bundleVersion = $"{major}.{minor}.{patch}";
+			}
+			PlayerSettings.companyName = AngeliaGameDeveloperAttribute.GetDeveloper();
+			PlayerSettings.productName = AngeliaGameTitleAttribute.GetTitle();
+			PlayerSettings.SetApplicationIdentifier(
+				NamedBuildTarget.Standalone,
+				$"com.{PlayerSettings.companyName}.{PlayerSettings.productName}"
+			);
 		}
 
 

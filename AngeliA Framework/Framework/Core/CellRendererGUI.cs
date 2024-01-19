@@ -434,8 +434,12 @@ namespace AngeliaFramework {
 		// Button
 		public static bool Button (IRect rect, string label, int z) => Button(rect, label, z, Const.WHITE);
 		public static bool Button (IRect rect, string label, int z, Byte4 labelTint) {
-			Label(CellContent.Get(label, labelTint, ReverseUnify(rect.height * 4 / 10)), rect);
+			Label(CellContent.Get(label, labelTint, ReverseUnify(rect.height / 2)), rect);
 			return Button(rect, 0, Const.PIXEL, 0, 0, 0, 0, z, Const.WHITE_12, default);
+		}
+		public static bool Button (IRect rect, int sprite, string label, int z, Byte4 buttonTint, Byte4 labelTint) {
+			Label(CellContent.Get(label, labelTint, ReverseUnify(rect.height / 2)), rect);
+			return Button(rect, sprite, sprite, sprite, 0, 0, 0, z, buttonTint, default);
 		}
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE);
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Byte4 buttonTint, Byte4 iconTint) {
@@ -460,7 +464,15 @@ namespace AngeliaFramework {
 					iconTint, z + 1
 				);
 			}
-			return hover && FrameInput.MouseLeftButtonDown;
+			// Cursor
+			CursorSystem.SetCursorAsHand(rect);
+			// Click
+			if (hover && FrameInput.MouseLeftButtonDown) {
+				FrameInput.UseMouseKey(0);
+				FrameInput.UseGameKey(Gamekey.Action);
+				return true;
+			}
+			return false;
 		}
 
 
@@ -475,8 +487,8 @@ namespace AngeliaFramework {
 
 
 		// Text Field
-		public static string TextField (int controlID, IRect rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, 24), out _);
-		public static string TextField (int controlID, IRect rect, string text, out bool changed) => TextField(controlID, rect, InputLabel.SetText(text, 24), out changed);
+		public static string TextField (int controlID, IRect rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _);
+		public static string TextField (int controlID, IRect rect, string text, out bool changed) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed);
 		public static string TextField (int controlID, IRect rect, CellContent text) => TextField(controlID, rect, text, out _);
 		public static string TextField (int controlID, IRect rect, CellContent text, out bool changed) {
 
@@ -485,13 +497,13 @@ namespace AngeliaFramework {
 			bool mouseDownPosInRect = rect.Contains(FrameInput.MouseLeftDownGlobalPosition);
 			bool mouseDragging = FrameInput.MouseLeftButton && mouseDownPosInRect;
 			bool inCamera = rect.Overlaps(CellRenderer.CameraRect);
-			bool interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
-			if (interactable) CursorSystem.SetCursorAsBeam(rect);
+
+			CursorSystem.SetCursorAsBeam(rect);
 
 			if (!inCamera && TypingTextFieldID == controlID) TypingTextFieldID = 0;
 
 			// Start Typing
-			if (interactable && inCamera && FrameInput.MouseLeftButtonDown && mouseDownPosInRect) {
+			if (inCamera && FrameInput.MouseLeftButtonDown && mouseDownPosInRect) {
 				TypingTextFieldID = controlID;
 				BeamBlinkFrame = Game.PauselessFrame;
 				startTyping = true;
@@ -499,7 +511,7 @@ namespace AngeliaFramework {
 			}
 
 			// Typing 
-			bool typing = interactable && TypingTextFieldID == controlID;
+			bool typing = TypingTextFieldID == controlID;
 			int beamIndex = typing ? BeamIndex : 0;
 			int beamLength = typing ? BeamLength : 0;
 			if (typing) {

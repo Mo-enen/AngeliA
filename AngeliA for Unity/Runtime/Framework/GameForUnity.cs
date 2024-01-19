@@ -89,19 +89,18 @@ namespace AngeliaForUnity {
 
 
 		// Listener
-		protected override void _AddGameQuittingListener (System.Action callback) {
+		protected override void _AddGameQuittingCallback (System.Action callback) {
 			Application.quitting -= callback;
 			Application.quitting += callback;
 		}
-		protected override void _AddGameTryingToQuitListener (System.Func<bool> callback) {
+		protected override void _AddGameTryingToQuitCallback (System.Func<bool> callback) {
 			Application.wantsToQuit -= callback;
 			Application.wantsToQuit += callback;
 		}
-		protected override void _AddTextInputListener (System.Action<char> callback) {
-			if (Keyboard.current != null) {
-				Keyboard.current.onTextInput -= callback;
-				Keyboard.current.onTextInput += callback;
-			}
+		protected override void _AddTextInputCallback (System.Action<char> callback) {
+			if (Keyboard.current == null) return;
+			Keyboard.current.onTextInput -= callback;
+			Keyboard.current.onTextInput += callback;
 		}
 
 

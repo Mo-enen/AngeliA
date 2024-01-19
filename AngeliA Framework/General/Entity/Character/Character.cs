@@ -81,16 +81,19 @@ namespace AngeliaFramework {
 		protected sealed override int CollisionMask => IsGrabFlipping ? 0 : PhysicsMask.MAP;
 		protected sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
 		protected virtual int Bouncy => 150;
-		protected virtual bool UseInventory => false;
+		protected virtual bool InventoryCurrentAvailable => false;
+		protected virtual bool IsCharacterWithInventory => false;
 
 		// Data
 		private static readonly HashSet<int> RenderWithSheetPool = new();
 		protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
+		private static int GlobalInventoryInitVersion = 0;
 		protected int LastRequireBounceFrame = int.MinValue;
 		private int _TeleportEndFrame = 0;
 		private int _TeleportDuration = 0;
 		private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 		private int LockedAnimationTypeFrame = int.MinValue;
+		private int LocalInventoryInitVersion = -1;
 
 
 		#endregion
@@ -101,9 +104,28 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public Character () {
-			// Inventory
-			if (UseInventory) {
+		[OnProjectOpen(4096)]
+		public static void OnProjectOpen () => GlobalInventoryInitVersion++;
+
+
+		public override void OnActivated () {
+			base.OnActivated();
+			OnActivated_Inventory();
+			OnActivated_Movement();
+			OnActivated_Health();
+			OnActivated_Attack();
+			OnActivated_Navigation();
+			CharacterState = CharacterState.GamePlay;
+			PassOutFrame = int.MinValue;
+			VelocityX = 0;
+			VelocityY = 0;
+		}
+
+
+		private void OnActivated_Inventory () {
+			// Init Inventory
+			if (IsCharacterWithInventory && GlobalInventoryInitVersion != LocalInventoryInitVersion) {
+				LocalInventoryInitVersion = GlobalInventoryInitVersion;
 				const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
 				if (Inventory.HasInventory(TypeID)) {
 					int invCount = Inventory.GetInventoryCapacity(TypeID);
@@ -115,19 +137,6 @@ namespace AngeliaFramework {
 					Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
 				}
 			}
-		}
-
-
-		public override void OnActivated () {
-			base.OnActivated();
-			OnActivated_Movement();
-			OnActivated_Health();
-			OnActivated_Attack();
-			OnActivated_Navigation();
-			CharacterState = CharacterState.GamePlay;
-			PassOutFrame = int.MinValue;
-			VelocityX = 0;
-			VelocityY = 0;
 		}
 
 
@@ -450,13 +459,13 @@ namespace AngeliaFramework {
 
 
 		// Inventory
-		public int GetInventoryCapacity () => UseInventory ? Inventory.GetInventoryCapacity(TypeID) : 0;
+		public int GetInventoryCapacity () => InventoryCurrentAvailable ? Inventory.GetInventoryCapacity(TypeID) : 0;
 
 
 		public int GetItemIDFromInventory (int itemIndex) => GetItemIDFromInventory(itemIndex, out _);
 		public int GetItemIDFromInventory (int itemIndex, out int count) {
 			count = 0;
-			if (!UseInventory) return 0;
+			if (!InventoryCurrentAvailable) return 0;
 			return Inventory.GetItemAt(TypeID, itemIndex, out count);
 		}
 
@@ -464,13 +473,13 @@ namespace AngeliaFramework {
 		public Item GetItemFromInventory (int itemIndex) => GetItemFromInventory(itemIndex, out _);
 		public Item GetItemFromInventory (int itemIndex, out int count) {
 			count = 0;
-			if (!UseInventory) return null;
+			if (!InventoryCurrentAvailable) return null;
 			return ItemSystem.GetItem(Inventory.GetItemAt(TypeID, itemIndex, out count));
 		}
 
 
 		public Equipment GetEquippingItem (EquipmentType type) {
-			if (!UseInventory) return null;
+			if (!InventoryCurrentAvailable) return null;
 			int id = Inventory.GetEquipment(TypeID, type);
 			if (id == 0) return null;
 			return ItemSystem.GetItem(id) as Equipment;

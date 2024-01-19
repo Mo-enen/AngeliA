@@ -10,8 +10,11 @@ namespace AngeliaFramework {
 
 
 	public class ProjectInfo {
-		public string ProjectName = "";
+		public string ProjectName = "(no name)";
 		public string Creator = "";
+		public int EditorMajorVersion = -1;
+		public int EditorMinorVersion = -1;
+		public int EditorPatchVersion = -1;
 	}
 
 
@@ -97,27 +100,19 @@ namespace AngeliaFramework {
 		public Project (string universeFolder, string savingFolder) {
 			// Universe
 			UniverseRoot = universeFolder;
-			SheetPath = Util.CombinePaths(universeFolder, "Sheet.sheet");
-			AtlasRoot = Util.CombinePaths(universeFolder, "Atlas");
-			DialogueRoot = Util.CombinePaths(universeFolder, "Dialogue");
-			UniverseMetaRoot = Util.CombinePaths(universeFolder, "Meta");
-			MapRoot = Util.CombinePaths(universeFolder, "Map");
-			LanguageRoot = Util.CombinePaths(universeFolder, "Language");
+			SheetPath = GetSheetPath(universeFolder);
+			AtlasRoot = GetAtlasRoot(universeFolder);
+			DialogueRoot = GetDialogueRoot(universeFolder);
+			UniverseMetaRoot = GetUniverseMetaRoot(universeFolder);
+			MapRoot = GetMapRoot(universeFolder);
+			LanguageRoot = GetLanguageRoot(universeFolder);
 			// Saving
 			SavingRoot = savingFolder;
-			ItemCustomizationRoot = Util.CombinePaths(savingFolder, "Item Customization");
-			SavingMetaRoot = Util.CombinePaths(savingFolder, "Meta");
-			ProcedureMapRoot = Util.CombinePaths(savingFolder, "Procedure Map");
+			ItemCustomizationRoot = GetItemCustomizationRoot(savingFolder);
+			SavingMetaRoot = GetSavingMetaRoot(savingFolder);
+			ProcedureMapRoot = GetProcedureMapRoot(savingFolder);
 			// Create Folders 
-			Util.CreateFolder(AtlasRoot);
-			Util.CreateFolder(DialogueRoot);
-			Util.CreateFolder(UniverseMetaRoot);
-			Util.CreateFolder(MapRoot);
-			Util.CreateFolder(LanguageRoot);
-			Util.CreateFolder(SavingRoot);
-			Util.CreateFolder(ItemCustomizationRoot);
-			Util.CreateFolder(SavingMetaRoot);
-			Util.CreateFolder(ProcedureMapRoot);
+			CreateFolders();
 			// Load Info
 			Info = JsonUtil.LoadOrCreateJson<ProjectInfo>(universeFolder);
 		}
@@ -134,6 +129,7 @@ namespace AngeliaFramework {
 		public static void OpenProject (Project project, bool ignoreCallback = false) {
 			if (project == null) return;
 			CurrentProject = project;
+			project.CreateFolders();
 			if (!ignoreCallback) OnProjectOpen?.Invoke();
 		}
 
@@ -152,6 +148,9 @@ namespace AngeliaFramework {
 			var project = new Project(projectFolderPath);
 			project.Info.ProjectName = NEW_PROJECT_NAME.Get("New Project");
 			project.Info.Creator = "";
+			project.Info.EditorMajorVersion = Game.GameMajorVersion;
+			project.Info.EditorMinorVersion = Game.GameMinorVersion;
+			project.Info.EditorPatchVersion = Game.GamePatchVersion;
 			project.SaveProjectInfoToDisk();
 			return project;
 		}
@@ -160,14 +159,29 @@ namespace AngeliaFramework {
 		public void SaveProjectInfoToDisk () => JsonUtil.SaveJson(Info, UniverseRoot);
 
 
-		#endregion
+		public void CreateFolders () {
+			Util.CreateFolder(AtlasRoot);
+			Util.CreateFolder(DialogueRoot);
+			Util.CreateFolder(UniverseMetaRoot);
+			Util.CreateFolder(MapRoot);
+			Util.CreateFolder(LanguageRoot);
+			Util.CreateFolder(SavingRoot);
+			Util.CreateFolder(ItemCustomizationRoot);
+			Util.CreateFolder(SavingMetaRoot);
+			Util.CreateFolder(ProcedureMapRoot);
+		}
 
 
-
-
-		#region --- LGC ---
-
-
+		// Util
+		public static string GetSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet.sheet");
+		public static string GetAtlasRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Atlas");
+		public static string GetDialogueRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Dialogue");
+		public static string GetUniverseMetaRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Meta");
+		public static string GetMapRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Map");
+		public static string GetLanguageRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Language");
+		public static string GetItemCustomizationRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Item Customization");
+		public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
+		public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
 
 
 		#endregion

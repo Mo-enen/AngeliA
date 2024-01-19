@@ -27,9 +27,12 @@ CtrlHint.Transfer:转移
 CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 CtrlHint.Wardrobe.Type:服饰类型
+DeveloperToolbox.CreateProject:+新工程
 DeveloperToolbox.Label.LanguageEditor:语 言
 DeveloperToolbox.Label.MapEditor:地 图
 DeveloperToolbox.Label.SheetEditor:图 集
+DeveloperToolbox.ProjectName:工程名
+DeveloperToolbox.ProjectSelectorMsg:来做一个属于你自己的关卡吧！
 DevilWing.Wing:恶魔翅膀
 Hint.Pong.Move:移动
 Hint.Sokoban.Move:移动
@@ -1659,7 +1662,7 @@ Palette.System:系统
 Palette.Vegetation:植被
 Palette.Wallpaper:壁纸
 PlayerCustomizerAngelia:自定义样貌
-Project.NewProjectName:
+Project.NewProjectName:新工程
 PropellerWing.Wing:螺旋桨
 UI.Back:返回
 UI.BodyPart.ArmHand:手臂
@@ -1677,6 +1680,7 @@ UI.BodyPart.Tail:尾巴
 UI.BodyPart.Wing:翅膀
 UI.Cancel:取消
 UI.Continue:继续
+UI.Create:创建
 UI.Delete:删除
 UI.DontSave:不保存
 UI.Equipment.Bodysuit:盔甲
