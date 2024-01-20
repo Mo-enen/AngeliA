@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -33,10 +34,13 @@ namespace AngeliaFramework {
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 		private static readonly LanguageCode PROJECT_NAME = "DeveloperToolbox.ProjectName";
 		private static readonly LanguageCode CREATE_PROJECT = "DeveloperToolbox.CreateProject";
+		private static readonly LanguageCode BUILT_IN_PROJECT = "DeveloperToolbox.BuiltInProject";
 		private static readonly LanguageCode PROJECT_SELECTOR_MSG = "DeveloperToolbox.ProjectSelectorMsg";
 		private static readonly LanguageCode UI_CREATE = "UI.Create";
 		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
 		private static readonly LanguageCode NEW_PROJECT_NAME = "Project.NewProjectName";
+		private static readonly LanguageCode NEW_PROJECT_ERROR_EXISTS = "Project.Error.NameExists";
+		private const string NEW_PROJECT_DEFAULT_MSG = "Having ideas for your own level? Create a new project with the button below now. Unleash your imagination and make something unique and amazing!";
 
 		// Api
 		public override int MaxStackCount => 1;
@@ -59,6 +63,7 @@ namespace AngeliaFramework {
 		private bool CreatingNewProject = false;
 		private bool DataInitialized = false;
 		private string CreatingNewProjectName = "";
+		private string CreatingNewProjectErrorMessage = "";
 		private int ProjectSelectorScrollIndex = 0;
 
 
@@ -101,7 +106,7 @@ namespace AngeliaFramework {
 			int panelYMax = panelRect.y;
 
 			// Tool Buttons
-			int buttonSize = CellRendererGUI.Unify(32);
+			int buttonSize = CellRendererGUI.Unify(36);
 			int padding = CellRendererGUI.Unify(6);
 			panelRect.height = buttonSize + padding * 2;
 			panelRect.y -= panelRect.height;
@@ -121,6 +126,7 @@ namespace AngeliaFramework {
 					SelectingPanelIndex = SelectingPanelIndex != i ? i : -1;
 					CreatingNewProject = false;
 					CreatingNewProjectName = "";
+					CreatingNewProjectErrorMessage = "";
 					ProjectSelectorScrollIndex = 0;
 					EffectsEnabled.FillWithValue(false);
 				}
@@ -257,13 +263,17 @@ namespace AngeliaFramework {
 
 				// Draw Bounds
 				if (Game.GlobalFrame <= DrawBoundFrame + 1) {
+					int thick = CellRendererGUI.Unify(1);
 					for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 						var entities = Stage.Entities[layer];
 						int count = Stage.EntityCounts[layer];
 						for (int i = 0; i < count; i++) {
 							var e = entities[i];
 							if (!e.Active) continue;
-							DrawGizmosRect(PanelRect, e.GlobalBounds, Const.BLUE_BETTER.WithNewA(64));
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Down, thick), Const.BLUE_BETTER, true);
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Up, thick), Const.BLUE_BETTER, true);
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Left, thick), Const.BLUE_BETTER, false);
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Right, thick), Const.BLUE_BETTER, false);
 						}
 					}
 				}
@@ -288,32 +298,6 @@ namespace AngeliaFramework {
 					}
 					if (rect.yMax > panelRect.yMax) {
 						Game.DrawGizmosRect(new IRect(rect.x, panelRect.yMax, rect.width, rect.yMax - panelRect.yMax), color);
-					}
-				}
-			}
-
-
-			static void DrawGizmosRect (IRect panelRect, IRect rect, Byte4 color) {
-				if (!rect.Overlaps(panelRect)) {
-					Game.DrawGizmosRect(rect, color);
-				} else {
-					// Left Part
-					if (rect.x < panelRect.x) {
-						Game.DrawGizmosRect(rect.Shrink(0, rect.xMax - panelRect.x, 0, 0), color);
-						rect = rect.Shrink(panelRect.x - rect.x, 0, 0, 0);
-					}
-					// Right Part
-					if (rect.xMax > panelRect.xMax) {
-						Game.DrawGizmosRect(rect.Shrink(panelRect.xMax - rect.x, 0, 0, 0), color);
-						rect = rect.Shrink(0, rect.xMax - panelRect.xMax, 0, 0);
-					}
-					// Bottom Part
-					if (rect.y < panelRect.y) {
-						Game.DrawGizmosRect(rect.Shrink(0, 0, 0, rect.yMax - panelRect.y), color);
-					}
-					// Top Part
-					if (rect.yMax > panelRect.yMax) {
-						Game.DrawGizmosRect(rect.Shrink(0, 0, panelRect.yMax - rect.y, 0), color);
 					}
 				}
 			}
@@ -430,7 +414,19 @@ namespace AngeliaFramework {
 
 			var rect = new IRect(panelRect.x, panelRect.y, panelRect.width, itemHeight);
 
+			// Error Message
+			if (!string.IsNullOrEmpty(CreatingNewProjectErrorMessage)) {
+				int msgHeight = CellRendererGUI.Unify(72);
+				rect.y -= msgHeight + padding;
+				CellRendererGUI.Label(CellContent.Get(
+					CreatingNewProjectErrorMessage, Const.RED_BETTER,
+					charSize: 18, alignment: Alignment.MidMid, wrap: true
+				), rect, out var msgBounds);
+				rect.y = msgBounds.y - padding;
+			}
+
 			// Label
+			rect.height = itemHeight;
 			rect.y -= itemHeight + padding;
 			CellRendererGUI.Label(
 				CellContent.Get(PROJECT_NAME.Get("Name"), tint: Const.GREY_196, charSize: 18, alignment: Alignment.MidLeft),
@@ -438,6 +434,7 @@ namespace AngeliaFramework {
 			);
 
 			// Field
+			rect.height = itemHeight;
 			var fieldRect = rect.EdgeInside(Direction4.Right, rect.width - labelWidth).Shrink(0, 0, itemShrink, itemShrink);
 			CreatingNewProjectName = CellRendererGUI.TextField(83474, fieldRect, CreatingNewProjectName);
 			CellRenderer.Draw_9Slice(
@@ -446,18 +443,24 @@ namespace AngeliaFramework {
 			);
 
 			// Create 
+			rect.height = itemHeight;
 			rect.y -= itemHeight + padding;
 			if (CellRendererGUI.Button(
 				rect.EdgeInside(Direction4.Left, rect.width / 2).Shrink(buttonShrink / 2, buttonShrink / 2, buttonShrink, buttonShrink),
 				BuiltInIcon.UI_BUTTON,
 				UI_CREATE.Get("Create"),
 				z: int.MaxValue - 9,
-				Const.WHITE, Const.GREY_32
-			)) {
-
-
-				CreatingNewProject = false;
-				CreatingNewProjectName = string.Empty;
+				Const.GREEN, Const.GREY_32
+			) && !FrameTask.HasTask()) {
+				if (Project.UserProjects.Any((p) => p.Info.ProjectName == CreatingNewProjectName)) {
+					// Name Already Exists
+					CreatingNewProjectErrorMessage = NEW_PROJECT_ERROR_EXISTS.Get("Name already exists");
+				} else {
+					// Create and Open
+					Project.CreateProject(CreatingNewProjectName);
+					CreatingNewProject = false;
+					CreatingNewProjectName = string.Empty;
+				}
 			}
 
 			// Cancel
@@ -482,7 +485,7 @@ namespace AngeliaFramework {
 
 			int itemHeight = CellRendererGUI.Unify(48);
 			int itemShrink = CellRendererGUI.Unify(10);
-			int padding = CellRendererGUI.Unify(8);
+			int padding = 0;
 
 			var rect = new IRect(panelRect.x, panelRect.y, panelRect.width, itemHeight);
 
@@ -491,9 +494,10 @@ namespace AngeliaFramework {
 				int msgHeight = CellRendererGUI.Unify(48);
 				rect.y -= msgHeight + padding;
 				CellRendererGUI.Label(CellContent.Get(
-					PROJECT_SELECTOR_MSG.Get("Create a new project and make your own level!"),
+					PROJECT_SELECTOR_MSG.Get(NEW_PROJECT_DEFAULT_MSG),
 					tint: Const.GREY_128, charSize: 16, alignment: Alignment.TopMid, true
-				), rect.Shrink(itemShrink, itemShrink, 0, 0));
+				), rect.Shrink(itemShrink, itemShrink, 0, 0), out var msgBounds);
+				rect.y = msgBounds.y - padding;
 			}
 
 			// New Project Button
@@ -504,14 +508,31 @@ namespace AngeliaFramework {
 				z: int.MaxValue - 9, Const.GREY_196, Const.GREY_196
 			)) {
 				CreatingNewProject = true;
+				CreatingNewProjectErrorMessage = "";
 				CreatingNewProjectName = NEW_PROJECT_NAME.Get("New Project");
 			}
 
-			// All Projects
+			// Built In Project
+			rect.y -= itemHeight + padding;
+			buttonRect = rect.Shrink(itemShrink, itemShrink, itemShrink / 2, itemShrink / 2);
+			if (CellRendererGUI.Button(
+				buttonRect,
+				BuiltInIcon.UI_BUTTON,
+				BUILT_IN_PROJECT.Get("Default Level"),
+				z: int.MaxValue - 9, Const.WHITE, Const.GREY_32,
+				enable: !Project.OpeningBuiltInProject
+			)) {
+				ChangeProject(Project.BuiltInProject);
+			}
+
+			// User Projects
 			int startCellIndex = CellRenderer.GetUsedCellCount();
 			int startTextCellIndex = CellRenderer.GetTextUsedCellCount();
 			int pageHeight = rect.y - CellRenderer.CameraRect.y;
 			int pageItemCount = pageHeight / (itemHeight + padding);
+			int clampMaxY = rect.y;
+
+			// Scroll
 			if (Project.UserProjects.Count > pageItemCount) {
 				int scrollBarWidth = CellRendererGUI.Unify(24);
 				rect.width -= scrollBarWidth;
@@ -525,6 +546,8 @@ namespace AngeliaFramework {
 			} else {
 				ProjectSelectorScrollIndex = 0;
 			}
+
+			// Open Project Button
 			for (int i = ProjectSelectorScrollIndex; i < Project.UserProjects.Count; i++) {
 				rect.y -= itemHeight + padding;
 				if (rect.yMax < CellRenderer.CameraRect.y) break;
@@ -532,32 +555,49 @@ namespace AngeliaFramework {
 				bool isCurrent = project == Project.CurrentProject;
 				if (CellRendererGUI.Button(
 					rect.Shrink(itemShrink, itemShrink, itemShrink / 2, itemShrink / 2),
-					isCurrent ? BuiltInIcon.UI_BUTTON : BuiltInIcon.UI_BUTTON_DOWN, project.Info.ProjectName,
-					z: int.MaxValue - 4, Const.WHITE, Const.GREY_32
+					BuiltInIcon.UI_BUTTON,
+					project.Info.ProjectName,
+					z: int.MaxValue - 4,
+					Const.WHITE, Const.GREY_32,
+					enable: !isCurrent
 				) && !FrameTask.HasTask() && !isCurrent) {
-					FrameTask.EndAllTask();
-					OpenProjectCallback += () => Project.OpenProject(project);
-					FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
-					if (GlobalEditorUI.HaveActiveInstance) {
-						FrameTask.AddToLast(DespawnEntityTask.TYPE_ID, GlobalEditorUI.Instance);
-					}
-					FrameTask.AddToLast(MethodTask.TYPE_ID, OpenProjectCallback);
-					FrameTask.AddToLast(MethodTask.TYPE_ID, RestartGameCallback);
-					FrameTask.AddToLast(DelayTask.TYPE_ID, 1);
-					if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
-						task.EntityID = MapEditor.TYPE_ID;
-						task.X = 0;
-						task.Y = 0;
-					}
+					ChangeProject(project);
 				}
 			}
 
 			// Final
 			panelRect.height = panelRect.y - rect.y + padding;
-			panelRect.y = rect.y - padding;
+			panelRect.y = rect.y - padding - CellRendererGUI.Unify(10);
 			if (Project.UserProjects.Count > pageItemCount) {
-				CellRenderer.ClampCells(panelRect, startCellIndex);
-				CellRenderer.ClampTextCells(panelRect, startTextCellIndex);
+				var clampRect = new IRect(panelRect.x, panelRect.y, panelRect.width, clampMaxY - panelRect.y);
+				CellRenderer.ClampCells(clampRect, startCellIndex);
+				CellRenderer.ClampTextCells(clampRect, startTextCellIndex);
+			}
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private static void ChangeProject (Project project) {
+			FrameTask.EndAllTask();
+			OpenProjectCallback += () => Project.OpenProject(project);
+			FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
+			if (GlobalEditorUI.HasActiveInstance) {
+				FrameTask.AddToLast(DespawnEntityTask.TYPE_ID, GlobalEditorUI.Instance);
+			}
+			FrameTask.AddToLast(MethodTask.TYPE_ID, OpenProjectCallback);
+			FrameTask.AddToLast(MethodTask.TYPE_ID, RestartGameCallback);
+			FrameTask.AddToLast(DelayTask.TYPE_ID, 1);
+			if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
+				task.EntityID = MapEditor.TYPE_ID;
+				task.X = 0;
+				task.Y = 0;
 			}
 		}
 

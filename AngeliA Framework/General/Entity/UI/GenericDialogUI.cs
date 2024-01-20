@@ -38,7 +38,7 @@ namespace AngeliaFramework {
 
 		public override void UpdateUI () {
 			// Exclude Text
-			CellRenderer.ExcludeTextCellsForAllLayers(BackgroundRect, 0);
+			CellRenderer.ExcludeTextCellsForAllLayers(BackgroundRect);
 			// Update
 			base.UpdateUI();
 		}

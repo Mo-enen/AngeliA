@@ -124,8 +124,8 @@ namespace AngeliaFramework {
 
 		[OnProjectOpen(1024)]
 		public static void OnProjectOpen () {
-			CreateItemCombinationHelperFiles();
-			CreateCombinationFileFromCode(false);
+			CreateItemCombinationHelperFiles(Project.CurrentProject.SavingRoot);
+			CreateCombinationFileFromCode(Project.CurrentProject.UniverseRoot, false);
 			CombinationPool.Clear();
 			LoadCombinationFromFile(Util.CombinePaths(Project.CurrentProject.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME));
 			LoadCombinationFromFile(Util.CombinePaths(Project.CurrentProject.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME));
@@ -215,10 +215,12 @@ namespace AngeliaFramework {
 
 
 		// Combination
-		public static void CreateItemCombinationHelperFiles () {
+		public static void CreateItemCombinationHelperFiles (string savingFolder) {
+
+			string itemCusRoot = Project.GetItemCustomizationRoot(savingFolder);
 
 			// Create User Combination Template
-			string combineFilePath = Util.CombinePaths(Project.CurrentProject.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME);
+			string combineFilePath = Util.CombinePaths(itemCusRoot, AngePath.COMBINATION_FILE_NAME);
 			if (!Util.FileExists(combineFilePath)) {
 				Util.TextToFile(@"
 #
@@ -245,7 +247,7 @@ namespace AngeliaFramework {
 			}
 
 			// Create Item Name Helper
-			string helperPath = Util.CombinePaths(Project.CurrentProject.ItemCustomizationRoot, "Item Name Helper.txt");
+			string helperPath = Util.CombinePaths(itemCusRoot, "Item Name Helper.txt");
 			if (!Util.FileExists(helperPath)) {
 				var builder = new StringBuilder();
 				foreach (var type in typeof(Item).AllChildClass()) {
@@ -257,9 +259,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void CreateCombinationFileFromCode (bool forceCreate) {
+		public static void CreateCombinationFileFromCode (string universeFolder, bool forceCreate) {
 
-			string builtInPath = Util.CombinePaths(Project.CurrentProject.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME);
+			string metaRoot = Project.GetUniverseMetaRoot(universeFolder);
+
+			string builtInPath = Util.CombinePaths(metaRoot, AngePath.COMBINATION_FILE_NAME);
 			if (!forceCreate && Util.FileExists(builtInPath)) return;
 
 			var builder = new StringBuilder();

@@ -218,7 +218,7 @@ namespace AngeliaFramework {
 					RequireMode = MenuMode.EditorSetting;
 					SetSelection(0);
 				}
-			} else if (!GlobalEditorUI.HaveActiveInstance) {
+			} else if (!GlobalEditorUI.HasActiveInstance) {
 				// 3-Restart Game
 				if (DrawItem(UI_RESTART.Get("Restart"))) {
 					RequireMode = MenuMode.Restart;
@@ -343,7 +343,7 @@ namespace AngeliaFramework {
 			}
 			if (DrawArrowItem(
 				MENU_LANGUAGE.Get("Language"),
-				CellContent.Get(Language.CurrentLanguageDisplayName),
+				CellContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
 				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 			) {
 				int newIndex = currentLanguageIndex + delta;

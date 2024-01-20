@@ -12,6 +12,8 @@ namespace AngeliaFramework {
 	public class ProjectInfo {
 		public string ProjectName = "(no name)";
 		public string Creator = "";
+		public long CreatedDate = 0;
+		public long ModifyDate = 0;
 		public int EditorMajorVersion = -1;
 		public int EditorMinorVersion = -1;
 		public int EditorPatchVersion = -1;
@@ -26,9 +28,6 @@ namespace AngeliaFramework {
 
 		#region --- VAR ---
 
-
-		// Const
-		private static readonly LanguageCode NEW_PROJECT_NAME = "Project.NewProjectName";
 
 		// Event
 		private static event System.Action OnProjectOpen;
@@ -51,6 +50,7 @@ namespace AngeliaFramework {
 		public static Project BuiltInProject { get; private set; } = null;
 		public static List<Project> UserProjects { get; } = new();
 		public static List<Project> DownloadedProjects { get; } = new();
+		public static bool OpeningBuiltInProject => CurrentProject == BuiltInProject;
 		public ProjectInfo Info { get; init; }
 
 
@@ -69,8 +69,8 @@ namespace AngeliaFramework {
 
 			// Load BuiltIn Project
 			CurrentProject = BuiltInProject = new(
-				Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"),
-				Util.CombinePaths(AngePath.PersistentDataPath, "Built In Saving")
+				Util.CombinePaths(AngePath.BuiltInUniverseRoot),
+				Util.CombinePaths(AngePath.BuiltInSavingRoot)
 			);
 
 			// Fill User Projects
@@ -79,6 +79,7 @@ namespace AngeliaFramework {
 			foreach (var folder in Util.EnumerateFolders(AngePath.WorkspaceRoot, true)) {
 				UserProjects.Add(new Project(folder));
 			}
+			SortUserProjectList();
 
 			// Fill Downloaded Projects
 			DownloadedProjects.Clear();
@@ -126,15 +127,12 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void OpenProject (Project project, bool ignoreCallback = false) {
-			if (project == null) return;
-			CurrentProject = project;
-			project.CreateFolders();
-			if (!ignoreCallback) OnProjectOpen?.Invoke();
-		}
+		public static Project CreateProject (string projectName) {
 
+			string projectFolderPath = Util.CombinePaths(
+				AngePath.WorkspaceRoot, System.Guid.NewGuid().ToString()
+			);
 
-		public static Project CreateProject (string projectFolderPath) {
 			// Copy Template Files
 			if (Util.FolderExists(AngePath.ProjectTemplateRoot)) {
 				Util.CopyFolder(
@@ -144,15 +142,35 @@ namespace AngeliaFramework {
 					ignoreHidden: true
 				);
 			}
+
 			// Create Project Object
 			var project = new Project(projectFolderPath);
-			project.Info.ProjectName = NEW_PROJECT_NAME.Get("New Project");
-			project.Info.Creator = "";
-			project.Info.EditorMajorVersion = Game.GameMajorVersion;
-			project.Info.EditorMinorVersion = Game.GameMinorVersion;
-			project.Info.EditorPatchVersion = Game.GamePatchVersion;
+			var info = project.Info;
+			info.ProjectName = projectName;
+			info.Creator = "";
+			info.ModifyDate = info.CreatedDate = System.DateTime.Now.ToFileTime();
+			info.EditorMajorVersion = Game.GameMajorVersion;
+			info.EditorMinorVersion = Game.GameMinorVersion;
+			info.EditorPatchVersion = Game.GamePatchVersion;
+
+			// Save to Disk
 			project.SaveProjectInfoToDisk();
+
+			// Add into User List
+			UserProjects.Add(project);
+			SortUserProjectList();
+
 			return project;
+		}
+
+
+		public static void OpenProject (Project project, bool ignoreCallback = false) {
+			if (project == null) return;
+			CurrentProject = project;
+			project.CreateFolders();
+			project.Info.ModifyDate = System.DateTime.Now.ToFileTime();
+			if (!ignoreCallback) OnProjectOpen?.Invoke();
+			SortUserProjectList();
 		}
 
 
@@ -173,6 +191,7 @@ namespace AngeliaFramework {
 
 
 		// Util
+		public static string GetUniverseRoot (string projectFolder) => Util.CombinePaths(projectFolder, "Universe");
 		public static string GetSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet.sheet");
 		public static string GetAtlasRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Atlas");
 		public static string GetDialogueRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Dialogue");
@@ -182,6 +201,17 @@ namespace AngeliaFramework {
 		public static string GetItemCustomizationRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Item Customization");
 		public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
 		public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private static void SortUserProjectList () => UserProjects.Sort((a, b) => b.Info.ModifyDate.CompareTo(a.Info.ModifyDate));
 
 
 		#endregion

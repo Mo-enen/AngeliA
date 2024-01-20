@@ -20,7 +20,6 @@ namespace AngeliaFramework {
 		// Api
 		public static int LanguageCount => AllLanguages.Length;
 		public static string CurrentLanguage => _LoadedLanguage.Value;
-		public static string CurrentLanguageDisplayName { get; private set; } = "";
 
 		// Data
 		private static event System.Action OnLanguageChanged;
@@ -34,9 +33,7 @@ namespace AngeliaFramework {
 
 		// API
 		[OnGameInitialize(-128)]
-		public static void Initialize () {
-			Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
-		}
+		public static void Initialize () => Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
 
 
 		[OnProjectOpen]
@@ -58,26 +55,26 @@ namespace AngeliaFramework {
 
 
 		public static string Get (int id, string failback = "") => Pool.TryGetValue(id, out string value) && !string.IsNullOrEmpty(value) ? value : failback;
-		
+
 
 		public static string GetLanguageAt (int index) => AllLanguages[index];
 
 
 		public static bool SetLanguage (string language) {
 			Pool.Clear();
-			foreach (var (key, value) in LoadAllPairsFromDisk(Project.CurrentProject.LanguageRoot, language)) {
+			string path = GetLanguageFilePath(Project.CurrentProject.LanguageRoot, language);
+			if (!Util.FileExists(path)) return false;
+			foreach (var (key, value) in LoadAllPairsFromDiskAtPath(path)) {
 				Pool.TryAdd(key.AngeHash(), value);
 			}
-			if (Pool.Count <= 0) return false;
 			_LoadedLanguage.Value = language;
-			CurrentLanguageDisplayName = Util.TryGetLanguageDisplayName(language, out string disName) ? disName : language;
 			OnLanguageChanged();
 			return true;
 		}
 
 
-		public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromDisk (string languageRoot, string language) {
-			string path = GetLanguageFilePath(languageRoot, language);
+		public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromDisk (string languageRoot, string language) => LoadAllPairsFromDiskAtPath(GetLanguageFilePath(languageRoot, language));
+		public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromDiskAtPath (string path) {
 			foreach (var line in Util.ForAllLines(path, Encoding.UTF8)) {
 				if (string.IsNullOrWhiteSpace(line)) continue;
 				int colon = line.IndexOf(':');

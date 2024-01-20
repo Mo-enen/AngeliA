@@ -49,7 +49,7 @@ namespace AngeliaFramework {
 			Alignment = Alignment.MidMid,
 			BackgroundTint = Const.BLACK,
 			CharSize = 22,
-			TightBackground = true,
+			BackgroundPadding = 2,
 		};
 		private int CurrentSlotIndex = 0;
 		private int WeaponCount = 0;

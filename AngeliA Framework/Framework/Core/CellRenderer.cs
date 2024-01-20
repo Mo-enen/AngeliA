@@ -891,11 +891,10 @@ namespace AngeliaFramework {
 
 
 		// Exclude
-		public static void ExcludeCellsForAllLayers (IRect rect, int startIndex, int endIndex = -1) {
+		public static void ExcludeCellsForAllLayers (IRect rect) {
 			int count = LayerCount;
 			for (int i = 0; i < count; i++) {
-				if (endIndex < 0) endIndex = GetUsedCellCount(i);
-				ExcludeCellsLogic(Layers[i].Cells, i, rect, startIndex, endIndex);
+				ExcludeCellsLogic(Layers[i].Cells, i, rect, 0, GetUsedCellCount(i));
 			}
 		}
 		public static void ExcludeCells (IRect rect, int startIndex, int endIndex = -1) {
@@ -906,11 +905,10 @@ namespace AngeliaFramework {
 			if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
 			ExcludeCellsLogic(Layers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
 		}
-		public static void ExcludeTextCellsForAllLayers (IRect rect, int startIndex, int endIndex = -1) {
+		public static void ExcludeTextCellsForAllLayers (IRect rect) {
 			int count = TextLayerCount;
 			for (int i = 0; i < count; i++) {
-				if (endIndex < 0) endIndex = GetTextUsedCellCount(i);
-				ExcludeCellsLogic(TextLayers[i].Cells, i, rect, startIndex, endIndex);
+				ExcludeCellsLogic(TextLayers[i].Cells, i, rect, 0, GetTextUsedCellCount(i));
 			}
 		}
 		public static void ExcludeTextCells (IRect rect, int startIndex, int endIndex = -1) {

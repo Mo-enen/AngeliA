@@ -44,6 +44,13 @@ namespace AngeliaFramework {
 		public static string ProjectTemplateRoot => _ProjectTemplateRoot ??= Util.CombinePaths(ApplicationDataPath, "Project Template");
 		private static string _ProjectTemplateRoot = null;
 
+		public static string BuiltInUniverseRoot => _BuiltInUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, "Universe");
+		private static string _BuiltInUniverseRoot = null;
+
+		public static string BuiltInSavingRoot => _BuiltInSavingRoot ??= Util.CombinePaths(PersistentDataPath, "Built In Saving");
+		private static string _BuiltInSavingRoot = null;
+
+
 		// Temp
 		public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(TempDataPath, "Generating Map");
 		private static string _ProcedureMapTempRoot = null;

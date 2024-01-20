@@ -14,7 +14,11 @@ namespace AngeliaFramework {
 				var e = entities[i];
 				if (e is not IWindowEntityUI window) continue;
 				if (e is not EntityUI ui) continue;
-				CellRenderer.ExcludeTextCellsForAllLayers(window.BackgroundRect, ui.TextCellEndIndex);
+				if (ui.TextCellEndIndex != null) {
+					for (int j = 0; j < CellRenderer.TextLayerCount; j++) {
+						CellRenderer.ExcludeTextCells(j, window.BackgroundRect, ui.TextCellEndIndex[j]);
+					}
+				}
 			}
 		}
 	}
@@ -31,7 +35,7 @@ namespace AngeliaFramework {
 		protected virtual bool BlockMouseEvent => false;
 		protected virtual bool BlockKeyboardEvent => false;
 		public int TextCellStartIndex { get; private set; }
-		public int TextCellEndIndex { get; private set; }
+		public int[] TextCellEndIndex { get; private set; }
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
@@ -42,7 +46,10 @@ namespace AngeliaFramework {
 
 			UpdateUI();
 
-			TextCellEndIndex = CellRenderer.GetTextUsedCellCount();
+			if (TextCellEndIndex == null) TextCellEndIndex = new int[CellRenderer.TextLayerCount];
+			for (int i = 0; i < CellRenderer.TextLayerCount; i++) {
+				TextCellEndIndex[i] = CellRenderer.GetTextUsedCellCount(i);
+			}
 
 			CellRenderer.SetLayerToDefault();
 

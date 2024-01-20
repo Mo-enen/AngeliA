@@ -75,7 +75,8 @@ namespace AngeliaFramework {
 
 		[OnGameUpdatePauseless]
 		public static void OnGameUpdateLater () {
-			if (Game.ShowFPS) {
+			// FPS
+			if (Game.ShowFPS && !GlobalEditorUI.ShowingToolbar) {
 				if (Game.PauselessFrame % 12 == 0) {
 					GameFPS = Game.CurrentFPS;
 				}

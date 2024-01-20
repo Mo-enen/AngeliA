@@ -144,7 +144,8 @@ namespace AngeliaForUnity.Editor {
 				try {
 					EditorUtil.ProgressBar("Refreshing", "Refreshing...", 0.5f);
 
-					string universeRoot = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
+					string universeRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot);
+					string savingRoot = Util.CombinePaths(AngePath.BuiltInSavingRoot);
 
 					// Aseprite Files >> Flex Sprites & Texture
 					var tResults = AsepriteUtil.CreateSprites(AsepriteUtil.ForAllAsepriteFiles().Select(
@@ -166,13 +167,14 @@ namespace AngeliaForUnity.Editor {
 					// Flex Sprites >> Sheet
 					var sheet = CreateSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
 					sheet?.SaveToDisk(Project.GetSheetPath(universeRoot));
+					sheet?.SaveToDisk(Project.GetSheetPath(Project.GetUniverseRoot(AngePath.ProjectTemplateRoot)));
 
 					// Maps
 					AngeUtil.DeleteAllEmptyMaps(Project.GetMapRoot(universeRoot));
 
 					// Final
-					ItemSystem.CreateItemCombinationHelperFiles();
-					ItemSystem.CreateCombinationFileFromCode(true);
+					ItemSystem.CreateItemCombinationHelperFiles(savingRoot);
+					ItemSystem.CreateCombinationFileFromCode(universeRoot, true);
 					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, Project.GetDialogueRoot(universeRoot), forceRefresh);
 
 					// For Unity

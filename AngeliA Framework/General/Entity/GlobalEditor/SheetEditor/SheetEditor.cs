@@ -42,7 +42,7 @@ namespace AngeliaFramework {
 		private const int PANEL_WIDTH = 300;
 		public static readonly int TYPE_ID = typeof(SheetEditor).AngeHash();
 		private static readonly SpriteCode ICON_FILE = "Icon.File";
-		private static readonly string[] STATIC_ATLAS_REQUIREMENTS = { "LevelFront", "LevelBack", "Background", };
+		private static readonly string[] BUILT_IN_ATLAS_REQUIREMENTS = { "LevelFront", "LevelBack", "Background", };
 
 		// Api
 		public new static SheetEditor Instance => GlobalEditorUI.Instance as SheetEditor;
@@ -87,6 +87,7 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			CurrentAtlasSheet.Clear();
 			CurrentAtlasName = "";
+			Game.StopGame();
 			InitializeAtlas();
 		}
 
@@ -104,6 +105,7 @@ namespace AngeliaFramework {
 			base.BeforePhysicsUpdate();
 			CursorSystem.RequireCursor();
 			ControlHintUI.ForceOffset(Unify(PANEL_WIDTH), 0);
+			Skybox.ForceSkyboxTint(new Byte4(32, 33, 37, 255), new Byte4(32, 33, 37, 255));
 		}
 
 
@@ -189,7 +191,7 @@ namespace AngeliaFramework {
 			}
 
 			// Add Static
-			foreach (var require in STATIC_ATLAS_REQUIREMENTS) {
+			foreach (var require in BUILT_IN_ATLAS_REQUIREMENTS) {
 				int id = require.AngeHash();
 				if (!AtlasRequirements.ContainsKey(id)) {
 					AtlasRequirements.Add(id, new AtlasRequirement() {

@@ -24,7 +24,7 @@ namespace AngeliaFramework {
 		public int ShadowOffset;
 		public bool Wrap;
 		public bool Clip;
-		public bool TightBackground;
+		public int BackgroundPadding;
 		public Byte4 Shadow;
 
 		public CellContent (string text = "") {
@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 			LineSpace = 5;
 			Wrap = false;
 			Clip = false;
-			TightBackground = true;
+			BackgroundPadding = -1;
 			Shadow = Const.CLEAR;
 		}
 
@@ -247,7 +247,7 @@ namespace AngeliaFramework {
 			var alignment = content.Alignment;
 			var bgColor = content.BackgroundTint;
 			bool wrap = content.Wrap;
-			bool tightBG = content.TightBackground;
+			int bgPadding = Unify(content.BackgroundPadding);
 			bool hasContent = count > 0;
 			bool clip = content.Clip;
 			bool beamEnd = beamIndex >= count;
@@ -399,12 +399,12 @@ namespace AngeliaFramework {
 				bounds.height = maxY - minY;
 			}
 
-			if (bgCell != null && tightBG) {
-				bgCell.X = bounds.x;
-				bgCell.Y = bounds.y;
+			if (bgCell != null && bgPadding >= 0) {
+				bgCell.X = bounds.x - bgPadding;
+				bgCell.Y = bounds.y - bgPadding;
 				bgCell.Z = int.MaxValue;
-				bgCell.Width = bounds.width;
-				bgCell.Height = bounds.height;
+				bgCell.Width = bounds.width + bgPadding * 2;
+				bgCell.Height = bounds.height + bgPadding * 2;
 			}
 
 		}
@@ -432,19 +432,23 @@ namespace AngeliaFramework {
 
 
 		// Button
-		public static bool Button (IRect rect, string label, int z) => Button(rect, label, z, Const.WHITE);
-		public static bool Button (IRect rect, string label, int z, Byte4 labelTint) {
-			Label(CellContent.Get(label, labelTint, ReverseUnify(rect.height / 2)), rect);
-			return Button(rect, 0, Const.PIXEL, 0, 0, 0, 0, z, Const.WHITE_12, default);
+		public static bool Button (IRect rect, string label, int z, int charSize = -1, bool enable = true) => Button(rect, label, z, Const.WHITE, charSize, enable);
+		public static bool Button (IRect rect, string label, int z, Byte4 labelTint, int charSize = -1, bool enable = true) {
+			charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
+			Label(CellContent.Get(label, labelTint, charSize), rect);
+			return Button(rect, 0, Const.PIXEL, 0, 0, 0, 0, z, Const.WHITE_12, default, enable);
 		}
-		public static bool Button (IRect rect, int sprite, string label, int z, Byte4 buttonTint, Byte4 labelTint) {
-			Label(CellContent.Get(label, labelTint, ReverseUnify(rect.height / 2)), rect);
-			return Button(rect, sprite, sprite, sprite, 0, 0, 0, z, buttonTint, default);
+		public static bool Button (IRect rect, int sprite, string label, int z, Byte4 buttonTint, Byte4 labelTint, int charSize = -1, bool enable = true) {
+			charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
+			Label(CellContent.Get(label, labelTint, charSize), rect);
+			return Button(rect, sprite, sprite, sprite, 0, 0, 0, z, buttonTint, default, enable);
 		}
-		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE);
-		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Byte4 buttonTint, Byte4 iconTint) {
+		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, bool enable = true) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE, enable);
+		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Byte4 buttonTint, Byte4 iconTint, bool enable = true) {
 			bool hover = rect.MouseInside();
-			bool down = hover && FrameInput.MouseLeftButton;
+			bool down = hover && enable && FrameInput.MouseLeftButton;
+			buttonTint.a = (byte)(enable ? buttonTint.a : buttonTint.a / 2);
+			iconTint.a = (byte)(enable ? iconTint.a : iconTint.a / 2);
 			// Button
 			int spriteID = down ? spriteDown : hover ? spriteHover : sprite;
 			if (spriteID != 0) {
@@ -465,9 +469,9 @@ namespace AngeliaFramework {
 				);
 			}
 			// Cursor
-			CursorSystem.SetCursorAsHand(rect);
+			if (enable) CursorSystem.SetCursorAsHand(rect);
 			// Click
-			if (hover && FrameInput.MouseLeftButtonDown) {
+			if (enable && hover && FrameInput.MouseLeftButtonDown) {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseGameKey(Gamekey.Action);
 				return true;
@@ -715,8 +719,8 @@ namespace AngeliaFramework {
 					}
 					// Set Selection on Drag
 					if (mouseDragging) {
-						beamLength = BeamLength = beamLength + beamIndex - mouseBeamIndex;
-						beamIndex = BeamIndex = mouseBeamIndex;
+						BeamLength = beamLength + beamIndex - mouseBeamIndex;
+						BeamIndex = mouseBeamIndex;
 					}
 				}
 			}

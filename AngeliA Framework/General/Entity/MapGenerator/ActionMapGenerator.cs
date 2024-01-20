@@ -22,7 +22,7 @@ namespace AngeliaFramework {
 		protected virtual bool ShowGeneratingHint => true;
 
 		// Data
-		private readonly CellContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Const.BLACK, TightBackground = true, Wrap = false, Clip = false, };
+		private readonly CellContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Const.BLACK, BackgroundPadding = 6, Wrap = false, Clip = false, };
 
 
 		#endregion

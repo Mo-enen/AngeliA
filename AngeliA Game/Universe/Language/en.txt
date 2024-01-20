@@ -27,12 +27,13 @@ CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
+DeveloperToolbox.BuiltInProject:Default
 DeveloperToolbox.CreateProject:Create Project
-DeveloperToolbox.Label.LanguageEditor:Language
-DeveloperToolbox.Label.MapEditor:Map
-DeveloperToolbox.Label.SheetEditor:Sheet
-DeveloperToolbox.ProjectName:Project Name
-DeveloperToolbox.ProjectSelectorMsg:Create a new project and make your own level!
+GlobalEditor.Label.LanguageEditor:Language
+GlobalEditor.Label.MapEditor:Map
+GlobalEditor.Label.SheetEditor:Sheet
+DeveloperToolbox.ProjectName:Name
+DeveloperToolbox.ProjectSelectorMsg:Having ideas for your own level? Create a new project with the button below now. Unleash your imagination and make something unique and amazing!
 DevilWing.Wing:Devil Wing
 Hint.Pong.Move:Move
 Hint.Sokoban.Move:Move
@@ -1591,7 +1592,7 @@ iName.Zongzi:
 Language.Creator:楠瓜Moenen
 MEDT.BackgroundOnly:Background Only
 MEDT.CancelDrop:Cancel Drop
-MEDT.Drop:Mouse Left Button to Drop
+MEDT.Drop:Click to Drop
 MEDT.EntityOnly:Entity Only
 MEDT.LevelOnly:Level Only
 Menu.Gomoku.Draw:Draw
@@ -1662,6 +1663,7 @@ Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
 PlayerCustomizerAngelia:Customize
+Project.Error.NameExists:Name already exists
 Project.NewProjectName:New Project
 PropellerWing.Wing:Propeller Wing
 UI.Back:Back
@@ -1710,7 +1712,7 @@ UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
 UI.PaletteTab.All:All
-UI.PaletteTab.Pinned:List
+UI.PaletteTab.Pinned:Favourite
 UI.Quit:Quit
 UI.QuitGame:Quit Game
 UI.Restart:Restart

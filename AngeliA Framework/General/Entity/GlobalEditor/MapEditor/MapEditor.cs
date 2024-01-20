@@ -111,8 +111,7 @@ namespace AngeliaFramework {
 			get => s_ShowState.Value;
 			set => s_ShowState.Value = value;
 		}
-		protected override bool StopGameOnActive => false;
-		protected override Byte4? ForceSkyColor => null;
+		protected override bool ShowGlobalToolbar => IsEditing;
 
 		// Pools
 		private readonly Dictionary<int, AngeSprite> SpritePool = new();
@@ -813,10 +812,16 @@ namespace AngeliaFramework {
 
 		private void Update_DropPlayer () {
 
-			if (IsPlaying || !DroppingPlayer || Player.Selecting == null || TaskingRoute) return;
+			if (IsPlaying || !DroppingPlayer || TaskingRoute) return;
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			var player = Player.Selecting;
+			if (player == null && Player.TryGetDefaultSelectPlayer(out var defaultPlayerType)) {
+				if (Stage.PeekOrGetEntity(defaultPlayerType.AngeHash()) is Player defaultPlayer) {
+					player = Player.Selecting = defaultPlayer;
+				}
+			}
+			if (player == null) return;
 
 			PlayerDropPos.x = PlayerDropPos.x.LerpTo(FrameInput.MouseGlobalPosition.x, 400);
 			PlayerDropPos.y = PlayerDropPos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 400);
