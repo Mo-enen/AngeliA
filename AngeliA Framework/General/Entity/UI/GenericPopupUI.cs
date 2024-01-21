@@ -112,7 +112,7 @@ namespace AngeliaFramework {
 			if (panelRect.height < cameraRect.height) {
 				panelRect.ClampPositionInside(cameraRect);
 			} else {
-				int padding = Unify(42);
+				int padding = Unify(84);
 				panelRect.y = Util.RemapUnclamped(
 					cameraRect.y + padding, cameraRect.yMax - padding,
 					cameraRect.y, cameraRect.y - panelRect.height + cameraRect.height,

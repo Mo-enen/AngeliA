@@ -51,6 +51,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public static Player Selecting { get; set; } = null;
+		public static bool HasActivePlayer => Selecting != null && Selecting.Active;
 		public static Int3? RespawnCpUnitPosition { get; set; } = null;
 		public static Int3? HomeUnitPosition { get; private set; } = null;
 		public override bool IsChargingAttack =>
@@ -96,7 +97,10 @@ namespace AngeliaFramework {
 
 
 		[OnProjectOpen]
-		public static void OnProjectOpen_Player () => LoadGameDataFromFile();
+		public static void OnProjectOpen_Player () {
+			LoadGameDataFromFile();
+			SelectPlayer(0);
+		}
 
 
 		public override void OnActivated () {
@@ -461,7 +465,7 @@ namespace AngeliaFramework {
 
 			// Reload Game After Player PassOut
 			if (IsFullPassOut && FrameInput.GameKeyDown(Gamekey.Action)) {
-				Game.RestartGame(TypeID);
+				FrameTask.AddToLast(RestartGameTask.TYPE_ID);
 				FrameInput.UseGameKey(Gamekey.Action);
 			}
 
@@ -544,14 +548,6 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public void MakeHome (Int3 unitPosition) {
-			if (unitPosition != HomeUnitPosition) {
-				HomeUnitPosition = unitPosition;
-				SaveGameDataToFile();
-			}
-		}
-
-
 		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
 
 
@@ -568,9 +564,29 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void SelectPlayer (int playerID) {
+			if (Selecting != null && playerID == Selecting.TypeID) return;
+			if (playerID == 0) {
+				playerID = TryGetDefaultSelectPlayer(out var defaultPlayer) ? defaultPlayer.AngeHash() : 0;
+			}
+			if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
+				Selecting = player;
+			}
+		}
+
+
+		public void MakeHome (Int3 unitPosition) {
+			if (unitPosition != HomeUnitPosition) {
+				HomeUnitPosition = unitPosition;
+				SaveGameDataToFile();
+			}
+		}
+
+
 		void IActionTarget.Invoke () {
 			RespawnCpUnitPosition = null;
-			Game.RestartGame(TypeID);
+			FrameTask.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
+			FrameTask.AddToLast(RestartGameTask.TYPE_ID);
 		}
 
 

@@ -111,7 +111,6 @@ namespace AngeliaFramework {
 			get => s_ShowState.Value;
 			set => s_ShowState.Value = value;
 		}
-		protected override bool ShowGlobalToolbar => IsEditing;
 
 		// Pools
 		private readonly Dictionary<int, AngeSprite> SpritePool = new();
@@ -218,14 +217,11 @@ namespace AngeliaFramework {
 
 			// Start
 			if (Game.GlobalFrame == 0) {
+				Game.RestartGameImmediately();
 				SetEditorMode(true);
-				Game.RestartGame();
 				Game.PassEffect_RetroDarken(1f);
 			} else {
 				SetEditorMode(false);
-			}
-			if (Player.Selecting != null) {
-				Player.Selecting.Active = false;
 			}
 
 			// View
@@ -440,22 +436,22 @@ namespace AngeliaFramework {
 
 			// Panel Rect
 			PanelRect.width = Unify(PANEL_WIDTH);
-			PanelRect.height = CellRenderer.CameraRect.height;
+			PanelRect.height = MainWindowRect.height;
 			PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width, 200);
-			PanelRect.x = CellRenderer.CameraRect.x + PanelOffsetX;
-			PanelRect.y = CellRenderer.CameraRect.y;
+			PanelRect.x = MainWindowRect.x + PanelOffsetX;
+			PanelRect.y = MainWindowRect.y;
 
 			// Toolbar Rect
 			int HEIGHT = Unify(TOOL_BAR_HEIGHT);
 			ToolbarRect.width = PanelRect.width;
 			ToolbarRect.height = HEIGHT;
-			ToolbarRect.y = CellRenderer.CameraRect.yMax - HEIGHT;
+			ToolbarRect.y = MainWindowRect.yMax - HEIGHT;
 			ToolbarOffsetX = ToolbarOffsetX.LerpTo(IsPlaying || DroppingPlayer ? -ToolbarRect.width : 0, 200);
-			ToolbarRect.x = CellRenderer.CameraRect.x + ToolbarOffsetX;
+			ToolbarRect.x = MainWindowRect.x + ToolbarOffsetX;
 
 			// Check Point Lane Rect
-			CheckPointLaneRect.x = CellRenderer.CameraRect.x;
-			CheckPointLaneRect.y = CellRenderer.CameraRect.y;
+			CheckPointLaneRect.x = MainWindowRect.x;
+			CheckPointLaneRect.y = MainWindowRect.y;
 			CheckPointLaneRect.width = Unify(PANEL_WIDTH);
 			CheckPointLaneRect.height = ToolbarRect.y - CheckPointLaneRect.y;
 
@@ -766,7 +762,7 @@ namespace AngeliaFramework {
 					// Play from Start
 					if (FrameInput.KeyboardDown(KeyboardKey.Space)) {
 						SetEditorMode(true);
-						Game.RestartGame();
+						FrameTask.AddToLast(RestartGameTask.TYPE_ID);
 						FrameInput.UseAllHoldingKeys();
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
@@ -932,7 +928,7 @@ namespace AngeliaFramework {
 
 		private void SetEditorMode (bool toPlayMode) {
 
-			if (toPlayMode) Save();
+			if (toPlayMode && Game.GlobalFrame != 0) Save();
 			PlayingGame = toPlayMode;
 			SelectingPaletteItem = null;
 			DroppingPlayer = false;

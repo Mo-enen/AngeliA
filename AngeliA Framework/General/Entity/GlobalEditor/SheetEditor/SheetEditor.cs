@@ -105,6 +105,7 @@ namespace AngeliaFramework {
 			base.BeforePhysicsUpdate();
 			CursorSystem.RequireCursor();
 			ControlHintUI.ForceOffset(Unify(PANEL_WIDTH), 0);
+			ControlHintUI.ForceHideGamepad();
 			Skybox.ForceSkyboxTint(new Byte4(32, 33, 37, 255), new Byte4(32, 33, 37, 255));
 		}
 
@@ -113,7 +114,7 @@ namespace AngeliaFramework {
 			base.UpdateUI();
 
 			// Panel Rect
-			var panelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
+			var panelRect = MainWindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 			if (string.IsNullOrEmpty(CurrentAtlasName)) {
 				Update_FilePanel(panelRect);
 			} else {

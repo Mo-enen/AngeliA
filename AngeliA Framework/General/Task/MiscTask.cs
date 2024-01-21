@@ -7,7 +7,7 @@ namespace AngeliaFramework {
 		private int Duration => UserData is int i ? i : 20;
 		public override TaskResult FrameUpdate () {
 			Game.PassEffect_RetroDarken(1f - (float)LocalFrame / Duration);
-			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.Follow;
+			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.End;
 		}
 	}
 
@@ -17,7 +17,7 @@ namespace AngeliaFramework {
 		private int Duration => UserData is int i ? i : 20;
 		public override TaskResult FrameUpdate () {
 			Game.PassEffect_RetroDarken((float)LocalFrame / Duration);
-			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.Follow;
+			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.End;
 		}
 	}
 
@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 					e.OnActivated();
 				}
 			}
-			return TaskResult.Follow;
+			return TaskResult.End;
 		}
 	}
 
@@ -48,7 +48,7 @@ namespace AngeliaFramework {
 		public static readonly int TYPE_ID = typeof(DespawnEntityTask).AngeHash();
 		public override TaskResult FrameUpdate () {
 			if (UserData is Entity e) e.Active = false;
-			return TaskResult.Follow;
+			return TaskResult.End;
 		}
 	}
 
@@ -60,7 +60,7 @@ namespace AngeliaFramework {
 			if (UserData is System.Action action) {
 				action.Invoke();
 			}
-			return TaskResult.Follow;
+			return TaskResult.End;
 		}
 	}
 
@@ -71,6 +71,25 @@ namespace AngeliaFramework {
 			if (UserData is not int) UserData = 1;
 			if (LocalFrame >= (int)UserData) return TaskResult.End;
 			return TaskResult.Continue;
+		}
+	}
+
+
+	public class RestartGameTask : TaskItem {
+		public static readonly int TYPE_ID = typeof(RestartGameTask).AngeHash();
+		public override TaskResult FrameUpdate () {
+			Game.RestartGameImmediately();
+			return TaskResult.End;
+		}
+	}
+
+
+	public class SelectPlayerTask : TaskItem {
+		public static readonly int TYPE_ID = typeof(RestartGameTask).AngeHash();
+		public override TaskResult FrameUpdate () {
+			if (UserData is not int) return TaskResult.End;
+			Player.SelectPlayer((int)UserData);
+			return TaskResult.End;
 		}
 	}
 

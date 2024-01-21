@@ -1,11 +1,14 @@
 ﻿using System.Reflection;
+using System.Linq;
 
 
 namespace AngeliaFramework {
 
 
+
 	[System.AttributeUsage(System.AttributeTargets.Assembly)]
 	public class AngeliAAttribute : System.Attribute { }
+
 
 
 	[System.AttributeUsage(System.AttributeTargets.Assembly)]
@@ -22,6 +25,7 @@ namespace AngeliaFramework {
 	}
 
 
+
 	[System.AttributeUsage(System.AttributeTargets.Assembly)]
 	public class AngeliaGameDeveloperAttribute : System.Attribute {
 		public string Developer;
@@ -34,6 +38,7 @@ namespace AngeliaFramework {
 			return "";
 		}
 	}
+
 
 
 	public enum ReleaseLifeCycle { Alpha = 0, Beta = 1, Release = 2, Final = 3, }
@@ -69,6 +74,16 @@ namespace AngeliaFramework {
 			return false;
 		}
 	}
+
+
+
+	[System.AttributeUsage(System.AttributeTargets.Assembly)]
+	public class AngeliaAllowMakerAttribute : System.Attribute {
+		public static bool AllowMakerFeatures => System.AppDomain.CurrentDomain.GetAssemblies().Any(
+			a => a.GetCustomAttribute<AngeliaGameTitleAttribute>() != null
+		);
+	}
+
 
 
 }

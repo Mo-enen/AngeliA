@@ -29,12 +29,12 @@ CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
 DeveloperToolbox.BuiltInProject:Default
 DeveloperToolbox.CreateProject:Create Project
-GlobalEditor.Label.LanguageEditor:Language
-GlobalEditor.Label.MapEditor:Map
-GlobalEditor.Label.SheetEditor:Sheet
 DeveloperToolbox.ProjectName:Name
 DeveloperToolbox.ProjectSelectorMsg:Having ideas for your own level? Create a new project with the button below now. Unleash your imagination and make something unique and amazing!
 DevilWing.Wing:Devil Wing
+GlobalEditor.Label.LanguageEditor:Language
+GlobalEditor.Label.MapEditor:Map
+GlobalEditor.Label.SheetEditor:Sheet
 Hint.Pong.Move:Move
 Hint.Sokoban.Move:Move
 Hint.Tetris.Drop:Drop
@@ -1719,7 +1719,6 @@ UI.Restart:Restart
 UI.Save:Save
 UI.Setting:Setting
 UI.Sokoban.Level:Level:
-UI.StopEdit:Stop Edit
 UI.Suit.Bodysuit:Cloth
 UI.Suit.Glove:Gloves
 UI.Suit.Hat:Hat

@@ -432,15 +432,15 @@ namespace AngeliaFramework {
 
 
 		// Button
-		public static bool Button (IRect rect, string label, int z, int charSize = -1, bool enable = true) => Button(rect, label, z, Const.WHITE, charSize, enable);
-		public static bool Button (IRect rect, string label, int z, Byte4 labelTint, int charSize = -1, bool enable = true) {
+		public static bool Button (IRect rect, string label, out IRect labelBounds, int z, int charSize = -1, bool enable = true) => Button(rect, label, out labelBounds, z, Const.WHITE, charSize, enable);
+		public static bool Button (IRect rect, string label, out IRect labelBounds, int z, Byte4 labelTint, int charSize = -1, bool enable = true) {
 			charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-			Label(CellContent.Get(label, labelTint, charSize), rect);
+			Label(CellContent.Get(label, labelTint, charSize), rect, out labelBounds);
 			return Button(rect, 0, Const.PIXEL, 0, 0, 0, 0, z, Const.WHITE_12, default, enable);
 		}
-		public static bool Button (IRect rect, int sprite, string label, int z, Byte4 buttonTint, Byte4 labelTint, int charSize = -1, bool enable = true) {
+		public static bool Button (IRect rect, int sprite, string label, out IRect labelBounds, int z, Byte4 buttonTint, Byte4 labelTint, int charSize = -1, bool enable = true) {
 			charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-			Label(CellContent.Get(label, labelTint, charSize), rect);
+			Label(CellContent.Get(label, labelTint, charSize), rect, out labelBounds);
 			return Button(rect, sprite, sprite, sprite, 0, 0, 0, z, buttonTint, default, enable);
 		}
 		public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, bool enable = true) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Const.WHITE, Const.WHITE, enable);

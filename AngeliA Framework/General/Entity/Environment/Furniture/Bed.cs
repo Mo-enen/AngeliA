@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 					RequireRestartGame = false;
 					player.MakeHome(new Int3(player.X.ToUnit(), player.Y.ToUnit(), Stage.ViewZ));
 					Player.RespawnCpUnitPosition = null;
-					Game.RestartGame(player.TypeID, immediately: true);
+					Game.RestartGameImmediately();
 				}
 			}
 

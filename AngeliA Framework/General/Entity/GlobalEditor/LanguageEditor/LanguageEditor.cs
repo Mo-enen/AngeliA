@@ -86,6 +86,7 @@ namespace AngeliaFramework {
 			base.BeforePhysicsUpdate();
 			CursorSystem.RequireCursor();
 			Skybox.ForceSkyboxTint(new Byte4(32, 33, 37, 255), new Byte4(32, 33, 37, 255));
+			ControlHintUI.ForceHideGamepad();
 		}
 
 
@@ -93,7 +94,7 @@ namespace AngeliaFramework {
 			base.UpdateUI();
 
 			int padding = Unify(32);
-			var cameraRect = CellRenderer.CameraRect.Shrink(padding, padding, 0, 0);
+			var cameraRect = MainWindowRect.Shrink(padding, padding, 0, 0);
 			int column = Languages.Count + 1;
 			int fieldWidth = Util.Clamp(cameraRect.width / column, 0, Unify(300));
 			int verticalPadding = Unify(24);
@@ -133,7 +134,8 @@ namespace AngeliaFramework {
 			// + Key
 			var rect = panelRect;
 			rect.width = Unify(108);
-			if (CellRendererGUI.Button(rect, ADD_KEY.Get("+ Key"), z: 1, charSize: 16) && interactable) {
+			if (CellRendererGUI.Button(rect, ADD_KEY.Get("+ Key"), out _, z: 1, charSize: 16) && interactable) {
+				ScrollY = 0;
 				Lines.Insert(0, new LanguageLine() {
 					Key = string.Empty,
 					Label = string.Empty,
@@ -150,7 +152,7 @@ namespace AngeliaFramework {
 
 			// + Language
 			rect.width = Unify(108);
-			if (CellRendererGUI.Button(rect, ADD_LANGUAGE.Get("+ Language"), z: 1, charSize: 16) && interactable) {
+			if (CellRendererGUI.Button(rect, ADD_LANGUAGE.Get("+ Language"), out _, z: 1, charSize: 16) && interactable) {
 				OpenAddLanguagePopup();
 			}
 			CursorSystem.SetCursorAsHand(rect);

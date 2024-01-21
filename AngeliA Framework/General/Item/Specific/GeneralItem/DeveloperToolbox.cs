@@ -48,7 +48,6 @@ namespace AngeliaFramework {
 		// Data
 		private static iDeveloperToolbox Instance;
 		private static System.Action OpenProjectCallback = null;
-		private static System.Action RestartGameCallback = null;
 		private readonly BarData[] RenderingUsages = new BarData[RenderLayer.COUNT];
 		private readonly BarData[] EntityUsages = new BarData[EntityLayer.COUNT];
 		private BarData[] TextUsages = new BarData[0];
@@ -78,7 +77,6 @@ namespace AngeliaFramework {
 		public iDeveloperToolbox () {
 			Instance = this;
 			DataInitialized = false;
-			if (RestartGameCallback == null) RestartGameCallback += () => Game.RestartGame(immediately: true);
 		}
 
 
@@ -448,7 +446,7 @@ namespace AngeliaFramework {
 			if (CellRendererGUI.Button(
 				rect.EdgeInside(Direction4.Left, rect.width / 2).Shrink(buttonShrink / 2, buttonShrink / 2, buttonShrink, buttonShrink),
 				BuiltInIcon.UI_BUTTON,
-				UI_CREATE.Get("Create"),
+				UI_CREATE.Get("Create"), out _,
 				z: int.MaxValue - 9,
 				Const.GREEN, Const.GREY_32
 			) && !FrameTask.HasTask()) {
@@ -467,7 +465,7 @@ namespace AngeliaFramework {
 			if (CellRendererGUI.Button(
 				rect.EdgeInside(Direction4.Right, rect.width / 2).Shrink(buttonShrink / 2, buttonShrink / 2, buttonShrink, buttonShrink),
 				BuiltInIcon.UI_BUTTON,
-				UI_CANCEL.Get("Cancel"),
+				UI_CANCEL.Get("Cancel"), out _,
 				z: int.MaxValue - 9,
 				Const.WHITE, Const.GREY_32
 			)) {
@@ -504,7 +502,7 @@ namespace AngeliaFramework {
 			rect.y -= itemHeight + padding;
 			var buttonRect = rect.Shrink(itemShrink, itemShrink, itemShrink / 2, itemShrink / 2);
 			if (CellRendererGUI.Button(
-				buttonRect, BuiltInIcon.FRAME_16, CREATE_PROJECT.Get("Create Project"),
+				buttonRect, BuiltInIcon.FRAME_16, CREATE_PROJECT.Get("Create Project"), out _,
 				z: int.MaxValue - 9, Const.GREY_196, Const.GREY_196
 			)) {
 				CreatingNewProject = true;
@@ -518,7 +516,7 @@ namespace AngeliaFramework {
 			if (CellRendererGUI.Button(
 				buttonRect,
 				BuiltInIcon.UI_BUTTON,
-				BUILT_IN_PROJECT.Get("Default Level"),
+				BUILT_IN_PROJECT.Get("Default Level"), out _,
 				z: int.MaxValue - 9, Const.WHITE, Const.GREY_32,
 				enable: !Project.OpeningBuiltInProject
 			)) {
@@ -556,7 +554,7 @@ namespace AngeliaFramework {
 				if (CellRendererGUI.Button(
 					rect.Shrink(itemShrink, itemShrink, itemShrink / 2, itemShrink / 2),
 					BuiltInIcon.UI_BUTTON,
-					project.Info.ProjectName,
+					project.Info.ProjectName, out _,
 					z: int.MaxValue - 4,
 					Const.WHITE, Const.GREY_32,
 					enable: !isCurrent
@@ -592,7 +590,7 @@ namespace AngeliaFramework {
 				FrameTask.AddToLast(DespawnEntityTask.TYPE_ID, GlobalEditorUI.Instance);
 			}
 			FrameTask.AddToLast(MethodTask.TYPE_ID, OpenProjectCallback);
-			FrameTask.AddToLast(MethodTask.TYPE_ID, RestartGameCallback);
+			FrameTask.AddToLast(RestartGameTask.TYPE_ID);
 			FrameTask.AddToLast(DelayTask.TYPE_ID, 1);
 			if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
 				task.EntityID = MapEditor.TYPE_ID;

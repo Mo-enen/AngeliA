@@ -78,6 +78,10 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameRestart]
+		public static void OnGameRestart () => Enable = true;
+
+
 		[OnGameUpdate(-64)]
 		public static void OnGameUpdate () {
 			if (!Enable) return;

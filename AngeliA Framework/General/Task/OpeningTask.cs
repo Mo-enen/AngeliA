@@ -34,6 +34,7 @@ namespace AngeliaFramework {
 			SkipFrame = int.MaxValue;
 			PlayerSpawnY = TargetViewY;
 			TargetViewY += Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
+			Stage.SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
 			if (FadeOut) {
 				Game.PassEffect_RetroDarken(1f);
 			}

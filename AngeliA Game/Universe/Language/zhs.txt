@@ -29,12 +29,12 @@ CtrlHint.WakeUp:起床
 CtrlHint.Wardrobe.Type:服饰类型
 DeveloperToolbox.BuiltInProject:默认
 DeveloperToolbox.CreateProject:+新项目
-GlobalEditor.Label.LanguageEditor:语 言
-GlobalEditor.Label.MapEditor:地 图
-GlobalEditor.Label.SheetEditor:图 集
 DeveloperToolbox.ProjectName:工程名
 DeveloperToolbox.ProjectSelectorMsg:来做个属于你自己的关卡吧！
 DevilWing.Wing:恶魔翅膀
+GlobalEditor.Label.LanguageEditor:语 言
+GlobalEditor.Label.MapEditor:地 图
+GlobalEditor.Label.SheetEditor:图 集
 Hint.Pong.Move:移动
 Hint.Sokoban.Move:移动
 Hint.Tetris.Drop:掉落
@@ -1719,7 +1719,6 @@ UI.Restart:重新开始
 UI.Save:保存
 UI.Setting:设置
 UI.Sokoban.Level:关卡：
-UI.StopEdit:停止编辑
 UI.Suit.Bodysuit:衣服
 UI.Suit.Glove:手套
 UI.Suit.Hat:帽子

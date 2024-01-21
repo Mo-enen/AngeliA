@@ -8,6 +8,7 @@ using AngeliaFramework;
 [assembly: AngeliaGameTitle("AngeliA")]
 [assembly: AngeliaGameDeveloper("Moenen")]
 [assembly: AngeliaVersion(0, 0, 0, ReleaseLifeCycle.Alpha)]
+[assembly: AngeliaAllowMaker]
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 

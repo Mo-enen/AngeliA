@@ -75,6 +75,7 @@ namespace AngeliaFramework {
 		public static ReleaseLifeCycle GameLifeCycle { get; private set; } = ReleaseLifeCycle.Release;
 		public static string GameTitle { get; private set; } = "";
 		public static string GameDeveloper { get; private set; } = "";
+		public static bool AllowMakerFeaures { get; private set; } = false;
 
 		// Event
 		private static event System.Action OnGameRestart;
@@ -86,9 +87,8 @@ namespace AngeliaFramework {
 
 		// Data
 		private static readonly Dictionary<int, object> ResourcePool = new();
-		private static int? RequireRestartWithPlayerID = null;
-		private static long LastGraphicUpdateTime = 0;
 		private static Stopwatch GameWatch;
+		private static long LastGraphicUpdateTime = 0;
 		private static bool _IsPlaying = true;
 
 		// Saving
@@ -108,19 +108,23 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
-		public Game () => Instance = this;
+		public Game () {
+			Instance = this;
+			// Info from Attribute
+			GameTitle = AngeliaGameTitleAttribute.GetTitle();
+			GameDeveloper = AngeliaGameDeveloperAttribute.GetDeveloper();
+			AllowMakerFeaures = IsEdittime || AngeliaAllowMakerAttribute.AllowMakerFeatures;
+			AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out var cycle);
+			GameMajorVersion = major;
+			GameMinorVersion = minor;
+			GamePatchVersion = patch;
+			GameLifeCycle = cycle;
+		}
 
 
 		public virtual void Initialize () {
 			try {
 
-				GameTitle = AngeliaGameTitleAttribute.GetTitle();
-				GameDeveloper = AngeliaGameDeveloperAttribute.GetDeveloper();
-				AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out var cycle);
-				GameMajorVersion = major;
-				GameMinorVersion = minor;
-				GamePatchVersion = patch;
-				GameLifeCycle = cycle;
 				GlobalFrame = 0;
 				GameWatch = Stopwatch.StartNew();
 
@@ -149,10 +153,15 @@ namespace AngeliaFramework {
 				ResourcePool.Clear();
 				ResourcePool.AddRange(_ForAllAudioClips());
 
-				RestartGameLogic();
 				System.GC.Collect();
 
-				if (IsEdittime) GlobalEditorUI.OpenEditorSmoothly(MapEditor.TYPE_ID, false);
+				if (IsEdittime) {
+					GlobalEditorUI.OpenEditor(MapEditor.TYPE_ID);
+				} else if (AllowMakerFeaures) {
+					GlobalEditorUI.OpenEditor(MapEditor.TYPE_ID);
+				} else {
+					RestartGameImmediately();
+				}
 
 			} catch (System.Exception ex) { LogException(ex); }
 			// Func
@@ -177,9 +186,6 @@ namespace AngeliaFramework {
 
 				// Switch Between Play and Pause
 				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
-
-				// Answer Game Restart Require
-				if (RequireRestartWithPlayerID.HasValue) RestartGameLogic();
 
 				// Grow Frame
 				if (!IsPausing) GlobalFrame++;
@@ -207,10 +213,7 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void RestartGame (int playerID = 0, bool immediately = false) {
-			RequireRestartWithPlayerID = playerID;
-			if (immediately) RestartGameLogic();
-		}
+		public static void RestartGameImmediately () => OnGameRestart?.Invoke();
 
 
 		public static void StopGame () {
@@ -218,7 +221,6 @@ namespace AngeliaFramework {
 			Stage.DespawnAllEntitiesFromWorld();
 			if (Player.Selecting != null) Player.Selecting.Active = false;
 			Player.Selecting = null;
-
 		}
 
 
@@ -240,34 +242,7 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private static void RestartGameLogic () {
-
-			WorldSquad.Enable = true;
-
-			// Select New Player
-			int playerID = RequireRestartWithPlayerID ?? 0;
-			RequireRestartWithPlayerID = null;
-			if (Player.Selecting == null || (playerID != Player.Selecting.TypeID)) {
-				if (playerID == 0) {
-					playerID =
-						Player.Selecting != null ? Player.Selecting.TypeID :
-						Player.TryGetDefaultSelectPlayer(out var defaultPlayer) ? defaultPlayer.AngeHash() : 0;
-				}
-				if (playerID != 0) {
-					if (Stage.PeekOrGetEntity(playerID) is Player player) {
-						Player.Selecting = player;
-					}
-				}
-			}
-
-			// Enable
-			if (!IsPlaying) IsPlaying = true;
-
-			// Event
-			OnGameRestart?.Invoke();
-		}
-
-
+		// Audio
 		private static float GetScaledAudioVolume (int volume, int scale = 1000) {
 			float fVolume = volume / 1000f;
 			if (scale != 1000) fVolume *= scale / 1000f;
@@ -276,7 +251,7 @@ namespace AngeliaFramework {
 
 
 		[OnGameUpdatePauseless]
-		internal static void RefreshGame () {
+		internal static void RefreshGameAudio () {
 			// Load or Stop Music
 			bool requireMusic = IsPlaying && MusicVolume > 0 && !MapEditor.IsEditing;
 			if (requireMusic != IsMusicPlaying) {

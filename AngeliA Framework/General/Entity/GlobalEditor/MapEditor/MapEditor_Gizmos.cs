@@ -44,11 +44,11 @@ namespace AngeliaFramework {
 			if (IsPlaying || DroppingPlayer || Game.IsPausing || TaskingRoute) return;
 
 			var TINT = new Byte4(128, 128, 128, 16);
-			var cRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
+			var cRect = MainWindowRect.Shrink(PanelRect.width, 0, 0, 0);
 			int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL) + 1) * Const.CEL;
-			int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL) + 1) * Const.CEL + Const.CEL;
+			int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL) + 1) * Const.CEL;
 			int d = Util.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
-			int u = Util.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL + Const.CEL;
+			int u = Util.CeilToInt(cRect.yMax.UDivide(Const.CEL)) * Const.CEL;
 			int size = Unify(2);
 			var rect = new IRect(cRect.xMin, 0, r - l, size);
 			for (int y = d; y <= u; y += Const.CEL) {
@@ -56,7 +56,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(BuiltInIcon.SOFT_LINE_H, rect, TINT, z: int.MinValue);
 				//Game.DrawGizmosRect(rect, TINT);
 			}
-			rect = new IRect(0, d, size, u - d);
+			rect = new IRect(0, cRect.y, size, cRect.height);
 			for (int x = l; x <= r; x += Const.CEL) {
 				rect.x = x - size / 2;
 				CellRenderer.Draw(BuiltInIcon.SOFT_LINE_V, rect, TINT, z: int.MinValue);

@@ -21,101 +21,84 @@ namespace AngeliaFramework {
 		// Api
 		public static GlobalEditorUI Instance { get; private set; } = null;
 		public static bool HasActiveInstance => Instance != null && Instance.Active;
-		public static bool ShowingToolbar => (Game.IsEdittime || !Project.OpeningBuiltInProject) && (!HasActiveInstance || Instance.ShowGlobalToolbar);
 		protected static bool MouseInToolbar { get; private set; } = false;
-		protected virtual bool ShowGlobalToolbar => true;
-
-		// Data
-		private static System.Action RestartGameImmediately;
-		private static readonly CellContent TooltipLabel = new() {
-			Alignment = Alignment.TopRight,
-			CharSize = 18,
-			Clip = false,
-			Wrap = false,
-			Tint = Const.GREY_230,
-			BackgroundTint = Const.BLACK,
-			BackgroundPadding = 6,
-		};
-
-		// MSG
-		[OnGameInitializeLater]
-		internal static void OnGameInitialize () => RestartGameImmediately += () => Game.RestartGame(immediately: true);
+		protected static IRect MainWindowRect { get; private set; } = default;
 
 
 		[OnGameQuitting]
 		public static void OnGameQuitting () {
-			if (HasActiveInstance) Instance.OnInactivated();
+			if (Game.AllowMakerFeaures && HasActiveInstance) Instance.OnInactivated();
 		}
 
 
 		[OnGameUpdate]
-		protected static void DrawToolbarUI () {
+		protected static void DrawPanelTabsUI () {
 
-			if (!ShowingToolbar) return;
-
-			int buttonSize = Unify(36);
-			var panelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Up, buttonSize);
-			int padding = Unify(6);
-			var rect = new IRect(panelRect.xMax, panelRect.y, buttonSize, buttonSize);
-
-			// Map Editor
-			rect.x -= buttonSize + padding;
-			if (MapEditor.IsActived) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue);
-			}
-			if (CellRendererGUI.Button(
-				rect, BUTTON_ICON_MAP_EDITOR, BUTTON_ICON_MAP_EDITOR, BUTTON_ICON_MAP_EDITOR,
-				0, 0, 0, z: int.MaxValue
-			) && !MapEditor.IsActived) {
-				OpenEditorSmoothly(MapEditor.TYPE_ID);
-			}
-			if (rect.MouseInside()) {
-				CellRendererGUI.Label(
-					TooltipLabel.SetText(LABEL_MAP_EDITOR.Get("Map Editor")),
-					rect.Shift(0, -rect.height - Unify(12))
-				);
+			if (!Game.AllowMakerFeaures) return;
+			if (Player.HasActivePlayer) {
+				MainWindowRect = CellRenderer.CameraRect;
+				return;
 			}
 
-			// Sheet Editor
-			rect.x -= buttonSize + padding;
-			if (SheetEditor.IsActived) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue);
-			}
-			if (CellRendererGUI.Button(
-				rect, BUTTON_ICON_SHEET_EDITOR, BUTTON_ICON_SHEET_EDITOR, BUTTON_ICON_SHEET_EDITOR,
-				0, 0, 0, z: int.MaxValue
-			) && !SheetEditor.IsActived) {
-				OpenEditorSmoothly(SheetEditor.TYPE_ID);
-			}
-			if (rect.MouseInside()) {
-				CellRendererGUI.Label(
-					TooltipLabel.SetText(LABEL_SHEET_EDITOR.Get("Sheet Editor")),
-					rect.Shift(0, -rect.height - Unify(12))
-				);
-			}
+			CellRenderer.SetLayerToUI();
 
-			// Language Editor
-			rect.x -= buttonSize + padding;
-			if (LanguageEditor.IsActived) {
-				CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue);
-			}
-			if (CellRendererGUI.Button(
-				rect, BUTTON_ICON_LANGUAGE_EDITOR, BUTTON_ICON_LANGUAGE_EDITOR, BUTTON_ICON_LANGUAGE_EDITOR,
-				0, 0, 0, z: int.MaxValue
-			) && !LanguageEditor.IsActived) {
-				OpenEditorSmoothly(LanguageEditor.TYPE_ID);
-			}
-			if (rect.MouseInside()) {
-				CellRendererGUI.Label(
-					TooltipLabel.SetText(LABEL_LANGUAGE_EDITOR.Get("Language Editor")),
-					rect.Shift(0, -rect.height - Unify(12))
-				);
-			}
+			int tabWidth = Unify(164);
+			int tabHeight = Unify(36);
+			const int padding = 0;
+			MainWindowRect = CellRenderer.CameraRect.EdgeInside(Direction4.Down, CellRenderer.CameraRect.height - tabHeight);
+			var panelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Up, tabHeight);
+			var rect = new IRect(panelRect.x, panelRect.y, tabWidth, tabHeight);
 
 			// BG
-			panelRect.width = panelRect.xMax - rect.x;
-			panelRect.x = rect.x;
-			CellRenderer.Draw(Const.PIXEL, panelRect, Const.BLACK, z: int.MaxValue - 1);
+			CellRenderer.Draw(Const.PIXEL, panelRect, Const.GREY_12, z: int.MaxValue - 2);
+
+			// Map Editor
+			if (MapEditor.IsActived) {
+				CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_128, int.MaxValue - 1);
+			}
+			if (CellRendererGUI.Button(
+				rect, LABEL_MAP_EDITOR.Get("map"), out var bounds, z: int.MaxValue
+			) && !MapEditor.IsActived) {
+				OpenEditor(MapEditor.TYPE_ID);
+			}
+			CellRenderer.Draw(
+				BUTTON_ICON_MAP_EDITOR,
+				new IRect(bounds.x - tabHeight, rect.y, tabHeight, tabHeight),
+				z: int.MaxValue - 1
+			);
+			rect.x += tabWidth + padding;
+
+			// Sheet Editor
+			if (SheetEditor.IsActived) {
+				CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_128, int.MaxValue - 1);
+			}
+			if (CellRendererGUI.Button(
+				rect, LABEL_SHEET_EDITOR.Get("Sheet"), out bounds, z: int.MaxValue
+			) && !SheetEditor.IsActived) {
+				OpenEditor(SheetEditor.TYPE_ID);
+			}
+			CellRenderer.Draw(
+				BUTTON_ICON_SHEET_EDITOR,
+				new IRect(bounds.x - tabHeight, rect.y, tabHeight, tabHeight),
+				z: int.MaxValue - 1
+			);
+			rect.x += tabWidth + padding;
+
+			// Language Editor
+			if (LanguageEditor.IsActived) {
+				CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_128, int.MaxValue - 1);
+			}
+			if (CellRendererGUI.Button(
+				rect, LABEL_LANGUAGE_EDITOR.Get("Language"), out bounds, z: int.MaxValue
+			) && !LanguageEditor.IsActived) {
+				OpenEditor(LanguageEditor.TYPE_ID);
+			}
+			CellRenderer.Draw(
+				BUTTON_ICON_LANGUAGE_EDITOR,
+				new IRect(bounds.x - tabHeight, rect.y, tabHeight, tabHeight),
+				z: int.MaxValue - 1
+			);
+			rect.x += tabWidth + padding;
 
 			// Block Event
 			MouseInToolbar = panelRect.MouseInside();
@@ -123,6 +106,8 @@ namespace AngeliaFramework {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseGameKey(Gamekey.Action);
 			}
+
+			CellRenderer.SetLayerToDefault();
 		}
 
 
@@ -134,7 +119,14 @@ namespace AngeliaFramework {
 
 
 		// API
+		public static void OpenEditor (int typeID) {
+			if (!Game.AllowMakerFeaures) return;
+			Stage.SpawnEntity(typeID, 0, 0);
+		}
+
+
 		public static void OpenEditorSmoothly (int typeID, bool fadeOutAndIn = true) {
+			if (!Game.AllowMakerFeaures) return;
 			FrameTask.EndAllTask();
 			if (fadeOutAndIn) {
 				// Fade
@@ -154,15 +146,6 @@ namespace AngeliaFramework {
 					task.Y = 0;
 				}
 			}
-		}
-
-
-		public static void CloseEditorSmoothly () {
-			if (Instance == null || !Instance.Active) return;
-			FrameTask.EndAllTask();
-			FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
-			FrameTask.AddToLast(DespawnEntityTask.TYPE_ID, Instance);
-			FrameTask.AddToLast(MethodTask.TYPE_ID, RestartGameImmediately);
 		}
 
 

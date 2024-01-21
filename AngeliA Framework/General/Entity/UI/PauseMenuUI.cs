@@ -60,7 +60,6 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_QUIT = "UI.Quit";
 		private static readonly LanguageCode UI_RESTART = "UI.Restart";
 		private static readonly LanguageCode UI_QUIT_GAME = "UI.QuitGame";
-		private static readonly LanguageCode UI_STOP_EDIT = "UI.StopEdit";
 		private static readonly LanguageCode UI_BACK = "UI.Back";
 		private static readonly LanguageCode UI_ON = "UI.ON";
 		private static readonly LanguageCode UI_OFF = "UI.OFF";
@@ -438,7 +437,7 @@ namespace AngeliaFramework {
 				Game.IsPlaying = true;
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
-				Game.RestartGame();
+				FrameTask.AddToLast(RestartGameTask.TYPE_ID);
 			}
 
 		}
@@ -446,22 +445,12 @@ namespace AngeliaFramework {
 
 		private void MenuQuit () {
 
-			bool editing = GlobalEditorUI.Instance != null && GlobalEditorUI.Instance.Active;
-
 			Message = MENU_QUIT_MESSAGE.Get("Quit Game?");
 
 			// Continue
 			if (DrawItem(UI_CONTINUE.Get("Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(1024);
-			}
-
-			// Stop Edit
-			if (editing && DrawItem(UI_STOP_EDIT.Get("Stop Editing"))) {
-				Game.IsPlaying = true;
-				Active = false;
-				FrameInput.UseAllHoldingKeys();
-				GlobalEditorUI.CloseEditorSmoothly();
 			}
 
 			// Quit Game
