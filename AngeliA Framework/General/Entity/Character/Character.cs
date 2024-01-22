@@ -110,7 +110,6 @@ namespace AngeliaFramework {
 
 		public override void OnActivated () {
 			base.OnActivated();
-			OnActivated_Inventory();
 			OnActivated_Movement();
 			OnActivated_Health();
 			OnActivated_Attack();
@@ -122,7 +121,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void OnActivated_Inventory () {
+		private void Update_InitInventory () {
 			// Init Inventory
 			if (IsCharacterWithInventory && GlobalInventoryInitVersion != LocalInventoryInitVersion) {
 				LocalInventoryInitVersion = GlobalInventoryInitVersion;
@@ -150,6 +149,7 @@ namespace AngeliaFramework {
 
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
+			Update_InitInventory();
 			BeforeUpdate_BuffValue();
 		}
 

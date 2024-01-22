@@ -50,7 +50,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_CONTINUE = "UI.Continue";
 
 		// Api
-		public static Player Selecting { get; set; } = null;
+		public static Player Selecting { get; private set; } = null;
 		public static bool HasActivePlayer => Selecting != null && Selecting.Active;
 		public static Int3? RespawnCpUnitPosition { get; set; } = null;
 		public static Int3? HomeUnitPosition { get; private set; } = null;
@@ -551,8 +551,8 @@ namespace AngeliaFramework {
 		public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
 
 
-		public static bool TryGetDefaultSelectPlayer (out System.Type result) {
-			result = null;
+		public static int GetDefaultPlayerID () {
+			System.Type result = null;
 			int currentPriority = int.MinValue;
 			foreach (var (type, attribute) in Util.AllClassWithAttribute<EntityAttribute.DefaultSelectPlayerAttribute>()) {
 				if ((type == typeof(Player) || type.IsSubclassOf(typeof(Player))) && attribute.Priority >= currentPriority) {
@@ -560,15 +560,13 @@ namespace AngeliaFramework {
 					currentPriority = attribute.Priority;
 				}
 			}
-			return result != null;
+			return result != null ? result.AngeHash() : 0;
 		}
 
 
 		public static void SelectPlayer (int playerID) {
 			if (Selecting != null && playerID == Selecting.TypeID) return;
-			if (playerID == 0) {
-				playerID = TryGetDefaultSelectPlayer(out var defaultPlayer) ? defaultPlayer.AngeHash() : 0;
-			}
+			if (playerID == 0) playerID = GetDefaultPlayerID();
 			if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
 				Selecting = player;
 			}
@@ -619,7 +617,7 @@ namespace AngeliaFramework {
 
 
 		private static void LoadGameDataFromFile () {
-			var data = JsonUtil.LoadOrCreateJson<PlayerGameData>(Project.CurrentProject.SavingMetaRoot);
+			var data = JsonUtil.LoadOrCreateJson<PlayerGameData>(ProjectSystem.CurrentProject.SavingMetaRoot);
 			HomeUnitPosition =
 				data.HomeUnitPositionX != int.MinValue &&
 				data.HomeUnitPositionY != int.MinValue &&
@@ -633,7 +631,7 @@ namespace AngeliaFramework {
 				HomeUnitPositionX = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.x : int.MinValue,
 				HomeUnitPositionY = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.y : int.MinValue,
 				HomeUnitPositionZ = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.z : int.MinValue,
-			}, Project.CurrentProject.SavingMetaRoot);
+			}, ProjectSystem.CurrentProject.SavingMetaRoot);
 		}
 
 

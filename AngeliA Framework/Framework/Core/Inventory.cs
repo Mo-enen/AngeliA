@@ -406,7 +406,7 @@ namespace AngeliaFramework {
 		private static void LoadAllFromDisk () {
 			IsPoolDirty = false;
 			Pool.Clear();
-			string root = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Inventory");
+			string root = Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, "Inventory");
 			if (!Util.FolderExists(root)) return;
 			foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{CHAR_INV_EXT}")) {
 				try {
@@ -438,7 +438,7 @@ namespace AngeliaFramework {
 
 		private static void SaveAllToDisk (bool forceSave) {
 			IsPoolDirty = false;
-			string root = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Inventory");
+			string root = Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, "Inventory");
 			foreach (var (_, data) in Pool) {
 				if (!forceSave && !data.IsDirty) continue;
 				data.IsDirty = false;

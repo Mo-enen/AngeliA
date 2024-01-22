@@ -33,7 +33,7 @@ namespace AngeliaFramework {
 		public static int LastTriggeredCheckPointID { get; private set; } = 0;
 
 		// Short
-		private static string UnlockFolderPath => Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Unlocked CP");
+		private static string UnlockFolderPath => Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, "Unlocked CP");
 
 		// Data
 		private static readonly HashSet<int> UnlockedCheckPoint = new();

@@ -119,6 +119,8 @@ namespace AngeliaForUnity {
 				CursorPivots = m_CursorPivots,
 			};
 			UnityGame.Initialize();
+			DontDestroyOnLoad(UnityGame.UnityCamera.gameObject);
+			DontDestroyOnLoad(gameObject);
 		}
 
 

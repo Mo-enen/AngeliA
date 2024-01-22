@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireLanguageFromField]
-	public partial class LanguageEditor : GlobalEditorUI {
+	public partial class LanguageEditor : WindowUI {
 
 
 
@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
 
 		// Api
-		public new static LanguageEditor Instance => GlobalEditorUI.Instance as LanguageEditor;
+		public new static LanguageEditor Instance => WindowUI.Instance as LanguageEditor;
 		public static bool IsActived => Instance != null && Instance.Active;
 
 		// Data
@@ -317,7 +317,7 @@ namespace AngeliaFramework {
 		private void LoadFromDisk () {
 			IsDirty = false;
 			Lines.Clear();
-			string targetRoot = Project.CurrentProject.LanguageRoot;
+			string targetRoot = ProjectSystem.CurrentProject.LanguageRoot;
 			int count = Language.LanguageCount;
 			// Load Language
 			for (int languageIndex = 0; languageIndex < count; languageIndex++) {
@@ -366,7 +366,7 @@ namespace AngeliaFramework {
 
 		private void SaveToDisk () {
 			IsDirty = false;
-			string targetRoot = Project.CurrentProject.LanguageRoot;
+			string targetRoot = ProjectSystem.CurrentProject.LanguageRoot;
 			var list = new List<KeyValuePair<string, string>>();
 			for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
 				string lan = Languages[languageIndex];
@@ -411,7 +411,7 @@ namespace AngeliaFramework {
 				string.Format(DELETE_MSG.Get("Delete Language {0}?"), lanName),
 				UI_DELETE.Get("Delete"),
 				() => {
-					string targetRoot = Project.CurrentProject.LanguageRoot;
+					string targetRoot = ProjectSystem.CurrentProject.LanguageRoot;
 					string path = Language.GetLanguageFilePath(targetRoot, Languages[lanIndex]);
 					Util.DeleteFile(path);
 					Languages.RemoveAt(lanIndex);

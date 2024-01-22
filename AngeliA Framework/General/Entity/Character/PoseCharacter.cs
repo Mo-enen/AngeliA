@@ -66,23 +66,23 @@ namespace AngeliaFramework {
 		public override int GrowingHeight => base.GrowingHeight * CharacterHeight / 160;
 
 		// BodyPart
-		public BodyPart Head { get; private set; } = null;
-		public BodyPart Body { get; private set; } = null;
-		public BodyPart Hip { get; private set; } = null;
-		public BodyPart ShoulderL { get; private set; } = null;
-		public BodyPart ShoulderR { get; private set; } = null;
-		public BodyPart UpperArmL { get; private set; } = null;
-		public BodyPart UpperArmR { get; private set; } = null;
-		public BodyPart LowerArmL { get; private set; } = null;
-		public BodyPart LowerArmR { get; private set; } = null;
-		public BodyPart HandL { get; private set; } = null;
-		public BodyPart HandR { get; private set; } = null;
-		public BodyPart UpperLegL { get; private set; } = null;
-		public BodyPart UpperLegR { get; private set; } = null;
-		public BodyPart LowerLegL { get; private set; } = null;
-		public BodyPart LowerLegR { get; private set; } = null;
-		public BodyPart FootL { get; private set; } = null;
-		public BodyPart FootR { get; private set; } = null;
+		public BodyPart Head { get; init; } = null;
+		public BodyPart Body { get; init; } = null;
+		public BodyPart Hip { get; init; } = null;
+		public BodyPart ShoulderL { get; init; } = null;
+		public BodyPart ShoulderR { get; init; } = null;
+		public BodyPart UpperArmL { get; init; } = null;
+		public BodyPart UpperArmR { get; init; } = null;
+		public BodyPart LowerArmL { get; init; } = null;
+		public BodyPart LowerArmR { get; init; } = null;
+		public BodyPart HandL { get; init; } = null;
+		public BodyPart HandR { get; init; } = null;
+		public BodyPart UpperLegL { get; init; } = null;
+		public BodyPart UpperLegR { get; init; } = null;
+		public BodyPart LowerLegL { get; init; } = null;
+		public BodyPart LowerLegR { get; init; } = null;
+		public BodyPart FootL { get; init; } = null;
+		public BodyPart FootR { get; init; } = null;
 
 		// Gadget
 		public int FaceID { get; set; } = 0;
@@ -124,7 +124,13 @@ namespace AngeliaFramework {
 
 
 		[OnProjectOpen(32)]
-		public static void OnProjectOpen_Pose () {
+		public static void OnGameInitialize () {
+			if (Game.GlobalFrame != 0) InitializePose();
+		}
+
+
+		[OnGameInitialize]
+		public static void InitializePose () {
 
 			// Require Reload
 			CachedConfigVersion++;
@@ -182,9 +188,31 @@ namespace AngeliaFramework {
 
 		public PoseCharacter () {
 			int len = DEFAULT_BODY_PART_ID.Length;
-			if (BodyParts == null || BodyParts.Length != len) {
-				BodyParts = new BodyPart[len];
+			BodyParts = new BodyPart[len];
+			for (int i = 0; i < len; i++) {
+				var bodyPart = BodyParts[i] = new BodyPart();
+				bodyPart.SetData(DEFAULT_BODY_PART_ID[i],
+					i == 9 || i == 10 || i == 15 || i == 16,
+					(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
+				);
 			}
+			Head = BodyParts[0];
+			Body = BodyParts[1];
+			Hip = BodyParts[2];
+			ShoulderL = BodyParts[3];
+			ShoulderR = BodyParts[4];
+			UpperArmL = BodyParts[5];
+			UpperArmR = BodyParts[6];
+			LowerArmL = BodyParts[7];
+			LowerArmR = BodyParts[8];
+			HandL = BodyParts[9];
+			HandR = BodyParts[10];
+			UpperLegL = BodyParts[11];
+			UpperLegR = BodyParts[12];
+			LowerLegL = BodyParts[13];
+			LowerLegR = BodyParts[14];
+			FootL = BodyParts[15];
+			FootR = BodyParts[16];
 		}
 
 
@@ -205,6 +233,7 @@ namespace AngeliaFramework {
 
 		protected override void RenderCharacter () {
 
+			if (!BodyPartsReady) return;
 			int cellIndexStart = CellRenderer.GetUsedCellCount();
 
 			ResetPoseToDefault(false);
@@ -680,7 +709,7 @@ namespace AngeliaFramework {
 				// Body Part
 				for (int i = 0; i < len; i++) {
 					var bodyPartID = config.BodyParts[i];
-					BodyParts[i] = new BodyPart(
+					BodyParts[i].SetData(
 						bodyPartID,
 						i == 9 || i == 10 || i == 15 || i == 16,
 						(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
@@ -705,7 +734,7 @@ namespace AngeliaFramework {
 			} else {
 				// Load Default Bodypart
 				for (int i = 0; i < len; i++) {
-					BodyParts[i] = new BodyPart(
+					BodyParts[i].SetData(
 						DEFAULT_BODY_PART_ID[i],
 						i == 9 || i == 10 || i == 15 || i == 16,
 						(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
@@ -713,24 +742,6 @@ namespace AngeliaFramework {
 				}
 			}
 
-			// Final
-			Head = BodyParts[0];
-			Body = BodyParts[1];
-			Hip = BodyParts[2];
-			ShoulderL = BodyParts[3];
-			ShoulderR = BodyParts[4];
-			UpperArmL = BodyParts[5];
-			UpperArmR = BodyParts[6];
-			LowerArmL = BodyParts[7];
-			LowerArmR = BodyParts[8];
-			HandL = BodyParts[9];
-			HandR = BodyParts[10];
-			UpperLegL = BodyParts[11];
-			UpperLegR = BodyParts[12];
-			LowerLegL = BodyParts[13];
-			LowerLegR = BodyParts[14];
-			FootL = BodyParts[15];
-			FootR = BodyParts[16];
 		}
 
 

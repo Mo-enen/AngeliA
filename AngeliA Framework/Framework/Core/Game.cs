@@ -39,15 +39,7 @@ namespace AngeliaFramework {
 		public static int SettleFrame => GlobalFrame - Stage.LastSettleFrame;
 		public static int PauselessFrame { get; private set; } = 0;
 		public static bool IsPausing => !IsPlaying;
-		public static bool IsPlaying {
-			get => _IsPlaying;
-			set {
-				if (_IsPlaying != value) {
-					_IsPlaying = value;
-					if (!value) Game.StopAllSounds();
-				}
-			}
-		}
+		public static bool IsPlaying { get; private set; } = true;
 		public static bool ShowFPS {
 			get => _ShowFPS.Value;
 			set {
@@ -65,8 +57,8 @@ namespace AngeliaFramework {
 			get => _SoundVolume.Value;
 			set => _SoundVolume.Value = value;
 		}
-		public static float ScaledMusicVolume => GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
-		public static float ScaledSoundVolume => GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
+		public static float ScaledMusicVolume => AngeUtil.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
+		public static float ScaledSoundVolume => AngeUtil.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 		public static int ProcedureAudioVolume { get; set; } = 1000;
 		public static float CurrentFPS { get; private set; } = 1f;
 		public static int GameMajorVersion { get; private set; } = -1;
@@ -89,15 +81,14 @@ namespace AngeliaFramework {
 		private static readonly Dictionary<int, object> ResourcePool = new();
 		private static Stopwatch GameWatch;
 		private static long LastGraphicUpdateTime = 0;
-		private static bool _IsPlaying = true;
 
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
 		private static readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
-		private static readonly SavingBool _VSync = new("Game.VSync", false);
-		private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 		private static readonly SavingInt _MusicVolume = new("Audio.MusicVolume", 500);
 		private static readonly SavingInt _SoundVolume = new("Audio.SoundVolume", 1000);
+		private static readonly SavingBool _VSync = new("Game.VSync", false);
+		private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 
 
 		#endregion
@@ -156,18 +147,18 @@ namespace AngeliaFramework {
 				System.GC.Collect();
 
 				if (IsEdittime) {
-					GlobalEditorUI.OpenEditor(MapEditor.TYPE_ID);
+					WindowUI.OpenWindow(MapEditor.TYPE_ID);
 				} else if (AllowMakerFeaures) {
-					GlobalEditorUI.OpenEditor(MapEditor.TYPE_ID);
+					WindowUI.OpenWindow(HomeScreen.TYPE_ID);
 				} else {
-					RestartGameImmediately();
+					RestartGame();
 				}
 
 			} catch (System.Exception ex) { LogException(ex); }
 			// Func
 			static bool OnTryingToQuit () {
 				if (IsPausing || IsEdittime) return true;
-				IsPlaying = false;
+				PauseGame();
 				OnGameTryingToQuit?.Invoke();
 				return false;
 			}
@@ -185,7 +176,13 @@ namespace AngeliaFramework {
 				OnGameUpdatePauseless?.Invoke();
 
 				// Switch Between Play and Pause
-				if (FrameInput.GameKeyUp(Gamekey.Start)) IsPlaying = !IsPlaying;
+				if (FrameInput.GameKeyUp(Gamekey.Start)) {
+					if (IsPlaying) {
+						PauseGame();
+					} else {
+						UnpauseGame();
+					}
+				}
 
 				// Grow Frame
 				if (!IsPausing) GlobalFrame++;
@@ -205,6 +202,20 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameUpdatePauseless]
+		internal static void RefreshGameAudio () {
+			// Load or Stop Music
+			bool requireMusic = IsPlaying && ScaledMusicVolume > 0 && !MapEditor.IsEditing;
+			if (requireMusic != IsMusicPlaying) {
+				if (requireMusic) {
+					UnpauseMusic();
+				} else {
+					PauseMusic();
+				}
+			}
+		}
+
+
 		#endregion
 
 
@@ -213,14 +224,26 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		public static void RestartGameImmediately () => OnGameRestart?.Invoke();
+		public static void RestartGame () => OnGameRestart?.Invoke();
 
 
 		public static void StopGame () {
 			WorldSquad.Enable = false;
 			Stage.DespawnAllEntitiesFromWorld();
 			if (Player.Selecting != null) Player.Selecting.Active = false;
-			Player.Selecting = null;
+		}
+
+
+		public static void UnpauseGame () {
+			if (IsPlaying) return;
+			IsPlaying = true;
+		}
+
+
+		public static void PauseGame () {
+			if (!IsPlaying) return;
+			StopAllSounds();
+			IsPlaying = false;
 		}
 
 
@@ -231,36 +254,6 @@ namespace AngeliaFramework {
 			}
 			resource = default;
 			return false;
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-		// Audio
-		private static float GetScaledAudioVolume (int volume, int scale = 1000) {
-			float fVolume = volume / 1000f;
-			if (scale != 1000) fVolume *= scale / 1000f;
-			return fVolume * fVolume;
-		}
-
-
-		[OnGameUpdatePauseless]
-		internal static void RefreshGameAudio () {
-			// Load or Stop Music
-			bool requireMusic = IsPlaying && MusicVolume > 0 && !MapEditor.IsEditing;
-			if (requireMusic != IsMusicPlaying) {
-				if (requireMusic) {
-					UnPauseMusic();
-				} else {
-					PauseMusic();
-				}
-			}
 		}
 
 

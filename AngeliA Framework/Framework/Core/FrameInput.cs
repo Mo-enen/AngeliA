@@ -246,7 +246,7 @@ namespace AngeliaFramework {
 		[OnProjectOpen]
 		public static void OnProjectOpen () {
 			// Load Config
-			var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(Project.CurrentProject.SavingMetaRoot);
+			var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(ProjectSystem.CurrentProject.SavingMetaRoot);
 			for (int i = 0; i < 8; i++) {
 				KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
 			}

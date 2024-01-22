@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 	[RequireSpriteFromField]
-	public partial class SheetEditor : GlobalEditorUI {
+	public partial class SheetEditor : WindowUI {
 
 
 
@@ -45,7 +45,7 @@ namespace AngeliaFramework {
 		private static readonly string[] BUILT_IN_ATLAS_REQUIREMENTS = { "LevelFront", "LevelBack", "Background", };
 
 		// Api
-		public new static SheetEditor Instance => GlobalEditorUI.Instance as SheetEditor;
+		public new static SheetEditor Instance => WindowUI.Instance as SheetEditor;
 		public static bool IsActived => Instance != null && Instance.Active;
 
 		// Data
@@ -65,7 +65,7 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize]
 		public static void CreateAtlasFiles () {
-			string root = Project.CurrentProject.AtlasRoot;
+			string root = ProjectSystem.CurrentProject.AtlasRoot;
 			CreateFileIfNotExists(root, "LevelFront", AtlasType.Level, 16);
 			CreateFileIfNotExists(root, "LevelBack", AtlasType.Level, -35);
 			CreateFileIfNotExists(root, "Background", AtlasType.Background, -64);
@@ -164,7 +164,7 @@ namespace AngeliaFramework {
 			AllRequiredAtlasNames.Clear();
 
 			// Load Requirement From File
-			foreach (var path in Util.EnumerateFiles(Project.CurrentProject.AtlasRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(ProjectSystem.CurrentProject.AtlasRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
 				string atlasName = Util.GetNameWithoutExtension(path);
 				int nameID = atlasName.AngeHash();
 				if (!AtlasRequirements.ContainsKey(nameID)) {
@@ -213,7 +213,7 @@ namespace AngeliaFramework {
 		private void LoadAtlasSheetFromDisk (Sheet atlasSheet, string atlasName) {
 			// Load from Disk
 			string path = Util.CombinePaths(
-				Project.CurrentProject.AtlasRoot,
+				ProjectSystem.CurrentProject.AtlasRoot,
 				$"{atlasName}.{AngePath.SHEET_FILE_EXT}"
 			);
 			bool loaded = atlasSheet.LoadFromDisk(path);
@@ -233,7 +233,7 @@ namespace AngeliaFramework {
 
 		private void SaveAtlasSheetToDisk (Sheet atlasSheet, string atlasName) =>
 			atlasSheet.SaveToDisk(Util.CombinePaths(
-				Project.CurrentProject.AtlasRoot,
+				ProjectSystem.CurrentProject.AtlasRoot,
 				$"{atlasName}.{AngePath.SHEET_FILE_EXT}"
 			));
 

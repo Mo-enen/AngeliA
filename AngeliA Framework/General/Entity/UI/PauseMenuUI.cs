@@ -68,16 +68,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_DONT_SAVE = "UI.DontSave";
 		private static readonly LanguageCode UI_NO = "UI.No";
 		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
-		private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
-			$"UI.GameKey.{Gamekey.Left}",
-			$"UI.GameKey.{Gamekey.Right}",
-			$"UI.GameKey.{Gamekey.Down}",
-			$"UI.GameKey.{Gamekey.Up}",
-			$"UI.GameKey.{Gamekey.Action}",
-			$"UI.GameKey.{Gamekey.Jump}",
-			$"UI.GameKey.{Gamekey.Start}",
-			$"UI.GameKey.{Gamekey.Select}",
-		};
+		private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] { $"UI.GameKey.{Gamekey.Left}", $"UI.GameKey.{Gamekey.Right}", $"UI.GameKey.{Gamekey.Down}", $"UI.GameKey.{Gamekey.Up}", $"UI.GameKey.{Gamekey.Action}", $"UI.GameKey.{Gamekey.Jump}", $"UI.GameKey.{Gamekey.Start}", $"UI.GameKey.{Gamekey.Select}", };
 
 		// Data
 		private static PauseMenuUI Instance = null;
@@ -137,7 +128,7 @@ namespace AngeliaFramework {
 
 		public override void OnInactivated () {
 			base.OnInactivated();
-			if (Game.IsPausing) Game.IsPlaying = true;
+			Game.UnpauseGame();
 		}
 
 
@@ -194,7 +185,7 @@ namespace AngeliaFramework {
 
 			// 0-Continue
 			if (DrawItem(UI_CONTINUE.Get("Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
-				Game.IsPlaying = true;
+				Game.UnpauseGame();
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
 			}
@@ -211,13 +202,17 @@ namespace AngeliaFramework {
 				SetSelection(0);
 			}
 
-			if (MapEditor.IsActived) {
-				// 3-Map Editor Setting
-				if (DrawItem(MENU_MEDT_SETTING.Get("Editor Setting"))) {
-					RequireMode = MenuMode.EditorSetting;
-					SetSelection(0);
+			if (Game.AllowMakerFeaures) {
+				// Maker Game
+				if (MapEditor.IsEditing) {
+					// 3-Map Editor Setting
+					if (DrawItem(MENU_MEDT_SETTING.Get("Editor Setting"))) {
+						RequireMode = MenuMode.EditorSetting;
+						SetSelection(0);
+					}
 				}
-			} else if (!GlobalEditorUI.HasActiveInstance) {
+			} else {
+				// Player Game
 				// 3-Restart Game
 				if (DrawItem(UI_RESTART.Get("Restart"))) {
 					RequireMode = MenuMode.Restart;
@@ -332,23 +327,25 @@ namespace AngeliaFramework {
 			}
 
 			// Language
-			int currentLanguageIndex = 0;
-			for (int i = 0; i < Language.LanguageCount; i++) {
-				var lan = Language.GetLanguageAt(i);
-				if (lan == Language.CurrentLanguage) {
-					currentLanguageIndex = i;
-					break;
+			if (Language.LanguageCount > 0) {
+				int currentLanguageIndex = 0;
+				for (int i = 0; i < Language.LanguageCount; i++) {
+					var lan = Language.GetLanguageAt(i);
+					if (lan == Language.CurrentLanguage) {
+						currentLanguageIndex = i;
+						break;
+					}
 				}
-			}
-			if (DrawArrowItem(
-				MENU_LANGUAGE.Get("Language"),
-				CellContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
-				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
-			) {
-				int newIndex = currentLanguageIndex + delta;
-				newIndex = newIndex.Clamp(0, Language.LanguageCount - 1);
-				if (newIndex != currentLanguageIndex) {
-					Language.SetLanguage(Language.GetLanguageAt(newIndex));
+				if (DrawArrowItem(
+					MENU_LANGUAGE.Get("Language"),
+					CellContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
+					currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
+				) {
+					int newIndex = currentLanguageIndex + delta;
+					newIndex = newIndex.Clamp(0, Language.LanguageCount - 1);
+					if (newIndex != currentLanguageIndex) {
+						Language.SetLanguage(Language.GetLanguageAt(newIndex));
+					}
 				}
 			}
 
@@ -434,7 +431,7 @@ namespace AngeliaFramework {
 
 			// Restart
 			if (DrawItem(UI_RESTART.Get("Restart"))) {
-				Game.IsPlaying = true;
+				Game.UnpauseGame();
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
 				FrameTask.AddToLast(RestartGameTask.TYPE_ID);

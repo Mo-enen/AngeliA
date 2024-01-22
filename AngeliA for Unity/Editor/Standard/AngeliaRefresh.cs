@@ -166,16 +166,16 @@ namespace AngeliaForUnity.Editor {
 
 					// Flex Sprites >> Sheet
 					var sheet = CreateSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
-					sheet?.SaveToDisk(Project.GetSheetPath(universeRoot));
-					sheet?.SaveToDisk(Project.GetSheetPath(Project.GetUniverseRoot(AngePath.ProjectTemplateRoot)));
+					sheet?.SaveToDisk(AngePath.GetSheetPath(universeRoot));
+					sheet?.SaveToDisk(AngePath.GetSheetPath(AngePath.GetUniverseRoot(AngePath.ProjectTemplateRoot)));
 
 					// Maps
-					AngeUtil.DeleteAllEmptyMaps(Project.GetMapRoot(universeRoot));
+					AngeUtil.DeleteAllEmptyMaps(AngePath.GetMapRoot(universeRoot));
 
 					// Final
 					ItemSystem.CreateItemCombinationHelperFiles(savingRoot);
 					ItemSystem.CreateCombinationFileFromCode(universeRoot, true);
-					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, Project.GetDialogueRoot(universeRoot), forceRefresh);
+					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, AngePath.GetDialogueRoot(universeRoot), forceRefresh);
 
 					// For Unity
 					if (forceRefresh) {

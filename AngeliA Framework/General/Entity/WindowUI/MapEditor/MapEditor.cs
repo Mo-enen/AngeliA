@@ -5,7 +5,7 @@ using GeorgeMamaladze;
 
 namespace AngeliaFramework {
 	[RequireLanguageFromField]
-	public sealed partial class MapEditor : GlobalEditorUI {
+	public sealed partial class MapEditor : WindowUI {
 
 
 
@@ -95,7 +95,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_DELETE = "UI.Delete";
 
 		// Api
-		public new static MapEditor Instance => GlobalEditorUI.Instance as MapEditor;
+		public new static MapEditor Instance => WindowUI.Instance as MapEditor;
 		public static bool IsActived => Instance != null && Instance.Active;
 		public static bool IsEditing => IsActived && !Instance.PlayingGame;
 		public static bool IsPlaying => IsActived && Instance.PlayingGame;
@@ -134,7 +134,7 @@ namespace AngeliaFramework {
 		// Data
 		private PaletteItem SelectingPaletteItem = null;
 		private Int3 PlayerDropPos = default;
-		private IRect TargetViewRect = default;
+		private IRect TargetViewRect = new(0, 0, 1, 1);
 		private IRect CopyBufferOriginalUnitRect = default;
 		private IRect TooltipRect = default;
 		private IRect PanelRect = default;
@@ -184,7 +184,7 @@ namespace AngeliaFramework {
 			if (InitializedFrame < 0) {
 				InitializedFrame = Game.GlobalFrame;
 				UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
-				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(Project.CurrentProject.MapRoot);
+				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(ProjectSystem.CurrentProject.MapRoot);
 				Initialize_Pool();
 				Initialize_Palette();
 				Initialize_Nav();
@@ -217,7 +217,7 @@ namespace AngeliaFramework {
 
 			// Start
 			if (Game.GlobalFrame == 0) {
-				Game.RestartGameImmediately();
+				Game.RestartGame();
 				SetEditorMode(true);
 				Game.PassEffect_RetroDarken(1f);
 			} else {
@@ -245,8 +245,8 @@ namespace AngeliaFramework {
 				Save();
 			}
 
-			JsonUtil.SaveJson(EditorMeta, Project.CurrentProject.MapRoot);
-			AngeUtil.DeleteAllEmptyMaps(Project.CurrentProject.MapRoot);
+			JsonUtil.SaveJson(EditorMeta, ProjectSystem.CurrentProject.MapRoot);
+			AngeUtil.DeleteAllEmptyMaps(ProjectSystem.CurrentProject.MapRoot);
 			IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SpawnEntity = true;
@@ -812,9 +812,11 @@ namespace AngeliaFramework {
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
 			var player = Player.Selecting;
-			if (player == null && Player.TryGetDefaultSelectPlayer(out var defaultPlayerType)) {
-				if (Stage.PeekOrGetEntity(defaultPlayerType.AngeHash()) is Player defaultPlayer) {
-					player = Player.Selecting = defaultPlayer;
+			if (player == null) {
+				int defaultID = Player.GetDefaultPlayerID();
+				if (defaultID != 0) {
+					Player.SelectPlayer(defaultID);
+					player = Player.Selecting;
 				}
 			}
 			if (player == null) return;

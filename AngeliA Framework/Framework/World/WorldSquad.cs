@@ -287,9 +287,9 @@ namespace AngeliaFramework {
 			if (SaveBeforeReload) Front.SaveToFile();
 
 			MapRoot = newChannel switch {
-				MapChannel.BuiltIn => Project.CurrentProject.MapRoot,
-				MapChannel.Procedure => Util.CombinePaths(Project.CurrentProject.ProcedureMapRoot, folderName),
-				_ => Project.CurrentProject.MapRoot,
+				MapChannel.BuiltIn => ProjectSystem.CurrentProject.MapRoot,
+				MapChannel.Procedure => Util.CombinePaths(ProjectSystem.CurrentProject.ProcedureMapRoot, folderName),
+				_ => ProjectSystem.CurrentProject.MapRoot,
 			};
 			Channel = newChannel;
 

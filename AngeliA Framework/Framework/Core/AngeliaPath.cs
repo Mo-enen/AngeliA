@@ -56,5 +56,19 @@ namespace AngeliaFramework {
 		private static string _ProcedureMapTempRoot = null;
 
 
+		// Project
+		public static string GetUniverseRoot (string projectFolder) => Util.CombinePaths(projectFolder, "Universe");
+		public static string GetSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet.sheet");
+		public static string GetAtlasRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Atlas");
+		public static string GetDialogueRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Dialogue");
+		public static string GetUniverseMetaRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Meta");
+		public static string GetMapRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Map");
+		public static string GetLanguageRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Language");
+		public static string GetItemCustomizationRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Item Customization");
+		public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
+		public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
+
+
+
 	}
 }

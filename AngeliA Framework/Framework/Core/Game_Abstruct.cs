@@ -264,7 +264,7 @@ namespace AngeliaFramework {
 		public static void PauseMusic () => Instance._PauseMusic();
 		protected abstract void _PauseMusic ();
 
-		public static void UnPauseMusic () => Instance._UnPauseMusic();
+		public static void UnpauseMusic () => Instance._UnPauseMusic();
 		protected abstract void _UnPauseMusic ();
 
 		internal static void SetMusicVolume (int volume) {

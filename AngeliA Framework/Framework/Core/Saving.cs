@@ -17,7 +17,7 @@ namespace AngeliaFramework {
 
 		[OnGameInitialize(int.MinValue + 1)]
 		public static void OnGameInitialize () {
-			SavingPath = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "Saving.txt");
+			SavingPath = Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, "Saving.txt");
 			LoadFromFile();
 		}
 

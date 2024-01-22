@@ -39,8 +39,8 @@ namespace AngeliaFramework {
 		public int SpritePivotY { get; private set; } = 0;
 		public int SizeX { get; private set; } = Const.CEL;
 		public int SizeY { get; private set; } = Const.CEL;
-		public bool UseLimbFlip { get; init; } = false;
-		public BodyPart LimbParent { get; init; } = null;
+		public bool UseLimbFlip { get; private set; } = false;
+		public BodyPart LimbParent { get; private set; } = null;
 		public bool IsFullCovered => Covered == CoverMode.FullCovered;
 
 		public int GlobalX;
@@ -59,7 +59,7 @@ namespace AngeliaFramework {
 
 
 		// API
-		public BodyPart (int id = 0, bool useLimbFlip = false, BodyPart parent = null) {
+		public void SetData (int id = 0, bool useLimbFlip = false, BodyPart parent = null) {
 			if (CellRenderer.TryGetSpriteFromGroup(id, 0, out var sprite, false, true)) {
 				SizeX = sprite.GlobalWidth;
 				SizeY = sprite.GlobalHeight;

@@ -204,12 +204,12 @@ namespace AngeliaFramework {
 
 		// Saving
 		protected bool LoadGameDataFromFile<T> (T data) => JsonUtil.OverrideJson(
-			Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "MiniGame"), data, GetType().Name
+			Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, "MiniGame"), data, GetType().Name
 		);
 
 
 		protected void SaveGameDataToFile<T> (T data) => JsonUtil.SaveJson(
-			data, Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, "MiniGame"), GetType().Name
+			data, Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, "MiniGame"), GetType().Name
 		);
 
 

@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 
 			// Get All Language from Disk
 			var allLanguages = new List<string>();
-			foreach (var path in Util.EnumerateFiles(Project.CurrentProject.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(ProjectSystem.CurrentProject.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 				allLanguages.Add(Util.GetNameWithoutExtension(path));
 			}
 			AllLanguages = allLanguages.ToArray();
@@ -62,7 +62,7 @@ namespace AngeliaFramework {
 
 		public static bool SetLanguage (string language) {
 			Pool.Clear();
-			string path = GetLanguageFilePath(Project.CurrentProject.LanguageRoot, language);
+			string path = GetLanguageFilePath(ProjectSystem.CurrentProject.LanguageRoot, language);
 			if (!Util.FileExists(path)) return false;
 			foreach (var (key, value) in LoadAllPairsFromDiskAtPath(path)) {
 				Pool.TryAdd(key.AngeHash(), value);

@@ -111,7 +111,7 @@ namespace AngeliaFramework {
 			foreach (var type in typeof(Item).AllChildClass()) {
 				if (System.Activator.CreateInstance(type) is not Item item) continue;
 				string angeName = type.AngeName();
-				ItemPool.TryAdd(type.AngeHash(), new(
+				ItemPool.TryAdd(type.AngeHash(), new ItemData(
 					item,
 					$"iName.{angeName}".AngeHash(),
 					$"iDes.{angeName}".AngeHash(),
@@ -122,13 +122,13 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnProjectOpen(1024)]
+		[OnProjectOpen(31)]
 		public static void OnProjectOpen () {
-			CreateItemCombinationHelperFiles(Project.CurrentProject.SavingRoot);
-			CreateCombinationFileFromCode(Project.CurrentProject.UniverseRoot, false);
+			CreateItemCombinationHelperFiles(ProjectSystem.CurrentProject.SavingRoot);
+			CreateCombinationFileFromCode(ProjectSystem.CurrentProject.UniverseRoot, false);
 			CombinationPool.Clear();
-			LoadCombinationFromFile(Util.CombinePaths(Project.CurrentProject.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME));
-			LoadCombinationFromFile(Util.CombinePaths(Project.CurrentProject.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME));
+			LoadCombinationFromFile(Util.CombinePaths(ProjectSystem.CurrentProject.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME));
+			LoadCombinationFromFile(Util.CombinePaths(ProjectSystem.CurrentProject.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME));
 			LoadUnlockDataFromFile();
 		}
 
@@ -217,7 +217,7 @@ namespace AngeliaFramework {
 		// Combination
 		public static void CreateItemCombinationHelperFiles (string savingFolder) {
 
-			string itemCusRoot = Project.GetItemCustomizationRoot(savingFolder);
+			string itemCusRoot = AngePath.GetItemCustomizationRoot(savingFolder);
 
 			// Create User Combination Template
 			string combineFilePath = Util.CombinePaths(itemCusRoot, AngePath.COMBINATION_FILE_NAME);
@@ -261,7 +261,7 @@ namespace AngeliaFramework {
 
 		public static void CreateCombinationFileFromCode (string universeFolder, bool forceCreate) {
 
-			string metaRoot = Project.GetUniverseMetaRoot(universeFolder);
+			string metaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
 
 			string builtInPath = Util.CombinePaths(metaRoot, AngePath.COMBINATION_FILE_NAME);
 			if (!forceCreate && Util.FileExists(builtInPath)) return;
@@ -480,7 +480,7 @@ namespace AngeliaFramework {
 
 		// Unlock
 		private static void LoadUnlockDataFromFile () {
-			string unlockPath = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, UNLOCK_NAME);
+			string unlockPath = Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, UNLOCK_NAME);
 			if (!Util.FileExists(unlockPath)) return;
 			foreach (var (_, data) in ItemPool) data.Unlocked = false;
 			var bytes = Util.FileToByte(unlockPath);
@@ -498,7 +498,7 @@ namespace AngeliaFramework {
 
 
 		private static void SaveUnlockDataToFile () {
-			string unlockPath = Util.CombinePaths(Project.CurrentProject.SavingMetaRoot, UNLOCK_NAME);
+			string unlockPath = Util.CombinePaths(ProjectSystem.CurrentProject.SavingMetaRoot, UNLOCK_NAME);
 			Util.CreateFolder(Util.GetParentPath(unlockPath));
 			var fs = new FileStream(unlockPath, FileMode.Create, FileAccess.Write);
 			foreach (var (id, data) in ItemPool) {

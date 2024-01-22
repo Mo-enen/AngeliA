@@ -182,7 +182,7 @@ namespace AngeliaForUnity.Editor {
 			var texture = SheetThumbnail.image as Texture2D;
 			if (texture == null || forceRefresh) {
 				SheetThumbnail.image = texture = Sheet.LoadTextureInSheet(
-					Project.GetSheetPath(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"))
+					AngePath.GetSheetPath(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"))
 				) as Texture2D;
 			}
 

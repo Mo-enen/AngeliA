@@ -41,6 +41,7 @@ namespace AngeliaForUnity {
 				source.mute = false;
 			}
 
+			Object.DontDestroyOnLoad(root.gameObject);
 		}
 
 

@@ -83,7 +83,7 @@ namespace AngeliaFramework {
 		public static void StartConversation<D> (string globalName) where D : DialogueUI {
 
 			string conversationPath = Util.CombinePaths(
-				Project.CurrentProject.DialogueRoot, globalName,
+				ProjectSystem.CurrentProject.DialogueRoot, globalName,
 				$"{Language.CurrentLanguage}.{AngePath.CONVERSATION_FILE_EXT}"
 			);
 			if (Main == null || FrameTask.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;

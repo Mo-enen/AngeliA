@@ -404,6 +404,13 @@ namespace AngeliaFramework {
 		}
 
 
+		public static float GetScaledAudioVolume (int volume, int scale = 1000) {
+			float fVolume = volume / 1000f;
+			if (scale != 1000) fVolume *= scale / 1000f;
+			return fVolume * fVolume;
+		}
+
+
 		// Requirement
 		public static IEnumerable<KeyValuePair<string, string>> ForAllSpriteNameRequirements () {
 			foreach (var pair in RequireSpriteFromField.ForAllRequirement()) {

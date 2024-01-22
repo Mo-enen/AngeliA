@@ -27,14 +27,11 @@ CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
-DeveloperToolbox.BuiltInProject:Default
-DeveloperToolbox.CreateProject:Create Project
-DeveloperToolbox.ProjectName:Name
-DeveloperToolbox.ProjectSelectorMsg:Having ideas for your own level? Create a new project with the button below now. Unleash your imagination and make something unique and amazing!
 DevilWing.Wing:Devil Wing
-GlobalEditor.Label.LanguageEditor:Language
-GlobalEditor.Label.MapEditor:Map
-GlobalEditor.Label.SheetEditor:Sheet
+Window.Label.HomeScreen:Home
+Window.Label.LanguageEditor:Language
+Window.Label.MapEditor:Map
+Window.Label.SheetEditor:Sheet
 Hint.Pong.Move:Move
 Hint.Sokoban.Move:Move
 Hint.Tetris.Drop:Drop
@@ -271,7 +268,6 @@ iDes.CuteGhost:
 iDes.CuttingBoard:
 iDes.Dagger:
 iDes.DartBoard:
-iDes.DeveloperToolbox:
 iDes.DialogBox:
 iDes.Dice:
 iDes.Donut:
@@ -1045,7 +1041,6 @@ iName.CuteGhost:
 iName.CuttingBoard:
 iName.Dagger:
 iName.DartBoard:
-iName.DeveloperToolbox:
 iName.DialogBox:
 iName.Dice:
 iName.Donut:

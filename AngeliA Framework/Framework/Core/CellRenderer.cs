@@ -195,8 +195,8 @@ namespace AngeliaFramework {
 		private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
 
 		// Api
-		public static IRect ViewRect { get; private set; } = default;
-		public static IRect CameraRect { get; private set; } = default;
+		public static IRect ViewRect { get; private set; } = new IRect(0, 0, 1, 1);
+		public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);
 		public static float CameraRestrictionRate { get; private set; } = 1f;
 		public static int LastDrawnID { get; private set; } = 0;
 		public static int LayerCount => Layers.Length;
@@ -256,7 +256,7 @@ namespace AngeliaFramework {
 			}
 
 			// Load Sheet
-			Sheet.LoadFromDisk(Project.CurrentProject.SheetPath);
+			Sheet.LoadFromDisk(ProjectSystem.CurrentProject.SheetPath);
 			Game.SetTextureForRenderer(Sheet.Texture);
 
 			// Func
@@ -286,7 +286,7 @@ namespace AngeliaFramework {
 		[OnProjectOpen]
 		internal static void OnProjectOpen () {
 			if (Game.GlobalFrame == 0) return;
-			Sheet.LoadFromDisk(Project.CurrentProject.SheetPath);
+			Sheet.LoadFromDisk(ProjectSystem.CurrentProject.SheetPath);
 			Game.SetTextureForRenderer(Sheet.Texture);
 		}
 

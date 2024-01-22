@@ -78,7 +78,7 @@ namespace AngeliaFramework {
 	public class RestartGameTask : TaskItem {
 		public static readonly int TYPE_ID = typeof(RestartGameTask).AngeHash();
 		public override TaskResult FrameUpdate () {
-			Game.RestartGameImmediately();
+			Game.RestartGame();
 			return TaskResult.End;
 		}
 	}
