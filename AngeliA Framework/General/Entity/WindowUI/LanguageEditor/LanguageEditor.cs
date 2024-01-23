@@ -40,8 +40,6 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode ADD_KEY = "UI.LanguageEditor.AddKey";
 		private static readonly LanguageCode ADD_LANGUAGE = "UI.LanguageEditor.AddLanguage";
 		private static readonly LanguageCode UI_LABEL_KEY = "UI.LanguageEditor.Key";
-		private static readonly LanguageCode UI_DELETE = "UI.Delete";
-		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
 
 		// Api
 		public new static LanguageEditor Instance => WindowUI.Instance as LanguageEditor;
@@ -134,7 +132,7 @@ namespace AngeliaFramework {
 			// + Key
 			var rect = panelRect;
 			rect.width = Unify(108);
-			if (CellRendererGUI.Button(rect, ADD_KEY.Get("+ Key"), out _, z: 1, charSize: 16) && interactable) {
+			if (CellRendererGUI.Button(rect, ADD_KEY.Get("+ Key"), z: 1, charSize: 16) && interactable) {
 				ScrollY = 0;
 				Lines.Insert(0, new LanguageLine() {
 					Key = string.Empty,
@@ -152,7 +150,7 @@ namespace AngeliaFramework {
 
 			// + Language
 			rect.width = Unify(108);
-			if (CellRendererGUI.Button(rect, ADD_LANGUAGE.Get("+ Language"), out _, z: 1, charSize: 16) && interactable) {
+			if (CellRendererGUI.Button(rect, ADD_LANGUAGE.Get("+ Language"), z: 1, charSize: 16) && interactable) {
 				OpenAddLanguagePopup();
 			}
 			CursorSystem.SetCursorAsHand(rect);
@@ -409,7 +407,7 @@ namespace AngeliaFramework {
 			string lanName = Util.GetLanguageDisplayName(Languages[lanIndex]);
 			GenericDialogUI.SpawnDialog(
 				string.Format(DELETE_MSG.Get("Delete Language {0}?"), lanName),
-				UI_DELETE.Get("Delete"),
+				BuiltInText.UI_DELETE.Get("Delete"),
 				() => {
 					string targetRoot = ProjectSystem.CurrentProject.LanguageRoot;
 					string path = Language.GetLanguageFilePath(targetRoot, Languages[lanIndex]);
@@ -419,7 +417,7 @@ namespace AngeliaFramework {
 						data.Value.RemoveAt(lanIndex);
 					}
 				},
-				UI_CANCEL.Get("Cancel"),
+				BuiltInText.UI_CANCEL.Get("Cancel"),
 				Const.EmptyMethod
 			);
 		}

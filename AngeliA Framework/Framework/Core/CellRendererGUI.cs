@@ -432,6 +432,9 @@ namespace AngeliaFramework {
 
 
 		// Button
+		public static bool Button (IRect rect, string label, int z, int charSize = -1, bool enable = true) => Button(rect, label, out _, z, charSize, enable);
+		public static bool Button (IRect rect, string label, int z, Byte4 labelTint, int charSize = -1, bool enable = true) => Button(rect, label, out _, z, labelTint, charSize, enable);
+		public static bool Button (IRect rect, int sprite, string label, int z, Byte4 buttonTint, Byte4 labelTint, int charSize = -1, bool enable = true) => Button(rect, sprite, label, out _, z, buttonTint, labelTint, charSize, enable);
 		public static bool Button (IRect rect, string label, out IRect labelBounds, int z, int charSize = -1, bool enable = true) => Button(rect, label, out labelBounds, z, Const.WHITE, charSize, enable);
 		public static bool Button (IRect rect, string label, out IRect labelBounds, int z, Byte4 labelTint, int charSize = -1, bool enable = true) {
 			charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;

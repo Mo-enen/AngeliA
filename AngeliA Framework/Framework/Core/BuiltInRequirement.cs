@@ -3,6 +3,44 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
+
+
+	[RequireLanguageFromField]
+	public static class BuiltInText {
+
+		// Hint
+		public static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
+		public static readonly LanguageCode HINT_JUMP = "CtrlHint.Jump";
+		public static readonly LanguageCode HINT_SHOW_MENU = "CtrlHint.ShowMenu";
+		public static readonly LanguageCode HINT_ATTACK = "CtrlHint.Attack";
+		public static readonly LanguageCode HINT_USE = "CtrlHint.Use";
+		public static readonly LanguageCode HINT_ADJUST = "CtrlHint.Adjust";
+		public static readonly LanguageCode HINT_TYPE = "CtrlHint.Wardrobe.Type";
+
+		// UI
+		public static readonly LanguageCode UI_CANCEL = "UI.Cancel";
+		public static readonly LanguageCode UI_CONTINUE = "UI.Continue";
+		public static readonly LanguageCode UI_NONE = "UI.None";
+		public static readonly LanguageCode UI_QUIT = "UI.Quit";
+		public static readonly LanguageCode UI_BACK = "UI.Back";
+		public static readonly LanguageCode UI_RESTART = "UI.Restart";
+		public static readonly LanguageCode UI_OK = "UI.OK";
+		public static readonly LanguageCode UI_GAMEOVER = "UI.GameOver";
+		public static readonly LanguageCode UI_SETTING = "UI.Setting";
+		public static readonly LanguageCode UI_QUIT_GAME = "UI.QuitGame";
+		public static readonly LanguageCode UI_ON = "UI.ON";
+		public static readonly LanguageCode UI_OFF = "UI.OFF";
+		public static readonly LanguageCode UI_YES = "UI.Yes";
+		public static readonly LanguageCode UI_SAVE = "UI.Save";
+		public static readonly LanguageCode UI_DONT_SAVE = "UI.DontSave";
+		public static readonly LanguageCode UI_NO = "UI.No";
+		public static readonly LanguageCode UI_DELETE = "UI.Delete";
+		public static readonly LanguageCode UI_OPEN = "UI.Open";
+
+	}
+
+
+
 	[RequireSpriteFromField]
 	public static class BuiltInIcon {
 
@@ -101,6 +139,7 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode ICON_FILE = "Icon.File";
 		public static readonly SpriteCode ICON_ATLAS = "Icon.Atlas";
 		public static readonly SpriteCode ICON_SPRITE = "Icon.Sprite";
+		public static readonly SpriteCode ICON_CROSS = "Icon.Cross";
 
 	}
 }

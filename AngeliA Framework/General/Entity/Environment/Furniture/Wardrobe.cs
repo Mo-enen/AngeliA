@@ -31,7 +31,6 @@ namespace AngeliaFramework {
 	}
 
 
-	[RequireLanguageFromField]
 	public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 
 
@@ -43,10 +42,6 @@ namespace AngeliaFramework {
 		// Const
 		private static readonly int FRAME = BuiltInIcon.FRAME_16;
 		private static readonly int TRIANGLE_RIGHT = BuiltInIcon.TRIANGLE_RIGHT_13;
-		private static readonly LanguageCode HINT_ADJUST = "CtrlHint.Adjust";
-		private static readonly LanguageCode HINT_TYPE = "CtrlHint.Wardrobe.Type";
-		private static readonly LanguageCode HINT_USE = "CtrlHint.Use";
-		private static readonly LanguageCode UI_NONE = "UI.None";
 		private static readonly int[] SUIT_TYPE_ICONS = {
 			"Icon.Suit.Hat".AngeHash(),
 			"Icon.Suit.Bodysuit".AngeHash(),
@@ -191,11 +186,11 @@ namespace AngeliaFramework {
 			CurrentPatternIndex = CurrentPatternIndex.Clamp(0, currentPattern.Count - 1);
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, HINT_ADJUST.Get("Adjust"), 0);
-			ControlHintUI.AddHint(Gamekey.Right, HINT_ADJUST.Get("Adjust"), 0);
-			ControlHintUI.AddHint(Gamekey.Down, HINT_TYPE.Get("Suit Type"), 0);
-			ControlHintUI.AddHint(Gamekey.Up, HINT_TYPE.Get("Suit Type"), 0);
-			ControlHintUI.AddHint(Gamekey.Action, HINT_USE.Get("Use"), 0);
+			ControlHintUI.AddHint(Gamekey.Left, BuiltInText.HINT_ADJUST.Get("Adjust"), 0);
+			ControlHintUI.AddHint(Gamekey.Right, BuiltInText.HINT_ADJUST.Get("Adjust"), 0);
+			ControlHintUI.AddHint(Gamekey.Down, BuiltInText.HINT_TYPE.Get("Suit Type"), 0);
+			ControlHintUI.AddHint(Gamekey.Up, BuiltInText.HINT_TYPE.Get("Suit Type"), 0);
+			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"), 0);
 
 		}
 
@@ -275,7 +270,7 @@ namespace AngeliaFramework {
 			} else {
 				// None Label
 				CellRendererGUI.Label(
-					CellContent.Get(UI_NONE.Get("None"), Const.WHITE),
+					CellContent.Get(BuiltInText.UI_NONE.Get("None"), Const.WHITE),
 					windowRect
 				);
 			}

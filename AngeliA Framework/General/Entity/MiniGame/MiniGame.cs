@@ -26,7 +26,7 @@ namespace AngeliaFramework {
 	[RequireLanguageFromField]
 	[RequireLanguage("{0}")]
 	public abstract class MiniGame : EnvironmentEntity, IActionTarget {
-		
+
 
 
 
@@ -75,12 +75,6 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly LanguageCode MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg";
-		protected static readonly LanguageCode UI_QUIT = "UI.Quit";
-		protected static readonly LanguageCode UI_BACK = "UI.Back";
-		protected static readonly LanguageCode UI_RESTART = "UI.Restart";
-		protected static readonly LanguageCode UI_NONE = "UI.None";
-		protected static readonly LanguageCode UI_OK = "UI.OK";
-		protected static readonly LanguageCode UI_GAMEOVER = "UI.GameOver";
 		private static readonly SpriteCode[] DEFAULT_BADGE_CODES = { "MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold", };
 
 		// Api
@@ -143,7 +137,7 @@ namespace AngeliaFramework {
 							CloseMiniGame();
 						}
 					}
-					ControlHintUI.AddHint(Gamekey.Start, UI_QUIT.Get("Quit"));
+					ControlHintUI.AddHint(Gamekey.Start, BuiltInText.UI_QUIT.Get("Quit"));
 				}
 				if (RequireMouseCursor) CursorSystem.RequireCursor(-1);
 			}
@@ -240,15 +234,15 @@ namespace AngeliaFramework {
 			if (ShowRestartOption) {
 				GenericDialogUI.SpawnDialog(
 					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
-					UI_BACK.Get("Back"), Const.EmptyMethod,
-					UI_RESTART.Get("Restart"), RestartGame,
-					UI_QUIT.Get("Quit"), CloseMiniGame
+					BuiltInText.UI_BACK.Get("Back"), Const.EmptyMethod,
+					BuiltInText.UI_RESTART.Get("Restart"), RestartGame,
+					BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
 				);
 			} else {
 				GenericDialogUI.SpawnDialog(
 					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
-					UI_BACK.Get("Back"), Const.EmptyMethod,
-					UI_QUIT.Get("Quit"), CloseMiniGame
+					BuiltInText.UI_BACK.Get("Back"), Const.EmptyMethod,
+					BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
 				);
 			}
 		}

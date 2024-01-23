@@ -1,4 +1,5 @@
-﻿@GuaGua:GuaGua
+﻿FileBrowser.Error.NameInValid:Name contains invalid char
+@GuaGua:GuaGua
 @SlimeRed:Red Slime
 @Yaya:Yaya
 AngelWing.Wing:Angel Wing
@@ -28,10 +29,9 @@ CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
 DevilWing.Wing:Devil Wing
-Window.Label.HomeScreen:Home
-Window.Label.LanguageEditor:Language
-Window.Label.MapEditor:Map
-Window.Label.SheetEditor:Sheet
+FileBrowser.Error.NameEmpty:Name can't be empty
+FileBrowser.FileName:File Name
+FileBrowser.FolderName:Folder Name
 Hint.Pong.Move:Move
 Hint.Sokoban.Move:Move
 Hint.Tetris.Drop:Drop
@@ -1706,6 +1706,7 @@ UI.None:None
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
+UI.Open:Open
 UI.PaletteTab.All:All
 UI.PaletteTab.Pinned:Favourite
 UI.Quit:Quit
@@ -1722,6 +1723,10 @@ UI.Suit.Shoes:Shoes
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.Holding:Holding
 UI.Yes:Yes
+Window.Label.HomeScreen:Home
+Window.Label.LanguageEditor:Language
+Window.Label.MapEditor:Map
+Window.Label.SheetEditor:Sheet
 Yaya.Body:Yaya's body
 Yaya.Ear:Yaya's cat ear
 Yaya.Face:Yaya's face

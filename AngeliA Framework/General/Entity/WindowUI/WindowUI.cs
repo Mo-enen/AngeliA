@@ -27,7 +27,7 @@ namespace AngeliaFramework {
 
 		// Api
 		public static WindowUI Instance { get; private set; } = null;
-		protected static bool MouseInToolbar { get; private set; } = false;
+		public static bool MouseOutside { get; set; } = false;
 		protected static IRect MainWindowRect { get; private set; } = default;
 
 
@@ -60,11 +60,11 @@ namespace AngeliaFramework {
 			int tabHeight = Unify(36);
 			const int padding = 0;
 			MainWindowRect = CellRenderer.CameraRect.EdgeInside(Direction4.Down, CellRenderer.CameraRect.height - tabHeight);
-			var panelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Up, tabHeight);
-			var rect = new IRect(panelRect.x, panelRect.y, tabWidth, tabHeight);
+			var barRect = CellRenderer.CameraRect.EdgeInside(Direction4.Up, tabHeight);
+			var rect = new IRect(barRect.x, barRect.y, tabWidth, tabHeight);
 
 			// BG
-			CellRenderer.Draw(Const.PIXEL, panelRect, Const.GREY_12, z: int.MaxValue - 2);
+			CellRenderer.Draw(Const.PIXEL, barRect, Const.GREY_12, z: int.MaxValue - 2);
 
 			// Home Editor
 			if (DrawTab(rect, HomeScreen.IsActived, LABEL_HOME_SCREEN.Get("Home"), BUTTON_ICON_HOME_SCREEN)) {
@@ -93,14 +93,18 @@ namespace AngeliaFramework {
 			}
 
 			// Block Event
-			MouseInToolbar = panelRect.MouseInside();
-			if (FrameInput.MouseLeftButton && MouseInToolbar) {
+			MouseOutside = MouseOutside || barRect.MouseInside();
+			if (FrameInput.MouseLeftButton && MouseOutside) {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseGameKey(Gamekey.Action);
 			}
 
 			CellRenderer.SetLayerToDefault();
 		}
+
+
+		[OnGameUpdatePauseless]
+		public static void OnGameUpdatePauseless () => MouseOutside = false;
 
 
 		public override void OnActivated () {
@@ -120,31 +124,8 @@ namespace AngeliaFramework {
 
 		public static void OpenWindow (int typeID) {
 			if (!Game.AllowMakerFeaures) return;
+			Stage.ClearStagedEntities();
 			Stage.SpawnEntity(typeID, 0, 0);
-		}
-
-
-		public static void OpenWindowSmoothly (int typeID, bool fadeOutAndIn = true) {
-			if (!Game.AllowMakerFeaures) return;
-			FrameTask.EndAllTask();
-			if (fadeOutAndIn) {
-				// Fade
-				FrameTask.AddToLast(FadeOutTask.TYPE_ID, 50);
-				if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
-					task.EntityID = typeID;
-					task.X = 0;
-					task.Y = 0;
-				}
-				FrameTask.AddToLast(FadeInTask.TYPE_ID, 50);
-			} else {
-				// Imme
-				Game.PassEffect_RetroDarken(1f);
-				if (FrameTask.AddToLast(SpawnEntityTask.TYPE_ID) is SpawnEntityTask task) {
-					task.EntityID = typeID;
-					task.X = 0;
-					task.Y = 0;
-				}
-			}
 		}
 
 

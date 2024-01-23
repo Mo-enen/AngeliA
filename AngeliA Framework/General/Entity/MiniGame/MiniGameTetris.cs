@@ -268,7 +268,7 @@ namespace AngeliaFramework {
 				labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 				labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
-				CellRendererGUI.Label(CellContent.Get(UI_GAMEOVER.Get("Game Over")), labelRect);
+				CellRendererGUI.Label(CellContent.Get(BuiltInText.UI_GAMEOVER.Get("Game Over")), labelRect);
 			}
 
 			int blockSize = stageRect.width / WIDTH;
@@ -666,10 +666,10 @@ namespace AngeliaFramework {
 
 		// Menu
 		private void OpenGameOverDialog () => GenericDialogUI.SpawnDialog(
-			UI_GAMEOVER.Get("Game Over"),
-			UI_OK.Get("OK"), Const.EmptyMethod,
-			UI_RESTART.Get("Restart"), StartMiniGame,
-			UI_QUIT.Get("Quit"), CloseMiniGame
+			BuiltInText.UI_GAMEOVER.Get("Game Over"),
+			BuiltInText.UI_OK.Get("OK"), Const.EmptyMethod,
+			BuiltInText.UI_RESTART.Get("Restart"), StartMiniGame,
+			BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
 		);
 
 

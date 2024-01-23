@@ -13,7 +13,6 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly LanguageCode HINT_MOVE = "Hint.Pong.Move";
 		private const int PADDLE_SPEED = 32;
 		private const int PADDLE_LEN = 200;
 		private const int PADDLE_X = 50;
@@ -92,7 +91,7 @@ namespace AngeliaFramework {
 				playerPaddleSpeed = PADDLE_SPEED;
 			}
 			PlayerPaddleY = PlayerPaddleY.Clamp(PADDLE_LEN / 2, 1000 - PADDLE_LEN / 2);
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
 
 			// Bot Paddle Movement
 			int botPaddleSpeed = GetBotPaddleSpeedY();

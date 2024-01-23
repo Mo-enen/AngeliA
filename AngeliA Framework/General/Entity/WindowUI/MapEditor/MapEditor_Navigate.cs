@@ -95,10 +95,10 @@ namespace AngeliaFramework {
 
 			// Tab
 			if (
-				FrameInput.KeyboardUp(KeyboardKey.Tab) ||
+				FrameInput.KeyboardDown(KeyboardKey.Tab) ||
 				FrameInput.KeyboardUp(KeyboardKey.Escape) ||
-				FrameInput.KeyboardUp(KeyboardKey.Space) ||
-				FrameInput.KeyboardUp(KeyboardKey.Enter)
+				FrameInput.KeyboardDown(KeyboardKey.Space) ||
+				FrameInput.KeyboardDown(KeyboardKey.Enter)
 			) {
 				SetNavigating(!IsNavigating);
 				FrameInput.UseKeyboardKey(KeyboardKey.Escape);
@@ -107,7 +107,7 @@ namespace AngeliaFramework {
 				FrameInput.UseGameKey(Gamekey.Start);
 				FrameInput.UseGameKey(Gamekey.Select);
 			}
-			ControlHintUI.AddHint(KeyboardKey.Tab, UI_CANCEL.Get("Cancel"));
+			ControlHintUI.AddHint(KeyboardKey.Tab, BuiltInText.UI_CANCEL.Get("Cancel"));
 
 		}
 

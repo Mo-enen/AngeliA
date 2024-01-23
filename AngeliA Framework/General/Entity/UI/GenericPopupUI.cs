@@ -37,8 +37,7 @@ namespace AngeliaFramework {
 		// Api
 		public static bool ShowingPopup => Instance != null && Instance.Active;
 		public static int CurrentItemCount => Instance != null ? Instance.ItemCount : 0;
-		protected override bool BlockMouseEvent => true;
-		protected override bool BlockKeyboardEvent => true;
+		protected override bool BlockEvent => true;
 		public IRect BackgroundRect { get; private set; }
 
 		// Data

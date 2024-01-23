@@ -122,12 +122,12 @@ namespace AngeliaFramework {
 		public static Int2 MouseRightDownGlobalPosition { get; private set; } = default;
 		public static Int2 MouseMidDownGlobalPosition { get; private set; } = default;
 		public static bool MouseMove { get; private set; } = false;
-		public static bool MouseLeftButton => !MouseLeftState.Ignored && MouseLeftState.Holding;
-		public static bool MouseRightButton => !MouseRightState.Ignored && MouseRightState.Holding;
-		public static bool MouseMidButton => !MouseMidState.Ignored && MouseMidState.Holding;
-		public static bool MouseLeftButtonDown => !MouseLeftState.Ignored && MouseLeftState.Down;
-		public static bool MouseRightButtonDown => !MouseRightState.Ignored && MouseRightState.Down;
-		public static bool MouseMidButtonDown => !MouseMidState.Ignored && MouseMidState.Down;
+		public static bool MouseLeftButton => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Holding;
+		public static bool MouseRightButton => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Holding;
+		public static bool MouseMidButton => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Holding;
+		public static bool MouseLeftButtonDown => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Down;
+		public static bool MouseRightButtonDown => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Down;
+		public static bool MouseMidButtonDown => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Down;
 		public static bool IgnoreMouseToActionJumpForThisFrame { get; set; } = false;
 		public static bool LastActionFromMouse { get; private set; } = false;
 		public static int MouseWheelDelta { get; private set; } = 0;
@@ -620,10 +620,12 @@ namespace AngeliaFramework {
 		// Any Key
 		public static bool TryGetHoldingGamepadButton (out GamepadKey button) {
 			button = GamepadKey.A;
+			if (IgnoringInput) return false;
 			return Game.IsGamepadAvailable && SearchAnyGamepadButtonHolding(out button);
 		}
 		public static bool TryGetHoldingKeyboardKey (out KeyboardKey key) {
 			key = KeyboardKey.None;
+			if (IgnoringInput) return false;
 			return Game.IsKeyboardAvailable && SearchAnyKeyboardKeyHolding(out key);
 		}
 
@@ -736,7 +738,11 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void IgnoreAllInput (int duration = 1) => IgnoreInputFrame = Game.GlobalFrame + duration;
+		// Misc
+		public static void IgnoreInput (int duration = 1) => IgnoreInputFrame = Game.GlobalFrame + duration;
+
+
+		public static void CancelIgnoreInput () => IgnoreInputFrame = Game.GlobalFrame - 1;
 
 
 		#endregion

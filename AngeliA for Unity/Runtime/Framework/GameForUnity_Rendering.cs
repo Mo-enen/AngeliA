@@ -421,6 +421,15 @@ namespace AngeliaForUnity {
 
 		protected override byte[] _TextureToPngBytes (object texture) => (texture as Texture2D).EncodeToPNG();
 
+		protected override void _ResetTextureSize (object texture, int newWidth, int newHeight) {
+			if (
+				texture is not Texture2D texture2d ||
+				(texture2d.width == newWidth && texture2d.height == newHeight)
+			) return;
+			texture2d.Reinitialize(newWidth, newHeight);
+
+		}
+
 
 		// GL
 		protected override void _DrawGizmosRect (IRect rect, Byte4 color) => PostRenderer.DrawRect(rect.ToUnity(), color.ToUnityColor32());

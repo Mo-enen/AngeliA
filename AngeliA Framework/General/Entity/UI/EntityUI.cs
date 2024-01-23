@@ -32,10 +32,10 @@ namespace AngeliaFramework {
 	[EntityAttribute.Layer(EntityLayer.UI)]
 	public abstract class EntityUI : Entity {
 
-		protected virtual bool BlockMouseEvent => false;
-		protected virtual bool BlockKeyboardEvent => false;
+		protected virtual bool BlockEvent => false;
 		public int TextCellStartIndex { get; private set; }
 		public int[] TextCellEndIndex { get; private set; }
+		private static int BlockingEventFrame = -1;
 
 		public override void FrameUpdate () {
 			base.FrameUpdate();
@@ -44,9 +44,15 @@ namespace AngeliaFramework {
 
 			TextCellStartIndex = CellRenderer.GetTextUsedCellCount();
 
+			if (Game.PauselessFrame == BlockingEventFrame) {
+				FrameInput.IgnoreInput();
+			}
 			UpdateUI();
+			if (Game.PauselessFrame == BlockingEventFrame) {
+				FrameInput.CancelIgnoreInput();
+			}
 
-			if (TextCellEndIndex == null) TextCellEndIndex = new int[CellRenderer.TextLayerCount];
+			TextCellEndIndex ??= new int[CellRenderer.TextLayerCount];
 			for (int i = 0; i < CellRenderer.TextLayerCount; i++) {
 				TextCellEndIndex[i] = CellRenderer.GetTextUsedCellCount(i);
 			}
@@ -55,14 +61,9 @@ namespace AngeliaFramework {
 
 			CellRenderer.SortLayer(RenderLayer.UI);
 
-			if (BlockMouseEvent) {
-				FrameInput.UseMouseKey(0);
-				FrameInput.UseMouseKey(1);
-				FrameInput.UseMouseKey(2);
+			if (BlockEvent) {
 				CursorSystem.SetCursorPriority(int.MaxValue);
-			}
-			if (BlockKeyboardEvent) {
-				FrameInput.UseAllHoldingKeys(true);
+				BlockingEventFrame = Game.PauselessFrame;
 			}
 		}
 

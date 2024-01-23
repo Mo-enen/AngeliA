@@ -40,14 +40,8 @@ namespace AngeliaFramework {
 		// Const
 		private const int RUSH_TAPPING_GAP = 16;
 		private const int ACTION_SCAN_RANGE = Const.HALF;
-		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
-		private static readonly LanguageCode HINT_JUMP = "CtrlHint.Jump";
-		private static readonly LanguageCode HINT_SHOW_MENU = "CtrlHint.ShowMenu";
-		private static readonly LanguageCode HINT_ATTACK = "CtrlHint.Attack";
-		private static readonly LanguageCode HINT_SWITCH_PLAYER = "CtrlHint.SwitchPlayer";
 		private static readonly LanguageCode HINT_WAKE = "CtrlHint.WakeUp";
-		private static readonly LanguageCode HINT_USE = "CtrlHint.Use";
-		private static readonly LanguageCode UI_CONTINUE = "UI.Continue";
+		private static readonly LanguageCode HINT_SWITCH_PLAYER = "CtrlHint.SwitchPlayer";
 
 		// Api
 		public static Player Selecting { get; private set; } = null;
@@ -174,7 +168,7 @@ namespace AngeliaFramework {
 						Update_JumpDashPoundRush();
 
 						// Hint
-						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE.Get("Move"));
+						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
 					} else {
 						Stop();
 					}
@@ -204,7 +198,7 @@ namespace AngeliaFramework {
 
 			if (LockingInput) return;
 
-			ControlHintUI.AddHint(Gamekey.Jump, HINT_JUMP.Get("Jump"));
+			ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.HINT_JUMP.Get("Jump"));
 
 			// Jump/Dash
 			HoldJump(FrameInput.GameKeyHolding(Gamekey.Jump));
@@ -302,7 +296,7 @@ namespace AngeliaFramework {
 
 			// Try Perform Action
 			if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
-				ControlHintUI.AddHint(Gamekey.Action, HINT_USE.Get("Use"), int.MinValue + 1);
+				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"), int.MinValue + 1);
 				if (FrameInput.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
 					TargetActionEntity?.Invoke();
 					FrameInput.UseGameKey(Gamekey.Action);
@@ -321,7 +315,7 @@ namespace AngeliaFramework {
 			if (LockingInput) return;
 
 			// Try Perform Attack
-			ControlHintUI.AddHint(Gamekey.Action, HINT_ATTACK.Get("Attack"));
+			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK.Get("Attack"));
 			bool attDown = FrameInput.GameKeyDown(Gamekey.Action);
 			bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && RepeatAttackWhenHolding;
 			if (attDown || attHolding) {
@@ -387,7 +381,7 @@ namespace AngeliaFramework {
 			if (requireHint) {
 				ControlHintUI.AddHint(
 					FrameInput.UsingGamepad ? Gamekey.Start : Gamekey.Select,
-					HINT_SHOW_MENU.Get("Show Menu")
+					BuiltInText.HINT_SHOW_MENU.Get("Show Menu")
 				);
 			}
 		}
@@ -460,7 +454,10 @@ namespace AngeliaFramework {
 			if (FrameTask.HasTask()) return;
 
 			if (IsFullPassOut) {
-				ControlHintUI.DrawGlobalHint(X - Const.HALF, Y + Const.CEL * 3 / 2, Gamekey.Action, UI_CONTINUE.Get("Continue"), true);
+				ControlHintUI.DrawGlobalHint(
+					X - Const.HALF, Y + Const.CEL * 3 / 2,
+					Gamekey.Action, BuiltInText.UI_CONTINUE.Get("Continue"), background: true
+				);
 			}
 
 			// Reload Game After Player PassOut

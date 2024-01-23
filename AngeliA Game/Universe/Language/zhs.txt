@@ -1,4 +1,5 @@
-﻿@GuaGua:瓜瓜
+﻿FileBrowser.Error.NameInValid:文件名包含无效字符
+@GuaGua:瓜瓜
 @SlimeRed:红色史莱姆
 @Yaya:丫丫
 AngelWing.Wing:天使翅膀
@@ -28,10 +29,9 @@ CtrlHint.Use:使用
 CtrlHint.WakeUp:起床
 CtrlHint.Wardrobe.Type:服饰类型
 DevilWing.Wing:恶魔翅膀
-Window.Label.HomeScreen:主页
-Window.Label.LanguageEditor:语 言
-Window.Label.MapEditor:地 图
-Window.Label.SheetEditor:图 集
+FileBrowser.Error.NameEmpty:文件名不能为空
+FileBrowser.FileName:文件名
+FileBrowser.FolderName:文件夹名
 Hint.Pong.Move:移动
 Hint.Sokoban.Move:移动
 Hint.Tetris.Drop:掉落
@@ -1706,6 +1706,7 @@ UI.None:无
 UI.OFF:关闭
 UI.OK:确定
 UI.ON:开启
+UI.Open:打开
 UI.PaletteTab.All:全部
 UI.PaletteTab.Pinned:收藏
 UI.Quit:退出
@@ -1722,6 +1723,10 @@ UI.Suit.Shoes:鞋
 UI.Tetris.ClearedLine:行数:
 UI.Tetris.Holding:保留
 UI.Yes:是
+Window.Label.HomeScreen:主页
+Window.Label.LanguageEditor:语 言
+Window.Label.MapEditor:地 图
+Window.Label.SheetEditor:图 集
 Yaya.Body:丫丫身体
 Yaya.Ear:丫丫猫耳
 Yaya.Face:丫丫面孔

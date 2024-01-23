@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using AngeliaFramework;
 
 
@@ -18,10 +17,13 @@ namespace AngeliaGame {
 
 
 
-		[OnGameInitialize]
-		public static void I () {
-
-
+		[OnGameUpdate]
+		public static void Test () {
+			if (FrameInput.KeyboardDown(KeyboardKey.Digit1)) {
+				FileBrowserUI.OpenFile("Test Title", "txt", (path) => {
+					Game.Log(path);
+				});
+			}
 		}
 
 

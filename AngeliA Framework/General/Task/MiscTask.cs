@@ -53,6 +53,15 @@ namespace AngeliaFramework {
 	}
 
 
+	public class ClearStageTask : TaskItem {
+		public static readonly int TYPE_ID = typeof(ClearStageTask).AngeHash();
+		public override TaskResult FrameUpdate () {
+			Stage.ClearStagedEntities();
+			return TaskResult.End;
+		}
+	}
+
+
 	// Misc
 	public class MethodTask : TaskItem {
 		public static readonly int TYPE_ID = typeof(MethodTask).AngeHash();

@@ -34,9 +34,6 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
-		// Const
-		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
-
 		// Api
 		public static PlayerQuickMenuUI Instance { get; private set; } = null;
 		public static bool ShowingUI => Instance != null && Instance.Active;
@@ -163,8 +160,8 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Right, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Left, BuiltInText.HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
 
 			// Draw
 			DrawMenu();

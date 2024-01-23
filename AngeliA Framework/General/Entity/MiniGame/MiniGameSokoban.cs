@@ -73,7 +73,6 @@ namespace AngeliaFramework {
 		};
 		private static readonly LanguageCode MENU_ALL_CLEAR = "Menu.Sokoban.AllCleared";
 		private static readonly LanguageCode UI_Level = "UI.Sokoban.Level";
-		private static readonly LanguageCode UI_MOVE = "Hint.Sokoban.Move";
 
 		// Api
 		protected override bool RequireMouseCursor => false;
@@ -182,7 +181,7 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			string hintMove = UI_MOVE.Get("Move");
+			string hintMove = BuiltInText.HINT_MOVE.Get("Move");
 			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, hintMove);
 			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, hintMove);
 
@@ -310,8 +309,8 @@ namespace AngeliaFramework {
 
 		private void ShowAllClearedDialog () => GenericDialogUI.SpawnDialog(
 			MENU_ALL_CLEAR.Get("You Win"),
-			UI_OK.Get("OK"), Const.EmptyMethod,
-			UI_QUIT.Get("Quit"), CloseMiniGame
+			BuiltInText.UI_OK.Get("OK"), Const.EmptyMethod,
+			BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
 		);
 
 

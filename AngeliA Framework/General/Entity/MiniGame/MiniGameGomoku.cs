@@ -27,7 +27,6 @@ namespace AngeliaFramework {
 		private static readonly Byte4 LAST_PLACED = new(255, 255, 0, 255);
 		private static readonly LanguageCode GOMOKU_YOU_ARE = "UI.Gomoku.YouAre";
 		private static readonly LanguageCode GOMOKU_PLACE = "UI.Gomoku.Place";
-		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
 		private static readonly LanguageCode MENU_GOMOKU_WIN = "Menu.Gomoku.Win";
 		private static readonly LanguageCode MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose";
 		private static readonly LanguageCode MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw";
@@ -155,8 +154,8 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
 			ControlHintUI.AddHint(Gamekey.Action, GOMOKU_PLACE.Get("Place"));
 		}
 
@@ -318,15 +317,15 @@ namespace AngeliaFramework {
 		// Menu
 		private void OpenGameOverDialog (bool blackWin) => GenericDialogUI.SpawnDialog(
 			blackWin == PlayerIsBlack ? MENU_GOMOKU_WIN.Get("You Win") : MENU_GOMOKU_LOSE.Get("You Lose"),
-			UI_OK.Get("OK"), Const.EmptyMethod,
-			UI_RESTART.Get("Restart"), StartMiniGame,
-			UI_QUIT.Get("Quit"), CloseMiniGame
+			BuiltInText.UI_OK.Get("OK"), Const.EmptyMethod,
+			BuiltInText.UI_RESTART.Get("Restart"), StartMiniGame,
+			BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
 		);
 
 
 		private void OpenDrawDialog () => GenericDialogUI.SpawnDialog(
 			MENU_GOMOKU_DRAW.Get("Tie"),
-			UI_OK.Get("OK"),
+			BuiltInText.UI_OK.Get("OK"),
 			Const.EmptyMethod
 		);
 

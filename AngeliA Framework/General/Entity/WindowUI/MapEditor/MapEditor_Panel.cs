@@ -136,7 +136,7 @@ namespace AngeliaFramework {
 				var firstSprite = chain.Sprites[0];
 				var atlasType = firstSprite.Atlas.Type;
 				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
-				
+
 				string atlasName = firstSprite.Atlas.Name;
 				if (!palGroupPool.TryGetValue(atlasName, out var palGroup)) {
 					palGroupPool.Add(atlasName, palGroup = new PaletteGroup() {
@@ -933,7 +933,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(
 					SEARCH_ICON,
 					searchPanel.Shrink(PADDING, searchPanel.width - ITEM_SIZE - PADDING, 0, 0),
-					Const.GREY_196, PANEL_Z - 4
+					Const.GREY_128, PANEL_Z - 4
 				);
 			}
 
@@ -945,6 +945,20 @@ namespace AngeliaFramework {
 				if (!string.IsNullOrWhiteSpace(SearchingText)) {
 					SearchResult.AddRange(PaletteTrie.Retrieve(SearchingText.ToLower()).Distinct());
 				}
+			}
+
+			// Close Button
+			if (
+				!string.IsNullOrEmpty(SearchingText) &&
+				CellRendererGUI.Button(
+					searchPanel.EdgeInside(Direction4.Right, searchPanel.height),
+					0, Const.PIXEL, Const.PIXEL, BuiltInIcon.ICON_CROSS, 0, PADDING * 2,
+					PANEL_Z - 4, Const.WHITE_64, Const.GREY_128
+				)
+			) {
+				SearchingText = "";
+				SearchResult.Clear();
+				CellRendererGUI.CancelTyping();
 			}
 
 		}
@@ -968,8 +982,8 @@ namespace AngeliaFramework {
 				GenericPopupUI.AddItem(MENU_PALETTE_DELETE_LIST.Get("Delete List"), () =>
 					GenericDialogUI.SpawnDialog(
 						$"{MENU_PALETTE_DELETE_LIST_MSG.Get("Delete List ")} \"{(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")}\"?",
-						UI_DELETE.Get("Delete"), () => EditorMeta.PinnedLists.Remove(list),
-						UI_CANCEL.Get("Cancel"), Const.EmptyMethod
+						BuiltInText.UI_DELETE.Get("Delete"), () => EditorMeta.PinnedLists.Remove(list),
+						BuiltInText.UI_CANCEL.Get("Cancel"), Const.EmptyMethod
 				), enabled: EditorMeta.PinnedLists.Count > 1);
 			} else {
 				// Click on Empty

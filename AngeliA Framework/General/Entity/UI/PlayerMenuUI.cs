@@ -62,7 +62,6 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode HINT_HUSE = "CtrlHint.HoldToUse";
 		private static readonly LanguageCode HINT_TRANSFER = "CtrlHint.Transfer";
 		private static readonly LanguageCode HINT_EQUIP = "CtrlHint.Equip";
-		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
 		private static readonly LanguageCode UI_HELMET = "UI.Equipment.Helmet";
 		private static readonly LanguageCode UI_WEAPON = "UI.Equipment.Weapon";
 		private static readonly LanguageCode UI_SHOES = "UI.Equipment.Shoes";
@@ -306,8 +305,8 @@ namespace AngeliaFramework {
 
 		private void Update_MoveCursor () {
 
-			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
 			ControlHintUI.AddHint(Gamekey.Action, "", int.MinValue + 2);
 
 			if (FrameInput.DirectionX == Direction3.None && FrameInput.DirectionY == Direction3.None) return;

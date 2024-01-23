@@ -91,8 +91,6 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = "CtrlHint.MEDT.SwitchMode.Play";
 		private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = "CtrlHint.MEDT.PlayFromBegin";
 		private static readonly LanguageCode HINT_MEDT_NAV = "CtrlHint.MEDT.Nav";
-		private static readonly LanguageCode UI_CANCEL = "UI.Cancel";
-		private static readonly LanguageCode UI_DELETE = "UI.Delete";
 
 		// Api
 		public new static MapEditor Instance => WindowUI.Instance as MapEditor;
@@ -175,6 +173,15 @@ namespace AngeliaFramework {
 
 
 		#region --- MSG ---
+
+
+		[OnProjectOpen]
+		public static void OnProjectOpen () {
+			if (Game.GlobalFrame > 0 && Stage.PeekOrGetEntity(TYPE_ID) is MapEditor editor) {
+				editor.InitializedFrame = -1;
+				if (editor.Active) editor.Active = false;
+			}
+		}
 
 
 		// Active
@@ -623,7 +630,6 @@ namespace AngeliaFramework {
 		private void Update_Hotkey () {
 
 			if (TaskingRoute || CellRendererGUI.IsTyping) return;
-			if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 
 			// Cancel Drop
 			if (!CtrlHolding && IsEditing && DroppingPlayer) {
@@ -682,7 +688,7 @@ namespace AngeliaFramework {
 					}
 
 					// Nav
-					if (FrameInput.KeyboardUp(KeyboardKey.Tab)) {
+					if (FrameInput.KeyboardDown(KeyboardKey.Tab)) {
 						FrameInput.UseKeyboardKey(KeyboardKey.Tab);
 						SetNavigating(!IsNavigating);
 					}

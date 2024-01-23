@@ -11,19 +11,12 @@ namespace AngeliaFramework {
 
 		#region --- VAR ---
 
-
-		// Const
-		private static readonly LanguageCode HINT_ADJUST = "CtrlHint.Adjust";
-		private static readonly LanguageCode HINT_USE = "CtrlHint.Use";
-		private static readonly LanguageCode HINT_MOVE = "CtrlHint.Move";
-
 		// Api
 		public bool SelectionAdjustable { get; private set; } = false;
 		public int SelectionIndex { get; private set; } = 0;
 		public string Message { get; set; } = "";
 		public IRect BackgroundRect { get; private set; }
-		protected override bool BlockMouseEvent => true;
-		protected override bool BlockKeyboardEvent => true;
+		protected override bool BlockEvent => true;
 
 		// Config
 		protected int BackgroundCode = Const.PIXEL;
@@ -181,11 +174,11 @@ namespace AngeliaFramework {
 
 			// Hint
 			if (SelectionAdjustable) {
-				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_ADJUST.Get("Adjust"));
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_ADJUST.Get("Adjust"));
 			} else {
-				ControlHintUI.AddHint(Gamekey.Action, HINT_USE.Get("Use"));
+				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"));
 			}
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
 
 			// Menu
 			DrawMenu();

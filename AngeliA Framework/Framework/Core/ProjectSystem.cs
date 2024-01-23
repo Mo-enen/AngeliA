@@ -13,12 +13,6 @@ namespace AngeliaFramework {
 
 	public static class ProjectSystem {
 
-
-
-
-		#region --- VAR ---
-
-
 		// Event
 		private static event System.Action OnProjectOpen;
 
@@ -28,15 +22,7 @@ namespace AngeliaFramework {
 		public static List<Project> UserProjects { get; } = new();
 		public static List<Project> DownloadedProjects { get; } = new();
 
-
-		#endregion
-
-
-
-
-		#region --- MSG ---
-
-
+		// MSG
 		[OnGameInitialize(int.MinValue)]
 		public static void OnGameInitializeMin () {
 
@@ -66,19 +52,10 @@ namespace AngeliaFramework {
 
 		}
 
-
 		[OnGameInitialize(int.MaxValue)]
 		public static void OnGameInitializeMax () => OpenProject(BuiltInProject);
 
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
+		// API
 		public static Project CreateProject (string projectName) {
 
 			string projectFolderPath = Util.CombinePaths(
@@ -115,7 +92,6 @@ namespace AngeliaFramework {
 			return project;
 		}
 
-
 		public static void OpenProject (Project project, bool ignoreCallback = false) {
 			if (project == null) return;
 			CurrentProject = project;
@@ -125,22 +101,7 @@ namespace AngeliaFramework {
 			SortUserProjectList();
 		}
 
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
 		private static void SortUserProjectList () => UserProjects.Sort((a, b) => b.Info.ModifyDate.CompareTo(a.Info.ModifyDate));
-
-
-		#endregion
-
-
-
 
 	}
 
@@ -175,12 +136,15 @@ namespace AngeliaFramework {
 		// Api
 		public ProjectInfo Info { get; init; }
 		public bool Readonly { get; init; }
+		public object Cover { get; init; }
 
 		// MSG
 		public Project (string projectFolder, bool @readonly) : this(Util.CombinePaths(projectFolder, "Universe"), Util.CombinePaths(projectFolder, "Saving"), @readonly) { }
 
 		public Project (string universeFolder, string savingFolder, bool @readonly) {
+
 			Readonly = !Game.IsEdittime && @readonly;
+
 			// Universe
 			UniverseRoot = universeFolder;
 			SheetPath = AngePath.GetSheetPath(universeFolder);
@@ -189,15 +153,23 @@ namespace AngeliaFramework {
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
 			MapRoot = AngePath.GetMapRoot(universeFolder);
 			LanguageRoot = AngePath.GetLanguageRoot(universeFolder);
+
 			// Saving
 			SavingRoot = savingFolder;
 			ItemCustomizationRoot = AngePath.GetItemCustomizationRoot(savingFolder);
 			SavingMetaRoot = AngePath.GetSavingMetaRoot(savingFolder);
 			ProcedureMapRoot = AngePath.GetProcedureMapRoot(savingFolder);
+
 			// Create Folders 
 			CreateFolders();
+
 			// Load Info
 			Info = JsonUtil.LoadOrCreateJson<ProjectInfo>(universeFolder);
+
+			// Cover
+			var coverBytes = Util.FileToByte(AngePath.GetProjectCoverPath(universeFolder));
+			Cover = Game.PngBytesToTexture(coverBytes);
+
 		}
 
 		// API
