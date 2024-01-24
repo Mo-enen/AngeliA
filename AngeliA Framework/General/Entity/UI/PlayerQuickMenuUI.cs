@@ -160,8 +160,8 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, BuiltInText.HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Left, BuiltInText.HINT_MOVE);
+			ControlHintUI.AddHint(Gamekey.Right, BuiltInText.HINT_MOVE);
 
 			// Draw
 			DrawMenu();
@@ -204,7 +204,7 @@ namespace AngeliaFramework {
 					NameLabel.Text = ItemSystem.GetItemName(weapon.TypeID);
 					int labelWidth = ITEM_SIZE * 3;
 					int labelHeight = Unify(NameLabel.CharSize + 4);
-					CellRendererGUI.Label(NameLabel, new IRect(
+					CellGUI.Label(NameLabel, new IRect(
 						rect.CenterX() - labelWidth / 2,
 						rect.y - labelHeight,
 						labelWidth, labelHeight

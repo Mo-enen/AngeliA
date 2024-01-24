@@ -152,7 +152,7 @@ namespace AngeliaFramework {
 					}
 
 					// Label
-					CellRendererGUI.Label(
+					CellGUI.Label(
 						CellContent.Get(item.Label, tint, 20, Alignment.MidLeft),
 						rect.Shrink(indent, 0, 0, 0),
 						out var labelBounds

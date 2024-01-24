@@ -43,7 +43,7 @@ namespace AngeliaFramework {
 		protected virtual void OnUiClose () { }
 
 
-		protected static int Unify (int value) => CellRendererGUI.Unify(value);
+		protected static int Unify (int value) => CellGUI.Unify(value);
 
 
 	}
@@ -74,7 +74,7 @@ namespace AngeliaFramework {
 					SetOpen(false);
 					FrameInput.UseGameKey(Gamekey.Select);
 				}
-				ControlHintUI.AddHint(Gamekey.Select, BuiltInText.UI_CANCEL.Get("Cancel"), int.MinValue + 1);
+				ControlHintUI.AddHint(Gamekey.Select, BuiltInText.UI_CANCEL, int.MinValue + 1);
 			}
 		}
 

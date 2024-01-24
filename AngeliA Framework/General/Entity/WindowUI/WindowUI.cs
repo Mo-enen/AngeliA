@@ -20,10 +20,10 @@ namespace AngeliaFramework {
 		private static readonly SpriteCode BUTTON_ICON_SHEET_EDITOR = "Window.SheetEditor";
 		private static readonly SpriteCode BUTTON_ICON_LANGUAGE_EDITOR = "Window.LanguageEditor";
 		private static readonly SpriteCode BUTTON_ICON_HOME_SCREEN = "Window.HomeScreen";
-		private static readonly LanguageCode LABEL_MAP_EDITOR = "Window.Label.MapEditor";
-		private static readonly LanguageCode LABEL_SHEET_EDITOR = "Window.Label.SheetEditor";
-		private static readonly LanguageCode LABEL_LANGUAGE_EDITOR = "Window.Label.LanguageEditor";
-		private static readonly LanguageCode LABEL_HOME_SCREEN = "Window.Label.HomeScreen";
+		private static readonly LanguageCode LABEL_MAP_EDITOR = ("Window.Label.MapEditor", "Map");
+		private static readonly LanguageCode LABEL_SHEET_EDITOR = ("Window.Label.SheetEditor", "Sheet");
+		private static readonly LanguageCode LABEL_LANGUAGE_EDITOR = ("Window.Label.LanguageEditor", "Language");
+		private static readonly LanguageCode LABEL_HOME_SCREEN = ("Window.Label.HomeScreen", "Home");
 
 		// Api
 		public static WindowUI Instance { get; private set; } = null;
@@ -67,26 +67,26 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(Const.PIXEL, barRect, Const.GREY_12, z: int.MaxValue - 2);
 
 			// Home Editor
-			if (DrawTab(rect, HomeScreen.IsActived, LABEL_HOME_SCREEN.Get("Home"), BUTTON_ICON_HOME_SCREEN)) {
+			if (DrawTab(rect, HomeScreen.IsActived, LABEL_HOME_SCREEN, BUTTON_ICON_HOME_SCREEN)) {
 				OpenWindow(HomeScreen.TYPE_ID);
 			}
 			rect.x += tabWidth + padding;
 
 			if (!ProjectSystem.CurrentProject.Readonly) {
 				// Map Editor
-				if (DrawTab(rect, MapEditor.IsActived, LABEL_MAP_EDITOR.Get("Map"), BUTTON_ICON_MAP_EDITOR)) {
+				if (DrawTab(rect, MapEditor.IsActived, LABEL_MAP_EDITOR, BUTTON_ICON_MAP_EDITOR)) {
 					OpenWindow(MapEditor.TYPE_ID);
 				}
 				rect.x += tabWidth + padding;
 
 				// Sheet Editor
-				if (DrawTab(rect, SheetEditor.IsActived, LABEL_SHEET_EDITOR.Get("Sheet"), BUTTON_ICON_SHEET_EDITOR)) {
+				if (DrawTab(rect, SheetEditor.IsActived, LABEL_SHEET_EDITOR, BUTTON_ICON_SHEET_EDITOR)) {
 					OpenWindow(SheetEditor.TYPE_ID);
 				}
 				rect.x += tabWidth + padding;
 
 				// Language Editor
-				if (DrawTab(rect, LanguageEditor.IsActived, LABEL_LANGUAGE_EDITOR.Get("Language"), BUTTON_ICON_LANGUAGE_EDITOR)) {
+				if (DrawTab(rect, LanguageEditor.IsActived, LABEL_LANGUAGE_EDITOR, BUTTON_ICON_LANGUAGE_EDITOR)) {
 					OpenWindow(LanguageEditor.TYPE_ID);
 				}
 				rect.x += tabWidth + padding;
@@ -141,7 +141,7 @@ namespace AngeliaFramework {
 			if (actived) {
 				CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_96, int.MaxValue - 1);
 			}
-			if (CellRendererGUI.Button(rect, label, out var bounds, z: int.MaxValue) && !actived) {
+			if (CellGUI.Button(rect, label, out var bounds, z: int.MaxValue) && !actived) {
 				return true;
 			}
 			CellRenderer.Draw(

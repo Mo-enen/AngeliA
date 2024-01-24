@@ -47,6 +47,8 @@ namespace AngeliaFramework {
 		#region --- VAR ---
 
 
+
+
 		// Const
 		private const int EDITOR_BASIC_Z = 60;
 		private static readonly int ICON_UP_CODE = BuiltInIcon.ICON_TRIANGLE_UP;
@@ -56,24 +58,24 @@ namespace AngeliaFramework {
 		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
 		private static readonly int SELECTION_MARK = BuiltInIcon.CHECK_MARK_16;
 		private static readonly LanguageCode[] MAIN_MENU_LABELS = {
-			"UI.BodyPart.Head",
-			"UI.BodyPart.Body",
-			"UI.BodyPart.ArmHand",
-			"UI.BodyPart.LegFoot",
-			"UI.BodyPart.Face",
-			"UI.BodyPart.Hair",
-			"UI.BodyPart.Ear",
-			"UI.BodyPart.Tail",
-			"UI.BodyPart.Wing",
-			"UI.BodyPart.Horn",
-			"UI.BodyPart.SkinColor",
-			"UI.BodyPart.HairColor",
-			"UI.Suit.Hat",
-			"UI.Suit.Bodysuit",
-			"UI.Suit.Pants",
-			"UI.Suit.Glove",
-			"UI.Suit.Shoes",
-			"UI.BodyPart.Height",
+			("UI.BodyPart.Head", "Head"),
+			("UI.BodyPart.Body", "Body"),
+			("UI.BodyPart.ArmHand", "Arm & Hand"),
+			("UI.BodyPart.LegFoot", "Leg & Foot"),
+			("UI.BodyPart.Face", "Face"),
+			("UI.BodyPart.Hair", "Hair"),
+			("UI.BodyPart.Ear", "Ear"),
+			("UI.BodyPart.Tail", "Tail"),
+			("UI.BodyPart.Wing", "Wing"),
+			("UI.BodyPart.Horn", "Horn"),
+			("UI.BodyPart.SkinColor", "Skin Color"),
+			("UI.BodyPart.HairColor", "Hair Color"),
+			("UI.Suit.Hat", "Hat"),
+			("UI.Suit.Bodysuit", "Body Suit"),
+			("UI.Suit.Pants", "Pants"),
+			("UI.Suit.Glove", "Gloves"),
+			("UI.Suit.Shoes", "Shoes"),
+			("UI.BodyPart.Height", "Body Height"),
 		};
 		private static readonly int[] MAIN_MENU_ICONS = {
 			BuiltInIcon.ICON_BODY_PART_HEAD,
@@ -200,7 +202,7 @@ namespace AngeliaFramework {
 				if (FrameInput.GameKeyDown(Gamekey.Jump)) {
 					CurrentSubMenu = null;
 				}
-				ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.UI_BACK.Get("Back"));
+				ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.UI_BACK);
 			}
 
 			if (!CurrentSubMenu.HasValue) {
@@ -229,9 +231,9 @@ namespace AngeliaFramework {
 				}
 				mainHighlightIndex = mainHighlightIndex.Clamp(0, menuItemCount - 1);
 				HighlightingMainIndex = mainHighlightIndex;
-				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
-				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
-				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"));
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE);
+				ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
+				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE);
 			}
 
 			if (CurrentSubMenu.HasValue) {
@@ -355,7 +357,7 @@ namespace AngeliaFramework {
 					(i % 2) * (fieldRect.width + fieldPadding);
 				fieldRect.y = panelRect.yMax - panelPadding - fieldHeight -
 					(i / 2) * (fieldHeight + fieldPadding);
-				string label = MAIN_MENU_LABELS[(int)_menuType].Get(_menuType.ToString());
+				string label = MAIN_MENU_LABELS[(int)_menuType];
 				bool mouseInField = fieldRect.MouseInside();
 
 				// Icon
@@ -368,7 +370,7 @@ namespace AngeliaFramework {
 				);
 
 				// Label
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(label, 32, Alignment.MidLeft),
 					fieldRect.Shrink(fieldRect.height + fieldPadding, 0, 0, 0)
 				);
@@ -394,7 +396,7 @@ namespace AngeliaFramework {
 				} else {
 					// Using Key
 					if (i == HighlightingMainIndex) {
-						CellRendererGUI.HighlightCursor(FRAME_CODE, fieldRect, EDITOR_BASIC_Z + 4);
+						CellGUI.HighlightCursor(FRAME_CODE, fieldRect, EDITOR_BASIC_Z + 4);
 					}
 				}
 
@@ -436,8 +438,8 @@ namespace AngeliaFramework {
 						CurrentSubMenu = null;
 					}
 				}
-				CellRendererGUI.Label(
-					CellContent.Get(BuiltInText.UI_BACK.Get("Back"), 28, Alignment.MidMid),
+				CellGUI.Label(
+					CellContent.Get(BuiltInText.UI_BACK, 28, Alignment.MidMid),
 					buttonRect, out var bounds
 				);
 				CursorSystem.SetCursorAsHand(buttonRect, 1);
@@ -454,7 +456,7 @@ namespace AngeliaFramework {
 						);
 					}
 				} else {
-					CellRendererGUI.Label(
+					CellGUI.Label(
 						CellContent.Get(BackButtonHotkeyLabel, 24, Alignment.MidLeft), hotkeyRect
 					);
 				}
@@ -837,8 +839,8 @@ namespace AngeliaFramework {
 			int deltaRow = 0;
 			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) deltaRow = 1;
 			if (FrameInput.GameKeyDownGUI(Gamekey.Up)) deltaRow = -1;
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
+			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE);
 
 			// Fix when Highlighting on Label
 			int newRow = (HighlightingPatternRow + deltaRow).Clamp(0, row - 1);
@@ -904,20 +906,20 @@ namespace AngeliaFramework {
 
 					if (isEmpty) {
 						// Empty Name
-						CellRendererGUI.Label(
-							CellContent.Get(BuiltInText.UI_NONE.Get("None"), Const.WHITE),
+						CellGUI.Label(
+							CellContent.Get(BuiltInText.UI_NONE, Const.WHITE),
 							rect.Shift(contentPadding * 2, 0)
 						);
 					} else {
 						if (!isLabel) {
 							// Item Name
-							CellRendererGUI.Label(
+							CellGUI.Label(
 								CellContent.Get(displayName, 24, Alignment.MidLeft),
 								rect.Shift(contentPadding * 2, 0).Shrink(rect.height + iconPadding, 0, 0, 0)
 							);
 						} else {
 							// Item Label
-							CellRendererGUI.Label(
+							CellGUI.Label(
 								CellContent.Get(displayName, Const.GREY_128, 20, Alignment.MidMid),
 								rect.Shift(contentPadding * 2, 0)
 							);
@@ -964,14 +966,14 @@ namespace AngeliaFramework {
 
 			// Cursor
 			if (cursorRect.width > 0) {
-				CellRendererGUI.HighlightCursor(FRAME_CODE, cursorRect, EDITOR_BASIC_Z + 4);
+				CellGUI.HighlightCursor(FRAME_CODE, cursorRect, EDITOR_BASIC_Z + 4);
 			}
 
 			// Scroll Bar
 			if (row > pageRow) {
 				var barRect = new IRect(patternRect.xMax, patternRect.y, scrollBarWidth, patternRect.height);
-				PatternPickerScrollRow = CellRendererGUI.ScrollBar(
-					barRect, EDITOR_BASIC_Z + 3,
+				PatternPickerScrollRow = CellGUI.ScrollBar(
+					94567, barRect, EDITOR_BASIC_Z + 3,
 					PatternPickerScrollRow, row, pageRow
 				);
 				if (FrameInput.MouseWheelDelta != 0) {
@@ -1000,13 +1002,13 @@ namespace AngeliaFramework {
 			int BUTTON_BORDER = Unify(6);
 
 			// Label
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				CellContent.Get(BodyHeightToString.GetChars(playerHeight), 52), panelRect, out var labelBounds
 			);
 
 			// Button Up
 			var btnRectU = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);
-			if (CellRendererGUI.Button(
+			if (CellGUI.Button(
 				btnRectU, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
 				ICON_UP_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
 			)) {
@@ -1016,7 +1018,7 @@ namespace AngeliaFramework {
 
 			// Button Down
 			var btnRectD = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.y - BUTTON_PADDING - BUTTON_H, BUTTON_W, BUTTON_H);
-			if (CellRendererGUI.Button(
+			if (CellGUI.Button(
 				btnRectD, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
 				ICON_DOWN_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
 			)) {

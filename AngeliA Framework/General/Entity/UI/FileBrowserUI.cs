@@ -6,6 +6,7 @@ namespace AngeliaFramework {
 	[EntityAttribute.StageOrder(4095)]
 	[EntityAttribute.Capacity(1, 0)]
 	[RequireLanguageFromField]
+	[RequireSpriteFromField]
 	public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 
@@ -18,6 +19,14 @@ namespace AngeliaFramework {
 		private enum BrowserTargetType { File, Folder, }
 
 
+		private class ItemData {
+			public string Path;
+			public string DisplayName;
+			public bool IsFolder;
+			public AngeSprite Icon;
+		}
+
+
 		#endregion
 
 
@@ -28,10 +37,24 @@ namespace AngeliaFramework {
 
 		// Const
 		private static readonly int TYPE_ID = typeof(FileBrowserUI).AngeHash();
-		private static readonly LanguageCode FILE_NAME = "FileBrowser.FileName";
-		private static readonly LanguageCode FOLDER_NAME = "FileBrowser.FolderName";
-		private static readonly LanguageCode ERROR_NAME_EMPTY = "FileBrowser.Error.NameEmpty";
-		private static readonly LanguageCode ERROR_NAME_INVALID = "FileBrowser.Error.NameInValid";
+		private static readonly LanguageCode FILE_NAME = ("FileBrowser.FileName", "File Name");
+		private static readonly LanguageCode FOLDER_NAME = ("FileBrowser.FolderName", "Folder Name");
+		private static readonly LanguageCode ERROR_NAME_EMPTY = ("FileBrowser.Error.NameEmpty", "Name can't be empty");
+		private static readonly LanguageCode ERROR_NAME_INVALID = ("FileBrowser.Error.NameInValid", "Name contains invalid char");
+		private static readonly LanguageCode FAV_DESKTOP = ("FileBrowser.Fav.Desktop", "Desktop");
+		private static readonly LanguageCode FAV_PIC = ("FileBrowser.Fav.Pic", "My Picture");
+		private static readonly SpriteCode CommenFileIcon = "FileIcon.File";
+		private static readonly SpriteCode FolderIcon = "FileIcon.Folder";
+		private static readonly SpriteCode DiskIcon = "FileIcon.Disk";
+		private static readonly Dictionary<int, SpriteCode> FileIconPool = new() {
+			{ ".mp3".AngeHash(), "FileIcon.Audio"},
+			{ ".wav".AngeHash(), "FileIcon.Audio"},
+			{ ".ogg".AngeHash(), "FileIcon.Audio"},
+			{ ".txt".AngeHash(), "FileIcon.Text"},
+			{ ".json".AngeHash(), "FileIcon.Text"},
+			{ ".png".AngeHash(), "FileIcon.Image"},
+			{ ".jpg".AngeHash(), "FileIcon.Image"},
+		};
 
 		// Api
 		public IRect BackgroundRect { get; private set; }
@@ -42,12 +65,23 @@ namespace AngeliaFramework {
 		public string Title { get; set; } = "";
 
 		// Data
-		private readonly List<string> Folders = new();
-		private readonly List<string> Files = new();
+		private static readonly List<string> Disks = new();
+		private readonly List<ItemData> Items = new();
 		private System.Action<string> OnPathPicked = null;
 		private BrowserActionType ActionType;
 		private BrowserTargetType TargetType;
 		private string ErrorMessage = "";
+		private int ScrollY = 0;
+		private int LastSelectFrame = -1;
+		private int SelectingIndex = -1;
+		private string NavbarText = "";
+		private readonly CellContent ItemLabel = new() {
+			CharSize = 14,
+			Alignment = Alignment.TopLeft,
+			Tint = Const.GREY_230,
+			Wrap = true,
+			Clip = true,
+		};
 
 
 		#endregion
@@ -58,12 +92,26 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		[OnGameInitialize]
+		public static void OnGameInitialize () {
+			Disks.Clear();
+			for (int i = 2; i < 26; i++) {
+				string path = $"{(char)('A' + i)}:\\";
+				if (Util.FolderExists(path)) {
+					Disks.Add(path);
+				}
+			}
+		}
+
+
 		public override void OnActivated () {
 			base.OnActivated();
 			TargetExtension = string.Empty;
 			ErrorMessage = "";
-			Folders.Clear();
-			Files.Clear();
+			NavbarText = "";
+			ScrollY = 0;
+			SelectingIndex = -1;
+			Items.Clear();
 		}
 
 
@@ -104,8 +152,8 @@ namespace AngeliaFramework {
 			// Panels
 			Update_NavigationBar(Rect.EdgeInside(Direction4.Up, navBarHeight));
 			Update_Favorite(Rect.Shrink(0, Width - favPanelWidth, controlPanelHeight, navBarHeight));
-			Update_Explorer(Rect.Shrink(favPanelWidth, 0, controlPanelHeight, navBarHeight));
 			Update_ControlPanel(Rect.EdgeInside(Direction4.Down, controlPanelHeight));
+			Update_Explorer(Rect.Shrink(favPanelWidth, 0, controlPanelHeight, navBarHeight));
 
 		}
 
@@ -119,14 +167,14 @@ namespace AngeliaFramework {
 			var rect = barRect.EdgeInside(Direction4.Left, buttonSize);
 
 			// Parent
-			rect.x += buttonSize + buttonPadding;
-			if (CellRendererGUI.Button(
-				rect, 0, Const.PIXEL, Const.PIXEL, BuiltInIcon.ICON_TRIANGLE_RIGHT, 0, iconPadding, 1,
+			rect.x += buttonPadding;
+			if (CellGUI.Button(
+				rect, 0, Const.PIXEL, Const.PIXEL, BuiltInIcon.ICON_TRIANGLE_LEFT, 0, iconPadding, 1,
 				Const.GREY_20, Const.WHITE, enable: true
-			)) {
+			) || FrameInput.KeyboardDown(KeyboardKey.Backspace)) {
 				string parentPath = Util.GetParentPath(CurrentFolder);
 				if (!string.IsNullOrEmpty(parentPath)) {
-					CurrentFolder = parentPath;
+					CurrentName = ActionType == BrowserActionType.Open ? Util.GetNameWithExtension(CurrentFolder) : CurrentName;
 					Explore(parentPath);
 				}
 			}
@@ -134,13 +182,13 @@ namespace AngeliaFramework {
 			// Address
 			rect.x += buttonSize + buttonPadding;
 			rect.width = barRect.xMax - rect.x;
-			CurrentFolder = CellRendererGUI.TextField(12124, rect, CurrentFolder, out bool changed);
+			NavbarText = CellGUI.TextField(12124, rect, NavbarText, out _, out bool confirm);
 			CellRenderer.Draw_9Slice(
 				BuiltInIcon.FRAME_16, rect, frameBorder, frameBorder, frameBorder, frameBorder,
 				Const.GREY_32, z: 1
 			);
-			if (changed) {
-				Explore(CurrentFolder);
+			if (confirm) {
+				Explore(NavbarText);
 			}
 
 		}
@@ -148,14 +196,140 @@ namespace AngeliaFramework {
 
 		private void Update_Explorer (IRect panelRect) {
 
+			if (!Util.FolderExists(CurrentFolder)) return;
 
+			int scrollBarWidth = Unify(10);
+			panelRect.width -= scrollBarWidth;
+			var paddedPanelRect = panelRect.Shrink(Unify(12));
+			int itemWidth = Unify(184);
+			int itemHeight = Unify(56);
+			int iconSize = Unify(40);
+			int column = paddedPanelRect.width / itemWidth;
+			int pageRow = paddedPanelRect.height / itemHeight;
+			int totalRow = Items.Count.CeilDivide(column);
+			int extendedRow = totalRow + 2;
+
+			// Scroll
+			if (extendedRow > pageRow) {
+				ScrollY = (ScrollY - FrameInput.MouseWheelDelta * 2).Clamp(0, extendedRow - pageRow);
+				ScrollY = CellGUI.ScrollBar(
+					2376, paddedPanelRect.EdgeOutside(Direction4.Right, scrollBarWidth), z: 1,
+					ScrollY, extendedRow, pageRow
+				);
+			} else {
+				ScrollY = 0;
+			}
+
+			// Content
+			bool mouseInsideItem = false;
+			int itemPadding = Unify(4);
+			var rect = new IRect(0, 0, itemWidth, itemHeight);
+			for (int row = ScrollY; row < ScrollY + pageRow; row++) {
+				rect.y = paddedPanelRect.yMax - ((row - ScrollY + 1) * itemHeight);
+				for (int x = 0; x < column; x++) {
+					int index = row * column + x;
+					if (index >= Items.Count) goto _END_;
+					var item = Items[index];
+					rect.x = paddedPanelRect.x + x * itemWidth;
+					var paddedRect = rect.Shrink(itemPadding);
+
+					// Icon
+					if (item.Icon != null) {
+						CellRenderer.Draw(
+							item.Icon,
+							new IRect(paddedRect.x, paddedRect.yMax - iconSize, iconSize, iconSize),
+							z: 2
+						);
+					}
+
+					// Name Label
+					CellGUI.Label(
+						ItemLabel.SetText(item.DisplayName),
+						paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding)
+					);
+
+					// Hover Highlight
+					if (rect.MouseInside()) {
+						CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_20, z: 1);
+						mouseInsideItem = true;
+					}
+
+					// Selecting Highlight
+					if (SelectingIndex == index) {
+						CellRenderer.Draw(Const.PIXEL, rect, Const.GREY_56, z: 1);
+					}
+
+					// Click
+					if (rect.MouseInside() && FrameInput.MouseLeftButtonDown) {
+						if (SelectingIndex == index && Game.PauselessFrame < LastSelectFrame + 30) {
+							// Double Click
+							LastSelectFrame = -1;
+							if (item.IsFolder) {
+								Explore(item.Path);
+							} else if (ActionType == BrowserActionType.Open && TargetType == BrowserTargetType.File) {
+								PerformPick();
+							}
+						} else {
+							// Single Click
+							LastSelectFrame = Game.PauselessFrame;
+							SelectingIndex = index;
+							if (ActionType == BrowserActionType.Open || !item.IsFolder) {
+								CurrentName = item.IsFolder ? Util.GetNameWithExtension(item.Path) : Util.GetNameWithoutExtension(item.Path);
+							}
+						}
+						FrameInput.UseMouseKey(0);
+					}
+
+				}
+			}
+			_END_:;
+
+			// Cancel Selection
+			if (SelectingIndex >= 0 && FrameInput.MouseLeftButtonDown && !mouseInsideItem) {
+				SelectingIndex = -1;
+			}
 
 		}
 
 
 		private void Update_Favorite (IRect panelRect) {
 
+			panelRect = panelRect.Shrink(Unify(6));
+			int buttonSize = Unify(32);
+			int iconShrink = Unify(6);
+			int padding = Unify(4);
+			var rect = panelRect.EdgeInside(Direction4.Up, buttonSize);
+			rect = rect.Shrink(buttonSize + padding, 0, 0, 0);
 
+			// Buttons
+			DrawButton(
+				FAV_DESKTOP,
+				System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop),
+				FolderIcon
+			);
+			DrawButton(
+				FAV_PIC,
+				System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyPictures),
+				FolderIcon
+			);
+
+			// Disks
+			foreach (var diskPath in Disks) {
+				DrawButton(diskPath, diskPath, DiskIcon);
+			}
+
+			// Func
+			void DrawButton (string label, string path, int icon) {
+				if (CellGUI.Button(
+					rect, 0, Const.PIXEL, Const.PIXEL,
+					0, 0, 0, z: 1, buttonTint: Const.GREY_20, iconTint: Const.CLEAR
+				)) {
+					Explore(path);
+				}
+				CellGUI.Label(CellContent.Get(label, charSize: 16, alignment: Alignment.MidLeft), rect);
+				CellRenderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
+				rect.y -= rect.height;
+			}
 
 		}
 
@@ -166,32 +340,34 @@ namespace AngeliaFramework {
 			int buttonHeight = Unify(32);
 			int buttonWidth = Unify(108);
 
-			// Name Field
-			int labelWidth = Unify(128);
-			int frameBorder = Unify(1.5f);
-			int fieldHeight = Unify(32);
-			var fieldRect = new IRect(
-				panelRect.x + labelWidth + padding * 2,
-				panelRect.yMax - fieldHeight - padding,
-				panelRect.width - labelWidth - padding * 3,
-				fieldHeight
-			);
-			CurrentName = CellRendererGUI.TextField(091253, fieldRect, CurrentName);
-			CellRenderer.Draw_9Slice(
-				BuiltInIcon.FRAME_16, fieldRect, frameBorder, frameBorder, frameBorder, frameBorder,
-				Const.GREY_32, z: 1
-			);
+			if (ActionType == BrowserActionType.Save) {
+				// Name Field
+				int labelWidth = Unify(128);
+				int frameBorder = Unify(1.5f);
+				int fieldHeight = Unify(32);
+				var fieldRect = new IRect(
+					panelRect.x + labelWidth + padding * 2,
+					panelRect.yMax - fieldHeight - padding,
+					panelRect.width - labelWidth - padding * 3,
+					fieldHeight
+				);
+				CurrentName = CellGUI.TextField(091253, fieldRect, CurrentName);
+				CellRenderer.Draw_9Slice(
+					BuiltInIcon.FRAME_16, fieldRect, frameBorder, frameBorder, frameBorder, frameBorder,
+					Const.GREY_32, z: 1
+				);
 
-			// Name Label
-			CellRendererGUI.Label(
-				CellContent.Get(TargetType == BrowserTargetType.Folder ? FOLDER_NAME.Get("Folder Name") : FILE_NAME.Get("File Name"), tint: Const.GREY_216, charSize: 20, alignment: Alignment.MidRight),
-				fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0)
-			);
+				// Name Label
+				CellGUI.Label(
+					CellContent.Get(TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME, tint: Const.GREY_216, charSize: 20, alignment: Alignment.MidRight),
+					fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0)
+				);
+			}
 
 			// Error Msg
 			if (!string.IsNullOrEmpty(ErrorMessage)) {
 				var msgRect = panelRect.EdgeInside(Direction4.Down, buttonHeight);
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(ErrorMessage, tint: Const.RED_BETTER, charSize: 20, alignment: Alignment.MidLeft),
 					msgRect
 				);
@@ -200,8 +376,8 @@ namespace AngeliaFramework {
 			// Cancel Button
 			var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 			buttonRect.x -= buttonRect.width + padding;
-			if (CellRendererGUI.Button(
-				buttonRect, Const.PIXEL, BuiltInText.UI_CANCEL.Get("Cancel"),
+			if (CellGUI.Button(
+				buttonRect, Const.PIXEL, BuiltInText.UI_CANCEL,
 				z: 1, buttonTint: Const.GREY_32, labelTint: Const.GREY_230
 			)) {
 				ErrorMessage = string.Empty;
@@ -211,8 +387,8 @@ namespace AngeliaFramework {
 
 			// OK Button
 			buttonRect.x -= buttonRect.width + padding;
-			if (CellRendererGUI.Button(
-				buttonRect, Const.PIXEL, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN.Get("Open") : BuiltInText.UI_SAVE.Get("Save"),
+			if (CellGUI.Button(
+				buttonRect, Const.PIXEL, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
 				z: 1, buttonTint: Const.GREY_32, labelTint: Const.GREY_230
 			)) {
 				PerformPick();
@@ -244,6 +420,7 @@ namespace AngeliaFramework {
 
 
 		private static void SpawnBrowserLogic (string title, string defaultName, string extension, BrowserActionType actionType, BrowserTargetType targetType, System.Action<string> callback) {
+			if (Stage.GetEntity(TYPE_ID) != null) return;
 			if (Stage.SpawnEntity(TYPE_ID, 0, 0) is not FileBrowserUI browser) return;
 			if (string.IsNullOrEmpty(browser.CurrentFolder) || !Util.FolderExists(browser.CurrentFolder)) {
 				browser.CurrentFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
@@ -259,11 +436,45 @@ namespace AngeliaFramework {
 
 
 		private void Explore (string path) {
-			Folders.Clear();
-			Files.Clear();
-			if (!Util.FolderExists(path)) return;
-			Folders.AddRange(Util.EnumerateFolders(path, true));
-			Files.AddRange(Util.EnumerateFiles(path, true, "*"));
+			const int MAX_NAME_LEN = 16;
+			ScrollY = 0;
+			LastSelectFrame = -1;
+			SelectingIndex = -1;
+			if (!Util.FolderExists(path)) {
+				NavbarText = CurrentFolder;
+				return;
+			}
+			Items.Clear();
+			CellRenderer.TryGetSprite(FolderIcon, out var folderSprite);
+			CellRenderer.TryGetSprite(CommenFileIcon, out var commenFileSprite);
+			foreach (string folderPath in Util.EnumerateFolders(path, true)) {
+				if (Util.IsFolderHidden(folderPath)) continue;
+				string name = Util.GetNameWithExtension(folderPath);
+				Items.Add(new ItemData() {
+					DisplayName = name.Length <= MAX_NAME_LEN ? name : $"{name[..(MAX_NAME_LEN - 2)]}..",
+					Icon = folderSprite,
+					IsFolder = true,
+					Path = folderPath,
+				});
+				if (Util.GetNameWithExtension(name) == CurrentName) {
+					SelectingIndex = Items.Count - 1;
+				}
+			}
+			foreach (string filePath in Util.EnumerateFiles(path, true, $"*.{TargetExtension}")) {
+				if (Util.IsFileHidden(filePath)) continue;
+				string name = Util.GetNameWithExtension(filePath);
+				int fileSpriteID = FileIconPool.TryGetValue(
+					Util.GetExtension(name).AngeHash(), out var fileSpriteCode
+				) ? fileSpriteCode : 0;
+				Items.Add(new ItemData() {
+					DisplayName = name.Length <= MAX_NAME_LEN ? name : $"{name[..(MAX_NAME_LEN - 2)]}..",
+					Icon = fileSpriteID != 0 && CellRenderer.TryGetSprite(fileSpriteID, out var fileSprite) ? fileSprite : commenFileSprite,
+					IsFolder = false,
+					Path = filePath,
+				});
+			}
+			// Final
+			NavbarText = CurrentFolder = path;
 		}
 
 
@@ -273,34 +484,56 @@ namespace AngeliaFramework {
 			bool isSaving = ActionType == BrowserActionType.Save;
 			bool forFolder = TargetType == BrowserTargetType.Folder;
 
-			// Name Empty Check
-			if (isSaving && !string.IsNullOrEmpty(TargetExtension)) {
-				if (string.IsNullOrWhiteSpace(CurrentName) || CurrentName == TargetExtension) {
-					ErrorMessage = ERROR_NAME_EMPTY.Get("Name can't be empty");
+			if (isSaving) {
+				// Name Empty Check
+				if (string.IsNullOrWhiteSpace(CurrentName)) {
+					ErrorMessage = ERROR_NAME_EMPTY;
 					return;
-				} else if (CurrentName.EndsWith(TargetExtension)) {
-					CurrentName = CurrentName[..(CurrentName.Length - TargetExtension.Length)];
+				}
+				// Name Valid Check
+				if (CurrentName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0) {
+					ErrorMessage = ERROR_NAME_INVALID;
+					return;
 				}
 			}
 
-			// Name Valid Check
-			if (isSaving && CurrentName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0) {
-				ErrorMessage = ERROR_NAME_INVALID.Get("Name contains invalid char");
-				return;
+			// Get Target Path
+			string targetPath;
+			if (forFolder) {
+				if (isSaving) {
+					targetPath = Util.CombinePaths(CurrentFolder, CurrentName);
+				} else {
+					if (SelectingIndex < 0) {
+						targetPath = CurrentFolder;
+					} else {
+						targetPath = Util.CombinePaths(CurrentFolder, CurrentName);
+					}
+				}
+			} else {
+				if (TargetExtension == "*") {
+					if (SelectingIndex >= 0 && SelectingIndex < Items.Count) {
+						var selectingItem = Items[SelectingIndex];
+						if (selectingItem.IsFolder) {
+							Explore(selectingItem.Path);
+							return;
+						}
+						string ext = Util.GetExtension(selectingItem.Path);
+						targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}{ext}");
+					} else {
+						return;
+					}
+				} else {
+					targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}.{TargetExtension}");
+				}
 			}
+			targetPath = Util.FixPath(targetPath, forUnity: false);
 
-			// Perform Pick
-			string targetPath = Util.FixPath(forFolder ?
-				Util.CombinePaths(CurrentFolder, CurrentName) :
-				Util.CombinePaths(CurrentFolder, $"{CurrentName}.{TargetExtension}"),
-				forUnity: false
-			);
+			// Perform
 			if (isSaving || (forFolder ? Util.FolderExists(targetPath) : Util.FileExists(targetPath))) {
 				OnPathPicked?.Invoke(targetPath);
 			}
 			OnPathPicked = null;
 			Active = false;
-
 		}
 
 

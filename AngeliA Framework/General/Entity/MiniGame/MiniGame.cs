@@ -74,7 +74,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly LanguageCode MENU_QUIT_MINI_GAME = "Menu.MiniGame.QuitMsg";
+		private static readonly LanguageCode MENU_QUIT_MINI_GAME = ("Menu.MiniGame.QuitMsg", "Quit mini game?");
 		private static readonly SpriteCode[] DEFAULT_BADGE_CODES = { "MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold", };
 
 		// Api
@@ -86,9 +86,9 @@ namespace AngeliaFramework {
 		protected virtual bool RequireQuitConfirm => true;
 		protected virtual bool ShowRestartOption => true;
 		protected IRect WindowRect => new(
-			CellRenderer.CameraRect.CenterX() - CellRendererGUI.Unify(WindowSize.x) / 2,
-			CellRenderer.CameraRect.CenterY() - CellRendererGUI.Unify(WindowSize.y) / 2,
-			CellRendererGUI.Unify(WindowSize.x), CellRendererGUI.Unify(WindowSize.y)
+			CellRenderer.CameraRect.CenterX() - CellGUI.Unify(WindowSize.x) / 2,
+			CellRenderer.CameraRect.CenterY() - CellGUI.Unify(WindowSize.y) / 2,
+			CellGUI.Unify(WindowSize.x), CellGUI.Unify(WindowSize.y)
 		);
 		protected bool IsPlaying => FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
 		protected bool ShowingMenu => MenuEntity != null && MenuEntity.Active;
@@ -137,7 +137,7 @@ namespace AngeliaFramework {
 							CloseMiniGame();
 						}
 					}
-					ControlHintUI.AddHint(Gamekey.Start, BuiltInText.UI_QUIT.Get("Quit"));
+					ControlHintUI.AddHint(Gamekey.Start, BuiltInText.UI_QUIT);
 				}
 				if (RequireMouseCursor) CursorSystem.RequireCursor(-1);
 			}
@@ -191,9 +191,9 @@ namespace AngeliaFramework {
 		}
 
 
-		protected static int Unify (int value) => CellRendererGUI.Unify(value);
-		protected static int Unify (float value) => CellRendererGUI.Unify(value);
-		protected static int ReverseUnify (int value) => CellRendererGUI.ReverseUnify(value);
+		protected static int Unify (int value) => CellGUI.Unify(value);
+		protected static int Unify (float value) => CellGUI.Unify(value);
+		protected static int ReverseUnify (int value) => CellGUI.ReverseUnify(value);
 
 
 		// Saving
@@ -233,16 +233,16 @@ namespace AngeliaFramework {
 		private void OpenQuitDialog () {
 			if (ShowRestartOption) {
 				GenericDialogUI.SpawnDialog(
-					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
-					BuiltInText.UI_BACK.Get("Back"), Const.EmptyMethod,
-					BuiltInText.UI_RESTART.Get("Restart"), RestartGame,
-					BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
+					MENU_QUIT_MINI_GAME,
+					BuiltInText.UI_BACK, Const.EmptyMethod,
+					BuiltInText.UI_RESTART, RestartGame,
+					BuiltInText.UI_QUIT, CloseMiniGame
 				);
 			} else {
 				GenericDialogUI.SpawnDialog(
-					MENU_QUIT_MINI_GAME.Get("Quit mini game?"),
-					BuiltInText.UI_BACK.Get("Back"), Const.EmptyMethod,
-					BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
+					MENU_QUIT_MINI_GAME,
+					BuiltInText.UI_BACK, Const.EmptyMethod,
+					BuiltInText.UI_QUIT, CloseMiniGame
 				);
 			}
 		}

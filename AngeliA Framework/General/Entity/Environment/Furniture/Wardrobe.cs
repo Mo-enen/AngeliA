@@ -31,6 +31,7 @@ namespace AngeliaFramework {
 	}
 
 
+	[RequireLanguageFromField]
 	public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 
 
@@ -49,6 +50,7 @@ namespace AngeliaFramework {
 			"Icon.Suit.Pants".AngeHash(),
 			"Icon.Suit.Shoes".AngeHash(),
 		};
+		public static readonly LanguageCode HINT_TYPE = ("CtrlHint.Wardrobe.Type", "Suit Type");
 
 		// API
 		protected override Int2 WindowSize => new(200, 200);
@@ -186,11 +188,11 @@ namespace AngeliaFramework {
 			CurrentPatternIndex = CurrentPatternIndex.Clamp(0, currentPattern.Count - 1);
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, BuiltInText.HINT_ADJUST.Get("Adjust"), 0);
-			ControlHintUI.AddHint(Gamekey.Right, BuiltInText.HINT_ADJUST.Get("Adjust"), 0);
-			ControlHintUI.AddHint(Gamekey.Down, BuiltInText.HINT_TYPE.Get("Suit Type"), 0);
-			ControlHintUI.AddHint(Gamekey.Up, BuiltInText.HINT_TYPE.Get("Suit Type"), 0);
-			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"), 0);
+			ControlHintUI.AddHint(Gamekey.Left, BuiltInText.HINT_ADJUST, 0);
+			ControlHintUI.AddHint(Gamekey.Right, BuiltInText.HINT_ADJUST, 0);
+			ControlHintUI.AddHint(Gamekey.Down, HINT_TYPE, 0);
+			ControlHintUI.AddHint(Gamekey.Up, HINT_TYPE, 0);
+			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE, 0);
 
 		}
 
@@ -269,8 +271,8 @@ namespace AngeliaFramework {
 				);
 			} else {
 				// None Label
-				CellRendererGUI.Label(
-					CellContent.Get(BuiltInText.UI_NONE.Get("None"), Const.WHITE),
+				CellGUI.Label(
+					CellContent.Get(BuiltInText.UI_NONE, Const.WHITE),
 					windowRect
 				);
 			}
@@ -382,7 +384,7 @@ namespace AngeliaFramework {
 
 			// Display Name
 			if (CurrentPattern != int.MinValue) {
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(CurrentDisplayName, Const.WHITE),
 					windowRect.EdgeOutside(Direction4.Down, LabelSize)
 				);
@@ -390,15 +392,15 @@ namespace AngeliaFramework {
 
 			// Index Label
 			int midWidth = Unify(12);
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				CellContent.Get(IndexLabelLeft.GetChars(CurrentPatternIndex + 1), 24, Alignment.MidRight),
 				new IRect(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 			);
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				CellContent.Get(IndexLabelRight.GetChars(CurrentPatternList.Count), 24, Alignment.MidLeft),
 				new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 			);
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				CellContent.Get("/", 24, Alignment.MidMid),
 				new IRect(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize)
 			);

@@ -80,15 +80,15 @@ namespace AngeliaFramework {
 		private static readonly int GAMEPAD_ICON = BuiltInIcon.ICON_GAMEPAD;
 		private static readonly int MAP_ICON = BuiltInIcon.ICON_MAP;
 		private static readonly int BRUSH_ICON = BuiltInIcon.ICON_BRUSH;
-		private static readonly LanguageCode UI_TAB_PINNED = "UI.PaletteTab.Pinned";
-		private static readonly LanguageCode UI_TAB_ALL = "UI.PaletteTab.All";
-		private static readonly LanguageCode MENU_PALETTE_ADD_TO_LIST = "Menu.MEDT.AddToList";
-		private static readonly LanguageCode MENU_PALETTE_ADD_TO_NEW_LIST = "Menu.MEDT.AddToNewList";
-		private static readonly LanguageCode MENU_PALETTE_REMOVE_FROM_LIST = "Menu.MEDT.RemoveFromList";
-		private static readonly LanguageCode MENU_PALETTE_CREATE_LIST = "Menu.MEDT.CreateList";
-		private static readonly LanguageCode MENU_PALETTE_DELETE_LIST = "Menu.MEDT.DeleteList";
-		private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = "Menu.MEDT.DeleteListMSG";
-		private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = "Menu.MEDT.SetAsListCover";
+		private static readonly LanguageCode UI_TAB_PINNED = ("UI.PaletteTab.Pinned", "Favorite");
+		private static readonly LanguageCode UI_TAB_ALL = ("UI.PaletteTab.All", "All");
+		private static readonly LanguageCode MENU_PALETTE_ADD_TO_LIST = ("Menu.MEDT.AddToList", "Add to List:");
+		private static readonly LanguageCode MENU_PALETTE_ADD_TO_NEW_LIST = ("Menu.MEDT.AddToNewList", "Add to New List");
+		private static readonly LanguageCode MENU_PALETTE_REMOVE_FROM_LIST = ("Menu.MEDT.RemoveFromList", "Remove from List:");
+		private static readonly LanguageCode MENU_PALETTE_CREATE_LIST = ("Menu.MEDT.CreateList", "Create List");
+		private static readonly LanguageCode MENU_PALETTE_DELETE_LIST = ("Menu.MEDT.DeleteList", "Delete List");
+		private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = ("Menu.MEDT.DeleteListMSG", "Delete List ");
+		private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = ("Menu.MEDT.SetAsListCover", "Set as List Cover");
 		private const int TOOL_BAR_HEIGHT = 54;
 
 		// UI
@@ -327,9 +327,9 @@ namespace AngeliaFramework {
 				}
 
 				// Label
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(
-						i == 0 ? UI_TAB_PINNED.Get("List") : UI_TAB_ALL.Get("All"),
+						i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
 						Const.WHITE,
 						alignment: Alignment.MidMid, charSize: 22
 					),
@@ -662,8 +662,8 @@ namespace AngeliaFramework {
 			}
 
 			// Scroll Bar
-			PaletteScrollY = CellRendererGUI.ScrollBar(
-				new IRect(
+			PaletteScrollY = CellGUI.ScrollBar(
+				1324235, new IRect(
 					contentRect.xMax - SCROLL_BAR_WIDTH,
 					contentRect.y,
 					SCROLL_BAR_WIDTH,
@@ -723,7 +723,7 @@ namespace AngeliaFramework {
 				}
 
 				// Label
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(pal.Name, Const.WHITE, 24, Alignment.MidLeft),
 					rect.Shrink(itemSize + itemGap, 0, 0, 0)
 				);
@@ -759,8 +759,8 @@ namespace AngeliaFramework {
 			}
 			CellRenderer.ClampTextCells(searchRect, clampStartIndex);
 
-			PaletteSearchScrollY = CellRendererGUI.ScrollBar(
-				new IRect(
+			PaletteSearchScrollY = CellGUI.ScrollBar(
+				-3457, new IRect(
 					searchRect.xMax + itemGap,
 					searchRect.y,
 					SCROLL_BAR_WIDTH,
@@ -791,7 +791,7 @@ namespace AngeliaFramework {
 			// Reset Camera
 			var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
-				CellRendererGUI.Button(
+				CellGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInIcon.ICON_REFRESH,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
@@ -803,7 +803,7 @@ namespace AngeliaFramework {
 			// Button Down
 			btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
-				CellRendererGUI.Button(
+				CellGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInIcon.ICON_TRIANGLE_DOWN,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
@@ -815,7 +815,7 @@ namespace AngeliaFramework {
 			// Button Up
 			btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
-				CellRendererGUI.Button(
+				CellGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInIcon.ICON_TRIANGLE_UP,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
@@ -827,7 +827,7 @@ namespace AngeliaFramework {
 			// Nav
 			btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
-				CellRendererGUI.Button(
+				CellGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, IsNavigating ? BRUSH_ICON : MAP_ICON,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
@@ -840,7 +840,7 @@ namespace AngeliaFramework {
 			btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 			if (
 				!IsNavigating && !DroppingPlayer &&
-				CellRendererGUI.Button(
+				CellGUI.Button(
 					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, GAMEPAD_ICON,
 					BUTTON_BORDER, 0, int.MaxValue - 1
 				) && interactable
@@ -892,7 +892,7 @@ namespace AngeliaFramework {
 				if (btnRect.yMax < CheckPointLaneRect.y) break;
 
 				if (
-					CellRendererGUI.Button(
+					CellGUI.Button(
 						btnRect, ITEM_FRAME, ITEM_FRAME, ITEM_FRAME, id,
 						BUTTON_BORDER, 0, PANEL_Z + 6, Const.WHITE, interactable ? Const.WHITE : Const.WHITE_64
 					) && interactable
@@ -929,7 +929,7 @@ namespace AngeliaFramework {
 			);
 
 			// Search Icon
-			if (CellRendererGUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
+			if (CellGUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
 				CellRenderer.Draw(
 					SEARCH_ICON,
 					searchPanel.Shrink(PADDING, searchPanel.width - ITEM_SIZE - PADDING, 0, 0),
@@ -938,7 +938,7 @@ namespace AngeliaFramework {
 			}
 
 			// Search Text
-			SearchingText = CellRendererGUI.TextField(SEARCH_ID, searchPanel, SearchingText, out bool changed);
+			SearchingText = CellGUI.TextField(SEARCH_ID, searchPanel, SearchingText, out bool changed, out _);
 			if (changed) {
 				PaletteSearchScrollY = 0;
 				SearchResult.Clear();
@@ -950,7 +950,7 @@ namespace AngeliaFramework {
 			// Close Button
 			if (
 				!string.IsNullOrEmpty(SearchingText) &&
-				CellRendererGUI.Button(
+				CellGUI.Button(
 					searchPanel.EdgeInside(Direction4.Right, searchPanel.height),
 					0, Const.PIXEL, Const.PIXEL, BuiltInIcon.ICON_CROSS, 0, PADDING * 2,
 					PANEL_Z - 4, Const.WHITE_64, Const.GREY_128
@@ -958,7 +958,7 @@ namespace AngeliaFramework {
 			) {
 				SearchingText = "";
 				SearchResult.Clear();
-				CellRendererGUI.CancelTyping();
+				CellGUI.CancelTyping();
 			}
 
 		}
@@ -979,16 +979,16 @@ namespace AngeliaFramework {
 			if (list != null) {
 				// Click on List
 				// Delete List
-				GenericPopupUI.AddItem(MENU_PALETTE_DELETE_LIST.Get("Delete List"), () =>
+				GenericPopupUI.AddItem(MENU_PALETTE_DELETE_LIST, () =>
 					GenericDialogUI.SpawnDialog(
-						$"{MENU_PALETTE_DELETE_LIST_MSG.Get("Delete List ")} \"{(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")}\"?",
-						BuiltInText.UI_DELETE.Get("Delete"), () => EditorMeta.PinnedLists.Remove(list),
-						BuiltInText.UI_CANCEL.Get("Cancel"), Const.EmptyMethod
+						$"{MENU_PALETTE_DELETE_LIST_MSG} \"{(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")}\"?",
+						BuiltInText.UI_DELETE, () => EditorMeta.PinnedLists.Remove(list),
+						BuiltInText.UI_CANCEL, Const.EmptyMethod
 				), enabled: EditorMeta.PinnedLists.Count > 1);
 			} else {
 				// Click on Empty
 				// Create List
-				GenericPopupUI.AddItem(MENU_PALETTE_CREATE_LIST.Get("Create List"), () => {
+				GenericPopupUI.AddItem(MENU_PALETTE_CREATE_LIST, () => {
 					EditorMeta.PinnedLists.Add(new PinnedList() {
 						Icon = UI_DEFAULT_LIST_COVER,
 						Items = new List<int>(),
@@ -1010,8 +1010,8 @@ namespace AngeliaFramework {
 				bool hasItem = list.Items.Contains(pal.ID);
 				GenericPopupUI.AddItem(
 					!hasItem ?
-						MENU_PALETTE_ADD_TO_LIST.Get("Add to List:") :
-						MENU_PALETTE_REMOVE_FROM_LIST.Get("Remove from List:"),
+						MENU_PALETTE_ADD_TO_LIST :
+						MENU_PALETTE_REMOVE_FROM_LIST,
 					list.Icon, Direction2.Right,
 					() => {
 						if (!hasItem) {
@@ -1031,7 +1031,7 @@ namespace AngeliaFramework {
 
 			// Add to New List
 			GenericPopupUI.AddItem(
-				MENU_PALETTE_ADD_TO_NEW_LIST.Get("Add to New List"), () => {
+				MENU_PALETTE_ADD_TO_NEW_LIST, () => {
 					EditorMeta.PinnedLists.Add(new PinnedList() {
 						Icon = pal.ArtworkID,
 						Items = new List<int>() { pal.ID },
@@ -1045,7 +1045,7 @@ namespace AngeliaFramework {
 					// Cover Icon
 					GenericPopupUI.AddSeparator();
 					GenericPopupUI.AddItem(
-						MENU_PALETTE_SET_LIST_COVER.Get("Set as List Cover"), () => {
+						MENU_PALETTE_SET_LIST_COVER, () => {
 							selectingList.Icon = pal.ArtworkID;
 						}, selectingList.Icon != pal.ArtworkID
 					);

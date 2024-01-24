@@ -36,10 +36,10 @@ namespace AngeliaFramework {
 
 		// Const
 		public static readonly int TYPE_ID = typeof(LanguageEditor).AngeHash();
-		private static readonly LanguageCode DELETE_MSG = "UI.LanguageEditor.DeleteMsg";
-		private static readonly LanguageCode ADD_KEY = "UI.LanguageEditor.AddKey";
-		private static readonly LanguageCode ADD_LANGUAGE = "UI.LanguageEditor.AddLanguage";
-		private static readonly LanguageCode UI_LABEL_KEY = "UI.LanguageEditor.Key";
+		private static readonly LanguageCode DELETE_MSG = ("UI.LanguageEditor.DeleteMsg", "Delete Language {0}?");
+		private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
+		private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
+		private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
 
 		// Api
 		public new static LanguageEditor Instance => WindowUI.Instance as LanguageEditor;
@@ -132,7 +132,7 @@ namespace AngeliaFramework {
 			// + Key
 			var rect = panelRect;
 			rect.width = Unify(108);
-			if (CellRendererGUI.Button(rect, ADD_KEY.Get("+ Key"), z: 1, charSize: 16) && interactable) {
+			if (CellGUI.Button(rect, ADD_KEY, z: 1, charSize: 16) && interactable) {
 				ScrollY = 0;
 				Lines.Insert(0, new LanguageLine() {
 					Key = string.Empty,
@@ -150,7 +150,7 @@ namespace AngeliaFramework {
 
 			// + Language
 			rect.width = Unify(108);
-			if (CellRendererGUI.Button(rect, ADD_LANGUAGE.Get("+ Language"), z: 1, charSize: 16) && interactable) {
+			if (CellGUI.Button(rect, ADD_LANGUAGE, z: 1, charSize: 16) && interactable) {
 				OpenAddLanguagePopup();
 			}
 			CursorSystem.SetCursorAsHand(rect);
@@ -163,7 +163,7 @@ namespace AngeliaFramework {
 			int border = Unify(1);
 			rect.width = panelRect.xMax - rect.x;
 			var searchRect = rect.Shrink(Unify(6));
-			string newText = CellRendererGUI.TextField(-19223, searchRect, InputContent.SetText(SearchingText));
+			string newText = CellGUI.TextField(-19223, searchRect, InputContent.SetText(SearchingText));
 			SearchingText = interactable ? newText : SearchingText;
 			CellRenderer.Draw_9Slice(
 				BuiltInIcon.FRAME_16, searchRect,
@@ -173,11 +173,11 @@ namespace AngeliaFramework {
 
 			// Labels
 			var labelRect = new IRect(panelRect.x + Unify(12), panelRect.y - labelHeight, labelWidth, labelHeight);
-			CellRendererGUI.Label(LabelContent.SetText(UI_LABEL_KEY.Get("Key")), labelRect);
+			CellGUI.Label(LabelContent.SetText(UI_LABEL_KEY), labelRect);
 			labelRect.x += labelRect.width;
 			for (int i = 0; i < Languages.Count; i++) {
 				string name = Util.GetLanguageDisplayName(Languages[i]);
-				CellRendererGUI.Label(LabelContent.SetText(name), labelRect);
+				CellGUI.Label(LabelContent.SetText(name), labelRect);
 				labelRect.x += labelRect.width;
 			}
 
@@ -238,7 +238,7 @@ namespace AngeliaFramework {
 					if (i != 0) {
 						rect.height = labelHeight;
 						rect.y -= labelHeight;
-						CellRendererGUI.Label(LabelContent.SetText(label), rect.Shrink(labelPadding, 0, 0, 0));
+						CellGUI.Label(LabelContent.SetText(label), rect.Shrink(labelPadding, 0, 0, 0));
 						rect.height = itemHeight;
 					}
 				}
@@ -250,13 +250,13 @@ namespace AngeliaFramework {
 				if (line.Required) {
 					int _textIndex = CellRenderer.GetTextUsedCellCount();
 					var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-					CellRendererGUI.Label(KeyLabelContent.SetText(line.Key), shrinkedRect);
+					CellGUI.Label(KeyLabelContent.SetText(line.Key), shrinkedRect);
 					CellRenderer.ClampTextCells(shrinkedRect, _textIndex);
 					ctrlID++;
 				} else {
 					var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-					line.Key = CellRendererGUI.TextField(
-						ctrlID++, shrinkedRect, InputContent.SetText(line.Key), out bool changed
+					line.Key = CellGUI.TextField(
+						ctrlID++, shrinkedRect, InputContent.SetText(line.Key), out bool changed, out _
 					);
 					CellRenderer.Draw_9Slice(
 						BuiltInIcon.FRAME_16, shrinkedRect,
@@ -273,8 +273,8 @@ namespace AngeliaFramework {
 				// Contents
 				for (int j = 0; j < line.Value.Count; j++) {
 					var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-					line.Value[j] = CellRendererGUI.TextField(
-						ctrlID++, shrinkedRect, InputContent.SetText(line.Value[j]), out bool changed
+					line.Value[j] = CellGUI.TextField(
+						ctrlID++, shrinkedRect, InputContent.SetText(line.Value[j]), out bool changed, out _
 					);
 					CellRenderer.Draw_9Slice(
 						BuiltInIcon.FRAME_16, shrinkedRect,
@@ -292,8 +292,8 @@ namespace AngeliaFramework {
 			CellRenderer.ClampTextCells(panelRect, startTextCellIndex);
 
 			// Scrollbar
-			ScrollY = interactable ? CellRendererGUI.ScrollBar(
-				panelRect.EdgeOutside(Direction4.Right, scrollBarWidth), z: 1,
+			ScrollY = interactable ? CellGUI.ScrollBar(
+				56093, panelRect.EdgeOutside(Direction4.Right, scrollBarWidth), z: 1,
 				ScrollY, shiftedItemCount, pageCount
 			) : ScrollY;
 			if (FrameInput.MouseWheelDelta != 0 && pageCount <= shiftedItemCount) {
@@ -406,8 +406,8 @@ namespace AngeliaFramework {
 			int lanIndex = index;
 			string lanName = Util.GetLanguageDisplayName(Languages[lanIndex]);
 			GenericDialogUI.SpawnDialog(
-				string.Format(DELETE_MSG.Get("Delete Language {0}?"), lanName),
-				BuiltInText.UI_DELETE.Get("Delete"),
+				string.Format(DELETE_MSG, lanName),
+				BuiltInText.UI_DELETE,
 				() => {
 					string targetRoot = ProjectSystem.CurrentProject.LanguageRoot;
 					string path = Language.GetLanguageFilePath(targetRoot, Languages[lanIndex]);
@@ -417,7 +417,7 @@ namespace AngeliaFramework {
 						data.Value.RemoveAt(lanIndex);
 					}
 				},
-				BuiltInText.UI_CANCEL.Get("Cancel"),
+				BuiltInText.UI_CANCEL,
 				Const.EmptyMethod
 			);
 		}

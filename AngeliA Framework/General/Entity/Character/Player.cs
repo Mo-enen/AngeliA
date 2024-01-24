@@ -40,8 +40,8 @@ namespace AngeliaFramework {
 		// Const
 		private const int RUSH_TAPPING_GAP = 16;
 		private const int ACTION_SCAN_RANGE = Const.HALF;
-		private static readonly LanguageCode HINT_WAKE = "CtrlHint.WakeUp";
-		private static readonly LanguageCode HINT_SWITCH_PLAYER = "CtrlHint.SwitchPlayer";
+		private static readonly LanguageCode HINT_WAKE = ("CtrlHint.WakeUp", "Wake");
+		private static readonly LanguageCode HINT_SWITCH_PLAYER = ("CtrlHint.SwitchPlayer", "Select Player");
 
 		// Api
 		public static Player Selecting { get; private set; } = null;
@@ -146,7 +146,7 @@ namespace AngeliaFramework {
 			switch (CharacterState) {
 				case CharacterState.GamePlay:
 
-					bool allowGamePlay = !FrameTask.HasTask() && !CellRendererGUI.IsTyping;
+					bool allowGamePlay = !FrameTask.HasTask() && !CellGUI.IsTyping;
 
 					if (allowGamePlay) {
 						if (PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI) {
@@ -168,7 +168,7 @@ namespace AngeliaFramework {
 						Update_JumpDashPoundRush();
 
 						// Hint
-						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
+						ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE);
 					} else {
 						Stop();
 					}
@@ -198,7 +198,7 @@ namespace AngeliaFramework {
 
 			if (LockingInput) return;
 
-			ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.HINT_JUMP.Get("Jump"));
+			ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.HINT_JUMP);
 
 			// Jump/Dash
 			HoldJump(FrameInput.GameKeyHolding(Gamekey.Jump));
@@ -296,7 +296,7 @@ namespace AngeliaFramework {
 
 			// Try Perform Action
 			if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
-				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"), int.MinValue + 1);
+				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE, int.MinValue + 1);
 				if (FrameInput.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
 					TargetActionEntity?.Invoke();
 					FrameInput.UseGameKey(Gamekey.Action);
@@ -315,7 +315,7 @@ namespace AngeliaFramework {
 			if (LockingInput) return;
 
 			// Try Perform Attack
-			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK.Get("Attack"));
+			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
 			bool attDown = FrameInput.GameKeyDown(Gamekey.Action);
 			bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && RepeatAttackWhenHolding;
 			if (attDown || attHolding) {
@@ -381,7 +381,7 @@ namespace AngeliaFramework {
 			if (requireHint) {
 				ControlHintUI.AddHint(
 					FrameInput.UsingGamepad ? Gamekey.Start : Gamekey.Select,
-					BuiltInText.HINT_SHOW_MENU.Get("Show Menu")
+					BuiltInText.HINT_SHOW_MENU
 				);
 			}
 		}
@@ -404,10 +404,10 @@ namespace AngeliaFramework {
 				X - Const.HALF,
 				Y + Const.CEL * 3 / 2,
 				Gamekey.Action,
-				HINT_WAKE.Get("Wake"),
+				HINT_WAKE,
 				true
 			);
-			ControlHintUI.AddHint(Gamekey.Action, HINT_WAKE.Get("Wake"));
+			ControlHintUI.AddHint(Gamekey.Action, HINT_WAKE);
 		}
 
 
@@ -456,7 +456,7 @@ namespace AngeliaFramework {
 			if (IsFullPassOut) {
 				ControlHintUI.DrawGlobalHint(
 					X - Const.HALF, Y + Const.CEL * 3 / 2,
-					Gamekey.Action, BuiltInText.UI_CONTINUE.Get("Continue"), background: true
+					Gamekey.Action, BuiltInText.UI_CONTINUE, background: true
 				);
 			}
 
@@ -530,7 +530,7 @@ namespace AngeliaFramework {
 				// Hint
 				ControlHintUI.DrawGlobalHint(
 					X - Const.HALF, Y + Const.CEL * 2,
-					Gamekey.Action, HINT_SWITCH_PLAYER.Get("Switch Character"), true
+					Gamekey.Action, HINT_SWITCH_PLAYER, true
 				);
 			}
 

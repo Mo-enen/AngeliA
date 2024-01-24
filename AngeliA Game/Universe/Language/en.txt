@@ -1,4 +1,4 @@
-﻿FileBrowser.Error.NameInValid:Name contains invalid char
+﻿FileBrowser.Fav.Pic:My Pictures
 @GuaGua:GuaGua
 @SlimeRed:Red Slime
 @Yaya:Yaya
@@ -30,10 +30,10 @@ CtrlHint.WakeUp:Wake Up
 CtrlHint.Wardrobe.Type:Suit Type
 DevilWing.Wing:Devil Wing
 FileBrowser.Error.NameEmpty:Name can't be empty
+FileBrowser.Error.NameInValid:Name contains invalid char
+FileBrowser.Fav.Desktop:Desktop
 FileBrowser.FileName:File Name
 FileBrowser.FolderName:Folder Name
-Hint.Pong.Move:Move
-Hint.Sokoban.Move:Move
 Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
 Hint.Tetris.Move:Move

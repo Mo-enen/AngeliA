@@ -20,8 +20,8 @@ namespace AngeliaForUnity {
 
 		private static void OnDeviceChange (InputDevice device, InputDeviceChange change) {
 			if (device is Keyboard && Keyboard.current != null) {
-				Keyboard.current.onTextInput -= CellRendererGUI.OnTextInput;
-				Keyboard.current.onTextInput += CellRendererGUI.OnTextInput;
+				Keyboard.current.onTextInput -= CellGUI.OnTextInput;
+				Keyboard.current.onTextInput += CellGUI.OnTextInput;
 			}
 		}
 

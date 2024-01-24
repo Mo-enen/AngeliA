@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 
 			DraggingUnitRect = null;
 
-			if (IsPlaying || DroppingPlayer || TaskingRoute || CellRendererGUI.IsTyping) {
+			if (IsPlaying || DroppingPlayer || TaskingRoute || CellGUI.IsTyping) {
 				MouseDownPosition = null;
 				MouseDownOutsideBoundary = false;
 				MouseOutsideBoundary = false;

@@ -130,7 +130,7 @@ namespace AngeliaFramework {
 		public static bool MouseMidButtonDown => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Down;
 		public static bool IgnoreMouseToActionJumpForThisFrame { get; set; } = false;
 		public static bool LastActionFromMouse { get; private set; } = false;
-		public static int MouseWheelDelta { get; private set; } = 0;
+		public static int MouseWheelDelta => IgnoringInput ? 0 : _MouseWheelDelta;
 
 		// Short
 		private static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
@@ -186,6 +186,7 @@ namespace AngeliaFramework {
 		private static int? GamepadRightStickAccumulate = null;
 		private static int IgnoreInputFrame = -1;
 		private static KeyboardKey[] AllKeyboardKeys = new KeyboardKey[0];
+		private static int _MouseWheelDelta = 0;
 
 		// Saving
 		private static readonly SavingBool s_AllowGamepad = new("FrameInput.AllowGamepad", true);
@@ -276,7 +277,7 @@ namespace AngeliaFramework {
 			if (Game.CursorVisible) {
 				if (AnyGamepadButtonHolding || AnyKeyboardKeyHolding) {
 					LastActionFromMouse = false;
-				} else if (MouseMove || AnyMouseButtonHolding || MouseWheelDelta != 0) {
+				} else if (MouseMove || AnyMouseButtonHolding || _MouseWheelDelta != 0) {
 					LastActionFromMouse = true;
 				}
 			} else {
@@ -329,7 +330,7 @@ namespace AngeliaFramework {
 				MouseRightDownGlobalPosition = MouseRightButtonDown ? newGlobalPos : MouseRightDownGlobalPosition;
 				MouseMidDownGlobalPosition = MouseMidButtonDown ? newGlobalPos : MouseMidDownGlobalPosition;
 
-				MouseWheelDelta = Game.MouseScrollDelta;
+				_MouseWheelDelta = Game.MouseScrollDelta;
 
 			} else {
 				MouseScreenPositionDelta = default;
@@ -343,7 +344,7 @@ namespace AngeliaFramework {
 				RefreshState(MouseRightState, false);
 				RefreshState(MouseMidState, false);
 				MouseMove = false;
-				MouseWheelDelta = 0;
+				_MouseWheelDelta = 0;
 			}
 
 			static void RefreshState (State state, bool holding) {
@@ -383,7 +384,7 @@ namespace AngeliaFramework {
 				}
 			}
 			// Mouse Wheel from Right Stick
-			if (MouseWheelDelta == 0) {
+			if (_MouseWheelDelta == 0) {
 				int acc = 0;
 				if (available) {
 					if (Game.IsGamepadRightStickHolding(Direction4.Down)) acc = -1;
@@ -400,7 +401,7 @@ namespace AngeliaFramework {
 					}
 					if (GamepadRightStickAccumulate.Value.Abs() >= 10) {
 						GamepadRightStickAccumulate = 0;
-						MouseWheelDelta = acc;
+						_MouseWheelDelta = acc;
 					}
 				} else {
 					GamepadRightStickAccumulate = null;

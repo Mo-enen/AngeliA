@@ -28,34 +28,43 @@ namespace AngeliaFramework {
 
 
 		// Const 
-		private static readonly LanguageCode MENU_QUIT_MESSAGE = "Menu.Pause.QuitMessage";
-		private static readonly LanguageCode MENU_RESTART_MESSAGE = "Menu.Pause.RestartMessage";
-		private static readonly LanguageCode MENU_KEYSETTER_GAMEPAD_MESSAGE = "Menu.KeySetter.GamepadMessage";
-		private static readonly LanguageCode MENU_KEYSETTER_KEYBOARD_MESSAGE = "Menu.KeySetter.KeyboardMessage";
-		private static readonly LanguageCode MENU_KEYSETTER_CONFIRM_MESSAGE = "Menu.KeySetter.ConfirmMessage";
-		private static readonly LanguageCode MENU_KEY_SETTER = "Menu.Pause.KeySetter";
-		private static readonly LanguageCode MENU_SETTER_KEYBOARD = "Menu.KeySetter.Keyboard";
-		private static readonly LanguageCode MENU_SETTER_GAMEPAD = "Menu.KeySetter.Gamepad";
-		private static readonly LanguageCode MENU_SETTER_RECORD = "Menu.KeySetter.Record";
-		private static readonly LanguageCode MENU_MUSIC_VOLUME = "Menu.Setting.MusicVolume";
-		private static readonly LanguageCode MENU_SOUND_VOLUME = "Menu.Setting.SoundVolume";
-		private static readonly LanguageCode MENU_FRAMERATE = "Menu.Setting.Framerate";
-		private static readonly LanguageCode MENU_LANGUAGE = "Menu.Setting.Language";
-		private static readonly LanguageCode MENU_SHOW_FPS = "Menu.Setting.ShowFPS";
-		private static readonly LanguageCode MENU_KEYSETTER_SAVE_BACK = "Menu.KeySetter.SaveAndBack";
-		private static readonly LanguageCode MENU_FULLSCREEN_0 = "Menu.Setting.Fullscreen.0";
-		private static readonly LanguageCode MENU_FULLSCREEN_1 = "Menu.Setting.Fullscreen.1";
-		private static readonly LanguageCode MENU_FULLSCREEN_2 = "Menu.Setting.Fullscreen.2";
-		private static readonly LanguageCode MENU_FULLSCREEN_LABEL = "Menu.Setting.Fullscreen.Label";
-		private static readonly LanguageCode MENU_VSYNC = "Menu.Setting.VSync";
-		private static readonly LanguageCode MENU_CONTROL_HINT = "Menu.Setting.UseControlHint";
-		private static readonly LanguageCode MENU_GAMEPAD_HINT = "Menu.Setting.UseGamepadHint";
-		private static readonly LanguageCode MENU_ALLOW_GAMEPAD = "Menu.Setting.AllowGamepad";
-		private static readonly LanguageCode MENU_MEDT_SETTING = "Menu.Pause.MEDTSetting";
-		private static readonly LanguageCode MENU_MEDT_AUTO_ZOOM = "Menu.MEDTSetting.AutoZoom";
-		private static readonly LanguageCode MENU_MEDT_PLAYER_DROP = "Menu.MEDTSetting.PlayerDrop";
-		private static readonly LanguageCode MENU_MEDT_STATE = "Menu.MEDTSetting.ShowState";
-		private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] { $"UI.GameKey.{Gamekey.Left}", $"UI.GameKey.{Gamekey.Right}", $"UI.GameKey.{Gamekey.Down}", $"UI.GameKey.{Gamekey.Up}", $"UI.GameKey.{Gamekey.Action}", $"UI.GameKey.{Gamekey.Jump}", $"UI.GameKey.{Gamekey.Start}", $"UI.GameKey.{Gamekey.Select}", };
+		private static readonly LanguageCode MENU_QUIT_MESSAGE = ("Menu.Pause.QuitMessage", "Quit Game?");
+		private static readonly LanguageCode MENU_RESTART_MESSAGE = ("Menu.Pause.RestartMessage", "Restart Game?");
+		private static readonly LanguageCode MENU_KEYSETTER_GAMEPAD_MESSAGE = ("Menu.KeySetter.GamepadMessage", "Press F1 key to reset");
+		private static readonly LanguageCode MENU_KEYSETTER_KEYBOARD_MESSAGE = ("Menu.KeySetter.KeyboardMessage", "Press F1 key to reset");
+		private static readonly LanguageCode MENU_KEYSETTER_CONFIRM_MESSAGE = ("Menu.KeySetter.ConfirmMessage", "Save the changes?");
+		private static readonly LanguageCode MENU_KEY_SETTER = ("Menu.Pause.KeySetter", "Key Assignment");
+		private static readonly LanguageCode MENU_SETTER_KEYBOARD = ("Menu.KeySetter.Keyboard", "Keyboard");
+		private static readonly LanguageCode MENU_SETTER_GAMEPAD = ("Menu.KeySetter.Gamepad", "Gamepad");
+		private static readonly LanguageCode MENU_SETTER_RECORD = ("Menu.KeySetter.Record", "Press key u want");
+		private static readonly LanguageCode MENU_MUSIC_VOLUME = ("Menu.Setting.MusicVolume", "Music Volume");
+		private static readonly LanguageCode MENU_SOUND_VOLUME = ("Menu.Setting.SoundVolume", "Sound Volume");
+		private static readonly LanguageCode MENU_FRAMERATE = ("Menu.Setting.Framerate", "Framerate");
+		private static readonly LanguageCode MENU_LANGUAGE = ("Menu.Setting.Language", "Language");
+		private static readonly LanguageCode MENU_SHOW_FPS = ("Menu.Setting.ShowFPS", "Show FPS");
+		private static readonly LanguageCode MENU_KEYSETTER_SAVE_BACK = ("Menu.KeySetter.SaveAndBack", "Save and Back");
+		private static readonly LanguageCode MENU_FULLSCREEN_0 = ("Menu.Setting.Fullscreen.0", "Windowed");
+		private static readonly LanguageCode MENU_FULLSCREEN_1 = ("Menu.Setting.Fullscreen.1", "Fullscreen");
+		private static readonly LanguageCode MENU_FULLSCREEN_2 = ("Menu.Setting.Fullscreen.2", "Fullscreen (Low)");
+		private static readonly LanguageCode MENU_FULLSCREEN_LABEL = ("Menu.Setting.Fullscreen.Label", "Fullscreen");
+		private static readonly LanguageCode MENU_VSYNC = ("Menu.Setting.VSync", "V-Sync");
+		private static readonly LanguageCode MENU_CONTROL_HINT = ("Menu.Setting.UseControlHint", "Show Control Hint");
+		private static readonly LanguageCode MENU_GAMEPAD_HINT = ("Menu.Setting.UseGamepadHint", "Show Gamepad Hint");
+		private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
+		private static readonly LanguageCode MENU_MEDT_SETTING = ("Menu.Pause.MEDTSetting", "Editor Setting");
+		private static readonly LanguageCode MENU_MEDT_AUTO_ZOOM = ("Menu.MEDTSetting.AutoZoom", "Auto Zoom");
+		private static readonly LanguageCode MENU_MEDT_PLAYER_DROP = ("Menu.MEDTSetting.PlayerDrop", "Quick Player Drop");
+		private static readonly LanguageCode MENU_MEDT_STATE = ("Menu.MEDTSetting.ShowState", "Show State Info");
+		private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
+			($"UI.GameKey.{Gamekey.Left}", "Left"),
+			($"UI.GameKey.{Gamekey.Right}", "Right"),
+			($"UI.GameKey.{Gamekey.Down}", "Down"),
+			($"UI.GameKey.{Gamekey.Up}", "Up"),
+			($"UI.GameKey.{Gamekey.Action}", "Action"),
+			($"UI.GameKey.{Gamekey.Jump}", "Jump"),
+			($"UI.GameKey.{Gamekey.Start}", "Start"),
+			($"UI.GameKey.{Gamekey.Select}", "Select"),
+		};
 
 		// Data
 		private static PauseMenuUI Instance = null;
@@ -171,20 +180,20 @@ namespace AngeliaFramework {
 		private void MenuPause () {
 
 			// 0-Continue
-			if (DrawItem(BuiltInText.UI_CONTINUE.Get("Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(BuiltInText.UI_CONTINUE) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				Game.UnpauseGame();
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
 			}
 
 			// 1-Key Setter
-			if (DrawItem(MENU_KEY_SETTER.Get("Key Assignment"))) {
+			if (DrawItem(MENU_KEY_SETTER)) {
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(0);
 			}
 
 			// 2-Setting
-			if (DrawItem(BuiltInText.UI_SETTING.Get("Setting"))) {
+			if (DrawItem(BuiltInText.UI_SETTING)) {
 				RequireMode = MenuMode.Setting;
 				SetSelection(0);
 			}
@@ -193,7 +202,7 @@ namespace AngeliaFramework {
 				// Maker Game
 				if (MapEditor.IsEditing) {
 					// 3-Map Editor Setting
-					if (DrawItem(MENU_MEDT_SETTING.Get("Editor Setting"))) {
+					if (DrawItem(MENU_MEDT_SETTING)) {
 						RequireMode = MenuMode.EditorSetting;
 						SetSelection(0);
 					}
@@ -201,14 +210,14 @@ namespace AngeliaFramework {
 			} else {
 				// Player Game
 				// 3-Restart Game
-				if (DrawItem(BuiltInText.UI_RESTART.Get("Restart"))) {
+				if (DrawItem(BuiltInText.UI_RESTART)) {
 					RequireMode = MenuMode.Restart;
 					SetSelection(0);
 				}
 			}
 
 			// 3/4-Quit
-			if (DrawItem(BuiltInText.UI_QUIT.Get("Quit"), Const.RED_BETTER)) {
+			if (DrawItem(BuiltInText.UI_QUIT, Const.RED_BETTER)) {
 				RequireMode = MenuMode.Quit;
 				SetSelection(0);
 			}
@@ -218,7 +227,7 @@ namespace AngeliaFramework {
 
 		private void MenuKeySetterHub () {
 
-			if (DrawItem(MENU_SETTER_KEYBOARD.Get("Keyboard"))) {
+			if (DrawItem(MENU_SETTER_KEYBOARD)) {
 				RequireMode = MenuMode.Setter_Keyboard;
 				SetSelection(0);
 				RecordingKey = -1;
@@ -230,7 +239,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			if (DrawItem(MENU_SETTER_GAMEPAD.Get("Gamepad"))) {
+			if (DrawItem(MENU_SETTER_GAMEPAD)) {
 				RequireMode = MenuMode.Setter_Gamepad;
 				SetSelection(0);
 				RecordingKey = -1;
@@ -242,7 +251,7 @@ namespace AngeliaFramework {
 				}
 			}
 
-			if (DrawItem(BuiltInText.UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(1);
 			}
@@ -253,7 +262,7 @@ namespace AngeliaFramework {
 
 			// Music Volume
 			if (DrawArrowItem(
-				MENU_MUSIC_VOLUME.Get("Music Volume"),
+				MENU_MUSIC_VOLUME,
 				CellContent.Get(MusicVolumeCache.GetChars(Game.MusicVolume / 100)),
 				Game.MusicVolume > 0, Game.MusicVolume < 1000, out int delta
 			)) {
@@ -262,7 +271,7 @@ namespace AngeliaFramework {
 
 			// Sound Volume
 			if (DrawArrowItem(
-				MENU_SOUND_VOLUME.Get("Sound Volume"),
+				MENU_SOUND_VOLUME,
 				CellContent.Get(SoundVolumeCache.GetChars(Game.SoundVolume / 100)),
 				Game.SoundVolume > 0, Game.SoundVolume < 1000, out delta
 			)) {
@@ -272,7 +281,7 @@ namespace AngeliaFramework {
 			// Framerate
 			int currentFramerate = Game.GraphicFramerate;
 			if (DrawArrowItem(
-				MENU_FRAMERATE.Get("Framerate"),
+				MENU_FRAMERATE,
 				CellContent.Get(FramerateCache.GetChars(currentFramerate)),
 				currentFramerate > 30, currentFramerate < 120, out delta
 			)) {
@@ -281,29 +290,29 @@ namespace AngeliaFramework {
 
 			// Show FPS 
 			if (DrawItem(
-				MENU_SHOW_FPS.Get("Show FPS"),
-				CellContent.Get(Game.ShowFPS ? BuiltInText.UI_ON.Get("ON") : BuiltInText.UI_OFF.Get("OFF"))
+				MENU_SHOW_FPS,
+				CellContent.Get(Game.ShowFPS ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
 				Game.ShowFPS = !Game.ShowFPS;
 			}
 
 			// VSync
 			if (DrawItem(
-				MENU_VSYNC.Get("V-Sync"),
-				CellContent.Get(Game.VSync ? BuiltInText.UI_ON.Get("ON") : BuiltInText.UI_OFF.Get("OFF"))
+				MENU_VSYNC,
+				CellContent.Get(Game.VSync ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
 				Game.VSync = !Game.VSync;
 			}
 
 			// Fullscreen
 			if (DrawArrowItem(
-				MENU_FULLSCREEN_LABEL.Get("Fullscreen"),
+				MENU_FULLSCREEN_LABEL,
 				CellContent.Get(
 					Game.FullscreenMode switch {
-						FullscreenMode.Window => MENU_FULLSCREEN_0.Get("Windowed"),
-						FullscreenMode.Fullscreen => MENU_FULLSCREEN_1.Get("Fullscreen"),
-						FullscreenMode.FullscreenLow => MENU_FULLSCREEN_2.Get("Fullscreen (Low)"),
-						_ => MENU_FULLSCREEN_0.Get("Windowed"),
+						FullscreenMode.Window => MENU_FULLSCREEN_0,
+						FullscreenMode.Fullscreen => MENU_FULLSCREEN_1,
+						FullscreenMode.FullscreenLow => MENU_FULLSCREEN_2,
+						_ => MENU_FULLSCREEN_0,
 					}
 				),
 				Game.FullscreenMode != FullscreenMode.Window,
@@ -324,7 +333,7 @@ namespace AngeliaFramework {
 					}
 				}
 				if (DrawArrowItem(
-					MENU_LANGUAGE.Get("Language"),
+					MENU_LANGUAGE,
 					CellContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
 					currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 				) {
@@ -338,30 +347,30 @@ namespace AngeliaFramework {
 
 			// Allow Gamepad
 			if (DrawItem(
-			MENU_ALLOW_GAMEPAD.Get("Allow Gamepad"),
-				CellContent.Get(FrameInput.AllowGamepad ? BuiltInText.UI_YES.Get("YES") : BuiltInText.UI_NO.Get("NO"))
+				MENU_ALLOW_GAMEPAD,
+				CellContent.Get(FrameInput.AllowGamepad ? BuiltInText.UI_YES : BuiltInText.UI_NO)
 			)) {
 				FrameInput.AllowGamepad = !FrameInput.AllowGamepad;
 			}
 
 			// Control Hint
 			if (DrawItem(
-				MENU_CONTROL_HINT.Get("Show Control Hint"),
-				CellContent.Get(ControlHintUI.UseControlHint ? BuiltInText.UI_ON.Get("ON") : BuiltInText.UI_OFF.Get("OFF"))
+				MENU_CONTROL_HINT,
+				CellContent.Get(ControlHintUI.UseControlHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
 				ControlHintUI.UseControlHint = !ControlHintUI.UseControlHint;
 			}
 
 			// Gamepad Hint
 			if (DrawItem(
-				MENU_GAMEPAD_HINT.Get("Show Gamepad Hint"),
-				CellContent.Get(ControlHintUI.UseGamePadHint ? BuiltInText.UI_ON.Get("ON") : BuiltInText.UI_OFF.Get("OFF"))
+				MENU_GAMEPAD_HINT,
+				CellContent.Get(ControlHintUI.UseGamePadHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
 				ControlHintUI.UseGamePadHint = !ControlHintUI.UseGamePadHint;
 			}
 
 			// Back
-			if (DrawItem(BuiltInText.UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(2);
 			}
@@ -375,31 +384,31 @@ namespace AngeliaFramework {
 
 				// Auto Zoom
 				if (DrawItem(
-					MENU_MEDT_AUTO_ZOOM.Get("Auto Zoom"),
-					CellContent.Get(mapEditor.AutoZoom ? BuiltInText.UI_ON.Get("ON") : BuiltInText.UI_OFF.Get("OFF"))
+					MENU_MEDT_AUTO_ZOOM,
+					CellContent.Get(mapEditor.AutoZoom ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 				)) {
 					mapEditor.AutoZoom = !mapEditor.AutoZoom;
 				}
 
 				// Drop Player
 				if (DrawItem(
-					MENU_MEDT_PLAYER_DROP.Get("Quick Player Drop"),
-					CellContent.Get(mapEditor.QuickPlayerDrop ? BuiltInText.UI_ON.Get("ON") : BuiltInText.UI_OFF.Get("OFF"))
+					MENU_MEDT_PLAYER_DROP,
+					CellContent.Get(mapEditor.QuickPlayerDrop ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 				)) {
 					mapEditor.QuickPlayerDrop = !mapEditor.QuickPlayerDrop;
 				}
 
 				// Show State
 				if (DrawItem(
-					MENU_MEDT_STATE.Get("Show State Info"),
-					CellContent.Get(mapEditor.ShowState ? BuiltInText.UI_ON.Get("ON") : BuiltInText.UI_OFF.Get("OFF"))
+					MENU_MEDT_STATE,
+					CellContent.Get(mapEditor.ShowState ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 				)) {
 					mapEditor.ShowState = !mapEditor.ShowState;
 				}
 			}
 
 			// Back
-			if (DrawItem(BuiltInText.UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(3);
 			}
@@ -408,16 +417,16 @@ namespace AngeliaFramework {
 
 		private void MenuRestart () {
 
-			Message = MENU_RESTART_MESSAGE.Get("Restart Game?");
+			Message = MENU_RESTART_MESSAGE;
 
 			// Continue
-			if (DrawItem(BuiltInText.UI_BACK.Get("Back")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(3);
 			}
 
 			// Restart
-			if (DrawItem(BuiltInText.UI_RESTART.Get("Restart"))) {
+			if (DrawItem(BuiltInText.UI_RESTART)) {
 				Game.UnpauseGame();
 				Active = false;
 				FrameInput.UseAllHoldingKeys();
@@ -429,16 +438,16 @@ namespace AngeliaFramework {
 
 		private void MenuQuit () {
 
-			Message = MENU_QUIT_MESSAGE.Get("Quit Game?");
+			Message = MENU_QUIT_MESSAGE;
 
 			// Continue
-			if (DrawItem(BuiltInText.UI_CONTINUE.Get("Continue")) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (DrawItem(BuiltInText.UI_CONTINUE) || FrameInput.GameKeyDown(Gamekey.Jump)) {
 				RequireMode = MenuMode.Pause;
 				SetSelection(1024);
 			}
 
 			// Quit Game
-			if (DrawItem(BuiltInText.UI_QUIT_GAME.Get("Quit Game"), Const.RED_BETTER)) {
+			if (DrawItem(BuiltInText.UI_QUIT_GAME, Const.RED_BETTER)) {
 				Game.QuitApplication();
 			}
 
@@ -449,24 +458,24 @@ namespace AngeliaFramework {
 
 			// Confirming
 			if (KeySetterConfirming) {
-				Message = MENU_KEYSETTER_CONFIRM_MESSAGE.Get("Save the changes?");
-				if (DrawItem(BuiltInText.UI_SAVE.Get("Save"))) {
+				Message = MENU_KEYSETTER_CONFIRM_MESSAGE;
+				if (DrawItem(BuiltInText.UI_SAVE)) {
 					RequireMode = MenuMode.KeySetter;
 					SetSelection(forGamepad ? 1 : 0);
 					SaveKeySetting(forGamepad);
 				}
-				if (DrawItem(BuiltInText.UI_DONT_SAVE.Get("Don't Save"))) {
+				if (DrawItem(BuiltInText.UI_DONT_SAVE)) {
 					RequireMode = MenuMode.KeySetter;
 					SetSelection(forGamepad ? 1 : 0);
 				}
-				if (DrawItem(BuiltInText.UI_CANCEL.Get("Cancel"))) {
+				if (DrawItem(BuiltInText.UI_CANCEL)) {
 					KeySetterConfirming = false;
 				}
 				return;
 			}
 
 			// Key Setter
-			Message = (forGamepad ? MENU_KEYSETTER_GAMEPAD_MESSAGE : MENU_KEYSETTER_KEYBOARD_MESSAGE).Get("Press F1 key to reset");
+			Message = forGamepad ? MENU_KEYSETTER_GAMEPAD_MESSAGE : MENU_KEYSETTER_KEYBOARD_MESSAGE;
 
 			// All Game Keys
 			for (int i = 0; i < GAMEKEY_UI_CODES.Length; i++) {
@@ -483,7 +492,7 @@ namespace AngeliaFramework {
 				} else {
 					// Recording
 					KeySetterLabel.Tint = Game.PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE;
-					KeySetterLabel.Text = MENU_SETTER_RECORD.Get("Press key u want");
+					KeySetterLabel.Text = MENU_SETTER_RECORD;
 					KeySetterLabel.BackgroundTint = Game.PauselessFrame % 30 > 15 ? Const.GREEN : Const.CLEAR;
 					valueLabel = KeySetterLabel;
 				}
@@ -497,7 +506,7 @@ namespace AngeliaFramework {
 			}
 
 			// Save & Back
-			if (RecordDirty && DrawItem(MENU_KEYSETTER_SAVE_BACK.Get("Save and Back"), Const.GREEN)) {
+			if (RecordDirty && DrawItem(MENU_KEYSETTER_SAVE_BACK, Const.GREEN)) {
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(forGamepad ? 1 : 0);
 				SaveKeySetting(forGamepad);
@@ -505,7 +514,7 @@ namespace AngeliaFramework {
 
 			// Back
 			if (
-				DrawItem(BuiltInText.UI_BACK.Get("Back")) ||
+				DrawItem(BuiltInText.UI_BACK) ||
 				(RecordingKey < 0 && FrameInput.GameKeyUp(Gamekey.Jump))
 			) {
 				if (RecordDirty) {

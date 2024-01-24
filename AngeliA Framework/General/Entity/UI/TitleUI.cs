@@ -67,20 +67,20 @@ namespace AngeliaFramework {
 				}
 
 				// Title
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(Title, Const.WHITE, 96),
 					cRect.Shrink(0, 0, cRect.height / 2, 0),
 					out var bound
 				);
 
 				// Sub Title
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(SubTitle, Const.WHITE, 32, Alignment.TopMid),
 					new IRect(
 						cRect.x,
 						bound.y - cRect.height,
 						cRect.width,
-						cRect.height - CellRendererGUI.Unify(32)
+						cRect.height - CellGUI.Unify(32)
 					)
 				);
 

@@ -128,7 +128,7 @@ namespace AngeliaFramework {
 
 				_AddGameTryingToQuitCallback(OnTryingToQuit);
 				_AddGameQuittingCallback(OnGameQuitting);
-				_AddTextInputCallback(CellRendererGUI.OnTextInput);
+				_AddTextInputCallback(CellGUI.OnTextInput);
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 

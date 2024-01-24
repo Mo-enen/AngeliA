@@ -13,10 +13,10 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly LanguageCode HINT_ENTER = "CtrlHint.MapGenerator.Enter";
-		private static readonly LanguageCode HINT_GENERATE = "CtrlHint.MapGenerator.Generate";
-		private static readonly LanguageCode HINT_GENERATING = "CtrlHint.MapGenerator.Generating";
-		private static readonly LanguageCode HINT_NOTIFY = "Notify.MapGeneratedNotify";
+		private static readonly LanguageCode HINT_ENTER = ("CtrlHint.MapGenerator.Enter", "Enter Level");
+		private static readonly LanguageCode HINT_GENERATE = ("CtrlHint.MapGenerator.Generate", "Generate Level");
+		private static readonly LanguageCode HINT_GENERATING = ("CtrlHint.MapGenerator.Generating", "Generating");
+		private static readonly LanguageCode HINT_NOTIFY = ("Notify.MapGeneratedNotify", "Map Generated");
 
 		// Api
 		protected virtual bool ShowGeneratingHint => true;
@@ -55,15 +55,15 @@ namespace AngeliaFramework {
 					// Hint
 					ControlHintUI.DrawGlobalHint(
 						X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action,
-						HasMapInDisk ? HINT_ENTER.Get("Enter Level") : HINT_GENERATE.Get("Generate Level"),
+						HasMapInDisk ? HINT_ENTER : HINT_GENERATE,
 						true
 					);
 				}
 			} else {
 				// Generating
 				if (ShowGeneratingHint) {
-					CellRendererGUI.Label(
-						HintContent.SetText(HINT_GENERATING.Get("Generating")),
+					CellGUI.Label(
+						HintContent.SetText(HINT_GENERATING),
 						new IRect(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL)
 					);
 				}
@@ -73,7 +73,7 @@ namespace AngeliaFramework {
 
 		protected override void AfterMapGenerate () {
 			base.AfterMapGenerate();
-			NotificationUI.SpawnNotification(HINT_NOTIFY.Get("Map Generated"), TypeID);
+			NotificationUI.SpawnNotification(HINT_NOTIFY, TypeID);
 		}
 
 

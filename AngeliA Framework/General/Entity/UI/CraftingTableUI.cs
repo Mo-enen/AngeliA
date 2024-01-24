@@ -21,7 +21,7 @@ namespace AngeliaFramework {
 		private static readonly int ARROW_CODE = BuiltInIcon.TRIANGLE_RIGHT_13;
 		private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
 		private static readonly int ITEM_FRAME_CODE = BuiltInIcon.UI_ITEM_FRAME;
-		private static readonly LanguageCode HINT_CRAFT = "CtrlHint.Craft";
+		private static readonly LanguageCode HINT_CRAFT = ("CtrlHint.Craft", "Craft");
 
 		// Api
 		public static readonly CraftingTableUI Instance = new();
@@ -180,7 +180,7 @@ namespace AngeliaFramework {
 			}
 			// Hint
 			if (CombineResultID != 0 && CursorInResult) {
-				string hint = HINT_CRAFT.Get("Craft");
+				string hint = HINT_CRAFT;
 				ControlHintUI.AddHint(Gamekey.Action, hint, 0);
 				ControlHintUI.AddHint(Gamekey.Jump, hint, 0);
 			}
@@ -226,7 +226,7 @@ namespace AngeliaFramework {
 
 			// Highlight Frame
 			if (CursorInDoc && !menu.CursorInBottomPanel && menu.TakingID == 0 && !FrameInput.LastActionFromMouse) {
-				CellRendererGUI.HighlightCursor(FRAME_CODE, docItemRect, int.MinValue + 6);
+				CellGUI.HighlightCursor(FRAME_CODE, docItemRect, int.MinValue + 6);
 			}
 
 			// Content
@@ -286,7 +286,7 @@ namespace AngeliaFramework {
 
 			// Tip
 			if (tipID != 0) {
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(ItemSystem.GetItemName(tipID), alignment: Alignment.BottomMid),
 					new IRect(tipRect.x - tipRect.width * 2, tipRect.yMax + tipRect.height / 2, tipRect.width * 5, tipRect.height),
 					out var tipBounds
@@ -322,7 +322,7 @@ namespace AngeliaFramework {
 				if (FrameInput.LastActionFromMouse) {
 					CellRenderer.Draw(Const.PIXEL, resultItemRect, Const.GREY_32, int.MinValue + 2);
 				} else if (!menu.CursorInBottomPanel) {
-					CellRendererGUI.HighlightCursor(FRAME_CODE, resultItemRect, int.MinValue + 6);
+					CellGUI.HighlightCursor(FRAME_CODE, resultItemRect, int.MinValue + 6);
 				}
 			}
 
@@ -340,7 +340,7 @@ namespace AngeliaFramework {
 						countSize, countSize
 					);
 					CellRenderer.Draw(Const.PIXEL, countRect, Const.BLACK, int.MinValue + 8);
-					CellRendererGUI.Label(CellContent.Get(CellRendererGUI.GetNumberCache(CombineResultCount)), countRect);
+					CellGUI.Label(CellContent.Get(CellGUI.GetNumberCache(CombineResultCount)), countRect);
 				}
 			}
 

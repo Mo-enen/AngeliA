@@ -332,7 +332,7 @@ namespace AngeliaFramework {
 			int entityUnitX = entityGlobalRect.x.ToUnit();
 			int entityUnitY = entityGlobalRect.y.ToUnit();
 			var squad = WorldSquad.Front;
-			int size = CellRendererGUI.Unify(10);
+			int size = CellGUI.Unify(10);
 			for (int i = 0; i < CameraAutoScroll.MAX_LEN; i++) {
 				int uX = entityUnitX + dir.x * i;
 				int uY = entityUnitY + dir.y * i;

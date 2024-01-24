@@ -24,6 +24,7 @@ namespace AngeliaFramework {
 	}
 
 	[EntityAttribute.ExcludeInMapEditor]
+	[EntityAttribute.MapEditorGroup("UI")]
 	[EntityAttribute.UpdateOutOfRange]
 	[EntityAttribute.DontDrawBehind]
 	[EntityAttribute.DontDestroyOutOfRange]
@@ -69,9 +70,9 @@ namespace AngeliaFramework {
 
 		public virtual void UpdateUI () { }
 
-		protected static int Unify (int value) => CellRendererGUI.Unify(value);
-		protected static int Unify (float value) => CellRendererGUI.Unify(value);
-		protected static int ReverseUnify (int value) => CellRendererGUI.ReverseUnify(value);
+		protected static int Unify (int value) => CellGUI.Unify(value);
+		protected static int Unify (float value) => CellGUI.Unify(value);
+		protected static int ReverseUnify (int value) => CellGUI.ReverseUnify(value);
 
 	}
 }

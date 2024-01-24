@@ -115,7 +115,7 @@ namespace AngeliaFramework {
 			LabelContent.CharSize = ContentFontSize;
 			LabelContent.Tint = ContentTint;
 			int cellStartIndex = CellRenderer.GetTextUsedCellCount();
-			CellRendererGUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
+			CellGUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
 			if (CellRenderer.GetTextCells(out var cells, out int count)) {
 				int charIndex = StartIndex;
 				int visibleIndex = StartIndex + (Game.GlobalFrame - RolledFrame) * RollingSpeed;
@@ -137,7 +137,7 @@ namespace AngeliaFramework {
 			LabelName.Text = Language.Get(Identity);
 			LabelName.CharSize = NameFontSize;
 			LabelName.Tint = NameTint;
-			CellRendererGUI.Label(LabelName, nameRect);
+			CellGUI.Label(LabelName, nameRect);
 
 			// Icon
 			if (CellRenderer.TryGetSprite(Identity, out var iconSprite)) {

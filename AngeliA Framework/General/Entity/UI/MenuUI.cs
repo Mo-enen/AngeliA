@@ -156,7 +156,7 @@ namespace AngeliaFramework {
 				MessageLabel.Text = msg;
 				MessageLabel.Tint = tint;
 				MessageLabel.CharSize = MessageFontSize;
-				CellRendererGUI.Label(MessageLabel, new IRect(
+				CellGUI.Label(MessageLabel, new IRect(
 					windowBounds.x, windowBounds.yMax,
 					windowBounds.width, msgHeight
 				));
@@ -174,11 +174,11 @@ namespace AngeliaFramework {
 
 			// Hint
 			if (SelectionAdjustable) {
-				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_ADJUST.Get("Adjust"));
+				ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_ADJUST);
 			} else {
-				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE.Get("Use"));
+				ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE);
 			}
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
 
 			// Menu
 			DrawMenu();
@@ -362,7 +362,7 @@ namespace AngeliaFramework {
 					ItemLabel.Tint = tint;
 					ItemLabel.CharSize = fontSize;
 					ItemLabel.Alignment = Alignment.MidMid;
-					CellRendererGUI.Label(ItemLabel, labelRect);
+					CellGUI.Label(ItemLabel, labelRect);
 
 				} else {
 
@@ -383,7 +383,7 @@ namespace AngeliaFramework {
 					ItemLabel.Tint = tint;
 					ItemLabel.CharSize = fontSize;
 					ItemLabel.Alignment = Alignment.MidLeft;
-					CellRendererGUI.Label(ItemLabel, labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0));
+					CellGUI.Label(ItemLabel, labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0));
 
 					if (string.IsNullOrEmpty(value.Text)) {
 						if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
@@ -395,7 +395,7 @@ namespace AngeliaFramework {
 						}
 					} else {
 						value.Tint.a = tint.a;
-						CellRendererGUI.Label(value, secLabelRect, out var labelBounds);
+						CellGUI.Label(value, secLabelRect, out var labelBounds);
 						if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
 							CellRenderer.Draw(
 								icon,

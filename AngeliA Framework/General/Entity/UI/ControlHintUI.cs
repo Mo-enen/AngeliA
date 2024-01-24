@@ -84,7 +84,7 @@ namespace AngeliaFramework {
 				int width = Unify(40);
 				int height = Unify(24);
 				FPSLabel.Chars = FPS.GetChars(GameFPS.RoundToInt());
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					FPSLabel,
 					new IRect(
 						CellRenderer.CameraRect.xMax - width - padding,
@@ -345,7 +345,7 @@ namespace AngeliaFramework {
 				CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
 				KeyLabel.Text = keyTextA;
-				CellRendererGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
+				CellGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 				CellRenderer.Draw_9Slice(
@@ -365,7 +365,7 @@ namespace AngeliaFramework {
 					CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 				} else {
 					KeyLabel.Text = keyTextB;
-					CellRendererGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
+					CellGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
 					int targetWidth = keyBounds.width + border.horizontal;
 					if (rect.width < targetWidth) rect.width = targetWidth;
 					CellRenderer.Draw_9Slice(
@@ -380,7 +380,7 @@ namespace AngeliaFramework {
 
 			HintLabel.Text = label;
 
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				HintLabel, rect, out var bounds
 			);
 			if (bgCell != null) {

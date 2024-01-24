@@ -77,7 +77,7 @@ namespace AngeliaFramework {
 
 
 		public static string GetUrl (string path) => string.IsNullOrEmpty(path) ? "" : new System.Uri(path).AbsoluteUri;
-		
+
 
 		public static string GetTimeString () => System.DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
@@ -104,6 +104,12 @@ namespace AngeliaFramework {
 
 
 		public static bool IsSamePath (string pathA, string pathB) => FixPath(GetFullPath(pathA)) == FixPath(GetFullPath(pathB));
+
+
+		public static bool IsFileHidden (string path) => (File.GetAttributes(path) & FileAttributes.Hidden) != 0;
+
+
+		public static bool IsFolderHidden (string path) => (new DirectoryInfo(path).Attributes & FileAttributes.Hidden) != 0;
 
 
 

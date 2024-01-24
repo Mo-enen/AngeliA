@@ -23,7 +23,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly LanguageCode HINT_ENTER = "CtrlHint.EnterDoor";
+		private static readonly LanguageCode HINT_ENTER = ("CtrlHint.EnterDoor", "Enter");
 
 		// Api
 		public virtual bool IsFrontDoor => false;
@@ -64,7 +64,7 @@ namespace AngeliaFramework {
 					if (FrameInput.GameKeyHolding(Gamekey.Up)) {
 						Invoke(player);
 					}
-					ControlHintUI.AddHint(Gamekey.Up, HINT_ENTER.Get("Entre"));
+					ControlHintUI.AddHint(Gamekey.Up, HINT_ENTER);
 				}
 				if (InputLock && !FrameInput.GameKeyHolding(Gamekey.Up)) {
 					InputLock = false;

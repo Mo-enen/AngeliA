@@ -71,8 +71,8 @@ namespace AngeliaFramework {
 			new ("##########", "#    #####", "# B   B  #", "# B  . B #", "#  .  PB #", "  .B  B  #", "  .B.B.  #", "##  ... ##", "##########"),
 			new ("##  ######", "##     ###", "#  BBBB ##", "# B P... #", "##   ... #", "##. . #B##", "# .B  B ##", "# B . #B##", "##  #   ##", "##########"),
 		};
-		private static readonly LanguageCode MENU_ALL_CLEAR = "Menu.Sokoban.AllCleared";
-		private static readonly LanguageCode UI_Level = "UI.Sokoban.Level";
+		private static readonly LanguageCode MENU_ALL_CLEAR = ("Menu.Sokoban.AllCleared", "You Win");
+		private static readonly LanguageCode UI_Level = ("UI.Sokoban.Level", "Level:");
 
 		// Api
 		protected override bool RequireMouseCursor => false;
@@ -104,7 +104,7 @@ namespace AngeliaFramework {
 
 		[OnLanguageChanged]
 		public static void OnLanguageChanged () {
-			LevelLabelToString = new(UI_Level.Get("Level:"));
+			LevelLabelToString = new(UI_Level);
 		}
 
 
@@ -181,7 +181,7 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			string hintMove = BuiltInText.HINT_MOVE.Get("Move");
+			string hintMove = BuiltInText.HINT_MOVE;
 			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, hintMove);
 			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, hintMove);
 
@@ -204,7 +204,7 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(Const.PIXEL, windowRect.Expand(0, 0, 0, barHeight), bgTint, 0);
 
 			// Label
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				CellContent.Get(LevelLabelToString.GetChars(CurrentLevel + 1), alignment: Alignment.MidRight),
 				new IRect(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight)
 			);
@@ -308,9 +308,9 @@ namespace AngeliaFramework {
 
 
 		private void ShowAllClearedDialog () => GenericDialogUI.SpawnDialog(
-			MENU_ALL_CLEAR.Get("You Win"),
-			BuiltInText.UI_OK.Get("OK"), Const.EmptyMethod,
-			BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
+			MENU_ALL_CLEAR,
+			BuiltInText.UI_OK, Const.EmptyMethod,
+			BuiltInText.UI_QUIT, CloseMiniGame
 		);
 
 

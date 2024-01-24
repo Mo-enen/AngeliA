@@ -75,12 +75,12 @@ namespace AngeliaFramework {
 		private static readonly int LINE_V_CODE = BuiltInIcon.SOFT_LINE_V;
 		private static readonly SpriteCode BLOCK_CODE = "Tetris Block";
 		private static readonly SpriteCode BLOCK_EMPTY_CODE = "Tetris Block Empty";
-		private static readonly LanguageCode UI_HOLDING = "UI.Tetris.Holding";
-		private static readonly LanguageCode UI_CLR_LINE = "UI.Tetris.ClearedLine";
-		private static readonly LanguageCode HINT_MOVE = "Hint.Tetris.Move";
-		private static readonly LanguageCode HINT_ROTATE = "Hint.Tetris.Rotate";
-		private static readonly LanguageCode HINT_HOLD = "Hint.Tetris.Hold";
-		private static readonly LanguageCode HINT_DROP = "Hint.Tetris.Drop";
+		private static readonly LanguageCode UI_HOLDING = ("UI.Tetris.Holding", "Holding");
+		private static readonly LanguageCode UI_CLR_LINE = ("UI.Tetris.ClearedLine", "Lines:");
+		private static readonly LanguageCode HINT_MOVE = ("Hint.Tetris.Move", "Move");
+		private static readonly LanguageCode HINT_ROTATE = ("Hint.Tetris.Rotate", "Rotate");
+		private static readonly LanguageCode HINT_HOLD = ("Hint.Tetris.Hold", "Hold");
+		private static readonly LanguageCode HINT_DROP = ("Hint.Tetris.Drop", "Drop");
 		private const int WIDTH = 10;
 		private const int HEIGHT = 40;
 		private const int STAGE_HEIGHT = 20;
@@ -251,10 +251,10 @@ namespace AngeliaFramework {
 			if (FrameInput.GameKeyDown(Gamekey.Select)) Hold();
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_DROP.Get("Drop"));
-			ControlHintUI.AddHint(Gamekey.Select, HINT_HOLD.Get("Hold"));
-			ControlHintUI.AddHint(Gamekey.Action, Gamekey.Jump, HINT_ROTATE.Get("Rotate"));
+			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE);
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, HINT_DROP);
+			ControlHintUI.AddHint(Gamekey.Select, HINT_HOLD);
+			ControlHintUI.AddHint(Gamekey.Action, Gamekey.Jump, HINT_ROTATE);
 		}
 
 
@@ -268,7 +268,7 @@ namespace AngeliaFramework {
 				labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 				labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
-				CellRendererGUI.Label(CellContent.Get(BuiltInText.UI_GAMEOVER.Get("Game Over")), labelRect);
+				CellGUI.Label(CellContent.Get(BuiltInText.UI_GAMEOVER), labelRect);
 			}
 
 			int blockSize = stageRect.width / WIDTH;
@@ -386,8 +386,8 @@ namespace AngeliaFramework {
 					Const.BLACK, 0
 				);
 				// Label
-				CellRendererGUI.Label(
-					CellContent.Get(UI_HOLDING.Get("Holding"), ReverseUnify(holdingBlockSize)),
+				CellGUI.Label(
+					CellContent.Get(UI_HOLDING, ReverseUnify(holdingBlockSize)),
 					new IRect(
 						stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 						stageRect.yMax - 4 * holdingBlockSize,
@@ -407,11 +407,11 @@ namespace AngeliaFramework {
 			);
 
 			// Lines
-			CellRendererGUI.Label(CellContent.Get(
-				UI_CLR_LINE.Get("Lines:"),
+			CellGUI.Label(CellContent.Get(
+				UI_CLR_LINE,
 				CHAR_SIZE, Alignment.MidLeft
 			), stateRect, out var lineBounds);
-			CellRendererGUI.Label(CellContent.Get(
+			CellGUI.Label(CellContent.Get(
 				LinesString.GetChars(ClearedLines),
 				CHAR_SIZE, Alignment.MidRight
 			), stateRect, out var lineNumberBounds);
@@ -666,10 +666,10 @@ namespace AngeliaFramework {
 
 		// Menu
 		private void OpenGameOverDialog () => GenericDialogUI.SpawnDialog(
-			BuiltInText.UI_GAMEOVER.Get("Game Over"),
-			BuiltInText.UI_OK.Get("OK"), Const.EmptyMethod,
-			BuiltInText.UI_RESTART.Get("Restart"), StartMiniGame,
-			BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
+			BuiltInText.UI_GAMEOVER,
+			BuiltInText.UI_OK, Const.EmptyMethod,
+			BuiltInText.UI_RESTART, StartMiniGame,
+			BuiltInText.UI_QUIT, CloseMiniGame
 		);
 
 

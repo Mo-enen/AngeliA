@@ -82,15 +82,15 @@ namespace AngeliaFramework {
 		private static readonly Byte4 CURSOR_TINT = new(240, 240, 240, 128);
 		private static readonly Byte4 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 		private static readonly Byte4 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
-		private static readonly LanguageCode MEDT_DROP = "MEDT.Drop";
-		private static readonly LanguageCode MEDT_CANCEL_DROP = "MEDT.CancelDrop";
-		private static readonly LanguageCode MEDT_ENTITY_ONLY = "MEDT.EntityOnly";
-		private static readonly LanguageCode MEDT_LEVEL_ONLY = "MEDT.LevelOnly";
-		private static readonly LanguageCode MEDT_BG_ONLY = "MEDT.BackgroundOnly";
-		private static readonly LanguageCode HINT_MEDT_SWITCH_EDIT = "CtrlHint.MEDT.SwitchMode.Edit";
-		private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = "CtrlHint.MEDT.SwitchMode.Play";
-		private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = "CtrlHint.MEDT.PlayFromBegin";
-		private static readonly LanguageCode HINT_MEDT_NAV = "CtrlHint.MEDT.Nav";
+		private static readonly LanguageCode MEDT_DROP = ("MEDT.Drop", "Mouse Left Button to Drop");
+		private static readonly LanguageCode MEDT_CANCEL_DROP = ("MEDT.CancelDrop", "Cancel Drop");
+		private static readonly LanguageCode MEDT_ENTITY_ONLY = ("MEDT.EntityOnly", "Entity Only");
+		private static readonly LanguageCode MEDT_LEVEL_ONLY = ("MEDT.LevelOnly", "Level Only");
+		private static readonly LanguageCode MEDT_BG_ONLY = ("MEDT.BackgroundOnly", "Background Only");
+		private static readonly LanguageCode HINT_MEDT_SWITCH_EDIT = ("CtrlHint.MEDT.SwitchMode.Edit", "Back to Edit");
+		private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = ("CtrlHint.MEDT.SwitchMode.Play", "Play");
+		private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = ("CtrlHint.MEDT.PlayFromBegin", "Play from Start");
+		private static readonly LanguageCode HINT_MEDT_NAV = ("CtrlHint.MEDT.Nav", "Overlook");
 
 		// Api
 		public new static MapEditor Instance => WindowUI.Instance as MapEditor;
@@ -534,7 +534,7 @@ namespace AngeliaFramework {
 
 		private void Update_View () {
 
-			if (TaskingRoute || DroppingPlayer || CellRendererGUI.IsTyping) return;
+			if (TaskingRoute || DroppingPlayer || CellGUI.IsTyping) return;
 			if (MouseDownOutsideBoundary) goto END;
 
 			// Playing
@@ -629,7 +629,7 @@ namespace AngeliaFramework {
 
 		private void Update_Hotkey () {
 
-			if (TaskingRoute || CellRendererGUI.IsTyping) return;
+			if (TaskingRoute || CellGUI.IsTyping) return;
 
 			// Cancel Drop
 			if (!CtrlHolding && IsEditing && DroppingPlayer) {
@@ -638,7 +638,7 @@ namespace AngeliaFramework {
 					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 					FrameInput.UseGameKey(Gamekey.Start);
 				}
-				ControlHintUI.AddHint(Gamekey.Start, MEDT_CANCEL_DROP.Get("Cancel Drop"));
+				ControlHintUI.AddHint(Gamekey.Start, MEDT_CANCEL_DROP);
 			}
 
 			// Editing Only
@@ -655,7 +655,7 @@ namespace AngeliaFramework {
 						}
 						ControlHintUI.AddHint(
 							KeyboardKey.Space,
-							HINT_MEDT_SWITCH_PLAY.Get("Play")
+							HINT_MEDT_SWITCH_PLAY
 						);
 					}
 
@@ -692,7 +692,7 @@ namespace AngeliaFramework {
 						FrameInput.UseKeyboardKey(KeyboardKey.Tab);
 						SetNavigating(!IsNavigating);
 					}
-					ControlHintUI.AddHint(KeyboardKey.Tab, HINT_MEDT_NAV.Get("Overlook"));
+					ControlHintUI.AddHint(KeyboardKey.Tab, HINT_MEDT_NAV);
 
 					// Move Selecting Blocks
 					if (SelectionUnitRect.HasValue) {
@@ -772,7 +772,7 @@ namespace AngeliaFramework {
 						FrameInput.UseAllHoldingKeys();
 						FrameInput.UseGameKey(Gamekey.Start);
 					}
-					ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_PLAY_FROM_BEGIN.Get("Play from Start"));
+					ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_PLAY_FROM_BEGIN);
 					// Reset Camera
 					if (FrameInput.KeyboardDown(KeyboardKey.R)) {
 						ResetCamera();
@@ -803,7 +803,7 @@ namespace AngeliaFramework {
 					}
 					ControlHintUI.AddHint(
 						KeyboardKey.Escape,
-						HINT_MEDT_SWITCH_EDIT.Get("Back to Edit")
+						HINT_MEDT_SWITCH_EDIT
 					);
 				}
 
@@ -853,8 +853,8 @@ namespace AngeliaFramework {
 			}
 
 			if (!QuickPlayerDrop) {
-				DropHintLabel.Text = MEDT_DROP.Get("Mouse Left Button to Drop");
-				CellRendererGUI.Label(DropHintLabel, new IRect(
+				DropHintLabel.Text = MEDT_DROP;
+				CellGUI.Label(DropHintLabel, new IRect(
 					FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
 					FrameInput.MouseGlobalPosition.y + Const.HALF,
 					DropHintWidth, Const.CEL
@@ -899,7 +899,7 @@ namespace AngeliaFramework {
 				int PADDING = Unify(6);
 
 				int z = IsNavigating ? NavPosition.z : Stage.ViewZ;
-				CellRendererGUI.Label(
+				CellGUI.Label(
 					CellContent.Get(StateZLabelToString.GetChars(z), Const.GREY_196, 22, Alignment.TopRight),
 					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 					out var boundsZ
@@ -908,14 +908,14 @@ namespace AngeliaFramework {
 				if (!IsNavigating) {
 
 					int y = FrameInput.MouseGlobalPosition.y.ToUnit();
-					CellRendererGUI.Label(
+					CellGUI.Label(
 						CellContent.Get(StateYLabelToString.GetChars(y), Const.GREY_196, 22, Alignment.TopRight),
 						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 						out var boundsY
 					);
 
 					int x = FrameInput.MouseGlobalPosition.x.ToUnit();
-					CellRendererGUI.Label(
+					CellGUI.Label(
 						CellContent.Get(StateXLabelToString.GetChars(x), Const.GREY_196, 22, Alignment.TopRight),
 						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
 					);
@@ -949,7 +949,7 @@ namespace AngeliaFramework {
 				IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 			}
 			if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
-			CellRendererGUI.CancelTyping();
+			CellGUI.CancelTyping();
 
 			// Squad  
 			if (WorldSquad.Channel != MapChannel.BuiltIn) {
@@ -1025,7 +1025,7 @@ namespace AngeliaFramework {
 				rect.width, height
 			);
 			TooltipLabel.Text = tip;
-			CellRendererGUI.Label(TooltipLabel, tipRect, out var bounds);
+			CellGUI.Label(TooltipLabel, tipRect, out var bounds);
 			CellRenderer.Draw(Const.PIXEL, bounds.Expand(gap), Const.BLACK, int.MaxValue);
 		}
 

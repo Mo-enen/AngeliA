@@ -111,7 +111,7 @@ namespace AngeliaFramework {
 	}
 
 
-	public static class CellRendererGUI {
+	public static class CellGUI {
 
 
 
@@ -155,6 +155,7 @@ namespace AngeliaFramework {
 		private static int BeamLength = 0;
 		private static int BeamBlinkFrame = int.MinValue;
 		private static Int2? ScrollBarMouseDownPos = null;
+		private static int DraggingScrollbarID = 0;
 
 
 		#endregion
@@ -494,12 +495,13 @@ namespace AngeliaFramework {
 
 
 		// Text Field
-		public static string TextField (int controlID, IRect rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _);
-		public static string TextField (int controlID, IRect rect, string text, out bool changed) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed);
-		public static string TextField (int controlID, IRect rect, CellContent text) => TextField(controlID, rect, text, out _);
-		public static string TextField (int controlID, IRect rect, CellContent text, out bool changed) {
+		public static string TextField (int controlID, IRect rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _);
+		public static string TextField (int controlID, IRect rect, string text, out bool changed, out bool confirm) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm);
+		public static string TextField (int controlID, IRect rect, CellContent text) => TextField(controlID, rect, text, out _, out _);
+		public static string TextField (int controlID, IRect rect, CellContent text, out bool changed, out bool confirm) {
 
 			changed = false;
+			confirm = false;
 			bool startTyping = false;
 			bool mouseDownPosInRect = rect.Contains(FrameInput.MouseLeftDownGlobalPosition);
 			bool mouseDragging = FrameInput.MouseLeftButton && mouseDownPosInRect;
@@ -526,6 +528,7 @@ namespace AngeliaFramework {
 				// Clear
 				if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
 					beamIndex = BeamIndex = 0;
+					confirm = true;
 					CancelTyping();
 					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
 					FrameInput.UseGameKey(Gamekey.Start);
@@ -575,6 +578,7 @@ namespace AngeliaFramework {
 							break;
 						case '\r':
 							// Enter
+							confirm = true;
 							CancelTyping();
 							break;
 						case CONTROL_COPY:
@@ -738,7 +742,9 @@ namespace AngeliaFramework {
 
 
 		// Scrollbar
-		public static int ScrollBar (IRect contentRect, int z, int positionRow, int totalSize, int pageSize, int barSpriteId = Const.PIXEL) {
+		public static int ScrollBar (
+			int controlID, IRect contentRect, int z, int positionRow, int totalSize, int pageSize, int barSpriteId = Const.PIXEL
+		) {
 			if (pageSize >= totalSize) return 0;
 			int barHeight = contentRect.height * pageSize / totalSize;
 			var barRect = new IRect(
@@ -751,17 +757,18 @@ namespace AngeliaFramework {
 				contentRect.width,
 				barHeight
 			);
+			bool focusingBar = DraggingScrollbarID == controlID;
 			bool hoveringBar = barRect.MouseInside();
 
 			CellRenderer.Draw(
 				barSpriteId,
 				barRect,
-				hoveringBar || ScrollBarMouseDownPos.HasValue ? Const.GREY_128 : Const.GREY_64,
+				hoveringBar || (focusingBar && ScrollBarMouseDownPos.HasValue) ? Const.GREY_128 : Const.GREY_64,
 				z
 			);
 
 			// Dragging
-			if (ScrollBarMouseDownPos.HasValue) {
+			if (focusingBar && ScrollBarMouseDownPos.HasValue) {
 				int mouseY = FrameInput.MouseGlobalPosition.y;
 				int mouseDownY = ScrollBarMouseDownPos.Value.x;
 				int scrollDownY = ScrollBarMouseDownPos.Value.y;
@@ -775,6 +782,7 @@ namespace AngeliaFramework {
 					ScrollBarMouseDownPos = new Int2(
 						FrameInput.MouseGlobalPosition.y, positionRow
 					);
+					DraggingScrollbarID = controlID;
 				} else if (contentRect.MouseInside()) {
 					// Jump on Click
 					int mouseY = FrameInput.MouseGlobalPosition.y;
@@ -784,6 +792,7 @@ namespace AngeliaFramework {
 						mouseY
 					);
 					ScrollBarMouseDownPos = new Int2(mouseY, positionRow);
+					DraggingScrollbarID = controlID;
 				}
 			}
 

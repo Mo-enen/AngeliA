@@ -91,7 +91,7 @@ namespace AngeliaFramework {
 				playerPaddleSpeed = PADDLE_SPEED;
 			}
 			PlayerPaddleY = PlayerPaddleY.Clamp(PADDLE_LEN / 2, 1000 - PADDLE_LEN / 2);
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
 
 			// Bot Paddle Movement
 			int botPaddleSpeed = GetBotPaddleSpeedY();
@@ -194,11 +194,11 @@ namespace AngeliaFramework {
 			int scoreGap = size / 30;
 			int scoreWidth = windowRect.width / 2 - scoreGap;
 			int scoreY = windowRect.y + windowRect.height - charRectSize;
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				CellContent.Get(PlayerScoreString.GetChars(ScorePlayer), 42, Alignment.MidRight),
 				new IRect(windowRect.x, scoreY, scoreWidth, charRectSize)
 			);
-			CellRendererGUI.Label(
+			CellGUI.Label(
 				CellContent.Get(BotScoreString.GetChars(ScoreBot), 42, Alignment.MidLeft),
 				new IRect(midX + scoreGap, scoreY, scoreWidth, charRectSize)
 			);

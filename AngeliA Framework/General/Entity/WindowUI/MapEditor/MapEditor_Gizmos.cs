@@ -210,7 +210,7 @@ namespace AngeliaFramework {
 
 		private void Update_DrawCursor () {
 
-			if (IsPlaying || DroppingPlayer || CtrlHolding || CellRendererGUI.IsTyping || MouseOutside) return;
+			if (IsPlaying || DroppingPlayer || CtrlHolding || CellGUI.IsTyping || MouseOutside) return;
 			if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 			if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
@@ -352,7 +352,7 @@ namespace AngeliaFramework {
 		private void DrawCrossLineGizmos (IRect rect, int thickness, Byte4 tint, Byte4 shadowTint) {
 			int shiftY = thickness / 2;
 			int shrink = thickness * 2;
-			CellRendererGUI.DrawLine(
+			CellGUI.DrawLine(
 				rect.xMin + shrink,
 				rect.yMin + shrink - shiftY,
 				rect.xMax - shrink,
@@ -360,7 +360,7 @@ namespace AngeliaFramework {
 				thickness, shadowTint,
 				GIZMOS_Z - 1
 			);
-			CellRendererGUI.DrawLine(
+			CellGUI.DrawLine(
 				rect.xMin + shrink,
 				rect.yMax - shrink - shiftY,
 				rect.xMax - shrink,
@@ -368,7 +368,7 @@ namespace AngeliaFramework {
 				thickness, shadowTint,
 				GIZMOS_Z - 1
 			);
-			CellRendererGUI.DrawLine(
+			CellGUI.DrawLine(
 				rect.xMin + shrink,
 				rect.yMin + shrink + shiftY,
 				rect.xMax - shrink,
@@ -376,7 +376,7 @@ namespace AngeliaFramework {
 				thickness, tint,
 				GIZMOS_Z - 1
 			);
-			CellRendererGUI.DrawLine(
+			CellGUI.DrawLine(
 				rect.xMin + shrink,
 				rect.yMax - shrink + shiftY,
 				rect.xMax - shrink,
@@ -390,20 +390,20 @@ namespace AngeliaFramework {
 		private void DrawModifyFilterLabel (IRect rect) {
 			if (Modify_EntityOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
-				CellRendererGUI.Label(
-					CursorEraseLabel.SetText(MEDT_ENTITY_ONLY.Get("Entity Only")),
+				CellGUI.Label(
+					CursorEraseLabel.SetText(MEDT_ENTITY_ONLY),
 					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			} else if (Modify_LevelOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
-				CellRendererGUI.Label(
-					CursorEraseLabel.SetText(MEDT_LEVEL_ONLY.Get("Level Only")),
+				CellGUI.Label(
+					CursorEraseLabel.SetText(MEDT_LEVEL_ONLY),
 					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			} else if (Modify_BackgroundOnly) {
 				int height = Unify(CursorEraseLabel.CharSize);
-				CellRendererGUI.Label(
-					CursorEraseLabel.SetText(MEDT_BG_ONLY.Get("Background Only")),
+				CellGUI.Label(
+					CursorEraseLabel.SetText(MEDT_BG_ONLY),
 					new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 				);
 			}

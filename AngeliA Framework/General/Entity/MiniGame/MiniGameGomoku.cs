@@ -25,11 +25,11 @@ namespace AngeliaFramework {
 		private static readonly Byte4 BLACK_STONE_TINT = new(16, 16, 16, 255);
 		private static readonly Byte4 WHITE_STONE_TINT = new(230, 230, 230, 255);
 		private static readonly Byte4 LAST_PLACED = new(255, 255, 0, 255);
-		private static readonly LanguageCode GOMOKU_YOU_ARE = "UI.Gomoku.YouAre";
-		private static readonly LanguageCode GOMOKU_PLACE = "UI.Gomoku.Place";
-		private static readonly LanguageCode MENU_GOMOKU_WIN = "Menu.Gomoku.Win";
-		private static readonly LanguageCode MENU_GOMOKU_LOSE = "Menu.Gomoku.Lose";
-		private static readonly LanguageCode MENU_GOMOKU_DRAW = "Menu.Gomoku.Draw";
+		private static readonly LanguageCode GOMOKU_YOU_ARE = ("UI.Gomoku.YouAre", "You Are:");
+		private static readonly LanguageCode GOMOKU_PLACE = ("UI.Gomoku.Place", "Place");
+		private static readonly LanguageCode MENU_GOMOKU_WIN = ("Menu.Gomoku.Win", "You Win");
+		private static readonly LanguageCode MENU_GOMOKU_LOSE = ("Menu.Gomoku.Lose", "You Lose");
+		private static readonly LanguageCode MENU_GOMOKU_DRAW = ("Menu.Gomoku.Draw", "Tie");
 
 		// Api
 		protected override Int2 WindowSize => new(618, 618);
@@ -154,9 +154,9 @@ namespace AngeliaFramework {
 			}
 
 			// Hint
-			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE.Get("Move"));
-			ControlHintUI.AddHint(Gamekey.Action, GOMOKU_PLACE.Get("Place"));
+			ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE);
+			ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
+			ControlHintUI.AddHint(Gamekey.Action, GOMOKU_PLACE);
 		}
 
 
@@ -171,8 +171,8 @@ namespace AngeliaFramework {
 			// Player Color Hint
 			int labelHeight = Unify(HintLabel.CharSize);
 			HintLabel.Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT;
-			HintLabel.Text = GOMOKU_YOU_ARE.Get("You Are:");
-			CellRendererGUI.Label(
+			HintLabel.Text = GOMOKU_YOU_ARE;
+			CellGUI.Label(
 				HintLabel,
 				new IRect(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
 				out var bounds
@@ -316,16 +316,16 @@ namespace AngeliaFramework {
 
 		// Menu
 		private void OpenGameOverDialog (bool blackWin) => GenericDialogUI.SpawnDialog(
-			blackWin == PlayerIsBlack ? MENU_GOMOKU_WIN.Get("You Win") : MENU_GOMOKU_LOSE.Get("You Lose"),
-			BuiltInText.UI_OK.Get("OK"), Const.EmptyMethod,
-			BuiltInText.UI_RESTART.Get("Restart"), StartMiniGame,
-			BuiltInText.UI_QUIT.Get("Quit"), CloseMiniGame
+			blackWin == PlayerIsBlack ? MENU_GOMOKU_WIN : MENU_GOMOKU_LOSE,
+			BuiltInText.UI_OK, Const.EmptyMethod,
+			BuiltInText.UI_RESTART, StartMiniGame,
+			BuiltInText.UI_QUIT, CloseMiniGame
 		);
 
 
 		private void OpenDrawDialog () => GenericDialogUI.SpawnDialog(
-			MENU_GOMOKU_DRAW.Get("Tie"),
-			BuiltInText.UI_OK.Get("OK"),
+			MENU_GOMOKU_DRAW,
+			BuiltInText.UI_OK,
 			Const.EmptyMethod
 		);
 
