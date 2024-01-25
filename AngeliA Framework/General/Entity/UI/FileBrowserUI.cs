@@ -129,6 +129,7 @@ namespace AngeliaFramework {
 			int windowWidth = Unify(800);
 			int windowHeight = Unify(618);
 			int navBarHeight = Unify(32);
+			int titleHeight = Unify(32);
 			int favPanelWidth = Unify(196);
 			int controlPanelHeight = Unify(86);
 			int lineSize = Unify(5);
@@ -149,11 +150,17 @@ namespace AngeliaFramework {
 			CellRenderer.Draw(BuiltInIcon.SOFT_LINE_H, new IRect(X, Y + controlPanelHeight - lineSize / 2, Width, lineSize), Const.GREY_20, z: 1);
 			CellRenderer.Draw(BuiltInIcon.SOFT_LINE_V, new IRect(X + favPanelWidth - lineSize / 2, Y + controlPanelHeight, lineSize, Height - controlPanelHeight - navBarHeight), Const.GREY_20, z: 1);
 
+			// Title
+			CellGUI.Label(
+				CellContent.Get(Title, tint: Const.GREY_230, charSize: 20, alignment: Alignment.MidLeft),
+				Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0)
+			);
+
 			// Panels
-			Update_NavigationBar(Rect.EdgeInside(Direction4.Up, navBarHeight));
-			Update_Favorite(Rect.Shrink(0, Width - favPanelWidth, controlPanelHeight, navBarHeight));
+			Update_NavigationBar(Rect.EdgeInside(Direction4.Up, navBarHeight).Shift(0, -titleHeight));
+			Update_Favorite(Rect.Shrink(0, Width - favPanelWidth, controlPanelHeight, navBarHeight + titleHeight));
 			Update_ControlPanel(Rect.EdgeInside(Direction4.Down, controlPanelHeight));
-			Update_Explorer(Rect.Shrink(favPanelWidth, 0, controlPanelHeight, navBarHeight));
+			Update_Explorer(Rect.Shrink(favPanelWidth, 0, controlPanelHeight, navBarHeight + titleHeight));
 
 		}
 
@@ -339,18 +346,21 @@ namespace AngeliaFramework {
 			int padding = Unify(6);
 			int buttonHeight = Unify(32);
 			int buttonWidth = Unify(108);
+			int typeFieldWidth = Unify(108);
+			int labelWidth = Unify(128);
+			int frameBorder = Unify(1.5f);
+			int fieldHeight = Unify(32);
+			var fieldRect = new IRect(
+				panelRect.x + labelWidth + padding * 2,
+				panelRect.yMax - fieldHeight - padding,
+				panelRect.width - labelWidth - typeFieldWidth - padding * 4,
+				fieldHeight
+			);
+			var typeRect = fieldRect.EdgeOutside(Direction4.Right, typeFieldWidth);
+			typeRect.x += padding;
 
 			if (ActionType == BrowserActionType.Save) {
 				// Name Field
-				int labelWidth = Unify(128);
-				int frameBorder = Unify(1.5f);
-				int fieldHeight = Unify(32);
-				var fieldRect = new IRect(
-					panelRect.x + labelWidth + padding * 2,
-					panelRect.yMax - fieldHeight - padding,
-					panelRect.width - labelWidth - padding * 3,
-					fieldHeight
-				);
 				CurrentName = CellGUI.TextField(091253, fieldRect, CurrentName);
 				CellRenderer.Draw_9Slice(
 					BuiltInIcon.FRAME_16, fieldRect, frameBorder, frameBorder, frameBorder, frameBorder,
@@ -361,6 +371,15 @@ namespace AngeliaFramework {
 				CellGUI.Label(
 					CellContent.Get(TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME, tint: Const.GREY_216, charSize: 20, alignment: Alignment.MidRight),
 					fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0)
+				);
+			}
+
+			// Type Field
+			if (TargetType == BrowserTargetType.File) {
+				CellGUI.Label(CellContent.Get(TargetExtension), typeRect);
+				CellRenderer.Draw_9Slice(
+					BuiltInIcon.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder,
+					Const.GREY_32, z: 1
 				);
 			}
 

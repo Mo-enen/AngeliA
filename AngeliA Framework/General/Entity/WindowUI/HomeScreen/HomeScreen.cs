@@ -41,13 +41,14 @@ namespace AngeliaFramework {
 		}
 
 
-		#endregion
+		public override void UpdateUI () {
+			base.UpdateUI();
 
 
 
 
-		#region --- API ---
 
+		}
 
 
 		#endregion
