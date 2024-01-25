@@ -268,7 +268,7 @@ namespace AngeliaFramework {
 				labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 				labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
-				CellGUI.Label(CellContent.Get(BuiltInText.UI_GAMEOVER), labelRect);
+				CellGUI.Label(BuiltInText.UI_GAMEOVER, labelRect);
 			}
 
 			int blockSize = stageRect.width / WIDTH;
@@ -387,13 +387,12 @@ namespace AngeliaFramework {
 				);
 				// Label
 				CellGUI.Label(
-					CellContent.Get(UI_HOLDING, ReverseUnify(holdingBlockSize)),
-					new IRect(
+					UI_HOLDING, new IRect(
 						stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 						stageRect.yMax - 4 * holdingBlockSize,
 						4 * holdingBlockSize,
 						holdingBlockSize
-					)
+					), charSize: ReverseUnify(holdingBlockSize)
 				);
 			}
 

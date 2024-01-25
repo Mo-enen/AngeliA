@@ -249,8 +249,8 @@ namespace AngeliaFramework {
 			// Name
 			var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
 			CellGUI.Label(
-				CellContent.Get(ItemSystem.GetItemName(itemID), charSize: 20, alignment: Alignment.MidLeft, tint: Const.ORANGE_BETTER),
-				nameRect
+				ItemSystem.GetItemName(itemID), nameRect,
+				charSize: 20, alignment: Alignment.MidLeft, tint: Const.ORANGE_BETTER
 			);
 
 			// Description
@@ -774,8 +774,8 @@ namespace AngeliaFramework {
 
 			// Label
 			CellGUI.Label(
-				CellContent.Get(label, enableTint, 20, Alignment.MidLeft),
-				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0)
+				label, fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0),
+				tint: enableTint, charSize: 20, alignment: Alignment.MidLeft
 			);
 
 			// Progressive Icon
@@ -1135,13 +1135,13 @@ namespace AngeliaFramework {
 		private void DrawItemCount (IRect rect, int number) {
 			if (number <= 1) return;
 			CellRenderer.Draw(Const.PIXEL, rect, Const.BLACK, int.MaxValue);
-			CellGUI.Label(CellContent.Get(CellGUI.GetNumberCache(number), Const.WHITE), rect);
+			CellGUI.Label(CellGUI.GetNumberCache(number), rect, tint: Const.WHITE);
 		}
 
 
 		private int CursorWrap (int x, bool fromBottom) {
-			int fromColumn = fromBottom ? Player.INVENTORY_COLUMN : TopPanelColumn;
-			int toColumn = !fromBottom ? Player.INVENTORY_COLUMN : TopPanelColumn;
+			int fromColumn = fromBottom ? Character.INVENTORY_COLUMN : TopPanelColumn;
+			int toColumn = !fromBottom ? Character.INVENTORY_COLUMN : TopPanelColumn;
 			if (fromColumn != toColumn && fromColumn != 0 && toColumn != 0) {
 				x = x * toColumn / fromColumn;
 			}

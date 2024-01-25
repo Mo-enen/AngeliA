@@ -340,7 +340,7 @@ namespace AngeliaFramework {
 						countSize, countSize
 					);
 					CellRenderer.Draw(Const.PIXEL, countRect, Const.BLACK, int.MinValue + 8);
-					CellGUI.Label(CellContent.Get(CellGUI.GetNumberCache(CombineResultCount)), countRect);
+					CellGUI.Label(CellGUI.GetNumberCache(CombineResultCount), countRect);
 				}
 			}
 

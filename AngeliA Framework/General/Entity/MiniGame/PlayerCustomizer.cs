@@ -371,8 +371,8 @@ namespace AngeliaFramework {
 
 				// Label
 				CellGUI.Label(
-					CellContent.Get(label, 32, Alignment.MidLeft),
-					fieldRect.Shrink(fieldRect.height + fieldPadding, 0, 0, 0)
+					label, fieldRect.Shrink(fieldRect.height + fieldPadding, 0, 0, 0),
+					charSize: 32, alignment: Alignment.MidLeft
 				);
 
 				// Bottom Line
@@ -456,9 +456,7 @@ namespace AngeliaFramework {
 						);
 					}
 				} else {
-					CellGUI.Label(
-						CellContent.Get(BackButtonHotkeyLabel, 24, Alignment.MidLeft), hotkeyRect
-					);
+					CellGUI.Label(BackButtonHotkeyLabel, hotkeyRect, charSize: 24, alignment: Alignment.MidLeft);
 				}
 
 				// End
@@ -906,22 +904,20 @@ namespace AngeliaFramework {
 
 					if (isEmpty) {
 						// Empty Name
-						CellGUI.Label(
-							CellContent.Get(BuiltInText.UI_NONE, Const.WHITE),
-							rect.Shift(contentPadding * 2, 0)
-						);
+						CellGUI.Label(BuiltInText.UI_NONE, rect.Shift(contentPadding * 2, 0), tint: Const.WHITE);
 					} else {
 						if (!isLabel) {
 							// Item Name
 							CellGUI.Label(
-								CellContent.Get(displayName, 24, Alignment.MidLeft),
-								rect.Shift(contentPadding * 2, 0).Shrink(rect.height + iconPadding, 0, 0, 0)
+								displayName,
+								rect.Shift(contentPadding * 2, 0).Shrink(rect.height + iconPadding, 0, 0, 0),
+								charSize: 24, alignment: Alignment.MidLeft
 							);
 						} else {
 							// Item Label
 							CellGUI.Label(
-								CellContent.Get(displayName, Const.GREY_128, 20, Alignment.MidMid),
-								rect.Shift(contentPadding * 2, 0)
+								displayName, rect.Shift(contentPadding * 2, 0),
+								tint: Const.GREY_128, charSize: 20, alignment: Alignment.MidMid
 							);
 						}
 					}

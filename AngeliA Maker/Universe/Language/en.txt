@@ -1,4 +1,7 @@
-﻿FileBrowser.Fav.Pic:My Pictures
+﻿HomeScreen.MyLevel:My Level
+HomeScreen.Downloaded:Downloaded
+HomeScreen.Hot:Hot
+HomeScreen.New:New
 @GuaGua:GuaGua
 @SlimeRed:Red Slime
 @Yaya:Yaya
@@ -32,6 +35,7 @@ DevilWing.Wing:Devil Wing
 FileBrowser.Error.NameEmpty:Name can't be empty
 FileBrowser.Error.NameInValid:Name contains invalid char
 FileBrowser.Fav.Desktop:Desktop
+FileBrowser.Fav.Pic:My Pictures
 FileBrowser.FileName:File Name
 FileBrowser.FolderName:Folder Name
 Hint.Tetris.Drop:Drop

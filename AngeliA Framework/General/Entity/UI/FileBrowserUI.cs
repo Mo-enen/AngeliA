@@ -152,8 +152,8 @@ namespace AngeliaFramework {
 
 			// Title
 			CellGUI.Label(
-				CellContent.Get(Title, tint: Const.GREY_230, charSize: 20, alignment: Alignment.MidLeft),
-				Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0)
+				Title, Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0),
+				tint: Const.GREY_230, charSize: 20, alignment: Alignment.MidLeft
 			);
 
 			// Panels
@@ -333,7 +333,7 @@ namespace AngeliaFramework {
 				)) {
 					Explore(path);
 				}
-				CellGUI.Label(CellContent.Get(label, charSize: 16, alignment: Alignment.MidLeft), rect);
+				CellGUI.Label(label, rect, charSize: 16, alignment: Alignment.MidLeft);
 				CellRenderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
 				rect.y -= rect.height;
 			}
@@ -369,14 +369,15 @@ namespace AngeliaFramework {
 
 				// Name Label
 				CellGUI.Label(
-					CellContent.Get(TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME, tint: Const.GREY_216, charSize: 20, alignment: Alignment.MidRight),
-					fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0)
+					TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME,
+					fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0),
+					tint: Const.GREY_216, charSize: 20, alignment: Alignment.MidRight
 				);
 			}
 
 			// Type Field
 			if (TargetType == BrowserTargetType.File) {
-				CellGUI.Label(CellContent.Get(TargetExtension), typeRect);
+				CellGUI.Label(TargetExtension, typeRect);
 				CellRenderer.Draw_9Slice(
 					BuiltInIcon.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder,
 					Const.GREY_32, z: 1
@@ -387,8 +388,7 @@ namespace AngeliaFramework {
 			if (!string.IsNullOrEmpty(ErrorMessage)) {
 				var msgRect = panelRect.EdgeInside(Direction4.Down, buttonHeight);
 				CellGUI.Label(
-					CellContent.Get(ErrorMessage, tint: Const.RED_BETTER, charSize: 20, alignment: Alignment.MidLeft),
-					msgRect
+					ErrorMessage, msgRect, tint: Const.RED_BETTER, charSize: 20, alignment: Alignment.MidLeft
 				);
 			}
 

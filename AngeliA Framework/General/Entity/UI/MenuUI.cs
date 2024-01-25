@@ -153,10 +153,8 @@ namespace AngeliaFramework {
 				if (animating) {
 					tint.a = (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame);
 				}
-				MessageLabel.Text = msg;
 				MessageLabel.Tint = tint;
-				MessageLabel.CharSize = MessageFontSize;
-				CellGUI.Label(MessageLabel, new IRect(
+				CellGUI.Label(MessageLabel.SetText(msg, charSize: MessageFontSize), new IRect(
 					windowBounds.x, windowBounds.yMax,
 					windowBounds.width, msgHeight
 				));
@@ -358,11 +356,9 @@ namespace AngeliaFramework {
 					}
 
 					// Single Label
-					ItemLabel.Text = label;
 					ItemLabel.Tint = tint;
-					ItemLabel.CharSize = fontSize;
 					ItemLabel.Alignment = Alignment.MidMid;
-					CellGUI.Label(ItemLabel, labelRect);
+					CellGUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect);
 
 				} else {
 
@@ -379,11 +375,9 @@ namespace AngeliaFramework {
 					}
 
 					// Double Labels
-					ItemLabel.Text = label;
 					ItemLabel.Tint = tint;
-					ItemLabel.CharSize = fontSize;
 					ItemLabel.Alignment = Alignment.MidLeft;
-					CellGUI.Label(ItemLabel, labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0));
+					CellGUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0));
 
 					if (string.IsNullOrEmpty(value.Text)) {
 						if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {

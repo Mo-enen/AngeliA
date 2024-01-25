@@ -76,8 +76,9 @@ namespace AngeliaFramework {
 
 			// Label
 			CellGUI.Label(
-				CellContent.Get(Content, alignment: Alignment.MidLeft),
-				panelRect.Shrink(panelRect.height + Unify(12), 0, 0, 0)
+				Content,
+				panelRect.Shrink(panelRect.height + Unify(12), 0, 0, 0),
+				alignment: Alignment.MidLeft
 			);
 
 		}

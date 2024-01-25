@@ -221,6 +221,10 @@ namespace AngeliaFramework {
 
 
 		// Label
+		public static void Label (string text, IRect rect, Byte4 tint, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, tint, charSize, alignment, wrap), rect, out bounds);
+		public static void Label (string text, IRect rect, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, charSize, alignment, wrap), rect, out bounds);
+		public static void Label (string text, IRect rect, Byte4 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, tint, charSize, alignment, wrap), rect);
+		public static void Label (string text, IRect rect, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, charSize, alignment, wrap), rect);
 		public static void Label (CellContent content, IRect rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
 		public static void Label (CellContent content, IRect rect, out IRect bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
 		public static void Label (CellContent content, IRect rect, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);

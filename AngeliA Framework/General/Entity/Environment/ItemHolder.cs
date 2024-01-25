@@ -99,9 +99,7 @@ namespace AngeliaFramework {
 				var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
 				CellRenderer.SetLayerToUI();
 				CellRenderer.Draw(Const.PIXEL, labelRect, Const.BLACK, int.MaxValue);
-				CellGUI.Label(
-					CellContent.Get(CellGUI.GetNumberCache(ItemCount), 20), labelRect
-				);
+				CellGUI.Label(CellGUI.GetNumberCache(ItemCount), labelRect, charSize: 20);
 			}
 			CellRenderer.SetLayerToDefault();
 			// Highlight

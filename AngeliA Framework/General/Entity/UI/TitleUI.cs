@@ -68,9 +68,7 @@ namespace AngeliaFramework {
 
 				// Title
 				CellGUI.Label(
-					CellContent.Get(Title, Const.WHITE, 96),
-					cRect.Shrink(0, 0, cRect.height / 2, 0),
-					out var bound
+					Title, cRect.Shrink(0, 0, cRect.height / 2, 0), Const.WHITE, out var bound, charSize: 96
 				);
 
 				// Sub Title

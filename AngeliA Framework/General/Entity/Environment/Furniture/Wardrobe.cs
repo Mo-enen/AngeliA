@@ -271,10 +271,7 @@ namespace AngeliaFramework {
 				);
 			} else {
 				// None Label
-				CellGUI.Label(
-					CellContent.Get(BuiltInText.UI_NONE, Const.WHITE),
-					windowRect
-				);
+				CellGUI.Label(BuiltInText.UI_NONE, windowRect, tint: Const.WHITE);
 			}
 
 			// Arrow L
@@ -385,8 +382,7 @@ namespace AngeliaFramework {
 			// Display Name
 			if (CurrentPattern != int.MinValue) {
 				CellGUI.Label(
-					CellContent.Get(CurrentDisplayName, Const.WHITE),
-					windowRect.EdgeOutside(Direction4.Down, LabelSize)
+					CurrentDisplayName, windowRect.EdgeOutside(Direction4.Down, LabelSize), tint: Const.WHITE
 				);
 			}
 
@@ -401,8 +397,9 @@ namespace AngeliaFramework {
 				new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 			);
 			CellGUI.Label(
-				CellContent.Get("/", 24, Alignment.MidMid),
-				new IRect(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize)
+				"/",
+				new IRect(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize),
+				charSize: 24, alignment: Alignment.MidMid
 			);
 
 		}

@@ -724,8 +724,8 @@ namespace AngeliaFramework {
 
 				// Label
 				CellGUI.Label(
-					CellContent.Get(pal.Name, Const.WHITE, 24, Alignment.MidLeft),
-					rect.Shrink(itemSize + itemGap, 0, 0, 0)
+					pal.Name, rect.Shrink(itemSize + itemGap, 0, 0, 0),
+					tint: Const.WHITE, charSize: 24, alignment: Alignment.MidLeft
 				);
 
 				// Hover

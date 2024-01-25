@@ -201,14 +201,16 @@ namespace AngeliaFramework {
 					CellRenderer.Draw(Const.PIXEL, rect.Shrink(BORDER), Const.GREEN, int.MinValue + 2);
 
 					// Name Label
-					NameLabel.Text = ItemSystem.GetItemName(weapon.TypeID);
 					int labelWidth = ITEM_SIZE * 3;
 					int labelHeight = Unify(NameLabel.CharSize + 4);
-					CellGUI.Label(NameLabel, new IRect(
-						rect.CenterX() - labelWidth / 2,
-						rect.y - labelHeight,
-						labelWidth, labelHeight
-					));
+					CellGUI.Label(
+						NameLabel.SetText(ItemSystem.GetItemName(weapon.TypeID)),
+						new IRect(
+							rect.CenterX() - labelWidth / 2,
+							rect.y - labelHeight,
+							labelWidth, labelHeight
+						)
+					);
 
 				}
 

@@ -1,4 +1,7 @@
-﻿FileBrowser.Fav.Pic:图片
+﻿HomeScreen.MyLevel:我 的
+HomeScreen.Downloaded:下 载
+HomeScreen.Hot:热 门
+HomeScreen.New:最 新
 @GuaGua:瓜瓜
 @SlimeRed:红色史莱姆
 @Yaya:丫丫
@@ -32,6 +35,7 @@ DevilWing.Wing:恶魔翅膀
 FileBrowser.Error.NameEmpty:文件名不能为空
 FileBrowser.Error.NameInValid:文件名包含无效字符
 FileBrowser.Fav.Desktop:桌面
+FileBrowser.Fav.Pic:图片
 FileBrowser.FileName:文件名
 FileBrowser.FolderName:文件夹名
 Hint.Tetris.Drop:掉落
