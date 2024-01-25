@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AngeliaFramework;
 
 
-namespace AngeliaGame {
+namespace AngeliaMaker {
 	[EntityAttribute.DefaultSelectPlayer]
 	public class Yaya : Player {
 

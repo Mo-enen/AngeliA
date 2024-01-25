@@ -4,7 +4,7 @@ using AngeliaFramework;
 
 
 [assembly: AngeliA]
-[assembly: AngeliaGameTitle("AngeliA")]
+[assembly: AngeliaGameTitle("AngeliA Maker")]
 [assembly: AngeliaGameDeveloper("Moenen")]
 [assembly: AngeliaVersion(0, 0, 0, ReleaseLifeCycle.Alpha)]
 [assembly: AngeliaAllowMaker]
@@ -12,8 +12,8 @@ using AngeliaFramework;
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 
 
-namespace AngeliaGame {
-	public static class AngeliA {
+namespace AngeliaMaker {
+	public static class AngeliaMaker {
 
 
 

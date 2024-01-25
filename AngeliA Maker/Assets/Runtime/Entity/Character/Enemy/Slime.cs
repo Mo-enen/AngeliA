@@ -4,7 +4,7 @@ using AngeliaFramework;
 
 
 
-namespace AngeliaGame {
+namespace AngeliaMaker {
 	public class SlimeRed : Slime {
 
 	}

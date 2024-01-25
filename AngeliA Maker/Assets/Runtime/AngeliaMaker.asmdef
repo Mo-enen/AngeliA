@@ -1,6 +1,6 @@
 {
-    "name": "AngeliaGame",
-    "rootNamespace": "AngeliaGame",
+    "name": "AngeliaMaker",
+    "rootNamespace": "AngeliaMaker",
     "references": [
         "AngeliaFramework"
     ],

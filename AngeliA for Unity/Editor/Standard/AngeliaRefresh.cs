@@ -216,8 +216,8 @@ namespace AngeliaForUnity.Editor {
 			if (AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out _)) {
 				PlayerSettings.bundleVersion = $"{major}.{minor}.{patch}";
 			}
-			PlayerSettings.companyName = AngeliaGameDeveloperAttribute.GetDeveloper();
-			PlayerSettings.productName = AngeliaGameTitleAttribute.GetTitle();
+			PlayerSettings.companyName = AngeliaGameDeveloperAttribute.GetDeveloper().Replace(" ", "");
+			PlayerSettings.productName = AngeliaGameTitleAttribute.GetTitle().Replace(" ","");
 			PlayerSettings.SetApplicationIdentifier(
 				NamedBuildTarget.Standalone,
 				$"com.{PlayerSettings.companyName}.{PlayerSettings.productName}"

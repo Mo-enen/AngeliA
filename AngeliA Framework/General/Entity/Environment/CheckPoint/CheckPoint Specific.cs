@@ -1,7 +1,7 @@
 using AngeliaFramework;
 
 
-namespace AngeliaGame {
+namespace AngeliaMaker {
 
 
 	public class CheckLalynnA : CheckPoint { }

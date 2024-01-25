@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AngeliaFramework;
 
 
-namespace AngeliaGame {
+namespace AngeliaMaker {
 	[EntityAttribute.Capacity(12)]
 	[RequireSprite("{0}")]
 	public class YayaPaw : MeleeBullet {
