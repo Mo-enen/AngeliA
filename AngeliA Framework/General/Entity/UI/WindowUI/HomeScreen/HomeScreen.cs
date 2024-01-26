@@ -12,7 +12,7 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		private enum PanelType { MyLevel, Downloaded, Hot, New, }
+		private enum ContentType { MyLevel, Downloaded, Hot, New, Sub, }
 
 
 		#endregion
@@ -29,13 +29,14 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode PANEL_DOWNLOAD = ("HomeScreen.Downloaded", "Downloaded");
 		private static readonly LanguageCode PANEL_HOT = ("HomeScreen.Hot", "Hot");
 		private static readonly LanguageCode PANEL_NEW = ("HomeScreen.New", "New");
+		private static readonly LanguageCode PANEL_SUB = ("HomeScreen.Sub", "Subscribe");
 
 		// Api
 		public new static HomeScreen Instance => WindowUI.Instance as HomeScreen;
 		public static bool IsActived => Instance != null && Instance.Active;
 
 		// Data
-		private PanelType CurrentPanel = PanelType.Hot;
+		private ContentType CurrentContent = ContentType.Hot;
 
 
 		#endregion
@@ -49,7 +50,7 @@ namespace AngeliaFramework {
 		public override void OnActivated () {
 			base.OnActivated();
 			Game.StopGame();
-			LoadPanel(CurrentPanel);
+			LoadContent(CurrentContent);
 		}
 
 
@@ -63,12 +64,9 @@ namespace AngeliaFramework {
 
 		public override void UpdateUI () {
 			base.UpdateUI();
-
-			Update_Panel(MainWindowRect.EdgeInside(Direction4.Left, Unify(300)));
-
-
-
-
+			int panelWidth = Unify(300);
+			Update_Panel(MainWindowRect.EdgeInside(Direction4.Left, panelWidth));
+			Update_Content(MainWindowRect.EdgeInside(Direction4.Right, MainWindowRect.width - panelWidth));
 		}
 
 
@@ -85,26 +83,29 @@ namespace AngeliaFramework {
 			panelRect = panelRect.Shrink(panelPadding, panelPadding, panelPadding, panelPadding * 4);
 			var rect = panelRect.EdgeInside(Direction4.Up, Unify(48));
 
-			DrawButton(rect, PANEL_MY_LEVEL, PanelType.MyLevel);
+			DrawButton(rect, PANEL_MY_LEVEL, ContentType.MyLevel);
 			rect.y -= rect.height + itemPadding;
 
-			DrawButton(rect, PANEL_DOWNLOAD, PanelType.Downloaded);
+			DrawButton(rect, PANEL_DOWNLOAD, ContentType.Downloaded);
 			rect.y -= rect.height + itemPadding;
 
-			DrawButton(rect, PANEL_HOT, PanelType.Hot);
+			DrawButton(rect, PANEL_HOT, ContentType.Hot);
 			rect.y -= rect.height + itemPadding;
 
-			DrawButton(rect, PANEL_NEW, PanelType.New);
+			DrawButton(rect, PANEL_NEW, ContentType.New);
+			rect.y -= rect.height + itemPadding;
+
+			DrawButton(rect, PANEL_SUB, ContentType.Sub);
 			rect.y -= rect.height + itemPadding;
 
 			// Func
-			void DrawButton (IRect rect, string label, PanelType panel) {
+			void DrawButton (IRect rect, string label, ContentType type) {
 
-				bool selecting = CurrentPanel == panel;
+				bool selecting = CurrentContent == type;
 
 				// Button
 				if (CellGUI.Button(rect, label, z: 1, labelTint: Const.GREY_230, enable: !selecting)) {
-					LoadPanel(panel);
+					LoadContent(type);
 				}
 
 				// Mark
@@ -117,6 +118,17 @@ namespace AngeliaFramework {
 		}
 
 
+		private void Update_Content (IRect panelRect) {
+
+
+
+
+
+
+
+		}
+
+
 		#endregion
 
 
@@ -125,9 +137,9 @@ namespace AngeliaFramework {
 		#region --- LGC ---
 
 
-		private void LoadPanel (PanelType panel) {
-			if (panel == CurrentPanel) return;
-			CurrentPanel = panel;
+		private void LoadContent (ContentType type) {
+			if (type == CurrentContent) return;
+			CurrentContent = type;
 
 
 

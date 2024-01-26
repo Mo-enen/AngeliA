@@ -1,8 +1,4 @@
-﻿HomeScreen.MyLevel:My Level
-HomeScreen.Downloaded:Downloaded
-HomeScreen.Hot:Hot
-HomeScreen.New:New
-@GuaGua:GuaGua
+﻿@GuaGua:GuaGua
 @SlimeRed:Red Slime
 @Yaya:Yaya
 AngelWing.Wing:Angel Wing
@@ -42,6 +38,11 @@ Hint.Tetris.Drop:Drop
 Hint.Tetris.Hold:Hold
 Hint.Tetris.Move:Move
 Hint.Tetris.Rotate:Rotate
+HomeScreen.Downloaded:Downloaded
+HomeScreen.Hot:Hot
+HomeScreen.MyLevel:My Level
+HomeScreen.New:New
+HomeScreen.Sub:Subscribe
 iDes.ABC:
 iDes.AlarmClock:
 iDes.Alcohol:

@@ -404,6 +404,7 @@ namespace AngeliaForUnity {
 		}
 
 		protected override Int2 _GetTextureSize (object texture) {
+			if (texture == null) return new Int2(0, 0);
 			var t = texture as Texture2D;
 			return new Int2(t.width, t.height);
 		}

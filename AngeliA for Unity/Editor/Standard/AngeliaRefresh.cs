@@ -167,7 +167,7 @@ namespace AngeliaForUnity.Editor {
 					// Flex Sprites >> Sheet
 					var sheet = CreateSheet(sheetTexturePixels, textureWidth, textureHeight, flexSprites);
 					sheet?.SaveToDisk(AngePath.GetSheetPath(universeRoot));
-					sheet?.SaveToDisk(AngePath.GetSheetPath(AngePath.GetUniverseRoot(AngePath.ProjectTemplateRoot)));
+					//sheet?.SaveToDisk(AngePath.GetSheetPath(AngePath.GetUniverseRoot(AngePath.ProjectTemplateRoot)));
 
 					// Maps
 					AngeUtil.DeleteAllEmptyMaps(AngePath.GetMapRoot(universeRoot));
@@ -217,7 +217,7 @@ namespace AngeliaForUnity.Editor {
 				PlayerSettings.bundleVersion = $"{major}.{minor}.{patch}";
 			}
 			PlayerSettings.companyName = AngeliaGameDeveloperAttribute.GetDeveloper().Replace(" ", "");
-			PlayerSettings.productName = AngeliaGameTitleAttribute.GetTitle().Replace(" ","");
+			PlayerSettings.productName = AngeliaGameTitleAttribute.GetTitle().Replace(" ", "");
 			PlayerSettings.SetApplicationIdentifier(
 				NamedBuildTarget.Standalone,
 				$"com.{PlayerSettings.companyName}.{PlayerSettings.productName}"
@@ -374,8 +374,7 @@ namespace AngeliaForUnity.Editor {
 			var spriteList = new List<AngeSprite>();
 			var atlases = new List<AtlasInfo>();
 			var atlasPool = new Dictionary<string, int>(); // Name, Index
-
-			// Load Sprites
+														   // Load Sprites
 			for (int i = 0; i < flexSprites.Length; i++) {
 				var flex = flexSprites[i];
 				var uvBorder = flex.Border;
@@ -391,13 +390,13 @@ namespace AngeliaForUnity.Editor {
 				);
 				int tag = tagStr.AngeHash();
 				int rule = AngeUtil.RuleStringToDigit(ruleStr);
-				int globalWidth = flex.Rect.width.RoundToInt() * Const.CEL / Const.ART_CEL;
-				int globalHeight = flex.Rect.height.RoundToInt() * Const.CEL / Const.ART_CEL;
+				int globalWidth = flex.Rect.width.RoundToInt() * Const.ART_SCALE;
+				int globalHeight = flex.Rect.height.RoundToInt() * Const.ART_SCALE;
 				var globalBorder = new Int4() {
-					left = Util.Clamp((int)(flex.Border.x * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					down = Util.Clamp((int)(flex.Border.y * Const.CEL / Const.ART_CEL), 0, globalHeight),
-					right = Util.Clamp((int)(flex.Border.z * Const.CEL / Const.ART_CEL), 0, globalWidth),
-					up = Util.Clamp((int)(flex.Border.w * Const.CEL / Const.ART_CEL), 0, globalHeight),
+					left = Util.Clamp((int)(flex.Border.x * Const.ART_SCALE), 0, globalWidth),
+					down = Util.Clamp((int)(flex.Border.y * Const.ART_SCALE), 0, globalHeight),
+					right = Util.Clamp((int)(flex.Border.z * Const.ART_SCALE), 0, globalWidth),
+					up = Util.Clamp((int)(flex.Border.w * Const.ART_SCALE), 0, globalHeight),
 				};
 				if (noCollider) {
 					globalBorder.left = globalWidth;
@@ -438,6 +437,7 @@ namespace AngeliaForUnity.Editor {
 					SummaryTint = Const.CLEAR,
 					GroupType = null,
 					UvRect = FRect.MinMaxRect(uvMinX, uvMinY, uvMaxX, uvMaxY),
+					TextureRect = flex.Rect.ToRectInt(),
 				};
 
 				spriteIDHash.TryAdd(newSprite.GlobalID);
@@ -496,21 +496,24 @@ namespace AngeliaForUnity.Editor {
 				});
 			}
 
-			// Final
-			var sheet = new Sheet(
-				spriteList.ToArray(), groups.ToArray(), atlases.ToArray(),
+			// Summary
+			FillSummaryForSheet(spriteList, textureWidth, textureHeight, texturePixels);
+
+			// Create
+			var sheet = new Sheet();
+			sheet.SetData(
+				spriteList, groups, atlases,
 				Game.GetTextureFromPixels(texturePixels, textureWidth, textureHeight)
 			);
-			FillSummaryForSheet(sheet.Sprites, textureWidth, textureHeight, texturePixels);
 			return sheet;
 		}
 
 
-		private static void FillSummaryForSheet (AngeSprite[] sprites, int textureWidth, int textureHeight, Byte4[] pixels) {
+		private static void FillSummaryForSheet (List<AngeSprite> sprites, int textureWidth, int textureHeight, Byte4[] pixels) {
 
 			// Color Pool
 			var pool = new Dictionary<int, Byte4>();
-			for (int i = 0; i < sprites.Length; i++) {
+			for (int i = 0; i < sprites.Count; i++) {
 				var sp = sprites[i];
 				if (pool.ContainsKey(sp.GlobalID)) continue;
 				;
@@ -526,7 +529,7 @@ namespace AngeliaForUnity.Editor {
 			}
 
 			// Set Values
-			for (int i = 0; i < sprites.Length; i++) {
+			for (int i = 0; i < sprites.Count; i++) {
 				var sprite = sprites[i];
 				sprite.SummaryTint = pool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
 			}

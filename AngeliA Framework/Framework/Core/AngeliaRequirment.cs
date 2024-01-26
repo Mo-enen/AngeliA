@@ -185,13 +185,19 @@ namespace AngeliaFramework {
 			var typeofFieldAtt = typeof(AllFieldAttribute);
 			foreach (var type in Util.AllTypes) {
 				if (GetCustomAttribute(type, typeofFieldAtt) == null) continue;
+				bool hasContent = false;
 				foreach (var value in type.ForAllStaticFieldValue<NameCode>()) {
+					hasContent = true;
 					yield return new(value.Name, type);
 				}
 				foreach (var value in type.ForAllStaticFieldValue<NameCode[]>()) {
 					foreach (var name in value) {
+						hasContent = true;
 						yield return new(name.Name, type);
 					}
+				}
+				if (!hasContent) {
+					Game.LogWarning($"{type.Name} is requiring for name field but don't have any field match.");
 				}
 			}
 		}

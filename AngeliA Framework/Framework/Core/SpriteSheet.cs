@@ -25,7 +25,6 @@ namespace AngeliaFramework {
 	// Sprite
 	public class AngeSprite {
 
-		const float UV_SCALE = 10000000f;
 		private static readonly StringBuilder CacheBuilder = new(256);
 
 		public int GlobalID;
@@ -38,6 +37,7 @@ namespace AngeliaFramework {
 		public int LocalZ;
 		public Int4 GlobalBorder;
 
+		public IRect TextureRect;
 		public FRect UvRect;
 		public Float4 UvBorder; // xyzw => ldru
 
@@ -49,10 +49,12 @@ namespace AngeliaFramework {
 		public int Rule;
 		public int Tag;
 
-		public void LoadFromBinary_v0 (BinaryReader reader) {
+		public void LoadFromBinary_v0 (BinaryReader reader, int textureWidth, int textureHeight) {
 			uint byteLen = reader.ReadUInt32();
 			long endPos = reader.BaseStream.Position + byteLen;
 			try {
+				float fTextureWidth = textureWidth;
+				float fTextureHeight = textureHeight;
 				// Name
 				int nameLen = reader.ReadByte();
 				CacheBuilder.Clear();
@@ -84,20 +86,24 @@ namespace AngeliaFramework {
 				);
 
 				// UV
-				uint uvMinX = reader.ReadUInt32();
-				uint uvMinY = reader.ReadUInt32();
-				uint uvMaxX = reader.ReadUInt32();
-				uint uvMaxY = reader.ReadUInt32();
-				uint uvBorderL = reader.ReadUInt32();
-				uint uvBorderR = reader.ReadUInt32();
-				uint uvBorderD = reader.ReadUInt32();
-				uint uvBorderU = reader.ReadUInt32();
-
-				UvRect = FRect.MinMaxRect(
-					uvMinX / UV_SCALE, uvMinY / UV_SCALE,
-					uvMaxX / UV_SCALE, uvMaxY / UV_SCALE
+				TextureRect = new IRect(
+					reader.ReadInt32(),
+					reader.ReadInt32(),
+					reader.ReadInt32(),
+					reader.ReadInt32()
 				);
-				UvBorder = new(uvBorderL / UV_SCALE, uvBorderD / UV_SCALE, uvBorderR / UV_SCALE, uvBorderU / UV_SCALE);
+				UvRect = FRect.MinMaxRect(
+					(TextureRect.x + 0.0001f) / fTextureWidth,
+					(TextureRect.y + 0.0001f) / fTextureHeight,
+					(TextureRect.xMax - 0.0001f) / fTextureWidth,
+					(TextureRect.yMax - 0.0001f) / fTextureHeight
+				);
+				UvBorder = new(
+					GlobalBorder.left / (float)GlobalWidth,
+					GlobalBorder.down / (float)GlobalHeight,
+					GlobalBorder.right / (float)GlobalWidth,
+					GlobalBorder.up / (float)GlobalHeight
+				);
 
 				// Atlas Index
 				AtlasIndex = reader.ReadByte();
@@ -151,15 +157,11 @@ namespace AngeliaFramework {
 				writer.Write((ushort)GlobalBorder.z);
 				writer.Write((ushort)GlobalBorder.w);
 
-				// UV
-				writer.Write((uint)(UvRect.x * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvRect.y * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvRect.xMax * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvRect.yMax * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvBorder.x * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvBorder.z * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvBorder.y * UV_SCALE).RoundToInt());
-				writer.Write((uint)(UvBorder.w * UV_SCALE).RoundToInt());
+				// Texture Rect
+				writer.Write((int)TextureRect.x);
+				writer.Write((int)TextureRect.y);
+				writer.Write((int)TextureRect.width);
+				writer.Write((int)TextureRect.height);
 
 				// Atlas Index
 				writer.Write((byte)AtlasIndex);
@@ -315,43 +317,150 @@ namespace AngeliaFramework {
 
 
 	// Sheet
-	public class Sheet {
+	public class EditableSheet : PoolingSheet {
 
-		// VAR
-		public bool NotEmpty => Sprites.Length > 0;
-		public AngeSprite[] Sprites { get; private set; } = System.Array.Empty<AngeSprite>();
-		public SpriteGroup[] Groups { get; private set; } = System.Array.Empty<SpriteGroup>();
-		public AtlasInfo[] AtlasInfo { get; private set; } = System.Array.Empty<AtlasInfo>();
-		public object Texture { get; set; } = null;
-		public Dictionary<int, AngeSprite> SpritePool { get; } = new();
-		public Dictionary<int, SpriteGroup> GroupPool { get; } = new();
+		public readonly List<Byte4[]> SpritePixels = new();
 
-		// MSG
-		public Sheet () { }
-		public Sheet (string path) => LoadFromDisk(path);
-		public Sheet (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo, object texture) => SetData(sprites, groups, atlasInfo, texture);
+		public override void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<AtlasInfo> atlasInfo, object texture) {
+			base.SetData(sprites, groups, atlasInfo, texture);
+			FillPixels();
+		}
 
-		// API
-		public void SetData (AngeSprite[] sprites, SpriteGroup[] groups, AtlasInfo[] atlasInfo, object texture) {
-			Sprites = sprites ?? System.Array.Empty<AngeSprite>();
-			Groups = groups ?? System.Array.Empty<SpriteGroup>();
-			AtlasInfo = atlasInfo ?? System.Array.Empty<AtlasInfo>();
-			Texture = texture;
-			ApplyData();
+		public override bool LoadFromDisk (string path) {
+			bool loaded = base.LoadFromDisk(path);
+			FillPixels();
+			return loaded;
+		}
+
+		public override void SaveToDisk (string path) {
+			// Reconstruct
+			
+
+
+
+			// Save
+			base.SaveToDisk(path);
+		}
+
+		public override void Clear () {
+			base.Clear();
+			SpritePixels.Clear();
+		}
+
+		private void FillPixels () {
+			SpritePixels.Clear();
+			if (Texture == null) return;
+			var texturePixels = Game.GetPixelsFromTexture(Texture);
+			var size = Game.GetTextureSize(Texture);
+			int pixelLen = texturePixels.Length;
+			int textureWidth = size.x;
+			foreach (var sprite in Sprites) {
+				int x = sprite.TextureRect.x;
+				int y = sprite.TextureRect.y;
+				int width = sprite.TextureRect.width;
+				int height = sprite.TextureRect.height;
+				var pixels = new Byte4[width * height];
+				for (int j = 0; j < height; j++) {
+					int targetY = j + y;
+					for (int i = 0; i < width; i++) {
+						int targetX = i + x;
+						int targetIndex = targetY * textureWidth + targetX;
+						pixels[j * width + i] = targetIndex >= 0 && targetIndex < pixelLen ?
+							texturePixels[targetIndex] : Const.CLEAR;
+					}
+				}
+				SpritePixels.Add(pixels);
+			}
+		}
+
+	}
+
+
+	public class PoolingSheet : Sheet {
+
+		public readonly Dictionary<int, AngeSprite> SpritePool = new();
+		public readonly Dictionary<int, SpriteGroup> GroupPool = new();
+
+		public override void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<AtlasInfo> atlasInfo, object texture) {
+			base.SetData(sprites, groups, atlasInfo, texture);
+			FillPool();
+		}
+
+		public override bool LoadFromDisk (string path) {
+			bool loaded = base.LoadFromDisk(path);
+			FillPool();
+			return loaded;
+		}
+
+		public override void Clear () {
+			base.Clear();
 			SpritePool.Clear();
 			GroupPool.Clear();
 		}
 
-		public bool LoadFromDisk (string path) {
+		private void FillPool () {
+			// Fill Sprites
+			SpritePool.Clear();
+			for (int i = 0; i < Sprites.Count; i++) {
+				var sp = Sprites[i];
+				SpritePool.TryAdd(sp.GlobalID, Sprites[i]);
+			}
+			// Fill Groups
+			GroupPool.Clear();
+			for (int i = 0; i < Groups.Count; i++) {
+				var group = Groups[i];
+				GroupPool.TryAdd(group.ID, group);
+			}
+		}
+
+	}
+
+
+	public class Sheet {
+
+		// VAR
+		public bool NotEmpty => Sprites.Count > 0;
+		public object Texture = null;
+		public readonly List<AngeSprite> Sprites = new();
+		public readonly List<SpriteGroup> Groups = new();
+		public readonly List<AtlasInfo> AtlasInfo = new();
+
+
+		// MSG
+		public Sheet () { }
+		public Sheet (List<AngeSprite> sprites, List<SpriteGroup> groups, List<AtlasInfo> atlasInfo, object texture) => SetData(sprites, groups, atlasInfo, texture);
+
+		// API
+		public virtual void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<AtlasInfo> atlasInfo, object texture) {
+			Sprites.Clear();
+			Sprites.AddRange(sprites);
+			Groups.Clear();
+			Groups.AddRange(groups);
+			AtlasInfo.Clear();
+			AtlasInfo.AddRange(atlasInfo);
+			Texture = texture;
+			ApplyData();
+		}
+
+		public virtual bool LoadFromDisk (string path) {
 
 			Clear();
-
 			if (!Util.FileExists(path)) return false;
 
-			// Load Meta Data
 			using var stream = new FileStream(path, FileMode.Open);
 			using var reader = new BinaryReader(stream);
+
+			// File Version
 			int fileVersion = reader.ReadInt32();
+
+			// Load Texture
+			int textureSize = reader.ReadInt32();
+			if (textureSize > 0) {
+				var pngBytes = reader.ReadBytes(textureSize);
+				Texture = Game.PngBytesToTexture(pngBytes);
+			}
+
+			// Load Data
 			switch (fileVersion) {
 				case 0:
 					LoadFromBinary_v0(reader);
@@ -361,28 +470,17 @@ namespace AngeliaFramework {
 					return false;
 			}
 
-			// Load Texture
-			int textureSize = reader.ReadInt32();
-			if (textureSize > 0) {
-				var pngBytes = reader.ReadBytes(textureSize);
-				Texture = Game.PngBytesToTexture(pngBytes);
-			}
-
-			// Apply Instance
+			// Final
 			ApplyData();
-
-			// Fill Pool
-			FillPool();
 
 			return true;
 		}
 
-		public void SaveToDisk (string path) {
+		public virtual void SaveToDisk (string path) {
 			using var stream = new FileStream(path, FileMode.Create);
 			using var writer = new BinaryWriter(stream);
-			// Save Meta Data
-			writer.Write((int)0); // File Version
-			SaveToBinary_v0(writer);
+			// File Version
+			writer.Write((int)0);
 			// Save Texture
 			if (Texture != null) {
 				var pngBytes = Game.TextureToPngBytes(Texture);
@@ -391,74 +489,39 @@ namespace AngeliaFramework {
 			} else {
 				writer.Write((int)0);
 			}
+			// Save Data
+			SaveToBinary_v0(writer);
 		}
 
-		public void Clear () {
-			SpritePool.Clear();
-			GroupPool.Clear();
-			Sprites = System.Array.Empty<AngeSprite>();
-			Groups = System.Array.Empty<SpriteGroup>();
-			AtlasInfo = System.Array.Empty<AtlasInfo>();
+		public virtual void Clear () {
+			Sprites.Clear();
+			Groups.Clear();
+			AtlasInfo.Clear();
 			Texture = null;
 		}
 
-		public void FillPool () {
-			// Fill Sprites
-			for (int i = 0; i < Sprites.Length; i++) {
-				var sp = Sprites[i];
-				SpritePool.TryAdd(sp.GlobalID, Sprites[i]);
-			}
-
-			// Fill Groups
-			for (int i = 0; i < Groups.Length; i++) {
-				var group = Groups[i];
-				GroupPool.TryAdd(group.ID, group);
-			}
-		}
-
-		public static object LoadTextureInSheet (string path) {
+		public static object LoadSheetTextureFromDisk (string path) {
 			if (!Util.FileExists(path)) return null;
 			object result = null;
 			using var stream = new FileStream(path, FileMode.Open);
 			using var reader = new BinaryReader(stream);
-			int fileVersion = reader.ReadInt32();
-			switch (fileVersion) {
-				default:
-					break;
-				case 0:
-					reader.ReadInt32(); // Sprite Count
-					int spriteByteLength = reader.ReadInt32();
-					stream.Seek(spriteByteLength, SeekOrigin.Current);
-
-					reader.ReadInt32(); // Group Count
-					int groupByteLength = reader.ReadInt32();
-					stream.Seek(groupByteLength, SeekOrigin.Current);
-
-					reader.ReadInt32(); // Atlas Count
-					int atlasByteLength = reader.ReadInt32();
-					stream.Seek(atlasByteLength, SeekOrigin.Current);
-
-					break;
-			}
-
-			// Load Texture
+			reader.ReadInt32(); // File Version
 			int textureSize = reader.ReadInt32();
 			if (textureSize > 0) {
 				var pngBytes = reader.ReadBytes(textureSize);
 				result = Game.PngBytesToTexture(pngBytes);
 			}
-
 			return result;
 		}
 
 		// LGC
 		private void ApplyData () {
-			for (int i = 0; i < Sprites.Length; i++) {
+			for (int i = 0; i < Sprites.Count; i++) {
 				var sp = Sprites[i];
 				sp.Atlas = AtlasInfo[sp.AtlasIndex];
 				sp.SortingZ = sp.Atlas.AtlasZ * 1024 + sp.LocalZ;
 			}
-			for (int i = 0; i < Groups.Length; i++) {
+			for (int i = 0; i < Groups.Count; i++) {
 				var group = Groups[i];
 				if (group.SpriteIndexes != null && group.SpriteIndexes.Length > 0) {
 					group.Sprites = new AngeSprite[group.SpriteIndexes.Length];
@@ -478,15 +541,20 @@ namespace AngeliaFramework {
 
 			var stream = reader.BaseStream;
 
+			var textureSize = Game.GetTextureSize(Texture);
+			textureSize.x = textureSize.x.GreaterOrEquel(1);
+			textureSize.y = textureSize.y.GreaterOrEquel(1);
+
 			// Sprites
 			int spriteCount = reader.ReadInt32();
 			int spriteByteLength = reader.ReadInt32();
 			long spriteEndPos = stream.Position + spriteByteLength;
-			Sprites = new AngeSprite[spriteCount];
+			Sprites.Clear();
 			try {
 				for (int i = 0; i < spriteCount; i++) {
-					var sprite = Sprites[i] = new AngeSprite();
-					sprite.LoadFromBinary_v0(reader);
+					var sprite = new AngeSprite();
+					Sprites.Add(sprite);
+					sprite.LoadFromBinary_v0(reader, textureSize.x, textureSize.y);
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			if (stream.Position != spriteEndPos) stream.Position = spriteEndPos;
@@ -495,10 +563,11 @@ namespace AngeliaFramework {
 			int groupCount = reader.ReadInt32();
 			int groupByteLength = reader.ReadInt32();
 			long groupEndPos = stream.Position + groupByteLength;
-			Groups = new SpriteGroup[groupCount];
+			Groups.Clear();
 			try {
 				for (int i = 0; i < groupCount; i++) {
-					var group = Groups[i] = new SpriteGroup();
+					var group = new SpriteGroup();
+					Groups.Add(group);
 					group.LoadFromBinary_v0(reader);
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
@@ -508,10 +577,11 @@ namespace AngeliaFramework {
 			int atlasCount = reader.ReadInt32();
 			int atlasByteLength = reader.ReadInt32();
 			long atlasEndPos = stream.Position + atlasByteLength;
-			AtlasInfo = new AtlasInfo[atlasCount];
+			AtlasInfo.Clear();
 			try {
 				for (int i = 0; i < atlasCount; i++) {
-					var atlas = AtlasInfo[i] = new AtlasInfo();
+					var atlas = new AtlasInfo();
+					AtlasInfo.Add(atlas);
 					atlas.LoadFromBinary_v0(reader);
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
@@ -526,11 +596,11 @@ namespace AngeliaFramework {
 
 				// Sprites
 				{
-					writer.Write((int)Sprites.Length);
+					writer.Write((int)Sprites.Count);
 					long markPos = stream.Position;
 					writer.Write((int)0);
 					long startPos = stream.Position;
-					for (int i = 0; i < Sprites.Length; i++) {
+					for (int i = 0; i < Sprites.Count; i++) {
 						Sprites[i].SaveToBinary_v0(writer);
 					}
 					long endPos = stream.Position;
@@ -541,11 +611,11 @@ namespace AngeliaFramework {
 
 				// Groups
 				{
-					writer.Write((int)Groups.Length);
+					writer.Write((int)Groups.Count);
 					long markPos = stream.Position;
 					writer.Write((int)0);
 					long startPos = stream.Position;
-					for (int i = 0; i < Groups.Length; i++) {
+					for (int i = 0; i < Groups.Count; i++) {
 						Groups[i].SaveToBinary_v0(writer);
 					}
 					long endPos = stream.Position;
@@ -556,11 +626,11 @@ namespace AngeliaFramework {
 
 				// Atlas
 				{
-					writer.Write((int)AtlasInfo.Length);
+					writer.Write((int)AtlasInfo.Count);
 					long markPos = stream.Position;
 					writer.Write((int)0);
 					long startPos = stream.Position;
-					for (int i = 0; i < AtlasInfo.Length; i++) {
+					for (int i = 0; i < AtlasInfo.Count; i++) {
 						AtlasInfo[i].SaveToBinary_v0(writer);
 					}
 					long endPos = stream.Position;

@@ -713,7 +713,7 @@ namespace AngeliaFramework {
 				var pal = SearchResult[i];
 
 				// Icon
-				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
+				if (CellRenderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite)) {
 					CellRenderer.Draw(
 						pal.ArtworkID,
 						new IRect(rect.x, rect.y, itemSize, itemSize).Fit(

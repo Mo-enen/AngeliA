@@ -330,7 +330,9 @@ namespace AngeliaFramework {
 				sizeX, sizeY
 			);
 		}
-		public static IRect ToRectInt (this FRect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+		public static IRect ToRectInt (this FRect rect) => new(
+			rect.x.RoundToInt(), rect.y.RoundToInt(), rect.width.RoundToInt(), rect.height.RoundToInt()
+		);
 		public static void Clamp (this ref FRect rect, FRect target) => rect = FRect.MinMaxRect(
 			Util.Min(target.xMax, Util.Max(rect.xMin, target.xMin)),
 			Util.Min(target.yMax, Util.Max(rect.yMin, target.yMin)),

@@ -3,19 +3,10 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[EntityAttribute.DontDestroyOnSquadTransition]
-	[EntityAttribute.Capacity(1, 0)]
 	[RequireSpriteFromField]
 	[RequireLanguageFromField]
-	public abstract class WindowUI : EntityUI {
+	public static class GlobalTabs {
 
-
-
-
-		#region --- VAR ---
-
-
-		// Const
 		private static readonly SpriteCode BUTTON_ICON_MAP_EDITOR = "Window.MapEditor";
 		private static readonly SpriteCode BUTTON_ICON_SHEET_EDITOR = "Window.SheetEditor";
 		private static readonly SpriteCode BUTTON_ICON_LANGUAGE_EDITOR = "Window.LanguageEditor";
@@ -25,41 +16,21 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode LABEL_LANGUAGE_EDITOR = ("Window.Label.LanguageEditor", "Language");
 		private static readonly LanguageCode LABEL_HOME_SCREEN = ("Window.Label.HomeScreen", "Home");
 
-		// Api
-		public static WindowUI Instance { get; private set; } = null;
-		public static bool MouseOutside { get; set; } = false;
-		protected static IRect MainWindowRect { get; private set; } = default;
-
-
-		#endregion
-
-
-
-
-		#region --- MSG ---
-
-
-		[OnGameQuitting]
-		public static void OnGameQuitting () {
-			if (Game.AllowMakerFeaures && Instance != null && Instance.Active) Instance.OnInactivated();
-		}
-
-
 		[OnGameUpdate]
-		protected static void DrawPanelTabsUI () {
+		public static void DrawPanelTabsUI () {
 
 			if (!Game.AllowMakerFeaures) return;
 			if (Player.HasActivePlayer) {
-				MainWindowRect = CellRenderer.CameraRect;
+				WindowUI.MainWindowRect = CellRenderer.CameraRect;
 				return;
 			}
 
 			CellRenderer.SetLayerToUI();
 
-			int tabWidth = Unify(164);
-			int tabHeight = Unify(36);
+			int tabWidth = CellGUI.Unify(164);
+			int tabHeight = CellGUI.Unify(36);
 			const int padding = 0;
-			MainWindowRect = CellRenderer.CameraRect.EdgeInside(Direction4.Down, CellRenderer.CameraRect.height - tabHeight);
+			WindowUI.MainWindowRect = CellRenderer.CameraRect.EdgeInside(Direction4.Down, CellRenderer.CameraRect.height - tabHeight);
 			var barRect = CellRenderer.CameraRect.EdgeInside(Direction4.Up, tabHeight);
 			var rect = new IRect(barRect.x, barRect.y, tabWidth, tabHeight);
 
@@ -68,33 +39,35 @@ namespace AngeliaFramework {
 
 			// Home Editor
 			if (DrawTab(rect, HomeScreen.IsActived, LABEL_HOME_SCREEN, BUTTON_ICON_HOME_SCREEN)) {
-				OpenWindow(HomeScreen.TYPE_ID);
+				WindowUI.OpenWindow(HomeScreen.TYPE_ID);
 			}
 			rect.x += tabWidth + padding;
 
 			if (!ProjectSystem.CurrentProject.Readonly) {
 				// Map Editor
 				if (DrawTab(rect, MapEditor.IsActived, LABEL_MAP_EDITOR, BUTTON_ICON_MAP_EDITOR)) {
-					OpenWindow(MapEditor.TYPE_ID);
+					WindowUI.OpenWindow(MapEditor.TYPE_ID);
 				}
 				rect.x += tabWidth + padding;
 
 				// Sheet Editor
 				if (DrawTab(rect, SheetEditor.IsActived, LABEL_SHEET_EDITOR, BUTTON_ICON_SHEET_EDITOR)) {
-					OpenWindow(SheetEditor.TYPE_ID);
+					WindowUI.OpenWindow(SheetEditor.TYPE_ID);
 				}
 				rect.x += tabWidth + padding;
 
-				// Language Editor
-				if (DrawTab(rect, LanguageEditor.IsActived, LABEL_LANGUAGE_EDITOR, BUTTON_ICON_LANGUAGE_EDITOR)) {
-					OpenWindow(LanguageEditor.TYPE_ID);
+				if (Game.IsEdittime) {
+					// Language Editor
+					if (DrawTab(rect, LanguageEditor.IsActived, LABEL_LANGUAGE_EDITOR, BUTTON_ICON_LANGUAGE_EDITOR)) {
+						WindowUI.OpenWindow(LanguageEditor.TYPE_ID);
+					}
+					rect.x += tabWidth + padding;
 				}
-				rect.x += tabWidth + padding;
 			}
 
 			// Block Event
-			MouseOutside = MouseOutside || barRect.MouseInside();
-			if (FrameInput.MouseLeftButton && MouseOutside) {
+			WindowUI.MouseOutside = WindowUI.MouseOutside || barRect.MouseInside();
+			if (FrameInput.MouseLeftButton && WindowUI.MouseOutside) {
 				FrameInput.UseMouseKey(0);
 				FrameInput.UseGameKey(Gamekey.Action);
 			}
@@ -102,40 +75,8 @@ namespace AngeliaFramework {
 			CellRenderer.SetLayerToDefault();
 		}
 
-
 		[OnGameUpdatePauseless]
-		public static void OnGameUpdatePauseless () => MouseOutside = false;
-
-
-		public override void OnActivated () {
-			base.OnActivated();
-			if (Instance != null && Instance != this) Instance.Active = false;
-			Instance = this;
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- API ---
-
-
-		public static void OpenWindow (int typeID) {
-			if (!Game.AllowMakerFeaures) return;
-			Stage.ClearStagedEntities();
-			Stage.SpawnEntity(typeID, 0, 0);
-		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
+		public static void OnGameUpdatePauseless () => WindowUI.MouseOutside = false;
 
 		private static bool DrawTab (IRect rect, bool actived, string label, int iconID) {
 			if (actived) {
@@ -151,12 +92,6 @@ namespace AngeliaFramework {
 			);
 			return false;
 		}
-
-
-		#endregion
-
-
-
 
 	}
 }

@@ -1,8 +1,4 @@
-﻿HomeScreen.MyLevel:我 的
-HomeScreen.Downloaded:下 载
-HomeScreen.Hot:热 门
-HomeScreen.New:最 新
-@GuaGua:瓜瓜
+﻿@GuaGua:瓜瓜
 @SlimeRed:红色史莱姆
 @Yaya:丫丫
 AngelWing.Wing:天使翅膀
@@ -42,6 +38,11 @@ Hint.Tetris.Drop:掉落
 Hint.Tetris.Hold:保留
 Hint.Tetris.Move:移动
 Hint.Tetris.Rotate:旋转
+HomeScreen.Downloaded:下 载
+HomeScreen.Hot:热 门
+HomeScreen.MyLevel:我 的
+HomeScreen.New:最 新
+HomeScreen.Sub:订 阅
 iDes.ABC:
 iDes.AlarmClock:
 iDes.Alcohol:

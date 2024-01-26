@@ -17,8 +17,9 @@ namespace AngeliaMaker {
 
 
 
-		[OnGameUpdate]
+		[OnGameUpdateLater]
 		public static void Test () {
+
 			if (FrameInput.KeyboardDown(KeyboardKey.Digit1)) {
 				FileBrowserUI.OpenFile("Test OpenFile", "*", (path) => {
 					Game.Log(path);

@@ -140,6 +140,7 @@ namespace AngeliaFramework {
 		public const int HALF = CEL / 2;
 		public const int MAP = 128;
 		public const int ART_CEL = 16;
+		public const int ART_SCALE = CEL / ART_CEL;
 
 		// View
 		public const int LEVEL_SPAWN_PADDING_UNIT = 8;
