@@ -62,15 +62,16 @@ namespace AngeliaFramework {
 				AngePath.WorkspaceRoot, System.Guid.NewGuid().ToString()
 			);
 
-			// Copy Template Files
-			if (Util.FolderExists(AngePath.ProjectTemplateRoot)) {
-				Util.CopyFolder(
-					AngePath.ProjectTemplateRoot,
-					projectFolderPath,
-					copySubDirs: true,
-					ignoreHidden: true
-				);
-			}
+			Util.CreateFolder(projectFolderPath);
+			string newUniversePath = AngePath.GetUniverseRoot(projectFolderPath);
+
+			// Copy Maps
+			Util.CopyFolder(
+				BuiltInProject.MapRoot,
+				AngePath.GetMapRoot(newUniversePath),
+				copySubDirs: true,
+				ignoreHidden: true
+			);
 
 			// Create Project Object
 			var project = new Project(projectFolderPath, @readonly: false);
@@ -126,7 +127,6 @@ namespace AngeliaFramework {
 		public string DialogueRoot { get; init; }
 		public string UniverseMetaRoot { get; init; }
 		public string MapRoot { get; init; }
-		public string LanguageRoot { get; init; }
 		public string SavingRoot { get; init; }
 		public string ItemCustomizationRoot { get; init; }
 		public string SavingMetaRoot { get; init; }
@@ -150,7 +150,6 @@ namespace AngeliaFramework {
 			DialogueRoot = AngePath.GetDialogueRoot(universeFolder);
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
 			MapRoot = AngePath.GetMapRoot(universeFolder);
-			LanguageRoot = AngePath.GetLanguageRoot(universeFolder);
 
 			// Saving
 			SavingRoot = savingFolder;
@@ -177,7 +176,6 @@ namespace AngeliaFramework {
 			Util.CreateFolder(DialogueRoot);
 			Util.CreateFolder(UniverseMetaRoot);
 			Util.CreateFolder(MapRoot);
-			Util.CreateFolder(LanguageRoot);
 			Util.CreateFolder(SavingRoot);
 			Util.CreateFolder(ItemCustomizationRoot);
 			Util.CreateFolder(SavingMetaRoot);

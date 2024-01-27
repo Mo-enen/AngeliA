@@ -255,7 +255,7 @@ namespace AngeliaForUnity.Editor {
 		private bool Load () {
 
 			IsDirty = false;
-			string lanRoot = AngePath.GetLanguageRoot(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"));
+			string lanRoot = AngePath.LanguageRoot;
 
 			// Get Keys
 			KeyVisibility.Clear();
@@ -307,7 +307,7 @@ namespace AngeliaForUnity.Editor {
 
 		private void Save () {
 
-			string lanRoot = AngePath.GetLanguageRoot(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"));
+			string lanRoot = AngePath.LanguageRoot;
 
 			IsDirty = false;
 
@@ -338,7 +338,7 @@ namespace AngeliaForUnity.Editor {
 				hasItem = true;
 				menu.AddItem(new GUIContent(Util.GetLanguageDisplayName(language)), Languages.Contains(language), () => {
 					if (IsDirty) Save();
-					string lanRoot = AngePath.GetLanguageRoot(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"));
+					string lanRoot = AngePath.LanguageRoot;
 					if (Languages.Contains(language)) {
 						// Delete
 						if (EditorUtil.Dialog(

@@ -111,11 +111,11 @@ namespace AngeliaForUnity.Editor {
 			for (int i = 0; i < metas.Length; i++) {
 				var m = metas[i];
 				flexs[i] = new FlexSprite() {
-					Border = m.border.ToAngelia(),
-					Name = m.name,
+					Border = Int4.Direction(m.border.x.RoundToInt(), m.border.z.RoundToInt(), m.border.y.RoundToInt(), m.border.w.RoundToInt()),
+					FullName = m.name,
 					AtlasName = AseName,
 					AngePivot = new Int2((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
-					Rect = m.rect.ToAngelia(),
+					Rect = m.rect.ToAngelia().ToRectInt(),
 					AtlasType = atlasType,
 					AtlasZ = sheetZ,
 				};

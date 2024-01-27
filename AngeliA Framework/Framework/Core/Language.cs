@@ -33,15 +33,13 @@ namespace AngeliaFramework {
 
 		// API
 		[OnGameInitialize(-128)]
-		public static void Initialize () => Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
+		public static void Initialize () {
 
-
-		[OnProjectOpen]
-		public static void OnProjectOpen () {
+			Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
 
 			// Get All Language from Disk
 			var allLanguages = new List<string>();
-			foreach (var path in Util.EnumerateFiles(ProjectSystem.CurrentProject.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
+			foreach (var path in Util.EnumerateFiles(AngePath.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 				allLanguages.Add(Util.GetNameWithoutExtension(path));
 			}
 			AllLanguages = allLanguages.ToArray();
@@ -51,6 +49,7 @@ namespace AngeliaFramework {
 			if (!SetLanguage(targetLanguage)) {
 				SetLanguage("en");
 			}
+
 		}
 
 
@@ -62,7 +61,7 @@ namespace AngeliaFramework {
 
 		public static bool SetLanguage (string language) {
 			Pool.Clear();
-			string path = GetLanguageFilePath(ProjectSystem.CurrentProject.LanguageRoot, language);
+			string path = GetLanguageFilePath(AngePath.LanguageRoot, language);
 			if (!Util.FileExists(path)) return false;
 			foreach (var (key, value) in LoadAllPairsFromDiskAtPath(path)) {
 				Pool.TryAdd(key.AngeHash(), value);

@@ -1,4 +1,5 @@
-﻿@GuaGua:GuaGua
+﻿PlayerQMenu.Hand:Hand
+@GuaGua:GuaGua
 @SlimeRed:Red Slime
 @Yaya:Yaya
 AngelWing.Wing:Angel Wing

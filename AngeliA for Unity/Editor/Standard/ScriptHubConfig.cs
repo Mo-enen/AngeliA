@@ -26,10 +26,10 @@ namespace AngeliaForUnity.Editor {
 	}
 
 
-	public class GeneralHab : IScriptHubConfig {
-		public string Title => "General";
+	public class ImplementHab : IScriptHubConfig {
+		public string Title => "Implement";
 		public string[] Paths => new string[] {
-			"Packages/com.moenengames.angeliaframework/General",
+			"Packages/com.moenengames.angeliaframework/Implement",
 		};
 		public string IgnoreFolders => "Aseprite\nThird Party\nStandard";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
