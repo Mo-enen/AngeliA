@@ -104,7 +104,7 @@ namespace AngeliaForUnity.Editor {
 			SpriteResults = null;
 			if (result == null) return;
 			// Texture Result
-			TextureResult = new TextureData(result.Width, result.Height, result.Pixels, AseName);
+			TextureResult = new TextureData(result.Width, result.Height, result.Pixels);
 			// Get Sprites
 			var metas = result.Sprites;
 			var flexs = new FlexSprite[metas.Length];

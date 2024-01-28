@@ -283,16 +283,6 @@ namespace AngeliaFramework {
 
 
 		// Update
-		[OnProjectOpen]
-		internal static void OnProjectOpen () {
-			if (Game.GlobalFrame == 0) return;
-			if (!Sheet.LoadFromDisk(ProjectSystem.CurrentProject.SheetPath)) {
-				Sheet.LoadFromDisk(ProjectSystem.BuiltInProject.SheetPath);
-			}
-			Game.SetTextureForRenderer(Sheet.Texture);
-		}
-
-
 		[OnGameUpdate(-2048)]
 		internal static void CameraUpdate () {
 
@@ -364,6 +354,16 @@ namespace AngeliaFramework {
 
 
 		#region --- API ---
+
+
+		[OnProjectOpen]
+		public static void ReloadSheet () {
+			if (Game.GlobalFrame == 0) return;
+			if (!Sheet.LoadFromDisk(ProjectSystem.CurrentProject.SheetPath)) {
+				Sheet.LoadFromDisk(ProjectSystem.BuiltInProject.SheetPath);
+			}
+			Game.SetTextureForRenderer(Sheet.Texture);
+		}
 
 
 		// Layer

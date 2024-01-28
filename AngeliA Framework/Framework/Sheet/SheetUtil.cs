@@ -8,15 +8,11 @@ namespace AngeliaFramework {
 
 		private class FlexSpriteComparer : IComparer<FlexSprite> {
 			public static readonly FlexSpriteComparer Instance = new();
-			public int Compare (FlexSprite a, FlexSprite b) {
-				int result = ((int)(a.Rect.x)).CompareTo((int)(b.Rect.x));
-				if (result != 0) return result;
-				result = ((int)(a.Rect.y)).CompareTo((int)(b.Rect.y));
-				if (result != 0) return result;
-				result = ((int)(a.Rect.width)).CompareTo((int)(b.Rect.width));
-				if (result != 0) return result;
-				return ((int)(a.Rect.height)).CompareTo((int)(b.Rect.height));
-			}
+			public int Compare (FlexSprite a, FlexSprite b) =>
+				a.Rect.x != b.Rect.x ? a.Rect.x.CompareTo(b.Rect.x) :
+				a.Rect.y != b.Rect.y ? a.Rect.y.CompareTo(b.Rect.y) :
+				a.Rect.width != b.Rect.width ? a.Rect.width.CompareTo(b.Rect.width) :
+				a.Rect.height.CompareTo(b.Rect.height);
 		}
 
 
@@ -54,20 +50,19 @@ namespace AngeliaFramework {
 			foreach (var (data, sourceFlexs) in flexTextures) {
 				int sourceWidth = data.Width;
 				int sourceHeight = data.Height;
-				string sheetName = data.Name;
 				System.Array.Sort(sourceFlexs, FlexSpriteComparer.Instance);
 				int prevX = int.MinValue;
 				int prevY = int.MinValue;
 				int prevW = int.MinValue;
 				int prevH = int.MinValue;
 				PackingItem prevItem = null;
-				foreach (var meta in sourceFlexs) {
-					int x = meta.Rect.x;
-					int y = meta.Rect.y;
-					int w = meta.Rect.width;
-					int h = meta.Rect.height;
+				foreach (var flex in sourceFlexs) {
+					int x = flex.Rect.x;
+					int y = flex.Rect.y;
+					int w = flex.Rect.width;
+					int h = flex.Rect.height;
 					if (x == prevX && y == prevY && w == prevW && h == prevH) {
-						overlapList.Add((meta, prevItem));
+						overlapList.Add((flex, prevItem));
 						continue;
 					}
 					prevX = x;
@@ -87,26 +82,26 @@ namespace AngeliaFramework {
 					items.Add(new PackingItem() {
 						Width = w,
 						Height = h,
-						Border = meta.Border,
-						Name = meta.FullName,
-						AngePivot = meta.AngePivot,
-						AtlasName = sheetName,
+						Border = flex.Border,
+						Name = flex.FullName,
+						AngePivot = flex.AngePivot,
+						AtlasName = flex.AtlasName,
 						Pixels = pixels,
-						AtlasType = meta.AtlasType,
-						AtlasZ = meta.AtlasZ,
+						AtlasType = flex.AtlasType,
+						AtlasZ = flex.AtlasZ,
 					});
 					prevItem = items.Count > 0 ? items[^1] : null;
 
-					if (!spriteSheetNamePool.ContainsKey(meta.FullName)) {
-						spriteSheetNamePool.Add(meta.FullName, sheetName);
+					if (!spriteSheetNamePool.ContainsKey(flex.FullName)) {
+						spriteSheetNamePool.Add(flex.FullName, flex.AtlasName);
 					}
 
 					// Check Duplicate
-					int realID = AngeUtil.GetBlockRealName(meta.FullName).AngeHash();
+					int realID = AngeUtil.GetBlockRealName(flex.FullName).AngeHash();
 					if (!dupHash.Contains(realID)) {
 						dupHash.Add(realID);
 					} else {
-						Game.LogWarning($"[Slice Name Confliction] Sheet <color=#ffcc00>{sheetName}</color> and <color=#ffcc00>{(spriteSheetNamePool.TryGetValue(meta.FullName, out string _sheetName) ? _sheetName : "")}</color> is having slices with same name <color=#ffcc00>{meta.FullName}</color>");
+						Game.LogWarning($"[Slice Name Confliction] Sheet <color=#ffcc00>{flex.AtlasName}</color> and <color=#ffcc00>{(spriteSheetNamePool.TryGetValue(flex.FullName, out string _sheetName) ? _sheetName : "")}</color> is having slices with same name <color=#ffcc00>{flex.FullName}</color>");
 					}
 				}
 			}
@@ -129,7 +124,7 @@ namespace AngeliaFramework {
 			var textures = new TextureData[items.Count];
 			for (int i = 0; i < textures.Length; i++) {
 				var item = items[i];
-				textures[i] = new TextureData(item.Width, item.Height, item.Pixels, item.AtlasName);
+				textures[i] = new TextureData(item.Width, item.Height, item.Pixels);
 			}
 
 			var uvs = AngeliaRectPacking.Pack(out var sheetTextureData, textures, 16384);
@@ -166,6 +161,8 @@ namespace AngeliaFramework {
 					)
 				});
 			}
+
+			// Overlaps
 			for (int i = 0; i < overlapList.Count; i++) {
 				var (flex, original) = overlapList[i];
 				flex.Rect = IRect.MinMaxRect(

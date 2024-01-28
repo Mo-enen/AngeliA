@@ -22,6 +22,7 @@ namespace AngeliaFramework {
 		public override void SaveToDisk (string path) {
 			Reconstruct(this);
 			base.SaveToDisk(path);
+			System.GC.Collect();
 		}
 
 		public override void Clear () {
@@ -118,24 +119,71 @@ namespace AngeliaFramework {
 
 		private static void Reconstruct (EditableSheet sheet) {
 
+			if (sheet.Sprites.Count == 0) return;
+
+			// Get Sorted Sprite Pixel List
+			var spritePixelList = new List<(AngeSprite sprite, Byte4[] pixels)>();
+			for (int i = 0; i < sheet.Sprites.Count; i++) {
+				var sprite = sheet.Sprites[i];
+				var pixels = sheet.SpritePixels[i];
+				if (pixels == null || pixels.Length == 0) continue;
+				spritePixelList.Add((sprite, pixels));
+			}
+			if (spritePixelList.Count == 0) return;
+			spritePixelList.Sort((a, b) => Compare(a.sprite, b.sprite, a.pixels, b.pixels));
+
+			// Get Identical Overlap Pool
+			var overlapPool = new Dictionary<int, List<int>>();
+			var (compareSprite, comparePixels) = spritePixelList[1];
+			for (int i = 1; i < spritePixelList.Count; i++) {
+				var (sprite, pixels) = spritePixelList[i];
+				if (Compare(compareSprite, sprite, comparePixels, pixels) == 0) {
+					if (overlapPool.TryGetValue(compareSprite.GlobalID, out var list)) {
+						list.Add(sprite.GlobalID);
+					} else {
+						overlapPool.Add(compareSprite.GlobalID, new() { compareSprite.GlobalID, sprite.GlobalID });
+					}
+				} else {
+					compareSprite = sprite;
+					comparePixels = pixels;
+				}
+			}
+
 			// Pixel & AngeSprite >> Flex
 			var flexTextures = new List<(TextureData textureData, FlexSprite[] flexs)>();
 			for (int i = 0; i < sheet.Sprites.Count; i++) {
 				var sprite = sheet.Sprites[i];
 				var pixel = sheet.SpritePixels[i];
-				var atlas = sprite.Atlas;
-				flexTextures.Add((
-					new TextureData(sprite.TextureRect.width, sprite.TextureRect.height, pixel, atlas.Name),
-					new FlexSprite[1] { new (){
-						FullName = sprite.GetFullName(),
-						AtlasName = atlas.Name,
-						AngePivot = new (sprite.PivotX, sprite.PivotY),
-						AtlasType = atlas.Type,
-						AtlasZ = atlas.AtlasZ,
-						Border = sprite.GlobalBorder,
-						Rect = new IRect(0,0,sprite.TextureRect.width,sprite.TextureRect.height),
-					},
-				}));
+				if (
+					sprite.TextureRect.width * sprite.TextureRect.height == 0 ||
+					pixel == null || pixel.Length == 0
+				) continue;
+				int flexCount;
+				if (overlapPool.TryGetValue(sprite.GlobalID, out var overlapList)) {
+					if (overlapList == null) continue;
+					flexCount = overlapList.Count;
+				} else {
+					flexCount = 1;
+					overlapList = null;
+				}
+				var flexs = new FlexSprite[flexCount];
+				for (int j = 0; j < flexCount; j++) {
+					var targetSprite = overlapList == null ? sprite : sheet.SpritePool[overlapList[j]];
+					flexs[j] = new FlexSprite() {
+						FullName = targetSprite.GetFullName(),
+						AtlasName = sprite.Atlas.Name,
+						AngePivot = new(targetSprite.PivotX, targetSprite.PivotY),
+						AtlasType = sprite.Atlas.Type,
+						AtlasZ = sprite.Atlas.AtlasZ,
+						Border = targetSprite.GlobalBorder,
+						Rect = new IRect(0, 0, sprite.TextureRect.width, sprite.TextureRect.height),
+					};
+				}
+				int spWidth = sprite.TextureRect.width;
+				int spHeight = sprite.TextureRect.height;
+				flexTextures.Add(
+					(new TextureData(spWidth, spHeight, pixel), flexs)
+				);
 			}
 
 			// Flex >> Sheet
@@ -147,6 +195,21 @@ namespace AngeliaFramework {
 				resultFlexs, texturePixels, textureWidth, textureHeight, sheet
 			);
 
+			// Func
+			static int Compare (AngeSprite spriteA, AngeSprite spriteB, Byte4[] pixelsA, Byte4[] pixelsB) {
+				if (spriteA.GlobalWidth != spriteB.GlobalWidth) return spriteA.GlobalWidth.CompareTo(spriteB.GlobalWidth);
+				if (spriteA.GlobalHeight != spriteB.GlobalHeight) return spriteA.GlobalHeight.CompareTo(spriteB.GlobalHeight);
+				if (pixelsA.Length != pixelsB.Length) return pixelsA.Length.CompareTo(pixelsB.Length);
+				// Compare Pixels
+				int len = pixelsA.Length;
+				for (int i = 0; i < len; i++) {
+					var pA = pixelsA[i];
+					var pB = pixelsB[i];
+					if (pA != pB) return pA.CompareTo(pB);
+				}
+				// Identical Comfirmed
+				return 0;
+			}
 		}
 
 	}

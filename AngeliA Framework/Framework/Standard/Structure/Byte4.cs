@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace AngeliaFramework {
 	[Serializable]
-	public struct Byte4 : IFormattable {
+	public struct Byte4 : IFormattable, IComparable {
 
 		public byte r {
 			readonly get => x;
@@ -89,6 +89,25 @@ namespace AngeliaFramework {
 			return string.Format("RGBA({0}, {1}, {2}, {3})", r.ToString(format, formatProvider), g.ToString(format, formatProvider), b.ToString(format, formatProvider), a.ToString(format, formatProvider));
 		}
 
+		public int CompareTo (object obj) {
+			var other = (Byte4)obj;
+			return
+				x != other.x ? x.CompareTo(other.x) :
+				y != other.y ? y.CompareTo(other.y) :
+				z != other.z ? z.CompareTo(other.z) :
+				w.CompareTo(other.w);
+		}
+
+		public override readonly bool Equals (object obj) {
+			if (obj is not Byte4) return false;
+			var b = (Byte4)obj;
+			return x == b.x && y == b.y && z == b.z && w == b.w;
+		}
+
+		public override readonly int GetHashCode () => x ^ (y << 2) ^ (z >> 2) ^ (w >> 1);
+
+		public static bool operator == (Byte4 a, Byte4 b) => a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;
+		public static bool operator != (Byte4 a, Byte4 b) => a.x != b.x || a.y != b.y || a.z != b.z || a.w != b.w;
 
 	}
 }

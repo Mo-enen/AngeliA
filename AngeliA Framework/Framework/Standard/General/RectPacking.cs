@@ -6,15 +6,13 @@ namespace AngeliaFramework {
 
 
 	public class TextureData {
-		public string Name;
 		public int Width;
 		public int Height;
 		public Byte4[] Pixels;
-		public TextureData (int width, int height, Byte4[] pixels, string name) {
+		public TextureData (int width, int height, Byte4[] pixels) {
 			Width = width;
 			Height = height;
 			Pixels = pixels;
-			Name = name;
 		}
 	}
 
@@ -100,7 +98,7 @@ namespace AngeliaFramework {
 
 			// Check
 			if (textures.Length == 0) {
-				result = new TextureData(1, 1, new Byte4[1], string.Empty);
+				result = new TextureData(1, 1, new Byte4[1]);
 				return new FRect[0];
 			}
 
@@ -214,7 +212,7 @@ namespace AngeliaFramework {
 			}
 
 			// Finish
-			result = new TextureData(width, height, colors, "");
+			result = new TextureData(width, height, colors);
 			return uvs;
 		}
 
