@@ -114,7 +114,7 @@ namespace AngeliaForUnity.Editor {
 
 			// Help
 			if (GUI.Button(MGUI.Rect(26, HEIGHT), Style.HelpContent, EditorStyles.toolbarButton)) {
-				EditorUtil.Dialog("Help", "Make key empty to delete a line. It will be delete when you close the language editor.", "OK");
+				EditorUtility.DisplayDialog("Help", "Make key empty to delete a line. It will be delete when you close the language editor.", "OK");
 			}
 			EditorGUIUtility.AddCursorRect(MGUI.LastRect(), MouseCursor.Link);
 
@@ -341,11 +341,12 @@ namespace AngeliaForUnity.Editor {
 					string lanRoot = AngePath.LanguageRoot;
 					if (Languages.Contains(language)) {
 						// Delete
-						if (EditorUtil.Dialog(
-							"", $"Delete Language {Util.GetLanguageDisplayName(language)}?\nFile will move to recycle bin.", "Delete", "Cancel"
+						if (EditorUtility.DisplayDialog(
+							"", $"Delete Language {Util.GetLanguageDisplayName(language)}? This can not be undo.", "Delete", "Cancel"
 						)) {
 							string path = Util.CombinePaths(lanRoot, $"{language}.{AngePath.LANGUAGE_FILE_EXT}");
-							EditorUtil.MoveFileOrFolderToTrash(path, path + ".meta");
+							Util.DeleteFile(path);
+							Util.DeleteFile(path + ".meta");
 						}
 					} else {
 						// Create

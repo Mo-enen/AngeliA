@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEditor;
 using AngeliaFramework;
-using Stage = AngeliaFramework.Stage;
+using System.Linq;
 
 
 
@@ -31,6 +31,7 @@ namespace AngeliaForUnity.Editor {
 		private static Label SheetThumbnailLabel = null;
 		private static double AutoRefreshTime = 0f;
 		private static bool RequireRefresh = true;
+		private static int SpriteCount = 0;
 
 
 		#endregion
@@ -180,9 +181,11 @@ namespace AngeliaForUnity.Editor {
 
 			// Texture
 			var texture = SheetThumbnail.image as Texture2D;
+			string sheetPath = AngePath.GetSheetPath(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"));
 			if (texture == null || forceRefresh) {
+				SpriteCount = 0;
 				SheetThumbnail.image = texture = Sheet.LoadSheetTextureFromDisk(
-					AngePath.GetSheetPath(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"))
+					sheetPath, out SpriteCount
 				) as Texture2D;
 			}
 
@@ -190,7 +193,9 @@ namespace AngeliaForUnity.Editor {
 			if (texture != null) {
 				var rawBytes = texture.GetRawTextureData();
 				float rawSize = rawBytes.Length / 1024f / 1024f;
-				SheetThumbnailLabel.text = $"{texture.width}×{texture.height}  |  {AngeliaRefresh.LastSpriteCount.Value} Sprites  |  {rawSize:0.00} MB";
+				float fileSize = Util.GetFileSizeInMB(sheetPath);
+				SheetThumbnailLabel.text = $"{texture.width}×{texture.height}  |  {SpriteCount} Sprites  |  {rawSize:0.00} MB  |  {fileSize:0.00} MB";
+				SheetThumbnailLabel.tooltip = "texture size | sprite count | texture raw size | sheet file size";
 			} else {
 				SheetThumbnailLabel.text = "";
 			}
@@ -208,7 +213,7 @@ namespace AngeliaForUnity.Editor {
 		}
 
 
-		private static void InjectToolbox (EditorWindow inspector, string assetName) => EditorUtil.InjectVisualTreeToEditorWindow(inspector, assetName, (root) => {
+		private static void InjectToolbox (EditorWindow inspector, string assetName) => InjectVisualTreeToEditorWindow(inspector, assetName, (root) => {
 
 			Toolbox = root;
 
@@ -282,6 +287,28 @@ namespace AngeliaForUnity.Editor {
 			RefreshSheetThumbnail();
 
 		});
+
+
+		private static void InjectVisualTreeToEditorWindow (EditorWindow window, string assetName, System.Action<VisualElement> callback) {
+			if (window.rootVisualElement.Children().Any(v => v.name == assetName)) return;
+			foreach (var guid in AssetDatabase.FindAssets(assetName)) {
+				string uxmlPath = AssetDatabase.GUIDToAssetPath(guid);
+				if (Util.GetExtension(uxmlPath) != ".uxml") continue;
+				var tree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
+				if (tree == null) continue;
+				InjectVisualTreeToEditorWindow(window, tree, callback);
+				break;
+			}
+		}
+
+
+		private static void InjectVisualTreeToEditorWindow (EditorWindow window, VisualTreeAsset asset, System.Action<VisualElement> callback) {
+			if (asset == null || window.rootVisualElement.Children().Any(v => v.name == asset.name)) return;
+			var root = new VisualElement() { name = asset.name, };
+			asset.CloneTree(root);
+			callback?.Invoke(root);
+			window.rootVisualElement.Insert(0, root);
+		}
 
 
 		#endregion

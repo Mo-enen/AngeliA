@@ -11,7 +11,7 @@
 					<ui:Label text="Refresh" enable-rich-text="false" style=" height: 100%; width: auto; margin-left: 12px;" />
 				</ui:Button>
 
-				<ui:Button name="ForceRefresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 5%; height: 100%; flex-direction: row;">
+				<ui:Button name="ForceRefresh" tooltip="Force Refresh" enable-rich-text="false" focusable="false" class="ToolboxButton" style=" width: 5%; height: 100%; flex-direction: row;">
 				</ui:Button>
 
 				<ui:GroupBox style="height: 100%; width: 5px;"/>

@@ -87,7 +87,10 @@ namespace AngeliaFramework {
 			Texture = null;
 		}
 
-		public static object LoadSheetTextureFromDisk (string path) {
+		public static object LoadSheetTextureFromDisk (string path) => LoadSheetTextureFromDisk(path, out _);
+
+		public static object LoadSheetTextureFromDisk (string path, out int spriteCount) {
+			spriteCount = 0;
 			if (!Util.FileExists(path)) return null;
 			object result = null;
 			using var stream = new FileStream(path, FileMode.Open);
@@ -98,6 +101,7 @@ namespace AngeliaFramework {
 				var pngBytes = reader.ReadBytes(textureSize);
 				result = Game.PngBytesToTexture(pngBytes);
 			}
+			spriteCount = reader.ReadInt32();
 			return result;
 		}
 

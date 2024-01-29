@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	[RequireLanguageFromField]
 	public class MiniGamePong : MiniGame {
 
 

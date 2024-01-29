@@ -442,23 +442,24 @@ namespace AngeliaFramework {
 			}
 
 			// Panel Rect
+			var mainRect = CellRenderer.CameraRect;
 			PanelRect.width = Unify(PANEL_WIDTH);
-			PanelRect.height = MainWindowRect.height;
+			PanelRect.height = mainRect.height;
 			PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width, 200);
-			PanelRect.x = MainWindowRect.x + PanelOffsetX;
-			PanelRect.y = MainWindowRect.y;
+			PanelRect.x = mainRect.x + PanelOffsetX;
+			PanelRect.y = mainRect.y;
 
 			// Toolbar Rect
 			int HEIGHT = Unify(TOOL_BAR_HEIGHT);
 			ToolbarRect.width = PanelRect.width;
 			ToolbarRect.height = HEIGHT;
-			ToolbarRect.y = MainWindowRect.yMax - HEIGHT;
+			ToolbarRect.y = mainRect.yMax - HEIGHT;
 			ToolbarOffsetX = ToolbarOffsetX.LerpTo(IsPlaying || DroppingPlayer ? -ToolbarRect.width : 0, 200);
-			ToolbarRect.x = MainWindowRect.x + ToolbarOffsetX;
+			ToolbarRect.x = mainRect.x + ToolbarOffsetX;
 
 			// Check Point Lane Rect
-			CheckPointLaneRect.x = MainWindowRect.x;
-			CheckPointLaneRect.y = MainWindowRect.y;
+			CheckPointLaneRect.x = mainRect.x;
+			CheckPointLaneRect.y = mainRect.y;
 			CheckPointLaneRect.width = Unify(PANEL_WIDTH);
 			CheckPointLaneRect.height = ToolbarRect.y - CheckPointLaneRect.y;
 

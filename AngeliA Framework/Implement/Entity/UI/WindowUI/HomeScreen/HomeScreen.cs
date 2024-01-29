@@ -65,8 +65,9 @@ namespace AngeliaFramework {
 		public override void UpdateUI () {
 			base.UpdateUI();
 			int panelWidth = Unify(300);
-			Update_Panel(MainWindowRect.EdgeInside(Direction4.Left, panelWidth));
-			Update_Content(MainWindowRect.EdgeInside(Direction4.Right, MainWindowRect.width - panelWidth));
+			var mainRect = CellRenderer.CameraRect;
+			Update_Panel(mainRect.EdgeInside(Direction4.Left, panelWidth));
+			Update_Content(mainRect.EdgeInside(Direction4.Right, mainRect.width - panelWidth));
 		}
 
 

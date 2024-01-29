@@ -41,7 +41,7 @@ namespace AngeliaFramework {
 			foreach (var folder in Util.EnumerateFolders(AngePath.WorkspaceRoot, true)) {
 				UserProjects.Add(new Project(folder, @readonly: false));
 			}
-			SortUserProjectList();
+			SortProjectList(UserProjects);
 
 			// Fill Downloaded Projects
 			DownloadedProjects.Clear();
@@ -87,22 +87,26 @@ namespace AngeliaFramework {
 			project.SaveProjectInfoToDisk();
 
 			// Add into User List
-			UserProjects.Add(project);
-			SortUserProjectList();
+			UserProjects.Insert(0, project);
 
 			return project;
 		}
 
 		public static void OpenProject (Project project, bool ignoreCallback = false) {
 			if (project == null) return;
+			// Open
 			CurrentProject = project;
 			project.CreateFolders();
 			project.Info.ModifyDate = System.DateTime.Now.ToFileTime();
+			// Callback
 			if (!ignoreCallback) OnProjectOpen?.Invoke();
-			SortUserProjectList();
+			// Sort
+			if (project != BuiltInProject && UserProjects.Contains(project)) {
+				SortProjectList(UserProjects);
+			}
 		}
 
-		private static void SortUserProjectList () => UserProjects.Sort((a, b) => b.Info.ModifyDate.CompareTo(a.Info.ModifyDate));
+		private static void SortProjectList (List<Project> projects) => projects.Sort((a, b) => b.Info.ModifyDate.CompareTo(a.Info.ModifyDate));
 
 	}
 
@@ -127,6 +131,7 @@ namespace AngeliaFramework {
 		public string DialogueRoot { get; init; }
 		public string UniverseMetaRoot { get; init; }
 		public string MapRoot { get; init; }
+		public string ArtworkRoot { get; init; }
 		public string SavingRoot { get; init; }
 		public string ItemCustomizationRoot { get; init; }
 		public string SavingMetaRoot { get; init; }
@@ -150,6 +155,7 @@ namespace AngeliaFramework {
 			DialogueRoot = AngePath.GetDialogueRoot(universeFolder);
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
 			MapRoot = AngePath.GetMapRoot(universeFolder);
+			ArtworkRoot = AngePath.GetArtworkRoot(universeFolder);
 
 			// Saving
 			SavingRoot = savingFolder;

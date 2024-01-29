@@ -9,7 +9,6 @@ using AngeliaFramework;
 
 
 namespace AngeliaForUnity.Editor {
-	using Debug = UnityEngine.Debug;
 	public interface IScriptHubConfig {
 		public struct SearchPattern {
 			public string Pattern;
@@ -50,13 +49,11 @@ namespace AngeliaForUnity.Editor {
 			public string Path;
 			public Texture2D Icon;
 			public bool IsFile;
-			public bool InPackage;
 			public Item (string name, Texture2D icon, string path, bool isFile) {
 				Name = name;
 				Path = path;
 				Icon = icon;
 				IsFile = isFile;
-				InPackage = path.StartsWith("packages", System.StringComparison.OrdinalIgnoreCase);
 			}
 		}
 
@@ -72,6 +69,7 @@ namespace AngeliaForUnity.Editor {
 				wordWrap = false,
 				alignment = TextAnchor.MiddleLeft,
 			};
+			public Texture2D DefaultFileIcon = EditorGUIUtility.IconContent("File").image as Texture2D;
 		}
 
 		private class HubSearchProvider : ScriptableObject, ISearchWindowProvider {
@@ -257,11 +255,11 @@ namespace AngeliaForUnity.Editor {
 							if (GUI.Button(rect, GUIContent.none, GUIStyle.none)) {
 								OnItemClick(path);
 							}
-							if (icon != null) GUI.DrawTexture(iconRect.Shrink(2).Fit((float)icon.width / icon.height), icon);
-							GUI.Label(itemRect, name, Style.LabelStyle);
-							if (!item.InPackage) {
-								EditorGUI.DrawRect(new Rect(rect.x - 1, rect.y + 2, 1, rect.height - 4), assetIconColor);
+							if (icon == null) icon = Style.DefaultFileIcon;
+							if (icon != null) {
+								GUI.DrawTexture(iconRect.Shrink(2).Fit((float)icon.width / icon.height), icon);
 							}
+							GUI.Label(itemRect, name, Style.LabelStyle);
 							EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 						} else if (i < scripts.Length - 1 && scripts[i + 1].IsFile) {
 							// Folder
@@ -359,20 +357,6 @@ namespace AngeliaForUnity.Editor {
 					}
 				}
 			}
-			//for (int i = 0; i < Scripts.Length; i++) {
-			//	HubSearch.List.Add(new MySearchTreeGroupEntry(new GUIContent(Titles[i]), 1));
-			//	var scripts = Scripts[i];
-			//	for (int j = 0; j < scripts.Length; j++) {
-			//		var item = scripts[j];
-			//		if (item.IsFile) {
-			//			HubSearch.List.Add(new HubSearchEntry(new GUIContent(item.Name)) {
-			//				Title = Titles[i],
-			//				userData = item,
-			//				level = 2,
-			//			});
-			//		}
-			//	}
-			//}
 
 			//  Scripts
 			void LoadScripts (
@@ -492,7 +476,7 @@ namespace AngeliaForUnity.Editor {
 				string ex = Util.GetExtension(path);
 				if (ex == ".cs" || ex == ".shader") {
 					EditorApplication.delayCall += () => {
-						EditorUtil.OpenFileWithCodeEditor(path);
+						OpenFileWithCodeEditor(path);
 					};
 				} else {
 					EditorApplication.delayCall += () => {
@@ -516,16 +500,27 @@ namespace AngeliaForUnity.Editor {
 			);
 			// Draw Icon
 			var item = (Item)entry.userData;
-			if (item.Icon != null) {
-				const float SHRINK = 1f;
+			const float SHRINK = 1f;
+			var icon = item.Icon != null ? item.Icon : Style.DefaultFileIcon;
+			if (icon != null) {
 				GUI.DrawTexture(
-					rect.Shrink(SHRINK + 2f, rect.width - iconSize + SHRINK, SHRINK, SHRINK).Fit((float)item.Icon.width / item.Icon.height),
-					item.Icon
+					rect.Shrink(SHRINK + 2f, rect.width - iconSize + SHRINK, SHRINK, SHRINK).Fit((float)icon.width / icon.height),
+					icon
 				);
 			}
 			// Draw Title
 			if (entry is HubSearchEntry hubEntry) {
 				GUI.Label(rect, hubEntry.Title, MGUI.RightGreyMiniLabel);
+			}
+		}
+
+
+		private static void OpenFileWithCodeEditor (string filePath, int line = -1, int column = -1) {
+			var editor = Unity.CodeEditor.CodeEditor.Editor;
+			if (editor != null && editor.CurrentCodeEditor != null) {
+				editor.CurrentCodeEditor.OpenProject(filePath, line, column);
+			} else {
+				Application.OpenURL(Util.GetUrl(filePath));
 			}
 		}
 

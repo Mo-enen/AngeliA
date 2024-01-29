@@ -369,8 +369,11 @@ namespace AngeliaFramework {
 				name = name[..hashIndex];
 			}
 
-			// Oneway Always Trigger
-			if (!isTrigger && IsOnewayTag(tag.AngeHash())) isTrigger = true;
+			// Always Trigger Check
+			isTrigger = isTrigger ||
+				IsOnewayTag(tag.AngeHash()) ||
+				tag == SpriteTag.WATER_STRING ||
+				tag == SpriteTag.QUICKSAND_STRING;
 
 			// Name and Group
 			realName = name.TrimEnd(' ');
@@ -790,7 +793,7 @@ namespace AngeliaFramework {
 			int tl0, int tm0, int tr0, int ml0, int mr0, int bl0, int bm0, int br0,
 			int tl1, int tm1, int tr1, int ml1, int mr1, int bl1, int bm1, int br1
 		) {
-			// 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty
+			// 0=Whatever 1=SameTile 2=NotSameTile 3=NotEmpty 4=Empty
 			int count = rule.Length / 8;
 			for (int i = 0; i < count; i++) {
 				char first = rule[i * 8 + 0];
@@ -854,6 +857,7 @@ namespace AngeliaFramework {
 		}
 
 
+		// AngeliA Hash Code
 		public static string AngeName (this System.Type type) {
 			string name = type.Name;
 			if (char.IsLower(name[0])) name = name[1..];
@@ -861,18 +865,15 @@ namespace AngeliaFramework {
 		}
 
 
-		// AngeliA Hash Code
 		public static int[] GetAngeHashs (System.Type[] types) {
 			if (types == null || types.Length == 0) return new int[0];
 			var results = new int[types.Length];
 			for (int i = 0; i < results.Length; i++) {
-				results[i] = GetAngeHash(types[i]);
+				var _type = types[i];
+				results[i] = _type != null ? _type.AngeHash() : 0;
 			}
 			return results;
 		}
-
-
-		public static int GetAngeHash (System.Type type) => type != null ? type.AngeName().AngeHash() : 0;
 
 
 		public static int AngeHash (this System.Type type) => type.AngeName().AngeHash();

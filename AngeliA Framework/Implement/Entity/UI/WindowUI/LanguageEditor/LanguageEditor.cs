@@ -92,7 +92,7 @@ namespace AngeliaFramework {
 			base.UpdateUI();
 
 			int padding = Unify(32);
-			var cameraRect = MainWindowRect.Shrink(padding, padding, 0, 0);
+			var cameraRect = CellRenderer.CameraRect.Shrink(padding, padding, 0, 0);
 			int column = Languages.Count + 1;
 			int fieldWidth = Util.Clamp(cameraRect.width / column, 0, Unify(300));
 			int verticalPadding = Unify(24);

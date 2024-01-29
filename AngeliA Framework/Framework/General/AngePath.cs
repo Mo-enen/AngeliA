@@ -65,6 +65,7 @@ namespace AngeliaFramework {
 		public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
 		public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
 		public static string GetProjectCoverPath (string universeFolder) => Util.CombinePaths(universeFolder, "Cover.png");
+		public static string GetArtworkRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Artwork");
 
 	}
 }

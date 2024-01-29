@@ -52,7 +52,14 @@ namespace AngeliaFramework {
 
 		protected abstract IEnumerable<KeyValuePair<int, object>> _ForAllAudioClips ();
 
-		public static void OnProjectBuild (string exePath) {
+		public static void BeforeApplicationBuild (string exePath) {
+			Instance._BeforeApplicationBuild(exePath);
+			// Create Sheet
+			SheetUtil.CreateSheetFromAsepriteFiles(
+				AngePath.GetArtworkRoot(AngePath.BuiltInUniverseRoot)
+			)?.SaveToDisk(
+				AngePath.GetSheetPath(AngePath.BuiltInUniverseRoot)
+			);
 			// Copy Universe
 			string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
 			if (Util.FolderExists(universePath)) {
@@ -60,12 +67,14 @@ namespace AngeliaFramework {
 				Util.CopyFolder(universePath, newUniversePath, true, true);
 			}
 		}
+		protected abstract void _BeforeApplicationBuild (string exePath);
 
 
 		// Listener
 		protected abstract void _AddGameQuittingCallback (System.Action callback);
 		protected abstract void _AddGameTryingToQuitCallback (System.Func<bool> callback);
 		protected abstract void _AddTextInputCallback (System.Action<char> callback);
+		protected abstract void _AddFocusChangedCallback (System.Action<bool> callback);
 
 
 		// Debug

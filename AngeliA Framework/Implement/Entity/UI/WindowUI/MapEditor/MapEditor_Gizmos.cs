@@ -44,7 +44,7 @@ namespace AngeliaFramework {
 			if (IsPlaying || DroppingPlayer || Game.IsPausing || TaskingRoute) return;
 
 			var TINT = new Byte4(128, 128, 128, 16);
-			var cRect = MainWindowRect.Shrink(PanelRect.width, 0, 0, 0);
+			var cRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 			int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL) + 1) * Const.CEL;
 			int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL) + 1) * Const.CEL;
 			int d = Util.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
@@ -210,7 +210,7 @@ namespace AngeliaFramework {
 
 		private void Update_DrawCursor () {
 
-			if (IsPlaying || DroppingPlayer || CtrlHolding || CellGUI.IsTyping || MouseOutside) return;
+			if (IsPlaying || DroppingPlayer || CtrlHolding || CellGUI.IsTyping) return;
 			if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 			if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 			if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;

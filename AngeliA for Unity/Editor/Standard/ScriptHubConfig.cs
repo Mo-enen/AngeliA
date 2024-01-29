@@ -79,10 +79,8 @@ namespace AngeliaForUnity.Editor {
 
 	public class ArtworkHub : IScriptHubConfig {
 		public string Title => "Artwork";
-		public string[] Paths => new string[] {
-			"Assets",
-			"Packages/com.moenengames.angeliaframework",
-			"Packages/com.moenengames.angeliageneral",
+		public string[] Paths => new string[] { 
+			"Universe/Artwork", 
 		};
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.ase", "Ase", true),

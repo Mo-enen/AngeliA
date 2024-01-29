@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace AngeliaFramework {
@@ -40,7 +41,38 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void CombineFlexTextures (List<(TextureData data, FlexSprite[] flexs)> flexTextures, out Byte4[] texturePixels, out int textureWidth, out int textureHeight, out FlexSprite[] resultFlexs) {
+		public static void RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
+			long sheetDate = Util.GetFileCreationDate(sheetPath);
+			foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles(asepriteRoot)) {
+				if (Util.GetFileModifyDate(filePath) <= sheetDate) continue;
+				CreateSheetFromAsepriteFiles(asepriteRoot)?.SaveToDisk(sheetPath);
+				return;
+			}
+		}
+
+
+		public static Sheet CreateSheetFromAsepriteFiles (string asepriteRoot) {
+
+			// Aseprite Files >> Flex Sprites & Texture
+			var tResults = AsepriteUtil.CreateSpritesFromAsepriteFiles(
+				AsepriteUtil.ForAllAsepriteFiles(asepriteRoot).ToArray(),
+				"#ignore"
+			);
+
+			// Combine Result Files
+			CombineFlexTextures(
+				tResults, out var sheetTexturePixels, out int textureWidth, out int textureHeight, out var flexSprites
+			);
+
+			// Flex Sprites >> Sheet
+			var sheet = new Sheet();
+			FillFlexIntoSheet(flexSprites, sheetTexturePixels, textureWidth, textureHeight, sheet);
+			return sheet;
+
+		}
+
+
+		private static void CombineFlexTextures (List<(TextureData data, FlexSprite[] flexs)> flexTextures, out Byte4[] texturePixels, out int textureWidth, out int textureHeight, out FlexSprite[] resultFlexs) {
 
 			// Combine
 			var items = new List<PackingItem>();
@@ -178,7 +210,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void FillFlexIntoSheet (FlexSprite[] flexSprites, Byte4[] texturePixels, int textureWidth, int textureHeight, Sheet sheet) {
+		private static void FillFlexIntoSheet (FlexSprite[] flexSprites, Byte4[] texturePixels, int textureWidth, int textureHeight, Sheet sheet) {
 
 			if (textureWidth == 0 || textureHeight == 0) return;
 

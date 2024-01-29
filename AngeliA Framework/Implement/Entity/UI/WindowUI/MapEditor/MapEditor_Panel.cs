@@ -5,25 +5,25 @@ using GeorgeMamaladze;
 
 
 [assembly: AngeliaFramework.RequireGlobalSprite(atlas: "UI",
-	"PaletteCover.Background",
-	"PaletteCover.LevelBack",
-	"PaletteCover.LevelFront",
-	"PaletteCover.Character",
-	"PaletteCover.CheckPoint",
-	"PaletteCover.Collectable",
-	"PaletteCover.Default",
-	"PaletteCover.Entity",
-	"PaletteCover.Furniture",
-	"PaletteCover.Item",
-	"PaletteCover.ItemEquipment",
-	"PaletteCover.ItemFood",
-	"PaletteCover.ItemWeapon",
-	"PaletteCover.MapGenerator",
-	"PaletteCover.MiniGame",
-	"PaletteCover.Platform",
-	"PaletteCover.System",
-	"PaletteCover.Vegetation",
-	"PaletteCover.Wallpaper"
+	"Cover.Background",
+	"Cover.LevelBack",
+	"Cover.LevelFront",
+	"Cover.Character",
+	"Cover.CheckPoint",
+	"Cover.Collectable",
+	"Cover.Default",
+	"Cover.Entity",
+	"Cover.Furniture",
+	"Cover.Item",
+	"Cover.ItemEquipment",
+	"Cover.ItemFood",
+	"Cover.ItemWeapon",
+	"Cover.MapGenerator",
+	"Cover.MiniGame",
+	"Cover.Platform",
+	"Cover.System",
+	"Cover.Vegetation",
+	"Cover.Wallpaper"
 )]
 
 
@@ -69,7 +69,7 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly SpriteCode UI_DEFAULT_LIST_COVER = "PaletteCover.Default";
+		private static readonly SpriteCode UI_DEFAULT_LIST_COVER = "Cover.Default";
 		private static readonly int UI_TAB = BuiltInIcon.UI_TAB;
 		private static readonly int UI_TAB_ICON_PINNED = BuiltInIcon.ICON_STAR;
 		private static readonly int UI_TAB_ICON_ALL = BuiltInIcon.ICON_MENU;
@@ -143,7 +143,7 @@ namespace AngeliaFramework {
 						Items = new List<PaletteItem>(),
 						GroupName = atlasName,
 						AtlasType = atlasType,
-						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
+						CoverID = $"Cover.{atlasName}".AngeHash(),
 						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
 					});
 				}
@@ -173,7 +173,7 @@ namespace AngeliaFramework {
 						Items = new List<PaletteItem>(),
 						GroupName = atlasName,
 						AtlasType = atlasType,
-						CoverID = $"PaletteCover.{atlasName}".AngeHash(),
+						CoverID = $"Cover.{atlasName}".AngeHash(),
 						DisplayNameID = $"Palette.{atlasName}".AngeHash(),
 					});
 				}
@@ -200,7 +200,7 @@ namespace AngeliaFramework {
 					AtlasType = AtlasType.General,
 					GroupName = "_Entity",
 					DisplayNameID = "Palette.Entity".AngeHash(),
-					CoverID = "PaletteCover.Entity".AngeHash(),
+					CoverID = "Cover.Entity".AngeHash(),
 				}
 			}};
 			foreach (var type in typeof(IMapItem).AllClassImplemented()) {
@@ -222,7 +222,7 @@ namespace AngeliaFramework {
 						Items = new List<PaletteItem>(),
 						GroupName = groupName,
 						AtlasType = AtlasType.General,
-						CoverID = $"PaletteCover.{groupName}".AngeHash(),
+						CoverID = $"Cover.{groupName}".AngeHash(),
 						DisplayNameID = $"Palette.{groupName}".AngeHash(),
 					});
 				}

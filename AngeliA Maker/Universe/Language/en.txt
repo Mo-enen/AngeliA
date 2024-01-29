@@ -1,5 +1,4 @@
-﻿PlayerQMenu.Hand:Hand
-@GuaGua:GuaGua
+﻿@GuaGua:GuaGua
 @SlimeRed:Red Slime
 @Yaya:Yaya
 AngelWing.Wing:Angel Wing
@@ -1664,6 +1663,7 @@ Palette.System:System
 Palette.Vegetation:Vegetation
 Palette.Wallpaper:Wallpaper
 PlayerCustomizerAngelia:Customize
+PlayerQMenu.Hand:Hand
 Project.Error.NameExists:Name already exists
 Project.NewProjectName:New Project
 PropellerWing.Wing:Propeller Wing
@@ -1729,10 +1729,6 @@ UI.Suit.Shoes:Shoes
 UI.Tetris.ClearedLine:Lines:
 UI.Tetris.Holding:Holding
 UI.Yes:Yes
-Window.Label.HomeScreen:Home
-Window.Label.LanguageEditor:Language
-Window.Label.MapEditor:Map
-Window.Label.SheetEditor:Sheet
 Yaya.Body:Yaya's body
 Yaya.Ear:Yaya's cat ear
 Yaya.Face:Yaya's face

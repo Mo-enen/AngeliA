@@ -8,8 +8,6 @@ namespace AngeliaFramework {
 	public abstract class WindowUI : EntityUI {
 
 		public static WindowUI Instance { get; private set; } = null;
-		public static bool MouseOutside { get; set; } = false;
-		public static IRect MainWindowRect { get; set; } = default;
 
 		[OnGameQuitting]
 		public static void OnGameQuitting () {

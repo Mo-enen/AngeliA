@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AngeliaFramework;
@@ -89,19 +90,24 @@ namespace AngeliaForUnity {
 
 
 		// Listener
-		protected override void _AddGameQuittingCallback (System.Action callback) {
+		protected override void _AddGameQuittingCallback (Action callback) {
 			Application.quitting -= callback;
 			Application.quitting += callback;
 		}
-		protected override void _AddGameTryingToQuitCallback (System.Func<bool> callback) {
+		protected override void _AddGameTryingToQuitCallback (Func<bool> callback) {
 			Application.wantsToQuit -= callback;
 			Application.wantsToQuit += callback;
 		}
-		protected override void _AddTextInputCallback (System.Action<char> callback) {
+		protected override void _AddTextInputCallback (Action<char> callback) {
 			if (Keyboard.current == null) return;
 			Keyboard.current.onTextInput -= callback;
 			Keyboard.current.onTextInput += callback;
 		}
+		protected override void _AddFocusChangedCallback (Action<bool> callback) {
+			Application.focusChanged -= callback;
+			Application.focusChanged += callback;
+		}
+		protected override void _BeforeApplicationBuild (string exePath) { }
 
 
 		// Debug

@@ -21,8 +21,10 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : OrderedAttribute { public OnGameUpdateLaterAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : OrderedAttribute { public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : OrderedAttribute { public OnGameRestartAttribute (int order = 0) : base(order) { } }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : OrderedAttribute { public OnGameTryingToQuitAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameFocusedAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameLostFocusAttribute : System.Attribute { }
 
 
 	public abstract partial class Game {
@@ -76,6 +78,8 @@ namespace AngeliaFramework {
 		private static event System.Action OnGameUpdate;
 		private static event System.Action OnGameUpdateLater;
 		private static event System.Action OnGameUpdatePauseless;
+		private static event System.Action OnGameFocused;
+		private static event System.Action OnGameLostFocus;
 
 		// Data
 		private static readonly Dictionary<int, object> ResourcePool = new();
@@ -125,10 +129,13 @@ namespace AngeliaFramework {
 				Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(typeof(Game), nameof(OnGameTryingToQuit));
 				Util.LinkEventWithAttribute<OnGameQuittingAttribute>(typeof(Game), nameof(OnGameQuitting));
 				Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
+				Util.LinkEventWithAttribute<OnGameFocusedAttribute>(typeof(Game), nameof(OnGameFocused));
+				Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
 
 				_AddGameTryingToQuitCallback(OnTryingToQuit);
 				_AddGameQuittingCallback(OnGameQuitting);
 				_AddTextInputCallback(CellGUI.OnTextInput);
+				_AddFocusChangedCallback(OnFocusChanged);
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
@@ -158,10 +165,10 @@ namespace AngeliaFramework {
 			// Func
 			static bool OnTryingToQuit () {
 				if (IsPausing || IsEdittime) return true;
-				PauseGame();
 				OnGameTryingToQuit?.Invoke();
 				return false;
 			}
+			static void OnFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
 		}
 
 
@@ -240,6 +247,7 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameTryingToQuit(int.MinValue)]
 		public static void PauseGame () {
 			if (!IsPlaying) return;
 			StopAllSounds();

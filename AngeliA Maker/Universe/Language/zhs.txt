@@ -1,5 +1,4 @@
-﻿PlayerQMenu.Hand:空手
-@GuaGua:瓜瓜
+﻿@GuaGua:瓜瓜
 @SlimeRed:红色史莱姆
 @Yaya:丫丫
 AngelWing.Wing:天使翅膀
@@ -1664,6 +1663,7 @@ Palette.System:系统
 Palette.Vegetation:植被
 Palette.Wallpaper:壁纸
 PlayerCustomizerAngelia:自定义样貌
+PlayerQMenu.Hand:空手
 Project.Error.NameExists:已存在同名工程
 Project.NewProjectName:新工程
 PropellerWing.Wing:螺旋桨
@@ -1729,10 +1729,6 @@ UI.Suit.Shoes:鞋
 UI.Tetris.ClearedLine:行数:
 UI.Tetris.Holding:保留
 UI.Yes:是
-Window.Label.HomeScreen:主页
-Window.Label.LanguageEditor:语 言
-Window.Label.MapEditor:地 图
-Window.Label.SheetEditor:图 集
 Yaya.Body:丫丫身体
 Yaya.Ear:丫丫猫耳
 Yaya.Face:丫丫面孔

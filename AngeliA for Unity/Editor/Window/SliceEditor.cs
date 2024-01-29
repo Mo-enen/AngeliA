@@ -42,7 +42,7 @@ namespace AngeliaForUnity.Editor {
 			padding = new RectOffset(24, 24, 24, 24),
 		};
 		private static GUIStyle _MasterStyle = null;
-		private static Texture2D AseIcon = null;
+		private static Texture2D AseIcon = EditorGUIUtility.IconContent("File").image as Texture2D;
 		private Vector2 MasterScrollPos = default;
 		private AseData CurrentAse = null;
 		private string SliceLines = "";
@@ -78,7 +78,7 @@ namespace AngeliaForUnity.Editor {
 			window.minSize = new Vector2(256, 256);
 			window.maxSize = new Vector2(1024, 1024);
 			window.AllAses.Clear();
-			foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles()) {
+			foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles(AngePath.GetArtworkRoot(AngePath.BuiltInUniverseRoot))) {
 				window.AllAses.Add(filePath);
 			}
 			window.CopyFlashTime = double.MinValue;
@@ -119,15 +119,6 @@ namespace AngeliaForUnity.Editor {
 			if (AllAses.Count == 0) {
 				EditorGUILayout.HelpBox("No ase file founded.", MessageType.Warning, true);
 				return;
-			}
-			if (AseIcon == null && AllAses.Count > 0) {
-				foreach (var path in AllAses) {
-					var fPath = EditorUtil.FixedRelativePath(path);
-					if (!string.IsNullOrEmpty(fPath)) {
-						AseIcon = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<DefaultAsset>(fPath));
-						break;
-					}
-				}
 			}
 			const int HEIGHT = 22;
 			MasterScrollPos = EditorGUILayout.BeginScrollView(MasterScrollPos);
@@ -263,7 +254,7 @@ namespace AngeliaForUnity.Editor {
 
 				MGUI.Space(2);
 				if (GUI.Button(MGUI.Rect(69, 24), "Apply")) {
-					if (EditorUtil.Dialog("", "Apply changes into file?", "Apply", "Cancel")) {
+					if (EditorUtility.DisplayDialog("", "Apply changes into file?", "Apply", "Cancel")) {
 						ApplySliceLines(CurrentAse, SliceLines, AsePath);
 						SliceLines = LoadSliceLines(CurrentAse);
 						return;
@@ -416,21 +407,19 @@ namespace AngeliaForUnity.Editor {
 						Flag = 0,
 						Name = string.Format(nameFormat, i, j, index),
 						SliceNum = 1,
-						Slices = new AseData.SliceChunk.SliceData[] {
-							new AseData.SliceChunk.SliceData() {
-								FrameIndex = 0,
-								PivotX = 0,
-								PivotY = 1,
-								X = offset.x + i * (size.x + gap.x),
-								Y = offset.y + j * (size.y + gap.y),
-								Width = (uint)size.x,
-								Height = (uint)size.y,
-								CenterX = 0,
-								CenterY = 0,
-								CenterWidth = 0,
-								CenterHeight = 0,
-							}
-						},
+						Slices = new AseData.SliceChunk.SliceData[] {new () {
+							FrameIndex = 0,
+							PivotX = 0,
+							PivotY = 1,
+							X = offset.x + i * (size.x + gap.x),
+							Y = offset.y + j * (size.y + gap.y),
+							Width = (uint)size.x,
+							Height = (uint)size.y,
+							CenterX = 0,
+							CenterY = 0,
+							CenterWidth = 0,
+							CenterHeight = 0,
+						}},
 					});
 					ase.AddChunk(0, new AseData.UserDataChunk() {
 						Flag = 2,

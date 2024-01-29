@@ -256,8 +256,7 @@ namespace AngeliaFramework {
 			}
 
 			// Load Sheet
-			Sheet.LoadFromDisk(ProjectSystem.CurrentProject.SheetPath);
-			Game.SetTextureForRenderer(Sheet.Texture);
+			LoadSheet(ProjectSystem.BuiltInProject);
 
 			// Func
 			static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
@@ -279,6 +278,13 @@ namespace AngeliaFramework {
 				layer.UiLayer = uiLayer;
 				return layer;
 			}
+		}
+
+
+		[OnProjectOpen]
+		internal static void OnProjectOpen () {
+			if (Game.GlobalFrame == 0) return;
+			LoadSheet(ProjectSystem.CurrentProject);
 		}
 
 
@@ -356,12 +362,16 @@ namespace AngeliaFramework {
 		#region --- API ---
 
 
-		[OnProjectOpen]
-		public static void ReloadSheet () {
-			if (Game.GlobalFrame == 0) return;
-			if (!Sheet.LoadFromDisk(ProjectSystem.CurrentProject.SheetPath)) {
+		public static void LoadSheet (Project project) {
+			// Artwork >> Sheet
+			if (project != ProjectSystem.BuiltInProject || Game.IsEdittime) {
+				SheetUtil.RecreateSheetIfArtworkModified(project.SheetPath, project.ArtworkRoot);
+			}
+			// Load Sheet
+			if (!Sheet.LoadFromDisk(project.SheetPath) && project != ProjectSystem.BuiltInProject) {
 				Sheet.LoadFromDisk(ProjectSystem.BuiltInProject.SheetPath);
 			}
+			// Load Texture
 			Game.SetTextureForRenderer(Sheet.Texture);
 		}
 

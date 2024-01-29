@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
+using UnityEngine.Rendering;
 
 
 [assembly: AngeliA]
@@ -23,8 +24,6 @@ namespace AngeliaForUnity.Editor {
 		#region --- VAR ---
 
 
-		public static readonly EditorSavingInt LastSpriteCount = new("AngeRefresh.LastSpriteCount", 0);
-		private static readonly EditorSavingString LastSyncTick = new("AngeRefresh.LastSyncTick", "0");
 		private static string ConversationWorkspace => Application.dataPath;
 		int IOrderedCallback.callbackOrder => 0;
 
@@ -37,41 +36,7 @@ namespace AngeliaForUnity.Editor {
 		#region --- MSG ---
 
 
-		[InitializeOnLoadMethod]
-		private static void Init () {
-			EditorApplication.playModeStateChanged -= ModeStateChanged;
-			EditorApplication.playModeStateChanged += ModeStateChanged;
-		}
-
-
-		private static void ModeStateChanged (PlayModeStateChange state) {
-			if (state == PlayModeStateChange.ExitingEditMode) {
-
-				if (!long.TryParse(LastSyncTick.Value, out long lastSyncTickValue)) {
-					lastSyncTickValue = 0;
-				}
-
-				// Check for Ase Files
-				foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles()) {
-					if (Util.GetFileModifyDate(filePath) > lastSyncTickValue) {
-						goto _Refresh_;
-					}
-				}
-
-				goto _NoRefresh;
-
-				_Refresh_:;
-				Refresh(false);
-
-				_NoRefresh:;
-			}
-		}
-
-
-		public void OnPreprocessBuild (BuildReport report) {
-			Refresh(forceRefresh: true);
-			Game.OnProjectBuild(report.summary.outputPath);
-		}
+		public void OnPreprocessBuild (BuildReport report) => Refresh(forceRefresh: true);
 
 
 		[MenuItem("AngeliA/Refresh", false, 0)]
@@ -83,34 +48,19 @@ namespace AngeliaForUnity.Editor {
 
 		public static void Refresh (bool forceRefresh) {
 			try {
-				LastSyncTick.Value = System.DateTime.Now.ToFileTime().ToString();
+				EditorUtility.ClearProgressBar();
 				try {
-					EditorUtil.ProgressBar("Refreshing", "Refreshing...", 0.5f);
+					EditorUtility.DisplayProgressBar("Refreshing", "Refreshing...", 0.5f);
 
 					string universeRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot);
 					string savingRoot = Util.CombinePaths(AngePath.BuiltInSavingRoot);
 
-					// Aseprite Files >> Flex Sprites & Texture
-					var tResults = AsepriteUtil.CreateSprites(AsepriteUtil.ForAllAsepriteFiles().Select(
-						filePath => {
-							string result = EditorUtil.FixedRelativePath(filePath);
-							if (string.IsNullOrEmpty(result)) {
-								result = filePath;
-							}
-							return result;
-						}
-					).ToArray(), "#ignore");
-
-					// Combine Result Files
-					SheetUtil.CombineFlexTextures(
-						tResults, out var sheetTexturePixels, out int textureWidth, out int textureHeight, out var flexSprites
+					// Aseprite >> Sheet
+					SheetUtil.CreateSheetFromAsepriteFiles(
+						AngePath.GetArtworkRoot(universeRoot)
+					)?.SaveToDisk(
+						AngePath.GetSheetPath(universeRoot)
 					);
-					LastSpriteCount.Value = flexSprites.Length;
-
-					// Flex Sprites >> Sheet
-					var sheet = new Sheet();
-					SheetUtil.FillFlexIntoSheet(flexSprites, sheetTexturePixels, textureWidth, textureHeight, sheet);
-					sheet.SaveToDisk(AngePath.GetSheetPath(universeRoot));
 
 					// Maps
 					AngeUtil.DeleteAllEmptyMaps(AngePath.GetMapRoot(universeRoot));
@@ -131,9 +81,9 @@ namespace AngeliaForUnity.Editor {
 					EditorSceneManager.SaveOpenScenes();
 
 				} catch (System.Exception ex) { Debug.LogException(ex); }
-				EditorUtil.ProgressBar("Refreshing", "Finished", 1f);
+				EditorUtility.DisplayProgressBar("Refreshing", "Finished", 1f);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
-			EditorUtil.ClearProgressBar();
+			EditorUtility.ClearProgressBar();
 		}
 
 
@@ -146,12 +96,39 @@ namespace AngeliaForUnity.Editor {
 					var shader = AssetDatabase.LoadAssetAtPath<Shader>(path);
 					if (shader == null) continue;
 					if (shader.name.StartsWith("Angelia/", System.StringComparison.OrdinalIgnoreCase)) {
-						EditorUtil.AddAlwaysIncludedShader(shader.name);
+						AddAlwaysIncludedShader(shader.name);
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 			// Final
 			AssetDatabase.SaveAssets();
+			// Func
+			static void AddAlwaysIncludedShader (string shaderName) {
+				var shader = Shader.Find(shaderName);
+				if (shader == null)
+					return;
+
+				var graphicsSettingsObj = AssetDatabase.LoadAssetAtPath<GraphicsSettings>("ProjectSettings/GraphicsSettings.asset");
+				var serializedObject = new SerializedObject(graphicsSettingsObj);
+				var arrayProp = serializedObject.FindProperty("m_AlwaysIncludedShaders");
+				bool hasShader = false;
+				for (int i = 0; i < arrayProp.arraySize; ++i) {
+					var arrayElem = arrayProp.GetArrayElementAtIndex(i);
+					if (shader == arrayElem.objectReferenceValue) {
+						hasShader = true;
+						break;
+					}
+				}
+
+				if (!hasShader) {
+					int arrayIndex = arrayProp.arraySize;
+					arrayProp.InsertArrayElementAtIndex(arrayIndex);
+					var arrayElem = arrayProp.GetArrayElementAtIndex(arrayIndex);
+					arrayElem.objectReferenceValue = shader;
+					serializedObject.ApplyModifiedProperties();
+				}
+
+			}
 		}
 
 
@@ -159,11 +136,11 @@ namespace AngeliaForUnity.Editor {
 			if (AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out _)) {
 				PlayerSettings.bundleVersion = $"{major}.{minor}.{patch}";
 			}
-			PlayerSettings.companyName = AngeliaGameDeveloperAttribute.GetDeveloper().Replace(" ", "");
-			PlayerSettings.productName = AngeliaGameTitleAttribute.GetTitle().Replace(" ", "");
+			PlayerSettings.companyName = AngeliaGameDeveloperAttribute.GetDeveloper();
+			PlayerSettings.productName = AngeliaGameTitleAttribute.GetTitle();
 			PlayerSettings.SetApplicationIdentifier(
 				NamedBuildTarget.Standalone,
-				$"com.{PlayerSettings.companyName}.{PlayerSettings.productName}"
+				$"com.{PlayerSettings.companyName.Replace(" ", "").ToLower()}.{PlayerSettings.productName.Replace(" ", "").ToLower()}"
 			);
 		}
 

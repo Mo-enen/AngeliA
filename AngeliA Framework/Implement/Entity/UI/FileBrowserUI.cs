@@ -118,7 +118,6 @@ namespace AngeliaFramework {
 		public override void BeforePhysicsUpdate () {
 			base.BeforePhysicsUpdate();
 			CursorSystem.RequireCursor();
-			WindowUI.MouseOutside = true;
 		}
 
 

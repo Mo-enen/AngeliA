@@ -102,6 +102,7 @@ namespace AngeliaFramework {
 		public static readonly SpriteCode ICON_ATLAS = "Icon.Atlas";
 		public static readonly SpriteCode ICON_SPRITE = "Icon.Sprite";
 		public static readonly SpriteCode ICON_CROSS = "Icon.Cross";
+		public static readonly SpriteCode ICON_HOME = "Icon.Home";
 
 	}
 }
