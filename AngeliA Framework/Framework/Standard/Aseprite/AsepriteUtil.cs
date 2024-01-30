@@ -20,13 +20,13 @@ namespace AngeliaFramework {
 			public SpriteMetaData[] Sprites;
 		}
 
-		public static List<(TextureData data, FlexSprite[] flexs)> CreateSpritesFromAsepriteFiles (string[] asePaths, string ignoreTag = "") {
+		public static List<(PackingTexture data, FlexSprite[] flexs)> CreateSpritesFromAsepriteFiles (string[] asePaths, string ignoreTag = "") {
 
 			bool hasError = false;
 			string errorMsg = "";
 			int successCount = 0;
 			int currentTaskCount = 0;
-			var textureResults = new List<(TextureData data, FlexSprite[] flexs)>();
+			var textureResults = new List<(PackingTexture data, FlexSprite[] flexs)>();
 
 			// Do Task
 			foreach (var path in asePaths) {
@@ -93,12 +93,12 @@ namespace AngeliaFramework {
 			}
 		}
 
-		private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out TextureData TextureResult, out FlexSprite[] SpriteResults) {
+		private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out PackingTexture TextureResult, out FlexSprite[] SpriteResults) {
 			TextureResult = null;
 			SpriteResults = null;
 			if (result == null) return;
 			// Texture Result
-			TextureResult = new TextureData(result.Width, result.Height, result.Pixels);
+			TextureResult = new PackingTexture(result.Width, result.Height, result.Pixels);
 			// Get Sprites
 			var metas = result.Sprites;
 			var flexs = new FlexSprite[metas.Length];

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AngeliaFramework;
 using UnityEngine;
 using UnityEditor;
@@ -24,7 +23,6 @@ namespace AngeliaForUnity.Editor {
 		#region --- VAR ---
 
 
-		private static string ConversationWorkspace => Application.dataPath;
 		int IOrderedCallback.callbackOrder => 0;
 
 
@@ -36,51 +34,33 @@ namespace AngeliaForUnity.Editor {
 		#region --- MSG ---
 
 
-		public void OnPreprocessBuild (BuildReport report) => Refresh(forceRefresh: true);
-
-
+		public void OnPreprocessBuild (BuildReport report) => Refresh(true);
 		[MenuItem("AngeliA/Refresh", false, 0)]
 		public static void RefreshFromMenu () => Refresh(false);
-
-
 		public static void ForceRefresh () => Refresh(true);
-
-
 		public static void Refresh (bool forceRefresh) {
 			try {
 				EditorUtility.ClearProgressBar();
-				try {
-					EditorUtility.DisplayProgressBar("Refreshing", "Refreshing...", 0.5f);
 
-					string universeRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot);
-					string savingRoot = Util.CombinePaths(AngePath.BuiltInSavingRoot);
+				EditorUtility.DisplayProgressBar("Refreshing", "Refreshing...", 0.5f);
 
-					// Aseprite >> Sheet
-					SheetUtil.CreateSheetFromAsepriteFiles(
-						AngePath.GetArtworkRoot(universeRoot)
-					)?.SaveToDisk(
-						AngePath.GetSheetPath(universeRoot)
-					);
+				// Aseprite >> Sheet
+				string universeRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot);
+				SheetUtil.CreateSheetFromAsepriteFiles(
+					AngePath.GetArtworkRoot(universeRoot)
+				)?.SaveToDisk(
+					AngePath.GetSheetPath(universeRoot)
+				);
 
-					// Maps
-					AngeUtil.DeleteAllEmptyMaps(AngePath.GetMapRoot(universeRoot));
-
-					// Final
-					ItemSystem.CreateItemCombinationHelperFiles(savingRoot);
-					ItemSystem.CreateCombinationFileFromCode(universeRoot, true);
-					AngeUtil.TryCompileDialogueFiles(ConversationWorkspace, AngePath.GetDialogueRoot(universeRoot), forceRefresh);
-
-					// For Unity
-					if (forceRefresh) {
-						AddAlwaysIncludeShadersForUnity();
-						AngeliaProjectInfo_to_Unity();
-					}
-					AngeliaToolbox.RefreshSheetThumbnail(true);
-					PlayerSettings.colorSpace = ColorSpace.Gamma;
-					AssetDatabase.Refresh();
-					EditorSceneManager.SaveOpenScenes();
-
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				// For Unity
+				if (forceRefresh) {
+					AddAlwaysIncludeShadersForUnity();
+					AngeliaProjectInfo_to_Unity();
+				}
+				AngeliaToolbox.RefreshSheetThumbnail(true);
+				PlayerSettings.colorSpace = ColorSpace.Gamma;
+				AssetDatabase.Refresh();
+				EditorSceneManager.SaveOpenScenes();
 				EditorUtility.DisplayProgressBar("Refreshing", "Finished", 1f);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			EditorUtility.ClearProgressBar();

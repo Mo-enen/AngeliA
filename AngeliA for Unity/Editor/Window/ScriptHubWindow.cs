@@ -33,8 +33,6 @@ namespace AngeliaForUnity.Editor {
 
 
 
-
-
 	public class ScriptHubWindow : EditorWindow, IHasCustomMenu {
 
 
@@ -475,13 +473,9 @@ namespace AngeliaForUnity.Editor {
 			if (Event.current.button == 0) {
 				string ex = Util.GetExtension(path);
 				if (ex == ".cs" || ex == ".shader") {
-					EditorApplication.delayCall += () => {
-						OpenFileWithCodeEditor(path);
-					};
+					EditorApplication.delayCall += () => OpenFileWithCodeEditor(path);
 				} else {
-					EditorApplication.delayCall += () => {
-						EditorUtility.OpenWithDefaultApp(Path.GetFullPath(path));
-					};
+					EditorApplication.delayCall += () => EditorUtility.OpenWithDefaultApp(Path.GetFullPath(path));
 				}
 			} else if (Event.current.button == 1) {
 				Selection.activeObject = AssetDatabase.LoadAssetAtPath<Object>(path);

@@ -35,14 +35,14 @@ namespace AngeliaFramework {
 		private static string _TempDataPath = null;
 
 		// Framework
+		public static string BuiltInUniverseRoot => _BuiltInUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, "Universe");
+		private static string _BuiltInUniverseRoot = null;
+
 		public static string WorkspaceRoot => _WorkspaceRoot ??= Util.CombinePaths(PersistentDataPath, "Workspace");
 		private static string _WorkspaceRoot = null;
 
 		public static string DownloadRoot => _DownloadRoot ??= Util.CombinePaths(PersistentDataPath, "Download");
 		private static string _DownloadRoot = null;
-
-		public static string BuiltInUniverseRoot => _BuiltInUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, "Universe");
-		private static string _BuiltInUniverseRoot = null;
 
 		public static string BuiltInSavingRoot => _BuiltInSavingRoot ??= Util.CombinePaths(PersistentDataPath, "Built In Saving");
 		private static string _BuiltInSavingRoot = null;
@@ -58,7 +58,8 @@ namespace AngeliaFramework {
 		public static string GetUniverseRoot (string projectFolder) => Util.CombinePaths(projectFolder, "Universe");
 		public static string GetSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet.sheet");
 		public static string GetAtlasRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Atlas");
-		public static string GetDialogueRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Dialogue");
+		public static string GetConversationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Conversation");
+		public static string GetEditableConversationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Editable Conversation");
 		public static string GetUniverseMetaRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Meta");
 		public static string GetMapRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Map");
 		public static string GetItemCustomizationRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Item Customization");

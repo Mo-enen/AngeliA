@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Versioning;
 using AngeliaFramework;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
@@ -110,6 +113,9 @@ namespace AngeliaForUnity {
 			}
 		}
 #endif
+
+
+		private static readonly Dictionary<string, string> FontName_to_FontPath = new();
 
 
 		private void Awake () {

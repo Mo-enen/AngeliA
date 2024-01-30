@@ -46,6 +46,16 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		[OnProjectOpen]
+		internal static void OnProjectOpen () {
+			AngeUtil.TryCompileDialogueFiles(
+				ProjectSystem.CurrentProject.EditableConversationRoot,
+				ProjectSystem.CurrentProject.ConversationRoot,
+				forceCompile: false
+			);
+		}
+
+
 		public DialogueTask () => Main = this;
 
 
@@ -83,7 +93,7 @@ namespace AngeliaFramework {
 		public static void StartConversation<D> (string globalName) where D : DialogueUI {
 
 			string conversationPath = Util.CombinePaths(
-				ProjectSystem.CurrentProject.DialogueRoot, globalName,
+				ProjectSystem.CurrentProject.ConversationRoot, globalName,
 				$"{Language.CurrentLanguage}.{AngePath.CONVERSATION_FILE_EXT}"
 			);
 			if (Main == null || FrameTask.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;

@@ -192,6 +192,7 @@ namespace AngeliaFramework {
 				InitializedFrame = Game.GlobalFrame;
 				UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
 				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(ProjectSystem.CurrentProject.MapRoot);
+				AngeUtil.DeleteAllEmptyMaps(ProjectSystem.CurrentProject.MapRoot);
 				Initialize_Pool();
 				Initialize_Palette();
 				Initialize_Nav();

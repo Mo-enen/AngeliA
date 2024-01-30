@@ -146,13 +146,12 @@ namespace AngeliaFramework {
 		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
 			Character.OnFootStepped += OnFootStepped;
-			Character.OnDashStepped += OnFootStepped;
 			static void OnFootStepped (Character character) {
 				if (
 					Stage.TrySpawnEntity(TYPE_ID, character.X, character.Y, out var entity) &&
 					entity is Particle particle
 				) {
-					if (CellRenderer.TryGetSprite(character.GroundedID, out var sprite)) {
+					if (CellRenderer.TryGetSpriteFromGroup(character.GroundedID, 0, out var sprite)) {
 						particle.Tint = sprite.SummaryTint;
 					} else {
 						particle.Tint = Const.WHITE;
@@ -176,9 +175,9 @@ namespace AngeliaFramework {
 
 		[OnGameInitializeLater(64)]
 		public static void OnGameInitialize () {
-			Character.OnJump += OnJumpFly;
-			Character.OnFly += OnJumpFly;
-			static void OnJumpFly (Character character) {
+			Character.OnJump += OnJumpOrFly;
+			Character.OnFly += OnJumpOrFly;
+			static void OnJumpOrFly (Character character) {
 				if (character.InWater || character.InSand) return;
 				if (character.CurrentJumpCount > character.JumpCount + 1) return;
 				// Fly without Rise
@@ -186,8 +185,8 @@ namespace AngeliaFramework {
 				// Spawn Particle
 				if (Stage.SpawnEntity(TYPE_ID, character.X, character.Y - character.DeltaPositionY) is not JumpParticle particle) return;
 				bool firstJump = character.CurrentJumpCount <= 1;
-				particle._Scale = firstJump ? 618 : 900;
-				if (firstJump && CellRenderer.TryGetSprite(character.GroundedID, out var sprite)) {
+				particle._Scale = firstJump ? 800 : 900;
+				if (firstJump && CellRenderer.TryGetSpriteFromGroup(character.GroundedID, 0, out var sprite)) {
 					particle.Tint = sprite.SummaryTint;
 				} else {
 					particle.Tint = Const.WHITE;

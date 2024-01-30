@@ -72,7 +72,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private static void CombineFlexTextures (List<(TextureData data, FlexSprite[] flexs)> flexTextures, out Byte4[] texturePixels, out int textureWidth, out int textureHeight, out FlexSprite[] resultFlexs) {
+		private static void CombineFlexTextures (List<(PackingTexture data, FlexSprite[] flexs)> flexTextures, out Byte4[] texturePixels, out int textureWidth, out int textureHeight, out FlexSprite[] resultFlexs) {
 
 			// Combine
 			var items = new List<PackingItem>();
@@ -153,13 +153,18 @@ namespace AngeliaFramework {
 			items.Sort(PackingItemComparer.Instance);
 
 			// Pack
-			var textures = new TextureData[items.Count];
+			var textures = new PackingTexture[items.Count];
 			for (int i = 0; i < textures.Length; i++) {
 				var item = items[i];
-				textures[i] = new TextureData(item.Width, item.Height, item.Pixels);
+				textures[i] = new PackingTexture(item.Width, item.Height, item.Pixels);
 			}
 
-			var uvs = AngeliaRectPacking.Pack(out var sheetTextureData, textures, 16384);
+			AngeliaRectPacking.Pack(
+				textures,
+				maxTextureWidth: 16384,
+				out var sheetTextureData,
+				out var uvs
+			);
 			for (int i = 0; i < items.Count; i++) {
 				items[i].UvResult = uvs[i];
 			}
@@ -263,10 +268,10 @@ namespace AngeliaFramework {
 					});
 				}
 
-				float uvMinX = flex.Rect.xMin / textureWidth;
-				float uvMinY = flex.Rect.yMin / textureHeight;
-				float uvMaxX = flex.Rect.xMax / textureWidth;
-				float uvMaxY = flex.Rect.yMax / textureHeight;
+				float uvMinX = flex.Rect.xMin / (float)textureWidth;
+				float uvMinY = flex.Rect.yMin / (float)textureHeight;
+				float uvMaxX = flex.Rect.xMax / (float)textureWidth;
+				float uvMaxY = flex.Rect.yMax / (float)textureHeight;
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
 					GlobalWidth = globalWidth,
@@ -361,55 +366,39 @@ namespace AngeliaFramework {
 			// Func
 			static void FillSummaryForSheet (List<AngeSprite> sprites, int textureWidth, int textureHeight, Byte4[] pixels) {
 
-				// Color Pool
-				var pool = new Dictionary<int, Byte4>();
+				// Color
 				for (int i = 0; i < sprites.Count; i++) {
 					var sp = sprites[i];
-					if (pool.ContainsKey(sp.GlobalID)) continue;
-					;
-					var tRect = new IRect(
-						(sp.UvRect.x * textureWidth).RoundToInt(),
-						(sp.UvRect.y * textureHeight).RoundToInt(),
-						(sp.UvRect.width * textureWidth).RoundToInt(),
-						(sp.UvRect.height * textureHeight).RoundToInt()
-					);
-					var color = GetThumbnailColor(pixels, textureWidth, tRect);
-					if (color.IsSame(Const.CLEAR)) continue;
-					pool.Add(sp.GlobalID, color);
-				}
-
-				// Set Values
-				for (int i = 0; i < sprites.Count; i++) {
-					var sprite = sprites[i];
-					sprite.SummaryTint = pool.TryGetValue(sprite.GlobalID, out var color) ? color : default;
+					var color = GetThumbnailColor(pixels, textureWidth, sp.TextureRect);
+					sp.SummaryTint = color;
 				}
 
 				// Func
 				static Byte4 GetThumbnailColor (Byte4[] pixels, int width, IRect rect) {
-					var CLEAR = new Byte4(0, 0, 0, 0);
-					if (rect.width <= 0 || rect.height <= 0) return CLEAR;
-					var result = CLEAR;
-					try {
-						var sum = Float3.zero;
-						float len = 0;
-						int l = rect.x;
-						int r = rect.xMax;
-						int d = rect.y;
-						int u = rect.yMax;
-						for (int x = l; x < r; x++) {
-							for (int y = d; y < u; y++) {
-								var pixel = pixels[y * width + x];
-								if (pixel.a != 0) {
-									sum.x += pixel.r / 255f;
-									sum.y += pixel.g / 255f;
-									sum.z += pixel.b / 255f;
-									len++;
-								}
+					if (rect.width <= 0 || rect.height <= 0) return Const.CLEAR;
+					var sum = Float3.zero;
+					float len = 0;
+					int l = rect.x;
+					int r = rect.xMax;
+					int d = rect.y;
+					int u = rect.yMax;
+					for (int x = l; x < r; x++) {
+						for (int y = d; y < u; y++) {
+							var pixel = pixels[y * width + x];
+							if (pixel.a != 0) {
+								sum.x += pixel.r / 255f;
+								sum.y += pixel.g / 255f;
+								sum.z += pixel.b / 255f;
+								len++;
 							}
 						}
-						return new Byte4((byte)(sum.x * 255f / len), (byte)(sum.y * 255f / len), (byte)(sum.z * 255f / len), 255);
-					} catch (System.Exception ex) { Game.LogException(ex); }
-					return result;
+					}
+					return new Byte4(
+						(byte)(sum.x * 255f / len),
+						(byte)(sum.y * 255f / len),
+						(byte)(sum.z * 255f / len),
+						255
+					);
 				}
 			}
 		}

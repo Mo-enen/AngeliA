@@ -128,7 +128,8 @@ namespace AngeliaFramework {
 		// Path
 		public string UniverseRoot { get; init; }
 		public string SheetPath { get; init; }
-		public string DialogueRoot { get; init; }
+		public string ConversationRoot { get; init; }
+		public string EditableConversationRoot { get; init; }
 		public string UniverseMetaRoot { get; init; }
 		public string MapRoot { get; init; }
 		public string ArtworkRoot { get; init; }
@@ -152,7 +153,8 @@ namespace AngeliaFramework {
 			// Universe
 			UniverseRoot = universeFolder;
 			SheetPath = AngePath.GetSheetPath(universeFolder);
-			DialogueRoot = AngePath.GetDialogueRoot(universeFolder);
+			ConversationRoot = AngePath.GetConversationRoot(universeFolder);
+			EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder);
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
 			MapRoot = AngePath.GetMapRoot(universeFolder);
 			ArtworkRoot = AngePath.GetArtworkRoot(universeFolder);
@@ -179,7 +181,7 @@ namespace AngeliaFramework {
 		public void SaveProjectInfoToDisk () => JsonUtil.SaveJson(Info, UniverseRoot);
 
 		public void CreateFolders () {
-			Util.CreateFolder(DialogueRoot);
+			Util.CreateFolder(ConversationRoot);
 			Util.CreateFolder(UniverseMetaRoot);
 			Util.CreateFolder(MapRoot);
 			Util.CreateFolder(SavingRoot);

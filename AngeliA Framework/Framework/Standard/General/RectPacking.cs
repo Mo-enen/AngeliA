@@ -1,27 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Collections;
-
 
 namespace AngeliaFramework {
 
-
-	public class TextureData {
+	public class PackingTexture {
 		public int Width;
 		public int Height;
 		public Byte4[] Pixels;
-		public TextureData (int width, int height, Byte4[] pixels) {
+		public PackingTexture (int width, int height, Byte4[] pixels) {
 			Width = width;
 			Height = height;
 			Pixels = pixels;
 		}
 	}
 
-
 	public static class AngeliaRectPacking {
-
-
-
-
 
 		private class ItemSorter : IComparer<Item> {
 			public bool SortByIndex;
@@ -37,24 +29,16 @@ namespace AngeliaFramework {
 			}
 		}
 
-
-
 		private struct Item {
-			public int Index;
-			public int X, Y;
-			public int Width, Height;
-			public TextureData Texture;
+			public int Index, X, Y, Width, Height;
+			public PackingTexture Texture;
 		}
 
-
 		private class Shelf {
-
 			public int Y;
 			public int Width;
 			public int Height;
 			public int[] RoomHeight;
-
-
 			public bool AddItem (ref Item item, ref int width, ref int height) {
 
 				int currentFitWidth = 0;
@@ -84,22 +68,16 @@ namespace AngeliaFramework {
 				}
 				return false;
 			}
-
 		}
 
-
-
-		// API
-		public static FRect[] Pack (out TextureData result, TextureData[] textures, int maxTextureWidth = -1) => PackLogic(out result, textures, maxTextureWidth);
-
-
-		// LGC
-		private static FRect[] PackLogic (out TextureData result, TextureData[] textures, int maxTextureWidth = -1) {
+		public static bool Pack (PackingTexture[] textures, out PackingTexture result, out FRect[] uvResults) => Pack(textures, -1, out result, out uvResults);
+		public static bool Pack (PackingTexture[] textures, int maxTextureWidth, out PackingTexture result, out FRect[] uvResults) {
 
 			// Check
 			if (textures.Length == 0) {
-				result = new TextureData(1, 1, new Byte4[1]);
-				return new FRect[0];
+				result = new PackingTexture(1, 1, new Byte4[1]);
+				uvResults = new FRect[0];
+				return false;
 			}
 
 			// Init
@@ -123,7 +101,6 @@ namespace AngeliaFramework {
 			while (aimSize < maxItemWidth || aimSize * aimSize < allArea * 1.1f) {
 				aimSize *= 2;
 			}
-			//aimSize /= 2;
 			aimSize = Util.Clamp(aimSize, maxItemWidth, maxTextureWidth > maxItemWidth ? maxTextureWidth : int.MaxValue);
 
 			// Sort
@@ -201,9 +178,9 @@ namespace AngeliaFramework {
 			// Sort
 			float uvGap = 0.01f / Util.Max(width, height);
 			items.Sort(new ItemSorter(true));
-			FRect[] uvs = new FRect[items.Count];
+			uvResults = new FRect[items.Count];
 			for (int i = 0; i < items.Count; i++) {
-				uvs[i] = new FRect(
+				uvResults[i] = new FRect(
 					items[i].X / (float)width + uvGap,
 					items[i].Y / (float)height + uvGap,
 					items[i].Width / (float)width - uvGap * 2f,
@@ -212,10 +189,9 @@ namespace AngeliaFramework {
 			}
 
 			// Finish
-			result = new TextureData(width, height, colors);
-			return uvs;
+			result = new PackingTexture(width, height, colors);
+			return true;
 		}
-
 
 	}
 }

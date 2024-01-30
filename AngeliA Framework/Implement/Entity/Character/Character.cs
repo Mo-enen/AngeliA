@@ -52,7 +52,6 @@ namespace AngeliaFramework {
 		public static event CharacterEventHandler OnFootStepped;
 		public static event CharacterEventHandler OnJump;
 		public static event CharacterEventHandler OnFly;
-		public static event CharacterEventHandler OnDashStepped;
 		public static event CharacterEventHandler OnSlideStepped;
 		public static event CharacterEventHandler OnPassOut;
 		public static event CharacterEventHandler OnTeleport;
@@ -327,17 +326,26 @@ namespace AngeliaFramework {
 		private void FrameUpdate_Event () {
 
 			if (CharacterState == CharacterState.GamePlay) {
+
+				// Teleport Event
 				if (
 					TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1
 				) InvokeCharacterEvent(OnTeleport);
-				if (
-					IsGrounded &&
-					LastStartRunFrame >= 0 &&
-					(Game.GlobalFrame - LastStartRunFrame) % 20 == 19
-				) InvokeCharacterEvent(OnFootStepped);
-				if (IsSliding && Game.GlobalFrame % 24 == 0) InvokeCharacterEvent(OnSlideStepped);
-				if (IsGrounded && IsDashing && Game.GlobalFrame % 8 == 0) InvokeCharacterEvent(OnDashStepped);
+
+				// Step
+				if (IsGrounded) {
+					if (
+						(LastStartRunFrame >= 0 && (Game.GlobalFrame - LastStartRunFrame) % 20 == 19) || // Run
+						(IsDashing && (Game.GlobalFrame - LastDashFrame) % 8 == 0) || // Dash
+						(IsRushing && (Game.GlobalFrame - LastRushFrame) % 3 == 0) // Rush
+					) {
+						InvokeCharacterEvent(OnFootStepped);
+					}
+				}
+
+				// Jump Fly Crash Slide Bounce
 				if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) Bounce();
+				if (IsSliding && Game.GlobalFrame % 24 == 0) InvokeCharacterEvent(OnSlideStepped);
 				if (Game.GlobalFrame == LastJumpFrame) InvokeCharacterEvent(OnJump);
 				if (Game.GlobalFrame == LastFlyFrame) InvokeCharacterEvent(OnFly);
 				if (Game.GlobalFrame == LastCrashFrame) InvokeCharacterEvent(OnCrash);

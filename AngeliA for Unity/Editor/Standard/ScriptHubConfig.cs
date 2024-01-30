@@ -66,7 +66,7 @@ namespace AngeliaForUnity.Editor {
 
 	public class AssetsScriptHub : IScriptHubConfig {
 		public string Title => UnityEngine.Application.productName;
-		public string[] Paths => new string[] { "Assets", };
+		public string[] Paths => new string[] { "Assets", "Universe/Editable Conversation",};
 		public string IgnoreFolders => "Aseprite\nStandard\nAngeliA Framework\nThird Party";
 		public IScriptHubConfig.SearchPattern[] SearchPatterns => new IScriptHubConfig.SearchPattern[]{
 			new ("*.cs", "", true),
