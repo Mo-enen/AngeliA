@@ -102,6 +102,7 @@ namespace AngeliaForUnity.Editor {
 					if (objs.Length > 0) {
 						Inspector = objs[0] as EditorWindow;
 						InjectAll(Inspector);
+
 					}
 				}
 			}
@@ -436,16 +437,11 @@ namespace AngeliaForUnity.Editor {
 
 
 		// Inject
-		private static void InjectAll (EditorWindow inspector) {
+		private static void InjectAll (EditorWindow inspector) => InjectVisualTreeToEditorWindow(inspector, "AngeliaToolbox", (root) => {
+
 			inspector.minSize = new Vector2(345f, inspector.minSize.y);
 			EdittimeOnlyElements.Clear();
 			RuntimeOnlyElements.Clear();
-			InjectToolbox(inspector, "AngeliaToolbox");
-			RefreshVisibility();
-		}
-
-
-		private static void InjectToolbox (EditorWindow inspector, string assetName) => InjectVisualTreeToEditorWindow(inspector, assetName, (root) => {
 
 			Toolbox = root;
 
@@ -475,6 +471,9 @@ namespace AngeliaForUnity.Editor {
 						break;
 					case "Refresh":
 						btn.clicked += () => Refresh();
+						break;
+					case "Language":
+						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Language Editor");
 						break;
 					case "Icon":
 						btn.clicked += () => EditorApplication.ExecuteMenuItem("AngeliA/Other/Editor Icons");
