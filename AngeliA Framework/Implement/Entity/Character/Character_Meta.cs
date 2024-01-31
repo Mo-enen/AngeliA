@@ -142,14 +142,9 @@ namespace AngeliaFramework {
 		#region --- Attack ---
 
 
-		public readonly BuffInt AttackDuration = new(12);
-		public readonly BuffInt AttackCooldown = new(2);
 		public readonly BuffInt AttackComboGap = new(12);
 		public readonly BuffInt HoldAttackPunish = new(4);
-		public readonly BuffInt MinimalChargeAttackDuration = new(int.MaxValue);
 		public readonly BuffBool CancelAttackOnJump = new(false);
-		public readonly BuffBool RepeatAttackWhenHolding = new(false);
-		public readonly BuffBool LockFacingOnAttack = new(false);
 
 		public BuffInt CurrentSpeedLoseOnAttack => MovementState switch {
 			CharacterMovementState.Walk => WalkingSpeedLoseOnAttack,

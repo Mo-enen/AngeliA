@@ -5,6 +5,155 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
+	// Shooting
+	public abstract class Shooting<B, A> : Shooting where B : ArrowBullet where A : Item {
+		public Shooting () {
+			BulletID = typeof(B).AngeHash();
+			ArrowItemID = typeof(A).AngeHash();
+		}
+	}
+	[RequireSprite("{0}.Attack")]
+	public abstract class Shooting : ArrowWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Ranged;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.Shooting;
+		private int SpriteIdAttack { get; init; }
+		private int SpriteFrameCount { get; init; }
+		public Shooting () {
+			SpriteIdAttack = $"{GetType().AngeName()}.Attack".AngeHash();
+			if (CellRenderer.HasSpriteGroup(SpriteIdAttack, out int length)) {
+				SpriteFrameCount = length;
+			} else {
+				SpriteIdAttack = 0;
+				SpriteFrameCount = 0;
+			}
+		}
+		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
+			// Draw Attack
+			if (character.IsAttacking || character.IsChargingAttack) {
+				int localFrame = character.IsAttacking ?
+					(Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / AttackDuration :
+					SpriteFrameCount - 1;
+				if (CellRenderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
+					cell.Color = Const.CLEAR;
+					CellRenderer.Draw(
+						attackSprite,
+						cell.X, cell.Y, attackSprite.PivotX, attackSprite.PivotY, cell.Rotation,
+						attackSprite.GlobalWidth,
+						character.FacingRight ? attackSprite.GlobalHeight : -attackSprite.GlobalHeight,
+						cell.Z
+					);
+				}
+			}
+			return cell;
+		}
+	}
+
+
+
+	// Bow
+	public abstract class Bow<B, A> : Bow where B : ArrowBullet where A : Item {
+		public Bow () {
+			BulletID = typeof(B).AngeHash();
+			ArrowItemID = typeof(A).AngeHash();
+		}
+	}
+	public abstract class Bow<B> : Bow where B : MovableBullet {
+		public Bow () {
+			BulletID = typeof(B).AngeHash();
+			ArrowItemID = 0;
+		}
+	}
+	[RequireSprite("{0}.String")]
+	public abstract class Bow : ArrowWeapon {
+
+		public sealed override WeaponType WeaponType => WeaponType.Ranged;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.Bow;
+		public override int AttackCooldown => base.AttackCooldown;
+		private int SpriteIdString { get; init; }
+		public override bool AttackWhenSquatting => true;
+		public override int? DefaultSpeedLoseOnAttack => 1000;
+		public override int? WalkingSpeedLoseOnAttack => 1000;
+		public override int? RunningSpeedLoseOnAttack => 618;
+		protected override int BulletDelay => 500;
+
+		public Bow () {
+			SpriteIdString = $"{GetType().AngeName()}.String".AngeHash();
+			if (!CellRenderer.HasSprite(SpriteIdString)) SpriteIdString = 0;
+		}
+
+		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
+			DrawString(character, cell, default, default, default);
+			return cell;
+		}
+
+		protected void DrawString (PoseCharacter character, Cell mainCell, Int2 offsetDown, Int2 offsetUp, Int2 offsetCenter) {
+			int borderL = 0;
+			int borderD = 0;
+			int borderU = 0;
+			if (CellRenderer.TryGetSprite(SpriteID, out var mainSprite)) {
+				borderL = mainSprite.GlobalBorder.left * mainCell.Width.Sign();
+				borderD = mainSprite.GlobalBorder.down;
+				borderU = mainSprite.GlobalBorder.up;
+			}
+			if (!character.FacingRight) {
+				offsetDown.x = -offsetDown.x;
+				offsetUp.x = -offsetUp.x;
+				offsetCenter.x = -offsetCenter.x;
+			}
+			if (character.IsAttacking || character.IsChargingAttack) {
+
+				// Attacking
+				int duration = AttackDuration;
+				int localFrame = character.IsAttacking ? Game.GlobalFrame - character.LastAttackFrame : duration / 2 - 1;
+				Int2 centerPos;
+				var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
+				var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
+				var handPos = (character.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
+				if (localFrame < duration / 2) {
+					// Pulling
+					centerPos = handPos + offsetCenter;
+				} else {
+					// Release
+					centerPos = Float2.Lerp(
+						handPos, mainCell.LocalToGlobal(borderL, mainCell.Height / 2),
+						Ease.OutBack((localFrame - duration / 2f) / (duration / 2f))
+					).RoundToInt() + offsetCenter;
+				}
+
+				// Draw Strings
+				int stringWidth = character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
+				CellRenderer.Draw(
+					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
+					(cornerU - centerPos).GetRotation(),
+					stringWidth, Util.DistanceInt(centerPos, cornerU), mainCell.Z - 1
+				);
+				CellRenderer.Draw(
+					SpriteIdString, centerPos.x, centerPos.y, 500, 0,
+					(cornerD - centerPos).GetRotation(),
+					stringWidth, Util.DistanceInt(centerPos, cornerD), mainCell.Z - 1
+				);
+
+			} else {
+				// Holding
+				var point = mainCell.LocalToGlobal(borderL + offsetDown.x, borderD + offsetDown.y);
+				CellRenderer.Draw(
+					SpriteIdString,
+					point.x, point.y,
+					character.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
+					Const.ORIGINAL_SIZE,
+					mainCell.Height - borderD - borderU - offsetDown.y + offsetUp.y,
+					mainCell.Z - 1
+				);
+			}
+		}
+
+	}
+
+
+
+	// Implement
 	[ItemCombination(typeof(iRope), typeof(iTreeBranch), 1)]
 	public class iBowWood : Bow<iBowWood.BowWoodBullet, iArrowWood> {
 		public class BowWoodBullet : ArrowBullet {
@@ -110,7 +259,7 @@ namespace AngeliaFramework {
 	public class iBowMage : Bow<iBowMage.BowMageBullet> {
 		public class BowMageBullet : MovableBullet {
 			public override int SpeedX => 96;
-			protected override void SpawnResidue (IDamageReceiver receiver) {
+			protected override void BeforeDespawn (IDamageReceiver receiver) {
 				if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, X + Width / 2, Y + Height / 2) is AppearSmokeParticle particle0) {
 					particle0.Tint = new(246, 196, 255, 255);
 					particle0.X += Util.QuickRandom(Game.GlobalFrame * 181).UMod(Const.HALF) - Const.HALF / 2;
@@ -166,15 +315,15 @@ namespace AngeliaFramework {
 			int centerDeltaX2 = GAP_X2;
 			if (character.IsAttacking) {
 				int localFrame = Game.GlobalFrame - character.LastAttackFrame;
-				if (localFrame < character.AttackDuration / 2) {
+				if (localFrame < AttackDuration / 2) {
 					centerDeltaX0 = 0;
 					centerDeltaX1 = 0;
 					centerDeltaX2 = 0;
 				} else {
-					localFrame -= character.AttackDuration / 2;
-					if (localFrame < character.AttackDuration / 8) centerDeltaX0 = 0;
-					if (localFrame < character.AttackDuration / 6) centerDeltaX1 = 0;
-					if (localFrame < character.AttackDuration / 4) centerDeltaX2 = 0;
+					localFrame -= AttackDuration / 2;
+					if (localFrame < AttackDuration / 8) centerDeltaX0 = 0;
+					if (localFrame < AttackDuration / 6) centerDeltaX1 = 0;
+					if (localFrame < AttackDuration / 4) centerDeltaX2 = 0;
 				}
 			}
 			DrawString(character, cell, new(GAP_X0, 00), new(GAP_X0, 000), new(centerDeltaX0, 0));

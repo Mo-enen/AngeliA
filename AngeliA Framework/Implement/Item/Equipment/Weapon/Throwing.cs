@@ -5,6 +5,17 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
+	// Throwing
+	public abstract class ThrowingWeapon<B> : ThrowingWeapon where B : MovableBullet {
+		public ThrowingWeapon () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class ThrowingWeapon : ProjectileWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Throwing;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+	}
+
+
+	// Implement
 	[ItemCombination(typeof(iBanana), typeof(iTreeBranch), 1)]
 	public class iBoomerang : ThrowingWeapon<iBoomerang.BoomerangBullet> {
 		public class BoomerangBullet : MovableBullet {

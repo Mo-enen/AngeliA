@@ -5,6 +5,22 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
+	// Axe
+	public abstract class Axe<B> : Axe where B : MeleeBullet {
+		public Axe () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class Axe : MeleeWeapon {
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+		public sealed override WeaponType WeaponType => WeaponType.Axe;
+		public override int AttackDuration => 12;
+		public override int AttackCooldown => 2;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 384;
+		public override int RangeY => 512;
+	}
+
+
+	// Implement
 	[ItemCombination(typeof(iIngotIron), typeof(iIngotIron), typeof(iTreeBranch), 1)]
 	public class iAxeWood : Axe { }
 	[ItemCombination(typeof(iAxeWood), typeof(iIngotIron), 1)]

@@ -5,6 +5,16 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 
+	// Magic
+	public abstract class MagicWeapon<B> : MagicWeapon where B : MovableBullet {
+		public MagicWeapon () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class MagicWeapon : ProjectileWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Magic;
+	}
+
+
+	// Implement
 	[ItemCombination(typeof(iBook), typeof(iRuneCube), typeof(iTreeBranch), 1)]
 	public class iWand : MagicWeapon<iWand.WandBullet> {
 		public class WandBullet : MovableBullet {

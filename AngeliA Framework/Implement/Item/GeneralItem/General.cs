@@ -28,7 +28,7 @@ namespace AngeliaFramework {
 	[ItemCombination(typeof(iCottonBall), typeof(iFabric), typeof(iNeedle), 1)]
 	public class iCurseDoll : Item { }
 
-	[ItemCombination(typeof(iAntimatterCookie), typeof(iCthulhuEye), typeof(iCthulhuMeat), 1)]
+	[ItemCombination(typeof(iAntimatterCookie), typeof(iCthulhuEye), 1)]
 	public class iTruthOfTheUniverse : Item { }
 
 	[ItemCombination(typeof(iCookie), typeof(iAntimatter), 1)]
@@ -40,7 +40,7 @@ namespace AngeliaFramework {
 	[ItemCombination(typeof(iDice), typeof(iTotemPoison), typeof(iTotemWater), typeof(iTotemLightning), 1)]
 	public class iRuneCube : Item { }
 
-	[ItemCombination(typeof(iTentacle), typeof(iEyeBall), typeof(iCthulhuMeat), typeof(iBookGreen), 1)]
+	[ItemCombination(typeof(iTentacle), typeof(iEyeBall), typeof(iCthulhuMeat), typeof(iCursedSoul), 1)]
 	public class iCthulhuEye : Item { }
 
 	[ItemCombination(typeof(iBowlingBall), typeof(iBowlingBall), typeof(iIngotIron), 1)]

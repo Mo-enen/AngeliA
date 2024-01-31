@@ -4,6 +4,25 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 
+
+	// Polearm
+	public abstract class Polearm<B> : Polearm where B : MeleeBullet {
+		public Polearm () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class Polearm : MeleeWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Polearm;
+		public sealed override WeaponHandheld Handheld => WeaponHandheld.Pole;
+		protected override bool IgnoreGrabTwist => true;
+		public override int AttackDuration => 18;
+		public override int AttackCooldown => 2;
+		public override int RangeXLeft => 384;
+		public override int RangeXRight => 384;
+		public override int RangeY => 432;
+
+	}
+
+
+	// Implement
 	[ItemCombination(typeof(iBoStaffWood), typeof(iDagger), 1)]
 	public class iSpearWood : Polearm { }
 	[ItemCombination(typeof(iSpearWood), typeof(iIngotIron), 1)]

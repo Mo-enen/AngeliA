@@ -4,6 +4,24 @@ using System.Collections.Generic;
 
 namespace AngeliaFramework {
 
+
+	// Hammer
+	public abstract class Hammer<B> : Hammer where B : MeleeBullet {
+		public Hammer () => BulletID = typeof(B).AngeHash();
+	}
+	public abstract class Hammer : MeleeWeapon {
+		public sealed override WeaponType WeaponType => WeaponType.Hammer;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+		protected override bool IgnoreGrabTwist => true;
+		public override int RangeXLeft => 275;
+		public override int RangeXRight => 275;
+		public override int RangeY => 432;
+
+	}
+
+
+
+	// Implement
 	[ItemCombination(typeof(iStonePolished), typeof(iTreeBranch), 1)]
 	public class iHammerWood : Hammer { }
 	[ItemCombination(typeof(iHammerWood), typeof(iIngotIron), 1)]

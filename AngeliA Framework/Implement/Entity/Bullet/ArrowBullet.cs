@@ -15,7 +15,7 @@ namespace AngeliaFramework {
 			ArrowArtworkID = 0;
 		}
 
-		protected override void SpawnResidue (IDamageReceiver receiver) {
+		protected override void BeforeDespawn (IDamageReceiver receiver) {
 			if (ArrowItemID != 0) {
 				ItemSystem.SpawnItem(ArrowItemID, X, Y, 1);
 			}

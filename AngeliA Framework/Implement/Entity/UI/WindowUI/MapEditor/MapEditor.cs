@@ -976,12 +976,19 @@ namespace AngeliaFramework {
 				// Despawn Player
 				if (Player.Selecting != null) {
 					Player.Selecting.Active = false;
-					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Helmet);
-					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.BodyArmor);
-					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Gloves);
-					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Shoes);
-					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Jewelry);
-					IProgressiveItem.RepairEquipment(Player.Selecting, EquipmentType.Weapon);
+					RepairEquipment(Player.Selecting, EquipmentType.Helmet);
+					RepairEquipment(Player.Selecting, EquipmentType.BodyArmor);
+					RepairEquipment(Player.Selecting, EquipmentType.Gloves);
+					RepairEquipment(Player.Selecting, EquipmentType.Shoes);
+					RepairEquipment(Player.Selecting, EquipmentType.Jewelry);
+					RepairEquipment(Player.Selecting, EquipmentType.Weapon);
+					// Func
+					static void RepairEquipment (Entity holder, EquipmentType type) {
+						int itemID = Inventory.GetEquipment(holder.TypeID, type);
+						if (itemID == 0 || ItemSystem.GetItem(itemID) is not IProgressiveItem progressive) return;
+						if (progressive.NextItemID == itemID || progressive.NextItemID == 0) return;
+						Inventory.SetEquipment(holder.TypeID, type, progressive.NextItemID);
+					}
 				}
 
 				// Fix View Pos

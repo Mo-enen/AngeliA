@@ -5,27 +5,27 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 
 	[ItemCombination(typeof(iTreeBranchBundle), typeof(iFlint), typeof(iLeaf), 16)]
-	public class iArrowWood : ItemArrow { }
+	public class iArrowWood : BulletItem { }
 	[ItemCombination(typeof(iIronWire), typeof(iFlint), typeof(iLeaf), 16)]
-	public class iArrowIron : ItemArrow { }
+	public class iArrowIron : BulletItem { }
 	[ItemCombination(typeof(GoldWire), typeof(iFlint), typeof(iLeaf), 16)]
-	public class iArrowGold : ItemArrow { }
+	public class iArrowGold : BulletItem { }
 
 
 	[ItemCombination(typeof(iTreeBranchBundle), typeof(iFlint), 16)]
-	public class iBoltsWood : ItemArrow { }
+	public class iBoltsWood : BulletItem { }
 	[ItemCombination(typeof(iIronWire), typeof(iFlint), 16)]
-	public class iBoltsIron : ItemArrow { }
+	public class iBoltsIron : BulletItem { }
 	[ItemCombination(typeof(GoldWire), typeof(iFlint), 16)]
-	public class iBoltsGold : ItemArrow { }
+	public class iBoltsGold : BulletItem { }
 
 
 	[ItemCombination(typeof(iTreeBranchBundle), typeof(iFlint), typeof(iLeaf), typeof(iRunePoison), 16)]
-	public class iPoisonDarts : ItemArrow { }
+	public class iPoisonDarts : BulletItem { }
 
 
 	[ItemCombination(typeof(iGlass), typeof(iRuneFire), 16)]
-	public class iMarbles : ItemArrow { }
+	public class iMarbles : BulletItem { }
 
 
 

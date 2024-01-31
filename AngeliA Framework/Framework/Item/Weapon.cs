@@ -11,11 +11,6 @@ namespace AngeliaFramework {
 	public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Shooting, Float, }
 
 
-	public abstract class Weapon<B> : Weapon where B : Bullet {
-		public Weapon () => BulletID = typeof(B).AngeHash();
-	}
-
-
 	[EntityAttribute.MapEditorGroup("ItemWeapon")]
 	[RequireSprite("{0}.Main")]
 	public abstract class Weapon : Equipment {
@@ -26,6 +21,7 @@ namespace AngeliaFramework {
 		public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 		public abstract WeaponType WeaponType { get; }
 		public abstract WeaponHandheld Handheld { get; }
+		public int BulletDelayFrame => AttackDuration * BulletDelay / 1000;
 		protected virtual int BulletDelay => 0;
 		public virtual int AttackDuration => 12;
 		public virtual int AttackCooldown => 2;
@@ -124,7 +120,7 @@ namespace AngeliaFramework {
 					if (character.EquippingWeaponType == WeaponType.Throwing) {
 						if (
 							attacking &&
-							Game.GlobalFrame - character.LastAttackFrame > character.AttackDuration / 6
+							Game.GlobalFrame - character.LastAttackFrame > AttackDuration / 6
 						) break;
 						grabScale = 700;
 						z = character.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
@@ -135,7 +131,7 @@ namespace AngeliaFramework {
 							grabRotation = 0;
 						} else {
 							grabRotation = Util.RemapUnclamped(
-								0, character.AttackDuration,
+								0, AttackDuration,
 								facingSign * 90, 0,
 								Game.GlobalFrame - character.LastAttackFrame
 							);
@@ -223,14 +219,14 @@ namespace AngeliaFramework {
 						int height = sprite.GlobalHeight;
 						if (!sprite.IsTrigger) {
 							int localFrame = Game.GlobalFrame - character.LastAttackFrame;
-							if (localFrame < character.AttackDuration / 2) {
+							if (localFrame < AttackDuration / 2) {
 								// Pulling
-								float ease01 = Ease.OutQuad(localFrame / (character.AttackDuration / 2f));
+								float ease01 = Ease.OutQuad(localFrame / (AttackDuration / 2f));
 								width += Util.LerpUnclamped(0, width * 2 / 3, ease01).RoundToInt();
 								height -= Util.LerpUnclamped(0, height / 2, ease01).RoundToInt();
 							} else {
 								// Release
-								float ease01 = Ease.OutQuad((localFrame - character.AttackDuration / 2f) / (character.AttackDuration / 2f));
+								float ease01 = Ease.OutQuad((localFrame - AttackDuration / 2f) / (AttackDuration / 2f));
 								width += Util.LerpUnclamped(width * 2 / 3, 0, ease01).RoundToInt();
 								height -= Util.LerpUnclamped(height / 2, 0, ease01).RoundToInt();
 							}
@@ -288,56 +284,6 @@ namespace AngeliaFramework {
 			bullet.TargetTeam = sender.AttackTargetTeam;
 			return bullet;
 		}
-
-		public static void FillCharacterMeta (Character character, Weapon weapon) {
-			if (weapon != null) {
-				character.AttackDuration.Override = weapon.AttackDuration;
-				character.AttackCooldown.Override = weapon.AttackCooldown;
-				character.RepeatAttackWhenHolding.Override = weapon.RepeatAttackWhenHolding;
-				character.MinimalChargeAttackDuration.Override = weapon.ChargeAttackDuration;
-				character.LockFacingOnAttack.Override = weapon.LockFacingOnAttack;
-				character.DefaultSpeedLoseOnAttack.Override = weapon.DefaultSpeedLoseOnAttack;
-				character.WalkingSpeedLoseOnAttack.Override = weapon.WalkingSpeedLoseOnAttack;
-				character.RunningSpeedLoseOnAttack.Override = weapon.RunningSpeedLoseOnAttack;
-				character.AttackInAir.Override = weapon.AttackInAir;
-				character.AttackInWater.Override = weapon.AttackInWater;
-				character.AttackWhenWalking.Override = weapon.AttackWhenWalking;
-				character.AttackWhenRunning.Override = weapon.AttackWhenRunning;
-				character.AttackWhenClimbing.Override = weapon.AttackWhenClimbing;
-				character.AttackWhenFlying.Override = weapon.AttackWhenFlying;
-				character.AttackWhenRolling.Override = weapon.AttackWhenRolling;
-				character.AttackWhenSquatting.Override = weapon.AttackWhenSquatting;
-				character.AttackWhenDashing.Override = weapon.AttackWhenDashing;
-				character.AttackWhenSliding.Override = weapon.AttackWhenSliding;
-				character.AttackWhenGrabbing.Override = weapon.AttackWhenGrabbing;
-				character.AttackWhenRush.Override = weapon.AttackWhenRush;
-				character.AttackWhenPounding.Override = weapon.AttackWhenPounding;
-			} else {
-				character.AttackDuration.Override = null;
-				character.AttackCooldown.Override = null;
-				character.RepeatAttackWhenHolding.Override = null;
-				character.MinimalChargeAttackDuration.Override = null;
-				character.LockFacingOnAttack.Override = null;
-				character.DefaultSpeedLoseOnAttack.Override = null;
-				character.WalkingSpeedLoseOnAttack.Override = null;
-				character.RunningSpeedLoseOnAttack.Override = null;
-				character.AttackInAir.Override = null;
-				character.AttackInWater.Override = null;
-				character.AttackWhenWalking.Override = null;
-				character.AttackWhenRunning.Override = null;
-				character.AttackWhenClimbing.Override = null;
-				character.AttackWhenFlying.Override = null;
-				character.AttackWhenRolling.Override = null;
-				character.AttackWhenSquatting.Override = null;
-				character.AttackWhenDashing.Override = null;
-				character.AttackWhenSliding.Override = null;
-				character.AttackWhenGrabbing.Override = null;
-				character.AttackWhenRush.Override = null;
-				character.AttackWhenPounding.Override = null;
-			}
-		}
-
-		public int GetBulletDelayFrame (Character character) => character.AttackDuration * BulletDelay / 1000;
 
 	}
 }

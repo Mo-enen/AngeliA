@@ -449,8 +449,8 @@ namespace AngeliaFramework {
 
 				// Grab
 				Target.HandGrabRotationL = FacingSign * (int)Util.LerpUnclamped(-70, 110, ease01);
-				Target.HandGrabScaleL = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
 				Target.HandGrabRotationR = FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
+				Target.HandGrabScaleL = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
 				Target.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 			}

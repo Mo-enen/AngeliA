@@ -141,7 +141,7 @@ namespace AngeliaForUnity.Editor {
 		public void OnPreprocessBuild (BuildReport report) => Refresh();
 
 
-		[MenuItem("AngeliA/Refresh", false, 0)]
+		[MenuItem("AngeliA/Refresh _r", false, 0)]
 		private static void Refresh () {
 			try {
 				EditorUtility.ClearProgressBar();
@@ -161,7 +161,7 @@ namespace AngeliaForUnity.Editor {
 				AngeliaProjectInfo_to_Unity();
 				RefreshSheetThumbnail(true);
 				if (EditorWindow.HasOpenInstances<ScriptHubWindow>()) {
-					EditorWindow.GetWindow<ScriptHubWindow>().ReloadAllScripts(blink: true);
+					EditorWindow.GetWindow<ScriptHubWindow>().ReloadAllScripts(repaint: true);
 				}
 				PlayerSettings.colorSpace = ColorSpace.Gamma;
 				AssetDatabase.Refresh();

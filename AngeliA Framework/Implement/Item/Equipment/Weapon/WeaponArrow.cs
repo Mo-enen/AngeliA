@@ -1,17 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-
-
 namespace AngeliaFramework {
 	public abstract class ArrowWeapon<A> : ArrowWeapon where A : Item {
 		public ArrowWeapon () => ArrowItemID = typeof(A).AngeHash();
 	}
 	public abstract class ArrowWeapon : ProjectileWeapon {
-
 		public virtual int ArrowCountInOneShot => 1;
 		public virtual int AngleSpeed => 0;
 		protected int ArrowItemID { get; init; }
-
 		public override Bullet SpawnBullet (Character sender) {
 
 			// Take Arrow
@@ -37,7 +31,7 @@ namespace AngeliaFramework {
 					if (result is ArrowBullet aBullet) {
 						var item = ItemSystem.GetItem(ArrowItemID);
 						aBullet.ArrowItemID = ArrowItemID;
-						aBullet.ArrowArtworkID = item is ItemArrow aItem ? aItem.BulletArtworkID : item.TypeID;
+						aBullet.ArrowArtworkID = item is BulletItem aItem ? aItem.BulletArtworkID : item.TypeID;
 					}
 				}
 
@@ -54,6 +48,5 @@ namespace AngeliaFramework {
 			}
 			return result;
 		}
-
 	}
 }

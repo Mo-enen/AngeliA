@@ -18,10 +18,6 @@ namespace AngeliaMaker {
 		public class HipSuit : HipCloth { }
 		public class FootSuit : FootCloth { }
 
-
-		// Const
-		private static readonly int YAYA_PAW = typeof(YayaPaw).AngeHash();
-
 		// Api
 		public override bool BodySuitAvailable => true;
 		public override bool HelmetAvailable => true;
@@ -51,12 +47,6 @@ namespace AngeliaMaker {
 			// Summon GuaGua
 			if (GuaGua == null || !GuaGua.Active) {
 				GuaGua = Summon.CreateSummon<GuaGua>(this, X, Y);
-			}
-		}
-
-		protected override void SpawnPunchBullet () {
-			if (Weapon.SpawnRawBullet(this, YAYA_PAW) is MeleeBullet mBullet) {
-				mBullet.SetSpawnSize(384, 486);
 			}
 		}
 

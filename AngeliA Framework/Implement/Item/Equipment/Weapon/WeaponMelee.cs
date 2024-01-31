@@ -1,13 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-
-
 namespace AngeliaFramework {
 	public abstract class MeleeWeapon<B> : MeleeWeapon where B : MeleeBullet {
 		public MeleeWeapon () => BulletID = typeof(B).AngeHash();
 	}
-
-
 	public abstract class MeleeWeapon : Weapon {
 		public abstract int RangeXLeft { get; }
 		public abstract int RangeXRight { get; }

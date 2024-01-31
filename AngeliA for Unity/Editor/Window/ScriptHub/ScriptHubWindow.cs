@@ -271,9 +271,7 @@ namespace AngeliaForUnity.Editor {
 		#region --- API ---
 
 
-		public void ReloadAllScripts (bool blink = false) {
-
-			if (blink) RequireBlink = 6;
+		public void ReloadAllScripts (bool repaint = false) {
 
 			// Get Roots
 			var roots = new List<IScriptHubConfig>();
@@ -342,8 +340,10 @@ namespace AngeliaForUnity.Editor {
 				}
 			}
 
-			//  Scripts
-			void LoadScripts (
+			if (repaint) Repaint();
+
+			//  Func
+			static void LoadScripts (
 				List<Item> scripts, string root,
 				HashSet<string> ignoreFolder,
 				HashSet<string> ignoreFile,

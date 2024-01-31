@@ -80,7 +80,7 @@ namespace AngeliaFramework {
 				// Collide with Oneway
 				if (collide) {
 					if (DestroyOnHitEnvironment) Active = false;
-					SpawnResidue(null);
+					BeforeDespawn(null);
 					break;
 				}
 			}
@@ -122,9 +122,9 @@ namespace AngeliaFramework {
 			}
 		}
 
-		protected override void SpawnResidue (IDamageReceiver receiver) {
+		protected override void BeforeDespawn (IDamageReceiver receiver) {
 
-			base.SpawnResidue(receiver);
+			base.BeforeDespawn(receiver);
 
 			int particleID = ResidueParticleID != 0 ? ResidueParticleID : FreeFallParticle.TYPE_ID;
 			if (Stage.SpawnEntity(particleID, X + Width / 2, Y + Height / 2) is not FreeFallParticle particle) return;

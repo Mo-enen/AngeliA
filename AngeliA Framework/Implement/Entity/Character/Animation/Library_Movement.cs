@@ -413,6 +413,8 @@ namespace AngeliaFramework {
 			// Final
 			Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
 			Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+			Target.HandGrabScaleL = FacingSign * 1000;
+			Target.HandGrabScaleR = FacingSign * 1000;
 		}
 	}
 
@@ -474,6 +476,8 @@ namespace AngeliaFramework {
 			// Final
 			Target.HandGrabRotationL = LowerArmL.Rotation - FacingSign * 90;
 			Target.HandGrabRotationR = LowerArmR.Rotation - FacingSign * 90;
+			Target.HandGrabScaleL = FacingSign * -1000;
+			Target.HandGrabScaleR = FacingSign * -1000;
 		}
 	}
 

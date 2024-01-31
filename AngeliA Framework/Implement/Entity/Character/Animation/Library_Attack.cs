@@ -1419,7 +1419,7 @@ namespace AngeliaFramework {
 		}
 	}
 
-	public class PoseAttack_Ranged : PoseAnimation {
+	public class PoseAttack_Arrow : PoseAnimation {
 		protected override void Animate (PoseCharacter character) {
 			base.Animate(character);
 			character.AttackStyleLoop = 1;

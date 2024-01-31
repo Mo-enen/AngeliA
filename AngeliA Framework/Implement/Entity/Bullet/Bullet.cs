@@ -3,18 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-
-
-	public sealed class PunchBullet : Bullet {
-		public static readonly int TYPE_ID = typeof(PunchBullet).AngeHash();
-		protected override int Duration => 30;
-		protected override int Damage => 1;
-		protected override int SpawnWidth => Const.CEL;
-		protected override int SpawnHeight => Const.CEL * 2;
-	}
-
-
-
 	[EntityAttribute.Capacity(128)]
 	[EntityAttribute.ExcludeInMapEditor]
 	[EntityAttribute.UpdateOutOfRange]
@@ -56,7 +44,7 @@ namespace AngeliaFramework {
 			if (CellPhysics.Overlap(EnvironmentMask, Rect, Sender)) {
 				if (DestroyOnHitEnvironment) {
 					Active = false;
-					SpawnResidue(null);
+					BeforeDespawn(null);
 				}
 			}
 		}
@@ -79,7 +67,7 @@ namespace AngeliaFramework {
 				receiver.TakeDamage(new Damage(Damage, Sender, DamageType));
 				if (DestroyOnHitReceiver) {
 					Active = false;
-					SpawnResidue(receiver);
+					BeforeDespawn(receiver);
 				}
 			}
 		}
@@ -95,7 +83,7 @@ namespace AngeliaFramework {
 			return grounded;
 		}
 
-		protected virtual void SpawnResidue (IDamageReceiver receiver) { }
+		protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
 
 	}
 }

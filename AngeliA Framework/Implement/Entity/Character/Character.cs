@@ -155,8 +155,7 @@ namespace AngeliaFramework {
 
 		private void BeforeUpdate_BuffValue () {
 
-			Weapon.FillCharacterMeta(this, null);
-
+			bool weaponFilled = false;
 			int invCapacity = GetInventoryCapacity();
 			if (invCapacity > 0) {
 
@@ -171,10 +170,61 @@ namespace AngeliaFramework {
 					var item = GetEquippingItem(type);
 					if (item == null) continue;
 					item.BeforeItemUpdate_FromEquipment(this);
-					if (item is Weapon weapon) Weapon.FillCharacterMeta(this, weapon);
+					if (item is Weapon weapon) {
+						weaponFilled = true;
+						Fill(this, weapon);
+					}
 				}
 			}
-
+			if (!weaponFilled) Fill(this, null);
+			// Func
+			static void Fill (Character character, Weapon weapon) {
+				if (weapon != null) {
+					character.AttackDuration = weapon.AttackDuration;
+					character.AttackCooldown = weapon.AttackCooldown;
+					character.MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
+					character.RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
+					character.LockFacingOnAttack = weapon.LockFacingOnAttack;
+					character.DefaultSpeedLoseOnAttack.Override = weapon.DefaultSpeedLoseOnAttack;
+					character.WalkingSpeedLoseOnAttack.Override = weapon.WalkingSpeedLoseOnAttack;
+					character.RunningSpeedLoseOnAttack.Override = weapon.RunningSpeedLoseOnAttack;
+					character.AttackInAir.Override = weapon.AttackInAir;
+					character.AttackInWater.Override = weapon.AttackInWater;
+					character.AttackWhenWalking.Override = weapon.AttackWhenWalking;
+					character.AttackWhenRunning.Override = weapon.AttackWhenRunning;
+					character.AttackWhenClimbing.Override = weapon.AttackWhenClimbing;
+					character.AttackWhenFlying.Override = weapon.AttackWhenFlying;
+					character.AttackWhenRolling.Override = weapon.AttackWhenRolling;
+					character.AttackWhenSquatting.Override = weapon.AttackWhenSquatting;
+					character.AttackWhenDashing.Override = weapon.AttackWhenDashing;
+					character.AttackWhenSliding.Override = weapon.AttackWhenSliding;
+					character.AttackWhenGrabbing.Override = weapon.AttackWhenGrabbing;
+					character.AttackWhenRush.Override = weapon.AttackWhenRush;
+					character.AttackWhenPounding.Override = weapon.AttackWhenPounding;
+				} else {
+					character.AttackDuration = 12;
+					character.AttackCooldown = 2;
+					character.MinimalChargeAttackDuration = int.MaxValue;
+					character.RepeatAttackWhenHolding = false;
+					character.LockFacingOnAttack = false;
+					character.DefaultSpeedLoseOnAttack.Override = null;
+					character.WalkingSpeedLoseOnAttack.Override = null;
+					character.RunningSpeedLoseOnAttack.Override = null;
+					character.AttackInAir.Override = null;
+					character.AttackInWater.Override = null;
+					character.AttackWhenWalking.Override = null;
+					character.AttackWhenRunning.Override = null;
+					character.AttackWhenClimbing.Override = null;
+					character.AttackWhenFlying.Override = null;
+					character.AttackWhenRolling.Override = null;
+					character.AttackWhenSquatting.Override = null;
+					character.AttackWhenDashing.Override = null;
+					character.AttackWhenSliding.Override = null;
+					character.AttackWhenGrabbing.Override = null;
+					character.AttackWhenRush.Override = null;
+					character.AttackWhenPounding.Override = null;
+				}
+			}
 		}
 
 
@@ -376,7 +426,6 @@ namespace AngeliaFramework {
 				}
 
 				// Equipping
-				bool equippingWeapon = false;
 				for (int i = 0; i < EquipmentTypeCount; i++) {
 					var type = (EquipmentType)i;
 					var item = GetEquippingItem(type);
@@ -385,14 +434,8 @@ namespace AngeliaFramework {
 					if (attackLocalFrame == 0) item.OnAttack(this);
 					if (squatStart) item.OnSquat(this);
 					if (item is Weapon weapon) {
-						equippingWeapon = true;
-						if (attackLocalFrame == weapon.GetBulletDelayFrame(this)) weapon.SpawnBullet(this);
+						if (attackLocalFrame == weapon.BulletDelayFrame) weapon.SpawnBullet(this);
 					}
-				}
-
-				// Spawn Punch Bullet
-				if (attackLocalFrame == 0 && !equippingWeapon) {
-					SpawnPunchBullet();
 				}
 
 			}
