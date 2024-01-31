@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliaFramework {
 	public class SpinningBlade : EnvironmentEntity {
 
-
+		 
 		public override void FillPhysics () => CellPhysics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect.Expand(1), true, 1);
 
 
