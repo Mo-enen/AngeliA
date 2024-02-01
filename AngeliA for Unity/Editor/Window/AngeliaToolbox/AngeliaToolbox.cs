@@ -51,7 +51,6 @@ namespace AngeliaForUnity.Editor {
 		private static Label SheetThumbnailLabel = null;
 		private static double AutoRefreshTime = 0f;
 		private static bool RequireRefresh = true;
-		private static int SpriteCount = 0;
 
 
 		#endregion
@@ -415,10 +414,10 @@ namespace AngeliaForUnity.Editor {
 			// Texture
 			var texture = SheetThumbnail.image as Texture2D;
 			string sheetPath = AngePath.GetSheetPath(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"));
+			int spriteCount = 0;
 			if (texture == null || forceRefresh) {
-				SpriteCount = 0;
 				SheetThumbnail.image = texture = Sheet.LoadSheetTextureFromDisk(
-					sheetPath, out SpriteCount
+					sheetPath, out spriteCount
 				) as Texture2D;
 			}
 
@@ -427,7 +426,7 @@ namespace AngeliaForUnity.Editor {
 				var rawBytes = texture.GetRawTextureData();
 				float rawSize = rawBytes.Length / 1024f / 1024f;
 				float fileSize = Util.GetFileSizeInMB(sheetPath);
-				SheetThumbnailLabel.text = $"{texture.width}×{texture.height}  |  {SpriteCount} Sprites  |  {rawSize:0.00} MB  |  {fileSize:0.00} MB";
+				SheetThumbnailLabel.text = $"{texture.width}×{texture.height}  |  {spriteCount} Sprites  |  {rawSize:0.00} MB  |  {fileSize:0.00} MB";
 				SheetThumbnailLabel.tooltip = "texture size | sprite count | texture raw size | sheet file size";
 			} else {
 				SheetThumbnailLabel.text = "";
