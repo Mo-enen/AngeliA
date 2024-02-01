@@ -52,6 +52,7 @@ namespace AngeliaForUnity {
 		private RenderingLayerUnity[] RenderingLayers = new RenderingLayerUnity[0];
 		private RenderingLayerUnity[] RenderingTextLayers = new RenderingLayerUnity[0];
 		private Material Skybox = null;
+		private Font[] Fonts = null;
 
 
 		#endregion
@@ -69,6 +70,9 @@ namespace AngeliaForUnity {
 			if (SKYBOX_SHADER != null) {
 				RenderSettings.skybox = Skybox = new Material(SKYBOX_SHADER);
 			}
+
+			// Fonts
+			Fonts = new Font[1] { GetDefaultFont() as Font };
 
 			// Layers
 			RenderingLayers = new RenderingLayerUnity[RenderLayer.COUNT];
@@ -449,7 +453,7 @@ namespace AngeliaForUnity {
 			);
 		}
 
-		protected override int _GetTextLayerCount () => Fonts.Length;
+		protected override int _GetTextLayerCount () => RenderingTextLayers.Length;
 
 		protected override string _GetTextLayerName (int index) => Fonts[index].name;
 
@@ -492,6 +496,8 @@ namespace AngeliaForUnity {
 		protected override void _SetClipboardText (string text) => GUIUtility.systemCopyBuffer = text;
 
 		protected override void _SetImeCompositionMode (bool on) => Input.imeCompositionMode = on ? IMECompositionMode.On : IMECompositionMode.Off;
+
+		protected override object _GetDefaultFont () => Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
 
 		#endregion

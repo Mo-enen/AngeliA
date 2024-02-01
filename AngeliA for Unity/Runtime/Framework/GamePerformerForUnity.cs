@@ -13,7 +13,6 @@ namespace AngeliaForUnity {
 
 
 		// Ser
-		[SerializeField] Font[] m_Fonts = null;
 		[SerializeField] AudioClip[] m_AudioClips = null;
 		[SerializeField] Texture2D[] m_Cursors = null;
 		[SerializeField] Vector2[] m_CursorPivots = null;
@@ -37,16 +36,6 @@ namespace AngeliaForUnity {
 			UnityEditor.AssetDatabase.SaveAssets();
 		}
 		public void Editor_ReloadAllResources () {
-
-			// Fonts
-			var fonts = new List<Font>();
-			foreach (var font in ForAllAssetsWithPath<Font>()) {
-				if (!font.name.Contains("#font", System.StringComparison.OrdinalIgnoreCase)) continue;
-				fonts.Add(font);
-			}
-			fonts.Sort((a, b) => a.name.CompareTo(b.name));
-			fonts.Insert(0, Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"));
-			m_Fonts = fonts.ToArray();
 
 			// Cursors
 			var cursors = new List<Texture2D>();
@@ -115,12 +104,8 @@ namespace AngeliaForUnity {
 #endif
 
 
-		private static readonly Dictionary<string, string> FontName_to_FontPath = new();
-
-
 		private void Awake () {
 			UnityGame = new GameForUnity {
-				Fonts = m_Fonts,
 				AudioClips = m_AudioClips,
 				Cursors = m_Cursors,
 				CursorPivots = m_CursorPivots,

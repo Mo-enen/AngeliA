@@ -20,7 +20,6 @@ namespace AngeliaForUnity {
 		// Api
 		public Camera UnityCamera => _UnityCamera != null ? _UnityCamera : (_UnityCamera = GetOrCreateCamera());
 		private Camera _UnityCamera = null;
-		public Font[] Fonts { get; init; } = new Font[0];
 		public AudioClip[] AudioClips { get; init; } = new AudioClip[0];
 		public Texture2D[] Cursors { get; init; } = new Texture2D[0];
 		public Vector2[] CursorPivots { get; init; } = new Vector2[0];

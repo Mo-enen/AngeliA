@@ -265,6 +265,9 @@ namespace AngeliaFramework {
 		public static void SetImeCompositionMode (bool on) => Instance?._SetImeCompositionMode(on);
 		protected abstract void _SetImeCompositionMode (bool on);
 
+		public static object GetDefaultFont () => Instance?._GetDefaultFont();
+		protected abstract object _GetDefaultFont ();
+
 
 		// Music
 		public static void PlayMusic (int id) => Instance._PlayMusic(id);

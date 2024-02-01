@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AngeliaFramework;
 
 
-namespace AngeliaMaker {
+namespace AngeliaGame {
 	[EntityAttribute.Capacity(1, 0)]
 	public class GuaGua : Summon {
 
