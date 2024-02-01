@@ -1,8 +1,0 @@
-{
-  "name": "com.moenengames.angeliaframework",
-  "displayName": "AngeliA Framework",
-  "version": "1.0.0",
-  "description": "2D retro game framework developed by Moenen",
-  "type": "tool",
-  "hideInEditor": false
-}

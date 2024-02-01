@@ -21,7 +21,7 @@ namespace AngeliaFramework {
 			var info = sender.GetEvent(
 				eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
 			);
-			if (info == null) return;
+			if (info == null || info.EventHandlerType == null) return;
 			// Get List
 			var list = new List<(MethodInfo method, int order)>();
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<T>()) {
@@ -38,7 +38,7 @@ namespace AngeliaFramework {
 				try {
 					var addMethod = info.GetAddMethod(true);
 					var del = System.Delegate.CreateDelegate(info.EventHandlerType, method);
-					addMethod.Invoke(null, new object[] { del });
+					addMethod?.Invoke(null, new object[] { del });
 				} catch (System.Exception ex) { Game.LogException(ex); }
 			}
 		}
@@ -46,7 +46,7 @@ namespace AngeliaFramework {
 
 		// Method
 		public static object InvokeStaticMethod (System.Type type, string methodName, params object[] param) {
-			if (string.IsNullOrEmpty(methodName)) { return null; }
+			if (string.IsNullOrEmpty(methodName)) return null;
 			try {
 				var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 				return method?.Invoke(null, param);
@@ -169,10 +169,8 @@ namespace AngeliaFramework {
 			get {
 				if (_AllTypes == null) {
 					var list = new List<System.Type>();
-					foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
-						if (assembly.GetCustomAttribute<AngeliAAttribute>() != null) {
-							list.AddRange(assembly.GetTypes());
-						}
+					foreach (var assembly in AllAssemblies) {
+						list.AddRange(assembly.GetTypes());
 					}
 					_AllTypes = list.ToArray();
 				}
@@ -194,7 +192,7 @@ namespace AngeliaFramework {
 				return _AllAssemblies;
 			}
 		}
-		public static Assembly[] _AllAssemblies = null;
+		private static Assembly[] _AllAssemblies = null;
 
 
 		public static IEnumerable<System.Type> AllChildClass (this System.Type type, bool includeAbstract = false, bool includeInterface = false) {
