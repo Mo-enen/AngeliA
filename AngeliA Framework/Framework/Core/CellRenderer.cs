@@ -309,10 +309,11 @@ namespace AngeliaFramework {
 			}
 
 			// Camera Rect
+			float cameraAspect = Util.Min(ratio, maxRatio);
 			var cRect = new IRect(
 				viewRect.x,
 				viewRect.y,
-				(int)(viewRect.height * Game.CameraAspect),
+				(int)(viewRect.height * cameraAspect),
 				viewRect.height
 			);
 			int cOffsetX = (viewRect.width - cRect.width) / 2;

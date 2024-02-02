@@ -5,22 +5,18 @@ using AngeliaFramework;
 
 
 [assembly: AngeliA]
+[assembly: AngeliaGameTitle("AngeliA")]
+[assembly: AngeliaGameDeveloper("Moenen")]
+[assembly: AngeliaVersion(0, 0, 1, ReleaseLifeCycle.Alpha)]
 
 
 namespace AngeliaGame;
 
 
 internal class AngeliaGame {
+
 	public static void Main () {
-		GamePerformer.Start();
+		new AngeliaForRaylib.Game().Start();
 	}
+
 }
-
-
-
-public class TestingCharacterA : Character {
-	protected override void RenderCharacter () {
-
-	}
-}
-

@@ -103,6 +103,7 @@ namespace AngeliaFramework {
 
 
 		public static bool LoadMapIntoTexture (string mapFolder, int worldX, int worldY, int worldZ, object texture) {
+			if (texture == null) return false;
 			string filePath = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
 			System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
 			if (!Util.FileExists(filePath)) {

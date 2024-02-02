@@ -152,7 +152,7 @@ namespace AngeliaFramework {
 			for (int j = 0; j < slotSize; j++) {
 				for (int i = 0; i < slotSize; i++) {
 					var slot = NavSlots[i, j];
-					if (slot.IsEmpty) continue;
+					if (slot.IsEmpty || slot.Texture == null) continue;
 					var rect = new IRect(
 						globalOffsetX + totalRect.x + (slot.WorldX - targetWorldX) * slotRectWidth,
 						globalOffsetY + totalRect.y + (slot.WorldY - targetWorldY) * slotRectHeight,

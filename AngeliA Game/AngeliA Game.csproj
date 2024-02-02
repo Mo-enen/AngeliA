@@ -3,18 +3,52 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>AngeliA_Game</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <RootNamespace>AngeliaGame</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
     <UseWindowsForms>False</UseWindowsForms>
     <StartupObject>AngeliaGame.AngeliaGame</StartupObject>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <AssemblyName>AngeliA Game</AssemblyName>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <SignAssembly>False</SignAssembly>
+    <PackageId>angeliagame</PackageId>
+    <Title>AngeliA</Title>
+    <Authors>Moenen</Authors>
+    <Company>MoenenGames</Company>
+    <Product>AngeliA</Product>
+    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AngeliA for Raylib\AngeliA for Raylib.csproj" />
-    <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="raylib.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AngeliA for Raylib\AngeliA for Raylib.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<ContentWithTargetPath Include="Resources\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
 
 </Project>

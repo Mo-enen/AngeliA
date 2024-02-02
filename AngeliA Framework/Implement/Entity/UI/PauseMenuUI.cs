@@ -43,11 +43,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode MENU_LANGUAGE = ("Menu.Setting.Language", "Language");
 		private static readonly LanguageCode MENU_SHOW_FPS = ("Menu.Setting.ShowFPS", "Show FPS");
 		private static readonly LanguageCode MENU_KEYSETTER_SAVE_BACK = ("Menu.KeySetter.SaveAndBack", "Save and Back");
-		private static readonly LanguageCode MENU_FULLSCREEN_0 = ("Menu.Setting.Fullscreen.0", "Windowed");
-		private static readonly LanguageCode MENU_FULLSCREEN_1 = ("Menu.Setting.Fullscreen.1", "Fullscreen");
-		private static readonly LanguageCode MENU_FULLSCREEN_2 = ("Menu.Setting.Fullscreen.2", "Fullscreen (Low)");
 		private static readonly LanguageCode MENU_FULLSCREEN_LABEL = ("Menu.Setting.Fullscreen.Label", "Fullscreen");
-		private static readonly LanguageCode MENU_VSYNC = ("Menu.Setting.VSync", "V-Sync");
 		private static readonly LanguageCode MENU_CONTROL_HINT = ("Menu.Setting.UseControlHint", "Show Control Hint");
 		private static readonly LanguageCode MENU_GAMEPAD_HINT = ("Menu.Setting.UseGamepadHint", "Show Gamepad Hint");
 		private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
@@ -296,30 +292,12 @@ namespace AngeliaFramework {
 				Game.ShowFPS = !Game.ShowFPS;
 			}
 
-			// VSync
-			if (DrawItem(
-				MENU_VSYNC,
-				CellContent.Get(Game.VSync ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
-			)) {
-				Game.VSync = !Game.VSync;
-			}
-
 			// Fullscreen
-			if (DrawArrowItem(
+			if (DrawItem(
 				MENU_FULLSCREEN_LABEL,
-				CellContent.Get(
-					Game.FullscreenMode switch {
-						FullscreenMode.Window => MENU_FULLSCREEN_0,
-						FullscreenMode.Fullscreen => MENU_FULLSCREEN_1,
-						FullscreenMode.FullscreenLow => MENU_FULLSCREEN_2,
-						_ => MENU_FULLSCREEN_0,
-					}
-				),
-				Game.FullscreenMode != FullscreenMode.Window,
-				Game.FullscreenMode != FullscreenMode.FullscreenLow,
-				out delta
+				CellContent.Get(Game.IsFullscreen ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
-				Game.FullscreenMode = (FullscreenMode)((int)Game.FullscreenMode + delta).Clamp(0, 2);
+				Game.IsFullscreen = !Game.IsFullscreen;
 			}
 
 			// Language

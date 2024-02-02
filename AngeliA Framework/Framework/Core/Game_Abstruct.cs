@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	public partial class Game {
+	public abstract partial class Game {
 
 
 		// VAR
@@ -23,23 +23,14 @@ namespace AngeliaFramework {
 		}
 		protected abstract void _SetGraphicFramerate (int framerate);
 
-		internal static bool VSync {
-			get => _VSync.Value;
+		internal static bool IsFullscreen {
+			get => _IsFullscreen.Value;
 			set {
-				Instance._SetVSync(value);
-				_VSync.Value = value;
+				_IsFullscreen.Value = value;
+				Instance._SetFullscreen(value);
 			}
 		}
-		protected abstract void _SetVSync (bool vsync);
-
-		internal static FullscreenMode FullscreenMode {
-			get => (FullscreenMode)_FullscreenMode.Value;
-			set {
-				_FullscreenMode.Value = (int)value;
-				Instance._SetFullscreenMode(value);
-			}
-		}
-		protected abstract void _SetFullscreenMode (FullscreenMode mode);
+		protected abstract void _SetFullscreen (bool fullScreen);
 
 		public static int ScreenWidth => Instance._GetScreenWidth();
 		protected abstract int _GetScreenWidth ();
@@ -67,7 +58,7 @@ namespace AngeliaFramework {
 				Util.CopyFolder(universePath, newUniversePath, true, true);
 			}
 		}
-		protected abstract void _BeforeApplicationBuild (string exePath);
+		protected virtual void _BeforeApplicationBuild (string exePath) { }
 
 
 		// Listener
@@ -90,12 +81,6 @@ namespace AngeliaFramework {
 		public static void LogException (System.Exception ex) => Instance?._LogException(ex);
 		protected abstract void _LogException (System.Exception ex);
 
-		internal static void SetDebugEnable (bool enable) => Instance?._SetDebugEnable(enable);
-		protected abstract void _SetDebugEnable (bool enable);
-
-		internal static bool GetDebugEnable () => Instance != null && Instance._GetDebugEnable();
-		protected abstract bool _GetDebugEnable ();
-
 
 		// Camera
 		internal static FRect CameraScreenLocacion {
@@ -104,12 +89,6 @@ namespace AngeliaFramework {
 		}
 		protected abstract FRect _GetCameraScreenLocacion ();
 		protected abstract void _SetCameraScreenLocacion (FRect rect);
-
-		public static float CameraAspect => Instance._GetCameraAspect();
-		protected abstract float _GetCameraAspect ();
-
-		public static float CameraOrthographicSize => Instance._GetCameraOrthographicSize();
-		protected abstract float _GetCameraOrthographicSize ();
 
 
 		// View
@@ -206,17 +185,11 @@ namespace AngeliaFramework {
 		public static Int2 GetTextureSize (object texture) => Instance._GetTextureSize(texture);
 		protected abstract Int2 _GetTextureSize (object texture);
 
-		public static string GetTextureName (object texture) => Instance._GetTextureName(texture);
-		protected abstract string _GetTextureName (object texture);
-
 		public static object PngBytesToTexture (byte[] bytes) => Instance._PngBytesToTexture(bytes);
 		protected abstract object _PngBytesToTexture (byte[] bytes);
 
 		public static byte[] TextureToPngBytes (object texture) => Instance._TextureToPngBytes(texture);
 		protected abstract byte[] _TextureToPngBytes (object texture);
-
-		public static void ResetTextureSize (object texture, int newWidth, int newHeight) => Instance?._ResetTextureSize(texture, newWidth, newHeight);
-		protected abstract void _ResetTextureSize (object texture, int newWidth, int newHeight);
 
 
 		// GL Gizmos

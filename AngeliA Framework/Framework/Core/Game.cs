@@ -12,9 +12,6 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace AngeliaFramework {
 
 
-	public enum FullscreenMode { Window = 0, Fullscreen = 1, FullscreenLow = 2, }
-
-
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : System.Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : OrderedAttribute { public OnGameUpdateAttribute (int order = 0) : base(order) { } }
@@ -88,10 +85,9 @@ namespace AngeliaFramework {
 
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
-		private static readonly SavingInt _FullscreenMode = new("Game.FullscreenMode", 0);
+		private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", true);
 		private static readonly SavingInt _MusicVolume = new("Audio.MusicVolume", 500);
 		private static readonly SavingInt _SoundVolume = new("Audio.SoundVolume", 1000);
-		private static readonly SavingBool _VSync = new("Game.VSync", false);
 		private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 
 
@@ -139,10 +135,8 @@ namespace AngeliaFramework {
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
-				SetDebugEnable(_GetIsEdittime());
 				_SetGraphicFramerate(GraphicFramerate);
-				_SetVSync(_VSync.Value);
-				_SetFullscreenMode((FullscreenMode)_FullscreenMode.Value);
+				_SetFullscreen(_IsFullscreen.Value);
 				_SetMusicVolume(MusicVolume);
 				_SetSoundVolume(SoundVolume);
 

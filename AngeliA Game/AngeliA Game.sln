@@ -5,9 +5,9 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Game", "AngeliA Game.csproj", "{F8AE1B2A-B69E-40B4-A719-86DF86683CAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Framework", "..\AngeliA Framework\AngeliA Framework.csproj", "{4A2BBBCB-B3DB-467C-A263-79585B43E082}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA for Raylib", "..\AngeliA for Raylib\AngeliA for Raylib.csproj", "{00F7650B-5CD3-42C5-8C01-00DDD3D7A6DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Framework", "..\AngeliA Framework\AngeliA Framework.csproj", "{4A2BBBCB-B3DB-467C-A263-79585B43E082}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
