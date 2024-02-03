@@ -109,7 +109,7 @@ namespace AngeliaFramework {
 
 
 		protected Byte4 GetSkyTint (int y) => Byte4.LerpUnclamped(
-			Skybox.SkyTintBottomColor, Skybox.SkyTintTopColor,
+			Sky.SkyTintBottomColor, Sky.SkyTintTopColor,
 			Util.InverseLerp(CellRenderer.CameraRect.yMin, CellRenderer.CameraRect.yMax, y)
 		);
 

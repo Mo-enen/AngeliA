@@ -1,18 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using AngeliaFramework;
 using Raylib_cs;
 
-
 [assembly: AngeliA]
-
 
 namespace AngeliaForRaylib;
 
+public partial class Game : AngeliaFramework.Game {
 
-public class Game : AngeliaFramework.Game {
+	// SUB
+	private class GLRect {
+		public IRect RaylibRect;
+		public Color Color;
+	}
+	private class GLTexture {
+		public IRect RaylibRect;
+		public Texture2D Texture;
+	}
+	private class FontData {
+		public Font Font;
+		public string Name;
+	}
 
+	// Api
+	public static Game InstanceRaylib => Instance as Game;
 
 	// Event
 	private event System.Action OnGameQuitting = null;
@@ -21,13 +33,15 @@ public class Game : AngeliaFramework.Game {
 	private event System.Action<char> OnTextInput = null;
 
 	// Data
+	private readonly GLRect[] GLRects = new GLRect[4096].FillWithNewValue();
+	private readonly GLTexture[] GLTextures = new GLTexture[196].FillWithNewValue();
+	private FontData[] Fonts;
+	private int GLRectCount = 0;
+	private int GLTextureCount = 0;
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
-	private FRect CameraScreenRect = new(0, 0, 1f, 1f);
-	private Texture2D Texture;
 
-
-	// MSG
+	// API
 	public void Start () {
 
 		var msgs = new List<(string msg, Color tint)>();
@@ -40,6 +54,7 @@ public class Game : AngeliaFramework.Game {
 
 		////////////////////////////////////////
 
+		// Init Window
 		Raylib.SetConfigFlags(
 			ConfigFlags.ResizableWindow |
 			ConfigFlags.VSyncHint |
@@ -48,6 +63,19 @@ public class Game : AngeliaFramework.Game {
 		Raylib.InitWindow(1024, 1024, "Test");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
+		// Init Font
+		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
+		var fontList = new List<FontData>(8);
+		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
+			fontList.Add(new FontData() {
+				Font = Raylib.LoadFont(fontPath),
+				Name = Util.GetNameWithoutExtension(fontPath),
+			});
+		}
+		fontList.Sort((a, b) => a.Name.CompareTo(b.Name));
+		Fonts = fontList.ToArray();
+
+		// init AngeliA
 		Initialize();
 
 		while (true) {
@@ -66,11 +94,11 @@ public class Game : AngeliaFramework.Game {
 					OnTextInput?.Invoke((char)currentChar);
 				}
 
-				// Game
+				// Update Game
 				Raylib.BeginDrawing();
 				Raylib.DrawRectangleGradientV(
 					0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(),
-					Skybox.SkyTintBottomColor.ToRaylib(), Skybox.SkyTintTopColor.ToRaylib()
+					Sky.SkyTintBottomColor.ToRaylib(), Sky.SkyTintTopColor.ToRaylib()
 				);
 
 
@@ -83,10 +111,27 @@ public class Game : AngeliaFramework.Game {
 				///////////////////////////
 
 
+				// Update GL Gizmos
+				for (int i = 0; i < GLRectCount; i++) {
+					var glRect = GLRects[i];
+					var rRect = glRect.RaylibRect;
+					Raylib.DrawRectangle(rRect.x, rRect.y, rRect.width, rRect.height, glRect.Color);
+				}
+				for (int i = 0; i < GLTextureCount; i++) {
+					var glTexture = GLTextures[i];
+					var rTexture = glTexture.Texture;
+					Raylib.DrawTexturePro(
+						rTexture,
+						new Rectangle(0, 0, rTexture.Width, rTexture.Height),
+						glTexture.RaylibRect.ToRaylib(),
+						default, 0, Color.White
+					);
+				}
+				GLRectCount = 0;
+				GLTextureCount = 0;
+
+				// End Draw
 				Raylib.EndDrawing();
-
-
-
 
 				// Trying to Quit Check
 				if (!RequireQuitGame && Raylib.WindowShouldClose()) {
@@ -96,216 +141,50 @@ public class Game : AngeliaFramework.Game {
 				// Real Quit Check
 				if (RequireQuitGame) break;
 
+				// Wait for Fixed Update
+
+
+
+
 			} catch (System.Exception ex) {
 				LogException(ex);
 			}
 		}
-		Raylib.CloseWindow();
 
 		// Quitting
 		OnGameQuitting?.Invoke();
 
-	}
-
-
-	// System
-	protected override bool _GetIsEdittime () {
-#if DEBUG
-		return true;
-#else
-		return false;
-#endif
-	}
-
-	protected override void _SetGraphicFramerate (int framerate) => Raylib.SetTargetFPS(framerate);
-
-	protected override void _SetFullscreen (bool fullScreen) {
-		if (Raylib.IsWindowFullscreen() == fullScreen) return;
-		Raylib.ToggleFullscreen();
-	}
-
-	protected override int _GetScreenWidth () => Raylib.GetScreenWidth();
-
-	protected override int _GetScreenHeight () => Raylib.GetScreenHeight();
-
-	protected override void _QuitApplication () => RequireQuitGame = true;
-
-
-	// Listener
-	protected override void _AddGameQuittingCallback (System.Action callback) {
-		OnGameQuitting -= callback;
-		OnGameQuitting += callback;
-	}
-
-	protected override void _AddGameTryingToQuitCallback (System.Func<bool> callback) {
-		OnGameTryingToQuit -= callback;
-		OnGameTryingToQuit += callback;
-	}
-
-	protected override void _AddTextInputCallback (System.Action<char> callback) {
-		OnTextInput -= callback;
-		OnTextInput += callback;
-	}
-
-	protected override void _AddFocusChangedCallback (System.Action<bool> callback) {
-		OnWindowFocusChanged -= callback;
-		OnWindowFocusChanged += callback;
-	}
-
-
-	// Debug
-	protected override void _Log (object target) {
-		if (!IsEdittime) return;
-		System.Console.ResetColor();
-		System.Console.WriteLine(target.ToString());
-	}
-
-	protected override void _LogWarning (object target) {
-		if (!IsEdittime) return;
-		System.Console.ForegroundColor = System.ConsoleColor.Yellow;
-		System.Console.WriteLine(target.ToString());
-		System.Console.ResetColor();
-	}
-
-	protected override void _LogError (object target) {
-		if (!IsEdittime) return;
-		System.Console.ForegroundColor = System.ConsoleColor.Red;
-		System.Console.WriteLine(target.ToString());
-		System.Console.ResetColor();
-	}
-
-	protected override void _LogException (System.Exception ex) {
-		if (!IsEdittime) return;
-		System.Console.ForegroundColor = System.ConsoleColor.Red;
-		System.Console.WriteLine(ex.GetType().Name);
-		System.Console.WriteLine(ex.Message);
-		System.Console.ResetColor();
-	}
-
-
-	// Camera
-	protected override FRect _GetCameraScreenLocacion () => CameraScreenRect;
-	protected override void _SetCameraScreenLocacion (FRect rect) => CameraScreenRect = rect;
-
-
-	// Render
-	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) {
-		// TODO
-	}
-
-	protected override void _OnCameraUpdate () { }
-
-	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
-
-
-		// TODO
-
+		// Close
+		Raylib.CloseWindow();
 
 	}
 
-	protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) { }
-
-	protected override void _SetTextureForRenderer (object texture) => Texture = (Texture2D)texture;
-
-
-	// Effect
-	protected override bool _GetEffectEnable (int effectIndex) {
-		// TODO
-
-		return false;
-	}
-	protected override void _SetEffectEnable (int effectIndex, bool enable) {
-		// TODO
-	}
-	protected override void _Effect_SetDarkenParams (float amount, float step) {
-		// TODO
-	}
-	protected override void _Effect_SetLightenParams (float amount, float step) {
-		// TODO
-	}
-	protected override void _Effect_SetTintParams (Byte4 color) {
-		// TODO
-	}
-	protected override void _Effect_SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round) {
-		// TODO
+	// Util
+	private static int Angelia_to_Raylib_X (int globalX) {
+		var cameraRect = CellRenderer.CameraRect;
+		var screenRect = InstanceRaylib.ScreenRect;
+		return Util.RemapUnclamped(
+			cameraRect.x, cameraRect.xMax,
+			screenRect.x, screenRect.xMax,
+			globalX
+		);
 	}
 
-
-	// Texture
-	protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
-		if (pixels == null || pixels.Length == 0) return null;
-		unsafe {
-			int len = pixels.Length;
-			var colors = pixels.ToRaylib();
-			fixed (Color* data = &colors[0]) {
-				return Raylib.LoadTextureFromImage(new Image() {
-					Data = data,
-					Format = PixelFormat.UncompressedR32G32B32A32,
-					Width = width,
-					Height = height,
-					Mipmaps = 0,
-				});
-			}
-		}
+	private static int Angelia_to_Raylib_Y (int globalY) {
+		var cameraRect = CellRenderer.CameraRect;
+		var screenRect = InstanceRaylib.ScreenRect;
+		return Util.RemapUnclamped(
+			cameraRect.y, cameraRect.yMax,
+			screenRect.yMax, screenRect.y,
+			globalY
+		);
 	}
 
-	protected override Byte4[] _GetPixelsFromTexture (object texture) {
-		if (texture is not Texture2D rTexture) return System.Array.Empty<Byte4>();
-		var image = Raylib.LoadImageFromTexture(rTexture);
-		unsafe {
-			int len = image.Width * image.Height;
-			var result = new Byte4[len];
-			var colors = Raylib.LoadImageColors(image);
-			for (int i = 0; i < len; i++) {
-				result[i] = colors[i].ToAngelia();
-			}
-			return result;
-		}
-	}
-
-	protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
-		if (texture is not Texture2D rTexture) return;
-		Raylib.UpdateTexture(rTexture, pixels.ToRaylib());
-	}
-
-	protected override Int2 _GetTextureSize (object texture) => texture is Texture2D rTexture ? new Int2(rTexture.Width, rTexture.Height) : default;
-
-	protected override object _PngBytesToTexture (byte[] bytes) {
-		if (bytes == null || bytes.Length == 0) return null;
-		var image = Raylib.LoadImageFromMemory(".png", bytes);
-		return Raylib.LoadTextureFromImage(image);
-	}
-
-	protected override byte[] _TextureToPngBytes (object texture) {
-		if (texture is not Texture2D rTexture) return System.Array.Empty<byte>();
-		unsafe {
-			var fileType = Marshal.StringToHGlobalAnsi(".png");
-			var fileSizePtr = new System.IntPtr();
-			var resultPtr = new System.IntPtr(Raylib.ExportImageToMemory(
-				Raylib.LoadImageFromTexture(rTexture),
-				(sbyte*)fileType.ToPointer(),
-				(int*)fileSizePtr.ToPointer()
-			));
-			var resultBytes = new byte[fileSizePtr.ToInt32()];
-			Marshal.Copy(resultPtr, resultBytes, 0, resultBytes.Length);
-			return resultBytes;
-		}
-	}
-
-
-	// GL Gizmos
-	protected override void _DrawGizmosRect (IRect rect, Byte4 color) {
-		
-		Raylib.DrawRectangle(,,,, color.ToRaylib());
-	}
-
-
-	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture) {
-		if (texture is not Texture2D rTexture) return;
-
-
-	}
-
-
+	private static IRect Angelia_to_Raylib_Rect (IRect globalRect) => IRect.MinMaxRect(
+		Angelia_to_Raylib_X(globalRect.x),
+		Angelia_to_Raylib_Y(globalRect.yMax),
+		Angelia_to_Raylib_X(globalRect.xMax),
+		Angelia_to_Raylib_Y(globalRect.y)
+	);
 
 }

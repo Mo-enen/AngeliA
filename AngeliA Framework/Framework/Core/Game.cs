@@ -118,6 +118,7 @@ namespace AngeliaFramework {
 
 				GlobalFrame = 0;
 				GameWatch = Stopwatch.StartNew();
+				if (IsEdittime) _IsFullscreen.Value = false;
 
 				Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 				Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
@@ -159,6 +160,7 @@ namespace AngeliaFramework {
 			// Func
 			static bool OnTryingToQuit () {
 				if (IsPausing || IsEdittime) return true;
+				PauseGame();
 				OnGameTryingToQuit?.Invoke();
 				return false;
 			}
@@ -174,7 +176,7 @@ namespace AngeliaFramework {
 					OnGameUpdate?.Invoke();
 					OnGameUpdateLater?.Invoke();
 				}
-				OnGameUpdatePauseless?.Invoke();
+				PauselessUpdate();
 
 				// Switch Between Play and Pause
 				if (FrameInput.GameKeyUp(Gamekey.Start)) {
@@ -203,8 +205,7 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameUpdatePauseless]
-		internal static void RefreshGameAudio () {
+		private static void PauselessUpdate () {
 			// Load or Stop Music
 			bool requireMusic = IsPlaying && ScaledMusicVolume > 0 && !MapEditor.IsEditing;
 			if (requireMusic != IsMusicPlaying) {
@@ -214,6 +215,11 @@ namespace AngeliaFramework {
 					PauseMusic();
 				}
 			}
+			// Screen Size Cache
+			ScreenWidth = Instance._GetScreenWidth();
+			ScreenHeight = Instance._GetScreenHeight();
+			// Event
+			OnGameUpdatePauseless?.Invoke();
 		}
 
 
@@ -241,7 +247,6 @@ namespace AngeliaFramework {
 		}
 
 
-		[OnGameTryingToQuit(int.MinValue)]
 		public static void PauseGame () {
 			if (!IsPlaying) return;
 			StopAllSounds();

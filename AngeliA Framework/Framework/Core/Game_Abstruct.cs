@@ -32,10 +32,10 @@ namespace AngeliaFramework {
 		}
 		protected abstract void _SetFullscreen (bool fullScreen);
 
-		public static int ScreenWidth => Instance._GetScreenWidth();
+		public static int ScreenWidth { get; private set; }
 		protected abstract int _GetScreenWidth ();
 
-		public static int ScreenHeight => Instance._GetScreenHeight();
+		public static int ScreenHeight { get; private set; }
 		protected abstract int _GetScreenHeight ();
 
 		public static void QuitApplication () => Instance._QuitApplication();
@@ -237,9 +237,6 @@ namespace AngeliaFramework {
 
 		public static void SetImeCompositionMode (bool on) => Instance?._SetImeCompositionMode(on);
 		protected abstract void _SetImeCompositionMode (bool on);
-
-		public static object GetDefaultFont () => Instance?._GetDefaultFont();
-		protected abstract object _GetDefaultFont ();
 
 
 		// Music

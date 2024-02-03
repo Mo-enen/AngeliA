@@ -545,7 +545,7 @@ namespace AngeliaFramework {
 				rect.height = height;
 			}
 			var tint = Byte4.LerpUnclamped(
-				Skybox.SkyTintBottomColor, Skybox.SkyTintTopColor,
+				Sky.SkyTintBottomColor, Sky.SkyTintTopColor,
 				Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 			);
 

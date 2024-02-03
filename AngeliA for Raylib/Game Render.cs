@@ -1,0 +1,192 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using AngeliaFramework;
+using Raylib_cs;
+
+namespace AngeliaForRaylib;
+
+public partial class Game {
+
+
+	// Data
+	private FRect CameraScreenRect = new(0, 0, 1f, 1f);
+	private Texture2D Texture;
+	private IRect ScreenRect;
+
+
+	// Render
+	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) {
+		// TODO
+	}
+
+	protected override void _OnCameraUpdate () {
+		ScreenRect = CameraScreenRect.x.AlmostZero() ?
+			new IRect(0, 0, ScreenWidth, ScreenHeight) :
+			new IRect(
+				Util.LerpUnclamped(0, ScreenWidth, CameraScreenRect.x).RoundToInt(), 0,
+				(ScreenWidth * CameraScreenRect.width).RoundToInt(), ScreenHeight
+			);
+	}
+
+	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
+
+
+		// TODO
+
+
+	}
+
+	protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) { }
+
+	protected override void _SetTextureForRenderer (object texture) => Texture = (Texture2D)texture;
+
+
+	// Effect
+	protected override bool _GetEffectEnable (int effectIndex) {
+		// TODO
+
+		return false;
+	}
+	protected override void _SetEffectEnable (int effectIndex, bool enable) {
+		// TODO
+	}
+	protected override void _Effect_SetDarkenParams (float amount, float step) {
+		// TODO
+	}
+	protected override void _Effect_SetLightenParams (float amount, float step) {
+		// TODO
+	}
+	protected override void _Effect_SetTintParams (Byte4 color) {
+		// TODO
+	}
+	protected override void _Effect_SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round) {
+		// TODO
+	}
+
+
+	// Texture
+	protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
+		if (pixels == null || pixels.Length == 0) return null;
+		unsafe {
+			int len = pixels.Length;
+			var colors = pixels.ToRaylib();
+			fixed (Color* data = &colors[0]) {
+				return Raylib.LoadTextureFromImage(new Image() {
+					Data = data,
+					Format = PixelFormat.UncompressedR32G32B32A32,
+					Width = width,
+					Height = height,
+					Mipmaps = 0,
+				});
+			}
+		}
+	}
+
+	protected override Byte4[] _GetPixelsFromTexture (object texture) {
+		if (texture is not Texture2D rTexture) return System.Array.Empty<Byte4>();
+		var image = Raylib.LoadImageFromTexture(rTexture);
+		unsafe {
+			int len = image.Width * image.Height;
+			var result = new Byte4[len];
+			var colors = Raylib.LoadImageColors(image);
+			for (int i = 0; i < len; i++) {
+				result[i] = colors[i].ToAngelia();
+			}
+			return result;
+		}
+	}
+
+	protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
+		if (texture is not Texture2D rTexture) return;
+		Raylib.UpdateTexture(rTexture, pixels.ToRaylib());
+	}
+
+	protected override Int2 _GetTextureSize (object texture) => texture is Texture2D rTexture ? new Int2(rTexture.Width, rTexture.Height) : default;
+
+	protected override object _PngBytesToTexture (byte[] bytes) {
+		if (bytes == null || bytes.Length == 0) return null;
+		var image = Raylib.LoadImageFromMemory(".png", bytes);
+		return Raylib.LoadTextureFromImage(image);
+	}
+
+	protected override byte[] _TextureToPngBytes (object texture) {
+		if (texture is not Texture2D rTexture) return System.Array.Empty<byte>();
+		unsafe {
+			var fileType = Marshal.StringToHGlobalAnsi(".png");
+			var fileSizePtr = new System.IntPtr();
+			var resultPtr = new System.IntPtr(Raylib.ExportImageToMemory(
+				Raylib.LoadImageFromTexture(rTexture),
+				(sbyte*)fileType.ToPointer(),
+				(int*)fileSizePtr.ToPointer()
+			));
+			var resultBytes = new byte[fileSizePtr.ToInt32()];
+			Marshal.Copy(resultPtr, resultBytes, 0, resultBytes.Length);
+			return resultBytes;
+		}
+	}
+
+
+	// GL Gizmos
+	protected override void _DrawGizmosRect (IRect rect, Byte4 color) {
+		if (GLRectCount >= GLRects.Length) return;
+		var glRect = GLRects[GLRectCount];
+		glRect.RaylibRect = Angelia_to_Raylib_Rect(rect);
+		glRect.Color = color.ToRaylib();
+		GLRectCount++;
+	}
+
+	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture) {
+		if (texture is not Texture2D rTexture) return;
+		if (GLTextureCount >= GLTextures.Length) return;
+		var glTexture = GLTextures[GLTextureCount];
+		glTexture.RaylibRect = Angelia_to_Raylib_Rect(rect);
+		glTexture.Texture = rTexture;
+		GLTextureCount++;
+	}
+
+
+	// Text
+	protected override void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) {
+
+	}
+
+	protected override int _GetTextLayerCount () => Fonts.Length;
+
+	protected override string _GetTextLayerName (int index) => Fonts[index].Name;
+
+	protected override int _GetFontSize (int index) => Fonts[index].Font.BaseSize;
+
+	protected override CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CharSprite charSprite, out bool filled) {
+
+		//charSprite.GlobalID = c;
+
+
+		filled = charSprite != null;
+		return charSprite;
+	}
+
+	protected override void _RequestStringForFont (int layerIndex, int textSize, char[] content) { }
+	protected override void _RequestStringForFont (int layerIndex, int textSize, string content) { }
+
+	protected override string _GetClipboardText () => Raylib.GetClipboardText_();
+
+	protected override void _SetClipboardText (string text) => Raylib.SetClipboardText(text);
+
+	protected override void _SetImeCompositionMode (bool on) {
+		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

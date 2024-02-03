@@ -58,7 +58,7 @@ namespace AngeliaFramework {
 			base.BeforePhysicsUpdate();
 			CursorSystem.RequireCursor();
 			ControlHintUI.ForceHideGamepad();
-			Skybox.ForceSkyboxTint(new Byte4(32, 33, 37, 255), new Byte4(32, 33, 37, 255));
+			Sky.ForceSkyboxTint(new Byte4(32, 33, 37, 255), new Byte4(32, 33, 37, 255));
 		}
 
 

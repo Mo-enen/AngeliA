@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 
 namespace AngeliaFramework {
-	public static class Skybox {
+	public static class Sky {
 
 
 		// Api
 		public static Byte4 SkyTintTopColor { get; private set; }
 		public static Byte4 SkyTintBottomColor { get; private set; }
 		public static ColorGradient GradientTop { get; set; } = new ColorGradient(
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
-				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.25f),
-				new ColorGradient.Data(new Byte4(29, 156, 219, 255), 0.5f),
-				new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.75f),
-				new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
-			);
+			new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
+			new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.25f),
+			new ColorGradient.Data(new Byte4(29, 156, 219, 255), 0.5f),
+			new ColorGradient.Data(new Byte4(13, 49, 76, 255), 0.75f),
+			new ColorGradient.Data(new Byte4(10, 12, 31, 255), 1f)
+		);
 		public static ColorGradient GradientBottom { get; set; } = new ColorGradient(
 			new ColorGradient.Data(new Byte4(10, 12, 31, 255), 0f),
 			new ColorGradient.Data(new Byte4(27, 69, 101, 255), 0.25f),
