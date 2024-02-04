@@ -14,9 +14,5 @@ namespace AngeliaGame;
 
 
 internal class AngeliaGame {
-
-	public static void Main () {
-		new AngeliaForRaylib.Game().Start();
-	}
-
+	public static void Main () => new GameForRaylib().Run();
 }

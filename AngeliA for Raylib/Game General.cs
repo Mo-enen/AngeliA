@@ -6,7 +6,7 @@ using Raylib_cs;
 
 namespace AngeliaForRaylib;
 
-public partial class Game {
+public partial class GameForRaylib {
 
 	// System
 	protected override bool _GetIsEdittime () {
@@ -29,6 +29,11 @@ public partial class Game {
 	protected override int _GetScreenHeight () => Raylib.GetScreenHeight();
 
 	protected override void _QuitApplication () => RequireQuitGame = true;
+
+	protected override void _SetWindowSize (int width, int height) {
+		if (Raylib.IsWindowFullscreen()) return;
+		Raylib.SetWindowSize(width, height);
+	}
 
 
 	// Listener

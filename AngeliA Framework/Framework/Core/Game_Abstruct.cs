@@ -38,6 +38,8 @@ namespace AngeliaFramework {
 		public static int ScreenHeight { get; private set; }
 		protected abstract int _GetScreenHeight ();
 
+		protected abstract void _SetWindowSize (int width, int height);
+
 		public static void QuitApplication () => Instance._QuitApplication();
 		protected abstract void _QuitApplication ();
 

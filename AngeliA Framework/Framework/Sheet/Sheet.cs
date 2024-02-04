@@ -86,25 +86,7 @@ namespace AngeliaFramework {
 			Atlas.Clear();
 			Texture = null;
 		}
-
-		public static object LoadSheetTextureFromDisk (string path) => LoadSheetTextureFromDisk(path, out _);
-
-		public static object LoadSheetTextureFromDisk (string path, out int spriteCount) {
-			spriteCount = 0;
-			if (!Util.FileExists(path)) return null;
-			object result = null;
-			using var stream = new FileStream(path, FileMode.Open);
-			using var reader = new BinaryReader(stream);
-			reader.ReadInt32(); // File Version
-			int textureSize = reader.ReadInt32();
-			if (textureSize > 0) {
-				var pngBytes = reader.ReadBytes(textureSize);
-				result = Game.PngBytesToTexture(pngBytes);
-			}
-			spriteCount = reader.ReadInt32();
-			return result;
-		}
-
+		
 		// LGC
 		private void ApplyData () {
 			for (int i = 0; i < Sprites.Count; i++) {

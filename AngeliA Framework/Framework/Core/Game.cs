@@ -67,6 +67,7 @@ namespace AngeliaFramework {
 		public static string GameTitle { get; private set; } = "";
 		public static string GameDeveloper { get; private set; } = "";
 		public static bool AllowMakerFeaures { get; private set; } = false;
+		public static long TicksSinceStart => GameWatch.ElapsedTicks;
 
 		// Event
 		private static event System.Action OnGameRestart;
@@ -88,6 +89,8 @@ namespace AngeliaFramework {
 		private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", true);
 		private static readonly SavingInt _MusicVolume = new("Audio.MusicVolume", 500);
 		private static readonly SavingInt _SoundVolume = new("Audio.SoundVolume", 1000);
+		private static readonly SavingInt _LastUsedScreenWindowWidth = new("Game.LastUsedScreenWindowWidth", 1024);
+		private static readonly SavingInt _LastUsedScreenWindowHeight = new("Game.LastUsedScreenWindowHeight", 1024);
 		private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 
 
@@ -130,7 +133,7 @@ namespace AngeliaFramework {
 				Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
 
 				_AddGameTryingToQuitCallback(OnTryingToQuit);
-				_AddGameQuittingCallback(OnGameQuitting);
+				_AddGameQuittingCallback(OnQuitting);
 				_AddTextInputCallback(CellGUI.OnTextInput);
 				_AddFocusChangedCallback(OnFocusChanged);
 
@@ -138,6 +141,7 @@ namespace AngeliaFramework {
 
 				_SetGraphicFramerate(GraphicFramerate);
 				_SetFullscreen(_IsFullscreen.Value);
+				_SetWindowSize(_LastUsedScreenWindowWidth.Value, _LastUsedScreenWindowHeight.Value);
 				_SetMusicVolume(MusicVolume);
 				_SetSoundVolume(SoundVolume);
 
@@ -163,6 +167,11 @@ namespace AngeliaFramework {
 				PauseGame();
 				OnGameTryingToQuit?.Invoke();
 				return false;
+			}
+			static void OnQuitting () {
+				_LastUsedScreenWindowWidth.Value = ScreenWidth;
+				_LastUsedScreenWindowHeight.Value = ScreenHeight;
+				OnGameQuitting?.Invoke();
 			}
 			static void OnFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
 		}

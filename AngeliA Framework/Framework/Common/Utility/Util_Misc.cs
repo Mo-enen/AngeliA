@@ -241,12 +241,15 @@ namespace AngeliaFramework {
 			return new Byte4((byte)(result.x * 255), (byte)(result.y * 255), (byte)(result.z * 255), 255);
 		}
 		public static void RGBToHSV (Byte4 rgbColor, out float h, out float s, out float v) {
-			if (rgbColor.b > rgbColor.g && rgbColor.b > rgbColor.r) {
-				Helper(4f, rgbColor.b, rgbColor.r, rgbColor.g, out h, out s, out v);
-			} else if (rgbColor.g > rgbColor.r) {
-				Helper(2f, rgbColor.g, rgbColor.b, rgbColor.r, out h, out s, out v);
+			float r = rgbColor.r / 255f;
+			float g = rgbColor.g / 255f;
+			float b = rgbColor.b / 255f;
+			if (b > g && b > r) {
+				Helper(4f, b, r, g, out h, out s, out v);
+			} else if (g > r) {
+				Helper(2f, g, b, r, out h, out s, out v);
 			} else {
-				Helper(0f, rgbColor.r, rgbColor.g, rgbColor.b, out h, out s, out v);
+				Helper(0f, r, g, b, out h, out s, out v);
 			}
 			// Func
 			static void Helper (float offset, float dominantcolor, float colorone, float colortwo, out float H, out float S, out float V) {

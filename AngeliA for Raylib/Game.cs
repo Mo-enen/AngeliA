@@ -7,24 +7,43 @@ using Raylib_cs;
 
 namespace AngeliaForRaylib;
 
-public partial class Game : AngeliaFramework.Game {
+public partial class GameForRaylib : Game {
 
-	// SUB
+
+
+
+	#region --- SUB ---
+
+
 	private class GLRect {
 		public IRect RaylibRect;
 		public Color Color;
 	}
+
 	private class GLTexture {
 		public IRect RaylibRect;
 		public Texture2D Texture;
 	}
+
 	private class FontData {
 		public Font Font;
 		public string Name;
 	}
 
+
+	#endregion
+
+
+
+
+	#region --- VAR ---
+
+
+	// Const
+	private const long TICK_GAP = System.TimeSpan.TicksPerSecond / 60;
+
 	// Api
-	public static Game InstanceRaylib => Instance as Game;
+	public static GameForRaylib InstanceRaylib => Instance as GameForRaylib;
 
 	// Event
 	private event System.Action OnGameQuitting = null;
@@ -40,19 +59,32 @@ public partial class Game : AngeliaFramework.Game {
 	private int GLTextureCount = 0;
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
+	private long NextUpdateTick = -1;
 
-	// API
-	public void Start () {
 
-		var msgs = new List<(string msg, Color tint)>();
-		foreach (var c in typeof(Character).AllChildClass()) {
-			var tint = Color.RayWhite;
-			msgs.Add((c.Name, tint));
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	public void Run () {
+		InitializeGame();
+		while (!RequireQuitGame) {
+			try {
+				UpdateGame();
+			} catch (System.Exception ex) {
+				LogException(ex);
+			}
 		}
+		OnGameQuitting?.Invoke();
+		Raylib.CloseWindow();
+	}
 
 
-
-		////////////////////////////////////////
+	private void InitializeGame () {
 
 		// Init Window
 		Raylib.SetConfigFlags(
@@ -60,7 +92,7 @@ public partial class Game : AngeliaFramework.Game {
 			ConfigFlags.VSyncHint |
 			ConfigFlags.AlwaysRunWindow
 		);
-		Raylib.InitWindow(1024, 1024, "Test");
+		Raylib.InitWindow(1024, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
 		// Init Font
@@ -75,91 +107,85 @@ public partial class Game : AngeliaFramework.Game {
 		fontList.Sort((a, b) => a.Name.CompareTo(b.Name));
 		Fonts = fontList.ToArray();
 
-		// init AngeliA
-		Initialize();
-
-		while (true) {
-			try {
-
-				// Window Focus
-				bool windowFocus = Raylib.IsWindowFocused();
-				if (windowFocus != WindowFocused) {
-					WindowFocused = windowFocus;
-					OnWindowFocusChanged?.Invoke(windowFocus);
-				}
-
-				// Text Input
-				int currentChar;
-				while ((currentChar = Raylib.GetCharPressed()) > 0) {
-					OnTextInput?.Invoke((char)currentChar);
-				}
-
-				// Update Game
-				Raylib.BeginDrawing();
-				Raylib.DrawRectangleGradientV(
-					0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(),
-					Sky.SkyTintBottomColor.ToRaylib(), Sky.SkyTintTopColor.ToRaylib()
-				);
-
-
-				///////////////////////////
-				int y = 12;
-				foreach (var (msg, tint) in msgs) {
-					Raylib.DrawText(msg, 12, y, 32, tint);
-					y += 36;
-				}
-				///////////////////////////
-
-
-				// Update GL Gizmos
-				for (int i = 0; i < GLRectCount; i++) {
-					var glRect = GLRects[i];
-					var rRect = glRect.RaylibRect;
-					Raylib.DrawRectangle(rRect.x, rRect.y, rRect.width, rRect.height, glRect.Color);
-				}
-				for (int i = 0; i < GLTextureCount; i++) {
-					var glTexture = GLTextures[i];
-					var rTexture = glTexture.Texture;
-					Raylib.DrawTexturePro(
-						rTexture,
-						new Rectangle(0, 0, rTexture.Width, rTexture.Height),
-						glTexture.RaylibRect.ToRaylib(),
-						default, 0, Color.White
-					);
-				}
-				GLRectCount = 0;
-				GLTextureCount = 0;
-
-				// End Draw
-				Raylib.EndDrawing();
-
-				// Trying to Quit Check
-				if (!RequireQuitGame && Raylib.WindowShouldClose()) {
-					OnGameTryingToQuit?.Invoke();
-				}
-
-				// Real Quit Check
-				if (RequireQuitGame) break;
-
-				// Wait for Fixed Update
-
-
-
-
-			} catch (System.Exception ex) {
-				LogException(ex);
-			}
-		}
-
-		// Quitting
-		OnGameQuitting?.Invoke();
-
-		// Close
-		Raylib.CloseWindow();
+		// Init AngeliA
+		base.Initialize();
+		Raylib.SetWindowTitle(GameTitle);
 
 	}
 
-	// Util
+
+	private void UpdateGame () {
+
+		// Text Input
+		int currentChar;
+		while ((currentChar = Raylib.GetCharPressed()) > 0) {
+			OnTextInput?.Invoke((char)currentChar);
+		}
+
+		// Wait for Fixed Update
+		long currentTick = TicksSinceStart;
+		if (currentTick < NextUpdateTick) goto _CONTINUE_;
+		NextUpdateTick = currentTick + TICK_GAP;
+
+		// Window Focus
+		bool windowFocus = Raylib.IsWindowFocused();
+		if (windowFocus != WindowFocused) {
+			WindowFocused = windowFocus;
+			OnWindowFocusChanged?.Invoke(windowFocus);
+		}
+
+		// Update Game
+		Raylib.BeginDrawing();
+		Raylib.DrawRectangleGradientV(
+			0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(),
+			Sky.SkyTintBottomColor.ToRaylib(), Sky.SkyTintTopColor.ToRaylib()
+		);
+
+		// Update AngeliA
+		base.GameUpdate();
+		base.GraphicUpdate();
+
+		// Update GL Gizmos
+		for (int i = 0; i < GLRectCount; i++) {
+			var glRect = GLRects[i];
+			var rRect = glRect.RaylibRect;
+			Raylib.DrawRectangle(rRect.x, rRect.y, rRect.width, rRect.height, glRect.Color);
+		}
+		for (int i = 0; i < GLTextureCount; i++) {
+			var glTexture = GLTextures[i];
+			var rTexture = glTexture.Texture;
+			Raylib.DrawTexturePro(
+				rTexture,
+				new Rectangle(0, 0, rTexture.Width, rTexture.Height),
+				glTexture.RaylibRect.ToRaylib(),
+				default, 0, Color.White
+			);
+		}
+		GLRectCount = 0;
+		GLTextureCount = 0;
+
+		// End Draw
+		Raylib.EndDrawing();
+
+		// Final
+		_CONTINUE_:;
+
+		// Trying to Quit Check
+		if (!RequireQuitGame && Raylib.WindowShouldClose()) {
+			RequireQuitGame = OnGameTryingToQuit != null && OnGameTryingToQuit.Invoke();
+		}
+
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
 	private static int Angelia_to_Raylib_X (int globalX) {
 		var cameraRect = CellRenderer.CameraRect;
 		var screenRect = InstanceRaylib.ScreenRect;
@@ -169,6 +195,7 @@ public partial class Game : AngeliaFramework.Game {
 			globalX
 		);
 	}
+
 
 	private static int Angelia_to_Raylib_Y (int globalY) {
 		var cameraRect = CellRenderer.CameraRect;
@@ -180,11 +207,48 @@ public partial class Game : AngeliaFramework.Game {
 		);
 	}
 
+
 	private static IRect Angelia_to_Raylib_Rect (IRect globalRect) => IRect.MinMaxRect(
 		Angelia_to_Raylib_X(globalRect.x),
 		Angelia_to_Raylib_Y(globalRect.yMax),
 		Angelia_to_Raylib_X(globalRect.xMax),
 		Angelia_to_Raylib_Y(globalRect.y)
 	);
+
+
+	private static void WritePixelsToConsole (Byte4[] pixels, int width) {
+
+		int height = pixels.Length / width;
+		int realWidth = Util.Min(width, 24);
+		int realHeight = height * realWidth / width;
+		int scale = width / realWidth;
+
+		for (int y = 0; y < realHeight; y++) {
+			System.Console.ResetColor();
+			System.Console.WriteLine();
+			for (int x = 0; x < realWidth; x++) {
+				var p = pixels[(y * scale).Clamp(0, height - 1) * width + (x * scale).Clamp(0, width - 1)];
+				Util.RGBToHSV(p, out float h, out float s, out float v);
+				System.Console.BackgroundColor = (v * s < 0.2f) ?
+					(v < 0.33f ? System.ConsoleColor.Black : v > 0.66f ? System.ConsoleColor.White : System.ConsoleColor.Gray) :
+					(h < 0.08f ? (v > 0.5f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed) :
+					h < 0.25f ? (v > 0.5f ? System.ConsoleColor.Yellow : System.ConsoleColor.DarkYellow) :
+					h < 0.42f ? (v > 0.5f ? System.ConsoleColor.Green : System.ConsoleColor.DarkGreen) :
+					h < 0.58f ? (v > 0.5f ? System.ConsoleColor.Cyan : System.ConsoleColor.DarkCyan) :
+					h < 0.75f ? (v > 0.5f ? System.ConsoleColor.Blue : System.ConsoleColor.DarkBlue) :
+					h < 0.92f ? (v > 0.5f ? System.ConsoleColor.Magenta : System.ConsoleColor.DarkMagenta) :
+					(v > 0.6f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed));
+				System.Console.Write(" ");
+			}
+		}
+		System.Console.ResetColor();
+		System.Console.WriteLine();
+	}
+
+
+	#endregion
+
+
+
 
 }

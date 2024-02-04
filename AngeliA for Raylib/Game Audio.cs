@@ -5,7 +5,7 @@ using Raylib_cs;
 
 namespace AngeliaForRaylib;
 
-public partial class Game {
+public partial class GameForRaylib {
 
 
 	// Data

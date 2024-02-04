@@ -6,7 +6,7 @@ using Raylib_cs;
 
 namespace AngeliaForRaylib;
 
-public partial class Game {
+public partial class GameForRaylib {
 
 
 	// Data
@@ -70,14 +70,21 @@ public partial class Game {
 		if (pixels == null || pixels.Length == 0) return null;
 		unsafe {
 			int len = pixels.Length;
-			var colors = pixels.ToRaylib();
-			fixed (Color* data = &colors[0]) {
+			var bytes = new byte[pixels.Length * 4];
+			for (int i = 0; i < bytes.Length; i += 4) {
+				var p = pixels[i / 4];
+				bytes[i + 0] = p.r;
+				bytes[i + 1] = p.g;
+				bytes[i + 2] = p.b;
+				bytes[i + 3] = p.a;
+			}
+			fixed (void* data = bytes) {
 				return Raylib.LoadTextureFromImage(new Image() {
 					Data = data,
-					Format = PixelFormat.UncompressedR32G32B32A32,
+					Format = PixelFormat.UncompressedR8G8B8A8,
 					Width = width,
 					Height = height,
-					Mipmaps = 0,
+					Mipmaps = 1,
 				});
 			}
 		}
@@ -93,6 +100,7 @@ public partial class Game {
 			for (int i = 0; i < len; i++) {
 				result[i] = colors[i].ToAngelia();
 			}
+			Raylib.UnloadImageColors(colors);
 			return result;
 		}
 	}
@@ -114,14 +122,17 @@ public partial class Game {
 		if (texture is not Texture2D rTexture) return System.Array.Empty<byte>();
 		unsafe {
 			var fileType = Marshal.StringToHGlobalAnsi(".png");
-			var fileSizePtr = new System.IntPtr();
-			var resultPtr = new System.IntPtr(Raylib.ExportImageToMemory(
+			int fileSize = 0;
+			char* result = Raylib.ExportImageToMemory(
 				Raylib.LoadImageFromTexture(rTexture),
 				(sbyte*)fileType.ToPointer(),
-				(int*)fileSizePtr.ToPointer()
-			));
-			var resultBytes = new byte[fileSizePtr.ToInt32()];
-			Marshal.Copy(resultPtr, resultBytes, 0, resultBytes.Length);
+				&fileSize
+			);
+			if (fileSize == 0) return System.Array.Empty<byte>();
+			var resultBytes = new byte[fileSize];
+			Marshal.Copy((nint)result, resultBytes, 0, fileSize);
+			Marshal.FreeCoTaskMem((System.IntPtr)result);
+			Marshal.FreeCoTaskMem(fileType);
 			return resultBytes;
 		}
 	}
@@ -174,7 +185,7 @@ public partial class Game {
 	protected override void _SetClipboardText (string text) => Raylib.SetClipboardText(text);
 
 	protected override void _SetImeCompositionMode (bool on) {
-		
+
 	}
 
 
