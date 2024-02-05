@@ -10,13 +10,13 @@ public partial class GameForRaylib {
 
 	// Cursor
 	protected override void _ShowCursor () {
-		Raylib.EnableCursor();
+		//Raylib.EnableCursor();
 		Raylib.ShowCursor();
 	}
 
 	protected override void _HideCursor () {
 		Raylib.HideCursor();
-		Raylib.DisableCursor();
+		//Raylib.DisableCursor();
 	}
 
 	protected override bool _CursorVisible () => !Raylib.IsCursorHidden();
@@ -41,30 +41,30 @@ public partial class GameForRaylib {
 	// Mouse
 	protected override bool _IsMouseAvailable () => true;
 
-	protected override bool _IsMouseLeftHolding () => Raylib.IsMouseButtonPressed(MouseButton.Left);
+	protected override bool _IsMouseLeftHolding () => Raylib.IsMouseButtonDown(MouseButton.Left);
 
-	protected override bool _IsMouseMidHolding () => Raylib.IsMouseButtonPressed(MouseButton.Middle);
+	protected override bool _IsMouseMidHolding () => Raylib.IsMouseButtonDown(MouseButton.Middle);
 
-	protected override bool _IsMouseRightHolding () => Raylib.IsMouseButtonPressed(MouseButton.Right);
+	protected override bool _IsMouseRightHolding () => Raylib.IsMouseButtonDown(MouseButton.Right);
 
 	protected override int _GetMouseScrollDelta () => Raylib.GetMouseWheelMove().RoundToInt();
 
 	protected override Int2 _GetMouseScreenPosition () {
 		var pos = Raylib.GetMousePosition();
-		return new(pos.X.RoundToInt(), pos.Y.RoundToInt());
+		return new(pos.X.RoundToInt(), ScreenHeight - pos.Y.RoundToInt());
 	}
 
 
 	// Keyboard
 	protected override bool _IsKeyboardAvailable () => true;
 
-	protected override bool _IsKeyboardKeyHolding (AngeliaFramework.KeyboardKey key) => Raylib.IsKeyPressed(key.ToRaylib());
+	protected override bool _IsKeyboardKeyHolding (AngeliaFramework.KeyboardKey key) => Raylib.IsKeyDown(key.ToRaylib());
 
 
 	// Gamepad
 	protected override bool _IsGamepadAvailable () => Raylib.IsGamepadAvailable(0);
 
-	protected override bool _IsGamepadKeyHolding (GamepadKey key) => Raylib.IsGamepadButtonPressed(0, key.ToRaylib());
+	protected override bool _IsGamepadKeyHolding (GamepadKey key) => Raylib.IsGamepadButtonDown(0, key.ToRaylib());
 
 	protected override bool _IsGamepadLeftStickHolding (Direction4 direction) {
 		float value = 0f;
@@ -113,14 +113,6 @@ public partial class GameForRaylib {
 		Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightX),
 		Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightY)
 	);
-
-
-
-
-
-
-
-
 
 
 }

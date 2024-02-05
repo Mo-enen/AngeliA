@@ -211,7 +211,7 @@ namespace AngeliaFramework {
 		private static readonly PoolingSheet Sheet = new();
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
-		private static TextLayer[] TextLayers = new TextLayer[0];
+		private static TextLayer[] TextLayers = System.Array.Empty<TextLayer>();
 		private static bool IsDrawing = false;
 
 
@@ -338,18 +338,18 @@ namespace AngeliaFramework {
 				for (int i = 0; i < Layers.Length; i++) {
 					var layer = Layers[i];
 					layer.ZSort();
-					int prevCellCount = layer.PrevCellCount;
-					Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count, ref prevCellCount);
-					layer.PrevCellCount = prevCellCount;
+					int prevCount = layer.Count;
+					Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count);
+					layer.PrevCellCount = prevCount;
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			try {
 				for (int i = 0; i < TextLayers.Length; i++) {
 					var layer = TextLayers[i];
 					layer.ZSort();
-					int prevCellCount = layer.PrevCellCount;
-					Game.OnLayerUpdate(i, layer.UiLayer, true, layer.Cells, layer.Count, ref prevCellCount);
-					layer.PrevCellCount = prevCellCount;
+					int prevCount = layer.Count;
+					Game.OnLayerUpdate(i, layer.UiLayer, true, layer.Cells, layer.Count);
+					layer.PrevCellCount = prevCount;
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
 		}

@@ -12,22 +12,17 @@ namespace AngeliaFramework {
 
 
 		// API
-		[OnGameInitialize(-64)]
-		public static void Initialize () {
-			foreach (var type in typeof(InventoryChest).AllChildClass()) {
-				int typeID = type.AngeHash();
-				if (System.Activator.CreateInstance(type) is not InventoryChest chest) continue;
-				int targetCount = chest.InventoryColumn * chest.InventoryRow;
-				if (Inventory.HasInventory(typeID)) {
-					int iCount = Inventory.GetInventoryCapacity(typeID);
-					// Resize
-					if (iCount != targetCount) {
-						Inventory.ResizeItems(typeID, targetCount);
-					}
-				} else {
-					// Create New Items
-					Inventory.AddNewInventoryData(type.AngeName(), targetCount);
+		public InventoryChest () {
+			int targetCount = InventoryColumn * InventoryRow;
+			if (Inventory.HasInventory(TypeID)) {
+				int iCount = Inventory.GetInventoryCapacity(TypeID);
+				// Resize
+				if (iCount != targetCount) {
+					Inventory.ResizeItems(TypeID, targetCount);
 				}
+			} else {
+				// Create New Items
+				Inventory.AddNewInventoryData(GetType().AngeName(), targetCount);
 			}
 		}
 

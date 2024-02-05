@@ -38,6 +38,14 @@ public static class ExtensionRaylib {
 	public static Rectangle ToRaylib (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 	public static IRect ToAngelia (this Rectangle rect) => new(rect.X.RoundToInt(), rect.Y.RoundToInt(), rect.Width.RoundToInt(), rect.Height.RoundToInt());
 
+	public static void FlipHorizontal (this ref Rectangle rect) {
+		rect.X += rect.Width;
+		rect.Width = -rect.Width;
+	}
+	public static void FlipVertical (this ref Rectangle rect) {
+		rect.Y += rect.Height;
+		rect.Height = -rect.Height;
+	}
 
 	public static Raylib_cs.KeyboardKey ToRaylib (this AngeliaFramework.KeyboardKey key) => KeyboardKeyPool[(int)key];
 

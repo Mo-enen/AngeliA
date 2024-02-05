@@ -60,6 +60,7 @@ public partial class GameForRaylib : Game {
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
 	private long NextUpdateTick = -1;
+	private FRect CameraScreenRect = new(0, 0, 1f, 1f);
 
 
 	#endregion
@@ -110,6 +111,12 @@ public partial class GameForRaylib : Game {
 		// Init AngeliA
 		base.Initialize();
 		Raylib.SetWindowTitle(GameTitle);
+		if (!Raylib.IsWindowFullscreen()) {
+			Raylib.SetWindowPosition(
+				(Raylib.GetMonitorWidth(Raylib.GetCurrentMonitor()) - _GetScreenWidth()) / 2,
+				(Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) - _GetScreenHeight()) / 2
+			);
+		}
 
 	}
 
@@ -186,29 +193,21 @@ public partial class GameForRaylib : Game {
 	#region --- LGC ---
 
 
-	private static int Angelia_to_Raylib_X (int globalX) {
-		var cameraRect = CellRenderer.CameraRect;
-		var screenRect = InstanceRaylib.ScreenRect;
-		return Util.RemapUnclamped(
-			cameraRect.x, cameraRect.xMax,
-			screenRect.x, screenRect.xMax,
-			globalX
-		);
-	}
+	private int Angelia_to_Raylib_X (int globalX) => Util.RemapUnclamped(
+		CellRenderer.CameraRect.x, CellRenderer.CameraRect.xMax,
+		ScreenRect.x, ScreenRect.xMax,
+		globalX
+	);
 
 
-	private static int Angelia_to_Raylib_Y (int globalY) {
-		var cameraRect = CellRenderer.CameraRect;
-		var screenRect = InstanceRaylib.ScreenRect;
-		return Util.RemapUnclamped(
-			cameraRect.y, cameraRect.yMax,
-			screenRect.yMax, screenRect.y,
-			globalY
-		);
-	}
+	private int Angelia_to_Raylib_Y (int globalY) => Util.RemapUnclamped(
+		CellRenderer.CameraRect.y, CellRenderer.CameraRect.yMax,
+		ScreenRect.yMax, ScreenRect.y,
+		globalY
+	);
 
 
-	private static IRect Angelia_to_Raylib_Rect (IRect globalRect) => IRect.MinMaxRect(
+	private IRect Angelia_to_Raylib_Rect (IRect globalRect) => IRect.MinMaxRect(
 		Angelia_to_Raylib_X(globalRect.x),
 		Angelia_to_Raylib_Y(globalRect.yMax),
 		Angelia_to_Raylib_X(globalRect.xMax),
