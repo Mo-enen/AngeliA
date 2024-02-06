@@ -50,7 +50,7 @@ namespace AngeliaFramework {
 			try {
 				var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 				return method?.Invoke(null, param);
-			} catch (System.Exception ex) { Game.LogError(ex); }
+			} catch (System.Exception ex) { Game.LogException(ex); }
 			return null;
 		}
 
@@ -58,7 +58,7 @@ namespace AngeliaFramework {
 		public static object InvokeMethod (object obj, string methodName, params object[] param) {
 			if (string.IsNullOrEmpty(methodName)) { return null; }
 			try {
-				param ??= new object[0];
+				param ??= System.Array.Empty<object>();
 				var type = obj.GetType();
 				var method = type.GetMethod(
 					methodName,
@@ -69,7 +69,7 @@ namespace AngeliaFramework {
 					return null;
 				}
 				return method.Invoke(obj, param);
-			} catch (System.Exception ex) { Game.LogError(ex); }
+			} catch (System.Exception ex) { Game.LogException(ex); }
 			return null;
 		}
 

@@ -9,11 +9,6 @@ namespace AngeliaForRaylib;
 public partial class GameForRaylib {
 
 
-	// Data
-	private Texture2D Texture;
-	private IRect ScreenRect;
-
-
 	// Render
 	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) { }
 
@@ -27,6 +22,23 @@ public partial class GameForRaylib {
 	}
 
 	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount) {
+		if (isTextLayer) {
+			UpdateLayer_Text(layerIndex, cells, cellCount);
+		} else {
+			UpdateLayer_Cell(layerIndex, isUiLayer, cells, cellCount);
+		}
+	}
+
+	private void UpdateLayer_Text (int layerIndex, Cell[] cells, int cellCount) {
+
+
+
+
+
+
+	}
+
+	private void UpdateLayer_Cell (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
 		var cameraRect = CellRenderer.CameraRect;
 		int cameraL = cameraRect.x;
@@ -40,11 +52,39 @@ public partial class GameForRaylib {
 		int textureWidth = Texture.Width;
 		int textureHeight = Texture.Height;
 
-		for (int i = 0; i < cellCount; i++) {
+		bool usingShader = false;
+		bool usingBlend = false;
 
-			var cell = cells[isUiLayer ? cellCount - i - 1 : i];
+		// Shader
+		switch (layerIndex) {
+			case RenderLayer.WALLPAPER:
+			case RenderLayer.BEHIND:
+				Raylib.BeginShaderMode(LerpShader);
+				usingShader = true;
+				break;
+			case RenderLayer.SHADOW:
+			case RenderLayer.COLOR:
+				Raylib.BeginShaderMode(ColorShader);
+				usingShader = true;
+				break;
+		}
 
-			if (!isTextLayer) {
+		// Blend
+		if (layerIndex == RenderLayer.MULT) {
+			Raylib.BeginBlendMode(BlendMode.Multiplied);
+			usingBlend = true;
+		}
+
+		if (layerIndex == RenderLayer.ADD) {
+			Raylib.BeginBlendMode(BlendMode.Additive);
+			usingBlend = true;
+		}
+
+		try {
+
+			for (int i = 0; i < cellCount; i++) {
+
+				var cell = cells[isUiLayer ? cellCount - i - 1 : i];
 
 				// Cell
 				if (cell.Sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
@@ -83,7 +123,7 @@ public partial class GameForRaylib {
 				);
 
 				// Shift
-				if (true || !cell.Shift.IsZero) {
+				if (!cell.Shift.IsZero) {
 
 					if (cell.Shift.horizontal >= cell.Width.Abs()) continue;
 					if (cell.Shift.vertical >= cell.Height.Abs()) continue;
@@ -96,6 +136,7 @@ public partial class GameForRaylib {
 					// Shift Dest/Source
 					var newDest = dest;
 					var newSource = source;
+
 					// L
 					if (cell.Width != 0) {
 						float shift = dest.Width * shiftL;
@@ -147,23 +188,19 @@ public partial class GameForRaylib {
 
 				// Draw
 				Raylib.DrawTexturePro(
-					Texture, source, dest,
+					Texture, source, dest.Expand(0.5f),
 					new(
 						pivotX * dest.Width,
 						pivotY * dest.Height
 					), cell.Rotation, cell.Color.ToRaylib()
 				);
 
-			} else {
-				// Text
-				if (cell.TextSprite == null) continue;
-
-
-
-
 			}
+		} catch (System.Exception ex) { LogException(ex); }
 
-		}
+		if (usingShader) Raylib.EndShaderMode();
+		if (usingBlend) Raylib.EndBlendMode();
+
 	}
 
 	protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) { }
@@ -200,26 +237,34 @@ public partial class GameForRaylib {
 
 	// Texture
 	protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
-		if (pixels == null || pixels.Length == 0) return null;
+		int len = width * height;
+		if (len == 0) return EMPTY_TEXTURE;
 		unsafe {
-			int len = pixels.Length;
-			var bytes = new byte[pixels.Length * 4];
-			for (int i = 0; i < bytes.Length; i += 4) {
-				var p = pixels[i / 4];
-				bytes[i + 0] = p.r;
-				bytes[i + 1] = p.g;
-				bytes[i + 2] = p.b;
-				bytes[i + 3] = p.a;
+			Texture2D textureResult;
+			var image = new Image() {
+				Format = PixelFormat.UncompressedR8G8B8A8,
+				Width = width,
+				Height = height,
+				Mipmaps = 1,
+			};
+			if (pixels != null && pixels.Length == len) {
+				var bytes = new byte[pixels.Length * 4];
+				for (int i = 0; i < bytes.Length; i += 4) {
+					var p = pixels[i / 4];
+					bytes[i + 0] = p.r;
+					bytes[i + 1] = p.g;
+					bytes[i + 2] = p.b;
+					bytes[i + 3] = p.a;
+				}
+				fixed (void* data = bytes) {
+					image.Data = data;
+					textureResult = Raylib.LoadTextureFromImage(image);
+				}
+			} else {
+				textureResult = Raylib.LoadTextureFromImage(image);
 			}
-			fixed (void* data = bytes) {
-				return Raylib.LoadTextureFromImage(new Image() {
-					Data = data,
-					Format = PixelFormat.UncompressedR8G8B8A8,
-					Width = width,
-					Height = height,
-					Mipmaps = 1,
-				});
-			}
+			Raylib.SetTextureFilter(textureResult, TextureFilter.Point);
+			return textureResult;
 		}
 	}
 
@@ -239,16 +284,19 @@ public partial class GameForRaylib {
 	}
 
 	protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
-		if (texture is not Texture2D rTexture) return;
+		if (pixels == null || texture is not Texture2D rTexture) return;
+		if (pixels.Length != rTexture.Width * rTexture.Height) return;
 		Raylib.UpdateTexture(rTexture, pixels.ToRaylib());
 	}
 
 	protected override Int2 _GetTextureSize (object texture) => texture is Texture2D rTexture ? new Int2(rTexture.Width, rTexture.Height) : default;
 
 	protected override object _PngBytesToTexture (byte[] bytes) {
-		if (bytes == null || bytes.Length == 0) return null;
+		if (bytes == null || bytes.Length == 0) return EMPTY_TEXTURE;
 		var image = Raylib.LoadImageFromMemory(".png", bytes);
-		return Raylib.LoadTextureFromImage(image);
+		var result = Raylib.LoadTextureFromImage(image);
+		Raylib.SetTextureFilter(result, TextureFilter.Point);
+		return result;
 	}
 
 	protected override byte[] _TextureToPngBytes (object texture) {
@@ -270,12 +318,17 @@ public partial class GameForRaylib {
 		}
 	}
 
+	protected override void _UnloadTexture (object texture) {
+		if (texture is not Texture2D rTexture) return;
+		Raylib.UnloadTexture(rTexture);
+	}
+
 
 	// GL Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Byte4 color) {
 		if (GLRectCount >= GLRects.Length) return;
 		var glRect = GLRects[GLRectCount];
-		glRect.RaylibRect = Angelia_to_Raylib_Rect(rect);
+		glRect.Rect = rect;
 		glRect.Color = color.ToRaylib();
 		GLRectCount++;
 	}
@@ -284,8 +337,9 @@ public partial class GameForRaylib {
 		if (texture is not Texture2D rTexture) return;
 		if (GLTextureCount >= GLTextures.Length) return;
 		var glTexture = GLTextures[GLTextureCount];
-		glTexture.RaylibRect = Angelia_to_Raylib_Rect(rect);
+		glTexture.Rect = rect;
 		glTexture.Texture = rTexture;
+		glTexture.UV = uv;
 		GLTextureCount++;
 	}
 

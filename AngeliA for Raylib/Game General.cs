@@ -8,6 +8,7 @@ namespace AngeliaForRaylib;
 
 public partial class GameForRaylib {
 
+
 	// System
 	protected override bool _GetIsEdittime () {
 #if DEBUG

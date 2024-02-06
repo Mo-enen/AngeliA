@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using AngeliaFramework;
 using Raylib_cs;
 
@@ -16,13 +17,14 @@ public partial class GameForRaylib : Game {
 
 
 	private class GLRect {
-		public IRect RaylibRect;
+		public IRect Rect;
 		public Color Color;
 	}
 
 	private class GLTexture {
-		public IRect RaylibRect;
+		public IRect Rect;
 		public Texture2D Texture;
+		public FRect UV;
 	}
 
 	private class FontData {
@@ -40,6 +42,7 @@ public partial class GameForRaylib : Game {
 
 
 	// Const
+	private Texture2D EMPTY_TEXTURE;
 	private const long TICK_GAP = System.TimeSpan.TicksPerSecond / 60;
 
 	// Api
@@ -52,8 +55,8 @@ public partial class GameForRaylib : Game {
 	private event System.Action<char> OnTextInput = null;
 
 	// Data
-	private readonly GLRect[] GLRects = new GLRect[4096].FillWithNewValue();
-	private readonly GLTexture[] GLTextures = new GLTexture[196].FillWithNewValue();
+	private readonly GLRect[] GLRects = new GLRect[256 * 256].FillWithNewValue();
+	private readonly GLTexture[] GLTextures = new GLTexture[256].FillWithNewValue();
 	private FontData[] Fonts;
 	private int GLRectCount = 0;
 	private int GLTextureCount = 0;
@@ -61,6 +64,13 @@ public partial class GameForRaylib : Game {
 	private bool WindowFocused = true;
 	private long NextUpdateTick = -1;
 	private FRect CameraScreenRect = new(0, 0, 1f, 1f);
+	private IRect ScreenRect;
+	private Shader LerpShader;
+	private Shader ColorShader;
+	private Texture2D Texture;
+
+	// Saving
+	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
 
 
 	#endregion
@@ -80,8 +90,7 @@ public partial class GameForRaylib : Game {
 				LogException(ex);
 			}
 		}
-		OnGameQuitting?.Invoke();
-		Raylib.CloseWindow();
+		QuitGame();
 	}
 
 
@@ -99,19 +108,53 @@ public partial class GameForRaylib : Game {
 		// Init Font
 		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
 		var fontList = new List<FontData>(8);
+		var gb2312 = new StringBuilder();
+		for (int i = ' '; i < 41892; i++) {
+			gb2312.Append(char.ConvertFromUtf32(i));
+		}
+
+		//Raylib.LoadFontData(,,,,, FontType.Default);
+		
+
 		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
+			int cpCount = 0;
+			int[] cPoints = Raylib.LoadCodepoints("13", ref cpCount);
 			fontList.Add(new FontData() {
-				Font = Raylib.LoadFont(fontPath),
+				Font = Raylib.LoadFontEx(fontPath, 48, cPoints, cpCount),
 				Name = Util.GetNameWithoutExtension(fontPath),
 			});
 		}
 		fontList.Sort((a, b) => a.Name.CompareTo(b.Name));
 		Fonts = fontList.ToArray();
 
+		// Init Shader
+		string shaderRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Shaders");
+		string lerpShaderPath = Util.CombinePaths(shaderRoot, "Lerp.fs");
+		if (Util.FileExists(lerpShaderPath)) LerpShader = Raylib.LoadShader(null, lerpShaderPath);
+		string colorShaderPath = Util.CombinePaths(shaderRoot, "Color.fs");
+		if (Util.FileExists(colorShaderPath)) ColorShader = Raylib.LoadShader(null, colorShaderPath);
+
+		// Init Cache
+		unsafe {
+			fixed (void* data = new byte[4] { 0, 0, 0, 0 }) {
+				EMPTY_TEXTURE = Raylib.LoadTextureFromImage(new Image() {
+					Data = data,
+					Format = PixelFormat.UncompressedR8G8B8A8,
+					Height = 1,
+					Width = 1,
+					Mipmaps = 1,
+				});
+			}
+		}
+
 		// Init AngeliA
 		base.Initialize();
+
+		// Raylib Window
 		Raylib.SetWindowTitle(GameTitle);
-		if (!Raylib.IsWindowFullscreen()) {
+		if (WindowMaximized.Value) {
+			Raylib.MaximizeWindow();
+		} else if (!Raylib.IsWindowFullscreen()) {
 			Raylib.SetWindowPosition(
 				(Raylib.GetMonitorWidth(Raylib.GetCurrentMonitor()) - _GetScreenWidth()) / 2,
 				(Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) - _GetScreenHeight()) / 2
@@ -141,8 +184,10 @@ public partial class GameForRaylib : Game {
 			OnWindowFocusChanged?.Invoke(windowFocus);
 		}
 
-		// Update Game
+		// Begin Update
 		Raylib.BeginDrawing();
+
+		// Sky
 		Raylib.DrawRectangleGradientV(
 			0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(),
 			Sky.SkyTintBottomColor.ToRaylib(), Sky.SkyTintTopColor.ToRaylib()
@@ -152,26 +197,15 @@ public partial class GameForRaylib : Game {
 		base.GameUpdate();
 		base.GraphicUpdate();
 
-		// Update GL Gizmos
-		for (int i = 0; i < GLRectCount; i++) {
-			var glRect = GLRects[i];
-			var rRect = glRect.RaylibRect;
-			Raylib.DrawRectangle(rRect.x, rRect.y, rRect.width, rRect.height, glRect.Color);
-		}
-		for (int i = 0; i < GLTextureCount; i++) {
-			var glTexture = GLTextures[i];
-			var rTexture = glTexture.Texture;
-			Raylib.DrawTexturePro(
-				rTexture,
-				new Rectangle(0, 0, rTexture.Width, rTexture.Height),
-				glTexture.RaylibRect.ToRaylib(),
-				default, 0, Color.White
-			);
-		}
-		GLRectCount = 0;
-		GLTextureCount = 0;
+		// Update Gizmos
+		UpdateGizmos();
 
-		// End Draw
+		Raylib.DrawTextureEx(Fonts[0].Font.Texture, new(0, 0), 0, 1f, Color.White);
+		int size = 0;
+		Raylib.DrawTextCodepoint(Fonts[0].Font, Raylib.GetCodepoint("3", ref size), new(900, 800), 100, Color.White);
+		Raylib.DrawTextCodepoint(Fonts[0].Font, Raylib.GetCodepoint("哦", ref size), new(900, 900), 100, Color.White);
+
+		// End Update
 		Raylib.EndDrawing();
 
 		// Final
@@ -185,6 +219,17 @@ public partial class GameForRaylib : Game {
 	}
 
 
+	private void QuitGame () {
+		foreach (var font in Fonts) Raylib.UnloadFont(font.Font);
+		Raylib.UnloadShader(LerpShader);
+		Raylib.UnloadShader(ColorShader);
+		Raylib.UnloadTexture(Texture);
+		WindowMaximized.Value = Raylib.IsWindowMaximized();
+		OnGameQuitting?.Invoke();
+		Raylib.CloseWindow();
+	}
+
+
 	#endregion
 
 
@@ -193,26 +238,50 @@ public partial class GameForRaylib : Game {
 	#region --- LGC ---
 
 
-	private int Angelia_to_Raylib_X (int globalX) => Util.RemapUnclamped(
-		CellRenderer.CameraRect.x, CellRenderer.CameraRect.xMax,
-		ScreenRect.x, ScreenRect.xMax,
-		globalX
-	);
-
-
-	private int Angelia_to_Raylib_Y (int globalY) => Util.RemapUnclamped(
-		CellRenderer.CameraRect.y, CellRenderer.CameraRect.yMax,
-		ScreenRect.yMax, ScreenRect.y,
-		globalY
-	);
-
-
-	private IRect Angelia_to_Raylib_Rect (IRect globalRect) => IRect.MinMaxRect(
-		Angelia_to_Raylib_X(globalRect.x),
-		Angelia_to_Raylib_Y(globalRect.yMax),
-		Angelia_to_Raylib_X(globalRect.xMax),
-		Angelia_to_Raylib_Y(globalRect.y)
-	);
+	private void UpdateGizmos () {
+		var cameraRect = CellRenderer.CameraRect;
+		int cameraL = cameraRect.x;
+		int cameraR = cameraRect.xMax;
+		int cameraD = cameraRect.y;
+		int cameraU = cameraRect.yMax;
+		int screenL = ScreenRect.x;
+		int screenR = ScreenRect.xMax;
+		int screenD = ScreenRect.y;
+		int screenU = ScreenRect.yMax;
+		for (int i = 0; i < GLTextureCount; i++) {
+			var glTexture = GLTextures[i];
+			var rTexture = glTexture.Texture;
+			var rect = glTexture.Rect;
+			var uv = glTexture.UV;
+			Raylib.DrawTexturePro(
+				rTexture,
+				new Rectangle(
+					uv.x * rTexture.Width,
+					(1f - uv.y - uv.height) * rTexture.Height,
+					uv.width * rTexture.Width,
+					-uv.height * rTexture.Height
+				), new Rectangle(
+					Util.Remap(cameraL, cameraR, screenL, screenR, rect.x),
+					Util.Remap(cameraD, cameraU, screenU, screenD, rect.yMax),
+					rect.width * ScreenRect.width / cameraRect.width,
+					rect.height * ScreenRect.height / cameraRect.height
+				), new(0, 0), 0, Color.White
+			);
+		}
+		for (int i = 0; i < GLRectCount; i++) {
+			var glRect = GLRects[i];
+			var rect = glRect.Rect;
+			Raylib.DrawRectangle(
+				Util.Remap(cameraL, cameraR, screenL, screenR, rect.x),
+				Util.Remap(cameraD, cameraU, screenU, screenD, rect.yMax),
+				rect.width * ScreenRect.width / cameraRect.width,
+				rect.height * ScreenRect.height / cameraRect.height,
+				glRect.Color
+			);
+		}
+		GLRectCount = 0;
+		GLTextureCount = 0;
+	}
 
 
 	private static void WritePixelsToConsole (Byte4[] pixels, int width) {

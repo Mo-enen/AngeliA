@@ -14,14 +14,17 @@ public partial class GameForRaylib {
 
 	// Music
 	protected override IEnumerable<KeyValuePair<int, object>> _ForAllAudioClips () {
-		string root = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Audio");
-		foreach (var path in Util.EnumerateFiles(root, false, "*.wav", "*.mp3", "*.ogg")) {
+		// Music
+		string musicRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Audio", "Music");
+		foreach (var path in Util.EnumerateFiles(musicRoot, false, "*.wav", "*.mp3", "*.ogg")) {
 			string name = Util.GetNameWithoutExtension(path);
-			if (name.EndsWith("#music", System.StringComparison.OrdinalIgnoreCase)) {
-				yield return new(name[..^6].TrimEnd(' ').AngeHash(), Raylib.LoadMusicStream(path));
-			} else {
-				yield return new(name.AngeHash(), Raylib.LoadSound(path));
-			}
+			yield return new(name.TrimEnd(' ').AngeHash(), Raylib.LoadMusicStream(path));
+		}
+		// Sound
+		string soundRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Audio", "Sound");
+		foreach (var path in Util.EnumerateFiles(soundRoot, false, "*.wav", "*.mp3", "*.ogg")) {
+			string name = Util.GetNameWithoutExtension(path);
+			yield return new(name.AngeHash(), Raylib.LoadSound(path));
 		}
 	}
 

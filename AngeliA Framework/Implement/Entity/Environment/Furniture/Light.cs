@@ -31,7 +31,7 @@ namespace AngeliaFramework {
 		public override void OnActivated () {
 			base.OnActivated();
 			int hour = System.DateTime.Now.Hour;
-			OpenLight = hour <= 6 || hour >= 18;
+			OpenLight = Game.IsEdittime || hour <= 6 || hour >= 18;
 		}
 
 		public override void FillPhysics () {

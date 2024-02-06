@@ -69,6 +69,48 @@ public static class ExtensionRaylib {
 		_ => GamepadButton.Unknown,
 	};
 
-
+	public static Rectangle Shift (this Rectangle rect, float x, float y) {
+		rect.X += x;
+		rect.Y += y;
+		return rect;
+	}
+	public static Rectangle Expand (this Rectangle rect, float offset) => rect.Expand(offset, offset, offset, offset);
+	public static Rectangle Expand (this Rectangle rect, float l, float r, float d, float u) {
+		rect.X -= l;
+		rect.Y -= d;
+		rect.Width += l + r;
+		rect.Height += d + u;
+		return rect;
+	}
+	public static Rectangle Shrink (this Rectangle rect, float offset) => rect.Expand(-offset);
+	public static Rectangle Shrink (this Rectangle rect, float l, float r, float d, float u) => rect.Expand(-l, -r, -d, -u);
+	public static Rectangle Fit (this Rectangle rect, float targetAspect, float pivotX = 0.5f, float pivotY = 0.5f) {
+		float sizeX = rect.Width;
+		float sizeY = rect.Height;
+		if (targetAspect > rect.Width / rect.Height) {
+			sizeY = sizeX / targetAspect;
+		} else {
+			sizeX = sizeY * targetAspect;
+		}
+		return new Rectangle(
+			rect.X + Util.Abs(rect.Width - sizeX) * pivotX,
+			rect.Y + Util.Abs(rect.Height - sizeY) * pivotY,
+			sizeX, sizeY
+		);
+	}
+	public static Rectangle Envelope (this Rectangle rect, float targetAspect) {
+		float sizeX = rect.Width;
+		float sizeY = rect.Height;
+		if (targetAspect < rect.Width / rect.Height) {
+			sizeY = sizeX / targetAspect;
+		} else {
+			sizeX = sizeY * targetAspect;
+		}
+		return new Rectangle(
+			rect.X - Util.Abs(rect.Width - sizeX) / 2f,
+			rect.Y - Util.Abs(rect.Height - sizeY) / 2f,
+			sizeX, sizeY
+		);
+	}
 
 }

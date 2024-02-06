@@ -46,6 +46,22 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		[OnGameQuitting]
+		internal static void OnGameQuitting_Nav () {
+			var mapEditor = Stage.PeekOrGetEntity<MapEditor>();
+			if (mapEditor != null) {
+				int slotSize = NAV_WORLD_SIZE + 1;
+				for (int i = 0; i < slotSize; i++) {
+					for (int j = 0; j < slotSize; j++) {
+						var slot = mapEditor.NavSlots[i, j];
+						if (slot == null || slot.Texture == null) continue;
+						Game.UnloadTexture(slot.Texture);
+					}
+				}
+			}
+		}
+
+
 		private void Initialize_Nav () {
 			// Create Slots
 			int slotSize = NAV_WORLD_SIZE + 1;

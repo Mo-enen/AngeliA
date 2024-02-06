@@ -193,6 +193,9 @@ namespace AngeliaFramework {
 		public static byte[] TextureToPngBytes (object texture) => Instance._TextureToPngBytes(texture);
 		protected abstract byte[] _TextureToPngBytes (object texture);
 
+		public static void UnloadTexture (object texture) => Instance._UnloadTexture(texture);
+		protected abstract void _UnloadTexture (object texture);
+
 
 		// GL Gizmos
 		public static void DrawGizmosFrame (IRect rect, Byte4 color, int thickness) {
