@@ -28,9 +28,33 @@ public partial class GameForRaylib : Game {
 	}
 
 	private class FontData {
-		public Font Font;
+
+		private readonly Dictionary<char, (GlyphInfo info, Texture2D texture)> Pool = new();
+
+		public byte[] PrioritizedData;
+		public byte[] FullsetData;
 		public string Name;
-		public bool IsFullSet;
+		public int LayerIndex;
+		public int Size;
+
+		public bool TryGetCharData (char c, out GlyphInfo info, out Texture2D texture) {
+			if (Pool.TryGetValue(c, out var result)) {
+				// Exists
+				info = result.info;
+				texture = result.texture;
+				return true;
+			} else {
+				// Get New
+
+
+
+
+			}
+			info = default;
+			texture = default;
+			return false;
+		}
+
 	}
 
 
@@ -105,18 +129,27 @@ public partial class GameForRaylib : Game {
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
 		// Init Font
-
 		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
 		var fontList = new List<FontData>(8);
 		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
-			int cpCount = 0;
-			int[] cPoints = Raylib.LoadCodepoints("12345", ref cpCount);
-			fontList.Add(new FontData() {
-				Font = Raylib.LoadFontEx(fontPath, 48, cPoints, cpCount),
-				Name = Util.GetNameWithoutExtension(fontPath),
-			});
+			string name = Util.GetNameWithoutExtension(fontPath);
+			if (!Util.TryGetIntFromString(name, 0, out int layerIndex, out _)) continue;
+			var targetData = fontList.Find(data => data.LayerIndex == layerIndex);
+			if (targetData == null) {
+				fontList.Add(targetData = new FontData() {
+					Name = name,
+					LayerIndex = layerIndex,
+					Size = 42,
+				});
+			}
+			var data = Util.FileToByte(fontPath);
+			if (name.Contains("#fullset", System.StringComparison.OrdinalIgnoreCase)) {
+				targetData.FullsetData = data;
+			} else {
+				targetData.PrioritizedData = data;
+			}
 		}
-		fontList.Sort((a, b) => a.Name.CompareTo(b.Name));
+		fontList.Sort((a, b) => a.LayerIndex.CompareTo(b.LayerIndex));
 		Fonts = fontList.ToArray();
 
 		// Init Shader
@@ -207,7 +240,9 @@ public partial class GameForRaylib : Game {
 
 
 	private void QuitGame () {
-		foreach (var font in Fonts) Raylib.UnloadFont(font.Font);
+		foreach (var font in Fonts) {
+
+		};
 		Raylib.UnloadShader(LerpShader);
 		Raylib.UnloadShader(ColorShader);
 		Raylib.UnloadTexture(Texture);

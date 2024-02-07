@@ -375,14 +375,25 @@ public partial class GameForRaylib {
 
 	protected override string _GetTextLayerName (int index) => Fonts[index].Name;
 
-	protected override int _GetFontSize (int index) => Fonts[index].Font.BaseSize;
+	protected override int _GetFontSize (int index) => Fonts[index].Size;
 
 	protected override CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CharSprite charSprite, out bool filled) {
 
-		//charSprite.GlobalID = c;
+		var fontData = Fonts[layerIndex];
+		if (!fontData.TryGetCharData(c, out var info, out var texture)) {
+			filled = false;
+			return charSprite;
+		}
 
+		float pxWidth = info.Image.Width;
+		float pxHeight = info.Image.Height;
+		charSprite ??= new();
+		charSprite.GlobalID = c;
+		charSprite.Advance = info.AdvanceX / pxWidth;
+		charSprite.Offset = FRect.MinMaxRect(info.OffsetX / pxWidth, info.OffsetY / pxHeight, 0f, 0f);
+		charSprite.Rebuild = 0;
 
-		filled = charSprite != null;
+		filled = true;
 		return charSprite;
 	}
 
