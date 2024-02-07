@@ -31,17 +31,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Remove="Raylib-cs.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Raylib-cs">
-      <HintPath>Raylib-cs.dll</HintPath>
+      <HintPath>Runtime\Raylib-cs.dll</HintPath>
     </Reference>
   </ItemGroup>
 
