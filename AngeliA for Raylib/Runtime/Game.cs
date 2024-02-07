@@ -30,6 +30,7 @@ public partial class GameForRaylib : Game {
 	private class FontData {
 		public Font Font;
 		public string Name;
+		public bool IsFullSet;
 	}
 
 
@@ -44,9 +45,6 @@ public partial class GameForRaylib : Game {
 	// Const
 	private Texture2D EMPTY_TEXTURE;
 	private const long TICK_GAP = System.TimeSpan.TicksPerSecond / 60;
-
-	// Api
-	public static GameForRaylib InstanceRaylib => Instance as GameForRaylib;
 
 	// Event
 	private event System.Action OnGameQuitting = null;
@@ -81,16 +79,17 @@ public partial class GameForRaylib : Game {
 	#region --- MSG ---
 
 
-	public void Run () {
-		InitializeGame();
-		while (!RequireQuitGame) {
+	public static void Run () {
+		var game = new GameForRaylib();
+		game.InitializeGame();
+		while (!game.RequireQuitGame) {
 			try {
-				UpdateGame();
+				game.UpdateGame();
 			} catch (System.Exception ex) {
 				LogException(ex);
 			}
 		}
-		QuitGame();
+		game.QuitGame();
 	}
 
 
@@ -106,6 +105,7 @@ public partial class GameForRaylib : Game {
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
 		// Init Font
+
 		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
 		var fontList = new List<FontData>(8);
 		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
@@ -128,7 +128,7 @@ public partial class GameForRaylib : Game {
 
 		// Init Cache
 		unsafe {
-			fixed (void* data = new byte[4] { 0, 0, 0, 0 }) {
+			fixed (void* data = new byte[4]) {
 				EMPTY_TEXTURE = Raylib.LoadTextureFromImage(new Image() {
 					Data = data,
 					Format = PixelFormat.UncompressedR8G8B8A8,
@@ -211,7 +211,8 @@ public partial class GameForRaylib : Game {
 		Raylib.UnloadShader(LerpShader);
 		Raylib.UnloadShader(ColorShader);
 		Raylib.UnloadTexture(Texture);
-		WindowMaximized.Value = Raylib.IsWindowMaximized();
+		Raylib.UnloadTexture(EMPTY_TEXTURE);
+		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
 		OnGameQuitting?.Invoke();
 		Raylib.CloseWindow();
 	}
@@ -250,12 +251,12 @@ public partial class GameForRaylib : Game {
 					uv.y * rTexture.Height,
 					uv.width * rTexture.Width,
 					uv.height * rTexture.Height
-				), new Rectangle(
+				).Shrink(0.1f), new Rectangle(
 					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
 					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
 					rect.width * ScreenRect.width / cameraRect.width,
 					rect.height * ScreenRect.height / cameraRect.height
-				), new(0, 0), 0, Color.White
+				).Expand(0.5f), new(0, 0), 0, Color.White
 			);
 		}
 		GLTextureCount = 0;

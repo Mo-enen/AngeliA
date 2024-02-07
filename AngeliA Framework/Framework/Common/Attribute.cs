@@ -80,7 +80,7 @@ namespace AngeliaFramework {
 	[System.AttributeUsage(System.AttributeTargets.Assembly)]
 	public class AngeliaAllowMakerAttribute : System.Attribute {
 		public static bool AllowMakerFeatures => System.AppDomain.CurrentDomain.GetAssemblies().Any(
-			a => a.GetCustomAttribute<AngeliaGameTitleAttribute>() != null
+			a => a.GetCustomAttribute<AngeliaAllowMakerAttribute>() != null
 		);
 	}
 

@@ -5,6 +5,26 @@
     <RootNamespace>AngeliA_Framework</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
+
+
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

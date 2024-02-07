@@ -80,9 +80,9 @@ public partial class GameForRaylib {
 			usingBlend = true;
 		}
 
-		try {
 
-			for (int i = 0; i < cellCount; i++) {
+		for (int i = 0; i < cellCount; i++) {
+			try {
 
 				var cell = cells[isUiLayer ? cellCount - i - 1 : i];
 
@@ -195,8 +195,8 @@ public partial class GameForRaylib {
 					), cell.Rotation, cell.Color.ToRaylib()
 				);
 
-			}
-		} catch (System.Exception ex) { LogException(ex); }
+			} catch (System.Exception ex) { LogException(ex); }
+		}
 
 		if (usingShader) Raylib.EndShaderMode();
 		if (usingBlend) Raylib.EndBlendMode();

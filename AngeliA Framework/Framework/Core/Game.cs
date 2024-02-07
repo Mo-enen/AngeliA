@@ -86,7 +86,7 @@ namespace AngeliaFramework {
 
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
-		private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", true);
+		private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
 		private static readonly SavingInt _MusicVolume = new("Audio.MusicVolume", 500);
 		private static readonly SavingInt _SoundVolume = new("Audio.SoundVolume", 1000);
 		private static readonly SavingInt _LastUsedScreenWindowWidth = new("Game.LastUsedScreenWindowWidth", 1024);

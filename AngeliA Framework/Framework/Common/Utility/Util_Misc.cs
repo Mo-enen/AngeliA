@@ -63,6 +63,17 @@ namespace AngeliaFramework {
 		}
 
 
+		public static bool TryGetIntFromString (string str, int startIndex, out int value, out int endIndex) {
+			value = 0;
+			for (endIndex = startIndex; endIndex < str.Length; endIndex++) {
+				char c = str[endIndex];
+				if (!char.IsNumber(c)) break;
+				value = value * 10 + (c - '0');
+			}
+			return startIndex != endIndex;
+		}
+
+
 		public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) where T : class {
 			int lo = min;
 			int hi = max;

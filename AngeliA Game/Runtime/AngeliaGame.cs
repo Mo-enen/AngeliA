@@ -1,18 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Collections;
-using AngeliaForRaylib;
+﻿using AngeliaForRaylib;
 using AngeliaFramework;
-
 
 [assembly: AngeliA]
 [assembly: AngeliaGameTitle("AngeliA")]
 [assembly: AngeliaGameDeveloper("Moenen")]
 [assembly: AngeliaVersion(0, 0, 1, ReleaseLifeCycle.Alpha)]
 
+//[assembly: System.Reflection.ObfuscateAssembly(true, StripAfterObfuscation = true)]
 
-namespace AngeliaGame;
-
-
-internal class AngeliaGame {
-	public static void Main () => new GameForRaylib().Run();
-}
+GameForRaylib.Run();

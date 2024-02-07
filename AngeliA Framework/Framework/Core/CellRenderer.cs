@@ -365,9 +365,7 @@ namespace AngeliaFramework {
 
 		public static void LoadSheet (Project project) {
 			// Artwork >> Sheet
-			if (project != ProjectSystem.BuiltInProject || Game.IsEdittime) {
-				SheetUtil.RecreateSheetIfArtworkModified(project.SheetPath, project.ArtworkRoot);
-			}
+			SheetUtil.RecreateSheetIfArtworkModified(project.SheetPath, project.ArtworkRoot);
 			// Load Sheet
 			if (!Sheet.LoadFromDisk(project.SheetPath) && project != ProjectSystem.BuiltInProject) {
 				Sheet.LoadFromDisk(ProjectSystem.BuiltInProject.SheetPath);
