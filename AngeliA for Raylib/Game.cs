@@ -108,17 +108,9 @@ public partial class GameForRaylib : Game {
 		// Init Font
 		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
 		var fontList = new List<FontData>(8);
-		var gb2312 = new StringBuilder();
-		for (int i = ' '; i < 41892; i++) {
-			gb2312.Append(char.ConvertFromUtf32(i));
-		}
-
-		//Raylib.LoadFontData(,,,,, FontType.Default);
-		
-
 		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
 			int cpCount = 0;
-			int[] cPoints = Raylib.LoadCodepoints("13", ref cpCount);
+			int[] cPoints = Raylib.LoadCodepoints("12345", ref cpCount);
 			fontList.Add(new FontData() {
 				Font = Raylib.LoadFontEx(fontPath, 48, cPoints, cpCount),
 				Name = Util.GetNameWithoutExtension(fontPath),
@@ -200,11 +192,6 @@ public partial class GameForRaylib : Game {
 		// Update Gizmos
 		UpdateGizmos();
 
-		Raylib.DrawTextureEx(Fonts[0].Font.Texture, new(0, 0), 0, 1f, Color.White);
-		int size = 0;
-		Raylib.DrawTextCodepoint(Fonts[0].Font, Raylib.GetCodepoint("3", ref size), new(900, 800), 100, Color.White);
-		Raylib.DrawTextCodepoint(Fonts[0].Font, Raylib.GetCodepoint("哦", ref size), new(900, 900), 100, Color.White);
-
 		// End Update
 		Raylib.EndDrawing();
 
@@ -239,6 +226,7 @@ public partial class GameForRaylib : Game {
 
 
 	private void UpdateGizmos () {
+
 		var cameraRect = CellRenderer.CameraRect;
 		int cameraL = cameraRect.x;
 		int cameraR = cameraRect.xMax;
@@ -248,6 +236,8 @@ public partial class GameForRaylib : Game {
 		int screenR = ScreenRect.xMax;
 		int screenD = ScreenRect.y;
 		int screenU = ScreenRect.yMax;
+
+		// Texture
 		for (int i = 0; i < GLTextureCount; i++) {
 			var glTexture = GLTextures[i];
 			var rTexture = glTexture.Texture;
@@ -257,41 +247,43 @@ public partial class GameForRaylib : Game {
 				rTexture,
 				new Rectangle(
 					uv.x * rTexture.Width,
-					(1f - uv.y - uv.height) * rTexture.Height,
+					uv.y * rTexture.Height,
 					uv.width * rTexture.Width,
-					-uv.height * rTexture.Height
+					uv.height * rTexture.Height
 				), new Rectangle(
-					Util.Remap(cameraL, cameraR, screenL, screenR, rect.x),
-					Util.Remap(cameraD, cameraU, screenU, screenD, rect.yMax),
+					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
+					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
 					rect.width * ScreenRect.width / cameraRect.width,
 					rect.height * ScreenRect.height / cameraRect.height
 				), new(0, 0), 0, Color.White
 			);
 		}
+		GLTextureCount = 0;
+
+		// Rect
 		for (int i = 0; i < GLRectCount; i++) {
 			var glRect = GLRects[i];
 			var rect = glRect.Rect;
 			Raylib.DrawRectangle(
-				Util.Remap(cameraL, cameraR, screenL, screenR, rect.x),
-				Util.Remap(cameraD, cameraU, screenU, screenD, rect.yMax),
+				Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
+				Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
 				rect.width * ScreenRect.width / cameraRect.width,
 				rect.height * ScreenRect.height / cameraRect.height,
 				glRect.Color
 			);
 		}
 		GLRectCount = 0;
-		GLTextureCount = 0;
 	}
 
 
 	private static void WritePixelsToConsole (Byte4[] pixels, int width) {
 
 		int height = pixels.Length / width;
-		int realWidth = Util.Min(width, 24);
+		int realWidth = Util.Min(width, 32);
 		int realHeight = height * realWidth / width;
 		int scale = width / realWidth;
 
-		for (int y = 0; y < realHeight; y++) {
+		for (int y = realHeight - 1; y >= 0; y--) {
 			System.Console.ResetColor();
 			System.Console.WriteLine();
 			for (int x = 0; x < realWidth; x++) {

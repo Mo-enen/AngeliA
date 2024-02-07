@@ -188,7 +188,7 @@ public partial class GameForRaylib {
 
 				// Draw
 				Raylib.DrawTexturePro(
-					Texture, source, dest.Expand(0.5f),
+					Texture, source.Shrink(0.1f), dest.Expand(0.5f),
 					new(
 						pivotX * dest.Width,
 						pivotY * dest.Height
@@ -249,12 +249,17 @@ public partial class GameForRaylib {
 			};
 			if (pixels != null && pixels.Length == len) {
 				var bytes = new byte[pixels.Length * 4];
-				for (int i = 0; i < bytes.Length; i += 4) {
-					var p = pixels[i / 4];
-					bytes[i + 0] = p.r;
-					bytes[i + 1] = p.g;
-					bytes[i + 2] = p.b;
-					bytes[i + 3] = p.a;
+				int index = 0;
+				for (int y = 0; y < height; y++) {
+					for (int x = 0; x < width; x++) {
+						int i = (height - y - 1) * width + x;
+						var p = pixels[i];
+						bytes[index * 4 + 0] = p.r;
+						bytes[index * 4 + 1] = p.g;
+						bytes[index * 4 + 2] = p.b;
+						bytes[index * 4 + 3] = p.a;
+						index++;
+					}
 				}
 				fixed (void* data = bytes) {
 					image.Data = data;
@@ -272,11 +277,17 @@ public partial class GameForRaylib {
 		if (texture is not Texture2D rTexture) return System.Array.Empty<Byte4>();
 		var image = Raylib.LoadImageFromTexture(rTexture);
 		unsafe {
-			int len = image.Width * image.Height;
-			var result = new Byte4[len];
+			int width = image.Width;
+			int height = image.Height;
+			var result = new Byte4[width * height];
 			var colors = Raylib.LoadImageColors(image);
-			for (int i = 0; i < len; i++) {
-				result[i] = colors[i].ToAngelia();
+			int index = 0;
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					int i = (height - y - 1) * width + x;
+					result[index] = colors[i].ToAngelia();
+					index++;
+				}
 			}
 			Raylib.UnloadImageColors(colors);
 			return result;
@@ -285,8 +296,19 @@ public partial class GameForRaylib {
 
 	protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
 		if (pixels == null || texture is not Texture2D rTexture) return;
-		if (pixels.Length != rTexture.Width * rTexture.Height) return;
-		Raylib.UpdateTexture(rTexture, pixels.ToRaylib());
+		int width = rTexture.Width;
+		int height = rTexture.Height;
+		if (pixels.Length != width * height) return;
+		var colors = new Color[pixels.Length];
+		int index = 0;
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				int i = (height - y - 1) * width + x;
+				colors[index] = pixels[i].ToRaylib();
+				index++;
+			}
+		}
+		Raylib.UpdateTexture(rTexture, colors);
 	}
 
 	protected override Int2 _GetTextureSize (object texture) => texture is Texture2D rTexture ? new Int2(rTexture.Width, rTexture.Height) : default;

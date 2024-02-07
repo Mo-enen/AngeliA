@@ -19,22 +19,6 @@ public static class ExtensionRaylib {
 	public static Byte4 ToAngelia (this Color color) => new(color.R, color.G, color.B, color.A);
 
 
-	public static Color[] ToRaylib (this Byte4[] colors) {
-		var result = new Color[colors.Length];
-		for (int i = 0; i < colors.Length; i++) {
-			result[i] = colors[i].ToRaylib();
-		}
-		return result;
-	}
-	public static Byte4[] ToAngelia (this Color[] colors) {
-		var result = new Byte4[colors.Length];
-		for (int i = 0; i < colors.Length; i++) {
-			result[i] = colors[i].ToAngelia();
-		}
-		return result;
-	}
-
-
 	public static Rectangle ToRaylib (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 	public static IRect ToAngelia (this Rectangle rect) => new(rect.X.RoundToInt(), rect.Y.RoundToInt(), rect.Width.RoundToInt(), rect.Height.RoundToInt());
 

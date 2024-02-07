@@ -32,7 +32,7 @@ namespace AngeliaFramework {
 		// Const
 		private static readonly SpriteCode[] BTN_SPRITES = { "DeveloperToolbox.Collider", "DeveloperToolbox.Bound", "DeveloperToolbox.Profiler", "DeveloperToolbox.Effect", };
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
-		
+
 		// Api
 		public override int MaxStackCount => 1;
 
@@ -238,10 +238,10 @@ namespace AngeliaFramework {
 						for (int i = 0; i < count; i++) {
 							var e = entities[i];
 							if (!e.Active) continue;
-							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Down, thick), Const.BLUE_BETTER, true);
-							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Up, thick), Const.BLUE_BETTER, true);
-							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Left, thick), Const.BLUE_BETTER, false);
-							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Right, thick), Const.BLUE_BETTER, false);
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Down, thick), Const.CYAN_BETTER, true);
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Up, thick), Const.CYAN_BETTER, true);
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Left, thick), Const.CYAN_BETTER, false);
+							DrawGizmosRectAsLine(PanelRect, e.GlobalBounds.EdgeInside(Direction4.Right, thick), Const.CYAN_BETTER, false);
 						}
 					}
 				}
