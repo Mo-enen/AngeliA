@@ -29,15 +29,6 @@ public partial class GameForRaylib {
 		}
 	}
 
-	private void UpdateLayer_Text (int layerIndex, Cell[] cells, int cellCount) {
-
-
-
-
-
-
-	}
-
 	private void UpdateLayer_Cell (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
 		var cameraRect = CellRenderer.CameraRect;
@@ -59,11 +50,13 @@ public partial class GameForRaylib {
 		switch (layerIndex) {
 			case RenderLayer.WALLPAPER:
 			case RenderLayer.BEHIND:
+				if (LerpShader.Id == 0) break;
 				Raylib.BeginShaderMode(LerpShader);
 				usingShader = true;
 				break;
 			case RenderLayer.SHADOW:
 			case RenderLayer.COLOR:
+				if (ColorShader.Id == 0) break;
 				Raylib.BeginShaderMode(ColorShader);
 				usingShader = true;
 				break;
@@ -88,9 +81,6 @@ public partial class GameForRaylib {
 
 				// Cell
 				if (cell.Sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
-
-				float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
-				float pivotY = cell.Height > 0 ? 1f - cell.PivotY : cell.PivotY;
 
 				// UV
 				float sourceL, sourceR, sourceD, sourceU;
@@ -122,73 +112,19 @@ public partial class GameForRaylib {
 					cell.Height.Abs() * ScreenRect.height / (float)cameraRect.height
 				);
 
+				float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
+				float pivotY = cell.Height > 0 ? 1f - cell.PivotY : cell.PivotY;
+
 				// Shift
-				if (!cell.Shift.IsZero) {
-
-					if (cell.Shift.horizontal >= cell.Width.Abs()) continue;
-					if (cell.Shift.vertical >= cell.Height.Abs()) continue;
-
-					float shiftL = ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
-					float shiftR = ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
-					float shiftD = ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
-					float shiftU = ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
-
-					// Shift Dest/Source
-					var newDest = dest;
-					var newSource = source;
-
-					// L
-					if (cell.Width != 0) {
-						float shift = dest.Width * shiftL;
-						newDest.X -= cell.Width < 0 ? shift : 0;
-						newDest.Width -= shift;
-						shift = source.Width * shiftL;
-						newSource.X += shift;
-						newSource.Width -= shift;
-					}
-
-					// R
-					if (cell.Width != 0) {
-						float shift = dest.Width * shiftR;
-						newDest.X += cell.Width < 0 ? shift : 0;
-						newDest.Width -= shift;
-						newSource.Width -= source.Width * shiftR;
-					}
-
-					// D
-					if (cell.Height != 0) {
-						float shift = dest.Height * shiftD;
-						newDest.Y += cell.Height < 0 ? shift : 0;
-						newDest.Height -= dest.Height * shiftD;
-						newSource.Height -= source.Height * shiftD;
-					}
-
-					// U
-					if (cell.Height != 0) {
-						float shift = dest.Height * shiftU;
-						newDest.Y -= cell.Height < 0 ? shift : 0;
-						newDest.Height -= shift;
-						shift = source.Height * shiftU;
-						newSource.Y += shift;
-						newSource.Height -= shift;
-					}
-
-					if (newDest.Width.AlmostZero() || newDest.Height.AlmostZero()) continue;
-
-					// Shift Pivot
-					pivotX = (pivotX - shiftL) * dest.Width / newDest.Width;
-					pivotY = (pivotY - shiftU) * dest.Height / newDest.Height;
-					dest = newDest;
-					source = newSource;
-
-				}
-
-				source.Width *= cell.Width.Sign();
-				source.Height *= cell.Height.Sign();
+				ShiftCell(cell, ref source, ref dest, ref pivotX, ref pivotY, out bool skipCell);
+				if (skipCell) continue;
 
 				// Draw
+				source = source.Shrink(0.1f);
+				source.Width *= cell.Width.Sign();
+				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
-					Texture, source.Shrink(0.1f), dest.Expand(0.5f),
+					Texture, source, dest.Expand(0.5f),
 					new(
 						pivotX * dest.Width,
 						pivotY * dest.Height
@@ -201,6 +137,140 @@ public partial class GameForRaylib {
 		if (usingShader) Raylib.EndShaderMode();
 		if (usingBlend) Raylib.EndBlendMode();
 
+	}
+
+	private void UpdateLayer_Text (int layerIndex, Cell[] cells, int cellCount) {
+
+		var cameraRect = CellRenderer.CameraRect;
+		int cameraL = cameraRect.x;
+		int cameraR = cameraRect.xMax;
+		int cameraD = cameraRect.y;
+		int cameraU = cameraRect.yMax;
+		int screenL = ScreenRect.x;
+		int screenR = ScreenRect.xMax;
+		int screenD = ScreenRect.y;
+		int screenU = ScreenRect.yMax;
+
+		bool usingShader = false;
+
+		if (TextShader.Id != 0) {
+			Raylib.BeginShaderMode(TextShader);
+			usingShader = true;
+		}
+
+		for (int i = 0; i < cellCount; i++) {
+			try {
+
+				var cell = cells[i];
+				var sprite = cell.TextSprite;
+
+				if (sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
+
+				var fontData = Fonts[layerIndex];
+				if (!fontData.TryGetTexture((char)sprite.GlobalID, out var texture)) continue;
+
+				// Source
+				var source = new Rectangle(0, 0, texture.Width, texture.Height);
+
+				// Pos
+				var dest = new Rectangle(
+					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, cell.X),
+					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, cell.Y),
+					cell.Width.Abs() * ScreenRect.width / (float)cameraRect.width,
+					cell.Height.Abs() * ScreenRect.height / (float)cameraRect.height
+				);
+
+				float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
+				float pivotY = cell.Height > 0 ? 1f - cell.PivotY : cell.PivotY;
+
+				// Shift
+				ShiftCell(cell, ref source, ref dest, ref pivotX, ref pivotY, out bool skipCell);
+				if (skipCell) continue;
+
+				// Draw
+				source.Width *= cell.Width.Sign();
+				source.Height *= cell.Height.Sign();
+				Raylib.DrawTexturePro(
+					texture, source, dest,
+					new(
+						pivotX * dest.Width,
+						pivotY * dest.Height
+					), cell.Rotation, cell.Color.ToRaylib()
+				);
+
+			} catch (System.Exception ex) {
+				LogException(ex);
+			}
+		}
+
+		if (usingShader) Raylib.EndShaderMode();
+
+	}
+
+	private static void ShiftCell (Cell cell, ref Rectangle source, ref Rectangle dest, ref float pivotX, ref float pivotY, out bool skipCell) {
+
+		skipCell = false;
+
+		if (cell.Shift.IsZero) return;
+		if (cell.Shift.horizontal >= cell.Width.Abs()) goto _SKIP_;
+		if (cell.Shift.vertical >= cell.Height.Abs()) goto _SKIP_;
+
+		float shiftL = ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
+		float shiftR = ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
+		float shiftD = ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
+		float shiftU = ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
+
+		// Shift Dest/Source
+		var newDest = dest;
+		var newSource = source;
+
+		// L
+		if (cell.Width != 0) {
+			float shift = dest.Width * shiftL;
+			newDest.X -= cell.Width < 0 ? shift : 0;
+			newDest.Width -= shift;
+			shift = source.Width * shiftL;
+			newSource.X += shift;
+			newSource.Width -= shift;
+		}
+
+		// R
+		if (cell.Width != 0) {
+			float shift = dest.Width * shiftR;
+			newDest.X += cell.Width < 0 ? shift : 0;
+			newDest.Width -= shift;
+			newSource.Width -= source.Width * shiftR;
+		}
+
+		// D
+		if (cell.Height != 0) {
+			float shift = dest.Height * shiftD;
+			newDest.Y += cell.Height < 0 ? shift : 0;
+			newDest.Height -= dest.Height * shiftD;
+			newSource.Height -= source.Height * shiftD;
+		}
+
+		// U
+		if (cell.Height != 0) {
+			float shift = dest.Height * shiftU;
+			newDest.Y -= cell.Height < 0 ? shift : 0;
+			newDest.Height -= shift;
+			shift = source.Height * shiftU;
+			newSource.Y += shift;
+			newSource.Height -= shift;
+		}
+
+		if (newDest.Width.AlmostZero() || newDest.Height.AlmostZero()) goto _SKIP_;
+
+		// Shift Pivot
+		pivotX = (pivotX - shiftL) * dest.Width / newDest.Width;
+		pivotY = (pivotY - shiftU) * dest.Height / newDest.Height;
+		dest = newDest;
+		source = newSource;
+
+		return;
+		_SKIP_:;
+		skipCell = true;
 	}
 
 	protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) { }
@@ -334,8 +404,8 @@ public partial class GameForRaylib {
 			if (fileSize == 0) return System.Array.Empty<byte>();
 			var resultBytes = new byte[fileSize];
 			Marshal.Copy((nint)result, resultBytes, 0, fileSize);
-			Marshal.FreeCoTaskMem((System.IntPtr)result);
-			Marshal.FreeCoTaskMem(fileType);
+			Marshal.FreeHGlobal((System.IntPtr)result);
+			Marshal.FreeHGlobal(fileType);
 			return resultBytes;
 		}
 	}
@@ -385,12 +455,16 @@ public partial class GameForRaylib {
 			return charSprite;
 		}
 
-		float pxWidth = info.Image.Width;
-		float pxHeight = info.Image.Height;
+		float fontSize = fontData.Size / fontData.Scale;
 		charSprite ??= new();
 		charSprite.GlobalID = c;
-		charSprite.Advance = info.AdvanceX / pxWidth;
-		charSprite.Offset = FRect.MinMaxRect(info.OffsetX / pxWidth, info.OffsetY / pxHeight, 0f, 0f);
+		charSprite.Advance = info.AdvanceX / fontSize;
+		charSprite.Offset = FRect.MinMaxRect(
+			xmin: info.OffsetX / fontSize,
+			ymin: (fontSize - info.OffsetY - info.Image.Height) / fontSize,
+			xmax: (info.OffsetX + info.Image.Width) / fontSize,
+			ymax: (fontSize - info.OffsetY) / fontSize
+		);
 		charSprite.Rebuild = 0;
 
 		filled = true;

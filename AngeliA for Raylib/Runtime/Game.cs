@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using AngeliaFramework;
 using Raylib_cs;
@@ -27,32 +28,71 @@ public partial class GameForRaylib : Game {
 		public FRect UV;
 	}
 
-	private class FontData {
+	private unsafe class FontData {
 
-		private readonly Dictionary<char, (GlyphInfo info, Texture2D texture)> Pool = new();
+		private readonly int[] CACHE_CHAR_ARR = { 0 };
+		private readonly Dictionary<char, (Image image, Texture2D texture)> Pool = new();
+		private byte* PrioritizedData = null;
+		private byte* FullsetData = null;
+		private int PrioritizedByteSize = 0;
+		private int FullsetByteSize = 0;
 
-		public byte[] PrioritizedData;
-		public byte[] FullsetData;
 		public string Name;
 		public int LayerIndex;
 		public int Size;
+		public float Scale = 1f;
+
+		public void LoadData (string filePath, bool isPrioritized) {
+			uint fileSize = 0;
+			byte* fileData = Raylib.LoadFileData(filePath, ref fileSize);
+			if (isPrioritized) {
+				PrioritizedData = fileData;
+				PrioritizedByteSize = (int)fileSize;
+			} else {
+				FullsetData = fileData;
+				FullsetByteSize = (int)fileSize;
+			}
+		}
 
 		public bool TryGetCharData (char c, out GlyphInfo info, out Texture2D texture) {
+			info = default;
+			texture = default;
+			if (PrioritizedByteSize == 0 && FullsetByteSize == 0) return false;
+			bool usingFullset = FullsetByteSize != 0 && (int)c >= 256;
+			var data = usingFullset ? FullsetData : PrioritizedData;
+			int dataSize = usingFullset ? FullsetByteSize : PrioritizedByteSize;
+			CACHE_CHAR_ARR[0] = c;
+			fixed (int* fontChar = CACHE_CHAR_ARR) {
+				var infoPtr = Raylib.LoadFontData(data, dataSize, Size, fontChar, 1, FontType.Default);
+				if (infoPtr == null) {
+					return false;
+				} else {
+					info = infoPtr[0];
+					var img = info.Image;
+					if (img.Width * img.Height == 0) return false;
+					texture = Raylib.LoadTextureFromImage(img);
+					Marshal.FreeHGlobal((System.IntPtr)infoPtr);
+					Pool.TryAdd(c, (img, texture));
+					return true;
+				}
+			}
+		}
+
+		public void Unload () {
+			foreach (var (_, (image, texture)) in Pool) {
+				Raylib.UnloadImage(image);
+				Raylib.UnloadTexture(texture);
+			}
+		}
+
+		public bool TryGetTexture (char c, out Texture2D texture) {
 			if (Pool.TryGetValue(c, out var result)) {
-				// Exists
-				info = result.info;
 				texture = result.texture;
 				return true;
 			} else {
-				// Get New
-
-
-
-
+				texture = default;
+				return false;
 			}
-			info = default;
-			texture = default;
-			return false;
 		}
 
 	}
@@ -89,6 +129,7 @@ public partial class GameForRaylib : Game {
 	private IRect ScreenRect;
 	private Shader LerpShader;
 	private Shader ColorShader;
+	private Shader TextShader;
 	private Texture2D Texture;
 
 	// Saving
@@ -140,14 +181,23 @@ public partial class GameForRaylib : Game {
 					Name = name,
 					LayerIndex = layerIndex,
 					Size = 42,
+					Scale = 1f,
 				});
 			}
-			var data = Util.FileToByte(fontPath);
-			if (name.Contains("#fullset", System.StringComparison.OrdinalIgnoreCase)) {
-				targetData.FullsetData = data;
-			} else {
-				targetData.PrioritizedData = data;
+			// Size
+			int sizeTagIndex = name.IndexOf("#size=", System.StringComparison.OrdinalIgnoreCase);
+			if (sizeTagIndex >= 0 && Util.TryGetIntFromString(name, sizeTagIndex + 6, out int size, out _)) {
+				targetData.Size = Util.Max(42, size);
 			}
+			// Scale
+			int scaleTagIndex = name.IndexOf("#scale=", System.StringComparison.OrdinalIgnoreCase);
+			if (scaleTagIndex >= 0 && Util.TryGetIntFromString(name, scaleTagIndex + 7, out int scale, out _)) {
+				targetData.Scale = (scale / 100f).Clamp(0.01f, 10f);
+			}
+			// Data
+			targetData.LoadData(
+				fontPath, !name.Contains("#fullset", System.StringComparison.OrdinalIgnoreCase)
+			);
 		}
 		fontList.Sort((a, b) => a.LayerIndex.CompareTo(b.LayerIndex));
 		Fonts = fontList.ToArray();
@@ -158,19 +208,11 @@ public partial class GameForRaylib : Game {
 		if (Util.FileExists(lerpShaderPath)) LerpShader = Raylib.LoadShader(null, lerpShaderPath);
 		string colorShaderPath = Util.CombinePaths(shaderRoot, "Color.fs");
 		if (Util.FileExists(colorShaderPath)) ColorShader = Raylib.LoadShader(null, colorShaderPath);
+		string textShaderPath = Util.CombinePaths(shaderRoot, "Text.fs");
+		if (Util.FileExists(textShaderPath)) TextShader = Raylib.LoadShader(null, textShaderPath);
 
 		// Init Cache
-		unsafe {
-			fixed (void* data = new byte[4]) {
-				EMPTY_TEXTURE = Raylib.LoadTextureFromImage(new Image() {
-					Data = data,
-					Format = PixelFormat.UncompressedR8G8B8A8,
-					Height = 1,
-					Width = 1,
-					Mipmaps = 1,
-				});
-			}
-		}
+		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Byte4[1] { Const.CLEAR }, 1, 1);
 
 		// Init AngeliA
 		base.Initialize();
@@ -240,9 +282,7 @@ public partial class GameForRaylib : Game {
 
 
 	private void QuitGame () {
-		foreach (var font in Fonts) {
-
-		};
+		foreach (var font in Fonts) font.Unload();
 		Raylib.UnloadShader(LerpShader);
 		Raylib.UnloadShader(ColorShader);
 		Raylib.UnloadTexture(Texture);
