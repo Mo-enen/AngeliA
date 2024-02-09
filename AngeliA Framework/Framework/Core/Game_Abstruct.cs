@@ -14,15 +14,6 @@ namespace AngeliaFramework {
 		public static bool IsEdittime => Instance._GetIsEdittime();
 		protected abstract bool _GetIsEdittime ();
 
-		internal static int GraphicFramerate {
-			get => _GraphicFramerate.Value.Clamp(30, 120);
-			set {
-				_GraphicFramerate.Value = value.Clamp(30, 120);
-				Instance._SetGraphicFramerate(_GraphicFramerate.Value);
-			}
-		}
-		protected abstract void _SetGraphicFramerate (int framerate);
-
 		internal static bool IsFullscreen {
 			get => _IsFullscreen.Value;
 			set {
@@ -42,8 +33,6 @@ namespace AngeliaFramework {
 
 		public static void QuitApplication () => Instance._QuitApplication();
 		protected abstract void _QuitApplication ();
-
-		protected abstract IEnumerable<KeyValuePair<int, object>> _ForAllAudioClips ();
 
 
 		// Listener
@@ -251,7 +240,7 @@ namespace AngeliaFramework {
 
 
 		// Sound
-		internal static void PlaySound (int id, float volume) => Instance._PlaySound(id, volume);
+		public static void PlaySound (int id, float volume = 1f) => Instance._PlaySound(id, volume);
 		protected abstract void _PlaySound (int id, float volume);
 
 		internal static void StopAllSounds () => Instance._StopAllSounds();

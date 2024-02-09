@@ -13,6 +13,7 @@ namespace AngeliaForUnity {
 		private const int SOUND_TRACK_COUNT = 6;
 		private static AudioSource MusicSource = null;
 		private static AudioSource[] SoundSources = null;
+		private static readonly Dictionary<int, AudioClip> AudioPool = new();
 
 
 		// MSG
@@ -42,15 +43,14 @@ namespace AngeliaForUnity {
 			}
 
 			Object.DontDestroyOnLoad(root.gameObject);
-		}
 
-
-		// Resource
-		protected override IEnumerable<KeyValuePair<int, object>> _ForAllAudioClips () {
-			foreach (var clip in AudioClips) {
+			// Clips
+			AudioPool.Clear();
+			foreach (var clip in InstanceUnity.AudioClips) {
 				if (clip == null || string.IsNullOrEmpty(clip.name)) continue;
-				yield return new(clip.name.AngeHash(), clip);
+				AudioPool.TryAdd(clip.name.AngeHash(), clip);
 			}
+
 		}
 
 
@@ -58,7 +58,7 @@ namespace AngeliaForUnity {
 		protected override void _PlayMusic (int id) {
 			MusicSource.Stop();
 			if (MusicVolume == 0) return;
-			if (TryGetResource<AudioClip>(id, out var unityClip)) {
+			if (AudioPool.TryGetValue(id, out var unityClip)) {
 				MusicSource.clip = unityClip;
 				MusicSource.Play();
 			}
@@ -84,7 +84,7 @@ namespace AngeliaForUnity {
 		protected override void _PlaySound (int soundID, float volume) {
 			if (SoundVolume == 0 || volume.LessOrAlmost(0f)) return;
 			volume *= ScaledSoundVolume;
-			if (TryGetResource<AudioClip>(soundID, out var clip)) {
+			if (AudioPool.TryGetValue(soundID, out var clip)) {
 				float maxTime = -1f;
 				int maxIndex = -1;
 				for (int i = 0; i < SoundSources.Length; i++) {

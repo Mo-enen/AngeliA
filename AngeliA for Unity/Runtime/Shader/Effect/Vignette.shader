@@ -32,8 +32,7 @@ Shader "Angelia/Vignette" {
 
 					fixed circle = length(newUV * round);
 					fixed mask = 1 - smoothstep(_Radius, _Radius + _Feather, circle);
-					fixed invertMask = 1 - mask;
-
+					
 					fixed3 displayColor = col.rgb * mask;
 
 					return fixed4(displayColor, 1);

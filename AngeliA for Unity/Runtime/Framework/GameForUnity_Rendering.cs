@@ -14,6 +14,7 @@ namespace AngeliaForUnity {
 
 
 		private class RenderingLayerUnity {
+			public int PrevCellCount;
 			public Transform RendererRoot;
 			public MeshRenderer Renderer;
 			public Mesh Mesh;
@@ -52,7 +53,6 @@ namespace AngeliaForUnity {
 		private RenderingLayerUnity[] RenderingLayers = new RenderingLayerUnity[0];
 		private RenderingLayerUnity[] RenderingTextLayers = new RenderingLayerUnity[0];
 		private Material Skybox = null;
-		private Font[] Fonts = null;
 
 
 		#endregion
@@ -72,16 +72,16 @@ namespace AngeliaForUnity {
 			}
 
 			// Fonts
-			Fonts = new Font[1] { GetDefaultFont() as Font };
+			var fonts = Fonts.Length > 0 ? Fonts : new Font[1] { Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") };
 
 			// Layers
 			RenderingLayers = new RenderingLayerUnity[RenderLayer.COUNT];
-			RenderingTextLayers = new RenderingLayerUnity[Fonts.Length];
+			RenderingTextLayers = new RenderingLayerUnity[fonts.Length];
 			for (int i = 0; i < RenderingTextLayers.Length; i++) {
 				int layerIndex = i;
 				var tLayer = RenderingTextLayers[layerIndex];
 				Font.textureRebuilt += (_font) => {
-					if (_font == Fonts[layerIndex]) CellRenderer.AddTextRebuild(layerIndex);
+					if (_font == fonts[layerIndex]) CellRenderer.AddTextRebuild(layerIndex);
 				};
 			}
 
@@ -102,15 +102,13 @@ namespace AngeliaForUnity {
 		// Camera
 		protected override FRect _GetCameraScreenLocacion () => UnityCamera.rect.ToAngelia();
 		protected override void _SetCameraScreenLocacion (FRect rect) => UnityCamera.rect = rect.ToUnity();
-		protected override float _GetCameraAspect () => UnityCamera.aspect;
-		protected override float _GetCameraOrthographicSize () => UnityCamera.orthographicSize;
 
 
 		// Renderer
 		protected override void _OnCameraUpdate () {
 
-			float orthographicSize = CameraOrthographicSize;
-			float aspect = CameraAspect;
+			float orthographicSize = UnityCamera.orthographicSize;
+			float aspect = UnityCamera.aspect;
 			var pos = new Vector3(
 				-orthographicSize * aspect,
 				-orthographicSize,
@@ -157,7 +155,7 @@ namespace AngeliaForUnity {
 			);
 		}
 
-		protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount, ref int prevCellCount) {
+		protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount) {
 
 			var viewRect = CellRenderer.ViewRect;
 			var a = Float3.zero;
@@ -327,16 +325,16 @@ namespace AngeliaForUnity {
 			}
 
 			// Clear Unused
-			if (cellCount < prevCellCount) {
+			if (cellCount < layer.PrevCellCount) {
 				var zero = Vector3.zero;
-				for (int i = cellCount; i < prevCellCount; i++) {
+				for (int i = cellCount; i < layer.PrevCellCount; i++) {
 					layer.VertexCache[i * 4 + 0] = zero;
 					layer.VertexCache[i * 4 + 1] = zero;
 					layer.VertexCache[i * 4 + 2] = zero;
 					layer.VertexCache[i * 4 + 3] = zero;
 				}
 			}
-			prevCellCount = cellCount;
+			layer.PrevCellCount = cellCount;
 
 			// Cache >> Mesh
 			var mesh = layer.Mesh;
@@ -413,8 +411,6 @@ namespace AngeliaForUnity {
 			return new Int2(t.width, t.height);
 		}
 
-		protected override string _GetTextureName (object texture) => (texture as Texture2D).name;
-
 		protected override object _PngBytesToTexture (byte[] bytes) {
 			var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false) {
 				filterMode = FilterMode.Point,
@@ -425,15 +421,6 @@ namespace AngeliaForUnity {
 		}
 
 		protected override byte[] _TextureToPngBytes (object texture) => (texture as Texture2D).EncodeToPNG();
-
-		protected override void _ResetTextureSize (object texture, int newWidth, int newHeight) {
-			if (
-				texture is not Texture2D texture2d ||
-				(texture2d.width == newWidth && texture2d.height == newHeight)
-			) return;
-			texture2d.Reinitialize(newWidth, newHeight);
-
-		}
 
 
 		// GL
@@ -496,8 +483,6 @@ namespace AngeliaForUnity {
 		protected override void _SetClipboardText (string text) => GUIUtility.systemCopyBuffer = text;
 
 		protected override void _SetImeCompositionMode (bool on) => Input.imeCompositionMode = on ? IMECompositionMode.On : IMECompositionMode.Off;
-
-		protected override object _GetDefaultFont () => Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
 
 		#endregion

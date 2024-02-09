@@ -18,8 +18,6 @@ public partial class GameForRaylib {
 #endif
 	}
 
-	protected override void _SetGraphicFramerate (int framerate) => Raylib.SetTargetFPS(framerate);
-
 	protected override void _SetFullscreen (bool fullScreen) {
 		if (Raylib.IsWindowFullscreen() == fullScreen) return;
 		Raylib.ToggleFullscreen();

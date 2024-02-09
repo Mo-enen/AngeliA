@@ -39,7 +39,6 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode MENU_SETTER_RECORD = ("Menu.KeySetter.Record", "Press key u want");
 		private static readonly LanguageCode MENU_MUSIC_VOLUME = ("Menu.Setting.MusicVolume", "Music Volume");
 		private static readonly LanguageCode MENU_SOUND_VOLUME = ("Menu.Setting.SoundVolume", "Sound Volume");
-		private static readonly LanguageCode MENU_FRAMERATE = ("Menu.Setting.Framerate", "Framerate");
 		private static readonly LanguageCode MENU_LANGUAGE = ("Menu.Setting.Language", "Language");
 		private static readonly LanguageCode MENU_SHOW_FPS = ("Menu.Setting.ShowFPS", "Show FPS");
 		private static readonly LanguageCode MENU_KEYSETTER_SAVE_BACK = ("Menu.KeySetter.SaveAndBack", "Save and Back");
@@ -68,7 +67,6 @@ namespace AngeliaFramework {
 		private readonly GamepadKey[] GamepadKeys = new GamepadKey[8];
 		private readonly IntToChars MusicVolumeCache = new();
 		private readonly IntToChars SoundVolumeCache = new();
-		private readonly IntToChars FramerateCache = new();
 		private readonly CellContent KeySetterLabel = new();
 		private MenuMode Mode = MenuMode.Pause;
 		private MenuMode RequireMode = MenuMode.Pause;
@@ -272,16 +270,6 @@ namespace AngeliaFramework {
 				Game.SoundVolume > 0, Game.SoundVolume < 1000, out delta
 			)) {
 				Game.SetSoundVolume(Game.SoundVolume + delta * 100);
-			}
-
-			// Framerate
-			int currentFramerate = Game.GraphicFramerate;
-			if (DrawArrowItem(
-				MENU_FRAMERATE,
-				CellContent.Get(FramerateCache.GetChars(currentFramerate)),
-				currentFramerate > 30, currentFramerate < 120, out delta
-			)) {
-				Game.GraphicFramerate += delta * 30;
 			}
 
 			// Show FPS 

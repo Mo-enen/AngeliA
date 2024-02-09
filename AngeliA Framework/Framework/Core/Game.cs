@@ -80,9 +80,8 @@ namespace AngeliaFramework {
 		private static event System.Action OnGameLostFocus;
 
 		// Data
-		private static readonly Dictionary<int, object> ResourcePool = new();
-		private static Stopwatch GameWatch;
 		private static long LastGraphicUpdateTime = 0;
+		private static Stopwatch GameWatch;
 
 		// Saving
 		private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
@@ -139,16 +138,12 @@ namespace AngeliaFramework {
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
-				_SetGraphicFramerate(GraphicFramerate);
 				_SetFullscreen(_IsFullscreen.Value);
 				_SetWindowSize(_LastUsedScreenWindowWidth.Value, _LastUsedScreenWindowHeight.Value);
 				_SetMusicVolume(MusicVolume);
 				_SetSoundVolume(SoundVolume);
 
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeLaterAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
-
-				ResourcePool.Clear();
-				ResourcePool.AddRange(_ForAllAudioClips());
 
 				System.GC.Collect();
 
@@ -260,16 +255,6 @@ namespace AngeliaFramework {
 			if (!IsPlaying) return;
 			StopAllSounds();
 			IsPlaying = false;
-		}
-
-
-		public static bool TryGetResource<T> (int id, out T resource) {
-			if (ResourcePool.TryGetValue(id, out object obj) && obj is T tObj) {
-				resource = tObj;
-				return true;
-			}
-			resource = default;
-			return false;
 		}
 
 

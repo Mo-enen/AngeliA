@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using AngeliaFramework;
-using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 
@@ -16,6 +15,7 @@ namespace AngeliaForUnity {
 		[SerializeField] AudioClip[] m_AudioClips = null;
 		[SerializeField] Texture2D[] m_Cursors = null;
 		[SerializeField] Vector2[] m_CursorPivots = null;
+		[SerializeField] Font[] m_Fonts = null;
 
 		// Data
 		private static GameForUnity UnityGame;
@@ -109,6 +109,7 @@ namespace AngeliaForUnity {
 				AudioClips = m_AudioClips,
 				Cursors = m_Cursors,
 				CursorPivots = m_CursorPivots,
+				Fonts = m_Fonts,
 			};
 			UnityGame.Initialize();
 			DontDestroyOnLoad(UnityGame.UnityCamera.gameObject);
@@ -128,7 +129,20 @@ namespace AngeliaForUnity {
 #if UNITY_EDITOR
 	public class BuildReporter : UnityEditor.Build.IPreprocessBuildWithReport {
 		public int callbackOrder => 1;
-		public void OnPreprocessBuild (BuildReport report) => Game.BeforeApplicationBuild(report.summary.outputPath);
+		public void OnPreprocessBuild (UnityEditor.Build.Reporting.BuildReport report) {
+			// Create Sheet
+			SheetUtil.CreateSheetFromAsepriteFiles(
+				AngePath.GetArtworkRoot(AngePath.BuiltInUniverseRoot)
+			)?.SaveToDisk(
+				AngePath.GetSheetPath(AngePath.BuiltInUniverseRoot)
+			);
+			// Copy Universe
+			string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
+			if (Util.FolderExists(universePath)) {
+				string newUniversePath = Util.CombinePaths(Util.GetParentPath(report.summary.outputPath), "Universe");
+				Util.CopyFolder(universePath, newUniversePath, true, true);
+			}
+		}
 	}
 #endif
 }

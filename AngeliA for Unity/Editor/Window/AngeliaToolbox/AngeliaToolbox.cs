@@ -416,7 +416,7 @@ namespace AngeliaForUnity.Editor {
 			string sheetPath = AngePath.GetSheetPath(Util.CombinePaths(AngePath.ApplicationDataPath, "Universe"));
 			int spriteCount = 0;
 			if (texture == null || forceRefresh) {
-				SheetThumbnail.image = texture = Sheet.LoadSheetTextureFromDisk(
+				SheetThumbnail.image = texture = SheetUtil.LoadSheetTextureFromDisk(
 					sheetPath, out spriteCount
 				) as Texture2D;
 			}

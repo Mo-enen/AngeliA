@@ -8,7 +8,7 @@
 		<Nullable>disable</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>
 		<StartupObject></StartupObject>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<AssemblyName>AngeliA Game</AssemblyName>
 		<BaseOutputPath>bin\</BaseOutputPath>

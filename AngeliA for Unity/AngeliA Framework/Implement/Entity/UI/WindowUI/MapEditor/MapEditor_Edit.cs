@@ -1,0 +1,611 @@
+using System.Collections;
+using System.Collections.Generic;
+
+
+namespace AngeliaFramework {
+	public partial class MapEditor {
+
+
+
+
+		#region --- VAR ---
+
+
+		// Const
+		private static readonly int BLOCK_TYPE_COUNT = typeof(BlockType).EnumLength();
+
+		// Short
+		private bool Modify_EntityOnly => ShiftHolding && !AltHolding;
+		private bool Modify_LevelOnly => !ShiftHolding && AltHolding;
+		private bool Modify_BackgroundOnly => ShiftHolding && AltHolding;
+
+		// Data
+		private IRect? SelectionUnitRect = null;
+		private IRect? DraggingUnitRect = null;
+		private Int2? MouseDownPosition = null;
+		private IRect DragBeginSelectionUnitRect = default;
+		private readonly System.Random PaintingRan = new(6492763);
+		private int MouseDownButton = -1;
+		private bool MouseMoved = false;
+		private bool MouseInSelection = false;
+		private bool MouseDownInSelection = false;
+		private bool MouseOutsideBoundary = false;
+		private bool MouseDownOutsideBoundary = false;
+		private bool Pasting = false;
+
+
+		#endregion
+
+
+
+
+		#region --- MSG ---
+
+
+		private void Update_Mouse () {
+
+			DraggingUnitRect = null;
+
+			if (IsPlaying || DroppingPlayer || TaskingRoute || CellGUI.IsTyping) {
+				MouseDownPosition = null;
+				MouseDownOutsideBoundary = false;
+				MouseOutsideBoundary = false;
+				return;
+			}
+
+			var mousePos = FrameInput.MouseGlobalPosition;
+			MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(mousePos.ToUnit());
+			var cameraRect = CellRenderer.CameraRect.Shrink(1);
+			int panelWidth = Unify(PANEL_WIDTH);
+			var targetPanelRect = new IRect(
+				CellRenderer.CameraRect.x + (IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -panelWidth),
+				CellRenderer.CameraRect.y,
+				panelWidth,
+				CellRenderer.CameraRect.height
+			);
+			MouseOutsideBoundary =
+				mousePos.x < cameraRect.x ||
+				mousePos.x > cameraRect.xMax ||
+				mousePos.y < cameraRect.y ||
+				mousePos.y > cameraRect.yMax ||
+				targetPanelRect.Contains(mousePos);
+
+			if (MouseInSelection) {
+				CursorSystem.SetCursorAsMove();
+				if (!Pasting) {
+					DrawModifyFilterLabel(new IRect(FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y, 1, 1));
+				}
+			}
+
+			if (!MouseDownPosition.HasValue) {
+				// Mouse Down
+				int holdingMouseBtn = FrameInput.GetHoldingMouseButton();
+				if (holdingMouseBtn != -1) {
+					MouseDownButton = holdingMouseBtn;
+					MouseDownPosition = mousePos;
+					MouseDownOutsideBoundary = MouseOutsideBoundary;
+					MouseMoved = false;
+					MouseDownInSelection = MouseInSelection;
+				}
+			} else if (FrameInput.MouseButtonHolding(MouseDownButton)) {
+				// Mouse Holding
+				bool newMouseMoved = MouseMoved || Util.SquareDistance(mousePos, MouseDownPosition.Value) > Util.Clamp(Unify(15) * Unify(15), 0, 220 * 220);
+				if (MouseMoved != newMouseMoved) {
+					MouseMoved = newMouseMoved;
+					MouseDragBegin();
+				}
+				if (MouseMoved) {
+					var mouseDownUnitPos = MouseDownPosition.Value.ToUnit();
+					var mouseUnitPos = mousePos.ToUnit();
+					MouseDragging(mouseDownUnitPos, mouseUnitPos);
+					if (MouseDownButton != 2 && (!MouseDownInSelection || MouseDownButton == 1)) {
+						DraggingUnitRect = new IRect(
+							Util.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+							Util.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+							Util.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1,
+							Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1
+						);
+					}
+				}
+			} else {
+				// Mouse Up
+				if (!CtrlHolding) {
+					switch (MouseDownButton) {
+						case 0:
+							MouseUp_Left(MouseDownPosition.Value.ToUnit(), mousePos.ToUnit());
+							break;
+						case 1:
+							MouseUp_Right(MouseDownPosition.Value.ToUnit(), mousePos.ToUnit());
+							break;
+					}
+				}
+				MouseDownButton = -1;
+				MouseDownPosition = null;
+				MouseDownOutsideBoundary = false;
+			}
+
+		}
+
+
+		#endregion
+
+
+
+
+		#region --- LGC ---
+
+
+		private void DeleteSelection () {
+			if (!SelectionUnitRect.HasValue) return;
+			var unitRect = SelectionUnitRect.Value;
+			int z = Stage.ViewZ;
+			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
+				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
+					for (int blockTypeIndex = 0; blockTypeIndex < BLOCK_TYPE_COUNT; blockTypeIndex++) {
+						var type = (BlockType)blockTypeIndex;
+						UserEraseBlock(i, j, z, type);
+					}
+					UserEraseGlobalPosition(i, j, z);
+				}
+			}
+			RedirectForRule(unitRect);
+			SelectionUnitRect = null;
+			IsDirty = true;
+		}
+
+
+		// Mouse Event
+		private void MouseDragBegin () {
+			if (MouseDownInSelection && MouseDownButton == 0 && !Pasting) {
+				StartPaste(true);
+			}
+			if (SelectionUnitRect.HasValue) DragBeginSelectionUnitRect = SelectionUnitRect.Value;
+		}
+
+
+		private void MouseDragging (Int2 mouseDownUnitPos, Int2 mouseUnitPos) {
+			if (MouseDownInSelection && MouseDownButton == 0 && SelectionUnitRect.HasValue) {
+				var unitRect = SelectionUnitRect.Value;
+				unitRect.x = DragBeginSelectionUnitRect.x + mouseUnitPos.x - mouseDownUnitPos.x;
+				unitRect.y = DragBeginSelectionUnitRect.y + mouseUnitPos.y - mouseDownUnitPos.y;
+				SelectionUnitRect = unitRect;
+			}
+		}
+
+
+		private void MouseUp_Left (Int2 mouseDownUnitPos, Int2 mouseUnitPos) {
+
+			if (MouseDownInSelection || MouseDownOutsideBoundary) return;
+
+			// Paint / Erase
+			ApplyPaste();
+			SelectionUnitRect = null;
+			var unitRect = new IRect(
+				Util.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+				Util.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+				(Util.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
+				(Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
+			);
+			bool paint = SelectingPaletteItem != null;
+			int id = paint ? SelectingPaletteItem.ID : 0;
+			var type = paint ? SelectingPaletteItem.BlockType : default;
+			int z = Stage.ViewZ;
+			bool idGlobalPosEntity = IGlobalPosition.IsGlobalPositionEntity(id);
+
+			for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
+				for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
+					if (paint) {
+						// Paint Block
+						if (idGlobalPosEntity) {
+							// Global Pos
+							UserSetGlobalPosition(i, j, z, id);
+						} else {
+							// Redirect for Random
+							if (
+								SelectingPaletteItem.GroupType == GroupType.Random &&
+								SelectingPaletteItem.Group != null &&
+								IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
+								idChain.Length > 0
+							) {
+								id = idChain[PaintingRan.Next(0, idChain.Length)];
+							}
+							// Set Data
+							UserSetBlock(i, j, z, type, id);
+						}
+
+					} else if (mouseDownUnitPos == mouseUnitPos) {
+						// Single Erase
+
+						// Global Pos
+						UserEraseGlobalPosition(i, j, z);
+
+						// Block
+						if (!Modify_BackgroundOnly && !Modify_EntityOnly && !Modify_LevelOnly) {
+							// In Order
+							for (int blockTypeIndex = 0; blockTypeIndex < BLOCK_TYPE_COUNT; blockTypeIndex++) {
+								var blockType = (BlockType)((blockTypeIndex + 3) % BLOCK_TYPE_COUNT);
+								if (UserEraseBlock(i, j, z, blockType)) {
+									break;
+								}
+							}
+						} else {
+							// Single Type
+							var requiredType =
+								Modify_BackgroundOnly ? BlockType.Background :
+								Modify_EntityOnly ? WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0 ? BlockType.Element : BlockType.Entity :
+								Modify_LevelOnly ? BlockType.Level :
+								BlockType.Entity;
+							UserEraseBlock(i, j, z, requiredType);
+						}
+					} else {
+						// Range Erase
+						if (!Modify_LevelOnly && !Modify_EntityOnly) {
+							UserEraseBlock(i, j, z, BlockType.Background);
+						}
+						if (!Modify_BackgroundOnly && !Modify_EntityOnly) {
+							UserEraseBlock(i, j, z, BlockType.Level);
+						}
+						if (!Modify_LevelOnly && !Modify_BackgroundOnly) {
+							UserEraseBlock(i, j, z, BlockType.Entity);
+							UserEraseBlock(i, j, z, BlockType.Element);
+							UserEraseGlobalPosition(i, j, z);
+						}
+					}
+				}
+			}
+			SpawnBlinkParticle(unitRect.ToGlobal(), id);
+			RedirectForRule(unitRect);
+			IsDirty = true;
+		}
+
+
+		private void MouseUp_Right (Int2 mouseDownUnitPos, Int2 mouseUnitPos) {
+			if (MouseDownOutsideBoundary) return;
+			ApplyPaste();
+			if (MouseMoved) {
+				// Select 
+				SelectionUnitRect = new IRect(
+					Util.Min(mouseDownUnitPos.x, mouseUnitPos.x),
+					Util.Min(mouseDownUnitPos.y, mouseUnitPos.y),
+					(Util.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
+					(Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
+				);
+				SelectingPaletteItem = null;
+			} else {
+				// Pick
+				ApplyPaste();
+				SelectionUnitRect = null;
+				int id;
+				if (IGlobalPosition.TryGetIdFromPosition(new Int3(mouseUnitPos.x, mouseUnitPos.y, Stage.ViewZ), out int globalID)) {
+					id = globalID;
+				} else {
+					id = WorldSquad.Front.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y);
+					id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
+				}
+				if (!PalettePool.TryGetValue(id, out SelectingPaletteItem)) {
+					SelectingPaletteItem = null;
+				}
+				if (SelectingPaletteItem != null) {
+					if (SelectingPaletteItem.GroupIndex != SelectingPaletteGroupIndex) {
+						SelectingPaletteGroupIndex = SelectingPaletteItem.GroupIndex;
+						PaletteScrollY = 0;
+					}
+				}
+			}
+		}
+
+
+		// Move
+		private void MoveSelection (Int2 delta) {
+			if (delta == Int2.zero || IsPlaying || DroppingPlayer || IsNavigating || !SelectionUnitRect.HasValue) return;
+			if (!Pasting) StartPaste(true);
+			SelectionUnitRect = SelectionUnitRect.Value.Shift(delta.x, delta.y);
+		}
+
+
+		// Copy
+		private void AddSelectionToCopyBuffer (bool removeOriginal) {
+			if (!SelectionUnitRect.HasValue) return;
+			var oldSelection = SelectionUnitRect.Value;
+			ApplyPaste();
+			SelectionUnitRect = oldSelection;
+			var unitRect = SelectionUnitRect.Value;
+			CopyBuffer.Clear();
+			CopyBufferOriginalUnitRect = unitRect;
+			int z = Stage.ViewZ;
+			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
+				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
+					AddToList(i, j, z, BlockType.Background);
+					AddToList(i, j, z, BlockType.Level);
+					AddToList(i, j, z, BlockType.Entity);
+					AddToList(i, j, z, BlockType.Element);
+				}
+			}
+			if (removeOriginal) {
+				SelectionUnitRect = null;
+				RedirectForRule(unitRect);
+				IsDirty = true;
+			}
+			// Func
+			void AddToList (int i, int j, int z, BlockType type) {
+				// GlobalPos
+				var unitPos = new Int3(i, j, Stage.ViewZ);
+				if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
+					unitPos, out int _gID
+				)) {
+					if (removeOriginal) {
+						UserEraseGlobalPosition(i, j, z);
+					}
+					CopyBuffer.Add(new BlockBuffer() {
+						ID = _gID,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = true,
+					});
+				}
+				// Block
+				int id = WorldSquad.Front.GetBlockAt(i, j, type);
+				if (id != 0) {
+					if (removeOriginal) {
+						UserEraseBlock(i, j, z, type);
+					}
+					CopyBuffer.Add(new BlockBuffer() {
+						ID = id,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = false,
+					});
+				}
+			}
+		}
+
+
+		private void StartPasteFromCopyBuffer () {
+			if (CopyBuffer.Count == 0) return;
+			// Apply Prev Paste
+			ApplyPaste();
+			// Get Target Rect
+			var copyBufferOriginalGlobalRect = CopyBufferOriginalUnitRect.ToGlobal();
+			var targetRect = CopyBufferOriginalUnitRect;
+			if (!CellRenderer.CameraRect.Shrink(Const.CEL * 2).Overlaps(copyBufferOriginalGlobalRect)) {
+				var cameraUnitRect = CellRenderer.CameraRect.ToUnit();
+				targetRect.x = cameraUnitRect.x + cameraUnitRect.width / 2 - targetRect.width / 2;
+				targetRect.y = cameraUnitRect.y + cameraUnitRect.height / 2 - targetRect.height / 2;
+			}
+			// Fill Paste Buffer
+			PastingBuffer.Clear();
+			Pasting = true;
+			foreach (var buffer in CopyBuffer) {
+				PastingBuffer.Add(buffer);
+			}
+			SelectionUnitRect = targetRect;
+		}
+
+
+		// Paste
+		private void ApplyPaste () {
+			if (!Pasting) return;
+			Pasting = false;
+			if (!SelectionUnitRect.HasValue || PastingBuffer.Count <= 0) return;
+			var unitRect = SelectionUnitRect.Value;
+			int z = Stage.ViewZ;
+			foreach (var buffer in PastingBuffer) {
+				int unitX = buffer.LocalUnitX + unitRect.x;
+				int unitY = buffer.LocalUnitY + unitRect.y;
+				if (buffer.IsGlobalPos) {
+					// Global Pos
+					UserSetGlobalPosition(unitX, unitY, z, buffer.ID, ignoreStep: true);
+				} else {
+					// Block
+					UserSetBlock(unitX, unitY, z, buffer.Type, buffer.ID, ignoreStep: true);
+				}
+			}
+			RedirectForRule(unitRect);
+			IsDirty = true;
+			SelectionUnitRect = null;
+			PastingBuffer.Clear();
+		}
+
+
+		private void CancelPaste () {
+			if (!Pasting) return;
+			SelectionUnitRect = null;
+			Pasting = false;
+			PastingBuffer.Clear();
+		}
+
+
+		private void StartPaste (bool removeOriginal) {
+			if (!SelectionUnitRect.HasValue) return;
+			var unitRect = SelectionUnitRect.Value;
+			PastingBuffer.Clear();
+			Pasting = true;
+			int z = Stage.ViewZ;
+			for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
+				for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
+					if (!Modify_EntityOnly && !Modify_LevelOnly) AddToList(i, j, z, BlockType.Background);
+					if (!Modify_EntityOnly && !Modify_BackgroundOnly) AddToList(i, j, z, BlockType.Level);
+					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, z, BlockType.Entity);
+					if (!Modify_BackgroundOnly && !Modify_LevelOnly) AddToList(i, j, z, BlockType.Element);
+				}
+			}
+			if (removeOriginal) {
+				RedirectForRule(unitRect);
+				IsDirty = true;
+			}
+			// Func
+			void AddToList (int i, int j, int z, BlockType type) {
+				// Global Pos
+				var unitPos = new Int3(i, j, Stage.ViewZ);
+				if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
+					unitPos, out int _gID
+				)) {
+					if (removeOriginal) {
+						UserEraseGlobalPosition(i, j, z);
+					}
+					PastingBuffer.Add(new BlockBuffer() {
+						ID = _gID,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = true,
+					});
+				}
+				// Block
+				int id = WorldSquad.Front.GetBlockAt(i, j, type);
+				if (id != 0) {
+					if (removeOriginal) {
+						UserEraseBlock(i, j, z, type);
+					}
+					PastingBuffer.Add(new BlockBuffer() {
+						ID = id,
+						LocalUnitX = i - unitRect.x,
+						LocalUnitY = j - unitRect.y,
+						Type = type,
+						IsGlobalPos = false,
+					});
+				}
+			}
+		}
+
+
+		// Rule
+		private void RedirectForRule (IRect unitRange) {
+			unitRange = unitRange.Expand(1);
+			for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
+				for (int j = unitRange.yMin; j < unitRange.yMax; j++) {
+					RedirectForRule(i, j, BlockType.Level);
+					RedirectForRule(i, j, BlockType.Background);
+				}
+			}
+		}
+		private void RedirectForRule (int i, int j, BlockType type) {
+			int id = WorldSquad.Front.GetBlockAt(i, j, type);
+			if (id == 0) return;
+			int oldID = id;
+			if (ReversedChainPool.TryGetValue(id, out int realRuleID)) id = realRuleID;
+			if (!IdChainPool.TryGetValue(id, out var idChain)) return;
+			if (!ChainRulePool.TryGetValue(id, out string fullRuleString)) return;
+			int tl0 = WorldSquad.Front.GetBlockAt(i - 1, j + 1, type);
+			int tm0 = WorldSquad.Front.GetBlockAt(i + 0, j + 1, type);
+			int tr0 = WorldSquad.Front.GetBlockAt(i + 1, j + 1, type);
+			int ml0 = WorldSquad.Front.GetBlockAt(i - 1, j + 0, type);
+			int mr0 = WorldSquad.Front.GetBlockAt(i + 1, j + 0, type);
+			int bl0 = WorldSquad.Front.GetBlockAt(i - 1, j - 1, type);
+			int bm0 = WorldSquad.Front.GetBlockAt(i + 0, j - 1, type);
+			int br0 = WorldSquad.Front.GetBlockAt(i + 1, j - 1, type);
+			int tl1 = ReversedChainPool.TryGetValue(tl0, out int _tl) ? _tl : tl0;
+			int tm1 = ReversedChainPool.TryGetValue(tm0, out int _tm) ? _tm : tm0;
+			int tr1 = ReversedChainPool.TryGetValue(tr0, out int _tr) ? _tr : tr0;
+			int ml1 = ReversedChainPool.TryGetValue(ml0, out int _ml) ? _ml : ml0;
+			int mr1 = ReversedChainPool.TryGetValue(mr0, out int _mr) ? _mr : mr0;
+			int bl1 = ReversedChainPool.TryGetValue(bl0, out int _bl) ? _bl : bl0;
+			int bm1 = ReversedChainPool.TryGetValue(bm0, out int _bm) ? _bm : bm0;
+			int br1 = ReversedChainPool.TryGetValue(br0, out int _br) ? _br : br0;
+			int ruleIndex = AngeUtil.GetRuleIndex(
+				fullRuleString, id,
+				tl0, tm0, tr0, ml0, mr0, bl0, bm0, br0,
+				tl1, tm1, tr1, ml1, mr1, bl1, bm1, br1
+			);
+			if (ruleIndex < 0 || ruleIndex >= idChain.Length) return;
+			int newID = idChain[ruleIndex];
+			if (newID == oldID) return;
+			WorldSquad.Front.SetBlockAt(i, j, type, newID);
+		}
+
+
+		// User CMD
+		private bool UserEraseBlock (int unitX, int unitY, int z, BlockType type, bool ignoreStep = false) {
+			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
+			if (blockID != 0) {
+				WorldSquad.Front.SetBlockAt(unitX, unitY, type, 0);
+				RegisterUndo(new BlockUndoItem() {
+					FromID = blockID,
+					ToID = 0,
+					Type = type,
+					UnitX = unitX,
+					UnitY = unitY,
+				}, ignoreStep);
+				return true;
+			}
+			return false;
+		}
+
+
+		private void UserSetBlock (int unitX, int unitY, int z, BlockType type, int id, bool ignoreStep = false) {
+			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
+			if (blockID != id) {
+				// Set Data
+				WorldSquad.Front.SetBlockAt(unitX, unitY, type, id);
+				// Regist Undo
+				RegisterUndo(new BlockUndoItem() {
+					FromID = blockID,
+					ToID = id,
+					Type = type,
+					UnitX = unitX,
+					UnitY = unitY,
+				}, ignoreStep);
+			}
+		}
+
+
+		private bool UserEraseGlobalPosition (int unitX, int unitY, int z, bool ignoreStep = false) {
+			var pos = new Int3(unitX, unitY, z);
+			if (IGlobalPosition.TryGetIdFromPosition(pos, out int oldGlobalID)) {
+				IGlobalPosition.RemovePosition(pos);
+				RegisterUndo(new GlobalPosUndoItem() {
+					FromID = oldGlobalID,
+					ToID = 0,
+					FromUnitPos = pos,
+					ToUnitPos = pos,
+				}, ignoreStep);
+				return true;
+			}
+			return false;
+		}
+
+
+		private void UserSetGlobalPosition (int unitX, int unitY, int z, int id, bool ignoreStep = false) {
+			var pos = new Int3(unitX, unitY, z);
+			if (IGlobalPosition.TryGetIdFromPosition(pos, out int gID)) {
+				// Have Global Pos Entity at Pos 
+				if (gID != id) {
+					IGlobalPosition.RemoveID(gID);
+					RegisterUndo(new GlobalPosUndoItem() {
+						FromID = gID,
+						ToID = 0,
+						FromUnitPos = pos,
+						ToUnitPos = pos,
+					}, ignoreStep);
+				}
+			} else {
+				// Target Pos Is Empty
+				if (IGlobalPosition.TryGetPositionFromID(id, out var oldPos)) {
+					RegisterUndo(new GlobalPosUndoItem() {
+						FromID = id,
+						ToID = id,
+						FromUnitPos = oldPos,
+						ToUnitPos = pos,
+					}, ignoreStep);
+				} else {
+					RegisterUndo(new GlobalPosUndoItem() {
+						FromID = 0,
+						ToID = id,
+						FromUnitPos = pos,
+						ToUnitPos = pos,
+					}, ignoreStep);
+				}
+				IGlobalPosition.SetPosition(id, pos);
+			}
+		}
+
+
+		#endregion
+
+
+
+
+	}
+}

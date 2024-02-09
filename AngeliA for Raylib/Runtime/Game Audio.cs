@@ -9,31 +9,44 @@ public partial class GameForRaylib {
 
 
 	// Data
+	private static readonly Dictionary<int, Sound> SoundPool = new();
+	private static readonly Dictionary<int, string> MusicPool = new();
 	private Music CurrentBGM;
 
 
 	// Music
-	protected override IEnumerable<KeyValuePair<int, object>> _ForAllAudioClips () {
+	private void InitializeAudio () {
+		Raylib.InitAudioDevice();
 		// Music
+		MusicPool.Clear();
 		string musicRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Audio", "Music");
 		foreach (var path in Util.EnumerateFiles(musicRoot, false, "*.wav", "*.mp3", "*.ogg")) {
-			string name = Util.GetNameWithoutExtension(path);
-			yield return new(name.TrimEnd(' ').AngeHash(), Raylib.LoadMusicStream(path));
+			MusicPool.TryAdd(Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash(), path);
 		}
 		// Sound
+		SoundPool.Clear();
 		string soundRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Audio", "Sound");
 		foreach (var path in Util.EnumerateFiles(soundRoot, false, "*.wav", "*.mp3", "*.ogg")) {
-			string name = Util.GetNameWithoutExtension(path);
-			yield return new(name.AngeHash(), Raylib.LoadSound(path));
+			SoundPool.TryAdd(Util.GetNameWithoutExtension(path).AngeHash(), Raylib.LoadSound(path));
 		}
 	}
 
 	protected override void _PlayMusic (int id) {
-		Raylib.StopMusicStream(CurrentBGM);
-		if (TryGetResource<Music>(id, out var music)) {
-			Raylib.PlayMusicStream(music);
-			CurrentBGM = music;
+
+		if (!MusicPool.TryGetValue(id, out var path)) return;
+
+		// Stop Current
+		if (Raylib.IsMusicStreamPlaying(CurrentBGM)) {
+			Raylib.StopMusicStream(CurrentBGM);
+			Raylib.UnloadMusicStream(CurrentBGM);
 		}
+
+		// Play New
+		var music = Raylib.LoadMusicStream(path);
+		Raylib.PlayMusicStream(music);
+		music.Looping = true;
+		CurrentBGM = music;
+
 	}
 
 	protected override void _StopMusic () => Raylib.StopMusicStream(CurrentBGM);
@@ -49,7 +62,7 @@ public partial class GameForRaylib {
 
 	// Sound
 	protected override void _PlaySound (int id, float volume) {
-		if (TryGetResource<Sound>(id, out var sound)) {
+		if (SoundPool.TryGetValue(id, out var sound)) {
 			Raylib.PlaySound(sound);
 			Raylib.SetSoundVolume(sound, ScaledSoundVolume * volume);
 		}

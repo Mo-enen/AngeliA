@@ -2,8 +2,8 @@
     "name": "AngeliaForUnity",
     "rootNamespace": "AngeliaForUnity",
     "references": [
-        "AngeliaFramework",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "AngeliaFramework"
     ],
     "includePlatforms": [
         "Editor",

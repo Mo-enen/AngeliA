@@ -28,12 +28,12 @@ public partial class GameForRaylib : Game {
 		public FRect UV;
 	}
 
-	private unsafe class FontData {
+	private class FontData {
 
 		private readonly int[] CACHE_CHAR_ARR = { 0 };
 		private readonly Dictionary<char, (Image image, Texture2D texture)> Pool = new();
-		private byte* PrioritizedData = null;
-		private byte* FullsetData = null;
+		private unsafe byte* PrioritizedData = null;
+		private unsafe byte* FullsetData = null;
 		private int PrioritizedByteSize = 0;
 		private int FullsetByteSize = 0;
 
@@ -42,7 +42,7 @@ public partial class GameForRaylib : Game {
 		public int Size;
 		public float Scale = 1f;
 
-		public void LoadData (string filePath, bool isPrioritized) {
+		public unsafe void LoadData (string filePath, bool isPrioritized) {
 			uint fileSize = 0;
 			byte* fileData = Raylib.LoadFileData(filePath, ref fileSize);
 			if (isPrioritized) {
@@ -54,7 +54,7 @@ public partial class GameForRaylib : Game {
 			}
 		}
 
-		public bool TryGetCharData (char c, out GlyphInfo info, out Texture2D texture) {
+		public unsafe bool TryGetCharData (char c, out GlyphInfo info, out Texture2D texture) {
 			info = default;
 			texture = default;
 			if (PrioritizedByteSize == 0 && FullsetByteSize == 0) return false;
@@ -119,6 +119,8 @@ public partial class GameForRaylib : Game {
 	// Data
 	private readonly GLRect[] GLRects = new GLRect[256 * 256].FillWithNewValue();
 	private readonly GLTexture[] GLTextures = new GLTexture[256].FillWithNewValue();
+	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
+	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
 	private FontData[] Fonts;
 	private int GLRectCount = 0;
 	private int GLTextureCount = 0;
@@ -131,6 +133,23 @@ public partial class GameForRaylib : Game {
 	private Shader ColorShader;
 	private Shader TextShader;
 	private Texture2D Texture;
+	private RenderTexture2D RenderTexture;
+	private int ShaderPropIndex_DarkenAmount;
+	private int ShaderPropIndex_LightenAmount;
+	private int ShaderPropIndex_TintAmount;
+	private int ShaderPropIndex_VignetteRadius;
+	private int ShaderPropIndex_VignetteFeather;
+	private int ShaderPropIndex_VignetteOffsetX;
+	private int ShaderPropIndex_VignetteOffsetY;
+	private int ShaderPropIndex_VignetteRound;
+	private int ShaderPropIndex_VignetteAspect;
+	private int ShaderPropIndex_CA_RED_X;
+	private int ShaderPropIndex_CA_RED_Y;
+	private int ShaderPropIndex_CA_GREEN_X;
+	private int ShaderPropIndex_CA_GREEN_Y;
+	private int ShaderPropIndex_CA_BLUE_X;
+	private int ShaderPropIndex_CA_BLUE_Y;
+
 
 	// Saving
 	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
@@ -169,49 +188,10 @@ public partial class GameForRaylib : Game {
 		Raylib.InitWindow(1024, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
-		// Init Font
-		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
-		var fontList = new List<FontData>(8);
-		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
-			string name = Util.GetNameWithoutExtension(fontPath);
-			if (!Util.TryGetIntFromString(name, 0, out int layerIndex, out _)) continue;
-			var targetData = fontList.Find(data => data.LayerIndex == layerIndex);
-			if (targetData == null) {
-				fontList.Add(targetData = new FontData() {
-					Name = name,
-					LayerIndex = layerIndex,
-					Size = 42,
-					Scale = 1f,
-				});
-			}
-			// Size
-			int sizeTagIndex = name.IndexOf("#size=", System.StringComparison.OrdinalIgnoreCase);
-			if (sizeTagIndex >= 0 && Util.TryGetIntFromString(name, sizeTagIndex + 6, out int size, out _)) {
-				targetData.Size = Util.Max(42, size);
-			}
-			// Scale
-			int scaleTagIndex = name.IndexOf("#scale=", System.StringComparison.OrdinalIgnoreCase);
-			if (scaleTagIndex >= 0 && Util.TryGetIntFromString(name, scaleTagIndex + 7, out int scale, out _)) {
-				targetData.Scale = (scale / 100f).Clamp(0.01f, 10f);
-			}
-			// Data
-			targetData.LoadData(
-				fontPath, !name.Contains("#fullset", System.StringComparison.OrdinalIgnoreCase)
-			);
-		}
-		fontList.Sort((a, b) => a.LayerIndex.CompareTo(b.LayerIndex));
-		Fonts = fontList.ToArray();
-
-		// Init Shader
-		string shaderRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Shaders");
-		string lerpShaderPath = Util.CombinePaths(shaderRoot, "Lerp.fs");
-		if (Util.FileExists(lerpShaderPath)) LerpShader = Raylib.LoadShader(null, lerpShaderPath);
-		string colorShaderPath = Util.CombinePaths(shaderRoot, "Color.fs");
-		if (Util.FileExists(colorShaderPath)) ColorShader = Raylib.LoadShader(null, colorShaderPath);
-		string textShaderPath = Util.CombinePaths(shaderRoot, "Text.fs");
-		if (Util.FileExists(textShaderPath)) TextShader = Raylib.LoadShader(null, textShaderPath);
-
-		// Init Cache
+		// Pipeline
+		InitializeFont();
+		InitializeShader();
+		InitializeAudio();
 		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Byte4[1] { Const.CLEAR }, 1, 1);
 
 		// Init AngeliA
@@ -234,9 +214,36 @@ public partial class GameForRaylib : Game {
 	private void UpdateGame () {
 
 		// Text Input
-		int currentChar;
-		while ((currentChar = Raylib.GetCharPressed()) > 0) {
-			OnTextInput?.Invoke((char)currentChar);
+		if (CellGUI.IsTyping) {
+			int current;
+			for (int safe = 0; (current = Raylib.GetCharPressed()) > 0 && safe < 1024; safe++) {
+				OnTextInput?.Invoke((char)current);
+			}
+			for (int safe = 0; (current = Raylib.GetKeyPressed()) > 0 && safe < 1024; safe++) {
+				switch ((Raylib_cs.KeyboardKey)current) {
+					case Raylib_cs.KeyboardKey.Backspace:
+						OnTextInput?.Invoke(Const.BACKSPACE_SIGN);
+						break;
+					case Raylib_cs.KeyboardKey.Enter:
+						OnTextInput?.Invoke(Const.RETURN_SIGN);
+						break;
+					case Raylib_cs.KeyboardKey.C:
+						if (Raylib.IsKeyDown(Raylib_cs.KeyboardKey.LeftControl)) {
+							OnTextInput?.Invoke(Const.CONTROL_COPY);
+						}
+						break;
+					case Raylib_cs.KeyboardKey.X:
+						if (Raylib.IsKeyDown(Raylib_cs.KeyboardKey.LeftControl)) {
+							OnTextInput?.Invoke(Const.CONTROL_CUT);
+						}
+						break;
+					case Raylib_cs.KeyboardKey.V:
+						if (Raylib.IsKeyDown(Raylib_cs.KeyboardKey.LeftControl)) {
+							OnTextInput?.Invoke(Const.CONTROL_PASTE);
+						}
+						break;
+				}
+			}
 		}
 
 		// Wait for Fixed Update
@@ -251,8 +258,30 @@ public partial class GameForRaylib : Game {
 			OnWindowFocusChanged?.Invoke(windowFocus);
 		}
 
-		// Begin Update
-		Raylib.BeginDrawing();
+		// Music
+		Raylib.UpdateMusicStream(CurrentBGM);
+
+		// Prepare for Screen Effect
+		bool hasScreenEffectEnabled = false;
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			if (ScreenEffectEnables[i]) {
+				hasScreenEffectEnabled = true;
+				int screenW = Raylib.GetScreenWidth();
+				int screenH = Raylib.GetScreenHeight();
+				if (RenderTexture.Texture.Width != screenW || RenderTexture.Texture.Height != screenH) {
+					RenderTexture = Raylib.LoadRenderTexture(screenW, screenH);
+					Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
+				}
+				break;
+			}
+		}
+
+		// Begin Draw
+		if (hasScreenEffectEnabled) {
+			Raylib.BeginTextureMode(RenderTexture);
+		} else {
+			Raylib.BeginDrawing();
+		}
 
 		// Sky
 		Raylib.DrawRectangleGradientV(
@@ -268,9 +297,42 @@ public partial class GameForRaylib : Game {
 		UpdateGizmos();
 
 		// End Update
-		Raylib.EndDrawing();
+		if (hasScreenEffectEnabled) {
+			// Screen Effect >> Render Texture
+			UpdateScreenEffect();
+			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+				if (!ScreenEffectEnables[i]) continue;
+				// Draw Texture with Shader
+				Raylib.BeginShaderMode(ScreenEffectShaders[i]);
+				Raylib.DrawTextureRec(
+					RenderTexture.Texture,
+					new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+					new(0, 0),
+					Color.White
+				);
+				Raylib.EndShaderMode();
+			}
+			Raylib.EndTextureMode();
+
+			// Render Texture >> Screen
+			Raylib.BeginDrawing();
+			Raylib.DrawTextureRec(
+				RenderTexture.Texture,
+				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+				new(0, 0),
+				Color.White
+			);
+		}
+
+		// Black Side Border
+		if (CameraScreenRect.x.NotAlmostZero()) {
+			int borderWidth = (int)(ScreenWidth * CameraScreenRect.x);
+			Raylib.DrawRectangle(0, 0, borderWidth, ScreenRect.height, Color.Black);
+			Raylib.DrawRectangle(ScreenWidth - borderWidth, 0, borderWidth, ScreenRect.height, Color.Black);
+		}
 
 		// Final
+		Raylib.EndDrawing();
 		_CONTINUE_:;
 
 		// Trying to Quit Check
@@ -282,11 +344,22 @@ public partial class GameForRaylib : Game {
 
 
 	private void QuitGame () {
+
+		// Unload Font
 		foreach (var font in Fonts) font.Unload();
+
+		// Unload Shader
 		Raylib.UnloadShader(LerpShader);
 		Raylib.UnloadShader(ColorShader);
+		Raylib.UnloadShader(TextShader);
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) Raylib.UnloadShader(ScreenEffectShaders[i]);
+
+		// Unload Texture
 		Raylib.UnloadTexture(Texture);
 		Raylib.UnloadTexture(EMPTY_TEXTURE);
+		Raylib.UnloadRenderTexture(RenderTexture);
+
+		// Quit Game
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
 		OnGameQuitting?.Invoke();
 		Raylib.CloseWindow();
@@ -299,57 +372,6 @@ public partial class GameForRaylib : Game {
 
 
 	#region --- LGC ---
-
-
-	private void UpdateGizmos () {
-
-		var cameraRect = CellRenderer.CameraRect;
-		int cameraL = cameraRect.x;
-		int cameraR = cameraRect.xMax;
-		int cameraD = cameraRect.y;
-		int cameraU = cameraRect.yMax;
-		int screenL = ScreenRect.x;
-		int screenR = ScreenRect.xMax;
-		int screenD = ScreenRect.y;
-		int screenU = ScreenRect.yMax;
-
-		// Texture
-		for (int i = 0; i < GLTextureCount; i++) {
-			var glTexture = GLTextures[i];
-			var rTexture = glTexture.Texture;
-			var rect = glTexture.Rect;
-			var uv = glTexture.UV;
-			Raylib.DrawTexturePro(
-				rTexture,
-				new Rectangle(
-					uv.x * rTexture.Width,
-					uv.y * rTexture.Height,
-					uv.width * rTexture.Width,
-					uv.height * rTexture.Height
-				).Shrink(0.1f), new Rectangle(
-					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
-					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
-					rect.width * ScreenRect.width / cameraRect.width,
-					rect.height * ScreenRect.height / cameraRect.height
-				).Expand(0.5f), new(0, 0), 0, Color.White
-			);
-		}
-		GLTextureCount = 0;
-
-		// Rect
-		for (int i = 0; i < GLRectCount; i++) {
-			var glRect = GLRects[i];
-			var rect = glRect.Rect;
-			Raylib.DrawRectangle(
-				Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
-				Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
-				rect.width * ScreenRect.width / cameraRect.width,
-				rect.height * ScreenRect.height / cameraRect.height,
-				glRect.Color
-			);
-		}
-		GLRectCount = 0;
-	}
 
 
 	private static void WritePixelsToConsole (Byte4[] pixels, int width) {

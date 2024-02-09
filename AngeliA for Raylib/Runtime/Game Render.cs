@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using AngeliaFramework;
 using Raylib_cs;
@@ -9,7 +10,79 @@ namespace AngeliaForRaylib;
 public partial class GameForRaylib {
 
 
+	private static System.Random CA_Ran = new(2353456);
+
+
 	// Render
+	private void InitializeFont () {
+		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
+		var fontList = new List<FontData>(8);
+		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
+			string name = Util.GetNameWithoutExtension(fontPath);
+			if (!Util.TryGetIntFromString(name, 0, out int layerIndex, out _)) continue;
+			var targetData = fontList.Find(data => data.LayerIndex == layerIndex);
+			if (targetData == null) {
+				int hashIndex = name.IndexOf('#');
+				fontList.Add(targetData = new FontData() {
+					Name = (hashIndex >= 0 ? name[..hashIndex] : name).TrimStart_Numbers(),
+					LayerIndex = layerIndex,
+					Size = 42,
+					Scale = 1f,
+				});
+			}
+			// Size
+			int sizeTagIndex = name.IndexOf("#size=", System.StringComparison.OrdinalIgnoreCase);
+			if (sizeTagIndex >= 0 && Util.TryGetIntFromString(name, sizeTagIndex + 6, out int size, out _)) {
+				targetData.Size = Util.Max(42, size);
+			}
+			// Scale
+			int scaleTagIndex = name.IndexOf("#scale=", System.StringComparison.OrdinalIgnoreCase);
+			if (scaleTagIndex >= 0 && Util.TryGetIntFromString(name, scaleTagIndex + 7, out int scale, out _)) {
+				targetData.Scale = (scale / 100f).Clamp(0.01f, 10f);
+			}
+			// Data
+			targetData.LoadData(
+				fontPath, !name.Contains("#fullset", System.StringComparison.OrdinalIgnoreCase)
+			);
+		}
+		fontList.Sort((a, b) => a.LayerIndex.CompareTo(b.LayerIndex));
+		Fonts = fontList.ToArray();
+	}
+
+	private void InitializeShader () {
+		string shaderRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Shaders");
+		// Shaders
+		string lerpShaderPath = Util.CombinePaths(shaderRoot, "Lerp.fs");
+		if (Util.FileExists(lerpShaderPath)) LerpShader = Raylib.LoadShader(null, lerpShaderPath);
+		string colorShaderPath = Util.CombinePaths(shaderRoot, "Color.fs");
+		if (Util.FileExists(colorShaderPath)) ColorShader = Raylib.LoadShader(null, colorShaderPath);
+		string textShaderPath = Util.CombinePaths(shaderRoot, "Text.fs");
+		if (Util.FileExists(textShaderPath)) TextShader = Raylib.LoadShader(null, textShaderPath);
+		// Effects
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			string path = Util.CombinePaths(shaderRoot, $"{Const.SCREEN_EFFECT_NAMES[i]}.fs");
+			if (Util.FileExists(path)) {
+				ScreenEffectShaders[i] = Raylib.LoadShader(null, path);
+			}
+		}
+		// Shader Index
+		ShaderPropIndex_DarkenAmount = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_DARKEN], "Amount");
+		ShaderPropIndex_LightenAmount = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_LIGHTEN], "Amount");
+		ShaderPropIndex_TintAmount = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_TINT], "Tint");
+		ShaderPropIndex_VignetteRadius = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "Radius");
+		ShaderPropIndex_VignetteFeather = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "Feather");
+		ShaderPropIndex_VignetteOffsetX = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "OffsetX");
+		ShaderPropIndex_VignetteOffsetY = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "OffsetY");
+		ShaderPropIndex_VignetteRound = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "Round");
+		ShaderPropIndex_VignetteAspect = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "Aspect");
+		ShaderPropIndex_CA_RED_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "RedX");
+		ShaderPropIndex_CA_RED_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "RedY");
+		ShaderPropIndex_CA_GREEN_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "GreenX");
+		ShaderPropIndex_CA_GREEN_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "GreenY");
+		ShaderPropIndex_CA_BLUE_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueX");
+		ShaderPropIndex_CA_BLUE_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueY");
+	}
+
 	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) { }
 
 	protected override void _OnCameraUpdate () {
@@ -158,7 +231,7 @@ public partial class GameForRaylib {
 			usingShader = true;
 		}
 
-		for (int i = 0; i < cellCount; i++) {
+		for (int i = cellCount - 1; i >= 0; i--) {
 			try {
 
 				var cell = cells[i];
@@ -281,27 +354,135 @@ public partial class GameForRaylib {
 		Raylib.SetTextureWrap(Texture, TextureWrap.Clamp);
 	}
 
+	private void UpdateGizmos () {
+
+		var cameraRect = CellRenderer.CameraRect;
+		int cameraL = cameraRect.x;
+		int cameraR = cameraRect.xMax;
+		int cameraD = cameraRect.y;
+		int cameraU = cameraRect.yMax;
+		int screenL = ScreenRect.x;
+		int screenR = ScreenRect.xMax;
+		int screenD = ScreenRect.y;
+		int screenU = ScreenRect.yMax;
+
+		// Texture
+		for (int i = 0; i < GLTextureCount; i++) {
+			var glTexture = GLTextures[i];
+			var rTexture = glTexture.Texture;
+			var rect = glTexture.Rect;
+			var uv = glTexture.UV;
+			Raylib.DrawTexturePro(
+				rTexture,
+				new Rectangle(
+					uv.x * rTexture.Width,
+					uv.y * rTexture.Height,
+					uv.width * rTexture.Width,
+					uv.height * rTexture.Height
+				).Shrink(0.1f), new Rectangle(
+					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
+					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
+					rect.width * ScreenRect.width / cameraRect.width,
+					rect.height * ScreenRect.height / cameraRect.height
+				).Expand(0.5f), new(0, 0), 0, Color.White
+			);
+		}
+		GLTextureCount = 0;
+
+		// Rect
+		for (int i = 0; i < GLRectCount; i++) {
+			var glRect = GLRects[i];
+			var rect = glRect.Rect;
+			Raylib.DrawRectangle(
+				Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
+				Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
+				rect.width * ScreenRect.width / cameraRect.width,
+				rect.height * ScreenRect.height / cameraRect.height,
+				glRect.Color
+			);
+		}
+		GLRectCount = 0;
+	}
+
+	private void UpdateScreenEffect () {
+		// Chromatic Aberration
+		if (ScreenEffectEnables[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION]) {
+			var caShader = ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION];
+			const float CA_PingPongTime = 0.618f;
+			const float CA_PingPongMin = 0f;
+			const float CA_PingPongMax = 0.015f;
+			if (Raylib.GetTime() % CA_PingPongTime > CA_PingPongTime / 2f) {
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_Y, GetRandomAmount(0.2f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.7f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
+			} else {
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_Y, GetRandomAmount(0.8f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.72f), ShaderUniformDataType.Float);
+			}
+			static float GetRandomAmount (float timeOffset) {
+				int range = (int)(Util.RemapUnclamped(
+					0f, CA_PingPongTime,
+					CA_PingPongMin, CA_PingPongMax,
+					Util.PingPong((float)Raylib.GetTime() + timeOffset * CA_PingPongTime, CA_PingPongTime)
+				) * 100000f);
+				return CA_Ran.Next(-range, range) / 100000f;
+			}
+		}
+		// Vig
+		if (ScreenEffectEnables[Const.SCREEN_EFFECT_VIGNETTE]) {
+			var vShader = ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE];
+			Raylib.SetShaderValue<float>(
+				vShader, ShaderPropIndex_VignetteAspect,
+				(float)ScreenWidth / ScreenHeight,
+				ShaderUniformDataType.Float
+			);
+		}
+	}
+
 
 	// Effect
-	protected override bool _GetEffectEnable (int effectIndex) {
-		// TODO
+	protected override bool _GetEffectEnable (int effectIndex) => ScreenEffectEnables[effectIndex];
 
-		return false;
+	protected override void _SetEffectEnable (int effectIndex, bool enable) => ScreenEffectEnables[effectIndex] = enable;
+
+	protected override void _Effect_SetDarkenParams (float amount, float step = 8f) {
+		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_DARKEN];
+		Raylib.SetShaderValue<float>(
+			shader, ShaderPropIndex_DarkenAmount,
+			(amount * step).RoundToInt() / step,
+			ShaderUniformDataType.Float
+		);
 	}
-	protected override void _SetEffectEnable (int effectIndex, bool enable) {
-		// TODO
+
+	protected override void _Effect_SetLightenParams (float amount, float step = 8f) {
+		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_LIGHTEN];
+		Raylib.SetShaderValue<float>(
+			shader, ShaderPropIndex_LightenAmount,
+			(amount * step).RoundToInt() / step,
+			ShaderUniformDataType.Float
+		);
 	}
-	protected override void _Effect_SetDarkenParams (float amount, float step) {
-		// TODO
-	}
-	protected override void _Effect_SetLightenParams (float amount, float step) {
-		// TODO
-	}
+
 	protected override void _Effect_SetTintParams (Byte4 color) {
-		// TODO
+		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_TINT];
+		Raylib.SetShaderValue<Vector4>(
+			shader,
+			ShaderPropIndex_TintAmount,
+			new Vector4(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f),
+			ShaderUniformDataType.Vec4
+		);
 	}
+
 	protected override void _Effect_SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round) {
-		// TODO
+		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE];
+		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteRadius, radius, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteFeather, feather, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteOffsetX, offsetX, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteOffsetY, offsetY, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteRound, round, ShaderUniformDataType.Float);
 	}
 
 
@@ -437,9 +618,7 @@ public partial class GameForRaylib {
 
 
 	// Text
-	protected override void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) {
-
-	}
+	protected override void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) { }
 
 	protected override int _GetTextLayerCount () => Fonts.Length;
 
@@ -459,7 +638,7 @@ public partial class GameForRaylib {
 		charSprite ??= new();
 		charSprite.GlobalID = c;
 		charSprite.Advance = info.AdvanceX / fontSize;
-		charSprite.Offset = FRect.MinMaxRect(
+		charSprite.Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
 			xmin: info.OffsetX / fontSize,
 			ymin: (fontSize - info.OffsetY - info.Image.Height) / fontSize,
 			xmax: (info.OffsetX + info.Image.Width) / fontSize,
@@ -472,6 +651,7 @@ public partial class GameForRaylib {
 	}
 
 	protected override void _RequestStringForFont (int layerIndex, int textSize, char[] content) { }
+
 	protected override void _RequestStringForFont (int layerIndex, int textSize, string content) { }
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();

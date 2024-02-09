@@ -1,0 +1,20 @@
+{
+    "name": "AngeliaGame",
+    "rootNamespace": "AngeliaGame",
+    "references": [
+        "AngeliaForUnity",
+        "AngeliaFramework"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}
