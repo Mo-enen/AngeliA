@@ -163,7 +163,6 @@ public partial class GameForRaylib : Game {
 
 
 	public static void Run () {
-
 		var game = new GameForRaylib();
 		game.InitializeGame();
 		while (!game.RequireQuitGame) {
