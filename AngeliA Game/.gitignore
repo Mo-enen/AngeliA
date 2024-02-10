@@ -2,7 +2,7 @@
 /obj
 /bin
 /Properties
-.vsconfig
-.editorconfig
-.csproj.user
-.ini
+*.vsconfig
+*.editorconfig
+*.csproj.user
+*.ini

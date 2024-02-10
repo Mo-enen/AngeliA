@@ -1,6 +1,6 @@
 /.vs
 /obj
 /bin
-.vsconfig
-.editorconfig
-.ini
+*.vsconfig
+*.editorconfig
+*.ini
