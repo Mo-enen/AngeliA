@@ -46,6 +46,7 @@
 
 	<ItemGroup>
 		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
 		<None Remove="raylib.dll" />
 	</ItemGroup>
 
