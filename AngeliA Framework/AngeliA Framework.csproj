@@ -13,6 +13,7 @@
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
 		
   </PropertyGroup>
 
@@ -28,6 +29,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
   </ItemGroup>
@@ -40,5 +47,12 @@
       <HintPath>Framework\ThirdParty\Aseprite\zlib.net.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+	<ItemGroup>
+		<ContentWithTargetPath Include="Resources\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
 
 </Project>

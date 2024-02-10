@@ -21,6 +21,7 @@
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
 
 	</PropertyGroup>
 
@@ -31,8 +32,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <DebugType>portable</DebugType>
-	  <Deterministic>True</Deterministic>
+		<DebugType>portable</DebugType>
+		<Deterministic>True</Deterministic>
 	</PropertyGroup>
 
 	<ItemGroup>

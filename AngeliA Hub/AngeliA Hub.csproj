@@ -1,34 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>AngeliaForRaylib</RootNamespace>
+    <RootNamespace>AngeliaHub</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <StartupObject></StartupObject>
-
-
-		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
-		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-		<EnableNETAnalyzers>False</EnableNETAnalyzers>
-		<GenerateDependencyFile>false</GenerateDependencyFile>
-		<GenerateDocumentationFile>False</GenerateDocumentationFile>
-		<ErrorReport>none</ErrorReport>
-	
-		
+    <ErrorReport>none</ErrorReport>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
+    <EnableNETAnalyzers>False</EnableNETAnalyzers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,10 +26,6 @@
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -149,7 +149,6 @@ public partial class GameForRaylib : Game {
 	private int ShaderPropIndex_CA_BLUE_X;
 	private int ShaderPropIndex_CA_BLUE_Y;
 
-
 	// Saving
 	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
 

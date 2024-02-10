@@ -4,7 +4,7 @@ namespace AngeliaFramework {
 
 		// Data
 		private static int CurrentCursorIndex = -1;
-		private static int CursorEndFrame = int.MinValue;
+		private static int CursorEndFrame = int.MinValue + 1;
 		private static int CursorPriority = int.MinValue;
 
 
@@ -15,9 +15,10 @@ namespace AngeliaFramework {
 				// No Cursor
 				CursorPriority = int.MinValue;
 				CursorEndFrame = int.MinValue;
-				Game.SetCursorToNormal();
 				if (!Game.IsEdittime) {
 					Game.HideCursor();
+				} else {
+					Game.SetCursorToNormal();
 				}
 			} else {
 				// Has Cursor
