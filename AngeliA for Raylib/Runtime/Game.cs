@@ -30,7 +30,6 @@ public partial class GameForRaylib : Game {
 
 	private class FontData {
 
-		private readonly int[] CACHE_CHAR_ARR = { 0 };
 		private readonly Dictionary<char, (Image image, Texture2D texture)> Pool = new();
 		private unsafe byte* PrioritizedData = null;
 		private unsafe byte* FullsetData = null;
@@ -55,27 +54,27 @@ public partial class GameForRaylib : Game {
 		}
 
 		public unsafe bool TryGetCharData (char c, out GlyphInfo info, out Texture2D texture) {
+
 			info = default;
 			texture = default;
+
 			if (PrioritizedByteSize == 0 && FullsetByteSize == 0) return false;
+
 			bool usingFullset = FullsetByteSize != 0 && (int)c >= 256;
 			var data = usingFullset ? FullsetData : PrioritizedData;
 			int dataSize = usingFullset ? FullsetByteSize : PrioritizedByteSize;
-			CACHE_CHAR_ARR[0] = c;
-			fixed (int* fontChar = CACHE_CHAR_ARR) {
-				var infoPtr = Raylib.LoadFontData(data, dataSize, Size, fontChar, 1, FontType.Default);
-				if (infoPtr == null) {
-					return false;
-				} else {
-					info = infoPtr[0];
-					var img = info.Image;
-					if (img.Width * img.Height == 0) return false;
-					texture = Raylib.LoadTextureFromImage(img);
-					Marshal.FreeHGlobal((System.IntPtr)infoPtr);
-					Pool.TryAdd(c, (img, texture));
-					return true;
-				}
+			int charInt = c;
+			var infoPtr = Raylib.LoadFontData(data, dataSize, Size, &charInt, 1, FontType.Default);
+			if (infoPtr == null) return false;
+
+			info = infoPtr[0];
+			var img = info.Image;
+			if (img.Width * img.Height != 0) {
+				texture = Raylib.LoadTextureFromImage(img);
+				Pool.TryAdd(c, (img, texture));
+				return true;
 			}
+			return false;
 		}
 
 		public void Unload () {

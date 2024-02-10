@@ -31,6 +31,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="desktop.ini" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
   </ItemGroup>
 
