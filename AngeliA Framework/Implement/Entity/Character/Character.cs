@@ -607,25 +607,32 @@ namespace AngeliaFramework {
 			bool isPounding = MovementState == CharacterMovementState.Pound;
 			bool isSquatting = MovementState == CharacterMovementState.SquatIdle || MovementState == CharacterMovementState.SquatMove;
 			if (frame < LastRequireBounceFrame + duration) {
-				bounce = BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
+				bounce = InWater ? BOUNCE_AMOUNTS_BIG[frame - LastRequireBounceFrame] : BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
 				if (AttackChargeStartFrame.HasValue && Game.GlobalFrame > AttackChargeStartFrame.Value + MinimalChargeAttackDuration) {
 					bounce += (1000 - bounce) / 2;
 				}
 			} else if (isPounding) {
 				bounce = 1500;
-			} else if (!isPounding && IsGrounded && frame.InRangeExclude(LastPoundingFrame, LastPoundingFrame + duration)) {
+			} else if (IsGrounded && frame.InRangeExclude(LastPoundingFrame, LastPoundingFrame + duration)) {
+				// Gound Pound End
 				bounce = BOUNCE_AMOUNTS_BIG[frame - LastPoundingFrame];
 			} else if (isSquatting && frame.InRangeExclude(LastSquatFrame, LastSquatFrame + duration)) {
+				// Squat Start
 				bounce = BOUNCE_AMOUNTS[frame - LastSquatFrame];
 			} else if (IsGrounded && frame.InRangeExclude(LastGroundFrame, LastGroundFrame + duration)) {
+				// Gounded Start
 				bounce = BOUNCE_AMOUNTS[frame - LastGroundFrame];
 			} else if (!isSquatting && frame.InRangeExclude(LastSquattingFrame, LastSquattingFrame + duration)) {
+				// Squat End
 				bounce = BOUNCE_AMOUNTS[frame - LastSquattingFrame];
 				reverse = true;
 			} else if (IsCrashing && frame.InRangeExclude(LastCrashFrame, LastCrashFrame + duration)) {
+				// Crash Start
 				bounce = BOUNCE_AMOUNTS_BIG[frame - LastCrashFrame];
 			}
-			if (bounce != 1000) bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);
+			if (bounce != 1000) {
+				bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);
+			}
 			return reverse ? -bounce : bounce;
 		}
 

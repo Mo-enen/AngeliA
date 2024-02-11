@@ -150,7 +150,7 @@ namespace AngeliaFramework {
 				palGroup.Items.Add(new PaletteItem() {
 					ID = chain.ID,
 					ArtworkID = chain.Type == GroupType.Animated ? chain.ID : firstSprite.GlobalID,
-					Name = Util.GetDisplayName(firstSprite.RealName),
+					Name = Util.GetDisplayName(firstSprite.RealName).TrimEnd_NumbersEmpty_(),
 					GroupType = chain.Type,
 					BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
 					Group = chain,
@@ -180,7 +180,7 @@ namespace AngeliaFramework {
 				group.Items.Add(new PaletteItem() {
 					ID = sp.GlobalID,
 					ArtworkID = sp.GlobalID,
-					Name = Util.GetDisplayName(sp.RealName),
+					Name = Util.GetDisplayName(sp.RealName).TrimEnd_NumbersEmpty_(),
 					GroupType = GroupType.General,
 					BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
 					Group = null,
@@ -235,7 +235,7 @@ namespace AngeliaFramework {
 					ArtworkID = artworkTypeID,
 					GroupType = GroupType.General,
 					BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
-					Name = Util.GetDisplayName(type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name),
+					Name = Util.GetDisplayName((type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name).TrimEnd_NumbersEmpty_()),
 					Group = null,
 				});
 			}
@@ -264,7 +264,7 @@ namespace AngeliaFramework {
 			foreach (var group in PaletteGroups) {
 				foreach (var item in group.Items) {
 					if (item == null || string.IsNullOrEmpty(item.Name)) continue;
-					PaletteTrie.AddForSearching(item.Name, item);
+					PaletteTrie.AddForSearching(item.Name.TrimEnd_NumbersEmpty_(), item);
 				}
 			}
 
@@ -713,14 +713,11 @@ namespace AngeliaFramework {
 				var pal = SearchResult[i];
 
 				// Icon
-				if (CellRenderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite)) {
-					CellRenderer.Draw(
-						pal.ArtworkID,
-						new IRect(rect.x, rect.y, itemSize, itemSize).Fit(
-							sprite, sprite.PivotX, sprite.PivotY
-						), PANEL_Z - 11
-					);
-				}
+				DrawSpriteGizmos(
+					pal.ArtworkID, 
+					new IRect(rect.x, rect.y, itemSize, itemSize), 
+					z: PANEL_Z - 11
+				);
 
 				// Label
 				CellGUI.Label(

@@ -1091,34 +1091,47 @@ namespace AngeliaFramework {
 
 
 		private void MovePaletteCursor (int delta) {
-			int index = -1;
-			if (CurrentPaletteTab == PaletteTabType.BuiltIn) {
-				if (SelectingPaletteGroupIndex >= 0 && SelectingPaletteGroupIndex < PaletteGroups.Count) {
-					var group = PaletteGroups[SelectingPaletteGroupIndex];
-					if (group.Items.Count > 0) {
-						index = group.Items.IndexOf(SelectingPaletteItem);
-						if (index >= 0) {
-							index = (index + delta).Clamp(0, group.Items.Count - 1);
-						} else {
-							index = delta > 0 ? 0 : group.Items.Count - 1;
+			if (SearchResult.Count == 0) {
+				// Commen
+				int index = -1;
+				if (CurrentPaletteTab == PaletteTabType.BuiltIn) {
+					if (SelectingPaletteGroupIndex >= 0 && SelectingPaletteGroupIndex < PaletteGroups.Count) {
+						var group = PaletteGroups[SelectingPaletteGroupIndex];
+						if (group.Items.Count > 0) {
+							index = group.Items.IndexOf(SelectingPaletteItem);
+							if (index >= 0) {
+								index = (index + delta).Clamp(0, group.Items.Count - 1);
+							} else {
+								index = delta > 0 ? 0 : group.Items.Count - 1;
+							}
 						}
+						if (index >= 0) SelectingPaletteItem = group.Items[index];
 					}
-					if (index >= 0) SelectingPaletteItem = group.Items[index];
+				} else {
+					var lists = EditorMeta.PinnedLists;
+					if (SelectingPaletteListIndex >= 0 && SelectingPaletteListIndex < lists.Count) {
+						var group = lists[SelectingPaletteListIndex];
+						if (group.Items.Count > 0) {
+							index = SelectingPaletteItem != null ? group.Items.IndexOf(SelectingPaletteItem.ID) : -1;
+							if (index >= 0) {
+								index = (index + delta).Clamp(0, group.Items.Count - 1);
+							} else {
+								index = delta > 0 ? 0 : group.Items.Count - 1;
+							}
+						}
+						if (index >= 0 && PalettePool.TryGetValue(group.Items[index], out var _newPal)) SelectingPaletteItem = _newPal;
+					}
 				}
 			} else {
-				var lists = EditorMeta.PinnedLists;
-				if (SelectingPaletteListIndex >= 0 && SelectingPaletteListIndex < lists.Count) {
-					var group = lists[SelectingPaletteListIndex];
-					if (group.Items.Count > 0) {
-						index = SelectingPaletteItem != null ? group.Items.IndexOf(SelectingPaletteItem.ID) : -1;
-						if (index >= 0) {
-							index = (index + delta).Clamp(0, group.Items.Count - 1);
-						} else {
-							index = delta > 0 ? 0 : group.Items.Count - 1;
-						}
-					}
-					if (index >= 0 && PalettePool.TryGetValue(group.Items[index], out var _newPal)) SelectingPaletteItem = _newPal;
+				// Searching
+				int index = SelectingPaletteItem != null ? SearchResult.IndexOf(SelectingPaletteItem) : -1;
+				if (index < 0) {
+					index = delta > 0 ? 0 : SearchResult.Count - 1;
+				} else {
+					index = (index + delta).Clamp(0, SearchResult.Count - 1);
 				}
+				SelectingPaletteItem = SearchResult[index];
+				PaletteSearchScrollY = index-3;
 			}
 		}
 

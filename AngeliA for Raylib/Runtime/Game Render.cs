@@ -10,10 +10,124 @@ namespace AngeliaForRaylib;
 public partial class GameForRaylib {
 
 
+	// SUB
+	private class GLRect {
+		public IRect Rect;
+		public Color Color;
+	}
+
+
+	private class GLTexture {
+		public IRect Rect;
+		public Texture2D Texture;
+		public FRect UV;
+	}
+
+
+	private class FontData {
+
+		private readonly Dictionary<char, (Image image, Texture2D texture)> Pool = new();
+		private unsafe byte* PrioritizedData = null;
+		private unsafe byte* FullsetData = null;
+		private int PrioritizedByteSize = 0;
+		private int FullsetByteSize = 0;
+
+		public string Name;
+		public int LayerIndex;
+		public int Size;
+		public float Scale = 1f;
+
+		public unsafe void LoadData (string filePath, bool isPrioritized) {
+			uint fileSize = 0;
+			byte* fileData = Raylib.LoadFileData(filePath, ref fileSize);
+			if (isPrioritized) {
+				PrioritizedData = fileData;
+				PrioritizedByteSize = (int)fileSize;
+			} else {
+				FullsetData = fileData;
+				FullsetByteSize = (int)fileSize;
+			}
+		}
+
+		public unsafe bool TryGetCharData (char c, out GlyphInfo info, out Texture2D texture) {
+
+			info = default;
+			texture = default;
+
+			if (PrioritizedByteSize == 0 && FullsetByteSize == 0) return false;
+
+			bool usingFullset = FullsetByteSize != 0 && (int)c >= 256;
+			var data = usingFullset ? FullsetData : PrioritizedData;
+			int dataSize = usingFullset ? FullsetByteSize : PrioritizedByteSize;
+			int charInt = c;
+			var infoPtr = Raylib.LoadFontData(data, dataSize, Size, &charInt, 1, FontType.Default);
+			if (infoPtr == null) return false;
+
+			info = infoPtr[0];
+			var img = info.Image;
+			if (img.Width * img.Height != 0) {
+				texture = Raylib.LoadTextureFromImage(img);
+				Pool.TryAdd(c, (img, texture));
+				return true;
+			}
+			return false;
+		}
+
+		public void Unload () {
+			foreach (var (_, (image, texture)) in Pool) {
+				Raylib.UnloadImage(image);
+				Raylib.UnloadTexture(texture);
+			}
+		}
+
+		public bool TryGetTexture (char c, out Texture2D texture) {
+			if (Pool.TryGetValue(c, out var result)) {
+				texture = result.texture;
+				return true;
+			} else {
+				texture = default;
+				return false;
+			}
+		}
+
+	}
+
+
+	// Data
+	private Texture2D EMPTY_TEXTURE;
 	private static System.Random CA_Ran = new(2353456);
+	private readonly GLRect[] GLRects = new GLRect[256 * 256].FillWithNewValue();
+	private readonly GLTexture[] GLTextures = new GLTexture[256].FillWithNewValue();
+	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
+	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
+	private FontData[] Fonts;
+	private int GLRectCount = 0;
+	private int GLTextureCount = 0;
+	private FRect CameraScreenRect = new(0, 0, 1f, 1f);
+	private IRect ScreenRect;
+	private Shader LerpShader;
+	private Shader ColorShader;
+	private Shader TextShader;
+	private Texture2D Texture;
+	private RenderTexture2D RenderTexture;
+	private int ShaderPropIndex_DarkenAmount;
+	private int ShaderPropIndex_LightenAmount;
+	private int ShaderPropIndex_TintAmount;
+	private int ShaderPropIndex_VignetteRadius;
+	private int ShaderPropIndex_VignetteFeather;
+	private int ShaderPropIndex_VignetteOffsetX;
+	private int ShaderPropIndex_VignetteOffsetY;
+	private int ShaderPropIndex_VignetteRound;
+	private int ShaderPropIndex_VignetteAspect;
+	private int ShaderPropIndex_CA_RED_X;
+	private int ShaderPropIndex_CA_RED_Y;
+	private int ShaderPropIndex_CA_GREEN_X;
+	private int ShaderPropIndex_CA_GREEN_Y;
+	private int ShaderPropIndex_CA_BLUE_X;
+	private int ShaderPropIndex_CA_BLUE_Y;
 
 
-	// Render
+	// MSG
 	private void InitializeFont () {
 		string fontRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts");
 		var fontList = new List<FontData>(8);
@@ -83,6 +197,113 @@ public partial class GameForRaylib {
 		ShaderPropIndex_CA_BLUE_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueY");
 	}
 
+	private void UpdateGizmos () {
+
+		var cameraRect = CellRenderer.CameraRect;
+		int cameraL = cameraRect.x;
+		int cameraR = cameraRect.xMax;
+		int cameraD = cameraRect.y;
+		int cameraU = cameraRect.yMax;
+		int screenL = ScreenRect.x;
+		int screenR = ScreenRect.xMax;
+		int screenD = ScreenRect.y;
+		int screenU = ScreenRect.yMax;
+
+		// Texture
+		for (int i = 0; i < GLTextureCount; i++) {
+			var glTexture = GLTextures[i];
+			var rTexture = glTexture.Texture;
+			var rect = glTexture.Rect;
+			var uv = glTexture.UV;
+			Raylib.DrawTexturePro(
+				rTexture,
+				new Rectangle(
+					uv.x * rTexture.Width,
+					uv.y * rTexture.Height,
+					uv.width * rTexture.Width,
+					uv.height * rTexture.Height
+				).Shrink(0.1f), new Rectangle(
+					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
+					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
+					rect.width * ScreenRect.width / cameraRect.width,
+					rect.height * ScreenRect.height / cameraRect.height
+				).Expand(0.5f), new(0, 0), 0, Color.White
+			);
+		}
+		GLTextureCount = 0;
+
+		// Rect
+		for (int i = 0; i < GLRectCount; i++) {
+			var glRect = GLRects[i];
+			var rect = glRect.Rect;
+			Raylib.DrawRectangle(
+				Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
+				Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
+				rect.width * ScreenRect.width / cameraRect.width,
+				rect.height * ScreenRect.height / cameraRect.height,
+				glRect.Color
+			);
+		}
+		GLRectCount = 0;
+	}
+
+	private bool PrepareScreenEffects () {
+		bool hasScreenEffectEnabled = false;
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			if (ScreenEffectEnables[i]) {
+				hasScreenEffectEnabled = true;
+				int screenW = Raylib.GetScreenWidth();
+				int screenH = Raylib.GetScreenHeight();
+				if (RenderTexture.Texture.Width != screenW || RenderTexture.Texture.Height != screenH) {
+					RenderTexture = Raylib.LoadRenderTexture(screenW, screenH);
+					Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
+				}
+				break;
+			}
+		}
+		return hasScreenEffectEnabled;
+	}
+
+	private void UpdateScreenEffect () {
+		// Chromatic Aberration
+		if (ScreenEffectEnables[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION]) {
+			var caShader = ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION];
+			const float CA_PingPongTime = 0.618f;
+			const float CA_PingPongMin = 0f;
+			const float CA_PingPongMax = 0.015f;
+			if (Raylib.GetTime() % CA_PingPongTime > CA_PingPongTime / 2f) {
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_Y, GetRandomAmount(0.2f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.7f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
+			} else {
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_Y, GetRandomAmount(0.8f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.72f), ShaderUniformDataType.Float);
+			}
+			static float GetRandomAmount (float timeOffset) {
+				int range = (int)(Util.RemapUnclamped(
+					0f, CA_PingPongTime,
+					CA_PingPongMin, CA_PingPongMax,
+					Util.PingPong((float)Raylib.GetTime() + timeOffset * CA_PingPongTime, CA_PingPongTime)
+				) * 100000f);
+				return CA_Ran.Next(-range, range) / 100000f;
+			}
+		}
+		// Vig
+		if (ScreenEffectEnables[Const.SCREEN_EFFECT_VIGNETTE]) {
+			var vShader = ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE];
+			Raylib.SetShaderValue<float>(
+				vShader, ShaderPropIndex_VignetteAspect,
+				(float)ScreenWidth / ScreenHeight,
+				ShaderUniformDataType.Float
+			);
+		}
+	}
+
+
+	// Render
 	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) { }
 
 	protected override void _OnCameraUpdate () {
@@ -354,94 +575,6 @@ public partial class GameForRaylib {
 		Raylib.SetTextureWrap(Texture, TextureWrap.Clamp);
 	}
 
-	private void UpdateGizmos () {
-
-		var cameraRect = CellRenderer.CameraRect;
-		int cameraL = cameraRect.x;
-		int cameraR = cameraRect.xMax;
-		int cameraD = cameraRect.y;
-		int cameraU = cameraRect.yMax;
-		int screenL = ScreenRect.x;
-		int screenR = ScreenRect.xMax;
-		int screenD = ScreenRect.y;
-		int screenU = ScreenRect.yMax;
-
-		// Texture
-		for (int i = 0; i < GLTextureCount; i++) {
-			var glTexture = GLTextures[i];
-			var rTexture = glTexture.Texture;
-			var rect = glTexture.Rect;
-			var uv = glTexture.UV;
-			Raylib.DrawTexturePro(
-				rTexture,
-				new Rectangle(
-					uv.x * rTexture.Width,
-					uv.y * rTexture.Height,
-					uv.width * rTexture.Width,
-					uv.height * rTexture.Height
-				).Shrink(0.1f), new Rectangle(
-					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
-					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
-					rect.width * ScreenRect.width / cameraRect.width,
-					rect.height * ScreenRect.height / cameraRect.height
-				).Expand(0.5f), new(0, 0), 0, Color.White
-			);
-		}
-		GLTextureCount = 0;
-
-		// Rect
-		for (int i = 0; i < GLRectCount; i++) {
-			var glRect = GLRects[i];
-			var rect = glRect.Rect;
-			Raylib.DrawRectangle(
-				Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
-				Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
-				rect.width * ScreenRect.width / cameraRect.width,
-				rect.height * ScreenRect.height / cameraRect.height,
-				glRect.Color
-			);
-		}
-		GLRectCount = 0;
-	}
-
-	private void UpdateScreenEffect () {
-		// Chromatic Aberration
-		if (ScreenEffectEnables[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION]) {
-			var caShader = ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION];
-			const float CA_PingPongTime = 0.618f;
-			const float CA_PingPongMin = 0f;
-			const float CA_PingPongMax = 0.015f;
-			if (Raylib.GetTime() % CA_PingPongTime > CA_PingPongTime / 2f) {
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_Y, GetRandomAmount(0.2f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.7f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
-			} else {
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_Y, GetRandomAmount(0.8f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.72f), ShaderUniformDataType.Float);
-			}
-			static float GetRandomAmount (float timeOffset) {
-				int range = (int)(Util.RemapUnclamped(
-					0f, CA_PingPongTime,
-					CA_PingPongMin, CA_PingPongMax,
-					Util.PingPong((float)Raylib.GetTime() + timeOffset * CA_PingPongTime, CA_PingPongTime)
-				) * 100000f);
-				return CA_Ran.Next(-range, range) / 100000f;
-			}
-		}
-		// Vig
-		if (ScreenEffectEnables[Const.SCREEN_EFFECT_VIGNETTE]) {
-			var vShader = ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE];
-			Raylib.SetShaderValue<float>(
-				vShader, ShaderPropIndex_VignetteAspect,
-				(float)ScreenWidth / ScreenHeight,
-				ShaderUniformDataType.Float
-			);
-		}
-	}
-
 
 	// Effect
 	protected override bool _GetEffectEnable (int effectIndex) => ScreenEffectEnables[effectIndex];
@@ -660,6 +793,37 @@ public partial class GameForRaylib {
 
 	protected override void _SetImeCompositionMode (bool on) {
 
+	}
+
+
+	// UTL
+	private static void WritePixelsToConsole (Byte4[] pixels, int width) {
+
+		int height = pixels.Length / width;
+		int realWidth = Util.Min(width, 32);
+		int realHeight = height * realWidth / width;
+		int scale = width / realWidth;
+
+		for (int y = realHeight - 1; y >= 0; y--) {
+			System.Console.ResetColor();
+			System.Console.WriteLine();
+			for (int x = 0; x < realWidth; x++) {
+				var p = pixels[(y * scale).Clamp(0, height - 1) * width + (x * scale).Clamp(0, width - 1)];
+				Util.RGBToHSV(p, out float h, out float s, out float v);
+				System.Console.BackgroundColor = (v * s < 0.2f) ?
+					(v < 0.33f ? System.ConsoleColor.Black : v > 0.66f ? System.ConsoleColor.White : System.ConsoleColor.Gray) :
+					(h < 0.08f ? (v > 0.5f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed) :
+					h < 0.25f ? (v > 0.5f ? System.ConsoleColor.Yellow : System.ConsoleColor.DarkYellow) :
+					h < 0.42f ? (v > 0.5f ? System.ConsoleColor.Green : System.ConsoleColor.DarkGreen) :
+					h < 0.58f ? (v > 0.5f ? System.ConsoleColor.Cyan : System.ConsoleColor.DarkCyan) :
+					h < 0.75f ? (v > 0.5f ? System.ConsoleColor.Blue : System.ConsoleColor.DarkBlue) :
+					h < 0.92f ? (v > 0.5f ? System.ConsoleColor.Magenta : System.ConsoleColor.DarkMagenta) :
+					(v > 0.6f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed));
+				System.Console.Write(" ");
+			}
+		}
+		System.Console.ResetColor();
+		System.Console.WriteLine();
 	}
 
 

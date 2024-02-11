@@ -18,6 +18,7 @@ namespace AngeliaFramework {
 		public virtual int ResidueParticleID => 0;
 		public virtual int ArtworkID => TypeID;
 		public virtual int Scale => 1000;
+		public virtual int WaterSpeedRate => 60;
 		protected override int Duration => 600;
 		protected override bool DestroyOnHitEnvironment => true;
 		protected override bool DestroyOnHitReceiver => true;
@@ -30,8 +31,14 @@ namespace AngeliaFramework {
 
 			if (!Active) return;
 
-			X += Velocity.x;
-			Y += Velocity.y;
+			var vel = Velocity;
+			if (CellPhysics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
+				vel.x = vel.x * WaterSpeedRate / 1000;
+				vel.y = vel.y * WaterSpeedRate / 1000;
+			}
+			X += vel.x;
+			Y += vel.y;
+
 			if (AriDrag != default) {
 				Velocity = Velocity.MoveTowards(Int2.zero, AriDrag);
 			}

@@ -296,7 +296,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) {
+		private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null, int z = GIZMOS_Z - 2) {
 			if (sprite == null && !CellRenderer.TryGetSpriteFromGroup(artworkID, 0, out sprite)) {
 				if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
 					CellRenderer.TryGetSprite(newID, out sprite);
@@ -304,7 +304,7 @@ namespace AngeliaFramework {
 			}
 			if (sprite == null) return;
 			if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-			CellRenderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), GIZMOS_Z - 2);
+			CellRenderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), z);
 		}
 
 

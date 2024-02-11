@@ -43,6 +43,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>Framework\ThirdParty\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security.Permissions">
+      <HintPath>Framework\ThirdParty\Newtonsoft.Json\System.Security.Permissions.dll</HintPath>
+    </Reference>
     <Reference Include="zlib.net">
       <HintPath>Framework\ThirdParty\Aseprite\zlib.net.dll</HintPath>
     </Reference>

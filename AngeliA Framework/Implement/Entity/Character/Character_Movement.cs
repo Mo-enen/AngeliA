@@ -451,6 +451,7 @@ namespace AngeliaFramework {
 						// Perform Jump
 						CurrentJumpCount++;
 						VelocityY = Util.Max(InWater ? SwimJumpSpeed : JumpSpeed, VelocityY);
+						if (InWater) Bounce();
 						if (IsGrabbingSide) {
 							X += FacingRight ? -6 : 6;
 						} else if (IsGrabbingTop) {
