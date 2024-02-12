@@ -8,6 +8,7 @@ namespace AngeliaFramework {
 	public abstract class WindowUI : EntityUI {
 
 		public static WindowUI Instance { get; private set; } = null;
+		public static bool HasActiveInstance => Instance != null && Instance.Active;
 
 		[OnGameQuitting]
 		public static void OnGameQuitting () {
@@ -24,6 +25,12 @@ namespace AngeliaFramework {
 			if (!Game.AllowMakerFeaures) return;
 			Stage.ClearStagedEntities();
 			Stage.SpawnEntity(typeID, 0, 0);
+		}
+
+		public static void CloseCurrentWindow () {
+			if (Instance != null) {
+				Instance.Active = false;
+			}
 		}
 
 	}

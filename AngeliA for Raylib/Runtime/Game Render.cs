@@ -67,6 +67,7 @@ public partial class GameForRaylib {
 			var img = info.Image;
 			if (img.Width * img.Height != 0) {
 				texture = Raylib.LoadTextureFromImage(img);
+				Raylib.SetTextureFilter(texture, TextureFilter.Bilinear);
 				Pool.TryAdd(c, (img, texture));
 				return true;
 			}

@@ -184,7 +184,7 @@ namespace AngeliaFramework {
 		protected static IEnumerable<KeyValuePair<string, System.Type>> ForAllRequirement<AllFieldAttribute, NameCode> () where NameCode : INameCode where AllFieldAttribute : RequireNameFromField {
 			var typeofFieldAtt = typeof(AllFieldAttribute);
 			foreach (var type in Util.AllTypes) {
-				if (GetCustomAttribute(type, typeofFieldAtt) == null) continue;
+				if (GetCustomAttribute(type, typeofFieldAtt, inherit: false) == null) continue;
 				bool hasContent = false;
 				foreach (var value in type.ForAllStaticFieldValue<NameCode>()) {
 					hasContent = true;

@@ -16,7 +16,7 @@ namespace AngeliaFramework {
 		#region --- SUB ---
 
 
-		private enum MenuMode { Pause, Setting, EditorSetting, KeySetter, Restart, Quit, Setter_Keyboard, Setter_Gamepad }
+		private enum MenuMode { Root, Setting, EditorSetting, KeySetter, Restart, Quit, Setter_Keyboard, Setter_Gamepad }
 
 
 		#endregion
@@ -50,6 +50,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode MENU_MEDT_AUTO_ZOOM = ("Menu.MEDTSetting.AutoZoom", "Auto Zoom");
 		private static readonly LanguageCode MENU_MEDT_PLAYER_DROP = ("Menu.MEDTSetting.PlayerDrop", "Quick Player Drop");
 		private static readonly LanguageCode MENU_MEDT_STATE = ("Menu.MEDTSetting.ShowState", "Show State Info");
+		private static readonly LanguageCode MENU_EDITOR_QUIT = ("Menu.WindowEditor.Quit", "Quit Editing");
 		private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
 			($"UI.GameKey.{Gamekey.Left}", "Left"),
 			($"UI.GameKey.{Gamekey.Right}", "Right"),
@@ -68,8 +69,8 @@ namespace AngeliaFramework {
 		private readonly IntToChars MusicVolumeCache = new();
 		private readonly IntToChars SoundVolumeCache = new();
 		private readonly CellContent KeySetterLabel = new();
-		private MenuMode Mode = MenuMode.Pause;
-		private MenuMode RequireMode = MenuMode.Pause;
+		private MenuMode Mode = MenuMode.Root;
+		private MenuMode RequireMode = MenuMode.Root;
 		private int RecordingKey = -1;
 		private bool RecordLock = true;
 		private bool RecordDirty = false;
@@ -100,7 +101,7 @@ namespace AngeliaFramework {
 			if (Game.IsPausing) {
 				if (!Instance.Active) {
 					Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
-					Instance.Mode = Instance.RequireMode = MenuMode.Pause;
+					Instance.Mode = Instance.RequireMode = MenuMode.Root;
 				}
 			} else {
 				if (Instance.Active) Instance.Active = false;
@@ -141,8 +142,8 @@ namespace AngeliaFramework {
 		protected override void DrawMenu () {
 			Message = string.Empty;
 			switch (Mode) {
-				case MenuMode.Pause:
-					MenuPause();
+				case MenuMode.Root:
+					MenuRoot();
 					break;
 				case MenuMode.KeySetter:
 					MenuKeySetterHub();
@@ -171,7 +172,7 @@ namespace AngeliaFramework {
 
 
 		// Menus
-		private void MenuPause () {
+		private void MenuRoot () {
 
 			// 0-Continue
 			if (DrawItem(BuiltInText.UI_CONTINUE) || FrameInput.GameKeyDown(Gamekey.Jump)) {
@@ -246,7 +247,7 @@ namespace AngeliaFramework {
 			}
 
 			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
-				RequireMode = MenuMode.Pause;
+				RequireMode = MenuMode.Root;
 				SetSelection(1);
 			}
 		}
@@ -337,7 +338,7 @@ namespace AngeliaFramework {
 
 			// Back
 			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
-				RequireMode = MenuMode.Pause;
+				RequireMode = MenuMode.Root;
 				SetSelection(2);
 			}
 		}
@@ -375,7 +376,7 @@ namespace AngeliaFramework {
 
 			// Back
 			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
-				RequireMode = MenuMode.Pause;
+				RequireMode = MenuMode.Root;
 				SetSelection(3);
 			}
 		}
@@ -387,7 +388,7 @@ namespace AngeliaFramework {
 
 			// Continue
 			if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
-				RequireMode = MenuMode.Pause;
+				RequireMode = MenuMode.Root;
 				SetSelection(3);
 			}
 
@@ -408,8 +409,18 @@ namespace AngeliaFramework {
 
 			// Continue
 			if (DrawItem(BuiltInText.UI_CONTINUE) || FrameInput.GameKeyDown(Gamekey.Jump)) {
-				RequireMode = MenuMode.Pause;
+				RequireMode = MenuMode.Root;
 				SetSelection(1024);
+			}
+
+			// Quit Editing
+			if (WindowUI.HasActiveInstance) {
+				if (DrawItem(MENU_EDITOR_QUIT)) {
+					Active = false;
+					FrameInput.UseAllHoldingKeys();
+					WindowUI.CloseCurrentWindow();
+					Game.RestartGame();
+				}
 			}
 
 			// Quit Game

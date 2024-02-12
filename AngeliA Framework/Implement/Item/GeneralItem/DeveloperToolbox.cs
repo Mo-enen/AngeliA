@@ -30,7 +30,16 @@ namespace AngeliaFramework {
 
 
 		// Const
-		private static readonly SpriteCode[] BTN_SPRITES = { "DeveloperToolbox.Collider", "DeveloperToolbox.Bound", "DeveloperToolbox.Profiler", "DeveloperToolbox.Effect", };
+		private static readonly SpriteCode[] PANEL_BTNS = {
+			"DeveloperToolbox.Collider",
+			"DeveloperToolbox.Bound",
+			"DeveloperToolbox.Profiler",
+			"DeveloperToolbox.Effect",
+		};
+		private static readonly SpriteCode[] WINDOW_BTNS = {
+			"DeveloperToolbox.MapEditor",
+			"DeveloperToolbox.Language",
+		};
 		private static readonly Byte4[] COLLIDER_TINTS = { Const.RED_BETTER, Const.ORANGE_BETTER, Const.YELLOW, Const.GREEN, Const.CYAN, Const.BLUE, Const.GREY_128, };
 
 		// Api
@@ -67,14 +76,20 @@ namespace AngeliaFramework {
 
 
 		[OnGameUpdateLater(-4097)]
-		public static void OnGameUpdateLaterMin () => Instance?.DrawToolboxUI();
+		public static void OnGameUpdateLaterMin () => Instance?.UpdateToolbar();
 
 
 		[OnGameUpdateLater(4096)]
-		public static void OnGameUpdateLaterMax () => Instance?.DrawToolboxGizmos();
+		public static void OnGameUpdateLaterMax () => Instance?.UpdateGizmos();
 
 
-		private void DrawToolboxUI () {
+		public override void OnItemUpdate_FromInventory (Entity holder) {
+			base.OnItemUpdate_FromInventory(holder);
+			RequireToolboxFrame = Game.GlobalFrame;
+		}
+
+
+		private void UpdateToolbar () {
 
 			if (Game.GlobalFrame > RequireToolboxFrame + 1) return;
 
@@ -93,20 +108,40 @@ namespace AngeliaFramework {
 
 			var rect = new IRect(panelRect.xMax - buttonSize - padding, panelRect.y + padding, buttonSize, buttonSize);
 
-			rect.x -= CellGUI.Unify(32);
+			if (Game.ShowFPS) rect.x -= CellGUI.Unify(32);
 
-			// Draw All Buttons
-			for (int i = 0; i < BTN_SPRITES.Length; i++) {
+			// Draw All Panel Buttons
+			for (int i = 0; i < PANEL_BTNS.Length; i++) {
 				if (SelectingPanelIndex == i) {
 					CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
 				}
-				int spriteCode = BTN_SPRITES[i];
+				int spriteCode = PANEL_BTNS[i];
 				if (CellGUI.Button(rect, spriteCode, spriteCode, spriteCode, 0, 0, 0, int.MaxValue)) {
 					SelectingPanelIndex = SelectingPanelIndex != i ? i : -1;
 					EffectsEnabled.FillWithValue(false);
+
 				}
-				rect.x -= i == BTN_SPRITES.Length - 1 ? padding : rect.width + padding;
+				rect.x -= rect.width + padding;
 			}
+
+			// Draw All Window Buttons
+			for (int i = 0; i < WINDOW_BTNS.Length; i++) {
+				bool opening = i == 0 ? MapEditor.IsActived : LanguageEditor.IsActived;
+				if (opening) {
+					CellRenderer.Draw(Const.PIXEL, rect, Const.GREEN, int.MaxValue - 1);
+				}
+				int spriteCode = WINDOW_BTNS[i];
+				if (CellGUI.Button(rect, spriteCode, spriteCode, spriteCode, 0, 0, 0, int.MaxValue)) {
+					if (opening) {
+						WindowUI.CloseCurrentWindow();
+						Game.RestartGame();
+					} else {
+						WindowUI.OpenWindow(i == 0 ? MapEditor.TYPE_ID : LanguageEditor.TYPE_ID);
+					}
+				}
+				rect.x -= i == WINDOW_BTNS.Length - 1 ? padding : rect.width + padding;
+			}
+
 			panelRect.width = panelRect.x - rect.x;
 			panelRect.x = rect.x;
 
@@ -143,7 +178,7 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawToolboxGizmos () {
+		private void UpdateGizmos () {
 			if (Game.GlobalFrame > RequireToolboxFrame + 1) return;
 
 			if (!DataInitialized) {
@@ -271,10 +306,12 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void OnItemUpdate_FromInventory (Entity holder) {
-			base.OnItemUpdate_FromInventory(holder);
-			RequireToolboxFrame = Game.GlobalFrame;
-		}
+		#endregion
+
+
+
+
+		#region --- LGC ---
 
 
 		private void DrawProfilerPanel (ref IRect panelRect) {
@@ -370,15 +407,6 @@ namespace AngeliaFramework {
 				Game.PassEffect_Vignette(0.95f, 0.6f, 0f, 0f, 0f);
 			}
 		}
-
-
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
 
 
 		#endregion
