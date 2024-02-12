@@ -26,11 +26,11 @@ public partial class GameForRaylib : Game {
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
 	private long NextUpdateTick = -1;
-	
+
 	// Saving
 	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
 
-	
+
 	// MSG
 	public static void Run () {
 		var game = new GameForRaylib();
@@ -49,6 +49,7 @@ public partial class GameForRaylib : Game {
 	private void InitializeGame () {
 
 		// Init Window
+		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.All : TraceLogLevel.None);
 		Raylib.SetConfigFlags(
 			ConfigFlags.ResizableWindow |
 			//ConfigFlags.VSyncHint |
@@ -181,7 +182,6 @@ public partial class GameForRaylib : Game {
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) Raylib.UnloadShader(ScreenEffectShaders[i]);
 
 		// Unload Texture
-		Raylib.UnloadTexture(Texture);
 		Raylib.UnloadTexture(EMPTY_TEXTURE);
 		Raylib.UnloadRenderTexture(RenderTexture);
 

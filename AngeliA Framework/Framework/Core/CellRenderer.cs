@@ -355,6 +355,10 @@ namespace AngeliaFramework {
 		}
 
 
+		[OnGameQuitting]
+		internal static void OnGameQuitting () => Sheet.Clear();
+
+
 		#endregion
 
 
@@ -370,8 +374,6 @@ namespace AngeliaFramework {
 			if (!Sheet.LoadFromDisk(project.SheetPath) && project != ProjectSystem.BuiltInProject) {
 				Sheet.LoadFromDisk(ProjectSystem.BuiltInProject.SheetPath);
 			}
-			// Load Texture
-			Game.SetTextureForRenderer(Sheet.Texture);
 		}
 
 

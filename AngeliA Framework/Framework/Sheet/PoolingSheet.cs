@@ -8,8 +8,8 @@ namespace AngeliaFramework {
 		public readonly Dictionary<int, AngeSprite> SpritePool = new();
 		public readonly Dictionary<int, SpriteGroup> GroupPool = new();
 
-		public override void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo, object texture) {
-			base.SetData(sprites, groups, atlasInfo, texture);
+		public override void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) {
+			base.SetData(sprites, groups, atlasInfo);
 			FillPool();
 		}
 

@@ -8,24 +8,22 @@ namespace AngeliaFramework {
 
 		// VAR 
 		public bool NotEmpty => Sprites.Count > 0;
-		public object Texture = null;
 		public readonly List<AngeSprite> Sprites = new();
 		public readonly List<SpriteGroup> Groups = new();
 		public readonly List<Atlas> Atlas = new();
 
 		// MSG
 		public Sheet () { }
-		public Sheet (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo, object texture) => SetData(sprites, groups, atlasInfo, texture);
+		public Sheet (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) => SetData(sprites, groups, atlasInfo);
 
 		// API
-		public virtual void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo, object texture) {
+		public virtual void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) {
 			Sprites.Clear();
 			Sprites.AddRange(sprites);
 			Groups.Clear();
 			Groups.AddRange(groups);
 			Atlas.Clear();
 			Atlas.AddRange(atlasInfo);
-			Texture = texture;
 			ApplyData();
 		}
 
@@ -39,13 +37,6 @@ namespace AngeliaFramework {
 
 			// File Version
 			int fileVersion = reader.ReadInt32();
-
-			// Load Texture
-			int textureSize = reader.ReadInt32();
-			if (textureSize > 0) {
-				var pngBytes = reader.ReadBytes(textureSize);
-				Texture = Game.PngBytesToTexture(pngBytes);
-			}
 
 			// Load Data
 			switch (fileVersion) {
@@ -66,27 +57,17 @@ namespace AngeliaFramework {
 		public virtual void SaveToDisk (string path) {
 			using var stream = new FileStream(path, FileMode.Create);
 			using var writer = new BinaryWriter(stream);
-			// File Version
-			writer.Write((int)0);
-			// Save Texture
-			if (Texture != null) {
-				var pngBytes = Game.TextureToPngBytes(Texture);
-				writer.Write((int)pngBytes.Length);
-				writer.Write(pngBytes);
-			} else {
-				writer.Write((int)0);
-			}
-			// Save Data
+			writer.Write((int)0); // File Version
 			SaveToBinary_v0(writer);
 		}
 
 		public virtual void Clear () {
+			foreach (var sprite in Sprites) Game.UnloadTexture(sprite.Texture);
 			Sprites.Clear();
 			Groups.Clear();
 			Atlas.Clear();
-			Texture = null;
 		}
-		
+
 		// LGC
 		private void ApplyData () {
 			for (int i = 0; i < Sprites.Count; i++) {
@@ -114,10 +95,6 @@ namespace AngeliaFramework {
 
 			var stream = reader.BaseStream;
 
-			var textureSize = Game.GetTextureSize(Texture);
-			textureSize.x = textureSize.x.GreaterOrEquel(1);
-			textureSize.y = textureSize.y.GreaterOrEquel(1);
-
 			// Sprites
 			int spriteCount = reader.ReadInt32();
 			int spriteByteLength = reader.ReadInt32();
@@ -127,7 +104,7 @@ namespace AngeliaFramework {
 				for (int i = 0; i < spriteCount; i++) {
 					var sprite = new AngeSprite();
 					Sprites.Add(sprite);
-					sprite.LoadFromBinary_v0(reader, textureSize.x, textureSize.y);
+					sprite.LoadFromBinary_v0(reader);
 				}
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			if (stream.Position != spriteEndPos) stream.Position = spriteEndPos;

@@ -8,237 +8,29 @@ namespace AngeliaFramework {
 	public static class SheetUtil {
 
 
-		private class FlexSpriteComparer : IComparer<FlexSprite> {
-			public static readonly FlexSpriteComparer Instance = new();
-			public int Compare (FlexSprite a, FlexSprite b) =>
-				a.Rect.x != b.Rect.x ? a.Rect.x.CompareTo(b.Rect.x) :
-				a.Rect.y != b.Rect.y ? a.Rect.y.CompareTo(b.Rect.y) :
-				a.Rect.width != b.Rect.width ? a.Rect.width.CompareTo(b.Rect.width) :
-				a.Rect.height.CompareTo(b.Rect.height);
-		}
-
-
-		private class PackingItemComparer : IComparer<PackingItem> {
-			public static readonly PackingItemComparer Instance = new();
-			public int Compare (PackingItem a, PackingItem b) {
-				int result = a.AtlasName.CompareTo(b.AtlasName);
-				if (result != 0) return result;
-				return a.Name.CompareTo(b.Name);
-			}
-		}
-
-
-		private class PackingItem {
-			public int Width;
-			public int Height;
-			public Byte4[] Pixels;
-			public FRect UvResult;
-			public string Name;
-			public Int2 AngePivot;
-			public Int4 Border;
-			public int AtlasZ;
-			public string AtlasName;
-			public AtlasType AtlasType;
-		}
-
-
 		public static void RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
 			long sheetDate = Util.GetFileCreationDate(sheetPath);
+			bool requireCreateSheet = false;
+			bool hasArtwork = false;
 			foreach (var filePath in AsepriteUtil.ForAllAsepriteFiles(asepriteRoot)) {
+				hasArtwork = true;
 				if (Util.GetFileModifyDate(filePath) <= sheetDate) continue;
-				CreateSheetFromAsepriteFiles(asepriteRoot)?.SaveToDisk(sheetPath);
-				return;
+				requireCreateSheet = true;
+				break;
+			}
+			if (!requireCreateSheet && hasArtwork && !Util.FileExists(sheetPath)) {
+				requireCreateSheet = true;
+			}
+			if (requireCreateSheet) {
+				CreateNewSheet(AsepriteUtil.CreateSpritesFromAsepriteFiles(
+					AsepriteUtil.ForAllAsepriteFiles(asepriteRoot).ToArray(),
+					"#ignore"
+				).Append(FlexSprite.PIXEL).ToArray())?.SaveToDisk(sheetPath);
 			}
 		}
 
 
-		public static Sheet CreateSheetFromAsepriteFiles (string asepriteRoot) {
-
-			// Aseprite Files >> Flex Sprites & Texture
-			var tResults = AsepriteUtil.CreateSpritesFromAsepriteFiles(
-				AsepriteUtil.ForAllAsepriteFiles(asepriteRoot).ToArray(),
-				"#ignore"
-			);
-
-			// Combine Result Files
-			CombineFlexTextures(
-				tResults, out var sheetTexturePixels, out int textureWidth, out int textureHeight, out var flexSprites
-			);
-
-			// Flex Sprites >> Sheet
-			var sheet = new Sheet();
-			FillFlexIntoSheet(flexSprites, sheetTexturePixels, textureWidth, textureHeight, sheet);
-			return sheet;
-
-		}
-
-
-		public static object LoadSheetTextureFromDisk (string path) => LoadSheetTextureFromDisk(path, out _);
-
-
-		public static object LoadSheetTextureFromDisk (string path, out int spriteCount) {
-			spriteCount = 0;
-			if (!Util.FileExists(path)) return null;
-			object result = null;
-			using var stream = new FileStream(path, FileMode.Open);
-			using var reader = new BinaryReader(stream);
-			reader.ReadInt32(); // File Version
-			int textureSize = reader.ReadInt32();
-			if (textureSize > 0) {
-				var pngBytes = reader.ReadBytes(textureSize);
-				result = Game.PngBytesToTexture(pngBytes);
-			}
-			spriteCount = reader.ReadInt32();
-			return result;
-		}
-
-
-		private static void CombineFlexTextures (List<(PackingTexture data, FlexSprite[] flexs)> flexTextures, out Byte4[] texturePixels, out int textureWidth, out int textureHeight, out FlexSprite[] resultFlexs) {
-
-			// Combine
-			var items = new List<PackingItem>();
-			var overlapList = new List<(FlexSprite flex, PackingItem original)>();
-			var spriteSheetNamePool = new Dictionary<string, string>();
-			var dupHash = new HashSet<int>();
-			foreach (var (data, sourceFlexs) in flexTextures) {
-				int sourceWidth = data.Width;
-				int sourceHeight = data.Height;
-				System.Array.Sort(sourceFlexs, FlexSpriteComparer.Instance);
-				int prevX = int.MinValue;
-				int prevY = int.MinValue;
-				int prevW = int.MinValue;
-				int prevH = int.MinValue;
-				PackingItem prevItem = null;
-				foreach (var flex in sourceFlexs) {
-					int x = flex.Rect.x;
-					int y = flex.Rect.y;
-					int w = flex.Rect.width;
-					int h = flex.Rect.height;
-					if (x == prevX && y == prevY && w == prevW && h == prevH) {
-						overlapList.Add((flex, prevItem));
-						continue;
-					}
-					prevX = x;
-					prevY = y;
-					prevW = w;
-					prevH = h;
-					if (x < 0 || y < 0 || x + w > sourceWidth || y + h > sourceHeight) continue;
-
-					var pixels = new Byte4[w * h];
-					for (int j = 0; j < h; j++) {
-						for (int i = 0; i < w; i++) {
-							pixels[j * w + i] = data.Pixels[(y + j) * sourceWidth + (x + i)];
-						}
-					}
-
-					// Add Packing Item
-					items.Add(new PackingItem() {
-						Width = w,
-						Height = h,
-						Border = flex.Border,
-						Name = flex.FullName,
-						AngePivot = flex.AngePivot,
-						AtlasName = flex.AtlasName,
-						Pixels = pixels,
-						AtlasType = flex.AtlasType,
-						AtlasZ = flex.AtlasZ,
-					});
-					prevItem = items.Count > 0 ? items[^1] : null;
-
-					if (!spriteSheetNamePool.ContainsKey(flex.FullName)) {
-						spriteSheetNamePool.Add(flex.FullName, flex.AtlasName);
-					}
-
-					// Check Duplicate
-					int realID = AngeUtil.GetBlockRealName(flex.FullName).AngeHash();
-					if (!dupHash.Contains(realID)) {
-						dupHash.Add(realID);
-					} else {
-						Game.LogWarning($"[Slice Name Confliction] Sheet <color=#ffcc00>{flex.AtlasName}</color> and <color=#ffcc00>{(spriteSheetNamePool.TryGetValue(flex.FullName, out string _sheetName) ? _sheetName : "")}</color> is having slices with same name <color=#ffcc00>{flex.FullName}</color>");
-					}
-				}
-			}
-
-			// Add "Pixel" to Items
-			items.Add(new PackingItem() {
-				Width = 1,
-				Height = 1,
-				Border = Int4.zero,
-				Name = "Pixel",
-				AngePivot = Int2.zero,
-				AtlasName = "(Procedure)",
-				Pixels = new Byte4[1] { new(255, 255, 255, 255) },
-				AtlasType = AtlasType.General,
-				AtlasZ = 0,
-			});
-			items.Sort(PackingItemComparer.Instance);
-
-			// Pack
-			var textures = new PackingTexture[items.Count];
-			for (int i = 0; i < textures.Length; i++) {
-				var item = items[i];
-				textures[i] = new PackingTexture(item.Width, item.Height, item.Pixels);
-			}
-
-			AngeliaRectPacking.Pack(
-				textures,
-				maxTextureWidth: 16384,
-				out var sheetTextureData,
-				out var uvs
-			);
-			for (int i = 0; i < items.Count; i++) {
-				items[i].UvResult = uvs[i];
-			}
-			texturePixels = sheetTextureData.Pixels;
-			textureWidth = sheetTextureData.Width;
-			textureHeight = sheetTextureData.Height;
-
-			// Create Meta
-			var resultList = new List<FlexSprite>();
-			float width = sheetTextureData.Width;
-			float height = sheetTextureData.Height;
-			for (int i = 0; i < uvs.Length; i++) {
-				var uv = uvs[i];
-				var item = items[i];
-				if (item.Border.x < 0) item.Border.x = 0;
-				if (item.Border.y < 0) item.Border.y = 0;
-				if (item.Border.z < 0) item.Border.z = 0;
-				if (item.Border.w < 0) item.Border.w = 0;
-				resultList.Add(new FlexSprite() {
-					FullName = item.Name,
-					AtlasName = item.AtlasName,
-					AtlasZ = item.AtlasZ,
-					Border = item.Border,
-					AngePivot = item.AngePivot,
-					AtlasType = item.AtlasType,
-					Rect = IRect.MinMaxRect(
-						(uv.xMin * width).RoundToInt(),
-						(uv.yMin * height).RoundToInt(),
-						(uv.xMax * width).RoundToInt(),
-						(uv.yMax * height).RoundToInt()
-					)
-				});
-			}
-
-			// Overlaps
-			for (int i = 0; i < overlapList.Count; i++) {
-				var (flex, original) = overlapList[i];
-				flex.Rect = IRect.MinMaxRect(
-					(original.UvResult.xMin * width).RoundToInt(),
-					(original.UvResult.yMin * height).RoundToInt(),
-					(original.UvResult.xMax * width).RoundToInt(),
-					(original.UvResult.yMax * height).RoundToInt()
-				);
-				resultList.Add(flex);
-			}
-			resultFlexs = resultList.ToArray();
-
-		}
-
-
-		private static void FillFlexIntoSheet (FlexSprite[] flexSprites, Byte4[] texturePixels, int textureWidth, int textureHeight, Sheet sheet) {
-
-			if (textureWidth == 0 || textureHeight == 0) return;
+		public static Sheet CreateNewSheet (FlexSprite[] flexSprites) {
 
 			var spriteIDHash = new HashSet<int>();
 			var groupPool = new Dictionary<
@@ -252,10 +44,10 @@ namespace AngeliaFramework {
 			for (int i = 0; i < flexSprites.Length; i++) {
 				var flex = flexSprites[i];
 				var uvBorder = new Float4(
-					(float)flex.Border.left / flex.Rect.width,
-					(float)flex.Border.down / flex.Rect.height,
-					(float)flex.Border.right / flex.Rect.width,
-					(float)flex.Border.up / flex.Rect.height
+					(float)flex.Border.left / flex.Size.x,
+					(float)flex.Border.down / flex.Size.y,
+					(float)flex.Border.right / flex.Size.x,
+					(float)flex.Border.up / flex.Size.y
 				);
 				AngeUtil.GetSpriteInfoFromName(
 					flex.FullName, out string realName, out string groupName, out int groupIndex, out var groupType,
@@ -265,8 +57,8 @@ namespace AngeliaFramework {
 				);
 				int tag = tagStr.AngeHash();
 				int rule = AngeUtil.RuleStringToDigit(ruleStr);
-				int globalWidth = flex.Rect.width * Const.ART_SCALE;
-				int globalHeight = flex.Rect.height * Const.ART_SCALE;
+				int globalWidth = flex.Size.x * Const.ART_SCALE;
+				int globalHeight = flex.Size.y * Const.ART_SCALE;
 				var globalBorder = Int4.Direction(
 					Util.Clamp(flex.Border.left * Const.ART_SCALE, 0, globalWidth),
 					Util.Clamp(flex.Border.right * Const.ART_SCALE, 0, globalWidth),
@@ -289,15 +81,12 @@ namespace AngeliaFramework {
 					});
 				}
 
-				float uvMinX = flex.Rect.xMin / (float)textureWidth;
-				float uvMinY = flex.Rect.yMin / (float)textureHeight;
-				float uvMaxX = flex.Rect.xMax / (float)textureWidth;
-				float uvMaxY = flex.Rect.yMax / (float)textureHeight;
 				var newSprite = new AngeSprite() {
 					GlobalID = globalID,
 					GlobalWidth = globalWidth,
 					GlobalHeight = globalHeight,
-					UvBorder = uvBorder,
+					PixelWidth = flex.Size.x,
+					PixelHeight = flex.Size.y,
 					GlobalBorder = globalBorder,
 					LocalZ = offsetZ,
 					SortingZ = flex.AtlasZ * 1024 + offsetZ,
@@ -309,10 +98,9 @@ namespace AngeliaFramework {
 					Tag = tag,
 					Rule = rule,
 					IsTrigger = isTrigger,
-					SummaryTint = Const.CLEAR,
 					Group = null,
-					UvRect = FRect.MinMaxRect(uvMinX, uvMinY, uvMaxX, uvMaxY),
-					TextureRect = flex.Rect,
+					SummaryTint = GetSummaryTint(flex.Pixels),
+					Pixels = flex.Pixels,
 				};
 
 				spriteIDHash.TryAdd(newSprite.GlobalID);
@@ -374,53 +162,32 @@ namespace AngeliaFramework {
 				groups.Add(group);
 			}
 
-			// Summary
-			FillSummaryForSheet(spriteList, textureWidth, textureHeight, texturePixels);
-
 			// Create
-			sheet.Clear();
+			var sheet = new Sheet();
 			sheet.SetData(
-				spriteList, groups, atlases,
-				Game.GetTextureFromPixels(texturePixels, textureWidth, textureHeight)
+				spriteList, groups, atlases
 			);
-
+			return sheet;
 			// Func
-			static void FillSummaryForSheet (List<AngeSprite> sprites, int textureWidth, int textureHeight, Byte4[] pixels) {
-
-				// Color
-				for (int i = 0; i < sprites.Count; i++) {
-					var sp = sprites[i];
-					var color = GetThumbnailColor(pixels, textureWidth, sp.TextureRect);
-					sp.SummaryTint = color;
-				}
-
-				// Func
-				static Byte4 GetThumbnailColor (Byte4[] pixels, int width, IRect rect) {
-					if (rect.width <= 0 || rect.height <= 0) return Const.CLEAR;
-					var sum = Float3.zero;
-					float len = 0;
-					int l = rect.x;
-					int r = rect.xMax;
-					int d = rect.y;
-					int u = rect.yMax;
-					for (int x = l; x < r; x++) {
-						for (int y = d; y < u; y++) {
-							var pixel = pixels[y * width + x];
-							if (pixel.a != 0) {
-								sum.x += pixel.r / 255f;
-								sum.y += pixel.g / 255f;
-								sum.z += pixel.b / 255f;
-								len++;
-							}
-						}
+			static Byte4 GetSummaryTint (Byte4[] pixels) {
+				if (pixels == null || pixels.Length == 0) return Const.CLEAR;
+				var sum = Float3.zero;
+				float len = 0;
+				for (int i = 0; i < pixels.Length; i++) {
+					var pixel = pixels[i];
+					if (pixel.a != 0) {
+						sum.x += pixel.r / 255f;
+						sum.y += pixel.g / 255f;
+						sum.z += pixel.b / 255f;
+						len++;
 					}
-					return new Byte4(
-						(byte)(sum.x * 255f / len),
-						(byte)(sum.y * 255f / len),
-						(byte)(sum.z * 255f / len),
-						255
-					);
 				}
+				return new Byte4(
+					(byte)(sum.x * 255f / len),
+					(byte)(sum.y * 255f / len),
+					(byte)(sum.z * 255f / len),
+					255
+				);
 			}
 		}
 

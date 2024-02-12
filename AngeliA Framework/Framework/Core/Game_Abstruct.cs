@@ -96,9 +96,6 @@ namespace AngeliaFramework {
 		internal static void SetSkyboxTint (Byte4 top, Byte4 bottom) => Instance._SetSkyboxTint(top, bottom);
 		protected abstract void _SetSkyboxTint (Byte4 top, Byte4 bottom);
 
-		internal static void SetTextureForRenderer (object texture) => Instance._SetTextureForRenderer(texture);
-		protected abstract void _SetTextureForRenderer (object texture);
-
 
 		// Effect
 		[OnGameUpdatePauseless(4096)]

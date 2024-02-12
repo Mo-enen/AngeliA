@@ -108,7 +108,6 @@ public partial class GameForRaylib {
 	private Shader LerpShader;
 	private Shader ColorShader;
 	private Shader TextShader;
-	private Texture2D Texture;
 	private RenderTexture2D RenderTexture;
 	private int ShaderPropIndex_DarkenAmount;
 	private int ShaderPropIndex_LightenAmount;
@@ -334,8 +333,6 @@ public partial class GameForRaylib {
 		int screenR = ScreenRect.xMax;
 		int screenD = ScreenRect.y;
 		int screenU = ScreenRect.yMax;
-		int textureWidth = Texture.Width;
-		int textureHeight = Texture.Height;
 
 		bool usingShader = false;
 		bool usingBlend = false;
@@ -374,22 +371,22 @@ public partial class GameForRaylib {
 				var cell = cells[isUiLayer ? cellCount - i - 1 : i];
 
 				// Cell
-				if (cell.Sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
+				var sprite = cell.Sprite;
+				if (sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
 
 				// UV
 				float sourceL, sourceR, sourceD, sourceU;
 				if (cell.BorderSide == Alignment.Full) {
-					var uvRect = cell.Sprite.UvRect;
-					sourceL = uvRect.x * textureWidth;
-					sourceR = uvRect.xMax * textureWidth;
-					sourceD = textureHeight - uvRect.yMax * textureHeight;
-					sourceU = textureHeight - uvRect.y * textureHeight;
+					sourceL = 0f;
+					sourceR = sprite.PixelWidth;
+					sourceD = 0f;
+					sourceU = sprite.PixelHeight;
 				} else {
-					AngeUtil.GetSlicedUvBorder(cell.Sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
-					sourceL = bl.x * textureWidth;
-					sourceR = tr.x * textureWidth;
-					sourceD = textureHeight - tr.y * textureHeight;
-					sourceU = textureHeight - bl.y * textureHeight;
+					AngeUtil.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
+					sourceL = bl.x * sprite.PixelWidth;
+					sourceR = tr.x * sprite.PixelWidth;
+					sourceD = sprite.PixelHeight - tr.y * sprite.PixelHeight;
+					sourceU = sprite.PixelHeight - bl.y * sprite.PixelHeight;
 				}
 				var source = new Rectangle(
 					sourceL,
@@ -418,7 +415,7 @@ public partial class GameForRaylib {
 				source.Width *= cell.Width.Sign();
 				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
-					Texture, source, dest.Expand(0.5f),
+					(Texture2D)sprite.Texture, source, dest.Expand(0.5f),
 					new(
 						pivotX * dest.Width,
 						pivotY * dest.Height
@@ -568,12 +565,6 @@ public partial class GameForRaylib {
 	}
 
 	protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) { }
-
-	protected override void _SetTextureForRenderer (object texture) {
-		if (texture == null) return;
-		Texture = (Texture2D)texture;
-		Raylib.SetTextureWrap(Texture, TextureWrap.Clamp);
-	}
 
 
 	// Effect

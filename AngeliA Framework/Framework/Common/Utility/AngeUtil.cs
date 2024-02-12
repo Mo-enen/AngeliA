@@ -400,6 +400,42 @@ namespace AngeliaFramework {
 		}
 
 
+		public static byte[] Pixels_to_Bytes (this Byte4[] pixels, int width, int height) {
+			var bytes = new byte[pixels.Length * 4];
+			int index = 0;
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					int i = y * width + x;
+					var p = pixels[i];
+					bytes[index * 4 + 0] = p.r;
+					bytes[index * 4 + 1] = p.g;
+					bytes[index * 4 + 2] = p.b;
+					bytes[index * 4 + 3] = p.a;
+					index++;
+				}
+			}
+			return bytes;
+		}
+
+
+		public static Byte4[] Bytes_to_Pixels (this byte[] bytes, int width, int height) {
+			var pixels = new Byte4[width * height];
+			int index = 0;
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					pixels[y * width + x] = new Byte4(
+						bytes[index + 0],
+						bytes[index + 1],
+						bytes[index + 2],
+						bytes[index + 3]
+					);
+					index += 4;
+				}
+			}
+			return pixels;
+		}
+
+
 		// Requirement
 		public static IEnumerable<KeyValuePair<string, string>> ForAllSpriteNameRequirements () {
 			foreach (var pair in RequireSpriteFromField.ForAllRequirement()) {
@@ -648,28 +684,28 @@ namespace AngeliaFramework {
 
 		public static void GetSlicedUvBorder (AngeSprite sprite, Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
 
-			var sourceBL = bl = sprite.UvRect.BottomLeft();
-			var sourceBR = br = sprite.UvRect.BottomRight();
-			var sourceTL = tl = sprite.UvRect.TopLeft();
-			tr = sprite.UvRect.TopRight();
+			bl = new(0f, 0f);
+			br = new(1f, 0f);
+			tl = new(0f, 1f);
+			tr = new(1f, 1f);
 
 			// Y
 			switch (alignment) {
 				case Alignment.TopLeft:
 				case Alignment.TopMid:
 				case Alignment.TopRight:
-					bl.y = br.y = Util.LerpUnclamped(sourceTL.y, sourceBL.y, sprite.UvBorder.w);
+					bl.y = br.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
 					break;
 				case Alignment.MidLeft:
 				case Alignment.MidMid:
 				case Alignment.MidRight:
-					tl.y = tr.y = Util.LerpUnclamped(sourceTL.y, sourceBL.y, sprite.UvBorder.w);
-					bl.y = br.y = Util.LerpUnclamped(sourceBL.y, sourceTL.y, sprite.UvBorder.y);
+					tl.y = tr.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
+					bl.y = br.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
 					break;
 				case Alignment.BottomLeft:
 				case Alignment.BottomMid:
 				case Alignment.BottomRight:
-					tl.y = tr.y = Util.LerpUnclamped(sourceBL.y, sourceTL.y, sprite.UvBorder.y);
+					tl.y = tr.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
 					break;
 			}
 			// X
@@ -677,18 +713,18 @@ namespace AngeliaFramework {
 				case Alignment.TopLeft:
 				case Alignment.MidLeft:
 				case Alignment.BottomLeft:
-					br.x = tr.x = Util.LerpUnclamped(sourceBL.x, sourceBR.x, sprite.UvBorder.x);
+					br.x = tr.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
 					break;
 				case Alignment.TopMid:
 				case Alignment.MidMid:
 				case Alignment.BottomMid:
-					br.x = tr.x = Util.LerpUnclamped(sourceBR.x, sourceBL.x, sprite.UvBorder.z);
-					bl.x = tl.x = Util.LerpUnclamped(sourceBL.x, sourceBR.x, sprite.UvBorder.x);
+					br.x = tr.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
+					bl.x = tl.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
 					break;
 				case Alignment.TopRight:
 				case Alignment.MidRight:
 				case Alignment.BottomRight:
-					bl.x = tl.x = Util.LerpUnclamped(sourceBR.x, sourceBL.x, sprite.UvBorder.z);
+					bl.x = tl.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
 					break;
 			}
 		}

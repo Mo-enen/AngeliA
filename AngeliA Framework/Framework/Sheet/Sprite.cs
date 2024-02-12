@@ -15,30 +15,27 @@ namespace AngeliaFramework {
 		public string RealName;
 		public int GlobalWidth;
 		public int GlobalHeight;
+		public int PixelWidth;
+		public int PixelHeight;
 		public int PivotX;
 		public int PivotY;
 		public int SortingZ;
 		public int LocalZ;
 		public Int4 GlobalBorder;
-
-		public IRect TextureRect;
-		public FRect UvRect;
-		public Float4 UvBorder; // xyzw => ldru
-
 		public int AtlasIndex;
 		public Atlas Atlas;
-		public Byte4 SummaryTint;
 		public SpriteGroup Group;
 		public bool IsTrigger;
 		public int Rule;
 		public int Tag;
+		public Byte4 SummaryTint;
+		public Byte4[] Pixels;
+		public object Texture;
 
-		public void LoadFromBinary_v0 (BinaryReader reader, int textureWidth, int textureHeight) {
+		public void LoadFromBinary_v0 (BinaryReader reader) {
 			uint byteLen = reader.ReadUInt32();
 			long endPos = reader.BaseStream.Position + byteLen;
 			try {
-				float fTextureWidth = textureWidth;
-				float fTextureHeight = textureHeight;
 				// Name
 				int nameLen = reader.ReadByte();
 				CacheBuilder.Clear();
@@ -51,8 +48,10 @@ namespace AngeliaFramework {
 				GlobalID = RealName.AngeHash();
 
 				// Size
-				GlobalWidth = reader.ReadUInt16();
-				GlobalHeight = reader.ReadUInt16();
+				PixelWidth = reader.ReadUInt16();
+				PixelHeight = reader.ReadUInt16();
+				GlobalWidth = PixelWidth * Const.ART_SCALE;
+				GlobalHeight = PixelHeight * Const.ART_SCALE;
 
 				// Pivot
 				PivotX = reader.ReadInt16();
@@ -67,26 +66,6 @@ namespace AngeliaFramework {
 					reader.ReadUInt16(),
 					reader.ReadUInt16(),
 					reader.ReadUInt16()
-				);
-
-				// UV
-				TextureRect = new IRect(
-					reader.ReadInt32(),
-					reader.ReadInt32(),
-					reader.ReadInt32(),
-					reader.ReadInt32()
-				);
-				UvRect = FRect.MinMaxRect(
-					(TextureRect.x + 0.0001f) / fTextureWidth,
-					(TextureRect.y + 0.0001f) / fTextureHeight,
-					(TextureRect.xMax - 0.0001f) / fTextureWidth,
-					(TextureRect.yMax - 0.0001f) / fTextureHeight
-				);
-				UvBorder = new(
-					GlobalBorder.left / (float)GlobalWidth,
-					GlobalBorder.down / (float)GlobalHeight,
-					GlobalBorder.right / (float)GlobalWidth,
-					GlobalBorder.up / (float)GlobalHeight
 				);
 
 				// Atlas Index
@@ -107,6 +86,11 @@ namespace AngeliaFramework {
 				// Group
 				Group = null;
 
+				// Pixels
+				var bytes = reader.ReadBytes(PixelWidth * PixelHeight * 4);
+				Pixels = AngeUtil.Bytes_to_Pixels(bytes, PixelWidth, PixelHeight);
+				Texture = Game.GetTextureFromPixels(Pixels, PixelWidth, PixelHeight);
+
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			reader.BaseStream.Position = endPos;
 		}
@@ -125,8 +109,8 @@ namespace AngeliaFramework {
 				}
 
 				// Size
-				writer.Write((ushort)GlobalWidth);
-				writer.Write((ushort)GlobalHeight);
+				writer.Write((ushort)PixelWidth);
+				writer.Write((ushort)PixelHeight);
 
 				// Pivot
 				writer.Write((short)PivotX);
@@ -140,12 +124,6 @@ namespace AngeliaFramework {
 				writer.Write((ushort)GlobalBorder.y);
 				writer.Write((ushort)GlobalBorder.z);
 				writer.Write((ushort)GlobalBorder.w);
-
-				// Texture Rect
-				writer.Write((int)TextureRect.x);
-				writer.Write((int)TextureRect.y);
-				writer.Write((int)TextureRect.width);
-				writer.Write((int)TextureRect.height);
 
 				// Atlas Index
 				writer.Write((byte)AtlasIndex);
@@ -161,6 +139,10 @@ namespace AngeliaFramework {
 
 				// Tag
 				writer.Write((int)Tag);
+
+				// Pixels
+				var bytes = AngeUtil.Pixels_to_Bytes(Pixels, PixelWidth, PixelHeight);
+				writer.Write(bytes);
 
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			long endPos = writer.BaseStream.Position;
@@ -241,13 +223,24 @@ namespace AngeliaFramework {
 
 
 	public class FlexSprite {
+		public static readonly FlexSprite PIXEL = new() {
+			AngePivot = default,
+			AtlasName = "(Procedure)",
+			AtlasType = AtlasType.General,
+			AtlasZ = 0,
+			Border = default,
+			FullName = "Pixel",
+			Pixels = new Byte4[1] { Const.WHITE },
+			Size = new(1, 1),
+		};
 		public string FullName;
 		public Int2 AngePivot;
 		public Int4 Border;
-		public IRect Rect;
+		public Int2 Size;
 		public int AtlasZ;
 		public string AtlasName;
 		public AtlasType AtlasType;
+		public Byte4[] Pixels;
 	}
 
 

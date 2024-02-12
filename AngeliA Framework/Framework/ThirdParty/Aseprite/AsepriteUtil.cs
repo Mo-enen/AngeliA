@@ -20,13 +20,13 @@ namespace AngeliaFramework {
 			public SpriteMetaData[] Sprites;
 		}
 
-		public static List<(PackingTexture data, FlexSprite[] flexs)> CreateSpritesFromAsepriteFiles (string[] asePaths, string ignoreTag = "") {
+		public static List<FlexSprite> CreateSpritesFromAsepriteFiles (string[] asePaths, string ignoreTag = "") {
 
 			bool hasError = false;
 			string errorMsg = "";
 			int successCount = 0;
 			int currentTaskCount = 0;
-			var textureResults = new List<(PackingTexture data, FlexSprite[] flexs)>();
+			var textureResults = new List<FlexSprite>();
 
 			// Do Task
 			foreach (var path in asePaths) {
@@ -65,8 +65,8 @@ namespace AngeliaFramework {
 						), ignoreTag);
 
 						// File
-						MakeFiles(result, name, sheetZ, atlasType, out var tResult, out var flexSprites);
-						textureResults.Add((tResult, flexSprites));
+						MakeFiles(result, name, sheetZ, atlasType, out var flexSprites);
+						textureResults.AddRange(flexSprites);
 
 						// Final
 						successCount++;
@@ -93,28 +93,37 @@ namespace AngeliaFramework {
 			}
 		}
 
-		private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out PackingTexture TextureResult, out FlexSprite[] SpriteResults) {
-			TextureResult = null;
-			SpriteResults = null;
+		private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out FlexSprite[] spriteResults) {
+			spriteResults = null;
 			if (result == null) return;
-			// Texture Result
-			TextureResult = new PackingTexture(result.Width, result.Height, result.Pixels);
 			// Get Sprites
 			var metas = result.Sprites;
-			var flexs = new FlexSprite[metas.Length];
+			spriteResults = new FlexSprite[metas.Length];
 			for (int i = 0; i < metas.Length; i++) {
 				var m = metas[i];
-				flexs[i] = new FlexSprite() {
+				int left = (int)m.rect.x;
+				int down = (int)m.rect.y;
+				int width = (int)m.rect.width;
+				int height = (int)m.rect.height;
+				var pixels = new Byte4[width * height];
+				for (int x = 0; x < width; x++) {
+					for (int y = 0; y < height; y++) {
+						int index = (y + down) * result.Width + (x + left);
+						if (index < 0 || index >= result.Pixels.Length) continue;
+						pixels[y * width + x] = result.Pixels[index];
+					}
+				}
+				spriteResults[i] = new FlexSprite() {
 					Border = Int4.Direction(m.border.x.RoundToInt(), m.border.z.RoundToInt(), m.border.y.RoundToInt(), m.border.w.RoundToInt()),
 					FullName = m.name,
 					AtlasName = AseName,
 					AngePivot = new Int2((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
-					Rect = m.rect.ToRectInt(),
+					Size = new(width, height),
 					AtlasType = atlasType,
 					AtlasZ = sheetZ,
+					Pixels = pixels,
 				};
 			}
-			SpriteResults = flexs;
 		}
 
 		private static TaskResult CreateResult (AseData data, Float2 userPivot, string ignoreLayerTag) {
