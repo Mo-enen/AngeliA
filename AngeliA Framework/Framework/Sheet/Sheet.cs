@@ -11,6 +11,8 @@ namespace AngeliaFramework {
 		public readonly List<AngeSprite> Sprites = new();
 		public readonly List<SpriteGroup> Groups = new();
 		public readonly List<Atlas> Atlas = new();
+		public readonly Dictionary<int, AngeSprite> SpritePool = new();
+		public readonly Dictionary<int, SpriteGroup> GroupPool = new();
 
 		// MSG
 		public Sheet () { }
@@ -19,12 +21,12 @@ namespace AngeliaFramework {
 		// API
 		public virtual void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) {
 			Sprites.Clear();
-			Sprites.AddRange(sprites);
 			Groups.Clear();
-			Groups.AddRange(groups);
 			Atlas.Clear();
+			Sprites.AddRange(sprites);
+			Groups.AddRange(groups);
 			Atlas.AddRange(atlasInfo);
-			ApplyData();
+			ApplyExtraData();
 		}
 
 		public virtual bool LoadFromDisk (string path) {
@@ -48,9 +50,6 @@ namespace AngeliaFramework {
 					return false;
 			}
 
-			// Final
-			ApplyData();
-
 			return true;
 		}
 
@@ -66,31 +65,11 @@ namespace AngeliaFramework {
 			Sprites.Clear();
 			Groups.Clear();
 			Atlas.Clear();
+			SpritePool.Clear();
+			GroupPool.Clear();
 		}
 
 		// LGC
-		private void ApplyData () {
-			for (int i = 0; i < Sprites.Count; i++) {
-				var sp = Sprites[i];
-				sp.Atlas = Atlas[sp.AtlasIndex];
-				sp.SortingZ = sp.Atlas.AtlasZ * 1024 + sp.LocalZ;
-			}
-			for (int i = 0; i < Groups.Count; i++) {
-				var group = Groups[i];
-				if (group.SpriteIndexes != null && group.SpriteIndexes.Count > 0) {
-					group.Sprites = new List<AngeSprite>(group.SpriteIndexes.Count);
-					for (int j = 0; j < group.SpriteIndexes.Count; j++) {
-						int index = group.SpriteIndexes[j];
-						var sp = Sprites[index];
-						sp.Group = group;
-						group.Sprites.Add(sp);
-					}
-				} else {
-					group.Sprites = new();
-				}
-			}
-		}
-
 		private void LoadFromBinary_v0 (BinaryReader reader) {
 
 			var stream = reader.BaseStream;
@@ -137,6 +116,8 @@ namespace AngeliaFramework {
 			} catch (System.Exception ex) { Game.LogException(ex); }
 			if (stream.Position != atlasEndPos) stream.Position = atlasEndPos;
 
+			// Final
+			ApplyExtraData();
 		}
 
 		private void SaveToBinary_v0 (BinaryWriter writer) {
@@ -191,6 +172,37 @@ namespace AngeliaFramework {
 
 			} catch (System.Exception ex) { Game.LogException(ex); }
 
+		}
+
+		private void ApplyExtraData () {
+			// Fill Sprites
+			SpritePool.Clear();
+			for (int i = 0; i < Sprites.Count; i++) {
+				var sp = Sprites[i];
+				SpritePool.TryAdd(sp.GlobalID, Sprites[i]);
+			}
+			// Fill Groups
+			GroupPool.Clear();
+			for (int i = 0; i < Groups.Count; i++) {
+				var group = Groups[i];
+				GroupPool.TryAdd(group.ID, group);
+			}
+			// Sprites
+			for (int i = 0; i < Sprites.Count; i++) {
+				var sprite = Sprites[i];
+				sprite.Atlas = Atlas[sprite.AtlasIndex];
+				sprite.SortingZ = sprite.Atlas.AtlasZ * 1024 + sprite.LocalZ;
+			}
+			// Groups
+			for (int i = 0; i < Groups.Count; i++) {
+				var group = Groups[i];
+				for (int j = 0; j < group.SpriteIDs.Count; j++) {
+					int id = group.SpriteIDs[j];
+					if (SpritePool.TryGetValue(id, out var sprite)) {
+						sprite.Group = group;
+					}
+				}
+			}
 		}
 
 	}

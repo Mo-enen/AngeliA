@@ -265,8 +265,8 @@ namespace AngeliaFramework {
 
 		public static void DrawCape (PoseCharacter character, int capeID, int motionAmount = 1000) {
 			if (capeID == 0) return;
-			if (!CellRenderer.TryGetSpriteGroup(capeID, out var group) || group.Length < 4) return;
-			var sprite = group[character.Body.FrontSide ? 2 : 3];
+			if (!CellRenderer.TryGetSpriteGroup(capeID, out var group) || group.Count < 4) return;
+			if (!CellRenderer.TryGetSpriteFromGroup(capeID, character.Body.FrontSide ? 2 : 3, out var sprite, false, false)) return;
 			var animatedPoseType = character.AnimationType;
 			if (
 				animatedPoseType == CharacterAnimationType.SquatIdle ||

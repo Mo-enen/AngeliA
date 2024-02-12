@@ -16,14 +16,35 @@ namespace AngeliaFramework {
 
 	public class SpriteGroup {
 
-		public AngeSprite this[int i] => Sprites[i];
-		public int Length => Sprites.Count;
+		public int Count => SpriteIDs.Count;
 
 		public int ID;
 		public int LoopStart;
 		public GroupType Type;
-		public List<int> SpriteIndexes;
-		public List<AngeSprite> Sprites;
+		public List<int> SpriteIDs;
+		public List<int> Timings;
+
+		public int GetSpriteIdFromAnimationFrame (int localFrame, int loopStart = -1) {
+
+			int len = Timings.Count;
+
+			// Fix Loopstart
+			loopStart = loopStart < 0 ? LoopStart : loopStart;
+			int loopStartTiming = loopStart == 0 ? 0 : Timings[(loopStart - 1).Clamp(0, len - 1)];
+			int totalFrame = localFrame < loopStartTiming ? Timings[^1] : Timings[^1] - loopStartTiming;
+			int frameOffset = localFrame < loopStartTiming ? 0 : loopStartTiming;
+			localFrame = ((localFrame - frameOffset) % totalFrame) + frameOffset;
+
+			// Get Target Index
+			int targetIndex = 0;
+			for (int i = 0; i < len; i++) {
+				if (localFrame < Timings[i]) {
+					targetIndex = i;
+					break;
+				}
+			}
+			return SpriteIDs[targetIndex];
+		}
 
 		public void LoadFromBinary_v0 (BinaryReader reader) {
 			uint byteLen = reader.ReadUInt32();
@@ -32,17 +53,27 @@ namespace AngeliaFramework {
 				// ID
 				ID = reader.ReadInt32();
 
-				// Loop Start
-				LoopStart = reader.ReadInt16();
-
 				// Group Type
 				Type = (GroupType)reader.ReadByte();
 
+				if (Type == GroupType.Animated) {
+					// Loop Start
+					LoopStart = reader.ReadInt16();
+				}
+
 				// Sprite Indexes
-				int len = reader.ReadUInt16();
-				SpriteIndexes = new List<int>(len);
-				for (int i = 0; i < len; i++) {
-					SpriteIndexes.Add(reader.ReadInt32());
+				int spriteLen = reader.ReadUInt16();
+				SpriteIDs = new List<int>(spriteLen);
+				for (int i = 0; i < spriteLen; i++) {
+					SpriteIDs.Add(reader.ReadInt32());
+				}
+
+				// Timing
+				if (Type == GroupType.Animated) {
+					Timings = new();
+					for (int i = 0; i < spriteLen; i++) {
+						Timings.Add(reader.ReadInt32().GreaterOrEquel(1));
+					}
 				}
 
 			} catch (System.Exception ex) { Game.LogException(ex); }
@@ -58,19 +89,36 @@ namespace AngeliaFramework {
 				// ID
 				writer.Write((int)ID);
 
-				// Loop Start
-				writer.Write((short)LoopStart);
-
 				// Group Type
 				writer.Write((byte)Type);
 
+				if (Type == GroupType.Animated) {
+					// Loop Start
+					writer.Write((short)LoopStart);
+				}
+
 				// Sprite Indexes
-				writer.Write((ushort)SpriteIndexes.Count);
-				for (int i = 0; i < SpriteIndexes.Count; i++) {
-					writer.Write((int)SpriteIndexes[i]);
+				int spriteCount = SpriteIDs.Count;
+				writer.Write((ushort)spriteCount);
+				for (int i = 0; i < spriteCount; i++) {
+					writer.Write((int)SpriteIDs[i]);
+				}
+
+				// Timing
+				if (Type == GroupType.Animated) {
+					if (Timings != null && Timings.Count >= spriteCount) {
+						for (int i = 0; i < spriteCount; i++) {
+							writer.Write((int)Timings[i]);
+						}
+					} else {
+						for (int i = 0; i < spriteCount; i++) {
+							writer.Write(i < Timings.Count ? (int)Timings[i] : 1);
+						}
+					}
 				}
 
 			} catch (System.Exception ex) { Game.LogException(ex); }
+
 			long endPos = writer.BaseStream.Position;
 			writer.BaseStream.Position = markPos;
 			writer.Write((uint)(endPos - startPos));

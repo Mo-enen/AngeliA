@@ -199,8 +199,8 @@ namespace AngeliaFramework {
 						CacheBuilder.Append(" #ani");
 						// Loopstart
 						if (
-							Group.LoopStart >= 0 && Group.LoopStart < Group.Sprites.Count &&
-							Group.Sprites[Group.LoopStart] == this
+							Group.LoopStart >= 0 && Group.LoopStart < Group.SpriteIDs.Count &&
+							Group.SpriteIDs[Group.LoopStart] == GlobalID
 						) {
 							CacheBuilder.Append(" #loopStart");
 						}

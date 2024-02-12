@@ -40,7 +40,9 @@ namespace AngeliaFramework {
 			var spriteList = new List<AngeSprite>();
 			var atlases = new List<Atlas>();
 			var atlasPool = new Dictionary<string, int>(); // Name, Index
-														   // Load Sprites
+			var aniDurationList = new List<int>();
+
+			// Load Sprites
 			for (int i = 0; i < flexSprites.Length; i++) {
 				var flex = flexSprites[i];
 				var uvBorder = new Float4(
@@ -53,7 +55,7 @@ namespace AngeliaFramework {
 					flex.FullName, out string realName, out string groupName, out int groupIndex, out var groupType,
 					out bool isTrigger, out string tagStr, out bool loopStart,
 					out string ruleStr, out bool noCollider, out int offsetZ,
-					out int? pivotX, out int? pivotY
+					out int aniDuration, out int? pivotX, out int? pivotY
 				);
 				int tag = tagStr.AngeHash();
 				int rule = AngeUtil.RuleStringToDigit(ruleStr);
@@ -105,6 +107,7 @@ namespace AngeliaFramework {
 
 				spriteIDHash.TryAdd(newSprite.GlobalID);
 				spriteList.Add(newSprite);
+				aniDurationList.Add(aniDuration);
 
 				// Group
 				if (groupIndex >= 0) {
@@ -122,52 +125,38 @@ namespace AngeliaFramework {
 				list.Sort((a, b) => a.localIndex.CompareTo(b.localIndex));
 			}
 
-			// Fix for Ani Group
-			foreach (var (name, (gType, list)) in groupPool) {
-				if (list.Count <= 1) continue;
-				if (gType != GroupType.Animated) continue;
-				for (int i = 0; i < list.Count - 1; i++) {
-					var item = list[i];
-					var (_, nextLocal, _) = list[i + 1];
-					if (nextLocal > item.localIndex + 1) {
-						int _index = i;
-						for (int j = 0; j < nextLocal - item.localIndex - 1; j++) {
-							list.Insert(_index, item);
-							i++;
-						}
-					}
-				}
-			}
-
 			// Load Groups
 			var groups = new List<SpriteGroup>();
 			foreach (var (gName, (type, list)) in groupPool) {
-				var spriteIndexes = new List<int>();
+				var spriteIDs = new List<int>();
 				int loopStart = 0;
 				bool isAni = type == GroupType.Animated;
 				var group = new SpriteGroup() {
 					ID = gName.AngeHash(),
-					SpriteIndexes = spriteIndexes,
+					SpriteIDs = spriteIDs,
+					Timings = isAni ? new() : null,
 					Type = type,
 				};
+				int totalDuration = 0;
 				for (int i = 0; i < list.Count; i++) {
 					int spIndex = list[i].globalIndex;
-					if (isAni && list[i].loopStart) {
-						loopStart = i;
+					if (isAni) {
+						if (list[i].loopStart) loopStart = i;
+						int duration = aniDurationList[spIndex].GreaterOrEquel(1);
+						totalDuration += duration;
+						group.Timings.Add(totalDuration);
 					}
-					spriteList[spIndex].Group = group;
-					spriteIndexes.Add(spIndex);
+					var sprite = spriteList[spIndex];
+					sprite.Group = group;
+					spriteIDs.Add(sprite.GlobalID);
 				}
 				group.LoopStart = loopStart;
 				groups.Add(group);
 			}
 
 			// Create
-			var sheet = new Sheet();
-			sheet.SetData(
-				spriteList, groups, atlases
-			);
-			return sheet;
+			return new Sheet(spriteList, groups, atlases);
+
 			// Func
 			static Byte4 GetSummaryTint (Byte4[] pixels) {
 				if (pixels == null || pixels.Length == 0) return Const.CLEAR;

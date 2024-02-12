@@ -133,7 +133,8 @@ namespace AngeliaFramework {
 			for (int index = 0; index < groupCount; index++) {
 
 				var chain = CellRenderer.GetGroupAt(index);
-				var firstSprite = chain.Sprites[0];
+				if (!CellRenderer.TryGetSprite(chain.SpriteIDs[0], out var firstSprite)) continue;
+
 				var atlasType = firstSprite.Atlas.Type;
 				if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
 
@@ -562,11 +563,8 @@ namespace AngeliaFramework {
 
 				// Cover
 				int drawingID = 0;
-				if (CellRenderer.TryGetSprite(pal.ArtworkID, out var sprite)) {
+				if (CellRenderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite, ignoreAnimatedWhenFailback: false)) {
 					drawingID = sprite.GlobalID;
-				} else if (CellRenderer.TryGetSpriteGroup(pal.ArtworkID, out var group) && group.Length > 0) {
-					sprite = group[0];
-					drawingID = group.Type == GroupType.Animated ? pal.ArtworkID : sprite.GlobalID;
 				}
 				if (drawingID != 0) {
 					CellRenderer.Draw(
@@ -714,8 +712,8 @@ namespace AngeliaFramework {
 
 				// Icon
 				DrawSpriteGizmos(
-					pal.ArtworkID, 
-					new IRect(rect.x, rect.y, itemSize, itemSize), 
+					pal.ArtworkID,
+					new IRect(rect.x, rect.y, itemSize, itemSize),
 					z: PANEL_Z - 11
 				);
 

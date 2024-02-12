@@ -17,8 +17,8 @@ namespace AngeliaFramework {
 		public float PivotX;
 		public float PivotY;
 		public Byte4 Color;
-		public Alignment BorderSide;
 		public Int4 Shift;
+		public Alignment BorderSide;
 		public void CopyFrom (Cell other) {
 			Sprite = other.Sprite;
 			TextSprite = other.TextSprite;
@@ -208,7 +208,7 @@ namespace AngeliaFramework {
 		public static bool TextReady => TextLayers.Length > 0;
 
 		// Data
-		private static readonly PoolingSheet Sheet = new();
+		private static readonly Sheet Sheet = new();
 		private static readonly Cell[] Last9SlicedCells = new Cell[9];
 		private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 		private static TextLayer[] TextLayers = System.Array.Empty<TextLayer>();
@@ -766,9 +766,8 @@ namespace AngeliaFramework {
 		public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 		public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Byte4 color, int loopStart = int.MinValue) {
 			if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return EMPTY_CELL;
-			int localFrame = GetAnimationFrame(frame, group.Length, loopStart == int.MinValue ? group.LoopStart : loopStart);
-			var sprite = group[localFrame];
-			return Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color);
+			int id = group.GetSpriteIdFromAnimationFrame(frame, loopStart);
+			return Draw(id, x, y, pivotX, pivotY, rotation, width, height, color);
 		}
 
 
@@ -776,9 +775,8 @@ namespace AngeliaFramework {
 		public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
 			if (Sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
 			if (!ignoreAnimation && Sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
-				int localFrame = GetAnimationFrame(Game.GlobalFrame, group.Length, group.LoopStart);
-				sprite = group[localFrame];
-				return true;
+				int id = group.GetSpriteIdFromAnimationFrame(Game.GlobalFrame);
+				return Sheet.SpritePool.TryGetValue(id, out sprite);
 			}
 			sprite = null;
 			return false;
@@ -790,7 +788,7 @@ namespace AngeliaFramework {
 
 		public static bool HasSpriteGroup (int groupID, out int groupLength) {
 			if (Sheet.GroupPool.TryGetValue(groupID, out var values)) {
-				groupLength = values.Length;
+				groupLength = values.Count;
 				return true;
 			} else {
 				groupLength = 0;
@@ -802,18 +800,17 @@ namespace AngeliaFramework {
 		public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => Sheet.GroupPool.TryGetValue(groupID, out group);
 
 
-		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true) {
-			if (Sheet.GroupPool.TryGetValue(groupID, out var sprites)) {
-				if (loopIndex) index = index.UMod(sprites.Length);
-				if (clampIndex) index = index.Clamp(0, sprites.Length - 1);
-				if (index >= 0 && index < sprites.Length) {
-					sprite = sprites[index];
-					return true;
+		public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true, bool ignoreAnimatedWhenFailback = true) {
+			if (Sheet.GroupPool.TryGetValue(groupID, out var group)) {
+				if (loopIndex) index = index.UMod(group.Count);
+				if (clampIndex) index = index.Clamp(0, group.Count - 1);
+				if (index >= 0 && index < group.Count) {
+					return TryGetSprite(group.SpriteIDs[index], out sprite, ignoreAnimatedWhenFailback);
 				} else {
 					sprite = null;
 					return false;
 				}
-			} else return TryGetSprite(groupID, out sprite, ignoreAnimation: true);
+			} else return TryGetSprite(groupID, out sprite, ignoreAnimatedWhenFailback);
 		}
 
 
@@ -1050,15 +1047,6 @@ namespace AngeliaFramework {
 
 
 		#region --- LGC ---
-
-
-		private static int GetAnimationFrame (int frame, int length, int loopStart = -1) {
-			if (frame < 0) frame = frame.UMod(length);
-			if (frame >= loopStart && loopStart >= 0 && loopStart < length) {
-				frame = (frame - loopStart).UMod(length - loopStart) + loopStart;
-			}
-			return frame.Clamp(0, length - 1);
-		}
 
 
 		// Text Logic

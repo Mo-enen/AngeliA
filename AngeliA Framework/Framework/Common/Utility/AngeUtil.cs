@@ -238,7 +238,7 @@ namespace AngeliaFramework {
 		}
 
 
-		public static void GetSpriteInfoFromName (string name, out string realName, out string groupName, out int groupIndex, out GroupType groupType, out bool isTrigger, out string tag, out bool loopStart, out string rule, out bool noCollider, out int offsetZ, out int? pivotX, out int? pivotY) {
+		public static void GetSpriteInfoFromName (string name, out string realName, out string groupName, out int groupIndex, out GroupType groupType, out bool isTrigger, out string tag, out bool loopStart, out string rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
 			isTrigger = false;
 			tag = "";
 			rule = "";
@@ -247,6 +247,7 @@ namespace AngeliaFramework {
 			offsetZ = 0;
 			pivotX = null;
 			pivotY = null;
+			aniDuration = 1;
 			groupType = GroupType.General;
 			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
 			int hashIndex = name.IndexOf('#');
@@ -284,16 +285,27 @@ namespace AngeliaFramework {
 					}
 
 					// Bool-Group
-					if (hashTag.Equals("animated", OIC) || hashTag.Equals("ani", OIC)) {
-						groupType = GroupType.Animated;
-						continue;
-					}
 					if (hashTag.Equals("random", OIC) || hashTag.Equals("ran", OIC)) {
 						groupType = GroupType.Random;
 						continue;
 					}
 
 					// Int
+					if (hashTag.StartsWith("ani=", OIC) ) {
+						groupType = GroupType.Animated;
+						if (int.TryParse(hashTag[4..], out int _aniD)) {
+							aniDuration = _aniD;
+						}
+						continue;
+					}
+					if (hashTag.StartsWith("animated=", OIC)) {
+						groupType = GroupType.Animated;
+						if (int.TryParse(hashTag[9..], out int _aniD)) {
+							aniDuration = _aniD;
+						}
+						continue;
+					}
+
 					if (hashTag.StartsWith("tag=", OIC)) {
 						tag = hashTag[4..];
 						continue;

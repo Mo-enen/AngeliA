@@ -49,7 +49,7 @@ public partial class GameForRaylib : Game {
 	private void InitializeGame () {
 
 		// Init Window
-		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.All : TraceLogLevel.None);
+		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
 		Raylib.SetConfigFlags(
 			ConfigFlags.ResizableWindow |
 			//ConfigFlags.VSyncHint |

@@ -297,26 +297,20 @@ namespace AngeliaFramework {
 			for (int i = 0; i < chainCount; i++) {
 
 				var chain = CellRenderer.GetGroupAt(i);
-				if (chain.Length == 0) continue;
+				if (chain.Count == 0) continue;
+				if (!SpritePool.TryGetValue(chain.SpriteIDs[0], out var firstSprite)) continue;
 
-				var firstSprite = chain[0];
 				var pivot = Int2.zero;
 				pivot.x = firstSprite.PivotX;
 				pivot.y = firstSprite.PivotY;
 				SpritePool.TryAdd(chain.ID, firstSprite);
 
 				// Chain
-				var cIdList = new List<int>();
-				foreach (var sprite in chain.Sprites) {
-					cIdList.Add(sprite.GlobalID);
-				}
-				IdChainPool.TryAdd(chain.ID, cIdList.ToArray());
+				IdChainPool.TryAdd(chain.ID, chain.SpriteIDs.ToArray());
 
 				// Reversed Chain
-				foreach (var sprite in chain.Sprites) {
-					ReversedChainPool.TryAdd(
-						sprite.GlobalID, chain.ID
-					);
+				foreach (var spriteID in chain.SpriteIDs) {
+					ReversedChainPool.TryAdd(spriteID, chain.ID);
 				}
 
 				// RuleID to RuleGroup
@@ -1131,7 +1125,7 @@ namespace AngeliaFramework {
 					index = (index + delta).Clamp(0, SearchResult.Count - 1);
 				}
 				SelectingPaletteItem = SearchResult[index];
-				PaletteSearchScrollY = index-3;
+				PaletteSearchScrollY = index - 3;
 			}
 		}
 
