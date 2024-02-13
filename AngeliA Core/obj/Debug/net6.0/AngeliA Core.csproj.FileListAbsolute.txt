@@ -1,0 +1,12 @@
+C:\Data\AngeliA\AngeliA Core\bin\Debug\net6.0\AngeliA Core.deps.json
+C:\Data\AngeliA\AngeliA Core\bin\Debug\net6.0\AngeliA Core.dll
+C:\Data\AngeliA\AngeliA Core\bin\Debug\net6.0\AngeliA Core.pdb
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\AngeliA Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\AngeliA Core.AssemblyInfoInputs.cache
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\AngeliA Core.AssemblyInfo.cs
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\AngeliA Core.csproj.CoreCompileInputs.cache
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\AngeliA Core.sourcelink.json
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\AngeliA Core.dll
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\refint\AngeliA Core.dll
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\AngeliA Core.pdb
+C:\Data\AngeliA\AngeliA Core\obj\Debug\net6.0\ref\AngeliA Core.dll

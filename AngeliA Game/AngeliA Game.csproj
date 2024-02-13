@@ -41,13 +41,9 @@
 		<Compile Remove="Resources\**" />
 		<EmbeddedResource Remove="Properties\**" />
 		<EmbeddedResource Remove="Resources\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Remove="Properties\**" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
-		<None Remove="raylib.dll" />
 	</ItemGroup>
 
 	<ItemGroup>

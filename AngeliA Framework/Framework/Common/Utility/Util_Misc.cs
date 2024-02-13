@@ -103,6 +103,22 @@ namespace AngeliaFramework {
 		}
 
 
+		public static void ExecuteCommand (string arguments) {
+			try {
+				System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
+					Verb = "runas",
+					FileName = "cmd.exe",
+					Arguments = "/C " + arguments,
+					WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+					UseShellExecute = false,
+					CreateNoWindow = true,
+					RedirectStandardOutput = false,
+					RedirectStandardError = false
+				});
+			} catch (System.Exception) { }
+		}
+
+
 		// Number
 		public static Float3 Vector3Lerp3 (Float3 a, Float3 b, float x, float y, float z = 0f) => new(
 				LerpUnclamped(a.x, b.x, x),
