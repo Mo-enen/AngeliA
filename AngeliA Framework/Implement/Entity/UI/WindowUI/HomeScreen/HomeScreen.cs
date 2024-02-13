@@ -32,7 +32,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode PANEL_SUB = ("HomeScreen.Sub", "Subscribe");
 
 		// Api
-		public new static HomeScreen Instance => WindowUI.Instance as HomeScreen;
+		public static HomeScreen Instance { get; private set; }
 		public static bool IsActived => Instance != null && Instance.Active;
 
 		// Data
@@ -45,6 +45,9 @@ namespace AngeliaFramework {
 
 
 		#region --- MSG ---
+
+
+		public HomeScreen () => Instance = this;
 
 
 		public override void OnActivated () {

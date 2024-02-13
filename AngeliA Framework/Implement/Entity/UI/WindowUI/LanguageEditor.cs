@@ -42,7 +42,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
 
 		// Api
-		public new static LanguageEditor Instance => WindowUI.Instance as LanguageEditor;
+		public static LanguageEditor Instance { get; private set; }
 		public static bool IsActived => Instance != null && Instance.Active;
 
 		// Data
@@ -64,9 +64,11 @@ namespace AngeliaFramework {
 		#region --- MSG ---
 
 
+		public LanguageEditor () => Instance = this;
+
+
 		public override void OnActivated () {
 			base.OnActivated();
-			Game.StopGame();
 			LoadFromDisk();
 			ScrollY = 0;
 		}
@@ -80,16 +82,10 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void BeforePhysicsUpdate () {
-			base.BeforePhysicsUpdate();
-			CursorSystem.RequireCursor();
-			Sky.ForceSkyboxTint(new Byte4(32, 33, 37, 255), new Byte4(32, 33, 37, 255));
-			ControlHintUI.ForceHideGamepad();
-		}
-
-
 		public override void UpdateUI () {
+
 			base.UpdateUI();
+			CursorSystem.RequireCursor();
 
 			int padding = Unify(32);
 			var cameraRect = CellRenderer.CameraRect.Shrink(padding, padding, 0, 0);

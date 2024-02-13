@@ -7,29 +7,26 @@ namespace AngeliaFramework {
 	[EntityAttribute.Capacity(1, 0)]
 	public abstract class WindowUI : EntityUI {
 
-		public static WindowUI Instance { get; private set; } = null;
-		public static bool HasActiveInstance => Instance != null && Instance.Active;
-
 		[OnGameQuitting]
 		public static void OnGameQuitting () {
-			if (Game.AllowMakerFeaures && Instance != null && Instance.Active) Instance.OnInactivated();
+			int len = Stage.EntityCounts[EntityLayer.UI];
+			var entities = Stage.Entities[EntityLayer.UI];
+			for (int i = 0; i < len; i++) {
+				var e = entities[i];
+				if (e is WindowUI window && e.Active) {
+					e.OnInactivated();
+				}
+			}
 		}
 
-		public override void OnActivated () {
-			base.OnActivated();
-			if (Instance != null && Instance != this) Instance.Active = false;
-			Instance = this;
-		}
+		public static void OpenWindow (int typeID) => Stage.SpawnEntity(typeID, 0, 0);
 
-		public static void OpenWindow (int typeID) {
-			if (!Game.AllowMakerFeaures) return;
-			Stage.ClearStagedEntities();
-			Stage.SpawnEntity(typeID, 0, 0);
-		}
-
-		public static void CloseCurrentWindow () {
-			if (Instance != null) {
-				Instance.Active = false;
+		public static void CloseWindow (int typeID) {
+			int len = Stage.EntityCounts[EntityLayer.UI];
+			var entities = Stage.Entities[EntityLayer.UI];
+			for (int i = 0; i < len; i++) {
+				var e = entities[i];
+				if (e.TypeID == typeID) e.Active = false;
 			}
 		}
 

@@ -28,7 +28,7 @@ namespace AngeliaFramework {
 		public static MapChannel Channel { get; private set; } = MapChannel.BuiltIn;
 		public static string MapRoot { get; private set; } = "";
 		public static bool Enable { get; set; } = true;
-		public static bool SpawnEntity { get; set; } = true;
+		public static bool SolidMode { get; set; } = true;
 		public static bool ShowElement { get; set; } = false;
 		public static byte BehindAlpha { get; set; } = Game.WorldBehindAlpha;
 		public static bool SaveBeforeReload { get; set; } = false;
@@ -157,6 +157,7 @@ namespace AngeliaFramework {
 
 			// BG-Level
 			if (!isBehind) BeforeLevelRendered?.Invoke();
+			bool ignoreCollider = isBehind || !SolidMode;
 			for (int worldI = 0; worldI < 3; worldI++) {
 				for (int worldJ = 0; worldJ < 3; worldJ++) {
 					var world = Worlds[worldI, worldJ];
@@ -187,7 +188,7 @@ namespace AngeliaFramework {
 								if (isBehind) {
 									DrawBehind(lv, i, j, false);
 								} else {
-									DrawLevelBlock(lv, i, j, isBehind);
+									DrawLevelBlock(lv, i, j, ignoreCollider);
 								}
 							}
 						}
@@ -462,12 +463,12 @@ namespace AngeliaFramework {
 		}
 
 
-		private void DrawLevelBlock (int id, int unitX, int unitY, bool behind) {
+		private void DrawLevelBlock (int id, int unitX, int unitY, bool ignoreCollider) {
 			var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 			if (CullingCameraRect.Overlaps(rect)) {
 				CellRenderer.Draw(id, rect);
 			}
-			if (!behind) {
+			if (!ignoreCollider) {
 				// Collider
 				if (!CellRenderer.TryGetSprite(id, out var sp)) return;
 				if (sp.Tag == SpriteTag.DAMAGE_TAG) {
@@ -482,7 +483,7 @@ namespace AngeliaFramework {
 
 
 		private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
-			if (SpawnEntity) {
+			if (SolidMode) {
 				// Spawn Entity
 				var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
 				if (entity is Character ch) {

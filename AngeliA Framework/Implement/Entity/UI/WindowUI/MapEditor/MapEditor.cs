@@ -5,6 +5,7 @@ using GeorgeMamaladze;
 
 namespace AngeliaFramework {
 	[RequireLanguageFromField]
+	[EntityAttribute.StageOrder(-4096)]
 	public sealed partial class MapEditor : WindowUI {
 
 
@@ -93,7 +94,7 @@ namespace AngeliaFramework {
 		private static readonly LanguageCode HINT_MEDT_NAV = ("CtrlHint.MEDT.Nav", "Overlook");
 
 		// Api
-		public new static MapEditor Instance => WindowUI.Instance as MapEditor;
+		public static MapEditor Instance { get; private set; }
 		public static bool IsActived => Instance != null && Instance.Active;
 		public static bool IsEditing => IsActived && !Instance.PlayingGame;
 		public static bool IsPlaying => IsActived && Instance.PlayingGame;
@@ -185,6 +186,9 @@ namespace AngeliaFramework {
 
 
 		// Active
+		public MapEditor () => Instance = this;
+
+
 		public override void OnActivated () {
 			base.OnActivated();
 			// Init
@@ -257,7 +261,7 @@ namespace AngeliaFramework {
 			AngeUtil.DeleteAllEmptyMaps(ProjectSystem.CurrentProject.MapRoot);
 			IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
-			WorldSquad.SpawnEntity = true;
+			WorldSquad.SolidMode = true;
 			WorldSquad.ShowElement = false;
 			WorldSquad.BehindAlpha = Game.WorldBehindAlpha;
 
@@ -952,7 +956,7 @@ namespace AngeliaFramework {
 				WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 				MapGenerator.DeleteAllGeneratedMapFiles();
 			}
-			WorldSquad.SpawnEntity = toPlayMode;
+			WorldSquad.SolidMode = toPlayMode;
 			WorldSquad.ShowElement = !toPlayMode;
 			WorldSquad.SaveBeforeReload = !toPlayMode;
 			WorldSquad.Front.ForceReloadDelay();

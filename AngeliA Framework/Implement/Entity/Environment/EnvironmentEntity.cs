@@ -49,7 +49,7 @@ namespace AngeliaFramework {
 		[AfterLayerFrameUpdate]
 		public static void AfterLayerFrameUpdate (int layerIndex) {
 			if (layerIndex != EntityLayer.ENVIRONMENT || CellUpdateFrame != Game.GlobalFrame) return;
-			if (MapEditor.Instance != null && MapEditor.IsEditing) return;
+			if (MapEditor.IsEditing) return;
 			if (CellRenderer.GetCells(RenderLayer.DEFAULT, out var cells, out int count)) {
 				CellRenderer.SetLayerToShadow();
 				for (int i = CellStartIndex; i < count; i++) {

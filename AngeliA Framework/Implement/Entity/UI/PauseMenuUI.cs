@@ -346,8 +346,8 @@ namespace AngeliaFramework {
 
 		private void MenuMapEditorSetting () {
 
-			var mapEditor = MapEditor.Instance;
-			if (mapEditor != null) {
+			if (MapEditor.IsActived) {
+				var mapEditor = MapEditor.Instance;
 
 				// Auto Zoom
 				if (DrawItem(
@@ -414,11 +414,11 @@ namespace AngeliaFramework {
 			}
 
 			// Quit Editing
-			if (WindowUI.HasActiveInstance) {
+			if (MapEditor.IsActived) {
 				if (DrawItem(MENU_EDITOR_QUIT)) {
 					Active = false;
 					FrameInput.UseAllHoldingKeys();
-					WindowUI.CloseCurrentWindow();
+					WindowUI.CloseWindow(MapEditor.TYPE_ID);
 					Game.RestartGame();
 				}
 			}
