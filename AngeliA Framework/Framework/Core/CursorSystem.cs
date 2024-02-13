@@ -5,7 +5,7 @@ namespace AngeliaFramework {
 		// Data
 		private static int CurrentCursorIndex = -1;
 		private static int CursorEndFrame = int.MinValue + 1;
-		private static int CursorPriority = int.MinValue;
+		public static int CursorPriority { get; set; } = int.MinValue;
 
 
 		// API
@@ -68,9 +68,6 @@ namespace AngeliaFramework {
 
 		public static void SetCursorAsMove (int priority = 0) => SetCursor(Const.CURSOR_MOVE, priority);
 		public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_MOVE, mouseRange, priority);
-
-
-		public static void SetCursorPriority (int priority) => CursorPriority = priority;
 
 
 	}

@@ -93,9 +93,9 @@ namespace AngeliaFramework {
 		// Api
 		public static bool UsingGamepad { get; private set; } = false;
 		public static bool UsingLeftStick { get; private set; } = false;
-		public static Direction3 DirectionX { get; private set; } = Direction3.None;
-		public static Direction3 DirectionY { get; private set; } = Direction3.None;
-		public static Int2 Direction { get; private set; } = default;
+		public static Direction3 DirectionX => IgnoringInput ? Direction3.None : _DirectionX;
+		public static Direction3 DirectionY => IgnoringInput ? Direction3.None : _DirectionY;
+		public static Int2 Direction => IgnoringInput ? default : _Direction;
 		public static bool AllowGamepad {
 			get => s_AllowGamepad.Value;
 			set => s_AllowGamepad.Value = value;
@@ -131,9 +131,7 @@ namespace AngeliaFramework {
 		public static bool IgnoreMouseToActionJumpForThisFrame { get; set; } = false;
 		public static bool LastActionFromMouse { get; private set; } = false;
 		public static int MouseWheelDelta => IgnoringInput ? 0 : _MouseWheelDelta;
-
-		// Short
-		private static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
+		public static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
 
 		// Data
 		private static readonly Dictionary<Gamekey, State> GamekeyStateMap = new() {
@@ -187,6 +185,9 @@ namespace AngeliaFramework {
 		private static int IgnoreInputFrame = -1;
 		private static KeyboardKey[] AllKeyboardKeys = new KeyboardKey[0];
 		private static int _MouseWheelDelta = 0;
+		private static Direction3 _DirectionX = Direction3.None;
+		private static Direction3 _DirectionY = Direction3.None;
+		private static Int2 _Direction = default;
 
 		// Saving
 		private static readonly SavingBool s_AllowGamepad = new("FrameInput.AllowGamepad", true);
@@ -538,8 +539,8 @@ namespace AngeliaFramework {
 
 		private static void Update_Direction (bool gamepadAvailable) {
 
-			DirectionX = Direction3.None;
-			DirectionY = Direction3.None;
+			_DirectionX = Direction3.None;
+			_DirectionY = Direction3.None;
 
 			// Left
 			if (GameKeyHolding(Gamekey.Left)) {
@@ -547,7 +548,7 @@ namespace AngeliaFramework {
 					LeftDownFrame = GlobalFrame;
 				}
 				if (LeftDownFrame > RightDownFrame) {
-					DirectionX = Direction3.Negative;
+					_DirectionX = Direction3.Negative;
 				}
 			} else if (LeftDownFrame > 0) {
 				LeftDownFrame = int.MinValue;
@@ -559,7 +560,7 @@ namespace AngeliaFramework {
 					RightDownFrame = GlobalFrame;
 				}
 				if (RightDownFrame > LeftDownFrame) {
-					DirectionX = Direction3.Positive;
+					_DirectionX = Direction3.Positive;
 				}
 			} else if (RightDownFrame > 0) {
 				RightDownFrame = int.MinValue;
@@ -571,7 +572,7 @@ namespace AngeliaFramework {
 					DownDownFrame = GlobalFrame;
 				}
 				if (DownDownFrame > UpDownFrame) {
-					DirectionY = Direction3.Negative;
+					_DirectionY = Direction3.Negative;
 				}
 			} else if (DownDownFrame > 0) {
 				DownDownFrame = int.MinValue;
@@ -583,7 +584,7 @@ namespace AngeliaFramework {
 					UpDownFrame = GlobalFrame;
 				}
 				if (UpDownFrame > DownDownFrame) {
-					DirectionY = Direction3.Positive;
+					_DirectionY = Direction3.Positive;
 				}
 			} else if (UpDownFrame > 0) {
 				UpDownFrame = int.MinValue;
@@ -605,7 +606,7 @@ namespace AngeliaFramework {
 			} else {
 				UsingLeftStick = true;
 			}
-			Direction = (1000f * magnitude * direction.normalized).FloorToInt();
+			_Direction = (1000f * magnitude * direction.normalized).FloorToInt();
 
 		}
 

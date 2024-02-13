@@ -63,7 +63,7 @@ namespace AngeliaFramework {
 			CellRenderer.SortLayer(RenderLayer.UI);
 
 			if (BlockEvent) {
-				CursorSystem.SetCursorPriority(int.MaxValue);
+				CursorSystem.CursorPriority = int.MaxValue;
 				BlockingEventFrame = Game.PauselessFrame;
 			}
 		}

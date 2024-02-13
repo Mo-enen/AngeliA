@@ -590,6 +590,9 @@ namespace AngeliaFramework {
 	[ItemCombination(typeof(iBookYellow), typeof(iIngotIron), typeof(iElectricWire), typeof(iFloppyDisk), 1)]
 	public class iElectronicChip : Item { }
 
+	[ItemCombination(typeof(iHandbag), typeof(iBolt), 1)]
+	public class iToolbox : Item { }
+
 	public class iCursedSoul : Item { }
 	public class iFist : Item { }
 	public class iBeetle : Item { }

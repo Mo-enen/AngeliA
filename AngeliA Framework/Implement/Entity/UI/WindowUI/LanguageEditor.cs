@@ -71,6 +71,8 @@ namespace AngeliaFramework {
 			base.OnActivated();
 			LoadFromDisk();
 			ScrollY = 0;
+			SearchingText = string.Empty;
+			FrameTask.AddToLast(EntityHookTask.TYPE_ID, this);
 		}
 
 
@@ -82,9 +84,8 @@ namespace AngeliaFramework {
 		}
 
 
-		public override void UpdateUI () {
+		public override void UpdateWindowUI () {
 
-			base.UpdateUI();
 			CursorSystem.RequireCursor();
 
 			int padding = Unify(32);
@@ -97,6 +98,10 @@ namespace AngeliaFramework {
 			cameraRect.width = fieldWidth * column;
 			cameraRect.y += verticalPadding;
 			cameraRect.height -= verticalPadding * 2;
+			X = cameraRect.x;
+			Y = cameraRect.y;
+			Width = cameraRect.width;
+			Height = cameraRect.height;
 
 			int frameThickness = Unify(2);
 			CellRenderer.Draw_9Slice(

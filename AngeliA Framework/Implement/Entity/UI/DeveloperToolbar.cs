@@ -2,7 +2,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliaFramework {
 	[RequireSpriteFromField]
 	public static class DeveloperToolbar {
@@ -60,6 +59,7 @@ namespace AngeliaFramework {
 
 		[OnGameInitializeLater]
 		internal static void OnGameInitializeLater () {
+			if (!Game.IsEdittime) return;
 			for (int i = 0; i < RenderingUsages.Length; i++) {
 				int capa = CellRenderer.GetLayerCapacity(i);
 				RenderingUsages[i] = new BarData() {
@@ -79,6 +79,7 @@ namespace AngeliaFramework {
 
 		[OnProjectOpen]
 		internal static void OnProjectOpen () {
+			if (!Game.IsEdittime) return;
 			TextUsages = new BarData[CellRenderer.TextLayerCount];
 			for (int i = 0; i < TextUsages.Length; i++) {
 				int capa = CellRenderer.GetTextLayerCapacity(i);
@@ -92,7 +93,8 @@ namespace AngeliaFramework {
 
 		[OnGameUpdateLater(-4097)]
 		internal static void UpdateToolbar () {
-
+			if (!Game.IsEdittime) return;
+			
 			CursorSystem.RequireCursor();
 			int oldLayer = CellRenderer.CurrentLayerIndex;
 			CellRenderer.SetLayerToUI();
@@ -106,7 +108,11 @@ namespace AngeliaFramework {
 			panelRect.height = buttonSize + padding * 2;
 			panelRect.y -= panelRect.height;
 
-			var rect = new IRect(panelRect.xMax - buttonSize - padding, panelRect.y + padding, buttonSize, buttonSize);
+			var rect = new IRect(
+				panelRect.xMax - buttonSize - padding, 
+				panelRect.y + padding,
+				buttonSize, buttonSize
+			);
 
 			if (Game.ShowFPS) rect.x -= CellGUI.Unify(32);
 
@@ -183,6 +189,7 @@ namespace AngeliaFramework {
 
 		[OnGameUpdateLater(4096)]
 		internal static void CollectProfilerData () {
+			if (!Game.IsEdittime) return;
 			if (!ProfilerPanelOpening) return;
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
 				RenderingUsages[i].Value = CellRenderer.GetUsedCellCount(i);
@@ -199,6 +206,7 @@ namespace AngeliaFramework {
 		[OnGameUpdateLater(4096)]
 		internal static void UpdateGizmos () {
 
+			if (!Game.IsEdittime) return;
 			if (PlayerMenuUI.ShowingUI) return;
 
 			// Draw Colliders
@@ -295,7 +303,7 @@ namespace AngeliaFramework {
 
 		// Panel
 		private static void DrawProfilerPanel (ref IRect panelRect) {
-
+			
 			int barHeight = CellGUI.Unify(24);
 			panelRect.height = barHeight * (EntityUsages.Length + TextUsages.Length + RenderingUsages.Length);
 			panelRect.y -= panelRect.height;

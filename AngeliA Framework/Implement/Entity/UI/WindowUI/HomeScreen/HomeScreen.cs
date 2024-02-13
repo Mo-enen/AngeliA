@@ -61,12 +61,15 @@ namespace AngeliaFramework {
 			base.BeforePhysicsUpdate();
 			CursorSystem.RequireCursor();
 			ControlHintUI.ForceHideGamepad();
-			Sky.ForceSkyboxTint(new Byte4(32, 33, 37, 255), new Byte4(32, 33, 37, 255));
+			var mainRect = CellRenderer.CameraRect;
+			X = mainRect.x;
+			Y = mainRect.y;
+			Width = mainRect.width;
+			Height = mainRect.height;
 		}
 
 
-		public override void UpdateUI () {
-			base.UpdateUI();
+		public override void UpdateWindowUI () {
 			int panelWidth = Unify(300);
 			var mainRect = CellRenderer.CameraRect;
 			Update_Panel(mainRect.EdgeInside(Direction4.Left, panelWidth));

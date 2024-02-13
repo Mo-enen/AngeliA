@@ -110,6 +110,7 @@ namespace AngeliaFramework {
 			get => s_ShowState.Value;
 			set => s_ShowState.Value = value;
 		}
+		public override IRect BackgroundRect => default;
 
 		// Pools
 		private readonly Dictionary<int, AngeSprite> SpritePool = new();
@@ -370,7 +371,7 @@ namespace AngeliaFramework {
 
 
 		// Update
-		public override void UpdateUI () {
+		public override void UpdateWindowUI () {
 			if (Active == false || Game.IsPausing) return;
 			Update_Before();
 			Update_ScreenUI();
@@ -414,6 +415,12 @@ namespace AngeliaFramework {
 
 		private void Update_Before () {
 
+			var mainRect = CellRenderer.CameraRect;
+			X = mainRect.x;
+			Y = mainRect.y;
+			Width = mainRect.width;
+			Height = mainRect.height;
+
 			// Cursor
 			if (!IsPlaying) CursorSystem.RequireCursor(int.MinValue);
 
@@ -441,7 +448,6 @@ namespace AngeliaFramework {
 			}
 
 			// Panel Rect
-			var mainRect = CellRenderer.CameraRect;
 			PanelRect.width = Unify(PANEL_WIDTH);
 			PanelRect.height = mainRect.height;
 			PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width, 200);
@@ -497,38 +503,6 @@ namespace AngeliaFramework {
 				}
 			}
 
-		}
-
-
-		private void Update_Final () {
-
-			// End Undo Perform for Current Frame
-			if (LastUndoPerformedFrame == Game.PauselessFrame) {
-				LastUndoPerformedFrame = -1;
-				if (CurrentUndoRuleMin.x <= CurrentUndoRuleMax.x) {
-					RedirectForRule(IRect.MinMaxRect(
-						CurrentUndoRuleMin.x - 1, CurrentUndoRuleMin.y - 1,
-						CurrentUndoRuleMax.x + 2, CurrentUndoRuleMax.y + 2
-					));
-				}
-				CurrentUndoRuleMin = default;
-				CurrentUndoRuleMax = default;
-			}
-
-			// End Undo Register for Current Frame
-			if (LastUndoRegisterFrame == Game.PauselessFrame) {
-				LastUndoRegisterFrame = -1;
-				UndoRedo.Register(new ViewUndoItem() {
-					ViewRect = TargetViewRect,
-					ViewZ = Stage.ViewZ,
-				});
-			}
-
-			// Mouse Event
-			if (!FrameInput.MouseLeftButton) {
-				DraggingForReorderPaletteItem = -1;
-				DraggingForReorderPaletteGroup = -1;
-			}
 		}
 
 
@@ -921,6 +895,39 @@ namespace AngeliaFramework {
 					);
 
 				}
+			}
+
+		}
+
+
+		private void Update_Final () {
+
+			// End Undo Perform for Current Frame
+			if (LastUndoPerformedFrame == Game.PauselessFrame) {
+				LastUndoPerformedFrame = -1;
+				if (CurrentUndoRuleMin.x <= CurrentUndoRuleMax.x) {
+					RedirectForRule(IRect.MinMaxRect(
+						CurrentUndoRuleMin.x - 1, CurrentUndoRuleMin.y - 1,
+						CurrentUndoRuleMax.x + 2, CurrentUndoRuleMax.y + 2
+					));
+				}
+				CurrentUndoRuleMin = default;
+				CurrentUndoRuleMax = default;
+			}
+
+			// End Undo Register for Current Frame
+			if (LastUndoRegisterFrame == Game.PauselessFrame) {
+				LastUndoRegisterFrame = -1;
+				UndoRedo.Register(new ViewUndoItem() {
+					ViewRect = TargetViewRect,
+					ViewZ = Stage.ViewZ,
+				});
+			}
+
+			// Mouse Event
+			if (!FrameInput.MouseLeftButton) {
+				DraggingForReorderPaletteItem = -1;
+				DraggingForReorderPaletteGroup = -1;
 			}
 
 		}
