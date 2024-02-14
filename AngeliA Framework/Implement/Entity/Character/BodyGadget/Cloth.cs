@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public enum ClothType { Head, Body, Hand, Hip, Foot, }

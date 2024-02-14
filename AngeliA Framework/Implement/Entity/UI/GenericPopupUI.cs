@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.StageOrder(4096)]
 	public class GenericPopupUI : EntityUI, IWindowEntityUI {
 

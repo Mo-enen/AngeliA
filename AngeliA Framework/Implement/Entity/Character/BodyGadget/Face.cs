@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "Character",
+[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Character",
 	"DefaultCharacterFace",
 	"DefaultCharacterFace.Face.Normal",
 	"DefaultCharacterFace.Face.Blink",
@@ -14,7 +14,7 @@ using System.Collections.Generic;
 )]
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public enum CharacterFaceType {

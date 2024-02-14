@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public class ArrowBullet : MovableBullet {
 
 		public int ArrowItemID { get; set; } = 0;

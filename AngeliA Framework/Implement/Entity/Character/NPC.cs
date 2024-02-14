@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.Capacity(8)]
 	public abstract class NPC : PoseCharacter, IDamageReceiver {
 

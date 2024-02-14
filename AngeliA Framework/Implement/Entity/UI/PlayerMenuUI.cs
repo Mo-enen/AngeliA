@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public sealed class InventoryPartnerUI : PlayerMenuPartnerUI {
@@ -702,7 +702,7 @@ namespace AngeliaFramework {
 
 			// Preview
 			var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
-			AngeUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
+			FrameworkUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
 			if (FrameInput.MouseLeftButtonDown && previewRect.MouseInside()) {
 				player.FacingRight = !player.FacingRight;
 				player.Bounce();
@@ -948,7 +948,7 @@ namespace AngeliaFramework {
 						// Collect
 						int collectCount = Inventory.CollectItem(playerInvID, oldEquipmentID, out int collectIndex, 1);
 						if (collectCount == 0) {
-							ItemSystem.SpawnItemAtPlayer(oldEquipmentID);
+							ItemSystem.SpawnItemAtTarget(Player.Selecting, oldEquipmentID);
 						} else {
 							FlashInventoryField(collectIndex, true);
 						}
@@ -1109,7 +1109,7 @@ namespace AngeliaFramework {
 
 		private void ThrowTakingToGround () {
 			if (TakingID == 0 || TakingCount == 0) return;
-			ItemSystem.SpawnItemAtPlayer(TakingID, TakingCount);
+			ItemSystem.SpawnItemAtTarget(Player.Selecting, TakingID, TakingCount);
 			TakingID = 0;
 			TakingCount = 0;
 		}

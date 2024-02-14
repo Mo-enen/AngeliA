@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public interface IBlockSquad {
 
 		private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) {
-			{ typeof(Number0).AngeHash(), 0 },
-			{ typeof(Number1).AngeHash(), 1 },
-			{ typeof(Number2).AngeHash(), 2 },
-			{ typeof(Number3).AngeHash(), 3 },
-			{ typeof(Number4).AngeHash(), 4 },
-			{ typeof(Number5).AngeHash(), 5 },
-			{ typeof(Number6).AngeHash(), 6 },
-			{ typeof(Number7).AngeHash(), 7 },
-			{ typeof(Number8).AngeHash(), 8 },
-			{ typeof(Number9).AngeHash(), 9 },
+			{ "Number0".AngeHash(), 0 },
+			{ "Number1".AngeHash(), 1 },
+			{ "Number2".AngeHash(), 2 },
+			{ "Number3".AngeHash(), 3 },
+			{ "Number4".AngeHash(), 4 },
+			{ "Number5".AngeHash(), 5 },
+			{ "Number6".AngeHash(), 6 },
+			{ "Number7".AngeHash(), 7 },
+			{ "Number8".AngeHash(), 8 },
+			{ "Number9".AngeHash(), 9 },
 		};
 
 		int GetBlockAt (int unitX, int unitY, int z, BlockType type);

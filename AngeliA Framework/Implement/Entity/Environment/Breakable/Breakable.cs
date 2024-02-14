@@ -1,4 +1,4 @@
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 
 		int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;

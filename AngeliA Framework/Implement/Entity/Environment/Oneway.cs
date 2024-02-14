@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public class OnewayGateDown : Oneway {
 		public override Direction4 GateDirection => Direction4.Down;
 	}

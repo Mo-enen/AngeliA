@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public enum EquipmentType { Weapon, BodyArmor, Helmet, Shoes, Gloves, Jewelry, }

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Engine", "AngeliA Engine.csproj", "{5076C53B-EC93-4B6D-91E1-FE77DDEF71D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Core", "..\AngeliA Core\AngeliA Core.csproj", "{BF9BD80D-D208-4110-A01C-C610E1094FDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Framework", "..\AngeliA Framework\AngeliA Framework.csproj", "{CFD0EC7A-A7E1-49CC-AD05-5B9BE6F6014A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{5076C53B-EC93-4B6D-91E1-FE77DDEF71D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5076C53B-EC93-4B6D-91E1-FE77DDEF71D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5076C53B-EC93-4B6D-91E1-FE77DDEF71D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF9BD80D-D208-4110-A01C-C610E1094FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF9BD80D-D208-4110-A01C-C610E1094FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF9BD80D-D208-4110-A01C-C610E1094FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF9BD80D-D208-4110-A01C-C610E1094FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFD0EC7A-A7E1-49CC-AD05-5B9BE6F6014A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFD0EC7A-A7E1-49CC-AD05-5B9BE6F6014A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFD0EC7A-A7E1-49CC-AD05-5B9BE6F6014A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFD0EC7A-A7E1-49CC-AD05-5B9BE6F6014A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

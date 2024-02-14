@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[RequireSpriteFromField]
 	public static class DeveloperToolbar {
 

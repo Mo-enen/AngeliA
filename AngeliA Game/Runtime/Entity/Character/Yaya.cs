@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
+using AngeliA;
+using AngeliA.Framework;
+
 
 
 namespace AngeliaGame {
@@ -9,11 +11,11 @@ namespace AngeliaGame {
 
 
 		// SUB
-		public class Face : AngeliaFramework.Face { }
-		public class Hair : AngeliaFramework.Hair { }
-		public class Tail : AngeliaFramework.Tail { }
-		public class Ear : AngeliaFramework.Ear { }
-		public class Wing : AngeliaFramework.Wing { }
+		public class Face : AngeliA.Framework.Face { }
+		public class Hair : AngeliA.Framework.Hair { }
+		public class Tail : AngeliA.Framework.Tail { }
+		public class Ear : AngeliA.Framework.Ear { }
+		public class Wing : AngeliA.Framework.Wing { }
 		public class BodySuit : BodyCloth { }
 		public class HipSuit : HipCloth { }
 		public class FootSuit : FootCloth { }

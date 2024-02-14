@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 	public enum FittingPose {
 		Unknown = 0,
@@ -54,7 +54,7 @@ namespace AngeliaFramework {
 				CellRenderer.SetLayerToShadow();
 				for (int i = CellStartIndex; i < count; i++) {
 					var cell = cells[i];
-					AngeUtil.DrawEnvironmentShadow(cell, z: cell.Z - 1);
+					FrameworkUtil.DrawEnvironmentShadow(cell, z: cell.Z - 1);
 				}
 				CellRenderer.SetLayerToDefault();
 			}

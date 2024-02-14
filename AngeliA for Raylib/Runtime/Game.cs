@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using AngeliaFramework;
+using AngeliA;
+using AngeliA.Framework;
 using Raylib_cs;
 
 [assembly: AngeliA]

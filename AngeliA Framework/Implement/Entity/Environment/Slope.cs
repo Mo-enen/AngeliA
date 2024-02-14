@@ -1,4 +1,4 @@
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public class WoodLogSlopeA : Slope, ICombustible {

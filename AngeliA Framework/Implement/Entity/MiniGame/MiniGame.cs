@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public class MiniGameTask : TaskItem {

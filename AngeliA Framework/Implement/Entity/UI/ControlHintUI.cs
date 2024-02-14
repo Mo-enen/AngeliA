@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.StageOrder(int.MaxValue)]
@@ -291,8 +291,8 @@ namespace AngeliaFramework {
 			}
 		}
 		private void DrawGamepadButton (int x, int y, GamepadKey buttonA, GamepadKey buttonB, string label, bool background = false) {
-			int keyIdA = Const.GAMEPAD_CODE.TryGetValue(buttonA, out int _value0) ? _value0 : 0;
-			int keyIdB = Const.GAMEPAD_CODE.TryGetValue(buttonB, out int _value1) ? _value1 : 0;
+			int keyIdA = FrameworkUtil.GAMEPAD_CODE.TryGetValue(buttonA, out int _value0) ? _value0 : 0;
+			int keyIdB = FrameworkUtil.GAMEPAD_CODE.TryGetValue(buttonB, out int _value1) ? _value1 : 0;
 			DrawKeyLogic(x, y, keyIdA, keyIdB, "", "", label, background);
 		}
 		private void DrawKey (int x, int y, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) {

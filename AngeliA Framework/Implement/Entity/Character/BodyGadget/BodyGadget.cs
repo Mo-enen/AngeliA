@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public enum BodyGadgetType { Face, Hair, Ear, Horn, Tail, Wing, }

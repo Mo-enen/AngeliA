@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public abstract class SummonItem<T> : Item where T : Summon {
 
 		private static Entity UpdatingHolder = null;

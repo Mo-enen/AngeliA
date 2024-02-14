@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>AngeliA_Framework</RootNamespace>
+    <RootNamespace>AngeliaFramework</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
@@ -52,10 +52,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
 		</ContentWithTargetPath>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA Core\AngeliA Core.csproj" />
 	</ItemGroup>
 
 </Project>

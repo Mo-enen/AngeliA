@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[RequireLanguageFromField]
 	public partial class LanguageEditor : WindowUI {
 
@@ -344,7 +344,7 @@ namespace AngeliaFramework {
 				}
 			}
 			// Fill Missing Requirements
-			foreach (var requiredKey in AngeUtil.ForAllLanguageKeyRequirements()) {
+			foreach (var requiredKey in FrameworkUtil.ForAllLanguageKeyRequirements()) {
 				if (pool.TryGetValue(requiredKey, out int index)) {
 					Lines[index].Required = true;
 					continue;

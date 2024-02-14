@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 	public enum BlockType {
 		Entity = 0,
@@ -130,6 +130,32 @@ namespace AngeliaFramework {
 		}
 
 
+		public void FillMapIntoTexture (object texture) {
+			lock (CacheMapPixels) {
+				int len = Const.MAP * Const.MAP;
+				for (int i = 0; i < len; i++) {
+					int id = Entities[i];
+					if (id != 0 && CellRenderer.TryGetSprite(id, out var sprite)) {
+						CacheMapPixels[i] = sprite.SummaryTint;
+						continue;
+					}
+					id = Levels[i];
+					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
+						CacheMapPixels[i] = sprite.SummaryTint;
+						continue;
+					}
+					id = Backgrounds[i];
+					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
+						CacheMapPixels[i] = sprite.SummaryTint;
+						continue;
+					}
+					CacheMapPixels[i] = Const.CLEAR;
+				}
+				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+			}
+		}
+
+
 		// Save
 		public void SaveToDisk (string mapFolder) => SaveToDisk(mapFolder, WorldPosition.x, WorldPosition.y, WorldPosition.z);
 
@@ -228,32 +254,6 @@ namespace AngeliaFramework {
 		}
 
 
-		public void FillMapIntoTexture (object texture) {
-			lock (CacheMapPixels) {
-				int len = Const.MAP * Const.MAP;
-				for (int i = 0; i < len; i++) {
-					int id = Entities[i];
-					if (id != 0 && CellRenderer.TryGetSprite(id, out var sprite)) {
-						CacheMapPixels[i] = sprite.SummaryTint;
-						continue;
-					}
-					id = Levels[i];
-					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
-						CacheMapPixels[i] = sprite.SummaryTint;
-						continue;
-					}
-					id = Backgrounds[i];
-					if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
-						CacheMapPixels[i] = sprite.SummaryTint;
-						continue;
-					}
-					CacheMapPixels[i] = Const.CLEAR;
-				}
-				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-			}
-		}
-
-
 		#endregion
 
 
@@ -315,9 +315,9 @@ namespace AngeliaFramework {
 								Backgrounds[y * Const.MAP + x] = id;
 							}
 						}
-					} catch (System.Exception ex) { Game.LogException(ex); }
+					} catch (System.Exception) { }
 				}
-			} catch (System.Exception ex) { Game.LogException(ex); }
+			} catch (System.Exception) { }
 
 			// Final
 			success = true;

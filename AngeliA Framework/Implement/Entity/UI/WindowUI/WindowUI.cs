@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(1, 0)]
 	public abstract class WindowUI : EntityUI, IWindowEntityUI {

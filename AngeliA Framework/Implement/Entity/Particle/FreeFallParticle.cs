@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public class FreeFallParticle : Particle {
 
 		public static readonly int TYPE_ID = typeof(FreeFallParticle).AngeHash();

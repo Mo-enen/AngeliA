@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.Capacity(1, 0)]
 	[RequireLanguageFromField]
 	public abstract class PlayerCustomizer : MiniGame, IActionTarget {
@@ -253,7 +253,7 @@ namespace AngeliaFramework {
 			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingID != 0;
 			player.AnimationType = flying ? CharacterAnimationType.Fly : CharacterAnimationType.Idle;
 			player.LockFacingRight(PlayerFacingRight);
-			AngeUtil.DrawPoseCharacterAsUI(
+			FrameworkUtil.DrawPoseCharacterAsUI(
 				leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, 0, out var rectFrom, out var rectTo
 			);
 			if (FrameInput.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
@@ -303,7 +303,7 @@ namespace AngeliaFramework {
 			PatternPickerScrollRow = 0;
 			CurrentSubMenu = null;
 			BackButtonHotkeyLabel = $"({Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(Gamekey.Jump))})";
-			BackButtonHotkeyPadCode = Const.GAMEPAD_JUMP_HINT_CODE;
+			//BackButtonHotkeyPadCode = FrameworkUtil.GAMEPAD_JUMP_HINT_CODE;
 		}
 
 

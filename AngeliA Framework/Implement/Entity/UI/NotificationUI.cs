@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.ForceSpawn]
 	[EntityAttribute.Capacity(6, 0)]
 	public class NotificationUI : EntityUI {

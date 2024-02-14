@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
+using AngeliA;
+using AngeliA.Framework;
 using Raylib_cs;
 
 namespace AngeliaForRaylib;
@@ -95,7 +96,7 @@ public partial class GameForRaylib {
 	// Keyboard
 	protected override bool _IsKeyboardAvailable () => true;
 
-	protected override bool _IsKeyboardKeyHolding (AngeliaFramework.KeyboardKey key) => Raylib.IsKeyDown(key.ToRaylib());
+	protected override bool _IsKeyboardKeyHolding (AngeliA.KeyboardKey key) => Raylib.IsKeyDown(key.ToRaylib());
 
 
 	// Gamepad

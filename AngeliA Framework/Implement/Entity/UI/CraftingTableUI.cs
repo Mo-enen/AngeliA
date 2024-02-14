@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[RequireSpriteFromField]
 	[RequireLanguageFromField]
 	public sealed class CraftingTableUI : PlayerMenuPartnerUI {
@@ -363,7 +363,7 @@ namespace AngeliaFramework {
 				if (playerID == 0) return;
 				int collectedCount = Inventory.CollectItem(playerID, CombineResultID, CombineResultCount);
 				if (collectedCount < CombineResultCount) {
-					ItemSystem.SpawnItemAtPlayer(CombineResultID, CombineResultCount - collectedCount);
+					ItemSystem.SpawnItemAtTarget(Player.Selecting, CombineResultID, CombineResultCount - collectedCount);
 				}
 			}
 

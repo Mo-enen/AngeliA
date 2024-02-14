@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, }
@@ -63,6 +63,12 @@ namespace AngeliaFramework {
 				character.AnimationType == CharacterAnimationType.Crash ||
 				!CellRenderer.TryGetSprite(SpriteID, out var sprite)
 			) return;
+
+			DrawWeaponLogic(character, sprite);
+
+		}
+
+		private void DrawWeaponLogic (PoseCharacter character, AngeSprite sprite) {
 
 			bool attacking = character.IsAttacking;
 			int grabScaleL = character.HandGrabScaleL;
@@ -251,6 +257,7 @@ namespace AngeliaFramework {
 				}
 
 			}
+
 
 		}
 

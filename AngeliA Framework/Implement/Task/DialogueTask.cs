@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public class DialogueTask : TaskItem {
 
 

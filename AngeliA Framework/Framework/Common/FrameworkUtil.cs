@@ -1,0 +1,230 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+
+
+namespace AngeliA.Framework {
+	public static class FrameworkUtil {
+
+
+		// Drawing
+		public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
+			var result = CellRenderer.Draw(Const.PIXEL, default);
+			result.CopyFrom(source);
+			result.X += offsetX;
+			result.Y += offsetY;
+			result.Z = z;
+			result.Color = new Byte4(0, 0, 0, alpha);
+			return result;
+		}
+
+
+		public static void DrawGlitchEffect (Cell cell, int frame) {
+
+			if (frame.UMod(0096) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-012, 012), AngeUtil.RandomInt(-007, 007), AngeUtil.RandomInt(0900, 1100), AngeUtil.RandomInt(0500, 1100), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0061) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-002, 041), AngeUtil.RandomInt(-019, 072), AngeUtil.RandomInt(0500, 1200), AngeUtil.RandomInt(0500, 1200), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0121) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-016, 016), AngeUtil.RandomInt(-007, 007), AngeUtil.RandomInt(0400, 1100), AngeUtil.RandomInt(0600, 1100), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0127) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-016, 016), AngeUtil.RandomInt(-007, 007), AngeUtil.RandomInt(0900, 1100), AngeUtil.RandomInt(0500, 1300), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0185) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-011, 021), AngeUtil.RandomInt(-018, 018), AngeUtil.RandomInt(0900, 1300), AngeUtil.RandomInt(0900, 1300), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0187) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-034, 042), AngeUtil.RandomInt(-012, 008), AngeUtil.RandomInt(0800, 1100), AngeUtil.RandomInt(0900, 1400), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0193) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-052, 002), AngeUtil.RandomInt(-091, 077), AngeUtil.RandomInt(0700, 1400), AngeUtil.RandomInt(0800, 1100), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(0274) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-033, 072), AngeUtil.RandomInt(-031, 079), AngeUtil.RandomInt(0800, 1100), AngeUtil.RandomInt(0900, 1800), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(1846) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-094, 012), AngeUtil.RandomInt(-077, 112), AngeUtil.RandomInt(0900, 1500), AngeUtil.RandomInt(0900, 1300), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(3379) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-194, 112), AngeUtil.RandomInt(-177, 212), AngeUtil.RandomInt(0900, 1600), AngeUtil.RandomInt(0700, 1900), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+			if (frame.UMod(9379) == 0) DrawGlitch(cell, AngeUtil.RandomInt(-293, 211), AngeUtil.RandomInt(-079, 011), AngeUtil.RandomInt(0900, 1700), AngeUtil.RandomInt(0900, 1100), AngeUtil.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+
+			// Func
+			static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Byte4 color) {
+
+				var cursedCell = CellRenderer.Draw(Const.PIXEL, default, 0);
+				cursedCell.Sprite = cell.Sprite;
+				cursedCell.TextSprite = cell.TextSprite;
+				cursedCell.X = cell.X;
+				cursedCell.Y = cell.Y;
+				cursedCell.Z = cell.Z + 1;
+				cursedCell.Rotation = cell.Rotation;
+				cursedCell.Width = cell.Width * scaleX / 1000;
+				cursedCell.Height = cell.Height * scaleY / 1000;
+				cursedCell.PivotX = cell.PivotX;
+				cursedCell.PivotY = cell.PivotY;
+				cursedCell.Shift = cell.Shift;
+
+				cursedCell.Color = color;
+				cursedCell.X += offsetX;
+				cursedCell.Y += offsetY;
+
+			}
+		}
+
+
+		public static void DrawSegmentHealthBar (int x, int y, int heartLeftCode, int heartRightCode, int emptyHeartLeftCode, int emptyHeartRightCode, int dropParticleID, int hp, int maxHP, int prevHP = int.MinValue) {
+
+			const int SIZE = Const.HALF;
+			const int COLUMN = 4;
+			const int MAX = 8;
+
+			int maxHp = Util.Min(maxHP, MAX);
+			int left = x - SIZE * COLUMN / 4;
+
+			// Draw Hearts
+			var rect = new IRect(0, 0, SIZE / 2, SIZE);
+			bool isLeft = true;
+			for (int i = 0; i < maxHp; i++) {
+				rect.x = left + (i % COLUMN) * SIZE / 2;
+				rect.y = y - (i / COLUMN + 1) * SIZE;
+				if (i < hp) {
+					// Heart
+					CellRenderer.Draw(isLeft ? heartLeftCode : heartRightCode, rect, 0);
+				} else {
+					// Empty Heart
+					CellRenderer.Draw(isLeft ? emptyHeartLeftCode : emptyHeartRightCode, rect, 0);
+					// Spawn Drop Particle
+					if (i < prevHP) {
+						Entity heart;
+						if (isLeft) {
+							heart = Stage.SpawnEntity(dropParticleID, rect.x, rect.y);
+						} else {
+							heart = Stage.SpawnEntity(dropParticleID, rect.x, rect.y);
+						}
+						if (heart != null) {
+							heart.Width = rect.width + 8;
+							heart.Height = rect.height + 16;
+						}
+					}
+				}
+				isLeft = !isLeft;
+			}
+		}
+
+
+		public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame, int z, out IRect globalRect, out IRect uiRect) {
+
+			globalRect = default;
+			uiRect = default;
+
+			// Draw Player
+			int oldLayerIndex = CellRenderer.CurrentLayerIndex;
+			CellRenderer.SetLayerToUI();
+			int layerIndex = CellRenderer.CurrentLayerIndex;
+			int cellIndexStart = CellRenderer.GetUsedCellCount();
+			int oldAniFrame = character.CurrentAnimationFrame;
+			character.CurrentAnimationFrame = animationFrame;
+			character.FrameUpdate();
+			character.CurrentAnimationFrame = oldAniFrame;
+			int cellIndexEnd = CellRenderer.GetUsedCellCount();
+			CellRenderer.SetLayer(oldLayerIndex);
+			if (cellIndexStart == cellIndexEnd) return false;
+			if (!CellRenderer.GetCells(layerIndex, out var cells, out int count)) return false;
+
+			// Get Min Max
+			bool flying = character.AnimationType == CharacterAnimationType.Fly;
+			int originalMinX = character.X - Const.HALF - 16;
+			int originalMinY = character.Y - 16 + (flying ? character.PoseRootY / 2 : 0);
+			int originalMaxX = character.X + Const.HALF + 16;
+			int originalMaxY = character.Y + Const.CEL * 2 + 16;
+			if (flying) {
+				originalMinY -= Const.HALF;
+				originalMaxY -= Const.HALF;
+			}
+			globalRect.SetMinMax(originalMinX, originalMaxX, originalMinY, originalMaxY);
+
+			// Move Cells
+			int originalWidth = originalMaxX - originalMinX;
+			int originalHeight = originalMaxY - originalMinY;
+			var targetRect = uiRect = rect.Fit(originalWidth, originalHeight, 500, 0);
+			int minZ = int.MaxValue;
+			for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
+				var cell = cells[i];
+				minZ = Util.Min(minZ, cell.Z);
+				cell.X = targetRect.x + (cell.X - originalMinX) * targetRect.width / originalWidth;
+				cell.Y = targetRect.y + (cell.Y - originalMinY) * targetRect.height / originalHeight;
+				cell.Width = cell.Width * targetRect.width / originalWidth;
+				cell.Height = cell.Height * targetRect.height / originalHeight;
+				if (!cell.Shift.IsZero) {
+					cell.Shift = new Int4(
+						cell.Shift.left * targetRect.width / originalWidth,
+						cell.Shift.right * targetRect.width / originalWidth,
+						cell.Shift.down * targetRect.height / originalHeight,
+						cell.Shift.up * targetRect.height / originalHeight
+					);
+				}
+			}
+
+			// Fix Z
+			if (minZ != int.MaxValue) {
+				for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
+					var cell = cells[i];
+					cell.Z = z + cell.Z - minZ;
+				}
+			}
+
+			return true;
+
+		}
+
+
+		// Misc
+		public static void DeleteAllEmptyMaps (string mapRoot) {
+			var world = new World();
+			foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
+				try {
+					if (!world.LoadFromDisk(path)) continue;
+					if (world.EmptyCheck()) {
+						Util.DeleteFile(path);
+					}
+				} catch (System.Exception ex) { Game.LogException(ex); }
+			}
+		}
+
+
+		// Requirement
+		public static IEnumerable<KeyValuePair<string, string>> ForAllSpriteNameRequirements () {
+			foreach (var pair in RequireSpriteFromField.ForAllRequirement()) {
+				yield return pair;
+			}
+			foreach (var pair in RequireGlobalSpriteAttribute.ForAllRequirement()) {
+				yield return pair;
+			}
+			foreach (var pair in RequireSpriteAttribute.ForAllRequirement()) {
+				yield return pair;
+			}
+		}
+
+
+		public static IEnumerable<string> ForAllLanguageKeyRequirements () {
+			foreach (var name in RequireLanguageFromField.ForAllRequirement()) {
+				yield return name;
+			}
+			foreach (var name in RequireGlobalLanguageAttribute.ForAllRequirement()) {
+				yield return name;
+			}
+			foreach (var name in RequireLanguageAttribute.ForAllRequirement()) {
+				yield return name;
+			}
+		}
+
+
+		// Input
+		internal static readonly Dictionary<GamepadKey, int> GAMEPAD_CODE = new() {
+			{ GamepadKey.DpadLeft, BuiltInIcon.GAMEPAD_LEFT},
+			{ GamepadKey.DpadRight, BuiltInIcon.GAMEPAD_RIGHT},
+			{ GamepadKey.DpadUp, BuiltInIcon.GAMEPAD_UP},
+			{ GamepadKey.DpadDown,BuiltInIcon.GAMEPAD_DOWN },
+			{ GamepadKey.South,BuiltInIcon.GAMEPAD_SOUTH},
+			{ GamepadKey.North,BuiltInIcon.GAMEPAD_NORTH},
+			{ GamepadKey.East, BuiltInIcon.GAMEPAD_EAST},
+			{ GamepadKey.West, BuiltInIcon.GAMEPAD_WEST},
+			{ GamepadKey.Select, BuiltInIcon.GAMEPAD_SELECT},
+			{ GamepadKey.Start, BuiltInIcon.GAMEPAD_START},
+			{ GamepadKey.LeftTrigger, BuiltInIcon.GAMEPAD_LEFT_TRIGGER},
+			{ GamepadKey.RightTrigger, BuiltInIcon.GAMEPAD_RIGHT_TRIGGER},
+			{ GamepadKey.LeftShoulder, BuiltInIcon.GAMEPAD_LEFT_SHOULDER},
+			{ GamepadKey.RightShoulder, BuiltInIcon.GAMEPAD_RIGHT_SHOULDER},
+		};
+
+
+		public static bool MouseInside (this IRect rect) => rect.Contains(FrameInput.MouseGlobalPosition);
+
+
+	}
+}

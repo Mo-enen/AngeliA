@@ -5,35 +5,7 @@ using System.Reflection;
 using System.Text;
 
 
-namespace AngeliaFramework {
-	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
-	public class ItemCombinationAttribute : System.Attribute {
-		public System.Type ItemA = null;
-		public System.Type ItemB = null;
-		public System.Type ItemC = null;
-		public System.Type ItemD = null;
-		public int Count = 1;
-		public bool ConsumeA = true;
-		public bool ConsumeB = true;
-		public bool ConsumeC = true;
-		public bool ConsumeD = true;
-		public ItemCombinationAttribute (System.Type itemA, int count = 1, bool consumeA = true) : this(itemA, null, null, null, count, consumeA, true, true, true) { }
-		public ItemCombinationAttribute (System.Type itemA, System.Type itemB, int count = 1, bool consumeA = true, bool consumeB = true) : this(itemA, itemB, null, null, count, consumeA, consumeB, true, true) { }
-		public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true) : this(itemA, itemB, itemC, null, count, consumeA, consumeB, consumeC, true) { }
-		public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, System.Type itemD, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true) {
-			ItemA = itemA;
-			ItemB = itemB;
-			ItemC = itemC;
-			ItemD = itemD;
-			Count = count;
-			ConsumeA = consumeA;
-			ConsumeB = consumeB;
-			ConsumeC = consumeC;
-			ConsumeD = consumeD;
-		}
-	}
-
-
+namespace AngeliA.Framework {
 	public static class ItemSystem {
 
 
@@ -443,19 +415,17 @@ namespace AngeliaFramework {
 
 
 		// Spawn 
-		public static bool GiveItemToPlayer (int itemID, int count = 1) => GiveItemTo(Player.Selecting, itemID, count);
-		public static bool GiveItemTo (Character target, int itemID, int count = 1) {
-			if (target == null) return false;
-			count -= Inventory.CollectItem(target.TypeID, itemID, count);
+		public static bool GiveItemTo (int inventoryID, int itemID, int count = 1) {
+			count -= Inventory.CollectItem(inventoryID, itemID, count);
 			if (count > 0) {
-				SpawnItemAtPlayer(itemID, count);
+				var cameraRect = CellRenderer.CameraRect;
+				SpawnItem(itemID, cameraRect.CenterX(), cameraRect.CenterY(), count);
 			}
 			return true;
 		}
 
 
-		public static void SpawnItemAtPlayer (int itemID, int count = 1) {
-			var target = Player.Selecting;
+		public static void SpawnItemAtTarget (Entity target, int itemID, int count = 1) {
 			int x = target != null ? target.Rect.x - Const.CEL : CellRenderer.CameraRect.CenterX();
 			int y = target != null ? target.Y : CellRenderer.CameraRect.CenterY();
 			SpawnItem(itemID, x, y, count);

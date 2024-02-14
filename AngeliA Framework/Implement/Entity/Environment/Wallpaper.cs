@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
+[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDrawBehind]

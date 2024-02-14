@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
+using AngeliA;
 using Raylib_cs;
 
 namespace AngeliaForRaylib;

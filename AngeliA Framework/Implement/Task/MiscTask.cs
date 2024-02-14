@@ -1,4 +1,4 @@
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	// Fading

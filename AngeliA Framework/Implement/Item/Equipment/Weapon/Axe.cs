@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	// Axe
@@ -39,7 +39,7 @@ namespace AngeliaFramework {
 	public class iAxeCursed : Axe {
 		protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
-			AngeUtil.DrawGlitchEffect(cell, Game.GlobalFrame);
+			FrameworkUtil.DrawGlitchEffect(cell, Game.GlobalFrame);
 			return cell;
 		}
 	}

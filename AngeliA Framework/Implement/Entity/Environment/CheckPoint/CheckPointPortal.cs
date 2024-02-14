@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.Capacity(1)]
 	[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 	[EntityAttribute.ExcludeInMapEditor]

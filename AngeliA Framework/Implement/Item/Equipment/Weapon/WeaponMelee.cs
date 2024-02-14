@@ -1,4 +1,4 @@
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public abstract class MeleeWeapon<B> : MeleeWeapon where B : MeleeBullet {
 		public MeleeWeapon () => BulletID = typeof(B).AngeHash();
 	}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public class Photo : Furniture, ICombustible, IActionTarget {
 
 		private int PhotoIndex = 0;

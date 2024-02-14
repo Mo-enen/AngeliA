@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AngeliA Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c159e40178b03b7ff7c9d3c01d3df781248f68e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f086c031fa327083249b4982c1c6851ab42d6cc1")]
 [assembly: System.Reflection.AssemblyProductAttribute("AngeliA Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AngeliA Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

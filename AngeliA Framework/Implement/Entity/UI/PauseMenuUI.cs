@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.DontDestroyOutOfRange]
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.Capacity(1, 1)]
@@ -465,7 +465,7 @@ namespace AngeliaFramework {
 					KeySetterLabel.BackgroundTint = Const.CLEAR;
 					KeySetterLabel.Text = forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i]);
 					valueLabel = KeySetterLabel;
-					iconID = forGamepad && Const.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
+					iconID = forGamepad && FrameworkUtil.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
 				} else {
 					// Recording
 					KeySetterLabel.Tint = Game.PauselessFrame % 30 > 15 ? Const.BLACK : Const.WHITE;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public class DefaultParticle : Particle {
 		public override int Duration => 30;
 		public override bool Loop => false;

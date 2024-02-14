@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
@@ -19,9 +19,9 @@ namespace AngeliaFramework {
 
 		// Config
 		protected int BackgroundCode = Const.PIXEL;
-		protected int SelectionMarkCode = Const.MENU_SELECTION_CODE;
-		protected int MoreItemMarkCode = Const.MENU_MORE_CODE;
-		protected int ArrowMarkCode = Const.MENU_ARROW_MARK;
+		protected int SelectionMarkCode = BuiltInIcon.MENU_SELECTION_MARK;
+		protected int MoreItemMarkCode = BuiltInIcon.MENU_MORE_MARK;
+		protected int ArrowMarkCode = BuiltInIcon.MENU_ARROW_MARK;
 		protected int WindowWidth = 660;
 		protected int ItemHeight = 36;
 		protected int ItemGap = 16;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public abstract class ProjectileWeapon<B> : ProjectileWeapon where B : MovableBullet {
 		public ProjectileWeapon () => BulletID = typeof(B).AngeHash();
 	}

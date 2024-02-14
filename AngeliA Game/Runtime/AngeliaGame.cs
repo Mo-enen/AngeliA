@@ -1,5 +1,6 @@
-﻿using AngeliaForRaylib;
-using AngeliaFramework;
+﻿using AngeliA;
+using AngeliaForRaylib;
+
 
 [assembly: AngeliA]
 [assembly: AngeliaGameTitle("AngeliA")]

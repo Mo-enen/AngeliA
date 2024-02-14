@@ -2,20 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
-	[EntityAttribute.ExcludeInMapEditor]
-	public class ProcedureCheckPoint : CheckPoint {
-		[OnGameInitialize(1024)]
-		public static void OnGameInitialize_PCP () {
-			Unlock(typeof(ProcedureCheckPoint).AngeHash());
-		}
-		protected override bool TryGetAltarPosition (out Int3 altarUnitPos) {
-			altarUnitPos = default;
-			return false;
-		}
-	}
-
-
+namespace AngeliA.Framework {
 	[EntityAttribute.Capacity(16)]
 	[EntityAttribute.MapEditorGroup("CheckPoint")]
 	public abstract class CheckPoint : EnvironmentEntity {

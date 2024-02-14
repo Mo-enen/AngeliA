@@ -1,4 +1,4 @@
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public abstract class ArrowWeapon<A> : ArrowWeapon where A : Item {
 		public ArrowWeapon () => ArrowItemID = typeof(A).AngeHash();
 	}

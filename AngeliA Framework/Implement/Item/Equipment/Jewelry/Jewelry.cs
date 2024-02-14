@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 
 	[ItemCombination(typeof(iGem), typeof(iRope), typeof(iTreeBranch), 1)]

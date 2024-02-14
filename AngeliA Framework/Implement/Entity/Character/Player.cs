@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "Character", "Player")]
+[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Character", "Player")]
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.Capacity(1, 1)]
 	[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 	[EntityAttribute.DontDestroyOnSquadTransition]

@@ -4,7 +4,7 @@ using System.Linq;
 using GeorgeMamaladze;
 
 
-[assembly: AngeliaFramework.RequireGlobalSprite(atlas: "UI",
+[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "UI",
 	"Cover.Background",
 	"Cover.LevelBack",
 	"Cover.LevelFront",
@@ -27,7 +27,7 @@ using GeorgeMamaladze;
 )]
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[RequireSpriteFromField]
 	public partial class MapEditor {
 

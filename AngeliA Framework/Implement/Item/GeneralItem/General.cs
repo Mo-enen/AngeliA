@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 
 	[ItemCombination(typeof(iRuneWater), typeof(iRuneFire), typeof(iTreeTrunk), 1)]
 	public class iChessPawn : Item { }
@@ -54,7 +54,7 @@ namespace AngeliaFramework {
 			MiniGame.OnBadgeSpawn += OnBadgeSpawn;
 			static void OnBadgeSpawn (int quality) {
 				if (quality >= 2) {
-					ItemSystem.GiveItemToPlayer(TYPE_ID, 1);
+					ItemSystem.GiveItemTo(Player.Selecting.TypeID, TYPE_ID, 1);
 				}
 			}
 		}
@@ -68,7 +68,7 @@ namespace AngeliaFramework {
 			MiniGame.OnBadgeSpawn += OnBadgeSpawn;
 			static void OnBadgeSpawn (int quality) {
 				if (quality <= 1) {
-					ItemSystem.GiveItemToPlayer(TYPE_ID, 1);
+					ItemSystem.GiveItemTo(Player.Selecting.TypeID, TYPE_ID, 1);
 				}
 			}
 		}

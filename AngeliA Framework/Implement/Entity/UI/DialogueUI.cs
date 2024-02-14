@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public sealed class DefaultDialogueUI : DialogueUI {
 
 		protected override IRect PanelRect => new(

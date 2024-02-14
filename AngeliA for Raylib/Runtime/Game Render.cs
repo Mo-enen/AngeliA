@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using AngeliaFramework;
+using AngeliA;
+using AngeliA.Framework;
 using Raylib_cs;
 
 namespace AngeliaForRaylib;
@@ -101,6 +102,7 @@ public partial class GameForRaylib {
 	private readonly GLTexture[] GLTextures = new GLTexture[256].FillWithNewValue();
 	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
+	private static readonly Dictionary<int, Texture2D> TexturePool = new();
 	private FontData[] Fonts;
 	private int GLRectCount = 0;
 	private int GLTextureCount = 0;
@@ -302,6 +304,25 @@ public partial class GameForRaylib {
 		}
 	}
 
+	[OnSheetLoaded]
+	internal static void OnSheetLoaded () {
+
+		// Unlock Texture Pool
+		foreach (var (_, texture) in TexturePool) Game.UnloadTexture(texture);
+		TexturePool.Clear();
+
+		// Fill Texture Pool
+		var sheet = CellRenderer.Sheet;
+		foreach (var sprite in sheet.Sprites) {
+			if (TexturePool.ContainsKey(sprite.GlobalID)) continue;
+			TexturePool.Add(
+				sprite.GlobalID,
+				(Texture2D)Game.GetTextureFromPixels(sprite.Pixels, sprite.PixelWidth, sprite.PixelHeight)
+			);
+		}
+
+	}
+
 
 	// Render
 	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) { }
@@ -375,6 +396,8 @@ public partial class GameForRaylib {
 				var sprite = cell.Sprite;
 				if (sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
 
+				if (!TexturePool.TryGetValue(sprite.GlobalID, out var texture)) continue;
+
 				// UV
 				float sourceL, sourceR, sourceD, sourceU;
 				if (cell.BorderSide == Alignment.Full) {
@@ -416,8 +439,8 @@ public partial class GameForRaylib {
 				source.Width *= cell.Width.Sign();
 				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
-					(Texture2D)sprite.Texture, source, dest.Expand(0.5f),
-					new(
+					texture, source, dest.Expand(0.5f),
+					new Vector2(
 						pivotX * dest.Width,
 						pivotY * dest.Height
 					), cell.Rotation, cell.Color.ToRaylib()

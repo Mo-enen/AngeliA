@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using GeorgeMamaladze;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[RequireLanguageFromField]
 	[EntityAttribute.StageOrder(-4096)]
 	public sealed partial class MapEditor : WindowUI {
@@ -197,7 +198,7 @@ namespace AngeliaFramework {
 				InitializedFrame = Game.GlobalFrame;
 				UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
 				EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(ProjectSystem.CurrentProject.MapRoot);
-				AngeUtil.DeleteAllEmptyMaps(ProjectSystem.CurrentProject.MapRoot);
+				FrameworkUtil.DeleteAllEmptyMaps(ProjectSystem.CurrentProject.MapRoot);
 				Initialize_Pool();
 				Initialize_Palette();
 				Initialize_Nav();
@@ -259,7 +260,7 @@ namespace AngeliaFramework {
 			}
 
 			JsonUtil.SaveJson(EditorMeta, ProjectSystem.CurrentProject.MapRoot);
-			AngeUtil.DeleteAllEmptyMaps(ProjectSystem.CurrentProject.MapRoot);
+			FrameworkUtil.DeleteAllEmptyMaps(ProjectSystem.CurrentProject.MapRoot);
 			IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
 			WorldSquad.SolidMode = true;
@@ -288,6 +289,7 @@ namespace AngeliaFramework {
 			ReversedChainPool.Clear();
 			GizmosPool.Clear();
 			CheckAltarIDs.Clear();
+			var builder = new StringBuilder();
 
 			int spriteCount = CellRenderer.SpriteCount;
 			int chainCount = CellRenderer.GroupCount;
@@ -320,7 +322,18 @@ namespace AngeliaFramework {
 
 				// RuleID to RuleGroup
 				if (chain.Type == GroupType.Rule) {
-					ChainRulePool.TryAdd(chain.ID, AngeUtil.GetTileRuleString(chain.ID));
+					builder.Clear();
+					if (CellRenderer.HasSpriteGroup(chain.ID, out int groupLength)) {
+						for (int j = 0; j < groupLength; j++) {
+							if (CellRenderer.TryGetSpriteFromGroup(chain.ID, j, out var sp, false, true)) {
+								int ruleDigit = sp.Rule;
+								builder.Append(AngeUtil.RuleDigitToString(ruleDigit));
+							} else {
+								builder.Append(AngeUtil.RULE_TILE_ERROR);
+							}
+						}
+					}
+					ChainRulePool.TryAdd(chain.ID, builder.ToString());
 				}
 
 			}
@@ -809,7 +822,7 @@ namespace AngeliaFramework {
 			player.AnimationType = CharacterAnimationType.Idle;
 			int startIndex = CellRenderer.GetUsedCellCount();
 			player.IgnoreInventory();
-			AngeUtil.DrawPoseCharacterAsUI(
+			FrameworkUtil.DrawPoseCharacterAsUI(
 				new IRect(
 					PlayerDropPos.x - Const.HALF,
 					PlayerDropPos.y - Const.CEL * 2,

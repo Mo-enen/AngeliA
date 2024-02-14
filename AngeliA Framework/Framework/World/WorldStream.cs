@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	public sealed class WorldStream : System.IDisposable, IBlockSquad {
 
 

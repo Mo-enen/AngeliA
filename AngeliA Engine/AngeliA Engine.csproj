@@ -30,10 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AngeliA Core\AngeliA Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Raylib-cs">
       <HintPath>Runtime\Raylib-cs.dll</HintPath>
     </Reference>

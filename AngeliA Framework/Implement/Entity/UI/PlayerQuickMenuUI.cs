@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliaFramework {
+namespace AngeliA.Framework {
 	[EntityAttribute.DontDestroyOnSquadTransition]
 	[EntityAttribute.DontDestroyOutOfRange]
 	[RequireLanguageFromField]
@@ -315,7 +315,7 @@ namespace AngeliaFramework {
 					// Collect
 					int collectCount = Inventory.CollectItem(invID, oldEquipmentID, out _, 1);
 					if (collectCount == 0) {
-						ItemSystem.SpawnItemAtPlayer(oldEquipmentID);
+						ItemSystem.SpawnItemAtTarget(Player.Selecting, oldEquipmentID);
 					}
 				}
 			}

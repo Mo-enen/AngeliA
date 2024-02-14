@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AngeliaFramework;
+using AngeliA;
 using Raylib_cs;
 
 
@@ -30,7 +30,7 @@ public static class ExtensionRaylib {
 		rect.Height = -rect.Height;
 	}
 
-	public static Raylib_cs.KeyboardKey ToRaylib (this AngeliaFramework.KeyboardKey key) => KeyboardKeyPool[(int)key];
+	public static Raylib_cs.KeyboardKey ToRaylib (this AngeliA.KeyboardKey key) => KeyboardKeyPool[(int)key];
 
 	public static GamepadButton ToRaylib (this GamepadKey key) => key switch {
 		GamepadKey.DpadUp => GamepadButton.LeftFaceUp,
@@ -96,5 +96,5 @@ public static class ExtensionRaylib {
 		);
 	}
 
-	
+
 }
