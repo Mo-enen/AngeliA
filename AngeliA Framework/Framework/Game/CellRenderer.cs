@@ -521,13 +521,9 @@ namespace AngeliA.Framework {
 
 			if (!IsDrawing) return EMPTY_CELL;
 
-			var tLayer = TextLayers[CurrentTextLayerIndex];
-			if (!tLayer.TextIDMap.TryGetValue(c, out var tSprite)) {
-				return EMPTY_CELL;
-			}
-
 			var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
-			if (layer.FocusedCell < 0) return EMPTY_CELL;
+			if (layer.FocusedCell < 0 || !layer.TextIDMap.TryGetValue(c, out var tSprite)) return EMPTY_CELL;
+
 			var cell = layer.Cells[layer.FocusedCell];
 
 			cell.Z = 0;
@@ -941,7 +937,9 @@ namespace AngeliA.Framework {
 			ExcludeCellsLogic(TextLayers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
 		}
 		private static void ExcludeCellsLogic (Cell[] cells, int layerIndex, IRect rect, int startIndex, int endIndex) {
+
 			var cellRect = new IRect();
+
 			for (int i = startIndex; i < endIndex; i++) {
 
 				var cell = cells[i];
@@ -950,78 +948,81 @@ namespace AngeliA.Framework {
 				cellRect.width = cell.Width;
 				cellRect.height = cell.Height;
 				cellRect.FlipNegative();
-				if (cellRect.Overlaps(rect)) {
 
-					// Inside
-					if (
-						cellRect.x > rect.x && cellRect.xMax < rect.xMax &&
-						cellRect.y > rect.y && cellRect.yMax < rect.yMax
-					) {
-						cell.Color = Const.CLEAR;
-						continue;
-					}
+				if (!cellRect.Overlaps(rect)) continue;
 
-					// L
-					var newCellRect = cellRect;
-					if (cellRect.x < rect.x) {
-						MakeCell(
-							cell, cellRect, cellRect.EdgeInside(Direction4.Left, rect.x - cellRect.x),
-							layerIndex
-						);
-						newCellRect = newCellRect.EdgeInside(Direction4.Right, cellRect.xMax - rect.x);
-					}
-					// R
-					if (cellRect.xMax > rect.xMax) {
-						MakeCell(
-							cell, cellRect, cellRect.EdgeInside(Direction4.Right, cellRect.xMax - rect.xMax),
-							layerIndex
-						);
-						newCellRect = newCellRect.EdgeInside(Direction4.Left, rect.xMax - cellRect.x);
-					}
+				// Complete Inside
+				if (
+					cellRect.x > rect.x && cellRect.xMax < rect.xMax &&
+					cellRect.y > rect.y && cellRect.yMax < rect.yMax
+				) {
+					cell.Color.a = 0;
+					continue;
+				}
 
-					// D
-					if (cellRect.y < rect.y) {
-						MakeCell(
-							cell, cellRect, newCellRect.EdgeInside(Direction4.Down, rect.y - cellRect.y),
-							layerIndex
-						);
-					}
-					// U
-					if (cellRect.yMax > rect.yMax) {
-						MakeCell(
-							cell, cellRect, newCellRect.EdgeInside(Direction4.Up, cellRect.yMax - rect.yMax),
-							layerIndex
-						);
-					}
-					cell.Color = Const.CLEAR;
+				// L
+				var newCellRect = cellRect;
+				if (cellRect.x < rect.x) {
+					MakeCell(
+						cell, cellRect, cellRect.EdgeInside(Direction4.Left, rect.x - cellRect.x),
+						layerIndex
+					);
+					newCellRect = newCellRect.EdgeInside(Direction4.Right, cellRect.xMax - rect.x);
+				}
 
-					// Func
-					static void MakeCell (Cell source, IRect originalRect, IRect targetRect, int layerIndex) {
-						Cell target;
-						if (source.Sprite != null) {
-							int oldLayer = CurrentLayerIndex;
-							SetLayer(layerIndex);
-							target = Draw(Const.PIXEL, default, 0);
-							SetLayer(oldLayer);
-						} else {
-							int oldLayer = CurrentTextLayerIndex;
-							SetTextLayer(layerIndex);
-							target = DrawChar(' ', 0, 0, 1, 1, Const.WHITE);
-							SetTextLayer(oldLayer);
-						}
-						if (target.Sprite == null && target.TextSprite == null) return;
-						target.CopyFrom(source);
-						target.X = originalRect.x;
-						target.Y = originalRect.y;
-						target.Width = originalRect.width;
-						target.Height = originalRect.height;
-						target.PivotX = 0;
-						target.PivotY = 0;
-						target.Shift.left = Util.Max(source.Shift.left, targetRect.x - originalRect.x);
-						target.Shift.right = Util.Max(source.Shift.right, originalRect.xMax - targetRect.xMax);
-						target.Shift.down = Util.Max(source.Shift.down, targetRect.y - originalRect.y);
-						target.Shift.up = Util.Max(source.Shift.up, originalRect.yMax - targetRect.yMax);
+				// R
+				if (cellRect.xMax > rect.xMax) {
+					MakeCell(
+						cell, cellRect, cellRect.EdgeInside(Direction4.Right, cellRect.xMax - rect.xMax),
+						layerIndex
+					);
+					newCellRect = newCellRect.EdgeInside(Direction4.Left, rect.xMax - cellRect.x);
+				}
+
+				// D
+				if (cellRect.y < rect.y) {
+					MakeCell(
+						cell, cellRect, newCellRect.EdgeInside(Direction4.Down, rect.y - cellRect.y),
+						layerIndex
+					);
+				}
+
+				// U
+				if (cellRect.yMax > rect.yMax) {
+					MakeCell(
+						cell, cellRect, newCellRect.EdgeInside(Direction4.Up, cellRect.yMax - rect.yMax),
+						layerIndex
+					);
+				}
+
+				cell.Color.a = 0;
+
+				// Func
+				static void MakeCell (Cell source, IRect originalRect, IRect targetRect, int layerIndex) {
+					Cell target;
+					if (source.Sprite != null) {
+						int oldLayer = CurrentLayerIndex;
+						SetLayer(layerIndex);
+						target = Draw(Const.PIXEL, default, 0);
+						SetLayer(oldLayer);
+					} else {
+						int oldLayer = CurrentTextLayerIndex;
+						SetTextLayer(layerIndex);
+						target = DrawChar('a', 0, 0, 10, 10, Const.WHITE);
+						SetTextLayer(oldLayer);
 					}
+					if (target.Sprite == null && target.TextSprite == null) return;
+					target.CopyFrom(source);
+					target.X = originalRect.x;
+					target.Y = originalRect.y;
+					target.Width = originalRect.width;
+					target.Height = originalRect.height;
+					target.PivotX = 0;
+					target.PivotY = 0;
+					target.Shift.left = Util.Max(source.Shift.left, targetRect.x - originalRect.x);
+					target.Shift.right = Util.Max(source.Shift.right, originalRect.xMax - targetRect.xMax);
+					target.Shift.down = Util.Max(source.Shift.down, targetRect.y - originalRect.y);
+					target.Shift.up = Util.Max(source.Shift.up, originalRect.yMax - targetRect.yMax);
 				}
 
 			}

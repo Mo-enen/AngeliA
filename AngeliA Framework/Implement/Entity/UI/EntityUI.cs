@@ -5,18 +5,30 @@ using System.Collections.Generic;
 namespace AngeliA.Framework {
 
 	public interface IWindowEntityUI {
+
 		public IRect BackgroundRect { get; }
+		private static int[] EndIndexCache = null;
+
 		[OnGameUpdatePauseless(31)]
 		public static void OnGameUpdatePauseless () {
 			int count = Stage.EntityCounts[EntityLayer.UI];
 			var entities = Stage.Entities[EntityLayer.UI];
+			EndIndexCache ??= new int[CellRenderer.TextLayerCount];
+			for (int i = 0; i < CellRenderer.TextLayerCount; i++) {
+				EndIndexCache[i] = CellRenderer.GetTextUsedCellCount(i);
+			}
 			for (int i = 0; i < count; i++) {
 				var e = entities[i];
 				if (e is not IWindowEntityUI window) continue;
 				if (e is not EntityUI ui) continue;
 				if (ui.TextCellEndIndex != null) {
 					for (int j = 0; j < CellRenderer.TextLayerCount; j++) {
-						CellRenderer.ExcludeTextCells(j, window.BackgroundRect, ui.TextCellEndIndex[j]);
+						CellRenderer.ExcludeTextCells(
+							j, 
+							window.BackgroundRect, 
+							ui.TextCellEndIndex[j], 
+							EndIndexCache[j]
+						);
 					}
 				}
 			}

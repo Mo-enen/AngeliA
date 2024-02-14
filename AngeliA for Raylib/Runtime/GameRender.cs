@@ -386,7 +386,6 @@ public partial class GameForRaylib {
 			usingBlend = true;
 		}
 
-
 		for (int i = 0; i < cellCount; i++) {
 			try {
 
@@ -421,8 +420,8 @@ public partial class GameForRaylib {
 
 				// Pos
 				var dest = new Rectangle(
-					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, cell.X),
-					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, cell.Y),
+					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
+					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
 					cell.Width.Abs() * ScreenRect.width / (float)cameraRect.width,
 					cell.Height.Abs() * ScreenRect.height / (float)cameraRect.height
 				);
@@ -435,7 +434,6 @@ public partial class GameForRaylib {
 				if (skipCell) continue;
 
 				// Draw
-				source = source.Shrink(0.1f);
 				source.Width *= cell.Width.Sign();
 				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
@@ -479,7 +477,7 @@ public partial class GameForRaylib {
 				var cell = cells[i];
 				var sprite = cell.TextSprite;
 
-				if (sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
+				if (sprite == null || cell.Width == 0 || cell.Height == 0) continue;
 
 				var fontData = Fonts[layerIndex];
 				if (!fontData.TryGetTexture((char)sprite.GlobalID, out var texture)) continue;
@@ -489,28 +487,26 @@ public partial class GameForRaylib {
 
 				// Pos
 				var dest = new Rectangle(
-					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, cell.X),
-					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, cell.Y),
-					cell.Width.Abs() * ScreenRect.width / (float)cameraRect.width,
-					cell.Height.Abs() * ScreenRect.height / (float)cameraRect.height
+					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
+					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
+					cell.Width * ScreenRect.width / (float)cameraRect.width,
+					cell.Height * ScreenRect.height / (float)cameraRect.height
 				);
 
-				float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
-				float pivotY = cell.Height > 0 ? 1f - cell.PivotY : cell.PivotY;
+				float pivotX = 0f;
+				float pivotY = 1f;
 
 				// Shift
 				ShiftCell(cell, ref source, ref dest, ref pivotX, ref pivotY, out bool skipCell);
 				if (skipCell) continue;
 
 				// Draw
-				source.Width *= cell.Width.Sign();
-				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
 					texture, source, dest,
-					new(
+					new Vector2(
 						pivotX * dest.Width,
 						pivotY * dest.Height
-					), cell.Rotation, cell.Color.ToRaylib()
+					), rotation: 0, cell.Color.ToRaylib()
 				);
 
 			} catch (System.Exception ex) {
@@ -815,15 +811,12 @@ public partial class GameForRaylib {
 	private static void WritePixelsToConsole (Byte4[] pixels, int width) {
 
 		int height = pixels.Length / width;
-		int realWidth = Util.Min(width, 32);
-		int realHeight = height * realWidth / width;
-		int scale = width / realWidth;
 
-		for (int y = realHeight - 1; y >= 0; y--) {
+		for (int y = height - 1; y >= 0; y--) {
 			System.Console.ResetColor();
 			System.Console.WriteLine();
-			for (int x = 0; x < realWidth; x++) {
-				var p = pixels[(y * scale).Clamp(0, height - 1) * width + (x * scale).Clamp(0, width - 1)];
+			for (int x = 0; x < width; x++) {
+				var p = pixels[(y).Clamp(0, height - 1) * width + (x).Clamp(0, width - 1)];
 				Util.RGBToHSV(p, out float h, out float s, out float v);
 				System.Console.BackgroundColor = (v * s < 0.2f) ?
 					(v < 0.33f ? System.ConsoleColor.Black : v > 0.66f ? System.ConsoleColor.White : System.ConsoleColor.Gray) :

@@ -1,10 +1,16 @@
-﻿using AngeliA;
-using AngeliaForRaylib;
+﻿using System.Linq;
+using AngeliA.Framework;
 
+namespace AngeliaGame;
 
-[assembly: AngeliA]
-[assembly: AngeliaGameTitle("AngeliA")]
-[assembly: AngeliaGameDeveloper("Moenen")]
-[assembly: AngeliaVersion(0, 0, 1, ReleaseLifeCycle.Alpha)]
-
-GameForRaylib.Run();
+public class AngeliaGame {
+	[OnGameQuitting]
+	internal static void OnGameQuitting () {
+		// Close CMD
+		if (Game.IsEdittime) {
+			System.Diagnostics.Process.GetProcessesByName(
+				"WindowsTerminal"
+			).ToList().ForEach(item => item.CloseMainWindow());
+		}
+	}
+}

@@ -185,11 +185,13 @@ public partial class GameForRaylib : Game {
 		// Unload Texture
 		Raylib.UnloadTexture(EMPTY_TEXTURE);
 		Raylib.UnloadRenderTexture(RenderTexture);
+		foreach (var (_, texture) in TexturePool) Game.UnloadTexture(texture);
 
 		// Quit Game
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
 		OnGameQuitting?.Invoke();
 		Raylib.CloseWindow();
+
 	}
 
 

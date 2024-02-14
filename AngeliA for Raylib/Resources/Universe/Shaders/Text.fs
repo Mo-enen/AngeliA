@@ -8,6 +8,6 @@ out vec4 finalColor;
 
 void main() {
     vec4 txColor = texture(texture0, fragTexCoord);
-    finalColor =  txColor* fragColor;
-    finalColor.a = txColor.r;
+    finalColor = txColor * fragColor;
+    finalColor.a = txColor.r * fragColor.a;
 }

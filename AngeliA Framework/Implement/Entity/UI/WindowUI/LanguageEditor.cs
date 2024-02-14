@@ -81,6 +81,7 @@ namespace AngeliA.Framework {
 			if (IsDirty) SaveToDisk();
 			Lines.Clear();
 			Languages.Clear();
+			Language.SetLanguage(Language.CurrentLanguage);
 		}
 
 
