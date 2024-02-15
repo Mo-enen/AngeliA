@@ -51,11 +51,18 @@
 		<ProjectReference Include="..\AngeliA for Raylib\AngeliA for Raylib.csproj" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<ItemGroup>
+		
+		<ContentWithTargetPath Include="%(RecursiveDir)\%(Filename)%(Extension)\Universe\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>Resources\Universe</TargetPath>
+		</ContentWithTargetPath>
+		
 		<ContentWithTargetPath Include="Resources\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
 		</ContentWithTargetPath>
+
 	</ItemGroup>
-	
+
 </Project>
