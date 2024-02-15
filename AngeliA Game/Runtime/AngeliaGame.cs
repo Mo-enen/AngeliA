@@ -4,7 +4,7 @@ using AngeliA.Framework;
 namespace AngeliaGame;
 
 public class AngeliaGame {
-	[OnGameQuitting]
+	[OnGameQuitting(int.MaxValue)]
 	internal static void OnGameQuitting () {
 		// Close CMD
 		if (Game.IsEdittime) {

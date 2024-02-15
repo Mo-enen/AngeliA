@@ -23,9 +23,9 @@ public partial class GameForRaylib {
 		Raylib.ToggleFullscreen();
 	}
 
-	protected override int _GetScreenWidth () => Raylib.GetScreenWidth();
+	protected override int _GetScreenWidth () => Raylib.GetRenderWidth();
 
-	protected override int _GetScreenHeight () => Raylib.GetScreenHeight();
+	protected override int _GetScreenHeight () => Raylib.GetRenderHeight();
 
 	protected override void _QuitApplication () => RequireQuitGame = true;
 
@@ -90,8 +90,8 @@ public partial class GameForRaylib {
 
 
 	// Camera
-	protected override FRect _GetCameraScreenLocacion () => CameraScreenRect;
-	protected override void _SetCameraScreenLocacion (FRect rect) => CameraScreenRect = rect;
+	protected override FRect _GetCameraScreenLocacion () => CameraRange;
+	protected override void _SetCameraScreenLocacion (FRect rect) => CameraRange = rect;
 
 
 }

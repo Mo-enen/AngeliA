@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+		<OutputType>Library</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>AngeliaFramework</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
-
-
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -14,7 +13,6 @@
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
-		
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

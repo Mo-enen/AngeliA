@@ -6,16 +6,15 @@ using AngeliA.Framework;
 
 
 
-namespace AngeliaGame {
-	public class SlimeRed : Slime {
+namespace AngeliaGame; 
+public class SlimeRed : Slime {
 
-	}
+}
 
-	public abstract class Slime : SheetCharacter, IDamageReceiver {
+public abstract class Slime : SheetCharacter, IDamageReceiver {
 
-		int IDamageReceiver.Team => Const.TEAM_ENEMY;
-		bool IDamageReceiver.TakeDamageFromLevel => false;
+	int IDamageReceiver.Team => Const.TEAM_ENEMY;
+	bool IDamageReceiver.TakeDamageFromLevel => false;
 
 
-	}
 }

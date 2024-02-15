@@ -53,18 +53,17 @@ public partial class GameForRaylib : Game {
 		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
 		Raylib.SetConfigFlags(
 			ConfigFlags.ResizableWindow |
-			//ConfigFlags.VSyncHint |
 			ConfigFlags.AlwaysRunWindow |
 			ConfigFlags.InterlacedHint
 		);
-		Raylib.InitWindow(1024, 1024, "");
+		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
 		// Pipeline
 		InitializeFont();
 		InitializeShader();
 		InitializeAudio();
-		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Byte4[1] { Const.CLEAR }, 1, 1);
+		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
 
 		// Init AngeliA
 		base.Initialize();
@@ -113,7 +112,7 @@ public partial class GameForRaylib : Game {
 
 		// Sky
 		Raylib.DrawRectangleGradientV(
-			0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight(),
+			0, 0, ScreenWidth, ScreenHeight,
 			Sky.SkyTintBottomColor.ToRaylib(), Sky.SkyTintTopColor.ToRaylib()
 		);
 
@@ -153,10 +152,10 @@ public partial class GameForRaylib : Game {
 		}
 
 		// Black Side Border
-		if (CameraScreenRect.x.NotAlmostZero()) {
-			int borderWidth = (int)(ScreenWidth * CameraScreenRect.x);
-			Raylib.DrawRectangle(0, 0, borderWidth, ScreenRect.height, Color.Black);
-			Raylib.DrawRectangle(ScreenWidth - borderWidth, 0, borderWidth, ScreenRect.height, Color.Black);
+		if (CameraRange.x.NotAlmostZero()) {
+			int borderWidth = (int)(ScreenWidth * CameraRange.x);
+			Raylib.DrawRectangle(0, 0, borderWidth, ScreenHeight, Color.Black);
+			Raylib.DrawRectangle(ScreenWidth - borderWidth, 0, borderWidth, ScreenHeight, Color.Black);
 		}
 
 		// Final

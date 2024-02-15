@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA.Framework {
-	public class Vase : Furniture {
+namespace AngeliA.Framework; 
+public class Vase : Furniture {
 
-		protected override Direction3 ModuleType => Direction3.Vertical;
+	protected override Direction3 ModuleType => Direction3.Vertical;
 
-		public override void FillPhysics () {
-			if (Pose == FittingPose.Up || Pose == FittingPose.Single) {
-				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
-			} else {
-				CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
-			}
+	public override void FillPhysics () {
+		if (Pose == FittingPose.Up || Pose == FittingPose.Single) {
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
+		} else {
+			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
-
 	}
+
 }

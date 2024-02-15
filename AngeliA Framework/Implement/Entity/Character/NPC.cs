@@ -2,52 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework {
-	[EntityAttribute.Capacity(8)]
-	public abstract class NPC : PoseCharacter, IDamageReceiver {
+namespace AngeliA.Framework; 
+[EntityAttribute.Capacity(8)]
+public abstract class NPC : PoseCharacter, IDamageReceiver {
 
 
 
 
-		#region --- VAR ---
+	#region --- VAR ---
 
 
-		// Api
-		int IDamageReceiver.Team => Const.TEAM_NEUTRAL;
-		public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
+	// Api
+	int IDamageReceiver.Team => Const.TEAM_NEUTRAL;
+	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 
 
-		#endregion
-
-
-
-
-		#region --- MSG ---
-
-
-
-		#endregion
+	#endregion
 
 
 
 
-		#region --- API ---
+	#region --- MSG ---
 
 
 
-		#endregion
-
-
-
-
-		#region --- LGC ---
-
-
-
-		#endregion
+	#endregion
 
 
 
 
-	}
+	#region --- API ---
+
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
+
+
 }

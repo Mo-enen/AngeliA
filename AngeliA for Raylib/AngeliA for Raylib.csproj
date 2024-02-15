@@ -9,8 +9,6 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <StartupObject></StartupObject>
-
-
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -18,8 +16,6 @@
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
-	
-		
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

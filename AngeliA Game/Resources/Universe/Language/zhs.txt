@@ -773,6 +773,7 @@ iDes.ToiletPaper:
 iDes.Tomato:
 iDes.TomatoCut:
 iDes.Tombstone:
+iDes.Toolbox:
 iDes.Tooth:
 iDes.TopHat:
 iDes.TopHatBroken:
@@ -1546,6 +1547,7 @@ iName.ToiletPaper:
 iName.Tomato:
 iName.TomatoCut:
 iName.Tombstone:
+iName.Toolbox:
 iName.Tooth:
 iName.TopHat:
 iName.TopHatBroken:
@@ -1640,6 +1642,7 @@ Menu.SheetEditor.DeleteUnitMSG:删除图块？
 Menu.SheetEditor.NewAtlasName:新图集
 Menu.SheetEditor.NewSpriteName:新图块
 Menu.Sokoban.AllCleared:恭喜通关！
+Menu.WindowEditor.Quit:退出编辑
 MiniGameGomoku:五子棋
 MiniGamePong:乓
 MiniGameSokoban:推箱子

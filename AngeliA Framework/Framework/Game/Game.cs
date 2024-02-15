@@ -18,7 +18,7 @@ namespace AngeliA.Framework {
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : OrderedAttribute { public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : OrderedAttribute { public OnGameRestartAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : OrderedAttribute { public OnGameTryingToQuitAttribute (int order = 0) : base(order) { } }
-	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : System.Attribute { }
+	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : OrderedAttribute { public OnGameQuittingAttribute (int order = 0) : base(order) { } }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameFocusedAttribute : System.Attribute { }
 	[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameLostFocusAttribute : System.Attribute { }
 
@@ -55,8 +55,8 @@ namespace AngeliA.Framework {
 			get => _SoundVolume.Value;
 			set => _SoundVolume.Value = value;
 		}
-		public static float ScaledMusicVolume => AngeUtil.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
-		public static float ScaledSoundVolume => AngeUtil.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
+		public static float ScaledMusicVolume => Util.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
+		public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 		public static int ProcedureAudioVolume { get; set; } = 1000;
 		public static float CurrentFPS { get; private set; } = 1f;
 		public static int GameMajorVersion { get; private set; } = -1;
@@ -87,8 +87,8 @@ namespace AngeliA.Framework {
 		private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
 		private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500);
 		private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 1000);
-		private static readonly SavingInt _LastUsedScreenWindowWidth = new("Game.LastUsedScreenWindowWidth", 1024);
-		private static readonly SavingInt _LastUsedScreenWindowHeight = new("Game.LastUsedScreenWindowHeight", 1024);
+		private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9);
+		private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024);
 		private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 
 
@@ -129,8 +129,8 @@ namespace AngeliA.Framework {
 				Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
 				Util.LinkEventWithAttribute<OnGameFocusedAttribute>(typeof(Game), nameof(OnGameFocused));
 				Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
-				AngeUtil.OnLogException += _LogException;
-				AngeUtil.OnLogWarning += _LogWarning;
+				Util.OnLogException += _LogException;
+				Util.OnLogWarning += _LogWarning;
 
 				_AddGameTryingToQuitCallback(OnTryingToQuit);
 				_AddGameQuittingCallback(OnQuitting);
@@ -140,7 +140,7 @@ namespace AngeliA.Framework {
 				Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
 				_SetFullscreen(_IsFullscreen.Value);
-				_SetWindowSize(_LastUsedScreenWindowWidth.Value, _LastUsedScreenWindowHeight.Value);
+				_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
 				_SetMusicVolume(MusicVolume);
 				_SetSoundVolume(SoundVolume);
 
@@ -165,8 +165,8 @@ namespace AngeliA.Framework {
 				return false;
 			}
 			static void OnQuitting () {
-				_LastUsedScreenWindowWidth.Value = ScreenWidth;
-				_LastUsedScreenWindowHeight.Value = ScreenHeight;
+				_LastUsedWindowWidth.Value = ScreenWidth;
+				_LastUsedWindowHeight.Value = ScreenHeight;
 				OnGameQuitting?.Invoke();
 			}
 			static void OnFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();

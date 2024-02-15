@@ -106,8 +106,8 @@ public partial class GameForRaylib {
 	private FontData[] Fonts;
 	private int GLRectCount = 0;
 	private int GLTextureCount = 0;
-	private FRect CameraScreenRect = new(0, 0, 1f, 1f);
-	private IRect ScreenRect;
+	private FRect CameraRange = new(0, 0, 1f, 1f);
+	private IRect ScreenRenderRect;
 	private Shader LerpShader;
 	private Shader ColorShader;
 	private Shader TextShader;
@@ -206,10 +206,10 @@ public partial class GameForRaylib {
 		int cameraR = cameraRect.xMax;
 		int cameraD = cameraRect.y;
 		int cameraU = cameraRect.yMax;
-		int screenL = ScreenRect.x;
-		int screenR = ScreenRect.xMax;
-		int screenD = ScreenRect.y;
-		int screenU = ScreenRect.yMax;
+		int screenL = ScreenRenderRect.x;
+		int screenR = ScreenRenderRect.xMax;
+		int screenD = ScreenRenderRect.y;
+		int screenU = ScreenRenderRect.yMax;
 
 		// Texture
 		for (int i = 0; i < GLTextureCount; i++) {
@@ -227,8 +227,8 @@ public partial class GameForRaylib {
 				).Shrink(0.1f), new Rectangle(
 					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
 					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
-					rect.width * ScreenRect.width / cameraRect.width,
-					rect.height * ScreenRect.height / cameraRect.height
+					rect.width * ScreenRenderRect.width / cameraRect.width,
+					rect.height * ScreenRenderRect.height / cameraRect.height
 				).Expand(0.5f), new(0, 0), 0, Color.White
 			);
 		}
@@ -241,8 +241,8 @@ public partial class GameForRaylib {
 			Raylib.DrawRectangle(
 				Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, rect.x),
 				Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, rect.yMax),
-				rect.width * ScreenRect.width / cameraRect.width,
-				rect.height * ScreenRect.height / cameraRect.height,
+				rect.width * ScreenRenderRect.width / cameraRect.width,
+				rect.height * ScreenRenderRect.height / cameraRect.height,
 				glRect.Color
 			);
 		}
@@ -254,10 +254,8 @@ public partial class GameForRaylib {
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			if (ScreenEffectEnables[i]) {
 				hasScreenEffectEnabled = true;
-				int screenW = Raylib.GetScreenWidth();
-				int screenH = Raylib.GetScreenHeight();
-				if (RenderTexture.Texture.Width != screenW || RenderTexture.Texture.Height != screenH) {
-					RenderTexture = Raylib.LoadRenderTexture(screenW, screenH);
+				if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
+					RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 					Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
 				}
 				break;
@@ -328,11 +326,13 @@ public partial class GameForRaylib {
 	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) { }
 
 	protected override void _OnCameraUpdate () {
-		ScreenRect = CameraScreenRect.x.AlmostZero() ?
+		ScreenRenderRect = CameraRange.x.AlmostZero() ?
 			new IRect(0, 0, ScreenWidth, ScreenHeight) :
 			new IRect(
-				Util.LerpUnclamped(0, ScreenWidth, CameraScreenRect.x).RoundToInt(), 0,
-				(ScreenWidth * CameraScreenRect.width).RoundToInt(), ScreenHeight
+				Util.LerpUnclamped(0, ScreenWidth, CameraRange.x).RoundToInt(),
+				0,
+				(ScreenWidth * CameraRange.width).RoundToInt(),
+				ScreenHeight
 			);
 	}
 
@@ -351,10 +351,10 @@ public partial class GameForRaylib {
 		int cameraR = cameraRect.xMax;
 		int cameraD = cameraRect.y;
 		int cameraU = cameraRect.yMax;
-		int screenL = ScreenRect.x;
-		int screenR = ScreenRect.xMax;
-		int screenD = ScreenRect.y;
-		int screenU = ScreenRect.yMax;
+		int screenL = ScreenRenderRect.x;
+		int screenR = ScreenRenderRect.xMax;
+		int screenD = ScreenRenderRect.y;
+		int screenU = ScreenRenderRect.yMax;
 
 		bool usingShader = false;
 		bool usingBlend = false;
@@ -405,7 +405,7 @@ public partial class GameForRaylib {
 					sourceD = 0f;
 					sourceU = sprite.PixelHeight;
 				} else {
-					AngeUtil.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
+					Util.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
 					sourceL = bl.x * sprite.PixelWidth;
 					sourceR = tr.x * sprite.PixelWidth;
 					sourceD = sprite.PixelHeight - tr.y * sprite.PixelHeight;
@@ -422,8 +422,8 @@ public partial class GameForRaylib {
 				var dest = new Rectangle(
 					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
 					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
-					cell.Width.Abs() * ScreenRect.width / (float)cameraRect.width,
-					cell.Height.Abs() * ScreenRect.height / (float)cameraRect.height
+					cell.Width.Abs() * ScreenRenderRect.width / (float)cameraRect.width,
+					cell.Height.Abs() * ScreenRenderRect.height / (float)cameraRect.height
 				);
 
 				float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
@@ -459,10 +459,10 @@ public partial class GameForRaylib {
 		int cameraR = cameraRect.xMax;
 		int cameraD = cameraRect.y;
 		int cameraU = cameraRect.yMax;
-		int screenL = ScreenRect.x;
-		int screenR = ScreenRect.xMax;
-		int screenD = ScreenRect.y;
-		int screenU = ScreenRect.yMax;
+		int screenL = ScreenRenderRect.x;
+		int screenR = ScreenRenderRect.xMax;
+		int screenD = ScreenRenderRect.y;
+		int screenU = ScreenRenderRect.yMax;
 
 		bool usingShader = false;
 
@@ -480,7 +480,7 @@ public partial class GameForRaylib {
 				if (sprite == null || cell.Width == 0 || cell.Height == 0) continue;
 
 				var fontData = Fonts[layerIndex];
-				if (!fontData.TryGetTexture((char)sprite.GlobalID, out var texture)) continue;
+				if (!fontData.TryGetTexture(sprite.Char, out var texture)) continue;
 
 				// Source
 				var source = new Rectangle(0, 0, texture.Width, texture.Height);
@@ -489,8 +489,8 @@ public partial class GameForRaylib {
 				var dest = new Rectangle(
 					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
 					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
-					cell.Width * ScreenRect.width / (float)cameraRect.width,
-					cell.Height * ScreenRect.height / (float)cameraRect.height
+					cell.Width * ScreenRenderRect.width / (float)cameraRect.width,
+					cell.Height * ScreenRenderRect.height / (float)cameraRect.height
 				);
 
 				float pivotX = 0f;
@@ -584,7 +584,7 @@ public partial class GameForRaylib {
 		skipCell = true;
 	}
 
-	protected override void _SetSkyboxTint (Byte4 top, Byte4 bottom) { }
+	protected override void _SetSkyboxTint (Color32 top, Color32 bottom) { }
 
 
 	// Effect
@@ -610,7 +610,7 @@ public partial class GameForRaylib {
 		);
 	}
 
-	protected override void _Effect_SetTintParams (Byte4 color) {
+	protected override void _Effect_SetTintParams (Color32 color) {
 		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_TINT];
 		Raylib.SetShaderValue<Vector4>(
 			shader,
@@ -631,7 +631,7 @@ public partial class GameForRaylib {
 
 
 	// Texture
-	protected override object _GetTextureFromPixels (Byte4[] pixels, int width, int height) {
+	protected override object _GetTextureFromPixels (Color32[] pixels, int width, int height) {
 		int len = width * height;
 		if (len == 0) return EMPTY_TEXTURE;
 		unsafe {
@@ -668,13 +668,13 @@ public partial class GameForRaylib {
 		}
 	}
 
-	protected override Byte4[] _GetPixelsFromTexture (object texture) {
-		if (texture is not Texture2D rTexture) return System.Array.Empty<Byte4>();
+	protected override Color32[] _GetPixelsFromTexture (object texture) {
+		if (texture is not Texture2D rTexture) return System.Array.Empty<Color32>();
 		var image = Raylib.LoadImageFromTexture(rTexture);
 		unsafe {
 			int width = image.Width;
 			int height = image.Height;
-			var result = new Byte4[width * height];
+			var result = new Color32[width * height];
 			var colors = Raylib.LoadImageColors(image);
 			int index = 0;
 			for (int y = 0; y < height; y++) {
@@ -689,7 +689,7 @@ public partial class GameForRaylib {
 		}
 	}
 
-	protected override void _FillPixelsIntoTexture (Byte4[] pixels, object texture) {
+	protected override void _FillPixelsIntoTexture (Color32[] pixels, object texture) {
 		if (pixels == null || texture is not Texture2D rTexture) return;
 		int width = rTexture.Width;
 		int height = rTexture.Height;
@@ -742,7 +742,7 @@ public partial class GameForRaylib {
 
 
 	// GL Gizmos
-	protected override void _DrawGizmosRect (IRect rect, Byte4 color) {
+	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
 		if (GLRectCount >= GLRects.Length) return;
 		var glRect = GLRects[GLRectCount];
 		glRect.Rect = rect;
@@ -770,17 +770,14 @@ public partial class GameForRaylib {
 
 	protected override int _GetFontSize (int index) => Fonts[index].Size;
 
-	protected override CharSprite _FillCharSprite (int layerIndex, char c, int textSize, CharSprite charSprite, out bool filled) {
+	protected override CharSprite _GetCharSprite (int layerIndex, char c, int textSize) {
 
 		var fontData = Fonts[layerIndex];
-		if (!fontData.TryGetCharData(c, out var info, out var texture)) {
-			filled = false;
-			return charSprite;
-		}
+		if (!fontData.TryGetCharData(c, out var info, out var texture)) return null;
 
 		float fontSize = fontData.Size / fontData.Scale;
-		charSprite ??= new();
-		charSprite.GlobalID = c;
+		var charSprite = new CharSprite();
+		charSprite.Char = c;
 		charSprite.Advance = info.AdvanceX / fontSize;
 		charSprite.Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
 			xmin: info.OffsetX / fontSize,
@@ -788,15 +785,9 @@ public partial class GameForRaylib {
 			xmax: (info.OffsetX + info.Image.Width) / fontSize,
 			ymax: (fontSize - info.OffsetY) / fontSize
 		);
-		charSprite.Rebuild = 0;
 
-		filled = true;
 		return charSprite;
 	}
-
-	protected override void _RequestStringForFont (int layerIndex, int textSize, char[] content) { }
-
-	protected override void _RequestStringForFont (int layerIndex, int textSize, string content) { }
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();
 
@@ -808,7 +799,7 @@ public partial class GameForRaylib {
 
 
 	// UTL
-	private static void WritePixelsToConsole (Byte4[] pixels, int width) {
+	private static void WritePixelsToConsole (Color32[] pixels, int width) {
 
 		int height = pixels.Length / width;
 

@@ -46,7 +46,7 @@ public partial class GameForRaylib {
 	// Cursor
 	protected override void _ShowCursor () {
 		if (!Raylib.IsCursorHidden()) return;
-		Raylib.SetMousePosition(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2);
+		Raylib.SetMousePosition(ScreenWidth / 2, ScreenHeight / 2);
 		Raylib.ShowCursor();
 		Raylib.EnableCursor();
 	}

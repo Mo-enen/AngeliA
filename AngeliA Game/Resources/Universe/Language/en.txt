@@ -773,6 +773,7 @@ iDes.ToiletPaper:
 iDes.Tomato:
 iDes.TomatoCut:
 iDes.Tombstone:
+iDes.Toolbox:
 iDes.Tooth:
 iDes.TopHat:
 iDes.TopHatBroken:
@@ -1546,6 +1547,7 @@ iName.ToiletPaper:
 iName.Tomato:
 iName.TomatoCut:
 iName.Tombstone:
+iName.Toolbox:
 iName.Tooth:
 iName.TopHat:
 iName.TopHatBroken:
@@ -1640,6 +1642,7 @@ Menu.SheetEditor.DeleteUnitMSG:Delete unit?
 Menu.SheetEditor.NewAtlasName:New Atlas
 Menu.SheetEditor.NewSpriteName:New Sprite
 Menu.Sokoban.AllCleared:Congratulations!! All levels has been cleared!
+Menu.WindowEditor.Quit:Quit Editing
 MiniGameGomoku:Gomoku
 MiniGamePong:Pong
 MiniGameSokoban:Sokoban
