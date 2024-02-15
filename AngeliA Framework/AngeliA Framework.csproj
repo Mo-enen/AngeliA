@@ -3,7 +3,7 @@
   <PropertyGroup>
 		<OutputType>Library</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>AngeliaFramework</RootNamespace>
+    <RootNamespace>AngeliA</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>

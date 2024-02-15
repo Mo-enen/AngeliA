@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -33,6 +34,21 @@ public partial class GameForRaylib : Game {
 
 
 	// MSG
+	public GameForRaylib () {
+#if DEBUG
+		string path = Util.GetParentPath(Environment.CurrentDirectory);
+		for (int safe = 0; safe < 12; safe++) {
+			foreach (var filePath in Util.EnumerateFiles(path, true, "*.csproj")) {
+				Environment.CurrentDirectory = path;
+				return;
+			}
+			path = Util.GetParentPath(path);
+			if (string.IsNullOrEmpty(path)) break;
+		}
+#endif
+	}
+
+
 	public static void Run () {
 		var game = new GameForRaylib();
 		game.InitializeGame();

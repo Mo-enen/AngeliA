@@ -166,21 +166,19 @@ public partial class GameForRaylib {
 	}
 
 	private void InitializeShader () {
-		string shaderRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Shaders");
+
 		// Shaders
-		string lerpShaderPath = Util.CombinePaths(shaderRoot, "Lerp.fs");
-		if (Util.FileExists(lerpShaderPath)) LerpShader = Raylib.LoadShader(null, lerpShaderPath);
-		string colorShaderPath = Util.CombinePaths(shaderRoot, "Color.fs");
-		if (Util.FileExists(colorShaderPath)) ColorShader = Raylib.LoadShader(null, colorShaderPath);
-		string textShaderPath = Util.CombinePaths(shaderRoot, "Text.fs");
-		if (Util.FileExists(textShaderPath)) TextShader = Raylib.LoadShader(null, textShaderPath);
+		LerpShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.LERP_FS);
+		ColorShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.COLOR_FS);
+		TextShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.TEXT_FS);
+
 		// Effects
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
-			string path = Util.CombinePaths(shaderRoot, $"{Const.SCREEN_EFFECT_NAMES[i]}.fs");
-			if (Util.FileExists(path)) {
-				ScreenEffectShaders[i] = Raylib.LoadShader(null, path);
-			}
+			ScreenEffectShaders[i] = Raylib.LoadShaderFromMemory(
+				BuiltInShader.BASIC_VS, BuiltInShader.EFFECTS[i]
+			);
 		}
+
 		// Shader Index
 		ShaderPropIndex_DarkenAmount = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_DARKEN], "Amount");
 		ShaderPropIndex_LightenAmount = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_LIGHTEN], "Amount");

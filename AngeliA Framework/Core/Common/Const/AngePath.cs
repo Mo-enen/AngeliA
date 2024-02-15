@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-namespace AngeliA; 
+namespace AngeliA;
+
 public static class AngePath {
 
 	public const string COMBINATION_FILE_NAME = "Item Combination.txt";

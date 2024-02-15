@@ -23,6 +23,7 @@
 		<ErrorReport>none</ErrorReport>
 	</PropertyGroup>
 
+	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputType>Exe</OutputType>
 		<Optimize>True</Optimize>
@@ -30,6 +31,7 @@
 		<Deterministic>True</Deterministic>
 	</PropertyGroup>
 
+	<!--Release Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<OutputType>WinExe</OutputType>
 		<Optimize>True</Optimize>
@@ -37,6 +39,7 @@
 		<Deterministic>True</Deterministic>
 	</PropertyGroup>
 
+	<!--Remove-->
 	<ItemGroup>
 		<Compile Remove="Properties\**" />
 		<Compile Remove="Resources\**" />
@@ -47,22 +50,17 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
+	<!--Ref-->
 	<ItemGroup>
 		<ProjectReference Include="..\AngeliA for Raylib\AngeliA for Raylib.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		
-		<ContentWithTargetPath Include="%(RecursiveDir)\%(Filename)%(Extension)\Universe\**">
+	<!--Sync Resource Folder for Release-->
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<ContentWithTargetPath Include="Universe\**">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>Resources\Universe</TargetPath>
+			<TargetPath>Universe\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
 		</ContentWithTargetPath>
-		
-		<ContentWithTargetPath Include="Resources\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
-		</ContentWithTargetPath>
-
 	</ItemGroup>
 
 </Project>
