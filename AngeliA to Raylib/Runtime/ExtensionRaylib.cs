@@ -4,7 +4,7 @@ using AngeliA;
 using Raylib_cs;
 
 
-namespace AngeliaForRaylib;
+namespace AngeliaToRaylib;
 
 
 public static class ExtensionRaylib {

@@ -35,7 +35,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<OutputType>WinExe</OutputType>
 		<Optimize>True</Optimize>
-		<DebugType>portable</DebugType>
+		<DebugType>none</DebugType>
 		<Deterministic>True</Deterministic>
 	</PropertyGroup>
 
@@ -50,10 +50,15 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
-	<!--Ref-->
-	<ItemGroup>
-		<ProjectReference Include="..\AngeliA for Raylib\AngeliA for Raylib.csproj" />
+	<!--Remove in Release-->
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<Compile Remove="Editor\**" />
+		<EmbeddedResource Remove="Editor\**" />
+		<None Remove="Editor\**" />
 	</ItemGroup>
+
+
+	<!--Ref-->
 
 	<!--Sync Resource Folder for Release-->
 	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -61,6 +66,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>Universe\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
 		</ContentWithTargetPath>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
 	</ItemGroup>
 
 </Project>

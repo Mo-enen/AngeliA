@@ -303,7 +303,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		PatternPickerScrollRow = 0;
 		CurrentSubMenu = null;
 		BackButtonHotkeyLabel = $"({Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(Gamekey.Jump))})";
-		//BackButtonHotkeyPadCode = FrameworkUtil.GAMEPAD_JUMP_HINT_CODE;
 	}
 
 

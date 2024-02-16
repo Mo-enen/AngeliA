@@ -1,5 +1,5 @@
 ﻿using AngeliA;
-namespace AngeliaForRaylib;
+namespace AngeliaToRaylib;
 public class BuiltInShader {
 
 	public const string BASIC_VS = @"

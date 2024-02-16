@@ -6,9 +6,9 @@ using AngeliA;
 using AngeliA.Framework;
 using Raylib_cs;
 
-namespace AngeliaForRaylib;
+namespace AngeliaToRaylib;
 
-public partial class GameForRaylib {
+public partial class RaylibGame {
 
 
 	// SUB

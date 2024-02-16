@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+		<OutputType>Library</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>AngeliaForRaylib</RootNamespace>
+    <RootNamespace>AngeliA</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <StartupObject></StartupObject>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -16,16 +13,18 @@
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
-		<AssemblyName>AngeliA For Raylib</AssemblyName>
+		<AssemblyName>AngeliA Core</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>portable</DebugType>
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
     <Optimize>True</Optimize>
   </PropertyGroup>
 
@@ -36,13 +35,16 @@
     <None Remove="desktop.ini" />
   </ItemGroup>
 
+	<!--Remove in Release-->
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<Compile Remove="Editor\**" />
+		<EmbeddedResource Remove="Editor\**" />
+		<None Remove="Editor\**" />
+	</ItemGroup>
+	
   <ItemGroup>
-    <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Raylib-cs">
-      <HintPath>Runtime\Raylib-cs.dll</HintPath>
+    <Reference Include="zlib.net">
+      <HintPath>Core\ThirdParty\Aseprite\zlib.net.dll</HintPath>
     </Reference>
   </ItemGroup>
 

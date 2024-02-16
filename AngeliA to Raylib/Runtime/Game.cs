@@ -10,9 +10,9 @@ using Raylib_cs;
 
 [assembly: AngeliA]
 
-namespace AngeliaForRaylib;
+namespace AngeliaToRaylib;
 
-public partial class GameForRaylib : Game {
+public partial class RaylibGame : Game {
 
 
 	// Const
@@ -34,7 +34,7 @@ public partial class GameForRaylib : Game {
 
 
 	// MSG
-	public GameForRaylib () {
+	public RaylibGame () {
 #if DEBUG
 		string path = Util.GetParentPath(Environment.CurrentDirectory);
 		for (int safe = 0; safe < 12; safe++) {
@@ -50,7 +50,7 @@ public partial class GameForRaylib : Game {
 
 
 	public static void Run () {
-		var game = new GameForRaylib();
+		var game = new RaylibGame();
 		game.InitializeGame();
 		while (!game.RequireQuitGame) {
 			try {

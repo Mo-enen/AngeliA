@@ -1,9 +1,9 @@
 ﻿using AngeliA;
-using AngeliaForRaylib;
+using AngeliaToRaylib;
 
 [assembly: AngeliA]
 [assembly: AngeliaGameTitle("AngeliA")]
 [assembly: AngeliaGameDeveloper("Moenen")]
 [assembly: AngeliaVersion(0, 0, 1, ReleaseLifeCycle.Alpha)]
 
-GameForRaylib.Run();
+RaylibGame.Run();

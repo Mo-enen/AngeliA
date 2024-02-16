@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Linq;
 
-
 namespace AngeliA; 
 
 
