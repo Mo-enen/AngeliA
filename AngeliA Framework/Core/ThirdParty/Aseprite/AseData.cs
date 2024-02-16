@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+namespace AngeliA;
 
-namespace AngeliA; 
 public class AseData {
 
 
@@ -393,6 +393,7 @@ public class AseData {
 
 
 	#endregion
+
 
 
 	#region --- SUB ---

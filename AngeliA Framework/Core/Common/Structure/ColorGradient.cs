@@ -1,5 +1,6 @@
-namespace AngeliA; 
-    [System.Serializable]
+namespace AngeliA;
+
+[System.Serializable]
 public class ColorGradient {
 	[System.Serializable]
 	public struct Data {

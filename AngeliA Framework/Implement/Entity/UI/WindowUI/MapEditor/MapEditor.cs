@@ -49,6 +49,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 
+	[System.Serializable]
 	private class PinnedList {
 		public int Icon = 0;
 		public List<int> Items = new();
@@ -56,6 +57,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 
+	[System.Serializable]
 	private class MapEditorMeta : IJsonSerializationCallback {
 		public List<PinnedList> PinnedLists = new();
 		void IJsonSerializationCallback.OnBeforeSaveToDisk () {

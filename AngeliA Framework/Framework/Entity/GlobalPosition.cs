@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
+namespace AngeliA.Framework;
 
-namespace AngeliA.Framework; 
 public interface IGlobalPosition {
 
 
@@ -12,14 +11,16 @@ public interface IGlobalPosition {
 	#region --- SUB ---
 
 
+	[System.Serializable]
 	public class Position {
-		[JsonProperty("i")] public int ID;
-		[JsonProperty("x")] public int UnitPositionX;
-		[JsonProperty("y")] public int UnitPositionY;
-		[JsonProperty("z")] public int UnitPositionZ;
+		public int ID;
+		public int UnitPositionX;
+		public int UnitPositionY;
+		public int UnitPositionZ;
 	}
 
 
+	[System.Serializable]
 	public class GlobalPositionMeta {
 		public List<Position> Positions = new();
 	}
@@ -36,7 +37,7 @@ public interface IGlobalPosition {
 	// Data
 	private static readonly EchoDictionary<int, Int3> IdPosEcho = new();
 	private static readonly HashSet<int> AllGlobalPositionID = new();
-	private static readonly GlobalPositionMeta Meta = new();
+	private static GlobalPositionMeta Meta = new();
 	private static string LoadedMapRoot = string.Empty;
 	private static bool IsDirty = false;
 
@@ -108,8 +109,7 @@ public interface IGlobalPosition {
 		LoadedMapRoot = rootFolder;
 		IsDirty = false;
 		// File >> Meta
-		Meta.Positions.Clear();
-		JsonUtil.OverrideJson(rootFolder, Meta);
+		Meta = JsonUtil.LoadOrCreateJson<GlobalPositionMeta>(rootFolder);
 		// Meta >> Pool
 		IdPosEcho.Clear();
 		foreach (var pos in Meta.Positions) {

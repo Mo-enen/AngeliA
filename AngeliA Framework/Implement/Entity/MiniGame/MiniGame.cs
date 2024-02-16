@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public class MiniGameTask : TaskItem {
@@ -33,35 +32,23 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	#region --- SUB ---
 
 
-	[JsonObject(MemberSerialization.OptIn)]
-	protected class BadgesSaveData : IJsonSerializationCallback {
-
-		[JsonProperty] public int[] Badges;
-		private readonly int BadgesCount;
-
-		public BadgesSaveData (int badgeCount) {
-			BadgesCount = badgeCount;
-			Valid();
-		}
-
+	[System.Serializable]
+	protected class BadgesSaveData {
+		public int[] Badges;
 		public int GetBadge (int index) => Badges != null && index >= 0 && index < Badges.Length ? Badges[index] : 0;
 		public void SetBadge (int index, int quality) {
 			if (Badges != null && index >= 0 && index < Badges.Length) {
 				Badges[index] = quality;
 			}
 		}
-
-		void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Valid();
-		void IJsonSerializationCallback.OnBeforeSaveToDisk () => Valid();
-		private void Valid () {
-			Badges ??= new int[BadgesCount].FillWithValue(0);
-			if (Badges.Length != BadgesCount) {
+		public void FixBadgeCount (int targetCount) {
+			Badges ??= new int[targetCount].FillWithValue(0);
+			if (Badges.Length != targetCount) {
 				var oldArr = Badges;
-				Badges = new int[BadgesCount].FillWithValue(0);
-				oldArr.CopyTo(Badges, Util.Min(BadgesCount, oldArr.Length));
+				Badges = new int[targetCount].FillWithValue(0);
+				oldArr.CopyTo(Badges, Util.Min(targetCount, oldArr.Length));
 			}
 		}
-
 	}
 
 
@@ -198,13 +185,16 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
 	// Saving
-	protected bool LoadGameDataFromFile<T> (T data) => JsonUtil.OverrideJson(
-		Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"), data, GetType().Name
+	protected T LoadGameDataFromFile<T> () where T : new() => JsonUtil.LoadOrCreateJson<T>(
+		rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
+		name: GetType().Name
 	);
 
 
 	protected void SaveGameDataToFile<T> (T data) => JsonUtil.SaveJson(
-		data, Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"), GetType().Name
+		data,
+		rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
+		name: GetType().Name
 	);
 
 

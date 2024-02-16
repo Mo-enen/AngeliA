@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AngeliA; 
+namespace AngeliA;
 public class Universe {
 
 	// SUB
+	[System.Serializable]
 	public class UniverseInfo {
 		public string UniverseName = "(no name)";
 		public string Creator = "";

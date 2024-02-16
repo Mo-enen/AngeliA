@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-
+using System.Text.Json.Serialization;
 
 namespace AngeliA.Framework;
+
 public static class Inventory {
 
 
@@ -12,14 +12,14 @@ public static class Inventory {
 	#region --- SUB ---
 
 
-
-	[JsonObject(MemberSerialization.OptIn)]
+	[System.Serializable]
 	private class InventoryData : IJsonSerializationCallback {
-		[JsonProperty] public int[] Items;
-		[JsonProperty] public int[] Counts;
-		public string Name;
-		public bool UnlockItemInside;
-		public bool IsDirty;
+
+		public int[] Items;
+		public int[] Counts;
+		[JsonIgnore] public string Name;
+		[JsonIgnore] public bool UnlockItemInside;
+		[JsonIgnore] public bool IsDirty;
 
 		public void Valid () {
 			Items ??= new int[0];
@@ -38,15 +38,14 @@ public static class Inventory {
 	}
 
 
-
-	[JsonObject(MemberSerialization.OptIn)]
+	[System.Serializable]
 	private class CharacterInventoryData : InventoryData {
-		[JsonProperty] public int Helmet = 0;
-		[JsonProperty] public int BodySuit = 0;
-		[JsonProperty] public int Shoes = 0;
-		[JsonProperty] public int Weapon = 0;
-		[JsonProperty] public int Gloves = 0;
-		[JsonProperty] public int Jewelry = 0;
+		public int Helmet = 0;
+		public int BodySuit = 0;
+		public int Shoes = 0;
+		public int Weapon = 0;
+		public int Gloves = 0;
+		public int Jewelry = 0;
 	}
 
 

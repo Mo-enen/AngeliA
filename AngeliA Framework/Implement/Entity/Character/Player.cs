@@ -22,6 +22,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	#region --- SUB ---
 
 
+	[System.Serializable]
 	private class PlayerGameData {
 		public int HomeUnitPositionX = int.MinValue;
 		public int HomeUnitPositionY = int.MinValue;

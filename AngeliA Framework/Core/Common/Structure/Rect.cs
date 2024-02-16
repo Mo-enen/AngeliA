@@ -1,8 +1,9 @@
 using System;
 using System.Globalization;
 
+namespace AngeliA;
 
-namespace AngeliA; 
+[System.Serializable]
 public struct FRect : IEquatable<FRect>, IFormattable {
 
 	private float m_XMin;

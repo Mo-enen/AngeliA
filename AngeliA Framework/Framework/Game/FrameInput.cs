@@ -23,6 +23,7 @@ public static class FrameInput {
 	}
 
 
+	[System.Serializable]
 	private class InputConfig : IJsonSerializationCallback {
 
 		public int[] KeyboardConfig = {

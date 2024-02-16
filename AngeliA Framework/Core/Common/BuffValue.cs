@@ -10,7 +10,7 @@ public class BuffInt {
 	public int FinalValue => Override ?? BaseValue;
 	public int BaseValue = 0;
 
-	[System.NonSerialized] public int? Override = null;
+	public int? Override = null;
 
 	public BuffInt (int value = 0) {
 		BaseValue = value;
@@ -26,7 +26,7 @@ public class BuffBool {
 	public bool FinalValue => Override ?? BaseValue;
 	public bool BaseValue = true;
 
-	[System.NonSerialized] public bool? Override = null;
+	public bool? Override = null;
 
 	public BuffBool (bool value = true) {
 		BaseValue = value;
@@ -42,7 +42,7 @@ public class BuffString {
 	public string FinalValue => Override != null ? BaseValue : Override;
 	public string BaseValue = "";
 
-	[System.NonSerialized] public string Override = null;
+	public string Override = null;
 
 	public BuffString (string value = "") {
 		BaseValue = value;

@@ -5,7 +5,7 @@ using AngeliA.Framework;
 
 
 
-namespace AngeliaGame; 
+namespace AngeliaGame;
 public class MiniGamePong : MiniGame {
 
 
@@ -38,7 +38,7 @@ public class MiniGamePong : MiniGame {
 	// Data
 	private readonly IntToChars PlayerScoreString = new();
 	private readonly IntToChars BotScoreString = new();
-	private readonly BadgesSaveData Saving = new(2);
+	private BadgesSaveData Saving;
 	private int ScorePlayer = 0;
 	private int ScoreBot = 0;
 	private int PlayerPaddleY = 500;
@@ -60,7 +60,8 @@ public class MiniGamePong : MiniGame {
 
 
 	protected override void StartMiniGame () {
-		LoadGameDataFromFile(Saving);
+		Saving = LoadGameDataFromFile<BadgesSaveData>();
+		Saving.FixBadgeCount(2);
 		ScorePlayer = 0;
 		ScoreBot = 0;
 		PlayerPaddleY = 500;
