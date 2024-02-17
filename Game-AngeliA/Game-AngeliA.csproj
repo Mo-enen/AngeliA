@@ -57,9 +57,6 @@
 		<None Remove="Editor\**" />
 	</ItemGroup>
 
-
-	<!--Ref-->
-
 	<!--Sync Resource Folder for Release-->
 	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<ContentWithTargetPath Include="Universe\**">
@@ -67,6 +64,8 @@
 			<TargetPath>Universe\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
 		</ContentWithTargetPath>
 	</ItemGroup>
+
+	<!--Ref-->
 	<ItemGroup>
 	  <ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
 	</ItemGroup>
