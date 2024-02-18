@@ -900,7 +900,7 @@ public class AseData {
 		public byte[] GetRawBytes (ushort colorDepth) {
 			byte[] bytes = new byte[0];
 			if (Type == (ushort)CelType.CompressedImage) {
-				bytes = DeCompressZLib(RawData);
+				bytes = Util.DecompressBytes(RawData);
 			} else if (Type == (ushort)CelType.Raw) {
 				if (Pixels != null && Pixels.Length > 0) {
 					colorDepth /= 8;
@@ -914,39 +914,6 @@ public class AseData {
 				}
 			}
 			return bytes;
-		}
-
-
-		// Zlib
-		private static byte[] DeCompressZLib (byte[] sourceByte) {
-			byte[] outputBytes = new byte[0];
-			try {
-				using var inputStream = new MemoryStream(sourceByte);
-				using var outputStream = DeCompressStream(inputStream);
-				outputBytes = new byte[outputStream.Length];
-				outputStream.Position = 0;
-				outputStream.Read(outputBytes, 0, outputBytes.Length);
-			} catch { }
-			return outputBytes;
-		}
-
-
-		private static void CopyStream (Stream input, Stream output) {
-			byte[] buffer = new byte[2000];
-			int len;
-			while ((len = input.Read(buffer, 0, 2000)) > 0) {
-				output.Write(buffer, 0, len);
-			}
-			output.Flush();
-		}
-
-
-		private static Stream DeCompressStream (Stream sourceStream) {
-			MemoryStream outStream = new();
-			var outZStream = new zlib.ZOutputStream(outStream);
-			CopyStream(sourceStream, outZStream);
-			outZStream.finish();
-			return outStream;
 		}
 
 	}
@@ -1351,6 +1318,7 @@ public class AseData {
 
 
 	#endregion
+
 
 
 }

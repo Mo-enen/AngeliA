@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
 		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>AngeliaGame</RootNamespace>
 		<ImplicitUsings>disable</ImplicitUsings>
@@ -25,7 +26,7 @@
 
 	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputType>Exe</OutputType>
+		
 		<Optimize>True</Optimize>
 		<DebugType>portable</DebugType>
 		<Deterministic>True</Deterministic>
@@ -33,7 +34,7 @@
 
 	<!--Release Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutputType>WinExe</OutputType>
+		
 		<Optimize>True</Optimize>
 		<DebugType>none</DebugType>
 		<Deterministic>True</Deterministic>

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 		<OutputType>Library</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
     <RootNamespace>AngeliA</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
@@ -41,12 +41,6 @@
 		<EmbeddedResource Remove="Editor\**" />
 		<None Remove="Editor\**" />
 	</ItemGroup>
-	
-  <ItemGroup>
-    <Reference Include="zlib.net">
-      <HintPath>Core\ThirdParty\Aseprite\zlib.net.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
 	<ItemGroup>
 		<ContentWithTargetPath Include="Resources\**">

@@ -27,7 +27,7 @@ using GeorgeMamaladze;
 )]
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [RequireSpriteFromField]
 public partial class MapEditor {
 
@@ -90,6 +90,7 @@ public partial class MapEditor {
 	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = ("Menu.MEDT.DeleteListMSG", "Delete List ");
 	private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = ("Menu.MEDT.SetAsListCover", "Set as List Cover");
 	private const int TOOL_BAR_HEIGHT = 54;
+	private const int SEARCH_BAR_ID = 3983472;
 
 	// UI
 	private readonly CellContent TooltipLabel = new() { Tint = Color32.WHITE, Alignment = Alignment.TopLeft, CharSize = 24, };
@@ -919,22 +920,21 @@ Color32.GREY_32, PANEL_Z - 6
 		// Bar
 		int ITEM_SIZE = searchPanel.height;
 		int BORDER = Unify(2);
-		const int SEARCH_ID = 3983472;
 		CellRenderer.Draw_9Slice(
 			BuiltInIcon.FRAME_16, searchPanel, BORDER, BORDER, BORDER, BORDER, Color32.GREY_96, PANEL_Z - 5
 		);
 
 		// Search Icon
-		if (CellGUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
+		if (CellGUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
 			CellRenderer.Draw(
 				SEARCH_ICON,
 				searchPanel.Shrink(PADDING, searchPanel.width - ITEM_SIZE - PADDING, 0, 0),
-Color32.GREY_128, PANEL_Z - 4
+				Color32.GREY_128, PANEL_Z - 4
 			);
 		}
 
 		// Search Text
-		SearchingText = CellGUI.TextField(SEARCH_ID, searchPanel, SearchingText, out bool changed, out _);
+		SearchingText = CellGUI.TextField(SEARCH_BAR_ID, searchPanel, SearchingText, out bool changed, out _);
 		if (changed) {
 			PaletteSearchScrollY = 0;
 			SearchResult.Clear();

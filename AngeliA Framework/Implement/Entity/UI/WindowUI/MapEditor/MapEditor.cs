@@ -4,7 +4,7 @@ using System.Text;
 using GeorgeMamaladze;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [RequireLanguageFromField]
 [EntityAttribute.StageOrder(-4096)]
 public sealed partial class MapEditor : WindowUI {
@@ -646,6 +646,11 @@ public sealed partial class MapEditor : WindowUI {
 						KeyboardKey.Space,
 						HINT_MEDT_SWITCH_PLAY
 					);
+				}
+
+				// Start Search
+				if (FrameInput.KeyboardDown(KeyboardKey.Enter)) {
+					CellGUI.StartTyping(SEARCH_BAR_ID);
 				}
 
 				// Delete

@@ -32,7 +32,7 @@ public class Sheet {
 	public virtual bool LoadFromDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
 
 		Clear();
-		var bytes = Util.CompressedFileToBytes(path, out int length);
+		var bytes = Util.CompressedFileToByte(path, out int length);
 		if (length == 0) return false;
 
 		using var stream = new MemoryStream(bytes);
@@ -61,7 +61,7 @@ public class Sheet {
 		using var writer = new BinaryWriter(stream);
 		writer.Write((int)0); // File Version
 		SaveToBinary_v0(writer, exceptionHandler);
-		Util.BytesToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
+		Util.ByteToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
 	}
 
 	public virtual void Clear () {

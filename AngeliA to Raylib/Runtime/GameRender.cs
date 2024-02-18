@@ -311,10 +311,10 @@ public partial class RaylibGame {
 		var sheet = CellRenderer.Sheet;
 		foreach (var sprite in sheet.Sprites) {
 			if (TexturePool.ContainsKey(sprite.GlobalID)) continue;
-			TexturePool.Add(
-				sprite.GlobalID,
-				(Texture2D)Game.GetTextureFromPixels(sprite.Pixels, sprite.PixelWidth, sprite.PixelHeight)
-			);
+			var texture = (Texture2D)Game.GetTextureFromPixels(sprite.Pixels, sprite.PixelWidth, sprite.PixelHeight);
+			Raylib.SetTextureFilter(texture, TextureFilter.Point);
+			Raylib.SetTextureWrap(texture, TextureWrap.Clamp);
+			TexturePool.Add(sprite.GlobalID, texture);
 		}
 
 	}

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public class CellContent {
@@ -208,6 +208,14 @@ public static class CellGUI {
 
 
 	// Typing
+	public static void StartTyping (int controlID) {
+		TypingTextFieldID = controlID;
+		BeamIndex = 0;
+		BeamLength = 0;
+		BeamBlinkFrame = Game.PauselessFrame;
+	}
+
+
 	public static void CancelTyping () {
 		TypingTextFieldID = 0;
 		TypingTextFieldRect = default;

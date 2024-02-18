@@ -341,22 +341,37 @@ public static partial class Util {
 	}
 
 
-	public static void BytesToCompressedFile (string path, byte[] rawBytes, int length = -1) {
+	public static void ByteToCompressedFile (string path, byte[] rawBytes, int length = -1) {
 		using var fileStream = System.IO.File.Create(path);
-		using var compressor = new DeflateStream(fileStream, CompressionLevel.SmallestSize);
+		using var compressor = new ZLibStream(fileStream, CompressionLevel.SmallestSize);
 		compressor.Write(rawBytes, 0, length < 0 ? rawBytes.Length : length);
 	}
 
 
-	public static byte[] CompressedFileToBytes (string path, out int byteLength) {
+	public static byte[] CompressedFileToByte (string path, out int byteLength) {
 		byteLength = 0;
 		if (!FileExists(path)) return System.Array.Empty<byte>();
 		using var fileStream = System.IO.File.OpenRead(path);
-		using var decompressor = new DeflateStream(fileStream, CompressionMode.Decompress);
+		using var decompressor = new ZLibStream(fileStream, CompressionMode.Decompress);
 		using var output = new MemoryStream();
 		decompressor.CopyTo(output);
 		byteLength = (int)output.Position;
 		return output.GetBuffer();
+	}
+
+
+	public static byte[] DecompressBytes (byte[] compressedBytes) {
+		if (compressedBytes == null || compressedBytes.Length == 0) return System.Array.Empty<byte>();
+		using var memStream = new MemoryStream(compressedBytes);
+		using var decompressor = new ZLibStream(memStream, CompressionMode.Decompress);
+		using var output = new MemoryStream();
+		decompressor.CopyTo(output);
+		int byteLength = (int)output.Position;
+		var buffer = output.GetBuffer();
+		if (byteLength != buffer.Length) {
+			System.Array.Resize(ref buffer, byteLength);
+		}
+		return buffer;
 	}
 
 
