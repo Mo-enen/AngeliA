@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class Sheet {
 
 	// VAR 
@@ -32,9 +32,10 @@ public class Sheet {
 	public virtual bool LoadFromDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
 
 		Clear();
-		if (!Util.FileExists(path)) return false;
+		var bytes = Util.CompressedFileToBytes(path, out int length);
+		if (length == 0) return false;
 
-		using var stream = new FileStream(path, FileMode.Open);
+		using var stream = new MemoryStream(bytes);
 		using var reader = new BinaryReader(stream);
 
 		// File Version
@@ -56,10 +57,11 @@ public class Sheet {
 	}
 
 	public virtual void SaveToDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
-		using var stream = new FileStream(path, FileMode.Create);
+		using var stream = new MemoryStream(1024);
 		using var writer = new BinaryWriter(stream);
 		writer.Write((int)0); // File Version
 		SaveToBinary_v0(writer, exceptionHandler);
+		Util.BytesToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
 	}
 
 	public virtual void Clear () {

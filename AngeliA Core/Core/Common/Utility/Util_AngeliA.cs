@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public static partial class Util {
 
 	// Const
@@ -377,7 +377,7 @@ public static partial class Util {
 
 	public static void LogException (System.Exception ex) => OnLogException?.Invoke(ex);
 
-	public static void LogWarning (string message) => OnLogWarning?.Invoke(message);
+	public static void LogWarning (object message) => OnLogWarning?.Invoke(message.ToString());
 
 	// Random
 	public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);

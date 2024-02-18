@@ -4,9 +4,10 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Linq;
+using System.IO.Compression;
 
+namespace AngeliA;
 
-namespace AngeliA; 
 public static partial class Util {
 
 
@@ -112,12 +113,12 @@ public static partial class Util {
 	}
 
 
-	public static void ByteToFile (byte[] bytes, string path) {
+	public static void ByteToFile (byte[] bytes, string path, int length = -1) {
 		string parentPath = GetParentPath(path);
 		CreateFolder(parentPath);
 		FileStream fs = new(path, FileMode.Create, FileAccess.Write);
 		bytes ??= new byte[0];
-		fs.Write(bytes, 0, bytes.Length);
+		fs.Write(bytes, 0, length < 0 ? bytes.Length : length);
 		fs.Close();
 		fs.Dispose();
 	}
@@ -337,6 +338,25 @@ public static partial class Util {
 	public static void SetFileModifyDate (string path, long fileTime) {
 		if (!FileExists(path)) return;
 		File.SetLastWriteTime(path, System.DateTime.FromFileTime(fileTime));
+	}
+
+
+	public static void BytesToCompressedFile (string path, byte[] rawBytes, int length = -1) {
+		using var fileStream = System.IO.File.Create(path);
+		using var compressor = new DeflateStream(fileStream, CompressionLevel.SmallestSize);
+		compressor.Write(rawBytes, 0, length < 0 ? rawBytes.Length : length);
+	}
+
+
+	public static byte[] CompressedFileToBytes (string path, out int byteLength) {
+		byteLength = 0;
+		if (!FileExists(path)) return System.Array.Empty<byte>();
+		using var fileStream = System.IO.File.OpenRead(path);
+		using var decompressor = new DeflateStream(fileStream, CompressionMode.Decompress);
+		using var output = new MemoryStream();
+		decompressor.CopyTo(output);
+		byteLength = (int)output.Position;
+		return output.GetBuffer();
 	}
 
 
