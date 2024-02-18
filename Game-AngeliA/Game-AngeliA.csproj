@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
 		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>AngeliaGame</RootNamespace>
 		<ImplicitUsings>disable</ImplicitUsings>
@@ -26,7 +25,7 @@
 
 	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		
+		<OutputType>Exe</OutputType>
 		<Optimize>True</Optimize>
 		<DebugType>portable</DebugType>
 		<Deterministic>True</Deterministic>
@@ -34,7 +33,7 @@
 
 	<!--Release Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		
+		<OutputType>WinExe</OutputType>
 		<Optimize>True</Optimize>
 		<DebugType>none</DebugType>
 		<Deterministic>True</Deterministic>
@@ -43,9 +42,7 @@
 	<!--Remove-->
 	<ItemGroup>
 		<Compile Remove="Properties\**" />
-		<Compile Remove="Resources\**" />
 		<EmbeddedResource Remove="Properties\**" />
-		<EmbeddedResource Remove="Resources\**" />
 		<None Remove="Properties\**" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
@@ -56,14 +53,6 @@
 		<Compile Remove="Editor\**" />
 		<EmbeddedResource Remove="Editor\**" />
 		<None Remove="Editor\**" />
-	</ItemGroup>
-
-	<!--Sync Resource Folder for Release-->
-	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<ContentWithTargetPath Include="Universe\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>Universe\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
-		</ContentWithTargetPath>
 	</ItemGroup>
 
 	<!--Ref-->

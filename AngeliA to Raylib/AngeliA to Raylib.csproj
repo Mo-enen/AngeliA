@@ -30,8 +30,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\**" />
-    <EmbeddedResource Remove="Resources\**" />
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
   </ItemGroup>
@@ -53,11 +51,24 @@
     </Reference>
   </ItemGroup>
 
+	<!--Sync Dll-->
 	<ItemGroup>
-		<ContentWithTargetPath Include="Resources\**">
+		<ContentWithTargetPath Include="Runtime\raylib-cs.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+			<TargetPath>raylib-cs.dll</TargetPath>
+		</ContentWithTargetPath>
+		<ContentWithTargetPath Include="Runtime\raylib.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>raylib.dll</TargetPath>
 		</ContentWithTargetPath>
 	</ItemGroup>
 
+	<!--Sync Universe Folder for Release-->
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<ContentWithTargetPath Include="$(SolutionDir)Universe\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>Universe\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
+	
 </Project>

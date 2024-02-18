@@ -29,8 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\**" />
-    <EmbeddedResource Remove="Resources\**" />
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
   </ItemGroup>
@@ -40,13 +38,6 @@
 		<Compile Remove="Editor\**" />
 		<EmbeddedResource Remove="Editor\**" />
 		<None Remove="Editor\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ContentWithTargetPath Include="Resources\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
-		</ContentWithTargetPath>
 	</ItemGroup>
 
 </Project>

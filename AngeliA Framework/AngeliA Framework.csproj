@@ -29,8 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\**" />
-    <EmbeddedResource Remove="Resources\**" />
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
   </ItemGroup>
@@ -42,13 +40,6 @@
 		<None Remove="Editor\**" />
 	</ItemGroup>
 	
-	<ItemGroup>
-		<ContentWithTargetPath Include="Resources\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
-		</ContentWithTargetPath>
-	</ItemGroup>
-
 	<ItemGroup>
 	  <ProjectReference Include="..\AngeliA Core\AngeliA Core.csproj" />
 	</ItemGroup>
