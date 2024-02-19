@@ -89,10 +89,5 @@ public partial class RaylibGame {
 	}
 
 
-	// Camera
-	protected override FRect _GetCameraScreenLocacion () => CameraRange;
-	protected override void _SetCameraScreenLocacion (FRect rect) => CameraRange = rect;
-
-
 }
 

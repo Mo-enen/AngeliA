@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Linq;
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 // Project
@@ -29,7 +29,7 @@ public class AngeliaGameTitleAttribute : System.Attribute {
 public class AngeliaGameDeveloperAttribute : System.Attribute {
 	public string Developer;
 	public AngeliaGameDeveloperAttribute (string developer) => Developer = developer;
-	public static string GetDeveloper () {
+	public static string GetDeveloperName () {
 		foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
 			var att = assembly.GetCustomAttribute<AngeliaGameDeveloperAttribute>();
 			if (att != null) return att.Developer;
@@ -72,6 +72,20 @@ public class AngeliaVersionAttribute : System.Attribute {
 			}
 		}
 		return false;
+	}
+	public static string GetVersionString () {
+		foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
+			var att = assembly.GetCustomAttribute<AngeliaVersionAttribute>();
+			if (att != null) {
+				return $"v{att.MajorVersion}.{att.MinorVersion}.{att.PatchVersion}{att.LifeCycle switch {
+					ReleaseLifeCycle.Alpha => "a",
+					ReleaseLifeCycle.Beta => "b",
+					ReleaseLifeCycle.Final => "f",
+					_ => "",
+				}}";
+			}
+		}
+		return string.Empty;
 	}
 }
 

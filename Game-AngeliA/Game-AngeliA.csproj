@@ -21,6 +21,7 @@
 		<GenerateDependencyFile>False</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
+		<AnalysisLevel>none</AnalysisLevel>
 	</PropertyGroup>
 
 	<!--Debug Only-->

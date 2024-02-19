@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnSquadTransition]
 [EntityAttribute.Capacity(1, 1)]
@@ -193,17 +193,15 @@ public class PauseMenuUI : MenuUI {
 			SetSelection(0);
 		}
 
-		if (Game.AllowMakerFeaures) {
-			// Maker Game
-			if (MapEditor.IsEditing) {
-				// 3-Map Editor Setting
-				if (DrawItem(MENU_MEDT_SETTING)) {
-					RequireMode = MenuMode.EditorSetting;
-					SetSelection(0);
-				}
+		if (MapEditor.IsEditing) {
+			// 3-Map Editor Setting
+			if (DrawItem(MENU_MEDT_SETTING)) {
+				RequireMode = MenuMode.EditorSetting;
+				SetSelection(0);
 			}
-		} else {
-			// Player Game
+		}
+
+		if (!MapEditor.IsEditing) {
 			// 3-Restart Game
 			if (DrawItem(BuiltInText.UI_RESTART)) {
 				RequireMode = MenuMode.Restart;

@@ -28,6 +28,7 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
 
+	<!--Remove-->
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
@@ -39,7 +40,8 @@
 		<EmbeddedResource Remove="Editor\**" />
 		<None Remove="Editor\**" />
 	</ItemGroup>
-	
+
+	<!--Ref-->
 	<ItemGroup>
 	  <ProjectReference Include="..\AngeliA Core\AngeliA Core.csproj" />
 	</ItemGroup>

@@ -29,6 +29,7 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
 
+	<!--Remove-->
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
@@ -41,11 +42,9 @@
 		<None Remove="Editor\**" />
 	</ItemGroup>
 
+	<!--Ref-->
   <ItemGroup>
     <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="raylib-cs">
       <HintPath>Runtime\raylib-cs.dll</HintPath>
     </Reference>
@@ -53,10 +52,6 @@
 
 	<!--Sync Dll-->
 	<ItemGroup>
-		<ContentWithTargetPath Include="Runtime\raylib-cs.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>raylib-cs.dll</TargetPath>
-		</ContentWithTargetPath>
 		<ContentWithTargetPath Include="Runtime\raylib.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>raylib.dll</TargetPath>

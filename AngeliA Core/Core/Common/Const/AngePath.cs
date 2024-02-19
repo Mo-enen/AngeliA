@@ -21,7 +21,7 @@ public static class AngePath {
 
 	public static string PersistentDataPath => _PersistentDataPath ??= Util.CombinePaths(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-		AngeliaGameDeveloperAttribute.GetDeveloper(),
+		AngeliaGameDeveloperAttribute.GetDeveloperName(),
 		AngeliaGameTitleAttribute.GetTitle()
 	);
 	private static string _PersistentDataPath = null;
@@ -29,7 +29,7 @@ public static class AngePath {
 	public static string TempDataPath => _TempDataPath ??= Util.CombinePaths(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 		"Temp",
-		AngeliaGameDeveloperAttribute.GetDeveloper(),
+		AngeliaGameDeveloperAttribute.GetDeveloperName(),
 		AngeliaGameTitleAttribute.GetTitle()
 	);
 	private static string _TempDataPath = null;
