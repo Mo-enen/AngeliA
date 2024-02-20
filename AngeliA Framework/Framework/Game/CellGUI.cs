@@ -2,113 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using AngeliA.Internal;
 
 
 namespace AngeliA.Framework;
-
-
-public class CellContent {
-
-	public static readonly CellContent Empty = new();
-	private static readonly CellContent Temp = new();
-
-	public string Text;
-	public char[] Chars;
-	public bool FromString;
-	public Color32 Tint;
-	public Color32 BackgroundTint;
-	public Alignment Alignment;
-	public int CharSize;
-	public int CharSpace;
-	public int LineSpace;
-	public int ShadowOffset;
-	public bool Wrap;
-	public bool Clip;
-	public int BackgroundPadding;
-	public Color32 Shadow;
-
-	public CellContent (string text = "") {
-		Text = text;
-		Chars = null;
-		FromString = true;
-		Tint = Color32.WHITE;
-		BackgroundTint = Color32.CLEAR;
-		Alignment = Alignment.MidMid;
-		CharSize = 24;
-		CharSpace = 0;
-		LineSpace = 5;
-		Wrap = false;
-		Clip = false;
-		BackgroundPadding = -1;
-		Shadow = Color32.CLEAR;
-	}
-
-	public CellContent SetText (string newText) {
-		Text = newText;
-		Chars = null;
-		FromString = true;
-		return this;
-	}
-
-	public CellContent SetText (string newText, int charSize) {
-		Text = newText;
-		Chars = null;
-		CharSize = charSize;
-		FromString = true;
-		return this;
-	}
-
-	public static CellContent Get (string text, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
-		Temp.CharSize = charSize;
-		Temp.Text = text;
-		Temp.Chars = null;
-		Temp.Alignment = alignment;
-		Temp.Tint = Color32.WHITE;
-		Temp.Wrap = wrap;
-		Temp.FromString = true;
-		Temp.BackgroundTint = default;
-		Temp.Shadow = Color32.CLEAR;
-		return Temp;
-	}
-
-	public static CellContent Get (string text, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
-		Temp.CharSize = charSize;
-		Temp.Text = text;
-		Temp.Chars = null;
-		Temp.Alignment = alignment;
-		Temp.Tint = tint;
-		Temp.Wrap = wrap;
-		Temp.FromString = true;
-		Temp.BackgroundTint = default;
-		Temp.Shadow = Color32.CLEAR;
-		return Temp;
-	}
-
-	public static CellContent Get (char[] chars, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
-		Temp.CharSize = charSize;
-		Temp.Chars = chars;
-		Temp.Alignment = alignment;
-		Temp.Tint = Color32.WHITE;
-		Temp.Wrap = wrap;
-		Temp.FromString = false;
-		Temp.BackgroundTint = default;
-		Temp.Shadow = Color32.CLEAR;
-		return Temp;
-	}
-
-	public static CellContent Get (char[] chars, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
-		Temp.CharSize = charSize;
-		Temp.Chars = chars;
-		Temp.Alignment = alignment;
-		Temp.Tint = tint;
-		Temp.Wrap = wrap;
-		Temp.FromString = false;
-		Temp.BackgroundTint = default;
-		Temp.Shadow = Color32.CLEAR;
-		return Temp;
-	}
-
-}
 
 
 public static class CellGUI {
@@ -234,175 +131,15 @@ public static class CellGUI {
 	public static void Label (CellContent content, IRect rect, out IRect bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
 	public static void Label (CellContent content, IRect rect, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
 	private static void Label (CellContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
-
 		endIndex = startIndex;
 		bounds = rect;
 		beamRect = new IRect(rect.x, rect.y, 1, rect.height);
 		if (!CellRenderer.TextReady) return;
-		if (string.IsNullOrEmpty(content.Text)) content.Text = string.Empty;
-
-		string text = content.Text;
-		char[] chars = content.Chars;
-		int count = content.FromString ? text.Length : chars.Length;
-		int charSize = Unify(content.CharSize);
-		int lineSpace = Unify(content.LineSpace);
-		var color = content.Tint;
-		int charSpace = Unify(content.CharSpace);
-		var alignment = content.Alignment;
-		var bgColor = content.BackgroundTint;
-		bool wrap = content.Wrap;
-		int bgPadding = Unify(content.BackgroundPadding);
-		bool hasContent = count > 0;
-		bool clip = content.Clip;
-		bool beamEnd = beamIndex >= count;
 
 		// Draw BG
-		Cell bgCell = bgColor.a > 0 ? CellRenderer.Draw(Const.PIXEL, rect, bgColor) : null;
-
-		// Content
-		int maxLineCount = ((float)rect.height / (charSize + lineSpace)).FloorToInt();
-		int line = 0;
-		int x = rect.x;
-		int y = rect.yMax - charSize;
-		int startCellIndex = CellRenderer.GetTextUsedCellCount();
-		int nextWrapCheckIndex = 0;
-		bool firstCharAtLine = true;
-		int minX = int.MaxValue;
-		int minY = int.MaxValue;
-		int maxX = int.MinValue;
-		int maxY = int.MinValue;
-		int shadowOffset = Unify(content.ShadowOffset);
-		for (int i = startIndex; i < count; i++) {
-
-			char c = content.FromString ? text[i] : chars[i];
-			endIndex = i;
-			if (c == '\r') goto CONTINUE;
-			if (c == '\0') break;
-
-			// Line
-			if (c == '\n') {
-				x = rect.x;
-				y -= charSize + lineSpace;
-				firstCharAtLine = true;
-				line++;
-				if (clip && line >= maxLineCount) break;
-				goto CONTINUE;
-			}
-
-			// Require Char
-			if (!CellRenderer.RequireCharForPool(c, out var sprite)) goto CONTINUE;
-
-			int realCharSize = (sprite.Advance * charSize).RoundToInt();
-
-			// Wrap Check for Word
-			if (wrap && i >= nextWrapCheckIndex && !Util.IsLineBreakingChar(c)) {
-				if (!WordEnoughToFit(
-					content, charSize, charSpace, i, rect.xMax - x - realCharSize, out int wordLength
-				) && !firstCharAtLine) {
-					x = rect.x;
-					y -= charSize + lineSpace;
-					line++;
-					firstCharAtLine = true;
-					if (clip && line >= maxLineCount) break;
-				}
-				nextWrapCheckIndex += wordLength - 1;
-			}
-
-			// Draw Char
-			if (wrap && x > rect.xMax - realCharSize) {
-				x = rect.x;
-				y -= charSize + lineSpace;
-				line++;
-				if (char.IsWhiteSpace(c)) goto CONTINUE;
-				if (clip && line >= maxLineCount) break;
-			}
-			var cell = DrawChar(c, x, y, charSize, charSize, color) ?? EMPTY_CELL;
-			if (content.Shadow.a > 0 && shadowOffset != 0) {
-				var shadowCell = CellRenderer.DrawChar(c, 0, 0, 1, 1, Color32.WHITE);
-				shadowCell.CopyFrom(cell);
-				shadowCell.Color = content.Shadow;
-				shadowCell.Y -= shadowOffset;
-				shadowCell.Z--;
-			}
-
-			// Beam
-			if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {
-				beamRect.x = x;
-				beamRect.y = y;
-				beamRect.width = Unify(2);
-				beamRect.height = charSize;
-				beamIndex = -1;
-			}
-			if (beamEnd && beamIndex >= 0 && i >= count - 1) {
-				beamRect.x = x + realCharSize + charSpace;
-				beamRect.y = y;
-				beamRect.width = Unify(2);
-				beamRect.height = charSize;
-				beamIndex = -1;
-			}
-
-			// Next
-			x += realCharSize + charSpace;
-			minX = Util.Min(minX, cell.X);
-			minY = Util.Min(minY, cell.Y);
-			maxX = Util.Max(maxX, cell.X + cell.Width);
-			maxY = Util.Max(maxY, cell.Y + cell.Height);
-			firstCharAtLine = false;
-
-			continue;
-
-			CONTINUE:;
-			if (drawInvisibleChar) {
-				int cellCount = CellRenderer.GetTextUsedCellCount() - startCellIndex - 1;
-				int textCount = i - startIndex;
-				int addCount = textCount - cellCount;
-				for (int add = 0; add < addCount; add++) {
-					CellRenderer.DrawChar(' ', 0, 0, 0, 0, color);
-				}
-			}
-
-		}
-
-		// Alignment
-		if (hasContent) {
-			int offsetX;
-			int offsetY;
-			int textSizeX = maxX - minX;
-			int textSizeY = maxY - minY;
-			offsetX = alignment switch {
-				Alignment.TopRight or Alignment.MidRight or Alignment.BottomRight =>
-					rect.xMax - maxX,
-				Alignment.TopMid or Alignment.MidMid or Alignment.BottomMid =>
-					rect.xMax - maxX - ((rect.width - textSizeX) / 2),
-				_ =>
-					rect.xMin - minX,
-			};
-			offsetY = alignment switch {
-				Alignment.BottomLeft or Alignment.BottomMid or Alignment.BottomRight =>
-					rect.yMin - minY,
-				Alignment.MidLeft or Alignment.MidMid or Alignment.MidRight =>
-					rect.yMax - maxY - ((rect.height - textSizeY) / 2),
-				_ =>
-					rect.yMax - maxY,
-			};
-
-			// Offset
-			CellRenderer.GetTextCells(out var cells, out int cellCount);
-			for (int i = startCellIndex; i < cellCount; i++) {
-				var cell = cells[i];
-				cell.X += offsetX;
-				cell.Y += offsetY;
-			}
-			beamRect.x += offsetX;
-			beamRect.y += offsetY;
-
-			// BG Size
-			bounds.x = minX + offsetX;
-			bounds.y = minY + offsetY;
-			bounds.width = maxX - minX;
-			bounds.height = maxY - minY;
-		}
-
+		var bgColor = content.BackgroundTint;
+		int bgPadding = Unify(content.BackgroundPadding);
+		var bgCell = bgColor.a > 0 ? CellRenderer.Draw(Const.PIXEL, rect, bgColor, z: int.MaxValue) : null;
 		if (bgCell != null && bgPadding >= 0) {
 			bgCell.X = bounds.x - bgPadding;
 			bgCell.Y = bounds.y - bgPadding;
@@ -410,6 +147,15 @@ public static class CellGUI {
 			bgCell.Width = bounds.width + bgPadding * 2;
 			bgCell.Height = bounds.height + bgPadding * 2;
 		}
+
+		// Draw Chars
+		CellRenderer.GetTextCells(out var cells, out int cellCount);
+		TextUtilInternal.DrawLabel(
+			CellRenderer.RequireCharForPool, DrawChar,
+			CellRenderer.CameraRect.height, cellCount, cells,
+			content, rect, beamIndex, startIndex, drawInvisibleChar,
+			out bounds, out beamRect, out endIndex
+		);
 
 	}
 
@@ -848,22 +594,6 @@ public static class CellGUI {
 
 
 	#region --- LGC ---
-
-
-	private static bool WordEnoughToFit (CellContent content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
-		int index = startIndex;
-		int count = content.FromString ? content.Text.Length : content.Chars.Length;
-		for (; index < count; index++) {
-			char c = content.FromString ? content.Text[index] : content.Chars[index];
-			if (Util.IsLineBreakingChar(c)) break;
-			if (!CellRenderer.RequireCharForPool(c, out var sprite)) continue;
-			if (room > 0) {
-				room -= (sprite.Advance * charSize).RoundToInt() + charSpace;
-			}
-		}
-		wordLength = index - startIndex + 1;
-		return room >= 0;
-	}
 
 
 	private static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {

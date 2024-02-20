@@ -55,8 +55,6 @@
 		<EmbeddedResource Remove="Editor\**" />
 		<None Remove="Editor\**" />
 	</ItemGroup>
-
-	<!--Ref-->
 	<ItemGroup>
 	  <ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
 	</ItemGroup>

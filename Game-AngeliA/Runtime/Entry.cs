@@ -1,5 +1,5 @@
 ﻿using AngeliA;
-using AngeliaToRaylib;
+using AngeliaToRaylib.Framework;
 
 [assembly: AngeliA]
 [assembly: AngeliaGameTitle("AngeliA")]

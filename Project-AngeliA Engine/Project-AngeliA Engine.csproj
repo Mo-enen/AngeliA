@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>AngeliaEngine</RootNamespace>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <ErrorReport>none</ErrorReport>
-    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
-    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-    <EnableNETAnalyzers>False</EnableNETAnalyzers>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<RootNamespace>AngeliaEngine</RootNamespace>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<ErrorReport>none</ErrorReport>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+	</PropertyGroup>
 
 	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -38,28 +38,21 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
-	<!--Ref-->
-  <ItemGroup>
-    <ProjectReference Include="..\AngeliA Core\AngeliA Core.csproj" />
-    <Reference Include="raylib-cs">
-      <HintPath>Runtime\raylib-cs.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 	<!--Remove in Release-->
 	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<Compile Remove="Editor\**" />
 		<EmbeddedResource Remove="Editor\**" />
 		<None Remove="Editor\**" />
 	</ItemGroup>
-	
-	<!--Sync Dll-->
 	<ItemGroup>
-		<ContentWithTargetPath Include="Runtime\raylib.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<TargetPath>raylib.dll</TargetPath>
-		</ContentWithTargetPath>
+		<ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
 	</ItemGroup>
 
-	
+	<!--Ref-->
+	<ItemGroup>
+		<Reference Include="raylib-cs">
+			<HintPath>..\AngeliA to Raylib\Framework\raylib-cs.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
 </Project>

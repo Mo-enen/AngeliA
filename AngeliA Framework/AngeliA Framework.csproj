@@ -42,8 +42,5 @@
 	</ItemGroup>
 
 	<!--Ref-->
-	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA Core\AngeliA Core.csproj" />
-	</ItemGroup>
 
 </Project>

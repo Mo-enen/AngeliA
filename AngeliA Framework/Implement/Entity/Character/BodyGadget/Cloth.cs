@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public enum ClothType { Head, Body, Hand, Hip, Foot, }
@@ -672,7 +672,7 @@ public abstract class Cloth {
 
 
 	// Const
-	private static readonly Cell[] SINGLE_CELL = { CellRenderer.EMPTY_CELL };
+	private static readonly Cell[] SINGLE_CELL = { Cell.EMPTY };
 
 	// Api
 	public int TypeID { get; init; }

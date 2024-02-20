@@ -4,118 +4,6 @@ using System.Collections.Generic;
 
 namespace AngeliA.Framework;
 
-public class Cell {
-	public AngeSprite Sprite;
-	public CharSprite TextSprite;
-	public int Order;
-	public int X;
-	public int Y;
-	public int Z;
-	public int Width;
-	public int Height;
-	public int Rotation;
-	public float PivotX;
-	public float PivotY;
-	public Color32 Color;
-	public Int4 Shift;
-	public Alignment BorderSide;
-	public void CopyFrom (Cell other) {
-		Sprite = other.Sprite;
-		TextSprite = other.TextSprite;
-		X = other.X;
-		Y = other.Y;
-		Z = other.Z;
-		Width = other.Width;
-		Height = other.Height;
-		Rotation = other.Rotation;
-		PivotX = other.PivotX;
-		PivotY = other.PivotY;
-		Color = other.Color;
-		BorderSide = other.BorderSide;
-		Shift = other.Shift;
-	}
-	public Int2 LocalToGlobal (int localX, int localY) {
-		int pOffsetX = (int)(PivotX * Width);
-		int pOffsetY = (int)(PivotY * Height);
-		if (Rotation == 0) {
-			return new Int2(X + localX - pOffsetX, Y + localY - pOffsetY);
-		}
-		var globalCellV = new Float2(localX, localY).Rotate(Rotation);
-		var globalPivotV = new Float2(pOffsetX, pOffsetY).Rotate(Rotation);
-		var result = new Float2(X + globalCellV.x - globalPivotV.x, Y + globalCellV.y - globalPivotV.y);
-		return result.RoundToInt();
-	}
-	public Int2 GlobalToLocal (int globalX, int globalY) {
-		int pOffsetX = (int)(PivotX * Width);
-		int pOffsetY = (int)(PivotY * Height);
-		if (Rotation == 0) {
-			return new Int2(globalX + pOffsetX - X, globalY + pOffsetY - Y);
-		}
-		var globalPoint = new Float2(pOffsetX, pOffsetY).Rotate(Rotation);
-		var globalOffset = new Float2(globalX - X + globalPoint.x, globalY - Y + globalPoint.y);
-		var result = globalOffset.Rotate(-Rotation);
-		return result.RoundToInt();
-	}
-	public void ReturnPivots () {
-		if (Rotation == 0) {
-			X -= (Width * PivotX).RoundToInt();
-			Y -= (Height * PivotY).RoundToInt();
-		} else {
-			var point = LocalToGlobal(0, 0);
-			X = point.x;
-			Y = point.y;
-		}
-		PivotX = 0;
-		PivotY = 0;
-	}
-	public void ReturnPivots (float newPivotX, float newPivotY) {
-		if (Rotation == 0) {
-			X -= (Width * (PivotX - newPivotX)).RoundToInt();
-			Y -= (Height * (PivotY - newPivotY)).RoundToInt();
-		} else {
-			var point = LocalToGlobal((int)(newPivotX * Width), (int)(newPivotY * Height));
-			X = point.x;
-			Y = point.y;
-		}
-		PivotX = newPivotX;
-		PivotY = newPivotY;
-	}
-	public void ReturnPosition (int globalX, int globalY) {
-		var localPoint = GlobalToLocal(globalX, globalY);
-		PivotX = (float)localPoint.x / Width;
-		PivotY = (float)localPoint.y / Height;
-		X = globalX;
-		Y = globalY;
-	}
-	public void RotateAround (int rotation, int pointX, int pointY) {
-		if (rotation == 0 || Width == 0 || Height == 0) return;
-		var localPoint = GlobalToLocal(pointX, pointY);
-		PivotX = (float)localPoint.x / Width;
-		PivotY = (float)localPoint.y / Height;
-		X = pointX;
-		Y = pointY;
-		Rotation += rotation;
-	}
-	public void ScaleFrom (int scale, int pointX, int pointY) {
-		var localPoint = GlobalToLocal(pointX, pointY);
-		PivotX = (float)localPoint.x / Width;
-		PivotY = (float)localPoint.y / Height;
-		X = pointX;
-		Y = pointY;
-		Width = Width * scale / 1000;
-		Height = Height * scale / 1000;
-	}
-}
-
-
-
-public class CharSprite {
-	public char Char;
-	public FRect Offset;
-	public float Advance;
-}
-
-
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnSheetLoadedAttribute : OrderedAttribute { public OnSheetLoadedAttribute (int order = 0) : base(order) { } }
 
 
@@ -188,7 +76,6 @@ public static partial class CellRenderer {
 
 
 	// Const
-	public static readonly Cell EMPTY_CELL = new() { Sprite = null, TextSprite = null, };
 	private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
 
 	// Event
@@ -428,8 +315,9 @@ public static partial class CellRenderer {
 	[OnGameUpdate(-512)]
 	public static void BeginDraw () {
 		IsDrawing = true;
-		EMPTY_CELL.Sprite = null;
-		EMPTY_CELL.TextSprite = null;
+		Cell.EMPTY.Sprite = null;
+		Cell.EMPTY.TextSprite = null;
+		Cell.EMPTY.Color = Color32.CLEAR;
 		SetLayerToDefault();
 		for (int i = 0; i < Layers.Length; i++) {
 			var layer = Layers[i];
@@ -456,21 +344,21 @@ public static partial class CellRenderer {
 	public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
 	public static Cell Draw (int globalID, IRect rect, Color32 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 	public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
-	public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(globalID, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : EMPTY_CELL;
+	public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(globalID, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : Cell.EMPTY;
 	public static Cell Draw (SpriteCode globalID, IRect rect, int z = int.MinValue) => Draw(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
 	public static Cell Draw (SpriteCode globalID, IRect rect, Color32 color, int z = int.MinValue) => Draw(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 	public static Cell Draw (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
-	public static Cell Draw (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(globalID.ID, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : EMPTY_CELL;
+	public static Cell Draw (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(globalID.ID, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : Cell.EMPTY;
 	public static Cell Draw (AngeSprite sprite, IRect rect, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
 	public static Cell Draw (AngeSprite sprite, IRect rect, Color32 color, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 	public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
 	public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
 
-		if (!IsDrawing || sprite == null) return EMPTY_CELL;
+		if (!IsDrawing || sprite == null) return Cell.EMPTY;
 
 		var layer = Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
-		if (Game.IsPausing && !layer.UiLayer) return EMPTY_CELL;
-		if (layer.FocusedCell < 0) return EMPTY_CELL;
+		if (Game.IsPausing && !layer.UiLayer) return Cell.EMPTY;
+		if (layer.FocusedCell < 0) return Cell.EMPTY;
 		var cell = layer.Cells[layer.FocusedCell];
 
 		// Original Size
@@ -513,10 +401,10 @@ public static partial class CellRenderer {
 
 	public static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
 
-		if (!IsDrawing) return EMPTY_CELL;
+		if (!IsDrawing) return Cell.EMPTY;
 
 		var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
-		if (layer.FocusedCell < 0 || !layer.TextIDMap.TryGetValue(c, out var tSprite)) return EMPTY_CELL;
+		if (layer.FocusedCell < 0 || !layer.TextIDMap.TryGetValue(c, out var tSprite)) return Cell.EMPTY;
 
 		var cell = layer.Cells[layer.FocusedCell];
 
@@ -602,9 +490,9 @@ public static partial class CellRenderer {
 	public static Cell[] Draw_9Slice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => Draw_9Slice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
 	public static Cell[] Draw_9Slice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) {
 
-		Last9SlicedCells[0] = Last9SlicedCells[1] = Last9SlicedCells[2] = EMPTY_CELL;
-		Last9SlicedCells[3] = Last9SlicedCells[4] = Last9SlicedCells[5] = EMPTY_CELL;
-		Last9SlicedCells[6] = Last9SlicedCells[7] = Last9SlicedCells[8] = EMPTY_CELL;
+		Last9SlicedCells[0] = Last9SlicedCells[1] = Last9SlicedCells[2] = Cell.EMPTY;
+		Last9SlicedCells[3] = Last9SlicedCells[4] = Last9SlicedCells[5] = Cell.EMPTY;
+		Last9SlicedCells[6] = Last9SlicedCells[7] = Last9SlicedCells[8] = Cell.EMPTY;
 
 		// Original Size
 		if (sprite != null && width != 0 && height != 0) {
@@ -760,7 +648,6 @@ public static partial class CellRenderer {
 		// Z
 		if (z != int.MinValue) foreach (var cell in Last9SlicedCells) cell.Z = z;
 
-		EMPTY_CELL.Color = Color32.CLEAR;
 		return Last9SlicedCells;
 	}
 
@@ -771,7 +658,7 @@ public static partial class CellRenderer {
 	public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, color, loopStart);
 	public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) {
-		if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return EMPTY_CELL;
+		if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return Cell.EMPTY;
 		int id = group.GetSpriteIdFromAnimationFrame(frame, loopStart);
 		return Draw(id, x, y, pivotX, pivotY, rotation, width, height, color);
 	}
@@ -1056,7 +943,6 @@ public static partial class CellRenderer {
 	#region --- LGC ---
 
 
-	// Text Logic
 	internal static bool RequireCharForPool (char c, out CharSprite charSprite) {
 		var tLayer = TextLayers[CurrentTextLayerIndex];
 		if (tLayer.TextIDMap.TryGetValue(c, out var textSprite)) {

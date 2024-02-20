@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
 		<TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>AngeliaForRaylib</RootNamespace>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <StartupObject></StartupObject>
+		<RootNamespace>AngeliaToRaylib</RootNamespace>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<StartupObject></StartupObject>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -17,23 +17,23 @@
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
 		<AssemblyName>AngeliA For Raylib</AssemblyName>
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>portable</DebugType>
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>portable</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>none</DebugType>
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 
 	<!--Remove-->
-  <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Remove="desktop.ini" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+	</ItemGroup>
 
 	<!--Remove in Release-->
 	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -43,16 +43,16 @@
 	</ItemGroup>
 
 	<!--Ref-->
-  <ItemGroup>
-    <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
-    <Reference Include="raylib-cs">
-      <HintPath>Runtime\raylib-cs.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+		<Reference Include="raylib-cs">
+			<HintPath>Framework\raylib-cs.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 	<!--Sync Dll-->
 	<ItemGroup>
-		<ContentWithTargetPath Include="Runtime\raylib.dll">
+		<ContentWithTargetPath Include="Framework\raylib.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>raylib.dll</TargetPath>
 		</ContentWithTargetPath>
@@ -65,5 +65,5 @@
 			<TargetPath>Universe\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
 		</ContentWithTargetPath>
 	</ItemGroup>
-	
+
 </Project>

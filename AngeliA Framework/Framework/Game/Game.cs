@@ -104,7 +104,7 @@ namespace AngeliA.Framework {
 			Instance = this;
 			// Info from Attribute
 			GameTitle = AngeliaGameTitleAttribute.GetTitle();
-			GameDeveloper = AngeliaGameDeveloperAttribute.GetDeveloper();
+			GameDeveloper = AngeliaGameDeveloperAttribute.GetDeveloperName();
 			AllowMakerFeaures = IsEdittime || AngeliaAllowMakerAttribute.AllowMakerFeatures;
 			AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out var cycle);
 			GameMajorVersion = major;
