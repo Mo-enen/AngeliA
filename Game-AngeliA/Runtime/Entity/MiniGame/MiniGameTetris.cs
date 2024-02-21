@@ -74,8 +74,8 @@ public class MiniGameTetris : MiniGame {
 		{ 0,0, +1,0, -2,0, +1,+2, -2,-1, }, // l > 2
 	};
 	private static readonly Color32 GRID_TINT = new(32, 32, 32, 255);
-	private static readonly int LINE_H_CODE = BuiltInIcon.SOFT_LINE_H;
-	private static readonly int LINE_V_CODE = BuiltInIcon.SOFT_LINE_V;
+	private static readonly int LINE_H_CODE = BuiltInSprite.SOFT_LINE_H;
+	private static readonly int LINE_V_CODE = BuiltInSprite.SOFT_LINE_V;
 	private static readonly SpriteCode BLOCK_CODE = "Tetris Block";
 	private static readonly SpriteCode BLOCK_EMPTY_CODE = "Tetris Block Empty";
 	private static readonly LanguageCode UI_HOLDING = ("UI.Tetris.Holding", "Holding");

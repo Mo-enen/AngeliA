@@ -1,62 +1,73 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AssemblyName>AngeliA Game</AssemblyName>
-		<RootNamespace>AngeliaGame</RootNamespace>
-		<OutputType>Library</OutputType>
+		<AssemblyName>AngeliA Player</AssemblyName>
+		<RootNamespace>AngeliaPlayer</RootNamespace>
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<UseWindowsForms>False</UseWindowsForms>
-		<StartupObject></StartupObject>
-		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<SignAssembly>False</SignAssembly>
+		<StartupObject></StartupObject>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
-		<GenerateDependencyFile>False</GenerateDependencyFile>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
-		<AnalysisLevel>none</AnalysisLevel>
 
-		<OutputPath>$(SolutionDir)Build\Library</OutputPath>
+		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 
-
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		
 	</PropertyGroup>
 
 	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Optimize>True</Optimize>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 		<DebugType>portable</DebugType>
-		<Deterministic>True</Deterministic>
+		<Optimize>True</Optimize>
+		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 
 	<!--Release Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Optimize>True</Optimize>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 		<DebugType>none</DebugType>
-		<Deterministic>True</Deterministic>
+		<Optimize>True</Optimize>
+		<OutputType>WinExe</OutputType>
 	</PropertyGroup>
 
 	<!--Remove-->
 	<ItemGroup>
-		<Compile Remove="Properties\**" />
-		<EmbeddedResource Remove="Properties\**" />
-		<None Remove="Properties\**" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
-	<!--Remove in Release-->
-	
+	<!--Ref Project-->
 	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
+		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+	</ItemGroup>
+	
+	<!--Ref-->
+	<ItemGroup>
+		<Reference Include="raylib-cs">
+			<HintPath>raylib\raylib-cs.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<!--Sync Dll-->
+	<ItemGroup>
+		<ContentWithTargetPath Include="raylib\raylib.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>raylib.dll</TargetPath>
+		</ContentWithTargetPath>
 	</ItemGroup>
 
 </Project>

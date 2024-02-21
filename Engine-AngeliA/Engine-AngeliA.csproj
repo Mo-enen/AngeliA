@@ -1,50 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AssemblyName>AngeliA Game</AssemblyName>
-		<RootNamespace>AngeliaGame</RootNamespace>
+		<AssemblyName>Angelia Engine</AssemblyName>
+		<RootNamespace>AngeliaEngine</RootNamespace>
 		<OutputType>Library</OutputType>
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<UseWindowsForms>False</UseWindowsForms>
-		<StartupObject></StartupObject>
-		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<SignAssembly>False</SignAssembly>
+		<ErrorReport>none</ErrorReport>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
-		<GenerateDependencyFile>False</GenerateDependencyFile>
-		<GenerateDocumentationFile>False</GenerateDocumentationFile>
-		<ErrorReport>none</ErrorReport>
-		<AnalysisLevel>none</AnalysisLevel>
 
-		<OutputPath>$(SolutionDir)Build\Library</OutputPath>
+		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 
-
 	</PropertyGroup>
 
-	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Optimize>True</Optimize>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 		<DebugType>portable</DebugType>
-		<Deterministic>True</Deterministic>
-	</PropertyGroup>
-
-	<!--Release Only-->
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<Optimize>True</Optimize>
-		<DebugType>none</DebugType>
-		<Deterministic>True</Deterministic>
 	</PropertyGroup>
 
-	<!--Remove-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<DebugType>none</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<Compile Remove="Properties\**" />
 		<EmbeddedResource Remove="Properties\**" />
@@ -53,10 +40,14 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
-	<!--Remove in Release-->
-	
 	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
+		<ProjectReference Include="..\AngeliA Player\AngeliA Player.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="raylib-cs">
+			<HintPath>..\AngeliA Player\raylib\raylib-cs.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 </Project>

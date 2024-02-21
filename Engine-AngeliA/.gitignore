@@ -1,0 +1,7 @@
+/.vs
+/obj
+/bin
+*.vsconfig
+*.editorconfig
+*.ini
+/dotnet sdk

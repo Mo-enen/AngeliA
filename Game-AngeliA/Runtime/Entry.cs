@@ -5,5 +5,3 @@ using AngeliaToRaylib.Framework;
 [assembly: AngeliaGameTitle("AngeliA")]
 [assembly: AngeliaGameDeveloper("Moenen")]
 [assembly: AngeliaVersion(0, 0, 1, ReleaseLifeCycle.Alpha)]
-
-RaylibGame.Run();

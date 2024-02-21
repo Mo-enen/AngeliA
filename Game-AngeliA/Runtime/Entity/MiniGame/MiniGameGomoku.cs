@@ -5,7 +5,7 @@ using AngeliA.Framework;
 
 
 
-namespace AngeliaGame; 
+namespace AngeliaGame;
 ////////////////////// UI //////////////////////
 [RequireLanguageFromField]
 public class MiniGameGomoku : MiniGame {
@@ -19,10 +19,10 @@ public class MiniGameGomoku : MiniGame {
 	// Const
 	private const int GRID_THICKNESS = 2;
 	private const int STAGE_SIZE = 21;
-	private static readonly int STONE_CODE = BuiltInIcon.CIRCLE_16;
-	private static readonly int LINE_H_CODE = BuiltInIcon.SOFT_LINE_H;
-	private static readonly int LINE_V_CODE = BuiltInIcon.SOFT_LINE_V;
-	private static readonly int FRAME_CODE = BuiltInIcon.FRAME_16;
+	private static readonly int STONE_CODE = BuiltInSprite.CIRCLE_16;
+	private static readonly int LINE_H_CODE = BuiltInSprite.SOFT_LINE_H;
+	private static readonly int LINE_V_CODE = BuiltInSprite.SOFT_LINE_V;
+	private static readonly int FRAME_CODE = BuiltInSprite.FRAME_16;
 	private static readonly Color32 BACKGROUND_TINT = new(196, 120, 50, 255);
 	private static readonly Color32 GRID_TINT = new(16, 16, 16, 255);
 	private static readonly Color32 BLACK_STONE_TINT = new(16, 16, 16, 255);

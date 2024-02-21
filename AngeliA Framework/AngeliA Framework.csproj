@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+		<AssemblyName>AngeliA Framework</AssemblyName>
+    <RootNamespace>AngeliA</RootNamespace>
 		<OutputType>Library</OutputType>
 		<TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>AngeliA</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
@@ -13,7 +14,11 @@
 		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
-		<AssemblyName>AngeliA Framework</AssemblyName>
+
+		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -33,14 +38,5 @@
     <None Remove=".gitignore" />
     <None Remove="desktop.ini" />
   </ItemGroup>
-
-	<!--Remove in Release-->
-	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Compile Remove="Editor\**" />
-		<EmbeddedResource Remove="Editor\**" />
-		<None Remove="Editor\**" />
-	</ItemGroup>
-
-	<!--Ref-->
 
 </Project>
