@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.Text;
+using System;
 
 
 namespace AngeliA;
@@ -295,5 +297,7 @@ public static partial class Util {
 			name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
 		).FieldType;
 
-
+	public static void ExecuteCommand (string projectFolderPath, StringBuilder builder) {
+		throw new NotImplementedException();
+	}
 }

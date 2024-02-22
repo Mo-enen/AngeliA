@@ -1,0 +1,55 @@
+{
+	"version": "12.3.2372",
+	"workloads": {
+		"macos": {
+			"description": ".NET SDK Workload for building macOS applications.",
+			"packs": [
+				"Microsoft.macOS.Sdk.net7",
+				"Microsoft.macOS.Sdk.net6",
+				"Microsoft.macOS.Ref",
+				"Microsoft.macOS.Runtime.osx-x64",
+				"Microsoft.macOS.Runtime.osx-arm64",
+				"Microsoft.macOS.Templates.net7"
+			],
+			"extends": [
+				"microsoft-net-runtime-mono-tooling",
+				"microsoft-net-runtime-mono-tooling-net6",
+			]
+		},
+	},
+	"packs": {
+		"Microsoft.macOS.Sdk.net7": {
+			"kind": "sdk",
+			"version": "12.3.2372",
+			"alias-to": {
+				"any": "Microsoft.macOS.Sdk"
+			}
+		},
+		"Microsoft.macOS.Sdk.net6": {
+			"kind": "sdk",
+			"version": "12.3.471",
+			"alias-to": {
+				"any": "Microsoft.macOS.Sdk"
+			}
+		},
+		"Microsoft.macOS.Ref": {
+			"kind": "framework",
+			"version": "12.3.2372"
+		},
+		"Microsoft.macOS.Runtime.osx-x64": {
+			"kind": "framework",
+			"version": "12.3.2372"
+		},
+		"Microsoft.macOS.Runtime.osx-arm64": {
+			"kind": "framework",
+			"version": "12.3.2372"
+		},
+		"Microsoft.macOS.Templates.net7": {
+			"kind": "template",
+			"version": "12.3.2372",
+			"alias-to": {
+				"any": "Microsoft.macOS.Templates",
+			}
+		}
+	}
+}

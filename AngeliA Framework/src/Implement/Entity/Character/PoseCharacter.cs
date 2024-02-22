@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public enum CharacterAnimationType {
@@ -124,7 +124,7 @@ public abstract class PoseCharacter : Character {
 
 
 	[OnUniverseOpen(32)]
-	public static void OnUniverseOpen () {
+	public static void OnUniverseOpen_Pose () {
 		if (Game.GlobalFrame != 0) InitializePose();
 	}
 

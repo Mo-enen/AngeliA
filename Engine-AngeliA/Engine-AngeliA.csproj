@@ -3,8 +3,8 @@
 	<PropertyGroup>
 		<AssemblyName>Angelia Engine</AssemblyName>
 		<RootNamespace>AngeliaEngine</RootNamespace>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<OutputType>Library</OutputType>
-		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -13,32 +13,23 @@
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<Optimize>True</Optimize>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 
 		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<PublishDir>Publish</PublishDir>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 		<DebugType>portable</DebugType>
-		<Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 		<DebugType>none</DebugType>
-		<Optimize>True</Optimize>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Remove="Properties\**" />
-		<EmbeddedResource Remove="Properties\**" />
-		<None Remove="Properties\**" />
-		<None Remove=".gitignore" />
-		<None Remove="desktop.ini" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\AngeliA Player\AngeliA Player.csproj" />
@@ -49,5 +40,17 @@
 			<HintPath>..\AngeliA Player\raylib\raylib-cs.dll</HintPath>
 		</Reference>
 	</ItemGroup>
+
+	<!--Remove-->
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+		<None Remove="dotnet sdk\**" />
+	</ItemGroup>
+
+	<!--Copy Dlls-->
+	<Target Name="CopyDLLs" AfterTargets="Build">
+		<Copy SourceFiles="$(SolutionDir)Build\$(AssemblyName).dll" DestinationFolder="$(SolutionDir)Build\Library" />
+	</Target>
 
 </Project>

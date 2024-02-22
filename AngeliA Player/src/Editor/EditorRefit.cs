@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace AngeliaPlayer;
+namespace AngeliaPlayer.Editor;
 
 #if DEBUG
 public class EditorRefit {

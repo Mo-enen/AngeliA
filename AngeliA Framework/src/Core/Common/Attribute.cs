@@ -84,16 +84,16 @@ public class AngeliaVersionAttribute : System.Attribute {
 		}
 		return false;
 	}
-	public static string GetVersionString () {
+	public static string GetVersionString (bool prefixV = true, bool lifeCycle = true) {
 		foreach (var assembly in Util.AllAssemblies) {
 			var att = assembly.GetCustomAttribute<AngeliaVersionAttribute>();
 			if (att != null) {
-				return $"v{att.MajorVersion}.{att.MinorVersion}.{att.PatchVersion}{att.LifeCycle switch {
+				return $"{(prefixV ? "v" : "")}{att.MajorVersion}.{att.MinorVersion}.{att.PatchVersion}{(lifeCycle ? att.LifeCycle switch {
 					ReleaseLifeCycle.Alpha => "a",
 					ReleaseLifeCycle.Beta => "b",
 					ReleaseLifeCycle.Final => "f",
 					_ => "",
-				}}";
+				} : "")}";
 			}
 		}
 		return string.Empty;

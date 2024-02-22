@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public static partial class Util {
 
 
@@ -103,19 +103,22 @@ public static partial class Util {
 	}
 
 
-	public static void ExecuteCommand (string arguments) {
+	public static void ExecuteCommand (string workingDirectory, string arguments) {
 		try {
 			System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
 				Verb = "runas",
 				FileName = "cmd.exe",
-				Arguments = "/C " + arguments,
+				Arguments = $"/C \"{arguments}\"",
 				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				RedirectStandardOutput = false,
-				RedirectStandardError = false
+				RedirectStandardError = false,
+				WorkingDirectory = workingDirectory,
 			});
-		} catch (System.Exception) { }
+		} catch (System.Exception ex) {
+			Util.LogException(ex);
+		}
 	}
 
 

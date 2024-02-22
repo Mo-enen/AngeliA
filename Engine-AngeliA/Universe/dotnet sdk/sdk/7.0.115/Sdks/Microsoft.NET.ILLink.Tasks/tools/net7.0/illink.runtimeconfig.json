@@ -1,0 +1,14 @@
+{
+  "runtimeOptions": {
+    "tfm": "net7.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "7.0.15"
+    },
+    "rollForwardOnNoCandidateFx": 2,
+    "configProperties": {
+      "System.GC.Server": true,
+      "System.Reflection.Metadata.MetadataUpdater.IsSupported": false
+    }
+  }
+}

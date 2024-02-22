@@ -1,0 +1,52 @@
+{
+  "runtimes": {
+    "linux-arm": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.linux-arm.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    },
+    "linux-arm64": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.linux-arm64.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    },
+    "linux-musl-arm64": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.linux-musl-arm64.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    },
+    "linux-musl-x64": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.linux-musl-x64.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    },
+    "linux-x64": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.linux-x64.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    },
+    "osx-x64": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.osx-x64.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    },
+    "win-arm64": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.win-arm64.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    },
+    "win-x64": {
+      "#import": [],
+      "Microsoft.DotNet.ILCompiler": {
+        "runtime.win-x64.Microsoft.DotNet.ILCompiler": "[7.0.15, )"
+      }
+    }
+  }
+}
