@@ -4,4 +4,4 @@
 *.vsconfig
 *.editorconfig
 *.ini
-/dotnet sdk
+dotnet sdk/
