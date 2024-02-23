@@ -6,7 +6,7 @@ using AngeliA;
 
 namespace AngeliaEditor;
 
-public static class Util {
+public static class EditorUtil {
 
 
 	private const string RUNTIME_LOCATION = "[angelia] dotnet runtime location";

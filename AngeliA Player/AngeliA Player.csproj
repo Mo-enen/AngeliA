@@ -4,6 +4,7 @@
 		<AssemblyName>AngeliA Player</AssemblyName>
 		<RootNamespace>AngeliaPlayer</RootNamespace>
 		<TargetFramework>net7.0-windows</TargetFramework>
+		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -19,7 +20,7 @@
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<Optimize>True</Optimize>
 
-		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<OutputPath>Build</OutputPath>
 		<PublishDir>Publish</PublishDir>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
@@ -29,22 +30,11 @@
 	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugType>portable</DebugType>
-		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 
 	<!--Release Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugType>none</DebugType>
-		<OutputType>WinExe</OutputType>
-
-		<PublishSingleFile>true</PublishSingleFile>
-		<PublishTrimmed>false</PublishTrimmed>
-		<SelfContained>true</SelfContained>
-		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<IncludeAllContentForSelfExtract>False</IncludeAllContentForSelfExtract>
-		<PublishReadyToRun>False</PublishReadyToRun>
-		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-		
 	</PropertyGroup>
 
 	<!--Ref Project-->

@@ -6,13 +6,7 @@ using Raylib_cs;
 using AngeliA;
 using AngeliaPlayer;
 using KeyboardKey = Raylib_cs.KeyboardKey;
-
-
-[assembly: AngeliA]
-[assembly: AngeliaGameDeveloper("Moenen")]
-[assembly: AngeliaGameTitle("AngeliA Engine")]
-[assembly: AngeliaVersion(0, 0, 1, AngeliA.ReleaseLifeCycle.Alpha)]
-
+using System.Linq;
 
 
 namespace AngeliaEditor;
@@ -27,16 +21,26 @@ public class Editor {
 
 
 	public class TestWindow0 : Window {
+		public TestWindow0 () {
+			Title = "Title 0";
+		}
 		public override void DrawWindow (Rectangle windowRect) {
 			Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
 		}
 	}
 	public class TestWindow1 : Window {
+		public TestWindow1 () {
+			Order = int.MaxValue;
+			Title = "Title 1";
+		}
 		public override void DrawWindow (Rectangle windowRect) {
 			Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
 		}
 	}
 	public class TestWindow2 : Window {
+		public TestWindow2 () {
+			Title = "Title 2";
+		}
 		public override void DrawWindow (Rectangle windowRect) {
 			Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
 		}
@@ -71,8 +75,7 @@ public class Editor {
 	#region --- MSG ---
 
 
-	[AngeliAOverrideStartUp]
-	public static void Open () {
+	public static void Run () {
 		var engine = new Editor();
 		engine.Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
 		engine.Initialize();
@@ -85,6 +88,7 @@ public class Editor {
 		}
 		engine.OnQuit();
 		Raylib.CloseWindow();
+		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
 	}
 
 
@@ -98,10 +102,10 @@ public class Editor {
 
 	private void Init_Raylib () {
 		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
-        AngeliA.Util.OnLogException += LogException;
-        AngeliA.Util.OnLogError += LogError;
-        AngeliA.Util.OnLog += Log;
-        AngeliA.Util.OnLogWarning += LogWarning;
+		AngeliA.Util.OnLogException += LogException;
+		AngeliA.Util.OnLogError += LogError;
+		AngeliA.Util.OnLog += Log;
+		AngeliA.Util.OnLogWarning += LogWarning;
 		Raylib.InitWindow(1024 / 9 * 16, 1024, $"{AngeliaGameTitleAttribute.GetTitle()} {AngeliaVersionAttribute.GetVersionString()}");
 		SwitchWindowMode(Setting.WindowMode);
 		Raylib.EnableEventWaiting();
@@ -111,8 +115,8 @@ public class Editor {
 
 	private void Init_Resources () {
 		string universePath = AngeliA.Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
-        // Font
-        Fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
+		// Font
+		Fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
 		// Sheet
 		string sheetPath = AngePath.GetSheetPath(universePath);
 		string artworkPath = AngePath.GetArtworkRoot(universePath);
@@ -137,8 +141,8 @@ public class Editor {
 
 	// Quit
 	private void OnQuit () {
-		Setting.LoadValueFromWindow();
 		foreach (var font in Fonts) font.Unload();
+		Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
 	}
 

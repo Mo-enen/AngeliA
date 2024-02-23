@@ -9,17 +9,6 @@ namespace AngeliA;
 public class AngeliAAttribute : System.Attribute { }
 
 
-[System.AttributeUsage(System.AttributeTargets.Method)]
-public class AngeliAOverrideStartUpAttribute : System.Attribute {
-	public static bool InvokeStartUp () {
-		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<AngeliAOverrideStartUpAttribute>()) {
-			method.Invoke(null, new object[0]);
-			return true;
-		}
-		return false;
-	}
-}
-
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class AngeliaGameTitleAttribute : System.Attribute {

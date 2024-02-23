@@ -4,8 +4,14 @@ using System.Collections.Generic;
 
 [assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Character", "Player")]
 
-
 namespace AngeliA.Framework;
+
+
+public sealed class DefaultPlayer : Player {
+	public static readonly int TYPE_ID = typeof(DefaultPlayer).AngeHash();
+}
+
+
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.DontDestroyOnSquadTransition]
@@ -558,7 +564,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 				currentPriority = attribute.Priority;
 			}
 		}
-		return result != null ? result.AngeHash() : 0;
+		return result != null ? result.AngeHash() : DefaultPlayer.TYPE_ID;
 	}
 
 

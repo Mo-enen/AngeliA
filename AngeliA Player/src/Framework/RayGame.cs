@@ -32,10 +32,6 @@ public partial class RayGame : Game {
 
 	// MSG
 	public static void Run () {
-		if (AngeliAOverrideStartUpAttribute.InvokeStartUp()) {
-			Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
-			return;
-		}
 		var game = new RayGame();
 		game.InitializeGame();
 		while (!game.RequireQuitGame) {
@@ -45,8 +41,8 @@ public partial class RayGame : Game {
 				Util.LogException(ex);
 			}
 		}
-		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
 		game.QuitGame();
+		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
 	}
 
 

@@ -15,7 +15,7 @@
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
 
-		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<OutputPath>Build</OutputPath>
 		<PublishDir>Publish</PublishDir>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

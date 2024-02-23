@@ -29,14 +29,14 @@ public static partial class Util {
 						list.Add(assembly);
 					}
 				}
-				foreach (var dllpath in EnumerateFiles("Library", false, "*.dll")) {
-					if (
-						Assembly.LoadFrom(dllpath) is Assembly assembly &&
-						assembly.GetCustomAttribute<AngeliAAttribute>() != null
-					) {
-						list.Add(assembly);
-					}
-				}
+				//foreach (var dllpath in EnumerateFiles("Library", false, "*.dll")) {
+				//	if (
+				//		Assembly.LoadFrom(dllpath) is Assembly assembly &&
+				//		assembly.GetCustomAttribute<AngeliAAttribute>() != null
+				//	) {
+				//		list.Add(assembly);
+				//	}
+				//}
 				_AllAssemblies = list.ToArray();
 			}
 			return _AllAssemblies;

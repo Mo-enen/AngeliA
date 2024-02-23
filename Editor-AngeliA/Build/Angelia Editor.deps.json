@@ -6,12 +6,12 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "Angelia Engine/1.0.0": {
+      "Angelia Editor/1.0.0": {
         "dependencies": {
           "raylib-cs": "6.0.0.0"
         },
         "runtime": {
-          "Angelia Engine.dll": {}
+          "Angelia Editor.dll": {}
         }
       },
       "AngeliA Framework/1.0.0": {
@@ -38,7 +38,7 @@
     }
   },
   "libraries": {
-    "Angelia Engine/1.0.0": {
+    "Angelia Editor/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

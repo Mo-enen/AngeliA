@@ -16,9 +16,9 @@ public abstract class Window {
 
 
 	// Api
-	public static float UiScale = 1f;
-	public virtual int Order => 0;
+	public static float UiScale { get; set; } = 1f;
 	public string Title { get; set; } = "";
+	public int Order { get; set; } = 0;
 	public int Icon { get; set; } = 0;
 
 
