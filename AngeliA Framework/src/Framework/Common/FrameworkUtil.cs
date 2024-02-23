@@ -172,7 +172,7 @@ public static class FrameworkUtil {
 				if (world.EmptyCheck()) {
 					Util.DeleteFile(path);
 				}
-			} catch (System.Exception ex) { Game.LogException(ex); }
+			} catch (System.Exception ex) { Util.LogException(ex); }
 		}
 	}
 

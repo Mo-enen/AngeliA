@@ -45,7 +45,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 				UpdateWindowUI();
 				CursorSystem.CursorPriority = oldP;
 				CellRenderer.Draw(Const.PIXEL, CellRenderer.CameraRect, new Color32(0, 0, 0, 200), int.MaxValue);
-			} catch (System.Exception ex) { Game.LogException(ex); }
+			} catch (System.Exception ex) { Util.LogException(ex); }
 			if (!oldIgnore) FrameInput.CancelIgnoreInput();
 		}
 	}

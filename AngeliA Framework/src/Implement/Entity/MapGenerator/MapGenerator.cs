@@ -128,7 +128,7 @@ public abstract class MapGenerator : Entity {
 		} catch (System.Exception ex) {
 			SampleReader?.Clear();
 			ResultWriter?.Clear();
-			Game.LogException(ex);
+			Util.LogException(ex);
 		}
 	}
 

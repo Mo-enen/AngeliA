@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Raylib_cs;
 
-namespace AngeliaEngine;
+namespace AngeliaEditor;
 
 public abstract class Window {
 

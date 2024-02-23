@@ -430,7 +430,7 @@ public static class Inventory {
 						data.Items[i] = 0;
 					}
 				}
-			} catch (System.Exception ex) { Game.LogException(ex); }
+			} catch (System.Exception ex) { Util.LogException(ex); }
 		}
 	}
 

@@ -57,37 +57,5 @@ public partial class RayGame {
 	}
 
 
-	// Debug
-	protected override void _Log (object target) {
-		if (!IsEdittime || target == null) return;
-		System.Console.ResetColor();
-		System.Console.WriteLine(target.ToString());
-	}
-
-	protected override void _LogWarning (object target) {
-		if (!IsEdittime || target == null) return;
-		System.Console.ForegroundColor = System.ConsoleColor.Yellow;
-		System.Console.WriteLine(target.ToString());
-		System.Console.ResetColor();
-	}
-
-	protected override void _LogError (object target) {
-		if (!IsEdittime || target == null) return;
-		System.Console.ForegroundColor = System.ConsoleColor.Red;
-		System.Console.WriteLine(target.ToString());
-		System.Console.ResetColor();
-	}
-
-	protected override void _LogException (System.Exception ex) {
-		if (!IsEdittime) return;
-		System.Console.ForegroundColor = System.ConsoleColor.Red;
-		System.Console.WriteLine(ex.Source);
-		System.Console.WriteLine(ex.GetType().Name);
-		System.Console.WriteLine(ex.Message);
-		System.Console.WriteLine();
-		System.Console.ResetColor();
-	}
-
-
 }
 

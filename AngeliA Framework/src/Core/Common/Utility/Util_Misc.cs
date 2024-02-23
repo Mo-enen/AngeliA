@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 
@@ -103,19 +104,24 @@ public static partial class Util {
 	}
 
 
-	public static void ExecuteCommand (string workingDirectory, string arguments) {
+	public static void ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true) {
 		try {
-			System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
+			var process = Process.Start(new System.Diagnostics.ProcessStartInfo {
 				Verb = "runas",
 				FileName = "cmd.exe",
 				Arguments = $"/C \"{arguments}\"",
 				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
 				CreateNoWindow = true,
-				RedirectStandardOutput = false,
-				RedirectStandardError = false,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
 				WorkingDirectory = workingDirectory,
 			});
+			if (logMessage) {
+				Util.Log(process.StandardOutput.ReadToEnd());
+				Util.LogError(process.StandardError.ReadToEnd());
+			}
+			process.WaitForExit(10_000);
 		} catch (System.Exception ex) {
 			Util.LogException(ex);
 		}

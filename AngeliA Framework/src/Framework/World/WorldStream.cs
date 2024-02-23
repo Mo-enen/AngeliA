@@ -119,7 +119,7 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int value) {
 		if (Readonly) {
 			if (Game.IsEdittime) {
-				Game.LogError("Can not write block data when the world stream is readonly.");
+				Util.LogError("Can not write block data when the world stream is readonly.");
 			}
 			return;
 		}
@@ -152,7 +152,7 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	public void SetBlocksAt (int unitX, int unitY, int z, int entity, int level, int background, int element) {
 		if (Readonly) {
 			if (Game.IsEdittime) {
-				Game.LogError("Can not write block data when the world stream is readonly.");
+				Util.LogError("Can not write block data when the world stream is readonly.");
 			}
 			return;
 		}

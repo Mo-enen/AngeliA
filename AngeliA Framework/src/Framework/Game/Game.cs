@@ -127,8 +127,6 @@ public abstract partial class Game {
 			Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
 			Util.LinkEventWithAttribute<OnGameFocusedAttribute>(typeof(Game), nameof(OnGameFocused));
 			Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
-			Util.OnLogException += _LogException;
-			Util.OnLogWarning += _LogWarning;
 
 			_AddGameTryingToQuitCallback(OnTryingToQuit);
 			_AddGameQuittingCallback(OnQuitting);
@@ -154,7 +152,7 @@ public abstract partial class Game {
 				RestartGame();
 			}
 
-		} catch (System.Exception ex) { LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 		// Func
 		static bool OnTryingToQuit () {
 			if (IsPausing || IsEdittime) return true;
@@ -194,7 +192,7 @@ public abstract partial class Game {
 			if (!IsPausing) GlobalFrame++;
 			PauselessFrame++;
 
-		} catch (System.Exception ex) { LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 	}
 
 

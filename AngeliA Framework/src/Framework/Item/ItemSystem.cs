@@ -297,8 +297,8 @@ public static class ItemSystem {
 
 		if (result == 0 || resultCount <= 0) {
 			if (Game.IsEdittime) {
-				if (result == 0) Game.LogWarning("Result of combination should not be zero.");
-				if (resultCount == 0) Game.LogWarning("ResultCount of combination should not be zero.");
+				if (result == 0) Util.LogWarning("Result of combination should not be zero.");
+				if (resultCount == 0) Util.LogWarning("ResultCount of combination should not be zero.");
 			}
 			return;
 		}
@@ -306,7 +306,7 @@ public static class ItemSystem {
 		var from = GetSortedCombination(item0, item1, item2, item3);
 		if (CombinationPool.ContainsKey(from)) {
 			if (Game.IsEdittime) {
-				Game.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
+				Util.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
 			}
 			return;
 		}

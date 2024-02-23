@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public class CollapseMapGenerator : RoomBasedMapGenerator {
 
 
@@ -19,7 +19,7 @@ public class CollapseMapGenerator : RoomBasedMapGenerator {
 			SampleReader, X.ToUnit(), Y.ToUnit(), Stage.ViewZ - 1,
 			(_room) => RoomPool.TryAdd(_room.ID, _room)
 		);
-		Game.Log(RootNode.PrintTree());
+		Util.Log(RootNode.PrintTree());
 	}
 
 

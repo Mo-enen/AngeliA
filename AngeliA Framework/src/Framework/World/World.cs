@@ -221,7 +221,7 @@ public class World {
 				writer.Close();
 				Util.DeleteFile(path);
 			}
-		} catch (System.Exception ex) { Game.LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 
 	}
 
@@ -319,9 +319,9 @@ public class World {
 							Backgrounds[y * Const.MAP + x] = id;
 						}
 					}
-				} catch (System.Exception ex) { Game.LogException(ex); }
+				} catch (System.Exception ex) { Util.LogException(ex); }
 			}
-		} catch (System.Exception ex) { Game.LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 
 		// Final
 		success = true;

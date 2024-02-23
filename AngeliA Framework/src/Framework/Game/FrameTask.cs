@@ -82,7 +82,7 @@ public static class FrameTask {
 				try {
 					result = CurrentTask.FrameUpdate();
 				} catch (System.Exception ex) {
-					Game.LogException(ex);
+					Util.LogException(ex);
 					result = TaskResult.End;
 				}
 				if (CurrentTask != null) {
@@ -90,7 +90,7 @@ public static class FrameTask {
 					if (result == TaskResult.End) {
 						try {
 							CurrentTask.OnEnd();
-						} catch (System.Exception ex) { Game.LogException(ex); }
+						} catch (System.Exception ex) { Util.LogException(ex); }
 						CurrentTask = null;
 					}
 				}

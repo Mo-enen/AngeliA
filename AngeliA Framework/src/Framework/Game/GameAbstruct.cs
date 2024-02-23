@@ -42,20 +42,6 @@ public abstract partial class Game {
 	protected abstract void _AddFocusChangedCallback (System.Action<bool> callback);
 
 
-	// Debug
-	public static void Log (object target) => Instance?._Log(target);
-	protected abstract void _Log (object target);
-
-	public static void LogWarning (object target) => Instance?._LogWarning(target);
-	protected abstract void _LogWarning (object target);
-
-	public static void LogError (object target) => Instance?._LogError(target);
-	protected abstract void _LogError (object target);
-
-	public static void LogException (System.Exception ex) => Instance?._LogException(ex);
-	protected abstract void _LogException (System.Exception ex);
-
-
 	// Camera
 	internal static FRect CameraScreenLocacion {
 		get => Instance._GetCameraScreenLocacion();

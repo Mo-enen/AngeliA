@@ -41,7 +41,7 @@ public partial class RayGame {
 	private int ShaderPropIndex_CA_GREEN_Y;
 	private int ShaderPropIndex_CA_BLUE_X;
 	private int ShaderPropIndex_CA_BLUE_Y;
-	
+
 
 	// MSG
 	private void InitializeShader () {
@@ -264,7 +264,7 @@ public partial class RayGame {
 					), cell.Rotation, cell.Color.ToRaylib()
 				);
 
-			} catch (System.Exception ex) { LogException(ex); }
+			} catch (System.Exception ex) { Util.LogException(ex); }
 		}
 
 		if (usingShader) Raylib.EndShaderMode();
@@ -330,7 +330,7 @@ public partial class RayGame {
 				);
 
 			} catch (System.Exception ex) {
-				LogException(ex);
+				Util.LogException(ex);
 			}
 		}
 

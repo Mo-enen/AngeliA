@@ -15,10 +15,10 @@ using KeyboardKey = Raylib_cs.KeyboardKey;
 
 
 
-namespace AngeliaEngine;
+namespace AngeliaEditor;
 
 
-public class Engine {
+public class Editor {
 
 
 
@@ -54,7 +54,7 @@ public class Engine {
 	private readonly Dictionary<int, Texture2D> TexturePool = new();
 	private readonly Sheet Sheet = new();
 	private FontData[] Fonts;
-	private EngineSetting Setting;
+	private Setting Setting;
 	private Window[] Windows;
 	private Vector2? FloatMascotMouseDownPos = null;
 	private Vector2 FloatMascotMouseDownGlobalPos = default;
@@ -73,8 +73,8 @@ public class Engine {
 
 	[AngeliAOverrideStartUp]
 	public static void Open () {
-		var engine = new Engine();
-		engine.Setting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
+		var engine = new Editor();
+		engine.Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
 		engine.Initialize();
 		while (true) {
 			Raylib.BeginDrawing();
@@ -98,12 +98,10 @@ public class Engine {
 
 	private void Init_Raylib () {
 		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
-		Util.OnLogException += (ex) => Console.WriteLine($"{ex.GetType().Name}\n{ex.Source}\n{ex.Message}");
-		Util.OnLogWarning += (msg) => {
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine(msg);
-			Console.ResetColor();
-		};
+        AngeliA.Util.OnLogException += LogException;
+        AngeliA.Util.OnLogError += LogError;
+        AngeliA.Util.OnLog += Log;
+        AngeliA.Util.OnLogWarning += LogWarning;
 		Raylib.InitWindow(1024 / 9 * 16, 1024, $"{AngeliaGameTitleAttribute.GetTitle()} {AngeliaVersionAttribute.GetVersionString()}");
 		SwitchWindowMode(Setting.WindowMode);
 		Raylib.EnableEventWaiting();
@@ -112,9 +110,9 @@ public class Engine {
 
 
 	private void Init_Resources () {
-		string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
-		// Font
-		Fonts = RaylibUtil.LoadFontDataFromFile(Util.CombinePaths(universePath, "Fonts"));
+		string universePath = AngeliA.Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
+        // Font
+        Fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
 		// Sheet
 		string sheetPath = AngePath.GetSheetPath(universePath);
 		string artworkPath = AngePath.GetArtworkRoot(universePath);
@@ -294,15 +292,6 @@ public class Engine {
 
 
 
-	#region --- API ---
-
-
-
-	#endregion
-
-
-
-
 	#region --- LGC ---
 
 
@@ -340,6 +329,34 @@ public class Engine {
 		}
 		Setting.WindowMode = windowMode;
 		Setting.Initialized = true;
+	}
+
+
+	// Log
+	private void Log (object msg) {
+		System.Console.ResetColor();
+		Console.WriteLine(msg);
+	}
+
+	private void LogWarning (object msg) {
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine(msg);
+		Console.ResetColor();
+	}
+
+	private void LogError (object msg) {
+		Console.ForegroundColor = ConsoleColor.Red;
+		Console.WriteLine(msg);
+		Console.ResetColor();
+	}
+
+	private void LogException (System.Exception ex) {
+		Console.ForegroundColor = ConsoleColor.Red;
+		Console.WriteLine(ex.Source);
+		Console.WriteLine(ex.GetType().Name);
+		Console.WriteLine(ex.Message);
+		System.Console.WriteLine();
+		Console.ResetColor();
 	}
 
 

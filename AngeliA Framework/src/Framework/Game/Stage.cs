@@ -196,7 +196,7 @@ public static class Stage {
 					var e = stack.CreateInstance();
 					if (e == null) break;
 					stack.Entities.Push(e);
-				} catch (System.Exception ex) { Game.LogException(ex); }
+				} catch (System.Exception ex) { Util.LogException(ex); }
 			}
 			EntityPool.TryAdd(id, stack);
 		}
@@ -303,7 +303,7 @@ public static class Stage {
 			for (int index = 0; index < count; index++) {
 				try {
 					entities[index].FillPhysics();
-				} catch (System.Exception ex) { Game.LogException(ex); }
+				} catch (System.Exception ex) { Util.LogException(ex); }
 			}
 		}
 
@@ -317,7 +317,7 @@ public static class Stage {
 				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
 						e.BeforePhysicsUpdate();
-					} catch (System.Exception ex) { Game.LogException(ex); }
+					} catch (System.Exception ex) { Util.LogException(ex); }
 				}
 			}
 		}
@@ -332,7 +332,7 @@ public static class Stage {
 				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
 						e.PhysicsUpdate();
-					} catch (System.Exception ex) { Game.LogException(ex); }
+					} catch (System.Exception ex) { Util.LogException(ex); }
 				}
 			}
 		}
@@ -352,7 +352,7 @@ public static class Stage {
 						CellRenderer.SetTextLayer(0);
 						e.FrameUpdate();
 						e.FrameUpdated = true;
-					} catch (System.Exception ex) { Game.LogException(ex); }
+					} catch (System.Exception ex) { Util.LogException(ex); }
 				}
 			}
 			AfterLayerFrameUpdate?.Invoke(layer);
@@ -671,7 +671,7 @@ public static class Stage {
 			) return null;
 			if (!EntityPool.TryGetValue(typeID, out var eMeta)) {
 				if (Game.IsEdittime) {
-					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) Game.LogWarning($"Invalid Entity Type ID {typeID}");
+					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) Util.LogWarning($"Invalid Entity Type ID {typeID}");
 				}
 				return null;
 			}
@@ -723,7 +723,7 @@ public static class Stage {
 				entity.SpawnFrame = Game.GlobalFrame;
 				return entity;
 			}
-		} catch (System.Exception ex) { Game.LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 		return null;
 	}
 
@@ -732,7 +732,7 @@ public static class Stage {
 		entity.Active = false;
 		try {
 			entity.OnInactivated();
-		} catch (System.Exception ex) { Game.LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 		entity.FrameUpdated = false;
 		StagedEntityHash.Remove(entity.InstanceID);
 		if (meta == null && EntityPool.TryGetValue(entity.TypeID, out meta)) {

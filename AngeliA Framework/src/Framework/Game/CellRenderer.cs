@@ -231,7 +231,7 @@ public static partial class CellRenderer {
 				Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
 			}
-		} catch (System.Exception ex) { Game.LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 		try {
 			for (int i = 0; i < TextLayers.Length; i++) {
 				var layer = TextLayers[i];
@@ -240,7 +240,7 @@ public static partial class CellRenderer {
 				Game.OnLayerUpdate(i, layer.UiLayer, true, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
 			}
-		} catch (System.Exception ex) { Game.LogException(ex); }
+		} catch (System.Exception ex) { Util.LogException(ex); }
 	}
 
 

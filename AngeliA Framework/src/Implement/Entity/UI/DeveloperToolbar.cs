@@ -207,7 +207,7 @@ public static class DeveloperToolbar {
 						var layerObj = layers.GetValue(layerIndex);
 						CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
 					}
-				} catch (System.Exception ex) { Game.LogException(ex); }
+				} catch (System.Exception ex) { Util.LogException(ex); }
 				if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
 			}
 			// Draw Cells
@@ -234,7 +234,7 @@ public static class DeveloperToolbar {
 								}
 							}
 						}
-					} catch (System.Exception ex) { Game.LogException(ex); }
+					} catch (System.Exception ex) { Util.LogException(ex); }
 				}
 			}
 		}

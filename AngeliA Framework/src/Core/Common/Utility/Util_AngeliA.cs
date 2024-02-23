@@ -11,7 +11,9 @@ public static partial class Util {
 	public const string RULE_TILE_ERROR = "ERROR---";
 	private static readonly System.Random GlobalRandom = new(2334768);
 	public static event System.Action<System.Exception> OnLogException;
-	public static event System.Action<string> OnLogWarning;
+	public static event System.Action<object> OnLogError;
+	public static event System.Action<object> OnLogWarning;
+	public static event System.Action<object> OnLog;
 
 	// API
 	public static bool IsLineBreakingChar (char c) =>
@@ -375,9 +377,14 @@ public static partial class Util {
 		return fVolume * fVolume;
 	}
 
+	// Log
 	public static void LogException (System.Exception ex) => OnLogException?.Invoke(ex);
 
-	public static void LogWarning (object message) => OnLogWarning?.Invoke(message.ToString());
+	public static void LogError (object message) => OnLogError?.Invoke(message);
+
+	public static void LogWarning (object message) => OnLogWarning?.Invoke(message);
+
+	public static void Log (object message) => OnLog?.Invoke(message);
 
 	// Random
 	public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);

@@ -5,10 +5,10 @@ using System.Text.Json.Serialization;
 using Raylib_cs;
 using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliaEditor;
 
 [Serializable]
-public class EngineSetting {
+public class Setting {
 
 	public bool WindowMode = true;
 	public bool Maximize = true;

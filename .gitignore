@@ -1,6 +1,5 @@
 .vs/
 .github/
-dotnet sdk/
 obj/
 bin/
 *.vsconfig

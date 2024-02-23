@@ -42,7 +42,7 @@ public partial class RayGame : Game {
 			try {
 				game.UpdateGame();
 			} catch (System.Exception ex) {
-				LogException(ex);
+				Util.LogException(ex);
 			}
 		}
 		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();

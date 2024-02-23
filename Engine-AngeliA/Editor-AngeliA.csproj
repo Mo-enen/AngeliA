@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AssemblyName>Angelia Engine</AssemblyName>
-		<RootNamespace>AngeliaEngine</RootNamespace>
+		<AssemblyName>Angelia Editor</AssemblyName>
+		<RootNamespace>AngeliaEditor</RootNamespace>
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
