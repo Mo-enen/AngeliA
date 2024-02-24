@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Raylib_cs;
 
-namespace AngeliaPlayer;
+namespace AngeliaToRaylib;
 
 public class FontData {
 
@@ -48,6 +48,7 @@ public class FontData {
 		if (img.Width * img.Height != 0) {
 			texture = Raylib.LoadTextureFromImage(img);
 			Raylib.SetTextureFilter(texture, TextureFilter.Bilinear);
+			Raylib.SetTextureWrap(texture, TextureWrap.Clamp);
 			Pool.TryAdd(c, (img, texture));
 			return true;
 		}

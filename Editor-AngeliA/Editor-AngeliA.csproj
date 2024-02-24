@@ -10,7 +10,7 @@
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<ErrorReport>none</ErrorReport>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
-		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 		<Optimize>True</Optimize>
 		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
@@ -19,6 +19,7 @@
 		<PublishDir>Publish</PublishDir>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
 
 	</PropertyGroup>
 
@@ -41,13 +42,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AngeliA Player\AngeliA Player.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="raylib-cs">
-			<HintPath>..\AngeliA Player\raylib\raylib-cs.dll</HintPath>
-		</Reference>
+		<ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
 	</ItemGroup>
 
 	<!--Remove-->
@@ -55,6 +50,11 @@
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 		<None Remove="dotnet sdk\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="raylib-cs">
+	    <HintPath>..\AngeliA to Raylib\raylib\raylib-cs.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Raylib_cs;
 using AngeliA;
-using AngeliaPlayer;
+using AngeliaToRaylib;
 using KeyboardKey = Raylib_cs.KeyboardKey;
 using System.Linq;
 
@@ -25,7 +25,7 @@ public class Editor {
 			Title = "Title 0";
 		}
 		public override void DrawWindow (Rectangle windowRect) {
-			Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
+			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
 		}
 	}
 	public class TestWindow1 : Window {
@@ -34,7 +34,7 @@ public class Editor {
 			Title = "Title 1";
 		}
 		public override void DrawWindow (Rectangle windowRect) {
-			Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
+			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
 		}
 	}
 	public class TestWindow2 : Window {
@@ -42,7 +42,7 @@ public class Editor {
 			Title = "Title 2";
 		}
 		public override void DrawWindow (Rectangle windowRect) {
-			Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
+			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
 		}
 	}
 
@@ -54,10 +54,14 @@ public class Editor {
 	private const int FLOAT_WINDOW_HEIGHT = 800;
 	private const int TAB_BAR_HEIGHT = 32;
 
+	// Event
+	private static event Func<bool> OnTryingToQuit;
+
 	// Data
-	private readonly Dictionary<int, Texture2D> TexturePool = new();
+	private static bool RequireQuit = false;
+	private static float UiScale = 1f;
 	private readonly Sheet Sheet = new();
-	private FontData[] Fonts;
+	private FontData Font;
 	private Setting Setting;
 	private Window[] Windows;
 	private Vector2? FloatMascotMouseDownPos = null;
@@ -76,31 +80,28 @@ public class Editor {
 
 
 	public static void Run () {
-		var engine = new Editor();
-		engine.Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
-		engine.Initialize();
-		while (true) {
+		var editor = new Editor();
+		editor.Init_Editor();
+		editor.Init_Resources();
+		editor.Init_Window();
+		while (!RequireQuit) {
 			Raylib.BeginDrawing();
-			engine.OnGUI();
+			editor.OnGUI();
 			GizmosRender.UpdateGizmos();
 			Raylib.EndDrawing();
-			if (Raylib.WindowShouldClose()) break;
+			if (Raylib.WindowShouldClose() && (OnTryingToQuit == null || OnTryingToQuit.Invoke())) break;
 		}
-		engine.OnQuit();
+		editor.OnQuit();
 		Raylib.CloseWindow();
 		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
 	}
 
 
 	// Init
-	private void Initialize () {
-		Init_Raylib();
-		Init_Resources();
-		Init_Window();
-	}
-
-
-	private void Init_Raylib () {
+	private void Init_Editor () {
+		RequireQuit = false;
+		Util.LinkEventWithAttribute<OnTryingToQuitAttribute>(typeof(Editor), nameof(OnTryingToQuit));
+		Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
 		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
 		AngeliA.Util.OnLogException += LogException;
 		AngeliA.Util.OnLogError += LogError;
@@ -114,17 +115,15 @@ public class Editor {
 
 
 	private void Init_Resources () {
-		string universePath = AngeliA.Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
+		string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
 		// Font
-		Fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
+		var fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
+		Font = fonts != null && fonts.Length > 0 ? fonts[0] : new();
 		// Sheet
 		string sheetPath = AngePath.GetSheetPath(universePath);
 		string artworkPath = AngePath.GetArtworkRoot(universePath);
 		SheetUtil.RecreateSheetIfArtworkModified(sheetPath, artworkPath);
 		Sheet.LoadFromDisk(sheetPath);
-		// Texture
-		TexturePool.Clear();
-		TextureUtil.FillSheetIntoTexturePool(Sheet, TexturePool);
 	}
 
 
@@ -141,7 +140,7 @@ public class Editor {
 
 	// Quit
 	private void OnQuit () {
-		foreach (var font in Fonts) font.Unload();
+		Font.Unload();
 		Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
 	}
@@ -149,7 +148,7 @@ public class Editor {
 
 	// GUI
 	private void OnGUI () {
-		Window.UiScale = Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) / 1000f;
+		UiScale = Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) / 1000f;
 		CurrentWindowIndex = CurrentWindowIndex.Clamp(0, Windows.Length - 1);
 		if (Setting.WindowMode) {
 			OnGUI_Window();
@@ -171,7 +170,7 @@ public class Editor {
 			return;
 		}
 
-		int barHeight = Window.Unify(TAB_BAR_HEIGHT);
+		int barHeight = Unify(TAB_BAR_HEIGHT);
 		OnGUI_TabBar(barHeight);
 		var window = Windows[CurrentWindowIndex];
 		window.DrawWindow(new Rectangle(0, barHeight, Raylib.GetRenderWidth(), Raylib.GetRenderHeight() - barHeight));
@@ -191,12 +190,12 @@ public class Editor {
 			return;
 		}
 
-		int width = Window.Unify(FLOAT_WINDOW_WIDTH);
-		int height = Window.Unify(FLOAT_WINDOW_HEIGHT);
+		int width = Unify(FLOAT_WINDOW_WIDTH);
+		int height = Unify(FLOAT_WINDOW_HEIGHT);
 		int monitor = Raylib.GetCurrentMonitor();
 		int monitorWidth = Raylib.GetMonitorWidth(monitor);
 		int monitorHeight = Raylib.GetMonitorHeight(monitor);
-		int barHeight = Window.Unify(TAB_BAR_HEIGHT);
+		int barHeight = Unify(TAB_BAR_HEIGHT);
 		Raylib.SetWindowPosition((monitorWidth - width) / 2, (monitorHeight - height) / 2);
 		Raylib.SetWindowSize(width, height);
 		OnGUI_TabBar(barHeight);
@@ -285,10 +284,32 @@ public class Editor {
 	private void OnGUI_TabBar (int barHeight) {
 		var barRect = new Rectangle(0, 0, Raylib.GetRenderWidth(), barHeight);
 
+		Sheet.Draw("Circle16".AngeHash(), new Rectangle(12, 128, 1024, 1024), Color32.RED_BETTER);
+
+		Font.DrawLabel(
+			CellContent.Get("Test中文", Color32.WHITE, 96),
+			new Rectangle(12, 128, 1024, 1024),
+			-1, 0, false, out _, out _, out _
+		);
 
 
 
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public static void Quit () => RequireQuit = true;
+
+	public static int Unify (float value) => (int)(value * UiScale);
+
+	public static int Unify (int value) => (int)(value * UiScale);
 
 
 	#endregion

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using AngeliA;
 using Raylib_cs;
 
-namespace AngeliaPlayer;
+namespace AngeliaToRaylib;
 
 public static class TextureUtil {
 

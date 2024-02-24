@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "Angelia Editor/1.0.0": {
         "dependencies": {
+          "AngeliA Player.Reference": "0.0.0.0",
           "raylib-cs": "6.0.0.0"
         },
         "runtime": {
@@ -25,6 +26,14 @@
         },
         "runtime": {
           "AngeliA Player.dll": {}
+        }
+      },
+      "AngeliA Player.Reference/0.0.0.0": {
+        "runtime": {
+          "AngeliA Player.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
         }
       },
       "raylib-cs/6.0.0.0": {
@@ -50,6 +59,11 @@
     },
     "AngeliA Player/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AngeliA Player.Reference/0.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     },

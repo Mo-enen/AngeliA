@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Internal;
+namespace AngeliA;
 
 
-public class TextUtilInternal {
+public class TextUtil {
 
 
 	public delegate bool RequireCharSpriteHander (char c, out CharSprite sprite);
-	public delegate Cell DrawCharHandler (char c, int x, int y, int width, int height, Color32 color);
+	public delegate Cell DrawCharHandler (CharSprite sprite, int x, int y, int width, int height, Color32 color);
 
 
 	public static void DrawLabel (
@@ -37,6 +37,7 @@ public class TextUtilInternal {
 		bool hasContent = count > 0;
 		bool clip = content.Clip;
 		bool beamEnd = beamIndex >= count;
+		requireCharSprite(' ', out var emptyCharSprite);
 
 		// Content
 		int maxLineCount = ((float)rect.height / (charSize + lineSpace)).FloorToInt();
@@ -95,15 +96,17 @@ public class TextUtilInternal {
 				if (char.IsWhiteSpace(c)) goto CONTINUE;
 				if (clip && line >= maxLineCount) break;
 			}
-			var cell = drawChar(c, x, y, charSize, charSize, color) ?? Cell.EMPTY;
+			var cell = drawChar(sprite, x, y, charSize, charSize, color) ?? Cell.EMPTY;
 			if (cell != null && cell.TextSprite != null) textCountInLayer++;
 			if (content.Shadow.a > 0 && shadowOffset != 0) {
-				var shadowCell = drawChar(c, 0, 0, 1, 1, Color32.WHITE);
-				if (cell != null && cell.TextSprite != null) textCountInLayer++;
-				shadowCell.CopyFrom(cell);
-				shadowCell.Color = content.Shadow;
-				shadowCell.Y -= shadowOffset;
-				shadowCell.Z--;
+				var shadowCell = drawChar(sprite, 0, 0, 1, 1, Color32.WHITE);
+				if (shadowCell != null) {
+					if (cell != null && cell.TextSprite != null) textCountInLayer++;
+					shadowCell.CopyFrom(cell);
+					shadowCell.Color = content.Shadow;
+					shadowCell.Y -= shadowOffset;
+					shadowCell.Z--;
+				}
 			}
 
 			// Beam
@@ -138,7 +141,7 @@ public class TextUtilInternal {
 				int textCount = i - startIndex;
 				int addCount = textCount - cellCount;
 				for (int add = 0; add < addCount; add++) {
-					var _cell = drawChar(' ', 0, 0, 0, 0, color);
+					var _cell = drawChar(emptyCharSprite, 0, 0, 0, 0, color);
 					if (_cell != null && _cell.TextSprite != null) textCountInLayer++;
 				}
 			}
@@ -188,6 +191,7 @@ public class TextUtilInternal {
 	}
 
 
+	// LGC
 	private static bool WordEnoughToFit (RequireCharSpriteHander requireCharSprite, CellContent content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
 		int index = startIndex;
 		int count = content.FromString ? content.Text.Length : content.Chars.Length;

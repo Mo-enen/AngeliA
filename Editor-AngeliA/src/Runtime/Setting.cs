@@ -18,7 +18,7 @@ public class Setting {
 	public int WindowSizeY = 1024;
 	public int WindowPositionX = 128;
 	public int WindowPositionY = 128;
-	
+
 	[JsonIgnore] public bool Initialized = false;
 
 	public void LoadValueFromWindow () {

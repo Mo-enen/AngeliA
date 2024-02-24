@@ -1,6 +1,6 @@
 ﻿using AngeliA;
 
-namespace AngeliaPlayer;
+namespace AngeliaToRaylib;
 
 public class BuiltInShader {
 

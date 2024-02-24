@@ -4,7 +4,7 @@ using AngeliA;
 using AngeliA.Framework;
 using Raylib_cs;
 
-namespace AngeliaPlayer.Framework;
+namespace AngeliaToRaylib.Framework;
 
 public partial class RayGame {
 

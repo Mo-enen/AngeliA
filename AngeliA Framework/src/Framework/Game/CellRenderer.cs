@@ -149,16 +149,9 @@ public static partial class CellRenderer {
 
 		// Func
 		static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
-			var cells = new Cell[renderCapacity];
-			for (int i = 0; i < renderCapacity; i++) {
-				cells[i] = new Cell() {
-					Sprite = null,
-					BorderSide = Alignment.Full,
-				};
-			}
 			var layer = textLayer ? new TextLayer() : new Layer();
 			layer.Name = name;
-			layer.Cells = cells;
+			layer.Cells = new Cell[renderCapacity].FillWithNewValue();
 			layer.CellCount = renderCapacity;
 			layer.FocusedCell = 0;
 			layer.PrevCellCount = 0;
@@ -400,35 +393,43 @@ public static partial class CellRenderer {
 
 
 	public static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
+		if (!IsDrawing || !TextReady) return Cell.EMPTY;
+		var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
+		if (!layer.TextIDMap.TryGetValue(c, out var tSprite)) return Cell.EMPTY;
+		return DrawChar(tSprite, x, y, width, height, color);
+	}
 
-		if (!IsDrawing) return Cell.EMPTY;
+	public static Cell DrawChar (CharSprite sprite, int x, int y, int width, int height, Color32 color) {
+
+		if (!IsDrawing || !TextReady || sprite == null) return Cell.EMPTY;
 
 		var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
-		if (layer.FocusedCell < 0 || !layer.TextIDMap.TryGetValue(c, out var tSprite)) return Cell.EMPTY;
+		if (layer.FocusedCell < 0) return Cell.EMPTY;
 
 		var cell = layer.Cells[layer.FocusedCell];
+		var uvOffset = sprite.Offset;
 
 		cell.Z = 0;
 		cell.Sprite = null;
-		cell.TextSprite = tSprite;
+		cell.TextSprite = sprite;
 		cell.Order = layer.FocusedCell;
-		cell.X = x;
-		cell.Y = y;
-		cell.Width = width;
-		cell.Height = height;
 		cell.Rotation = 0;
 		cell.PivotX = 0;
 		cell.PivotY = 0;
 		cell.Color = color;
 		cell.BorderSide = Alignment.Full;
 		cell.Shift = Int4.zero;
+		cell.X = x + (int)(width * uvOffset.x);
+		cell.Y = y + (int)(height * uvOffset.y);
+		cell.Width = (int)(width * uvOffset.width);
+		cell.Height = (int)(height * uvOffset.height);
 
 		// Final
 		layer.FocusedCell++;
 		if (layer.FocusedCell >= layer.CellCount) {
 			layer.FocusedCell = -1;
 		}
-		LastDrawnID = c;
+		LastDrawnID = sprite.Char;
 		return cell;
 	}
 

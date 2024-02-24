@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿#if DEBUG
+using System.Linq;
 
-namespace AngeliaPlayer.Editor;
+namespace AngeliaToRaylib.Editor;
 
-#if DEBUG
 public class EditorRefit {
 	[OnQuit]
 	internal static void OnGameQuitting () {

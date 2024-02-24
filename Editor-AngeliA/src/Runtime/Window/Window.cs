@@ -16,7 +16,6 @@ public abstract class Window {
 
 
 	// Api
-	public static float UiScale { get; set; } = 1f;
 	public string Title { get; set; } = "";
 	public int Order { get; set; } = 0;
 	public int Icon { get; set; } = 0;
@@ -40,10 +39,6 @@ public abstract class Window {
 
 	#region --- API ---
 
-
-	// Util
-	public static int Unify (float value) => (int)(value * UiScale);
-	public static int Unify (int value) => (int)(value * UiScale);
 
 
 	#endregion

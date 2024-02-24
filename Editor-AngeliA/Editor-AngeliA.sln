@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Editor-AngeliA", "Editor-An
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Framework", "..\AngeliA Framework\AngeliA Framework.csproj", "{99E1C2E8-657E-4415-B2C9-C097A402B692}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Player", "..\AngeliA Player\AngeliA Player.csproj", "{4910BAFD-8AA4-47AA-B969-682426E8C9D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA to Raylib", "..\AngeliA to Raylib\AngeliA to Raylib.csproj", "{4910BAFD-8AA4-47AA-B969-682426E8C9D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

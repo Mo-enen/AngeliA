@@ -7,7 +7,7 @@ using Raylib_cs;
 
 [assembly: AngeliA]
 
-namespace AngeliaPlayer.Framework;
+namespace AngeliaToRaylib.Framework;
 
 public partial class RayGame : Game {
 
@@ -42,7 +42,6 @@ public partial class RayGame : Game {
 			}
 		}
 		game.QuitGame();
-		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
 	}
 
 

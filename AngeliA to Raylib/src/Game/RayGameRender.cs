@@ -7,7 +7,7 @@ using AngeliA.Framework;
 using Raylib_cs;
 
 
-namespace AngeliaPlayer.Framework;
+namespace AngeliaToRaylib.Framework;
 
 
 public partial class RayGame {
@@ -521,24 +521,7 @@ public partial class RayGame {
 
 	protected override int _GetFontSize (int index) => Fonts[index].Size;
 
-	protected override CharSprite _GetCharSprite (int layerIndex, char c, int textSize) {
-
-		var fontData = Fonts[layerIndex];
-		if (!fontData.TryGetCharData(c, out var info, out var texture)) return null;
-
-		float fontSize = fontData.Size / fontData.Scale;
-		var charSprite = new CharSprite();
-		charSprite.Char = c;
-		charSprite.Advance = info.AdvanceX / fontSize;
-		charSprite.Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
-			xmin: info.OffsetX / fontSize,
-			ymin: (fontSize - info.OffsetY - info.Image.Height) / fontSize,
-			xmax: (info.OffsetX + info.Image.Width) / fontSize,
-			ymax: (fontSize - info.OffsetY) / fontSize
-		);
-
-		return charSprite;
-	}
+	protected override CharSprite _GetCharSprite (int layerIndex, char c, int textSize) => RaylibUtil.CreateCharSprite(Fonts[layerIndex], c);
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();
 

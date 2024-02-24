@@ -4,7 +4,7 @@ using AngeliA;
 using Raylib_cs;
 
 
-namespace AngeliaPlayer;
+namespace AngeliaToRaylib;
 
 
 public class GLRect {

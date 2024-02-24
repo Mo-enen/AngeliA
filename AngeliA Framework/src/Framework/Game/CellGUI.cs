@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using AngeliA.Internal;
 
 
 namespace AngeliA.Framework;
@@ -150,8 +149,8 @@ public static class CellGUI {
 
 		// Draw Chars
 		CellRenderer.GetTextCells(out var cells, out int cellCount);
-		TextUtilInternal.DrawLabel(
-			CellRenderer.RequireCharForPool, DrawChar,
+		TextUtil.DrawLabel(
+			CellRenderer.RequireCharForPool, CellRenderer.DrawChar,
 			CellRenderer.CameraRect.height, cellCount, cells,
 			content, rect, beamIndex, startIndex, drawInvisibleChar,
 			out bounds, out beamRect, out endIndex
@@ -585,33 +584,6 @@ public static class CellGUI {
 			}
 		}
 		TypingBuilder.Append(c);
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
-
-		if (!CellRenderer.TextReady) return null;
-
-		// Require
-		if (!CellRenderer.RequireCharForPool(c, out var sprite)) return null;
-
-		// Draw
-		var cell = CellRenderer.DrawChar(c, x, y, width, height, color);
-		if (cell.TextSprite == null) return cell;
-		var uvOffset = sprite.Offset;
-		cell.X += (int)(cell.Width * uvOffset.x);
-		cell.Y += (int)(cell.Height * uvOffset.y);
-		cell.Width = (int)(cell.Width * uvOffset.width);
-		cell.Height = (int)(cell.Height * uvOffset.height);
-		return cell;
 	}
 
 
