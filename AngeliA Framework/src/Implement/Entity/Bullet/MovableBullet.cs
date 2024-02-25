@@ -32,7 +32,7 @@ public abstract class MovableBullet : Bullet {
 		if (!Active) return;
 
 		var vel = Velocity;
-		if (CellPhysics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
+		if (Physics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
 			vel.x = vel.x * WaterSpeedRate / 1000;
 			vel.y = vel.y * WaterSpeedRate / 1000;
 		}
@@ -53,7 +53,7 @@ public abstract class MovableBullet : Bullet {
 		}
 
 		// Oneway Check
-		var hits = CellPhysics.OverlapAll(EnvironmentMask, Rect, out int count, Sender, OperationMode.TriggerOnly);
+		var hits = Physics.OverlapAll(EnvironmentMask, Rect, out int count, Sender, OperationMode.TriggerOnly);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Tag == 0 || !Util.TryGetOnewayDirection(hit.Tag, out var onewayDir)) continue;
@@ -112,11 +112,11 @@ public abstract class MovableBullet : Bullet {
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		if (CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
+		if (Renderer.TryGetSprite(ArtworkID, out var sprite)) {
 			int facingSign = Velocity.x.Sign();
 			CurrentRotation += facingSign * RotateSpeed;
 			int signedPivotX = facingSign > 0 ? sprite.PivotX : 1000 - sprite.PivotX;
-			CellRenderer.Draw(
+			Renderer.Draw(
 				ArtworkID,
 				X + Width * signedPivotX / 1000,
 				Y + Height * sprite.PivotY / 1000,
@@ -138,7 +138,7 @@ public abstract class MovableBullet : Bullet {
 
 		particle.ArtworkID = ArtworkID;
 
-		if (CellRenderer.TryGetSprite(ArtworkID, out var sprite)) {
+		if (Renderer.TryGetSprite(ArtworkID, out var sprite)) {
 			particle.Width = sprite.GlobalWidth;
 			particle.Height = sprite.GlobalHeight;
 		} else {

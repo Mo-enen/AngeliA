@@ -44,7 +44,7 @@ public abstract class Door : EnvironmentEntity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
@@ -61,12 +61,12 @@ public abstract class Door : EnvironmentEntity {
 
 			// Invoke
 			if (!InputLock && !player.LockingInput && PlayerOverlaps) {
-				if (FrameInput.GameKeyHolding(Gamekey.Up)) {
+				if (Input.GameKeyHolding(Gamekey.Up)) {
 					Invoke(player);
 				}
 				ControlHintUI.AddHint(Gamekey.Up, HINT_ENTER);
 			}
-			if (InputLock && !FrameInput.GameKeyHolding(Gamekey.Up)) {
+			if (InputLock && !Input.GameKeyHolding(Gamekey.Up)) {
 				InputLock = false;
 			}
 		}
@@ -77,16 +77,16 @@ public abstract class Door : EnvironmentEntity {
 		base.FrameUpdate();
 
 		int artIndex = Open || PlayerOverlaps ? 1 : 0;
-		if (!CellRenderer.TryGetSpriteFromGroup(TypeID, artIndex, out var sprite)) return;
+		if (!Renderer.TryGetSpriteFromGroup(TypeID, artIndex, out var sprite)) return;
 
 		// Draw
-		var cell = CellRenderer.Draw(
+		var cell = Renderer.Draw(
 			sprite, X + Width / 2, Y, 500, 0, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 		);
 
 		// Z Fix
-		if (IsFrontDoor != FrameTask.IsTasking<TeleportTask>()) {
+		if (IsFrontDoor != Task.IsTasking<TeleportTask>()) {
 			cell.Z = -cell.Z;
 		}
 	}
@@ -94,7 +94,7 @@ public abstract class Door : EnvironmentEntity {
 
 	// API
 	public virtual bool Invoke (Player player) {
-		if (player == null || FrameTask.HasTask()) return false;
+		if (player == null || Task.HasTask()) return false;
 		TeleportTask.Teleport(
 			X + Width / 2, Y + Height / 2, X + Width / 2, Y,
 			IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
@@ -108,7 +108,7 @@ public abstract class Door : EnvironmentEntity {
 
 
 	public virtual bool AllowInvoke (Entity target) =>
-		!FrameTask.HasTask() && target is Character ch &&
+		!Task.HasTask() && target is Character ch &&
 		ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquatting && !ch.IsClimbing;
 
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Character",
+[assembly: AngeliA.RequireGlobalSprite(atlas: "Character",
 	"DefaultCharacterFace",
 	"DefaultCharacterFace.Face.Normal",
 	"DefaultCharacterFace.Face.Blink",
@@ -52,7 +52,7 @@ public class FaceSpriteID {
 		if (!string.IsNullOrEmpty(keyword)) {
 			for (int i = 0; i < FACE_TYPE_COUNT; i++) {
 				int id = $"{keyword}.Face.{(CharacterFaceType)i}".AngeHash();
-				if (!CellRenderer.HasSpriteGroup(id) && !CellRenderer.HasSprite(id))
+				if (!Renderer.HasSpriteGroup(id) && !Renderer.HasSprite(id))
 					id = DEFAULT_ID[i];
 				SpriteIDs[i] = id;
 			}
@@ -101,7 +101,7 @@ public abstract class Face : BodyGadget {
 			character.IsAttacking &&
 			character.EquippingWeaponType != WeaponType.Magic &&
 			character.EquippingWeaponType != WeaponType.Ranged;
-		if (!CellRenderer.TryGetSpriteFromGroup(
+		if (!Renderer.TryGetSpriteFromGroup(
 			spriteGroupID,
 			attacking ? (Game.GlobalFrame - character.LastAttackFrame) * 2 / character.AttackDuration : character.CurrentAnimationFrame / 5,
 			out var sprite,
@@ -152,7 +152,7 @@ public abstract class Face : BodyGadget {
 
 
 		// Draw
-		var cells = CellRenderer.Draw_9Slice(
+		var cells = Renderer.Draw_9Slice(
 			sprite,
 			faceRect.CenterX(), faceRect.y, 500, 0, 0, faceRect.width, faceRect.height,
 Color32.WHITE, 33
@@ -168,7 +168,7 @@ Color32.WHITE, 33
 					cell.X += offsetX;
 					cell.Width -= offsetX.Abs() / 2;
 				}
-				CellRenderer.ClampCells(cells, headRect);
+				Renderer.ClampCells(cells, headRect);
 			}
 
 			// Rotate
@@ -206,13 +206,13 @@ Color32.WHITE, 33
 
 		// Draw Ears
 		if (!facingRight) (offsetXL, offsetXR) = (-offsetXR, -offsetXL);
-		var cellL = CellRenderer.Draw(
+		var cellL = Renderer.Draw(
 			spriteL,
 			faceRect.x + offsetXL, faceRect.yMax, 1000, 1000, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, character.SkinColor,
 			facingRight ? 33 : -33
 		);
-		var cellR = CellRenderer.Draw(
+		var cellR = Renderer.Draw(
 			spriteR,
 			faceRect.xMax + offsetXR, faceRect.yMax, 0, 1000, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, character.SkinColor,

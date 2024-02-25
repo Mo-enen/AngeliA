@@ -92,7 +92,7 @@ public class Explosion : Entity {
 		// Explode
 		if (!Exploded) {
 			Exploded = true;
-			var hits = CellPhysics.OverlapAll(
+			var hits = Physics.OverlapAll(
 				CollisionMask,
 				new IRect(X - Radius, Y - Radius, Radius * 2, Radius * 2),
 				out int count,
@@ -137,13 +137,13 @@ public class Explosion : Entity {
 		int radiusExpand = (int)Util.LerpUnclamped(Radius / 3, Radius * 2, ease01Ex);
 
 		// Additive
-		CellRenderer.SetLayerToAdditive();
+		Renderer.SetLayerToAdditive();
 
 		// Light
 		if (LightArtwork != 0) {
 			int lightRadius = Radius * 20 / 8;
 			var lightColor = new Color32(255, 255, 255, (byte)Util.LerpUnclamped(255, 0, lerp01));
-			CellRenderer.Draw(
+			Renderer.Draw(
 				LightArtwork, X, Y, 500, 500, 0, lightRadius, lightRadius,
 				lightColor, 1023
 			);
@@ -153,7 +153,7 @@ public class Explosion : Entity {
 		if (WaveArtwork != 0) {
 			var waveColor = WaveColor;
 			waveColor.a = (byte)Util.LerpUnclamped(220, 0, ease01Cub);
-			CellRenderer.Draw(
+			Renderer.Draw(
 				WaveArtwork, X, Y, 500, 500, (int)(ease01Ex * 830), radiusExpand, radiusExpand,
 				waveColor, 1024
 			);
@@ -164,18 +164,18 @@ public class Explosion : Entity {
 			var ringColor = RingColor;
 			ringColor.a = (byte)Util.LerpUnclamped(255, 0, ease01Ex);
 			int ringRadius = Radius * 9 / 10;
-			CellRenderer.Draw_9Slice(RingArtwork, X, Y, 500, 500, (int)(ease01Ex * 720), ringRadius, ringRadius, ringColor, 1025);
+			Renderer.Draw_9Slice(RingArtwork, X, Y, 500, 500, (int)(ease01Ex * 720), ringRadius, ringRadius, ringColor, 1025);
 		}
 
 
 		// Cell
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToDefault();
 
 		// Dark
 		if (DarkArtwork != 0) {
 			var darkColor = new Color32(0, 0, 0, (byte)Util.LerpUnclamped(64, 0, lerp01));
 			int darkRadius = Radius * 22 / 8;
-			CellRenderer.Draw(
+			Renderer.Draw(
 				DarkArtwork, X, Y, 500, 500, 45,
 				darkRadius, darkRadius, darkColor, int.MaxValue - 2
 			);
@@ -189,7 +189,7 @@ public class Explosion : Entity {
 				var pos = FirePos[i];
 				int radius = i % 2 == 0 ? radiusShrink : radiusExpand;
 				int size = Util.RemapUnclamped(0, 1000, radius / 6, radius / 2, pos.z);
-				CellRenderer.Draw(
+				Renderer.Draw(
 					FireArtwork,
 					X + pos.x * radius / 2000,
 					Y + pos.y * radius / 2000,

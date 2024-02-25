@@ -46,47 +46,23 @@ public enum ReleaseLifeCycle { Alpha = 0, Beta = 1, Release = 2, Final = 3, }
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class AngeliaVersionAttribute : System.Attribute {
-	public int MajorVersion;
-	public int MinorVersion;
-	public int PatchVersion;
-	public ReleaseLifeCycle LifeCycle;
+	public static int MajorVersion = 0;
+	public static int MinorVersion = 0;
+	public static int PatchVersion = 0;
+	public static ReleaseLifeCycle? LifeCycle = null;
 	public AngeliaVersionAttribute (int majorVersion, int minorVersion, int patchVersion, ReleaseLifeCycle lifeCycle) {
 		MajorVersion = majorVersion;
 		MinorVersion = minorVersion;
 		PatchVersion = patchVersion;
 		LifeCycle = lifeCycle;
 	}
-	public static bool GetVersion (out int major, out int minor, out int patch, out ReleaseLifeCycle lifeCycle) {
-		major = -1;
-		minor = -1;
-		patch = -1;
-		lifeCycle = ReleaseLifeCycle.Release;
-		foreach (var assembly in Util.AllAssemblies) {
-			var att = assembly.GetCustomAttribute<AngeliaVersionAttribute>();
-			if (att != null) {
-				major = att.MajorVersion;
-				minor = att.MinorVersion;
-				patch = att.PatchVersion;
-				lifeCycle = att.LifeCycle;
-				return true;
-			}
-		}
-		return false;
-	}
-	public static string GetVersionString (bool prefixV = true, bool lifeCycle = true) {
-		foreach (var assembly in Util.AllAssemblies) {
-			var att = assembly.GetCustomAttribute<AngeliaVersionAttribute>();
-			if (att != null) {
-				return $"{(prefixV ? "v" : "")}{att.MajorVersion}.{att.MinorVersion}.{att.PatchVersion}{(lifeCycle ? att.LifeCycle switch {
-					ReleaseLifeCycle.Alpha => "a",
-					ReleaseLifeCycle.Beta => "b",
-					ReleaseLifeCycle.Final => "f",
-					_ => "",
-				} : "")}";
-			}
-		}
-		return string.Empty;
-	}
+	public static string GetVersionString (bool prefixV = true, bool lifeCycle = true) =>
+		$"{(prefixV ? "v" : "")}{MajorVersion}.{MinorVersion}.{PatchVersion}{(lifeCycle ? LifeCycle switch {
+			ReleaseLifeCycle.Alpha => "a",
+			ReleaseLifeCycle.Beta => "b",
+			ReleaseLifeCycle.Final => "f",
+			_ => "",
+		} : "")}";
 }
 
 

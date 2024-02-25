@@ -84,44 +84,44 @@ public partial class MapEditor {
 
 		// View Z
 		if (CtrlHolding) {
-			if (FrameInput.MouseWheelDelta > 0) {
+			if (Input.MouseWheelDelta > 0) {
 				NavPosition.z++;
 			}
-			if (FrameInput.MouseWheelDelta < 0) {
+			if (Input.MouseWheelDelta < 0) {
 				NavPosition.z--;
 			}
 		}
 
 		// Move
-		if (FrameInput.AnyMouseButtonHolding) {
+		if (Input.AnyMouseButtonHolding) {
 			int squadScale = (NAV_WORLD_SIZE - 1) * Const.MAP * Const.CEL;
-			int cameraHeight = CellRenderer.CameraRect.height;
-			NavPosition.x -= FrameInput.MouseGlobalPositionDelta.x * squadScale / cameraHeight;
-			NavPosition.y -= FrameInput.MouseGlobalPositionDelta.y * squadScale / cameraHeight;
-		} else if (!ShiftHolding && FrameInput.Direction != Int2.zero) {
+			int cameraHeight = Renderer.CameraRect.height;
+			NavPosition.x -= Input.MouseGlobalPositionDelta.x * squadScale / cameraHeight;
+			NavPosition.y -= Input.MouseGlobalPositionDelta.y * squadScale / cameraHeight;
+		} else if (!ShiftHolding && Input.Direction != Int2.zero) {
 			int speed = Const.MAP * Const.CEL * 2 / NAV_WORLD_SIZE;
-			NavPosition.x += FrameInput.Direction.x * speed / 1000;
-			NavPosition.y += FrameInput.Direction.y * speed / 1000;
+			NavPosition.x += Input.Direction.x * speed / 1000;
+			NavPosition.y += Input.Direction.y * speed / 1000;
 		}
 
 		// Reset Camera
-		if (CtrlHolding && FrameInput.KeyboardDown(KeyboardKey.R)) {
+		if (CtrlHolding && Input.KeyboardDown(KeyboardKey.R)) {
 			ResetCamera();
 		}
 
 		// Tab
 		if (
-			FrameInput.KeyboardDown(KeyboardKey.Tab) ||
-			FrameInput.KeyboardUp(KeyboardKey.Escape) ||
-			FrameInput.KeyboardDown(KeyboardKey.Space) ||
-			FrameInput.KeyboardDown(KeyboardKey.Enter)
+			Input.KeyboardDown(KeyboardKey.Tab) ||
+			Input.KeyboardUp(KeyboardKey.Escape) ||
+			Input.KeyboardDown(KeyboardKey.Space) ||
+			Input.KeyboardDown(KeyboardKey.Enter)
 		) {
 			SetNavigating(!IsNavigating);
-			FrameInput.UseKeyboardKey(KeyboardKey.Escape);
-			FrameInput.UseKeyboardKey(KeyboardKey.Tab);
-			FrameInput.UseKeyboardKey(KeyboardKey.Enter);
-			FrameInput.UseGameKey(Gamekey.Start);
-			FrameInput.UseGameKey(Gamekey.Select);
+			Input.UseKeyboardKey(KeyboardKey.Escape);
+			Input.UseKeyboardKey(KeyboardKey.Tab);
+			Input.UseKeyboardKey(KeyboardKey.Enter);
+			Input.UseGameKey(Gamekey.Start);
+			Input.UseGameKey(Gamekey.Select);
 		}
 		ControlHintUI.AddHint(KeyboardKey.Tab, BuiltInText.UI_CANCEL);
 
@@ -159,12 +159,12 @@ public partial class MapEditor {
 		}
 
 		// Draw
-		var totalRect = (CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0)).Envelope(1, 1);
+		var totalRect = (Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0)).Envelope(1, 1);
 		int slotRectWidth = totalRect.width / NAV_WORLD_SIZE;
 		int slotRectHeight = totalRect.height / NAV_WORLD_SIZE;
 		int globalOffsetX = -(NavPosition.x.UMod(Const.CEL * Const.MAP) * slotRectWidth / (Const.CEL * Const.MAP));
 		int globalOffsetY = -(NavPosition.y.UMod(Const.CEL * Const.MAP) * slotRectHeight / (Const.CEL * Const.MAP));
-		var navPanelRect = CellRenderer.CameraRect.EdgeInside(Direction4.Left, PanelRect.width);
+		var navPanelRect = Renderer.CameraRect.EdgeInside(Direction4.Left, PanelRect.width);
 		for (int j = 0; j < slotSize; j++) {
 			for (int i = 0; i < slotSize; i++) {
 				var slot = NavSlots[i, j];
@@ -192,7 +192,7 @@ public partial class MapEditor {
 	private void Update_NavGizmos () {
 
 		// Camera Rect
-		var cameraRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
+		var cameraRect = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 		var totalRect = cameraRect.Envelope(1, 1);
 		int width, height;
 
@@ -216,9 +216,9 @@ public partial class MapEditor {
 
 		// Click Camera Rect
 		bool hoverRect = rect.MouseInside();
-		if (hoverRect) CursorSystem.SetCursorAsHand();
-		if (hoverRect && FrameInput.MouseLeftButtonDown) {
-			FrameInput.UseAllHoldingKeys();
+		if (hoverRect) Cursor.SetCursorAsHand();
+		if (hoverRect && Input.MouseLeftButtonDown) {
+			Input.UseAllHoldingKeys();
 			SetNavigating(false);
 		}
 
@@ -238,7 +238,7 @@ public partial class MapEditor {
 		if (IsNavigating != navigating) {
 			IsNavigating = navigating;
 			if (navigating) {
-				var cameraRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
+				var cameraRect = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 				Save();
 				NavLoadedSlotZ = int.MinValue;
 				NavPosition.x = cameraRect.CenterX() + Const.MAP * Const.HALF;

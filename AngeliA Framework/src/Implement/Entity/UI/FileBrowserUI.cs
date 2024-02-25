@@ -75,7 +75,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	private int LastSelectFrame = -1;
 	private int SelectingIndex = -1;
 	private string NavbarText = "";
-	private readonly CellContent ItemLabel = new() {
+	private readonly TextContent ItemLabel = new() {
 		CharSize = 14,
 		Alignment = Alignment.TopLeft,
 		Tint = Color32.GREY_230,
@@ -117,7 +117,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 	public override void BeforePhysicsUpdate () {
 		base.BeforePhysicsUpdate();
-		CursorSystem.RequireCursor();
+		Cursor.RequireCursor();
 	}
 
 
@@ -134,23 +134,23 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		int lineSize = Unify(5);
 
 		// Curtain
-		CellRenderer.Draw(Const.PIXEL, CellRenderer.CameraRect, Color32.BLACK_128, int.MinValue);
+		Renderer.Draw(Const.PIXEL, Renderer.CameraRect, Color32.BLACK_128, int.MinValue);
 
 		// BG
-		X = CellRenderer.CameraRect.CenterX() - windowWidth / 2;
-		Y = CellRenderer.CameraRect.CenterY() - windowHeight / 2;
+		X = Renderer.CameraRect.CenterX() - windowWidth / 2;
+		Y = Renderer.CameraRect.CenterY() - windowHeight / 2;
 		Width = windowWidth;
 		Height = windowHeight;
 		BackgroundRect = Rect.Expand(bgPadding);
-		CellRenderer.Draw(Const.PIXEL, BackgroundRect, Color32.BLACK, 0);
+		Renderer.Draw(Const.PIXEL, BackgroundRect, Color32.BLACK, 0);
 
 		// Lines
-		CellRenderer.Draw(BuiltInSprite.SOFT_LINE_H, new IRect(X, Y + Height - navBarHeight - lineSize / 2, Width, lineSize), Color32.GREY_20, z: 1);
-		CellRenderer.Draw(BuiltInSprite.SOFT_LINE_H, new IRect(X, Y + controlPanelHeight - lineSize / 2, Width, lineSize), Color32.GREY_20, z: 1);
-		CellRenderer.Draw(BuiltInSprite.SOFT_LINE_V, new IRect(X + favPanelWidth - lineSize / 2, Y + controlPanelHeight, lineSize, Height - controlPanelHeight - navBarHeight), Color32.GREY_20, z: 1);
+		Renderer.Draw(BuiltInSprite.SOFT_LINE_H, new IRect(X, Y + Height - navBarHeight - lineSize / 2, Width, lineSize), Color32.GREY_20, z: 1);
+		Renderer.Draw(BuiltInSprite.SOFT_LINE_H, new IRect(X, Y + controlPanelHeight - lineSize / 2, Width, lineSize), Color32.GREY_20, z: 1);
+		Renderer.Draw(BuiltInSprite.SOFT_LINE_V, new IRect(X + favPanelWidth - lineSize / 2, Y + controlPanelHeight, lineSize, Height - controlPanelHeight - navBarHeight), Color32.GREY_20, z: 1);
 
 		// Title
-		CellGUI.Label(
+		GUI.Label(
 			Title, Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0),
 			tint: Color32.GREY_230, charSize: 20, alignment: Alignment.MidLeft
 		);
@@ -174,10 +174,10 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Parent
 		rect.x += buttonPadding;
-		if (CellGUI.Button(
+		if (GUI.Button(
 			rect, 0, Const.PIXEL, Const.PIXEL, BuiltInSprite.ICON_TRIANGLE_LEFT, 0, iconPadding, 1,
 Color32.GREY_20, Color32.WHITE, enable: true
-		) || FrameInput.KeyboardDown(KeyboardKey.Backspace)) {
+		) || Input.KeyboardDown(KeyboardKey.Backspace)) {
 			string parentPath = Util.GetParentPath(CurrentFolder);
 			if (!string.IsNullOrEmpty(parentPath)) {
 				CurrentName = ActionType == BrowserActionType.Open ? Util.GetNameWithExtension(CurrentFolder) : CurrentName;
@@ -188,8 +188,8 @@ Color32.GREY_20, Color32.WHITE, enable: true
 		// Address
 		rect.x += buttonSize + buttonPadding;
 		rect.width = barRect.xMax - rect.x;
-		NavbarText = CellGUI.TextField(12124, rect, NavbarText, out _, out bool confirm);
-		CellRenderer.Draw_9Slice(
+		NavbarText = GUI.TextField(12124, rect, NavbarText, out _, out bool confirm);
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, rect, frameBorder, frameBorder, frameBorder, frameBorder,
 Color32.GREY_32, z: 1
 		);
@@ -217,8 +217,8 @@ Color32.GREY_32, z: 1
 
 		// Scroll
 		if (extendedRow > pageRow) {
-			ScrollY = (ScrollY - FrameInput.MouseWheelDelta * 2).Clamp(0, extendedRow - pageRow);
-			ScrollY = CellGUI.ScrollBar(
+			ScrollY = (ScrollY - Input.MouseWheelDelta * 2).Clamp(0, extendedRow - pageRow);
+			ScrollY = GUI.ScrollBar(
 				2376, paddedPanelRect.EdgeOutside(Direction4.Right, scrollBarWidth), z: 1,
 				ScrollY, extendedRow, pageRow
 			);
@@ -241,7 +241,7 @@ Color32.GREY_32, z: 1
 
 				// Icon
 				if (item.Icon != null) {
-					CellRenderer.Draw(
+					Renderer.Draw(
 						item.Icon,
 						new IRect(paddedRect.x, paddedRect.yMax - iconSize, iconSize, iconSize),
 						z: 2
@@ -249,24 +249,24 @@ Color32.GREY_32, z: 1
 				}
 
 				// Name Label
-				CellGUI.Label(
+				GUI.Label(
 					ItemLabel.SetText(item.DisplayName),
 					paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding)
 				);
 
 				// Hover Highlight
 				if (rect.MouseInside()) {
-					CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_20, z: 1);
+					Renderer.Draw(Const.PIXEL, rect, Color32.GREY_20, z: 1);
 					mouseInsideItem = true;
 				}
 
 				// Selecting Highlight
 				if (SelectingIndex == index) {
-					CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_56, z: 1);
+					Renderer.Draw(Const.PIXEL, rect, Color32.GREY_56, z: 1);
 				}
 
 				// Click
-				if (rect.MouseInside() && FrameInput.MouseLeftButtonDown) {
+				if (rect.MouseInside() && Input.MouseLeftButtonDown) {
 					if (SelectingIndex == index && Game.PauselessFrame < LastSelectFrame + 30) {
 						// Double Click
 						LastSelectFrame = -1;
@@ -283,7 +283,7 @@ Color32.GREY_32, z: 1
 							CurrentName = item.IsFolder ? Util.GetNameWithExtension(item.Path) : Util.GetNameWithoutExtension(item.Path);
 						}
 					}
-					FrameInput.UseMouseKey(0);
+					Input.UseMouseKey(0);
 				}
 
 			}
@@ -291,7 +291,7 @@ Color32.GREY_32, z: 1
 		_END_:;
 
 		// Cancel Selection
-		if (SelectingIndex >= 0 && FrameInput.MouseLeftButtonDown && !mouseInsideItem) {
+		if (SelectingIndex >= 0 && Input.MouseLeftButtonDown && !mouseInsideItem) {
 			SelectingIndex = -1;
 		}
 
@@ -326,15 +326,15 @@ Color32.GREY_32, z: 1
 
 		// Func
 		void DrawButton (string label, string path, int icon) {
-			if (CellGUI.Button(
+			if (GUI.Button(
 				rect, 0, Const.PIXEL, Const.PIXEL,
 				0, 0, 0, z: 1, buttonTint: Color32.GREY_20, iconTint: Color32
 .CLEAR
 			)) {
 				Explore(path);
 			}
-			CellGUI.Label(label, rect, charSize: 16, alignment: Alignment.MidLeft);
-			CellRenderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
+			GUI.Label(label, rect, charSize: 16, alignment: Alignment.MidLeft);
+			Renderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
 			rect.y -= rect.height;
 		}
 
@@ -361,14 +361,14 @@ Color32.GREY_32, z: 1
 
 		if (ActionType == BrowserActionType.Save) {
 			// Name Field
-			CurrentName = CellGUI.TextField(091253, fieldRect, CurrentName);
-			CellRenderer.Draw_9Slice(
+			CurrentName = GUI.TextField(091253, fieldRect, CurrentName);
+			Renderer.Draw_9Slice(
 				BuiltInSprite.FRAME_16, fieldRect, frameBorder, frameBorder, frameBorder, frameBorder,
 Color32.GREY_32, z: 1
 			);
 
 			// Name Label
-			CellGUI.Label(
+			GUI.Label(
 				TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME,
 				fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0),
 				tint: Color32.GREY_216, charSize: 20, alignment: Alignment.MidRight
@@ -377,8 +377,8 @@ Color32.GREY_32, z: 1
 
 		// Type Field
 		if (TargetType == BrowserTargetType.File) {
-			CellGUI.Label(TargetExtension, typeRect);
-			CellRenderer.Draw_9Slice(
+			GUI.Label(TargetExtension, typeRect);
+			Renderer.Draw_9Slice(
 				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder,
 Color32.GREY_32, z: 1
 			);
@@ -387,7 +387,7 @@ Color32.GREY_32, z: 1
 		// Error Msg
 		if (!string.IsNullOrEmpty(ErrorMessage)) {
 			var msgRect = panelRect.EdgeInside(Direction4.Down, buttonHeight);
-			CellGUI.Label(
+			GUI.Label(
 				ErrorMessage, msgRect, tint: Color32.RED_BETTER, charSize: 20, alignment: Alignment.MidLeft
 			);
 		}
@@ -395,7 +395,7 @@ Color32.GREY_32, z: 1
 		// Cancel Button
 		var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 		buttonRect.x -= buttonRect.width + padding;
-		if (CellGUI.Button(
+		if (GUI.Button(
 			buttonRect, Const.PIXEL, BuiltInText.UI_CANCEL,
 			z: 1, buttonTint: Color32.GREY_32, labelTint: Color32
 .GREY_230
@@ -407,7 +407,7 @@ Color32.GREY_32, z: 1
 
 		// OK Button
 		buttonRect.x -= buttonRect.width + padding;
-		if (CellGUI.Button(
+		if (GUI.Button(
 			buttonRect, Const.PIXEL, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
 			z: 1, buttonTint: Color32.GREY_32, labelTint: Color32
 .GREY_230
@@ -466,8 +466,8 @@ Color32.GREY_32, z: 1
 			return;
 		}
 		Items.Clear();
-		CellRenderer.TryGetSprite(FolderIcon, out var folderSprite);
-		CellRenderer.TryGetSprite(CommenFileIcon, out var commenFileSprite);
+		Renderer.TryGetSprite(FolderIcon, out var folderSprite);
+		Renderer.TryGetSprite(CommenFileIcon, out var commenFileSprite);
 		foreach (string folderPath in Util.EnumerateFolders(path, true)) {
 			if (Util.IsFolderHidden(folderPath)) continue;
 			string name = Util.GetNameWithExtension(folderPath);
@@ -489,7 +489,7 @@ Color32.GREY_32, z: 1
 			) ? fileSpriteCode : 0;
 			Items.Add(new ItemData() {
 				DisplayName = name.Length <= MAX_NAME_LEN ? name : $"{name[..(MAX_NAME_LEN - 2)]}..",
-				Icon = fileSpriteID != 0 && CellRenderer.TryGetSprite(fileSpriteID, out var fileSprite) ? fileSprite : commenFileSprite,
+				Icon = fileSpriteID != 0 && Renderer.TryGetSprite(fileSpriteID, out var fileSprite) ? fileSprite : commenFileSprite,
 				IsFolder = false,
 				Path = filePath,
 			});

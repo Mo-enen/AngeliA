@@ -14,12 +14,12 @@ public class Photo : Furniture, ICombustible, IActionTarget {
 	}
 
 	public override void FillPhysics () {
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 	public override void FrameUpdate () {
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
-			var cell = CellRenderer.Draw(sprite, RenderingRect);
+		if (Renderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
+			var cell = Renderer.Draw(sprite, RenderingRect);
 			if ((this as IActionTarget).IsHighlighted) {
 				BlinkCellAsFurniture(cell);
 			}

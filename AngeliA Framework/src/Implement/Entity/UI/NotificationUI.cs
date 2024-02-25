@@ -48,13 +48,13 @@ public class NotificationUI : EntityUI {
 		int panelHeight = Unify(48);
 		CurrentOffsetY = CurrentOffsetY.LerpTo((panelHeight + Unify(30)) * NotificationIndex, 60);
 		var fromRect = new IRect(
-			CellRenderer.CameraRect.CenterX() - panelWidth / 2,
-			CellRenderer.CameraRect.yMax,
+			Renderer.CameraRect.CenterX() - panelWidth / 2,
+			Renderer.CameraRect.yMax,
 			panelWidth, panelHeight
 		);
 		var toRect = new IRect(
-			CellRenderer.CameraRect.CenterX() - panelWidth / 2,
-			CellRenderer.CameraRect.yMax - panelHeight - Unify(24) - CurrentOffsetY,
+			Renderer.CameraRect.CenterX() - panelWidth / 2,
+			Renderer.CameraRect.yMax - panelHeight - Unify(24) - CurrentOffsetY,
 			panelWidth, panelHeight
 		);
 		var panelRect =
@@ -63,11 +63,11 @@ public class NotificationUI : EntityUI {
 			toRect;
 
 		// BG
-		CellRenderer.Draw(Const.PIXEL, panelRect.Expand(Unify(12)), Color32.BLACK, int.MaxValue - 1);
+		Renderer.Draw(Const.PIXEL, panelRect.Expand(Unify(12)), Color32.BLACK, int.MaxValue - 1);
 
 		// Icon
-		if (CellRenderer.TryGetSprite(Icon, out var icon)) {
-			CellRenderer.Draw(
+		if (Renderer.TryGetSprite(Icon, out var icon)) {
+			Renderer.Draw(
 				Icon,
 				new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height).Fit(icon),
 				int.MaxValue
@@ -75,7 +75,7 @@ public class NotificationUI : EntityUI {
 		}
 
 		// Label
-		CellGUI.Label(
+		GUI.Label(
 			Content,
 			panelRect.Shrink(panelRect.height + Unify(12), 0, 0, 0),
 			alignment: Alignment.MidLeft

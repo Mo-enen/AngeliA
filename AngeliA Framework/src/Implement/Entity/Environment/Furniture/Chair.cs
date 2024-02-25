@@ -29,18 +29,18 @@ public abstract class Chair : Furniture {
 
 	public override void FrameUpdate () {
 		if (!DockedToRight.HasValue) {
-			DockedToRight = !CellPhysics.HasEntity<Table>(
+			DockedToRight = !Physics.HasEntity<Table>(
 				Rect.Expand(ColliderBorder).Shift(-Const.CEL, 0).Shrink(1),
 				PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			);
 		}
 		// Render
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
+		if (Renderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
 			var rect = Rect.Expand(ColliderBorder);
 			if (DockedToRight.HasValue && DockedToRight.Value) {
-				CellRenderer.Draw(sprite, rect);
+				Renderer.Draw(sprite, rect);
 			} else {
-				CellRenderer.Draw(sprite, rect.CenterX(), rect.y, 500, 0, 0, -rect.width, rect.height);
+				Renderer.Draw(sprite, rect.CenterX(), rect.y, 500, 0, 0, -rect.width, rect.height);
 			}
 		}
 	}

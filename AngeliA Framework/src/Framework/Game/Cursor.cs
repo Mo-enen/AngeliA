@@ -1,5 +1,5 @@
 namespace AngeliA.Framework; 
-public static class CursorSystem {
+public static class Cursor {
 
 
 	// Data

@@ -22,11 +22,11 @@ public class LeafPalm : Leaf {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, SpriteTag.ONEWAY_UP_TAG);
+		Physics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, SpriteTag.ONEWAY_UP_TAG);
 	}
 
 	public override void FrameUpdate () {
-		CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
+		Renderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
 	}
 
 }
@@ -36,14 +36,14 @@ public class LeafWillow : Leaf {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillBlock(
+		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID,
 			Rect.Shrink(0, 0, 0, Height / 2),
 			true, SpriteTag.CLIMB_TAG
 		);
 	}
 
-	public override void FrameUpdate () => CellRenderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
+	public override void FrameUpdate () => Renderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
 
 }
 
@@ -90,18 +90,18 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 		Width = Const.CEL;
 		Height = Const.CEL;
 		// Leaf
-		LeafArtworkCode = CellRenderer.TryGetSpriteFromGroup(
+		LeafArtworkCode = Renderer.TryGetSpriteFromGroup(
 			TypeID, (X * 5 + Y * 7) / Const.CEL, out var lSprite
 		) ? lSprite.GlobalID : TypeID;
 	}
 
 
-	public override void FillPhysics () => CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	public override void FillPhysics () => Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 
 
 	public override void PhysicsUpdate () {
 		base.PhysicsUpdate();
-		CharacterNearby = CellPhysics.HasEntity<Character>(Rect.Expand(Const.CEL), PhysicsMask.CHARACTER, null);
+		CharacterNearby = Physics.HasEntity<Character>(Rect.Expand(Const.CEL), PhysicsMask.CHARACTER, null);
 	}
 
 
@@ -126,7 +126,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 				rect.x += rect.width;
 				rect.width = -rect.width;
 			}
-			CellRenderer.Draw(LeafArtworkCode, rect, LeafTint);
+			Renderer.Draw(LeafArtworkCode, rect, LeafTint);
 		}
 	}
 
@@ -158,7 +158,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 		// Particle
 		int id = TypeID;
 		var rect = Rect;
-		if (CellRenderer.TryGetSprite(LeafArtworkCode, out var sprite)) {
+		if (Renderer.TryGetSprite(LeafArtworkCode, out var sprite)) {
 			id = sprite.GlobalID;
 			rect.height = sprite.GlobalHeight;
 			if (rect.width != sprite.GlobalWidth) {

@@ -7,7 +7,7 @@ using System.Text;
 namespace AngeliA.Framework;
 
 
-public static class CellGUI {
+public static class GUI {
 
 
 
@@ -16,7 +16,6 @@ public static class CellGUI {
 
 
 	// Const
-	private static readonly Cell EMPTY_CELL = new() { Sprite = null, TextSprite = null, };
 	private static readonly string[] NUMBER_CACHE = new string[100];
 	private const int MAX_INPUT_CHAR = 256;
 
@@ -34,7 +33,7 @@ public static class CellGUI {
 	public static int _TypingTextFieldID = 0;
 
 	// UI
-	private static readonly CellContent InputLabel = new() {
+	private static readonly TextContent InputLabel = new() {
 		Alignment = Alignment.MidLeft,
 		Clip = true,
 		Wrap = false,
@@ -69,14 +68,14 @@ public static class CellGUI {
 
 	[OnGameUpdate(1023)]
 	internal static void Update () {
-		if (TypingTextFieldID != 0 && FrameInput.AnyKeyHolding) {
-			FrameInput.UseAllHoldingKeys(ignoreMouse: true);
-			FrameInput.UnuseKeyboardKey(KeyboardKey.LeftArrow);
-			FrameInput.UnuseKeyboardKey(KeyboardKey.RightArrow);
-			FrameInput.UnuseKeyboardKey(KeyboardKey.Delete);
-			FrameInput.UnuseKeyboardKey(KeyboardKey.Escape);
+		if (TypingTextFieldID != 0 && Input.AnyKeyHolding) {
+			Input.UseAllHoldingKeys(ignoreMouse: true);
+			Input.UnuseKeyboardKey(KeyboardKey.LeftArrow);
+			Input.UnuseKeyboardKey(KeyboardKey.RightArrow);
+			Input.UnuseKeyboardKey(KeyboardKey.Delete);
+			Input.UnuseKeyboardKey(KeyboardKey.Escape);
 		}
-		if (!FrameInput.MouseLeftButton) ScrollBarMouseDownPos = null;
+		if (!Input.MouseLeftButton) ScrollBarMouseDownPos = null;
 	}
 
 
@@ -88,7 +87,7 @@ public static class CellGUI {
 		// Cancel Typing Text Field
 		if (TypingTextFieldID != 0) {
 			if (
-				(FrameInput.AnyMouseButtonDown && !TypingTextFieldRect.MouseInside()) ||
+				(Input.AnyMouseButtonDown && !TypingTextFieldRect.MouseInside()) ||
 				Game.PauselessFrame > TypingUpdateFrame
 			) {
 				CancelTyping();
@@ -98,9 +97,9 @@ public static class CellGUI {
 
 
 	// Unify
-	public static int Unify (int value) => (value * CellRenderer.CameraRect.height / 1000f).RoundToInt();
-	public static int Unify (float value) => (value * CellRenderer.CameraRect.height / 1000f).RoundToInt();
-	public static int ReverseUnify (int value) => (value / (CellRenderer.CameraRect.height / 1000f)).RoundToInt();
+	public static int Unify (int value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
+	public static int Unify (float value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
+	public static int ReverseUnify (int value) => (value / (Renderer.CameraRect.height / 1000f)).RoundToInt();
 
 
 	// Typing
@@ -122,23 +121,23 @@ public static class CellGUI {
 
 
 	// Label
-	public static void Label (string text, IRect rect, Color32 tint, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, tint, charSize, alignment, wrap), rect, out bounds);
-	public static void Label (string text, IRect rect, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, charSize, alignment, wrap), rect, out bounds);
-	public static void Label (string text, IRect rect, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, tint, charSize, alignment, wrap), rect);
-	public static void Label (string text, IRect rect, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(CellContent.Get(text, charSize, alignment, wrap), rect);
-	public static void Label (CellContent content, IRect rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
-	public static void Label (CellContent content, IRect rect, out IRect bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
-	public static void Label (CellContent content, IRect rect, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
-	private static void Label (CellContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
+	public static void Label (string text, IRect rect, Color32 tint, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect, out bounds);
+	public static void Label (string text, IRect rect, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, charSize, alignment, wrap), rect, out bounds);
+	public static void Label (string text, IRect rect, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect);
+	public static void Label (string text, IRect rect, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, charSize, alignment, wrap), rect);
+	public static void Label (TextContent content, IRect rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
+	public static void Label (TextContent content, IRect rect, out IRect bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
+	public static void Label (TextContent content, IRect rect, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+	private static void Label (TextContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
 		endIndex = startIndex;
 		bounds = rect;
 		beamRect = new IRect(rect.x, rect.y, 1, rect.height);
-		if (!CellRenderer.TextReady) return;
+		if (!Renderer.TextReady) return;
 
 		// Draw BG
 		var bgColor = content.BackgroundTint;
 		int bgPadding = Unify(content.BackgroundPadding);
-		var bgCell = bgColor.a > 0 ? CellRenderer.Draw(Const.PIXEL, rect, bgColor, z: int.MaxValue) : null;
+		var bgCell = bgColor.a > 0 ? Renderer.Draw(Const.PIXEL, rect, bgColor, z: int.MaxValue) : null;
 		if (bgCell != null && bgPadding >= 0) {
 			bgCell.X = bounds.x - bgPadding;
 			bgCell.Y = bounds.y - bgPadding;
@@ -148,10 +147,10 @@ public static class CellGUI {
 		}
 
 		// Draw Chars
-		CellRenderer.GetTextCells(out var cells, out int cellCount);
+		Renderer.GetTextCells(out var cells, out int cellCount);
 		TextUtil.DrawLabel(
-			CellRenderer.RequireCharForPool, CellRenderer.DrawChar,
-			CellRenderer.CameraRect.height, cellCount, cells,
+			Renderer.RequireCharForPool, Renderer.DrawChar,
+			Renderer.CameraRect.height, cellCount, cells,
 			content, rect, beamIndex, startIndex, drawInvisibleChar,
 			out bounds, out beamRect, out endIndex
 		);
@@ -160,23 +159,23 @@ public static class CellGUI {
 
 
 	// Scroll Label
-	public static void ScrollLabel (CellContent content, IRect rect, ref int scrollPosition) {
-		int before = CellRenderer.GetTextUsedCellCount();
+	public static void ScrollLabel (TextContent content, IRect rect, ref int scrollPosition) {
+		int before = Renderer.GetTextUsedCellCount();
 		Label(content, rect, out var bounds);
 		if (bounds.height < rect.height) {
 			scrollPosition = 0;
 			return;
 		}
 		scrollPosition = scrollPosition.Clamp(0, bounds.height - rect.height + Unify(content.CharSize * 2));
-		int after = CellRenderer.GetTextUsedCellCount();
+		int after = Renderer.GetTextUsedCellCount();
 		if (before == after) return;
-		if (CellRenderer.GetTextCells(out var cells, out int count)) {
+		if (Renderer.GetTextCells(out var cells, out int count)) {
 			for (int i = before; i < after && i < count; i++) {
 				var cell = cells[i];
 				cell.Y += scrollPosition;
 			}
 		}
-		CellRenderer.ClampTextCells(rect, before, after);
+		Renderer.ClampTextCells(rect, before, after);
 	}
 
 
@@ -187,45 +186,45 @@ public static class CellGUI {
 	public static bool Button (IRect rect, string label, out IRect labelBounds, int z, int charSize = -1, bool enable = true) => Button(rect, label, out labelBounds, z, Color32.WHITE, charSize, enable);
 	public static bool Button (IRect rect, string label, out IRect labelBounds, int z, Color32 labelTint, int charSize = -1, bool enable = true) {
 		charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-		Label(CellContent.Get(label, labelTint, charSize), rect, out labelBounds);
+		Label(TextContent.Get(label, labelTint, charSize), rect, out labelBounds);
 		return Button(rect, 0, Const.PIXEL, 0, 0, 0, 0, z, Color32.WHITE_12, default, enable);
 	}
 	public static bool Button (IRect rect, int sprite, string label, out IRect labelBounds, int z, Color32 buttonTint, Color32 labelTint, int charSize = -1, bool enable = true) {
 		charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-		Label(CellContent.Get(label, labelTint, charSize), rect, out labelBounds);
+		Label(TextContent.Get(label, labelTint, charSize), rect, out labelBounds);
 		return Button(rect, sprite, sprite, sprite, 0, 0, 0, z, buttonTint, default, enable);
 	}
 	public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, bool enable = true) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Color32.WHITE, Color32.WHITE, enable);
 	public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Color32 buttonTint, Color32 iconTint, bool enable = true) {
 		bool hover = rect.MouseInside();
-		bool down = hover && enable && FrameInput.MouseLeftButton;
+		bool down = hover && enable && Input.MouseLeftButton;
 		buttonTint.a = (byte)(enable ? buttonTint.a : buttonTint.a / 2);
 		iconTint.a = (byte)(enable ? iconTint.a : iconTint.a / 2);
 		// Button
 		int spriteID = down ? spriteDown : hover ? spriteHover : sprite;
 		if (spriteID != 0) {
 			if (buttonBorder > 0) {
-				CellRenderer.Draw_9Slice(
+				Renderer.Draw_9Slice(
 					spriteID, rect, buttonBorder, buttonBorder, buttonBorder, buttonBorder, buttonTint, z
 				);
 			} else {
-				CellRenderer.Draw_9Slice(spriteID, rect, buttonTint, z);
+				Renderer.Draw_9Slice(spriteID, rect, buttonTint, z);
 			}
 		}
 		// Icon
-		if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
-			CellRenderer.Draw(
+		if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
+			Renderer.Draw(
 				iconSprite,
 				rect.Shrink(iconPadding).Fit(iconSprite),
 				iconTint, z + 1
 			);
 		}
 		// Cursor
-		if (enable) CursorSystem.SetCursorAsHand(rect);
+		if (enable) Cursor.SetCursorAsHand(rect);
 		// Click
-		if (enable && hover && FrameInput.MouseLeftButtonDown) {
-			FrameInput.UseMouseKey(0);
-			FrameInput.UseGameKey(Gamekey.Action);
+		if (enable && hover && Input.MouseLeftButtonDown) {
+			Input.UseMouseKey(0);
+			Input.UseGameKey(Gamekey.Action);
 			return true;
 		}
 		return false;
@@ -234,7 +233,7 @@ public static class CellGUI {
 
 	// Gizmos
 	public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness = 8, int z = int.MinValue) => DrawLine(fromX, fromY, toX, toY, thickness, Color32.WHITE, z);
-	public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint, int z = int.MinValue) => CellRenderer.Draw(
+	public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint, int z = int.MinValue) => Renderer.Draw(
 		Const.PIXEL, fromX, fromY, 500, 0,
 		-Float2.SignedAngle(Float2.up, new Float2(toX - fromX, toY - fromY)).RoundToInt(),
 		thickness, Util.DistanceInt(fromX, fromY, toX, toY),
@@ -245,22 +244,22 @@ public static class CellGUI {
 	// Text Field
 	public static string TextField (int controlID, IRect rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _);
 	public static string TextField (int controlID, IRect rect, string text, out bool changed, out bool confirm) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm);
-	public static string TextField (int controlID, IRect rect, CellContent text) => TextField(controlID, rect, text, out _, out _);
-	public static string TextField (int controlID, IRect rect, CellContent text, out bool changed, out bool confirm) {
+	public static string TextField (int controlID, IRect rect, TextContent text) => TextField(controlID, rect, text, out _, out _);
+	public static string TextField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm) {
 
 		changed = false;
 		confirm = false;
 		bool startTyping = false;
-		bool mouseDownPosInRect = rect.Contains(FrameInput.MouseLeftDownGlobalPosition);
-		bool mouseDragging = FrameInput.MouseLeftButton && mouseDownPosInRect;
-		bool inCamera = rect.Overlaps(CellRenderer.CameraRect);
+		bool mouseDownPosInRect = rect.Contains(Input.MouseLeftDownGlobalPosition);
+		bool mouseDragging = Input.MouseLeftButton && mouseDownPosInRect;
+		bool inCamera = rect.Overlaps(Renderer.CameraRect);
 
-		CursorSystem.SetCursorAsBeam(rect);
+		Cursor.SetCursorAsBeam(rect);
 
 		if (!inCamera && TypingTextFieldID == controlID) TypingTextFieldID = 0;
 
 		// Start Typing
-		if (inCamera && FrameInput.MouseLeftButtonDown && mouseDownPosInRect) {
+		if (inCamera && Input.MouseLeftButtonDown && mouseDownPosInRect) {
 			TypingTextFieldID = controlID;
 			BeamBlinkFrame = Game.PauselessFrame;
 			startTyping = true;
@@ -274,16 +273,16 @@ public static class CellGUI {
 		if (typing) {
 
 			// Clear
-			if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
+			if (Input.KeyboardUp(KeyboardKey.Escape)) {
 				beamIndex = BeamIndex = 0;
 				confirm = true;
 				CancelTyping();
-				FrameInput.UseKeyboardKey(KeyboardKey.Escape);
-				FrameInput.UseGameKey(Gamekey.Start);
+				Input.UseKeyboardKey(KeyboardKey.Escape);
+				Input.UseGameKey(Gamekey.Start);
 			}
 
 			// Move Beam
-			if (FrameInput.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
+			if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
 				if (beamLength == 0) {
 					beamIndex = BeamIndex = beamIndex - 1;
 				} else if (beamLength < 0) {
@@ -292,7 +291,7 @@ public static class CellGUI {
 				beamLength = BeamLength = 0;
 				BeamBlinkFrame = Game.PauselessFrame;
 			}
-			if (FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow)) {
+			if (Input.KeyboardDownGUI(KeyboardKey.RightArrow)) {
 				if (beamLength == 0) {
 					beamIndex = BeamIndex = beamIndex + 1;
 				} else if (beamLength > 0) {
@@ -360,7 +359,7 @@ public static class CellGUI {
 			}
 
 			// Delete
-			if (FrameInput.KeyboardDownGUI(KeyboardKey.Delete)) {
+			if (Input.KeyboardDownGUI(KeyboardKey.Delete)) {
 				int removeIndex = beamIndex;
 				if (removeIndex >= 0 && removeIndex < text.Text.Length) {
 					if (beamLength == 0) {
@@ -373,7 +372,7 @@ public static class CellGUI {
 						changed = true;
 					}
 				}
-				FrameInput.UseKeyboardKey(KeyboardKey.Delete);
+				Input.UseKeyboardKey(KeyboardKey.Delete);
 			}
 			// Func
 			void RemoveSelection () {
@@ -387,7 +386,7 @@ public static class CellGUI {
 		if (changed) BeamBlinkFrame = Game.PauselessFrame;
 
 		// Rendering
-		int startCellIndex = CellRenderer.GetTextUsedCellCount();
+		int startCellIndex = Renderer.GetTextUsedCellCount();
 		var labelRect = rect.Shrink(Unify(12), 0, 0, 0);
 		int beamShrink = rect.height / 12;
 		var beamRect = new IRect(
@@ -404,11 +403,11 @@ public static class CellGUI {
 		if (!startTyping && typing && (Game.PauselessFrame - BeamBlinkFrame) % 56 < 28) {
 			beamRect.y = labelRect.y + beamShrink;
 			beamRect.height = labelRect.height - beamShrink * 2;
-			beamCell = CellRenderer.Draw(Const.PIXEL, beamRect, Color32.WHITE, int.MaxValue);
+			beamCell = Renderer.Draw(Const.PIXEL, beamRect, Color32.WHITE, int.MaxValue);
 		}
-		int endCellIndex = CellRenderer.GetTextUsedCellCount();
+		int endCellIndex = Renderer.GetTextUsedCellCount();
 
-		if (startCellIndex != endCellIndex && CellRenderer.GetTextCells(out var cells, out int count)) {
+		if (startCellIndex != endCellIndex && Renderer.GetTextCells(out var cells, out int count)) {
 
 			// Scroll X from Beam 
 			int beamCellIndex = typing ? (beamIndex + startCellIndex).Clamp(startCellIndex, endCellIndex - 1) : startCellIndex;
@@ -451,12 +450,12 @@ public static class CellGUI {
 					Util.Min(endCell.X + endCell.Width, rect.xMax),
 					Util.Min(labelRect.yMax - beamShrink, rect.yMax)
 				);
-				CellRenderer.Draw(Const.PIXEL, selectionRect, Color32.ORANGE, int.MaxValue - 1);
+				Renderer.Draw(Const.PIXEL, selectionRect, Color32.ORANGE, int.MaxValue - 1);
 			}
 
 			if (typing && (startTyping || mouseDragging)) {
 				int mouseBeamIndex = 0;
-				int mouseX = FrameInput.MouseGlobalPosition.x;
+				int mouseX = Input.MouseGlobalPosition.x;
 				for (int i = startCellIndex; i < endCellIndex && i < count; i++) {
 					var cell = cells[i];
 					int x = cell.X + cell.Width / 2;
@@ -508,7 +507,7 @@ public static class CellGUI {
 		bool focusingBar = DraggingScrollbarID == controlID;
 		bool hoveringBar = barRect.MouseInside();
 
-		CellRenderer.Draw(
+		Renderer.Draw(
 			barSpriteId,
 			barRect,
 			hoveringBar || (focusingBar && ScrollBarMouseDownPos.HasValue) ? Color32.GREY_128 : Color32.GREY_64,
@@ -517,23 +516,23 @@ public static class CellGUI {
 
 		// Dragging
 		if (focusingBar && ScrollBarMouseDownPos.HasValue) {
-			int mouseY = FrameInput.MouseGlobalPosition.y;
+			int mouseY = Input.MouseGlobalPosition.y;
 			int mouseDownY = ScrollBarMouseDownPos.Value.x;
 			int scrollDownY = ScrollBarMouseDownPos.Value.y;
 			positionRow = scrollDownY + (mouseDownY - mouseY) * totalSize / contentRect.height;
 		}
 
 		// Mouse Down
-		if (FrameInput.MouseLeftButtonDown) {
+		if (Input.MouseLeftButtonDown) {
 			if (hoveringBar) {
 				// Start Drag
 				ScrollBarMouseDownPos = new Int2(
-					FrameInput.MouseGlobalPosition.y, positionRow
+					Input.MouseGlobalPosition.y, positionRow
 				);
 				DraggingScrollbarID = controlID;
 			} else if (contentRect.MouseInside()) {
 				// Jump on Click
-				int mouseY = FrameInput.MouseGlobalPosition.y;
+				int mouseY = Input.MouseGlobalPosition.y;
 				positionRow = Util.RemapUnclamped(
 					contentRect.y, contentRect.yMax,
 					totalSize - pageSize / 2, -pageSize / 2,
@@ -553,7 +552,7 @@ public static class CellGUI {
 	public static void HighlightCursor (int spriteID, IRect rect, int z, Color32 color) {
 		int border = Unify(4);
 		int thickness = Unify(8);
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			spriteID, rect.Expand(Game.GlobalFrame.PingPong(thickness)),
 			border, border, border, border,
 			color, z

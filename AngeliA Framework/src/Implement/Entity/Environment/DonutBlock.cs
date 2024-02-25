@@ -45,7 +45,7 @@ public abstract class DonutBlock : EnvironmentEntity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
 
@@ -56,7 +56,7 @@ public abstract class DonutBlock : EnvironmentEntity {
 
 		// Fall Check
 		if (!IsFalling) {
-			IsHolding = !CellPhysics.RoomCheck(PhysicsMask.CHARACTER, rect, this, Direction4.Up);
+			IsHolding = !Physics.RoomCheck(PhysicsMask.CHARACTER, rect, this, Direction4.Up);
 			if (IsHolding) {
 				if (!LastHolding) HoldStartFrame = frame;
 				if (frame - HoldStartFrame > HoldDuration) {
@@ -74,8 +74,8 @@ public abstract class DonutBlock : EnvironmentEntity {
 			switch (BreakCondition) {
 				case BreakMode.BreakOnCollideGround: {
 					if (
-						!CellPhysics.RoomCheck(PhysicsMask.SOLID, rect, this, Direction4.Down) ||
-						!CellPhysics.RoomCheckOneway(PhysicsMask.MAP, rect, this, Direction4.Down, true)
+						!Physics.RoomCheck(PhysicsMask.SOLID, rect, this, Direction4.Down) ||
+						!Physics.RoomCheckOneway(PhysicsMask.MAP, rect, this, Direction4.Down, true)
 					) {
 						Break();
 					}
@@ -95,7 +95,7 @@ public abstract class DonutBlock : EnvironmentEntity {
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		CellRenderer.Draw(
+		Renderer.Draw(
 			TypeID, X + Width / 2, Y + Height / 2,
 			500, 500,
 			IsHolding ? (Game.GlobalFrame * 4 - HoldStartFrame).PingPong(12) - 6 : 0,

@@ -5,10 +5,8 @@ using System.Collections.Generic;
 namespace AngeliA.Framework; 
 
 
-
 [System.AttributeUsage(System.AttributeTargets.Method)]
 public class OnUniverseOpenAttribute : OrderedAttribute { public OnUniverseOpenAttribute (int order = 0) : base(order) { } }
-
 
 
 public static class UniverseSystem {

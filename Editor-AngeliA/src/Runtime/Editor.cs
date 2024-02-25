@@ -12,6 +12,7 @@ using System.Linq;
 namespace AngeliaEditor;
 
 
+[RequireSpriteFromField]
 public class Editor {
 
 
@@ -53,6 +54,7 @@ public class Editor {
 	private const int FLOAT_WINDOW_WIDTH = 1000;
 	private const int FLOAT_WINDOW_HEIGHT = 800;
 	private const int TAB_BAR_HEIGHT = 32;
+	private static readonly SpriteCode UI_TAB = "UI.Tab";
 
 	// Event
 	private static event Func<bool> OnTryingToQuit;
@@ -121,7 +123,7 @@ public class Editor {
 		Font = fonts != null && fonts.Length > 0 ? fonts[0] : new();
 		// Sheet
 		string sheetPath = AngePath.GetSheetPath(universePath);
-		string artworkPath = AngePath.GetArtworkRoot(universePath);
+		string artworkPath = AngePath.GetAsepriteRoot(universePath);
 		SheetUtil.RecreateSheetIfArtworkModified(sheetPath, artworkPath);
 		Sheet.LoadFromDisk(sheetPath);
 	}
@@ -284,14 +286,13 @@ public class Editor {
 	private void OnGUI_TabBar (int barHeight) {
 		var barRect = new Rectangle(0, 0, Raylib.GetRenderWidth(), barHeight);
 
-		Sheet.Draw("Circle16".AngeHash(), new Rectangle(12, 128, 1024, 1024), Color32.RED_BETTER);
-
-		Font.DrawLabel(
-			CellContent.Get("Test中文", Color32.WHITE, 96),
-			new Rectangle(12, 128, 1024, 1024),
-			-1, 0, false, out _, out _, out _
+		Sheet.Draw_9Slice(
+			UI_TAB,
+			x: 12, y: 128,
+			pivotX: 0, pivotY: 0, rotation: 0,
+			width: 512, height: 512,
+			Color.Gray
 		);
-
 
 
 	}

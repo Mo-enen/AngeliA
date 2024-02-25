@@ -13,7 +13,7 @@ public class QuickSmokeSmallParticle : Particle {
 		int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
 		var tint = Tint;
 		tint.a = (byte)Util.Remap(0, smokeDuration, 512, 0, smokeFrame);
-		var cell = CellRenderer.Draw(
+		var cell = Renderer.Draw(
 			TypeID, X, Y,
 			500, 500, (smokeFrame + Game.GlobalFrame) * 12,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
@@ -35,7 +35,7 @@ public class QuickSmokeBigParticle : Particle {
 		int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
 		var tint = Tint;
 		tint.a = (byte)Util.Remap(0, smokeDuration, 512, 0, smokeFrame);
-		var cell = CellRenderer.Draw(
+		var cell = Renderer.Draw(
 			TypeID, X, Y,
 			500, 500, (smokeFrame + Game.GlobalFrame) * 12,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,

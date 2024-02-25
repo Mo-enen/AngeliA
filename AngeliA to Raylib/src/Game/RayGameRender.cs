@@ -15,7 +15,7 @@ public partial class RayGame {
 
 	// Data
 	private Texture2D EMPTY_TEXTURE;
-	private static System.Random CA_Ran = new(2353456);
+	private readonly static System.Random CA_Ran = new(2353456);
 	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
 	private static readonly Dictionary<int, Texture2D> TexturePool = new();
@@ -133,7 +133,7 @@ public partial class RayGame {
 	internal static void OnSheetLoaded () {
 		foreach (var (_, texture) in TexturePool) Game.UnloadTexture(texture);
 		TexturePool.Clear();
-		TextureUtil.FillSheetIntoTexturePool(CellRenderer.Sheet, TexturePool);
+		TextureUtil.FillSheetIntoTexturePool(Renderer.Sheet, TexturePool);
 	}
 
 
@@ -166,7 +166,7 @@ public partial class RayGame {
 
 	private void UpdateLayer_Cell (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		int cameraL = cameraRect.x;
 		int cameraR = cameraRect.xMax;
 		int cameraD = cameraRect.y;
@@ -274,7 +274,7 @@ public partial class RayGame {
 
 	private void UpdateLayer_Text (int layerIndex, Cell[] cells, int cellCount) {
 
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		int cameraL = cameraRect.x;
 		int cameraR = cameraRect.xMax;
 		int cameraD = cameraRect.y;
@@ -453,7 +453,7 @@ public partial class RayGame {
 	// Texture
 	protected override object _GetTextureFromPixels (Color32[] pixels, int width, int height) {
 		var result = TextureUtil.GetTextureFromPixels(pixels, width, height);
-		return result.HasValue ? result.Value : EMPTY_TEXTURE;
+		return result ?? EMPTY_TEXTURE;
 	}
 
 	protected override Color32[] _GetPixelsFromTexture (object texture) {
@@ -470,7 +470,7 @@ public partial class RayGame {
 
 	protected override object _PngBytesToTexture (byte[] bytes) {
 		var result = TextureUtil.PngBytesToTexture(bytes);
-		return result.HasValue ? result.Value : EMPTY_TEXTURE;
+		return result ?? EMPTY_TEXTURE;
 	}
 
 	protected override byte[] _TextureToPngBytes (object texture) {
@@ -486,7 +486,7 @@ public partial class RayGame {
 
 	// GL Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		GizmosRender.DrawGizmosRect(new Rectangle(
 			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, ScreenRenderRect.x, ScreenRenderRect.xMax, rect.x),
 			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, ScreenRenderRect.yMax, ScreenRenderRect.y, rect.yMax),
@@ -497,7 +497,7 @@ public partial class RayGame {
 
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture) {
 		if (texture is not Texture2D rTexture) return;
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		GizmosRender.DrawGizmosTexture(new Rectangle(
 			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, ScreenRenderRect.x, ScreenRenderRect.xMax, rect.x),
 			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, ScreenRenderRect.yMax, ScreenRenderRect.y, rect.yMax),
@@ -529,34 +529,6 @@ public partial class RayGame {
 
 	protected override void _SetImeCompositionMode (bool on) {
 
-	}
-
-
-	// UTL
-	private static void WritePixelsToConsole (Color32[] pixels, int width) {
-
-		int height = pixels.Length / width;
-
-		for (int y = height - 1; y >= 0; y--) {
-			System.Console.ResetColor();
-			System.Console.WriteLine();
-			for (int x = 0; x < width; x++) {
-				var p = pixels[(y).Clamp(0, height - 1) * width + (x).Clamp(0, width - 1)];
-				Util.RGBToHSV(p, out float h, out float s, out float v);
-				System.Console.BackgroundColor = (v * s < 0.2f) ?
-					(v < 0.33f ? System.ConsoleColor.Black : v > 0.66f ? System.ConsoleColor.White : System.ConsoleColor.Gray) :
-					(h < 0.08f ? (v > 0.5f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed) :
-					h < 0.25f ? (v > 0.5f ? System.ConsoleColor.Yellow : System.ConsoleColor.DarkYellow) :
-					h < 0.42f ? (v > 0.5f ? System.ConsoleColor.Green : System.ConsoleColor.DarkGreen) :
-					h < 0.58f ? (v > 0.5f ? System.ConsoleColor.Cyan : System.ConsoleColor.DarkCyan) :
-					h < 0.75f ? (v > 0.5f ? System.ConsoleColor.Blue : System.ConsoleColor.DarkBlue) :
-					h < 0.92f ? (v > 0.5f ? System.ConsoleColor.Magenta : System.ConsoleColor.DarkMagenta) :
-					(v > 0.6f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed));
-				System.Console.Write(" ");
-			}
-		}
-		System.Console.ResetColor();
-		System.Console.WriteLine();
 	}
 
 

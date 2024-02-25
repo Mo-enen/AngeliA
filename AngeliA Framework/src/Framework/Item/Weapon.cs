@@ -49,7 +49,7 @@ public abstract class Weapon : Equipment {
 	// MSG
 	public Weapon () {
 		SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
+		if (!Renderer.HasSprite(SpriteID)) SpriteID = 0;
 	}
 
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
@@ -61,7 +61,7 @@ public abstract class Weapon : Equipment {
 			character.AnimationType == CharacterAnimationType.Sleep ||
 			character.AnimationType == CharacterAnimationType.PassOut ||
 			character.AnimationType == CharacterAnimationType.Crash ||
-			!CellRenderer.TryGetSprite(SpriteID, out var sprite)
+			!Renderer.TryGetSprite(SpriteID, out var sprite)
 		) return;
 
 		DrawWeaponLogic(character, sprite);
@@ -261,7 +261,7 @@ public abstract class Weapon : Equipment {
 
 	}
 
-	protected virtual Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => CellRenderer.Draw(
+	protected virtual Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => Renderer.Draw(
 		sprite,
 		x, y,
 		sprite.PivotX, sprite.PivotY, grabRotation,

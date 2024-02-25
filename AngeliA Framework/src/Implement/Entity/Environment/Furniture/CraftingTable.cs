@@ -35,12 +35,12 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 			SetOpen(false);
 		}
 		// Draw Items
-		if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
+		if (Renderer.TryGetSprite(TypeID, out var sprite)) {
 			var itemRect = Rect;
 			for (int i = 0; i < 4; i++) {
 				int id = Inventory.GetItemAt(TypeID, i);
 				if (id == 0) continue;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					id, new IRect(
 						itemRect.x + (i % 2) * itemRect.width / 2,
 						itemRect.y + (i / 2) * itemRect.height / 2,

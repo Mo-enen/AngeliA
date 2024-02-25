@@ -13,7 +13,7 @@ public enum NavigationOperateMotion {
 }
 
 
-public static class CellNavigation {
+public static class Navigation {
 
 
 
@@ -71,12 +71,12 @@ public static class CellNavigation {
 	private class OperationCell {
 
 		public bool OperationValid {
-			get => OperationStamp == CellNavigation.OperationStamp;
-			set => OperationStamp = value ? CellNavigation.OperationStamp : 0;
+			get => OperationStamp == Navigation.OperationStamp;
+			set => OperationStamp = value ? Navigation.OperationStamp : 0;
 		}
 		public bool OperationValidAlt {
-			get => OperationStampAlt == CellNavigation.OperationStamp;
-			set => OperationStampAlt = value ? CellNavigation.OperationStamp : 0;
+			get => OperationStampAlt == Navigation.OperationStamp;
+			set => OperationStampAlt = value ? Navigation.OperationStamp : 0;
 		}
 
 		public NavigationOperateMotion FromMotion = NavigationOperateMotion.None;
@@ -476,7 +476,7 @@ public static class CellNavigation {
 		int y = (cellY + CellUnitOffsetY) * Const.CEL;
 		var blockRect = new IRect(x, y, Const.CEL, Const.CEL);
 		var centerRect = blockRect.Shrink(16);
-		bool solid = CellPhysics.Overlap(
+		bool solid = Physics.Overlap(
 			PhysicsMask.MAP, centerRect, out var info
 		);
 		cell.BlockDataValid = true;
@@ -492,7 +492,7 @@ public static class CellNavigation {
 		} else {
 			int platformY = y + Const.CEL;
 			// Liquid Check
-			if (CellPhysics.Overlap(PhysicsMask.MAP, centerRect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
+			if (Physics.Overlap(PhysicsMask.MAP, centerRect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
 				cell.BlockType = BlockType.Liquid;
 				platformY = y + Const.HALF;
 			}
@@ -504,7 +504,7 @@ public static class CellNavigation {
 			cell.PlatformY = platformY;
 			// Func
 			bool OnewaySolid (Direction4 gateDirection) {
-				bool hitted = CellPhysics.Overlap(
+				bool hitted = Physics.Overlap(
 					PhysicsMask.MAP,
 					blockRect, out var hit,
 					null, OperationMode.TriggerOnly,

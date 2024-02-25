@@ -69,18 +69,18 @@ public abstract class Spring : EnvironmentRigidbody {
 		// Check for Bounce
 		if (Horizontal) {
 			// Horizontal
-			if (CellPhysics.Overlap(
+			if (Physics.Overlap(
 				PhysicsMask.ENTITY, new(X - 1, Y, Const.HALF, Const.CEL), this
 			)) {
 				PerformBounce(Direction4.Left);
-			} else if (CellPhysics.Overlap(
+			} else if (Physics.Overlap(
 				PhysicsMask.ENTITY, new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL), this
 			)) {
 				PerformBounce(Direction4.Right);
 			}
 		} else {
 			// Vertical
-			if (CellPhysics.Overlap(
+			if (Physics.Overlap(
 				PhysicsMask.ENTITY, new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1), this
 			)) {
 				PerformBounce(Direction4.Up);
@@ -97,8 +97,8 @@ public abstract class Spring : EnvironmentRigidbody {
 			CurrentArtworkFrame = 0;
 		}
 		int frame = CurrentArtworkFrame.UMod(BOUNCE_ANI.Length);
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
-			CellRenderer.Draw(
+		if (Renderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
+			Renderer.Draw(
 				sprite,
 				X + Const.HALF, Y,
 				500, 0, 0,
@@ -121,7 +121,7 @@ public abstract class Spring : EnvironmentRigidbody {
 		);
 		Entity ignore = this;
 		for (int safe = 0; safe < 2048; safe++) {
-			var hits = CellPhysics.OverlapAll(PhysicsMask.ENTITY, globalRect, out int count, ignore);
+			var hits = Physics.OverlapAll(PhysicsMask.ENTITY, globalRect, out int count, ignore);
 			if (count == 0) break;
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];

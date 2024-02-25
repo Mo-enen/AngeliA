@@ -57,7 +57,7 @@ public abstract class Oneway : EnvironmentEntity {
 
 
 	public override void FillPhysics () {
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Util.GetOnewayTag(GateDirection));
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Util.GetOnewayTag(GateDirection));
 	}
 
 
@@ -69,7 +69,7 @@ public abstract class Oneway : EnvironmentEntity {
 			rect.y += (ReboundFrame - frame + 4) * 8;
 			rotDelta = (ReboundFrame - frame + 4) * 2 * (frame % 2 == 0 ? -1 : 1);
 		}
-		CellRenderer.Draw(
+		Renderer.Draw(
 			TypeID,
 			rect.x + rect.width / 2,
 			rect.y + rect.height / 2,
@@ -92,7 +92,7 @@ public abstract class Oneway : EnvironmentEntity {
 			Direction4.Right => new(rect.xMax, rect.y, GAP, rect.height),
 			_ => throw new System.NotImplementedException(),
 		};
-		var hits = CellPhysics.OverlapAll(MASK, edge, out int count, this);
+		var hits = Physics.OverlapAll(MASK, edge, out int count, this);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (

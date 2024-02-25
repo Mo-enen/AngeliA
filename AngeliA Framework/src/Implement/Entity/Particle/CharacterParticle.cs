@@ -63,7 +63,7 @@ public class PassOutStarParticle : Particle {
 			sizeFrame.PingPong(sizeDuration / 2)
 		);
 
-		var cell = CellRenderer.Draw(STAR_CODE, x, y, 500, 500, 0, size, size);
+		var cell = Renderer.Draw(STAR_CODE, x, y, 500, 500, 0, size, size);
 		cell.Z *= posFrame < Duration / 2 ? 1 : -1;
 
 	}
@@ -151,7 +151,7 @@ public class FootstepParticle : Particle {
 				Stage.TrySpawnEntity(TYPE_ID, character.X, character.Y, out var entity) &&
 				entity is Particle particle
 			) {
-				if (CellRenderer.TryGetSpriteFromGroup(character.GroundedID, 0, out var sprite)) {
+				if (Renderer.TryGetSpriteFromGroup(character.GroundedID, 0, out var sprite)) {
 					particle.Tint = sprite.SummaryTint;
 				} else {
 					particle.Tint = Color32.WHITE;
@@ -186,7 +186,7 @@ public class JumpParticle : Particle {
 			if (Stage.SpawnEntity(TYPE_ID, character.X, character.Y - character.DeltaPositionY) is not JumpParticle particle) return;
 			bool firstJump = character.CurrentJumpCount <= 1;
 			particle._Scale = firstJump ? 800 : 900;
-			if (firstJump && CellRenderer.TryGetSpriteFromGroup(character.GroundedID, 0, out var sprite)) {
+			if (firstJump && Renderer.TryGetSpriteFromGroup(character.GroundedID, 0, out var sprite)) {
 				particle.Tint = sprite.SummaryTint;
 			} else {
 				particle.Tint = Color32.WHITE;

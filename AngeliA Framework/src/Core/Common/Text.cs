@@ -11,10 +11,10 @@ public class CharSprite {
 }
 
 
-public class CellContent {
+public class TextContent {
 
-	public static readonly CellContent Empty = new();
-	private static readonly CellContent Temp = new();
+	public static readonly TextContent Empty = new();
+	private static readonly TextContent Temp = new();
 
 	public string Text;
 	public char[] Chars;
@@ -31,7 +31,7 @@ public class CellContent {
 	public int BackgroundPadding;
 	public Color32 Shadow;
 
-	public CellContent (string text = "") {
+	public TextContent (string text = "") {
 		Text = text;
 		Chars = null;
 		FromString = true;
@@ -47,14 +47,14 @@ public class CellContent {
 		Shadow = Color32.CLEAR;
 	}
 
-	public CellContent SetText (string newText) {
+	public TextContent SetText (string newText) {
 		Text = newText;
 		Chars = null;
 		FromString = true;
 		return this;
 	}
 
-	public CellContent SetText (string newText, int charSize) {
+	public TextContent SetText (string newText, int charSize) {
 		Text = newText;
 		Chars = null;
 		CharSize = charSize;
@@ -62,7 +62,7 @@ public class CellContent {
 		return this;
 	}
 
-	public static CellContent Get (string text, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+	public static TextContent Get (string text, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 		Temp.CharSize = charSize;
 		Temp.Text = text;
 		Temp.Chars = null;
@@ -75,7 +75,7 @@ public class CellContent {
 		return Temp;
 	}
 
-	public static CellContent Get (string text, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+	public static TextContent Get (string text, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 		Temp.CharSize = charSize;
 		Temp.Text = text;
 		Temp.Chars = null;
@@ -88,7 +88,7 @@ public class CellContent {
 		return Temp;
 	}
 
-	public static CellContent Get (char[] chars, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+	public static TextContent Get (char[] chars, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 		Temp.CharSize = charSize;
 		Temp.Chars = chars;
 		Temp.Alignment = alignment;
@@ -100,7 +100,7 @@ public class CellContent {
 		return Temp;
 	}
 
-	public static CellContent Get (char[] chars, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
+	public static TextContent Get (char[] chars, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) {
 		Temp.CharSize = charSize;
 		Temp.Chars = chars;
 		Temp.Alignment = alignment;

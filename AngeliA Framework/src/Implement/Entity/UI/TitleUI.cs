@@ -37,7 +37,7 @@ public abstract class TitleUI : Entity {
 	public override void OnActivated () {
 		base.OnActivated();
 		TriggeredFrame = int.MinValue;
-		PrevCameraX = CellRenderer.CameraRect.CenterX();
+		PrevCameraX = Renderer.CameraRect.CenterX();
 		if (WorldSquad.FrontBlockSquad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Down, out int titleIndex)) {
 			Title = Language.Get($"UI.Title.{titleIndex}".AngeHash(), "");
 			SubTitle = Language.Get($"UI.SubTitle.{titleIndex}".AngeHash(), "");
@@ -56,7 +56,7 @@ public abstract class TitleUI : Entity {
 		if (TriggeredFrame < 0) {
 			TriggerCheck();
 		} else {
-			var cRect = CellRenderer.CameraRect;
+			var cRect = Renderer.CameraRect;
 			X = cRect.CenterX();
 			Y = cRect.CenterY();
 			const int DURATION = 180;
@@ -67,18 +67,18 @@ public abstract class TitleUI : Entity {
 			}
 
 			// Title
-			CellGUI.Label(
+			GUI.Label(
 				Title, cRect.Shrink(0, 0, cRect.height / 2, 0), Color32.WHITE, out var bound, charSize: 96
 			);
 
 			// Sub Title
-			CellGUI.Label(
-				CellContent.Get(SubTitle, Color32.WHITE, 32, Alignment.TopMid),
+			GUI.Label(
+				TextContent.Get(SubTitle, Color32.WHITE, 32, Alignment.TopMid),
 				new IRect(
 					cRect.x,
 					bound.y - cRect.height,
 					cRect.width,
-					cRect.height - CellGUI.Unify(32)
+					cRect.height - GUI.Unify(32)
 				)
 			);
 
@@ -91,7 +91,7 @@ public abstract class TitleUI : Entity {
 		if (TriggerMode == TitleUITriggerMode.Active) {
 			TriggeredFrame = Game.GlobalFrame;
 		} else {
-			int x = CellRenderer.CameraRect.CenterX();
+			int x = Renderer.CameraRect.CenterX();
 			if (Player.Selecting != null) {
 				x = Player.Selecting.Rect.CenterX();
 			}

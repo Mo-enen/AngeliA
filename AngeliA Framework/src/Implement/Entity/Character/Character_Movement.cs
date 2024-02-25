@@ -639,7 +639,7 @@ public abstract partial class Character {
 
 		// Push
 		if (PushAvailable && !IsCrashing && IntendedX != 0 && speed != 0 && !NavigationEnable) {
-			var hits = CellPhysics.OverlapAll(
+			var hits = Physics.OverlapAll(
 			PhysicsMask.ENVIRONMENT,
 			Rect.Shrink(0, 0, 4, 4).EdgeOutside(IntendedX < 0 ? Direction4.Left : Direction4.Right),
 			out int count, this
@@ -760,8 +760,8 @@ public abstract partial class Character {
 		// Func
 		bool CheckCorrect (IRect trueRect, IRect falseRect, out IRect hitRect) {
 			if (
-				CellPhysics.Overlap(CollisionMask, trueRect, out var hit, this) &&
-				!CellPhysics.Overlap(CollisionMask, falseRect, this)
+				Physics.Overlap(CollisionMask, trueRect, out var hit, this) &&
+				!Physics.Overlap(CollisionMask, falseRect, this)
 			) {
 				hitRect = hit.Rect;
 				return true;
@@ -879,18 +879,18 @@ public abstract partial class Character {
 		);
 
 		// Oneway Check
-		if ((IsSquatting || IsDashing) && !CellPhysics.RoomCheckOneway(
+		if ((IsSquatting || IsDashing) && !Physics.RoomCheckOneway(
 			PhysicsMask.LEVEL, rect, this, Direction4.Up, false
 		)) return true;
 
 		// Overlap Check
-		return CellPhysics.Overlap(PhysicsMask.MAP, rect, null);
+		return Physics.Overlap(PhysicsMask.MAP, rect, null);
 	}
 
 
 	private bool ClimbCheck (bool up = false) {
 		if (IsInsideGround) return false;
-		if (CellPhysics.Overlap(
+		if (Physics.Overlap(
 			PhysicsMask.MAP,
 			up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 			this,
@@ -899,7 +899,7 @@ public abstract partial class Character {
 		)) {
 			return true;
 		}
-		if (CellPhysics.Overlap(
+		if (Physics.Overlap(
 			PhysicsMask.MAP,
 			up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 			out var info,
@@ -927,7 +927,7 @@ public abstract partial class Character {
 			1, 1
 		);
 		if (SlideOnAnyBlock) {
-			var hits = CellPhysics.OverlapAll(PhysicsMask.MAP, rect, out int count, this, OperationMode.ColliderOnly);
+			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, this, OperationMode.ColliderOnly);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Tag == SpriteTag.NO_SLIDE_TAG) continue;
@@ -937,7 +937,7 @@ public abstract partial class Character {
 			}
 			return false;
 		} else {
-			return CellPhysics.Overlap(
+			return Physics.Overlap(
 				PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, SpriteTag.SLIDE_TAG
 			);
 		}
@@ -958,10 +958,10 @@ public abstract partial class Character {
 			Hitbox.width,
 			height / 2 + GRAB_TOP_CHECK_GAP
 		);
-		if (CellPhysics.Overlap(
+		if (Physics.Overlap(
 			PhysicsMask.MAP, rect, out var hit, this,
 			OperationMode.ColliderOnly, SpriteTag.GRAB_TOP_TAG
-		) || CellPhysics.Overlap(
+		) || Physics.Overlap(
 			PhysicsMask.MAP, rect, out hit, this,
 			OperationMode.ColliderOnly, SpriteTag.GRAB_TAG
 		)) {
@@ -996,22 +996,22 @@ public abstract partial class Character {
 			(AllowCheck(rectD, SpriteTag.GRAB_SIDE_TAG) || AllowCheck(rectD, SpriteTag.GRAB_TAG)) &&
 			(AllowCheck(rectU, SpriteTag.GRAB_SIDE_TAG) || AllowCheck(rectU, SpriteTag.GRAB_TAG));
 		if (allowGrab) {
-			allowMoveUp = CellPhysics.Overlap(
+			allowMoveUp = Physics.Overlap(
 				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, SpriteTag.GRAB_SIDE_TAG
-			) || CellPhysics.Overlap(
+			) || Physics.Overlap(
 				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, SpriteTag.GRAB_TAG
 			);
 		}
 		return allowGrab;
 		// Func
-		bool AllowCheck (IRect rect, int tag) => CellPhysics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
+		bool AllowCheck (IRect rect, int tag) => Physics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
 	}
 
 
 	private bool JumpThoughOnewayCheck () {
 		var rect = new IRect(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4);
-		if (CellPhysics.Overlap(PhysicsMask.MAP, rect, this)) return false;
-		var hits = CellPhysics.OverlapAll(
+		if (Physics.Overlap(PhysicsMask.MAP, rect, this)) return false;
+		var hits = Physics.OverlapAll(
 			PhysicsMask.MAP, rect, out int count, this,
 			OperationMode.TriggerOnly, SpriteTag.ONEWAY_UP_TAG
 		);
@@ -1029,7 +1029,7 @@ public abstract partial class Character {
 		if (flipUp) {
 			// Up
 			// No Block Above
-			if (CellPhysics.Overlap(
+			if (Physics.Overlap(
 				PhysicsMask.MAP,
 				new IRect(x, Y + (GrowingHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
 				this
@@ -1038,13 +1038,13 @@ public abstract partial class Character {
 		} else {
 			// Down
 			// No Block Below
-			if (CellPhysics.Overlap(
+			if (Physics.Overlap(
 				PhysicsMask.MAP,
 				new IRect(x, Y - Const.CEL - Const.HALF, width, 1),
 				this
 			)) return false;
 			// Standing on Grab-Top Block
-			var hits = CellPhysics.OverlapAll(
+			var hits = Physics.OverlapAll(
 				PhysicsMask.MAP,
 				new IRect(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4), out int count,
 				this, OperationMode.ColliderOnly, SpriteTag.GRAB_TOP_TAG

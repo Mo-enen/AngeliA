@@ -35,20 +35,20 @@ public abstract class Light : Furniture, ICombustible {
 	}
 
 	public override void FillPhysics () {
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
 		if (OpenLight) {
 			byte brightness = (byte)(64 + (Game.GlobalFrame + ((X * 17 + Y * 9) / Const.CEL)).PingPong(240) / 8);
-			CellRenderer.SetLayerToAdditive();
-			CellRenderer.Draw(
+			Renderer.SetLayerToAdditive();
+			Renderer.Draw(
 				LIGHT,
 				base.Rect.Expand(Const.CEL),
 				new Color32(brightness, brightness, brightness, 255)
 			);
-			CellRenderer.SetLayerToDefault();
+			Renderer.SetLayerToDefault();
 		}
 	}
 

@@ -1,10 +1,8 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AngeliA;
+
 public class Universe {
 
 	// SUB
@@ -50,7 +48,7 @@ public class Universe {
 		EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder);
 		UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
 		MapRoot = AngePath.GetMapRoot(universeFolder);
-		ArtworkRoot = AngePath.GetArtworkRoot(universeFolder);
+		ArtworkRoot = AngePath.GetAsepriteRoot(universeFolder);
 
 		// Saving
 		SavingRoot = savingFolder;

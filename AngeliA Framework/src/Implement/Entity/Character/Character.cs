@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Character",
+[assembly: AngeliA.RequireGlobalSprite(atlas: "Character",
 	"DefaultCharacter.Head",
 	"DefaultCharacter.Body",
 	"DefaultCharacter.Hip",
@@ -84,7 +84,6 @@ public abstract partial class Character : Rigidbody {
 	protected virtual bool IsCharacterWithInventory => false;
 
 	// Data
-	private static readonly HashSet<int> RenderWithSheetPool = new();
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 	private static int GlobalInventoryInitVersion = 0;
 	protected int LastRequireBounceFrame = int.MinValue;
@@ -141,7 +140,7 @@ public abstract partial class Character : Rigidbody {
 	// Physics Update
 	public override void FillPhysics () {
 		if (CharacterState == CharacterState.GamePlay) {
-			CellPhysics.FillEntity(PhysicalLayer, this, NavigationEnable);
+			Physics.FillEntity(PhysicalLayer, this, NavigationEnable);
 		}
 	}
 
@@ -325,10 +324,10 @@ public abstract partial class Character : Rigidbody {
 		bool blinking = IsInvincible && !TakingDamage && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
 		if (blinking) return;
 
-		int oldLayerIndex = CellRenderer.CurrentLayerIndex;
+		int oldLayerIndex = Renderer.CurrentLayerIndex;
 		bool colorFlash = TakingDamage && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
-		if (colorFlash) CellRenderer.SetLayerToColor();
-		int cellIndexStart = CellRenderer.GetUsedCellCount();
+		if (colorFlash) Renderer.SetLayerToColor();
+		int cellIndexStart = Renderer.GetUsedCellCount();
 
 		// Render
 		CurrentRenderingBounce = GetCurrentRenderingBounce();
@@ -338,7 +337,7 @@ public abstract partial class Character : Rigidbody {
 		// Cell Effect
 		if (
 			(colorFlash || (Teleporting && TeleportWithPortal)) &&
-			CellRenderer.GetCells(out var cells, out int count)
+			Renderer.GetCells(out var cells, out int count)
 		) {
 			// Color Flash
 			if (colorFlash) {
@@ -369,7 +368,7 @@ public abstract partial class Character : Rigidbody {
 		}
 
 		// Final
-		CellRenderer.SetLayer(oldLayerIndex);
+		Renderer.SetLayer(oldLayerIndex);
 	}
 
 
@@ -416,7 +415,7 @@ public abstract partial class Character : Rigidbody {
 		int invCapacity = GetInventoryCapacity();
 		if (invCapacity > 0) {
 
-			bool eventAvailable = CharacterState == CharacterState.GamePlay && !FrameTask.HasTask() && !TakingDamage;
+			bool eventAvailable = CharacterState == CharacterState.GamePlay && !Task.HasTask() && !TakingDamage;
 			int attackLocalFrame = eventAvailable && IsAttacking ? Game.GlobalFrame - LastAttackFrame : -1;
 			bool squatStart = eventAvailable && Game.GlobalFrame == LastSquatFrame;
 

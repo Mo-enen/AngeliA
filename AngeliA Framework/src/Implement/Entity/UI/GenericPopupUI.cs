@@ -67,9 +67,9 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	public override void OnActivated () {
 		base.OnActivated();
 		ItemCount = 0;
-		FrameInput.UseMouseKey(0);
-		FrameInput.UseMouseKey(1);
-		FrameInput.UseMouseKey(2);
+		Input.UseMouseKey(0);
+		Input.UseMouseKey(1);
+		Input.UseMouseKey(2);
 	}
 
 
@@ -98,7 +98,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		int panelWidth = Unify(200);
 		int itemHeight = Unify(30);
 		int separatorHeight = Unify(6);
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		var panelRect = new IRect(
 			cameraRect.x + OffsetX,
 			cameraRect.y + OffsetY,
@@ -115,13 +115,13 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			panelRect.y = Util.RemapUnclamped(
 				cameraRect.y + padding, cameraRect.yMax - padding,
 				cameraRect.y, cameraRect.y - panelRect.height + cameraRect.height,
-				FrameInput.MouseGlobalPosition.y
+				Input.MouseGlobalPosition.y
 			);
 		}
 
 		// Items
 		Cell highlightCell = null;
-		int textStart = CellRenderer.GetTextUsedCellCount();
+		int textStart = Renderer.GetTextUsedCellCount();
 		int indent = Unify(42);
 		var rect = new IRect(panelRect.x, panelRect.yMax, panelRect.width, itemHeight);
 		int checkShrink = itemHeight / 6;
@@ -135,7 +135,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 			if (isSeparator) {
 				// Separator
-				CellRenderer.Draw(
+				Renderer.Draw(
 					LINE_CODE, new(rect.x, rect.y + separatorHeight / 4, rect.width, separatorHeight / 2),
 					new Color32(0, 0, 0, 32), int.MaxValue
 				);
@@ -145,15 +145,15 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 				// Check Mark
 				if (item.Checked) {
-					CellRenderer.Draw(
+					Renderer.Draw(
 						CHECK_CODE, new IRect(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
 						tint, int.MaxValue
 					);
 				}
 
 				// Label
-				CellGUI.Label(
-					CellContent.Get(item.Label, tint, 20, Alignment.MidLeft),
+				GUI.Label(
+					TextContent.Get(item.Label, tint, 20, Alignment.MidLeft),
 					rect.Shrink(indent, 0, 0, 0),
 					out var labelBounds
 				);
@@ -169,17 +169,17 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 						item.IconPosition == Direction2.Left ? labelBounds.x - iconSize - iconPadding : labelBounds.xMax + iconPadding,
 						rect.y, iconSize, iconSize
 					);
-					CellRenderer.Draw(item.Icon, iconRect, int.MaxValue);
+					Renderer.Draw(item.Icon, iconRect, int.MaxValue);
 				}
 
 				// Highlight
 				bool hover = rect.MouseInside();
 				if (hover && item.Enabled) {
-					highlightCell = CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_230, int.MaxValue - 1);
+					highlightCell = Renderer.Draw(Const.PIXEL, rect, Color32.GREY_230, int.MaxValue - 1);
 				}
 
 				// Click
-				if (hover && item.Enabled && FrameInput.MouseLeftButtonDown) {
+				if (hover && item.Enabled && Input.MouseLeftButtonDown) {
 					item.Action?.Invoke();
 				}
 			}
@@ -190,18 +190,18 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 		// BG
 		BackgroundRect = panelRect.Expand(Unify(8));
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL, BackgroundRect, new Color32(249, 249, 249, 255), int.MaxValue - 2
 		);
 
 		// Clamp Text
-		CellRenderer.ClampTextCells(panelRect, textStart);
+		Renderer.ClampTextCells(panelRect, textStart);
 
 		// Cancel
-		if (FrameInput.AnyMouseButtonDown || FrameInput.AnyKeyDown) {
-			FrameInput.UseMouseKey(0);
-			FrameInput.UseMouseKey(1);
-			FrameInput.UseMouseKey(2);
+		if (Input.AnyMouseButtonDown || Input.AnyKeyDown) {
+			Input.UseMouseKey(0);
+			Input.UseMouseKey(1);
+			Input.UseMouseKey(2);
 			Active = false;
 		}
 
@@ -221,8 +221,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		Stage.SpawnEntity(Instance.TypeID, 0, 0);
 		if (Instance.Active) Instance.OnInactivated();
 		Instance.ItemCount = 0;
-		Instance.OffsetX = FrameInput.MouseGlobalPosition.x - CellRenderer.CameraRect.x;
-		Instance.OffsetY = FrameInput.MouseGlobalPosition.y - CellRenderer.CameraRect.y;
+		Instance.OffsetX = Input.MouseGlobalPosition.x - Renderer.CameraRect.x;
+		Instance.OffsetY = Input.MouseGlobalPosition.y - Renderer.CameraRect.y;
 	}
 
 

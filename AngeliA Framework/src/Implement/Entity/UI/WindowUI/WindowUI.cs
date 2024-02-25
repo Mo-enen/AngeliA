@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.DontDestroyOnSquadTransition]
 [EntityAttribute.Capacity(1, 0)]
 public abstract class WindowUI : EntityUI, IWindowEntityUI {
@@ -21,7 +21,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 		var entities = Stage.Entities[EntityLayer.UI];
 		for (int i = 0; i < len; i++) {
 			var e = entities[i];
-			if (e is WindowUI window && e.Active) {
+			if (e.Active) {
 				e.OnInactivated();
 			}
 		}
@@ -37,16 +37,16 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 			UpdateWindowUI();
 		} else {
 			// Subsequent
-			bool oldIgnore = FrameInput.IgnoringInput;
-			if (!oldIgnore) FrameInput.IgnoreInput();
+			bool oldIgnore = Input.IgnoringInput;
+			if (!oldIgnore) Input.IgnoreInput();
 			try {
-				int oldP = CursorSystem.CursorPriority;
-				CursorSystem.CursorPriority = int.MaxValue;
+				int oldP = Cursor.CursorPriority;
+				Cursor.CursorPriority = int.MaxValue;
 				UpdateWindowUI();
-				CursorSystem.CursorPriority = oldP;
-				CellRenderer.Draw(Const.PIXEL, CellRenderer.CameraRect, new Color32(0, 0, 0, 200), int.MaxValue);
+				Cursor.CursorPriority = oldP;
+				Renderer.Draw(Const.PIXEL, Renderer.CameraRect, new Color32(0, 0, 0, 200), int.MaxValue);
 			} catch (System.Exception ex) { Util.LogException(ex); }
-			if (!oldIgnore) FrameInput.CancelIgnoreInput();
+			if (!oldIgnore) Input.CancelIgnoreInput();
 		}
 	}
 

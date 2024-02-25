@@ -37,7 +37,7 @@ public abstract class Particle : Entity {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		IsAutoParticle = CellRenderer.HasSpriteGroup(TypeID);
+		IsAutoParticle = Renderer.HasSpriteGroup(TypeID);
 	}
 
 
@@ -49,8 +49,8 @@ public abstract class Particle : Entity {
 		}
 		if (IsAutoParticle) {
 			// Artwork ID
-			if (CellRenderer.TryGetSpriteFromGroup(TypeID, LocalFrame / FramePerSprite, out var sprite, Loop)) {
-				CellRenderer.Draw(
+			if (Renderer.TryGetSpriteFromGroup(TypeID, LocalFrame / FramePerSprite, out var sprite, Loop)) {
+				Renderer.Draw(
 					sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
 					sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
 				);

@@ -130,15 +130,15 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 
 	private void Update_GameLogic (IRect windowRect) {
 
-		if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
-			FrameInput.UseGameKey(Gamekey.Action);
+		if (Input.LastActionFromMouse && Input.MouseLeftButtonDown) {
+			Input.UseGameKey(Gamekey.Action);
 		}
 
-		if (FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (Input.GameKeyDown(Gamekey.Jump)) {
 			SetOpen(false);
 		}
 
-		if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+		if (Input.GameKeyDownGUI(Gamekey.Down)) {
 			// D
 			var newSuit = CurrentSuitType.Next();
 			if (newSuit != CurrentSuitType) {
@@ -146,7 +146,7 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 				CurrentPatternIndex = GetPlayerSuitIndex(newSuit);
 			}
 		}
-		if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+		if (Input.GameKeyDownGUI(Gamekey.Up)) {
 			// U
 			var newSuit = CurrentSuitType.Prev();
 			if (newSuit != CurrentSuitType) {
@@ -155,35 +155,35 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 			}
 		}
 		var currentPattern = GetPattern(CurrentSuitType);
-		if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
+		if (Input.GameKeyDownGUI(Gamekey.Left)) {
 			// L
 			CurrentPatternIndex = (CurrentPatternIndex - 1).Clamp(0, currentPattern.Count - 1);
 			ArrowLeftPopFrame = Game.GlobalFrame;
 			ArrowRightPopFrame = 0;
 		}
-		if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
+		if (Input.GameKeyDownGUI(Gamekey.Right)) {
 			// R
 			CurrentPatternIndex = (CurrentPatternIndex + 1).Clamp(0, currentPattern.Count - 1);
 			ArrowRightPopFrame = Game.GlobalFrame;
 			ArrowLeftPopFrame = 0;
 		}
 
-		if (FrameInput.GameKeyDown(Gamekey.Action)) {
+		if (Input.GameKeyDown(Gamekey.Action)) {
 			// Use Suit
 			ChangeSuit(
 				CurrentSuitType,
 				currentPattern[CurrentPatternIndex.Clamp(0, currentPattern.Count - 1)].Key
 			);
-			FrameInput.UseGameKey(Gamekey.Action);
+			Input.UseGameKey(Gamekey.Action);
 		}
 
-		if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown && windowRect.MouseInside()) {
+		if (Input.LastActionFromMouse && Input.MouseLeftButtonDown && windowRect.MouseInside()) {
 			// Use Suit
 			ChangeSuit(
 				CurrentSuitType,
 				currentPattern[CurrentPatternIndex.Clamp(0, currentPattern.Count - 1)].Key
 			);
-			FrameInput.UseMouseKey(0);
+			Input.UseMouseKey(0);
 		}
 		CurrentPatternIndex = CurrentPatternIndex.Clamp(0, currentPattern.Count - 1);
 
@@ -212,7 +212,7 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 	private void Update_LeftBarUI (IRect windowRect) {
 
 		// Bar BG
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL, windowRect.EdgeOutside(Direction4.Left, LeftBarWidth).Expand(WindowPadding, 0, 0, 0), Color32.BLACK, z: 0
 		);
 		for (int i = 0; i < SUIT_TYPE_ICONS.Length; i++) {
@@ -222,20 +222,20 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 				ContentIconSize, ContentIconSize
 			);
 			// Icon
-			CellRenderer.Draw(
+			Renderer.Draw(
 				SUIT_TYPE_ICONS[i], iconRect.Shrink(iconRect.width / 10), CurrentSuitType == (ClothType)i ? Color32.BLACK : Color32.WHITE, z: 2
 			);
 			// Highlight
 			if ((int)CurrentSuitType == i) {
-				CellRenderer.Draw(Const.PIXEL, iconRect, Color32.GREEN, z: 1);
+				Renderer.Draw(Const.PIXEL, iconRect, Color32.GREEN, z: 1);
 			}
 			// Mouse
 			if (iconRect.MouseInside()) {
 				// Hover
-				CursorSystem.SetCursorAsHand();
+				Cursor.SetCursorAsHand();
 				// Click
-				if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
-					FrameInput.UseMouseKey(0);
+				if (Input.LastActionFromMouse && Input.MouseLeftButtonDown) {
+					Input.UseMouseKey(0);
 					CurrentSuitType = (ClothType)i;
 					CurrentPatternIndex = GetPlayerSuitIndex(CurrentSuitType);
 					Update_UiCache(windowRect);
@@ -250,28 +250,28 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 		bool isWearingCurrent =
 			CurrentPlayerSuitIndex == CurrentPatternIndex ||
 			(CurrentPattern == int.MinValue && CurrentPlayerSuitIndex < 0);
-		CursorSystem.SetCursorAsHand(windowRect);
+		Cursor.SetCursorAsHand(windowRect);
 		int localPopL = Unify(12 - (Game.GlobalFrame - ArrowLeftPopFrame).Clamp(0, 12));
 		int localPopR = Unify(12 - (Game.GlobalFrame - ArrowRightPopFrame).Clamp(0, 12));
 
 		// BG
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			windowRect.Expand(0, WindowPadding, 0, 0),
 Color32.BLACK, 0
 		);
-		if (isWearingCurrent) CellRenderer.Draw(Const.PIXEL, windowRect, Color32.GREEN, 1);
+		if (isWearingCurrent) Renderer.Draw(Const.PIXEL, windowRect, Color32.GREEN, 1);
 
 		if (CurrentPattern != int.MinValue) {
 			// Icon
-			CellRenderer.Draw(
+			Renderer.Draw(
 				CurrentPattern,
 				windowRect.Shift((-localPopL + localPopR) * 2, 0).Shrink(Unify(8)),
 				9
 			);
 		} else {
 			// None Label
-			CellGUI.Label(BuiltInText.UI_NONE, windowRect, tint: Color32.WHITE);
+			GUI.Label(BuiltInText.UI_NONE, windowRect, tint: Color32.WHITE);
 		}
 
 		// Arrow L
@@ -282,11 +282,11 @@ Color32.BLACK, 0
 		);
 		var arrowRenderingRectL = arrowRectL.Shift(-localPopL, 0);
 		arrowRenderingRectL.FlipHorizontal();
-		CellRenderer.Draw(
+		Renderer.Draw(
 			TRIANGLE_RIGHT, arrowRenderingRectL,
 			new Color32(255, 255, 255, (byte)(CurrentPatternIndex > 0 ? 255 : 64)), 5
 		);
-		CursorSystem.SetCursorAsHand(arrowRectL);
+		Cursor.SetCursorAsHand(arrowRectL);
 
 		// Arrow R
 		var arrowRectR = new IRect(
@@ -294,26 +294,26 @@ Color32.BLACK, 0
 			windowRect.CenterY() - ArrowSize / 2,
 			ArrowSize, ArrowSize
 		);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			TRIANGLE_RIGHT, arrowRectR.Shift(localPopR, 0),
 			new Color32(255, 255, 255, (byte)(CurrentPatternIndex < CurrentPatternList.Count - 1 ? 255 : 64)), 5
 		);
-		CursorSystem.SetCursorAsHand(arrowRectR);
+		Cursor.SetCursorAsHand(arrowRectR);
 
 		// Mouse Click Arrow
-		if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
+		if (Input.LastActionFromMouse && Input.MouseLeftButtonDown) {
 			if (arrowRectL.MouseInside()) {
 				CurrentPatternIndex = (CurrentPatternIndex - 1).Clamp(0, CurrentPatternList.Count - 1);
 				ArrowLeftPopFrame = Game.GlobalFrame;
 				ArrowRightPopFrame = 0;
 				Update_UiCache(windowRect);
-				FrameInput.UseMouseKey(0);
+				Input.UseMouseKey(0);
 			} else if (arrowRectR.MouseInside()) {
 				CurrentPatternIndex = (CurrentPatternIndex + 1).Clamp(0, CurrentPatternList.Count - 1);
 				ArrowRightPopFrame = Game.GlobalFrame;
 				ArrowLeftPopFrame = 0;
 				Update_UiCache(windowRect);
-				FrameInput.UseMouseKey(0);
+				Input.UseMouseKey(0);
 			}
 		}
 
@@ -331,7 +331,7 @@ Color32.BLACK, 0
 		int right = CurrentPatternIndex + EXTEND + 1;
 
 		// BG
-		CellRenderer.Draw(Const.PIXEL, new IRect(
+		Renderer.Draw(Const.PIXEL, new IRect(
 			windowRect.x - WindowPadding / 2 - LeftBarWidth,
 			windowRect.yMax,
 			windowRect.width + WindowPadding + LeftBarWidth,
@@ -349,17 +349,17 @@ Color32.BLACK, 0
 			rect.x = windowRect.x + (i - left) * SIZE;
 
 			// Icon
-			CellRenderer.Draw(Const.PIXEL, rect.Shrink(SIZE / 16), Color32.GREY_32, 1);
-			CellRenderer.Draw(pat, rect.Shrink(SIZE / 16), 9);
+			Renderer.Draw(Const.PIXEL, rect.Shrink(SIZE / 16), Color32.GREY_32, 1);
+			Renderer.Draw(pat, rect.Shrink(SIZE / 16), 9);
 
 			// Current Highlight
 			if (i == CurrentPatternIndex) {
-				CellRenderer.Draw_9Slice(FRAME, rect, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, Color32.GREY_96, 3);
+				Renderer.Draw_9Slice(FRAME, rect, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, Color32.GREY_96, 3);
 			}
 
 			// Suit Highlight
 			if (i == CurrentPlayerSuitIndex) {
-				CellRenderer.Draw(Const.PIXEL, rect, Color32.GREEN, 2);
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, 2);
 			}
 		}
 	}
@@ -368,7 +368,7 @@ Color32.BLACK, 0
 	private void Update_LabelsUI (IRect windowRect) {
 
 		// BG
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			new IRect(
 				windowRect.x - LeftBarWidth - WindowPadding,
@@ -381,7 +381,7 @@ Color32.BLACK, 0
 
 		// Display Name
 		if (CurrentPattern != int.MinValue) {
-			CellGUI.Label(
+			GUI.Label(
 				CurrentDisplayName, windowRect.EdgeOutside(Direction4.Down, LabelSize), tint: Color32
 .WHITE
 			);
@@ -389,15 +389,15 @@ Color32.BLACK, 0
 
 		// Index Label
 		int midWidth = Unify(12);
-		CellGUI.Label(
-			CellContent.Get(IndexLabelLeft.GetChars(CurrentPatternIndex + 1), 24, Alignment.MidRight),
+		GUI.Label(
+			TextContent.Get(IndexLabelLeft.GetChars(CurrentPatternIndex + 1), 24, Alignment.MidRight),
 			new IRect(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 		);
-		CellGUI.Label(
-			CellContent.Get(IndexLabelRight.GetChars(CurrentPatternList.Count), 24, Alignment.MidLeft),
+		GUI.Label(
+			TextContent.Get(IndexLabelRight.GetChars(CurrentPatternList.Count), 24, Alignment.MidLeft),
 			new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
 		);
-		CellGUI.Label(
+		GUI.Label(
 			"/",
 			new IRect(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize),
 			charSize: 24, alignment: Alignment.MidMid
@@ -406,7 +406,7 @@ Color32.BLACK, 0
 	}
 
 
-	bool IActionTarget.AllowInvoke () => Player.Selecting is IConfigurableCharacter && !FrameTask.HasTask();
+	bool IActionTarget.AllowInvoke () => Player.Selecting is IConfigurableCharacter && !Task.HasTask();
 
 
 	#endregion

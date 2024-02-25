@@ -37,7 +37,7 @@ public class GenericDialogUI : MenuUI {
 
 	public override void UpdateUI () {
 		// Exclude Text
-		CellRenderer.ExcludeTextCellsForAllLayers(BackgroundRect);
+		Renderer.ExcludeTextCellsForAllLayers(BackgroundRect);
 		// Update
 		base.UpdateUI();
 	}
@@ -52,7 +52,7 @@ public class GenericDialogUI : MenuUI {
 			if (DrawItem(option.Label)) {
 				option.Action();
 				Active = false;
-				FrameInput.UseAllHoldingKeys();
+				Input.UseAllHoldingKeys();
 			}
 		}
 	}

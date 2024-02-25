@@ -68,7 +68,7 @@ public class PauseMenuUI : MenuUI {
 	private readonly GamepadKey[] GamepadKeys = new GamepadKey[8];
 	private readonly IntToChars MusicVolumeCache = new();
 	private readonly IntToChars SoundVolumeCache = new();
-	private readonly CellContent KeySetterLabel = new();
+	private readonly TextContent KeySetterLabel = new();
 	private MenuMode Mode = MenuMode.Root;
 	private MenuMode RequireMode = MenuMode.Root;
 	private int RecordingKey = -1;
@@ -175,10 +175,10 @@ public class PauseMenuUI : MenuUI {
 	private void MenuRoot () {
 
 		// 0-Continue
-		if (DrawItem(BuiltInText.UI_CONTINUE) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (DrawItem(BuiltInText.UI_CONTINUE) || Input.GameKeyDown(Gamekey.Jump)) {
 			Game.UnpauseGame();
 			Active = false;
-			FrameInput.UseAllHoldingKeys();
+			Input.UseAllHoldingKeys();
 		}
 
 		// 1-Key Setter
@@ -228,7 +228,7 @@ public class PauseMenuUI : MenuUI {
 			RecordDirty = false;
 			KeySetterConfirming = false;
 			for (int i = 0; i < KeyboardKeys.Length; i++) {
-				KeyboardKeys[i] = FrameInput.GetKeyboardMap((Gamekey)i);
+				KeyboardKeys[i] = Input.GetKeyboardMap((Gamekey)i);
 			}
 		}
 
@@ -240,11 +240,11 @@ public class PauseMenuUI : MenuUI {
 			RecordDirty = false;
 			KeySetterConfirming = false;
 			for (int i = 0; i < GamepadKeys.Length; i++) {
-				GamepadKeys[i] = FrameInput.GetGamepadMap((Gamekey)i);
+				GamepadKeys[i] = Input.GetGamepadMap((Gamekey)i);
 			}
 		}
 
-		if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
 			RequireMode = MenuMode.Root;
 			SetSelection(1);
 		}
@@ -256,7 +256,7 @@ public class PauseMenuUI : MenuUI {
 		// Music Volume
 		if (DrawArrowItem(
 			MENU_MUSIC_VOLUME,
-			CellContent.Get(MusicVolumeCache.GetChars(Game.MusicVolume / 100)),
+			TextContent.Get(MusicVolumeCache.GetChars(Game.MusicVolume / 100)),
 			Game.MusicVolume > 0, Game.MusicVolume < 1000, out int delta
 		)) {
 			Game.SetMusicVolume(Game.MusicVolume + delta * 100);
@@ -265,7 +265,7 @@ public class PauseMenuUI : MenuUI {
 		// Sound Volume
 		if (DrawArrowItem(
 			MENU_SOUND_VOLUME,
-			CellContent.Get(SoundVolumeCache.GetChars(Game.SoundVolume / 100)),
+			TextContent.Get(SoundVolumeCache.GetChars(Game.SoundVolume / 100)),
 			Game.SoundVolume > 0, Game.SoundVolume < 1000, out delta
 		)) {
 			Game.SetSoundVolume(Game.SoundVolume + delta * 100);
@@ -274,7 +274,7 @@ public class PauseMenuUI : MenuUI {
 		// Show FPS 
 		if (DrawItem(
 			MENU_SHOW_FPS,
-			CellContent.Get(Game.ShowFPS ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+			TextContent.Get(Game.ShowFPS ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 		)) {
 			Game.ShowFPS = !Game.ShowFPS;
 		}
@@ -282,7 +282,7 @@ public class PauseMenuUI : MenuUI {
 		// Fullscreen
 		if (DrawItem(
 			MENU_FULLSCREEN_LABEL,
-			CellContent.Get(Game.IsFullscreen ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+			TextContent.Get(Game.IsFullscreen ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 		)) {
 			Game.IsFullscreen = !Game.IsFullscreen;
 		}
@@ -299,7 +299,7 @@ public class PauseMenuUI : MenuUI {
 			}
 			if (DrawArrowItem(
 				MENU_LANGUAGE,
-				CellContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
+				TextContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
 				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 			) {
 				int newIndex = currentLanguageIndex + delta;
@@ -313,15 +313,15 @@ public class PauseMenuUI : MenuUI {
 		// Allow Gamepad
 		if (DrawItem(
 			MENU_ALLOW_GAMEPAD,
-			CellContent.Get(FrameInput.AllowGamepad ? BuiltInText.UI_YES : BuiltInText.UI_NO)
+			TextContent.Get(Input.AllowGamepad ? BuiltInText.UI_YES : BuiltInText.UI_NO)
 		)) {
-			FrameInput.AllowGamepad = !FrameInput.AllowGamepad;
+			Input.AllowGamepad = !Input.AllowGamepad;
 		}
 
 		// Control Hint
 		if (DrawItem(
 			MENU_CONTROL_HINT,
-			CellContent.Get(ControlHintUI.UseControlHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+			TextContent.Get(ControlHintUI.UseControlHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 		)) {
 			ControlHintUI.UseControlHint = !ControlHintUI.UseControlHint;
 		}
@@ -329,13 +329,13 @@ public class PauseMenuUI : MenuUI {
 		// Gamepad Hint
 		if (DrawItem(
 			MENU_GAMEPAD_HINT,
-			CellContent.Get(ControlHintUI.UseGamePadHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+			TextContent.Get(ControlHintUI.UseGamePadHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 		)) {
 			ControlHintUI.UseGamePadHint = !ControlHintUI.UseGamePadHint;
 		}
 
 		// Back
-		if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
 			RequireMode = MenuMode.Root;
 			SetSelection(2);
 		}
@@ -350,7 +350,7 @@ public class PauseMenuUI : MenuUI {
 			// Auto Zoom
 			if (DrawItem(
 				MENU_MEDT_AUTO_ZOOM,
-				CellContent.Get(mapEditor.AutoZoom ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+				TextContent.Get(mapEditor.AutoZoom ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
 				mapEditor.AutoZoom = !mapEditor.AutoZoom;
 			}
@@ -358,7 +358,7 @@ public class PauseMenuUI : MenuUI {
 			// Drop Player
 			if (DrawItem(
 				MENU_MEDT_PLAYER_DROP,
-				CellContent.Get(mapEditor.QuickPlayerDrop ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+				TextContent.Get(mapEditor.QuickPlayerDrop ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
 				mapEditor.QuickPlayerDrop = !mapEditor.QuickPlayerDrop;
 			}
@@ -366,14 +366,14 @@ public class PauseMenuUI : MenuUI {
 			// Show State
 			if (DrawItem(
 				MENU_MEDT_STATE,
-				CellContent.Get(mapEditor.ShowState ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+				TextContent.Get(mapEditor.ShowState ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
 			)) {
 				mapEditor.ShowState = !mapEditor.ShowState;
 			}
 		}
 
 		// Back
-		if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
 			RequireMode = MenuMode.Root;
 			SetSelection(3);
 		}
@@ -385,7 +385,7 @@ public class PauseMenuUI : MenuUI {
 		Message = MENU_RESTART_MESSAGE;
 
 		// Continue
-		if (DrawItem(BuiltInText.UI_BACK) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
 			RequireMode = MenuMode.Root;
 			SetSelection(3);
 		}
@@ -394,8 +394,8 @@ public class PauseMenuUI : MenuUI {
 		if (DrawItem(BuiltInText.UI_RESTART)) {
 			Game.UnpauseGame();
 			Active = false;
-			FrameInput.UseAllHoldingKeys();
-			FrameTask.AddToLast(RestartGameTask.TYPE_ID);
+			Input.UseAllHoldingKeys();
+			Task.AddToLast(RestartGameTask.TYPE_ID);
 		}
 
 	}
@@ -406,7 +406,7 @@ public class PauseMenuUI : MenuUI {
 		Message = MENU_QUIT_MESSAGE;
 
 		// Continue
-		if (DrawItem(BuiltInText.UI_CONTINUE) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (DrawItem(BuiltInText.UI_CONTINUE) || Input.GameKeyDown(Gamekey.Jump)) {
 			RequireMode = MenuMode.Root;
 			SetSelection(1024);
 		}
@@ -415,7 +415,7 @@ public class PauseMenuUI : MenuUI {
 		if (MapEditor.IsActived) {
 			if (DrawItem(MENU_EDITOR_QUIT)) {
 				Active = false;
-				FrameInput.UseAllHoldingKeys();
+				Input.UseAllHoldingKeys();
 				WindowUI.CloseWindow(MapEditor.TYPE_ID);
 				Game.RestartGame();
 			}
@@ -455,7 +455,7 @@ public class PauseMenuUI : MenuUI {
 		// All Game Keys
 		for (int i = 0; i < GAMEKEY_UI_CODES.Length; i++) {
 			int code = GAMEKEY_UI_CODES[i].ID;
-			CellContent valueLabel;
+			TextContent valueLabel;
 			int iconID = 0;
 			if (RecordingKey != i) {
 				// Normal
@@ -490,7 +490,7 @@ public class PauseMenuUI : MenuUI {
 		// Back
 		if (
 			DrawItem(BuiltInText.UI_BACK) ||
-			(RecordingKey < 0 && FrameInput.GameKeyUp(Gamekey.Jump))
+			(RecordingKey < 0 && Input.GameKeyUp(Gamekey.Jump))
 		) {
 			if (RecordDirty) {
 				// Confirm
@@ -506,7 +506,7 @@ public class PauseMenuUI : MenuUI {
 		if (RecordingKey >= 0 && !RecordLock) {
 			if (forGamepad) {
 				// Gamepad
-				if (FrameInput.TryGetHoldingGamepadButton(out var button)) {
+				if (Input.TryGetHoldingGamepadButton(out var button)) {
 					if (
 						(button != GamepadKey.Start || RecordingKey == (int)Gamekey.Start) &&
 						(button != GamepadKey.Select || RecordingKey == (int)Gamekey.Select)
@@ -522,14 +522,14 @@ public class PauseMenuUI : MenuUI {
 						}
 					}
 					RecordingKey = -1;
-					FrameInput.UseAllHoldingKeys();
-				} else if (FrameInput.AnyKeyboardKeyHolding || FrameInput.MouseLeftButtonDown) {
+					Input.UseAllHoldingKeys();
+				} else if (Input.AnyKeyboardKeyHolding || Input.MouseLeftButtonDown) {
 					RecordingKey = -1;
-					FrameInput.UseAllHoldingKeys();
+					Input.UseAllHoldingKeys();
 				}
 			} else {
 				// Keyboard
-				if (FrameInput.TryGetHoldingKeyboardKey(out var button)) {
+				if (Input.TryGetHoldingKeyboardKey(out var button)) {
 					if (button != KeyboardKey.Escape || RecordingKey == (int)Gamekey.Start) {
 						if (KeyboardKeys[RecordingKey] != button) {
 							for (int i = 0; i < KeyboardKeys.Length; i++) {
@@ -542,10 +542,10 @@ public class PauseMenuUI : MenuUI {
 						}
 					}
 					RecordingKey = -1;
-					FrameInput.UseAllHoldingKeys();
-				} else if (FrameInput.AnyGamepadButtonHolding || FrameInput.MouseLeftButtonDown) {
+					Input.UseAllHoldingKeys();
+				} else if (Input.AnyGamepadButtonHolding || Input.MouseLeftButtonDown) {
 					RecordingKey = -1;
-					FrameInput.UseAllHoldingKeys();
+					Input.UseAllHoldingKeys();
 				}
 			}
 		}
@@ -553,25 +553,25 @@ public class PauseMenuUI : MenuUI {
 		// Unlock Record
 		if (
 			RecordLock &&
-			!FrameInput.AnyGamepadButtonHolding &&
-			!FrameInput.AnyKeyboardKeyHolding &&
-			!FrameInput.MouseLeftButton
+			!Input.AnyGamepadButtonHolding &&
+			!Input.AnyKeyboardKeyHolding &&
+			!Input.MouseLeftButton
 		) {
 			RecordLock = false;
 		}
 
 		// Reset
-		if (FrameInput.KeyboardDown(KeyboardKey.F1)) {
+		if (Input.KeyboardDown(KeyboardKey.F1)) {
 			bool changed = false;
 			if (forGamepad) {
 				for (int i = 0; i < GamepadKeys.Length; i++) {
-					var defaultKey = FrameInput.GetDefaultGamepadMap((Gamekey)i);
+					var defaultKey = Input.GetDefaultGamepadMap((Gamekey)i);
 					changed = changed || GamepadKeys[i] != defaultKey;
 					GamepadKeys[i] = defaultKey;
 				}
 			} else {
 				for (int i = 0; i < KeyboardKeys.Length; i++) {
-					var defaultKey = FrameInput.GetDefaultKeyboardMap((Gamekey)i);
+					var defaultKey = Input.GetDefaultKeyboardMap((Gamekey)i);
 					changed = changed || KeyboardKeys[i] != defaultKey;
 					KeyboardKeys[i] = defaultKey;
 				}
@@ -580,9 +580,9 @@ public class PauseMenuUI : MenuUI {
 		}
 
 		// Use ESC
-		if (FrameInput.KeyboardUp(KeyboardKey.Escape) || FrameInput.GameKeyUp(Gamekey.Start)) {
-			FrameInput.UseGameKey(Gamekey.Start);
-			FrameInput.UseKeyboardKey(KeyboardKey.Escape);
+		if (Input.KeyboardUp(KeyboardKey.Escape) || Input.GameKeyUp(Gamekey.Start)) {
+			Input.UseGameKey(Gamekey.Start);
+			Input.UseKeyboardKey(KeyboardKey.Escape);
 		}
 
 		// Func
@@ -590,11 +590,11 @@ public class PauseMenuUI : MenuUI {
 			if (Instance == null) return;
 			if (forGamepad) {
 				for (int i = 0; i < Instance.GamepadKeys.Length; i++) {
-					FrameInput.SetGamepadMap((Gamekey)i, Instance.GamepadKeys[i]);
+					Input.SetGamepadMap((Gamekey)i, Instance.GamepadKeys[i]);
 				}
 			} else {
 				for (int i = 0; i < Instance.KeyboardKeys.Length; i++) {
-					FrameInput.SetKeyboardMap((Gamekey)i, Instance.KeyboardKeys[i]);
+					Input.SetKeyboardMap((Gamekey)i, Instance.KeyboardKeys[i]);
 				}
 			}
 		}

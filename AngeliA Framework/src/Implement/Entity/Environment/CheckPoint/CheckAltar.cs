@@ -53,8 +53,8 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IGlobalPosition where 
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
-		CellPhysics.FillBlock(
+		var border = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
+		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, SpriteTag.ONEWAY_UP_TAG
 		);
 	}
@@ -101,7 +101,7 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IGlobalPosition where 
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		CellRenderer.Draw(TypeID, Rect);
+		Renderer.Draw(TypeID, Rect);
 		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 		if (Player.RespawnCpUnitPosition == unitPos) {
 			CheckPoint.DrawActivatedHighlight(Rect);

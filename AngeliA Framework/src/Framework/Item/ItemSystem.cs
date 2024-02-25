@@ -174,7 +174,7 @@ public static class ItemSystem {
 						int totalProgress = progItem.TotalProgress;
 						var rect = new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
 						for (int i = 0; i < totalProgress - 1; i++) {
-							CellRenderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, z);
+							Renderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, z);
 							rect.x += rect.width;
 						}
 					}
@@ -418,7 +418,7 @@ public static class ItemSystem {
 	public static bool GiveItemTo (int inventoryID, int itemID, int count = 1) {
 		count -= Inventory.CollectItem(inventoryID, itemID, count);
 		if (count > 0) {
-			var cameraRect = CellRenderer.CameraRect;
+			var cameraRect = Renderer.CameraRect;
 			SpawnItem(itemID, cameraRect.CenterX(), cameraRect.CenterY(), count);
 		}
 		return true;
@@ -426,8 +426,8 @@ public static class ItemSystem {
 
 
 	public static void SpawnItemAtTarget (Entity target, int itemID, int count = 1) {
-		int x = target != null ? target.Rect.x - Const.CEL : CellRenderer.CameraRect.CenterX();
-		int y = target != null ? target.Y : CellRenderer.CameraRect.CenterY();
+		int x = target != null ? target.Rect.x - Const.CEL : Renderer.CameraRect.CenterX();
+		int y = target != null ? target.Y : Renderer.CameraRect.CenterY();
 		SpawnItem(itemID, x, y, count);
 	}
 

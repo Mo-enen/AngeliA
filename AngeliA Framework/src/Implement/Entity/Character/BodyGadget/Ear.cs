@@ -25,10 +25,10 @@ public abstract class Ear : BodyGadget {
 		SpriteIdR = $"{name}.EarR".AngeHash();
 		SpriteIdLBack = $"{name}.EarLB".AngeHash();
 		SpriteIdRBack = $"{name}.EarRB".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
-		if (!CellRenderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
-		if (!CellRenderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
-		if (!CellRenderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
+		if (!Renderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
+		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
+		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
+		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
 	}
 
 
@@ -156,8 +156,8 @@ public abstract class Ear : BodyGadget {
 		}
 
 		// Draw
-		if (CellRenderer.TryGetSprite(leftEarID, out var earSpriteL)) {
-			var cell = CellRenderer.Draw(
+		if (Renderer.TryGetSprite(leftEarID, out var earSpriteL)) {
+			var cell = Renderer.Draw(
 				earSpriteL,
 				headRect.x + shiftL.x + offsetX,
 				(flipY ? headRect.y : headRect.yMax) + shiftL.y,
@@ -171,8 +171,8 @@ public abstract class Ear : BodyGadget {
 				cell.Y -= character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
 			}
 		}
-		if (CellRenderer.TryGetSprite(rightEarID, out var earSpriteR)) {
-			var cell = CellRenderer.Draw(
+		if (Renderer.TryGetSprite(rightEarID, out var earSpriteR)) {
+			var cell = Renderer.Draw(
 				earSpriteR,
 				headRect.xMax + shiftR.x + offsetX,
 				(flipY ? headRect.y : headRect.yMax) + shiftR.y,

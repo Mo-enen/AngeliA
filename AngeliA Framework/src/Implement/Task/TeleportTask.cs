@@ -56,9 +56,9 @@ public class TeleportTask : TaskItem {
 			float scale = ToBehind ? 1000f / PARA : PARA / 1000f;
 			float z01 = Util.InverseLerp(WaitDuration, Duration, LocalFrame);
 			float lerp = Util.LerpUnclamped(scale, 1f, z01);
-			var center = CellRenderer.CameraRect.center.CeilToInt();
+			var center = Renderer.CameraRect.center.CeilToInt();
 			// Behind
-			if (CellRenderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
+			if (Renderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
 				MapEffectLogic(cells, center, count, scale, lerp, true, ToBehind);
 			}
 			// Front
@@ -68,7 +68,7 @@ public class TeleportTask : TaskItem {
 					layer == RenderLayer.UI ||
 					layer == RenderLayer.BEHIND
 				) continue;
-				if (CellRenderer.GetCells(layer, out cells, out count)) {
+				if (Renderer.GetCells(layer, out cells, out count)) {
 					MapEffectLogic(cells, center, count, scale, lerp, false, ToBehind);
 				}
 			}
@@ -76,7 +76,7 @@ public class TeleportTask : TaskItem {
 
 		// Update Vig Effect
 		if (useVig) {
-			var cameraRect = CellRenderer.CameraRect;
+			var cameraRect = Renderer.CameraRect;
 			if (LocalFrame < WaitDuration) {
 				float radius = Util.RemapUnclamped(0, WaitDuration - 1, 1f, 0f, LocalFrame);
 				float offsetX = Util.RemapUnclamped(cameraRect.xMin, cameraRect.xMax, -1f, 1f, TeleportFrom.x);
@@ -111,8 +111,8 @@ public class TeleportTask : TaskItem {
 		int waitDuration = 6, int duration = 24, bool useVignette = false, bool useParallax = true, bool withPortal = false,
 		MapChannel? newChannel = null, string channelName = ""
 	) {
-		if (FrameTask.HasTask()) return null;
-		if (FrameTask.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
+		if (Task.HasTask()) return null;
+		if (Task.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
 			svTask.TeleportFrom = new Int2(fromX, fromY);
 			svTask.TeleportTo = new Int3(toX, toY, toZ);
 			svTask.WaitDuration = waitDuration;

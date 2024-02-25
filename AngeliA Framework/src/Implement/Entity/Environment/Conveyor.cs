@@ -73,7 +73,7 @@ public abstract class Conveyor : EnvironmentEntity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillBlock(PhysicsLayer.LEVEL, TypeID, Rect);
+		Physics.FillBlock(PhysicsLayer.LEVEL, TypeID, Rect);
 	}
 
 
@@ -82,7 +82,7 @@ public abstract class Conveyor : EnvironmentEntity {
 		var rect = Rect;
 		rect.y += rect.height;
 		rect.height = 1;
-		var hits = CellPhysics.OverlapAll(PhysicsMask.ENTITY, rect, out int count, this);
+		var hits = Physics.OverlapAll(PhysicsMask.ENTITY, rect, out int count, this);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is Rigidbody rig) {
@@ -98,7 +98,7 @@ public abstract class Conveyor : EnvironmentEntity {
 		base.FrameUpdate();
 		int aFrame = (Game.GlobalFrame * Util.Abs(MoveSpeed) / 16).UMod(8);
 		if (MoveSpeed > 0) aFrame = 7 - aFrame;
-		if (CellRenderer.TryGetSpriteFromGroup(
+		if (Renderer.TryGetSpriteFromGroup(
 			Pose switch {
 				FittingPose.Left => ArtCodeLeft,
 				FittingPose.Mid => ArtCodeMid,
@@ -107,7 +107,7 @@ public abstract class Conveyor : EnvironmentEntity {
 				_ => 0,
 			}, aFrame, out var sprite, true, true
 		)) {
-			CellRenderer.Draw(sprite, base.Rect);
+			Renderer.Draw(sprite, base.Rect);
 		}
 	}
 

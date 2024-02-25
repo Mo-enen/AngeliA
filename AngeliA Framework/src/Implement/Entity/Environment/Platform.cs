@@ -117,9 +117,9 @@ public abstract class Platform : EnvironmentEntity {
 
 	public override void FillPhysics () {
 		if (OneWay) {
-			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
+			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
 		} else {
-			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 		}
 	}
 
@@ -144,15 +144,15 @@ public abstract class Platform : EnvironmentEntity {
 			FittingPose.Right => 3,
 			_ => 0,
 		};
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, index, out var sprite, false, true)) {
-			CellRenderer.Draw(sprite, Rect);
+		if (Renderer.TryGetSpriteFromGroup(TypeID, index, out var sprite, false, true)) {
+			Renderer.Draw(sprite, Rect);
 		}
 	}
 
 
 	private void Update_Touch () {
 		if (!TouchedByRigidbody || !TouchedByCharacter || !TouchedByPlayer) {
-			var hits = CellPhysics.OverlapAll(PhysicsMask.ENTITY, Rect.Expand(1), out int count, this);
+			var hits = Physics.OverlapAll(PhysicsMask.ENTITY, Rect.Expand(1), out int count, this);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Rect.y < Y + Height) continue;
@@ -191,7 +191,7 @@ public abstract class Platform : EnvironmentEntity {
 		var rect = Rect;
 		var prevRect = rect;
 		prevRect.x = PrevX;
-		var hits = CellPhysics.OverlapAll(PhysicsMask.DYNAMIC, rect, out int count, this);
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, rect, out int count, this);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;
@@ -225,7 +225,7 @@ public abstract class Platform : EnvironmentEntity {
 			right = int.MaxValue;
 		}
 
-		var hits = CellPhysics.OverlapAll(
+		var hits = Physics.OverlapAll(
 			PhysicsMask.DYNAMIC, rect.EdgeOutside(Direction4.Up, 32).Shift(0, -16), out int count,
 			this, OperationMode.ColliderAndTrigger
 		);
@@ -273,7 +273,7 @@ public abstract class Platform : EnvironmentEntity {
 			prevRect.height -= Height / 3;
 			rect.y = PrevY + prevRect.height;
 			rect.height = Y + Height - rect.y;
-			var hits = CellPhysics.OverlapAll(
+			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC, rect, out int count,
 				this, OperationMode.ColliderOnly
 			);
@@ -288,7 +288,7 @@ public abstract class Platform : EnvironmentEntity {
 				}
 			}
 			// For Nav Character
-			hits = CellPhysics.OverlapAll(
+			hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC, rect, out count,
 				this, OperationMode.TriggerOnly
 			);
@@ -307,7 +307,7 @@ public abstract class Platform : EnvironmentEntity {
 		} else {
 			// Moving Down
 			prevRect.height += PrevY - Y + 1;
-			var hits = CellPhysics.OverlapAll(
+			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC, prevRect, out int count,
 				this, OperationMode.ColliderAndTrigger
 			);

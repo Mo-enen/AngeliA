@@ -22,7 +22,7 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 	protected virtual bool ShowGeneratingHint => true;
 
 	// Data
-	private readonly CellContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, BackgroundPadding = 6, Wrap = false, Clip = false, };
+	private readonly TextContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, BackgroundPadding = 6, Wrap = false, Clip = false, };
 
 
 	#endregion
@@ -41,7 +41,7 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
@@ -62,7 +62,7 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 		} else {
 			// Generating
 			if (ShowGeneratingHint) {
-				CellGUI.Label(
+				GUI.Label(
 					HintContent.SetText(HINT_GENERATING),
 					new IRect(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL)
 				);
@@ -77,7 +77,7 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 	}
 
 
-	protected virtual Cell DrawArtwork () => CellRenderer.Draw(TypeID, Rect);
+	protected virtual Cell DrawArtwork () => Renderer.Draw(TypeID, Rect);
 
 
 	void IActionTarget.Invoke () {
@@ -93,7 +93,7 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 
 
 	private void Enter () {
-		if (FrameTask.HasTask()) return;
+		if (Task.HasTask()) return;
 		TeleportTask.Teleport(
 			X + Width / 2,
 			Y + Height / 2,

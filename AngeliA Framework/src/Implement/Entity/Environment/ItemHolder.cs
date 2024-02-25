@@ -45,7 +45,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	}
 
 
-	public override void FillPhysics () => CellPhysics.FillEntity(PhysicsLayer.ITEM, this, true);
+	public override void FillPhysics () => Physics.FillEntity(PhysicsLayer.ITEM, this, true);
 
 
 	public override void PhysicsUpdate () {
@@ -59,7 +59,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		// Make Room
 		if (IsGrounded) {
 			int dir = 0;
-			var hits = CellPhysics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, this, OperationMode.TriggerOnly);
+			var hits = Physics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, this, OperationMode.TriggerOnly);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity == null) continue;
@@ -89,7 +89,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 			Y, ITEM_RENDER_SIZE, ITEM_RENDER_SIZE
 		);
 		byte rgb = (byte)Util.RemapUnclamped(0, 120, 225, 255, Game.GlobalFrame.PingPong(120));
-		var cell = CellRenderer.Draw(
+		var cell = Renderer.Draw(
 			ItemID,
 			rect,
 			new Color32(rgb, rgb, rgb, 255)
@@ -97,11 +97,11 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		// Count
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
-			CellRenderer.SetLayerToUI();
-			CellRenderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
-			CellGUI.Label(CellGUI.GetNumberCache(ItemCount), labelRect, charSize: 20);
+			Renderer.SetLayerToUI();
+			Renderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
+			GUI.Label(GUI.GetNumberCache(ItemCount), labelRect, charSize: 20);
 		}
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToDefault();
 		// Highlight
 		if ((this as IActionTarget).IsHighlighted) {
 			IActionTarget.HighlightBlink(cell);

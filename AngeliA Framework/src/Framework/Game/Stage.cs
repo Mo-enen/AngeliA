@@ -338,7 +338,7 @@ public static class Stage {
 		}
 
 		// FrameUpdate
-		var cullCameraRect = CellRenderer.CameraRect.Expand(GetCameraCullingPadding());
+		var cullCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
 			int count = EntityCounts[layer];
@@ -348,8 +348,8 @@ public static class Stage {
 				var e = entities[index];
 				if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
 					try {
-						CellRenderer.SetLayerToDefault();
-						CellRenderer.SetTextLayer(0);
+						Renderer.SetLayerToDefault();
+						Renderer.SetTextLayer(0);
 						e.FrameUpdate();
 						e.FrameUpdated = true;
 					} catch (System.Exception ex) { Util.LogException(ex); }
@@ -619,8 +619,8 @@ public static class Stage {
 
 
 	public static Int4 GetCameraCullingPadding () {
-		int expand = CellRenderer.CameraRect.width * (Game.WorldBehindParallax - 1000) / 2000;
-		return FrameTask.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
+		int expand = Renderer.CameraRect.width * (Game.WorldBehindParallax - 1000) / 2000;
+		return Task.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
 	}
 
 

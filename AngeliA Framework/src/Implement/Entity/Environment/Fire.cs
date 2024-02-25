@@ -84,7 +84,7 @@ public abstract class Fire : Entity {
 		}
 
 		// Put Out when Hit Water
-		if (CellPhysics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
+		if (Physics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
 			PutOut();
 			Active = false;
 			return;
@@ -133,8 +133,8 @@ public abstract class Fire : Entity {
 		base.FrameUpdate();
 		if (!Active) return;
 
-		if (UseAdditiveShader) CellRenderer.SetLayerToAdditive();
-		var cell = CellRenderer.Draw(
+		if (UseAdditiveShader) Renderer.SetLayerToAdditive();
+		var cell = Renderer.Draw(
 			TypeID,
 			X + (Direction == Direction4.Left ? Width : Direction == Direction4.Right ? 0 : Width / 2),
 			Y + (Direction == Direction4.Down ? Height : Direction == Direction4.Up ? 0 : Height / 2),
@@ -142,7 +142,7 @@ public abstract class Fire : Entity {
 			Direction.GetRotation(),
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, int.MaxValue
 		);
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToDefault();
 
 		// Fit Size to Target
 		if (Target is Entity eTarget && cell.Width != eTarget.Width) {
@@ -218,7 +218,7 @@ public abstract class Fire : Entity {
 
 
 	public void Spread () {
-		var hits = CellPhysics.OverlapAll(
+		var hits = Physics.OverlapAll(
 			PhysicsMask.ENTITY,
 			Rect.Expand(SpreadRange), out int count,
 			this, OperationMode.ColliderAndTrigger

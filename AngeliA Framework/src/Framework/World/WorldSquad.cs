@@ -125,14 +125,14 @@ public sealed class WorldSquad : IBlockSquad {
 		bool isBehind = this == Behind;
 		int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
 		if (isBehind) {
-			CellRenderer.SetLayerToBehind();
+			Renderer.SetLayerToBehind();
 		} else {
-			CellRenderer.SetLayerToDefault();
+			Renderer.SetLayerToDefault();
 		}
 
 		IRect unitRect_Entity;
 		IRect unitRect_Level;
-		CameraRect = CellRenderer.CameraRect;
+		CameraRect = Renderer.CameraRect;
 		var cullingPadding = Stage.GetCameraCullingPadding();
 		CullingCameraRect = CameraRect.Expand(cullingPadding);
 		float para01 = Game.WorldBehindParallax / 1000f;
@@ -269,7 +269,7 @@ public sealed class WorldSquad : IBlockSquad {
 		}
 
 		// Final
-		if (isBehind) CellRenderer.SetLayerToDefault();
+		if (isBehind) Renderer.SetLayerToDefault();
 	}
 
 
@@ -458,7 +458,7 @@ public sealed class WorldSquad : IBlockSquad {
 	private void DrawBackgroundBlock (int id, int unitX, int unitY) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (CullingCameraRect.Overlaps(rect)) {
-			CellRenderer.Draw(id, rect);
+			Renderer.Draw(id, rect);
 		}
 	}
 
@@ -466,18 +466,18 @@ public sealed class WorldSquad : IBlockSquad {
 	private void DrawLevelBlock (int id, int unitX, int unitY, bool ignoreCollider) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (CullingCameraRect.Overlaps(rect)) {
-			CellRenderer.Draw(id, rect);
+			Renderer.Draw(id, rect);
 		}
 		if (!ignoreCollider) {
 			// Collider
-			if (!CellRenderer.TryGetSprite(id, out var sp)) return;
+			if (!Renderer.TryGetSprite(id, out var sp)) return;
 			if (sp.Tag == SpriteTag.DAMAGE_TAG) {
-				CellPhysics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, 1);
+				Physics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, 1);
 			}
 			rect = rect.Shrink(
 				sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
 			);
-			CellPhysics.FillBlock(PhysicsLayer.LEVEL, id, rect, sp.IsTrigger, sp.Tag);
+			Physics.FillBlock(PhysicsLayer.LEVEL, id, rect, sp.IsTrigger, sp.Tag);
 		}
 	}
 
@@ -494,13 +494,13 @@ public sealed class WorldSquad : IBlockSquad {
 			var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 			if (!CullingCameraRect.Overlaps(rect)) return;
 			if (
-				CellRenderer.TryGetSprite(id, out var sprite) ||
-				CellRenderer.TryGetSpriteFromGroup(id, 0, out sprite)
+				Renderer.TryGetSprite(id, out var sprite) ||
+				Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
 			) {
 				rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
-				CellRenderer.Draw(sprite, rect);
+				Renderer.Draw(sprite, rect);
 			} else {
-				CellRenderer.Draw(ENTITY_CODE, rect);
+				Renderer.Draw(ENTITY_CODE, rect);
 			}
 		}
 	}
@@ -510,13 +510,13 @@ public sealed class WorldSquad : IBlockSquad {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (!CullingCameraRect.Overlaps(rect)) return;
 		if (
-			CellRenderer.TryGetSprite(id, out var sprite) ||
-			CellRenderer.TryGetSpriteFromGroup(id, 0, out sprite)
+			Renderer.TryGetSprite(id, out var sprite) ||
+			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
 		) {
 			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
-			CellRenderer.Draw(sprite.GlobalID, rect);
+			Renderer.Draw(sprite.GlobalID, rect);
 		} else {
-			CellRenderer.Draw(ENTITY_CODE, rect);
+			Renderer.Draw(ENTITY_CODE, rect);
 		}
 	}
 
@@ -530,8 +530,8 @@ public sealed class WorldSquad : IBlockSquad {
 		);
 
 		if (
-			!CellRenderer.TryGetSprite(id, out var sprite) &&
-			!CellRenderer.TryGetSpriteFromGroup(id, 0, out sprite)
+			!Renderer.TryGetSprite(id, out var sprite) &&
+			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
 		) return;
 
 		if (
@@ -551,7 +551,7 @@ public sealed class WorldSquad : IBlockSquad {
 		);
 
 		tint.a = BehindAlpha;
-		CellRenderer.Draw(sprite, rect, tint, 0);
+		Renderer.Draw(sprite, rect, tint, 0);
 	}
 
 

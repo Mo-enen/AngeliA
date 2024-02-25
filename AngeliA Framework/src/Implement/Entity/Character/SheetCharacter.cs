@@ -112,7 +112,7 @@ public abstract class SheetCharacter : Character {
 
 
 		private static int LoadAniCode (int code, int failback = 0) {
-			if (CellRenderer.HasSpriteGroup(code) || CellRenderer.HasSprite(code)) {
+			if (Renderer.HasSpriteGroup(code) || Renderer.HasSprite(code)) {
 				return code;
 			} else {
 				return failback;
@@ -164,7 +164,7 @@ public abstract class SheetCharacter : Character {
 
 		// Damage
 		if (TakingDamage) {
-			CellRenderer.DrawAnimation(
+			Renderer.DrawAnimation(
 				sheet.Damaging,
 				X, Y, 500, 0, 0,
 				FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
@@ -177,7 +177,7 @@ public abstract class SheetCharacter : Character {
 		// Door
 		if (Teleporting) {
 			LastRequireBounceFrame = int.MinValue;
-			CellRenderer.DrawAnimation(
+			Renderer.DrawAnimation(
 				TeleportEndFrame > 0 ? sheet.DoorFront : sheet.DoorBack,
 				X, Y, 500, 0, 0,
 				FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
@@ -196,18 +196,18 @@ public abstract class SheetCharacter : Character {
 				BounceCellForSheet(RenderedCell, CurrentRenderingBounce);
 				break;
 			case CharacterState.Sleep:
-				RenderedCell = CellRenderer.DrawAnimation(
+				RenderedCell = Renderer.DrawAnimation(
 					sheet.Sleep, X, Y, 500, 0, 0,
 					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, Game.GlobalFrame
 				);
-				if (CellRenderer.TryGetSprite(sheet.Sleep, out var sleepSprite)) {
+				if (Renderer.TryGetSprite(sheet.Sleep, out var sleepSprite)) {
 					if (sleepSprite.GlobalBorder.down > 0) {
 						RenderedCell.Y -= sleepSprite.GlobalBorder.down;
 					}
 				}
 				break;
 			case CharacterState.PassOut:
-				RenderedCell = CellRenderer.DrawAnimation(
+				RenderedCell = Renderer.DrawAnimation(
 					sheet.PassOut,
 					X, Y,
 					500, 0, 0,
@@ -243,8 +243,8 @@ public abstract class SheetCharacter : Character {
 		}
 
 		// Draw
-		if (CellRenderer.TryGetSprite(ani, out var sprite)) {
-			return CellRenderer.DrawAnimation(
+		if (Renderer.TryGetSprite(ani, out var sprite)) {
+			return Renderer.DrawAnimation(
 				ani, X, Y, sprite.PivotX, sprite.PivotY, 0,
 				FacingRight || IsClimbing || IsPounding ? sprite.GlobalWidth : -sprite.GlobalWidth,
 				sprite.GlobalHeight, CurrentAnimationFrame

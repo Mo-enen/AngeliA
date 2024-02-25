@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace AngeliA; 
+namespace AngeliA;
 [Serializable]
 public struct Color32 : IFormattable, IComparable {
 
@@ -77,7 +77,7 @@ public struct Color32 : IFormattable, IComparable {
 		return string.Format("RGBA({0}, {1}, {2}, {3})", r.ToString(format, formatProvider), g.ToString(format, formatProvider), b.ToString(format, formatProvider), a.ToString(format, formatProvider));
 	}
 
-	public int CompareTo (object obj) {
+	public readonly int CompareTo (object obj) {
 		var other = (Color32)obj;
 		return
 			r != other.r ? r.CompareTo(other.r) :

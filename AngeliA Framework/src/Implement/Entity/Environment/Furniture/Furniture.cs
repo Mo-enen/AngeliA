@@ -43,7 +43,7 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 
 
 	public override void FillPhysics () {
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
 	}
 
 
@@ -86,7 +86,7 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 		if (Pose == FittingPose.Unknown) return;
 		var sprite = GetSpriteFromPose();
 		if (sprite != null) {
-			var cell = CellRenderer.Draw(sprite, RenderingRect);
+			var cell = Renderer.Draw(sprite, RenderingRect);
 			if ((this as IActionTarget).IsHighlighted) {
 				BlinkCellAsFurniture(cell);
 			}
@@ -111,19 +111,19 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 	protected void DrawClockHands (IRect rect, int handCode, int thickness, int thicknessSecond) {
 		var now = System.DateTime.Now;
 		// Sec
-		CellRenderer.Draw(
+		Renderer.Draw(
 			handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 			500, 0, now.Second * 360 / 60,
 			thicknessSecond, rect.height * 900 / 2000
 		);
 		// Min
-		CellRenderer.Draw(
+		Renderer.Draw(
 			handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 			500, 0, now.Minute * 360 / 60,
 			thickness, rect.height * 800 / 2000
 		);
 		// Hour
-		CellRenderer.Draw(
+		Renderer.Draw(
 			handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
 			500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
 			thickness, rect.height * 400 / 2000
@@ -136,9 +136,9 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 		int rot = (t11 * maxRot).RoundToInt();
 		int dX = -(t11 * deltaX).RoundToInt();
 		// Leg
-		CellRenderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
+		Renderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
 		// Head
-		CellRenderer.Draw(
+		Renderer.Draw(
 			artCodeHead, x + dX, y, 500,
 			500 * (headSize / 2 + length) / (headSize / 2),
 			rot, headSize, headSize
@@ -147,14 +147,14 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 
 
 	protected AngeSprite GetSpriteFromPose () {
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, Pose switch {
+		if (Renderer.TryGetSpriteFromGroup(TypeID, Pose switch {
 			FittingPose.Left => 1,
 			FittingPose.Mid => 2,
 			FittingPose.Right => 3,
 			FittingPose.Single => 0,
 			_ => 0,
 		}, out var sprite, false, true) ||
-			CellRenderer.TryGetSprite(TypeID, out sprite)
+			Renderer.TryGetSprite(TypeID, out sprite)
 		) return sprite;
 		return null;
 	}

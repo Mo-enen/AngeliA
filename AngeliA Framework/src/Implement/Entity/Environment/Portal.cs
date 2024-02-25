@@ -48,29 +48,29 @@ public abstract class CircleFlamePortal : Portal {
 		RenderingMaxZ = int.MinValue;
 
 		// Light
-		if (CellRenderer.TryGetSprite(LightCode, out var light)) {
+		if (Renderer.TryGetSprite(LightCode, out var light)) {
 			int lightSize = CircleSize;
 			if (!light.GlobalBorder.IsZero) {
 				lightSize += CircleSize * light.GlobalBorder.horizontal / light.GlobalWidth;
 			}
 			lightSize += (int)Util.PingPong(Game.GlobalFrame, 36);
 			var tint = new Color32(255, 255, 255, (byte)(Util.PingPong(Game.GlobalFrame, 36) * 2 + 90).Clamp(0, 255));
-			CellRenderer.SetLayerToAdditive();
-			CellRenderer.Draw(
+			Renderer.SetLayerToAdditive();
+			Renderer.Draw(
 				light, centerX, centerY,
 				500, 500, (Game.GlobalFrame * 6).UMod(360),
 				lightSize, lightSize, tint
 			);
-			CellRenderer.Draw(
+			Renderer.Draw(
 				light, centerX, centerY,
 				500, 500, (Game.GlobalFrame * -4).UMod(360),
 				lightSize * 19 / 20, lightSize * 19 / 20, tint
 			);
-			CellRenderer.SetLayerToDefault();
+			Renderer.SetLayerToDefault();
 		}
 
 		// Circle
-		if (CellRenderer.TryGetSprite(CircleCode, out var circle)) {
+		if (Renderer.TryGetSprite(CircleCode, out var circle)) {
 			const int CIRCLE_DURATION = 24;
 			const int CIRCLE_COUNT = 4;
 			int circleFrame = Game.GlobalFrame % CIRCLE_DURATION;
@@ -93,7 +93,7 @@ public abstract class CircleFlamePortal : Portal {
 					(byte)(i > 0 ? 255 : Util.RemapUnclamped(0, CIRCLE_DURATION, 0, 400, circleFrame).Clamp(0, 255))
 				);
 				int z = circle.SortingZ + i;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					circle, centerX, centerY,
 					500, 500, 0,
 					size, size,
@@ -105,7 +105,7 @@ public abstract class CircleFlamePortal : Portal {
 		}
 
 		// Flame
-		if (CellRenderer.TryGetSprite(FlameCode, out var flame)) {
+		if (Renderer.TryGetSprite(FlameCode, out var flame)) {
 			const int FLAME_COUNT = 3;
 			const int FLAME_DURATION = 51;
 			int flameFrame = Game.GlobalFrame % FLAME_DURATION;
@@ -127,7 +127,7 @@ public abstract class CircleFlamePortal : Portal {
 					flameFrame.PingPong(FLAME_DURATION / 2)
 				).Clamp(0, 255);
 				int z = flame.SortingZ + FLAME_COUNT + 1;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					flame, centerX, centerY,
 					flame.PivotX, flame.PivotY, rot,
 					size, size,
@@ -154,7 +154,7 @@ public abstract class Portal : Entity {
 	}
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 	public override void PhysicsUpdate () {
 		base.PhysicsUpdate();
@@ -170,7 +170,7 @@ public abstract class Portal : Entity {
 		}
 	}
 	public virtual bool Invoke (Player player) {
-		if (FrameTask.HasTask()) return false;
+		if (Task.HasTask()) return false;
 		if (DontSpawnAfterUsed) Stage.MarkAsGlobalAntiSpawn(this);
 		TeleportTask.Teleport(
 			X + Width / 2, Y + Height / 2,

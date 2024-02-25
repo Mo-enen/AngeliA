@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA.Framework; 
-public static class FrameInput {
+public static class Input {
 
 
 
@@ -260,7 +260,7 @@ public static class FrameInput {
 	[OnGameUpdate(-2048)]
 	internal static void FrameUpdate () {
 
-		IRect cameraRect = CellRenderer.CameraRect;
+		IRect cameraRect = Renderer.CameraRect;
 
 		bool gamepadAvailable = AllowGamepad && Game.IsGamepadAvailable;
 		bool keyboardAvailable = Game.IsKeyboardAvailable;

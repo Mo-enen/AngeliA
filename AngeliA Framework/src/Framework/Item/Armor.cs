@@ -19,14 +19,14 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 		string basicName = GetType().AngeName();
 		SpriteFront = $"{basicName}.Main".AngeHash();
 		SpriteBack = $"{basicName}.Back".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteFront)) SpriteFront = 0;
-		if (!CellRenderer.HasSprite(SpriteBack)) SpriteBack = 0;
+		if (!Renderer.HasSprite(SpriteFront)) SpriteFront = 0;
+		if (!Renderer.HasSprite(SpriteBack)) SpriteBack = 0;
 	}
 	protected override void DrawArmor (PoseCharacter character) {
 
 		var head = character.Head;
 		int spriteID = head.FrontSide ? SpriteFront : SpriteBack;
-		if (spriteID == 0 || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+		if (spriteID == 0 || !Renderer.TryGetSprite(spriteID, out var sprite)) return;
 		Cell[] cells;
 
 		// Draw Helmet
@@ -93,22 +93,22 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 		LowerArmID = $"{basicName}.LowerArm".AngeHash();
 		UpperLegID = $"{basicName}.UpperLeg".AngeHash();
 		LowerLegID = $"{basicName}.LowerLeg".AngeHash();
-		if (!CellRenderer.HasSpriteGroup(BodyId)) {
+		if (!Renderer.HasSpriteGroup(BodyId)) {
 			BodyId = $"{basicName}.BodyL".AngeHash();
 			BodyIdAlt = $"{basicName}.BodyR".AngeHash();
 		}
-		if (!CellRenderer.HasSpriteGroup(HipID) && !CellRenderer.HasSprite(HipID)) {
+		if (!Renderer.HasSpriteGroup(HipID) && !Renderer.HasSprite(HipID)) {
 			HipID = $"{basicName}.Skirt".AngeHash();
 			IsSkirt = true;
 		}
-		if (!CellRenderer.HasSprite(BodyId) && !CellRenderer.HasSpriteGroup(BodyId)) BodyId = 0;
-		if (!CellRenderer.HasSprite(BodyIdAlt) && !CellRenderer.HasSpriteGroup(BodyIdAlt)) BodyIdAlt = 0;
-		if (!CellRenderer.HasSprite(HipID)) HipID = 0;
-		if (!CellRenderer.HasSprite(ShoulderID)) ShoulderID = 0;
-		if (!CellRenderer.HasSprite(UpperArmID)) UpperArmID = 0;
-		if (!CellRenderer.HasSprite(LowerArmID)) LowerArmID = 0;
-		if (!CellRenderer.HasSprite(UpperLegID)) UpperLegID = 0;
-		if (!CellRenderer.HasSprite(LowerLegID)) LowerLegID = 0;
+		if (!Renderer.HasSprite(BodyId) && !Renderer.HasSpriteGroup(BodyId)) BodyId = 0;
+		if (!Renderer.HasSprite(BodyIdAlt) && !Renderer.HasSpriteGroup(BodyIdAlt)) BodyIdAlt = 0;
+		if (!Renderer.HasSprite(HipID)) HipID = 0;
+		if (!Renderer.HasSprite(ShoulderID)) ShoulderID = 0;
+		if (!Renderer.HasSprite(UpperArmID)) UpperArmID = 0;
+		if (!Renderer.HasSprite(LowerArmID)) LowerArmID = 0;
+		if (!Renderer.HasSprite(UpperLegID)) UpperLegID = 0;
+		if (!Renderer.HasSprite(LowerLegID)) LowerLegID = 0;
 	}
 	protected override void DrawArmor (PoseCharacter character) {
 
@@ -130,7 +130,7 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 		BodyCloth.DrawCape(character, BodyId);
 
 		// Shoulder
-		if (ShoulderID != 0 && CellRenderer.TryGetSprite(ShoulderID, out var shoulderSprite)) {
+		if (ShoulderID != 0 && Renderer.TryGetSprite(ShoulderID, out var shoulderSprite)) {
 			Cloth.AttachClothOn(character.ShoulderL, shoulderSprite, 1000, 1000, 16);
 			Cloth.AttachClothOn(character.ShoulderR, shoulderSprite, 1000, 1000, 16);
 		}
@@ -155,7 +155,7 @@ public abstract class Gloves<P, N> : Armor<P, N> where P : Equipment where N : E
 	public Gloves () {
 		string basicName = GetType().AngeName();
 		SpriteID = $"{basicName}.Main".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
+		if (!Renderer.HasSprite(SpriteID)) SpriteID = 0;
 	}
 	protected override void DrawArmor (PoseCharacter character) => HandCloth.DrawClothForHand(character, SpriteID, 2);
 }
@@ -169,7 +169,7 @@ public abstract class Shoes<P, N> : Armor<P, N> where P : Equipment where N : Eq
 	public Shoes () {
 		string basicName = GetType().AngeName();
 		SpriteID = $"{basicName}.Main".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteID)) SpriteID = 0;
+		if (!Renderer.HasSprite(SpriteID)) SpriteID = 0;
 	}
 	protected override void DrawArmor (PoseCharacter character) => FootCloth.DrawClothForFoot(character, SpriteID, 2);
 }

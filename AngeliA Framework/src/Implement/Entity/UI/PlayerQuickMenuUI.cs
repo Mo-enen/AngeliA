@@ -47,7 +47,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	// Data
 	private static readonly Weapon[] WeaponList = new Weapon[Character.INVENTORY_ROW * Character.INVENTORY_COLUMN + 2];
-	private static readonly CellContent NameLabel = new() {
+	private static readonly TextContent NameLabel = new() {
 		Alignment = Alignment.MidMid,
 		BackgroundTint = Color32.BLACK,
 		CharSize = 22,
@@ -71,8 +71,8 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public override void OnActivated () {
 		base.OnActivated();
 
-		X = CellRenderer.CameraRect.CenterX();
-		Y = CellRenderer.CameraRect.CenterY();
+		X = Renderer.CameraRect.CenterX();
+		Y = Renderer.CameraRect.CenterY();
 		IsDirty = false;
 		CurrentSlotIndex = 0;
 		WeaponCount = 0;
@@ -139,19 +139,19 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public override void UpdateUI () {
 		base.UpdateUI();
 
-		if (!Active || Player.Selecting == null || FrameTask.HasTask() || WeaponCount <= 0) {
+		if (!Active || Player.Selecting == null || Task.HasTask() || WeaponCount <= 0) {
 			Active = false;
 			return;
 		}
 
 		// Close Menu Check
 		if (
-			!FrameInput.GameKeyHolding(Gamekey.Start) &&
-			!FrameInput.GameKeyHolding(Gamekey.Select)
+			!Input.GameKeyHolding(Gamekey.Start) &&
+			!Input.GameKeyHolding(Gamekey.Select)
 		) {
 			if (IsDirty) {
-				FrameInput.UseGameKey(Gamekey.Start);
-				FrameInput.UseGameKey(Gamekey.Select);
+				Input.UseGameKey(Gamekey.Start);
+				Input.UseGameKey(Gamekey.Select);
 			}
 			if (IsDirty) {
 				if (CurrentSlotIndex == 0 && WeaponList[0] == null) {
@@ -175,11 +175,11 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		if (Game.GlobalFrame - SpawnFrame > 24) IsDirty = true;
 
 		// Logic
-		if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
+		if (Input.GameKeyDownGUI(Gamekey.Left)) {
 			CurrentSlotIndex = (CurrentSlotIndex - 1).UMod(WeaponCount);
 			IsDirty = true;
 		}
-		if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
+		if (Input.GameKeyDownGUI(Gamekey.Right)) {
 			CurrentSlotIndex = (CurrentSlotIndex + 1).UMod(WeaponCount);
 			IsDirty = true;
 		}
@@ -224,12 +224,12 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			if (i == CurrentSlotIndex) {
 
 				// Highlight
-				CellRenderer.Draw(Const.PIXEL, rect.Shrink(BORDER), Color32.GREEN, int.MinValue + 2);
+				Renderer.Draw(Const.PIXEL, rect.Shrink(BORDER), Color32.GREEN, int.MinValue + 2);
 
 				// Name Label
 				int labelWidth = ITEM_SIZE * 3;
 				int labelHeight = Unify(NameLabel.CharSize + 4);
-				CellGUI.Label(
+				GUI.Label(
 					NameLabel.SetText(weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemName(weaponID)),
 					new IRect(
 						rect.CenterX() - labelWidth / 2,
@@ -242,7 +242,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 			// From Inventory
 			if (weaponID == 0) {
-				CellRenderer.Draw(HAND_ICON, rect.Shrink(Unify(7)), z: int.MinValue + 10);
+				Renderer.Draw(HAND_ICON, rect.Shrink(Unify(7)), z: int.MinValue + 10);
 			} else {
 				DrawItemIcon(rect, weaponID);
 			}
@@ -251,7 +251,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 		// BG
 		BackgroundRect = new IRect(basicX, basicY, rect.xMax - basicX, ITEM_SIZE).Expand(PADDING);
-		CellRenderer.Draw(Const.PIXEL, BackgroundRect, Color32.BLACK, int.MinValue + 1);
+		Renderer.Draw(Const.PIXEL, BackgroundRect, Color32.BLACK, int.MinValue + 1);
 
 	}
 
@@ -324,12 +324,12 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	private static void DrawItemIcon (IRect rect, int id) {
 		if (id == 0) return;
-		if (!CellRenderer.TryGetSprite(id, out var sprite)) {
+		if (!Renderer.TryGetSprite(id, out var sprite)) {
 			id = Const.PIXEL;
-			CellRenderer.TryGetSprite(Const.PIXEL, out sprite);
+			Renderer.TryGetSprite(Const.PIXEL, out sprite);
 			rect = rect.Shrink(rect.width / 6);
 		}
-		CellRenderer.Draw(
+		Renderer.Draw(
 			id,
 			rect.Shrink(Unify(7)).Fit(sprite),
 			z: int.MinValue + 10

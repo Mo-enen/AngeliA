@@ -54,11 +54,11 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	private int TargetItemCount;
 	private int AnimationFrame = 0;
 	private bool Layout;
-	private readonly CellContent MessageLabel = new() {
+	private readonly TextContent MessageLabel = new() {
 		Alignment = Alignment.MidMid,
 		Wrap = true,
 	};
-	private readonly CellContent ItemLabel = new();
+	private readonly TextContent ItemLabel = new();
 
 
 	#endregion
@@ -75,24 +75,24 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		ScrollY = 0;
 		ActiveFrame = Game.GlobalFrame;
 		AnimationFrame = 0;
-		FrameInput.UseAllHoldingKeys();
+		Input.UseAllHoldingKeys();
 	}
 
 
 	public override void BeforePhysicsUpdate () {
 		base.BeforePhysicsUpdate();
-		if (FrameInput.AnyMouseButtonHolding && !BackgroundRect.MouseInside()) {
-			FrameInput.UseMouseKey(0);
-			FrameInput.UseMouseKey(1);
-			FrameInput.UseMouseKey(2);
+		if (Input.AnyMouseButtonHolding && !BackgroundRect.MouseInside()) {
+			Input.UseMouseKey(0);
+			Input.UseMouseKey(1);
+			Input.UseMouseKey(2);
 		}
 	}
 
 
 	public override void UpdateUI () {
 
-		FrameInput.IgnoreMouseToActionJumpForThisFrame = true;
-		CursorSystem.RequireCursor();
+		Input.IgnoreMouseToActionJumpForThisFrame = true;
+		Cursor.RequireCursor();
 
 		// Layout
 		TargetItemCount = 0;
@@ -133,7 +133,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 		// BG
 		if (ScreenTint.a > 0) {
-			CellRenderer.Draw(Const.PIXEL, CellRenderer.CameraRect, ScreenTint, int.MaxValue - 6);
+			Renderer.Draw(Const.PIXEL, Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
 		}
 		var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? msgHeight : 0);
 		if (animating) {
@@ -144,7 +144,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			));
 		}
 		BackgroundRect = bgRect;
-		CellRenderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
+		Renderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
 
 		// Message
 		if (hasMsg) {
@@ -153,7 +153,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				tint.a = (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame);
 			}
 			MessageLabel.Tint = tint;
-			CellGUI.Label(MessageLabel.SetText(msg, charSize: MessageFontSize), new IRect(
+			GUI.Label(MessageLabel.SetText(msg, charSize: MessageFontSize), new IRect(
 				windowBounds.x, windowBounds.yMax,
 				windowBounds.width, msgHeight
 			));
@@ -181,7 +181,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		DrawMenu();
 
 		// Scroll Wheel
-		int wheel = -FrameInput.MouseWheelDelta;
+		int wheel = -Input.MouseWheelDelta;
 		if (wheel != 0) {
 			if (wheel > 0) {
 				SelectionIndex = TargetItemCount + ScrollY + wheel - 1;
@@ -213,8 +213,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				windowRect.yMax + contentPadding.up - moreMarkSize.y,
 				moreMarkSize.x, moreMarkSize.y
 			).Shift(0, MarkPingPongFrame.PingPong(46));
-			CellRenderer.Draw(MoreItemMarkCode, markRectU, MoreMarkTint, int.MaxValue - 4);
-			CursorSystem.SetCursorAsHand(markRectU);
+			Renderer.Draw(MoreItemMarkCode, markRectU, MoreMarkTint, int.MaxValue - 4);
+			Cursor.SetCursorAsHand(markRectU);
 		}
 		if (ScrollY < ItemCount - TargetItemCount) {
 			// D
@@ -223,12 +223,12 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				windowRect.yMin - contentPadding.down + moreMarkSize.y,
 				moreMarkSize.x, -moreMarkSize.y
 			).Shift(0, MarkPingPongFrame.PingPong(46));
-			CellRenderer.Draw(MoreItemMarkCode, markRectD, MoreMarkTint, int.MaxValue - 4);
-			CursorSystem.SetCursorAsHand(markRectD);
+			Renderer.Draw(MoreItemMarkCode, markRectD, MoreMarkTint, int.MaxValue - 4);
+			Cursor.SetCursorAsHand(markRectD);
 		}
 
 		// Click on Mark
-		if (FrameInput.MouseLeftButtonDown) {
+		if (Input.MouseLeftButtonDown) {
 			markRectD.FlipNegative();
 			markRectU.FlipNegative();
 			if (markRectD.Expand(Unify(12)).MouseInside()) {
@@ -241,17 +241,17 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 		// Use Action
 		if (Interactable) {
-			if (FrameInput.GameKeyDownGUI(Gamekey.Up) || FrameInput.KeyboardDownGUI(KeyboardKey.UpArrow)) {
+			if (Input.GameKeyDownGUI(Gamekey.Up) || Input.KeyboardDownGUI(KeyboardKey.UpArrow)) {
 				SelectionIndex = (SelectionIndex - 1).Clamp(0, ItemCount - 1);
 				OnSelectionChanged();
 			}
-			if (FrameInput.GameKeyDownGUI(Gamekey.Down) || FrameInput.KeyboardDownGUI(KeyboardKey.DownArrow)) {
+			if (Input.GameKeyDownGUI(Gamekey.Down) || Input.KeyboardDownGUI(KeyboardKey.DownArrow)) {
 				SelectionIndex = (SelectionIndex + 1).Clamp(0, ItemCount - 1);
 				OnSelectionChanged();
 			}
-			if (QuitOnPressStartOrEscKey && Game.GlobalFrame != ActiveFrame && (FrameInput.GameKeyUp(Gamekey.Start) || FrameInput.KeyboardUp(KeyboardKey.Escape))) {
+			if (QuitOnPressStartOrEscKey && Game.GlobalFrame != ActiveFrame && (Input.GameKeyUp(Gamekey.Start) || Input.KeyboardUp(KeyboardKey.Escape))) {
 				Active = false;
-				FrameInput.UseAllHoldingKeys();
+				Input.UseAllHoldingKeys();
 			}
 		}
 
@@ -277,19 +277,19 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected virtual IRect GetWindowRect () {
 		int w = Unify(WindowWidth);
 		int h = Unify(TargetItemCount * ItemHeight + (TargetItemCount - 1) * ItemGap);
-		int x = (int)(CellRenderer.CameraRect.x + CellRenderer.CameraRect.width / 2 - Unify(WindowWidth) / 2);
-		int y = CellRenderer.CameraRect.y + CellRenderer.CameraRect.height / 2 - h / 2;
+		int x = (int)(Renderer.CameraRect.x + Renderer.CameraRect.width / 2 - Unify(WindowWidth) / 2);
+		int y = Renderer.CameraRect.y + Renderer.CameraRect.height / 2 - h / 2;
 		return new IRect(x, y, w, h);
 	}
 
 
 	// Draw Item
-	protected bool DrawItem (string label, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, Color32.WHITE, out _);
-	protected bool DrawItem (string label, Color32 tint, int icon = 0) => DrawItemLogic(label, CellContent.Empty, icon, false, false, tint, out _);
-	protected bool DrawItem (string label, CellContent value, int icon = 0) => DrawItemLogic(label, value, icon, false, false, Color32.WHITE, out _);
-	protected bool DrawItem (string label, CellContent value, Color32 tint, int icon = 0) => DrawItemLogic(label, value, icon, false, false, tint, out _);
-	protected bool DrawArrowItem (string label, CellContent value, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, value, icon, leftArrow, rightArrow, Color32.WHITE, out delta);
-	private bool DrawItemLogic (string label, CellContent value, int icon, bool useLeftArrow, bool useRightArrow, Color32 tint, out int delta) {
+	protected bool DrawItem (string label, int icon = 0) => DrawItemLogic(label, TextContent.Empty, icon, false, false, Color32.WHITE, out _);
+	protected bool DrawItem (string label, Color32 tint, int icon = 0) => DrawItemLogic(label, TextContent.Empty, icon, false, false, tint, out _);
+	protected bool DrawItem (string label, TextContent value, int icon = 0) => DrawItemLogic(label, value, icon, false, false, Color32.WHITE, out _);
+	protected bool DrawItem (string label, TextContent value, Color32 tint, int icon = 0) => DrawItemLogic(label, value, icon, false, false, tint, out _);
+	protected bool DrawArrowItem (string label, TextContent value, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, value, icon, leftArrow, rightArrow, Color32.WHITE, out delta);
+	private bool DrawItemLogic (string label, TextContent value, int icon, bool useLeftArrow, bool useRightArrow, Color32 tint, out int delta) {
 
 		bool invoke = false;
 		delta = 0;
@@ -349,15 +349,15 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				bounds = hoverCheckingRect.Shrink(markSize.x * 2, markSize.x * 2, 0, 0);
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
-					if (mouseHoverLabel && FrameInput.LastActionFromMouse) {
-						CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
+					if (mouseHoverLabel && Input.LastActionFromMouse) {
+						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
 					}
 				}
 
 				// Single Label
 				ItemLabel.Tint = tint;
 				ItemLabel.Alignment = Alignment.MidMid;
-				CellGUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect);
+				GUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect);
 
 			} else {
 
@@ -368,19 +368,19 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				// Mouse Highlight
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
-					if (mouseHoverLabel && FrameInput.LastActionFromMouse) {
-						CellRenderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
+					if (mouseHoverLabel && Input.LastActionFromMouse) {
+						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
 					}
 				}
 
 				// Double Labels
 				ItemLabel.Tint = tint;
 				ItemLabel.Alignment = Alignment.MidLeft;
-				CellGUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0));
+				GUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0));
 
 				if (string.IsNullOrEmpty(value.Text)) {
-					if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
-						CellRenderer.Draw(
+					if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
+						Renderer.Draw(
 							icon,
 							secLabelRect.Fit(iconSprite),
 							int.MaxValue - 2
@@ -388,9 +388,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 					}
 				} else {
 					value.Tint.a = tint.a;
-					CellGUI.Label(value, secLabelRect, out var labelBounds);
-					if (icon != 0 && CellRenderer.TryGetSprite(icon, out var iconSprite)) {
-						CellRenderer.Draw(
+					GUI.Label(value, secLabelRect, out var labelBounds);
+					if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
+						Renderer.Draw(
 							icon,
 							new IRect(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
 							int.MaxValue - 2
@@ -430,20 +430,20 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				}
 
 				// Draw Hover
-				if (FrameInput.LastActionFromMouse) {
+				if (Input.LastActionFromMouse) {
 					if (mouseHoverArrowL && useLeftArrow) {
-						CellRenderer.Draw(Const.PIXEL, rectL_H, MouseHighlightTint, int.MaxValue - 3);
+						Renderer.Draw(Const.PIXEL, rectL_H, MouseHighlightTint, int.MaxValue - 3);
 					}
 					if (mouseHoverArrowR && useRightArrow) {
-						CellRenderer.Draw(Const.PIXEL, rectR_H, MouseHighlightTint, int.MaxValue - 3);
+						Renderer.Draw(Const.PIXEL, rectR_H, MouseHighlightTint, int.MaxValue - 3);
 					}
 				}
 
 				// L Arrow
-				if (useLeftArrow) CellRenderer.Draw(ArrowMarkCode, rectL, whiteTint, int.MaxValue - 2);
+				if (useLeftArrow) Renderer.Draw(ArrowMarkCode, rectL, whiteTint, int.MaxValue - 2);
 
 				// R Arrow
-				if (useRightArrow) CellRenderer.Draw(ArrowMarkCode, rectR, whiteTint, int.MaxValue - 2);
+				if (useRightArrow) Renderer.Draw(ArrowMarkCode, rectR, whiteTint, int.MaxValue - 2);
 
 			}
 
@@ -451,7 +451,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 		// Selection
 		if (SelectionIndex == ItemCount) {
-			CellRenderer.Draw(
+			Renderer.Draw(
 				SelectionMarkCode,
 				new IRect(
 					itemRect.x - markSize.x + MarkPingPongFrame.PingPong(60),
@@ -464,13 +464,13 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			);
 			// Invoke
 			if (Interactable) {
-				if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.KeyboardDown(KeyboardKey.Enter)) {
+				if (Input.GameKeyDown(Gamekey.Action) || Input.KeyboardDown(KeyboardKey.Enter)) {
 					invoke = true;
 				}
-				if (useArrows && (FrameInput.GameKeyDownGUI(Gamekey.Left) || FrameInput.KeyboardDownGUI(KeyboardKey.LeftArrow))) {
+				if (useArrows && (Input.GameKeyDownGUI(Gamekey.Left) || Input.KeyboardDownGUI(KeyboardKey.LeftArrow))) {
 					delta = -1;
 				}
-				if (useArrows && (FrameInput.GameKeyDownGUI(Gamekey.Right) || FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow))) {
+				if (useArrows && (Input.GameKeyDownGUI(Gamekey.Right) || Input.KeyboardDownGUI(KeyboardKey.RightArrow))) {
 					delta = 1;
 				}
 			}
@@ -479,7 +479,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		}
 
 		// Mouse
-		if (FrameInput.MouseLeftButtonDown) {
+		if (Input.MouseLeftButtonDown) {
 			if (mouseHoverArrowL) {
 				delta = -1;
 			} else if (mouseHoverArrowR) {
@@ -488,7 +488,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				invoke = true;
 			}
 		}
-		if (itemRect_Old.MouseInside() && FrameInput.LastActionFromMouse && SelectionIndex != ItemCount) {
+		if (itemRect_Old.MouseInside() && Input.LastActionFromMouse && SelectionIndex != ItemCount) {
 			SetSelection(ItemCount);
 		}
 

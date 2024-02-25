@@ -15,7 +15,7 @@ public class SkeletonPile : Breakable {
 		Height = Const.CEL;
 		FullRect = Rect;
 		int artworkIndex = X.UDivide(Const.CEL) + Y.UDivide(Const.CEL);
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, artworkIndex, out var sprite)) {
+		if (Renderer.TryGetSpriteFromGroup(TypeID, artworkIndex, out var sprite)) {
 			var rect = base.Rect.Shrink(sprite.GlobalBorder.left, sprite.GlobalBorder.right, sprite.GlobalBorder.down, sprite.GlobalBorder.up);
 			X = rect.x;
 			Y = rect.y;
@@ -27,11 +27,11 @@ public class SkeletonPile : Breakable {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
 	public override void FrameUpdate () {
-		CellRenderer.Draw(ArtworkCode, FullRect);
+		Renderer.Draw(ArtworkCode, FullRect);
 	}
 
 }

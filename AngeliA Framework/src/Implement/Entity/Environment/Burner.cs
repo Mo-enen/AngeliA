@@ -59,7 +59,7 @@ public abstract class Burner<F> : EnvironmentEntity where F : Fire {
 		NextFireSpawnedFrame = int.MinValue;
 		Burning = false;
 
-		if (CellRenderer.TryGetSprite(FireTypeID, out var fSprite)) {
+		if (Renderer.TryGetSprite(FireTypeID, out var fSprite)) {
 			FireTint = fSprite.SummaryTint;
 		} else {
 			FireTint = Color32.WHITE;
@@ -83,7 +83,7 @@ public abstract class Burner<F> : EnvironmentEntity where F : Fire {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
 
@@ -114,11 +114,11 @@ public abstract class Burner<F> : EnvironmentEntity where F : Fire {
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		CellRenderer.Draw(TypeID, Rect);
+		Renderer.Draw(TypeID, Rect);
 		if (Burning && Game.GlobalFrame % 6 < 3) {
-			CellRenderer.SetLayerToAdditive();
-			CellRenderer.Draw(TypeID, Rect, FireTint);
-			CellRenderer.SetLayerToDefault();
+			Renderer.SetLayerToAdditive();
+			Renderer.Draw(TypeID, Rect, FireTint);
+			Renderer.SetLayerToDefault();
 		}
 	}
 

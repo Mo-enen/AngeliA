@@ -36,7 +36,7 @@ public abstract class MapGenerator : Entity {
 
 	// Data
 	private readonly CancellationTokenSource GenerateMapToken = new();
-	private Task GenerateMapTask = null;
+	private System.Threading.Tasks.Task GenerateMapTask = null;
 	private bool? _HasMapInDisk = null;
 
 
@@ -93,7 +93,7 @@ public abstract class MapGenerator : Entity {
 
 	public void StartGenerateAsync () {
 		CancelAsyncGeneration();
-		GenerateMapTask = Task.Factory.StartNew(StartGenerate, GenerateMapToken.Token);
+        GenerateMapTask = System.Threading.Tasks.Task.Factory.StartNew(StartGenerate, GenerateMapToken.Token);
 	}
 
 

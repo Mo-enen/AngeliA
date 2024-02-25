@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.Capacity(1, 0)]
 [RequireLanguageFromField]
 public abstract class PlayerCustomizer : MiniGame, IActionTarget {
@@ -149,9 +149,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	private int HighlightingMainIndex = 0;
 	private int HighlightingPatternRow = 0;
 	private int PatternPickerScrollRow = 0;
-	private int BackButtonHotkeyPadCode = 0;
 	private bool PlayerFacingRight = true;
-	private string BackButtonHotkeyLabel = "";
 
 
 	#endregion
@@ -192,14 +190,14 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		if (player is not IConfigurableCharacter) return;
 
 		// Quit
-		if (FrameInput.GameKeyDown(Gamekey.Select)) {
+		if (Input.GameKeyDown(Gamekey.Select)) {
 			CloseMiniGame();
 			return;
 		}
 
 		// Back Button
 		if (CurrentSubMenu.HasValue) {
-			if (FrameInput.GameKeyDown(Gamekey.Jump)) {
+			if (Input.GameKeyDown(Gamekey.Jump)) {
 				CurrentSubMenu = null;
 			}
 			ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.UI_BACK);
@@ -209,22 +207,22 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			int mainHighlightIndex = HighlightingMainIndex;
 			int menuItemCount = MainMenu.Length;
 			// Main Menu
-			if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
+			if (Input.GameKeyDownGUI(Gamekey.Left)) {
 				if (mainHighlightIndex % 2 == 1) {
 					mainHighlightIndex--;
 				}
 			}
-			if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
+			if (Input.GameKeyDownGUI(Gamekey.Right)) {
 				if (mainHighlightIndex % 2 == 0) {
 					mainHighlightIndex++;
 				}
 			}
-			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+			if (Input.GameKeyDownGUI(Gamekey.Down)) {
 				if (mainHighlightIndex + 2 <= menuItemCount - 1) {
 					mainHighlightIndex += 2;
 				}
 			}
-			if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+			if (Input.GameKeyDownGUI(Gamekey.Up)) {
 				if (mainHighlightIndex - 2 >= 0) {
 					mainHighlightIndex -= 2;
 				}
@@ -237,15 +235,15 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		}
 
 		if (CurrentSubMenu.HasValue) {
-			if (FrameInput.GameKeyDown(Gamekey.Left)) PlayerFacingRight = false;
-			if (FrameInput.GameKeyDown(Gamekey.Right)) PlayerFacingRight = true;
+			if (Input.GameKeyDown(Gamekey.Left)) PlayerFacingRight = false;
+			if (Input.GameKeyDown(Gamekey.Right)) PlayerFacingRight = true;
 		}
 
 		// Rendering
 		var windowRect = WindowRect;
 
 		// Background
-		CellRenderer.Draw(Const.PIXEL, windowRect.Expand(Unify(16)), Color32.BLACK, int.MinValue + 1);
+		Renderer.Draw(Const.PIXEL, windowRect.Expand(Unify(16)), Color32.BLACK, int.MinValue + 1);
 
 		// Preview
 		int leftPanelWidth = Unify(400);
@@ -256,7 +254,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		FrameworkUtil.DrawPoseCharacterAsUI(
 			leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, 0, out var rectFrom, out var rectTo
 		);
-		if (FrameInput.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
+		if (Input.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
 			PlayerFacingRight = !PlayerFacingRight;
 		}
 
@@ -270,7 +268,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMin),
 				Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
 			);
-			CellRenderer.Draw(Const.PIXEL, hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
+			Renderer.Draw(Const.PIXEL, hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
 			//DrawFrame(hitboxRect, 12, 12);
 			//static void DrawFrame (RectInt rect, int thickX, int thickY) {
 			//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
@@ -302,7 +300,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		HighlightingPatternRow = 0;
 		PatternPickerScrollRow = 0;
 		CurrentSubMenu = null;
-		BackButtonHotkeyLabel = $"({Util.GetKeyDisplayName(FrameInput.GetKeyboardMap(Gamekey.Jump))})";
 	}
 
 
@@ -346,7 +343,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			panelRect.width / 2 - panelPadding,
 			fieldHeight
 		);
-		bool actionKeyDown = !FrameInput.MouseLeftButtonDown && FrameInput.GameKeyDown(Gamekey.Action);
+		bool actionKeyDown = !Input.MouseLeftButtonDown && Input.GameKeyDown(Gamekey.Action);
 
 		for (int i = 0; i < MainMenu.Length; i++) {
 
@@ -360,7 +357,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			bool mouseInField = fieldRect.MouseInside();
 
 			// Icon
-			CellRenderer.Draw(
+			Renderer.Draw(
 				MAIN_MENU_ICONS[(int)_menuType],
 				fieldRect.Shrink(0, fieldRect.width - fieldRect.height, 0, 0).Shrink(iconPadding),
 				_menuType == SubMenuType.SkinColor ? player.SkinColor :
@@ -369,13 +366,13 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			);
 
 			// Label
-			CellGUI.Label(
+			GUI.Label(
 				label, fieldRect.Shrink(fieldRect.height + fieldPadding, 0, 0, 0),
 				charSize: 32, alignment: Alignment.MidLeft
 			);
 
 			// Bottom Line
-			CellRenderer.Draw(
+			Renderer.Draw(
 				Const.PIXEL,
 				new IRect(
 					fieldRect.x,
@@ -385,25 +382,25 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			);
 
 			// Highlight
-			if (FrameInput.LastActionFromMouse) {
+			if (Input.LastActionFromMouse) {
 				// Using Mouse
 				if (mouseInField) {
 					HighlightingMainIndex = i;
-					CellRenderer.Draw(Const.PIXEL, fieldRect, Color32.GREY_32, EDITOR_BASIC_Z + 1);
-					CursorSystem.SetCursorAsHand(1);
+					Renderer.Draw(Const.PIXEL, fieldRect, Color32.GREY_32, EDITOR_BASIC_Z + 1);
+					Cursor.SetCursorAsHand(1);
 				}
 			} else {
 				// Using Key
 				if (i == HighlightingMainIndex) {
-					CellGUI.HighlightCursor(FRAME_CODE, fieldRect, EDITOR_BASIC_Z + 4);
+					GUI.HighlightCursor(FRAME_CODE, fieldRect, EDITOR_BASIC_Z + 4);
 				}
 			}
 
 			// Invoke
 			bool invokeSubMenu = false;
 			if (i == HighlightingMainIndex) {
-				if (FrameInput.LastActionFromMouse) {
-					if (FrameInput.MouseLeftButtonDown && mouseInField) invokeSubMenu = true;
+				if (Input.LastActionFromMouse) {
+					if (Input.MouseLeftButtonDown && mouseInField) invokeSubMenu = true;
 				} else {
 					if (actionKeyDown) invokeSubMenu = true;
 				}
@@ -421,7 +418,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	private void EditorUI (IRect panelRect, Player player) {
 
 		// Background
-		CellRenderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, EDITOR_BASIC_Z);
+		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, EDITOR_BASIC_Z);
 
 		// Bottom Bar
 		if (CurrentSubMenu.HasValue) {
@@ -431,32 +428,14 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			// Back Button
 			var buttonRect = new IRect(panelRect.xMax - backButtonWidth, panelRect.y, backButtonWidth, bottomBarHeight);
 			if (buttonRect.MouseInside()) {
-				CellRenderer.Draw(Const.PIXEL, buttonRect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
-				if (FrameInput.LastActionFromMouse && FrameInput.MouseLeftButtonDown) {
+				Renderer.Draw(Const.PIXEL, buttonRect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
+				if (Input.LastActionFromMouse && Input.MouseLeftButtonDown) {
 					HighlightingMainIndex = (int)CurrentSubMenu.Value;
 					CurrentSubMenu = null;
 				}
 			}
-			CellGUI.Label(
-				CellContent.Get(BuiltInText.UI_BACK, 28, Alignment.MidMid),
-				buttonRect, out var bounds
-			);
-			CursorSystem.SetCursorAsHand(buttonRect, 1);
-
-			// Hotkey Label
-			var hotkeyRect = new IRect(bounds.xMax + Unify(16), bounds.y, 1, bounds.height);
-			if (FrameInput.UsingGamepad) {
-				if (CellRenderer.TryGetSprite(BackButtonHotkeyPadCode, out var padSprite)) {
-					hotkeyRect.width = padSprite.GlobalWidth;
-					CellRenderer.Draw(
-						padSprite,
-						hotkeyRect.Fit(padSprite),
-						EDITOR_BASIC_Z + 5
-					);
-				}
-			} else {
-				CellGUI.Label(BackButtonHotkeyLabel, hotkeyRect, charSize: 24, alignment: Alignment.MidLeft);
-			}
+			GUI.Label(TextContent.Get(BuiltInText.UI_BACK, 28, Alignment.MidMid), buttonRect);
+			Cursor.SetCursorAsHand(buttonRect, 1);
 
 			// End
 			panelRect = panelRect.Shrink(0, 0, bottomBarHeight, 0);
@@ -818,24 +797,24 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		int itemHeight = Unify(52);
 		int padding = Unify(8);
 		int iconPadding = Unify(2);
-		bool tryInvoke = !FrameInput.MouseLeftButtonDown && FrameInput.GameKeyDown(Gamekey.Action);
+		bool tryInvoke = !Input.MouseLeftButtonDown && Input.GameKeyDown(Gamekey.Action);
 		panelRect = panelRect.Shrink(panelPadding, panelPadding, panelPadding, 0);
 		var patternRect = panelRect.Shrink(0, scrollBarWidth, 0, 0);
 		int row = patterns.Count;
 		int pageRow = patternRect.height / (itemHeight + padding);
 		var cursorRect = new IRect(0, 0, 0, 0);
 		var rect = new IRect(patternRect.x, 0, patternRect.width, itemHeight);
-		int cellStart = CellRenderer.GetUsedCellCount();
-		int cellTextStart = CellRenderer.GetTextUsedCellCount();
-		if (!FrameInput.LastActionFromMouse) {
+		int cellStart = Renderer.GetUsedCellCount();
+		int cellTextStart = Renderer.GetTextUsedCellCount();
+		if (!Input.LastActionFromMouse) {
 			PatternPickerScrollRow = PatternPickerScrollRow.Clamp(HighlightingPatternRow - pageRow + 1, HighlightingPatternRow);
 		}
 		PatternPickerScrollRow = row <= pageRow ? 0 : PatternPickerScrollRow.Clamp(0, row - pageRow);
 
 		// Game Logic
 		int deltaRow = 0;
-		if (FrameInput.GameKeyDownGUI(Gamekey.Down)) deltaRow = 1;
-		if (FrameInput.GameKeyDownGUI(Gamekey.Up)) deltaRow = -1;
+		if (Input.GameKeyDownGUI(Gamekey.Down)) deltaRow = 1;
+		if (Input.GameKeyDownGUI(Gamekey.Up)) deltaRow = -1;
 		ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
 		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE);
 
@@ -872,7 +851,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			// Selecting Highlight
 			if (!isLabel && IsSamePattern(pat, selectingPattern, forColor)) {
 				int iconSize = rect.height * 8 / 10;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					SELECTION_MARK,
 					rect.xMax - contentPadding, rect.CenterY(),
 					1000, 500, 0, iconSize, iconSize,
@@ -881,7 +860,7 @@ Color32.GREEN, EDITOR_BASIC_Z + 3
 			}
 
 			// Frame
-			if (!isLabel) CellRenderer.Draw_9Slice(
+			if (!isLabel) Renderer.Draw_9Slice(
 				FRAME_CODE, rect,
 				itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness,
 Color32.GREY_32, EDITOR_BASIC_Z + 4
@@ -893,8 +872,8 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 				if (iconID == 0) iconID = pat.y;
 				if (iconID == 0) iconID = pat.z;
 				if (iconID == 0) iconID = pat.w;
-				if (iconID != 0 && CellRenderer.TryGetSpriteFromGroup(iconID, 0, out var sprite, false, true)) {
-					CellRenderer.Draw(
+				if (iconID != 0 && Renderer.TryGetSpriteFromGroup(iconID, 0, out var sprite, false, true)) {
+					Renderer.Draw(
 						sprite,
 						rect.Shift(contentPadding, 0).Shrink(iconPadding, rect.width + iconPadding * 2 - rect.height, iconPadding, iconPadding).Fit(sprite),
 						iconTint, EDITOR_BASIC_Z + 3
@@ -903,18 +882,18 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 
 				if (isEmpty) {
 					// Empty Name
-					CellGUI.Label(BuiltInText.UI_NONE, rect.Shift(contentPadding * 2, 0), tint: Color32.WHITE);
+					GUI.Label(BuiltInText.UI_NONE, rect.Shift(contentPadding * 2, 0), tint: Color32.WHITE);
 				} else {
 					if (!isLabel) {
 						// Item Name
-						CellGUI.Label(
+						GUI.Label(
 							displayName,
 							rect.Shift(contentPadding * 2, 0).Shrink(rect.height + iconPadding, 0, 0, 0),
 							charSize: 24, alignment: Alignment.MidLeft
 						);
 					} else {
 						// Item Label
-						CellGUI.Label(
+						GUI.Label(
 							displayName, rect.Shift(contentPadding * 2, 0),
 							tint: Color32.GREY_128, charSize: 20, alignment: Alignment.MidMid
 						);
@@ -922,7 +901,7 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 				}
 			} else {
 				// Color
-				CellRenderer.Draw(
+				Renderer.Draw(
 					Const.PIXEL, rect.Shrink(iconPadding),
 					new Color32(
 						(byte)pat.x.Clamp(0, 255),
@@ -936,12 +915,12 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 
 			// Hovering Highlight
 			if (!isLabel) {
-				if (FrameInput.LastActionFromMouse) {
+				if (Input.LastActionFromMouse) {
 					if (rect.MouseInside()) {
-						CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
+						Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
 						HighlightingPatternRow = index;
-						CursorSystem.SetCursorAsHand(1);
-						tryInvoke = FrameInput.MouseLeftButtonDown;
+						Cursor.SetCursorAsHand(1);
+						tryInvoke = Input.MouseLeftButtonDown;
 					}
 				} else {
 					if (HighlightingPatternRow == index) {
@@ -956,23 +935,23 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 		}
 
 		var clampRect = patternRect.Expand(itemHeight * 6, scrollBarWidth, 0, 0);
-		CellRenderer.ClampCells(CellRenderer.CurrentLayerIndex, clampRect, cellStart);
-		CellRenderer.ClampTextCells(CellRenderer.CurrentTextLayerIndex, clampRect, cellTextStart);
+		Renderer.ClampCells(Renderer.CurrentLayerIndex, clampRect, cellStart);
+		Renderer.ClampTextCells(Renderer.CurrentTextLayerIndex, clampRect, cellTextStart);
 
 		// Cursor
 		if (cursorRect.width > 0) {
-			CellGUI.HighlightCursor(FRAME_CODE, cursorRect, EDITOR_BASIC_Z + 4);
+			GUI.HighlightCursor(FRAME_CODE, cursorRect, EDITOR_BASIC_Z + 4);
 		}
 
 		// Scroll Bar
 		if (row > pageRow) {
 			var barRect = new IRect(patternRect.xMax, patternRect.y, scrollBarWidth, patternRect.height);
-			PatternPickerScrollRow = CellGUI.ScrollBar(
+			PatternPickerScrollRow = GUI.ScrollBar(
 				94567, barRect, EDITOR_BASIC_Z + 3,
 				PatternPickerScrollRow, row, pageRow
 			);
-			if (FrameInput.MouseWheelDelta != 0) {
-				PatternPickerScrollRow -= FrameInput.MouseWheelDelta;
+			if (Input.MouseWheelDelta != 0) {
+				PatternPickerScrollRow -= Input.MouseWheelDelta;
 			}
 		}
 
@@ -984,10 +963,10 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 	private int BodyHeightMenuUI (IRect panelRect, int playerHeight) {
 
 		// Hotkeys
-		if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+		if (Input.GameKeyDownGUI(Gamekey.Down)) {
 			playerHeight--;
 		}
-		if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+		if (Input.GameKeyDownGUI(Gamekey.Up)) {
 			playerHeight++;
 		}
 
@@ -997,29 +976,29 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 		int BUTTON_BORDER = Unify(6);
 
 		// Label
-		CellGUI.Label(
-			CellContent.Get(BodyHeightToString.GetChars(playerHeight), 52), panelRect, out var labelBounds
+		GUI.Label(
+			TextContent.Get(BodyHeightToString.GetChars(playerHeight), 52), panelRect, out var labelBounds
 		);
 
 		// Button Up
 		var btnRectU = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);
-		if (CellGUI.Button(
+		if (GUI.Button(
 			btnRectU, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
 			ICON_UP_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
 		)) {
 			playerHeight++;
 		}
-		CursorSystem.SetCursorAsHand(btnRectU);
+		Cursor.SetCursorAsHand(btnRectU);
 
 		// Button Down
 		var btnRectD = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.y - BUTTON_PADDING - BUTTON_H, BUTTON_W, BUTTON_H);
-		if (CellGUI.Button(
+		if (GUI.Button(
 			btnRectD, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
 			ICON_DOWN_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
 		)) {
 			playerHeight--;
 		}
-		CursorSystem.SetCursorAsHand(btnRectD);
+		Cursor.SetCursorAsHand(btnRectD);
 
 		return playerHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 	}

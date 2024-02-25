@@ -4,7 +4,7 @@ using System.Linq;
 using GeorgeMamaladze;
 
 
-[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "UI",
+[assembly: AngeliA.RequireGlobalSprite(atlas: "UI",
 	"Cover.Background",
 	"Cover.LevelBack",
 	"Cover.LevelFront",
@@ -93,9 +93,8 @@ public partial class MapEditor {
 	private const int SEARCH_BAR_ID = 3983472;
 
 	// UI
-	private readonly CellContent TooltipLabel = new() { Tint = Color32.WHITE, Alignment = Alignment.TopLeft, CharSize = 24, };
-	private readonly CellContent PalGroupLabel = new() { Tint = Color32.WHITE, Alignment = Alignment.TopMid, CharSize = 20, };
-
+	private readonly TextContent TooltipLabel = new() { Tint = Color32.WHITE, Alignment = Alignment.TopLeft, CharSize = 24, };
+	
 	// Data
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
@@ -119,22 +118,22 @@ public partial class MapEditor {
 
 	private void Initialize_Palette () {
 
-		CellRenderer.TryGetSprite("Cloud 0".AngeHash(), out var testSP);
+		Renderer.TryGetSprite("Cloud 0".AngeHash(), out var testSP);
 
 		DraggingForReorderPaletteGroup = -1;
 		DraggingForReorderPaletteItem = -1;
 		CurrentPaletteTab = PaletteTabType.BuiltIn;
 		PaletteGroups.Clear();
 		PalettePool.Clear();
-		int spriteCount = CellRenderer.SpriteCount;
-		int groupCount = CellRenderer.GroupCount;
+		int spriteCount = Renderer.SpriteCount;
+		int groupCount = Renderer.GroupCount;
 		var palGroupPool = new Dictionary<string, PaletteGroup>();
 
 		// For all Sprite Groups
 		for (int index = 0; index < groupCount; index++) {
 
-			var chain = CellRenderer.GetGroupAt(index);
-			if (!CellRenderer.TryGetSprite(chain.SpriteIDs[0], out var firstSprite)) continue;
+			var chain = Renderer.GetGroupAt(index);
+			if (!Renderer.TryGetSprite(chain.SpriteIDs[0], out var firstSprite)) continue;
 
 			var atlasType = firstSprite.Atlas.Type;
 			if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
@@ -162,7 +161,7 @@ public partial class MapEditor {
 
 		// For all Sprites
 		for (int index = 0; index < spriteCount; index++) {
-			var sp = CellRenderer.GetSpriteAt(index);
+			var sp = Renderer.GetSpriteAt(index);
 			int id = sp.GlobalID;
 
 			var atlasType = sp.Atlas.Type;
@@ -280,7 +279,7 @@ public partial class MapEditor {
 		SelectingPaletteGroupIndex = SelectingPaletteGroupIndex.Clamp(0, PaletteGroups.Count - 1);
 		SelectingPaletteListIndex = SelectingPaletteListIndex.Clamp(0, EditorMeta.PinnedLists.Count - 1);
 
-		if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
+		if (PanelRect.xMax <= Renderer.CameraRect.x) return;
 
 		int ITEM_GAP = Unify(2);
 		int PANEL_PADDING = Unify(12);
@@ -309,16 +308,16 @@ public partial class MapEditor {
 			bool tabInteractable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
 
 			// Button
-			CellRenderer.Draw_9Slice(
+			Renderer.Draw_9Slice(
 				UI_TAB, tabRect,
 				tabBorder, tabBorder, tabBorder, tabBorder,
 				selecting ? Color32.GREY_128 : Color32.GREY_64, PANEL_Z - 5
 			);
-			if (tabInteractable) CursorSystem.SetCursorAsHand(tabRect);
+			if (tabInteractable) Cursor.SetCursorAsHand(tabRect);
 
 			// Highlight
 			if (selecting) {
-				var cells = CellRenderer.Draw_9Slice(
+				var cells = Renderer.Draw_9Slice(
 					UI_TAB, tabRect.EdgeOutside(Direction4.Up, tabBorder).Shift(0, -tabBorder),
 					tabBorder, tabBorder, 0, tabBorder,
 					new(225, 171, 48, 255), PANEL_Z - 4
@@ -329,8 +328,8 @@ public partial class MapEditor {
 			}
 
 			// Label
-			CellGUI.Label(
-				CellContent.Get(
+			GUI.Label(
+				TextContent.Get(
 					i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
 Color32.WHITE,
 					alignment: Alignment.MidMid, charSize: 22
@@ -339,26 +338,26 @@ Color32.WHITE,
 			);
 
 			// Icon
-			CellRenderer.Draw(
+			Renderer.Draw(
 				i == (int)PaletteTabType.Listed ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
 				labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 3, 0),
 Color32.WHITE, PANEL_Z - 4
 			);
 
 			// Click
-			if (tabInteractable && FrameInput.MouseLeftButtonDown && tabRect.MouseInside()) {
+			if (tabInteractable && Input.MouseLeftButtonDown && tabRect.MouseInside()) {
 				CurrentPaletteTab = (PaletteTabType)i;
 			}
 		}
 
 		// Content
 		int buttonDownShiftY = 0;
-		if (CellRenderer.TryGetSprite(BUTTON_DARK, out var sprite) && CellRenderer.TryGetSprite(BUTTON_DARK_DOWN, out var spriteDown)) {
+		if (Renderer.TryGetSprite(BUTTON_DARK, out var sprite) && Renderer.TryGetSprite(BUTTON_DARK_DOWN, out var spriteDown)) {
 			buttonDownShiftY = ITEM_SIZE - ITEM_SIZE * sprite.GlobalHeight / spriteDown.GlobalHeight;
 		}
 		bool mouseInPanel = groupRect.MouseInside();
 		groupRect = groupRect.Shrink(PANEL_PADDING);
-		CellRenderer.Draw(Const.PIXEL, groupRect.Expand(PANEL_PADDING), Color32.GREY_32, PANEL_Z - 6);
+		Renderer.Draw(Const.PIXEL, groupRect.Expand(PANEL_PADDING), Color32.GREY_32, PANEL_Z - 6);
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 		var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
 		int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
@@ -378,14 +377,14 @@ Color32.WHITE, PANEL_Z - 4
 
 			// Button
 			if (selecting) {
-				CellRenderer.Draw_9Slice(
+				Renderer.Draw_9Slice(
 					BUTTON_DARK_DOWN,
 					rect.x, rect.y, 0, 0, 0, rect.width, rect.height + buttonDownShiftY,
 					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER,
 					PANEL_Z - 5
 				);
 			} else {
-				CellRenderer.Draw_9Slice(
+				Renderer.Draw_9Slice(
 					BUTTON_DARK, rect,
 					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER,
 					PANEL_Z - 5
@@ -393,8 +392,8 @@ Color32.WHITE, PANEL_Z - 4
 			}
 
 			// Cover
-			if (CellRenderer.TryGetSprite(coverID, out var coverSprite)) {
-				CellRenderer.Draw(
+			if (Renderer.TryGetSprite(coverID, out var coverSprite)) {
+				Renderer.Draw(
 					coverSprite,
 					rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0).Fit(coverSprite),
 					selecting ? Color32.GREY_196 : Color32.WHITE,
@@ -404,7 +403,7 @@ Color32.WHITE, PANEL_Z - 4
 
 			// Tooltip
 			if (interactable && mouseHovering) {
-				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) CursorSystem.SetCursorAsHand();
+				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
 				if (showingBuiltIn) {
 					var group = PaletteGroups[i];
 					DrawTooltip(rect, Language.Get(group.DisplayNameID, group.GroupName));
@@ -417,13 +416,13 @@ Color32.WHITE, PANEL_Z - 4
 			}
 
 			// Start Reorder
-			if (!showingBuiltIn && !draggingForReorder && mouseHovering && FrameInput.MouseLeftButtonDown) {
+			if (!showingBuiltIn && !draggingForReorder && mouseHovering && Input.MouseLeftButtonDown) {
 				DraggingForReorderPaletteGroup = i;
 			}
 
 			// Click
 			if (mouseHovering && interactable) {
-				if (FrameInput.MouseLeftButtonDown) {
+				if (Input.MouseLeftButtonDown) {
 					// Left
 					if (showingBuiltIn) {
 						// Select from BuiltIn
@@ -433,7 +432,7 @@ Color32.WHITE, PANEL_Z - 4
 						SelectingPaletteListIndex = i;
 					}
 					PaletteScrollY = 0;
-				} else if (FrameInput.MouseRightButtonDown) {
+				} else if (Input.MouseRightButtonDown) {
 					// Right
 					if (!showingBuiltIn) {
 						ShowPaletteListMenu(EditorMeta.PinnedLists[i]);
@@ -450,12 +449,12 @@ Color32.WHITE, PANEL_Z - 4
 				if (reorderCheckingRect.MouseInside()) {
 					targetReorderReleaseIndex = i;
 					if (i != DraggingForReorderPaletteGroup) {
-						CellRenderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
 					targetReorderReleaseIndex = i + 1;
 					if (i != DraggingForReorderPaletteGroup) {
-						CellRenderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				}
 			}
@@ -463,8 +462,8 @@ Color32.WHITE, PANEL_Z - 4
 		}
 
 		// Click on Empty
-		if (!showingBuiltIn && FrameInput.MouseRightButtonDown && groupRect.MouseInside()) {
-			FrameInput.UseMouseKey(1);
+		if (!showingBuiltIn && Input.MouseRightButtonDown && groupRect.MouseInside()) {
+			Input.UseMouseKey(1);
 			ShowPaletteListMenu(null);
 		}
 
@@ -477,7 +476,7 @@ Color32.WHITE, PANEL_Z - 4
 			targetReorderReleaseIndex <= EditorMeta.PinnedLists.Count &&
 			DraggingForReorderPaletteGroup >= 0 &&
 			DraggingForReorderPaletteGroup < EditorMeta.PinnedLists.Count &&
-			!FrameInput.MouseLeftButton
+			!Input.MouseLeftButton
 		) {
 			var movingItem = EditorMeta.PinnedLists[DraggingForReorderPaletteGroup];
 			EditorMeta.PinnedLists.RemoveAt(DraggingForReorderPaletteGroup);
@@ -492,10 +491,10 @@ Color32.WHITE, PANEL_Z - 4
 	private void Update_PaletteContentUI () {
 
 		if (!string.IsNullOrEmpty(SearchingText)) return;
-		if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
+		if (PanelRect.xMax <= Renderer.CameraRect.x) return;
 
 		// BG
-		CellRenderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, PANEL_Z - 14);
+		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, PANEL_Z - 14);
 
 		// Gate
 		bool showingBuiltIn = CurrentPaletteTab == PaletteTabType.BuiltIn;
@@ -556,7 +555,7 @@ Color32.WHITE, PANEL_Z - 4
 			bool draggingForReorder = !showingBuiltIn && DraggingForReorderPaletteGroup == index;
 
 			// Frame
-			CellRenderer.Draw_9Slice(
+			Renderer.Draw_9Slice(
 				ITEM_FRAME, rect,
 				BORDER, BORDER, BORDER, BORDER,
 				PANEL_Z - 12
@@ -564,11 +563,11 @@ Color32.WHITE, PANEL_Z - 4
 
 			// Cover
 			int drawingID = 0;
-			if (CellRenderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite, ignoreAnimatedWhenFailback: false)) {
+			if (Renderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite, ignoreAnimatedWhenFailback: false)) {
 				drawingID = sprite.GlobalID;
 			}
 			if (drawingID != 0) {
-				CellRenderer.Draw(
+				Renderer.Draw(
 					drawingID,
 					rect.Shrink(COVER_SHRINK).Fit(sprite, sprite.PivotX, sprite.PivotY),
 					PANEL_Z - 10
@@ -577,7 +576,7 @@ Color32.WHITE, PANEL_Z - 4
 
 			// Selecting
 			if (SelectingPaletteItem == pal) {
-				CellRenderer.Draw_9Slice(
+				Renderer.Draw_9Slice(
 					BuiltInSprite.FRAME_16, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Color32.GREEN, PANEL_Z - 11
 				);
 			}
@@ -585,22 +584,22 @@ Color32.WHITE, PANEL_Z - 4
 			// Hover
 			bool mouseHovering = interactable && mouseInPanel && rect.MouseInside();
 			if (mouseHovering) {
-				CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_32, PANEL_Z - 13);
-				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) CursorSystem.SetCursorAsHand();
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, PANEL_Z - 13);
+				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
 				DrawTooltip(rect, pal.Name);
 			}
 
 			// Start Reorder
-			if (!showingBuiltIn && !draggingForReorder && mouseHovering && FrameInput.MouseLeftButtonDown) {
+			if (!showingBuiltIn && !draggingForReorder && mouseHovering && Input.MouseLeftButtonDown) {
 				DraggingForReorderPaletteItem = index;
 			}
 
 			// Click
 			if (mouseHovering) {
-				if (FrameInput.MouseLeftButtonDown) {
+				if (Input.MouseLeftButtonDown) {
 					SelectingPaletteItem = pal;
-				} else if (FrameInput.MouseRightButtonDown) {
-					FrameInput.UseMouseKey(1);
+				} else if (Input.MouseRightButtonDown) {
+					Input.UseMouseKey(1);
 					SelectingPaletteItem = pal;
 					ShowPaletteItemMenu(pal);
 				}
@@ -615,12 +614,12 @@ Color32.WHITE, PANEL_Z - 4
 				if (reorderCheckingRect.MouseInside()) {
 					targetReorderReleaseIndex = index;
 					if (index != DraggingForReorderPaletteItem) {
-						CellRenderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
 					targetReorderReleaseIndex = index + 1;
 					if (index != DraggingForReorderPaletteItem) {
-						CellRenderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				}
 			}
@@ -636,7 +635,7 @@ Color32.WHITE, PANEL_Z - 4
 			targetReorderReleaseIndex <= itemCount &&
 			DraggingForReorderPaletteItem >= 0 &&
 			DraggingForReorderPaletteItem < itemCount &&
-			!FrameInput.MouseLeftButton
+			!Input.MouseLeftButton
 		) {
 			var movingItem = listItems[DraggingForReorderPaletteItem];
 			listItems.RemoveAt(DraggingForReorderPaletteItem);
@@ -645,14 +644,14 @@ Color32.WHITE, PANEL_Z - 4
 		}
 
 		// Menu
-		if (FrameInput.MouseRightButtonDown && contentRect.MouseInside()) {
-			FrameInput.UseMouseKey(1);
+		if (Input.MouseRightButtonDown && contentRect.MouseInside()) {
+			Input.UseMouseKey(1);
 			ShowPaletteItemMenu(null);
 		}
 
 		// Scroll Wheel
 		if (pageRowCount <= rowCount + EXTRA_ROW) {
-			int wheel = FrameInput.MouseWheelDelta;
+			int wheel = Input.MouseWheelDelta;
 			if (wheel != 0 && contentRect.MouseInside()) {
 				PaletteScrollY = (PaletteScrollY - wheel * 2).Clamp(
 					0, rowCount + EXTRA_ROW - pageRowCount
@@ -661,7 +660,7 @@ Color32.WHITE, PANEL_Z - 4
 		}
 
 		// Scroll Bar
-		PaletteScrollY = CellGUI.ScrollBar(
+		PaletteScrollY = GUI.ScrollBar(
 			1324235, new IRect(
 				contentRect.xMax - SCROLL_BAR_WIDTH,
 				contentRect.y,
@@ -676,8 +675,8 @@ Color32.WHITE, PANEL_Z - 4
 	private void Update_PaletteSearchResultUI () {
 
 		if (IsPlaying || DroppingPlayer || string.IsNullOrEmpty(SearchingText)) return;
-		if (PanelRect.xMax <= CellRenderer.CameraRect.x) return;
-		CellRenderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, PANEL_Z - 14);
+		if (PanelRect.xMax <= Renderer.CameraRect.x) return;
+		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, PANEL_Z - 14);
 		if (SearchResult.Count == 0) return;
 
 		int SCROLL_BAR_WIDTH = Unify(12);
@@ -686,9 +685,9 @@ Color32.WHITE, PANEL_Z - 4
 		var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(TOOL_BAR_HEIGHT * 2)).Shrink(Unify(6));
 		bool mouseInPanel = searchRect.MouseInside();
 		bool interactable = !TaskingRoute;
-		int clampStartIndex = CellRenderer.GetTextUsedCellCount();
+		int clampStartIndex = Renderer.GetTextUsedCellCount();
 		if (mouseInPanel) {
-			int wheel = FrameInput.MouseWheelDelta;
+			int wheel = Input.MouseWheelDelta;
 			if (wheel != 0) PaletteSearchScrollY -= wheel * 2;
 		}
 		int pageRowCount = searchRect.height / (itemSize + itemGap);
@@ -719,7 +718,7 @@ Color32.WHITE, PANEL_Z - 4
 			);
 
 			// Label
-			CellGUI.Label(
+			GUI.Label(
 				pal.Name, rect.Shrink(itemSize + itemGap, 0, 0, 0),
 				tint: Color32.WHITE, charSize: 24, alignment: Alignment.MidLeft
 			);
@@ -727,23 +726,23 @@ Color32.WHITE, PANEL_Z - 4
 			// Hover
 			bool hover = interactable && mouseInPanel && rect.MouseInside();
 			if (hover) {
-				CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_32, PANEL_Z - 13);
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, PANEL_Z - 13);
 			}
 
 			// Selecting Highlight
 			if (pal == SelectingPaletteItem) {
-				CellRenderer.Draw_9Slice(BuiltInSprite.FRAME_16, rect, Color32.GREEN, PANEL_Z - 12);
+				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, rect, Color32.GREEN, PANEL_Z - 12);
 			}
 
 			// Click
 			if (hover) {
-				if (FrameInput.MouseLeftButtonDown) {
+				if (Input.MouseLeftButtonDown) {
 					SelectingPaletteItem = pal;
 					if (SelectingPaletteItem != null && SelectingPaletteItem.GroupIndex != SelectingPaletteGroupIndex) {
 						SelectingPaletteGroupIndex = SelectingPaletteItem.GroupIndex;
 						PaletteScrollY = 0;
 					}
-				} else if (FrameInput.MouseRightButtonDown) {
+				} else if (Input.MouseRightButtonDown) {
 					ShowPaletteItemMenu(pal);
 				}
 			}
@@ -753,9 +752,9 @@ Color32.WHITE, PANEL_Z - 4
 			if (rect.y + rect.height < searchRect.y) break;
 
 		}
-		CellRenderer.ClampTextCells(searchRect, clampStartIndex);
+		Renderer.ClampTextCells(searchRect, clampStartIndex);
 
-		PaletteSearchScrollY = CellGUI.ScrollBar(
+		PaletteSearchScrollY = GUI.ScrollBar(
 			-3457, new IRect(
 				searchRect.xMax + itemGap,
 				searchRect.y,
@@ -776,7 +775,7 @@ Color32.WHITE, PANEL_Z - 4
 		int BUTTON_PADDING = Unify(3);
 		bool interactable = !TaskingRoute;
 		var panel = ToolbarRect;
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			panel,
 Color32.GREY_32, PANEL_Z - 6
@@ -787,56 +786,56 @@ Color32.GREY_32, PANEL_Z - 6
 		// Reset Camera
 		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 		if (
-			CellGUI.Button(
+			GUI.Button(
 				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInSprite.ICON_REFRESH,
 				BUTTON_BORDER, 0, int.MaxValue - 1
 			) && interactable
 		) {
 			ResetCamera();
 		}
-		CursorSystem.SetCursorAsHand(btnRect);
+		Cursor.SetCursorAsHand(btnRect);
 
 		// Button Down
 		btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 		if (
-			CellGUI.Button(
+			GUI.Button(
 				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInSprite.ICON_TRIANGLE_DOWN,
 				BUTTON_BORDER, 0, int.MaxValue - 1
 			) && interactable
 		) {
 			SetViewZ(IsNavigating ? NavPosition.z - 1 : Stage.ViewZ - 1);
 		}
-		CursorSystem.SetCursorAsHand(btnRect);
+		Cursor.SetCursorAsHand(btnRect);
 
 		// Button Up
 		btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 		if (
-			CellGUI.Button(
+			GUI.Button(
 				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInSprite.ICON_TRIANGLE_UP,
 				BUTTON_BORDER, 0, int.MaxValue - 1
 			) && interactable
 		) {
 			SetViewZ(IsNavigating ? NavPosition.z + 1 : Stage.ViewZ + 1);
 		}
-		CursorSystem.SetCursorAsHand(btnRect);
+		Cursor.SetCursorAsHand(btnRect);
 
 		// Nav
 		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 		if (
-			CellGUI.Button(
+			GUI.Button(
 				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, IsNavigating ? BRUSH_ICON : MAP_ICON,
 				BUTTON_BORDER, 0, int.MaxValue - 1
 			) && interactable
 		) {
 			SetNavigating(!IsNavigating);
 		}
-		CursorSystem.SetCursorAsHand(btnRect);
+		Cursor.SetCursorAsHand(btnRect);
 
 		// Play
 		btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 		if (
 			!IsNavigating && !DroppingPlayer &&
-			CellGUI.Button(
+			GUI.Button(
 				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, GAMEPAD_ICON,
 				BUTTON_BORDER, 0, int.MaxValue - 1
 			) && interactable
@@ -848,7 +847,7 @@ Color32.GREY_32, PANEL_Z - 6
 				SetEditorMode(!PlayingGame);
 			}
 		}
-		CursorSystem.SetCursorAsHand(btnRect);
+		Cursor.SetCursorAsHand(btnRect);
 
 	}
 
@@ -862,13 +861,13 @@ Color32.GREY_32, PANEL_Z - 6
 		int ROW = CheckAltarIDs.Count.CeilDivide(COLUMN);
 		int pageLineCount = CheckPointLaneRect.height / ITEM_SIZE;
 		int offsetX = (CheckPointLaneRect.width - COLUMN * ITEM_SIZE) / 2;
-		bool hasTask = FrameTask.HasTask();
+		bool hasTask = Task.HasTask();
 
 		// BG
-		CellRenderer.Draw(Const.PIXEL, CheckPointLaneRect, Color32.BLACK, PANEL_Z + 1);
+		Renderer.Draw(Const.PIXEL, CheckPointLaneRect, Color32.BLACK, PANEL_Z + 1);
 
 		// Scroll
-		if (FrameInput.MouseWheelDelta != 0) QuickLaneScrollY -= FrameInput.MouseWheelDelta;
+		if (Input.MouseWheelDelta != 0) QuickLaneScrollY -= Input.MouseWheelDelta;
 
 		// Content
 		QuickLaneScrollY = QuickLaneScrollY.Clamp(0, Util.Max(ROW - pageLineCount + 3, 0));
@@ -888,7 +887,7 @@ Color32.GREY_32, PANEL_Z - 6
 			if (btnRect.yMax < CheckPointLaneRect.y) break;
 
 			if (
-				CellGUI.Button(
+				GUI.Button(
 					btnRect, ITEM_FRAME, ITEM_FRAME, ITEM_FRAME, id,
 					BUTTON_BORDER, 0, PANEL_Z + 6, Color32.WHITE, interactable ? Color32.WHITE : Color32
 .WHITE_64
@@ -901,7 +900,7 @@ Color32.GREY_32, PANEL_Z - 6
 				NavPosition.z = globalUnitPos.z;
 				SetNavigating(false);
 			}
-			if (interactable) CursorSystem.SetCursorAsHand(btnRect);
+			if (interactable) Cursor.SetCursorAsHand(btnRect);
 		}
 
 	}
@@ -914,19 +913,19 @@ Color32.GREY_32, PANEL_Z - 6
 		int PADDING = Unify(6);
 		int HEIGHT = Unify(TOOL_BAR_HEIGHT);
 		var searchPanel = new IRect(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
-		CellRenderer.Draw(Const.PIXEL, searchPanel, Color32.GREY_32, PANEL_Z - 6);
+		Renderer.Draw(Const.PIXEL, searchPanel, Color32.GREY_32, PANEL_Z - 6);
 		searchPanel = searchPanel.Shrink(PADDING);
 
 		// Bar
 		int ITEM_SIZE = searchPanel.height;
 		int BORDER = Unify(2);
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, searchPanel, BORDER, BORDER, BORDER, BORDER, Color32.GREY_96, PANEL_Z - 5
 		);
 
 		// Search Icon
-		if (CellGUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
-			CellRenderer.Draw(
+		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
+			Renderer.Draw(
 				SEARCH_ICON,
 				searchPanel.Shrink(PADDING, searchPanel.width - ITEM_SIZE - PADDING, 0, 0),
 				Color32.GREY_128, PANEL_Z - 4
@@ -934,7 +933,7 @@ Color32.GREY_32, PANEL_Z - 6
 		}
 
 		// Search Text
-		SearchingText = CellGUI.TextField(SEARCH_BAR_ID, searchPanel, SearchingText, out bool changed, out _);
+		SearchingText = GUI.TextField(SEARCH_BAR_ID, searchPanel, SearchingText, out bool changed, out _);
 		if (changed) {
 			PaletteSearchScrollY = 0;
 			SearchResult.Clear();
@@ -946,7 +945,7 @@ Color32.GREY_32, PANEL_Z - 6
 		// Close Button
 		if (
 			!string.IsNullOrEmpty(SearchingText) &&
-			CellGUI.Button(
+			GUI.Button(
 				searchPanel.EdgeInside(Direction4.Right, searchPanel.height),
 				0, Const.PIXEL, Const.PIXEL, BuiltInSprite.ICON_CROSS, 0, PADDING * 2,
 				PANEL_Z - 4, Color32.WHITE_64, Color32
@@ -955,7 +954,7 @@ Color32.GREY_32, PANEL_Z - 6
 		) {
 			SearchingText = "";
 			SearchResult.Clear();
-			CellGUI.CancelTyping();
+			GUI.CancelTyping();
 		}
 
 	}

@@ -14,8 +14,8 @@ public abstract class MapChest : Furniture, IActionTarget {
 	// MSG
 	public override void FrameUpdate () {
 		bool opened = IsChestOpened(this);
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, opened ? 1 : 0, out var sprite, false, true)) {
-			var cell = CellRenderer.Draw(sprite, RenderingRect);
+		if (Renderer.TryGetSpriteFromGroup(TypeID, opened ? 1 : 0, out var sprite, false, true)) {
+			var cell = Renderer.Draw(sprite, RenderingRect);
 			if ((this as IActionTarget).IsHighlighted) {
 				IActionTarget.HighlightBlink(cell);
 			}

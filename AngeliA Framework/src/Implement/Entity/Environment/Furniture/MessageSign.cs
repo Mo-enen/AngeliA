@@ -9,7 +9,7 @@ public class MessageSign : Furniture, ICombustible {
 	int ICombustible.BurnStartFrame { get; set; }
 
 	public override void FillPhysics () {
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 }

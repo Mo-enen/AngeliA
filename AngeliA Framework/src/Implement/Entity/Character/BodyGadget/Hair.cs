@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 [RequireSprite("{1}.BraidL", "{1}.BraidR")]
 public abstract class BraidHair : Hair {
 
-	private static readonly Cell[] SINGLE_CELL = new Cell[] { new Cell() };
+	private static readonly Cell[] SINGLE_CELL = new Cell[] { new() };
 	private int BraidL { get; init; }
 	private int BraidR { get; init; }
 	protected virtual bool GetFrontL (PoseCharacter character) => character.Head.FrontSide;
@@ -26,8 +26,8 @@ public abstract class BraidHair : Hair {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
 		BraidL = $"{name}.BraidL".AngeHash();
 		BraidR = $"{name}.BraidR".AngeHash();
-		if (!CellRenderer.HasSprite(BraidL)) BraidL = 0;
-		if (!CellRenderer.HasSprite(BraidR)) BraidR = 0;
+		if (!Renderer.HasSprite(BraidL)) BraidL = 0;
+		if (!Renderer.HasSprite(BraidR)) BraidR = 0;
 	}
 
 	public override void DrawGadget (PoseCharacter character) {
@@ -151,7 +151,7 @@ public abstract class BraidHair : Hair {
 
 		// Func
 		static Cell[] DrawBraid (int spriteID, int x, int y, int z, int px, int rot, bool flipX, bool flipY, int deltaHeight, bool rolling, bool allowLimbRotate) {
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return null;
+			if (!Renderer.TryGetSprite(spriteID, out var sprite)) return null;
 			int width = flipX ? -sprite.GlobalWidth : sprite.GlobalWidth;
 			int height = flipY ? -sprite.GlobalHeight : sprite.GlobalHeight;
 			height = (height + deltaHeight).Clamp(height / 3, height * 3);
@@ -164,10 +164,10 @@ public abstract class BraidHair : Hair {
 			}
 			if (!allowLimbRotate) px = 1000 - px;
 			if (sprite.GlobalBorder.IsZero) {
-				SINGLE_CELL[0] = CellRenderer.Draw(sprite, x, y, px, py, rot, width, height, z);
+				SINGLE_CELL[0] = Renderer.Draw(sprite, x, y, px, py, rot, width, height, z);
 				return SINGLE_CELL;
 			} else {
-				return CellRenderer.Draw_9Slice(sprite, x, y, px, py, rot, width, height, z);
+				return Renderer.Draw_9Slice(sprite, x, y, px, py, rot, width, height, z);
 			}
 		}
 		static void TwistRotateHair (PoseCharacter character, Cell[] cells, bool isRight) {
@@ -235,10 +235,10 @@ public abstract class Hair : BodyGadget {
 		SpriteFFR = $"{name}.HairFFR".AngeHash();
 		SpriteFB = $"{name}.HairFB".AngeHash();
 		SpriteBF = $"{name}.HairBF".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteFFL)) SpriteFFL = 0;
-		if (!CellRenderer.HasSprite(SpriteFFR)) SpriteFFR = 0;
-		if (!CellRenderer.HasSprite(SpriteFB)) SpriteFB = 0;
-		if (!CellRenderer.HasSprite(SpriteBF)) SpriteBF = 0;
+		if (!Renderer.HasSprite(SpriteFFL)) SpriteFFL = 0;
+		if (!Renderer.HasSprite(SpriteFFR)) SpriteFFR = 0;
+		if (!Renderer.HasSprite(SpriteFB)) SpriteFB = 0;
+		if (!Renderer.HasSprite(SpriteBF)) SpriteBF = 0;
 	}
 
 
@@ -281,7 +281,7 @@ public abstract class Hair : BodyGadget {
 
 			var head = character.Head;
 
-			if (!CellRenderer.TryGetSprite(spriteID, out var hairSprite)) return null;
+			if (!Renderer.TryGetSprite(spriteID, out var hairSprite)) return null;
 
 			var headRect = head.GetGlobalRect();
 
@@ -319,7 +319,7 @@ public abstract class Hair : BodyGadget {
 			if (flipX) hairRect.FlipHorizontal();
 
 			// Draw Hair
-			return CellRenderer.Draw_9Slice(
+			return Renderer.Draw_9Slice(
 				hairSprite,
 				hairRect.CenterX(), hairRect.y + hairRect.height,
 				500, 1000, 0,

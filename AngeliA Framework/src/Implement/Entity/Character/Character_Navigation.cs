@@ -38,7 +38,7 @@ public abstract partial class Character {
 	protected virtual int NavigationMinimumFlyDuration => 60;
 
 	// Data
-	private readonly CellNavigation.Operation[] NavOperations = new CellNavigation.Operation[64];
+	private readonly Navigation.Operation[] NavOperations = new Navigation.Operation[64];
 	private int CurrentNavOperationIndex = 0;
 	private int CurrentNavOperationCount = 0;
 	private int NavFlyStartFrame = int.MinValue;
@@ -83,7 +83,7 @@ public abstract partial class Character {
 			CurrentNavOperationCount = 0;
 			CurrentNavOperationIndex = 0;
 			if (NavigationState == CharacterNavigationState.Operation) {
-				CurrentNavOperationCount = CellNavigation.NavigateTo(
+				CurrentNavOperationCount = Navigation.NavigateTo(
 					NavOperations, Game.GlobalFrame, Stage.ViewRect, X, Y, NavigationAim.x, NavigationAim.y
 				);
 				if (CurrentNavOperationCount == 0) {
@@ -188,7 +188,7 @@ public abstract partial class Character {
 	private void NavUpdate_Movement_Idle () {
 		VelocityX = 0;
 		if (!InWater && !InSand && !IsInsideGround) {
-			if (CellNavigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.HALF / 2, out int groundY)) {
+			if (Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.HALF / 2, out int groundY)) {
 				// Move to Ground
 				VelocityY = groundY - Y;
 				MakeGrounded(1);
@@ -238,7 +238,7 @@ public abstract partial class Character {
 
 				// Goto Next Operation
 				if (NavMoveDoneX && NavMoveDoneY) {
-					if (!CellNavigation.IsGround(Game.GlobalFrame, Stage.ViewRect, targetX, targetY, out _)) {
+					if (!Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, targetX, targetY, out _)) {
 						NavigationState = CharacterNavigationState.Fly;
 						NavFlyStartFrame = Game.GlobalFrame;
 						CurrentNavOperationIndex = 0;

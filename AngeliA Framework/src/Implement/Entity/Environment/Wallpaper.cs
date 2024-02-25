@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
+[assembly: AngeliA.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
 
 
 namespace AngeliA.Framework; 
@@ -90,10 +90,10 @@ public abstract class Wallpaper : Entity {
 			return;
 		}
 		base.FrameUpdate();
-		int oldLayer = CellRenderer.CurrentLayerIndex;
-		CellRenderer.SetLayerToWallpaper();
-		DrawBackground(CellRenderer.CameraRect);
-		CellRenderer.SetLayer(oldLayer);
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayerToWallpaper();
+		DrawBackground(Renderer.CameraRect);
+		Renderer.SetLayer(oldLayer);
 	}
 
 
@@ -110,7 +110,7 @@ public abstract class Wallpaper : Entity {
 
 	protected Color32 GetSkyTint (int y) => Color32.LerpUnclamped(
 		Sky.SkyTintBottomColor, Sky.SkyTintTopColor,
-		Util.InverseLerp(CellRenderer.CameraRect.yMin, CellRenderer.CameraRect.yMax, y)
+		Util.InverseLerp(Renderer.CameraRect.yMin, Renderer.CameraRect.yMax, y)
 	);
 
 

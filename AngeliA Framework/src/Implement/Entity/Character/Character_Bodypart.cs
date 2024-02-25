@@ -60,7 +60,7 @@ public class BodyPart {
 
 	// API
 	public void SetData (int id = 0, bool useLimbFlip = false, BodyPart parent = null) {
-		if (CellRenderer.TryGetSpriteFromGroup(id, 0, out var sprite, false, true)) {
+		if (Renderer.TryGetSpriteFromGroup(id, 0, out var sprite, false, true)) {
 			SizeX = sprite.GlobalWidth;
 			SizeY = sprite.GlobalHeight;
 			Border = sprite.GlobalBorder;
@@ -154,7 +154,7 @@ public class BodyPart {
 
 	public void SetSpriteID (int newID) {
 		ID = newID;
-		CellRenderer.TryGetSpriteFromGroup(newID, 0, out var sprite, false, true);
+		Renderer.TryGetSpriteFromGroup(newID, 0, out var sprite, false, true);
 		if (sprite == null) return;
 		SizeX = sprite.GlobalWidth;
 		SizeY = sprite.GlobalHeight;

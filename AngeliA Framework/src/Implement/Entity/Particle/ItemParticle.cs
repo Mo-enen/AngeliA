@@ -39,9 +39,9 @@ public class ItemCollectParticle : Particle {
 			255, 255, 255,
 			(byte)Util.RemapUnclamped(0, Duration, 512, 1, LocalFrame).Clamp(0, 255)
 		);
-		CellRenderer.SetLayerToUI();
-		CellRenderer.Draw((int)UserData, Rect, Tint, 0);
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToUI();
+		Renderer.Draw((int)UserData, Rect, Tint, 0);
+		Renderer.SetLayerToDefault();
 	}
 }
 
@@ -105,7 +105,7 @@ public class ItemDamageParticle : Particle {
 	}
 	public override void DrawParticle () {
 		base.DrawParticle();
-		CellRenderer.SetLayerToUI();
+		Renderer.SetLayerToUI();
 
 		float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
 		float ease010 = Util.PingPong(ease01, 0.5f) * 2f;
@@ -119,13 +119,13 @@ public class ItemDamageParticle : Particle {
 		);
 
 		// Draw
-		CellRenderer.Draw(
+		Renderer.Draw(
 			ease01 < 0.5f ? ItemBeforeID : ItemAfterID,
 			X, Y, 500, 500, rotation,
 			Width + deltaSize, Height + deltaSize,
 			tint, 0
 		);
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToDefault();
 	}
 }
 
@@ -161,7 +161,7 @@ public class ItemInsufficientParticle : Particle {
 		X = Holder.X;
 		Y = Holder.Y;
 
-		CellRenderer.SetLayerToUI();
+		Renderer.SetLayerToUI();
 
 		float lerp01 = (float)LocalFrame / Duration;
 		float ease01 = Ease.OutExpo(lerp01);
@@ -170,18 +170,18 @@ public class ItemInsufficientParticle : Particle {
 		byte alpha = (byte)Util.Lerp(1024, 0, lerp01).Clamp(0, 255);
 
 		// Draw
-		CellRenderer.Draw(
+		Renderer.Draw(
 			ItemID,
 			X + deltaX, Y + deltaY, 500, 500, 0,
 			Width, Height,
 			new Color32(255, 255, 255, alpha), 0
 		);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			X + deltaX, Y + deltaY, 500, 500, 0,
 			Width * 10 / 8, Height * 10 / 8,
 			new Color32(255, 64, 64, alpha), -1
 		);
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToDefault();
 	}
 }

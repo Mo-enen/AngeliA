@@ -9,7 +9,7 @@ public static class FrameworkUtil {
 
 	// Drawing
 	public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
-		var result = CellRenderer.Draw(Const.PIXEL, default);
+		var result = Renderer.Draw(Const.PIXEL, default);
 		result.CopyFrom(source);
 		result.X += offsetX;
 		result.Y += offsetY;
@@ -36,7 +36,7 @@ public static class FrameworkUtil {
 		// Func
 		static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Color32 color) {
 
-			var cursedCell = CellRenderer.Draw(Const.PIXEL, default, 0);
+			var cursedCell = Renderer.Draw(Const.PIXEL, default, 0);
 			cursedCell.Sprite = cell.Sprite;
 			cursedCell.TextSprite = cell.TextSprite;
 			cursedCell.X = cell.X;
@@ -74,10 +74,10 @@ public static class FrameworkUtil {
 			rect.y = y - (i / COLUMN + 1) * SIZE;
 			if (i < hp) {
 				// Heart
-				CellRenderer.Draw(isLeft ? heartLeftCode : heartRightCode, rect, 0);
+				Renderer.Draw(isLeft ? heartLeftCode : heartRightCode, rect, 0);
 			} else {
 				// Empty Heart
-				CellRenderer.Draw(isLeft ? emptyHeartLeftCode : emptyHeartRightCode, rect, 0);
+				Renderer.Draw(isLeft ? emptyHeartLeftCode : emptyHeartRightCode, rect, 0);
 				// Spawn Drop Particle
 				if (i < prevHP) {
 					Entity heart;
@@ -103,18 +103,18 @@ public static class FrameworkUtil {
 		uiRect = default;
 
 		// Draw Player
-		int oldLayerIndex = CellRenderer.CurrentLayerIndex;
-		CellRenderer.SetLayerToUI();
-		int layerIndex = CellRenderer.CurrentLayerIndex;
-		int cellIndexStart = CellRenderer.GetUsedCellCount();
+		int oldLayerIndex = Renderer.CurrentLayerIndex;
+		Renderer.SetLayerToUI();
+		int layerIndex = Renderer.CurrentLayerIndex;
+		int cellIndexStart = Renderer.GetUsedCellCount();
 		int oldAniFrame = character.CurrentAnimationFrame;
 		character.CurrentAnimationFrame = animationFrame;
 		character.FrameUpdate();
 		character.CurrentAnimationFrame = oldAniFrame;
-		int cellIndexEnd = CellRenderer.GetUsedCellCount();
-		CellRenderer.SetLayer(oldLayerIndex);
+		int cellIndexEnd = Renderer.GetUsedCellCount();
+		Renderer.SetLayer(oldLayerIndex);
 		if (cellIndexStart == cellIndexEnd) return false;
-		if (!CellRenderer.GetCells(layerIndex, out var cells, out int count)) return false;
+		if (!Renderer.GetCells(layerIndex, out var cells, out int count)) return false;
 
 		// Get Min Max
 		bool flying = character.AnimationType == CharacterAnimationType.Fly;
@@ -223,7 +223,7 @@ public static class FrameworkUtil {
 	};
 
 
-	public static bool MouseInside (this IRect rect) => rect.Contains(FrameInput.MouseGlobalPosition);
+	public static bool MouseInside (this IRect rect) => rect.Contains(Input.MouseGlobalPosition);
 
 
 }

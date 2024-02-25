@@ -86,7 +86,7 @@ public abstract class Bed : Furniture, IActionTarget {
 
 		// Get Offset Y
 		int offsetY = 0;
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
+		if (Renderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
 			offsetY += sprite.GlobalHeight - sprite.GlobalBorder.up;
 		}
 

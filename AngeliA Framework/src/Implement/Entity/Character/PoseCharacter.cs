@@ -153,12 +153,12 @@ public abstract class PoseCharacter : Character {
 				int newID = $"{basicName}.{BODY_PART_NAME[i]}".AngeHash();
 				if (i == 0) {
 					// For Head
-					if (CellRenderer.HasSpriteGroup(newID) || CellRenderer.HasSprite(newID)) {
+					if (Renderer.HasSpriteGroup(newID) || Renderer.HasSprite(newID)) {
 						id = newID;
 					}
 				} else {
 					// For Other
-					if (CellRenderer.HasSprite(newID)) id = newID;
+					if (Renderer.HasSprite(newID)) id = newID;
 				}
 				config.BodyParts[i] = id;
 			}
@@ -234,7 +234,7 @@ public abstract class PoseCharacter : Character {
 	protected override void RenderCharacter () {
 
 		if (!BodyPartsReady) return;
-		int cellIndexStart = CellRenderer.GetUsedCellCount();
+		int cellIndexStart = Renderer.GetUsedCellCount();
 
 		ResetPoseToDefault(false);
 		PerformPoseAnimation();
@@ -572,8 +572,8 @@ public abstract class PoseCharacter : Character {
 		// Draw
 		foreach (var bodyPart in BodyParts) {
 			if (bodyPart.ID == 0 || bodyPart.IsFullCovered) continue;
-			if (bodyPart == Head && CellRenderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
-				CellRenderer.Draw(
+			if (bodyPart == Head && Renderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
+				Renderer.Draw(
 					headSprite,
 					X + PoseRootX + bodyPart.X,
 					Y + PoseRootY + bodyPart.Y,
@@ -581,7 +581,7 @@ public abstract class PoseCharacter : Character {
 					bodyPart.Tint, bodyPart.Z
 				);
 			} else {
-				CellRenderer.Draw(
+				Renderer.Draw(
 					bodyPart.ID,
 					X + PoseRootX + bodyPart.X,
 					Y + PoseRootY + bodyPart.Y,
@@ -594,7 +594,7 @@ public abstract class PoseCharacter : Character {
 
 		// Z Offset
 		PoseRenderingZOffset -= 40;
-		if (CellRenderer.GetCells(out var cells, out int count)) {
+		if (Renderer.GetCells(out var cells, out int count)) {
 			for (int i = cellIndexStart; i < count; i++) {
 				cells[i].Z += PoseRenderingZOffset;
 			}

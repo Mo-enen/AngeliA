@@ -106,7 +106,7 @@ public abstract class Water : Entity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.WATER_TAG);
+		Physics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.WATER_TAG);
 	}
 
 
@@ -127,7 +127,7 @@ public abstract class Water : Entity {
 		BeforeUpdate_Movement();
 
 		// Try Merge
-		if (CellPhysics.GetEntity(
+		if (Physics.GetEntity(
 				TypeID, IsGrounded ? new IRect(X + Width / 2, Y, 1, 1) : Rect,
 				PhysicsMask.MAP, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 			) is Water overlapWater
@@ -140,22 +140,22 @@ public abstract class Water : Entity {
 			var rect = Rect.Shrink(1);
 
 			// Get Neighbors
-			WaterLeft = CellPhysics.GetEntity(
+			WaterLeft = Physics.GetEntity(
 				TypeID, rect.Shift(-Const.CEL, 0), PhysicsMask.LEVEL,
 				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 			) as Water;
 
-			WaterRight = CellPhysics.GetEntity(
+			WaterRight = Physics.GetEntity(
 				TypeID, rect.Shift(Const.CEL, 0), PhysicsMask.LEVEL,
 				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 			) as Water;
 
-			WaterDown = CellPhysics.GetEntity(
+			WaterDown = Physics.GetEntity(
 				TypeID, rect.Shift(0, -Const.CEL), PhysicsMask.LEVEL,
 				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 			) as Water;
 
-			WaterUp = CellPhysics.GetEntity(
+			WaterUp = Physics.GetEntity(
 				TypeID, rect.Shift(0, Const.CEL), PhysicsMask.LEVEL,
 				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 			) as Water;
@@ -174,7 +174,7 @@ public abstract class Water : Entity {
 			const int GRAVITY = 5;
 			const int MAX_SPEED = 48;
 			CurrentSpeed = (CurrentSpeed + GRAVITY).Clamp(0, MAX_SPEED);
-			Y = CellPhysics.MoveImmediately(
+			Y = Physics.MoveImmediately(
 				PhysicsMask.LEVEL, new(X, Y), Direction4.Down,
 				CurrentSpeed, new(Width, Height), this, true
 			).y;
@@ -212,7 +212,7 @@ public abstract class Water : Entity {
 			// Flow Up
 			if (
 				WaterUp == null &&
-				!CellPhysics.Overlap(PhysicsMask.LEVEL, rect.Shift(0, Const.CEL), this)
+				!Physics.Overlap(PhysicsMask.LEVEL, rect.Shift(0, Const.CEL), this)
 			) {
 				RequireTransferUp += (volume - 1000).Clamp(0, 1000);
 			}
@@ -237,13 +237,13 @@ public abstract class Water : Entity {
 			// Flow
 			if (
 				volume > StableVolume && WaterLeft == null &&
-				!CellPhysics.Overlap(PhysicsMask.LEVEL, rect.Shift(-Const.CEL, 0), this)
+				!Physics.Overlap(PhysicsMask.LEVEL, rect.Shift(-Const.CEL, 0), this)
 			) {
 				transferL += volume - StableVolume / 2;
 			}
 			if (
 				volume > StableVolume && WaterRight == null &&
-				!CellPhysics.Overlap(PhysicsMask.LEVEL, rect.Shift(Const.CEL, 0), this)
+				!Physics.Overlap(PhysicsMask.LEVEL, rect.Shift(Const.CEL, 0), this)
 			) {
 				transferR += volume - StableVolume / 2;
 			}
@@ -341,7 +341,7 @@ public abstract class Water : Entity {
 			return;
 		}
 
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, Game.GlobalFrame / 5, out var sprite, true, true)) {
+		if (Renderer.TryGetSpriteFromGroup(TypeID, Game.GlobalFrame / 5, out var sprite, true, true)) {
 
 			bool showTopBorder = IsGrounded && WaterUp == null;
 			bool showBottomBorder = !IsGrounded;
@@ -382,7 +382,7 @@ public abstract class Water : Entity {
 			if (showBottomBorder) {
 				rect = rect.Expand(0, 0, sprite.GlobalBorder.down, 0);
 			}
-			CellRenderer.Draw_9Slice(
+			Renderer.Draw_9Slice(
 				sprite, rect,
 				sprite.GlobalBorder.left,
 				sprite.GlobalBorder.right,
@@ -461,13 +461,13 @@ public abstract class Water : Entity {
 
 
 	private bool GroundCheck () {
-		if (IsGrounded && CellPhysics.Overlap(
+		if (IsGrounded && Physics.Overlap(
 			PhysicsMask.LEVEL, new IRect(X + 1, Y - Const.CEL + 1, Const.CEL - 2, Const.CEL - 2),
 			out var hit, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
 		) && hit.Entity is Water water && water.IsGrounded) return true;
-		return !CellPhysics.RoomCheck(
+		return !Physics.RoomCheck(
 			PhysicsMask.LEVEL, Rect, this, Direction4.Down
-		) || !CellPhysics.RoomCheckOneway(
+		) || !Physics.RoomCheckOneway(
 			PhysicsMask.LEVEL, Rect, this, Direction4.Down, true, true
 		);
 	}

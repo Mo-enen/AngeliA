@@ -21,15 +21,14 @@ public static class UniverseUtil {
 		);
 
 		// Create Universe Object
-		AngeliaVersionAttribute.GetVersion(out int majorVersion, out int minorVersion, out int patchVersion, out _);
 		var universe = new Universe(universeFolderPath, @readonly: false);
 		var info = universe.Info;
 		info.UniverseName = universeName;
 		info.Creator = creator;
 		info.ModifyDate = info.CreatedDate = System.DateTime.Now.ToFileTime();
-		info.EditorMajorVersion = majorVersion;
-		info.EditorMinorVersion = minorVersion;
-		info.EditorPatchVersion = patchVersion;
+		info.EditorMajorVersion = AngeliaVersionAttribute.MajorVersion;
+		info.EditorMinorVersion = AngeliaVersionAttribute.MinorVersion;
+		info.EditorPatchVersion = AngeliaVersionAttribute.PatchVersion;
 
 		// Save to Disk
 		universe.SaveUniverseInfoToDisk();

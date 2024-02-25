@@ -33,7 +33,7 @@ public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
 
 	public virtual void DrawPanel (IRect panelRect) => BackgroundRect = panelRect;
 
-	protected static int Unify (int value) => CellGUI.Unify(value);
+	protected static int Unify (int value) => GUI.Unify(value);
 
 }
 
@@ -136,8 +136,8 @@ public class PlayerMenuUI : EntityUI {
 		UsingMouseMode = false;
 		MouseHoveringItemIndex = int.MaxValue;
 		FlashingField = new(-1, 0, 0);
-		X = CellRenderer.CameraRect.CenterX();
-		Y = CellRenderer.CameraRect.CenterY();
+		X = Renderer.CameraRect.CenterX();
+		Y = Renderer.CameraRect.CenterY();
 	}
 
 
@@ -156,7 +156,7 @@ public class PlayerMenuUI : EntityUI {
 			Active = false;
 			return;
 		}
-		CursorSystem.RequireCursor();
+		Cursor.RequireCursor();
 
 		Update_PanelUI();
 		Update_InfoUI();
@@ -169,8 +169,8 @@ public class PlayerMenuUI : EntityUI {
 		if (CursorIndex != PrevCursorIndex || CursorInBottomPanel != PrevCursorInBottomPanel) {
 			PrevCursorIndex = CursorIndex;
 			PrevCursorInBottomPanel = CursorInBottomPanel;
-			FrameInput.UseGameKey(Gamekey.Action);
-			FrameInput.UseGameKey(Gamekey.Jump);
+			Input.UseGameKey(Gamekey.Action);
+			Input.UseGameKey(Gamekey.Jump);
 		}
 	}
 
@@ -184,7 +184,7 @@ public class PlayerMenuUI : EntityUI {
 		// Bottom Panel
 		RenderingBottomPanel = true;
 		var playerPanelRect = GetPanelRect(Player.INVENTORY_COLUMN, Player.INVENTORY_ROW, ITEM_SIZE, false);
-		CellRenderer.Draw(Const.PIXEL, playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
+		Renderer.Draw(Const.PIXEL, playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
 		DrawInventory(Player.Selecting.TypeID, Player.INVENTORY_COLUMN, Player.INVENTORY_ROW, false);
 
 		// Top Panel
@@ -192,7 +192,7 @@ public class PlayerMenuUI : EntityUI {
 		if (Partner != null) {
 			// Partner Panel
 			var panelRect = GetPanelRect(Partner.Column, Partner.Row, Partner.ItemSize, true);
-			CellRenderer.Draw(Const.PIXEL, panelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
+			Renderer.Draw(Const.PIXEL, panelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
 			Partner.MouseInPanel = panelRect.MouseInside();
 			Partner.DrawPanel(panelRect);
 			TopPanelRect = panelRect;
@@ -204,11 +204,11 @@ public class PlayerMenuUI : EntityUI {
 
 		if (!HoveringItemField) {
 			MouseHoveringItemIndex = int.MaxValue;
-			if (FrameInput.MouseLeftButtonDown) {
-				FrameInput.UseGameKey(Gamekey.Action);
+			if (Input.MouseLeftButtonDown) {
+				Input.UseGameKey(Gamekey.Action);
 			}
-			if (FrameInput.MouseRightButtonDown) {
-				FrameInput.UseGameKey(Gamekey.Jump);
+			if (Input.MouseRightButtonDown) {
+				Input.UseGameKey(Gamekey.Jump);
 			}
 		}
 
@@ -240,7 +240,7 @@ public class PlayerMenuUI : EntityUI {
 		MouseInPanel = MouseInPanel || panelRect.MouseInside();
 
 		// Type Icon
-		CellRenderer.Draw(
+		Renderer.Draw(
 			ItemSystem.GetItemTypeIcon(itemID),
 			new IRect(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight),
 Color32.ORANGE_BETTER, int.MinValue + 3
@@ -248,15 +248,15 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 
 		// Name
 		var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
-		CellGUI.Label(
+		GUI.Label(
 			ItemSystem.GetItemName(itemID), nameRect,
 			charSize: 20, alignment: Alignment.MidLeft, tint: Color32
 .ORANGE_BETTER
 		);
 
 		// Description
-		CellGUI.Label(
-			CellContent.Get(
+		GUI.Label(
+			TextContent.Get(
 				ItemSystem.GetItemDescription(itemID),
 				charSize: 18,
 				alignment: Alignment.TopLeft,
@@ -267,7 +267,7 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 		);
 
 		// Background
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			new IRect(panelRect.x, desBounds.y, panelRect.width, nameRect.yMax - desBounds.y).Expand(windowPadding),
 Color32.BLACK, int.MinValue + 1
@@ -282,7 +282,7 @@ Color32.BLACK, int.MinValue + 1
 		if (
 			!MouseInPanel &&
 			Game.GlobalFrame != SpawnFrame &&
-			FrameInput.AnyMouseButtonDown
+			Input.AnyMouseButtonDown
 		) {
 			if (TakingID == 0) {
 				Active = false;
@@ -292,9 +292,9 @@ Color32.BLACK, int.MinValue + 1
 		}
 
 		// Key
-		if (FrameInput.GameKeyUp(Gamekey.Select) || FrameInput.GameKeyUp(Gamekey.Start)) {
-			FrameInput.UseGameKey(Gamekey.Select);
-			FrameInput.UseGameKey(Gamekey.Start);
+		if (Input.GameKeyUp(Gamekey.Select) || Input.GameKeyUp(Gamekey.Start)) {
+			Input.UseGameKey(Gamekey.Select);
+			Input.UseGameKey(Gamekey.Start);
 			Active = false;
 			return;
 		}
@@ -310,7 +310,7 @@ Color32.BLACK, int.MinValue + 1
 		ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
 		ControlHintUI.AddHint(Gamekey.Action, "", int.MinValue + 2);
 
-		if (FrameInput.DirectionX == Direction3.None && FrameInput.DirectionY == Direction3.None) return;
+		if (Input.DirectionX == Direction3.None && Input.DirectionY == Direction3.None) return;
 
 		int column = CursorInBottomPanel ? Character.INVENTORY_COLUMN : TopPanelColumn;
 		int row = CursorInBottomPanel ? Character.INVENTORY_ROW : TopPanelRow;
@@ -318,19 +318,19 @@ Color32.BLACK, int.MinValue + 1
 		int y = CursorIndex / column;
 
 		// Left
-		if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
+		if (Input.GameKeyDownGUI(Gamekey.Left)) {
 			x = Util.Max(x - 1, 0);
 			UsingMouseMode = false;
 		}
 
 		// Right
-		if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
+		if (Input.GameKeyDownGUI(Gamekey.Right)) {
 			x = Util.Min(x + 1, column - 1);
 			UsingMouseMode = false;
 		}
 
 		// Down
-		if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+		if (Input.GameKeyDownGUI(Gamekey.Down)) {
 			UsingMouseMode = false;
 			if (!CursorInBottomPanel && y == 0) {
 				CursorInBottomPanel = true;
@@ -348,7 +348,7 @@ Color32.BLACK, int.MinValue + 1
 		}
 
 		// Up
-		if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+		if (Input.GameKeyDownGUI(Gamekey.Up)) {
 			UsingMouseMode = false;
 			if (CursorInBottomPanel && y == row - 1) {
 				CursorInBottomPanel = false;
@@ -378,11 +378,11 @@ Color32.BLACK, int.MinValue + 1
 		// Action Cache
 		int oldCursorIndex = CursorIndex;
 		bool cursorChanged = CursorIndex != PrevCursorIndex;
-		bool actionDown = FrameInput.GameKeyDown(Gamekey.Action);
-		bool cancelDown = !actionDown && FrameInput.GameKeyDown(Gamekey.Jump);
-		bool actionUp = FrameInput.GameKeyUp(Gamekey.Action);
-		bool actionHolding = FrameInput.GameKeyHolding(Gamekey.Action);
-		bool cancelHolding = !actionHolding && FrameInput.GameKeyHolding(Gamekey.Jump);
+		bool actionDown = Input.GameKeyDown(Gamekey.Action);
+		bool cancelDown = !actionDown && Input.GameKeyDown(Gamekey.Jump);
+		bool actionUp = Input.GameKeyUp(Gamekey.Action);
+		bool actionHolding = Input.GameKeyHolding(Gamekey.Action);
+		bool cancelHolding = !actionHolding && Input.GameKeyHolding(Gamekey.Jump);
 
 		if (cursorChanged && (actionHolding || cancelHolding) && CursorInBottomPanel == PrevCursorInBottomPanel) {
 			if (actionHolding) actionUp = true;
@@ -407,8 +407,8 @@ Color32.BLACK, int.MinValue + 1
 			Game.GlobalFrame >= CancelKeyDownFrame + HOLD_KEY_DURATION;
 		if (!actionHolding) ActionKeyDownFrame = int.MinValue;
 		if (!cancelHolding) CancelKeyDownFrame = int.MinValue;
-		if (intendedHoldAction) FrameInput.UseGameKey(Gamekey.Action);
-		if (intendedHoldCancel) FrameInput.UseGameKey(Gamekey.Jump);
+		if (intendedHoldAction) Input.UseGameKey(Gamekey.Action);
+		if (intendedHoldCancel) Input.UseGameKey(Gamekey.Jump);
 
 		// Inv Logic
 		int invID = CursorInBottomPanel ? Player.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
@@ -474,10 +474,10 @@ Color32.BLACK, int.MinValue + 1
 
 	private void DrawTakingItemMouseCursor () {
 		if (!UsingMouseMode || TakingID == 0) return;
-		int x = FrameInput.MouseGlobalPosition.x;
-		int y = FrameInput.MouseGlobalPosition.y;
+		int x = Input.MouseGlobalPosition.x;
+		int y = Input.MouseGlobalPosition.y;
 		int size = Unify(ITEM_SIZE);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			TakingID,
 			x, y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
 			size, size, Color32.WHITE, int.MaxValue
@@ -571,15 +571,15 @@ Color32.BLACK, int.MinValue + 1
 	public void DrawItemField (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) {
 
 		if (itemCount <= 0) itemID = 0;
-		bool actionHolding = FrameInput.GameKeyHolding(Gamekey.Action);
-		bool cancelHolding = FrameInput.GameKeyHolding(Gamekey.Jump);
+		bool actionHolding = Input.GameKeyHolding(Gamekey.Action);
+		bool cancelHolding = Input.GameKeyHolding(Gamekey.Jump);
 		bool mouseHovering = interactable && itemRect.MouseInside();
 		int cursorIndex = RenderingBottomPanel == CursorInBottomPanel ? CursorIndex : -1;
 		HoveringItemField = HoveringItemField || mouseHovering;
 
 		// Frame
 		int frameBorder = Unify(1);
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			frameCode,
 			itemRect.x,
 			itemRect.y, 0, 0, 0, itemRect.width, itemRect.height,
@@ -606,11 +606,11 @@ Color32.BLACK, int.MinValue + 1
 				cursorIndex = CursorIndex = uiIndex;
 				CursorInBottomPanel = RenderingBottomPanel;
 				// Draw Highlight
-				CellRenderer.Draw(Const.PIXEL, itemRect, Color32.GREY_42, int.MinValue + 2);
+				Renderer.Draw(Const.PIXEL, itemRect, Color32.GREY_42, int.MinValue + 2);
 			}
 			if (itemID != 0) {
 				// System Mouse Cursor
-				CursorSystem.SetCursorAsHand();
+				Cursor.SetCursorAsHand();
 			}
 		}
 
@@ -618,10 +618,10 @@ Color32.BLACK, int.MinValue + 1
 		if (!UsingMouseMode && cursorIndex == uiIndex) {
 			HoveringItemID = itemID;
 			// Cursor
-			CellGUI.HighlightCursor(FRAME_CODE, itemRect, int.MinValue + 4);
+			GUI.HighlightCursor(FRAME_CODE, itemRect, int.MinValue + 4);
 			// Taking Item
 			if (TakingID != 0) {
-				CellRenderer.Draw(
+				Renderer.Draw(
 					TakingID,
 					itemRect.x + itemRect.width / 2,
 					itemRect.y + itemRect.height / 2,
@@ -641,7 +641,7 @@ Color32.WHITE, int.MaxValue
 		) {
 			var tint = Color32.GREEN;
 			tint.a = (byte)Util.RemapUnclamped(FLASH_PANEL_DURATION, 0, 255, 0, FlashingField.y - Game.GlobalFrame);
-			CellRenderer.Draw(Const.PIXEL, itemRect, tint, int.MinValue + 3);
+			Renderer.Draw(Const.PIXEL, itemRect, tint, int.MinValue + 3);
 		}
 
 		// Holding
@@ -652,7 +652,7 @@ Color32.WHITE, int.MaxValue
 				ActionKeyDownFrame >= 0 &&
 				Game.GlobalFrame >= ActionKeyDownFrame + 6
 			) {
-				var cell = CellRenderer.Draw(Const.PIXEL, itemRect, Color32.GREY_96, int.MinValue + 3);
+				var cell = Renderer.Draw(Const.PIXEL, itemRect, Color32.GREY_96, int.MinValue + 3);
 				cell.Shift = new Int4(
 					0, 0, 0,
 					Util.RemapUnclamped(
@@ -668,7 +668,7 @@ Color32.WHITE, int.MaxValue
 				Game.GlobalFrame >= CancelKeyDownFrame + 6
 			) {
 				if (ItemSystem.CanUseItem(itemID, Player.Selecting)) {
-					var cell = CellRenderer.Draw(Const.PIXEL, itemRect, Color32.GREEN, int.MinValue + 3);
+					var cell = Renderer.Draw(Const.PIXEL, itemRect, Color32.GREEN, int.MinValue + 3);
 					cell.Shift = new Int4(
 						0, 0, 0,
 						Util.RemapUnclamped(
@@ -698,13 +698,13 @@ Color32.WHITE, int.MaxValue
 
 		// Background
 		var windowRect = panelRect.Expand(Unify(WINDOW_PADDING));
-		CellRenderer.Draw(Const.PIXEL, windowRect, Color32.BLACK, int.MinValue + 1);
+		Renderer.Draw(Const.PIXEL, windowRect, Color32.BLACK, int.MinValue + 1);
 		MouseInPanel = MouseInPanel || windowRect.MouseInside();
 
 		// Preview
 		var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
 		FrameworkUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
-		if (FrameInput.MouseLeftButtonDown && previewRect.MouseInside()) {
+		if (Input.MouseLeftButtonDown && previewRect.MouseInside()) {
 			player.FacingRight = !player.FacingRight;
 			player.Bounce();
 		}
@@ -751,8 +751,8 @@ Color32.WHITE, int.MaxValue
 		int itemID = Inventory.GetEquipment(Player.Selecting.TypeID, type);
 		int fieldPadding = Unify(4);
 		var fieldRect = rect.Shrink(fieldPadding);
-		bool actionDown = interactable && FrameInput.GameKeyDown(Gamekey.Action);
-		bool cancelDown = interactable && FrameInput.GameKeyDown(Gamekey.Jump);
+		bool actionDown = interactable && Input.GameKeyDown(Gamekey.Action);
+		bool cancelDown = interactable && Input.GameKeyDown(Gamekey.Jump);
 		var enableTint = Color32.WHITE;
 		var equipAvailable = Player.Selecting.EquipmentAvailable(type);
 		bool mouseHovering = interactable && rect.MouseInside();
@@ -766,7 +766,7 @@ Color32.WHITE, int.MaxValue
 		// Item Frame
 		if (equipAvailable) {
 			int border = Unify(4);
-			CellRenderer.Draw_9Slice(ITEM_FRAME_CODE, itemRect, border, border, border, border, enableTint, int.MinValue + 2);
+			Renderer.Draw_9Slice(ITEM_FRAME_CODE, itemRect, border, border, border, border, enableTint, int.MinValue + 2);
 		}
 
 		// Icon
@@ -774,7 +774,7 @@ Color32.WHITE, int.MaxValue
 		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
 		// Label
-		CellGUI.Label(
+		GUI.Label(
 			label, fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0),
 			tint: enableTint, charSize: 20, alignment: Alignment.MidLeft
 		);
@@ -789,7 +789,7 @@ Color32.WHITE, int.MaxValue
 
 		// Bottom Line
 		int lineSize = Unify(2);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			new IRect(
 				rect.x + fieldPadding,
@@ -805,7 +805,7 @@ Color32.WHITE, int.MaxValue
 			Game.GlobalFrame >= EquipFlashStartFrame &&
 			Game.GlobalFrame < EquipFlashStartFrame + FLASH_PANEL_DURATION
 		) {
-			CellRenderer.Draw(
+			Renderer.Draw(
 				Const.PIXEL, rect.Shrink(lineSize), new Color32(
 					0, 255, 0,
 					(byte)Util.RemapUnclamped(
@@ -832,7 +832,7 @@ Color32.WHITE, int.MaxValue
 			if (mouseHovering) {
 				CursorIndex = index;
 				CursorInBottomPanel = false;
-				CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_32, int.MinValue + 1);
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, int.MinValue + 1);
 				highlighting = true;
 			}
 		} else {
@@ -840,10 +840,10 @@ Color32.WHITE, int.MaxValue
 				highlighting = true;
 				var cursorTint = interactable ? Color32.GREEN : Color32.GREY_96;
 				cursorTint.a = enableTint.a;
-				CellGUI.HighlightCursor(FRAME_CODE, rect, int.MinValue + 4, cursorTint);
+				GUI.HighlightCursor(FRAME_CODE, rect, int.MinValue + 4, cursorTint);
 				// Taking Item
 				if (TakingID != 0) {
-					CellRenderer.Draw(
+					Renderer.Draw(
 						TakingID,
 						itemRect.x + itemRect.width / 2,
 						itemRect.y + itemRect.height / 2,
@@ -1119,13 +1119,13 @@ Color32.WHITE, int.MaxValue
 	// Util
 	private static void DrawItemIcon (IRect rect, int id, Color32 tint, int z) {
 		if (id == 0) return;
-		if (!CellRenderer.TryGetSprite(id, out var sprite)) {
+		if (!Renderer.TryGetSprite(id, out var sprite)) {
 			id = Const.PIXEL;
-			CellRenderer.TryGetSprite(Const.PIXEL, out sprite);
+			Renderer.TryGetSprite(Const.PIXEL, out sprite);
 			rect = rect.Shrink(rect.width / 6);
 		}
 		int iconShrink = Unify(7);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			id,
 			rect.Shrink(iconShrink).Fit(sprite),
 			tint, z
@@ -1135,8 +1135,8 @@ Color32.WHITE, int.MaxValue
 
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
-		CellRenderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
-		CellGUI.Label(CellGUI.GetNumberCache(number), rect, tint: Color32.WHITE);
+		Renderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
+		GUI.Label(GUI.GetNumberCache(number), rect, tint: Color32.WHITE);
 	}
 
 
@@ -1175,7 +1175,7 @@ Color32.WHITE, int.MaxValue
 			invWidth -= Util.LerpUnclamped(uItemSize * 4, 0, lerp01).RoundToInt();
 		}
 		var result = new IRect(invX - invWidth / 2, invY, invWidth, invHeight);
-		result.ClampPositionInside(CellRenderer.CameraRect);
+		result.ClampPositionInside(Renderer.CameraRect);
 		return result;
 	}
 
@@ -1192,7 +1192,7 @@ Color32.WHITE, int.MaxValue
 			invWidth -= Util.LerpUnclamped(Unify(128), 0, lerp01).RoundToInt();
 		}
 		var panelRect = new IRect(player.X - invWidth / 2 + Unify(PREVIEW_SIZE) / 2, invY, invWidth, invHeight);
-		panelRect.ClampPositionInside(CellRenderer.CameraRect);
+		panelRect.ClampPositionInside(Renderer.CameraRect);
 		return panelRect;
 	}
 

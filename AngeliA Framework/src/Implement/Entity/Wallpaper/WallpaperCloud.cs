@@ -49,7 +49,7 @@ public class WallpaperCloud : Wallpaper {
 				size = (int)Util.LerpUnclamped(size / 9f, size, pos.y / 100000f);
 				int targetAlpha = pos.y > 30000 ? 24 : 12;
 				tint.a = (byte)Util.RemapUnclamped(0, 1000, 0, targetAlpha, Amount);
-				CellRenderer.Draw(
+				Renderer.Draw(
 					CLOUD,
 					x, y, 500, 500, 0, size, size,
 					tint, int.MinValue + pos.y + 1

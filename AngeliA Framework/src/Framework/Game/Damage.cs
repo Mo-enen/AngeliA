@@ -41,7 +41,7 @@ public interface IDamageReceiver {
 					!receiver.TakeDamageFromLevel ||
 					receiver.Team == Const.TEAM_ENVIRONMENT
 				) continue;
-				var hits = CellPhysics.OverlapAll(PhysicsMask.DAMAGE, entity.Rect, out int count, entity, OperationMode.ColliderAndTrigger);
+				var hits = Physics.OverlapAll(PhysicsMask.DAMAGE, entity.Rect, out int count, entity, OperationMode.ColliderAndTrigger);
 				for (int j = 0; j < count; j++) {
 					var hit = hits[j];
 					receiver.TakeDamage(new Damage(1, null, hit.Tag));

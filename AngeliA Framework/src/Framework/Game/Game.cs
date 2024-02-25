@@ -2,12 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-
 [assembly: AngeliA.AngeliA]
 
-
 namespace AngeliA.Framework;
-
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : System.Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }
@@ -57,10 +54,6 @@ public abstract partial class Game {
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
 	public static float CurrentFPS { get; private set; } = 1f;
-	public static int GameMajorVersion { get; private set; } = -1;
-	public static int GameMinorVersion { get; private set; } = -1;
-	public static int GamePatchVersion { get; private set; } = -1;
-	public static ReleaseLifeCycle GameLifeCycle { get; private set; } = ReleaseLifeCycle.Release;
 	public static string GameTitle { get; private set; } = "";
 	public static string GameDeveloper { get; private set; } = "";
 	public static bool AllowMakerFeaures { get; private set; } = false;
@@ -81,7 +74,6 @@ public abstract partial class Game {
 	private static Stopwatch GameWatch;
 
 	// Saving
-	private static readonly SavingInt _GraphicFramerate = new("Game.GraphicFramerate", 60);
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
 	private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500);
 	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 1000);
@@ -104,11 +96,6 @@ public abstract partial class Game {
 		GameTitle = AngeliaGameTitleAttribute.GetTitle();
 		GameDeveloper = AngeliaGameDeveloperAttribute.GetDeveloperName();
 		AllowMakerFeaures = IsEdittime || AngeliaAllowMakerAttribute.AllowMakerFeatures;
-		AngeliaVersionAttribute.GetVersion(out int major, out int minor, out int patch, out var cycle);
-		GameMajorVersion = major;
-		GameMinorVersion = minor;
-		GamePatchVersion = patch;
-		GameLifeCycle = cycle;
 	}
 
 
@@ -130,7 +117,7 @@ public abstract partial class Game {
 
 			_AddGameTryingToQuitCallback(OnTryingToQuit);
 			_AddGameQuittingCallback(OnQuitting);
-			_AddTextInputCallback(CellGUI.OnTextInput);
+			_AddTextInputCallback(GUI.OnTextInput);
 			_AddFocusChangedCallback(OnFocusChanged);
 
 			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
@@ -180,7 +167,7 @@ public abstract partial class Game {
 			PauselessUpdate();
 
 			// Switch Between Play and Pause
-			if (FrameInput.GameKeyUp(Gamekey.Start)) {
+			if (Input.GameKeyUp(Gamekey.Start)) {
 				if (IsPlaying) {
 					PauseGame();
 				} else {

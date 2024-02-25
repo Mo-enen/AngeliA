@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [Serializable]
 public struct Float4 : IEquatable<Float4>, IFormattable {
 	public const float kEpsilon = 1E-05f;
@@ -167,7 +167,7 @@ public struct Float4 : IEquatable<Float4>, IFormattable {
 		w *= scale.w;
 	}
 
-	public override int GetHashCode () {
+	public readonly override int GetHashCode () {
 		return x.GetHashCode() ^ (y.GetHashCode() << 2) ^ (z.GetHashCode() >> 2) ^ (w.GetHashCode() >> 1);
 	}
 
@@ -278,15 +278,15 @@ public struct Float4 : IEquatable<Float4>, IFormattable {
 		return new Float2(v.x, v.y);
 	}
 
-	public override string ToString () {
+	public readonly override string ToString () {
 		return ToString(null, null);
 	}
 
-	public string ToString (string format) {
+	public readonly string ToString (string format) {
 		return ToString(format, null);
 	}
 
-	public string ToString (string format, IFormatProvider formatProvider) {
+	public readonly string ToString (string format, IFormatProvider formatProvider) {
 		if (string.IsNullOrEmpty(format)) {
 			format = "F2";
 		}

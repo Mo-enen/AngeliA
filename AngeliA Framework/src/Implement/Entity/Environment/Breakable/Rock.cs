@@ -15,7 +15,7 @@ public class Rock : Breakable {
 		FullRect = new(X, Y, Const.CEL, Const.CEL);
 		Width = Height = Const.CEL;
 		int artworkIndex = X.UDivide(Const.CEL) + Y.UDivide(Const.CEL);
-		if (CellRenderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
+		if (Renderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
 			var rect = base.Rect.Shrink(sprite.GlobalBorder.left, sprite.GlobalBorder.right, sprite.GlobalBorder.down, sprite.GlobalBorder.up);
 			X = rect.x;
 			Y = rect.y;
@@ -27,11 +27,11 @@ public class Rock : Breakable {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
 	public override void FrameUpdate () {
-		CellRenderer.Draw(ArtworkCode, FullRect);
+		Renderer.Draw(ArtworkCode, FullRect);
 	}
 
 }

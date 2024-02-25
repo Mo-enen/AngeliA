@@ -18,7 +18,7 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 	}
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		CellRenderer.Draw(TypeID, Rect);
+		Renderer.Draw(TypeID, Rect);
 	}
 	protected virtual void OnBreak () {
 		Stage.MarkAsGlobalAntiSpawn(this);

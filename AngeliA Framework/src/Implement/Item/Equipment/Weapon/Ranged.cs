@@ -20,7 +20,7 @@ public abstract class Shooting : ArrowWeapon {
 	private int SpriteFrameCount { get; init; }
 	public Shooting () {
 		SpriteIdAttack = $"{GetType().AngeName()}.Attack".AngeHash();
-		if (CellRenderer.HasSpriteGroup(SpriteIdAttack, out int length)) {
+		if (Renderer.HasSpriteGroup(SpriteIdAttack, out int length)) {
 			SpriteFrameCount = length;
 		} else {
 			SpriteIdAttack = 0;
@@ -34,9 +34,9 @@ public abstract class Shooting : ArrowWeapon {
 			int localFrame = character.IsAttacking ?
 				(Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / AttackDuration :
 				SpriteFrameCount - 1;
-			if (CellRenderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
 				cell.Color = Color32.CLEAR;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					attackSprite,
 					cell.X, cell.Y, attackSprite.PivotX, attackSprite.PivotY, cell.Rotation,
 					attackSprite.GlobalWidth,
@@ -79,7 +79,7 @@ public abstract class Bow : ArrowWeapon {
 
 	public Bow () {
 		SpriteIdString = $"{GetType().AngeName()}.String".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteIdString)) SpriteIdString = 0;
+		if (!Renderer.HasSprite(SpriteIdString)) SpriteIdString = 0;
 	}
 
 	protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
@@ -92,7 +92,7 @@ public abstract class Bow : ArrowWeapon {
 		int borderL = 0;
 		int borderD = 0;
 		int borderU = 0;
-		if (CellRenderer.TryGetSprite(SpriteID, out var mainSprite)) {
+		if (Renderer.TryGetSprite(SpriteID, out var mainSprite)) {
 			borderL = mainSprite.GlobalBorder.left * mainCell.Width.Sign();
 			borderD = mainSprite.GlobalBorder.down;
 			borderU = mainSprite.GlobalBorder.up;
@@ -124,12 +124,12 @@ public abstract class Bow : ArrowWeapon {
 
 			// Draw Strings
 			int stringWidth = character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
-			CellRenderer.Draw(
+			Renderer.Draw(
 				SpriteIdString, centerPos.x, centerPos.y, 500, 0,
 				(cornerU - centerPos).GetRotation(),
 				stringWidth, Util.DistanceInt(centerPos, cornerU), mainCell.Z - 1
 			);
-			CellRenderer.Draw(
+			Renderer.Draw(
 				SpriteIdString, centerPos.x, centerPos.y, 500, 0,
 				(cornerD - centerPos).GetRotation(),
 				stringWidth, Util.DistanceInt(centerPos, cornerD), mainCell.Z - 1
@@ -138,7 +138,7 @@ public abstract class Bow : ArrowWeapon {
 		} else {
 			// Holding
 			var point = mainCell.LocalToGlobal(borderL + offsetDown.x, borderD + offsetDown.y);
-			CellRenderer.Draw(
+			Renderer.Draw(
 				SpriteIdString,
 				point.x, point.y,
 				character.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
@@ -213,7 +213,7 @@ public class iBlowgun : Shooting<iBlowgun.BlowgunBullet, iPoisonDarts> {
 [ItemCombination(typeof(iRubberBall), typeof(iRibbon), typeof(iIngotIron), 1)]
 public class iSlingshot : Bow<iSlingshot.SlingshotBullet, iMarbles> {
 	public class SlingshotBullet : ArrowBullet {
-		public override int ArtworkID => CellRenderer.TryGetSpriteFromGroup(
+		public override int ArtworkID => Renderer.TryGetSpriteFromGroup(
 			base.ArtworkID, SpawnFrame, out var sprite, true, true
 		) ? sprite.GlobalID : 0;
 	}

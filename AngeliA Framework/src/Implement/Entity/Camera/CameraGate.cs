@@ -63,7 +63,7 @@ public abstract class CameraGate : Entity {
 		}) return;
 
 		// Camera Range Check
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		if (Direction switch {
 			Direction4.Down or Direction4.Up => !(X + Const.HALF).InRange(cameraRect.xMin, cameraRect.xMax),
 			Direction4.Left or Direction4.Right => !(Y + Const.HALF).InRange(cameraRect.yMin, cameraRect.yMax),
@@ -97,8 +97,8 @@ public abstract class CameraGate : Entity {
 
 		// Clamp Camera
 		var player = Player.Selecting;
-		var cameraRect = CellRenderer.CameraRect;
-		int viewOffsetX = Stage.ViewRect.x - CellRenderer.CameraRect.x;
+		var cameraRect = Renderer.CameraRect;
+		int viewOffsetX = Stage.ViewRect.x - Renderer.CameraRect.x;
 		if (player != null && player.Active) {
 			cameraRect.x = player.AimViewX - viewOffsetX;
 			cameraRect.y = player.AimViewY;

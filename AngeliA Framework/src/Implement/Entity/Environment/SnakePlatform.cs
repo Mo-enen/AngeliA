@@ -86,7 +86,7 @@ public abstract class SnakePlatform : Platform {
 			TargetPosition.y += normal.y * Const.CEL;
 
 			// Stop Check
-			if (Head == null && CellPhysics.Overlap(
+			if (Head == null && Physics.Overlap(
 				PhysicsMask.LEVEL, new(TargetPosition.x + HALF, TargetPosition.y + HALF, 1, 1), null
 			)) {
 				EndReachingFrame = Game.GlobalFrame;
@@ -111,7 +111,7 @@ public abstract class SnakePlatform : Platform {
 		// Artwork
 		Cell cell;
 		if (EndReachingFrame < 0) {
-			cell = CellRenderer.Draw(TypeID, Rect);
+			cell = Renderer.Draw(TypeID, Rect);
 			if (ArtworkScale != 1000) {
 				cell.Width = cell.Width * ArtworkScale / 1000;
 				cell.Height = cell.Height * ArtworkScale / 1000;
@@ -125,7 +125,7 @@ public abstract class SnakePlatform : Platform {
 			int rot = (Game.GlobalFrame + (X + Y) / Const.CEL).PingPong(6) - 3;
 			int width = Width * ArtworkScale / 1000;
 			int height = Height * ArtworkScale / 1000;
-			CellRenderer.Draw(TypeID, X + Width / 2 + shakeX, Y + Height / 2 + shakeY, 500, 500, rot, width, height);
+			Renderer.Draw(TypeID, X + Width / 2 + shakeX, Y + Height / 2 + shakeY, 500, 500, rot, width, height);
 		}
 		ArtworkScale = ArtworkScale < 995 ? ArtworkScale.LerpTo(1000, 200) : 1000;
 	}
@@ -161,7 +161,7 @@ public abstract class SnakePlatform : Platform {
 
 		// L
 		for (int x = -Const.HALF; ; x -= Const.CEL) {
-			var snake = CellPhysics.GetEntity<SnakePlatform>(
+			var snake = Physics.GetEntity<SnakePlatform>(
 				new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			);
 			if (snake == null) break;
@@ -172,7 +172,7 @@ public abstract class SnakePlatform : Platform {
 
 		// R
 		for (int x = Const.CEL + Const.HALF; ; x += Const.CEL) {
-			var snake = CellPhysics.GetEntity<SnakePlatform>(
+			var snake = Physics.GetEntity<SnakePlatform>(
 				new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			);
 			if (snake == null) break;
@@ -199,7 +199,7 @@ public abstract class SnakePlatform : Platform {
 			int leftX = left.X + left.Width / 2;
 			int rightX = right.X + right.Width;
 			for (int x = leftX; x < rightX; x += Const.CEL) {
-				var snake = CellPhysics.GetEntity<SnakePlatform>(
+				var snake = Physics.GetEntity<SnakePlatform>(
 					new IRect(x, y, 1, 1), PhysicsMask.ENVIRONMENT,
 					null, OperationMode.ColliderAndTrigger
 				);

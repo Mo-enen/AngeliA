@@ -13,17 +13,17 @@ public interface IWindowEntityUI {
 	public static void OnGameUpdatePauseless () {
 		int count = Stage.EntityCounts[EntityLayer.UI];
 		var entities = Stage.Entities[EntityLayer.UI];
-		EndIndexCache ??= new int[CellRenderer.TextLayerCount];
-		for (int i = 0; i < CellRenderer.TextLayerCount; i++) {
-			EndIndexCache[i] = CellRenderer.GetTextUsedCellCount(i);
+		EndIndexCache ??= new int[Renderer.TextLayerCount];
+		for (int i = 0; i < Renderer.TextLayerCount; i++) {
+			EndIndexCache[i] = Renderer.GetTextUsedCellCount(i);
 		}
 		for (int i = 0; i < count; i++) {
 			var e = entities[i];
 			if (e is not IWindowEntityUI window) continue;
 			if (e is not EntityUI ui) continue;
 			if (ui.TextCellEndIndex != null) {
-				for (int j = 0; j < CellRenderer.TextLayerCount; j++) {
-					CellRenderer.ExcludeTextCells(
+				for (int j = 0; j < Renderer.TextLayerCount; j++) {
+					Renderer.ExcludeTextCells(
 						j, 
 						window.BackgroundRect, 
 						ui.TextCellEndIndex[j], 
@@ -53,37 +53,37 @@ public abstract class EntityUI : Entity {
 	public override void FrameUpdate () {
 		base.FrameUpdate();
 
-		CellRenderer.SetLayerToUI();
+		Renderer.SetLayerToUI();
 
-		TextCellStartIndex = CellRenderer.GetTextUsedCellCount();
+		TextCellStartIndex = Renderer.GetTextUsedCellCount();
 
 		if (Game.PauselessFrame == BlockingEventFrame) {
-			FrameInput.IgnoreInput();
+			Input.IgnoreInput();
 		}
 		UpdateUI();
 		if (Game.PauselessFrame == BlockingEventFrame) {
-			FrameInput.CancelIgnoreInput();
+			Input.CancelIgnoreInput();
 		}
 
-		TextCellEndIndex ??= new int[CellRenderer.TextLayerCount];
-		for (int i = 0; i < CellRenderer.TextLayerCount; i++) {
-			TextCellEndIndex[i] = CellRenderer.GetTextUsedCellCount(i);
+		TextCellEndIndex ??= new int[Renderer.TextLayerCount];
+		for (int i = 0; i < Renderer.TextLayerCount; i++) {
+			TextCellEndIndex[i] = Renderer.GetTextUsedCellCount(i);
 		}
 
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToDefault();
 
-		CellRenderer.SortLayer(RenderLayer.UI);
+		Renderer.SortLayer(RenderLayer.UI);
 
 		if (BlockEvent) {
-			CursorSystem.CursorPriority = int.MaxValue;
+			Cursor.CursorPriority = int.MaxValue;
 			BlockingEventFrame = Game.PauselessFrame;
 		}
 	}
 
 	public virtual void UpdateUI () { }
 
-	protected static int Unify (int value) => CellGUI.Unify(value);
-	protected static int Unify (float value) => CellGUI.Unify(value);
-	protected static int ReverseUnify (int value) => CellGUI.ReverseUnify(value);
+	protected static int Unify (int value) => GUI.Unify(value);
+	protected static int Unify (float value) => GUI.Unify(value);
+	protected static int ReverseUnify (int value) => GUI.ReverseUnify(value);
 
 }

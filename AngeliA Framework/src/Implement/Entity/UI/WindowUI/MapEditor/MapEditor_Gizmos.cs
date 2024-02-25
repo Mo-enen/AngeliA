@@ -24,7 +24,7 @@ public partial class MapEditor {
 
 
 	// UI
-	private readonly CellContent CursorEraseLabel = new() { CharSize = 24, Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, };
+	private readonly TextContent CursorEraseLabel = new() { CharSize = 24, Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, };
 
 	// Data
 	private IRect PaintingThumbnailRect = default;
@@ -44,7 +44,7 @@ public partial class MapEditor {
 		if (IsPlaying || DroppingPlayer || Game.IsPausing || TaskingRoute) return;
 
 		var TINT = new Color32(128, 128, 128, 16);
-		var cRect = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
+		var cRect = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 		int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL) + 1) * Const.CEL;
 		int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL) + 1) * Const.CEL;
 		int d = Util.FloorToInt(cRect.yMin.UDivide(Const.CEL)) * Const.CEL;
@@ -53,13 +53,13 @@ public partial class MapEditor {
 		var rect = new IRect(cRect.xMin, 0, r - l, size);
 		for (int y = d; y <= u; y += Const.CEL) {
 			rect.y = y - size / 2;
-			CellRenderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, TINT, z: int.MinValue);
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, TINT, z: int.MinValue);
 			//Game.DrawGizmosRect(rect, TINT);
 		}
 		rect = new IRect(0, cRect.y, size, cRect.height);
 		for (int x = l; x <= r; x += Const.CEL) {
 			rect.x = x - size / 2;
-			CellRenderer.Draw(BuiltInSprite.SOFT_LINE_V, rect, TINT, z: int.MinValue);
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_V, rect, TINT, z: int.MinValue);
 			//Game.DrawGizmosRect(rect, TINT);
 		}
 
@@ -80,13 +80,13 @@ public partial class MapEditor {
 		);
 		int thickness = Unify(1);
 
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, draggingRect.Shrink(thickness),
 			thickness, thickness, thickness, thickness,
 Color32.BLACK, GIZMOS_Z
 		);
 
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, draggingRect,
 			thickness, thickness, thickness, thickness,
 Color32.WHITE, GIZMOS_Z
@@ -100,7 +100,7 @@ Color32.WHITE, GIZMOS_Z
 				DrawModifyFilterLabel(DraggingUnitRect.Value.ToGlobal());
 			} else {
 				// Draw Painting Thumbnails
-				CellRenderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
+				Renderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
 				var unitRect = DraggingUnitRect.Value;
 				if (unitRect != PaintingThumbnailRect) {
 					PaintingThumbnailRect = unitRect;
@@ -108,7 +108,7 @@ Color32.WHITE, GIZMOS_Z
 				}
 				var rect = new IRect(0, 0, Const.CEL, Const.CEL);
 				int endIndex = unitRect.width * unitRect.height;
-				int cellRemain = CellRenderer.GetLayerCapacity(RenderLayer.UI) - CellRenderer.GetUsedCellCount(RenderLayer.UI);
+				int cellRemain = Renderer.GetLayerCapacity(RenderLayer.UI) - Renderer.GetUsedCellCount(RenderLayer.UI);
 				cellRemain = cellRemain * 9 / 10;
 				int nextStartIndex = 0;
 				if (endIndex - PaintingThumbnailStartIndex > cellRemain) {
@@ -137,7 +137,7 @@ Color32.WHITE, GIZMOS_Z
 		// Rect Frame
 		int thickness = Unify(1);
 		var frameRect = pastingUnitRect.ToGlobal();
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, frameRect,
 			thickness, thickness, thickness, thickness,
 Color32.WHITE, GIZMOS_Z
@@ -169,11 +169,11 @@ Color32.WHITE, GIZMOS_Z
 
 		// Paste Tint
 		if (Pasting) {
-			CellRenderer.Draw(Const.PIXEL, selectionRect, new Color32(0, 128, 255, 32), GIZMOS_Z - 1);
+			Renderer.Draw(Const.PIXEL, selectionRect, new Color32(0, 128, 255, 32), GIZMOS_Z - 1);
 		}
 
 		// Black Frame
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, selectionRect,
 			thickness, thickness, thickness, thickness,
 Color32.BLACK, GIZMOS_Z
@@ -214,25 +214,25 @@ Color32.BLACK, GIZMOS_Z
 
 	private void Update_DrawCursor () {
 
-		if (IsPlaying || DroppingPlayer || CtrlHolding || CellGUI.IsTyping) return;
+		if (IsPlaying || DroppingPlayer || CtrlHolding || GUI.IsTyping) return;
 		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 		if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
-		if (FrameInput.AnyMouseButtonHolding && MouseDownInSelection) return;
+		if (Input.AnyMouseButtonHolding && MouseDownInSelection) return;
 
 		var cursorRect = new IRect(
-			FrameInput.MouseGlobalPosition.x.ToUnifyGlobal(),
-			FrameInput.MouseGlobalPosition.y.ToUnifyGlobal(),
+			Input.MouseGlobalPosition.x.ToUnifyGlobal(),
+			Input.MouseGlobalPosition.y.ToUnifyGlobal(),
 			Const.CEL, Const.CEL
 		);
 		int thickness = Unify(1);
 
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect.Shrink(thickness),
 			thickness, thickness, thickness, thickness,
 			CURSOR_TINT_DARK, GIZMOS_Z
 		);
 
-		CellRenderer.Draw_9Slice(
+		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect,
 			thickness, thickness, thickness, thickness,
 			CURSOR_TINT, GIZMOS_Z
@@ -252,7 +252,7 @@ Color32.BLACK, GIZMOS_Z
 	private void Update_EntityGizmos () {
 		if (IsPlaying || DroppingPlayer) return;
 		var squad = WorldSquad.Front;
-		var range = CellRenderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
+		var range = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 		MapEditorGizmos.MapEditorCameraRange = range;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -301,14 +301,14 @@ Color32.BLACK, GIZMOS_Z
 
 
 	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null, int z = GIZMOS_Z - 2) {
-		if (sprite == null && !CellRenderer.TryGetSpriteFromGroup(artworkID, 0, out sprite)) {
+		if (sprite == null && !Renderer.TryGetSpriteFromGroup(artworkID, 0, out sprite)) {
 			if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
-				CellRenderer.TryGetSprite(newID, out sprite);
+				Renderer.TryGetSprite(newID, out sprite);
 			}
 		}
 		if (sprite == null) return;
 		if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-		CellRenderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), z);
+		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), z);
 	}
 
 
@@ -323,7 +323,7 @@ Color32.BLACK, GIZMOS_Z
 		for (int i = 0; i <= stepCount; i++) {
 			if (i == stepCount && extraLength == 0) break;
 			if (horizontal) {
-				var cell = CellRenderer.Draw(
+				var cell = Renderer.Draw(
 					BuiltInSprite.DOTTED_LINE_16,
 					x + i * stepLength, y,
 					0, 500, 0,
@@ -335,7 +335,7 @@ Color32.BLACK, GIZMOS_Z
 					shift.right = cell.Width - extraLength * cell.Width / stepLength;
 				}
 			} else {
-				var cell = CellRenderer.Draw(
+				var cell = Renderer.Draw(
 					BuiltInSprite.DOTTED_LINE_16,
 					x, y + i * stepLength,
 					0, 500, -90,
@@ -356,7 +356,7 @@ Color32.BLACK, GIZMOS_Z
 	private void DrawCrossLineGizmos (IRect rect, int thickness, Color32 tint, Color32 shadowTint) {
 		int shiftY = thickness / 2;
 		int shrink = thickness * 2;
-		CellGUI.DrawLine(
+		GUI.DrawLine(
 			rect.xMin + shrink,
 			rect.yMin + shrink - shiftY,
 			rect.xMax - shrink,
@@ -364,7 +364,7 @@ Color32.BLACK, GIZMOS_Z
 			thickness, shadowTint,
 			GIZMOS_Z - 1
 		);
-		CellGUI.DrawLine(
+		GUI.DrawLine(
 			rect.xMin + shrink,
 			rect.yMax - shrink - shiftY,
 			rect.xMax - shrink,
@@ -372,7 +372,7 @@ Color32.BLACK, GIZMOS_Z
 			thickness, shadowTint,
 			GIZMOS_Z - 1
 		);
-		CellGUI.DrawLine(
+		GUI.DrawLine(
 			rect.xMin + shrink,
 			rect.yMin + shrink + shiftY,
 			rect.xMax - shrink,
@@ -380,7 +380,7 @@ Color32.BLACK, GIZMOS_Z
 			thickness, tint,
 			GIZMOS_Z - 1
 		);
-		CellGUI.DrawLine(
+		GUI.DrawLine(
 			rect.xMin + shrink,
 			rect.yMax - shrink + shiftY,
 			rect.xMax - shrink,
@@ -394,19 +394,19 @@ Color32.BLACK, GIZMOS_Z
 	private void DrawModifyFilterLabel (IRect rect) {
 		if (Modify_EntityOnly) {
 			int height = Unify(CursorEraseLabel.CharSize);
-			CellGUI.Label(
+			GUI.Label(
 				CursorEraseLabel.SetText(MEDT_ENTITY_ONLY),
 				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 			);
 		} else if (Modify_LevelOnly) {
 			int height = Unify(CursorEraseLabel.CharSize);
-			CellGUI.Label(
+			GUI.Label(
 				CursorEraseLabel.SetText(MEDT_LEVEL_ONLY),
 				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 			);
 		} else if (Modify_BackgroundOnly) {
 			int height = Unify(CursorEraseLabel.CharSize);
-			CellGUI.Label(
+			GUI.Label(
 				CursorEraseLabel.SetText(MEDT_BG_ONLY),
 				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
 			);
@@ -430,10 +430,10 @@ public class MapEditorBlinkParticle : Particle {
 	public override bool Loop => false;
 	public int SpriteID { get; set; } = Const.PIXEL;
 	public override void DrawParticle () {
-		CellRenderer.SetLayerToAdditive();
+		Renderer.SetLayerToAdditive();
 		var tint = Tint;
 		tint.a = (byte)((Duration - LocalFrame) * Tint.a / 2 / Duration).Clamp(0, 255);
-		CellRenderer.Draw_9Slice(SpriteID, Rect, tint, int.MaxValue);
-		CellRenderer.SetLayerToDefault();
+		Renderer.Draw_9Slice(SpriteID, Rect, tint, int.MaxValue);
+		Renderer.SetLayerToDefault();
 	}
 }

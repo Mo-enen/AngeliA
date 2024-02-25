@@ -21,12 +21,12 @@ public class CheckPointTouchParticle : Particle {
 	public override void DrawParticle () {
 		if (UserData is not CheckPoint targetCP) return;
 		// Flash
-		if (CellRenderer.TryGetSprite(targetCP.TypeID, out var cpSprite)) {
-			CellRenderer.SetLayerToAdditive();
-			CellRenderer.Draw(cpSprite, targetCP.Rect.Expand(LocalFrame), new Color32(0, 255, 0,
+		if (Renderer.TryGetSprite(targetCP.TypeID, out var cpSprite)) {
+			Renderer.SetLayerToAdditive();
+			Renderer.Draw(cpSprite, targetCP.Rect.Expand(LocalFrame), new Color32(0, 255, 0,
 				(byte)Util.RemapUnclamped(0, Duration, 128, 0, LocalFrame).Clamp(0, 255)
 			));
-			CellRenderer.SetLayerToDefault();
+			Renderer.SetLayerToDefault();
 		}
 	}
 }

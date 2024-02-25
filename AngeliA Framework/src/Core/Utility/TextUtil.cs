@@ -16,7 +16,7 @@ public class TextUtil {
 	public static void DrawLabel (
 		RequireCharSpriteHander requireCharSprite, DrawCharHandler drawChar,
 		int cameraHeight, int textCountInLayer, Cell[] textCells,
-		CellContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar,
+		TextContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar,
 		out IRect bounds, out IRect beamRect, out int endIndex
 	) {
 
@@ -192,7 +192,7 @@ public class TextUtil {
 
 
 	// LGC
-	private static bool WordEnoughToFit (RequireCharSpriteHander requireCharSprite, CellContent content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
+	private static bool WordEnoughToFit (RequireCharSpriteHander requireCharSprite, TextContent content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
 		int index = startIndex;
 		int count = content.FromString ? content.Text.Length : content.Chars.Length;
 		for (; index < count; index++) {

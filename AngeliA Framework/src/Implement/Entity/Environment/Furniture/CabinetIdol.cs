@@ -15,10 +15,10 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 
 
 	public override void FrameUpdate () {
-		if (CellRenderer.TryGetSpriteFromGroup(
+		if (Renderer.TryGetSpriteFromGroup(
 			TypeID, s_ArtworkIndex.Value, out var sprite, true, true
 		)) {
-			var cell = CellRenderer.Draw(sprite, RenderingRect);
+			var cell = Renderer.Draw(sprite, RenderingRect);
 			if ((this as IActionTarget).IsHighlighted) {
 				IActionTarget.HighlightBlink(cell);
 			}
@@ -28,7 +28,7 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 
 	void IActionTarget.Invoke () {
 		s_ArtworkIndex.Value++;
-		if (CellRenderer.HasSpriteGroup(TypeID, out int length)) {
+		if (Renderer.HasSpriteGroup(TypeID, out int length)) {
 			s_ArtworkIndex.Value = s_ArtworkIndex.Value.UMod(length);
 		}
 	}

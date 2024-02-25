@@ -157,7 +157,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int PanelOffsetX = 0;
 	private int ToolbarOffsetX = 0;
 	private int InitializedFrame = int.MinValue;
-	private readonly CellContent DropHintLabel = new() { BackgroundTint = Color32.BLACK, Alignment = Alignment.BottomLeft, Wrap = false, CharSize = 24, };
+	private readonly TextContent DropHintLabel = new() { BackgroundTint = Color32.BLACK, Alignment = Alignment.BottomLeft, Wrap = false, CharSize = 24, };
 	private readonly IntToChars StateXLabelToString = new("x:");
 	private readonly IntToChars StateYLabelToString = new("y:");
 	private readonly IntToChars StateZLabelToString = new("z:");
@@ -246,7 +246,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Panel
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
-		PanelRect.x = CellRenderer.CameraRect.x - PanelRect.width;
+		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
 
 		System.GC.Collect();
 
@@ -293,19 +293,19 @@ public sealed partial class MapEditor : WindowUI {
 		CheckAltarIDs.Clear();
 		var builder = new StringBuilder();
 
-		int spriteCount = CellRenderer.SpriteCount;
-		int chainCount = CellRenderer.GroupCount;
+		int spriteCount = Renderer.SpriteCount;
+		int chainCount = Renderer.GroupCount;
 
 		// Sprites
 		for (int i = 0; i < spriteCount; i++) {
-			var sprite = CellRenderer.GetSpriteAt(i);
+			var sprite = Renderer.GetSpriteAt(i);
 			SpritePool.TryAdd(sprite.GlobalID, sprite);
 		}
 
 		// Chains
 		for (int i = 0; i < chainCount; i++) {
 
-			var chain = CellRenderer.GetGroupAt(i);
+			var chain = Renderer.GetGroupAt(i);
 			if (chain.Count == 0) continue;
 			if (!SpritePool.TryGetValue(chain.SpriteIDs[0], out var firstSprite)) continue;
 
@@ -325,9 +325,9 @@ public sealed partial class MapEditor : WindowUI {
 			// RuleID to RuleGroup
 			if (chain.Type == GroupType.Rule) {
 				builder.Clear();
-				if (CellRenderer.HasSpriteGroup(chain.ID, out int groupLength)) {
+				if (Renderer.HasSpriteGroup(chain.ID, out int groupLength)) {
 					for (int j = 0; j < groupLength; j++) {
-						if (CellRenderer.TryGetSpriteFromGroup(chain.ID, j, out var sp, false, true)) {
+						if (Renderer.TryGetSpriteFromGroup(chain.ID, j, out var sp, false, true)) {
 							int ruleDigit = sp.Rule;
 							builder.Append(Util.RuleDigitToString(ruleDigit));
 						} else {
@@ -345,7 +345,7 @@ public sealed partial class MapEditor : WindowUI {
 		foreach (var type in typeof(Entity).AllChildClass()) {
 			int id = type.AngeHash();
 			if (SpritePool.ContainsKey(id)) continue;
-			if (CellRenderer.TryGetSpriteFromGroup(id, 0, out var sprite)) {
+			if (Renderer.TryGetSpriteFromGroup(id, 0, out var sprite)) {
 				EntityArtworkRedirectPool[id] = sprite.GlobalID;
 				continue;
 			}
@@ -355,7 +355,7 @@ public sealed partial class MapEditor : WindowUI {
 				if (SpritePool.ContainsKey(_tID)) {
 					EntityArtworkRedirectPool[id] = _tID;
 					break;
-				} else if (CellRenderer.TryGetSpriteFromGroup(_tID, 0, out sprite)) {
+				} else if (Renderer.TryGetSpriteFromGroup(_tID, 0, out sprite)) {
 					EntityArtworkRedirectPool[id] = sprite.GlobalID;
 					break;
 				}
@@ -430,14 +430,14 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_Before () {
 
-		var mainRect = CellRenderer.CameraRect;
+		var mainRect = Renderer.CameraRect;
 		X = mainRect.x;
 		Y = mainRect.y;
 		Width = mainRect.width;
 		Height = mainRect.height;
 
 		// Cursor
-		if (!IsPlaying) CursorSystem.RequireCursor(int.MinValue);
+		if (!IsPlaying) Cursor.RequireCursor(int.MinValue);
 
 		// Search
 		if (IsPlaying || DroppingPlayer) {
@@ -446,10 +446,10 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// Cache
-		TaskingRoute = FrameTask.HasTask();
-		CtrlHolding = FrameInput.KeyboardHolding(KeyboardKey.LeftCtrl) || FrameInput.KeyboardHolding(KeyboardKey.RightCtrl) || FrameInput.KeyboardHolding(KeyboardKey.CapsLock);
-		ShiftHolding = FrameInput.KeyboardHolding(KeyboardKey.LeftShift) || FrameInput.KeyboardHolding(KeyboardKey.RightShift);
-		AltHolding = FrameInput.KeyboardHolding(KeyboardKey.LeftAlt) || FrameInput.KeyboardHolding(KeyboardKey.RightAlt);
+		TaskingRoute = Task.HasTask();
+		CtrlHolding = Input.KeyboardHolding(KeyboardKey.LeftCtrl) || Input.KeyboardHolding(KeyboardKey.RightCtrl) || Input.KeyboardHolding(KeyboardKey.CapsLock);
+		ShiftHolding = Input.KeyboardHolding(KeyboardKey.LeftShift) || Input.KeyboardHolding(KeyboardKey.RightShift);
+		AltHolding = Input.KeyboardHolding(KeyboardKey.LeftAlt) || Input.KeyboardHolding(KeyboardKey.RightAlt);
 
 		// List
 		if (EditorMeta.PinnedLists.Count == 0) {
@@ -513,8 +513,8 @@ public sealed partial class MapEditor : WindowUI {
 				Player.Selecting.Active = false;
 			}
 			// No Opening Task
-			if (FrameTask.IsTasking<OpeningTask>()) {
-				FrameTask.EndAllTask();
+			if (Task.IsTasking<OpeningTask>()) {
+				Task.EndAllTask();
 			}
 		}
 
@@ -523,7 +523,7 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_View () {
 
-		if (TaskingRoute || DroppingPlayer || CellGUI.IsTyping) return;
+		if (TaskingRoute || DroppingPlayer || GUI.IsTyping) return;
 		if (MouseDownOutsideBoundary) goto END;
 
 		// Playing
@@ -546,16 +546,16 @@ public sealed partial class MapEditor : WindowUI {
 		// Move
 		var delta = Int2.zero;
 		if (
-			(!FrameInput.MouseMidButtonDown && FrameInput.MouseMidButton) ||
-			(FrameInput.MouseLeftButton && CtrlHolding)
+			(!Input.MouseMidButtonDown && Input.MouseMidButton) ||
+			(Input.MouseLeftButton && CtrlHolding)
 		) {
-			delta = FrameInput.MouseScreenPositionDelta;
-		} else if (!CtrlHolding && !ShiftHolding && !FrameInput.AnyMouseButtonHolding) {
-			delta = FrameInput.Direction / -32;
+			delta = Input.MouseScreenPositionDelta;
+		} else if (!CtrlHolding && !ShiftHolding && !Input.AnyMouseButtonHolding) {
+			delta = Input.Direction / -32;
 		}
 		if (delta.x != 0 || delta.y != 0) {
-			var cRect = CellRenderer.CameraRect;
-			delta.x = (delta.x * cRect.width / (CellRenderer.CameraRestrictionRate * Game.ScreenWidth)).RoundToInt();
+			var cRect = Renderer.CameraRect;
+			delta.x = (delta.x * cRect.width / (Renderer.CameraRestrictionRate * Game.ScreenWidth)).RoundToInt();
 			delta.y = delta.y * cRect.height / Game.ScreenHeight;
 			TargetViewRect.x -= delta.x;
 			TargetViewRect.y -= delta.y;
@@ -573,10 +573,10 @@ public sealed partial class MapEditor : WindowUI {
 			}
 		} else if (!MouseOutsideBoundary) {
 			// Manual Zoom
-			int wheelDelta = CtrlHolding ? 0 : FrameInput.MouseWheelDelta;
+			int wheelDelta = CtrlHolding ? 0 : Input.MouseWheelDelta;
 			int zoomDelta = wheelDelta * Const.CEL * 2;
-			if (zoomDelta == 0 && FrameInput.MouseRightButton && CtrlHolding) {
-				zoomDelta = FrameInput.MouseScreenPositionDelta.y * 6;
+			if (zoomDelta == 0 && Input.MouseRightButton && CtrlHolding) {
+				zoomDelta = Input.MouseScreenPositionDelta.y * 6;
 			}
 			if (zoomDelta != 0) {
 
@@ -587,13 +587,13 @@ public sealed partial class MapEditor : WindowUI {
 				);
 				int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
-				float cameraWidth = TargetViewRect.height * CellRenderer.CameraRect.width / CellRenderer.CameraRect.height;
+				float cameraWidth = TargetViewRect.height * Renderer.CameraRect.width / Renderer.CameraRect.height;
 				float cameraHeight = TargetViewRect.height;
 				float cameraX = TargetViewRect.x + (TargetViewRect.width - cameraWidth) / 2f;
 				float cameraY = TargetViewRect.y;
 
-				float mousePosX01 = wheelDelta != 0 ? Util.InverseLerp(0f, Game.ScreenWidth, FrameInput.MouseScreenPosition.x) : 0.5f;
-				float mousePosY01 = wheelDelta != 0 ? Util.InverseLerp(0f, Game.ScreenHeight, FrameInput.MouseScreenPosition.y) : 0.5f;
+				float mousePosX01 = wheelDelta != 0 ? Util.InverseLerp(0f, Game.ScreenWidth, Input.MouseScreenPosition.x) : 0.5f;
+				float mousePosY01 = wheelDelta != 0 ? Util.InverseLerp(0f, Game.ScreenHeight, Input.MouseScreenPosition.y) : 0.5f;
 
 				float pivotX = Util.LerpUnclamped(cameraX, cameraX + cameraWidth, mousePosX01);
 				float pivotY = Util.LerpUnclamped(cameraY, cameraY + cameraHeight, mousePosY01);
@@ -618,14 +618,14 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_Hotkey () {
 
-		if (TaskingRoute || CellGUI.IsTyping) return;
+		if (TaskingRoute || GUI.IsTyping) return;
 
 		// Cancel Drop
 		if (!CtrlHolding && IsEditing && DroppingPlayer) {
-			if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
+			if (Input.KeyboardUp(KeyboardKey.Escape)) {
 				DroppingPlayer = false;
-				FrameInput.UseKeyboardKey(KeyboardKey.Escape);
-				FrameInput.UseGameKey(Gamekey.Start);
+				Input.UseKeyboardKey(KeyboardKey.Escape);
+				Input.UseGameKey(Gamekey.Start);
 			}
 			ControlHintUI.AddHint(Gamekey.Start, MEDT_CANCEL_DROP);
 		}
@@ -638,7 +638,7 @@ public sealed partial class MapEditor : WindowUI {
 
 				// Switch Mode
 				if (!CtrlHolding) {
-					if (FrameInput.KeyboardDown(KeyboardKey.Space)) {
+					if (Input.KeyboardDown(KeyboardKey.Space)) {
 						IgnoreQuickPlayerDropThisTime = false;
 						StartDropPlayer();
 					}
@@ -649,12 +649,12 @@ public sealed partial class MapEditor : WindowUI {
 				}
 
 				// Start Search
-				if (FrameInput.KeyboardDown(KeyboardKey.Enter)) {
-					CellGUI.StartTyping(SEARCH_BAR_ID);
+				if (Input.KeyboardDown(KeyboardKey.Enter)) {
+					GUI.StartTyping(SEARCH_BAR_ID);
 				}
 
 				// Delete
-				if (FrameInput.KeyboardDown(KeyboardKey.Delete) || FrameInput.KeyboardDown(KeyboardKey.Backspace)) {
+				if (Input.KeyboardDown(KeyboardKey.Delete) || Input.KeyboardDown(KeyboardKey.Backspace)) {
 					if (Pasting) {
 						CancelPaste();
 					} else if (SelectionUnitRect.HasValue) {
@@ -663,68 +663,68 @@ public sealed partial class MapEditor : WindowUI {
 				}
 
 				// Cancel
-				if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
+				if (Input.KeyboardUp(KeyboardKey.Escape)) {
 					if (Pasting) {
 						ApplyPaste();
-						FrameInput.UseKeyboardKey(KeyboardKey.Escape);
-						FrameInput.UseGameKey(Gamekey.Start);
+						Input.UseKeyboardKey(KeyboardKey.Escape);
+						Input.UseGameKey(Gamekey.Start);
 					} else if (SelectionUnitRect.HasValue) {
 						SelectionUnitRect = null;
-						FrameInput.UseKeyboardKey(KeyboardKey.Escape);
-						FrameInput.UseGameKey(Gamekey.Start);
+						Input.UseKeyboardKey(KeyboardKey.Escape);
+						Input.UseGameKey(Gamekey.Start);
 					}
 					if (!string.IsNullOrEmpty(SearchingText)) {
 						SearchingText = "";
 						SearchResult.Clear();
-						FrameInput.UseKeyboardKey(KeyboardKey.Escape);
-						FrameInput.UseGameKey(Gamekey.Start);
+						Input.UseKeyboardKey(KeyboardKey.Escape);
+						Input.UseGameKey(Gamekey.Start);
 					}
 				}
 
 				// Nav
-				if (FrameInput.KeyboardDown(KeyboardKey.Tab)) {
-					FrameInput.UseKeyboardKey(KeyboardKey.Tab);
+				if (Input.KeyboardDown(KeyboardKey.Tab)) {
+					Input.UseKeyboardKey(KeyboardKey.Tab);
 					SetNavigating(!IsNavigating);
 				}
 				ControlHintUI.AddHint(KeyboardKey.Tab, HINT_MEDT_NAV);
 
 				// Move Selecting Blocks
 				if (SelectionUnitRect.HasValue) {
-					if (FrameInput.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
+					if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
 						MoveSelection(Int2.left);
 					}
-					if (FrameInput.KeyboardDownGUI(KeyboardKey.RightArrow)) {
+					if (Input.KeyboardDownGUI(KeyboardKey.RightArrow)) {
 						MoveSelection(Int2.right);
 					}
-					if (FrameInput.KeyboardDownGUI(KeyboardKey.DownArrow)) {
+					if (Input.KeyboardDownGUI(KeyboardKey.DownArrow)) {
 						MoveSelection(Int2.down);
 					}
-					if (FrameInput.KeyboardDownGUI(KeyboardKey.UpArrow)) {
+					if (Input.KeyboardDownGUI(KeyboardKey.UpArrow)) {
 						MoveSelection(Int2.up);
 					}
 				}
 
 				// System Numbers
 				int targetNumberID = 0;
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit0)) targetNumberID = typeof(Number0).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit1)) targetNumberID = typeof(Number1).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit2)) targetNumberID = typeof(Number2).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit3)) targetNumberID = typeof(Number3).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit4)) targetNumberID = typeof(Number4).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit5)) targetNumberID = typeof(Number5).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit6)) targetNumberID = typeof(Number6).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit7)) targetNumberID = typeof(Number7).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit8)) targetNumberID = typeof(Number8).AngeHash();
-				if (FrameInput.KeyboardDown(KeyboardKey.Digit9)) targetNumberID = typeof(Number9).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit0)) targetNumberID = typeof(Number0).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit1)) targetNumberID = typeof(Number1).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit2)) targetNumberID = typeof(Number2).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit3)) targetNumberID = typeof(Number3).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit4)) targetNumberID = typeof(Number4).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit5)) targetNumberID = typeof(Number5).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit6)) targetNumberID = typeof(Number6).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit7)) targetNumberID = typeof(Number7).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit8)) targetNumberID = typeof(Number8).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit9)) targetNumberID = typeof(Number9).AngeHash();
 				if (targetNumberID != 0 && PalettePool.TryGetValue(targetNumberID, out var resultPal)) {
 					SelectingPaletteItem = resultPal;
 				}
 
 				// Move Palette Cursor
-				if (FrameInput.KeyboardDownGUI(KeyboardKey.Q)) {
+				if (Input.KeyboardDownGUI(KeyboardKey.Q)) {
 					MovePaletteCursor(-1);
 				}
-				if (FrameInput.KeyboardDownGUI(KeyboardKey.E)) {
+				if (Input.KeyboardDownGUI(KeyboardKey.E)) {
 					MovePaletteCursor(1);
 				}
 			}
@@ -732,52 +732,52 @@ public sealed partial class MapEditor : WindowUI {
 			// Ctrl + ...
 			if (CtrlHolding && !ShiftHolding) {
 				// Save
-				if (FrameInput.KeyboardDown(KeyboardKey.S)) {
+				if (Input.KeyboardDown(KeyboardKey.S)) {
 					Save();
 				}
 				// Copy
-				if (FrameInput.KeyboardDown(KeyboardKey.C)) {
+				if (Input.KeyboardDown(KeyboardKey.C)) {
 					AddSelectionToCopyBuffer(false);
 				}
 				// Cut
-				if (FrameInput.KeyboardDown(KeyboardKey.X)) {
+				if (Input.KeyboardDown(KeyboardKey.X)) {
 					AddSelectionToCopyBuffer(true);
 				}
 				// Paste
-				if (FrameInput.KeyboardDown(KeyboardKey.V)) {
+				if (Input.KeyboardDown(KeyboardKey.V)) {
 					StartPasteFromCopyBuffer();
 				}
 				// Undo
-				if (FrameInput.KeyboardDown(KeyboardKey.Z)) {
+				if (Input.KeyboardDown(KeyboardKey.Z)) {
 					ApplyPaste();
 					SelectionUnitRect = null;
 					UndoRedo.Undo();
 				}
 				// Redo
-				if (FrameInput.KeyboardDown(KeyboardKey.Y)) {
+				if (Input.KeyboardDown(KeyboardKey.Y)) {
 					ApplyPaste();
 					SelectionUnitRect = null;
 					UndoRedo.Redo();
 				}
 				// Play from Start
-				if (FrameInput.KeyboardDown(KeyboardKey.Space)) {
+				if (Input.KeyboardDown(KeyboardKey.Space)) {
 					SetEditorMode(true);
-					FrameTask.AddToLast(RestartGameTask.TYPE_ID);
-					FrameInput.UseAllHoldingKeys();
-					FrameInput.UseGameKey(Gamekey.Start);
+					Task.AddToLast(RestartGameTask.TYPE_ID);
+					Input.UseAllHoldingKeys();
+					Input.UseGameKey(Gamekey.Start);
 				}
 				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_PLAY_FROM_BEGIN);
 				// Reset Camera
-				if (FrameInput.KeyboardDown(KeyboardKey.R)) {
+				if (Input.KeyboardDown(KeyboardKey.R)) {
 					ResetCamera();
-					FrameInput.UseAllHoldingKeys();
+					Input.UseAllHoldingKeys();
 				}
 				// Up
-				if (FrameInput.MouseWheelDelta > 0) {
+				if (Input.MouseWheelDelta > 0) {
 					SetViewZ(Stage.ViewZ + 1);
 				}
 				// Down
-				if (FrameInput.MouseWheelDelta < 0) {
+				if (Input.MouseWheelDelta < 0) {
 					SetViewZ(Stage.ViewZ - 1);
 				}
 			}
@@ -789,11 +789,11 @@ public sealed partial class MapEditor : WindowUI {
 
 			// Switch Mode
 			if (!CtrlHolding) {
-				if (FrameInput.KeyboardUp(KeyboardKey.Escape)) {
+				if (Input.KeyboardUp(KeyboardKey.Escape)) {
 					IgnoreQuickPlayerDropThisTime = false;
 					SetEditorMode(false);
-					FrameInput.UseKeyboardKey(KeyboardKey.Escape);
-					FrameInput.UseGameKey(Gamekey.Start);
+					Input.UseKeyboardKey(KeyboardKey.Escape);
+					Input.UseGameKey(Gamekey.Start);
 				}
 				ControlHintUI.AddHint(
 					KeyboardKey.Escape,
@@ -821,13 +821,13 @@ public sealed partial class MapEditor : WindowUI {
 		}
 		if (player == null) return;
 
-		PlayerDropPos.x = PlayerDropPos.x.LerpTo(FrameInput.MouseGlobalPosition.x, 400);
-		PlayerDropPos.y = PlayerDropPos.y.LerpTo(FrameInput.MouseGlobalPosition.y, 400);
-		PlayerDropPos.z = PlayerDropPos.z.LerpTo(((FrameInput.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 300);
+		PlayerDropPos.x = PlayerDropPos.x.LerpTo(Input.MouseGlobalPosition.x, 400);
+		PlayerDropPos.y = PlayerDropPos.y.LerpTo(Input.MouseGlobalPosition.y, 400);
+		PlayerDropPos.z = PlayerDropPos.z.LerpTo(((Input.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 300);
 
 		// Draw Pose Player
 		player.AnimationType = CharacterAnimationType.Idle;
-		int startIndex = CellRenderer.GetUsedCellCount();
+		int startIndex = Renderer.GetUsedCellCount();
 		player.IgnoreInventory();
 		FrameworkUtil.DrawPoseCharacterAsUI(
 			new IRect(
@@ -837,10 +837,10 @@ public sealed partial class MapEditor : WindowUI {
 			),
 			player, Game.GlobalFrame, 0, out _, out _
 		);
-		int endIndex = CellRenderer.GetUsedCellCount();
+		int endIndex = Renderer.GetUsedCellCount();
 
 		// Rotate Cells
-		if (CellRenderer.GetCells(out var cells, out int count)) {
+		if (Renderer.GetCells(out var cells, out int count)) {
 			for (int i = startIndex; i < endIndex && i < count; i++) {
 				cells[i].RotateAround(PlayerDropPos.z, PlayerDropPos.x, PlayerDropPos.y);
 			}
@@ -848,17 +848,17 @@ public sealed partial class MapEditor : WindowUI {
 
 		if (!QuickPlayerDrop) {
 			DropHintLabel.Text = MEDT_DROP;
-			CellGUI.Label(DropHintLabel, new IRect(
-				FrameInput.MouseGlobalPosition.x - DropHintWidth / 2,
-				FrameInput.MouseGlobalPosition.y + Const.HALF,
+			GUI.Label(DropHintLabel, new IRect(
+				Input.MouseGlobalPosition.x - DropHintWidth / 2,
+				Input.MouseGlobalPosition.y + Const.HALF,
 				DropHintWidth, Const.CEL
 			), out var bounds);
 			DropHintWidth = bounds.width;
 		}
 
 		// Drop
-		bool drop = FrameInput.MouseLeftButtonDown;
-		if (!drop && QuickPlayerDrop && !FrameInput.GameKeyHolding(Gamekey.Select)) {
+		bool drop = Input.MouseLeftButtonDown;
+		if (!drop && QuickPlayerDrop && !Input.GameKeyHolding(Gamekey.Select)) {
 			drop = true;
 		}
 		if (drop) {
@@ -887,30 +887,30 @@ public sealed partial class MapEditor : WindowUI {
 
 		// State
 		if (ShowState) {
-			var cameraRect = CellRenderer.CameraRect;
+			var cameraRect = Renderer.CameraRect;
 			int LABEL_HEIGHT = Unify(22);
 			int LABEL_WIDTH = Unify(52);
 			int PADDING = Unify(6);
 
 			int z = IsNavigating ? NavPosition.z : Stage.ViewZ;
-			CellGUI.Label(
-				CellContent.Get(StateZLabelToString.GetChars(z), Color32.GREY_196, 22, Alignment.TopRight),
+			GUI.Label(
+				TextContent.Get(StateZLabelToString.GetChars(z), Color32.GREY_196, 22, Alignment.TopRight),
 				new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 				out var boundsZ
 			);
 
 			if (!IsNavigating) {
 
-				int y = FrameInput.MouseGlobalPosition.y.ToUnit();
-				CellGUI.Label(
-					CellContent.Get(StateYLabelToString.GetChars(y), Color32.GREY_196, 22, Alignment.TopRight),
+				int y = Input.MouseGlobalPosition.y.ToUnit();
+				GUI.Label(
+					TextContent.Get(StateYLabelToString.GetChars(y), Color32.GREY_196, 22, Alignment.TopRight),
 					new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 					out var boundsY
 				);
 
-				int x = FrameInput.MouseGlobalPosition.x.ToUnit();
-				CellGUI.Label(
-					CellContent.Get(StateXLabelToString.GetChars(x), Color32.GREY_196, 22, Alignment.TopRight),
+				int x = Input.MouseGlobalPosition.x.ToUnit();
+				GUI.Label(
+					TextContent.Get(StateXLabelToString.GetChars(x), Color32.GREY_196, 22, Alignment.TopRight),
 					new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
 				);
 
@@ -945,7 +945,7 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// Mouse Event
-		if (!FrameInput.MouseLeftButton) {
+		if (!Input.MouseLeftButton) {
 			DraggingForReorderPaletteItem = -1;
 			DraggingForReorderPaletteGroup = -1;
 		}
@@ -976,7 +976,7 @@ public sealed partial class MapEditor : WindowUI {
 			IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
 		}
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
-		CellGUI.CancelTyping();
+		GUI.CancelTyping();
 
 		// Squad  
 		if (WorldSquad.Channel != MapChannel.BuiltIn) {
@@ -1031,8 +1031,8 @@ public sealed partial class MapEditor : WindowUI {
 	private void StartDropPlayer () {
 		ApplyPaste();
 		DroppingPlayer = true;
-		PlayerDropPos.x = FrameInput.MouseGlobalPosition.x;
-		PlayerDropPos.y = FrameInput.MouseGlobalPosition.y;
+		PlayerDropPos.x = Input.MouseGlobalPosition.x;
+		PlayerDropPos.y = Input.MouseGlobalPosition.y;
 		PlayerDropPos.z = 0;
 		SelectionUnitRect = null;
 		DraggingUnitRect = null;
@@ -1055,18 +1055,18 @@ public sealed partial class MapEditor : WindowUI {
 		int gap = Unify(6);
 		var tipRect = new IRect(
 			rect.x,
-			Util.Max(rect.y - height - Unify(12), CellRenderer.CameraRect.y),
+			Util.Max(rect.y - height - Unify(12), Renderer.CameraRect.y),
 			rect.width, height
 		);
 		TooltipLabel.Text = tip;
-		CellGUI.Label(TooltipLabel, tipRect, out var bounds);
-		CellRenderer.Draw(Const.PIXEL, bounds.Expand(gap), Color32.BLACK, int.MaxValue);
+		GUI.Label(TooltipLabel, tipRect, out var bounds);
+		Renderer.Draw(Const.PIXEL, bounds.Expand(gap), Color32.BLACK, int.MaxValue);
 	}
 
 
 	private void SetViewZ (int newZ) {
 		if (!IsNavigating) {
-			var cameraRect = CellRenderer.CameraRect;
+			var cameraRect = Renderer.CameraRect;
 			var svTask = TeleportTask.Teleport(
 				cameraRect.x + cameraRect.width / 2,
 				cameraRect.y + cameraRect.height / 2,

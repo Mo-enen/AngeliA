@@ -57,9 +57,9 @@ public class ControlHintUI : EntityUI {
 	private int ForceHintFrame = int.MinValue;
 	private int ForceHideGamepadFrame = int.MinValue;
 	private int OffsetResetFrame = int.MinValue;
-	private static readonly CellContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = LabelTint, };
-	private static readonly CellContent KeyLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = KeyTint, };
-	private static readonly CellContent FPSLabel = new() { Alignment = Alignment.TopRight, CharSize = 20, Tint = Color32.WHITE, Shadow = Color32.BLACK, FromString = false, ShadowOffset = 3, };
+	private static readonly TextContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = LabelTint, };
+	private static readonly TextContent KeyLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = KeyTint, };
+	private static readonly TextContent FPSLabel = new() { Alignment = Alignment.TopRight, CharSize = 20, Tint = Color32.WHITE, Shadow = Color32.BLACK, FromString = false, ShadowOffset = 3, };
 	private static float GameFPS = 1f;
 	private static readonly IntToChars FPS = new();
 
@@ -84,11 +84,11 @@ public class ControlHintUI : EntityUI {
 			int width = Unify(40);
 			int height = Unify(24);
 			FPSLabel.Chars = FPS.GetChars(GameFPS.RoundToInt());
-			CellGUI.Label(
+			GUI.Label(
 				FPSLabel,
 				new IRect(
-					CellRenderer.CameraRect.xMax - width - padding,
-					CellRenderer.CameraRect.yMax - height - padding,
+					Renderer.CameraRect.xMax - width - padding,
+					Renderer.CameraRect.yMax - height - padding,
 					width, height
 				)
 			);
@@ -112,7 +112,7 @@ public class ControlHintUI : EntityUI {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		if (CellRenderer.TryGetSprite(HINT_BUTTON_CODE, out var sprite)) {
+		if (Renderer.TryGetSprite(HINT_BUTTON_CODE, out var sprite)) {
 			ButtonBorder.left = (int)(sprite.GlobalBorder.left * ((float)KEYSIZE / sprite.GlobalWidth));
 			ButtonBorder.right = (int)(sprite.GlobalBorder.right * ((float)KEYSIZE / sprite.GlobalWidth));
 			ButtonBorder.down = (int)(sprite.GlobalBorder.down * ((float)KEYSIZE / sprite.GlobalHeight));
@@ -137,24 +137,24 @@ public class ControlHintUI : EntityUI {
 		var ButtonAPosition = new IRect(Unify(106), Unify(18), Unify(12), Unify(12));
 		var ButtonBPosition = new IRect(Unify(86), Unify(18), Unify(12), Unify(12));
 
-		var screenRect = CellRenderer.CameraRect;
+		var screenRect = Renderer.CameraRect;
 
-		int oldLayer = CellRenderer.CurrentLayerIndex;
-		CellRenderer.SetLayerToUI();
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayerToUI();
 
 		// Body
-		CellRenderer.Draw(BodyCode, rect.Shift(screenRect.x, screenRect.y));
+		Renderer.Draw(BodyCode, rect.Shift(screenRect.x, screenRect.y));
 
 		// DPad
-		CellRenderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Left) ? PressingTint : DarkButtonTint);
-		CellRenderer.Draw(DPadRightCode, DPadRightPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Right) ? PressingTint : DarkButtonTint);
-		CellRenderer.Draw(DPadDownCode, DPadDownPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Down) ? PressingTint : DarkButtonTint);
-		CellRenderer.Draw(DPadUpCode, DPadUpPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Up) ? PressingTint : DarkButtonTint);
+		Renderer.Draw(DPadLeftCode, DPadLeftPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Left) ? PressingTint : DarkButtonTint);
+		Renderer.Draw(DPadRightCode, DPadRightPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Right) ? PressingTint : DarkButtonTint);
+		Renderer.Draw(DPadDownCode, DPadDownPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Down) ? PressingTint : DarkButtonTint);
+		Renderer.Draw(DPadUpCode, DPadUpPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Up) ? PressingTint : DarkButtonTint);
 
 		// Direction
-		if (FrameInput.UsingLeftStick) {
-			var nDir = FrameInput.Direction;
-			CellRenderer.Draw(
+		if (Input.UsingLeftStick) {
+			var nDir = Input.Direction;
+			Renderer.Draw(
 				Const.PIXEL, DPadCenterPos.x + x + screenRect.x, DPadCenterPos.y + y + screenRect.y,
 				500, 0, (int)Float3.SignedAngle(Float3.up, (Float2)nDir, Float3.back),
 				Unify(3),
@@ -164,23 +164,23 @@ public class ControlHintUI : EntityUI {
 		}
 
 		// Func
-		CellRenderer.Draw(ButtonSelectCode, SelectPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Select) ? PressingTint : DarkButtonTint);
-		CellRenderer.Draw(ButtonStartCode, StartPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Start) ? PressingTint : DarkButtonTint);
+		Renderer.Draw(ButtonSelectCode, SelectPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Select) ? PressingTint : DarkButtonTint);
+		Renderer.Draw(ButtonStartCode, StartPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Start) ? PressingTint : DarkButtonTint);
 
 		// Buttons
-		CellRenderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Action) ? PressingTint : ColorfulButtonTint);
-		CellRenderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), FrameInput.GameKeyHolding(Gamekey.Jump) ? PressingTint : ColorfulButtonTint);
+		Renderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Action) ? PressingTint : ColorfulButtonTint);
+		Renderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Jump) ? PressingTint : ColorfulButtonTint);
 
-		CellRenderer.SetLayer(oldLayer);
+		Renderer.SetLayer(oldLayer);
 	}
 
 
 	private void DrawHints () {
 
-		int hintPositionY = CurrentHintOffsetY + OffsetY + CellRenderer.CameraRect.y + Unify(GamepadVisible ? 78 : 12);
+		int hintPositionY = CurrentHintOffsetY + OffsetY + Renderer.CameraRect.y + Unify(GamepadVisible ? 78 : 12);
 
 		// Draw
-		int x = CellRenderer.CameraRect.x + OffsetX + Unify(12);
+		int x = Renderer.CameraRect.x + OffsetX + Unify(12);
 		Draw(Gamekey.Start);
 		Draw(Gamekey.Select);
 		Draw(Gamekey.Down);
@@ -230,13 +230,13 @@ public class ControlHintUI : EntityUI {
 	internal static void AddHint (KeyboardKey keyA, KeyboardKey keyB, string label) {
 		if (Instance == null || !Instance.HintVisible) return;
 		int x =
-			CellRenderer.CameraRect.x +
+			Renderer.CameraRect.x +
 			Instance.OffsetX +
 			Unify(12);
 		int y =
 			CurrentHintOffsetY +
 			Instance.OffsetY +
-			CellRenderer.CameraRect.y +
+			Renderer.CameraRect.y +
 			Unify(Instance.GamepadVisible ? 78 : 12);
 		Instance.DrawKey(x, y, keyA, keyB, label);
 		CurrentHintOffsetY += Unify(KEYSIZE + GAP);
@@ -284,10 +284,10 @@ public class ControlHintUI : EntityUI {
 
 
 	private void DrawGamekey (int x, int y, Gamekey keyA, Gamekey keyB, string label, bool background = false) {
-		if (FrameInput.UsingGamepad) {
-			DrawGamepadButton(x, y, FrameInput.GetGamepadMap(keyA), FrameInput.GetGamepadMap(keyB), label, background);
+		if (Input.UsingGamepad) {
+			DrawGamepadButton(x, y, Input.GetGamepadMap(keyA), Input.GetGamepadMap(keyB), label, background);
 		} else {
-			DrawKey(x, y, FrameInput.GetKeyboardMap(keyA), FrameInput.GetKeyboardMap(keyB), label, background);
+			DrawKey(x, y, Input.GetKeyboardMap(keyA), Input.GetKeyboardMap(keyB), label, background);
 		}
 	}
 	private void DrawGamepadButton (int x, int y, GamepadKey buttonA, GamepadKey buttonB, string label, bool background = false) {
@@ -316,39 +316,39 @@ public class ControlHintUI : EntityUI {
 
 		// Fix Width
 		if (keyIdA != 0) {
-			if (CellRenderer.TryGetSprite(keyIdA, out var spriteA) && spriteA.GlobalWidth > spriteA.GlobalHeight) {
+			if (Renderer.TryGetSprite(keyIdA, out var spriteA) && spriteA.GlobalWidth > spriteA.GlobalHeight) {
 				widthA = ((keySize - border.vertical) * ((float)spriteA.GlobalWidth / spriteA.GlobalHeight)).RoundToInt();
 				widthA += border.horizontal;
 			}
 		}
 		if (keyIdB != 0) {
-			if (CellRenderer.TryGetSprite(keyIdB, out var spriteB) && spriteB.GlobalWidth > spriteB.GlobalHeight) {
+			if (Renderer.TryGetSprite(keyIdB, out var spriteB) && spriteB.GlobalWidth > spriteB.GlobalHeight) {
 				widthB = ((keySize - border.vertical) * ((float)spriteB.GlobalWidth / spriteB.GlobalHeight)).RoundToInt();
 				widthB += border.horizontal;
 			}
 		}
 
 		// Draw
-		int oldLayer = CellRenderer.CurrentLayerIndex;
-		CellRenderer.SetLayerToUI();
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayerToUI();
 
 		rect.width = widthA;
 		if (background) {
-			bgCell = CellRenderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);
+			bgCell = Renderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);
 		}
 
 		// Button A
 		if (keyIdA != 0) {
-			CellRenderer.Draw_9Slice(
+			Renderer.Draw_9Slice(
 				HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
 			);
-			CellRenderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
+			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 		} else {
 			KeyLabel.Text = keyTextA;
-			CellGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
+			GUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
 			int targetWidth = keyBounds.width + border.horizontal;
 			if (rect.width < targetWidth) rect.width = targetWidth;
-			CellRenderer.Draw_9Slice(
+			Renderer.Draw_9Slice(
 				HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 			);
 		}
@@ -359,16 +359,16 @@ public class ControlHintUI : EntityUI {
 			// Button B
 			rect.width = widthB;
 			if (keyIdB != 0) {
-				CellRenderer.Draw_9Slice(
+				Renderer.Draw_9Slice(
 					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
 				);
-				CellRenderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
+				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
 				KeyLabel.Text = keyTextB;
-				CellGUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
+				GUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
-				CellRenderer.Draw_9Slice(
+				Renderer.Draw_9Slice(
 					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 				);
 			}
@@ -380,7 +380,7 @@ public class ControlHintUI : EntityUI {
 
 		HintLabel.Text = label;
 
-		CellGUI.Label(
+		GUI.Label(
 			HintLabel, rect, out var bounds
 		);
 		if (bgCell != null) {
@@ -389,7 +389,7 @@ public class ControlHintUI : EntityUI {
 			bgCell.Height = Util.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
 		}
 
-		CellRenderer.SetLayer(oldLayer);
+		Renderer.SetLayer(oldLayer);
 
 	}
 

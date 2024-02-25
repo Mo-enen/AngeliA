@@ -27,7 +27,7 @@ public enum OperationMode {
 }
 
 
-public static class CellPhysics {
+public static class Physics {
 
 
 

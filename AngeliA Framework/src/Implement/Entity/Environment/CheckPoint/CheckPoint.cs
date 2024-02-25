@@ -53,10 +53,10 @@ public abstract class CheckPoint : EnvironmentEntity {
 		base.FillPhysics();
 		if (IsUnlocked(TypeID)) {
 			// Unlocked
-			CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}
-		var border = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
-		CellPhysics.FillBlock(
+		var border = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
+		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, SpriteTag.ONEWAY_UP_TAG
 		);
 	}
@@ -112,11 +112,11 @@ public abstract class CheckPoint : EnvironmentEntity {
 		base.FrameUpdate();
 		if (!IsUnlocked(TypeID)) {
 			// Locked
-			var cell = CellRenderer.Draw(TypeID, Rect);
-			cell.Shift = CellRenderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
+			var cell = Renderer.Draw(TypeID, Rect);
+			cell.Shift = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 		} else {
 			// Unlocked
-			CellRenderer.Draw(TypeID, Rect);
+			Renderer.Draw(TypeID, Rect);
 			var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 			if (Player.RespawnCpUnitPosition == unitPos) {
 				DrawActivatedHighlight(Rect);
@@ -149,15 +149,15 @@ public abstract class CheckPoint : EnvironmentEntity {
 		int localFrame = Game.GlobalFrame % DURATION;
 		var rect = targetRect;
 		var tint = new Color32(128, 255, 128, 255);
-		CellRenderer.SetLayerToAdditive();
+		Renderer.SetLayerToAdditive();
 		for (int i = 0; i < LINE_COUNT; i++) {
 			tint.a = (byte)(i == LINE_COUNT - 1 ? Util.RemapUnclamped(0, DURATION, 64, 0, localFrame) : 64);
 			rect.y = targetRect.y;
 			rect.height = i * targetRect.height / LINE_COUNT;
 			rect.height += Util.RemapUnclamped(0, DURATION, 0, targetRect.height / LINE_COUNT, localFrame);
-			CellRenderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, tint);
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, tint);
 		}
-		CellRenderer.SetLayerToDefault();
+		Renderer.SetLayerToDefault();
 	}
 
 

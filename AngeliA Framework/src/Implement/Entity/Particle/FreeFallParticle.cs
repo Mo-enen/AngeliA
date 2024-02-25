@@ -37,7 +37,7 @@ public class FreeFallParticle : Particle {
 		Y += CurrentSpeedY;
 		Rotation += RotateSpeed;
 		// Despawn when Out Of Range
-		if (!CellRenderer.CameraRect.Overlaps(Rect)) {
+		if (!Renderer.CameraRect.Overlaps(Rect)) {
 			Active = false;
 		}
 	}
@@ -46,9 +46,9 @@ public class FreeFallParticle : Particle {
 		base.FrameUpdate();
 		if (BlinkInEnd && LocalFrame > Duration / 2 && LocalFrame % 6 < 3) return;
 		if (ArtworkID != 0) {
-			CellRenderer.SetLayerToUI();
-			CellRenderer.Draw(ArtworkID, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, 0);
-			CellRenderer.SetLayerToDefault();
+			Renderer.SetLayerToUI();
+			Renderer.Draw(ArtworkID, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, 0);
+			Renderer.SetLayerToDefault();
 		}
 	}
 

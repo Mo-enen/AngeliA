@@ -46,7 +46,7 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		if (CellRenderer.HasSpriteGroup(TypeID)) {
+		if (Renderer.HasSpriteGroup(TypeID)) {
 			ArtworkIndex = (X.ToUnit() * 11 + Y.ToUnit() * 7).Abs();
 		} else {
 			ArtworkIndex = -1;
@@ -56,20 +56,20 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		if (ArtworkIndex >= 0 && CellRenderer.TryGetSpriteFromGroup(TypeID, ArtworkIndex, out var sprite, true)) {
-			CellRenderer.Draw(
+		if (ArtworkIndex >= 0 && Renderer.TryGetSpriteFromGroup(TypeID, ArtworkIndex, out var sprite, true)) {
+			Renderer.Draw(
 				sprite, X + Width / 2, Y,
 				500, 0, 0,
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 			);
 		} else {
-			CellRenderer.Draw(
+			Renderer.Draw(
 				TypeID, X + Width / 2, Y,
 				500, 0, 0,
 				Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
@@ -88,7 +88,7 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 		// Particle
 		int id = TypeID;
 		var rect = Rect;
-		if (ArtworkIndex >= 0 && CellRenderer.TryGetSpriteFromGroup(TypeID, ArtworkIndex, out var sprite, true)) {
+		if (ArtworkIndex >= 0 && Renderer.TryGetSpriteFromGroup(TypeID, ArtworkIndex, out var sprite, true)) {
 			id = sprite.GlobalID;
 			rect.height = sprite.GlobalHeight;
 			if (rect.width != sprite.GlobalWidth) {

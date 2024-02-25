@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliA.Framework.RequireGlobalSprite(atlas: "Character", "Player")]
+[assembly: AngeliA.RequireGlobalSprite(atlas: "Character", "Player")]
 
 namespace AngeliA.Framework;
 
@@ -59,9 +59,9 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		Selecting == this &&
 		MinimalChargeAttackDuration != int.MaxValue &&
 		Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + MinimalChargeAttackDuration &&
-		!FrameTask.HasTask() &&
+		!Task.HasTask() &&
 		!LockingInput &&
-		FrameInput.GameKeyHolding(Gamekey.Action);
+		Input.GameKeyHolding(Gamekey.Action);
 	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 	public bool LockingInput => Game.GlobalFrame <= LockInputFrame;
 	public int LockInputFrame { get; private set; } = -1;
@@ -122,7 +122,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 
 	public override void FillPhysics () {
-		if (FrameTask.HasTask()) return;
+		if (Task.HasTask()) return;
 		base.FillPhysics();
 	}
 
@@ -153,7 +153,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		switch (CharacterState) {
 			case CharacterState.GamePlay:
 
-				bool allowGamePlay = !FrameTask.HasTask() && !CellGUI.IsTyping;
+				bool allowGamePlay = !Task.HasTask() && !GUI.IsTyping;
 
 				if (allowGamePlay) {
 					if (PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI) {
@@ -164,10 +164,10 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 				if (allowGamePlay && !LockingInput) {
 
 					// Move
-					Move(FrameInput.DirectionX, FrameInput.DirectionY);
+					Move(Input.DirectionX, Input.DirectionY);
 
 					// Walk when Holding Up
-					if (FrameInput.GameKeyHolding(Gamekey.Up)) {
+					if (Input.GameKeyHolding(Gamekey.Up)) {
 						RunningAccumulateFrame = -1;
 					}
 
@@ -208,10 +208,10 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.HINT_JUMP);
 
 		// Jump/Dash
-		HoldJump(FrameInput.GameKeyHolding(Gamekey.Jump));
-		if (FrameInput.GameKeyDown(Gamekey.Jump)) {
+		HoldJump(Input.GameKeyHolding(Gamekey.Jump));
+		if (Input.GameKeyDown(Gamekey.Jump)) {
 			// Movement Jump
-			if (FrameInput.GameKeyHolding(Gamekey.Down)) {
+			if (Input.GameKeyHolding(Gamekey.Down)) {
 				Dash();
 			} else {
 				Jump();
@@ -220,25 +220,25 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		}
 
 		// Pound
-		if (FrameInput.GameKeyDown(Gamekey.Down)) {
+		if (Input.GameKeyDown(Gamekey.Down)) {
 			Pound();
 		}
 
 		// Rush
-		if (FrameInput.GameKeyDown(Gamekey.Left)) {
+		if (Input.GameKeyDown(Gamekey.Left)) {
 			if (
 				Game.GlobalFrame < LastLeftKeyDown + RUSH_TAPPING_GAP &&
-				!FrameInput.GameKeyHolding(Gamekey.Up)
+				!Input.GameKeyHolding(Gamekey.Up)
 			) {
 				Rush();
 			}
 			LastLeftKeyDown = Game.GlobalFrame;
 			LastRightKeyDown = int.MinValue;
 		}
-		if (FrameInput.GameKeyDown(Gamekey.Right)) {
+		if (Input.GameKeyDown(Gamekey.Right)) {
 			if (
 				Game.GlobalFrame < LastRightKeyDown + RUSH_TAPPING_GAP &&
-				!FrameInput.GameKeyHolding(Gamekey.Up)
+				!Input.GameKeyHolding(Gamekey.Up)
 			) {
 				Rush();
 			}
@@ -251,13 +251,13 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 	private void Update_Action () {
 
-		if (TakingDamage || FrameTask.HasTask()) return;
+		if (TakingDamage || Task.HasTask()) return;
 
 		// Search for Active Trigger
 		if (TargetActionEntity == null || !TargetActionEntity.LockInput) {
 			TargetActionEntity = null;
 			Entity eActTarget = null;
-			var hits = CellPhysics.OverlapAll(
+			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC,
 				Rect.Expand(ACTION_SCAN_RANGE, ACTION_SCAN_RANGE, 0, ACTION_SCAN_RANGE),
 				out int count, this,
@@ -304,9 +304,9 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		// Try Perform Action
 		if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
 			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE, int.MinValue + 1);
-			if (FrameInput.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
+			if (Input.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
 				TargetActionEntity?.Invoke();
-				FrameInput.UseGameKey(Gamekey.Action);
+				Input.UseGameKey(Gamekey.Action);
 			}
 		}
 
@@ -323,8 +323,8 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 		// Try Perform Attack
 		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
-		bool attDown = FrameInput.GameKeyDown(Gamekey.Action);
-		bool attHolding = FrameInput.GameKeyHolding(Gamekey.Action) && RepeatAttackWhenHolding;
+		bool attDown = Input.GameKeyDown(Gamekey.Action);
+		bool attHolding = Input.GameKeyHolding(Gamekey.Action) && RepeatAttackWhenHolding;
 		if (attDown || attHolding) {
 			if (Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + (attDown ? 0 : HoldAttackPunish)) {
 				Attack();
@@ -336,8 +336,8 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 		// Reset Require on Move
 		if (
-			FrameInput.GameKeyDown(Gamekey.Left) || FrameInput.GameKeyDown(Gamekey.Right) ||
-			FrameInput.GameKeyDown(Gamekey.Down) || FrameInput.GameKeyDown(Gamekey.Up)
+			Input.GameKeyDown(Gamekey.Left) || Input.GameKeyDown(Gamekey.Right) ||
+			Input.GameKeyDown(Gamekey.Down) || Input.GameKeyDown(Gamekey.Up)
 		) {
 			AttackRequiringFrame = int.MinValue;
 		}
@@ -364,7 +364,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 		// Quick Menu
 		if (AllowQuickPlayerMenuUI && !PlayerMenuUI.ShowingUI && !PlayerQuickMenuUI.ShowingUI && !LockingInput) {
-			if (FrameInput.GameKeyDown(Gamekey.Select) || FrameInput.GameKeyDown(Gamekey.Start)) {
+			if (Input.GameKeyDown(Gamekey.Select) || Input.GameKeyDown(Gamekey.Start)) {
 				PlayerQuickMenuUI.OpenMenu();
 			}
 			requireHint = true;
@@ -377,8 +377,8 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 			(PlayerQuickMenuUI.ShowingUI || !LockingInput) &&
 			(!PlayerQuickMenuUI.ShowingUI || !PlayerQuickMenuUI.Instance.IsDirty)
 		) {
-			if (FrameInput.GameKeyUp(Gamekey.Select)) {
-				FrameInput.UseGameKey(Gamekey.Select);
+			if (Input.GameKeyUp(Gamekey.Select)) {
+				Input.UseGameKey(Gamekey.Select);
 				PlayerMenuUI.OpenMenu();
 			}
 			requireHint = true;
@@ -387,7 +387,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		// Hint
 		if (requireHint) {
 			ControlHintUI.AddHint(
-				FrameInput.UsingGamepad ? Gamekey.Start : Gamekey.Select,
+				Input.UsingGamepad ? Gamekey.Start : Gamekey.Select,
 				BuiltInText.HINT_SHOW_MENU
 			);
 		}
@@ -398,10 +398,10 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 		TargetActionEntity = null;
 
-		if (FrameTask.HasTask()) return;
+		if (Task.HasTask()) return;
 
 		// Wake up on Press Action
-		if (FrameInput.GameKeyDown(Gamekey.Action) || FrameInput.GameKeyDown(Gamekey.Jump)) {
+		if (Input.GameKeyDown(Gamekey.Action) || Input.GameKeyDown(Gamekey.Jump)) {
 			SetCharacterState(CharacterState.GamePlay);
 			Y -= 4;
 		}
@@ -421,7 +421,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	private void Update_View () {
 
 		const int LINGER_RATE = 32;
-		bool notInGameplay = FrameTask.HasTask() || CharacterState != CharacterState.GamePlay;
+		bool notInGameplay = Task.HasTask() || CharacterState != CharacterState.GamePlay;
 		bool notInAir =
 			notInGameplay ||
 			IsGrounded || InWater || InSand || IsSliding ||
@@ -458,7 +458,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 	private void Update_PassOut () {
 
-		if (FrameTask.HasTask()) return;
+		if (Task.HasTask()) return;
 
 		if (IsFullPassOut) {
 			ControlHintUI.DrawGlobalHint(
@@ -468,9 +468,9 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		}
 
 		// Reload Game After Player PassOut
-		if (IsFullPassOut && FrameInput.GameKeyDown(Gamekey.Action)) {
-			FrameTask.AddToLast(RestartGameTask.TYPE_ID);
-			FrameInput.UseGameKey(Gamekey.Action);
+		if (IsFullPassOut && Input.GameKeyDown(Gamekey.Action)) {
+			Task.AddToLast(RestartGameTask.TYPE_ID);
+			Input.UseGameKey(Gamekey.Action);
 		}
 
 	}
@@ -486,7 +486,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 	private void PhysicsUpdate_Collect () {
 		if (Selecting != this) return;
-		var hits = CellPhysics.OverlapAll(
+		var hits = Physics.OverlapAll(
 			PhysicsMask.DYNAMIC, Rect, out int count, this, OperationMode.TriggerOnly
 		);
 		for (int i = 0; i < count; i++) {
@@ -521,8 +521,8 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		PoseRenderingZOffset = oldZ;
 
 		// Auto Pick Item
-		if (!FrameTask.HasTask() && !PlayerMenuUI.ShowingUI) {
-			var cells = CellPhysics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
+		if (!Task.HasTask() && !PlayerMenuUI.ShowingUI) {
+			var cells = Physics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
 				if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
@@ -587,8 +587,8 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 	void IActionTarget.Invoke () {
 		RespawnCpUnitPosition = null;
-		FrameTask.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
-		FrameTask.AddToLast(RestartGameTask.TYPE_ID);
+		Task.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
+		Task.AddToLast(RestartGameTask.TYPE_ID);
 	}
 
 

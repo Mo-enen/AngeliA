@@ -6,9 +6,9 @@ namespace AngeliA.Framework;
 public sealed class DefaultDialogueUI : DialogueUI {
 
 	protected override IRect PanelRect => new(
-		CellRenderer.CameraRect.x,
-		CellRenderer.CameraRect.y,
-		CellRenderer.CameraRect.width,
+		Renderer.CameraRect.x,
+		Renderer.CameraRect.y,
+		Renderer.CameraRect.width,
 		Unify(300)
 	);
 	protected override IRect ContentRect => PanelRect.Shrink(IconRect.width + Unify(28), Unify(12), Unify(12), Unify(36 + NameFontSize));
@@ -59,8 +59,8 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	private int Identity = 0;
 	private string Content = "";
 	private Color32[] Colors = null;
-	private readonly CellContent LabelName = new() { Alignment = Alignment.MidLeft, };
-	private readonly CellContent LabelContent = new() { Wrap = true, Clip = true, Alignment = Alignment.TopLeft, };
+	private readonly TextContent LabelName = new() { Alignment = Alignment.MidLeft, };
+	private readonly TextContent LabelContent = new() { Wrap = true, Clip = true, Alignment = Alignment.TopLeft, };
 
 
 	#endregion
@@ -108,15 +108,15 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 
 		// BG
 		BackgroundRect = panelRect;
-		CellRenderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, 0);
+		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, 0);
 
 		// Content
 		LabelContent.Text = Content;
 		LabelContent.CharSize = ContentFontSize;
 		LabelContent.Tint = ContentTint;
-		int cellStartIndex = CellRenderer.GetTextUsedCellCount();
-		CellGUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
-		if (CellRenderer.GetTextCells(out var cells, out int count)) {
+		int cellStartIndex = Renderer.GetTextUsedCellCount();
+		GUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
+		if (Renderer.GetTextCells(out var cells, out int count)) {
 			int charIndex = StartIndex;
 			int visibleIndex = StartIndex + (Game.GlobalFrame - RolledFrame) * RollingSpeed;
 			for (int i = cellStartIndex; i < count; i++) {
@@ -137,11 +137,11 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 		LabelName.Text = Language.Get(Identity);
 		LabelName.CharSize = NameFontSize;
 		LabelName.Tint = NameTint;
-		CellGUI.Label(LabelName, nameRect);
+		GUI.Label(LabelName, nameRect);
 
 		// Icon
-		if (CellRenderer.TryGetSprite(Identity, out var iconSprite)) {
-			CellRenderer.Draw(iconSprite, iconRect.Fit(iconSprite), 1);
+		if (Renderer.TryGetSprite(Identity, out var iconSprite)) {
+			Renderer.Draw(iconSprite, iconRect.Fit(iconSprite), 1);
 		}
 
 	}

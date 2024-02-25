@@ -25,10 +25,10 @@ public abstract class Wing : BodyGadget {
 	public Wing () {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
 		SpriteGroupID = $"{name}.Wing".AngeHash();
-		if (!CellRenderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
+		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		if (
 			SpriteGroupID != 0 &&
-			CellRenderer.TryGetSpriteFromGroup(SpriteGroupID, 0, out var sprite)
+			Renderer.TryGetSpriteFromGroup(SpriteGroupID, 0, out var sprite)
 		) {
 			IsPropeller = sprite.IsTrigger;
 		}
@@ -53,8 +53,8 @@ public abstract class Wing : BodyGadget {
 	public static void DrawSpriteAsWing (PoseCharacter character, int spriteGroupID, bool isPropeller, int scale = 1000) {
 		if (
 			spriteGroupID == 0 ||
-			!CellRenderer.HasSpriteGroup(spriteGroupID, out int groupCount) ||
-			!CellRenderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var firstSprite, false, true)
+			!Renderer.HasSpriteGroup(spriteGroupID, out int groupCount) ||
+			!Renderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var firstSprite, false, true)
 		) return;
 		int z = character.Body.FrontSide ? -33 : 33;
 		int xLeft = character.UpperLegL.GlobalX;
@@ -78,11 +78,11 @@ public abstract class Wing : BodyGadget {
 			// Flying
 			if (isPropeller) {
 				// Propeller
-				if (CellRenderer.TryGetSpriteFromGroup(
+				if (Renderer.TryGetSpriteFromGroup(
 					spriteGroupID, character.CurrentAnimationFrame.UMod(groupCount),
 					out var sprite, true, true
 				)) {
-					CellRenderer.Draw(
+					Renderer.Draw(
 						sprite,
 						(xLeft + xRight) / 2,
 						(yLeft + yRight) / 2,
@@ -94,15 +94,15 @@ public abstract class Wing : BodyGadget {
 				}
 			} else {
 				// Wings
-				if (CellRenderer.TryGetSpriteFromGroup(spriteGroupID, (character.CurrentAnimationFrame / 6).UMod(groupCount), out var sprite, true, true)) {
-					CellRenderer.Draw(
+				if (Renderer.TryGetSpriteFromGroup(spriteGroupID, (character.CurrentAnimationFrame / 6).UMod(groupCount), out var sprite, true, true)) {
+					Renderer.Draw(
 						sprite,
 						xLeft, yLeft, firstSprite.PivotX, firstSprite.PivotY, 0,
 						firstSprite.GlobalWidth * scale / 1000,
 						spriteHeight,
 						z
 					);
-					CellRenderer.Draw(
+					Renderer.Draw(
 						sprite,
 						xRight, yRight, firstSprite.PivotX, firstSprite.PivotY, 0,
 						-firstSprite.GlobalWidth * scale / 1000,
@@ -115,14 +115,14 @@ public abstract class Wing : BodyGadget {
 			// Not Flying
 			int rot = Game.GlobalFrame.PingPong(120) - 60;
 			rot /= 12;
-			CellRenderer.Draw(
+			Renderer.Draw(
 				firstSprite,
 				xLeft, yLeft, firstSprite.PivotX, firstSprite.PivotY, -rot,
 				firstSprite.GlobalWidth * scale / 1000,
 				spriteHeight,
 				z
 			);
-			CellRenderer.Draw(
+			Renderer.Draw(
 				firstSprite,
 				xRight, yRight, firstSprite.PivotX, firstSprite.PivotY, rot,
 				-firstSprite.GlobalWidth * scale / 1000,

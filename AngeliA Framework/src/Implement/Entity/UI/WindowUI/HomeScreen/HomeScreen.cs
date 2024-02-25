@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [RequireLanguageFromField]
 public class HomeScreen : WindowUI {
 
@@ -59,9 +59,9 @@ public class HomeScreen : WindowUI {
 
 	public override void BeforePhysicsUpdate () {
 		base.BeforePhysicsUpdate();
-		CursorSystem.RequireCursor();
+		Cursor.RequireCursor();
 		ControlHintUI.ForceHideGamepad();
-		var mainRect = CellRenderer.CameraRect;
+		var mainRect = Renderer.CameraRect;
 		X = mainRect.x;
 		Y = mainRect.y;
 		Width = mainRect.width;
@@ -71,7 +71,7 @@ public class HomeScreen : WindowUI {
 
 	public override void UpdateWindowUI () {
 		int panelWidth = Unify(300);
-		var mainRect = CellRenderer.CameraRect;
+		var mainRect = Renderer.CameraRect;
 		Update_Panel(mainRect.EdgeInside(Direction4.Left, panelWidth));
 		Update_Content(mainRect.EdgeInside(Direction4.Right, mainRect.width - panelWidth));
 	}
@@ -84,7 +84,7 @@ public class HomeScreen : WindowUI {
 		int markWidth = Unify(6);
 
 		// BG
-		CellRenderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, z: 0);
+		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, z: 0);
 
 		// Content
 		panelRect = panelRect.Shrink(panelPadding, panelPadding, panelPadding, panelPadding * 4);
@@ -111,14 +111,14 @@ public class HomeScreen : WindowUI {
 			bool selecting = CurrentContent == type;
 
 			// Button
-			if (CellGUI.Button(rect, label, z: 1, labelTint: Color32.GREY_230, enable: !selecting)) {
+			if (GUI.Button(rect, label, z: 1, labelTint: Color32.GREY_230, enable: !selecting)) {
 				LoadContent(type);
 			}
 
 			// Mark
 			if (selecting) {
-				CellRenderer.Draw(Const.PIXEL, rect.EdgeInside(Direction4.Right, markWidth), Color32.GREEN, z: 3);
-				CellRenderer.Draw(Const.PIXEL, rect, Color32.GREY_20, z: 2);
+				Renderer.Draw(Const.PIXEL, rect.EdgeInside(Direction4.Right, markWidth), Color32.GREEN, z: 3);
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_20, z: 2);
 			}
 
 		}
@@ -127,7 +127,7 @@ public class HomeScreen : WindowUI {
 
 	private void Update_Content (IRect panelRect) {
 
-
+		Util.Log(panelRect);
 
 
 

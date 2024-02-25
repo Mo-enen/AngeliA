@@ -39,7 +39,7 @@ public class BreakingParticle : Particle {
 	public override void FrameUpdate () {
 		base.FrameUpdate();
 
-		if (!Rect.Expand(Const.CEL).Overlaps(CellRenderer.CameraRect)) {
+		if (!Rect.Expand(Const.CEL).Overlaps(Renderer.CameraRect)) {
 			Active = false;
 			return;
 		}
@@ -52,7 +52,7 @@ public class BreakingParticle : Particle {
 		int py = (y - originalY) * 1000 / (Height * 2);
 		int r = Game.GlobalFrame * RotateSpeed;
 		byte alpha = (byte)Util.RemapUnclamped(0, Duration, 512, 0, Game.GlobalFrame - SpawnFrame).Clamp(0, 255);
-		var cell = CellRenderer.Draw(
+		var cell = Renderer.Draw(
 			SpriteID, x, y, px, py, r, Width * 2, Height * 2,
 			new Color32(255, 255, 255, alpha), int.MaxValue
 		);
@@ -63,8 +63,8 @@ public class BreakingParticle : Particle {
 
 	public static void SpawnParticles (int spriteID, IRect rect, bool lightWeight = false) {
 
-		if (!CellRenderer.HasSprite(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, 0, out var groupSprite, false)) {
+		if (!Renderer.HasSprite(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, 0, out var groupSprite, false)) {
 				spriteID = groupSprite.GlobalID;
 			} else return;
 		}

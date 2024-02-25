@@ -24,10 +24,10 @@ public abstract class Horn : BodyGadget {
 		SpriteIdR = $"{name}.HornR".AngeHash();
 		SpriteIdLBack = $"{name}.HornLB".AngeHash();
 		SpriteIdRBack = $"{name}.HornRB".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
-		if (!CellRenderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
-		if (!CellRenderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
-		if (!CellRenderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
+		if (!Renderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
+		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
+		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
+		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
 	}
 
 
@@ -80,8 +80,8 @@ public abstract class Horn : BodyGadget {
 			twistWidth -= 16 * twist.Abs() / 500;
 		}
 
-		if (CellRenderer.TryGetSprite(spriteIdLeft, out var sprite)) {
-			var cell = CellRenderer.Draw(
+		if (Renderer.TryGetSprite(spriteIdLeft, out var sprite)) {
+			var cell = Renderer.Draw(
 				sprite,
 				headRect.xMin + offsetX,
 				head.Height > 0 ? headRect.yMax : headRect.yMin,
@@ -96,8 +96,8 @@ public abstract class Horn : BodyGadget {
 			}
 		}
 
-		if (CellRenderer.TryGetSprite(spriteIdRight, out sprite)) {
-			var cell = CellRenderer.Draw(
+		if (Renderer.TryGetSprite(spriteIdRight, out sprite)) {
+			var cell = Renderer.Draw(
 				sprite,
 				headRect.xMax + offsetX,
 				head.Height > 0 ? headRect.yMax : headRect.yMin,

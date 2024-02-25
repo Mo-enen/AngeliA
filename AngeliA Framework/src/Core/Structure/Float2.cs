@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Globalization;
 
-namespace AngeliA; 
+namespace AngeliA;
 [Serializable]
 public struct Float2 : IEquatable<Float2>, IFormattable {
 
@@ -181,15 +181,15 @@ public struct Float2 : IEquatable<Float2>, IFormattable {
 		}
 	}
 
-	public override string ToString () {
+	public readonly override string ToString () {
 		return ToString(null, null);
 	}
 
-	public string ToString (string format) {
+	public readonly string ToString (string format) {
 		return ToString(format, null);
 	}
 
-	public string ToString (string format, IFormatProvider formatProvider) {
+	public readonly string ToString (string format, IFormatProvider formatProvider) {
 		if (string.IsNullOrEmpty(format)) {
 			format = "F2";
 		}
@@ -199,7 +199,7 @@ public struct Float2 : IEquatable<Float2>, IFormattable {
 		return string.Format("({0}, {1})", x.ToString(format, formatProvider), y.ToString(format, formatProvider));
 	}
 
-	public override int GetHashCode () {
+	public readonly override int GetHashCode () {
 		return x.GetHashCode() ^ (y.GetHashCode() << 2);
 	}
 

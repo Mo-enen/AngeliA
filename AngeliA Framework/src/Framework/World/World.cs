@@ -118,7 +118,7 @@ public class World {
 			int x = reader.ReadByte();
 			int y = reader.ReadByte();
 			if (x < SIZE && y >= SIZE) continue;
-			if (CellRenderer.TryGetSprite(id, out var sprite)) {
+			if (Renderer.TryGetSprite(id, out var sprite)) {
 				if (x >= SIZE) x -= SIZE;
 				if (y >= SIZE) y -= SIZE;
 				CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
@@ -135,17 +135,17 @@ public class World {
 			int len = Const.MAP * Const.MAP;
 			for (int i = 0; i < len; i++) {
 				int id = Entities[i];
-				if (id != 0 && CellRenderer.TryGetSprite(id, out var sprite)) {
+				if (id != 0 && Renderer.TryGetSprite(id, out var sprite)) {
 					CacheMapPixels[i] = sprite.SummaryTint;
 					continue;
 				}
 				id = Levels[i];
-				if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
+				if (id != 0 && Renderer.TryGetSprite(id, out sprite)) {
 					CacheMapPixels[i] = sprite.SummaryTint;
 					continue;
 				}
 				id = Backgrounds[i];
-				if (id != 0 && CellRenderer.TryGetSprite(id, out sprite)) {
+				if (id != 0 && Renderer.TryGetSprite(id, out sprite)) {
 					CacheMapPixels[i] = sprite.SummaryTint;
 					continue;
 				}

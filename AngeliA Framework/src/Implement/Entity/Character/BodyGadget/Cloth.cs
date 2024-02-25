@@ -27,7 +27,7 @@ public abstract class HeadCloth : Cloth {
 	public HeadCloth () {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
 		SpriteID = $"{name}.HeadSuit".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
@@ -50,11 +50,11 @@ public abstract class HeadCloth : Cloth {
 
 		// Draw
 		Cell[] cells = null;
-		if (CellRenderer.HasSpriteGroup(spriteGroupID)) {
+		if (Renderer.HasSpriteGroup(spriteGroupID)) {
 			if (head.FrontSide) {
 				// Front
 				bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Back;
-				if (CellRenderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var sprite, false, true)) {
+				if (Renderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var sprite, false, true)) {
 					bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
 					cells = AttachClothOn(
 						head, sprite, 500, 1000,
@@ -64,7 +64,7 @@ public abstract class HeadCloth : Cloth {
 				}
 			} else {
 				// Back
-				if (CellRenderer.TryGetSpriteFromGroup(spriteGroupID, 1, out var sprite, false, true)) {
+				if (Renderer.TryGetSpriteFromGroup(spriteGroupID, 1, out var sprite, false, true)) {
 					bool front = frontMode != FrontMode.AlwaysBack && frontMode != FrontMode.Front;
 					bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
 					cells = AttachClothOn(
@@ -74,7 +74,7 @@ public abstract class HeadCloth : Cloth {
 					);
 				}
 			}
-		} else if (CellRenderer.TryGetSprite(spriteGroupID, out var sprite)) {
+		} else if (Renderer.TryGetSprite(spriteGroupID, out var sprite)) {
 			// Single Sprite
 			bool front = frontMode != FrontMode.AlwaysBack && (
 				frontMode == FrontMode.AlwaysFront ||
@@ -117,19 +117,19 @@ public abstract class BodyCloth : Cloth {
 	public BodyCloth () {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
 		SpriteIdFrontL = SpriteIdFrontR = $"{name}.BodySuit".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteIdFrontL) && !CellRenderer.HasSpriteGroup(SpriteIdFrontL)) SpriteIdFrontL = 0;
+		if (!Renderer.HasSprite(SpriteIdFrontL) && !Renderer.HasSpriteGroup(SpriteIdFrontL)) SpriteIdFrontL = 0;
 		if (SpriteIdFrontL == 0) {
 			SpriteIdFrontL = $"{name}.BodySuitL".AngeHash();
 			SpriteIdFrontR = $"{name}.BodySuitR".AngeHash();
-			if (!CellRenderer.HasSprite(SpriteIdFrontL) && !CellRenderer.HasSpriteGroup(SpriteIdFrontL)) SpriteIdFrontL = 0;
-			if (!CellRenderer.HasSprite(SpriteIdFrontR) && !CellRenderer.HasSpriteGroup(SpriteIdFrontR)) SpriteIdFrontR = SpriteIdFrontL;
+			if (!Renderer.HasSprite(SpriteIdFrontL) && !Renderer.HasSpriteGroup(SpriteIdFrontL)) SpriteIdFrontL = 0;
+			if (!Renderer.HasSprite(SpriteIdFrontR) && !Renderer.HasSpriteGroup(SpriteIdFrontR)) SpriteIdFrontR = SpriteIdFrontL;
 		}
 		SpriteIdShoulder = $"{name}.ShoulderSuit".AngeHash();
 		SpriteIdUpperArm = $"{name}.UpperArmSuit".AngeHash();
 		SpriteIdLowerArm = $"{name}.LowerArmSuit".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteIdShoulder) && !CellRenderer.HasSpriteGroup(SpriteIdShoulder)) SpriteIdShoulder = 0;
-		if (!CellRenderer.HasSprite(SpriteIdUpperArm) && !CellRenderer.HasSpriteGroup(SpriteIdUpperArm)) SpriteIdUpperArm = 0;
-		if (!CellRenderer.HasSprite(SpriteIdLowerArm) && !CellRenderer.HasSpriteGroup(SpriteIdLowerArm)) SpriteIdLowerArm = 0;
+		if (!Renderer.HasSprite(SpriteIdShoulder) && !Renderer.HasSpriteGroup(SpriteIdShoulder)) SpriteIdShoulder = 0;
+		if (!Renderer.HasSprite(SpriteIdUpperArm) && !Renderer.HasSpriteGroup(SpriteIdUpperArm)) SpriteIdUpperArm = 0;
+		if (!Renderer.HasSprite(SpriteIdLowerArm) && !Renderer.HasSpriteGroup(SpriteIdLowerArm)) SpriteIdLowerArm = 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
@@ -159,7 +159,7 @@ public abstract class BodyCloth : Cloth {
 		var hip = character.Hip;
 		int poseTwist = character.BodyTwist;
 		int groupIndex = body.FrontSide ? 0 : 1;
-		if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
+		if (!Renderer.TryGetSpriteFromGroup(spriteGroupId, groupIndex, out var suitSprite, false, true)) return;
 
 		var rect = new IRect(
 			body.GlobalX - body.Width / 2,
@@ -192,16 +192,16 @@ public abstract class BodyCloth : Cloth {
 		if (flipX) rect.FlipHorizontal();
 
 		// Draw
-		var cell = CellRenderer.Draw(suitSprite, rect, body.Z + localZ);
+		var cell = Renderer.Draw(suitSprite, rect, body.Z + localZ);
 
 		// Twist
 		if (poseTwist != 0 && body.FrontSide && body.Height > 0) {
 			if (flipX) poseTwist = -poseTwist;
 			int shiftTop = body.Height * twistShiftTopAmount / 1000;
 			int shiftX = poseTwist * cell.Width / 2500;
-			var cellL = CellRenderer.Draw(Const.PIXEL, default);
+			var cellL = Renderer.Draw(Const.PIXEL, default);
 			cellL.CopyFrom(cell);
-			var cellR = CellRenderer.Draw(Const.PIXEL, default);
+			var cellR = Renderer.Draw(Const.PIXEL, default);
 			cellR.CopyFrom(cell);
 			cellL.Shift.up = cellR.Shift.up = shiftTop;
 			cellL.Width += body.Width.Sign() * shiftX;
@@ -220,11 +220,11 @@ public abstract class BodyCloth : Cloth {
 
 	public static void DrawClothForShoulder (PoseCharacter character, int spriteID) {
 		if (spriteID == 0) return;
-		if (CellRenderer.HasSpriteGroup(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+		if (Renderer.HasSpriteGroup(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 				CoverClothOn(character.ShoulderL, spriteL.GlobalID);
 			}
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 				CoverClothOn(character.ShoulderR, spriteR.GlobalID);
 			}
 		} else {
@@ -235,11 +235,11 @@ public abstract class BodyCloth : Cloth {
 
 	public static void DrawClothForUpperArm (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
-		if (CellRenderer.HasSpriteGroup(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+		if (Renderer.HasSpriteGroup(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 				CoverClothOn(character.UpperArmL, spriteL.GlobalID, localZ);
 			}
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 				CoverClothOn(character.UpperArmR, spriteR.GlobalID, localZ);
 			}
 		} else {
@@ -250,11 +250,11 @@ public abstract class BodyCloth : Cloth {
 
 	public static void DrawClothForLowerArm (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
-		if (CellRenderer.HasSpriteGroup(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+		if (Renderer.HasSpriteGroup(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 				CoverClothOn(character.LowerArmL, spriteL.GlobalID, localZ);
 			}
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 				CoverClothOn(character.LowerArmR, spriteR.GlobalID, localZ);
 			}
 		} else {
@@ -265,8 +265,8 @@ public abstract class BodyCloth : Cloth {
 
 	public static void DrawCape (PoseCharacter character, int capeID, int motionAmount = 1000) {
 		if (capeID == 0) return;
-		if (!CellRenderer.TryGetSpriteGroup(capeID, out var group) || group.Count < 4) return;
-		if (!CellRenderer.TryGetSpriteFromGroup(capeID, character.Body.FrontSide ? 2 : 3, out var sprite, false, false)) return;
+		if (!Renderer.TryGetSpriteGroup(capeID, out var group) || group.Count < 4) return;
+		if (!Renderer.TryGetSpriteFromGroup(capeID, character.Body.FrontSide ? 2 : 3, out var sprite, false, false)) return;
 		var animatedPoseType = character.AnimationType;
 		if (
 			animatedPoseType == CharacterAnimationType.SquatIdle ||
@@ -287,7 +287,7 @@ public abstract class BodyCloth : Cloth {
 
 			// Draw
 			int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
-			var cells = CellRenderer.Draw_9Slice(
+			var cells = Renderer.Draw_9Slice(
 				sprite,
 				body.GlobalX, body.GlobalY + body.Height,
 				500, 1000, 0,
@@ -345,10 +345,10 @@ public abstract class HipCloth : Cloth {
 		SpriteIdSkirt = $"{name}.SkirtSuit".AngeHash();
 		SpriteIdUpperLeg = $"{name}.UpperLegSuit".AngeHash();
 		SpriteIdLowerLeg = $"{name}.LowerLegSuit".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteIdHip) && !CellRenderer.HasSpriteGroup(SpriteIdHip)) SpriteIdHip = 0;
-		if (!CellRenderer.HasSprite(SpriteIdSkirt) && !CellRenderer.HasSpriteGroup(SpriteIdSkirt)) SpriteIdSkirt = 0;
-		if (!CellRenderer.HasSprite(SpriteIdUpperLeg) && !CellRenderer.HasSpriteGroup(SpriteIdUpperLeg)) SpriteIdUpperLeg = 0;
-		if (!CellRenderer.HasSprite(SpriteIdLowerLeg) && !CellRenderer.HasSpriteGroup(SpriteIdLowerLeg)) SpriteIdLowerLeg = 0;
+		if (!Renderer.HasSprite(SpriteIdHip) && !Renderer.HasSpriteGroup(SpriteIdHip)) SpriteIdHip = 0;
+		if (!Renderer.HasSprite(SpriteIdSkirt) && !Renderer.HasSpriteGroup(SpriteIdSkirt)) SpriteIdSkirt = 0;
+		if (!Renderer.HasSprite(SpriteIdUpperLeg) && !Renderer.HasSpriteGroup(SpriteIdUpperLeg)) SpriteIdUpperLeg = 0;
+		if (!Renderer.HasSprite(SpriteIdLowerLeg) && !Renderer.HasSpriteGroup(SpriteIdLowerLeg)) SpriteIdLowerLeg = 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
@@ -369,8 +369,8 @@ public abstract class HipCloth : Cloth {
 		var hip = character.Hip;
 		if (spriteID == 0 || hip.IsFullCovered) return;
 		if (
-			!CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
-			!CellRenderer.TryGetSprite(spriteID, out sprite)
+			!Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
+			!Renderer.TryGetSprite(spriteID, out sprite)
 		) return;
 
 		var rect = hip.GetGlobalRect();
@@ -397,7 +397,7 @@ public abstract class HipCloth : Cloth {
 			 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 		// Draw
-		CellRenderer.Draw(sprite, rect, hip.Z + localZ);
+		Renderer.Draw(sprite, rect, hip.Z + localZ);
 
 	}
 
@@ -406,8 +406,8 @@ public abstract class HipCloth : Cloth {
 		var hip = character.Hip;
 		if (spriteID == 0 || hip.IsFullCovered) return;
 		if (
-			!CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
-			!CellRenderer.TryGetSprite(spriteID, out sprite)
+			!Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
+			!Renderer.TryGetSprite(spriteID, out sprite)
 		) return;
 
 		var body = character.Body;
@@ -443,7 +443,7 @@ public abstract class HipCloth : Cloth {
 			_ => 0,
 		};
 		int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000 + shiftY;
-		CellRenderer.Draw(
+		Renderer.Draw(
 			sprite,
 			centerX,
 			body.Height > 0 ? Util.Max(centerY + offsetY, character.Y + sprite.GlobalHeight) : centerY - offsetY,
@@ -468,11 +468,11 @@ public abstract class HipCloth : Cloth {
 
 	public static void DrawClothForUpperLeg (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
-		if (CellRenderer.HasSpriteGroup(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+		if (Renderer.HasSpriteGroup(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 				CoverClothOn(character.UpperLegL, spriteL.GlobalID, localZ);
 			}
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 				CoverClothOn(character.UpperLegR, spriteR.GlobalID, localZ);
 			}
 		} else {
@@ -483,11 +483,11 @@ public abstract class HipCloth : Cloth {
 
 	public static void DrawClothForLowerLeg (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
-		if (CellRenderer.HasSpriteGroup(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+		if (Renderer.HasSpriteGroup(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 				CoverClothOn(character.LowerLegL, spriteL.GlobalID, localZ);
 			}
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 				CoverClothOn(character.LowerLegR, spriteR.GlobalID, localZ);
 			}
 		} else {
@@ -533,7 +533,7 @@ public abstract class HipCloth : Cloth {
 
 	public static void DrawClothTail (PoseCharacter character, int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
 
-		if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
 
 		int rot = 0;
 
@@ -548,7 +548,7 @@ public abstract class HipCloth : Cloth {
 		}
 
 		// Draw
-		CellRenderer.Draw(
+		Renderer.Draw(
 			sprite,
 			globalX, globalY,
 			sprite.PivotX, sprite.PivotY, rotation + rot,
@@ -572,7 +572,7 @@ public abstract class HandCloth : Cloth {
 	public HandCloth () {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
 		SpriteID = $"{name}.HandSuit".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
@@ -585,11 +585,11 @@ public abstract class HandCloth : Cloth {
 
 	public static void DrawClothForHand (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
-		if (CellRenderer.HasSpriteGroup(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+		if (Renderer.HasSpriteGroup(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 				CoverClothOn(character.HandL, spriteL.GlobalID, localZ);
 			}
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 				CoverClothOn(character.HandR, spriteR.GlobalID, localZ);
 			}
 		} else {
@@ -612,7 +612,7 @@ public abstract class FootCloth : Cloth {
 	public FootCloth () {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
 		SpriteID = $"{name}.FootSuit".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteID) && !CellRenderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
@@ -625,11 +625,11 @@ public abstract class FootCloth : Cloth {
 
 	public static void DrawClothForFoot (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
-		if (CellRenderer.HasSpriteGroup(spriteID)) {
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+		if (Renderer.HasSpriteGroup(spriteID)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
 				DrawClothForFootLogic(character.FootL, spriteL.GlobalID, localZ);
 			}
-			if (CellRenderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
 				DrawClothForFootLogic(character.FootR, spriteR.GlobalID, localZ);
 			}
 		} else {
@@ -639,18 +639,18 @@ public abstract class FootCloth : Cloth {
 		// Func
 		static void DrawClothForFootLogic (BodyPart foot, int spriteID, int localZ) {
 			if (spriteID == 0 || foot.IsFullCovered) return;
-			if (!CellRenderer.TryGetSprite(spriteID, out var sprite)) return;
+			if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
 			var location = foot.GlobalLerp(0f, 0f);
 			int width = Util.Max(foot.Width, sprite.GlobalWidth);
 			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(
+				Renderer.Draw(
 					sprite, location.x, location.y,
 					0, 0, foot.Rotation,
 					foot.Width.Sign() * width, sprite.GlobalHeight,
 					foot.Z + localZ
 				);
 			} else {
-				CellRenderer.Draw_9Slice(
+				Renderer.Draw_9Slice(
 					sprite, location.x, location.y,
 					0, 0, foot.Rotation,
 					foot.Width.Sign() * width, sprite.GlobalHeight,
@@ -740,7 +740,7 @@ public abstract class Cloth {
 		location.y += shiftPixelY;
 		Cell[] result;
 		if (sprite.GlobalBorder.IsZero) {
-			var cell = CellRenderer.Draw(
+			var cell = Renderer.Draw(
 				sprite,
 				location.x,
 				location.y,
@@ -752,7 +752,7 @@ public abstract class Cloth {
 			result = SINGLE_CELL;
 			result[0] = cell;
 		} else {
-			result = CellRenderer.Draw_9Slice(
+			result = Renderer.Draw_9Slice(
 				sprite, location.x, location.y,
 				sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
 				(bodyPart.Width > 0 ? sprite.GlobalWidth : -sprite.GlobalWidth) * widthAmount / 1000,
@@ -774,17 +774,17 @@ public abstract class Cloth {
 	public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID) => CoverClothOn(bodyPart, spriteID, 1, Color32.WHITE, true);
 	public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ) => CoverClothOn(bodyPart, spriteID, localZ, Color32.WHITE, true);
 	public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ, Color32 tint, bool defaultHideLimb = true) {
-		if (spriteID == 0 || bodyPart.IsFullCovered || !CellRenderer.TryGetSprite(spriteID, out var sprite)) return null;
+		if (spriteID == 0 || bodyPart.IsFullCovered || !Renderer.TryGetSprite(spriteID, out var sprite)) return null;
 		Cell[] result;
 		if (sprite.GlobalBorder.IsZero) {
-			SINGLE_CELL[0] = CellRenderer.Draw(
+			SINGLE_CELL[0] = Renderer.Draw(
 				sprite, bodyPart.GlobalX, bodyPart.GlobalY,
 				bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation,
 				bodyPart.Width, bodyPart.Height, tint, bodyPart.Z + localZ
 			);
 			result = SINGLE_CELL;
 		} else {
-			result = CellRenderer.Draw_9Slice(
+			result = Renderer.Draw_9Slice(
 				sprite, bodyPart.GlobalX, bodyPart.GlobalY,
 				bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation,
 				bodyPart.Width, bodyPart.Height, tint, bodyPart.Z + localZ

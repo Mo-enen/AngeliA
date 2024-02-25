@@ -83,7 +83,7 @@ public abstract class Rigidbody : Entity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicalLayer, this);
+		Physics.FillEntity(PhysicalLayer, this);
 	}
 
 
@@ -101,9 +101,9 @@ public abstract class Rigidbody : Entity {
 		bool prevInWater = InWater;
 		bool prevInSand = InSand;
 		int checkingMask = PhysicsMask.MAP & CollisionMask;
-		InWater = CellPhysics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG);
-		InSand = !InWater && CellPhysics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, SpriteTag.QUICKSAND_TAG);
-		OnSlippy = !InWater && !InSand && CellPhysics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, SpriteTag.SLIP_TAG);
+		InWater = Physics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG);
+		InSand = !InWater && Physics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, SpriteTag.QUICKSAND_TAG);
+		OnSlippy = !InWater && !InSand && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, SpriteTag.SLIP_TAG);
 		IsInsideGround = InsideGroundCheck();
 
 		if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {
@@ -135,10 +135,10 @@ public abstract class Rigidbody : Entity {
 
 		// Hori Stopping
 		if (VelocityX != 0) {
-			if (!CellPhysics.RoomCheckOneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true)) {
+			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true)) {
 				VelocityX = 0;
 			} else {
-				var hits = CellPhysics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
+				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is not Rigidbody hitRig) {
@@ -154,10 +154,10 @@ public abstract class Rigidbody : Entity {
 		}
 		// Vertical Stopping
 		if (VelocityY != 0) {
-			if (!CellPhysics.RoomCheckOneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true)) {
+			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true)) {
 				VelocityY = 0;
 			} else {
-				var hits = CellPhysics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
+				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is not Rigidbody hitRig) {
@@ -204,7 +204,7 @@ public abstract class Rigidbody : Entity {
 		if (AllowBeingCarryByOtherRigidbody) {
 			int speedLeft = 0;
 			int speedRight = 0;
-			var hits = CellPhysics.OverlapAll(CollisionMask, Rect.EdgeOutside(Direction4.Down), out int count, this);
+			var hits = Physics.OverlapAll(CollisionMask, Rect.EdgeOutside(Direction4.Down), out int count, this);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not Rigidbody rig || !rig.CarryOtherRigidbodyOnTop) continue;
@@ -250,9 +250,9 @@ public abstract class Rigidbody : Entity {
 		if (ignoreLevel) mask &= ~PhysicsMask.LEVEL;
 
 		if (ignoreOneway) {
-			pos = CellPhysics.MoveIgnoreOneway(mask, pos, speedX, speedY, new(Width, Height), this);
+			pos = Physics.MoveIgnoreOneway(mask, pos, speedX, speedY, new(Width, Height), this);
 		} else {
-			pos = CellPhysics.Move(mask, pos, speedX, speedY, new(Width, Height), this, out bool stopX, out bool stopY);
+			pos = Physics.Move(mask, pos, speedX, speedY, new(Width, Height), this, out bool stopX, out bool stopY);
 			if (stopX) VelocityX = 0;
 			if (stopY) VelocityY = 0;
 		}
@@ -299,9 +299,9 @@ public abstract class Rigidbody : Entity {
 		if (Game.GlobalFrame <= IgnoreGroundCheckFrame) return IsGrounded;
 		if (VelocityY > 0) return false;
 		var rect = Rect;
-		bool result = !CellPhysics.RoomCheck(
+		bool result = !Physics.RoomCheck(
 			CollisionMask, rect, this, Direction4.Down, out var hit
-		) || !CellPhysics.RoomCheckOneway(
+		) || !Physics.RoomCheckOneway(
 			CollisionMask, rect, this, Direction4.Down, out hit, true
 		);
 		GroundedID = result ? hit.SourceID : 0;
@@ -312,7 +312,7 @@ public abstract class Rigidbody : Entity {
 	private bool InsideGroundCheck () {
 		int sizeX = Width / 8;
 		int sizeY = Height / 8;
-		return CellPhysics.Overlap(
+		return Physics.Overlap(
 			PhysicsMask.LEVEL & CollisionMask,
 			new IRect(
 				X + OffsetX + Width / 2 - sizeX / 2,

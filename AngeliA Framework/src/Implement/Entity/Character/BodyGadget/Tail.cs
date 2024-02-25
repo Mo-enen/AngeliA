@@ -26,7 +26,7 @@ public abstract class Tail : BodyGadget {
 	public Tail () {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
 		SpriteGroupID = $"{name}.Tail".AngeHash();
-		if (!CellRenderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
+		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 	}
 
 
@@ -57,7 +57,7 @@ public abstract class Tail : BodyGadget {
 		int offsetX, int offsetY
 	) {
 
-		if (spriteGroupID == 0 || !CellRenderer.HasSpriteGroup(spriteGroupID, out int count)) return;
+		if (spriteGroupID == 0 || !Renderer.HasSpriteGroup(spriteGroupID, out int count)) return;
 		if (frequency <= 0) frequency = 1;
 		if (frequencyAlt <= 0) frequencyAlt = 1;
 		if (frameLen <= 0) frameLen = 1;
@@ -79,7 +79,7 @@ public abstract class Tail : BodyGadget {
 		int animationFrame = (character.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
 		for (int i = 0; i < count; i++) {
 
-			if (!CellRenderer.TryGetSpriteFromGroup(spriteGroupID, i, out var sprite, false, true)) break;
+			if (!Renderer.TryGetSpriteFromGroup(spriteGroupID, i, out var sprite, false, true)) break;
 			w = sprite.GlobalWidth;
 			h = sprite.GlobalHeight;
 			px = 0;
@@ -159,9 +159,9 @@ public abstract class Tail : BodyGadget {
 
 			// Draw
 			if (sprite.GlobalBorder.IsZero) {
-				CellRenderer.Draw(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
+				Renderer.Draw(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
 			} else {
-				CellRenderer.Draw_9Slice(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
+				Renderer.Draw_9Slice(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
 			}
 
 			// to Next

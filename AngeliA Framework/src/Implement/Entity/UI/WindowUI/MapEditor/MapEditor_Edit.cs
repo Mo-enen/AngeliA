@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public partial class MapEditor {
 
 
@@ -46,22 +46,22 @@ public partial class MapEditor {
 
 		DraggingUnitRect = null;
 
-		if (IsPlaying || DroppingPlayer || TaskingRoute || CellGUI.IsTyping) {
+		if (IsPlaying || DroppingPlayer || TaskingRoute || GUI.IsTyping) {
 			MouseDownPosition = null;
 			MouseDownOutsideBoundary = false;
 			MouseOutsideBoundary = false;
 			return;
 		}
 
-		var mousePos = FrameInput.MouseGlobalPosition;
+		var mousePos = Input.MouseGlobalPosition;
 		MouseInSelection = SelectionUnitRect.HasValue && SelectionUnitRect.Value.Contains(mousePos.ToUnit());
-		var cameraRect = CellRenderer.CameraRect.Shrink(1);
+		var cameraRect = Renderer.CameraRect.Shrink(1);
 		int panelWidth = Unify(PANEL_WIDTH);
 		var targetPanelRect = new IRect(
-			CellRenderer.CameraRect.x + (IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -panelWidth),
-			CellRenderer.CameraRect.y,
+			Renderer.CameraRect.x + (IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -panelWidth),
+			Renderer.CameraRect.y,
 			panelWidth,
-			CellRenderer.CameraRect.height
+			Renderer.CameraRect.height
 		);
 		MouseOutsideBoundary =
 			mousePos.x < cameraRect.x ||
@@ -71,15 +71,15 @@ public partial class MapEditor {
 			targetPanelRect.Contains(mousePos);
 
 		if (MouseInSelection) {
-			CursorSystem.SetCursorAsMove();
+			Cursor.SetCursorAsMove();
 			if (!Pasting) {
-				DrawModifyFilterLabel(new IRect(FrameInput.MouseGlobalPosition.x, FrameInput.MouseGlobalPosition.y, 1, 1));
+				DrawModifyFilterLabel(new IRect(Input.MouseGlobalPosition.x, Input.MouseGlobalPosition.y, 1, 1));
 			}
 		}
 
 		if (!MouseDownPosition.HasValue) {
 			// Mouse Down
-			int holdingMouseBtn = FrameInput.GetHoldingMouseButton();
+			int holdingMouseBtn = Input.GetHoldingMouseButton();
 			if (holdingMouseBtn != -1) {
 				MouseDownButton = holdingMouseBtn;
 				MouseDownPosition = mousePos;
@@ -87,7 +87,7 @@ public partial class MapEditor {
 				MouseMoved = false;
 				MouseDownInSelection = MouseInSelection;
 			}
-		} else if (FrameInput.MouseButtonHolding(MouseDownButton)) {
+		} else if (Input.MouseButtonHolding(MouseDownButton)) {
 			// Mouse Holding
 			bool newMouseMoved = MouseMoved || Util.SquareDistance(mousePos, MouseDownPosition.Value) > Util.Clamp(Unify(15) * Unify(15), 0, 220 * 220);
 			if (MouseMoved != newMouseMoved) {
@@ -143,7 +143,7 @@ public partial class MapEditor {
 			for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 				for (int blockTypeIndex = 0; blockTypeIndex < BLOCK_TYPE_COUNT; blockTypeIndex++) {
 					var type = (BlockType)blockTypeIndex;
-					UserEraseBlock(i, j, z, type);
+					UserEraseBlock(i, j, type);
 				}
 				UserEraseGlobalPosition(i, j, z);
 			}
@@ -210,7 +210,7 @@ public partial class MapEditor {
 							id = idChain[PaintingRan.Next(0, idChain.Length)];
 						}
 						// Set Data
-						UserSetBlock(i, j, z, type, id);
+						UserSetBlock(i, j, type, id);
 					}
 
 				} else if (mouseDownUnitPos == mouseUnitPos) {
@@ -224,7 +224,7 @@ public partial class MapEditor {
 						// In Order
 						for (int blockTypeIndex = 0; blockTypeIndex < BLOCK_TYPE_COUNT; blockTypeIndex++) {
 							var blockType = (BlockType)((blockTypeIndex + 3) % BLOCK_TYPE_COUNT);
-							if (UserEraseBlock(i, j, z, blockType)) {
+							if (UserEraseBlock(i, j, blockType)) {
 								break;
 							}
 						}
@@ -235,19 +235,19 @@ public partial class MapEditor {
 							Modify_EntityOnly ? WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0 ? BlockType.Element : BlockType.Entity :
 							Modify_LevelOnly ? BlockType.Level :
 							BlockType.Entity;
-						UserEraseBlock(i, j, z, requiredType);
+						UserEraseBlock(i, j, requiredType);
 					}
 				} else {
 					// Range Erase
 					if (!Modify_LevelOnly && !Modify_EntityOnly) {
-						UserEraseBlock(i, j, z, BlockType.Background);
+						UserEraseBlock(i, j, BlockType.Background);
 					}
 					if (!Modify_BackgroundOnly && !Modify_EntityOnly) {
-						UserEraseBlock(i, j, z, BlockType.Level);
+						UserEraseBlock(i, j, BlockType.Level);
 					}
 					if (!Modify_LevelOnly && !Modify_BackgroundOnly) {
-						UserEraseBlock(i, j, z, BlockType.Entity);
-						UserEraseBlock(i, j, z, BlockType.Element);
+						UserEraseBlock(i, j, BlockType.Entity);
+						UserEraseBlock(i, j, BlockType.Element);
 						UserEraseGlobalPosition(i, j, z);
 					}
 				}
@@ -348,7 +348,7 @@ public partial class MapEditor {
 			int id = WorldSquad.Front.GetBlockAt(i, j, type);
 			if (id != 0) {
 				if (removeOriginal) {
-					UserEraseBlock(i, j, z, type);
+					UserEraseBlock(i, j, type);
 				}
 				CopyBuffer.Add(new BlockBuffer() {
 					ID = id,
@@ -369,8 +369,8 @@ public partial class MapEditor {
 		// Get Target Rect
 		var copyBufferOriginalGlobalRect = CopyBufferOriginalUnitRect.ToGlobal();
 		var targetRect = CopyBufferOriginalUnitRect;
-		if (!CellRenderer.CameraRect.Shrink(Const.CEL * 2).Overlaps(copyBufferOriginalGlobalRect)) {
-			var cameraUnitRect = CellRenderer.CameraRect.ToUnit();
+		if (!Renderer.CameraRect.Shrink(Const.CEL * 2).Overlaps(copyBufferOriginalGlobalRect)) {
+			var cameraUnitRect = Renderer.CameraRect.ToUnit();
 			targetRect.x = cameraUnitRect.x + cameraUnitRect.width / 2 - targetRect.width / 2;
 			targetRect.y = cameraUnitRect.y + cameraUnitRect.height / 2 - targetRect.height / 2;
 		}
@@ -399,7 +399,7 @@ public partial class MapEditor {
 				UserSetGlobalPosition(unitX, unitY, z, buffer.ID, ignoreStep: true);
 			} else {
 				// Block
-				UserSetBlock(unitX, unitY, z, buffer.Type, buffer.ID, ignoreStep: true);
+				UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true);
 			}
 		}
 		RedirectForRule(unitRect);
@@ -457,7 +457,7 @@ public partial class MapEditor {
 			int id = WorldSquad.Front.GetBlockAt(i, j, type);
 			if (id != 0) {
 				if (removeOriginal) {
-					UserEraseBlock(i, j, z, type);
+					UserEraseBlock(i, j, type);
 				}
 				PastingBuffer.Add(new BlockBuffer() {
 					ID = id,
@@ -517,7 +517,7 @@ public partial class MapEditor {
 
 
 	// User CMD
-	private bool UserEraseBlock (int unitX, int unitY, int z, BlockType type, bool ignoreStep = false) {
+	private bool UserEraseBlock (int unitX, int unitY, BlockType type, bool ignoreStep = false) {
 		int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
 		if (blockID != 0) {
 			WorldSquad.Front.SetBlockAt(unitX, unitY, type, 0);
@@ -534,7 +534,7 @@ public partial class MapEditor {
 	}
 
 
-	private void UserSetBlock (int unitX, int unitY, int z, BlockType type, int id, bool ignoreStep = false) {
+	private void UserSetBlock (int unitX, int unitY, BlockType type, int id, bool ignoreStep = false) {
 		int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
 		if (blockID != id) {
 			// Set Data

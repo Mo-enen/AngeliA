@@ -52,14 +52,14 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 		base.FrameUpdate();
 		if (!Rolling) {
 			// Normal
-			if (CellRenderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
-				CellRenderer.Draw(sprite, Rect);
+			if (Renderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
+				Renderer.Draw(sprite, Rect);
 			}
 		} else {
 			// Rolling
-			if (CellRenderer.TryGetSpriteFromGroup(TypeID, 1, out var sprite, false, true)) {
+			if (Renderer.TryGetSpriteFromGroup(TypeID, 1, out var sprite, false, true)) {
 				RollingRotation += RollingSpeed;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					sprite, X + Width / 2, Y + Height / 2, 500, 500, RollingRotation, Width, Height
 				);
 			}
@@ -150,7 +150,7 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 		// Check for New Driver Join
 		if (characterDriver == null) {
 			int shrinkX = DeltaPositionX.Abs() + 16;
-			var hits = CellPhysics.OverlapAll(
+			var hits = Physics.OverlapAll(
 				PhysicsMask.ENTITY,
 				Rect.Shrink(shrinkX, shrinkX, 0, 0).EdgeOutside(Direction4.Up, 1),
 				out int count, this

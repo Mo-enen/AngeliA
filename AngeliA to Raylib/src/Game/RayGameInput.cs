@@ -10,7 +10,7 @@ public partial class RayGame {
 
 
 	private void Update_TextInput () {
-		if (!CellGUI.IsTyping) return;
+		if (!GUI.IsTyping) return;
 		int current;
 		for (int safe = 0; (current = Raylib.GetCharPressed()) > 0 && safe < 1024; safe++) {
 			OnTextInput?.Invoke((char)current);

@@ -73,11 +73,11 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	protected virtual bool RequireQuitConfirm => true;
 	protected virtual bool ShowRestartOption => true;
 	protected IRect WindowRect => new(
-		CellRenderer.CameraRect.CenterX() - CellGUI.Unify(WindowSize.x) / 2,
-		CellRenderer.CameraRect.CenterY() - CellGUI.Unify(WindowSize.y) / 2,
-		CellGUI.Unify(WindowSize.x), CellGUI.Unify(WindowSize.y)
+		Renderer.CameraRect.CenterX() - GUI.Unify(WindowSize.x) / 2,
+		Renderer.CameraRect.CenterY() - GUI.Unify(WindowSize.y) / 2,
+		GUI.Unify(WindowSize.x), GUI.Unify(WindowSize.y)
 	);
-	protected bool IsPlaying => FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
+	protected bool IsPlaying => Task.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
 	protected bool ShowingMenu => MenuEntity != null && MenuEntity.Active;
 
 	// Short
@@ -101,7 +101,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
@@ -112,12 +112,12 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			ControlHintUI.ForceShowHint(1);
 			if (MenuEntity == null || !MenuEntity.Active) {
 				// Gaming
-				CellRenderer.SetLayerToUI();
+				Renderer.SetLayerToUI();
 				GameUpdate();
-				CellRenderer.SetLayerToDefault();
+				Renderer.SetLayerToDefault();
 				// Quit
-				if (FrameInput.GameKeyUp(Gamekey.Start)) {
-					FrameInput.UseGameKey(Gamekey.Start);
+				if (Input.GameKeyUp(Gamekey.Start)) {
+					Input.UseGameKey(Gamekey.Start);
 					if (RequireQuitConfirm) {
 						OpenQuitDialog();
 					} else {
@@ -126,11 +126,11 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 				}
 				ControlHintUI.AddHint(Gamekey.Start, BuiltInText.UI_QUIT);
 			}
-			if (RequireMouseCursor) CursorSystem.RequireCursor(-1);
+			if (RequireMouseCursor) Cursor.RequireCursor(-1);
 		}
 		// Draw Arcade
 		bool allowInvoke = (this as IActionTarget).AllowInvoke();
-		var cell = CellRenderer.Draw(
+		var cell = Renderer.Draw(
 			TypeID, X + Width / 2, Y,
 			500, 0, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
@@ -159,11 +159,11 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 	void IActionTarget.Invoke () {
 		if (IsPlaying) return;
-		FrameTask.EndAllTask();
-		if (FrameTask.AddToLast(typeof(MiniGameTask).AngeHash()) is MiniGameTask task) {
+		Task.EndAllTask();
+		if (Task.AddToLast(typeof(MiniGameTask).AngeHash()) is MiniGameTask task) {
 			task.MiniGame = this;
 		}
-		FrameInput.UseAllHoldingKeys();
+		Input.UseAllHoldingKeys();
 		StartMiniGame();
 	}
 
@@ -173,15 +173,15 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	protected virtual void RestartGame () => StartMiniGame();
 
 	protected virtual void CloseMiniGame () {
-		if (FrameTask.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
+		if (Task.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
 			task.MiniGame = null;
 		}
 	}
 
 
-	protected static int Unify (int value) => CellGUI.Unify(value);
-	protected static int Unify (float value) => CellGUI.Unify(value);
-	protected static int ReverseUnify (int value) => CellGUI.ReverseUnify(value);
+	protected static int Unify (int value) => GUI.Unify(value);
+	protected static int Unify (float value) => GUI.Unify(value);
+	protected static int ReverseUnify (int value) => GUI.ReverseUnify(value);
 
 
 	// Saving
@@ -207,7 +207,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 		var badgeRect = new IRect(x, y, badgeSize, badgeSize);
 		for (int i = 0; i < data.Badges.Length; i++) {
 			int icon = spriteIDs[data.GetBadge(i).Clamp(0, spriteIDs.Length - 1)];
-			CellRenderer.Draw(icon, badgeRect, z);
+			Renderer.Draw(icon, badgeRect, z);
 			badgeRect.x += badgeRect.width;
 		}
 	}

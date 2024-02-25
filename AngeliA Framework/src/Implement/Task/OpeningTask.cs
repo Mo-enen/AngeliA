@@ -97,7 +97,7 @@ public class OpeningTask : TaskItem {
 
 		if (localFrame < SkipFrame) {
 			// Slow 
-			if (localFrame > 2 && FrameInput.AnyKeyDown) {
+			if (localFrame > 2 && Input.AnyKeyDown) {
 				SkipFrame = localFrame;
 				SkipY = (int)Util.Remap(0f, DURATION, TargetViewY + DOLLY_HEIGHT, TargetViewY, localFrame);
 			}
@@ -162,7 +162,7 @@ public class OpeningTask : TaskItem {
 
 		// Start Opening
 		if (
-			FrameTask.TryAddToLast(TYPE_ID, out var task) &&
+			Task.TryAddToLast(TYPE_ID, out var task) &&
 			task is OpeningTask oTask
 		) {
 			Stage.SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);

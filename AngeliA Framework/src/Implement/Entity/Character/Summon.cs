@@ -56,7 +56,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	public override void FillPhysics () {
 		base.FillPhysics();
 		if (CharacterState == CharacterState.PassOut) {
-			CellPhysics.FillEntity(EntityLayer.CHARACTER, this, true);
+			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 		}
 	}
 
@@ -154,7 +154,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		// Find Available Ground
 		int offsetX = freeShiftX + Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);
 		int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : Const.HALF;
-		if (CellNavigation.ExpandTo(
+		if (Navigation.ExpandTo(
 			Game.GlobalFrame, Stage.ViewRect,
 			Owner.X, Owner.Y,
 			Owner.X + offsetX, Owner.Y + offsetY,

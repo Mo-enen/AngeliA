@@ -64,11 +64,11 @@ public abstract class Slope : EnvironmentEntity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(
+		Physics.FillEntity(
 			PhysicsLayer.ENVIRONMENT, this, true,
 			DirectionHorizontal == Direction2.Left ? SpriteTag.ONEWAY_RIGHT_TAG : SpriteTag.ONEWAY_LEFT_TAG
 		);
-		CellPhysics.FillEntity(
+		Physics.FillEntity(
 			PhysicsLayer.ENVIRONMENT, this, true,
 			DirectionVertical == Direction2.Down ? SpriteTag.ONEWAY_UP_TAG : SpriteTag.ONEWAY_DOWN_TAG
 		);
@@ -78,7 +78,7 @@ public abstract class Slope : EnvironmentEntity {
 	public override void BeforePhysicsUpdate () {
 		base.BeforePhysicsUpdate();
 		// Fix Rig
-		var hits = CellPhysics.OverlapAll(CollisionMask, Rect, out int count);
+		var hits = Physics.OverlapAll(CollisionMask, Rect, out int count);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;
@@ -89,7 +89,7 @@ public abstract class Slope : EnvironmentEntity {
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		CellRenderer.Draw(TypeID, Rect);
+		Renderer.Draw(TypeID, Rect);
 	}
 
 

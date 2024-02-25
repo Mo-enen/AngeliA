@@ -25,9 +25,9 @@ public abstract class Flail : MeleeWeapon {
 
 	public Flail () {
 		SpriteIdHead = $"{GetType().AngeName()}.Head".AngeHash();
-		if (!CellRenderer.HasSprite(SpriteIdHead)) SpriteIdHead = 0;
+		if (!Renderer.HasSprite(SpriteIdHead)) SpriteIdHead = 0;
 		SpriteIdChain = $"{GetType().AngeName()}.Chain".AngeHash();
-		if (!CellRenderer.HasSpriteGroup(SpriteIdChain)) SpriteIdChain = 0;
+		if (!Renderer.HasSpriteGroup(SpriteIdChain)) SpriteIdChain = 0;
 	}
 
 	protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
@@ -92,12 +92,12 @@ public abstract class Flail : MeleeWeapon {
 		}
 
 		// Draw Head
-		if (SpriteIdHead != 0 && CellRenderer.TryGetSprite(SpriteIdHead, out var headSprite)) {
+		if (SpriteIdHead != 0 && Renderer.TryGetSprite(SpriteIdHead, out var headSprite)) {
 			int scale = character.HandGrabScaleR;
 			if (climbing && !isAttacking) scale = -scale.Abs();
 			int rot = headSprite.IsTrigger ?
 				new Float2(point.x - headPos.x, point.y - headPos.y).GetRotation() : 0;
-			CellRenderer.Draw(
+			Renderer.Draw(
 				headSprite, headPos.x, headPos.y,
 				headSprite.PivotX, headSprite.PivotY, rot,
 				headSprite.GlobalWidth * scale / 1000,
@@ -107,11 +107,11 @@ public abstract class Flail : MeleeWeapon {
 		}
 
 		// Draw Chain
-		if (SpriteIdChain != 0 && CellRenderer.HasSpriteGroup(SpriteIdChain, out int chainCount)) {
+		if (SpriteIdChain != 0 && Renderer.HasSpriteGroup(SpriteIdChain, out int chainCount)) {
 			int rot = new Float2(point.x - headPos.x, point.y - headPos.y).GetRotation();
 			for (int i = 0; i < chainCount; i++) {
-				if (CellRenderer.TryGetSpriteFromGroup(SpriteIdChain, i, out var chainSprite, false, true)) {
-					CellRenderer.Draw(
+				if (Renderer.TryGetSpriteFromGroup(SpriteIdChain, i, out var chainSprite, false, true)) {
+					Renderer.Draw(
 						chainSprite,
 						Util.RemapUnclamped(-1, chainCount, point.x, headPos.x, i),
 						Util.RemapUnclamped(-1, chainCount, point.y, headPos.y, i),

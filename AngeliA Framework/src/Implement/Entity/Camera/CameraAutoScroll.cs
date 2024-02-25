@@ -118,7 +118,7 @@ public abstract class CameraAutoScroll : Entity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
@@ -146,7 +146,7 @@ public abstract class CameraAutoScroll : Entity {
 		if (player == null || !player.Active) return;
 		int thisX = X + Const.HALF;
 		int thisY = Y + Const.HALF;
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		int? prevX = null;
 
 		if (Game.GlobalFrame == PlayerPrevXUpdateFrame + 1) {
@@ -188,7 +188,7 @@ public abstract class CameraAutoScroll : Entity {
 		}
 
 		// End by Hit Other Scroll Entity
-		var nextScroll = CellPhysics.GetEntity<CameraAutoScroll>(
+		var nextScroll = Physics.GetEntity<CameraAutoScroll>(
 			new IRect(X + Const.HALF, Y + Const.HALF, 1, 1),
 			PhysicsMask.ENVIRONMENT, this, OperationMode.TriggerOnly
 		);
@@ -228,7 +228,7 @@ public abstract class CameraAutoScroll : Entity {
 		const int PASS_OUT_GAP = Const.CEL * 3;
 		var player = Player.Selecting;
 		var pRect = player.Rect;
-		var cameraRect = CellRenderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
 		if (pRect.yMin < cameraRect.yMin - PASS_OUT_GAP) {
 			player.SetHealth(0);
 		}
@@ -325,14 +325,14 @@ public class CameraAutoScroll_Gizmos : MapEditorGizmos {
 			entityGlobalRect.x, entityGlobalRect.y,
 			(Direction3)dir.x, (Direction3)dir.y
 		)) {
-			CellRenderer.Draw_9Slice(FRAME, entityGlobalRect, Color32.GREEN);
+			Renderer.Draw_9Slice(FRAME, entityGlobalRect, Color32.GREEN);
 		}
 
 		// Draw Line
 		int entityUnitX = entityGlobalRect.x.ToUnit();
 		int entityUnitY = entityGlobalRect.y.ToUnit();
 		var squad = WorldSquad.Front;
-		int size = CellGUI.Unify(10);
+		int size = GUI.Unify(10);
 		for (int i = 0; i < CameraAutoScroll.MAX_LEN; i++) {
 			int uX = entityUnitX + dir.x * i;
 			int uY = entityUnitY + dir.y * i;
@@ -341,7 +341,7 @@ public class CameraAutoScroll_Gizmos : MapEditorGizmos {
 			int delta = Game.GlobalFrame.UMod(60) * Const.CEL / 60;
 			int x = uX.ToGlobal() + Const.HALF + delta * dir.x;
 			int y = uY.ToGlobal() + Const.HALF + delta * dir.y;
-			CellRenderer.Draw(TRI, x, y, 500, 500, dir.z, size, size);
+			Renderer.Draw(TRI, x, y, 500, 500, dir.z, size, size);
 		}
 	}
 }

@@ -97,21 +97,21 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	private CraftActionType Update_Action (IRect docItemRect, IRect resultItemRect) {
 		var action = CraftActionType.None;
 		var menu = PlayerMenuUI.Instance;
-		if (FrameInput.LastActionFromMouse) {
+		if (Input.LastActionFromMouse) {
 			// Result
 			CursorInResult = resultItemRect.MouseInside();
 			if (CursorInResult && CombineResultID != 0) {
-				if (FrameInput.MouseLeftButtonDown) {
+				if (Input.MouseLeftButtonDown) {
 					action = CraftActionType.Take;
-				} else if (FrameInput.MouseRightButtonDown) {
+				} else if (Input.MouseRightButtonDown) {
 					action = CraftActionType.QuickDrop;
 				}
 			}
 			// Doc
 			CursorInDoc = docItemRect.MouseInside();
-			if (CursorInDoc && FrameInput.MouseWheelDelta != 0 && DocumentContent.Count > DocumentPageSize) {
+			if (CursorInDoc && Input.MouseWheelDelta != 0 && DocumentContent.Count > DocumentPageSize) {
 				// Scroll Doc
-				DocumentScrollY = (DocumentScrollY - FrameInput.MouseWheelDelta).Clamp(
+				DocumentScrollY = (DocumentScrollY - Input.MouseWheelDelta).Clamp(
 					0, DocumentContent.Count - DocumentPageSize
 				);
 			}
@@ -122,58 +122,58 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				CursorInDoc = false;
 			}
 			if (CursorInResult) {
-				if (FrameInput.GameKeyDown(Gamekey.Action)) {
-					FrameInput.UseGameKey(Gamekey.Action);
+				if (Input.GameKeyDown(Gamekey.Action)) {
+					Input.UseGameKey(Gamekey.Action);
 					if (CombineResultID != 0) {
 						action = CraftActionType.Take;
 					}
 				}
-				if (FrameInput.GameKeyDown(Gamekey.Jump)) {
-					FrameInput.UseGameKey(Gamekey.Jump);
+				if (Input.GameKeyDown(Gamekey.Jump)) {
+					Input.UseGameKey(Gamekey.Jump);
 					if (CombineResultID != 0) {
 						action = CraftActionType.QuickDrop;
 					}
 				}
-				if (FrameInput.GameKeyDown(Gamekey.Down)) {
-					FrameInput.UseGameKey(Gamekey.Down);
+				if (Input.GameKeyDown(Gamekey.Down)) {
+					Input.UseGameKey(Gamekey.Down);
 					int x = (Player.INVENTORY_COLUMN - 1).Clamp(0, Player.INVENTORY_COLUMN - 1);
 					int y = Player.INVENTORY_ROW - 1;
 					menu.CursorIndex = x + Player.INVENTORY_COLUMN * y;
 					menu.CursorInBottomPanel = true;
 				}
-				if (FrameInput.GameKeyDown(Gamekey.Left)) {
-					FrameInput.UseGameKey(Gamekey.Left);
+				if (Input.GameKeyDown(Gamekey.Left)) {
+					Input.UseGameKey(Gamekey.Left);
 					CursorInResult = false;
 					menu.CursorIndex = 1;
 				}
 			} else if (menu.CursorIndex % 2 == 1) {
-				if (FrameInput.GameKeyDown(Gamekey.Right)) {
-					FrameInput.UseGameKey(Gamekey.Right);
+				if (Input.GameKeyDown(Gamekey.Right)) {
+					Input.UseGameKey(Gamekey.Right);
 					if (menu.TakingID == 0) CursorInResult = true;
 				}
 			}
 			// Doc
 			if (CursorInDoc) {
-				if (FrameInput.GameKeyDown(Gamekey.Right)) {
-					FrameInput.UseGameKey(Gamekey.Right);
+				if (Input.GameKeyDown(Gamekey.Right)) {
+					Input.UseGameKey(Gamekey.Right);
 					CursorInDoc = false;
 					menu.CursorIndex = 0;
 				}
-				if (FrameInput.GameKeyDown(Gamekey.Down)) {
-					FrameInput.UseGameKey(Gamekey.Down);
+				if (Input.GameKeyDown(Gamekey.Down)) {
+					Input.UseGameKey(Gamekey.Down);
 					DocumentScrollY = (DocumentScrollY + 4).Clamp(
 						0, DocumentContent.Count - DocumentPageSize
 					);
 				}
-				if (FrameInput.GameKeyDown(Gamekey.Up)) {
-					FrameInput.UseGameKey(Gamekey.Up);
+				if (Input.GameKeyDown(Gamekey.Up)) {
+					Input.UseGameKey(Gamekey.Up);
 					DocumentScrollY = (DocumentScrollY - 4).Clamp(
 						0, DocumentContent.Count - DocumentPageSize
 					);
 				}
 			} else if (menu.CursorIndex % 2 == 0) {
-				if (FrameInput.GameKeyDown(Gamekey.Left)) {
-					FrameInput.UseGameKey(Gamekey.Left);
+				if (Input.GameKeyDown(Gamekey.Left)) {
+					Input.UseGameKey(Gamekey.Left);
 					if (menu.TakingID == 0) CursorInDoc = true;
 				}
 			}
@@ -203,7 +203,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				cursorInInventory,
 				cursorInInventory ? i : -2
 			);
-			CellRenderer.Draw_9Slice(
+			Renderer.Draw_9Slice(
 				CRAFTING_FRAME_CODE, itemRect.Shrink(itemSize / 32),
 				itemBorder, itemBorder, itemBorder, itemBorder,
 Color32.WHITE, int.MinValue + 1
@@ -218,19 +218,19 @@ Color32.WHITE, int.MinValue + 1
 
 		// BG
 		int bgPadding = Unify(12);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			docRect.Expand(bgPadding, 0, bgPadding, bgPadding),
 Color32.BLACK, int.MinValue + 1
 		);
 
 		// Highlight Frame
-		if (CursorInDoc && !menu.CursorInBottomPanel && menu.TakingID == 0 && !FrameInput.LastActionFromMouse) {
-			CellGUI.HighlightCursor(FRAME_CODE, docItemRect, int.MinValue + 6);
+		if (CursorInDoc && !menu.CursorInBottomPanel && menu.TakingID == 0 && !Input.LastActionFromMouse) {
+			GUI.HighlightCursor(FRAME_CODE, docItemRect, int.MinValue + 6);
 		}
 
 		// Content
-		int startIndex = CellRenderer.GetUsedCellCount();
+		int startIndex = Renderer.GetUsedCellCount();
 		var lineRect = new IRect(docItemRect.x, 0, docItemRect.width, Unify(DOC_ITEM_HEIGHT));
 		DocumentScrollY = DocumentScrollY.Clamp(0, DocumentContent.Count);
 		int iconPadding = Unify(4);
@@ -249,15 +249,15 @@ Color32.BLACK, int.MinValue + 1
 			// Draw Result
 			iRect.x -= iconSize;
 			bool resultUnlocked = ItemSystem.IsItemUnlocked(result);
-			CellRenderer.Draw(resultUnlocked ? result : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
-			if (resultUnlocked && FrameInput.LastActionFromMouse && iRect.MouseInside()) {
+			Renderer.Draw(resultUnlocked ? result : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
+			if (resultUnlocked && Input.LastActionFromMouse && iRect.MouseInside()) {
 				tipID = result;
 				tipRect = iRect;
 			}
 
 			// Draw Equal Sign
 			iRect.x -= iconSize / 2 + iconPadding;
-			CellRenderer.Draw(EQUAL_CODE, new IRect(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Color32.GREY_128, int.MinValue + 4);
+			Renderer.Draw(EQUAL_CODE, new IRect(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Color32.GREY_128, int.MinValue + 4);
 
 			// Draw Combination 
 			for (int j = 3; j >= 0; j--) {
@@ -266,32 +266,32 @@ Color32.BLACK, int.MinValue + 1
 				bool unlocked = ItemSystem.IsItemUnlocked(id);
 				// Icon
 				iRect.x -= iconSize + iconPadding;
-				CellRenderer.Draw(unlocked ? id : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
+				Renderer.Draw(unlocked ? id : QUESTION_MARK_CODE, iRect, int.MinValue + 4);
 				// Tip
-				if (unlocked && FrameInput.LastActionFromMouse && iRect.MouseInside()) {
+				if (unlocked && Input.LastActionFromMouse && iRect.MouseInside()) {
 					tipID = id;
 					tipRect = iRect;
 				}
 				// Plus Sign
 				if (j > 0) {
 					iRect.x -= iconSize / 2 + iconPadding;
-					CellRenderer.Draw(PLUS_CODE, new IRect(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Color32.GREY_128, int.MinValue + 4);
+					Renderer.Draw(PLUS_CODE, new IRect(iRect.x, iRect.y + iconSize / 4, iconSize / 2, iconSize / 2), Color32.GREY_128, int.MinValue + 4);
 				}
 			}
 
 		}
 
 		// Clamp
-		CellRenderer.ClampCells(docRect, startIndex);
+		Renderer.ClampCells(docRect, startIndex);
 
 		// Tip
 		if (tipID != 0) {
-			CellGUI.Label(
-				CellContent.Get(ItemSystem.GetItemName(tipID), alignment: Alignment.BottomMid),
+			GUI.Label(
+				TextContent.Get(ItemSystem.GetItemName(tipID), alignment: Alignment.BottomMid),
 				new IRect(tipRect.x - tipRect.width * 2, tipRect.yMax + tipRect.height / 2, tipRect.width * 5, tipRect.height),
 				out var tipBounds
 			);
-			CellRenderer.Draw(Const.PIXEL, tipBounds, Color32.BLACK, int.MaxValue);
+			Renderer.Draw(Const.PIXEL, tipBounds, Color32.BLACK, int.MaxValue);
 		}
 
 	}
@@ -304,14 +304,14 @@ Color32.BLACK, int.MinValue + 1
 
 		// BG
 		int bgPadding = Unify(12);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			resultPanelRect.Expand(0, bgPadding, bgPadding, bgPadding),
 Color32.BLACK, int.MinValue + 1
 		);
 
 		// Arrow
-		CellRenderer.Draw(ARROW_CODE, new IRect(
+		Renderer.Draw(ARROW_CODE, new IRect(
 			resultItemRect.x - ARROW_SIZE,
 			resultItemRect.y + resultItemRect.height / 2 - ARROW_SIZE / 2,
 			ARROW_SIZE, ARROW_SIZE
@@ -319,19 +319,19 @@ Color32.BLACK, int.MinValue + 1
 
 		// Highlight Frame
 		if (CursorInResult && menu.TakingID == 0) {
-			if (FrameInput.LastActionFromMouse) {
-				CellRenderer.Draw(Const.PIXEL, resultItemRect, Color32.GREY_32, int.MinValue + 2);
+			if (Input.LastActionFromMouse) {
+				Renderer.Draw(Const.PIXEL, resultItemRect, Color32.GREY_32, int.MinValue + 2);
 			} else if (!menu.CursorInBottomPanel) {
-				CellGUI.HighlightCursor(FRAME_CODE, resultItemRect, int.MinValue + 6);
+				GUI.HighlightCursor(FRAME_CODE, resultItemRect, int.MinValue + 6);
 			}
 		}
 
 		// Item Frame
-		CellRenderer.Draw_9Slice(ITEM_FRAME_CODE, resultItemRect, Color32.WHITE, int.MinValue + 3);
+		Renderer.Draw_9Slice(ITEM_FRAME_CODE, resultItemRect, Color32.WHITE, int.MinValue + 3);
 
 		// Item
 		if (CombineResultID != 0) {
-			CellRenderer.Draw(CombineResultID, resultItemRect.Shrink(Unify(12)), int.MinValue + 4);
+			Renderer.Draw(CombineResultID, resultItemRect.Shrink(Unify(12)), int.MinValue + 4);
 			if (CombineResultCount > 1) {
 				int countSize = resultItemRect.width / 4;
 				var countRect = new IRect(
@@ -339,8 +339,8 @@ Color32.BLACK, int.MinValue + 1
 					resultItemRect.y,
 					countSize, countSize
 				);
-				CellRenderer.Draw(Const.PIXEL, countRect, Color32.BLACK, int.MinValue + 8);
-				CellGUI.Label(CellGUI.GetNumberCache(CombineResultCount), countRect);
+				Renderer.Draw(Const.PIXEL, countRect, Color32.BLACK, int.MinValue + 8);
+				GUI.Label(GUI.GetNumberCache(CombineResultCount), countRect);
 			}
 		}
 

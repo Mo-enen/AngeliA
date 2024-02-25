@@ -41,7 +41,7 @@ public abstract class Bullet : Entity {
 			return;
 		}
 		// Environment Hit Check
-		if (CellPhysics.Overlap(EnvironmentMask, Rect, Sender)) {
+		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
 			if (DestroyOnHitEnvironment) {
 				Active = false;
 				BeforeDespawn(null);
@@ -56,7 +56,7 @@ public abstract class Bullet : Entity {
 
 	// Api
 	protected void ReceiverHitCheck (IRect rect) {
-		var hits = CellPhysics.OverlapAll(
+		var hits = Physics.OverlapAll(
 			ReceiverMask, rect, out int count, Sender, OperationMode.ColliderAndTrigger
 		);
 		for (int i = 0; i < count; i++) {
@@ -75,9 +75,9 @@ public abstract class Bullet : Entity {
 	public bool GroundCheck (out Color32 groundTint) {
 		groundTint = Color32.WHITE;
 		bool grounded =
-			CellPhysics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
-			CellPhysics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, SpriteTag.ONEWAY_UP_TAG);
-		if (grounded && CellRenderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
+			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
+			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, SpriteTag.ONEWAY_UP_TAG);
+		if (grounded && Renderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
 			groundTint = groundSprite.SummaryTint;
 		}
 		return grounded;

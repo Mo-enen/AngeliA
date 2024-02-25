@@ -60,10 +60,10 @@ public static class DeveloperToolbar {
 	internal static void OnGameInitializeLater () {
 		if (!Game.IsEdittime) return;
 		for (int i = 0; i < RenderingUsages.Length; i++) {
-			int capa = CellRenderer.GetLayerCapacity(i);
+			int capa = Renderer.GetLayerCapacity(i);
 			RenderingUsages[i] = new BarData() {
 				Capacity = capa,
-				I2C = new IntToChars($"{CellRenderer.GetLayerName(i)}  ", $" / {capa}"),
+				I2C = new IntToChars($"{Renderer.GetLayerName(i)}  ", $" / {capa}"),
 			};
 		}
 		for (int i = 0; i < EntityUsages.Length; i++) {
@@ -79,12 +79,12 @@ public static class DeveloperToolbar {
 	[OnUniverseOpen]
 	internal static void OnUniverseOpen () {
 		if (!Game.IsEdittime) return;
-		TextUsages = new BarData[CellRenderer.TextLayerCount];
+		TextUsages = new BarData[Renderer.TextLayerCount];
 		for (int i = 0; i < TextUsages.Length; i++) {
-			int capa = CellRenderer.GetTextLayerCapacity(i);
+			int capa = Renderer.GetTextLayerCapacity(i);
 			TextUsages[i] = new BarData() {
 				Capacity = capa,
-				I2C = new IntToChars($"{CellRenderer.GetTextLayerName(i)}  ", $" / {capa}"),
+				I2C = new IntToChars($"{Renderer.GetTextLayerName(i)}  ", $" / {capa}"),
 			};
 		}
 	}
@@ -94,16 +94,16 @@ public static class DeveloperToolbar {
 	internal static void UpdateToolbar () {
 		if (!Game.IsEdittime) return;
 
-		CursorSystem.RequireCursor();
-		int oldLayer = CellRenderer.CurrentLayerIndex;
-		CellRenderer.SetLayerToUI();
+		Cursor.RequireCursor();
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayerToUI();
 
-		var panelRect = new IRect(CellRenderer.CameraRect.xMax, CellRenderer.CameraRect.yMax, 0, 0);
+		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
 		int panelYMax = panelRect.y;
 
 		// Tool Buttons
-		int buttonSize = CellGUI.Unify(36);
-		int padding = CellGUI.Unify(6);
+		int buttonSize = GUI.Unify(36);
+		int padding = GUI.Unify(6);
 		panelRect.height = buttonSize + padding * 2;
 		panelRect.y -= panelRect.height;
 
@@ -113,40 +113,40 @@ public static class DeveloperToolbar {
 			buttonSize, buttonSize
 		);
 
-		if (Game.ShowFPS) rect.x -= CellGUI.Unify(32);
+		if (Game.ShowFPS) rect.x -= GUI.Unify(32);
 
 		// Collider Btn
-		if (DrawCollider) CellRenderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (CellGUI.Button(rect, BTN_COLLIDER, BTN_COLLIDER, BTN_COLLIDER, 0, 0, 0, int.MaxValue)) {
+		if (DrawCollider) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
+		if (GUI.Button(rect, BTN_COLLIDER, BTN_COLLIDER, BTN_COLLIDER, 0, 0, 0, int.MaxValue)) {
 			DrawCollider = !DrawCollider;
 		}
 		rect.x -= rect.width + padding;
 
 		// Bound Btn
-		if (DrawBounds) CellRenderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (CellGUI.Button(rect, BTN_BOUND, BTN_BOUND, BTN_BOUND, 0, 0, 0, int.MaxValue)) {
+		if (DrawBounds) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
+		if (GUI.Button(rect, BTN_BOUND, BTN_BOUND, BTN_BOUND, 0, 0, 0, int.MaxValue)) {
 			DrawBounds = !DrawBounds;
 		}
 		rect.x -= rect.width + padding;
 
 		// Profiler Btn
-		if (ProfilerPanelOpening) CellRenderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (CellGUI.Button(rect, BTN_PROFILER, BTN_PROFILER, BTN_PROFILER, 0, 0, 0, int.MaxValue)) {
+		if (ProfilerPanelOpening) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
+		if (GUI.Button(rect, BTN_PROFILER, BTN_PROFILER, BTN_PROFILER, 0, 0, 0, int.MaxValue)) {
 			ProfilerPanelOpening = !ProfilerPanelOpening;
 		}
 		rect.x -= rect.width + padding;
 
 		// Effect Btn
-		if (EffectPanelOpening) CellRenderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (CellGUI.Button(rect, BTN_EFFECT, BTN_EFFECT, BTN_EFFECT, 0, 0, 0, int.MaxValue)) {
+		if (EffectPanelOpening) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
+		if (GUI.Button(rect, BTN_EFFECT, BTN_EFFECT, BTN_EFFECT, 0, 0, 0, int.MaxValue)) {
 			EffectPanelOpening = !EffectPanelOpening;
 			EffectsEnabled.FillWithValue(false);
 		}
 		rect.x -= rect.width + padding;
 
 		// Map Editor Btn
-		if (MapEditor.IsActived) CellRenderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (CellGUI.Button(rect, BTN_MAP, BTN_MAP, BTN_MAP, 0, 0, 0, int.MaxValue)) {
+		if (MapEditor.IsActived) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
+		if (GUI.Button(rect, BTN_MAP, BTN_MAP, BTN_MAP, 0, 0, 0, int.MaxValue)) {
 			if (MapEditor.IsActived) {
 				WindowUI.CloseWindow(MapEditor.TYPE_ID);
 				Game.RestartGame();
@@ -164,13 +164,13 @@ public static class DeveloperToolbar {
 
 		// BG
 		PanelRect = new IRect(panelRect.x, panelRect.y, panelRect.width, panelYMax - panelRect.y);
-		CellRenderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, int.MaxValue - 16);
+		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, int.MaxValue - 16);
 
 		// Finish
-		CellRenderer.SetLayer(oldLayer);
-		if (FrameInput.MouseLeftButton && PanelRect.MouseInside()) {
-			FrameInput.UseMouseKey(0);
-			FrameInput.UseGameKey(Gamekey.Action);
+		Renderer.SetLayer(oldLayer);
+		if (Input.MouseLeftButton && PanelRect.MouseInside()) {
+			Input.UseMouseKey(0);
+			Input.UseGameKey(Gamekey.Action);
 		}
 	}
 
@@ -180,10 +180,10 @@ public static class DeveloperToolbar {
 		if (!Game.IsEdittime) return;
 		if (!ProfilerPanelOpening) return;
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
-			RenderingUsages[i].Value = CellRenderer.GetUsedCellCount(i);
+			RenderingUsages[i].Value = Renderer.GetUsedCellCount(i);
 		}
-		for (int i = 0; i < CellRenderer.TextLayerCount; i++) {
-			TextUsages[i].Value = CellRenderer.GetTextUsedCellCount(i);
+		for (int i = 0; i < Renderer.TextLayerCount; i++) {
+			TextUsages[i].Value = Renderer.GetTextUsedCellCount(i);
 		}
 		for (int i = 0; i < EntityLayer.COUNT; i++) {
 			EntityUsages[i].Value = Stage.EntityCounts[i];
@@ -202,7 +202,7 @@ public static class DeveloperToolbar {
 			// Init Cells
 			if (CellPhysicsCells.Count == 0) {
 				try {
-					var layers = Util.GetStaticFieldValue(typeof(CellPhysics), "Layers") as System.Array;
+					var layers = Util.GetStaticFieldValue(typeof(Physics), "Layers") as System.Array;
 					for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
 						var layerObj = layers.GetValue(layerIndex);
 						CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
@@ -212,8 +212,8 @@ public static class DeveloperToolbar {
 			}
 			// Draw Cells
 			if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
-				var cameraRect = CellRenderer.CameraRect;
-				int thick = CellGUI.Unify(1);
+				var cameraRect = Renderer.CameraRect;
+				int thick = GUI.Unify(1);
 				for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
 					try {
 						var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
@@ -225,7 +225,7 @@ public static class DeveloperToolbar {
 							for (int x = 0; x < cellWidth; x++) {
 								for (int d = 0; d < celDepth; d++) {
 									var cell = cells[x, y, d];
-									if (cell.Frame != CellPhysics.CurrentFrame) break;
+									if (cell.Frame != Physics.CurrentFrame) break;
 									if (!cell.Rect.Overlaps(cameraRect)) continue;
 									DrawGizmosRectAsLine(PanelRect, cell.Rect.EdgeInside(Direction4.Down, thick), tint, true);
 									DrawGizmosRectAsLine(PanelRect, cell.Rect.EdgeInside(Direction4.Up, thick), tint, true);
@@ -241,7 +241,7 @@ public static class DeveloperToolbar {
 
 		// Draw Bounds
 		if (DrawBounds) {
-			int thick = CellGUI.Unify(1);
+			int thick = GUI.Unify(1);
 			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				var entities = Stage.Entities[layer];
 				int count = Stage.EntityCounts[layer];
@@ -292,10 +292,10 @@ public static class DeveloperToolbar {
 	// Panel
 	private static void DrawProfilerPanel (ref IRect panelRect) {
 
-		int barHeight = CellGUI.Unify(24);
+		int barHeight = GUI.Unify(24);
 		panelRect.height = barHeight * (EntityUsages.Length + TextUsages.Length + RenderingUsages.Length);
 		panelRect.y -= panelRect.height;
-		int barPadding = CellGUI.Unify(4);
+		int barPadding = GUI.Unify(4);
 		var rect = new IRect(panelRect.x, panelRect.yMax - barHeight, panelRect.width, barHeight);
 
 		// Entity
@@ -317,13 +317,13 @@ public static class DeveloperToolbar {
 		// Func
 		static void DrawBar (IRect rect, BarData data, Color32 barColor) {
 			int width = Util.RemapUnclamped(0, data.Capacity, 0, rect.width, data.Value);
-			CellRenderer.Draw(Const.PIXEL, new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
+			Renderer.Draw(Const.PIXEL, new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
 			// Label
-			int startIndex = CellRenderer.GetTextUsedCellCount();
-			CellGUI.Label(
-				CellContent.Get(data.I2C.GetChars(data.Value), Color32.GREY_230, 14, Alignment.MidMid), rect
+			int startIndex = Renderer.GetTextUsedCellCount();
+			GUI.Label(
+				TextContent.Get(data.I2C.GetChars(data.Value), Color32.GREY_230, 14, Alignment.MidMid), rect
 			);
-			if (CellRenderer.GetTextCells(out var cells, out int count)) {
+			if (Renderer.GetTextCells(out var cells, out int count)) {
 				for (int i = startIndex; i < count && i < startIndex + data.I2C.Prefix.Length; i++) {
 					cells[i].Color = new Color32(96, 96, 96, 255);
 				}
@@ -333,8 +333,8 @@ public static class DeveloperToolbar {
 
 
 	private static void DrawEffectPanel (ref IRect panelRect) {
-		int itemHeight = CellGUI.Unify(28);
-		int itemPadding = CellGUI.Unify(8);
+		int itemHeight = GUI.Unify(28);
+		int itemPadding = GUI.Unify(8);
 		panelRect.height = Const.SCREEN_EFFECT_COUNT * (itemHeight + itemPadding) + itemPadding;
 		panelRect.y -= panelRect.height;
 		var rect = new IRect(panelRect.x + itemPadding, panelRect.yMax, panelRect.width - itemPadding * 2, itemHeight);
@@ -344,14 +344,14 @@ public static class DeveloperToolbar {
 
 			// Label
 			string name = Const.SCREEN_EFFECT_NAMES[i];
-			CellGUI.Label(CellContent.Get(
+			GUI.Label(TextContent.Get(
 				name, Color32.GREY_216, charSize: 18, alignment: Alignment.MidLeft
 			), rect);
 
 			// Enable Button
 			var enableRect = rect.EdgeInside(Direction4.Right, itemHeight);
 			bool enable = EffectsEnabled[i];
-			if (CellGUI.Button(
+			if (GUI.Button(
 				enableRect,
 				BuiltInSprite.CIRCLE_16, BuiltInSprite.CIRCLE_16, BuiltInSprite.CIRCLE_16,
 				enable ? BuiltInSprite.CHECK_MARK_16 : 0,
@@ -361,7 +361,7 @@ Color32.GREY_32, Color32
 			)) {
 				EffectsEnabled[i] = !enable;
 			}
-			CursorSystem.SetCursorAsHand(enableRect);
+			Cursor.SetCursorAsHand(enableRect);
 		}
 
 		// Update Values

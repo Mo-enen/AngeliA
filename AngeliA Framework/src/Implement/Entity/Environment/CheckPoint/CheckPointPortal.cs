@@ -34,11 +34,11 @@ public class CheckPointPortal : CircleFlamePortal {
 		base.FrameUpdate();
 
 		// Draw Cp Icon
-		if (CellRenderer.TryGetSprite(TargetCheckPointID, out var sprite)) {
+		if (Renderer.TryGetSprite(TargetCheckPointID, out var sprite)) {
 			const int SIZE = 196;
 			var rect = new IRect(Rect.CenterX() - SIZE / 2, Rect.CenterY() - SIZE / 2, SIZE, SIZE);
 			var tint = Color32.LerpUnclamped(Color32.WHITE_0, Color32.WHITE, (Game.GlobalFrame - SpawnFrame).PingPong(60) / 60f);
-			CellRenderer.Draw(TargetCheckPointID, rect.Fit(sprite), tint, RenderingMaxZ + 1);
+			Renderer.Draw(TargetCheckPointID, rect.Fit(sprite), tint, RenderingMaxZ + 1);
 		}
 	}
 

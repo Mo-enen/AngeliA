@@ -71,8 +71,8 @@ public class DialogueTask : TaskItem {
 		DialogueUI.Update();
 
 		// Roll
-		if (FrameInput.GameKeyDown(Gamekey.Action)) {
-			FrameInput.UseGameKey(Gamekey.Action);
+		if (Input.GameKeyDown(Gamekey.Action)) {
+			Input.UseGameKey(Gamekey.Action);
 			if (DialogueUI.Roll()) {
 				CurrentSection++;
 			}
@@ -96,7 +96,7 @@ public class DialogueTask : TaskItem {
 			UniverseSystem.CurrentUniverse.ConversationRoot, globalName,
 			$"{Language.CurrentLanguage}.{AngePath.CONVERSATION_FILE_EXT}"
 		);
-		if (Main == null || FrameTask.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;
+		if (Main == null || Task.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;
 
 		Main.CurrentSection = 0;
 		Main.LoadedSection = -1;
@@ -106,7 +106,7 @@ public class DialogueTask : TaskItem {
 		Main.DialogueUI.Active = true;
 
 		// Add Task
-		FrameTask.AddToLast(TASK_ID);
+		Task.AddToLast(TASK_ID);
 
 		// Load Conversation
 		bool prevLineConfig = false;

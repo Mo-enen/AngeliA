@@ -22,7 +22,7 @@ public abstract class Collectable : EnvironmentEntity {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		if (CellRenderer.TryGetSprite(TypeID, out var sprite)) {
+		if (Renderer.TryGetSprite(TypeID, out var sprite)) {
 			X += (Width - sprite.GlobalWidth) / 2;
 			Y += (Height - sprite.GlobalHeight) / 2;
 			Width = sprite.GlobalWidth;
@@ -33,13 +33,13 @@ public abstract class Collectable : EnvironmentEntity {
 
 	public override void FillPhysics () {
 		base.FillPhysics();
-		CellPhysics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
 	public override void FrameUpdate () {
 		base.FrameUpdate();
-		CellRenderer.Draw(TypeID, Rect);
+		Renderer.Draw(TypeID, Rect);
 	}
 
 
