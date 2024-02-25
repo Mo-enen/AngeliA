@@ -2,6 +2,7 @@
 .github/
 obj/
 bin/
+Build/
 *.vsconfig
 *.editorconfig
 *.ini
