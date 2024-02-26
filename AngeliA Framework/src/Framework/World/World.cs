@@ -77,11 +77,10 @@ public class World {
 		LoadFromDiskLogic(mapFile, pos.x, pos.y, pos.z);
 
 
-	public bool LoadFromDisk (string mapFolder, int worldX, int worldY, int worldZ) =>
-		LoadFromDiskLogic(
-			Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ)),
-			worldX, worldY, worldZ
-		);
+	public bool LoadFromDisk (string mapFolder, int worldX, int worldY, int worldZ) => LoadFromDiskLogic(
+		Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ)),
+		worldX, worldY, worldZ
+	);
 
 
 	public static void ForAllEntities (string filePath, System.Action<int, int, int> callback) {
@@ -321,10 +320,10 @@ public class World {
 					}
 				} catch (System.Exception ex) { Util.LogException(ex); }
 			}
+			success = true;
 		} catch (System.Exception ex) { Util.LogException(ex); }
 
 		// Final
-		success = true;
 		return success;
 	}
 

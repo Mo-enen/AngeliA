@@ -168,7 +168,7 @@ public class MiniGameTetris : MiniGame {
 	private void GamePlayUpdate () {
 
 		if (GameOver) {
-			if (FrameInput.AnyKeyDown) OpenGameOverDialog();
+			if (Input.AnyKeyDown) OpenGameOverDialog();
 			return;
 		}
 
@@ -202,14 +202,14 @@ public class MiniGameTetris : MiniGame {
 		}
 
 		// Left Right
-		if (FrameInput.GameKeyDown(Gamekey.Left)) {
+		if (Input.GameKeyDown(Gamekey.Left)) {
 			MoveHorizontal(Direction3.Left);
 			LeftKeyDownFrame = Game.GlobalFrame;
 			RightKeyDownFrame = int.MinValue;
 			DownKeyDownFrame = int.MinValue;
 		}
 
-		if (FrameInput.GameKeyDown(Gamekey.Right)) {
+		if (Input.GameKeyDown(Gamekey.Right)) {
 			MoveHorizontal(Direction3.Right);
 			RightKeyDownFrame = Game.GlobalFrame;
 			LeftKeyDownFrame = int.MinValue;
@@ -217,26 +217,26 @@ public class MiniGameTetris : MiniGame {
 		}
 
 		if (
-			FrameInput.DirectionX == Direction3.Left &&
+			Input.DirectionX == Direction3.Left &&
 			Game.GlobalFrame > LeftKeyDownFrame + AUTO_SHIFT_DELAY &&
 			(Game.GlobalFrame - LeftKeyDownFrame) % AUTO_REPEAT_RATE == 0
 		) MoveHorizontal(Direction3.Left);
 
 		if (
-			FrameInput.DirectionX == Direction3.Right &&
+			Input.DirectionX == Direction3.Right &&
 			Game.GlobalFrame > RightKeyDownFrame + AUTO_SHIFT_DELAY &&
 			(Game.GlobalFrame - RightKeyDownFrame) % AUTO_REPEAT_RATE == 0
 		) MoveHorizontal(Direction3.Right);
 
 		// Soft Drop
-		if (FrameInput.GameKeyDown(Gamekey.Down)) {
+		if (Input.GameKeyDown(Gamekey.Down)) {
 			SoftDrop();
 			DownKeyDownFrame = Game.GlobalFrame;
 			LeftKeyDownFrame = int.MinValue;
 			RightKeyDownFrame = int.MinValue;
 		}
 		if (
-			FrameInput.GameKeyHolding(Gamekey.Down) &&
+			Input.GameKeyHolding(Gamekey.Down) &&
 			Game.GlobalFrame > DownKeyDownFrame + AUTO_SHIFT_DELAY &&
 			(Game.GlobalFrame - DownKeyDownFrame) % AUTO_REPEAT_RATE == 0
 		) {
@@ -244,14 +244,14 @@ public class MiniGameTetris : MiniGame {
 		}
 
 		// Hard Drop
-		if (FrameInput.GameKeyDown(Gamekey.Up)) HardDrop();
+		if (Input.GameKeyDown(Gamekey.Up)) HardDrop();
 
 		// Rotate
-		if (FrameInput.GameKeyDown(Gamekey.Action)) Rotate(false);
-		if (FrameInput.GameKeyDown(Gamekey.Jump)) Rotate(true);
+		if (Input.GameKeyDown(Gamekey.Action)) Rotate(false);
+		if (Input.GameKeyDown(Gamekey.Jump)) Rotate(true);
 
 		// Hold
-		if (FrameInput.GameKeyDown(Gamekey.Select)) Hold();
+		if (Input.GameKeyDown(Gamekey.Select)) Hold();
 
 		// Hint
 		ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, HINT_MOVE);
@@ -264,14 +264,14 @@ public class MiniGameTetris : MiniGame {
 	private void RenderingUpdate () {
 
 		var stageRect = WindowRect;
-		CellRenderer.Draw(Const.PIXEL, stageRect, Color32.BLACK, int.MinValue + 1);
+		Renderer.Draw(Const.PIXEL, stageRect, Color32.BLACK, int.MinValue + 1);
 
 		if (GameOver) {
 			var labelRect = new IRect(0, 0, stageRect.width * 2 / 3, stageRect.height / 4);
 			labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 			labelRect.y = stageRect.CenterY() - labelRect.height / 2;
-			CellRenderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
-			CellGUI.Label(BuiltInText.UI_GAMEOVER, labelRect);
+			Renderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
+			GUI.Label(BuiltInText.UI_GAMEOVER, labelRect);
 		}
 
 		int blockSize = stageRect.width / WIDTH;
@@ -281,14 +281,14 @@ public class MiniGameTetris : MiniGame {
 		var gridRect = new IRect(0, stageRect.y, Unify(GRID_THICKNESS), stageRect.height);
 		for (int x = 0; x <= WIDTH; x++) {
 			gridRect.x = stageRect.x + x * blockSize - Unify(GRID_THICKNESS) / 2;
-			CellRenderer.Draw(LINE_V_CODE, gridRect, GRID_TINT, 0);
+			Renderer.Draw(LINE_V_CODE, gridRect, GRID_TINT, 0);
 		}
 		gridRect.x = stageRect.x;
 		gridRect.width = stageRect.width;
 		gridRect.height = Unify(GRID_THICKNESS);
 		for (int y = 0; y <= STAGE_HEIGHT; y++) {
 			gridRect.y = stageRect.y + y * blockSize - Unify(GRID_THICKNESS) / 2;
-			CellRenderer.Draw(LINE_H_CODE, gridRect, GRID_TINT, 0);
+			Renderer.Draw(LINE_H_CODE, gridRect, GRID_TINT, 0);
 		}
 
 		// Staged Blocks
@@ -299,7 +299,7 @@ public class MiniGameTetris : MiniGame {
 				if (blockIndex < 0) continue;
 				stageBlockRect.x = stageRect.x + i * blockSize;
 				stageBlockRect.y = stageRect.y + j * blockSize;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					BLOCK_CODE, stageBlockRect,
 					blockIndex < TETROMINOES.Length ? TETROMINOES[blockIndex].Tint : Color32.WHITE,
 					1
@@ -318,7 +318,7 @@ public class MiniGameTetris : MiniGame {
 					currentBlockRect.x = stageRect.x + (CurrentTetrominoX + i) * blockSize;
 					currentBlockRect.y = stageRect.y + (CurrentTetrominoY + j) * blockSize;
 					tint.a = (byte)(CurrentTetrominoY + j < STAGE_HEIGHT ? 255 : 128);
-					CellRenderer.Draw(BLOCK_CODE, currentBlockRect, tint, 1);
+					Renderer.Draw(BLOCK_CODE, currentBlockRect, tint, 1);
 				}
 			}
 
@@ -330,7 +330,7 @@ public class MiniGameTetris : MiniGame {
 						if (!currentTetromino[i, j, CurrentTetrominoRotation]) continue;
 						currentBlockRect.x = stageRect.x + (CurrentTetrominoX + i) * blockSize;
 						currentBlockRect.y = stageRect.y + (lockY + j) * blockSize;
-						CellRenderer.Draw(BLOCK_EMPTY_CODE, currentBlockRect, currentTetromino.Tint, 1);
+						Renderer.Draw(BLOCK_EMPTY_CODE, currentBlockRect, currentTetromino.Tint, 1);
 					}
 				}
 			}
@@ -349,10 +349,10 @@ public class MiniGameTetris : MiniGame {
 					if (!tetromino[i, j, 0]) continue;
 					queueRect.x = stageRect.xMax + QUEUE_PADDING + i * queueBlockSize;
 					queueRect.y = stageRect.yMax - (renderedCount + 1) * 4 * queueBlockSize + j * queueBlockSize;
-					CellRenderer.Draw(BLOCK_CODE, queueRect, tetromino.Tint, 1);
+					Renderer.Draw(BLOCK_CODE, queueRect, tetromino.Tint, 1);
 				}
 			}
-			CellRenderer.Draw(
+			Renderer.Draw(
 				Const.PIXEL,
 				new IRect(
 					stageRect.xMax + QUEUE_PADDING - BG_PADDING,
@@ -375,10 +375,10 @@ public class MiniGameTetris : MiniGame {
 					if (!holdingTetromino[i, j, 0]) continue;
 					holdingRect.x = stageRect.xMin - 4 * holdingBlockSize + i * holdingBlockSize - HOLDING_PADDING;
 					holdingRect.y = stageRect.yMax - 4 * holdingBlockSize + j * holdingBlockSize;
-					CellRenderer.Draw(BLOCK_CODE, holdingRect, holdingTetromino.Tint, 1);
+					Renderer.Draw(BLOCK_CODE, holdingRect, holdingTetromino.Tint, 1);
 				}
 			}
-			CellRenderer.Draw(
+			Renderer.Draw(
 				Const.PIXEL,
 				new IRect(
 					stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
@@ -389,7 +389,7 @@ public class MiniGameTetris : MiniGame {
 Color32.BLACK, 0
 			);
 			// Label
-			CellGUI.Label(
+			GUI.Label(
 				UI_HOLDING, new IRect(
 					stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 					stageRect.yMax - 4 * holdingBlockSize,
@@ -409,16 +409,16 @@ Color32.BLACK, 0
 		);
 
 		// Lines
-		CellGUI.Label(CellContent.Get(
+		GUI.Label(TextContent.Get(
 			UI_CLR_LINE,
 			CHAR_SIZE, Alignment.MidLeft
 		), stateRect, out var lineBounds);
-		CellGUI.Label(CellContent.Get(
+		GUI.Label(TextContent.Get(
 			LinesString.GetChars(ClearedLines),
 			CHAR_SIZE, Alignment.MidRight
 		), stateRect, out var lineNumberBounds);
 
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL, new IRect(
 				lineBounds.x, lineBounds.y,
 				lineNumberBounds.xMax - lineBounds.x, lineBounds.height

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }
@@ -580,6 +580,20 @@ public static class Stage {
 			for (int i = 0; i < count; i++) {
 				var e = entities[i];
 				if (e.Active && e.FromWorld) {
+					e.Active = false;
+				}
+			}
+		}
+	}
+
+
+	public static void DespawnAllEntitiesOfType<E> () where E : Entity {
+		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+			var entities = Entities[layer];
+			int count = EntityCounts[layer];
+			for (int i = 0; i < count; i++) {
+				var e = entities[i];
+				if (e.Active && e is E) {
 					e.Active = false;
 				}
 			}

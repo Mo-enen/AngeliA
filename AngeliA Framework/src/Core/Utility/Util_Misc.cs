@@ -110,7 +110,7 @@ public static partial class Util {
 				Verb = "runas",
 				FileName = "cmd.exe",
 				Arguments = $"/C \"{arguments}\"",
-				WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+				WindowStyle = ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				RedirectStandardOutput = true,
@@ -118,12 +118,12 @@ public static partial class Util {
 				WorkingDirectory = workingDirectory,
 			});
 			if (logMessage) {
-				Util.Log(process.StandardOutput.ReadToEnd());
-				Util.LogError(process.StandardError.ReadToEnd());
+				Log(process.StandardOutput.ReadToEnd());
+				LogError(process.StandardError.ReadToEnd());
 			}
 			process.WaitForExit(10_000);
 		} catch (System.Exception ex) {
-			Util.LogException(ex);
+			LogException(ex);
 		}
 	}
 

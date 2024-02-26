@@ -126,7 +126,7 @@ public class MiniGameSokoban : MiniGame {
 
 	protected override void GameUpdate () {
 		if (CurrentLevel >= Levels.Length) {
-			if (FrameInput.AnyKeyDown) ShowAllClearedDialog();
+			if (Input.AnyKeyDown) ShowAllClearedDialog();
 		}
 		Update_GamePlay();
 		Update_Rendering();
@@ -153,17 +153,17 @@ public class MiniGameSokoban : MiniGame {
 
 		// Move
 		bool boxChanged = false;
-		if (FrameInput.GameKeyDown(Gamekey.Down)) {
+		if (Input.GameKeyDown(Gamekey.Down)) {
 			MovePlayer(Direction4.Down, out boxChanged);
 		}
-		if (FrameInput.GameKeyDown(Gamekey.Up)) {
+		if (Input.GameKeyDown(Gamekey.Up)) {
 			MovePlayer(Direction4.Up, out boxChanged);
 		}
-		if (FrameInput.GameKeyDown(Gamekey.Left)) {
+		if (Input.GameKeyDown(Gamekey.Left)) {
 			MovePlayer(Direction4.Left, out boxChanged);
 			PlayerFacingRight = false;
 		}
-		if (FrameInput.GameKeyDown(Gamekey.Right)) {
+		if (Input.GameKeyDown(Gamekey.Right)) {
 			MovePlayer(Direction4.Right, out boxChanged);
 			PlayerFacingRight = true;
 		}
@@ -205,11 +205,11 @@ public class MiniGameSokoban : MiniGame {
 Color32.BLACK, Color32.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20) / 20f
 			);
 		}
-		CellRenderer.Draw(Const.PIXEL, windowRect.Expand(0, 0, 0, barHeight), bgTint, 0);
+		Renderer.Draw(Const.PIXEL, windowRect.Expand(0, 0, 0, barHeight), bgTint, 0);
 
 		// Label
-		CellGUI.Label(
-			CellContent.Get(LevelLabelToString.GetChars(CurrentLevel + 1), alignment: Alignment.MidRight),
+		GUI.Label(
+			TextContent.Get(LevelLabelToString.GetChars(CurrentLevel + 1), alignment: Alignment.MidRight),
 			new IRect(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight)
 		);
 
@@ -221,7 +221,7 @@ Color32.BLACK, Color32.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20
 				blockRect.x = stageRect.x + x * blockRect.width;
 				blockRect.y = stageRect.y + y * blockRect.height;
 				var tint = block == BlockType.BoxInGoal ? new Color32(140, 255, 140, 255) : Color32.WHITE;
-				CellRenderer.Draw(
+				Renderer.Draw(
 					block switch {
 						BlockType.Box => BOX_CODE,
 						BlockType.BoxInGoal => BOX_CODE,
@@ -251,7 +251,7 @@ Color32.BLACK, Color32.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20
 		}
 
 		// Draw
-		CellRenderer.Draw(PLAYER_CODE, playerRect, 2);
+		Renderer.Draw(PLAYER_CODE, playerRect, 2);
 
 	}
 

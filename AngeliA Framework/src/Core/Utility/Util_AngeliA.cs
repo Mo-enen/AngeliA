@@ -76,28 +76,28 @@ public static partial class Util {
 		var ignoreDelete = new HashSet<string>();
 
 		// For all Editable Conversation Files
-		foreach (var path in Util.EnumerateFiles(workspace, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
+		foreach (var path in EnumerateFiles(workspace, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
 
-			string globalName = Util.GetNameWithoutExtension(path);
-			string conFolderPath = Util.CombinePaths(exportRoot, globalName);
+			string globalName = GetNameWithoutExtension(path);
+			string conFolderPath = CombinePaths(exportRoot, globalName);
 			ignoreDelete.TryAdd(globalName);
 
 			// Check Dirty
-			long modTime = Util.GetFileModifyDate(path);
-			long creationTime = Util.GetFileCreationDate(path);
-			if (!forceCompile && modTime == creationTime && Util.FolderExists(conFolderPath)) continue;
-			Util.SetFileModifyDate(path, creationTime);
+			long modTime = GetFileModifyDate(path);
+			long creationTime = GetFileCreationDate(path);
+			if (!forceCompile && modTime == creationTime && FolderExists(conFolderPath)) continue;
+			SetFileModifyDate(path, creationTime);
 
 			// Delete Existing for All Languages
-			Util.DeleteFolder(conFolderPath);
-			Util.CreateFolder(conFolderPath);
+			DeleteFolder(conFolderPath);
+			CreateFolder(conFolderPath);
 
 			// Compile
 			var builder = new StringBuilder();
 			string currentIso = "en";
 			bool contentFlag0 = false;
 			bool contentFlag1 = false;
-			foreach (string line in Util.ForAllLines(path, Encoding.UTF8)) {
+			foreach (string line in ForAllLines(path, Encoding.UTF8)) {
 
 				string trimedLine = line.TrimStart(' ', '\t');
 
@@ -113,13 +113,13 @@ public static partial class Util {
 				if (trimedLine[0] == '>') {
 					// Switch Language
 					string iso = trimedLine[1..];
-					if (trimedLine.Length > 1 && Util.IsSupportedLanguageISO(iso) && currentIso != iso) {
+					if (trimedLine.Length > 1 && IsSupportedLanguageISO(iso) && currentIso != iso) {
 						// Make File
-						string targetPath = Util.CombinePaths(
+						string targetPath = CombinePaths(
 							conFolderPath,
 							$"{currentIso}.{AngePath.CONVERSATION_FILE_EXT}"
 						);
-						Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
+						TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
 						builder.Clear();
 						currentIso = iso;
 					}
@@ -151,11 +151,11 @@ public static partial class Util {
 
 			// Make File for Last Language 
 			if (builder.Length != 0) {
-				string targetPath = Util.CombinePaths(
+				string targetPath = CombinePaths(
 					conFolderPath,
 					$"{currentIso}.{AngePath.CONVERSATION_FILE_EXT}"
 				);
-				Util.TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
+				TextToFile(builder.ToString(), targetPath, Encoding.UTF8);
 				builder.Clear();
 			}
 
@@ -164,15 +164,15 @@ public static partial class Util {
 		// Delete Useless Old Files
 		if (ignoreDelete != null) {
 			List<string> deleteList = null;
-			foreach (var path in Util.EnumerateFolders(exportRoot, true, "*")) {
-				if (ignoreDelete.Contains(Util.GetNameWithoutExtension(path))) continue;
+			foreach (var path in EnumerateFolders(exportRoot, true, "*")) {
+				if (ignoreDelete.Contains(GetNameWithoutExtension(path))) continue;
 				deleteList ??= new List<string>();
 				deleteList.Add(path);
 			}
 			if (deleteList != null) {
 				foreach (var path in deleteList) {
-					Util.DeleteFolder(path);
-					Util.DeleteFile(path + ".meta");
+					DeleteFolder(path);
+					DeleteFile(path + ".meta");
 				}
 			}
 		}
@@ -397,7 +397,7 @@ public static partial class Util {
 	public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
 	public static double RandomDouble01 () => GlobalRandom.NextDouble();
 	public static Color32 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
-		var result = Util.HsvToRgb(
+		var result = HsvToRgb(
 			RandomInt(minH, maxH) / 360f,
 			RandomInt(minS, maxS) / 100f,
 			RandomInt(minV, maxV) / 100f
@@ -430,8 +430,8 @@ public static partial class Util {
 			if (bigRot || useFlip) {
 				targetWidth = -targetWidth;
 			} else {
-				targetX -= (int)(Util.Cos(targetRotation * Util.Deg2Rad) * targetWidth);
-				targetY += (int)(Util.Sin(targetRotation * Util.Deg2Rad) * targetWidth);
+				targetX -= (int)(Cos(targetRotation * Deg2Rad) * targetWidth);
+				targetY += (int)(Sin(targetRotation * Deg2Rad) * targetWidth);
 			}
 		}
 
@@ -459,14 +459,14 @@ public static partial class Util {
 
 		// Rotate
 		targetRotation = parentRotation + rotation;
-		targetX = parentX - (int)(Util.Sin(parentRotation * Util.Deg2Rad) * parentHeight);
-		targetY = parentY - (int)(Util.Cos(parentRotation * Util.Deg2Rad) * parentHeight);
+		targetX = parentX - (int)(Sin(parentRotation * Deg2Rad) * parentHeight);
+		targetY = parentY - (int)(Cos(parentRotation * Deg2Rad) * parentHeight);
 		targetPivotX = rotation > 0 != bigRot ? 1000 : 0;
 		if (parentWidth < 0 != targetPivotX > 500) {
 			int pWidth = parentWidth.Abs();
 			int sign = targetPivotX > 500 ? -1 : 1;
-			targetX -= (int)(Util.Cos(parentRotation * Util.Deg2Rad) * pWidth) * sign;
-			targetY += (int)(Util.Sin(parentRotation * Util.Deg2Rad) * pWidth) * sign;
+			targetX -= (int)(Cos(parentRotation * Deg2Rad) * pWidth) * sign;
+			targetY += (int)(Sin(parentRotation * Deg2Rad) * pWidth) * sign;
 		}
 
 		// Flip
@@ -475,8 +475,8 @@ public static partial class Util {
 			if (bigRot || useFlip) {
 				targetWidth = -targetWidth;
 			} else {
-				targetX -= (int)(Util.Cos(targetRotation * Util.Deg2Rad) * targetWidth);
-				targetY += (int)(Util.Sin(targetRotation * Util.Deg2Rad) * targetWidth);
+				targetX -= (int)(Cos(targetRotation * Deg2Rad) * targetWidth);
+				targetY += (int)(Sin(targetRotation * Deg2Rad) * targetWidth);
 			}
 		}
 
@@ -801,7 +801,7 @@ public static partial class Util {
 				if (jumpOut) break;
 				lastIndex = i;
 			}
-			if (resultIndex != lastIndex) resultIndex = Util.RandomInt(resultIndex, lastIndex + 1);
+			if (resultIndex != lastIndex) resultIndex = RandomInt(resultIndex, lastIndex + 1);
 			return resultIndex;
 		}
 	}

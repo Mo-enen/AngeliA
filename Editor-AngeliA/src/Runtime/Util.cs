@@ -52,8 +52,8 @@ public static class EditorUtil {
 		// Release
 		CacheBuilder.Append(" -c release");
 
-        // Execute
-        AngeliA.Util.ExecuteCommand(AngeliA.Util.GetParentPath(projectPath), CacheBuilder.ToString(), logMessage);
+		// Execute
+		Util.ExecuteCommand(Util.GetParentPath(projectPath), CacheBuilder.ToString(), logMessage);
 		CacheBuilder.Clear();
 
 	}
@@ -63,12 +63,12 @@ public static class EditorUtil {
 
 		// Find Runtime
 		string runtimeRoot = string.Empty;
-		foreach (string path in AngeliA.Util.EnumerateFiles(AngeliA.Util.GetParentPath(sdkPath), false, RUNTIME_LOCATION)) {
-			runtimeRoot = AngeliA.Util.GetParentPath(path);
+		foreach (string path in Util.EnumerateFiles(Util.GetParentPath(sdkPath), false, RUNTIME_LOCATION)) {
+			runtimeRoot = Util.GetParentPath(path);
 			break;
 		}
 		if (string.IsNullOrEmpty(runtimeRoot)) {
-            AngeliA.Util.LogError($"Can not find dotnet runtime. it should be inside dotnet sdk folder: {sdkPath}");
+			Util.LogError($"Can not find dotnet runtime. it should be inside dotnet sdk folder: {sdkPath}");
 			return string.Empty;
 		}
 
@@ -81,11 +81,11 @@ public static class EditorUtil {
 		CacheBuilder.AppendLine("\t</PropertyGroup>");
 
 		// Add Dotnet Runtime Dll
-		foreach (string path in AngeliA.Util.EnumerateFiles(runtimeRoot, true, "*.dll")) {
+		foreach (string path in Util.EnumerateFiles(runtimeRoot, true, "*.dll")) {
             CacheBuilder.AppendLine("\t<ItemGroup>");
             // Include
             CacheBuilder.Append("\t\t<Reference Include=\"");
-            CacheBuilder.Append(AngeliA.Util.GetNameWithoutExtension(path));
+            CacheBuilder.Append(Util.GetNameWithoutExtension(path));
             CacheBuilder.AppendLine("\">");
             // Hint Path
             CacheBuilder.Append("\t\t\t<HintPath>");

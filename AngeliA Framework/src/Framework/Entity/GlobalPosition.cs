@@ -59,12 +59,8 @@ public interface IGlobalPosition {
 	}
 
 
-	[OnUniverseOpen]
-	public static void OnUniverseOpen () => LoadFromDisk(WorldSquad.MapRoot);
-
-
-	[OnMapChannelChanged]
-	public static void OnMapChannelChanged (MapChannel _) => LoadFromDisk(WorldSquad.MapRoot);
+	[OnMapFolderChanged]
+	public static void OnMapFolderChanged () => LoadFromDisk(WorldSquad.MapRoot);
 
 
 	#endregion

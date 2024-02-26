@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public class OpeningTask : TaskItem {
 
 
@@ -25,6 +25,7 @@ public class OpeningTask : TaskItem {
 	// Data
 	private int SkipFrame = int.MaxValue;
 	private int SkipY = 0;
+	private int PlayerSpawnX = 0;
 	private int PlayerSpawnY = 0;
 
 
@@ -32,6 +33,7 @@ public class OpeningTask : TaskItem {
 	public override void OnStart () {
 		base.OnStart();
 		SkipFrame = int.MaxValue;
+		PlayerSpawnX = TargetViewX;
 		PlayerSpawnY = TargetViewY;
 		TargetViewY += Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
 		Stage.SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
@@ -79,14 +81,14 @@ public class OpeningTask : TaskItem {
 			var player = Player.Selecting;
 			if (player != null) {
 				if (!player.Active) {
-					player = Stage.SpawnEntity(player.TypeID, TargetViewX, PlayerSpawnY) as Player;
+					player = Stage.SpawnEntity(player.TypeID, PlayerSpawnX, PlayerSpawnY) as Player;
 				} else {
-					player.X = TargetViewX;
+					player.X = PlayerSpawnX;
 					player.Y = PlayerSpawnY;
 				}
 				player?.OnActivated();
 				player?.Heal(player.MaxHP);
-				if (player != null && GotoBed && Stage.TryGetEntity<Bed>(out var bed)) {
+				if (player != null && GotoBed && Stage.TryGetEntityNearby<Bed>(new Int2(PlayerSpawnX, PlayerSpawnY), out var bed)) {
 					bed.GetTargetOnBed(Player.Selecting);
 					TargetViewX = player.Rect.CenterX();
 					TargetViewY = player.Y + Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
@@ -146,7 +148,7 @@ public class OpeningTask : TaskItem {
 			startUnitPosition = Player.RespawnCpUnitPosition.Value;
 			gotoBed = false;
 		} else if (Player.HomeUnitPosition.HasValue) {
-			// Sleeped Pos
+			// Home Pos
 			startUnitPosition = new Int3(
 				Player.HomeUnitPosition.Value.x,
 				Player.HomeUnitPosition.Value.y,

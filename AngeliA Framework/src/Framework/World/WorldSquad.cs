@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
-public enum MapChannel { BuiltIn, Procedure, }
+public enum MapChannel { Crafted, Procedure, }
 
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapChannelChangedAttribute : System.Attribute { }
+[System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapFolderChangedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLevelRenderedAttribute : System.Attribute { }
 
@@ -25,20 +25,18 @@ public sealed class WorldSquad : IBlockSquad {
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
 	public static IBlockSquad FrontBlockSquad => Front;
-	public static MapChannel Channel { get; private set; } = MapChannel.BuiltIn;
+	public static MapChannel Channel { get; private set; } = MapChannel.Crafted;
 	public static string MapRoot { get; private set; } = "";
 	public static bool Enable { get; set; } = true;
-	public static bool SolidMode { get; set; } = true;
-	public static bool ShowElement { get; set; } = false;
+	public static bool EditMode { get; set; } = false;
 	public static byte BehindAlpha { get; set; } = Game.WorldBehindAlpha;
-	public static bool SaveBeforeReload { get; set; } = false;
 	public World this[int i, int j] => Worlds[i, j];
 
 	// Data
 	private readonly World[,] Worlds = new World[3, 3] { { new(), new(), new() }, { new(), new(), new() }, { new(), new(), new() }, };
 	private readonly World[,] WorldBuffer = new World[3, 3];
 	private readonly World[] WorldBufferAlt = new World[9];
-	private static event System.Action<MapChannel> OnMapChannelChanged;
+	private static event System.Action OnMapFolderChanged;
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
 	private bool RequireReload = false;
@@ -61,18 +59,18 @@ public sealed class WorldSquad : IBlockSquad {
 	public static void OnGameInitialize () {
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
-		Util.LinkEventWithAttribute<OnMapChannelChangedAttribute>(typeof(WorldSquad), nameof(OnMapChannelChanged));
+		Util.LinkEventWithAttribute<OnMapFolderChangedAttribute>(typeof(WorldSquad), nameof(OnMapFolderChanged));
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
-		SetMapChannel(MapChannel.BuiltIn, forceOperate: true);
-		Front.ForceReloadDelay();
-		Behind.ForceReloadDelay();
+		//SwitchToCraftedMode(forceOperate: true);
+		//Front.ForceReloadDelay();
+		//Behind.ForceReloadDelay();
 	}
 
 
 	[OnUniverseOpen]
 	public static void OnUniverseOpen () {
-		SetMapChannel(MapChannel.BuiltIn, forceOperate: true);
+		SwitchToCraftedMode(forceOperate: true);
 		Front.ForceReloadDelay();
 		Behind.ForceReloadDelay();
 	}
@@ -105,7 +103,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 		if (RequireReload || !midZone.Contains(center) || z != LoadedZ) {
 			// Reload All Worlds in Squad
-			if (SaveBeforeReload && !isBehind) {
+			if (EditMode && !isBehind) {
 				SaveToFile();
 			}
 			LoadSquadFromDisk(
@@ -157,7 +155,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 		// BG-Level
 		if (!isBehind) BeforeLevelRendered?.Invoke();
-		bool ignoreCollider = isBehind || !SolidMode;
+		bool ignoreCollider = isBehind || EditMode;
 		for (int worldI = 0; worldI < 3; worldI++) {
 			for (int worldJ = 0; worldJ < 3; worldJ++) {
 				var world = Worlds[worldI, worldJ];
@@ -253,7 +251,7 @@ public sealed class WorldSquad : IBlockSquad {
 				}
 
 				// Element
-				if (ShowElement && !isBehind) {
+				if (EditMode && !isBehind) {
 					for (int j = d; j < u; j++) {
 						int localY = j - worldUnitRect.y;
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
@@ -281,14 +279,17 @@ public sealed class WorldSquad : IBlockSquad {
 	#region --- API ---
 
 
-	public static void SetMapChannel (MapChannel newChannel, string folderName = "", bool forceOperate = false) {
+
+	public static void SwitchToCraftedMode (bool forceOperate = false) => SetMode(string.Empty, MapChannel.Crafted, forceOperate);
+	public static void SwitchToProcedureMode (string folderName, bool forceOperate = false) => SetMode(folderName, MapChannel.Procedure, forceOperate);
+	private static void SetMode (string folderName, MapChannel newChannel, bool forceOperate = false) {
 
 		if (!forceOperate && newChannel == Channel) return;
 
-		if (SaveBeforeReload) Front.SaveToFile();
+		if (EditMode) Front.SaveToFile();
 
 		MapRoot = newChannel switch {
-			MapChannel.BuiltIn => UniverseSystem.CurrentUniverse.MapRoot,
+			MapChannel.Crafted => UniverseSystem.CurrentUniverse.MapRoot,
 			MapChannel.Procedure => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, folderName),
 			_ => UniverseSystem.CurrentUniverse.MapRoot,
 		};
@@ -310,7 +311,7 @@ public sealed class WorldSquad : IBlockSquad {
 		Front.RequireReload = false;
 		Behind.RequireReload = false;
 
-		OnMapChannelChanged?.Invoke(newChannel);
+		OnMapFolderChanged?.Invoke();
 	}
 
 
@@ -483,13 +484,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
-		if (SolidMode) {
-			// Spawn Entity
-			var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
-			if (entity is Character ch) {
-				ch.X += ch.Width / 2;
-			}
-		} else {
+		if (EditMode) {
 			// Draw Entity
 			var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 			if (!CullingCameraRect.Overlaps(rect)) return;
@@ -501,6 +496,12 @@ public sealed class WorldSquad : IBlockSquad {
 				Renderer.Draw(sprite, rect);
 			} else {
 				Renderer.Draw(ENTITY_CODE, rect);
+			}
+		} else {
+			// Spawn Entity
+			var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
+			if (entity is Character ch) {
+				ch.X += ch.Width / 2;
 			}
 		}
 	}

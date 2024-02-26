@@ -25,22 +25,6 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 
 
-	#region --- SUB ---
-
-
-	[System.Serializable]
-	private class PlayerGameData {
-		public int HomeUnitPositionX = int.MinValue;
-		public int HomeUnitPositionY = int.MinValue;
-		public int HomeUnitPositionZ = int.MinValue;
-	}
-
-
-	#endregion
-
-
-
-
 	#region --- VAR ---
 
 
@@ -54,7 +38,28 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	public static Player Selecting { get; private set; } = null;
 	public static bool HasActivePlayer => Selecting != null && Selecting.Active;
 	public static Int3? RespawnCpUnitPosition { get; set; } = null;
-	public static Int3? HomeUnitPosition { get; private set; } = null;
+	public static Int3? HomeUnitPosition {
+		get {
+			if (
+				HomeUnitPositionX.Value == int.MinValue ||
+				HomeUnitPositionY.Value == int.MinValue ||
+				HomeUnitPositionZ.Value == int.MinValue
+			) return null;
+			return new Int3(HomeUnitPositionX.Value, HomeUnitPositionY.Value, HomeUnitPositionZ.Value);
+		}
+		set {
+			if (value.HasValue) {
+				HomeUnitPositionX.Value = value.Value.x;
+				HomeUnitPositionY.Value = value.Value.y;
+				HomeUnitPositionZ.Value = value.Value.z;
+			} else {
+				HomeUnitPositionX.Value = int.MinValue;
+				HomeUnitPositionY.Value = int.MinValue;
+				HomeUnitPositionZ.Value = int.MinValue;
+			}
+
+		}
+	}
 	public override bool IsChargingAttack =>
 		Selecting == this &&
 		MinimalChargeAttackDuration != int.MaxValue &&
@@ -88,6 +93,12 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	private int PrevZ = int.MinValue;
 	private int IgnoreInventoryFrame = int.MinValue;
 
+	// Saving
+	private static readonly SavingInt LastPlayerID = new("Player.LastPlayerID", 0);
+	private static readonly SavingInt HomeUnitPositionX = new("Player.HomeX", int.MinValue);
+	private static readonly SavingInt HomeUnitPositionY = new("Player.HomeY", int.MinValue);
+	private static readonly SavingInt HomeUnitPositionZ = new("Player.HomeZ", int.MinValue);
+
 
 	#endregion
 
@@ -98,10 +109,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 
 	[OnUniverseOpen]
-	public static void OnUniverseOpen_Player () {
-		LoadGameDataFromFile();
-		SelectPlayer(0);
-	}
+	public static void OnUniverseOpen_Player () => SelectPlayer(LastPlayerID.Value);
 
 
 	public override void OnActivated () {
@@ -573,6 +581,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 		if (playerID == 0) playerID = GetDefaultPlayerID();
 		if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
 			Selecting = player;
+			LastPlayerID.Value = player.TypeID;
 		}
 	}
 
@@ -580,7 +589,6 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	public void MakeHome (Int3 unitPosition) {
 		if (unitPosition != HomeUnitPosition) {
 			HomeUnitPosition = unitPosition;
-			SaveGameDataToFile();
 		}
 	}
 
@@ -610,33 +618,6 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 
 	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private static void LoadGameDataFromFile () {
-		var data = JsonUtil.LoadOrCreateJson<PlayerGameData>(UniverseSystem.CurrentUniverse.SavingMetaRoot);
-		HomeUnitPosition =
-			data.HomeUnitPositionX != int.MinValue &&
-			data.HomeUnitPositionY != int.MinValue &&
-			data.HomeUnitPositionZ != int.MinValue ?
-			new(data.HomeUnitPositionX, data.HomeUnitPositionY, data.HomeUnitPositionZ) : null;
-	}
-
-
-	private static void SaveGameDataToFile () {
-		JsonUtil.SaveJson(new PlayerGameData() {
-			HomeUnitPositionX = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.x : int.MinValue,
-			HomeUnitPositionY = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.y : int.MinValue,
-			HomeUnitPositionZ = HomeUnitPosition.HasValue ? HomeUnitPosition.Value.z : int.MinValue,
-		}, UniverseSystem.CurrentUniverse.SavingMetaRoot);
-	}
 
 
 	#endregion

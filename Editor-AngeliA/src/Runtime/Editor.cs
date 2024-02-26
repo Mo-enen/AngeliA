@@ -76,6 +76,7 @@ public class Editor {
 	private int CurrentWindowIndex = 0;
 	private WindowMode CurrentWindowMode;
 	private bool FloatMascotDragged = false;
+	private Shader UiShader;
 
 
 	#endregion
@@ -94,10 +95,10 @@ public class Editor {
 		Util.LinkEventWithAttribute<OnTryingToQuitAttribute>(typeof(Editor), nameof(OnTryingToQuit));
 		editor.Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
 		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
-		Util.OnLogException += editor.LogException;
-		Util.OnLogError += editor.LogError;
-		Util.OnLog += editor.Log;
-		Util.OnLogWarning += editor.LogWarning;
+		Util.OnLogException += RaylibUtil.LogException;
+		Util.OnLogError += RaylibUtil.LogError;
+		Util.OnLog += RaylibUtil.Log;
+		Util.OnLogWarning += RaylibUtil.LogWarning;
 		Raylib.SetConfigFlags(ConfigFlags.TransparentWindow);
 		Raylib.InitWindow(1024 / 9 * 16, 1024, $"{AngeliaGameTitleAttribute.GetTitle()} {AngeliaVersionAttribute.GetVersionString()}");
 		Raylib.EnableEventWaiting();
@@ -106,12 +107,13 @@ public class Editor {
 
 		// Init Resources
 		string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
-		var fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
+		var fonts = RaylibUtil.LoadFontDataFromFile(Util.CombinePaths(universePath, "Fonts"));
 		editor.Font = fonts != null && fonts.Length > 0 ? fonts[0] : new();
 		string sheetPath = AngePath.GetSheetPath(universePath);
 		string artworkPath = AngePath.GetAsepriteRoot(universePath);
 		SheetUtil.RecreateSheetIfArtworkModified(sheetPath, artworkPath);
 		editor.Sheet.LoadFromDisk(sheetPath);
+		//editor.UiShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.BASIC_VS);
 
 		// Init Window
 		var windowList = new List<Window>();
@@ -209,16 +211,25 @@ public class Editor {
 		int tabWidth = (screenWidth - padding * 2) / Windows.Length;
 		var rect = new Rectangle(padding, 0, tabWidth, barHeight);
 		var mousePos = Raylib.GetMousePosition();
-		//if (CurrentWindowMode == WindowMode.Window) {
-		//Raylib.DrawRectangle(0, 0, screenWidth, barHeight, new Color(38, 38, 38, 255));
-		//}
 		// Content
 		for (int i = 0; i < Windows.Length; i++) {
 			var window = Windows[i];
 			bool selecting = i == CurrentWindowIndex;
 
+			// Hovering
+			bool hovering = false;
+			if (!selecting && rect.Contains(mousePos)) {
+				// Cursor
+				Raylib.SetMouseCursor(MouseCursor.PointingHand);
+				hovering = true;
+			}
+
 			// Body
-			Sheet.Draw_9Slice(selecting ? UI_TAB : UI_INACTIVE_TAB, rect.Shrink(0, 0, 0, contentPadding));
+			Sheet.Draw_9Slice(
+				selecting ? UI_TAB : UI_INACTIVE_TAB,
+				rect.Shrink(0, 0, 0, contentPadding),
+				hovering ? Color.Gray : Color.White
+			);
 			var contentRect = rect.Shrink(contentPadding, contentPadding, 0, contentPadding);
 
 			// Icon
@@ -232,11 +243,6 @@ public class Editor {
 				TextContent.Get(window.Title, Color32.GREY_196, charSize: 20, alignment: Alignment.MidLeft),
 				contentRect.Shrink(window.Icon != 0 ? iconSize : contentPadding, 0, 0, 0)
 			);
-
-			// Cursor
-			if (!selecting && rect.Contains(mousePos)) {
-				Raylib.SetMouseCursor(MouseCursor.PointingHand);
-			}
 
 			// Next
 			rect.X += rect.Width;
@@ -383,34 +389,6 @@ public class Editor {
 		CurrentWindowMode = newMode;
 		Setting.WindowMode = newMode == WindowMode.Window;
 		Setting.Initialized = true;
-	}
-
-
-	// Log
-	private void Log (object msg) {
-		System.Console.ResetColor();
-		Console.WriteLine(msg);
-	}
-
-	private void LogWarning (object msg) {
-		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine(msg);
-		Console.ResetColor();
-	}
-
-	private void LogError (object msg) {
-		Console.ForegroundColor = ConsoleColor.Red;
-		Console.WriteLine(msg);
-		Console.ResetColor();
-	}
-
-	private void LogException (System.Exception ex) {
-		Console.ForegroundColor = ConsoleColor.Red;
-		Console.WriteLine(ex.Source);
-		Console.WriteLine(ex.GetType().Name);
-		Console.WriteLine(ex.Message);
-		System.Console.WriteLine();
-		Console.ResetColor();
 	}
 
 

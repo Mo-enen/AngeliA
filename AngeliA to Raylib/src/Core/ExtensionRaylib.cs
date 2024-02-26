@@ -16,6 +16,11 @@ public static class ExtensionRaylib {
 
 
 
+	public static Color WithAlpha (this Color color, byte newAlpha) {
+		color.A = newAlpha;
+		return color;
+	}
+
 	public static Color ToRaylib (this Color32 color) => new(color.r, color.g, color.b, color.a);
 	public static Color32 ToAngelia (this Color color) => new(color.R, color.G, color.B, color.A);
 

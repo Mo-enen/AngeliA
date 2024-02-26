@@ -1,4 +1,4 @@
 ﻿using System;
 
-[AttributeUsage(System.AttributeTargets.Method)] public class OnQuitAttribute : Attribute { }
-[AttributeUsage(System.AttributeTargets.Method)] public class OnTryingToQuitAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class OnQuitAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class OnTryingToQuitAttribute : Attribute { }

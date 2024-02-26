@@ -85,11 +85,11 @@ public class MiniGamePong : MiniGame {
 
 		// Player Paddle Movement
 		int playerPaddleSpeed = 0;
-		if (FrameInput.DirectionY == Direction3.Down) {
+		if (Input.DirectionY == Direction3.Down) {
 			PlayerPaddleY -= PADDLE_SPEED;
 			playerPaddleSpeed = -PADDLE_SPEED;
 		}
-		if (FrameInput.DirectionY == Direction3.Up) {
+		if (Input.DirectionY == Direction3.Up) {
 			PlayerPaddleY += PADDLE_SPEED;
 			playerPaddleSpeed = PADDLE_SPEED;
 		}
@@ -172,7 +172,7 @@ public class MiniGamePong : MiniGame {
 		int size = windowRect.width;
 
 		// BG
-		CellRenderer.Draw(Const.PIXEL, windowRect, Color32.BLACK, int.MinValue);
+		Renderer.Draw(Const.PIXEL, windowRect, Color32.BLACK, int.MinValue);
 
 		// Badgets
 		int badgetSize = Unify(30);
@@ -184,7 +184,7 @@ public class MiniGamePong : MiniGame {
 		int lineWidth = size * 5 / 1000;
 		int lineHeight = size / LINE_DOT_COUNT / 2;
 		for (int i = 0; i < LINE_DOT_COUNT; i++) {
-			CellRenderer.Draw(
+			Renderer.Draw(
 				Const.PIXEL,
 				midX, windowRect.y + i * lineHeight * 2 + lineHeight / 2,
 				500, 0, 0,
@@ -197,25 +197,25 @@ public class MiniGamePong : MiniGame {
 		int scoreGap = size / 30;
 		int scoreWidth = windowRect.width / 2 - scoreGap;
 		int scoreY = windowRect.y + windowRect.height - charRectSize;
-		CellGUI.Label(
-			CellContent.Get(PlayerScoreString.GetChars(ScorePlayer), 42, Alignment.MidRight),
+		GUI.Label(
+			TextContent.Get(PlayerScoreString.GetChars(ScorePlayer), 42, Alignment.MidRight),
 			new IRect(windowRect.x, scoreY, scoreWidth, charRectSize)
 		);
-		CellGUI.Label(
-			CellContent.Get(BotScoreString.GetChars(ScoreBot), 42, Alignment.MidLeft),
+		GUI.Label(
+			TextContent.Get(BotScoreString.GetChars(ScoreBot), 42, Alignment.MidLeft),
 			new IRect(midX + scoreGap, scoreY, scoreWidth, charRectSize)
 		);
 
 		// Paddle
 		int paddleLen = size * PADDLE_LEN / 1000;
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			Util.RemapUnclamped(0, 1000, windowRect.x, windowRect.x + size, PADDLE_X),
 			Util.RemapUnclamped(0, 1000, windowRect.y, windowRect.y + size, PlayerPaddleY),
 			500, 500, 0,
 			size * PADDLE_THICK / 1000, paddleLen
 		);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			Const.PIXEL,
 			Util.RemapUnclamped(0, 1000, windowRect.x + size, windowRect.x, PADDLE_X),
 			Util.RemapUnclamped(0, 1000, windowRect.y, windowRect.y + size, BotPaddleY),
@@ -226,7 +226,7 @@ public class MiniGamePong : MiniGame {
 		// Ball
 		if (!ServingBall || (Game.GlobalFrame - ServeBallFrame) % 6 < 3) {
 			int ballSize = size * BALL_SIZE / 1000;
-			CellRenderer.Draw(Const.PIXEL,
+			Renderer.Draw(Const.PIXEL,
 				Util.RemapUnclamped(0, 1000, windowRect.x, windowRect.x + size, BallX),
 				Util.RemapUnclamped(0, 1000, windowRect.y, windowRect.y + size, BallY),
 				500, 500, 0, ballSize, ballSize

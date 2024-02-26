@@ -131,7 +131,7 @@ public partial class RayGame {
 
 	[OnSheetLoaded]
 	internal static void OnSheetLoaded () {
-		foreach (var (_, texture) in TexturePool) Game.UnloadTexture(texture);
+		foreach (var (_, texture) in TexturePool) UnloadTexture(texture);
 		TexturePool.Clear();
 		TextureUtil.FillSheetIntoTexturePool(Renderer.Sheet, TexturePool);
 	}

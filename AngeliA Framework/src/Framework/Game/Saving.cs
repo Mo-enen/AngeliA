@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public static class SavingSystem {
@@ -13,12 +13,21 @@ public static class SavingSystem {
 	private static string SavingPath = "";
 	public static bool FileLoaded = false;
 	public static bool IsDirty = true;
+	public static int PoolVersion = 0;
 
 
 	[OnGameInitialize(int.MinValue + 1)]
 	public static void OnGameInitialize () {
 		SavingPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Saving.txt");
+		FileLoaded = false;
 		LoadFromFile();
+	}
+
+
+	[OnUniverseOpen(int.MinValue + 1)]
+	public static void OnUniverseOpen () {
+		if (Game.GlobalFrame == 0) return;
+		OnGameInitialize();
 	}
 
 
@@ -38,6 +47,7 @@ public static class SavingSystem {
 	public static void LoadFromFile () {
 		FileLoaded = true;
 		Pool.Clear();
+		PoolVersion++;
 		foreach (string line in Util.ForAllLines(SavingPath, Encoding.ASCII)) {
 			int midIndex = line.IndexOf(':');
 			if (midIndex <= 0 || midIndex > line.Length) continue;
@@ -72,24 +82,24 @@ public abstract class Saving<T> {
 			if (!SavingSystem.FileLoaded) {
 				SavingSystem.LoadFromFile();
 			}
-			if (!Loaded) {
+			if (PoolVersion != SavingSystem.PoolVersion) {
+				PoolVersion = SavingSystem.PoolVersion;
 				if (SavingSystem.Pool.TryGetValue(ID, out var strValue)) {
 					_Value = StringToValue(strValue.value);
 				} else {
 					_Value = DefaultValue;
 				}
-				Loaded = true;
 			}
 			return _Value;
 		}
 		set {
 			if (
-				!Loaded ||
+				PoolVersion != SavingSystem.PoolVersion ||
 				(_Value != null && !_Value.Equals(value)) ||
 				(_Value == null && value != null)
 			) {
 				_Value = value;
-				Loaded = true;
+				PoolVersion = SavingSystem.PoolVersion;
 				SavingSystem.IsDirty = true;
 				string newString = ValueToString(value);
 				SavingSystem.Pool[ID] = (Key, newString);
@@ -99,14 +109,14 @@ public abstract class Saving<T> {
 	public T DefaultValue { get; init; }
 
 	private T _Value;
-	private bool Loaded;
+	private int PoolVersion;
 
 	public Saving (string key, T defaultValue = default) {
 		Key = key;
 		ID = key.AngeHash();
 		DefaultValue = defaultValue;
 		_Value = defaultValue;
-		Loaded = false;
+		PoolVersion = -1;
 	}
 
 	protected abstract T StringToValue (string str);

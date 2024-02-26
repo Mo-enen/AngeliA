@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 using AngeliA.Framework;
 
 
-
 namespace AngeliaGame; 
+
+
 [EntityAttribute.Capacity(1, 0)]
 public class GuaGua : Summon {
 
@@ -56,7 +58,7 @@ public class GuaGua : Summon {
 		if (state == CharacterState.Sleep) {
 			if (Stage.TryGetEntityNearby<Basket>(new(X, Y), out var basket)) {
 				int offsetY = 0;
-				if (CellRenderer.TryGetSprite(basket.TypeID, out var basketSprite)) {
+				if (Renderer.TryGetSprite(basket.TypeID, out var basketSprite)) {
 					offsetY = basketSprite.GlobalHeight - basketSprite.GlobalBorder.up;
 				}
 				X = basket.X + basket.Width / 2;

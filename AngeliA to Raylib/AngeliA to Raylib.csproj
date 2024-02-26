@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AssemblyName>AngeliA Player</AssemblyName>
-		<RootNamespace>AngeliaPlayer</RootNamespace>
+		<AssemblyName>AngeliA to Raylib</AssemblyName>
+		<RootNamespace>AngeliaToRaylib</RootNamespace>
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
@@ -48,7 +48,7 @@
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 	</ItemGroup>
-	
+
 	<!--Ref-->
 	<ItemGroup>
 		<Reference Include="raylib-cs">

@@ -136,9 +136,9 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				}
 				if (Input.GameKeyDown(Gamekey.Down)) {
 					Input.UseGameKey(Gamekey.Down);
-					int x = (Player.INVENTORY_COLUMN - 1).Clamp(0, Player.INVENTORY_COLUMN - 1);
-					int y = Player.INVENTORY_ROW - 1;
-					menu.CursorIndex = x + Player.INVENTORY_COLUMN * y;
+					int x = (Character.INVENTORY_COLUMN - 1).Clamp(0, Character.INVENTORY_COLUMN - 1);
+					int y = Character.INVENTORY_ROW - 1;
+					menu.CursorIndex = x + Character.INVENTORY_COLUMN * y;
 					menu.CursorInBottomPanel = true;
 				}
 				if (Input.GameKeyDown(Gamekey.Left)) {

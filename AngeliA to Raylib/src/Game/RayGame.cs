@@ -13,13 +13,13 @@ public partial class RayGame : Game {
 
 
 	// Const
-	private const long TICK_GAP = System.TimeSpan.TicksPerSecond / 60;
+	private const long TICK_GAP = TimeSpan.TicksPerSecond / 60;
 
 	// Event
-	private event System.Action OnGameQuitting = null;
-	private event System.Func<bool> OnGameTryingToQuit = null;
-	private event System.Action<bool> OnWindowFocusChanged = null;
-	private event System.Action<char> OnTextInput = null;
+	private event Action OnGameQuitting = null;
+	private event Func<bool> OnGameTryingToQuit = null;
+	private event Action<bool> OnWindowFocusChanged = null;
+	private event Action<char> OnTextInput = null;
 
 	// Data
 	private bool RequireQuitGame = false;
@@ -37,7 +37,7 @@ public partial class RayGame : Game {
 		while (!game.RequireQuitGame) {
 			try {
 				game.UpdateGame();
-			} catch (System.Exception ex) {
+			} catch (Exception ex) {
 				Util.LogException(ex);
 			}
 		}
@@ -56,6 +56,12 @@ public partial class RayGame : Game {
 		);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
+
+		// Debug
+		Util.OnLogException += RaylibUtil.LogException;
+		Util.OnLogError += RaylibUtil.LogError;
+		Util.OnLog += RaylibUtil.Log;
+		Util.OnLogWarning += RaylibUtil.LogWarning;
 
 		// Pipeline
 		Fonts = RaylibUtil.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
@@ -182,7 +188,7 @@ public partial class RayGame : Game {
 		// Unload Texture
 		Raylib.UnloadTexture(EMPTY_TEXTURE);
 		Raylib.UnloadRenderTexture(RenderTexture);
-		foreach (var (_, texture) in TexturePool) Game.UnloadTexture(texture);
+		foreach (var (_, texture) in TexturePool) UnloadTexture(texture);
 
 		// Quit Game
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();

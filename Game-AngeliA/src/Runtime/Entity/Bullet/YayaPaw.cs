@@ -36,8 +36,8 @@ public class YayaPaw : MeleeBullet {
 		}
 
 		// Paw
-		if (CellRenderer.TryGetSpriteFromGroup(TypeID, spriteFrame, out var sprite, false, true)) {
-			CellRenderer.Draw(
+		if (Renderer.TryGetSpriteFromGroup(TypeID, spriteFrame, out var sprite, false, true)) {
+			Renderer.Draw(
 				sprite,
 				X + Width / 2 + (facingRight ? PAW_X[localFrame] : -PAW_X[localFrame]),
 				Y + PAW_Y[localFrame],

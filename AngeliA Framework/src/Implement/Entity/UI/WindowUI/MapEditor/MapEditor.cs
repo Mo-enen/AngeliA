@@ -264,9 +264,8 @@ public sealed partial class MapEditor : WindowUI {
 		JsonUtil.SaveJson(EditorMeta, UniverseSystem.CurrentUniverse.MapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(UniverseSystem.CurrentUniverse.MapRoot);
 		IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
-		WorldSquad.SetMapChannel(MapChannel.BuiltIn);
-		WorldSquad.SolidMode = true;
-		WorldSquad.ShowElement = false;
+		WorldSquad.SwitchToCraftedMode();
+		WorldSquad.EditMode = false;
 		WorldSquad.BehindAlpha = Game.WorldBehindAlpha;
 
 		IsNavigating = false;
@@ -979,13 +978,11 @@ public sealed partial class MapEditor : WindowUI {
 		GUI.CancelTyping();
 
 		// Squad  
-		if (WorldSquad.Channel != MapChannel.BuiltIn) {
-			WorldSquad.SetMapChannel(MapChannel.BuiltIn);
+		if (WorldSquad.Channel != MapChannel.Crafted) {
+			WorldSquad.SwitchToCraftedMode();
 			MapGenerator.DeleteAllGeneratedMapFiles();
 		}
-		WorldSquad.SolidMode = toPlayMode;
-		WorldSquad.ShowElement = !toPlayMode;
-		WorldSquad.SaveBeforeReload = !toPlayMode;
+		WorldSquad.EditMode = !toPlayMode;
 		WorldSquad.Front.ForceReloadDelay();
 		WorldSquad.Behind.ForceReloadDelay();
 
@@ -997,6 +994,7 @@ public sealed partial class MapEditor : WindowUI {
 
 			// Despawn Entities from World
 			Stage.DespawnAllEntitiesFromWorld();
+			Stage.DespawnAllEntitiesOfType<Player>();
 
 			// Despawn Player
 			if (Player.Selecting != null) {

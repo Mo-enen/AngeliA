@@ -4,9 +4,8 @@ using AngeliA;
 using AngeliA.Framework;
 
 
-
-
 namespace AngeliaGame; 
+
 public class SlimeRed : Slime {
 
 }

@@ -342,7 +342,7 @@ public static partial class Util {
 
 
 	public static void ByteToCompressedFile (string path, byte[] rawBytes, int length = -1) {
-		using var fileStream = System.IO.File.Create(path);
+		using var fileStream = File.Create(path);
 		using var compressor = new ZLibStream(fileStream, CompressionLevel.SmallestSize);
 		compressor.Write(rawBytes, 0, length < 0 ? rawBytes.Length : length);
 	}
@@ -351,7 +351,7 @@ public static partial class Util {
 	public static byte[] CompressedFileToByte (string path, out int byteLength) {
 		byteLength = 0;
 		if (!FileExists(path)) return System.Array.Empty<byte>();
-		using var fileStream = System.IO.File.OpenRead(path);
+		using var fileStream = File.OpenRead(path);
 		using var decompressor = new ZLibStream(fileStream, CompressionMode.Decompress);
 		using var output = new MemoryStream();
 		decompressor.CopyTo(output);

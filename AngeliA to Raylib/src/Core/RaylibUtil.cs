@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using AngeliA;
@@ -223,7 +224,7 @@ public static class RaylibUtil {
 
 	public static int GetUnifyBorder (int spriteBorder, int screenHeight) => spriteBorder * screenHeight / 6000;
 
-
+	
 	// Debug
 	public static void WritePixelsToConsole (Color32[] pixels, int width) {
 
@@ -251,6 +252,32 @@ public static class RaylibUtil {
 		System.Console.WriteLine();
 	}
 
+	public static void Log (object msg) {
+		Console.ResetColor();
+		Console.WriteLine(msg);
+	}
+
+	public static void LogWarning (object msg) {
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine(msg);
+		Console.ResetColor();
+	}
+
+	public static void LogError (object msg) {
+		Console.ForegroundColor = ConsoleColor.Red;
+		Console.WriteLine(msg);
+		Console.ResetColor();
+	}
+
+	public static void LogException (Exception ex) {
+		Console.ForegroundColor = ConsoleColor.Red;
+		Console.WriteLine(ex.Source);
+		Console.WriteLine(ex.GetType().Name);
+		Console.WriteLine(ex.Message);
+		Console.WriteLine();
+		Console.ResetColor();
+	}
+
 
 	// LGC
 	private static bool RequireCharSpriteHander (char c, out CharSprite sprite) {
@@ -259,7 +286,7 @@ public static class RaylibUtil {
 			sprite = textSprite;
 		} else {
 			// Require Char from Font
-			sprite = RaylibUtil.CreateCharSprite(CacheFont, c);
+			sprite = CreateCharSprite(CacheFont, c);
 			TextPool.Add(c, sprite);
 		}
 		return sprite != null;

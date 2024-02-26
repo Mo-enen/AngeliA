@@ -100,7 +100,7 @@ public class RestartGameTask : TaskItem {
 
 
 public class SelectPlayerTask : TaskItem {
-	public static readonly int TYPE_ID = typeof(RestartGameTask).AngeHash();
+	public static readonly int TYPE_ID = typeof(SelectPlayerTask).AngeHash();
 	public override TaskResult FrameUpdate () {
 		if (UserData is not int) return TaskResult.End;
 		Player.SelectPlayer((int)UserData);

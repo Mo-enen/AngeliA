@@ -1,10 +1,11 @@
 ﻿#if DEBUG
 using System.Linq;
+using AngeliA.Framework;
 
-namespace AngeliaEditor;
+namespace AngeliaGame.Editor;
 
 public class EditorRefit {
-	[OnQuit]
+	[OnGameQuitting]
 	internal static void OnGameQuitting () {
 		// Close CMD
 		System.Diagnostics.Process.GetProcessesByName(

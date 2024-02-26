@@ -59,7 +59,7 @@ public class MiniGameGomoku : MiniGame {
 	private int WinningDeltaY = -1;
 	private int LastPlacePositionX = -1;
 	private int LastPlacePositionY = -1;
-	private readonly CellContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = 24, };
+	private readonly TextContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = 24, };
 
 
 	#endregion
@@ -99,7 +99,7 @@ public class MiniGameGomoku : MiniGame {
 		StageCellSize = StageRect.width / (STAGE_SIZE - 1);
 
 		if (Winner.HasValue) {
-			if (FrameInput.AnyKeyDown) {
+			if (Input.AnyKeyDown) {
 				if (Winner.Value != GomokuAI.GomokuStone.None) {
 					OpenGameOverDialog(Winner.Value == GomokuAI.GomokuStone.Black);
 				} else {
@@ -110,24 +110,24 @@ public class MiniGameGomoku : MiniGame {
 		}
 
 		// Cursor
-		if (FrameInput.LastActionFromMouse) {
+		if (Input.LastActionFromMouse) {
 			// Mouse
-			var mousePos = FrameInput.MouseGlobalPosition;
+			var mousePos = Input.MouseGlobalPosition;
 			if (StageRect.Contains(mousePos)) {
 				(StageCursorX, StageCursorY) = GlobalPos_to_StagePos(mousePos.x, mousePos.y);
 			}
 		} else {
 			// Game Button
-			if (FrameInput.GameKeyDownGUI(Gamekey.Left)) {
+			if (Input.GameKeyDownGUI(Gamekey.Left)) {
 				StageCursorX = (StageCursorX - 1).Clamp(0, STAGE_SIZE - 1);
 			}
-			if (FrameInput.GameKeyDownGUI(Gamekey.Right)) {
+			if (Input.GameKeyDownGUI(Gamekey.Right)) {
 				StageCursorX = (StageCursorX + 1).Clamp(0, STAGE_SIZE - 1);
 			}
-			if (FrameInput.GameKeyDownGUI(Gamekey.Down)) {
+			if (Input.GameKeyDownGUI(Gamekey.Down)) {
 				StageCursorY = (StageCursorY - 1).Clamp(0, STAGE_SIZE - 1);
 			}
-			if (FrameInput.GameKeyDownGUI(Gamekey.Up)) {
+			if (Input.GameKeyDownGUI(Gamekey.Up)) {
 				StageCursorY = (StageCursorY + 1).Clamp(0, STAGE_SIZE - 1);
 			}
 		}
@@ -135,7 +135,7 @@ public class MiniGameGomoku : MiniGame {
 		// Player Place Stone
 		if (
 			Interactable &&
-			(FrameInput.MouseLeftButtonDown || FrameInput.GameKeyDown(Gamekey.Action)) &&
+			(Input.MouseLeftButtonDown || Input.GameKeyDown(Gamekey.Action)) &&
 			StageCursorX >= 0 && StageCursorX < STAGE_SIZE &&
 			StageCursorY >= 0 && StageCursorY < STAGE_SIZE &&
 			Stones[StageCursorX, StageCursorY] == GomokuAI.GomokuStone.None
@@ -169,18 +169,18 @@ public class MiniGameGomoku : MiniGame {
 		var boardRect = StageRect.Expand(StageCellSize);
 
 		// Background
-		CellRenderer.Draw(Const.PIXEL, boardRect, BACKGROUND_TINT);
+		Renderer.Draw(Const.PIXEL, boardRect, BACKGROUND_TINT);
 
 		// Player Color Hint
 		int labelHeight = Unify(HintLabel.CharSize);
 		HintLabel.Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT;
 		HintLabel.Text = GOMOKU_YOU_ARE;
-		CellGUI.Label(
+		GUI.Label(
 			HintLabel,
 			new IRect(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
 			out var bounds
 		);
-		CellRenderer.Draw(
+		Renderer.Draw(
 			STONE_CODE,
 			new IRect(bounds.xMax + Unify(8), boardRect.yMax - labelHeight, labelHeight, labelHeight),
 			PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT
@@ -190,16 +190,16 @@ public class MiniGameGomoku : MiniGame {
 		var gridRect = new IRect(0, StageRect.y, Unify(GRID_THICKNESS), StageRect.height);
 		for (int x = 0; x < STAGE_SIZE; x++) {
 			gridRect.x = StageRect.x + x * StageCellSize - Unify(GRID_THICKNESS) / 2;
-			CellRenderer.Draw(LINE_V_CODE, gridRect, GRID_TINT);
+			Renderer.Draw(LINE_V_CODE, gridRect, GRID_TINT);
 		}
 		gridRect.x = StageRect.x;
 		gridRect.width = StageRect.width;
 		gridRect.height = Unify(GRID_THICKNESS);
 		for (int y = 0; y < STAGE_SIZE; y++) {
 			gridRect.y = (int)(StageRect.y + y * StageCellSize - Unify(GRID_THICKNESS) / 2); ;
-			CellRenderer.Draw(LINE_H_CODE, gridRect, GRID_TINT);
+			Renderer.Draw(LINE_H_CODE, gridRect, GRID_TINT);
 		}
-		CellRenderer.Draw(
+		Renderer.Draw(
 			STONE_CODE,
 			StageRect.x + STAGE_SIZE / 2 * StageCellSize,
 			StageRect.y + STAGE_SIZE / 2 * StageCellSize,
@@ -213,7 +213,7 @@ public class MiniGameGomoku : MiniGame {
 			// Last Placed Highlight
 			if (LastPlacePositionX >= 0 && LastPlacePositionY >= 0) {
 				var (x, y) = StagePos_to_GlobalPos(LastPlacePositionX, LastPlacePositionY);
-				CellRenderer.Draw(
+				Renderer.Draw(
 					Const.PIXEL,
 					x, y, 500, 500, 0,
 					StageCellSize, StageCellSize,
@@ -230,7 +230,7 @@ public class MiniGameGomoku : MiniGame {
 					var stone = Stones[x, y];
 					if (stone != Winner.Value) break;
 					var (posX, posY) = StagePos_to_GlobalPos(x, y);
-					CellRenderer.Draw(
+					Renderer.Draw(
 						Const.PIXEL,
 						posX, posY, 500, 500, 0,
 						StageCellSize, StageCellSize,
@@ -249,7 +249,7 @@ public class MiniGameGomoku : MiniGame {
 				var stone = Stones[i, j];
 				if (stone == GomokuAI.GomokuStone.None) continue;
 				var (x, y) = StagePos_to_GlobalPos(i, j);
-				CellRenderer.Draw(
+				Renderer.Draw(
 					STONE_CODE, x, y, 500, 500, 0,
 					stoneSize, stoneSize,
 					stone == GomokuAI.GomokuStone.Black ? BLACK_STONE_TINT : WHITE_STONE_TINT
@@ -261,7 +261,7 @@ public class MiniGameGomoku : MiniGame {
 		if (Interactable && PlayerTurn && StageCursorX >= 0 && StageCursorY >= 0) {
 			var (x, y) = StagePos_to_GlobalPos(StageCursorX, StageCursorY);
 			var rect = new IRect(x - StageCellSize / 2, y - StageCellSize / 2, StageCellSize, StageCellSize);
-			CellRenderer.Draw_9Slice(FRAME_CODE, rect, PlayerIsBlack ? Color32.BLACK : Color32.WHITE);
+			Renderer.Draw_9Slice(FRAME_CODE, rect, PlayerIsBlack ? Color32.BLACK : Color32.WHITE);
 		}
 
 	}

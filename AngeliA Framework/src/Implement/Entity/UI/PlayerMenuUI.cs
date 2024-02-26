@@ -183,9 +183,9 @@ public class PlayerMenuUI : EntityUI {
 
 		// Bottom Panel
 		RenderingBottomPanel = true;
-		var playerPanelRect = GetPanelRect(Player.INVENTORY_COLUMN, Player.INVENTORY_ROW, ITEM_SIZE, false);
+		var playerPanelRect = GetPanelRect(Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, ITEM_SIZE, false);
 		Renderer.Draw(Const.PIXEL, playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
-		DrawInventory(Player.Selecting.TypeID, Player.INVENTORY_COLUMN, Player.INVENTORY_ROW, false);
+		DrawInventory(Player.Selecting.TypeID, Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, false);
 
 		// Top Panel
 		RenderingBottomPanel = false;
@@ -335,7 +335,7 @@ Color32.BLACK, int.MinValue + 1
 			if (!CursorInBottomPanel && y == 0) {
 				CursorInBottomPanel = true;
 				if (Partner == null) {
-					x = x == 0 ? 0 : Player.INVENTORY_COLUMN / 2;
+					x = x == 0 ? 0 : Character.INVENTORY_COLUMN / 2;
 				} else {
 					x = CursorWrap(x, false);
 				}
@@ -353,7 +353,7 @@ Color32.BLACK, int.MinValue + 1
 			if (CursorInBottomPanel && y == row - 1) {
 				CursorInBottomPanel = false;
 				if (Partner == null) {
-					x = x < Player.INVENTORY_COLUMN / 2 ? 0 : 1;
+					x = x < Character.INVENTORY_COLUMN / 2 ? 0 : 1;
 				} else {
 					x = CursorWrap(x, true);
 				}

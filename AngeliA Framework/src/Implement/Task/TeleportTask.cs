@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public class TeleportTask : TaskItem {
 
 
@@ -36,7 +36,11 @@ public class TeleportTask : TaskItem {
 		if (LocalFrame == WaitDuration) {
 			// Channel
 			if (NewChannel.HasValue) {
-				WorldSquad.SetMapChannel(NewChannel.Value, ChannelName);
+				if (NewChannel.Value == MapChannel.Procedure) {
+					WorldSquad.SwitchToProcedureMode(ChannelName);
+				} else {
+					WorldSquad.SwitchToCraftedMode();
+				}
 			}
 			// Position
 			int offsetX = TeleportFrom.x - Stage.ViewRect.xMin;

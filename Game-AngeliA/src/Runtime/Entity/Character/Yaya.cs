@@ -4,9 +4,9 @@ using AngeliA;
 using AngeliA.Framework;
 
 
-
 namespace AngeliaGame; 
-[EntityAttribute.DefaultSelectPlayer]
+
+//[EntityAttribute.DefaultSelectPlayer]
 public class Yaya : Player {
 
 

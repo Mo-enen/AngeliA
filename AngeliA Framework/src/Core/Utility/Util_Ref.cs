@@ -139,7 +139,7 @@ public static partial class Util {
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { LogException(ex); }
 		}
 	}
 	public static void InvokeAllStaticMethodWithAttribute<A> (System.Comparison<KeyValuePair<MethodInfo, A>> comparison) where A : System.Attribute {
@@ -148,7 +148,7 @@ public static partial class Util {
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { LogException(ex); }
 		}
 	}
 
@@ -187,7 +187,7 @@ public static partial class Util {
 		try {
 			var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 			return method?.Invoke(null, param);
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { LogException(ex); }
 		return null;
 	}
 

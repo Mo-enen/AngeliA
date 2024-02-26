@@ -1,10 +1,9 @@
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<AssemblyName>AngeliA Game</AssemblyName>
 		<RootNamespace>AngeliaGame</RootNamespace>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>
@@ -22,32 +21,46 @@
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
 		<AnalysisLevel>none</AnalysisLevel>
-
+		<Deterministic>True</Deterministic>
+		<Optimize>True</Optimize>
+		
 		<OutputPath>Build</OutputPath>
 		<PublishDir>Publish</PublishDir>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
 
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Optimize>True</Optimize>
 		<DebugType>portable</DebugType>
-		<Deterministic>True</Deterministic>
+		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Optimize>True</Optimize>
 		<DebugType>none</DebugType>
-		<Deterministic>True</Deterministic>
+		<OutputType>WinExe</OutputType>
+
+		<PublishSingleFile>true</PublishSingleFile>
+		<PublishTrimmed>false</PublishTrimmed>
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<IncludeAllContentForSelfExtract>False</IncludeAllContentForSelfExtract>
+		<PublishReadyToRun>False</PublishReadyToRun>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove=".gitignore" />
+	  <None Remove="desktop.ini" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
 	</ItemGroup>
 
-
-
-	
+	<ItemGroup>
+	  <Folder Include="src\Editor\" />
+	</ItemGroup>
 
 </Project>
