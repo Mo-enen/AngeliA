@@ -195,19 +195,23 @@ public static class RaylibUtil {
 	public static void Draw_9Slice (this Sheet sheet, int id, int x, int y, float pivotX, float pivotY, int rotation, int width, int height, Color color) => Draw_9Slice(sheet, id, x, y, pivotX, pivotY, rotation, width, height, -1, -1, -1, -1, color);
 	public static void Draw_9Slice (this Sheet sheet, int id, int x, int y, float pivotX, float pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU) => Draw_9Slice(sheet, id, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Color.White);
 	public static void Draw_9Slice (this Sheet sheet, int id, int x, int y, float pivotX, float pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color color) {
+
 		if (!sheet.SpritePool.TryGetValue(id, out var sprite)) return;
 		NineSliceCellCount = 0;
+
 		// 9-Slice
+		int screenHeight = Raylib.GetRenderHeight();
 		var cells = Util.NineSlice(
 			DrawHandler, sprite, x, y,
 			(int)(pivotX * 1000), (int)(pivotY * 1000),
 			rotation, width, height,
-			borderL >= 0 ? borderL : sprite.GlobalBorder.left,
-			borderR >= 0 ? borderR : sprite.GlobalBorder.right,
-			borderU >= 0 ? borderU : sprite.GlobalBorder.up,
-			borderD >= 0 ? borderD : sprite.GlobalBorder.down,
+			GetUnifyBorder(borderL >= 0 ? borderL : sprite.GlobalBorder.left, screenHeight),
+			GetUnifyBorder(borderR >= 0 ? borderR : sprite.GlobalBorder.right, screenHeight),
+			GetUnifyBorder(borderU >= 0 ? borderU : sprite.GlobalBorder.up, screenHeight),
+			GetUnifyBorder(borderD >= 0 ? borderD : sprite.GlobalBorder.down, screenHeight),
 			DEFAULT_PART_IGNORE, color.ToAngelia(), z: 0
 		);
+
 		// Draw
 		foreach (var cell in cells) {
 			Draw(
@@ -216,6 +220,8 @@ public static class RaylibUtil {
 			);
 		}
 	}
+
+	public static int GetUnifyBorder (int spriteBorder, int screenHeight) => spriteBorder * screenHeight / 6000;
 
 
 	// Debug

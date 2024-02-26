@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using AngeliA;
 using Raylib_cs;
 
@@ -29,6 +30,22 @@ public static class ExtensionRaylib {
 		rect.Y += rect.Height;
 		rect.Height = -rect.Height;
 	}
+
+	public static Rectangle EdgeInside (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
+		Direction4.Up => rect.Shrink(0, 0, rect.Height - size, 0),
+		Direction4.Down => rect.Shrink(0, 0, 0, rect.Height - size),
+		Direction4.Left => rect.Shrink(0, rect.Width - size, 0, 0),
+		Direction4.Right => rect.Shrink(rect.Width - size, 0, 0, 0),
+		_ => throw new System.NotImplementedException(),
+	};
+	public static Rectangle EdgeOutside (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
+		Direction4.Up => rect.Shrink(0, 0, rect.Height, -size),
+		Direction4.Down => rect.Shrink(0, 0, -size, rect.Height),
+		Direction4.Left => rect.Shrink(-size, rect.Width, 0, 0),
+		Direction4.Right => rect.Shrink(rect.Width, -size, 0, 0),
+		_ => throw new System.NotImplementedException(),
+	};
+
 
 	public static Raylib_cs.KeyboardKey ToRaylib (this AngeliA.KeyboardKey key) => KeyboardKeyPool[(int)key];
 
@@ -60,7 +77,7 @@ public static class ExtensionRaylib {
 	public static Rectangle Expand (this Rectangle rect, float offset) => rect.Expand(offset, offset, offset, offset);
 	public static Rectangle Expand (this Rectangle rect, float l, float r, float d, float u) {
 		rect.X -= l;
-		rect.Y -= d;
+		rect.Y -= u;
 		rect.Width += l + r;
 		rect.Height += d + u;
 		return rect;
@@ -96,5 +113,6 @@ public static class ExtensionRaylib {
 		);
 	}
 
+	public static bool Contains (this Rectangle rect, Vector2 point) => point.X >= rect.X && point.X < rect.X + rect.Width && point.Y >= rect.Y && point.Y < rect.Y + rect.Height;
 
 }

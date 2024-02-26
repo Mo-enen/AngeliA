@@ -6,7 +6,6 @@ using Raylib_cs;
 using AngeliA;
 using AngeliaToRaylib;
 using KeyboardKey = Raylib_cs.KeyboardKey;
-using System.Linq;
 
 
 namespace AngeliaEditor;
@@ -24,6 +23,7 @@ public class Editor {
 	public class TestWindow0 : Window {
 		public TestWindow0 () {
 			Title = "Title 0";
+			Icon = "Icon.Language".AngeHash();
 		}
 		public override void DrawWindow (Rectangle windowRect) {
 			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
@@ -31,8 +31,8 @@ public class Editor {
 	}
 	public class TestWindow1 : Window {
 		public TestWindow1 () {
-			Order = int.MaxValue;
 			Title = "Title 1";
+			Icon = "Icon.Pixel".AngeHash();
 		}
 		public override void DrawWindow (Rectangle windowRect) {
 			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
@@ -41,6 +41,7 @@ public class Editor {
 	public class TestWindow2 : Window {
 		public TestWindow2 () {
 			Title = "Title 2";
+			Icon = 0;
 		}
 		public override void DrawWindow (Rectangle windowRect) {
 			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
@@ -48,13 +49,17 @@ public class Editor {
 	}
 
 
+	// SUB
+	private enum WindowMode { Mascot, Float, Window, }
+
 	// Const
 	private const int FLOAT_WIDTH = 360;
 	private const int FLOAT_HEIGHT = 360;
 	private const int FLOAT_WINDOW_WIDTH = 1000;
 	private const int FLOAT_WINDOW_HEIGHT = 800;
-	private const int TAB_BAR_HEIGHT = 32;
 	private static readonly SpriteCode UI_TAB = "UI.Tab";
+	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.InactiveTab";
+	private static readonly SpriteCode UI_WINDOW_BG = "UI.WindowBG";
 
 	// Event
 	private static event Func<bool> OnTryingToQuit;
@@ -69,7 +74,7 @@ public class Editor {
 	private Vector2? FloatMascotMouseDownPos = null;
 	private Vector2 FloatMascotMouseDownGlobalPos = default;
 	private int CurrentWindowIndex = 0;
-	private bool ShowingFloatMascot = true;
+	private WindowMode CurrentWindowMode;
 	private bool FloatMascotDragged = false;
 
 
@@ -82,10 +87,42 @@ public class Editor {
 
 
 	public static void Run () {
+
+		// Init Editor
 		var editor = new Editor();
-		editor.Init_Editor();
-		editor.Init_Resources();
-		editor.Init_Window();
+		RequireQuit = false;
+		Util.LinkEventWithAttribute<OnTryingToQuitAttribute>(typeof(Editor), nameof(OnTryingToQuit));
+		editor.Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
+		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
+		Util.OnLogException += editor.LogException;
+		Util.OnLogError += editor.LogError;
+		Util.OnLog += editor.Log;
+		Util.OnLogWarning += editor.LogWarning;
+		Raylib.SetConfigFlags(ConfigFlags.TransparentWindow);
+		Raylib.InitWindow(1024 / 9 * 16, 1024, $"{AngeliaGameTitleAttribute.GetTitle()} {AngeliaVersionAttribute.GetVersionString()}");
+		Raylib.EnableEventWaiting();
+		Raylib.SetExitKey(KeyboardKey.Null);
+		editor.SwitchWindowMode(editor.Setting.WindowMode ? WindowMode.Window : WindowMode.Mascot);
+
+		// Init Resources
+		string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
+		var fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
+		editor.Font = fonts != null && fonts.Length > 0 ? fonts[0] : new();
+		string sheetPath = AngePath.GetSheetPath(universePath);
+		string artworkPath = AngePath.GetAsepriteRoot(universePath);
+		SheetUtil.RecreateSheetIfArtworkModified(sheetPath, artworkPath);
+		editor.Sheet.LoadFromDisk(sheetPath);
+
+		// Init Window
+		var windowList = new List<Window>();
+		foreach (var type in typeof(Window).AllChildClass()) {
+			if (Activator.CreateInstance(type) is not Window window) continue;
+			windowList.Add(window);
+		}
+		windowList.Sort((a, b) => a.Order.CompareTo(b.Order));
+		editor.Windows = windowList.ToArray();
+
+		// Update
 		while (!RequireQuit) {
 			Raylib.BeginDrawing();
 			editor.OnGUI();
@@ -93,71 +130,48 @@ public class Editor {
 			Raylib.EndDrawing();
 			if (Raylib.WindowShouldClose() && (OnTryingToQuit == null || OnTryingToQuit.Invoke())) break;
 		}
-		editor.OnQuit();
+
+		// Quit
+		editor.Font.Unload();
+		editor.Setting.LoadValueFromWindow();
+		JsonUtil.SaveJson(editor.Setting, AngePath.PersistentDataPath, prettyPrint: true);
 		Raylib.CloseWindow();
 		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
 	}
 
 
-	// Init
-	private void Init_Editor () {
-		RequireQuit = false;
-		Util.LinkEventWithAttribute<OnTryingToQuitAttribute>(typeof(Editor), nameof(OnTryingToQuit));
-		Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
-		Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
-		AngeliA.Util.OnLogException += LogException;
-		AngeliA.Util.OnLogError += LogError;
-		AngeliA.Util.OnLog += Log;
-		AngeliA.Util.OnLogWarning += LogWarning;
-		Raylib.InitWindow(1024 / 9 * 16, 1024, $"{AngeliaGameTitleAttribute.GetTitle()} {AngeliaVersionAttribute.GetVersionString()}");
-		SwitchWindowMode(Setting.WindowMode);
-		Raylib.EnableEventWaiting();
-		Raylib.SetExitKey(KeyboardKey.Null);
-	}
-
-
-	private void Init_Resources () {
-		string universePath = Util.CombinePaths(AngePath.ApplicationDataPath, "Universe");
-		// Font
-		var fonts = RaylibUtil.LoadFontDataFromFile(AngeliA.Util.CombinePaths(universePath, "Fonts"));
-		Font = fonts != null && fonts.Length > 0 ? fonts[0] : new();
-		// Sheet
-		string sheetPath = AngePath.GetSheetPath(universePath);
-		string artworkPath = AngePath.GetAsepriteRoot(universePath);
-		SheetUtil.RecreateSheetIfArtworkModified(sheetPath, artworkPath);
-		Sheet.LoadFromDisk(sheetPath);
-	}
-
-
-	private void Init_Window () {
-		var windowList = new List<Window>();
-		foreach (var type in typeof(Window).AllChildClass()) {
-			if (System.Activator.CreateInstance(type) is not Window window) continue;
-			windowList.Add(window);
-		}
-		windowList.Sort((a, b) => a.Order.CompareTo(b.Order));
-		Windows = windowList.ToArray();
-	}
-
-
-	// Quit
-	private void OnQuit () {
-		Font.Unload();
-		Setting.LoadValueFromWindow();
-		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
-	}
-
-
 	// GUI
 	private void OnGUI () {
-		UiScale = Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) / 1000f;
+		Raylib.SetMouseCursor(MouseCursor.Default);
+		UiScale = Raylib.GetRenderHeight() / 1000f;
 		CurrentWindowIndex = CurrentWindowIndex.Clamp(0, Windows.Length - 1);
-		if (Setting.WindowMode) {
-			OnGUI_Window();
-		} else if (ShowingFloatMascot) {
-			OnGUI_FloatMascot();
-		} else {
-			OnGUI_FloatWindow();
+		// Switch to Mascot on Lost Focus
+		if (CurrentWindowMode == WindowMode.Float && !Raylib.IsWindowFocused()) {
+			SwitchWindowMode(WindowMode.Mascot);
+		}
+		// Switch on Mid Click
+		if (Raylib.IsMouseButtonPressed(MouseButton.Middle)) {
+			SwitchWindowMode(CurrentWindowMode == WindowMode.Window ? WindowMode.Float : WindowMode.Window);
+		}
+		// On GUI
+		switch (CurrentWindowMode) {
+			case WindowMode.Mascot:
+				OnGUI_Mascot_MouseLogic();
+				OnGUI_Mascot_Render();
+				break;
+			case WindowMode.Float:
+				int monitor = Raylib.GetCurrentMonitor();
+				int monitorWidth = Raylib.GetMonitorWidth(monitor);
+				int monitorHeight = Raylib.GetMonitorHeight(monitor);
+				int width = FLOAT_WINDOW_WIDTH * monitorHeight / 1000;
+				int height = FLOAT_WINDOW_HEIGHT * monitorHeight / 1000;
+				Raylib.SetWindowPosition((monitorWidth - width) / 2, (monitorHeight - height) / 2);
+				Raylib.SetWindowSize(width, height);
+				OnGUI_Window();
+				break;
+			case WindowMode.Window:
+				OnGUI_Window();
+				break;
 		}
 	}
 
@@ -165,61 +179,73 @@ public class Editor {
 	// Window
 	private void OnGUI_Window () {
 
-		Raylib.ClearBackground(new Color(0, 0, 0, 255));
+		Raylib.ClearBackground(
+			CurrentWindowMode == WindowMode.Window ? new Color(38, 38, 38, 255) : Color.Blank
+		);
+		int screenWidth = Raylib.GetRenderWidth();
+		int screenheight = Raylib.GetRenderHeight();
 
-		if (Raylib.IsMouseButtonPressed(MouseButton.Middle)) {
-			SwitchWindowMode(!Setting.WindowMode);
-			return;
-		}
+		// Tab Bar
+		int barPadding = Sheet.SpritePool.TryGetValue(UI_WINDOW_BG, out var bgSprite) ?
+			bgSprite.GlobalBorder.left : 5;
+		int barHeight = Unify(58);
+		OnGUI_TabBar(barHeight, RaylibUtil.GetUnifyBorder(barPadding, screenheight));
 
-		int barHeight = Unify(TAB_BAR_HEIGHT);
-		OnGUI_TabBar(barHeight);
+		// Window BG
+		Sheet.Draw_9Slice(
+			UI_WINDOW_BG, 0, barHeight, 0, 0, 0, screenWidth, screenheight - barHeight,
+			barPadding, barPadding, barPadding, barPadding
+		);
+
+		// Window Content
 		var window = Windows[CurrentWindowIndex];
-		window.DrawWindow(new Rectangle(0, barHeight, Raylib.GetRenderWidth(), Raylib.GetRenderHeight() - barHeight));
-
+		window.DrawWindow(new Rectangle(0, barHeight, screenWidth, screenheight - barHeight));
 	}
 
 
-	// Float Window
-	private void OnGUI_FloatWindow () {
+	private void OnGUI_TabBar (int barHeight, int padding) {
+		int contentPadding = Unify(12);
+		int screenWidth = Raylib.GetRenderWidth();
+		int tabWidth = (screenWidth - padding * 2) / Windows.Length;
+		var rect = new Rectangle(padding, 0, tabWidth, barHeight);
+		var mousePos = Raylib.GetMousePosition();
+		//if (CurrentWindowMode == WindowMode.Window) {
+		//Raylib.DrawRectangle(0, 0, screenWidth, barHeight, new Color(38, 38, 38, 255));
+		//}
+		// Content
+		for (int i = 0; i < Windows.Length; i++) {
+			var window = Windows[i];
+			bool selecting = i == CurrentWindowIndex;
 
-		Raylib.ClearBackground(new Color(0, 0, 0, 255));
+			// Body
+			Sheet.Draw_9Slice(selecting ? UI_TAB : UI_INACTIVE_TAB, rect.Shrink(0, 0, 0, contentPadding));
+			var contentRect = rect.Shrink(contentPadding, contentPadding, 0, contentPadding);
 
-		if (!Raylib.IsWindowFocused()) {
-			ShowingFloatMascot = true;
-			Raylib.SetWindowSize(FLOAT_WIDTH, FLOAT_HEIGHT);
-			Raylib.SetWindowPosition(Setting.FloatX, Setting.FloatY);
-			return;
+			// Icon
+			float iconSize = contentRect.Height;
+			if (window.Icon != 0) {
+				Sheet.Draw(window.Icon, contentRect.EdgeInside(Direction4.Left, iconSize));
+			}
+
+			// Label
+			Font.DrawLabel(
+				TextContent.Get(window.Title, Color32.GREY_196, charSize: 20, alignment: Alignment.MidLeft),
+				contentRect.Shrink(window.Icon != 0 ? iconSize : contentPadding, 0, 0, 0)
+			);
+
+			// Cursor
+			if (!selecting && rect.Contains(mousePos)) {
+				Raylib.SetMouseCursor(MouseCursor.PointingHand);
+			}
+
+			// Next
+			rect.X += rect.Width;
 		}
-
-		int width = Unify(FLOAT_WINDOW_WIDTH);
-		int height = Unify(FLOAT_WINDOW_HEIGHT);
-		int monitor = Raylib.GetCurrentMonitor();
-		int monitorWidth = Raylib.GetMonitorWidth(monitor);
-		int monitorHeight = Raylib.GetMonitorHeight(monitor);
-		int barHeight = Unify(TAB_BAR_HEIGHT);
-		Raylib.SetWindowPosition((monitorWidth - width) / 2, (monitorHeight - height) / 2);
-		Raylib.SetWindowSize(width, height);
-		OnGUI_TabBar(barHeight);
-		var window = Windows[CurrentWindowIndex];
-		window.DrawWindow(new Rectangle(0, barHeight, width, height - barHeight));
-
 	}
 
 
-	// Float Mascot
-	private void OnGUI_FloatMascot () {
-		OnGUI_FloatMascot_MouseLogic();
-		OnGUI_FloatMascot_Render();
-	}
-
-
-	private void OnGUI_FloatMascot_MouseLogic () {
-		// Switch Mode
-		if (Raylib.IsMouseButtonPressed(MouseButton.Middle)) {
-			SwitchWindowMode(!Setting.WindowMode);
-			return;
-		}
+	// Mascot
+	private void OnGUI_Mascot_MouseLogic () {
 		// Mouse Logic
 		var mousePos = Raylib.GetMousePosition();
 		const float DRAG_TO_MOVE_GAP = 20f;
@@ -251,7 +277,7 @@ public class Editor {
 			FloatMascotMouseDownPos = null;
 			if (!FloatMascotDragged) {
 				// Click
-				ShowingFloatMascot = false;
+				SwitchWindowMode(WindowMode.Float);
 				return;
 			} else {
 				// Drag End
@@ -270,29 +296,14 @@ public class Editor {
 	}
 
 
-	private void OnGUI_FloatMascot_Render () {
+	private void OnGUI_Mascot_Render () {
 
-		Raylib.ClearBackground(new Color(0, 0, 0, 0));
+		Raylib.ClearBackground(Color.Black);
+
 		var panelRect = new Rectangle(0, 0, Raylib.GetRenderWidth(), Raylib.GetRenderHeight());
 
 		// BG
 
-
-
-	}
-
-
-	// Bar
-	private void OnGUI_TabBar (int barHeight) {
-		var barRect = new Rectangle(0, 0, Raylib.GetRenderWidth(), barHeight);
-
-		Sheet.Draw_9Slice(
-			UI_TAB,
-			x: 12, y: 128,
-			pivotX: 0, pivotY: 0, rotation: 0,
-			width: 512, height: 512,
-			Color.Gray
-		);
 
 
 	}
@@ -321,7 +332,7 @@ public class Editor {
 	#region --- LGC ---
 
 
-	private void SwitchWindowMode (bool windowMode) {
+	private void SwitchWindowMode (WindowMode newMode) {
 
 		// Cache
 		if (Setting.Initialized) {
@@ -329,31 +340,48 @@ public class Editor {
 		}
 
 		// Set
-		if (windowMode) {
-			// Window
-			Raylib.ClearWindowState(ConfigFlags.UndecoratedWindow);
-			Raylib.ClearWindowState(ConfigFlags.TopmostWindow);
-			Raylib.SetWindowState(ConfigFlags.ResizableWindow);
-			if (Setting.Maximize) {
-				int monitor = Raylib.GetCurrentMonitor();
-				Raylib.SetWindowPosition(0, 0);
-				Raylib.SetWindowSize(Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
-				Raylib.SetWindowState(ConfigFlags.MaximizedWindow);
-			} else {
-				Raylib.SetWindowPosition(Setting.WindowPositionX, Setting.WindowPositionY.GreaterOrEquel(24));
-				Raylib.SetWindowSize(Setting.WindowSizeX, Setting.WindowSizeY);
-			}
-		} else {
-			// Float
-			Raylib.SetWindowState(ConfigFlags.UndecoratedWindow);
-			Raylib.SetWindowState(ConfigFlags.TopmostWindow);
-			Raylib.ClearWindowState(ConfigFlags.ResizableWindow);
-			Raylib.ClearWindowState(ConfigFlags.MaximizedWindow);
-			Raylib.SetWindowSize(FLOAT_WIDTH, FLOAT_HEIGHT);
-			Raylib.SetWindowPosition(Setting.FloatX, Setting.FloatY);
-			ShowingFloatMascot = true;
+		switch (newMode) {
+			case WindowMode.Mascot:
+				// Mascot
+				Raylib.SetWindowState(ConfigFlags.UndecoratedWindow);
+				Raylib.SetWindowState(ConfigFlags.TopmostWindow);
+				Raylib.ClearWindowState(ConfigFlags.ResizableWindow);
+				Raylib.ClearWindowState(ConfigFlags.MaximizedWindow);
+				Raylib.SetWindowSize(FLOAT_WIDTH, FLOAT_HEIGHT);
+				Raylib.SetWindowPosition(Setting.FloatX, Setting.FloatY);
+				break;
+			case WindowMode.Float:
+				// Float
+				Raylib.SetWindowState(ConfigFlags.UndecoratedWindow);
+				Raylib.SetWindowState(ConfigFlags.TopmostWindow);
+				Raylib.ClearWindowState(ConfigFlags.ResizableWindow);
+				Raylib.ClearWindowState(ConfigFlags.MaximizedWindow);
+				int width = Unify(FLOAT_WINDOW_WIDTH);
+				int height = Unify(FLOAT_WINDOW_HEIGHT);
+				int _monitor = Raylib.GetCurrentMonitor();
+				int monitorWidth = Raylib.GetMonitorWidth(_monitor);
+				int monitorHeight = Raylib.GetMonitorHeight(_monitor);
+				Raylib.SetWindowPosition((monitorWidth - width) / 2, (monitorHeight - height) / 2);
+				Raylib.SetWindowSize(width, height);
+				break;
+			case WindowMode.Window:
+				// Window
+				Raylib.ClearWindowState(ConfigFlags.UndecoratedWindow);
+				Raylib.ClearWindowState(ConfigFlags.TopmostWindow);
+				Raylib.SetWindowState(ConfigFlags.ResizableWindow);
+				if (Setting.Maximize) {
+					int monitor = Raylib.GetCurrentMonitor();
+					Raylib.SetWindowPosition(0, 0);
+					Raylib.SetWindowSize(Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
+					Raylib.SetWindowState(ConfigFlags.MaximizedWindow);
+				} else {
+					Raylib.SetWindowPosition(Setting.WindowPositionX, Setting.WindowPositionY.GreaterOrEquel(24));
+					Raylib.SetWindowSize(Setting.WindowSizeX, Setting.WindowSizeY);
+				}
+				break;
 		}
-		Setting.WindowMode = windowMode;
+		CurrentWindowMode = newMode;
+		Setting.WindowMode = newMode == WindowMode.Window;
 		Setting.Initialized = true;
 	}
 
