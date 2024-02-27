@@ -117,6 +117,7 @@ public static class ExtensionRaylib {
 			sizeX, sizeY
 		);
 	}
+	public static bool Overlaps (this Rectangle rect, Rectangle other) => other.X < rect.X + rect.Width && other.X + other.Width > rect.X && other.Y < rect.Y + rect.Height && other.Y + other.Height > rect.Y;
 
 	public static bool Contains (this Rectangle rect, Vector2 point) => point.X >= rect.X && point.X < rect.X + rect.Width && point.Y >= rect.Y && point.Y < rect.Y + rect.Height;
 

@@ -3,7 +3,7 @@
 namespace AngeliaToRaylib;
 
 public class BuiltInShader {
-
+	
 	public const string BASIC_VS = @"
 #version 330
 in vec3 vertexPosition;
@@ -18,6 +18,7 @@ void main(){
     fragColor = vertexColor;
     gl_Position = mvp*vec4(vertexPosition, 1.0);
 }";
+
 	public const string LERP_FS = @"
 #version 330
 in vec2 fragTexCoord;

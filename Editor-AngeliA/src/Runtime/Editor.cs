@@ -20,35 +20,6 @@ public class Editor {
 	#region --- VAR ---
 
 
-	public class TestWindow0 : Window {
-		public TestWindow0 () {
-			Title = "Title 0";
-			Icon = "Icon.Language".AngeHash();
-		}
-		public override void DrawWindow (Rectangle windowRect) {
-			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
-		}
-	}
-	public class TestWindow1 : Window {
-		public TestWindow1 () {
-			Title = "Title 1";
-			Icon = "Icon.Pixel".AngeHash();
-		}
-		public override void DrawWindow (Rectangle windowRect) {
-			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
-		}
-	}
-	public class TestWindow2 : Window {
-		public TestWindow2 () {
-			Title = "Title 2";
-			Icon = 0;
-		}
-		public override void DrawWindow (Rectangle windowRect) {
-			//Raylib.DrawRectangle(36, 36, Raylib.GetRenderWidth() - 72, Raylib.GetRenderHeight() - 72, Color.DarkBlue);
-		}
-	}
-
-
 	// SUB
 	private enum WindowMode { Mascot, Float, Window, }
 
@@ -76,7 +47,6 @@ public class Editor {
 	private int CurrentWindowIndex = 0;
 	private WindowMode CurrentWindowMode;
 	private bool FloatMascotDragged = false;
-	private Shader UiShader;
 
 
 	#endregion
@@ -113,9 +83,10 @@ public class Editor {
 		string artworkPath = AngePath.GetAsepriteRoot(universePath);
 		SheetUtil.RecreateSheetIfArtworkModified(sheetPath, artworkPath);
 		editor.Sheet.LoadFromDisk(sheetPath);
-		//editor.UiShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.BASIC_VS);
 
 		// Init Window
+		Window.CacheSheet = editor.Sheet;
+		Window.CacheFont = editor.Font;
 		var windowList = new List<Window>();
 		foreach (var type in typeof(Window).AllChildClass()) {
 			if (Activator.CreateInstance(type) is not Window window) continue;
@@ -123,13 +94,16 @@ public class Editor {
 		}
 		windowList.Sort((a, b) => a.Order.CompareTo(b.Order));
 		editor.Windows = windowList.ToArray();
+		if (windowList.Count == 0) RequireQuit = true;
 
 		// Update
 		while (!RequireQuit) {
+			editor.TextUpdate();
 			Raylib.BeginDrawing();
 			editor.OnGUI();
 			GizmosRender.UpdateGizmos();
 			Raylib.EndDrawing();
+			RaylibUtil.TypingBuilder.Clear();
 			if (Raylib.WindowShouldClose() && (OnTryingToQuit == null || OnTryingToQuit.Invoke())) break;
 		}
 
@@ -139,6 +113,40 @@ public class Editor {
 		JsonUtil.SaveJson(editor.Setting, AngePath.PersistentDataPath, prettyPrint: true);
 		Raylib.CloseWindow();
 		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
+	}
+
+
+	private void TextUpdate () {
+		if (!RaylibUtil.IsTyping) return;
+		int current;
+		for (int safe = 0; (current = Raylib.GetCharPressed()) > 0 && safe < 1024; safe++) {
+			RaylibUtil.TypingBuilder.Append((char)current);
+		}
+		for (int safe = 0; (current = Raylib.GetKeyPressed()) > 0 && safe < 1024; safe++) {
+			switch ((KeyboardKey)current) {
+				case KeyboardKey.Enter:
+					RaylibUtil.TypingBuilder.Append(Const.RETURN_SIGN);
+					break;
+				case KeyboardKey.C:
+					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
+						RaylibUtil.TypingBuilder.Append(Const.CONTROL_COPY);
+					}
+					break;
+				case KeyboardKey.X:
+					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
+						RaylibUtil.TypingBuilder.Append(Const.CONTROL_CUT);
+					}
+					break;
+				case KeyboardKey.V:
+					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
+						RaylibUtil.TypingBuilder.Append(Const.CONTROL_PASTE);
+					}
+					break;
+			}
+		}
+		if (RaylibUtil.IsKeyPressedOrRepeat(KeyboardKey.Backspace)) {
+			RaylibUtil.TypingBuilder.Append(Const.BACKSPACE_SIGN);
+		}
 	}
 
 
@@ -158,10 +166,12 @@ public class Editor {
 		// On GUI
 		switch (CurrentWindowMode) {
 			case WindowMode.Mascot:
+				Raylib.ClearBackground(Color.Black);
 				OnGUI_Mascot_MouseLogic();
 				OnGUI_Mascot_Render();
 				break;
 			case WindowMode.Float:
+				Raylib.ClearBackground(Color.Blank);
 				int monitor = Raylib.GetCurrentMonitor();
 				int monitorWidth = Raylib.GetMonitorWidth(monitor);
 				int monitorHeight = Raylib.GetMonitorHeight(monitor);
@@ -172,6 +182,7 @@ public class Editor {
 				OnGUI_Window();
 				break;
 			case WindowMode.Window:
+				Raylib.ClearBackground(new Color(38, 38, 38, 255));
 				OnGUI_Window();
 				break;
 		}
@@ -181,9 +192,6 @@ public class Editor {
 	// Window
 	private void OnGUI_Window () {
 
-		Raylib.ClearBackground(
-			CurrentWindowMode == WindowMode.Window ? new Color(38, 38, 38, 255) : Color.Blank
-		);
 		int screenWidth = Raylib.GetRenderWidth();
 		int screenheight = Raylib.GetRenderHeight();
 
@@ -206,29 +214,30 @@ public class Editor {
 
 
 	private void OnGUI_TabBar (int barHeight, int padding) {
+
 		int contentPadding = Unify(12);
 		int screenWidth = Raylib.GetRenderWidth();
 		int tabWidth = (screenWidth - padding * 2) / Windows.Length;
 		var rect = new Rectangle(padding, 0, tabWidth, barHeight);
 		var mousePos = Raylib.GetMousePosition();
+		bool mousePress = Raylib.IsMouseButtonPressed(MouseButton.Left);
+
 		// Content
 		for (int i = 0; i < Windows.Length; i++) {
 			var window = Windows[i];
 			bool selecting = i == CurrentWindowIndex;
+			bool hovering = rect.Contains(mousePos);
 
-			// Hovering
-			bool hovering = false;
-			if (!selecting && rect.Contains(mousePos)) {
-				// Cursor
+			// Cursor
+			if (!selecting && hovering) {
 				Raylib.SetMouseCursor(MouseCursor.PointingHand);
-				hovering = true;
 			}
 
 			// Body
 			Sheet.Draw_9Slice(
 				selecting ? UI_TAB : UI_INACTIVE_TAB,
 				rect.Shrink(0, 0, 0, contentPadding),
-				hovering ? Color.Gray : Color.White
+				selecting || hovering ? Color.White : Color.LightGray
 			);
 			var contentRect = rect.Shrink(contentPadding, contentPadding, 0, contentPadding);
 
@@ -244,6 +253,11 @@ public class Editor {
 				contentRect.Shrink(window.Icon != 0 ? iconSize : contentPadding, 0, 0, 0)
 			);
 
+			// Click
+			if (mousePress && hovering) {
+				CurrentWindowIndex = i;
+			}
+
 			// Next
 			rect.X += rect.Width;
 		}
@@ -254,7 +268,7 @@ public class Editor {
 	private void OnGUI_Mascot_MouseLogic () {
 		// Mouse Logic
 		var mousePos = Raylib.GetMousePosition();
-		const float DRAG_TO_MOVE_GAP = 20f;
+		const float DRAG_TO_MOVE_GAP = 1600f;
 		if (Raylib.IsMouseButtonDown(MouseButton.Left)) {
 			if (!FloatMascotMouseDownPos.HasValue) {
 				// Mouse Down
@@ -265,15 +279,18 @@ public class Editor {
 					if (!FloatMascotDragged) {
 						// Drag Start
 						FloatMascotDragged = true;
+						FloatMascotMouseDownPos = mousePos;
 						FloatMascotMouseDownGlobalPos = Raylib.GetWindowPosition() + mousePos;
 					} else {
 						// Dragging
 						var windowPos = Raylib.GetWindowPosition();
 						var mouseGlobalPos = windowPos + mousePos;
-						windowPos =
-							(FloatMascotMouseDownGlobalPos - FloatMascotMouseDownPos.Value) +
+						var aimPos = (FloatMascotMouseDownGlobalPos - FloatMascotMouseDownPos.Value) +
 							(mouseGlobalPos - FloatMascotMouseDownGlobalPos);
-						Raylib.SetWindowPosition((int)windowPos.X, (int)windowPos.Y);
+						Raylib.SetWindowPosition(
+							(int)Util.LerpUnclamped(windowPos.X, aimPos.X, 0.1f),
+							(int)Util.LerpUnclamped(windowPos.Y, aimPos.Y, 0.1f)
+						);
 					}
 				}
 			}
@@ -303,8 +320,6 @@ public class Editor {
 
 
 	private void OnGUI_Mascot_Render () {
-
-		Raylib.ClearBackground(Color.Black);
 
 		var panelRect = new Rectangle(0, 0, Raylib.GetRenderWidth(), Raylib.GetRenderHeight());
 

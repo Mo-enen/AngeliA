@@ -11,7 +11,7 @@ public class TextUtil {
 
 	public delegate bool RequireCharSpriteHander (char c, out CharSprite sprite);
 	public delegate Cell DrawCharHandler (CharSprite sprite, int x, int y, int width, int height, Color32 color);
-
+	
 
 	public static void DrawLabel (
 		RequireCharSpriteHander requireCharSprite, DrawCharHandler drawChar,

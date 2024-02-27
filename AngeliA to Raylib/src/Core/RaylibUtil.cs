@@ -2,16 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Text;
 using AngeliA;
 using Raylib_cs;
+using KeyboardKey = Raylib_cs.KeyboardKey;
 
 namespace AngeliaToRaylib;
 
 public static class RaylibUtil {
 
 
+	public static bool IsTyping => TypingTextFieldID != 0;
 	public static readonly Dictionary<int, Texture2D> TexturePool = new();
 	public static readonly Dictionary<char, CharSprite> TextPool = new();
+	public static readonly StringBuilder TypingBuilder = new();
+
 	private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
 	private static readonly Cell[] CacheTextCells = new Cell[1024].FillWithNewValue();
 	private static readonly Cell[] CacheNineSliceCells = new Cell[9].FillWithNewValue();
@@ -20,6 +25,17 @@ public static class RaylibUtil {
 	private static FontData CacheFont = null;
 	private static Shader? TextShader;
 	private static bool TexturePoolInitialized = false;
+	private const int MAX_INPUT_CHAR = 256;
+	private static readonly TextContent InputLabel = new() {
+		Alignment = Alignment.MidLeft,
+		Clip = true,
+		Wrap = false,
+	};
+	private static int TypingTextFieldID = 0;
+	private static int BeamIndex = 0;
+	private static int BeamLength = 0;
+	private static Vector2 LastInputMouseDownPos = default;
+
 
 	// Text
 	public static FontData[] LoadFontDataFromFile (string fontRoot) {
@@ -74,12 +90,24 @@ public static class RaylibUtil {
 	public static void DrawLabel (this FontData font, TextContent content, Rectangle rect) => DrawLabel(font, content, rect, -1, 0, false, out _, out _, out _);
 	public static void DrawLabel (this FontData font, TextContent content, Rectangle rect, out Rectangle bounds) => DrawLabel(font, content, rect, -1, 0, false, out bounds, out _, out _);
 	public static void DrawLabel (this FontData font, TextContent content, Rectangle rect, int beamIndex, int startIndex, bool drawInvisibleChar, out Rectangle bounds, out Rectangle beamRect, out int endIndex) {
+		DrawLabelIntoCacheCells(
+			font, content, rect, beamIndex, startIndex, drawInvisibleChar,
+			out bounds, out beamRect, out endIndex
+		);
+		DrawLabelFromCacheCells(font);
+		TextCellCount = 0;
+	}
+
+
+	private static void DrawLabelIntoCacheCells (
+		FontData font, TextContent content, Rectangle rect,
+		int beamIndex, int startIndex, bool drawInvisibleChar,
+		out Rectangle bounds, out Rectangle beamRect, out int endIndex
+	) {
 		bounds = default;
 		beamRect = default;
 		endIndex = beamIndex;
 		if (font == null) return;
-
-		// Fill Cells
 		CacheFont = font;
 		TextCellCount = 0;
 		int windowHeight = Raylib.GetRenderHeight();
@@ -88,15 +116,19 @@ public static class RaylibUtil {
 			content, new IRect(rect.X.RoundToInt(), windowHeight - rect.Y.RoundToInt() - rect.Height.RoundToInt(), rect.Width.RoundToInt(), rect.Height.RoundToInt()), beamIndex, startIndex, drawInvisibleChar,
 			out var iBounds, out var iBeamRect, out endIndex
 		);
+		beamRect = iBeamRect.ToRaylib();
+		bounds = iBounds.ToRaylib();
 		CacheFont = null;
+	}
 
-		int screenHeight = Raylib.GetRenderHeight();
 
-		// Draw Cells
+	private static void DrawLabelFromCacheCells (FontData font) {
+		if (font == null) return;
 		if (!TextShader.HasValue) {
 			TextShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.TEXT_FS);
 		}
 		Raylib.BeginShaderMode(TextShader.Value);
+		int screenHeight = Raylib.GetRenderHeight();
 		for (int i = 0; i < TextCellCount; i++) {
 			try {
 				var cell = CacheTextCells[i];
@@ -115,10 +147,9 @@ public static class RaylibUtil {
 					new Vector2(0, dest.Height),
 					rotation: 0, cell.Color.ToRaylib()
 				);
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (Exception ex) { Util.LogException(ex); }
 		}
 		Raylib.EndShaderMode();
-		TextCellCount = 0;
 	}
 
 
@@ -180,7 +211,7 @@ public static class RaylibUtil {
 		source.Width *= width.Sign();
 		source.Height *= height.Sign();
 		Raylib.DrawTexturePro(
-			texture, source.Shrink(0.02f), dest.Expand(0.5f),
+			texture, source.Shrink(0.002f), dest.Expand(0.05f),
 			new Vector2(
 				pivotX * dest.Width,
 				pivotY * dest.Height
@@ -222,9 +253,278 @@ public static class RaylibUtil {
 		}
 	}
 
-	public static int GetUnifyBorder (int spriteBorder, int screenHeight) => spriteBorder * screenHeight / 6000;
+	public static int GetUnifyBorder (int spriteBorder, int screenHeight) => spriteBorder * screenHeight / 7000;
 
-	
+
+	// Text
+	public static void CancelTyping () {
+		TypingTextFieldID = 0;
+		TypingBuilder.Clear();
+		BeamIndex = 0;
+		BeamLength = 0;
+	}
+
+
+	public static string TextField (FontData font, Sheet sheet, int controlID, Rectangle rect, string _text, out bool changed, out bool confirm) {
+
+		InputLabel.SetText(_text);
+		changed = false;
+		confirm = false;
+		int screenHeight = Raylib.GetRenderHeight();
+		var cameraRect = new Rectangle(0, 0, Raylib.GetRenderWidth(), screenHeight);
+		var mousePos = Raylib.GetMousePosition();
+		bool mouseLeftHolding = Raylib.IsMouseButtonDown(MouseButton.Left);
+		bool mouseLeftDown = Raylib.IsMouseButtonPressed(MouseButton.Left);
+		bool startTyping = false;
+		if (mouseLeftDown) LastInputMouseDownPos = mousePos;
+		bool mouseDownPosInRect = rect.Contains(LastInputMouseDownPos);
+		bool mouseDragging = mouseLeftHolding && mouseDownPosInRect;
+		bool inCamera = rect.Overlaps(cameraRect);
+		bool mouseInside = rect.Contains(mousePos);
+
+		if (mouseLeftDown && !mouseInside && TypingTextFieldID == controlID) {
+			CancelTyping();
+		}
+
+		if (mouseInside) {
+			Raylib.SetMouseCursor(MouseCursor.IBeam);
+		}
+
+		if (!inCamera && TypingTextFieldID == controlID) TypingTextFieldID = 0;
+
+		// Start Typing
+		if (inCamera && mouseLeftDown && mouseDownPosInRect) {
+			TypingTextFieldID = controlID;
+			startTyping = true;
+			mouseDragging = false;
+		}
+
+		// Typing 
+		bool typing = TypingTextFieldID == controlID;
+		int beamIndex = typing ? BeamIndex : 0;
+		int beamLength = typing ? BeamLength : 0;
+		if (typing) {
+
+			// Clear
+			if (Raylib.IsKeyReleased(KeyboardKey.Escape)) {
+				beamIndex = BeamIndex = 0;
+				confirm = true;
+				CancelTyping();
+			}
+
+			// Move Beam
+			if (IsKeyPressedOrRepeat(KeyboardKey.Left)) {
+				if (beamLength == 0) {
+					beamIndex = BeamIndex = beamIndex - 1;
+				} else if (beamLength < 0) {
+					beamIndex = BeamIndex = beamIndex + beamLength;
+				}
+				beamLength = BeamLength = 0;
+			}
+			if (IsKeyPressedOrRepeat(KeyboardKey.Right)) {
+				if (beamLength == 0) {
+					beamIndex = BeamIndex = beamIndex + 1;
+				} else if (beamLength > 0) {
+					beamIndex = BeamIndex = beamIndex + beamLength;
+				}
+				beamLength = BeamLength = 0;
+			}
+
+			beamIndex = BeamIndex = beamIndex.Clamp(0, InputLabel.Text.Length);
+			beamLength = BeamLength = beamLength.Clamp(-beamIndex, InputLabel.Text.Length - beamIndex);
+
+			for (int i = 0; i < TypingBuilder.Length; i++) {
+				char c = TypingBuilder[i];
+				switch (c) {
+					case Const.BACKSPACE_SIGN:
+						// Backspace
+						if (beamLength == 0) {
+							int removeIndex = beamIndex - 1;
+							if (removeIndex >= 0 && removeIndex < InputLabel.Text.Length) {
+								InputLabel.Text = InputLabel.Text.Remove(removeIndex, 1);
+								beamIndex = BeamIndex = beamIndex - 1;
+								changed = true;
+							}
+						} else {
+							RemoveSelection();
+							changed = true;
+						}
+						break;
+					case Const.RETURN_SIGN:
+						// Enter
+						confirm = true;
+						CancelTyping();
+						break;
+					case Const.CONTROL_COPY:
+					case Const.CONTROL_CUT:
+						if (beamLength == 0) break;
+						int beamStart = Util.Min(beamIndex, beamIndex + beamLength);
+						int beamEnd = Util.Max(beamIndex, beamIndex + beamLength);
+						Raylib.SetClipboardText(InputLabel.Text[beamStart..beamEnd]);
+						if (c == Const.CONTROL_CUT) {
+							RemoveSelection();
+							changed = true;
+						}
+						break;
+					case Const.CONTROL_PASTE:
+						string clipboardText = Raylib.GetClipboardText_();
+						if (string.IsNullOrEmpty(clipboardText)) break;
+						if (beamLength != 0) RemoveSelection();
+						InputLabel.Text = InputLabel.Text.Insert(beamIndex, clipboardText);
+						beamIndex = BeamIndex = beamIndex + clipboardText.Length;
+						changed = true;
+						break;
+					default:
+						if (InputLabel.Text.Length >= MAX_INPUT_CHAR) break;
+						// Append Char
+						if (beamLength != 0) RemoveSelection();
+						InputLabel.Text = InputLabel.Text.Insert(beamIndex, c.ToString());
+						beamIndex = BeamIndex = beamIndex + 1;
+						changed = true;
+						break;
+				}
+			}
+
+			// Delete
+			if (IsKeyPressedOrRepeat(KeyboardKey.Delete)) {
+				int removeIndex = beamIndex;
+				if (removeIndex >= 0 && removeIndex < InputLabel.Text.Length) {
+					if (beamLength == 0) {
+						// Delete One Char
+						InputLabel.Text = InputLabel.Text.Remove(removeIndex, 1);
+						changed = true;
+					} else {
+						// Delete Selection
+						RemoveSelection();
+						changed = true;
+					}
+				}
+			}
+			// Func
+			void RemoveSelection () {
+				int newBeamIndex = Util.Min(beamIndex, beamIndex + beamLength);
+				InputLabel.Text = InputLabel.Text.Remove(newBeamIndex, beamLength.Abs());
+				beamIndex = BeamIndex = newBeamIndex;
+				beamLength = BeamLength = 0;
+			}
+		}
+
+		// Rendering
+		var labelRect = rect.Shrink(Unify(12, screenHeight), 0, 0, 0);
+		float beamShrink = rect.Height / 12;
+		var beamRect = new Rectangle(
+			labelRect.X, labelRect.Y + beamShrink, Unify(2, screenHeight), labelRect.Height - beamShrink * 2
+		);
+
+		// Draw Text
+		if (!string.IsNullOrEmpty(InputLabel.Text)) {
+			DrawLabelIntoCacheCells(
+				font, InputLabel, rect, beamIndex, 0, false,
+				out _, out beamRect, out _
+			);
+		}
+
+		float beamOffsetX = 0;
+		var cells = CacheTextCells;
+		if (TextCellCount != 0) {
+
+			// Scroll X from Beam 
+			int beamCellIndex = typing ? beamIndex.Clamp(0, TextCellCount - 1) : 0;
+			var beamCharCell = cells[beamCellIndex];
+
+			// Shift for Beam Out
+			float shiftX = 0;
+			float labelRight = labelRect.X + labelRect.Width - Unify(22f, screenHeight);
+			if (beamCharCell.X + beamCharCell.Width / 2 >= labelRight) {
+				shiftX = labelRight - beamCharCell.X;
+				beamOffsetX = shiftX;
+			}
+
+			// Clip
+			for (int i = 0; i < TextCellCount && i < TextCellCount; i++) {
+				var cell = cells[i];
+				cell.X += (int)shiftX;
+				// Set Tint for Outside Clip
+				if (
+					cell.X + cell.Width > labelRect.X + labelRect.Width ||
+					cell.X < labelRect.X
+				) {
+					if (cell.X > labelRect.X + labelRect.Width || cell.X + cell.Width < labelRect.X) {
+						cell.Color = Color32.CLEAR;
+					}
+				}
+			}
+
+			// Get Beam Selection Rect
+			if (!startTyping && typing && beamLength != 0) {
+				int beamSelectionStartIndex = Util.Min(beamIndex, beamIndex + beamLength);
+				int beamSelectionEndIndex = Util.Max(beamIndex, beamIndex + beamLength);
+				var startCell = cells[(beamSelectionStartIndex).Clamp(0, TextCellCount - 1)];
+				var endCell = cells[(beamSelectionEndIndex - 1).Clamp(0, TextCellCount - 1)];
+				var selectionRect = IRect.MinMaxRect(
+					(int)Util.Max(startCell.X, rect.X),
+					(int)Util.Max(labelRect.Y + beamShrink, rect.Y),
+					(int)Util.Min(endCell.X + endCell.Width, rect.X + rect.Width),
+					(int)Util.Min(labelRect.Y + labelRect.Height - beamShrink, rect.Y + rect.Height)
+				).ToRaylib();
+				Draw(sheet, Const.PIXEL, selectionRect, Color32.ORANGE);
+			}
+
+			if (typing && (startTyping || mouseDragging)) {
+				int mouseBeamIndex = 0;
+				int mouseX = (int)mousePos.X;
+				for (int i = 0; i < TextCellCount && i < TextCellCount; i++) {
+					var cell = cells[i];
+					int x = cell.X + cell.Width / 2;
+					mouseBeamIndex = i;
+					// End Check
+					if (i == TextCellCount - 1 && mouseX > x) {
+						mouseBeamIndex = InputLabel.Text.Length;
+					}
+					if (x > mouseX) break;
+				}
+				// Set Beam on Click
+				if (startTyping) {
+					beamIndex = BeamIndex = mouseBeamIndex;
+					beamLength = BeamLength = 0;
+				}
+				// Set Selection on Drag
+				if (mouseDragging) {
+					BeamLength = beamLength + beamIndex - mouseBeamIndex;
+					BeamIndex = mouseBeamIndex;
+				}
+			}
+		}
+
+		// Beam
+		if (!startTyping && typing) {
+			beamRect.X += beamOffsetX;
+			beamRect.Y = labelRect.Y + beamShrink;
+			beamRect.Height = labelRect.Height - beamShrink * 2;
+			Draw(sheet, Const.PIXEL, beamRect);
+		}
+
+		// Draw Text
+		DrawLabelFromCacheCells(font);
+		TextCellCount = 0;
+
+		// Clamp
+		if (InputLabel.Text.Length > MAX_INPUT_CHAR) {
+			InputLabel.Text = InputLabel.Text[..MAX_INPUT_CHAR];
+		}
+
+		return InputLabel.Text;
+	}
+
+
+	// Misc
+	public static int Unify (int value, int screenHeight) => (value * screenHeight / 1000f).RoundToInt();
+	public static int Unify (float value, float screenHeight) => (value * screenHeight / 1000f).RoundToInt();
+
+
+	public static bool IsKeyPressedOrRepeat (KeyboardKey key) => Raylib.IsKeyPressed(key) || Raylib.IsKeyPressedRepeat(key);
+
+
 	// Debug
 	public static void WritePixelsToConsole (Color32[] pixels, int width) {
 
@@ -327,5 +627,6 @@ public static class RaylibUtil {
 		cell.Color = color;
 		return cell;
 	}
+
 
 }
