@@ -11,11 +11,11 @@ public class TextUtil {
 
 	public delegate bool RequireCharSpriteHander (char c, out CharSprite sprite);
 	public delegate Cell DrawCharHandler (CharSprite sprite, int x, int y, int width, int height, Color32 color);
-	
+
 
 	public static void DrawLabel (
 		RequireCharSpriteHander requireCharSprite, DrawCharHandler drawChar,
-		int cameraHeight, int textCountInLayer, Cell[] textCells,
+		int unifyHeight, int textCountInLayer, Cell[] textCells,
 		TextContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar,
 		out IRect bounds, out IRect beamRect, out int endIndex
 	) {
@@ -28,10 +28,10 @@ public class TextUtil {
 		string text = content.Text;
 		char[] chars = content.Chars;
 		int count = content.FromString ? text.Length : chars.Length;
-		int charSize = Unify(content.CharSize, cameraHeight);
-		int lineSpace = Unify(content.LineSpace, cameraHeight);
+		int charSize = Unify(content.CharSize, unifyHeight);
+		int lineSpace = Unify(content.LineSpace, unifyHeight);
 		var color = content.Tint;
-		int charSpace = Unify(content.CharSpace, cameraHeight);
+		int charSpace = Unify(content.CharSpace, unifyHeight);
 		var alignment = content.Alignment;
 		bool wrap = content.Wrap;
 		bool hasContent = count > 0;
@@ -51,7 +51,7 @@ public class TextUtil {
 		int minY = int.MaxValue;
 		int maxX = int.MinValue;
 		int maxY = int.MinValue;
-		int shadowOffset = Unify(content.ShadowOffset, cameraHeight);
+		int shadowOffset = Unify(content.ShadowOffset, unifyHeight);
 		for (int i = startIndex; i < count; i++) {
 
 			char c = content.FromString ? text[i] : chars[i];
@@ -113,14 +113,14 @@ public class TextUtil {
 			if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {
 				beamRect.x = x;
 				beamRect.y = y;
-				beamRect.width = Unify(2, cameraHeight);
+				beamRect.width = Unify(2, unifyHeight);
 				beamRect.height = charSize;
 				beamIndex = -1;
 			}
 			if (beamEnd && beamIndex >= 0 && i >= count - 1) {
 				beamRect.x = x + realCharSize + charSpace;
 				beamRect.y = y;
-				beamRect.width = Unify(2, cameraHeight);
+				beamRect.width = Unify(2, unifyHeight);
 				beamRect.height = charSize;
 				beamIndex = -1;
 			}

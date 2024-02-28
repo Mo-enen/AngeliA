@@ -4,7 +4,7 @@ using System.Linq;
 namespace AngeliaEditor;
 
 public class EditorRefit {
-	[OnQuit]
+	[OnQuit(int.MaxValue)]
 	internal static void OnGameQuitting () {
 		// Close CMD
 		System.Diagnostics.Process.GetProcessesByName(

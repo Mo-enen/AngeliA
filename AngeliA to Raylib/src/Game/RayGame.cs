@@ -64,7 +64,7 @@ public partial class RayGame : Game {
 		Util.OnLogWarning += RaylibUtil.LogWarning;
 
 		// Pipeline
-		Fonts = RaylibUtil.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
+		Fonts = RayGUI.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
 		InitializeShader();
 		InitializeAudio();
 		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);

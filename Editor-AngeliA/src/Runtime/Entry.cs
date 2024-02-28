@@ -6,4 +6,4 @@ using AngeliaEditor;
 [assembly: AngeliaGameTitle("AngeliA Editor")]
 [assembly: AngeliaVersion(0, 0, 1, ReleaseLifeCycle.Alpha)]
 
-Editor.Run();
+new Editor().Run();

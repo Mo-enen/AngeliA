@@ -161,7 +161,6 @@ public class World {
 
 	public void SaveToDisk (string mapFolder, int worldX, int worldY, int worldZ) {
 
-
 		try {
 
 			// Save
@@ -269,59 +268,59 @@ public class World {
 
 		bool success = false;
 
-		try {
+		//try {
 
-			System.Array.Clear(Levels, 0, Levels.Length);
-			System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
-			System.Array.Clear(Entities, 0, Entities.Length);
-			System.Array.Clear(Elements, 0, Elements.Length);
+		System.Array.Clear(Levels, 0, Levels.Length);
+		System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
+		System.Array.Clear(Entities, 0, Entities.Length);
+		System.Array.Clear(Elements, 0, Elements.Length);
 
-			WorldPosition = new(worldX, worldY, worldZ);
+		WorldPosition = new(worldX, worldY, worldZ);
 
-			if (!Util.FileExists(filePath)) return success;
+		if (!Util.FileExists(filePath)) return success;
 
-			using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-			using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+		using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+		using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
 
-			// Load Content
-			while (reader.NotEnd()) {
-				try {
-					int id = reader.ReadInt32();
-					int x = reader.ReadByte();
-					int y = reader.ReadByte();
-					if (x < Const.MAP) {
-						if (y < Const.MAP) {
-							// Entity x y
-							if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-							if (Entities[y * Const.MAP + x] != 0) continue;
-							Entities[y * Const.MAP + x] = id;
-						} else {
-							// Element x yy
-							y -= Const.MAP;
-							if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-							if (Elements[y * Const.MAP + x] != 0) continue;
-							Elements[y * Const.MAP + x] = id;
-						}
-					} else {
-						if (y < Const.MAP) {
-							// Level xx y
-							x -= Const.MAP;
-							if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-							if (Levels[y * Const.MAP + x] != 0) continue;
-							Levels[y * Const.MAP + x] = id;
-						} else {
-							// Background xx yy
-							x -= Const.MAP;
-							y -= Const.MAP;
-							if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-							if (Backgrounds[y * Const.MAP + x] != 0) continue;
-							Backgrounds[y * Const.MAP + x] = id;
-						}
-					}
-				} catch (System.Exception ex) { Util.LogException(ex); }
+		// Load Content
+		while (reader.NotEnd()) {
+			//try {
+			int id = reader.ReadInt32();
+			int x = reader.ReadByte();
+			int y = reader.ReadByte();//////////////error
+			if (x < Const.MAP) {
+				if (y < Const.MAP) {
+					// Entity x y
+					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+					if (Entities[y * Const.MAP + x] != 0) continue;
+					Entities[y * Const.MAP + x] = id;
+				} else {
+					// Element x yy
+					y -= Const.MAP;
+					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+					if (Elements[y * Const.MAP + x] != 0) continue;
+					Elements[y * Const.MAP + x] = id;
+				}
+			} else {
+				if (y < Const.MAP) {
+					// Level xx y
+					x -= Const.MAP;
+					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+					if (Levels[y * Const.MAP + x] != 0) continue;
+					Levels[y * Const.MAP + x] = id;
+				} else {
+					// Background xx yy
+					x -= Const.MAP;
+					y -= Const.MAP;
+					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+					if (Backgrounds[y * Const.MAP + x] != 0) continue;
+					Backgrounds[y * Const.MAP + x] = id;
+				}
 			}
-			success = true;
-		} catch (System.Exception ex) { Util.LogException(ex); }
+			//} catch (System.Exception ex) { Util.LogException(ex); }
+		}
+		success = true;
+		//} catch (System.Exception ex) { Util.LogException(ex); }
 
 		// Final
 		return success;

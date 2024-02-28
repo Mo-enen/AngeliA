@@ -1038,9 +1038,9 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void Save () {
-		if (PlayingGame || WorldSquad.Front == null) return;
+		if (PlayingGame) return;
 		IsDirty = false;
-		WorldSquad.Front.SaveToFile();
+		WorldSquad.Front?.SaveToFile();
 	}
 
 

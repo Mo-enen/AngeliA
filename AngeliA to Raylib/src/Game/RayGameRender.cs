@@ -521,7 +521,7 @@ public partial class RayGame {
 
 	protected override int _GetFontSize (int index) => Fonts[index].Size;
 
-	protected override CharSprite _GetCharSprite (int layerIndex, char c, int textSize) => RaylibUtil.CreateCharSprite(Fonts[layerIndex], c);
+	protected override CharSprite _GetCharSprite (int layerIndex, char c, int textSize) => RayGUI.CreateCharSprite(Fonts[layerIndex], c);
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();
 
