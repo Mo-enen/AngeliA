@@ -2,7 +2,7 @@
 using System.Linq;
 using AngeliA.Framework;
 
-namespace AngeliaGame.Editor;
+namespace AngeliaToRaylib.Editor;
 
 public class EditorRefit {
 	[OnGameQuitting(int.MaxValue)]

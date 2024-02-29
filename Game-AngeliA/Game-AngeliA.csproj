@@ -24,9 +24,9 @@
 		<AnalysisLevel>none</AnalysisLevel>
 		<Deterministic>True</Deterministic>
 		<Optimize>True</Optimize>
-		
-		<OutputPath>Build</OutputPath>
-		<PublishDir>Publish</PublishDir>
+
+		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<PublishDir>$(SolutionDir)Publish</PublishDir>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
@@ -44,16 +44,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove=".gitignore" />
-	  <None Remove="desktop.ini" />
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
+		<ProjectReference Include="..\AngeliA to Raylib\AngeliA to Raylib.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="src\Editor\" />
-	</ItemGroup>
+	<!--Move Game Lib into Library Folder-->
+	<Target Name="CopyDLL" AfterTargets="Build">
+		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
+	</Target>
 
+	<!--Rename Exe File when Release-->
+	<Target Name="RenameExe" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<Move SourceFiles="$(OutputPath)AngeliA to Raylib.exe" DestinationFiles="$(OutputPath)AngeliA.exe" ContinueOnError="true" />
+	</Target>
+	
 </Project>

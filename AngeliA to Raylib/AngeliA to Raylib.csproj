@@ -19,8 +19,8 @@
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<Optimize>True</Optimize>
 
-		<OutputPath>Build</OutputPath>
-		<PublishDir>Publish</PublishDir>
+		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<PublishDir>$(SolutionDir)Publish</PublishDir>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
