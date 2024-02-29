@@ -113,8 +113,6 @@ public static class DeveloperToolbar {
 			buttonSize, buttonSize
 		);
 
-		if (Game.ShowFPS) rect.x -= GUI.Unify(32);
-
 		// Collider Btn
 		if (DrawCollider) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
 		if (GUI.Button(rect, BTN_COLLIDER, BTN_COLLIDER, BTN_COLLIDER, 0, 0, 0, int.MaxValue)) {

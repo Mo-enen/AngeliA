@@ -1,79 +1,49 @@
 ﻿using System.Reflection;
-using System.Linq;
 
 namespace AngeliA;
 
 
 // Project
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliAAttribute : System.Attribute { }
-
-
-
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class AngeliaGameTitleAttribute : System.Attribute {
-	public string Title;
-	public AngeliaGameTitleAttribute (string title) => Title = title;
-	public static string GetTitle () {
-		foreach (var assembly in Util.AllAssemblies) {
-			var att = assembly.GetCustomAttribute<AngeliaGameTitleAttribute>();
-			if (att != null) return att.Title;
-		}
-		return "";
-	}
+	public static string Title => !string.IsNullOrEmpty(_Title) ? _Title : _Title = (Util.TryGetAttributeFromAllAssemblies<AngeliaGameTitleAttribute>(out _, out var att) ? att.LocalTitle : "(No Title)");
+	private static string _Title = "";
+	private readonly string LocalTitle = "";
+	public AngeliaGameTitleAttribute (string title) => LocalTitle = title;
 }
 
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class AngeliaGameDeveloperAttribute : System.Attribute {
-	public string Developer;
-	public AngeliaGameDeveloperAttribute (string developer) => Developer = developer;
-	public static string GetDeveloperName () {
-		foreach (var assembly in Util.AllAssemblies) {
-			var att = assembly.GetCustomAttribute<AngeliaGameDeveloperAttribute>();
-			if (att != null) return att.Developer;
-		}
-		return "";
-	}
+	public static string Developer => !string.IsNullOrEmpty(_Developer) ? _Developer : _Developer = (Util.TryGetAttributeFromAllAssemblies<AngeliaGameDeveloperAttribute>(out _, out var att) ? att.LocalDeveloper : "(No Developer)");
+	private static string _Developer = "";
+	private readonly string LocalDeveloper = "";
+	public AngeliaGameDeveloperAttribute (string developer) => LocalDeveloper = developer;
 }
-
-
-
-public enum ReleaseLifeCycle { Alpha = 0, Beta = 1, Release = 2, Final = 3, }
-
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class AngeliaVersionAttribute : System.Attribute {
-	public static int MajorVersion = 0;
-	public static int MinorVersion = 0;
-	public static int PatchVersion = 0;
-	public static ReleaseLifeCycle? LifeCycle = null;
-	public AngeliaVersionAttribute (int majorVersion, int minorVersion, int patchVersion, ReleaseLifeCycle lifeCycle) {
-		MajorVersion = majorVersion;
-		MinorVersion = minorVersion;
-		PatchVersion = patchVersion;
-		LifeCycle = lifeCycle;
-	}
-	public static string GetVersionString (bool prefixV = true, bool lifeCycle = true) =>
-		$"{(prefixV ? "v" : "")}{MajorVersion}.{MinorVersion}.{PatchVersion}{(lifeCycle ? LifeCycle switch {
-			ReleaseLifeCycle.Alpha => "a",
-			ReleaseLifeCycle.Beta => "b",
-			ReleaseLifeCycle.Final => "f",
-			_ => "",
-		} : "")}";
+	public static int MajorVersion => Version.x;
+	public static int MinorVersion => Version.y;
+	public static int PatchVersion => Version.z;
+	public static Int3 Version => _Version ?? (_Version = (Util.TryGetAttributeFromAllAssemblies<AngeliaVersionAttribute>(out _, out var att) ? att.LocalVersion : Int3.zero)).Value;
+	private static Int3? _Version = null;
+	public Int3 LocalVersion = Int3.zero;
+	public AngeliaVersionAttribute (int majorVersion, int minorVersion, int patchVersion) => LocalVersion = new Int3(majorVersion, minorVersion, patchVersion);
+	public static string GetVersionString (bool prefixV = true) => $"{(prefixV ? "v" : "")}{Version.x}.{Version.y}.{Version.z}";
 }
 
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class AngeliaAllowMakerAttribute : System.Attribute {
-	public static bool AllowMakerFeatures => Util.AllAssemblies.Any(
-		a => a.GetCustomAttribute<AngeliaAllowMakerAttribute>() != null
-	);
+	public static bool AllowMakerFeatures => _AllowMakerFeatures ?? (_AllowMakerFeatures = (Util.TryGetAttributeFromAllAssemblies<AngeliaAllowMakerAttribute>(out _, out var att) && att.LocalAllowMakerFeatures)).Value;
+	private static bool? _AllowMakerFeatures = null;
+	private readonly bool LocalAllowMakerFeatures = false;
+	public AngeliaAllowMakerAttribute (bool allow) => LocalAllowMakerFeatures = allow;
 }
-
 
 
 // Item

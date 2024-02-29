@@ -59,10 +59,7 @@ public class ControlHintUI : EntityUI {
 	private int OffsetResetFrame = int.MinValue;
 	private static readonly TextContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = LabelTint, };
 	private static readonly TextContent KeyLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = KeyTint, };
-	private static readonly TextContent FPSLabel = new() { Alignment = Alignment.TopRight, CharSize = 20, Tint = Color32.WHITE, Shadow = Color32.BLACK, FromString = false, ShadowOffset = 3, };
-	private static float GameFPS = 1f;
-	private static readonly IntToChars FPS = new();
-
+	
 	// Saving
 	private static readonly SavingBool ShowGamePadUI = new("Hint.ShowGamePadUI", false);
 	private static readonly SavingBool ShowControlHint = new("Hint.ShowControlHint", true);
@@ -75,24 +72,6 @@ public class ControlHintUI : EntityUI {
 
 	[OnGameUpdatePauseless]
 	public static void OnGameUpdateLater () {
-		// FPS
-		if (Game.ShowFPS) {
-			if (Game.PauselessFrame % 12 == 0) {
-				GameFPS = Game.CurrentFPS;
-			}
-			int padding = Unify(6);
-			int width = Unify(40);
-			int height = Unify(24);
-			FPSLabel.Chars = FPS.GetChars(GameFPS.RoundToInt());
-			GUI.Label(
-				FPSLabel,
-				new IRect(
-					Renderer.CameraRect.xMax - width - padding,
-					Renderer.CameraRect.yMax - height - padding,
-					width, height
-				)
-			);
-		}
 		// Draw Hints
 		if (Instance != null) {
 			if (Instance.GamepadVisible) Instance.DrawGamePad();

@@ -39,7 +39,47 @@ public static class RayGUI {
 
 
 	// MSG
-	public static void BeforeUpdate () {
+	public static void BeforeUpdate (Action<char> onTextInput = null) {
+		// Text Update
+		if (IsTyping) {
+			TypingBuilder.Clear();
+			int current;
+			for (int safe = 0; (current = Raylib.GetCharPressed()) > 0 && safe < 1024; safe++) {
+				TypingBuilder.Append((char)current);
+				onTextInput?.Invoke((char)current);
+			}
+			for (int safe = 0; (current = Raylib.GetKeyPressed()) > 0 && safe < 1024; safe++) {
+				switch ((KeyboardKey)current) {
+					case KeyboardKey.Enter:
+						TypingBuilder.Append(Const.RETURN_SIGN);
+						onTextInput?.Invoke(Const.RETURN_SIGN);
+						break;
+					case KeyboardKey.C:
+						if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
+							TypingBuilder.Append(Const.CONTROL_COPY);
+							onTextInput?.Invoke(Const.CONTROL_COPY);
+						}
+						break;
+					case KeyboardKey.X:
+						if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
+							TypingBuilder.Append(Const.CONTROL_CUT);
+							onTextInput?.Invoke(Const.CONTROL_CUT);
+						}
+						break;
+					case KeyboardKey.V:
+						if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
+							TypingBuilder.Append(Const.CONTROL_PASTE);
+							onTextInput?.Invoke(Const.CONTROL_PASTE);
+						}
+						break;
+				}
+			}
+			if (IsKeyPressedOrRepeat(KeyboardKey.Backspace)) {
+				TypingBuilder.Append(Const.BACKSPACE_SIGN);
+				onTextInput?.Invoke(Const.BACKSPACE_SIGN);
+			}
+		}
+		// Monitor Cache
 		int monitor = Raylib.GetCurrentMonitor();
 		MonitorHeight = Raylib.GetMonitorHeight(monitor);
 	}

@@ -42,8 +42,8 @@ public sealed class Editor {
 	private Window[] Windows;
 	private Vector2? FloatMascotMouseDownPos = null;
 	private Vector2 FloatMascotMouseDownGlobalPos = default;
-	private int CurrentWindowIndex = 0;
 	private WindowMode CurrentWindowMode;
+	private int CurrentWindowIndex = 0;
 	private bool FloatMascotDragged = false;
 
 
@@ -89,7 +89,6 @@ public sealed class Editor {
 
 		// Update
 		while (!RequireQuit) {
-			TextUpdate();
 			RayGUI.BeforeUpdate();
 			Raylib.BeginDrawing();
 			OnGUI();
@@ -111,40 +110,6 @@ public sealed class Editor {
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
 		Raylib.CloseWindow();
 		Util.InvokeAllStaticMethodWithAttribute<OnQuitAttribute>();
-	}
-
-
-	private void TextUpdate () {
-		if (!RayGUI.IsTyping) return;
-		int current;
-		for (int safe = 0; (current = Raylib.GetCharPressed()) > 0 && safe < 1024; safe++) {
-			RayGUI.TypingBuilder.Append((char)current);
-		}
-		for (int safe = 0; (current = Raylib.GetKeyPressed()) > 0 && safe < 1024; safe++) {
-			switch ((KeyboardKey)current) {
-				case KeyboardKey.Enter:
-					RayGUI.TypingBuilder.Append(Const.RETURN_SIGN);
-					break;
-				case KeyboardKey.C:
-					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
-						RayGUI.TypingBuilder.Append(Const.CONTROL_COPY);
-					}
-					break;
-				case KeyboardKey.X:
-					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
-						RayGUI.TypingBuilder.Append(Const.CONTROL_CUT);
-					}
-					break;
-				case KeyboardKey.V:
-					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
-						RayGUI.TypingBuilder.Append(Const.CONTROL_PASTE);
-					}
-					break;
-			}
-		}
-		if (RayGUI.IsKeyPressedOrRepeat(KeyboardKey.Backspace)) {
-			RayGUI.TypingBuilder.Append(Const.BACKSPACE_SIGN);
-		}
 	}
 
 
@@ -190,7 +155,7 @@ public sealed class Editor {
 		int screenheight = Raylib.GetRenderHeight();
 
 		// Tab Bar
-		int barHeight = Unify(58);
+		int barHeight = Unify(32);
 		int barPadding = Sheet.SpritePool.TryGetValue(UI_WINDOW_BG, out var bgSprite) ?
 			bgSprite.GlobalBorder.left : 5;
 		OnGUI_TabBar(barHeight, RayGUI.GetUnifyBorder(barPadding));
@@ -245,7 +210,7 @@ public sealed class Editor {
 
 			// Label
 			Font.DrawLabel(
-				TextContent.Get(window.Title, Color32.GREY_196, charSize: 20, alignment: Alignment.MidLeft),
+				TextContent.Get(window.Title, Color32.GREY_196, charSize: 12, alignment: Alignment.MidLeft),
 				contentRect.Shrink(window.Icon != 0 ? iconSize : contentPadding, 0, 0, 0)
 			);
 
@@ -276,16 +241,19 @@ public sealed class Editor {
 
 	// Mascot
 	private void OnGUI_Mascot_MouseLogic () {
-		// Mouse Logic
-		var mousePos = Raylib.GetMousePosition();
-		const float DRAG_TO_MOVE_GAP = 1600f;
+		// Mouse Right Down
+		if (Raylib.IsMouseButtonDown(MouseButton.Right)) {
+			//EditorUtil.BuildProject(,,);
+		}
+		// Mouse Left Down
 		if (Raylib.IsMouseButtonDown(MouseButton.Left)) {
+			var mousePos = Raylib.GetMousePosition();
 			if (!FloatMascotMouseDownPos.HasValue) {
 				// Mouse Down
 				FloatMascotMouseDownPos = mousePos;
 				FloatMascotDragged = false;
 			} else {
-				if (FloatMascotDragged || Vector2.DistanceSquared(mousePos, FloatMascotMouseDownPos.Value) > DRAG_TO_MOVE_GAP) {
+				if (FloatMascotDragged || Vector2.DistanceSquared(mousePos, FloatMascotMouseDownPos.Value) > 1600f) {
 					if (!FloatMascotDragged) {
 						// Drag Start
 						FloatMascotDragged = true;

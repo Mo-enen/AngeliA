@@ -35,6 +35,16 @@ public static partial class Util {
 
 
 	// Misc
+	public static void AddGetEnvironmentVariable (string key, string value) {
+		string oldPath = System.Environment.GetEnvironmentVariable(
+			key, System.EnvironmentVariableTarget.Process
+		) ?? "";
+		System.Environment.SetEnvironmentVariable(
+			key, oldPath.Insert(0, $"{value};"), System.EnvironmentVariableTarget.Process
+		);
+	}
+
+
 	public static string GetDisplayName (string name) {
 
 		// Remove "m_" at Start
@@ -104,9 +114,9 @@ public static partial class Util {
 	}
 
 
-	public static void ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true) {
+	public static int ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true) {
 		try {
-			var process = Process.Start(new System.Diagnostics.ProcessStartInfo {
+			var process = Process.Start(new ProcessStartInfo {
 				Verb = "runas",
 				FileName = "cmd.exe",
 				Arguments = $"/C \"{arguments}\"",
@@ -122,8 +132,10 @@ public static partial class Util {
 				LogError(process.StandardError.ReadToEnd());
 			}
 			process.WaitForExit(10_000);
+			return process.ExitCode;
 		} catch (System.Exception ex) {
 			LogException(ex);
+			return -1;
 		}
 	}
 

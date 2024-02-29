@@ -32,6 +32,10 @@ public static class Extension {
 	}
 
 	// Misc
+	public static void AddDistinct<T> (this IList<T> list, T item) {
+		if (!list.Contains(item)) list.Add(item);
+	}
+
 	public static void ForEach<T> (this T[] arr, System.Action<T> action) {
 		foreach (var a in arr) action(a);
 	}

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using AngeliA;
 using AngeliA.Framework;
 using Raylib_cs;
-
-[assembly: AngeliA]
 
 namespace AngeliaToRaylib.Framework;
 
@@ -22,6 +22,7 @@ public partial class RayGame : Game {
 	private event Action<char> OnTextInput = null;
 
 	// Data
+	private readonly Stopwatch GameWatch = new();
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
 	private long NextUpdateTick = -1;
@@ -31,17 +32,16 @@ public partial class RayGame : Game {
 
 
 	// MSG
-	public static void Run () {
-		var game = new RayGame();
-		game.InitializeGame();
-		while (!game.RequireQuitGame) {
+	public void Run () {
+		InitializeGame();
+		while (!RequireQuitGame) {
 			try {
-				game.UpdateGame();
+				UpdateGame();
 			} catch (Exception ex) {
 				Util.LogException(ex);
 			}
 		}
-		game.QuitGame();
+		QuitGame();
 	}
 
 
@@ -54,6 +54,8 @@ public partial class RayGame : Game {
 			ConfigFlags.AlwaysRunWindow |
 			ConfigFlags.InterlacedHint
 		);
+		if (RequireTransparentWindowAttribute.Required) Raylib.SetWindowState(ConfigFlags.TransparentWindow);
+		if (RequireEventWaitingAttribute.Required) Raylib.EnableEventWaiting();
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 
@@ -70,10 +72,11 @@ public partial class RayGame : Game {
 		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
 
 		// Init AngeliA
-		base.Initialize();
+		Initialize();
 
 		// Raylib Window
-		Raylib.SetWindowTitle(GameTitle);
+		GameWatch.Start();
+		Raylib.SetWindowTitle(AngeliaGameTitleAttribute.Title);
 		if (WindowMaximized.Value) {
 			Raylib.MaximizeWindow();
 		} else if (!Raylib.IsWindowFullscreen()) {
@@ -82,17 +85,16 @@ public partial class RayGame : Game {
 				(Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) - _GetScreenHeight()) / 2
 			);
 		}
-
 	}
 
 
 	private void UpdateGame () {
 
 		// Text Input
-		Update_TextInput();
+		RayGUI.BeforeUpdate(OnTextInput);
 
 		// Wait for Fixed Update
-		long currentTick = TicksSinceStart;
+		long currentTick = GameWatch.ElapsedTicks;
 		if (currentTick < NextUpdateTick) goto _CONTINUE_;
 		NextUpdateTick = currentTick + TICK_GAP;
 
@@ -121,8 +123,7 @@ public partial class RayGame : Game {
 		);
 
 		// Update AngeliA
-		base.GameUpdate();
-		base.GraphicUpdate();
+		base.Update();
 
 		// Update Gizmos
 		GizmosRender.UpdateGizmos();
@@ -194,7 +195,6 @@ public partial class RayGame : Game {
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
 		OnGameQuitting?.Invoke();
 		Raylib.CloseWindow();
-
 	}
 
 

@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-
-[assembly: AngeliA.AngeliA]
+using System.Linq;
+using System.Reflection;
 
 namespace AngeliA.Framework;
 
@@ -33,15 +32,6 @@ public abstract partial class Game {
 	public static int PauselessFrame { get; private set; } = 0;
 	public static bool IsPausing => !IsPlaying;
 	public static bool IsPlaying { get; private set; } = true;
-	public static bool ShowFPS {
-		get => _ShowFPS.Value;
-		set {
-			_ShowFPS.Value = value;
-			if (value) {
-				LastGraphicUpdateTime = GameWatch.ElapsedMilliseconds;
-			}
-		}
-	}
 	public static int MusicVolume {
 		get => _MusicVolume.Value;
 		set => _MusicVolume.Value = value;
@@ -53,11 +43,6 @@ public abstract partial class Game {
 	public static float ScaledMusicVolume => Util.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
-	public static float CurrentFPS { get; private set; } = 1f;
-	public static string GameTitle { get; private set; } = "";
-	public static string GameDeveloper { get; private set; } = "";
-	public static bool AllowMakerFeaures { get; private set; } = false;
-	public static long TicksSinceStart => GameWatch.ElapsedTicks;
 
 	// Event
 	private static event System.Action OnGameRestart;
@@ -69,17 +54,12 @@ public abstract partial class Game {
 	private static event System.Action OnGameFocused;
 	private static event System.Action OnGameLostFocus;
 
-	// Data
-	private static long LastGraphicUpdateTime = 0;
-	private static Stopwatch GameWatch;
-
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
 	private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500);
 	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 1000);
 	private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9);
 	private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024);
-	private static readonly SavingBool _ShowFPS = new("Game.ShowFPS", false);
 
 
 	#endregion
@@ -92,18 +72,20 @@ public abstract partial class Game {
 
 	public Game () {
 		Instance = this;
-		// Info from Attribute
-		GameTitle = AngeliaGameTitleAttribute.GetTitle();
-		GameDeveloper = AngeliaGameDeveloperAttribute.GetDeveloperName();
-		AllowMakerFeaures = IsEdittime || AngeliaAllowMakerAttribute.AllowMakerFeatures;
+		Util.AllAssemblies.AddDistinct(typeof(Game).Assembly);
+		Util.AllAssemblies.AddDistinct(Assembly.GetCallingAssembly());
+		foreach (var dllpath in Util.EnumerateFiles("Library", false, "*.dll")) {
+			if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
+				Util.AllAssemblies.AddDistinct(assembly);
+			}
+		}
 	}
 
 
-	public virtual void Initialize () {
+	public void Initialize () {
 		try {
 
 			GlobalFrame = 0;
-			GameWatch = Stopwatch.StartNew();
 			if (IsEdittime) _IsFullscreen.Value = false;
 
 			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
@@ -133,7 +115,7 @@ public abstract partial class Game {
 
 			if (IsEdittime) {
 				WindowUI.OpenWindow(MapEditor.TYPE_ID);
-			} else if (AllowMakerFeaures) {
+			} else if (AngeliaAllowMakerAttribute.AllowMakerFeatures) {
 				WindowUI.OpenWindow(HomeScreen.TYPE_ID);
 			} else {
 				RestartGame();
@@ -156,7 +138,7 @@ public abstract partial class Game {
 	}
 
 
-	public virtual void GameUpdate () {
+	public void Update () {
 		try {
 
 			// Update Callbacks
@@ -164,7 +146,7 @@ public abstract partial class Game {
 				OnGameUpdate?.Invoke();
 				OnGameUpdateLater?.Invoke();
 			}
-			PauselessUpdate();
+			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
 			if (Input.GameKeyUp(Gamekey.Start)) {
@@ -183,17 +165,8 @@ public abstract partial class Game {
 	}
 
 
-	public virtual void GraphicUpdate () {
-		if (_ShowFPS.Value) {
-			long currentTime = GameWatch.ElapsedMilliseconds;
-			float deltaTime = (currentTime - LastGraphicUpdateTime) / 1000f;
-			LastGraphicUpdateTime = currentTime;
-			CurrentFPS = Util.LerpUnclamped(CurrentFPS, 1f / Util.Max(deltaTime, 0.000001f), 0.1f);
-		}
-	}
-
-
-	private static void PauselessUpdate () {
+	[OnGameUpdatePauseless(int.MinValue)]
+	internal static void PauselessUpdate () {
 		// Load or Stop Music
 		bool requireMusic = IsPlaying && ScaledMusicVolume > 0 && !MapEditor.IsEditing;
 		if (requireMusic != IsMusicPlaying) {
@@ -206,8 +179,6 @@ public abstract partial class Game {
 		// Screen Size Cache
 		ScreenWidth = Instance._GetScreenWidth();
 		ScreenHeight = Instance._GetScreenHeight();
-		// Event
-		OnGameUpdatePauseless?.Invoke();
 	}
 
 

@@ -3,44 +3,11 @@ using System.Collections.Generic;
 using AngeliA;
 using AngeliA.Framework;
 using Raylib_cs;
+using KeyboardKey = Raylib_cs.KeyboardKey;
 
 namespace AngeliaToRaylib.Framework;
 
 public partial class RayGame {
-
-
-	private void Update_TextInput () {
-		if (!GUI.IsTyping) return;
-		int current;
-		for (int safe = 0; (current = Raylib.GetCharPressed()) > 0 && safe < 1024; safe++) {
-			OnTextInput?.Invoke((char)current);
-		}
-		for (int safe = 0; (current = Raylib.GetKeyPressed()) > 0 && safe < 1024; safe++) {
-			switch ((Raylib_cs.KeyboardKey)current) {
-				case Raylib_cs.KeyboardKey.Backspace:
-					OnTextInput?.Invoke(Const.BACKSPACE_SIGN);
-					break;
-				case Raylib_cs.KeyboardKey.Enter:
-					OnTextInput?.Invoke(Const.RETURN_SIGN);
-					break;
-				case Raylib_cs.KeyboardKey.C:
-					if (Raylib.IsKeyDown(Raylib_cs.KeyboardKey.LeftControl)) {
-						OnTextInput?.Invoke(Const.CONTROL_COPY);
-					}
-					break;
-				case Raylib_cs.KeyboardKey.X:
-					if (Raylib.IsKeyDown(Raylib_cs.KeyboardKey.LeftControl)) {
-						OnTextInput?.Invoke(Const.CONTROL_CUT);
-					}
-					break;
-				case Raylib_cs.KeyboardKey.V:
-					if (Raylib.IsKeyDown(Raylib_cs.KeyboardKey.LeftControl)) {
-						OnTextInput?.Invoke(Const.CONTROL_PASTE);
-					}
-					break;
-			}
-		}
-	}
 
 
 	// Cursor

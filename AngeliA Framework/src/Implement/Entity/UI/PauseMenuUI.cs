@@ -40,7 +40,6 @@ public class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_MUSIC_VOLUME = ("Menu.Setting.MusicVolume", "Music Volume");
 	private static readonly LanguageCode MENU_SOUND_VOLUME = ("Menu.Setting.SoundVolume", "Sound Volume");
 	private static readonly LanguageCode MENU_LANGUAGE = ("Menu.Setting.Language", "Language");
-	private static readonly LanguageCode MENU_SHOW_FPS = ("Menu.Setting.ShowFPS", "Show FPS");
 	private static readonly LanguageCode MENU_KEYSETTER_SAVE_BACK = ("Menu.KeySetter.SaveAndBack", "Save and Back");
 	private static readonly LanguageCode MENU_FULLSCREEN_LABEL = ("Menu.Setting.Fullscreen.Label", "Fullscreen");
 	private static readonly LanguageCode MENU_CONTROL_HINT = ("Menu.Setting.UseControlHint", "Show Control Hint");
@@ -269,14 +268,6 @@ public class PauseMenuUI : MenuUI {
 			Game.SoundVolume > 0, Game.SoundVolume < 1000, out delta
 		)) {
 			Game.SetSoundVolume(Game.SoundVolume + delta * 100);
-		}
-
-		// Show FPS 
-		if (DrawItem(
-			MENU_SHOW_FPS,
-			TextContent.Get(Game.ShowFPS ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
-		)) {
-			Game.ShowFPS = !Game.ShowFPS;
 		}
 
 		// Fullscreen

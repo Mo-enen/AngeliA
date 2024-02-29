@@ -9,11 +9,10 @@ namespace AngeliaEditor;
 public static class EditorUtil {
 
 
-	private const string RUNTIME_LOCATION = "[angelia] dotnet runtime location";
 	private static readonly StringBuilder CacheBuilder = new();
 
 
-	public static void BuildProject (
+	public static int BuildProject (
 		string projectPath, string sdkPath, string outputFolderPath,
 		bool logMessage = true
 	) {
@@ -53,24 +52,13 @@ public static class EditorUtil {
 		CacheBuilder.Append(" -c release");
 
 		// Execute
-		Util.ExecuteCommand(Util.GetParentPath(projectPath), CacheBuilder.ToString(), logMessage);
+		int exitCode = Util.ExecuteCommand(Util.GetParentPath(projectPath), CacheBuilder.ToString(), logMessage);
 		CacheBuilder.Clear();
-
+		return exitCode;
 	}
 
 
-	public static string GenerateProjectFile (string sdkPath) {
-
-		// Find Runtime
-		string runtimeRoot = string.Empty;
-		foreach (string path in Util.EnumerateFiles(Util.GetParentPath(sdkPath), false, RUNTIME_LOCATION)) {
-			runtimeRoot = Util.GetParentPath(path);
-			break;
-		}
-		if (string.IsNullOrEmpty(runtimeRoot)) {
-			Util.LogError($"Can not find dotnet runtime. it should be inside dotnet sdk folder: {sdkPath}");
-			return string.Empty;
-		}
+	public static string GenerateProjectFile () {
 
 		// Create Project File
 		CacheBuilder.Clear();
@@ -79,22 +67,6 @@ public static class EditorUtil {
 		CacheBuilder.AppendLine("\t<PropertyGroup>");
 		CacheBuilder.AppendLine("\t\t<TargetFramework>net7.0-windows</TargetFramework>");
 		CacheBuilder.AppendLine("\t</PropertyGroup>");
-
-		// Add Dotnet Runtime Dll
-		foreach (string path in Util.EnumerateFiles(runtimeRoot, true, "*.dll")) {
-            CacheBuilder.AppendLine("\t<ItemGroup>");
-            // Include
-            CacheBuilder.Append("\t\t<Reference Include=\"");
-            CacheBuilder.Append(Util.GetNameWithoutExtension(path));
-            CacheBuilder.AppendLine("\">");
-            // Hint Path
-            CacheBuilder.Append("\t\t\t<HintPath>");
-            CacheBuilder.Append(path);
-            CacheBuilder.AppendLine("</HintPath>");
-            // End
-            CacheBuilder.AppendLine("\t\t</Reference>");
-            CacheBuilder.AppendLine("\t</ItemGroup>");
-		}
 
 		CacheBuilder.AppendLine("</Project>");
 		string result = CacheBuilder.ToString();

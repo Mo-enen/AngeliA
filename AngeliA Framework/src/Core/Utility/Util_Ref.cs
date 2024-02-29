@@ -20,31 +20,8 @@ public static partial class Util {
 
 
 	// All Class
-	public static Assembly[] AllAssemblies {
-		get {
-			if (_AllAssemblies == null) {
-				var list = new List<Assembly>();
-				foreach (var assembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
-					if (assembly.GetCustomAttribute<AngeliAAttribute>() != null) {
-						list.Add(assembly);
-					}
-				}
-				//foreach (var dllpath in EnumerateFiles("Library", false, "*.dll")) {
-				//	if (
-				//		Assembly.LoadFrom(dllpath) is Assembly assembly &&
-				//		assembly.GetCustomAttribute<AngeliAAttribute>() != null
-				//	) {
-				//		list.Add(assembly);
-				//	}
-				//}
-				_AllAssemblies = list.ToArray();
-			}
-			return _AllAssemblies;
-		}
-	}
-	private static Assembly[] _AllAssemblies = null;
-
-	public static System.Type[] AllTypes {
+	public static readonly List<Assembly> AllAssemblies = new();
+	public static Type[] AllTypes {
 		get {
 			if (_AllTypes == null) {
 				var list = new List<System.Type>();
@@ -56,16 +33,16 @@ public static partial class Util {
 			return _AllTypes;
 		}
 	}
-	private static System.Type[] _AllTypes = null;
+	private static Type[] _AllTypes = null;
 
 
-	public static IEnumerable<System.Type> AllChildClass (this System.Type type, bool includeAbstract = false, bool includeInterface = false) {
+	public static IEnumerable<Type> AllChildClass (this Type type, bool includeAbstract = false, bool includeInterface = false) {
 		foreach (var t in AllChildClass(type, AllTypes, includeAbstract, includeInterface))
 			yield return t;
 	}
-	public static IEnumerable<System.Type> AllChildClass (this System.Type type, Assembly assembly, bool includeAbstract = false, bool includeInterface = false) =>
+	public static IEnumerable<Type> AllChildClass (this Type type, Assembly assembly, bool includeAbstract = false, bool includeInterface = false) =>
 		AllChildClass(type, assembly.GetTypes(), includeAbstract, includeInterface);
-	private static IEnumerable<System.Type> AllChildClass (this System.Type type, System.Type[] types, bool includeAbstract = false, bool includeInterface = false) =>
+	private static IEnumerable<Type> AllChildClass (this Type type, Type[] types, bool includeAbstract = false, bool includeInterface = false) =>
 		types.Where(t =>
 			(includeAbstract || !t.IsAbstract) &&
 			(includeInterface || !t.IsInterface) &&
@@ -74,26 +51,46 @@ public static partial class Util {
 
 
 	public static void ClearAllTypeCache () => _AllTypes = null;
-	public static void ClearAllAssembliesCache () => _AllAssemblies = null;
+
+
+	public static IEnumerable<(Assembly assembly, A attribyte)> ForAllAssemblyWithAttribute<A> () where A : Attribute {
+		foreach (var assembly in AllAssemblies) {
+			var att = assembly.GetCustomAttribute<A>();
+			if (att == null) continue;
+			yield return new(assembly, att);
+		}
+	}
+
+
+	public static bool TryGetAttributeFromAllAssemblies<A> (out Assembly assembly, out A attribute) where A : Attribute {
+		foreach (var (_assembly, att) in ForAllAssemblyWithAttribute<A>()) {
+			attribute = att;
+			assembly = _assembly;
+			return true;
+		}
+		attribute = null;
+		assembly = null;
+		return false;
+	}
 
 
 	// For All Types
-	public static IEnumerable<System.Type> AllClassImplemented (this System.Type type, bool includeAbstract = false) => AllTypes.Where(
+	public static IEnumerable<Type> AllClassImplemented (this Type type, bool includeAbstract = false) => AllTypes.Where(
 		t => !t.IsInterface && (includeAbstract || !t.IsAbstract) && type.IsAssignableFrom(t)
 	);
 
 
-	public static IEnumerable<(System.Type, System.Attribute)> AllClassWithAttribute (this System.Type attribute, bool ignoreAbstract = true, bool ignoreInterface = true) {
+	public static IEnumerable<(Type, Attribute)> AllClassWithAttribute (this Type attribute, bool ignoreAbstract = true, bool ignoreInterface = true) {
 		foreach (var target in AllTypes.Where(type =>
 			(!ignoreAbstract || !type.IsAbstract) &&
 			(!ignoreInterface || !type.IsInterface))
 		) {
 			foreach (var att in target.GetCustomAttributes(attribute, inherit: false)) {
-				yield return (target, att as System.Attribute);
+				yield return (target, att as Attribute);
 			}
 		}
 	}
-	public static IEnumerable<(System.Type, A)> AllClassWithAttribute<A> (bool ignoreAbstract = true, bool ignoreInterface = true, bool inherit = false) where A : System.Attribute {
+	public static IEnumerable<(Type, A)> AllClassWithAttribute<A> (bool ignoreAbstract = true, bool ignoreInterface = true, bool inherit = false) where A : Attribute {
 		var typeofA = typeof(A);
 		foreach (var target in AllTypes.Where(type =>
 			(!ignoreAbstract || !type.IsAbstract) &&
@@ -124,31 +121,31 @@ public static partial class Util {
 	}
 
 
-	public static void InvokeAllStaticMethodWithAttribute<A> () where A : System.Attribute {
+	public static void InvokeAllStaticMethodWithAttribute<A> () where A : Attribute {
 		var methods = new List<KeyValuePair<MethodInfo, A>>(AllStaticMethodWithAttribute<A>());
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (Exception ex) { Util.LogException(ex); }
 		}
 	}
-	public static void InvokeAllStaticMethodWithAttribute<A> (System.Func<KeyValuePair<MethodInfo, A>, bool> predicte) where A : System.Attribute {
+	public static void InvokeAllStaticMethodWithAttribute<A> (Func<KeyValuePair<MethodInfo, A>, bool> predicte) where A : Attribute {
 		var methods = new List<KeyValuePair<MethodInfo, A>>(
 			AllStaticMethodWithAttribute<A>().Where(predicte)
 		);
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (System.Exception ex) { LogException(ex); }
+			} catch (Exception ex) { LogException(ex); }
 		}
 	}
-	public static void InvokeAllStaticMethodWithAttribute<A> (System.Comparison<KeyValuePair<MethodInfo, A>> comparison) where A : System.Attribute {
+	public static void InvokeAllStaticMethodWithAttribute<A> (Comparison<KeyValuePair<MethodInfo, A>> comparison) where A : Attribute {
 		var methods = new List<KeyValuePair<MethodInfo, A>>(AllStaticMethodWithAttribute<A>());
 		methods.Sort(comparison);
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (System.Exception ex) { LogException(ex); }
+			} catch (Exception ex) { LogException(ex); }
 		}
 	}
 
@@ -182,12 +179,12 @@ public static partial class Util {
 
 
 	// Method
-	public static object InvokeStaticMethod (System.Type type, string methodName, params object[] param) {
+	public static object InvokeStaticMethod (Type type, string methodName, params object[] param) {
 		if (string.IsNullOrEmpty(methodName)) return null;
 		try {
 			var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 			return method?.Invoke(null, param);
-		} catch (System.Exception ex) { LogException(ex); }
+		} catch (Exception ex) { LogException(ex); }
 		return null;
 	}
 
@@ -209,7 +206,7 @@ public static partial class Util {
 
 
 	// Prop
-	public static object GetStaticPropertyValue (System.Type type, string name) => type.GetProperty(
+	public static object GetStaticPropertyValue (Type type, string name) => type.GetProperty(
 		name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static
 	).GetValue(null);
 
@@ -218,12 +215,12 @@ public static partial class Util {
 		GetProperty(target.GetType(), name).GetValue(target);
 
 
-	public static PropertyInfo GetProperty (System.Type type, string name) => type.GetProperty(
+	public static PropertyInfo GetProperty (Type type, string name) => type.GetProperty(
 		name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
 	);
 
 
-	public static void SetStaticPropertyValue (System.Type type, string name, object value) => type.GetProperty(
+	public static void SetStaticPropertyValue (Type type, string name, object value) => type.GetProperty(
 		name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static
 	).SetValue(null, value);
 
@@ -247,7 +244,7 @@ public static partial class Util {
 	public static object GetFieldValue (object target, string name) => GetField(target.GetType(), name)?.GetValue(target);
 
 
-	public static FieldInfo GetField (System.Type type, string name) {
+	public static FieldInfo GetField (Type type, string name) {
 		var field = type.GetField(
 			name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
 		);
@@ -276,28 +273,25 @@ public static partial class Util {
 	}
 
 
-	public static object GetStaticFieldValue (System.Type type, string name) => type.GetField(
+	public static object GetStaticFieldValue (Type type, string name) => type.GetField(
 		name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static
 	).GetValue(null);
 
 
-	public static void SetStaticFieldValue (System.Type type, string name, object value) => type.GetField(
+	public static void SetStaticFieldValue (Type type, string name, object value) => type.GetField(
 		name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static
 	)?.SetValue(null, value);
 
 
-	public static System.Type GetFieldType (object target, string name) =>
+	public static Type GetFieldType (object target, string name) =>
 		target.GetType().GetField(
 			name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
 		)?.FieldType;
 
 
-	public static System.Type GetStaticFieldType (System.Type type, string name) =>
+	public static Type GetStaticFieldType (Type type, string name) =>
 		type.GetField(
 			name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance
 		).FieldType;
 
-	public static void ExecuteCommand (string projectFolderPath, StringBuilder builder) {
-		throw new NotImplementedException();
-	}
 }

@@ -3,6 +3,7 @@
 obj/
 bin/
 Build/
+dotnet/
 *.vsconfig
 *.editorconfig
 *.ini
