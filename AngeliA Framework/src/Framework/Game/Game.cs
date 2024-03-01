@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace AngeliA.Framework;
@@ -113,9 +112,11 @@ public abstract partial class Game {
 
 			System.GC.Collect();
 
-			if (IsEdittime) {
+			if (AngeliaDontStartGameAttribute.DontStartGame) {
+				StopGame();
+			} else if (IsEdittime) {
 				WindowUI.OpenWindow(MapEditor.TYPE_ID);
-			} else if (AngeliaAllowMakerAttribute.AllowMakerFeatures) {
+			} else if (AngeliaAllowMakerFeaturesAttribute.AllowMakerFeatures) {
 				WindowUI.OpenWindow(HomeScreen.TYPE_ID);
 			} else {
 				RestartGame();

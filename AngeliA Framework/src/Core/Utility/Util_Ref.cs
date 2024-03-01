@@ -18,7 +18,6 @@ public abstract class OrderedAttribute : System.Attribute {
 public static partial class Util {
 
 
-
 	// All Class
 	public static readonly List<Assembly> AllAssemblies = new();
 	public static Type[] AllTypes {

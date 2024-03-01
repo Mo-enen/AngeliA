@@ -38,11 +38,22 @@ public class AngeliaVersionAttribute : System.Attribute {
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliaAllowMakerAttribute : System.Attribute {
-	public static bool AllowMakerFeatures => _AllowMakerFeatures ?? (_AllowMakerFeatures = (Util.TryGetAttributeFromAllAssemblies<AngeliaAllowMakerAttribute>(out _, out var att) && att.LocalAllowMakerFeatures)).Value;
+public class AngeliaAllowMakerFeaturesAttribute : GlobalMarkAttribute {
+	public static bool AllowMakerFeatures => IsMarked<AngeliaAllowMakerFeaturesAttribute>(ref _AllowMakerFeatures);
 	private static bool? _AllowMakerFeatures = null;
-	private readonly bool LocalAllowMakerFeatures = false;
-	public AngeliaAllowMakerAttribute (bool allow) => LocalAllowMakerFeatures = allow;
+}
+
+
+[System.AttributeUsage(System.AttributeTargets.Assembly)]
+public class AngeliaDontStartGameAttribute : GlobalMarkAttribute {
+	public static bool DontStartGame => IsMarked<AngeliaDontStartGameAttribute>(ref _DontStartGame);
+	private static bool? _DontStartGame = null;
+}
+
+
+[System.AttributeUsage(System.AttributeTargets.Assembly)]
+public abstract class GlobalMarkAttribute : System.Attribute {
+	protected static bool IsMarked<T> (ref bool? cache) where T : GlobalMarkAttribute => cache ?? (cache = Util.TryGetAttributeFromAllAssemblies<T>(out _, out _)).Value;
 }
 
 

@@ -1,1 +1,0 @@
-﻿new AngeliaToRaylib.Framework.RayGame().Run();
