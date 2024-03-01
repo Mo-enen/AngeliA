@@ -87,6 +87,8 @@ public abstract partial class Game {
 			GlobalFrame = 0;
 			if (IsEdittime) _IsFullscreen.Value = false;
 
+			_SetWindowTitle($"{AngeliaGameTitleAttribute.DisplayTitle} - {AngeliaGameDeveloperAttribute.DisplayName}");
+
 			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 			Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
@@ -112,14 +114,20 @@ public abstract partial class Game {
 
 			System.GC.Collect();
 
-			if (AngeliaDontStartGameAttribute.DontStartGame) {
-				StopGame();
-			} else if (IsEdittime) {
-				WindowUI.OpenWindow(MapEditor.TYPE_ID);
-			} else if (AngeliaAllowMakerFeaturesAttribute.AllowMakerFeatures) {
-				WindowUI.OpenWindow(HomeScreen.TYPE_ID);
-			} else {
-				RestartGame();
+			// Start Game !!
+			switch (AngeliaProjectType.ProjectType) {
+				case ProjectType.Game:
+					if (IsEdittime) {
+						WindowUI.OpenWindow(MapEditor.TYPE_ID);
+					} else if (AngeliaAllowMakerFeaturesAttribute.AllowMakerFeatures) {
+						WindowUI.OpenWindow(HomeScreen.TYPE_ID);
+					} else {
+						RestartGame();
+					}
+					break;
+				case ProjectType.Editor:
+					StopGame();
+					break;
 			}
 
 		} catch (System.Exception ex) { Util.LogException(ex); }
@@ -150,7 +158,7 @@ public abstract partial class Game {
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
-			if (Input.GameKeyUp(Gamekey.Start)) {
+			if (AngeliaProjectType.ProjectType == ProjectType.Game && Input.GameKeyUp(Gamekey.Start)) {
 				if (IsPlaying) {
 					PauseGame();
 				} else {

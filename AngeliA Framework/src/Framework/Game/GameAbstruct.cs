@@ -83,6 +83,9 @@ public abstract partial class Game {
 	protected abstract bool _GetWindowMaximized ();
 	protected abstract void _SetWindowMaximized (bool maximized);
 
+	public static void SetWindowTitle (string title) => Instance._SetWindowTitle(title);
+	protected abstract void _SetWindowTitle (string title);
+
 
 	// Listener
 	protected abstract void _AddGameQuittingCallback (System.Action callback);

@@ -178,6 +178,7 @@ public partial class RayGame {
 
 		bool usingShader = false;
 		bool usingBlend = false;
+		bool useAlpha = !RequireTransparentWindowAttribute.Required;
 
 		// Shader
 		switch (layerIndex) {
@@ -210,6 +211,7 @@ public partial class RayGame {
 			try {
 
 				var cell = cells[isUiLayer ? cellCount - i - 1 : i];
+				cell.Color.a = (byte)(useAlpha ? cell.Color.a : 255);
 
 				// Cell
 				var sprite = cell.Sprite;

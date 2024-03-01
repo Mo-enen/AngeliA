@@ -46,6 +46,7 @@ public static class DeveloperToolbar {
 	private static bool DrawBounds = false;
 	private static bool ProfilerPanelOpening = false;
 	private static bool EffectPanelOpening = false;
+	private static bool Enable = false;
 
 
 	#endregion
@@ -58,7 +59,8 @@ public static class DeveloperToolbar {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-		if (!Game.IsEdittime) return;
+		Enable = Game.IsEdittime && AngeliaProjectType.ProjectType == ProjectType.Game;
+		if (!Enable) return;
 		for (int i = 0; i < RenderingUsages.Length; i++) {
 			int capa = Renderer.GetLayerCapacity(i);
 			RenderingUsages[i] = new BarData() {
@@ -78,7 +80,7 @@ public static class DeveloperToolbar {
 
 	[OnUniverseOpen]
 	internal static void OnUniverseOpen () {
-		if (!Game.IsEdittime) return;
+		if (!Enable) return;
 		TextUsages = new BarData[Renderer.TextLayerCount];
 		for (int i = 0; i < TextUsages.Length; i++) {
 			int capa = Renderer.GetTextLayerCapacity(i);
@@ -92,7 +94,7 @@ public static class DeveloperToolbar {
 
 	[OnGameUpdateLater(-4097)]
 	internal static void UpdateToolbar () {
-		if (!Game.IsEdittime) return;
+		if (!Enable) return;
 
 		Cursor.RequireCursor();
 		int oldLayer = Renderer.CurrentLayerIndex;
@@ -175,7 +177,7 @@ public static class DeveloperToolbar {
 
 	[OnGameUpdateLater(4096)]
 	internal static void CollectProfilerData () {
-		if (!Game.IsEdittime) return;
+		if (!Enable) return;
 		if (!ProfilerPanelOpening) return;
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
 			RenderingUsages[i].Value = Renderer.GetUsedCellCount(i);
@@ -192,7 +194,7 @@ public static class DeveloperToolbar {
 	[OnGameUpdateLater(4096)]
 	internal static void UpdateGizmos () {
 
-		if (!Game.IsEdittime) return;
+		if (!Enable) return;
 		if (PlayerMenuUI.ShowingUI) return;
 
 		// Draw Colliders

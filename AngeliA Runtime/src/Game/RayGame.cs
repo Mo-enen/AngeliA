@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using AngeliA;
 using AngeliA.Framework;
 using Raylib_cs;
@@ -12,7 +13,7 @@ public partial class RayGame : Game {
 
 
 	// Const
-	private const long TICK_GAP = TimeSpan.TicksPerSecond / 60;
+	private static long TICK_GAP = TimeSpan.TicksPerSecond / 60;
 
 	// Event
 	private event Action OnGameQuitting = null;
@@ -50,10 +51,10 @@ public partial class RayGame : Game {
 		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
 		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
 		if (RequireTransparentWindowAttribute.Required) windowConfig |= ConfigFlags.TransparentWindow;
-		if (RequireEventWaitingAttribute.Required) Raylib.EnableEventWaiting();
 		Raylib.SetConfigFlags(windowConfig);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
+		if (RequireEventWaitingAttribute.Required) Raylib.EnableEventWaiting();
 
 		// Debug
 		Util.OnLogException += RaylibUtil.LogException;
@@ -72,7 +73,7 @@ public partial class RayGame : Game {
 
 		// Raylib Window
 		GameWatch.Start();
-		Raylib.SetWindowTitle(AngeliaGameTitleAttribute.Title);
+		TICK_GAP = AngeliaProjectType.ProjectType == ProjectType.Game ? TimeSpan.TicksPerSecond / 60 : TimeSpan.TicksPerSecond / 240;
 		if (WindowMaximized.Value) {
 			Raylib.MaximizeWindow();
 		} else if (!Raylib.IsWindowFullscreen()) {
@@ -113,19 +114,26 @@ public partial class RayGame : Game {
 		}
 
 		// Sky
-		Raylib.DrawRectangleGradientV(
-			0, 0, ScreenWidth, ScreenHeight,
-			Sky.SkyTintBottomColor.ToRaylib(), Sky.SkyTintTopColor.ToRaylib()
-		);
+		var skyColorA = Sky.SkyTintBottomColor;
+		var skyColorB = Sky.SkyTintTopColor;
+		if (skyColorA != skyColorB) {
+			Raylib.DrawRectangleGradientV(
+				0, 0, ScreenWidth, ScreenHeight,
+				skyColorA.ToRaylib(), skyColorB.ToRaylib()
+			);
+		} else {
+			Raylib.ClearBackground(skyColorA.ToRaylib());
+		}
 
 		// Update AngeliA
-		base.Update();
+		Update();
 
 		// Update Gizmos
 		GizmosRender.UpdateGizmos();
 
 		// End Update
 		if (hasScreenEffectEnabled) {
+
 			// Screen Effect >> Render Texture
 			UpdateScreenEffect();
 			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
@@ -192,6 +200,12 @@ public partial class RayGame : Game {
 		OnGameQuitting?.Invoke();
 		Raylib.CloseWindow();
 	}
+
+
+#if DEBUG
+	[OnGameQuitting(int.MaxValue)]
+	internal static void CloseCMD () => Process.GetProcessesByName("WindowsTerminal").ToList().ForEach(item => item.CloseMainWindow());
+#endif
 
 
 }

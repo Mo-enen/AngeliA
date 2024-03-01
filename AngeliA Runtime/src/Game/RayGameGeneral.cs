@@ -91,6 +91,8 @@ public partial class RayGame {
 
 	protected override bool _GetWindowTopmost () => Raylib.IsWindowState(ConfigFlags.TopmostWindow);
 
+	protected override void _SetWindowTitle (string title) => Raylib.SetWindowTitle(title);
+
 
 	// Listener
 	protected override void _AddGameQuittingCallback (System.Action callback) {

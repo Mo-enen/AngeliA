@@ -81,19 +81,23 @@ internal class Engine {
 		if (CurrentWindowMode == WindowMode.Float && !Game.IsWindowFocused) {
 			SwitchWindowMode(WindowMode.Mascot);
 		}
+
 		// Switch on Mid Click
 		if (Input.MouseMidButtonDown) {
 			SwitchWindowMode(CurrentWindowMode == WindowMode.Window ? WindowMode.Float : WindowMode.Window);
 		}
+
 		// On GUI
 		switch (CurrentWindowMode) {
 			case WindowMode.Mascot:
-				Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
+				//Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
+				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
 				OnGUI_Mascot_MouseLogic();
 				OnGUI_Mascot_Render();
 				break;
 			case WindowMode.Float:
-				Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
+				//Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
+				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
 				OnGUI_Window();
 				break;
 			case WindowMode.Window:
@@ -204,7 +208,8 @@ internal class Engine {
 		//}
 		// Mouse Left Down
 		if (Input.MouseLeftButton) {
-			var mousePos = Input.MouseGlobalPosition;
+			var mousePos = Input.MouseScreenPosition;
+			mousePos.y = Game.ScreenHeight - mousePos.y;
 			if (!FloatMascotMouseDownPos.HasValue) {
 				// Mouse Down
 				FloatMascotMouseDownPos = mousePos;
@@ -223,8 +228,8 @@ internal class Engine {
 						var aimPos = (FloatMascotMouseDownGlobalPos - FloatMascotMouseDownPos.Value) +
 							(mouseGlobalPos - FloatMascotMouseDownGlobalPos);
 						Game.SetWindowPosition(
-							(int)Util.LerpUnclamped(windowPos.x, aimPos.x, 0.1f),
-							(int)Util.LerpUnclamped(windowPos.y, aimPos.y, 0.1f)
+							(int)Util.LerpUnclamped(windowPos.x, aimPos.x, 0.4f),
+							(int)Util.LerpUnclamped(windowPos.y, aimPos.y, 0.4f)
 						);
 					}
 				}

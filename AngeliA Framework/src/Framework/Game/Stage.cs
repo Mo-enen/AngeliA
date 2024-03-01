@@ -131,6 +131,7 @@ public static class Stage {
 	private static readonly HashSet<Int3> StagedEntityHash = new();
 	private static readonly HashSet<Int3> GlobalAntiSpawnHash = new();
 	private static readonly HashSet<Int3> LocalAntiSpawnHash = new();
+	private static bool FoundationalOnly = false;
 
 
 	#endregion
@@ -143,16 +144,21 @@ public static class Stage {
 
 	[OnGameInitialize(-64)]
 	public static void OnGameInitialize () {
+
+		FoundationalOnly = AngeliaProjectType.ProjectType != ProjectType.Game;
 		ViewRect = new(
 			0, 0,
 			Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000,
 			Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight)
 		);
+		SpawnRect = ViewRect.Expand(Const.SPAWN_PADDING);
 		Entities = new Entity[EntityLayer.COUNT][];
 		for (int i = 0; i < EntityLayer.COUNT; i++) {
 			Entities[i] = new Entity[ENTITY_CAPACITY[i]];
 		}
 		EntityPool.Clear();
+		if (FoundationalOnly) return;
+
 		var allEntityTypes = new List<System.Type>(typeof(Entity).AllChildClass());
 		for (int tIndex = 0; tIndex < allEntityTypes.Count; tIndex++) {
 
@@ -209,12 +215,15 @@ public static class Stage {
 
 	[OnGameRestart]
 	public static void OnGameRestart () {
+		if (FoundationalOnly) return;
 		SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
 	}
 
 
 	[OnGameUpdate(-4096)]
-	internal static void Update_View () {
+	internal static void UpdateView () {
+
+		if (FoundationalOnly) return;
 
 		// Move View Rect
 		if (ViewDelayX.value.HasValue || ViewDelayY.value.HasValue || ViewDelayHeight.value.HasValue) {
@@ -257,6 +266,8 @@ public static class Stage {
 	[OnGameUpdateLater(-4096)]
 	internal static void UpdateAllEntities () {
 
+		if (FoundationalOnly) return;
+
 		// Update All Layers
 		UpdateEntitiesForLayer(-1);
 
@@ -276,7 +287,7 @@ public static class Stage {
 
 	[OnGameUpdatePauseless]
 	internal static void UpdateUiEntitiesOnPause () {
-		if (Game.IsPlaying) return;
+		if (FoundationalOnly || Game.IsPlaying) return;
 		UpdateEntitiesForLayer(EntityLayer.UI);
 	}
 
@@ -678,6 +689,7 @@ public static class Stage {
 
 
 	private static Entity SpawnEntityLogic (int typeID, int x, int y, Int3 globalUnitPos) {
+		if (FoundationalOnly) return null;
 		try {
 			if (
 				globalUnitPos.x != int.MinValue &&
@@ -685,7 +697,9 @@ public static class Stage {
 			) return null;
 			if (!EntityPool.TryGetValue(typeID, out var eMeta)) {
 				if (Game.IsEdittime) {
-					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) Util.LogWarning($"Invalid Entity Type ID {typeID}");
+					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) {
+						Util.LogWarning($"Invalid Entity Type ID {typeID}");
+					}
 				}
 				return null;
 			}

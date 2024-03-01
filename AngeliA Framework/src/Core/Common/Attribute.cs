@@ -8,8 +8,14 @@ namespace AngeliA;
 public class AngeliaGameTitleAttribute : System.Attribute {
 	public static string Title => !string.IsNullOrEmpty(_Title) ? _Title : _Title = (Util.TryGetAttributeFromAllAssemblies<AngeliaGameTitleAttribute>(out _, out var att) ? att.LocalTitle : "(No Title)");
 	private static string _Title = "";
+	public static string DisplayTitle => !string.IsNullOrEmpty(_DisplayTitle) ? _DisplayTitle : _DisplayTitle = (Util.TryGetAttributeFromAllAssemblies<AngeliaGameTitleAttribute>(out _, out var att) ? att.LocalDisTitle : Title);
+	private static string _DisplayTitle = "";
 	private readonly string LocalTitle = "";
-	public AngeliaGameTitleAttribute (string title) => LocalTitle = title;
+	private readonly string LocalDisTitle = "";
+	public AngeliaGameTitleAttribute (string title, string displayTitle = "") {
+		LocalTitle = title;
+		LocalDisTitle = string.IsNullOrEmpty(displayTitle) ? title : displayTitle;
+	}
 }
 
 
@@ -18,8 +24,14 @@ public class AngeliaGameTitleAttribute : System.Attribute {
 public class AngeliaGameDeveloperAttribute : System.Attribute {
 	public static string Developer => !string.IsNullOrEmpty(_Developer) ? _Developer : _Developer = (Util.TryGetAttributeFromAllAssemblies<AngeliaGameDeveloperAttribute>(out _, out var att) ? att.LocalDeveloper : "(No Developer)");
 	private static string _Developer = "";
+	public static string DisplayName => !string.IsNullOrEmpty(_DisplayName) ? _DisplayName : _DisplayName = (Util.TryGetAttributeFromAllAssemblies<AngeliaGameDeveloperAttribute>(out _, out var att) ? att.LocalDisName : Developer);
+	private static string _DisplayName = "";
 	private readonly string LocalDeveloper = "";
-	public AngeliaGameDeveloperAttribute (string developer) => LocalDeveloper = developer;
+	private readonly string LocalDisName = "";
+	public AngeliaGameDeveloperAttribute (string developer, string displayName = "") {
+		LocalDeveloper = developer;
+		LocalDisName = string.IsNullOrEmpty(displayName) ? developer : displayName;
+	}
 }
 
 
@@ -44,10 +56,16 @@ public class AngeliaAllowMakerFeaturesAttribute : GlobalMarkAttribute {
 }
 
 
+
+public enum ProjectType { Game = 0, Editor = 1, }
+
+
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliaDontStartGameAttribute : GlobalMarkAttribute {
-	public static bool DontStartGame => IsMarked<AngeliaDontStartGameAttribute>(ref _DontStartGame);
-	private static bool? _DontStartGame = null;
+public class AngeliaProjectType : System.Attribute {
+	public static ProjectType ProjectType => _ProjectType ?? (_ProjectType = Util.TryGetAttributeFromAllAssemblies<AngeliaProjectType>(out _, out var att) ? att._Local : ProjectType.Game).Value;
+	private static ProjectType? _ProjectType = null;
+	private readonly ProjectType _Local = ProjectType.Game;
+	public AngeliaProjectType (ProjectType type) => _Local = type;
 }
 
 
