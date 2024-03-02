@@ -36,14 +36,14 @@ public static class ExtensionRaylib {
 		rect.Height = -rect.Height;
 	}
 
-	public static Rectangle EdgeInside (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
+	public static Rectangle EdgeInsideRectangle (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.Height - size, 0),
 		Direction4.Down => rect.Shrink(0, 0, 0, rect.Height - size),
 		Direction4.Left => rect.Shrink(0, rect.Width - size, 0, 0),
 		Direction4.Right => rect.Shrink(rect.Width - size, 0, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
-	public static Rectangle EdgeOutside (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
+	public static Rectangle EdgeOutsideRectangle (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.Height, -size),
 		Direction4.Down => rect.Shrink(0, 0, -size, rect.Height),
 		Direction4.Left => rect.Shrink(-size, rect.Width, 0, 0),

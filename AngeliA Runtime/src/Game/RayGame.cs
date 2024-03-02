@@ -15,17 +15,12 @@ public partial class RayGame : Game {
 	// Const
 	private static long TICK_GAP = TimeSpan.TicksPerSecond / 60;
 
-	// Event
-	private event Action OnGameQuitting = null;
-	private event Func<bool> OnGameTryingToQuit = null;
-	private event Action<bool> OnWindowFocusChanged = null;
-	private event Action<char> OnTextInput = null;
-
 	// Data
 	private readonly Stopwatch GameWatch = new();
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
 	private long NextUpdateTick = -1;
+	private bool IsTransparentWindow = false;
 
 	// Saving
 	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
@@ -50,20 +45,23 @@ public partial class RayGame : Game {
 		// Init Window
 		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
 		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
-		if (RequireTransparentWindowAttribute.Required) windowConfig |= ConfigFlags.TransparentWindow;
+		IsTransparentWindow = Util.TryGetAttributeFromAllAssemblies<RequireTransparentWindowAttribute>();
+		if (IsTransparentWindow) windowConfig |= ConfigFlags.TransparentWindow;
 		Raylib.SetConfigFlags(windowConfig);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
-		if (RequireEventWaitingAttribute.Required) Raylib.EnableEventWaiting();
+		if (Util.TryGetAttributeFromAllAssemblies<RequireEventWaitingAttribute>()) {
+			Raylib.EnableEventWaiting();
+		}
 
 		// Debug
-		Util.OnLogException += RaylibUtil.LogException;
-		Util.OnLogError += RaylibUtil.LogError;
-		Util.OnLog += RaylibUtil.Log;
-		Util.OnLogWarning += RaylibUtil.LogWarning;
+		Util.OnLogException += RayUtil.LogException;
+		Util.OnLogError += RayUtil.LogError;
+		Util.OnLog += RayUtil.Log;
+		Util.OnLogWarning += RayUtil.LogWarning;
 
 		// Pipeline
-		Fonts = RayGUI.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
+		Fonts = RayUtil.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
 		InitializeShader();
 		InitializeAudio();
 		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
@@ -73,7 +71,7 @@ public partial class RayGame : Game {
 
 		// Raylib Window
 		GameWatch.Start();
-		TICK_GAP = AngeliaProjectType.ProjectType == ProjectType.Game ? TimeSpan.TicksPerSecond / 60 : TimeSpan.TicksPerSecond / 240;
+		TICK_GAP = ProjectType == ProjectType.Game ? TimeSpan.TicksPerSecond / 60 : TimeSpan.TicksPerSecond / 240;
 		if (WindowMaximized.Value) {
 			Raylib.MaximizeWindow();
 		} else if (!Raylib.IsWindowFullscreen()) {
@@ -88,7 +86,7 @@ public partial class RayGame : Game {
 	private void UpdateGame () {
 
 		// Text Input
-		RayGUI.BeforeUpdate(OnTextInput);
+		RayUtil.TextInputUpdate(GUI.OnTextInput);
 
 		// Wait for Fixed Update
 		long currentTick = GameWatch.ElapsedTicks;
@@ -99,7 +97,7 @@ public partial class RayGame : Game {
 		bool windowFocus = Raylib.IsWindowFocused();
 		if (windowFocus != WindowFocused) {
 			WindowFocused = windowFocus;
-			OnWindowFocusChanged?.Invoke(windowFocus);
+			InvokeWindowFocusChanged(windowFocus);
 		}
 
 		// Music
@@ -173,7 +171,7 @@ public partial class RayGame : Game {
 
 		// Trying to Quit Check
 		if (!RequireQuitGame && Raylib.WindowShouldClose()) {
-			RequireQuitGame = OnGameTryingToQuit != null && OnGameTryingToQuit.Invoke();
+			RequireQuitGame = InvokeGameTryingToQuit();
 		}
 
 	}
@@ -197,7 +195,7 @@ public partial class RayGame : Game {
 
 		// Quit Game
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
-		OnGameQuitting?.Invoke();
+		InvokeGameQuitting();
 		Raylib.CloseWindow();
 	}
 

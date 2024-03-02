@@ -47,7 +47,6 @@ public static class Sky {
 		float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
 		SkyTintTopColor = GradientTop.Evaluate(time01);
 		SkyTintBottomColor = GradientBottom.Evaluate(time01);
-		Game.SetSkyboxTint(SkyTintTopColor, SkyTintBottomColor);
 	}
 
 
@@ -55,7 +54,6 @@ public static class Sky {
 		ForceBackgroundTintFrame = Game.GlobalFrame + 1;
 		SkyTintTopColor = top;
 		SkyTintBottomColor = bottom;
-		Game.SetSkyboxTint(SkyTintTopColor, SkyTintBottomColor);
 	}
 
 

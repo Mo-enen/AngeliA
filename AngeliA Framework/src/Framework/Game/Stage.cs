@@ -145,7 +145,7 @@ public static class Stage {
 	[OnGameInitialize(-64)]
 	public static void OnGameInitialize () {
 
-		FoundationalOnly = AngeliaProjectType.ProjectType != ProjectType.Game;
+		FoundationalOnly = Game.ProjectType != ProjectType.Game;
 		ViewRect = new(
 			0, 0,
 			Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000,

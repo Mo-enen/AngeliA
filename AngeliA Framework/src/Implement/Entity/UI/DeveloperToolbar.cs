@@ -59,7 +59,7 @@ public static class DeveloperToolbar {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-		Enable = Game.IsEdittime && AngeliaProjectType.ProjectType == ProjectType.Game;
+		Enable = Game.IsEdittime && Game.ProjectType == ProjectType.Game;
 		if (!Enable) return;
 		for (int i = 0; i < RenderingUsages.Length; i++) {
 			int capa = Renderer.GetLayerCapacity(i);

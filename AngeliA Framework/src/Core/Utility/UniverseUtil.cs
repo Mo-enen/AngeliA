@@ -5,7 +5,10 @@ namespace AngeliA;
 
 public static class UniverseUtil {
 
-	public static Universe CreateUniverse (string workspace, string universeName, string mapTemplateRoot, string creator) {
+	public static Universe CreateUniverse (
+		string workspace, string universeName, string mapTemplateRoot,
+		string creator, Int3 version
+	) {
 
 		string universeFolderPath = Util.CombinePaths(workspace, System.Guid.NewGuid().ToString());
 
@@ -26,9 +29,9 @@ public static class UniverseUtil {
 		info.UniverseName = universeName;
 		info.Creator = creator;
 		info.ModifyDate = info.CreatedDate = System.DateTime.Now.ToFileTime();
-		info.EditorMajorVersion = AngeliaVersionAttribute.MajorVersion;
-		info.EditorMinorVersion = AngeliaVersionAttribute.MinorVersion;
-		info.EditorPatchVersion = AngeliaVersionAttribute.PatchVersion;
+		info.EditorMajorVersion = version.x;
+		info.EditorMinorVersion = version.y;
+		info.EditorPatchVersion = version.z;
 
 		// Save to Disk
 		universe.SaveUniverseInfoToDisk();

@@ -94,27 +94,5 @@ public partial class RayGame {
 	protected override void _SetWindowTitle (string title) => Raylib.SetWindowTitle(title);
 
 
-	// Listener
-	protected override void _AddGameQuittingCallback (System.Action callback) {
-		OnGameQuitting -= callback;
-		OnGameQuitting += callback;
-	}
-
-	protected override void _AddGameTryingToQuitCallback (System.Func<bool> callback) {
-		OnGameTryingToQuit -= callback;
-		OnGameTryingToQuit += callback;
-	}
-
-	protected override void _AddTextInputCallback (System.Action<char> callback) {
-		OnTextInput -= callback;
-		OnTextInput += callback;
-	}
-
-	protected override void _AddFocusChangedCallback (System.Action<bool> callback) {
-		OnWindowFocusChanged -= callback;
-		OnWindowFocusChanged += callback;
-	}
-
-
 }
 

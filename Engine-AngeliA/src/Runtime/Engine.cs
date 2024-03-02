@@ -1,11 +1,8 @@
-﻿using System;
-using System.Numerics;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 using AngeliA.Framework;
 using AngeliaRuntime;
-using System.Linq;
 
 
 namespace AngeliaEngine;
@@ -49,7 +46,7 @@ internal class Engine {
 	#region --- MSG ---
 
 
-	[OnGameInitialize]
+	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
 		Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
 		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Mascot);
@@ -57,11 +54,12 @@ internal class Engine {
 
 
 	[OnGameTryingToQuit]
-	internal static void OnGameTryingToQuit () {
+	internal static bool OnGameTryingToQuit () {
 		if (CurrentWindowMode != WindowMode.ConfirmQuit) {
 			SwitchWindowMode(WindowMode.ConfirmQuit);
+			return false;
 		} else {
-			Game.QuitApplication();
+			return true;
 		}
 	}
 
@@ -90,14 +88,12 @@ internal class Engine {
 		// On GUI
 		switch (CurrentWindowMode) {
 			case WindowMode.Mascot:
-				//Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
-				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
+				Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
 				OnGUI_Mascot_MouseLogic();
 				OnGUI_Mascot_Render();
 				break;
 			case WindowMode.Float:
-				//Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
-				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
+				Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
 				OnGUI_Window();
 				break;
 			case WindowMode.Window:
@@ -115,21 +111,18 @@ internal class Engine {
 	// Window
 	private static void OnGUI_Window () {
 
-		//int screenWidth = Raylib.GetRenderWidth();
-		//int screenheight = Raylib.GetRenderHeight();
-		//
-		//// Tab Bar
-		//int barHeight = Unify(32);
-		//int barPadding = Sheet.SpritePool.TryGetValue(UI_WINDOW_BG, out var bgSprite) ?
-		//	bgSprite.GlobalBorder.left : 5;
-		//OnGUI_TabBar(barHeight, RayGUI.GetUnifyBorder(barPadding));
-		//
-		//// Window BG
-		//Sheet.Draw_9Slice(
-		//	UI_WINDOW_BG, 0, barHeight, 0, 0, 0, screenWidth, screenheight - barHeight,
-		//	barPadding, barPadding, barPadding, barPadding
-		//);
+		// Tab Bar
+		int barHeight = GUI.Unify(48);
+		int barPadding = Renderer.TryGetSprite(UI_WINDOW_BG, out var bgSprite) ?
+			bgSprite.GlobalBorder.left : 12;
+		OnGUI_TabBar(barHeight, GUI.Unify(barPadding));
 
+		// Window BG
+		Renderer.Draw_9Slice(
+			UI_WINDOW_BG,
+			Renderer.CameraRect.EdgeInside(Direction4.Down, Renderer.CameraRect.height - barHeight),
+			barPadding, barPadding, barPadding, barPadding
+		);
 	}
 
 

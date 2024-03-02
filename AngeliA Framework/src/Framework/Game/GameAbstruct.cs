@@ -24,9 +24,11 @@ public abstract partial class Game {
 	protected abstract void _SetFullscreen (bool fullScreen);
 
 	public static int ScreenWidth { get; private set; }
+	public static int MonitorWidth { get; private set; }
 	protected abstract int _GetScreenWidth ();
 
 	public static int ScreenHeight { get; private set; }
+	public static int MonitorHeight { get; private set; }
 	protected abstract int _GetScreenHeight ();
 
 	public static void QuitApplication () => Instance._QuitApplication();
@@ -88,10 +90,21 @@ public abstract partial class Game {
 
 
 	// Listener
-	protected abstract void _AddGameQuittingCallback (System.Action callback);
-	protected abstract void _AddGameTryingToQuitCallback (System.Func<bool> callback);
-	protected abstract void _AddTextInputCallback (System.Action<char> callback);
-	protected abstract void _AddFocusChangedCallback (System.Action<bool> callback);
+	public static void InvokeGameQuitting () {
+		_LastUsedWindowWidth.Value = ScreenWidth;
+		_LastUsedWindowHeight.Value = ScreenHeight;
+		OnGameQuitting?.Invoke();
+	}
+	public static bool InvokeGameTryingToQuit () {
+		if (ProjectType == ProjectType.Game && !IsPausing) PauseGame();
+		foreach (var method in OnGameTryingToQuitMethods) {
+			if (method.Invoke(null, null) is bool result && !result) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public static void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
 
 
 	// Camera
@@ -130,9 +143,6 @@ public abstract partial class Game {
 
 	internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, isTextLayer, cells, cellCount);
 	protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount);
-
-	internal static void SetSkyboxTint (Color32 top, Color32 bottom) => Instance._SetSkyboxTint(top, bottom);
-	protected abstract void _SetSkyboxTint (Color32 top, Color32 bottom);
 
 
 	// Effect

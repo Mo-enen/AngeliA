@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace AngeliA.Framework;
@@ -43,15 +44,26 @@ public abstract partial class Game {
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
 
+	// Attribute Info
+	public static ProjectType ProjectType { get; private set; } = ProjectType.Game;
+	public static string Title { get; private set; } = "";
+	public static string DisplayTitle { get; private set; } = "";
+	public static string Developer { get; private set; } = "";
+	public static string DeveloperDisplayName { get; private set; } = "";
+	public static int MajorVersion { get; private set; } = 0;
+	public static int MinorVersion { get; private set; } = 0;
+	public static int PatchVersion { get; private set; } = 0;
+	public static bool AllowMakerFeatures { get; private set; } = false;
+
 	// Event
 	private static event System.Action OnGameRestart;
-	private static event System.Action OnGameTryingToQuit;
 	private static event System.Action OnGameQuitting;
 	private static event System.Action OnGameUpdate;
 	private static event System.Action OnGameUpdateLater;
 	private static event System.Action OnGameUpdatePauseless;
 	private static event System.Action OnGameFocused;
 	private static event System.Action OnGameLostFocus;
+	private static MethodInfo[] OnGameTryingToQuitMethods;
 
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
@@ -71,6 +83,7 @@ public abstract partial class Game {
 
 	public Game () {
 		Instance = this;
+		// Assembly
 		Util.AllAssemblies.AddDistinct(typeof(Game).Assembly);
 		Util.AllAssemblies.AddDistinct(Assembly.GetCallingAssembly());
 		foreach (var dllpath in Util.EnumerateFiles("Library", false, "*.dll")) {
@@ -78,6 +91,27 @@ public abstract partial class Game {
 				Util.AllAssemblies.AddDistinct(assembly);
 			}
 		}
+		// Attribute >> Game
+		if (Util.TryGetAttributeFromAllAssemblies<AngeliaProjectTypeAttribute>(out var _project)) {
+			ProjectType = _project.Type;
+		}
+		if (Util.TryGetAttributeFromAllAssemblies<AngeliaGameTitleAttribute>(out var _title)) {
+			Title = _title.Title;
+			DisplayTitle = _title.DisTitle;
+		}
+		if (Util.TryGetAttributeFromAllAssemblies<AngeliaGameDeveloperAttribute>(out var _dev)) {
+			Developer = _dev.Developer;
+			DeveloperDisplayName = _dev.DisName;
+		}
+		if (Util.TryGetAttributeFromAllAssemblies<AngeliaVersionAttribute>(out var _ver)) {
+			MajorVersion = _ver.Version.x;
+			MinorVersion = _ver.Version.y;
+			PatchVersion = _ver.Version.z;
+		}
+		if (Util.TryGetAttributeFromAllAssemblies<AngeliaAllowMakerFeaturesAttribute>()) {
+			AllowMakerFeatures = true;
+		}
+
 	}
 
 
@@ -87,21 +121,16 @@ public abstract partial class Game {
 			GlobalFrame = 0;
 			if (IsEdittime) _IsFullscreen.Value = false;
 
-			_SetWindowTitle($"{AngeliaGameTitleAttribute.DisplayTitle} - {AngeliaGameDeveloperAttribute.DisplayName}");
+			_SetWindowTitle($"{DisplayTitle} - {DeveloperDisplayName}");
 
 			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 			Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
-			Util.LinkEventWithAttribute<OnGameTryingToQuitAttribute>(typeof(Game), nameof(OnGameTryingToQuit));
 			Util.LinkEventWithAttribute<OnGameQuittingAttribute>(typeof(Game), nameof(OnGameQuitting));
 			Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
 			Util.LinkEventWithAttribute<OnGameFocusedAttribute>(typeof(Game), nameof(OnGameFocused));
 			Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
-
-			_AddGameTryingToQuitCallback(OnTryingToQuit);
-			_AddGameQuittingCallback(OnQuitting);
-			_AddTextInputCallback(GUI.OnTextInput);
-			_AddFocusChangedCallback(OnFocusChanged);
+			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
 
 			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
@@ -115,11 +144,11 @@ public abstract partial class Game {
 			System.GC.Collect();
 
 			// Start Game !!
-			switch (AngeliaProjectType.ProjectType) {
+			switch (ProjectType) {
 				case ProjectType.Game:
 					if (IsEdittime) {
 						WindowUI.OpenWindow(MapEditor.TYPE_ID);
-					} else if (AngeliaAllowMakerFeaturesAttribute.AllowMakerFeatures) {
+					} else if (AllowMakerFeatures) {
 						WindowUI.OpenWindow(HomeScreen.TYPE_ID);
 					} else {
 						RestartGame();
@@ -131,19 +160,6 @@ public abstract partial class Game {
 			}
 
 		} catch (System.Exception ex) { Util.LogException(ex); }
-		// Func
-		static bool OnTryingToQuit () {
-			if (IsPausing || IsEdittime) return true;
-			PauseGame();
-			OnGameTryingToQuit?.Invoke();
-			return false;
-		}
-		static void OnQuitting () {
-			_LastUsedWindowWidth.Value = ScreenWidth;
-			_LastUsedWindowHeight.Value = ScreenHeight;
-			OnGameQuitting?.Invoke();
-		}
-		static void OnFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
 	}
 
 
@@ -158,7 +174,7 @@ public abstract partial class Game {
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
-			if (AngeliaProjectType.ProjectType == ProjectType.Game && Input.GameKeyUp(Gamekey.Start)) {
+			if (ProjectType == ProjectType.Game && Input.GameKeyUp(Gamekey.Start)) {
 				if (IsPlaying) {
 					PauseGame();
 				} else {
@@ -186,8 +202,11 @@ public abstract partial class Game {
 			}
 		}
 		// Screen Size Cache
+		int monitor = Instance._GetCurrentMonitor();
 		ScreenWidth = Instance._GetScreenWidth();
 		ScreenHeight = Instance._GetScreenHeight();
+		MonitorWidth = Instance._GetMonitorWidth(monitor);
+		MonitorHeight = Instance._GetMonitorHeight(monitor);
 	}
 
 

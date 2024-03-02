@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public static class ItemSystem {
 
 
@@ -79,6 +79,7 @@ public static class ItemSystem {
 
 	[OnGameInitialize(-128)]
 	internal static void OnGameInitialize () {
+		if (Game.ProjectType != ProjectType.Game) return;
 		ItemPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -96,6 +97,7 @@ public static class ItemSystem {
 
 	[OnUniverseOpen(31)]
 	public static void OnUniverseOpen () {
+		if (Game.ProjectType != ProjectType.Game) return;
 		CreateItemCombinationHelperFiles(UniverseSystem.CurrentUniverse.SavingRoot);
 		CreateCombinationFileFromCode(UniverseSystem.CurrentUniverse.UniverseRoot, false);
 		CombinationPool.Clear();

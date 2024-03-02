@@ -88,9 +88,11 @@ public class PauseMenuUI : MenuUI {
 
 
 	[OnGameTryingToQuit]
-	public static void OnGameTryingToQuit () {
+	public static bool OnGameTryingToQuit () {
+		if (Game.ProjectType != ProjectType.Game) return true;
 		Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
 		Instance.Mode = Instance.RequireMode = MenuMode.Quit;
+		return false;
 	}
 
 

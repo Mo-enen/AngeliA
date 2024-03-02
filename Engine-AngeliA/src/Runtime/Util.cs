@@ -28,7 +28,7 @@ public static class EditorUtil {
 
 		// Property
 		CacheBuilder.Append(" -p:Version=");
-		CacheBuilder.Append(AngeliaVersionAttribute.GetVersionString(prefixV: false));
+		//CacheBuilder.Append(AngeliaVersionAttribute.GetVersionString(prefixV: false));
 		CacheBuilder.Append(" -p:OutputType=Library");
 		CacheBuilder.Append(" -p:ProduceReferenceAssembly=false");
 		CacheBuilder.Append(" -p:GenerateDependencyFile=false");

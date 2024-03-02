@@ -1,4 +1,9 @@
-﻿namespace AngeliA; 
+﻿namespace AngeliA;
+
+public enum ProjectType { 
+	Game = 0, 
+	Editor = 1, 
+}
 
 public enum Direction2 {
 	Negative = -1,

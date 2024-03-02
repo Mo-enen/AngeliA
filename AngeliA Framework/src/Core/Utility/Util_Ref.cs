@@ -61,14 +61,13 @@ public static partial class Util {
 	}
 
 
-	public static bool TryGetAttributeFromAllAssemblies<A> (out Assembly assembly, out A attribute) where A : Attribute {
+	public static bool TryGetAttributeFromAllAssemblies<A> () where A : Attribute => TryGetAttributeFromAllAssemblies<A>(out _);
+	public static bool TryGetAttributeFromAllAssemblies<A> (out A attribute) where A : Attribute {
 		foreach (var (_assembly, att) in ForAllAssemblyWithAttribute<A>()) {
 			attribute = att;
-			assembly = _assembly;
 			return true;
 		}
 		attribute = null;
-		assembly = null;
 		return false;
 	}
 

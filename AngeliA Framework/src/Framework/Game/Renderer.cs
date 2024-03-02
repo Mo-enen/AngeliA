@@ -177,7 +177,9 @@ public static class Renderer {
 
 		// Ratio
 		float ratio = (float)Game.ScreenWidth / Game.ScreenHeight;
-		float maxRatio = (float)viewRect.width / viewRect.height;
+		float maxRatio = Game.ProjectType == ProjectType.Game ? 
+			Const.VIEW_RATIO / 1000f : 
+			float.MaxValue - 1f;
 		var rect = new FRect(0f, 0f, 1f, 1f);
 		if (ratio > maxRatio) {
 			rect = new FRect(0.5f - 0.5f * maxRatio / ratio, 0f, maxRatio / ratio, 1f);
