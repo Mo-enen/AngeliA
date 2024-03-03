@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AngeliA;
 using AngeliA.Framework;
 using AngeliaRuntime;
@@ -9,6 +10,7 @@ namespace AngeliaEngine;
 
 
 [RequireSpriteFromField]
+[RequireLanguageFromField]
 internal class Engine {
 
 
@@ -23,19 +25,31 @@ internal class Engine {
 	// Const
 	private const int FLOAT_WIDTH = 360;
 	private const int FLOAT_HEIGHT = 360;
-	private static readonly SpriteCode UI_TAB = "UI.Tab";
-	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.InactiveTab";
-	private static readonly SpriteCode UI_WINDOW_BG = "UI.WindowBG";
-	private static readonly SpriteCode UI_BTN = "UI.Button";
-	private static readonly SpriteCode ICON_CLOSE = "Icon.Close";
+	private static readonly SpriteCode UI_TAB = "UI.PixelTab";
+	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.PixelInactiveTab";
+	private static readonly SpriteCode UI_WINDOW_BG = "UI.PixelWindowBG";
+	private static readonly SpriteCode UI_BTN = "UI.PixelButton";
+	private static readonly SpriteCode ICON_CLOSE = "Icon.PixelClose";
+	private static readonly WindowUI[] WINDOWS = {
+		new HomeScreen(),
+		new LanguageEditor(),
+	};
+	private static readonly LanguageCode[] WINDOW_TITLES = {
+		("Title.Home", "Home"),
+		("Title.Language", "Language"),
+	};
+	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
+	private static readonly List<EntityUI> ALL_UI = new();
 
 	// Data
-	private readonly Project CurrentProject = new();
+	private static readonly Project CurrentProject = new();
+	private static readonly GenericPopupUI PopupUI = new();
 	private static Setting Setting;
 	private static Int2? FloatMascotMouseDownPos = null;
 	private static Int2 FloatMascotMouseDownGlobalPos = default;
 	private static WindowMode CurrentWindowMode;
 	private static bool FloatMascotDragged = false;
+	private static int CurrentWindowIndex = 0;
 
 
 	#endregion
@@ -50,6 +64,10 @@ internal class Engine {
 	internal static void OnGameInitialize () {
 		Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
 		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Mascot);
+		WINDOWS.ForEach(w => w.OnActivated());
+		ALL_UI.Clear();
+		ALL_UI.Add(PopupUI);
+		ALL_UI.AddRange(WINDOWS);
 	}
 
 
@@ -68,11 +86,12 @@ internal class Engine {
 	internal static void OnGameQuitting () {
 		if (CurrentWindowMode != WindowMode.ConfirmQuit) Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
+		WINDOWS.ForEach(w => w.OnInactivated());
 	}
 
 
 	// GUI
-	[OnGameUpdateLater]
+	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
 		// Switch to Mascot on Lost Focus
@@ -113,83 +132,92 @@ internal class Engine {
 
 		// Tab Bar
 		int barHeight = GUI.Unify(48);
-		int barPadding = Renderer.TryGetSprite(UI_WINDOW_BG, out var bgSprite) ?
-			bgSprite.GlobalBorder.left : 12;
-		OnGUI_TabBar(barHeight, GUI.Unify(barPadding));
+		int barPadding = Renderer.TryGetSprite(UI_WINDOW_BG, out var bgSprite) ? bgSprite.GlobalBorder.left : GUI.Unify(12);
+		bool floating = CurrentWindowMode == WindowMode.Float;
+		int contentPadding = GUI.Unify(8);
+		int closeButtonWidth = floating ? barHeight - contentPadding : barPadding;
+		var cameraRect = Renderer.CameraRect;
+		int tabWidth = (cameraRect.width - barPadding - closeButtonWidth) / WINDOWS.Length;
+		var rect = new IRect(cameraRect.x + barPadding, cameraRect.yMax - barHeight, tabWidth, barHeight);
+		var mousePos = Input.MouseGlobalPosition;
+		bool mousePress = Input.MouseLeftButtonDown;
+
+		// Content
+		for (int i = 0; i < WINDOWS.Length; i++) {
+			var window = WINDOWS[i];
+			bool selecting = i == CurrentWindowIndex;
+			bool hovering = rect.Contains(mousePos);
+
+			// Cursor
+			if (!selecting && hovering) Cursor.SetCursorAsHand();
+
+			// Body
+			Renderer.Draw_9Slice(
+				selecting ? UI_TAB : UI_INACTIVE_TAB,
+				rect.Shrink(0, 0, 0, contentPadding),
+				selecting || hovering ? Color32.WHITE : Color32.GREY_196
+			);
+			var contentRect = rect.Shrink(contentPadding, closeButtonWidth, 0, contentPadding);
+
+			// Icon
+			int iconSize = contentRect.height;
+			Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
+
+			// Label
+			GUI.Label(
+				TextContent.Get(WINDOW_TITLES[i], Color32.GREY_196, charSize: 12, alignment: Alignment.MidLeft),
+				contentRect.Shrink(iconSize, 0, 0, 0)
+			);
+
+			// Click
+			if (mousePress && hovering) CurrentWindowIndex = i;
+
+			// Next
+			rect.x += rect.width;
+		}
+
+		// Close Button
+		if (floating && GUI.Button(new IRect(
+			cameraRect.xMax - closeButtonWidth,
+			cameraRect.yMax - barHeight,
+			closeButtonWidth,
+			barHeight - contentPadding
+		), UI_BTN, UI_BTN, UI_BTN, ICON_CLOSE, 0, 0, 0)) {
+			if (CurrentWindowMode != WindowMode.ConfirmQuit) {
+				SwitchWindowMode(WindowMode.ConfirmQuit);
+			} else {
+				Game.QuitApplication();
+			}
+		}
 
 		// Window BG
 		Renderer.Draw_9Slice(
 			UI_WINDOW_BG,
-			Renderer.CameraRect.EdgeInside(Direction4.Down, Renderer.CameraRect.height - barHeight),
+			cameraRect.EdgeInside(Direction4.Down, cameraRect.height - barHeight),
 			barPadding, barPadding, barPadding, barPadding
 		);
-	}
 
+		// Window Content
+		WindowUI.ForceWindowRect(cameraRect.EdgeInside(Direction4.Down, cameraRect.height - barHeight));
+		for (int i = 0; i < WINDOWS.Length; i++) {
+			var win = WINDOWS[i];
+			bool active = i == CurrentWindowIndex;
+			if (active != win.Active) {
+				win.Active = active;
+				if (active) {
+					win.OnActivated();
+				} else {
+					win.OnInactivated();
+				}
+			}
+		}
+		foreach (var ui in ALL_UI) if (ui.Active) ui.BeforePhysicsUpdate();
+		foreach (var ui in ALL_UI) if (ui.Active) ui.PhysicsUpdate();
+		foreach (var ui in ALL_UI) if (ui.Active) ui.FrameUpdate();
 
-	private static void OnGUI_TabBar (int barHeight, int padding) {
+		// Clip
+		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Count);
 
-		//bool floating = CurrentWindowMode == WindowMode.Float;
-		//int contentPadding = Unify(4);
-		//int closeButtonWidth = floating ? barHeight - contentPadding : padding;
-		//int screenWidth = Raylib.GetRenderWidth();
-		//int tabWidth = (screenWidth - padding - closeButtonWidth) / Windows.Length;
-		//var rect = new Rectangle(padding, 0, tabWidth, barHeight);
-		//var mousePos = Raylib.GetMousePosition();
-		//bool mousePress = Raylib.IsMouseButtonPressed(MouseButton.Left);
-		//
-		//// Content
-		//for (int i = 0; i < Windows.Length; i++) {
-		//	var window = Windows[i];
-		//	bool selecting = i == CurrentWindowIndex;
-		//	bool hovering = rect.Contains(mousePos);
-		//
-		//	// Cursor
-		//	if (!selecting && hovering) {
-		//		Raylib.SetMouseCursor(MouseCursor.PointingHand);
-		//	}
-		//
-		//	// Body
-		//	Sheet.Draw_9Slice(
-		//		selecting ? UI_TAB : UI_INACTIVE_TAB,
-		//		rect.Shrink(0, 0, 0, contentPadding),
-		//		selecting || hovering ? Color32.WHITE : Color32.GREY_196
-		//	);
-		//	var contentRect = rect.Shrink(contentPadding, closeButtonWidth, 0, contentPadding);
-		//
-		//	// Icon
-		//	float iconSize = contentRect.Height;
-		//	if (window.Icon != 0) {
-		//		Sheet.Draw(window.Icon, contentRect.EdgeInside(Direction4.Left, iconSize));
-		//	}
-		//
-		//	// Label
-		//	Font.DrawLabel(
-		//		TextContent.Get(window.Title, Color32.GREY_196, charSize: 12, alignment: Alignment.MidLeft),
-		//		contentRect.Shrink(window.Icon != 0 ? iconSize : contentPadding, 0, 0, 0)
-		//	);
-		//
-		//	// Click
-		//	if (mousePress && hovering) {
-		//		CurrentWindowIndex = i;
-		//	}
-		//
-		//	// Next
-		//	rect.X += rect.Width;
-		//}
-		//
-		//// Close Button
-		//if (floating) {
-		//	if (Sheet.IconButton(
-		//		new Rectangle(screenWidth - closeButtonWidth, contentPadding, closeButtonWidth, barHeight - contentPadding),
-		//		UI_BTN, ICON_CLOSE
-		//	)) {
-		//		if (CurrentWindowMode != WindowMode.ConfirmQuit) {
-		//			SwitchWindowMode(WindowMode.ConfirmQuit);
-		//		} else {
-		//			RequireQuit = true;
-		//		}
-		//	}
-		//}
 	}
 
 
@@ -266,43 +294,25 @@ internal class Engine {
 	// Confirm Quit
 	private static void OnGUI_ConfirmQuit () {
 
-		//int screenWidth = Raylib.GetRenderWidth();
-		//int screenHeight = Raylib.GetRenderHeight();
-		//int padding = screenHeight / 10;
-		//int buttonHeight = Unify(60);
-		//int btnPadding = Unify(6);
-		//bool isDirty = Windows.Any(w => w.IsDirty);
-		//
-		//// MSG 
-		//Font.DrawLabel(
-		//	TextContent.Get(isDirty ? "Save all changes?" : "Quit editor?", charSize: 20, alignment: Alignment.MidMid, wrap: true),
-		//	new Rectangle(0, 0, screenWidth, screenHeight - buttonHeight).Shrink(padding)
-		//);
-		//
-		//// Buttons 
-		//var rect = new Rectangle(0, screenHeight - buttonHeight, isDirty ? screenWidth / 3 : screenWidth / 2, buttonHeight);
-		//if (isDirty) {
-		//	if (RayGUI.TextButton(Font, Sheet, rect.Shrink(btnPadding), UI_BTN, "Save")) {
-		//		Windows.ForEach(w => w?.Save());
-		//		RequireQuit = true;
-		//	}
-		//	rect.X += rect.Width;
-		//	if (RayGUI.TextButton(Font, Sheet, rect.Shrink(btnPadding), UI_BTN, "Don't Save")) {
-		//		RequireQuit = true;
-		//	}
-		//	rect.X += rect.Width;
-		//	if (RayGUI.TextButton(Font, Sheet, rect.Shrink(btnPadding), UI_BTN, "Cancel")) {
-		//		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Float);
-		//	}
-		//} else {
-		//	if (RayGUI.TextButton(Font, Sheet, rect.Shrink(btnPadding), UI_BTN, "Quit")) {
-		//		RequireQuit = true;
-		//	}
-		//	rect.X += rect.Width;
-		//	if (RayGUI.TextButton(Font, Sheet, rect.Shrink(btnPadding), UI_BTN, "Cancel")) {
-		//		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Float);
-		//	}
-		//}
+		var cameraRect = Renderer.CameraRect;
+		int buttonHeight = GUI.Unify(320);
+		int btnPadding = GUI.Unify(42);
+
+		// MSG 
+		GUI.Label(
+			TextContent.Get(QUIT_MSG, charSize: 80, alignment: Alignment.MidMid, wrap: true),
+			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.Unify(42))
+		);
+
+		// Buttons 
+		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
+		if (GUI.Button(rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_QUIT, 0, Color32.WHITE, Color32.GREY_216)) {
+			Game.QuitApplication();
+		}
+		rect.x += rect.width;
+		if (GUI.Button(rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_CANCEL, 0, Color32.WHITE, Color32.GREY_216)) {
+			SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Float);
+		}
 
 	}
 

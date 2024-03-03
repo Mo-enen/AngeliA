@@ -61,7 +61,7 @@ public class HomeScreen : WindowUI {
 		base.BeforePhysicsUpdate();
 		Cursor.RequireCursor();
 		ControlHintUI.ForceHideGamepad();
-		var mainRect = Renderer.CameraRect;
+		var mainRect = WindowRect;
 		X = mainRect.x;
 		Y = mainRect.y;
 		Width = mainRect.width;
@@ -71,7 +71,7 @@ public class HomeScreen : WindowUI {
 
 	public override void UpdateWindowUI () {
 		int panelWidth = Unify(300);
-		var mainRect = Renderer.CameraRect;
+		var mainRect = WindowRect;
 		Update_Panel(mainRect.EdgeInside(Direction4.Left, panelWidth));
 		Update_Content(mainRect.EdgeInside(Direction4.Right, mainRect.width - panelWidth));
 	}
@@ -127,8 +127,7 @@ public class HomeScreen : WindowUI {
 
 	private void Update_Content (IRect panelRect) {
 
-		Util.Log(panelRect);
-
+		
 
 
 

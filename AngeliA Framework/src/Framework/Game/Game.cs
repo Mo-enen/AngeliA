@@ -154,7 +154,7 @@ public abstract partial class Game {
 						RestartGame();
 					}
 					break;
-				case ProjectType.Editor:
+				case ProjectType.Application:
 					StopGame();
 					break;
 			}

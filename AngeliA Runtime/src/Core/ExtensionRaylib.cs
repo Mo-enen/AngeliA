@@ -37,17 +37,17 @@ public static class ExtensionRaylib {
 	}
 
 	public static Rectangle EdgeInsideRectangle (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
-		Direction4.Up => rect.Shrink(0, 0, rect.Height - size, 0),
-		Direction4.Down => rect.Shrink(0, 0, 0, rect.Height - size),
-		Direction4.Left => rect.Shrink(0, rect.Width - size, 0, 0),
-		Direction4.Right => rect.Shrink(rect.Width - size, 0, 0, 0),
+		Direction4.Up => rect.ShrinkRectangle(0, 0, rect.Height - size, 0),
+		Direction4.Down => rect.ShrinkRectangle(0, 0, 0, rect.Height - size),
+		Direction4.Left => rect.ShrinkRectangle(0, rect.Width - size, 0, 0),
+		Direction4.Right => rect.ShrinkRectangle(rect.Width - size, 0, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
 	public static Rectangle EdgeOutsideRectangle (this Rectangle rect, Direction4 edge, float size = 1f) => edge switch {
-		Direction4.Up => rect.Shrink(0, 0, rect.Height, -size),
-		Direction4.Down => rect.Shrink(0, 0, -size, rect.Height),
-		Direction4.Left => rect.Shrink(-size, rect.Width, 0, 0),
-		Direction4.Right => rect.Shrink(rect.Width, -size, 0, 0),
+		Direction4.Up => rect.ShrinkRectangle(0, 0, rect.Height, -size),
+		Direction4.Down => rect.ShrinkRectangle(0, 0, -size, rect.Height),
+		Direction4.Left => rect.ShrinkRectangle(-size, rect.Width, 0, 0),
+		Direction4.Right => rect.ShrinkRectangle(rect.Width, -size, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
 
@@ -74,22 +74,22 @@ public static class ExtensionRaylib {
 		_ => GamepadButton.Unknown,
 	};
 
-	public static Rectangle Shift (this Rectangle rect, float x, float y) {
+	public static Rectangle ShiftRectangle (this Rectangle rect, float x, float y) {
 		rect.X += x;
 		rect.Y += y;
 		return rect;
 	}
-	public static Rectangle Expand (this Rectangle rect, float offset) => rect.Expand(offset, offset, offset, offset);
-	public static Rectangle Expand (this Rectangle rect, float l, float r, float d, float u) {
+	public static Rectangle ExpandRectangle (this Rectangle rect, float offset) => rect.ExpandRectangle(offset, offset, offset, offset);
+	public static Rectangle ExpandRectangle (this Rectangle rect, float l, float r, float d, float u) {
 		rect.X -= l;
 		rect.Y -= u;
 		rect.Width += l + r;
 		rect.Height += d + u;
 		return rect;
 	}
-	public static Rectangle Shrink (this Rectangle rect, float offset) => rect.Expand(-offset);
-	public static Rectangle Shrink (this Rectangle rect, float l, float r, float d, float u) => rect.Expand(-l, -r, -d, -u);
-	public static Rectangle Fit (this Rectangle rect, float targetAspect, float pivotX = 0.5f, float pivotY = 0.5f) {
+	public static Rectangle ShrinkRectangle (this Rectangle rect, float offset) => rect.ExpandRectangle(-offset);
+	public static Rectangle ShrinkRectangle (this Rectangle rect, float l, float r, float d, float u) => rect.ExpandRectangle(-l, -r, -d, -u);
+	public static Rectangle FitRectangle (this Rectangle rect, float targetAspect, float pivotX = 0.5f, float pivotY = 0.5f) {
 		float sizeX = rect.Width;
 		float sizeY = rect.Height;
 		if (targetAspect > rect.Width / rect.Height) {
@@ -103,7 +103,7 @@ public static class ExtensionRaylib {
 			sizeX, sizeY
 		);
 	}
-	public static Rectangle Envelope (this Rectangle rect, float targetAspect) {
+	public static Rectangle EnvelopeRectangle (this Rectangle rect, float targetAspect) {
 		float sizeX = rect.Width;
 		float sizeY = rect.Height;
 		if (targetAspect < rect.Width / rect.Height) {
@@ -117,8 +117,8 @@ public static class ExtensionRaylib {
 			sizeX, sizeY
 		);
 	}
-	public static bool Overlaps (this Rectangle rect, Rectangle other) => other.X < rect.X + rect.Width && other.X + other.Width > rect.X && other.Y < rect.Y + rect.Height && other.Y + other.Height > rect.Y;
+	public static bool OverlapsRectangle (this Rectangle rect, Rectangle other) => other.X < rect.X + rect.Width && other.X + other.Width > rect.X && other.Y < rect.Y + rect.Height && other.Y + other.Height > rect.Y;
 
-	public static bool Contains (this Rectangle rect, Vector2 point) => point.X >= rect.X && point.X < rect.X + rect.Width && point.Y >= rect.Y && point.Y < rect.Y + rect.Height;
+	public static bool ContainsRectangle (this Rectangle rect, Vector2 point) => point.X >= rect.X && point.X < rect.X + rect.Width && point.Y >= rect.Y && point.Y < rect.Y + rect.Height;
 
 }

@@ -125,13 +125,13 @@ public static class Stage {
 	private static event System.Action OnViewZChanged;
 	private static event System.Action<int> BeforeLayerFrameUpdate;
 	private static event System.Action<int> AfterLayerFrameUpdate;
-	private static int ViewLerpRate = 1000;
-	private static int? RequireSetViewZ = null;
 	private static readonly Dictionary<int, EntityStack> EntityPool = new();
 	private static readonly HashSet<Int3> StagedEntityHash = new();
 	private static readonly HashSet<Int3> GlobalAntiSpawnHash = new();
 	private static readonly HashSet<Int3> LocalAntiSpawnHash = new();
-	private static bool FoundationalOnly = false;
+	private static int ViewLerpRate = 1000;
+	private static int? RequireSetViewZ = null;
+	private static bool Enable = true;
 
 
 	#endregion
@@ -145,7 +145,7 @@ public static class Stage {
 	[OnGameInitialize(-64)]
 	public static void OnGameInitialize () {
 
-		FoundationalOnly = Game.ProjectType != ProjectType.Game;
+		Enable = Game.ProjectType == ProjectType.Game;
 		ViewRect = new(
 			0, 0,
 			Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000,
@@ -157,7 +157,7 @@ public static class Stage {
 			Entities[i] = new Entity[ENTITY_CAPACITY[i]];
 		}
 		EntityPool.Clear();
-		if (FoundationalOnly) return;
+		if (!Enable) return;
 
 		var allEntityTypes = new List<System.Type>(typeof(Entity).AllChildClass());
 		for (int tIndex = 0; tIndex < allEntityTypes.Count; tIndex++) {
@@ -215,7 +215,7 @@ public static class Stage {
 
 	[OnGameRestart]
 	public static void OnGameRestart () {
-		if (FoundationalOnly) return;
+		if (!Enable) return;
 		SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
 	}
 
@@ -223,7 +223,7 @@ public static class Stage {
 	[OnGameUpdate(-4096)]
 	internal static void UpdateView () {
 
-		if (FoundationalOnly) return;
+		if (!Enable) return;
 
 		// Move View Rect
 		if (ViewDelayX.value.HasValue || ViewDelayY.value.HasValue || ViewDelayHeight.value.HasValue) {
@@ -266,7 +266,7 @@ public static class Stage {
 	[OnGameUpdateLater(-4096)]
 	internal static void UpdateAllEntities () {
 
-		if (FoundationalOnly) return;
+		if (!Enable) return;
 
 		// Update All Layers
 		UpdateEntitiesForLayer(-1);
@@ -287,7 +287,7 @@ public static class Stage {
 
 	[OnGameUpdatePauseless]
 	internal static void UpdateUiEntitiesOnPause () {
-		if (FoundationalOnly || Game.IsPlaying) return;
+		if (!Enable || Game.IsPlaying) return;
 		UpdateEntitiesForLayer(EntityLayer.UI);
 	}
 
@@ -689,7 +689,7 @@ public static class Stage {
 
 
 	private static Entity SpawnEntityLogic (int typeID, int x, int y, Int3 globalUnitPos) {
-		if (FoundationalOnly) return null;
+		if (!Enable) return null;
 		try {
 			if (
 				globalUnitPos.x != int.MinValue &&

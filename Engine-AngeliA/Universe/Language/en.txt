@@ -1,6 +1,4 @@
-﻿@GuaGua:GuaGua
-@SlimeRed:Red Slime
-@Yaya:Yaya
+﻿@DefaultPlayer:
 AngelWing.Wing:Angel Wing
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
@@ -1670,6 +1668,8 @@ PlayerQMenu.Hand:Hand
 Project.Error.NameExists:Name already exists
 Project.NewProjectName:New Project
 PropellerWing.Wing:Propeller Wing
+Title.Home:
+Title.Language:
 UI.Back:Back
 UI.BodyPart.ArmHand:Arm
 UI.BodyPart.Body:Body
@@ -1720,6 +1720,7 @@ UI.PaletteTab.All:All
 UI.PaletteTab.Pinned:Favourite
 UI.Quit:Quit
 UI.QuitGame:Quit Game
+UI.QuitMessage:
 UI.Restart:Restart
 UI.Save:Save
 UI.Setting:Setting

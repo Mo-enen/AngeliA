@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.StageOrder(4096)]
 public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
@@ -75,11 +75,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 	public override void OnInactivated () {
 		base.OnInactivated();
-		for (int i = 0; i < ItemCount; i++) {
-			var item = Items[i];
-			item.Label = "";
-			item.Action = null;
-		}
+		ClearItems();
 	}
 
 
@@ -198,7 +194,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		Renderer.ClampTextCells(panelRect, textStart);
 
 		// Cancel
-		if (Input.AnyMouseButtonDown || Input.AnyKeyDown) {
+		if (Game.GlobalFrame > SpawnFrame && (Input.AnyMouseButtonDown || Input.AnyKeyDown)) {
 			Input.UseMouseKey(0);
 			Input.UseMouseKey(1);
 			Input.UseMouseKey(2);
@@ -218,8 +214,13 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 	public static void BeginPopup () {
 		if (Instance == null) return;
-		Stage.SpawnEntity(Instance.TypeID, 0, 0);
-		if (Instance.Active) Instance.OnInactivated();
+		if (Game.ProjectType == ProjectType.Game) {
+			Stage.SpawnEntity(Instance.TypeID, 0, 0);
+		} else {
+			Instance.Active = true;
+			Instance.SpawnFrame = Game.GlobalFrame;
+		}
+		ClearItems();
 		Instance.ItemCount = 0;
 		Instance.OffsetX = Input.MouseGlobalPosition.x - Renderer.CameraRect.x;
 		Instance.OffsetY = Input.MouseGlobalPosition.y - Renderer.CameraRect.y;
@@ -247,6 +248,16 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 	public static void ClosePopup () {
 		if (Instance != null) Instance.Active = false;
+	}
+
+
+	public static void ClearItems () {
+		if (Instance == null) return;
+		for (int i = 0; i < Instance.ItemCount; i++) {
+			var item = Instance.Items[i];
+			item.Label = "";
+			item.Action = null;
+		}
 	}
 
 

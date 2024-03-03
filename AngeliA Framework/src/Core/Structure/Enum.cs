@@ -2,7 +2,7 @@
 
 public enum ProjectType { 
 	Game = 0, 
-	Editor = 1, 
+	Application = 1, 
 }
 
 public enum Direction2 {

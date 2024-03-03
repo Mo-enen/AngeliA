@@ -48,6 +48,7 @@ public partial class RayGame : Game {
 		IsTransparentWindow = Util.TryGetAttributeFromAllAssemblies<RequireTransparentWindowAttribute>();
 		if (IsTransparentWindow) windowConfig |= ConfigFlags.TransparentWindow;
 		Raylib.SetConfigFlags(windowConfig);
+		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 		if (Util.TryGetAttributeFromAllAssemblies<RequireEventWaitingAttribute>()) {

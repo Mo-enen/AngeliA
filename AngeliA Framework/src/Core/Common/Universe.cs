@@ -71,10 +71,10 @@ public class Universe {
 		Util.CreateFolder(ConversationRoot);
 		Util.CreateFolder(UniverseMetaRoot);
 		Util.CreateFolder(MapRoot);
-		Util.CreateFolder(SavingRoot);
 		Util.CreateFolder(ItemCustomizationRoot);
-		Util.CreateFolder(SavingMetaRoot);
 		Util.CreateFolder(ProcedureMapRoot);
+		Util.CreateFolder(SavingRoot);
+		Util.CreateFolder(SavingMetaRoot);
 	}
 
 }

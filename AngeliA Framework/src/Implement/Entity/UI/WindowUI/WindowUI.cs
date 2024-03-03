@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA.Framework;
+
 [EntityAttribute.DontDestroyOnSquadTransition]
 [EntityAttribute.Capacity(1, 0)]
 public abstract class WindowUI : EntityUI, IWindowEntityUI {
@@ -10,9 +10,12 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	// Api
 	public virtual IRect BackgroundRect => Rect;
+	public static IRect WindowRect { get; private set; }
 
 	// Data
 	private static int UpdatedFrame = -1;
+	private static int WindowRectOverrideFrame = -1;
+
 
 	// MSG
 	[OnGameQuitting]
@@ -31,6 +34,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	public sealed override void UpdateUI () {
 		base.UpdateUI();
+		WindowRect = Game.PauselessFrame > WindowRectOverrideFrame ? Renderer.CameraRect : WindowRect;
 		if (Game.PauselessFrame > UpdatedFrame) {
 			// First
 			UpdatedFrame = Game.PauselessFrame;
@@ -60,6 +64,11 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 			var e = entities[i];
 			if (e.TypeID == typeID) e.Active = false;
 		}
+	}
+
+	public static void ForceWindowRect (IRect newRect) {
+		WindowRectOverrideFrame = Game.PauselessFrame;
+		WindowRect = newRect;
 	}
 
 }

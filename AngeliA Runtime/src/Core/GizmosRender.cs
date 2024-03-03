@@ -38,7 +38,7 @@ public static class GizmosRender {
 			var rect = glTexture.Rect;
 			var uv = glTexture.UV;
 			Raylib.DrawTexturePro(
-				rTexture, uv.Shrink(0.1f), rect.Expand(0.5f), new(0, 0), 0, Color.White
+				rTexture, uv.ShrinkRectangle(0.1f), rect.ExpandRectangle(0.5f), new(0, 0), 0, Color.White
 			);
 		}
 		GLTextureCount = 0;

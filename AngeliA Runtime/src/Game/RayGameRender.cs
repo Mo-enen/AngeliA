@@ -259,7 +259,7 @@ public partial class RayGame {
 				source.Width *= cell.Width.Sign();
 				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
-					texture, source.Shrink(0.02f), dest.Expand(0.5f),
+					texture, source.ShrinkRectangle(0.02f), dest.ExpandRectangle(0.5f),
 					new Vector2(
 						pivotX * dest.Width,
 						pivotY * dest.Height

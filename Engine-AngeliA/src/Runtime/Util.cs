@@ -9,9 +9,11 @@ namespace AngeliaEngine;
 public static class EditorUtil {
 
 
+	private const string UNIVERSE_TEMPLATE_NAME = "UniverseTemplate";
 	private static readonly StringBuilder CacheBuilder = new();
 
 
+	// API
 	public static int BuildProject (
 		string projectPath, string sdkPath, string outputFolderPath,
 		bool logMessage = true

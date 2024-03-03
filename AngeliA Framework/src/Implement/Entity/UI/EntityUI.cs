@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 public interface IWindowEntityUI {
 
@@ -10,29 +10,34 @@ public interface IWindowEntityUI {
 	private static int[] EndIndexCache = null;
 
 	[OnGameUpdatePauseless(31)]
-	public static void OnGameUpdatePauseless () {
-		int count = Stage.EntityCounts[EntityLayer.UI];
-		var entities = Stage.Entities[EntityLayer.UI];
+	internal static void OnGameUpdatePauseless () => ClipTextForAllUI(Stage.Entities[EntityLayer.UI], Stage.EntityCounts[EntityLayer.UI]);
+
+
+	public static void ClipTextForAllUI (IEnumerable<Entity> entities, int count) {
 		EndIndexCache ??= new int[Renderer.TextLayerCount];
 		for (int i = 0; i < Renderer.TextLayerCount; i++) {
 			EndIndexCache[i] = Renderer.GetTextUsedCellCount(i);
 		}
-		for (int i = 0; i < count; i++) {
-			var e = entities[i];
+		int index = -1;
+		foreach (var e in entities) {
+			index++;
+			if (index >= count) break;
+			if (!e.Active) continue;
 			if (e is not IWindowEntityUI window) continue;
 			if (e is not EntityUI ui) continue;
-			if (ui.TextCellEndIndex != null) {
-				for (int j = 0; j < Renderer.TextLayerCount; j++) {
-					Renderer.ExcludeTextCells(
-						j, 
-						window.BackgroundRect, 
-						ui.TextCellEndIndex[j], 
-						EndIndexCache[j]
-					);
-				}
+			if (ui.TextCellEndIndex == null) continue;
+			for (int j = 0; j < Renderer.TextLayerCount; j++) {
+				Renderer.ExcludeTextCells(
+					j,
+					window.BackgroundRect,
+					ui.TextCellEndIndex[j],
+					EndIndexCache[j]
+				);
 			}
 		}
 	}
+
+
 }
 
 [EntityAttribute.ExcludeInMapEditor]
@@ -60,7 +65,9 @@ public abstract class EntityUI : Entity {
 		if (Game.PauselessFrame == BlockingEventFrame) {
 			Input.IgnoreInput();
 		}
+
 		UpdateUI();
+
 		if (Game.PauselessFrame == BlockingEventFrame) {
 			Input.CancelIgnoreInput();
 		}
