@@ -8,7 +8,7 @@ namespace AngeliaEngine;
 [System.Serializable]
 public class ProjectInfo {
 	public string ProjectName = "No Title";
-	public string Developer = "Default Company";
+	public string Developer = "";
 }
 
 
@@ -41,7 +41,10 @@ public class Project {
 
 		Util.CreateFolder(projectPath);
 
-		JsonUtil.SaveJson(new ProjectInfo(), projectPath, prettyPrint: true);
+		JsonUtil.SaveJson(new ProjectInfo() {
+			ProjectName = Util.GetDisplayName(Util.GetNameWithoutExtension(projectPath)),
+			Developer = "Default Company",
+		}, projectPath, prettyPrint: true);
 
 		Util.CopyFolder(EngineUtil.UniverseTemplatePath, AngePath.GetUniverseRoot(projectPath), true, true);
 

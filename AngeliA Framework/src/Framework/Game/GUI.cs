@@ -99,7 +99,9 @@ public static class GUI {
 	// Unify
 	public static int Unify (int value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
 	public static int Unify (float value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
-	public static int ReverseUnify (int value) => (value / (Renderer.CameraRect.height / 1000f)).RoundToInt();
+	public static int ReverseUnify (int value) => (value * 1000f / Renderer.CameraRect.height).RoundToInt();
+	public static int UnifyMonitor (int value) => (value * Renderer.CameraRect.height * Game.MonitorHeight / 1000f / Game.ScreenHeight).RoundToInt();
+	public static int UnifyMonitor (float value) => (value * Renderer.CameraRect.height * Game.MonitorHeight / 1000f / Game.ScreenHeight).RoundToInt();
 
 
 	// Typing

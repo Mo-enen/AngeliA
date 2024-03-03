@@ -130,10 +130,11 @@ internal class Engine {
 	private static void OnGUI_Window () {
 
 		// Tab Bar
-		int barHeight = GUI.Unify(48);
-		int barPadding = Renderer.TryGetSprite(UI_WINDOW_BG, out var bgSprite) ? bgSprite.GlobalBorder.left : GUI.Unify(12);
+		int barHeight = GUI.UnifyMonitor(32);
+		int contentPadding = GUI.UnifyMonitor(8);
+		int bodyBorder = GUI.UnifyMonitor(6);
+		int barPadding = GUI.UnifyMonitor(Renderer.TryGetSprite(UI_WINDOW_BG, out var bgSprite) ? GUI.ReverseUnify(bgSprite.GlobalBorder.left) : 12);
 		bool floating = CurrentWindowMode == WindowMode.Float;
-		int contentPadding = GUI.Unify(8);
 		int closeButtonWidth = floating ? barHeight - contentPadding : barPadding;
 		var cameraRect = Renderer.CameraRect;
 		int tabWidth = (cameraRect.width - barPadding - closeButtonWidth) / WINDOWS.Length;
@@ -154,6 +155,7 @@ internal class Engine {
 			Renderer.Draw_9Slice(
 				selecting ? UI_TAB : UI_INACTIVE_TAB,
 				rect.Shrink(0, 0, 0, contentPadding),
+				bodyBorder, bodyBorder, bodyBorder, bodyBorder,
 				selecting || hovering ? Color32.WHITE : Color32.GREY_196
 			);
 			var contentRect = rect.Shrink(contentPadding, closeButtonWidth, 0, contentPadding);
@@ -163,8 +165,9 @@ internal class Engine {
 			Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
 
 			// Label
+			int labelCharSize = GUI.ReverseUnify(contentRect.height) / 2;
 			GUI.Label(
-				TextContent.Get(WINDOW_TITLES[i], Color32.GREY_196, charSize: 12, alignment: Alignment.MidLeft),
+				TextContent.Get(WINDOW_TITLES[i], Color32.GREY_196, charSize: labelCharSize, alignment: Alignment.MidLeft),
 				contentRect.Shrink(iconSize, 0, 0, 0)
 			);
 
@@ -294,22 +297,30 @@ internal class Engine {
 	private static void OnGUI_ConfirmQuit () {
 
 		var cameraRect = Renderer.CameraRect;
-		int buttonHeight = GUI.Unify(320);
-		int btnPadding = GUI.Unify(42);
+		int buttonHeight = GUI.UnifyMonitor(64);
+		int btnPadding = GUI.UnifyMonitor(8);
 
 		// MSG 
 		GUI.Label(
 			TextContent.Get(QUIT_MSG, charSize: 80, alignment: Alignment.MidMid, wrap: true),
-			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.Unify(42))
+			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.UnifyMonitor(8))
 		);
 
 		// Buttons 
 		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
-		if (GUI.Button(rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_QUIT, 0, Color32.WHITE, Color32.GREY_216)) {
+		if (GUI.Button(
+			rect.Shrink(btnPadding), UI_BTN,
+			BuiltInText.UI_QUIT,
+			0, Color32.WHITE, Color32.GREY_216
+		)) {
 			Game.QuitApplication();
 		}
 		rect.x += rect.width;
-		if (GUI.Button(rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_CANCEL, 0, Color32.WHITE, Color32.GREY_216)) {
+		if (GUI.Button(
+			rect.Shrink(btnPadding),
+			UI_BTN,
+			BuiltInText.UI_CANCEL, 0, Color32.WHITE, Color32.GREY_216
+		)) {
 			SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Float);
 		}
 
