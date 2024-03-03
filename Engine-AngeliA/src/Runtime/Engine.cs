@@ -31,20 +31,19 @@ internal class Engine {
 	private static readonly SpriteCode UI_BTN = "UI.PixelButton";
 	private static readonly SpriteCode ICON_CLOSE = "Icon.PixelClose";
 	private static readonly WindowUI[] WINDOWS = {
-		new HomeScreen(),
+		new ProjectHub(),
 		new LanguageEditor(),
 	};
 	private static readonly LanguageCode[] WINDOW_TITLES = {
-		("Title.Home", "Home"),
+		("Title.Hub", "Home"),
 		("Title.Language", "Language"),
 	};
 	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
 	private static readonly List<EntityUI> ALL_UI = new();
 
 	// Data
-	private static readonly Project CurrentProject = new();
 	private static readonly GenericPopupUI PopupUI = new();
-	private static Setting Setting;
+	private static EngineSetting Setting;
 	private static Int2? FloatMascotMouseDownPos = null;
 	private static Int2 FloatMascotMouseDownGlobalPos = default;
 	private static WindowMode CurrentWindowMode;
@@ -62,7 +61,7 @@ internal class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
-		Setting = JsonUtil.LoadOrCreateJson<Setting>(AngePath.PersistentDataPath);
+		Setting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
 		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Mascot);
 		WINDOWS.ForEach(w => w.OnActivated());
 		ALL_UI.Clear();

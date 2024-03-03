@@ -70,7 +70,7 @@ public static class AngePath {
 	private static string _ProcedureMapTempRoot = null;
 
 	// Universe
-	public static string GetUniverseRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Universe");
+	public static string GetUniverseRoot (string projectFolder) => Util.CombinePaths(projectFolder, "Universe");
 	public static string GetSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet.sheet");
 	public static string GetAtlasRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Atlas");
 	public static string GetConversationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Conversation");

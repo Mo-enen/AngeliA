@@ -35,7 +35,7 @@ public class Universe {
 	public bool Readonly { get; init; }
 
 	// MSG
-	public Universe (string universeFolder, bool @readonly) : this(Util.CombinePaths(universeFolder, "Universe"), Util.CombinePaths(universeFolder, "Saving"), @readonly) { }
+	public Universe (string projectFolder, bool @readonly) : this(Util.CombinePaths(projectFolder, "Universe"), Util.CombinePaths(projectFolder, "Saving"), @readonly) { }
 
 	public Universe (string universeFolder, string savingFolder, bool @readonly) {
 

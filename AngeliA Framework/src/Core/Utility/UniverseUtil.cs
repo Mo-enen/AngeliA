@@ -10,10 +10,10 @@ public static class UniverseUtil {
 		string creator, Int3 version
 	) {
 
-		string universeFolderPath = Util.CombinePaths(workspace, System.Guid.NewGuid().ToString());
+		string projectFolderPath = Util.CombinePaths(workspace, System.Guid.NewGuid().ToString());
 
-		Util.CreateFolder(universeFolderPath);
-		string newUniversePath = AngePath.GetUniverseRoot(universeFolderPath);
+		Util.CreateFolder(projectFolderPath);
+		string newUniversePath = AngePath.GetUniverseRoot(projectFolderPath);
 
 		// Copy Maps
 		Util.CopyFolder(
@@ -24,7 +24,7 @@ public static class UniverseUtil {
 		);
 
 		// Create Universe Object
-		var universe = new Universe(universeFolderPath, @readonly: false);
+		var universe = new Universe(projectFolderPath, @readonly: false);
 		var info = universe.Info;
 		info.UniverseName = universeName;
 		info.Creator = creator;

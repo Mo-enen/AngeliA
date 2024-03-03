@@ -8,7 +8,7 @@ using AngeliA.Framework;
 namespace AngeliaEngine;
 
 [Serializable]
-public class Setting {
+public class EngineSetting {
 
 	public bool WindowMode = true;
 	public bool Maximize = true;

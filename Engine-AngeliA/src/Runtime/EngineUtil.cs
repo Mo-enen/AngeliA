@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using AngeliA;
+using AngeliA.Framework;
 
 namespace AngeliaEngine;
 
-public static class EditorUtil {
+public static class EngineUtil {
 
 
+	public static string UniverseTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, UNIVERSE_TEMPLATE_NAME);
 	private const string UNIVERSE_TEMPLATE_NAME = "UniverseTemplate";
 	private static readonly StringBuilder CacheBuilder = new();
 
@@ -16,7 +18,7 @@ public static class EditorUtil {
 	// API
 	public static int BuildProject (
 		string projectPath, string sdkPath, string outputFolderPath,
-		bool logMessage = true
+		bool logMessage = true, string versionString = ""
 	) {
 
 		CacheBuilder.Clear();
@@ -29,8 +31,7 @@ public static class EditorUtil {
 		CacheBuilder.AppendWithDoubleQuotes(projectPath);
 
 		// Property
-		CacheBuilder.Append(" -p:Version=");
-		//CacheBuilder.Append(AngeliaVersionAttribute.GetVersionString(prefixV: false));
+		if (!string.IsNullOrEmpty(versionString)) CacheBuilder.Append($" -p:Version={versionString}");
 		CacheBuilder.Append(" -p:OutputType=Library");
 		CacheBuilder.Append(" -p:ProduceReferenceAssembly=false");
 		CacheBuilder.Append(" -p:GenerateDependencyFile=false");
@@ -60,11 +61,11 @@ public static class EditorUtil {
 	}
 
 
-	public static string GenerateProjectFile () {
+	public static string GenerateCsProjectFile () {
 
 		// Create Project File
 		CacheBuilder.Clear();
-		CacheBuilder.AppendLine("<Project>");
+		CacheBuilder.AppendLine("<Project Sdk=\"Microsoft.NET.Sdk\">");
 
 		CacheBuilder.AppendLine("\t<PropertyGroup>");
 		CacheBuilder.AppendLine("\t\t<TargetFramework>net7.0-windows</TargetFramework>");
@@ -75,6 +76,8 @@ public static class EditorUtil {
 		CacheBuilder.Clear();
 		return result;
 	}
+
+
 
 
 }
