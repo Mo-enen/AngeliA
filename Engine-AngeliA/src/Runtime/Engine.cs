@@ -23,8 +23,8 @@ internal class Engine {
 	private enum WindowMode { Mascot, Float, Window, ConfirmQuit, }
 
 	// Const
-	private const int FLOAT_WIDTH = 360;
-	private const int FLOAT_HEIGHT = 360;
+	private const int MASCOT_WIDTH = 360;
+	private const int MASCOT_HEIGHT = 360;
 	private static readonly SpriteCode UI_TAB = "UI.PixelTab";
 	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.PixelInactiveTab";
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.PixelWindowBG";
@@ -32,22 +32,29 @@ internal class Engine {
 	private static readonly SpriteCode ICON_CLOSE = "Icon.PixelClose";
 	private static readonly WindowUI[] WINDOWS = {
 		new ProjectHub(),
+		new PixelEditor(),
 		new LanguageEditor(),
 	};
 	private static readonly LanguageCode[] WINDOW_TITLES = {
 		("Title.Hub", "Home"),
+		("Title.Pixel", "Artwork"),
 		("Title.Language", "Language"),
 	};
-	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
 	private static readonly List<EntityUI> ALL_UI = new();
+	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
+
+	// Api
+	public static Project CurrentProject { get; private set; } = null;
 
 	// Data
 	private static readonly GenericPopupUI PopupUI = new();
+	private static readonly GenericDialogUI DialogUI = new();
 	private static EngineSetting Setting;
 	private static Int2? FloatMascotMouseDownPos = null;
 	private static Int2 FloatMascotMouseDownGlobalPos = default;
 	private static WindowMode CurrentWindowMode;
 	private static bool FloatMascotDragged = false;
+	private static bool SettingInitialized = false;
 	private static int CurrentWindowIndex = 0;
 
 
@@ -63,10 +70,13 @@ internal class Engine {
 	internal static void OnGameInitialize () {
 		Setting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
 		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Mascot);
-		WINDOWS.ForEach(w => w.OnActivated());
+		PopupUI.Active = false;
+		DialogUI.Active = false;
 		ALL_UI.Clear();
 		ALL_UI.Add(PopupUI);
+		ALL_UI.Add(DialogUI);
 		ALL_UI.AddRange(WINDOWS);
+		ALL_UI.ForEach(ui => ui.OnActivated());
 	}
 
 
@@ -85,7 +95,7 @@ internal class Engine {
 	internal static void OnGameQuitting () {
 		if (CurrentWindowMode != WindowMode.ConfirmQuit) Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
-		WINDOWS.ForEach(w => w.OnInactivated());
+		ALL_UI.ForEach(ui => ui.OnInactivated());
 	}
 
 
@@ -99,7 +109,7 @@ internal class Engine {
 		}
 
 		// Switch on Mid Click
-		if (Input.MouseMidButtonDown) {
+		if (CurrentWindowMode != WindowMode.ConfirmQuit && Input.MouseMidButtonDown) {
 			SwitchWindowMode(CurrentWindowMode == WindowMode.Window ? WindowMode.Float : WindowMode.Window);
 		}
 
@@ -130,20 +140,22 @@ internal class Engine {
 	private static void OnGUI_Window () {
 
 		// Tab Bar
-		int barHeight = GUI.UnifyMonitor(32);
+		int barHeight = GUI.UnifyMonitor(38);
 		int contentPadding = GUI.UnifyMonitor(8);
 		int bodyBorder = GUI.UnifyMonitor(6);
-		int barPadding = GUI.UnifyMonitor(Renderer.TryGetSprite(UI_WINDOW_BG, out var bgSprite) ? GUI.ReverseUnify(bgSprite.GlobalBorder.left) : 12);
 		bool floating = CurrentWindowMode == WindowMode.Float;
-		int closeButtonWidth = floating ? barHeight - contentPadding : barPadding;
+		int closeButtonWidth = floating ? barHeight - contentPadding : bodyBorder;
 		var cameraRect = Renderer.CameraRect;
-		int tabWidth = (cameraRect.width - barPadding - closeButtonWidth) / WINDOWS.Length;
-		var rect = new IRect(cameraRect.x + barPadding, cameraRect.yMax - barHeight, tabWidth, barHeight);
+		int tabWidth = (cameraRect.width - bodyBorder - closeButtonWidth) / WINDOWS.Length;
+		var rect = new IRect(cameraRect.x + bodyBorder, cameraRect.yMax - barHeight, tabWidth, barHeight);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 
 		// Content
-		for (int i = 0; i < WINDOWS.Length; i++) {
+		int windowLen = CurrentProject == null ? 1 : WINDOWS.Length;
+		CurrentWindowIndex = CurrentWindowIndex.Clamp(0, windowLen - 1);
+		for (int i = 0; i < windowLen; i++) {
+
 			var window = WINDOWS[i];
 			bool selecting = i == CurrentWindowIndex;
 			bool hovering = rect.Contains(mousePos);
@@ -156,7 +168,7 @@ internal class Engine {
 				selecting ? UI_TAB : UI_INACTIVE_TAB,
 				rect.Shrink(0, 0, 0, contentPadding),
 				bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-				selecting || hovering ? Color32.WHITE : Color32.GREY_196
+				selecting ? Color32.WHITE : Color32.GREY_196
 			);
 			var contentRect = rect.Shrink(contentPadding, closeButtonWidth, 0, contentPadding);
 
@@ -165,7 +177,7 @@ internal class Engine {
 			Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
 
 			// Label
-			int labelCharSize = GUI.ReverseUnify(contentRect.height) / 2;
+			int labelCharSize = GUI.ReverseUnify(contentRect.height) / 3;
 			GUI.Label(
 				TextContent.Get(WINDOW_TITLES[i], Color32.GREY_196, charSize: labelCharSize, alignment: Alignment.MidLeft),
 				contentRect.Shrink(iconSize, 0, 0, 0)
@@ -196,7 +208,7 @@ internal class Engine {
 		Renderer.Draw_9Slice(
 			UI_WINDOW_BG,
 			cameraRect.EdgeInside(Direction4.Down, cameraRect.height - barHeight),
-			barPadding, barPadding, barPadding, barPadding
+			bodyBorder, bodyBorder, bodyBorder, bodyBorder
 		);
 
 		// Window Content
@@ -204,13 +216,12 @@ internal class Engine {
 		for (int i = 0; i < WINDOWS.Length; i++) {
 			var win = WINDOWS[i];
 			bool active = i == CurrentWindowIndex;
-			if (active != win.Active) {
-				win.Active = active;
-				if (active) {
-					win.OnActivated();
-				} else {
-					win.OnInactivated();
-				}
+			if (active == win.Active) continue;
+			win.Active = active;
+			if (active) {
+				win.OnActivated();
+			} else {
+				win.OnInactivated();
 			}
 		}
 		foreach (var ui in ALL_UI) if (ui.Active) ui.BeforePhysicsUpdate();
@@ -269,14 +280,12 @@ internal class Engine {
 				// Drag End
 				FloatMascotDragged = false;
 				var windowPos = Game.GetWindowPosition();
-				int windowWidth = Game.ScreenWidth;
-				int windowHeight = Game.ScreenHeight;
-				int monitor = Game.CurrentMonitor;
-				windowPos.x = windowPos.x.Clamp(0, Game.GetMonitorWidth(monitor) - windowWidth);
-				windowPos.y = windowPos.y.Clamp(0, Game.GetMonitorHeight(monitor) - windowHeight);
+				windowPos.x = windowPos.x.Clamp(0, Game.MonitorWidth - Game.ScreenWidth);
+				windowPos.y = windowPos.y.Clamp(0, Game.MonitorHeight - Game.ScreenHeight);
 				Setting.FloatX = windowPos.x;
 				Setting.FloatY = windowPos.y;
 				Game.SetWindowPosition(Setting.FloatX, Setting.FloatY);
+				Game.SetWindowSize(MASCOT_WIDTH, MASCOT_HEIGHT);
 			}
 		}
 	}
@@ -284,10 +293,8 @@ internal class Engine {
 
 	private static void OnGUI_Mascot_Render () {
 
-		//var panelRect = new Rectangle(0, 0, Raylib.GetRenderWidth(), Raylib.GetRenderHeight());
-
 		// BG
-
+		Renderer.Draw(Const.PIXEL, Renderer.CameraRect);
 
 
 	}
@@ -332,17 +339,38 @@ internal class Engine {
 
 
 
+	#region --- API ---
+
+
+	public bool LoadProject (string projectPath) {
+		if (!Project.IsValidProjectPath(projectPath)) return false;
+		if (projectPath == CurrentProject.ProjectPath) return false;
+		CurrentProject = new Project(projectPath);
+		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
+		PixelEditor.Instance.SetSheetPath(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		return true;
+	}
+
+
+	#endregion
+
+
+
+
 	#region --- LGC ---
 
 
 	private static void SwitchWindowMode (WindowMode newMode) {
 
 		// Cache
-		if (Setting.Initialized && CurrentWindowMode != WindowMode.ConfirmQuit) {
+		if (SettingInitialized && CurrentWindowMode != WindowMode.ConfirmQuit) {
 			Setting.LoadValueFromWindow();
 		}
 
 		// Set
+		int targetWindowWidth = Game.ScreenWidth;
+		int targetWindowHeight = Game.ScreenHeight;
+		int minWindowSize = Game.MonitorHeight / 5;
 		switch (newMode) {
 			case WindowMode.Mascot: {
 				// Mascot
@@ -350,8 +378,12 @@ internal class Engine {
 				Game.IsWindowTopmost = true;
 				Game.IsWindowResizable = false;
 				Game.IsWindowMaximized = false;
-				Game.SetWindowSize(FLOAT_WIDTH, FLOAT_HEIGHT);
+				Setting.FloatX = Setting.FloatX.Clamp(0, Game.MonitorWidth - MASCOT_WIDTH);
+				Setting.FloatY = Setting.FloatY.Clamp(0, Game.MonitorHeight - MASCOT_HEIGHT);
 				Game.SetWindowPosition(Setting.FloatX, Setting.FloatY);
+				targetWindowWidth = MASCOT_WIDTH;
+				targetWindowHeight = MASCOT_HEIGHT;
+				minWindowSize = Util.Min(MASCOT_WIDTH, MASCOT_HEIGHT);
 				Setting.WindowMode = false;
 				break;
 			}
@@ -361,13 +393,11 @@ internal class Engine {
 				Game.IsWindowTopmost = true;
 				Game.IsWindowResizable = false;
 				Game.IsWindowMaximized = false;
-				int monitor = Game.CurrentMonitor;
-				int monitorWidth = Game.GetMonitorWidth(monitor);
-				int monitorHeight = Game.GetMonitorHeight(monitor);
-				int width = monitorHeight;
-				int height = monitorHeight * 8 / 10;
-				Game.SetWindowPosition((monitorWidth - width) / 2, (monitorHeight - height) / 2);
-				Game.SetWindowSize(width, height);
+				int width = Game.MonitorHeight;
+				int height = Game.MonitorHeight * 8 / 10;
+				Game.SetWindowPosition((Game.MonitorWidth - width) / 2, (Game.MonitorHeight - height) / 2);
+				targetWindowWidth = width;
+				targetWindowHeight = height;
 				Setting.WindowMode = false;
 				break;
 			}
@@ -377,14 +407,15 @@ internal class Engine {
 				Game.IsWindowTopmost = false;
 				Game.IsWindowResizable = true;
 				if (Setting.Maximize) {
-					int monitor = Game.CurrentMonitor;
 					Game.SetWindowPosition(0, 0);
-					Game.SetWindowSize(Game.GetMonitorWidth(monitor), Game.GetMonitorHeight(monitor));
+					targetWindowWidth = Game.MonitorWidth;
+					targetWindowHeight = Game.MonitorHeight;
 					Game.IsWindowMaximized = true;
 				} else {
-					Game.IsWindowMaximized = false;
 					Game.SetWindowPosition(Setting.WindowPositionX, Setting.WindowPositionY.GreaterOrEquel(24));
-					Game.SetWindowSize(Setting.WindowSizeX, Setting.WindowSizeY);
+					targetWindowWidth = Setting.WindowSizeX;
+					targetWindowHeight = Setting.WindowSizeY;
+					Game.IsWindowMaximized = false;
 				}
 				Setting.WindowMode = true;
 				break;
@@ -399,13 +430,19 @@ internal class Engine {
 				int monitorHeight = Game.GetMonitorHeight(monitor);
 				int width = monitorHeight * 5 / 10;
 				int height = monitorHeight * 2 / 10;
+				targetWindowWidth = width;
+				targetWindowHeight = height;
 				Game.SetWindowPosition((monitorWidth - width) / 2, (monitorHeight - height) / 2);
-				Game.SetWindowSize(width, height);
 				break;
 			}
 		}
+		Game.SetWindowMinSize(minWindowSize);
+		Game.SetWindowSize(
+			targetWindowWidth.GreaterOrEquel(minWindowSize),
+			targetWindowHeight.GreaterOrEquel(minWindowSize)
+		);
 		CurrentWindowMode = newMode;
-		Setting.Initialized = true;
+		SettingInitialized = true;
 	}
 
 

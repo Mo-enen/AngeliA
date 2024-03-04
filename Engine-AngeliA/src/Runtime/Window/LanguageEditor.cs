@@ -6,7 +6,7 @@ using AngeliA.Framework;
 namespace AngeliaEngine;
 
 [RequireLanguageFromField]
-public partial class LanguageEditor : WindowUI {
+public partial class LanguageEditor : EngineWindow {
 
 
 
@@ -46,7 +46,7 @@ public partial class LanguageEditor : WindowUI {
 	// Api
 	public static LanguageEditor Instance { get; private set; }
 	public static bool IsActived => Instance != null && Instance.Active;
-	public string LanguageRoot { get; set; } = "";
+	public string LanguageRoot { get; private set; } = "";
 
 	// Data
 	private readonly List<string> Languages = new();
@@ -54,9 +54,9 @@ public partial class LanguageEditor : WindowUI {
 	private readonly TextContent KeyLabelContent = new() { Alignment = Alignment.MidLeft, CharSize = 22, Tint = Color32.GREY_216, };
 	private readonly TextContent LabelContent = new() { Alignment = Alignment.MidLeft, CharSize = 15, Tint = Color32.GREY_96, };
 	private readonly TextContent InputContent = new() { Alignment = Alignment.MidLeft, CharSize = 22, Tint = Color32.GREY_216, };
-	private bool IsDirty = false;
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
+	private string LoadedLanguageRoot = "";
 
 
 	#endregion
@@ -70,29 +70,34 @@ public partial class LanguageEditor : WindowUI {
 	public LanguageEditor () => Instance = this;
 
 
+	public void SetLanguageRoot (string newRoot) {
+		if (newRoot == LanguageRoot) return;
+		Save();
+		LanguageRoot = newRoot;
+		OnActivated();
+	}
+
+
 	public override void OnActivated () {
 		base.OnActivated();
-		if (string.IsNullOrEmpty(LanguageRoot)) {
-			Active = false;
-			return;
+		if (LanguageRoot != LoadedLanguageRoot) {
+			LoadedLanguageRoot = LanguageRoot;
+			Load(LanguageRoot);
 		}
-		LoadFromDisk(LanguageRoot);
 		ScrollY = 0;
 		SearchingText = string.Empty;
-		Task.AddToLast(EntityHookTask.TYPE_ID, this);
 	}
 
 
 	public override void OnInactivated () {
 		base.OnInactivated();
-		if (IsDirty) SaveToDisk();
-		Lines.Clear();
-		Languages.Clear();
-		Language.SetLanguage(Language.CurrentLanguage);
+		Save();
 	}
 
 
 	public override void UpdateWindowUI () {
+
+		if (string.IsNullOrEmpty(LanguageRoot)) return;
 
 		Cursor.RequireCursor();
 
@@ -149,7 +154,7 @@ public partial class LanguageEditor : WindowUI {
 				Required = false,
 				Value = new List<string>(new string[Languages.Count].FillWithValue(string.Empty)),
 			});
-			IsDirty = true;
+			SetDirty();
 		}
 		Cursor.SetCursorAsHand(rect);
 		rect.x += rect.width;
@@ -270,11 +275,11 @@ Color32.GREY_128, 1
 				Renderer.Draw_9Slice(
 					BuiltInSprite.FRAME_16, shrinkedRect,
 					itemBorder, itemBorder, itemBorder, itemBorder,
-Color32.GREY_128, 1
+					Color32.GREY_128, 1
 				);
 				if (changed) {
 					line.Label = Key_to_Label(line.Key);
-					IsDirty = true;
+					SetDirty();
 				}
 			}
 			rect.x += rect.width;
@@ -288,9 +293,9 @@ Color32.GREY_128, 1
 				Renderer.Draw_9Slice(
 					BuiltInSprite.FRAME_16, shrinkedRect,
 					itemBorder, itemBorder, itemBorder, itemBorder,
-Color32.GREY_128, 1
+					Color32.GREY_128, 1
 				);
-				if (changed) IsDirty = true;
+				if (changed) SetDirty();
 				rect.x += rect.width;
 			}
 
@@ -321,10 +326,10 @@ Color32.GREY_128, 1
 	#region --- LGC ---
 
 
-	private void LoadFromDisk (string languageRoot) {
-		IsDirty = false;
+	private void Load (string languageRoot) {
+		if (!Util.FolderExists(languageRoot)) return;
+		SetDirty(false);
 		Lines.Clear();
-		string targetRoot = languageRoot;
 		int count = Language.LanguageCount;
 		// Load Language
 		Languages.Clear();
@@ -335,7 +340,7 @@ Color32.GREY_128, 1
 		// Load Contents
 		var pool = new Dictionary<string, int>();
 		for (int languageIndex = 0; languageIndex < count; languageIndex++) {
-			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDisk(targetRoot, Languages[languageIndex])) {
+			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDisk(languageRoot, Languages[languageIndex])) {
 				LanguageLine data;
 				if (pool.TryGetValue(key, out int index)) {
 					data = Lines[index];
@@ -365,16 +370,16 @@ Color32.GREY_128, 1
 				Value = new List<string>(new string[count].FillWithValue(string.Empty)),
 				Required = true,
 			});
-			IsDirty = true;
+			SetDirty();
 		}
 		// Sort
 		Lines.Sort(LineComparer.Instance);
 	}
 
 
-	private void SaveToDisk () {
-		IsDirty = false;
-		string targetRoot = AngePath.LanguageRoot;
+	protected override void Save (bool forceSave = false) {
+		base.Save(forceSave);
+		if (Lines.Count == 0 || string.IsNullOrEmpty(LanguageRoot)) return;
 		var list = new List<KeyValuePair<string, string>>();
 		for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
 			string lan = Languages[languageIndex];
@@ -383,7 +388,7 @@ Color32.GREY_128, 1
 				if (string.IsNullOrWhiteSpace(data.Key)) continue;
 				list.Add(new(data.Key, data.Value[languageIndex]));
 			}
-			LanguageUtil.SaveAllPairsToDisk(targetRoot, lan, list);
+			LanguageUtil.SaveAllPairsToDisk(LanguageRoot, lan, list);
 		}
 	}
 
@@ -405,7 +410,7 @@ Color32.GREY_128, 1
 					foreach (var data in Lines) {
 						data.Value.Insert(newIndex, string.Empty);
 					}
-					IsDirty = true;
+					SetDirty();
 				}
 			}, true, index >= 0);
 		}

@@ -10,6 +10,7 @@ namespace AngeliaEngine;
 [Serializable]
 public class EngineSetting {
 
+	// Window
 	public bool WindowMode = true;
 	public bool Maximize = true;
 	public int FloatX = 0;
@@ -19,8 +20,10 @@ public class EngineSetting {
 	public int WindowPositionX = 128;
 	public int WindowPositionY = 128;
 
-	[JsonIgnore] public bool Initialized = false;
+	// Projects
+	public List<string> Projects = new();
 
+	// API
 	public void LoadValueFromWindow () {
 		if (!Game.IsWindowDecorated) return;
 		var windowPos = Game.GetWindowPosition();

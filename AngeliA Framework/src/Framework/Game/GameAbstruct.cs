@@ -88,6 +88,9 @@ public abstract partial class Game {
 	public static void SetWindowTitle (string title) => Instance._SetWindowTitle(title);
 	protected abstract void _SetWindowTitle (string title);
 
+	public static void SetWindowMinSize (int size) => Instance._SetWindowMinSize(size);
+	protected abstract void _SetWindowMinSize (int size);
+
 
 	// Listener
 	public static void InvokeGameQuitting () {

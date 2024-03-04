@@ -51,6 +51,7 @@ public partial class RayGame : Game {
 		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
+		SetWindowMinSize(256);
 		if (Util.TryGetAttributeFromAllAssemblies<RequireEventWaitingAttribute>()) {
 			Raylib.EnableEventWaiting();
 		}
@@ -73,13 +74,15 @@ public partial class RayGame : Game {
 		// Raylib Window
 		GameWatch.Start();
 		TICK_GAP = ProjectType == ProjectType.Game ? TimeSpan.TicksPerSecond / 60 : TimeSpan.TicksPerSecond / 240;
-		if (WindowMaximized.Value) {
-			Raylib.MaximizeWindow();
-		} else if (!Raylib.IsWindowFullscreen()) {
-			Raylib.SetWindowPosition(
-				(Raylib.GetMonitorWidth(Raylib.GetCurrentMonitor()) - _GetScreenWidth()) / 2,
-				(Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) - _GetScreenHeight()) / 2
-			);
+		if (ProjectType == ProjectType.Game) {
+			if (WindowMaximized.Value) {
+				Raylib.MaximizeWindow();
+			} else if (!Raylib.IsWindowFullscreen()) {
+				Raylib.SetWindowPosition(
+					(Raylib.GetMonitorWidth(Raylib.GetCurrentMonitor()) - _GetScreenWidth()) / 2,
+					(Raylib.GetMonitorHeight(Raylib.GetCurrentMonitor()) - _GetScreenHeight()) / 2
+				);
+			}
 		}
 	}
 

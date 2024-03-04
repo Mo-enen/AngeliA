@@ -191,8 +191,7 @@ public abstract partial class Game {
 
 
 	[OnGameUpdatePauseless(int.MinValue)]
-	internal static void PauselessUpdate () {
-		// Load or Stop Music
+	internal static void LoadOrStopMusic () {
 		bool requireMusic = IsPlaying && ScaledMusicVolume > 0 && !MapEditor.IsEditing;
 		if (requireMusic != IsMusicPlaying) {
 			if (requireMusic) {
@@ -201,7 +200,12 @@ public abstract partial class Game {
 				PauseMusic();
 			}
 		}
-		// Screen Size Cache
+	}
+
+
+	[OnGameInitialize(int.MinValue)]
+	[OnGameUpdate(int.MinValue)]
+	internal static void ScreenSizeCache () {
 		int monitor = Instance._GetCurrentMonitor();
 		ScreenWidth = Instance._GetScreenWidth();
 		ScreenHeight = Instance._GetScreenHeight();

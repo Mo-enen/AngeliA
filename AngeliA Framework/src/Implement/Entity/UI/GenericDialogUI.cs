@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.StageOrder(4097)]
 public class GenericDialogUI : MenuUI {
 
@@ -70,15 +70,19 @@ public class GenericDialogUI : MenuUI {
 	public static void SpawnDialog (string message, string label, System.Action action) => SpawnDialog(message, label, action, null, null, null, null);
 	public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB) => SpawnDialog(message, labelA, actionA, labelB, actionB, null, null);
 	public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
-		var menu = Stage.SpawnEntity<GenericDialogUI>(0, 0);
-		if (menu == null) return;
-		menu.Message = message;
-		menu.OptionA.Label = labelA;
-		menu.OptionB.Label = labelB;
-		menu.OptionC.Label = labelC;
-		menu.OptionA.Action = actionA;
-		menu.OptionB.Action = actionB;
-		menu.OptionC.Action = actionC;
+		if (Instance == null) return;
+		if (Game.ProjectType == ProjectType.Game) {
+			Stage.SpawnEntity<GenericDialogUI>(0, 0);
+		} else {
+			Instance.Active = true;
+		}
+		Instance.Message = message;
+		Instance.OptionA.Label = labelA;
+		Instance.OptionB.Label = labelB;
+		Instance.OptionC.Label = labelC;
+		Instance.OptionA.Action = actionA;
+		Instance.OptionB.Action = actionB;
+		Instance.OptionC.Action = actionC;
 	}
 
 

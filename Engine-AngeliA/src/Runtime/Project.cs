@@ -7,7 +7,7 @@ namespace AngeliaEngine;
 
 [System.Serializable]
 public class ProjectInfo {
-	public string ProjectName = "No Title";
+	public string ProjectName = "";
 	public string Developer = "";
 }
 

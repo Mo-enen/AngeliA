@@ -93,6 +93,7 @@ public partial class RayGame {
 
 	protected override void _SetWindowTitle (string title) => Raylib.SetWindowTitle(title);
 
+	protected override void _SetWindowMinSize (int size) => Raylib.SetWindowMinSize(size, size);
 
 }
 
