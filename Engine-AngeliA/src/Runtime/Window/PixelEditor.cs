@@ -78,8 +78,8 @@ public class PixelEditor : EngineWindow {
 	#region --- LGC ---
 
 
-	private void Load (string artworkRoot) {
-		if (!Util.FolderExists(artworkRoot)) return;
+	private void Load (string sheetPath) {
+		if (string.IsNullOrEmpty(sheetPath) || !Util.FileExists(sheetPath)) return;
 
 
 

@@ -933,7 +933,7 @@ Color32.GREY_32, PANEL_Z - 6
 		}
 
 		// Search Text
-		SearchingText = GUI.TextField(SEARCH_BAR_ID, searchPanel, SearchingText, out bool changed, out _);
+		SearchingText = GUI.InputField(SEARCH_BAR_ID, searchPanel, SearchingText, out bool changed, out _);
 		if (changed) {
 			PaletteSearchScrollY = 0;
 			SearchResult.Clear();

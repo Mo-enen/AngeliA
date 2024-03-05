@@ -100,8 +100,8 @@ public static class GUI {
 	public static int Unify (int value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
 	public static int Unify (float value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
 	public static int ReverseUnify (int value) => (value * 1000f / Renderer.CameraRect.height).RoundToInt();
-	public static int UnifyMonitor (int value) => (value * Renderer.CameraRect.height * Game.MonitorHeight / 1000f / Game.ScreenHeight).RoundToInt();
-	public static int UnifyMonitor (float value) => (value * Renderer.CameraRect.height * Game.MonitorHeight / 1000f / Game.ScreenHeight).RoundToInt();
+	public static int UnifyMonitor (int value) => (value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight).RoundToInt();
+	public static int UnifyMonitor (float value) => (value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight).RoundToInt();
 
 
 	// Typing
@@ -111,7 +111,6 @@ public static class GUI {
 		BeamLength = 0;
 		BeamBlinkFrame = Game.PauselessFrame;
 	}
-
 
 	public static void CancelTyping () {
 		TypingTextFieldID = 0;
@@ -244,10 +243,10 @@ public static class GUI {
 
 
 	// Text Field
-	public static string TextField (int controlID, IRect rect, string text) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _);
-	public static string TextField (int controlID, IRect rect, string text, out bool changed, out bool confirm) => TextField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm);
-	public static string TextField (int controlID, IRect rect, TextContent text) => TextField(controlID, rect, text, out _, out _);
-	public static string TextField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm) {
+	public static string InputField (int controlID, IRect rect, string text) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _);
+	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm);
+	public static string InputField (int controlID, IRect rect, TextContent text) => InputField(controlID, rect, text, out _, out _);
+	public static string InputField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm) {
 
 		changed = false;
 		confirm = false;

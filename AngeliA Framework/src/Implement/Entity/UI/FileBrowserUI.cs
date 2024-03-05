@@ -188,7 +188,7 @@ Color32.GREY_20, Color32.WHITE, enable: true
 		// Address
 		rect.x += buttonSize + buttonPadding;
 		rect.width = barRect.xMax - rect.x;
-		NavbarText = GUI.TextField(12124, rect, NavbarText, out _, out bool confirm);
+		NavbarText = GUI.InputField(12124, rect, NavbarText, out _, out bool confirm);
 		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, rect, frameBorder, frameBorder, frameBorder, frameBorder,
 Color32.GREY_32, z: 1
@@ -361,7 +361,7 @@ Color32.GREY_32, z: 1
 
 		if (ActionType == BrowserActionType.Save) {
 			// Name Field
-			CurrentName = GUI.TextField(091253, fieldRect, CurrentName);
+			CurrentName = GUI.InputField(091253, fieldRect, CurrentName);
 			Renderer.Draw_9Slice(
 				BuiltInSprite.FRAME_16, fieldRect, frameBorder, frameBorder, frameBorder, frameBorder,
 Color32.GREY_32, z: 1

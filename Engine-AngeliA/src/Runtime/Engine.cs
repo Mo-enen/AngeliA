@@ -25,10 +25,10 @@ internal class Engine {
 	// Const
 	private const int MASCOT_WIDTH = 360;
 	private const int MASCOT_HEIGHT = 360;
-	private static readonly SpriteCode UI_TAB = "UI.PixelTab";
-	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.PixelInactiveTab";
-	private static readonly SpriteCode UI_WINDOW_BG = "UI.PixelWindowBG";
-	private static readonly SpriteCode UI_BTN = "UI.PixelButton";
+	private static readonly SpriteCode UI_TAB = "UI.MainTab";
+	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.MainTabInactive";
+	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
+	private static readonly SpriteCode UI_BTN = "UI.CommenButton";
 	private static readonly SpriteCode ICON_CLOSE = "Icon.PixelClose";
 	private static readonly WindowUI[] WINDOWS = {
 		new ProjectHub(),
@@ -77,6 +77,7 @@ internal class Engine {
 		ALL_UI.Add(DialogUI);
 		ALL_UI.AddRange(WINDOWS);
 		ALL_UI.ForEach(ui => ui.OnActivated());
+		ProjectHub.Instance.LoadSettingFromDisk();
 	}
 
 
@@ -96,6 +97,7 @@ internal class Engine {
 		if (CurrentWindowMode != WindowMode.ConfirmQuit) Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
 		ALL_UI.ForEach(ui => ui.OnInactivated());
+		ProjectHub.Instance.SaveSettingToDisk();
 	}
 
 
@@ -177,7 +179,7 @@ internal class Engine {
 			Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
 
 			// Label
-			int labelCharSize = GUI.ReverseUnify(contentRect.height) / 3;
+			int labelCharSize = GUI.ReverseUnify(contentRect.height) * 5 / 12;
 			GUI.Label(
 				TextContent.Get(WINDOW_TITLES[i], Color32.GREY_196, charSize: labelCharSize, alignment: Alignment.MidLeft),
 				contentRect.Shrink(iconSize, 0, 0, 0)
@@ -208,11 +210,11 @@ internal class Engine {
 		Renderer.Draw_9Slice(
 			UI_WINDOW_BG,
 			cameraRect.EdgeInside(Direction4.Down, cameraRect.height - barHeight),
-			bodyBorder, bodyBorder, bodyBorder, bodyBorder
+			bodyBorder, bodyBorder, bodyBorder, bodyBorder, z: int.MinValue
 		);
 
 		// Window Content
-		WindowUI.ForceWindowRect(cameraRect.EdgeInside(Direction4.Down, cameraRect.height - barHeight));
+		WindowUI.ForceWindowRect(cameraRect.Shrink(0, 0, 0, barHeight));
 		for (int i = 0; i < WINDOWS.Length; i++) {
 			var win = WINDOWS[i];
 			bool active = i == CurrentWindowIndex;
@@ -342,13 +344,21 @@ internal class Engine {
 	#region --- API ---
 
 
-	public bool LoadProject (string projectPath) {
+	public bool OpenProject (string projectPath) {
 		if (!Project.IsValidProjectPath(projectPath)) return false;
 		if (projectPath == CurrentProject.ProjectPath) return false;
 		CurrentProject = new Project(projectPath);
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.SetSheetPath(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		return true;
+	}
+
+
+	public void CloseProject () {
+		foreach (var win in WINDOWS) win.OnInactivated();
+		LanguageEditor.Instance.SetLanguageRoot("");
+		PixelEditor.Instance.SetSheetPath("");
+		CurrentProject = null;
 	}
 
 

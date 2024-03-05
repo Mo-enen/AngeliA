@@ -20,9 +20,6 @@ public class EngineSetting {
 	public int WindowPositionX = 128;
 	public int WindowPositionY = 128;
 
-	// Projects
-	public List<string> Projects = new();
-
 	// API
 	public void LoadValueFromWindow () {
 		if (!Game.IsWindowDecorated) return;

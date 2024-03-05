@@ -54,7 +54,7 @@ public class Project {
 	}
 
 
-	public static bool IsValidProjectPath (string projectPath) => Util.FileExists(JsonUtil.GetJsonPath<ProjectInfo>(projectPath));
+	public static bool IsValidProjectPath (string projectPath) => !string.IsNullOrEmpty(projectPath) && Util.FileExists(JsonUtil.GetJsonPath<ProjectInfo>(projectPath));
 
 
 }

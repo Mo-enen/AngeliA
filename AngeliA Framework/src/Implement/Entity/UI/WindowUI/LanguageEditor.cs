@@ -170,7 +170,7 @@ public partial class LanguageEditor : WindowUI {
 		int border = Unify(1);
 		rect.width = panelRect.xMax - rect.x;
 		var searchRect = rect.Shrink(Unify(6));
-		string newText = GUI.TextField(-19223, searchRect, InputContent.SetText(SearchingText));
+		string newText = GUI.InputField(-19223, searchRect, InputContent.SetText(SearchingText));
 		SearchingText = interactable ? newText : SearchingText;
 		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, searchRect,
@@ -262,7 +262,7 @@ Color32.GREY_128, 1
 				ctrlID++;
 			} else {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Key = GUI.TextField(
+				line.Key = GUI.InputField(
 					ctrlID++, shrinkedRect, InputContent.SetText(line.Key), out bool changed, out _
 				);
 				Renderer.Draw_9Slice(
@@ -280,7 +280,7 @@ Color32.GREY_128, 1
 			// Contents
 			for (int j = 0; j < line.Value.Count; j++) {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Value[j] = GUI.TextField(
+				line.Value[j] = GUI.InputField(
 					ctrlID++, shrinkedRect, InputContent.SetText(line.Value[j]), out bool changed, out _
 				);
 				Renderer.Draw_9Slice(

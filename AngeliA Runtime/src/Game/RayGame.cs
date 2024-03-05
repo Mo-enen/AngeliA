@@ -21,6 +21,8 @@ public partial class RayGame : Game {
 	private bool WindowFocused = true;
 	private long NextUpdateTick = -1;
 	private bool IsTransparentWindow = false;
+	private bool RequireEventWaiting = false;
+
 
 	// Saving
 	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
@@ -45,6 +47,7 @@ public partial class RayGame : Game {
 		// Init Window
 		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
 		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
+		RequireEventWaiting = Util.TryGetAttributeFromAllAssemblies<RequireEventWaitingAttribute>();
 		IsTransparentWindow = Util.TryGetAttributeFromAllAssemblies<RequireTransparentWindowAttribute>();
 		if (IsTransparentWindow) windowConfig |= ConfigFlags.TransparentWindow;
 		Raylib.SetConfigFlags(windowConfig);
@@ -52,9 +55,6 @@ public partial class RayGame : Game {
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 		SetWindowMinSize(256);
-		if (Util.TryGetAttributeFromAllAssemblies<RequireEventWaitingAttribute>()) {
-			Raylib.EnableEventWaiting();
-		}
 
 		// Debug
 		Util.OnLogException += RayUtil.LogException;
@@ -88,6 +88,12 @@ public partial class RayGame : Game {
 
 
 	private void UpdateGame () {
+
+		// Enable Waiting
+		if (RequireEventWaiting && PauselessFrame > 4) {
+			RequireEventWaiting = false;
+			Raylib.EnableEventWaiting();
+		}
 
 		// Text Input
 		RayUtil.TextInputUpdate(GUI.OnTextInput);
