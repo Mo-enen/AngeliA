@@ -982,23 +982,23 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 
 		// Button Up
 		var btnRectU = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);
-		if (GUI.Button(
+		GUI.Icon(btnRectU, ICON_UP_CODE, EDITOR_BASIC_Z + 6);
+		if (GUI.SpriteButton(
 			btnRectU, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
-			ICON_UP_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
+			BUTTON_BORDER, z: EDITOR_BASIC_Z + 5
 		)) {
 			playerHeight++;
 		}
-		Cursor.SetCursorAsHand(btnRectU);
-
+		
 		// Button Down
 		var btnRectD = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.y - BUTTON_PADDING - BUTTON_H, BUTTON_W, BUTTON_H);
-		if (GUI.Button(
+		GUI.Icon(btnRectD, ICON_DOWN_CODE, EDITOR_BASIC_Z + 6);
+		if (GUI.SpriteButton(
 			btnRectD, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
-			ICON_DOWN_CODE, BUTTON_BORDER, 0, EDITOR_BASIC_Z + 5
+			BUTTON_BORDER, z: EDITOR_BASIC_Z + 5
 		)) {
 			playerHeight--;
 		}
-		Cursor.SetCursorAsHand(btnRectD);
 
 		return playerHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 	}

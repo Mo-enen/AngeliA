@@ -193,16 +193,20 @@ internal class Engine {
 		}
 
 		// Close Button
-		if (floating && GUI.Button(new IRect(
-			cameraRect.xMax - closeButtonWidth,
-			cameraRect.yMax - barHeight,
-			closeButtonWidth,
-			barHeight - contentPadding
-		), UI_BTN, UI_BTN, UI_BTN, ICON_CLOSE, 0, 0, 0)) {
-			if (CurrentWindowMode != WindowMode.ConfirmQuit) {
-				SwitchWindowMode(WindowMode.ConfirmQuit);
-			} else {
-				Game.QuitApplication();
+		if (floating) {
+			var btnRect = new IRect(
+				cameraRect.xMax - closeButtonWidth,
+				cameraRect.yMax - barHeight,
+				closeButtonWidth,
+				barHeight - contentPadding
+			);
+			GUI.Icon(btnRect, ICON_CLOSE, z: 1);
+			if (GUI.SpriteButton(btnRect, UI_BTN, z: 0)) {
+				if (CurrentWindowMode != WindowMode.ConfirmQuit) {
+					SwitchWindowMode(WindowMode.ConfirmQuit);
+				} else {
+					Game.QuitApplication();
+				}
 			}
 		}
 
@@ -317,18 +321,14 @@ internal class Engine {
 
 		// Buttons 
 		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
-		if (GUI.Button(
-			rect.Shrink(btnPadding), UI_BTN,
-			BuiltInText.UI_QUIT,
-			0, Color32.WHITE, Color32.GREY_216
+		if (GUI.LabelButton(
+			rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_QUIT, Color32.WHITE, Color32.GREY_216
 		)) {
 			Game.QuitApplication();
 		}
 		rect.x += rect.width;
-		if (GUI.Button(
-			rect.Shrink(btnPadding),
-			UI_BTN,
-			BuiltInText.UI_CANCEL, 0, Color32.WHITE, Color32.GREY_216
+		if (GUI.LabelButton(
+			rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_CANCEL, Color32.WHITE, Color32.GREY_216
 		)) {
 			SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Float);
 		}

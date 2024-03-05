@@ -123,13 +123,12 @@ public partial class LanguageEditor : EngineWindow {
 			Color32.GREY_12, int.MinValue
 		);
 
-		bool interactable = true;
-		Update_Bar(cameraRect.EdgeInside(Direction4.Up, Unify(84)), interactable);
-		Update_Content(cameraRect.EdgeInside(Direction4.Down, cameraRect.height - Unify(84)), interactable);
+		Update_Bar(cameraRect.EdgeInside(Direction4.Up, Unify(84)));
+		Update_Content(cameraRect.EdgeInside(Direction4.Down, cameraRect.height - Unify(84)));
 	}
 
 
-	private void Update_Bar (IRect panelRect, bool interactable) {
+	private void Update_Bar (IRect panelRect) {
 
 		// BG
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_32, 0);
@@ -146,7 +145,7 @@ public partial class LanguageEditor : EngineWindow {
 		// + Key
 		var rect = panelRect;
 		rect.width = Unify(108);
-		if (GUI.Button(rect, ADD_KEY, z: 1, charSize: 16) && interactable) {
+		if (GUI.LabelButton(rect, ADD_KEY, z: 1, charSize: 16)) {
 			ScrollY = 0;
 			Lines.Insert(0, new LanguageLine() {
 				Key = string.Empty,
@@ -164,7 +163,7 @@ public partial class LanguageEditor : EngineWindow {
 
 		// + Language
 		rect.width = Unify(108);
-		if (GUI.Button(rect, ADD_LANGUAGE, z: 1, charSize: 16) && interactable) {
+		if (GUI.LabelButton(rect, ADD_LANGUAGE, z: 1, charSize: 16)) {
 			OpenAddLanguagePopup();
 		}
 		Cursor.SetCursorAsHand(rect);
@@ -177,8 +176,7 @@ public partial class LanguageEditor : EngineWindow {
 		int border = Unify(1);
 		rect.width = panelRect.xMax - rect.x;
 		var searchRect = rect.Shrink(Unify(6));
-		string newText = GUI.InputField(-19223, searchRect, InputContent.SetText(SearchingText));
-		SearchingText = interactable ? newText : SearchingText;
+		SearchingText = GUI.InputField(-19223, searchRect, InputContent.SetText(SearchingText));
 		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, searchRect,
 			border, border, border, border,
@@ -198,7 +196,7 @@ Color32.GREY_128, 1
 	}
 
 
-	private void Update_Content (IRect panelRect, bool interactable) {
+	private void Update_Content (IRect panelRect) {
 
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_32, 0);
 
@@ -306,10 +304,10 @@ Color32.GREY_128, 1
 		Renderer.ClampTextCells(panelRect, startTextCellIndex);
 
 		// Scrollbar
-		ScrollY = interactable ? GUI.ScrollBar(
+		ScrollY = GUI.ScrollBar(
 			56093, panelRect.EdgeOutside(Direction4.Right, scrollBarWidth), z: 1,
 			ScrollY, shiftedItemCount, pageCount
-		) : ScrollY;
+		);
 		if (Input.MouseWheelDelta != 0 && pageCount <= shiftedItemCount) {
 			ScrollY -= Input.MouseWheelDelta * 4;
 			ScrollY = ScrollY.Clamp(0, shiftedItemCount - pageCount);

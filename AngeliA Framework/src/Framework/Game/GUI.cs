@@ -21,6 +21,7 @@ public static class GUI {
 
 	// Api
 	public static bool IsTyping => TypingTextFieldID != 0;
+	public static bool Enable { get; set; } = true;
 	public static int TypingTextFieldID {
 		get => _TypingTextFieldID;
 		private set {
@@ -64,6 +65,10 @@ public static class GUI {
 			NUMBER_CACHE[i] = i.ToString();
 		}
 	}
+
+
+	[OnGameUpdate(-4096)]
+	internal static void EarlyUpdate () => Enable = true;
 
 
 	[OnGameUpdate(1023)]
@@ -160,16 +165,16 @@ public static class GUI {
 
 
 	// Scroll Label
-	public static void ScrollLabel (TextContent content, IRect rect, ref int scrollPosition) {
+	public static int ScrollLabel (TextContent content, IRect rect, int scrollPosition) {
 		int before = Renderer.GetTextUsedCellCount();
 		Label(content, rect, out var bounds);
 		if (bounds.height < rect.height) {
 			scrollPosition = 0;
-			return;
+			return scrollPosition;
 		}
 		scrollPosition = scrollPosition.Clamp(0, bounds.height - rect.height + Unify(content.CharSize * 2));
 		int after = Renderer.GetTextUsedCellCount();
-		if (before == after) return;
+		if (before == after) return scrollPosition;
 		if (Renderer.GetTextCells(out var cells, out int count)) {
 			for (int i = before; i < after && i < count; i++) {
 				var cell = cells[i];
@@ -177,58 +182,88 @@ public static class GUI {
 			}
 		}
 		Renderer.ClampTextCells(rect, before, after);
+		return scrollPosition;
 	}
 
 
 	// Button
-	public static bool Button (IRect rect, string label, int z, int charSize = -1, bool enable = true) => Button(rect, label, out _, z, charSize, enable);
-	public static bool Button (IRect rect, string label, int z, Color32 labelTint, int charSize = -1, bool enable = true) => Button(rect, label, out _, z, labelTint, charSize, enable);
-	public static bool Button (IRect rect, int sprite, string label, int z, Color32 buttonTint, Color32 labelTint, int charSize = -1, bool enable = true) => Button(rect, sprite, label, out _, z, buttonTint, labelTint, charSize, enable);
-	public static bool Button (IRect rect, string label, out IRect labelBounds, int z, int charSize = -1, bool enable = true) => Button(rect, label, out labelBounds, z, Color32.WHITE, charSize, enable);
-	public static bool Button (IRect rect, string label, out IRect labelBounds, int z, Color32 labelTint, int charSize = -1, bool enable = true) {
+	public static bool LabelButton (IRect rect, string label, int z = 0, int charSize = -1) => LabelButton(rect, label, Color32.WHITE, z, charSize);
+	public static bool LabelButton (IRect rect, string label, Color32 labelTint, int z = 0, int charSize = -1) {
 		charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-		Label(TextContent.Get(label, labelTint, charSize), rect, out labelBounds);
-		return Button(rect, 0, Const.PIXEL, 0, 0, 0, 0, z, Color32.WHITE_12, default, enable);
+		Label(TextContent.Get(label, labelTint, charSize), rect);
+		return SpriteButton(rect, 0, Const.PIXEL, 0, Color32.GREY_20, border: 0, z: z);
 	}
-	public static bool Button (IRect rect, int sprite, string label, out IRect labelBounds, int z, Color32 buttonTint, Color32 labelTint, int charSize = -1, bool enable = true) {
+	public static bool LabelButton (IRect rect, int sprite, string label, int z = 0, int charSize = -1) => LabelButton(rect, sprite, label, Color32.WHITE, Color32.WHITE, z, charSize);
+	public static bool LabelButton (IRect rect, int sprite, string label, Color32 buttonTint, Color32 labelTint, int z = 0, int charSize = -1) {
 		charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-		Label(TextContent.Get(label, labelTint, charSize), rect, out labelBounds);
-		return Button(rect, sprite, sprite, sprite, 0, 0, 0, z, buttonTint, default, enable);
+		Label(TextContent.Get(label, labelTint, charSize), rect);
+		return SpriteButton(rect, sprite, sprite, sprite, buttonTint, z: z);
 	}
-	public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, bool enable = true) => Button(rect, sprite, spriteHover, spriteDown, icon, buttonBorder, iconPadding, z, Color32.WHITE, Color32.WHITE, enable);
-	public static bool Button (IRect rect, int sprite, int spriteHover, int spriteDown, int icon, int buttonBorder, int iconPadding, int z, Color32 buttonTint, Color32 iconTint, bool enable = true) {
-		bool hover = rect.MouseInside();
-		bool down = hover && enable && Input.MouseLeftButton;
-		buttonTint.a = (byte)(enable ? buttonTint.a : buttonTint.a / 2);
-		iconTint.a = (byte)(enable ? iconTint.a : iconTint.a / 2);
+
+	public static bool IconButton (IRect rect, int icon, int z = 0, int padding = 0) => IconButton(rect, icon, Color32.GREY_20, Color32.WHITE, z, padding);
+	public static bool IconButton (IRect rect, int icon, Color32 highlightTint, Color32 iconTint, int z = 0, int padding = 0) {
+		bool result = SpriteButton(rect, 0, Const.PIXEL, 0, highlightTint, 0, z);
+		Icon(rect.Shrink(padding), icon, iconTint, z);
+		return result;
+	}
+
+	public static bool SpriteButton (IRect rect, int sprite, int z = 0) => SpriteButton(rect, sprite, sprite, sprite, Color32.WHITE, -1, z);
+	public static bool SpriteButton (IRect rect, int sprite, Color32 buttonTint, int z = 0) => SpriteButton(rect, sprite, sprite, sprite, buttonTint, -1, z);
+	public static bool SpriteButton (IRect rect, int sprite, int spriteHover, int spriteDown, int border = -1, int z = 0) => SpriteButton(rect, sprite, spriteHover, spriteDown, Color32.WHITE, border, z);
+	public static bool SpriteButton (IRect rect, int sprite, int spriteHover, int spriteDown, Color32 buttonTint, int border = -1, int z = 0) {
 		// Button
+		bool result = BlankButton(rect, out bool hover);
+		// Draw Sprite
+		buttonTint.a = (byte)(Enable ? buttonTint.a : buttonTint.a / 2);
+		bool down = hover && Enable && Input.MouseLeftButton;
 		int spriteID = down ? spriteDown : hover ? spriteHover : sprite;
-		if (spriteID != 0) {
-			if (buttonBorder > 0) {
-				Renderer.Draw_9Slice(
-					spriteID, rect, buttonBorder, buttonBorder, buttonBorder, buttonBorder, buttonTint, z
-				);
+		if (spriteID != 0 && buttonTint.a > 0) {
+			if (border > 0) {
+				Renderer.Draw_9Slice(spriteID, rect, border, border, border, border, buttonTint, z);
 			} else {
 				Renderer.Draw_9Slice(spriteID, rect, buttonTint, z);
 			}
 		}
-		// Icon
-		if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
-			Renderer.Draw(
-				iconSprite,
-				rect.Shrink(iconPadding).Fit(iconSprite),
-				iconTint, z + 1
-			);
-		}
+		return result;
+	}
+
+
+	public static bool BlankButton (IRect rect, out bool hover) {
+		hover = rect.MouseInside();
 		// Cursor
-		if (enable) Cursor.SetCursorAsHand(rect);
+		if (Enable) Cursor.SetCursorAsHand(rect);
 		// Click
-		if (enable && hover && Input.MouseLeftButtonDown) {
+		if (Enable && hover && Input.MouseLeftButtonDown) {
 			Input.UseMouseKey(0);
-			Input.UseGameKey(Gamekey.Action);
+			if (!Input.IgnoreMouseToActionJumpForThisFrame) {
+				Input.UseGameKey(Gamekey.Action);
+			}
 			return true;
 		}
 		return false;
+	}
+
+
+	// Toggle
+	public static bool IconToggle (IRect rect, bool isOn, int icon, int z = 0, int padding = 0) => IconToggle(rect, isOn, icon, Color32.WHITE, Color32.GREEN, z, padding);
+	public static bool IconToggle (IRect rect, bool isOn, int icon, Color32 iconTint, Color32 markTint, int z = 0, int padding = 0) {
+		// Toggle
+		isOn = BlankToggle(rect, isOn, out _);
+		// Draw Mark
+		Renderer.Draw(Const.PIXEL, rect, markTint, z);
+		// Draw Icon
+		Icon(rect.Shrink(padding), icon, iconTint, z);
+		return isOn;
+	}
+
+	public static bool BlankToggle (IRect rect, bool isOn, out bool hover) => BlankButton(rect, out hover) ? !isOn : isOn;
+
+
+	// Icon
+	public static void Icon (IRect rect, int sprite, int z = 0) => Icon(rect, sprite, z);
+	public static void Icon (IRect rect, int sprite, Color32 tint, int z = 0) {
+		if (!Renderer.TryGetSprite(sprite, out var icon)) return;
+		Renderer.Draw(icon, rect.Fit(icon), tint, z);
 	}
 
 
@@ -257,10 +292,10 @@ public static class GUI {
 
 		Cursor.SetCursorAsBeam(rect);
 
-		if (!inCamera && TypingTextFieldID == controlID) TypingTextFieldID = 0;
+		if ((!inCamera || !Enable) && TypingTextFieldID == controlID) TypingTextFieldID = 0;
 
 		// Start Typing
-		if (inCamera && Input.MouseLeftButtonDown && mouseDownPosInRect) {
+		if (Enable && inCamera && Input.MouseLeftButtonDown && mouseDownPosInRect) {
 			TypingTextFieldID = controlID;
 			BeamBlinkFrame = Game.PauselessFrame;
 			startTyping = true;
@@ -268,7 +303,7 @@ public static class GUI {
 		}
 
 		// Typing 
-		bool typing = TypingTextFieldID == controlID;
+		bool typing = Enable && TypingTextFieldID == controlID;
 		int beamIndex = typing ? BeamIndex : 0;
 		int beamLength = typing ? BeamLength : 0;
 		if (typing) {

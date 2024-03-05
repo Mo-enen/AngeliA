@@ -87,6 +87,7 @@ public class HomeScreen : WindowUI {
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, z: 0);
 
 		// Content
+		bool oldE = GUI.Enable;
 		panelRect = panelRect.Shrink(panelPadding, panelPadding, panelPadding, panelPadding * 4);
 		var rect = panelRect.EdgeInside(Direction4.Up, Unify(48));
 
@@ -105,13 +106,16 @@ public class HomeScreen : WindowUI {
 		DrawButton(rect, PANEL_SUB, ContentType.Sub);
 		rect.y -= rect.height + itemPadding;
 
+		GUI.Enable = oldE;
+
 		// Func
 		void DrawButton (IRect rect, string label, ContentType type) {
 
 			bool selecting = CurrentContent == type;
 
 			// Button
-			if (GUI.Button(rect, label, z: 1, labelTint: Color32.GREY_230, enable: !selecting)) {
+			GUI.Enable = !selecting;
+			if (GUI.LabelButton(rect, label, z: 1, labelTint: Color32.GREY_230)) {
 				LoadContent(type);
 			}
 
@@ -127,7 +131,7 @@ public class HomeScreen : WindowUI {
 
 	private void Update_Content (IRect panelRect) {
 
-		
+
 
 
 

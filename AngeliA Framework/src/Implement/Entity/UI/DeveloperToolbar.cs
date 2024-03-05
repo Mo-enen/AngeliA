@@ -116,38 +116,26 @@ public static class DeveloperToolbar {
 		);
 
 		// Collider Btn
-		if (DrawCollider) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (GUI.Button(rect, BTN_COLLIDER, BTN_COLLIDER, BTN_COLLIDER, 0, 0, 0, int.MaxValue)) {
-			DrawCollider = !DrawCollider;
-		}
+		DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER, z: int.MaxValue);
 		rect.x -= rect.width + padding;
 
 		// Bound Btn
-		if (DrawBounds) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (GUI.Button(rect, BTN_BOUND, BTN_BOUND, BTN_BOUND, 0, 0, 0, int.MaxValue)) {
-			DrawBounds = !DrawBounds;
-		}
+		DrawBounds = GUI.IconToggle(rect, DrawBounds, BTN_BOUND, z: int.MaxValue);
 		rect.x -= rect.width + padding;
 
 		// Profiler Btn
-		if (ProfilerPanelOpening) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (GUI.Button(rect, BTN_PROFILER, BTN_PROFILER, BTN_PROFILER, 0, 0, 0, int.MaxValue)) {
-			ProfilerPanelOpening = !ProfilerPanelOpening;
-		}
+		ProfilerPanelOpening = GUI.IconToggle(rect, ProfilerPanelOpening, BTN_PROFILER, z: int.MaxValue);
 		rect.x -= rect.width + padding;
 
 		// Effect Btn
-		if (EffectPanelOpening) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (GUI.Button(rect, BTN_EFFECT, BTN_EFFECT, BTN_EFFECT, 0, 0, 0, int.MaxValue)) {
-			EffectPanelOpening = !EffectPanelOpening;
-			EffectsEnabled.FillWithValue(false);
-		}
+		EffectPanelOpening = GUI.IconToggle(rect, EffectPanelOpening, BTN_EFFECT, z: int.MaxValue);
 		rect.x -= rect.width + padding;
 
 		// Map Editor Btn
-		if (MapEditor.IsActived) Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, int.MaxValue - 1);
-		if (GUI.Button(rect, BTN_MAP, BTN_MAP, BTN_MAP, 0, 0, 0, int.MaxValue)) {
-			if (MapEditor.IsActived) {
+		bool isMapEditorActived = MapEditor.IsActived;
+		bool newIsOn = GUI.IconToggle(rect, isMapEditorActived, BTN_MAP, z: int.MaxValue);
+		if (newIsOn != isMapEditorActived) {
+			if (isMapEditorActived) {
 				WindowUI.CloseWindow(MapEditor.TYPE_ID);
 				Game.RestartGame();
 			} else {
@@ -351,15 +339,11 @@ public static class DeveloperToolbar {
 			// Enable Button
 			var enableRect = rect.EdgeInside(Direction4.Right, itemHeight);
 			bool enable = EffectsEnabled[i];
-			if (GUI.Button(
-				enableRect,
-				BuiltInSprite.CIRCLE_16, BuiltInSprite.CIRCLE_16, BuiltInSprite.CIRCLE_16,
-				enable ? BuiltInSprite.CHECK_MARK_16 : 0,
-				0, itemHeight / 5, z: int.MaxValue - 8,
-Color32.GREY_32, Color32
-.WHITE
-			)) {
+			if (GUI.SpriteButton(enableRect, BuiltInSprite.CIRCLE_16, Color32.GREY_32, z: int.MaxValue - 8)) {
 				EffectsEnabled[i] = !enable;
+			}
+			if (enable) {
+				GUI.Icon(enableRect.Shrink(itemHeight / 5), BuiltInSprite.CHECK_MARK_16, z: int.MaxValue - 7);
 			}
 			Cursor.SetCursorAsHand(enableRect);
 		}

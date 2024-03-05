@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.StageOrder(4095)]
 [EntityAttribute.Capacity(1, 0)]
 [RequireLanguageFromField]
@@ -174,9 +174,8 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Parent
 		rect.x += buttonPadding;
-		if (GUI.Button(
-			rect, 0, Const.PIXEL, Const.PIXEL, BuiltInSprite.ICON_TRIANGLE_LEFT, 0, iconPadding, 1,
-Color32.GREY_20, Color32.WHITE, enable: true
+		if (GUI.IconButton(
+			rect, BuiltInSprite.ICON_TRIANGLE_LEFT, Color32.GREY_20, Color32.WHITE, padding: iconPadding, z: 1
 		) || Input.KeyboardDown(KeyboardKey.Backspace)) {
 			string parentPath = Util.GetParentPath(CurrentFolder);
 			if (!string.IsNullOrEmpty(parentPath)) {
@@ -326,11 +325,7 @@ Color32.GREY_32, z: 1
 
 		// Func
 		void DrawButton (string label, string path, int icon) {
-			if (GUI.Button(
-				rect, 0, Const.PIXEL, Const.PIXEL,
-				0, 0, 0, z: 1, buttonTint: Color32.GREY_20, iconTint: Color32
-.CLEAR
-			)) {
+			if (GUI.SpriteButton(rect, 0, Const.PIXEL, Const.PIXEL, z: 1, buttonTint: Color32.GREY_20)) {
 				Explore(path);
 			}
 			GUI.Label(label, rect, charSize: 16, alignment: Alignment.MidLeft);
@@ -379,8 +374,7 @@ Color32.GREY_32, z: 1
 		if (TargetType == BrowserTargetType.File) {
 			GUI.Label(TargetExtension, typeRect);
 			Renderer.Draw_9Slice(
-				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder,
-Color32.GREY_32, z: 1
+				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
 			);
 		}
 
@@ -395,11 +389,7 @@ Color32.GREY_32, z: 1
 		// Cancel Button
 		var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.Button(
-			buttonRect, Const.PIXEL, BuiltInText.UI_CANCEL,
-			z: 1, buttonTint: Color32.GREY_32, labelTint: Color32
-.GREY_230
-		)) {
+		if (GUI.LabelButton(buttonRect, BuiltInText.UI_CANCEL, Color32.GREY_230, z: 1)) {
 			ErrorMessage = string.Empty;
 			OnPathPicked = null;
 			Active = false;
@@ -407,10 +397,9 @@ Color32.GREY_32, z: 1
 
 		// OK Button
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.Button(
-			buttonRect, Const.PIXEL, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
-			z: 1, buttonTint: Color32.GREY_32, labelTint: Color32
-.GREY_230
+		if (GUI.LabelButton(
+			buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
+			Color32.GREY_230, z: 1
 		)) {
 			PerformPick();
 		}

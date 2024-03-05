@@ -94,7 +94,7 @@ public partial class MapEditor {
 
 	// UI
 	private readonly TextContent TooltipLabel = new() { Tint = Color32.WHITE, Alignment = Alignment.TopLeft, CharSize = 24, };
-	
+
 	// Data
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
@@ -785,10 +785,11 @@ Color32.GREY_32, PANEL_Z - 6
 
 		// Reset Camera
 		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		GUI.Icon(btnRect, BuiltInSprite.ICON_REFRESH, int.MaxValue);
 		if (
-			GUI.Button(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInSprite.ICON_REFRESH,
-				BUTTON_BORDER, 0, int.MaxValue - 1
+			GUI.SpriteButton(
+				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
+				BUTTON_BORDER, int.MaxValue - 1
 			) && interactable
 		) {
 			ResetCamera();
@@ -797,10 +798,11 @@ Color32.GREY_32, PANEL_Z - 6
 
 		// Button Down
 		btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		GUI.Icon(btnRect, BuiltInSprite.ICON_TRIANGLE_DOWN, int.MaxValue);
 		if (
-			GUI.Button(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInSprite.ICON_TRIANGLE_DOWN,
-				BUTTON_BORDER, 0, int.MaxValue - 1
+			GUI.SpriteButton(
+				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
+				BUTTON_BORDER, int.MaxValue - 1
 			) && interactable
 		) {
 			SetViewZ(IsNavigating ? NavPosition.z - 1 : Stage.ViewZ - 1);
@@ -809,10 +811,11 @@ Color32.GREY_32, PANEL_Z - 6
 
 		// Button Up
 		btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		GUI.Icon(btnRect, BuiltInSprite.ICON_TRIANGLE_UP, int.MaxValue);
 		if (
-			GUI.Button(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, BuiltInSprite.ICON_TRIANGLE_UP,
-				BUTTON_BORDER, 0, int.MaxValue - 1
+			GUI.SpriteButton(
+				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
+				BUTTON_BORDER, int.MaxValue - 1
 			) && interactable
 		) {
 			SetViewZ(IsNavigating ? NavPosition.z + 1 : Stage.ViewZ + 1);
@@ -821,10 +824,11 @@ Color32.GREY_32, PANEL_Z - 6
 
 		// Nav
 		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		GUI.Icon(btnRect, IsNavigating ? BRUSH_ICON : MAP_ICON, int.MaxValue);
 		if (
-			GUI.Button(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, IsNavigating ? BRUSH_ICON : MAP_ICON,
-				BUTTON_BORDER, 0, int.MaxValue - 1
+			GUI.SpriteButton(
+				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
+				BUTTON_BORDER, int.MaxValue - 1
 			) && interactable
 		) {
 			SetNavigating(!IsNavigating);
@@ -833,18 +837,20 @@ Color32.GREY_32, PANEL_Z - 6
 
 		// Play
 		btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-		if (
-			!IsNavigating && !DroppingPlayer &&
-			GUI.Button(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN, GAMEPAD_ICON,
-				BUTTON_BORDER, 0, int.MaxValue - 1
-			) && interactable
-		) {
-			IgnoreQuickPlayerDropThisTime = true;
-			if (IsEditing) {
-				StartDropPlayer();
-			} else {
-				SetEditorMode(!PlayingGame);
+		if (!IsNavigating && !DroppingPlayer) {
+			GUI.Icon(btnRect, GAMEPAD_ICON, int.MaxValue);
+			if (
+				GUI.SpriteButton(
+					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
+					BUTTON_BORDER, int.MaxValue - 1
+				) && interactable
+			) {
+				IgnoreQuickPlayerDropThisTime = true;
+				if (IsEditing) {
+					StartDropPlayer();
+				} else {
+					SetEditorMode(!PlayingGame);
+				}
 			}
 		}
 		Cursor.SetCursorAsHand(btnRect);
@@ -870,12 +876,13 @@ Color32.GREY_32, PANEL_Z - 6
 		if (Input.MouseWheelDelta != 0) QuickLaneScrollY -= Input.MouseWheelDelta;
 
 		// Content
+		bool oldE = GUI.Enable;
 		QuickLaneScrollY = QuickLaneScrollY.Clamp(0, Util.Max(ROW - pageLineCount + 3, 0));
 		int index = 0;
 		for (int i = QuickLaneScrollY * COLUMN; i < CheckAltarIDs.Count; i++, index++) {
 
 			int id = CheckAltarIDs[i];
-			bool interactable = IGlobalPosition.TryGetPositionFromID(id, out var globalUnitPos) && !hasTask;
+			GUI.Enable = IGlobalPosition.TryGetPositionFromID(id, out var globalUnitPos) && !hasTask;
 
 			// Button
 			var btnRect = new IRect(
@@ -886,13 +893,11 @@ Color32.GREY_32, PANEL_Z - 6
 
 			if (btnRect.yMax < CheckPointLaneRect.y) break;
 
-			if (
-				GUI.Button(
-					btnRect, ITEM_FRAME, ITEM_FRAME, ITEM_FRAME, id,
-					BUTTON_BORDER, 0, PANEL_Z + 6, Color32.WHITE, interactable ? Color32.WHITE : Color32
-.WHITE_64
-				) && interactable
-			) {
+			GUI.Icon(btnRect, id, GUI.Enable ? Color32.WHITE : Color32.WHITE_64, PANEL_Z + 7);
+			if (GUI.SpriteButton(
+				btnRect, ITEM_FRAME, ITEM_FRAME, ITEM_FRAME,
+				Color32.WHITE, BUTTON_BORDER, PANEL_Z + 6
+			)) {
 				TargetViewRect.x = globalUnitPos.x.ToGlobal() - TargetViewRect.width / 2;
 				TargetViewRect.y = globalUnitPos.y.ToGlobal() - Player.GetCameraShiftOffset(TargetViewRect.height);
 				NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
@@ -900,8 +905,8 @@ Color32.GREY_32, PANEL_Z - 6
 				NavPosition.z = globalUnitPos.z;
 				SetNavigating(false);
 			}
-			if (interactable) Cursor.SetCursorAsHand(btnRect);
 		}
+		GUI.Enable = oldE;
 
 	}
 
@@ -945,11 +950,10 @@ Color32.GREY_32, PANEL_Z - 6
 		// Close Button
 		if (
 			!string.IsNullOrEmpty(SearchingText) &&
-			GUI.Button(
+			GUI.IconButton(
 				searchPanel.EdgeInside(Direction4.Right, searchPanel.height),
-				0, Const.PIXEL, Const.PIXEL, BuiltInSprite.ICON_CROSS, 0, PADDING * 2,
-				PANEL_Z - 4, Color32.WHITE_64, Color32
-.GREY_128
+				BuiltInSprite.ICON_CROSS, Color32.GREY_20, Color32.GREY_128,
+				z: PANEL_Z - 4, padding: PADDING * 2
 			)
 		) {
 			SearchingText = "";
