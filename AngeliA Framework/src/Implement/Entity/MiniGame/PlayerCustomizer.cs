@@ -53,8 +53,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	private const int EDITOR_BASIC_Z = 60;
 	private static readonly int ICON_UP_CODE = BuiltInSprite.ICON_TRIANGLE_UP;
 	private static readonly int ICON_DOWN_CODE = BuiltInSprite.ICON_TRIANGLE_DOWN;
-	private static readonly int BUTTON_CODE = BuiltInSprite.UI_DARK_BUTTON;
-	private static readonly int BUTTON_DOWN_CODE = BuiltInSprite.UI_DARK_BUTTON_DOWN;
 	private static readonly int FRAME_CODE = BuiltInSprite.FRAME_16;
 	private static readonly int SELECTION_MARK = BuiltInSprite.CHECK_MARK_16;
 	private static readonly LanguageCode[] MAIN_MENU_LABELS = {
@@ -973,7 +971,6 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 		int BUTTON_W = Unify(84);
 		int BUTTON_H = Unify(42);
 		int BUTTON_PADDING = Unify(24);
-		int BUTTON_BORDER = Unify(6);
 
 		// Label
 		GUI.Label(
@@ -982,23 +979,11 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 
 		// Button Up
 		var btnRectU = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);
-		GUI.Icon(btnRectU, ICON_UP_CODE, EDITOR_BASIC_Z + 6);
-		if (GUI.SpriteButton(
-			btnRectU, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
-			BUTTON_BORDER, z: EDITOR_BASIC_Z + 5
-		)) {
-			playerHeight++;
-		}
-		
+		if (GUI.DarkButton(btnRectU, ICON_UP_CODE)) playerHeight++;
+
 		// Button Down
 		var btnRectD = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.y - BUTTON_PADDING - BUTTON_H, BUTTON_W, BUTTON_H);
-		GUI.Icon(btnRectD, ICON_DOWN_CODE, EDITOR_BASIC_Z + 6);
-		if (GUI.SpriteButton(
-			btnRectD, BUTTON_CODE, BUTTON_CODE, BUTTON_DOWN_CODE,
-			BUTTON_BORDER, z: EDITOR_BASIC_Z + 5
-		)) {
-			playerHeight--;
-		}
+		if (GUI.DarkButton(btnRectD, ICON_DOWN_CODE)) playerHeight--;
 
 		return playerHeight.Clamp(Const.MIN_CHARACTER_HEIGHT, Const.MAX_CHARACTER_HEIGHT);
 	}

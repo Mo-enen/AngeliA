@@ -115,7 +115,7 @@ public class HomeScreen : WindowUI {
 
 			// Button
 			GUI.Enable = !selecting;
-			if (GUI.LabelButton(rect, label, z: 1, labelTint: Color32.GREY_230)) {
+			if (GUI.Button(rect, label)) {
 				LoadContent(type);
 			}
 

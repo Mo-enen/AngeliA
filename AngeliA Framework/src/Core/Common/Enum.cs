@@ -1,16 +1,24 @@
 ﻿namespace AngeliA;
 
 
-public enum ProjectType { 
-	Game = 0, 
-	Application = 1, 
+public enum ProjectType {
+	Game = 0,
+	Application = 1,
 }
 
 
-public enum WrapMode { 
-	NoWrap = 0, 
-	Wrap = 1, 
-	WordWrap = 2, 
+public enum WrapMode {
+	NoWrap = 0,
+	Wrap = 1,
+	WordWrap = 2,
+}
+
+
+public enum GUIState {
+	Normal = 0,
+	Hover = 1,
+	Press = 2,
+	Disable = 3,
 }
 
 

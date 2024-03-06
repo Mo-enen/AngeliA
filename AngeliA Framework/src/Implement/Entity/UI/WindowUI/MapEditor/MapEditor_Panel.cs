@@ -771,96 +771,57 @@ Color32.WHITE, PANEL_Z - 4
 		if (IsPlaying) return;
 
 		int PADDING = Unify(6);
-		int BUTTON_BORDER = Unify(6);
 		int BUTTON_PADDING = Unify(3);
-		bool interactable = !TaskingRoute;
+		bool oldE = GUI.Enable;
+		GUI.Enable = !TaskingRoute;
 		var panel = ToolbarRect;
-		Renderer.Draw(
-			Const.PIXEL,
-			panel,
-Color32.GREY_32, PANEL_Z - 6
-		);
+		Renderer.Draw(Const.PIXEL, panel, Color32.GREY_32);
 		panel = panel.Shrink(PADDING);
 		int ITEM_SIZE = panel.height;
 
 		// Reset Camera
 		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-		GUI.Icon(btnRect, BuiltInSprite.ICON_REFRESH, int.MaxValue);
-		if (
-			GUI.SpriteButton(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
-				BUTTON_BORDER, int.MaxValue - 1
-			) && interactable
-		) {
+		if (GUI.Button(btnRect, BuiltInSprite.ICON_REFRESH)) {
 			ResetCamera();
 		}
-		Cursor.SetCursorAsHand(btnRect);
 
 		// Button Down
 		btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-		GUI.Icon(btnRect, BuiltInSprite.ICON_TRIANGLE_DOWN, int.MaxValue);
 		if (
-			GUI.SpriteButton(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
-				BUTTON_BORDER, int.MaxValue - 1
-			) && interactable
+			GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_DOWN)
 		) {
 			SetViewZ(IsNavigating ? NavPosition.z - 1 : Stage.ViewZ - 1);
 		}
-		Cursor.SetCursorAsHand(btnRect);
 
 		// Button Up
 		btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-		GUI.Icon(btnRect, BuiltInSprite.ICON_TRIANGLE_UP, int.MaxValue);
-		if (
-			GUI.SpriteButton(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
-				BUTTON_BORDER, int.MaxValue - 1
-			) && interactable
-		) {
+		if (GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_UP)) {
 			SetViewZ(IsNavigating ? NavPosition.z + 1 : Stage.ViewZ + 1);
 		}
-		Cursor.SetCursorAsHand(btnRect);
 
 		// Nav
 		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-		GUI.Icon(btnRect, IsNavigating ? BRUSH_ICON : MAP_ICON, int.MaxValue);
-		if (
-			GUI.SpriteButton(
-				btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
-				BUTTON_BORDER, int.MaxValue - 1
-			) && interactable
-		) {
+		if (GUI.DarkButton(btnRect, IsNavigating ? BRUSH_ICON : MAP_ICON)) {
 			SetNavigating(!IsNavigating);
 		}
-		Cursor.SetCursorAsHand(btnRect);
 
 		// Play
 		btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-		if (!IsNavigating && !DroppingPlayer) {
-			GUI.Icon(btnRect, GAMEPAD_ICON, int.MaxValue);
-			if (
-				GUI.SpriteButton(
-					btnRect, BUTTON_DARK, BUTTON_DARK, BUTTON_DARK_DOWN,
-					BUTTON_BORDER, int.MaxValue - 1
-				) && interactable
-			) {
-				IgnoreQuickPlayerDropThisTime = true;
-				if (IsEditing) {
-					StartDropPlayer();
-				} else {
-					SetEditorMode(!PlayingGame);
-				}
+		if (!IsNavigating && !DroppingPlayer && GUI.DarkButton(btnRect, GAMEPAD_ICON)) {
+			IgnoreQuickPlayerDropThisTime = true;
+			if (IsEditing) {
+				StartDropPlayer();
+			} else {
+				SetEditorMode(!PlayingGame);
 			}
 		}
-		Cursor.SetCursorAsHand(btnRect);
 
+		GUI.Enable = oldE;
 	}
 
 
 	private void Update_NavQuickLane () {
 
-		int BUTTON_BORDER = Unify(2);
 		int BUTTON_PADDING = Unify(6);
 		int ITEM_SIZE = Unify(64) + BUTTON_PADDING;
 		int COLUMN = CheckPointLaneRect.width / ITEM_SIZE;
@@ -893,11 +854,7 @@ Color32.GREY_32, PANEL_Z - 6
 
 			if (btnRect.yMax < CheckPointLaneRect.y) break;
 
-			GUI.Icon(btnRect, id, GUI.Enable ? Color32.WHITE : Color32.WHITE_64, PANEL_Z + 7);
-			if (GUI.SpriteButton(
-				btnRect, ITEM_FRAME, ITEM_FRAME, ITEM_FRAME,
-				Color32.WHITE, BUTTON_BORDER, PANEL_Z + 6
-			)) {
+			if (GUI.Button(btnRect, id, GUISkin.ItemFrame)) {
 				TargetViewRect.x = globalUnitPos.x.ToGlobal() - TargetViewRect.width / 2;
 				TargetViewRect.y = globalUnitPos.y.ToGlobal() - Player.GetCameraShiftOffset(TargetViewRect.height);
 				NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
@@ -950,10 +907,9 @@ Color32.GREY_32, PANEL_Z - 6
 		// Close Button
 		if (
 			!string.IsNullOrEmpty(SearchingText) &&
-			GUI.IconButton(
+			GUI.Button(
 				searchPanel.EdgeInside(Direction4.Right, searchPanel.height),
-				BuiltInSprite.ICON_CROSS, Color32.GREY_20, Color32.GREY_128,
-				z: PANEL_Z - 4, padding: PADDING * 2
+				BuiltInSprite.ICON_CROSS
 			)
 		) {
 			SearchingText = "";

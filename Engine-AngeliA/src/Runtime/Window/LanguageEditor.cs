@@ -145,7 +145,7 @@ public partial class LanguageEditor : EngineWindow {
 		// + Key
 		var rect = panelRect;
 		rect.width = Unify(108);
-		if (GUI.LabelButton(rect, ADD_KEY, z: 1, charSize: 16)) {
+		if (GUI.Button(rect, ADD_KEY, GUISkin.Label)) {
 			ScrollY = 0;
 			Lines.Insert(0, new LanguageLine() {
 				Key = string.Empty,
@@ -163,7 +163,7 @@ public partial class LanguageEditor : EngineWindow {
 
 		// + Language
 		rect.width = Unify(108);
-		if (GUI.LabelButton(rect, ADD_LANGUAGE, z: 1, charSize: 16)) {
+		if (GUI.Button(rect, ADD_LANGUAGE, GUISkin.Label)) {
 			OpenAddLanguagePopup();
 		}
 		Cursor.SetCursorAsHand(rect);

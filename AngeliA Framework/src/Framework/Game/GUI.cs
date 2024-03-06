@@ -21,6 +21,7 @@ public static class GUI {
 	// Api
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
+	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static int TypingTextFieldID {
 		get => _TypingTextFieldID;
 		private set {
@@ -66,10 +67,6 @@ public static class GUI {
 	}
 
 
-	[OnGameUpdate(-4096)]
-	internal static void EarlyUpdate () => Enable = true;
-
-
 	[OnGameUpdate(1023)]
 	internal static void Update () {
 		if (TypingTextFieldID != 0 && Input.AnyKeyHolding) {
@@ -97,6 +94,13 @@ public static class GUI {
 				CancelTyping();
 			}
 		}
+	}
+
+
+	[OnGameUpdate(-4096)]
+	internal static void Reset () {
+		Enable = true;
+		Color = Color32.WHITE;
 	}
 
 
@@ -187,119 +191,78 @@ public static class GUI {
 
 
 	// Style
-	public static void DrawStyleBody (IRect rect, GUIStyle style, bool hover, bool holding, int z) {
-		int sprite =
-			!Enable ? style.BodyDisableSprite :
-			holding ? style.BodyPressSprite :
-			hover ? style.BodyHighlightSprite :
-			style.BodySprite;
+	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) {
+		int sprite = style.GetBodySprite(state);
 		if (sprite == 0) return;
-		var color = !Enable ? style.BodyDisableColor :
-			holding ? style.BodyPressColor :
-			hover ? style.BodyHighlightColor :
-			style.BodyColor;
+		var color = Color * style.GetBodyColor(state);
+		if (color.a == 0) return;
 		if (style.BodyBorder.HasValue) {
 			var border = style.BodyBorder.Value;
-			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color, z);
+			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
 		} else {
-			Renderer.Draw_9Slice(sprite, rect, color, z);
+			Renderer.Draw_9Slice(sprite, rect, color);
 		}
 	}
 
 
 	// Button
-	public static bool Button (IRect rect, string label, GUIStyle style = null, int z = 0) {
+	public static bool DarkButton (IRect rect, string label) => Button(rect, label, GUISkin.DarkButton);
+	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, GUISkin.DarkButton);
+	public static bool Button (IRect rect, string label, GUIStyle style = null) {
 		style ??= GUISkin.Button;
-		// Button
-		bool result = BlankButton(rect, out bool hover, out bool holding);
+		bool result = BlankButton(rect, out var state);
+		DrawStyleBody(rect, style, state);
 		// Label
-		var labelRect = style.ContentBorder.HasValue ? rect.Shrink(style.ContentBorder.Value) : rect;
-		Label(TextContent.Get(label, style), labelRect);
-		// Body
-		DrawStyleBody(rect, style, hover, holding, z);
-		return result;
-	}
-
-	public static bool LabelButton (IRect rect, string label, int z = 0, int charSize = -1) => LabelButton(rect, label, Color32.WHITE, z, charSize);
-	public static bool LabelButton (IRect rect, string label, Color32 labelTint, int z = 0, int charSize = -1) {
-		charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-		Label(TextContent.Get(label, labelTint, charSize), rect);
-		return SpriteButton(rect, 0, Const.PIXEL, 0, Color32.GREY_20, border: 0, z: z);
-	}
-	public static bool LabelButton (IRect rect, int sprite, string label, int z = 0, int charSize = -1) => LabelButton(rect, sprite, label, Color32.WHITE, Color32.WHITE, z, charSize);
-	public static bool LabelButton (IRect rect, int sprite, string label, Color32 buttonTint, Color32 labelTint, int z = 0, int charSize = -1) {
-		charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
-		Label(TextContent.Get(label, labelTint, charSize), rect);
-		return SpriteButton(rect, sprite, sprite, sprite, buttonTint, z: z);
-	}
-
-	public static bool IconButton (IRect rect, int icon, int z = 0, int padding = 0) => IconButton(rect, icon, Color32.GREY_20, Color32.WHITE, z, padding);
-	public static bool IconButton (IRect rect, int icon, Color32 highlightTint, Color32 iconTint, int z = 0, int padding = 0) {
-		bool result = SpriteButton(rect, 0, Const.PIXEL, 0, highlightTint, 0, z);
-		Icon(rect.Shrink(padding), icon, iconTint, z);
-		return result;
-	}
-
-	public static bool SpriteButton (IRect rect, int sprite, int z = 0) => SpriteButton(rect, sprite, sprite, sprite, Color32.WHITE, -1, z);
-	public static bool SpriteButton (IRect rect, int sprite, Color32 buttonTint, int z = 0) => SpriteButton(rect, sprite, sprite, sprite, buttonTint, -1, z);
-	public static bool SpriteButton (IRect rect, int sprite, int spriteHover, int spriteDown, int border = -1, int z = 0) => SpriteButton(rect, sprite, spriteHover, spriteDown, Color32.WHITE, border, z);
-	public static bool SpriteButton (IRect rect, int sprite, int spriteHover, int spriteDown, Color32 buttonTint, int border = -1, int z = 0) {
-		// Button
-		bool result = BlankButton(rect, out bool hover, out bool holding);
-		// Draw Sprite
-		buttonTint.a = (byte)(Enable ? buttonTint.a : buttonTint.a / 2);
-		int spriteID = holding ? spriteDown : hover ? spriteHover : sprite;
-		if (spriteID != 0 && buttonTint.a > 0) {
-			if (border > 0) {
-				Renderer.Draw_9Slice(spriteID, rect, border, border, border, border, buttonTint, z);
-			} else {
-				Renderer.Draw_9Slice(spriteID, rect, buttonTint, z);
-			}
+		if (!string.IsNullOrEmpty(label)) {
+			var labelRect = style.ContentBorder.HasValue ? rect.Shrink(style.ContentBorder.Value) : rect;
+			var contentShift = style.GetContentShift(state);
+			Label(TextContent.Get(label, style), labelRect.Shift(contentShift.x, contentShift.y));
 		}
 		return result;
 	}
+	public static bool Button (IRect rect, int icon, GUIStyle style = null) {
+		style ??= GUISkin.Button;
+		bool result = BlankButton(rect, out var state);
+		DrawStyleBody(rect, style, state);
+		Icon(rect, icon, style.GetContentColor(state));
+		return result;
+	}
 
-
-	public static bool BlankButton (IRect rect, out bool hover, out bool holding) {
-		hover = rect.MouseInside();
-		holding = false;
+	public static bool BlankButton (IRect rect, out GUIState state) {
+		state = GUIState.Normal;
+		if (!Enable) {
+			state = GUIState.Disable;
+			return false;
+		}
+		bool hover = rect.MouseInside();
 		// Cursor
-		if (Enable) Cursor.SetCursorAsHand(rect);
+		Cursor.SetCursorAsHand(rect);
 		// Click
-		if (Enable && hover) {
-			holding = Input.MouseLeftButton;
-			if (Input.MouseLeftButtonDown) {
-				Input.UseMouseKey(0);
-				if (!Input.IgnoreMouseToActionJumpForThisFrame) {
-					Input.UseGameKey(Gamekey.Action);
-				}
-				return true;
-			}
+		if (hover) {
+			state = Input.MouseLeftButton ? GUIState.Press : GUIState.Hover;
+			return Input.MouseLeftButtonDown;
 		}
 		return false;
 	}
 
 
 	// Toggle
-	public static bool IconToggle (IRect rect, bool isOn, int icon, int z = 0, int padding = 0) => IconToggle(rect, isOn, icon, Color32.WHITE, Color32.GREEN, z, padding);
-	public static bool IconToggle (IRect rect, bool isOn, int icon, Color32 iconTint, Color32 markTint, int z = 0, int padding = 0) {
-		// Toggle
+	public static bool Toggle (IRect rect, bool isOn, int icon, int padding = 0) {
 		isOn = BlankToggle(rect, isOn, out _);
-		// Draw Mark
-		Renderer.Draw(Const.PIXEL, rect, markTint, z);
-		// Draw Icon
-		Icon(rect.Shrink(padding), icon, iconTint, z);
+		Icon(rect.Shrink(padding), icon);
+		Renderer.Draw(Const.PIXEL, rect);
 		return isOn;
 	}
 
-	public static bool BlankToggle (IRect rect, bool isOn, out bool hover) => BlankButton(rect, out hover, out _) ? !isOn : isOn;
+	public static bool BlankToggle (IRect rect, bool isOn, out GUIState state) => BlankButton(rect, out state) ? !isOn : isOn;
 
 
 	// Icon
-	public static void Icon (IRect rect, int sprite, int z = 0) => Icon(rect, sprite, z);
-	public static void Icon (IRect rect, int sprite, Color32 tint, int z = 0) {
+	public static void Icon (IRect rect, int sprite, Alignment alignment = Alignment.MidMid) => Icon(rect, sprite, Color32.WHITE, alignment);
+	public static void Icon (IRect rect, int sprite, Color32 color, Alignment alignment = Alignment.MidMid) {
 		if (!Renderer.TryGetSprite(sprite, out var icon)) return;
-		Renderer.Draw(icon, rect.Fit(icon), tint, z);
+		var normal = alignment.Normal();
+		Renderer.Draw(icon, rect.Fit(icon, normal.x * 500 + 500, normal.y * 500 + 500), color);
 	}
 
 

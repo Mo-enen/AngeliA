@@ -105,6 +105,9 @@ internal class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
+		// Sync View Size
+
+
 		// Switch to Mascot on Lost Focus
 		if (CurrentWindowMode == WindowMode.Float && !Game.IsWindowFocused) {
 			SwitchWindowMode(WindowMode.Mascot);
@@ -200,8 +203,7 @@ internal class Engine {
 				closeButtonWidth,
 				barHeight - contentPadding
 			);
-			GUI.Icon(btnRect, ICON_CLOSE, z: 1);
-			if (GUI.SpriteButton(btnRect, UI_BTN, z: 0)) {
+			if (GUI.Button(btnRect, ICON_CLOSE)) {
 				if (CurrentWindowMode != WindowMode.ConfirmQuit) {
 					SwitchWindowMode(WindowMode.ConfirmQuit);
 				} else {
@@ -321,15 +323,11 @@ internal class Engine {
 
 		// Buttons 
 		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
-		if (GUI.LabelButton(
-			rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_QUIT, Color32.WHITE, Color32.GREY_216
-		)) {
+		if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_QUIT, GUISkin.DarkButton)) {
 			Game.QuitApplication();
 		}
 		rect.x += rect.width;
-		if (GUI.LabelButton(
-			rect.Shrink(btnPadding), UI_BTN, BuiltInText.UI_CANCEL, Color32.WHITE, Color32.GREY_216
-		)) {
+		if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_CANCEL, GUISkin.DarkButton)) {
 			SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Float);
 		}
 

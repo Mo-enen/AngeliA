@@ -26,17 +26,6 @@ public static class Renderer {
 	}
 
 
-	private class ReversedCellComparer : IComparer<Cell> {
-		public static readonly ReversedCellComparer Instance = new();
-		public int Compare (Cell a, Cell b) =>
-			a.Z < b.Z ? 1 :
-			a.Z > b.Z ? -1 :
-			a.Order < b.Order ? 1 :
-			a.Order > b.Order ? -1 :
-			0;
-	}
-
-
 	private class TextLayer : Layer {
 		public int TextSize = 30;
 		public readonly Dictionary<int, CharSprite> TextIDMap = new();
@@ -56,11 +45,13 @@ public static class Renderer {
 		public void ZSort (bool fromStart = false) {
 			if (fromStart) SortedIndex = 0;
 			if (SortedIndex < Count - 1) {
-				Util.QuickSort(
-					Cells, SortedIndex, Count - 1,
-					UiLayer ? ReversedCellComparer.Instance : CellComparer.Instance
-				);
-				SortedIndex = Count;
+				Util.QuickSort(Cells, SortedIndex, Count - 1, CellComparer.Instance);
+			}
+			SortedIndex = Count;
+		}
+		public void ReverseUnsorted () {
+			if (SortedIndex < Count - 1) {
+				System.Array.Reverse(Cells, SortedIndex, Count - 1 - SortedIndex);
 			}
 		}
 		public void AbandonZSort () => SortedIndex = Count;
@@ -286,9 +277,9 @@ public static class Renderer {
 	public static void SetLayerToAdditive () => CurrentLayerIndex = RenderLayer.ADD;
 	public static void SetLayerToUI () => CurrentLayerIndex = RenderLayer.UI;
 
-
 	public static void SortLayer (int layerIndex) => Layers[layerIndex].ZSort();
-
+	public static void ReverseUnsortedCells (int layerIndex) => Layers[layerIndex].ReverseUnsorted();
+	public static void AbandonLayerSort (int layerIndex) => Layers[layerIndex].AbandonZSort();
 
 	public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Name : "";
 	public static string GetTextLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < TextLayers.Length ? TextLayers[layerIndex].Name : "";
@@ -373,7 +364,7 @@ public static class Renderer {
 		cell.Order = layer.FocusedCell;
 		cell.X = x;
 		cell.Y = y;
-		cell.Z = z != int.MinValue ? z : sprite.SortingZ;
+		cell.Z = layer.UiLayer ? 0 : z != int.MinValue ? z : sprite.SortingZ;
 		cell.Width = width;
 		cell.Height = height;
 		cell.Rotation = rotation;

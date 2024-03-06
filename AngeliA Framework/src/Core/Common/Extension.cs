@@ -630,6 +630,19 @@ public static class Extension {
 	public static bool IsBottom (this Alignment alignment) => alignment == Alignment.BottomLeft || alignment == Alignment.BottomMid || alignment == Alignment.BottomRight;
 	public static bool IsMidY (this Alignment alignment) => alignment == Alignment.MidLeft || alignment == Alignment.MidMid || alignment == Alignment.MidRight;
 	public static bool IsTop (this Alignment alignment) => alignment == Alignment.TopLeft || alignment == Alignment.TopMid || alignment == Alignment.TopRight;
+	public static Int2 Normal (this Alignment alignment) => alignment switch {
+		Alignment.TopLeft => new(-1, 1),
+		Alignment.TopMid => new(0, 1),
+		Alignment.TopRight => new(1, 1),
+		Alignment.MidLeft => new(-1, 0),
+		Alignment.MidMid => new(0, 0),
+		Alignment.MidRight => new(1, 0),
+		Alignment.BottomLeft => new(-1, -1),
+		Alignment.BottomMid => new(0, -1),
+		Alignment.BottomRight => new(1, -1),
+		Alignment.Full => new(0, 0),
+		_ => new(0, 0),
+	};
 
 	public static A[] FillWithValue<A> (this A[] arr, A value) {
 		for (int i = 0; i < arr.Length; i++) {

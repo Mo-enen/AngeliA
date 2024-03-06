@@ -58,6 +58,7 @@ public abstract class EntityUI : Entity {
 	public override void FrameUpdate () {
 		base.FrameUpdate();
 
+		Renderer.SortLayer(RenderLayer.UI);
 		Renderer.SetLayerToUI();
 
 		TextCellStartIndex = Renderer.GetTextUsedCellCount();
@@ -78,8 +79,7 @@ public abstract class EntityUI : Entity {
 		}
 
 		Renderer.SetLayerToDefault();
-
-		Renderer.SortLayer(RenderLayer.UI);
+		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 
 		if (BlockEvent) {
 			Cursor.CursorPriority = int.MaxValue;
@@ -91,6 +91,8 @@ public abstract class EntityUI : Entity {
 
 	protected static int Unify (int value) => GUI.Unify(value);
 	protected static int Unify (float value) => GUI.Unify(value);
+	protected static int UnifyMonitor (int value) => GUI.UnifyMonitor(value);
+	protected static int UnifyMonitor (float value) => GUI.UnifyMonitor(value);
 	protected static int ReverseUnify (int value) => GUI.ReverseUnify(value);
 
 }

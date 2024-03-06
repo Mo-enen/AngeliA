@@ -66,22 +66,28 @@ public class ProjectHub : EngineWindow {
 
 	private void PanelUpdate () {
 
-		var panelRect = WindowRect.EdgeInside(Direction4.Left, GUI.UnifyMonitor(PANEL_WIDTH));
+		var panelRect = WindowRect.EdgeInside(Direction4.Left, UnifyMonitor(PANEL_WIDTH));
 
+		var rect = new IRect(panelRect.x, panelRect.yMax, panelRect.width, UnifyMonitor(42));
+		rect.y -= rect.height;
+		if (GUI.Button(rect, "Test 0", GUISkin.DarkButton)) {
 
+		}
 
+		rect.y -= rect.height;
+		if (GUI.Button(rect, "Test 1", GUISkin.DarkButton)) {
 
-
+		}
 
 	}
 
 
 	private void ContentUpdate () {
 
-		int border = GUI.UnifyMonitor(8);
-		int padding = GUI.UnifyMonitor(8);
+		int border = UnifyMonitor(8);
+		int padding = UnifyMonitor(8);
 		var contentRect = WindowRect.EdgeInside(
-			Direction4.Right, WindowRect.width - GUI.UnifyMonitor(PANEL_WIDTH)
+			Direction4.Right, WindowRect.width - UnifyMonitor(PANEL_WIDTH)
 		).Shrink(padding);
 
 		Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);

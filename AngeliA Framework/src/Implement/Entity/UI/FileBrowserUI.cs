@@ -168,15 +168,12 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		int buttonSize = barRect.height;
 		int buttonPadding = Unify(2);
-		int iconPadding = Unify(2);
 		int frameBorder = Unify(1.5f);
 		var rect = barRect.EdgeInside(Direction4.Left, buttonSize);
 
 		// Parent
 		rect.x += buttonPadding;
-		if (GUI.IconButton(
-			rect, BuiltInSprite.ICON_TRIANGLE_LEFT, Color32.GREY_20, Color32.WHITE, padding: iconPadding, z: 1
-		) || Input.KeyboardDown(KeyboardKey.Backspace)) {
+		if (GUI.DarkButton(rect, BuiltInSprite.ICON_TRIANGLE_LEFT) || Input.KeyboardDown(KeyboardKey.Backspace)) {
 			string parentPath = Util.GetParentPath(CurrentFolder);
 			if (!string.IsNullOrEmpty(parentPath)) {
 				CurrentName = ActionType == BrowserActionType.Open ? Util.GetNameWithExtension(CurrentFolder) : CurrentName;
@@ -189,8 +186,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		rect.width = barRect.xMax - rect.x;
 		NavbarText = GUI.InputField(12124, rect, NavbarText, out _, out bool confirm);
 		Renderer.Draw_9Slice(
-			BuiltInSprite.FRAME_16, rect, frameBorder, frameBorder, frameBorder, frameBorder,
-Color32.GREY_32, z: 1
+			BuiltInSprite.FRAME_16, rect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
 		);
 		if (confirm) {
 			Explore(NavbarText);
@@ -325,10 +321,7 @@ Color32.GREY_32, z: 1
 
 		// Func
 		void DrawButton (string label, string path, int icon) {
-			if (GUI.SpriteButton(rect, 0, Const.PIXEL, Const.PIXEL, z: 1, buttonTint: Color32.GREY_20)) {
-				Explore(path);
-			}
-			GUI.Label(label, rect, charSize: 16, alignment: Alignment.MidLeft);
+			if (GUI.Button(rect, label)) Explore(path);
 			Renderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
 			rect.y -= rect.height;
 		}
@@ -389,7 +382,7 @@ Color32.GREY_32, z: 1
 		// Cancel Button
 		var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.LabelButton(buttonRect, BuiltInText.UI_CANCEL, Color32.GREY_230, z: 1)) {
+		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUISkin.DarkButton)) {
 			ErrorMessage = string.Empty;
 			OnPathPicked = null;
 			Active = false;
@@ -397,9 +390,8 @@ Color32.GREY_32, z: 1
 
 		// OK Button
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.LabelButton(
-			buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
-			Color32.GREY_230, z: 1
+		if (GUI.Button(
+			buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE, GUISkin.DarkButton
 		)) {
 			PerformPick();
 		}
