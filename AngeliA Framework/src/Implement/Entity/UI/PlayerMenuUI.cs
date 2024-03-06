@@ -260,7 +260,7 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 				ItemSystem.GetItemDescription(itemID),
 				charSize: 18,
 				alignment: Alignment.TopLeft,
-				wrap: true
+				wrap: WrapMode.WordWrap
 			),
 			panelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
 			out var desBounds

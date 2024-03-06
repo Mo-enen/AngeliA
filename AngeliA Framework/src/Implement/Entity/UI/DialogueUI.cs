@@ -60,7 +60,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	private string Content = "";
 	private Color32[] Colors = null;
 	private readonly TextContent LabelName = new() { Alignment = Alignment.MidLeft, };
-	private readonly TextContent LabelContent = new() { Wrap = true, Clip = true, Alignment = Alignment.TopLeft, };
+	private readonly TextContent LabelContent = new() { Wrap = WrapMode.WordWrap, Clip = true, Alignment = Alignment.TopLeft, };
 
 
 	#endregion

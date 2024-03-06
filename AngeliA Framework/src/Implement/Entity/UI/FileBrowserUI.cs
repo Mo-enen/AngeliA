@@ -79,7 +79,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		CharSize = 14,
 		Alignment = Alignment.TopLeft,
 		Tint = Color32.GREY_230,
-		Wrap = true,
+		Wrap = WrapMode.WordWrap,
 		Clip = true,
 	};
 

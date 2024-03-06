@@ -56,7 +56,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	private bool Layout;
 	private readonly TextContent MessageLabel = new() {
 		Alignment = Alignment.MidMid,
-		Wrap = true,
+		Wrap = WrapMode.WordWrap,
 	};
 	private readonly TextContent ItemLabel = new();
 

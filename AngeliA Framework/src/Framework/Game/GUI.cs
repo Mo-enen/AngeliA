@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 
 
@@ -36,8 +35,8 @@ public static class GUI {
 	// UI
 	private static readonly TextContent InputLabel = new() {
 		Alignment = Alignment.MidLeft,
+		Wrap = WrapMode.NoWrap,
 		Clip = true,
-		Wrap = false,
 	};
 
 	// Data
@@ -127,14 +126,15 @@ public static class GUI {
 
 
 	// Label
-	public static void Label (string text, IRect rect, Color32 tint, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect, out bounds);
-	public static void Label (string text, IRect rect, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, charSize, alignment, wrap), rect, out bounds);
-	public static void Label (string text, IRect rect, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect);
-	public static void Label (string text, IRect rect, int charSize = 24, Alignment alignment = Alignment.MidMid, bool wrap = false) => Label(TextContent.Get(text, charSize, alignment, wrap), rect);
+	public static void Label (string text, IRect rect, Color32 tint, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect, out bounds);
+	public static void Label (string text, IRect rect, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, charSize, alignment, wrap), rect, out bounds);
+	public static void Label (string text, IRect rect, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect);
+	public static void Label (string text, IRect rect, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, charSize, alignment, wrap), rect);
 	public static void Label (TextContent content, IRect rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
 	public static void Label (TextContent content, IRect rect, out IRect bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
 	public static void Label (TextContent content, IRect rect, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
 	private static void Label (TextContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
+
 		endIndex = startIndex;
 		bounds = rect;
 		beamRect = new IRect(rect.x, rect.y, 1, rect.height);
@@ -186,7 +186,40 @@ public static class GUI {
 	}
 
 
+	// Style
+	public static void DrawStyleBody (IRect rect, GUIStyle style, bool hover, bool holding, int z) {
+		int sprite =
+			!Enable ? style.BodyDisableSprite :
+			holding ? style.BodyPressSprite :
+			hover ? style.BodyHighlightSprite :
+			style.BodySprite;
+		if (sprite == 0) return;
+		var color = !Enable ? style.BodyDisableColor :
+			holding ? style.BodyPressColor :
+			hover ? style.BodyHighlightColor :
+			style.BodyColor;
+		if (style.BodyBorder.HasValue) {
+			var border = style.BodyBorder.Value;
+			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color, z);
+		} else {
+			Renderer.Draw_9Slice(sprite, rect, color, z);
+		}
+	}
+
+
 	// Button
+	public static bool Button (IRect rect, string label, GUIStyle style = null, int z = 0) {
+		style ??= GUISkin.Button;
+		// Button
+		bool result = BlankButton(rect, out bool hover, out bool holding);
+		// Label
+		var labelRect = style.ContentBorder.HasValue ? rect.Shrink(style.ContentBorder.Value) : rect;
+		Label(TextContent.Get(label, style), labelRect);
+		// Body
+		DrawStyleBody(rect, style, hover, holding, z);
+		return result;
+	}
+
 	public static bool LabelButton (IRect rect, string label, int z = 0, int charSize = -1) => LabelButton(rect, label, Color32.WHITE, z, charSize);
 	public static bool LabelButton (IRect rect, string label, Color32 labelTint, int z = 0, int charSize = -1) {
 		charSize = charSize < 0 ? ReverseUnify(rect.height / 2) : charSize;
@@ -212,11 +245,10 @@ public static class GUI {
 	public static bool SpriteButton (IRect rect, int sprite, int spriteHover, int spriteDown, int border = -1, int z = 0) => SpriteButton(rect, sprite, spriteHover, spriteDown, Color32.WHITE, border, z);
 	public static bool SpriteButton (IRect rect, int sprite, int spriteHover, int spriteDown, Color32 buttonTint, int border = -1, int z = 0) {
 		// Button
-		bool result = BlankButton(rect, out bool hover);
+		bool result = BlankButton(rect, out bool hover, out bool holding);
 		// Draw Sprite
 		buttonTint.a = (byte)(Enable ? buttonTint.a : buttonTint.a / 2);
-		bool down = hover && Enable && Input.MouseLeftButton;
-		int spriteID = down ? spriteDown : hover ? spriteHover : sprite;
+		int spriteID = holding ? spriteDown : hover ? spriteHover : sprite;
 		if (spriteID != 0 && buttonTint.a > 0) {
 			if (border > 0) {
 				Renderer.Draw_9Slice(spriteID, rect, border, border, border, border, buttonTint, z);
@@ -228,17 +260,21 @@ public static class GUI {
 	}
 
 
-	public static bool BlankButton (IRect rect, out bool hover) {
+	public static bool BlankButton (IRect rect, out bool hover, out bool holding) {
 		hover = rect.MouseInside();
+		holding = false;
 		// Cursor
 		if (Enable) Cursor.SetCursorAsHand(rect);
 		// Click
-		if (Enable && hover && Input.MouseLeftButtonDown) {
-			Input.UseMouseKey(0);
-			if (!Input.IgnoreMouseToActionJumpForThisFrame) {
-				Input.UseGameKey(Gamekey.Action);
+		if (Enable && hover) {
+			holding = Input.MouseLeftButton;
+			if (Input.MouseLeftButtonDown) {
+				Input.UseMouseKey(0);
+				if (!Input.IgnoreMouseToActionJumpForThisFrame) {
+					Input.UseGameKey(Gamekey.Action);
+				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -256,7 +292,7 @@ public static class GUI {
 		return isOn;
 	}
 
-	public static bool BlankToggle (IRect rect, bool isOn, out bool hover) => BlankButton(rect, out hover) ? !isOn : isOn;
+	public static bool BlankToggle (IRect rect, bool isOn, out bool hover) => BlankButton(rect, out hover, out _) ? !isOn : isOn;
 
 
 	// Icon

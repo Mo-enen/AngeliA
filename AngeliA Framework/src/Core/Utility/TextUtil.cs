@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 
 
 namespace AngeliA;
@@ -11,6 +12,18 @@ public class TextUtil {
 
 	public delegate bool RequireCharSpriteHander (char c, out CharSprite sprite);
 	public delegate Cell DrawCharHandler (CharSprite sprite, int x, int y, int width, int height, Color32 color);
+
+
+	public static bool IsLineBreakingChar (char c) =>
+		char.IsWhiteSpace(c) || char.GetUnicodeCategory(c) switch {
+			UnicodeCategory.DecimalDigitNumber => false,
+			UnicodeCategory.LowercaseLetter => false,
+			UnicodeCategory.LetterNumber => false,
+			UnicodeCategory.UppercaseLetter => false,
+			UnicodeCategory.MathSymbol => false,
+			UnicodeCategory.TitlecaseLetter => false,
+			_ => true,
+		};
 
 
 	public static void DrawLabel (
@@ -28,13 +41,13 @@ public class TextUtil {
 		string text = content.Text;
 		char[] chars = content.Chars;
 		int count = content.FromString ? text.Length : chars.Length;
-		int charSize = Unify(content.CharSize, unifyHeight);
+
+		int charSize = content.CharSize < 0 ? rect.height / 2 : Unify(content.CharSize, unifyHeight);
 		int lineSpace = Unify(content.LineSpace, unifyHeight);
 		var color = content.Tint;
 		int charSpace = Unify(content.CharSpace, unifyHeight);
 		var alignment = content.Alignment;
-		bool wrap = content.Wrap;
-		bool hasContent = count > 0;
+		var wrap = content.Wrap;
 		bool clip = content.Clip;
 		bool beamEnd = beamIndex >= count;
 		requireCharSprite(' ', out var emptyCharSprite);
@@ -75,9 +88,10 @@ public class TextUtil {
 			int realCharSize = (sprite.Advance * charSize).RoundToInt();
 
 			// Wrap Check for Word
-			if (wrap && i >= nextWrapCheckIndex && !Util.IsLineBreakingChar(c)) {
+			if (wrap == WrapMode.WordWrap && i >= nextWrapCheckIndex && !IsLineBreakingChar(c)) {
 				if (!WordEnoughToFit(
-					requireCharSprite, content, charSize, charSpace, i, rect.xMax - x - realCharSize, out int wordLength
+					requireCharSprite, content, charSize, charSpace, i,
+					rect.xMax - x - realCharSize, out int wordLength
 				) && !firstCharAtLine) {
 					x = rect.x;
 					y -= charSize + lineSpace;
@@ -89,7 +103,7 @@ public class TextUtil {
 			}
 
 			// Draw Char
-			if (wrap && x > rect.xMax - realCharSize) {
+			if (wrap != WrapMode.NoWrap && x > rect.xMax - realCharSize) {
 				x = rect.x;
 				y -= charSize + lineSpace;
 				line++;
@@ -149,7 +163,7 @@ public class TextUtil {
 		}
 
 		// Alignment
-		if (hasContent) {
+		if (count > 0) {
 			int offsetX;
 			int offsetY;
 			int textSizeX = maxX - minX;
@@ -186,6 +200,11 @@ public class TextUtil {
 			bounds.y = minY + offsetY;
 			bounds.width = maxX - minX;
 			bounds.height = maxY - minY;
+
+			// Clip Cells
+			if (clip) {
+				Util.ClampCells(textCells, bounds, startCellIndex, textCountInLayer);
+			}
 		}
 
 	}
@@ -197,7 +216,7 @@ public class TextUtil {
 		int count = content.FromString ? content.Text.Length : content.Chars.Length;
 		for (; index < count; index++) {
 			char c = content.FromString ? content.Text[index] : content.Chars[index];
-			if (Util.IsLineBreakingChar(c)) break;
+			if (IsLineBreakingChar(c)) break;
 			if (!requireCharSprite(c, out var sprite)) continue;
 			if (room > 0) {
 				room -= (sprite.Advance * charSize).RoundToInt() + charSpace;

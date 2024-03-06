@@ -315,7 +315,7 @@ internal class Engine {
 
 		// MSG 
 		GUI.Label(
-			TextContent.Get(QUIT_MSG, charSize: 80, alignment: Alignment.MidMid, wrap: true),
+			TextContent.Get(QUIT_MSG, charSize: 80, alignment: Alignment.MidMid, wrap: WrapMode.WordWrap),
 			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.UnifyMonitor(8))
 		);
 

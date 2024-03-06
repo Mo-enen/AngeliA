@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [RequireLanguageFromField]
 public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 
@@ -22,7 +22,7 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 	protected virtual bool ShowGeneratingHint => true;
 
 	// Data
-	private readonly TextContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, BackgroundPadding = 6, Wrap = false, Clip = false, };
+	private readonly TextContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, BackgroundPadding = 6, Wrap = WrapMode.NoWrap, Clip = false, };
 
 
 	#endregion

@@ -1,9 +1,18 @@
 ﻿namespace AngeliA;
 
+
 public enum ProjectType { 
 	Game = 0, 
 	Application = 1, 
 }
+
+
+public enum WrapMode { 
+	NoWrap = 0, 
+	Wrap = 1, 
+	WordWrap = 2, 
+}
+
 
 public enum Direction2 {
 	Negative = -1,
@@ -15,6 +24,7 @@ public enum Direction2 {
 	Right = 1,
 	Vertical = 1,
 }
+
 
 public enum Direction3 {
 	None = 0,
@@ -28,12 +38,14 @@ public enum Direction3 {
 	Vertical = 1,
 }
 
+
 public enum Direction4 {
 	Up = 0,
 	Down = 1,
 	Left = 2,
 	Right = 3,
 }
+
 
 public enum Alignment {
 	TopLeft = 0,

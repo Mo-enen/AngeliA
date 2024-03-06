@@ -157,7 +157,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int PanelOffsetX = 0;
 	private int ToolbarOffsetX = 0;
 	private int InitializedFrame = int.MinValue;
-	private readonly TextContent DropHintLabel = new() { BackgroundTint = Color32.BLACK, Alignment = Alignment.BottomLeft, Wrap = false, CharSize = 24, };
+	private readonly TextContent DropHintLabel = new() { BackgroundTint = Color32.BLACK, Alignment = Alignment.BottomLeft, Wrap = WrapMode.NoWrap, CharSize = 24, };
 	private readonly IntToChars StateXLabelToString = new("x:");
 	private readonly IntToChars StateYLabelToString = new("y:");
 	private readonly IntToChars StateZLabelToString = new("z:");

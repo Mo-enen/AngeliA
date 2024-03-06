@@ -177,8 +177,8 @@ public static class Renderer {
 
 		// Ratio
 		float ratio = (float)Game.ScreenWidth / Game.ScreenHeight;
-		float maxRatio = Game.ProjectType == ProjectType.Game ? 
-			Const.VIEW_RATIO / 1000f : 
+		float maxRatio = Game.ProjectType == ProjectType.Game ?
+			Const.VIEW_RATIO / 1000f :
 			float.MaxValue - 1f;
 		var rect = new FRect(0f, 0f, 1f, 1f);
 		if (ratio > maxRatio) {
@@ -575,69 +575,21 @@ public static class Renderer {
 	// Clamp
 	public static void ClampCells (IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetUsedCellCount(CurrentLayerIndex);
-		ClampCellsLogic(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
+		Util.ClampCells(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
 	}
 	public static void ClampCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
-		ClampCellsLogic(Layers[layerIndex].Cells, rect, startIndex, endIndex);
+		Util.ClampCells(Layers[layerIndex].Cells, rect, startIndex, endIndex);
 	}
 	public static void ClampTextCells (IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetTextUsedCellCount(CurrentTextLayerIndex);
-		ClampCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
+		Util.ClampCells(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
 	}
 	public static void ClampTextCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetTextUsedCellCount(layerIndex);
-		ClampCellsLogic(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
+		Util.ClampCells(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
 	}
-	public static void ClampCells (Cell[] cells, IRect rect) => ClampCellsLogic(cells, rect, 0, cells.Length);
-	private static void ClampCellsLogic (Cell[] cells, IRect rect, int startIndex, int endIndex) {
-		var cellRect = new IRect();
-		for (int i = startIndex; i < endIndex; i++) {
-			var cell = cells[i];
-			cellRect.x = cell.X - (int)(cell.Width * cell.PivotX);
-			cellRect.y = cell.Y - (int)(cell.Height * cell.PivotY);
-			cellRect.width = cell.Width;
-			cellRect.height = cell.Height;
-			cellRect.FlipNegative();
-			if (!cellRect.Overlaps(rect)) {
-				cell.Width = 0;
-				continue;
-			}
-			// Clamp
-			int cellL = cellRect.x;
-			int cellR = cellRect.x + cellRect.width;
-			int cellD = cellRect.y;
-			int cellU = cellRect.y + cellRect.height;
-			if (cellL < rect.x) {
-				if (cell.Width > 0) {
-					cell.Shift.left = rect.x - cellL;
-				} else {
-					cell.Shift.right = rect.x - cellL;
-				}
-			}
-			if (cellR > rect.x + rect.width) {
-				if (cell.Width > 0) {
-					cell.Shift.right = cellR - rect.x - rect.width;
-				} else {
-					cell.Shift.left = cellR - rect.x - rect.width;
-				}
-			}
-			if (cellD < rect.y) {
-				if (cell.Height > 0) {
-					cell.Shift.down = rect.y - cellD;
-				} else {
-					cell.Shift.up = rect.y - cellD;
-				}
-			}
-			if (cellU > rect.y + rect.height) {
-				if (cell.Height > 0) {
-					cell.Shift.up = cellU - rect.y - rect.height;
-				} else {
-					cell.Shift.down = cellU - rect.y - rect.height;
-				}
-			}
-		}
-	}
+	public static void ClampCells (Cell[] cells, IRect rect) => Util.ClampCells(cells, rect, 0, cells.Length);
 
 
 	// Exclude
