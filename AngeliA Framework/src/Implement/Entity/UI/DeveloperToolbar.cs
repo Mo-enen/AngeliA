@@ -116,24 +116,24 @@ public static class DeveloperToolbar {
 		);
 
 		// Collider Btn
-		DrawCollider = GUI.Toggle(rect, DrawCollider, BTN_COLLIDER);
+		DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
 		rect.x -= rect.width + padding;
 
 		// Bound Btn
-		DrawBounds = GUI.Toggle(rect, DrawBounds, BTN_BOUND);
+		DrawBounds = GUI.IconToggle(rect, DrawBounds, BTN_BOUND);
 		rect.x -= rect.width + padding;
 
 		// Profiler Btn
-		ProfilerPanelOpening = GUI.Toggle(rect, ProfilerPanelOpening, BTN_PROFILER);
+		ProfilerPanelOpening = GUI.IconToggle(rect, ProfilerPanelOpening, BTN_PROFILER);
 		rect.x -= rect.width + padding;
 
 		// Effect Btn
-		EffectPanelOpening = GUI.Toggle(rect, EffectPanelOpening, BTN_EFFECT);
+		EffectPanelOpening = GUI.IconToggle(rect, EffectPanelOpening, BTN_EFFECT);
 		rect.x -= rect.width + padding;
 
 		// Map Editor Btn
 		bool isMapEditorActived = MapEditor.IsActived;
-		bool newIsOn = GUI.Toggle(rect, isMapEditorActived, BTN_MAP);
+		bool newIsOn = GUI.IconToggle(rect, isMapEditorActived, BTN_MAP);
 		if (newIsOn != isMapEditorActived) {
 			if (isMapEditorActived) {
 				WindowUI.CloseWindow(MapEditor.TYPE_ID);
@@ -338,8 +338,7 @@ public static class DeveloperToolbar {
 
 			// Enable Button
 			var enableRect = rect.EdgeInside(Direction4.Right, itemHeight);
-			bool enable = EffectsEnabled[i];
-			GUI.Toggle(enableRect, EffectsEnabled[i], BuiltInSprite.CHECK_MARK_16);
+			EffectsEnabled[i] = GUI.Toggle(enableRect, EffectsEnabled[i]);
 		}
 
 		// Update Values

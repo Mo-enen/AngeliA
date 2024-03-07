@@ -67,17 +67,37 @@ public class ProjectHub : EngineWindow {
 	private void PanelUpdate () {
 
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, UnifyMonitor(PANEL_WIDTH));
+		int itemPadding = UnifyMonitor(8);
 
-		var rect = new IRect(panelRect.x, panelRect.yMax, panelRect.width, UnifyMonitor(42));
-		rect.y -= rect.height;
+		var rect = new IRect(
+			panelRect.x + itemPadding,
+			panelRect.yMax - itemPadding * 2,
+			panelRect.width - itemPadding * 2,
+			UnifyMonitor(36)
+		);
+		rect.y -= rect.height + itemPadding;
 		if (GUI.Button(rect, "Test 0", GUISkin.DarkButton)) {
 
 		}
 
-		rect.y -= rect.height;
+		rect.y -= rect.height + itemPadding;
 		if (GUI.Button(rect, "Test 1", GUISkin.DarkButton)) {
 
 		}
+
+		rect.y -= rect.height + itemPadding;
+		GUI.IconToggle(rect, true, BuiltInSprite.GAMEPAD_DOWN);
+
+		rect.y -= rect.height + itemPadding;
+		GUI.IconToggle(rect, false, BuiltInSprite.UI_BUTTON);
+
+		rect.y -= rect.height + itemPadding;
+		GUI.InputField(123467, rect, "sdfasdfasdfsf");
+
+
+
+
+
 
 	}
 

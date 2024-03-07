@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public class AngeSprite {
@@ -15,8 +15,7 @@ public class AngeSprite {
 	public string RealName;
 	public int GlobalWidth;
 	public int GlobalHeight;
-	public int PixelWidth;
-	public int PixelHeight;
+	public IRect PixelRect;
 	public int PivotX;
 	public int PivotY;
 	public int SortingZ;
@@ -47,10 +46,12 @@ public class AngeSprite {
 			GlobalID = RealName.AngeHash();
 
 			// Size
-			PixelWidth = reader.ReadUInt16();
-			PixelHeight = reader.ReadUInt16();
-			GlobalWidth = PixelWidth * Const.ART_SCALE;
-			GlobalHeight = PixelHeight * Const.ART_SCALE;
+			PixelRect.x = reader.ReadUInt16();
+			PixelRect.y = reader.ReadUInt16();
+			PixelRect.width = reader.ReadUInt16();
+			PixelRect.height = reader.ReadUInt16();
+			GlobalWidth = PixelRect.width * Const.ART_SCALE;
+			GlobalHeight = PixelRect.height * Const.ART_SCALE;
 
 			// Pivot
 			PivotX = reader.ReadInt16();
@@ -86,8 +87,8 @@ public class AngeSprite {
 			Group = null;
 
 			// Pixels
-			var bytes = reader.ReadBytes(PixelWidth * PixelHeight * 4);
-			Pixels = bytes.Bytes_to_Pixels(PixelWidth, PixelHeight);
+			var bytes = reader.ReadBytes(PixelRect.width * PixelRect.height * 4);
+			Pixels = bytes.Bytes_to_Pixels(PixelRect.width, PixelRect.height);
 
 		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
 		reader.BaseStream.Position = endPos;
@@ -107,8 +108,10 @@ public class AngeSprite {
 			}
 
 			// Size
-			writer.Write((ushort)PixelWidth);
-			writer.Write((ushort)PixelHeight);
+			writer.Write((ushort)PixelRect.x);
+			writer.Write((ushort)PixelRect.y);
+			writer.Write((ushort)PixelRect.width);
+			writer.Write((ushort)PixelRect.height);
 
 			// Pivot
 			writer.Write((short)PivotX);
@@ -139,8 +142,8 @@ public class AngeSprite {
 			writer.Write((int)Tag);
 
 			// Pixels
-			Pixels ??= new Color32[PixelWidth * PixelHeight];
-			var bytes = Pixels.Pixels_to_Bytes(PixelWidth, PixelHeight);
+			Pixels ??= new Color32[PixelRect.width * PixelRect.height];
+			var bytes = Pixels.Pixels_to_Bytes(PixelRect.width, PixelRect.height);
 			writer.Write(bytes);
 
 		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
@@ -230,12 +233,12 @@ public class FlexSprite {
 		Border = default,
 		FullName = "Pixel",
 		Pixels = new Color32[1] { Color32.WHITE },
-		Size = new(1, 1),
+		PixelRect = new(0, 0, 1, 1),
 	};
 	public string FullName;
 	public Int2 AngePivot;
 	public Int4 Border;
-	public Int2 Size;
+	public IRect PixelRect;
 	public int AtlasZ;
 	public string AtlasName;
 	public AtlasType AtlasType;

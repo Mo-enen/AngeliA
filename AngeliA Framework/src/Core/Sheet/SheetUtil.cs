@@ -51,10 +51,10 @@ public static class SheetUtil {
 		for (int i = 0; i < flexSprites.Length; i++) {
 			var flex = flexSprites[i];
 			var uvBorder = new Float4(
-				(float)flex.Border.left / flex.Size.x,
-				(float)flex.Border.down / flex.Size.y,
-				(float)flex.Border.right / flex.Size.x,
-				(float)flex.Border.up / flex.Size.y
+				(float)flex.Border.left / flex.PixelRect.width,
+				(float)flex.Border.down / flex.PixelRect.height,
+				(float)flex.Border.right / flex.PixelRect.width,
+				(float)flex.Border.up / flex.PixelRect.height
 			);
 			Util.GetSpriteInfoFromName(
 				flex.FullName, out string realName, out string groupName, out int groupIndex, out var groupType,
@@ -64,8 +64,8 @@ public static class SheetUtil {
 			);
 			int tag = tagStr.AngeHash();
 			int rule = Util.RuleStringToDigit(ruleStr);
-			int globalWidth = flex.Size.x * Const.ART_SCALE;
-			int globalHeight = flex.Size.y * Const.ART_SCALE;
+			int globalWidth = flex.PixelRect.width * Const.ART_SCALE;
+			int globalHeight = flex.PixelRect.height * Const.ART_SCALE;
 			var globalBorder = Int4.Direction(
 				Util.Clamp(flex.Border.left * Const.ART_SCALE, 0, globalWidth),
 				Util.Clamp(flex.Border.right * Const.ART_SCALE, 0, globalWidth),
@@ -92,8 +92,7 @@ public static class SheetUtil {
 				GlobalID = globalID,
 				GlobalWidth = globalWidth,
 				GlobalHeight = globalHeight,
-				PixelWidth = flex.Size.x,
-				PixelHeight = flex.Size.y,
+				PixelRect = flex.PixelRect,
 				GlobalBorder = globalBorder,
 				LocalZ = offsetZ,
 				SortingZ = flex.AtlasZ * 1024 + offsetZ,

@@ -211,7 +211,7 @@ public static class Renderer {
 		try {
 			for (int i = 0; i < Layers.Length; i++) {
 				var layer = Layers[i];
-				layer.ZSort();
+				if (!layer.UiLayer) layer.ZSort();
 				int prevCount = layer.Count;
 				Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;

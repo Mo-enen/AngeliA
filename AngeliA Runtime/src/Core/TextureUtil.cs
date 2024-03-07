@@ -101,7 +101,7 @@ public static class TextureUtil {
 		if (fileSize == 0) return System.Array.Empty<byte>();
 		var resultBytes = new byte[fileSize];
 		Marshal.Copy((nint)result, resultBytes, 0, fileSize);
-		Marshal.FreeHGlobal((System.IntPtr)result);
+		Marshal.FreeHGlobal((nint)result);
 		Marshal.FreeHGlobal(fileType);
 		return resultBytes;
 	}
@@ -109,7 +109,7 @@ public static class TextureUtil {
 	public static void FillSheetIntoTexturePool (Sheet sheet, Dictionary<int, Texture2D> TexturePool) {
 		foreach (var sprite in sheet.Sprites) {
 			if (TexturePool.ContainsKey(sprite.GlobalID)) continue;
-			var texture = GetTextureFromPixels(sprite.Pixels, sprite.PixelWidth, sprite.PixelHeight);
+			var texture = GetTextureFromPixels(sprite.Pixels, sprite.PixelRect.width, sprite.PixelRect.height);
 			if (!texture.HasValue) continue;
 			Raylib.SetTextureFilter(texture.Value, TextureFilter.Point);
 			Raylib.SetTextureWrap(texture.Value, TextureWrap.Clamp);

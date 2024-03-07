@@ -13,6 +13,17 @@ public static class GUISkin {
 		BodyDisableSprite = 0,
 	};
 
+	public static readonly GUIStyle GreenPixel = new() {
+		BodySprite = Const.PIXEL,
+		BodyHighlightSprite = Const.PIXEL,
+		BodyPressSprite = Const.PIXEL,
+		BodyDisableSprite = Const.PIXEL,
+		BodyColor = Color32.GREEN,
+		BodyHighlightColor = Color32.GREEN,
+		BodyPressColor = Color32.GREEN,
+		BodyDisableColor = Color32.GREEN,
+	};
+
 	public static readonly GUIStyle Button = new() {
 		BodySprite = BuiltInSprite.UI_BUTTON,
 		BodyHighlightSprite = BuiltInSprite.UI_BUTTON,
@@ -21,6 +32,7 @@ public static class GUISkin {
 		ContentShift = new(0, Const.ART_SCALE * 2),
 		ContentDisableShift = new(0, Const.ART_SCALE * 2),
 		ContentHighlightShift = new(0, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 	};
 
 	public static readonly GUIStyle DarkButton = new() {
@@ -28,6 +40,28 @@ public static class GUISkin {
 		BodyHighlightSprite = BuiltInSprite.UI_DARK_BUTTON,
 		BodyPressSprite = BuiltInSprite.UI_DARK_BUTTON_DOWN,
 		BodyDisableSprite = BuiltInSprite.UI_DARK_BUTTON,
+		ContentShift = new(0, Const.ART_SCALE * 2),
+		ContentDisableShift = new(0, Const.ART_SCALE * 2),
+		ContentHighlightShift = new(0, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+	};
+
+	public static readonly GUIStyle Toggle = new() {
+		BodySprite = BuiltInSprite.UI_TOGGLE,
+		BodyHighlightSprite = BuiltInSprite.UI_TOGGLE,
+		BodyPressSprite = BuiltInSprite.UI_TOGGLE_DOWN,
+		BodyDisableSprite = BuiltInSprite.UI_TOGGLE,
+		ContentShift = new(0, Const.ART_SCALE * 2),
+		ContentDisableShift = new(0, Const.ART_SCALE * 2),
+		ContentHighlightShift = new(0, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+	};
+
+	public static readonly GUIStyle ToggleMark = new() {
+		BodySprite = BuiltInSprite.UI_TOGGLE_MARK,
+		BodyHighlightSprite = BuiltInSprite.UI_TOGGLE_MARK,
+		BodyPressSprite = BuiltInSprite.UI_TOGGLE_MARK,
+		BodyDisableSprite = BuiltInSprite.UI_TOGGLE_MARK,
 		ContentShift = new(0, Const.ART_SCALE * 2),
 		ContentDisableShift = new(0, Const.ART_SCALE * 2),
 		ContentHighlightShift = new(0, Const.ART_SCALE * 2),
@@ -50,6 +84,14 @@ public static class GUISkin {
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
+	};
+
+	public static readonly GUIStyle InputField = new() {
+		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
+		BodyHighlightSprite = BuiltInSprite.UI_INPUT_FIELD,
+		BodyPressSprite = BuiltInSprite.UI_INPUT_FIELD,
+		BodyDisableSprite = BuiltInSprite.UI_INPUT_FIELD,
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 	};
 
 }

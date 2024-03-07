@@ -179,7 +179,7 @@ public partial class RayGame {
 		bool usingShader = false;
 		bool usingBlend = false;
 		bool useAlpha = !IsTransparentWindow;
-		
+
 		// Shader
 		switch (layerIndex) {
 			case RenderLayer.WALLPAPER:
@@ -220,18 +220,20 @@ public partial class RayGame {
 				if (!TexturePool.TryGetValue(sprite.GlobalID, out var texture)) continue;
 
 				// UV
+				int pixelWidth = sprite.PixelRect.width;
+				int pixelHeight = sprite.PixelRect.height;
 				float sourceL, sourceR, sourceD, sourceU;
 				if (cell.BorderSide == Alignment.Full) {
 					sourceL = 0f;
-					sourceR = sprite.PixelWidth;
+					sourceR = pixelWidth;
 					sourceD = 0f;
-					sourceU = sprite.PixelHeight;
+					sourceU = pixelHeight;
 				} else {
 					Util.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
-					sourceL = bl.x * sprite.PixelWidth;
-					sourceR = tr.x * sprite.PixelWidth;
-					sourceD = sprite.PixelHeight - tr.y * sprite.PixelHeight;
-					sourceU = sprite.PixelHeight - bl.y * sprite.PixelHeight;
+					sourceL = bl.x * sprite.PixelRect.width;
+					sourceR = tr.x * sprite.PixelRect.width;
+					sourceD = pixelHeight - tr.y * pixelHeight;
+					sourceU = pixelHeight - bl.y * pixelHeight;
 				}
 				var source = new Rectangle(
 					sourceL,

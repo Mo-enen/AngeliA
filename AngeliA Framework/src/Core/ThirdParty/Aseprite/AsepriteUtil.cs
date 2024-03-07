@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
 
 public class AsepriteUtil {
 
@@ -118,7 +118,7 @@ public class AsepriteUtil {
 				FullName = m.name,
 				AtlasName = AseName,
 				AngePivot = new Int2((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
-				Size = new(width, height),
+				PixelRect = new IRect(left, down, width, height),
 				AtlasType = atlasType,
 				AtlasZ = sheetZ,
 				Pixels = pixels,

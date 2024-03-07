@@ -103,5 +103,9 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_SPRITE = "Icon.Sprite";
 	public static readonly SpriteCode ICON_CROSS = "Icon.Cross";
 	public static readonly SpriteCode ICON_HOME = "Icon.Home";
-
+	public static readonly SpriteCode UI_TOGGLE = "UI.Toggle";
+	public static readonly SpriteCode UI_TOGGLE_DOWN = "UI.ToggleDown";
+	public static readonly SpriteCode UI_TOGGLE_MARK = "UI.ToggleMark";
+	public static readonly SpriteCode UI_INPUT_FIELD = "UI.InputField";
+	
 }

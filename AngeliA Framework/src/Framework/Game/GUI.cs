@@ -21,7 +21,6 @@ public static class GUI {
 	// Api
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
-	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static int TypingTextFieldID {
 		get => _TypingTextFieldID;
 		private set {
@@ -98,10 +97,7 @@ public static class GUI {
 
 
 	[OnGameUpdate(-4096)]
-	internal static void Reset () {
-		Enable = true;
-		Color = Color32.WHITE;
-	}
+	internal static void Reset () => Enable = true;
 
 
 	// Unify
@@ -194,8 +190,20 @@ public static class GUI {
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) {
 		int sprite = style.GetBodySprite(state);
 		if (sprite == 0) return;
-		var color = Color * style.GetBodyColor(state);
+		var color = style.GetBodyColor(state);
 		if (color.a == 0) return;
+		if (style.BodyBorder.HasValue) {
+			var border = style.BodyBorder.Value;
+			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
+		} else {
+			Renderer.Draw_9Slice(sprite, rect, color);
+		}
+	}
+	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state) {
+		var color = style.GetContentColor(state);
+		if (color.a == 0) return;
+		var shift = style.GetContentShift(state);
+		rect = rect.Shift(shift.x, shift.y);
 		if (style.BodyBorder.HasValue) {
 			var border = style.BodyBorder.Value;
 			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
@@ -214,9 +222,7 @@ public static class GUI {
 		DrawStyleBody(rect, style, state);
 		// Label
 		if (!string.IsNullOrEmpty(label)) {
-			var labelRect = style.ContentBorder.HasValue ? rect.Shrink(style.ContentBorder.Value) : rect;
-			var contentShift = style.GetContentShift(state);
-			Label(TextContent.Get(label, style), labelRect.Shift(contentShift.x, contentShift.y));
+			Label(TextContent.Get(label, style), GetContentRect(rect, style, state));
 		}
 		return result;
 	}
@@ -224,10 +230,9 @@ public static class GUI {
 		style ??= GUISkin.Button;
 		bool result = BlankButton(rect, out var state);
 		DrawStyleBody(rect, style, state);
-		Icon(rect, icon, style.GetContentColor(state));
+		Icon(rect, icon, style, state);
 		return result;
 	}
-
 	public static bool BlankButton (IRect rect, out GUIState state) {
 		state = GUIState.Normal;
 		if (!Enable) {
@@ -247,22 +252,42 @@ public static class GUI {
 
 
 	// Toggle
-	public static bool Toggle (IRect rect, bool isOn, int icon, int padding = 0) {
-		isOn = BlankToggle(rect, isOn, out _);
-		Icon(rect.Shrink(padding), icon);
-		Renderer.Draw(Const.PIXEL, rect);
+	public static bool IconToggle (IRect rect, bool isOn, int icon, GUIStyle markStyle = null, GUIStyle iconStyle = null) {
+		markStyle ??= GUISkin.GreenPixel;
+		isOn = BlankToggle(rect, isOn, out var state);
+		if (isOn) {
+			DrawStyleBody(GetContentRect(rect, markStyle, state), markStyle, state);
+		}
+		if (iconStyle != null) {
+			Icon(rect, icon, iconStyle, state);
+		} else {
+			Icon(rect, icon);
+		}
 		return isOn;
 	}
-
+	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) {
+		bodyStyle ??= GUISkin.Toggle;
+		markStyle ??= GUISkin.ToggleMark;
+		rect = rect.EdgeInside(Direction4.Left, rect.height);
+		isOn = BlankToggle(rect, isOn, out var state);
+		DrawStyleBody(rect, bodyStyle, state);
+		if (isOn) {
+			DrawStyleBody(GetContentRect(rect, markStyle, state), markStyle, state);
+		}
+		return isOn;
+	}
 	public static bool BlankToggle (IRect rect, bool isOn, out GUIState state) => BlankButton(rect, out state) ? !isOn : isOn;
 
 
 	// Icon
-	public static void Icon (IRect rect, int sprite, Alignment alignment = Alignment.MidMid) => Icon(rect, sprite, Color32.WHITE, alignment);
-	public static void Icon (IRect rect, int sprite, Color32 color, Alignment alignment = Alignment.MidMid) {
+	public static void Icon (IRect rect, int sprite) => Icon(rect, sprite, null, default);
+	public static void Icon (IRect rect, int sprite, GUIStyle style, GUIState state) {
 		if (!Renderer.TryGetSprite(sprite, out var icon)) return;
-		var normal = alignment.Normal();
-		Renderer.Draw(icon, rect.Fit(icon, normal.x * 500 + 500, normal.y * 500 + 500), color);
+		if (style != null) {
+			DrawStyleContent(rect, sprite, style, state);
+		} else {
+			Renderer.Draw(icon, rect.Fit(icon));
+		}
 	}
 
 
@@ -277,19 +302,27 @@ public static class GUI {
 
 
 	// Text Field
-	public static string InputField (int controlID, IRect rect, string text) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _);
-	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm);
-	public static string InputField (int controlID, IRect rect, TextContent text) => InputField(controlID, rect, text, out _, out _);
-	public static string InputField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm) {
+	public static string InputField (int controlID, IRect rect, string text, GUIStyle style = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _, style);
+	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle style = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm, style);
+	public static string InputField (int controlID, IRect rect, TextContent text, GUIStyle style = null) => InputField(controlID, rect, text, out _, out _, style);
+	public static string InputField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm, GUIStyle style = null) {
 
+		style ??= GUISkin.InputField;
 		changed = false;
 		confirm = false;
 		bool startTyping = false;
 		bool mouseDownPosInRect = rect.Contains(Input.MouseLeftDownGlobalPosition);
 		bool mouseDragging = Input.MouseLeftButton && mouseDownPosInRect;
 		bool inCamera = rect.Overlaps(Renderer.CameraRect);
+		var state =
+			(!Enable || !inCamera) ? GUIState.Disable :
+			Input.MouseLeftButton && mouseDownPosInRect ? GUIState.Press :
+			Input.MouseLeftButton && rect.Contains(Input.MouseGlobalPosition) ? GUIState.Hover :
+			GUIState.Normal;
 
 		Cursor.SetCursorAsBeam(rect);
+
+		DrawStyleBody(rect, style, state);
 
 		if ((!inCamera || !Enable) && TypingTextFieldID == controlID) TypingTextFieldID = 0;
 
@@ -618,6 +651,22 @@ public static class GUI {
 			}
 		}
 		TypingBuilder.Append(c);
+	}
+
+
+	#endregion
+
+
+
+	#region --- LGC ---
+
+
+	private static IRect GetContentRect (IRect rect, GUIStyle style, GUIState state) {
+		if (style.ContentBorder.HasValue) {
+			rect = rect.Shrink(style.ContentBorder.Value);
+		}
+		var shift = style.GetContentShift(state);
+		return rect.Shift(shift.x, shift.y);
 	}
 
 

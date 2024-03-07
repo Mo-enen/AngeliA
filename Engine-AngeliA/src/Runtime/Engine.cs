@@ -220,7 +220,7 @@ internal class Engine {
 		);
 
 		// Window Content
-		WindowUI.ForceWindowRect(cameraRect.Shrink(0, 0, 0, barHeight));
+		WindowUI.ForceWindowRect(cameraRect.Shrink(0, 0, 0, barHeight + bodyBorder));
 		for (int i = 0; i < WINDOWS.Length; i++) {
 			var win = WINDOWS[i];
 			bool active = i == CurrentWindowIndex;
