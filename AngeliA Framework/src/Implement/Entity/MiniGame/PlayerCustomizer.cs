@@ -944,10 +944,7 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 		// Scroll Bar
 		if (row > pageRow) {
 			var barRect = new IRect(patternRect.xMax, patternRect.y, scrollBarWidth, patternRect.height);
-			PatternPickerScrollRow = GUI.ScrollBar(
-				94567, barRect, EDITOR_BASIC_Z + 3,
-				PatternPickerScrollRow, row, pageRow
-			);
+			PatternPickerScrollRow = GUI.ScrollBar(94567, barRect, PatternPickerScrollRow, row, pageRow);
 			if (Input.MouseWheelDelta != 0) {
 				PatternPickerScrollRow -= Input.MouseWheelDelta;
 			}

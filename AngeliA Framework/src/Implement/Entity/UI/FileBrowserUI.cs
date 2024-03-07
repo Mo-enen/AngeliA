@@ -168,7 +168,6 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		int buttonSize = barRect.height;
 		int buttonPadding = Unify(2);
-		int frameBorder = Unify(1.5f);
 		var rect = barRect.EdgeInside(Direction4.Left, buttonSize);
 
 		// Parent
@@ -185,12 +184,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		rect.x += buttonSize + buttonPadding;
 		rect.width = barRect.xMax - rect.x;
 		NavbarText = GUI.InputField(12124, rect, NavbarText, out _, out bool confirm);
-		Renderer.Draw_9Slice(
-			BuiltInSprite.FRAME_16, rect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
-		);
-		if (confirm) {
-			Explore(NavbarText);
-		}
+		if (confirm) Explore(NavbarText);
 
 	}
 
@@ -214,7 +208,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		if (extendedRow > pageRow) {
 			ScrollY = (ScrollY - Input.MouseWheelDelta * 2).Clamp(0, extendedRow - pageRow);
 			ScrollY = GUI.ScrollBar(
-				2376, paddedPanelRect.EdgeOutside(Direction4.Right, scrollBarWidth), z: 1,
+				2376, paddedPanelRect.EdgeOutside(Direction4.Right, scrollBarWidth),
 				ScrollY, extendedRow, pageRow
 			);
 		} else {
@@ -350,10 +344,6 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		if (ActionType == BrowserActionType.Save) {
 			// Name Field
 			CurrentName = GUI.InputField(091253, fieldRect, CurrentName);
-			Renderer.Draw_9Slice(
-				BuiltInSprite.FRAME_16, fieldRect, frameBorder, frameBorder, frameBorder, frameBorder,
-Color32.GREY_32, z: 1
-			);
 
 			// Name Label
 			GUI.Label(

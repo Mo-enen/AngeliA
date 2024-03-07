@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [RequireSpriteFromField]
 [RequireLanguageFromField]
 public sealed class CraftingTableUI : PlayerMenuPartnerUI {
@@ -29,6 +29,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	// Data
 	private readonly List<Int4> DocumentContent = new();
 	private readonly int[] IgnoreConsumes = { 0, 0, 0, 0, };
+	private readonly IntToChars CombineResultCountChars = new();
 	private Int4 CurrentCraftingItems = default;
 	private bool CursorInDoc = false;
 	private bool CursorInResult = false;
@@ -340,7 +341,8 @@ Color32.BLACK, int.MinValue + 1
 					countSize, countSize
 				);
 				Renderer.Draw(Const.PIXEL, countRect, Color32.BLACK, int.MinValue + 8);
-				GUI.Label(GUI.GetNumberCache(CombineResultCount), countRect);
+				var chars = CombineResultCountChars.GetChars(CombineResultCount);
+				GUI.Label(TextContent.Get(chars), countRect);
 			}
 		}
 

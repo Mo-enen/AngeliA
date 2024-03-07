@@ -666,7 +666,7 @@ Color32.WHITE, PANEL_Z - 4
 				contentRect.y,
 				SCROLL_BAR_WIDTH,
 				contentRect.height
-			), PANEL_Z - 9, PaletteScrollY, rowCount + EXTRA_ROW, pageRowCount
+			), PaletteScrollY, rowCount + EXTRA_ROW, pageRowCount
 		);
 
 	}
@@ -760,7 +760,7 @@ Color32.WHITE, PANEL_Z - 4
 				searchRect.y,
 				SCROLL_BAR_WIDTH,
 				searchRect.height
-			), PANEL_Z - 9, PaletteSearchScrollY, SearchResult.Count + PAGE_EXTRA, pageRowCount
+			), PaletteSearchScrollY, SearchResult.Count + PAGE_EXTRA, pageRowCount
 		);
 
 	}
@@ -878,22 +878,6 @@ Color32.WHITE, PANEL_Z - 4
 		Renderer.Draw(Const.PIXEL, searchPanel, Color32.GREY_32, PANEL_Z - 6);
 		searchPanel = searchPanel.Shrink(PADDING);
 
-		// Bar
-		int ITEM_SIZE = searchPanel.height;
-		int BORDER = Unify(2);
-		Renderer.Draw_9Slice(
-			BuiltInSprite.FRAME_16, searchPanel, BORDER, BORDER, BORDER, BORDER, Color32.GREY_96, PANEL_Z - 5
-		);
-
-		// Search Icon
-		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
-			Renderer.Draw(
-				SEARCH_ICON,
-				searchPanel.Shrink(PADDING, searchPanel.width - ITEM_SIZE - PADDING, 0, 0),
-				Color32.GREY_128, PANEL_Z - 4
-			);
-		}
-
 		// Search Text
 		SearchingText = GUI.InputField(SEARCH_BAR_ID, searchPanel, SearchingText, out bool changed, out _);
 		if (changed) {
@@ -902,6 +886,15 @@ Color32.WHITE, PANEL_Z - 4
 			if (!string.IsNullOrWhiteSpace(SearchingText)) {
 				SearchResult.AddRange(PaletteTrie.Retrieve(SearchingText.ToLower()).Distinct());
 			}
+		}
+
+		// Search Icon
+		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
+			Renderer.Draw(
+				SEARCH_ICON,
+				searchPanel.Shrink(PADDING, searchPanel.width - searchPanel.height - PADDING, 0, 0),
+				Color32.GREY_128, PANEL_Z - 4
+			);
 		}
 
 		// Close Button

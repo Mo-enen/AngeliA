@@ -15,7 +15,6 @@ public static class GUI {
 
 
 	// Const
-	private static readonly string[] NUMBER_CACHE = new string[100];
 	private const int MAX_INPUT_CHAR = 256;
 
 	// Api
@@ -56,14 +55,6 @@ public static class GUI {
 
 
 	#region --- API ---
-
-
-	[OnGameInitialize(-128)]
-	public static void Initialize () {
-		for (int i = 0; i < NUMBER_CACHE.Length; i++) {
-			NUMBER_CACHE[i] = i.ToString();
-		}
-	}
 
 
 	[OnGameUpdate(1023)]
@@ -163,7 +154,7 @@ public static class GUI {
 
 	}
 
-
+	
 	// Scroll Label
 	public static int ScrollLabel (TextContent content, IRect rect, int scrollPosition) {
 		int before = Renderer.GetTextUsedCellCount();
@@ -557,10 +548,11 @@ public static class GUI {
 
 
 	// Scrollbar
-	public static int ScrollBar (
-		int controlID, IRect contentRect, int z, int positionRow, int totalSize, int pageSize, int barSpriteId = Const.PIXEL
-	) {
+	public static int ScrollBar (int controlID, IRect contentRect, int positionRow, int totalSize, int pageSize, GUIStyle style = null) {
 		if (pageSize >= totalSize) return 0;
+
+		style ??= GUISkin.Scrollbar;
+
 		int barHeight = contentRect.height * pageSize / totalSize;
 		var barRect = new IRect(
 			contentRect.x,
@@ -574,16 +566,17 @@ public static class GUI {
 		);
 		bool focusingBar = DraggingScrollbarID == controlID;
 		bool hoveringBar = barRect.MouseInside();
+		bool dragging = focusingBar && ScrollBarMouseDownPos.HasValue;
 
-		Renderer.Draw(
-			barSpriteId,
-			barRect,
-			hoveringBar || (focusingBar && ScrollBarMouseDownPos.HasValue) ? Color32.GREY_128 : Color32.GREY_64,
-			z
-		);
-
+		var state =
+			!Enable ? GUIState.Disable :
+			dragging ? GUIState.Press :
+			hoveringBar ? GUIState.Hover :
+			GUIState.Normal;
+		DrawStyleBody(barRect, style, state);
+		
 		// Dragging
-		if (focusingBar && ScrollBarMouseDownPos.HasValue) {
+		if (dragging) {
 			int mouseY = Input.MouseGlobalPosition.y;
 			int mouseDownY = ScrollBarMouseDownPos.Value.x;
 			int scrollDownY = ScrollBarMouseDownPos.Value.y;
@@ -629,13 +622,6 @@ public static class GUI {
 
 
 	// Misc
-	public static string GetNumberCache (int number) {
-		if (number >= NUMBER_CACHE.Length) return "99+";
-		if (number >= 0) return NUMBER_CACHE[number];
-		return "";
-	}
-
-
 	public static void OnTextInput (char c) {
 		if (!IsTyping) return;
 		if (char.IsControl(c)) {

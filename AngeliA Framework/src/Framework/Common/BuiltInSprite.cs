@@ -107,5 +107,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode UI_TOGGLE_DOWN = "UI.ToggleDown";
 	public static readonly SpriteCode UI_TOGGLE_MARK = "UI.ToggleMark";
 	public static readonly SpriteCode UI_INPUT_FIELD = "UI.InputField";
-	
+	public static readonly SpriteCode UI_SCROLL_BAR = "UI.Scrollbar";
+	public static readonly SpriteCode UI_SCROLL_BAR_DOWN = "UI.ScrollbarDown";
+
 }

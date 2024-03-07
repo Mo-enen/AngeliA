@@ -94,4 +94,11 @@ public static class GUISkin {
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 	};
 
+	public static readonly GUIStyle Scrollbar = new() {
+		BodySprite = BuiltInSprite.UI_SCROLL_BAR,
+		BodyHighlightSprite = BuiltInSprite.UI_SCROLL_BAR,
+		BodyPressSprite = BuiltInSprite.UI_SCROLL_BAR_DOWN,
+		BodyDisableSprite = BuiltInSprite.UI_SCROLL_BAR,
+	};
+
 }

@@ -1,4 +1,4 @@
-﻿namespace AngeliA; 
+﻿namespace AngeliA;
 public class IntToChars {
 
 	private int IntValue = 0;
@@ -24,32 +24,31 @@ public class IntToChars {
 	}
 
 	public char[] GetChars (int value) {
-		if (value != IntValue) {
-			IntValue = value;
-			int digitCount = value.DigitCount();
-			int startIndex = Prefix.Length;
-			if (value < 0) {
-				value = -value;
-				CharsValue[startIndex] = '-';
-				startIndex++;
+		if (value == IntValue) return CharsValue;
+		IntValue = value;
+		int digitCount = value.DigitCount();
+		int startIndex = Prefix.Length;
+		if (value < 0) {
+			value = -value;
+			CharsValue[startIndex] = '-';
+			startIndex++;
+		}
+		// Fill Value
+		for (int i = startIndex + digitCount - 1; i >= startIndex; i--) {
+			CharsValue[i] = (char)((value % 10) + '0');
+			value /= 10;
+		}
+		// Fill Suffix
+		startIndex += digitCount;
+		if (Suffix.Length > 0) {
+			for (int i = 0; i < Suffix.Length; i++) {
+				CharsValue[startIndex + i] = Suffix[i];
 			}
-			// Fill Value
-			for (int i = startIndex + digitCount - 1; i >= startIndex; i--) {
-				CharsValue[i] = (char)((value % 10) + '0');
-				value /= 10;
-			}
-			// Fill Suffix
-			startIndex += digitCount;
-			if (Suffix.Length > 0) {
-				for (int i = 0; i < Suffix.Length; i++) {
-					CharsValue[startIndex + i] = Suffix[i];
-				}
-			}
-			// Fill End
-			startIndex += Suffix.Length;
-			if (startIndex < CharsValue.Length) {
-				CharsValue[startIndex] = '\0';
-			}
+		}
+		// Fill End
+		startIndex += Suffix.Length;
+		if (startIndex < CharsValue.Length) {
+			CharsValue[startIndex] = '\0';
 		}
 		return CharsValue;
 	}

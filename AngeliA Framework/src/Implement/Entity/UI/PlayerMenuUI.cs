@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public sealed class InventoryPartnerUI : PlayerMenuPartnerUI {
@@ -88,6 +88,7 @@ public class PlayerMenuUI : EntityUI {
 	public int TakingCount { get; private set; } = 0;
 
 	// Data
+	private readonly IntToChars ItemCountChars = new();
 	private int TakingFromIndex = 0;
 	private int ActionKeyDownFrame = int.MinValue;
 	private int CancelKeyDownFrame = int.MinValue;
@@ -1136,7 +1137,8 @@ Color32.WHITE, int.MaxValue
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
 		Renderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
-		GUI.Label(GUI.GetNumberCache(number), rect, tint: Color32.WHITE);
+		var chars = ItemCountChars.GetChars(number);
+		GUI.Label(TextContent.Get(chars, Color32.WHITE), rect);
 	}
 
 

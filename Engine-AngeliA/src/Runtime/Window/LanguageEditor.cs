@@ -173,16 +173,10 @@ public partial class LanguageEditor : EngineWindow {
 		Renderer.Draw(Const.PIXEL, rect.EdgeOutside(Direction4.Left, Unify(1.5f)), Color32.GREY_12, 2);
 
 		// Search
-		int border = Unify(1);
 		rect.width = panelRect.xMax - rect.x;
 		var searchRect = rect.Shrink(Unify(6));
 		SearchingText = GUI.InputField(-19223, searchRect, InputContent.SetText(SearchingText));
-		Renderer.Draw_9Slice(
-			BuiltInSprite.FRAME_16, searchRect,
-			border, border, border, border,
-Color32.GREY_128, 1
-		);
-
+		
 		// Labels
 		var labelRect = new IRect(panelRect.x + Unify(12), panelRect.y - labelHeight, labelWidth, labelHeight);
 		GUI.Label(LabelContent.SetText(UI_LABEL_KEY), labelRect);
@@ -206,7 +200,6 @@ Color32.GREY_128, 1
 		int labelPadding = Unify(12);
 		int itemSpaceX = Unify(5);
 		int itemSpaceY = Unify(1);
-		int itemBorder = Unify(1);
 		panelRect = panelRect.Shrink(0, scrollBarWidth, 0, 0);
 		int pageCount = panelRect.height.CeilDivide(itemHeight);
 		int shiftedItemCount = Lines.Count + 6;
@@ -267,14 +260,7 @@ Color32.GREY_128, 1
 				ctrlID++;
 			} else {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Key = GUI.InputField(
-					ctrlID++, shrinkedRect, InputContent.SetText(line.Key), out bool changed, out _
-				);
-				Renderer.Draw_9Slice(
-					BuiltInSprite.FRAME_16, shrinkedRect,
-					itemBorder, itemBorder, itemBorder, itemBorder,
-					Color32.GREY_128, 1
-				);
+				line.Key = GUI.InputField(ctrlID++, shrinkedRect, InputContent.SetText(line.Key), out bool changed, out _);
 				if (changed) {
 					line.Label = Key_to_Label(line.Key);
 					SetDirty();
@@ -285,14 +271,7 @@ Color32.GREY_128, 1
 			// Contents
 			for (int j = 0; j < line.Value.Count; j++) {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Value[j] = GUI.InputField(
-					ctrlID++, shrinkedRect, InputContent.SetText(line.Value[j]), out bool changed, out _
-				);
-				Renderer.Draw_9Slice(
-					BuiltInSprite.FRAME_16, shrinkedRect,
-					itemBorder, itemBorder, itemBorder, itemBorder,
-					Color32.GREY_128, 1
-				);
+				line.Value[j] = GUI.InputField(ctrlID++, shrinkedRect, InputContent.SetText(line.Value[j]), out bool changed, out _);
 				if (changed) SetDirty();
 				rect.x += rect.width;
 			}
@@ -305,7 +284,7 @@ Color32.GREY_128, 1
 
 		// Scrollbar
 		ScrollY = GUI.ScrollBar(
-			56093, panelRect.EdgeOutside(Direction4.Right, scrollBarWidth), z: 1,
+			56093, panelRect.EdgeOutside(Direction4.Right, scrollBarWidth),
 			ScrollY, shiftedItemCount, pageCount
 		);
 		if (Input.MouseWheelDelta != 0 && pageCount <= shiftedItemCount) {
