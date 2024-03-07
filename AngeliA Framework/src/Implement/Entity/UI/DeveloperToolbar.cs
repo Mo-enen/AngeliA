@@ -75,12 +75,6 @@ public static class DeveloperToolbar {
 				I2C = new IntToChars($"{EntityLayer.LAYER_NAMES[i]}  ", $" / {capa}"),
 			};
 		}
-	}
-
-
-	[OnUniverseOpen]
-	internal static void OnUniverseOpen () {
-		if (!Enable) return;
 		TextUsages = new BarData[Renderer.TextLayerCount];
 		for (int i = 0; i < TextUsages.Length; i++) {
 			int capa = Renderer.GetTextLayerCapacity(i);

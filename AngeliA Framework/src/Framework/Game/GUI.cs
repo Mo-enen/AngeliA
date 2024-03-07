@@ -154,7 +154,7 @@ public static class GUI {
 
 	}
 
-	
+
 	// Scroll Label
 	public static int ScrollLabel (TextContent content, IRect rect, int scrollPosition) {
 		int before = Renderer.GetTextUsedCellCount();
@@ -282,23 +282,14 @@ public static class GUI {
 	}
 
 
-	// Gizmos
-	public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness = 8, int z = int.MinValue) => DrawLine(fromX, fromY, toX, toY, thickness, Color32.WHITE, z);
-	public static Cell DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint, int z = int.MinValue) => Renderer.Draw(
-		Const.PIXEL, fromX, fromY, 500, 0,
-		-Float2.SignedAngle(Float2.up, new Float2(toX - fromX, toY - fromY)).RoundToInt(),
-		thickness, Util.DistanceInt(fromX, fromY, toX, toY),
-		tint, z
-	);
-
-
 	// Text Field
-	public static string InputField (int controlID, IRect rect, string text, GUIStyle style = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _, style);
-	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle style = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm, style);
-	public static string InputField (int controlID, IRect rect, TextContent text, GUIStyle style = null) => InputField(controlID, rect, text, out _, out _, style);
-	public static string InputField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm, GUIStyle style = null) {
+	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _, bodyStyle, selectionStyle);
+	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm, bodyStyle, selectionStyle);
+	public static string InputField (int controlID, IRect rect, TextContent text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionStyle);
+	public static string InputField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) {
 
-		style ??= GUISkin.InputField;
+		bodyStyle ??= GUISkin.InputField;
+		selectionStyle ??= GUISkin.GreenPixel;
 		changed = false;
 		confirm = false;
 		bool startTyping = false;
@@ -313,7 +304,7 @@ public static class GUI {
 
 		Cursor.SetCursorAsBeam(rect);
 
-		DrawStyleBody(rect, style, state);
+		DrawStyleBody(rect, bodyStyle, state);
 
 		if ((!inCamera || !Enable) && TypingTextFieldID == controlID) TypingTextFieldID = 0;
 
@@ -509,7 +500,7 @@ public static class GUI {
 					Util.Min(endCell.X + endCell.Width, rect.xMax),
 					Util.Min(labelRect.yMax - beamShrink, rect.yMax)
 				);
-				Renderer.Draw(Const.PIXEL, selectionRect, Color32.ORANGE, int.MaxValue - 1);
+				DrawStyleBody(selectionRect, selectionStyle, GUIState.Normal);
 			}
 
 			if (typing && (startTyping || mouseDragging)) {
@@ -574,7 +565,7 @@ public static class GUI {
 			hoveringBar ? GUIState.Hover :
 			GUIState.Normal;
 		DrawStyleBody(barRect, style, state);
-		
+
 		// Dragging
 		if (dragging) {
 			int mouseY = Input.MouseGlobalPosition.y;

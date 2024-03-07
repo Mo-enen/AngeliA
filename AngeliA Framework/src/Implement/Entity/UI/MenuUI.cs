@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
@@ -132,9 +132,6 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		bool animating = AnimationDuration > 0 && AnimationFrame < AnimationDuration;
 
 		// BG
-		if (ScreenTint.a > 0) {
-			Renderer.Draw(Const.PIXEL, Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
-		}
 		var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? msgHeight : 0);
 		if (animating) {
 			bgRect = bgRect.Expand(Util.RemapUnclamped(
@@ -144,6 +141,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			));
 		}
 		BackgroundRect = bgRect;
+		if (ScreenTint.a > 0) {
+			Renderer.Draw(Const.PIXEL, Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
+		}
 		Renderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
 
 		// Message
@@ -177,8 +177,13 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		}
 		ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
 
-		// Menu
+
+		// --- Draw all Menu Items ---
+
 		DrawMenu();
+
+		// ---------------------------
+
 
 		// Scroll Wheel
 		int wheel = -Input.MouseWheelDelta;
@@ -336,6 +341,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		var itemRect_Old = new IRect(windowRect.x, itemY, windowRect.width, itemHeight);
 		var itemRect = itemRect_Old.Shrink(markSize.x, markSize.x, 0, 0);
 		itemRect_Old = itemRect_Old.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
+		var hoverCheckingRect = itemRect;
 		if (itemRect.Overlaps(windowRect)) {
 
 			var labelRect = itemRect;
@@ -345,12 +351,12 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			if (string.IsNullOrEmpty(value.Text) && icon == 0) {
 
 				// Mouse Highlight
-				var hoverCheckingRect = labelRect.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
+				hoverCheckingRect = labelRect.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
 				bounds = hoverCheckingRect.Shrink(markSize.x * 2, markSize.x * 2, 0, 0);
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
 					if (mouseHoverLabel && Input.LastActionFromMouse) {
-						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
+						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint);
 					}
 				}
 
@@ -362,7 +368,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			} else {
 
 				var secLabelRect = labelRect.Shrink(labelRect.width / 2, 0, 0, 0);
-				var hoverCheckingRect = secLabelRect.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
+				hoverCheckingRect = secLabelRect.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
 				bounds = hoverCheckingRect.Shrink(markSize.x * 2, markSize.x * 2, 0, 0);
 
 				// Mouse Highlight
@@ -451,17 +457,18 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 		// Selection
 		if (SelectionIndex == ItemCount) {
-			Renderer.Draw(
-				SelectionMarkCode,
-				new IRect(
+			if (!Input.LastActionFromMouse) {
+				// Highlight
+				Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint);
+				// Hand
+				var handRect = new IRect(
 					itemRect.x - markSize.x + MarkPingPongFrame.PingPong(60),
 					itemRect.y + (itemRect.height - markSize.y) / 2,
 					markSize.x,
 					markSize.y
-				),
-				SelectionMarkTint,
-				int.MaxValue - 3
-			);
+				);
+				Renderer.Draw(SelectionMarkCode, handRect, SelectionMarkTint);
+			}
 			// Invoke
 			if (Interactable) {
 				if (Input.GameKeyDown(Gamekey.Action) || Input.KeyboardDown(KeyboardKey.Enter)) {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public abstract class MapEditorGizmos {
@@ -356,7 +356,7 @@ Color32.BLACK, GIZMOS_Z
 	private void DrawCrossLineGizmos (IRect rect, int thickness, Color32 tint, Color32 shadowTint) {
 		int shiftY = thickness / 2;
 		int shrink = thickness * 2;
-		GUI.DrawLine(
+		DrawLine(
 			rect.xMin + shrink,
 			rect.yMin + shrink - shiftY,
 			rect.xMax - shrink,
@@ -364,7 +364,7 @@ Color32.BLACK, GIZMOS_Z
 			thickness, shadowTint,
 			GIZMOS_Z - 1
 		);
-		GUI.DrawLine(
+		DrawLine(
 			rect.xMin + shrink,
 			rect.yMax - shrink - shiftY,
 			rect.xMax - shrink,
@@ -372,7 +372,7 @@ Color32.BLACK, GIZMOS_Z
 			thickness, shadowTint,
 			GIZMOS_Z - 1
 		);
-		GUI.DrawLine(
+		DrawLine(
 			rect.xMin + shrink,
 			rect.yMin + shrink + shiftY,
 			rect.xMax - shrink,
@@ -380,7 +380,7 @@ Color32.BLACK, GIZMOS_Z
 			thickness, tint,
 			GIZMOS_Z - 1
 		);
-		GUI.DrawLine(
+		DrawLine(
 			rect.xMin + shrink,
 			rect.yMax - shrink + shiftY,
 			rect.xMax - shrink,
@@ -388,6 +388,14 @@ Color32.BLACK, GIZMOS_Z
 			thickness, tint,
 			GIZMOS_Z - 1
 		);
+		static void DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint, int z = int.MinValue) {
+			Renderer.Draw(
+				Const.PIXEL, fromX, fromY, 500, 0,
+				-Float2.SignedAngle(Float2.up, new Float2(toX - fromX, toY - fromY)).RoundToInt(),
+				thickness, Util.DistanceInt(fromX, fromY, toX, toY),
+				tint, z
+			);
+		}
 	}
 
 

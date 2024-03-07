@@ -51,7 +51,8 @@ public static class Renderer {
 		}
 		public void ReverseUnsorted () {
 			if (SortedIndex < Count - 1) {
-				System.Array.Reverse(Cells, SortedIndex, Count - 1 - SortedIndex);
+				System.Array.Reverse(Cells, SortedIndex, Count - SortedIndex);
+				SortedIndex = Count;
 			}
 		}
 		public void AbandonZSort () => SortedIndex = Count;
