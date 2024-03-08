@@ -288,8 +288,8 @@ Color32.BLACK, int.MinValue + 1
 		// Tip
 		if (tipID != 0) {
 			GUI.Label(
-				TextContent.Get(ItemSystem.GetItemName(tipID), alignment: Alignment.BottomMid),
 				new IRect(tipRect.x - tipRect.width * 2, tipRect.yMax + tipRect.height / 2, tipRect.width * 5, tipRect.height),
+				ItemSystem.GetItemName(tipID),
 				out var tipBounds
 			);
 			Renderer.Draw(Const.PIXEL, tipBounds, Color32.BLACK, int.MaxValue);
@@ -341,8 +341,7 @@ Color32.BLACK, int.MinValue + 1
 					countSize, countSize
 				);
 				Renderer.Draw(Const.PIXEL, countRect, Color32.BLACK, int.MinValue + 8);
-				var chars = CombineResultCountChars.GetChars(CombineResultCount);
-				GUI.Label(TextContent.Get(chars), countRect);
+				GUI.Label(countRect, CombineResultCountChars.GetChars(CombineResultCount));
 			}
 		}
 

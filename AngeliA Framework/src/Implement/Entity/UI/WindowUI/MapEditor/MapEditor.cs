@@ -157,7 +157,6 @@ public sealed partial class MapEditor : WindowUI {
 	private int PanelOffsetX = 0;
 	private int ToolbarOffsetX = 0;
 	private int InitializedFrame = int.MinValue;
-	private readonly TextContent DropHintLabel = new() { BackgroundTint = Color32.BLACK, Alignment = Alignment.BottomLeft, Wrap = WrapMode.NoWrap, CharSize = 24, };
 	private readonly IntToChars StateXLabelToString = new("x:");
 	private readonly IntToChars StateYLabelToString = new("y:");
 	private readonly IntToChars StateZLabelToString = new("z:");
@@ -846,12 +845,11 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		if (!QuickPlayerDrop) {
-			DropHintLabel.Text = MEDT_DROP;
-			GUI.Label(DropHintLabel, new IRect(
+			GUI.BackgroundLabel(new IRect(
 				Input.MouseGlobalPosition.x - DropHintWidth / 2,
 				Input.MouseGlobalPosition.y + Const.HALF,
 				DropHintWidth, Const.CEL
-			), out var bounds);
+			), MEDT_DROP, Color32.BLACK, out var bounds);
 			DropHintWidth = bounds.width;
 		}
 
@@ -886,36 +884,39 @@ public sealed partial class MapEditor : WindowUI {
 
 		// State
 		if (ShowState) {
-			var cameraRect = Renderer.CameraRect;
-			int LABEL_HEIGHT = Unify(22);
-			int LABEL_WIDTH = Unify(52);
-			int PADDING = Unify(6);
 
-			int z = IsNavigating ? NavPosition.z : Stage.ViewZ;
-			GUI.Label(
-				TextContent.Get(StateZLabelToString.GetChars(z), Color32.GREY_196, 22, Alignment.TopRight),
-				new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
-				out var boundsZ
-			);
+			using (ContentColorScope.Start(Color32.GREY_196)) {
 
-			if (!IsNavigating) {
+				var cameraRect = Renderer.CameraRect;
+				int LABEL_HEIGHT = Unify(22);
+				int LABEL_WIDTH = Unify(52);
+				int PADDING = Unify(6);
+				int z = IsNavigating ? NavPosition.z : Stage.ViewZ;
 
-				int y = Input.MouseGlobalPosition.y.ToUnit();
 				GUI.Label(
-					TextContent.Get(StateYLabelToString.GetChars(y), Color32.GREY_196, 22, Alignment.TopRight),
-					new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
-					out var boundsY
+					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+					StateZLabelToString.GetChars(z),
+					out var boundsZ
 				);
 
-				int x = Input.MouseGlobalPosition.x.ToUnit();
-				GUI.Label(
-					TextContent.Get(StateXLabelToString.GetChars(x), Color32.GREY_196, 22, Alignment.TopRight),
-					new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT)
-				);
+				if (!IsNavigating) {
 
+					int y = Input.MouseGlobalPosition.y.ToUnit();
+					GUI.Label(
+						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						StateYLabelToString.GetChars(y),
+						out var boundsY
+					);
+
+					int x = Input.MouseGlobalPosition.x.ToUnit();
+					GUI.Label(
+						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						StateXLabelToString.GetChars(x)
+					);
+
+				}
 			}
 		}
-
 	}
 
 
@@ -1056,8 +1057,7 @@ public sealed partial class MapEditor : WindowUI {
 			Util.Max(rect.y - height - Unify(12), Renderer.CameraRect.y),
 			rect.width, height
 		);
-		TooltipLabel.Text = tip;
-		GUI.Label(TooltipLabel, tipRect, out var bounds);
+		GUI.Label(tipRect, tip, out var bounds);
 		Renderer.Draw(Const.PIXEL, bounds.Expand(gap), Color32.BLACK, int.MaxValue);
 	}
 

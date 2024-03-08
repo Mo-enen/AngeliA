@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public class WardrobeA : WardrobeWood { }
 public class WardrobeB : WardrobeWood { }
 public class WardrobeC : WardrobeWood { }
@@ -271,7 +271,7 @@ Color32.BLACK, 0
 			);
 		} else {
 			// None Label
-			GUI.Label(BuiltInText.UI_NONE, windowRect, tint: Color32.WHITE);
+			GUI.Label(windowRect, BuiltInText.UI_NONE);
 		}
 
 		// Arrow L
@@ -381,26 +381,22 @@ Color32.BLACK, 0
 
 		// Display Name
 		if (CurrentPattern != int.MinValue) {
-			GUI.Label(
-				CurrentDisplayName, windowRect.EdgeOutside(Direction4.Down, LabelSize), tint: Color32
-.WHITE
-			);
+			GUI.Label(windowRect.EdgeOutside(Direction4.Down, LabelSize), CurrentDisplayName);
 		}
 
 		// Index Label
 		int midWidth = Unify(12);
 		GUI.Label(
-			TextContent.Get(IndexLabelLeft.GetChars(CurrentPatternIndex + 1), 24, Alignment.MidRight),
-			new IRect(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
+			new IRect(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize),
+			IndexLabelLeft.GetChars(CurrentPatternIndex + 1)
 		);
 		GUI.Label(
-			TextContent.Get(IndexLabelRight.GetChars(CurrentPatternList.Count), 24, Alignment.MidLeft),
-			new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize)
+			new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize),
+			IndexLabelRight.GetChars(CurrentPatternList.Count)
 		);
 		GUI.Label(
-			"/",
 			new IRect(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize),
-			charSize: 24, alignment: Alignment.MidMid
+			"/"
 		);
 
 	}

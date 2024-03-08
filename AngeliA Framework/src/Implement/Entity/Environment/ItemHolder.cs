@@ -102,8 +102,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
 			Renderer.SetLayerToUI();
 			Renderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
-			var chars = ItemCountChars.GetChars(ItemCount);
-			GUI.Label(TextContent.Get(chars, charSize: 20), labelRect);
+			GUI.Label(labelRect, ItemCountChars.GetChars(ItemCount));
 		}
 		Renderer.SetLayerToDefault();
 		// Highlight

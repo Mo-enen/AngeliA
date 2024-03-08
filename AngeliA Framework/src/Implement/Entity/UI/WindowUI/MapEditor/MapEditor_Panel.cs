@@ -92,9 +92,6 @@ public partial class MapEditor {
 	private const int TOOL_BAR_HEIGHT = 54;
 	private const int SEARCH_BAR_ID = 3983472;
 
-	// UI
-	private readonly TextContent TooltipLabel = new() { Tint = Color32.WHITE, Alignment = Alignment.TopLeft, CharSize = 24, };
-
 	// Data
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
@@ -329,19 +326,15 @@ public partial class MapEditor {
 
 			// Label
 			GUI.Label(
-				TextContent.Get(
-					i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
-Color32.WHITE,
-					alignment: Alignment.MidMid, charSize: 22
-				),
-				tabRect.Shrink(tabRect.height * 2 / 3, 0, 0, 0), out var labelBounds
+				tabRect.Shrink(tabRect.height * 2 / 3, 0, 0, 0),
+				i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
+				out var labelBounds
 			);
 
 			// Icon
 			Renderer.Draw(
 				i == (int)PaletteTabType.Listed ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
-				labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 3, 0),
-Color32.WHITE, PANEL_Z - 4
+				labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 3, 0), Color32.WHITE, PANEL_Z - 4
 			);
 
 			// Click
@@ -718,10 +711,7 @@ Color32.WHITE, PANEL_Z - 4
 			);
 
 			// Label
-			GUI.Label(
-				pal.Name, rect.Shrink(itemSize + itemGap, 0, 0, 0),
-				tint: Color32.WHITE, charSize: 24, alignment: Alignment.MidLeft
-			);
+			GUI.Label(rect.Shrink(itemSize + itemGap, 0, 0, 0), pal.Name);
 
 			// Hover
 			bool hover = interactable && mouseInPanel && rect.MouseInside();

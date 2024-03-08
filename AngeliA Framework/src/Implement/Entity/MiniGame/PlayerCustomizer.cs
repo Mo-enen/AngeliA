@@ -364,10 +364,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			);
 
 			// Label
-			GUI.Label(
-				label, fieldRect.Shrink(fieldRect.height + fieldPadding, 0, 0, 0),
-				charSize: 32, alignment: Alignment.MidLeft
-			);
+			GUI.Label(fieldRect.Shrink(fieldRect.height + fieldPadding, 0, 0, 0), label);
 
 			// Bottom Line
 			Renderer.Draw(
@@ -432,7 +429,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 					CurrentSubMenu = null;
 				}
 			}
-			GUI.Label(TextContent.Get(BuiltInText.UI_BACK, 28, Alignment.MidMid), buttonRect);
+			GUI.Label(buttonRect, BuiltInText.UI_BACK, GUISkin.CenterLabel);
 			Cursor.SetCursorAsHand(buttonRect, 1);
 
 			// End
@@ -852,16 +849,14 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				Renderer.Draw(
 					SELECTION_MARK,
 					rect.xMax - contentPadding, rect.CenterY(),
-					1000, 500, 0, iconSize, iconSize,
-Color32.GREEN, EDITOR_BASIC_Z + 3
+					1000, 500, 0, iconSize, iconSize, Color32.GREEN, EDITOR_BASIC_Z + 3
 				);
 			}
 
 			// Frame
 			if (!isLabel) Renderer.Draw_9Slice(
 				FRAME_CODE, rect,
-				itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness,
-Color32.GREY_32, EDITOR_BASIC_Z + 4
+				itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness, Color32.GREY_32, EDITOR_BASIC_Z + 4
 			);
 
 			if (!forColor) {
@@ -880,21 +875,17 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 
 				if (isEmpty) {
 					// Empty Name
-					GUI.Label(BuiltInText.UI_NONE, rect.Shift(contentPadding * 2, 0), tint: Color32.WHITE);
+					GUI.Label(rect.Shift(contentPadding * 2, 0), BuiltInText.UI_NONE);
 				} else {
 					if (!isLabel) {
 						// Item Name
 						GUI.Label(
-							displayName,
 							rect.Shift(contentPadding * 2, 0).Shrink(rect.height + iconPadding, 0, 0, 0),
-							charSize: 24, alignment: Alignment.MidLeft
+							displayName
 						);
 					} else {
 						// Item Label
-						GUI.Label(
-							displayName, rect.Shift(contentPadding * 2, 0),
-							tint: Color32.GREY_128, charSize: 20, alignment: Alignment.MidMid
-						);
+						GUI.Label(rect.Shift(contentPadding * 2, 0), displayName);
 					}
 				}
 			} else {
@@ -970,9 +961,7 @@ Color32.GREY_32, EDITOR_BASIC_Z + 4
 		int BUTTON_PADDING = Unify(24);
 
 		// Label
-		GUI.Label(
-			TextContent.Get(BodyHeightToString.GetChars(playerHeight), 52), panelRect, out var labelBounds
-		);
+		GUI.Label(panelRect, BodyHeightToString.GetChars(playerHeight), out var labelBounds);
 
 		// Button Up
 		var btnRectU = new IRect(panelRect.CenterX() - BUTTON_W / 2, labelBounds.yMax + BUTTON_PADDING, BUTTON_W, BUTTON_H);

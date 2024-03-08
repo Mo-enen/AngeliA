@@ -249,29 +249,21 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 
 		// Name
 		var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
-		GUI.Label(
-			ItemSystem.GetItemName(itemID), nameRect,
-			charSize: 20, alignment: Alignment.MidLeft, tint: Color32
-.ORANGE_BETTER
-		);
+		using (ContentColorScope.Start(Color32.ORANGE_BETTER)) {
+			GUI.Label(nameRect, ItemSystem.GetItemName(itemID));
+		}
 
 		// Description
 		GUI.Label(
-			TextContent.Get(
-				ItemSystem.GetItemDescription(itemID),
-				charSize: 18,
-				alignment: Alignment.TopLeft,
-				wrap: WrapMode.WordWrap
-			),
 			panelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
-			out var desBounds
+			ItemSystem.GetItemDescription(itemID),
+			out var desBounds, GUISkin.TextArea
 		);
 
 		// Background
 		Renderer.Draw(
 			Const.PIXEL,
-			new IRect(panelRect.x, desBounds.y, panelRect.width, nameRect.yMax - desBounds.y).Expand(windowPadding),
-Color32.BLACK, int.MinValue + 1
+			new IRect(panelRect.x, desBounds.y, panelRect.width, nameRect.yMax - desBounds.y).Expand(windowPadding), Color32.BLACK, int.MinValue + 1
 		);
 
 	}
@@ -775,10 +767,7 @@ Color32.WHITE, int.MaxValue
 		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
 		// Label
-		GUI.Label(
-			label, fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0),
-			tint: enableTint, charSize: 20, alignment: Alignment.MidLeft
-		);
+		GUI.Label(fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label);
 
 		// Progressive Icon
 		ItemSystem.DrawItemShortInfo(
@@ -1137,8 +1126,7 @@ Color32.WHITE, int.MaxValue
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
 		Renderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
-		var chars = ItemCountChars.GetChars(number);
-		GUI.Label(TextContent.Get(chars, Color32.WHITE), rect);
+		GUI.Label(rect, ItemCountChars.GetChars(number));
 	}
 
 

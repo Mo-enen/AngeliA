@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public sealed class DefaultDialogueUI : DialogueUI {
 
 	protected override IRect PanelRect => new(
@@ -11,7 +11,7 @@ public sealed class DefaultDialogueUI : DialogueUI {
 		Renderer.CameraRect.width,
 		Unify(300)
 	);
-	protected override IRect ContentRect => PanelRect.Shrink(IconRect.width + Unify(28), Unify(12), Unify(12), Unify(36 + NameFontSize));
+	protected override IRect ContentRect => PanelRect.Shrink(IconRect.width + Unify(28), Unify(12), Unify(12), Unify(36 + 32));
 	protected override IRect IconRect {
 		get {
 			var rect = PanelRect.Shrink(Unify(12));
@@ -22,10 +22,9 @@ public sealed class DefaultDialogueUI : DialogueUI {
 	protected override IRect NameRect {
 		get {
 			var panelRect = PanelRect.Shrink(Unify(12));
-			return new IRect(panelRect.x + panelRect.height + Unify(12), panelRect.yMax - Unify(30), panelRect.width, Unify(NameFontSize));
+			return new IRect(panelRect.x + panelRect.height + Unify(12), panelRect.yMax - Unify(30), panelRect.width, Unify(32));
 		}
 	}
-	protected override Color32 NameTint => Color32.GREY_196;
 
 }
 
@@ -44,11 +43,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	protected abstract IRect ContentRect { get; }
 	protected abstract IRect IconRect { get; }
 	protected abstract IRect NameRect { get; }
-	protected virtual int NameFontSize => 28;
-	protected virtual int ContentFontSize => 32;
 	protected virtual int RollingSpeed => 16; // Character per Frame
-	protected virtual Color32 NameTint => Color32.WHITE;
-	protected virtual Color32 ContentTint => Color32.WHITE;
 	public IRect BackgroundRect { get; private set; }
 
 	// Data
@@ -59,8 +54,6 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	private int Identity = 0;
 	private string Content = "";
 	private Color32[] Colors = null;
-	private readonly TextContent LabelName = new() { Alignment = Alignment.MidLeft, };
-	private readonly TextContent LabelContent = new() { Wrap = WrapMode.WordWrap, Clip = true, Alignment = Alignment.TopLeft, };
 
 
 	#endregion
@@ -111,11 +104,8 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, 0);
 
 		// Content
-		LabelContent.Text = Content;
-		LabelContent.CharSize = ContentFontSize;
-		LabelContent.Tint = ContentTint;
 		int cellStartIndex = Renderer.GetTextUsedCellCount();
-		GUI.Label(LabelContent, contentRect, StartIndex, true, out _, out EndIndex);
+		GUI.Label(contentRect, Content, StartIndex, true, out _, out EndIndex, GUISkin.TextArea);
 		if (Renderer.GetTextCells(out var cells, out int count)) {
 			int charIndex = StartIndex;
 			int visibleIndex = StartIndex + (Game.GlobalFrame - RolledFrame) * RollingSpeed;
@@ -134,10 +124,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 		}
 
 		// Name
-		LabelName.Text = Language.Get(Identity);
-		LabelName.CharSize = NameFontSize;
-		LabelName.Tint = NameTint;
-		GUI.Label(LabelName, nameRect);
+		GUI.Label(nameRect, Language.Get(Identity));
 
 		// Icon
 		if (Renderer.TryGetSprite(Identity, out var iconSprite)) {

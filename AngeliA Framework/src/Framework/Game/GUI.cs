@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using AngeliA.Internal;
 
 
 namespace AngeliA.Framework;
@@ -20,6 +21,9 @@ public static class GUI {
 	// Api
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
+	public static Color32 Color { get; set; } = Color32.WHITE;
+	public static Color32 BodyColor { get; set; } = Color32.WHITE;
+	public static Color32 ContentColor { get; set; } = Color32.WHITE;
 	public static int TypingTextFieldID {
 		get => _TypingTextFieldID;
 		private set {
@@ -30,13 +34,6 @@ public static class GUI {
 		}
 	}
 	public static int _TypingTextFieldID = 0;
-
-	// UI
-	private static readonly TextContent InputLabel = new() {
-		Alignment = Alignment.MidLeft,
-		Wrap = WrapMode.NoWrap,
-		Clip = true,
-	};
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
@@ -88,7 +85,12 @@ public static class GUI {
 
 
 	[OnGameUpdate(-4096)]
-	internal static void Reset () => Enable = true;
+	internal static void Reset () {
+		Enable = true;
+		Color = Color32.WHITE;
+		BodyColor = Color32.WHITE;
+		ContentColor = Color32.WHITE;
+	}
 
 
 	// Unify
@@ -117,55 +119,44 @@ public static class GUI {
 
 
 	// Label
-	public static void Label (string text, IRect rect, Color32 tint, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect, out bounds);
-	public static void Label (string text, IRect rect, out IRect bounds, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, charSize, alignment, wrap), rect, out bounds);
-	public static void Label (string text, IRect rect, Color32 tint, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, tint, charSize, alignment, wrap), rect);
-	public static void Label (string text, IRect rect, int charSize = 24, Alignment alignment = Alignment.MidMid, WrapMode wrap = WrapMode.NoWrap) => Label(TextContent.Get(text, charSize, alignment, wrap), rect);
-	public static void Label (TextContent content, IRect rect) => Label(content, rect, -1, 0, false, out _, out _, out _);
-	public static void Label (TextContent content, IRect rect, out IRect bounds) => Label(content, rect, -1, 0, false, out bounds, out _, out _);
-	public static void Label (TextContent content, IRect rect, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => Label(content, rect, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
-	private static void Label (TextContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
-
-		endIndex = startIndex;
-		bounds = rect;
-		beamRect = new IRect(rect.x, rect.y, 1, rect.height);
-		if (!Renderer.TextReady) return;
-
-		// Draw BG
-		var bgColor = content.BackgroundTint;
-		int bgPadding = Unify(content.BackgroundPadding);
-		var bgCell = bgColor.a > 0 ? Renderer.Draw(Const.PIXEL, rect, bgColor, z: int.MaxValue) : null;
-		if (bgCell != null && bgPadding >= 0) {
-			bgCell.X = bounds.x - bgPadding;
-			bgCell.Y = bounds.y - bgPadding;
-			bgCell.Z = int.MaxValue;
-			bgCell.Width = bounds.width + bgPadding * 2;
-			bgCell.Height = bounds.height + bgPadding * 2;
+	public static void Label (IRect rect, string text, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+	public static void Label (IRect rect, char[] text, GUIStyle style = null) => LabelLogic(rect, "", text, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+	public static void Label (IRect rect, string text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
+	public static void Label (IRect rect, char[] text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, "", text, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
+	public static void Label (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
+	private static void LabelLogic (IRect rect, string text, char[] chars, GUIStyle style, GUIState state, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
+		if (!Renderer.TextReady) {
+			endIndex = startIndex;
+			bounds = rect;
+			beamRect = new IRect(rect.x, rect.y, 1, rect.height);
+			return;
 		}
-
-		// Draw Chars
+		// Draw
+		style ??= GUISkin.Label;
 		Renderer.GetTextCells(out var cells, out int cellCount);
-		TextUtil.DrawLabel(
+		TextUtilInternal.DrawLabelInternal(
 			Renderer.RequireCharForPool, Renderer.DrawChar,
-			Renderer.CameraRect.height, cellCount, cells,
-			content, rect, beamIndex, startIndex, drawInvisibleChar,
+			Renderer.CameraRect.height, cellCount, cells, style,
+			GetContentRect(rect, style, state), text, chars, Color * ContentColor * style.GetContentColor(state), beamIndex, startIndex, drawInvisibleChar,
 			out bounds, out beamRect, out endIndex
 		);
-
 	}
 
 
-	// Scroll Label
-	public static int ScrollLabel (TextContent content, IRect rect, int scrollPosition) {
+	// Label Extra
+	public static int ScrollLabel (string text, IRect rect, int scrollPosition, GUIStyle style) {
+		style ??= GUISkin.Label;
 		int before = Renderer.GetTextUsedCellCount();
-		Label(content, rect, out var bounds);
+		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out var bounds, out _, out _);
 		if (bounds.height < rect.height) {
 			scrollPosition = 0;
 			return scrollPosition;
 		}
-		scrollPosition = scrollPosition.Clamp(0, bounds.height - rect.height + Unify(content.CharSize * 2));
+		scrollPosition = scrollPosition.Clamp(0, bounds.height - rect.height + Unify(style.CharSize * 2));
 		int after = Renderer.GetTextUsedCellCount();
 		if (before == after) return scrollPosition;
+		// Clamp
 		if (Renderer.GetTextCells(out var cells, out int count)) {
 			for (int i = before; i < after && i < count; i++) {
 				var cell = cells[i];
@@ -176,12 +167,18 @@ public static class GUI {
 		return scrollPosition;
 	}
 
+	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, text, backgroundColor, out _, backgroundPadding, style);
+	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null) {
+		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
+		Renderer.Draw(Const.PIXEL, bounds.Expand(backgroundPadding), Color * BodyColor * backgroundColor, z: 0);
+	}
+
 
 	// Style
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) {
 		int sprite = style.GetBodySprite(state);
 		if (sprite == 0) return;
-		var color = style.GetBodyColor(state);
+		var color = Color * BodyColor * style.GetBodyColor(state);
 		if (color.a == 0) return;
 		if (style.BodyBorder.HasValue) {
 			var border = style.BodyBorder.Value;
@@ -190,8 +187,9 @@ public static class GUI {
 			Renderer.Draw_9Slice(sprite, rect, color);
 		}
 	}
+
 	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state) {
-		var color = style.GetContentColor(state);
+		var color = Color * ContentColor * style.GetContentColor(state);
 		if (color.a == 0) return;
 		var shift = style.GetContentShift(state);
 		rect = rect.Shift(shift.x, shift.y);
@@ -207,13 +205,14 @@ public static class GUI {
 	// Button
 	public static bool DarkButton (IRect rect, string label) => Button(rect, label, GUISkin.DarkButton);
 	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, GUISkin.DarkButton);
-	public static bool Button (IRect rect, string label, GUIStyle style = null) {
+	public static bool Button (IRect rect, string label, GUIStyle style = null, GUIStyle labelStyle = null) {
 		style ??= GUISkin.Button;
+		labelStyle ??= GUISkin.CenterLabel;
 		bool result = BlankButton(rect, out var state);
 		DrawStyleBody(rect, style, state);
 		// Label
 		if (!string.IsNullOrEmpty(label)) {
-			Label(TextContent.Get(label, style), GetContentRect(rect, style, state));
+			LabelLogic(rect, label, null, labelStyle, state, -1, 0, false, out _, out _, out _);
 		}
 		return result;
 	}
@@ -221,6 +220,7 @@ public static class GUI {
 		style ??= GUISkin.Button;
 		bool result = BlankButton(rect, out var state);
 		DrawStyleBody(rect, style, state);
+		// Icon
 		Icon(rect, icon, style, state);
 		return result;
 	}
@@ -277,16 +277,14 @@ public static class GUI {
 		if (style != null) {
 			DrawStyleContent(rect, sprite, style, state);
 		} else {
-			Renderer.Draw(icon, rect.Fit(icon));
+			Renderer.Draw(icon, rect.Fit(icon), Color * ContentColor);
 		}
 	}
 
 
 	// Text Field
-	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out _, out _, bodyStyle, selectionStyle);
-	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, InputLabel.SetText(text, ReverseUnify(rect.height / 2)), out changed, out confirm, bodyStyle, selectionStyle);
-	public static string InputField (int controlID, IRect rect, TextContent text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionStyle);
-	public static string InputField (int controlID, IRect rect, TextContent text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) {
+	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionStyle);
+	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) {
 
 		bodyStyle ??= GUISkin.InputField;
 		selectionStyle ??= GUISkin.GreenPixel;
@@ -351,8 +349,8 @@ public static class GUI {
 				BeamBlinkFrame = Game.PauselessFrame;
 			}
 
-			beamIndex = BeamIndex = beamIndex.Clamp(0, text.Text.Length);
-			beamLength = BeamLength = beamLength.Clamp(-beamIndex, text.Text.Length - beamIndex);
+			beamIndex = BeamIndex = beamIndex.Clamp(0, text.Length);
+			beamLength = BeamLength = beamLength.Clamp(-beamIndex, text.Length - beamIndex);
 			TypingTextFieldRect = rect;
 			TypingUpdateFrame = Game.PauselessFrame;
 
@@ -363,8 +361,8 @@ public static class GUI {
 						// Backspace
 						if (beamLength == 0) {
 							int removeIndex = beamIndex - 1;
-							if (removeIndex >= 0 && removeIndex < text.Text.Length) {
-								text.Text = text.Text.Remove(removeIndex, 1);
+							if (removeIndex >= 0 && removeIndex < text.Length) {
+								text = text.Remove(removeIndex, 1);
 								beamIndex = BeamIndex = beamIndex - 1;
 								changed = true;
 							}
@@ -383,7 +381,7 @@ public static class GUI {
 						if (beamLength == 0) break;
 						int beamStart = Util.Min(beamIndex, beamIndex + beamLength);
 						int beamEnd = Util.Max(beamIndex, beamIndex + beamLength);
-						Game.SetClipboardText(text.Text[beamStart..beamEnd]);
+						Game.SetClipboardText(text[beamStart..beamEnd]);
 						if (c == Const.CONTROL_CUT) {
 							RemoveSelection();
 							changed = true;
@@ -393,15 +391,15 @@ public static class GUI {
 						string clipboardText = Game.GetClipboardText();
 						if (string.IsNullOrEmpty(clipboardText)) break;
 						if (beamLength != 0) RemoveSelection();
-						text.Text = text.Text.Insert(beamIndex, clipboardText);
+						text = text.Insert(beamIndex, clipboardText);
 						beamIndex = BeamIndex = beamIndex + clipboardText.Length;
 						changed = true;
 						break;
 					default:
-						if (text.Text.Length >= MAX_INPUT_CHAR) break;
+						if (text.Length >= MAX_INPUT_CHAR) break;
 						// Append Char
 						if (beamLength != 0) RemoveSelection();
-						text.Text = text.Text.Insert(beamIndex, c.ToString());
+						text = text.Insert(beamIndex, c.ToString());
 						beamIndex = BeamIndex = beamIndex + 1;
 						changed = true;
 						break;
@@ -411,10 +409,10 @@ public static class GUI {
 			// Delete
 			if (Input.KeyboardDownGUI(KeyboardKey.Delete)) {
 				int removeIndex = beamIndex;
-				if (removeIndex >= 0 && removeIndex < text.Text.Length) {
+				if (removeIndex >= 0 && removeIndex < text.Length) {
 					if (beamLength == 0) {
 						// Delete One Char
-						text.Text = text.Text.Remove(removeIndex, 1);
+						text = text.Remove(removeIndex, 1);
 						changed = true;
 					} else {
 						// Delete Selection
@@ -427,7 +425,7 @@ public static class GUI {
 			// Func
 			void RemoveSelection () {
 				int newBeamIndex = Util.Min(beamIndex, beamIndex + beamLength);
-				text.Text = text.Text.Remove(newBeamIndex, beamLength.Abs());
+				text = text.Remove(newBeamIndex, beamLength.Abs());
 				beamIndex = BeamIndex = newBeamIndex;
 				beamLength = BeamLength = 0;
 			}
@@ -444,8 +442,8 @@ public static class GUI {
 		);
 
 		// Draw Text
-		if (!string.IsNullOrEmpty(text.Text)) {
-			Label(text, labelRect, beamIndex, 0, false, out _, out beamRect, out _);
+		if (!string.IsNullOrEmpty(text)) {
+			LabelLogic(labelRect, text, null, bodyStyle, state, beamIndex, 0, false, out _, out beamRect, out _);
 		}
 
 		// Draw Beam
@@ -512,7 +510,7 @@ public static class GUI {
 					mouseBeamIndex = i - startCellIndex;
 					// End Check
 					if (i == endCellIndex - 1 && mouseX > x) {
-						mouseBeamIndex = text.Text.Length;
+						mouseBeamIndex = text.Length;
 					}
 					if (x > mouseX) break;
 				}
@@ -530,11 +528,11 @@ public static class GUI {
 		}
 
 		// Clamp
-		if (text.Text.Length > MAX_INPUT_CHAR) {
-			text.Text = text.Text[..MAX_INPUT_CHAR];
+		if (text.Length > MAX_INPUT_CHAR) {
+			text = text[..MAX_INPUT_CHAR];
 		}
 
-		return text.Text;
+		return text;
 	}
 
 
@@ -607,7 +605,7 @@ public static class GUI {
 		Renderer.Draw_9Slice(
 			spriteID, rect.Expand(Game.GlobalFrame.PingPong(thickness)),
 			border, border, border, border,
-			color, z
+			Color * BodyColor * color, z
 		);
 	}
 

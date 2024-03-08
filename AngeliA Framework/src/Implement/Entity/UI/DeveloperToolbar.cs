@@ -302,9 +302,7 @@ public static class DeveloperToolbar {
 			Renderer.Draw(Const.PIXEL, new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
 			// Label
 			int startIndex = Renderer.GetTextUsedCellCount();
-			GUI.Label(
-				TextContent.Get(data.I2C.GetChars(data.Value), Color32.GREY_230, 14, Alignment.MidMid), rect
-			);
+			GUI.Label(rect, data.I2C.GetChars(data.Value), GUISkin.CenterMiniLabel);
 			if (Renderer.GetTextCells(out var cells, out int count)) {
 				for (int i = startIndex; i < count && i < startIndex + data.I2C.Prefix.Length; i++) {
 					cells[i].Color = new Color32(96, 96, 96, 255);
@@ -325,10 +323,7 @@ public static class DeveloperToolbar {
 			rect.y -= itemHeight + itemPadding;
 
 			// Label
-			string name = Const.SCREEN_EFFECT_NAMES[i];
-			GUI.Label(TextContent.Get(
-				name, Color32.GREY_216, charSize: 18, alignment: Alignment.MidLeft
-			), rect);
+			GUI.Label(rect, Const.SCREEN_EFFECT_NAMES[i]);
 
 			// Enable Button
 			var enableRect = rect.EdgeInside(Direction4.Right, itemHeight);

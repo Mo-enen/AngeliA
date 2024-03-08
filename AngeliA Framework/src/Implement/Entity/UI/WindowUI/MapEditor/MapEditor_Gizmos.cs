@@ -23,9 +23,6 @@ public partial class MapEditor {
 	#region --- VAR ---
 
 
-	// UI
-	private readonly TextContent CursorEraseLabel = new() { CharSize = 24, Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, };
-
 	// Data
 	private IRect PaintingThumbnailRect = default;
 	private int PaintingThumbnailStartIndex = 0;
@@ -401,22 +398,22 @@ Color32.BLACK, GIZMOS_Z
 
 	private void DrawModifyFilterLabel (IRect rect) {
 		if (Modify_EntityOnly) {
-			int height = Unify(CursorEraseLabel.CharSize);
+			int height = Unify(22);
 			GUI.Label(
-				CursorEraseLabel.SetText(MEDT_ENTITY_ONLY),
-				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
+				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height),
+				MEDT_ENTITY_ONLY
 			);
 		} else if (Modify_LevelOnly) {
-			int height = Unify(CursorEraseLabel.CharSize);
+			int height = Unify(22);
 			GUI.Label(
-				CursorEraseLabel.SetText(MEDT_LEVEL_ONLY),
-				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
+				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height),
+				MEDT_LEVEL_ONLY
 			);
 		} else if (Modify_BackgroundOnly) {
-			int height = Unify(CursorEraseLabel.CharSize);
+			int height = Unify(22);
 			GUI.Label(
-				CursorEraseLabel.SetText(MEDT_BG_ONLY),
-				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height)
+				new IRect(rect.x + rect.width / 2, rect.y - height, 1, height),
+				MEDT_BG_ONLY
 			);
 		}
 	}

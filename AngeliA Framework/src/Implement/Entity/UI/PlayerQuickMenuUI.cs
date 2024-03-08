@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.DontDestroyOnSquadTransition]
 [EntityAttribute.DontDestroyOutOfRange]
 [RequireLanguageFromField]
@@ -47,12 +47,6 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	// Data
 	private static readonly Weapon[] WeaponList = new Weapon[Character.INVENTORY_ROW * Character.INVENTORY_COLUMN + 2];
-	private static readonly TextContent NameLabel = new() {
-		Alignment = Alignment.MidMid,
-		BackgroundTint = Color32.BLACK,
-		CharSize = 22,
-		BackgroundPadding = 2,
-	};
 	private int CurrentSlotIndex = 0;
 	private int WeaponCount = 0;
 
@@ -228,14 +222,15 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 				// Name Label
 				int labelWidth = ITEM_SIZE * 3;
-				int labelHeight = Unify(NameLabel.CharSize + 4);
-				GUI.Label(
-					NameLabel.SetText(weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemName(weaponID)),
+				int labelHeight = Unify(36);
+				GUI.BackgroundLabel(
 					new IRect(
 						rect.CenterX() - labelWidth / 2,
 						rect.y - labelHeight,
 						labelWidth, labelHeight
-					)
+					),
+					weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemName(weaponID),
+					Color32.BLACK, 4
 				);
 
 			}

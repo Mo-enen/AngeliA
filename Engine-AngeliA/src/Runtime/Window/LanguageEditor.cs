@@ -51,9 +51,6 @@ public partial class LanguageEditor : EngineWindow {
 	// Data
 	private readonly List<string> Languages = new();
 	private readonly List<LanguageLine> Lines = new();
-	private readonly TextContent KeyLabelContent = new() { Alignment = Alignment.MidLeft, CharSize = 22, Tint = Color32.GREY_216, };
-	private readonly TextContent LabelContent = new() { Alignment = Alignment.MidLeft, CharSize = 15, Tint = Color32.GREY_96, };
-	private readonly TextContent InputContent = new() { Alignment = Alignment.MidLeft, CharSize = 22, Tint = Color32.GREY_216, };
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
 	private string LoadedLanguageRoot = "";
@@ -175,15 +172,15 @@ public partial class LanguageEditor : EngineWindow {
 		// Search
 		rect.width = panelRect.xMax - rect.x;
 		var searchRect = rect.Shrink(Unify(6));
-		SearchingText = GUI.InputField(-19223, searchRect, InputContent.SetText(SearchingText));
-		
+		SearchingText = GUI.InputField(-19223, searchRect, SearchingText);
+
 		// Labels
 		var labelRect = new IRect(panelRect.x + Unify(12), panelRect.y - labelHeight, labelWidth, labelHeight);
-		GUI.Label(LabelContent.SetText(UI_LABEL_KEY), labelRect);
+		GUI.Label(labelRect, UI_LABEL_KEY);
 		labelRect.x += labelRect.width;
 		for (int i = 0; i < Languages.Count; i++) {
 			string name = Util.GetLanguageDisplayName(Languages[i]);
-			GUI.Label(LabelContent.SetText(name), labelRect);
+			GUI.Label(labelRect, name);
 			labelRect.x += labelRect.width;
 		}
 
@@ -243,7 +240,7 @@ public partial class LanguageEditor : EngineWindow {
 				if (i != 0) {
 					rect.height = labelHeight;
 					rect.y -= labelHeight;
-					GUI.Label(LabelContent.SetText(label), rect.Shrink(labelPadding, 0, 0, 0));
+					GUI.Label(rect.Shrink(labelPadding, 0, 0, 0), label);
 					rect.height = itemHeight;
 				}
 			}
@@ -255,12 +252,12 @@ public partial class LanguageEditor : EngineWindow {
 			if (line.Required) {
 				int _textIndex = Renderer.GetTextUsedCellCount();
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				GUI.Label(KeyLabelContent.SetText(line.Key), shrinkedRect);
+				GUI.Label(shrinkedRect, line.Key, GUISkin.CenterMiniLabel);
 				Renderer.ClampTextCells(shrinkedRect, _textIndex);
 				ctrlID++;
 			} else {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Key = GUI.InputField(ctrlID++, shrinkedRect, InputContent.SetText(line.Key), out bool changed, out _);
+				line.Key = GUI.InputField(ctrlID++, shrinkedRect, line.Key, out bool changed, out _);
 				if (changed) {
 					line.Label = Key_to_Label(line.Key);
 					SetDirty();
@@ -271,7 +268,7 @@ public partial class LanguageEditor : EngineWindow {
 			// Contents
 			for (int j = 0; j < line.Value.Count; j++) {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Value[j] = GUI.InputField(ctrlID++, shrinkedRect, InputContent.SetText(line.Value[j]), out bool changed, out _);
+				line.Value[j] = GUI.InputField(ctrlID++, shrinkedRect, line.Value[j], out bool changed, out _);
 				if (changed) SetDirty();
 				rect.x += rect.width;
 			}

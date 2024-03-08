@@ -29,6 +29,8 @@ public sealed class GUIStyle {
 
 	// Text
 	public int CharSize = -1;
+	public int CharSpace = 0;
+	public int LineSpace = 5;
 	public Alignment Alignment = Alignment.MidMid;
 	public WrapMode Wrap = WrapMode.NoWrap;
 	public bool Clip = true;

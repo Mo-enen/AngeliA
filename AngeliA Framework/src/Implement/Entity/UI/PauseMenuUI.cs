@@ -67,7 +67,6 @@ public class PauseMenuUI : MenuUI {
 	private readonly GamepadKey[] GamepadKeys = new GamepadKey[8];
 	private readonly IntToChars MusicVolumeCache = new();
 	private readonly IntToChars SoundVolumeCache = new();
-	private readonly TextContent KeySetterLabel = new();
 	private MenuMode Mode = MenuMode.Root;
 	private MenuMode RequireMode = MenuMode.Root;
 	private int RecordingKey = -1;
@@ -211,9 +210,11 @@ public class PauseMenuUI : MenuUI {
 		}
 
 		// 3/4-Quit
-		if (DrawItem(BuiltInText.UI_QUIT, Color32.RED_BETTER)) {
-			RequireMode = MenuMode.Quit;
-			SetSelection(0);
+		using (ContentColorScope.Start(Color32.RED_BETTER)) {
+			if (DrawItem(BuiltInText.UI_QUIT)) {
+				RequireMode = MenuMode.Quit;
+				SetSelection(0);
+			}
 		}
 
 	}
@@ -257,7 +258,7 @@ public class PauseMenuUI : MenuUI {
 		// Music Volume
 		if (DrawArrowItem(
 			MENU_MUSIC_VOLUME,
-			TextContent.Get(MusicVolumeCache.GetChars(Game.MusicVolume / 100)),
+			MusicVolumeCache.GetChars(Game.MusicVolume / 100),
 			Game.MusicVolume > 0, Game.MusicVolume < 1000, out int delta
 		)) {
 			Game.SetMusicVolume(Game.MusicVolume + delta * 100);
@@ -266,7 +267,7 @@ public class PauseMenuUI : MenuUI {
 		// Sound Volume
 		if (DrawArrowItem(
 			MENU_SOUND_VOLUME,
-			TextContent.Get(SoundVolumeCache.GetChars(Game.SoundVolume / 100)),
+			SoundVolumeCache.GetChars(Game.SoundVolume / 100),
 			Game.SoundVolume > 0, Game.SoundVolume < 1000, out delta
 		)) {
 			Game.SetSoundVolume(Game.SoundVolume + delta * 100);
@@ -275,7 +276,7 @@ public class PauseMenuUI : MenuUI {
 		// Fullscreen
 		if (DrawItem(
 			MENU_FULLSCREEN_LABEL,
-			TextContent.Get(Game.IsFullscreen ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+			Game.IsFullscreen ? BuiltInText.UI_ON : BuiltInText.UI_OFF
 		)) {
 			Game.IsFullscreen = !Game.IsFullscreen;
 		}
@@ -292,7 +293,7 @@ public class PauseMenuUI : MenuUI {
 			}
 			if (DrawArrowItem(
 				MENU_LANGUAGE,
-				TextContent.Get(Util.GetLanguageDisplayName(Language.CurrentLanguage)),
+				Util.GetLanguageDisplayName(Language.CurrentLanguage),
 				currentLanguageIndex > 0, currentLanguageIndex < Language.LanguageCount - 1, out delta)
 			) {
 				int newIndex = currentLanguageIndex + delta;
@@ -306,7 +307,7 @@ public class PauseMenuUI : MenuUI {
 		// Allow Gamepad
 		if (DrawItem(
 			MENU_ALLOW_GAMEPAD,
-			TextContent.Get(Input.AllowGamepad ? BuiltInText.UI_YES : BuiltInText.UI_NO)
+			Input.AllowGamepad ? BuiltInText.UI_YES : BuiltInText.UI_NO
 		)) {
 			Input.AllowGamepad = !Input.AllowGamepad;
 		}
@@ -314,7 +315,7 @@ public class PauseMenuUI : MenuUI {
 		// Control Hint
 		if (DrawItem(
 			MENU_CONTROL_HINT,
-			TextContent.Get(ControlHintUI.UseControlHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+			ControlHintUI.UseControlHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF
 		)) {
 			ControlHintUI.UseControlHint = !ControlHintUI.UseControlHint;
 		}
@@ -322,7 +323,7 @@ public class PauseMenuUI : MenuUI {
 		// Gamepad Hint
 		if (DrawItem(
 			MENU_GAMEPAD_HINT,
-			TextContent.Get(ControlHintUI.UseGamePadHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+			ControlHintUI.UseGamePadHint ? BuiltInText.UI_ON : BuiltInText.UI_OFF
 		)) {
 			ControlHintUI.UseGamePadHint = !ControlHintUI.UseGamePadHint;
 		}
@@ -343,7 +344,7 @@ public class PauseMenuUI : MenuUI {
 			// Auto Zoom
 			if (DrawItem(
 				MENU_MEDT_AUTO_ZOOM,
-				TextContent.Get(mapEditor.AutoZoom ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+				mapEditor.AutoZoom ? BuiltInText.UI_ON : BuiltInText.UI_OFF
 			)) {
 				mapEditor.AutoZoom = !mapEditor.AutoZoom;
 			}
@@ -351,7 +352,7 @@ public class PauseMenuUI : MenuUI {
 			// Drop Player
 			if (DrawItem(
 				MENU_MEDT_PLAYER_DROP,
-				TextContent.Get(mapEditor.QuickPlayerDrop ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+				mapEditor.QuickPlayerDrop ? BuiltInText.UI_ON : BuiltInText.UI_OFF
 			)) {
 				mapEditor.QuickPlayerDrop = !mapEditor.QuickPlayerDrop;
 			}
@@ -359,7 +360,7 @@ public class PauseMenuUI : MenuUI {
 			// Show State
 			if (DrawItem(
 				MENU_MEDT_STATE,
-				TextContent.Get(mapEditor.ShowState ? BuiltInText.UI_ON : BuiltInText.UI_OFF)
+				mapEditor.ShowState ? BuiltInText.UI_ON : BuiltInText.UI_OFF
 			)) {
 				mapEditor.ShowState = !mapEditor.ShowState;
 			}
@@ -415,8 +416,10 @@ public class PauseMenuUI : MenuUI {
 		}
 
 		// Quit Game
-		if (DrawItem(BuiltInText.UI_QUIT_GAME, Color32.RED_BETTER)) {
-			Game.QuitApplication();
+		using (ContentColorScope.Start(Color32.RED_BETTER)) {
+			if (DrawItem(BuiltInText.UI_QUIT_GAME)) {
+				Game.QuitApplication();
+			}
 		}
 
 	}
@@ -448,36 +451,33 @@ public class PauseMenuUI : MenuUI {
 		// All Game Keys
 		for (int i = 0; i < GAMEKEY_UI_CODES.Length; i++) {
 			int code = GAMEKEY_UI_CODES[i].ID;
-			TextContent valueLabel;
 			int iconID = 0;
+			Color32 tint = Color32.WHITE;
+			string text;
 			if (RecordingKey != i) {
 				// Normal
-				KeySetterLabel.Tint = Color32.WHITE;
-				KeySetterLabel.BackgroundTint = Color32.CLEAR;
-				KeySetterLabel.Text = forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i]);
-				valueLabel = KeySetterLabel;
+				text = forGamepad ? string.Empty : Util.GetKeyDisplayName(KeyboardKeys[i]);
 				iconID = forGamepad && FrameworkUtil.GAMEPAD_CODE.TryGetValue(GamepadKeys[i], out var _value0) ? _value0 : 0;
 			} else {
 				// Recording
-				KeySetterLabel.Tint = Game.PauselessFrame % 30 > 15 ? Color32.BLACK : Color32.WHITE;
-				KeySetterLabel.Text = MENU_SETTER_RECORD;
-				KeySetterLabel.BackgroundTint = Game.PauselessFrame % 30 > 15 ? Color32.GREEN : Color32.CLEAR;
-				valueLabel = KeySetterLabel;
+				tint = Game.PauselessFrame % 30 > 15 ? Color32.GREEN : Color32.WHITE;
+				text = MENU_SETTER_RECORD;
 			}
-			valueLabel.Tint = Color32.WHITE;
-			if (DrawItem(
-				Language.Get(code), valueLabel, Color32.WHITE, iconID
-			)) {
-				RecordLock = true;
-				RecordingKey = i;
+			using (ContentColorScope.Start(tint)) {
+				if (DrawItem(Language.Get(code), text, iconID)) {
+					RecordLock = true;
+					RecordingKey = i;
+				}
 			}
 		}
 
 		// Save & Back
-		if (RecordDirty && DrawItem(MENU_KEYSETTER_SAVE_BACK, Color32.GREEN)) {
-			RequireMode = MenuMode.KeySetter;
-			SetSelection(forGamepad ? 1 : 0);
-			SaveKeySetting(forGamepad);
+		using (ContentColorScope.Start(Color32.GREEN)) {
+			if (RecordDirty && DrawItem(MENU_KEYSETTER_SAVE_BACK)) {
+				RequireMode = MenuMode.KeySetter;
+				SetSelection(forGamepad ? 1 : 0);
+				SaveKeySetting(forGamepad);
+			}
 		}
 
 		// Back

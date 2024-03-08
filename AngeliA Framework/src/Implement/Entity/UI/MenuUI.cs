@@ -25,9 +25,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected int WindowWidth = 660;
 	protected int ItemHeight = 36;
 	protected int ItemGap = 16;
-	protected int FontSize = 26;
 	protected int MessageHeight = 96;
-	protected int MessageFontSize = 22;
 	protected int MaxItemCount = 10;
 	protected Int4 ContentPadding = new(32, 32, 46, 46);
 	protected Int2 SelectionMarkSize = new(32, 32);
@@ -37,7 +35,6 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected Color32 BackgroundTint = new(0, 0, 0, 255);
 	protected Color32 SelectionMarkTint = new(255, 255, 255, 255);
 	protected Color32 MoreMarkTint = new(220, 220, 220, 255);
-	protected Color32 MessageTint = new(220, 220, 220, 255);
 	protected Color32 MouseHighlightTint = new(255, 255, 255, 16);
 	protected bool Interactable = true;
 	protected bool AllowMouseClick = true;
@@ -54,11 +51,6 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	private int TargetItemCount;
 	private int AnimationFrame = 0;
 	private bool Layout;
-	private readonly TextContent MessageLabel = new() {
-		Alignment = Alignment.MidMid,
-		Wrap = WrapMode.WordWrap,
-	};
-	private readonly TextContent ItemLabel = new();
 
 
 	#endregion
@@ -130,6 +122,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			Unify(ContentPadding.w)
 		);
 		bool animating = AnimationDuration > 0 && AnimationFrame < AnimationDuration;
+		if (animating) {
+			byte alpha = (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame);
+			GUI.Color = new Color32(255, 255, 255, alpha);
+		}
 
 		// BG
 		var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? msgHeight : 0);
@@ -148,15 +144,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 		// Message
 		if (hasMsg) {
-			var tint = MessageTint;
-			if (animating) {
-				tint.a = (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame);
-			}
-			MessageLabel.Tint = tint;
-			GUI.Label(MessageLabel.SetText(msg, charSize: MessageFontSize), new IRect(
+			GUI.Label(new IRect(
 				windowBounds.x, windowBounds.yMax,
 				windowBounds.width, msgHeight
-			));
+			), msg);
 		}
 
 		// Scroll Y
@@ -289,35 +280,28 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	// Draw Item
-	protected bool DrawItem (string label, int icon = 0) => DrawItemLogic(label, TextContent.Empty, icon, false, false, Color32.WHITE, out _);
-	protected bool DrawItem (string label, Color32 tint, int icon = 0) => DrawItemLogic(label, TextContent.Empty, icon, false, false, tint, out _);
-	protected bool DrawItem (string label, TextContent value, int icon = 0) => DrawItemLogic(label, value, icon, false, false, Color32.WHITE, out _);
-	protected bool DrawItem (string label, TextContent value, Color32 tint, int icon = 0) => DrawItemLogic(label, value, icon, false, false, tint, out _);
-	protected bool DrawArrowItem (string label, TextContent value, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, value, icon, leftArrow, rightArrow, Color32.WHITE, out delta);
-	private bool DrawItemLogic (string label, TextContent value, int icon, bool useLeftArrow, bool useRightArrow, Color32 tint, out int delta) {
+	protected bool DrawItem (string label, int icon = 0) => DrawItemLogic(label, "", null, icon, false, false, out _);
+	protected bool DrawItem (string label, string content, int icon = 0) => DrawItemLogic(label, content, null, icon, false, false, out _);
+	protected bool DrawArrowItem (string label, string content, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, content, null, icon, leftArrow, rightArrow, out delta);
+	protected bool DrawItem (string label, char[] chars, int icon = 0) => DrawItemLogic(label, "", chars, icon, false, false, out _);
+	protected bool DrawArrowItem (string label, char[] chars, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, "", chars, icon, leftArrow, rightArrow, out delta);
+	private bool DrawItemLogic (string label, string content, char[] chars, int icon, bool useLeftArrow, bool useRightArrow, out int delta) {
 
-		bool invoke = false;
 		delta = 0;
 		if (Layout) {
 			TargetItemCount++;
 			return false;
 		}
+
+		bool invoke = false;
 		if (ItemCount < ScrollY || ItemCount >= ScrollY + TargetItemCount) {
 			ItemCount++;
 			return invoke;
 		}
 
-		if (AnimationDuration > 0 && AnimationFrame < AnimationDuration) {
-			tint.a = (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame);
-		}
-		if (!Interactable) {
-			tint.a /= 2;
-		}
-
-		var whiteTint = Color32.WHITE;
-		whiteTint.a = tint.a;
+		bool useStringContent = chars == null;
+		bool hasContent = useStringContent ? !string.IsNullOrEmpty(content) : chars.Length > 0;
 		bool useArrows = useLeftArrow || useRightArrow;
-		int fontSize = FontSize;
 		int itemHeight = Unify(ItemHeight);
 		int itemGap = Unify(ItemGap);
 		var markSize = new Int2(
@@ -329,7 +313,6 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			Unify(SelectionArrowMarkSize.y)
 		);
 		var windowRect = Rect;
-		value.CharSize = 24;
 
 		int itemY = windowRect.yMax - itemHeight;
 		itemY -= ItemCount * (itemHeight + itemGap);
@@ -348,7 +331,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			IRect bounds;
 
 			// Labels
-			if (string.IsNullOrEmpty(value.Text) && icon == 0) {
+			if (!hasContent && icon == 0) {
 
 				// Mouse Highlight
 				hoverCheckingRect = labelRect.Expand(markSize.x, markSize.x, itemGap / 2, itemGap / 2);
@@ -361,9 +344,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				}
 
 				// Single Label
-				ItemLabel.Tint = tint;
-				ItemLabel.Alignment = Alignment.MidMid;
-				GUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect);
+				GUI.Label(labelRect, label, GUISkin.CenterLabel);
 
 			} else {
 
@@ -380,28 +361,21 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				}
 
 				// Double Labels
-				ItemLabel.Tint = tint;
-				ItemLabel.Alignment = Alignment.MidLeft;
-				GUI.Label(ItemLabel.SetText(label, charSize: fontSize), labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0));
-
-				if (string.IsNullOrEmpty(value.Text)) {
-					if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
-						Renderer.Draw(
-							icon,
-							secLabelRect.Fit(iconSprite),
-							int.MaxValue - 2
-						);
+				var labelBounds = secLabelRect;
+				GUI.Label(labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0), label);
+				if (hasContent) {
+					if (useStringContent) {
+						GUI.Label(secLabelRect, content, out labelBounds);
+					} else {
+						GUI.Label(secLabelRect, chars, out labelBounds);
 					}
-				} else {
-					value.Tint.a = tint.a;
-					GUI.Label(value, secLabelRect, out var labelBounds);
-					if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
-						Renderer.Draw(
-							icon,
-							new IRect(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
-							int.MaxValue - 2
-						);
-					}
+				}
+				if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
+					Renderer.Draw(
+						icon,
+						new IRect(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
+						int.MaxValue - 2
+					);
 				}
 
 			}
@@ -446,10 +420,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				}
 
 				// L Arrow
-				if (useLeftArrow) Renderer.Draw(ArrowMarkCode, rectL, whiteTint, int.MaxValue - 2);
+				if (useLeftArrow) Renderer.Draw(ArrowMarkCode, rectL, int.MaxValue - 2);
 
 				// R Arrow
-				if (useRightArrow) Renderer.Draw(ArrowMarkCode, rectR, whiteTint, int.MaxValue - 2);
+				if (useRightArrow) Renderer.Draw(ArrowMarkCode, rectR, int.MaxValue - 2);
 
 			}
 

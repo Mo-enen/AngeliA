@@ -28,7 +28,6 @@ internal class Engine {
 	private static readonly SpriteCode UI_TAB = "UI.MainTab";
 	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.MainTabInactive";
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
-	private static readonly SpriteCode UI_BTN = "UI.CommenButton";
 	private static readonly SpriteCode ICON_CLOSE = "Icon.PixelClose";
 	private static readonly WindowUI[] WINDOWS = {
 		new ProjectHub(),
@@ -182,11 +181,7 @@ internal class Engine {
 			Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
 
 			// Label
-			int labelCharSize = GUI.ReverseUnify(contentRect.height) * 5 / 12;
-			GUI.Label(
-				TextContent.Get(WINDOW_TITLES[i], Color32.GREY_196, charSize: labelCharSize, alignment: Alignment.MidLeft),
-				contentRect.Shrink(iconSize, 0, 0, 0)
-			);
+			GUI.Label(contentRect.Shrink(iconSize, 0, 0, 0), WINDOW_TITLES[i]);
 
 			// Click
 			if (mousePress && hovering) CurrentWindowIndex = i;
@@ -317,8 +312,8 @@ internal class Engine {
 
 		// MSG 
 		GUI.Label(
-			TextContent.Get(QUIT_MSG, charSize: 80, alignment: Alignment.MidMid, wrap: WrapMode.WordWrap),
-			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.UnifyMonitor(8))
+			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.UnifyMonitor(8)),
+			QUIT_MSG
 		);
 
 		// Buttons 

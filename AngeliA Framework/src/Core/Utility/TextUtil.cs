@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
+namespace AngeliA.Internal;
 
-namespace AngeliA;
-
-
-public class TextUtil {
+public class TextUtilInternal {
 
 
 	public delegate bool RequireCharSpriteHander (char c, out CharSprite sprite);
@@ -26,29 +23,26 @@ public class TextUtil {
 		};
 
 
-	public static void DrawLabel (
+	public static void DrawLabelInternal (
 		RequireCharSpriteHander requireCharSprite, DrawCharHandler drawChar,
-		int unifyHeight, int textCountInLayer, Cell[] textCells,
-		TextContent content, IRect rect, int beamIndex, int startIndex, bool drawInvisibleChar,
+		int unifyHeight, int textCountInLayer, Cell[] textCells, GUIStyle style,
+		IRect rect, string text, char[] chars, Color32 color,
+		int beamIndex, int startIndex, bool drawInvisibleChar,
 		out IRect bounds, out IRect beamRect, out int endIndex
 	) {
 
 		endIndex = startIndex;
 		bounds = rect;
 		beamRect = new IRect(rect.x, rect.y, 1, rect.height);
-		if (string.IsNullOrEmpty(content.Text)) content.Text = string.Empty;
 
-		string text = content.Text;
-		char[] chars = content.Chars;
-		int count = content.FromString ? text.Length : chars.Length;
-
-		int charSize = content.CharSize < 0 ? rect.height / 2 : Unify(content.CharSize, unifyHeight);
-		int lineSpace = Unify(content.LineSpace, unifyHeight);
-		var color = content.Tint;
-		int charSpace = Unify(content.CharSpace, unifyHeight);
-		var alignment = content.Alignment;
-		var wrap = content.Wrap;
-		bool clip = content.Clip;
+		bool fromString = chars == null;
+		int count = fromString ? text.Length : chars.Length;
+		int charSize = style.CharSize < 0 ? rect.height / 2 : Unify(style.CharSize, unifyHeight);
+		int lineSpace = Unify(style.LineSpace, unifyHeight);
+		int charSpace = Unify(style.CharSpace, unifyHeight);
+		var alignment = style.Alignment;
+		var wrap = style.Wrap;
+		bool clip = style.Clip;
 		bool beamEnd = beamIndex >= count;
 		requireCharSprite(' ', out var emptyCharSprite);
 
@@ -64,10 +58,9 @@ public class TextUtil {
 		int minY = int.MaxValue;
 		int maxX = int.MinValue;
 		int maxY = int.MinValue;
-		int shadowOffset = Unify(content.ShadowOffset, unifyHeight);
 		for (int i = startIndex; i < count; i++) {
 
-			char c = content.FromString ? text[i] : chars[i];
+			char c = fromString ? text[i] : chars[i];
 			endIndex = i;
 			if (c == '\r') goto CONTINUE;
 			if (c == '\0') break;
@@ -90,7 +83,7 @@ public class TextUtil {
 			// Wrap Check for Word
 			if (wrap == WrapMode.WordWrap && i >= nextWrapCheckIndex && !IsLineBreakingChar(c)) {
 				if (!WordEnoughToFit(
-					requireCharSprite, content, charSize, charSpace, i,
+					requireCharSprite, text, chars, charSize, charSpace, i,
 					rect.xMax - x - realCharSize, out int wordLength
 				) && !firstCharAtLine) {
 					x = rect.x;
@@ -112,16 +105,6 @@ public class TextUtil {
 			}
 			var cell = drawChar(sprite, x, y, charSize, charSize, color) ?? Cell.EMPTY;
 			if (cell != null && cell.TextSprite != null) textCountInLayer++;
-			if (content.Shadow.a > 0 && shadowOffset != 0) {
-				var shadowCell = drawChar(sprite, 0, 0, 1, 1, Color32.WHITE);
-				if (shadowCell != null) {
-					if (cell != null && cell.TextSprite != null) textCountInLayer++;
-					shadowCell.CopyFrom(cell);
-					shadowCell.Color = content.Shadow;
-					shadowCell.Y -= shadowOffset;
-					shadowCell.Z--;
-				}
-			}
 
 			// Beam
 			if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {
@@ -211,11 +194,12 @@ public class TextUtil {
 
 
 	// LGC
-	private static bool WordEnoughToFit (RequireCharSpriteHander requireCharSprite, TextContent content, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
+	private static bool WordEnoughToFit (RequireCharSpriteHander requireCharSprite, string text, char[] chars, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
 		int index = startIndex;
-		int count = content.FromString ? content.Text.Length : content.Chars.Length;
+		bool fromString = chars == null;
+		int count = fromString ? text.Length : chars.Length;
 		for (; index < count; index++) {
-			char c = content.FromString ? content.Text[index] : content.Chars[index];
+			char c = fromString ? text[index] : chars[index];
 			if (IsLineBreakingChar(c)) break;
 			if (!requireCharSprite(c, out var sprite)) continue;
 			if (room > 0) {

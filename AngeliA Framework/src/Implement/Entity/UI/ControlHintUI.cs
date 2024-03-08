@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnSquadTransition]
 [EntityAttribute.StageOrder(int.MaxValue)]
@@ -24,11 +24,9 @@ public class ControlHintUI : EntityUI {
 	private static readonly Color32 PressingTint = new(0, 255, 0, 255);
 	private static readonly Color32 DarkButtonTint = new(0, 0, 0, 255);
 	private static readonly Color32 ColorfulButtonTint = new(240, 86, 86, 255);
-	private static readonly Color32 LabelTint = Color32.WHITE;
 	private static readonly Color32 KeyTint = new(44, 49, 54, 255);
 	private const int KEYSIZE = 24;
 	private const int GAP = 4;
-	private const int TEXT_SIZE = 21;
 
 	// Api
 	public static ControlHintUI Instance { get; private set; } = null;
@@ -57,9 +55,7 @@ public class ControlHintUI : EntityUI {
 	private int ForceHintFrame = int.MinValue;
 	private int ForceHideGamepadFrame = int.MinValue;
 	private int OffsetResetFrame = int.MinValue;
-	private static readonly TextContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = LabelTint, };
-	private static readonly TextContent KeyLabel = new() { Alignment = Alignment.MidLeft, CharSize = TEXT_SIZE, Tint = KeyTint, };
-	
+
 	// Saving
 	private static readonly SavingBool ShowGamePadUI = new("Hint.ShowGamePadUI", false);
 	private static readonly SavingBool ShowControlHint = new("Hint.ShowControlHint", true);
@@ -323,8 +319,7 @@ public class ControlHintUI : EntityUI {
 			);
 			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 		} else {
-			KeyLabel.Text = keyTextA;
-			GUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
+			GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds);
 			int targetWidth = keyBounds.width + border.horizontal;
 			if (rect.width < targetWidth) rect.width = targetWidth;
 			Renderer.Draw_9Slice(
@@ -343,8 +338,7 @@ public class ControlHintUI : EntityUI {
 				);
 				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
-				KeyLabel.Text = keyTextB;
-				GUI.Label(KeyLabel, rect.Shrink(border), out var keyBounds);
+				GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds);
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 				Renderer.Draw_9Slice(
@@ -356,12 +350,7 @@ public class ControlHintUI : EntityUI {
 
 		// Label
 		rect.width = 1;
-
-		HintLabel.Text = label;
-
-		GUI.Label(
-			HintLabel, rect, out var bounds
-		);
+		GUI.Label(rect, label, out var bounds);
 		if (bgCell != null) {
 			bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
 			bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);

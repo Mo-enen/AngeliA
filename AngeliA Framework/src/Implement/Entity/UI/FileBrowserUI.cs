@@ -75,13 +75,6 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	private int LastSelectFrame = -1;
 	private int SelectingIndex = -1;
 	private string NavbarText = "";
-	private readonly TextContent ItemLabel = new() {
-		CharSize = 14,
-		Alignment = Alignment.TopLeft,
-		Tint = Color32.GREY_230,
-		Wrap = WrapMode.WordWrap,
-		Clip = true,
-	};
 
 
 	#endregion
@@ -150,10 +143,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Renderer.Draw(BuiltInSprite.SOFT_LINE_V, new IRect(X + favPanelWidth - lineSize / 2, Y + controlPanelHeight, lineSize, Height - controlPanelHeight - navBarHeight), Color32.GREY_20, z: 1);
 
 		// Title
-		GUI.Label(
-			Title, Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0),
-			tint: Color32.GREY_230, charSize: 20, alignment: Alignment.MidLeft
-		);
+		GUI.Label(Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0), Title);
 
 		// Panels
 		Update_NavigationBar(Rect.EdgeInside(Direction4.Up, navBarHeight).Shift(0, -titleHeight));
@@ -238,10 +228,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 				}
 
 				// Name Label
-				GUI.Label(
-					ItemLabel.SetText(item.DisplayName),
-					paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding)
-				);
+				GUI.Label(paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding), item.DisplayName);
 
 				// Hover Highlight
 				if (rect.MouseInside()) {
@@ -347,15 +334,14 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 			// Name Label
 			GUI.Label(
-				TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME,
 				fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0),
-				tint: Color32.GREY_216, charSize: 20, alignment: Alignment.MidRight
+				TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME
 			);
 		}
 
 		// Type Field
 		if (TargetType == BrowserTargetType.File) {
-			GUI.Label(TargetExtension, typeRect);
+			GUI.Label(typeRect, TargetExtension);
 			Renderer.Draw_9Slice(
 				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
 			);
@@ -363,10 +349,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Error Msg
 		if (!string.IsNullOrEmpty(ErrorMessage)) {
-			var msgRect = panelRect.EdgeInside(Direction4.Down, buttonHeight);
-			GUI.Label(
-				ErrorMessage, msgRect, tint: Color32.RED_BETTER, charSize: 20, alignment: Alignment.MidLeft
-			);
+			GUI.Label(panelRect.EdgeInside(Direction4.Down, buttonHeight), ErrorMessage);
 		}
 
 		// Cancel Button

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.ForceSpawn]
 [EntityAttribute.Capacity(6, 0)]
 public class NotificationUI : EntityUI {
@@ -76,9 +76,8 @@ public class NotificationUI : EntityUI {
 
 		// Label
 		GUI.Label(
-			Content,
 			panelRect.Shrink(panelRect.height + Unify(12), 0, 0, 0),
-			alignment: Alignment.MidLeft
+			Content
 		);
 
 	}

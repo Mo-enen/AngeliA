@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public class ActiveTitleUI : TitleUI {
@@ -67,19 +67,16 @@ public abstract class TitleUI : Entity {
 			}
 
 			// Title
-			GUI.Label(
-				Title, cRect.Shrink(0, 0, cRect.height / 2, 0), Color32.WHITE, out var bound, charSize: 96
-			);
+			GUI.Label(cRect.Shrink(0, 0, cRect.height / 2, 0), Title, out var bound);
 
 			// Sub Title
 			GUI.Label(
-				TextContent.Get(SubTitle, Color32.WHITE, 32, Alignment.TopMid),
 				new IRect(
 					cRect.x,
 					bound.y - cRect.height,
 					cRect.width,
 					cRect.height - GUI.Unify(32)
-				)
+				), SubTitle
 			);
 
 		}

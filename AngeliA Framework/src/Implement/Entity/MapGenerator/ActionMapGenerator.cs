@@ -21,9 +21,6 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 	// Api
 	protected virtual bool ShowGeneratingHint => true;
 
-	// Data
-	private readonly TextContent HintContent = new() { Alignment = Alignment.MidMid, BackgroundTint = Color32.BLACK, BackgroundPadding = 6, Wrap = WrapMode.NoWrap, Clip = false, };
-
 
 	#endregion
 
@@ -62,9 +59,9 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 		} else {
 			// Generating
 			if (ShowGeneratingHint) {
-				GUI.Label(
-					HintContent.SetText(HINT_GENERATING),
-					new IRect(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL)
+				GUI.BackgroundLabel(
+					new IRect(X - Const.CEL, Y + Const.CEL * 2, Const.CEL * 3, Const.CEL),
+					HINT_GENERATING, Color32.BLACK, GUI.Unify(6)
 				);
 			}
 		}
