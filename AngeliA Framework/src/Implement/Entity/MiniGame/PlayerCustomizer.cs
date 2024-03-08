@@ -387,7 +387,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			} else {
 				// Using Key
 				if (i == HighlightingMainIndex) {
-					GUI.HighlightCursor(FRAME_CODE, fieldRect, EDITOR_BASIC_Z + 4);
+					GUI.HighlightCursor(FRAME_CODE, fieldRect);
 				}
 			}
 
@@ -929,7 +929,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 		// Cursor
 		if (cursorRect.width > 0) {
-			GUI.HighlightCursor(FRAME_CODE, cursorRect, EDITOR_BASIC_Z + 4);
+			GUI.HighlightCursor(FRAME_CODE, cursorRect);
 		}
 
 		// Scroll Bar

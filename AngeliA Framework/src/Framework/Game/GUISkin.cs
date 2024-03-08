@@ -45,11 +45,11 @@ public static class GUISkin {
 		ContentHighlightShift = new(0, Const.ART_SCALE * 2),
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 
-		ContentColor = Color32.CLEAR,
+		ContentColor = Color32.WHITE,
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
-		CharSize = 36,
+		CharSize = -1,
 		Alignment = Alignment.MidMid,
 	};
 
@@ -63,11 +63,11 @@ public static class GUISkin {
 		ContentHighlightShift = new(0, Const.ART_SCALE * 2),
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 
-		ContentColor = Color32.CLEAR,
+		ContentColor = Color32.WHITE,
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
-		CharSize = 36,
+		CharSize = -1,
 		Alignment = Alignment.MidMid,
 	};
 
@@ -106,7 +106,7 @@ public static class GUISkin {
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
-		CharSize = 36,
+		CharSize = 28,
 		Alignment = Alignment.MidLeft,
 	};
 
@@ -121,7 +121,7 @@ public static class GUISkin {
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
 
-		CharSize = 36,
+		CharSize = 28,
 		Alignment = Alignment.MidLeft,
 		Wrap = WrapMode.WordWrap,
 		Clip = true,
@@ -137,7 +137,7 @@ public static class GUISkin {
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
-		CharSize = 36,
+		CharSize = 28,
 		Alignment = Alignment.MidMid,
 	};
 
@@ -151,7 +151,7 @@ public static class GUISkin {
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
-		CharSize = 22,
+		CharSize = 14,
 		Alignment = Alignment.MidMid,
 	};
 

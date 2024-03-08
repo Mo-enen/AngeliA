@@ -209,8 +209,8 @@ Color32.BLACK, Color32.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20
 
 		// Label
 		GUI.Label(
-			TextContent.Get(LevelLabelToString.GetChars(CurrentLevel + 1), alignment: Alignment.MidRight),
-			new IRect(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight)
+			new IRect(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight),
+			LevelLabelToString.GetChars(CurrentLevel + 1)
 		);
 
 		// Stage

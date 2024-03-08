@@ -205,14 +205,13 @@ public static class GUI {
 	// Button
 	public static bool DarkButton (IRect rect, string label) => Button(rect, label, GUISkin.DarkButton);
 	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, GUISkin.DarkButton);
-	public static bool Button (IRect rect, string label, GUIStyle style = null, GUIStyle labelStyle = null) {
+	public static bool Button (IRect rect, string label, GUIStyle style = null) {
 		style ??= GUISkin.Button;
-		labelStyle ??= GUISkin.CenterLabel;
 		bool result = BlankButton(rect, out var state);
 		DrawStyleBody(rect, style, state);
 		// Label
 		if (!string.IsNullOrEmpty(label)) {
-			LabelLogic(rect, label, null, labelStyle, state, -1, 0, false, out _, out _, out _);
+			LabelLogic(rect, label, null, style, state, -1, 0, false, out _, out _, out _);
 		}
 		return result;
 	}
@@ -598,14 +597,14 @@ public static class GUI {
 
 
 	// Highlight
-	public static void HighlightCursor (int spriteID, IRect rect, int z) => HighlightCursor(spriteID, rect, z, Color32.GREEN);
-	public static void HighlightCursor (int spriteID, IRect rect, int z, Color32 color) {
+	public static void HighlightCursor (int spriteID, IRect rect) => HighlightCursor(spriteID, rect, Color32.GREEN);
+	public static void HighlightCursor (int spriteID, IRect rect, Color32 color) {
 		int border = Unify(4);
 		int thickness = Unify(8);
 		Renderer.Draw_9Slice(
 			spriteID, rect.Expand(Game.GlobalFrame.PingPong(thickness)),
 			border, border, border, border,
-			Color * BodyColor * color, z
+			Color * BodyColor * color
 		);
 	}
 

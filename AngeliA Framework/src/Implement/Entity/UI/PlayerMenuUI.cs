@@ -105,6 +105,7 @@ public class PlayerMenuUI : EntityUI {
 	private EquipmentType EquipFlashType = EquipmentType.BodyArmor;
 	private IRect TopPanelRect = default;
 	private IRect BottomPanelRect = default;
+	private IRect HoveringItemUiRect = default;
 	private Int3 FlashingField = new(-1, 0, 0);
 
 
@@ -466,9 +467,12 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 
 
 	private void DrawTakingItemMouseCursor () {
-		if (!UsingMouseMode || TakingID == 0) return;
-		int x = Input.MouseGlobalPosition.x;
-		int y = Input.MouseGlobalPosition.y;
+		if (!UsingMouseMode) {
+			GUI.HighlightCursor(FRAME_CODE, HoveringItemUiRect);
+		}
+		if (TakingID == 0) return;
+		int x = UsingMouseMode ? Input.MouseGlobalPosition.x : HoveringItemUiRect.CenterX();
+		int y = UsingMouseMode ? Input.MouseGlobalPosition.y : HoveringItemUiRect.y;
 		int size = Unify(ITEM_SIZE);
 		Renderer.Draw(
 			TakingID,
@@ -580,12 +584,6 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 			Const.SliceIgnoreCenter, Color32.WHITE, int.MinValue + 3
 		);
 
-		// Icon
-		DrawItemIcon(itemRect, itemID, Color32.WHITE, int.MinValue + 4);
-
-		// Count
-		DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
-
 		// Mouse Hovering
 		if (mouseHovering) {
 			if (MouseHoveringItemIndex != uiIndex) {
@@ -607,22 +605,16 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 			}
 		}
 
+		// Icon
+		DrawItemIcon(itemRect, itemID, Color32.WHITE, int.MinValue + 4);
+
+		// Count
+		DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
+
 		// UI Cursor
 		if (!UsingMouseMode && cursorIndex == uiIndex) {
 			HoveringItemID = itemID;
-			// Cursor
-			GUI.HighlightCursor(FRAME_CODE, itemRect, int.MinValue + 4);
-			// Taking Item
-			if (TakingID != 0) {
-				Renderer.Draw(
-					TakingID,
-					itemRect.x + itemRect.width / 2,
-					itemRect.y + itemRect.height / 2,
-					500, 500, Game.GlobalFrame.PingPong(30) - 15,
-					itemRect.width * 3 / 2, itemRect.height * 3 / 2,
-Color32.WHITE, int.MaxValue
-				);
-			}
+			HoveringItemUiRect = itemRect;
 		}
 
 		// Flashing
@@ -694,14 +686,6 @@ Color32.WHITE, int.MaxValue
 		Renderer.Draw(Const.PIXEL, windowRect, Color32.BLACK, int.MinValue + 1);
 		MouseInPanel = MouseInPanel || windowRect.MouseInside();
 
-		// Preview
-		var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
-		FrameworkUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
-		if (Input.MouseLeftButtonDown && previewRect.MouseInside()) {
-			player.FacingRight = !player.FacingRight;
-			player.Bounce();
-		}
-
 		// Content
 		int width = (panelRect.width - previewWidth) / 2;
 		int left = panelRect.x + previewWidth;
@@ -736,6 +720,14 @@ Color32.WHITE, int.MaxValue
 
 
 
+		// Preview
+		var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
+		FrameworkUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame, 0, out _, out _);
+		if (Input.MouseLeftButtonDown && previewRect.MouseInside()) {
+			player.FacingRight = !player.FacingRight;
+			player.Bounce();
+		}
+
 	}
 
 
@@ -756,6 +748,23 @@ Color32.WHITE, int.MaxValue
 		}
 		var itemRect = new IRect(fieldRect.x, fieldRect.y, fieldRect.height, fieldRect.height);
 
+		// Highlight
+		bool highlighting = false;
+		if (UsingMouseMode) {
+			if (mouseHovering) {
+				CursorIndex = index;
+				CursorInBottomPanel = false;
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, int.MinValue + 1);
+				highlighting = true;
+			}
+		} else {
+			if (CursorIndex == index && !CursorInBottomPanel) {
+				highlighting = true;
+				HoveringItemUiRect = itemRect;
+			}
+		}
+		if (highlighting) HoveringItemID = itemID;
+
 		// Item Frame
 		if (equipAvailable) {
 			int border = Unify(4);
@@ -767,14 +776,17 @@ Color32.WHITE, int.MaxValue
 		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
 		// Label
-		GUI.Label(fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label);
+		using (ContentColorScope.Start(enableTint)) {
+			GUI.Label(fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label);
+		}
 
 		// Progressive Icon
 		ItemSystem.DrawItemShortInfo(
 			itemID,
 			fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, 0, itemRect.height / 2),
 			int.MinValue + 3,
-			ARMOR_ICON, ARMOR_EMPTY_ICON
+			ARMOR_ICON, ARMOR_EMPTY_ICON,
+			enableTint
 		);
 
 		// Bottom Line
@@ -807,8 +819,6 @@ Color32.WHITE, int.MaxValue
 			);
 		}
 
-		bool highlighting = false;
-
 		if (mouseHovering) {
 			int uiIndex = int.MinValue + index;
 			if (MouseHoveringItemIndex != uiIndex) {
@@ -816,36 +826,6 @@ Color32.WHITE, int.MaxValue
 				UsingMouseMode = true;
 			}
 		}
-
-		// Highlight
-		if (UsingMouseMode) {
-			if (mouseHovering) {
-				CursorIndex = index;
-				CursorInBottomPanel = false;
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, int.MinValue + 1);
-				highlighting = true;
-			}
-		} else {
-			if (CursorIndex == index && !CursorInBottomPanel) {
-				highlighting = true;
-				var cursorTint = interactable ? Color32.GREEN : Color32.GREY_96;
-				cursorTint.a = enableTint.a;
-				GUI.HighlightCursor(FRAME_CODE, rect, int.MinValue + 4, cursorTint);
-				// Taking Item
-				if (TakingID != 0) {
-					Renderer.Draw(
-						TakingID,
-						itemRect.x + itemRect.width / 2,
-						itemRect.y + itemRect.height / 2,
-						500, 500, Game.GlobalFrame.PingPong(30) - 15,
-						itemRect.width * 3 / 2,
-						itemRect.height * 3 / 2,
-Color32.WHITE, int.MaxValue
-					);
-				}
-			}
-		}
-		if (highlighting) HoveringItemID = itemID;
 
 		if (interactable) {
 

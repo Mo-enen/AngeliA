@@ -51,6 +51,7 @@ public class ControlHintUI : EntityUI {
 		("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 	};
 	private static int CurrentHintOffsetY = 0;
+	private readonly GUIStyle HintKeyLabelStyle = new(GUISkin.Label) { CharSize = 18, ContentColor = Color32.GREY_20, };
 	private Int4 ButtonBorder = default;
 	private int ForceHintFrame = int.MinValue;
 	private int ForceHideGamepadFrame = int.MinValue;
@@ -319,7 +320,7 @@ public class ControlHintUI : EntityUI {
 			);
 			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 		} else {
-			GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds);
+			GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
 			int targetWidth = keyBounds.width + border.horizontal;
 			if (rect.width < targetWidth) rect.width = targetWidth;
 			Renderer.Draw_9Slice(
@@ -338,7 +339,7 @@ public class ControlHintUI : EntityUI {
 				);
 				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
-				GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds);
+				GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 				Renderer.Draw_9Slice(

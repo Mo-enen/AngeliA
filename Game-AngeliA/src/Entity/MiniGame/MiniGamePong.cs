@@ -198,12 +198,12 @@ public class MiniGamePong : MiniGame {
 		int scoreWidth = windowRect.width / 2 - scoreGap;
 		int scoreY = windowRect.y + windowRect.height - charRectSize;
 		GUI.Label(
-			TextContent.Get(PlayerScoreString.GetChars(ScorePlayer), 42, Alignment.MidRight),
-			new IRect(windowRect.x, scoreY, scoreWidth, charRectSize)
+			new IRect(windowRect.x, scoreY, scoreWidth, charRectSize),
+			PlayerScoreString.GetChars(ScorePlayer)
 		);
 		GUI.Label(
-			TextContent.Get(BotScoreString.GetChars(ScoreBot), 42, Alignment.MidLeft),
-			new IRect(midX + scoreGap, scoreY, scoreWidth, charRectSize)
+			new IRect(midX + scoreGap, scoreY, scoreWidth, charRectSize),
+			BotScoreString.GetChars(ScoreBot)
 		);
 
 		// Paddle

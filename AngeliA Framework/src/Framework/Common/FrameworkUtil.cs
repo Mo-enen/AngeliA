@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public static class FrameworkUtil {
 
 
@@ -157,6 +157,9 @@ public static class FrameworkUtil {
 				cell.Z = z + cell.Z - minZ;
 			}
 		}
+
+		// Sort
+		Util.QuickSort(cells, cellIndexStart, Util.Min(cellIndexEnd - 1, count - 1), Renderer.CellComparer.Instance);
 
 		return true;
 

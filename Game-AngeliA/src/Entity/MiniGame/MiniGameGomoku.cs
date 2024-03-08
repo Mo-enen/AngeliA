@@ -59,7 +59,6 @@ public class MiniGameGomoku : MiniGame {
 	private int WinningDeltaY = -1;
 	private int LastPlacePositionX = -1;
 	private int LastPlacePositionY = -1;
-	private readonly TextContent HintLabel = new() { Alignment = Alignment.MidLeft, CharSize = 24, };
 
 
 	#endregion
@@ -172,19 +171,18 @@ public class MiniGameGomoku : MiniGame {
 		Renderer.Draw(Const.PIXEL, boardRect, BACKGROUND_TINT);
 
 		// Player Color Hint
-		int labelHeight = Unify(HintLabel.CharSize);
-		HintLabel.Tint = PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT;
-		HintLabel.Text = GOMOKU_YOU_ARE;
-		GUI.Label(
-			HintLabel,
-			new IRect(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
-			out var bounds
-		);
-		Renderer.Draw(
-			STONE_CODE,
-			new IRect(bounds.xMax + Unify(8), boardRect.yMax - labelHeight, labelHeight, labelHeight),
-			PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT
-		);
+		int labelHeight = Unify(32);
+		using (ContentColorScope.Start(PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT)) {
+			GUI.Label(
+				new IRect(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
+				GOMOKU_YOU_ARE, out var bounds
+			);
+			Renderer.Draw(
+				STONE_CODE,
+				new IRect(bounds.xMax + Unify(8), boardRect.yMax - labelHeight, labelHeight, labelHeight),
+				PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT
+			);
+		}
 
 		// Grid
 		var gridRect = new IRect(0, StageRect.y, Unify(GRID_THICKNESS), StageRect.height);

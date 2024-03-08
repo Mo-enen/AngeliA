@@ -5,7 +5,7 @@ using AngeliA.Framework;
 
 
 
-namespace AngeliaGame; 
+namespace AngeliaGame;
 [RequireSpriteFromField]
 [RequireLanguageFromField]
 public class MiniGameTetris : MiniGame {
@@ -271,7 +271,7 @@ public class MiniGameTetris : MiniGame {
 			labelRect.x = stageRect.CenterX() - labelRect.width / 2;
 			labelRect.y = stageRect.CenterY() - labelRect.height / 2;
 			Renderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
-			GUI.Label(BuiltInText.UI_GAMEOVER, labelRect);
+			GUI.Label(labelRect, BuiltInText.UI_GAMEOVER);
 		}
 
 		int blockSize = stageRect.width / WIDTH;
@@ -385,18 +385,15 @@ public class MiniGameTetris : MiniGame {
 					stageRect.yMax - 4 * holdingBlockSize,
 					4 * holdingBlockSize,
 					4 * holdingBlockSize
-				),
-Color32.BLACK, 0
+				), Color32.BLACK, 0
 			);
 			// Label
-			GUI.Label(
-				UI_HOLDING, new IRect(
-					stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
-					stageRect.yMax - 4 * holdingBlockSize,
-					4 * holdingBlockSize,
-					holdingBlockSize
-				), charSize: ReverseUnify(holdingBlockSize)
-			);
+			GUI.Label(new IRect(
+				stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
+				stageRect.yMax - 4 * holdingBlockSize,
+				4 * holdingBlockSize,
+				holdingBlockSize
+			), UI_HOLDING);
 		}
 
 		// State
@@ -409,21 +406,12 @@ Color32.BLACK, 0
 		);
 
 		// Lines
-		GUI.Label(TextContent.Get(
-			UI_CLR_LINE,
-			CHAR_SIZE, Alignment.MidLeft
-		), stateRect, out var lineBounds);
-		GUI.Label(TextContent.Get(
-			LinesString.GetChars(ClearedLines),
-			CHAR_SIZE, Alignment.MidRight
-		), stateRect, out var lineNumberBounds);
-
-		Renderer.Draw(
-			Const.PIXEL, new IRect(
-				lineBounds.x, lineBounds.y,
-				lineNumberBounds.xMax - lineBounds.x, lineBounds.height
-			).Expand(Unify(6)), Color32.BLACK, 0
-		);
+		GUI.Label(stateRect, UI_CLR_LINE, out var lineBounds);
+		GUI.Label(stateRect, LinesString.GetChars(ClearedLines), out var lineNumberBounds);
+		Renderer.Draw(Const.PIXEL, new IRect(
+			lineBounds.x, lineBounds.y,
+			lineNumberBounds.xMax - lineBounds.x, lineBounds.height
+		).Expand(Unify(6)), Color32.BLACK, 0);
 
 	}
 

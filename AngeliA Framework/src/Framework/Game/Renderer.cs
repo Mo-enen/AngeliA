@@ -15,7 +15,7 @@ public static class Renderer {
 	#region --- SUB ---
 
 
-	private class CellComparer : IComparer<Cell> {
+	public class CellComparer : IComparer<Cell> {
 		public static readonly CellComparer Instance = new();
 		public int Compare (Cell a, Cell b) =>
 			a.Z < b.Z ? -1 :
@@ -24,7 +24,6 @@ public static class Renderer {
 			a.Order > b.Order ? 1 :
 			0;
 	}
-
 
 	private class TextLayer : Layer {
 		public int TextSize = 30;
@@ -365,7 +364,7 @@ public static class Renderer {
 		cell.Order = layer.FocusedCell;
 		cell.X = x;
 		cell.Y = y;
-		cell.Z = layer.UiLayer ? 0 : z != int.MinValue ? z : sprite.SortingZ;
+		cell.Z = z != int.MinValue ? z : sprite.SortingZ;
 		cell.Width = width;
 		cell.Height = height;
 		cell.Rotation = rotation;

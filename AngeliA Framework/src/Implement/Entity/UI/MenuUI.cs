@@ -43,6 +43,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected int AnimationAmount = -32;
 
 	// Data
+	private readonly GUIStyle MsgStyle = new(GUISkin.CenterLabel) { Wrap = WrapMode.WordWrap, Clip = true, };
 	private int ItemCount;
 	private int ScrollY = 0;
 	private int MarkPingPongFrame = 0;
@@ -147,7 +148,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			GUI.Label(new IRect(
 				windowBounds.x, windowBounds.yMax,
 				windowBounds.width, msgHeight
-			), msg);
+			), msg, MsgStyle);
 		}
 
 		// Scroll Y
@@ -363,6 +364,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				// Double Labels
 				var labelBounds = secLabelRect;
 				GUI.Label(labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0), label);
+
+				// Content Label
 				if (hasContent) {
 					if (useStringContent) {
 						GUI.Label(secLabelRect, content, out labelBounds);
@@ -370,12 +373,12 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 						GUI.Label(secLabelRect, chars, out labelBounds);
 					}
 				}
+
+				// Icon
 				if (icon != 0 && Renderer.TryGetSprite(icon, out var iconSprite)) {
-					Renderer.Draw(
-						icon,
-						new IRect(labelBounds.x - labelBounds.height, labelBounds.y, labelBounds.height, labelBounds.height).Fit(iconSprite),
-						int.MaxValue - 2
-					);
+					var iconRect = labelBounds.Fit(iconSprite, hasContent ? 0 : 500, 500);
+					if (hasContent) iconRect.x -= iconRect.height;
+					Renderer.Draw(icon, iconRect);
 				}
 
 			}

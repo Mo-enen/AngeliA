@@ -36,6 +36,33 @@ public sealed class GUIStyle {
 	public bool Clip = true;
 
 	// API
+	public GUIStyle (GUIStyle source = null) {
+		if (source == null) return;
+		BodySprite = source.BodySprite;
+		BodyHighlightSprite = source.BodyHighlightSprite;
+		BodyPressSprite = source.BodyPressSprite;
+		BodyDisableSprite = source.BodyDisableSprite;
+		BodyBorder = source.BodyBorder;
+		BodyColor = source.BodyColor;
+		BodyHighlightColor = source.BodyHighlightColor;
+		BodyPressColor = source.BodyPressColor;
+		BodyDisableColor = source.BodyDisableColor;
+		ContentBorder = source.ContentBorder;
+		ContentColor = source.ContentColor;
+		ContentHighlightColor = source.ContentHighlightColor;
+		ContentPressColor = source.ContentPressColor;
+		ContentDisableColor = source.ContentDisableColor;
+		ContentShift = source.ContentShift;
+		ContentHighlightShift = source.ContentHighlightShift;
+		ContentPressShift = source.ContentPressShift;
+		ContentDisableShift = source.ContentDisableShift;
+		CharSize = source.CharSize;
+		CharSpace = source.CharSpace;
+		LineSpace = source.LineSpace;
+		Alignment = source.Alignment;
+		Wrap = source.Wrap;
+		Clip = source.Clip;
+	}
 	public Int2 GetContentShift (GUIState state) => state switch {
 		GUIState.Normal => ContentShift,
 		GUIState.Hover => ContentHighlightShift,

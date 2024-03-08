@@ -221,13 +221,12 @@ Color32.WHITE, int.MinValue + 1
 		int bgPadding = Unify(12);
 		Renderer.Draw(
 			Const.PIXEL,
-			docRect.Expand(bgPadding, 0, bgPadding, bgPadding),
-Color32.BLACK, int.MinValue + 1
+			docRect.Expand(bgPadding, 0, bgPadding, bgPadding), Color32.BLACK, int.MinValue + 1
 		);
 
 		// Highlight Frame
 		if (CursorInDoc && !menu.CursorInBottomPanel && menu.TakingID == 0 && !Input.LastActionFromMouse) {
-			GUI.HighlightCursor(FRAME_CODE, docItemRect, int.MinValue + 6);
+			GUI.HighlightCursor(FRAME_CODE, docItemRect);
 		}
 
 		// Content
@@ -323,7 +322,7 @@ Color32.BLACK, int.MinValue + 1
 			if (Input.LastActionFromMouse) {
 				Renderer.Draw(Const.PIXEL, resultItemRect, Color32.GREY_32, int.MinValue + 2);
 			} else if (!menu.CursorInBottomPanel) {
-				GUI.HighlightCursor(FRAME_CODE, resultItemRect, int.MinValue + 6);
+				GUI.HighlightCursor(FRAME_CODE, resultItemRect);
 			}
 		}
 

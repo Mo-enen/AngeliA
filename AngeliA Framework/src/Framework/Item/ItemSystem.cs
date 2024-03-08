@@ -155,7 +155,7 @@ public static class ItemSystem {
 
 
 	// UI
-	public static void DrawItemShortInfo (int itemID, IRect panelRect, int z, int armorIcon, int armorEmptyIcon) {
+	public static void DrawItemShortInfo (int itemID, IRect panelRect, int z, int armorIcon, int armorEmptyIcon, Color32 tint) {
 
 		if (!ItemPool.TryGetValue(itemID, out var itemData)) return;
 		var item = itemData.Item;
@@ -176,7 +176,7 @@ public static class ItemSystem {
 						int totalProgress = progItem.TotalProgress;
 						var rect = new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
 						for (int i = 0; i < totalProgress - 1; i++) {
-							Renderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, z);
+							Renderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, tint, z);
 							rect.x += rect.width;
 						}
 					}

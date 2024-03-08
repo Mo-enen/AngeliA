@@ -48,6 +48,7 @@ internal class Engine {
 	// Data
 	private static readonly GenericPopupUI PopupUI = new();
 	private static readonly GenericDialogUI DialogUI = new();
+	private static readonly GUIStyle MsgStyle = new(GUISkin.CenterLabel) { CharSize = 100 };
 	private static EngineSetting Setting;
 	private static Int2? FloatMascotMouseDownPos = null;
 	private static Int2 FloatMascotMouseDownGlobalPos = default;
@@ -313,7 +314,7 @@ internal class Engine {
 		// MSG 
 		GUI.Label(
 			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.UnifyMonitor(8)),
-			QUIT_MSG
+			QUIT_MSG, MsgStyle
 		);
 
 		// Buttons 
