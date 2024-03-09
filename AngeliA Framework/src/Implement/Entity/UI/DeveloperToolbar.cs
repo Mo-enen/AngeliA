@@ -88,14 +88,19 @@ public static class DeveloperToolbar {
 
 	[OnGameUpdateLater(-4097)]
 	internal static void UpdateToolbar () {
+
 		if (!Enable) return;
 
 		Cursor.RequireCursor();
-		int oldLayer = Renderer.CurrentLayerIndex;
-		Renderer.SetLayerToUI();
+
+		using var _ = LayerScope.Start(RenderLayer.UI);
+		Renderer.AbandonLayerSort(RenderLayer.UI);
 
 		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
 		int panelYMax = panelRect.y;
+
+		// BG
+		var bgCell = Renderer.Draw(Const.PIXEL, default, Color32.BLACK);
 
 		// Tool Buttons
 		int buttonSize = GUI.Unify(36);
@@ -146,14 +151,18 @@ public static class DeveloperToolbar {
 
 		// BG
 		PanelRect = new IRect(panelRect.x, panelRect.y, panelRect.width, panelYMax - panelRect.y);
-		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, int.MaxValue - 16);
+		bgCell.X = PanelRect.x;
+		bgCell.Y = PanelRect.y;
+		bgCell.Width = PanelRect.width;
+		bgCell.Height = PanelRect.height;
 
 		// Finish
-		Renderer.SetLayer(oldLayer);
+		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 		if (Input.MouseLeftButton && PanelRect.MouseInside()) {
 			Input.UseMouseKey(0);
 			Input.UseGameKey(Gamekey.Action);
 		}
+
 	}
 
 
@@ -323,18 +332,16 @@ public static class DeveloperToolbar {
 			rect.y -= itemHeight + itemPadding;
 
 			// Label
-			GUI.Label(rect, Const.SCREEN_EFFECT_NAMES[i]);
+			GUI.Label(rect, Const.SCREEN_EFFECT_NAMES[i], GUISkin.MiniLabel);
 
-			// Enable Button
-			var enableRect = rect.EdgeInside(Direction4.Right, itemHeight);
+			// Toggle
+			var enableRect = rect.EdgeInside(Direction4.Right, rect.height);
 			EffectsEnabled[i] = GUI.Toggle(enableRect, EffectsEnabled[i]);
 		}
 
 		// Update Values
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
-			if (EffectsEnabled[i]) {
-				Game.PassEffect(i);
-			}
+			if (EffectsEnabled[i]) Game.PassEffect(i);
 		}
 		if (EffectsEnabled[Const.SCREEN_EFFECT_RETRO_DARKEN]) {
 			Game.PassEffect_RetroDarken(Game.GlobalFrame.PingPong(60) / 60f);

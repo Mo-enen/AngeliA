@@ -9,6 +9,17 @@ namespace AngeliA.Framework {
 		public abstract void Dispose ();
 	}
 
+	public class LayerScope : GUIScope {
+		private static readonly LayerScope Instance = new();
+		private int OldLayer;
+		public static LayerScope Start (int layer) {
+			Instance.OldLayer = Renderer.CurrentLayerIndex;
+			Renderer.SetLayer(layer);
+			return Instance;
+		}
+		public override void Dispose () => Renderer.SetLayer(OldLayer);
+	}
+
 	public class ColorScope : GUIScope {
 		private static readonly ColorScope Instance = new();
 		private Color32 OldColor;

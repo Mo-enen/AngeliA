@@ -241,31 +241,33 @@ public class PlayerMenuUI : EntityUI {
 		// Mouse in Panel
 		MouseInPanel = MouseInPanel || panelRect.MouseInside();
 
+		// Background
+		var bgCell = Renderer.Draw(Const.PIXEL, default, Color32.BLACK);
+
 		// Type Icon
 		Renderer.Draw(
 			ItemSystem.GetItemTypeIcon(itemID),
-			new IRect(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight),
-Color32.ORANGE_BETTER, int.MinValue + 3
+			new IRect(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight), Color32.ORANGE_BETTER, int.MinValue + 3
 		);
 
 		// Name
 		var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
 		using (ContentColorScope.Start(Color32.ORANGE_BETTER)) {
-			GUI.Label(nameRect, ItemSystem.GetItemName(itemID));
+			GUI.Label(nameRect, ItemSystem.GetItemName(itemID), GUISkin.MiniLabel);
 		}
 
 		// Description
 		GUI.Label(
 			panelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
 			ItemSystem.GetItemDescription(itemID),
-			out var desBounds, GUISkin.TextArea
+			out var desBounds, GUISkin.MiniTextArea
 		);
 
-		// Background
-		Renderer.Draw(
-			Const.PIXEL,
-			new IRect(panelRect.x, desBounds.y, panelRect.width, nameRect.yMax - desBounds.y).Expand(windowPadding), Color32.BLACK, int.MinValue + 1
-		);
+		// Final
+		bgCell.X = panelRect.x - windowPadding;
+		bgCell.Y = desBounds.y - windowPadding;
+		bgCell.Width = panelRect.width + 2 * windowPadding;
+		bgCell.Height = nameRect.yMax - desBounds.y + 2 * windowPadding;
 
 	}
 
@@ -471,14 +473,25 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 			GUI.HighlightCursor(FRAME_CODE, HoveringItemUiRect);
 		}
 		if (TakingID == 0) return;
-		int x = UsingMouseMode ? Input.MouseGlobalPosition.x : HoveringItemUiRect.CenterX();
-		int y = UsingMouseMode ? Input.MouseGlobalPosition.y : HoveringItemUiRect.y;
 		int size = Unify(ITEM_SIZE);
+		var itemRect = UsingMouseMode ?
+			new IRect(Input.MouseGlobalPosition.x - size / 2, Input.MouseGlobalPosition.y - size / 2, size, size) :
+			HoveringItemUiRect;
+
+		// Exclude Text for Count Mark
+		var countRect = itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3);
+		for (int i = 0; i < Renderer.TextLayerCount; i++) {
+			Renderer.ExcludeTextCells(i, countRect, 0);
+		}
+
+		// Item Icon
 		Renderer.Draw(
 			TakingID,
-			x, y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
+			itemRect.x + size / 2, itemRect.y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
 			size, size, Color32.WHITE, int.MaxValue
 		);
+		// Item Count
+		DrawItemCount(countRect, TakingCount);
 	}
 
 
@@ -1095,18 +1108,14 @@ Color32.ORANGE_BETTER, int.MinValue + 3
 			rect = rect.Shrink(rect.width / 6);
 		}
 		int iconShrink = Unify(7);
-		Renderer.Draw(
-			id,
-			rect.Shrink(iconShrink).Fit(sprite),
-			tint, z
-		);
+		Renderer.Draw(id, rect.Shrink(iconShrink).Fit(sprite), tint, z);
 	}
 
 
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
 		Renderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
-		GUI.Label(rect, ItemCountChars.GetChars(number));
+		GUI.Label(rect, ItemCountChars.GetChars(number), GUISkin.CenterMiniLabel);
 	}
 
 

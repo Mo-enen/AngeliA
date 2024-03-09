@@ -211,7 +211,7 @@ Color32.BLACK, GIZMOS_Z
 
 	private void Update_DrawCursor () {
 
-		if (IsPlaying || DroppingPlayer || CtrlHolding || GUI.IsTyping) return;
+		if (IsPlaying || DroppingPlayer || CtrlHolding || GUI.IsTyping || TaskingRoute) return;
 		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 		if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 		if (Input.AnyMouseButtonHolding && MouseDownInSelection) return;

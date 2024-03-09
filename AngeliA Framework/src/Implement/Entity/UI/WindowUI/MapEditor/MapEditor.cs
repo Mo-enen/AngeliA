@@ -81,7 +81,6 @@ public sealed partial class MapEditor : WindowUI {
 	// Const
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 	private const int GIZMOS_Z = int.MaxValue - 64;
-	private const int PANEL_Z = int.MaxValue - 16;
 	private const int PANEL_WIDTH = 300;
 	private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 	private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);

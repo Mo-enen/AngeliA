@@ -245,9 +245,11 @@ public static class GUI {
 	public static bool IconToggle (IRect rect, bool isOn, int icon, GUIStyle markStyle = null, GUIStyle iconStyle = null) {
 		markStyle ??= GUISkin.GreenPixel;
 		isOn = BlankToggle(rect, isOn, out var state);
+		// Mark
 		if (isOn) {
 			DrawStyleBody(GetContentRect(rect, markStyle, state), markStyle, state);
 		}
+		// Icon
 		if (iconStyle != null) {
 			Icon(rect, icon, iconStyle, state);
 		} else {
@@ -274,7 +276,7 @@ public static class GUI {
 	public static void Icon (IRect rect, int sprite, GUIStyle style, GUIState state) {
 		if (!Renderer.TryGetSprite(sprite, out var icon)) return;
 		if (style != null) {
-			DrawStyleContent(rect, sprite, style, state);
+			DrawStyleContent(rect.Fit(icon), sprite, style, state);
 		} else {
 			Renderer.Draw(icon, rect.Fit(icon), Color * ContentColor);
 		}

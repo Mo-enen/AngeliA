@@ -294,6 +294,10 @@ public partial class MapEditor {
 			PanelRect.x, PanelRect.y, PanelRect.width, groupPanelHeight + PANEL_PADDING * 2 + TAB_SIZE
 		);
 
+		// BG
+		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK);
+		Renderer.Draw(Const.PIXEL, groupRect, Color32.GREY_32);
+
 		// Tabs
 		for (int i = 0; i < 2; i++) {
 
@@ -308,7 +312,7 @@ public partial class MapEditor {
 			Renderer.Draw_9Slice(
 				UI_TAB, tabRect,
 				tabBorder, tabBorder, tabBorder, tabBorder,
-				selecting ? Color32.GREY_128 : Color32.GREY_64, PANEL_Z - 5
+				selecting ? Color32.GREY_128 : Color32.GREY_64
 			);
 			if (tabInteractable) Cursor.SetCursorAsHand(tabRect);
 
@@ -317,7 +321,7 @@ public partial class MapEditor {
 				var cells = Renderer.Draw_9Slice(
 					UI_TAB, tabRect.EdgeOutside(Direction4.Up, tabBorder).Shift(0, -tabBorder),
 					tabBorder, tabBorder, 0, tabBorder,
-					new(225, 171, 48, 255), PANEL_Z - 4
+					new Color32(225, 171, 48, 255)
 				);
 				cells[0].Shift.down = tabBorder / 2;
 				cells[1].Shift.down = tabBorder / 2;
@@ -326,15 +330,16 @@ public partial class MapEditor {
 
 			// Label
 			GUI.Label(
-				tabRect.Shrink(tabRect.height * 2 / 3, 0, 0, 0),
+				tabRect.Shrink(tabRect.height / 2, 0, 0, 0),
 				i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
-				out var labelBounds
+				out var labelBounds,
+				GUISkin.CenterMediumLabel
 			);
 
 			// Icon
 			Renderer.Draw(
 				i == (int)PaletteTabType.Listed ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
-				labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-labelBounds.height / 3, 0), Color32.WHITE, PANEL_Z - 4
+				labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-tabRect.height / 4, 0), Color32.WHITE
 			);
 
 			// Click
@@ -350,7 +355,6 @@ public partial class MapEditor {
 		}
 		bool mouseInPanel = groupRect.MouseInside();
 		groupRect = groupRect.Shrink(PANEL_PADDING);
-		Renderer.Draw(Const.PIXEL, groupRect.Expand(PANEL_PADDING), Color32.GREY_32, PANEL_Z - 6);
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 		var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
 		int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
@@ -373,14 +377,12 @@ public partial class MapEditor {
 				Renderer.Draw_9Slice(
 					BUTTON_DARK_DOWN,
 					rect.x, rect.y, 0, 0, 0, rect.width, rect.height + buttonDownShiftY,
-					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER,
-					PANEL_Z - 5
+					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
 				);
 			} else {
 				Renderer.Draw_9Slice(
 					BUTTON_DARK, rect,
-					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER,
-					PANEL_Z - 5
+					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
 				);
 			}
 
@@ -389,8 +391,7 @@ public partial class MapEditor {
 				Renderer.Draw(
 					coverSprite,
 					rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0).Fit(coverSprite),
-					selecting ? Color32.GREY_196 : Color32.WHITE,
-					PANEL_Z - 3
+					selecting ? Color32.GREY_196 : Color32.WHITE
 				);
 			}
 
@@ -486,9 +487,6 @@ public partial class MapEditor {
 		if (!string.IsNullOrEmpty(SearchingText)) return;
 		if (PanelRect.xMax <= Renderer.CameraRect.x) return;
 
-		// BG
-		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, PANEL_Z - 14);
-
 		// Gate
 		bool showingBuiltIn = CurrentPaletteTab == PaletteTabType.BuiltIn;
 		if (showingBuiltIn) {
@@ -547,11 +545,18 @@ public partial class MapEditor {
 
 			bool draggingForReorder = !showingBuiltIn && DraggingForReorderPaletteGroup == index;
 
+			// Hover
+			bool mouseHovering = interactable && mouseInPanel && rect.MouseInside();
+			if (mouseHovering) {
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32);
+				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
+				DrawTooltip(rect, pal.Name);
+			}
+
 			// Frame
 			Renderer.Draw_9Slice(
 				ITEM_FRAME, rect,
-				BORDER, BORDER, BORDER, BORDER,
-				PANEL_Z - 12
+				BORDER, BORDER, BORDER, BORDER
 			);
 
 			// Cover
@@ -562,24 +567,15 @@ public partial class MapEditor {
 			if (drawingID != 0) {
 				Renderer.Draw(
 					drawingID,
-					rect.Shrink(COVER_SHRINK).Fit(sprite, sprite.PivotX, sprite.PivotY),
-					PANEL_Z - 10
+					rect.Shrink(COVER_SHRINK).Fit(sprite, sprite.PivotX, sprite.PivotY)
 				);
 			}
 
 			// Selecting
 			if (SelectingPaletteItem == pal) {
 				Renderer.Draw_9Slice(
-					BuiltInSprite.FRAME_16, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Color32.GREEN, PANEL_Z - 11
+					BuiltInSprite.FRAME_16, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Color32.GREEN
 				);
-			}
-
-			// Hover
-			bool mouseHovering = interactable && mouseInPanel && rect.MouseInside();
-			if (mouseHovering) {
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, PANEL_Z - 13);
-				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
-				DrawTooltip(rect, pal.Name);
 			}
 
 			// Start Reorder
@@ -669,7 +665,7 @@ public partial class MapEditor {
 
 		if (IsPlaying || DroppingPlayer || string.IsNullOrEmpty(SearchingText)) return;
 		if (PanelRect.xMax <= Renderer.CameraRect.x) return;
-		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK, PANEL_Z - 14);
+		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK);
 		if (SearchResult.Count == 0) return;
 
 		int SCROLL_BAR_WIDTH = Unify(12);
@@ -703,25 +699,24 @@ public partial class MapEditor {
 		for (int i = pageStartIndex; i < SearchResult.Count; i++) {
 			var pal = SearchResult[i];
 
-			// Icon
-			DrawSpriteGizmos(
-				pal.ArtworkID,
-				new IRect(rect.x, rect.y, itemSize, itemSize),
-				z: PANEL_Z - 11
-			);
-
-			// Label
-			GUI.Label(rect.Shrink(itemSize + itemGap, 0, 0, 0), pal.Name);
-
 			// Hover
 			bool hover = interactable && mouseInPanel && rect.MouseInside();
 			if (hover) {
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, PANEL_Z - 13);
+				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32);
 			}
+
+			// Icon
+			DrawSpriteGizmos(
+				pal.ArtworkID,
+				new IRect(rect.x, rect.y, itemSize, itemSize)
+			);
+
+			// Label
+			GUI.Label(rect.Shrink(itemSize + itemGap, 0, 0, 0), pal.Name, GUISkin.MediumLabel);
 
 			// Selecting Highlight
 			if (pal == SelectingPaletteItem) {
-				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, rect, Color32.GREEN, PANEL_Z - 12);
+				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, rect, Color32.GREEN);
 			}
 
 			// Click
@@ -771,7 +766,7 @@ public partial class MapEditor {
 
 		// Reset Camera
 		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
-		if (GUI.Button(btnRect, BuiltInSprite.ICON_REFRESH)) {
+		if (GUI.DarkButton(btnRect, BuiltInSprite.ICON_REFRESH)) {
 			ResetCamera();
 		}
 
@@ -821,7 +816,7 @@ public partial class MapEditor {
 		bool hasTask = Task.HasTask();
 
 		// BG
-		Renderer.Draw(Const.PIXEL, CheckPointLaneRect, Color32.BLACK, PANEL_Z + 1);
+		Renderer.Draw(Const.PIXEL, CheckPointLaneRect, Color32.BLACK);
 
 		// Scroll
 		if (Input.MouseWheelDelta != 0) QuickLaneScrollY -= Input.MouseWheelDelta;
@@ -865,7 +860,7 @@ public partial class MapEditor {
 		int PADDING = Unify(6);
 		int HEIGHT = Unify(TOOL_BAR_HEIGHT);
 		var searchPanel = new IRect(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
-		Renderer.Draw(Const.PIXEL, searchPanel, Color32.GREY_32, PANEL_Z - 6);
+		Renderer.Draw(Const.PIXEL, searchPanel, Color32.GREY_32);
 		searchPanel = searchPanel.Shrink(PADDING);
 
 		// Search Text
@@ -882,8 +877,8 @@ public partial class MapEditor {
 		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
 			Renderer.Draw(
 				SEARCH_ICON,
-				searchPanel.Shrink(PADDING, searchPanel.width - searchPanel.height - PADDING, 0, 0),
-				Color32.GREY_128, PANEL_Z - 4
+				searchPanel.EdgeInside(Direction4.Left, searchPanel.height).Shrink(PADDING),
+				Color32.GREY_128
 			);
 		}
 
@@ -891,8 +886,8 @@ public partial class MapEditor {
 		if (
 			!string.IsNullOrEmpty(SearchingText) &&
 			GUI.Button(
-				searchPanel.EdgeInside(Direction4.Right, searchPanel.height),
-				BuiltInSprite.ICON_CROSS
+				searchPanel.EdgeInside(Direction4.Right, searchPanel.height).Shrink(PADDING),
+				BuiltInSprite.ICON_CROSS, GUISkin.IconButton
 			)
 		) {
 			SearchingText = "";

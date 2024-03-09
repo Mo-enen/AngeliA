@@ -99,6 +99,9 @@ public class ControlHintUI : EntityUI {
 
 	private void DrawGamePad () {
 
+		using var _ = LayerScope.Start(RenderLayer.UI);
+		Renderer.AbandonLayerSort(RenderLayer.UI);
+
 		int x = Unify(6);
 		int y = Unify(6);
 		var rect = new IRect(x, y, Unify(132), Unify(60));
@@ -114,9 +117,6 @@ public class ControlHintUI : EntityUI {
 		var ButtonBPosition = new IRect(Unify(86), Unify(18), Unify(12), Unify(12));
 
 		var screenRect = Renderer.CameraRect;
-
-		int oldLayer = Renderer.CurrentLayerIndex;
-		Renderer.SetLayerToUI();
 
 		// Body
 		Renderer.Draw(BodyCode, rect.Shift(screenRect.x, screenRect.y));
@@ -147,7 +147,9 @@ public class ControlHintUI : EntityUI {
 		Renderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Action) ? PressingTint : ColorfulButtonTint);
 		Renderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Jump) ? PressingTint : ColorfulButtonTint);
 
-		Renderer.SetLayer(oldLayer);
+		// Final
+		Renderer.ReverseUnsortedCells(RenderLayer.UI);
+
 	}
 
 
@@ -307,6 +309,7 @@ public class ControlHintUI : EntityUI {
 		// Draw
 		int oldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayerToUI();
+		Renderer.AbandonLayerSort(RenderLayer.UI);
 
 		rect.width = widthA;
 		if (background) {
@@ -351,7 +354,7 @@ public class ControlHintUI : EntityUI {
 
 		// Label
 		rect.width = 1;
-		GUI.Label(rect, label, out var bounds);
+		GUI.Label(rect, label, out var bounds, GUISkin.MediumLabel);
 		if (bgCell != null) {
 			bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
 			bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
@@ -359,6 +362,7 @@ public class ControlHintUI : EntityUI {
 		}
 
 		Renderer.SetLayer(oldLayer);
+		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 
 	}
 

@@ -53,6 +53,23 @@ public static class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
+	public static readonly GUIStyle IconButton = new() {
+		BodySprite = 0,
+		BodyHighlightSprite = Const.PIXEL,
+		BodyPressSprite = Const.PIXEL,
+		BodyDisableSprite = 0,
+
+		BodyColor = Color32.CLEAR,
+		BodyHighlightColor = Color32.GREY_20,
+		BodyPressColor = Color32.GREY_12,
+		BodyDisableColor = Color32.CLEAR,
+
+		ContentColor = Color32.WHITE,
+		ContentHighlightColor = Color32.WHITE,
+		ContentPressColor = Color32.GREY_230,
+		ContentDisableColor = Color32.CLEAR,
+	};
+
 	public static readonly GUIStyle DarkButton = new() {
 		BodySprite = BuiltInSprite.UI_DARK_BUTTON,
 		BodyHighlightSprite = BuiltInSprite.UI_DARK_BUTTON,
@@ -110,6 +127,76 @@ public static class GUISkin {
 		Alignment = Alignment.MidLeft,
 	};
 
+	public static readonly GUIStyle MediumLabel = new() {
+		BodyColor = Color32.CLEAR,
+		BodyHighlightColor = Color32.WHITE,
+		BodyPressColor = Color32.GREY_230,
+		BodyDisableColor = Color32.GREY_196,
+
+		ContentColor = Color32.WHITE,
+		ContentHighlightColor = Color32.WHITE,
+		ContentPressColor = Color32.GREY_230,
+		ContentDisableColor = Color32.GREY_196,
+		CharSize = 21,
+		Alignment = Alignment.MidLeft,
+	};
+
+	public static readonly GUIStyle MiniLabel = new() {
+		BodyColor = Color32.CLEAR,
+		BodyHighlightColor = Color32.WHITE,
+		BodyPressColor = Color32.GREY_230,
+		BodyDisableColor = Color32.GREY_196,
+
+		ContentColor = Color32.WHITE,
+		ContentHighlightColor = Color32.WHITE,
+		ContentPressColor = Color32.GREY_230,
+		ContentDisableColor = Color32.GREY_196,
+		CharSize = 14,
+		Alignment = Alignment.MidLeft,
+	};
+
+	public static readonly GUIStyle CenterLabel = new() {
+		BodyColor = Color32.CLEAR,
+		BodyHighlightColor = Color32.WHITE,
+		BodyPressColor = Color32.GREY_230,
+		BodyDisableColor = Color32.GREY_196,
+
+		ContentColor = Color32.WHITE,
+		ContentHighlightColor = Color32.WHITE,
+		ContentPressColor = Color32.GREY_230,
+		ContentDisableColor = Color32.GREY_196,
+		CharSize = 28,
+		Alignment = Alignment.MidMid,
+	};
+
+	public static readonly GUIStyle CenterMediumLabel = new() {
+		BodyColor = Color32.CLEAR,
+		BodyHighlightColor = Color32.WHITE,
+		BodyPressColor = Color32.GREY_230,
+		BodyDisableColor = Color32.GREY_196,
+
+		ContentColor = Color32.WHITE,
+		ContentHighlightColor = Color32.WHITE,
+		ContentPressColor = Color32.GREY_230,
+		ContentDisableColor = Color32.GREY_196,
+		CharSize = 21,
+		Alignment = Alignment.MidMid,
+	};
+
+	public static readonly GUIStyle CenterMiniLabel = new() {
+		BodyColor = Color32.CLEAR,
+		BodyHighlightColor = Color32.WHITE,
+		BodyPressColor = Color32.GREY_230,
+		BodyDisableColor = Color32.GREY_196,
+
+		ContentColor = Color32.WHITE,
+		ContentHighlightColor = Color32.WHITE,
+		ContentPressColor = Color32.GREY_230,
+		ContentDisableColor = Color32.GREY_196,
+		CharSize = 14,
+		Alignment = Alignment.MidMid,
+	};
+
 	public static readonly GUIStyle TextArea = new() {
 		BodyColor = Color32.CLEAR,
 		BodyHighlightColor = Color32.WHITE,
@@ -127,7 +214,7 @@ public static class GUISkin {
 		Clip = true,
 	};
 
-	public static readonly GUIStyle CenterLabel = new() {
+	public static readonly GUIStyle MediumTextArea = new() {
 		BodyColor = Color32.CLEAR,
 		BodyHighlightColor = Color32.WHITE,
 		BodyPressColor = Color32.GREY_230,
@@ -137,11 +224,14 @@ public static class GUISkin {
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
-		CharSize = 28,
-		Alignment = Alignment.MidMid,
+
+		CharSize = 21,
+		Alignment = Alignment.MidLeft,
+		Wrap = WrapMode.WordWrap,
+		Clip = true,
 	};
 
-	public static readonly GUIStyle CenterMiniLabel = new() {
+	public static readonly GUIStyle MiniTextArea = new() {
 		BodyColor = Color32.CLEAR,
 		BodyHighlightColor = Color32.WHITE,
 		BodyPressColor = Color32.GREY_230,
@@ -151,8 +241,11 @@ public static class GUISkin {
 		ContentHighlightColor = Color32.WHITE,
 		ContentPressColor = Color32.GREY_230,
 		ContentDisableColor = Color32.GREY_196,
+
 		CharSize = 14,
-		Alignment = Alignment.MidMid,
+		Alignment = Alignment.MidLeft,
+		Wrap = WrapMode.WordWrap,
+		Clip = true,
 	};
 
 	public static readonly GUIStyle InputField = new() {

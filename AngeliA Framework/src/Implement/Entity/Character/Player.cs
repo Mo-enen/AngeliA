@@ -416,11 +416,8 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 		// Hint
 		ControlHintUI.DrawGlobalHint(
-			X - Const.HALF,
-			Y + Const.CEL * 3 / 2,
-			Gamekey.Action,
-			HINT_WAKE,
-			true
+			X - Const.HALF, Y + Const.CEL * 3 / 2,
+			Gamekey.Action, HINT_WAKE, background: true
 		);
 		ControlHintUI.AddHint(Gamekey.Action, HINT_WAKE);
 	}
