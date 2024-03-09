@@ -102,7 +102,7 @@ public abstract class SnakePlatform : Platform {
 	}
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		// Touch Check
 		if (TouchedByPlayer && !PrevTouched) {
 			PrevTouched = true;

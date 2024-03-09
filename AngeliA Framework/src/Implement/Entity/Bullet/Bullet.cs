@@ -33,8 +33,8 @@ public abstract class Bullet : Entity {
 		Sender = null;
 	}
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		// Life Check
 		if (Game.GlobalFrame > SpawnFrame + Duration) {
 			Active = false;
@@ -49,8 +49,8 @@ public abstract class Bullet : Entity {
 		}
 	}
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		ReceiverHitCheck(Rect);
 	}
 

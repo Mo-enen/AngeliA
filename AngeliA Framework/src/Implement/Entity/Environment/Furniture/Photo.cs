@@ -13,11 +13,11 @@ public class Photo : Furniture, ICombustible, IActionTarget {
 		PhotoIndex = Util.RandomInt(0, int.MaxValue);
 	}
 
-	public override void FillPhysics () {
+	public override void FirstUpdate () {
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		if (Renderer.TryGetSpriteFromGroup(TypeID, PhotoIndex, out var sprite, true, false)) {
 			var cell = Renderer.Draw(sprite, RenderingRect);
 			if ((this as IActionTarget).IsHighlighted) {

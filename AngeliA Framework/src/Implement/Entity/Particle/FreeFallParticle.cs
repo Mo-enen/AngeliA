@@ -29,8 +29,8 @@ public class FreeFallParticle : Particle {
 		ArtworkID = 0;
 	}
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		CurrentSpeedX = CurrentSpeedX.MoveTowards(0, AirDragX);
 		CurrentSpeedY = Util.Max(CurrentSpeedY - Gravity, -96);
 		X += CurrentSpeedX;
@@ -42,8 +42,8 @@ public class FreeFallParticle : Particle {
 		}
 	}
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (BlinkInEnd && LocalFrame > Duration / 2 && LocalFrame % 6 < 3) return;
 		if (ArtworkID != 0) {
 			Renderer.SetLayerToUI();

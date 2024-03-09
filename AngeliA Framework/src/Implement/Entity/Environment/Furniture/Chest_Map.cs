@@ -12,7 +12,7 @@ public abstract class MapChest : Furniture, IActionTarget {
 
 
 	// MSG
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		bool opened = IsChestOpened(this);
 		if (Renderer.TryGetSpriteFromGroup(TypeID, opened ? 1 : 0, out var sprite, false, true)) {
 			var cell = Renderer.Draw(sprite, RenderingRect);

@@ -30,9 +30,9 @@ public class MeleeBullet : Bullet {
 		base.OnActivated();
 	}
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 		FollowSender();
-		base.PhysicsUpdate();
+		base.Update();
 	}
 
 	public void FollowSender () {

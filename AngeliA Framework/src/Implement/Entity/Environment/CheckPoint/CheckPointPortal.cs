@@ -21,17 +21,17 @@ public class CheckPointPortal : CircleFlamePortal {
 		InvokeFrame = -1;
 	}
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		if (InvokeFrame >= 0 && Game.GlobalFrame > InvokeFrame + 30) {
 			Active = false;
 			InvokeFrame = -1;
 		}
 	}
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 
-		base.FrameUpdate();
+		base.LateUpdate();
 
 		// Draw Cp Icon
 		if (Renderer.TryGetSprite(TargetCheckPointID, out var sprite)) {

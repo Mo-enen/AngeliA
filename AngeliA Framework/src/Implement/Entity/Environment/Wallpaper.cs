@@ -48,16 +48,16 @@ public abstract class Wallpaper : Entity {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		if (Current != null && Current.Active && Current.TypeID == TypeID && Current.SpawnFrame < SpawnFrame) {
 			Active = false;
 		}
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		if (!Active) return;
 		// Switch Current
 		if (Current != this) {
@@ -81,7 +81,7 @@ public abstract class Wallpaper : Entity {
 	}
 
 
-	public sealed override void FrameUpdate () {
+	public sealed override void LateUpdate () {
 		if (!Active) return;
 		if (Current != this && Amount == 0) {
 			if (!FromWorld || InstanceID.z != Stage.ViewZ || !Rect.Overlaps(Stage.SpawnRect)) {
@@ -89,7 +89,7 @@ public abstract class Wallpaper : Entity {
 			}
 			return;
 		}
-		base.FrameUpdate();
+		base.LateUpdate();
 		int oldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayerToWallpaper();
 		DrawBackground(Renderer.CameraRect);

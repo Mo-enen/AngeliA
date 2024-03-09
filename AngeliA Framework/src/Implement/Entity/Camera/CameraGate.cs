@@ -38,8 +38,8 @@ public abstract class CameraGate : Entity {
 
 
 	// MSG
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		TargetMinX = null;
 		TargetMinY = null;
 		TargetMaxX = null;
@@ -47,8 +47,8 @@ public abstract class CameraGate : Entity {
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 
 		var player = Player.Selecting;
 		if (player == null || !player.Active) return;
@@ -90,9 +90,9 @@ public abstract class CameraGate : Entity {
 	}
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 
-		base.FrameUpdate();
+		base.LateUpdate();
 		if (Game.GlobalFrame <= LastClampFrame) return;
 
 		// Clamp Camera

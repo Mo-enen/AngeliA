@@ -97,13 +97,13 @@ public static class Stage {
 
 	// Const
 	private static readonly int[] ENTITY_CAPACITY = new int[EntityLayer.COUNT] {
+		64,		//UI
 		4096,	//GAME
 		512,	//CHARACTER
 		1024,	//ENVIRONMENT 
 		1024,	//BULLET 
 		1024,	//ITEM
 		128,	//DECORATE
-		64,		//UI
 	};
 
 	// Api
@@ -306,19 +306,19 @@ public static class Stage {
 			RefreshStagedEntities(layer);
 		}
 
-		// Fill Physics
+		// First Physics
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
 			int count = EntityCounts[layer];
 			count = count.Clamp(0, entities.Length);
 			for (int index = 0; index < count; index++) {
 				try {
-					entities[index].FillPhysics();
+					entities[index].FirstUpdate();
 				} catch (System.Exception ex) { Util.LogException(ex); }
 			}
 		}
 
-		// Before Physics Update
+		// Before Update
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
 			int count = EntityCounts[layer];
@@ -327,13 +327,13 @@ public static class Stage {
 				var e = entities[index];
 				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
-						e.BeforePhysicsUpdate();
+						e.BeforeUpdate();
 					} catch (System.Exception ex) { Util.LogException(ex); }
 				}
 			}
 		}
 
-		// Physics Update
+		// Update
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
 			int count = EntityCounts[layer];
@@ -342,13 +342,13 @@ public static class Stage {
 				var e = entities[index];
 				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
-						e.PhysicsUpdate();
+						e.Update();
 					} catch (System.Exception ex) { Util.LogException(ex); }
 				}
 			}
 		}
 
-		// FrameUpdate
+		// Late Update
 		var cullCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
@@ -361,7 +361,7 @@ public static class Stage {
 					try {
 						Renderer.SetLayerToDefault();
 						Renderer.SetTextLayer(0);
-						e.FrameUpdate();
+						e.LateUpdate();
 						e.FrameUpdated = true;
 					} catch (System.Exception ex) { Util.LogException(ex); }
 				}

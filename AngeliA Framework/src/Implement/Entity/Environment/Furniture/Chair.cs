@@ -27,7 +27,7 @@ public abstract class Chair : Furniture {
 		DockedToRight = null;
 	}
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		if (!DockedToRight.HasValue) {
 			DockedToRight = !Physics.HasEntity<Table>(
 				Rect.Expand(ColliderBorder).Shift(-Const.CEL, 0).Shrink(1),

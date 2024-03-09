@@ -42,14 +42,14 @@ public abstract class Door : EnvironmentEntity {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		const int OVERLAP_SHRINK = Const.CEL / 8;
 		var player = Player.Selecting;
 		if (player != null) {
@@ -73,8 +73,8 @@ public abstract class Door : EnvironmentEntity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 
 		int artIndex = Open || PlayerOverlaps ? 1 : 0;
 		if (!Renderer.TryGetSpriteFromGroup(TypeID, artIndex, out var sprite)) return;

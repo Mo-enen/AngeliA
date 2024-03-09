@@ -116,14 +116,14 @@ public abstract class CameraAutoScroll : Entity {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (Player.Selecting == null || !Player.Selecting.Active) {
 			Current = null;
 			return;

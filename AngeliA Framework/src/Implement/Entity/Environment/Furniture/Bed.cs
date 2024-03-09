@@ -31,8 +31,8 @@ public abstract class Bed : Furniture, IActionTarget {
 		RequireRestartGame = false;
 	}
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		UpdateForTarget();
 	}
 

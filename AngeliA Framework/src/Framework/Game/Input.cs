@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public static class Input {
 
 
@@ -686,6 +686,11 @@ public static class Input {
 			if (MouseRightState.Holding) MouseRightState.Ignored = true;
 			if (MouseMidState.Holding) MouseMidState.Ignored = true;
 		}
+	}
+	public static void UseAllMouseKey () {
+		MouseLeftState.Ignored = true;
+		MouseRightState.Ignored = true;
+		MouseMidState.Ignored = true;
 	}
 	public static void UseMouseKey (int index) {
 		if (index == 0 && MouseLeftState.Holding) MouseLeftState.Ignored = true;

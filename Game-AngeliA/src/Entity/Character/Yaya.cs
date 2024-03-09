@@ -4,9 +4,9 @@ using AngeliA;
 using AngeliA.Framework;
 
 
-namespace AngeliaGame; 
+namespace AngeliaGame;
 
-//[EntityAttribute.DefaultSelectPlayer]
+[EntityAttribute.DefaultSelectPlayer]
 public class Yaya : Player {
 
 
@@ -44,12 +44,21 @@ public class Yaya : Player {
 
 	}
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		// Summon GuaGua
 		if (GuaGua == null || !GuaGua.Active) {
 			GuaGua = Summon.CreateSummon<GuaGua>(this, X, Y);
 		}
+
+
+
+		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
+			
+
+		}
+
+
 	}
 
 }

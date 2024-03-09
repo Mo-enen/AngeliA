@@ -16,8 +16,8 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 		Active = false;
 		OnBreak();
 	}
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 	}
 	protected virtual void OnBreak () {

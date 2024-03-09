@@ -50,8 +50,8 @@ public abstract class TitleUI : Entity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Active || string.IsNullOrEmpty(Title)) return;
 		if (TriggeredFrame < 0) {
 			TriggerCheck();

@@ -199,15 +199,14 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 			int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
 			itemRect.x = panelRect.x + (i % 2) * itemSize;
 			itemRect.y = panelRect.y + (i / 2) * itemSize;
+			Renderer.Draw_9Slice(
+				CRAFTING_FRAME_CODE, itemRect.Shrink(itemSize / 32),
+				itemBorder, itemBorder, itemBorder, itemBorder
+			);
 			PlayerMenuUI.DrawItemFieldUI(
 				itemID, count, 0, itemRect.Shrink(padding),
 				cursorInInventory,
 				cursorInInventory ? i : -2
-			);
-			Renderer.Draw_9Slice(
-				CRAFTING_FRAME_CODE, itemRect.Shrink(itemSize / 32),
-				itemBorder, itemBorder, itemBorder, itemBorder,
-Color32.WHITE, int.MinValue + 1
 			);
 		}
 	}

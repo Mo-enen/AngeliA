@@ -6,11 +6,11 @@ namespace AngeliA.Framework;
 public class SpinningBlade : EnvironmentEntity {
 
 	 
-	public override void FillPhysics () => Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect.Expand(1), true, 1);
+	public override void FirstUpdate () => Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect.Expand(1), true, 1);
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		Renderer.Draw(
 			TypeID,
 			X + Width / 2, Y + Height / 2,

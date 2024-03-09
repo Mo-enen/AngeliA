@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA.Framework;
+
 [EntityAttribute.StageOrder(4097)]
 public class GenericDialogUI : MenuUI {
 
@@ -32,14 +32,6 @@ public class GenericDialogUI : MenuUI {
 	public override void OnActivated () {
 		base.OnActivated();
 		ContentPadding = new(32, 32, 46, 12);
-	}
-
-
-	public override void UpdateUI () {
-		// Exclude Text
-		Renderer.ExcludeTextCellsForAllLayers(BackgroundRect);
-		// Update
-		base.UpdateUI();
 	}
 
 

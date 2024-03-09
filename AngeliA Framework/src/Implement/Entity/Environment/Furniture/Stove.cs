@@ -5,16 +5,16 @@ using System.Collections.Generic;
 namespace AngeliA.Framework; 
 
 public class StoveA : Furniture {
-	public override void FillPhysics () { }
+	public override void FirstUpdate () { }
 }
 public class StoveB : Furniture {
-	public override void FillPhysics () { }
+	public override void FirstUpdate () { }
 }
 public class StoveC : Furniture {
-	public override void FillPhysics () { }
+	public override void FirstUpdate () { }
 }
 public class StoveD : Furniture {
-	public override void FillPhysics () { }
+	public override void FirstUpdate () { }
 }
 
 public class StoveCabinetA : StoveCabinet { }

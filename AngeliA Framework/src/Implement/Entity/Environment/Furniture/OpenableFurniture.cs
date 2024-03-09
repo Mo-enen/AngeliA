@@ -5,7 +5,7 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 	protected virtual Int2 WindowSize => new(800, 600);
 	private static int UiUpdateFrame = -1;
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		// Close Check
 		if (Open && (Player.Selecting == null || PlayerMenuUI.ShowingUI || Task.HasTask())) {
 			SetOpen(false);
@@ -23,7 +23,7 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 			));
 			Renderer.SetLayerToDefault();
 		}
-		base.FrameUpdate();
+		base.LateUpdate();
 	}
 
 
@@ -58,7 +58,7 @@ public abstract class OpenableFurniture : Furniture, IActionTarget {
 	bool IActionTarget.IsHighlighted => !Open && GetIsHighlighted();
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 
 		var act = this as IActionTarget;
 		if (Renderer.TryGetSpriteFromGroup(TypeID, Open ? 1 : 0, out var sprite)) {

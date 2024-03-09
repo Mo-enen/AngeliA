@@ -77,8 +77,8 @@ public class Explosion : Entity {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		if (Game.GlobalFrame >= SpawnFrame + Duration) {
 			Active = false;
 			return;
@@ -86,8 +86,8 @@ public class Explosion : Entity {
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		if (!Active) return;
 		// Explode
 		if (!Exploded) {
@@ -109,8 +109,8 @@ public class Explosion : Entity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Active) return;
 		RenderExplosion();
 		if (Game.GlobalFrame == SpawnFrame) {

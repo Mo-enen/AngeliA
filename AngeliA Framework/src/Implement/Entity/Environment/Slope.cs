@@ -62,8 +62,8 @@ public abstract class Slope : EnvironmentEntity {
 	#region --- MSG ---
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(
 			PhysicsLayer.ENVIRONMENT, this, true,
 			DirectionHorizontal == Direction2.Left ? SpriteTag.ONEWAY_RIGHT_TAG : SpriteTag.ONEWAY_LEFT_TAG
@@ -75,8 +75,8 @@ public abstract class Slope : EnvironmentEntity {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		// Fix Rig
 		var hits = Physics.OverlapAll(CollisionMask, Rect, out int count);
 		for (int i = 0; i < count; i++) {
@@ -87,8 +87,8 @@ public abstract class Slope : EnvironmentEntity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 	}
 

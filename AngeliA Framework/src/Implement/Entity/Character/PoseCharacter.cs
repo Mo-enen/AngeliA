@@ -225,9 +225,9 @@ public abstract class PoseCharacter : Character {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
+	public override void BeforeUpdate () {
 		PoseRenderingZOffset = 0;
-		base.BeforePhysicsUpdate();
+		base.BeforeUpdate();
 	}
 
 

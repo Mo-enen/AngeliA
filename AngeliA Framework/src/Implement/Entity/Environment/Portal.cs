@@ -38,7 +38,7 @@ public abstract class CircleFlamePortal : Portal {
 		Width = size;
 		Height = size;
 	}
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 
 		int centerX = X + Width / 2;
 		int centerY = Y + Height / 2;
@@ -152,12 +152,12 @@ public abstract class Portal : Entity {
 		base.OnActivated();
 		CooldownFrame = 0;
 	}
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		// Invoke
 		var player = Player.Selecting;
 		if (player != null && player.Rect.Overlaps(Rect)) {

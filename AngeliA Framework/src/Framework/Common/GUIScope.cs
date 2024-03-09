@@ -5,63 +5,71 @@ using AngeliA;
 namespace AngeliA.Framework {
 
 
-	public abstract class GUIScope : System.IDisposable {
-		public abstract void Dispose ();
-	}
+	public class GUIScope : System.IDisposable {
 
-	public class LayerScope : GUIScope {
-		private static readonly LayerScope Instance = new();
-		private int OldLayer;
-		public static LayerScope Start (int layer) {
-			Instance.OldLayer = Renderer.CurrentLayerIndex;
+		private enum ScopeType { Layer, Color, ContentColor, BodyColor, Enable, }
+
+		private static readonly GUIScope LayerInstance = new(ScopeType.Layer);
+		private static readonly GUIScope ColorInstance = new(ScopeType.Color);
+		private static readonly GUIScope ContentColorInstance = new(ScopeType.ContentColor);
+		private static readonly GUIScope BodyColorInstance = new(ScopeType.BodyColor);
+		private static readonly GUIScope EnableInstance = new(ScopeType.Enable);
+
+		private readonly ScopeType Type;
+		private Color32 ColorData;
+		private int IntData;
+
+		private GUIScope (ScopeType type) => Type = type;
+
+		public static GUIScope Layer (int layer) {
+			LayerInstance.IntData = Renderer.CurrentLayerIndex;
 			Renderer.SetLayer(layer);
-			return Instance;
+			return LayerInstance;
 		}
-		public override void Dispose () => Renderer.SetLayer(OldLayer);
-	}
 
-	public class ColorScope : GUIScope {
-		private static readonly ColorScope Instance = new();
-		private Color32 OldColor;
-		public static ColorScope Start (Color32 color) {
-			Instance.OldColor = GUI.Color;
+		public static GUIScope Color (Color32 color) {
+			ColorInstance.ColorData = GUI.Color;
 			GUI.Color = color;
-			return Instance;
+			return ColorInstance;
 		}
-		public override void Dispose () => GUI.Color = Instance.OldColor;
-	}
 
-	public class BodyColorScope : GUIScope {
-		private static readonly BodyColorScope Instance = new();
-		private Color32 OldColor;
-		public static BodyColorScope Start (Color32 color) {
-			Instance.OldColor = GUI.BodyColor;
-			GUI.BodyColor = color;
-			return Instance;
-		}
-		public override void Dispose () => GUI.BodyColor = Instance.OldColor;
-	}
-
-	public class ContentColorScope : GUIScope {
-		private static readonly ContentColorScope Instance = new();
-		private Color32 OldColor;
-		public static ContentColorScope Start (Color32 color) {
-			Instance.OldColor = GUI.ContentColor;
+		public static GUIScope ContentColor (Color32 color) {
+			ContentColorInstance.ColorData = GUI.ContentColor;
 			GUI.ContentColor = color;
-			return Instance;
+			return ContentColorInstance;
 		}
-		public override void Dispose () => GUI.ContentColor = Instance.OldColor;
-	}
 
-	public class EnableScope : GUIScope {
-		private static readonly EnableScope Instance = new();
-		private bool OldEnable;
-		public static EnableScope Start (bool enable) {
-			Instance.OldEnable = GUI.Enable;
-			GUI.Enable = enable;
-			return Instance;
+		public static GUIScope BodyColor (Color32 color) {
+			BodyColorInstance.ColorData = GUI.BodyColor;
+			GUI.BodyColor = color;
+			return BodyColorInstance;
 		}
-		public override void Dispose () => GUI.Enable = Instance.OldEnable;
+
+		public static GUIScope BodyColor (bool enable) {
+			EnableInstance.IntData = GUI.Enable ? 1 : 0;
+			GUI.Enable = enable;
+			return EnableInstance;
+		}
+
+		public void Dispose () {
+			switch (Type) {
+				case ScopeType.Layer:
+					Renderer.SetLayer(IntData);
+					break;
+				case ScopeType.Color:
+					GUI.Color = ColorData;
+					break;
+				case ScopeType.ContentColor:
+					GUI.ContentColor = ColorData;
+					break;
+				case ScopeType.BodyColor:
+					GUI.BodyColor = ColorData;
+					break;
+				case ScopeType.Enable:
+					GUI.Enable = IntData == 1;
+					break;
+			}
+		}
 	}
 
 }

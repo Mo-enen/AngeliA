@@ -26,8 +26,8 @@ public abstract class MovableBullet : Bullet {
 	public Int2 Velocity { get; set; }
 
 	// MSG
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 
 		if (!Active) return;
 
@@ -93,7 +93,7 @@ public abstract class MovableBullet : Bullet {
 		}
 	}
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 		int stepCount = Util.Max(Velocity.x.Abs().CeilDivide(Width), Velocity.y.Abs().CeilDivide(Height));
 		if (stepCount <= 1) {
 			ReceiverHitCheck(Rect);
@@ -110,8 +110,8 @@ public abstract class MovableBullet : Bullet {
 		}
 	}
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (Renderer.TryGetSprite(ArtworkID, out var sprite)) {
 			int facingSign = Velocity.x.Sign();
 			CurrentRotation += facingSign * RotateSpeed;

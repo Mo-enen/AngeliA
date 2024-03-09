@@ -884,7 +884,7 @@ public sealed partial class MapEditor : WindowUI {
 		// State
 		if (ShowState) {
 
-			using (ContentColorScope.Start(Color32.GREY_196)) {
+			using (GUIScope.ContentColor(Color32.GREY_196)) {
 
 				var cameraRect = Renderer.CameraRect;
 				int LABEL_HEIGHT = Unify(22);

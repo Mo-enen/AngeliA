@@ -30,6 +30,7 @@ public struct Color32 : IFormattable, IComparable {
 	public static readonly Color32 PINK = new(255, 0, 255, 255);
 	public static readonly Color32 PURPLE_BETTER = new(176, 94, 196, 255);
 	public static readonly Color32 CLEAR = new(0, 0, 0, 0);
+	public static readonly Color32 GREY_245 = new(245, 245, 245, 255);
 	public static readonly Color32 GREY_230 = new(230, 230, 230, 255);
 	public static readonly Color32 GREY_216 = new(216, 216, 216, 255);
 	public static readonly Color32 GREY_196 = new(196, 196, 196, 255);

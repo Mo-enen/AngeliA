@@ -34,12 +34,12 @@ public abstract class Light : Furniture, ICombustible {
 		OpenLight = Game.IsEdittime || hour <= 6 || hour >= 18;
 	}
 
-	public override void FillPhysics () {
+	public override void FirstUpdate () {
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (OpenLight) {
 			byte brightness = (byte)(64 + (Game.GlobalFrame + ((X * 17 + Y * 9) / Const.CEL)).PingPong(240) / 8);
 			Renderer.SetLayerToAdditive();

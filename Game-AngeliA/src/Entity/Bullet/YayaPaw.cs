@@ -20,7 +20,7 @@ public class YayaPaw : MeleeBullet {
 	public override int SmokeParticleID => SMOKE_ID;
 
 	// MSG
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 
 		if (Sender is not Character character) return;
 

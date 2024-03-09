@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA.Framework;
+
 public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
@@ -43,7 +43,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected int AnimationAmount = -32;
 
 	// Data
-	private readonly GUIStyle MsgStyle = new(GUISkin.CenterLabel) { Wrap = WrapMode.WordWrap, Clip = true, };
+	private readonly GUIStyle MsgStyle = new(GUISkin.CenterLargeLabel) { Wrap = WrapMode.WordWrap, Clip = true, };
 	private int ItemCount;
 	private int ScrollY = 0;
 	private int MarkPingPongFrame = 0;
@@ -72,8 +72,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		if (Input.AnyMouseButtonHolding && !BackgroundRect.MouseInside()) {
 			Input.UseMouseKey(0);
 			Input.UseMouseKey(1);
@@ -122,11 +122,11 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			Unify(ContentPadding.z),
 			Unify(ContentPadding.w)
 		);
+
+		// Ani
 		bool animating = AnimationDuration > 0 && AnimationFrame < AnimationDuration;
-		if (animating) {
-			byte alpha = (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame);
-			GUI.Color = new Color32(255, 255, 255, alpha);
-		}
+		byte alpha = animating ? (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame) : (byte)255;
+		using var _ = GUIScope.Color(new Color32(255, 255, 255, alpha));
 
 		// BG
 		var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? msgHeight : 0);
@@ -345,7 +345,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				}
 
 				// Single Label
-				GUI.Label(labelRect, label, GUISkin.CenterLabel);
+				GUI.Label(labelRect, label, GUISkin.CenterLargeLabel);
 
 			} else {
 
@@ -368,9 +368,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				// Content Label
 				if (hasContent) {
 					if (useStringContent) {
-						GUI.Label(secLabelRect, content, out labelBounds);
+						GUI.Label(secLabelRect, content, out labelBounds, GUISkin.CenterLabel);
 					} else {
-						GUI.Label(secLabelRect, chars, out labelBounds);
+						GUI.Label(secLabelRect, chars, out labelBounds, GUISkin.CenterLabel);
 					}
 				}
 

@@ -138,15 +138,15 @@ public abstract partial class Character : Rigidbody {
 
 
 	// Physics Update
-	public override void FillPhysics () {
+	public override void FirstUpdate () {
 		if (CharacterState == CharacterState.GamePlay) {
 			Physics.FillEntity(PhysicalLayer, this, NavigationEnable);
 		}
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		Update_InitInventory();
 		BeforeUpdate_BuffValue();
 	}
@@ -227,7 +227,7 @@ public abstract partial class Character : Rigidbody {
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 
 		if (IsEmptyHealth) SetCharacterState(CharacterState.PassOut);
 
@@ -267,7 +267,7 @@ public abstract partial class Character : Rigidbody {
 		PhysicsUpdate_Movement_After();
 		PhysicsUpdate_Navigation();
 		PhysicsUpdate_AnimationType();
-		base.PhysicsUpdate();
+		base.Update();
 	}
 
 
@@ -311,11 +311,11 @@ public abstract partial class Character : Rigidbody {
 
 
 	// Frame Update
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		FrameUpdate_RenderCharacter();
 		FrameUpdate_Event();
 		FrameUpdate_Inventory();
-		base.FrameUpdate();
+		base.LateUpdate();
 	}
 
 

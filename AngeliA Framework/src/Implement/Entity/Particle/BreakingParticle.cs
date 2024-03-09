@@ -27,8 +27,8 @@ public class BreakingParticle : Particle {
 
 
 	// MSG
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		X += SpeedX;
 		Y += SpeedY;
 		SpeedX = SpeedX.LerpTo(0, AirDragX);
@@ -36,8 +36,8 @@ public class BreakingParticle : Particle {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 
 		if (!Rect.Expand(Const.CEL).Overlaps(Renderer.CameraRect)) {
 			Active = false;

@@ -81,21 +81,21 @@ public abstract class Rigidbody : Entity {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicalLayer, this);
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		RefreshPrevPosition();
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 
-		base.PhysicsUpdate();
+		base.Update();
 		var rect = Rect;
 
 		bool prevInWater = InWater;
@@ -199,7 +199,7 @@ public abstract class Rigidbody : Entity {
 	}
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		// Carry
 		if (AllowBeingCarryByOtherRigidbody) {
 			int speedLeft = 0;
@@ -224,7 +224,7 @@ public abstract class Rigidbody : Entity {
 			}
 		}
 		// Base
-		base.FrameUpdate();
+		base.LateUpdate();
 	}
 
 

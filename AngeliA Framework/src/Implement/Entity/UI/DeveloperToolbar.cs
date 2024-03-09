@@ -93,7 +93,7 @@ public static class DeveloperToolbar {
 
 		Cursor.RequireCursor();
 
-		using var _ = LayerScope.Start(RenderLayer.UI);
+		using var _ = GUIScope.Layer(RenderLayer.UI);
 		Renderer.AbandonLayerSort(RenderLayer.UI);
 
 		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
@@ -311,7 +311,7 @@ public static class DeveloperToolbar {
 			Renderer.Draw(Const.PIXEL, new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
 			// Label
 			int startIndex = Renderer.GetTextUsedCellCount();
-			GUI.Label(rect, data.I2C.GetChars(data.Value), GUISkin.CenterMiniLabel);
+			GUI.Label(rect, data.I2C.GetChars(data.Value), GUISkin.CenterSmallLabel);
 			if (Renderer.GetTextCells(out var cells, out int count)) {
 				for (int i = startIndex; i < count && i < startIndex + data.I2C.Prefix.Length; i++) {
 					cells[i].Color = new Color32(96, 96, 96, 255);
@@ -332,7 +332,7 @@ public static class DeveloperToolbar {
 			rect.y -= itemHeight + itemPadding;
 
 			// Label
-			GUI.Label(rect, Const.SCREEN_EFFECT_NAMES[i], GUISkin.MiniLabel);
+			GUI.Label(rect, Const.SCREEN_EFFECT_NAMES[i], GUISkin.SmallLabel);
 
 			// Toggle
 			var enableRect = rect.EdgeInside(Direction4.Right, rect.height);

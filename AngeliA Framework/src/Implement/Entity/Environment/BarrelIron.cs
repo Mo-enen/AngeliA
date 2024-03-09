@@ -36,8 +36,8 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		IsDriving = DrivingCheck();
 		if (IsDriving) OnDriving();
 		if (!IsDriving && Rolling && RollingSpeed != 0) {
@@ -48,8 +48,8 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Rolling) {
 			// Normal
 			if (Renderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {

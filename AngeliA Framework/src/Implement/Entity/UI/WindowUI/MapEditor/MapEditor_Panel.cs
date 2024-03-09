@@ -333,7 +333,7 @@ public partial class MapEditor {
 				tabRect.Shrink(tabRect.height / 2, 0, 0, 0),
 				i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
 				out var labelBounds,
-				GUISkin.CenterMediumLabel
+				GUISkin.CenterLabel
 			);
 
 			// Icon
@@ -712,7 +712,7 @@ public partial class MapEditor {
 			);
 
 			// Label
-			GUI.Label(rect.Shrink(itemSize + itemGap, 0, 0, 0), pal.Name, GUISkin.MediumLabel);
+			GUI.Label(rect.Shrink(itemSize + itemGap, 0, 0, 0), pal.Name);
 
 			// Selecting Highlight
 			if (pal == SelectingPaletteItem) {

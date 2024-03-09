@@ -55,8 +55,19 @@ public abstract class EntityUI : Entity {
 	public int[] TextCellEndIndex { get; private set; }
 	private static int BlockingEventFrame = -1;
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	// MSG
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		if (BlockEvent) Input.IgnoreInput(0);
+	}
+
+	public override void Update () {
+		base.Update();
+		if (BlockEvent) Input.CancelIgnoreInput();
+	}
+
+	public override void LateUpdate () {
+		base.LateUpdate();
 
 		Renderer.SortLayer(RenderLayer.UI);
 		Renderer.SetLayerToUI();
@@ -64,7 +75,7 @@ public abstract class EntityUI : Entity {
 		TextCellStartIndex = Renderer.GetTextUsedCellCount();
 
 		if (Game.PauselessFrame == BlockingEventFrame) {
-			Input.IgnoreInput();
+			Input.IgnoreInput(0);
 		}
 
 		UpdateUI();
@@ -89,6 +100,7 @@ public abstract class EntityUI : Entity {
 
 	public virtual void UpdateUI () { }
 
+	// API
 	protected static int Unify (int value) => GUI.Unify(value);
 	protected static int Unify (float value) => GUI.Unify(value);
 	protected static int UnifyMonitor (int value) => GUI.UnifyMonitor(value);

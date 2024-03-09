@@ -30,8 +30,8 @@ public class GuaGua : Summon {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		FrameUpdate_Sleep();
 	}
 

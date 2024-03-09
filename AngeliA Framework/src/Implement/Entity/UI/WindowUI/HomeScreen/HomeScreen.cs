@@ -57,8 +57,8 @@ public class HomeScreen : WindowUI {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		Cursor.RequireCursor();
 		ControlHintUI.ForceHideGamepad();
 		var mainRect = WindowRect;

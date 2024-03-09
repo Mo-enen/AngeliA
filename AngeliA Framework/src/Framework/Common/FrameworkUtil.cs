@@ -109,7 +109,7 @@ public static class FrameworkUtil {
 		int cellIndexStart = Renderer.GetUsedCellCount();
 		int oldAniFrame = character.CurrentAnimationFrame;
 		character.CurrentAnimationFrame = animationFrame;
-		character.FrameUpdate();
+		character.LateUpdate();
 		character.CurrentAnimationFrame = oldAniFrame;
 		int cellIndexEnd = Renderer.GetUsedCellCount();
 		Renderer.SetLayer(oldLayerIndex);

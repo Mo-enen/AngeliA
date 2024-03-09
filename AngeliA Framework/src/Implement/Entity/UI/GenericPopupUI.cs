@@ -87,6 +87,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			return;
 		}
 
+		Cursor.RequireCursor();
+
 		int separatorCount = 0;
 		for (int i = 0; i < ItemCount; i++) {
 			if (string.IsNullOrEmpty(Items[i].Label)) separatorCount++;
@@ -115,6 +117,9 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			);
 		}
 
+		// BG
+		var bgCell = Renderer.Draw(Const.PIXEL, default, new Color32(249, 249, 249, 255));
+
 		// Items
 		Cell highlightCell = null;
 		int textStart = Renderer.GetTextUsedCellCount();
@@ -139,6 +144,12 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 				// Item
 				var tint = item.Enabled ? Color32.BLACK : Color32.BLACK_128;
 
+				// Highlight
+				bool hover = rect.MouseInside();
+				if (hover && item.Enabled) {
+					highlightCell = Renderer.Draw(Const.PIXEL, rect, Color32.GREY_230, int.MaxValue - 1);
+				}
+
 				// Check Mark
 				if (item.Checked) {
 					Renderer.Draw(
@@ -147,27 +158,23 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					);
 				}
 
-				// Label
-				GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds);
-				maxWidth = Util.Max(
-					maxWidth,
-					labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)
-				);
-
-				// Icon
-				if (item.Icon != 0) {
-					int iconSize = rect.height;
-					var iconRect = new IRect(
-						item.IconPosition == Direction2.Left ? labelBounds.x - iconSize - iconPadding : labelBounds.xMax + iconPadding,
-						rect.y, iconSize, iconSize
+				using (GUIScope.ContentColor(Color32.GREY_20)) {
+					// Label
+					GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds);
+					maxWidth = Util.Max(
+						maxWidth,
+						labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)
 					);
-					Renderer.Draw(item.Icon, iconRect, int.MaxValue);
-				}
 
-				// Highlight
-				bool hover = rect.MouseInside();
-				if (hover && item.Enabled) {
-					highlightCell = Renderer.Draw(Const.PIXEL, rect, Color32.GREY_230, int.MaxValue - 1);
+					// Icon
+					if (item.Icon != 0) {
+						int iconSize = rect.height;
+						var iconRect = new IRect(
+							item.IconPosition == Direction2.Left ? labelBounds.x - iconSize - iconPadding : labelBounds.xMax + iconPadding,
+							rect.y, iconSize, iconSize
+						);
+						Renderer.Draw(item.Icon, iconRect, int.MaxValue);
+					}
 				}
 
 				// Click
@@ -182,9 +189,10 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 		// BG
 		BackgroundRect = panelRect.Expand(Unify(8));
-		Renderer.Draw(
-			Const.PIXEL, BackgroundRect, new Color32(249, 249, 249, 255), int.MaxValue - 2
-		);
+		bgCell.X = BackgroundRect.x;
+		bgCell.Y = BackgroundRect.y;
+		bgCell.Width = BackgroundRect.width;
+		bgCell.Height = BackgroundRect.height;
 
 		// Clamp Text
 		Renderer.ClampTextCells(panelRect, textStart);

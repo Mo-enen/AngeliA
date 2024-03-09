@@ -43,13 +43,13 @@ public abstract class DonutBlock : EnvironmentEntity {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 
 		int frame = Game.GlobalFrame;
 		var rect = Rect;
@@ -89,12 +89,12 @@ public abstract class DonutBlock : EnvironmentEntity {
 			Y -= FallingVelocity;
 		}
 
-		base.PhysicsUpdate();
+		base.Update();
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		Renderer.Draw(
 			TypeID, X + Width / 2, Y + Height / 2,
 			500, 500,

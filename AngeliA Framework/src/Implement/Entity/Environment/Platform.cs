@@ -115,7 +115,7 @@ public abstract class Platform : EnvironmentEntity {
 	}
 
 
-	public override void FillPhysics () {
+	public override void FirstUpdate () {
 		if (OneWay) {
 			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
 		} else {
@@ -124,8 +124,8 @@ public abstract class Platform : EnvironmentEntity {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		PrevX = X;
 		PrevY = Y;
 		Move();
@@ -136,7 +136,7 @@ public abstract class Platform : EnvironmentEntity {
 	}
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		int index = Pose switch {
 			FittingPose.Single => 0,
 			FittingPose.Left => 1,

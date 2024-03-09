@@ -101,8 +101,8 @@ public class SleepParticle : Particle {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		int frame = LocalFrame;
 		X += (frame + X).PingPong(40) / (frame / 12 + 3);
 		Y += (frame + Y + 16).PingPong(40) / (frame / 12 + 3);

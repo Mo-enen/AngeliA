@@ -27,8 +27,8 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		// UI Close Check
 		if (Open && !PlayerMenuUI.ShowingUI) {
 			SetOpen(false);

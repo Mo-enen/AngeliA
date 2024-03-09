@@ -53,8 +53,8 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		if (CharacterState == CharacterState.PassOut) {
 			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 		}
@@ -70,7 +70,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 
 		if (!Active) return;
 
@@ -92,12 +92,12 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 			}
 		}
 
-		base.PhysicsUpdate();
+		base.Update();
 
 	}
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		if (!Active) return;
 
 		// Check Item Exists
@@ -112,7 +112,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		}
 
 		// Base
-		base.FrameUpdate();
+		base.LateUpdate();
 
 		// Highlight
 		if ((this as IActionTarget).IsHighlighted) {

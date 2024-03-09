@@ -51,8 +51,8 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IGlobalPosition where 
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		var border = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, SpriteTag.ONEWAY_UP_TAG
@@ -60,9 +60,9 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IGlobalPosition where 
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 
-		base.PhysicsUpdate();
+		base.Update();
 
 		var player = Player.Selecting;
 
@@ -99,8 +99,8 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IGlobalPosition where 
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 		if (Player.RespawnCpUnitPosition == unitPos) {

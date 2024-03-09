@@ -16,8 +16,8 @@ public abstract class GrandfatherClock : Furniture, ICombustible {
 	int ICombustible.BurnStartFrame { get; set; }
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		// Hands
 		if (Pose == FittingPose.Up) {
 			DrawClockHands(Rect.Shrink(36), HAND_CODE, 16, 8);

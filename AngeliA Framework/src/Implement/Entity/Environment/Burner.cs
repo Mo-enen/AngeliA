@@ -81,14 +81,14 @@ public abstract class Burner<F> : EnvironmentEntity where F : Fire {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		int localFrame = (Game.SettleFrame - FireFrameOffset).UMod(FireFrequency);
 		Burning = localFrame < FireDuration;
 		// Spawn Fire
@@ -112,8 +112,8 @@ public abstract class Burner<F> : EnvironmentEntity where F : Fire {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 		if (Burning && Game.GlobalFrame % 6 < 3) {
 			Renderer.SetLayerToAdditive();

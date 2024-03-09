@@ -51,7 +51,7 @@ public class ControlHintUI : EntityUI {
 		("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 	};
 	private static int CurrentHintOffsetY = 0;
-	private readonly GUIStyle HintKeyLabelStyle = new(GUISkin.Label) { CharSize = 18, ContentColor = Color32.GREY_20, };
+	private readonly GUIStyle HintKeyLabelStyle = new(GUISkin.LargeLabel) { CharSize = 18, ContentColor = Color32.GREY_20, };
 	private Int4 ButtonBorder = default;
 	private int ForceHintFrame = int.MinValue;
 	private int ForceHideGamepadFrame = int.MinValue;
@@ -99,7 +99,7 @@ public class ControlHintUI : EntityUI {
 
 	private void DrawGamePad () {
 
-		using var _ = LayerScope.Start(RenderLayer.UI);
+		using var _ = GUIScope.Layer(RenderLayer.UI);
 		Renderer.AbandonLayerSort(RenderLayer.UI);
 
 		int x = Unify(6);
@@ -354,7 +354,7 @@ public class ControlHintUI : EntityUI {
 
 		// Label
 		rect.width = 1;
-		GUI.Label(rect, label, out var bounds, GUISkin.MediumLabel);
+		GUI.Label(rect, label, out var bounds);
 		if (bgCell != null) {
 			bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
 			bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);

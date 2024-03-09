@@ -48,11 +48,11 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	}
 
 
-	public override void FillPhysics () => Physics.FillEntity(PhysicsLayer.ITEM, this, true);
+	public override void FirstUpdate () => Physics.FillEntity(PhysicsLayer.ITEM, this, true);
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 
 		if (ItemID == 0 || ItemCount <= 0) {
 			Active = false;
@@ -83,8 +83,8 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Active) return;
 		// Draw
 		var rect = new IRect(

@@ -42,13 +42,13 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 	}
 
 
-	public override void FillPhysics () {
+	public override void FirstUpdate () {
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		// Update Pose
 		if (Pose == FittingPose.Unknown) {
 			Pose = FittingPose.Single;
@@ -81,8 +81,8 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (Pose == FittingPose.Unknown) return;
 		var sprite = GetSpriteFromPose();
 		if (sprite != null) {

@@ -40,8 +40,8 @@ public abstract class WaterSource<W> : Entity where W : Water {
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		// Spawn Water
 		if (Game.SettleFrame.UMod(SpawnFrequency) == 0) {
 			Water.SpawnWater(WaterTypeID, Rect, Direction, TargetVolume);
@@ -104,15 +104,15 @@ public abstract class Water : Entity {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.WATER_TAG);
 	}
 
 
 	// Before Update
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 
 		RequireTransferLeft = 0;
 		RequireTransferRight = 0;
@@ -265,8 +265,8 @@ public abstract class Water : Entity {
 
 
 	// Physics Update
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 
 		if (IsGrounded) {
 			// Grounded
@@ -333,8 +333,8 @@ public abstract class Water : Entity {
 
 
 	// Frame Update
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 
 		if (Volume == 0 || !Active) {
 			Active = false;

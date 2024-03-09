@@ -64,8 +64,8 @@ public abstract class Spring : EnvironmentRigidbody {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		// Check for Bounce
 		if (Horizontal) {
 			// Horizontal
@@ -89,8 +89,8 @@ public abstract class Spring : EnvironmentRigidbody {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (Game.GlobalFrame < LastBounceFrame + BOUNCE_ANI.Length) {
 			CurrentArtworkFrame++;
 		} else {

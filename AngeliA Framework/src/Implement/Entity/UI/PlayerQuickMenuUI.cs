@@ -202,6 +202,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		int PADDING = Unify(8);
 		int BORDER = Unify(4);
 
+		// BG
+		var bgCell = Renderer.Draw(Const.PIXEL, default, Color32.BLACK);
+
 		// Content
 		int basicX = player.X - CurrentSlotIndex * ITEM_SIZE - ITEM_SIZE / 2;
 		int basicY = player.Y - ITEM_SIZE - PADDING + offsetY - Const.HALF;
@@ -230,7 +233,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 						labelWidth, labelHeight
 					),
 					weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemName(weaponID),
-					Color32.BLACK, 4
+					backgroundColor: Color32.BLACK,
+					backgroundPadding: 4,
+					GUISkin.CenterSmallLabel
 				);
 
 			}
@@ -246,7 +251,10 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 		// BG
 		BackgroundRect = new IRect(basicX, basicY, rect.xMax - basicX, ITEM_SIZE).Expand(PADDING);
-		Renderer.Draw(Const.PIXEL, BackgroundRect, Color32.BLACK, int.MinValue + 1);
+		bgCell.X = BackgroundRect.x;
+		bgCell.Y = BackgroundRect.y;
+		bgCell.Width = BackgroundRect.width;
+		bgCell.Height = BackgroundRect.height;
 
 	}
 

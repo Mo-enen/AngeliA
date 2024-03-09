@@ -21,13 +21,13 @@ public class NotificationUI : EntityUI {
 		CurrentOffsetY = 0;
 	}
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		CurrentNotificationCount = 0;
 	}
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		NotificationIndex = CurrentNotificationCount;
 		CurrentNotificationCount++;
 	}
@@ -77,7 +77,7 @@ public class NotificationUI : EntityUI {
 		// Label
 		GUI.Label(
 			panelRect.Shrink(panelRect.height + Unify(12), 0, 0, 0),
-			Content
+			Content, GUISkin.CenterLabel
 		);
 
 	}

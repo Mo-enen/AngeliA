@@ -99,14 +99,14 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
-	public sealed override void FrameUpdate () {
-		base.FrameUpdate();
+	public sealed override void LateUpdate () {
+		base.LateUpdate();
 		if (Game.IsPausing) return;
 		if (IsPlaying) {
 			ControlHintUI.ForceShowHint(1);

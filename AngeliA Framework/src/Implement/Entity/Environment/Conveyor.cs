@@ -71,14 +71,14 @@ public abstract class Conveyor : EnvironmentEntity {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillBlock(PhysicsLayer.LEVEL, TypeID, Rect);
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		var rect = Rect;
 		rect.y += rect.height;
 		rect.height = 1;
@@ -94,8 +94,8 @@ public abstract class Conveyor : EnvironmentEntity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		int aFrame = (Game.GlobalFrame * Util.Abs(MoveSpeed) / 16).UMod(8);
 		if (MoveSpeed > 0) aFrame = 7 - aFrame;
 		if (Renderer.TryGetSpriteFromGroup(

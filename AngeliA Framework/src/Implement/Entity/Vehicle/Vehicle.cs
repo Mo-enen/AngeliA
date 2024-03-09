@@ -20,8 +20,8 @@ public abstract class Vehicle : EnvironmentRigidbody {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		if (Driver is Rigidbody rig) {
 			rig.IgnorePhysics(0);
 		}
@@ -33,13 +33,13 @@ public abstract class Vehicle : EnvironmentRigidbody {
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 		IsDriving = DrivingCheck();
 		if (IsDriving) {
 			// Drive
 			OnDriving();
 			// Movement
-			base.PhysicsUpdate();
+			base.Update();
 			int deltaX = DeltaPositionX;
 			int deltaY = DeltaPositionY;
 			if (Driver != null && Driver.Active) {
@@ -57,7 +57,7 @@ public abstract class Vehicle : EnvironmentRigidbody {
 
 		} else {
 			// Not Driving
-			base.PhysicsUpdate();
+			base.Update();
 		}
 	}
 

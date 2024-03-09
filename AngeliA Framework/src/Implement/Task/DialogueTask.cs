@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public class DialogueTask : TaskItem {
 
 
@@ -14,6 +14,7 @@ public class DialogueTask : TaskItem {
 
 	private class Section {
 		public int CharacterID;
+		public string CharacterName;
 		public string Content;
 		public Color32[] Colors;
 	}
@@ -66,9 +67,9 @@ public class DialogueTask : TaskItem {
 		if (LoadedSection != CurrentSection) {
 			var section = Sections[CurrentSection];
 			LoadedSection = CurrentSection;
-			DialogueUI.SetData(section.Content, section.CharacterID, section.Colors);
+			DialogueUI.SetData(section.Content, section.CharacterID, section.CharacterName, section.Colors);
 		}
-		DialogueUI.Update();
+		DialogueUI.UpdateDialogue();
 
 		// Roll
 		if (Input.GameKeyDown(Gamekey.Action)) {
@@ -111,6 +112,7 @@ public class DialogueTask : TaskItem {
 		// Load Conversation
 		bool prevLineConfig = false;
 		int currentCharacterID = 0;
+		string currentCharacterName = "";
 		var currentColor = Color32.WHITE;
 		var builder = new StringBuilder();
 		var colors = new List<Color32>();
@@ -128,6 +130,7 @@ public class DialogueTask : TaskItem {
 				case '@':
 					// Character Line
 					MakeSection();
+					currentCharacterName = line;
 					currentCharacterID = line.AngeHash();
 					prevLineConfig = false;
 					break;
@@ -182,11 +185,13 @@ public class DialogueTask : TaskItem {
 			if (builder.Length > 0) {
 				Main.Sections.Add(new Section() {
 					CharacterID = currentCharacterID,
+					CharacterName = currentCharacterName,
 					Content = builder.ToString(),
 					Colors = colors.ToArray(),
 				});
 			}
 			currentCharacterID = 0;
+			currentCharacterName = "";
 			currentColor = Color32.WHITE;
 			colors.Clear();
 			builder.Clear();

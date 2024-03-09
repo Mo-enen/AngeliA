@@ -20,12 +20,12 @@ public class LeafPoplar : Leaf { }
 [EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
 public class LeafPalm : Leaf {
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, SpriteTag.ONEWAY_UP_TAG);
 	}
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		Renderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
 	}
 
@@ -34,8 +34,8 @@ public class LeafPalm : Leaf {
 
 public class LeafWillow : Leaf {
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID,
 			Rect.Shrink(0, 0, 0, Height / 2),
@@ -43,7 +43,7 @@ public class LeafWillow : Leaf {
 		);
 	}
 
-	public override void FrameUpdate () => Renderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
+	public override void LateUpdate () => Renderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
 
 }
 
@@ -96,17 +96,17 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 	}
 
 
-	public override void FillPhysics () => Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	public override void FirstUpdate () => Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 		CharacterNearby = Physics.HasEntity<Character>(Rect.Expand(Const.CEL), PhysicsMask.CHARACTER, null);
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		// Leaf
 		LeafTint.a = (byte)Util.Lerp(LeafTint.a, CharacterNearby ? LEAF_HIDE_ALPHA : 255, 0.1f);
 		int sLen = LEAF_OFFSET_SEEDS.Length;

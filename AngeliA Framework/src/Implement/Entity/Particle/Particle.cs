@@ -41,8 +41,8 @@ public abstract class Particle : Entity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Loop && Game.GlobalFrame >= SpawnFrame + Duration) {
 			Active = false;
 			return;

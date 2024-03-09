@@ -71,10 +71,10 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	private BrowserActionType ActionType;
 	private BrowserTargetType TargetType;
 	private string ErrorMessage = "";
+	private string NavbarText = "";
 	private int ScrollY = 0;
 	private int LastSelectFrame = -1;
 	private int SelectingIndex = -1;
-	private string NavbarText = "";
 
 
 	#endregion
@@ -108,14 +108,16 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	}
 
 
-	public override void BeforePhysicsUpdate () {
-		base.BeforePhysicsUpdate();
-		Cursor.RequireCursor();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		Input.IgnoreMouseToActionJumpForThisFrame = true;
 	}
 
 
 	public override void UpdateUI () {
 		base.UpdateUI();
+
+		Cursor.RequireCursor();
 
 		int bgPadding = Unify(12);
 		int windowWidth = Unify(800);
@@ -143,13 +145,17 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Renderer.Draw(BuiltInSprite.SOFT_LINE_V, new IRect(X + favPanelWidth - lineSize / 2, Y + controlPanelHeight, lineSize, Height - controlPanelHeight - navBarHeight), Color32.GREY_20, z: 1);
 
 		// Title
-		GUI.Label(Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0), Title);
+		GUI.Label(Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0), Title, GUISkin.SmallLabel);
 
 		// Panels
 		Update_NavigationBar(Rect.EdgeInside(Direction4.Up, navBarHeight).Shift(0, -titleHeight));
 		Update_Favorite(Rect.Shrink(0, Width - favPanelWidth, controlPanelHeight, navBarHeight + titleHeight));
 		Update_ControlPanel(Rect.EdgeInside(Direction4.Down, controlPanelHeight));
 		Update_Explorer(Rect.Shrink(favPanelWidth, 0, controlPanelHeight, navBarHeight + titleHeight));
+
+		// Final
+		Input.UseGameKey(Gamekey.Action);
+		Input.UseGameKey(Gamekey.Jump);
 
 	}
 
@@ -162,7 +168,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Parent
 		rect.x += buttonPadding;
-		if (GUI.DarkButton(rect, BuiltInSprite.ICON_TRIANGLE_LEFT) || Input.KeyboardDown(KeyboardKey.Backspace)) {
+		if (GUI.Button(rect, BuiltInSprite.ICON_TRIANGLE_LEFT, GUISkin.IconButton) || Input.KeyboardDown(KeyboardKey.Backspace)) {
 			string parentPath = Util.GetParentPath(CurrentFolder);
 			if (!string.IsNullOrEmpty(parentPath)) {
 				CurrentName = ActionType == BrowserActionType.Open ? Util.GetNameWithExtension(CurrentFolder) : CurrentName;
@@ -218,18 +224,6 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 				rect.x = paddedPanelRect.x + x * itemWidth;
 				var paddedRect = rect.Shrink(itemPadding);
 
-				// Icon
-				if (item.Icon != null) {
-					Renderer.Draw(
-						item.Icon,
-						new IRect(paddedRect.x, paddedRect.yMax - iconSize, iconSize, iconSize),
-						z: 2
-					);
-				}
-
-				// Name Label
-				GUI.Label(paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding), item.DisplayName);
-
 				// Hover Highlight
 				if (rect.MouseInside()) {
 					Renderer.Draw(Const.PIXEL, rect, Color32.GREY_20, z: 1);
@@ -240,6 +234,18 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 				if (SelectingIndex == index) {
 					Renderer.Draw(Const.PIXEL, rect, Color32.GREY_56, z: 1);
 				}
+
+				// Icon
+				if (item.Icon != null) {
+					Renderer.Draw(
+						item.Icon,
+						new IRect(paddedRect.x, paddedRect.yMax - iconSize, iconSize, iconSize),
+						z: 2
+					);
+				}
+
+				// Name Label
+				GUI.Label(paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding), item.DisplayName, GUISkin.SmallLabel);
 
 				// Click
 				if (rect.MouseInside() && Input.MouseLeftButtonDown) {
@@ -302,7 +308,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Func
 		void DrawButton (string label, string path, int icon) {
-			if (GUI.Button(rect, label)) Explore(path);
+			if (GUI.Button(rect, label, GUISkin.MediumLabelButton)) Explore(path);
 			Renderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
 			rect.y -= rect.height;
 		}
@@ -341,7 +347,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Type Field
 		if (TargetType == BrowserTargetType.File) {
-			GUI.Label(typeRect, TargetExtension);
+			GUI.Label(typeRect, TargetExtension, GUISkin.CenterSmallLabel);
 			Renderer.Draw_9Slice(
 				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
 			);
@@ -349,13 +355,13 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Error Msg
 		if (!string.IsNullOrEmpty(ErrorMessage)) {
-			GUI.Label(panelRect.EdgeInside(Direction4.Down, buttonHeight), ErrorMessage);
+			GUI.Label(panelRect.EdgeInside(Direction4.Down, buttonHeight), ErrorMessage, GUISkin.SmallLabel);
 		}
 
 		// Cancel Button
 		var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUISkin.DarkButton)) {
+		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUISkin.DarkMiniButton)) {
 			ErrorMessage = string.Empty;
 			OnPathPicked = null;
 			Active = false;
@@ -364,7 +370,8 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		// OK Button
 		buttonRect.x -= buttonRect.width + padding;
 		if (GUI.Button(
-			buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE, GUISkin.DarkButton
+			buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
+			GUISkin.DarkMiniButton
 		)) {
 			PerformPick();
 		}

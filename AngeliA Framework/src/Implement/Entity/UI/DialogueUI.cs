@@ -52,6 +52,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	private int StartIndex = 0;
 	private int EndIndex = 0;
 	private int Identity = 0;
+	private string Name = "";
 	private string Content = "";
 	private Color32[] Colors = null;
 
@@ -105,7 +106,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 
 		// Content
 		int cellStartIndex = Renderer.GetTextUsedCellCount();
-		GUI.Label(contentRect, Content, StartIndex, true, out _, out EndIndex, GUISkin.TextArea);
+		GUI.Label(contentRect, Content, StartIndex, true, out _, out EndIndex, GUISkin.LargeTextArea);
 		if (Renderer.GetTextCells(out var cells, out int count)) {
 			int charIndex = StartIndex;
 			int visibleIndex = StartIndex + (Game.GlobalFrame - RolledFrame) * RollingSpeed;
@@ -124,7 +125,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 		}
 
 		// Name
-		GUI.Label(nameRect, Language.Get(Identity));
+		GUI.Label(nameRect, Language.Get(Identity, Name));
 
 		// Icon
 		if (Renderer.TryGetSprite(Identity, out var iconSprite)) {
@@ -142,13 +143,14 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
-	public void Update () => UpdatedFrame = Game.GlobalFrame;
+	public void UpdateDialogue () => UpdatedFrame = Game.GlobalFrame;
 
 
-	public void SetData (string content, int identity, Color32[] colors) {
+	public void SetData (string content, int identity, string name, Color32[] colors) {
 		Content = content;
 		Identity = identity;
 		Colors = colors;
+		Name = name;
 	}
 
 

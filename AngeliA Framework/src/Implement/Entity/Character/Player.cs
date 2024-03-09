@@ -129,16 +129,16 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	}
 
 
-	public override void FillPhysics () {
+	public override void FirstUpdate () {
 		if (Task.HasTask()) return;
-		base.FillPhysics();
+		base.FirstUpdate();
 	}
 
 
 	// Before Physics Update
-	public override void BeforePhysicsUpdate () {
+	public override void BeforeUpdate () {
 
-		base.BeforePhysicsUpdate();
+		base.BeforeUpdate();
 
 		// Non-Selecting Players Despawn on Z Changed
 		if (PrevZ != Stage.ViewZ) {
@@ -482,9 +482,9 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 
 	// Physics Update
-	public override void PhysicsUpdate () {
+	public override void Update () {
 		if (Selecting != this && !Stage.ViewRect.Overlaps(GlobalBounds)) return;
-		base.PhysicsUpdate();
+		base.Update();
 		PhysicsUpdate_Collect();
 	}
 
@@ -507,7 +507,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 
 	// Frame Update
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 
 		int oldZ = PoseRenderingZOffset;
 		if (Selecting == this) PoseRenderingZOffset = 40;
@@ -522,7 +522,7 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 			EquippingWeaponHeld = WeaponHandheld.Float;
 		}
 
-		base.FrameUpdate();
+		base.LateUpdate();
 		PoseRenderingZOffset = oldZ;
 
 		// Auto Pick Item

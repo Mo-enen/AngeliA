@@ -54,14 +54,14 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 	}
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (ArtworkIndex >= 0 && Renderer.TryGetSpriteFromGroup(TypeID, ArtworkIndex, out var sprite, true)) {
 			Renderer.Draw(
 				sprite, X + Width / 2, Y,

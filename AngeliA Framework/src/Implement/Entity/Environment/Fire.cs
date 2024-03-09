@@ -70,8 +70,8 @@ public abstract class Fire : Entity {
 	}
 
 
-	public override void PhysicsUpdate () {
-		base.PhysicsUpdate();
+	public override void Update () {
+		base.Update();
 
 		if (Target != null && Direction != Direction4.Up) Direction = Direction4.Up;
 		var eTarget = Target as Entity;
@@ -129,8 +129,8 @@ public abstract class Fire : Entity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Active) return;
 
 		if (UseAdditiveShader) Renderer.SetLayerToAdditive();

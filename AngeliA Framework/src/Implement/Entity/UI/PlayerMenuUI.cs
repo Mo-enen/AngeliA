@@ -252,15 +252,15 @@ public class PlayerMenuUI : EntityUI {
 
 		// Name
 		var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
-		using (ContentColorScope.Start(Color32.ORANGE_BETTER)) {
-			GUI.Label(nameRect, ItemSystem.GetItemName(itemID), GUISkin.MiniLabel);
+		using (GUIScope.ContentColor(Color32.ORANGE_BETTER)) {
+			GUI.Label(nameRect, ItemSystem.GetItemName(itemID), GUISkin.SmallLabel);
 		}
 
 		// Description
 		GUI.Label(
 			panelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
 			ItemSystem.GetItemDescription(itemID),
-			out var desBounds, GUISkin.MiniTextArea
+			out var desBounds, GUISkin.SmallTextArea
 		);
 
 		// Final
@@ -618,30 +618,6 @@ public class PlayerMenuUI : EntityUI {
 			}
 		}
 
-		// Icon
-		DrawItemIcon(itemRect, itemID, Color32.WHITE, int.MinValue + 4);
-
-		// Count
-		DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
-
-		// UI Cursor
-		if (!UsingMouseMode && cursorIndex == uiIndex) {
-			HoveringItemID = itemID;
-			HoveringItemUiRect = itemRect;
-		}
-
-		// Flashing
-		if (
-			Game.GlobalFrame < FlashingField.y &&
-			FlashingField.z == 0 == RenderingBottomPanel &&
-			FlashingField.x >= 0 &&
-			FlashingField.x == uiIndex
-		) {
-			var tint = Color32.GREEN;
-			tint.a = (byte)Util.RemapUnclamped(FLASH_PANEL_DURATION, 0, 255, 0, FlashingField.y - Game.GlobalFrame);
-			Renderer.Draw(Const.PIXEL, itemRect, tint, int.MinValue + 3);
-		}
-
 		// Holding
 		if (itemID != 0 && cursorIndex == uiIndex) {
 			if (
@@ -677,6 +653,30 @@ public class PlayerMenuUI : EntityUI {
 					);
 				}
 			}
+		}
+
+		// Icon
+		DrawItemIcon(itemRect, itemID, Color32.WHITE, int.MinValue + 4);
+
+		// Count
+		DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
+
+		// UI Cursor
+		if (!UsingMouseMode && cursorIndex == uiIndex) {
+			HoveringItemID = itemID;
+			HoveringItemUiRect = itemRect;
+		}
+
+		// Flashing
+		if (
+			Game.GlobalFrame < FlashingField.y &&
+			FlashingField.z == 0 == RenderingBottomPanel &&
+			FlashingField.x >= 0 &&
+			FlashingField.x == uiIndex
+		) {
+			var tint = Color32.GREEN;
+			tint.a = (byte)Util.RemapUnclamped(FLASH_PANEL_DURATION, 0, 255, 0, FlashingField.y - Game.GlobalFrame);
+			Renderer.Draw(Const.PIXEL, itemRect, tint, int.MinValue + 3);
 		}
 
 	}
@@ -789,8 +789,10 @@ public class PlayerMenuUI : EntityUI {
 		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
 		// Label
-		using (ContentColorScope.Start(enableTint)) {
-			GUI.Label(fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label);
+		using (GUIScope.ContentColor(enableTint)) {
+			GUI.Label(
+				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label
+			);
 		}
 
 		// Progressive Icon
@@ -1115,7 +1117,7 @@ public class PlayerMenuUI : EntityUI {
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
 		Renderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
-		GUI.Label(rect, ItemCountChars.GetChars(number), GUISkin.CenterMiniLabel);
+		GUI.Label(rect, ItemCountChars.GetChars(number), GUISkin.CenterSmallLabel);
 	}
 
 

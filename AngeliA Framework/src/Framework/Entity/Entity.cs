@@ -45,10 +45,10 @@ public abstract class Entity : IMapItem {
 	public Entity () => TypeID = GetType().AngeHash();
 	public virtual void OnActivated () { }
 	public virtual void OnInactivated () { }
-	public virtual void FillPhysics () { }
-	public virtual void BeforePhysicsUpdate () { }
-	public virtual void PhysicsUpdate () { }
-	public virtual void FrameUpdate () { }
+	public virtual void FirstUpdate () { }
+	public virtual void BeforeUpdate () { }
+	public virtual void Update () { }
+	public virtual void LateUpdate () { }
 
 
 }

@@ -14,7 +14,7 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 	private static readonly SavingInt s_ArtworkIndex = new("CabinetIdol.ArtworkIndex", 0);
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		if (Renderer.TryGetSpriteFromGroup(
 			TypeID, s_ArtworkIndex.Value, out var sprite, true, true
 		)) {

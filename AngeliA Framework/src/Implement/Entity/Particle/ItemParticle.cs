@@ -31,8 +31,8 @@ public class ItemCollectParticle : Particle {
 		Height = Const.CEL * 2 / 3;
 		X -= Width / 2;
 	}
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Active) return;
 		Y += 4;
 		Tint = new Color32(

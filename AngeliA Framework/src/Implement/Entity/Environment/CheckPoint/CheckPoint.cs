@@ -49,8 +49,8 @@ public abstract class CheckPoint : EnvironmentEntity {
 	public CheckPoint () => CheckAltar<CheckPoint>.TryGetLinkedID(TypeID, out LinkedAltarID);
 
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		if (IsUnlocked(TypeID)) {
 			// Unlocked
 			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
@@ -62,9 +62,9 @@ public abstract class CheckPoint : EnvironmentEntity {
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 
-		base.PhysicsUpdate();
+		base.Update();
 
 		if (!IsUnlocked(TypeID)) return;
 		var player = Player.Selecting;
@@ -108,8 +108,8 @@ public abstract class CheckPoint : EnvironmentEntity {
 	}
 
 
-	public override void FrameUpdate () {
-		base.FrameUpdate();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!IsUnlocked(TypeID)) {
 			// Locked
 			var cell = Renderer.Draw(TypeID, Rect);

@@ -25,12 +25,12 @@ public class Rock : Breakable {
 		}
 	}
 
-	public override void FillPhysics () {
-		base.FillPhysics();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		Renderer.Draw(ArtworkCode, FullRect);
 	}
 

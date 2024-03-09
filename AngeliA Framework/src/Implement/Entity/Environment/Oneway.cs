@@ -44,7 +44,7 @@ public abstract class Oneway : EnvironmentEntity {
 	}
 
 
-	public override void PhysicsUpdate () {
+	public override void Update () {
 		int frame = Game.GlobalFrame;
 		if (ContactReboundUpdate(frame)) {
 			if (LastContactFrame < frame - 1) {
@@ -52,16 +52,16 @@ public abstract class Oneway : EnvironmentEntity {
 			}
 			LastContactFrame = frame;
 		}
-		base.PhysicsUpdate();
+		base.Update();
 	}
 
 
-	public override void FillPhysics () {
+	public override void FirstUpdate () {
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Util.GetOnewayTag(GateDirection));
 	}
 
 
-	public override void FrameUpdate () {
+	public override void LateUpdate () {
 		int frame = Game.GlobalFrame;
 		var rect = Rect;
 		int rotDelta = 0;
@@ -77,7 +77,7 @@ public abstract class Oneway : EnvironmentEntity {
 			rect.width,
 			rect.height
 		);
-		base.FrameUpdate();
+		base.LateUpdate();
 	}
 
 
