@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace AngeliA.Framework;
 
-namespace AngeliA.Framework; 
 public sealed class WorldStream : System.IDisposable, IBlockSquad {
 
 
@@ -183,20 +183,19 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 
 	private bool TryGetWorldData (int worldX, int worldY, int worldZ, out WorldData worldData, bool createNew = false) {
 		var pos = new Int3(worldX, worldY, worldZ);
-		if (!Pool.TryGetValue(pos, out worldData)) {
-			worldData = new WorldData {
-				World = new World(pos),
-				LastReadWriteFrame = InternalFrame++,
-				IsDirty = false,
-			};
-			bool loaded = worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ);
-			if (!loaded && !createNew) worldData = null;
-			Pool.Add(pos, worldData);
-			if (createNew) worldData.World.SaveToDisk(MapRoot);
-			if (worldData != null) {
-				CurrentValidMapCount++;
-				TryReleaseOverload();
-			}
+		if (Pool.TryGetValue(pos, out worldData)) return worldData != null;
+		worldData = new WorldData {
+			World = new World(pos),
+			LastReadWriteFrame = InternalFrame++,
+			IsDirty = false,
+		};
+		bool loaded = worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ);
+		if (!loaded && !createNew) worldData = null;
+		Pool.Add(pos, worldData);
+		if (createNew) worldData.World.SaveToDisk(MapRoot);
+		if (worldData != null) {
+			CurrentValidMapCount++;
+			TryReleaseOverload();
 		}
 		return worldData != null;
 	}
