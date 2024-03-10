@@ -661,7 +661,7 @@ public static class Extension {
 		foreach (var (k, v) in values) map.TryAdd(k, v);
 	}
 
-	public static Color32 WithNewA (this Color32 value, byte a) => new(value.r, value.g, value.b, a);
+	public static Color32 WithNewA (this Color32 value, int a) => new(value.r, value.g, value.b, (byte)(a.Clamp(0, 255)));
 
 	// Enum
 	public static int EnumLength (this System.Type @enum) => System.Enum.GetValues(@enum).Length;

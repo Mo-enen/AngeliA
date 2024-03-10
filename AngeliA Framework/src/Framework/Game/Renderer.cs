@@ -236,6 +236,35 @@ public static class Renderer {
 	}
 
 
+	[OnGameUpdate(-512)]
+	public static void BeginDraw () {
+		IsDrawing = true;
+		Cell.EMPTY.Sprite = null;
+		Cell.EMPTY.TextSprite = null;
+		Cell.EMPTY.Color = Color32.CLEAR;
+		SetLayerToDefault();
+		for (int i = 0; i < Layers.Length; i++) {
+			var layer = Layers[i];
+			if (Game.IsPlaying || layer.UiLayer) {
+				layer.FocusedCell = 0;
+				layer.SortedIndex = 0;
+			}
+		}
+		for (int i = 0; i < TextLayers.Length; i++) {
+			var tLayer = TextLayers[i];
+			tLayer.FocusedCell = 0;
+			tLayer.SortedIndex = 0;
+		}
+	}
+
+
+	[OnGameUpdatePauseless(-512)]
+	public static void UpdatePausing () {
+		if (Game.IsPlaying) return;
+		BeginDraw();
+	}
+
+
 	#endregion
 
 
@@ -277,6 +306,12 @@ public static class Renderer {
 	public static void SetLayerToAdditive () => CurrentLayerIndex = RenderLayer.ADD;
 	public static void SetLayerToUI () => CurrentLayerIndex = RenderLayer.UI;
 
+	public static void ResetLayer (int layerIndex) {
+		var layer = Layers[layerIndex];
+		layer.FocusedCell = 0;
+		layer.SortedIndex = 0;
+	}
+
 	public static void SortLayer (int layerIndex) => Layers[layerIndex].ZSort();
 	public static void ReverseUnsortedCells (int layerIndex) => Layers[layerIndex].ReverseUnsorted();
 	public static void AbandonLayerSort (int layerIndex) => Layers[layerIndex].AbandonZSort();
@@ -297,35 +332,6 @@ public static class Renderer {
 
 
 	// Draw
-	[OnGameUpdate(-512)]
-	public static void BeginDraw () {
-		IsDrawing = true;
-		Cell.EMPTY.Sprite = null;
-		Cell.EMPTY.TextSprite = null;
-		Cell.EMPTY.Color = Color32.CLEAR;
-		SetLayerToDefault();
-		for (int i = 0; i < Layers.Length; i++) {
-			var layer = Layers[i];
-			if (Game.IsPlaying || layer.UiLayer) {
-				layer.FocusedCell = 0;
-				layer.SortedIndex = 0;
-			}
-		}
-		for (int i = 0; i < TextLayers.Length; i++) {
-			var tLayer = TextLayers[i];
-			tLayer.FocusedCell = 0;
-			tLayer.SortedIndex = 0;
-		}
-	}
-
-
-	[OnGameUpdatePauseless(-512)]
-	public static void UpdatePausing () {
-		if (Game.IsPlaying) return;
-		BeginDraw();
-	}
-
-
 	public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
 	public static Cell Draw (int globalID, IRect rect, Color32 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 	public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);

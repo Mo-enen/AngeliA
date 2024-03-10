@@ -1,4 +1,4 @@
-﻿namespace AngeliA; 
+﻿namespace AngeliA;
 public static class RenderLayer {
 
 	public const int WALLPAPER = 0;
@@ -17,7 +17,7 @@ public static class RenderLayer {
 		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
 	};
 
-	public static readonly int[] CAPACITY = {
+	public static readonly int[] CAPACITY = new int[COUNT] {
 		WALLPAPER_CAPACITY,
 		BEHIND_CAPACITY,
 		SHADOW_CAPACITY,
@@ -26,16 +26,14 @@ public static class RenderLayer {
 		MULT_CAPACITY,
 		ADD_CAPACITY,
 		UI_CAPACITY,
-		TOP_UI_CAPACITY,
 	};
 	public const int WALLPAPER_CAPACITY = 256;
 	public const int BEHIND_CAPACITY = 8192;
 	public const int SHADOW_CAPACITY = 4096;
-	public const int DEFAULT_CAPACITY = 8192;
+	public const int DEFAULT_CAPACITY = 16384;
 	public const int COLOR_CAPACITY = 256;
 	public const int MULT_CAPACITY = 128;
 	public const int ADD_CAPACITY = 128;
 	public const int UI_CAPACITY = 4096;
-	public const int TOP_UI_CAPACITY = 256;
 
 }

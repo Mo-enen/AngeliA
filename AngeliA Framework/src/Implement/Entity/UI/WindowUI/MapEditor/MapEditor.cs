@@ -98,6 +98,7 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = ("CtrlHint.MEDT.SwitchMode.Play", "Play");
 	private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = ("CtrlHint.MEDT.PlayFromBegin", "Play from Start");
 	private static readonly LanguageCode HINT_MEDT_NAV = ("CtrlHint.MEDT.Nav", "Overlook");
+	private static readonly LanguageCode HINT_TOO_MANY_SPRITE = ("MEDT.TooManySpriteHint", "too many sprites (っ°Д°)っ");
 
 	// Api
 	public static MapEditor Instance { get; private set; }
@@ -170,6 +171,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoPerformedFrame = -1;
 	private int CurrentZ = 0;
 	private int CurrentZChangedFrame = int.MinValue;
+	private int RequireWorldRenderBlinkIndex = -1;
 
 	// Saving
 	private static readonly SavingBool s_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
@@ -383,9 +385,16 @@ public sealed partial class MapEditor : WindowUI {
 
 	// Update
 	public override void UpdateWindowUI () {
-		if (Active == false || Game.IsPausing) return;
+
+		if (Active == false) return;
+		if (Game.IsPausing) {
+			Renderer.ResetLayer(RenderLayer.DEFAULT);
+			return;
+		}
+
 		Update_Before();
 		Update_ScreenUI();
+
 		if (!IsNavigating) {
 			// Map Editing
 			Update_Mouse();
@@ -483,7 +492,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (IsEditing) {
 			ControlHintUI.ForceShowHint();
 			ControlHintUI.ForceHideGamepad();
-			ControlHintUI.ForceOffset(PanelRect.width, 0);
+			ControlHintUI.ForceOffset(PanelRect.xMax - mainRect.x, 0);
 		}
 
 		// Auto Save
@@ -876,23 +885,28 @@ public sealed partial class MapEditor : WindowUI {
 
 		if (IsPlaying) return;
 
-		var cameraRect = Renderer.CameraRect.Shrink(Game.IsPausing || DroppingPlayer || TaskingRoute ? 0 : PanelRect.width, 0, 0, 0);
+		var cameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.width, 0, 0, 0);
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayerToDefault();
 
 		int z = CurrentZ;
 		int left = cameraRect.xMin.ToUnit() - 1;
 		int right = cameraRect.xMax.ToUnit() + 1;
 		int down = cameraRect.yMin.ToUnit() - 1;
 		int up = cameraRect.yMax.ToUnit() + 1;
-
-		int oldLayer = Renderer.CurrentLayerIndex;
-		Renderer.SetLayerToDefault();
+		int index = 0;
+		int blinkCountDown = RequireWorldRenderBlinkIndex + 1;
+		int unusedCellCount = Renderer.GetLayerCapacity(Renderer.CurrentLayerIndex) - Renderer.GetUsedCellCount();
 
 		// BG
 		for (int y = down; y <= up; y++) {
 			for (int x = left; x <= right; x++) {
 				int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
 				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
 				DrawBlock(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
 			}
 		}
 
@@ -901,7 +915,10 @@ public sealed partial class MapEditor : WindowUI {
 			for (int x = left; x <= right; x++) {
 				int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
 				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
 				DrawBlock(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
 			}
 		}
 
@@ -910,7 +927,10 @@ public sealed partial class MapEditor : WindowUI {
 			for (int x = left; x <= right; x++) {
 				int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
 				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
 				DrawEntity(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
 			}
 		}
 
@@ -918,7 +938,10 @@ public sealed partial class MapEditor : WindowUI {
 		for (int y = down; y <= up; y++) {
 			for (int x = left; x <= right; x++) {
 				if (!IGlobalPosition.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
+				if (blinkCountDown-- > 0) continue;
 				DrawEntity(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
 			}
 		}
 
@@ -927,17 +950,41 @@ public sealed partial class MapEditor : WindowUI {
 			for (int x = left; x <= right; x++) {
 				int id = Stream.GetBlockAt(x, y, z, BlockType.Element);
 				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
 				DrawElement(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
 			}
 		}
 
 		Renderer.SetLayer(oldLayer);
+		bool requireRepaint = RequireWorldRenderBlinkIndex > 0;
+		RequireWorldRenderBlinkIndex = -1;
+		if (requireRepaint) Update_RenderWorld();
+		return;
+
+		_REQUIRE_BLINK_:;
+		Renderer.SetLayer(oldLayer);
+		RequireWorldRenderBlinkIndex += unusedCellCount;
+
 	}
 
 
 	private void Update_ScreenUI () {
 
 		if (IsPlaying || TaskingRoute) return;
+
+		// Too Many Sprite
+		if (RequireWorldRenderBlinkIndex > 0) {
+			var cameraRect = Renderer.CameraRect;
+			int hintWidth = Unify(120);
+			using (GUIScope.BodyColor(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
+				GUI.BackgroundLabel(
+					new IRect(cameraRect.CenterX() - hintWidth / 2, cameraRect.yMax - Unify(32), hintWidth, Unify(22)),
+					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), GUISkin.CenterSmallLabel
+				);
+			}
+		}
 
 		// State
 		if (ShowState) {
