@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA.Framework;
 
-[EntityAttribute.DontDestroyOnSquadTransition]
+[EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(1, 0)]
 public abstract class WindowUI : EntityUI, IWindowEntityUI {
 

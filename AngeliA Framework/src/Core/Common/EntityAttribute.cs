@@ -71,7 +71,7 @@ public static class EntityAttribute {
 
 
 	[System.AttributeUsage(System.AttributeTargets.Class)]
-	public class DontDestroyOnSquadTransitionAttribute : System.Attribute { }
+	public class DontDestroyOnZChangedAttribute : System.Attribute { }
 
 
 	[System.AttributeUsage(System.AttributeTargets.Class)]

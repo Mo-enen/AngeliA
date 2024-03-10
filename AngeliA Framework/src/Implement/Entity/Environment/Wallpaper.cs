@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AngeliA.Framework; 
 [EntityAttribute.DontDestroyOutOfRange]
-[EntityAttribute.DontDestroyOnSquadTransition]
+[EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Wallpaper")]

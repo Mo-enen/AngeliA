@@ -38,7 +38,7 @@ public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
 }
 
 
-[EntityAttribute.DontDestroyOnSquadTransition]
+[EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
 [RequireSpriteFromField]
 [RequireLanguageFromField]

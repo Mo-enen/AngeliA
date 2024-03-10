@@ -53,15 +53,6 @@ public class DespawnEntityTask : TaskItem {
 }
 
 
-public class ClearStageTask : TaskItem {
-	public static readonly int TYPE_ID = typeof(ClearStageTask).AngeHash();
-	public override TaskResult FrameUpdate () {
-		Stage.ClearStagedEntities();
-		return TaskResult.End;
-	}
-}
-
-
 public class EntityHookTask : TaskItem {
 	public static readonly int TYPE_ID = typeof(EntityHookTask).AngeHash();
 	public override TaskResult FrameUpdate () => UserData is Entity e && e.Active ? TaskResult.Continue : TaskResult.End;

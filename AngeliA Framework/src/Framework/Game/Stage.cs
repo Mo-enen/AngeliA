@@ -51,7 +51,7 @@ public static class Stage {
 		public System.Type EntityType = null;
 		public IRect LocalBound = default;
 		public bool DrawBehind = false;
-		public bool DestroyOnSquadTransition = true;
+		public bool DestroyOnZChanged = true;
 		public bool DontSpawnFromWorld = false;
 		public bool ForceSpawn = false;
 		public int Capacity = 0;
@@ -75,7 +75,7 @@ public static class Stage {
 		public Entity CreateInstance () {
 			if (System.Activator.CreateInstance(EntityType) is not Entity e) return null;
 			e.Active = false;
-			e.DestroyOnSquadTransition = DestroyOnSquadTransition;
+			e.DestroyOnZChanged = DestroyOnZChanged;
 			e.DespawnOutOfRange = DespawnOutOfRange;
 			e.LocalBounds = LocalBound;
 			e.UpdateOutOfRange = UpdateOutOfRange;
@@ -174,7 +174,7 @@ public static class Stage {
 			var att_DontDespawn = eType.GetCustomAttribute<EntityAttribute.DontDestroyOutOfRangeAttribute>(true);
 			var att_ForceUpdate = eType.GetCustomAttribute<EntityAttribute.UpdateOutOfRangeAttribute>(true);
 			var att_DontDrawBehind = eType.GetCustomAttribute<EntityAttribute.DontDrawBehindAttribute>(true);
-			var att_DontDestroyOnTran = eType.GetCustomAttribute<EntityAttribute.DontDestroyOnSquadTransitionAttribute>(true);
+			var att_DontDestroyOnTran = eType.GetCustomAttribute<EntityAttribute.DontDestroyOnZChangedAttribute>(true);
 			var att_DontSpawnFromWorld = eType.GetCustomAttribute<EntityAttribute.DontSpawnFromWorld>(true);
 			var att_ForceSpawn = eType.GetCustomAttribute<EntityAttribute.ForceSpawnAttribute>(true);
 			var att_Order = eType.GetCustomAttribute<EntityAttribute.StageOrderAttribute>(true);
@@ -187,7 +187,7 @@ public static class Stage {
 				Entities = new Stack<Entity>(preSpawn),
 				LocalBound = att_Bound != null ? att_Bound.Value : new(0, 0, Const.CEL, Const.CEL),
 				DrawBehind = att_DontDrawBehind == null,
-				DestroyOnSquadTransition = att_DontDestroyOnTran == null,
+				DestroyOnZChanged = att_DontDestroyOnTran == null,
 				ForceSpawn = att_ForceSpawn != null,
 				Capacity = capacity,
 				EntityType = eType,
@@ -276,7 +276,19 @@ public static class Stage {
 			int newZ = RequireSetViewZ.Value;
 			RequireSetViewZ = null;
 			LastSettleFrame = Game.GlobalFrame;
-			ClearStagedEntities();
+			// Despawn Entities
+			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+				var entities = Entities[layer];
+				int count = EntityCounts[layer];
+				for (int i = 0; i < count; i++) {
+					var e = entities[i];
+					if (e.DespawnOutOfRange || e.DestroyOnZChanged) {
+						e.Active = false;
+					}
+				}
+				RefreshStagedEntities(layer);
+			}
+			AntiSpawnRect = default;
 			LocalAntiSpawnHash.Clear();
 			ViewZ = newZ;
 			OnViewZChanged?.Invoke();
@@ -567,39 +579,11 @@ public static class Stage {
 	public static int GetSpawnedEntityCount (int id) => EntityPool.TryGetValue(id, out var meta) ? meta.SpawnedCount : 0;
 
 
-	// Stage Workflow
-	public static void ClearStagedEntities () {
-		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
-			var entities = Entities[layer];
-			int count = EntityCounts[layer];
-			for (int i = 0; i < count; i++) {
-				var e = entities[i];
-				if (e.DespawnOutOfRange || e.DestroyOnSquadTransition) {
-					e.Active = false;
-				}
-			}
-			RefreshStagedEntities(layer);
-		}
-		AntiSpawnRect = default;
-	}
-
-
-	public static void DespawnAllEntitiesFromWorld () {
-		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
-			var entities = Entities[layer];
-			int count = EntityCounts[layer];
-			for (int i = 0; i < count; i++) {
-				var e = entities[i];
-				if (e.Active && e.FromWorld) {
-					e.Active = false;
-				}
-			}
-		}
-	}
-
-
-	public static void DespawnAllEntitiesOfType<E> () where E : Entity {
-		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+	// Despawn
+	public static void DespawnAllEntitiesOfType<E> (int targetLayer = -1) where E : Entity {
+		int start = targetLayer < 0 ? 0 : targetLayer;
+		int end = targetLayer < 0 ? EntityLayer.COUNT : targetLayer + 1;
+		for (int layer = start; layer < end; layer++) {
 			var entities = Entities[layer];
 			int count = EntityCounts[layer];
 			for (int i = 0; i < count; i++) {
@@ -607,6 +591,19 @@ public static class Stage {
 				if (e.Active && e is E) {
 					e.Active = false;
 				}
+			}
+		}
+	}
+
+
+	// Stage Workflow
+	public static void DespawnAllNonUiEntities () {
+		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+			if (layer == EntityLayer.UI) continue;
+			var entities = Entities[layer];
+			int count = EntityCounts[layer];
+			for (int i = 0; i < count; i++) {
+				entities[i].Active = false;
 			}
 		}
 	}

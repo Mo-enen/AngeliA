@@ -992,9 +992,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (!toPlayMode) {
 			// Play >> Edit
 
-			// Despawn Entities from World
-			Stage.DespawnAllEntitiesFromWorld();
-			Stage.DespawnAllEntitiesOfType<Player>();
+			Stage.DespawnAllNonUiEntities();
 
 			// Despawn Player
 			if (Player.Selecting != null) {

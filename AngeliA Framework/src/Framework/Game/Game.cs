@@ -227,8 +227,7 @@ public abstract partial class Game {
 
 	public static void StopGame () {
 		WorldSquad.Enable = false;
-		Stage.DespawnAllEntitiesFromWorld();
-		if (Player.Selecting != null) Player.Selecting.Active = false;
+		Stage.DespawnAllNonUiEntities();
 	}
 
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliA.Framework;
 [EntityAttribute.DontDestroyOutOfRange]
-[EntityAttribute.DontDestroyOnSquadTransition]
+[EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.StageOrder(int.MaxValue)]
 public class ControlHintUI : EntityUI {
 

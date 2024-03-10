@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA.Framework; 
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDestroyOutOfRange]
-[EntityAttribute.DontDestroyOnSquadTransition]
+[EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.ExcludeInMapEditor]
 public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {

@@ -14,7 +14,7 @@ public sealed class DefaultPlayer : Player {
 
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
-[EntityAttribute.DontDestroyOnSquadTransition]
+[EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.ForceSpawn]
 [EntityAttribute.UpdateOutOfRange]

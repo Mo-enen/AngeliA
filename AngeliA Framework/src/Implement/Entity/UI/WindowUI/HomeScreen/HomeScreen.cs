@@ -131,7 +131,7 @@ public class HomeScreen : WindowUI {
 
 	private void Update_Content (IRect panelRect) {
 
-
+		Util.Log(panelRect);
 
 
 

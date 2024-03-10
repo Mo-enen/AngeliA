@@ -42,13 +42,13 @@ public class AsepriteUtil {
 				string ex = Util.GetExtension(path);
 
 				// Ase Data
-				var data = AseData.CreateFromBytes(Util.FileToByte(fullPath));
+				var data = Aseprite.CreateFromBytes(Util.FileToByte(fullPath));
 
 				if (data != null || data.FrameDatas == null || data.FrameDatas.Count == 0 || data.FrameDatas[0].Chunks == null) {
 
 					bool hasSlice = false;
 					foreach (var chunk in data.FrameDatas[0].Chunks) {
-						if (chunk is AseData.SliceChunk) {
+						if (chunk is Aseprite.SliceChunk) {
 							hasSlice = true;
 							break;
 						}
@@ -126,14 +126,14 @@ public class AsepriteUtil {
 		}
 	}
 
-	private static TaskResult CreateResult (AseData data, Float2 userPivot, string ignoreLayerTag) {
+	private static TaskResult CreateResult (Aseprite data, Float2 userPivot, string ignoreLayerTag) {
 
 		// Check
 		if (data == null) { return null; }
 
 		// Layer Check
 		int layerCount = data.GetLayerCount(false);
-		var layers = data.GetAllChunks<AseData.LayerChunk>();
+		var layers = data.GetAllChunks<Aseprite.LayerChunk>();
 
 		// Get Cells
 		var cells = data.GetCells(layers, layerCount, -1, ignoreLayerTag);
@@ -147,15 +147,15 @@ public class AsepriteUtil {
 			if (width <= 0 || height <= 0) return new();
 			ushort colorDepth = data.Header.ColorDepth;
 			var palette = colorDepth == 8 ? data.GetPalette32() : null;
-			var layerChunks = data.GetAllChunks<AseData.LayerChunk>();
+			var layerChunks = data.GetAllChunks<Aseprite.LayerChunk>();
 			var pixels = data.GetAllPixels(
 				cells, 0, true, true, palette, layerChunks
 			);
 
 			// Sprites
 			var sprites = new List<SpriteMetaData>();
-			data.ForAllChunks<AseData.SliceChunk>((chunk, fIndex, cIndex) => {
-				AseData.SliceChunk.SliceData sData = null;
+			data.ForAllChunks<Aseprite.SliceChunk>((chunk, fIndex, cIndex) => {
+				Aseprite.SliceChunk.SliceData sData = null;
 				for (int i = 0; i < chunk.Slices.Length; i++) {
 					var d = chunk.Slices[i];
 					if (sData == null || 0 >= d.FrameIndex) {
@@ -176,13 +176,13 @@ public class AsepriteUtil {
 					sprites.Add(new SpriteMetaData() {
 						name = chunk.Name,
 						rect = rect,
-						border = chunk.CheckFlag(AseData.SliceChunk.SliceFlag.NinePatches) ? new Float4(
+						border = chunk.CheckFlag(Aseprite.SliceChunk.SliceFlag.NinePatches) ? new Float4(
 							sData.CenterX,
 							sData.Height - sData.CenterY - sData.CenterHeight,
 							sData.Width - sData.CenterX - sData.CenterWidth,
 							sData.CenterY
 						) : Float4.zero,
-						pivot = chunk.CheckFlag(AseData.SliceChunk.SliceFlag.HasPivot) ? new Float2(
+						pivot = chunk.CheckFlag(Aseprite.SliceChunk.SliceFlag.HasPivot) ? new Float2(
 							(float)sData.PivotX / sData.Width,
 							1f - (float)sData.PivotY / sData.Height
 						) : userPivot,
@@ -202,13 +202,13 @@ public class AsepriteUtil {
 
 	}
 
-	private static void GetAsepriteSheetInfo (AseData ase, out int z, out AtlasType type, out int? pivotX, out int? pivotY) {
+	private static void GetAsepriteSheetInfo (Aseprite ase, out int z, out AtlasType type, out int? pivotX, out int? pivotY) {
 		var oic = System.StringComparison.OrdinalIgnoreCase;
 		var sheetType = AtlasType.General;
 		int? sheetZ = null;
 		int? _pivotX = null;
 		int? _pivotY = null;
-		ase.ForAllChunks<AseData.LayerChunk>((layer, _, _) => {
+		ase.ForAllChunks<Aseprite.LayerChunk>((layer, _, _) => {
 
 			if (
 				sheetType != AtlasType.General &&

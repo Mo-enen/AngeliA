@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AngeliA;
 
-public class AseData {
+public class Aseprite {
 
 
 
@@ -46,8 +46,8 @@ public class AseData {
 
 
 	// Bytes
-	public static AseData CreateFromBytes (byte[] bytes, bool loadPixels = true) {
-		AseData data = new();
+	public static Aseprite CreateFromBytes (byte[] bytes, bool loadPixels = true) {
+		Aseprite data = new();
 		using (MemoryStream ms = new(bytes)) {
 			using BinaryReader br = new(ms);
 			data.Header = new AseHeader(br);
@@ -393,6 +393,7 @@ public class AseData {
 
 
 	#endregion
+
 
 
 
