@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GeorgeMamaladze;
 
+//byte alpha = (byte)((int)Game.WorldBehindAlpha).MoveTowards(PlayingGame ? 64 : 12, 1);
 
 namespace AngeliA.Framework;
 [RequireLanguageFromField]
@@ -79,9 +80,12 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Const
+	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 	private const int GIZMOS_Z = int.MaxValue - 64;
 	private const int PANEL_WIDTH = 300;
+	private const int MIN_VIEW_HEIGHT = 16 * Const.CEL;
+	private const int MAX_VIEW_HEIGHT = 120 * Const.CEL;
 	private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 	private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 	private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
@@ -129,19 +133,26 @@ public sealed partial class MapEditor : WindowUI {
 	private readonly List<PaletteItem> SearchResult = new();
 	private readonly List<int> CheckAltarIDs = new();
 	private readonly Trie<PaletteItem> PaletteTrie = new();
-	private readonly Dictionary<int, MapEditorGizmos> GizmosPool = new();
 	private UndoRedo UndoRedo = null;
 	private MapEditorMeta EditorMeta = new();
 
 	// Data
+	private readonly IntToChars StateXLabelToString = new("x:");
+	private readonly IntToChars StateYLabelToString = new("y:");
+	private readonly IntToChars StateZLabelToString = new("z:");
 	private PaletteItem SelectingPaletteItem = null;
+	private WorldStream Stream = null;
 	private Int3 PlayerDropPos = default;
 	private IRect TargetViewRect = new(0, 0, 1, 1);
+	private IRect ViewRect = new(0, 0, 1, 1);
 	private IRect CopyBufferOriginalUnitRect = default;
 	private IRect TooltipRect = default;
 	private IRect PanelRect = default;
 	private IRect ToolbarRect = default;
 	private IRect CheckPointLaneRect = default;
+	private Int2 CurrentUndoRuleMin = default;
+	private Int2 CurrentUndoRuleMax = default;
+	private bool Initialized = false;
 	private bool PlayingGame = false;
 	private bool IsNavigating = false;
 	private bool IsDirty = false;
@@ -155,14 +166,10 @@ public sealed partial class MapEditor : WindowUI {
 	private int TooltipDuration = 0;
 	private int PanelOffsetX = 0;
 	private int ToolbarOffsetX = 0;
-	private int InitializedFrame = int.MinValue;
-	private readonly IntToChars StateXLabelToString = new("x:");
-	private readonly IntToChars StateYLabelToString = new("y:");
-	private readonly IntToChars StateZLabelToString = new("z:");
 	private int LastUndoRegisterFrame = -1;
 	private int LastUndoPerformedFrame = -1;
-	private Int2 CurrentUndoRuleMin = default;
-	private Int2 CurrentUndoRuleMax = default;
+	private int CurrentZ = 0;
+	private int CurrentZChangedFrame = int.MinValue;
 
 	// Saving
 	private static readonly SavingBool s_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
@@ -181,7 +188,7 @@ public sealed partial class MapEditor : WindowUI {
 	[OnUniverseOpen]
 	public static void OnUniverseOpen () {
 		if (Game.GlobalFrame > 0 && Stage.PeekOrGetEntity(TYPE_ID) is MapEditor editor) {
-			editor.InitializedFrame = -1;
+			editor.Initialized = false;
 			if (editor.Active) editor.Active = false;
 		}
 	}
@@ -194,16 +201,23 @@ public sealed partial class MapEditor : WindowUI {
 	public override void OnActivated () {
 		base.OnActivated();
 		// Init
-		if (InitializedFrame < 0) {
-			InitializedFrame = Game.GlobalFrame;
+		if (!Initialized) {
+			Initialized = true;
+			var universe = UniverseSystem.CurrentUniverse;
 			UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
-			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(UniverseSystem.CurrentUniverse.MapRoot);
-			FrameworkUtil.DeleteAllEmptyMaps(UniverseSystem.CurrentUniverse.MapRoot);
+			if (Stream == null) {
+				Stream = new WorldStream(universe.MapRoot, false);
+			} else {
+				Stream.Load(universe.MapRoot, false);
+			}
+			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.MapRoot);
+			FrameworkUtil.DeleteAllEmptyMaps(universe.MapRoot);
 			Initialize_Pool();
 			Initialize_Palette();
 			Initialize_Nav();
 		}
 		// Cache
+		CurrentZ = 0;
 		PastingBuffer.Clear();
 		CopyBuffer.Clear();
 		UndoRedo.Reset();
@@ -228,6 +242,7 @@ public sealed partial class MapEditor : WindowUI {
 		LastUndoPerformedFrame = -1;
 		SetNavigating(false);
 		ToolbarOffsetX = 0;
+		IGlobalPosition.LoadFromDisk(Stream.MapRoot);
 
 		// Start
 		if (Game.GlobalFrame == 0) {
@@ -261,10 +276,9 @@ public sealed partial class MapEditor : WindowUI {
 
 		JsonUtil.SaveJson(EditorMeta, UniverseSystem.CurrentUniverse.MapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(UniverseSystem.CurrentUniverse.MapRoot);
-		IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
+		IGlobalPosition.SaveToDisk(Stream.MapRoot);
 		WorldSquad.SwitchToCraftedMode();
-		WorldSquad.EditMode = false;
-		WorldSquad.BehindAlpha = Game.WorldBehindAlpha;
+		WorldSquad.Enable = true;
 
 		IsNavigating = false;
 		PastingBuffer.Clear();
@@ -273,6 +287,7 @@ public sealed partial class MapEditor : WindowUI {
 		IsDirty = false;
 		MouseDownOutsideBoundary = false;
 		SearchResult.Clear();
+		Stream?.Clear();
 
 		System.GC.Collect();
 
@@ -286,7 +301,6 @@ public sealed partial class MapEditor : WindowUI {
 		EntityArtworkRedirectPool.Clear();
 		ChainRulePool.Clear();
 		ReversedChainPool.Clear();
-		GizmosPool.Clear();
 		CheckAltarIDs.Clear();
 		var builder = new StringBuilder();
 
@@ -359,21 +373,6 @@ public sealed partial class MapEditor : WindowUI {
 			}
 		}
 
-		// Gizmos Pool
-		foreach (var type in typeof(MapEditorGizmos).AllChildClass()) {
-			if (System.Activator.CreateInstance(type) is not MapEditorGizmos giz) continue;
-			if (!giz.TargetEntity.IsAbstract) {
-				GizmosPool.TryAdd(giz.TargetEntity.AngeHash(), giz);
-			}
-			if (giz.AlsoForChildClass) {
-				foreach (var childEntityTarget in giz.TargetEntity.AllChildClass()) {
-					if (!childEntityTarget.IsAbstract) {
-						GizmosPool.TryAdd(childEntityTarget.AngeHash(), giz);
-					}
-				}
-			}
-		}
-
 		// Check Altar
 		foreach (var type in typeof(CheckAltar<>).AllChildClass()) {
 			CheckAltarIDs.Add(type.AngeHash());
@@ -389,11 +388,11 @@ public sealed partial class MapEditor : WindowUI {
 		Update_ScreenUI();
 		if (!IsNavigating) {
 			// Map Editing
-			Update_EntityGizmos();
 			Update_Mouse();
 			Update_View();
 			Update_Hotkey();
 			Update_DropPlayer();
+			Update_RenderWorld();
 
 			Update_PaletteGroupUI();
 			Update_PaletteContentUI();
@@ -487,12 +486,6 @@ public sealed partial class MapEditor : WindowUI {
 			ControlHintUI.ForceOffset(PanelRect.width, 0);
 		}
 
-		// Squad Behind Tint
-		WorldSquad.BehindAlpha = (byte)((int)Game.WorldBehindAlpha).MoveTowards(
-			PlayingGame ? 64 : 12, 1
-		);
-		if (IsEditing) WorldSquad.Enable = !IsNavigating;
-
 		// Auto Save
 		if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing) {
 			Save();
@@ -513,6 +506,12 @@ public sealed partial class MapEditor : WindowUI {
 			if (Task.IsTasking<OpeningTask>()) {
 				Task.EndAllTask();
 			}
+		}
+
+		// View
+		if (IsEditing) {
+			Game.ForceMinViewHeight(MIN_VIEW_HEIGHT);
+			Game.ForceMaxViewHeight(MAX_VIEW_HEIGHT);
 		}
 
 	}
@@ -579,9 +578,7 @@ public sealed partial class MapEditor : WindowUI {
 
 				TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 
-				int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
-					Game.MinViewHeight, Game.MaxViewHeight
-				);
+				int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(Game.MinViewHeight, Game.MaxViewHeight);
 				int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
 				float cameraWidth = TargetViewRect.height * Renderer.CameraRect.width / Renderer.CameraRect.height;
@@ -605,11 +602,13 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		END:;
+
 		// Lerp
-		if (Stage.ViewRect != TargetViewRect) {
-			Stage.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 300, int.MaxValue - 1);
-			Stage.SetViewSizeDelay(TargetViewRect.height, 300, int.MaxValue - 1);
+		if (ViewRect != TargetViewRect) {
+			ViewRect = ViewRect.LerpTo(TargetViewRect, 300);
 		}
+		Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue);
+		Stage.SetViewSizeDelay(ViewRect.height, 1000, int.MaxValue);
 	}
 
 
@@ -771,11 +770,11 @@ public sealed partial class MapEditor : WindowUI {
 				}
 				// Up
 				if (Input.MouseWheelDelta > 0) {
-					SetViewZ(Stage.ViewZ + 1);
+					SetViewZ(CurrentZ + 1);
 				}
 				// Down
 				if (Input.MouseWheelDelta < 0) {
-					SetViewZ(Stage.ViewZ - 1);
+					SetViewZ(CurrentZ - 1);
 				}
 			}
 
@@ -868,12 +867,71 @@ public sealed partial class MapEditor : WindowUI {
 			SetEditorMode(true);
 		} else {
 			if (player.Active) player.Active = false;
-			Stage.SetViewPositionDelay(
-				Stage.ViewRect.x,
-				Stage.ViewRect.y,
-				1000, int.MaxValue - 1
-			);
+			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue - 1);
 		}
+	}
+
+
+	private void Update_RenderWorld () {
+
+		if (IsPlaying) return;
+
+		var cameraRect = Renderer.CameraRect.Shrink(Game.IsPausing || DroppingPlayer || TaskingRoute ? 0 : PanelRect.width, 0, 0, 0);
+
+		int z = CurrentZ;
+		int left = cameraRect.xMin.ToUnit() - 1;
+		int right = cameraRect.xMax.ToUnit() + 1;
+		int down = cameraRect.yMin.ToUnit() - 1;
+		int up = cameraRect.yMax.ToUnit() + 1;
+
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayerToDefault();
+
+		// BG
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
+				if (id == 0) continue;
+				DrawBlock(id, x, y);
+			}
+		}
+
+		// Level
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
+				if (id == 0) continue;
+				DrawBlock(id, x, y);
+			}
+		}
+
+		// Entity
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
+				if (id == 0) continue;
+				DrawEntity(id, x, y);
+			}
+		}
+
+		// Global Pos
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				if (!IGlobalPosition.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
+				DrawEntity(id, x, y);
+			}
+		}
+
+		// Element
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Element);
+				if (id == 0) continue;
+				DrawElement(id, x, y);
+			}
+		}
+
+		Renderer.SetLayer(oldLayer);
 	}
 
 
@@ -890,7 +948,7 @@ public sealed partial class MapEditor : WindowUI {
 				int LABEL_HEIGHT = Unify(22);
 				int LABEL_WIDTH = Unify(52);
 				int PADDING = Unify(6);
-				int z = IsNavigating ? NavPosition.z : Stage.ViewZ;
+				int z = CurrentZ;
 
 				GUI.Label(
 					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
@@ -939,7 +997,7 @@ public sealed partial class MapEditor : WindowUI {
 			LastUndoRegisterFrame = -1;
 			UndoRedo.Register(new ViewUndoItem() {
 				ViewRect = TargetViewRect,
-				ViewZ = Stage.ViewZ,
+				ViewZ = CurrentZ,
 			});
 		}
 
@@ -963,6 +1021,7 @@ public sealed partial class MapEditor : WindowUI {
 	private void SetEditorMode (bool toPlayMode) {
 
 		if (toPlayMode && Game.GlobalFrame != 0) Save();
+
 		PlayingGame = toPlayMode;
 		SelectingPaletteItem = null;
 		DroppingPlayer = false;
@@ -972,26 +1031,23 @@ public sealed partial class MapEditor : WindowUI {
 		Stage.ClearGlobalAntiSpawn();
 		Player.RespawnCpUnitPosition = null;
 		if (toPlayMode) {
-			IGlobalPosition.SaveToDisk(WorldSquad.MapRoot);
+			IGlobalPosition.SaveToDisk(Stream.MapRoot);
 		}
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 		GUI.CancelTyping();
 
 		// Squad  
-		if (WorldSquad.Channel != MapChannel.Crafted) {
+		if (WorldSquad.Channel != MapChannel.General) {
 			WorldSquad.SwitchToCraftedMode();
 			MapGenerator.DeleteAllGeneratedMapFiles();
 		}
-		WorldSquad.EditMode = !toPlayMode;
-		WorldSquad.Front.ForceReloadDelay();
-		WorldSquad.Behind.ForceReloadDelay();
-
-		// Respawn Entities
-		Stage.SetViewZ(Stage.ViewZ);
+		WorldSquad.Enable = toPlayMode;
 
 		if (!toPlayMode) {
 			// Play >> Edit
 
+			ViewRect = Stage.ViewRect;
+			SetViewZ(Stage.ViewZ);
 			Stage.DespawnAllNonUiEntities();
 
 			// Despawn Player
@@ -1014,12 +1070,19 @@ public sealed partial class MapEditor : WindowUI {
 
 			// Fix View Pos
 			if (!AutoZoom) {
-				TargetViewRect.x = Stage.ViewRect.x + Stage.ViewRect.width / 2 - (TargetViewRect.height * Const.VIEW_RATIO / 1000) / 2;
-				TargetViewRect.y = Stage.ViewRect.y + Stage.ViewRect.height / 2 - TargetViewRect.height / 2;
+				TargetViewRect.x = ViewRect.x + ViewRect.width / 2 - (TargetViewRect.height * Const.VIEW_RATIO / 1000) / 2;
+				TargetViewRect.y = ViewRect.y + ViewRect.height / 2 - TargetViewRect.height / 2;
 			} else {
-				TargetViewRect = Stage.ViewRect;
+				TargetViewRect = ViewRect;
 			}
 
+		} else {
+			// Edit >> Play
+			Stage.SetViewZ(CurrentZ);
+			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
+			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);
+			WorldSquad.Front.ForceReloadDelay();
+			WorldSquad.Behind.ForceReloadDelay();
 		}
 	}
 
@@ -1038,7 +1101,7 @@ public sealed partial class MapEditor : WindowUI {
 	private void Save () {
 		if (PlayingGame) return;
 		IsDirty = false;
-		WorldSquad.Front?.SaveToFile();
+		Stream?.SaveAllDirty();
 	}
 
 
@@ -1060,24 +1123,8 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void SetViewZ (int newZ) {
-		if (!IsNavigating) {
-			var cameraRect = Renderer.CameraRect;
-			var svTask = TeleportTask.Teleport(
-				cameraRect.x + cameraRect.width / 2,
-				cameraRect.y + cameraRect.height / 2,
-				cameraRect.x + cameraRect.width / 2,
-				cameraRect.y + cameraRect.height / 2,
-				newZ
-			);
-			if (svTask != null) {
-				svTask.UseVignette = false;
-				svTask.WaitDuration = 0;
-				svTask.Duration = 10;
-			}
-			Save();
-		} else {
-			NavPosition.z = newZ;
-		}
+		CurrentZ = newZ;
+		CurrentZChangedFrame = Game.GlobalFrame;
 	}
 
 
@@ -1090,11 +1137,8 @@ public sealed partial class MapEditor : WindowUI {
 			TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
 			TargetViewRect.height = viewHeight;
 			TargetViewRect.width = viewWidth;
-			if (Stage.ViewZ != 0) SetViewZ(0);
-			if (immediately) {
-				Stage.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
-				Stage.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
-			}
+			if (CurrentZ != 0) SetViewZ(0);
+			if (immediately) ViewRect = TargetViewRect;
 		} else {
 			// Navigating
 			int viewHeight = Game.DefaultViewHeight * 3 / 2;
@@ -1105,8 +1149,9 @@ public sealed partial class MapEditor : WindowUI {
 			TargetViewRect.width = viewWidth;
 			NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
 			NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
-			NavPosition.z = 0;
+			if (CurrentZ != 0) SetViewZ(0);
 		}
+
 	}
 
 
@@ -1165,7 +1210,7 @@ public sealed partial class MapEditor : WindowUI {
 			if (!ignoreStep) UndoRedo.GrowStep();
 			UndoRedo.Register(new ViewUndoItem() {
 				ViewRect = TargetViewRect,
-				ViewZ = Stage.ViewZ,
+				ViewZ = CurrentZ,
 			});
 		}
 
@@ -1191,8 +1236,8 @@ public sealed partial class MapEditor : WindowUI {
 		switch (item) {
 			case BlockUndoItem blockItem:
 				// Block
-				WorldSquad.Front.SetBlockAt(
-					blockItem.UnitX, blockItem.UnitY, blockItem.Type,
+				Stream.SetBlockAt(
+					blockItem.UnitX, blockItem.UnitY, CurrentZ, blockItem.Type,
 					reversed ? blockItem.FromID : blockItem.ToID
 				);
 				if (blockItem.Type == BlockType.Level || blockItem.Type == BlockType.Background) {
@@ -1215,15 +1260,48 @@ public sealed partial class MapEditor : WindowUI {
 				break;
 			case ViewUndoItem viewItem:
 				// View
-				if (Stage.ViewZ != viewItem.ViewZ) {
-					Stage.SetViewZ(viewItem.ViewZ);
+				if (CurrentZ != viewItem.ViewZ) {
+					SetViewZ(viewItem.ViewZ);
 				}
-				TargetViewRect = viewItem.ViewRect;
-				Stage.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
-				Stage.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
-				WorldSquad.Front.UpdateWorldDataImmediately(viewItem.ViewRect, viewItem.ViewZ);
+				TargetViewRect = ViewRect = viewItem.ViewRect;
+				//WorldSquaad.Front.UpdateWorldDataImmediately(viewItem.ViewRect, viewItem.ViewZ);
 				break;
 		}
+	}
+
+
+	// Render
+	private void DrawEntity (int id, int unitX, int unitY) {
+		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+		if (
+			Renderer.TryGetSprite(id, out var sprite) ||
+			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
+		) {
+			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
+			Renderer.Draw(sprite, rect);
+		} else {
+			Renderer.Draw(ENTITY_CODE, rect);
+		}
+	}
+
+
+	private void DrawElement (int id, int unitX, int unitY) {
+		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+		if (
+			Renderer.TryGetSprite(id, out var sprite) ||
+			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
+		) {
+			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
+			Renderer.Draw(sprite.GlobalID, rect);
+		} else {
+			Renderer.Draw(ENTITY_CODE, rect);
+		}
+	}
+
+
+	private void DrawBlock (int id, int unitX, int unitY) {
+		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+		Renderer.Draw(id, rect);
 	}
 
 

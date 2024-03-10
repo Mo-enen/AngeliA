@@ -138,7 +138,7 @@ public partial class MapEditor {
 	private void DeleteSelection () {
 		if (!SelectionUnitRect.HasValue) return;
 		var unitRect = SelectionUnitRect.Value;
-		int z = Stage.ViewZ;
+		int z = CurrentZ;
 		for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 			for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 				for (int blockTypeIndex = 0; blockTypeIndex < BLOCK_TYPE_COUNT; blockTypeIndex++) {
@@ -189,7 +189,7 @@ public partial class MapEditor {
 		bool paint = SelectingPaletteItem != null;
 		int id = paint ? SelectingPaletteItem.ID : 0;
 		var type = paint ? SelectingPaletteItem.BlockType : default;
-		int z = Stage.ViewZ;
+		int z = CurrentZ;
 		bool idGlobalPosEntity = IGlobalPosition.IsGlobalPositionEntity(id);
 
 		for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
@@ -232,7 +232,7 @@ public partial class MapEditor {
 						// Single Type
 						var requiredType =
 							Modify_BackgroundOnly ? BlockType.Background :
-							Modify_EntityOnly ? WorldSquad.Front.GetBlockAt(i, j, BlockType.Element) != 0 ? BlockType.Element : BlockType.Entity :
+							Modify_EntityOnly ? Stream.GetBlockAt(i, j, CurrentZ, BlockType.Element) != 0 ? BlockType.Element : BlockType.Entity :
 							Modify_LevelOnly ? BlockType.Level :
 							BlockType.Entity;
 						UserEraseBlock(i, j, requiredType);
@@ -276,10 +276,10 @@ public partial class MapEditor {
 			ApplyPaste();
 			SelectionUnitRect = null;
 			int id;
-			if (IGlobalPosition.TryGetIdFromPosition(new Int3(mouseUnitPos.x, mouseUnitPos.y, Stage.ViewZ), out int globalID)) {
+			if (IGlobalPosition.TryGetIdFromPosition(new Int3(mouseUnitPos.x, mouseUnitPos.y, CurrentZ), out int globalID)) {
 				id = globalID;
 			} else {
-				id = WorldSquad.Front.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y);
+				id = Stream.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y, CurrentZ);
 				id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
 			}
 			if (!PalettePool.TryGetValue(id, out SelectingPaletteItem)) {
@@ -312,7 +312,7 @@ public partial class MapEditor {
 		var unitRect = SelectionUnitRect.Value;
 		CopyBuffer.Clear();
 		CopyBufferOriginalUnitRect = unitRect;
-		int z = Stage.ViewZ;
+		int z = CurrentZ;
 		for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 			for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 				AddToList(i, j, z, BlockType.Background);
@@ -329,7 +329,7 @@ public partial class MapEditor {
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {
 			// GlobalPos
-			var unitPos = new Int3(i, j, Stage.ViewZ);
+			var unitPos = new Int3(i, j, CurrentZ);
 			if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
 				unitPos, out int _gID
 			)) {
@@ -345,7 +345,7 @@ public partial class MapEditor {
 				});
 			}
 			// Block
-			int id = WorldSquad.Front.GetBlockAt(i, j, type);
+			int id = Stream.GetBlockAt(i, j, CurrentZ, type);
 			if (id != 0) {
 				if (removeOriginal) {
 					UserEraseBlock(i, j, type);
@@ -390,7 +390,7 @@ public partial class MapEditor {
 		Pasting = false;
 		if (!SelectionUnitRect.HasValue || PastingBuffer.Count <= 0) return;
 		var unitRect = SelectionUnitRect.Value;
-		int z = Stage.ViewZ;
+		int z = CurrentZ;
 		foreach (var buffer in PastingBuffer) {
 			int unitX = buffer.LocalUnitX + unitRect.x;
 			int unitY = buffer.LocalUnitY + unitRect.y;
@@ -422,7 +422,7 @@ public partial class MapEditor {
 		var unitRect = SelectionUnitRect.Value;
 		PastingBuffer.Clear();
 		Pasting = true;
-		int z = Stage.ViewZ;
+		int z = CurrentZ;
 		for (int i = unitRect.x; i < unitRect.x + unitRect.width; i++) {
 			for (int j = unitRect.y; j < unitRect.y + unitRect.height; j++) {
 				if (!Modify_EntityOnly && !Modify_LevelOnly) AddToList(i, j, z, BlockType.Background);
@@ -438,7 +438,7 @@ public partial class MapEditor {
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {
 			// Global Pos
-			var unitPos = new Int3(i, j, Stage.ViewZ);
+			var unitPos = new Int3(i, j, CurrentZ);
 			if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
 				unitPos, out int _gID
 			)) {
@@ -454,7 +454,7 @@ public partial class MapEditor {
 				});
 			}
 			// Block
-			int id = WorldSquad.Front.GetBlockAt(i, j, type);
+			int id = Stream.GetBlockAt(i, j, CurrentZ, type);
 			if (id != 0) {
 				if (removeOriginal) {
 					UserEraseBlock(i, j, type);
@@ -482,20 +482,20 @@ public partial class MapEditor {
 		}
 	}
 	private void RedirectForRule (int i, int j, BlockType type) {
-		int id = WorldSquad.Front.GetBlockAt(i, j, type);
+		int id = Stream.GetBlockAt(i, j, CurrentZ, type);
 		if (id == 0) return;
 		int oldID = id;
 		if (ReversedChainPool.TryGetValue(id, out int realRuleID)) id = realRuleID;
 		if (!IdChainPool.TryGetValue(id, out var idChain)) return;
 		if (!ChainRulePool.TryGetValue(id, out string fullRuleString)) return;
-		int tl0 = WorldSquad.Front.GetBlockAt(i - 1, j + 1, type);
-		int tm0 = WorldSquad.Front.GetBlockAt(i + 0, j + 1, type);
-		int tr0 = WorldSquad.Front.GetBlockAt(i + 1, j + 1, type);
-		int ml0 = WorldSquad.Front.GetBlockAt(i - 1, j + 0, type);
-		int mr0 = WorldSquad.Front.GetBlockAt(i + 1, j + 0, type);
-		int bl0 = WorldSquad.Front.GetBlockAt(i - 1, j - 1, type);
-		int bm0 = WorldSquad.Front.GetBlockAt(i + 0, j - 1, type);
-		int br0 = WorldSquad.Front.GetBlockAt(i + 1, j - 1, type);
+		int tl0 = Stream.GetBlockAt(i - 1, j + 1, CurrentZ, type);
+		int tm0 = Stream.GetBlockAt(i + 0, j + 1, CurrentZ, type);
+		int tr0 = Stream.GetBlockAt(i + 1, j + 1, CurrentZ, type);
+		int ml0 = Stream.GetBlockAt(i - 1, j + 0, CurrentZ, type);
+		int mr0 = Stream.GetBlockAt(i + 1, j + 0, CurrentZ, type);
+		int bl0 = Stream.GetBlockAt(i - 1, j - 1, CurrentZ, type);
+		int bm0 = Stream.GetBlockAt(i + 0, j - 1, CurrentZ, type);
+		int br0 = Stream.GetBlockAt(i + 1, j - 1, CurrentZ, type);
 		int tl1 = ReversedChainPool.TryGetValue(tl0, out int _tl) ? _tl : tl0;
 		int tm1 = ReversedChainPool.TryGetValue(tm0, out int _tm) ? _tm : tm0;
 		int tr1 = ReversedChainPool.TryGetValue(tr0, out int _tr) ? _tr : tr0;
@@ -512,15 +512,15 @@ public partial class MapEditor {
 		if (ruleIndex < 0 || ruleIndex >= idChain.Length) return;
 		int newID = idChain[ruleIndex];
 		if (newID == oldID) return;
-		WorldSquad.Front.SetBlockAt(i, j, type, newID);
+		Stream.SetBlockAt(i, j, CurrentZ, type, newID);
 	}
 
 
 	// User CMD
 	private bool UserEraseBlock (int unitX, int unitY, BlockType type, bool ignoreStep = false) {
-		int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
+		int blockID = Stream.GetBlockAt(unitX, unitY, CurrentZ, type);
 		if (blockID != 0) {
-			WorldSquad.Front.SetBlockAt(unitX, unitY, type, 0);
+			Stream.SetBlockAt(unitX, unitY, CurrentZ, type, 0);
 			RegisterUndo(new BlockUndoItem() {
 				FromID = blockID,
 				ToID = 0,
@@ -535,10 +535,10 @@ public partial class MapEditor {
 
 
 	private void UserSetBlock (int unitX, int unitY, BlockType type, int id, bool ignoreStep = false) {
-		int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, type);
+		int blockID = Stream.GetBlockAt(unitX, unitY, CurrentZ, type);
 		if (blockID != id) {
 			// Set Data
-			WorldSquad.Front.SetBlockAt(unitX, unitY, type, id);
+			Stream.SetBlockAt(unitX, unitY, CurrentZ, type, id);
 			// Regist Undo
 			RegisterUndo(new BlockUndoItem() {
 				FromID = blockID,

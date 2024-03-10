@@ -775,13 +775,13 @@ public partial class MapEditor {
 		if (
 			GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_DOWN)
 		) {
-			SetViewZ(IsNavigating ? NavPosition.z - 1 : Stage.ViewZ - 1);
+			SetViewZ(CurrentZ - 1);
 		}
 
 		// Button Up
 		btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 		if (GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_UP)) {
-			SetViewZ(IsNavigating ? NavPosition.z + 1 : Stage.ViewZ + 1);
+			SetViewZ(CurrentZ + 1);
 		}
 
 		// Nav
@@ -844,7 +844,7 @@ public partial class MapEditor {
 				TargetViewRect.y = globalUnitPos.y.ToGlobal() - Player.GetCameraShiftOffset(TargetViewRect.height);
 				NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
 				NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
-				NavPosition.z = globalUnitPos.z;
+				SetViewZ(globalUnitPos.z);
 				SetNavigating(false);
 			}
 		}

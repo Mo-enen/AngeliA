@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA.Framework;
 
-public enum MapChannel { Crafted, Procedure, }
+public enum MapChannel { General, Procedure, }
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapFolderChangedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
@@ -18,18 +17,13 @@ public sealed class WorldSquad : IBlockSquad {
 	#region --- VAR ---
 
 
-	// Const
-	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
-
 	// Api
+	public static bool Enable { get; set; } = true;
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
 	public static IBlockSquad FrontBlockSquad => Front;
-	public static MapChannel Channel { get; private set; } = MapChannel.Crafted;
+	public static MapChannel Channel { get; private set; } = MapChannel.General;
 	public static string MapRoot { get; private set; } = "";
-	public static bool Enable { get; set; } = true;
-	public static bool EditMode { get; set; } = false;
-	public static byte BehindAlpha { get; set; } = Game.WorldBehindAlpha;
 	public World this[int i, int j] => Worlds[i, j];
 
 	// Data
@@ -92,7 +86,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 	private void Update_Data (IRect viewRect, int z) {
 
-		bool isBehind = this == Behind;
 		var center = viewRect.CenterInt();
 
 		// View & World
@@ -103,9 +96,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 		if (RequireReload || !midZone.Contains(center) || z != LoadedZ) {
 			// Reload All Worlds in Squad
-			if (EditMode && !isBehind) {
-				SaveToFile();
-			}
 			LoadSquadFromDisk(
 				center.x.UDivide(Const.MAP * Const.CEL),
 				center.y.UDivide(Const.MAP * Const.CEL),
@@ -114,7 +104,6 @@ public sealed class WorldSquad : IBlockSquad {
 			);
 			RequireReload = false;
 		}
-
 	}
 
 
@@ -155,7 +144,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 		// BG-Level
 		if (!isBehind) BeforeLevelRendered?.Invoke();
-		bool ignoreCollider = isBehind || EditMode;
 		for (int worldI = 0; worldI < 3; worldI++) {
 			for (int worldJ = 0; worldJ < 3; worldJ++) {
 				var world = Worlds[worldI, worldJ];
@@ -186,7 +174,7 @@ public sealed class WorldSquad : IBlockSquad {
 							if (isBehind) {
 								DrawBehind(lv, i, j, false);
 							} else {
-								DrawLevelBlock(lv, i, j, ignoreCollider);
+								DrawLevelBlock(lv, i, j, isBehind);
 							}
 						}
 					}
@@ -250,19 +238,6 @@ public sealed class WorldSquad : IBlockSquad {
 					}
 				}
 
-				// Element
-				if (EditMode && !isBehind) {
-					for (int j = d; j < u; j++) {
-						int localY = j - worldUnitRect.y;
-						int index = localY * Const.MAP + (l - worldUnitRect.x);
-						for (int i = l; i < r; i++, index++) {
-							var elementID = world.Elements[index];
-							if (elementID != 0) {
-								DrawElement(elementID, i, j);
-							}
-						}
-					}
-				}
 			}
 		}
 
@@ -280,16 +255,14 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 
-	public static void SwitchToCraftedMode (bool forceOperate = false) => SetMode(string.Empty, MapChannel.Crafted, forceOperate);
+	public static void SwitchToCraftedMode (bool forceOperate = false) => SetMode(string.Empty, MapChannel.General, forceOperate);
 	public static void SwitchToProcedureMode (string folderName, bool forceOperate = false) => SetMode(folderName, MapChannel.Procedure, forceOperate);
 	private static void SetMode (string folderName, MapChannel newChannel, bool forceOperate = false) {
 
 		if (!forceOperate && newChannel == Channel) return;
 
-		if (EditMode) Front.SaveToFile();
-
 		MapRoot = newChannel switch {
-			MapChannel.Crafted => UniverseSystem.CurrentUniverse.MapRoot,
+			MapChannel.General => UniverseSystem.CurrentUniverse.MapRoot,
 			MapChannel.Procedure => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, folderName),
 			_ => UniverseSystem.CurrentUniverse.MapRoot,
 		};
@@ -319,22 +292,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	public void ForceReloadDelay () => RequireReload = true;
-
-
-	public void SaveToFile () {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				var world = Worlds[i, j];
-				if (
-					world.WorldPosition.x != int.MinValue &&
-					world.WorldPosition.y != int.MinValue &&
-					world.WorldPosition.z != int.MinValue
-				) {
-					world.SaveToDisk(MapRoot);
-				}
-			}
-		}
-	}
 
 
 	// Get Set Block
@@ -484,40 +441,9 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
-		if (EditMode) {
-			// Draw Entity
-			var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
-			if (!CullingCameraRect.Overlaps(rect)) return;
-			if (
-				Renderer.TryGetSprite(id, out var sprite) ||
-				Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
-			) {
-				rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
-				Renderer.Draw(sprite, rect);
-			} else {
-				Renderer.Draw(ENTITY_CODE, rect);
-			}
-		} else {
-			// Spawn Entity
-			var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
-			if (entity is Character ch) {
-				ch.X += ch.Width / 2;
-			}
-		}
-	}
-
-
-	private void DrawElement (int id, int unitX, int unitY) {
-		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
-		if (!CullingCameraRect.Overlaps(rect)) return;
-		if (
-			Renderer.TryGetSprite(id, out var sprite) ||
-			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
-		) {
-			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
-			Renderer.Draw(sprite.GlobalID, rect);
-		} else {
-			Renderer.Draw(ENTITY_CODE, rect);
+		var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
+		if (entity is Character ch) {
+			ch.X += ch.Width / 2;
 		}
 	}
 
@@ -551,7 +477,7 @@ public sealed class WorldSquad : IBlockSquad {
 			Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 		);
 
-		tint.a = BehindAlpha;
+		tint.a = Game.WorldBehindAlpha;
 		Renderer.Draw(sprite, rect, tint, 0);
 	}
 

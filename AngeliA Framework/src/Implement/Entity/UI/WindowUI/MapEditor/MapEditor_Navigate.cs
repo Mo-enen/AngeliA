@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public partial class MapEditor {
 
 
@@ -32,7 +32,7 @@ public partial class MapEditor {
 
 	// Data
 	private readonly NavWorldSlot[,] NavSlots = new NavWorldSlot[NAV_WORLD_SIZE + 1, NAV_WORLD_SIZE + 1];
-	private Int3 NavPosition = default; // Global Pos, Screen Center
+	private Int2 NavPosition = default; // Global Pos, Screen Center
 	private int NavLoadedSlotX = int.MinValue;
 	private int NavLoadedSlotY = int.MinValue;
 	private int NavLoadedSlotZ = int.MinValue;
@@ -85,10 +85,10 @@ public partial class MapEditor {
 		// View Z
 		if (CtrlHolding) {
 			if (Input.MouseWheelDelta > 0) {
-				NavPosition.z++;
+				SetViewZ(CurrentZ + 1);
 			}
 			if (Input.MouseWheelDelta < 0) {
-				NavPosition.z--;
+				SetViewZ(CurrentZ - 1);
 			}
 		}
 
@@ -136,11 +136,11 @@ public partial class MapEditor {
 		int targetWorldY = (NavPosition.y.ToUnit() - (slotSize * Const.MAP) / 2).UDivide(Const.MAP);
 		int headX = (-targetWorldX).UMod(slotSize);
 		int headY = (-targetWorldY).UMod(slotSize);
-		int z = NavPosition.z;
+		int z = CurrentZ;
 
 		// Reload
 		if (NavLoadedSlotZ != z || NavLoadedSlotX != targetWorldX || NavLoadedSlotY != targetWorldY) {
-			string mapFolder = WorldSquad.MapRoot;
+			string mapFolder = Stream.MapRoot;
 			for (int j = 0; j < slotSize; j++) {
 				for (int i = 0; i < slotSize; i++) {
 					var slot = NavSlots[(i - headX).UMod(slotSize), (j - headY).UMod(slotSize)];
@@ -243,12 +243,11 @@ public partial class MapEditor {
 				NavLoadedSlotZ = int.MinValue;
 				NavPosition.x = cameraRect.CenterX() + Const.MAP * Const.HALF;
 				NavPosition.y = cameraRect.CenterY() + Const.MAP * Const.HALF;
-				NavPosition.z = Stage.ViewZ;
 			} else {
 				TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = NavPosition.x - (TargetViewRect.width + PanelRect.width) / 2 - Const.MAP * Const.HALF;
 				TargetViewRect.y = NavPosition.y - TargetViewRect.height / 2 - Const.MAP * Const.HALF;
-				Stage.SetViewZ(NavPosition.z);
+				SetViewZ(CurrentZ);
 				Stage.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
 				Stage.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);
 			}

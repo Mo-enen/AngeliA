@@ -31,11 +31,13 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	private const int START_RELEASE_COUNT = 256;
 	private const int END_RELEASE_COUNT = 128;
 
+	// Api
+	public string MapRoot { get; private set; }
+	public bool Readonly { get; private set; }
+
 	// Data
 	private readonly Dictionary<Int3, WorldData> Pool = new();
 	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
-	private readonly string MapRoot;
-	private readonly bool Readonly;
 	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;
 
@@ -48,21 +50,26 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	#region --- API ---
 
 
-	public WorldStream (string mapRoot, bool @readonly) {
-		Pool.Clear();
+	public WorldStream (string mapRoot, bool @readonly) => Load(mapRoot, @readonly);
+
+
+	public void Load (string mapRoot, bool @readonly) {
+		Clear();
 		MapRoot = mapRoot;
 		Readonly = @readonly;
-		CurrentValidMapCount = 0;
-		InternalFrame = 0;
 	}
 
 
-	public void Clear () => Pool.Clear();
+	public void Clear () {
+		Pool.Clear();
+		CurrentValidMapCount = 0;
+		InternalFrame = int.MinValue;
+	}
 
 
 	public void Dispose () {
 		SaveAllDirty();
-		Pool.Clear();
+		Clear();
 	}
 
 
@@ -116,6 +123,15 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	}
 
 
+	public int GetBlockAt (int unitX, int unitY, int z) {
+		int id = GetBlockAt(unitX, unitY, z, BlockType.Element);
+		if (id == 0) id = GetBlockAt(unitX, unitY, z, BlockType.Entity);
+		if (id == 0) id = GetBlockAt(unitX, unitY, z, BlockType.Level);
+		if (id == 0) id = GetBlockAt(unitX, unitY, z, BlockType.Background);
+		return id;
+	}
+
+
 	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int value) {
 		if (Readonly) {
 			if (Game.IsEdittime) {
@@ -125,26 +141,25 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 		}
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);
-		if (TryGetWorldData(worldX, worldY, z, out var worldData, createNew: true)) {
-			worldData.LastReadWriteFrame = InternalFrame++;
-			var world = worldData.World;
-			int localX = unitX.UMod(Const.MAP);
-			int localY = unitY.UMod(Const.MAP);
-			worldData.IsDirty = true;
-			switch (type) {
-				case BlockType.Entity:
-					world.Entities[localY * Const.MAP + localX] = value;
-					break;
-				case BlockType.Level:
-					world.Levels[localY * Const.MAP + localX] = value;
-					break;
-				case BlockType.Background:
-					world.Backgrounds[localY * Const.MAP + localX] = value;
-					break;
-				case BlockType.Element:
-					world.Elements[localY * Const.MAP + localX] = value;
-					break;
-			}
+		var worldData = CreateOrGetWorldData(worldX, worldY, z);
+		worldData.LastReadWriteFrame = InternalFrame++;
+		var world = worldData.World;
+		int localX = unitX.UMod(Const.MAP);
+		int localY = unitY.UMod(Const.MAP);
+		worldData.IsDirty = true;
+		switch (type) {
+			case BlockType.Entity:
+				world.Entities[localY * Const.MAP + localX] = value;
+				break;
+			case BlockType.Level:
+				world.Levels[localY * Const.MAP + localX] = value;
+				break;
+			case BlockType.Background:
+				world.Backgrounds[localY * Const.MAP + localX] = value;
+				break;
+			case BlockType.Element:
+				world.Elements[localY * Const.MAP + localX] = value;
+				break;
 		}
 	}
 
@@ -158,18 +173,17 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 		}
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);
-		if (TryGetWorldData(worldX, worldY, z, out var worldData, createNew: true)) {
-			worldData.LastReadWriteFrame = InternalFrame++;
-			var world = worldData.World;
-			int localX = unitX.UMod(Const.MAP);
-			int localY = unitY.UMod(Const.MAP);
-			int index = localY * Const.MAP + localX;
-			world.Entities[index] = entity;
-			world.Levels[index] = level;
-			world.Backgrounds[index] = background;
-			world.Elements[index] = element;
-			worldData.IsDirty = true;
-		}
+		var worldData = CreateOrGetWorldData(worldX, worldY, z);
+		worldData.LastReadWriteFrame = InternalFrame++;
+		var world = worldData.World;
+		int localX = unitX.UMod(Const.MAP);
+		int localY = unitY.UMod(Const.MAP);
+		int index = localY * Const.MAP + localX;
+		world.Entities[index] = entity;
+		world.Levels[index] = level;
+		world.Backgrounds[index] = background;
+		world.Elements[index] = element;
+		worldData.IsDirty = true;
 	}
 
 
@@ -181,23 +195,39 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	#region --- LGC ---
 
 
-	private bool TryGetWorldData (int worldX, int worldY, int worldZ, out WorldData worldData, bool createNew = false) {
+	private bool TryGetWorldData (int worldX, int worldY, int worldZ, out WorldData worldData) {
 		var pos = new Int3(worldX, worldY, worldZ);
 		if (Pool.TryGetValue(pos, out worldData)) return worldData != null;
+		// Load From Disk
 		worldData = new WorldData {
 			World = new World(pos),
 			LastReadWriteFrame = InternalFrame++,
 			IsDirty = false,
 		};
 		bool loaded = worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ);
-		if (!loaded && !createNew) worldData = null;
+		if (!loaded) worldData = null;
 		Pool.Add(pos, worldData);
-		if (createNew) worldData.World.SaveToDisk(MapRoot);
-		if (worldData != null) {
-			CurrentValidMapCount++;
-			TryReleaseOverload();
+		return loaded;
+	}
+
+
+	private WorldData CreateOrGetWorldData (int worldX, int worldY, int worldZ) {
+		var pos = new Int3(worldX, worldY, worldZ);
+		if (Pool.TryGetValue(pos, out var worldData) && worldData != null) return worldData;
+		// Create New
+		worldData = new WorldData {
+			World = new World(pos),
+			LastReadWriteFrame = InternalFrame++,
+			IsDirty = false,
+		};
+		Pool[pos] = worldData;
+		if (!worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ)) {
+			worldData.World.SaveToDisk(MapRoot);
 		}
-		return worldData != null;
+		CurrentValidMapCount++;
+		TryReleaseOverload();
+		return worldData;
+
 	}
 
 

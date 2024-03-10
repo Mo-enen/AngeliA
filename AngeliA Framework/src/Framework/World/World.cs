@@ -71,6 +71,12 @@ public class World {
 	}
 
 
+	public static bool HasMapFile (string mapFolder, int worldX, int worldY, int worldZ) {
+		string path = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
+		return Util.FileExists(path);
+	}
+
+
 	// Load
 	public bool LoadFromDisk (string mapFile) =>
 		GetWorldPositionFromName(Util.GetNameWithoutExtension(mapFile), out var pos) &&
@@ -213,12 +219,6 @@ public class World {
 				}
 			}
 
-			// Empty Check
-			if (stream.Position == 0 && Util.FileExists(path)) {
-				stream.Close();
-				writer.Close();
-				Util.DeleteFile(path);
-			}
 		} catch (System.Exception ex) { Util.LogException(ex); }
 
 	}

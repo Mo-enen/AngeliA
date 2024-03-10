@@ -5,16 +5,6 @@ using System.Collections.Generic;
 namespace AngeliA.Framework;
 
 
-public abstract class MapEditorGizmos {
-	public static IRect MapEditorCameraRange { get; internal set; } = default;
-	public abstract System.Type TargetEntity { get; }
-	public virtual bool AlsoForChildClass => true;
-	public virtual bool DrawGizmosOutOfRange => false;
-	public abstract void DrawGizmos (IRect entityGlobalRect, int entityID);
-	public MapEditorGizmos () { }
-}
-
-
 public partial class MapEditor {
 
 
@@ -242,34 +232,6 @@ Color32.BLACK, GIZMOS_Z
 		} else {
 			// Pal Thumbnail
 			DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
-		}
-	}
-
-
-	private void Update_EntityGizmos () {
-		if (IsPlaying || DroppingPlayer) return;
-		var squad = WorldSquad.Front;
-		var range = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
-		MapEditorGizmos.MapEditorCameraRange = range;
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				var world = squad[i, j];
-				int index = 0;
-				var rect = new IRect(0, 0, Const.CEL, Const.CEL);
-				int worldGlobalX = world.WorldPosition.x * Const.MAP * Const.CEL;
-				int worldGlobalY = world.WorldPosition.y * Const.MAP * Const.CEL;
-				for (int y = 0; y < Const.MAP; y++) {
-					for (int x = 0; x < Const.MAP; x++, index++) {
-						int id = world.Entities[index];
-						if (id == 0 || !GizmosPool.TryGetValue(id, out var gizmos)) continue;
-						rect.x = worldGlobalX + x * Const.CEL;
-						rect.y = worldGlobalY + y * Const.CEL;
-						if (gizmos.DrawGizmosOutOfRange || range.Overlaps(rect)) {
-							gizmos.DrawGizmos(rect, id);
-						}
-					}
-				}
-			}
 		}
 	}
 
