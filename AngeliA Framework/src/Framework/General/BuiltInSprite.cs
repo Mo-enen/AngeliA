@@ -78,9 +78,11 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_MAP = "Icon Map";
 	public static readonly SpriteCode UI_ITEM_FRAME = "UI.ItemFrame";
 	public static readonly SpriteCode UI_DARK_BUTTON = "UI.DarkButton";
+	public static readonly SpriteCode UI_DARK_BUTTON_HOVER = "UI.DarkButtonHover";
 	public static readonly SpriteCode UI_DARK_BUTTON_DOWN = "UI.DarkButtonDown";
 	public static readonly SpriteCode UI_BUTTON = "UI.Button";
 	public static readonly SpriteCode UI_HOLO_BUTTON = "UI.HoloButton";
+	public static readonly SpriteCode UI_BUTTON_HOVER = "UI.ButtonHover";
 	public static readonly SpriteCode UI_BUTTON_DOWN = "UI.ButtonDown";
 	public static readonly SpriteCode ICON_SEARCH = "Icon.Search";
 	public static readonly SpriteCode MENU_ARROW_MARK = "Menu Arrow Mark";
@@ -105,11 +107,13 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_HOME = "Icon.Home";
 	public static readonly SpriteCode UI_TOGGLE = "UI.Toggle";
 	public static readonly SpriteCode UI_TOGGLE_DOWN = "UI.ToggleDown";
+	public static readonly SpriteCode UI_TOGGLE_HOVER = "UI.ToggleHover";
 	public static readonly SpriteCode UI_TOGGLE_MARK = "UI.ToggleMark";
 	public static readonly SpriteCode UI_INPUT_FIELD = "UI.InputField";
 	public static readonly SpriteCode UI_SCROLL_BAR = "UI.Scrollbar";
 	public static readonly SpriteCode UI_SCROLL_BAR_DOWN = "UI.ScrollbarDown";
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK = "UI.MiniButtonDark";
+	public static readonly SpriteCode UI_MINI_BUTTON_DARK_HOVER = "UI.MiniButtonDarkHover";
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK_DOWN = "UI.MiniButtonDarkDown";
 
 }

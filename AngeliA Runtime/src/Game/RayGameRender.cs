@@ -295,7 +295,7 @@ public partial class RayGame {
 			usingShader = true;
 		}
 
-		for (int i = cellCount - 1; i >= 0; i--) {
+		for (int i = 0; i < cellCount; i++) {
 			try {
 
 				var cell = cells[i];

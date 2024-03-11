@@ -7,25 +7,25 @@ public sealed class GUIStyle {
 
 	// Body
 	public int BodySprite = Const.PIXEL;
-	public int BodyHighlightSprite = Const.PIXEL;
-	public int BodyPressSprite = Const.PIXEL;
-	public int BodyDisableSprite = Const.PIXEL;
-	public Int4? BodyBorder = null;
+	public int BodySpriteHover = Const.PIXEL;
+	public int BodySpriteDown = Const.PIXEL;
+	public int BodySpriteDisable = Const.PIXEL;
 	public Color32 BodyColor = Color32.WHITE;
-	public Color32 BodyHighlightColor = Color32.WHITE;
-	public Color32 BodyPressColor = Color32.WHITE;
-	public Color32 BodyDisableColor = Color32.WHITE;
+	public Color32 BodyColorHover = Color32.WHITE;
+	public Color32 BodyColorDown = Color32.WHITE;
+	public Color32 BodyColorDisable = Color32.WHITE;
+	public Int4? BodyBorder = null;
 
 	// Content
-	public Int4? ContentBorder = null;
 	public Color32 ContentColor = Color32.WHITE;
-	public Color32 ContentHighlightColor = Color32.WHITE;
-	public Color32 ContentPressColor = Color32.WHITE;
-	public Color32 ContentDisableColor = Color32.WHITE;
+	public Color32 ContentColorHover = Color32.WHITE;
+	public Color32 ContentColorDown = Color32.WHITE;
+	public Color32 ContentColorDisable = Color32.WHITE;
 	public Int2 ContentShift = Int2.zero;
-	public Int2 ContentHighlightShift = Int2.zero;
-	public Int2 ContentPressShift = Int2.zero;
-	public Int2 ContentDisableShift = Int2.zero;
+	public Int2 ContentShiftHover = Int2.zero;
+	public Int2 ContentShiftDown = Int2.zero;
+	public Int2 ContentShiftDisable = Int2.zero;
+	public Int4? ContentBorder = null;
 
 	// Text
 	public int CharSize = -1;
@@ -39,23 +39,23 @@ public sealed class GUIStyle {
 	public GUIStyle (GUIStyle source = null) {
 		if (source == null) return;
 		BodySprite = source.BodySprite;
-		BodyHighlightSprite = source.BodyHighlightSprite;
-		BodyPressSprite = source.BodyPressSprite;
-		BodyDisableSprite = source.BodyDisableSprite;
+		BodySpriteHover = source.BodySpriteHover;
+		BodySpriteDown = source.BodySpriteDown;
+		BodySpriteDisable = source.BodySpriteDisable;
 		BodyBorder = source.BodyBorder;
 		BodyColor = source.BodyColor;
-		BodyHighlightColor = source.BodyHighlightColor;
-		BodyPressColor = source.BodyPressColor;
-		BodyDisableColor = source.BodyDisableColor;
+		BodyColorHover = source.BodyColorHover;
+		BodyColorDown = source.BodyColorDown;
+		BodyColorDisable = source.BodyColorDisable;
 		ContentBorder = source.ContentBorder;
 		ContentColor = source.ContentColor;
-		ContentHighlightColor = source.ContentHighlightColor;
-		ContentPressColor = source.ContentPressColor;
-		ContentDisableColor = source.ContentDisableColor;
+		ContentColorHover = source.ContentColorHover;
+		ContentColorDown = source.ContentColorDown;
+		ContentColorDisable = source.ContentColorDisable;
 		ContentShift = source.ContentShift;
-		ContentHighlightShift = source.ContentHighlightShift;
-		ContentPressShift = source.ContentPressShift;
-		ContentDisableShift = source.ContentDisableShift;
+		ContentShiftHover = source.ContentShiftHover;
+		ContentShiftDown = source.ContentShiftDown;
+		ContentShiftDisable = source.ContentShiftDisable;
 		CharSize = source.CharSize;
 		CharSpace = source.CharSpace;
 		LineSpace = source.LineSpace;
@@ -65,30 +65,30 @@ public sealed class GUIStyle {
 	}
 	public Int2 GetContentShift (GUIState state) => state switch {
 		GUIState.Normal => ContentShift,
-		GUIState.Hover => ContentHighlightShift,
-		GUIState.Press => ContentPressShift,
-		GUIState.Disable => ContentDisableShift,
+		GUIState.Hover => ContentShiftHover,
+		GUIState.Press => ContentShiftDown,
+		GUIState.Disable => ContentShiftDisable,
 		_ => ContentShift,
 	};
 	public Color32 GetContentColor (GUIState state) => state switch {
 		GUIState.Normal => ContentColor,
-		GUIState.Hover => ContentHighlightColor,
-		GUIState.Press => ContentPressColor,
-		GUIState.Disable => ContentDisableColor,
+		GUIState.Hover => ContentColorHover,
+		GUIState.Press => ContentColorDown,
+		GUIState.Disable => ContentColorDisable,
 		_ => ContentColor,
 	};
 	public Color32 GetBodyColor (GUIState state) => state switch {
 		GUIState.Normal => BodyColor,
-		GUIState.Hover => BodyHighlightColor,
-		GUIState.Press => BodyPressColor,
-		GUIState.Disable => BodyDisableColor,
+		GUIState.Hover => BodyColorHover,
+		GUIState.Press => BodyColorDown,
+		GUIState.Disable => BodyColorDisable,
 		_ => BodyColor,
 	};
 	public int GetBodySprite (GUIState state) => state switch {
 		GUIState.Normal => BodySprite,
-		GUIState.Hover => BodyHighlightSprite,
-		GUIState.Press => BodyPressSprite,
-		GUIState.Disable => BodyDisableSprite,
+		GUIState.Hover => BodySpriteHover,
+		GUIState.Press => BodySpriteDown,
+		GUIState.Disable => BodySpriteDisable,
 		_ => BodySprite,
 	};
 

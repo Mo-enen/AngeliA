@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AngeliA.Internal;
 
-
 namespace AngeliA.Framework;
-
 
 public static class GUI {
 
@@ -173,12 +171,21 @@ public static class GUI {
 		Renderer.Draw(Const.PIXEL, bounds.Expand(backgroundPadding), Color * BodyColor * backgroundColor, z: 0);
 	}
 
+	public static void ShadowLabel (IRect rect, string text, int shadowDistance = 3, GUIStyle style = null) {
+		var oldC = ContentColor;
+		ContentColor = Color32.GREY_20;
+		LabelLogic(rect.Shift(0, -UnifyMonitor(shadowDistance)), text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+		ContentColor = oldC;
+		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+	}
+
 
 	// Style
-	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) {
+	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) => DrawStyleBody(rect, style, state, Color32.WHITE);
+	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
 		int sprite = style.GetBodySprite(state);
 		if (sprite == 0) return;
-		var color = Color * BodyColor * style.GetBodyColor(state);
+		var color = tint * Color * BodyColor * style.GetBodyColor(state);
 		if (color.a == 0) return;
 		if (style.BodyBorder.HasValue) {
 			var border = style.BodyBorder.Value;
@@ -257,10 +264,29 @@ public static class GUI {
 		}
 		return isOn;
 	}
+	public static bool ToggleLeft (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle labelStyle = null, GUIStyle markStyle = null) {
+		bodyStyle ??= GUISkin.Toggle;
+		labelStyle ??= GUISkin.Label;
+		markStyle ??= GUISkin.ToggleMark;
+		var boxRect = rect.EdgeInside(Direction4.Left, rect.height);
+		isOn = BlankToggle(boxRect, isOn, out var state);
+		DrawStyleBody(boxRect, bodyStyle, state);
+		Label(rect.Shrink(rect.height * 13 / 10, 0, 0, 0), label, labelStyle);
+		if (isOn) {
+			DrawStyleBody(GetContentRect(boxRect, markStyle, state), markStyle, state);
+		}
+		return isOn;
+	}
+	public static bool ToggleButton (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null) {
+		bodyStyle ??= GUISkin.DarkButton;
+		isOn = BlankToggle(rect, isOn, out var state);
+		DrawStyleBody(rect, bodyStyle, state, isOn ? Color32.GREY_160 : Color32.WHITE);
+		LabelLogic(rect, label, null, bodyStyle, state, -1, 0, false, out _, out _, out _);
+		return isOn;
+	}
 	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) {
 		bodyStyle ??= GUISkin.Toggle;
 		markStyle ??= GUISkin.ToggleMark;
-		rect = rect.EdgeInside(Direction4.Left, rect.height);
 		isOn = BlankToggle(rect, isOn, out var state);
 		DrawStyleBody(rect, bodyStyle, state);
 		if (isOn) {
@@ -268,7 +294,15 @@ public static class GUI {
 		}
 		return isOn;
 	}
-	public static bool BlankToggle (IRect rect, bool isOn, out GUIState state) => BlankButton(rect, out state) ? !isOn : isOn;
+	public static bool BlankToggle (IRect rect, bool isOn, out GUIState state) {
+		if (BlankButton(rect, out state)) isOn = !isOn;
+		state =
+			state == GUIState.Disable ? GUIState.Disable :
+			isOn ? GUIState.Press :
+			state == GUIState.Press ? GUIState.Hover :
+			state;
+		return isOn;
+	}
 
 
 	// Icon
@@ -631,6 +665,7 @@ public static class GUI {
 
 
 	#endregion
+
 
 
 

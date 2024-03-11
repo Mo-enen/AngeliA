@@ -252,7 +252,7 @@ public partial class LanguageEditor : EngineWindow {
 			if (line.Required) {
 				int _textIndex = Renderer.GetTextUsedCellCount();
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				GUI.Label(shrinkedRect, line.Key, GUISkin.CenterMiniLabel);
+				GUI.Label(shrinkedRect, line.Key, GUISkin.CenterSmallLabel);
 				Renderer.ClampTextCells(shrinkedRect, _textIndex);
 				ctrlID++;
 			} else {

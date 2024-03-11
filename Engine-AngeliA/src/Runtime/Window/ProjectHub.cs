@@ -5,6 +5,7 @@ using AngeliA.Framework;
 
 namespace AngeliaEngine;
 
+
 [System.Serializable]
 public class ProjectSetting {
 	public List<string> Projects = new();
@@ -12,6 +13,7 @@ public class ProjectSetting {
 
 
 [RequireSpriteFromField]
+[RequireLanguageFromField]
 public class ProjectHub : EngineWindow {
 
 
@@ -23,6 +25,8 @@ public class ProjectHub : EngineWindow {
 	// Const
 	private const int PANEL_WIDTH = 260;
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
+	private static readonly LanguageCode BTN_CREATE = ("Hub.Create", "Create Project");
+	private static readonly LanguageCode BTN_OPEN = ("Hub.Add", "Open Project");
 
 	// Api
 	public static ProjectHub Instance { get; private set; }
@@ -37,6 +41,14 @@ public class ProjectHub : EngineWindow {
 
 
 	#region --- MSG ---
+
+
+	[OnGameInitializeLater(1)]
+	internal static void OnGameInitialize () => Instance.LoadSettingFromDisk();
+
+
+	[OnGameQuitting]
+	internal static void OnGameQuittingHub () => Instance?.SaveSettingToDisk();
 
 
 	public ProjectHub () => Instance = this;
@@ -60,7 +72,9 @@ public class ProjectHub : EngineWindow {
 
 	public override void UpdateWindowUI () {
 		PanelUpdate();
-		ContentUpdate();
+		if (Setting.Projects.Count > 0) {
+			ContentUpdate();
+		}
 	}
 
 
@@ -75,29 +89,18 @@ public class ProjectHub : EngineWindow {
 			panelRect.width - itemPadding * 2,
 			UnifyMonitor(36)
 		);
+
+		// Create
 		rect.y -= rect.height + itemPadding;
-		if (GUI.Button(rect, "Test 0", GUISkin.DarkButton)) {
+		if (GUI.DarkButton(rect, BTN_CREATE)) {
 
 		}
 
+		// Open
 		rect.y -= rect.height + itemPadding;
-		if (GUI.Button(rect, "Test 1", GUISkin.DarkButton)) {
+		if (GUI.DarkButton(rect, BTN_OPEN)) {
 
 		}
-
-		rect.y -= rect.height + itemPadding;
-		GUI.IconToggle(rect, true, BuiltInSprite.GAMEPAD_DOWN);
-
-		rect.y -= rect.height + itemPadding;
-		GUI.IconToggle(rect, false, BuiltInSprite.UI_BUTTON);
-
-		rect.y -= rect.height + itemPadding;
-		GUI.InputField(123467, rect, "sdfasdfasdfsf");
-
-
-
-
-
 
 	}
 
@@ -125,10 +128,10 @@ public class ProjectHub : EngineWindow {
 	#region --- API ---
 
 
-	public void LoadSettingFromDisk () => Setting = JsonUtil.LoadOrCreateJson<ProjectSetting>(AngePath.BuiltInSavingRoot);
+	public void LoadSettingFromDisk () => Setting = JsonUtil.LoadOrCreateJson<ProjectSetting>(AngePath.PersistentDataPath);
 
 
-	public void SaveSettingToDisk () => JsonUtil.SaveJson(Setting, AngePath.BuiltInSavingRoot);
+	public void SaveSettingToDisk () => JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath);
 
 
 	#endregion

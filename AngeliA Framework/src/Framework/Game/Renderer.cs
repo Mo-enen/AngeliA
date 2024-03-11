@@ -208,6 +208,7 @@ public static class Renderer {
 	[OnGameUpdatePauseless(32)]
 	internal static void FrameUpdate () {
 		IsDrawing = false;
+		// Cell
 		try {
 			for (int i = 0; i < Layers.Length; i++) {
 				var layer = Layers[i];
@@ -217,6 +218,7 @@ public static class Renderer {
 				layer.PrevCellCount = prevCount;
 			}
 		} catch (System.Exception ex) { Util.LogException(ex); }
+		// Text
 		try {
 			for (int i = 0; i < TextLayers.Length; i++) {
 				var layer = TextLayers[i];

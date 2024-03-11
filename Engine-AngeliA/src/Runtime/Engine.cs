@@ -1,13 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using AngeliA;
 using AngeliA.Framework;
-using AngeliaRuntime;
-
 
 namespace AngeliaEngine;
-
 
 [RequireSpriteFromField]
 [RequireLanguageFromField]
@@ -77,7 +73,6 @@ internal class Engine {
 		ALL_UI.Add(DialogUI);
 		ALL_UI.AddRange(WINDOWS);
 		ALL_UI.ForEach(ui => ui.OnActivated());
-		ProjectHub.Instance.LoadSettingFromDisk();
 	}
 
 
@@ -97,16 +92,12 @@ internal class Engine {
 		if (CurrentWindowMode != WindowMode.ConfirmQuit) Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
 		ALL_UI.ForEach(ui => ui.OnInactivated());
-		ProjectHub.Instance.SaveSettingToDisk();
 	}
 
 
 	// GUI
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
-
-		// Sync View Size
-
 
 		// Switch to Mascot on Lost Focus
 		if (CurrentWindowMode == WindowMode.Float && !Game.IsWindowFocused) {
@@ -132,6 +123,10 @@ internal class Engine {
 			case WindowMode.Window:
 				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
 				OnGUI_Window();
+				var windowPos = Game.GetWindowPosition();
+				if (windowPos.y < 24) {
+					Game.SetWindowPosition(windowPos.x, 24);
+				}
 				break;
 			case WindowMode.ConfirmQuit:
 				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
@@ -151,13 +146,13 @@ internal class Engine {
 		bool floating = CurrentWindowMode == WindowMode.Float;
 		int closeButtonWidth = floating ? barHeight - contentPadding : bodyBorder;
 		var cameraRect = Renderer.CameraRect;
-		int tabWidth = (cameraRect.width - bodyBorder - closeButtonWidth) / WINDOWS.Length;
+		int windowLen = CurrentProject == null ? 1 : WINDOWS.Length;
+		int tabWidth = (cameraRect.width - bodyBorder - closeButtonWidth) / windowLen;
 		var rect = new IRect(cameraRect.x + bodyBorder, cameraRect.yMax - barHeight, tabWidth, barHeight);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 
 		// Content
-		int windowLen = CurrentProject == null ? 1 : WINDOWS.Length;
 		CurrentWindowIndex = CurrentWindowIndex.Clamp(0, windowLen - 1);
 		for (int i = 0; i < windowLen; i++) {
 
@@ -199,7 +194,7 @@ internal class Engine {
 				closeButtonWidth,
 				barHeight - contentPadding
 			);
-			if (GUI.Button(btnRect, ICON_CLOSE)) {
+			if (GUI.DarkButton(btnRect, ICON_CLOSE)) {
 				if (CurrentWindowMode != WindowMode.ConfirmQuit) {
 					SwitchWindowMode(WindowMode.ConfirmQuit);
 				} else {
@@ -228,9 +223,9 @@ internal class Engine {
 				win.OnInactivated();
 			}
 		}
-		foreach (var ui in ALL_UI) if (ui.Active) ui.BeforePhysicsUpdate();
-		foreach (var ui in ALL_UI) if (ui.Active) ui.PhysicsUpdate();
-		foreach (var ui in ALL_UI) if (ui.Active) ui.FrameUpdate();
+		foreach (var ui in ALL_UI) if (ui.Active) ui.BeforeUpdate();
+		foreach (var ui in ALL_UI) if (ui.Active) ui.Update();
+		foreach (var ui in ALL_UI) if (ui.Active) ui.LateUpdate();
 
 		// Clip
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Count);

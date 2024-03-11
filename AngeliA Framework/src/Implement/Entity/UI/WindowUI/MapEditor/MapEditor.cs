@@ -387,7 +387,8 @@ public sealed partial class MapEditor : WindowUI {
 	public override void UpdateWindowUI () {
 
 		if (Active == false) return;
-		if (Game.IsPausing) {
+
+		if (IsEditing && Game.IsPausing) {
 			Renderer.ResetLayer(RenderLayer.DEFAULT);
 			return;
 		}
