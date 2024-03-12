@@ -35,7 +35,6 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 	// Api
 	public static Player Selecting { get; private set; } = null;
-	public static bool HasActivePlayer => Selecting != null && Selecting.Active;
 	public static Int3? RespawnCpUnitPosition { get; set; } = null;
 	public static Int3? HomeUnitPosition {
 		get {

@@ -49,7 +49,6 @@
 		<None Remove="desktop.ini" />
 		<Compile Remove="Universe\**" />
 		<EmbeddedResource Remove="Universe\**" />
-		<None Remove="Universe\**" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,71 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-namespace AngeliA.Framework; 
-
-
-// x
-public class CameraAutoScrollStop : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.None;
-	public override Direction3 DirectionY => Direction3.None;
-}
-
-
-// ←
-public class CameraAutoScrollLeft : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.Left;
-	public override Direction3 DirectionY => Direction3.None;
-}
-
-// →
-public class CameraAutoScrollRight : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.Right;
-	public override Direction3 DirectionY => Direction3.None;
-}
-
-// ↓
-public class CameraAutoScrollBottom : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.None;
-	public override Direction3 DirectionY => Direction3.Down;
-}
-
-// ↑
-public class CameraAutoScrollTop : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.None;
-	public override Direction3 DirectionY => Direction3.Up;
-}
-
-// ↙
-public class CameraAutoScrollBottomLeft : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.Left;
-	public override Direction3 DirectionY => Direction3.Down;
-}
-
-// ↘
-public class CameraAutoScrollBottomRight : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.Right;
-	public override Direction3 DirectionY => Direction3.Down;
-}
-
-// ↖
-public class CameraAutoScrollTopLeft : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.Left;
-	public override Direction3 DirectionY => Direction3.Up;
-}
-
-// ↗
-public class CameraAutoScrollTopRight : CameraAutoScroll {
-	public override Direction3 DirectionX => Direction3.Right;
-	public override Direction3 DirectionY => Direction3.Up;
-}
-
+namespace AngeliA.Framework;
 
 [EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("System")]
 [EntityAttribute.UpdateOutOfRange]
 [RequireSprite("{0}")]
-public abstract class CameraAutoScroll : Entity {
+public sealed class CameraAutoScroll : Entity {
 
 
 
@@ -74,30 +16,18 @@ public abstract class CameraAutoScroll : Entity {
 
 
 	// Const
-	public const int MAX_LEN = 64;
-
-	// Api
-	public static readonly Dictionary<int, Int3> DirectionPool = new() {
-		{ typeof(CameraAutoScrollStop).AngeHash(), new Int3(0, 0, 0) },
-		{ typeof(CameraAutoScrollLeft).AngeHash(), new Int3(-1, 0, -90) },
-		{ typeof(CameraAutoScrollRight).AngeHash(), new Int3(1, 0, 90) },
-		{ typeof(CameraAutoScrollBottom).AngeHash(), new Int3(0, -1, 180) },
-		{ typeof(CameraAutoScrollTop).AngeHash(), new Int3(0, 1, 0) },
-		{ typeof(CameraAutoScrollBottomLeft).AngeHash(), new Int3(-1, -1, -135) },
-		{ typeof(CameraAutoScrollBottomRight).AngeHash(), new Int3(1, -1, 135) },
-		{ typeof(CameraAutoScrollTopLeft).AngeHash(), new Int3(-1, 1, -45) },
-		{ typeof(CameraAutoScrollTopRight).AngeHash(), new Int3(1, 1, 45) },
-	};
-	public abstract Direction3 DirectionX { get; }
-	public abstract Direction3 DirectionY { get; }
-	public virtual int Speed => 24;
+	private const int PLAYER_OUT_RANGE_GAP = Const.CEL * 3;
+	private static readonly int PATH_ID = typeof(AutoDirection).AngeHash();
 
 	// Data
 	private static CameraAutoScroll Current = null;
-	private Int2 MaxPosition = default;
-	private bool IsEntrance = true;
-	private int PlayerPrevX = 0;
-	private int PlayerPrevXUpdateFrame = int.MinValue;
+	private Int2 UpdatedPlayerPos;
+	private Int2 StartVelocity;
+	private Int2 TargetUnitPos;
+	private Direction8 StartDirection;
+	private Direction8 MovingDirection;
+	private int Speed = 24;
+	private int MoveStartFrame;
 
 
 	#endregion
@@ -110,136 +40,139 @@ public abstract class CameraAutoScroll : Entity {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		MaxPosition.x = X + (int)DirectionX * MAX_LEN * Const.CEL;
-		MaxPosition.y = Y + (int)DirectionY * MAX_LEN * Const.CEL;
-		IsEntrance = CheckEntrance(X, Y, DirectionX, DirectionY);
+		MovingDirection = Direction8.Right;
+		var startDir = GetDirection(X, Y, MovingDirection, ignoreOpposite: false);
+		if (!startDir.HasValue) {
+			Active = false;
+			return;
+		}
+		StartDirection = startDir.Value;
+		StartVelocity = StartDirection.Normal();
+		UpdatedPlayerPos = Player.Selecting != null ? new(Player.Selecting.X, Player.Selecting.Y) : default;
+		Speed =
+			WorldSquad.FrontBlockSquad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Right, out int speed) ? speed :
+			WorldSquad.FrontBlockSquad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() - 1, Stage.ViewZ, Direction4.Right, out speed) ? speed : 24;
+		Speed = Speed.Clamp(1, Const.CEL);
 	}
 
 
-	public override void FirstUpdate () {
-		base.FirstUpdate();
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	public override void OnInactivated () {
+		base.OnInactivated();
+		if (Current == this) Current = null;
 	}
 
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		if (Player.Selecting == null || !Player.Selecting.Active) {
-			Current = null;
-			return;
-		}
-		if (Player.Selecting.CharacterState != CharacterState.GamePlay) {
-			Current = null;
-			return;
-		}
-		if (Current != null) {
-			FrameUpdate_Scroll();
-		} else if (IsEntrance) {
-			FrameUpdate_Idle();
-		}
-	}
 
+		Renderer.Draw(TypeID, Rect, Current == this ? Color32.GREEN : Color32.WHITE);
 
-	private void FrameUpdate_Idle () {
+		if (Current != null && !Current.Active) Current = null;
 
+		// Update
+		if (Current == this) {
+			Update_Following();
+		} else if (Current == null) {
+			Update_Idle();
+		}
+
+		// Cache
 		var player = Player.Selecting;
-		if (player == null || !player.Active) return;
-		int thisX = X + Const.HALF;
-		int thisY = Y + Const.HALF;
-		var cameraRect = Renderer.CameraRect;
-		int? prevX = null;
-
-		if (Game.GlobalFrame == PlayerPrevXUpdateFrame + 1) {
-			prevX = PlayerPrevX;
+		if (player != null) {
+			UpdatedPlayerPos.x = player.X;
+			UpdatedPlayerPos.y = player.Y;
 		}
-		PlayerPrevX = player.Rect.x + player.Rect.width / 2;
-		PlayerPrevXUpdateFrame = Game.GlobalFrame;
-
-		// Check Camera in Range
-		if (!cameraRect.Contains(thisX, thisY)) return;
-
-		// Left to Right
-		if (DirectionX != Direction3.Left && prevX.HasValue && prevX < thisX && player.X >= thisX) {
-			Current = this;
-		}
-
-		// Right to Left
-		if (DirectionX != Direction3.Right && prevX.HasValue && prevX > thisX && player.X <= thisX) {
-			Current = this;
-		}
-
 	}
 
 
-	private void FrameUpdate_Scroll () {
+	private void Update_Idle () {
 
-		if (Current != this) return;
+		if (Game.GlobalFrame < SpawnFrame + 2) return;
+		var player = Player.Selecting;
+		if (player == null) return;
 
-		// End by Max Pos
-		if (
-			(DirectionX == Direction3.Left && X < MaxPosition.x) ||
-			(DirectionX == Direction3.Right && X > MaxPosition.x) ||
-			(DirectionY == Direction3.Down && Y < MaxPosition.y) ||
-			(DirectionY == Direction3.Up && Y > MaxPosition.y)
-		) {
-			Current = null;
-			Active = false;
-			return;
-		}
-
-		// End by Hit Other Scroll Entity
-		var nextScroll = Physics.GetEntity<CameraAutoScroll>(
-			new IRect(X + Const.HALF, Y + Const.HALF, 1, 1),
-			PhysicsMask.ENVIRONMENT, this, OperationMode.TriggerOnly
-		);
-		if (nextScroll != null && nextScroll.Active) {
-
-			// End Scroll Check
+		if (StartVelocity.x != 0) {
+			// Check for X
+			int centerX = X + Width / 2;
 			if (
-				(nextScroll.DirectionX == Direction3.None && nextScroll.DirectionY == Direction3.None) ||
-				(DirectionX == nextScroll.DirectionX.Opposite() && DirectionY == nextScroll.DirectionY.Opposite())
+				(UpdatedPlayerPos.x - centerX).Sign() != StartVelocity.x.Sign() &&
+				(player.X - centerX).Sign() == StartVelocity.x.Sign()
 			) {
+				goto _TRIGGER_;
+			}
+		} else {
+			// Check for Y
+			int centerY = Y + Height / 2;
+			if (
+				(UpdatedPlayerPos.y - centerY).Sign() != StartVelocity.y.Sign() &&
+				(player.Y - centerY).Sign() == StartVelocity.y.Sign()
+			) {
+				goto _TRIGGER_;
+			}
+		}
+
+		return;
+		_TRIGGER_:;
+		Current = this;
+		MovingDirection = StartDirection;
+		var normal = MovingDirection.Normal();
+		TargetUnitPos.x = (X + Const.HALF).ToUnit() + normal.x;
+		TargetUnitPos.y = (Y + Const.HALF).ToUnit() + normal.y;
+		MoveStartFrame = Game.GlobalFrame;
+	}
+
+
+	private void Update_Following () {
+		var targetPos = TargetUnitPos.ToGlobal();
+		int dis = Util.DistanceInt(new Int2(X, Y), targetPos);
+		var normal = MovingDirection.Normal();
+		if (dis > Speed) {
+			// Just Move
+			int speed = normal.x == 0 || normal.y == 0 ? Speed : (Speed * 10000 / 14142).GreaterOrEquel(1);
+			X += normal.x * speed;
+			Y += normal.y * speed;
+		} else {
+			// Reached
+			X = targetPos.x;
+			Y = targetPos.y;
+			// To Next
+			var nextDir = GetDirection(X, Y, MovingDirection, ignoreOpposite: true);
+			if (!nextDir.HasValue) {
+				// Stop
+				Active = false;
 				Current = null;
-				Active = false;
 				return;
 			}
-
-			// Trigger Check
-			bool xTriggered =
-				DirectionX == Direction3.None ||
-				(DirectionX == Direction3.Left && X < nextScroll.X) ||
-				(DirectionX == Direction3.Right && X > nextScroll.X);
-			bool yTriggered =
-				DirectionY == Direction3.None ||
-				(DirectionY == Direction3.Down && Y < nextScroll.Y) ||
-				(DirectionY == Direction3.Up && Y > nextScroll.Y);
-			if (xTriggered && yTriggered) {
-				Active = false;
-				Current = nextScroll;
-				nextScroll.Move();
-				return;
-			}
+			// Move Remaining
+			MovingDirection = nextDir.Value;
+			normal = MovingDirection.Normal();
+			TargetUnitPos.x = (X + Const.HALF).ToUnit() + normal.x;
+			TargetUnitPos.y = (Y + Const.HALF).ToUnit() + normal.y;
+			int remaining = Speed - dis;
+			int speed = normal.x == 0 || normal.y == 0 ? remaining : (remaining * 10000 / 14142).GreaterOrEquel(1);
+			X += normal.x * speed;
+			Y += normal.y * speed;
 		}
-
-		// Movement
-		Move();
-
-		// Clamp or PassOut Player
-		const int PASS_OUT_GAP = Const.CEL * 3;
+		// Move Camera
+		Stage.SetViewPositionDelay(
+			X - Stage.ViewRect.width / 2,
+			Y - Stage.ViewRect.height / 2,
+			((Game.GlobalFrame - MoveStartFrame) * 6).LessOrEquel(1000),
+			0
+		);
+		// Player Interaction
 		var player = Player.Selecting;
-		var pRect = player.Rect;
-		var cameraRect = Renderer.CameraRect;
-		if (pRect.yMin < cameraRect.yMin - PASS_OUT_GAP) {
-			player.SetHealth(0);
-		}
-		if (pRect.yMax > cameraRect.yMax) {
-			player.Y = cameraRect.yMax - pRect.height;
-		}
-		if (pRect.xMin < cameraRect.xMin) {
-			player.X = cameraRect.xMin + player.Width / 2;
-		}
-		if (pRect.xMax > cameraRect.xMax) {
-			player.X = cameraRect.xMax - player.Width / 2;
+		var viewRect = Stage.ViewRect;
+		if (player != null) {
+			if (player.Y < viewRect.y - PLAYER_OUT_RANGE_GAP) {
+				// Player Passout Outside Camera
+				Active = false;
+				Current = null;
+				player.SetHealth(0);
+				player.SetCharacterState(CharacterState.PassOut);
+			} else {
+				player.X = player.X.Clamp(viewRect.xMin, viewRect.xMax);
+			}
 		}
 
 	}
@@ -253,52 +186,54 @@ public abstract class CameraAutoScroll : Entity {
 	#region --- LGC ---
 
 
-	private void Move () {
-		var view = Stage.ViewRect;
-		int deltaX = (int)DirectionX * Speed;
-		int deltaY = (int)DirectionY * Speed;
-		X += deltaX;
-		Y += deltaY;
-		Stage.SetViewPositionDelay(
-			X + Const.HALF - view.width / 2,
-			Y + Const.HALF - view.height / 2,
-			50, 1
-		);
-	}
+	private static Direction8? GetDirection (int x, int y, Direction8 movingDir, bool ignoreOpposite) {
 
+		x = (x + Const.HALF).ToUnit();
+		y = (y + Const.HALF).ToUnit();
 
-	public static bool CheckEntrance (int globalX, int globalY, Direction3 directionX, Direction3 directionY) {
+		// 0
+		var movingNormal = movingDir.Normal();
+		int id = WorldSquad.Front.GetBlockAt(x + movingNormal.x, y + movingNormal.y, BlockType.Element);
+		if (id == PATH_ID) return movingDir;
 
-		if (directionX == Direction3.None && directionY == Direction3.None) return false;
-		var unitPos = new Int2(globalX, globalY).ToUnit();
-		var squad = WorldSquad.Front;
+		// 45
+		var dirA = movingDir.AntiClockwise();
+		var dirB = movingDir.Clockwise();
+		var normalA = dirA.Normal();
+		var normalB = dirB.Normal();
+		id = WorldSquad.Front.GetBlockAt(x + normalA.x, y + normalA.y, BlockType.Element);
+		if (id == PATH_ID) return dirA;
+		id = WorldSquad.Front.GetBlockAt(x + normalB.x, y + normalB.y, BlockType.Element);
+		if (id == PATH_ID) return dirB;
 
-		var dir = new Int2((int)directionX, (int)directionY);
-		if (HasPrevTarget(new(-1, -1))) return false;
-		if (HasPrevTarget(new(-1, 0))) return false;
-		if (HasPrevTarget(new(-1, 1))) return false;
-		if (HasPrevTarget(new(0, -1))) return false;
-		if (HasPrevTarget(new(0, 1))) return false;
-		if (HasPrevTarget(new(1, -1))) return false;
-		if (HasPrevTarget(new(1, 0))) return false;
-		if (HasPrevTarget(new(1, 1))) return false;
-		return true;
+		// 90
+		dirA = dirA.AntiClockwise();
+		dirB = dirB.Clockwise();
+		normalA = dirA.Normal();
+		normalB = dirB.Normal();
+		id = WorldSquad.Front.GetBlockAt(x + normalA.x, y + normalA.y, BlockType.Element);
+		if (id == PATH_ID) return dirA;
+		id = WorldSquad.Front.GetBlockAt(x + normalB.x, y + normalB.y, BlockType.Element);
+		if (id == PATH_ID) return dirB;
 
-		bool HasPrevTarget (Int2 direction) {
-			if (direction == dir) return false;
-			for (int i = 1; i < MAX_LEN; i++) {
-				int x = unitPos.x + direction.x * i;
-				int y = unitPos.y + direction.y * i;
-				int id = squad.GetBlockAt(x, y, BlockType.Entity);
-				if (
-					id != 0 &&
-					DirectionPool.TryGetValue(id, out var dir) &&
-					direction.x == -dir.x &&
-					direction.y == -dir.y
-				) return true;
-			}
-			return false;
+		// 135
+		dirA = dirA.AntiClockwise();
+		dirB = dirB.Clockwise();
+		normalA = dirA.Normal();
+		normalB = dirB.Normal();
+		id = WorldSquad.Front.GetBlockAt(x + normalA.x, y + normalA.y, BlockType.Element);
+		if (id == PATH_ID) return dirA;
+		id = WorldSquad.Front.GetBlockAt(x + normalB.x, y + normalB.y, BlockType.Element);
+		if (id == PATH_ID) return dirB;
+
+		// 180
+		if (!ignoreOpposite) {
+			id = WorldSquad.Front.GetBlockAt(x - movingNormal.x, y - movingNormal.y, BlockType.Element);
+			if (id == PATH_ID) return movingDir.Opposite();
 		}
+
+		// None
+		return null;
 	}
 
 

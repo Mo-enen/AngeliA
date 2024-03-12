@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public abstract class Rigidbody : Entity {
 
 
@@ -34,10 +34,13 @@ public abstract class Rigidbody : Entity {
 	public int OffsetY { get; protected set; } = 0;
 	public int GravityScale { get; protected set; } = 1000;
 	public int GroundedID { get; private set; } = 0;
+	public int PrevX { get; private set; } = 0;
+	public int PrevY { get; private set; } = 0;
 	public int DeltaPositionX => X - PrevX;
 	public int DeltaPositionY => Y - PrevY;
 
 	// Override
+	public virtual bool AllowBeingPush => true;
 	protected abstract int PhysicalLayer { get; }
 	protected virtual int CollisionMask => PhysicsMask.SOLID;
 	protected virtual int Gravity => VelocityY <= 0 ? 5 : 3;
@@ -47,15 +50,12 @@ public abstract class Rigidbody : Entity {
 	protected virtual bool CarryOtherRigidbodyOnTop => true;
 	protected virtual bool PhysicsEnable => true;
 	protected virtual bool DestroyWhenInsideGround => false;
-	public virtual bool AllowBeingPush => true;
 	protected virtual int MaxGravitySpeed => 96;
 
 	// Data
 	private int IgnoreGroundCheckFrame = int.MinValue;
 	private int IgnoreGravityFrame = int.MinValue;
 	private int IgnorePhysicsFrame = -1;
-	private int PrevX = 0;
-	private int PrevY = 0;
 	private int PrevPositionUpdateFrame = -1;
 
 

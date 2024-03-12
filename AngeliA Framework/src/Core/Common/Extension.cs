@@ -155,7 +155,7 @@ public static class Extension {
 	public static int GreaterOrEquelThanZero (this int value) => value > 0 ? value : 0;
 	public static int LessOrEquelThanZero (this int value) => value < 0 ? value : 0;
 
-	public static int Sign (this int i) => (i >= 0) ? 1 : -1;
+	public static int Sign (this int i) => i >= 0 ? 1 : -1;
 	public static int Sign3 (this int i) => i == 0 ? 0 : i > 0 ? 1 : -1;
 
 	public static int MoveTowards (this int current, int target, int maxDelta) {
@@ -368,6 +368,18 @@ public static class Extension {
 		_ => throw new System.NotImplementedException(),
 	};
 
+	public static Int2 Normal (this Direction8 dir) => dir switch {
+		Direction8.Bottom => new(0, -1),
+		Direction8.BottomLeft => new(-1, -1),
+		Direction8.BottomRight => new(1, -1),
+		Direction8.Top => new(0, 1),
+		Direction8.TopLeft => new(-1, 1),
+		Direction8.TopRight => new(1, 1),
+		Direction8.Left => new(-1, 0),
+		Direction8.Right => new(1, 0),
+		_ => throw new System.NotImplementedException(),
+	};
+
 	public static int GetRotation (this Direction4 dir) => dir switch {
 		Direction4.Up => 0,
 		Direction4.Down => 180,
@@ -375,6 +387,13 @@ public static class Extension {
 		Direction4.Right => 90,
 		_ => 0,
 	};
+
+	public static Direction8 Clockwise (this Direction8 dir) => (Direction8)(((int)dir + 1) % 8);
+
+	public static Direction8 AntiClockwise (this Direction8 dir) => (Direction8)(((int)dir + 7) % 8);
+
+	public static Direction8 Opposite (this Direction8 dir) => (Direction8)(((int)dir + 4) % 8);
+
 
 	// Rect
 	public static FRect Shift (this FRect rect, float x, float y) {

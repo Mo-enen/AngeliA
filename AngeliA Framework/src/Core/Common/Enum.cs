@@ -55,6 +55,18 @@ public enum Direction4 {
 }
 
 
+public enum Direction8 {
+	Top = 0,
+	TopRight = 1,
+	Right = 2,
+	BottomRight = 3,
+	Bottom = 4,
+	BottomLeft = 5,
+	Left = 6,
+	TopLeft = 7,
+}
+
+
 public enum Alignment {
 	TopLeft = 0,
 	TopMid = 1,
