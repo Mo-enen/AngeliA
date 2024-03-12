@@ -16,7 +16,7 @@ internal class Engine {
 
 
 	// SUB
-	private enum WindowMode { Mascot, Float, Window, ConfirmQuit, }
+	private enum WindowMode { Mascot, Window, ConfirmQuit, }
 
 	// Const
 	private const int MASCOT_WIDTH = 360;
@@ -24,7 +24,6 @@ internal class Engine {
 	private static readonly SpriteCode UI_TAB = "UI.MainTab";
 	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.MainTabInactive";
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
-	private static readonly SpriteCode ICON_CLOSE = "Icon.PixelClose";
 	private static readonly WindowUI[] WINDOWS = {
 		new ProjectHub(),
 		new PixelEditor(),
@@ -45,6 +44,7 @@ internal class Engine {
 	private static readonly GenericPopupUI PopupUI = new();
 	private static readonly GenericDialogUI DialogUI = new();
 	private static readonly GUIStyle MsgStyle = new(GUISkin.CenterLabel) { CharSize = 100 };
+	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 100 };
 	private static EngineSetting Setting;
 	private static Int2? FloatMascotMouseDownPos = null;
 	private static Int2 FloatMascotMouseDownGlobalPos = default;
@@ -99,14 +99,9 @@ internal class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
-		// Switch to Mascot on Lost Focus
-		if (CurrentWindowMode == WindowMode.Float && !Game.IsWindowFocused) {
-			SwitchWindowMode(WindowMode.Mascot);
-		}
-
 		// Switch on Mid Click
 		if (CurrentWindowMode != WindowMode.ConfirmQuit && Input.MouseMidButtonDown) {
-			SwitchWindowMode(CurrentWindowMode == WindowMode.Window ? WindowMode.Float : WindowMode.Window);
+			SwitchWindowMode(CurrentWindowMode == WindowMode.Window ? WindowMode.Mascot : WindowMode.Window);
 		}
 
 		// On GUI
@@ -115,10 +110,6 @@ internal class Engine {
 				Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
 				OnGUI_Mascot_MouseLogic();
 				OnGUI_Mascot_Render();
-				break;
-			case WindowMode.Float:
-				Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
-				OnGUI_Window();
 				break;
 			case WindowMode.Window:
 				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
@@ -143,11 +134,9 @@ internal class Engine {
 		int barHeight = GUI.UnifyMonitor(38);
 		int contentPadding = GUI.UnifyMonitor(8);
 		int bodyBorder = GUI.UnifyMonitor(6);
-		bool floating = CurrentWindowMode == WindowMode.Float;
-		int closeButtonWidth = floating ? barHeight - contentPadding : bodyBorder;
 		var cameraRect = Renderer.CameraRect;
 		int windowLen = CurrentProject == null ? 1 : WINDOWS.Length;
-		int tabWidth = (cameraRect.width - bodyBorder - closeButtonWidth) / windowLen;
+		int tabWidth = (cameraRect.width - bodyBorder * 2) / windowLen;
 		var rect = new IRect(cameraRect.x + bodyBorder, cameraRect.yMax - barHeight, tabWidth, barHeight);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
@@ -170,7 +159,7 @@ internal class Engine {
 				bodyBorder, bodyBorder, bodyBorder, bodyBorder,
 				selecting ? Color32.WHITE : Color32.GREY_196
 			);
-			var contentRect = rect.Shrink(contentPadding, closeButtonWidth, 0, contentPadding);
+			var contentRect = rect.Shrink(contentPadding, contentPadding, 0, contentPadding);
 
 			// Icon
 			int iconSize = contentRect.height;
@@ -184,23 +173,6 @@ internal class Engine {
 
 			// Next
 			rect.x += rect.width;
-		}
-
-		// Close Button
-		if (floating) {
-			var btnRect = new IRect(
-				cameraRect.xMax - closeButtonWidth,
-				cameraRect.yMax - barHeight,
-				closeButtonWidth,
-				barHeight - contentPadding
-			);
-			if (GUI.DarkButton(btnRect, ICON_CLOSE)) {
-				if (CurrentWindowMode != WindowMode.ConfirmQuit) {
-					SwitchWindowMode(WindowMode.ConfirmQuit);
-				} else {
-					Game.QuitApplication();
-				}
-			}
 		}
 
 		// Window BG
@@ -273,7 +245,7 @@ internal class Engine {
 			FloatMascotMouseDownPos = null;
 			if (!FloatMascotDragged) {
 				// Click
-				SwitchWindowMode(WindowMode.Float);
+				SwitchWindowMode(WindowMode.Window);
 				return;
 			} else {
 				// Drag End
@@ -313,13 +285,19 @@ internal class Engine {
 		);
 
 		// Buttons 
+		ConfirmBtnStyle.BodyBorder = Int4.one * GUI.UnifyMonitor(20);
+		ConfirmBtnStyle.ContentShift = ConfirmBtnStyle.ContentShiftHover = ConfirmBtnStyle.ContentShiftDisable = new Int2(0, GUI.UnifyMonitor(5));
+		
 		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
-		if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_QUIT, GUISkin.DarkButton)) {
-			Game.QuitApplication();
+		using (GUIScope.BodyColor(Color32.RED_BETTER)) {
+			if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_QUIT, ConfirmBtnStyle)) {
+				Game.QuitApplication();
+			}
 		}
+
 		rect.x += rect.width;
-		if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_CANCEL, GUISkin.DarkButton)) {
-			SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Float);
+		if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_CANCEL, ConfirmBtnStyle)) {
+			SwitchWindowMode(WindowMode.Window);
 		}
 
 	}
@@ -383,20 +361,6 @@ internal class Engine {
 				targetWindowWidth = MASCOT_WIDTH;
 				targetWindowHeight = MASCOT_HEIGHT;
 				minWindowSize = Util.Min(MASCOT_WIDTH, MASCOT_HEIGHT);
-				Setting.WindowMode = false;
-				break;
-			}
-			case WindowMode.Float: {
-				// Float
-				Game.IsWindowDecorated = false;
-				Game.IsWindowTopmost = true;
-				Game.IsWindowResizable = false;
-				Game.IsWindowMaximized = false;
-				int width = Game.MonitorHeight;
-				int height = Game.MonitorHeight * 8 / 10;
-				Game.SetWindowPosition((Game.MonitorWidth - width) / 2, (Game.MonitorHeight - height) / 2);
-				targetWindowWidth = width;
-				targetWindowHeight = height;
 				Setting.WindowMode = false;
 				break;
 			}

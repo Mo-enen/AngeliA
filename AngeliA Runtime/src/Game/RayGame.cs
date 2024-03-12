@@ -20,7 +20,6 @@ public partial class RayGame : Game {
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
 	private long NextUpdateTick = -1;
-	private bool IsTransparentWindow = false;
 	private bool RequireEventWaiting = false;
 
 
@@ -48,8 +47,6 @@ public partial class RayGame : Game {
 		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
 		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
 		RequireEventWaiting = Util.TryGetAttributeFromAllAssemblies<RequireEventWaitingAttribute>();
-		IsTransparentWindow = Util.TryGetAttributeFromAllAssemblies<RequireTransparentWindowAttribute>();
-		if (IsTransparentWindow) windowConfig |= ConfigFlags.TransparentWindow;
 		Raylib.SetConfigFlags(windowConfig);
 		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");

@@ -80,7 +80,9 @@ public class ProjectHub : EngineWindow {
 
 	private void PanelUpdate () {
 
-		var panelRect = WindowRect.EdgeInside(Direction4.Left, UnifyMonitor(PANEL_WIDTH));
+		var panelRect = Setting.Projects.Count > 0 ?
+			WindowRect.EdgeInside(Direction4.Left, UnifyMonitor(PANEL_WIDTH)) :
+			new IRect(WindowRect.x + (WindowRect.width - UnifyMonitor(PANEL_WIDTH)) / 2, WindowRect.y, UnifyMonitor(PANEL_WIDTH), WindowRect.height);
 		int itemPadding = UnifyMonitor(8);
 
 		var rect = new IRect(

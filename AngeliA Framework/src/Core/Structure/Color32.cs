@@ -8,6 +8,7 @@ namespace AngeliA;
 public struct Color32 : IFormattable, IComparable {
 
 	public static readonly Color32 WHITE = new(255, 255, 255, 255);
+	public static readonly Color32 WHITE_196 = new(255, 255, 255, 196);
 	public static readonly Color32 WHITE_128 = new(255, 255, 255, 128);
 	public static readonly Color32 WHITE_96 = new(255, 255, 255, 96);
 	public static readonly Color32 WHITE_64 = new(255, 255, 255, 64);

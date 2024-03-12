@@ -44,7 +44,6 @@
 		<Compile Remove="Universe\**" />
 		<EmbeddedResource Remove="Universe\**" />
 		<None Remove="dotnet sdk\**" />
-		<None Remove="Universe\**" />
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->

@@ -16,7 +16,7 @@ using System.Collections.Generic;
 )]
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 
 public enum CharacterState {
@@ -71,6 +71,7 @@ public abstract partial class Character : Rigidbody {
 	public int CurrentRenderingBounce { get; private set; } = 1000;
 	public int SleepStartFrame { get; private set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
+	public bool InventoryCurrentAvailable => IsCharacterWithInventory && Game.GlobalFrame > IgnoreInventoryFrame;
 	protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
 	protected override int AirDragX => 0;
 	protected override int AirDragY => 0;
@@ -80,7 +81,6 @@ public abstract partial class Character : Rigidbody {
 	protected sealed override int CollisionMask => IsGrabFlipping ? 0 : PhysicsMask.MAP;
 	protected sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	protected virtual int Bouncy => 150;
-	protected virtual bool InventoryCurrentAvailable => false;
 	protected virtual bool IsCharacterWithInventory => false;
 
 	// Data
@@ -92,6 +92,7 @@ public abstract partial class Character : Rigidbody {
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
 	private int LocalInventoryInitVersion = -1;
+	private int IgnoreInventoryFrame = int.MinValue;
 
 
 	#endregion
@@ -534,6 +535,8 @@ public abstract partial class Character : Rigidbody {
 		if (id == 0) return null;
 		return ItemSystem.GetItem(id) as Equipment;
 	}
+
+	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
 
 
 	#endregion

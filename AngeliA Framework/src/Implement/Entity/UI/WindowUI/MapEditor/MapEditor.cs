@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using GeorgeMamaladze;
 
-//byte alpha = (byte)((int)Game.WorldBehindAlpha).MoveTowards(PlayingGame ? 64 : 12, 1);
-
 namespace AngeliA.Framework;
 [RequireLanguageFromField]
 [EntityAttribute.StageOrder(-4096)]
@@ -170,7 +168,6 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoRegisterFrame = -1;
 	private int LastUndoPerformedFrame = -1;
 	private int CurrentZ = 0;
-	private int CurrentZChangedFrame = int.MinValue;
 	private int RequireWorldRenderBlinkIndex = -1;
 
 	// Saving
@@ -886,7 +883,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		if (IsPlaying) return;
 
-		var cameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.width, 0, 0, 0);
+		var cameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - Renderer.CameraRect.x, 0, 0, 0);
 		int oldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayerToDefault();
 
@@ -1165,15 +1162,14 @@ public sealed partial class MapEditor : WindowUI {
 			Util.Max(rect.y - height - Unify(12), Renderer.CameraRect.y),
 			rect.width, height
 		);
+		int excludeEndIndex = Renderer.GetTextUsedCellCount();
 		GUI.Label(tipRect, tip, out var bounds);
-		Renderer.Draw(Const.PIXEL, bounds.Expand(gap), Color32.BLACK, int.MaxValue);
+		Renderer.Draw(Const.PIXEL, bounds.Expand(gap), Color32.BLACK);
+		Renderer.ExcludeTextCells(bounds.Expand(gap), 0, excludeEndIndex);
 	}
 
 
-	private void SetViewZ (int newZ) {
-		CurrentZ = newZ;
-		CurrentZChangedFrame = Game.GlobalFrame;
-	}
+	private void SetViewZ (int newZ) => CurrentZ = newZ;
 
 
 	private void ResetCamera (bool immediately = false) {
@@ -1321,6 +1317,7 @@ public sealed partial class MapEditor : WindowUI {
 	// Render
 	private void DrawEntity (int id, int unitX, int unitY) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+		if (EntityArtworkRedirectPool.TryGetValue(id, out int newID)) id = newID;
 		if (
 			Renderer.TryGetSprite(id, out var sprite) ||
 			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)

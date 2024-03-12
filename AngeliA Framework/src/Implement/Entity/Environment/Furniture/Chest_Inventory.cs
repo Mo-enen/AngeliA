@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 
 
@@ -39,16 +39,20 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 	void IActionTarget.Invoke () {
 		if (!Open) SetOpen(true);
 		// Spawn UI Entity
-		if (Player.Selecting != null) {
-			var playerMenu = PlayerMenuUI.OpenMenu();
-			if (playerMenu != null) {
-				playerMenu.Partner = InventoryPartnerUI.Instance;
-				InventoryPartnerUI.Instance.AvatarIcon = TypeID;
-				playerMenu.Partner.EnablePanel(TypeID, InventoryColumn, InventoryRow);
-			}
+		var player = Player.Selecting;
+		if (player == null || !player.InventoryCurrentAvailable) return;
+		var playerMenu = PlayerMenuUI.OpenMenu();
+		if (playerMenu != null) {
+			playerMenu.Partner = InventoryPartnerUI.Instance;
+			InventoryPartnerUI.Instance.AvatarIcon = TypeID;
+			playerMenu.Partner.EnablePanel(TypeID, InventoryColumn, InventoryRow);
 		}
 	}
 
+	bool IActionTarget.AllowInvoke () {
+		var player = Player.Selecting;
+		return player != null && player.InventoryCurrentAvailable;
+	}
 
 	protected override void SetOpen (bool open) {
 		if (Open && !open) {

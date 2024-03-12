@@ -24,6 +24,7 @@ public class Yaya : Player {
 	public override bool BodySuitAvailable => true;
 	public override bool HelmetAvailable => true;
 	public override int AttackStyleIndex => EquippingWeaponType == WeaponType.Hand ? 1 : base.AttackStyleIndex;
+	//protected override bool IsCharacterWithInventory => false;
 
 	// Data
 	private GuaGua GuaGua = null;
@@ -54,7 +55,7 @@ public class Yaya : Player {
 
 
 		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-			
+
 
 		}
 

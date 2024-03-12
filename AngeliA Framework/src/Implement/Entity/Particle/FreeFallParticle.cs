@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA.Framework;
 
-namespace AngeliA.Framework; 
 public class FreeFallParticle : Particle {
 
 	public static readonly int TYPE_ID = typeof(FreeFallParticle).AngeHash();
@@ -16,6 +16,7 @@ public class FreeFallParticle : Particle {
 	public int Gravity { get; set; } = 5;
 	public bool FlipX { get; set; } = false;
 	public bool BlinkInEnd { get; set; } = true;
+	public Color32 Color { get; set; } = Color32.WHITE;
 
 	public override void OnActivated () {
 		base.OnActivated();
@@ -27,6 +28,7 @@ public class FreeFallParticle : Particle {
 		FlipX = false;
 		BlinkInEnd = true;
 		ArtworkID = 0;
+		Color = Color32.WHITE;
 	}
 
 	public override void Update () {
@@ -46,9 +48,9 @@ public class FreeFallParticle : Particle {
 		base.LateUpdate();
 		if (BlinkInEnd && LocalFrame > Duration / 2 && LocalFrame % 6 < 3) return;
 		if (ArtworkID != 0) {
-			Renderer.SetLayerToUI();
-			Renderer.Draw(ArtworkID, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, 0);
-			Renderer.SetLayerToDefault();
+			using (GUIScope.Layer(RenderLayer.UI)) {
+				Renderer.Draw(ArtworkID, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, Color, z: 0);
+			}
 		}
 	}
 

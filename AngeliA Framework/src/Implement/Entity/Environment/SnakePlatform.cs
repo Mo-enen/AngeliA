@@ -2,20 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
-
-
-[EntityAttribute.MapEditorGroup("Platform")]
-[RequireSprite("{0}")]
-public class SnakePath : IMapItem { }
-
+namespace AngeliA.Framework;
 
 
 public abstract class SnakePlatform : Platform {
 
 
 	// Const
-	private static readonly int PATH_ID = typeof(SnakePath).AngeHash();
+	private static readonly int PATH_ID = typeof(AutoDirection).AngeHash();
 
 	// Api
 	public abstract int EndBreakDuration { get; }
@@ -57,6 +51,17 @@ public abstract class SnakePlatform : Platform {
 		// Reached End
 		if (EndReachingFrame >= 0) {
 			if (Game.GlobalFrame > EndReachingFrame + EndBreakDuration) {
+				// Particle
+				if (Stage.SpawnEntity(FreeFallParticle.TYPE_ID, X, Y) is FreeFallParticle particle) {
+					particle.ArtworkID = TypeID;
+					particle.CurrentSpeedX = CurrentDirection.Normal().x * 6;
+					particle.CurrentSpeedY = Const.CEL / 4;
+					particle.RotateSpeed = 4;
+					particle.Gravity = 4;
+					particle.AirDragX = 0;
+					particle.Color = Color32.WHITE_196;
+				}
+				// Reset
 				X = StartPosition.x;
 				Y = StartPosition.y;
 				OnActivated();

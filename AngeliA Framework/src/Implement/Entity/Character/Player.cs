@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 [assembly: AngeliA.RequireGlobalSprite(atlas: "Character", "Player")]
 
 namespace AngeliA.Framework;
@@ -79,10 +78,9 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	public virtual bool ShoesAvailable => true;
 	public virtual bool JewelryAvailable => true;
 	public virtual bool WeaponAvailable => true;
-	public virtual bool AllowPlayerMenuUI => true;
-	public virtual bool AllowQuickPlayerMenuUI => true;
+	public virtual bool AllowPlayerMenuUI => InventoryCurrentAvailable;
+	public virtual bool AllowQuickPlayerMenuUI => InventoryCurrentAvailable;
 	protected override bool IsCharacterWithInventory => true;
-	protected override bool InventoryCurrentAvailable => Game.GlobalFrame > IgnoreInventoryFrame;
 	int IDamageReceiver.Team => Const.TEAM_PLAYER;
 
 	// Data
@@ -91,7 +89,6 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 	private int LastRightKeyDown = int.MinValue;
 	private int LastGroundedY = 0;
 	private int PrevZ = int.MinValue;
-	private int IgnoreInventoryFrame = int.MinValue;
 
 	// Saving
 	private static readonly SavingInt LastPlayerID = new("Player.LastPlayerID", 0);
@@ -612,9 +609,6 @@ public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, 
 
 
 	public void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
-
-
-	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
 
 
 	#endregion

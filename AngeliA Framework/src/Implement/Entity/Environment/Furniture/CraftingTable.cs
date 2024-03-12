@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 
 public class CraftingTableWood : CraftingTable, ICombustible {
 	public int BurnStartFrame { get; set; }
@@ -10,7 +10,6 @@ public class CraftingTableWood : CraftingTable, ICombustible {
 
 
 public abstract class CraftingTable : OpenableFurniture, IActionTarget {
-
 
 	public CraftingTable () {
 		int invID = GetType().AngeHash();
@@ -26,7 +25,6 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 			Inventory.AddNewInventoryData(GetType().AngeName(), TARGET_COUNT);
 		}
 	}
-
 
 	public override void LateUpdate () {
 		base.LateUpdate();
@@ -53,21 +51,24 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 		}
 	}
 
-
 	void IActionTarget.Invoke () {
-		if (!Open) SetOpen(true);
-		if (Player.Selecting == null) return;
+		var player = Player.Selecting;
+		if (player == null || !player.InventoryCurrentAvailable) return;
 		var playerMenu = PlayerMenuUI.OpenMenu();
+		if (!Open) SetOpen(true);
 		if (playerMenu == null) return;
 		playerMenu.Partner = CraftingTableUI.Instance;
 		playerMenu.Partner.EnablePanel(TypeID, 2, 2, 128);
 	}
 
+	bool IActionTarget.AllowInvoke () {
+		var player = Player.Selecting;
+		return player != null && player.InventoryCurrentAvailable;
+	}
 
 	protected override void SetOpen (bool open) {
 		if (Open && !open) PlayerMenuUI.CloseMenu();
 		base.SetOpen(open);
 	}
-
 
 }

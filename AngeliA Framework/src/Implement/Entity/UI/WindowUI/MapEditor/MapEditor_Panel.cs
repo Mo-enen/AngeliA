@@ -283,6 +283,8 @@ public partial class MapEditor {
 		int BUTTON_BORDER = Unify(6);
 		int ITEM_SIZE = Unify(46);
 		int TAB_SIZE = Unify(40);
+		IRect requiringTooltipRect = default;
+		string requiringTooltip = null;
 
 		// Calculate Group Rect
 		bool showingBuiltIn = CurrentPaletteTab == PaletteTabType.BuiltIn;
@@ -400,11 +402,13 @@ public partial class MapEditor {
 				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
 				if (showingBuiltIn) {
 					var group = PaletteGroups[i];
-					DrawTooltip(rect, Language.Get(group.DisplayNameID, group.GroupName));
+					requiringTooltip = Language.Get(group.DisplayNameID, group.GroupName);
+					requiringTooltipRect = rect;
 				} else {
 					var list = EditorMeta.PinnedLists[i];
 					if (list.Icon != 0) {
-						DrawTooltip(rect, PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "");
+						requiringTooltip = PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "";
+						requiringTooltipRect = rect;
 					}
 				}
 			}
@@ -479,6 +483,9 @@ public partial class MapEditor {
 			SelectingPaletteListIndex = targetReorderReleaseIndex;
 		}
 
+		// Tooltip
+		if (requiringTooltip != null) DrawTooltip(requiringTooltipRect, requiringTooltip);
+
 	}
 
 
@@ -508,6 +515,8 @@ public partial class MapEditor {
 		int TOOLBAR_HEIGHT = Unify(TOOL_BAR_HEIGHT * 2);
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 		int targetReorderReleaseIndex = -1;
+		IRect requiringTooltipRect = default;
+		string requiringTooltip = null;
 		const int EXTRA_ROW = 3;
 
 		// Content
@@ -550,7 +559,8 @@ public partial class MapEditor {
 			if (mouseHovering) {
 				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32);
 				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
-				DrawTooltip(rect, pal.Name);
+				requiringTooltipRect = rect;
+				requiringTooltip = pal.Name;
 			}
 
 			// Frame
@@ -657,6 +667,11 @@ public partial class MapEditor {
 				contentRect.height
 			), PaletteScrollY, rowCount + EXTRA_ROW, pageRowCount
 		);
+
+		// Tooltip
+		if (requiringTooltip != null) {
+			DrawTooltip(requiringTooltipRect, requiringTooltip);
+		}
 
 	}
 
