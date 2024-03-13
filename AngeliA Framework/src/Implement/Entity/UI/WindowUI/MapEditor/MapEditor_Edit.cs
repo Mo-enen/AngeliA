@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA.Framework;
+
 public partial class MapEditor {
 
 
@@ -20,11 +20,11 @@ public partial class MapEditor {
 	private bool Modify_BackgroundOnly => ShiftHolding && AltHolding;
 
 	// Data
+	private readonly System.Random PaintingRan = new(6492763);
 	private IRect? SelectionUnitRect = null;
 	private IRect? DraggingUnitRect = null;
 	private Int2? MouseDownPosition = null;
 	private IRect DragBeginSelectionUnitRect = default;
-	private readonly System.Random PaintingRan = new(6492763);
 	private int MouseDownButton = -1;
 	private bool MouseMoved = false;
 	private bool MouseInSelection = false;
@@ -145,7 +145,7 @@ public partial class MapEditor {
 					var type = (BlockType)blockTypeIndex;
 					UserEraseBlock(i, j, type);
 				}
-				UserEraseGlobalPosition(i, j, z);
+				UserEraseUnique(i, j, z);
 			}
 		}
 		RedirectForRule(unitRect);
@@ -190,16 +190,18 @@ public partial class MapEditor {
 		int id = paint ? SelectingPaletteItem.ID : 0;
 		var type = paint ? SelectingPaletteItem.BlockType : default;
 		int z = CurrentZ;
-		bool idGlobalPosEntity = IGlobalPosition.IsGlobalPositionEntity(id);
+
+		// Paint Unique
+		bool idUniqueEntity = IUnique.IsUniqueEntity(id);
+		if (paint && idUniqueEntity) {
+			UserSetUnique(mouseUnitPos.x, mouseUnitPos.y, z, id);
+		}
 
 		for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
 			for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
 				if (paint) {
 					// Paint Block
-					if (idGlobalPosEntity) {
-						// Global Pos
-						UserSetGlobalPosition(i, j, z, id);
-					} else {
+					if (!idUniqueEntity) {
 						// Redirect for Random
 						if (
 							SelectingPaletteItem.GroupType == GroupType.Random &&
@@ -216,8 +218,8 @@ public partial class MapEditor {
 				} else if (mouseDownUnitPos == mouseUnitPos) {
 					// Single Erase
 
-					// Global Pos
-					UserEraseGlobalPosition(i, j, z);
+					// Unique
+					UserEraseUnique(i, j, z);
 
 					// Block
 					if (!Modify_BackgroundOnly && !Modify_EntityOnly && !Modify_LevelOnly) {
@@ -248,12 +250,12 @@ public partial class MapEditor {
 					if (!Modify_LevelOnly && !Modify_BackgroundOnly) {
 						UserEraseBlock(i, j, BlockType.Entity);
 						UserEraseBlock(i, j, BlockType.Element);
-						UserEraseGlobalPosition(i, j, z);
+						UserEraseUnique(i, j, z);
 					}
 				}
 			}
 		}
-		SpawnBlinkParticle(unitRect.ToGlobal(), id);
+		if (!idUniqueEntity) SpawnBlinkParticle(unitRect.ToGlobal(), id);
 		RedirectForRule(unitRect);
 		IsDirty = true;
 	}
@@ -276,8 +278,8 @@ public partial class MapEditor {
 			ApplyPaste();
 			SelectionUnitRect = null;
 			int id;
-			if (IGlobalPosition.TryGetIdFromPosition(new Int3(mouseUnitPos.x, mouseUnitPos.y, CurrentZ), out int globalID)) {
-				id = globalID;
+			if (IUnique.TryGetIdFromPosition(new Int3(mouseUnitPos.x, mouseUnitPos.y, CurrentZ), out int uniqueID)) {
+				id = uniqueID;
 			} else {
 				id = Stream.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y, CurrentZ);
 				id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
@@ -328,20 +330,20 @@ public partial class MapEditor {
 		}
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {
-			// GlobalPos
+			// Unique
 			var unitPos = new Int3(i, j, CurrentZ);
-			if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
+			if (type == BlockType.Entity && IUnique.TryGetIdFromPosition(
 				unitPos, out int _gID
 			)) {
 				if (removeOriginal) {
-					UserEraseGlobalPosition(i, j, z);
+					UserEraseUnique(i, j, z);
 				}
 				CopyBuffer.Add(new BlockBuffer() {
 					ID = _gID,
 					LocalUnitX = i - unitRect.x,
 					LocalUnitY = j - unitRect.y,
 					Type = type,
-					IsGlobalPos = true,
+					IsUnique = true,
 				});
 			}
 			// Block
@@ -355,7 +357,7 @@ public partial class MapEditor {
 					LocalUnitX = i - unitRect.x,
 					LocalUnitY = j - unitRect.y,
 					Type = type,
-					IsGlobalPos = false,
+					IsUnique = false,
 				});
 			}
 		}
@@ -394,9 +396,9 @@ public partial class MapEditor {
 		foreach (var buffer in PastingBuffer) {
 			int unitX = buffer.LocalUnitX + unitRect.x;
 			int unitY = buffer.LocalUnitY + unitRect.y;
-			if (buffer.IsGlobalPos) {
-				// Global Pos
-				UserSetGlobalPosition(unitX, unitY, z, buffer.ID, ignoreStep: true);
+			if (buffer.IsUnique) {
+				// Unique
+				UserSetUnique(unitX, unitY, z, buffer.ID, ignoreStep: true);
 			} else {
 				// Block
 				UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true);
@@ -437,20 +439,20 @@ public partial class MapEditor {
 		}
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {
-			// Global Pos
+			// Unique
 			var unitPos = new Int3(i, j, CurrentZ);
-			if (type == BlockType.Entity && IGlobalPosition.TryGetIdFromPosition(
+			if (type == BlockType.Entity && IUnique.TryGetIdFromPosition(
 				unitPos, out int _gID
 			)) {
 				if (removeOriginal) {
-					UserEraseGlobalPosition(i, j, z);
+					UserEraseUnique(i, j, z);
 				}
 				PastingBuffer.Add(new BlockBuffer() {
 					ID = _gID,
 					LocalUnitX = i - unitRect.x,
 					LocalUnitY = j - unitRect.y,
 					Type = type,
-					IsGlobalPos = true,
+					IsUnique = true,
 				});
 			}
 			// Block
@@ -464,7 +466,7 @@ public partial class MapEditor {
 					LocalUnitX = i - unitRect.x,
 					LocalUnitY = j - unitRect.y,
 					Type = type,
-					IsGlobalPos = false,
+					IsUnique = false,
 				});
 			}
 		}
@@ -551,10 +553,10 @@ public partial class MapEditor {
 	}
 
 
-	private bool UserEraseGlobalPosition (int unitX, int unitY, int z, bool ignoreStep = false) {
+	private bool UserEraseUnique (int unitX, int unitY, int z, bool ignoreStep = false) {
 		var pos = new Int3(unitX, unitY, z);
-		if (IGlobalPosition.TryGetIdFromPosition(pos, out int oldGlobalID)) {
-			IGlobalPosition.RemovePosition(pos);
+		if (IUnique.TryGetIdFromPosition(pos, out int oldGlobalID)) {
+			IUnique.RemovePosition(pos);
 			RegisterUndo(new GlobalPosUndoItem() {
 				FromID = oldGlobalID,
 				ToID = 0,
@@ -567,22 +569,31 @@ public partial class MapEditor {
 	}
 
 
-	private void UserSetGlobalPosition (int unitX, int unitY, int z, int id, bool ignoreStep = false) {
+	private void UserSetUnique (int unitX, int unitY, int z, int id, bool ignoreStep = false) {
 		var pos = new Int3(unitX, unitY, z);
-		if (IGlobalPosition.TryGetIdFromPosition(pos, out int gID)) {
+		if (IUnique.TryGetIdFromPosition(pos, out int gID)) {
 			// Have Global Pos Entity at Pos 
 			if (gID != id) {
-				IGlobalPosition.RemoveID(gID);
+				if (IUnique.TryGetPositionFromID(id, out var paintingIdPos)) {
+					IUnique.RemoveID(id);
+					RegisterUndo(new GlobalPosUndoItem() {
+						FromID = id,
+						ToID = 0,
+						FromUnitPos = paintingIdPos,
+						ToUnitPos = paintingIdPos,
+					}, ignoreStep);
+				}
+				IUnique.SetPosition(id, pos);
 				RegisterUndo(new GlobalPosUndoItem() {
 					FromID = gID,
-					ToID = 0,
+					ToID = id,
 					FromUnitPos = pos,
 					ToUnitPos = pos,
 				}, ignoreStep);
 			}
 		} else {
 			// Target Pos Is Empty
-			if (IGlobalPosition.TryGetPositionFromID(id, out var oldPos)) {
+			if (IUnique.TryGetPositionFromID(id, out var oldPos)) {
 				RegisterUndo(new GlobalPosUndoItem() {
 					FromID = id,
 					ToID = id,
@@ -597,7 +608,7 @@ public partial class MapEditor {
 					ToUnitPos = pos,
 				}, ignoreStep);
 			}
-			IGlobalPosition.SetPosition(id, pos);
+			IUnique.SetPosition(id, pos);
 		}
 	}
 

@@ -64,9 +64,9 @@ public sealed class CameraAutoScroll : Entity {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-
+#if DEBUG
 		Renderer.Draw(TypeID, Rect, Current == this ? Color32.GREEN : Color32.WHITE);
-
+#endif
 		if (Current != null && !Current.Active) Current = null;
 
 		// Update

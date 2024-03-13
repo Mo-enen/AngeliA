@@ -42,8 +42,9 @@ public partial class MapEditor {
 		public int ArtworkID = 0;
 		public int GroupIndex = -1;
 		public string Name = "";
+		public bool IsUnique = false;
 		public GroupType GroupType = GroupType.General;
-		public BlockType BlockType { get; set; } = BlockType.Entity;
+		public BlockType BlockType = BlockType.Entity;
 		public SpriteGroup Group = null;
 	}
 
@@ -235,8 +236,10 @@ public partial class MapEditor {
 				BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
 				Name = Util.GetDisplayName((type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name).TrimEnd_NumbersEmpty_()),
 				Group = null,
+				IsUnique = IUnique.IsUniqueEntity(typeId),
 			});
 		}
+
 		foreach (var (_, group) in entityGroupPool) {
 			group.Items.Sort((a, b) => a.Name.CompareTo(b.Name));
 			PaletteGroups.Add(group);
@@ -584,7 +587,9 @@ public partial class MapEditor {
 			// Selecting
 			if (SelectingPaletteItem == pal) {
 				Renderer.Draw_9Slice(
-					BuiltInSprite.FRAME_16, rect, BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT, Color32.GREEN
+					BuiltInSprite.FRAME_16, rect,
+					BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT,
+					pal.IsUnique ? Color32.ORANGE : Color32.GREEN
 				);
 			}
 
@@ -843,7 +848,7 @@ public partial class MapEditor {
 		for (int i = QuickLaneScrollY * COLUMN; i < CheckAltarIDs.Count; i++, index++) {
 
 			int id = CheckAltarIDs[i];
-			GUI.Enable = IGlobalPosition.TryGetPositionFromID(id, out var globalUnitPos) && !hasTask;
+			GUI.Enable = IUnique.TryGetPositionFromID(id, out var globalUnitPos) && !hasTask;
 
 			// Button
 			var btnRect = new IRect(

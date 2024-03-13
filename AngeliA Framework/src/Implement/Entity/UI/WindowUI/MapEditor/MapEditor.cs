@@ -43,7 +43,7 @@ public sealed partial class MapEditor : WindowUI {
 		public BlockType Type;
 		public int LocalUnitX;
 		public int LocalUnitY;
-		public bool IsGlobalPos;
+		public bool IsUnique;
 	}
 
 
@@ -80,7 +80,6 @@ public sealed partial class MapEditor : WindowUI {
 	// Const
 	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
-	private const int GIZMOS_Z = int.MaxValue - 64;
 	private const int PANEL_WIDTH = 300;
 	private const int MIN_VIEW_HEIGHT = 16 * Const.CEL;
 	private const int MAX_VIEW_HEIGHT = 120 * Const.CEL;
@@ -241,7 +240,7 @@ public sealed partial class MapEditor : WindowUI {
 		LastUndoPerformedFrame = -1;
 		SetNavigating(false);
 		ToolbarOffsetX = 0;
-		IGlobalPosition.LoadFromDisk(Stream.MapRoot);
+		IUnique.LoadFromDisk(Stream.MapRoot);
 
 		// Start
 		if (Game.GlobalFrame == 0) {
@@ -275,7 +274,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		JsonUtil.SaveJson(EditorMeta, UniverseSystem.CurrentUniverse.MapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(UniverseSystem.CurrentUniverse.MapRoot);
-		IGlobalPosition.SaveToDisk(Stream.MapRoot);
+		IUnique.SaveToDisk(Stream.MapRoot);
 		WorldSquad.SwitchToCraftedMode();
 		WorldSquad.Enable = true;
 
@@ -935,7 +934,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Global Pos
 		for (int y = down; y <= up; y++) {
 			for (int x = left; x <= right; x++) {
-				if (!IGlobalPosition.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
+				if (!IUnique.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
 				if (blinkCountDown-- > 0) continue;
 				DrawEntity(id, x, y);
 				index++;
@@ -1076,7 +1075,7 @@ public sealed partial class MapEditor : WindowUI {
 		Stage.ClearGlobalAntiSpawn();
 		Player.RespawnCpUnitPosition = null;
 		if (toPlayMode) {
-			IGlobalPosition.SaveToDisk(Stream.MapRoot);
+			IUnique.SaveToDisk(Stream.MapRoot);
 		}
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 		GUI.CancelTyping();
@@ -1296,10 +1295,10 @@ public sealed partial class MapEditor : WindowUI {
 				int targetID = reversed ? globalPosItem.FromID : globalPosItem.ToID;
 				if (targetID == 0) {
 					int targetIdAlt = reversed ? globalPosItem.ToID : globalPosItem.FromID;
-					IGlobalPosition.RemoveID(targetIdAlt);
+					IUnique.RemoveID(targetIdAlt);
 				} else {
 					var targetPos = reversed ? globalPosItem.FromUnitPos : globalPosItem.ToUnitPos;
-					IGlobalPosition.SetPosition(targetID, targetPos);
+					IUnique.SetPosition(targetID, targetPos);
 				}
 				break;
 			case ViewUndoItem viewItem:

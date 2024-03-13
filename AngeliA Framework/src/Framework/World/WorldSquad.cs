@@ -211,7 +211,7 @@ public sealed class WorldSquad : IBlockSquad {
 								DrawEntity(entityID, i, j, z);
 							}
 							// Global Pos
-							if (IGlobalPosition.TryGetIdFromPosition(new Int3(i, j, z), out int gID)) {
+							if (IUnique.TryGetIdFromPosition(new Int3(i, j, z), out int gID)) {
 								DrawEntity(gID, i, j, z);
 							}
 						}
@@ -229,7 +229,7 @@ public sealed class WorldSquad : IBlockSquad {
 							}
 							// Global Pos
 							if (
-								IGlobalPosition.TryGetIdFromPosition(new Int3(i, j, z), out int gID) &&
+								IUnique.TryGetIdFromPosition(new Int3(i, j, z), out int gID) &&
 								Stage.RequireDrawEntityBehind(gID, i, j, z)
 							) {
 								DrawBehind(gID, i, j, true);

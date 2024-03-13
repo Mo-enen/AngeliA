@@ -19,7 +19,7 @@ public sealed class DefaultPlayer : Player {
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]
 [RequireLanguageFromField]
-public abstract class Player : PoseCharacter, IGlobalPosition, IDamageReceiver, IActionTarget {
+public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionTarget {
 
 
 

@@ -6,7 +6,7 @@ namespace AngeliA.Framework;
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Capacity(1, 1)]
-public abstract class CheckAltar<CP> : EnvironmentEntity, IGlobalPosition where CP : CheckPoint {
+public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : CheckPoint {
 
 
 

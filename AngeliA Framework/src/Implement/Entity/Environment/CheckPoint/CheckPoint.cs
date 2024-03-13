@@ -161,7 +161,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 	}
 
 
-	protected virtual bool TryGetAltarPosition (out Int3 altarUnitPos) => IGlobalPosition.TryGetPositionFromID(LinkedAltarID, out altarUnitPos);
+	protected virtual bool TryGetAltarPosition (out Int3 altarUnitPos) => IUnique.TryGetPositionFromID(LinkedAltarID, out altarUnitPos);
 
 
 	#endregion

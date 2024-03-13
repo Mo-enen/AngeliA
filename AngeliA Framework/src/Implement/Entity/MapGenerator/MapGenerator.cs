@@ -119,7 +119,7 @@ public abstract class MapGenerator : Entity {
 
 			Util.DeleteFolder(mapRoot);
 			Util.MoveFolder(tempMapRoot, mapRoot);
-			IGlobalPosition.SaveToDisk(mapRoot);
+			IUnique.SaveToDisk(mapRoot);
 			WorldSquad.Front.ForceReloadDelay();
 			WorldSquad.Behind.ForceReloadDelay();
 			Stage.SetViewZ(Stage.ViewZ);

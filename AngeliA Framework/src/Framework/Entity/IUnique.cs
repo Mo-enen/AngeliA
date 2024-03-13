@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA.Framework;
 
-public interface IGlobalPosition {
+public interface IUnique {
 
 
 
@@ -21,7 +21,7 @@ public interface IGlobalPosition {
 
 
 	[System.Serializable]
-	public class GlobalPositionMeta {
+	public class UniqueMeta {
 		public List<Position> Positions = new();
 	}
 
@@ -36,8 +36,8 @@ public interface IGlobalPosition {
 
 	// Data
 	private static readonly EchoDictionary<int, Int3> IdPosEcho = new();
-	private static readonly HashSet<int> AllGlobalPositionID = new();
-	private static GlobalPositionMeta Meta = new();
+	private static readonly HashSet<int> AllUniqueID = new();
+	private static UniqueMeta Meta = new();
 	private static string LoadedMapRoot = string.Empty;
 	private static bool IsDirty = false;
 
@@ -52,9 +52,9 @@ public interface IGlobalPosition {
 
 	[OnGameInitialize(-1024)]
 	public static void OnGameInitialize () {
-		AllGlobalPositionID.Clear();
-		foreach (var type in typeof(IGlobalPosition).AllClassImplemented()) {
-			AllGlobalPositionID.TryAdd(type.AngeHash());
+		AllUniqueID.Clear();
+		foreach (var type in typeof(IUnique).AllClassImplemented()) {
+			AllUniqueID.TryAdd(type.AngeHash());
 		}
 	}
 
@@ -71,7 +71,7 @@ public interface IGlobalPosition {
 	#region --- API ---
 
 
-	public static bool IsGlobalPositionEntity (int id) => AllGlobalPositionID.Contains(id);
+	public static bool IsUniqueEntity (int id) => AllUniqueID.Contains(id);
 
 
 	public static bool HasID (int id) => IdPosEcho.ContainsKey(id);
@@ -105,7 +105,7 @@ public interface IGlobalPosition {
 		LoadedMapRoot = rootFolder;
 		IsDirty = false;
 		// File >> Meta
-		Meta = JsonUtil.LoadOrCreateJson<GlobalPositionMeta>(rootFolder);
+		Meta = JsonUtil.LoadOrCreateJson<UniqueMeta>(rootFolder);
 		// Meta >> Pool
 		IdPosEcho.Clear();
 		foreach (var pos in Meta.Positions) {

@@ -67,17 +67,18 @@ public partial class MapEditor {
 		);
 		int thickness = Unify(1);
 
-		Renderer.Draw_9Slice(
-			BuiltInSprite.FRAME_16, draggingRect.Shrink(thickness),
-			thickness, thickness, thickness, thickness,
-Color32.BLACK, GIZMOS_Z
-		);
+		// Rect Frame
+		if (MouseDownButton != 0 || SelectingPaletteItem == null || !SelectingPaletteItem.IsUnique) {
+			Renderer.Draw_9Slice(
+				BuiltInSprite.FRAME_16, draggingRect.Shrink(thickness),
+				thickness, thickness, thickness, thickness, Color32.BLACK
+			);
 
-		Renderer.Draw_9Slice(
-			BuiltInSprite.FRAME_16, draggingRect,
-			thickness, thickness, thickness, thickness,
-Color32.WHITE, GIZMOS_Z
-		);
+			Renderer.Draw_9Slice(
+				BuiltInSprite.FRAME_16, draggingRect,
+				thickness, thickness, thickness, thickness, Color32.WHITE
+			);
+		}
 
 		// Painting Content
 		if (MouseDownButton == 0) {
@@ -85,7 +86,7 @@ Color32.WHITE, GIZMOS_Z
 				// Draw Erase Cross
 				DrawCrossLineGizmos(DraggingUnitRect.Value.ToGlobal(), Unify(1), Color32.WHITE, Color32.BLACK);
 				DrawModifyFilterLabel(DraggingUnitRect.Value.ToGlobal());
-			} else {
+			} else if (!SelectingPaletteItem.IsUnique) {
 				// Draw Painting Thumbnails
 				Renderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
 				var unitRect = DraggingUnitRect.Value;
@@ -108,6 +109,14 @@ Color32.WHITE, GIZMOS_Z
 					DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, rect, false, sprite);
 				}
 				PaintingThumbnailStartIndex = nextStartIndex;
+			} else {
+				// Unique Thumbnail
+				Renderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
+				DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, new IRect(
+					Input.MouseGlobalPosition.x.ToUnifyGlobal(),
+					Input.MouseGlobalPosition.y.ToUnifyGlobal(),
+					Const.CEL, Const.CEL
+				), false, sprite);
 			}
 		}
 
@@ -126,8 +135,7 @@ Color32.WHITE, GIZMOS_Z
 		var frameRect = pastingUnitRect.ToGlobal();
 		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, frameRect,
-			thickness, thickness, thickness, thickness,
-Color32.WHITE, GIZMOS_Z
+			thickness, thickness, thickness, thickness, Color32.WHITE
 		);
 
 		// Content Thumbnail
@@ -156,14 +164,14 @@ Color32.WHITE, GIZMOS_Z
 
 		// Paste Tint
 		if (Pasting) {
-			Renderer.Draw(Const.PIXEL, selectionRect, new Color32(0, 128, 255, 32), GIZMOS_Z - 1);
+			Renderer.Draw(Const.PIXEL, selectionRect, new Color32(0, 128, 255, 32));
 		}
 
 		// Black Frame
 		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_16, selectionRect,
 			thickness, thickness, thickness, thickness,
-Color32.BLACK, GIZMOS_Z
+			Color32.BLACK
 		);
 
 		// Dotted White
@@ -171,8 +179,7 @@ Color32.BLACK, GIZMOS_Z
 			selectionRect.x,
 			selectionRect.yMin + thickness / 2,
 			selectionRect.width,
-			true, thickness, dotGap, Color32
-.WHITE
+			true, thickness, dotGap, Color32.WHITE
 		);
 		DrawDottedLineGizmos(
 			selectionRect.x,
@@ -216,13 +223,13 @@ Color32.BLACK, GIZMOS_Z
 		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect.Shrink(thickness),
 			thickness, thickness, thickness, thickness,
-			CURSOR_TINT_DARK, GIZMOS_Z
+			CURSOR_TINT_DARK
 		);
 
 		Renderer.Draw_9Slice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect,
 			thickness, thickness, thickness, thickness,
-			CURSOR_TINT, GIZMOS_Z
+			CURSOR_TINT
 		);
 
 		if (SelectingPaletteItem == null) {
@@ -231,6 +238,9 @@ Color32.BLACK, GIZMOS_Z
 			DrawModifyFilterLabel(cursorRect);
 		} else {
 			// Pal Thumbnail
+			if (SelectingPaletteItem.IsUnique) {
+				Renderer.Draw(Const.PIXEL, cursorRect, Color32.ORANGE.WithNewA(64));
+			}
 			DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
 		}
 	}
@@ -244,22 +254,21 @@ Color32.BLACK, GIZMOS_Z
 	#region --- LGC ---
 
 
-	private void SpawnBlinkParticle (IRect globalRect, int blockTintId) => SpawnBlinkParticle(globalRect, blockTintId, Const.PIXEL);
-	private void SpawnBlinkParticle (IRect globalRect, int blockTintId, int spriteID) {
+	private void SpawnBlinkParticle (IRect globalRect, int blockTintId) {
 		var particle = Stage.SpawnEntity(MapEditorBlinkParticle.TYPE_ID, 0, 0) as MapEditorBlinkParticle;
 		particle.X = globalRect.x;
 		particle.Y = globalRect.y;
 		particle.Width = globalRect.width;
 		particle.Height = globalRect.height;
 		particle.Tint = PARTICLE_CLEAR_TINT;
-		particle.SpriteID = spriteID;
+		particle.SpriteID = Const.PIXEL;
 		if (SpritePool.TryGetValue(blockTintId, out var sprite)) {
 			particle.Tint = sprite.SummaryTint;
 		}
 	}
 
 
-	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null, int z = GIZMOS_Z - 2) {
+	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) {
 		if (sprite == null && !Renderer.TryGetSpriteFromGroup(artworkID, 0, out sprite)) {
 			if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
 				Renderer.TryGetSprite(newID, out sprite);
@@ -267,7 +276,7 @@ Color32.BLACK, GIZMOS_Z
 		}
 		if (sprite == null) return;
 		if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), z);
+		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY));
 	}
 
 
@@ -287,7 +296,7 @@ Color32.BLACK, GIZMOS_Z
 					x + i * stepLength, y,
 					0, 500, 0,
 					stepLength, thickness,
-					tint, GIZMOS_Z
+					tint
 				);
 				if (i == stepCount) {
 					ref var shift = ref cell.Shift;
@@ -299,7 +308,7 @@ Color32.BLACK, GIZMOS_Z
 					x, y + i * stepLength,
 					0, 500, -90,
 					stepLength, thickness,
-					tint, GIZMOS_Z
+					tint
 				);
 				if (i == stepCount) {
 					ref var shift = ref cell.Shift;
@@ -320,39 +329,35 @@ Color32.BLACK, GIZMOS_Z
 			rect.yMin + shrink - shiftY,
 			rect.xMax - shrink,
 			rect.yMax - shrink - shiftY,
-			thickness, shadowTint,
-			GIZMOS_Z - 1
+			thickness, shadowTint
 		);
 		DrawLine(
 			rect.xMin + shrink,
 			rect.yMax - shrink - shiftY,
 			rect.xMax - shrink,
 			rect.yMin + shrink - shiftY,
-			thickness, shadowTint,
-			GIZMOS_Z - 1
+			thickness, shadowTint
 		);
 		DrawLine(
 			rect.xMin + shrink,
 			rect.yMin + shrink + shiftY,
 			rect.xMax - shrink,
 			rect.yMax - shrink + shiftY,
-			thickness, tint,
-			GIZMOS_Z - 1
+			thickness, tint
 		);
 		DrawLine(
 			rect.xMin + shrink,
 			rect.yMax - shrink + shiftY,
 			rect.xMax - shrink,
 			rect.yMin + shrink + shiftY,
-			thickness, tint,
-			GIZMOS_Z - 1
+			thickness, tint
 		);
-		static void DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint, int z = int.MinValue) {
+		static void DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint) {
 			Renderer.Draw(
 				Const.PIXEL, fromX, fromY, 500, 0,
 				-Float2.SignedAngle(Float2.up, new Float2(toX - fromX, toY - fromY)).RoundToInt(),
 				thickness, Util.DistanceInt(fromX, fromY, toX, toY),
-				tint, z
+				tint
 			);
 		}
 	}
