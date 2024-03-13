@@ -5,7 +5,7 @@ using AngeliA.Framework;
 
 namespace AngeliaEngine;
 
-public class PixelEditor : EngineWindow {
+public class PixelEditor : WindowUI {
 
 
 
@@ -16,9 +16,6 @@ public class PixelEditor : EngineWindow {
 	// Api
 	public static PixelEditor Instance { get; private set; }
 	public string SheetPath { get; private set; } = "";
-
-	// Data
-	private string LoadedSheetPath = "";
 
 
 	#endregion
@@ -34,16 +31,13 @@ public class PixelEditor : EngineWindow {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		if (SheetPath != LoadedSheetPath) {
-			LoadedSheetPath = SheetPath;
-			Load(SheetPath);
-		}
+
 	}
 
 
 	public override void OnInactivated () {
 		base.OnInactivated();
-		Save();
+		
 	}
 
 
@@ -63,10 +57,14 @@ public class PixelEditor : EngineWindow {
 	#region --- API ---
 
 
-	public void SetSheetPath (string newPath) {
-		if (SheetPath == newPath) return;
-		SheetPath = newPath;
-		OnActivated();
+	public void SetSheetPath (string sheetPath, bool forceLoad = false) {
+		if (!forceLoad && sheetPath == SheetPath) return;
+		SheetPath = sheetPath;
+		if (string.IsNullOrEmpty(sheetPath) || !Util.FileExists(sheetPath)) return;
+
+
+
+
 	}
 
 
@@ -77,14 +75,6 @@ public class PixelEditor : EngineWindow {
 
 	#region --- LGC ---
 
-
-	private void Load (string sheetPath) {
-		if (string.IsNullOrEmpty(sheetPath) || !Util.FileExists(sheetPath)) return;
-
-
-
-
-	}
 
 
 	#endregion

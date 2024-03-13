@@ -548,7 +548,7 @@ public class PauseMenuUI : MenuUI {
 			RecordLock &&
 			!Input.AnyGamepadButtonHolding &&
 			!Input.AnyKeyboardKeyHolding &&
-			!Input.MouseLeftButton
+			!Input.MouseLeftButtonHolding
 		) {
 			RecordLock = false;
 		}

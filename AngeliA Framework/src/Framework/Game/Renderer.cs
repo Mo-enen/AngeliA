@@ -41,8 +41,7 @@ public static class Renderer {
 		public int SortedIndex;
 		public int SortingOrder;
 		public bool UiLayer;
-		public void ZSort (bool fromStart = false) {
-			if (fromStart) SortedIndex = 0;
+		public void ZSort () {
 			if (SortedIndex < Count - 1) {
 				Util.QuickSort(Cells, SortedIndex, Count - 1, CellComparer.Instance);
 			}

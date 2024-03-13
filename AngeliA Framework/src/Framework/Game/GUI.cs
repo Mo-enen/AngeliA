@@ -61,7 +61,7 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.Delete);
 			Input.UnuseKeyboardKey(KeyboardKey.Escape);
 		}
-		if (!Input.MouseLeftButton) ScrollBarMouseDownPos = null;
+		if (!Input.MouseLeftButtonHolding) ScrollBarMouseDownPos = null;
 	}
 
 
@@ -195,12 +195,13 @@ public static class GUI {
 		}
 	}
 
-	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state) {
+	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
 		var color = Color * ContentColor * style.GetContentColor(state);
 		if (color.a == 0) return;
-		var shift = style.GetContentShift(state);
-		rect = rect.Shift(shift.x, shift.y);
-		if (style.BodyBorder.HasValue) {
+		rect = GetContentRect(rect, style, state);
+		if (ignoreSlice) {
+			Renderer.Draw(sprite, rect, color);
+		} else if (style.BodyBorder.HasValue) {
 			var border = style.BodyBorder.Value;
 			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
 		} else {
@@ -241,7 +242,7 @@ public static class GUI {
 		Cursor.SetCursorAsHand(rect);
 		// Click
 		if (hover) {
-			state = Input.MouseLeftButton ? GUIState.Press : GUIState.Hover;
+			state = Input.MouseLeftButtonHolding ? GUIState.Press : GUIState.Hover;
 			return Input.MouseLeftButtonDown;
 		}
 		return false;
@@ -310,7 +311,7 @@ public static class GUI {
 	public static void Icon (IRect rect, int sprite, GUIStyle style, GUIState state) {
 		if (!Renderer.TryGetSprite(sprite, out var icon)) return;
 		if (style != null) {
-			DrawStyleContent(rect.Fit(icon), sprite, style, state);
+			DrawStyleContent(rect.Fit(icon), sprite, style, state, ignoreSlice: true);
 		} else {
 			Renderer.Draw(icon, rect.Fit(icon), Color * ContentColor);
 		}
@@ -327,12 +328,12 @@ public static class GUI {
 		confirm = false;
 		bool startTyping = false;
 		bool mouseDownPosInRect = rect.Contains(Input.MouseLeftDownGlobalPosition);
-		bool mouseDragging = Input.MouseLeftButton && mouseDownPosInRect;
+		bool mouseDragging = Input.MouseLeftButtonHolding && mouseDownPosInRect;
 		bool inCamera = rect.Overlaps(Renderer.CameraRect);
 		var state =
 			(!Enable || !inCamera) ? GUIState.Disable :
-			Input.MouseLeftButton && mouseDownPosInRect ? GUIState.Press :
-			Input.MouseLeftButton && rect.Contains(Input.MouseGlobalPosition) ? GUIState.Hover :
+			Input.MouseLeftButtonHolding && mouseDownPosInRect ? GUIState.Press :
+			Input.MouseLeftButtonHolding && rect.Contains(Input.MouseGlobalPosition) ? GUIState.Hover :
 			GUIState.Normal;
 
 		Cursor.SetCursorAsBeam(rect);

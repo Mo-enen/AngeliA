@@ -14,7 +14,7 @@ public class ProjectSetting {
 
 [RequireSpriteFromField]
 [RequireLanguageFromField]
-public class ProjectHub : EngineWindow {
+public class ProjectHub : WindowUI {
 
 
 

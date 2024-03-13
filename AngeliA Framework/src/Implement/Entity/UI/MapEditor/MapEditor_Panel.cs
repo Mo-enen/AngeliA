@@ -477,7 +477,7 @@ public partial class MapEditor {
 			targetReorderReleaseIndex <= EditorMeta.PinnedLists.Count &&
 			DraggingForReorderPaletteGroup >= 0 &&
 			DraggingForReorderPaletteGroup < EditorMeta.PinnedLists.Count &&
-			!Input.MouseLeftButton
+			!Input.MouseLeftButtonHolding
 		) {
 			var movingItem = EditorMeta.PinnedLists[DraggingForReorderPaletteGroup];
 			EditorMeta.PinnedLists.RemoveAt(DraggingForReorderPaletteGroup);
@@ -639,7 +639,7 @@ public partial class MapEditor {
 			targetReorderReleaseIndex <= itemCount &&
 			DraggingForReorderPaletteItem >= 0 &&
 			DraggingForReorderPaletteItem < itemCount &&
-			!Input.MouseLeftButton
+			!Input.MouseLeftButtonHolding
 		) {
 			var movingItem = listItems[DraggingForReorderPaletteItem];
 			listItems.RemoveAt(DraggingForReorderPaletteItem);
@@ -833,11 +833,10 @@ public partial class MapEditor {
 		int ROW = CheckAltarIDs.Count.CeilDivide(COLUMN);
 		int pageLineCount = CheckPointLaneRect.height / ITEM_SIZE;
 		int offsetX = (CheckPointLaneRect.width - COLUMN * ITEM_SIZE) / 2;
-		bool hasTask = Task.HasTask();
 
 		// BG
 		Renderer.Draw(Const.PIXEL, CheckPointLaneRect, Color32.BLACK);
-
+		
 		// Scroll
 		if (Input.MouseWheelDelta != 0) QuickLaneScrollY -= Input.MouseWheelDelta;
 
@@ -848,7 +847,7 @@ public partial class MapEditor {
 		for (int i = QuickLaneScrollY * COLUMN; i < CheckAltarIDs.Count; i++, index++) {
 
 			int id = CheckAltarIDs[i];
-			GUI.Enable = IUnique.TryGetPositionFromID(id, out var globalUnitPos) && !hasTask;
+			GUI.Enable = IUnique.TryGetPositionFromID(id, out var globalUnitPos) && !TaskingRoute;
 
 			// Button
 			var btnRect = new IRect(

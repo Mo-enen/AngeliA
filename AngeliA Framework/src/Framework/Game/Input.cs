@@ -123,9 +123,9 @@ public static class Input {
 	public static Int2 MouseRightDownGlobalPosition { get; private set; } = default;
 	public static Int2 MouseMidDownGlobalPosition { get; private set; } = default;
 	public static bool MouseMove { get; private set; } = false;
-	public static bool MouseLeftButton => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Holding;
-	public static bool MouseRightButton => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Holding;
-	public static bool MouseMidButton => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Holding;
+	public static bool MouseLeftButtonHolding => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Holding;
+	public static bool MouseRightButtonHolding => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Holding;
+	public static bool MouseMidButtonHolding => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Holding;
 	public static bool MouseLeftButtonDown => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Down;
 	public static bool MouseRightButtonDown => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Down;
 	public static bool MouseMidButtonDown => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Down;
@@ -471,10 +471,10 @@ public static class Input {
 			) {
 				switch (key) {
 					case Gamekey.Jump:
-						state.Holding = MouseRightButton;
+						state.Holding = MouseRightButtonHolding;
 						break;
 					case Gamekey.Action:
-						state.Holding = MouseLeftButton;
+						state.Holding = MouseLeftButtonHolding;
 						break;
 				}
 			}
@@ -730,18 +730,18 @@ public static class Input {
 
 	// Mouse
 	public static bool MouseButtonHolding (int button) => !IgnoringInput && button switch {
-		0 => MouseLeftButton,
-		1 => MouseRightButton,
-		2 => MouseMidButton,
+		0 => MouseLeftButtonHolding,
+		1 => MouseRightButtonHolding,
+		2 => MouseMidButtonHolding,
 		_ => false,
 	};
 
 
 	public static int GetHoldingMouseButton () {
 		if (IgnoringInput) return -1;
-		if (MouseLeftButton) return 0;
-		if (MouseRightButton) return 1;
-		if (MouseMidButton) return 2;
+		if (MouseLeftButtonHolding) return 0;
+		if (MouseRightButtonHolding) return 1;
+		if (MouseMidButtonHolding) return 2;
 		return -1;
 	}
 

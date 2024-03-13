@@ -78,9 +78,10 @@ public partial class MapEditor {
 	}
 
 
-	private void Update_NavHotkey () {
+	private void Update_Move () {
 
 		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
+		var camerarect = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 
 		// View Z
 		if (CtrlHolding) {
@@ -92,13 +93,27 @@ public partial class MapEditor {
 			}
 		}
 
-		// Move
-		if (Input.AnyMouseButtonHolding) {
-			int squadScale = (NAV_WORLD_SIZE - 1) * Const.MAP * Const.CEL;
-			int cameraHeight = Renderer.CameraRect.height;
-			NavPosition.x -= Input.MouseGlobalPositionDelta.x * squadScale / cameraHeight;
-			NavPosition.y -= Input.MouseGlobalPositionDelta.y * squadScale / cameraHeight;
-		} else if (!ShiftHolding && Input.Direction != Int2.zero) {
+		// Move with Mouse
+		if (Input.MouseMidButtonHolding) {
+			var totalRect = camerarect.Envelope(1, 1);
+			int squadScale = NAV_WORLD_SIZE * Const.MAP * Const.CEL;
+			NavPosition.x -= Input.MouseGlobalPositionDelta.x * squadScale / totalRect.height;
+			NavPosition.y -= Input.MouseGlobalPositionDelta.y * squadScale / totalRect.height;
+		}
+
+		// Jump to Mouse
+		if (Input.MouseLeftButtonDown && !CheckPointLaneRect.MouseInside() && !ToolbarRect.MouseInside()) {
+			var totalRect = camerarect.Envelope(1, 1);
+			int squadScale = NAV_WORLD_SIZE * Const.MAP * Const.CEL;
+			var delta = Input.MouseGlobalPosition - camerarect.CenterInt();
+			NavPosition.x += ((float)delta.x * squadScale / totalRect.height).RoundToInt();
+			NavPosition.y += ((float)delta.y * squadScale / totalRect.height).RoundToInt();
+			Input.UseAllHoldingKeys();
+			SetNavigating(false);
+		}
+
+		// Move with Direction Keys
+		if (!ShiftHolding && Input.Direction != Int2.zero) {
 			int speed = Const.MAP * Const.CEL * 2 / NAV_WORLD_SIZE;
 			NavPosition.x += Input.Direction.x * speed / 1000;
 			NavPosition.y += Input.Direction.y * speed / 1000;
@@ -159,12 +174,14 @@ public partial class MapEditor {
 		}
 
 		// Draw
-		var totalRect = (Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0)).Envelope(1, 1);
+		var camerarect = Renderer.CameraRect;
+		const int MAP_GLOBAL_SIZE = Const.CEL * Const.MAP;
+		var totalRect = camerarect.Shrink(PanelRect.width, 0, 0, 0).Envelope(1, 1);
 		int slotRectWidth = totalRect.width / NAV_WORLD_SIZE;
 		int slotRectHeight = totalRect.height / NAV_WORLD_SIZE;
-		int globalOffsetX = -(NavPosition.x.UMod(Const.CEL * Const.MAP) * slotRectWidth / (Const.CEL * Const.MAP));
-		int globalOffsetY = -(NavPosition.y.UMod(Const.CEL * Const.MAP) * slotRectHeight / (Const.CEL * Const.MAP));
-		var navPanelRect = Renderer.CameraRect.EdgeInside(Direction4.Left, PanelRect.width);
+		int globalOffsetX = -(NavPosition.x.UMod(MAP_GLOBAL_SIZE) * slotRectWidth / MAP_GLOBAL_SIZE);
+		int globalOffsetY = -(NavPosition.y.UMod(MAP_GLOBAL_SIZE) * slotRectHeight / MAP_GLOBAL_SIZE);
+		var navPanelRect = camerarect.EdgeInside(Direction4.Left, PanelRect.width);
 		for (int j = 0; j < slotSize; j++) {
 			for (int i = 0; i < slotSize; i++) {
 				var slot = NavSlots[i, j];
@@ -213,14 +230,6 @@ public partial class MapEditor {
 		int BORDER = Unify(1);
 		Game.DrawGizmosFrame(rect, Color32.WHITE, BORDER);
 		Game.DrawGizmosFrame(rect.Expand(BORDER), Color32.BLACK, BORDER);
-
-		// Click Camera Rect
-		bool hoverRect = rect.MouseInside();
-		if (hoverRect) Cursor.SetCursorAsHand();
-		if (hoverRect && Input.MouseLeftButtonDown) {
-			Input.UseAllHoldingKeys();
-			SetNavigating(false);
-		}
 
 	}
 

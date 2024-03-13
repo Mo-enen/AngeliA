@@ -33,7 +33,9 @@ public static class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_ITEM_FRAME,
 		BodySpriteDown = BuiltInSprite.UI_ITEM_FRAME,
 		BodySpriteDisable = BuiltInSprite.UI_ITEM_FRAME,
-		ContentColorDisable = Color32.GREY_196,
+
+		ContentColorDisable = Color32.WHITE_128,
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 	};
 
 

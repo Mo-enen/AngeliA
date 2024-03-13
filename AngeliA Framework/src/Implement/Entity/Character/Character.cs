@@ -207,22 +207,6 @@ public abstract partial class Character : Rigidbody {
 				character.MinimalChargeAttackDuration = int.MaxValue;
 				character.RepeatAttackWhenHolding = false;
 				character.LockFacingOnAttack = false;
-				character.DefaultSpeedLoseOnAttack.ClearOverride();
-				character.WalkingSpeedLoseOnAttack.ClearOverride();
-				character.RunningSpeedLoseOnAttack.ClearOverride();
-				character.AttackInAir.ClearOverride();
-				character.AttackInWater.ClearOverride();
-				character.AttackWhenWalking.ClearOverride();
-				character.AttackWhenRunning.ClearOverride();
-				character.AttackWhenClimbing.ClearOverride();
-				character.AttackWhenFlying.ClearOverride();
-				character.AttackWhenRolling.ClearOverride();
-				character.AttackWhenSquatting.ClearOverride();
-				character.AttackWhenDashing.ClearOverride();
-				character.AttackWhenSliding.ClearOverride();
-				character.AttackWhenGrabbing.ClearOverride();
-				character.AttackWhenRush.ClearOverride();
-				character.AttackWhenPounding.ClearOverride();
 			}
 		}
 	}

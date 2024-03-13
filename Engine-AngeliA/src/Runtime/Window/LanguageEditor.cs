@@ -6,7 +6,7 @@ using AngeliA.Framework;
 namespace AngeliaEngine;
 
 [RequireLanguageFromField]
-public partial class LanguageEditor : EngineWindow {
+public partial class LanguageEditor : WindowUI {
 
 
 
@@ -54,6 +54,7 @@ public partial class LanguageEditor : EngineWindow {
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
 	private string LoadedLanguageRoot = "";
+	private bool IsDirty = false;
 
 
 	#endregion
@@ -297,6 +298,33 @@ public partial class LanguageEditor : EngineWindow {
 
 
 
+	#region --- API ---
+
+
+	public void SetDirty (bool dirty = true) => IsDirty = dirty;
+
+
+	public void Save (bool forceSave = false) {
+		if (forceSave || IsDirty) IsDirty = false;
+		if (Lines.Count == 0 || string.IsNullOrEmpty(LanguageRoot)) return;
+		var list = new List<KeyValuePair<string, string>>();
+		for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
+			string lan = Languages[languageIndex];
+			list.Clear();
+			foreach (var data in Lines) {
+				if (string.IsNullOrWhiteSpace(data.Key)) continue;
+				list.Add(new(data.Key, data.Value[languageIndex]));
+			}
+			LanguageUtil.SaveAllPairsToDisk(LanguageRoot, lan, list);
+		}
+	}
+
+
+	#endregion
+
+
+
+
 	#region --- LGC ---
 
 
@@ -348,22 +376,6 @@ public partial class LanguageEditor : EngineWindow {
 		}
 		// Sort
 		Lines.Sort(LineComparer.Instance);
-	}
-
-
-	protected override void Save (bool forceSave = false) {
-		base.Save(forceSave);
-		if (Lines.Count == 0 || string.IsNullOrEmpty(LanguageRoot)) return;
-		var list = new List<KeyValuePair<string, string>>();
-		for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
-			string lan = Languages[languageIndex];
-			list.Clear();
-			foreach (var data in Lines) {
-				if (string.IsNullOrWhiteSpace(data.Key)) continue;
-				list.Add(new(data.Key, data.Value[languageIndex]));
-			}
-			LanguageUtil.SaveAllPairsToDisk(LanguageRoot, lan, list);
-		}
 	}
 
 

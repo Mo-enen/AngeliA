@@ -94,7 +94,6 @@ public static class DeveloperToolbar {
 		Cursor.RequireCursor();
 
 		using var _ = GUIScope.Layer(RenderLayer.UI);
-		Renderer.AbandonLayerSort(RenderLayer.UI);
 
 		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
 		int panelYMax = panelRect.y;
@@ -158,7 +157,7 @@ public static class DeveloperToolbar {
 
 		// Finish
 		Renderer.ReverseUnsortedCells(RenderLayer.UI);
-		if (Input.MouseLeftButton && PanelRect.MouseInside()) {
+		if (Input.MouseLeftButtonHolding && PanelRect.MouseInside()) {
 			Input.UseMouseKey(0);
 			Input.UseGameKey(Gamekey.Action);
 		}

@@ -100,7 +100,6 @@ public class ControlHintUI : EntityUI {
 	private void DrawGamePad () {
 
 		using var _ = GUIScope.Layer(RenderLayer.UI);
-		Renderer.AbandonLayerSort(RenderLayer.UI);
 
 		int x = Unify(6);
 		int y = Unify(6);
@@ -309,8 +308,7 @@ public class ControlHintUI : EntityUI {
 		// Draw
 		int oldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayerToUI();
-		Renderer.AbandonLayerSort(RenderLayer.UI);
-
+		
 		rect.width = widthA;
 		if (background) {
 			bgCell = Renderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);

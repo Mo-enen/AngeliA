@@ -419,7 +419,7 @@ public sealed partial class MapEditor : WindowUI {
 				Update_PaletteContentUI();
 				Update_ToolbarUI();
 				Update_NavQuickLane();
-				Update_NavHotkey();
+				Update_Move();
 				Update_NavMapTextureSlots();
 				Update_NavGizmos();
 			} else {
@@ -548,8 +548,8 @@ public sealed partial class MapEditor : WindowUI {
 		// Move
 		var delta = Int2.zero;
 		if (
-			(!Input.MouseMidButtonDown && Input.MouseMidButton) ||
-			(Input.MouseLeftButton && CtrlHolding)
+			(!Input.MouseMidButtonDown && Input.MouseMidButtonHolding) ||
+			(Input.MouseLeftButtonHolding && CtrlHolding)
 		) {
 			delta = Input.MouseScreenPositionDelta;
 		} else if (!CtrlHolding && !ShiftHolding && !Input.AnyMouseButtonHolding) {
@@ -577,7 +577,7 @@ public sealed partial class MapEditor : WindowUI {
 			// Manual Zoom
 			int wheelDelta = CtrlHolding ? 0 : Input.MouseWheelDelta;
 			int zoomDelta = wheelDelta * Const.CEL * 2;
-			if (zoomDelta == 0 && Input.MouseRightButton && CtrlHolding) {
+			if (zoomDelta == 0 && Input.MouseRightButtonHolding && CtrlHolding) {
 				zoomDelta = Input.MouseScreenPositionDelta.y * 6;
 			}
 			if (zoomDelta != 0) {
@@ -1046,7 +1046,7 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// Mouse Event
-		if (!Input.MouseLeftButton) {
+		if (!Input.MouseLeftButtonHolding) {
 			DraggingForReorderPaletteItem = -1;
 			DraggingForReorderPaletteGroup = -1;
 		}
