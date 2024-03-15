@@ -9,6 +9,7 @@ public class TextUtilInternal {
 
 	public delegate bool RequireCharSpriteHander (char c, out CharSprite sprite);
 	public delegate Cell DrawCharHandler (CharSprite sprite, int x, int y, int width, int height, Color32 color);
+	public delegate int UnifyHandler (int value);
 
 
 	public static bool IsLineBreakingChar (char c) =>
@@ -24,8 +25,8 @@ public class TextUtilInternal {
 
 
 	public static void DrawLabelInternal (
-		RequireCharSpriteHander requireCharSprite, DrawCharHandler drawChar,
-		int unifyHeight, int textCountInLayer, Cell[] textCells, GUIStyle style,
+		RequireCharSpriteHander requireCharSprite, DrawCharHandler drawChar, UnifyHandler unify,
+		int textCountInLayer, Cell[] textCells, GUIStyle style,
 		IRect rect, string text, char[] chars, Color32 color,
 		int beamIndex, int startIndex, bool drawInvisibleChar,
 		out IRect bounds, out IRect beamRect, out int endIndex
@@ -37,9 +38,9 @@ public class TextUtilInternal {
 
 		bool fromString = chars == null;
 		int count = fromString ? text.Length : chars.Length;
-		int charSize = style.CharSize < 0 ? rect.height / 2 : Unify(style.CharSize, unifyHeight);
-		int lineSpace = Unify(style.LineSpace, unifyHeight);
-		int charSpace = Unify(style.CharSpace, unifyHeight);
+		int charSize = style.CharSize < 0 ? rect.height / 2 : unify(style.CharSize);
+		int lineSpace = unify(style.LineSpace);
+		int charSpace = unify(style.CharSpace);
 		var alignment = style.Alignment;
 		var wrap = style.Wrap;
 		bool clip = style.Clip;
@@ -110,14 +111,14 @@ public class TextUtilInternal {
 			if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {
 				beamRect.x = x;
 				beamRect.y = y;
-				beamRect.width = Unify(2, unifyHeight);
+				beamRect.width = unify(2);
 				beamRect.height = charSize;
 				beamIndex = -1;
 			}
 			if (beamEnd && beamIndex >= 0 && i >= count - 1) {
 				beamRect.x = x + realCharSize + charSpace;
 				beamRect.y = y;
-				beamRect.width = Unify(2, unifyHeight);
+				beamRect.width = unify(2);
 				beamRect.height = charSize;
 				beamIndex = -1;
 			}
@@ -209,9 +210,6 @@ public class TextUtilInternal {
 		wordLength = index - startIndex + 1;
 		return room >= 0;
 	}
-
-
-	private static int Unify (int value, int cameraHeight) => (value * cameraHeight / 1000f).RoundToInt();
 
 
 }

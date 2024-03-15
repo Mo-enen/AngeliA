@@ -375,4 +375,7 @@ public static partial class Util {
 	}
 
 
+	public static bool IsExistingFileEmpty (string path) => new FileInfo(path).Length == 0;
+
+
 }

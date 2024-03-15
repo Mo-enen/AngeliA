@@ -103,8 +103,5 @@ public abstract class EntityUI : Entity {
 	// API
 	protected static int Unify (int value) => GUI.Unify(value);
 	protected static int Unify (float value) => GUI.Unify(value);
-	protected static int UnifyMonitor (int value) => GUI.UnifyMonitor(value);
-	protected static int UnifyMonitor (float value) => GUI.UnifyMonitor(value);
-	protected static int ReverseUnify (int value) => GUI.ReverseUnify(value);
 
 }

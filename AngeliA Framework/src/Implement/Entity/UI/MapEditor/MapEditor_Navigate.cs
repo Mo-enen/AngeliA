@@ -164,7 +164,8 @@ public partial class MapEditor {
 					if (NavLoadedSlotZ != z || slot.WorldX != worldX || slot.WorldY != worldY) {
 						slot.WorldX = worldX;
 						slot.WorldY = worldY;
-						slot.IsEmpty = !World.LoadMapIntoTexture(mapFolder, worldX, worldY, z, slot.Texture);
+						slot.IsEmpty = !Stream.TryGetMapFilePath(new(slot.WorldX, slot.WorldY, z), out string path);
+						World.LoadMapIntoTexture(path, slot.Texture);
 					}
 				}
 			}

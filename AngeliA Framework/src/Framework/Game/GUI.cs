@@ -19,6 +19,7 @@ public static class GUI {
 	// Api
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
+	public static bool UnifyBasedOnMonitor { get; set; } = false;
 	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
@@ -92,11 +93,10 @@ public static class GUI {
 
 
 	// Unify
-	public static int Unify (int value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
-	public static int Unify (float value) => (value * Renderer.CameraRect.height / 1000f).RoundToInt();
-	public static int ReverseUnify (int value) => (value * 1000f / Renderer.CameraRect.height).RoundToInt();
-	public static int UnifyMonitor (int value) => (value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight).RoundToInt();
-	public static int UnifyMonitor (float value) => (value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight).RoundToInt();
+	public static int Unify (int value) => UnifyBasedOnMonitor ? UnifyMonitor(value) : (value * Renderer.CameraRect.height / 1000f).RoundToInt();
+	public static int Unify (float value) => UnifyBasedOnMonitor ? UnifyMonitor(value) : (value * Renderer.CameraRect.height / 1000f).RoundToInt();
+	private static int UnifyMonitor (int value) => (value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight).RoundToInt();
+	private static int UnifyMonitor (float value) => (value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight).RoundToInt();
 
 
 	// Typing
@@ -134,8 +134,8 @@ public static class GUI {
 		style ??= GUISkin.Label;
 		Renderer.GetTextCells(out var cells, out int cellCount);
 		TextUtilInternal.DrawLabelInternal(
-			Renderer.RequireCharForPool, Renderer.DrawChar,
-			Renderer.CameraRect.height, cellCount, cells, style,
+			Renderer.RequireCharForPool, Renderer.DrawChar, UnifyBasedOnMonitor ? UnifyMonitor : Unify,
+			cellCount, cells, style,
 			GetContentRect(rect, style, state), text, chars, Color * ContentColor * style.GetContentColor(state), beamIndex, startIndex, drawInvisibleChar,
 			out bounds, out beamRect, out endIndex
 		);
@@ -184,28 +184,35 @@ public static class GUI {
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) => DrawStyleBody(rect, style, state, Color32.WHITE);
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
 		int sprite = style.GetBodySprite(state);
-		if (sprite == 0) return;
+		if (sprite == 0 || !Renderer.TryGetSprite(sprite, out var _sprite)) return;
 		var color = tint * Color * BodyColor * style.GetBodyColor(state);
 		if (color.a == 0) return;
-		if (style.BodyBorder.HasValue) {
-			var border = style.BodyBorder.Value;
-			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
-		} else {
-			Renderer.Draw_9Slice(sprite, rect, color);
+		var border = style.BodyBorder ?? _sprite.GlobalBorder;
+		if (UnifyBasedOnMonitor) {
+			border.left = border.left * Game.MonitorHeight / Game.ScreenHeight;
+			border.right = border.right * Game.MonitorHeight / Game.ScreenHeight;
+			border.down = border.down * Game.MonitorHeight / Game.ScreenHeight;
+			border.up = border.up * Game.MonitorHeight / Game.ScreenHeight;
 		}
+		Renderer.Draw_9Slice(_sprite, rect, border.left, border.right, border.down, border.up, color);
 	}
 
 	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
+		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
 		var color = Color * ContentColor * style.GetContentColor(state);
 		if (color.a == 0) return;
 		rect = GetContentRect(rect, style, state);
 		if (ignoreSlice) {
-			Renderer.Draw(sprite, rect, color);
-		} else if (style.BodyBorder.HasValue) {
-			var border = style.BodyBorder.Value;
-			Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
+			Renderer.Draw(_sprite, rect, color);
 		} else {
-			Renderer.Draw_9Slice(sprite, rect, color);
+			var border = style.BodyBorder ?? _sprite.GlobalBorder;
+			if (UnifyBasedOnMonitor) {
+				border.left = border.left * Game.MonitorHeight / Game.ScreenHeight;
+				border.right = border.right * Game.MonitorHeight / Game.ScreenHeight;
+				border.down = border.down * Game.MonitorHeight / Game.ScreenHeight;
+				border.up = border.up * Game.MonitorHeight / Game.ScreenHeight;
+			}
+			Renderer.Draw_9Slice(_sprite, rect, border.left, border.right, border.down, border.up, color);
 		}
 	}
 

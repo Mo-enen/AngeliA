@@ -5,9 +5,7 @@ using AngeliA;
 using AngeliA.Framework;
 using Raylib_cs;
 
-
 namespace AngeliaRuntime.Framework;
-
 
 public partial class RayGame {
 
@@ -259,7 +257,9 @@ public partial class RayGame {
 				source.Width *= cell.Width.Sign();
 				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
-					texture, source.ShrinkRectangle(0.02f), dest.ExpandRectangle(0.5f),
+					texture, 
+					source.ShrinkRectangle(0.02f), 
+					dest.ExpandRectangle(0.001f),
 					new Vector2(
 						pivotX * dest.Width,
 						pivotY * dest.Height

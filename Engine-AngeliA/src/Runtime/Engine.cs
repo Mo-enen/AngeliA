@@ -20,17 +20,23 @@ internal class Engine {
 	private enum WindowMode { Mascot, Window, ConfirmQuit, }
 
 	// Const
+	private static int WINDOW_UI_COUNT = 2;
 	private const int MASCOT_WIDTH = 360;
 	private const int MASCOT_HEIGHT = 360;
-	private static int WINDOW_UI_COUNT = 3;
+	private const int HUB_PANEL_WIDTH = 360;
 	private static readonly SpriteCode UI_TAB = "UI.MainTab";
 	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.MainTabInactive";
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
+	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
+	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
+	private static readonly LanguageCode BTN_CREATE = ("Hub.Create", "Create New Project");
+	private static readonly LanguageCode BTN_ADD = ("Hub.Add", "Add Existing Project");
+	private static readonly LanguageCode CREATE_PRO_TITLE = ("UI.CreateProjectTitle", "New Project");
+	private static readonly LanguageCode ADD_PRO_TITLE = ("UI.AddProjectTitle", "Add Existing Project");
 	private static readonly EntityUI[] ALL_UI = {
 		new GenericPopupUI() { Active = false, },
 		new GenericDialogUI(){ Active = false, },
 		new FileBrowserUI(){ Active = false, },
-		new ProjectHub(OpenProject, CloseProject, GetCurrentProjectPath),
 		new PixelEditor(),
 		new LanguageEditor(),
 	};
@@ -38,7 +44,6 @@ internal class Engine {
 		("", ""),
 		("", ""),
 		("", ""),
-		("Title.Hub", "Home"),
 		("Title.Pixel", "Artwork"),
 		("Title.Language", "Language"),
 	};
@@ -48,8 +53,8 @@ internal class Engine {
 	public static Project CurrentProject { get; private set; } = null;
 
 	// Data
-	private static readonly GUIStyle MsgStyle = new(GUISkin.CenterLabel) { CharSize = 100 };
-	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 100 };
+	private static readonly GUIStyle MsgStyle = new(GUISkin.CenterLabel) { CharSize = 25 };
+	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 23 };
 	private static EngineSetting Setting;
 	private static Int2? FloatMascotMouseDownPos = null;
 	private static Int2 FloatMascotMouseDownGlobalPos = default;
@@ -70,7 +75,7 @@ internal class Engine {
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
 		Setting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
-		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Mascot);
+		SwitchWindowMode(WindowMode.Window);
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 	}
@@ -89,7 +94,6 @@ internal class Engine {
 
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
-		if (CurrentWindowMode != WindowMode.ConfirmQuit) Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
 	}
@@ -99,40 +103,161 @@ internal class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
-		// Switch on Mid Click
-		if (CurrentWindowMode != WindowMode.ConfirmQuit && Input.MouseMidButtonDown) {
-			SwitchWindowMode(CurrentWindowMode == WindowMode.Window ? WindowMode.Mascot : WindowMode.Window);
-		}
-
 		// On GUI
+		GUI.Enable = true;
+		GUI.UnifyBasedOnMonitor = true;
+		Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255));
 		switch (CurrentWindowMode) {
 			case WindowMode.Mascot:
-				Sky.ForceSkyboxTint(Color32.CLEAR, Color32.CLEAR);
 				OnGUI_Mascot_MouseLogic();
 				OnGUI_Mascot_Render();
 				break;
 			case WindowMode.Window:
-				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
-				OnGUI_Window();
-				var windowPos = Game.GetWindowPosition();
-				if (windowPos.y < 24) {
-					Game.SetWindowPosition(windowPos.x, 24);
+				if (CurrentProject == null) {
+					OnGUI_Hub();
+				} else {
+					OnGUI_Window();
 				}
 				break;
 			case WindowMode.ConfirmQuit:
-				Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255), new Color32(38, 38, 38, 255));
 				OnGUI_ConfirmQuit();
 				break;
+		}
+
+		// Clamp Window Pos
+		if (Game.IsWindowDecorated) {
+			var windowPos = Game.GetWindowPosition();
+			if (windowPos.y < 24) {
+				Game.SetWindowPosition(windowPos.x, 24);
+			}
 		}
 	}
 
 
 	// Window
+	private static void OnGUI_Hub () {
+
+		var cameraRect = Renderer.CameraRect;
+		int hubPanelWidth = GUI.Unify(HUB_PANEL_WIDTH);
+
+		// BG
+		int bodyBorder = GUI.Unify(6);
+		Renderer.Draw_9Slice(
+			UI_WINDOW_BG, cameraRect,
+			bodyBorder, bodyBorder, bodyBorder, bodyBorder
+		);
+
+		// --- File Browser ---
+		var browser = FileBrowserUI.Instance;
+		if (browser.Active) {
+			browser.FirstUpdate();
+			browser.BeforeUpdate();
+			browser.Update();
+			browser.LateUpdate();
+			GUI.Enable = false;
+		}
+
+		// --- Panel ---
+		{
+			var panelRect = Setting.Projects.Count > 0 ?
+				cameraRect.EdgeInside(Direction4.Left, hubPanelWidth) :
+				new IRect(cameraRect.x + (cameraRect.width - hubPanelWidth) / 2, cameraRect.y, hubPanelWidth, cameraRect.height);
+			int itemPadding = GUI.Unify(8);
+
+			var rect = new IRect(
+				panelRect.x + itemPadding,
+				panelRect.yMax - itemPadding * 2,
+				panelRect.width - itemPadding * 2,
+				GUI.Unify(36)
+			);
+
+			// Create
+			rect.y -= rect.height + itemPadding;
+			if (GUI.DarkButton(rect, BTN_CREATE)) {
+				FileBrowserUI.SaveFolder(CREATE_PRO_TITLE, "New Project", CreateNewProjectAt);
+			}
+
+			// Add
+			rect.y -= rect.height + itemPadding;
+			if (GUI.DarkButton(rect, BTN_ADD)) {
+				FileBrowserUI.OpenFolder(ADD_PRO_TITLE, AddExistsProjectAt);
+			}
+		}
+
+		// --- Content ---
+		if (Setting.Projects.Count > 0) {
+
+			int border = GUI.Unify(8);
+			int padding = GUI.Unify(8);
+			var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(padding);
+			var projects = Setting.Projects;
+
+			// BG
+			Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
+
+			// Project List
+			var STEP_TINT = new Color32(42, 42, 42, 255);
+			var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, GUI.Unify(48));
+			bool stepTint = false;
+			foreach (string projectPath in projects) {
+
+				var itemContentRect = rect.Shrink(padding);
+
+				// Step Tint
+				if (stepTint) {
+					Renderer.Draw(Const.PIXEL, rect, STEP_TINT);
+				}
+				stepTint = !stepTint;
+
+				// Button
+				if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
+					//OpenProject?.Invoke();
+				}
+
+				// Icon
+				GUI.Icon(itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height), PROJECT_ICON);
+
+				// Name
+				GUI.Label(itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0), Util.GetNameWithoutExtension(projectPath), GUISkin.Label);
+
+				// Path
+				GUI.Label(itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2), projectPath, GUISkin.SmallGreyLabel);
+
+				rect.y -= rect.height;
+			}
+		}
+
+		// Clip
+		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
+
+		// Func
+		static void CreateNewProjectAt (string path) {
+			if (string.IsNullOrEmpty(path)) return;
+			if (Project.CreateProjectToDisk(path)) {
+				AddExistsProjectAt(path);
+			}
+		}
+		static void AddExistsProjectAt (string path) {
+			if (string.IsNullOrEmpty(path) || !Util.FolderExists(path)) return;
+			if (Setting != null && Project.IsValidProjectPath(path) && !Setting.Projects.Contains(path)) {
+				// Add to Path List
+				Setting.Projects.Add(path);
+				// Save Setting
+				JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath);
+			}
+		}
+	}
+
+
 	private static void OnGUI_Window () {
 
-		int barHeight = GUI.UnifyMonitor(38);
-		int contentPadding = GUI.UnifyMonitor(8);
-		int bodyBorder = GUI.UnifyMonitor(6);
+		// Switch on Mid Click
+		if (Input.MouseMidButtonDown) SwitchWindowMode(WindowMode.Mascot);
+
+		// Window
+		int barHeight = GUI.Unify(38);
+		int contentPadding = GUI.Unify(8);
+		int bodyBorder = GUI.Unify(6);
 		var cameraRect = Renderer.CameraRect;
 		int windowLen = CurrentProject == null ? 1 : WINDOW_UI_COUNT;
 		int tabWidth = (cameraRect.width - bodyBorder * 2) / windowLen;
@@ -185,7 +310,7 @@ internal class Engine {
 			bodyBorder, bodyBorder, bodyBorder, bodyBorder
 		);
 
-		// Window Content
+		// Switch Active Window
 		WindowUI.ForceWindowRect(cameraRect.Shrink(0, 0, 0, barHeight + bodyBorder));
 		index = 0;
 		foreach (var ui in ALL_UI) {
@@ -200,6 +325,8 @@ internal class Engine {
 				win.OnInactivated();
 			}
 		}
+
+		// Update UI
 		foreach (var ui in ALL_UI) if (ui.Active) ui.FirstUpdate();
 		foreach (var ui in ALL_UI) if (ui.Active) ui.BeforeUpdate();
 		foreach (var ui in ALL_UI) if (ui.Active) ui.Update();
@@ -213,10 +340,15 @@ internal class Engine {
 
 	// Mascot
 	private static void OnGUI_Mascot_MouseLogic () {
+
 		// Mouse Right Down
 		//if (Raylib.IsMouseButtonDown(MouseButton.Right)) {
 		//	//EditorUtil.BuildProject(,,);
 		//}
+
+		// Switch on Mid Click
+		if (Input.MouseMidButtonDown) SwitchWindowMode(WindowMode.Window);
+
 		// Mouse Left Down
 		if (Input.MouseLeftButtonHolding) {
 			var mousePos = Input.MouseScreenPosition;
@@ -281,19 +413,16 @@ internal class Engine {
 	private static void OnGUI_ConfirmQuit () {
 
 		var cameraRect = Renderer.CameraRect;
-		int buttonHeight = GUI.UnifyMonitor(64);
-		int btnPadding = GUI.UnifyMonitor(8);
+		int buttonHeight = GUI.Unify(64);
+		int btnPadding = GUI.Unify(8);
 
 		// MSG 
 		GUI.Label(
-			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.UnifyMonitor(8)),
+			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.Unify(8)),
 			QUIT_MSG, MsgStyle
 		);
 
 		// Buttons 
-		ConfirmBtnStyle.BodyBorder = Int4.one * GUI.UnifyMonitor(20);
-		ConfirmBtnStyle.ContentShift = ConfirmBtnStyle.ContentShiftHover = ConfirmBtnStyle.ContentShiftDisable = new Int2(0, GUI.UnifyMonitor(5));
-
 		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
 		using (GUIScope.BodyColor(Color32.RED_BETTER)) {
 			if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_QUIT, ConfirmBtnStyle)) {
@@ -314,25 +443,19 @@ internal class Engine {
 
 
 
-	#region --- API ---
-
-
-
-
-
-	#endregion
-
-
-
-
 	#region --- LGC ---
 
 
 	private static void SwitchWindowMode (WindowMode newMode) {
 
 		// Cache
-		if (SettingInitialized && CurrentWindowMode != WindowMode.ConfirmQuit) {
-			Setting.LoadValueFromWindow();
+		if (SettingInitialized && CurrentWindowMode == WindowMode.Window) {
+			var windowPos = Game.GetWindowPosition();
+			Setting.Maximize = Game.IsWindowMaximized;
+			Setting.WindowSizeX = Game.ScreenWidth;
+			Setting.WindowSizeY = Game.ScreenHeight;
+			Setting.WindowPositionX = windowPos.x;
+			Setting.WindowPositionY = windowPos.y;
 		}
 
 		// Set
@@ -352,7 +475,6 @@ internal class Engine {
 				targetWindowWidth = MASCOT_WIDTH;
 				targetWindowHeight = MASCOT_HEIGHT;
 				minWindowSize = Util.Min(MASCOT_WIDTH, MASCOT_HEIGHT);
-				Setting.WindowMode = false;
 				break;
 			}
 			case WindowMode.Window: {
@@ -371,7 +493,6 @@ internal class Engine {
 					targetWindowHeight = Setting.WindowSizeY;
 					Game.IsWindowMaximized = false;
 				}
-				Setting.WindowMode = true;
 				break;
 			}
 			case WindowMode.ConfirmQuit: {
@@ -404,26 +525,13 @@ internal class Engine {
 	private static bool OpenProject (string projectPath) {
 		LanguageEditor.Instance.SetLanguageRoot("");
 		PixelEditor.Instance.SetSheetPath("");
-		if (!ProjectUtil.IsValidProjectPath(projectPath)) return false;
+		if (!Project.IsValidProjectPath(projectPath)) return false;
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return false;
 		CurrentProject = new Project(projectPath);
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.SetSheetPath(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		return true;
 	}
-
-
-	private static void CloseProject () {
-		foreach (var win in ALL_UI) {
-			if (win is WindowUI) win.OnInactivated();
-		}
-		LanguageEditor.Instance.SetLanguageRoot("");
-		PixelEditor.Instance.SetSheetPath("");
-		CurrentProject = null;
-	}
-
-
-	private static string GetCurrentProjectPath () => CurrentProject?.ProjectPath;
 
 
 	#endregion

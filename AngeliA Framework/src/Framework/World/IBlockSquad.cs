@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA.Framework; 
+
 public interface IBlockSquad {
 
 	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) {

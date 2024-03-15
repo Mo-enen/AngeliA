@@ -27,6 +27,7 @@ public sealed class WorldSquad : IBlockSquad {
 	public World this[int i, int j] => Worlds[i, j];
 
 	// Data
+	private static readonly WorldPathPool PathPool = new();
 	private readonly World[,] Worlds = new World[3, 3] { { new(), new(), new() }, { new(), new(), new() }, { new(), new(), new() }, };
 	private readonly World[,] WorldBuffer = new World[3, 3];
 	private readonly World[] WorldBufferAlt = new World[9];
@@ -56,14 +57,12 @@ public sealed class WorldSquad : IBlockSquad {
 		Util.LinkEventWithAttribute<OnMapFolderChangedAttribute>(typeof(WorldSquad), nameof(OnMapFolderChanged));
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
-		//SwitchToCraftedMode(forceOperate: true);
-		//Front.ForceReloadDelay();
-		//Behind.ForceReloadDelay();
 	}
 
 
 	[OnUniverseOpen]
 	public static void OnUniverseOpen () {
+		ResetWorldPathPool(UniverseSystem.CurrentUniverse.MapRoot);
 		SwitchToCraftedMode(forceOperate: true);
 		Front.ForceReloadDelay();
 		Behind.ForceReloadDelay();
@@ -254,7 +253,6 @@ public sealed class WorldSquad : IBlockSquad {
 	#region --- API ---
 
 
-
 	public static void SwitchToCraftedMode (bool forceOperate = false) => SetMode(string.Empty, MapChannel.General, forceOperate);
 	public static void SwitchToProcedureMode (string folderName, bool forceOperate = false) => SetMode(folderName, MapChannel.Procedure, forceOperate);
 	private static void SetMode (string folderName, MapChannel newChannel, bool forceOperate = false) {
@@ -286,6 +284,9 @@ public sealed class WorldSquad : IBlockSquad {
 
 		OnMapFolderChanged?.Invoke();
 	}
+
+
+	public static void ResetWorldPathPool (string newMapRoot = null) => PathPool.SetMapRoot(newMapRoot ?? PathPool.MapRoot);
 
 
 	public void UpdateWorldDataImmediately (IRect viewRect, int z) => Update_Data(viewRect, z);
@@ -329,13 +330,26 @@ public sealed class WorldSquad : IBlockSquad {
 		var world = Worlds[worldX, worldY];
 		int localX = unitX - world.WorldPosition.x * Const.MAP;
 		int localY = unitY - world.WorldPosition.y * Const.MAP;
-		return type switch {
-			BlockType.Entity => world.Entities[localY * Const.MAP + localX],
-			BlockType.Level => world.Levels[localY * Const.MAP + localX],
-			BlockType.Background => world.Backgrounds[localY * Const.MAP + localX],
-			BlockType.Element => world.Elements[localY * Const.MAP + localX],
-			_ => throw new System.NotImplementedException(),
-		};
+
+
+		try {
+
+
+
+
+			return type switch {
+				BlockType.Entity => world.Entities[localY * Const.MAP + localX],
+				BlockType.Level => world.Levels[localY * Const.MAP + localX],
+				BlockType.Background => world.Backgrounds[localY * Const.MAP + localX],
+				BlockType.Element => world.Elements[localY * Const.MAP + localX],
+				_ => throw new System.NotImplementedException(),
+			};
+		} catch {
+
+			Util.LogWarning(world.Entities.Length);
+			Util.LogWarning(localY * Const.MAP + localX + " " + localY + " " + localX);
+			return 0;
+		}
 	}
 
 
@@ -542,7 +556,11 @@ public sealed class WorldSquad : IBlockSquad {
 				var world = Worlds[i, j];
 				var pos = new Int3(centerWorldX + i - 1, centerWorldY + j - 1, z);
 				if (!forceLoad && world.WorldPosition == pos) continue;
-				world.LoadFromDisk(MapRoot, pos.x, pos.y, pos.z);
+				if (PathPool.TryGetPath(pos, out string path)) {
+					world.LoadFromDisk(path, pos.x, pos.y, pos.z);
+				} else {
+					world.Clear(pos);
+				}
 			}
 		}
 		LoadedZ = z;

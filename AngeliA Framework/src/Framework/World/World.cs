@@ -28,7 +28,6 @@ public class World {
 	public int[] Elements { get; set; } = null;
 
 	// Data
-	private static readonly Dictionary<Int3, string> WorldNamePool = new();
 	private static readonly Color32[] CacheMapPixels = new Color32[Const.MAP * Const.MAP];
 
 
@@ -71,67 +70,102 @@ public class World {
 	}
 
 
-	public static bool HasMapFile (string mapFolder, int worldX, int worldY, int worldZ) {
-		string path = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
-		return Util.FileExists(path);
+	public void Clear (Int3? pos = null) {
+		WorldPosition = pos ?? WorldPosition;
+		System.Array.Clear(Levels, 0, Levels.Length);
+		System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
+		System.Array.Clear(Entities, 0, Entities.Length);
+		System.Array.Clear(Elements, 0, Elements.Length);
 	}
 
 
 	// Load
-	public bool LoadFromDisk (string mapFile) =>
-		GetWorldPositionFromName(Util.GetNameWithoutExtension(mapFile), out var pos) &&
-		LoadFromDiskLogic(mapFile, pos.x, pos.y, pos.z);
+	public bool LoadFromDisk (string filePath, int worldX, int worldY, int worldZ) {
 
+		bool success = false;
 
-	public bool LoadFromDisk (string mapFolder, int worldX, int worldY, int worldZ) => LoadFromDiskLogic(
-		Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ)),
-		worldX, worldY, worldZ
-	);
+		try {
 
+			System.Array.Clear(Levels, 0, Levels.Length);
+			System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
+			System.Array.Clear(Entities, 0, Entities.Length);
+			System.Array.Clear(Elements, 0, Elements.Length);
 
-	public static void ForAllEntities (string filePath, System.Action<int, int, int> callback) {
-		if (!Util.FileExists(filePath)) return;
-		using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-		using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
-		int SIZE = Const.MAP;
-		while (reader.NotEnd()) {
-			int id = reader.ReadInt32();
-			int x = reader.ReadByte();
-			int y = reader.ReadByte();
-			if (x < Const.MAP) {
-				// Entity x y
-				if (x < 0 || x >= SIZE || y < 0 || y >= SIZE || id == 0) continue;
-				callback.Invoke(id, x, y);
+			WorldPosition = new(worldX, worldY, worldZ);
+
+			if (!Util.FileExists(filePath)) return success;
+
+			using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+			using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+
+			// Load Content
+			while (reader.NotEnd()) {
+				int id = reader.ReadInt32();
+				int x = reader.ReadByte();
+				int y = reader.ReadByte();
+				if (x < Const.MAP) {
+					if (y < Const.MAP) {
+						// Entity x y
+						if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+						if (Entities[y * Const.MAP + x] != 0) continue;
+						Entities[y * Const.MAP + x] = id;
+					} else {
+						// Element x yy
+						y -= Const.MAP;
+						if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+						if (Elements[y * Const.MAP + x] != 0) continue;
+						Elements[y * Const.MAP + x] = id;
+					}
+				} else {
+					if (y < Const.MAP) {
+						// Level xx y
+						x -= Const.MAP;
+						if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+						if (Levels[y * Const.MAP + x] != 0) continue;
+						Levels[y * Const.MAP + x] = id;
+					} else {
+						// Background xx yy
+						x -= Const.MAP;
+						y -= Const.MAP;
+						if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
+						if (Backgrounds[y * Const.MAP + x] != 0) continue;
+						Backgrounds[y * Const.MAP + x] = id;
+					}
+				}
 			}
-		}
+			success = true;
+		} catch (System.Exception ex) { Util.LogException(ex); }
+
+		// Final
+		return success;
 	}
 
 
-	public static bool LoadMapIntoTexture (string mapFolder, int worldX, int worldY, int worldZ, object texture) {
-		if (texture == null) return false;
-		string filePath = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
-		System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
-		if (!Util.FileExists(filePath)) {
-			Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-			return false;
-		}
-		using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-		using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
-		int SIZE = Const.MAP;
-		while (reader.NotEnd()) {
-			int id = reader.ReadInt32();
-			int x = reader.ReadByte();
-			int y = reader.ReadByte();
-			if (x < SIZE && y >= SIZE) continue;
-			if (Renderer.TryGetSprite(id, out var sprite)) {
-				if (x >= SIZE) x -= SIZE;
-				if (y >= SIZE) y -= SIZE;
-				CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
+	public static bool LoadMapIntoTexture (string filePath, object texture) {
+		lock (CacheMapPixels) {
+			if (texture == null) return false;
+			System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
+			if (string.IsNullOrEmpty(filePath) || !Util.FileExists(filePath)) {
+				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+				return false;
 			}
+			using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+			using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
+			int SIZE = Const.MAP;
+			while (reader.NotEnd()) {
+				int id = reader.ReadInt32();
+				int x = reader.ReadByte();
+				int y = reader.ReadByte();
+				if (x < SIZE && y >= SIZE) continue;
+				if (Renderer.TryGetSprite(id, out var sprite)) {
+					if (x >= SIZE) x -= SIZE;
+					if (y >= SIZE) y -= SIZE;
+					CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
+				}
+			}
+			Game.FillPixelsIntoTexture(CacheMapPixels, texture);
+			return true;
 		}
-		Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-		return true;
-
 	}
 
 
@@ -162,17 +196,13 @@ public class World {
 
 
 	// Save
-	public void SaveToDisk (string mapFolder) => SaveToDisk(mapFolder, WorldPosition.x, WorldPosition.y, WorldPosition.z);
-
-
-	public void SaveToDisk (string mapFolder, int worldX, int worldY, int worldZ) {
+	public void SaveToDisk (string filePath) {
 
 		try {
 
 			// Save
 			const int SIZE = Const.MAP;
-			string path = Util.CombinePaths(mapFolder, GetWorldNameFromPosition(worldX, worldY, worldZ));
-			using var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+			using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
 			using var writer = new BinaryWriter(stream, System.Text.Encoding.ASCII);
 
 			// Background
@@ -221,109 +251,6 @@ public class World {
 
 		} catch (System.Exception ex) { Util.LogException(ex); }
 
-	}
-
-
-	// Misc
-	public static bool GetWorldPositionFromName (string fileName, out Int3 pos) {
-		pos = default;
-		int _index0 = fileName.IndexOf('_');
-		if (_index0 < 0) return false;
-		int _index1 = fileName.IndexOf('_', _index0 + 1);
-		if (_index1 < 0) return false;
-		if (
-			int.TryParse(fileName[.._index0], out int x) &&
-			int.TryParse(fileName[(_index0 + 1)..(_index1)], out int y) &&
-			int.TryParse(fileName[(_index1 + 1)..], out int z)
-		) {
-			pos = new(x, y, z);
-			return true;
-		}
-		pos = default;
-		return false;
-	}
-
-
-	public static string GetWorldNameFromPosition (int x, int y, int z) {
-		var pos = new Int3(x, y, z);
-		if (WorldNamePool.TryGetValue(pos, out string name)) {
-			return name;
-		} else {
-			string newName = $"{x}_{y}_{z}.{AngePath.MAP_FILE_EXT}";
-			WorldNamePool[pos] = newName;
-			return newName;
-		}
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private bool LoadFromDiskLogic (string filePath, int worldX, int worldY, int worldZ) {
-
-		bool success = false;
-
-		//try {
-
-		System.Array.Clear(Levels, 0, Levels.Length);
-		System.Array.Clear(Backgrounds, 0, Backgrounds.Length);
-		System.Array.Clear(Entities, 0, Entities.Length);
-		System.Array.Clear(Elements, 0, Elements.Length);
-
-		WorldPosition = new(worldX, worldY, worldZ);
-
-		if (!Util.FileExists(filePath)) return success;
-
-		using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-		using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
-
-		// Load Content
-		while (reader.NotEnd()) {
-			//try {
-			int id = reader.ReadInt32();
-			int x = reader.ReadByte();
-			int y = reader.ReadByte();//////////////error
-			if (x < Const.MAP) {
-				if (y < Const.MAP) {
-					// Entity x y
-					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-					if (Entities[y * Const.MAP + x] != 0) continue;
-					Entities[y * Const.MAP + x] = id;
-				} else {
-					// Element x yy
-					y -= Const.MAP;
-					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-					if (Elements[y * Const.MAP + x] != 0) continue;
-					Elements[y * Const.MAP + x] = id;
-				}
-			} else {
-				if (y < Const.MAP) {
-					// Level xx y
-					x -= Const.MAP;
-					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-					if (Levels[y * Const.MAP + x] != 0) continue;
-					Levels[y * Const.MAP + x] = id;
-				} else {
-					// Background xx yy
-					x -= Const.MAP;
-					y -= Const.MAP;
-					if (x < 0 || x >= Const.MAP || y < 0 || y >= Const.MAP || id == 0) continue;
-					if (Backgrounds[y * Const.MAP + x] != 0) continue;
-					Backgrounds[y * Const.MAP + x] = id;
-				}
-			}
-			//} catch (System.Exception ex) { Util.LogException(ex); }
-		}
-		success = true;
-		//} catch (System.Exception ex) { Util.LogException(ex); }
-
-		// Final
-		return success;
 	}
 
 

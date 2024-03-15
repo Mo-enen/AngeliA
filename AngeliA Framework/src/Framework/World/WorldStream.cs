@@ -27,17 +27,16 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	#region --- VAR ---
 
 
-	// Const
-	private const int START_RELEASE_COUNT = 256;
-	private const int END_RELEASE_COUNT = 128;
-
 	// Api
 	public string MapRoot { get; private set; }
 	public bool Readonly { get; private set; }
 
 	// Data
 	private readonly Dictionary<Int3, WorldData> Pool = new();
-	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
+	private static readonly WorldPathPool PathPool = new();
+	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new();
+	private readonly int StartReleaseCount = 256;
+	private readonly int EndReleaseCount = 128;
 	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;
 
@@ -50,11 +49,17 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	#region --- API ---
 
 
-	public WorldStream (string mapRoot, bool @readonly) => Load(mapRoot, @readonly);
+	public WorldStream (string mapRoot, bool @readonly, int startReleaseCount = 256, int endReleaseCount = 128) {
+		StartReleaseCount = startReleaseCount;
+		EndReleaseCount = endReleaseCount.LessOrEquel(startReleaseCount - 1);
+		CacheReleaseList.Capacity = startReleaseCount;
+		Load(mapRoot, @readonly);
+	}
 
 
 	public void Load (string mapRoot, bool @readonly) {
 		Clear();
+		PathPool.SetMapRoot(mapRoot);
 		MapRoot = mapRoot;
 		Readonly = @readonly;
 	}
@@ -62,6 +67,7 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 
 	public void Clear () {
 		Pool.Clear();
+		PathPool.Clear();
 		CurrentValidMapCount = 0;
 		InternalFrame = int.MinValue;
 	}
@@ -78,11 +84,16 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 		foreach (var pair in Pool) {
 			var data = pair.Value;
 			if (data != null && data.IsDirty) {
-				data.World?.SaveToDisk(MapRoot);
+				var pos = data.World.WorldPosition;
+				string path = PathPool.GetOrAddPath(pos);
+				data.World?.SaveToDisk(path);
 				data.IsDirty = false;
 			}
 		}
 	}
+
+
+	public bool TryGetMapFilePath (Int3 worldPos, out string path) => PathPool.TryGetPath(worldPos, out path);
 
 
 	// Block
@@ -204,7 +215,10 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 			LastReadWriteFrame = InternalFrame++,
 			IsDirty = false,
 		};
-		bool loaded = worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ);
+		bool loaded = false;
+		if (PathPool.TryGetPath(pos, out string path)) {
+			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
+		}
 		if (!loaded) worldData = null;
 		Pool.Add(pos, worldData);
 		return loaded;
@@ -221,25 +235,30 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 			IsDirty = false,
 		};
 		Pool[pos] = worldData;
-		if (!worldData.World.LoadFromDisk(MapRoot, worldX, worldY, worldZ)) {
-			worldData.World.SaveToDisk(MapRoot);
+		bool loaded = false;
+		if (PathPool.TryGetPath(pos, out string path)) {
+			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
+		}
+		if (!loaded) {
+			path = PathPool.GetOrAddPath(pos);
+			worldData.World.SaveToDisk(path);
 		}
 		CurrentValidMapCount++;
 		TryReleaseOverload();
 		return worldData;
-
 	}
 
 
 	private void TryReleaseOverload () {
-		if (CurrentValidMapCount < START_RELEASE_COUNT) return;
+		if (CurrentValidMapCount < StartReleaseCount) return;
 		CacheReleaseList.Clear();
 		CacheReleaseList.AddRange(Pool.TakeWhile(a => a.Value != null));
 		CacheReleaseList.Sort((a, b) => b.Value.LastReadWriteFrame.CompareTo(a.Value.LastReadWriteFrame));
-		for (int i = CacheReleaseList.Count - 1; i >= END_RELEASE_COUNT; i--) {
+		for (int i = CacheReleaseList.Count - 1; i >= EndReleaseCount; i--) {
 			if (Pool.Remove(CacheReleaseList[i].Key, out var worldData)) {
-				if (!Readonly && worldData.IsDirty) {
-					worldData.World.SaveToDisk(MapRoot);
+				if (!Readonly && worldData.IsDirty && worldData.World != null) {
+					string path = PathPool.GetOrAddPath(worldData.World.WorldPosition);
+					worldData.World.SaveToDisk(path);
 					worldData.IsDirty = false;
 				}
 			}

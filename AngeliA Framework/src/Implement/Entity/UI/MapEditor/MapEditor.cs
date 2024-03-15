@@ -1089,6 +1089,7 @@ public sealed partial class MapEditor : WindowUI {
 			MapGenerator.DeleteAllGeneratedMapFiles();
 		}
 		WorldSquad.Enable = toPlayMode;
+		WorldSquad.ResetWorldPathPool();
 
 		if (!toPlayMode) {
 			// Play >> Edit
