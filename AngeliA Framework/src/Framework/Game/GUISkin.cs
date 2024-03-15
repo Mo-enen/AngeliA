@@ -8,6 +8,7 @@ public static class GUISkin {
 
 
 	private static readonly Color32 LABEL_CONTENT_TINT = Color32.GREY_245;
+	private static readonly Color32 LABEL_GREY_CONTENT_TINT = Color32.GREY_128;
 	private static readonly Color32 LABEL_DOWN_TINT = Color32.GREY_216;
 
 	public static readonly GUIStyle None = new() {
@@ -15,6 +16,17 @@ public static class GUISkin {
 		BodySpriteHover = 0,
 		BodySpriteDown = 0,
 		BodySpriteDisable = 0,
+	};
+
+	public static readonly GUIStyle HighlightPixel = new() {
+		BodySprite = Const.PIXEL,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = Const.PIXEL,
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.WHITE_12,
+		BodyColorDown = Color32.WHITE_20,
+		BodyColorDisable = Color32.CLEAR,
 	};
 
 	public static readonly GUIStyle GreenPixel = new() {
@@ -211,6 +223,16 @@ public static class GUISkin {
 
 	public static readonly GUIStyle Label = new() {
 
+		BodySprite = 0,
+		BodySpriteHover = 0,
+		BodySpriteDown = 0,
+		BodySpriteDisable = 0,
+
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.CLEAR,
+		BodyColorDown = Color32.CLEAR,
+		BodyColorDisable = Color32.CLEAR,
+
 		ContentColor = LABEL_CONTENT_TINT,
 		ContentColorHover = LABEL_CONTENT_TINT,
 		ContentColorDown = LABEL_DOWN_TINT,
@@ -226,6 +248,17 @@ public static class GUISkin {
 		ContentColorHover = LABEL_CONTENT_TINT,
 		ContentColorDown = LABEL_DOWN_TINT,
 		ContentColorDisable = Color32.GREY_196,
+
+		CharSize = 14,
+		Alignment = Alignment.MidLeft,
+	};
+
+	public static readonly GUIStyle SmallGreyLabel = new() {
+
+		ContentColor = LABEL_GREY_CONTENT_TINT,
+		ContentColorHover = LABEL_GREY_CONTENT_TINT,
+		ContentColorDown = LABEL_GREY_CONTENT_TINT,
+		ContentColorDisable = Color32.GREY_32,
 
 		CharSize = 14,
 		Alignment = Alignment.MidLeft,

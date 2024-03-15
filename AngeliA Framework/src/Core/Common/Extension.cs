@@ -36,8 +36,10 @@ public static class Extension {
 		if (!list.Contains(item)) list.Add(item);
 	}
 
-	public static void ForEach<T> (this T[] arr, System.Action<T> action) {
-		foreach (var a in arr) action(a);
+	public static void ForEach<T> (this object[] arr, System.Action<T> action) {
+		foreach (var a in arr) {
+			if (a is T t) action(t);
+		}
 	}
 
 	public static void AppendWithDoubleQuotes (this StringBuilder builder, string content) {

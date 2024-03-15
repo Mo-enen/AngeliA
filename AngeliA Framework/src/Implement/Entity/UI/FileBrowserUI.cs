@@ -57,6 +57,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	};
 
 	// Api
+	public static FileBrowserUI Instance { get; private set; } = null;
 	public IRect BackgroundRect { get; private set; }
 	protected override bool BlockEvent => true;
 	public string TargetExtension { get; private set; } = string.Empty; // txt >> text files  (empty) >> all file types
@@ -83,6 +84,9 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 
 	#region --- MSG ---
+
+
+	public FileBrowserUI () => Instance = this;
 
 
 	[OnGameInitialize]
@@ -402,8 +406,17 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 
 	private static void SpawnBrowserLogic (string title, string defaultName, string extension, BrowserActionType actionType, BrowserTargetType targetType, System.Action<string> callback) {
-		if (Stage.GetEntity(TYPE_ID) != null) return;
-		if (Stage.SpawnEntity(TYPE_ID, 0, 0) is not FileBrowserUI browser) return;
+		FileBrowserUI browser;
+		if (Stage.Enable) {
+			if (Stage.GetEntity(TYPE_ID) != null) return;
+			browser = Stage.SpawnEntity(TYPE_ID, 0, 0) as FileBrowserUI;
+			if (browser == null) return;
+		} else {
+			browser = Instance;
+			browser.Active = true;
+			browser.SpawnFrame = Game.GlobalFrame;
+			browser.OnActivated();
+		}
 		if (string.IsNullOrEmpty(browser.CurrentFolder) || !Util.FolderExists(browser.CurrentFolder)) {
 			browser.CurrentFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
 		}

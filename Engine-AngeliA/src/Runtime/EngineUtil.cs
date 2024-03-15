@@ -18,6 +18,7 @@ public static class EngineUtil {
 	// API
 	public static int BuildProject (
 		string projectPath, string sdkPath, string outputFolderPath,
+		string assemblyName,
 		bool logMessage = true, string versionString = ""
 	) {
 
@@ -37,6 +38,7 @@ public static class EngineUtil {
 		CacheBuilder.Append(" -p:GenerateDependencyFile=false");
 		CacheBuilder.Append(" -p:GenerateDocumentationFile=false");
 		CacheBuilder.Append(" -p:DebugType=none");
+		CacheBuilder.Append($" -p:AssemblyName={assemblyName}");
 
 		// Dep
 		CacheBuilder.Append(" --no-dependencies");

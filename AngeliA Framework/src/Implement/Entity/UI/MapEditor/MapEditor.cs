@@ -384,21 +384,21 @@ public sealed partial class MapEditor : WindowUI {
 
 		if (Active == false) return;
 
-		if (IsEditing && Game.IsPausing) {
-			Renderer.ResetLayer(RenderLayer.DEFAULT);
-			return;
-		}
+		bool editingPause = IsEditing && Game.IsPausing;
 
 		Update_Before();
 		Update_ScreenUI();
 
 		if (!IsNavigating) {
 			// Map Editing
-			Update_Mouse();
-			Update_View();
-			Update_Hotkey();
-			Update_DropPlayer();
-			Update_RenderWorld();
+
+			if (!editingPause) {
+				Update_Mouse();
+				Update_View();
+				Update_Hotkey();
+				Update_DropPlayer();
+				Update_RenderWorld();
+			}
 
 			Update_PaletteGroupUI();
 			Update_PaletteContentUI();
@@ -406,12 +406,13 @@ public sealed partial class MapEditor : WindowUI {
 			Update_PaletteSearchBarUI();
 			Update_ToolbarUI();
 
-			Update_Grid();
-			Update_DraggingGizmos();
-			Update_PastingGizmos();
-			Update_SelectionGizmos();
-			Update_DrawCursor();
-
+			if (!editingPause) {
+				Update_Grid();
+				Update_DraggingGizmos();
+				Update_PastingGizmos();
+				Update_SelectionGizmos();
+				Update_DrawCursor();
+			}
 		} else {
 			// Navigating
 			if (!IsPlaying && !TaskingRoute && !DroppingPlayer) {
@@ -419,9 +420,11 @@ public sealed partial class MapEditor : WindowUI {
 				Update_PaletteContentUI();
 				Update_ToolbarUI();
 				Update_NavQuickLane();
-				Update_Move();
-				Update_NavMapTextureSlots();
-				Update_NavGizmos();
+				if (!editingPause) {
+					Update_Move();
+					Update_NavMapTextureSlots();
+					Update_NavGizmos();
+				}
 			} else {
 				SetNavigating(false);
 			}
@@ -489,7 +492,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (IsEditing) {
 			ControlHintUI.ForceShowHint();
 			ControlHintUI.ForceHideGamepad();
-			ControlHintUI.ForceOffset(PanelRect.xMax - mainRect.x, 0);
+			ControlHintUI.ForceOffset(Util.Max(PanelRect.xMax, CheckPointLaneRect.xMax) - mainRect.x, 0);
 		}
 
 		// Auto Save

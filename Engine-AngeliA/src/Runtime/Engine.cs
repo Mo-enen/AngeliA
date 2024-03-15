@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 using AngeliA.Framework;
@@ -21,28 +22,32 @@ internal class Engine {
 	// Const
 	private const int MASCOT_WIDTH = 360;
 	private const int MASCOT_HEIGHT = 360;
+	private static int WINDOW_UI_COUNT = 3;
 	private static readonly SpriteCode UI_TAB = "UI.MainTab";
 	private static readonly SpriteCode UI_INACTIVE_TAB = "UI.MainTabInactive";
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
-	private static readonly WindowUI[] WINDOWS = {
-		new ProjectHub(),
+	private static readonly EntityUI[] ALL_UI = {
+		new GenericPopupUI() { Active = false, },
+		new GenericDialogUI(){ Active = false, },
+		new FileBrowserUI(){ Active = false, },
+		new ProjectHub(OpenProject, CloseProject, GetCurrentProjectPath),
 		new PixelEditor(),
 		new LanguageEditor(),
 	};
-	private static readonly LanguageCode[] WINDOW_TITLES = {
+	private static readonly LanguageCode[] UI_TITLES = {
+		("", ""),
+		("", ""),
+		("", ""),
 		("Title.Hub", "Home"),
 		("Title.Pixel", "Artwork"),
 		("Title.Language", "Language"),
 	};
-	private static readonly List<EntityUI> ALL_UI = new();
 	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
 
 	// Api
 	public static Project CurrentProject { get; private set; } = null;
 
 	// Data
-	private static readonly GenericPopupUI PopupUI = new();
-	private static readonly GenericDialogUI DialogUI = new();
 	private static readonly GUIStyle MsgStyle = new(GUISkin.CenterLabel) { CharSize = 100 };
 	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 100 };
 	private static EngineSetting Setting;
@@ -66,13 +71,8 @@ internal class Engine {
 	internal static void OnGameInitialize () {
 		Setting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
 		SwitchWindowMode(Setting.WindowMode ? WindowMode.Window : WindowMode.Mascot);
-		PopupUI.Active = false;
-		DialogUI.Active = false;
-		ALL_UI.Clear();
-		ALL_UI.Add(PopupUI);
-		ALL_UI.Add(DialogUI);
-		ALL_UI.AddRange(WINDOWS);
-		ALL_UI.ForEach(ui => ui.OnActivated());
+		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
+		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 	}
 
 
@@ -91,7 +91,7 @@ internal class Engine {
 	internal static void OnGameQuitting () {
 		if (CurrentWindowMode != WindowMode.ConfirmQuit) Setting.LoadValueFromWindow();
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
-		ALL_UI.ForEach(ui => ui.OnInactivated());
+		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
 	}
 
 
@@ -130,23 +130,25 @@ internal class Engine {
 	// Window
 	private static void OnGUI_Window () {
 
-		// Tab Bar
 		int barHeight = GUI.UnifyMonitor(38);
 		int contentPadding = GUI.UnifyMonitor(8);
 		int bodyBorder = GUI.UnifyMonitor(6);
 		var cameraRect = Renderer.CameraRect;
-		int windowLen = CurrentProject == null ? 1 : WINDOWS.Length;
+		int windowLen = CurrentProject == null ? 1 : WINDOW_UI_COUNT;
 		int tabWidth = (cameraRect.width - bodyBorder * 2) / windowLen;
 		var rect = new IRect(cameraRect.x + bodyBorder, cameraRect.yMax - barHeight, tabWidth, barHeight);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 
-		// Content
+		// Tab
 		CurrentWindowIndex = CurrentWindowIndex.Clamp(0, windowLen - 1);
-		for (int i = 0; i < windowLen; i++) {
+		int index = 0;
+		for (int i = 0; i < ALL_UI.Length; i++) {
 
-			var window = WINDOWS[i];
-			bool selecting = i == CurrentWindowIndex;
+			if (ALL_UI[i] is not WindowUI window) continue;
+			if (index >= windowLen) break;
+
+			bool selecting = index == CurrentWindowIndex;
 			bool hovering = rect.Contains(mousePos);
 
 			// Cursor
@@ -166,27 +168,30 @@ internal class Engine {
 			Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
 
 			// Label
-			GUI.Label(contentRect.Shrink(iconSize, 0, 0, 0), WINDOW_TITLES[i]);
+			GUI.Label(contentRect.Shrink(iconSize, 0, 0, 0), UI_TITLES[i]);
 
 			// Click
-			if (mousePress && hovering) CurrentWindowIndex = i;
+			if (mousePress && hovering) CurrentWindowIndex = index;
 
 			// Next
 			rect.x += rect.width;
+			index++;
 		}
 
 		// Window BG
 		Renderer.Draw_9Slice(
 			UI_WINDOW_BG,
-			cameraRect.EdgeInside(Direction4.Down, cameraRect.height - barHeight),
-			bodyBorder, bodyBorder, bodyBorder, bodyBorder, z: int.MinValue
+			cameraRect.Shrink(0, 0, 0, barHeight),
+			bodyBorder, bodyBorder, bodyBorder, bodyBorder
 		);
 
 		// Window Content
 		WindowUI.ForceWindowRect(cameraRect.Shrink(0, 0, 0, barHeight + bodyBorder));
-		for (int i = 0; i < WINDOWS.Length; i++) {
-			var win = WINDOWS[i];
-			bool active = i == CurrentWindowIndex;
+		index = 0;
+		foreach (var ui in ALL_UI) {
+			if (ui is not WindowUI win) continue;
+			bool active = index == CurrentWindowIndex;
+			index++;
 			if (active == win.Active) continue;
 			win.Active = active;
 			if (active) {
@@ -195,12 +200,13 @@ internal class Engine {
 				win.OnInactivated();
 			}
 		}
+		foreach (var ui in ALL_UI) if (ui.Active) ui.FirstUpdate();
 		foreach (var ui in ALL_UI) if (ui.Active) ui.BeforeUpdate();
 		foreach (var ui in ALL_UI) if (ui.Active) ui.Update();
 		foreach (var ui in ALL_UI) if (ui.Active) ui.LateUpdate();
 
 		// Clip
-		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Count);
+		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
 
 	}
 
@@ -212,7 +218,7 @@ internal class Engine {
 		//	//EditorUtil.BuildProject(,,);
 		//}
 		// Mouse Left Down
-		if (Input.MouseLeftButton) {
+		if (Input.MouseLeftButtonHolding) {
 			var mousePos = Input.MouseScreenPosition;
 			mousePos.y = Game.ScreenHeight - mousePos.y;
 			if (!FloatMascotMouseDownPos.HasValue) {
@@ -240,7 +246,7 @@ internal class Engine {
 				}
 			}
 		}
-		if (FloatMascotMouseDownPos.HasValue && !Input.MouseLeftButton) {
+		if (FloatMascotMouseDownPos.HasValue && !Input.MouseLeftButtonHolding) {
 			// Mouse Up
 			FloatMascotMouseDownPos = null;
 			if (!FloatMascotDragged) {
@@ -287,7 +293,7 @@ internal class Engine {
 		// Buttons 
 		ConfirmBtnStyle.BodyBorder = Int4.one * GUI.UnifyMonitor(20);
 		ConfirmBtnStyle.ContentShift = ConfirmBtnStyle.ContentShiftHover = ConfirmBtnStyle.ContentShiftDisable = new Int2(0, GUI.UnifyMonitor(5));
-		
+
 		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
 		using (GUIScope.BodyColor(Color32.RED_BETTER)) {
 			if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_QUIT, ConfirmBtnStyle)) {
@@ -311,22 +317,7 @@ internal class Engine {
 	#region --- API ---
 
 
-	public bool OpenProject (string projectPath) {
-		if (!Project.IsValidProjectPath(projectPath)) return false;
-		if (projectPath == CurrentProject.ProjectPath) return false;
-		CurrentProject = new Project(projectPath);
-		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
-		PixelEditor.Instance.SetSheetPath(AngePath.GetSheetPath(CurrentProject.UniversePath));
-		return true;
-	}
 
-
-	public void CloseProject () {
-		foreach (var win in WINDOWS) win.OnInactivated();
-		LanguageEditor.Instance.SetLanguageRoot("");
-		PixelEditor.Instance.SetSheetPath("");
-		CurrentProject = null;
-	}
 
 
 	#endregion
@@ -407,6 +398,32 @@ internal class Engine {
 		CurrentWindowMode = newMode;
 		SettingInitialized = true;
 	}
+
+
+	// Workflow
+	private static bool OpenProject (string projectPath) {
+		LanguageEditor.Instance.SetLanguageRoot("");
+		PixelEditor.Instance.SetSheetPath("");
+		if (!ProjectUtil.IsValidProjectPath(projectPath)) return false;
+		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return false;
+		CurrentProject = new Project(projectPath);
+		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
+		PixelEditor.Instance.SetSheetPath(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		return true;
+	}
+
+
+	private static void CloseProject () {
+		foreach (var win in ALL_UI) {
+			if (win is WindowUI) win.OnInactivated();
+		}
+		LanguageEditor.Instance.SetLanguageRoot("");
+		PixelEditor.Instance.SetSheetPath("");
+		CurrentProject = null;
+	}
+
+
+	private static string GetCurrentProjectPath () => CurrentProject?.ProjectPath;
 
 
 	#endregion

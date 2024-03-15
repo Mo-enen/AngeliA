@@ -53,7 +53,6 @@ public partial class LanguageEditor : WindowUI {
 	private readonly List<LanguageLine> Lines = new();
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
-	private string LoadedLanguageRoot = "";
 	private bool IsDirty = false;
 
 
@@ -71,17 +70,15 @@ public partial class LanguageEditor : WindowUI {
 	public void SetLanguageRoot (string newRoot) {
 		if (newRoot == LanguageRoot) return;
 		Save();
+		Load(newRoot);
 		LanguageRoot = newRoot;
-		OnActivated();
+		ScrollY = 0;
+		SearchingText = string.Empty;
 	}
 
 
 	public override void OnActivated () {
 		base.OnActivated();
-		if (LanguageRoot != LoadedLanguageRoot) {
-			LoadedLanguageRoot = LanguageRoot;
-			Load(LanguageRoot);
-		}
 		ScrollY = 0;
 		SearchingText = string.Empty;
 	}
@@ -329,17 +326,20 @@ public partial class LanguageEditor : WindowUI {
 
 
 	private void Load (string languageRoot) {
+
 		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;
 		SetDirty(false);
 		Lines.Clear();
-		int count = Language.LanguageCount;
+
 		// Load Language
 		Languages.Clear();
 		foreach (var path in Util.EnumerateFiles(languageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 			Languages.Add(Util.GetNameWithoutExtension(path));
 		}
 		Languages.Sort();
+
 		// Load Contents
+		int count = Language.LanguageCount;
 		var pool = new Dictionary<string, int>();
 		for (int languageIndex = 0; languageIndex < count; languageIndex++) {
 			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDisk(languageRoot, Languages[languageIndex])) {
@@ -359,6 +359,7 @@ public partial class LanguageEditor : WindowUI {
 				data.Value[languageIndex] = value;
 			}
 		}
+
 		// Fill Missing Requirements
 		foreach (var requiredKey in FrameworkUtil.ForAllLanguageKeyRequirements()) {
 			if (pool.TryGetValue(requiredKey, out int index)) {
@@ -374,6 +375,7 @@ public partial class LanguageEditor : WindowUI {
 			});
 			SetDirty();
 		}
+
 		// Sort
 		Lines.Sort(LineComparer.Instance);
 	}

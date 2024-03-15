@@ -218,11 +218,12 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 	public static void BeginPopup () {
 		if (Instance == null) return;
-		if (Game.ProjectType == ProjectType.Game) {
+		if (Stage.Enable) {
 			Stage.SpawnEntity(Instance.TypeID, 0, 0);
 		} else {
 			Instance.Active = true;
 			Instance.SpawnFrame = Game.GlobalFrame;
+			Instance.OnActivated();
 		}
 		ClearItems();
 		Instance.ItemCount = 0;

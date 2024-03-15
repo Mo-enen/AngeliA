@@ -256,6 +256,7 @@ public partial class MapEditor {
 				TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x = NavPosition.x - (TargetViewRect.width + PanelRect.width) / 2 - Const.MAP * Const.HALF;
 				TargetViewRect.y = NavPosition.y - TargetViewRect.height / 2 - Const.MAP * Const.HALF;
+				ViewRect = TargetViewRect;
 				SetViewZ(CurrentZ);
 				Stage.SetViewPositionDelay(TargetViewRect.x, TargetViewRect.y, 1000, int.MaxValue);
 				Stage.SetViewSizeDelay(TargetViewRect.height, 1000, int.MaxValue);

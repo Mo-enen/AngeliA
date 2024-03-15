@@ -63,10 +63,12 @@ public class GenericDialogUI : MenuUI {
 	public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB) => SpawnDialog(message, labelA, actionA, labelB, actionB, null, null);
 	public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
 		if (Instance == null) return;
-		if (Game.ProjectType == ProjectType.Game) {
+		if (Stage.Enable) {
 			Stage.SpawnEntity<GenericDialogUI>(0, 0);
 		} else {
 			Instance.Active = true;
+			Instance.SpawnFrame = Game.GlobalFrame;
+			Instance.OnActivated();
 		}
 		Instance.Message = message;
 		Instance.OptionA.Label = labelA;

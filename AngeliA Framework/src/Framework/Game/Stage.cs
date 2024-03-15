@@ -117,6 +117,7 @@ public static class Stage {
 	public static int? DelayingViewX => ViewDelayX.value;
 	public static int? DelayingViewY => ViewDelayY.value;
 	public static int? DelayingViewHeight => ViewDelayHeight.value;
+	public static bool Enable { get; private set; } = true;
 
 	// Data
 	private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
@@ -131,7 +132,6 @@ public static class Stage {
 	private static readonly HashSet<Int3> LocalAntiSpawnHash = new();
 	private static int ViewLerpRate = 1000;
 	private static int? RequireSetViewZ = null;
-	private static bool Enable = true;
 
 
 	#endregion
