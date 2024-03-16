@@ -36,8 +36,6 @@ public static class GUI {
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
-	private static IRect TypingTextFieldRect = default;
-	private static int TypingUpdateFrame = int.MinValue;
 	private static int BeamIndex = 0;
 	private static int BeamLength = 0;
 	private static int BeamBlinkFrame = int.MinValue;
@@ -68,18 +66,7 @@ public static class GUI {
 
 	[OnGameUpdateLater(4096)]
 	internal static void LateUpdate () {
-
 		if (TypingBuilder.Length > 0) TypingBuilder.Clear();
-
-		// Cancel Typing Text Field
-		if (TypingTextFieldID != 0) {
-			if (
-				(Input.AnyMouseButtonDown && !TypingTextFieldRect.MouseInside()) ||
-				Game.PauselessFrame > TypingUpdateFrame
-			) {
-				CancelTyping();
-			}
-		}
 	}
 
 
@@ -109,7 +96,6 @@ public static class GUI {
 
 	public static void CancelTyping () {
 		TypingTextFieldID = 0;
-		TypingTextFieldRect = default;
 		TypingBuilder.Clear();
 		BeamIndex = 0;
 		BeamLength = 0;
@@ -340,7 +326,7 @@ public static class GUI {
 		var state =
 			(!Enable || !inCamera) ? GUIState.Disable :
 			Input.MouseLeftButtonHolding && mouseDownPosInRect ? GUIState.Press :
-			Input.MouseLeftButtonHolding && rect.Contains(Input.MouseGlobalPosition) ? GUIState.Hover :
+			Input.MouseLeftButtonHolding && rect.MouseInside() ? GUIState.Hover :
 			GUIState.Normal;
 
 		Cursor.SetCursorAsBeam(rect);
@@ -361,6 +347,17 @@ public static class GUI {
 		bool typing = Enable && TypingTextFieldID == controlID;
 		int beamIndex = typing ? BeamIndex : 0;
 		int beamLength = typing ? BeamLength : 0;
+
+		// Cancel on Click Outside
+		if (typing && Input.MouseLeftButtonDown && !rect.MouseInside()) {
+			typing = false;
+			confirm = true;
+			TypingTextFieldID = 0;
+			TypingBuilder.Clear();
+			BeamIndex = beamIndex = 0;
+			BeamLength = beamLength = 0;
+		}
+
 		if (typing) {
 
 			// Clear
@@ -394,8 +391,6 @@ public static class GUI {
 
 			beamIndex = BeamIndex = beamIndex.Clamp(0, text.Length);
 			beamLength = BeamLength = beamLength.Clamp(-beamIndex, text.Length - beamIndex);
-			TypingTextFieldRect = rect;
-			TypingUpdateFrame = Game.PauselessFrame;
 
 			for (int i = 0; i < TypingBuilder.Length; i++) {
 				char c = TypingBuilder[i];
@@ -421,6 +416,7 @@ public static class GUI {
 						break;
 					case Const.CONTROL_COPY:
 					case Const.CONTROL_CUT:
+						// Copy/Cut
 						if (beamLength == 0) break;
 						int beamStart = Util.Min(beamIndex, beamIndex + beamLength);
 						int beamEnd = Util.Max(beamIndex, beamIndex + beamLength);
@@ -431,6 +427,7 @@ public static class GUI {
 						}
 						break;
 					case Const.CONTROL_PASTE:
+						// Paste
 						string clipboardText = Game.GetClipboardText();
 						if (string.IsNullOrEmpty(clipboardText)) break;
 						if (beamLength != 0) RemoveSelection();
@@ -451,6 +448,7 @@ public static class GUI {
 
 			// Delete
 			if (Input.KeyboardDownGUI(KeyboardKey.Delete)) {
+				Input.UseKeyboardKey(KeyboardKey.Delete);
 				int removeIndex = beamIndex;
 				if (removeIndex >= 0 && removeIndex < text.Length) {
 					if (beamLength == 0) {
@@ -463,8 +461,8 @@ public static class GUI {
 						changed = true;
 					}
 				}
-				Input.UseKeyboardKey(KeyboardKey.Delete);
 			}
+
 			// Func
 			void RemoveSelection () {
 				int newBeamIndex = Util.Min(beamIndex, beamIndex + beamLength);
@@ -681,11 +679,26 @@ public static class GUI {
 
 
 	private static IRect GetContentRect (IRect rect, GUIStyle style, GUIState state) {
+		// Border
 		if (style.ContentBorder.HasValue) {
-			rect = rect.Shrink(style.ContentBorder.Value);
+			var border = style.ContentBorder.Value;
+			if (UnifyBasedOnMonitor) {
+				border.left = border.left * Game.MonitorHeight / Game.ScreenHeight;
+				border.right = border.right * Game.MonitorHeight / Game.ScreenHeight;
+				border.down = border.down * Game.MonitorHeight / Game.ScreenHeight;
+				border.up = border.up * Game.MonitorHeight / Game.ScreenHeight;
+			}
+			rect = rect.Shrink(border);
 		}
+		// Shift
 		var shift = style.GetContentShift(state);
-		return rect.Shift(shift.x, shift.y);
+		if (UnifyBasedOnMonitor) {
+			shift.x = shift.x * Game.MonitorHeight / Game.ScreenHeight;
+			shift.y = shift.y * Game.MonitorHeight / Game.ScreenHeight;
+		}
+		rect = rect.Shift(shift.x, shift.y);
+		// Final
+		return rect;
 	}
 
 

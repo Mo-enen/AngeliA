@@ -38,12 +38,11 @@ public static class RayUtil {
 						onTextInput?.Invoke(Const.CONTROL_PASTE);
 					}
 					break;
+				case KeyboardKey.Backspace:
+					onTextInput?.Invoke(Const.BACKSPACE_SIGN);
+					break;
 			}
 		}
-		if (IsKeyPressedOrRepeat(KeyboardKey.Backspace)) {
-			onTextInput?.Invoke(Const.BACKSPACE_SIGN);
-		}
-
 	}
 
 	public static FontData[] LoadFontDataFromFile (string fontRoot) {
@@ -94,8 +93,6 @@ public static class RayUtil {
 			)
 		};
 	}
-
-	private static bool IsKeyPressedOrRepeat (KeyboardKey key) => Raylib.IsKeyPressed(key) || Raylib.IsKeyPressedRepeat(key);
 
 
 	// Debug

@@ -18,6 +18,7 @@ public partial class LanguageEditor : WindowUI {
 		public string Key;
 		public string Label;
 		public bool Required;
+		public bool Visible;
 		public List<string> Value;
 	}
 
@@ -47,6 +48,7 @@ public partial class LanguageEditor : WindowUI {
 	public static LanguageEditor Instance { get; private set; }
 	public static bool IsActived => Instance != null && Instance.Active;
 	public string LanguageRoot { get; private set; } = "";
+	public bool IgnoreRequirements { get; init; } = false;
 
 	// Data
 	private readonly List<string> Languages = new();
@@ -64,7 +66,10 @@ public partial class LanguageEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public LanguageEditor () => Instance = this;
+	public LanguageEditor (bool ignoreRequirements = false) {
+		Instance = this;
+		IgnoreRequirements = ignoreRequirements;
+	}
 
 
 	public void SetLanguageRoot (string newRoot) {
@@ -96,16 +101,12 @@ public partial class LanguageEditor : WindowUI {
 
 		Cursor.RequireCursor();
 
-		int padding = Unify(32);
-		var cameraRect = WindowRect.Shrink(padding, padding, 0, 0);
+		var cameraRect = WindowRect;
 		int column = Languages.Count + 1;
-		int fieldWidth = Util.Clamp(cameraRect.width / column, 0, Unify(300));
-		int verticalPadding = Unify(24);
+		int fieldWidth = cameraRect.width / column;
 
 		cameraRect.x += (cameraRect.width - fieldWidth * column) / 2;
 		cameraRect.width = fieldWidth * column;
-		cameraRect.y += verticalPadding;
-		cameraRect.height -= verticalPadding * 2;
 		X = cameraRect.x;
 		Y = cameraRect.y;
 		Width = cameraRect.width;
@@ -140,7 +141,7 @@ public partial class LanguageEditor : WindowUI {
 		// + Key
 		var rect = panelRect;
 		rect.width = Unify(108);
-		if (GUI.Button(rect, ADD_KEY, GUISkin.Label)) {
+		if (GUI.Button(rect, ADD_KEY, GUISkin.SmallCenterLabelButton)) {
 			ScrollY = 0;
 			Lines.Insert(0, new LanguageLine() {
 				Key = string.Empty,
@@ -158,27 +159,50 @@ public partial class LanguageEditor : WindowUI {
 
 		// + Language
 		rect.width = Unify(108);
-		if (GUI.Button(rect, ADD_LANGUAGE, GUISkin.Label)) {
+		if (GUI.Button(rect, ADD_LANGUAGE, GUISkin.SmallCenterLabelButton)) {
 			OpenAddLanguagePopup();
 		}
 		Cursor.SetCursorAsHand(rect);
 		rect.x += rect.width;
 
 		// Line
-		Renderer.Draw(Const.PIXEL, rect.EdgeOutside(Direction4.Left, Unify(1.5f)), Color32.GREY_12, 2);
+		Renderer.Draw(Const.PIXEL, rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
 
 		// Search
 		rect.width = panelRect.xMax - rect.x;
 		var searchRect = rect.Shrink(Unify(6));
-		SearchingText = GUI.InputField(-19223, searchRect, SearchingText);
+		SearchingText = GUI.InputField(-19223, searchRect, SearchingText, out _, out bool confirm);
+		if (GUI.TypingTextFieldID != -19223 && string.IsNullOrEmpty(SearchingText)) {
+			GUI.Icon(
+				searchRect.EdgeInside(Direction4.Left, searchRect.height * 8 / 10).Shift(searchRect.height / 6, 0),
+				BuiltInSprite.ICON_SEARCH
+			);
+		}
+		if (confirm) {
+			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
+			for (int i = 0; i < Lines.Count; i++) {
+				var line = Lines[i];
+				line.Visible = false;
+				if (!line.Key.Contains(SearchingText, OIC)) {
+					foreach (var value in line.Value) {
+						if (value.Contains(SearchingText, OIC)) {
+							line.Visible = true;
+							break;
+						}
+					}
+				} else {
+					line.Visible = true;
+				}
+			}
+		}
 
 		// Labels
 		var labelRect = new IRect(panelRect.x + Unify(12), panelRect.y - labelHeight, labelWidth, labelHeight);
-		GUI.Label(labelRect, UI_LABEL_KEY);
+		GUI.Label(labelRect, UI_LABEL_KEY, GUISkin.SmallGreyLabel);
 		labelRect.x += labelRect.width;
 		for (int i = 0; i < Languages.Count; i++) {
 			string name = Util.GetLanguageDisplayName(Languages[i]);
-			GUI.Label(labelRect, name);
+			GUI.Label(labelRect, name, GUISkin.SmallGreyLabel);
 			labelRect.x += labelRect.width;
 		}
 
@@ -190,7 +214,7 @@ public partial class LanguageEditor : WindowUI {
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_32, 0);
 
 		int scrollBarWidth = Unify(24);
-		int itemHeight = Unify(30);
+		int itemHeight = Unify(36);
 		int labelHeight = Unify(22);
 		int labelPadding = Unify(12);
 		int itemSpaceX = Unify(5);
@@ -210,7 +234,6 @@ public partial class LanguageEditor : WindowUI {
 		int startTextCellIndex = Renderer.GetTextUsedCellCount();
 		string prevLabel = startLine - 1 >= 0 ? Lines[startLine - 1].Label : string.Empty;
 		bool searching = !string.IsNullOrEmpty(SearchingText);
-		var OIC = System.StringComparison.OrdinalIgnoreCase;
 
 		for (int i = startLine; i < Lines.Count; i++) {
 			var line = Lines[i];
@@ -220,16 +243,7 @@ public partial class LanguageEditor : WindowUI {
 			if (rect.yMax < panelRect.y) break;
 
 			// Searching Check
-			if (searching && !line.Key.Contains(SearchingText, OIC)) {
-				bool founded = false;
-				foreach (var value in line.Value) {
-					if (value.Contains(SearchingText, OIC)) {
-						founded = true;
-						break;
-					}
-				}
-				if (!founded) continue;
-			}
+			if (searching && !line.Visible) continue;
 
 			// Label Line
 			string label = line.Label;
@@ -238,7 +252,7 @@ public partial class LanguageEditor : WindowUI {
 				if (i != 0) {
 					rect.height = labelHeight;
 					rect.y -= labelHeight;
-					GUI.Label(rect.Shrink(labelPadding, 0, 0, 0), label);
+					GUI.Label(rect.Shrink(labelPadding, 0, 0, 0), label, GUISkin.SmallGreyLabel);
 					rect.height = itemHeight;
 				}
 			}
@@ -247,7 +261,7 @@ public partial class LanguageEditor : WindowUI {
 			rect.y -= itemHeight;
 
 			// Key
-			if (line.Required) {
+			if (!IgnoreRequirements && line.Required) {
 				int _textIndex = Renderer.GetTextUsedCellCount();
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
 				GUI.Label(shrinkedRect, line.Key, GUISkin.CenterSmallLabel);
@@ -336,10 +350,11 @@ public partial class LanguageEditor : WindowUI {
 		foreach (var path in Util.EnumerateFiles(languageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 			Languages.Add(Util.GetNameWithoutExtension(path));
 		}
+		if (Languages.Count == 0) Languages.Add("en");
 		Languages.Sort();
 
 		// Load Contents
-		int count = Language.LanguageCount;
+		int count = Languages.Count;
 		var pool = new Dictionary<string, int>();
 		for (int languageIndex = 0; languageIndex < count; languageIndex++) {
 			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDisk(languageRoot, Languages[languageIndex])) {
@@ -361,20 +376,21 @@ public partial class LanguageEditor : WindowUI {
 		}
 
 		// Fill Missing Requirements
-		foreach (var requiredKey in FrameworkUtil.ForAllLanguageKeyRequirements()) {
-			if (pool.TryGetValue(requiredKey, out int index)) {
-				Lines[index].Required = true;
-				continue;
+		if (!IgnoreRequirements)
+			foreach (var requiredKey in FrameworkUtil.ForAllLanguageKeyRequirements()) {
+				if (pool.TryGetValue(requiredKey, out int index)) {
+					Lines[index].Required = true;
+					continue;
+				}
+				pool.Add(requiredKey, Lines.Count);
+				Lines.Add(new LanguageLine() {
+					Key = requiredKey,
+					Label = Key_to_Label(requiredKey),
+					Value = new List<string>(new string[count].FillWithValue(string.Empty)),
+					Required = true,
+				});
+				SetDirty();
 			}
-			pool.Add(requiredKey, Lines.Count);
-			Lines.Add(new LanguageLine() {
-				Key = requiredKey,
-				Label = Key_to_Label(requiredKey),
-				Value = new List<string>(new string[count].FillWithValue(string.Empty)),
-				Required = true,
-			});
-			SetDirty();
-		}
 
 		// Sort
 		Lines.Sort(LineComparer.Instance);

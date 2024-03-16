@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public static class Const {
 
 	public const int CEL = 256;

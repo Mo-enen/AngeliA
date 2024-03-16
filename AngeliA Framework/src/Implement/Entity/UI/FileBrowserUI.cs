@@ -312,7 +312,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Func
 		void DrawButton (string label, string path, int icon) {
-			if (GUI.Button(rect, label, GUISkin.MediumLabelButton)) Explore(path);
+			if (GUI.Button(rect, label, GUISkin.SmallLabelButton)) Explore(path);
 			Renderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
 			rect.y -= rect.height;
 		}
@@ -365,7 +365,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		// Cancel Button
 		var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUISkin.DarkMiniButton)) {
+		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUISkin.SmallDarkButton)) {
 			ErrorMessage = string.Empty;
 			OnPathPicked = null;
 			Active = false;
@@ -375,7 +375,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		buttonRect.x -= buttonRect.width + padding;
 		if (GUI.Button(
 			buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
-			GUISkin.DarkMiniButton
+			GUISkin.SmallDarkButton
 		)) {
 			PerformPick();
 		}

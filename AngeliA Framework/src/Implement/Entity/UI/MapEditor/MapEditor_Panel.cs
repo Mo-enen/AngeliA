@@ -896,8 +896,7 @@ public partial class MapEditor {
 		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
 			Renderer.Draw(
 				SEARCH_ICON,
-				searchPanel.EdgeInside(Direction4.Left, searchPanel.height).Shrink(PADDING),
-				Color32.GREY_128
+				searchPanel.EdgeInside(Direction4.Left, searchPanel.height).Shrink(PADDING)
 			);
 		}
 

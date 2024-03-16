@@ -31,7 +31,7 @@ public class TextUtilInternal {
 		int beamIndex, int startIndex, bool drawInvisibleChar,
 		out IRect bounds, out IRect beamRect, out int endIndex
 	) {
-
+		
 		endIndex = startIndex;
 		bounds = rect;
 		beamRect = new IRect(rect.x, rect.y, 1, rect.height);

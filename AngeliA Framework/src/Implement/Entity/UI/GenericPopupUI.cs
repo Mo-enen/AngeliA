@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA.Framework;
+
 [EntityAttribute.StageOrder(4096)]
 public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
@@ -94,8 +94,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			if (string.IsNullOrEmpty(Items[i].Label)) separatorCount++;
 		}
 		int panelWidth = Unify(200);
-		int itemHeight = Unify(30);
-		int separatorHeight = Unify(6);
+		int itemHeight = Unify(26);
+		int separatorHeight = Unify(4);
 		var cameraRect = Renderer.CameraRect;
 		var panelRect = new IRect(
 			cameraRect.x + OffsetX,
@@ -109,7 +109,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		if (panelRect.height < cameraRect.height) {
 			panelRect.ClampPositionInside(cameraRect);
 		} else {
-			int padding = Unify(84);
+			int padding = Unify(64);
 			panelRect.y = Util.RemapUnclamped(
 				cameraRect.y + padding, cameraRect.yMax - padding,
 				cameraRect.y, cameraRect.y - panelRect.height + cameraRect.height,
@@ -160,7 +160,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 				using (GUIScope.ContentColor(Color32.GREY_20)) {
 					// Label
-					GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds);
+					GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds, GUISkin.SmallLabel);
 					maxWidth = Util.Max(
 						maxWidth,
 						labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)

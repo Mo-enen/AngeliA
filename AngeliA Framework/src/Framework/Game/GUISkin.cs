@@ -105,7 +105,7 @@ public static class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle DarkMiniButton = new() {
+	public static readonly GUIStyle SmallDarkButton = new() {
 
 		BodySprite = BuiltInSprite.UI_MINI_BUTTON_DARK,
 		BodySpriteHover = BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER,
@@ -126,7 +126,7 @@ public static class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle LabelButton = new() {
+	public static readonly GUIStyle LargeLabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -146,7 +146,7 @@ public static class GUISkin {
 		Alignment = Alignment.MidLeft,
 	};
 
-	public static readonly GUIStyle MediumLabelButton = new() {
+	public static readonly GUIStyle LabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -166,7 +166,7 @@ public static class GUISkin {
 		Alignment = Alignment.MidLeft,
 	};
 
-	public static readonly GUIStyle MiniLabelButton = new() {
+	public static readonly GUIStyle SmallLabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -184,6 +184,66 @@ public static class GUISkin {
 
 		CharSize = 14,
 		Alignment = Alignment.MidLeft,
+	};
+
+	public static readonly GUIStyle LargeCenterLabelButton = new() {
+		BodySprite = 0,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = 0,
+
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.GREY_20,
+		BodyColorDown = Color32.CLEAR,
+		BodyColorDisable = Color32.CLEAR,
+
+		ContentColor = Color32.GREY_230,
+		ContentColorHover = Color32.GREY_230,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.GREY_230,
+
+		CharSize = 28,
+		Alignment = Alignment.MidMid,
+	};
+
+	public static readonly GUIStyle CenterLabelButton = new() {
+		BodySprite = 0,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = 0,
+
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.GREY_20,
+		BodyColorDown = Color32.CLEAR,
+		BodyColorDisable = Color32.CLEAR,
+
+		ContentColor = Color32.GREY_230,
+		ContentColorHover = Color32.GREY_230,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.GREY_230,
+
+		CharSize = 21,
+		Alignment = Alignment.MidMid,
+	};
+
+	public static readonly GUIStyle SmallCenterLabelButton = new() {
+		BodySprite = 0,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = 0,
+
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.GREY_20,
+		BodyColorDown = Color32.CLEAR,
+		BodyColorDisable = Color32.CLEAR,
+
+		ContentColor = Color32.GREY_230,
+		ContentColorHover = Color32.GREY_230,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.GREY_230,
+
+		CharSize = 14,
+		Alignment = Alignment.MidMid,
 	};
 
 	// Toggle
