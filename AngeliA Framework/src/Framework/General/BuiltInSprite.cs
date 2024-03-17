@@ -56,6 +56,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_SUIT_SHOES = "Icon.Suit.Shoes";
 	public static readonly SpriteCode ICON_BODY_PART_TAIL = "Icon.BodyPart.Tail";
 	public static readonly SpriteCode ICON_BODY_PART_WING = "Icon.BodyPart.Wing";
+	public static readonly SpriteCode ICON_PLUS = "Icon.Plus";
 	public static readonly SpriteCode GAMEPAD_HINT_LEFT = "GamePad Hint Left";
 	public static readonly SpriteCode GAMEPAD_HINT_SELECT = "GamePad Hint Select";
 	public static readonly SpriteCode GAMEPAD_HINT_UP = "GamePad Hint Up";

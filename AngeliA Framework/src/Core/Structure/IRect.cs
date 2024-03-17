@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [Serializable]
 public struct IRect : IEquatable<IRect>, IFormattable {
 
@@ -164,6 +164,13 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		xMax = maxX,
 		yMax = maxY,
 	};
+
+	public IRect (IRect source) {
+		m_XMin = source.xMin;
+		m_YMin = source.yMin;
+		m_Width = source.width;
+		m_Height = source.height;
+	}
 
 	public IRect (int xMin, int yMin, int width, int height) {
 		m_XMin = xMin;

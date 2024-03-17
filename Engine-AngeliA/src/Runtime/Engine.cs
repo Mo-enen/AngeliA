@@ -214,9 +214,7 @@ internal class Engine {
 
 				// Button
 				if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
-					if (OpenProject(projectPath)) {
-						SwitchWindowMode(WindowMode.Window);
-					}
+					OpenProject(projectPath);
 				}
 
 				// Icon
@@ -264,7 +262,7 @@ internal class Engine {
 		var cameraRect = Renderer.CameraRect;
 		int windowLen = CurrentProject == null ? 1 : WINDOW_UI_COUNT;
 		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
-		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42)).Shift(0, -GUI.Unify(6));
+		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 
@@ -521,16 +519,13 @@ internal class Engine {
 
 
 	// Workflow
-	private static bool OpenProject (string projectPath) {
-		LanguageEditor.Instance.SetLanguageRoot("");
-		PixelEditor.Instance.SetSheetPath("");
-		if (!Project.IsValidProjectPath(projectPath)) return false;
-		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return false;
+	private static void OpenProject (string projectPath) {
+		if (!Project.IsValidProjectPath(projectPath)) return;
+		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
 		CurrentProject = new Project(projectPath);
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.SetSheetPath(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		Game.SetWindowTitle($"{Game.DisplayTitle} - {Util.GetNameWithoutExtension(projectPath)}");
-		return true;
 	}
 
 
