@@ -155,7 +155,6 @@ public partial class MapEditor {
 
 		// Reload
 		if (NavLoadedSlotZ != z || NavLoadedSlotX != targetWorldX || NavLoadedSlotY != targetWorldY) {
-			string mapFolder = Stream.MapRoot;
 			for (int j = 0; j < slotSize; j++) {
 				for (int i = 0; i < slotSize; i++) {
 					var slot = NavSlots[(i - headX).UMod(slotSize), (j - headY).UMod(slotSize)];

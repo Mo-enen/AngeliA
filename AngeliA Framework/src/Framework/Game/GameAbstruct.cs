@@ -43,6 +43,9 @@ public abstract partial class Game {
 	public static bool IsWindowFocused => Instance._IsWindowFocused();
 	protected abstract bool _IsWindowFocused ();
 
+	public static void MakeWindowFocused () => Instance._MakeWindowFocused();
+	protected abstract void _MakeWindowFocused ();
+
 	public static void SetWindowPosition (int x, int y) => Instance._SetWindowPosition(x, y);
 	protected abstract void _SetWindowPosition (int x, int y);
 
@@ -88,6 +91,13 @@ public abstract partial class Game {
 	}
 	protected abstract bool _GetWindowMaximized ();
 	protected abstract void _SetWindowMaximized (bool maximized);
+
+	public static bool IsWindowMinimized {
+		get => Instance._GetWindowMinimized();
+		set => Instance._SetWindowMinimized(value);
+	}
+	protected abstract bool _GetWindowMinimized ();
+	protected abstract void _SetWindowMinimized (bool minimized);
 
 	public static void SetWindowTitle (string title) => Instance._SetWindowTitle(title);
 	protected abstract void _SetWindowTitle (string title);

@@ -45,6 +45,8 @@ public partial class RayGame {
 
 	protected override bool _IsWindowFocused () => Raylib.IsWindowFocused();
 
+	protected override void _MakeWindowFocused () => Raylib.SetWindowFocused();
+
 	protected override int _GetCurrentMonitor () => Raylib.GetCurrentMonitor();
 
 	protected override int _GetMonitorWidth (int monitor) => Raylib.GetMonitorWidth(monitor);
@@ -67,6 +69,14 @@ public partial class RayGame {
 		}
 	}
 
+	protected override void _SetWindowMinimized (bool minimized) {
+		if (minimized) {
+			Raylib.SetWindowState(ConfigFlags.MinimizedWindow);
+		} else {
+			Raylib.ClearWindowState(ConfigFlags.MinimizedWindow);
+		}
+	}
+
 	protected override void _SetWindowResizable (bool resizable) {
 		if (resizable) {
 			Raylib.SetWindowState(ConfigFlags.ResizableWindow);
@@ -86,6 +96,8 @@ public partial class RayGame {
 	protected override bool _GetWindowDecorated () => !Raylib.IsWindowState(ConfigFlags.UndecoratedWindow);
 
 	protected override bool _GetWindowMaximized () => Raylib.IsWindowState(ConfigFlags.MaximizedWindow);
+
+	protected override bool _GetWindowMinimized () => Raylib.IsWindowState(ConfigFlags.MinimizedWindow);
 
 	protected override bool _GetWindowResizable () => Raylib.IsWindowState(ConfigFlags.ResizableWindow);
 

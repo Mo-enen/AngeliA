@@ -32,17 +32,8 @@ public class Project {
 
 	// API
 	public static bool CreateProjectToDisk (string projectPath) {
-
 		if (IsValidProjectPath(projectPath)) return false;
-
-		Util.CreateFolder(projectPath);
-		Util.CreateFolder(Util.CombinePaths(projectPath, SOURCE_NAME));
-		Util.CreateFolder(Util.CombinePaths(projectPath, BUILD_NAME));
-		Util.CreateFolder(Util.CombinePaths(projectPath, OBJECT_NAME));
-
-		Util.CopyFolder(EngineUtil.UniverseTemplatePath, AngePath.GetUniverseRoot(projectPath), true, true);
-		Util.TextToFile(EngineUtil.GenerateCsProjectFile(), Util.CombinePaths(projectPath, CS_PROJECT_NAME));
-
+		Util.CopyFolder(EngineUtil.ProjectTemplatePath, projectPath, true, true);
 		return true;
 	}
 

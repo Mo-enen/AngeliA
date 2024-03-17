@@ -121,7 +121,11 @@ public abstract partial class Game {
 			GlobalFrame = 0;
 			if (IsEdittime) _IsFullscreen.Value = false;
 
-			_SetWindowTitle($"{DisplayTitle} - {DeveloperDisplayName}");
+			if (!string.IsNullOrWhiteSpace(DeveloperDisplayName)) {
+				_SetWindowTitle($"{DisplayTitle} - {DeveloperDisplayName}");
+			} else {
+				_SetWindowTitle(DisplayTitle);
+			}
 
 			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));

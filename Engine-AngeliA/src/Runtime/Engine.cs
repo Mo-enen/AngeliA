@@ -37,6 +37,7 @@ internal class Engine {
 		new FileBrowserUI(){ Active = false, },
 		new PixelEditor(),
 		new LanguageEditor(ignoreRequirements:true),
+		new SettingWindow(),
 	};
 	private static readonly LanguageCode[] UI_TITLES = {
 		("", ""),
@@ -44,6 +45,7 @@ internal class Engine {
 		("", ""),
 		("Title.Pixel", "Artwork"),
 		("Title.Language", "Language"),
+		("Title.Setting", "Setting"),
 	};
 	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
 
@@ -100,6 +102,8 @@ internal class Engine {
 	// GUI
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
+
+		if (Game.IsWindowMinimized) return;
 
 		// On GUI
 		GUI.Enable = true;
@@ -166,7 +170,7 @@ internal class Engine {
 				panelRect.x + itemPadding,
 				panelRect.yMax - itemPadding * 2,
 				panelRect.width - itemPadding * 2,
-				GUI.Unify(36)
+				GUI.Unify(42)
 			);
 
 			// Create
@@ -248,7 +252,10 @@ internal class Engine {
 	private static void OnGUI_Window () {
 
 		// Switch on Mid Click
-		if (Input.MouseMidButtonDown) SwitchWindowMode(WindowMode.Mascot);
+		if (Input.MouseMidButtonDown) {
+			SwitchWindowMode(WindowMode.Mascot);
+			return;
+		}
 
 		// Window
 		int barWidth = GUI.Unify(200);
@@ -262,7 +269,7 @@ internal class Engine {
 		bool mousePress = Input.MouseLeftButtonDown;
 
 		// Tab BG
-		Renderer.Draw(Const.PIXEL, barRect, Color32.BLACK);
+		Renderer.Draw(Const.PIXEL, barRect, Color32.GREY_12);
 
 		// Tab
 		CurrentWindowIndex = CurrentWindowIndex.Clamp(0, windowLen - 1);
@@ -282,9 +289,9 @@ internal class Engine {
 			Renderer.Draw_9Slice(
 				Const.PIXEL, rect,
 				bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-				selecting ? Color32.GREY_20 : Color32.GREY_12
+				selecting ? Color32.GREY_32 : Color32.GREY_12
 			);
-			var contentRect = rect.Shrink(contentPadding, contentPadding, 0, contentPadding);
+			var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
 
 			// Icon
 			int iconSize = contentRect.height;
@@ -522,6 +529,7 @@ internal class Engine {
 		CurrentProject = new Project(projectPath);
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.SetSheetPath(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		Game.SetWindowTitle($"{Game.DisplayTitle} - {Util.GetNameWithoutExtension(projectPath)}");
 		return true;
 	}
 

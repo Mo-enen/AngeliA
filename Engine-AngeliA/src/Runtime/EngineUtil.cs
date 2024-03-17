@@ -10,8 +10,8 @@ namespace AngeliaEngine;
 public static class EngineUtil {
 
 
-	public static string UniverseTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, UNIVERSE_TEMPLATE_NAME);
-	private const string UNIVERSE_TEMPLATE_NAME = "UniverseTemplate";
+	public static string ProjectTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, TEMPLATE_NAME);
+	private const string TEMPLATE_NAME = "ProjectTemplate";
 	private static readonly StringBuilder CacheBuilder = new();
 
 
@@ -61,25 +61,6 @@ public static class EngineUtil {
 		CacheBuilder.Clear();
 		return exitCode;
 	}
-
-
-	public static string GenerateCsProjectFile () {
-
-		// Create Project File
-		CacheBuilder.Clear();
-		CacheBuilder.AppendLine("<Project Sdk=\"Microsoft.NET.Sdk\">");
-
-		CacheBuilder.AppendLine("\t<PropertyGroup>");
-		CacheBuilder.AppendLine("\t\t<TargetFramework>net7.0-windows</TargetFramework>");
-		CacheBuilder.AppendLine("\t</PropertyGroup>");
-
-		CacheBuilder.AppendLine("</Project>");
-		string result = CacheBuilder.ToString();
-		CacheBuilder.Clear();
-		return result;
-	}
-
-
 
 
 }

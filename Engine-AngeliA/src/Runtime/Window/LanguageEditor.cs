@@ -211,10 +211,12 @@ public partial class LanguageEditor : WindowUI {
 
 	private void Update_Content (IRect panelRect) {
 
+		int itemHeight = Unify(36);
+		if (panelRect.height <= itemHeight) return;
+
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_32, 0);
 
 		int scrollBarWidth = Unify(24);
-		int itemHeight = Unify(36);
 		int labelHeight = Unify(22);
 		int labelPadding = Unify(12);
 		int itemSpaceX = Unify(5);
@@ -227,12 +229,12 @@ public partial class LanguageEditor : WindowUI {
 		} else {
 			ScrollY = ScrollY.Clamp(0, shiftedItemCount - pageCount);
 		}
-		int startLine = ScrollY;
+		int startLine = ScrollY.GreaterOrEquelThanZero();
 		int ctrlID = 23186 + startLine * (Languages.Count + 1);
 		var rect = new IRect(0, panelRect.yMax, panelRect.width / (Languages.Count + 1), itemHeight);
 		int startCellIndex = Renderer.GetUsedCellCount();
 		int startTextCellIndex = Renderer.GetTextUsedCellCount();
-		string prevLabel = startLine - 1 >= 0 ? Lines[startLine - 1].Label : string.Empty;
+		string prevLabel = startLine - 1 >= 0 && startLine - 1 < Lines.Count ? Lines[startLine - 1].Label : string.Empty;
 		bool searching = !string.IsNullOrEmpty(SearchingText);
 
 		for (int i = startLine; i < Lines.Count; i++) {
