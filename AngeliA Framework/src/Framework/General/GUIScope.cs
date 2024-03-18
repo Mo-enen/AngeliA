@@ -16,7 +16,7 @@ public class GUIScope : System.IDisposable {
 				Scopes[i] = new GUIScope(type);
 			}
 		}
-		public GUIScope StartInt (int oldValue) {
+		public GUIScope Start () {
 			if (CurrentIndex >= COUNT) {
 #if DEBUG
 				Util.LogWarning("Too many layers of GUIScope");
@@ -25,25 +25,12 @@ public class GUIScope : System.IDisposable {
 			}
 			var scope = Scopes[CurrentIndex];
 			CurrentIndex++;
-			scope.IntData = oldValue;
-			return scope;
-		}
-		public GUIScope StartColor (Color32 oldValue) {
-			if (CurrentIndex >= COUNT) {
-#if DEBUG
-				Util.LogWarning("Too many layers of GUIScope");
-#endif
-				return null;
-			}
-			var scope = Scopes[CurrentIndex];
-			CurrentIndex++;
-			scope.ColorData = oldValue;
 			return scope;
 		}
 		public void End () => CurrentIndex--;
 	}
 
-	private enum ScopeType { None, Layer, Color, ContentColor, BodyColor, Enable, }
+	private enum ScopeType { None, Layer, Color, ContentColor, BodyColor, Enable, Scroll, }
 
 	private static readonly GUIScope EmptyScope = new(ScopeType.None);
 	private static readonly ScopeGroup LayerInstance = new(ScopeType.Layer);
@@ -51,45 +38,84 @@ public class GUIScope : System.IDisposable {
 	private static readonly ScopeGroup ContentColorInstance = new(ScopeType.ContentColor);
 	private static readonly ScopeGroup BodyColorInstance = new(ScopeType.BodyColor);
 	private static readonly ScopeGroup EnableInstance = new(ScopeType.Enable);
+	private static readonly ScopeGroup ScrollInstance = new(ScopeType.Scroll);
+
+	public Int2 Position => Int2Data;
 
 	private readonly ScopeType Type;
 	private Color32 ColorData;
 	private int IntData;
+	private int IntDataAlt;
+	private IRect RectData;
+	private Int2 Int2Data;
+	private Int2 Int2DataAlt;
 
 	private GUIScope (ScopeType type) => Type = type;
 
 	public static GUIScope Layer (int layer) {
-		var result = LayerInstance.StartInt(Renderer.CurrentLayerIndex);
+		var result = LayerInstance.Start();
 		if (result == null) return EmptyScope;
+		result.IntData = Renderer.CurrentLayerIndex;
 		Renderer.SetLayer(layer);
 		return result;
 	}
 
 	public static GUIScope Color (Color32 color) {
-		var result = ColorInstance.StartColor(GUI.Color);
+		var result = ColorInstance.Start();
 		if (result == null) return EmptyScope;
+		result.ColorData = GUI.Color;
 		GUI.Color = color;
 		return result;
 	}
 
 	public static GUIScope ContentColor (Color32 color) {
-		var result = ContentColorInstance.StartColor(GUI.ContentColor);
+		var result = ContentColorInstance.Start();
 		if (result == null) return EmptyScope;
+		result.ColorData = GUI.ContentColor;
 		GUI.ContentColor = color;
 		return result;
 	}
 
 	public static GUIScope BodyColor (Color32 color) {
-		var result = BodyColorInstance.StartColor(GUI.BodyColor);
+		var result = BodyColorInstance.Start();
 		if (result == null) return EmptyScope;
+		result.ColorData = GUI.BodyColor;
 		GUI.BodyColor = color;
 		return result;
 	}
 
 	public static GUIScope BodyColor (bool enable) {
-		var result = EnableInstance.StartInt(GUI.Enable ? 1 : 0);
+		var result = EnableInstance.Start();
 		if (result == null) return EmptyScope;
+		result.IntData = GUI.Enable ? 1 : 0;
 		GUI.Enable = enable;
+		return result;
+	}
+
+	public static GUIScope Scroll (IRect rect, int positionX, int positionY) {
+
+		var result = ScrollInstance.Start();
+		if (result == null) return EmptyScope;
+		bool mouseInside = rect.MouseInside();
+
+		result.RectData = rect;
+		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
+		result.IntDataAlt = Renderer.GetTextUsedCellCount(0);
+		result.Int2DataAlt = Input.MousePositionShift;
+		result.ColorData.a = (byte)(Input.IgnoringInput ? 1 : 0);
+
+		// Scroll by Mouse Wheel
+		if (mouseInside && Input.MouseWheelDelta != 0) {
+			positionY -= Input.MouseWheelDelta * GUI.Unify(96);
+		}
+		result.Int2Data = new Int2(positionX, positionY);
+
+		// Shift Input
+		Input.SetMousePositionShift(-positionX, -positionY);
+
+		// Ignore Input
+		if (!mouseInside) Input.IgnoreInput(0);
+
 		return result;
 	}
 
@@ -114,6 +140,43 @@ public class GUIScope : System.IDisposable {
 			case ScopeType.Enable:
 				EnableInstance.End();
 				GUI.Enable = IntData == 1;
+				break;
+			case ScopeType.Scroll:
+
+				ScrollInstance.End();
+
+				// Old Value Back
+				Input.SetMousePositionShift(Int2DataAlt.x, Int2DataAlt.y);
+				if (ColorData.a == 1) {
+					Input.IgnoreInput(0);
+				} else {
+					Input.CancelIgnoreInput();
+				}
+
+				// Scroll Sprites
+				int startIndex = IntData;
+				if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
+					for (int i = startIndex; i < count; i++) {
+						var cell = cells[i];
+						cell.X += Int2Data.x;
+						cell.Y += Int2Data.y;
+					}
+				}
+
+				// Scroll Text
+				int tStartIndex = IntDataAlt;
+				if (Renderer.GetTextCells(0, out var tCells, out int tCount)) {
+					for (int i = tStartIndex; i < tCount; i++) {
+						var cell = tCells[i];
+						cell.X += Int2Data.x;
+						cell.Y += Int2Data.y;
+					}
+				}
+
+				// Clamp Sprites
+				Renderer.ClampCells(RenderLayer.UI, RectData, startIndex);
+				Renderer.ClampTextCells(RectData, tStartIndex);
+
 				break;
 		}
 	}

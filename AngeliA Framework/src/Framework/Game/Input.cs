@@ -117,11 +117,11 @@ public static class Input {
 	// API - Mouse
 	public static Int2 MouseScreenPosition { get; private set; } = default;
 	public static Int2 MouseScreenPositionDelta { get; private set; } = default;
-	public static Int2 MouseGlobalPosition { get; private set; } = default;
 	public static Int2 MouseGlobalPositionDelta { get; private set; } = default;
-	public static Int2 MouseLeftDownGlobalPosition { get; private set; } = default;
-	public static Int2 MouseRightDownGlobalPosition { get; private set; } = default;
-	public static Int2 MouseMidDownGlobalPosition { get; private set; } = default;
+	public static Int2 MouseGlobalPosition => _MouseGlobalPosition + MousePositionShift;
+	public static Int2 MouseLeftDownGlobalPosition => _MouseLeftDownGlobalPosition + MousePositionShift;
+	public static Int2 MouseRightDownGlobalPosition => _MouseRightDownGlobalPosition + MousePositionShift;
+	public static Int2 MouseMidDownGlobalPosition => _MouseMidDownGlobalPosition + MousePositionShift;
 	public static bool MouseMove { get; private set; } = false;
 	public static bool MouseLeftButtonHolding => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Holding;
 	public static bool MouseRightButtonHolding => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Holding;
@@ -133,6 +133,7 @@ public static class Input {
 	public static bool LastActionFromMouse { get; private set; } = false;
 	public static int MouseWheelDelta => IgnoringInput ? 0 : _MouseWheelDelta;
 	public static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
+	public static Int2 MousePositionShift { get; private set; } = default;
 
 	// Data
 	private static readonly Dictionary<Gamekey, State> GamekeyStateMap = new() {
@@ -189,6 +190,10 @@ public static class Input {
 	private static Direction3 _DirectionX = Direction3.None;
 	private static Direction3 _DirectionY = Direction3.None;
 	private static Int2 _Direction = default;
+	private static Int2 _MouseGlobalPosition = default;
+	private static Int2 _MouseLeftDownGlobalPosition = default;
+	private static Int2 _MouseRightDownGlobalPosition = default;
+	private static Int2 _MouseMidDownGlobalPosition = default;
 
 	// Saving
 	private static readonly SavingBool s_AllowGamepad = new("FrameInput.AllowGamepad", true);
@@ -272,6 +277,7 @@ public static class Input {
 		Update_Keyboard(keyboardAvailable);
 		Update_Direction(gamepadAvailable);
 
+		MousePositionShift = default;
 		AnyKeyDown = AnyGamepadButtonDown || AnyKeyboardKeyDown || AnyGamekeyDown || AnyMouseButtonDown;
 		AnyKeyHolding = AnyGamepadButtonHolding || AnyKeyboardKeyHolding || AnyGamekeyHolding || AnyMouseButtonHolding;
 
@@ -321,16 +327,16 @@ public static class Input {
 					mousePos.y
 				).RoundToInt()
 			);
-			MouseGlobalPositionDelta = newGlobalPos - MouseGlobalPosition;
-			MouseGlobalPosition = newGlobalPos;
+			MouseGlobalPositionDelta = newGlobalPos - _MouseGlobalPosition;
+			_MouseGlobalPosition = newGlobalPos;
 
 			RefreshState(MouseLeftState, Game.IsMouseLeftHolding);
 			RefreshState(MouseRightState, Game.IsMouseRightHolding);
 			RefreshState(MouseMidState, Game.IsMouseMidHolding);
 
-			MouseLeftDownGlobalPosition = MouseLeftButtonDown ? newGlobalPos : MouseLeftDownGlobalPosition;
-			MouseRightDownGlobalPosition = MouseRightButtonDown ? newGlobalPos : MouseRightDownGlobalPosition;
-			MouseMidDownGlobalPosition = MouseMidButtonDown ? newGlobalPos : MouseMidDownGlobalPosition;
+			_MouseLeftDownGlobalPosition = MouseLeftButtonDown ? newGlobalPos : _MouseLeftDownGlobalPosition;
+			_MouseRightDownGlobalPosition = MouseRightButtonDown ? newGlobalPos : _MouseRightDownGlobalPosition;
+			_MouseMidDownGlobalPosition = MouseMidButtonDown ? newGlobalPos : _MouseMidDownGlobalPosition;
 
 			_MouseWheelDelta = Game.MouseScrollDelta;
 
@@ -338,10 +344,10 @@ public static class Input {
 			MouseScreenPositionDelta = default;
 			MouseGlobalPositionDelta = default;
 			MouseScreenPosition = default;
-			MouseGlobalPosition = default;
-			MouseLeftDownGlobalPosition = default;
-			MouseRightDownGlobalPosition = default;
-			MouseMidDownGlobalPosition = default;
+			_MouseGlobalPosition = default;
+			_MouseLeftDownGlobalPosition = default;
+			_MouseRightDownGlobalPosition = default;
+			_MouseMidDownGlobalPosition = default;
 			RefreshState(MouseLeftState, false);
 			RefreshState(MouseRightState, false);
 			RefreshState(MouseMidState, false);
@@ -751,6 +757,9 @@ public static class Input {
 
 
 	public static void CancelIgnoreInput () => IgnoreInputFrame = Game.GlobalFrame - 1;
+
+
+	public static void SetMousePositionShift (int x, int y) => MousePositionShift = new Int2(x, y);
 
 
 	#endregion

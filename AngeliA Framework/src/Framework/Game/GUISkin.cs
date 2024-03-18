@@ -394,6 +394,25 @@ public static class GUISkin {
 		Clip = true,
 	};
 
+	// Input Field
+	public static readonly GUIStyle LargeInputField = new() {
+
+		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
+		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD,
+		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
+		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
+
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		Alignment = Alignment.MidLeft,
+
+		ContentColor = LABEL_CONTENT_TINT,
+		ContentColorHover = LABEL_CONTENT_TINT,
+		ContentColorDown = LABEL_DOWN_TINT,
+		ContentColorDisable = Color32.GREY_196,
+
+		CharSize = 28,
+		Wrap = WrapMode.NoWrap,
+	};
 	public static readonly GUIStyle InputField = new() {
 
 		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
@@ -408,6 +427,27 @@ public static class GUISkin {
 		ContentColorHover = LABEL_CONTENT_TINT,
 		ContentColorDown = LABEL_DOWN_TINT,
 		ContentColorDisable = Color32.GREY_196,
+
+		CharSize = 21,
+		Wrap = WrapMode.NoWrap,
+	};
+	public static readonly GUIStyle SmallInputField = new() {
+
+		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
+		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD,
+		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
+		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
+
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		Alignment = Alignment.MidLeft,
+
+		ContentColor = LABEL_CONTENT_TINT,
+		ContentColorHover = LABEL_CONTENT_TINT,
+		ContentColorDown = LABEL_DOWN_TINT,
+		ContentColorDisable = Color32.GREY_196,
+
+		CharSize = 14,
+		Wrap = WrapMode.NoWrap,
 	};
 
 	// Scroll
