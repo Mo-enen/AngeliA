@@ -92,7 +92,7 @@ public class GUIScope : System.IDisposable {
 		return result;
 	}
 
-	public static GUIScope Scroll (IRect rect, int positionX, int positionY) {
+	public static GUIScope Scroll (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
 
 		var result = ScrollInstance.Start();
 		if (result == null) return EmptyScope;
@@ -102,19 +102,16 @@ public class GUIScope : System.IDisposable {
 		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
 		result.IntDataAlt = Renderer.GetTextUsedCellCount(0);
 		result.Int2DataAlt = Input.MousePositionShift;
-		result.ColorData.a = (byte)(Input.IgnoringInput ? 1 : 0);
 
 		// Scroll by Mouse Wheel
 		if (mouseInside && Input.MouseWheelDelta != 0) {
 			positionY -= Input.MouseWheelDelta * GUI.Unify(96);
 		}
-		result.Int2Data = new Int2(positionX, positionY);
+		positionY = positionY.Clamp(min, max);
+		result.Int2Data = new Int2(0, positionY);
 
 		// Shift Input
-		Input.SetMousePositionShift(-positionX, -positionY);
-
-		// Ignore Input
-		if (!mouseInside) Input.IgnoreInput(0);
+		Input.SetMousePositionShift(0, -positionY);
 
 		return result;
 	}
@@ -147,18 +144,12 @@ public class GUIScope : System.IDisposable {
 
 				// Old Value Back
 				Input.SetMousePositionShift(Int2DataAlt.x, Int2DataAlt.y);
-				if (ColorData.a == 1) {
-					Input.IgnoreInput(0);
-				} else {
-					Input.CancelIgnoreInput();
-				}
-
+				
 				// Scroll Sprites
 				int startIndex = IntData;
 				if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
 					for (int i = startIndex; i < count; i++) {
 						var cell = cells[i];
-						cell.X += Int2Data.x;
 						cell.Y += Int2Data.y;
 					}
 				}
@@ -168,7 +159,6 @@ public class GUIScope : System.IDisposable {
 				if (Renderer.GetTextCells(0, out var tCells, out int tCount)) {
 					for (int i = tStartIndex; i < tCount; i++) {
 						var cell = tCells[i];
-						cell.X += Int2Data.x;
 						cell.Y += Int2Data.y;
 					}
 				}

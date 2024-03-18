@@ -271,7 +271,7 @@ public partial class LanguageEditor : WindowUI {
 				ctrlID++;
 			} else {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Key = GUI.InputField(ctrlID++, shrinkedRect, line.Key, out bool changed, out _);
+				line.Key = GUI.InputField(ctrlID++, shrinkedRect, line.Key, out bool changed, out _, GUISkin.SmallInputField);
 				if (changed) {
 					line.Label = Key_to_Label(line.Key);
 					SetDirty();
@@ -282,7 +282,7 @@ public partial class LanguageEditor : WindowUI {
 			// Contents
 			for (int j = 0; j < line.Value.Count; j++) {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Value[j] = GUI.InputField(ctrlID++, shrinkedRect, line.Value[j], out bool changed, out _);
+				line.Value[j] = GUI.InputField(ctrlID++, shrinkedRect, line.Value[j], out bool changed, out _, GUISkin.SmallInputField);
 				if (changed) SetDirty();
 				rect.x += rect.width;
 			}

@@ -41,8 +41,10 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 			UpdateWindowUI();
 		} else {
 			// Subsequent
-			bool oldIgnore = Input.IgnoringInput;
-			if (!oldIgnore) Input.IgnoreInput();
+			bool oldIgnoreM = Input.IgnoringMouseInput;
+			bool oldIgnoreK = Input.IgnoringKeyInput;
+			if (!oldIgnoreM) Input.IgnoreMouseInput();
+			if (!oldIgnoreK) Input.IgnoreKeyInput();
 			try {
 				int oldP = Cursor.CursorPriority;
 				Cursor.CursorPriority = int.MaxValue;
@@ -50,7 +52,8 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 				Cursor.CursorPriority = oldP;
 				Renderer.Draw(Const.PIXEL, Renderer.CameraRect, new Color32(0, 0, 0, 200), int.MaxValue);
 			} catch (System.Exception ex) { Util.LogException(ex); }
-			if (!oldIgnore) Input.CancelIgnoreInput();
+			if (!oldIgnoreM) Input.CancelIgnoreMouseInput();
+			if (!oldIgnoreK) Input.CancelIgnoreKeyInput();
 		}
 	}
 

@@ -183,7 +183,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		// Address
 		rect.x += buttonSize + buttonPadding;
 		rect.width = barRect.xMax - rect.x;
-		NavbarText = GUI.InputField(12124, rect, NavbarText, out _, out bool confirm);
+		NavbarText = GUI.InputField(12124, rect, NavbarText, out _, out bool confirm, GUISkin.SmallInputField);
 		if (confirm) Explore(NavbarText);
 
 	}

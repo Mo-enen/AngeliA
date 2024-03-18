@@ -94,9 +94,9 @@ public static class Input {
 	// Api
 	public static bool UsingGamepad { get; private set; } = false;
 	public static bool UsingLeftStick { get; private set; } = false;
-	public static Direction3 DirectionX => IgnoringInput ? Direction3.None : _DirectionX;
-	public static Direction3 DirectionY => IgnoringInput ? Direction3.None : _DirectionY;
-	public static Int2 Direction => IgnoringInput ? default : _Direction;
+	public static Direction3 DirectionX => IgnoringKeyInput ? Direction3.None : _DirectionX;
+	public static Direction3 DirectionY => IgnoringKeyInput ? Direction3.None : _DirectionY;
+	public static Int2 Direction => IgnoringKeyInput ? default : _Direction;
 	public static bool AllowGamepad {
 		get => s_AllowGamepad.Value;
 		set => s_AllowGamepad.Value = value;
@@ -123,16 +123,17 @@ public static class Input {
 	public static Int2 MouseRightDownGlobalPosition => _MouseRightDownGlobalPosition + MousePositionShift;
 	public static Int2 MouseMidDownGlobalPosition => _MouseMidDownGlobalPosition + MousePositionShift;
 	public static bool MouseMove { get; private set; } = false;
-	public static bool MouseLeftButtonHolding => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Holding;
-	public static bool MouseRightButtonHolding => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Holding;
-	public static bool MouseMidButtonHolding => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Holding;
-	public static bool MouseLeftButtonDown => !IgnoringInput && !MouseLeftState.Ignored && MouseLeftState.Down;
-	public static bool MouseRightButtonDown => !IgnoringInput && !MouseRightState.Ignored && MouseRightState.Down;
-	public static bool MouseMidButtonDown => !IgnoringInput && !MouseMidState.Ignored && MouseMidState.Down;
+	public static bool MouseLeftButtonHolding => !IgnoringMouseInput && !MouseLeftState.Ignored && MouseLeftState.Holding;
+	public static bool MouseRightButtonHolding => !IgnoringMouseInput && !MouseRightState.Ignored && MouseRightState.Holding;
+	public static bool MouseMidButtonHolding => !IgnoringMouseInput && !MouseMidState.Ignored && MouseMidState.Holding;
+	public static bool MouseLeftButtonDown => !IgnoringMouseInput && !MouseLeftState.Ignored && MouseLeftState.Down;
+	public static bool MouseRightButtonDown => !IgnoringMouseInput && !MouseRightState.Ignored && MouseRightState.Down;
+	public static bool MouseMidButtonDown => !IgnoringMouseInput && !MouseMidState.Ignored && MouseMidState.Down;
 	public static bool IgnoreMouseToActionJumpForThisFrame { get; set; } = false;
 	public static bool LastActionFromMouse { get; private set; } = false;
-	public static int MouseWheelDelta => IgnoringInput ? 0 : _MouseWheelDelta;
-	public static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
+	public static int MouseWheelDelta => IgnoringMouseInput ? 0 : _MouseWheelDelta;
+	public static bool IgnoringMouseInput => Game.GlobalFrame <= IgnoreMouseInputFrame;
+	public static bool IgnoringKeyInput => Game.GlobalFrame <= IgnoreKeyInputFrame;
 	public static Int2 MousePositionShift { get; private set; } = default;
 
 	// Data
@@ -184,7 +185,8 @@ public static class Input {
 	private static int DownDownFrame = int.MinValue;
 	private static int UpDownFrame = int.MinValue;
 	private static int? GamepadRightStickAccumulate = null;
-	private static int IgnoreInputFrame = -1;
+	private static int IgnoreMouseInputFrame = -1;
+	private static int IgnoreKeyInputFrame = -1;
 	private static KeyboardKey[] AllKeyboardKeys = new KeyboardKey[0];
 	private static int _MouseWheelDelta = 0;
 	private static Direction3 _DirectionX = Direction3.None;
@@ -629,20 +631,20 @@ public static class Input {
 	// Any Key
 	public static bool TryGetHoldingGamepadButton (out GamepadKey button) {
 		button = GamepadKey.A;
-		if (IgnoringInput) return false;
+		if (IgnoringKeyInput) return false;
 		return Game.IsGamepadAvailable && SearchAnyGamepadButtonHolding(out button);
 	}
 	public static bool TryGetHoldingKeyboardKey (out KeyboardKey key) {
 		key = KeyboardKey.None;
-		if (IgnoringInput) return false;
+		if (IgnoringKeyInput) return false;
 		return Game.IsKeyboardAvailable && SearchAnyKeyboardKeyHolding(out key);
 	}
 
 
 	// Game Key
-	public static bool GameKeyDown (Gamekey key) => !IgnoringInput && GamekeyStateMap[key].Down && !GamekeyStateMap[key].Ignored;
+	public static bool GameKeyDown (Gamekey key) => !IgnoringKeyInput && GamekeyStateMap[key].Down && !GamekeyStateMap[key].Ignored;
 	public static bool GameKeyDownGUI (Gamekey key) {
-		if (IgnoringInput) return false;
+		if (IgnoringKeyInput) return false;
 		var state = GamekeyStateMap[key];
 		if (state.Ignored) return false;
 		if (state.Down) return true;
@@ -652,14 +654,14 @@ public static class Input {
 		}
 		return false;
 	}
-	public static bool GameKeyHolding (Gamekey key) => !IgnoringInput && GamekeyStateMap[key].Holding && !GamekeyStateMap[key].Ignored;
-	public static bool GameKeyUp (Gamekey key) => !IgnoringInput && GamekeyStateMap[key].Up && !GamekeyStateMap[key].Ignored;
+	public static bool GameKeyHolding (Gamekey key) => !IgnoringKeyInput && GamekeyStateMap[key].Holding && !GamekeyStateMap[key].Ignored;
+	public static bool GameKeyUp (Gamekey key) => !IgnoringKeyInput && GamekeyStateMap[key].Up && !GamekeyStateMap[key].Ignored;
 
 
 	// Keyboard Key
-	public static bool KeyboardDown (KeyboardKey key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
+	public static bool KeyboardDown (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
 	public static bool KeyboardDownGUI (KeyboardKey key) {
-		if (IgnoringInput) return false;
+		if (IgnoringKeyInput) return false;
 		var state = KeyboardStateMap[key];
 		if (state.Ignored) return false;
 		if (state.Down) return true;
@@ -669,8 +671,8 @@ public static class Input {
 		}
 		return false;
 	}
-	public static bool KeyboardHolding (KeyboardKey key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Holding && !state.Ignored;
-	public static bool KeyboardUp (KeyboardKey key) => !IgnoringInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Up && !state.Ignored;
+	public static bool KeyboardHolding (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Holding && !state.Ignored;
+	public static bool KeyboardUp (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Up && !state.Ignored;
 
 
 	// Use
@@ -735,7 +737,7 @@ public static class Input {
 
 
 	// Mouse
-	public static bool MouseButtonHolding (int button) => !IgnoringInput && button switch {
+	public static bool MouseButtonHolding (int button) => !IgnoringKeyInput && button switch {
 		0 => MouseLeftButtonHolding,
 		1 => MouseRightButtonHolding,
 		2 => MouseMidButtonHolding,
@@ -744,7 +746,7 @@ public static class Input {
 
 
 	public static int GetHoldingMouseButton () {
-		if (IgnoringInput) return -1;
+		if (IgnoringKeyInput) return -1;
 		if (MouseLeftButtonHolding) return 0;
 		if (MouseRightButtonHolding) return 1;
 		if (MouseMidButtonHolding) return 2;
@@ -753,10 +755,16 @@ public static class Input {
 
 
 	// Misc
-	public static void IgnoreInput (int duration = 1) => IgnoreInputFrame = Game.GlobalFrame + duration;
+	public static void IgnoreAllInput (int duration = 1) {
+		IgnoreMouseInput(duration);
+		IgnoreKeyInput(duration);
+	}
+	public static void IgnoreMouseInput (int duration = 1) => IgnoreMouseInputFrame = Game.GlobalFrame + duration;
+	public static void IgnoreKeyInput (int duration = 1) => IgnoreKeyInputFrame = Game.GlobalFrame + duration;
 
 
-	public static void CancelIgnoreInput () => IgnoreInputFrame = Game.GlobalFrame - 1;
+	public static void CancelIgnoreMouseInput () => IgnoreMouseInputFrame = Game.GlobalFrame - 1;
+	public static void CancelIgnoreKeyInput () => IgnoreKeyInputFrame = Game.GlobalFrame - 1;
 
 
 	public static void SetMousePositionShift (int x, int y) => MousePositionShift = new Int2(x, y);

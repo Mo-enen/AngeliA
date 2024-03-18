@@ -58,12 +58,15 @@ public abstract class EntityUI : Entity {
 	// MSG
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		if (BlockEvent) Input.IgnoreInput(0);
+		if (BlockEvent) Input.IgnoreAllInput(0);
 	}
 
 	public override void Update () {
 		base.Update();
-		if (BlockEvent) Input.CancelIgnoreInput();
+		if (BlockEvent) {
+			Input.CancelIgnoreMouseInput();
+			Input.CancelIgnoreKeyInput();
+		}
 	}
 
 	public override void LateUpdate () {
@@ -75,13 +78,14 @@ public abstract class EntityUI : Entity {
 		TextCellStartIndex = Renderer.GetTextUsedCellCount();
 
 		if (Game.PauselessFrame == BlockingEventFrame) {
-			Input.IgnoreInput(0);
+			Input.IgnoreAllInput(0);
 		}
 
 		UpdateUI();
 
 		if (Game.PauselessFrame == BlockingEventFrame) {
-			Input.CancelIgnoreInput();
+			Input.CancelIgnoreMouseInput();
+			Input.CancelIgnoreKeyInput();
 		}
 
 		TextCellEndIndex ??= new int[Renderer.TextLayerCount];
