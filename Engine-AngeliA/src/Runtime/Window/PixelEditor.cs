@@ -17,6 +17,7 @@ public class PixelEditor : WindowUI {
 	// Const
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
+	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas {0}? All sprites inside will be delete too.");
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
@@ -28,6 +29,7 @@ public class PixelEditor : WindowUI {
 	private int CurrentAtlasIndex = 0;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
+	private int AtlasMenuTargetIndex = -1;
 	private bool IsDirty = false;
 
 
@@ -60,23 +62,10 @@ public class PixelEditor : WindowUI {
 	private void Update_Panel (int panelWidth) {
 
 		const int INPUT_ID = 287234;
-		int padding = Unify(4);
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, panelWidth);
-		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(42));
-		var contentRect = panelRect.Shrink(0, 0, 0, toolbarRect.height + padding);
-		IRect rect;
 
 		// BG
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_20);
-
-		// --- Toolbar ---
-		toolbarRect = toolbarRect.Shrink(Unify(4));
-		rect = new IRect(toolbarRect) { width = toolbarRect.height };
-
-		// Add Button
-		if (GUI.Button(rect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
-
-		}
 
 		// Rename Hotkey
 		if (Input.KeyboardDown(KeyboardKey.F2) && RenamingAtlasIndex < 0 && CurrentAtlasIndex >= 0) {
@@ -89,21 +78,23 @@ public class PixelEditor : WindowUI {
 		if (itemCount > 0) {
 
 			int scrollbarWidth = Unify(12);
+			int padding = Unify(4);
 			int atlasPadding = Unify(4);
 			CurrentAtlasIndex = CurrentAtlasIndex.Clamp(0, itemCount - 1);
-			rect = contentRect.EdgeInside(Direction4.Up, Unify(32));
+			var rect = panelRect.EdgeInside(Direction4.Up, Unify(32));
 			int newSelectingIndex = -1;
-			int scrollMax = ((itemCount + 6) * (rect.height + atlasPadding) - contentRect.height).GreaterOrEquelThanZero();
+			int scrollMax = ((itemCount + 6) * (rect.height + atlasPadding) - panelRect.height).GreaterOrEquelThanZero();
 			bool hasScrollbar = scrollMax > 0;
 			if (hasScrollbar) rect.width -= scrollbarWidth;
 
-			using (var scroll = GUIScope.Scroll(contentRect, AtlasPanelScrollY, 0, scrollMax)) {
+			using (var scroll = GUIScope.Scroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
 				AtlasPanelScrollY = scroll.Position.y;
 				for (int i = 0; i < itemCount; i++) {
 
 					var atlas = Sheet.Atlas[i];
 					bool selecting = CurrentAtlasIndex == i;
 					bool renaming = RenamingAtlasIndex == i;
+					bool hover = rect.MouseInside();
 					if (renaming && !GUI.IsTyping) {
 						RenamingAtlasIndex = -1;
 						renaming = false;
@@ -140,6 +131,12 @@ public class PixelEditor : WindowUI {
 						GUI.Label(rect.Shrink(rect.height + padding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
 					}
 
+					// Right Click
+					if (hover && Input.MouseRightButtonDown) {
+						Input.UseAllMouseKey();
+						ShowAtlasItemPopup(i);
+					}
+
 					// Next
 					rect.y -= rect.height + atlasPadding;
 				}
@@ -153,12 +150,19 @@ public class PixelEditor : WindowUI {
 
 			// Scrollbar
 			if (hasScrollbar) {
-				var barRect = contentRect.EdgeInside(Direction4.Right, scrollbarWidth);
+				var barRect = panelRect.EdgeInside(Direction4.Right, scrollbarWidth);
 				AtlasPanelScrollY = GUI.ScrollBar(
 					1256231, barRect,
-					AtlasPanelScrollY, (itemCount + 6) * (rect.height + atlasPadding), contentRect.height
+					AtlasPanelScrollY, (itemCount + 6) * (rect.height + atlasPadding), panelRect.height
 				);
 			}
+
+			// Right Click on Empty
+			if (panelRect.MouseInside() && Input.MouseRightButtonDown) {
+				Input.UseAllMouseKey();
+				ShowAtlasItemPopup(-1);
+			}
+
 
 		}
 
@@ -213,6 +217,52 @@ public class PixelEditor : WindowUI {
 
 
 
+	}
+
+
+	private void ShowAtlasItemPopup (int atlasIndex) {
+
+		AtlasMenuTargetIndex = atlasIndex;
+		GenericPopupUI.BeginPopup();
+
+		if (atlasIndex >= 0) {
+			// Delete
+			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteConfirm, enabled: Sheet.Atlas.Count > 1);
+		}
+
+		GenericPopupUI.AddSeparator();
+
+		// For All
+		GenericPopupUI.AddItem(BuiltInText.UI_ADD, Add);
+
+		// Func
+		static void Add () {
+			Instance.Sheet.Atlas.Add(new Atlas() {
+				AtlasZ = 0,
+				Name = "New Atlas",
+				Type = AtlasType.General,
+			});
+			Instance.IsDirty = true;
+			Instance.AtlasPanelScrollY = int.MaxValue;
+		}
+		static void DeleteConfirm () {
+			var atlasList = Instance.Sheet.Atlas;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (atlasList.Count <= 1) return;
+			if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
+			GenericDialogUI.SpawnDialog(
+				string.Format(PIX_DELETE_ATLAS_MSG, atlasList[targetIndex].Name),
+				BuiltInText.UI_DELETE, Delete,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+		}
+		static void Delete () {
+			var atlasList = Instance.Sheet.Atlas;
+			if (atlasList.Count <= 1) return;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
+			Instance.Sheet.RemoveAtlasWithAllSpritesInside(targetIndex);
+		}
 	}
 
 

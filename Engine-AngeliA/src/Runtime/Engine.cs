@@ -62,6 +62,7 @@ internal class Engine {
 	private static bool FloatMascotDragged = false;
 	private static bool SettingInitialized = false;
 	private static int CurrentWindowIndex = 0;
+	private static int HubPanelScroll = 0;
 
 
 	#endregion
@@ -133,21 +134,17 @@ internal class Engine {
 				Game.SetWindowPosition(windowPos.x, 24);
 			}
 		}
+
 	}
 
 
 	// Window
 	private static void OnGUI_Hub () {
 
+		Renderer.SetLayerToUI();
+
 		var cameraRect = Renderer.CameraRect;
 		int hubPanelWidth = GUI.Unify(HUB_PANEL_WIDTH);
-
-		// BG
-		int bodyBorder = GUI.Unify(6);
-		Renderer.Draw_9Slice(
-			UI_WINDOW_BG, cameraRect,
-			bodyBorder, bodyBorder, bodyBorder, bodyBorder
-		);
 
 		// --- File Browser ---
 		var browser = FileBrowserUI.Instance;
@@ -158,6 +155,13 @@ internal class Engine {
 			browser.LateUpdate();
 			GUI.Enable = false;
 		}
+
+		// --- BG ---
+		int bodyBorder = GUI.Unify(6);
+		Renderer.Draw_9Slice(
+			UI_WINDOW_BG, cameraRect,
+			bodyBorder, bodyBorder, bodyBorder, bodyBorder
+		);
 
 		// --- Panel ---
 		{
@@ -199,50 +203,54 @@ internal class Engine {
 			Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
 
 			// Project List
-			var STEP_TINT = new Color32(42, 42, 42, 255);
-			var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
-			bool stepTint = false;
-			foreach (string projectPath in projects) {
+			using (var scroll = GUIScope.Scroll(contentRect, HubPanelScroll, 0, Util.Max(0, projects.Count * itemHeight - contentRect.height))) {
+				HubPanelScroll = scroll.Position.y;
 
-				var itemContentRect = rect.Shrink(padding);
+				var STEP_TINT = new Color32(42, 42, 42, 255);
+				var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
+				bool stepTint = false;
 
-				// Step Tint
-				if (stepTint) {
-					Renderer.Draw(Const.PIXEL, rect, STEP_TINT);
+				foreach (string projectPath in projects) {
+
+					var itemContentRect = rect.Shrink(padding);
+
+					// Step Tint
+					if (stepTint) Renderer.Draw(Const.PIXEL, rect, STEP_TINT);
+					stepTint = !stepTint;
+
+					// Button
+					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
+						OpenProject(projectPath);
+					}
+
+					// Icon
+					GUI.Icon(
+						itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
+						PROJECT_ICON
+					);
+
+					// Name
+					GUI.Label(
+						itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
+						Util.GetNameWithoutExtension(projectPath),
+						GUISkin.SmallLabel
+					);
+
+					// Path
+					GUI.Label(
+						itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
+						projectPath,
+						GUISkin.SmallGreyLabel
+					);
+
+					rect.y -= rect.height;
 				}
-				stepTint = !stepTint;
-
-				// Button
-				if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
-					OpenProject(projectPath);
-				}
-
-				// Icon
-				GUI.Icon(
-					itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
-					PROJECT_ICON
-				);
-
-				// Name
-				GUI.Label(
-					itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
-					Util.GetNameWithoutExtension(projectPath),
-					GUISkin.SmallLabel
-				);
-
-				// Path
-				GUI.Label(
-					itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
-					projectPath,
-					GUISkin.SmallGreyLabel
-				);
-
-				rect.y -= rect.height;
 			}
 		}
 
-		// Clip
+		// Final
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
+		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 
 	}
 
@@ -329,7 +337,7 @@ internal class Engine {
 		foreach (var ui in ALL_UI) if (ui.Active) ui.Update();
 		foreach (var ui in ALL_UI) if (ui.Active) ui.LateUpdate();
 
-		// Clip
+		// Final
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
 
 	}

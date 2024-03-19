@@ -230,7 +230,7 @@ public static class GUI {
 			state = GUIState.Disable;
 			return false;
 		}
-		bool hover = rect.MouseInside();
+		bool hover = !Input.IgnoringMouseInput && rect.MouseInside();
 		// Cursor
 		Cursor.SetCursorAsHand(rect);
 		// Click
@@ -322,7 +322,9 @@ public static class GUI {
 		bool startTyping = false;
 		bool mouseDownPosInRect = rect.Contains(Input.MouseLeftDownGlobalPosition);
 		bool mouseDragging = Input.MouseLeftButtonHolding && mouseDownPosInRect;
-		bool inCamera = rect.Overlaps(Renderer.CameraRect);
+		bool inCamera = rect.Shift(
+			-Input.MousePositionShift.x, -Input.MousePositionShift.y
+		).Overlaps(Renderer.CameraRect);
 		var state =
 			(!Enable || !inCamera) ? GUIState.Disable :
 			Input.MouseLeftButtonHolding && mouseDownPosInRect ? GUIState.Press :

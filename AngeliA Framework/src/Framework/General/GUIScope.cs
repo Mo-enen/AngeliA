@@ -149,8 +149,7 @@ public class GUIScope : System.IDisposable {
 				int startIndex = IntData;
 				if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
 					for (int i = startIndex; i < count; i++) {
-						var cell = cells[i];
-						cell.Y += Int2Data.y;
+						cells[i].Y += Int2Data.y;
 					}
 				}
 
@@ -158,8 +157,7 @@ public class GUIScope : System.IDisposable {
 				int tStartIndex = IntDataAlt;
 				if (Renderer.GetTextCells(0, out var tCells, out int tCount)) {
 					for (int i = tStartIndex; i < tCount; i++) {
-						var cell = tCells[i];
-						cell.Y += Int2Data.y;
+						tCells[i].Y += Int2Data.y;
 					}
 				}
 

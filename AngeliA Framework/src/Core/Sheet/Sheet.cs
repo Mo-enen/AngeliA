@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-
 namespace AngeliA;
+
 public class Sheet {
 
 	// VAR 
@@ -70,6 +70,12 @@ public class Sheet {
 		Atlas.Clear();
 		SpritePool.Clear();
 		GroupPool.Clear();
+	}
+
+	public void RemoveAtlasWithAllSpritesInside (int index) {
+
+
+
 	}
 
 	// LGC

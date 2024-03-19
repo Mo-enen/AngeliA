@@ -118,6 +118,7 @@ public static class Input {
 	public static Int2 MouseScreenPosition { get; private set; } = default;
 	public static Int2 MouseScreenPositionDelta { get; private set; } = default;
 	public static Int2 MouseGlobalPositionDelta { get; private set; } = default;
+	public static Int2 UnshiftedMouseGlobalPosition => _MouseGlobalPosition;
 	public static Int2 MouseGlobalPosition => _MouseGlobalPosition + MousePositionShift;
 	public static Int2 MouseLeftDownGlobalPosition => _MouseLeftDownGlobalPosition + MousePositionShift;
 	public static Int2 MouseRightDownGlobalPosition => _MouseRightDownGlobalPosition + MousePositionShift;

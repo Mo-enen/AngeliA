@@ -215,8 +215,8 @@ public partial class LanguageEditor : WindowUI {
 		if (panelRect.height <= itemHeight) return;
 
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_32, 0);
-
-		int scrollBarWidth = Unify(24);
+		
+		int scrollBarWidth = Unify(12);
 		int labelHeight = Unify(22);
 		int labelPadding = Unify(12);
 		int itemSpaceX = Unify(5);

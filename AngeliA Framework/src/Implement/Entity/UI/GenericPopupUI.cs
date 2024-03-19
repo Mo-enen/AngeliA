@@ -227,8 +227,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		}
 		ClearItems();
 		Instance.ItemCount = 0;
-		Instance.OffsetX = Input.MouseGlobalPosition.x - Renderer.CameraRect.x;
-		Instance.OffsetY = Input.MouseGlobalPosition.y - Renderer.CameraRect.y;
+		Instance.OffsetX = Input.UnshiftedMouseGlobalPosition.x - Renderer.CameraRect.x;
+		Instance.OffsetY = Input.UnshiftedMouseGlobalPosition.y - Renderer.CameraRect.y;
 	}
 
 
