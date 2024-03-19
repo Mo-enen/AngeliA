@@ -324,7 +324,7 @@ public static class GUISkin {
 		Alignment = Alignment.MidLeft,
 	};
 
-	public static readonly GUIStyle CenterLargeLabel = new() {
+	public static readonly GUIStyle LargeCenterLabel = new() {
 
 		ContentColor = LABEL_CONTENT_TINT,
 		ContentColorHover = LABEL_CONTENT_TINT,
@@ -345,7 +345,7 @@ public static class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle CenterSmallLabel = new() {
+	public static readonly GUIStyle SmallCenterLabel = new() {
 
 		ContentColor = LABEL_CONTENT_TINT,
 		ContentColorHover = LABEL_CONTENT_TINT,
@@ -353,6 +353,21 @@ public static class GUISkin {
 		ContentColorDisable = Color32.GREY_196,
 		CharSize = 14,
 		Alignment = Alignment.MidMid,
+	};
+
+	public static readonly GUIStyle Message = new() {
+
+		ContentColor = LABEL_CONTENT_TINT,
+		ContentColorHover = LABEL_CONTENT_TINT,
+		ContentColorDown = LABEL_CONTENT_TINT,
+		ContentColorDisable = Color32.GREY_196,
+
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 6, Const.ART_SCALE * 6, Const.ART_SCALE * 6, Const.ART_SCALE * 6),
+
+		CharSize = 21,
+		Alignment = Alignment.TopMid,
+		Wrap = WrapMode.WordWrap,
+		Clip = true,
 	};
 
 	public static readonly GUIStyle LargeTextArea = new() {

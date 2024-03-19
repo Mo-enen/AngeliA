@@ -981,7 +981,7 @@ public sealed partial class MapEditor : WindowUI {
 			using (GUIScope.BodyColor(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
 				GUI.BackgroundLabel(
 					new IRect(cameraRect.CenterX() - hintWidth / 2, cameraRect.yMax - Unify(32), hintWidth, Unify(22)),
-					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), GUISkin.CenterSmallLabel
+					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), GUISkin.SmallCenterLabel
 				);
 			}
 		}

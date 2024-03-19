@@ -1117,7 +1117,7 @@ public class PlayerMenuUI : EntityUI {
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
 		Renderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
-		GUI.Label(rect, ItemCountChars.GetChars(number), GUISkin.CenterSmallLabel);
+		GUI.Label(rect, ItemCountChars.GetChars(number), GUISkin.SmallCenterLabel);
 	}
 
 

@@ -351,7 +351,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Type Field
 		if (TargetType == BrowserTargetType.File) {
-			GUI.Label(typeRect, TargetExtension, GUISkin.CenterSmallLabel);
+			GUI.Label(typeRect, TargetExtension, GUISkin.SmallCenterLabel);
 			Renderer.Draw_9Slice(
 				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
 			);

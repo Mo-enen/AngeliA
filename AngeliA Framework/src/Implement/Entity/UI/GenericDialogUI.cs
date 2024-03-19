@@ -15,11 +15,11 @@ public class GenericDialogUI : MenuUI {
 
 
 	// Api
+	public static GenericDialogUI Instance { get; private set; }
 	public static bool ShowingDialog => Instance != null && Instance.Active;
 	protected override bool BlockEvent => true;
 
 	// Data
-	private static GenericDialogUI Instance;
 	private readonly Option OptionA = new();
 	private readonly Option OptionB = new();
 	private readonly Option OptionC = new();

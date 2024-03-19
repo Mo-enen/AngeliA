@@ -266,7 +266,7 @@ public partial class LanguageEditor : WindowUI {
 			if (!IgnoreRequirements && line.Required) {
 				int _textIndex = Renderer.GetTextUsedCellCount();
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				GUI.Label(shrinkedRect, line.Key, GUISkin.CenterSmallLabel);
+				GUI.Label(shrinkedRect, line.Key, GUISkin.SmallCenterLabel);
 				Renderer.ClampTextCells(shrinkedRect, _textIndex);
 				ctrlID++;
 			} else {

@@ -30,7 +30,8 @@ public class PixelEditor : WindowUI {
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasMenuTargetIndex = -1;
-	private bool IsDirty = false;
+	private bool IsSheetDirty = false;
+	private bool IsStageDirty = false;
 
 
 	#endregion
@@ -46,7 +47,7 @@ public class PixelEditor : WindowUI {
 
 	public override void OnInactivated () {
 		base.OnInactivated();
-		SaveSheet();
+		SaveSheetToDisk();
 	}
 
 
@@ -126,7 +127,7 @@ public class PixelEditor : WindowUI {
 							INPUT_ID + i, rect.Shrink(rect.height + padding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm, GUISkin.SmallInputField
 						);
-						if (changed || confirm) IsDirty = true;
+						if (changed || confirm) IsSheetDirty = true;
 					} else {
 						GUI.Label(rect.Shrink(rect.height + padding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
 					}
@@ -145,7 +146,8 @@ public class PixelEditor : WindowUI {
 			// Change Selection
 			if (newSelectingIndex >= 0 && CurrentAtlasIndex != newSelectingIndex) {
 				CurrentAtlasIndex = newSelectingIndex;
-				LoadAtlasToStage(newSelectingIndex);
+				if (IsStageDirty) SaveStageToSheet();
+				LoadSheetToStage(newSelectingIndex);
 			}
 
 			// Scrollbar
@@ -182,18 +184,21 @@ public class PixelEditor : WindowUI {
 	#region --- API ---
 
 
-	public void SetSheetPath (string sheetPath) {
+	public void LoadSheetFromDisk (string sheetPath) {
 		SheetPath = sheetPath;
 		if (string.IsNullOrEmpty(sheetPath)) return;
+		IsSheetDirty = false;
+		IsStageDirty = false;
 		Sheet.LoadFromDisk(sheetPath);
-		LoadAtlasToStage(0);
+		LoadSheetToStage(CurrentAtlasIndex = 0);
 	}
 
 
-	public void SaveSheet (bool forceSave = false) {
-		if (!forceSave && !IsDirty) return;
-		IsDirty = false;
+	public void SaveSheetToDisk (bool forceSave = false) {
+		if (!forceSave && !IsSheetDirty) return;
+		IsSheetDirty = false;
 		if (string.IsNullOrEmpty(SheetPath)) return;
+		if (IsStageDirty) SaveStageToSheet();
 		Sheet.SaveToDisk(SheetPath);
 	}
 
@@ -206,12 +211,26 @@ public class PixelEditor : WindowUI {
 	#region --- LGC ---
 
 
-	private void LoadAtlasToStage (int targetIndex) {
-		// Clear
+	private void LoadSheetToStage (int atlasIndex) {
+
+		IsStageDirty = false;
+
+		// Clear Stage
 
 
-		// Load
-		if (Sheet.Atlas == null || targetIndex < 0 || targetIndex >= Sheet.Atlas.Count) return;
+		// Load New to Stage
+		if (Sheet.Atlas == null || atlasIndex < 0 || atlasIndex >= Sheet.Atlas.Count) return;
+
+
+
+
+
+	}
+
+
+	private void SaveStageToSheet () {
+		IsStageDirty = false;
+
 
 
 
@@ -242,7 +261,7 @@ public class PixelEditor : WindowUI {
 				Name = "New Atlas",
 				Type = AtlasType.General,
 			});
-			Instance.IsDirty = true;
+			Instance.IsSheetDirty = true;
 			Instance.AtlasPanelScrollY = int.MaxValue;
 		}
 		static void DeleteConfirm () {
@@ -255,6 +274,7 @@ public class PixelEditor : WindowUI {
 				BuiltInText.UI_DELETE, Delete,
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
+			GenericDialogUI.Instance.SetStyle(GUISkin.Message, GUISkin.Label, GUISkin.CenterLabel);
 		}
 		static void Delete () {
 			var atlasList = Instance.Sheet.Atlas;
@@ -262,6 +282,7 @@ public class PixelEditor : WindowUI {
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
 			Instance.Sheet.RemoveAtlasWithAllSpritesInside(targetIndex);
+			Instance.IsSheetDirty = true;
 		}
 	}
 

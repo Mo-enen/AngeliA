@@ -43,7 +43,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected int AnimationAmount = -32;
 
 	// Data
-	private readonly GUIStyle MsgStyle = new(GUISkin.CenterLargeLabel) { Wrap = WrapMode.WordWrap, Clip = true, };
+	private GUIStyle MessageStyle;
+	private GUIStyle LabelStyle;
+	private GUIStyle ContentStyle;
 	private int ItemCount;
 	private int ScrollY = 0;
 	private int MarkPingPongFrame = 0;
@@ -69,6 +71,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		ActiveFrame = Game.GlobalFrame;
 		AnimationFrame = 0;
 		Input.UseAllHoldingKeys();
+		MessageStyle = GUISkin.SmallTextArea;
+		LabelStyle = GUISkin.Label;
+		ContentStyle = GUISkin.CenterLabel;
 	}
 
 
@@ -148,7 +153,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			GUI.Label(new IRect(
 				windowBounds.x, windowBounds.yMax,
 				windowBounds.width, msgHeight
-			), msg, MsgStyle);
+			), msg, MessageStyle);
 		}
 
 		// Scroll Y
@@ -345,7 +350,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				}
 
 				// Single Label
-				GUI.Label(labelRect, label, GUISkin.CenterLargeLabel);
+				GUI.Label(labelRect, label, ContentStyle);
 
 			} else {
 
@@ -363,14 +368,14 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 				// Double Labels
 				var labelBounds = secLabelRect;
-				GUI.Label(labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0), label);
+				GUI.Label(labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0), label, LabelStyle);
 
 				// Content Label
 				if (hasContent) {
 					if (useStringContent) {
-						GUI.Label(secLabelRect, content, out labelBounds, GUISkin.CenterLabel);
+						GUI.Label(secLabelRect, content, out labelBounds, ContentStyle);
 					} else {
-						GUI.Label(secLabelRect, chars, out labelBounds, GUISkin.CenterLabel);
+						GUI.Label(secLabelRect, chars, out labelBounds, ContentStyle);
 					}
 				}
 
@@ -487,6 +492,13 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	protected void RefreshAnimation () => AnimationFrame = 0;
+
+
+	public void SetStyle (GUIStyle message, GUIStyle label, GUIStyle content) {
+		MessageStyle = message ?? GUISkin.TextArea;
+		LabelStyle = label ?? GUISkin.Label;
+		ContentStyle = content ?? GUISkin.CenterLabel;
+	}
 
 
 	#endregion

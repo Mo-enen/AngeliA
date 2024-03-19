@@ -19,7 +19,7 @@ public class Sheet {
 	public Sheet (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) => SetData(sprites, groups, atlasInfo);
 
 	// API
-	public virtual void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) {
+	public void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) {
 		Sprites.Clear();
 		Groups.Clear();
 		Atlas.Clear();
@@ -29,7 +29,7 @@ public class Sheet {
 		ApplyExtraData();
 	}
 
-	public virtual bool LoadFromDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
+	public bool LoadFromDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
 
 		Clear();
 		var bytes = Util.CompressedFileToByte(path, out int length);
@@ -56,7 +56,7 @@ public class Sheet {
 		return true;
 	}
 
-	public virtual void SaveToDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
+	public void SaveToDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
 		using var stream = new MemoryStream(1024);
 		using var writer = new BinaryWriter(stream);
 		writer.Write((int)0); // File Version
@@ -64,7 +64,7 @@ public class Sheet {
 		Util.ByteToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
 	}
 
-	public virtual void Clear () {
+	public void Clear () {
 		Sprites.Clear();
 		Groups.Clear();
 		Atlas.Clear();
@@ -73,9 +73,36 @@ public class Sheet {
 	}
 
 	public void RemoveAtlasWithAllSpritesInside (int index) {
-
-
-
+		if (index < 0 || index >= Atlas.Count) return;
+		// Remove Atlas
+		Atlas.RemoveAt(index);
+		// Remove Sprites
+		for (int i = 0; i < Sprites.Count; i++) {
+			var sprite = Sprites[i];
+			if (sprite.AtlasIndex != index) continue;
+			// Remove Sprite
+			Sprites.RemoveAt(i);
+			SpritePool.Remove(sprite.GlobalID);
+			i--;
+			// Remove Sprite in Group
+			if (sprite.Group != null) {
+				int spIndexInGroup = sprite.Group.SpriteIDs.IndexOf(sprite.GlobalID);
+				if (spIndexInGroup >= 0) {
+					// ID
+					sprite.Group.SpriteIDs.RemoveAt(spIndexInGroup);
+					// Timing
+					var timings = sprite.Group.Timings;
+					int timingCount = timings.Count;
+					if (spIndexInGroup < timingCount - 1) {
+						int timingDelta = timings[spIndexInGroup + 1] - timings[spIndexInGroup];
+						for (int j = spIndexInGroup + 1; j < timingCount; j++) {
+							timings[j] -= timingDelta;
+						}
+					}
+					timings.RemoveAt(spIndexInGroup);
+				}
+			}
+		}
 	}
 
 	// LGC
