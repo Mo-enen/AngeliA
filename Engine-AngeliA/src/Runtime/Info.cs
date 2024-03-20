@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: AngeliaGameDeveloper("Moenen", " ")]
 [assembly: AngeliaVersion(0, 0, 1)]
 [assembly: AngeliaProjectType(ProjectType.Application)]
-[assembly: RequireEventWaiting]
 
 [assembly: SuppressMessage(
 	"Style",

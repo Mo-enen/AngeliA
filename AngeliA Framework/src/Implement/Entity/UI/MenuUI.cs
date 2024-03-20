@@ -46,6 +46,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	private GUIStyle MessageStyle;
 	private GUIStyle LabelStyle;
 	private GUIStyle ContentStyle;
+	private bool DrawStyleBody;
 	private int ItemCount;
 	private int ScrollY = 0;
 	private int MarkPingPongFrame = 0;
@@ -54,6 +55,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	private int TargetItemCount;
 	private int AnimationFrame = 0;
 	private bool Layout;
+	private int OverrideWindowWidth = -1;
 
 
 	#endregion
@@ -74,6 +76,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		MessageStyle = GUISkin.SmallTextArea;
 		LabelStyle = GUISkin.Label;
 		ContentStyle = GUISkin.CenterLabel;
+		DrawStyleBody = false;
+		OverrideWindowWidth = -1;
 	}
 
 
@@ -277,9 +281,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	protected virtual IRect GetWindowRect () {
-		int w = Unify(WindowWidth);
+		int w = OverrideWindowWidth >= 0 ? OverrideWindowWidth : Unify(WindowWidth);
 		int h = Unify(TargetItemCount * ItemHeight + (TargetItemCount - 1) * ItemGap);
-		int x = (int)(Renderer.CameraRect.x + Renderer.CameraRect.width / 2 - Unify(WindowWidth) / 2);
+		int x = (int)(Renderer.CameraRect.x + Renderer.CameraRect.width / 2 - w / 2);
 		int y = Renderer.CameraRect.y + Renderer.CameraRect.height / 2 - h / 2;
 		return new IRect(x, y, w, h);
 	}
@@ -344,12 +348,16 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				bounds = hoverCheckingRect.Shrink(markSize.x * 2, markSize.x * 2, 0, 0);
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
-					if (mouseHoverLabel && Input.LastActionFromMouse) {
+					if (!DrawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
 						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint);
 					}
 				}
 
 				// Single Label
+				if (DrawStyleBody) {
+					GUI.DrawStyleBody(labelRect, ContentStyle, GUIState.Normal);
+				}
+
 				GUI.Label(labelRect, label, ContentStyle);
 
 			} else {
@@ -361,7 +369,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				// Mouse Highlight
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
-					if (mouseHoverLabel && Input.LastActionFromMouse) {
+					if (!DrawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
 						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
 					}
 				}
@@ -372,6 +380,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 				// Content Label
 				if (hasContent) {
+					if (DrawStyleBody) {
+						GUI.DrawStyleBody(secLabelRect, ContentStyle, GUIState.Normal);
+					}
 					if (useStringContent) {
 						GUI.Label(secLabelRect, content, out labelBounds, ContentStyle);
 					} else {
@@ -480,6 +491,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		if (itemRect_Old.MouseInside() && Input.LastActionFromMouse && SelectionIndex != ItemCount) {
 			SetSelection(ItemCount);
 		}
+		if (mouseHoverLabel) {
+			Cursor.SetCursorAsHand();
+		}
 
 		// Final
 		ItemCount++;
@@ -494,10 +508,12 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected void RefreshAnimation () => AnimationFrame = 0;
 
 
-	public void SetStyle (GUIStyle message, GUIStyle label, GUIStyle content) {
-		MessageStyle = message ?? GUISkin.TextArea;
+	public void SetStyle (GUIStyle message, GUIStyle label, GUIStyle content, bool drawStyleBody, int newWindowWidth = -1) {
+		MessageStyle = message ?? GUISkin.Message;
 		LabelStyle = label ?? GUISkin.Label;
 		ContentStyle = content ?? GUISkin.CenterLabel;
+		DrawStyleBody = drawStyleBody;
+		OverrideWindowWidth = newWindowWidth;
 	}
 
 

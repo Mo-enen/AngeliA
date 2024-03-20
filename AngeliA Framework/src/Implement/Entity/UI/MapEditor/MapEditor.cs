@@ -308,7 +308,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Sprites
 		for (int i = 0; i < spriteCount; i++) {
 			var sprite = Renderer.GetSpriteAt(i);
-			SpritePool.TryAdd(sprite.GlobalID, sprite);
+			SpritePool.TryAdd(sprite.ID, sprite);
 		}
 
 		// Chains
@@ -355,7 +355,7 @@ public sealed partial class MapEditor : WindowUI {
 			int id = type.AngeHash();
 			if (SpritePool.ContainsKey(id)) continue;
 			if (Renderer.TryGetSpriteFromGroup(id, 0, out var sprite)) {
-				EntityArtworkRedirectPool[id] = sprite.GlobalID;
+				EntityArtworkRedirectPool[id] = sprite.ID;
 				continue;
 			}
 			// Base Class
@@ -365,7 +365,7 @@ public sealed partial class MapEditor : WindowUI {
 					EntityArtworkRedirectPool[id] = _tID;
 					break;
 				} else if (Renderer.TryGetSpriteFromGroup(_tID, 0, out sprite)) {
-					EntityArtworkRedirectPool[id] = sprite.GlobalID;
+					EntityArtworkRedirectPool[id] = sprite.ID;
 					break;
 				}
 			}
@@ -1340,7 +1340,7 @@ public sealed partial class MapEditor : WindowUI {
 			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
 		) {
 			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
-			Renderer.Draw(sprite.GlobalID, rect);
+			Renderer.Draw(sprite.ID, rect);
 		} else {
 			Renderer.Draw(ENTITY_CODE, rect);
 		}

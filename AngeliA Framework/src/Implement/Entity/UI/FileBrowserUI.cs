@@ -340,12 +340,13 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		if (ActionType == BrowserActionType.Save) {
 			// Name Field
-			CurrentName = GUI.InputField(091253, fieldRect, CurrentName);
+			CurrentName = GUI.InputField(091253, fieldRect, CurrentName, GUISkin.SmallInputField);
 
 			// Name Label
 			GUI.Label(
 				fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0),
-				TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME
+				TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME,
+				GUISkin.SmallLabel
 			);
 		}
 

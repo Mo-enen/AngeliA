@@ -215,7 +215,7 @@ public class iSlingshot : Bow<iSlingshot.SlingshotBullet, iMarbles> {
 	public class SlingshotBullet : ArrowBullet {
 		public override int ArtworkID => Renderer.TryGetSpriteFromGroup(
 			base.ArtworkID, SpawnFrame, out var sprite, true, true
-		) ? sprite.GlobalID : 0;
+		) ? sprite.ID : 0;
 	}
 }
 

@@ -92,7 +92,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 		// Leaf
 		LeafArtworkCode = Renderer.TryGetSpriteFromGroup(
 			TypeID, (X * 5 + Y * 7) / Const.CEL, out var lSprite
-		) ? lSprite.GlobalID : TypeID;
+		) ? lSprite.ID : TypeID;
 	}
 
 
@@ -159,7 +159,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 		int id = TypeID;
 		var rect = Rect;
 		if (Renderer.TryGetSprite(LeafArtworkCode, out var sprite)) {
-			id = sprite.GlobalID;
+			id = sprite.ID;
 			rect.height = sprite.GlobalHeight;
 			if (rect.width != sprite.GlobalWidth) {
 				rect.x -= (sprite.GlobalWidth - rect.width) / 2;

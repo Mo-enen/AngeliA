@@ -37,7 +37,6 @@ public static class SheetUtil {
 
 	public static Sheet CreateNewSheet (FlexSprite[] flexSprites) {
 
-		var spriteIDHash = new HashSet<int>();
 		var groupPool = new Dictionary<
 			string,
 			(GroupType type, List<(int globalIndex, int localIndex, bool loopStart)> list)
@@ -45,7 +44,6 @@ public static class SheetUtil {
 		var spriteList = new List<AngeSprite>();
 		var atlases = new List<Atlas>();
 		var atlasPool = new Dictionary<string, int>(); // Name, Index
-		var aniDurationList = new List<int>();
 
 		// Load Sprites
 		for (int i = 0; i < flexSprites.Length; i++) {
@@ -89,7 +87,7 @@ public static class SheetUtil {
 			}
 
 			var newSprite = new AngeSprite() {
-				GlobalID = globalID,
+				ID = globalID,
 				GlobalWidth = globalWidth,
 				GlobalHeight = globalHeight,
 				PixelRect = flex.PixelRect,
@@ -107,11 +105,10 @@ public static class SheetUtil {
 				Group = null,
 				SummaryTint = GetSummaryTint(flex.Pixels),
 				Pixels = flex.Pixels,
+				Duration = aniDuration,
 			};
 
-			spriteIDHash.TryAdd(newSprite.GlobalID);
 			spriteList.Add(newSprite);
-			aniDurationList.Add(aniDuration);
 
 			// Group
 			if (groupIndex >= 0) {
@@ -137,22 +134,16 @@ public static class SheetUtil {
 			bool isAni = type == GroupType.Animated;
 			var group = new SpriteGroup() {
 				ID = gName.AngeHash(),
+				Name = gName,
 				SpriteIDs = spriteIDs,
-				Timings = isAni ? new() : null,
 				Type = type,
 			};
-			int totalDuration = 0;
 			for (int i = 0; i < list.Count; i++) {
 				int spIndex = list[i].globalIndex;
-				if (isAni) {
-					if (list[i].loopStart) loopStart = i;
-					int duration = aniDurationList[spIndex].GreaterOrEquel(1);
-					totalDuration += duration;
-					group.Timings.Add(totalDuration);
-				}
 				var sprite = spriteList[spIndex];
+				if (isAni && list[i].loopStart) loopStart = i;
 				sprite.Group = group;
-				spriteIDs.Add(sprite.GlobalID);
+				spriteIDs.Add(sprite.ID);
 			}
 			group.LoopStart = loopStart;
 			groups.Add(group);

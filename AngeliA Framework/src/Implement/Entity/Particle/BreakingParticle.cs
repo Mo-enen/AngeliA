@@ -65,7 +65,7 @@ public class BreakingParticle : Particle {
 
 		if (!Renderer.HasSprite(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, 0, out var groupSprite, false)) {
-				spriteID = groupSprite.GlobalID;
+				spriteID = groupSprite.ID;
 			} else return;
 		}
 

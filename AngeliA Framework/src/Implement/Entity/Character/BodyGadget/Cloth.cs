@@ -222,10 +222,10 @@ public abstract class BodyCloth : Cloth {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(character.ShoulderL, spriteL.GlobalID);
+				CoverClothOn(character.ShoulderL, spriteL.ID);
 			}
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(character.ShoulderR, spriteR.GlobalID);
+				CoverClothOn(character.ShoulderR, spriteR.ID);
 			}
 		} else {
 			CoverClothOn(character.ShoulderL, spriteID);
@@ -237,10 +237,10 @@ public abstract class BodyCloth : Cloth {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(character.UpperArmL, spriteL.GlobalID, localZ);
+				CoverClothOn(character.UpperArmL, spriteL.ID, localZ);
 			}
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(character.UpperArmR, spriteR.GlobalID, localZ);
+				CoverClothOn(character.UpperArmR, spriteR.ID, localZ);
 			}
 		} else {
 			CoverClothOn(character.UpperArmL, spriteID, localZ);
@@ -252,10 +252,10 @@ public abstract class BodyCloth : Cloth {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(character.LowerArmL, spriteL.GlobalID, localZ);
+				CoverClothOn(character.LowerArmL, spriteL.ID, localZ);
 			}
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(character.LowerArmR, spriteR.GlobalID, localZ);
+				CoverClothOn(character.LowerArmR, spriteR.ID, localZ);
 			}
 		} else {
 			CoverClothOn(character.LowerArmL, spriteID, localZ);
@@ -470,10 +470,10 @@ public abstract class HipCloth : Cloth {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(character.UpperLegL, spriteL.GlobalID, localZ);
+				CoverClothOn(character.UpperLegL, spriteL.ID, localZ);
 			}
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(character.UpperLegR, spriteR.GlobalID, localZ);
+				CoverClothOn(character.UpperLegR, spriteR.ID, localZ);
 			}
 		} else {
 			CoverClothOn(character.UpperLegL, spriteID, localZ);
@@ -485,10 +485,10 @@ public abstract class HipCloth : Cloth {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(character.LowerLegL, spriteL.GlobalID, localZ);
+				CoverClothOn(character.LowerLegL, spriteL.ID, localZ);
 			}
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(character.LowerLegR, spriteR.GlobalID, localZ);
+				CoverClothOn(character.LowerLegR, spriteR.ID, localZ);
 			}
 		} else {
 			CoverClothOn(character.LowerLegL, spriteID, localZ);
@@ -587,10 +587,10 @@ public abstract class HandCloth : Cloth {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(character.HandL, spriteL.GlobalID, localZ);
+				CoverClothOn(character.HandL, spriteL.ID, localZ);
 			}
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(character.HandR, spriteR.GlobalID, localZ);
+				CoverClothOn(character.HandR, spriteR.ID, localZ);
 			}
 		} else {
 			CoverClothOn(character.HandL, spriteID, localZ);
@@ -627,10 +627,10 @@ public abstract class FootCloth : Cloth {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				DrawClothForFootLogic(character.FootL, spriteL.GlobalID, localZ);
+				DrawClothForFootLogic(character.FootL, spriteL.ID, localZ);
 			}
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				DrawClothForFootLogic(character.FootR, spriteR.GlobalID, localZ);
+				DrawClothForFootLogic(character.FootR, spriteR.ID, localZ);
 			}
 		} else {
 			DrawClothForFootLogic(character.FootL, spriteID, localZ);

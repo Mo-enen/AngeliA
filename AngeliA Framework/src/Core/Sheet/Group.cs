@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
-
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public enum GroupType {
@@ -16,42 +17,31 @@ public enum GroupType {
 
 public class SpriteGroup {
 
+	private static readonly StringBuilder CacheBuilder = new(256);
+
 	public int Count => SpriteIDs.Count;
 
 	public int ID;
+	public string Name;
 	public int LoopStart;
 	public GroupType Type;
 	public List<int> SpriteIDs;
-	public List<int> Timings;
 
-	public int GetSpriteIdFromAnimationFrame (int localFrame, int loopStart = -1) {
-
-		int len = Timings.Count;
-
-		// Fix Loopstart
-		loopStart = loopStart < 0 ? LoopStart : loopStart;
-		int loopStartTiming = loopStart == 0 ? 0 : Timings[(loopStart - 1).Clamp(0, len - 1)];
-		int totalFrame = localFrame < loopStartTiming ? Timings[^1] : Timings[^1] - loopStartTiming;
-		int frameOffset = localFrame < loopStartTiming ? 0 : loopStartTiming;
-		localFrame = ((localFrame - frameOffset) % totalFrame) + frameOffset;
-
-		// Get Target Index
-		int targetIndex = 0;
-		for (int i = 0; i < len; i++) {
-			if (localFrame < Timings[i]) {
-				targetIndex = i;
-				break;
-			}
-		}
-		return SpriteIDs[targetIndex];
-	}
-
-	public void LoadFromBinary_v0 (BinaryReader reader, System.Action<System.Exception> exceptionHandler) {
+	public void LoadFromBinary_v0 (BinaryReader reader, Action<Exception> exceptionHandler) {
 		uint byteLen = reader.ReadUInt32();
 		long endPos = reader.BaseStream.Position + byteLen;
 		try {
+
+			// Name
+			int nameLen = reader.ReadByte();
+			CacheBuilder.Clear();
+			for (int i = 0; i < nameLen; i++) {
+				CacheBuilder.Append((char)reader.ReadByte());
+			}
+			Name = CacheBuilder.ToString();
+
 			// ID
-			ID = reader.ReadInt32();
+			ID = Name.AngeHash();
 
 			// Group Type
 			Type = (GroupType)reader.ReadByte();
@@ -68,26 +58,22 @@ public class SpriteGroup {
 				SpriteIDs.Add(reader.ReadInt32());
 			}
 
-			// Timing
-			if (Type == GroupType.Animated) {
-				Timings = new();
-				for (int i = 0; i < spriteLen; i++) {
-					Timings.Add(reader.ReadInt32().GreaterOrEquel(1));
-				}
-			}
-
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
+		} catch (Exception ex) { exceptionHandler?.Invoke(ex); }
 		reader.BaseStream.Position = endPos;
 	}
 
-	public void SaveToBinary_v0 (BinaryWriter writer, System.Action<System.Exception> exceptionHandler) {
+	public void SaveToBinary_v0 (BinaryWriter writer, Action<Exception> exceptionHandler) {
 		long markPos = writer.BaseStream.Position;
 		writer.Write((uint)0);
 		long startPos = writer.BaseStream.Position;
 		try {
 
-			// ID
-			writer.Write((int)ID);
+			// Name
+			int len = Name.Length.Clamp(0, 255);
+			writer.Write((byte)len);
+			for (int i = 0; i < len; i++) {
+				writer.Write((byte)Name[i]);
+			}
 
 			// Group Type
 			writer.Write((byte)Type);
@@ -104,20 +90,7 @@ public class SpriteGroup {
 				writer.Write((int)SpriteIDs[i]);
 			}
 
-			// Timing
-			if (Type == GroupType.Animated) {
-				if (Timings != null && Timings.Count >= spriteCount) {
-					for (int i = 0; i < spriteCount; i++) {
-						writer.Write((int)Timings[i]);
-					}
-				} else {
-					for (int i = 0; i < spriteCount; i++) {
-						writer.Write(i < Timings.Count ? (int)Timings[i] : 1);
-					}
-				}
-			}
-
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
+		} catch (Exception ex) { exceptionHandler?.Invoke(ex); }
 
 		long endPos = writer.BaseStream.Position;
 		writer.BaseStream.Position = markPos;

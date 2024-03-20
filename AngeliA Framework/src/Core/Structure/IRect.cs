@@ -218,6 +218,10 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width && lhs.height == rhs.height;
 	}
 
+	public static implicit operator int (IRect v) {
+		throw new NotImplementedException();
+	}
+
 	public override readonly int GetHashCode () {
 		int hashCode = x.GetHashCode();
 		int hashCode2 = y.GetHashCode();

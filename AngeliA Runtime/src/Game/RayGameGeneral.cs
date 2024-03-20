@@ -29,6 +29,13 @@ public partial class RayGame {
 
 	protected override void _QuitApplication () => RequireQuitGame = true;
 
+	protected override void _SetEventWaiting (bool enable) {
+		if (enable) {
+			Raylib.EnableEventWaiting();
+		} else {
+			Raylib.DisableEventWaiting();
+		}
+	}
 
 	// Window
 	protected override void _SetWindowSize (int width, int height) {

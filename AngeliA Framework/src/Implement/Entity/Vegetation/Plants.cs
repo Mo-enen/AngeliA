@@ -89,7 +89,7 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 		int id = TypeID;
 		var rect = Rect;
 		if (ArtworkIndex >= 0 && Renderer.TryGetSpriteFromGroup(TypeID, ArtworkIndex, out var sprite, true)) {
-			id = sprite.GlobalID;
+			id = sprite.ID;
 			rect.height = sprite.GlobalHeight;
 			if (rect.width != sprite.GlobalWidth) {
 				rect.x -= (sprite.GlobalWidth - rect.width) / 2;

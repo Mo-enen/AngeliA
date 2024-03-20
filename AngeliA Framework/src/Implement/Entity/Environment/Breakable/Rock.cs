@@ -21,7 +21,7 @@ public class Rock : Breakable {
 			Y = rect.y;
 			Width = rect.width;
 			Height = rect.height;
-			ArtworkCode = sprite.GlobalID;
+			ArtworkCode = sprite.ID;
 		}
 	}
 

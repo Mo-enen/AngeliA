@@ -148,7 +148,7 @@ public partial class MapEditor {
 			}
 			palGroup.Items.Add(new PaletteItem() {
 				ID = chain.ID,
-				ArtworkID = chain.Type == GroupType.Animated ? chain.ID : firstSprite.GlobalID,
+				ArtworkID = chain.Type == GroupType.Animated ? chain.ID : firstSprite.ID,
 				Name = Util.GetDisplayName(firstSprite.RealName).TrimEnd_NumbersEmpty_(),
 				GroupType = chain.Type,
 				BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
@@ -160,7 +160,7 @@ public partial class MapEditor {
 		// For all Sprites
 		for (int index = 0; index < spriteCount; index++) {
 			var sp = Renderer.GetSpriteAt(index);
-			int id = sp.GlobalID;
+			int id = sp.ID;
 
 			var atlasType = sp.Atlas.Type;
 			if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
@@ -177,8 +177,8 @@ public partial class MapEditor {
 				});
 			}
 			group.Items.Add(new PaletteItem() {
-				ID = sp.GlobalID,
-				ArtworkID = sp.GlobalID,
+				ID = sp.ID,
+				ArtworkID = sp.ID,
 				Name = Util.GetDisplayName(sp.RealName).TrimEnd_NumbersEmpty_(),
 				GroupType = GroupType.General,
 				BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
@@ -575,7 +575,7 @@ public partial class MapEditor {
 			// Cover
 			int drawingID = 0;
 			if (Renderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite, ignoreAnimatedWhenFailback: false)) {
-				drawingID = sprite.GlobalID;
+				drawingID = sprite.ID;
 			}
 			if (drawingID != 0) {
 				Renderer.Draw(

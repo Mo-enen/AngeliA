@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA;
+namespace AngeliA.Framework;
 
 public sealed class GUIStyle {
 

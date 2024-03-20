@@ -105,6 +105,9 @@ public abstract partial class Game {
 	public static void SetWindowMinSize (int size) => Instance._SetWindowMinSize(size);
 	protected abstract void _SetWindowMinSize (int size);
 
+	public static void SetEventWaiting (bool enable) => Instance._SetEventWaiting(enable);
+	protected abstract void _SetEventWaiting (bool enable);
+
 
 	// Listener
 	public static void InvokeGameQuitting () {

@@ -16,7 +16,7 @@ public struct Color32 : IFormattable, IComparable {
 	public static readonly Color32 WHITE_20 = new(255, 255, 255, 20);
 	public static readonly Color32 WHITE_0 = new(255, 255, 255, 0);
 	public static readonly Color32 ORANGE = new(255, 128, 0, 255);
-	public static readonly Color32 ORANGE_BETTER = new(255, 200, 100, 255);
+	public static readonly Color32 ORANGE_BETTER = new(255, 220, 100, 255);
 	public static readonly Color32 YELLOW = new(255, 255, 0, 255);
 	public static readonly Color32 BLACK = new(0, 0, 0, 255);
 	public static readonly Color32 BLACK_128 = new(0, 0, 0, 128);
@@ -24,6 +24,8 @@ public struct Color32 : IFormattable, IComparable {
 	public static readonly Color32 RED = new(255, 0, 0, 255);
 	public static readonly Color32 RED_BETTER = new(255, 64, 64, 255);
 	public static readonly Color32 GREEN = new(0, 255, 0, 255);
+	public static readonly Color32 GREEN_DARK = new(42, 128, 36, 255);
+	public static readonly Color32 GREEN_BETTER = new(32, 200, 96, 255);
 	public static readonly Color32 CYAN = new(0, 255, 255, 255);
 	public static readonly Color32 CYAN_BETTER = new(32, 232, 255, 255);
 	public static readonly Color32 BLUE = new(0, 0, 255, 255);
@@ -38,6 +40,7 @@ public struct Color32 : IFormattable, IComparable {
 	public static readonly Color32 GREY_196 = new(196, 196, 196, 255);
 	public static readonly Color32 GREY_160 = new(160, 160, 160, 255);
 	public static readonly Color32 GREY_128 = new(128, 128, 128, 255);
+	public static readonly Color32 GREY_112 = new(112, 112, 112, 255);
 	public static readonly Color32 GREY_96 = new(96, 96, 96, 255);
 	public static readonly Color32 GREY_64 = new(64, 64, 64, 255);
 	public static readonly Color32 GREY_56 = new(56, 56, 56, 255);

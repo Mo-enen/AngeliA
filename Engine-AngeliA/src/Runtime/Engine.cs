@@ -463,6 +463,9 @@ internal class Engine {
 			Setting.WindowPositionY = windowPos.y;
 		}
 
+		// Event Waiting
+		Game.SetEventWaiting(newMode == WindowMode.Mascot);
+
 		// Set
 		int targetWindowWidth = Game.ScreenWidth;
 		int targetWindowHeight = Game.ScreenHeight;

@@ -108,12 +108,12 @@ public static class TextureUtil {
 
 	public static void FillSheetIntoTexturePool (Sheet sheet, Dictionary<int, Texture2D> TexturePool) {
 		foreach (var sprite in sheet.Sprites) {
-			if (TexturePool.ContainsKey(sprite.GlobalID)) continue;
+			if (TexturePool.ContainsKey(sprite.ID)) continue;
 			var texture = GetTextureFromPixels(sprite.Pixels, sprite.PixelRect.width, sprite.PixelRect.height);
 			if (!texture.HasValue) continue;
 			Raylib.SetTextureFilter(texture.Value, TextureFilter.Point);
 			Raylib.SetTextureWrap(texture.Value, TextureWrap.Clamp);
-			TexturePool.Add(sprite.GlobalID, texture.Value);
+			TexturePool.Add(sprite.ID, texture.Value);
 		}
 	}
 

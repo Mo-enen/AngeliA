@@ -11,7 +11,7 @@ public class AngeSprite {
 
 	private static readonly StringBuilder CacheBuilder = new(256);
 
-	public int GlobalID;
+	public int ID;
 	public string RealName;
 	public int GlobalWidth;
 	public int GlobalHeight;
@@ -27,6 +27,7 @@ public class AngeSprite {
 	public bool IsTrigger;
 	public int Rule;
 	public int Tag;
+	public int Duration;
 	public Color32 SummaryTint;
 	public Color32[] Pixels;
 
@@ -43,7 +44,7 @@ public class AngeSprite {
 			RealName = CacheBuilder.ToString();
 
 			// ID
-			GlobalID = RealName.AngeHash();
+			ID = RealName.AngeHash();
 
 			// Size
 			PixelRect.x = reader.ReadUInt16();
@@ -82,6 +83,9 @@ public class AngeSprite {
 
 			// Tag
 			Tag = reader.ReadInt32();
+
+			// Duration
+			Duration = reader.ReadUInt16();
 
 			// Group
 			Group = null;
@@ -140,6 +144,9 @@ public class AngeSprite {
 
 			// Tag
 			writer.Write((int)Tag);
+
+			// Duration
+			writer.Write((ushort)Duration);
 
 			// Pixels
 			Pixels ??= new Color32[PixelRect.width * PixelRect.height];
@@ -202,7 +209,7 @@ public class AngeSprite {
 					// Loopstart
 					if (
 						Group.LoopStart >= 0 && Group.LoopStart < Group.SpriteIDs.Count &&
-						Group.SpriteIDs[Group.LoopStart] == GlobalID
+						Group.SpriteIDs[Group.LoopStart] == ID
 					) {
 						CacheBuilder.Append(" #loopStart");
 					}

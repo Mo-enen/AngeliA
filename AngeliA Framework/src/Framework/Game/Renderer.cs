@@ -386,7 +386,7 @@ public static class Renderer {
 		if (layer.FocusedCell >= layer.CellCount) {
 			layer.FocusedCell = -1;
 		}
-		LastDrawnID = sprite.GlobalID;
+		LastDrawnID = sprite.ID;
 		return cell;
 	}
 
@@ -513,7 +513,7 @@ public static class Renderer {
 	public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) {
 		if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return Cell.EMPTY;
-		int id = group.GetSpriteIdFromAnimationFrame(frame, loopStart);
+		int id = Sheet.GetSpriteIdFromAnimationFrame(group, frame, loopStart);
 		return Draw(id, x, y, pivotX, pivotY, rotation, width, height, color);
 	}
 
@@ -522,7 +522,7 @@ public static class Renderer {
 	public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
 		if (Sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
 		if (!ignoreAnimation && Sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
-			int id = group.GetSpriteIdFromAnimationFrame(Game.GlobalFrame);
+			int id = Sheet.GetSpriteIdFromAnimationFrame(group, Game.GlobalFrame);
 			return Sheet.SpritePool.TryGetValue(id, out sprite);
 		}
 		sprite = null;

@@ -26,12 +26,12 @@ public class PixelEditor : WindowUI {
 
 	// Data
 	private readonly Sheet Sheet = new();
-	private int CurrentAtlasIndex = 0;
+	private readonly List<AngeSprite> StagedSprites = new();
+	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasMenuTargetIndex = -1;
-	private bool IsSheetDirty = false;
-	private bool IsStageDirty = false;
+	private bool IsDirty = false;
 
 
 	#endregion
@@ -54,16 +54,14 @@ public class PixelEditor : WindowUI {
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
 		Cursor.RequireCursor();
-		int panelWidth = Unify(240);
-		Update_Panel(panelWidth);
-		Update_Editor();
+		Update_Panel(WindowRect.EdgeInside(Direction4.Left, Unify(240)));
+		Update_Editor(WindowRect.Shrink(Unify(240), 0, 0, 0));
 	}
 
 
-	private void Update_Panel (int panelWidth) {
+	private void Update_Panel (IRect panelRect) {
 
 		const int INPUT_ID = 287234;
-		var panelRect = WindowRect.EdgeInside(Direction4.Left, panelWidth);
 
 		// BG
 		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_20);
@@ -81,7 +79,7 @@ public class PixelEditor : WindowUI {
 			int scrollbarWidth = Unify(12);
 			int padding = Unify(4);
 			int atlasPadding = Unify(4);
-			CurrentAtlasIndex = CurrentAtlasIndex.Clamp(0, itemCount - 1);
+			SetCurrentAtlas(CurrentAtlasIndex.Clamp(0, itemCount - 1));
 			var rect = panelRect.EdgeInside(Direction4.Up, Unify(32));
 			int newSelectingIndex = -1;
 			int scrollMax = ((itemCount + 6) * (rect.height + atlasPadding) - panelRect.height).GreaterOrEquelThanZero();
@@ -114,8 +112,8 @@ public class PixelEditor : WindowUI {
 					}
 
 					// Selection Mark
-					if (selecting) {
-						Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32);
+					if (!renaming && selecting) {
+						Renderer.Draw(Const.PIXEL, rect, Color32.GREEN_DARK);
 					}
 
 					// Icon
@@ -127,7 +125,7 @@ public class PixelEditor : WindowUI {
 							INPUT_ID + i, rect.Shrink(rect.height + padding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm, GUISkin.SmallInputField
 						);
-						if (changed || confirm) IsSheetDirty = true;
+						if (changed || confirm) IsDirty = true;
 					} else {
 						GUI.Label(rect.Shrink(rect.height + padding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
 					}
@@ -145,9 +143,7 @@ public class PixelEditor : WindowUI {
 
 			// Change Selection
 			if (newSelectingIndex >= 0 && CurrentAtlasIndex != newSelectingIndex) {
-				CurrentAtlasIndex = newSelectingIndex;
-				if (IsStageDirty) SaveStageToSheet();
-				LoadSheetToStage(newSelectingIndex);
+				SetCurrentAtlas(newSelectingIndex);
 			}
 
 			// Scrollbar
@@ -171,7 +167,11 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_Editor () {
+	private void Update_Editor (IRect contentRect) {
+
+
+
+
 
 	}
 
@@ -187,18 +187,16 @@ public class PixelEditor : WindowUI {
 	public void LoadSheetFromDisk (string sheetPath) {
 		SheetPath = sheetPath;
 		if (string.IsNullOrEmpty(sheetPath)) return;
-		IsSheetDirty = false;
-		IsStageDirty = false;
+		IsDirty = false;
+		CurrentAtlasIndex = -1;
 		Sheet.LoadFromDisk(sheetPath);
-		LoadSheetToStage(CurrentAtlasIndex = 0);
 	}
 
 
 	public void SaveSheetToDisk (bool forceSave = false) {
-		if (!forceSave && !IsSheetDirty) return;
-		IsSheetDirty = false;
+		if (!forceSave && !IsDirty) return;
+		IsDirty = false;
 		if (string.IsNullOrEmpty(SheetPath)) return;
-		if (IsStageDirty) SaveStageToSheet();
 		Sheet.SaveToDisk(SheetPath);
 	}
 
@@ -209,34 +207,6 @@ public class PixelEditor : WindowUI {
 
 
 	#region --- LGC ---
-
-
-	private void LoadSheetToStage (int atlasIndex) {
-
-		IsStageDirty = false;
-
-		// Clear Stage
-
-
-		// Load New to Stage
-		if (Sheet.Atlas == null || atlasIndex < 0 || atlasIndex >= Sheet.Atlas.Count) return;
-
-
-
-
-
-	}
-
-
-	private void SaveStageToSheet () {
-		IsStageDirty = false;
-
-
-
-
-
-
-	}
 
 
 	private void ShowAtlasItemPopup (int atlasIndex) {
@@ -261,8 +231,9 @@ public class PixelEditor : WindowUI {
 				Name = "New Atlas",
 				Type = AtlasType.General,
 			});
-			Instance.IsSheetDirty = true;
+			Instance.IsDirty = true;
 			Instance.AtlasPanelScrollY = int.MaxValue;
+			Instance.SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
 		}
 		static void DeleteConfirm () {
 			var atlasList = Instance.Sheet.Atlas;
@@ -274,15 +245,27 @@ public class PixelEditor : WindowUI {
 				BuiltInText.UI_DELETE, Delete,
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
-			GenericDialogUI.Instance.SetStyle(GUISkin.Message, GUISkin.Label, GUISkin.CenterLabel);
+			GenericDialogUI.Instance.SetStyle(
+				GUISkin.SmallMessage, GUISkin.Label, GUISkin.DarkButton,
+				drawStyleBody: true, newWindowWidth: Unify(330)
+			);
 		}
 		static void Delete () {
 			var atlasList = Instance.Sheet.Atlas;
 			if (atlasList.Count <= 1) return;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
-			Instance.Sheet.RemoveAtlasWithAllSpritesInside(targetIndex);
-			Instance.IsSheetDirty = true;
+			Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
+			Instance.IsDirty = true;
+		}
+	}
+
+
+	private void SetCurrentAtlas (int atlasIndex) {
+		if (CurrentAtlasIndex == atlasIndex) return;
+		StagedSprites.Clear();
+		foreach(var sprite in Sheet.Sprites) {
+
 		}
 	}
 

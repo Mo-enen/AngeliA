@@ -213,7 +213,7 @@ public partial class RayGame {
 				var sprite = cell.Sprite;
 				if (sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
 
-				if (!TexturePool.TryGetValue(sprite.GlobalID, out var texture)) continue;
+				if (!TexturePool.TryGetValue(sprite.ID, out var texture)) continue;
 
 				// UV
 				int pixelWidth = sprite.PixelRect.width;

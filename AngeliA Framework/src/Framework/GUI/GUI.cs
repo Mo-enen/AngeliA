@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
-using AngeliA.Internal;
 
 namespace AngeliA.Framework;
 
@@ -41,6 +41,7 @@ public static class GUI {
 	private static int BeamBlinkFrame = int.MinValue;
 	private static Int2? ScrollBarMouseDownPos = null;
 	private static int DraggingScrollbarID = 0;
+	private static int InvokeTypingStartID = 0;
 
 
 	#endregion
@@ -92,6 +93,7 @@ public static class GUI {
 		BeamIndex = 0;
 		BeamLength = 0;
 		BeamBlinkFrame = Game.PauselessFrame;
+		InvokeTypingStartID = controlID;
 	}
 
 	public static void CancelTyping () {
@@ -99,6 +101,7 @@ public static class GUI {
 		TypingBuilder.Clear();
 		BeamIndex = 0;
 		BeamLength = 0;
+		InvokeTypingStartID = 0;
 	}
 
 
@@ -110,21 +113,180 @@ public static class GUI {
 	public static void Label (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
 	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
 	private static void LabelLogic (IRect rect, string text, char[] chars, GUIStyle style, GUIState state, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
+
 		if (!Renderer.TextReady) {
 			endIndex = startIndex;
 			bounds = rect;
 			beamRect = new IRect(rect.x, rect.y, 1, rect.height);
 			return;
 		}
+
 		// Draw
 		style ??= GUISkin.Label;
-		Renderer.GetTextCells(out var cells, out int cellCount);
-		TextUtilInternal.DrawLabelInternal(
-			Renderer.RequireCharForPool, Renderer.DrawChar, UnifyBasedOnMonitor ? UnifyMonitor : Unify,
-			cellCount, cells, style,
-			GetContentRect(rect, style, state), text, chars, Color * ContentColor * style.GetContentColor(state), beamIndex, startIndex, drawInvisibleChar,
-			out bounds, out beamRect, out endIndex
-		);
+		Renderer.GetTextCells(out var textCells, out int textCountInLayer);
+		rect = GetContentRect(rect, style, state);
+		var color = Color * ContentColor * style.GetContentColor(state);
+
+		// Logic
+		endIndex = startIndex;
+		bounds = rect;
+		beamRect = new IRect(rect.x, rect.y, 1, rect.height);
+
+		bool fromString = chars == null;
+		int count = fromString ? text.Length : chars.Length;
+		int charSize = style.CharSize < 0 ? rect.height / 2 : Unify(style.CharSize);
+		int lineSpace = Unify(style.LineSpace);
+		int charSpace = Unify(style.CharSpace);
+		var alignment = style.Alignment;
+		var wrap = style.Wrap;
+		bool clip = style.Clip;
+		bool beamEnd = beamIndex >= count;
+		Renderer.RequireCharForPool(' ', out var emptyCharSprite);
+
+		// Content
+		int maxLineCount = ((float)rect.height / (charSize + lineSpace)).FloorToInt();
+		int line = 0;
+		int x = rect.x;
+		int y = rect.yMax - charSize;
+		int startCellIndex = textCountInLayer;
+		int nextWrapCheckIndex = 0;
+		bool firstCharAtLine = true;
+		int minX = int.MaxValue;
+		int minY = int.MaxValue;
+		int maxX = int.MinValue;
+		int maxY = int.MinValue;
+		for (int i = startIndex; i < count; i++) {
+
+			char c = fromString ? text[i] : chars[i];
+			endIndex = i;
+			if (c == '\r') goto CONTINUE;
+			if (c == '\0') break;
+
+			// Line
+			if (c == '\n') {
+				x = rect.x;
+				y -= charSize + lineSpace;
+				firstCharAtLine = true;
+				line++;
+				if (clip && line >= maxLineCount) break;
+				goto CONTINUE;
+			}
+
+			// Require Char
+			if (!Renderer.RequireCharForPool(c, out var sprite)) goto CONTINUE;
+
+			int realCharSize = (sprite.Advance * charSize).RoundToInt();
+
+			// Wrap Check for Word
+			if (wrap == WrapMode.WordWrap && i >= nextWrapCheckIndex && !IsLineBreakingChar(c)) {
+				if (!WordEnoughToFit(
+					text, chars, charSize, charSpace, i,
+					rect.xMax - x - realCharSize, out int wordLength
+				) && !firstCharAtLine) {
+					x = rect.x;
+					y -= charSize + lineSpace;
+					line++;
+					firstCharAtLine = true;
+					if (clip && line >= maxLineCount) break;
+				}
+				nextWrapCheckIndex += wordLength - 1;
+			}
+
+			// Draw Char
+			if (wrap != WrapMode.NoWrap && x > rect.xMax - realCharSize) {
+				x = rect.x;
+				y -= charSize + lineSpace;
+				line++;
+				if (char.IsWhiteSpace(c)) goto CONTINUE;
+				if (clip && line >= maxLineCount) break;
+			}
+			var cell = Renderer.DrawChar(sprite, x, y, charSize, charSize, color) ?? Cell.EMPTY;
+			if (cell != null && cell.TextSprite != null) textCountInLayer++;
+
+			// Beam
+			if (!beamEnd && beamIndex >= 0 && i >= beamIndex) {
+				beamRect.x = x;
+				beamRect.y = y;
+				beamRect.width = Unify(2);
+				beamRect.height = charSize;
+				beamIndex = -1;
+			}
+			if (beamEnd && beamIndex >= 0 && i >= count - 1) {
+				beamRect.x = x + realCharSize + charSpace;
+				beamRect.y = y;
+				beamRect.width = Unify(2);
+				beamRect.height = charSize;
+				beamIndex = -1;
+			}
+
+			// Next
+			x += realCharSize + charSpace;
+			minX = Util.Min(minX, cell.X);
+			minY = Util.Min(minY, cell.Y);
+			maxX = Util.Max(maxX, cell.X + cell.Width);
+			maxY = Util.Max(maxY, cell.Y + cell.Height);
+			firstCharAtLine = false;
+
+			continue;
+
+			CONTINUE:;
+			if (drawInvisibleChar) {
+				int cellCount = textCountInLayer.Clamp(0, textCells.Length) - startCellIndex - 1;
+				int textCount = i - startIndex;
+				int addCount = textCount - cellCount;
+				for (int add = 0; add < addCount; add++) {
+					var _cell = Renderer.DrawChar(emptyCharSprite, 0, 0, 0, 0, color);
+					if (_cell != null && _cell.TextSprite != null) textCountInLayer++;
+				}
+			}
+
+		}
+
+		// Alignment
+		if (count > 0) {
+			int offsetX;
+			int offsetY;
+			int textSizeX = maxX - minX;
+			int textSizeY = maxY - minY;
+			offsetX = alignment switch {
+				Alignment.TopRight or Alignment.MidRight or Alignment.BottomRight =>
+					rect.xMax - maxX,
+				Alignment.TopMid or Alignment.MidMid or Alignment.BottomMid =>
+					rect.xMax - maxX - ((rect.width - textSizeX) / 2),
+				_ =>
+					rect.xMin - minX,
+			};
+			offsetY = alignment switch {
+				Alignment.BottomLeft or Alignment.BottomMid or Alignment.BottomRight =>
+					rect.yMin - minY,
+				Alignment.MidLeft or Alignment.MidMid or Alignment.MidRight =>
+					rect.yMax - maxY - ((rect.height - textSizeY) / 2),
+				_ =>
+					rect.yMax - maxY,
+			};
+
+			// Offset
+			int cellCount = textCountInLayer.Clamp(0, textCells.Length);
+			for (int i = startCellIndex; i < cellCount; i++) {
+				var cell = textCells[i];
+				cell.X += offsetX;
+				cell.Y += offsetY;
+			}
+			beamRect.x += offsetX;
+			beamRect.y += offsetY;
+
+			// BG Size
+			bounds.x = minX + offsetX;
+			bounds.y = minY + offsetY;
+			bounds.width = maxX - minX;
+			bounds.height = maxY - minY;
+
+			// Clip Cells
+			if (clip) {
+				Util.ClampCells(textCells, bounds, startCellIndex, textCountInLayer);
+			}
+		}
+
 	}
 
 
@@ -319,6 +481,7 @@ public static class GUI {
 		selectionStyle ??= GUISkin.GreenPixel;
 		changed = false;
 		confirm = false;
+		bool invokeStart = InvokeTypingStartID == controlID;
 		bool startTyping = false;
 		bool mouseDownPosInRect = rect.Contains(Input.MouseLeftDownGlobalPosition);
 		bool mouseDragging = Input.MouseLeftButtonHolding && mouseDownPosInRect;
@@ -330,6 +493,7 @@ public static class GUI {
 			Input.MouseLeftButtonHolding && mouseDownPosInRect ? GUIState.Press :
 			Input.MouseLeftButtonHolding && rect.MouseInside() ? GUIState.Hover :
 			GUIState.Normal;
+		if (invokeStart) InvokeTypingStartID = 0;
 
 		Cursor.SetCursorAsBeam(rect);
 
@@ -343,7 +507,9 @@ public static class GUI {
 			BeamBlinkFrame = Game.PauselessFrame;
 			startTyping = true;
 			mouseDragging = false;
+			InvokeTypingStartID = 0;
 		}
+		startTyping = startTyping || invokeStart;
 
 		// Typing 
 		bool typing = Enable && TypingTextFieldID == controlID;
@@ -486,7 +652,10 @@ public static class GUI {
 
 		// Draw Text
 		if (!string.IsNullOrEmpty(text)) {
-			LabelLogic(labelRect, text, null, bodyStyle, state, beamIndex, 0, false, out _, out beamRect, out _);
+			LabelLogic(
+				labelRect, text, null, bodyStyle, state,
+				beamIndex, 0, false, out _, out beamRect, out _
+			);
 		}
 
 		// Draw Beam
@@ -544,6 +713,7 @@ public static class GUI {
 				DrawStyleBody(selectionRect, selectionStyle, GUIState.Normal);
 			}
 
+			// Move Beam from Mouse
 			if (typing && (startTyping || mouseDragging)) {
 				int mouseBeamIndex = 0;
 				int mouseX = Input.MouseGlobalPosition.x;
@@ -701,6 +871,35 @@ public static class GUI {
 		rect = rect.Shift(shift.x, shift.y);
 		// Final
 		return rect;
+	}
+
+
+	private static bool IsLineBreakingChar (char c) =>
+		char.IsWhiteSpace(c) || char.GetUnicodeCategory(c) switch {
+			UnicodeCategory.DecimalDigitNumber => false,
+			UnicodeCategory.LowercaseLetter => false,
+			UnicodeCategory.LetterNumber => false,
+			UnicodeCategory.UppercaseLetter => false,
+			UnicodeCategory.MathSymbol => false,
+			UnicodeCategory.TitlecaseLetter => false,
+			_ => true,
+		};
+
+
+	private static bool WordEnoughToFit (string text, char[] chars, int charSize, int charSpace, int startIndex, int room, out int wordLength) {
+		int index = startIndex;
+		bool fromString = chars == null;
+		int count = fromString ? text.Length : chars.Length;
+		for (; index < count; index++) {
+			char c = fromString ? text[index] : chars[index];
+			if (IsLineBreakingChar(c)) break;
+			if (!Renderer.RequireCharForPool(c, out var sprite)) continue;
+			if (room > 0) {
+				room -= (sprite.Advance * charSize).RoundToInt() + charSpace;
+			}
+		}
+		wordLength = index - startIndex + 1;
+		return room >= 0;
 	}
 
 
