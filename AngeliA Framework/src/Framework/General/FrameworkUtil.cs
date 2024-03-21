@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 namespace AngeliA.Framework;
 
 public static class FrameworkUtil {
@@ -102,18 +103,18 @@ public static class FrameworkUtil {
 		uiRect = default;
 
 		// Draw Player
-		int oldLayerIndex = Renderer.CurrentLayerIndex;
-		Renderer.SetLayerToUI();
-		int layerIndex = Renderer.CurrentLayerIndex;
-		int cellIndexStart = Renderer.GetUsedCellCount();
-		int oldAniFrame = character.CurrentAnimationFrame;
-		character.CurrentAnimationFrame = animationFrame;
-		character.LateUpdate();
-		character.CurrentAnimationFrame = oldAniFrame;
-		int cellIndexEnd = Renderer.GetUsedCellCount();
-		Renderer.SetLayer(oldLayerIndex);
+		int cellIndexStart;
+		int cellIndexEnd;
+		using (GUIScope.LayerUI()) {
+			cellIndexStart = Renderer.GetUsedCellCount();
+			int oldAniFrame = character.CurrentAnimationFrame;
+			character.CurrentAnimationFrame = animationFrame;
+			character.LateUpdate();
+			character.CurrentAnimationFrame = oldAniFrame;
+			cellIndexEnd = Renderer.GetUsedCellCount();
+		}
 		if (cellIndexStart == cellIndexEnd) return false;
-		if (!Renderer.GetCells(layerIndex, out var cells, out int count)) return false;
+		if (!Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) return false;
 
 		// Get Min Max
 		bool flying = character.AnimationType == CharacterAnimationType.Fly;
@@ -170,7 +171,7 @@ public static class FrameworkUtil {
 		foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
 			try {
 				if (Util.IsExistingFileEmpty(path)) Util.DeleteFile(path);
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 

@@ -56,24 +56,33 @@ public static class RayUtil {
 				fontList.Add(targetData = new FontData() {
 					Name = (hashIndex >= 0 ? name[..hashIndex] : name).TrimStart_Numbers(),
 					LayerIndex = layerIndex,
-					Size = 42,
-					Scale = 1f,
+					FullsetSize = 42,
+					FullsetScale = 1f,
+					PrioritizedSize = 42,
+					PrioritizedScale = 1f,
 				});
 			}
+			bool isFullset = name.Contains("#fullset", StringComparison.OrdinalIgnoreCase);
 			// Size
-			int sizeTagIndex = name.IndexOf("#size=", System.StringComparison.OrdinalIgnoreCase);
+			int sizeTagIndex = name.IndexOf("#size=", StringComparison.OrdinalIgnoreCase);
 			if (sizeTagIndex >= 0 && Util.TryGetIntFromString(name, sizeTagIndex + 6, out int size, out _)) {
-				targetData.Size = Util.Max(42, size);
+				if (isFullset) {
+					targetData.FullsetSize = Util.Max(42, size);
+				} else {
+					targetData.PrioritizedSize = Util.Max(42, size);
+				}
 			}
 			// Scale
-			int scaleTagIndex = name.IndexOf("#scale=", System.StringComparison.OrdinalIgnoreCase);
+			int scaleTagIndex = name.IndexOf("#scale=", StringComparison.OrdinalIgnoreCase);
 			if (scaleTagIndex >= 0 && Util.TryGetIntFromString(name, scaleTagIndex + 7, out int scale, out _)) {
-				targetData.Scale = (scale / 100f).Clamp(0.01f, 10f);
+				if (isFullset) {
+					targetData.FullsetScale = (scale / 100f).Clamp(0.01f, 10f);
+				} else {
+					targetData.PrioritizedScale = (scale / 100f).Clamp(0.01f, 10f);
+				}
 			}
 			// Data
-			targetData.LoadData(
-				fontPath, !name.Contains("#fullset", System.StringComparison.OrdinalIgnoreCase)
-			);
+			targetData.LoadData(fontPath, !isFullset);
 		}
 		fontList.Sort((a, b) => a.LayerIndex.CompareTo(b.LayerIndex));
 		return fontList.ToArray();
@@ -81,7 +90,10 @@ public static class RayUtil {
 
 	public static CharSprite CreateCharSprite (FontData fontData, char c) {
 		if (!fontData.TryGetCharData(c, out var info, out _)) return null;
-		float fontSize = fontData.Size / fontData.Scale;
+		bool fullset = FontData.IsFullsetChar(c);
+		float fontSize = fullset ? 
+			fontData.FullsetSize / fontData.FullsetScale : 
+			fontData.PrioritizedSize / fontData.PrioritizedScale;
 		return new CharSprite {
 			Char = c,
 			Advance = info.AdvanceX / fontSize,
@@ -101,25 +113,25 @@ public static class RayUtil {
 		int height = pixels.Length / width;
 
 		for (int y = height - 1; y >= 0; y--) {
-			System.Console.ResetColor();
-			System.Console.WriteLine();
+			Console.ResetColor();
+			Console.WriteLine();
 			for (int x = 0; x < width; x++) {
 				var p = pixels[(y).Clamp(0, height - 1) * width + (x).Clamp(0, width - 1)];
 				Util.RGBToHSV(p, out float h, out float s, out float v);
-				System.Console.BackgroundColor = (v * s < 0.2f) ?
-					(v < 0.33f ? System.ConsoleColor.Black : v > 0.66f ? System.ConsoleColor.White : System.ConsoleColor.Gray) :
-					(h < 0.08f ? (v > 0.5f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed) :
-					h < 0.25f ? (v > 0.5f ? System.ConsoleColor.Yellow : System.ConsoleColor.DarkYellow) :
-					h < 0.42f ? (v > 0.5f ? System.ConsoleColor.Green : System.ConsoleColor.DarkGreen) :
-					h < 0.58f ? (v > 0.5f ? System.ConsoleColor.Cyan : System.ConsoleColor.DarkCyan) :
-					h < 0.75f ? (v > 0.5f ? System.ConsoleColor.Blue : System.ConsoleColor.DarkBlue) :
-					h < 0.92f ? (v > 0.5f ? System.ConsoleColor.Magenta : System.ConsoleColor.DarkMagenta) :
-					(v > 0.6f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed));
-				System.Console.Write(" ");
+				Console.BackgroundColor = (v * s < 0.2f) ?
+					(v < 0.33f ? ConsoleColor.Black : v > 0.66f ? ConsoleColor.White : ConsoleColor.Gray) :
+					(h < 0.08f ? (v > 0.5f ? ConsoleColor.Red : ConsoleColor.DarkRed) :
+					h < 0.25f ? (v > 0.5f ? ConsoleColor.Yellow : ConsoleColor.DarkYellow) :
+					h < 0.42f ? (v > 0.5f ? ConsoleColor.Green : ConsoleColor.DarkGreen) :
+					h < 0.58f ? (v > 0.5f ? ConsoleColor.Cyan : ConsoleColor.DarkCyan) :
+					h < 0.75f ? (v > 0.5f ? ConsoleColor.Blue : ConsoleColor.DarkBlue) :
+					h < 0.92f ? (v > 0.5f ? ConsoleColor.Magenta : ConsoleColor.DarkMagenta) :
+					(v > 0.6f ? ConsoleColor.Red : ConsoleColor.DarkRed));
+				Console.Write(" ");
 			}
 		}
-		System.Console.ResetColor();
-		System.Console.WriteLine();
+		Console.ResetColor();
+		Console.WriteLine();
 	}
 
 	public static void Log (object msg) {

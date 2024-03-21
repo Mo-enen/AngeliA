@@ -266,7 +266,7 @@ public partial class RayGame {
 					), cell.Rotation, cell.Color.ToRaylib()
 				);
 
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 		if (usingShader) Raylib.EndShaderMode();
@@ -332,7 +332,7 @@ public partial class RayGame {
 				);
 
 			} catch (System.Exception ex) {
-				Util.LogException(ex);
+				Debug.LogException(ex);
 			}
 		}
 
@@ -519,9 +519,7 @@ public partial class RayGame {
 
 	protected override string _GetTextLayerName (int index) => Fonts[index].Name;
 
-	protected override int _GetFontSize (int index) => Fonts[index].Size;
-
-	protected override CharSprite _GetCharSprite (int layerIndex, char c, int textSize) => RayUtil.CreateCharSprite(Fonts[layerIndex], c);
+	protected override CharSprite _GetCharSprite (int layerIndex, char c) => RayUtil.CreateCharSprite(Fonts[layerIndex], c);
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();
 

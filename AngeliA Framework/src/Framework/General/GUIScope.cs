@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+
 namespace AngeliA.Framework;
 
 public class GUIScope : System.IDisposable {
@@ -19,7 +20,7 @@ public class GUIScope : System.IDisposable {
 		public GUIScope Start () {
 			if (CurrentIndex >= COUNT) {
 #if DEBUG
-				Util.LogWarning("Too many layers of GUIScope");
+				Debug.LogWarning("Too many layers of GUIScope");
 #endif
 				return null;
 			}
@@ -51,6 +52,8 @@ public class GUIScope : System.IDisposable {
 	private Int2 Int2DataAlt;
 
 	private GUIScope (ScopeType type) => Type = type;
+
+	public static GUIScope LayerUI () => Layer(RenderLayer.UI);
 
 	public static GUIScope Layer (int layer) {
 		var result = LayerInstance.Start();
@@ -120,6 +123,9 @@ public class GUIScope : System.IDisposable {
 		switch (Type) {
 			case ScopeType.Layer:
 				LayerInstance.End();
+				if (Renderer.CurrentLayerIndex == RenderLayer.UI) {
+					Renderer.ReverseUnsortedCells(RenderLayer.UI);
+				}
 				Renderer.SetLayer(IntData);
 				break;
 			case ScopeType.Color:
@@ -144,7 +150,7 @@ public class GUIScope : System.IDisposable {
 
 				// Old Value Back
 				Input.SetMousePositionShift(Int2DataAlt.x, Int2DataAlt.y);
-				
+
 				// Scroll Sprites
 				int startIndex = IntData;
 				if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {

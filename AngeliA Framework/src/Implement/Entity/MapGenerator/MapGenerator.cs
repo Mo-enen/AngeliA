@@ -4,7 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace AngeliA.Framework; 
+
+namespace AngeliA.Framework;
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.Capacity(1, 0)]
 [EntityAttribute.MapEditorGroup("MapGenerator")]
@@ -128,7 +129,7 @@ public abstract class MapGenerator : Entity {
 		} catch (System.Exception ex) {
 			SampleReader?.Clear();
 			ResultWriter?.Clear();
-			Util.LogException(ex);
+			Debug.LogException(ex);
 		}
 	}
 

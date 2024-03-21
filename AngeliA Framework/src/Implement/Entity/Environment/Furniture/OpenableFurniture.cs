@@ -1,4 +1,4 @@
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 public abstract class OpenableUiFurniture : OpenableFurniture {
 
 
@@ -15,13 +15,13 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 			UiUpdateFrame = Game.GlobalFrame;
 			Cursor.RequireCursor();
 			var size = WindowSize;
-			Renderer.SetLayerToUI();
-			FrameUpdateUI(new IRect(
+			using (GUIScope.LayerUI()) {
+				FrameUpdateUI(new IRect(
 				Renderer.CameraRect.CenterX() - Unify(size.x) / 2,
 				Renderer.CameraRect.CenterY() - Unify(size.y) / 2,
 				Unify(size.x), Unify(size.y)
 			));
-			Renderer.SetLayerToDefault();
+			}
 		}
 		base.LateUpdate();
 	}

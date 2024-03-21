@@ -886,86 +886,86 @@ public sealed partial class MapEditor : WindowUI {
 		if (IsPlaying) return;
 
 		var cameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - Renderer.CameraRect.x, 0, 0, 0);
-		int oldLayer = Renderer.CurrentLayerIndex;
-		Renderer.SetLayerToDefault();
 
-		int z = CurrentZ;
-		int left = cameraRect.xMin.ToUnit() - 1;
-		int right = cameraRect.xMax.ToUnit() + 1;
-		int down = cameraRect.yMin.ToUnit() - 1;
-		int up = cameraRect.yMax.ToUnit() + 1;
-		int index = 0;
-		int blinkCountDown = RequireWorldRenderBlinkIndex + 1;
-		int unusedCellCount = Renderer.GetLayerCapacity(Renderer.CurrentLayerIndex) - Renderer.GetUsedCellCount();
+		using (GUIScope.Layer(RenderLayer.DEFAULT)) {
 
-		// BG
-		for (int y = down; y <= up; y++) {
-			for (int x = left; x <= right; x++) {
-				int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
-				if (id == 0) continue;
-				if (blinkCountDown-- > 0) continue;
-				DrawBlock(id, x, y);
-				index++;
-				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+
+			int z = CurrentZ;
+			int left = cameraRect.xMin.ToUnit() - 1;
+			int right = cameraRect.xMax.ToUnit() + 1;
+			int down = cameraRect.yMin.ToUnit() - 1;
+			int up = cameraRect.yMax.ToUnit() + 1;
+			int index = 0;
+			int blinkCountDown = RequireWorldRenderBlinkIndex + 1;
+			int unusedCellCount = Renderer.GetLayerCapacity(Renderer.CurrentLayerIndex) - Renderer.GetUsedCellCount();
+
+			// BG
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
+					if (id == 0) continue;
+					if (blinkCountDown-- > 0) continue;
+					DrawBlock(id, x, y);
+					index++;
+					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+				}
 			}
-		}
 
-		// Level
-		for (int y = down; y <= up; y++) {
-			for (int x = left; x <= right; x++) {
-				int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
-				if (id == 0) continue;
-				if (blinkCountDown-- > 0) continue;
-				DrawBlock(id, x, y);
-				index++;
-				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+			// Level
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
+					if (id == 0) continue;
+					if (blinkCountDown-- > 0) continue;
+					DrawBlock(id, x, y);
+					index++;
+					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+				}
 			}
-		}
 
-		// Entity
-		for (int y = down; y <= up; y++) {
-			for (int x = left; x <= right; x++) {
-				int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
-				if (id == 0) continue;
-				if (blinkCountDown-- > 0) continue;
-				DrawEntity(id, x, y);
-				index++;
-				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+			// Entity
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
+					if (id == 0) continue;
+					if (blinkCountDown-- > 0) continue;
+					DrawEntity(id, x, y);
+					index++;
+					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+				}
 			}
-		}
 
-		// Global Pos
-		for (int y = down; y <= up; y++) {
-			for (int x = left; x <= right; x++) {
-				if (!IUnique.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
-				if (blinkCountDown-- > 0) continue;
-				DrawEntity(id, x, y);
-				index++;
-				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+			// Global Pos
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					if (!IUnique.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
+					if (blinkCountDown-- > 0) continue;
+					DrawEntity(id, x, y);
+					index++;
+					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+				}
 			}
-		}
 
-		// Element
-		for (int y = down; y <= up; y++) {
-			for (int x = left; x <= right; x++) {
-				int id = Stream.GetBlockAt(x, y, z, BlockType.Element);
-				if (id == 0) continue;
-				if (blinkCountDown-- > 0) continue;
-				DrawElement(id, x, y);
-				index++;
-				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+			// Element
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					int id = Stream.GetBlockAt(x, y, z, BlockType.Element);
+					if (id == 0) continue;
+					if (blinkCountDown-- > 0) continue;
+					DrawElement(id, x, y);
+					index++;
+					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+				}
 			}
+
+			bool requireRepaint = RequireWorldRenderBlinkIndex > 0;
+			RequireWorldRenderBlinkIndex = -1;
+			if (requireRepaint) Update_RenderWorld();
+			return;
+
+			_REQUIRE_BLINK_:;
+			RequireWorldRenderBlinkIndex += unusedCellCount;
 		}
-
-		Renderer.SetLayer(oldLayer);
-		bool requireRepaint = RequireWorldRenderBlinkIndex > 0;
-		RequireWorldRenderBlinkIndex = -1;
-		if (requireRepaint) Update_RenderWorld();
-		return;
-
-		_REQUIRE_BLINK_:;
-		Renderer.SetLayer(oldLayer);
-		RequireWorldRenderBlinkIndex += unusedCellCount;
 
 	}
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+
 namespace AngeliA;
 
 public class AsepriteUtil {
@@ -75,13 +76,13 @@ public class AsepriteUtil {
 			} catch (System.Exception exc) {
 				hasError = true;
 				errorMsg = exc.Message;
-				Util.LogException(exc);
+				Debug.LogException(exc);
 			}
 		};
 
 		// Final
 		System.GC.Collect();
-		if (hasError) Util.LogWarning(errorMsg);
+		if (hasError) Debug.LogWarning(errorMsg);
 		return textureResults;
 	}
 

@@ -267,11 +267,8 @@ public abstract partial class Game {
 	internal static string GetTextLayerName (int index) => Instance._GetTextLayerName(index);
 	protected abstract string _GetTextLayerName (int index);
 
-	internal static int GetFontSize (int index) => Instance._GetFontSize(index);
-	protected abstract int _GetFontSize (int index);
-
-	internal static CharSprite GetCharSprite (int layerIndex, char c, int textSize) => Instance._GetCharSprite(layerIndex, c, textSize);
-	protected abstract CharSprite _GetCharSprite (int layerIndex, char c, int textSize);
+	internal static CharSprite GetCharSprite (int layerIndex, char c) => Instance._GetCharSprite(layerIndex, c);
+	protected abstract CharSprite _GetCharSprite (int layerIndex, char c);
 
 	public static string GetClipboardText () => Instance?._GetClipboardText();
 	protected abstract string _GetClipboardText ();

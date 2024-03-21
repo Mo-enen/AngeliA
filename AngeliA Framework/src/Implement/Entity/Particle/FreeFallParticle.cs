@@ -48,7 +48,7 @@ public class FreeFallParticle : Particle {
 		base.LateUpdate();
 		if (BlinkInEnd && LocalFrame > Duration / 2 && LocalFrame % 6 < 3) return;
 		if (ArtworkID != 0) {
-			using (GUIScope.Layer(RenderLayer.UI)) {
+			using (GUIScope.LayerUI()) {
 				Renderer.Draw(ArtworkID, X, Y, 500, 500, Rotation, FlipX ? -Width : Width, Height, Color, z: 0);
 			}
 		}

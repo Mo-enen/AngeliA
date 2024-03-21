@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 
+
 namespace AngeliA.Framework;
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnSheetLoadedAttribute : OrderedAttribute { public OnSheetLoadedAttribute (int order = 0) : base(order) { } }
@@ -26,7 +27,6 @@ public static class Renderer {
 	}
 
 	private class TextLayer : Layer {
-		public int TextSize = 30;
 		public readonly Dictionary<int, CharSprite> TextIDMap = new();
 	}
 
@@ -122,14 +122,13 @@ public static class Renderer {
 		for (int i = 0; i < textLayerCount; i++) {
 			string name = Game.GetTextLayerName(i);
 			int sortingOrder = Layers.Length + i;
-			var tLayer = TextLayers[i] = CreateLayer(
+			TextLayers[i] = CreateLayer(
 				name,
 				uiLayer: true,
 				sortingOrder,
 				TEXT_CAPACITY,
 				textLayer: true
 			) as TextLayer;
-			tLayer.TextSize = Game.GetFontSize(i).Clamp(42, int.MaxValue);
 			Game.OnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
 		}
 
@@ -216,7 +215,7 @@ public static class Renderer {
 				Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
 			}
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 		// Text
 		try {
 			for (int i = 0; i < TextLayers.Length; i++) {
@@ -226,7 +225,7 @@ public static class Renderer {
 				Game.OnLayerUpdate(i, layer.UiLayer, true, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
 			}
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 
 
@@ -305,7 +304,6 @@ public static class Renderer {
 	public static void SetLayerToColor () => CurrentLayerIndex = RenderLayer.COLOR;
 	public static void SetLayerToMultiply () => CurrentLayerIndex = RenderLayer.MULT;
 	public static void SetLayerToAdditive () => CurrentLayerIndex = RenderLayer.ADD;
-	public static void SetLayerToUI () => CurrentLayerIndex = RenderLayer.UI;
 
 	public static void ResetLayer (int layerIndex) {
 		var layer = Layers[layerIndex];
@@ -756,7 +754,7 @@ public static class Renderer {
 			charSprite = textSprite;
 		} else {
 			// Require Char from Font
-			charSprite = Game.GetCharSprite(CurrentTextLayerIndex, c, tLayer.TextSize);
+			charSprite = Game.GetCharSprite(CurrentTextLayerIndex, c);
 			tLayer.TextIDMap.Add(c, charSprite);
 		}
 		return charSprite != null;

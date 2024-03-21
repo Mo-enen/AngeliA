@@ -112,9 +112,9 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			ControlHintUI.ForceShowHint(1);
 			if (MenuEntity == null || !MenuEntity.Active) {
 				// Gaming
-				Renderer.SetLayerToUI();
-				GameUpdate();
-				Renderer.SetLayerToDefault();
+				using (GUIScope.LayerUI()) {
+					GameUpdate();
+				}
 				// Quit
 				if (Input.GameKeyUp(Gamekey.Start)) {
 					Input.UseGameKey(Gamekey.Start);

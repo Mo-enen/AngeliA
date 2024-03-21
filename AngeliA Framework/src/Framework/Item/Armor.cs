@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+
+namespace AngeliA.Framework;
 
 
 
@@ -215,7 +216,7 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 				type = genericArgs[0];
 				totalProgress++;
 				progressive++;
-				if (Game.IsEdittime && safe == 1023) Util.LogWarning($"Armor {armorType} is having a progressive loop.");
+				if (Game.IsEdittime && safe == 1023) Debug.LogWarning($"Armor {armorType} is having a progressive loop.");
 			}
 			// Forward
 			type = armorType;
@@ -224,7 +225,7 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 				if (genericArgs.Length < 2 || genericArgs[1] == type) break;
 				type = genericArgs[1];
 				totalProgress++;
-				if (Game.IsEdittime && safe == 1023) Util.LogWarning($"Armor {armorType} is having a progressive loop.");
+				if (Game.IsEdittime && safe == 1023) Debug.LogWarning($"Armor {armorType} is having a progressive loop.");
 			}
 			return progressive;
 		}

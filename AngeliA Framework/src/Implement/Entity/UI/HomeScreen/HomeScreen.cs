@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+
 namespace AngeliA.Framework;
 [RequireLanguageFromField]
 public class HomeScreen : WindowUI {
@@ -130,8 +131,7 @@ public class HomeScreen : WindowUI {
 
 
 	private void Update_Content (IRect panelRect) {
-
-		Util.Log(panelRect);
+		Debug.Log(panelRect);
 
 
 

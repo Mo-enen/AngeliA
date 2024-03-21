@@ -72,29 +72,26 @@ public abstract class EntityUI : Entity {
 	public override void LateUpdate () {
 		base.LateUpdate();
 
-		Renderer.SortLayer(RenderLayer.UI);
-		Renderer.SetLayerToUI();
+		using (GUIScope.LayerUI()) {
 
-		TextCellStartIndex = Renderer.GetTextUsedCellCount();
+			TextCellStartIndex = Renderer.GetTextUsedCellCount();
 
-		if (Game.PauselessFrame == BlockingEventFrame) {
-			Input.IgnoreAllInput(0);
+			if (Game.PauselessFrame == BlockingEventFrame) {
+				Input.IgnoreAllInput(0);
+			}
+
+			UpdateUI();
+
+			if (Game.PauselessFrame == BlockingEventFrame) {
+				Input.CancelIgnoreMouseInput();
+				Input.CancelIgnoreKeyInput();
+			}
+
+			TextCellEndIndex ??= new int[Renderer.TextLayerCount];
+			for (int i = 0; i < Renderer.TextLayerCount; i++) {
+				TextCellEndIndex[i] = Renderer.GetTextUsedCellCount(i);
+			}
 		}
-
-		UpdateUI();
-
-		if (Game.PauselessFrame == BlockingEventFrame) {
-			Input.CancelIgnoreMouseInput();
-			Input.CancelIgnoreKeyInput();
-		}
-
-		TextCellEndIndex ??= new int[Renderer.TextLayerCount];
-		for (int i = 0; i < Renderer.TextLayerCount; i++) {
-			TextCellEndIndex[i] = Renderer.GetTextUsedCellCount(i);
-		}
-
-		Renderer.SetLayerToDefault();
-		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 
 		if (BlockEvent) {
 			Cursor.CursorPriority = int.MaxValue;

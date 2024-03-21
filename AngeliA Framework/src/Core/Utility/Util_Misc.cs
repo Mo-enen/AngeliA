@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 
+
 namespace AngeliA;
 public static partial class Util {
 
@@ -128,13 +129,13 @@ public static partial class Util {
 				WorkingDirectory = workingDirectory,
 			});
 			if (logMessage) {
-				Log(process.StandardOutput.ReadToEnd());
-				LogError(process.StandardError.ReadToEnd());
+				Debug.Log(process.StandardOutput.ReadToEnd());
+				Debug.LogError(process.StandardError.ReadToEnd());
 			}
 			process.WaitForExit(10_000);
 			return process.ExitCode;
 		} catch (System.Exception ex) {
-			LogException(ex);
+			Debug.LogException(ex);
 			return -1;
 		}
 	}

@@ -14,8 +14,12 @@ public class FontData {
 
 	public string Name;
 	public int LayerIndex;
-	public int Size;
-	public float Scale = 1f;
+	public int PrioritizedSize;
+	public float PrioritizedScale = 1f;
+	public int FullsetSize;
+	public float FullsetScale = 1f;
+
+	public static bool IsFullsetChar (char c) => c >= 256;
 
 	public unsafe void LoadData (string filePath, bool isPrioritized) {
 		uint fileSize = 0;
@@ -36,11 +40,13 @@ public class FontData {
 
 		if (PrioritizedByteSize == 0 && FullsetByteSize == 0) return false;
 
-		bool usingFullset = FullsetByteSize != 0 && (int)c >= 256;
+		bool usingFullset = FullsetByteSize != 0 && IsFullsetChar(c);
 		var data = usingFullset ? FullsetData : PrioritizedData;
 		int dataSize = usingFullset ? FullsetByteSize : PrioritizedByteSize;
 		int charInt = c;
-		var infoPtr = Raylib.LoadFontData(data, dataSize, Size, &charInt, 1, FontType.Default);
+		var infoPtr = Raylib.LoadFontData(
+			data, dataSize, usingFullset ? FullsetSize : PrioritizedSize, &charInt, 1, FontType.Default
+		);
 		if (infoPtr == null) return false;
 
 		info = infoPtr[0];

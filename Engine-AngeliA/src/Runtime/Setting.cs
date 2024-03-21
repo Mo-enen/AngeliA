@@ -8,6 +8,7 @@ namespace AngeliaEngine;
 public class EngineSetting {
 
 	public bool Maximize = true;
+	public bool FullsizeMenu = true;
 	public int FloatX = 0;
 	public int FloatY = 0;
 	public int WindowSizeX = 1024;

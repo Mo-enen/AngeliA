@@ -6,6 +6,7 @@ using System.Text;
 using System;
 
 
+
 namespace AngeliA;
 
 
@@ -124,7 +125,7 @@ public static partial class Util {
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (Exception ex) { Util.LogException(ex); }
+			} catch (Exception ex) { Debug.LogException(ex); }
 		}
 	}
 	public static void InvokeAllStaticMethodWithAttribute<A> (Func<KeyValuePair<MethodInfo, A>, bool> predicte) where A : Attribute {
@@ -134,7 +135,7 @@ public static partial class Util {
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (Exception ex) { LogException(ex); }
+			} catch (Exception ex) { Debug.LogException(ex); }
 		}
 	}
 	public static void InvokeAllStaticMethodWithAttribute<A> (Comparison<KeyValuePair<MethodInfo, A>> comparison) where A : Attribute {
@@ -143,7 +144,7 @@ public static partial class Util {
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (Exception ex) { LogException(ex); }
+			} catch (Exception ex) { Debug.LogException(ex); }
 		}
 	}
 
@@ -161,7 +162,7 @@ public static partial class Util {
 				int order = 0;
 				if (att is OrderedAttribute orderAtt) order = orderAtt.Order;
 				list.Add((method, order));
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 		// Sort 
 		list.Sort((a, b) => a.order.CompareTo(b.order));
@@ -171,7 +172,7 @@ public static partial class Util {
 				var addMethod = info.GetAddMethod(true);
 				var del = System.Delegate.CreateDelegate(info.EventHandlerType, method);
 				addMethod?.Invoke(null, new object[] { del });
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 
@@ -182,7 +183,7 @@ public static partial class Util {
 		try {
 			var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 			return method?.Invoke(null, param);
-		} catch (Exception ex) { LogException(ex); }
+		} catch (Exception ex) { Debug.LogException(ex); }
 		return null;
 	}
 
@@ -198,7 +199,7 @@ public static partial class Util {
 			);
 			if (method == null) return null;
 			return method.Invoke(obj, param);
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 		return null;
 	}
 

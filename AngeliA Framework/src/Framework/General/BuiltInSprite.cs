@@ -102,8 +102,6 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_MENU = "Icon.Menu";
 	public static readonly SpriteCode ICON_PALETTE = "Icon.Palette";
 	public static readonly SpriteCode ICON_FILE = "Icon.File";
-	public static readonly SpriteCode ICON_ATLAS = "Icon.Atlas";
-	public static readonly SpriteCode ICON_SPRITE = "Icon.Sprite";
 	public static readonly SpriteCode ICON_CROSS = "Icon.Cross";
 	public static readonly SpriteCode ICON_HOME = "Icon.Home";
 	public static readonly SpriteCode UI_TOGGLE = "UI.Toggle";

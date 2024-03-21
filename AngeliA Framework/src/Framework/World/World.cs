@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 
+
 namespace AngeliA.Framework;
 
 public enum BlockType {
@@ -134,7 +135,7 @@ public class World {
 				}
 			}
 			success = true;
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 		// Final
 		return success;
@@ -249,7 +250,7 @@ public class World {
 				}
 			}
 
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}
 

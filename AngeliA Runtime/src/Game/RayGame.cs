@@ -1,4 +1,5 @@
-﻿using System;
+﻿global using Debug = AngeliA.Debug;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,7 +34,7 @@ public partial class RayGame : Game {
 			try {
 				UpdateGame();
 			} catch (Exception ex) {
-				Util.LogException(ex);
+				Debug.LogException(ex);
 			}
 		}
 		QuitGame();
@@ -50,12 +51,10 @@ public partial class RayGame : Game {
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 		SetWindowMinSize(256);
-
-		// Debug
-		Util.OnLogException += RayUtil.LogException;
-		Util.OnLogError += RayUtil.LogError;
-		Util.OnLog += RayUtil.Log;
-		Util.OnLogWarning += RayUtil.LogWarning;
+		Debug.OnLogException += RayUtil.LogException;
+		Debug.OnLogError += RayUtil.LogError;
+		Debug.OnLog += RayUtil.Log;
+		Debug.OnLogWarning += RayUtil.LogWarning;
 
 		// Pipeline
 		Fonts = RayUtil.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));

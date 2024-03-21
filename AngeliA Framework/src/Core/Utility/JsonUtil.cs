@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
+
 namespace AngeliA;
 
 public interface IJsonSerializationCallback {
@@ -68,7 +69,7 @@ public static class JsonUtil {
 					return target;
 				}
 			}
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 		return default;
 	}
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 namespace AngeliA.Framework;
 
 [EntityAttribute.DontDestroyOnZChanged]
@@ -51,7 +52,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 				UpdateWindowUI();
 				Cursor.CursorPriority = oldP;
 				Renderer.Draw(Const.PIXEL, Renderer.CameraRect, new Color32(0, 0, 0, 200), int.MaxValue);
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 			if (!oldIgnoreM) Input.CancelIgnoreMouseInput();
 			if (!oldIgnoreK) Input.CancelIgnoreKeyInput();
 		}

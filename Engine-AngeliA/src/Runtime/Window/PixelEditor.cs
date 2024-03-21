@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 using AngeliA.Framework;
@@ -15,8 +16,11 @@ public class PixelEditor : WindowUI {
 
 
 	// Const
+	private const int STAGE_SIZE = 512;
+	private const int PANEL_WIDTH = 240;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
+	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas {0}? All sprites inside will be delete too.");
 
 	// Api
@@ -32,6 +36,7 @@ public class PixelEditor : WindowUI {
 	private int AtlasPanelScrollY = 0;
 	private int AtlasMenuTargetIndex = -1;
 	private bool IsDirty = false;
+	private IRect StageGlobalRect;
 
 
 	#endregion
@@ -54,8 +59,11 @@ public class PixelEditor : WindowUI {
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
 		Cursor.RequireCursor();
-		Update_Panel(WindowRect.EdgeInside(Direction4.Left, Unify(240)));
-		Update_Editor(WindowRect.Shrink(Unify(240), 0, 0, 0));
+		int panelWidth = Unify(PANEL_WIDTH);
+		Update_Panel(WindowRect.EdgeInside(Direction4.Left, panelWidth));
+		var stageRect = WindowRect.Shrink(panelWidth, 0, 0, 0);
+		Update_Editor(stageRect);
+		DrawStagedPixels(stageRect);
 	}
 
 
@@ -167,12 +175,42 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_Editor (IRect contentRect) {
+	private void Update_Editor (IRect stageRect) {
 
 
 
 
 
+	}
+
+
+	private void DrawStagedPixels (IRect stageRect) {
+
+		using var _ = GUIScope.Layer(RenderLayer.DEFAULT);
+
+		// Checker Board
+		if (Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) {
+			const int CHECKER_COUNT = STAGE_SIZE / 32;
+			int sizeX = StageGlobalRect.width / CHECKER_COUNT;
+			int sizeY = StageGlobalRect.height / CHECKER_COUNT;
+			for (int x = 0; x < CHECKER_COUNT; x++) {
+				for (int y = 0; y < CHECKER_COUNT; y++) {
+					Renderer.Draw(checkerSprite,
+						x * sizeX + StageGlobalRect.x,
+						y * sizeY + StageGlobalRect.y,
+						0, 0, 0, sizeX, sizeY, z: 0
+					);
+				}
+			}
+		}
+
+		// Sprites
+		foreach (var sprite in StagedSprites) {
+
+
+
+
+		}
 	}
 
 
@@ -263,10 +301,10 @@ public class PixelEditor : WindowUI {
 
 	private void SetCurrentAtlas (int atlasIndex) {
 		if (CurrentAtlasIndex == atlasIndex) return;
+		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
-		foreach(var sprite in Sheet.Sprites) {
-
-		}
+		StagedSprites.AddRange(Sheet.Sprites.Where(sp => sp.AtlasIndex == atlasIndex));
+		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, 0).Shrink(Unify(12)).Fit(1, 1);
 	}
 
 

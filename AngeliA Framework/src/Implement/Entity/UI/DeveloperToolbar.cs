@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
+
 namespace AngeliA.Framework;
 [RequireSpriteFromField]
 public static class DeveloperToolbar {
@@ -93,7 +94,7 @@ public static class DeveloperToolbar {
 
 		Cursor.RequireCursor();
 
-		using var _ = GUIScope.Layer(RenderLayer.UI);
+		using var _ = GUIScope.LayerUI();
 
 		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
 		int panelYMax = panelRect.y;
@@ -156,7 +157,6 @@ public static class DeveloperToolbar {
 		bgCell.Height = PanelRect.height;
 
 		// Finish
-		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 		if (Input.MouseLeftButtonHolding && PanelRect.MouseInside()) {
 			Input.UseMouseKey(0);
 			Input.UseGameKey(Gamekey.Action);
@@ -197,7 +197,7 @@ public static class DeveloperToolbar {
 						var layerObj = layers.GetValue(layerIndex);
 						CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
 					}
-				} catch (System.Exception ex) { Util.LogException(ex); }
+				} catch (System.Exception ex) { Debug.LogException(ex); }
 				if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
 			}
 			// Draw Cells
@@ -224,7 +224,7 @@ public static class DeveloperToolbar {
 								}
 							}
 						}
-					} catch (System.Exception ex) { Util.LogException(ex); }
+					} catch (System.Exception ex) { Debug.LogException(ex); }
 				}
 			}
 		}

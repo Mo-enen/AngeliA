@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [assembly: AngeliA.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA.Framework;
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDrawBehind]
@@ -90,10 +90,9 @@ public abstract class Wallpaper : Entity {
 			return;
 		}
 		base.LateUpdate();
-		int oldLayer = Renderer.CurrentLayerIndex;
-		Renderer.SetLayerToWallpaper();
-		DrawBackground(Renderer.CameraRect);
-		Renderer.SetLayer(oldLayer);
+		using (GUIScope.Layer(RenderLayer.WALLPAPER)) {
+			DrawBackground(Renderer.CameraRect);
+		}
 	}
 
 

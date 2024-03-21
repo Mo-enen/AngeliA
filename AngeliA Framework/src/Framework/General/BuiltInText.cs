@@ -34,5 +34,6 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_DELETE = ("UI.Delete", "Delete");
 	public static readonly LanguageCode UI_OPEN = ("UI.Open", "Open");
 	public static readonly LanguageCode UI_ADD = ("UI.Add", "Add");
+	public static readonly LanguageCode UI_MENU = ("UI.Menu", "Menu");
 
 }

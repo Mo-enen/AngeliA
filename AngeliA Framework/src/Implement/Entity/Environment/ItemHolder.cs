@@ -100,11 +100,11 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		// Count
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
-			Renderer.SetLayerToUI();
-			Renderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
-			GUI.Label(labelRect, ItemCountChars.GetChars(ItemCount));
+			using (GUIScope.LayerUI()) {
+				Renderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
+				GUI.Label(labelRect, ItemCountChars.GetChars(ItemCount));
+			}
 		}
-		Renderer.SetLayerToDefault();
 		// Highlight
 		if ((this as IActionTarget).IsHighlighted) {
 			IActionTarget.HighlightBlink(cell);

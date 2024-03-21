@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
+
 namespace AngeliA.Framework;
 
 public static class Inventory {
@@ -430,7 +431,7 @@ public static class Inventory {
 						data.Items[i] = 0;
 					}
 				}
-			} catch (System.Exception ex) { Util.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 

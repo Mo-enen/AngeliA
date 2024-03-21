@@ -12,10 +12,6 @@ public static partial class Util {
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 	public const string RULE_TILE_ERROR = "ERROR---";
 	private static readonly System.Random GlobalRandom = new(2334768);
-	public static event System.Action<System.Exception> OnLogException;
-	public static event System.Action<object> OnLogError;
-	public static event System.Action<object> OnLogWarning;
-	public static event System.Action<object> OnLog;
 	public delegate Cell DrawHandler (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z);
 
 
@@ -418,16 +414,6 @@ public static partial class Util {
 		if (scale != 1000) fVolume *= scale / 1000f;
 		return fVolume * fVolume;
 	}
-
-
-	// Log
-	public static void LogException (System.Exception ex) => OnLogException?.Invoke(ex);
-
-	public static void LogError (object message) => OnLogError?.Invoke(message);
-
-	public static void LogWarning (object message) => OnLogWarning?.Invoke(message);
-
-	public static void Log (object message) => OnLog?.Invoke(message);
 
 
 	// Random

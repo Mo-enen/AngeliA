@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 
 
+
 namespace AngeliA.Framework;
 public static class ItemSystem {
 
@@ -299,8 +300,8 @@ public static class ItemSystem {
 
 		if (result == 0 || resultCount <= 0) {
 			if (Game.IsEdittime) {
-				if (result == 0) Util.LogWarning("Result of combination should not be zero.");
-				if (resultCount == 0) Util.LogWarning("ResultCount of combination should not be zero.");
+				if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
+				if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
 			}
 			return;
 		}
@@ -308,7 +309,7 @@ public static class ItemSystem {
 		var from = GetSortedCombination(item0, item1, item2, item3);
 		if (CombinationPool.ContainsKey(from)) {
 			if (Game.IsEdittime) {
-				Util.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
+				Debug.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
 			}
 			return;
 		}

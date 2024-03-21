@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+
+namespace AngeliA.Framework;
 
 
 public enum TaskResult { Continue, End, }
@@ -82,7 +83,7 @@ public static class Task {
 				try {
 					result = CurrentTask.FrameUpdate();
 				} catch (System.Exception ex) {
-					Util.LogException(ex);
+					Debug.LogException(ex);
 					result = TaskResult.End;
 				}
 				if (CurrentTask != null) {
@@ -90,7 +91,7 @@ public static class Task {
 					if (result == TaskResult.End) {
 						try {
 							CurrentTask.OnEnd();
-						} catch (System.Exception ex) { Util.LogException(ex); }
+						} catch (System.Exception ex) { Debug.LogException(ex); }
 						CurrentTask = null;
 					}
 				}

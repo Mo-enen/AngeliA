@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+
 namespace AngeliA.Framework;
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
@@ -163,7 +164,7 @@ public abstract partial class Game {
 					break;
 			}
 
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 
 
@@ -190,7 +191,7 @@ public abstract partial class Game {
 			if (!IsPausing) GlobalFrame++;
 			PauselessFrame++;
 
-		} catch (System.Exception ex) { Util.LogException(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 
 

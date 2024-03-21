@@ -99,7 +99,7 @@ public class ControlHintUI : EntityUI {
 
 	private void DrawGamePad () {
 
-		using var _ = GUIScope.Layer(RenderLayer.UI);
+		using var _ = GUIScope.LayerUI();
 
 		int x = Unify(6);
 		int y = Unify(6);
@@ -145,9 +145,6 @@ public class ControlHintUI : EntityUI {
 		// Buttons
 		Renderer.Draw(ButtonACode, ButtonAPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Action) ? PressingTint : ColorfulButtonTint);
 		Renderer.Draw(ButtonBCode, ButtonBPosition.Shift(x, y).Shift(screenRect.x, screenRect.y), Input.GameKeyHolding(Gamekey.Jump) ? PressingTint : ColorfulButtonTint);
-
-		// Final
-		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 
 	}
 
@@ -306,41 +303,20 @@ public class ControlHintUI : EntityUI {
 		}
 
 		// Draw
-		int oldLayer = Renderer.CurrentLayerIndex;
-		Renderer.SetLayerToUI();
-		
-		rect.width = widthA;
-		if (background) {
-			bgCell = Renderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);
-		}
+		using (GUIScope.LayerUI()) {
+			rect.width = widthA;
+			if (background) {
+				bgCell = Renderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);
+			}
 
-		// Button A
-		if (keyIdA != 0) {
-			Renderer.Draw_9Slice(
-				HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
-			);
-			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
-		} else {
-			GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
-			int targetWidth = keyBounds.width + border.horizontal;
-			if (rect.width < targetWidth) rect.width = targetWidth;
-			Renderer.Draw_9Slice(
-				HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
-			);
-		}
-		rect.x += rect.width + gap;
-
-		// Button B
-		if (keyIdA != keyIdB || keyTextA != keyTextB) {
-			// Button B
-			rect.width = widthB;
-			if (keyIdB != 0) {
+			// Button A
+			if (keyIdA != 0) {
 				Renderer.Draw_9Slice(
 					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
 				);
-				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
+				Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
-				GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
+				GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 				Renderer.Draw_9Slice(
@@ -348,20 +324,36 @@ public class ControlHintUI : EntityUI {
 				);
 			}
 			rect.x += rect.width + gap;
+
+			// Button B
+			if (keyIdA != keyIdB || keyTextA != keyTextB) {
+				// Button B
+				rect.width = widthB;
+				if (keyIdB != 0) {
+					Renderer.Draw_9Slice(
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
+					);
+					Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
+				} else {
+					GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
+					int targetWidth = keyBounds.width + border.horizontal;
+					if (rect.width < targetWidth) rect.width = targetWidth;
+					Renderer.Draw_9Slice(
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
+					);
+				}
+				rect.x += rect.width + gap;
+			}
+
+			// Label
+			rect.width = 1;
+			GUI.Label(rect, label, out var bounds);
+			if (bgCell != null) {
+				bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
+				bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
+				bgCell.Height = Util.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
+			}
 		}
-
-		// Label
-		rect.width = 1;
-		GUI.Label(rect, label, out var bounds);
-		if (bgCell != null) {
-			bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
-			bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
-			bgCell.Height = Util.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
-		}
-
-		Renderer.SetLayer(oldLayer);
-		Renderer.ReverseUnsortedCells(RenderLayer.UI);
-
 	}
 
 

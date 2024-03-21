@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 namespace AngeliA.Framework;
 
 public enum MapChannel { General, Procedure, }
@@ -345,9 +346,8 @@ public sealed class WorldSquad : IBlockSquad {
 				_ => throw new System.NotImplementedException(),
 			};
 		} catch {
-
-			Util.LogWarning(world.Entities.Length);
-			Util.LogWarning(localY * Const.MAP + localX + " " + localY + " " + localX);
+			Debug.LogWarning(world.Entities.Length);
+			Debug.LogWarning(localY * Const.MAP + localX + " " + localY + " " + localX);
 			return 0;
 		}
 	}

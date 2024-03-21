@@ -53,8 +53,8 @@ internal class Engine {
 	public static Project CurrentProject { get; private set; } = null;
 
 	// Data
-	private static readonly GUIStyle ConfirmMsgStyle = new(GUISkin.CenterLabel) { CharSize = 23 };
-	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 23 };
+	private static readonly GUIStyle ConfirmMsgStyle = new(GUISkin.CenterLabel) { CharSize = 18 };
+	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 18 };
 	private static EngineSetting Setting;
 	private static Int2? FloatMascotMouseDownPos = null;
 	private static Int2 FloatMascotMouseDownGlobalPos = default;
@@ -141,7 +141,7 @@ internal class Engine {
 	// Window
 	private static void OnGUI_Hub () {
 
-		Renderer.SetLayerToUI();
+		using var _ = GUIScope.LayerUI();
 
 		var cameraRect = Renderer.CameraRect;
 		int hubPanelWidth = GUI.Unify(HUB_PANEL_WIDTH);
@@ -250,7 +250,6 @@ internal class Engine {
 
 		// Final
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
-		Renderer.ReverseUnsortedCells(RenderLayer.UI);
 
 	}
 
@@ -264,70 +263,99 @@ internal class Engine {
 		}
 
 		// Window
-		int barWidth = GUI.Unify(200);
 		int contentPadding = GUI.Unify(8);
+		int barWidth = Setting.FullsizeMenu ? GUI.Unify(200) : GUI.Unify(42) + contentPadding;
 		int bodyBorder = GUI.Unify(6);
 		var cameraRect = Renderer.CameraRect;
 		int windowLen = CurrentProject == null ? 1 : WINDOW_UI_COUNT;
 		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
-		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
+		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
 
-		// Tab BG
-		Renderer.Draw(Const.PIXEL, barRect, Color32.GREY_12);
+		using (GUIScope.LayerUI()) {
 
-		// Tab
-		CurrentWindowIndex = CurrentWindowIndex.Clamp(0, windowLen - 1);
-		int index = 0;
-		for (int i = 0; i < ALL_UI.Length; i++) {
+			// Tab BG
+			Renderer.Draw(Const.PIXEL, barRect, Color32.GREY_12);
 
-			if (ALL_UI[i] is not WindowUI window) continue;
-			if (index >= windowLen) break;
+			// Menu
+			{
+				var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
 
-			bool selecting = index == CurrentWindowIndex;
-			bool hovering = rect.Contains(mousePos);
+				// Menu Button
+				if (GUI.BlankButton(rect, out _)) {
+					Setting.FullsizeMenu = !Setting.FullsizeMenu;
+				}
 
-			// Cursor
-			if (!selecting && hovering) Cursor.SetCursorAsHand();
+				// Menu Icon
+				GUI.Icon(menuRect.EdgeInside(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
 
-			// Body
-			Renderer.Draw_9Slice(
-				Const.PIXEL, rect,
-				bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-				selecting ? Color32.GREY_32 : Color32.GREY_12
-			);
-			var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+				// Menu Label
+				if (Setting.FullsizeMenu) {
+					GUI.Label(menuRect.Shrink(menuRect.height + contentPadding, 0, 0, 0), BuiltInText.UI_MENU, GUISkin.SmallLabel);
+				}
+				rect.y -= rect.height;
+			}
 
-			// Icon
-			int iconSize = contentRect.height;
-			Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
+			// Window Tabs
+			CurrentWindowIndex = CurrentWindowIndex.Clamp(0, windowLen - 1);
+			int index = 0;
+			for (int i = 0; i < ALL_UI.Length; i++) {
 
-			// Label
-			GUI.Label(contentRect.Shrink(iconSize, 0, 0, 0), UI_TITLES[i], GUISkin.SmallLabel);
+				if (ALL_UI[i] is not WindowUI window) continue;
+				if (index >= windowLen) break;
 
-			// Click
-			if (mousePress && hovering) CurrentWindowIndex = index;
+				bool selecting = index == CurrentWindowIndex;
+				bool hovering = rect.Contains(mousePos);
 
-			// Next
-			rect.y -= rect.height;
-			index++;
+				// Cursor
+				if (!selecting && hovering) Cursor.SetCursorAsHand();
+
+				// Body
+				Renderer.Draw_9Slice(
+					Const.PIXEL, rect,
+					bodyBorder, bodyBorder, bodyBorder, bodyBorder,
+					selecting ? Color32.GREY_32 : Color32.GREY_12
+				);
+				var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+
+				// Icon
+				int iconSize = contentRect.height;
+				Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
+
+				// Label
+				if (Setting.FullsizeMenu) {
+					GUI.Label(
+						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
+						UI_TITLES[i], GUISkin.SmallLabel
+					);
+				}
+
+				// Click
+				if (mousePress && hovering) CurrentWindowIndex = index;
+
+				// Next
+				rect.y -= rect.height;
+				index++;
+			}
+
 		}
 
 		// Switch Active Window
-		var windowRect = cameraRect.Shrink(barWidth, 0, 0, 0);
-		WindowUI.ForceWindowRect(windowRect);
-		index = 0;
-		foreach (var ui in ALL_UI) {
-			if (ui is not WindowUI win) continue;
-			bool active = index == CurrentWindowIndex;
-			index++;
-			if (active == win.Active) continue;
-			win.Active = active;
-			if (active) {
-				win.OnActivated();
-			} else {
-				win.OnInactivated();
+		{
+			WindowUI.ForceWindowRect(cameraRect.Shrink(barWidth, 0, 0, 0));
+			int index = 0;
+			foreach (var ui in ALL_UI) {
+				if (ui is not WindowUI win) continue;
+				bool active = index == CurrentWindowIndex;
+				index++;
+				if (active == win.Active) continue;
+				win.Active = active;
+				if (active) {
+					win.OnActivated();
+				} else {
+					win.OnInactivated();
+				}
 			}
 		}
 
