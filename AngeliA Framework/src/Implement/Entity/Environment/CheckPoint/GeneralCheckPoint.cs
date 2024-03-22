@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 
 public class GeneralCheckPoint : CheckPoint {

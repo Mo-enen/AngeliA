@@ -441,9 +441,6 @@ public static class Extension {
 			sizeX, sizeY
 		);
 	}
-	public static IRect ToRectInt (this FRect rect) => new(
-		rect.x.RoundToInt(), rect.y.RoundToInt(), rect.width.RoundToInt(), rect.height.RoundToInt()
-	);
 	public static void Clamp (this ref FRect rect, FRect target) => rect = FRect.MinMaxRect(
 		Util.Min(target.xMax, Util.Max(rect.xMin, target.xMin)),
 		Util.Min(target.yMax, Util.Max(rect.yMin, target.yMin)),
@@ -469,6 +466,16 @@ public static class Extension {
 		Direction4.Right => rect.Shrink(rect.width, -thickness, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+
+	public static FRect ScaleFrom (this FRect rect, float scale, float pointX, float pointY) => ResizeFrom(rect, rect.width * scale, rect.height * scale, pointX, pointY);
+	public static FRect ResizeFrom (this FRect rect, float newWidth, float newHeight, float pointX, float pointY) {
+		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;
+		rect.y = pointY - (pointY - rect.y) * newHeight / rect.height;
+		rect.width = newWidth;
+		rect.height = newHeight;
+		return rect;
+	}
+
 
 	// RectInt
 	public static FRect ToRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
@@ -631,12 +638,13 @@ public static class Extension {
 		return rect;
 	}
 
-	public static FRect ScaleFrom (this FRect rect, float scale, float pointX, float pointY) => ResizeFrom(rect, rect.width * scale, rect.height * scale, pointX, pointY);
-	public static FRect ResizeFrom (this FRect rect, float newWidth, float newHeight, float pointX, float pointY) {
-		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;
-		rect.y = pointY - (pointY - rect.y) * newHeight / rect.height;
-		rect.width = newWidth;
-		rect.height = newHeight;
+	public static bool CompleteInside (this IRect rect, IRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
+
+	public static IRect Clamp (this IRect rect, IRect range) {
+		rect.xMin = Util.Max(rect.xMin, range.xMin);
+		rect.yMin = Util.Max(rect.yMin, range.yMin);
+		rect.xMax = Util.Min(rect.xMax, range.xMax);
+		rect.yMax = Util.Min(rect.yMax, range.yMax);
 		return rect;
 	}
 

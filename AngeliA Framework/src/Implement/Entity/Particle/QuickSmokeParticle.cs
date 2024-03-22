@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 public class QuickSmokeSmallParticle : Particle {
 	public override int Duration => 10;
 	public override bool Loop => false;

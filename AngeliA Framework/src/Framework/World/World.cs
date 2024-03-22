@@ -4,7 +4,7 @@ using System.IO;
 
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public enum BlockType {
 	Entity = 0,

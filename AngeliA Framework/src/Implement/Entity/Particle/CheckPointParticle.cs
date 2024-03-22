@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 public class CheckPointTouchParticle : Particle {
 	private static readonly int TYPE_ID = typeof(CheckPointTouchParticle).AngeHash();
 	public override int Duration => 32;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [assembly: AngeliA.RequireGlobalSprite(atlas: "Entity", "Entity")]
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 
 public interface IMapItem { }

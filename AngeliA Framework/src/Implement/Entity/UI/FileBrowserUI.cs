@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 [EntityAttribute.StageOrder(4095)]
 [EntityAttribute.Capacity(1, 0)]
 [RequireLanguageFromField]

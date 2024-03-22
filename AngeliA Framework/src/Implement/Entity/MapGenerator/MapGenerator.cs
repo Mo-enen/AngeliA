@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.Capacity(1, 0)]
 [EntityAttribute.MapEditorGroup("MapGenerator")]

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using AngeliA;
 using Raylib_cs;
 
-
 namespace AngeliaRuntime;
 
 
@@ -24,7 +23,7 @@ public static class GizmosRender {
 
 
 	private static readonly GLRect[] GLRects = new GLRect[256 * 256].FillWithNewValue();
-	private static readonly GLTexture[] GLTextures = new GLTexture[256].FillWithNewValue();
+	private static readonly GLTexture[] GLTextures = new GLTexture[1024].FillWithNewValue();
 	private static int GLRectCount = 0;
 	private static int GLTextureCount = 0;
 
@@ -37,8 +36,12 @@ public static class GizmosRender {
 			var rTexture = glTexture.Texture;
 			var rect = glTexture.Rect;
 			var uv = glTexture.UV;
+			float yMin = rTexture.Height - (uv.Y + uv.Height);
+			float yMax = rTexture.Height - uv.Y;
+			uv.Y = yMin;
+			uv.Height = yMax - yMin;
 			Raylib.DrawTexturePro(
-				rTexture, uv.ShrinkRectangle(0.1f), rect.ExpandRectangle(0.5f), new(0, 0), 0, Color.White
+				rTexture, uv.ShrinkRectangle(0.01f), rect.ExpandRectangle(0.5f), new(0, 0), 0, Color.White
 			);
 		}
 		GLTextureCount = 0;

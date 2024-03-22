@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 public class Box : Breakable, ICombustible {
 	public int BurnedDuration => 320;
 	int ICombustible.BurnStartFrame { get; set; }

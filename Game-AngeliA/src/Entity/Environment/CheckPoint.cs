@@ -1,7 +1,6 @@
-using AngeliA.Framework;
+using AngeliA;
 
 namespace AngeliaGame; 
-
 
 public class CheckLalynnA : CheckPoint { }
 public class CheckMage : CheckPoint { }

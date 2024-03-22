@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
-using AngeliA.Framework;
-
 
 namespace AngeliaGame;
 
@@ -11,11 +9,11 @@ public class Yaya : Player {
 
 
 	// SUB
-	public class Face : AngeliA.Framework.Face { }
-	public class Hair : AngeliA.Framework.Hair { }
-	public class Tail : AngeliA.Framework.Tail { }
-	public class Ear : AngeliA.Framework.Ear { }
-	public class Wing : AngeliA.Framework.Wing { }
+	public class Face : AngeliA.Face { }
+	public class Hair : AngeliA.Hair { }
+	public class Tail : AngeliA.Tail { }
+	public class Ear : AngeliA.Ear { }
+	public class Wing : AngeliA.Wing { }
 	public class BodySuit : BodyCloth { }
 	public class HipSuit : HipCloth { }
 	public class FootSuit : FootCloth { }

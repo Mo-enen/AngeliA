@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 public class WardrobeA : WardrobeWood { }
 public class WardrobeB : WardrobeWood { }
 public class WardrobeC : WardrobeWood { }

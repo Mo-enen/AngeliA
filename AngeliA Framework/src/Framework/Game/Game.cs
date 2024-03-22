@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : System.Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }

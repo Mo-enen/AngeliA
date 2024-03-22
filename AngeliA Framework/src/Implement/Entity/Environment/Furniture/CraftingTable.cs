@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public class CraftingTableWood : CraftingTable, ICombustible {
 	public int BurnStartFrame { get; set; }

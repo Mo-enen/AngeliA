@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [assembly: AngeliA.RequireGlobalSprite(atlas: "Character", "Player")]
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 
 public sealed class DefaultPlayer : Player {

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using AngeliA;
 using Raylib_cs;
 
-
-namespace AngeliaRuntime.Framework;
+namespace AngeliaRuntime;
 
 public partial class RayGame {
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public static class FrameworkUtil {
 
@@ -105,15 +105,18 @@ public static class FrameworkUtil {
 		// Draw Player
 		int cellIndexStart;
 		int cellIndexEnd;
-		using (GUIScope.LayerUI()) {
-			cellIndexStart = Renderer.GetUsedCellCount();
-			int oldAniFrame = character.CurrentAnimationFrame;
-			character.CurrentAnimationFrame = animationFrame;
-			character.LateUpdate();
-			character.CurrentAnimationFrame = oldAniFrame;
-			cellIndexEnd = Renderer.GetUsedCellCount();
-		}
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayer(RenderLayer.UI);
+		cellIndexStart = Renderer.GetUsedCellCount();
+		int oldAniFrame = character.CurrentAnimationFrame;
+		character.CurrentAnimationFrame = animationFrame;
+		character.LateUpdate();
+		character.CurrentAnimationFrame = oldAniFrame;
+		cellIndexEnd = Renderer.GetUsedCellCount();
+		Renderer.SetLayer(oldLayer);
+
 		if (cellIndexStart == cellIndexEnd) return false;
+
 		if (!Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) return false;
 
 		// Get Min Max
@@ -222,7 +225,7 @@ public static class FrameworkUtil {
 	};
 
 
-	public static bool MouseInside (this IRect rect) => rect.Contains(Input.MouseGlobalPosition);
+	public static bool MouseInside (this IRect rect) => Game.CursorInScreen && rect.Contains(Input.MouseGlobalPosition);
 
 
 }

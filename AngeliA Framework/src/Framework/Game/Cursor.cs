@@ -1,4 +1,5 @@
-namespace AngeliA.Framework; 
+namespace AngeliA;
+
 public static class Cursor {
 
 
@@ -38,11 +39,11 @@ public static class Cursor {
 	public static void RequireCursor (int priority = -1) => SetCursor(-1, priority);
 
 
-	private static void SetCursor (int cursorIndex, IRect mouseRange, int priority = 0) {
+	public static void SetCursor (int cursorIndex, IRect mouseRange, int priority = 0) {
 		if (!mouseRange.MouseInside()) return;
 		SetCursor(cursorIndex, priority);
 	}
-	private static void SetCursor (int cursorIndex, int priority = 0) {
+	public static void SetCursor (int cursorIndex, int priority = 0) {
 		priority++; // for int.Min 
 		if (priority < CursorPriority) return;
 		CursorPriority = priority;
@@ -66,8 +67,8 @@ public static class Cursor {
 	public static void SetCursorAsBeam (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_BEAM, mouseRange, priority);
 
 
-	public static void SetCursorAsMove (int priority = 0) => SetCursor(Const.CURSOR_MOVE, priority);
-	public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_MOVE, mouseRange, priority);
+	public static void SetCursorAsMove (int priority = 0) => SetCursor(Const.CURSOR_RESIZE_CROSS, priority);
+	public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_RESIZE_CROSS, mouseRange, priority);
 
 
 }

@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
-using AngeliA.Framework;
 using Raylib_cs;
-using KeyboardKey = Raylib_cs.KeyboardKey;
 
-namespace AngeliaRuntime.Framework;
+namespace AngeliaRuntime;
 
 public partial class RayGame {
 
@@ -27,20 +25,14 @@ public partial class RayGame {
 	protected override bool _CursorVisible () => !Raylib.IsCursorHidden();
 
 	protected override void _SetCursor (int index) {
-		switch (index) {
-			case Const.CURSOR_BEAM:
-				Raylib.SetMouseCursor(MouseCursor.IBeam);
-				break;
-			case Const.CURSOR_HAND:
-				Raylib.SetMouseCursor(MouseCursor.PointingHand);
-				break;
-			case Const.CURSOR_MOVE:
-				Raylib.SetMouseCursor(MouseCursor.ResizeAll);
-				break;
+		if (index >= 0 && index < Const.CURSOR_COUNT) {
+			Raylib.SetMouseCursor((MouseCursor)index);
 		}
 	}
 
 	protected override void _SetCursorToNormal () => Raylib.SetMouseCursor(MouseCursor.Default);
+
+	protected override bool _CursorInScreen () => Raylib.IsCursorOnScreen();
 
 
 	// Mouse

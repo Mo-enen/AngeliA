@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 [EntityAttribute.MapEditorGroup("System")]
 [RequireSprite("{0}")]

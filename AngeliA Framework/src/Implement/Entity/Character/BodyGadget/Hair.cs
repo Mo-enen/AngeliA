@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 
 [RequireSprite("{1}.BraidL", "{1}.BraidR")]

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [assembly: AngeliA.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDrawBehind]

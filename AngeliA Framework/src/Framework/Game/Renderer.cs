@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA.Framework;
-
-[System.AttributeUsage(System.AttributeTargets.Method)] 
-public class OnSheetLoadedAttribute : OrderedAttribute { public OnSheetLoadedAttribute (int order = 0) : base(order) { } }
+namespace AngeliA;
 
 public static class Renderer {
 
@@ -81,9 +78,9 @@ public static class Renderer {
 	public static int CurrentLayerIndex { get; private set; } = 0;
 	public static int CurrentTextLayerIndex { get; private set; } = 0;
 	public static bool TextReady => TextLayers.Length > 0;
-	public static Sheet Sheet { get; } = new();
 
 	// Data
+	private static readonly Sheet Sheet = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static TextLayer[] TextLayers = System.Array.Empty<TextLayer>();
 	private static bool IsDrawing = false;
@@ -100,8 +97,6 @@ public static class Renderer {
 	// Init
 	[OnGameInitialize(-4096)]
 	internal static void Initialize () {
-
-		Util.LinkEventWithAttribute<OnSheetLoadedAttribute>(typeof(Renderer), nameof(OnSheetLoaded));
 
 		// Create Layers
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
@@ -228,10 +223,7 @@ public static class Renderer {
 
 
 	[OnGameQuitting]
-	internal static void OnGameQuitting () {
-
-		Sheet.Clear();
-	}
+	internal static void OnGameQuitting () => Sheet.Clear();
 
 
 	[OnGameUpdate(-512)]
@@ -271,6 +263,7 @@ public static class Renderer {
 	#region --- API ---
 
 
+	// Sheet
 	public static void LoadSheet (Universe project) {
 
 		// Artwork >> Sheet
@@ -283,6 +276,17 @@ public static class Renderer {
 
 		// Event
 		OnSheetLoaded?.Invoke();
+	}
+
+
+	public static bool TryGetTextureFromSheet<T> (int spriteID, out T texture) {
+		if (Sheet.TexturePool.TryGetValue(spriteID, out object textureObj) && textureObj is T result) {
+			texture = result;
+			return true;
+		} else {
+			texture = default;
+			return false;
+		}
 	}
 
 
@@ -737,14 +741,7 @@ public static class Renderer {
 	}
 
 
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
+	// Internal
 	internal static bool RequireCharForPool (char c, out CharSprite charSprite) {
 		var tLayer = TextLayers[CurrentTextLayerIndex];
 		if (tLayer.TextIDMap.TryGetValue(c, out var textSprite)) {

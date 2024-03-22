@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 [RequireSprite("{1}.EarL", "{1}.EarR", "{1}.EarLB", "{1}.EarRB")]
 [RequireLanguage("{1}.Ear")]
 public abstract class Ear : BodyGadget {

@@ -1,4 +1,4 @@
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 public interface IActionTarget {
 	public virtual bool LockInput => false;
 	public bool IsHighlighted => Player.Selecting != null && Player.Selecting.TargetActionEntity == this;

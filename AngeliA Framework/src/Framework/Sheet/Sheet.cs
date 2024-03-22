@@ -18,7 +18,7 @@ public class Sheet {
 	public readonly List<Atlas> Atlas = new();
 	public readonly Dictionary<int, AngeSprite> SpritePool = new();
 	public readonly Dictionary<int, SpriteGroup> GroupPool = new();
-	private readonly Dictionary<int, object> TexturePool = new();
+	public readonly Dictionary<int, object> TexturePool = new();
 
 
 	#endregion
@@ -93,6 +93,8 @@ public class Sheet {
 		Atlas.Clear();
 		SpritePool.Clear();
 		GroupPool.Clear();
+		foreach (var (_, texture) in TexturePool) Game.UnloadTexture(texture);
+		TexturePool.Clear();
 	}
 
 	public int GetSpriteIdFromAnimationFrame (SpriteGroup group, int localFrame, int loopStart = -1) {
@@ -131,6 +133,27 @@ public class Sheet {
 				if (totalDuration >= targetTiming) break;
 			}
 			return result;
+		}
+	}
+
+	public void SyncSpritePixelsIntoTexturePool (AngeSprite sprite) {
+		if (TexturePool.TryGetValue(sprite.ID, out var texture)) {
+			var size = Game.GetTextureSize(texture);
+			if (size.x != sprite.PixelRect.width || size.y != sprite.PixelRect.height) {
+				// Resize
+				Game.UnloadTexture(texture);
+				TexturePool[sprite.ID] = Game.GetTextureFromPixels(
+					sprite.Pixels, sprite.PixelRect.width, sprite.PixelRect.height
+				);
+			} else {
+				// Fill
+				Game.FillPixelsIntoTexture(sprite.Pixels, texture);
+			}
+		} else {
+			TexturePool.Add(
+				sprite.ID,
+				Game.GetTextureFromPixels(sprite.Pixels, sprite.PixelRect.width, sprite.PixelRect.height)
+			);
 		}
 	}
 
@@ -194,16 +217,22 @@ public class Sheet {
 	}
 
 	// Remove
-	public void RemoveAtlasAndAllSpritesInside (int index) {
-		if (index < 0 || index >= Atlas.Count) return;
+	public void RemoveAtlasAndAllSpritesInside (int atlasIndex) {
+		if (atlasIndex < 0 || atlasIndex >= Atlas.Count) return;
 		// Remove Atlas
-		Atlas.RemoveAt(index);
+		Atlas.RemoveAt(atlasIndex);
 		// Remove Sprites
 		for (int i = 0; i < Sprites.Count; i++) {
-			var sprite = Sprites[i];
-			if (sprite.AtlasIndex != index) continue;
-			RemoveSprite(i);
-			i--;
+			if (Sprites[i].AtlasIndex == atlasIndex) {
+				RemoveSprite(i);
+				i--;
+			}
+		}
+		// Fix Index
+		foreach (var sprite in Sprites) {
+			if (sprite.AtlasIndex > atlasIndex) {
+				sprite.AtlasIndex--;
+			}
 		}
 	}
 
@@ -369,19 +398,9 @@ public class Sheet {
 			}
 		}
 		// Texture Pool
-		foreach (var texture in TexturePool) 123;
+		foreach (var texture in TexturePool) Game.UnloadTexture(texture);
 		TexturePool.Clear();
-		//static void FillSheetIntoTexturePool (Sheet sheet, Dictionary<int, Texture2D> TexturePool) {
-		//	foreach (var sprite in sheet.Sprites) {
-		//		if (TexturePool.ContainsKey(sprite.ID)) continue;
-		//		var texture = GetTextureFromPixels(sprite.Pixels, sprite.PixelRect.width, sprite.PixelRect.height);
-		//		if (!texture.HasValue) continue;
-		//		Raylib.SetTextureFilter(texture.Value, TextureFilter.Point);
-		//		Raylib.SetTextureWrap(texture.Value, TextureWrap.Clamp);
-		//		TexturePool.Add(sprite.ID, texture.Value);
-		//	}
-		//}
-
+		foreach (var sprite in Sprites) SyncSpritePixelsIntoTexturePool(sprite);
 	}
 
 	private void RemoveSpriteFromGroup (int spriteIndex) {

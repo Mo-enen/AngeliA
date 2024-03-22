@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 // Language
 public class RequireLanguageAttribute : RequireNameAttribute {

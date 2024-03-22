@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 [EntityAttribute.DontSpawnFromWorld]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.Capacity(1024, 0)]

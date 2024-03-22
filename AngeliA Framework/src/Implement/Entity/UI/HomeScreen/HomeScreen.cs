@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 [RequireLanguageFromField]
 public class HomeScreen : WindowUI {
 

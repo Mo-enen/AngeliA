@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 public class CommonBurnerLeft : Burner<CommonFire> {
 	protected override Direction4 Direction => Direction4.Left;

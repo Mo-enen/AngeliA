@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 // Collect
 [EntityAttribute.Capacity(16, 0)]
 [EntityAttribute.ForceSpawn]

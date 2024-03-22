@@ -1,1 +1,1 @@
-﻿new AngeliaRuntime.Framework.RayGame().Run();
+﻿new AngeliaRuntime.RayGame().Run();

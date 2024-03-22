@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 [EntityAttribute.MapEditorGroup("Furniture")]
 [EntityAttribute.Capacity(32)]
 public abstract class Furniture : EnvironmentEntity, IActionTarget {

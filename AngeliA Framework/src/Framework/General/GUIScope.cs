@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public class GUIScope : System.IDisposable {
 

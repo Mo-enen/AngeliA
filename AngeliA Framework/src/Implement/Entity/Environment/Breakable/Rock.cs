@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 public class Rock : Breakable {
 
 	private static readonly int CODE = "Rock".AngeHash();

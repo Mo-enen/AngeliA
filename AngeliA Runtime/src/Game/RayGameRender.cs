@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Numerics;
 using AngeliA;
-using AngeliA.Framework;
 using Raylib_cs;
 
-namespace AngeliaRuntime.Framework;
+namespace AngeliaRuntime;
 
 public partial class RayGame {
 
@@ -204,8 +203,7 @@ public partial class RayGame {
 				// Cell
 				var sprite = cell.Sprite;
 				if (sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
-
-				if (!TexturePool.TryGetValue(sprite.ID, out var texture)) continue;
+				if (!Renderer.TryGetTextureFromSheet<Texture2D>(sprite.ID, out var texture)) continue;
 
 				// UV
 				int pixelWidth = sprite.PixelRect.width;
@@ -249,8 +247,8 @@ public partial class RayGame {
 				source.Width *= cell.Width.Sign();
 				source.Height *= cell.Height.Sign();
 				Raylib.DrawTexturePro(
-					texture, 
-					source.ShrinkRectangle(0.02f), 
+					texture,
+					source.ShrinkRectangle(0.001f),
 					dest.ExpandRectangle(0.001f),
 					new Vector2(
 						pivotX * dest.Width,
@@ -445,7 +443,13 @@ public partial class RayGame {
 	// Texture
 	protected override object _GetTextureFromPixels (Color32[] pixels, int width, int height) {
 		var result = TextureUtil.GetTextureFromPixels(pixels, width, height);
-		return result ?? EMPTY_TEXTURE;
+		if (result.HasValue) {
+			Raylib.SetTextureFilter(result.Value, TextureFilter.Point);
+			Raylib.SetTextureWrap(result.Value, TextureWrap.Clamp);
+			return result.Value;
+		} else {
+			return EMPTY_TEXTURE;
+		}
 	}
 
 	protected override Color32[] _GetPixelsFromTexture (object texture) {

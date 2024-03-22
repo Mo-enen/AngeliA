@@ -2,12 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
-using AngeliA.Framework;
 
 namespace AngeliaEngine;
 
 [RequireSpriteFromField]
 public class PixelEditor : WindowUI {
+
+
+
+
+	#region --- SUB ---
+
+
+	private class SpriteData {
+		public AngeSprite Sprite;
+		public bool IsDirty;
+	}
+
+
+	#endregion
 
 
 
@@ -30,7 +43,7 @@ public class PixelEditor : WindowUI {
 
 	// Data
 	private readonly Sheet Sheet = new();
-	private readonly List<AngeSprite> StagedSprites = new();
+	private readonly List<SpriteData> StagedSprites = new();
 	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
@@ -38,6 +51,7 @@ public class PixelEditor : WindowUI {
 	private int ZoomLevel = 1;
 	private bool IsDirty = false;
 	private FRect StageGlobalRect;
+	private Color32 PaintingColor = Color32.CLEAR;
 
 
 	#endregion
@@ -59,13 +73,15 @@ public class PixelEditor : WindowUI {
 
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
+		Sky.ForceSkyboxTint(new Color32(32, 33, 37, 255));
 		Cursor.RequireCursor();
 		int panelWidth = Unify(PANEL_WIDTH);
 		Update_Panel(WindowRect.EdgeInside(Direction4.Left, panelWidth));
 		var stageRect = WindowRect.Shrink(panelWidth, 0, 0, 0);
 		Update_View(stageRect);
 		Update_Editor(stageRect);
-		DrawStagedPixels(stageRect);
+		Update_Stage(stageRect);
+		Update_Cursor(stageRect);
 	}
 
 
@@ -212,14 +228,14 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void DrawStagedPixels (IRect stageRect) {
+	private void Update_Stage (IRect stageRect) {
 
 		using var _ = GUIScope.Layer(RenderLayer.DEFAULT);
+		var stageRectInt = StageGlobalRect.ToIRect();
 
 		// Checker Board
 		if (Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) {
 			const int CHECKER_COUNT = STAGE_SIZE / 32;
-			var stageRectInt = StageGlobalRect.ToIRect();
 			int sizeX = stageRectInt.width / CHECKER_COUNT;
 			int sizeY = stageRectInt.height / CHECKER_COUNT;
 			for (int x = 0; x < CHECKER_COUNT; x++) {
@@ -234,6 +250,68 @@ public class PixelEditor : WindowUI {
 				}
 			}
 		}
+
+		// Sprites
+		foreach (var spriteData in StagedSprites) {
+			var sprite = spriteData.Sprite;
+			// Sync Texture
+			if (spriteData.IsDirty) {
+				spriteData.IsDirty = false;
+				Sheet.SyncSpritePixelsIntoTexturePool(sprite);
+			}
+			// Render
+			if (!Sheet.TexturePool.TryGetValue(sprite.ID, out var texture)) continue;
+			var pixRect = sprite.PixelRect;
+			var rect = new IRect(
+				stageRectInt.x + pixRect.x * stageRectInt.width / STAGE_SIZE,
+				stageRectInt.y + pixRect.y * stageRectInt.height / STAGE_SIZE,
+				stageRectInt.width * pixRect.width / STAGE_SIZE,
+				stageRectInt.height * pixRect.height / STAGE_SIZE
+			);
+			if (rect.CompleteInside(stageRect)) {
+				Game.DrawGizmosTexture(rect, texture);
+			} else if (rect.Overlaps(stageRect)) {
+				Game.DrawGizmosTexture(rect.Clamp(stageRect), FRect.MinMaxRect(
+					Util.InverseLerpUnclamped(rect.xMin, rect.xMax, Util.Max(stageRect.xMin, rect.xMin)),
+					Util.InverseLerpUnclamped(rect.yMin, rect.yMax, Util.Max(stageRect.yMin, rect.yMin)),
+					Util.InverseLerpUnclamped(rect.xMin, rect.xMax, Util.Min(stageRect.xMax, rect.xMax)),
+					Util.InverseLerpUnclamped(rect.yMin, rect.yMax, Util.Min(stageRect.yMax, rect.yMax))
+				), texture);
+			}
+		}
+
+	}
+
+
+	private void Update_Cursor (IRect stageRect) {
+
+		if (Input.IgnoringMouseInput) return;
+
+		int thickness = Unify(1);
+		var mousePos = Input.MouseGlobalPosition;
+
+		// Mouse Cursor
+		if (stageRect.MouseInside()) {
+			var stageIntGlobalRect = StageGlobalRect.ToIRect();
+			int pixWidth = stageIntGlobalRect.width / STAGE_SIZE;
+			int pixHeight = stageIntGlobalRect.height / STAGE_SIZE;
+			var cursorRect = new IRect(
+				(mousePos.x - stageIntGlobalRect.x).UFloor(pixWidth) + stageIntGlobalRect.x,
+				(mousePos.y - stageIntGlobalRect.y).UFloor(pixHeight) + stageIntGlobalRect.y,
+				pixWidth, pixHeight
+			);
+			if (PaintingColor == Color32.CLEAR) {
+				// Empty
+				if (ZoomLevel > 5) {
+					Game.DrawGizmosFrame(cursorRect, Color32.WHITE, thickness);
+					Game.DrawGizmosFrame(cursorRect.Expand(thickness), Color32.BLACK, thickness);
+				}
+			} else {
+				// Color
+				Game.DrawGizmosRect(cursorRect, PaintingColor);
+			}
+		}
+
 
 
 
@@ -321,6 +399,7 @@ public class PixelEditor : WindowUI {
 			if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
 			Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
 			Instance.IsDirty = true;
+			Instance.SetCurrentAtlas(Instance.CurrentAtlasIndex);
 		}
 	}
 
@@ -329,9 +408,16 @@ public class PixelEditor : WindowUI {
 		if (CurrentAtlasIndex == atlasIndex) return;
 		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
-		StagedSprites.AddRange(Sheet.Sprites.Where(sp => sp.AtlasIndex == atlasIndex));
+		foreach (var sprite in Sheet.Sprites) {
+			if (sprite.AtlasIndex != atlasIndex) continue;
+			StagedSprites.Add(new SpriteData() {
+				Sprite = sprite,
+				IsDirty = false,
+			});
+		}
 		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, 0).Fit(1, 1).ToRect();
 		ZoomLevel = 1;
+		PaintingColor = Color32.CLEAR;
 	}
 
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 // Map Chest
 public class MapChestWood : MapChest, ICombustible {

@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
-using AngeliA.Framework;
-
-
 
 namespace AngeliaGame; 
+
 [EntityAttribute.Capacity(12)]
 [RequireSprite("{0}")]
 public class YayaPaw : MeleeBullet {

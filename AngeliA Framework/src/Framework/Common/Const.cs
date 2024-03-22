@@ -52,11 +52,18 @@ public static class Const {
 		"Invert",
 	};
 
-	// Cursor
-	public const int CURSOR_HAND = 0;
-	public const int CURSOR_MOVE = 1;
+	public const int CURSOR_DEFAULT = 0;
+	public const int CURSOR_ARROW = 1;
 	public const int CURSOR_BEAM = 2;
-	public const int CURSOR_COUNT = 3;
+	public const int CURSOR_CROSSHAIR = 3;
+	public const int CURSOR_HAND = 4;
+	public const int CURSOR_RESIZE_HORIZONTAL = 5;
+	public const int CURSOR_RESIZE_VERTICAL = 6;
+	public const int CURSOR_RESIZE_TOPLEFT = 7;
+	public const int CURSOR_RESIZE_TOPRIGHT = 8;
+	public const int CURSOR_RESIZE_CROSS = 9;
+	public const int CURSOR_PROHIBIT = 10;
+	public const int CURSOR_COUNT = 11;
 
 	// Misc
 	public static void EmptyMethod () { }

@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using AngeliA;
-using AngeliA.Framework;
 using Raylib_cs;
 
-namespace AngeliaRuntime.Framework;
+namespace AngeliaRuntime;
 
 public partial class RayGame : Game {
 
@@ -188,7 +187,6 @@ public partial class RayGame : Game {
 		// Unload Texture
 		Raylib.UnloadTexture(EMPTY_TEXTURE);
 		Raylib.UnloadRenderTexture(RenderTexture);
-		foreach (var (_, texture) in TexturePool) UnloadTexture(texture);
 
 		// Quit Game
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 [EntityAttribute.Layer(EntityLayer.BULLET)]
 [RequireSpriteFromField]
 [RequireSprite("{0}")]

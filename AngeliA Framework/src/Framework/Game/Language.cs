@@ -4,10 +4,10 @@ using System.Text;
 using System.Linq;
 using System.Globalization;
 
-[assembly: AngeliA.Framework.RequireGlobalLanguage("Language.Creator")]
+[assembly: AngeliA.RequireGlobalLanguage("Language.Creator")]
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 
 [System.AttributeUsage(System.AttributeTargets.Method)]

@@ -4,7 +4,7 @@ using System.Reflection;
 
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public static partial class GUISkin {
 

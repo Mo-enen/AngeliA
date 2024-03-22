@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
@@ -73,7 +73,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		ActiveFrame = Game.GlobalFrame;
 		AnimationFrame = 0;
 		Input.UseAllHoldingKeys();
-		MessageStyle = GUISkin.SmallTextArea;
+		MessageStyle = GUISkin.Message;
 		LabelStyle = GUISkin.Label;
 		ContentStyle = GUISkin.CenterLabel;
 		DrawStyleBody = false;

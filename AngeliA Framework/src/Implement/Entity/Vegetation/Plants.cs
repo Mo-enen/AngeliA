@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL * 2, Const.CEL * 2)]

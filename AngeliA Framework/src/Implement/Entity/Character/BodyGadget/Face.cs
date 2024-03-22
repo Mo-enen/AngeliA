@@ -14,7 +14,7 @@ using System.Collections.Generic;
 )]
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 
 
 public enum CharacterFaceType {

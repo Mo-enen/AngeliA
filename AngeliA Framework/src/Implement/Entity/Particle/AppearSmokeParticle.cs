@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 public class AppearSmokeParticle : Particle {
 
 	public static readonly int TYPE_ID = typeof(AppearSmokeParticle).AngeHash();

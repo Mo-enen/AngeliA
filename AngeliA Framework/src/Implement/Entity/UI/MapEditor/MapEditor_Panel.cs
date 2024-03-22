@@ -27,7 +27,7 @@ using GeorgeMamaladze;
 )]
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 [RequireSpriteFromField]
 public partial class MapEditor {
 

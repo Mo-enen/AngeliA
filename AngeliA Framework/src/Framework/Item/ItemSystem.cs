@@ -6,7 +6,7 @@ using System.Text;
 
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 public static class ItemSystem {
 
 

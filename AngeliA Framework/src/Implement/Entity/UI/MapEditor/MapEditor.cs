@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GeorgeMamaladze;
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 [RequireLanguageFromField]
 [EntityAttribute.StageOrder(-4096)]
 public sealed partial class MapEditor : WindowUI {

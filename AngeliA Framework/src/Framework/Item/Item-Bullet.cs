@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 [RequireSprite("{0}.Bullet")]
 public abstract class BulletItem : Item {
 	public int BulletArtworkID { get; init; }

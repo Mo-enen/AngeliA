@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA.Framework; 
+namespace AngeliA; 
 [EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 public abstract class CheckPoint : EnvironmentEntity {

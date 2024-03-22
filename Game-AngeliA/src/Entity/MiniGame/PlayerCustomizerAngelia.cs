@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliA.Framework;
+using AngeliA;
 
+namespace AngeliaGame;
 
-
-namespace AngeliaGame; 
 public class PlayerCustomizerAngelia : PlayerCustomizer {
 
 

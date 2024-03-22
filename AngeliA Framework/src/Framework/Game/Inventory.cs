@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public static class Inventory {
 

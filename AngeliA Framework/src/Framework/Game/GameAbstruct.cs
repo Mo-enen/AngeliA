@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA.Framework;
+namespace AngeliA;
 
 public abstract partial class Game {
 
@@ -332,6 +332,9 @@ public abstract partial class Game {
 
 	public static void SetCursorToNormal () => Instance._SetCursorToNormal();
 	protected abstract void _SetCursorToNormal ();
+
+	public static bool CursorInScreen => Instance._CursorInScreen();
+	protected abstract bool _CursorInScreen ();
 
 
 	// Mouse
