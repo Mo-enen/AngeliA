@@ -15,7 +15,6 @@ public partial class RayGame {
 	private readonly static System.Random CA_Ran = new(2353456);
 	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
-	private static readonly Dictionary<int, Texture2D> TexturePool = new();
 	private FontData[] Fonts;
 	private FRect CameraRange = new(0, 0, 1f, 1f);
 	private IRect ScreenRenderRect;
@@ -124,13 +123,6 @@ public partial class RayGame {
 				ShaderUniformDataType.Float
 			);
 		}
-	}
-
-	[OnSheetLoaded]
-	internal static void OnSheetLoaded () {
-		foreach (var (_, texture) in TexturePool) UnloadTexture(texture);
-		TexturePool.Clear();
-		TextureUtil.FillSheetIntoTexturePool(Renderer.Sheet, TexturePool);
 	}
 
 

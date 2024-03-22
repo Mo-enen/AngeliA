@@ -472,6 +472,7 @@ public static class Extension {
 
 	// RectInt
 	public static FRect ToRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
+	public static IRect ToIRect (this FRect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
 	public static IRect Fit (this IRect rect, AngeSprite sprite, int pivotX = 500, int pivotY = 500) => rect.Fit(sprite.GlobalWidth, sprite.GlobalHeight, pivotX, pivotY);
 	public static IRect Fit (this IRect rect, int outterWidth, int outterHeight, int pivotX = 500, int pivotY = 500) {
 		if (outterWidth * outterHeight == 0) return rect;
@@ -620,6 +621,24 @@ public static class Extension {
 		Direction4.Right => rect.Shrink(rect.width, -size, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+
+	public static IRect ScaleFrom (this IRect rect, int scale, int pointX, int pointY) => ResizeFrom(rect, rect.width * scale / 1000, rect.height * scale / 1000, pointX, pointY);
+	public static IRect ResizeFrom (this IRect rect, int newWidth, int newHeight, int pointX, int pointY) {
+		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;
+		rect.y = pointY - (pointY - rect.y) * newHeight / rect.height;
+		rect.width = newWidth;
+		rect.height = newHeight;
+		return rect;
+	}
+
+	public static FRect ScaleFrom (this FRect rect, float scale, float pointX, float pointY) => ResizeFrom(rect, rect.width * scale, rect.height * scale, pointX, pointY);
+	public static FRect ResizeFrom (this FRect rect, float newWidth, float newHeight, float pointX, float pointY) {
+		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;
+		rect.y = pointY - (pointY - rect.y) * newHeight / rect.height;
+		rect.width = newWidth;
+		rect.height = newHeight;
+		return rect;
+	}
 
 	// Misc
 	public static bool IsSame (this Color32 a, Color32 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);

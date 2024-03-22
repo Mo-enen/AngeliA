@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-
-
 namespace AngeliA.Framework;
 
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSheetLoadedAttribute : OrderedAttribute { public OnSheetLoadedAttribute (int order = 0) : base(order) { } }
-
+[System.AttributeUsage(System.AttributeTargets.Method)] 
+public class OnSheetLoadedAttribute : OrderedAttribute { public OnSheetLoadedAttribute (int order = 0) : base(order) { } }
 
 public static class Renderer {
 

@@ -35,8 +35,9 @@ public class PixelEditor : WindowUI {
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasMenuTargetIndex = -1;
+	private int ZoomLevel = 1;
 	private bool IsDirty = false;
-	private IRect StageGlobalRect;
+	private FRect StageGlobalRect;
 
 
 	#endregion
@@ -62,6 +63,7 @@ public class PixelEditor : WindowUI {
 		int panelWidth = Unify(PANEL_WIDTH);
 		Update_Panel(WindowRect.EdgeInside(Direction4.Left, panelWidth));
 		var stageRect = WindowRect.Shrink(panelWidth, 0, 0, 0);
+		Update_View(stageRect);
 		Update_Editor(stageRect);
 		DrawStagedPixels(stageRect);
 	}
@@ -175,6 +177,32 @@ public class PixelEditor : WindowUI {
 	}
 
 
+	private void Update_View (IRect stageRect) {
+
+		// Move
+		if (
+			(Input.MouseMidButtonHolding && stageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
+			(Input.MouseLeftButtonHolding && Input.KeyboardHolding(KeyboardKey.Space) && stageRect.Contains(Input.MouseLeftDownGlobalPosition))
+		) {
+			var delta = Input.MouseGlobalPositionDelta;
+			StageGlobalRect = StageGlobalRect.Shift(delta.x, delta.y);
+		}
+
+		// Zoom
+		if (stageRect.MouseInside() && Input.MouseWheelDelta != 0) {
+			ZoomLevel = (ZoomLevel + Input.MouseWheelDelta).Clamp(1, 32);
+			var mousePos = Input.MouseGlobalPosition;
+			var fittedStage = stageRect.Fit(1, 1);
+			StageGlobalRect = StageGlobalRect.ResizeFrom(
+				fittedStage.width * ZoomLevel,
+				fittedStage.height * ZoomLevel,
+				mousePos.x, mousePos.y
+			);
+		}
+
+	}
+
+
 	private void Update_Editor (IRect stageRect) {
 
 
@@ -191,26 +219,24 @@ public class PixelEditor : WindowUI {
 		// Checker Board
 		if (Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) {
 			const int CHECKER_COUNT = STAGE_SIZE / 32;
-			int sizeX = StageGlobalRect.width / CHECKER_COUNT;
-			int sizeY = StageGlobalRect.height / CHECKER_COUNT;
+			var stageRectInt = StageGlobalRect.ToIRect();
+			int sizeX = stageRectInt.width / CHECKER_COUNT;
+			int sizeY = stageRectInt.height / CHECKER_COUNT;
 			for (int x = 0; x < CHECKER_COUNT; x++) {
+				int globalX = x * sizeX + stageRectInt.x;
+				if (globalX < stageRect.x - sizeX) continue;
+				if (globalX > stageRect.xMax) break;
 				for (int y = 0; y < CHECKER_COUNT; y++) {
-					Renderer.Draw(checkerSprite,
-						x * sizeX + StageGlobalRect.x,
-						y * sizeY + StageGlobalRect.y,
-						0, 0, 0, sizeX, sizeY, z: 0
-					);
+					int globalY = y * sizeY + stageRectInt.y;
+					if (globalY < stageRect.y - sizeY) continue;
+					if (globalY > stageRect.yMax) break;
+					Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, z: 0);
 				}
 			}
 		}
 
-		// Sprites
-		foreach (var sprite in StagedSprites) {
 
 
-
-
-		}
 	}
 
 
@@ -304,7 +330,8 @@ public class PixelEditor : WindowUI {
 		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
 		StagedSprites.AddRange(Sheet.Sprites.Where(sp => sp.AtlasIndex == atlasIndex));
-		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, 0).Shrink(Unify(12)).Fit(1, 1);
+		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, 0).Fit(1, 1).ToRect();
+		ZoomLevel = 1;
 	}
 
 

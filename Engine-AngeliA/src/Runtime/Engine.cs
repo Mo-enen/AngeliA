@@ -17,12 +17,10 @@ internal class Engine {
 
 
 	// SUB
-	private enum WindowMode { Mascot, Window, ConfirmQuit, }
+	private enum WindowMode { Window, ConfirmQuit, }
 
 	// Const
 	private static int WINDOW_UI_COUNT = 2;
-	private const int MASCOT_WIDTH = 360;
-	private const int MASCOT_HEIGHT = 360;
 	private const int HUB_PANEL_WIDTH = 360;
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
@@ -56,10 +54,7 @@ internal class Engine {
 	private static readonly GUIStyle ConfirmMsgStyle = new(GUISkin.CenterLabel) { CharSize = 18 };
 	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 18 };
 	private static EngineSetting Setting;
-	private static Int2? FloatMascotMouseDownPos = null;
-	private static Int2 FloatMascotMouseDownGlobalPos = default;
 	private static WindowMode CurrentWindowMode;
-	private static bool FloatMascotDragged = false;
 	private static bool SettingInitialized = false;
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
@@ -111,10 +106,6 @@ internal class Engine {
 		GUI.UnifyBasedOnMonitor = true;
 		Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255));
 		switch (CurrentWindowMode) {
-			case WindowMode.Mascot:
-				OnGUI_Mascot_MouseLogic();
-				OnGUI_Mascot_Render();
-				break;
 			case WindowMode.Window:
 				if (CurrentProject == null) {
 					OnGUI_Hub();
@@ -256,12 +247,6 @@ internal class Engine {
 
 	private static void OnGUI_Window () {
 
-		// Switch on Mid Click
-		if (Input.MouseMidButtonDown) {
-			SwitchWindowMode(WindowMode.Mascot);
-			return;
-		}
-
 		// Window
 		int contentPadding = GUI.Unify(8);
 		int barWidth = Setting.FullsizeMenu ? GUI.Unify(200) : GUI.Unify(42) + contentPadding;
@@ -371,77 +356,6 @@ internal class Engine {
 	}
 
 
-	// Mascot
-	private static void OnGUI_Mascot_MouseLogic () {
-
-		// Mouse Right Down
-		//if (Raylib.IsMouseButtonDown(MouseButton.Right)) {
-		//	//EditorUtil.BuildProject(,,);
-		//}
-
-		// Switch on Mid Click
-		if (Input.MouseMidButtonDown) SwitchWindowMode(WindowMode.Window);
-
-		// Mouse Left Down
-		if (Input.MouseLeftButtonHolding) {
-			var mousePos = Input.MouseScreenPosition;
-			mousePos.y = Game.ScreenHeight - mousePos.y;
-			if (!FloatMascotMouseDownPos.HasValue) {
-				// Mouse Down
-				FloatMascotMouseDownPos = mousePos;
-				FloatMascotDragged = false;
-			} else {
-				if (FloatMascotDragged || Util.SquareDistance(mousePos, FloatMascotMouseDownPos.Value) > 1600) {
-					if (!FloatMascotDragged) {
-						// Drag Start
-						FloatMascotDragged = true;
-						FloatMascotMouseDownPos = mousePos;
-						FloatMascotMouseDownGlobalPos = Game.GetWindowPosition() + mousePos;
-					} else {
-						// Dragging
-						var windowPos = Game.GetWindowPosition();
-						var mouseGlobalPos = windowPos + mousePos;
-						var aimPos = (FloatMascotMouseDownGlobalPos - FloatMascotMouseDownPos.Value) +
-							(mouseGlobalPos - FloatMascotMouseDownGlobalPos);
-						Game.SetWindowPosition(
-							(int)Util.LerpUnclamped(windowPos.x, aimPos.x, 0.4f),
-							(int)Util.LerpUnclamped(windowPos.y, aimPos.y, 0.4f)
-						);
-					}
-				}
-			}
-		}
-		if (FloatMascotMouseDownPos.HasValue && !Input.MouseLeftButtonHolding) {
-			// Mouse Up
-			FloatMascotMouseDownPos = null;
-			if (!FloatMascotDragged) {
-				// Click
-				SwitchWindowMode(WindowMode.Window);
-				return;
-			} else {
-				// Drag End
-				FloatMascotDragged = false;
-				var windowPos = Game.GetWindowPosition();
-				windowPos.x = windowPos.x.Clamp(0, Game.MonitorWidth - Game.ScreenWidth);
-				windowPos.y = windowPos.y.Clamp(0, Game.MonitorHeight - Game.ScreenHeight);
-				Setting.FloatX = windowPos.x;
-				Setting.FloatY = windowPos.y;
-				Game.SetWindowPosition(Setting.FloatX, Setting.FloatY);
-				Game.SetWindowSize(MASCOT_WIDTH, MASCOT_HEIGHT);
-			}
-		}
-	}
-
-
-	private static void OnGUI_Mascot_Render () {
-
-		// BG
-		Renderer.Draw(Const.PIXEL, Renderer.CameraRect);
-
-
-	}
-
-
 	// Confirm Quit
 	private static void OnGUI_ConfirmQuit () {
 
@@ -491,28 +405,11 @@ internal class Engine {
 			Setting.WindowPositionY = windowPos.y;
 		}
 
-		// Event Waiting
-		Game.SetEventWaiting(newMode == WindowMode.Mascot);
-
 		// Set
 		int targetWindowWidth = Game.ScreenWidth;
 		int targetWindowHeight = Game.ScreenHeight;
 		int minWindowSize = Game.MonitorHeight / 5;
 		switch (newMode) {
-			case WindowMode.Mascot: {
-				// Mascot
-				Game.IsWindowDecorated = false;
-				Game.IsWindowTopmost = true;
-				Game.IsWindowResizable = false;
-				Game.IsWindowMaximized = false;
-				Setting.FloatX = Setting.FloatX.Clamp(0, Game.MonitorWidth - MASCOT_WIDTH);
-				Setting.FloatY = Setting.FloatY.Clamp(0, Game.MonitorHeight - MASCOT_HEIGHT);
-				Game.SetWindowPosition(Setting.FloatX, Setting.FloatY);
-				targetWindowWidth = MASCOT_WIDTH;
-				targetWindowHeight = MASCOT_HEIGHT;
-				minWindowSize = Util.Min(MASCOT_WIDTH, MASCOT_HEIGHT);
-				break;
-			}
 			case WindowMode.Window: {
 				// Window
 				Game.IsWindowDecorated = true;

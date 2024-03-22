@@ -18,6 +18,7 @@ public class Sheet {
 	public readonly List<Atlas> Atlas = new();
 	public readonly Dictionary<int, AngeSprite> SpritePool = new();
 	public readonly Dictionary<int, SpriteGroup> GroupPool = new();
+	private readonly Dictionary<int, object> TexturePool = new();
 
 
 	#endregion
@@ -36,7 +37,7 @@ public class Sheet {
 	#endregion
 
 
-	
+
 
 	#region --- API ---
 
@@ -367,6 +368,20 @@ public class Sheet {
 				}
 			}
 		}
+		// Texture Pool
+		foreach (var texture in TexturePool) 123;
+		TexturePool.Clear();
+		//static void FillSheetIntoTexturePool (Sheet sheet, Dictionary<int, Texture2D> TexturePool) {
+		//	foreach (var sprite in sheet.Sprites) {
+		//		if (TexturePool.ContainsKey(sprite.ID)) continue;
+		//		var texture = GetTextureFromPixels(sprite.Pixels, sprite.PixelRect.width, sprite.PixelRect.height);
+		//		if (!texture.HasValue) continue;
+		//		Raylib.SetTextureFilter(texture.Value, TextureFilter.Point);
+		//		Raylib.SetTextureWrap(texture.Value, TextureWrap.Clamp);
+		//		TexturePool.Add(sprite.ID, texture.Value);
+		//	}
+		//}
+
 	}
 
 	private void RemoveSpriteFromGroup (int spriteIndex) {
