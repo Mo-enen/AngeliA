@@ -475,11 +475,11 @@ public static class Extension {
 		rect.height = newHeight;
 		return rect;
 	}
-
-
-	// RectInt
-	public static FRect ToRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 	public static IRect ToIRect (this FRect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+
+
+	// IRect
+	public static FRect ToFRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 	public static IRect Fit (this IRect rect, AngeSprite sprite, int pivotX = 500, int pivotY = 500) => rect.Fit(sprite.GlobalWidth, sprite.GlobalHeight, pivotX, pivotY);
 	public static IRect Fit (this IRect rect, int outterWidth, int outterHeight, int pivotX = 500, int pivotY = 500) {
 		if (outterWidth * outterHeight == 0) return rect;
@@ -580,7 +580,6 @@ public static class Extension {
 		rect.width = xMax - xMin;
 		rect.height = yMax - yMin;
 	}
-
 	public static bool IsSame (this IRect a, IRect b) => a.x == b.x && a.y == b.y && a.width == b.width && a.height == b.height;
 	public static bool IsNotSame (this IRect a, IRect b) => a.x != b.x || a.y != b.y || a.width != b.width || a.height != b.height;
 	public static bool Contains (this IRect rect, int x, int y) => rect.Contains(new Int2(x, y));
@@ -595,12 +594,10 @@ public static class Extension {
 	public static Int2 BottomRight (this IRect rect) => new(rect.xMax, rect.yMin);
 	public static Int2 TopLeft (this IRect rect) => new(rect.xMin, rect.yMax);
 	public static Int2 TopRight (this IRect rect) => new(rect.xMax, rect.yMax);
-
 	public static void ClampPositionInside (ref this IRect rect, IRect bounds) {
 		rect.x = rect.x.Clamp(bounds.x, bounds.xMax - rect.width);
 		rect.y = rect.y.Clamp(bounds.y, bounds.yMax - rect.height);
 	}
-
 	public static IRect LerpTo (this IRect from, IRect to, int lerpRate) => new(
 		from.x.LerpTo(to.x, lerpRate),
 		from.y.LerpTo(to.y, lerpRate),
@@ -613,7 +610,6 @@ public static class Extension {
 		from.width.LerpTo(to.width, lerp),
 		from.height.LerpTo(to.height, lerp)
 	);
-
 	public static IRect EdgeInside (this IRect rect, Direction4 edge, int size = 1) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.height - size, 0),
 		Direction4.Down => rect.Shrink(0, 0, 0, rect.height - size),
@@ -628,7 +624,6 @@ public static class Extension {
 		Direction4.Right => rect.Shrink(rect.width, -size, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
-
 	public static IRect ScaleFrom (this IRect rect, int scale, int pointX, int pointY) => ResizeFrom(rect, rect.width * scale / 1000, rect.height * scale / 1000, pointX, pointY);
 	public static IRect ResizeFrom (this IRect rect, int newWidth, int newHeight, int pointX, int pointY) {
 		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;
@@ -637,9 +632,7 @@ public static class Extension {
 		rect.height = newHeight;
 		return rect;
 	}
-
 	public static bool CompleteInside (this IRect rect, IRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
-
 	public static IRect Clamp (this IRect rect, IRect range) {
 		rect.xMin = Util.Max(rect.xMin, range.xMin);
 		rect.yMin = Util.Max(rect.yMin, range.yMin);
@@ -647,6 +640,11 @@ public static class Extension {
 		rect.yMax = Util.Min(rect.yMax, range.yMax);
 		return rect;
 	}
+	public static void SlideLeft (ref this IRect rect, int padding = 0) => rect.x -= rect.width + padding;
+	public static void SlideRight (ref this IRect rect, int padding = 0) => rect.x += rect.width + padding;
+	public static void SlideDown (ref this IRect rect, int padding = 0) => rect.y -= rect.height + padding;
+	public static void SlideUp (ref this IRect rect, int padding = 0) => rect.y += rect.height + padding;
+
 
 	// Misc
 	public static bool IsSame (this Color32 a, Color32 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);

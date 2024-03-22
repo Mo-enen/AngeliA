@@ -164,7 +164,7 @@ public partial class MapEditor {
 
 		// Paste Tint
 		if (Pasting) {
-			Renderer.Draw(Const.PIXEL, selectionRect, new Color32(0, 128, 255, 32));
+			Renderer.DrawPixel(selectionRect, new Color32(0, 128, 255, 32));
 		}
 
 		// Black Frame
@@ -239,7 +239,7 @@ public partial class MapEditor {
 		} else {
 			// Pal Thumbnail
 			if (SelectingPaletteItem.IsUnique) {
-				Renderer.Draw(Const.PIXEL, cursorRect, Color32.ORANGE.WithNewA(64));
+				Renderer.DrawPixel(cursorRect, Color32.ORANGE.WithNewA(64));
 			}
 			DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
 		}

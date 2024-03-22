@@ -205,7 +205,7 @@ internal class Engine {
 					var itemContentRect = rect.Shrink(padding);
 
 					// Step Tint
-					if (stepTint) Renderer.Draw(Const.PIXEL, rect, STEP_TINT);
+					if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
 					stepTint = !stepTint;
 
 					// Button
@@ -260,7 +260,7 @@ internal class Engine {
 		using (GUIScope.LayerUI()) {
 
 			// Tab BG
-			Renderer.Draw(Const.PIXEL, barRect, Color32.GREY_12);
+			Renderer.DrawPixel(barRect, Color32.GREY_12);
 
 			// Menu
 			{

@@ -203,7 +203,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		int BORDER = Unify(4);
 
 		// BG
-		var bgCell = Renderer.Draw(Const.PIXEL, default, Color32.BLACK);
+		var bgCell = Renderer.DrawPixel(default, Color32.BLACK);
 
 		// Content
 		int basicX = player.X - CurrentSlotIndex * ITEM_SIZE - ITEM_SIZE / 2;
@@ -221,7 +221,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			if (i == CurrentSlotIndex) {
 
 				// Highlight
-				Renderer.Draw(Const.PIXEL, rect.Shrink(BORDER), Color32.GREEN, int.MinValue + 2);
+				Renderer.DrawPixel(rect.Shrink(BORDER), Color32.GREEN, int.MinValue + 2);
 
 				// Name Label
 				int labelWidth = ITEM_SIZE * 3;

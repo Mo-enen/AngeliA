@@ -316,7 +316,7 @@ public static class GUI {
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, text, backgroundColor, out _, backgroundPadding, style);
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null) {
 		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
-		Renderer.Draw(Const.PIXEL, bounds.Expand(backgroundPadding), Color * BodyColor * backgroundColor, z: 0);
+		Renderer.DrawPixel(bounds.Expand(backgroundPadding), Color * BodyColor * backgroundColor, z: 0);
 	}
 
 	public static void ShadowLabel (IRect rect, string text, int shadowDistance = 3, GUIStyle style = null) {
@@ -382,7 +382,6 @@ public static class GUI {
 		style ??= GUISkin.Button;
 		bool result = BlankButton(rect, out var state);
 		DrawStyleBody(rect, style, state);
-		// Icon
 		Icon(rect, icon, style, state);
 		return result;
 	}
@@ -394,7 +393,7 @@ public static class GUI {
 		}
 		bool hover = !Input.IgnoringMouseInput && rect.MouseInside();
 		// Cursor
-		Cursor.SetCursorAsHand(rect);
+		if (hover) Cursor.SetCursorAsHand();
 		// Click
 		if (hover) {
 			state = Input.MouseLeftButtonHolding ? GUIState.Press : GUIState.Hover;
@@ -438,6 +437,13 @@ public static class GUI {
 		isOn = BlankToggle(rect, isOn, out var state);
 		DrawStyleBody(rect, bodyStyle, state, isOn ? Color32.GREY_160 : Color32.WHITE);
 		LabelLogic(rect, label, null, bodyStyle, state, -1, 0, false, out _, out _, out _);
+		return isOn;
+	}
+	public static bool ToggleButton (IRect rect, bool isOn, int icon, GUIStyle style = null) {
+		style ??= GUISkin.DarkButton;
+		isOn = BlankToggle(rect, isOn, out var state);
+		DrawStyleBody(rect, style, state, isOn ? Color32.GREY_160 : Color32.WHITE);
+		Icon(rect, icon, style, state);
 		return isOn;
 	}
 	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) {
@@ -663,7 +669,7 @@ public static class GUI {
 		if (!startTyping && typing && (Game.PauselessFrame - BeamBlinkFrame) % 56 < 28) {
 			beamRect.y = labelRect.y + beamShrink;
 			beamRect.height = labelRect.height - beamShrink * 2;
-			beamCell = Renderer.Draw(Const.PIXEL, beamRect, Color32.WHITE, int.MaxValue);
+			beamCell = Renderer.DrawPixel(beamRect, Color32.WHITE, int.MaxValue);
 		}
 		int endCellIndex = Renderer.GetTextUsedCellCount();
 

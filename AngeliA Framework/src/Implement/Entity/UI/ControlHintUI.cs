@@ -306,7 +306,7 @@ public class ControlHintUI : EntityUI {
 		using (GUIScope.LayerUI()) {
 			rect.width = widthA;
 			if (background) {
-				bgCell = Renderer.Draw(Const.PIXEL, rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);
+				bgCell = Renderer.DrawPixel(rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);
 			}
 
 			// Button A

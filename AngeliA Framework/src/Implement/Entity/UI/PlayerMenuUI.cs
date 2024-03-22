@@ -186,7 +186,7 @@ public class PlayerMenuUI : EntityUI {
 		// Bottom Panel
 		RenderingBottomPanel = true;
 		var playerPanelRect = GetPanelRect(Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, ITEM_SIZE, false);
-		Renderer.Draw(Const.PIXEL, playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
+		Renderer.DrawPixel(playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
 		DrawInventory(Player.Selecting.TypeID, Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, false);
 
 		// Top Panel
@@ -194,7 +194,7 @@ public class PlayerMenuUI : EntityUI {
 		if (Partner != null) {
 			// Partner Panel
 			var panelRect = GetPanelRect(Partner.Column, Partner.Row, Partner.ItemSize, true);
-			Renderer.Draw(Const.PIXEL, panelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
+			Renderer.DrawPixel(panelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
 			Partner.MouseInPanel = panelRect.MouseInside();
 			Partner.DrawPanel(panelRect);
 			TopPanelRect = panelRect;
@@ -242,7 +242,7 @@ public class PlayerMenuUI : EntityUI {
 		MouseInPanel = MouseInPanel || panelRect.MouseInside();
 
 		// Background
-		var bgCell = Renderer.Draw(Const.PIXEL, default, Color32.BLACK);
+		var bgCell = Renderer.DrawPixel(default, Color32.BLACK);
 
 		// Type Icon
 		Renderer.Draw(
@@ -610,7 +610,7 @@ public class PlayerMenuUI : EntityUI {
 				cursorIndex = CursorIndex = uiIndex;
 				CursorInBottomPanel = RenderingBottomPanel;
 				// Draw Highlight
-				Renderer.Draw(Const.PIXEL, itemRect, Color32.GREY_42, int.MinValue + 2);
+				Renderer.DrawPixel(itemRect, Color32.GREY_42, int.MinValue + 2);
 			}
 			if (itemID != 0) {
 				// System Mouse Cursor
@@ -626,7 +626,7 @@ public class PlayerMenuUI : EntityUI {
 				ActionKeyDownFrame >= 0 &&
 				Game.GlobalFrame >= ActionKeyDownFrame + 6
 			) {
-				var cell = Renderer.Draw(Const.PIXEL, itemRect, Color32.GREY_96, int.MinValue + 3);
+				var cell = Renderer.DrawPixel(itemRect, Color32.GREY_96, int.MinValue + 3);
 				cell.Shift = new Int4(
 					0, 0, 0,
 					Util.RemapUnclamped(
@@ -642,7 +642,7 @@ public class PlayerMenuUI : EntityUI {
 				Game.GlobalFrame >= CancelKeyDownFrame + 6
 			) {
 				if (ItemSystem.CanUseItem(itemID, Player.Selecting)) {
-					var cell = Renderer.Draw(Const.PIXEL, itemRect, Color32.GREEN, int.MinValue + 3);
+					var cell = Renderer.DrawPixel(itemRect, Color32.GREEN, int.MinValue + 3);
 					cell.Shift = new Int4(
 						0, 0, 0,
 						Util.RemapUnclamped(
@@ -676,7 +676,7 @@ public class PlayerMenuUI : EntityUI {
 		) {
 			var tint = Color32.GREEN;
 			tint.a = (byte)Util.RemapUnclamped(FLASH_PANEL_DURATION, 0, 255, 0, FlashingField.y - Game.GlobalFrame);
-			Renderer.Draw(Const.PIXEL, itemRect, tint, int.MinValue + 3);
+			Renderer.DrawPixel(itemRect, tint, int.MinValue + 3);
 		}
 
 	}
@@ -696,7 +696,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Background
 		var windowRect = panelRect.Expand(Unify(WINDOW_PADDING));
-		Renderer.Draw(Const.PIXEL, windowRect, Color32.BLACK, int.MinValue + 1);
+		Renderer.DrawPixel(windowRect, Color32.BLACK, int.MinValue + 1);
 		MouseInPanel = MouseInPanel || windowRect.MouseInside();
 
 		// Content
@@ -767,7 +767,7 @@ public class PlayerMenuUI : EntityUI {
 			if (mouseHovering) {
 				CursorIndex = index;
 				CursorInBottomPanel = false;
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, int.MinValue + 1);
+				Renderer.DrawPixel(rect, Color32.GREY_32, int.MinValue + 1);
 				highlighting = true;
 			}
 		} else {
@@ -1116,7 +1116,7 @@ public class PlayerMenuUI : EntityUI {
 
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
-		Renderer.Draw(Const.PIXEL, rect, Color32.BLACK, int.MaxValue);
+		Renderer.DrawPixel(rect, Color32.BLACK, int.MaxValue);
 		GUI.Label(rect, ItemCountChars.GetChars(number), GUISkin.SmallCenterLabel);
 	}
 

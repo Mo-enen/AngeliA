@@ -390,6 +390,11 @@ public static class Renderer {
 		return cell;
 	}
 
+	public static Cell DrawPixel (IRect rect, int z = int.MinValue) => Draw(Const.PIXEL, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
+	public static Cell DrawPixel (IRect rect, Color32 color, int z = int.MinValue) => Draw(Const.PIXEL, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	public static Cell DrawPixel (int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(Const.PIXEL, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	public static Cell DrawPixel (int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(Const.PIXEL, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : Cell.EMPTY;
+
 
 	public static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
 		if (!IsDrawing || !TextReady) return Cell.EMPTY;

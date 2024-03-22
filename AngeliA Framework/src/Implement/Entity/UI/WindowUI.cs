@@ -51,7 +51,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 				Cursor.CursorPriority = int.MaxValue;
 				UpdateWindowUI();
 				Cursor.CursorPriority = oldP;
-				Renderer.Draw(Const.PIXEL, Renderer.CameraRect, new Color32(0, 0, 0, 200), int.MaxValue);
+				Renderer.DrawPixel(Renderer.CameraRect, new Color32(0, 0, 0, 200), int.MaxValue);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			if (!oldIgnoreM) Input.CancelIgnoreMouseInput();
 			if (!oldIgnoreK) Input.CancelIgnoreKeyInput();

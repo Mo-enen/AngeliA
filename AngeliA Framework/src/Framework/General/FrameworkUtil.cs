@@ -9,7 +9,7 @@ public static class FrameworkUtil {
 
 	// Drawing
 	public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
-		var result = Renderer.Draw(Const.PIXEL, default);
+		var result = Renderer.DrawPixel(default);
 		result.CopyFrom(source);
 		result.X += offsetX;
 		result.Y += offsetY;
@@ -36,7 +36,7 @@ public static class FrameworkUtil {
 		// Func
 		static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Color32 color) {
 
-			var cursedCell = Renderer.Draw(Const.PIXEL, default, 0);
+			var cursedCell = Renderer.DrawPixel(default, 0);
 			cursedCell.Sprite = cell.Sprite;
 			cursedCell.TextSprite = cell.TextSprite;
 			cursedCell.X = cell.X;

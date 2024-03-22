@@ -199,9 +199,9 @@ public abstract class BodyCloth : Cloth {
 			if (flipX) poseTwist = -poseTwist;
 			int shiftTop = body.Height * twistShiftTopAmount / 1000;
 			int shiftX = poseTwist * cell.Width / 2500;
-			var cellL = Renderer.Draw(Const.PIXEL, default);
+			var cellL = Renderer.DrawPixel(default);
 			cellL.CopyFrom(cell);
-			var cellR = Renderer.Draw(Const.PIXEL, default);
+			var cellR = Renderer.DrawPixel(default);
 			cellR.CopyFrom(cell);
 			cellL.Shift.up = cellR.Shift.up = shiftTop;
 			cellL.Width += body.Width.Sign() * shiftX;

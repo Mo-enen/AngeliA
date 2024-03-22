@@ -1167,7 +1167,7 @@ public sealed partial class MapEditor : WindowUI {
 		);
 		int excludeEndIndex = Renderer.GetTextUsedCellCount();
 		GUI.Label(tipRect, tip, out var bounds);
-		Renderer.Draw(Const.PIXEL, bounds.Expand(gap), Color32.BLACK);
+		Renderer.DrawPixel(bounds.Expand(gap), Color32.BLACK);
 		Renderer.ExcludeTextCells(bounds.Expand(gap), 0, excludeEndIndex);
 	}
 

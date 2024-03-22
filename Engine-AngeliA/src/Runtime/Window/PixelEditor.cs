@@ -31,9 +31,11 @@ public class PixelEditor : WindowUI {
 	// Const
 	private const int STAGE_SIZE = 512;
 	private const int PANEL_WIDTH = 240;
+	private const int TOOLBAR_HEIGHT = 42;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
 	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
+	private static readonly SpriteCode ICON_SHOW_BG = "IconI.ShowBackground";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas {0}? All sprites inside will be delete too.");
 
 	// Api
@@ -52,6 +54,9 @@ public class PixelEditor : WindowUI {
 	private bool IsDirty = false;
 	private FRect StageGlobalRect;
 	private Color32 PaintingColor = Color32.CLEAR;
+
+	// Saving
+	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
 
 
 	#endregion
@@ -76,9 +81,11 @@ public class PixelEditor : WindowUI {
 		Sky.ForceSkyboxTint(new Color32(32, 33, 37, 255));
 		Cursor.RequireCursor();
 		int panelWidth = Unify(PANEL_WIDTH);
-		Update_Panel(WindowRect.EdgeInside(Direction4.Left, panelWidth));
-		var stageRect = WindowRect.Shrink(panelWidth, 0, 0, 0);
+		var panelRect = WindowRect.EdgeInside(Direction4.Left, panelWidth);
+		Update_Panel(panelRect);
+		var stageRect = WindowRect.Shrink(panelWidth, 0, 0, Unify(TOOLBAR_HEIGHT));
 		Update_View(stageRect);
+		Update_Toolbar(stageRect);
 		Update_Editor(stageRect);
 		Update_Stage(stageRect);
 		Update_Cursor(stageRect);
@@ -90,7 +97,7 @@ public class PixelEditor : WindowUI {
 		const int INPUT_ID = 287234;
 
 		// BG
-		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_20);
+		Renderer.DrawPixel(panelRect, Color32.GREY_20);
 
 		// Rename Hotkey
 		if (Input.KeyboardDown(KeyboardKey.F2) && RenamingAtlasIndex < 0 && CurrentAtlasIndex >= 0) {
@@ -98,12 +105,23 @@ public class PixelEditor : WindowUI {
 			GUI.StartTyping(INPUT_ID + CurrentAtlasIndex);
 		}
 
+		// --- Bar ---
+		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
+		panelRect = panelRect.Shrink(0, 0, 0, toolbarRect.height);
+		toolbarRect = toolbarRect.Shrink(Unify(6));
+		int buttonPadding = Unify(4);
+		var buttonRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
+		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
+			AddAtlas();
+		}
+		buttonRect.SlideRight(buttonPadding);
+
 		// --- Atlas ---
 		int itemCount = Sheet.Atlas.Count;
 		if (itemCount > 0) {
 
 			int scrollbarWidth = Unify(12);
-			int padding = Unify(4);
+			int labelPadding = Unify(4);
 			int atlasPadding = Unify(4);
 			SetCurrentAtlas(CurrentAtlasIndex.Clamp(0, itemCount - 1));
 			var rect = panelRect.EdgeInside(Direction4.Up, Unify(32));
@@ -111,6 +129,7 @@ public class PixelEditor : WindowUI {
 			int scrollMax = ((itemCount + 6) * (rect.height + atlasPadding) - panelRect.height).GreaterOrEquelThanZero();
 			bool hasScrollbar = scrollMax > 0;
 			if (hasScrollbar) rect.width -= scrollbarWidth;
+			bool requireUseMouseButtons = false;
 
 			using (var scroll = GUIScope.Scroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
 				AtlasPanelScrollY = scroll.Position.y;
@@ -139,7 +158,7 @@ public class PixelEditor : WindowUI {
 
 					// Selection Mark
 					if (!renaming && selecting) {
-						Renderer.Draw(Const.PIXEL, rect, Color32.GREEN_DARK);
+						Renderer.DrawPixel(rect, Color32.GREEN_DARK);
 					}
 
 					// Icon
@@ -148,24 +167,26 @@ public class PixelEditor : WindowUI {
 					// Label
 					if (renaming) {
 						atlas.Name = GUI.InputField(
-							INPUT_ID + i, rect.Shrink(rect.height + padding, 0, 0, 0),
+							INPUT_ID + i, rect.Shrink(rect.height + labelPadding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm, GUISkin.SmallInputField
 						);
 						if (changed || confirm) IsDirty = true;
 					} else {
-						GUI.Label(rect.Shrink(rect.height + padding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
+						GUI.Label(rect.Shrink(rect.height + labelPadding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
 					}
 
 					// Right Click
 					if (hover && Input.MouseRightButtonDown) {
-						Input.UseAllMouseKey();
+						requireUseMouseButtons = true;
 						ShowAtlasItemPopup(i);
 					}
 
 					// Next
-					rect.y -= rect.height + atlasPadding;
+					rect.SlideDown(atlasPadding);
 				}
 			}
+
+			if (requireUseMouseButtons) Input.UseAllMouseKey();
 
 			// Change Selection
 			if (newSelectingIndex >= 0 && CurrentAtlasIndex != newSelectingIndex) {
@@ -186,7 +207,6 @@ public class PixelEditor : WindowUI {
 				Input.UseAllMouseKey();
 				ShowAtlasItemPopup(-1);
 			}
-
 
 		}
 
@@ -219,6 +239,20 @@ public class PixelEditor : WindowUI {
 	}
 
 
+	private void Update_Toolbar (IRect stageRect) {
+		int toolbarButtonPadding = Unify(4);
+		var toolbarRect = stageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
+		// BG
+		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
+		toolbarRect = toolbarRect.Shrink(Unify(6));
+		var toolbarBtnRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
+		// Show BG
+		ShowBackground.Value = GUI.ToggleButton(toolbarBtnRect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
+		toolbarBtnRect.SlideRight(toolbarButtonPadding);
+
+	}
+
+
 	private void Update_Editor (IRect stageRect) {
 
 
@@ -230,23 +264,25 @@ public class PixelEditor : WindowUI {
 
 	private void Update_Stage (IRect stageRect) {
 
-		using var _ = GUIScope.Layer(RenderLayer.DEFAULT);
 		var stageRectInt = StageGlobalRect.ToIRect();
 
 		// Checker Board
-		if (Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) {
-			const int CHECKER_COUNT = STAGE_SIZE / 32;
-			int sizeX = stageRectInt.width / CHECKER_COUNT;
-			int sizeY = stageRectInt.height / CHECKER_COUNT;
-			for (int x = 0; x < CHECKER_COUNT; x++) {
-				int globalX = x * sizeX + stageRectInt.x;
-				if (globalX < stageRect.x - sizeX) continue;
-				if (globalX > stageRect.xMax) break;
-				for (int y = 0; y < CHECKER_COUNT; y++) {
-					int globalY = y * sizeY + stageRectInt.y;
-					if (globalY < stageRect.y - sizeY) continue;
-					if (globalY > stageRect.yMax) break;
-					Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, z: 0);
+		using (GUIScope.Layer(RenderLayer.DEFAULT)) {
+			if (Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) {
+				var tint = ShowBackground.Value ? new Color32(34, 47, 64, 255) : Color32.WHITE;
+				const int CHECKER_COUNT = STAGE_SIZE / 32;
+				int sizeX = stageRectInt.width / CHECKER_COUNT;
+				int sizeY = stageRectInt.height / CHECKER_COUNT;
+				for (int x = 0; x < CHECKER_COUNT; x++) {
+					int globalX = x * sizeX + stageRectInt.x;
+					if (globalX < stageRect.x - sizeX) continue;
+					if (globalX > stageRect.xMax) break;
+					for (int y = 0; y < CHECKER_COUNT; y++) {
+						int globalY = y * sizeY + stageRectInt.y;
+						if (globalY < stageRect.y - sizeY) continue;
+						if (globalY > stageRect.yMax) break;
+						Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, tint, z: 0);
+					}
 				}
 			}
 		}
@@ -302,18 +338,13 @@ public class PixelEditor : WindowUI {
 			);
 			if (PaintingColor == Color32.CLEAR) {
 				// Empty
-				if (ZoomLevel > 5) {
-					Game.DrawGizmosFrame(cursorRect, Color32.WHITE, thickness);
-					Game.DrawGizmosFrame(cursorRect.Expand(thickness), Color32.BLACK, thickness);
-				}
+				Game.DrawGizmosFrame(cursorRect, Color32.WHITE, thickness);
+				Game.DrawGizmosFrame(cursorRect.Expand(thickness), Color32.BLACK, thickness);
 			} else {
 				// Color
 				Game.DrawGizmosRect(cursorRect, PaintingColor);
 			}
 		}
-
-
-
 
 	}
 
@@ -356,27 +387,15 @@ public class PixelEditor : WindowUI {
 		AtlasMenuTargetIndex = atlasIndex;
 		GenericPopupUI.BeginPopup();
 
+		// Delete
 		if (atlasIndex >= 0) {
-			// Delete
 			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteConfirm, enabled: Sheet.Atlas.Count > 1);
 		}
 
-		GenericPopupUI.AddSeparator();
-
-		// For All
-		GenericPopupUI.AddItem(BuiltInText.UI_ADD, Add);
+		// Add
+		GenericPopupUI.AddItem(BuiltInText.UI_ADD, AddAtlas);
 
 		// Func
-		static void Add () {
-			Instance.Sheet.Atlas.Add(new Atlas() {
-				AtlasZ = 0,
-				Name = "New Atlas",
-				Type = AtlasType.General,
-			});
-			Instance.IsDirty = true;
-			Instance.AtlasPanelScrollY = int.MaxValue;
-			Instance.SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
-		}
 		static void DeleteConfirm () {
 			var atlasList = Instance.Sheet.Atlas;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
@@ -415,9 +434,21 @@ public class PixelEditor : WindowUI {
 				IsDirty = false,
 			});
 		}
-		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, 0).Fit(1, 1).ToRect();
+		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
 		ZoomLevel = 1;
 		PaintingColor = Color32.CLEAR;
+	}
+
+
+	private static void AddAtlas () {
+		Instance.Sheet.Atlas.Add(new Atlas() {
+			AtlasZ = 0,
+			Name = "New Atlas",
+			Type = AtlasType.General,
+		});
+		Instance.IsDirty = true;
+		Instance.AtlasPanelScrollY = int.MaxValue;
+		Instance.SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
 	}
 
 

@@ -241,7 +241,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		var windowRect = WindowRect;
 
 		// Background
-		Renderer.Draw(Const.PIXEL, windowRect.Expand(Unify(16)), Color32.BLACK, int.MinValue + 1);
+		Renderer.DrawPixel(windowRect.Expand(Unify(16)), Color32.BLACK, int.MinValue + 1);
 
 		// Preview
 		int leftPanelWidth = Unify(400);
@@ -266,13 +266,13 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMin),
 				Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
 			);
-			Renderer.Draw(Const.PIXEL, hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
+			Renderer.DrawPixel(hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
 			//DrawFrame(hitboxRect, 12, 12);
 			//static void DrawFrame (RectInt rect, int thickX, int thickY) {
-			//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
-			//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.xMax - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
-			//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x, rect.y - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
-			//	CellRenderer.Draw(Const.PIXEL, new RectInt(rect.x, rect.yMax - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
+			//	CellRenderer.DrawPixel(new RectInt(rect.x - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
+			//	CellRenderer.DrawPixel(new RectInt(rect.xMax - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
+			//	CellRenderer.DrawPixel(new RectInt(rect.x, rect.y - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
+			//	CellRenderer.DrawPixel(new RectInt(rect.x, rect.yMax - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
 			//}
 		}
 
@@ -381,7 +381,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				// Using Mouse
 				if (mouseInField) {
 					HighlightingMainIndex = i;
-					Renderer.Draw(Const.PIXEL, fieldRect, Color32.GREY_32, EDITOR_BASIC_Z + 1);
+					Renderer.DrawPixel(fieldRect, Color32.GREY_32, EDITOR_BASIC_Z + 1);
 					Cursor.SetCursorAsHand(1);
 				}
 			} else {
@@ -413,7 +413,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	private void EditorUI (IRect panelRect, Player player) {
 
 		// Background
-		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, EDITOR_BASIC_Z);
+		Renderer.DrawPixel(panelRect, Color32.BLACK, EDITOR_BASIC_Z);
 
 		// Bottom Bar
 		if (CurrentSubMenu.HasValue) {
@@ -423,7 +423,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			// Back Button
 			var buttonRect = new IRect(panelRect.xMax - backButtonWidth, panelRect.y, backButtonWidth, bottomBarHeight);
 			if (buttonRect.MouseInside()) {
-				Renderer.Draw(Const.PIXEL, buttonRect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
+				Renderer.DrawPixel(buttonRect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
 				if (Input.LastActionFromMouse && Input.MouseLeftButtonDown) {
 					HighlightingMainIndex = (int)CurrentSubMenu.Value;
 					CurrentSubMenu = null;
@@ -906,7 +906,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			if (!isLabel) {
 				if (Input.LastActionFromMouse) {
 					if (rect.MouseInside()) {
-						Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
+						Renderer.DrawPixel(rect, Color32.GREY_32, EDITOR_BASIC_Z + 2);
 						HighlightingPatternRow = index;
 						Cursor.SetCursorAsHand(1);
 						tryInvoke = Input.MouseLeftButtonDown;

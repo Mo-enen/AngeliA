@@ -300,8 +300,8 @@ public partial class MapEditor {
 		);
 
 		// BG
-		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK);
-		Renderer.Draw(Const.PIXEL, groupRect, Color32.GREY_32);
+		Renderer.DrawPixel(PanelRect, Color32.BLACK);
+		Renderer.DrawPixel(groupRect, Color32.GREY_32);
 
 		// Tabs
 		for (int i = 0; i < 2; i++) {
@@ -450,12 +450,12 @@ public partial class MapEditor {
 				if (reorderCheckingRect.MouseInside()) {
 					targetReorderReleaseIndex = i;
 					if (i != DraggingForReorderPaletteGroup) {
-						Renderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.DrawPixel(new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
 					targetReorderReleaseIndex = i + 1;
 					if (i != DraggingForReorderPaletteGroup) {
-						Renderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.DrawPixel(new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				}
 			}
@@ -560,7 +560,7 @@ public partial class MapEditor {
 			// Hover
 			bool mouseHovering = interactable && mouseInPanel && rect.MouseInside();
 			if (mouseHovering) {
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32);
+				Renderer.DrawPixel(rect, Color32.GREY_32);
 				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
 				requiringTooltipRect = rect;
 				requiringTooltip = pal.Name;
@@ -618,12 +618,12 @@ public partial class MapEditor {
 				if (reorderCheckingRect.MouseInside()) {
 					targetReorderReleaseIndex = index;
 					if (index != DraggingForReorderPaletteItem) {
-						Renderer.Draw(Const.PIXEL, new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.DrawPixel(new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
 					targetReorderReleaseIndex = index + 1;
 					if (index != DraggingForReorderPaletteItem) {
-						Renderer.Draw(Const.PIXEL, new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						Renderer.DrawPixel(new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
 					}
 				}
 			}
@@ -685,7 +685,7 @@ public partial class MapEditor {
 
 		if (IsPlaying || DroppingPlayer || string.IsNullOrEmpty(SearchingText)) return;
 		if (PanelRect.xMax <= Renderer.CameraRect.x) return;
-		Renderer.Draw(Const.PIXEL, PanelRect, Color32.BLACK);
+		Renderer.DrawPixel(PanelRect, Color32.BLACK);
 		if (SearchResult.Count == 0) return;
 
 		int SCROLL_BAR_WIDTH = Unify(12);
@@ -722,7 +722,7 @@ public partial class MapEditor {
 			// Hover
 			bool hover = interactable && mouseInPanel && rect.MouseInside();
 			if (hover) {
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_32);
+				Renderer.DrawPixel(rect, Color32.GREY_32);
 			}
 
 			// Icon
@@ -780,7 +780,7 @@ public partial class MapEditor {
 		bool oldE = GUI.Enable;
 		GUI.Enable = !TaskingRoute;
 		var panel = ToolbarRect;
-		Renderer.Draw(Const.PIXEL, panel, Color32.GREY_32);
+		Renderer.DrawPixel(panel, Color32.GREY_32);
 		panel = panel.Shrink(PADDING);
 		int ITEM_SIZE = panel.height;
 
@@ -835,7 +835,7 @@ public partial class MapEditor {
 		int offsetX = (CheckPointLaneRect.width - COLUMN * ITEM_SIZE) / 2;
 
 		// BG
-		Renderer.Draw(Const.PIXEL, CheckPointLaneRect, Color32.BLACK);
+		Renderer.DrawPixel(CheckPointLaneRect, Color32.BLACK);
 		
 		// Scroll
 		if (Input.MouseWheelDelta != 0) QuickLaneScrollY -= Input.MouseWheelDelta;
@@ -879,7 +879,7 @@ public partial class MapEditor {
 		int PADDING = Unify(6);
 		int HEIGHT = Unify(TOOL_BAR_HEIGHT);
 		var searchPanel = new IRect(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
-		Renderer.Draw(Const.PIXEL, searchPanel, Color32.GREY_32);
+		Renderer.DrawPixel(searchPanel, Color32.GREY_32);
 		searchPanel = searchPanel.Shrink(PADDING);
 
 		// Search Text

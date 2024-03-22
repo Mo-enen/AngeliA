@@ -101,7 +101,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
 			using (GUIScope.LayerUI()) {
-				Renderer.Draw(Const.PIXEL, labelRect, Color32.BLACK, int.MaxValue);
+				Renderer.DrawPixel(labelRect, Color32.BLACK, int.MaxValue);
 				GUI.Label(labelRect, ItemCountChars.GetChars(ItemCount));
 			}
 		}

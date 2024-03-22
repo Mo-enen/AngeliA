@@ -677,6 +677,14 @@ public static class Input {
 
 
 	// Use
+	public static bool MouseKeyUsed (int key) => key switch {
+		0 => MouseLeftState.Ignored,
+		1 => MouseRightState.Ignored,
+		2 => MouseMidState.Ignored,
+		_ => false,
+	};
+
+
 	public static void UseGameKey (Gamekey key) => GamekeyStateMap[key].Ignored = true;
 	public static void UseKeyboardKey (KeyboardKey key) {
 		if (KeyboardStateMap.TryGetValue(key, out var state)) {
@@ -714,7 +722,24 @@ public static class Input {
 		}
 	}
 	public static void UnuseGameKey (Gamekey key) => GamekeyStateMap[key].Ignored = false;
-
+	public static void UnuseMouseKey (int key) {
+		switch (key) {
+			case 0:
+				MouseLeftState.Ignored = false;
+				break;
+			case 1:
+				MouseRightState.Ignored = false;
+				break;
+			case 2:
+				MouseMidState.Ignored = false;
+				break;
+		}
+	}
+	public static void UnuseAllMouseKey () {
+		MouseLeftState.Ignored = false;
+		MouseRightState.Ignored = false;
+		MouseMidState.Ignored = false;
+	}
 
 	// Key Map
 	public static KeyboardKey GetKeyboardMap (Gamekey key) => (KeyboardKey)KeyMap[key].x;

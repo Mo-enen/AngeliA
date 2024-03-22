@@ -148,7 +148,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		}
 		BackgroundRect = bgRect;
 		if (ScreenTint.a > 0) {
-			Renderer.Draw(Const.PIXEL, Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
+			Renderer.DrawPixel(Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
 		}
 		Renderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
 
@@ -349,7 +349,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
 					if (!DrawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
-						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint);
+						Renderer.DrawPixel(hoverCheckingRect, MouseHighlightTint);
 					}
 				}
 
@@ -370,7 +370,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
 					if (!DrawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
-						Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
+						Renderer.DrawPixel(hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
 					}
 				}
 
@@ -431,10 +431,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				// Draw Hover
 				if (Input.LastActionFromMouse) {
 					if (mouseHoverArrowL && useLeftArrow) {
-						Renderer.Draw(Const.PIXEL, rectL_H, MouseHighlightTint, int.MaxValue - 3);
+						Renderer.DrawPixel(rectL_H, MouseHighlightTint, int.MaxValue - 3);
 					}
 					if (mouseHoverArrowR && useRightArrow) {
-						Renderer.Draw(Const.PIXEL, rectR_H, MouseHighlightTint, int.MaxValue - 3);
+						Renderer.DrawPixel(rectR_H, MouseHighlightTint, int.MaxValue - 3);
 					}
 				}
 
@@ -452,7 +452,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		if (SelectionIndex == ItemCount) {
 			if (!Input.LastActionFromMouse) {
 				// Highlight
-				Renderer.Draw(Const.PIXEL, hoverCheckingRect, MouseHighlightTint);
+				Renderer.DrawPixel(hoverCheckingRect, MouseHighlightTint);
 				// Hand
 				var handRect = new IRect(
 					itemRect.x - markSize.x + MarkPingPongFrame.PingPong(60),

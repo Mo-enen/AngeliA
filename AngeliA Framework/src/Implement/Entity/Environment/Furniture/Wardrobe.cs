@@ -227,7 +227,7 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 			);
 			// Highlight
 			if ((int)CurrentSuitType == i) {
-				Renderer.Draw(Const.PIXEL, iconRect, Color32.GREEN, z: 1);
+				Renderer.DrawPixel(iconRect, Color32.GREEN, z: 1);
 			}
 			// Mouse
 			if (iconRect.MouseInside()) {
@@ -260,7 +260,7 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 			windowRect.Expand(0, WindowPadding, 0, 0),
 Color32.BLACK, 0
 		);
-		if (isWearingCurrent) Renderer.Draw(Const.PIXEL, windowRect, Color32.GREEN, 1);
+		if (isWearingCurrent) Renderer.DrawPixel(windowRect, Color32.GREEN, 1);
 
 		if (CurrentPattern != int.MinValue) {
 			// Icon
@@ -331,7 +331,7 @@ Color32.BLACK, 0
 		int right = CurrentPatternIndex + EXTEND + 1;
 
 		// BG
-		Renderer.Draw(Const.PIXEL, new IRect(
+		Renderer.DrawPixel(new IRect(
 			windowRect.x - WindowPadding / 2 - LeftBarWidth,
 			windowRect.yMax,
 			windowRect.width + WindowPadding + LeftBarWidth,
@@ -349,7 +349,7 @@ Color32.BLACK, 0
 			rect.x = windowRect.x + (i - left) * SIZE;
 
 			// Icon
-			Renderer.Draw(Const.PIXEL, rect.Shrink(SIZE / 16), Color32.GREY_32, 1);
+			Renderer.DrawPixel(rect.Shrink(SIZE / 16), Color32.GREY_32, 1);
 			Renderer.Draw(pat, rect.Shrink(SIZE / 16), 9);
 
 			// Current Highlight
@@ -359,7 +359,7 @@ Color32.BLACK, 0
 
 			// Suit Highlight
 			if (i == CurrentPlayerSuitIndex) {
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREEN, 2);
+				Renderer.DrawPixel(rect, Color32.GREEN, 2);
 			}
 		}
 	}

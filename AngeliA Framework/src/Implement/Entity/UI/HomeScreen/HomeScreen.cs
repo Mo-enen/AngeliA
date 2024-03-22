@@ -85,7 +85,7 @@ public class HomeScreen : WindowUI {
 		int markWidth = Unify(6);
 
 		// BG
-		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, z: 0);
+		Renderer.DrawPixel(panelRect, Color32.BLACK, z: 0);
 
 		// Content
 		bool oldE = GUI.Enable;
@@ -122,8 +122,8 @@ public class HomeScreen : WindowUI {
 
 			// Mark
 			if (selecting) {
-				Renderer.Draw(Const.PIXEL, rect.EdgeInside(Direction4.Right, markWidth), Color32.GREEN, z: 3);
-				Renderer.Draw(Const.PIXEL, rect, Color32.GREY_20, z: 2);
+				Renderer.DrawPixel(rect.EdgeInside(Direction4.Right, markWidth), Color32.GREEN, z: 3);
+				Renderer.DrawPixel(rect, Color32.GREY_20, z: 2);
 			}
 
 		}

@@ -290,7 +290,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				ItemSystem.GetItemName(tipID),
 				out var tipBounds
 			);
-			Renderer.Draw(Const.PIXEL, tipBounds, Color32.BLACK, int.MaxValue);
+			Renderer.DrawPixel(tipBounds, Color32.BLACK, int.MaxValue);
 		}
 
 	}
@@ -305,8 +305,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		int bgPadding = Unify(12);
 		Renderer.Draw(
 			Const.PIXEL,
-			resultPanelRect.Expand(0, bgPadding, bgPadding, bgPadding),
-Color32.BLACK, int.MinValue + 1
+			resultPanelRect.Expand(0, bgPadding, bgPadding, bgPadding), Color32.BLACK, int.MinValue + 1
 		);
 
 		// Arrow
@@ -319,7 +318,7 @@ Color32.BLACK, int.MinValue + 1
 		// Highlight Frame
 		if (CursorInResult && menu.TakingID == 0) {
 			if (Input.LastActionFromMouse) {
-				Renderer.Draw(Const.PIXEL, resultItemRect, Color32.GREY_32, int.MinValue + 2);
+				Renderer.DrawPixel(resultItemRect, Color32.GREY_32, int.MinValue + 2);
 			} else if (!menu.CursorInBottomPanel) {
 				GUI.HighlightCursor(FRAME_CODE, resultItemRect);
 			}
@@ -338,7 +337,7 @@ Color32.BLACK, int.MinValue + 1
 					resultItemRect.y,
 					countSize, countSize
 				);
-				Renderer.Draw(Const.PIXEL, countRect, Color32.BLACK, int.MinValue + 8);
+				Renderer.DrawPixel(countRect, Color32.BLACK, int.MinValue + 8);
 				GUI.Label(countRect, CombineResultCountChars.GetChars(CombineResultCount));
 			}
 		}

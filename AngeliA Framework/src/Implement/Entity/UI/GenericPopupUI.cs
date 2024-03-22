@@ -118,7 +118,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		}
 
 		// BG
-		var bgCell = Renderer.Draw(Const.PIXEL, default, new Color32(249, 249, 249, 255));
+		var bgCell = Renderer.DrawPixel(default, new Color32(249, 249, 249, 255));
 
 		// Items
 		Cell highlightCell = null;
@@ -147,7 +147,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 				// Highlight
 				bool hover = rect.MouseInside();
 				if (hover && item.Enabled) {
-					highlightCell = Renderer.Draw(Const.PIXEL, rect, Color32.GREY_230, int.MaxValue - 1);
+					highlightCell = Renderer.DrawPixel(rect, Color32.GREY_230, int.MaxValue - 1);
 				}
 
 				// Check Mark

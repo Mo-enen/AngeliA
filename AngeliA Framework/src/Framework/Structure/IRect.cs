@@ -242,5 +242,4 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		return m_XMin == other.m_XMin && m_YMin == other.m_YMin && m_Width == other.m_Width && m_Height == other.m_Height;
 	}
 
-
 }

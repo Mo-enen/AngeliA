@@ -133,7 +133,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		int lineSize = Unify(5);
 
 		// Curtain
-		Renderer.Draw(Const.PIXEL, Renderer.CameraRect, Color32.BLACK_128, int.MinValue);
+		Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_128, int.MinValue);
 
 		// BG
 		X = Renderer.CameraRect.CenterX() - windowWidth / 2;
@@ -141,7 +141,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Width = windowWidth;
 		Height = windowHeight;
 		BackgroundRect = Rect.Expand(bgPadding);
-		Renderer.Draw(Const.PIXEL, BackgroundRect, Color32.BLACK, 0);
+		Renderer.DrawPixel(BackgroundRect, Color32.BLACK, 0);
 
 		// Lines
 		Renderer.Draw(BuiltInSprite.SOFT_LINE_H, new IRect(X, Y + Height - navBarHeight - lineSize / 2, Width, lineSize), Color32.GREY_20, z: 1);
@@ -230,13 +230,13 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 				// Hover Highlight
 				if (rect.MouseInside()) {
-					Renderer.Draw(Const.PIXEL, rect, Color32.GREY_20, z: 1);
+					Renderer.DrawPixel(rect, Color32.GREY_20, z: 1);
 					mouseInsideItem = true;
 				}
 
 				// Selecting Highlight
 				if (SelectingIndex == index) {
-					Renderer.Draw(Const.PIXEL, rect, Color32.GREY_56, z: 1);
+					Renderer.DrawPixel(rect, Color32.GREY_56, z: 1);
 				}
 
 				// Icon

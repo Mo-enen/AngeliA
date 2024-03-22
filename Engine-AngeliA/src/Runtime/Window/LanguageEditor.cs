@@ -126,7 +126,7 @@ public partial class LanguageEditor : WindowUI {
 	private void Update_Bar (IRect panelRect) {
 
 		// BG
-		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_32, 0);
+		Renderer.DrawPixel(panelRect, Color32.GREY_32, 0);
 
 		// Shift Panel Rect
 		int labelWidth = (panelRect.width - Unify(24)) / (Languages.Count + 1);
@@ -135,7 +135,7 @@ public partial class LanguageEditor : WindowUI {
 		panelRect.y += labelHeight;
 
 		// Line
-		Renderer.Draw(Const.PIXEL, panelRect.EdgeInside(Direction4.Down, Unify(1.5f)), Color32.GREY_12, 1);
+		Renderer.DrawPixel(panelRect.EdgeInside(Direction4.Down, Unify(1.5f)), Color32.GREY_12, 1);
 
 		// + Key
 		var rect = panelRect;
@@ -154,7 +154,7 @@ public partial class LanguageEditor : WindowUI {
 		rect.x += rect.width;
 
 		// Line
-		Renderer.Draw(Const.PIXEL, rect.EdgeOutside(Direction4.Left, Unify(1.5f)), Color32.GREY_12, 2);
+		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1.5f)), Color32.GREY_12, 2);
 
 		// + Language
 		rect.width = Unify(108);
@@ -165,7 +165,7 @@ public partial class LanguageEditor : WindowUI {
 		rect.x += rect.width;
 
 		// Line
-		Renderer.Draw(Const.PIXEL, rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
+		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
 
 		// Search
 		rect.width = panelRect.xMax - rect.x;
@@ -213,7 +213,7 @@ public partial class LanguageEditor : WindowUI {
 		int itemHeight = Unify(36);
 		if (panelRect.height <= itemHeight) return;
 
-		Renderer.Draw(Const.PIXEL, panelRect, Color32.GREY_32, 0);
+		Renderer.DrawPixel(panelRect, Color32.GREY_32, 0);
 		
 		int scrollBarWidth = Unify(12);
 		int labelHeight = Unify(22);

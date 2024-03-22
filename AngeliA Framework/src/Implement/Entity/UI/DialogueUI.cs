@@ -102,7 +102,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 
 		// BG
 		BackgroundRect = panelRect;
-		Renderer.Draw(Const.PIXEL, panelRect, Color32.BLACK, 0);
+		Renderer.DrawPixel(panelRect, Color32.BLACK, 0);
 
 		// Content
 		int cellStartIndex = Renderer.GetTextUsedCellCount();

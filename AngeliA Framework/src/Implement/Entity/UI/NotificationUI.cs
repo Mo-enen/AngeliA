@@ -63,7 +63,7 @@ public class NotificationUI : EntityUI {
 			toRect;
 
 		// BG
-		Renderer.Draw(Const.PIXEL, panelRect.Expand(Unify(12)), Color32.BLACK, int.MaxValue - 1);
+		Renderer.DrawPixel(panelRect.Expand(Unify(12)), Color32.BLACK, int.MaxValue - 1);
 
 		// Icon
 		if (Renderer.TryGetSprite(Icon, out var icon)) {

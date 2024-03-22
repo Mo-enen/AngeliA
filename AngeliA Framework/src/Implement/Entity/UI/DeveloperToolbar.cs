@@ -100,7 +100,7 @@ public static class DeveloperToolbar {
 		int panelYMax = panelRect.y;
 
 		// BG
-		var bgCell = Renderer.Draw(Const.PIXEL, default, Color32.BLACK);
+		var bgCell = Renderer.DrawPixel(default, Color32.BLACK);
 
 		// Tool Buttons
 		int buttonSize = GUI.Unify(36);
@@ -307,7 +307,7 @@ public static class DeveloperToolbar {
 		// Func
 		static void DrawBar (IRect rect, BarData data, Color32 barColor) {
 			int width = Util.RemapUnclamped(0, data.Capacity, 0, rect.width, data.Value);
-			Renderer.Draw(Const.PIXEL, new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
+			Renderer.DrawPixel(new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
 			// Label
 			int startIndex = Renderer.GetTextUsedCellCount();
 			GUI.Label(rect, data.I2C.GetChars(data.Value), GUISkin.SmallCenterLabel);
