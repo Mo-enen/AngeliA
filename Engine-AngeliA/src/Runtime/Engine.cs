@@ -241,10 +241,12 @@ internal class Engine {
 							}
 
 							// Icon
-							GUI.Icon(
-								itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
-								PROJECT_ICON
-							);
+							using (GUIScope.ContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+								GUI.Icon(
+									itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
+									PROJECT_ICON
+								);
+							}
 
 							// Name
 							GUI.Label(

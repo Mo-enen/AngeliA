@@ -40,12 +40,12 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	public static int CurrentItemCount => Instance != null ? Instance.ItemCount : 0;
 	protected override bool BlockEvent => true;
 	public IRect BackgroundRect { get; private set; }
+	public int OffsetX { get; set; } = 0;
+	public int OffsetY { get; set; } = 0;
 
 	// Data
 	private readonly Item[] Items = new Item[128];
 	private int ItemCount = 0;
-	private int OffsetX = 0;
-	private int OffsetY = 0;
 
 
 	#endregion
@@ -155,7 +155,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					// Check Mark
 					if (item.Checked) {
 						Renderer.Draw(
-							CHECK_CODE, 
+							CHECK_CODE,
 							new IRect(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
 							tint
 						);
@@ -209,6 +209,11 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			Input.UseMouseKey(2);
 			Active = false;
 		}
+
+		X = BackgroundRect.x;
+		Y = BackgroundRect.y;
+		Width = BackgroundRect.width;
+		Height = BackgroundRect.height;
 
 	}
 
