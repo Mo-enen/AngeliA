@@ -109,6 +109,8 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		ScrollY = 0;
 		SelectingIndex = -1;
 		Items.Clear();
+		Width = Unify(800);
+		Height = Unify(618);
 	}
 
 
@@ -124,8 +126,6 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Cursor.RequireCursor();
 
 		int bgPadding = Unify(12);
-		int windowWidth = Unify(800);
-		int windowHeight = Unify(618);
 		int navBarHeight = Unify(32);
 		int titleHeight = Unify(32);
 		int favPanelWidth = Unify(196);
@@ -136,10 +136,8 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_128, int.MinValue);
 
 		// BG
-		X = Renderer.CameraRect.CenterX() - windowWidth / 2;
-		Y = Renderer.CameraRect.CenterY() - windowHeight / 2;
-		Width = windowWidth;
-		Height = windowHeight;
+		X = Renderer.CameraRect.CenterX() - Width / 2;
+		Y = Renderer.CameraRect.CenterY() - Height / 2;
 		BackgroundRect = Rect.Expand(bgPadding);
 		Renderer.DrawPixel(BackgroundRect, Color32.BLACK, 0);
 

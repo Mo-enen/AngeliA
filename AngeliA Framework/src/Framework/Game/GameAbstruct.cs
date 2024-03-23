@@ -38,6 +38,9 @@ public abstract partial class Game {
 	public static void QuitApplication () => Instance._QuitApplication();
 	protected abstract void _QuitApplication ();
 
+	public static void OpenUrl (string url) => Instance._OpenUrl(url);
+	protected abstract void _OpenUrl (string url);
+
 
 	// Window
 	public static bool IsWindowFocused => Instance._IsWindowFocused();

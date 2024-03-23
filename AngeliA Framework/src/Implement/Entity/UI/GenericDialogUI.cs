@@ -23,6 +23,9 @@ public class GenericDialogUI : MenuUI {
 	private readonly Option OptionA = new();
 	private readonly Option OptionB = new();
 	private readonly Option OptionC = new();
+	private Color32 ButtonTintA;
+	private Color32 ButtonTintB;
+	private Color32 ButtonTintC;
 
 
 	// MSG
@@ -35,12 +38,19 @@ public class GenericDialogUI : MenuUI {
 	}
 
 
+	public override void LateUpdate () {
+		base.LateUpdate();
+		Input.IgnoreMouseInput(0);
+	}
+
+
 	protected override void DrawMenu () {
-		DrawOption(OptionA);
-		DrawOption(OptionB);
-		DrawOption(OptionC);
-		void DrawOption (Option option) {
+		DrawOption(OptionA, ButtonTintA);
+		DrawOption(OptionB, ButtonTintB);
+		DrawOption(OptionC, ButtonTintC);
+		void DrawOption (Option option, Color32 tint) {
 			if (option.Action == null) return;
+			using var _ = GUIScope.BodyColor(tint);
 			if (DrawItem(option.Label)) {
 				option.Action();
 				Active = false;
@@ -59,6 +69,15 @@ public class GenericDialogUI : MenuUI {
 
 
 	// API
+	public static void SpawnDialog_Button (string message, string label, System.Action action) => SpawnDialog_Button(message, label, action, null, null, null, null);
+	public static void SpawnDialog_Button (string message, string labelA, System.Action actionA, string labelB, System.Action actionB) => SpawnDialog_Button(message, labelA, actionA, labelB, actionB, null, null);
+	public static void SpawnDialog_Button (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
+		SpawnDialog(message, labelA, actionA, labelB, actionB, labelC, actionC);
+		Instance.SetStyle(
+			GUISkin.SmallMessage, GUISkin.Label, GUISkin.DarkButton,
+			drawStyleBody: true, newWindowWidth: Unify(330)
+		);
+	}
 	public static void SpawnDialog (string message, string label, System.Action action) => SpawnDialog(message, label, action, null, null, null, null);
 	public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB) => SpawnDialog(message, labelA, actionA, labelB, actionB, null, null);
 	public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
@@ -77,6 +96,18 @@ public class GenericDialogUI : MenuUI {
 		Instance.OptionA.Action = actionA;
 		Instance.OptionB.Action = actionB;
 		Instance.OptionC.Action = actionC;
+		Instance.ButtonTintA = Color32.WHITE;
+		Instance.ButtonTintB = Color32.WHITE;
+		Instance.ButtonTintC = Color32.WHITE;
+	}
+
+
+	public static void SetButtonTint (Color32 tintA) => SetButtonTint(tintA, Color32.WHITE, Color32.WHITE);
+	public static void SetButtonTint (Color32 tintA, Color32 tintB) => SetButtonTint(tintA, tintB, Color32.WHITE);
+	public static void SetButtonTint (Color32 tintA, Color32 tintB, Color32 tintC) {
+		Instance.ButtonTintA = tintA;
+		Instance.ButtonTintB = tintB;
+		Instance.ButtonTintC = tintC;
 	}
 
 

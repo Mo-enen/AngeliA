@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace AngeliA;
@@ -785,7 +786,10 @@ public static class Input {
 		IgnoreMouseInput(duration);
 		IgnoreKeyInput(duration);
 	}
-	public static void IgnoreMouseInput (int duration = 1) => IgnoreMouseInputFrame = Game.GlobalFrame + duration;
+	public static void IgnoreMouseInput (int duration = 1) {
+		IgnoreMouseInputFrame = Game.GlobalFrame + duration;
+	}
+
 	public static void IgnoreKeyInput (int duration = 1) => IgnoreKeyInputFrame = Game.GlobalFrame + duration;
 
 

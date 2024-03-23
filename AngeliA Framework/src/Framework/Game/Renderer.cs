@@ -43,7 +43,7 @@ public static class Renderer {
 			SortedIndex = Count;
 		}
 		public void ReverseUnsorted () {
-			if (SortedIndex < Count - 1) {
+			if (SortedIndex < Count ) {
 				System.Array.Reverse(Cells, SortedIndex, Count - SortedIndex);
 				SortedIndex = Count;
 			}

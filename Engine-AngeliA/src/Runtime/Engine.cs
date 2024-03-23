@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿global using Debug = AngeliA.Debug;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
@@ -28,14 +29,8 @@ internal class Engine {
 	private static readonly LanguageCode BTN_ADD = ("Hub.Add", "Add Existing Project");
 	private static readonly LanguageCode CREATE_PRO_TITLE = ("UI.CreateProjectTitle", "New Project");
 	private static readonly LanguageCode ADD_PRO_TITLE = ("UI.AddProjectTitle", "Add Existing Project");
-	private static readonly EntityUI[] ALL_UI = {
-		new GenericPopupUI() { Active = false, },
-		new GenericDialogUI(){ Active = false, },
-		new FileBrowserUI(){ Active = false, },
-		new PixelEditor(),
-		new LanguageEditor(ignoreRequirements:true),
-		new SettingWindow(),
-	};
+	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
+	private static readonly LanguageCode DELETE_PROJECT_MSG = ("UI.DeleteProjectMsg", "Remove project {0}? This will NOT delete files in the disk.");
 	private static readonly LanguageCode[] UI_TITLES = {
 		("", ""),
 		("", ""),
@@ -44,7 +39,14 @@ internal class Engine {
 		("Title.Language", "Language"),
 		("Title.Setting", "Setting"),
 	};
-	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
+	private static readonly EntityUI[] ALL_UI = {
+		new GenericPopupUI() { Active = false, },
+		new GenericDialogUI() { Active = false, },
+		new FileBrowserUI() { Active = false, },
+		new PixelEditor(),
+		new LanguageEditor(ignoreRequirements:true),
+		new SettingWindow(),
+	};
 
 	// Api
 	public static Project CurrentProject { get; private set; } = null;
@@ -57,6 +59,7 @@ internal class Engine {
 	private static bool SettingInitialized = false;
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
+	private static int CurrentProjectMenuIndex = -1;
 
 
 	#endregion
@@ -70,6 +73,7 @@ internal class Engine {
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
 		Setting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
+		Setting.RefreshProjectFileExistsCache();
 		SwitchWindowMode(WindowMode.Window);
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
@@ -91,6 +95,12 @@ internal class Engine {
 	internal static void OnGameQuitting () {
 		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
+	}
+
+
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+		Setting.RefreshProjectFileExistsCache();
 	}
 
 
@@ -131,109 +141,146 @@ internal class Engine {
 	// Window
 	private static void OnGUI_Hub () {
 
-		using var _ = GUIScope.LayerUI();
-
 		var cameraRect = Renderer.CameraRect;
 		int hubPanelWidth = GUI.Unify(HUB_PANEL_WIDTH);
+
+		// --- Generic UI ---
+		foreach (var ui in ALL_UI) {
+			if (ui is WindowUI) continue;
+			if (ui.Active) {
+				ui.FirstUpdate();
+				ui.BeforeUpdate();
+				ui.Update();
+				ui.LateUpdate();
+			}
+		}
 
 		// --- File Browser ---
 		var browser = FileBrowserUI.Instance;
 		if (browser.Active) {
-			browser.FirstUpdate();
-			browser.BeforeUpdate();
-			browser.Update();
-			browser.LateUpdate();
+			browser.Width = GUI.Unify(800);
+			browser.Height = GUI.Unify(600);
 			GUI.Enable = false;
 		}
 
-		// --- BG ---
-		int bodyBorder = GUI.Unify(6);
-		Renderer.Draw_9Slice(
-			UI_WINDOW_BG, cameraRect,
-			bodyBorder, bodyBorder, bodyBorder, bodyBorder
-		);
+		using (GUIScope.LayerUI()) {
 
-		// --- Panel ---
-		{
-			var panelRect = Setting.Projects.Count > 0 ?
-				cameraRect.EdgeInside(Direction4.Left, hubPanelWidth) :
-				new IRect(cameraRect.x + (cameraRect.width - hubPanelWidth) / 2, cameraRect.y, hubPanelWidth, cameraRect.height);
-			int itemPadding = GUI.Unify(8);
-
-			var rect = new IRect(
-				panelRect.x + itemPadding,
-				panelRect.yMax - itemPadding * 2,
-				panelRect.width - itemPadding * 2,
-				GUI.Unify(42)
+			// --- BG ---
+			int bodyBorder = GUI.Unify(6);
+			Renderer.Draw_9Slice(
+				UI_WINDOW_BG, cameraRect,
+				bodyBorder, bodyBorder, bodyBorder, bodyBorder
 			);
 
-			// Create
-			rect.y -= rect.height + itemPadding;
-			if (GUI.DarkButton(rect, BTN_CREATE)) {
-				FileBrowserUI.SaveFolder(CREATE_PRO_TITLE, "New Project", CreateNewProjectAt);
+			// --- Panel ---
+			{
+				var panelRect = Setting.Projects.Count > 0 ?
+					cameraRect.EdgeInside(Direction4.Left, hubPanelWidth) :
+					new IRect(cameraRect.x + (cameraRect.width - hubPanelWidth) / 2, cameraRect.y, hubPanelWidth, cameraRect.height);
+				int itemPadding = GUI.Unify(8);
+
+				var rect = new IRect(
+					panelRect.x + itemPadding,
+					panelRect.yMax - itemPadding * 2,
+					panelRect.width - itemPadding * 2,
+					GUI.Unify(42)
+				);
+
+				// Create
+				rect.y -= rect.height + itemPadding;
+				if (GUI.DarkButton(rect, BTN_CREATE)) {
+					FileBrowserUI.SaveFolder(CREATE_PRO_TITLE, "New Project", CreateNewProjectAt);
+				}
+
+				// Add
+				rect.y -= rect.height + itemPadding;
+				if (GUI.DarkButton(rect, BTN_ADD)) {
+					FileBrowserUI.OpenFolder(ADD_PRO_TITLE, AddExistsProjectAt);
+				}
 			}
 
-			// Add
-			rect.y -= rect.height + itemPadding;
-			if (GUI.DarkButton(rect, BTN_ADD)) {
-				FileBrowserUI.OpenFolder(ADD_PRO_TITLE, AddExistsProjectAt);
-			}
-		}
+			// --- Content ---
+			if (Setting.Projects.Count > 0) {
 
-		// --- Content ---
-		if (Setting.Projects.Count > 0) {
+				int border = GUI.Unify(8);
+				int padding = GUI.Unify(8);
+				int itemHeight = GUI.Unify(52);
+				var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(padding);
+				var projects = Setting.Projects;
 
-			int border = GUI.Unify(8);
-			int padding = GUI.Unify(8);
-			int itemHeight = GUI.Unify(52);
-			var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(padding);
-			var projects = Setting.Projects;
+				// BG
+				Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
 
-			// BG
-			Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
+				// Project List
+				using (var scroll = GUIScope.Scroll(contentRect, HubPanelScroll, 0, Util.Max(0, projects.Count * itemHeight - contentRect.height))) {
+					HubPanelScroll = scroll.Position.y;
 
-			// Project List
-			using (var scroll = GUIScope.Scroll(contentRect, HubPanelScroll, 0, Util.Max(0, projects.Count * itemHeight - contentRect.height))) {
-				HubPanelScroll = scroll.Position.y;
+					var STEP_TINT = new Color32(42, 42, 42, 255);
+					var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
+					bool stepTint = false;
 
-				var STEP_TINT = new Color32(42, 42, 42, 255);
-				var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
-				bool stepTint = false;
+					for (int i = 0; i < projects.Count; i++) {
+						string projectPath = projects[i].Path;
+						bool folderExists = projects[i].FolderExists;
+						var itemContentRect = rect.Shrink(padding);
 
-				foreach (string projectPath in projects) {
+						// Step Tint
+						if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
+						stepTint = !stepTint;
 
-					var itemContentRect = rect.Shrink(padding);
+						using (GUIScope.Enable(folderExists)) {
 
-					// Step Tint
-					if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
-					stepTint = !stepTint;
+							// Red Highlight
+							if (!folderExists && rect.MouseInside()) {
+								Renderer.DrawPixel(rect, Color32.RED.WithNewA(32));
+							}
 
-					// Button
-					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
-						OpenProject(projectPath);
+							// Button
+							if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
+								OpenProject(projectPath);
+							}
+
+							// Icon
+							GUI.Icon(
+								itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
+								PROJECT_ICON
+							);
+
+							// Name
+							GUI.Label(
+								itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
+								Util.GetNameWithoutExtension(projectPath),
+								GUISkin.SmallLabel
+							);
+
+							// Path
+							GUI.Label(
+								itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
+								projectPath,
+								GUISkin.SmallGreyLabel
+							);
+
+							// Click
+							if (rect.MouseInside()) {
+								// Menu
+								if (folderExists && Input.MouseRightButtonDown) {
+									Input.UseAllMouseKey();
+									OpenHubItemPopup(i);
+								}
+
+								// Delete Not Exists
+								if (!folderExists) {
+									if (Input.MouseLeftButtonDown) {
+										CurrentProjectMenuIndex = i;
+										DeleteProjectConfirm();
+									}
+									Cursor.SetCursorAsHand();
+								}
+							}
+						}
+
+						rect.SlideDown();
 					}
-
-					// Icon
-					GUI.Icon(
-						itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
-						PROJECT_ICON
-					);
-
-					// Name
-					GUI.Label(
-						itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
-						Util.GetNameWithoutExtension(projectPath),
-						GUISkin.SmallLabel
-					);
-
-					// Path
-					GUI.Label(
-						itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
-						projectPath,
-						GUISkin.SmallGreyLabel
-					);
-
-					rect.y -= rect.height;
 				}
 			}
 		}
@@ -319,8 +366,25 @@ internal class Engine {
 				if (mousePress && hovering) CurrentWindowIndex = index;
 
 				// Next
-				rect.y -= rect.height;
+				rect.SlideDown();
 				index++;
+			}
+
+			// Back to Hub
+			if (Setting.FullsizeMenu) {
+				if (GUI.Button(
+					barRect.EdgeInside(Direction4.Down, rect.height),
+					BuiltInText.UI_BACK, GUISkin.SmallCenterLabelButton
+				)) {
+					CloseProject();
+				}
+			} else {
+				if (GUI.Button(
+					barRect.EdgeInside(Direction4.Down, rect.height),
+					BuiltInSprite.ICON_BACK, GUISkin.IconButton
+				)) {
+					CloseProject();
+				}
 			}
 
 		}
@@ -453,6 +517,42 @@ internal class Engine {
 	}
 
 
+	private static void OpenHubItemPopup (int index) {
+		CurrentProjectMenuIndex = index;
+		GenericPopupUI.BeginPopup();
+		GenericPopupUI.AddItem(BuiltInText.UI_EXPLORE, OpenProjectInExplorer);
+		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteProjectConfirm);
+	}
+
+
+	private static void OpenProjectInExplorer () {
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Setting.Projects.Count) return;
+		string path = Setting.Projects[CurrentProjectMenuIndex].Path;
+		if (Util.FolderExists(path)) {
+			Game.OpenUrl(path);
+		}
+	}
+
+
+	private static void DeleteProjectConfirm () {
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Setting.Projects.Count) return;
+		string name = Util.GetNameWithoutExtension(Setting.Projects[CurrentProjectMenuIndex].Path);
+		string msg = string.Format(DELETE_PROJECT_MSG, name);
+		GenericDialogUI.SpawnDialog_Button(
+			msg,
+			BuiltInText.UI_DELETE, DeleteProject,
+			BuiltInText.UI_CANCEL, Const.EmptyMethod
+		);
+		GenericDialogUI.SetButtonTint(Color32.RED_BETTER);
+	}
+
+
+	private static void DeleteProject () {
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Setting.Projects.Count) return;
+		Setting.Projects.RemoveAt(CurrentProjectMenuIndex);
+	}
+
+
 	// Workflow
 	private static void OpenProject (string projectPath) {
 		if (!Project.IsValidProjectPath(projectPath)) return;
@@ -461,6 +561,17 @@ internal class Engine {
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		Game.SetWindowTitle($"{Game.DisplayTitle} - {Util.GetNameWithoutExtension(projectPath)}");
+	}
+
+
+	private static void CloseProject () {
+		CurrentProject = null;
+		foreach (var ui in ALL_UI) {
+			if (ui is WindowUI) ui.OnInactivated();
+		}
+		LanguageEditor.Instance.SetLanguageRoot("");
+		PixelEditor.Instance.LoadSheetFromDisk("");
+		Game.SetWindowTitle(Game.DisplayTitle);
 	}
 
 
@@ -474,9 +585,12 @@ internal class Engine {
 
 	private static void AddExistsProjectAt (string path) {
 		if (string.IsNullOrEmpty(path) || !Util.FolderExists(path)) return;
-		if (Setting != null && Project.IsValidProjectPath(path) && !Setting.Projects.Contains(path)) {
+		if (Setting != null && Project.IsValidProjectPath(path) && !Setting.Projects.Any(data => data.Path == path)) {
 			// Add to Path List
-			Setting.Projects.Add(path);
+			Setting.Projects.Add(new EngineSetting.ProjectData() {
+				Path = path,
+				FolderExists = true,
+			});
 			// Save Setting
 			JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath);
 		}

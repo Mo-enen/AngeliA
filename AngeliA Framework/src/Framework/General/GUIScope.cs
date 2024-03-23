@@ -87,7 +87,7 @@ public class GUIScope : System.IDisposable {
 		return result;
 	}
 
-	public static GUIScope BodyColor (bool enable) {
+	public static GUIScope Enable (bool enable) {
 		var result = EnableInstance.Start();
 		if (result == null) return EmptyScope;
 		result.IntData = GUI.Enable ? 1 : 0;
@@ -105,7 +105,6 @@ public class GUIScope : System.IDisposable {
 		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
 		result.IntDataAlt = Renderer.GetTextUsedCellCount(0);
 		result.Int2DataAlt = Input.MousePositionShift;
-		result.ColorData.r = (byte)(Input.IgnoringMouseInput ? 1 : 0);
 		if (!mouseInside) Input.IgnoreMouseInput();
 
 		// Scroll by Mouse Wheel
@@ -152,11 +151,7 @@ public class GUIScope : System.IDisposable {
 
 				// Old Value Back
 				Input.SetMousePositionShift(Int2DataAlt.x, Int2DataAlt.y);
-				if (ColorData.r == 1) {
-					Input.IgnoreMouseInput();
-				} else {
-					Input.CancelIgnoreMouseInput();
-				}
+				Input.CancelIgnoreMouseInput();
 
 				// Scroll Sprites
 				int startIndex = IntData;

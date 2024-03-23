@@ -214,7 +214,7 @@ public partial class LanguageEditor : WindowUI {
 		if (panelRect.height <= itemHeight) return;
 
 		Renderer.DrawPixel(panelRect, Color32.GREY_32, 0);
-		
+
 		int scrollBarWidth = Unify(12);
 		int labelHeight = Unify(22);
 		int labelPadding = Unify(12);
@@ -317,7 +317,7 @@ public partial class LanguageEditor : WindowUI {
 
 
 	public void Save (bool forceSave = false) {
-		if (forceSave || IsDirty) IsDirty = false;
+		if (forceSave || IsDirty) SetDirty(false);
 		if (Lines.Count == 0 || string.IsNullOrEmpty(LanguageRoot)) return;
 		var list = new List<KeyValuePair<string, string>>();
 		for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
@@ -342,8 +342,8 @@ public partial class LanguageEditor : WindowUI {
 
 	private void Load (string languageRoot) {
 
-		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;
 		SetDirty(false);
+		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;
 		Lines.Clear();
 
 		// Load Language

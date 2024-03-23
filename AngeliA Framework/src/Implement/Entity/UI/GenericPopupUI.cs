@@ -35,13 +35,13 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	private static readonly int LINE_CODE = BuiltInSprite.SOFT_LINE_H;
 
 	// Api
+	public static GenericPopupUI Instance { get; private set; }
 	public static bool ShowingPopup => Instance != null && Instance.Active;
 	public static int CurrentItemCount => Instance != null ? Instance.ItemCount : 0;
 	protected override bool BlockEvent => true;
 	public IRect BackgroundRect { get; private set; }
 
 	// Data
-	private static GenericPopupUI Instance;
 	private readonly Item[] Items = new Item[128];
 	private int ItemCount = 0;
 	private int OffsetX = 0;
@@ -147,20 +147,22 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 				// Highlight
 				bool hover = rect.MouseInside();
 				if (hover && item.Enabled) {
-					highlightCell = Renderer.DrawPixel(rect, Color32.GREY_230, int.MaxValue - 1);
+					highlightCell = Renderer.DrawPixel(rect, Color32.GREY_230);
 				}
 
-				// Check Mark
-				if (item.Checked) {
-					Renderer.Draw(
-						CHECK_CODE, new IRect(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
-						tint, int.MaxValue
-					);
-				}
+				using (GUIScope.Enable(item.Enabled)) {
 
-				using (GUIScope.ContentColor(Color32.GREY_20)) {
+					// Check Mark
+					if (item.Checked) {
+						Renderer.Draw(
+							CHECK_CODE, 
+							new IRect(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
+							tint
+						);
+					}
+
 					// Label
-					GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds, GUISkin.SmallLabel);
+					GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds, GUISkin.SmallDarkLabel);
 					maxWidth = Util.Max(
 						maxWidth,
 						labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)
@@ -173,13 +175,13 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 							item.IconPosition == Direction2.Left ? labelBounds.x - iconSize - iconPadding : labelBounds.xMax + iconPadding,
 							rect.y, iconSize, iconSize
 						);
-						Renderer.Draw(item.Icon, iconRect, int.MaxValue);
+						Renderer.Draw(item.Icon, iconRect);
 					}
-				}
 
-				// Click
-				if (hover && item.Enabled && Input.MouseLeftButtonDown) {
-					item.Action?.Invoke();
+					// Click
+					if (hover && item.Enabled && Input.MouseLeftButtonDown) {
+						item.Action?.Invoke();
+					}
 				}
 			}
 
@@ -196,6 +198,9 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 		// Clamp Text
 		Renderer.ClampTextCells(panelRect, textStart);
+
+		// Block Input
+		Input.IgnoreMouseInput(0);
 
 		// Cancel
 		if (Game.GlobalFrame > SpawnFrame && (Input.AnyMouseButtonDown || Input.AnyKeyDown)) {

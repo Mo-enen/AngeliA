@@ -83,12 +83,14 @@ public class PixelEditor : WindowUI {
 		int panelWidth = Unify(PANEL_WIDTH);
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, panelWidth);
 		Update_Panel(panelRect);
-		var stageRect = WindowRect.Shrink(panelWidth, 0, 0, Unify(TOOLBAR_HEIGHT));
-		Update_View(stageRect);
-		Update_Toolbar(stageRect);
-		Update_Editor(stageRect);
-		Update_Stage(stageRect);
-		Update_Cursor(stageRect);
+		if (Sheet.Atlas.Count > 0) {
+			var stageRect = WindowRect.Shrink(panelWidth, 0, 0, Unify(TOOLBAR_HEIGHT));
+			Update_View(stageRect);
+			Update_Toolbar(stageRect);
+			Update_Editor(stageRect);
+			Update_Stage(stageRect);
+			Update_Cursor(stageRect);
+		}
 	}
 
 
@@ -259,6 +261,9 @@ public class PixelEditor : WindowUI {
 
 
 
+
+
+
 	}
 
 
@@ -328,14 +333,13 @@ public class PixelEditor : WindowUI {
 
 		// Mouse Cursor
 		if (stageRect.MouseInside()) {
-			var stageIntGlobalRect = StageGlobalRect.ToIRect();
-			int pixWidth = stageIntGlobalRect.width / STAGE_SIZE;
-			int pixHeight = stageIntGlobalRect.height / STAGE_SIZE;
-			var cursorRect = new IRect(
-				(mousePos.x - stageIntGlobalRect.x).UFloor(pixWidth) + stageIntGlobalRect.x,
-				(mousePos.y - stageIntGlobalRect.y).UFloor(pixHeight) + stageIntGlobalRect.y,
+			float pixWidth = Util.Max(StageGlobalRect.width, 1f) / STAGE_SIZE;
+			float pixHeight = Util.Max(StageGlobalRect.height, 1f) / STAGE_SIZE;
+			var cursorRect = new FRect(
+				(mousePos.x - StageGlobalRect.x).UFloor(pixWidth) + StageGlobalRect.x,
+				(mousePos.y - StageGlobalRect.y).UFloor(pixHeight) + StageGlobalRect.y,
 				pixWidth, pixHeight
-			);
+			).ToIRect();
 			if (PaintingColor == Color32.CLEAR) {
 				// Empty
 				Game.DrawGizmosFrame(cursorRect, Color32.WHITE, thickness);
@@ -389,37 +393,15 @@ public class PixelEditor : WindowUI {
 
 		// Delete
 		if (atlasIndex >= 0) {
-			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteConfirm, enabled: Sheet.Atlas.Count > 1);
+			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: Sheet.Atlas.Count > 1);
 		}
 
 		// Add
 		GenericPopupUI.AddItem(BuiltInText.UI_ADD, AddAtlas);
 
 		// Func
-		static void DeleteConfirm () {
-			var atlasList = Instance.Sheet.Atlas;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
-			if (atlasList.Count <= 1) return;
-			if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
-			GenericDialogUI.SpawnDialog(
-				string.Format(PIX_DELETE_ATLAS_MSG, atlasList[targetIndex].Name),
-				BuiltInText.UI_DELETE, Delete,
-				BuiltInText.UI_CANCEL, Const.EmptyMethod
-			);
-			GenericDialogUI.Instance.SetStyle(
-				GUISkin.SmallMessage, GUISkin.Label, GUISkin.DarkButton,
-				drawStyleBody: true, newWindowWidth: Unify(330)
-			);
-		}
-		static void Delete () {
-			var atlasList = Instance.Sheet.Atlas;
-			if (atlasList.Count <= 1) return;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
-			if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
-			Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
-			Instance.IsDirty = true;
-			Instance.SetCurrentAtlas(Instance.CurrentAtlasIndex);
-		}
+
+		
 	}
 
 
@@ -435,6 +417,8 @@ public class PixelEditor : WindowUI {
 			});
 		}
 		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
+		StageGlobalRect.width = Util.Max(StageGlobalRect.width, 1f);
+		StageGlobalRect.height = Util.Max(StageGlobalRect.height, 1f);
 		ZoomLevel = 1;
 		PaintingColor = Color32.CLEAR;
 	}
@@ -449,6 +433,31 @@ public class PixelEditor : WindowUI {
 		Instance.IsDirty = true;
 		Instance.AtlasPanelScrollY = int.MaxValue;
 		Instance.SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
+	}
+
+
+	private static void DeleteAtlasConfirm () {
+		var atlasList = Instance.Sheet.Atlas;
+		int targetIndex = Instance.AtlasMenuTargetIndex;
+		if (atlasList.Count <= 1) return;
+		if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
+		GenericDialogUI.SpawnDialog_Button(
+			string.Format(PIX_DELETE_ATLAS_MSG, atlasList[targetIndex].Name),
+			BuiltInText.UI_DELETE, DeleteAtlas,
+			BuiltInText.UI_CANCEL, Const.EmptyMethod
+		);
+		GenericDialogUI.SetButtonTint(Color32.RED_BETTER);
+	}
+
+
+	private static void DeleteAtlas () {
+		var atlasList = Instance.Sheet.Atlas;
+		if (atlasList.Count <= 1) return;
+		int targetIndex = Instance.AtlasMenuTargetIndex;
+		if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
+		Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
+		Instance.IsDirty = true;
+		Instance.SetCurrentAtlas(Instance.CurrentAtlasIndex);
 	}
 
 

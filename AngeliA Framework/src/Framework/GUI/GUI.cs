@@ -106,12 +106,12 @@ public static class GUI {
 
 
 	// Label
-	public static void Label (IRect rect, string text, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
-	public static void Label (IRect rect, char[] text, GUIStyle style = null) => LabelLogic(rect, "", text, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
-	public static void Label (IRect rect, string text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
-	public static void Label (IRect rect, char[] text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, "", text, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
-	public static void Label (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
-	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, GUIState.Normal, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
+	public static void Label (IRect rect, string text, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	public static void Label (IRect rect, char[] text, GUIStyle style = null) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	public static void Label (IRect rect, string text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	public static void Label (IRect rect, char[] text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	public static void Label (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
 	private static void LabelLogic (IRect rect, string text, char[] chars, GUIStyle style, GUIState state, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
 
 		if (!Renderer.TextReady) {

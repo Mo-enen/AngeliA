@@ -36,6 +36,9 @@ public partial class RayGame {
 		}
 	}
 
+	protected override void _OpenUrl (string url) => Raylib.OpenURL(url);
+
+
 	// Window
 	protected override void _SetWindowSize (int width, int height) {
 		if (Raylib.IsWindowFullscreen()) return;

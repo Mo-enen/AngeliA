@@ -77,6 +77,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_TRIANGLE_LEFT = "Icon TriangleLeft";
 	public static readonly SpriteCode ICON_TRIANGLE_RIGHT = "Icon TriangleRight";
 	public static readonly SpriteCode ICON_MAP = "Icon Map";
+	public static readonly SpriteCode ICON_BACK = "Icon Back";
 	public static readonly SpriteCode UI_ITEM_FRAME = "UI.ItemFrame";
 	public static readonly SpriteCode UI_DARK_BUTTON = "UI.DarkButton";
 	public static readonly SpriteCode UI_DARK_BUTTON_HOVER = "UI.DarkButtonHover";
