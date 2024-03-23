@@ -246,11 +246,12 @@ public abstract partial class Game {
 
 
 	// GL Gizmos
-	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness) {
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Down, thickness), color);
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Up, thickness), color);
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Left, thickness), color);
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Right, thickness), color);
+	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness) => DrawGizmosFrame(rect, color, new Int4(thickness, thickness, thickness, thickness));
+	public static void DrawGizmosFrame (IRect rect, Color32 color, Int4 thickness) {
+		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Down, thickness.down), color);
+		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Up, thickness.up), color);
+		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Left, thickness.left), color);
+		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Right, thickness.right), color);
 	}
 	public static void DrawGizmosRect (IRect rect, Color32 color) => Instance._DrawGizmosRect(rect, color);
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 color);
