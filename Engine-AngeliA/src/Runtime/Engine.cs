@@ -60,6 +60,10 @@ internal class Engine {
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
+	private static bool RequireEventWaitingOn = false;
+	private static bool PrevMouseHoldingL = false;
+	private static bool PrevMouseHoldingR = false;
+	private static bool PrevMouseHoldingM = false;
 
 
 	#endregion
@@ -77,6 +81,7 @@ internal class Engine {
 		SwitchWindowMode(WindowMode.Window);
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
+		Game.SetEventWaiting(true);
 	}
 
 
@@ -101,6 +106,25 @@ internal class Engine {
 	[OnGameFocused]
 	internal static void OnGameFocused () {
 		Setting.RefreshProjectFileExistsCache();
+	}
+
+
+	[OnGameUpdate(-4096)]
+	internal static void OnGameUpdate () {
+		if (RequireEventWaitingOn) {
+			RequireEventWaitingOn = false;
+			Game.SetEventWaiting(true);
+		}
+		if (
+			(PrevMouseHoldingL != Game.IsMouseLeftHolding) ||
+			(PrevMouseHoldingM != Game.IsMouseMidHolding) ||
+			(PrevMouseHoldingR != Game.IsMouseRightHolding)
+		) {
+			Game.SetEventWaiting(false);
+			PrevMouseHoldingL = Game.IsMouseLeftHolding;
+			PrevMouseHoldingR = Game.IsMouseMidHolding;
+			PrevMouseHoldingM = Game.IsMouseRightHolding;
+		}
 	}
 
 
@@ -146,7 +170,10 @@ internal class Engine {
 
 		// --- Generic UI ---
 		foreach (var ui in ALL_UI) {
-			if (ui is WindowUI) continue;
+			if (ui is WindowUI) {
+				ui.Active = false;
+				continue;
+			}
 			if (ui.Active) {
 				ui.FirstUpdate();
 				ui.BeforeUpdate();
@@ -569,7 +596,10 @@ internal class Engine {
 	private static void CloseProject () {
 		CurrentProject = null;
 		foreach (var ui in ALL_UI) {
-			if (ui is WindowUI) ui.OnInactivated();
+			ui.Active = false;
+			if (ui is WindowUI) {
+				ui.OnInactivated();
+			}
 		}
 		LanguageEditor.Instance.SetLanguageRoot("");
 		PixelEditor.Instance.LoadSheetFromDisk("");

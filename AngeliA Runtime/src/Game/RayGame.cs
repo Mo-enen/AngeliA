@@ -13,13 +13,13 @@ public partial class RayGame : Game {
 
 
 	// Const
-	private const long TICK_GAP = TimeSpan.TicksPerSecond / 60;
+	//private const long TICK_GAP = TimeSpan.TicksPerSecond / 60;
 
 	// Data
 	private readonly Stopwatch GameWatch = new();
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
-	private long NextUpdateTick = -1;
+	//private long NextUpdateTick = -1;
 
 
 	// Saving
@@ -44,6 +44,7 @@ public partial class RayGame : Game {
 
 		// Init Window
 		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
+		Raylib.SetTargetFPS(60);
 		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
 		Raylib.SetConfigFlags(windowConfig);
 		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
@@ -85,9 +86,9 @@ public partial class RayGame : Game {
 		RayUtil.TextInputUpdate(GUI.OnTextInput);
 
 		// Wait for Fixed Update
-		long currentTick = GameWatch.ElapsedTicks;
-		if (currentTick < NextUpdateTick) goto _CONTINUE_;
-		NextUpdateTick = currentTick + TICK_GAP;
+		//long currentTick = GameWatch.ElapsedTicks;
+		//if (currentTick < NextUpdateTick) goto _CONTINUE_;
+		//NextUpdateTick = currentTick + TICK_GAP;
 
 		// Window Focus
 		bool windowFocus = Raylib.IsWindowFocused();
@@ -163,7 +164,7 @@ public partial class RayGame : Game {
 
 		// Final
 		Raylib.EndDrawing();
-		_CONTINUE_:;
+		//_CONTINUE_:;
 
 		// Trying to Quit Check
 		if (!RequireQuitGame && Raylib.WindowShouldClose()) {

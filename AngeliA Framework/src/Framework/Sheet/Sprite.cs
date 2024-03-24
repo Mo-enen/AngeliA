@@ -46,11 +46,11 @@ public class AngeSprite {
 			// ID
 			ID = RealName.AngeHash();
 
-			// Size
-			PixelRect.x = reader.ReadUInt16();
-			PixelRect.y = reader.ReadUInt16();
-			PixelRect.width = reader.ReadUInt16();
-			PixelRect.height = reader.ReadUInt16();
+			// Rect
+			PixelRect.x = reader.ReadInt16();
+			PixelRect.y = reader.ReadInt16();
+			PixelRect.width = reader.ReadInt16();
+			PixelRect.height = reader.ReadInt16();
 			GlobalWidth = PixelRect.width * Const.ART_SCALE;
 			GlobalHeight = PixelRect.height * Const.ART_SCALE;
 
@@ -111,11 +111,11 @@ public class AngeSprite {
 				writer.Write((byte)RealName[i]);
 			}
 
-			// Size
-			writer.Write((ushort)PixelRect.x);
-			writer.Write((ushort)PixelRect.y);
-			writer.Write((ushort)PixelRect.width);
-			writer.Write((ushort)PixelRect.height);
+			// Rect
+			writer.Write((short)PixelRect.x);
+			writer.Write((short)PixelRect.y);
+			writer.Write((short)PixelRect.width);
+			writer.Write((short)PixelRect.height);
 
 			// Pivot
 			writer.Write((short)PivotX);
@@ -226,6 +226,12 @@ public class AngeSprite {
 		string result = CacheBuilder.ToString();
 		CacheBuilder.Clear();
 		return result;
+	}
+
+	public void SetPixelRect (IRect newRect) {
+
+
+		//PixelRect = newRect;
 	}
 
 }

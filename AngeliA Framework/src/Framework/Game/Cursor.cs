@@ -71,4 +71,17 @@ public static class Cursor {
 	public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_RESIZE_CROSS, mouseRange, priority);
 
 
+	public static int GetResizeCursorIndex (Direction8 direction) => direction switch {
+		Direction8.Top => Const.CURSOR_RESIZE_VERTICAL,
+		Direction8.Bottom => Const.CURSOR_RESIZE_VERTICAL,
+		Direction8.Left => Const.CURSOR_RESIZE_HORIZONTAL,
+		Direction8.Right => Const.CURSOR_RESIZE_HORIZONTAL,
+		Direction8.TopRight => Const.CURSOR_RESIZE_TOPRIGHT,
+		Direction8.BottomRight => Const.CURSOR_RESIZE_TOPLEFT,
+		Direction8.BottomLeft => Const.CURSOR_RESIZE_TOPRIGHT,
+		Direction8.TopLeft => Const.CURSOR_RESIZE_TOPLEFT,
+		_ => Const.CURSOR_DEFAULT,
+	};
+
+
 }

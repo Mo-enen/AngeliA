@@ -397,6 +397,26 @@ public static class Extension {
 	public static Direction8 Opposite (this Direction8 dir) => (Direction8)(((int)dir + 4) % 8);
 
 
+	public static bool IsLeft (this Direction8 dir) => dir == Direction8.Left || dir == Direction8.BottomLeft || dir == Direction8.TopLeft;
+	public static bool IsRight (this Direction8 dir) => dir == Direction8.Right || dir == Direction8.BottomRight || dir == Direction8.TopRight;
+	public static bool IsVertical (this Direction8 dir) => dir == Direction8.Top || dir == Direction8.Bottom;
+	public static bool IsHorizontal (this Direction8 dir) => dir == Direction8.Left || dir == Direction8.Right;
+	public static bool IsBottom (this Direction8 dir) => dir == Direction8.Bottom || dir == Direction8.BottomLeft || dir == Direction8.BottomRight;
+	public static bool IsTop (this Direction8 dir) => dir == Direction8.Top || dir == Direction8.TopLeft || dir == Direction8.TopRight;
+
+	public static Int2 GetNormal (this Direction8 dir) => dir switch {
+		Direction8.Top => new(0, 1),
+		Direction8.TopRight => new(1, 1),
+		Direction8.Right => new(1, 0),
+		Direction8.BottomRight => new(1, -1),
+		Direction8.Bottom => new(0, -1),
+		Direction8.BottomLeft => new(-1, -1),
+		Direction8.Left => new(-1, 0),
+		Direction8.TopLeft => new(-1, 1),
+		_ => new(0, 0)
+	};
+
+
 	// Rect
 	public static FRect Shift (this FRect rect, float x, float y) {
 		rect.x += x;

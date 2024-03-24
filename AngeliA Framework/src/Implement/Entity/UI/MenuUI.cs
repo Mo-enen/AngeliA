@@ -78,6 +78,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		ContentStyle = GUISkin.CenterLabel;
 		DrawStyleBody = false;
 		OverrideWindowWidth = -1;
+		AnimationDuration = 8;
 	}
 
 
@@ -508,12 +509,16 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected void RefreshAnimation () => AnimationFrame = 0;
 
 
-	public void SetStyle (GUIStyle message, GUIStyle label, GUIStyle content, bool drawStyleBody, int newWindowWidth = -1) {
+	public void SetStyle (
+		GUIStyle message, GUIStyle label, GUIStyle content,
+		bool drawStyleBody, int newWindowWidth = -1, int animationDuration = 8
+	) {
 		MessageStyle = message ?? GUISkin.Message;
 		LabelStyle = label ?? GUISkin.Label;
 		ContentStyle = content ?? GUISkin.CenterLabel;
 		DrawStyleBody = drawStyleBody;
 		OverrideWindowWidth = newWindowWidth;
+		AnimationDuration = animationDuration;
 	}
 
 

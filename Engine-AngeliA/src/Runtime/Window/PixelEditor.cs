@@ -14,10 +14,21 @@ public class PixelEditor : WindowUI {
 	#region --- SUB ---
 
 
+	private class SpriteDataComparer : IComparer<SpriteData> {
+		public static readonly SpriteDataComparer Instance = new();
+		public int Compare (SpriteData a, SpriteData b) => a.Selecting.CompareTo(b.Selecting);
+	}
+
+
 	private class SpriteData {
 		public AngeSprite Sprite;
 		public bool PixelDirty;
+		public bool Selecting;
+		public IRect DraggingStartRect;
 	}
+
+
+	private enum DragState { None, MoveSlice, SelectSlice, ResizeSlice, Paint, }
 
 
 	#endregion
@@ -35,7 +46,8 @@ public class PixelEditor : WindowUI {
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
 	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
-	private static readonly SpriteCode ICON_SHOW_BG = "IconI.ShowBackground";
+	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
+	private static readonly SpriteCode ICON_SHOW_SLICE_FRAME = "Icon.ShowSliceFrame";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas {0}? All sprites inside will be delete too.");
 
 	// Api
@@ -43,9 +55,7 @@ public class PixelEditor : WindowUI {
 	protected override bool BlockEvent => true;
 
 	// Short
-	private bool PaintMode => PaintingDraggingRect != null || !Input.KeyboardHolding(KeyboardKey.LeftCtrl);
-	private bool SliceMode => !PaintMode;
-	private bool AnyEditorDragging => PaintingDraggingRect.HasValue || SliceDraggingStageIndex.HasValue;
+	private bool HoldingSliceModeKey => Input.KeyboardHolding(KeyboardKey.LeftCtrl);
 
 	// Data
 	private readonly Sheet Sheet = new();
@@ -57,14 +67,18 @@ public class PixelEditor : WindowUI {
 	private int AtlasMenuTargetIndex = -1;
 	private int ZoomLevel = 1;
 	private bool IsDirty = false;
-	private FRect StageGlobalRect;
+	private bool IsUndoDirty = false;
+	private FRect CanvasRect;
+	private IRect StageRect;
 	private Color32 PaintingColor = Color32.CLEAR;
-	private IRect? PaintingDraggingRect = null;
-	private Int2? SliceDraggingStartPixPos = null;
-	private int? SliceDraggingStageIndex = null;
+	private IRect DraggingPixelRect = default;
+	private DragState DraggingState = DragState.None;
+	private Direction8 ResizingDirection = default;
+	private int ResizingStageIndex = -1;
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
+	private static readonly SavingBool ShowSliceFrame = new("PixEdt.ShowSliceFrame", true);
 
 
 	#endregion
@@ -92,13 +106,15 @@ public class PixelEditor : WindowUI {
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, panelWidth);
 		Update_Panel(panelRect);
 		if (Sheet.Atlas.Count > 0) {
-			var stageRect = WindowRect.Shrink(panelWidth, 0, 0, Unify(TOOLBAR_HEIGHT));
-			Update_View(stageRect);
-			Update_Toolbar(stageRect);
-			Update_Editor(stageRect);
-			Update_Stage(stageRect);
-			Update_Gizmos(stageRect);
+			StageRect = WindowRect.Shrink(panelWidth, 0, 0, Unify(TOOLBAR_HEIGHT));
+			Update_View();
+			Update_Toolbar();
+			Update_ColorPicking();
+			Update_Dragging();
+			Update_BG();
+			Update_Stage();
 		}
+		Update_Undo();
 	}
 
 
@@ -132,11 +148,11 @@ public class PixelEditor : WindowUI {
 
 			int scrollbarWidth = Unify(12);
 			int labelPadding = Unify(4);
-			int atlasPadding = Unify(4);
+			int itemPadding = Unify(2);
 			SetCurrentAtlas(CurrentAtlasIndex.Clamp(0, itemCount - 1));
-			var rect = panelRect.EdgeInside(Direction4.Up, Unify(32));
+			var rect = panelRect.EdgeInside(Direction4.Up, Unify(36));
 			int newSelectingIndex = -1;
-			int scrollMax = ((itemCount + 6) * (rect.height + atlasPadding) - panelRect.height).GreaterOrEquelThanZero();
+			int scrollMax = ((itemCount + 6) * rect.height - panelRect.height).GreaterOrEquelThanZero();
 			bool hasScrollbar = scrollMax > 0;
 			if (hasScrollbar) rect.width -= scrollbarWidth;
 			bool requireUseMouseButtons = false;
@@ -153,6 +169,7 @@ public class PixelEditor : WindowUI {
 						RenamingAtlasIndex = -1;
 						renaming = false;
 					}
+					var contentRect = rect.Shrink(0, 0, itemPadding, itemPadding);
 
 					// Button
 					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
@@ -168,21 +185,21 @@ public class PixelEditor : WindowUI {
 
 					// Selection Mark
 					if (!renaming && selecting) {
-						Renderer.DrawPixel(rect, Color32.GREEN_DARK);
+						Renderer.DrawPixel(contentRect, Color32.GREEN_DARK);
 					}
 
 					// Icon
-					GUI.Icon(rect.EdgeInside(Direction4.Left, rect.height), atlas.Type == AtlasType.General ? ICON_SPRITE_ATLAS : ICON_LEVEL_ATLAS);
+					GUI.Icon(contentRect.EdgeInside(Direction4.Left, contentRect.height), atlas.Type == AtlasType.General ? ICON_SPRITE_ATLAS : ICON_LEVEL_ATLAS);
 
 					// Label
 					if (renaming) {
 						atlas.Name = GUI.InputField(
-							INPUT_ID + i, rect.Shrink(rect.height + labelPadding, 0, 0, 0),
+							INPUT_ID + i, contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm, GUISkin.SmallInputField
 						);
-						if (changed || confirm) IsDirty = true;
+						if (changed || confirm) SetDirty();
 					} else {
-						GUI.Label(rect.Shrink(rect.height + labelPadding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
+						GUI.Label(contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
 					}
 
 					// Right Click
@@ -192,7 +209,7 @@ public class PixelEditor : WindowUI {
 					}
 
 					// Next
-					rect.SlideDown(atlasPadding);
+					rect.SlideDown();
 				}
 			}
 
@@ -208,7 +225,7 @@ public class PixelEditor : WindowUI {
 				var barRect = panelRect.EdgeInside(Direction4.Right, scrollbarWidth);
 				AtlasPanelScrollY = GUI.ScrollBar(
 					1256231, barRect,
-					AtlasPanelScrollY, (itemCount + 6) * (rect.height + atlasPadding), panelRect.height
+					AtlasPanelScrollY, (itemCount + 6) * rect.height, panelRect.height
 				);
 			}
 
@@ -232,23 +249,23 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_View (IRect stageRect) {
+	private void Update_View () {
 
 		// Move
 		if (
-			(Input.MouseMidButtonHolding && stageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
-			(Input.MouseLeftButtonHolding && Input.KeyboardHolding(KeyboardKey.Space) && stageRect.Contains(Input.MouseLeftDownGlobalPosition))
+			(Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
+			(Input.MouseLeftButtonHolding && Input.KeyboardHolding(KeyboardKey.Space) && StageRect.Contains(Input.MouseLeftDownGlobalPosition))
 		) {
 			var delta = Input.MouseGlobalPositionDelta;
-			StageGlobalRect = StageGlobalRect.Shift(delta.x, delta.y);
+			CanvasRect = CanvasRect.Shift(delta.x, delta.y);
 		}
 
 		// Zoom
-		if (stageRect.MouseInside() && Input.MouseWheelDelta != 0) {
+		if (StageRect.MouseInside() && Input.MouseWheelDelta != 0) {
 			ZoomLevel = (ZoomLevel + Input.MouseWheelDelta).Clamp(1, 32);
 			var mousePos = Input.MouseGlobalPosition;
-			var fittedStage = stageRect.Fit(1, 1);
-			StageGlobalRect = StageGlobalRect.ResizeFrom(
+			var fittedStage = StageRect.Fit(1, 1);
+			CanvasRect = CanvasRect.ResizeFrom(
 				fittedStage.width * ZoomLevel,
 				fittedStage.height * ZoomLevel,
 				mousePos.x, mousePos.y
@@ -258,9 +275,9 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_Toolbar (IRect stageRect) {
+	private void Update_Toolbar () {
 		int toolbarButtonPadding = Unify(4);
-		var toolbarRect = stageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
+		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 		// BG
 		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
@@ -268,153 +285,258 @@ public class PixelEditor : WindowUI {
 		// Show BG
 		ShowBackground.Value = GUI.ToggleButton(toolbarBtnRect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
 		toolbarBtnRect.SlideRight(toolbarButtonPadding);
-
+		// Show Slice Frame
+		ShowSliceFrame.Value = GUI.ToggleButton(toolbarBtnRect, ShowSliceFrame.Value, ICON_SHOW_SLICE_FRAME, GUISkin.SmallDarkButton);
+		toolbarBtnRect.SlideRight(toolbarButtonPadding);
 	}
 
 
-	private void Update_Editor (IRect stageRect) {
+	private void Update_ColorPicking () {
 
-		// Dragging
-		if (AnyEditorDragging) {
-			if (SliceMode) {
-				// Dragging Slice
+		if (
+			!Input.MouseRightButtonHolding ||
+			DraggingState != DragState.None ||
+			HoldingSliceModeKey
+		) return;
 
-
-
-			} else {
-				// Dragging to Paint
-
-
-			}
+		if (!StageRect.MouseInside()) {
+			PaintingColor = Color32.CLEAR;
+			return;
 		}
 
-		// Color Picking
-		if (Input.MouseRightButtonHolding && !AnyEditorDragging && PaintMode) {
-			if (stageRect.MouseInside()) {
-				var point = GetCursorRect().CenterInt();
-				var pixelPos = Stage_to_Pixel(point);
-				PaintingColor = Color32.CLEAR;
-				if (pixelPos.HasValue) {
-					var pos = pixelPos.Value;
-					for (int i = StagedSprites.Count - 1; i >= 0; i--) {
-						var sprite = StagedSprites[i].Sprite;
-						var spRect = sprite.PixelRect;
-						if (sprite.Pixels.Length > 0 && spRect.Contains(pos)) {
-							int pxIndex = (pos.y - spRect.yMin) * spRect.width + (pos.x - spRect.xMin);
-							PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
-							break;
-						}
-					}
+		var pixelPos = Stage_to_Pixel(Input.MouseGlobalPosition);
+		PaintingColor = Color32.CLEAR;
+		if (new IRect(0, 0, STAGE_SIZE, STAGE_SIZE).Contains(pixelPos)) {
+			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
+				var sprite = StagedSprites[i].Sprite;
+				var spRect = sprite.PixelRect;
+				if (sprite.Pixels.Length > 0 && spRect.Contains(pixelPos)) {
+					int pxIndex = (pixelPos.y - spRect.yMin) * spRect.width + (pixelPos.x - spRect.xMin);
+					PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
+					break;
 				}
-			} else {
-				PaintingColor = Color32.CLEAR;
 			}
 		}
-
 	}
 
 
-	private void Update_Stage (IRect stageRect) {
+	private void Update_Dragging () {
 
-		var stageRectInt = StageGlobalRect.ToIRect();
+		bool leftHolding = Input.MouseLeftButtonHolding;
 
-		// Checker Board / BG
-		using (GUIScope.Layer(RenderLayer.DEFAULT)) {
-			if (Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) {
-				var tint = ShowBackground.Value ? new Color32(34, 47, 64, 255) : Color32.WHITE;
-				const int CHECKER_COUNT = STAGE_SIZE / 32;
-				int sizeX = stageRectInt.width / CHECKER_COUNT;
-				int sizeY = stageRectInt.height / CHECKER_COUNT;
-				for (int x = 0; x < CHECKER_COUNT; x++) {
-					int globalX = x * sizeX + stageRectInt.x;
-					if (globalX < stageRect.x - sizeX) continue;
-					if (globalX > stageRect.xMax) break;
-					for (int y = 0; y < CHECKER_COUNT; y++) {
-						int globalY = y * sizeY + stageRectInt.y;
-						if (globalY < stageRect.y - sizeY) continue;
-						if (globalY > stageRect.yMax) break;
-						Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, tint, z: 0);
+		if (leftHolding) {
+			switch (DraggingState) {
+				case DragState.None:
+					// Paint Drag Start
+					if (!HoldingSliceModeKey) {
+						DraggingState = DragState.Paint;
 					}
-				}
+					break;
+				case DragState.ResizeSlice:
+					// Resize Slice
+					Cursor.SetCursor(Cursor.GetResizeCursorIndex(ResizingDirection));
+					break;
+				case DragState.MoveSlice:
+					// Move Slice
+					Cursor.SetCursorAsMove();
+					break;
+			}
+			// Update Rect
+			DraggingPixelRect = GetStageDraggingPixRect();
+		} else if (DraggingState != DragState.None) {
+			// Drag End
+			DraggingPixelRect = GetStageDraggingPixRect();
+			switch (DraggingState) {
+				case DragState.ResizeSlice:
+					SetDirty();
+					var resizingSp = StagedSprites[ResizingStageIndex];
+					var resizingPxRect = GetResizingPixelRect();
+					resizingPxRect.width = resizingPxRect.width.Clamp(1, STAGE_SIZE);
+					resizingPxRect.height = resizingPxRect.height.Clamp(1, STAGE_SIZE);
+					resizingSp.PixelDirty = true;
+					resizingSp.Sprite.SetPixelRect(resizingPxRect);
+					break;
+				case DragState.SelectSlice:
+					SelectSpritesOverlap(DraggingPixelRect);
+					break;
+				case DragState.Paint:
+
+					break;
+				case DragState.MoveSlice:
+					SetDirty();
+					var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
+					var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
+					var pixDelta = mousePixPos - mouseDownPixPos;
+					int count = StagedSprites.Count;
+					for (int i = 0; i < count; i++) {
+						var spData = StagedSprites[i];
+						if (!spData.Selecting) continue;
+						var sprite = spData.Sprite;
+						sprite.PixelRect.x = spData.DraggingStartRect.x + pixDelta.x;
+						sprite.PixelRect.y = spData.DraggingStartRect.y + pixDelta.y;
+					}
+					StagedSprites.Sort(SpriteDataComparer.Instance);
+					break;
+			}
+			DraggingState = DragState.None;
+			ResizingStageIndex = -1;
+		}
+	}
+
+
+	private void Update_BG () {
+		if (!Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) return;
+		using var _ = GUIScope.Layer(RenderLayer.DEFAULT);
+		var stageRectInt = CanvasRect.ToIRect();
+		var tint = ShowBackground.Value ? new Color32(34, 47, 64, 255) : Color32.WHITE;
+		const int CHECKER_COUNT = STAGE_SIZE / 32;
+		int sizeX = stageRectInt.width / CHECKER_COUNT;
+		int sizeY = stageRectInt.height / CHECKER_COUNT;
+		for (int x = 0; x < CHECKER_COUNT; x++) {
+			int globalX = x * sizeX + stageRectInt.x;
+			if (globalX < StageRect.x - sizeX) continue;
+			if (globalX > StageRect.xMax) break;
+			for (int y = 0; y < CHECKER_COUNT; y++) {
+				int globalY = y * sizeY + stageRectInt.y;
+				if (globalY < StageRect.y - sizeY) continue;
+				if (globalY > StageRect.yMax) break;
+				Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, tint, z: 0);
 			}
 		}
+	}
 
-		// Sprites
+
+	private void Update_Stage () {
+
+		bool highlighted = false;
+		bool sliceHolding = HoldingSliceModeKey;
+		bool allowingSliceGizmos = !Input.IgnoringMouseInput && ((DraggingState != DragState.Paint && sliceHolding) || ShowSliceFrame.Value);
+		bool mouseLeftDown = Input.MouseLeftButtonDown;
+		int thickness = Unify(1);
+		int resizePadding = Unify(12);
+		int resizeCorner = Unify(16);
+		var mousePos = Input.MouseGlobalPosition;
+
+		// Sprites Rendering
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spriteData = StagedSprites[i];
 			var sprite = spriteData.Sprite;
+
 			// Sync Texture
 			if (spriteData.PixelDirty) {
 				spriteData.PixelDirty = false;
 				Sheet.SyncSpritePixelsIntoTexturePool(sprite);
 			}
-			// Render
-			if (!Sheet.TexturePool.TryGetValue(sprite.ID, out var texture)) continue;
-			bool mouseLeftDown = Input.MouseLeftButtonDown;
-			bool anyDragging = AnyEditorDragging;
-			var rect = Pixel_to_Stage(stageRect, sprite.PixelRect, out var uv);
-			if (rect.HasValue) {
-				if (uv.HasValue) {
-					Game.DrawGizmosTexture(rect.Value.Clamp(stageRect), uv.Value, texture);
-				} else {
-					Game.DrawGizmosTexture(rect.Value, texture);
-				}
-				// Drag Start
-				if (mouseLeftDown && !anyDragging && rect.Value.MouseInside()) {
-					if (SliceMode) {
-						SliceDraggingStageIndex = i;
-						SliceDraggingStartPixPos = sprite.PixelRect.position;
-					} else {
 
-					}
-				}
+			if (DraggingState == DragState.MoveSlice && spriteData.Selecting) continue;
+
+			if (!Sheet.TexturePool.TryGetValue(sprite.ID, out var texture)) continue;
+
+			var rect = Pixel_to_Stage(sprite.PixelRect, out var uv);
+			if (!rect.HasValue) continue;
+
+			// Draw Pixels
+			if (uv.HasValue) {
+				Game.DrawGizmosTexture(rect.Value.Clamp(StageRect), uv.Value, texture);
+			} else {
+				Game.DrawGizmosTexture(rect.Value, texture);
 			}
 		}
 
-	}
+		// Sprite Logic
+		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
+			var spriteData = StagedSprites[i];
+			var sprite = spriteData.Sprite;
+			var rectNullable = Pixel_to_Stage(sprite.PixelRect, out var uv);
 
-	private void Update_Gizmos (IRect stageRect) {
+			if (!rectNullable.HasValue) continue;
+			var rect = rectNullable.Value;
 
-		if (Input.IgnoringMouseInput) return;
+			var resizeRectOut = rect.Expand(resizePadding / 2);
+			var resizeRectIn = rect.Shrink(resizePadding / 2);
+			bool inResizeRange = resizeRectOut.MouseInside() && !resizeRectIn.MouseInside();
 
-		int thickness = Unify(1);
+			// Resize Cursor
+			Direction8? resizeDirection = null;
+			if (DraggingState == DragState.None && inResizeRange && sliceHolding) {
+				int cornerW = Util.Min(resizeCorner, rect.width / 3);
+				int cornerH = Util.Min(resizeCorner, rect.height / 3);
+				if (mousePos.x < resizeRectOut.xMin + cornerW) {
+					// Left
+					resizeDirection =
+						mousePos.y < resizeRectOut.yMin + cornerH ? Direction8.BottomLeft :
+						mousePos.y < resizeRectOut.yMax - cornerH ? Direction8.Left :
+						Direction8.TopLeft;
+				} else if (mousePos.x < resizeRectOut.xMax - cornerW) {
+					// Mid
+					resizeDirection =
+						mousePos.y < resizeRectOut.CenterY() ? Direction8.Bottom :
+						Direction8.Top;
+				} else {
+					// Right
+					resizeDirection =
+						mousePos.y < resizeRectOut.yMin + cornerH ? Direction8.BottomRight :
+						mousePos.y < resizeRectOut.yMax - cornerH ? Direction8.Right :
+						Direction8.TopRight;
+				}
+				Cursor.SetCursor(Cursor.GetResizeCursorIndex(resizeDirection.Value));
+			}
 
-		// Slice Gizmos
-		if (SliceMode) {
-			bool highlighted = false;
-			bool sliceDragging = SliceDraggingStageIndex.HasValue;
-			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
-				var spData = StagedSprites[i];
-				var rect = Pixel_to_Stage(stageRect, spData.Sprite.PixelRect, out var uv);
-				if (rect.HasValue) {
-					// Mouse Inside
-					if (rect.Value.MouseInside()) {
-						// Cursor
-						Cursor.SetCursorAsMove();
-						// Highlight
-						if (!highlighted && !sliceDragging) {
-							highlighted = true;
-							Game.DrawGizmosRect(rect.Value, Color32.BLUE_BETTER.WithNewA(32));
+			// Slice Drag Start
+			if (sliceHolding && mouseLeftDown && DraggingState == DragState.None) {
+				if (inResizeRange) {
+					// Start for Resize
+					if (resizeDirection.HasValue) {
+						DraggingState = DragState.ResizeSlice;
+						SelectSprite(i);
+						ResizingStageIndex = i;
+						ResizingDirection = resizeDirection.Value;
+					}
+				} else if (rect.MouseInside()) {
+					// Start for Move
+					DraggingState = DragState.MoveSlice;
+					if (!spriteData.Selecting) {
+						SelectSprite(i);
+						spriteData.DraggingStartRect = sprite.PixelRect;
+					} else {
+						foreach (var _spData in StagedSprites) {
+							if (_spData.Selecting) {
+								_spData.DraggingStartRect = _spData.Sprite.PixelRect;
+							}
 						}
 					}
-					// Frame
-					if (uv.HasValue) {
-						Game.DrawGizmosFrame(rect.Value, Color32.BLUE_BETTER, Int4.Direction(
-							uv.Value.xMin.Almost(0f) ? thickness : 0,
-							uv.Value.xMax.Almost(1f) ? thickness : 0,
-							uv.Value.yMin.Almost(0f) ? thickness : 0,
-							uv.Value.yMax.Almost(1f) ? thickness : 0
-						));
-					} else {
-						Game.DrawGizmosFrame(rect.Value, Color32.BLUE_BETTER, thickness);
+				}
+			}
+
+			// Selecting Gizmos
+			if (DraggingState != DragState.MoveSlice && sliceHolding && spriteData.Selecting && ResizingStageIndex != i) {
+				DrawGizmosFrame(rect.Expand(thickness), uv, Color32.WHITE, thickness * 2);
+			}
+
+			// Normal Gizmos
+			if (allowingSliceGizmos) {
+
+				// Mouse Inside
+				if (!inResizeRange && sliceHolding && DraggingState == DragState.None && rect.MouseInside()) {
+					// Cursor
+					Cursor.SetCursorAsMove();
+					// Highlight
+					if (!highlighted) {
+						highlighted = true;
+						Game.DrawGizmosRect(rect, Color32.BLUE_BETTER.WithNewA(32));
 					}
+				}
+
+				// Frame
+				if (DraggingState != DragState.MoveSlice || !spriteData.Selecting) {
+					DrawGizmosFrame(rect, uv, Color32.BLACK, thickness);
 				}
 			}
 		}
 
 		// Mouse Cursor
-		if (!SliceMode && stageRect.MouseInside()) {
+		if (!sliceHolding && DraggingState == DragState.None && StageRect.MouseInside()) {
 			var cursorRect = GetCursorRect();
 			if (PaintingColor == Color32.CLEAR) {
 				// Empty
@@ -425,6 +547,68 @@ public class PixelEditor : WindowUI {
 				Game.DrawGizmosRect(cursorRect, PaintingColor);
 			}
 		}
+
+		// Range Select Slice
+		if (DraggingState == DragState.SelectSlice) {
+			DrawGizmosFrame(DraggingPixelRect, Color32.WHITE, thickness);
+		}
+		if (mouseLeftDown && DraggingState == DragState.None && sliceHolding) {
+			DraggingState = DragState.SelectSlice;
+		}
+
+		// Resizing Gizmos
+		if (DraggingState == DragState.ResizeSlice) {
+			Cursor.SetCursor(Cursor.GetResizeCursorIndex(ResizingDirection));
+			var resizingPixRect = GetResizingPixelRect();
+			var resizingRect = Pixel_to_Stage(resizingPixRect, out var uv);
+			if (resizingRect.HasValue) {
+				DrawGizmosFrame(resizingRect.Value.Expand(thickness), uv, Color32.WHITE, thickness * 2);
+			}
+		}
+
+		// Moving Slices Gizmos
+		if (DraggingState == DragState.MoveSlice) {
+			var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
+			var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
+			var pixDelta = mousePixPos - mouseDownPixPos;
+			int count = StagedSprites.Count;
+			for (int i = 0; i < count; i++) {
+				var spData = StagedSprites[i];
+				if (!spData.Selecting) continue;
+				var sprite = spData.Sprite;
+				var pxRect = sprite.PixelRect;
+				pxRect.x = spData.DraggingStartRect.x + pixDelta.x;
+				pxRect.y = spData.DraggingStartRect.y + pixDelta.y;
+				var rect = Pixel_to_Stage(pxRect, out var uv);
+				if (!rect.HasValue) continue;
+
+				// Draw Sprite
+				if (Sheet.TexturePool.TryGetValue(sprite.ID, out var texture)) {
+					if (uv.HasValue) {
+						Game.DrawGizmosTexture(rect.Value.Clamp(StageRect), uv.Value, texture);
+					} else {
+						Game.DrawGizmosTexture(rect.Value, texture);
+					}
+				}
+
+				// Draw Gizmos
+				if (rect.HasValue) {
+					DrawGizmosFrame(rect.Value, uv, Color32.WHITE, thickness * 2);
+				}
+			}
+		}
+
+	}
+
+
+	private void Update_Undo () {
+		if (!IsUndoDirty) return;
+		// Register Undo
+		IsUndoDirty = false;
+
+
+
+
 
 	}
 
@@ -441,8 +625,9 @@ public class PixelEditor : WindowUI {
 		SheetPath = sheetPath;
 		if (string.IsNullOrEmpty(sheetPath)) return;
 		IsDirty = false;
+		IsUndoDirty = false;
 		CurrentAtlasIndex = -1;
-		PaintingDraggingRect = null;
+		DraggingState = DragState.None;
 		PaintingColor = Color32.CLEAR;
 		Sheet.LoadFromDisk(sheetPath);
 	}
@@ -464,6 +649,63 @@ public class PixelEditor : WindowUI {
 	#region --- LGC ---
 
 
+	private void SetDirty () {
+		IsDirty = true;
+		IsUndoDirty = true;
+	}
+
+
+	private void ClearUndo () {
+		IsUndoDirty = false;
+
+
+	}
+
+
+	// Sprite
+	private void SelectSprite (int stageIndex) {
+		int count = StagedSprites.Count;
+		for (int i = 0; i < count; i++) {
+			StagedSprites[i].Selecting = i == stageIndex;
+		}
+	}
+
+
+	private void SelectSpritesOverlap (IRect pixelRange) {
+		int count = StagedSprites.Count;
+		for (int i = 0; i < count; i++) {
+			var spData = StagedSprites[i];
+			spData.Selecting = spData.Sprite.PixelRect.Overlaps(pixelRange);
+		}
+	}
+
+
+	// Atlas
+	private void SetCurrentAtlas (int atlasIndex) {
+		if (CurrentAtlasIndex == atlasIndex) return;
+		CurrentAtlasIndex = atlasIndex;
+		StagedSprites.Clear();
+		//var pixelStageRect = new IRect(0, 0, STAGE_SIZE, STAGE_SIZE);
+		foreach (var sprite in Sheet.Sprites) {
+			if (sprite.AtlasIndex != atlasIndex) continue;
+			//sprite.PixelRect.ClampPositionInside(pixelStageRect);
+			StagedSprites.Add(new SpriteData() {
+				Sprite = sprite,
+				PixelDirty = false,
+				Selecting = false,
+			});
+		}
+		CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
+		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
+		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
+		DraggingState = DragState.None;
+		ZoomLevel = 1;
+		PaintingColor = Color32.CLEAR;
+		ResizingStageIndex = -1;
+		ClearUndo();
+	}
+
+
 	private void ShowAtlasItemPopup (int atlasIndex) {
 
 		AtlasMenuTargetIndex = atlasIndex;
@@ -480,32 +722,13 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void SetCurrentAtlas (int atlasIndex) {
-		if (CurrentAtlasIndex == atlasIndex) return;
-		CurrentAtlasIndex = atlasIndex;
-		StagedSprites.Clear();
-		foreach (var sprite in Sheet.Sprites) {
-			if (sprite.AtlasIndex != atlasIndex) continue;
-			StagedSprites.Add(new SpriteData() {
-				Sprite = sprite,
-				PixelDirty = false,
-			});
-		}
-		StageGlobalRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
-		StageGlobalRect.width = Util.Max(StageGlobalRect.width, 1f);
-		StageGlobalRect.height = Util.Max(StageGlobalRect.height, 1f);
-		ZoomLevel = 1;
-		PaintingColor = Color32.CLEAR;
-	}
-
-
 	private static void AddAtlas () {
 		Instance.Sheet.Atlas.Add(new Atlas() {
 			AtlasZ = 0,
 			Name = "New Atlas",
 			Type = AtlasType.General,
 		});
-		Instance.IsDirty = true;
+		Instance.SetDirty();
 		Instance.AtlasPanelScrollY = int.MaxValue;
 		Instance.SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
 	}
@@ -530,57 +753,124 @@ public class PixelEditor : WindowUI {
 		if (atlasList.Count <= 1) return;
 		int targetIndex = Instance.AtlasMenuTargetIndex;
 		if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
+		int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
 		Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
-		Instance.IsDirty = true;
-		Instance.SetCurrentAtlas(Instance.CurrentAtlasIndex);
+		Instance.SetDirty();
+		Instance.CurrentAtlasIndex = -1;
+		Instance.SetCurrentAtlas(newSelectingAtlasIndex);
 	}
 
 
 	// Util
 	private IRect GetCursorRect () {
 		var mousePos = Input.MouseGlobalPosition;
-		float pixWidth = Util.Max(StageGlobalRect.width, 1f) / STAGE_SIZE;
-		float pixHeight = Util.Max(StageGlobalRect.height, 1f) / STAGE_SIZE;
+		float pixWidth = Util.Max(CanvasRect.width, 1f) / STAGE_SIZE;
+		float pixHeight = Util.Max(CanvasRect.height, 1f) / STAGE_SIZE;
 		return new FRect(
-			(mousePos.x - StageGlobalRect.x).UFloor(pixWidth) + StageGlobalRect.x,
-			(mousePos.y - StageGlobalRect.y).UFloor(pixHeight) + StageGlobalRect.y,
+			(mousePos.x - CanvasRect.x).UFloor(pixWidth) + CanvasRect.x,
+			(mousePos.y - CanvasRect.y).UFloor(pixHeight) + CanvasRect.y,
 			pixWidth, pixHeight
 		).ToIRect();
 	}
 
 
-	//private IRect? Pixel_to_Stage (IRect stageRect, IRect pixRect) => Pixel_to_Stage(stageRect, pixRect, out _);
-	private IRect? Pixel_to_Stage (IRect stageRect, IRect pixRect, out FRect? uv) {
+	private IRect? Pixel_to_Stage (IRect pixRect, out FRect? uv) {
 		uv = null;
-		var stageRectInt = StageGlobalRect.ToIRect();
+		var stageRectInt = CanvasRect.ToIRect();
 		var rect = new IRect(
 			stageRectInt.x + pixRect.x * stageRectInt.width / STAGE_SIZE,
 			stageRectInt.y + pixRect.y * stageRectInt.height / STAGE_SIZE,
 			stageRectInt.width * pixRect.width / STAGE_SIZE,
 			stageRectInt.height * pixRect.height / STAGE_SIZE
 		);
-		if (rect.CompleteInside(stageRect)) {
+		if (rect.CompleteInside(StageRect)) {
 			return rect;
-		} else if (rect.Overlaps(stageRect)) {
+		} else if (rect.Overlaps(StageRect)) {
 			uv = FRect.MinMaxRect(
-				Util.InverseLerpUnclamped(rect.xMin, rect.xMax, Util.Max(stageRect.xMin, rect.xMin)),
-				Util.InverseLerpUnclamped(rect.yMin, rect.yMax, Util.Max(stageRect.yMin, rect.yMin)),
-				Util.InverseLerpUnclamped(rect.xMin, rect.xMax, Util.Min(stageRect.xMax, rect.xMax)),
-				Util.InverseLerpUnclamped(rect.yMin, rect.yMax, Util.Min(stageRect.yMax, rect.yMax))
+				Util.InverseLerpUnclamped(rect.xMin, rect.xMax, Util.Max(StageRect.xMin, rect.xMin)),
+				Util.InverseLerpUnclamped(rect.yMin, rect.yMax, Util.Max(StageRect.yMin, rect.yMin)),
+				Util.InverseLerpUnclamped(rect.xMin, rect.xMax, Util.Min(StageRect.xMax, rect.xMax)),
+				Util.InverseLerpUnclamped(rect.yMin, rect.yMax, Util.Min(StageRect.yMax, rect.yMax))
 			);
-			return rect.Clamp(stageRect);
+			return rect.Clamp(StageRect);
 		}
 		return null;
 	}
 
 
-	private Int2? Stage_to_Pixel (Int2 pos) {
+	private Int2 Stage_to_Pixel (Int2 pos) {
 		var fPos = new Float2(pos.x, pos.y);
-		if (!StageGlobalRect.Contains(fPos)) return null;
 		return new Int2(
-			Util.RemapUnclamped(StageGlobalRect.xMin, StageGlobalRect.xMax, 0, STAGE_SIZE, fPos.x).RoundToInt(),
-			Util.RemapUnclamped(StageGlobalRect.yMin, StageGlobalRect.yMax, 0, STAGE_SIZE, fPos.y).RoundToInt()
+			Util.RemapUnclamped(CanvasRect.xMin, CanvasRect.xMax, 0, STAGE_SIZE, fPos.x).FloorToInt(),
+			Util.RemapUnclamped(CanvasRect.yMin, CanvasRect.yMax, 0, STAGE_SIZE, fPos.y).FloorToInt()
 		);
+	}
+
+
+	private IRect GetStageDraggingPixRect () {
+		var downPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
+		var pos = Stage_to_Pixel(Input.MouseGlobalPosition);
+		return IRect.MinMaxRect(
+			Util.Min(downPos.x, pos.x),
+			Util.Min(downPos.y, pos.y),
+			Util.Max(downPos.x, pos.x),
+			Util.Max(downPos.y, pos.y)
+		);
+	}
+
+
+	private IRect GetResizingPixelRect () {
+		var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
+		var resizingSp = StagedSprites[ResizingStageIndex];
+		var resizingPixRect = resizingSp.Sprite.PixelRect;
+		var resizingNormal = ResizingDirection.GetNormal();
+		if (resizingNormal.x == -1) {
+			// Left
+			resizingPixRect.xMin = mousePixPos.x.Clamp(
+				resizingPixRect.xMax - STAGE_SIZE,
+				resizingPixRect.xMax - 1
+			);
+		} else if (resizingNormal.x == 1) {
+			// Right
+			resizingPixRect.xMax = mousePixPos.x.Clamp(
+				resizingPixRect.xMin + 1,
+				resizingPixRect.xMin + STAGE_SIZE
+			);
+		}
+		if (resizingNormal.y == -1) {
+			// Down
+			resizingPixRect.yMin = mousePixPos.y.Clamp(
+				resizingPixRect.yMax - STAGE_SIZE,
+				resizingPixRect.yMax - 1
+			);
+		} else if (resizingNormal.y == 1) {
+			// Up
+			resizingPixRect.yMax = mousePixPos.y.Clamp(
+				resizingPixRect.yMin + 1,
+				resizingPixRect.yMin + STAGE_SIZE
+			);
+		}
+		return resizingPixRect;
+	}
+
+
+	private void DrawGizmosFrame (IRect pixelRect, Color32 color, int thickness) {
+		var rect = Pixel_to_Stage(pixelRect, out var uv);
+		if (rect.HasValue) {
+			DrawGizmosFrame(rect.Value, uv, color, thickness);
+		}
+	}
+	private void DrawGizmosFrame (IRect stageRect, FRect? uv, Color32 color, int thickness) {
+		if (uv.HasValue) {
+			Game.DrawGizmosFrame(stageRect, color, Int4.Direction(
+				uv.Value.xMin.Almost(0f) ? thickness : 0,
+				uv.Value.xMax.Almost(1f) ? thickness : 0,
+				uv.Value.yMin.Almost(0f) ? thickness : 0,
+				uv.Value.yMax.Almost(1f) ? thickness : 0
+			));
+		} else {
+			Game.DrawGizmosFrame(stageRect, color, thickness);
+		}
 	}
 
 

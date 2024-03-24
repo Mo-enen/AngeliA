@@ -342,50 +342,50 @@ public abstract partial class Game {
 
 
 	// Mouse
-	internal static bool IsMouseAvailable => Instance._IsMouseAvailable();
+	public static bool IsMouseAvailable => Instance._IsMouseAvailable();
 	protected abstract bool _IsMouseAvailable ();
 
-	internal static bool IsMouseLeftHolding => Instance._IsMouseLeftHolding();
+	public static bool IsMouseLeftHolding => Instance._IsMouseLeftHolding();
 	protected abstract bool _IsMouseLeftHolding ();
 
-	internal static bool IsMouseMidHolding => Instance._IsMouseMidHolding();
+	public static bool IsMouseMidHolding => Instance._IsMouseMidHolding();
 	protected abstract bool _IsMouseMidHolding ();
 
-	internal static bool IsMouseRightHolding => Instance._IsMouseRightHolding();
+	public static bool IsMouseRightHolding => Instance._IsMouseRightHolding();
 	protected abstract bool _IsMouseRightHolding ();
 
-	internal static int MouseScrollDelta => Instance._GetMouseScrollDelta();
+	public static int MouseScrollDelta => Instance._GetMouseScrollDelta();
 	protected abstract int _GetMouseScrollDelta ();
 
-	internal static Int2 MouseScreenPosition => Instance._GetMouseScreenPosition();
+	public static Int2 MouseScreenPosition => Instance._GetMouseScreenPosition();
 	protected abstract Int2 _GetMouseScreenPosition ();
 
 
 	// Keyboard
-	internal static bool IsKeyboardAvailable => Instance._IsKeyboardAvailable();
+	public static bool IsKeyboardAvailable => Instance._IsKeyboardAvailable();
 	protected abstract bool _IsKeyboardAvailable ();
 
-	internal static bool IsKeyboardKeyHolding (KeyboardKey key) => Instance._IsKeyboardKeyHolding(key);
+	public static bool IsKeyboardKeyHolding (KeyboardKey key) => Instance._IsKeyboardKeyHolding(key);
 	protected abstract bool _IsKeyboardKeyHolding (KeyboardKey key);
 
 
 	// Gamepad
-	internal static bool IsGamepadAvailable => Instance._IsGamepadAvailable();
+	public static bool IsGamepadAvailable => Instance._IsGamepadAvailable();
 	protected abstract bool _IsGamepadAvailable ();
 
-	internal static bool IsGamepadKeyHolding (GamepadKey key) => Instance._IsGamepadKeyHolding(key);
+	public static bool IsGamepadKeyHolding (GamepadKey key) => Instance._IsGamepadKeyHolding(key);
 	protected abstract bool _IsGamepadKeyHolding (GamepadKey key);
 
-	internal static bool IsGamepadLeftStickHolding (Direction4 direction) => Instance._IsGamepadLeftStickHolding(direction);
+	public static bool IsGamepadLeftStickHolding (Direction4 direction) => Instance._IsGamepadLeftStickHolding(direction);
 	protected abstract bool _IsGamepadLeftStickHolding (Direction4 direction);
 
-	internal static bool IsGamepadRightStickHolding (Direction4 direction) => Instance._IsGamepadRightStickHolding(direction);
+	public static bool IsGamepadRightStickHolding (Direction4 direction) => Instance._IsGamepadRightStickHolding(direction);
 	protected abstract bool _IsGamepadRightStickHolding (Direction4 direction);
 
-	internal static Float2 GamepadLeftStickDirection => Instance._GetGamepadLeftStickDirection();
+	public static Float2 GamepadLeftStickDirection => Instance._GetGamepadLeftStickDirection();
 	protected abstract Float2 _GetGamepadLeftStickDirection ();
 
-	internal static Float2 GamepadRightStickDirection => Instance._GetGamepadRightStickDirection();
+	public static Float2 GamepadRightStickDirection => Instance._GetGamepadRightStickDirection();
 	protected abstract Float2 _GetGamepadRightStickDirection ();
 
 
