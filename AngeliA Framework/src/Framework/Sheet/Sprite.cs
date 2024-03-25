@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-
 namespace AngeliA;
-
 
 public class AngeSprite {
 
@@ -228,10 +226,23 @@ public class AngeSprite {
 		return result;
 	}
 
-	public void SetPixelRect (IRect newRect) {
-
-
-		//PixelRect = newRect;
+	public void ResizePixelRect (IRect newRect) {
+		if (newRect.width != PixelRect.width || newRect.height != PixelRect.height) {
+			int newLen = newRect.width * newRect.height;
+			var newPixels = new Color32[newLen];
+			int left = Util.Max(PixelRect.xMin, newRect.xMin);
+			int right = Util.Min(PixelRect.xMax, newRect.xMax);
+			int down = Util.Max(PixelRect.yMin, newRect.yMin);
+			int up = Util.Min(PixelRect.yMax, newRect.yMax);
+			for (int x = left; x < right; x++) {
+				for (int y = down; y < up; y++) {
+					newPixels[(y - newRect.y) * newRect.width + (x - newRect.x)] =
+						Pixels[(y - PixelRect.y) * PixelRect.width + (x - PixelRect.x)];
+				}
+			}
+			Pixels = newPixels;
+		}
+		PixelRect = newRect;
 	}
 
 }

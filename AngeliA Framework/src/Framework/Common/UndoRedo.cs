@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public interface IUndoItem {
@@ -226,6 +226,7 @@ public class UndoRedo {
 	public void Reset () {
 		UndoList.Clear();
 		RedoList.Clear();
+		CurrentStep = int.MinValue;
 	}
 
 
