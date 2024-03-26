@@ -3,10 +3,13 @@ namespace AngeliA;
 public static class Cursor {
 
 
-	// Data
-	private static int CurrentCursorIndex = -1;
-	private static int CursorEndFrame = int.MinValue + 1;
+	// Api
 	public static int CursorPriority { get; set; } = int.MinValue;
+	public static int CustomCursorID { get; private set; } = 0;
+	public static int CurrentCursorIndex { get; private set; } = -1;
+
+	// Data
+	private static int CursorEndFrame = int.MinValue + 1;
 
 
 	// API
@@ -16,20 +19,31 @@ public static class Cursor {
 			// No Cursor
 			CursorPriority = int.MinValue;
 			CursorEndFrame = int.MinValue;
-			if (!Game.IsEdittime) {
-				Game.HideCursor();
-			} else {
+			if (Game.IsEdittime) {
+				Game.ShowCursor();
 				Game.SetCursorToNormal();
+			} else {
+				Game.HideCursor();
 			}
 		} else {
 			// Has Cursor
 			if (CursorPriority != int.MinValue) {
 				CursorPriority = int.MinValue;
-				Game.ShowCursor();
-				if (CurrentCursorIndex >= 0 && CurrentCursorIndex < Const.CURSOR_COUNT) {
+				if (CurrentCursorIndex == Const.CURSOR_CUSTOM) {
+					Game.HideCursor();
 					Game.SetCursor(CurrentCursorIndex);
 				} else {
-					Game.SetCursorToNormal();
+					if (!Game.CursorVisible) {
+						Game.ShowCursor();
+						if (Game.ProjectType == ProjectType.Game) {
+							Game.CenterCursor();
+						}
+					}
+					if (CurrentCursorIndex >= 0 && CurrentCursorIndex < Const.CURSOR_COUNT) {
+						Game.SetCursor(CurrentCursorIndex);
+					} else {
+						Game.SetCursorToNormal();
+					}
 				}
 			}
 		}
@@ -44,12 +58,12 @@ public static class Cursor {
 		SetCursor(cursorIndex, priority);
 	}
 	public static void SetCursor (int cursorIndex, int priority = 0) {
-		priority++; // for int.Min 
+		priority = priority != int.MaxValue ? priority++ : priority; // for int.Min 
 		if (priority < CursorPriority) return;
 		CursorPriority = priority;
 		CursorEndFrame = Game.GlobalFrame + 1;
 		if (cursorIndex < 0 || cursorIndex >= Const.CURSOR_COUNT) {
-			CurrentCursorIndex = -1;
+			CurrentCursorIndex = cursorIndex == Const.CURSOR_CUSTOM ? Const.CURSOR_CUSTOM : -1;
 		} else {
 			CurrentCursorIndex = cursorIndex;
 		}
@@ -69,6 +83,12 @@ public static class Cursor {
 
 	public static void SetCursorAsMove (int priority = 0) => SetCursor(Const.CURSOR_RESIZE_CROSS, priority);
 	public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_RESIZE_CROSS, mouseRange, priority);
+
+
+	public static void SetCursorAsCustom (int spriteID, int priority = 0) {
+		SetCursor(Const.CURSOR_CUSTOM, priority);
+		CustomCursorID = spriteID;
+	}
 
 
 	public static int GetResizeCursorIndex (Direction8 direction) => direction switch {

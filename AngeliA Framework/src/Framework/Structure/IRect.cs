@@ -186,11 +186,6 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		m_Height = size.y;
 	}
 
-	public void ClampToBounds (IRect bounds) {
-		position = new Int2(Math.Max(Math.Min(bounds.xMax, position.x), bounds.xMin), Math.Max(Math.Min(bounds.yMax, position.y), bounds.yMin));
-		size = new Int2(Math.Min(bounds.xMax - position.x, size.x), Math.Min(bounds.yMax - position.y, size.y));
-	}
-
 	public readonly bool Contains (Int2 position) {
 		return position.x >= xMin && position.y >= yMin && position.x < xMax && position.y < yMax;
 	}

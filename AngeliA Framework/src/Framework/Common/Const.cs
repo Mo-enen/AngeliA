@@ -52,6 +52,8 @@ public static class Const {
 		"Invert",
 	};
 
+	// Cursor
+	public const int CURSOR_CUSTOM = -2;
 	public const int CURSOR_DEFAULT = 0;
 	public const int CURSOR_ARROW = 1;
 	public const int CURSOR_BEAM = 2;

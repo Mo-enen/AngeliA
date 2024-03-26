@@ -250,9 +250,9 @@ public class Sheet {
 
 	public void RemoveSprite (int spriteIndex) {
 		var sprite = Sprites[spriteIndex];
+		RemoveSpriteFromGroup(spriteIndex);
 		Sprites.RemoveAt(spriteIndex);
 		SpritePool.Remove(sprite.ID);
-		RemoveSpriteFromGroup(spriteIndex);
 	}
 
 

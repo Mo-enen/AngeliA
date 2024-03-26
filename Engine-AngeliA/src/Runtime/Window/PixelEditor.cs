@@ -27,6 +27,7 @@ public class PixelEditor : WindowUI {
 
 	}
 
+
 	private class SpriteDataComparer : IComparer<SpriteData> {
 		public static readonly SpriteDataComparer Instance = new();
 		public int Compare (SpriteData a, SpriteData b) => a.Selecting.CompareTo(b.Selecting);
@@ -58,9 +59,11 @@ public class PixelEditor : WindowUI {
 	private const int TOOLBAR_HEIGHT = 42;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
+	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
 	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
 	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
 	private static readonly SpriteCode ICON_SHOW_SLICE_FRAME = "Icon.ShowSliceFrame";
+	private static readonly SpriteCode CURSOR_DOT = "Cursor.Dot";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas {0}? All sprites inside will be delete too.");
 
 	// Api
@@ -73,7 +76,7 @@ public class PixelEditor : WindowUI {
 	// Data
 	private readonly Sheet Sheet = new();
 	private readonly List<SpriteData> StagedSprites = new();
-	private readonly UndoRedo Undo = new(4096, OnUndoPerformed, OnRedoPerformed);
+	private readonly UndoRedo Undo = new(16 * 16 * 128, OnUndoPerformed, OnRedoPerformed);
 	private string SheetPath = "";
 	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
@@ -115,7 +118,6 @@ public class PixelEditor : WindowUI {
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
 		Sky.ForceSkyboxTint(new Color32(32, 33, 37, 255));
-		Cursor.RequireCursor();
 		int panelWidth = Unify(PANEL_WIDTH);
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, panelWidth);
 		Update_Panel(panelRect);
@@ -124,7 +126,7 @@ public class PixelEditor : WindowUI {
 		Update_View();
 		Update_Toolbar();
 		Update_ColorPicking();
-		Update_Dragging();
+		Update_Drag();
 		Update_BG();
 		Update_Stage();
 		Update_Hotkey();
@@ -264,6 +266,11 @@ public class PixelEditor : WindowUI {
 
 	private void Update_View () {
 
+		// Custom Cursor
+		if (StageRect.MouseInside() && !HoldingSliceModeKey && (DraggingState == DragState.None || DraggingState == DragState.Paint)) {
+			Cursor.SetCursorAsCustom(CURSOR_DOT, -1);
+		}
+
 		// Move
 		if (
 			(Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
@@ -289,18 +296,31 @@ public class PixelEditor : WindowUI {
 
 
 	private void Update_Toolbar () {
+
 		int toolbarButtonPadding = Unify(4);
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 		// BG
 		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var toolbarBtnRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
-		// Show BG
-		ShowBackground.Value = GUI.ToggleButton(toolbarBtnRect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
-		toolbarBtnRect.SlideRight(toolbarButtonPadding);
-		// Show Slice Frame
-		ShowSliceFrame.Value = GUI.ToggleButton(toolbarBtnRect, ShowSliceFrame.Value, ICON_SHOW_SLICE_FRAME, GUISkin.SmallDarkButton);
-		toolbarBtnRect.SlideRight(toolbarButtonPadding);
+
+		if (!HoldingSliceModeKey) {
+			// Show BG
+			ShowBackground.Value = GUI.ToggleButton(toolbarBtnRect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
+			toolbarBtnRect.SlideRight(toolbarButtonPadding);
+			// Show Slice Frame
+			ShowSliceFrame.Value = GUI.ToggleButton(toolbarBtnRect, ShowSliceFrame.Value, ICON_SHOW_SLICE_FRAME, GUISkin.SmallDarkButton);
+			toolbarBtnRect.SlideRight(toolbarButtonPadding);
+		} else {
+			// Delete Sprite
+			if (GUI.Button(toolbarBtnRect, ICON_DELETE_SPRITE, GUISkin.SmallDarkButton)) {
+				DeleteAllSelectingSprite();
+			}
+			toolbarBtnRect.SlideRight(toolbarButtonPadding);
+
+		}
+
+
 	}
 
 
@@ -333,11 +353,14 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_Dragging () {
+	private void Update_Drag () {
 
 		bool leftHolding = Input.MouseLeftButtonHolding;
 
 		if (leftHolding) {
+
+			// === Dragging ===
+
 			switch (DraggingState) {
 				case DragState.None:
 					// Paint Drag Start
@@ -356,10 +379,15 @@ public class PixelEditor : WindowUI {
 			}
 			// Update Rect
 			DraggingPixelRect = GetStageDraggingPixRect();
+
 		} else if (DraggingState != DragState.None) {
-			// Drag End
+
+			// === Drag End ===
+
 			DraggingPixelRect = GetStageDraggingPixRect();
+
 			switch (DraggingState) {
+
 				case DragState.ResizeSlice:
 					SetDirty();
 					var resizingSp = StagedSprites[ResizingStageIndex];
@@ -369,12 +397,49 @@ public class PixelEditor : WindowUI {
 					resizingSp.PixelDirty = true;
 					resizingSp.Sprite.ResizePixelRect(resizingPxRect);
 					break;
+
 				case DragState.SelectSlice:
-					SelectSpritesOverlap(DraggingPixelRect);
+					// Select or Create
+					int selectedCount = SelectSpritesOverlap(DraggingPixelRect);
+					if (selectedCount == 0 && DraggingPixelRect.width > 0 && DraggingPixelRect.height > 0) {
+						SetDirty();
+						// Create Sprite
+						var pixelRect = DraggingPixelRect.Clamp(new IRect(0, 0, STAGE_SIZE, STAGE_SIZE));
+						if (pixelRect.width > 1 || pixelRect.height > 1) {
+							const string BASIC_NAME = "New Sprite";
+							string name = BASIC_NAME;
+							int index = 0;
+							while (Sheet.SpritePool.ContainsKey(name.AngeHash())) {
+								index++;
+								name = $"{BASIC_NAME} {index}";
+							}
+							var atlas = Sheet.Atlas[CurrentAtlasIndex];
+							var sprite = new AngeSprite() {
+								ID = name.AngeHash(),
+								RealName = name,
+								Atlas = atlas,
+								AtlasIndex = CurrentAtlasIndex,
+								GlobalWidth = pixelRect.width * Const.ART_SCALE,
+								GlobalHeight = pixelRect.height * Const.ART_SCALE,
+								PixelRect = pixelRect,
+								Pixels = new Color32[pixelRect.width * pixelRect.height],
+								SortingZ = atlas.AtlasZ * 1024,
+							};
+							Sheet.AddSprite(sprite);
+							StagedSprites.Add(new SpriteData() {
+								Sprite = sprite,
+								PixelDirty = true,
+								Selecting = false,
+								DraggingStartRect = default,
+							});
+						}
+					}
 					break;
+
 				case DragState.Paint:
 
 					break;
+
 				case DragState.MoveSlice:
 					SetDirty();
 					var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
@@ -390,6 +455,7 @@ public class PixelEditor : WindowUI {
 					}
 					StagedSprites.Sort(SpriteDataComparer.Instance);
 					break;
+
 			}
 			DraggingState = DragState.None;
 			ResizingStageIndex = -1;
@@ -421,7 +487,6 @@ public class PixelEditor : WindowUI {
 
 	private void Update_Stage () {
 
-		bool highlighted = false;
 		bool sliceHolding = HoldingSliceModeKey;
 		bool allowingSliceGizmos = !Input.IgnoringMouseInput && ((DraggingState != DragState.Paint && sliceHolding) || ShowSliceFrame.Value);
 		bool mouseLeftDown = Input.MouseLeftButtonDown;
@@ -535,11 +600,6 @@ public class PixelEditor : WindowUI {
 				if (!inResizeRange && sliceHolding && DraggingState == DragState.None && rect.MouseInside()) {
 					// Cursor
 					Cursor.SetCursorAsMove();
-					// Highlight
-					if (!highlighted) {
-						highlighted = true;
-						Game.DrawGizmosRect(rect, Color32.BLUE_BETTER.WithNewA(32));
-					}
 				}
 
 				// Frame
@@ -620,12 +680,26 @@ public class PixelEditor : WindowUI {
 
 
 	private void Update_Hotkey () {
+		// Ctrl
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+			// Z
 			if (Input.KeyboardDown(KeyboardKey.Z)) {
 				Undo.Undo();
 			}
+			// Y
 			if (Input.KeyboardDown(KeyboardKey.Y)) {
 				Undo.Redo();
+			}
+			// S
+			if (Input.KeyboardDown(KeyboardKey.S)) {
+				SaveSheetToDisk();
+			}
+		}
+		// Slice
+		if (DraggingState == DragState.None && HoldingSliceModeKey) {
+			// Delete
+			if (Input.KeyboardDown(KeyboardKey.Delete)) {
+				DeleteAllSelectingSprite();
 			}
 		}
 	}
@@ -702,11 +776,37 @@ public class PixelEditor : WindowUI {
 	}
 
 
-	private void SelectSpritesOverlap (IRect pixelRange) {
+	private int SelectSpritesOverlap (IRect pixelRange) {
 		int count = StagedSprites.Count;
+		int selectedCount = 0;
 		for (int i = 0; i < count; i++) {
 			var spData = StagedSprites[i];
 			spData.Selecting = spData.Sprite.PixelRect.Overlaps(pixelRange);
+			selectedCount += spData.Selecting ? 1 : 0;
+		}
+		return selectedCount;
+	}
+
+
+	private void DeleteAllSelectingSprite () {
+		bool changed = false;
+		for (int i = 0; i < StagedSprites.Count; i++) {
+			if (StagedSprites[i].Selecting) {
+				// Remove from Stage
+				var sprite = StagedSprites[i].Sprite;
+				StagedSprites.RemoveAt(i);
+				i--;
+				// Remove from Sheet
+				int index = Sheet.IndexOfSprite(sprite.ID);
+				if (index >= 0) {
+					Sheet.RemoveSprite(index);
+				}
+				// Dirty
+				if (!changed) {
+					SetDirty();
+					changed = true;
+				}
+			}
 		}
 	}
 

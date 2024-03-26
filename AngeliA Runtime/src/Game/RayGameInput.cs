@@ -11,16 +11,21 @@ public partial class RayGame {
 	// Cursor
 	protected override void _ShowCursor () {
 		if (!Raylib.IsCursorHidden()) return;
-		Raylib.SetMousePosition(ScreenWidth / 2, ScreenHeight / 2);
 		Raylib.ShowCursor();
-		Raylib.EnableCursor();
+		if (ProjectType == ProjectType.Game) {
+			Raylib.EnableCursor();
+		}
 	}
 
 	protected override void _HideCursor () {
 		if (Raylib.IsCursorHidden()) return;
 		Raylib.HideCursor();
-		Raylib.DisableCursor();
+		if (ProjectType == ProjectType.Game) {
+			Raylib.DisableCursor();
+		}
 	}
+
+	protected override void _CenterCursor () => Raylib.SetMousePosition(ScreenWidth / 2, ScreenHeight / 2);
 
 	protected override bool _CursorVisible () => !Raylib.IsCursorHidden();
 

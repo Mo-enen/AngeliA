@@ -328,6 +328,9 @@ public abstract partial class Game {
 	public static void HideCursor () => Instance._HideCursor();
 	protected abstract void _HideCursor ();
 
+	public static void CenterCursor () => Instance._CenterCursor();
+	protected abstract void _CenterCursor ();
+
 	public static bool CursorVisible => Instance._CursorVisible();
 	protected abstract bool _CursorVisible ();
 

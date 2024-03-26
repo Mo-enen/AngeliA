@@ -12,15 +12,10 @@ namespace AngeliaRuntime;
 public partial class RayGame : Game {
 
 
-	// Const
-	//private const long TICK_GAP = TimeSpan.TicksPerSecond / 60;
-
 	// Data
 	private readonly Stopwatch GameWatch = new();
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
-	//private long NextUpdateTick = -1;
-
 
 	// Saving
 	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
@@ -82,13 +77,13 @@ public partial class RayGame : Game {
 
 	private void UpdateGame () {
 
+		// Trying to Quit Check
+		if (!RequireQuitGame && Raylib.WindowShouldClose()) {
+			RequireQuitGame = InvokeGameTryingToQuit();
+		}
+
 		// Text Input
 		RayUtil.TextInputUpdate(GUI.OnTextInput);
-
-		// Wait for Fixed Update
-		//long currentTick = GameWatch.ElapsedTicks;
-		//if (currentTick < NextUpdateTick) goto _CONTINUE_;
-		//NextUpdateTick = currentTick + TICK_GAP;
 
 		// Window Focus
 		bool windowFocus = Raylib.IsWindowFocused();
@@ -162,14 +157,23 @@ public partial class RayGame : Game {
 			Raylib.DrawRectangle(ScreenWidth - borderWidth, 0, borderWidth, ScreenHeight, Color.Black);
 		}
 
+		// Custom Cursor
+		if (Cursor.CurrentCursorIndex == Const.CURSOR_CUSTOM && Cursor.CustomCursorID != 0 && Raylib.IsCursorOnScreen()) {
+			if (Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, out var texture)) {
+				float scale = ScreenHeight / 1024f;
+				Raylib.DrawTextureEx(
+					texture,
+					Raylib.GetMousePosition() - new System.Numerics.Vector2(
+						texture.Width * scale / 2f,
+						texture.Height * scale / 2f
+					),
+					rotation: 0, scale, Color.White
+				);
+			}
+		}
+
 		// Final
 		Raylib.EndDrawing();
-		//_CONTINUE_:;
-
-		// Trying to Quit Check
-		if (!RequireQuitGame && Raylib.WindowShouldClose()) {
-			RequireQuitGame = InvokeGameTryingToQuit();
-		}
 
 	}
 

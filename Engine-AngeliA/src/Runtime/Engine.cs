@@ -111,6 +111,11 @@ internal class Engine {
 
 	[OnGameUpdate(-4096)]
 	internal static void OnGameUpdate () {
+
+		// Cursor
+		Cursor.RequireCursor();
+
+		// Event Waiting
 		if (RequireEventWaitingOn) {
 			RequireEventWaitingOn = false;
 			Game.SetEventWaiting(true);
