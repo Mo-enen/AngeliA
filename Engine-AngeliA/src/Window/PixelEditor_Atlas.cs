@@ -15,14 +15,18 @@ public partial class PixelEditor {
 	// Const
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
-	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas {0}? All sprites inside will be delete too.");
+	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
+	private static readonly SpriteCode ICON_IMPORT_ASEPRITE = "Icon.ImportAseprite";
+	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
+	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
+	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
+	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 
 	// Data
 	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasMenuTargetIndex = -1;
-
 
 
 	#endregion
@@ -53,9 +57,26 @@ public partial class PixelEditor {
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		int buttonPadding = Unify(4);
 		var buttonRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
+
+		// Add
 		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
-			AddAtlas();
+			CreateAtlas();
 		}
+		RequireToolLabel(buttonRect, TIP_ADD_ATLAS);
+		buttonRect.SlideRight(buttonPadding);
+
+		// Import from PNG
+		if (GUI.Button(buttonRect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
+			ShowImportAtlasBrowser(false);
+		}
+		RequireToolLabel(buttonRect, TIP_IMPORT_PNG);
+		buttonRect.SlideRight(buttonPadding);
+
+		// Import from Ase
+		if (GUI.Button(buttonRect, ICON_IMPORT_ASEPRITE, GUISkin.SmallDarkButton)) {
+			ShowImportAtlasBrowser(true);
+		}
+		RequireToolLabel(buttonRect, TIP_IMPORT_ASE);
 		buttonRect.SlideRight(buttonPadding);
 
 		// --- Atlas ---
@@ -105,7 +126,31 @@ public partial class PixelEditor {
 					}
 
 					// Icon
-					GUI.Icon(contentRect.EdgeInside(Direction4.Left, contentRect.height), atlas.Type == AtlasType.General ? ICON_SPRITE_ATLAS : ICON_LEVEL_ATLAS);
+					var iconRect = contentRect.EdgeInside(Direction4.Left, contentRect.height);
+
+					//if (Sheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
+					//	var iconSize = Game.GetTextureSize(iconTexture);
+					//	iconRect = iconRect.Shift(
+					//		-Input.MousePositionShift.x,
+					//		-Input.MousePositionShift.y
+					//	).Fit(iconSize.x, iconSize.y);
+					//	if (iconRect.CompleteInside(panelRect)) {
+					//		Game.DrawGizmosTexture(iconRect, iconTexture);
+					//	} else if (iconRect.Overlaps(panelRect)) {
+					//		var uv = FRect.MinMaxRect(
+					//			Util.InverseLerpUnclamped(iconRect.xMin, iconRect.xMax, Util.Max(panelRect.xMin, iconRect.xMin)),
+					//			Util.InverseLerpUnclamped(iconRect.yMin, iconRect.yMax, Util.Max(panelRect.yMin, iconRect.yMin)),
+					//			Util.InverseLerpUnclamped(iconRect.xMin, iconRect.xMax, Util.Min(panelRect.xMax, iconRect.xMax)),
+					//			Util.InverseLerpUnclamped(iconRect.yMin, iconRect.yMax, Util.Min(panelRect.yMax, iconRect.yMax))
+					//		);
+					//		Game.DrawGizmosTexture(iconRect.Clamp(panelRect), uv, iconTexture);
+					//	}
+					//} else {
+					GUI.Icon(
+						iconRect,
+						atlas.Type == AtlasType.General ? ICON_SPRITE_ATLAS : ICON_LEVEL_ATLAS
+					);
+					//}
 
 					// Label
 					if (renaming) {
@@ -113,7 +158,10 @@ public partial class PixelEditor {
 							INPUT_ID + i, contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm, GUISkin.SmallInputField
 						);
-						if (changed || confirm) SetDirty();
+						if (changed || confirm) {
+							atlas.ID = atlas.Name.AngeHash();
+							SetDirty();
+						}
 					} else {
 						GUI.Label(contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
 					}
@@ -208,12 +256,12 @@ public partial class PixelEditor {
 		}
 
 		// Add
-		GenericPopupUI.AddItem(BuiltInText.UI_ADD, AddAtlas);
+		GenericPopupUI.AddItem(BuiltInText.UI_ADD, CreateAtlas);
 
 	}
 
 
-	private static void AddAtlas () {
+	private static void CreateAtlas () {
 		Instance.Sheet.Atlas.Add(new Atlas() {
 			AtlasZ = 0,
 			Name = "New Atlas",
@@ -249,6 +297,16 @@ public partial class PixelEditor {
 		Instance.SetDirty();
 		Instance.CurrentAtlasIndex = -1;
 		Instance.SetCurrentAtlas(newSelectingAtlasIndex);
+	}
+
+
+	private void ShowImportAtlasBrowser (bool fromAseprite) {
+		//FileBrowserUI.OpenFile(,)
+	}
+
+
+	private static void ImportAtlas (string path) {
+
 	}
 
 

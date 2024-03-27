@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public enum AtlasType {
 	General = 0,
 	Level = 1,
@@ -15,6 +15,7 @@ public enum AtlasType {
 public class Atlas {
 
 	private static readonly StringBuilder CacheBuilder = new(256);
+	public int ID;
 	public string Name;
 	public AtlasType Type;
 	public int AtlasZ;
@@ -30,6 +31,9 @@ public class Atlas {
 				CacheBuilder.Append((char)reader.ReadByte());
 			}
 			Name = CacheBuilder.ToString();
+
+			// ID
+			ID = Name.AngeHash();
 
 			// Type
 			Type = (AtlasType)reader.ReadByte();

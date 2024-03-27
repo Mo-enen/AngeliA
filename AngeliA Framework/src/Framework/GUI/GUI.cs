@@ -316,7 +316,8 @@ public static class GUI {
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, text, backgroundColor, out _, backgroundPadding, style);
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null) {
 		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
-		Renderer.DrawPixel(bounds.Expand(backgroundPadding), Color * BodyColor * backgroundColor, z: 0);
+		bounds = bounds.Expand(backgroundPadding);
+		Renderer.DrawPixel(bounds, Color * BodyColor * backgroundColor, z: 0);
 	}
 
 	public static void ShadowLabel (IRect rect, string text, int shadowDistance = 3, GUIStyle style = null) {

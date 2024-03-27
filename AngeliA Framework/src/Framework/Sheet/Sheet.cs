@@ -136,6 +136,21 @@ public class Sheet {
 		}
 	}
 
+	public bool TryGetTextureFromPool (int spriteID, out object texture) {
+		texture = null;
+		if (!SpritePool.TryGetValue(spriteID, out var sprite)) return false;
+		if (TexturePool.TryGetValue(spriteID, out texture)) {
+			return texture != null;
+		} else {
+			SyncSpritePixelsIntoTexturePool(sprite);
+			if (TexturePool.TryGetValue(spriteID, out texture)) {
+				return texture != null;
+			} else {
+				return false;
+			}
+		}
+	}
+
 	public void SyncSpritePixelsIntoTexturePool (AngeSprite sprite) {
 		if (TexturePool.TryGetValue(sprite.ID, out var texture)) {
 			var size = Game.GetTextureSize(texture);
@@ -253,6 +268,29 @@ public class Sheet {
 		RemoveSpriteFromGroup(spriteIndex);
 		Sprites.RemoveAt(spriteIndex);
 		SpritePool.Remove(sprite.ID);
+	}
+
+	// Create
+	public AngeSprite CreateSprite (string name, IRect pixelRect, int atlasIndex) => new AngeSprite() {
+		ID = name.AngeHash(),
+		RealName = name,
+		Atlas = Atlas[atlasIndex],
+		AtlasIndex = atlasIndex,
+		GlobalWidth = pixelRect.width * Const.ART_SCALE,
+		GlobalHeight = pixelRect.height * Const.ART_SCALE,
+		PixelRect = pixelRect,
+		Pixels = new Color32[pixelRect.width * pixelRect.height],
+		SortingZ = Atlas[atlasIndex].AtlasZ * 1024,
+	};
+
+	public string GetAvailableSpriteName (string basicName) {
+		string name = basicName;
+		int index = 0;
+		while (SpritePool.ContainsKey(name.AngeHash())) {
+			index++;
+			name = $"{basicName} {index}";
+		}
+		return name;
 	}
 
 

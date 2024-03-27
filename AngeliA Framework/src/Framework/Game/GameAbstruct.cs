@@ -246,12 +246,52 @@ public abstract partial class Game {
 
 
 	// GL Gizmos
-	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness) => DrawGizmosFrame(rect, color, new Int4(thickness, thickness, thickness, thickness));
-	public static void DrawGizmosFrame (IRect rect, Color32 color, Int4 thickness) {
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Down, thickness.down), color);
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Up, thickness.up), color);
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Left, thickness.left), color);
-		Instance._DrawGizmosRect(rect.EdgeInside(Direction4.Right, thickness.right), color);
+	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness, int gap = 0) => DrawGizmosFrame(rect, color, new Int4(thickness, thickness, thickness, thickness), new Int4(gap, gap, gap, gap));
+	public static void DrawGizmosFrame (IRect rect, Color32 color, Int4 thickness, Int4 gap = default) {
+		// Down
+		if (thickness.down > 0) {
+			var edge = rect.EdgeInside(Direction4.Down, thickness.down);
+			if (gap.down == 0) {
+				Instance._DrawGizmosRect(edge, color);
+			} else {
+				int shrink = edge.width - (edge.width - gap.down) / 2;
+				Instance._DrawGizmosRect(edge.Shrink(shrink, 0, 0, 0), color);
+				Instance._DrawGizmosRect(edge.Shrink(0, shrink, 0, 0), color);
+			}
+		}
+		// Up
+		if (thickness.up > 0) {
+			var edge = rect.EdgeInside(Direction4.Up, thickness.up);
+			if (gap.up == 0) {
+				Instance._DrawGizmosRect(edge, color);
+			} else {
+				int shrink = edge.width - (edge.width - gap.up) / 2;
+				Instance._DrawGizmosRect(edge.Shrink(shrink, 0, 0, 0), color);
+				Instance._DrawGizmosRect(edge.Shrink(0, shrink, 0, 0), color);
+			}
+		}
+		// Left
+		if (thickness.left > 0) {
+			var edge = rect.EdgeInside(Direction4.Left, thickness.left);
+			if (gap.left == 0) {
+				Instance._DrawGizmosRect(edge, color);
+			} else {
+				int shrink = edge.height - (edge.height - gap.left) / 2;
+				Instance._DrawGizmosRect(edge.Shrink(0, 0, shrink, 0), color);
+				Instance._DrawGizmosRect(edge.Shrink(0, 0, 0, shrink), color);
+			}
+		}
+		// Right
+		if (thickness.right > 0) {
+			var edge = rect.EdgeInside(Direction4.Right, thickness.right);
+			if (gap.right == 0) {
+				Instance._DrawGizmosRect(edge, color);
+			} else {
+				int shrink = edge.height - (edge.height - gap.right) / 2;
+				Instance._DrawGizmosRect(edge.Shrink(0, 0, shrink, 0), color);
+				Instance._DrawGizmosRect(edge.Shrink(0, 0, 0, shrink), color);
+			}
+		}
 	}
 	public static void DrawGizmosRect (IRect rect, Color32 color) => Instance._DrawGizmosRect(rect, color);
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 color);
