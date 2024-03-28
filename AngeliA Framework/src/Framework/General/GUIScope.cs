@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
 
 public class Scope : System.IDisposable {
 
+	// SUB
 	private class ScopeGroup {
 		private const int COUNT = 32;
 		public Scope[] Scopes;
@@ -31,8 +31,9 @@ public class Scope : System.IDisposable {
 		public void End () => CurrentIndex--;
 	}
 
-	private enum ScopeType { None, Layer, Color, ContentColor, BodyColor, Enable, Scroll, }
+	private enum ScopeType { None, Layer, Color, ContentColor, BodyColor, Enable, Scroll, Sheet, }
 
+	// Const
 	private static readonly Scope EmptyScope = new(ScopeType.None);
 	private static readonly ScopeGroup LayerInstance = new(ScopeType.Layer);
 	private static readonly ScopeGroup ColorInstance = new(ScopeType.Color);
@@ -40,9 +41,12 @@ public class Scope : System.IDisposable {
 	private static readonly ScopeGroup BodyColorInstance = new(ScopeType.BodyColor);
 	private static readonly ScopeGroup EnableInstance = new(ScopeType.Enable);
 	private static readonly ScopeGroup ScrollInstance = new(ScopeType.Scroll);
+	private static readonly ScopeGroup SheetInstance = new(ScopeType.Sheet);
 
-	public Int2 Position => Int2Data;
+	// Api
+	public Int2 ScrollPosition => Int2Data;
 
+	// Data
 	private readonly ScopeType Type;
 	private Color32 ColorData;
 	private int IntData;
@@ -51,9 +55,11 @@ public class Scope : System.IDisposable {
 	private Int2 Int2Data;
 	private Int2 Int2DataAlt;
 
+	// MSG
 	private Scope (ScopeType type) => Type = type;
 
-	public static Scope RendererLayerUI () => RendererLayer(AngeliA.RenderLayer.UI);
+	// API
+	public static Scope RendererLayerUI () => RendererLayer(RenderLayer.UI);
 
 	public static Scope RendererLayer (int layer) {
 		var result = LayerInstance.Start();
@@ -120,12 +126,20 @@ public class Scope : System.IDisposable {
 		return result;
 	}
 
+	public static Scope Sheet (int index) {
+		var result = SheetInstance.Start();
+		if (result == null) return EmptyScope;
+		result.IntData = Renderer.CurrentSheetIndex;
+		Renderer.CurrentSheetIndex = index;
+		return result;
+	}
+
 	public void Dispose () {
 		switch (Type) {
 			case ScopeType.Layer:
 				LayerInstance.End();
 				if (Renderer.CurrentLayerIndex == AngeliA.RenderLayer.UI) {
-                    Renderer.ReverseUnsortedCells(AngeliA.RenderLayer.UI);
+					Renderer.ReverseUnsortedCells(AngeliA.RenderLayer.UI);
 				}
 				Renderer.SetLayer(IntData);
 				break;
@@ -169,10 +183,15 @@ public class Scope : System.IDisposable {
 					}
 				}
 
-                // Clamp Sprites
-                Renderer.ClampCells(AngeliA.RenderLayer.UI, RectData, startIndex);
+				// Clamp Sprites
+				Renderer.ClampCells(AngeliA.RenderLayer.UI, RectData, startIndex);
 				Renderer.ClampTextCells(RectData, tStartIndex);
 
+				break;
+
+			case ScopeType.Sheet:
+				SheetInstance.End();
+				Renderer.CurrentSheetIndex = IntData;
 				break;
 		}
 	}

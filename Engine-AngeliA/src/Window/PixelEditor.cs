@@ -58,6 +58,7 @@ public partial class PixelEditor : WindowUI {
 	private const int STAGE_SIZE = 512;
 	private const int PANEL_WIDTH = 240;
 	private const int TOOLBAR_HEIGHT = 42;
+	private const int SHEET_INDEX = 0;
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
 	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
 	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
@@ -71,6 +72,7 @@ public partial class PixelEditor : WindowUI {
 	// Data
 	private readonly Sheet Sheet = new();
 	private readonly List<SpriteData> StagedSprites = new();
+	private readonly List<AngeSprite> SpriteCopyBuffer = new();
 	private readonly UndoRedo Undo = new(16 * 16 * 128, OnUndoPerformed, OnRedoPerformed);
 	private string SheetPath = "";
 	private string ToolLabel = null;
@@ -86,6 +88,7 @@ public partial class PixelEditor : WindowUI {
 	private int GizmosThickness = 1;
 	private Int2 MousePixelPos;
 	private FRect CanvasRect;
+	private IRect CopyBufferPixRange;
 	private IRect StageRect;
 	private IRect ToolLabelRect;
 	private Color32 PaintingColor = Color32.CLEAR;
@@ -103,6 +106,10 @@ public partial class PixelEditor : WindowUI {
 
 
 	#region --- MSG ---
+
+
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () => Renderer.AddAltSheet(Instance.Sheet);
 
 
 	public PixelEditor () => Instance = this;
@@ -238,7 +245,7 @@ public partial class PixelEditor : WindowUI {
 
 		// BG
 		if (Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) {
-			using var _ = Scope.RendererLayer(RenderLayer.DEFAULT);
+			using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
 			var stageRectInt = CanvasRect.ToIRect();
 			var tint = ShowBackground.Value ? new Color32(34, 47, 64, 255) : Color32.WHITE;
 			const int CHECKER_COUNT = STAGE_SIZE / 32;
@@ -252,12 +259,15 @@ public partial class PixelEditor : WindowUI {
 					int globalY = y * sizeY + stageRectInt.y;
 					if (globalY < StageRect.y - sizeY) continue;
 					if (globalY > StageRect.yMax) break;
-					Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, tint, z: 0);
+					Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, tint, z: int.MinValue);
 				}
 			}
 		}
 
 		// Content
+		using var _sheet = Scope.Sheet(SHEET_INDEX);
+		using var __layer = Scope.RendererLayer(RenderLayer.DEFAULT);
+
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spriteData = StagedSprites[i];
 			var sprite = spriteData.Sprite;
@@ -270,18 +280,12 @@ public partial class PixelEditor : WindowUI {
 
 			if (DraggingStateLeft == DragStateLeft.MoveSlice && spriteData.Selecting) continue;
 
-			if (!Sheet.TexturePool.TryGetValue(sprite.ID, out var texture)) continue;
-
-			var rect = Pixel_to_Stage(sprite.PixelRect, out var uv, out bool outside);
+			var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
 			if (outside) continue;
 
-			// Draw Pixels
-			if (uv.HasValue) {
-				Game.DrawGizmosTexture(rect.Clamp(StageRect), uv.Value, texture);
-			} else {
-				Game.DrawGizmosTexture(rect, texture);
-			}
+			Renderer.Draw(sprite, rect, z: 0);
 		}
+
 
 	}
 
@@ -382,7 +386,7 @@ public partial class PixelEditor : WindowUI {
 
 		// Show BG
 		ShowBackground.Value = GUI.ToggleButton(toolbarBtnRect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
-		RequireToolLabel(toolbarBtnRect, TIP_SHOW_BG, Direction4.Right);
+		RequireToolLabel(toolbarBtnRect, TIP_SHOW_BG);
 		toolbarBtnRect.SlideRight(toolbarButtonPadding);
 
 		// Delete Sprite
@@ -413,6 +417,28 @@ public partial class PixelEditor : WindowUI {
 			// S
 			if (Input.KeyboardDown(KeyboardKey.S)) {
 				SaveSheetToDisk();
+			}
+			// C
+			if (Input.KeyboardDown(KeyboardKey.C)) {
+				if (HasSpriteSelecting) {
+					// Copy Sprites
+					SetSelectingAsCopyBuffer();
+				}
+			}
+			// X
+			if (Input.KeyboardDown(KeyboardKey.X)) {
+				if (HasSpriteSelecting) {
+					// Cut Sprites
+					SetSelectingAsCopyBuffer();
+					DeleteAllSelectingSprite();
+				}
+			}
+			// V
+			if (Input.KeyboardDown(KeyboardKey.V)) {
+				ClearSpriteSelection();
+				if (SpriteCopyBuffer.Count > 0) {
+					PasteSpriteCopyBufferIntoStage();
+				}
 			}
 		}
 		// Slice
@@ -448,7 +474,10 @@ public partial class PixelEditor : WindowUI {
 
 	public void LoadSheetFromDisk (string sheetPath) {
 		SheetPath = sheetPath;
-		if (string.IsNullOrEmpty(sheetPath)) return;
+		if (string.IsNullOrEmpty(sheetPath)) {
+			Sheet.Clear();
+			return;
+		}
 		IsDirty = false;
 		CurrentAtlasIndex = -1;
 		DraggingStateLeft = DragStateLeft.None;
@@ -499,9 +528,9 @@ public partial class PixelEditor : WindowUI {
 
 
 	// Util
-	private IRect Pixel_to_Stage (IRect pixRect) => Pixel_to_Stage(pixRect, out _, out _);
-	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv) => Pixel_to_Stage(pixRect, out uv, out _);
-	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, out bool outside) {
+	private IRect Pixel_to_Stage (IRect pixRect, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out _, out _, ignoreClamp);
+	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out uv, out _, ignoreClamp);
+	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, out bool outside, bool ignoreClamp = false) {
 		uv = null;
 		outside = false;
 		var stageRectInt = CanvasRect.ToIRect();
@@ -520,7 +549,7 @@ public partial class PixelEditor : WindowUI {
 				Util.InverseLerpUnclamped(rect.xMin, rect.xMax, Util.Min(StageRect.xMax, rect.xMax)),
 				Util.InverseLerpUnclamped(rect.yMin, rect.yMax, Util.Min(StageRect.yMax, rect.yMax))
 			);
-			return rect.Clamp(StageRect);
+			return ignoreClamp ? rect : rect.Clamp(StageRect);
 		}
 		outside = true;
 		return rect;
@@ -562,15 +591,10 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void RequireToolLabel (IRect buttonRect, string content) => RequireToolLabel(buttonRect, content, Direction4.Down);
-	private void RequireToolLabel (IRect buttonRect, string content, Direction4 direction) {
+	private void RequireToolLabel (IRect buttonRect, string content) {
 		if (!buttonRect.MouseInside()) return;
 		ToolLabel = content;
-		if (direction.IsVertical()) {
-			ToolLabelRect = buttonRect.EdgeOutside(direction, Unify(24)).Shift(0, Unify(-12));
-		} else {
-			ToolLabelRect = buttonRect.EdgeOutside(direction, 1).Shift(Unify(20), 0);
-		}
+		ToolLabelRect = buttonRect.EdgeOutside(Direction4.Down, Unify(24)).Shift(0, Unify(-12));
 	}
 
 

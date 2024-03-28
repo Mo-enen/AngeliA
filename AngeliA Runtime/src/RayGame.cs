@@ -159,7 +159,7 @@ public partial class RayGame : Game {
 
 		// Custom Cursor
 		if (Cursor.CurrentCursorIndex == Const.CURSOR_CUSTOM && Cursor.CustomCursorID != 0 && Raylib.IsCursorOnScreen()) {
-			if (Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, out var texture)) {
+			if (Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, -1, out var texture)) {
 				float scale = ScreenHeight / 1024f;
 				Raylib.DrawTextureEx(
 					texture,

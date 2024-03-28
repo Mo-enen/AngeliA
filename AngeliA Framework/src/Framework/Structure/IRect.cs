@@ -158,6 +158,12 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		max = maxPosition;
 	}
 
+	public static IRect MinMaxRect (Int2 min, Int2 max) => new() {
+		xMin = min.x,
+		yMin = min.y,
+		xMax = max.x,
+		yMax = max.y,
+	};
 	public static IRect MinMaxRect (int minX, int minY, int maxX, int maxY) => new() {
 		xMin = minX,
 		yMin = minY,

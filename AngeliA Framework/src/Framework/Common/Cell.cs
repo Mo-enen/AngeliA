@@ -1,8 +1,9 @@
 ﻿namespace AngeliA;
 public class Cell {
-	public static readonly Cell EMPTY = new() { Sprite = null, TextSprite = null, };
+	public static readonly Cell EMPTY = new() { Sprite = null, TextSprite = null, SheetIndex = -1, };
 	public AngeSprite Sprite;
 	public CharSprite TextSprite;
+	public int SheetIndex;
 	public int Order;
 	public int X;
 	public int Y;
@@ -18,6 +19,7 @@ public class Cell {
 	public void CopyFrom (Cell other) {
 		Sprite = other.Sprite;
 		TextSprite = other.TextSprite;
+		SheetIndex = other.SheetIndex;
 		X = other.X;
 		Y = other.Y;
 		Z = other.Z;

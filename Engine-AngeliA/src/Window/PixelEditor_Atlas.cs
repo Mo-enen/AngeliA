@@ -21,6 +21,8 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
+	private static readonly LanguageCode TITLE_IMPORT_ASE = ("Title.ImportAse", "Import Aseprite file");
+	private static readonly LanguageCode TITLE_IMPORT_PNG = ("Title.ImportPNG", "Import PNG file");
 
 	// Data
 	private int CurrentAtlasIndex = -1;
@@ -95,7 +97,7 @@ public partial class PixelEditor {
 			bool requireUseMouseButtons = false;
 
 			using (var scroll = Scope.GUIScroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
-				AtlasPanelScrollY = scroll.Position.y;
+				AtlasPanelScrollY = scroll.ScrollPosition.y;
 				for (int i = 0; i < itemCount; i++) {
 
 					var atlas = Sheet.Atlas[i];
@@ -128,29 +130,17 @@ public partial class PixelEditor {
 					// Icon
 					var iconRect = contentRect.EdgeInside(Direction4.Left, contentRect.height);
 
-					//if (Sheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
-					//	var iconSize = Game.GetTextureSize(iconTexture);
-					//	iconRect = iconRect.Shift(
-					//		-Input.MousePositionShift.x,
-					//		-Input.MousePositionShift.y
-					//	).Fit(iconSize.x, iconSize.y);
-					//	if (iconRect.CompleteInside(panelRect)) {
-					//		Game.DrawGizmosTexture(iconRect, iconTexture);
-					//	} else if (iconRect.Overlaps(panelRect)) {
-					//		var uv = FRect.MinMaxRect(
-					//			Util.InverseLerpUnclamped(iconRect.xMin, iconRect.xMax, Util.Max(panelRect.xMin, iconRect.xMin)),
-					//			Util.InverseLerpUnclamped(iconRect.yMin, iconRect.yMax, Util.Max(panelRect.yMin, iconRect.yMin)),
-					//			Util.InverseLerpUnclamped(iconRect.xMin, iconRect.xMax, Util.Min(panelRect.xMax, iconRect.xMax)),
-					//			Util.InverseLerpUnclamped(iconRect.yMin, iconRect.yMax, Util.Min(panelRect.yMax, iconRect.yMax))
-					//		);
-					//		Game.DrawGizmosTexture(iconRect.Clamp(panelRect), uv, iconTexture);
-					//	}
-					//} else {
-					GUI.Icon(
-						iconRect,
-						atlas.Type == AtlasType.General ? ICON_SPRITE_ATLAS : ICON_LEVEL_ATLAS
-					);
-					//}
+					if (Sheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
+						var iconSize = Game.GetTextureSize(iconTexture);
+						using (Scope.Sheet(SHEET_INDEX)) {
+							GUI.Icon(iconRect.Fit(iconSize.x, iconSize.y), atlas.ID);
+						}
+					} else {
+						GUI.Icon(
+							iconRect,
+							atlas.Type == AtlasType.General ? ICON_SPRITE_ATLAS : ICON_LEVEL_ATLAS
+						);
+					}
 
 					// Label
 					if (renaming) {
@@ -301,12 +291,28 @@ public partial class PixelEditor {
 
 
 	private void ShowImportAtlasBrowser (bool fromAseprite) {
-		//FileBrowserUI.OpenFile(,)
+		if (fromAseprite) {
+			FileBrowserUI.OpenFile(TITLE_IMPORT_ASE, "ase", ImportAtlas);
+		} else {
+			FileBrowserUI.OpenFile(TITLE_IMPORT_PNG, "png", ImportAtlas);
+		}
 	}
 
 
 	private static void ImportAtlas (string path) {
+		if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
+		string ext = Util.GetExtension(path);
+		if (ext == ".png") {
+			// PNG
+			var texture = Game.PngBytesToTexture(Util.FileToByte(path));
 
+
+
+		} else if (ext == ".ase") {
+			// ASE
+
+
+		}
 	}
 
 

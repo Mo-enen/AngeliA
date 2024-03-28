@@ -271,7 +271,7 @@ public class Sheet {
 	}
 
 	// Create
-	public AngeSprite CreateSprite (string name, IRect pixelRect, int atlasIndex) => new AngeSprite() {
+	public AngeSprite CreateSprite (string name, IRect pixelRect, int atlasIndex) => new() {
 		ID = name.AngeHash(),
 		RealName = name,
 		Atlas = Atlas[atlasIndex],

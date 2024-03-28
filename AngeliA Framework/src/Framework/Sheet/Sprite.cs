@@ -245,6 +245,32 @@ public class AngeSprite {
 		PixelRect = newRect;
 	}
 
+	public AngeSprite CreateCopy () {
+		var pixels = new Color32[Pixels.Length];
+		Pixels.CopyTo(pixels, 0);
+		return new AngeSprite() {
+			ID = ID,
+			RealName = RealName,
+			GlobalWidth = GlobalWidth,
+			GlobalHeight = GlobalHeight,
+			PixelRect = PixelRect,
+			PivotX = PivotX,
+			PivotY = PivotY,
+			SortingZ = SortingZ,
+			LocalZ = LocalZ,
+			GlobalBorder = GlobalBorder,
+			AtlasIndex = AtlasIndex,
+			Atlas = Atlas,
+			Group = null,
+			IsTrigger = IsTrigger,
+			Rule = Rule,
+			Tag = Tag,
+			Duration = Duration,
+			SummaryTint = SummaryTint,
+			Pixels = pixels,
+		};
+	}
+
 }
 
 

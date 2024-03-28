@@ -43,7 +43,7 @@ public static class Renderer {
 			SortedIndex = Count;
 		}
 		public void ReverseUnsorted () {
-			if (SortedIndex < Count ) {
+			if (SortedIndex < Count) {
 				System.Array.Reverse(Cells, SortedIndex, Count - SortedIndex);
 				SortedIndex = Count;
 			}
@@ -78,9 +78,13 @@ public static class Renderer {
 	public static int CurrentLayerIndex { get; private set; } = 0;
 	public static int CurrentTextLayerIndex { get; private set; } = 0;
 	public static bool TextReady => TextLayers.Length > 0;
+	public static int CurrentSheetIndex { get; set; } = -1;
+	public static int AltSheetCount => AltSheets.Count;
+	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? Sheet : AltSheets[CurrentSheetIndex];
 
 	// Data
 	private static readonly Sheet Sheet = new();
+	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static TextLayer[] TextLayers = System.Array.Empty<TextLayer>();
 	private static bool IsDrawing = false;
@@ -233,6 +237,7 @@ public static class Renderer {
 		Cell.EMPTY.TextSprite = null;
 		Cell.EMPTY.Color = Color32.CLEAR;
 		SetLayerToDefault();
+		CurrentSheetIndex = -1;
 		for (int i = 0; i < Layers.Length; i++) {
 			var layer = Layers[i];
 			if (Game.IsPlaying || layer.UiLayer) {
@@ -264,6 +269,18 @@ public static class Renderer {
 
 
 	// Sheet
+	public static bool TryGetTextureFromSheet<T> (int spriteID, int sheetIndex, out T texture) {
+		var sheet = sheetIndex < 0 || sheetIndex >= AltSheets.Count ? Sheet : AltSheets[sheetIndex];
+		if (sheet.TexturePool.TryGetValue(spriteID, out object textureObj) && textureObj is T result) {
+			texture = result;
+			return true;
+		} else {
+			texture = default;
+			return false;
+		}
+	}
+
+
 	public static void LoadSheet (Universe project) {
 
 		// Artwork >> Sheet
@@ -279,15 +296,13 @@ public static class Renderer {
 	}
 
 
-	public static bool TryGetTextureFromSheet<T> (int spriteID, out T texture) {
-		if (Sheet.TexturePool.TryGetValue(spriteID, out object textureObj) && textureObj is T result) {
-			texture = result;
-			return true;
-		} else {
-			texture = default;
-			return false;
-		}
-	}
+	public static void AddAltSheet (Sheet sheet) => AltSheets.Add(sheet);
+
+
+	public static void RemoveAltSheet (int index) => AltSheets.RemoveAt(index);
+
+
+	public static Sheet GetAltSheet (int index) => AltSheets[index];
 
 
 	// Layer
@@ -368,6 +383,7 @@ public static class Renderer {
 		// Cell
 		cell.Sprite = sprite;
 		cell.TextSprite = null;
+		cell.SheetIndex = CurrentSheetIndex;
 		cell.Order = layer.FocusedCell;
 		cell.X = x;
 		cell.Y = y;
@@ -518,28 +534,29 @@ public static class Renderer {
 	public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) {
 		if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return Cell.EMPTY;
-		int id = Sheet.GetSpriteIdFromAnimationFrame(group, frame, loopStart);
+		int id = CurrentSheet.GetSpriteIdFromAnimationFrame(group, frame, loopStart);
 		return Draw(id, x, y, pivotX, pivotY, rotation, width, height, color);
 	}
 
 
 	// Sprite Data
 	public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
-		if (Sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
-		if (!ignoreAnimation && Sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
-			int id = Sheet.GetSpriteIdFromAnimationFrame(group, Game.GlobalFrame);
-			return Sheet.SpritePool.TryGetValue(id, out sprite);
+		var sheet = CurrentSheet;
+		if (sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
+		if (!ignoreAnimation && sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
+			int id = sheet.GetSpriteIdFromAnimationFrame(group, Game.GlobalFrame);
+			return sheet.SpritePool.TryGetValue(id, out sprite);
 		}
 		sprite = null;
 		return false;
 	}
 
 
-	public static bool HasSpriteGroup (int groupID) => Sheet.GroupPool.ContainsKey(groupID);
+	public static bool HasSpriteGroup (int groupID) => CurrentSheet.GroupPool.ContainsKey(groupID);
 
 
 	public static bool HasSpriteGroup (int groupID, out int groupLength) {
-		if (Sheet.GroupPool.TryGetValue(groupID, out var values)) {
+		if (CurrentSheet.GroupPool.TryGetValue(groupID, out var values)) {
 			groupLength = values.Count;
 			return true;
 		} else {
@@ -549,11 +566,11 @@ public static class Renderer {
 	}
 
 
-	public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => Sheet.GroupPool.TryGetValue(groupID, out group);
+	public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => CurrentSheet.GroupPool.TryGetValue(groupID, out group);
 
 
 	public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true, bool ignoreAnimatedWhenFailback = true) {
-		if (Sheet.GroupPool.TryGetValue(groupID, out var group)) {
+		if (CurrentSheet.GroupPool.TryGetValue(groupID, out var group)) {
 			if (loopIndex) index = index.UMod(group.Count);
 			if (clampIndex) index = index.Clamp(0, group.Count - 1);
 			if (index >= 0 && index < group.Count) {
@@ -566,13 +583,19 @@ public static class Renderer {
 	}
 
 
-	public static bool HasSprite (int globalID) => Sheet.SpritePool.ContainsKey(globalID);
+	public static bool HasSprite (int globalID) => CurrentSheet.SpritePool.ContainsKey(globalID);
 
 
-	public static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Sheet.Sprites.Count ? Sheet.Sprites[index] : null;
+	public static AngeSprite GetSpriteAt (int index) {
+		var sheet = CurrentSheet;
+		return index >= 0 && index < sheet.Sprites.Count ? sheet.Sprites[index] : null;
+	}
 
 
-	public static SpriteGroup GetGroupAt (int index) => index >= 0 && index < Sheet.Groups.Count ? Sheet.Groups[index] : null;
+	public static SpriteGroup GetGroupAt (int index) {
+		var sheet = CurrentSheet;
+		return index >= 0 && index < sheet.Groups.Count ? sheet.Groups[index] : null;
+	}
 
 
 	// Clamp

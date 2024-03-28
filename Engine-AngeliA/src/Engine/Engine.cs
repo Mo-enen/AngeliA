@@ -245,7 +245,7 @@ internal class Engine {
 
 				// Project List
 				using (var scroll = Scope.GUIScroll(contentRect, HubPanelScroll, 0, Util.Max(0, projects.Count * itemHeight - contentRect.height))) {
-					HubPanelScroll = scroll.Position.y;
+					HubPanelScroll = scroll.ScrollPosition.y;
 
 					var STEP_TINT = new Color32(42, 42, 42, 255);
 					var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);

@@ -29,6 +29,8 @@ public partial class PixelEditor {
 
 	private void Update_LeftDrag () {
 
+		if (!StageRect.Contains(Input.MouseLeftDownGlobalPosition)) return;
+
 		if (Interactable && Input.MouseLeftButtonHolding) {
 
 			// === Drag Start ===
@@ -221,6 +223,8 @@ public partial class PixelEditor {
 
 	private void Update_RightDrag () {
 
+		if (!StageRect.Contains(Input.MouseRightDownGlobalPosition)) return;
+
 		if (Interactable && Input.MouseRightButtonHolding) {
 
 			// === Drag Start ===
@@ -306,6 +310,7 @@ public partial class PixelEditor {
 
 
 	private void ClearSpriteSelection () {
+		if (!HasSpriteSelecting) return;
 		HasSpriteSelecting = false;
 		foreach (var spData in StagedSprites) {
 			spData.Selecting = false;
@@ -337,9 +342,76 @@ public partial class PixelEditor {
 	}
 
 
+	// Copy Paste
+	private void SetSelectingAsCopyBuffer () {
+		SpriteCopyBuffer.Clear();
+		CopyBufferPixRange = default;
+		int left = int.MaxValue;
+		int right = int.MinValue;
+		int down = int.MaxValue;
+		int up = int.MinValue;
+		foreach (var spData in StagedSprites) {
+			if (!spData.Selecting) continue;
+			var sprite = spData.Sprite.CreateCopy();
+			SpriteCopyBuffer.Add(sprite);
+			var pxRect = sprite.PixelRect;
+			left = Util.Min(left, pxRect.xMin);
+			right = Util.Max(right, pxRect.xMax);
+			down = Util.Min(down, pxRect.yMin);
+			up = Util.Max(up, pxRect.yMax);
+		}
+		if (SpriteCopyBuffer.Count > 0) {
+			CopyBufferPixRange = IRect.MinMaxRect(left, down, right, up);
+		}
+	}
+
+
+	private void PasteSpriteCopyBufferIntoStage () {
+
+		if (SpriteCopyBuffer.Count == 0) return;
+		ClearSpriteSelection();
+		SetDirty();
+
+		// Get Offset
+		int offsetX;
+		int offsetY;
+		var stagePxRange = IRect.MinMaxRect(
+			Stage_to_Pixel(StageRect.min),
+			Stage_to_Pixel(StageRect.max)
+		);
+		if (CopyBufferPixRange.Overlaps(stagePxRange)) {
+			offsetX = 4;
+			offsetY = 4;
+			CopyBufferPixRange.x += 4;
+			CopyBufferPixRange.y += 4;
+		} else {
+			offsetX = stagePxRange.CenterX() - CopyBufferPixRange.x;
+			offsetY = stagePxRange.CenterY() - CopyBufferPixRange.y;
+		}
+
+		// Paste
+		foreach (var source in SpriteCopyBuffer) {
+			var sprite = source.CreateCopy();
+			sprite.RealName = Sheet.GetAvailableSpriteName(source.RealName);
+			sprite.ID = sprite.RealName.AngeHash();
+			sprite.PixelRect = source.PixelRect.Shift(offsetX, offsetY);
+			if (sprite == null) continue;
+			Sheet.AddSprite(sprite);
+			StagedSprites.Add(new SpriteData() {
+				Sprite = sprite,
+				PixelDirty = true,
+				Selecting = true,
+				DraggingStartRect = default,
+			});
+		}
+		HasSpriteSelecting = true;
+
+	}
+
+
 	// Util
-	private IRect GetStageDraggingPixRect (bool forLeft) {
-		var downPos = Stage_to_Pixel(forLeft ? Input.MouseLeftDownGlobalPosition : Input.MouseRightDownGlobalPosition);
+	private IRect GetStageDraggingPixRect (bool forLeftButton) {
+		var downPos = Stage_to_Pixel(forLeftButton ? Input.MouseLeftDownGlobalPosition : Input.MouseRightDownGlobalPosition);
 		var pos = Stage_to_Pixel(Input.MouseGlobalPosition);
 		return IRect.MinMaxRect(
 			Util.Min(downPos.x, pos.x),
