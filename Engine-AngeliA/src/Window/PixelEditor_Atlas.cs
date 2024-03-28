@@ -16,7 +16,7 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
 	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
-	private static readonly SpriteCode ICON_IMPORT_ASEPRITE = "Icon.ImportAseprite";
+	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
 	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
@@ -39,13 +39,14 @@ public partial class PixelEditor {
 	#region --- MSG ---
 
 
-	private void Update_Panel () {
+	private void Update_AtlasPanel () {
 
 		const int INPUT_ID = 287234;
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 
 		// BG
 		Renderer.DrawPixel(panelRect, Color32.GREY_20);
+		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_HEIGHT));
 
 		// Rename Hotkey
 		if (Input.KeyboardDown(KeyboardKey.F2) && RenamingAtlasIndex < 0 && CurrentAtlasIndex >= 0) {
@@ -53,35 +54,6 @@ public partial class PixelEditor {
 			GUI.StartTyping(INPUT_ID + CurrentAtlasIndex);
 		}
 
-		// --- Bar ---
-		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
-		panelRect = panelRect.Shrink(0, 0, 0, toolbarRect.height);
-		toolbarRect = toolbarRect.Shrink(Unify(6));
-		int buttonPadding = Unify(4);
-		var buttonRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
-
-		// Add
-		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
-			CreateAtlas();
-		}
-		RequireToolLabel(buttonRect, TIP_ADD_ATLAS);
-		buttonRect.SlideRight(buttonPadding);
-
-		// Import from PNG
-		if (GUI.Button(buttonRect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
-			ShowImportAtlasBrowser(false);
-		}
-		RequireToolLabel(buttonRect, TIP_IMPORT_PNG);
-		buttonRect.SlideRight(buttonPadding);
-
-		// Import from Ase
-		if (GUI.Button(buttonRect, ICON_IMPORT_ASEPRITE, GUISkin.SmallDarkButton)) {
-			ShowImportAtlasBrowser(true);
-		}
-		RequireToolLabel(buttonRect, TIP_IMPORT_ASE);
-		buttonRect.SlideRight(buttonPadding);
-
-		// --- Atlas ---
 		int itemCount = Sheet.Atlas.Count;
 		if (itemCount > 0) {
 
@@ -203,6 +175,31 @@ public partial class PixelEditor {
 	}
 
 
+	private void Update_AtlasToolbar () {
+
+		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
+		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
+		toolbarRect = toolbarRect.Shrink(Unify(6));
+		int buttonPadding = Unify(4);
+		var buttonRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
+
+		// Add
+		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
+			CreateAtlas();
+		}
+		RequireToolLabel(buttonRect, TIP_ADD_ATLAS);
+		buttonRect.SlideRight(buttonPadding);
+
+		// Import from Ase
+		if (GUI.Button(buttonRect, ICON_IMPORT_ASE, GUISkin.SmallDarkButton)) {
+			ShowImportAtlasBrowser(true);
+		}
+		RequireToolLabel(buttonRect, TIP_IMPORT_ASE);
+		buttonRect.SlideRight(buttonPadding);
+
+	}
+
+
 	#endregion
 
 
@@ -304,10 +301,21 @@ public partial class PixelEditor {
 		string ext = Util.GetExtension(path);
 		if (ext == ".png") {
 			// PNG
+			var sheet = Instance.Sheet;
 			var texture = Game.PngBytesToTexture(Util.FileToByte(path));
-
-
-
+			var size = Game.GetTextureSize(texture);
+			var sprite = sheet.CreateSprite(
+				sheet.GetAvailableSpriteName("New Sprite"),
+				new IRect(4, 4, size.x, size.y),
+				Instance.CurrentAtlasIndex
+			);
+			sprite.Pixels = Game.GetPixelsFromTexture(texture);
+			sheet.AddSprite(sprite);
+			Instance.StagedSprites.Add(new SpriteData() {
+				Sprite = sprite,
+				PixelDirty = true,
+				Selecting = true,
+			});
 		} else if (ext == ".ase") {
 			// ASE
 

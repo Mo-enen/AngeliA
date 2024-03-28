@@ -64,6 +64,7 @@ public partial class PixelEditor : WindowUI {
 	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
 	private static readonly SpriteCode CURSOR_DOT = "Cursor.Dot";
 	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show Background");
+	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete Slice");
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
@@ -126,18 +127,20 @@ public partial class PixelEditor : WindowUI {
 		if (string.IsNullOrEmpty(SheetPath)) return;
 		Sky.ForceSkyboxTint(new Color32(32, 33, 37, 255));
 
-		Update_Panel();
+		Update_AtlasPanel();
+		Update_AtlasToolbar();
 
 		if (Sheet.Atlas.Count <= 0) return;
 
 		Update_Cache();
 		Update_View();
 
-		Update_Rendering();
 		Update_Gizmos();
 
 		Update_LeftDrag();
 		Update_RightDrag();
+
+		Update_Rendering();
 
 		Update_Toolbar();
 		Update_Hotkey();
@@ -161,7 +164,7 @@ public partial class PixelEditor : WindowUI {
 		StageRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT));
 		HoveringResizeStageIndex = -1;
 		HoldingSliceOptionKey = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
-		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
+		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.Instance.Active;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
@@ -341,33 +344,36 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// All Sprites
-		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
+		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
 
-			var spriteData = StagedSprites[i];
-			var sprite = spriteData.Sprite;
-			var rect = Pixel_to_Stage(sprite.PixelRect, out var uv, out bool outside);
-			if (outside) continue;
+			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
-			if (ResizingStageIndex == i) continue;
+				var spriteData = StagedSprites[i];
+				var sprite = spriteData.Sprite;
+				var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
+				if (outside) continue;
 
-			// Frame Gizmos
-			bool drawingSelectionGizmos =
-				spriteData.Selecting &&
-				DraggingStateLeft != DragStateLeft.MoveSlice &&
-				ResizingStageIndex != i;
-			if (drawingSelectionGizmos) {
-				// Selecting Frame
-				DrawGizmosFrame(
-					rect.Expand(GizmosThickness),
-					uv, Color32.WHITE,
-					GizmosThickness * 2
-				);
-			} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spriteData.Selecting) {
-				// Normal Frame
-				DrawGizmosFrame(
-					rect.Expand(GizmosThickness), uv, Color32.BLACK,
-					GizmosThickness
-				);
+				if (ResizingStageIndex == i) continue;
+
+				// Frame Gizmos
+				bool drawingSelectionGizmos =
+					spriteData.Selecting &&
+					DraggingStateLeft != DragStateLeft.MoveSlice &&
+					ResizingStageIndex != i;
+				if (drawingSelectionGizmos) {
+					// Selecting Frame
+					DrawRendererFrame(
+						rect.Expand(GizmosThickness),
+						Color32.WHITE,
+						GizmosThickness * 2
+					);
+				} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spriteData.Selecting) {
+					// Normal Frame
+					DrawRendererFrame(
+						rect.Expand(GizmosThickness), Color32.BLACK,
+						GizmosThickness
+					);
+				}
 			}
 		}
 
@@ -376,27 +382,37 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Toolbar () {
 
-		int toolbarButtonPadding = Unify(4);
+		int padding = Unify(4);
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
-
 		// BG
 		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
-		var toolbarBtnRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
+		var rect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
 
-		// Show BG
-		ShowBackground.Value = GUI.ToggleButton(toolbarBtnRect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
-		RequireToolLabel(toolbarBtnRect, TIP_SHOW_BG);
-		toolbarBtnRect.SlideRight(toolbarButtonPadding);
+		if (!HasSpriteSelecting) {
 
-		// Delete Sprite
-		if (HasSpriteSelecting) {
-			if (GUI.Button(toolbarBtnRect, ICON_DELETE_SPRITE, GUISkin.SmallDarkButton)) {
+			// Show BG
+			ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
+			RequireToolLabel(rect, TIP_SHOW_BG);
+			rect.SlideRight(padding);
+
+			// Import from PNG
+			if (GUI.Button(rect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
+				ShowImportAtlasBrowser(false);
+			}
+			RequireToolLabel(rect, TIP_IMPORT_PNG);
+			rect.SlideRight(padding);
+
+		} else {
+
+
+			// Delete Sprite
+			if (GUI.Button(rect, ICON_DELETE_SPRITE, GUISkin.SmallDarkButton)) {
 				DeleteAllSelectingSprite();
 			}
-			toolbarBtnRect.SlideRight(toolbarButtonPadding);
+			RequireToolLabel(rect, TIP_DEL_SLICE);
+			rect.SlideRight(padding);
 		}
-
 	}
 
 
@@ -527,6 +543,14 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	// UI
+	private void RequireToolLabel (IRect buttonRect, string content) {
+		if (!buttonRect.MouseInside()) return;
+		ToolLabel = content;
+		ToolLabelRect = buttonRect.EdgeOutside(Direction4.Down, Unify(24)).Shift(0, Unify(-12));
+	}
+
+
 	// Util
 	private IRect Pixel_to_Stage (IRect pixRect, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out _, out _, ignoreClamp);
 	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out uv, out _, ignoreClamp);
@@ -577,6 +601,8 @@ public partial class PixelEditor : WindowUI {
 			DrawGizmosFrame(rect, uv, color, thickness);
 		}
 	}
+
+
 	private void DrawGizmosFrame (IRect stageRect, FRect? uv, Color32 color, int thickness) {
 		if (uv.HasValue) {
 			Game.DrawGizmosFrame(stageRect, color, Int4.Direction(
@@ -591,10 +617,11 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void RequireToolLabel (IRect buttonRect, string content) {
-		if (!buttonRect.MouseInside()) return;
-		ToolLabel = content;
-		ToolLabelRect = buttonRect.EdgeOutside(Direction4.Down, Unify(24)).Shift(0, Unify(-12));
+	private void DrawRendererFrame (IRect stageRect, Color32 color, int thickness) {
+		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
+		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z: int.MaxValue);
+		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z: int.MaxValue);
 	}
 
 
