@@ -94,7 +94,7 @@ public static class DeveloperToolbar {
 
 		Cursor.RequireCursor();
 
-		using var _ = GUIScope.LayerUI();
+		using var _ = Scope.RendererLayerUI();
 
 		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
 		int panelYMax = panelRect.y;

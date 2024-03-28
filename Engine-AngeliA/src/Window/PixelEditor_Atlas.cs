@@ -94,7 +94,7 @@ public partial class PixelEditor {
 			if (hasScrollbar) rect.width -= scrollbarWidth;
 			bool requireUseMouseButtons = false;
 
-			using (var scroll = GUIScope.Scroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
+			using (var scroll = Scope.GUIScroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
 				AtlasPanelScrollY = scroll.Position.y;
 				for (int i = 0; i < itemCount; i++) {
 

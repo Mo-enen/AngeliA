@@ -39,7 +39,7 @@ public class ItemCollectParticle : Particle {
 			255, 255, 255,
 			(byte)Util.RemapUnclamped(0, Duration, 512, 1, LocalFrame).Clamp(0, 255)
 		);
-		using (GUIScope.LayerUI()) {
+		using (Scope.RendererLayerUI()) {
 			Renderer.Draw((int)UserData, Rect, Tint, 0);
 		}
 	}
@@ -105,7 +105,7 @@ public class ItemDamageParticle : Particle {
 	}
 	public override void DrawParticle () {
 		base.DrawParticle();
-		using (GUIScope.LayerUI()) {
+		using (Scope.RendererLayerUI()) {
 
 			float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
 			float ease010 = Util.PingPong(ease01, 0.5f) * 2f;
@@ -161,7 +161,7 @@ public class ItemInsufficientParticle : Particle {
 		X = Holder.X;
 		Y = Holder.Y;
 
-		using (GUIScope.LayerUI()) {
+		using (Scope.RendererLayerUI()) {
 
 			float lerp01 = (float)LocalFrame / Duration;
 			float ease01 = Ease.OutExpo(lerp01);

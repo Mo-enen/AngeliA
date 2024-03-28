@@ -99,7 +99,7 @@ public class ControlHintUI : EntityUI {
 
 	private void DrawGamePad () {
 
-		using var _ = GUIScope.LayerUI();
+		using var _ = Scope.RendererLayerUI();
 
 		int x = Unify(6);
 		int y = Unify(6);
@@ -303,7 +303,7 @@ public class ControlHintUI : EntityUI {
 		}
 
 		// Draw
-		using (GUIScope.LayerUI()) {
+		using (Scope.RendererLayerUI()) {
 			rect.width = widthA;
 			if (background) {
 				bgCell = Renderer.DrawPixel(rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);

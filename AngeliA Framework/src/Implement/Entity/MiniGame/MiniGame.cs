@@ -112,7 +112,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			ControlHintUI.ForceShowHint(1);
 			if (MenuEntity == null || !MenuEntity.Active) {
 				// Gaming
-				using (GUIScope.LayerUI()) {
+				using (Scope.RendererLayerUI()) {
 					GameUpdate();
 				}
 				// Quit

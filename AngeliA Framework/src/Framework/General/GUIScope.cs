@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class GUIScope : System.IDisposable {
+public class Scope : System.IDisposable {
 
 	private class ScopeGroup {
 		private const int COUNT = 32;
-		public GUIScope[] Scopes;
+		public Scope[] Scopes;
 		public int CurrentIndex;
 		public ScopeGroup (ScopeType type) {
 			CurrentIndex = 0;
-			Scopes = new GUIScope[COUNT];
+			Scopes = new Scope[COUNT];
 			for (int i = 0; i < COUNT; i++) {
-				Scopes[i] = new GUIScope(type);
+				Scopes[i] = new Scope(type);
 			}
 		}
-		public GUIScope Start () {
+		public Scope Start () {
 			if (CurrentIndex >= COUNT) {
 #if DEBUG
 				Debug.LogWarning("Too many layers of GUIScope");
@@ -33,7 +33,7 @@ public class GUIScope : System.IDisposable {
 
 	private enum ScopeType { None, Layer, Color, ContentColor, BodyColor, Enable, Scroll, }
 
-	private static readonly GUIScope EmptyScope = new(ScopeType.None);
+	private static readonly Scope EmptyScope = new(ScopeType.None);
 	private static readonly ScopeGroup LayerInstance = new(ScopeType.Layer);
 	private static readonly ScopeGroup ColorInstance = new(ScopeType.Color);
 	private static readonly ScopeGroup ContentColorInstance = new(ScopeType.ContentColor);
@@ -51,11 +51,11 @@ public class GUIScope : System.IDisposable {
 	private Int2 Int2Data;
 	private Int2 Int2DataAlt;
 
-	private GUIScope (ScopeType type) => Type = type;
+	private Scope (ScopeType type) => Type = type;
 
-	public static GUIScope LayerUI () => Layer(RenderLayer.UI);
+	public static Scope RendererLayerUI () => RendererLayer(AngeliA.RenderLayer.UI);
 
-	public static GUIScope Layer (int layer) {
+	public static Scope RendererLayer (int layer) {
 		var result = LayerInstance.Start();
 		if (result == null) return EmptyScope;
 		result.IntData = Renderer.CurrentLayerIndex;
@@ -63,7 +63,7 @@ public class GUIScope : System.IDisposable {
 		return result;
 	}
 
-	public static GUIScope Color (Color32 color) {
+	public static Scope GUIColor (Color32 color) {
 		var result = ColorInstance.Start();
 		if (result == null) return EmptyScope;
 		result.ColorData = GUI.Color;
@@ -71,7 +71,7 @@ public class GUIScope : System.IDisposable {
 		return result;
 	}
 
-	public static GUIScope ContentColor (Color32 color) {
+	public static Scope GUIContentColor (Color32 color) {
 		var result = ContentColorInstance.Start();
 		if (result == null) return EmptyScope;
 		result.ColorData = GUI.ContentColor;
@@ -79,7 +79,7 @@ public class GUIScope : System.IDisposable {
 		return result;
 	}
 
-	public static GUIScope BodyColor (Color32 color) {
+	public static Scope GUIBodyColor (Color32 color) {
 		var result = BodyColorInstance.Start();
 		if (result == null) return EmptyScope;
 		result.ColorData = GUI.BodyColor;
@@ -87,7 +87,7 @@ public class GUIScope : System.IDisposable {
 		return result;
 	}
 
-	public static GUIScope Enable (bool enable) {
+	public static Scope GUIEnable (bool enable) {
 		var result = EnableInstance.Start();
 		if (result == null) return EmptyScope;
 		result.IntData = GUI.Enable ? 1 : 0;
@@ -95,14 +95,14 @@ public class GUIScope : System.IDisposable {
 		return result;
 	}
 
-	public static GUIScope Scroll (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
+	public static Scope GUIScroll (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
 
 		var result = ScrollInstance.Start();
 		if (result == null) return EmptyScope;
 		bool mouseInside = rect.MouseInside();
 
 		result.RectData = rect;
-		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
+		result.IntData = Renderer.GetUsedCellCount(AngeliA.RenderLayer.UI);
 		result.IntDataAlt = Renderer.GetTextUsedCellCount(0);
 		result.Int2DataAlt = Input.MousePositionShift;
 		if (!mouseInside) Input.IgnoreMouseInput();
@@ -124,8 +124,8 @@ public class GUIScope : System.IDisposable {
 		switch (Type) {
 			case ScopeType.Layer:
 				LayerInstance.End();
-				if (Renderer.CurrentLayerIndex == RenderLayer.UI) {
-					Renderer.ReverseUnsortedCells(RenderLayer.UI);
+				if (Renderer.CurrentLayerIndex == AngeliA.RenderLayer.UI) {
+                    Renderer.ReverseUnsortedCells(AngeliA.RenderLayer.UI);
 				}
 				Renderer.SetLayer(IntData);
 				break;
@@ -155,7 +155,7 @@ public class GUIScope : System.IDisposable {
 
 				// Scroll Sprites
 				int startIndex = IntData;
-				if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
+				if (Renderer.GetCells(AngeliA.RenderLayer.UI, out var cells, out int count)) {
 					for (int i = startIndex; i < count; i++) {
 						cells[i].Y += Int2Data.y;
 					}
@@ -169,8 +169,8 @@ public class GUIScope : System.IDisposable {
 					}
 				}
 
-				// Clamp Sprites
-				Renderer.ClampCells(RenderLayer.UI, RectData, startIndex);
+                // Clamp Sprites
+                Renderer.ClampCells(AngeliA.RenderLayer.UI, RectData, startIndex);
 				Renderer.ClampTextCells(RectData, tStartIndex);
 
 				break;

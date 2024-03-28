@@ -887,7 +887,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		var cameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - Renderer.CameraRect.x, 0, 0, 0);
 
-		using (GUIScope.Layer(RenderLayer.DEFAULT)) {
+		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
 
 
 			int z = CurrentZ;
@@ -978,7 +978,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (RequireWorldRenderBlinkIndex > 0) {
 			var cameraRect = Renderer.CameraRect;
 			int hintWidth = Unify(120);
-			using (GUIScope.BodyColor(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
+			using (Scope.GUIBodyColor(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
 				GUI.BackgroundLabel(
 					new IRect(cameraRect.CenterX() - hintWidth / 2, cameraRect.yMax - Unify(32), hintWidth, Unify(22)),
 					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), GUISkin.SmallCenterLabel
@@ -989,7 +989,7 @@ public sealed partial class MapEditor : WindowUI {
 		// State
 		if (ShowState) {
 
-			using (GUIScope.ContentColor(Color32.GREY_196)) {
+			using (Scope.GUIContentColor(Color32.GREY_196)) {
 
 				var cameraRect = Renderer.CameraRect;
 				int LABEL_HEIGHT = Unify(22);

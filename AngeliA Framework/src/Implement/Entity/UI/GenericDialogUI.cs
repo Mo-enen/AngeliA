@@ -50,7 +50,7 @@ public class GenericDialogUI : MenuUI {
 		DrawOption(OptionC, ButtonTintC);
 		void DrawOption (Option option, Color32 tint) {
 			if (option.Action == null) return;
-			using var _ = GUIScope.BodyColor(tint);
+			using var _ = Scope.GUIBodyColor(tint);
 			if (DrawItem(option.Label)) {
 				option.Action();
 				Active = false;

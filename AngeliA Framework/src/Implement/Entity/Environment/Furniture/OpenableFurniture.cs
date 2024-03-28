@@ -15,7 +15,7 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 			UiUpdateFrame = Game.GlobalFrame;
 			Cursor.RequireCursor();
 			var size = WindowSize;
-			using (GUIScope.LayerUI()) {
+			using (Scope.RendererLayerUI()) {
 				FrameUpdateUI(new IRect(
 				Renderer.CameraRect.CenterX() - Unify(size.x) / 2,
 				Renderer.CameraRect.CenterY() - Unify(size.y) / 2,

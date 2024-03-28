@@ -195,7 +195,7 @@ internal class Engine {
 			GUI.Enable = false;
 		}
 
-		using (GUIScope.LayerUI()) {
+		using (Scope.RendererLayerUI()) {
 
 			// --- BG ---
 			int bodyBorder = GUI.Unify(6);
@@ -244,7 +244,7 @@ internal class Engine {
 				Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
 
 				// Project List
-				using (var scroll = GUIScope.Scroll(contentRect, HubPanelScroll, 0, Util.Max(0, projects.Count * itemHeight - contentRect.height))) {
+				using (var scroll = Scope.GUIScroll(contentRect, HubPanelScroll, 0, Util.Max(0, projects.Count * itemHeight - contentRect.height))) {
 					HubPanelScroll = scroll.Position.y;
 
 					var STEP_TINT = new Color32(42, 42, 42, 255);
@@ -260,7 +260,7 @@ internal class Engine {
 						if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
 						stepTint = !stepTint;
 
-						using (GUIScope.Enable(folderExists)) {
+						using (Scope.GUIEnable(folderExists)) {
 
 							// Red Highlight
 							if (!folderExists && rect.MouseInside()) {
@@ -273,7 +273,7 @@ internal class Engine {
 							}
 
 							// Icon
-							using (GUIScope.ContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+							using (Scope.GUIContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
 								GUI.Icon(
 									itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
 									PROJECT_ICON
@@ -338,7 +338,7 @@ internal class Engine {
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
 
-		using (GUIScope.LayerUI()) {
+		using (Scope.RendererLayerUI()) {
 
 			// Tab BG
 			Renderer.DrawPixel(barRect, Color32.GREY_12);
@@ -468,7 +468,7 @@ internal class Engine {
 
 		// Buttons 
 		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
-		using (GUIScope.BodyColor(Color32.RED_BETTER)) {
+		using (Scope.GUIBodyColor(Color32.RED_BETTER)) {
 			if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_QUIT, ConfirmBtnStyle)) {
 				Game.QuitApplication();
 			}

@@ -136,7 +136,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		// Ani
 		bool animating = AnimationDuration > 0 && AnimationFrame < AnimationDuration;
 		byte alpha = animating ? (byte)Util.RemapUnclamped(0, AnimationDuration, 0, 255, AnimationFrame) : (byte)255;
-		using var _ = GUIScope.Color(new Color32(255, 255, 255, alpha));
+		using var _ = Scope.GUIColor(new Color32(255, 255, 255, alpha));
 
 		// BG
 		var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? msgHeight : 0);

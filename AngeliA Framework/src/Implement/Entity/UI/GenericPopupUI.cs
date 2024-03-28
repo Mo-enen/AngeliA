@@ -150,7 +150,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					highlightCell = Renderer.DrawPixel(rect, Color32.GREY_230);
 				}
 
-				using (GUIScope.Enable(item.Enabled)) {
+				using (Scope.GUIEnable(item.Enabled)) {
 
 					// Check Mark
 					if (item.Checked) {

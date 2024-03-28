@@ -211,7 +211,7 @@ public class PauseMenuUI : MenuUI {
 		}
 
 		// 3/4-Quit
-		using (GUIScope.ContentColor(Color32.RED_BETTER)) {
+		using (Scope.GUIContentColor(Color32.RED_BETTER)) {
 			if (DrawItem(BuiltInText.UI_QUIT)) {
 				RequireMode = MenuMode.Quit;
 				SetSelection(0);
@@ -417,7 +417,7 @@ public class PauseMenuUI : MenuUI {
 		}
 
 		// Quit Game
-		using (GUIScope.ContentColor(Color32.RED_BETTER)) {
+		using (Scope.GUIContentColor(Color32.RED_BETTER)) {
 			if (DrawItem(BuiltInText.UI_QUIT_GAME)) {
 				Game.QuitApplication();
 			}
@@ -464,7 +464,7 @@ public class PauseMenuUI : MenuUI {
 				tint = Game.PauselessFrame % 30 > 15 ? Color32.GREEN : Color32.WHITE;
 				text = MENU_SETTER_RECORD;
 			}
-			using (GUIScope.ContentColor(tint)) {
+			using (Scope.GUIContentColor(tint)) {
 				if (DrawItem(Language.Get(code), text, iconID)) {
 					RecordLock = true;
 					RecordingKey = i;
@@ -473,7 +473,7 @@ public class PauseMenuUI : MenuUI {
 		}
 
 		// Save & Back
-		using (GUIScope.ContentColor(Color32.GREEN)) {
+		using (Scope.GUIContentColor(Color32.GREEN)) {
 			if (RecordDirty && DrawItem(MENU_KEYSETTER_SAVE_BACK)) {
 				RequireMode = MenuMode.KeySetter;
 				SetSelection(forGamepad ? 1 : 0);

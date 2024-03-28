@@ -238,7 +238,7 @@ public partial class PixelEditor : WindowUI {
 
 		// BG
 		if (Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) {
-			using var _ = GUIScope.Layer(RenderLayer.DEFAULT);
+			using var _ = Scope.RendererLayer(RenderLayer.DEFAULT);
 			var stageRectInt = CanvasRect.ToIRect();
 			var tint = ShowBackground.Value ? new Color32(34, 47, 64, 255) : Color32.WHITE;
 			const int CHECKER_COUNT = STAGE_SIZE / 32;

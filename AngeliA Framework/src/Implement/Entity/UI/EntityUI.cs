@@ -72,7 +72,7 @@ public abstract class EntityUI : Entity {
 	public override void LateUpdate () {
 		base.LateUpdate();
 
-		using (GUIScope.LayerUI()) {
+		using (Scope.RendererLayerUI()) {
 
 			TextCellStartIndex = Renderer.GetTextUsedCellCount();
 

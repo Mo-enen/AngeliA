@@ -90,7 +90,7 @@ public abstract class Wallpaper : Entity {
 			return;
 		}
 		base.LateUpdate();
-		using (GUIScope.Layer(RenderLayer.WALLPAPER)) {
+		using (Scope.RendererLayer(RenderLayer.WALLPAPER)) {
 			DrawBackground(Renderer.CameraRect);
 		}
 	}
