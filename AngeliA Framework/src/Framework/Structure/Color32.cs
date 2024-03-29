@@ -19,7 +19,12 @@ public struct Color32 : IFormattable, IComparable {
 	public static readonly Color32 ORANGE_BETTER = new(255, 220, 100, 255);
 	public static readonly Color32 YELLOW = new(255, 255, 0, 255);
 	public static readonly Color32 BLACK = new(0, 0, 0, 255);
+	public static readonly Color32 BLACK_220 = new(0, 0, 0, 220);
+	public static readonly Color32 BLACK_196 = new(0, 0, 0, 196);
 	public static readonly Color32 BLACK_128 = new(0, 0, 0, 128);
+	public static readonly Color32 BLACK_96 = new(0, 0, 0, 96);
+	public static readonly Color32 BLACK_64 = new(0, 0, 0, 64);
+	public static readonly Color32 BLACK_32 = new(0, 0, 0, 32);
 	public static readonly Color32 BLACK_12 = new(0, 0, 0, 12);
 	public static readonly Color32 RED = new(255, 0, 0, 255);
 	public static readonly Color32 RED_BETTER = new(255, 64, 64, 255);

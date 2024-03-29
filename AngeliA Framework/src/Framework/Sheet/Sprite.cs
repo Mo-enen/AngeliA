@@ -243,6 +243,8 @@ public class AngeSprite {
 			Pixels = newPixels;
 		}
 		PixelRect = newRect;
+		GlobalWidth = PixelRect.width * Const.ART_SCALE;
+		GlobalHeight = PixelRect.height * Const.ART_SCALE;
 	}
 
 	public AngeSprite CreateCopy () {

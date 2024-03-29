@@ -42,8 +42,8 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private enum DragStateLeft { None, MoveSlice, SelectOrCreateSlice, ResizeSlice, Paint, }
-	private enum DragStateRight { None, SelectPixel, }
+	private enum DragStateLeft { None, MoveSlice, SelectOrCreateSlice, ResizeSlice, Paint, Canceled, }
+	private enum DragStateRight { None, SelectPixel, Canceled, }
 
 
 	#endregion
@@ -60,11 +60,13 @@ public partial class PixelEditor : WindowUI {
 	private const int TOOLBAR_HEIGHT = 42;
 	private const int SHEET_INDEX = 0;
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
+	private static readonly SpriteCode ICON_MAKE_BORDER = "Icon.MakeBorder";
 	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
 	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
 	private static readonly SpriteCode CURSOR_DOT = "Cursor.Dot";
-	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show Background");
-	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete Slice");
+	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show background");
+	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete slice");
+	private static readonly LanguageCode TIP_MAKE_BORDER = ("Tip.MakeBorder", "Create borders");
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
@@ -79,23 +81,17 @@ public partial class PixelEditor : WindowUI {
 	private string ToolLabel = null;
 	private bool IsDirty = false;
 	private bool HasSpriteSelecting;
+	private bool HasNoBorderSpriteSelecting;
 	private bool HoldingSliceOptionKey = false;
 	private bool Interactable = true;
 	private int ZoomLevel = 1;
 	private int LastGrowUndoFrame = -1;
-	private int HoveringSpriteStageIndex;
-	private int HoveringResizeStageIndex = -1;
-	private int ResizingStageIndex = 0;
 	private int GizmosThickness = 1;
 	private Int2 MousePixelPos;
 	private FRect CanvasRect;
 	private IRect CopyBufferPixRange;
 	private IRect StageRect;
 	private IRect ToolLabelRect;
-	private Color32 PaintingColor = Color32.CLEAR;
-	private DragStateLeft DraggingStateLeft = DragStateLeft.None;
-	private DragStateRight DraggingStateRight = DragStateRight.None;
-	private Direction8? HoveringResizeDirection = null;
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
@@ -150,8 +146,8 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Cache () {
 
-		int resizePadding = Unify(24);
-		int resizeCorner = Unify(18);
+		var resizePadding = Int4.one * Unify(12);
+		int resizeCorner = Unify(10);
 		bool leftDragging = DraggingStateLeft != DragStateLeft.None;
 		bool rightDragging = DraggingStateRight != DragStateRight.None;
 		var mousePos = Input.MouseGlobalPosition;
@@ -159,6 +155,7 @@ public partial class PixelEditor : WindowUI {
 		GizmosThickness = Unify(1);
 		HoveringResizeDirection = null;
 		HasSpriteSelecting = false;
+		HasNoBorderSpriteSelecting = false;
 		HoveringSpriteStageIndex = -1;
 		MousePixelPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 		StageRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT));
@@ -173,6 +170,7 @@ public partial class PixelEditor : WindowUI {
 
 			// Has Selecting
 			HasSpriteSelecting = HasSpriteSelecting || spData.Selecting;
+			HasNoBorderSpriteSelecting = HasNoBorderSpriteSelecting || (spData.Selecting && spData.Sprite.GlobalBorder.IsZero);
 
 			// Mouse Hovering
 			if (HoveringSpriteStageIndex < 0 && spData.Sprite.PixelRect.Contains(MousePixelPos)) {
@@ -181,33 +179,51 @@ public partial class PixelEditor : WindowUI {
 
 			// Resize
 			if (HoldingSliceOptionKey && !HoveringResizeDirection.HasValue && !leftDragging && !rightDragging) {
-				var resizeRectOut = rect;
-				var resizeRectIn = rect.Shrink(Util.Min(resizePadding / 2, Util.Min(rect.width / 3, rect.height / 3)));
-				if (resizeRectOut.MouseInside() && !resizeRectIn.MouseInside()) {
-					Direction8 resizeDirection;
-					// In Range
-					int cornerW = Util.Min(resizeCorner, resizeRectIn.width / 3);
-					int cornerH = Util.Min(resizeCorner, resizeRectIn.height / 3);
-					if (mousePos.x < resizeRectIn.xMin + cornerW) {
-						// Left
-						resizeDirection =
-							mousePos.y < resizeRectIn.yMin + cornerH ? Direction8.BottomLeft :
-							mousePos.y < resizeRectIn.yMax - cornerH ? Direction8.Left :
-							Direction8.TopLeft;
-					} else if (mousePos.x < resizeRectIn.xMax - cornerW) {
-						// Mid
-						resizeDirection =
-							mousePos.y < resizeRectOut.CenterY() ? Direction8.Bottom :
-							Direction8.Top;
-					} else {
-						// Right
-						resizeDirection =
-							mousePos.y < resizeRectIn.yMin + cornerH ? Direction8.BottomRight :
-							mousePos.y < resizeRectIn.yMax - cornerH ? Direction8.Right :
-							Direction8.TopRight;
+
+				// For Border
+				if (!spData.Sprite.GlobalBorder.IsZero) {
+
+					//ResizeForBorder
+					//HoveringResizeDirection
+					//HoveringResizeStageIndex
+
+				}
+
+				// For Size
+				if (!HoveringResizeDirection.HasValue) {
+					var resizeRectIn = rect.Shrink(
+						Util.Min(resizePadding.left, rect.width / 3),
+						Util.Min(resizePadding.right, rect.width / 3),
+						Util.Min(resizePadding.down, rect.height / 3),
+						Util.Min(resizePadding.up, rect.height / 3)
+					);
+					if (rect.MouseInside() && !resizeRectIn.MouseInside()) {
+						Direction8 resizeDirection;
+						// In Range
+						int cornerW = Util.Min(resizeCorner, resizeRectIn.width / 3);
+						int cornerH = Util.Min(resizeCorner, resizeRectIn.height / 3);
+						if (mousePos.x < resizeRectIn.xMin + cornerW) {
+							// Left
+							resizeDirection =
+								mousePos.y < resizeRectIn.yMin + cornerH ? Direction8.BottomLeft :
+								mousePos.y < resizeRectIn.yMax - cornerH ? Direction8.Left :
+								Direction8.TopLeft;
+						} else if (mousePos.x < resizeRectIn.xMax - cornerW) {
+							// Mid
+							resizeDirection =
+								mousePos.y < rect.CenterY() ? Direction8.Bottom :
+								Direction8.Top;
+						} else {
+							// Right
+							resizeDirection =
+								mousePos.y < resizeRectIn.yMin + cornerH ? Direction8.BottomRight :
+								mousePos.y < resizeRectIn.yMax - cornerH ? Direction8.Right :
+								Direction8.TopRight;
+						}
+						HoveringResizeDirection = resizeDirection;
+						HoveringResizeStageIndex = i;
+						ResizeForBorder = false;
 					}
-					HoveringResizeDirection = resizeDirection;
-					HoveringResizeStageIndex = i;
 				}
 			}
 
@@ -286,7 +302,9 @@ public partial class PixelEditor : WindowUI {
 			var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
 			if (outside) continue;
 
+			// Draw Sprite
 			Renderer.Draw(sprite, rect, z: 0);
+
 		}
 
 
@@ -299,11 +317,17 @@ public partial class PixelEditor : WindowUI {
 
 		// Mouse Cursor
 		if (StageRect.MouseInside()) {
-			if (HoveringResizeDirection.HasValue) {
-				// Resize Cursor
-				Cursor.SetCursor(Cursor.GetResizeCursorIndex(HoveringResizeDirection.Value));
-			} else if (HoveringSpriteStageIndex >= 0 && (StagedSprites[HoveringSpriteStageIndex].Selecting || HoldingSliceOptionKey)) {
-				// Move Cursor
+
+			if (HoldingSliceOptionKey) {
+				if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
+					// Resize
+					Cursor.SetCursor(Cursor.GetResizeCursorIndex(HoveringResizeDirection.Value));
+				} else if (HoveringSpriteStageIndex >= 0) {
+					// Quick Move From Inside
+					Cursor.SetCursorAsMove(1);
+				}
+			} else if (HoveringSpriteStageIndex >= 0 && StagedSprites[HoveringSpriteStageIndex].Selecting) {
+				// Move from Inside Cursor
 				Cursor.SetCursorAsMove(1);
 			} else {
 				// Custom Cursor
@@ -315,6 +339,7 @@ public partial class PixelEditor : WindowUI {
 				) {
 					Cursor.SetCursorAsCustom(CURSOR_DOT, -1);
 				}
+
 				// Gizmos Mouse Cursor
 				if (DraggingStateLeft == DragStateLeft.None && DraggingStateRight == DragStateRight.None) {
 					var mousePos = Input.MouseGlobalPosition;
@@ -343,21 +368,21 @@ public partial class PixelEditor : WindowUI {
 			}
 		}
 
-		// All Sprites
 		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
 
+			// All Sprites
 			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
-				var spriteData = StagedSprites[i];
-				var sprite = spriteData.Sprite;
+				var spData = StagedSprites[i];
+				var sprite = spData.Sprite;
 				var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
 				if (outside) continue;
 
-				if (ResizingStageIndex == i) continue;
+				if (ResizingStageIndex == i && !ResizeForBorder) continue;
 
 				// Frame Gizmos
 				bool drawingSelectionGizmos =
-					spriteData.Selecting &&
+					spData.Selecting &&
 					DraggingStateLeft != DragStateLeft.MoveSlice &&
 					ResizingStageIndex != i;
 				if (drawingSelectionGizmos) {
@@ -367,13 +392,53 @@ public partial class PixelEditor : WindowUI {
 						Color32.WHITE,
 						GizmosThickness * 2
 					);
-				} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spriteData.Selecting) {
+				} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
 					// Normal Frame
 					DrawRendererFrame(
 						rect.Expand(GizmosThickness), Color32.BLACK,
 						GizmosThickness
 					);
 				}
+
+				// Border Gizmos
+				var border = sprite.GlobalBorder;
+				int posLeft = rect.x + rect.width * border.left / sprite.GlobalWidth;
+				int posRight = rect.xMax - rect.width * border.right / sprite.GlobalWidth;
+				int posDown = rect.y + rect.height * border.down / sprite.GlobalHeight;
+				int posUp = rect.yMax - rect.height * border.up / sprite.GlobalHeight;
+
+				// Frame L
+				if (border.left > 0) {
+					Renderer.DrawPixel(
+						new IRect(posLeft - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
+						Color32.BLACK_128, int.MaxValue
+					);
+				}
+
+				// Frame R
+				if (border.right > 0) {
+					Renderer.DrawPixel(
+						new IRect(posRight - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
+						Color32.BLACK_128, int.MaxValue
+					);
+				}
+
+				// Frame D
+				if (border.down > 0) {
+					Renderer.DrawPixel(
+						new IRect(rect.x, posDown - GizmosThickness / 2, rect.width, GizmosThickness),
+						Color32.BLACK_128, int.MaxValue
+					);
+				}
+
+				// Frame U
+				if (border.up > 0) {
+					Renderer.DrawPixel(
+						new IRect(rect.x, posUp - GizmosThickness / 2, rect.width, GizmosThickness),
+						Color32.BLACK_128, int.MaxValue
+					);
+				}
+
 			}
 		}
 
@@ -405,6 +470,17 @@ public partial class PixelEditor : WindowUI {
 
 		} else {
 
+			// Make Border
+			using (Scope.GUIEnable(HasNoBorderSpriteSelecting)) {
+				if (GUI.Button(rect, ICON_MAKE_BORDER, GUISkin.SmallDarkButton)) {
+					MakeBorderForSelection();
+				}
+			}
+			RequireToolLabel(rect, TIP_MAKE_BORDER);
+			rect.SlideRight(padding);
+
+			// (Space)
+			rect.SlideRight(padding);
 
 			// Delete Sprite
 			if (GUI.Button(rect, ICON_DELETE_SPRITE, GUISkin.SmallDarkButton)) {

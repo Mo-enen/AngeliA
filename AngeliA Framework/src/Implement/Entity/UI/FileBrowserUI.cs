@@ -372,11 +372,17 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// OK Button
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.Button(
-			buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
-			GUISkin.SmallDarkButton
+		using (Scope.GUIEnable(
+			ActionType != BrowserActionType.Open ||
+			TargetType != BrowserTargetType.File ||
+			(SelectingIndex >= 0 && !Items[SelectingIndex].IsFolder)
 		)) {
-			PerformPick();
+			if (GUI.Button(
+				buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
+				GUISkin.SmallDarkButton
+			)) {
+				PerformPick();
+			}
 		}
 
 	}
