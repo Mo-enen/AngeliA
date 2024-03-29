@@ -231,6 +231,25 @@ public class Sheet {
 		return group;
 	}
 
+	public void CombineSheet (Sheet sheet) {
+		int atlasShift = Atlas.Count;
+		foreach (var altas in sheet.Atlas) {
+			Atlas.Add(altas);
+		}
+		foreach (var group in sheet.Groups) {
+			if (GroupPool.ContainsKey(group.ID)) continue;
+			Groups.Add(group);
+			GroupPool.Add(group.ID, group);
+		}
+		foreach (var sprite in sheet.Sprites) {
+			if (SpritePool.ContainsKey(sprite.ID)) continue;
+			sprite.AtlasIndex += atlasShift;
+			Sprites.Add(sprite);
+			SpritePool.Add(sprite.ID, sprite);
+			SyncSpritePixelsIntoTexturePool(sprite);
+		}
+	}
+
 	// Remove
 	public void RemoveAtlasAndAllSpritesInside (int atlasIndex) {
 		if (atlasIndex < 0 || atlasIndex >= Atlas.Count) return;

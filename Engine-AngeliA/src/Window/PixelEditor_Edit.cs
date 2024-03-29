@@ -261,15 +261,13 @@ public partial class PixelEditor {
 				// Pick Color
 				var pixelPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 				PaintingColor = Color32.CLEAR;
-				if (new IRect(0, 0, STAGE_SIZE, STAGE_SIZE).Contains(pixelPos)) {
-					for (int i = StagedSprites.Count - 1; i >= 0; i--) {
-						var sprite = StagedSprites[i].Sprite;
-						var spRect = sprite.PixelRect;
-						if (sprite.Pixels.Length > 0 && spRect.Contains(pixelPos)) {
-							int pxIndex = (pixelPos.y - spRect.yMin) * spRect.width + (pixelPos.x - spRect.xMin);
-							PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
-							break;
-						}
+				for (int i = StagedSprites.Count - 1; i >= 0; i--) {
+					var sprite = StagedSprites[i].Sprite;
+					var spRect = sprite.PixelRect;
+					if (sprite.Pixels.Length > 0 && spRect.Contains(pixelPos)) {
+						int pxIndex = (pixelPos.y - spRect.yMin) * spRect.width + (pixelPos.x - spRect.xMin);
+						PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
+						break;
 					}
 				}
 			} else {
@@ -392,6 +390,8 @@ public partial class PixelEditor {
 		// Paste
 		foreach (var source in SpriteCopyBuffer) {
 			var sprite = source.CreateCopy();
+			sprite.AtlasIndex = CurrentAtlasIndex;
+			sprite.Atlas = Sheet.Atlas[CurrentAtlasIndex];
 			sprite.RealName = Sheet.GetAvailableSpriteName(source.RealName);
 			sprite.ID = sprite.RealName.AngeHash();
 			sprite.PixelRect = source.PixelRect.Shift(offsetX, offsetY);

@@ -469,7 +469,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Final () {
 		// Tool Label
-		if (ToolLabel != null) {
+		if (ToolLabel != null && Interactable) {
 			int endIndex = Renderer.GetTextUsedCellCount();
 			GUI.BackgroundLabel(ToolLabelRect, ToolLabel, Color32.BLACK, out var bounds, Unify(12), GUISkin.SmallLabel);
 			Renderer.ExcludeTextCells(bounds, 0, endIndex);

@@ -47,15 +47,6 @@ public class AsepriteUtil {
 
 				if (data != null || data.FrameDatas == null || data.FrameDatas.Count == 0 || data.FrameDatas[0].Chunks == null) {
 
-					bool hasSlice = false;
-					foreach (var chunk in data.FrameDatas[0].Chunks) {
-						if (chunk is Aseprite.SliceChunk) {
-							hasSlice = true;
-							break;
-						}
-					}
-					if (!hasSlice) continue;
-
 					// Result
 					GetAsepriteSheetInfo(
 						data, out int sheetZ, out var atlasType, out var pivotX, out var pivotY
@@ -191,6 +182,15 @@ public class AsepriteUtil {
 					});
 				}
 			});
+			if (sprites.Count == 0) {
+				sprites.Add(new SpriteMetaData() {
+					name = "Root",
+					rect = new FRect(0, 0, width, height),
+					border = default,
+					pivot = default,
+					alignment = 9,
+				});
+			}
 			return new TaskResult() {
 				Pixels = pixels,
 				Sprites = sprites.ToArray(),

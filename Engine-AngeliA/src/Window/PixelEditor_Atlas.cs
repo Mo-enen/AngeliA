@@ -209,6 +209,8 @@ public partial class PixelEditor {
 
 
 	private void SetCurrentAtlas (int atlasIndex) {
+		if (Sheet.Atlas.Count == 0) return;
+		atlasIndex = atlasIndex.Clamp(0, Sheet.Atlas.Count - 1);
 		if (CurrentAtlasIndex == atlasIndex) return;
 		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
@@ -299,9 +301,9 @@ public partial class PixelEditor {
 	private static void ImportAtlas (string path) {
 		if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
 		string ext = Util.GetExtension(path);
+		var sheet = Instance.Sheet;
 		if (ext == ".png") {
 			// PNG
-			var sheet = Instance.Sheet;
 			var texture = Game.PngBytesToTexture(Util.FileToByte(path));
 			var size = Game.GetTextureSize(texture);
 			var sprite = sheet.CreateSprite(
@@ -318,8 +320,11 @@ public partial class PixelEditor {
 			});
 		} else if (ext == ".ase") {
 			// ASE
-
-
+			var aseSheet = SheetUtil.CreateNewSheet(
+				AsepriteUtil.CreateSpritesFromAsepriteFiles(new string[1] { path }, "#ignore").ToArray()
+			);
+			sheet.CombineSheet(aseSheet);
+			Instance.SetCurrentAtlas(sheet.Atlas.Count - 1);
 		}
 	}
 
