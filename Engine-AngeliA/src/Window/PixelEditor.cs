@@ -66,7 +66,7 @@ public partial class PixelEditor : WindowUI {
 	private static readonly SpriteCode CURSOR_DOT = "Cursor.Dot";
 	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show background");
 	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete slice");
-	private static readonly LanguageCode TIP_MAKE_BORDER = ("Tip.MakeBorder", "Create borders");
+	private static readonly LanguageCode TIP_MAKE_BORDER = ("Tip.MakeBorder", "Create or remove borders");
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
@@ -76,18 +76,18 @@ public partial class PixelEditor : WindowUI {
 	private readonly Sheet Sheet = new();
 	private readonly List<SpriteData> StagedSprites = new();
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
-	private readonly UndoRedo Undo = new(16 * 16 * 128, OnUndoPerformed, OnRedoPerformed);
 	private string SheetPath = "";
 	private string ToolLabel = null;
 	private bool IsDirty = false;
 	private bool HasSpriteSelecting;
-	private bool HasNoBorderSpriteSelecting;
+	private bool SelectingAnySpriteWithoutBorder;
 	private bool HoldingSliceOptionKey = false;
 	private bool Interactable = true;
 	private int ZoomLevel = 1;
 	private int LastGrowUndoFrame = -1;
 	private int GizmosThickness = 1;
 	private Int2 MousePixelPos;
+	private Int2 MousePixelPosRound;
 	private FRect CanvasRect;
 	private IRect CopyBufferPixRange;
 	private IRect StageRect;
@@ -119,26 +119,18 @@ public partial class PixelEditor : WindowUI {
 
 
 	public override void UpdateWindowUI () {
-
 		if (string.IsNullOrEmpty(SheetPath)) return;
 		Sky.ForceSkyboxTint(new Color32(32, 33, 37, 255));
-
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
-
-		if (Sheet.Atlas.Count <= 0) return;
-
 		Update_Cache();
 		Update_View();
-
+		Update_Cursor();
 		Update_Gizmos();
-
 		Update_LeftDrag();
 		Update_RightDrag();
-
 		Update_Rendering();
-
-		Update_Toolbar();
+		Update_StageToolbar();
 		Update_Hotkey();
 		Update_Final();
 	}
@@ -146,58 +138,89 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Cache () {
 
-		var resizePadding = Int4.one * Unify(12);
+		int resizePadding = Unify(12);
 		int resizeCorner = Unify(10);
-		bool leftDragging = DraggingStateLeft != DragStateLeft.None;
-		bool rightDragging = DraggingStateRight != DragStateRight.None;
+		bool dragging = DraggingStateLeft != DragStateLeft.None && DraggingStateRight != DragStateRight.None;
 		var mousePos = Input.MouseGlobalPosition;
 
 		GizmosThickness = Unify(1);
 		HoveringResizeDirection = null;
 		HasSpriteSelecting = false;
-		HasNoBorderSpriteSelecting = false;
+		SelectingAnySpriteWithoutBorder = false;
 		HoveringSpriteStageIndex = -1;
-		MousePixelPos = Stage_to_Pixel(Input.MouseGlobalPosition);
+		MousePixelPos = Stage_to_Pixel(Input.MouseGlobalPosition, round: false);
+		MousePixelPosRound = Stage_to_Pixel(Input.MouseGlobalPosition, round: true);
 		StageRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT));
 		HoveringResizeStageIndex = -1;
 		HoldingSliceOptionKey = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
 		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.Instance.Active;
+		HoveringResizeForBorder = false;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
 			var spData = StagedSprites[i];
-			var rect = Pixel_to_Stage(spData.Sprite.PixelRect);
+			var sprite = spData.Sprite;
+			var rect = Pixel_to_Stage(sprite.PixelRect);
 
 			// Has Selecting
 			HasSpriteSelecting = HasSpriteSelecting || spData.Selecting;
-			HasNoBorderSpriteSelecting = HasNoBorderSpriteSelecting || (spData.Selecting && spData.Sprite.GlobalBorder.IsZero);
+			SelectingAnySpriteWithoutBorder = SelectingAnySpriteWithoutBorder || (spData.Selecting && sprite.GlobalBorder.IsZero);
 
 			// Mouse Hovering
-			if (HoveringSpriteStageIndex < 0 && spData.Sprite.PixelRect.Contains(MousePixelPos)) {
+			if (HoveringSpriteStageIndex < 0 && sprite.PixelRect.Contains(MousePixelPos)) {
 				HoveringSpriteStageIndex = i;
 			}
 
 			// Resize
-			if (HoldingSliceOptionKey && !HoveringResizeDirection.HasValue && !leftDragging && !rightDragging) {
+			if (
+				HoldingSliceOptionKey &&
+				!HoveringResizeDirection.HasValue &&
+				!dragging &&
+				rect.MouseInside()
+			) {
 
 				// For Border
-				if (!spData.Sprite.GlobalBorder.IsZero) {
+				var border = sprite.GlobalBorder;
+				if (!border.IsZero) {
 
-					//ResizeForBorder
-					//HoveringResizeDirection
-					//HoveringResizeStageIndex
+					int posLeft = rect.x + rect.width * border.left / sprite.GlobalWidth;
+					int posRight = rect.xMax - rect.width * border.right / sprite.GlobalWidth;
+					int posDown = rect.y + rect.height * border.down / sprite.GlobalHeight;
+					int posUp = rect.yMax - rect.height * border.up / sprite.GlobalHeight;
 
+					if (new IRect(posLeft - resizePadding / 2, rect.y, resizePadding, rect.height).MouseInside()) {
+						// L
+						HoveringResizeForBorder = true;
+						HoveringResizeDirection = Direction8.Left;
+						HoveringResizeStageIndex = i;
+					} else if (new IRect(posRight - resizePadding / 2, rect.y, resizePadding, rect.height).MouseInside()) {
+						// R
+						HoveringResizeForBorder = true;
+						HoveringResizeDirection = Direction8.Right;
+						HoveringResizeStageIndex = i;
+					} else if (new IRect(rect.x, posDown - resizePadding / 2, rect.width, resizePadding).MouseInside()) {
+						// D
+						HoveringResizeForBorder = true;
+						HoveringResizeDirection = Direction8.Bottom;
+						HoveringResizeStageIndex = i;
+					} else if (new IRect(rect.x, posUp - resizePadding / 2, rect.width, resizePadding).MouseInside()) {
+						// U
+						HoveringResizeForBorder = true;
+						HoveringResizeDirection = Direction8.Top;
+						HoveringResizeStageIndex = i;
+					}
 				}
 
 				// For Size
 				if (!HoveringResizeDirection.HasValue) {
 					var resizeRectIn = rect.Shrink(
-						Util.Min(resizePadding.left, rect.width / 3),
-						Util.Min(resizePadding.right, rect.width / 3),
-						Util.Min(resizePadding.down, rect.height / 3),
-						Util.Min(resizePadding.up, rect.height / 3)
+						Util.Min(resizePadding, rect.width / 3),
+						Util.Min(resizePadding, rect.width / 3),
+						Util.Min(resizePadding, rect.height / 3),
+						Util.Min(resizePadding, rect.height / 3)
 					);
-					if (rect.MouseInside() && !resizeRectIn.MouseInside()) {
+					if (!resizeRectIn.MouseInside()) {
+						HoveringResizeForBorder = false;
 						Direction8 resizeDirection;
 						// In Range
 						int cornerW = Util.Min(resizeCorner, resizeRectIn.width / 3);
@@ -222,7 +245,6 @@ public partial class PixelEditor : WindowUI {
 						}
 						HoveringResizeDirection = resizeDirection;
 						HoveringResizeStageIndex = i;
-						ResizeForBorder = false;
 					}
 				}
 			}
@@ -234,6 +256,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_View () {
 
+		if (Sheet.Atlas.Count <= 0) return;
 		if (!Interactable) return;
 
 		// Move
@@ -261,6 +284,8 @@ public partial class PixelEditor : WindowUI {
 
 
 	private void Update_Rendering () {
+
+		if (Sheet.Atlas.Count <= 0) return;
 
 		// BG
 		if (Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) {
@@ -311,8 +336,9 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_Gizmos () {
+	private void Update_Cursor () {
 
+		if (Sheet.Atlas.Count <= 0) return;
 		if (!Interactable) return;
 
 		// Mouse Cursor
@@ -368,87 +394,133 @@ public partial class PixelEditor : WindowUI {
 			}
 		}
 
-		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+	}
 
-			// All Sprites
-			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
-				var spData = StagedSprites[i];
-				var sprite = spData.Sprite;
-				var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
-				if (outside) continue;
+	private void Update_Gizmos () {
 
-				if (ResizingStageIndex == i && !ResizeForBorder) continue;
+		if (Sheet.Atlas.Count <= 0) return;
+		if (!Interactable) return;
 
-				// Frame Gizmos
-				bool drawingSelectionGizmos =
-					spData.Selecting &&
-					DraggingStateLeft != DragStateLeft.MoveSlice &&
-					ResizingStageIndex != i;
-				if (drawingSelectionGizmos) {
-					// Selecting Frame
-					DrawRendererFrame(
-						rect.Expand(GizmosThickness),
-						Color32.WHITE,
-						GizmosThickness * 2
-					);
-				} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
-					// Normal Frame
-					DrawRendererFrame(
-						rect.Expand(GizmosThickness), Color32.BLACK,
-						GizmosThickness
+		bool allowHighlight = DraggingStateLeft == DragStateLeft.None && DraggingStateRight == DragStateRight.None;
+		using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
+
+		// All Sprites
+		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
+
+			var spData = StagedSprites[i];
+			var sprite = spData.Sprite;
+			var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
+
+			if (outside) continue;
+			if (ResizingStageIndex == i && !ResizeForBorder) continue;
+
+			// Frame Gizmos
+			if (
+				spData.Selecting &&
+				DraggingStateLeft != DragStateLeft.MoveSlice &&
+				ResizingStageIndex != i
+			) {
+				// Selecting Frame
+				DrawRendererFrame(
+					rect.Expand(GizmosThickness),
+					Color32.WHITE,
+					GizmosThickness * 2
+				);
+			} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
+				// Normal Frame
+				DrawRendererFrame(
+					rect.Expand(GizmosThickness), Color32.BLACK,
+					GizmosThickness
+				);
+			}
+
+			// Resize Hover Highlight
+			if (allowHighlight && HoveringResizeDirection.HasValue && HoveringResizeStageIndex == i && !HoveringResizeForBorder) {
+				var hrDir = HoveringResizeDirection.Value;
+				if (hrDir.IsLeft()) {
+					Renderer.DrawPixel(
+						rect.EdgeInside(Direction4.Left, GizmosThickness),
+						Color32.GREEN_DARK, z: int.MaxValue
 					);
 				}
+				if (hrDir.IsRight()) {
+					Renderer.DrawPixel(
+						rect.EdgeInside(Direction4.Right, GizmosThickness),
+						Color32.GREEN_DARK, z: int.MaxValue
+					);
+				}
+				if (hrDir.IsBottom()) {
+					Renderer.DrawPixel(
+						rect.EdgeInside(Direction4.Down, GizmosThickness),
+						Color32.GREEN_DARK, z: int.MaxValue
+					);
+				}
+				if (hrDir.IsTop()) {
+					Renderer.DrawPixel(
+						rect.EdgeInside(Direction4.Up, GizmosThickness),
+						Color32.GREEN_DARK, z: int.MaxValue
+					);
+				}
+			}
 
-				// Border Gizmos
+			// Border Gizmos
+			if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
+
 				var border = sprite.GlobalBorder;
 				int posLeft = rect.x + rect.width * border.left / sprite.GlobalWidth;
 				int posRight = rect.xMax - rect.width * border.right / sprite.GlobalWidth;
 				int posDown = rect.y + rect.height * border.down / sprite.GlobalHeight;
 				int posUp = rect.yMax - rect.height * border.up / sprite.GlobalHeight;
+				bool highlight = allowHighlight && HoveringResizeForBorder && HoveringResizeDirection.HasValue && HoveringResizeStageIndex == i;
+				bool dragging = ResizeForBorder && ResizingStageIndex == i;
 
 				// Frame L
-				if (border.left > 0) {
+				if (border.left > 0 && (!dragging || ResizingDirection != Direction8.Left)) {
 					Renderer.DrawPixel(
 						new IRect(posLeft - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
-						Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Left ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
 					);
 				}
 
 				// Frame R
-				if (border.right > 0) {
+				if (border.right > 0 && (!dragging || ResizingDirection != Direction8.Right)) {
 					Renderer.DrawPixel(
 						new IRect(posRight - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
-						Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Right ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
 					);
 				}
 
 				// Frame D
-				if (border.down > 0) {
+				if (border.down > 0 && (!dragging || ResizingDirection != Direction8.Bottom)) {
 					Renderer.DrawPixel(
 						new IRect(rect.x, posDown - GizmosThickness / 2, rect.width, GizmosThickness),
-						Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Bottom ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
 					);
 				}
 
 				// Frame U
-				if (border.up > 0) {
+				if (border.up > 0 && (!dragging || ResizingDirection != Direction8.Top)) {
 					Renderer.DrawPixel(
 						new IRect(rect.x, posUp - GizmosThickness / 2, rect.width, GizmosThickness),
-						Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Top ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
 					);
 				}
-
 			}
+
 		}
+
 
 	}
 
 
-	private void Update_Toolbar () {
+	private void Update_StageToolbar () {
+
+		if (Sheet.Atlas.Count <= 0) return;
 
 		int padding = Unify(4);
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
+
 		// BG
 		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
@@ -471,15 +543,12 @@ public partial class PixelEditor : WindowUI {
 		} else {
 
 			// Make Border
-			using (Scope.GUIEnable(HasNoBorderSpriteSelecting)) {
-				if (GUI.Button(rect, ICON_MAKE_BORDER, GUISkin.SmallDarkButton)) {
-					MakeBorderForSelection();
-				}
+			bool newSASWB = GUI.ToggleButton(rect, SelectingAnySpriteWithoutBorder, ICON_MAKE_BORDER, GUISkin.SmallDarkButton);
+			if (newSASWB != SelectingAnySpriteWithoutBorder) {
+				SelectingAnySpriteWithoutBorder = newSASWB;
+				MakeBorderForSelection(!newSASWB);
 			}
 			RequireToolLabel(rect, TIP_MAKE_BORDER);
-			rect.SlideRight(padding);
-
-			// (Space)
 			rect.SlideRight(padding);
 
 			// Delete Sprite
@@ -494,6 +563,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Hotkey () {
 
+		if (Sheet.Atlas.Count <= 0) return;
 		if (!Interactable) return;
 
 		// Ctrl
@@ -592,31 +662,6 @@ public partial class PixelEditor : WindowUI {
 
 
 	#region --- LGC ---
-
-
-	private void SetDirty () => IsDirty = true;
-
-
-	// Undo
-	private void RegisterUndo (IUndoItem item, bool ignoreStep) {
-		if (LastGrowUndoFrame != Game.PauselessFrame) {
-			LastGrowUndoFrame = Game.PauselessFrame;
-			if (!ignoreStep) Undo.GrowStep();
-			Undo.Register(new ViewUndoItem() {
-
-			});
-		}
-		Undo.Register(item);
-	}
-
-
-	private static void OnUndoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, false);
-	private static void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, true);
-	private static void OnUndoRedoPerformed (IUndoItem item, bool reverse) {
-
-
-
-	}
 
 
 	// UI
