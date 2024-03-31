@@ -651,7 +651,10 @@ public static class GUI {
 
 		// Rendering
 		int startCellIndex = Renderer.GetTextUsedCellCount();
-		var labelRect = rect.Shrink(Unify(12), 0, 0, 0);
+		var labelRect = rect;
+		if (bodyStyle.ContentBorder.HasValue) {
+			rect = rect.Shrink(bodyStyle.ContentBorder.Value);
+		}
 		int beamShrink = rect.height / 12;
 		var beamRect = new IRect(
 			labelRect.x, labelRect.y + beamShrink, Unify(2), labelRect.height - beamShrink * 2

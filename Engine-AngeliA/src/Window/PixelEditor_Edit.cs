@@ -666,18 +666,48 @@ public partial class PixelEditor {
 
 	private void TryApplySliceInputField (bool forceApply = false) {
 		if (!HasSpriteSelecting) return;
-		if (
-			!forceApply &&
-			GUI.TypingTextFieldID != BORDER_INPUT_ID_L &&
-			GUI.TypingTextFieldID != BORDER_INPUT_ID_R &&
-			GUI.TypingTextFieldID != BORDER_INPUT_ID_D &&
-			GUI.TypingTextFieldID != BORDER_INPUT_ID_U
-		) return;
-		// = SliceBorderInputL  
-
-
-
-
+		int borderL = -1;
+		int borderR = -1;
+		int borderD = -1;
+		int borderU = -1;
+		// L
+		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_L) {
+			if (SliceBorderInputL != "*" && int.TryParse(SliceBorderInputL, out int result)) {
+				borderL = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
+			}
+		}
+		// R
+		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_R) {
+			if (SliceBorderInputR != "*" && int.TryParse(SliceBorderInputR, out int result)) {
+				borderR = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
+			}
+		}
+		// D
+		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_D) {
+			if (SliceBorderInputD != "*" && int.TryParse(SliceBorderInputD, out int result)) {
+				borderD = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
+			}
+		}
+		// U
+		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_U) {
+			if (SliceBorderInputU != "*" && int.TryParse(SliceBorderInputU, out int result)) {
+				borderU = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
+			}
+		}
+		// Final
+		foreach (var spData in StagedSprites) {
+			if (!spData.Selecting) continue;
+			var border = spData.Sprite.GlobalBorder;
+			int width = spData.Sprite.PixelRect.width * Const.ART_SCALE;
+			int height = spData.Sprite.PixelRect.height * Const.ART_SCALE;
+			spData.Sprite.GlobalBorder = Int4.Direction(
+				borderL >= 0 ? borderL.Clamp(0, width - border.right) : border.left,
+				borderR >= 0 ? borderR.Clamp(0, width - border.left) : border.right,
+				borderD >= 0 ? borderD.Clamp(0, height - border.up) : border.down,
+				borderU >= 0 ? borderU.Clamp(0, height - border.down) : border.up
+			);
+			SetDirty();
+		}
 	}
 
 

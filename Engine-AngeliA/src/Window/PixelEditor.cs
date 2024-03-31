@@ -465,7 +465,8 @@ public partial class PixelEditor : WindowUI {
 			} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
 				// Normal Frame
 				DrawRendererFrame(
-					rect.Expand(GizmosThickness), Color32.BLACK,
+					rect.Expand(GizmosThickness),
+					HoldingSliceOptionKey ? Color32.BLACK : Color32.BLACK_128,
 					GizmosThickness
 				);
 			}
@@ -476,25 +477,25 @@ public partial class PixelEditor : WindowUI {
 				if (hrDir.IsLeft()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Left, GizmosThickness),
-						Color32.GREEN_DARK, z: int.MaxValue
+						Color32.GREEN, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsRight()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Right, GizmosThickness),
-						Color32.GREEN_DARK, z: int.MaxValue
+						Color32.GREEN, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsBottom()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Down, GizmosThickness),
-						Color32.GREEN_DARK, z: int.MaxValue
+						Color32.GREEN, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsTop()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Up, GizmosThickness),
-						Color32.GREEN_DARK, z: int.MaxValue
+						Color32.GREEN, z: int.MaxValue
 					);
 				}
 			}
@@ -509,12 +510,13 @@ public partial class PixelEditor : WindowUI {
 				int posUp = rect.yMax - rect.height * border.up / sprite.GlobalHeight;
 				bool highlight = allowHighlight && HoveringResizeForBorder && HoveringResizeDirection.HasValue && HoveringResizeStageIndex == i;
 				bool dragging = ResizeForBorder && ResizingStageIndex == i;
+				var normalTint = HoldingSliceOptionKey ? Color32.BLACK_128 : Color32.BLACK_32;
 
 				// Frame L
 				if (border.left > 0 && (!dragging || ResizingDirection != Direction8.Left)) {
 					Renderer.DrawPixel(
 						new IRect(posLeft - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
-						highlight && HoveringResizeDirection.Value == Direction8.Left ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Left ? Color32.GREEN : normalTint, int.MaxValue
 					);
 				}
 
@@ -522,7 +524,7 @@ public partial class PixelEditor : WindowUI {
 				if (border.right > 0 && (!dragging || ResizingDirection != Direction8.Right)) {
 					Renderer.DrawPixel(
 						new IRect(posRight - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
-						highlight && HoveringResizeDirection.Value == Direction8.Right ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Right ? Color32.GREEN : normalTint, int.MaxValue
 					);
 				}
 
@@ -530,7 +532,7 @@ public partial class PixelEditor : WindowUI {
 				if (border.down > 0 && (!dragging || ResizingDirection != Direction8.Bottom)) {
 					Renderer.DrawPixel(
 						new IRect(rect.x, posDown - GizmosThickness / 2, rect.width, GizmosThickness),
-						highlight && HoveringResizeDirection.Value == Direction8.Bottom ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Bottom ? Color32.GREEN : normalTint, int.MaxValue
 					);
 				}
 
@@ -538,7 +540,7 @@ public partial class PixelEditor : WindowUI {
 				if (border.up > 0 && (!dragging || ResizingDirection != Direction8.Top)) {
 					Renderer.DrawPixel(
 						new IRect(rect.x, posUp - GizmosThickness / 2, rect.width, GizmosThickness),
-						highlight && HoveringResizeDirection.Value == Direction8.Top ? Color32.GREEN_DARK : Color32.BLACK_128, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Top ? Color32.GREEN : normalTint, int.MaxValue
 					);
 				}
 			}
@@ -554,7 +556,7 @@ public partial class PixelEditor : WindowUI {
 		if (Sheet.Atlas.Count <= 0) return;
 
 		int buttonWidth = Unify(30);
-		int fieldWidth = Unify(56);
+		int fieldWidth = Unify(36);
 		int padding = Unify(4);
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 
@@ -597,7 +599,10 @@ public partial class PixelEditor : WindowUI {
 				SliceBorderInputL = GUI.InputField(
 					BORDER_INPUT_ID_L, rect, SliceBorderInputL, out _, out bool confirm, GUISkin.SmallInputField
 				);
-				if (confirm) TryApplySliceInputField(forceApply: true);
+				if (confirm) {
+					TryApplySliceInputField(forceApply: true);
+					RefreshSliceInputContent();
+				}
 				RequireToolLabel(rect, TIP_BORDER_L);
 				rect.SlideRight(padding);
 
@@ -605,7 +610,10 @@ public partial class PixelEditor : WindowUI {
 				SliceBorderInputR = GUI.InputField(
 					BORDER_INPUT_ID_R, rect, SliceBorderInputR, out _, out confirm, GUISkin.SmallInputField
 				);
-				if (confirm) TryApplySliceInputField(forceApply: true);
+				if (confirm) {
+					TryApplySliceInputField(forceApply: true);
+					RefreshSliceInputContent();
+				}
 				RequireToolLabel(rect, TIP_BORDER_R);
 				rect.SlideRight(padding);
 
@@ -613,7 +621,10 @@ public partial class PixelEditor : WindowUI {
 				SliceBorderInputD = GUI.InputField(
 					BORDER_INPUT_ID_D, rect, SliceBorderInputD, out _, out confirm, GUISkin.SmallInputField
 				);
-				if (confirm) TryApplySliceInputField(forceApply: true);
+				if (confirm) {
+					TryApplySliceInputField(forceApply: true);
+					RefreshSliceInputContent();
+				}
 				RequireToolLabel(rect, TIP_BORDER_D);
 				rect.SlideRight(padding);
 
@@ -621,7 +632,10 @@ public partial class PixelEditor : WindowUI {
 				SliceBorderInputU = GUI.InputField(
 					BORDER_INPUT_ID_U, rect, SliceBorderInputU, out _, out confirm, GUISkin.SmallInputField
 				);
-				if (confirm) TryApplySliceInputField(forceApply: true);
+				if (confirm) {
+					TryApplySliceInputField(forceApply: true);
+					RefreshSliceInputContent();
+				}
 				RequireToolLabel(rect, TIP_BORDER_U);
 				rect.SlideRight(padding);
 			}
