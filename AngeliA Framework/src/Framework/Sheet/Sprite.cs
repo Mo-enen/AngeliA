@@ -226,7 +226,8 @@ public class AngeSprite {
 		return result;
 	}
 
-	public void ResizePixelRect (IRect newRect) {
+	public void ResizePixelRect (IRect newRect, bool resizeBorder) {
+		// Pixels
 		if (newRect.width != PixelRect.width || newRect.height != PixelRect.height) {
 			int newLen = newRect.width * newRect.height;
 			var newPixels = new Color32[newLen];
@@ -242,6 +243,30 @@ public class AngeSprite {
 			}
 			Pixels = newPixels;
 		}
+		// Border
+		if (resizeBorder) {
+			// Left
+			GlobalBorder.left -= (newRect.xMin - PixelRect.xMin) * Const.ART_SCALE;
+			if (newRect.xMin != PixelRect.xMin) {
+				GlobalBorder.left = GlobalBorder.left.Clamp(0, newRect.width * Const.ART_SCALE - GlobalBorder.right);
+			}
+			// Right
+			GlobalBorder.right += (newRect.xMax - PixelRect.xMax) * Const.ART_SCALE;
+			if (newRect.xMax != PixelRect.xMax) {
+				GlobalBorder.right = GlobalBorder.right.Clamp(0, newRect.width * Const.ART_SCALE - GlobalBorder.left);
+			}
+			// Down
+			GlobalBorder.down -= (newRect.yMin - PixelRect.yMin) * Const.ART_SCALE;
+			if (newRect.yMin != PixelRect.yMin) {
+				GlobalBorder.down = GlobalBorder.down.Clamp(0, newRect.height * Const.ART_SCALE - GlobalBorder.up);
+			}
+			// Up
+			GlobalBorder.up += (newRect.yMax - PixelRect.yMax) * Const.ART_SCALE;
+			if (newRect.yMax != PixelRect.yMax) {
+				GlobalBorder.up = GlobalBorder.up.Clamp(0, newRect.height * Const.ART_SCALE - GlobalBorder.down);
+			}
+		}
+		// Rect
 		PixelRect = newRect;
 		GlobalWidth = PixelRect.width * Const.ART_SCALE;
 		GlobalHeight = PixelRect.height * Const.ART_SCALE;

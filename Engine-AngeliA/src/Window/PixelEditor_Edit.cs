@@ -58,6 +58,7 @@ public partial class PixelEditor {
 
 		DragChanged = false;
 		DraggingStateLeft = DragStateLeft.Canceled;
+		TryApplySliceInputField();
 
 		if (HoldingSliceOptionKey) {
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
@@ -69,9 +70,7 @@ public partial class PixelEditor {
 				// Quick Move From Inside
 				var spData = StagedSprites[HoveringSpriteStageIndex];
 				DraggingStateLeft = DragStateLeft.MoveSlice;
-				ClearSpriteSelection();
-				spData.Selecting = true;
-				HasSpriteSelecting = true;
+				SetSpriteSelection(HoveringSpriteStageIndex);
 				spData.DraggingStartRect = spData.Sprite.PixelRect;
 			} else {
 				// From Outside
@@ -167,12 +166,26 @@ public partial class PixelEditor {
 				SetDirty();
 				var resizingSpData = StagedSprites[ResizingStageIndex];
 				var resizingSp = resizingSpData.Sprite;
+				var resizingPixRect = resizingSp.PixelRect;
 				if (ResizeForBorder) {
 					// Resize Border
-
-
-
-
+					var resizeBorderPixPos = GetResizingBorderPixPos();
+					if (resizeBorderPixPos.HasValue) {
+						switch (ResizingDirection) {
+							case Direction8.Left:
+								resizingSp.GlobalBorder.left = Const.ART_SCALE * (resizeBorderPixPos.Value.x - resizingPixRect.xMin);
+								break;
+							case Direction8.Right:
+								resizingSp.GlobalBorder.right = Const.ART_SCALE * (resizingPixRect.width - (resizeBorderPixPos.Value.x - resizingPixRect.xMin));
+								break;
+							case Direction8.Bottom:
+								resizingSp.GlobalBorder.down = Const.ART_SCALE * (resizeBorderPixPos.Value.y - resizingPixRect.yMin);
+								break;
+							case Direction8.Top:
+								resizingSp.GlobalBorder.up = Const.ART_SCALE * (resizingPixRect.height - (resizeBorderPixPos.Value.y - resizingPixRect.yMin));
+								break;
+						}
+					}
 				} else {
 					// Resize Size
 					var _resizingPxRect = GetResizeDraggingPixRect();
@@ -181,7 +194,10 @@ public partial class PixelEditor {
 						resizingPxRect.width = resizingPxRect.width.Clamp(1, STAGE_SIZE);
 						resizingPxRect.height = resizingPxRect.height.Clamp(1, STAGE_SIZE);
 						resizingSpData.PixelDirty = true;
-						resizingSp.ResizePixelRect(resizingPxRect);
+						resizingSp.ResizePixelRect(
+							resizingPxRect,
+							resizeBorder: !resizingSp.GlobalBorder.IsZero
+						);
 						if (resizingSp.GlobalBorder.horizontal >= resizingSp.GlobalWidth) {
 							if (ResizingDirection.IsLeft()) {
 								resizingSp.GlobalBorder.left = resizingSp.GlobalWidth - resizingSp.GlobalBorder.right;
@@ -202,6 +218,7 @@ public partial class PixelEditor {
 						}
 					}
 				}
+				RefreshSliceInputContent();
 				break;
 
 			case DragStateLeft.SelectOrCreateSlice:
@@ -399,7 +416,22 @@ public partial class PixelEditor {
 
 
 	// Sprite
+	private void SetSpriteSelection (int index) {
+		if (index < 0 || index >= StagedSprites.Count) return;
+		TryApplySliceInputField();
+		if (HasSpriteSelecting) {
+			for (int i = 0; i < StagedSprites.Count; i++) {
+				StagedSprites[i].Selecting = false;
+			}
+		}
+		StagedSprites[index].Selecting = true;
+		HasSpriteSelecting = true;
+		RefreshSliceInputContent();
+	}
+
+
 	private void SelectSpritesOverlap (IRect pixelRange) {
+		TryApplySliceInputField();
 		int count = StagedSprites.Count;
 		HasSpriteSelecting = false;
 		for (int i = 0; i < count; i++) {
@@ -407,19 +439,23 @@ public partial class PixelEditor {
 			spData.Selecting = spData.Sprite.PixelRect.Overlaps(pixelRange);
 			HasSpriteSelecting = HasSpriteSelecting || spData.Selecting;
 		}
+		RefreshSliceInputContent();
 	}
 
 
 	private void ClearSpriteSelection () {
 		if (!HasSpriteSelecting) return;
+		TryApplySliceInputField();
 		HasSpriteSelecting = false;
 		foreach (var spData in StagedSprites) {
 			spData.Selecting = false;
 		}
+		RefreshSliceInputContent();
 	}
 
 
 	private void DeleteAllSelectingSprite () {
+		TryApplySliceInputField();
 		bool changed = false;
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			if (StagedSprites[i].Selecting) {
@@ -440,24 +476,33 @@ public partial class PixelEditor {
 			}
 		}
 		HasSpriteSelecting = false;
+		if (changed) RefreshSliceInputContent();
 	}
 
 
 	private void MakeBorderForSelection (bool enableBorder) {
+		TryApplySliceInputField();
+		bool changed = false;
 		foreach (var spData in StagedSprites) {
 			if (!spData.Selecting) continue;
 			if (spData.Sprite.GlobalBorder.IsZero != enableBorder) continue;
-			SetDirty();
+			changed = true;
 			if (enableBorder) {
-				spData.Sprite.GlobalBorder = Int4.Direction(
-					Const.ART_SCALE,
-					Util.Min(Const.ART_SCALE, spData.Sprite.GlobalWidth - Const.ART_SCALE),
-					Const.ART_SCALE,
-					Util.Min(Const.ART_SCALE, spData.Sprite.GlobalHeight - Const.ART_SCALE)
-				);
+				if (spData.Sprite.GlobalBorder.IsZero) {
+					spData.Sprite.GlobalBorder = Int4.Direction(
+						Const.ART_SCALE,
+						Util.Min(Const.ART_SCALE, spData.Sprite.GlobalWidth - Const.ART_SCALE),
+						Const.ART_SCALE,
+						Util.Min(Const.ART_SCALE, spData.Sprite.GlobalHeight - Const.ART_SCALE)
+					);
+				}
 			} else {
 				spData.Sprite.GlobalBorder = Int4.zero;
 			}
+		}
+		if (changed) {
+			SetDirty();
+			RefreshSliceInputContent();
 		}
 	}
 
@@ -616,6 +661,80 @@ public partial class PixelEditor {
 			ResizingDirection.IsBottom() ? spRect.yMax - spBorder.up / Const.ART_SCALE : spRect.yMax
 		);
 		return result;
+	}
+
+
+	private void TryApplySliceInputField (bool forceApply = false) {
+		if (!HasSpriteSelecting) return;
+		if (
+			!forceApply &&
+			GUI.TypingTextFieldID != BORDER_INPUT_ID_L &&
+			GUI.TypingTextFieldID != BORDER_INPUT_ID_R &&
+			GUI.TypingTextFieldID != BORDER_INPUT_ID_D &&
+			GUI.TypingTextFieldID != BORDER_INPUT_ID_U
+		) return;
+		// = SliceBorderInputL  
+
+
+
+
+	}
+
+
+	private void RefreshSliceInputContent () {
+		if (!HasSpriteSelecting) {
+			SliceBorderInputL = "";
+			SliceBorderInputR = "";
+			SliceBorderInputD = "";
+			SliceBorderInputU = "";
+			return;
+		}
+		int borderL = int.MinValue;
+		int borderR = int.MinValue;
+		int borderD = int.MinValue;
+		int borderU = int.MinValue;
+		int starCount = 0;
+		foreach (var spData in StagedSprites) {
+			if (!spData.Selecting) continue;
+			var border = spData.Sprite.GlobalBorder;
+			if (borderL != int.MaxValue) {
+				if (borderL == int.MinValue) {
+					borderL = border.left;
+				} else if (borderL != border.left) {
+					borderL = int.MaxValue;
+					starCount++;
+				}
+			}
+			if (borderR != int.MaxValue) {
+				if (borderR == int.MinValue) {
+					borderR = border.right;
+				} else if (borderR != border.right) {
+					borderR = int.MaxValue;
+					starCount++;
+				}
+			}
+			if (borderD != int.MaxValue) {
+				if (borderD == int.MinValue) {
+					borderD = border.down;
+				} else if (borderD != border.down) {
+					borderD = int.MaxValue;
+					starCount++;
+				}
+			}
+			if (borderU != int.MaxValue) {
+				if (borderU == int.MinValue) {
+					borderU = border.up;
+				} else if (borderU != border.up) {
+					borderU = int.MaxValue;
+					starCount++;
+				}
+			}
+			if (starCount >= 4) break;
+		}
+		SliceBorderInputL = borderL == int.MinValue || borderL == int.MaxValue ? "*" : (borderL / Const.ART_SCALE).ToString();
+		SliceBorderInputR = borderR == int.MinValue || borderR == int.MaxValue ? "*" : (borderR / Const.ART_SCALE).ToString();
+		SliceBorderInputD = borderD == int.MinValue || borderD == int.MaxValue ? "*" : (borderD / Const.ART_SCALE).ToString();
+		SliceBorderInputU = borderU == int.MinValue || borderU == int.MaxValue ? "*" : (borderU / Const.ART_SCALE).ToString();
 	}
 
 
