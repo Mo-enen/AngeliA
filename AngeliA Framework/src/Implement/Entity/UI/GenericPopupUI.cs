@@ -200,7 +200,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		Renderer.ClampTextCells(panelRect, textStart);
 
 		// Block Input
-		Input.IgnoreMouseInput(0);
+		Input.IgnoreMouseInput();
 
 		// Cancel
 		if (Game.GlobalFrame > SpawnFrame && (Input.AnyMouseButtonDown || Input.AnyKeyDown)) {

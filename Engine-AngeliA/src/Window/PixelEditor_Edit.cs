@@ -37,7 +37,7 @@ public partial class PixelEditor {
 	#region --- MSG ---
 
 
-	// Left
+	// Left Drag
 	private void Update_LeftDrag () {
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!StageRect.Contains(Input.MouseLeftDownGlobalPosition)) return;
@@ -278,7 +278,7 @@ public partial class PixelEditor {
 	}
 
 
-	// Right
+	// Right Drag
 	private void Update_RightDrag () {
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!StageRect.Contains(Input.MouseRightDownGlobalPosition)) return;
@@ -665,11 +665,14 @@ public partial class PixelEditor {
 
 
 	private void TryApplySliceInputField (bool forceApply = false) {
+
 		if (!HasSpriteSelecting) return;
+
 		int borderL = -1;
 		int borderR = -1;
 		int borderD = -1;
 		int borderU = -1;
+
 		// L
 		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_L) {
 			if (SliceBorderInputL != "*" && int.TryParse(SliceBorderInputL, out int result)) {
@@ -694,6 +697,10 @@ public partial class PixelEditor {
 				borderU = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
 			}
 		}
+
+		// Any Valid
+		if (borderL < 0 && borderR < 0 && borderD < 0 && borderU < 0) return;
+
 		// Final
 		foreach (var spData in StagedSprites) {
 			if (!spData.Selecting) continue;
@@ -708,6 +715,7 @@ public partial class PixelEditor {
 			);
 			SetDirty();
 		}
+		GUI.CancelTyping();
 	}
 
 

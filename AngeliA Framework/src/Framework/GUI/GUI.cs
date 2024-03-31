@@ -20,9 +20,6 @@ public static class GUI {
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
 	public static bool UnifyBasedOnMonitor { get; set; } = false;
-	public static Color32 Color { get; set; } = Color32.WHITE;
-	public static Color32 BodyColor { get; set; } = Color32.WHITE;
-	public static Color32 ContentColor { get; set; } = Color32.WHITE;
 	public static int TypingTextFieldID {
 		get => _TypingTextFieldID;
 		private set {
@@ -32,16 +29,20 @@ public static class GUI {
 			}
 		}
 	}
-	public static int _TypingTextFieldID = 0;
+	public static Color32 Color { get; set; } = Color32.WHITE;
+	public static Color32 BodyColor { get; set; } = Color32.WHITE;
+	public static Color32 ContentColor { get; set; } = Color32.WHITE;
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
 	private static int BeamIndex = 0;
 	private static int BeamLength = 0;
 	private static int BeamBlinkFrame = int.MinValue;
-	private static Int2? ScrollBarMouseDownPos = null;
 	private static int DraggingScrollbarID = 0;
 	private static int InvokeTypingStartID = 0;
+	private static int _TypingTextFieldID = 0;
+	private static int TypingTextFieldUpdateFrame = -1;
+	private static Int2? ScrollBarMouseDownPos = null;
 
 
 	#endregion
@@ -68,6 +69,9 @@ public static class GUI {
 	[OnGameUpdateLater(4096)]
 	internal static void LateUpdate () {
 		if (TypingBuilder.Length > 0) TypingBuilder.Clear();
+		if (TypingTextFieldID != 0 && Game.PauselessFrame > TypingTextFieldUpdateFrame) {
+			CancelTyping();
+		}
 	}
 
 
@@ -524,14 +528,18 @@ public static class GUI {
 		int beamLength = typing ? BeamLength : 0;
 
 		// Cancel on Click Outside
-		if (typing && Input.MouseLeftButtonDown && !rect.MouseInside()) {
-			typing = false;
-			confirm = true;
-			TypingTextFieldID = 0;
-			TypingBuilder.Clear();
-			BeamIndex = beamIndex = 0;
-			BeamLength = beamLength = 0;
+		using (Scope.IgnoreInput(ignoreKey: false, ignoreMouse: false)) {
+			if (typing && !startTyping && Input.MouseLeftButtonDown && !rect.MouseInside()) {
+				typing = false;
+				confirm = true;
+				TypingTextFieldID = 0;
+				TypingBuilder.Clear();
+				BeamIndex = beamIndex = 0;
+				BeamLength = beamLength = 0;
+			}
 		}
+
+		TypingTextFieldUpdateFrame = typing ? Game.PauselessFrame : TypingTextFieldUpdateFrame;
 
 		if (typing) {
 

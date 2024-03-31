@@ -782,15 +782,15 @@ public static class Input {
 
 
 	// Misc
-	public static void IgnoreAllInput (int duration = 1) {
+	public static void IgnoreAllInput (int duration = 0) {
 		IgnoreMouseInput(duration);
 		IgnoreKeyInput(duration);
 	}
-	public static void IgnoreMouseInput (int duration = 1) {
+	public static void IgnoreMouseInput (int duration = 0) {
 		IgnoreMouseInputFrame = Game.GlobalFrame + duration;
 	}
 
-	public static void IgnoreKeyInput (int duration = 1) => IgnoreKeyInputFrame = Game.GlobalFrame + duration;
+	public static void IgnoreKeyInput (int duration = 0) => IgnoreKeyInputFrame = Game.GlobalFrame + duration;
 
 
 	public static void CancelIgnoreMouseInput () => IgnoreMouseInputFrame = Game.GlobalFrame - 1;

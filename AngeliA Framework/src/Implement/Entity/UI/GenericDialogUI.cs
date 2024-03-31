@@ -40,7 +40,7 @@ public class GenericDialogUI : MenuUI {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		Input.IgnoreMouseInput(0);
+		Input.IgnoreMouseInput();
 	}
 
 

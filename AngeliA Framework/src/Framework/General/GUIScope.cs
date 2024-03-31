@@ -31,7 +31,9 @@ public class Scope : System.IDisposable {
 		public void End () => CurrentIndex--;
 	}
 
-	private enum ScopeType { None, Layer, Color, ContentColor, BodyColor, Enable, Scroll, Sheet, }
+	private enum ScopeType {
+		None, Layer, Color, ContentColor, BodyColor, Enable, Scroll, Sheet, IgnoreInput,
+	}
 
 	// Const
 	private static readonly Scope EmptyScope = new(ScopeType.None);
@@ -42,6 +44,7 @@ public class Scope : System.IDisposable {
 	private static readonly ScopeGroup EnableInstance = new(ScopeType.Enable);
 	private static readonly ScopeGroup ScrollInstance = new(ScopeType.Scroll);
 	private static readonly ScopeGroup SheetInstance = new(ScopeType.Sheet);
+	private static readonly ScopeGroup IgnoreInputInstance = new(ScopeType.IgnoreInput);
 
 	// Api
 	public Int2 ScrollPosition => Int2Data;
@@ -134,6 +137,24 @@ public class Scope : System.IDisposable {
 		return result;
 	}
 
+	public static Scope IgnoreInput (bool ignoreKey = true, bool ignoreMouse = true) {
+		var result = IgnoreInputInstance.Start();
+		if (result == null) return EmptyScope;
+		result.Int2Data.x = Input.IgnoringKeyInput ? 1 : 0;
+		result.Int2Data.y = Input.IgnoringMouseInput ? 1 : 0;
+		if (ignoreKey) {
+			Input.IgnoreKeyInput();
+		} else {
+			Input.CancelIgnoreKeyInput();
+		}
+		if (ignoreMouse) {
+			Input.IgnoreMouseInput();
+		} else {
+			Input.CancelIgnoreMouseInput();
+		}
+		return result;
+	}
+
 	public void Dispose () {
 		switch (Type) {
 			case ScopeType.Layer:
@@ -193,6 +214,21 @@ public class Scope : System.IDisposable {
 				SheetInstance.End();
 				Renderer.CurrentSheetIndex = IntData;
 				break;
+
+			case ScopeType.IgnoreInput:
+				IgnoreInputInstance.End();
+				if (Int2Data.x == 1) {
+					Input.IgnoreKeyInput();
+				} else {
+					Input.CancelIgnoreKeyInput();
+				}
+				if (Int2Data.y == 1) {
+					Input.IgnoreMouseInput();
+				} else {
+					Input.CancelIgnoreMouseInput();
+				}
+				break;
+
 		}
 	}
 

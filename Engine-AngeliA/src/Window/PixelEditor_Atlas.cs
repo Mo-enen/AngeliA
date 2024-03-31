@@ -41,7 +41,7 @@ public partial class PixelEditor {
 
 	private void Update_AtlasPanel () {
 
-		const int INPUT_ID = 287234;
+		const int ATLAS_INPUT_ID = 287234;
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 
 		// BG
@@ -51,7 +51,7 @@ public partial class PixelEditor {
 		// Rename Hotkey
 		if (Input.KeyboardDown(KeyboardKey.F2) && RenamingAtlasIndex < 0 && CurrentAtlasIndex >= 0) {
 			RenamingAtlasIndex = CurrentAtlasIndex;
-			GUI.StartTyping(INPUT_ID + CurrentAtlasIndex);
+			GUI.StartTyping(ATLAS_INPUT_ID + CurrentAtlasIndex);
 		}
 
 		int itemCount = Sheet.Atlas.Count;
@@ -85,9 +85,12 @@ public partial class PixelEditor {
 					// Button
 					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
 						if (selecting) {
+							TryApplySliceInputField();
+							RefreshSliceInputContent();
 							GUI.CancelTyping();
 							RenamingAtlasIndex = i;
-							GUI.StartTyping(INPUT_ID + i);
+							renaming = true;
+							GUI.StartTyping(ATLAS_INPUT_ID + i);
 						} else {
 							newSelectingIndex = i;
 							RenamingAtlasIndex = -1;
@@ -117,7 +120,7 @@ public partial class PixelEditor {
 					// Label
 					if (renaming) {
 						atlas.Name = GUI.InputField(
-							INPUT_ID + i, contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
+							ATLAS_INPUT_ID + i, contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm, GUISkin.SmallInputField
 						);
 						if (changed || confirm) {

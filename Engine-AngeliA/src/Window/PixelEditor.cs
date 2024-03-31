@@ -76,6 +76,8 @@ public partial class PixelEditor : WindowUI {
 	private static readonly LanguageCode TIP_BORDER_R = ("Tip.BorderR", "Border right");
 	private static readonly LanguageCode TIP_BORDER_D = ("Tip.BorderD", "Border bottom");
 	private static readonly LanguageCode TIP_BORDER_U = ("Tip.BorderU", "Border top");
+	private static readonly LanguageCode LABEL_BORDER = ("Label.Border", "Border");
+
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
@@ -594,50 +596,62 @@ public partial class PixelEditor : WindowUI {
 
 			if (SelectingAnySpriteWithBorder) {
 
-				// Border L
+				// Label
+				//rect.width = Unify(46);
+				//GUI.Label(rect, LABEL_BORDER, GUISkin.SmallGreyLabel);
+				//rect.SlideRight(padding);
+
+				// Fields
 				rect.width = fieldWidth;
+				var inputRect = rect.Shrink(0, 0, padding, padding);
+
+				// Border L
 				SliceBorderInputL = GUI.InputField(
-					BORDER_INPUT_ID_L, rect, SliceBorderInputL, out _, out bool confirm, GUISkin.SmallInputField
+					BORDER_INPUT_ID_L, inputRect, SliceBorderInputL, out _, out bool confirm, GUISkin.SmallInputField
 				);
 				if (confirm) {
 					TryApplySliceInputField(forceApply: true);
 					RefreshSliceInputContent();
 				}
-				RequireToolLabel(rect, TIP_BORDER_L);
+				RequireToolLabel(inputRect, TIP_BORDER_L);
 				rect.SlideRight(padding);
+				inputRect.SlideRight(padding);
 
 				// Border R
 				SliceBorderInputR = GUI.InputField(
-					BORDER_INPUT_ID_R, rect, SliceBorderInputR, out _, out confirm, GUISkin.SmallInputField
+					BORDER_INPUT_ID_R, inputRect, SliceBorderInputR, out _, out confirm, GUISkin.SmallInputField
 				);
 				if (confirm) {
 					TryApplySliceInputField(forceApply: true);
 					RefreshSliceInputContent();
 				}
-				RequireToolLabel(rect, TIP_BORDER_R);
+				RequireToolLabel(inputRect, TIP_BORDER_R);
 				rect.SlideRight(padding);
+				inputRect.SlideRight(padding);
 
 				// Border D
 				SliceBorderInputD = GUI.InputField(
-					BORDER_INPUT_ID_D, rect, SliceBorderInputD, out _, out confirm, GUISkin.SmallInputField
+					BORDER_INPUT_ID_D, inputRect, SliceBorderInputD, out _, out confirm, GUISkin.SmallInputField
 				);
 				if (confirm) {
 					TryApplySliceInputField(forceApply: true);
 					RefreshSliceInputContent();
 				}
-				RequireToolLabel(rect, TIP_BORDER_D);
+				RequireToolLabel(inputRect, TIP_BORDER_D);
 				rect.SlideRight(padding);
+				inputRect.SlideRight(padding);
 
 				// Border U
 				SliceBorderInputU = GUI.InputField(
-					BORDER_INPUT_ID_U, rect, SliceBorderInputU, out _, out confirm, GUISkin.SmallInputField
+					BORDER_INPUT_ID_U, inputRect, SliceBorderInputU, out _, out confirm, GUISkin.SmallInputField
 				);
 				if (confirm) {
 					TryApplySliceInputField(forceApply: true);
 					RefreshSliceInputContent();
 				}
-				RequireToolLabel(rect, TIP_BORDER_U);
+				RequireToolLabel(inputRect, TIP_BORDER_U);
 				rect.SlideRight(padding);
+
 			}
 
 			// Delete Sprite
