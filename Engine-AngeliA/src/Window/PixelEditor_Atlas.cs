@@ -85,7 +85,7 @@ public partial class PixelEditor {
 					// Button
 					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
 						if (selecting) {
-							TryApplySliceInputField();
+							TryApplySliceInputFields();
 							RefreshSliceInputContent();
 							GUI.CancelTyping();
 							RenamingAtlasIndex = i;
@@ -225,11 +225,8 @@ public partial class PixelEditor {
 				Selecting = false,
 			});
 		}
-		CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
-		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
-		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
+		ResetCamera();
 		DraggingStateLeft = DragStateLeft.None;
-		ZoomLevel = 1;
 		PaintingColor = Color32.CLEAR;
 		ResizingStageIndex = -1;
 		HoveringResizeDirection = null;

@@ -45,7 +45,7 @@ public static partial class GUISkin {
 			CharSize =
 				pattern.HasFlag(LabelPattern.Auto) ? -1 :
 				pattern.HasFlag(LabelPattern.Large) ? 28 :
-				pattern.HasFlag(LabelPattern.Small) ? 14 : 
+				pattern.HasFlag(LabelPattern.Small) ? 14 :
 				21,
 			Alignment =
 				pattern.HasFlag(LabelPattern.TopMid) ? Alignment.TopMid :
@@ -67,6 +67,12 @@ public static partial class GUISkin {
 	public static readonly GUIStyle GreyLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Grey);
 	public static readonly GUIStyle LargeGreyLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Grey);
 	public static readonly GUIStyle AutoGreyLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Grey);
+
+	// Center Grey
+	public static readonly GUIStyle SmallCenterGreyLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Grey | LabelPattern.MidMid);
+	public static readonly GUIStyle CenterGreyLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Grey | LabelPattern.MidMid);
+	public static readonly GUIStyle LargeCenterGreyLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Grey | LabelPattern.MidMid);
+	public static readonly GUIStyle AutoCenterGreyLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Grey | LabelPattern.MidMid);
 
 	// Dark
 	public static readonly GUIStyle SmallDarkLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Dark);

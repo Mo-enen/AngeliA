@@ -172,6 +172,33 @@ public class Sheet {
 		}
 	}
 
+	public bool RenameSprite (int id, string newName) {
+		if (!SpritePool.TryGetValue(id, out var sprite)) return false;
+		return RenameSprite(sprite, newName);
+	}
+
+	public bool RenameSprite (AngeSprite sprite, string newName) {
+		if (sprite.RealName == newName) return false;
+		int id = newName.AngeHash();
+		if (SpritePool.ContainsKey(id)) return false;
+		int oldID = sprite.ID;
+		if (sprite.Group != null) {
+			for (int i = 0; i < sprite.Group.Count; i++) {
+				if (sprite.Group.SpriteIDs[i] == oldID) {
+					sprite.Group.SpriteIDs[i] = id;
+					break;
+				}
+			}
+		}
+		SpritePool.Remove(oldID);
+		SpritePool.Add(id, sprite);
+		TexturePool.Remove(oldID);
+		sprite.RealName = newName;
+		sprite.ID = id;
+		SyncSpritePixelsIntoTexturePool(sprite);
+		return true;
+	}
+
 	// Find
 	public int IndexOfSprite (int id) => Sprites.FindIndex(s => s.ID == id);
 

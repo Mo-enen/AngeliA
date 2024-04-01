@@ -37,4 +37,18 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_MENU = ("UI.Menu", "Menu");
 	public static readonly LanguageCode UI_EXPLORE = ("UI.Explore", "Open in Explorer");
 
+	// Label
+	public static readonly LanguageCode LABEL_L = ("Label.L", "L");
+	public static readonly LanguageCode LABEL_R = ("Label.R", "R");
+	public static readonly LanguageCode LABEL_D = ("Label.D", "D");
+	public static readonly LanguageCode LABEL_U = ("Label.U", "U");
+	public static readonly LanguageCode LABEL_B = ("Label.B", "B");
+	public static readonly LanguageCode LABEL_T = ("Label.T", "T");
+	public static readonly LanguageCode LABEL_LEFT = ("Label.Left", "Left");
+	public static readonly LanguageCode LABEL_RIGHT = ("Label.Right", "Right");
+	public static readonly LanguageCode LABEL_DOWN = ("Label.Down", "Down");
+	public static readonly LanguageCode LABEL_UP = ("Label.Up", "Up");
+	public static readonly LanguageCode LABEL_BOTTOM = ("Label.Bottom", "Bottom");
+	public static readonly LanguageCode LABEL_TOP = ("Label.Top", "Top");
+
 }

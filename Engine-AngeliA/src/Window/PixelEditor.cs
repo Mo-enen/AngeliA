@@ -10,6 +10,12 @@ public partial class PixelEditor : WindowUI {
 
 
 
+	//LocalZ;
+	//IsTrigger;
+	//Rule;
+	//Tag;
+	//Duration;
+
 
 	#region --- SUB ---
 
@@ -59,25 +65,8 @@ public partial class PixelEditor : WindowUI {
 	private const int PANEL_WIDTH = 240;
 	private const int TOOLBAR_HEIGHT = 42;
 	private const int SHEET_INDEX = 0;
-	private const int BORDER_INPUT_ID_L = 123631256;
-	private const int BORDER_INPUT_ID_R = 123631257;
-	private const int BORDER_INPUT_ID_D = 123631258;
-	private const int BORDER_INPUT_ID_U = 123631259;
-	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
-	private static readonly SpriteCode ICON_MAKE_BORDER = "Icon.MakeBorder";
 	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
-	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
 	private static readonly SpriteCode CURSOR_DOT = "Cursor.Dot";
-	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show background");
-	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete slice");
-	private static readonly LanguageCode TIP_ENABLE_BORDER = ("Tip.EnableBorder", "Enable borders");
-	private static readonly LanguageCode TIP_DISABLE_BORDER = ("Tip.DisableBorder", "Disable borders");
-	private static readonly LanguageCode TIP_BORDER_L = ("Tip.BorderL", "Border left");
-	private static readonly LanguageCode TIP_BORDER_R = ("Tip.BorderR", "Border right");
-	private static readonly LanguageCode TIP_BORDER_D = ("Tip.BorderD", "Border bottom");
-	private static readonly LanguageCode TIP_BORDER_U = ("Tip.BorderU", "Border top");
-	private static readonly LanguageCode LABEL_BORDER = ("Label.Border", "Border");
-
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
@@ -87,12 +76,11 @@ public partial class PixelEditor : WindowUI {
 	private readonly Sheet Sheet = new();
 	private readonly List<SpriteData> StagedSprites = new();
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
+	private readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
 	private string SheetPath = "";
 	private string ToolLabel = null;
 	private bool IsDirty = false;
-	private bool HasSpriteSelecting;
-	private bool SelectingAnySpriteWithBorder;
-	private bool SelectingAnySpriteWithoutBorder;
+	private int SelectingSpriteCount = 0;
 	private bool HoldingSliceOptionKey = false;
 	private bool Interactable = true;
 	private int ZoomLevel = 1;
@@ -104,10 +92,6 @@ public partial class PixelEditor : WindowUI {
 	private IRect CopyBufferPixRange;
 	private IRect StageRect;
 	private IRect ToolLabelRect;
-	private string SliceBorderInputL = "";
-	private string SliceBorderInputR = "";
-	private string SliceBorderInputD = "";
-	private string SliceBorderInputU = "";
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
@@ -152,6 +136,7 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	// Update
 	private void Update_Cache () {
 
 		int resizePadding = Unify(12);
@@ -161,9 +146,10 @@ public partial class PixelEditor : WindowUI {
 
 		GizmosThickness = Unify(1);
 		HoveringResizeDirection = null;
-		HasSpriteSelecting = false;
+		SelectingSpriteCount = 0;
 		SelectingAnySpriteWithBorder = false;
 		SelectingAnySpriteWithoutBorder = false;
+		SelectingAnyNonTiggerSprite = false;
 		HoveringSpriteStageIndex = -1;
 		MousePixelPos = Stage_to_Pixel(Input.MouseGlobalPosition, round: false);
 		MousePixelPosRound = Stage_to_Pixel(Input.MouseGlobalPosition, round: true);
@@ -179,10 +165,13 @@ public partial class PixelEditor : WindowUI {
 			var sprite = spData.Sprite;
 			var rect = Pixel_to_Stage(sprite.PixelRect);
 
-			// Has Selecting
-			HasSpriteSelecting = HasSpriteSelecting || spData.Selecting;
-			SelectingAnySpriteWithoutBorder = SelectingAnySpriteWithoutBorder || (spData.Selecting && sprite.GlobalBorder.IsZero);
-			SelectingAnySpriteWithBorder = SelectingAnySpriteWithBorder || (spData.Selecting && !sprite.GlobalBorder.IsZero);
+			// Selecting...
+			if (spData.Selecting) {
+				SelectingSpriteCount++;
+				SelectingAnySpriteWithoutBorder = SelectingAnySpriteWithoutBorder || sprite.GlobalBorder.IsZero;
+				SelectingAnySpriteWithBorder = SelectingAnySpriteWithBorder || !sprite.GlobalBorder.IsZero;
+				SelectingAnyNonTiggerSprite = SelectingAnyNonTiggerSprite || !sprite.IsTrigger;
+			}
 
 			// Mouse Hovering
 			if (HoveringSpriteStageIndex < 0 && sprite.PixelRect.Contains(MousePixelPos)) {
@@ -553,118 +542,6 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_StageToolbar () {
-
-		if (Sheet.Atlas.Count <= 0) return;
-
-		int buttonWidth = Unify(30);
-		int fieldWidth = Unify(36);
-		int padding = Unify(4);
-		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
-
-		// BG
-		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
-		toolbarRect = toolbarRect.Shrink(Unify(6));
-		var rect = toolbarRect.EdgeInside(Direction4.Left, buttonWidth);
-
-		if (!HasSpriteSelecting) {
-			// --- General ---
-
-			// Show BG
-			ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
-			RequireToolLabel(rect, TIP_SHOW_BG);
-			rect.SlideRight(padding);
-
-			// Import from PNG
-			if (GUI.Button(rect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
-				ShowImportAtlasBrowser(false);
-			}
-			RequireToolLabel(rect, TIP_IMPORT_PNG);
-			rect.SlideRight(padding);
-
-		} else {
-			// --- Slice ---
-
-			// Make Border
-			bool newSASWB = GUI.ToggleButton(rect, SelectingAnySpriteWithoutBorder, ICON_MAKE_BORDER, GUISkin.SmallDarkButton);
-			if (newSASWB != SelectingAnySpriteWithoutBorder) {
-				SelectingAnySpriteWithoutBorder = newSASWB;
-				MakeBorderForSelection(!newSASWB);
-			}
-			RequireToolLabel(rect, SelectingAnySpriteWithoutBorder ? TIP_ENABLE_BORDER : TIP_DISABLE_BORDER);
-			rect.SlideRight(padding);
-
-			if (SelectingAnySpriteWithBorder) {
-
-				// Label
-				//rect.width = Unify(46);
-				//GUI.Label(rect, LABEL_BORDER, GUISkin.SmallGreyLabel);
-				//rect.SlideRight(padding);
-
-				// Fields
-				rect.width = fieldWidth;
-				var inputRect = rect.Shrink(0, 0, padding, padding);
-
-				// Border L
-				SliceBorderInputL = GUI.InputField(
-					BORDER_INPUT_ID_L, inputRect, SliceBorderInputL, out _, out bool confirm, GUISkin.SmallInputField
-				);
-				if (confirm) {
-					TryApplySliceInputField(forceApply: true);
-					RefreshSliceInputContent();
-				}
-				RequireToolLabel(inputRect, TIP_BORDER_L);
-				rect.SlideRight(padding);
-				inputRect.SlideRight(padding);
-
-				// Border R
-				SliceBorderInputR = GUI.InputField(
-					BORDER_INPUT_ID_R, inputRect, SliceBorderInputR, out _, out confirm, GUISkin.SmallInputField
-				);
-				if (confirm) {
-					TryApplySliceInputField(forceApply: true);
-					RefreshSliceInputContent();
-				}
-				RequireToolLabel(inputRect, TIP_BORDER_R);
-				rect.SlideRight(padding);
-				inputRect.SlideRight(padding);
-
-				// Border D
-				SliceBorderInputD = GUI.InputField(
-					BORDER_INPUT_ID_D, inputRect, SliceBorderInputD, out _, out confirm, GUISkin.SmallInputField
-				);
-				if (confirm) {
-					TryApplySliceInputField(forceApply: true);
-					RefreshSliceInputContent();
-				}
-				RequireToolLabel(inputRect, TIP_BORDER_D);
-				rect.SlideRight(padding);
-				inputRect.SlideRight(padding);
-
-				// Border U
-				SliceBorderInputU = GUI.InputField(
-					BORDER_INPUT_ID_U, inputRect, SliceBorderInputU, out _, out confirm, GUISkin.SmallInputField
-				);
-				if (confirm) {
-					TryApplySliceInputField(forceApply: true);
-					RefreshSliceInputContent();
-				}
-				RequireToolLabel(inputRect, TIP_BORDER_U);
-				rect.SlideRight(padding);
-
-			}
-
-			// Delete Sprite
-			rect.width = buttonWidth;
-			if (GUI.Button(rect, ICON_DELETE_SPRITE, GUISkin.SmallDarkButton)) {
-				DeleteAllSelectingSprite();
-			}
-			RequireToolLabel(rect, TIP_DEL_SLICE);
-			rect.SlideRight(padding);
-		}
-	}
-
-
 	private void Update_Hotkey () {
 
 		if (Sheet.Atlas.Count <= 0) return;
@@ -686,14 +563,14 @@ public partial class PixelEditor : WindowUI {
 			}
 			// C
 			if (Input.KeyboardDown(KeyboardKey.C)) {
-				if (HasSpriteSelecting) {
+				if (SelectingSpriteCount > 0) {
 					// Copy Sprites
 					SetSelectingAsCopyBuffer();
 				}
 			}
 			// X
 			if (Input.KeyboardDown(KeyboardKey.X)) {
-				if (HasSpriteSelecting) {
+				if (SelectingSpriteCount > 0) {
 					// Cut Sprites
 					SetSelectingAsCopyBuffer();
 					DeleteAllSelectingSprite();
@@ -708,7 +585,7 @@ public partial class PixelEditor : WindowUI {
 			}
 		}
 		// Slice
-		if (HasSpriteSelecting) {
+		if (SelectingSpriteCount > 0) {
 			// Delete
 			if (Input.KeyboardDown(KeyboardKey.Delete)) {
 				DeleteAllSelectingSprite();
@@ -721,12 +598,24 @@ public partial class PixelEditor : WindowUI {
 		// Tool Label
 		if (ToolLabel != null && Interactable) {
 			int endIndex = Renderer.GetTextUsedCellCount();
-			GUI.BackgroundLabel(ToolLabelRect, ToolLabel, Color32.BLACK, out var bounds, Unify(12), GUISkin.SmallLabel);
+			bool leftSide = ToolLabelRect.CenterX() < WindowRect.CenterX();
+			bool downSide = ToolLabelRect.CenterY() < WindowRect.CenterY();
+			TooltipStyle.Alignment =
+				leftSide && downSide ? Alignment.BottomLeft :
+				leftSide && !downSide ? Alignment.TopLeft :
+				!leftSide && downSide ? Alignment.BottomRight :
+				Alignment.TopRight;
+			GUI.BackgroundLabel(
+				ToolLabelRect.EdgeOutside(Direction4.Down, Unify(24)).Shift(
+					leftSide ? Unify(20) : Unify(-20),
+					downSide ? Unify(10) : Unify(-10)
+				),
+				ToolLabel, Color32.BLACK,
+				out var bounds, Unify(6), TooltipStyle
+			);
 			Renderer.ExcludeTextCells(bounds, 0, endIndex);
 			ToolLabel = null;
 		}
-
-
 	}
 
 
@@ -772,7 +661,15 @@ public partial class PixelEditor : WindowUI {
 	private void RequireToolLabel (IRect buttonRect, string content) {
 		if (!buttonRect.MouseInside()) return;
 		ToolLabel = content;
-		ToolLabelRect = buttonRect.EdgeOutside(Direction4.Down, Unify(24)).Shift(0, Unify(-12));
+		ToolLabelRect = buttonRect;
+	}
+
+
+	private void ResetCamera () {
+		CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
+		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
+		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
+		ZoomLevel = 1;
 	}
 
 

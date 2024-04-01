@@ -58,7 +58,7 @@ public partial class PixelEditor {
 
 		DragChanged = false;
 		DraggingStateLeft = DragStateLeft.Canceled;
-		TryApplySliceInputField();
+		TryApplySliceInputFields();
 
 		if (HoldingSliceOptionKey) {
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
@@ -227,7 +227,7 @@ public partial class PixelEditor {
 				SelectSpritesOverlap(DraggingPixelRectLeft);
 
 				// Create Slice
-				if (!HasSpriteSelecting && DraggingPixelRectLeft.width > 0 && DraggingPixelRectLeft.height > 0) {
+				if (SelectingSpriteCount == 0 && DraggingPixelRectLeft.width > 0 && DraggingPixelRectLeft.height > 0) {
 					SetDirty();
 					// Create Sprite
 					var pixelRect = DraggingPixelRectLeft.Clamp(new IRect(0, 0, STAGE_SIZE, STAGE_SIZE));
@@ -416,37 +416,36 @@ public partial class PixelEditor {
 
 
 	// Sprite
-	private void SetSpriteSelection (int index) {
-		if (index < 0 || index >= StagedSprites.Count) return;
-		TryApplySliceInputField();
-		if (HasSpriteSelecting) {
-			for (int i = 0; i < StagedSprites.Count; i++) {
-				StagedSprites[i].Selecting = false;
-			}
+	private void SetSpriteSelection (int index, int length = 1) {
+		if (length <= 0 || index < 0 || index + length - 1 >= StagedSprites.Count) return;
+		TryApplySliceInputFields();
+		SelectingSpriteCount = 0;
+		for (int i = 0; i < StagedSprites.Count; i++) {
+			bool select = i >= index && i < index + length;
+			StagedSprites[i].Selecting = select;
+			if (select) SelectingSpriteCount++;
 		}
-		StagedSprites[index].Selecting = true;
-		HasSpriteSelecting = true;
 		RefreshSliceInputContent();
 	}
 
 
 	private void SelectSpritesOverlap (IRect pixelRange) {
-		TryApplySliceInputField();
+		TryApplySliceInputFields();
 		int count = StagedSprites.Count;
-		HasSpriteSelecting = false;
+		SelectingSpriteCount = 0;
 		for (int i = 0; i < count; i++) {
 			var spData = StagedSprites[i];
 			spData.Selecting = spData.Sprite.PixelRect.Overlaps(pixelRange);
-			HasSpriteSelecting = HasSpriteSelecting || spData.Selecting;
+			if (spData.Selecting) SelectingSpriteCount++;
 		}
 		RefreshSliceInputContent();
 	}
 
 
 	private void ClearSpriteSelection () {
-		if (!HasSpriteSelecting) return;
-		TryApplySliceInputField();
-		HasSpriteSelecting = false;
+		if (SelectingSpriteCount == 0) return;
+		TryApplySliceInputFields();
+		SelectingSpriteCount = 0;
 		foreach (var spData in StagedSprites) {
 			spData.Selecting = false;
 		}
@@ -455,7 +454,7 @@ public partial class PixelEditor {
 
 
 	private void DeleteAllSelectingSprite () {
-		TryApplySliceInputField();
+		TryApplySliceInputFields();
 		bool changed = false;
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			if (StagedSprites[i].Selecting) {
@@ -475,13 +474,13 @@ public partial class PixelEditor {
 				}
 			}
 		}
-		HasSpriteSelecting = false;
+		SelectingSpriteCount = 0;
 		if (changed) RefreshSliceInputContent();
 	}
 
 
 	private void MakeBorderForSelection (bool enableBorder) {
-		TryApplySliceInputField();
+		TryApplySliceInputFields();
 		bool changed = false;
 		foreach (var spData in StagedSprites) {
 			if (!spData.Selecting) continue;
@@ -499,6 +498,22 @@ public partial class PixelEditor {
 			} else {
 				spData.Sprite.GlobalBorder = Int4.zero;
 			}
+		}
+		if (changed) {
+			SetDirty();
+			RefreshSliceInputContent();
+		}
+	}
+
+
+	private void MakeTriggerForSelection (bool enableTrigger) {
+		TryApplySliceInputFields();
+		bool changed = false;
+		foreach (var spData in StagedSprites) {
+			if (!spData.Selecting) continue;
+			if (spData.Sprite.IsTrigger == enableTrigger) continue;
+			changed = true;
+			spData.Sprite.IsTrigger = enableTrigger;
 		}
 		if (changed) {
 			SetDirty();
@@ -555,6 +570,7 @@ public partial class PixelEditor {
 		}
 
 		// Paste
+		int oldCount = StagedSprites.Count;
 		foreach (var source in SpriteCopyBuffer) {
 			var sprite = source.CreateCopy();
 			sprite.AtlasIndex = CurrentAtlasIndex;
@@ -567,11 +583,13 @@ public partial class PixelEditor {
 			StagedSprites.Add(new SpriteData() {
 				Sprite = sprite,
 				PixelDirty = true,
-				Selecting = true,
+				Selecting = false,
 				DraggingStartRect = default,
 			});
 		}
-		HasSpriteSelecting = true;
+
+		// Select
+		SetSpriteSelection(oldCount, StagedSprites.Count - oldCount);
 
 	}
 
@@ -664,77 +682,198 @@ public partial class PixelEditor {
 	}
 
 
-	private void TryApplySliceInputField (bool forceApply = false) {
+	// Input Field
+	private void TryApplySliceInputFields (bool forceApply = false) {
 
-		if (!HasSpriteSelecting) return;
+		if (SelectingSpriteCount == 0) return;
 
+		string name = null;
+		int sizeX = -1;
+		int sizeY = -1;
 		int borderL = -1;
 		int borderR = -1;
 		int borderD = -1;
 		int borderU = -1;
+		int pivotX = int.MinValue;
+		int pivotY = int.MinValue;
+
+		// Name
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_N) {
+			if (SliceNameInput != "*" && !string.IsNullOrEmpty(SliceNameInput)) {
+				name = SliceNameInput;
+			}
+		}
+
+		// Width
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_W) {
+			if (SliceWidthInput != "*" && int.TryParse(SliceWidthInput, out int result)) {
+				sizeX = result.GreaterOrEquel(1);
+			}
+		}
+		// Height
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_H) {
+			if (SliceHeightInput != "*" && int.TryParse(SliceHeightInput, out int result)) {
+				sizeY = result.GreaterOrEquel(1);
+			}
+		}
 
 		// L
-		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_L) {
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_BL) {
 			if (SliceBorderInputL != "*" && int.TryParse(SliceBorderInputL, out int result)) {
 				borderL = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
 			}
 		}
 		// R
-		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_R) {
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_BR) {
 			if (SliceBorderInputR != "*" && int.TryParse(SliceBorderInputR, out int result)) {
 				borderR = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
 			}
 		}
 		// D
-		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_D) {
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_BD) {
 			if (SliceBorderInputD != "*" && int.TryParse(SliceBorderInputD, out int result)) {
 				borderD = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
 			}
 		}
 		// U
-		if (forceApply || GUI.TypingTextFieldID == BORDER_INPUT_ID_U) {
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_BU) {
 			if (SliceBorderInputU != "*" && int.TryParse(SliceBorderInputU, out int result)) {
 				borderU = (result * Const.ART_SCALE).GreaterOrEquelThanZero();
 			}
 		}
 
+		// Pivot X
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_PX) {
+			if (SlicePivotInputX != "*" && int.TryParse(SlicePivotInputX, out int result)) {
+				pivotX = result * 10;
+			}
+		}
+
+		// Pivot Y
+		if (forceApply || GUI.TypingTextFieldID == INPUT_ID_PY) {
+			if (SlicePivotInputY != "*" && int.TryParse(SlicePivotInputY, out int result)) {
+				pivotY = result * 10;
+			}
+		}
+
+
 		// Any Valid
-		if (borderL < 0 && borderR < 0 && borderD < 0 && borderU < 0) return;
+		if (
+			borderL < 0 && borderR < 0 && borderD < 0 && borderU < 0 &&
+			sizeX < 0 && sizeY < 0 && name == null &&
+			pivotX == int.MaxValue && pivotY == int.MaxValue
+		) return;
+
 
 		// Final
 		foreach (var spData in StagedSprites) {
+
 			if (!spData.Selecting) continue;
-			var border = spData.Sprite.GlobalBorder;
-			int width = spData.Sprite.PixelRect.width * Const.ART_SCALE;
-			int height = spData.Sprite.PixelRect.height * Const.ART_SCALE;
-			spData.Sprite.GlobalBorder = Int4.Direction(
-				borderL >= 0 ? borderL.Clamp(0, width - border.right) : border.left,
-				borderR >= 0 ? borderR.Clamp(0, width - border.left) : border.right,
-				borderD >= 0 ? borderD.Clamp(0, height - border.up) : border.down,
-				borderU >= 0 ? borderU.Clamp(0, height - border.down) : border.up
+
+			var sprite = spData.Sprite;
+			var pixRect = sprite.PixelRect;
+
+			// Border
+			var border = sprite.GlobalBorder;
+			sprite.GlobalBorder = Int4.Direction(
+				borderL >= 0 ? borderL.Clamp(0, sprite.GlobalWidth - border.right) : border.left,
+				borderR >= 0 ? borderR.Clamp(0, sprite.GlobalWidth - border.left) : border.right,
+				borderD >= 0 ? borderD.Clamp(0, sprite.GlobalHeight - border.up) : border.down,
+				borderU >= 0 ? borderU.Clamp(0, sprite.GlobalHeight - border.down) : border.up
 			);
+
+			// Size Changed
+			if (sizeX > 0 && sizeX != pixRect.width) {
+				sprite.ResizePixelRect(
+					new IRect(pixRect.x, pixRect.y, sizeX, pixRect.height),
+					resizeBorder: !border.IsZero
+				);
+				spData.PixelDirty = true;
+			}
+			if (sizeY > 0 && sizeY != pixRect.height) {
+				sprite.ResizePixelRect(
+					new IRect(pixRect.x, pixRect.y, pixRect.width, sizeY),
+					resizeBorder: !border.IsZero
+				);
+				spData.PixelDirty = true;
+			}
+
+			// Name
+			if (SelectingSpriteCount == 1 && !string.IsNullOrEmpty(name)) {
+				Sheet.RenameSprite(sprite, name);
+			}
+
+			// Pivot X
+			if (pivotX != int.MinValue && pivotX != sprite.PivotX) {
+				sprite.PivotX = pivotX;
+			}
+
+			// Pivot Y
+			if (pivotY != int.MinValue && pivotY != sprite.PivotY) {
+				sprite.PivotY = pivotY;
+			}
+
+			// Final
 			SetDirty();
 		}
+
 		GUI.CancelTyping();
 	}
 
 
 	private void RefreshSliceInputContent () {
-		if (!HasSpriteSelecting) {
+
+		if (SelectingSpriteCount == 0) {
+			SliceNameInput = "";
+			SliceWidthInput = "";
+			SliceHeightInput = "";
 			SliceBorderInputL = "";
 			SliceBorderInputR = "";
 			SliceBorderInputD = "";
 			SliceBorderInputU = "";
+			SlicePivotInputX = "";
+			SlicePivotInputY = "";
 			return;
 		}
+
+		string name = null;
+		int sizeX = int.MinValue;
+		int sizeY = int.MinValue;
 		int borderL = int.MinValue;
 		int borderR = int.MinValue;
 		int borderD = int.MinValue;
 		int borderU = int.MinValue;
+		int pivotX = int.MinValue;
+		int pivotY = int.MinValue;
 		int starCount = 0;
+
 		foreach (var spData in StagedSprites) {
+
 			if (!spData.Selecting) continue;
 			var border = spData.Sprite.GlobalBorder;
+
+			// Name
+			name ??= spData.Sprite.RealName;
+
+			// Width
+			if (sizeX != int.MaxValue) {
+				if (sizeX == int.MinValue) {
+					sizeX = spData.Sprite.GlobalWidth;
+				} else if (sizeX != spData.Sprite.GlobalWidth) {
+					sizeX = int.MaxValue;
+					starCount++;
+				}
+			}
+			// Height
+			if (sizeY != int.MaxValue) {
+				if (sizeY == int.MinValue) {
+					sizeY = spData.Sprite.GlobalHeight;
+				} else if (sizeY != spData.Sprite.GlobalHeight) {
+					sizeY = int.MaxValue;
+					starCount++;
+				}
+			}
+			// Border L
 			if (borderL != int.MaxValue) {
 				if (borderL == int.MinValue) {
 					borderL = border.left;
@@ -743,6 +882,7 @@ public partial class PixelEditor {
 					starCount++;
 				}
 			}
+			// Border R
 			if (borderR != int.MaxValue) {
 				if (borderR == int.MinValue) {
 					borderR = border.right;
@@ -751,6 +891,7 @@ public partial class PixelEditor {
 					starCount++;
 				}
 			}
+			// Border D
 			if (borderD != int.MaxValue) {
 				if (borderD == int.MinValue) {
 					borderD = border.down;
@@ -759,6 +900,7 @@ public partial class PixelEditor {
 					starCount++;
 				}
 			}
+			// Border U
 			if (borderU != int.MaxValue) {
 				if (borderU == int.MinValue) {
 					borderU = border.up;
@@ -767,12 +909,42 @@ public partial class PixelEditor {
 					starCount++;
 				}
 			}
-			if (starCount >= 4) break;
+
+			// PivotX
+			if (pivotX != int.MaxValue) {
+				if (pivotX == int.MinValue) {
+					pivotX = spData.Sprite.PivotX / 10;
+				} else if (pivotX != spData.Sprite.PivotX / 10) {
+					pivotX = int.MaxValue;
+					starCount++;
+				}
+			}
+
+			// PivotY
+			if (pivotY != int.MaxValue) {
+				if (pivotY == int.MinValue) {
+					pivotY = spData.Sprite.PivotY / 10;
+				} else if (pivotY != spData.Sprite.PivotY / 10) {
+					pivotY = int.MaxValue;
+					starCount++;
+				}
+			}
+
+			// Star Check
+			if (starCount >= 8) break;
 		}
+
+		// Final
+		SliceNameInput = name ?? "*";
+		SliceWidthInput = sizeX == int.MinValue || sizeX == int.MaxValue ? "*" : (sizeX / Const.ART_SCALE).ToString();
+		SliceHeightInput = sizeY == int.MinValue || sizeY == int.MaxValue ? "*" : (sizeY / Const.ART_SCALE).ToString();
 		SliceBorderInputL = borderL == int.MinValue || borderL == int.MaxValue ? "*" : (borderL / Const.ART_SCALE).ToString();
 		SliceBorderInputR = borderR == int.MinValue || borderR == int.MaxValue ? "*" : (borderR / Const.ART_SCALE).ToString();
 		SliceBorderInputD = borderD == int.MinValue || borderD == int.MaxValue ? "*" : (borderD / Const.ART_SCALE).ToString();
 		SliceBorderInputU = borderU == int.MinValue || borderU == int.MaxValue ? "*" : (borderU / Const.ART_SCALE).ToString();
+		SlicePivotInputX = pivotX == int.MinValue || pivotX == int.MaxValue ? "*" : pivotX.ToString();
+		SlicePivotInputY = pivotY == int.MinValue || pivotY == int.MaxValue ? "*" : pivotY.ToString();
+
 	}
 
 
