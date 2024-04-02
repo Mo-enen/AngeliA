@@ -15,6 +15,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	private class Item {
 		public string Label;
 		public int Icon;
+		public int Mark;
 		public Direction2 IconPosition;
 		public bool Checked;
 		public bool Enabled;
@@ -42,6 +43,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	public IRect BackgroundRect { get; private set; }
 	public int OffsetX { get; set; } = 0;
 	public int OffsetY { get; set; } = 0;
+	public int InvokingItemIndex { get; private set; } = -1;
+	public int MenuID { get; private set; } = 0;
 
 	// Data
 	private readonly Item[] Items = new Item[128];
@@ -141,9 +144,6 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					new Color32(0, 0, 0, 32), int.MaxValue
 				);
 			} else {
-				// Item
-				var tint = item.Enabled ? Color32.BLACK : Color32.BLACK_128;
-
 				// Highlight
 				bool hover = rect.MouseInside();
 				if (hover && item.Enabled) {
@@ -155,9 +155,9 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					// Check Mark
 					if (item.Checked) {
 						Renderer.Draw(
-							CHECK_CODE,
+							item.Mark != 0 ? item.Mark : CHECK_CODE,
 							new IRect(rect.x, rect.y, rect.height, rect.height).Shrink(checkShrink),
-							tint
+							item.Enabled ? Color32.BLACK : Color32.BLACK_128
 						);
 					}
 
@@ -180,6 +180,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 					// Click
 					if (hover && item.Enabled && Input.MouseLeftButtonDown) {
+						InvokingItemIndex = i;
 						item.Action?.Invoke();
 					}
 				}
@@ -226,7 +227,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
-	public static void BeginPopup () {
+	public static void BeginPopup (int menuID = 0) {
 		if (Instance == null) return;
 		if (Stage.Enable) {
 			Stage.SpawnEntity(Instance.TypeID, 0, 0);
@@ -236,19 +237,21 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			Instance.OnActivated();
 		}
 		ClearItems();
+		Instance.InvokingItemIndex = -1;
 		Instance.ItemCount = 0;
 		Instance.OffsetX = Input.UnshiftedMouseGlobalPosition.x - Renderer.CameraRect.x;
 		Instance.OffsetY = Input.UnshiftedMouseGlobalPosition.y - Renderer.CameraRect.y;
+		Instance.MenuID = menuID;
 	}
 
 
 	public static void AddSeparator () => AddItem("", Const.EmptyMethod, true, false);
 
 
-	public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false) => AddItem(label, 0, default, action, enabled, @checked);
+	public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false) => AddItem(label, 0, default, 0, action, enabled, @checked);
 
 
-	public static void AddItem (string label, int icon, Direction2 iconPosition, System.Action action, bool enabled = true, bool @checked = false) {
+	public static void AddItem (string label, int icon, Direction2 iconPosition, int checkMark, System.Action action, bool enabled = true, bool @checked = false) {
 		if (Instance == null || Instance.ItemCount >= Instance.Items.Length - 1) return;
 		var item = Instance.Items[Instance.ItemCount];
 		item.Label = label;
@@ -257,6 +260,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		item.Action = action;
 		item.Enabled = enabled;
 		item.Checked = @checked;
+		item.Mark = checkMark;
 		Instance.ItemCount++;
 	}
 

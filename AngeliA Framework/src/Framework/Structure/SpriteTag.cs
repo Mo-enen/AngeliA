@@ -1,4 +1,4 @@
-﻿namespace AngeliA; 
+﻿namespace AngeliA;
 public static class SpriteTag {
 
 	public const string ONEWAY_UP_STRING = "OnewayUp";
@@ -43,7 +43,9 @@ public static class SpriteTag {
 	public static readonly int DAMAGE_MAGICAL_TAG = DAMAGE_MAGICAL_STRING.AngeHash();
 	public static readonly int DAMAGE_POISON_TAG = DAMAGE_POISON_STRING.AngeHash();
 
-	public static readonly string[] ALL_TAGS_STRING = new string[20]{
+	public const int COUNT = 20;
+
+	public static readonly string[] ALL_TAGS_STRING = new string[COUNT]{
 		ONEWAY_UP_STRING,
 		ONEWAY_DOWN_STRING,
 		ONEWAY_LEFT_STRING,
@@ -65,7 +67,7 @@ public static class SpriteTag {
 		DAMAGE_MAGICAL_STRING,
 		DAMAGE_POISON_STRING,
 	};
-	public static readonly int[] ALL_TAGS = new int[20]{
+	public static readonly int[] ALL_TAGS = new int[COUNT]{
 		ONEWAY_UP_TAG,
 		ONEWAY_DOWN_TAG,
 		ONEWAY_LEFT_TAG,

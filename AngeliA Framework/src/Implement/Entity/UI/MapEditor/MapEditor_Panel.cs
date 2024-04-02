@@ -836,7 +836,7 @@ public partial class MapEditor {
 
 		// BG
 		Renderer.DrawPixel(CheckPointLaneRect, Color32.BLACK);
-		
+
 		// Scroll
 		if (Input.MouseWheelDelta != 0) QuickLaneScrollY -= Input.MouseWheelDelta;
 
@@ -964,7 +964,7 @@ public partial class MapEditor {
 				!hasItem ?
 					MENU_PALETTE_ADD_TO_LIST :
 					MENU_PALETTE_REMOVE_FROM_LIST,
-				list.Icon, Direction2.Right,
+				list.Icon, Direction2.Right, 0,
 				() => {
 					if (!hasItem) {
 						if (list.Items.Count == 0) list.Icon = pal.ArtworkID;

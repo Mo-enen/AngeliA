@@ -13,6 +13,7 @@ public partial class PixelEditor {
 
 
 	// Const
+	private const int ATLAS_POPUP_ID = 1278321;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
 	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
@@ -166,7 +167,7 @@ public partial class PixelEditor {
 
 			// Clamp Popup
 			var popup = GenericPopupUI.Instance;
-			if (popup.Active) {
+			if (popup.Active && popup.MenuID == ATLAS_POPUP_ID) {
 				popup.OffsetX = (popup.OffsetX + Renderer.CameraRect.x).Clamp(
 					WindowRect.x,
 					WindowRect.x + Unify(PANEL_WIDTH) - popup.Width
@@ -237,7 +238,7 @@ public partial class PixelEditor {
 	private void ShowAtlasItemPopup (int atlasIndex) {
 
 		AtlasMenuTargetIndex = atlasIndex;
-		GenericPopupUI.BeginPopup();
+		GenericPopupUI.BeginPopup(ATLAS_POPUP_ID);
 
 		// Delete
 		if (atlasIndex >= 0) {

@@ -10,11 +10,7 @@ public partial class PixelEditor : WindowUI {
 
 
 
-	//LocalZ;
-	//IsTrigger;
 	//Rule;
-	//Tag;
-	//Duration;
 
 
 	#region --- SUB ---
@@ -77,6 +73,7 @@ public partial class PixelEditor : WindowUI {
 	private readonly List<SpriteData> StagedSprites = new();
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
 	private readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
+	private readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private string SheetPath = "";
 	private string ToolLabel = null;
 	private bool IsDirty = false;
@@ -106,7 +103,13 @@ public partial class PixelEditor : WindowUI {
 
 
 	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () => Renderer.AddAltSheet(Instance.Sheet);
+	internal static void OnGameInitializeLater () {
+		Renderer.AddAltSheet(Instance.Sheet);
+		Instance.TagPool.Clear();
+		for (int i = 0; i < SpriteTag.COUNT; i++) {
+			Instance.TagPool.TryAdd(SpriteTag.ALL_TAGS[i], (SpriteTag.ALL_TAGS_STRING[i], i));
+		}
+	}
 
 
 	public PixelEditor () => Instance = this;
@@ -147,6 +150,7 @@ public partial class PixelEditor : WindowUI {
 		GizmosThickness = Unify(1);
 		HoveringResizeDirection = null;
 		SelectingSpriteCount = 0;
+		SelectingAnyTiggerSprite = false;
 		SelectingAnySpriteWithBorder = false;
 		SelectingAnySpriteWithoutBorder = false;
 		SelectingAnyNonTiggerSprite = false;
@@ -170,6 +174,7 @@ public partial class PixelEditor : WindowUI {
 				SelectingSpriteCount++;
 				SelectingAnySpriteWithoutBorder = SelectingAnySpriteWithoutBorder || sprite.GlobalBorder.IsZero;
 				SelectingAnySpriteWithBorder = SelectingAnySpriteWithBorder || !sprite.GlobalBorder.IsZero;
+				SelectingAnyTiggerSprite = SelectingAnyTiggerSprite || sprite.IsTrigger;
 				SelectingAnyNonTiggerSprite = SelectingAnyNonTiggerSprite || !sprite.IsTrigger;
 			}
 
@@ -422,7 +427,7 @@ public partial class PixelEditor : WindowUI {
 
 	}
 
-
+	
 	private void Update_Gizmos () {
 
 		if (Sheet.Atlas.Count <= 0) return;

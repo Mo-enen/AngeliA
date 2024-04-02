@@ -60,7 +60,7 @@ public static class SheetUtil {
 				out string ruleStr, out bool noCollider, out int offsetZ,
 				out int aniDuration, out int? pivotX, out int? pivotY
 			);
-			int tag = tagStr.AngeHash();
+			int tag = string.IsNullOrEmpty(tagStr) ? 0 : tagStr.AngeHash();
 			int rule = Util.RuleStringToDigit(ruleStr);
 			int globalWidth = flex.PixelRect.width * Const.ART_SCALE;
 			int globalHeight = flex.PixelRect.height * Const.ART_SCALE;

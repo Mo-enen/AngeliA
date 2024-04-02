@@ -1,5 +1,4 @@
-﻿global using Debug = AngeliA.Debug;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
@@ -502,6 +501,8 @@ internal class Engine {
 			Setting.WindowPositionY = windowPos.y;
 		}
 
+		Input.UseAllHoldingKeys();
+		
 		// Set
 		int targetWindowWidth = Game.ScreenWidth;
 		int targetWindowHeight = Game.ScreenHeight;

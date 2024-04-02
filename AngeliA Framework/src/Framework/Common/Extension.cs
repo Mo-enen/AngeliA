@@ -653,13 +653,12 @@ public static class Extension {
 		return rect;
 	}
 	public static bool CompleteInside (this IRect rect, IRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
-	public static IRect Clamp (this IRect rect, IRect range) {
-		rect.xMin = Util.Max(rect.xMin, range.xMin);
-		rect.yMin = Util.Max(rect.yMin, range.yMin);
-		rect.xMax = Util.Min(rect.xMax, range.xMax);
-		rect.yMax = Util.Min(rect.yMax, range.yMax);
-		return rect;
-	}
+	public static IRect Clamp (this IRect rect, IRect range) => IRect.MinMaxRect(
+		Util.Max(rect.xMin, range.xMin),
+		Util.Max(rect.yMin, range.yMin),
+		Util.Min(rect.xMax, range.xMax),
+		Util.Min(rect.yMax, range.yMax)
+	);
 	public static void SlideLeft (ref this IRect rect, int padding = 0) => rect.x -= rect.width + padding;
 	public static void SlideRight (ref this IRect rect, int padding = 0) => rect.x += rect.width + padding;
 	public static void SlideDown (ref this IRect rect, int padding = 0) => rect.y -= rect.height + padding;
