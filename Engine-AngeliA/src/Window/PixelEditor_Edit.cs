@@ -365,6 +365,8 @@ public partial class PixelEditor {
 
 
 	private void DrawMovingSprites () {
+		using var _ = Scope.RendererLayer(RenderLayer.DEFAULT);
+		using var _sheet = Scope.Sheet(SHEET_INDEX);
 		var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 		var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 		var pixDelta = mousePixPos - mouseDownPixPos;
@@ -378,20 +380,14 @@ public partial class PixelEditor {
 			var pxRect = sprite.PixelRect;
 			pxRect.x = spData.DraggingStartRect.x + pixDelta.x;
 			pxRect.y = spData.DraggingStartRect.y + pixDelta.y;
-			var rect = Pixel_to_Stage(pxRect, out var uv, out bool outside);
+			var rect = Pixel_to_Stage(pxRect, out var uv, out bool outside, ignoreClamp: true);
 			if (outside) continue;
-
-			// Draw Sprite
-			if (Sheet.TexturePool.TryGetValue(sprite.ID, out var texture)) {
-				if (uv.HasValue) {
-					Game.DrawGizmosTexture(rect.Clamp(StageRect), uv.Value, texture);
-				} else {
-					Game.DrawGizmosTexture(rect, texture);
-				}
-			}
-
-			// Draw Gizmos
-			DrawGizmosFrame(rect, uv, Color32.WHITE, GizmosThickness * 2);
+			Renderer.Draw(sprite.ID, rect, z: int.MaxValue);
+			DrawRendererFrame(
+				rect.Expand(GizmosThickness),
+				Color32.WHITE,
+				GizmosThickness * 2
+			);
 		}
 	}
 

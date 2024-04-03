@@ -481,6 +481,7 @@ public class Sheet {
 				}
 			}
 		}
+
 		// Texture Pool
 		foreach (var texture in TexturePool) Game.UnloadTexture(texture);
 		TexturePool.Clear();

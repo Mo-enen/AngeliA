@@ -252,7 +252,7 @@ public static partial class Util {
 		offsetZ = 0;
 		pivotX = null;
 		pivotY = null;
-		aniDuration = 1;
+		aniDuration = 0;
 		groupType = GroupType.General;
 		const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
 		int hashIndex = name.IndexOf('#');
@@ -378,8 +378,6 @@ public static partial class Util {
 							continue;
 					}
 				}
-
-				//Game.LogWarning($"Unknown hash \"{hashTag}\" for {name}");
 
 			}
 			// Trim Name
