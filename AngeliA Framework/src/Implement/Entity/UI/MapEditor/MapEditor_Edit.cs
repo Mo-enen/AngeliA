@@ -204,8 +204,8 @@ public partial class MapEditor {
 					if (!idUniqueEntity) {
 						// Redirect for Random
 						if (
-							SelectingPaletteItem.GroupType == GroupType.Random &&
 							SelectingPaletteItem.Group != null &&
+							SelectingPaletteItem.Group.Random &&
 							IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
 							idChain.Length > 0
 						) {

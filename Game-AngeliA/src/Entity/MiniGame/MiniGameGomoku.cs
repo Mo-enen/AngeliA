@@ -172,7 +172,7 @@ public class MiniGameGomoku : MiniGame {
 
 		// Player Color Hint
 		int labelHeight = Unify(32);
-		using (GUIScope.ContentColor(PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT)) {
+		using (Scope.GUIContentColor(PlayerIsBlack ? BLACK_STONE_TINT : WHITE_STONE_TINT)) {
 			GUI.Label(
 				new IRect(boardRect.x, boardRect.yMax - labelHeight, boardRect.width, labelHeight),
 				GOMOKU_YOU_ARE, out var bounds

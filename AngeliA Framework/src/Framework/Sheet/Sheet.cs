@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,7 @@ public class Sheet {
 	public readonly Dictionary<int, AngeSprite> SpritePool = new();
 	public readonly Dictionary<int, SpriteGroup> GroupPool = new();
 	public readonly Dictionary<int, object> TexturePool = new();
+	private bool IgnoreGroups { get; init; } = false;
 
 
 	#endregion
@@ -29,9 +31,11 @@ public class Sheet {
 	#region --- MSG ---
 
 
-	public Sheet () { }
+	public Sheet (bool ignoreGroups = false) => IgnoreGroups = ignoreGroups;
 
-	public Sheet (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) => SetData(sprites, groups, atlasInfo);
+	public Sheet (
+		List<AngeSprite> sprites, List<Atlas> atlasInfo, bool ignoreGroups = false
+	) : this(ignoreGroups) => SetData(sprites, atlasInfo);
 
 
 	#endregion
@@ -42,17 +46,15 @@ public class Sheet {
 	#region --- API ---
 
 
-	public void SetData (List<AngeSprite> sprites, List<SpriteGroup> groups, List<Atlas> atlasInfo) {
+	public void SetData (List<AngeSprite> sprites, List<Atlas> atlasInfo) {
 		Sprites.Clear();
-		Groups.Clear();
 		Atlas.Clear();
 		Sprites.AddRange(sprites);
-		Groups.AddRange(groups);
 		Atlas.AddRange(atlasInfo);
-		ApplyExtraData();
+		CalculateExtraData();
 	}
 
-	public bool LoadFromDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
+	public bool LoadFromDisk (string path) {
 
 		Clear();
 		var bytes = Util.CompressedFileToByte(path, out int length);
@@ -63,27 +65,26 @@ public class Sheet {
 
 		// File Version
 		int fileVersion = reader.ReadInt32();
+		const int CODE_VERSION = 0;
 
 		// Load Data
 		switch (fileVersion) {
-			case 0:
-				LoadFromBinary_v0(reader, exceptionHandler);
+			case CODE_VERSION:
+				LoadFromBinary_v0(reader);
 				break;
 			default:
-				exceptionHandler?.Invoke(
-					new System.Exception($"Can not handle sheet version {fileVersion}. Expect: version-0")
-				);
+				Debug.LogError($"Can not handle sheet version {fileVersion}. Expect: version-{CODE_VERSION}");
 				return false;
 		}
 
 		return true;
 	}
 
-	public void SaveToDisk (string path, System.Action<System.Exception> exceptionHandler = null) {
+	public void SaveToDisk (string path) {
 		using var stream = new MemoryStream(1024);
 		using var writer = new BinaryWriter(stream);
 		writer.Write((int)0); // File Version
-		SaveToBinary_v0(writer, exceptionHandler);
+		SaveToBinary_v0(writer);
 		Util.ByteToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
 	}
 
@@ -216,48 +217,6 @@ public class Sheet {
 		return true;
 	}
 
-	public AngeSprite CreateSpriteInGroup (SpriteGroup group, int atlasIndex, IRect pixelRect, int duration = 5) {
-		string name = $"{group.Name} {group.Count}";
-		var atlas = Atlas[atlasIndex];
-		var sprite = new AngeSprite {
-			Group = group,
-			ID = name.AngeHash(),
-			RealName = name,
-			PixelRect = pixelRect,
-			GlobalWidth = pixelRect.width * Const.ART_SCALE,
-			GlobalHeight = pixelRect.height * Const.ART_SCALE,
-			Atlas = atlas,
-			AtlasIndex = atlasIndex,
-			LocalZ = 0,
-			SortingZ = atlas.AtlasZ * 1024,
-			PivotX = 0,
-			PivotY = 0,
-			Pixels = new Color32[pixelRect.width * pixelRect.height],
-			Rule = 0,
-			GlobalBorder = default,
-			IsTrigger = false,
-			SummaryTint = default,
-			Duration = duration,
-			Tag = 0,
-		};
-		group.SpriteIDs.Add(sprite.ID);
-		return sprite;
-	}
-
-	public SpriteGroup CreateSpriteGroup (string name, GroupType type) {
-		int id = name.AngeHash();
-		if (GroupPool.ContainsKey(id)) return null;
-		var group = new SpriteGroup() {
-			Name = name,
-			ID = id,
-			SpriteIDs = new(),
-			Type = type,
-		};
-		Groups.Add(group);
-		GroupPool.Add(id, group);
-		return group;
-	}
-
 	public void CombineSheet (Sheet sheet) {
 		int atlasShift = Atlas.Count;
 		foreach (var altas in sheet.Atlas) {
@@ -348,7 +307,7 @@ public class Sheet {
 	#region --- LGC ---
 
 
-	private void LoadFromBinary_v0 (BinaryReader reader, System.Action<System.Exception> exceptionHandler) {
+	private void LoadFromBinary_v0 (BinaryReader reader) {
 
 		var stream = reader.BaseStream;
 
@@ -361,24 +320,10 @@ public class Sheet {
 			for (int i = 0; i < spriteCount; i++) {
 				var sprite = new AngeSprite();
 				Sprites.Add(sprite);
-				sprite.LoadFromBinary_v0(reader, exceptionHandler);
+				sprite.LoadFromBinary_v0(reader);
 			}
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 		if (stream.Position != spriteEndPos) stream.Position = spriteEndPos;
-
-		// Groups
-		int groupCount = reader.ReadInt32();
-		int groupByteLength = reader.ReadInt32();
-		long groupEndPos = stream.Position + groupByteLength;
-		Groups.Clear();
-		try {
-			for (int i = 0; i < groupCount; i++) {
-				var group = new SpriteGroup();
-				Groups.Add(group);
-				group.LoadFromBinary_v0(reader, exceptionHandler);
-			}
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
-		if (stream.Position != groupEndPos) stream.Position = groupEndPos;
 
 		// Atlas
 		int atlasCount = reader.ReadInt32();
@@ -389,16 +334,16 @@ public class Sheet {
 			for (int i = 0; i < atlasCount; i++) {
 				var atlas = new Atlas();
 				Atlas.Add(atlas);
-				atlas.LoadFromBinary_v0(reader, exceptionHandler);
+				atlas.LoadFromBinary_v0(reader);
 			}
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 		if (stream.Position != atlasEndPos) stream.Position = atlasEndPos;
 
 		// Final
-		ApplyExtraData();
+		CalculateExtraData();
 	}
 
-	private void SaveToBinary_v0 (BinaryWriter writer, System.Action<System.Exception> exceptionHandler) {
+	private void SaveToBinary_v0 (BinaryWriter writer) {
 		try {
 
 			var stream = writer.BaseStream;
@@ -410,22 +355,7 @@ public class Sheet {
 				writer.Write((int)0);
 				long startPos = stream.Position;
 				for (int i = 0; i < Sprites.Count; i++) {
-					Sprites[i].SaveToBinary_v0(writer, exceptionHandler);
-				}
-				long endPos = stream.Position;
-				stream.Position = markPos;
-				writer.Write((int)(endPos - startPos));
-				stream.Position = endPos;
-			}
-
-			// Groups
-			{
-				writer.Write((int)Groups.Count);
-				long markPos = stream.Position;
-				writer.Write((int)0);
-				long startPos = stream.Position;
-				for (int i = 0; i < Groups.Count; i++) {
-					Groups[i].SaveToBinary_v0(writer, exceptionHandler);
+					Sprites[i].SaveToBinary_v0(writer);
 				}
 				long endPos = stream.Position;
 				stream.Position = markPos;
@@ -440,7 +370,7 @@ public class Sheet {
 				writer.Write((int)0);
 				long startPos = stream.Position;
 				for (int i = 0; i < Atlas.Count; i++) {
-					Atlas[i].SaveToBinary_v0(writer, exceptionHandler);
+					Atlas[i].SaveToBinary_v0(writer);
 				}
 				long endPos = stream.Position;
 				stream.Position = markPos;
@@ -448,40 +378,73 @@ public class Sheet {
 				stream.Position = endPos;
 			}
 
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}
 
-	private void ApplyExtraData () {
-		// Fill Sprites
-		SpritePool.Clear();
-		for (int i = 0; i < Sprites.Count; i++) {
-			var sp = Sprites[i];
-			SpritePool.TryAdd(sp.ID, Sprites[i]);
-		}
-		// Fill Groups
-		GroupPool.Clear();
-		for (int i = 0; i < Groups.Count; i++) {
-			var group = Groups[i];
-			GroupPool.TryAdd(group.ID, group);
-		}
+	private void CalculateExtraData () {
 		// Sprites
+		SpritePool.Clear();
 		for (int i = 0; i < Sprites.Count; i++) {
 			var sprite = Sprites[i];
 			sprite.Atlas = Atlas[sprite.AtlasIndex];
 			sprite.SortingZ = sprite.Atlas.AtlasZ * 1024 + sprite.LocalZ;
+			sprite.Group = null;
+			SpritePool.TryAdd(sprite.ID, Sprites[i]);
 		}
-		// Groups
-		for (int i = 0; i < Groups.Count; i++) {
-			var group = Groups[i];
-			for (int j = 0; j < group.SpriteIDs.Count; j++) {
-				int id = group.SpriteIDs[j];
-				if (SpritePool.TryGetValue(id, out var sprite)) {
-					sprite.Group = group;
+		// Make Groups
+		GroupPool.Clear();
+		if (!IgnoreGroups) {
+			// Create Groups
+			for (int i = 0; i < Sprites.Count; i++) {
+				var sprite = Sprites[i];
+
+				if (!Util.GetGroupInfoFromSpriteRealName(
+					sprite.RealName, out string groupName, out int groupIndex
+				)) continue;
+
+				// Get or Create Group
+				groupIndex = groupIndex.Clamp(0, SpriteGroup.MAX_COUNT - 1);
+				int groupId = groupName.AngeHash();
+				if (!GroupPool.TryGetValue(groupId, out var group)) {
+					group = new SpriteGroup() {
+						ID = groupId,
+						Name = groupName,
+						SpriteIDs = new(),
+						LoopStart = 0,
+						Animated = false,
+						WithRule = false,
+						Random = false,
+					};
+					Groups.Add(group);
+					GroupPool.Add(groupId, group);
 				}
+				sprite.Group = group;
+
+				// Add Sprite ID into Group
+				if (groupIndex < group.Count) {
+					group[groupIndex] = sprite.ID;
+				} else if (groupIndex == group.Count) {
+					group.Add(sprite.ID);
+				} else {
+					for (int safe = 0; groupIndex > group.Count && safe < SpriteGroup.MAX_COUNT; safe++) {
+						group.Add(0);
+					}
+					group.Add(sprite.ID);
+				}
+
+				// Extra Info
+				if (sprite.Duration > 0) group.Animated = true;
+				if (sprite.Rule != 0) group.WithRule = true;
+				if (sprite.Tag == SpriteTag.LOOP_START_TAG) group.LoopStart = groupIndex;
+				if (sprite.Tag == SpriteTag.RANDOM_TAG) group.Random = true;
+
+			}
+			// Remove Null
+			foreach (var group in Groups) {
+				group.SpriteIDs.RemoveAll(id => id == 0);
 			}
 		}
-
 		// Texture Pool
 		foreach (var texture in TexturePool) Game.UnloadTexture(texture);
 		TexturePool.Clear();

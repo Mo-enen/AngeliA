@@ -29,7 +29,7 @@ public class AngeSprite {
 	public Color32 SummaryTint;
 	public Color32[] Pixels;
 
-	public void LoadFromBinary_v0 (BinaryReader reader, System.Action<System.Exception> exceptionHandler) {
+	public void LoadFromBinary_v0 (BinaryReader reader) {
 		uint byteLen = reader.ReadUInt32();
 		long endPos = reader.BaseStream.Position + byteLen;
 		try {
@@ -92,11 +92,11 @@ public class AngeSprite {
 			var bytes = reader.ReadBytes(PixelRect.width * PixelRect.height * 4);
 			Pixels = bytes.Bytes_to_Pixels(PixelRect.width, PixelRect.height);
 
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 		reader.BaseStream.Position = endPos;
 	}
 
-	public void SaveToBinary_v0 (BinaryWriter writer, System.Action<System.Exception> exceptionHandler) {
+	public void SaveToBinary_v0 (BinaryWriter writer) {
 		long markPos = writer.BaseStream.Position;
 		writer.Write((uint)0);
 		long startPos = writer.BaseStream.Position;
@@ -151,79 +151,11 @@ public class AngeSprite {
 			var bytes = Pixels.Pixels_to_Bytes(PixelRect.width, PixelRect.height);
 			writer.Write(bytes);
 
-		} catch (System.Exception ex) { exceptionHandler?.Invoke(ex); }
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 		long endPos = writer.BaseStream.Position;
 		writer.BaseStream.Position = markPos;
 		writer.Write((uint)(endPos - startPos));
 		writer.BaseStream.Position = endPos;
-	}
-
-	public string GetFullName () {
-
-		CacheBuilder.Clear();
-		CacheBuilder.Append(RealName);
-
-		// Trigger
-		if (IsTrigger) {
-			CacheBuilder.Append(" #IsTrigger");
-		}
-
-		// Tag
-		if (Tag != 0) {
-			for (int i = 0; i < SpriteTag.ALL_TAGS.Length; i++) {
-				if (SpriteTag.ALL_TAGS[i] == Tag) {
-					CacheBuilder.Append(" #tag=");
-					CacheBuilder.Append(SpriteTag.ALL_TAGS_STRING[i]);
-					break;
-				}
-			}
-		}
-
-		// No Collider
-		if (
-			Atlas.Type == AtlasType.Level &&
-			(GlobalBorder.horizontal >= GlobalWidth || GlobalBorder.vertical >= GlobalHeight)
-		) {
-			CacheBuilder.Append(" #noCollider");
-		}
-
-		if (Group != null) {
-			// Ani
-			switch (Group.Type) {
-				case GroupType.Rule:
-					// Rule
-					if (Rule != 0) {
-						CacheBuilder.Append(" #rule=");
-						CacheBuilder.Append(Util.RuleDigitToString(Rule));
-					}
-					break;
-				case GroupType.Random:
-					// Ran
-					CacheBuilder.Append(" #ran");
-					break;
-				case GroupType.Animated:
-					// Ani
-					CacheBuilder.Append(" #ani");
-					// Loopstart
-					if (
-						Group.LoopStart >= 0 && Group.LoopStart < Group.SpriteIDs.Count &&
-						Group.SpriteIDs[Group.LoopStart] == ID
-					) {
-						CacheBuilder.Append(" #loopStart");
-					}
-					break;
-			}
-		}
-
-		// Z
-		if (LocalZ != 0) {
-			CacheBuilder.Append(" #z=");
-			CacheBuilder.Append(LocalZ);
-		}
-
-		string result = CacheBuilder.ToString();
-		CacheBuilder.Clear();
-		return result;
 	}
 
 	public void ResizePixelRect (IRect newRect, bool resizeBorder) {

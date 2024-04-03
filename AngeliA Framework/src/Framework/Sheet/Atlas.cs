@@ -20,7 +20,7 @@ public class Atlas {
 	public AtlasType Type;
 	public int AtlasZ;
 
-	public void LoadFromBinary_v0 (BinaryReader reader, System.Action<System.Exception> exceptionHandler) {
+	public void LoadFromBinary_v0 (BinaryReader reader) {
 		uint byteLen = reader.ReadUInt32();
 		long endPos = reader.BaseStream.Position + byteLen;
 		try {
@@ -42,12 +42,12 @@ public class Atlas {
 			AtlasZ = reader.ReadInt32();
 
 		} catch (System.Exception ex) {
-			exceptionHandler?.Invoke(ex);
+			Debug.LogException(ex);
 		}
 		reader.BaseStream.Position = endPos;
 	}
 
-	public void SaveToBinary_v0 (BinaryWriter writer, System.Action<System.Exception> exceptionHandler) {
+	public void SaveToBinary_v0 (BinaryWriter writer) {
 		long markPos = writer.BaseStream.Position;
 		writer.Write((uint)0);
 		long startPos = writer.BaseStream.Position;
@@ -66,7 +66,7 @@ public class Atlas {
 			writer.Write((int)AtlasZ);
 
 		} catch (System.Exception ex) {
-			exceptionHandler?.Invoke(ex);
+			Debug.LogException(ex);
 		}
 		long endPos = writer.BaseStream.Position;
 		writer.BaseStream.Position = markPos;

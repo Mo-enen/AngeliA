@@ -332,7 +332,7 @@ public sealed partial class MapEditor : WindowUI {
 			}
 
 			// RuleID to RuleGroup
-			if (chain.Type == GroupType.Rule) {
+			if (chain.WithRule) {
 				builder.Clear();
 				if (Renderer.HasSpriteGroup(chain.ID, out int groupLength)) {
 					for (int j = 0; j < groupLength; j++) {

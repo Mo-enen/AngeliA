@@ -37,10 +37,6 @@ public static class SheetUtil {
 
 	public static Sheet CreateNewSheet (FlexSprite[] flexSprites) {
 
-		var groupPool = new Dictionary<
-			string,
-			(GroupType type, List<(int globalIndex, int localIndex, bool loopStart)> list)
-		>();
 		var spriteList = new List<AngeSprite>();
 		var atlases = new List<Atlas>();
 		var atlasPool = new Dictionary<string, int>(); // Name, Index
@@ -48,15 +44,9 @@ public static class SheetUtil {
 		// Load Sprites
 		for (int i = 0; i < flexSprites.Length; i++) {
 			var flex = flexSprites[i];
-			var uvBorder = new Float4(
-				(float)flex.Border.left / flex.PixelRect.width,
-				(float)flex.Border.down / flex.PixelRect.height,
-				(float)flex.Border.right / flex.PixelRect.width,
-				(float)flex.Border.up / flex.PixelRect.height
-			);
 			Util.GetSpriteInfoFromName(
-				flex.FullName, out string realName, out string groupName, out int groupIndex, out var groupType,
-				out bool isTrigger, out string tagStr, out bool loopStart,
+				flex.FullName, out string realName,
+				out bool isTrigger, out string tagStr,
 				out string ruleStr, out bool noCollider, out int offsetZ,
 				out int aniDuration, out int? pivotX, out int? pivotY
 			);
@@ -110,47 +100,10 @@ public static class SheetUtil {
 
 			spriteList.Add(newSprite);
 
-			// Group
-			if (groupIndex >= 0) {
-				int _index = groupIndex;
-				if (!groupPool.ContainsKey(groupName)) {
-					groupPool.Add(groupName, (groupType, new()));
-				}
-				groupPool[groupName].list.Add((spriteList.Count - 1, _index, loopStart));
-			}
-
-		}
-
-		// Sort Groups
-		foreach (var (_, (_, list)) in groupPool) {
-			list.Sort((a, b) => a.localIndex.CompareTo(b.localIndex));
-		}
-
-		// Load Groups
-		var groups = new List<SpriteGroup>();
-		foreach (var (gName, (type, list)) in groupPool) {
-			var spriteIDs = new List<int>();
-			int loopStart = 0;
-			bool isAni = type == GroupType.Animated;
-			var group = new SpriteGroup() {
-				ID = gName.AngeHash(),
-				Name = gName,
-				SpriteIDs = spriteIDs,
-				Type = type,
-			};
-			for (int i = 0; i < list.Count; i++) {
-				int spIndex = list[i].globalIndex;
-				var sprite = spriteList[spIndex];
-				if (isAni && list[i].loopStart) loopStart = i;
-				sprite.Group = group;
-				spriteIDs.Add(sprite.ID);
-			}
-			group.LoopStart = loopStart;
-			groups.Add(group);
 		}
 
 		// Create
-		return new Sheet(spriteList, groups, atlases);
+		return new Sheet(spriteList, atlases);
 
 		// Func
 		static Color32 GetSummaryTint (Color32[] pixels) {

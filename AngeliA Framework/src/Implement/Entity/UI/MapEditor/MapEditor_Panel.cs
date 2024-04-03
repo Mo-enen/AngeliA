@@ -43,7 +43,6 @@ public partial class MapEditor {
 		public int GroupIndex = -1;
 		public string Name = "";
 		public bool IsUnique = false;
-		public GroupType GroupType = GroupType.General;
 		public BlockType BlockType = BlockType.Entity;
 		public SpriteGroup Group = null;
 	}
@@ -130,8 +129,8 @@ public partial class MapEditor {
 		// For all Sprite Groups
 		for (int index = 0; index < groupCount; index++) {
 
-			var chain = Renderer.GetGroupAt(index);
-			if (!Renderer.TryGetSprite(chain.SpriteIDs[0], out var firstSprite)) continue;
+			var group = Renderer.GetGroupAt(index);
+			if (group.Count == 0 || !Renderer.TryGetSprite(group[0], out var firstSprite)) continue;
 
 			var atlasType = firstSprite.Atlas.Type;
 			if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
@@ -147,12 +146,11 @@ public partial class MapEditor {
 				});
 			}
 			palGroup.Items.Add(new PaletteItem() {
-				ID = chain.ID,
-				ArtworkID = chain.Type == GroupType.Animated ? chain.ID : firstSprite.ID,
+				ID = group.ID,
+				ArtworkID = group.Animated ? group.ID : firstSprite.ID,
 				Name = Util.GetDisplayName(firstSprite.RealName).TrimEnd_NumbersEmpty_(),
-				GroupType = chain.Type,
 				BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
-				Group = chain,
+				Group = group,
 			});
 
 		}
@@ -180,7 +178,6 @@ public partial class MapEditor {
 				ID = sp.ID,
 				ArtworkID = sp.ID,
 				Name = Util.GetDisplayName(sp.RealName).TrimEnd_NumbersEmpty_(),
-				GroupType = GroupType.General,
 				BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
 				Group = null,
 			});
@@ -232,7 +229,6 @@ public partial class MapEditor {
 			group.Items.Add(new PaletteItem() {
 				ID = typeId,
 				ArtworkID = artworkTypeID,
-				GroupType = GroupType.General,
 				BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
 				Name = Util.GetDisplayName((type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name).TrimEnd_NumbersEmpty_()),
 				Group = null,

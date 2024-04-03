@@ -243,17 +243,15 @@ public static partial class Util {
 		}
 	}
 
-	public static void GetSpriteInfoFromName (string name, out string realName, out string groupName, out int groupIndex, out GroupType groupType, out bool isTrigger, out string tag, out bool loopStart, out string rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
+	public static void GetSpriteInfoFromName (string name, out string realName, out bool isTrigger, out string tag, out string rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
 		isTrigger = false;
 		tag = "";
 		rule = "";
-		loopStart = false;
 		noCollider = false;
 		offsetZ = 0;
 		pivotX = null;
 		pivotY = null;
 		aniDuration = 0;
-		groupType = GroupType.General;
 		const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
 		int hashIndex = name.IndexOf('#');
 		if (hashIndex >= 0) {
@@ -279,8 +277,9 @@ public static partial class Util {
 				}
 				if (tagFinded) continue;
 
+				// Bool-Group
 				if (hashTag.Equals("loopStart", OIC)) {
-					loopStart = true;
+					tag = SpriteTag.LOOP_START_STRING;
 					continue;
 				}
 
@@ -289,22 +288,19 @@ public static partial class Util {
 					continue;
 				}
 
-				// Bool-Group
 				if (hashTag.Equals("random", OIC) || hashTag.Equals("ran", OIC)) {
-					groupType = GroupType.Random;
+					tag = SpriteTag.RANDOM_STRING;
 					continue;
 				}
 
 				// Int
 				if (hashTag.StartsWith("ani=", OIC)) {
-					groupType = GroupType.Animated;
 					if (int.TryParse(hashTag[4..], out int _aniD)) {
 						aniDuration = _aniD;
 					}
 					continue;
 				}
 				if (hashTag.StartsWith("animated=", OIC)) {
-					groupType = GroupType.Animated;
 					if (int.TryParse(hashTag[9..], out int _aniD)) {
 						aniDuration = _aniD;
 					}
@@ -318,7 +314,6 @@ public static partial class Util {
 
 				if (hashTag.StartsWith("rule=", OIC)) {
 					rule = hashTag[5..];
-					groupType = GroupType.Rule;
 					continue;
 				}
 
@@ -390,21 +385,27 @@ public static partial class Util {
 			tag == SpriteTag.WATER_STRING ||
 			tag == SpriteTag.QUICKSAND_STRING;
 
-		// Name and Group
+		// Name
 		realName = name.TrimEnd(' ');
-		groupName = realName.TrimEnd_NumbersEmpty();
+
+	}
+
+	public static bool GetGroupInfoFromSpriteRealName (string realName, out string groupName, out int groupIndex) {
+		groupName = realName;
 		groupIndex = -1;
-		if (!string.IsNullOrEmpty(realName) && realName[^1] >= '0' && realName[^1] <= '9') {
+		if (!string.IsNullOrEmpty(realName) && char.IsNumber(realName[^1])) {
 			string key = realName;
 			int endIndex = key.Length - 1;
 			while (endIndex >= 0) {
 				char c = key[endIndex];
-				if (c < '0' || c > '9') break;
+				if (!char.IsNumber(c)) break;
 				endIndex--;
 			}
 			groupIndex = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
+			groupName = realName.TrimEnd_NumbersEmpty();
+			return true;
 		}
-
+		return false;
 	}
 
 	public static float GetScaledAudioVolume (int volume, int scale = 1000) {

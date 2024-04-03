@@ -533,7 +533,7 @@ public static class Renderer {
 	public static Cell DrawAnimation (int chainID, IRect globalRect, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, globalRect.x, globalRect.y, 0, 0, 0, globalRect.width, globalRect.height, frame, color, loopStart);
 	public static Cell DrawAnimation (int chainID, int x, int y, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) => DrawAnimation(chainID, x, y, 0, 0, 0, width, height, frame, color, loopStart);
 	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, Color32 color, int loopStart = int.MinValue) {
-		if (!TryGetSpriteGroup(chainID, out var group) || group.Type != GroupType.Animated) return Cell.EMPTY;
+		if (!TryGetSpriteGroup(chainID, out var group) || !group.Animated) return Cell.EMPTY;
 		int id = CurrentSheet.GetSpriteIdFromAnimationFrame(group, frame, loopStart);
 		return Draw(id, x, y, pivotX, pivotY, rotation, width, height, color);
 	}
@@ -543,7 +543,7 @@ public static class Renderer {
 	public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
 		var sheet = CurrentSheet;
 		if (sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
-		if (!ignoreAnimation && sheet.GroupPool.TryGetValue(globalID, out var group) && group.Type == GroupType.Animated) {
+		if (!ignoreAnimation && sheet.GroupPool.TryGetValue(globalID, out var group) && group.Animated) {
 			int id = sheet.GetSpriteIdFromAnimationFrame(group, Game.GlobalFrame);
 			return sheet.SpritePool.TryGetValue(id, out sprite);
 		}
