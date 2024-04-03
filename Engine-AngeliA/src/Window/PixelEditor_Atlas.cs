@@ -15,17 +15,20 @@ public partial class PixelEditor {
 	// Const
 	private const int ATLAS_POPUP_ID = 1278321;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
-	private static readonly SpriteCode ICON_LEVEL_ATLAS = "Icon.LevelAtlas";
-	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
 	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
 	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
-	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_ASE = ("Title.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_PNG = ("Title.ImportPNG", "Import PNG file");
 
 	// Data
+	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUISkin.SmallLabel) {
+		ContentColor = Color32.ORANGE_BETTER,
+		ContentColorHover = Color32.ORANGE_BETTER,
+		ContentColorDown = Color32.ORANGE_BETTER,
+		ContentColorDisable = Color32.ORANGE_BETTER,
+	};
 	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
@@ -112,10 +115,7 @@ public partial class PixelEditor {
 							GUI.Icon(iconRect.Fit(iconSize.x, iconSize.y), atlas.ID);
 						}
 					} else {
-						GUI.Icon(
-							iconRect,
-							atlas.Type == AtlasType.General ? ICON_SPRITE_ATLAS : ICON_LEVEL_ATLAS
-						);
+						GUI.Icon(iconRect, ICON_SPRITE_ATLAS);
 					}
 
 					// Label
@@ -129,7 +129,11 @@ public partial class PixelEditor {
 							SetDirty();
 						}
 					} else {
-						GUI.Label(contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0), atlas.Name, GUISkin.SmallLabel);
+						GUI.Label(
+							contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
+							atlas.Name,
+							atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background ? LevelBgAtlasLabelStyle : GUISkin.SmallLabel
+						);
 					}
 
 					// Right Click

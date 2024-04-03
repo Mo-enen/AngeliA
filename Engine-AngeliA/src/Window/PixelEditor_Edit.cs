@@ -836,7 +836,7 @@ public partial class PixelEditor {
 			}
 
 			// Duration
-			if (duration != int.MinValue && duration != sprite.Duration) {
+			if (duration > 0 && duration != sprite.Duration) {
 				sprite.Duration = duration;
 			}
 

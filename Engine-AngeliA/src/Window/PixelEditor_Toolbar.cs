@@ -24,6 +24,8 @@ public partial class PixelEditor {
 	private const int INPUT_ID_PY = 123631261;
 	private const int INPUT_ID_Z = 123631262;
 	private const int INPUT_ID_DURATION = 123631263;
+	private static readonly int ATLAS_TYPE_COUNT = typeof(AtlasType).EnumLength();
+	private static string[] ATLAS_TYPE_NAMES = null;
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
 	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
 	private static readonly SpriteCode ICON_TRIGGER_ON = "Icon.TriggerOn";
@@ -31,6 +33,10 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_TRIGGER_MIX = "Icon.TriggerMix";
 	private static readonly SpriteCode ICON_TAG = "Icon.Tag";
 	private static readonly SpriteCode ICON_MIX = "Icon.Mix";
+	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
+	private static readonly SpriteCode ICON_ATLAS_TYPE = "Icon.AtlasType";
+	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
+	private static readonly LanguageCode TIP_ATLAS_TYPE = ("Tip.AtlasType", "Type of the opening atlas");
 	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show background");
 	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset camera");
 	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete sprite");
@@ -86,37 +92,16 @@ public partial class PixelEditor {
 
 		if (Sheet.Atlas.Count <= 0) return;
 
-		int buttonWidth = Unify(30);
-		int padding = Unify(4);
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 
 		// BG
 		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
-		var rect = toolbarRect.EdgeInside(Direction4.Left, buttonWidth);
+		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
 
 		if (SelectingSpriteCount == 0) {
 			// --- General ---
-
-			// Show BG
-			ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
-			RequireToolLabel(rect, TIP_SHOW_BG);
-			rect.SlideRight(padding);
-
-			// Reset Camera
-			if (GUI.Button(rect, BuiltInSprite.ICON_REFRESH, GUISkin.SmallDarkButton)) {
-				ResetCamera();
-			}
-			RequireToolLabel(rect, TIP_RESET_CAMERA);
-			rect.SlideRight(padding);
-
-			// Import from PNG
-			if (GUI.Button(rect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
-				ShowImportAtlasBrowser(false);
-			}
-			RequireToolLabel(rect, TIP_IMPORT_PNG);
-			rect.SlideRight(padding);
-
+			Update_GeneralToolbar(ref rect);
 		} else {
 			// --- Slice ---
 			Update_SliceToolbar_Name(ref rect);
@@ -125,6 +110,39 @@ public partial class PixelEditor {
 			Update_SliceToolbar_Pivot(ref rect);
 			Update_SliceToolbar_Alt(ref rect);
 		}
+	}
+
+
+	private void Update_GeneralToolbar (ref IRect rect) {
+
+		int padding = Unify(4);
+
+		// Show BG
+		ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
+		RequireToolLabel(rect, TIP_SHOW_BG);
+		rect.SlideRight(padding);
+
+		// Reset Camera
+		if (GUI.Button(rect, BuiltInSprite.ICON_REFRESH, GUISkin.SmallDarkButton)) {
+			ResetCamera();
+		}
+		RequireToolLabel(rect, TIP_RESET_CAMERA);
+		rect.SlideRight(padding);
+
+		// Import from PNG
+		if (GUI.Button(rect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
+			ShowImportAtlasBrowser(false);
+		}
+		RequireToolLabel(rect, TIP_IMPORT_PNG);
+		rect.SlideRight(padding);
+
+		// Atlas Type
+		if (GUI.Button(rect, ICON_ATLAS_TYPE, GUISkin.SmallDarkButton)) {
+			OpenAtlasTypeMenu();
+		}
+		RequireToolLabel(rect, TIP_ATLAS_TYPE);
+		rect.SlideRight(padding);
+
 	}
 
 
@@ -507,6 +525,26 @@ public partial class PixelEditor {
 				checkedCount++;
 				spData.Sprite.Tag = targetValue;
 			}
+			Instance.SetDirty();
+		}
+	}
+
+
+	private void OpenAtlasTypeMenu () {
+		int currentType = (int)Sheet.Atlas[CurrentAtlasIndex].Type;
+		GenericPopupUI.BeginPopup();
+		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
+			GenericPopupUI.AddItem(ATLAS_TYPE_NAMES[i], OnClick, enabled: true, @checked: currentType == i);
+		}
+		// Func
+		static void OnClick () {
+			int index = GenericPopupUI.Instance.InvokingItemIndex;
+			int currentAtlasIndex = Instance.CurrentAtlasIndex;
+			var atlasList = Instance.Sheet.Atlas;
+			if (index < 0 || index >= ATLAS_TYPE_COUNT) return;
+			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
+			var atlas = atlasList[currentAtlasIndex];
+			atlas.Type = (AtlasType)index;
 			Instance.SetDirty();
 		}
 	}

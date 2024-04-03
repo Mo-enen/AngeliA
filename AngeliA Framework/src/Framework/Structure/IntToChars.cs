@@ -26,18 +26,10 @@ public class IntToChars {
 	public char[] GetChars (int value) {
 		if (value == IntValue) return CharsValue;
 		IntValue = value;
-		int digitCount = value.DigitCount();
+		// Fill Int Value
 		int startIndex = Prefix.Length;
-		if (value < 0) {
-			value = -value;
-			CharsValue[startIndex] = '-';
-			startIndex++;
-		}
-		// Fill Value
-		for (int i = startIndex + digitCount - 1; i >= startIndex; i--) {
-			CharsValue[i] = (char)((value % 10) + '0');
-			value /= 10;
-		}
+		int digitCount = value.DigitCount();
+		Int_to_Chars(value, CharsValue, startIndex);
 		// Fill Suffix
 		startIndex += digitCount;
 		if (Suffix.Length > 0) {
@@ -51,6 +43,32 @@ public class IntToChars {
 			CharsValue[startIndex] = '\0';
 		}
 		return CharsValue;
+	}
+
+	public static void Int_to_Chars (int intValue, char[] charsValue, int startIndex = 0) {
+		int digitCount = intValue.DigitCount();
+		if (intValue < 0) {
+			intValue = -intValue;
+			charsValue[startIndex] = '-';
+			startIndex++;
+		}
+		// Fill Value
+		for (int i = startIndex + digitCount - 1; i >= startIndex; i--) {
+			charsValue[i] = (char)((intValue % 10) + '0');
+			intValue /= 10;
+		}
+		startIndex += digitCount;
+		if (startIndex < charsValue.Length) charsValue[startIndex] = '\0';
+	}
+
+	public static int Chars_to_Int (char[] charsValue, int startIndex = 0) {
+		int result = 0;
+		for (int i = startIndex; i < charsValue.Length; i++) {
+			char c = charsValue[i];
+			if (!char.IsNumber(c)) break;
+			result = result * 10 + (c - '0');
+		}
+		return result;
 	}
 
 }

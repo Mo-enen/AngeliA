@@ -10,8 +10,6 @@ public partial class PixelEditor : WindowUI {
 
 
 
-	//Rule;
-
 
 	#region --- SUB ---
 
@@ -69,7 +67,7 @@ public partial class PixelEditor : WindowUI {
 	protected override bool BlockEvent => true;
 
 	// Data
-	private readonly Sheet Sheet = new();
+	private readonly Sheet Sheet = new(ignoreGroups: true);
 	private readonly List<SpriteData> StagedSprites = new();
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
 	private readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
@@ -77,9 +75,9 @@ public partial class PixelEditor : WindowUI {
 	private string SheetPath = "";
 	private string ToolLabel = null;
 	private bool IsDirty = false;
-	private int SelectingSpriteCount = 0;
 	private bool HoldingSliceOptionKey = false;
 	private bool Interactable = true;
+	private int SelectingSpriteCount = 0;
 	private int ZoomLevel = 1;
 	private int LastGrowUndoFrame = -1;
 	private int GizmosThickness = 1;
@@ -109,8 +107,12 @@ public partial class PixelEditor : WindowUI {
 		for (int i = 0; i < SpriteTag.COUNT; i++) {
 			Instance.TagPool.TryAdd(SpriteTag.ALL_TAGS[i], (SpriteTag.ALL_TAGS_STRING[i], i));
 		}
+		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
+		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
+			ATLAS_TYPE_NAMES[i] = ((AtlasType)i).ToString();
+		}
 	}
-
+	
 
 	public PixelEditor () => Instance = this;
 
@@ -427,7 +429,7 @@ public partial class PixelEditor : WindowUI {
 
 	}
 
-	
+
 	private void Update_Gizmos () {
 
 		if (Sheet.Atlas.Count <= 0) return;

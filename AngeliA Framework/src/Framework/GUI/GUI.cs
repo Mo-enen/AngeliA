@@ -490,8 +490,10 @@ public static class GUI {
 
 		bodyStyle ??= GUISkin.InputField;
 		selectionStyle ??= GUISkin.GreenPixel;
+
 		changed = false;
 		confirm = false;
+
 		bool invokeStart = InvokeTypingStartID == controlID;
 		bool startTyping = false;
 		bool mouseDownPosInRect = rect.Contains(Input.MouseLeftDownGlobalPosition);

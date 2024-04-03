@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-
 namespace AngeliA;
+
 public enum AtlasType {
 	General = 0,
 	Level = 1,
