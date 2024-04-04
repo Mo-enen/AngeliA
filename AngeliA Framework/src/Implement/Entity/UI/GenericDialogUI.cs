@@ -20,6 +20,7 @@ public class GenericDialogUI : MenuUI {
 	protected override bool BlockEvent => true;
 
 	// Data
+	private readonly GUIStyle ButtonMessageStyle = new(GUISkin.SmallCenterMessage) { Clip = false, };
 	private readonly Option OptionA = new();
 	private readonly Option OptionB = new();
 	private readonly Option OptionC = new();
@@ -34,7 +35,7 @@ public class GenericDialogUI : MenuUI {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		ContentPadding = new(32, 32, 46, 12);
+		ContentPadding = new(32, 32, 18, 12);
 	}
 
 
@@ -74,7 +75,7 @@ public class GenericDialogUI : MenuUI {
 	public static void SpawnDialog_Button (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
 		SpawnDialog(message, labelA, actionA, labelB, actionB, labelC, actionC);
 		Instance.SetStyle(
-			GUISkin.SmallMessage, GUISkin.Label, GUISkin.DarkButton,
+			Instance.ButtonMessageStyle, GUISkin.Label, GUISkin.DarkButton,
 			drawStyleBody: true, newWindowWidth: Unify(330), animationDuration: 0
 		);
 	}

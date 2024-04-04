@@ -9,10 +9,12 @@ public static partial class Util {
 
 
 	// Const
+	private static readonly byte[] SINGLE_RULE_CACHE = new byte[8];
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 	public const string RULE_TILE_ERROR = "ERROR---";
 	private static readonly System.Random GlobalRandom = new(2334768);
 	public delegate Cell DrawHandler (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z);
+	private static readonly StringBuilder CacheRuleBuilder = new();
 
 
 	// API
@@ -734,7 +736,7 @@ public static partial class Util {
 
 
 	// Rule
-	public static string RuleDigitToString (int digit) {
+	public static string DigitToRuleString (int digit) {
 		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
 		//              000        001        010           011       100
 		// eg: "02022020,11111111,01022020,02012020,..."
@@ -742,34 +744,61 @@ public static partial class Util {
 		//              01234567 890 123 456 789 012 345 678 901
 		//              000000000001 111 111 111 222 222 222 233
 		if (!digit.GetBit(0)) return RULE_TILE_ERROR;
-		var builder = new StringBuilder();
+
+		CacheRuleBuilder.Clear();
 		for (int i = 0; i < 8; i++) {
 			int tileStrNumber = 0;
 			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
 			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
 			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
-			builder.Append(tileStrNumber);
+			CacheRuleBuilder.Append(tileStrNumber);
 		}
-		return builder.ToString();
+		return CacheRuleBuilder.ToString();
 	}
 
-	public static int RuleStringToDigit (string str) {
+	public static void DigitToRuleByte (int digit, byte[] bytes) {
+		if (!digit.GetBit(0)) {
+			System.Array.Clear(bytes);
+			return;
+		}
+		for (int i = 0; i < 8; i++) {
+			int tileStrNumber = 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
+			bytes[i] = (byte)tileStrNumber;
+		}
+	}
+
+	public static int RuleStringToDigit (string ruleStr) {
 		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
 		//              000        001        010           011       100
 		// eg: "02022020,11111111,01022020,02012020,..."
 		// digit: int32 10000000 000 000 000 000 000 000 000 000
 		//              01234567 890 123 456 789 012 345 678 901
 		//              000000000001 111 111 111 222 222 222 233
-		if (string.IsNullOrEmpty(str) || str.Length < 8) return 0;
+		if (string.IsNullOrEmpty(ruleStr) || ruleStr.Length < 8) return 0;
+		for (int i = 0; i < 8; i++) {
+			char c = ruleStr[i];
+			SINGLE_RULE_CACHE[i] = (byte)(c >= '0' && c <= '9' ? c - '0' : 255);
+		}
+		return RuleByteToDigit(SINGLE_RULE_CACHE);
+	}
+
+	public static int RuleByteToDigit (byte[] singleRule) {
+		// ↖↑↗←→↙↓↘ 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty 255=Error
+		//              000        001        010           011       100
+		// eg: "02022020,11111111,01022020,02012020,..."
+		// digit: int32 10000000 000 000 000 000 000 000 000 000
+		//              01234567 890 123 456 789 012 345 678 901
+		//              000000000001 111 111 111 222 222 222 233
 		int digit = 0;
 		digit.SetBit(0, true);
 		for (int i = 0; i < 8; i++) {
-			char c = str[i];
-			if (c < '0' || c > '9') continue;
-			int strNumber = str[i] - '0';
-			digit.SetBit(8 + i * 3 + 0, (strNumber / 4) % 2 == 1);
-			digit.SetBit(8 + i * 3 + 1, (strNumber / 2) % 2 == 1);
-			digit.SetBit(8 + i * 3 + 2, (strNumber / 1) % 2 == 1);
+			byte b = singleRule[i];
+			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
 		}
 		return digit;
 	}

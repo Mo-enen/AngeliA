@@ -183,6 +183,9 @@ internal class Engine {
 				ui.BeforeUpdate();
 				ui.Update();
 				ui.LateUpdate();
+				if (GUI.Enable && ui is not WindowUI) {
+					GUI.Enable = false;
+				}
 			}
 		}
 
@@ -191,7 +194,6 @@ internal class Engine {
 		if (browser.Active) {
 			browser.Width = GUI.Unify(800);
 			browser.Height = GUI.Unify(600);
-			GUI.Enable = false;
 		}
 
 		using (Scope.RendererLayerUI()) {
@@ -294,7 +296,7 @@ internal class Engine {
 							);
 
 							// Click
-							if (rect.MouseInside()) {
+							if (GUI.Enable && rect.MouseInside()) {
 								// Menu
 								if (folderExists && Input.MouseRightButtonDown) {
 									Input.UseAllMouseKey();
@@ -336,7 +338,16 @@ internal class Engine {
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
+		bool interactable = true;
 
+		foreach (var ui in ALL_UI) {
+			if (ui is not WindowUI && ui.Active) {
+				interactable = false;
+				break;
+			}
+		}
+
+		using (Scope.GUIEnable(interactable))
 		using (Scope.RendererLayerUI()) {
 
 			// Tab BG
@@ -373,7 +384,7 @@ internal class Engine {
 				bool hovering = rect.Contains(mousePos);
 
 				// Cursor
-				if (!selecting && hovering) Cursor.SetCursorAsHand();
+				if (GUI.Enable&& !selecting && hovering) Cursor.SetCursorAsHand();
 
 				// Body
 				Renderer.Draw_9Slice(
@@ -396,7 +407,7 @@ internal class Engine {
 				}
 
 				// Click
-				if (mousePress && hovering) CurrentWindowIndex = index;
+				if (GUI.Enable && mousePress && hovering) CurrentWindowIndex = index;
 
 				// Next
 				rect.SlideDown();
@@ -441,10 +452,26 @@ internal class Engine {
 		}
 
 		// Update UI
-		foreach (var ui in ALL_UI) if (ui.Active) ui.FirstUpdate();
-		foreach (var ui in ALL_UI) if (ui.Active) ui.BeforeUpdate();
-		foreach (var ui in ALL_UI) if (ui.Active) ui.Update();
-		foreach (var ui in ALL_UI) if (ui.Active) ui.LateUpdate();
+		foreach (var ui in ALL_UI) {
+			if (!ui.Active) continue;
+			GUI.Enable = interactable || ui is not WindowUI;
+			ui.FirstUpdate();
+		}
+		foreach (var ui in ALL_UI) {
+			if (!ui.Active) continue;
+			GUI.Enable = interactable || ui is not WindowUI;
+			ui.BeforeUpdate();
+		}
+		foreach (var ui in ALL_UI) {
+			if (!ui.Active) continue;
+			GUI.Enable = interactable || ui is not WindowUI;
+			ui.Update();
+		}
+		foreach (var ui in ALL_UI) {
+			if (!ui.Active) continue;
+			GUI.Enable = interactable || ui is not WindowUI;
+			ui.LateUpdate();
+		}
 
 		// Final
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
@@ -502,7 +529,7 @@ internal class Engine {
 		}
 
 		Input.UseAllHoldingKeys();
-		
+
 		// Set
 		int targetWindowWidth = Game.ScreenWidth;
 		int targetWindowHeight = Game.ScreenHeight;

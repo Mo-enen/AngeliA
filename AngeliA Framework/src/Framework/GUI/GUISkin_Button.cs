@@ -42,6 +42,24 @@ public static partial class GUISkin {
 
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 3, Const.ART_SCALE * 3, Const.ART_SCALE * 3, Const.ART_SCALE * 3),
 	};
+	public static readonly GUIStyle SmallIconButton = new() {
+		BodySprite = 0,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = 0,
+
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.GREY_20,
+		BodyColorDown = Color32.GREY_12,
+		BodyColorDisable = Color32.CLEAR,
+
+		ContentColor = Color32.WHITE,
+		ContentColorHover = Color32.WHITE,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.CLEAR,
+
+		ContentBorder = Int4.Direction(Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE),
+	};
 
 	public static readonly GUIStyle DarkButton = new() {
 		BodySprite = BuiltInSprite.UI_DARK_BUTTON,

@@ -115,6 +115,7 @@ public class PauseMenuUI : MenuUI {
 		ScreenTint = new(0, 0, 0, 128);
 		BackgroundTint = new(0, 0, 0, 255);
 		MaxItemCount = 11;
+		ContentPadding = Int4.Direction(32, 32, 32, 32);
 		SetStyle(MessageStyle, GUISkin.LargeLabel, GUISkin.LargeCenterLabel, false);
 	}
 
@@ -132,8 +133,7 @@ public class PauseMenuUI : MenuUI {
 			RefreshAnimation();
 		}
 		Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
-		ContentPadding = new(32, 32, 46, string.IsNullOrEmpty(Message) ? 46 : 23);
-
+		
 		ControlHintUI.ForceShowHint();
 
 		base.LateUpdate();

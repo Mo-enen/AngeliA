@@ -25,9 +25,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected int WindowWidth = 660;
 	protected int ItemHeight = 36;
 	protected int ItemGap = 16;
-	protected int MessageHeight = 96;
 	protected int MaxItemCount = 10;
-	protected Int4 ContentPadding = new(32, 32, 46, 46);
+	protected Int4 ContentPadding = new(32, 32, 18, 46);
 	protected Int2 SelectionMarkSize = new(32, 32);
 	protected Int2 SelectionArrowMarkSize = new(24, 24);
 	protected Int2 MoreMarkSize = new(28, 28);
@@ -56,6 +55,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	private int AnimationFrame = 0;
 	private bool Layout;
 	private int OverrideWindowWidth = -1;
+	private int MessageHeight = 0;
 
 
 	#endregion
@@ -96,6 +96,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 		Input.IgnoreMouseToActionJumpForThisFrame = true;
 		Cursor.RequireCursor();
+		int msgPadding = Unify(24);
+		string msg = Message;
+		bool hasMsg = !string.IsNullOrWhiteSpace(msg);
 
 		// Layout
 		TargetItemCount = 0;
@@ -113,14 +116,11 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		Y = windowRect.y;
 
 		// Paint
-		string msg = Message;
-		bool hasMsg = !string.IsNullOrWhiteSpace(msg);
-		int msgHeight = Unify(MessageHeight);
 		var windowBounds = windowRect.Expand(
 			Unify(ContentPadding.left),
 			Unify(ContentPadding.right),
 			Unify(ContentPadding.down),
-			Unify(ContentPadding.up)
+			hasMsg ? msgPadding : Unify(ContentPadding.up)
 		);
 		var moreMarkSize = new Int2(
 			Unify(MoreMarkSize.x),
@@ -139,7 +139,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		using var _ = Scope.GUIColor(new Color32(255, 255, 255, alpha));
 
 		// BG
-		var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? msgHeight : 0);
+		var bgRect = windowBounds.Expand(0, 0, 0, hasMsg ? MessageHeight + contentPadding.up : 0);
 		if (animating) {
 			bgRect = bgRect.Expand(Util.RemapUnclamped(
 				0, AnimationDuration * AnimationDuration,
@@ -156,9 +156,12 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		// Message
 		if (hasMsg) {
 			GUI.Label(new IRect(
-				windowBounds.x, windowBounds.yMax,
-				windowBounds.width, msgHeight
-			), msg, MessageStyle);
+				windowBounds.x + contentPadding.left,
+				windowBounds.yMax,
+				windowBounds.width - contentPadding.horizontal,
+				MessageHeight
+			), msg, out var msgBounds, MessageStyle);
+			MessageHeight = msgBounds.height + msgPadding;
 		}
 
 		// Scroll Y

@@ -264,6 +264,7 @@ public partial class PixelEditor {
 		Instance.SetDirty();
 		Instance.AtlasPanelScrollY = int.MaxValue;
 		Instance.SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
+		Instance.CreateSpriteForPalette(useDefaultPos: true);
 	}
 
 

@@ -273,6 +273,9 @@ public class Sheet {
 		RemoveSpriteFromGroup(spriteIndex);
 		Sprites.RemoveAt(spriteIndex);
 		SpritePool.Remove(sprite.ID);
+		if (TexturePool.Remove(sprite.ID, out object texture)) {
+			Game.UnloadTexture(texture);
+		}
 	}
 
 	// Create
@@ -289,13 +292,27 @@ public class Sheet {
 	};
 
 	public string GetAvailableSpriteName (string basicName) {
-		string name = basicName;
-		int index = 0;
-		while (SpritePool.ContainsKey(name.AngeHash())) {
-			index++;
-			name = $"{basicName} {index}";
+
+		if (!SpritePool.ContainsKey(basicName.AngeHash())) return basicName;
+
+		if (Util.GetGroupInfoFromSpriteRealName(basicName, out string groupName, out int groupIndex)) {
+			// Grow Index
+			string name = $"{groupName} {groupIndex}";
+			while (SpritePool.ContainsKey(name.AngeHash())) {
+				groupIndex++;
+				name = $"{groupName} {groupIndex}";
+			}
+			return name;
+		} else {
+			// Add Index
+			string name = basicName;
+			int index = 0;
+			while (SpritePool.ContainsKey(name.AngeHash())) {
+				index++;
+				name = $"{basicName} {index}";
+			}
+			return name;
 		}
-		return name;
 	}
 
 

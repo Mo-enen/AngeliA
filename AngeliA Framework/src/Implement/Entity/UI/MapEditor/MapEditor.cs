@@ -338,7 +338,7 @@ public sealed partial class MapEditor : WindowUI {
 					for (int j = 0; j < groupLength; j++) {
 						if (Renderer.TryGetSpriteFromGroup(chain.ID, j, out var sp, false, true)) {
 							int ruleDigit = sp.Rule;
-							builder.Append(Util.RuleDigitToString(ruleDigit));
+							builder.Append(Util.DigitToRuleString(ruleDigit));
 						} else {
 							builder.Append(Util.RULE_TILE_ERROR);
 						}

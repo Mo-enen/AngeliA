@@ -644,6 +644,18 @@ public static class Extension {
 		Direction4.Right => rect.Shrink(rect.width, -size, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+	public static IRect CornerInside (this IRect rect, Alignment corner, int size) => CornerInside(rect, corner, size, size);
+	public static IRect CornerInside (this IRect rect, Alignment corner, int width, int height) => new(
+		corner.IsLeft() ? rect.x : corner.IsRight() ? rect.xMax - width : rect.CenterX() - width / 2,
+		corner.IsBottom() ? rect.y : corner.IsTop() ? rect.yMax - height : rect.CenterY() - height / 2,
+		width, height
+	);
+	public static IRect CornerOutside (this IRect rect, Direction8 corner, int size) => CornerOutside(rect, corner, size, size);
+	public static IRect CornerOutside (this IRect rect, Direction8 corner, int width, int height) => new(
+		corner.IsLeft() ? rect.x - width : corner.IsRight() ? rect.xMax : rect.CenterX() - width / 2,
+		corner.IsBottom() ? rect.y - height : corner.IsTop() ? rect.yMax : rect.CenterY() - height / 2,
+		width, height
+	);
 	public static IRect ScaleFrom (this IRect rect, int scale, int pointX, int pointY) => ResizeFrom(rect, rect.width * scale / 1000, rect.height * scale / 1000, pointX, pointY);
 	public static IRect ResizeFrom (this IRect rect, int newWidth, int newHeight, int pointX, int pointY) {
 		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;
