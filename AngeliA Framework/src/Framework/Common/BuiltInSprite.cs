@@ -115,5 +115,9 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK = "UI.MiniButtonDark";
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK_HOVER = "UI.MiniButtonDarkHover";
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK_DOWN = "UI.MiniButtonDarkDown";
+	public static readonly SpriteCode COLOR_HUE = "ColorSlider.H";
+	public static readonly SpriteCode COLOR_WHITE_BAR = "ColorSlider.White";
+	public static readonly SpriteCode CHECKER_BOARD_16 = "Checkerboard 16";
+	public static readonly SpriteCode CHECKER_BOARD_8 = "Checkerboard 8";
 
 }

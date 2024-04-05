@@ -71,6 +71,16 @@ public partial class PixelEditor : WindowUI {
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
+	public static Color32 BackgroundColor {
+		get => _BackgroundColor;
+		set {
+			if (_BackgroundColor != value) {
+				_BackgroundColor = value;
+				BackgroundColorInt.Value = Util.ColorToInt(value);
+			}
+		}
+	}
+	private static Color32 _BackgroundColor = new(32, 33, 37, 255);
 	protected override bool BlockEvent => true;
 
 	// Data
@@ -100,6 +110,7 @@ public partial class PixelEditor : WindowUI {
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
+	private static readonly SavingInt BackgroundColorInt = new("PixEdt.BGColor", Util.ColorToInt(new Color32(32, 33, 37, 255)));
 
 
 	#endregion
@@ -122,6 +133,8 @@ public partial class PixelEditor : WindowUI {
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
 			ATLAS_TYPE_NAMES[i] = ((AtlasType)i).ToString();
 		}
+		// Setting
+		_BackgroundColor = Util.IntToColor(BackgroundColorInt.Value);
 	}
 
 
@@ -136,7 +149,7 @@ public partial class PixelEditor : WindowUI {
 
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
-		Sky.ForceSkyboxTint(new Color32(32, 33, 37, 255));
+		Sky.ForceSkyboxTint(BackgroundColor);
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();

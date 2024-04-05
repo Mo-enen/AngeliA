@@ -461,6 +461,7 @@ public partial class PixelEditor {
 
 
 	private void Update_RuleEditor () {
+
 		if (!OpeningTilingRuleEditor || SelectingSpriteCount == 0) return;
 
 		// BG
@@ -541,8 +542,8 @@ public partial class PixelEditor {
 				GUI.Label(labelRect, spData.Sprite.RealName, GUISkin.SmallCenterLabel);
 			}
 
+			// Icon
 			using (Scope.Sheet(SHEET_INDEX)) {
-				// Icon
 				Renderer.Draw(spData.Sprite, panelRect.CornerInside(Alignment.MidMid, buttonSize).Fit(spData.Sprite));
 			}
 
@@ -550,8 +551,15 @@ public partial class PixelEditor {
 			for (int ruleIndex = 0; ruleIndex < 8; ruleIndex++) {
 				var buttonRect = panelRect.CornerInside((Alignment)(ruleIndex < 4 ? ruleIndex : ruleIndex + 1), buttonSize);
 				if (GUI.Button(buttonRect, RuleNumberToIcon(ruleIndex), GUISkin.IconButton)) {
-
-
+					bool modeA = TilingRuleModeA.Value;
+					RuleCache[ruleIndex] = (byte)(RuleCache[ruleIndex] switch {
+						0 => modeA ? 1 : 3,
+						1 or 3 => modeA ? 2 : 4,
+						2 or 4 => 0,
+						_ => 0,
+					});
+					spData.Sprite.Rule = Util.RuleByteToDigit(RuleCache);
+					SetDirty();
 				}
 				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
 				RequireToolLabel(buttonRect, RuleNumberToTip(ruleIndex));

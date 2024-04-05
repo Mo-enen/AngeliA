@@ -218,20 +218,21 @@ public static partial class Util {
 	public static int FloorToInt (float value) => (int)System.Math.Floor(value);
 
 
-	public static Color32 HsvToRgb (float h, float s, float v) {
-		Float3 result = new(1f, 1f, 1f);
+	public static Color32 HsvToRgb (float h, float s, float v) => HsvToRgbF(h, s, v).ToColor32();
+	public static ColorF HsvToRgbF (float h, float s, float v) {
+		ColorF result = new(1f, 1f, 1f);
 		if (s == 0f) {
-			result.x = v;
-			result.y = v;
-			result.z = v;
+			result.r = v;
+			result.g = v;
+			result.b = v;
 		} else if (v == 0f) {
-			result.x = 0f;
-			result.y = 0f;
-			result.z = 0f;
+			result.r = 0f;
+			result.g = 0f;
+			result.b = 0f;
 		} else {
-			result.x = 0f;
-			result.y = 0f;
-			result.z = 0f;
+			result.r = 0f;
+			result.g = 0f;
+			result.b = 0f;
 			float num = h * 6f;
 			int num2 = FloorToInt(num);
 			float num3 = num - num2;
@@ -240,59 +241,62 @@ public static partial class Util {
 			float num6 = v * (1f - s * (1f - num3));
 			switch (num2) {
 				case 0:
-					result.x = v;
-					result.y = num6;
-					result.z = num4;
+					result.r = v;
+					result.g = num6;
+					result.b = num4;
 					break;
 				case 1:
-					result.x = num5;
-					result.y = v;
-					result.z = num4;
+					result.r = num5;
+					result.g = v;
+					result.b = num4;
 					break;
 				case 2:
-					result.x = num4;
-					result.y = v;
-					result.z = num6;
+					result.r = num4;
+					result.g = v;
+					result.b = num6;
 					break;
 				case 3:
-					result.x = num4;
-					result.y = num5;
-					result.z = v;
+					result.r = num4;
+					result.g = num5;
+					result.b = v;
 					break;
 				case 4:
-					result.x = num6;
-					result.y = num4;
-					result.z = v;
+					result.r = num6;
+					result.g = num4;
+					result.b = v;
 					break;
 				case 5:
-					result.x = v;
-					result.y = num4;
-					result.z = num5;
+					result.r = v;
+					result.g = num4;
+					result.b = num5;
 					break;
 				case 6:
-					result.x = v;
-					result.y = num6;
-					result.z = num4;
+					result.r = v;
+					result.g = num6;
+					result.b = num4;
 					break;
 				case -1:
-					result.x = v;
-					result.y = num4;
-					result.z = num5;
+					result.r = v;
+					result.g = num4;
+					result.b = num5;
 					break;
 			}
 
-			result.x = Clamp01(result.x);
-			result.y = Clamp01(result.y);
-			result.z = Clamp01(result.z);
+			result.r = Clamp01(result.r);
+			result.g = Clamp01(result.g);
+			result.b = Clamp01(result.b);
 
 		}
 
-		return new Color32((byte)(result.x * 255), (byte)(result.y * 255), (byte)(result.z * 255), 255);
+		return result;
 	}
-	public static void RGBToHSV (Color32 rgbColor, out float h, out float s, out float v) {
-		float r = rgbColor.r / 255f;
-		float g = rgbColor.g / 255f;
-		float b = rgbColor.b / 255f;
+
+
+	public static void RGBToHSV (Color32 rgbColor, out float h, out float s, out float v) => RGBToHSV(rgbColor.ToColorF(), out h, out s, out v);
+	public static void RGBToHSV (ColorF rgbColor, out float h, out float s, out float v) {
+		float r = rgbColor.r;
+		float g = rgbColor.g;
+		float b = rgbColor.b;
 		if (b > g && b > r) {
 			Helper(4f, b, r, g, out h, out s, out v);
 		} else if (g > r) {

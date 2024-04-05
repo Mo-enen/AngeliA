@@ -32,6 +32,7 @@ public static class GUI {
 	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
+	public static int LabelWidth { get; set; } = 128;
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
@@ -840,6 +841,114 @@ public static class GUI {
 			border, border, border, border,
 			Color * BodyColor * color
 		);
+	}
+
+
+	// Color
+	public static ColorF ColorField (ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool horizontal = true, float hueStep = 1f / 32f, float step = 1 / 20f) => ColorField(color, rect, null, null, hsv, alpha, horizontal, hueStep, step);
+	public static ColorF ColorField (ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool horizontal = true, float hueStep = 1f / 32f, float step = 1 / 20f) {
+		// Label
+		if (label != null) {
+			labelStyle ??= GUISkin.Label;
+			int labelWidth = Unify(LabelWidth);
+			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
+			rect = rect.Shrink(labelWidth, 0, 0, 0);
+		}
+		// Result
+		var resultRect = rect.EdgeInside(Direction4.Left, rect.height);
+		var resultColorRect = resultRect.Shrink(Unify(3));
+		Renderer.DrawPixel(resultRect, Color32.BLACK);
+		if (color.a.NotAlmost(1f)) {
+			Renderer.Draw(BuiltInSprite.CHECKER_BOARD_8, resultColorRect);
+		}
+		Renderer.DrawPixel(resultColorRect, color.ToColor32());
+		rect = rect.Shrink(resultRect.width, 0, 0, 0);
+		// Editor
+		if (horizontal) {
+			rect = rect.EdgeInside(Direction4.Left, alpha ? rect.width / 4 : rect.width / 3);
+		} else {
+			rect = rect.EdgeInside(Direction4.Up, alpha ? rect.height / 4 : rect.height / 3);
+		}
+		int gapH = horizontal ? Unify(4) : 0;
+		int gapV = horizontal ? 0 : Unify(4);
+		if (hsv) {
+			// HSV
+			Util.RGBToHSV(color, out float h, out float s, out float v);
+			float a = color.a;
+			bool changed = false;
+			// H
+			changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref h, true, new ColorF(1f, 1f, 1f, s), new ColorF(v, v, v), hueStep) || changed;
+			if (horizontal) rect.SlideRight(); else rect.SlideDown();
+			// S
+			changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref s, false, Util.HsvToRgbF(h, 1f, v).WithNewA(v), new ColorF(v, v, v), step) || changed;
+			if (horizontal) rect.SlideRight(); else rect.SlideDown();
+			// V
+			changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref v, false, Util.HsvToRgbF(h, s, 1f), new ColorF(0, 0, 0), step) || changed;
+			if (horizontal) rect.SlideRight(); else rect.SlideDown();
+			// A
+			if (alpha) {
+				changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref a, false, color.WithNewA(1f), new ColorF(0, 0, 0, 0), step) || changed;
+			}
+			// Final
+			if (changed) {
+				color = Util.HsvToRgbF(h.Clamp(0f, 0.99999f), s.Clamp(0.00001f, 1f), v.Clamp(0.00001f, 1f));
+				color.a = a;
+			}
+		} else {
+			// RGB
+			bool changed = false;
+			float r = color.r;
+			float g = color.g;
+			float b = color.b;
+			float a = color.a;
+			// R
+			changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref r, false, new ColorF(1f, g, b), new ColorF(0f, g, b), step) || changed;
+			if (horizontal) rect.SlideRight(); else rect.SlideDown();
+			// G
+			changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref g, false, new ColorF(r, 1f, b), new ColorF(r, 0f, b), step) || changed;
+			if (horizontal) rect.SlideRight(); else rect.SlideDown();
+			// B
+			changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref b, false, new ColorF(r, g, 1f), new ColorF(r, g, 0f), step) || changed;
+			if (horizontal) rect.SlideRight(); else rect.SlideDown();
+			// A
+			if (alpha) {
+				changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref a, false, color.WithNewA(1f), new ColorF(0, 0, 0, 0), step) || changed;
+			}
+			// Final
+			if (changed) {
+				color.r = r;
+				color.g = g;
+				color.b = b;
+				color.a = a;
+			}
+		}
+		return color;
+		// Func
+		static bool Slider (IRect rect, ref float value, bool forHue, ColorF tintF, ColorF tintB, float step) {
+			int gap = Unify(4);
+			bool changed = false;
+			int spriteID = forHue ? BuiltInSprite.COLOR_HUE : BuiltInSprite.COLOR_WHITE_BAR;
+			// Bar
+			if (tintB.a.NotAlmostZero()) {
+				Renderer.DrawPixel(rect, tintB.ToColor32());
+			}
+			if (forHue) tintF.a = tintF.a.Clamp(0.3f, 1f);
+			Renderer.Draw(spriteID, rect, tintF.ToColor32());
+			// Cursor
+			int cursorWidth = Unify(1);
+			var cursorRect = new IRect(rect.x + (int)(rect.width * value) - cursorWidth / 2, rect.y, cursorWidth, rect.height);
+			Renderer.DrawPixel(cursorRect.Expand(cursorWidth / 2, cursorWidth / 2, 0, 0), Color32.BLACK);
+			Renderer.DrawPixel(cursorRect, Color32.WHITE);
+			// Logic
+			if (Enable && rect.Contains(Input.MouseLeftDownGlobalPosition) && Input.MouseLeftButtonHolding) {
+				value = Util.InverseLerp(rect.xMin, rect.xMax, Input.MouseGlobalPosition.x);
+				if (step.NotAlmostZero()) {
+					value = ((value / step).RoundToInt()) * step;
+				}
+				changed = true;
+			}
+			return changed;
+		}
 	}
 
 

@@ -10,11 +10,11 @@ public class Scope : System.IDisposable {
 		private const int COUNT = 32;
 		public Scope[] Scopes;
 		public int CurrentIndex;
-		public ScopeGroup (ScopeType type) {
+		public ScopeGroup () {
 			CurrentIndex = 0;
 			Scopes = new Scope[COUNT];
 			for (int i = 0; i < COUNT; i++) {
-				Scopes[i] = new Scope(type);
+				Scopes[i] = new Scope(this);
 			}
 		}
 		public Scope Start () {
@@ -31,26 +31,23 @@ public class Scope : System.IDisposable {
 		public void End () => CurrentIndex--;
 	}
 
-	private enum ScopeType {
-		None, Layer, Color, ContentColor, BodyColor, Enable, Scroll, Sheet, IgnoreInput,
-	}
-
 	// Const
-	private static readonly Scope EmptyScope = new(ScopeType.None);
-	private static readonly ScopeGroup LayerInstance = new(ScopeType.Layer);
-	private static readonly ScopeGroup ColorInstance = new(ScopeType.Color);
-	private static readonly ScopeGroup ContentColorInstance = new(ScopeType.ContentColor);
-	private static readonly ScopeGroup BodyColorInstance = new(ScopeType.BodyColor);
-	private static readonly ScopeGroup EnableInstance = new(ScopeType.Enable);
-	private static readonly ScopeGroup ScrollInstance = new(ScopeType.Scroll);
-	private static readonly ScopeGroup SheetInstance = new(ScopeType.Sheet);
-	private static readonly ScopeGroup IgnoreInputInstance = new(ScopeType.IgnoreInput);
+	private static readonly Scope EmptyScope = new(null);
+	private static readonly ScopeGroup LayerInstance = new();
+	private static readonly ScopeGroup ColorInstance = new();
+	private static readonly ScopeGroup ContentColorInstance = new();
+	private static readonly ScopeGroup BodyColorInstance = new();
+	private static readonly ScopeGroup EnableInstance = new();
+	private static readonly ScopeGroup ScrollInstance = new();
+	private static readonly ScopeGroup SheetInstance = new();
+	private static readonly ScopeGroup IgnoreInputInstance = new();
+	private static readonly ScopeGroup GUILabelWidthInstance = new();
 
 	// Api
 	public Int2 ScrollPosition => Int2Data;
 
 	// Data
-	private readonly ScopeType Type;
+	private readonly ScopeGroup Group;
 	private Color32 ColorData;
 	private int IntData;
 	private int IntDataAlt;
@@ -59,7 +56,7 @@ public class Scope : System.IDisposable {
 	private Int2 Int2DataAlt;
 
 	// MSG
-	private Scope (ScopeType type) => Type = type;
+	private Scope (ScopeGroup group) => Group = group;
 
 	// API
 	public static Scope RendererLayerUI () => RendererLayer(RenderLayer.UI);
@@ -111,7 +108,7 @@ public class Scope : System.IDisposable {
 		bool mouseInside = rect.MouseInside();
 
 		result.RectData = rect;
-		result.IntData = Renderer.GetUsedCellCount(AngeliA.RenderLayer.UI);
+		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
 		result.IntDataAlt = Renderer.GetTextUsedCellCount(0);
 		result.Int2DataAlt = Input.MousePositionShift;
 		if (!mouseInside) Input.IgnoreMouseInput();
@@ -155,68 +152,66 @@ public class Scope : System.IDisposable {
 		return result;
 	}
 
+	public static Scope GUILabelWidth (int width) {
+		var result = GUILabelWidthInstance.Start();
+		if (result == null) return EmptyScope;
+		result.IntData = GUI.LabelWidth;
+		GUI.LabelWidth = width;
+		return result;
+	}
+
 	public void Dispose () {
-		switch (Type) {
-			case ScopeType.Layer:
-				LayerInstance.End();
-				if (Renderer.CurrentLayerIndex == AngeliA.RenderLayer.UI) {
-					Renderer.ReverseUnsortedCells(AngeliA.RenderLayer.UI);
+
+		Group?.End();
+
+		switch (0) {
+			case var _ when Group == LayerInstance:
+				if (Renderer.CurrentLayerIndex == RenderLayer.UI) {
+					Renderer.ReverseUnsortedCells(RenderLayer.UI);
 				}
 				Renderer.SetLayer(IntData);
 				break;
-			case ScopeType.Color:
-				ColorInstance.End();
+
+			case var _ when Group == ColorInstance:
 				GUI.Color = ColorData;
 				break;
-			case ScopeType.ContentColor:
-				ContentColorInstance.End();
+
+			case var _ when Group == ContentColorInstance:
 				GUI.ContentColor = ColorData;
 				break;
-			case ScopeType.BodyColor:
-				BodyColorInstance.End();
+
+			case var _ when Group == BodyColorInstance:
 				GUI.BodyColor = ColorData;
 				break;
-			case ScopeType.Enable:
-				EnableInstance.End();
+
+			case var _ when Group == EnableInstance:
 				GUI.Enable = IntData == 1;
 				break;
-			case ScopeType.Scroll:
 
-				ScrollInstance.End();
-
-				// Old Value Back
+			case var _ when Group == ScrollInstance:
 				Input.SetMousePositionShift(Int2DataAlt.x, Int2DataAlt.y);
 				Input.CancelIgnoreMouseInput();
-
-				// Scroll Sprites
 				int startIndex = IntData;
-				if (Renderer.GetCells(AngeliA.RenderLayer.UI, out var cells, out int count)) {
+				if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
 					for (int i = startIndex; i < count; i++) {
 						cells[i].Y += Int2Data.y;
 					}
 				}
-
-				// Scroll Text
 				int tStartIndex = IntDataAlt;
 				if (Renderer.GetTextCells(0, out var tCells, out int tCount)) {
 					for (int i = tStartIndex; i < tCount; i++) {
 						tCells[i].Y += Int2Data.y;
 					}
 				}
-
-				// Clamp Sprites
-				Renderer.ClampCells(AngeliA.RenderLayer.UI, RectData, startIndex);
+				Renderer.ClampCells(RenderLayer.UI, RectData, startIndex);
 				Renderer.ClampTextCells(RectData, tStartIndex);
-
 				break;
 
-			case ScopeType.Sheet:
-				SheetInstance.End();
+			case var _ when Group == SheetInstance:
 				Renderer.CurrentSheetIndex = IntData;
 				break;
 
-			case ScopeType.IgnoreInput:
-				IgnoreInputInstance.End();
+			case var _ when Group == IgnoreInputInstance:
 				if (Int2Data.x == 1) {
 					Input.IgnoreKeyInput();
 				} else {
@@ -229,6 +224,9 @@ public class Scope : System.IDisposable {
 				}
 				break;
 
+			case var _ when Group == GUILabelWidthInstance:
+				GUI.LabelWidth = IntData;
+				break;
 		}
 	}
 
