@@ -121,8 +121,7 @@ public abstract class MapGenerator : Entity {
 			Util.DeleteFolder(mapRoot);
 			Util.MoveFolder(tempMapRoot, mapRoot);
 			IUnique.SaveToDisk(mapRoot);
-			WorldSquad.Front.ForceReloadDelay();
-			WorldSquad.Behind.ForceReloadDelay();
+			WorldSquad.ForceReload();
 			Stage.SetViewZ(Stage.ViewZ);
 
 			AfterMapGenerate();

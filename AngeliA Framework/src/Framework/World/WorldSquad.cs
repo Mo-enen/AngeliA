@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
 
 public enum MapChannel { General, Procedure, }
@@ -10,7 +9,7 @@ public enum MapChannel { General, Procedure, }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLevelRenderedAttribute : System.Attribute { }
 
-public sealed class WorldSquad : IBlockSquad {
+public class WorldSquad : IBlockSquad {
 
 
 
@@ -25,18 +24,13 @@ public sealed class WorldSquad : IBlockSquad {
 	public static IBlockSquad FrontBlockSquad => Front;
 	public static MapChannel Channel { get; private set; } = MapChannel.General;
 	public static string MapRoot { get; private set; } = "";
-	public World this[int i, int j] => Worlds[i, j];
 
 	// Data
 	private static readonly WorldPathPool PathPool = new();
-	private readonly World[,] Worlds = new World[3, 3] { { new(), new(), new() }, { new(), new(), new() }, { new(), new(), new() }, };
-	private readonly World[,] WorldBuffer = new World[3, 3];
-	private readonly World[] WorldBufferAlt = new World[9];
+	private static readonly WorldStream Stream = new();
 	private static event System.Action OnMapFolderChanged;
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
-	private bool RequireReload = false;
-	private int LoadedZ = int.MinValue;
 	private int BackgroundBlockSize = Const.CEL;
 	private IRect CullingCameraRect = default;
 	private IRect ParallaxRect = default;
@@ -65,8 +59,7 @@ public sealed class WorldSquad : IBlockSquad {
 	public static void OnUniverseOpen () {
 		ResetWorldPathPool(UniverseSystem.CurrentUniverse.MapRoot);
 		SwitchToCraftedMode(forceOperate: true);
-		Front.ForceReloadDelay();
-		Behind.ForceReloadDelay();
+		ForceReload();
 	}
 
 
@@ -77,37 +70,12 @@ public sealed class WorldSquad : IBlockSquad {
 	[OnGameUpdate(-64)]
 	public static void OnGameUpdate () {
 		if (!Enable) return;
-		Front.Update_Data(Stage.ViewRect, Stage.ViewZ);
-		Front.Update_Rendering();
-		Behind.Update_Data(Stage.ViewRect, Stage.ViewZ + 1);
-		Behind.Update_Rendering();
+		Front.Render();
+		Behind.Render();
 	}
 
 
-	private void Update_Data (IRect viewRect, int z) {
-
-		var center = viewRect.CenterInt();
-
-		// View & World
-		var midZone = new IRect(
-			(Int2)Worlds[1, 1].WorldPosition * Const.MAP * Const.CEL,
-			new Int2(Const.MAP * Const.CEL, Const.MAP * Const.CEL)
-		).Expand(Const.MAP * Const.HALF);
-
-		if (RequireReload || !midZone.Contains(center) || z != LoadedZ) {
-			// Reload All Worlds in Squad
-			LoadSquadFromDisk(
-				center.x.UDivide(Const.MAP * Const.CEL),
-				center.y.UDivide(Const.MAP * Const.CEL),
-				z,
-				RequireReload
-			);
-			RequireReload = false;
-		}
-	}
-
-
-	private void Update_Rendering () {
+	private void Render () {
 
 		bool isBehind = this == Behind;
 		int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
@@ -144,9 +112,13 @@ public sealed class WorldSquad : IBlockSquad {
 
 		// BG-Level
 		if (!isBehind) BeforeLevelRendered?.Invoke();
-		for (int worldI = 0; worldI < 3; worldI++) {
-			for (int worldJ = 0; worldJ < 3; worldJ++) {
-				var world = Worlds[worldI, worldJ];
+		int worldL = unitRect_Level.xMin.UDivide(Const.MAP);
+		int worldR = unitRect_Level.xMax.CeilDivide(Const.MAP);
+		int worldD = unitRect_Level.yMin.UDivide(Const.MAP);
+		int worldU = unitRect_Level.yMax.CeilDivide(Const.MAP);
+		for (int worldI = worldL; worldI < worldR; worldI++) {
+			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
+				if (!Stream.TryGetWorld(worldI, worldJ, z, out var world)) continue;
 				var worldUnitRect = new IRect(
 					world.WorldPosition.x * Const.MAP,
 					world.WorldPosition.y * Const.MAP,
@@ -184,9 +156,13 @@ public sealed class WorldSquad : IBlockSquad {
 		if (!isBehind) AfterLevelRendered?.Invoke();
 
 		// Entity & Element & Global Pos
-		for (int worldI = 0; worldI < 3; worldI++) {
-			for (int worldJ = 0; worldJ < 3; worldJ++) {
-				var world = Worlds[worldI, worldJ];
+		worldL = unitRect_Entity.xMin.UDivide(Const.MAP);
+		worldR = unitRect_Entity.xMax.CeilDivide(Const.MAP);
+		worldD = unitRect_Entity.yMin.UDivide(Const.MAP);
+		worldU = unitRect_Entity.yMax.CeilDivide(Const.MAP);
+		for (int worldI = worldL; worldI < worldR; worldI++) {
+			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
+				if (!Stream.TryGetWorld(worldI, worldJ, z, out var world)) continue;
 				var worldUnitRect = new IRect(
 					world.WorldPosition.x * Const.MAP,
 					world.WorldPosition.y * Const.MAP,
@@ -257,32 +233,14 @@ public sealed class WorldSquad : IBlockSquad {
 	public static void SwitchToCraftedMode (bool forceOperate = false) => SetMode(string.Empty, MapChannel.General, forceOperate);
 	public static void SwitchToProcedureMode (string folderName, bool forceOperate = false) => SetMode(folderName, MapChannel.Procedure, forceOperate);
 	private static void SetMode (string folderName, MapChannel newChannel, bool forceOperate = false) {
-
 		if (!forceOperate && newChannel == Channel) return;
-
 		MapRoot = newChannel switch {
 			MapChannel.General => UniverseSystem.CurrentUniverse.MapRoot,
 			MapChannel.Procedure => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, folderName),
 			_ => UniverseSystem.CurrentUniverse.MapRoot,
 		};
 		Channel = newChannel;
-
-		var center = Stage.ViewRect.CenterInt();
-		Front.LoadSquadFromDisk(
-			center.x.UDivide(Const.MAP * Const.CEL),
-			center.y.UDivide(Const.MAP * Const.CEL),
-			Stage.ViewZ,
-			true
-		);
-		Behind.LoadSquadFromDisk(
-			center.x.UDivide(Const.MAP * Const.CEL),
-			center.y.UDivide(Const.MAP * Const.CEL),
-			Stage.ViewZ,
-			true
-		);
-		Front.RequireReload = false;
-		Behind.RequireReload = false;
-
+		Stream.Load(MapRoot, @readonly: true);
 		OnMapFolderChanged?.Invoke();
 	}
 
@@ -290,77 +248,36 @@ public sealed class WorldSquad : IBlockSquad {
 	public static void ResetWorldPathPool (string newMapRoot = null) => PathPool.SetMapRoot(newMapRoot ?? PathPool.MapRoot);
 
 
-	public void UpdateWorldDataImmediately (IRect viewRect, int z) => Update_Data(viewRect, z);
-
-
-	public void ForceReloadDelay () => RequireReload = true;
+	public static void ForceReload () => Stream.Clear(ignorePathPool: true);
 
 
 	// Get Set Block
 	public Int4 GetBlocksAt (int unitX, int unitY) {
-		var position00 = Worlds[0, 0].WorldPosition;
-		int worldX = unitX.UDivide(Const.MAP) - position00.x;
-		int worldY = unitY.UDivide(Const.MAP) - position00.y;
-		if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return default;
-		var world = Worlds[worldX, worldY];
-		int localX = unitX - world.WorldPosition.x * Const.MAP;
-		int localY = unitY - world.WorldPosition.y * Const.MAP;
-		return new Int4(
-			world.Entities[localY * Const.MAP + localX],
-			world.Levels[localY * Const.MAP + localX],
-			world.Backgrounds[localY * Const.MAP + localX],
-			world.Elements[localY * Const.MAP + localX]
-		);
+		Stream.GetBlocksAt(unitX, unitY, Stage.ViewZ, out int e, out int l, out int b, out int ele);
+		return new Int4(e, l, b, ele);
 	}
 
 
 	public int GetBlockAt (int unitX, int unitY) {
 		int id = GetBlockAt(unitX, unitY, BlockType.Element);
 		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Entity);
+		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Element);
 		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Level);
 		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Background);
 		return id;
 	}
 
 
-	public int GetBlockAt (int unitX, int unitY, BlockType type) {
-		var position00 = Worlds[0, 0].WorldPosition;
-		int worldX = unitX.UDivide(Const.MAP) - position00.x;
-		int worldY = unitY.UDivide(Const.MAP) - position00.y;
-		if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return 0;
-		var world = Worlds[worldX, worldY];
-		int localX = unitX - world.WorldPosition.x * Const.MAP;
-		int localY = unitY - world.WorldPosition.y * Const.MAP;
+	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
 
 
-		try {
-
-
-
-
-			return type switch {
-				BlockType.Entity => world.Entities[localY * Const.MAP + localX],
-				BlockType.Level => world.Levels[localY * Const.MAP + localX],
-				BlockType.Background => world.Backgrounds[localY * Const.MAP + localX],
-				BlockType.Element => world.Elements[localY * Const.MAP + localX],
-				_ => throw new System.NotImplementedException(),
-			};
-		} catch {
-			Debug.LogWarning(world.Entities.Length);
-			Debug.LogWarning(localY * Const.MAP + localX + " " + localY + " " + localX);
-			return 0;
-		}
-	}
-
-
-	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY) {
+	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
 		resultX = default;
 		resultY = default;
-		var position00 = Worlds[0, 0].WorldPosition;
-		int l = position00.x * Const.MAP;
-		int r = (position00.x + 3) * Const.MAP - 1;
-		int d = position00.y * Const.MAP;
-		int u = (position00.y + 3) * Const.MAP - 1;
+		int l = unitX - maxDistance;
+		int r = unitX + maxDistance;
+		int d = unitY - maxDistance;
+		int u = unitY + maxDistance;
 		var delta = direction.Normal();
 		while (unitX >= l && unitX <= r && unitY >= d && unitY <= u) {
 			int _id = GetBlockAt(unitX, unitY, type);
@@ -376,54 +293,16 @@ public sealed class WorldSquad : IBlockSquad {
 	}
 
 
-	public void SetBlocksAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, int elementID) {
-		var position00 = Worlds[0, 0].WorldPosition;
-		int worldX = unitX.UDivide(Const.MAP) - position00.x;
-		int worldY = unitY.UDivide(Const.MAP) - position00.y;
-		if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return;
-		var world = Worlds[worldX, worldY];
-		int localX = unitX - world.WorldPosition.x * Const.MAP;
-		int localY = unitY - world.WorldPosition.y * Const.MAP;
-		world.Entities[localY * Const.MAP + localX] = entityID;
-		world.Levels[localY * Const.MAP + localX] = levelID;
-		world.Backgrounds[localY * Const.MAP + localX] = backgroundID;
-		world.Elements[localY * Const.MAP + localX] = elementID;
-	}
+	public void SetBlocksAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, int elementID) => Stream.SetBlocksAt(unitX, unitY, Stage.ViewZ, entityID, levelID, backgroundID, elementID);
 
 
-	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) {
-		var position00 = Worlds[0, 0].WorldPosition;
-		int worldX = unitX.UDivide(Const.MAP) - position00.x;
-		int worldY = unitY.UDivide(Const.MAP) - position00.y;
-		if (!worldX.InRange(0, 2) || !worldY.InRange(0, 2)) return;
-		var world = Worlds[worldX, worldY];
-		int localX = unitX - world.WorldPosition.x * Const.MAP;
-		int localY = unitY - world.WorldPosition.y * Const.MAP;
-		switch (type) {
-			default: throw new System.NotImplementedException();
-			case BlockType.Entity:
-				world.Entities[localY * Const.MAP + localX] = newID;
-				break;
-			case BlockType.Level:
-				world.Levels[localY * Const.MAP + localX] = newID;
-				break;
-			case BlockType.Background:
-				world.Backgrounds[localY * Const.MAP + localX] = newID;
-				break;
-			case BlockType.Element:
-				world.Elements[localY * Const.MAP + localX] = newID;
-				break;
-		}
-	}
+	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) => Stream.SetBlockAt(unitX, unitY, Stage.ViewZ, type, newID);
 
 
-	int IBlockSquad.GetBlockAt (int unitX, int unitY, int z, BlockType type) => z == Stage.ViewZ ? GetBlockAt(unitX, unitY, type) : 0;
+	int IBlockSquad.GetBlockAt (int unitX, int unitY, int z, BlockType type) => GetBlockAt(unitX, unitY, type);
 
 
-	void IBlockSquad.SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
-		if (z != Stage.ViewZ) return;
-		SetBlockAt(unitX, unitY, type, newID);
-	}
+	void IBlockSquad.SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) => SetBlockAt(unitX, unitY, type, newID);
 
 
 	// Draw
@@ -493,78 +372,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 		tint.a = Game.WorldBehindAlpha;
 		Renderer.Draw(sprite, rect, tint, 0);
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private void LoadSquadFromDisk (int centerWorldX, int centerWorldY, int z, bool forceLoad) {
-
-		// Clear Buffer
-		for (int i = 0; i < 9; i++) {
-			WorldBuffer[i / 3, i % 3] = null;
-			WorldBufferAlt[i] = null;
-		}
-
-		if (!forceLoad && LoadedZ == z) {
-			// Worlds >> Buffer
-			int alt = 0;
-			for (int j = 0; j < 3; j++) {
-				for (int i = 0; i < 3; i++) {
-					var world = Worlds[i, j];
-					int localX = world.WorldPosition.x - centerWorldX;
-					int localY = world.WorldPosition.y - centerWorldY;
-					if (localX >= -1 && localX <= 1 && localY >= -1 && localY <= 1) {
-						WorldBuffer[localX + 1, localY + 1] = world;
-					} else {
-						WorldBufferAlt[alt] = world;
-						alt++;
-					}
-				}
-			}
-
-			// Buffer >> Worlds
-			alt = 0;
-			for (int j = 0; j < 3; j++) {
-				for (int i = 0; i < 3; i++) {
-					var buffer = WorldBuffer[i, j];
-					if (buffer != null) {
-						Worlds[i, j] = buffer;
-					} else {
-						Worlds[i, j] = WorldBufferAlt[alt];
-						alt++;
-					}
-				}
-			}
-
-			// Clear Buffer
-			for (int i = 0; i < 9; i++) {
-				WorldBuffer[i / 3, i % 3] = null;
-				WorldBufferAlt[i] = null;
-			}
-		}
-
-		// Load
-		for (int j = 0; j < 3; j++) {
-			for (int i = 0; i < 3; i++) {
-				var world = Worlds[i, j];
-				var pos = new Int3(centerWorldX + i - 1, centerWorldY + j - 1, z);
-				if (!forceLoad && world.WorldPosition == pos) continue;
-				if (PathPool.TryGetPath(pos, out string path)) {
-					world.LoadFromDisk(path, pos.x, pos.y, pos.z);
-				} else {
-					world.Clear(pos);
-				}
-			}
-		}
-		LoadedZ = z;
-
 	}
 
 

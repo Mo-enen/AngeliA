@@ -1129,8 +1129,7 @@ public sealed partial class MapEditor : WindowUI {
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
 			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);
-			WorldSquad.Front.ForceReloadDelay();
-			WorldSquad.Behind.ForceReloadDelay();
+			WorldSquad.ForceReload();
 		}
 	}
 

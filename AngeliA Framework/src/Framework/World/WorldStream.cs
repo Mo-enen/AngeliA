@@ -34,7 +34,7 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 
 	// Data
 	private readonly Dictionary<Int3, WorldData> Pool = new();
-	private static readonly WorldPathPool PathPool = new();
+	private readonly WorldPathPool PathPool = new();
 	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new();
 	private readonly int StartReleaseCount = 256;
 	private readonly int EndReleaseCount = 128;
@@ -50,12 +50,14 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	#region --- API ---
 
 
-	public WorldStream (string mapRoot, bool @readonly, int startReleaseCount = 256, int endReleaseCount = 128) {
+	public WorldStream (int startReleaseCount = 256, int endReleaseCount = 128) {
 		StartReleaseCount = startReleaseCount;
 		EndReleaseCount = endReleaseCount.LessOrEquel(startReleaseCount - 1);
 		CacheReleaseList.Capacity = startReleaseCount;
-		Load(mapRoot, @readonly);
 	}
+
+
+	public WorldStream (string mapRoot, bool @readonly, int startReleaseCount = 256, int endReleaseCount = 128) : this(startReleaseCount, endReleaseCount) => Load(mapRoot, @readonly);
 
 
 	public void Load (string mapRoot, bool @readonly) {
@@ -66,9 +68,9 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	}
 
 
-	public void Clear () {
+	public void Clear (bool ignorePathPool = false) {
 		Pool.Clear();
-		PathPool.Clear();
+		if (!ignorePathPool) PathPool.Clear();
 		CurrentValidMapCount = 0;
 		InternalFrame = int.MinValue;
 	}
@@ -97,11 +99,21 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	public bool TryGetMapFilePath (Int3 worldPos, out string path) => PathPool.TryGetPath(worldPos, out path);
 
 
+	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) {
+		world = null;
+		if (TryGetWorldData(worldX, worldY, worldZ, out var data)) {
+			world = data.World;
+		}
+		return world != null;
+	}
+
+
 	// Block
-	public void GetBlocksAt (int unitX, int unitY, int z, out int entity, out int level, out int background) {
+	public void GetBlocksAt (int unitX, int unitY, int z, out int entity, out int level, out int background, out int element) {
 		entity = 0;
 		level = 0;
 		background = 0;
+		element = 0;
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);
 		if (TryGetWorldData(worldX, worldY, z, out var worldData)) {
@@ -111,6 +123,7 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 			entity = world.Entities[index];
 			level = world.Levels[index];
 			background = world.Backgrounds[index];
+			element = world.Elements[index];
 		}
 	}
 
