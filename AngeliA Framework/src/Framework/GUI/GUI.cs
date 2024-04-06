@@ -32,7 +32,7 @@ public static class GUI {
 	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
-	public static int LabelWidth { get; set; } = 128;
+	public static int LabelWidth { get; set; } = 196;
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
@@ -845,8 +845,12 @@ public static class GUI {
 
 
 	// Color
-	public static ColorF ColorField (ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool horizontal = true, float hueStep = 1f / 32f, float step = 1 / 20f) => ColorField(color, rect, null, null, hsv, alpha, horizontal, hueStep, step);
-	public static ColorF ColorField (ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool horizontal = true, float hueStep = 1f / 32f, float step = 1 / 20f) {
+	public static ColorF VerticalColorField (ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool stepped = true, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, label, labelStyle, hsv, alpha, false, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f);
+	public static ColorF HorizontalColorField (ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool stepped = true, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, label, labelStyle, hsv, alpha, true, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f);
+	public static ColorF VerticalColorField (ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool stepped = true, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, null, null, hsv, alpha, false, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f);
+	public static ColorF HorizontalColorField (ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool stepped = true, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, null, null, hsv, alpha, true, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f);
+	private static ColorF ColorFieldInternal (ColorF color, ColorF? defaultColor, IRect rect, string label, GUIStyle labelStyle, bool hsv, bool alpha, bool horizontal, float hueStep, float step) {
+
 		// Label
 		if (label != null) {
 			labelStyle ??= GUISkin.Label;
@@ -854,15 +858,24 @@ public static class GUI {
 			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
 			rect = rect.Shrink(labelWidth, 0, 0, 0);
 		}
+
 		// Result
 		var resultRect = rect.EdgeInside(Direction4.Left, rect.height);
-		var resultColorRect = resultRect.Shrink(Unify(3));
+		var resultColorRect = resultRect.Shrink(Unify(2));
 		Renderer.DrawPixel(resultRect, Color32.BLACK);
 		if (color.a.NotAlmost(1f)) {
 			Renderer.Draw(BuiltInSprite.CHECKER_BOARD_8, resultColorRect);
 		}
 		Renderer.DrawPixel(resultColorRect, color.ToColor32());
 		rect = rect.Shrink(resultRect.width, 0, 0, 0);
+
+		// Default Rect
+		IRect defaultRect = default;
+		if (defaultColor.HasValue) {
+			defaultRect = rect.EdgeInside(Direction4.Right, rect.height);
+			rect.width -= rect.height;
+		}
+
 		// Editor
 		if (horizontal) {
 			rect = rect.EdgeInside(Direction4.Left, alpha ? rect.width / 4 : rect.width / 3);
@@ -888,6 +901,7 @@ public static class GUI {
 			// A
 			if (alpha) {
 				changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref a, false, color.WithNewA(1f), new ColorF(0, 0, 0, 0), step) || changed;
+				if (horizontal) rect.SlideRight(); else rect.SlideDown();
 			}
 			// Final
 			if (changed) {
@@ -913,6 +927,7 @@ public static class GUI {
 			// A
 			if (alpha) {
 				changed = Slider(rect.Shrink(gapH, gapH, gapV, gapV), ref a, false, color.WithNewA(1f), new ColorF(0, 0, 0, 0), step) || changed;
+				if (horizontal) rect.SlideRight(); else rect.SlideDown();
 			}
 			// Final
 			if (changed) {
@@ -922,17 +937,25 @@ public static class GUI {
 				color.a = a;
 			}
 		}
+
+		// Default
+		if (defaultColor.HasValue && Button(defaultRect, BuiltInSprite.ICON_REFRESH, GUISkin.SmallDarkButton)) {
+			color = defaultColor.Value;
+		}
+
 		return color;
+
 		// Func
 		static bool Slider (IRect rect, ref float value, bool forHue, ColorF tintF, ColorF tintB, float step) {
-			int gap = Unify(4);
 			bool changed = false;
 			int spriteID = forHue ? BuiltInSprite.COLOR_HUE : BuiltInSprite.COLOR_WHITE_BAR;
 			// Bar
+			Renderer.DrawPixel(rect, Color32.BLACK);
+			rect = rect.Shrink(Unify(2));
 			if (tintB.a.NotAlmostZero()) {
 				Renderer.DrawPixel(rect, tintB.ToColor32());
 			}
-			if (forHue) tintF.a = tintF.a.Clamp(0.3f, 1f);
+			if (forHue) tintF.a = tintF.a.Clamp(0.2f, 1f);
 			Renderer.Draw(spriteID, rect, tintF.ToColor32());
 			// Cursor
 			int cursorWidth = Unify(1);

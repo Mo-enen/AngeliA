@@ -71,17 +71,9 @@ public partial class PixelEditor : WindowUI {
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
-	public static Color32 BackgroundColor {
-		get => _BackgroundColor;
-		set {
-			if (_BackgroundColor != value) {
-				_BackgroundColor = value;
-				BackgroundColorInt.Value = Util.ColorToInt(value);
-			}
-		}
-	}
-	private static Color32 _BackgroundColor = new(32, 33, 37, 255);
 	protected override bool BlockEvent => true;
+	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
+	public static readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
 
 	// Data
 	private readonly Sheet Sheet = new(ignoreGroups: true);
@@ -110,7 +102,6 @@ public partial class PixelEditor : WindowUI {
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
-	private static readonly SavingInt BackgroundColorInt = new("PixEdt.BGColor", Util.ColorToInt(new Color32(32, 33, 37, 255)));
 
 
 	#endregion
@@ -133,8 +124,6 @@ public partial class PixelEditor : WindowUI {
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
 			ATLAS_TYPE_NAMES[i] = ((AtlasType)i).ToString();
 		}
-		// Setting
-		_BackgroundColor = Util.IntToColor(BackgroundColorInt.Value);
 	}
 
 
@@ -149,7 +138,7 @@ public partial class PixelEditor : WindowUI {
 
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
-		Sky.ForceSkyboxTint(BackgroundColor);
+		Sky.ForceSkyboxTint(BackgroundColor.Value);
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();
@@ -358,7 +347,7 @@ public partial class PixelEditor : WindowUI {
 		if (Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) {
 			using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
 			var stageRectInt = CanvasRect.ToIRect();
-			var tint = ShowBackground.Value ? new Color32(34, 47, 64, 255) : Color32.WHITE;
+			var tint = ShowBackground.Value ? CanvasBackgroundColor.Value : Color32.WHITE;
 			const int CHECKER_COUNT = STAGE_SIZE / 32;
 			int sizeX = stageRectInt.width / CHECKER_COUNT;
 			int sizeY = stageRectInt.height / CHECKER_COUNT;

@@ -176,15 +176,9 @@ public partial class PixelEditor {
 		// Name
 		rect.width = fieldWidth;
 		var inputRect = rect.Shrink(0, 0, 0, padding);
-		if (SelectingSpriteCount == 1) {
-			if (InputField(InputName.Name, inputRect)) {
-				TryApplySliceInputFields(forceApply: true);
-				RefreshSliceInputContent();
-			}
-		} else {
-			using (Scope.GUIEnable(false)) {
-				GUI.InputField(-1, inputRect, "*", GUISkin.SmallInputField);
-			}
+		if (InputField(InputName.Name, inputRect)) {
+			TryApplySliceInputFields(forceApply: true);
+			RefreshSliceInputContent();
 		}
 		RequireToolLabel(inputRect, TIP_SLICE_NAME);
 		rect.SlideRight(padding);
@@ -736,7 +730,7 @@ public partial class PixelEditor {
 		int z = int.MinValue;
 		int duration = -1;
 
-		// Name
+		// All Fields
 		for (int i = 0; i < INPUT_TEXT.Length; i++) {
 			string text = INPUT_TEXT[i];
 			if (string.IsNullOrWhiteSpace(text) || text == "*") continue;
@@ -792,9 +786,12 @@ public partial class PixelEditor {
 		) return;
 
 		// Final
-		foreach (var spData in StagedSprites) {
+		int checkedCount = 0;
+		for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
 
+			var spData = StagedSprites[i];
 			if (!spData.Selecting) continue;
+			checkedCount++;
 
 			var sprite = spData.Sprite;
 			var pixRect = sprite.PixelRect;
@@ -825,8 +822,12 @@ public partial class PixelEditor {
 			}
 
 			// Name
-			if (SelectingSpriteCount == 1 && !string.IsNullOrEmpty(name)) {
-				Sheet.RenameSprite(sprite, name);
+			if (!string.IsNullOrEmpty(name)) {
+				if (SelectingSpriteCount == 1) {
+					Sheet.RenameSprite(sprite, name);
+				} else {
+					Sheet.RenameSprite(sprite, $"{name} {checkedCount - 1}");
+				}
 			}
 
 			// Pivot X
@@ -883,7 +884,13 @@ public partial class PixelEditor {
 			var border = spData.Sprite.GlobalBorder;
 
 			// Name
-			name ??= spData.Sprite.RealName;
+			if (name == null) {
+				name = spData.Sprite.RealName;
+			} else {
+				name = "*";
+				starCount++;
+			}
+
 			// Width
 			if (sizeX != int.MaxValue) {
 				if (sizeX == int.MinValue) {
@@ -980,11 +987,11 @@ public partial class PixelEditor {
 			}
 
 			// Star Check
-			if (starCount >= 10) break;
+			if (starCount >= 11) break;
 		}
 
 		// Final
-		INPUT_TEXT[(int)InputName.Name] = name ?? "*";
+		INPUT_TEXT[(int)InputName.Name] = name;
 		INPUT_TEXT[(int)InputName.Width] = sizeX == int.MinValue || sizeX == int.MaxValue ? "*" : (sizeX / Const.ART_SCALE).ToString();
 		INPUT_TEXT[(int)InputName.Height] = sizeY == int.MinValue || sizeY == int.MaxValue ? "*" : (sizeY / Const.ART_SCALE).ToString();
 		INPUT_TEXT[(int)InputName.BorderL] = borderL == int.MinValue || borderL == int.MaxValue ? "*" : (borderL / Const.ART_SCALE).ToString();
