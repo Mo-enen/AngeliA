@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using AngeliA;
 using Raylib_cs;
 
@@ -96,8 +97,20 @@ public partial class RayGame : Game {
 		Raylib.UpdateMusicStream(CurrentBGM);
 
 		// Begin Draw
-		bool hasScreenEffectEnabled = PrepareScreenEffects();
-		if (hasScreenEffectEnabled) {
+		bool hasScreenEffectEnabled = false;
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			if (ScreenEffectEnables[i]) {
+				hasScreenEffectEnabled = true;
+				break;
+			}
+		}
+		bool hasCustomCursor = Cursor.CurrentCursorIndex == Const.CURSOR_CUSTOM && Cursor.CustomCursorID != 0 && Raylib.IsCursorOnScreen();
+		bool usingTextureMode = hasScreenEffectEnabled || hasCustomCursor;
+		if (usingTextureMode) {
+			if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
+				RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
+				Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
+			}
 			Raylib.BeginTextureMode(RenderTexture);
 		} else {
 			Raylib.BeginDrawing();
@@ -123,7 +136,6 @@ public partial class RayGame : Game {
 
 		// End Update
 		if (hasScreenEffectEnabled) {
-
 			// Screen Effect >> Render Texture
 			UpdateScreenEffect();
 			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
@@ -138,16 +150,6 @@ public partial class RayGame : Game {
 				);
 				Raylib.EndShaderMode();
 			}
-			Raylib.EndTextureMode();
-
-			// Render Texture >> Screen
-			Raylib.BeginDrawing();
-			Raylib.DrawTextureRec(
-				RenderTexture.Texture,
-				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
-				new(0, 0),
-				Color.White
-			);
 		}
 
 		// Black Side Border
@@ -158,21 +160,37 @@ public partial class RayGame : Game {
 		}
 
 		// Custom Cursor
-		if (Cursor.CurrentCursorIndex == Const.CURSOR_CUSTOM && Cursor.CustomCursorID != 0 && Raylib.IsCursorOnScreen()) {
-			if (Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, -1, out var texture)) {
-				float scale = ScreenHeight / 1024f;
-				Raylib.DrawTextureEx(
-					texture,
-					Raylib.GetMousePosition() - new System.Numerics.Vector2(
-						texture.Width * scale / 2f,
-						texture.Height * scale / 2f
-					),
-					rotation: 0, scale, Color.White
-				);
-			}
+		if (hasCustomCursor && Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, -1, out var texture)) {
+			Raylib.BeginShaderMode(CursorShader);
+			Raylib.SetShaderValueTexture(CursorShader, ShaderPropIndex_CURSOR_TEXTURE, RenderTexture.Texture);
+			Raylib.SetShaderValue(
+				CursorShader, ShaderPropIndex_CURSOR_SIZE,
+				new Vector2(ScreenWidth, ScreenHeight), ShaderUniformDataType.Vec2
+			);
+			float scale = ScreenHeight / 1024f;
+			Raylib.DrawTextureEx(
+				texture,
+				Raylib.GetMousePosition() - new Vector2(
+					texture.Width * scale / 2f,
+					texture.Height * scale / 2f
+				),
+				rotation: 0, scale, Color.White
+			);
+			Raylib.EndShaderMode();
 		}
 
-		// Final
+		// Render Texture >> Screen
+		if (usingTextureMode) {
+			Raylib.EndTextureMode();
+			Raylib.BeginDrawing();
+			Raylib.DrawTextureRec(
+				RenderTexture.Texture,
+				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+				new Vector2(0, 0), Color.White
+			);
+		}
+
+		// End Game Rendering
 		Raylib.EndDrawing();
 
 	}

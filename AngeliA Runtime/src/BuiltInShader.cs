@@ -3,7 +3,7 @@
 namespace AngeliaRuntime;
 
 public class BuiltInShader {
-	
+
 	public const string BASIC_VS = @"
 #version 330
 in vec3 vertexPosition;
@@ -160,7 +160,27 @@ void main() {
     finalColor.b = 1- tColor.b;
     finalColor.a = tColor.a;
 }";
-
+	public const string CURSOR_FS = @"
+#version 330
+in vec2 fragTexCoord;
+uniform vec2 cursorTexCoord;
+uniform vec2 screenSize;
+uniform sampler2D screenTexture;
+uniform sampler2D texture0;
+out vec4 finalColor;
+void main() {
+	vec2 pos = vec2(gl_FragCoord.x / screenSize.x, gl_FragCoord.y / screenSize.y);
+    vec4 tColor = texture(texture0, fragTexCoord);
+	vec4 screenColor = texture(screenTexture, pos);
+	if(screenColor.r + screenColor.g + screenColor.b < 1.5){
+		finalColor = tColor;		
+	}else{
+		finalColor.r = 1 - tColor.r;
+		finalColor.g = 1 - tColor.g;
+		finalColor.b = 1 - tColor.b;
+	}
+    finalColor.a = tColor.a;
+}";
 	public static readonly string[] EFFECTS = new string[Const.SCREEN_EFFECT_COUNT] { CHROMATIC_ABERRATION_FS, TINT_FS, RETRO_DARKEN_FS, RETRO_LIGHTEN_FS, VIGNETTE_FS, GREYSCALE_FS, INVERT_FS, };
 
 }

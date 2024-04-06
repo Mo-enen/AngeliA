@@ -496,6 +496,12 @@ public static class Extension {
 		return rect;
 	}
 	public static IRect ToIRect (this FRect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+	public static IRect ExpandToIRect (this FRect rect) => IRect.MinMaxRect(
+		rect.xMin.FloorToInt(),
+		rect.yMin.FloorToInt(),
+		rect.xMax.CeilToInt(),
+		rect.yMax.CeilToInt()
+	);
 
 
 	// IRect

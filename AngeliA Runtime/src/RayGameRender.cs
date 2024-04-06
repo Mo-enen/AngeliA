@@ -20,6 +20,7 @@ public partial class RayGame {
 	private Shader LerpShader;
 	private Shader ColorShader;
 	private Shader TextShader;
+	private Shader CursorShader;
 	private RenderTexture2D RenderTexture;
 	private int ShaderPropIndex_DarkenAmount;
 	private int ShaderPropIndex_LightenAmount;
@@ -36,6 +37,8 @@ public partial class RayGame {
 	private int ShaderPropIndex_CA_GREEN_Y;
 	private int ShaderPropIndex_CA_BLUE_X;
 	private int ShaderPropIndex_CA_BLUE_Y;
+	private int ShaderPropIndex_CURSOR_TEXTURE;
+	private int ShaderPropIndex_CURSOR_SIZE;
 
 
 	// MSG
@@ -45,6 +48,7 @@ public partial class RayGame {
 		LerpShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.LERP_FS);
 		ColorShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.COLOR_FS);
 		TextShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.TEXT_FS);
+		CursorShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.CURSOR_FS);
 
 		// Effects
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
@@ -69,21 +73,8 @@ public partial class RayGame {
 		ShaderPropIndex_CA_GREEN_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "GreenY");
 		ShaderPropIndex_CA_BLUE_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueX");
 		ShaderPropIndex_CA_BLUE_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueY");
-	}
-
-	private bool PrepareScreenEffects () {
-		bool hasScreenEffectEnabled = false;
-		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
-			if (ScreenEffectEnables[i]) {
-				hasScreenEffectEnabled = true;
-				if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
-					RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
-					Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
-				}
-				break;
-			}
-		}
-		return hasScreenEffectEnabled;
+		ShaderPropIndex_CURSOR_TEXTURE = Raylib.GetShaderLocation(CursorShader, "screenTexture");
+		ShaderPropIndex_CURSOR_SIZE = Raylib.GetShaderLocation(CursorShader, "screenSize");
 	}
 
 	private void UpdateScreenEffect () {
@@ -94,15 +85,15 @@ public partial class RayGame {
 			const float CA_PingPongMin = 0f;
 			const float CA_PingPongMax = 0.015f;
 			if (Raylib.GetTime() % CA_PingPongTime > CA_PingPongTime / 2f) {
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_RED_Y, GetRandomAmount(0.2f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.7f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_RED_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_RED_Y, GetRandomAmount(0.2f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.7f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
 			} else {
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_GREEN_Y, GetRandomAmount(0.8f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue<float>(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.72f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_GREEN_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_GREEN_Y, GetRandomAmount(0.8f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
+				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.72f), ShaderUniformDataType.Float);
 			}
 			static float GetRandomAmount (float timeOffset) {
 				int range = (int)(Util.RemapUnclamped(

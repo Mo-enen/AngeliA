@@ -19,6 +19,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Pixel Editor");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
 	private static readonly LanguageCode LABEL_PE_CANVAS_COLOR = ("Setting.PE.CanvasBgColor", "Canvas Background Color");
+	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
 
 	// Data
 	private ColorF PixEditor_BackgroundColor;
@@ -76,8 +77,12 @@ public class SettingWindow : WindowUI {
 		PixelEditor.CanvasBackgroundColor.Value = PixEditor_CanvasBackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
 
-
-
+		// Solid Painting Preview
+		PixelEditor.SolidPaintingPreview.Value = GUI.Toggle(
+			rect, PixelEditor.SolidPaintingPreview.Value, LABEL_PE_SOLID_PAINTING,
+			labelStyle: GUISkin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
 
 
 	}

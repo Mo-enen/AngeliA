@@ -452,9 +452,18 @@ public static class GUI {
 		Icon(rect, icon, style, state);
 		return isOn;
 	}
-	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) {
+	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) =>
+		Toggle(rect, isOn, null, bodyStyle, markStyle, null);
+	public static bool Toggle (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle markStyle = null, GUIStyle labelStyle = null) {
 		bodyStyle ??= GUISkin.Toggle;
 		markStyle ??= GUISkin.ToggleMark;
+		if (label != null) {
+			labelStyle ??= GUISkin.Label;
+			int labelWidth = Unify(LabelWidth);
+			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
+			rect = rect.Shrink(labelWidth, 0, 0, 0);
+		}
+		rect.width = rect.height;
 		isOn = BlankToggle(rect, isOn, out var state);
 		DrawStyleBody(rect, bodyStyle, state);
 		if (isOn) {

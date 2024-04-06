@@ -21,6 +21,7 @@ public partial class PixelEditor {
 	private DragStateRight DraggingStateRight = DragStateRight.None;
 	private Direction8 ResizingDirection = default;
 	private Direction8? HoveringResizeDirection = null;
+	private int PaintingSpriteStageIndex;
 	private int HoveringSpriteStageIndex;
 	private int HoveringResizeStageIndex = -1;
 	private int ResizingStageIndex = 0;
@@ -91,6 +92,7 @@ public partial class PixelEditor {
 					}
 				} else {
 					DraggingStateLeft = DragStateLeft.Paint;
+					PaintingSpriteStageIndex = HoveringSpriteStageIndex;
 					ClearSpriteSelection();
 				}
 			}
@@ -105,6 +107,37 @@ public partial class PixelEditor {
 		DragChanged = DragChanged || DraggingPixelRectLeft.width > 1 || DraggingPixelRectLeft.height > 1;
 
 		switch (DraggingStateLeft) {
+
+			case DragStateLeft.Paint:
+				if (PaintingSpriteStageIndex < 0 || PaintingSpriteStageIndex >= StagedSprites.Count) break;
+				var paintingSpData = StagedSprites[PaintingSpriteStageIndex];
+				var stageRect = Pixel_to_Stage(DraggingPixelRectLeft);
+				var spStageRect = Pixel_to_Stage(paintingSpData.Sprite.PixelRect);
+				if (!stageRect.Overlaps(spStageRect)) break;
+				stageRect = stageRect.Clamp(spStageRect);
+				if (PaintingColor.a == 0) {
+					// Erase Rect
+					DrawRendererFrame(stageRect, Color32.WHITE, GizmosThickness);
+					DrawRendererFrame(stageRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
+					// Cross
+					var center = stageRect.CenterInt();
+					int length = Util.BabylonianSqrt(stageRect.width * stageRect.width + stageRect.height * stageRect.height);
+					int angle = Util.Atan(stageRect.width, stageRect.height).RoundToInt();
+					Renderer.DrawPixel(center.x, center.y, 500, 500, angle, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
+					Renderer.DrawPixel(center.x, center.y, 500, 500, -angle, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
+					Renderer.DrawPixel(center.x, center.y, 500, 500, angle, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
+					Renderer.DrawPixel(center.x, center.y, 500, 500, -angle, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
+				} else {
+					// Paint Rect
+					using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+						if (SolidPaintingPreview.Value) {
+							Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
+						} else {
+							DrawRendererFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
+						}
+					}
+				}
+				break;
 
 			case DragStateLeft.ResizeSlice:
 				// Resize Slice
@@ -161,6 +194,31 @@ public partial class PixelEditor {
 		DraggingPixelRectLeft = GetDraggingPixRect(true);
 
 		switch (DraggingStateLeft) {
+
+			case DragStateLeft.Paint:
+				if (PaintingSpriteStageIndex < 0 || PaintingSpriteStageIndex >= StagedSprites.Count) break;
+				var paintingSpData = StagedSprites[PaintingSpriteStageIndex];
+				var paintingRect = DraggingPixelRectLeft;
+				var paintingSprite = paintingSpData.Sprite;
+				var spritePixelRect = paintingSprite.PixelRect;
+				if (!paintingRect.Overlaps(spritePixelRect)) break;
+				paintingRect = paintingRect.Clamp(spritePixelRect);
+				int l = paintingRect.xMin - spritePixelRect.x;
+				int r = paintingRect.xMax - spritePixelRect.x;
+				int d = paintingRect.yMin - spritePixelRect.y;
+				int u = paintingRect.yMax - spritePixelRect.y;
+				int pixelWidth = spritePixelRect.width;
+				int pixelCount = paintingSprite.Pixels.Length;
+				for (int j = d; j < u; j++) {
+					for (int i = l; i < r; i++) {
+						int pIndex = j * pixelWidth + i;
+						if (pIndex < 0 || pIndex >= pixelCount) continue;
+						paintingSprite.Pixels[pIndex] = PaintingColor;
+					}
+				}
+				paintingSpData.PixelDirty = true;
+				SetDirty();
+				break;
 
 			case DragStateLeft.ResizeSlice:
 				// Resize Slice
@@ -246,13 +304,6 @@ public partial class PixelEditor {
 						});
 					}
 				}
-				break;
-
-			case DragStateLeft.Paint:
-
-
-
-
 				break;
 
 			case DragStateLeft.MoveSlice:
@@ -344,7 +395,7 @@ public partial class PixelEditor {
 			// Drag Changed
 			switch (DraggingStateRight) {
 				case DragStateRight.SelectPixel:
-					PaintingColor = Color32.CLEAR;
+					
 
 
 					break;
