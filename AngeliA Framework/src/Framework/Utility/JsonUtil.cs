@@ -23,6 +23,7 @@ public static class JsonUtil {
 		IgnoreReadOnlyProperties = true,
 		IncludeFields = true,
 		PropertyNameCaseInsensitive = true,
+		AllowTrailingCommas = true,
 	};
 	private static readonly JsonSerializerOptions NO_INDENTED = new() {
 		WriteIndented = false,
@@ -30,12 +31,14 @@ public static class JsonUtil {
 		IgnoreReadOnlyProperties = true,
 		IncludeFields = true,
 		PropertyNameCaseInsensitive = true,
+		AllowTrailingCommas = true,
 	};
 	private static readonly JsonSerializerOptions READ = new() {
 		IgnoreReadOnlyFields = true,
 		IgnoreReadOnlyProperties = true,
 		IncludeFields = true,
 		PropertyNameCaseInsensitive = true,
+		AllowTrailingCommas = true,
 	};
 
 

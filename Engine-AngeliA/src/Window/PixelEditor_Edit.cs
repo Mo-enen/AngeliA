@@ -12,10 +12,17 @@ public partial class PixelEditor {
 	#region --- VAR ---
 
 
+	// Const
+	private const int MAX_SELECTION_SIZE = 64;
+
 	// Data
 	private readonly UndoRedo Undo = new(16 * 16 * 128, OnUndoPerformed, OnRedoPerformed);
+	private readonly List<AngeSprite> SpriteCopyBuffer = new();
+	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
+	private Int2 PixelCopySize;
 	private IRect DraggingPixelRectLeft = default;
 	private IRect DraggingPixelRectRight = default;
+	private IRect PixelSelectionPixelRect = default;
 	private Color32 PaintingColor = Color32.CLEAR;
 	private DragStateLeft DraggingStateLeft = DragStateLeft.None;
 	private DragStateRight DraggingStateRight = DragStateRight.None;
@@ -79,21 +86,28 @@ public partial class PixelEditor {
 				ClearSpriteSelection();
 			}
 		} else {
-			if (HoveringSpriteStageIndex < 0) {
-				// From Outside
-				DraggingStateLeft = DragStateLeft.SelectOrCreateSlice;
+			if (PixelSelectionPixelRect.Contains(MousePixelPos)) {
+				// Inside Pixel Selection
+				DraggingStateLeft = DragStateLeft.MovePixel;
+				ClearSpriteSelection();
 			} else {
-				// From Inside
-				var spData = StagedSprites[HoveringSpriteStageIndex];
-				if (spData.Selecting) {
-					DraggingStateLeft = DragStateLeft.MoveSlice;
-					foreach (var _spData in StagedSprites) {
-						_spData.DraggingStartRect = _spData.Sprite.PixelRect;
-					}
+				PixelSelectionPixelRect = default;
+				if (HoveringSpriteStageIndex < 0) {
+					// From Outside
+					DraggingStateLeft = DragStateLeft.SelectOrCreateSlice;
 				} else {
-					DraggingStateLeft = DragStateLeft.Paint;
-					PaintingSpriteStageIndex = HoveringSpriteStageIndex;
-					ClearSpriteSelection();
+					// From Inside
+					var spData = StagedSprites[HoveringSpriteStageIndex];
+					if (spData.Selecting) {
+						DraggingStateLeft = DragStateLeft.MoveSlice;
+						foreach (var _spData in StagedSprites) {
+							_spData.DraggingStartRect = _spData.Sprite.PixelRect;
+						}
+					} else {
+						DraggingStateLeft = DragStateLeft.Paint;
+						PaintingSpriteStageIndex = HoveringSpriteStageIndex;
+						ClearSpriteSelection();
+					}
 				}
 			}
 		}
@@ -107,6 +121,11 @@ public partial class PixelEditor {
 		DragChanged = DragChanged || DraggingPixelRectLeft.width > 1 || DraggingPixelRectLeft.height > 1;
 
 		switch (DraggingStateLeft) {
+
+			case DragStateLeft.MovePixel:
+
+
+				break;
 
 			case DragStateLeft.Paint:
 				if (PaintingSpriteStageIndex < 0 || PaintingSpriteStageIndex >= StagedSprites.Count) break;
@@ -198,6 +217,11 @@ public partial class PixelEditor {
 		DraggingPixelRectLeft = GetDraggingPixRect(true);
 
 		switch (DraggingStateLeft) {
+
+			case DragStateLeft.MovePixel:
+
+
+				break;
 
 			case DragStateLeft.Paint:
 				if (PaintingSpriteStageIndex < 0 || PaintingSpriteStageIndex >= StagedSprites.Count) break;
@@ -357,6 +381,7 @@ public partial class PixelEditor {
 	private void Update_RightDrag_Start () {
 		DragChanged = false;
 		DraggingStateRight = DragStateRight.SelectPixel;
+		PixelSelectionPixelRect = default;
 	}
 
 
@@ -367,11 +392,7 @@ public partial class PixelEditor {
 
 		switch (DraggingStateRight) {
 			case DragStateRight.SelectPixel:
-
-
-
-
-
+				DrawRendererDottedFrame(DraggingPixelRectRight, Color32.BLACK, Color32.WHITE, GizmosThickness);
 				break;
 		}
 	}
@@ -399,9 +420,17 @@ public partial class PixelEditor {
 			// Drag Changed
 			switch (DraggingStateRight) {
 				case DragStateRight.SelectPixel:
-
-
-
+					bool anyOverlaps = false;
+					foreach (var spData in StagedSprites) {
+						if (spData.Sprite.PixelRect.Overlaps(DraggingPixelRectRight)) {
+							anyOverlaps = true;
+							break;
+						}
+					}
+					if (anyOverlaps) {
+						PixelSelectionPixelRect = DraggingPixelRectRight;
+						ClearSpriteSelection();
+					}
 					break;
 			}
 		}
@@ -484,6 +513,7 @@ public partial class PixelEditor {
 		RefreshSliceInputContent();
 		RulePageIndex = 0;
 		OpeningTilingRuleEditor = false;
+		PixelSelectionPixelRect = default;
 	}
 
 
@@ -499,6 +529,7 @@ public partial class PixelEditor {
 		RefreshSliceInputContent();
 		RulePageIndex = 0;
 		OpeningTilingRuleEditor = false;
+		PixelSelectionPixelRect = default;
 	}
 
 
@@ -590,8 +621,8 @@ public partial class PixelEditor {
 	}
 
 
-	// Copy Paste
-	private void SetSelectingAsCopyBuffer () {
+	// Sprite Copy/Paste
+	private void SetSelectingSpritesAsCopyBuffer () {
 		SpriteCopyBuffer.Clear();
 		CopyBufferPixRange = default;
 		int left = int.MaxValue;
@@ -658,6 +689,20 @@ public partial class PixelEditor {
 
 		// Select
 		SetSpriteSelection(oldCount, StagedSprites.Count - oldCount);
+
+	}
+
+
+	// Pixel Copy/Paste
+	private void SetSelectingPixelAsCopyBuffer () {
+
+
+	}
+
+
+	private void PastePixelCopyBufferIntoSprite (int spriteIndex) {
+
+
 
 	}
 

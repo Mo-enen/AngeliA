@@ -49,6 +49,10 @@ internal class Engine {
 
 	// Api
 	public static Project CurrentProject { get; private set; } = null;
+	public static bool OpenLastProjectOnStart {
+		get => Setting.OpenLastProjectOnStart;
+		set => Setting.OpenLastProjectOnStart = value;
+	}
 
 	// Data
 	private static readonly GUIStyle ConfirmMsgStyle = new(GUISkin.CenterLabel) { CharSize = 18 };
@@ -80,7 +84,10 @@ internal class Engine {
 		SwitchWindowMode(WindowMode.Window);
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
-		Game.SetEventWaiting(true);
+		Game.SetEventWaiting(false);
+		if (Setting.OpenLastProjectOnStart) {
+			OpenProject(Setting.LastOpenProject);
+		}
 	}
 
 
@@ -115,20 +122,24 @@ internal class Engine {
 		Cursor.RequireCursor();
 
 		// Event Waiting
-		if (RequireEventWaitingOn) {
+		var pEditor = PixelEditor.Instance;
+		if (RequireEventWaitingOn && (!pEditor.Active || !pEditor.HasPixelSelection)) {
 			RequireEventWaitingOn = false;
 			Game.SetEventWaiting(true);
 		}
+
 		if (
 			(PrevMouseHoldingL != Game.IsMouseLeftHolding) ||
 			(PrevMouseHoldingM != Game.IsMouseMidHolding) ||
 			(PrevMouseHoldingR != Game.IsMouseRightHolding)
 		) {
+			RequireEventWaitingOn = true;
 			Game.SetEventWaiting(false);
 			PrevMouseHoldingL = Game.IsMouseLeftHolding;
-			PrevMouseHoldingR = Game.IsMouseMidHolding;
-			PrevMouseHoldingM = Game.IsMouseRightHolding;
+			PrevMouseHoldingM = Game.IsMouseMidHolding;
+			PrevMouseHoldingR = Game.IsMouseRightHolding;
 		}
+
 	}
 
 
@@ -384,7 +395,7 @@ internal class Engine {
 				bool hovering = rect.Contains(mousePos);
 
 				// Cursor
-				if (GUI.Enable&& !selecting && hovering) Cursor.SetCursorAsHand();
+				if (GUI.Enable && !selecting && hovering) Cursor.SetCursorAsHand();
 
 				// Body
 				Renderer.Draw_9Slice(
@@ -623,6 +634,7 @@ internal class Engine {
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		Game.SetWindowTitle($"{Game.DisplayTitle} - {Util.GetNameWithoutExtension(projectPath)}");
+		Setting.LastOpenProject = projectPath;
 	}
 
 

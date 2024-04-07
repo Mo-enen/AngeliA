@@ -21,6 +21,7 @@ public class Sheet {
 	public readonly Dictionary<int, SpriteGroup> GroupPool = new();
 	public readonly Dictionary<int, object> TexturePool = new();
 	private bool IgnoreGroups { get; init; } = false;
+	private bool IgnoreSpriteWithIgnoreTag { get; init; } = true;
 
 
 	#endregion
@@ -31,11 +32,13 @@ public class Sheet {
 	#region --- MSG ---
 
 
-	public Sheet (bool ignoreGroups = false) => IgnoreGroups = ignoreGroups;
+	public Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = true) {
+		IgnoreGroups = ignoreGroups;
+		IgnoreSpriteWithIgnoreTag = ignoreSpriteWithIgnoreTag;
+	}
 
-	public Sheet (
-		List<AngeSprite> sprites, List<Atlas> atlasInfo, bool ignoreGroups = false
-	) : this(ignoreGroups) => SetData(sprites, atlasInfo);
+
+	public Sheet (List<AngeSprite> sprites, List<Atlas> atlasInfo, bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = true) : this(ignoreGroups, ignoreSpriteWithIgnoreTag) => SetData(sprites, atlasInfo);
 
 
 	#endregion
@@ -336,8 +339,10 @@ public class Sheet {
 		try {
 			for (int i = 0; i < spriteCount; i++) {
 				var sprite = new AngeSprite();
-				Sprites.Add(sprite);
 				sprite.LoadFromBinary_v0(reader);
+				if (!IgnoreSpriteWithIgnoreTag || sprite.Tag != SpriteTag.IGNORE_TAG) {
+					Sprites.Add(sprite);
+				}
 			}
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 		if (stream.Position != spriteEndPos) stream.Position = spriteEndPos;

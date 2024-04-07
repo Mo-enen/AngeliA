@@ -689,6 +689,7 @@ public partial class PixelEditor {
 		var atlas = Sheet.Atlas[CurrentAtlasIndex];
 		string name = Sheet.GetAvailableSpriteName($"{atlas.Name}.Palette");
 		var sprite = Sheet.CreateSprite(name, new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT), CurrentAtlasIndex);
+		sprite.Tag = SpriteTag.IGNORE_TAG;
 		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
 		Sheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData() {

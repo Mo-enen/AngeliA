@@ -20,6 +20,8 @@ public class EngineSetting {
 	public int WindowSizeY = 1024;
 	public int WindowPositionX = 128;
 	public int WindowPositionY = 128;
+	public string LastOpenProject = "";
+	public bool OpenLastProjectOnStart = false;
 	public List<ProjectData> Projects = new();
 
 	public void RefreshProjectFileExistsCache () {
