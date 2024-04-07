@@ -68,9 +68,9 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 	}
 
 
-	public void Clear (bool ignorePathPool = false) {
+	public void Clear () {
 		Pool.Clear();
-		if (!ignorePathPool) PathPool.Clear();
+		PathPool.Clear();
 		CurrentValidMapCount = 0;
 		InternalFrame = int.MinValue;
 	}
@@ -278,6 +278,7 @@ public sealed class WorldStream : System.IDisposable, IBlockSquad {
 			}
 			CurrentValidMapCount--;
 		}
+		CacheReleaseList.Clear();
 	}
 
 

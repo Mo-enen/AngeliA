@@ -433,7 +433,7 @@ public static class Renderer {
 		cell.Sprite = null;
 		cell.TextSprite = sprite;
 		cell.Order = layer.FocusedCell;
-		cell.Rotation = 0;
+		cell.Rotation1000 = 0;
 		cell.PivotX = 0;
 		cell.PivotY = 0;
 		cell.Color = color;

@@ -155,7 +155,7 @@ public class TeleportTask : TaskItem {
 		// Scale
 		for (int i = 0; i < count; i++) {
 			var cell = cells[i];
-			if (cell.Rotation == 0) {
+			if (cell.Rotation1000 == 0) {
 				cell.X = Util.LerpUnclamped(center.x, cell.X - cell.PivotX * cell.Width, lerp).FloorToInt();
 				cell.Y = Util.LerpUnclamped(center.y, cell.Y - cell.PivotY * cell.Height, lerp).FloorToInt();
 				cell.Width = cell.Width > 0 ? (cell.Width * lerp).CeilToInt() : (cell.Width * lerp).FloorToInt();

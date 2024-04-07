@@ -23,10 +23,9 @@ public class WorldSquad : IBlockSquad {
 	public static WorldSquad Behind { get; set; } = null;
 	public static IBlockSquad FrontBlockSquad => Front;
 	public static MapChannel Channel { get; private set; } = MapChannel.General;
-	public static string MapRoot { get; private set; } = "";
+	public static string MapRoot => Stream.MapRoot;
 
 	// Data
-	private static readonly WorldPathPool PathPool = new();
 	private static readonly WorldStream Stream = new();
 	private static event System.Action OnMapFolderChanged;
 	private static event System.Action BeforeLevelRendered;
@@ -57,9 +56,8 @@ public class WorldSquad : IBlockSquad {
 
 	[OnUniverseOpen]
 	public static void OnUniverseOpen () {
-		ResetWorldPathPool(UniverseSystem.CurrentUniverse.MapRoot);
 		SwitchToCraftedMode(forceOperate: true);
-		ForceReload();
+		Reset();
 	}
 
 
@@ -234,21 +232,18 @@ public class WorldSquad : IBlockSquad {
 	public static void SwitchToProcedureMode (string folderName, bool forceOperate = false) => SetMode(folderName, MapChannel.Procedure, forceOperate);
 	private static void SetMode (string folderName, MapChannel newChannel, bool forceOperate = false) {
 		if (!forceOperate && newChannel == Channel) return;
-		MapRoot = newChannel switch {
+		Channel = newChannel;
+		string mapRoot = newChannel switch {
 			MapChannel.General => UniverseSystem.CurrentUniverse.MapRoot,
 			MapChannel.Procedure => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, folderName),
 			_ => UniverseSystem.CurrentUniverse.MapRoot,
 		};
-		Channel = newChannel;
-		Stream.Load(MapRoot, @readonly: true);
+		Stream.Load(mapRoot, @readonly: true);
 		OnMapFolderChanged?.Invoke();
 	}
 
 
-	public static void ResetWorldPathPool (string newMapRoot = null) => PathPool.SetMapRoot(newMapRoot ?? PathPool.MapRoot);
-
-
-	public static void ForceReload () => Stream.Clear(ignorePathPool: true);
+	public static void Reset () => Stream.Clear();
 
 
 	// Get Set Block
@@ -293,16 +288,10 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
-	public void SetBlocksAt (int unitX, int unitY, int entityID, int levelID, int backgroundID, int elementID) => Stream.SetBlocksAt(unitX, unitY, Stage.ViewZ, entityID, levelID, backgroundID, elementID);
-
-
-	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) => Stream.SetBlockAt(unitX, unitY, Stage.ViewZ, type, newID);
-
-
 	int IBlockSquad.GetBlockAt (int unitX, int unitY, int z, BlockType type) => GetBlockAt(unitX, unitY, type);
 
 
-	void IBlockSquad.SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) => SetBlockAt(unitX, unitY, type, newID);
+	void IBlockSquad.SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) { }
 
 
 	// Draw

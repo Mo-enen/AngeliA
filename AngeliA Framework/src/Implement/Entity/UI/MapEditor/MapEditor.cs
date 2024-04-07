@@ -1089,7 +1089,6 @@ public sealed partial class MapEditor : WindowUI {
 			MapGenerator.DeleteAllGeneratedMapFiles();
 		}
 		WorldSquad.Enable = toPlayMode;
-		WorldSquad.ResetWorldPathPool();
 
 		if (!toPlayMode) {
 			// Play >> Edit
@@ -1129,7 +1128,7 @@ public sealed partial class MapEditor : WindowUI {
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
 			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);
-			WorldSquad.ForceReload();
+			WorldSquad.Reset();
 		}
 	}
 

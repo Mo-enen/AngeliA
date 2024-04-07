@@ -122,11 +122,15 @@ public partial class PixelEditor {
 					// Cross
 					var center = stageRect.CenterInt();
 					int length = Util.BabylonianSqrt(stageRect.width * stageRect.width + stageRect.height * stageRect.height);
-					int angle = Util.Atan(stageRect.width, stageRect.height).RoundToInt();
-					Renderer.DrawPixel(center.x, center.y, 500, 500, angle, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
-					Renderer.DrawPixel(center.x, center.y, 500, 500, -angle, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
-					Renderer.DrawPixel(center.x, center.y, 500, 500, angle, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
-					Renderer.DrawPixel(center.x, center.y, 500, 500, -angle, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
+					float angle = Util.Atan(stageRect.width, stageRect.height);
+					var cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
+					cell.Rotation1000 = (angle * 1000).RoundToInt();
+					cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
+					cell.Rotation1000 = (angle * -1000).RoundToInt();
+					cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
+					cell.Rotation1000 = (angle * 1000).RoundToInt();
+					cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
+					cell.Rotation1000 = (angle * -1000).RoundToInt();
 				} else {
 					// Paint Rect
 					using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
@@ -395,7 +399,7 @@ public partial class PixelEditor {
 			// Drag Changed
 			switch (DraggingStateRight) {
 				case DragStateRight.SelectPixel:
-					
+
 
 
 					break;

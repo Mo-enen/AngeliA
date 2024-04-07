@@ -6,11 +6,9 @@ namespace AngeliA;
 public class WorldPathPool : Dictionary<Int3, string> {
 
 	// VAR
-	public string MapRoot { get; private set; }
+	public string MapRoot { get; private set; } = "";
 	private static readonly Dictionary<Int3, string> WorldNamePool = new();
 
-	// MSG
-	public WorldPathPool (string mapRoot = "") => MapRoot = mapRoot;
 
 	// API
 	public void SetMapRoot (string newRoot) {
@@ -30,13 +28,13 @@ public class WorldPathPool : Dictionary<Int3, string> {
 
 	public string GetOrAddPath (Int3 worldPos) {
 		if (string.IsNullOrEmpty(MapRoot)) return "";
-		if (TryGetValue(worldPos, out string path)) return path;
+		if (TryGetValue(worldPos, out string path) && path != null) return path;
 		path = Util.CombinePaths(MapRoot, GetWorldNameFromPosition(worldPos.x, worldPos.y, worldPos.z));
-		Add(worldPos, path);
+		this[worldPos] = path;
 		return path;
 	}
 
-	public static string GetWorldNameFromPosition (int x, int y, int z) {
+	private static string GetWorldNameFromPosition (int x, int y, int z) {
 		var pos = new Int3(x, y, z);
 		if (WorldNamePool.TryGetValue(pos, out string name)) {
 			return name;

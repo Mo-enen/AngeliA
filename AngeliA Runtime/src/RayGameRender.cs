@@ -244,7 +244,9 @@ public partial class RayGame {
 					new Vector2(
 						pivotX * dest.Width,
 						pivotY * dest.Height
-					), cell.Rotation, cell.Color.ToRaylib()
+					), 
+					cell.Rotation1000 / 1000f, 
+					cell.Color.ToRaylib()
 				);
 
 			} catch (System.Exception ex) { Debug.LogException(ex); }

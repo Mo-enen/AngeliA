@@ -199,6 +199,8 @@ public class World {
 	// Save
 	public void SaveToDisk (string filePath) {
 
+		if (string.IsNullOrEmpty(filePath)) return;
+
 		try {
 
 			// Save

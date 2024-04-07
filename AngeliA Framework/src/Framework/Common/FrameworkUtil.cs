@@ -42,7 +42,7 @@ public static class FrameworkUtil {
 			cursedCell.X = cell.X;
 			cursedCell.Y = cell.Y;
 			cursedCell.Z = cell.Z + 1;
-			cursedCell.Rotation = cell.Rotation;
+			cursedCell.Rotation1000 = cell.Rotation1000;
 			cursedCell.Width = cell.Width * scaleX / 1000;
 			cursedCell.Height = cell.Height * scaleY / 1000;
 			cursedCell.PivotX = cell.PivotX;

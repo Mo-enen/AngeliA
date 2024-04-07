@@ -1,4 +1,5 @@
 ﻿namespace AngeliA;
+
 public class Cell {
 	public static readonly Cell EMPTY = new() { Sprite = null, TextSprite = null, SheetIndex = -1, };
 	public AngeSprite Sprite;
@@ -10,7 +11,11 @@ public class Cell {
 	public int Z;
 	public int Width;
 	public int Height;
-	public int Rotation;
+	public int Rotation {
+		get => Rotation1000 / 1000;
+		set => Rotation1000 = value * 1000;
+	}
+	public int Rotation1000;
 	public float PivotX;
 	public float PivotY;
 	public Color32 Color;
@@ -25,7 +30,7 @@ public class Cell {
 		Z = other.Z;
 		Width = other.Width;
 		Height = other.Height;
-		Rotation = other.Rotation;
+		Rotation1000 = other.Rotation1000;
 		PivotX = other.PivotX;
 		PivotY = other.PivotY;
 		Color = other.Color;
@@ -35,27 +40,27 @@ public class Cell {
 	public Int2 LocalToGlobal (int localX, int localY) {
 		int pOffsetX = (int)(PivotX * Width);
 		int pOffsetY = (int)(PivotY * Height);
-		if (Rotation == 0) {
+		if (Rotation1000 == 0) {
 			return new Int2(X + localX - pOffsetX, Y + localY - pOffsetY);
 		}
-		var globalCellV = new Float2(localX, localY).Rotate(Rotation);
-		var globalPivotV = new Float2(pOffsetX, pOffsetY).Rotate(Rotation);
+		var globalCellV = new Float2(localX, localY).Rotate(Rotation1000 / 1000f);
+		var globalPivotV = new Float2(pOffsetX, pOffsetY).Rotate(Rotation1000 / 1000f);
 		var result = new Float2(X + globalCellV.x - globalPivotV.x, Y + globalCellV.y - globalPivotV.y);
 		return result.RoundToInt();
 	}
 	public Int2 GlobalToLocal (int globalX, int globalY) {
 		int pOffsetX = (int)(PivotX * Width);
 		int pOffsetY = (int)(PivotY * Height);
-		if (Rotation == 0) {
+		if (Rotation1000 == 0) {
 			return new Int2(globalX + pOffsetX - X, globalY + pOffsetY - Y);
 		}
-		var globalPoint = new Float2(pOffsetX, pOffsetY).Rotate(Rotation);
+		var globalPoint = new Float2(pOffsetX, pOffsetY).Rotate(Rotation1000 / 1000f);
 		var globalOffset = new Float2(globalX - X + globalPoint.x, globalY - Y + globalPoint.y);
-		var result = globalOffset.Rotate(-Rotation);
+		var result = globalOffset.Rotate(Rotation1000 / -1000f);
 		return result.RoundToInt();
 	}
 	public void ReturnPivots () {
-		if (Rotation == 0) {
+		if (Rotation1000 == 0) {
 			X -= (Width * PivotX).RoundToInt();
 			Y -= (Height * PivotY).RoundToInt();
 		} else {
@@ -67,7 +72,7 @@ public class Cell {
 		PivotY = 0;
 	}
 	public void ReturnPivots (float newPivotX, float newPivotY) {
-		if (Rotation == 0) {
+		if (Rotation1000 == 0) {
 			X -= (Width * (PivotX - newPivotX)).RoundToInt();
 			Y -= (Height * (PivotY - newPivotY)).RoundToInt();
 		} else {
