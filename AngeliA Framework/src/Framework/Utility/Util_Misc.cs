@@ -331,4 +331,14 @@ public static partial class Util {
 	}
 
 
+	public static Color32 MergeColor (Color32 top, Color32 back) {
+		byte oldTopAlpha = top.a;
+		top.r = (byte)Clamp(top.r, 0, 255);
+		top.g = (byte)Clamp(top.g, 0, 255);
+		top.b = (byte)Clamp(top.b, 0, 255);
+		top = Color32.Lerp(back, top, oldTopAlpha / 255f);
+		top.a = (byte)Clamp((1f - (1f - oldTopAlpha / 255f) * (1f - back.a / 255f)) * 255f, 0, 255);
+		return top;
+	}
+
 }

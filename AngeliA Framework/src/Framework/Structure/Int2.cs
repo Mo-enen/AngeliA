@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 [Serializable]
 public struct Int2 : IEquatable<Int2>, IFormattable {
@@ -23,6 +23,8 @@ public struct Int2 : IEquatable<Int2>, IFormattable {
 	private static readonly Int2 s_Left = new(-1, 0);
 
 	private static readonly Int2 s_Right = new(1, 0);
+
+	public readonly int Area => x * y;
 
 	public int x {
 		readonly get {

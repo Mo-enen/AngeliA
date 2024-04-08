@@ -13,13 +13,15 @@ public partial class PixelEditor {
 
 
 	// Const
-	private const int MAX_SELECTION_SIZE = 64;
+	private const int MAX_SELECTION_SIZE = 128;
 
 	// Data
 	private readonly UndoRedo Undo = new(16 * 16 * 128, OnUndoPerformed, OnRedoPerformed);
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
+	private readonly Color32[] PixelBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
-	private Int2 PixelCopySize;
+	private Int2 PixelBufferSize = Int2.zero;
+	private Int2 PixelCopyBufferSize = Int2.zero;
 	private IRect DraggingPixelRectLeft = default;
 	private IRect DraggingPixelRectRight = default;
 	private IRect PixelSelectionPixelRect = default;
@@ -35,6 +37,7 @@ public partial class PixelEditor {
 	private bool DragChanged = false;
 	private bool ResizeForBorder = false;
 	private bool HoveringResizeForBorder = false;
+	private Int2 MovePixelPixOffset;
 
 
 	#endregion
@@ -89,9 +92,15 @@ public partial class PixelEditor {
 			if (PixelSelectionPixelRect.Contains(MousePixelPos)) {
 				// Inside Pixel Selection
 				DraggingStateLeft = DragStateLeft.MovePixel;
+				MovePixelPixOffset = MousePixelPos - PixelSelectionPixelRect.position;
 				ClearSpriteSelection();
+				var oldSelectionRect = PixelSelectionPixelRect;
+				if (PixelBufferSize == Int2.zero) {
+					SetSelectingPixelAsBuffer();
+				}
+				PixelSelectionPixelRect = oldSelectionRect;
 			} else {
-				PixelSelectionPixelRect = default;
+				ClearPixelSelectionRect();
 				if (HoveringSpriteStageIndex < 0) {
 					// From Outside
 					DraggingStateLeft = DragStateLeft.SelectOrCreateSlice;
@@ -123,8 +132,8 @@ public partial class PixelEditor {
 		switch (DraggingStateLeft) {
 
 			case DragStateLeft.MovePixel:
-
-
+				PixelSelectionPixelRect.x = MousePixelPos.x - MovePixelPixOffset.x;
+				PixelSelectionPixelRect.y = MousePixelPos.y - MovePixelPixOffset.y;
 				break;
 
 			case DragStateLeft.Paint:
@@ -217,11 +226,6 @@ public partial class PixelEditor {
 		DraggingPixelRectLeft = GetDraggingPixRect(true);
 
 		switch (DraggingStateLeft) {
-
-			case DragStateLeft.MovePixel:
-
-
-				break;
 
 			case DragStateLeft.Paint:
 				if (PaintingSpriteStageIndex < 0 || PaintingSpriteStageIndex >= StagedSprites.Count) break;
@@ -364,7 +368,7 @@ public partial class PixelEditor {
 	private void Update_RightDrag () {
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!MouseRightDownInStage) return;
-		if (Interactable && Input.MouseRightButtonHolding) {
+		if (Interactable && !Input.MouseLeftButtonHolding && Input.MouseRightButtonHolding) {
 			if (DraggingStateRight == DragStateRight.None) {
 				Update_RightDrag_Start();
 			}
@@ -381,18 +385,23 @@ public partial class PixelEditor {
 	private void Update_RightDrag_Start () {
 		DragChanged = false;
 		DraggingStateRight = DragStateRight.SelectPixel;
-		PixelSelectionPixelRect = default;
+		ClearPixelSelectionRect();
 	}
 
 
 	private void Update_RightDrag_Dragging () {
 
-		DraggingPixelRectRight = GetDraggingPixRect(false);
-		DragChanged = DragChanged || DraggingPixelRectRight.width > 1 || DraggingPixelRectRight.height > 1;
+		DraggingPixelRectRight = GetDraggingPixRect(false, MAX_SELECTION_SIZE);
+		DragChanged = DragChanged || (
+			//(DraggingPixelRectRight.width > 1 || DraggingPixelRectRight.height > 1) &&
+			(Util.SquareDistance(Input.MouseGlobalPosition, Input.MouseRightDownGlobalPosition) > Unify(3600))
+		);
 
 		switch (DraggingStateRight) {
 			case DragStateRight.SelectPixel:
-				DrawRendererDottedFrame(DraggingPixelRectRight, Color32.BLACK, Color32.WHITE, GizmosThickness);
+				if (DragChanged) {
+					DrawRendererDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
+				}
 				break;
 		}
 	}
@@ -401,7 +410,7 @@ public partial class PixelEditor {
 	private void Update_RightDrag_End () {
 
 		// Update Rect
-		DraggingPixelRectRight = GetDraggingPixRect(false);
+		DraggingPixelRectRight = GetDraggingPixRect(false, MAX_SELECTION_SIZE);
 
 		if (!DragChanged) {
 			// Pick Color
@@ -429,6 +438,10 @@ public partial class PixelEditor {
 					}
 					if (anyOverlaps) {
 						PixelSelectionPixelRect = DraggingPixelRectRight;
+						PixelBufferSize = Int2.zero;
+						if (DragChanged) {
+							DrawRendererDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
+						}
 						ClearSpriteSelection();
 					}
 					break;
@@ -479,10 +492,10 @@ public partial class PixelEditor {
 
 
 	// Undo
-	private void RegisterUndo (IUndoItem item, bool ignoreStep) {
-		if (LastGrowUndoFrame != Game.PauselessFrame) {
+	private void RegisterUndo (IUndoItem item, bool ignoreStep = false) {
+		if (!ignoreStep && LastGrowUndoFrame != Game.PauselessFrame) {
 			LastGrowUndoFrame = Game.PauselessFrame;
-			if (!ignoreStep) Undo.GrowStep();
+			Undo.GrowStep();
 			Undo.Register(new ViewUndoItem() {
 
 			});
@@ -513,7 +526,7 @@ public partial class PixelEditor {
 		RefreshSliceInputContent();
 		RulePageIndex = 0;
 		OpeningTilingRuleEditor = false;
-		PixelSelectionPixelRect = default;
+		ClearPixelSelectionRect();
 	}
 
 
@@ -529,7 +542,7 @@ public partial class PixelEditor {
 		RefreshSliceInputContent();
 		RulePageIndex = 0;
 		OpeningTilingRuleEditor = false;
-		PixelSelectionPixelRect = default;
+		ClearPixelSelectionRect();
 	}
 
 
@@ -551,6 +564,7 @@ public partial class PixelEditor {
 
 
 	private void DeleteAllSelectingSprite () {
+		if (SelectingSpriteCount == 0) return;
 		TryApplySliceInputFields();
 		bool changed = false;
 		int checkedCount = 0;
@@ -693,24 +707,156 @@ public partial class PixelEditor {
 	}
 
 
-	// Pixel Copy/Paste
-	private void SetSelectingPixelAsCopyBuffer () {
+	// Pixel
+	private void ClearPixelSelectionRect () {
+		TryApplyPixelBuffer();
+		PixelSelectionPixelRect = default;
+		PixelBufferSize = Int2.zero;
+	}
+
+
+	private void SetSelectingPixelAsBuffer () {
+
+		PixelBufferSize.x = PixelSelectionPixelRect.width.Clamp(0, MAX_SELECTION_SIZE);
+		PixelBufferSize.y = PixelSelectionPixelRect.height.Clamp(0, MAX_SELECTION_SIZE);
+
+		if (PixelSelectionPixelRect == default) return;
+
+		// Clear Buffer
+		for (int j = 0; j < PixelBufferSize.y; j++) {
+			for (int i = 0; i < PixelBufferSize.x; i++) {
+				PixelBuffer[j * MAX_SELECTION_SIZE + i] = Color32.CLEAR;
+			}
+		}
+
+		// Set Buffer
+		for (int i = 0; i < StagedSprites.Count; i++) {
+			var spData = StagedSprites[i];
+			var sprite = spData.Sprite;
+			var pixelRect = sprite.PixelRect;
+			var inter = pixelRect.Intersection(PixelSelectionPixelRect);
+			if (!inter.HasValue) continue;
+			int l = inter.Value.xMin;
+			int r = inter.Value.xMax;
+			int d = inter.Value.yMin;
+			int u = inter.Value.yMax;
+			int bufferL = PixelSelectionPixelRect.xMin;
+			int bufferD = PixelSelectionPixelRect.yMin;
+			for (int y = d; y < u; y++) {
+				for (int x = l; x < r; x++) {
+					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
+					int bufferIndex = (y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL);
+					PixelBuffer[bufferIndex] = Util.MergeColor(sprite.Pixels[index], PixelBuffer[bufferIndex]);
+					sprite.Pixels[index] = Color32.CLEAR;
+				}
+			}
+			spData.PixelDirty = true;
+		}
+
+		PixelSelectionPixelRect = default;
+		SetDirty();
+		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
+	}
+
+
+	private void DeleteSelectingPixels () {
+
+		if (PixelSelectionPixelRect == default) return;
+
+		if (PixelBufferSize.Area > 0 && PixelSelectionPixelRect != default) {
+			PixelBufferSize = Int2.zero;
+			PixelSelectionPixelRect = default;
+			SetDirty();
+			return;
+		}
+
+		for (int i = 0; i < StagedSprites.Count; i++) {
+			var spData = StagedSprites[i];
+			var sprite = spData.Sprite;
+			var pixelRect = sprite.PixelRect;
+			var inter = pixelRect.Intersection(PixelSelectionPixelRect);
+			if (!inter.HasValue) continue;
+			int l = inter.Value.xMin;
+			int r = inter.Value.xMax;
+			int d = inter.Value.yMin;
+			int u = inter.Value.yMax;
+			for (int y = d; y < u; y++) {
+				for (int x = l; x < r; x++) {
+					sprite.Pixels[
+						(y - pixelRect.y) * pixelRect.width + (x - pixelRect.x)
+					] = Color32.CLEAR;
+				}
+			}
+			spData.PixelDirty = true;
+		}
+
+		SetDirty();
+		PixelSelectionPixelRect = default;
+		PixelBufferSize = Int2.zero;
+	}
+
+
+	private void CopyCutPixel (bool cut) {
+		if (PixelSelectionPixelRect == default) return;
+
+
 
 
 	}
 
 
-	private void PastePixelCopyBufferIntoSprite (int spriteIndex) {
+	private void PastePixel () {
+		TryApplyPixelBuffer();
+		if (PixelCopyBufferSize.Area <= 0) return;
+		if (PixelSelectionPixelRect == default) {
+			var pos = Stage_to_Pixel(StageRect.CenterInt() - PixelCopyBufferSize / 2);
+			PixelSelectionPixelRect.width = PixelCopyBufferSize.x;
+			PixelSelectionPixelRect.height = PixelCopyBufferSize.y;
+			PixelSelectionPixelRect.x = pos.x;
+			PixelSelectionPixelRect.y = pos.y;
+		}
+		PixelCopyBuffer.CopyTo(PixelBuffer, 0);
+		PixelBufferSize = PixelCopyBufferSize;
+		SetDirty();
+	}
 
 
-
+	private void TryApplyPixelBuffer () {
+		if (PixelBufferSize.Area <= 0 || PixelSelectionPixelRect == default) return;
+		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
+			var spData = StagedSprites[i];
+			var sprite = spData.Sprite;
+			var pixelRect = sprite.PixelRect;
+			var inter = pixelRect.Intersection(PixelSelectionPixelRect);
+			if (!inter.HasValue) continue;
+			int l = inter.Value.xMin;
+			int r = inter.Value.xMax;
+			int d = inter.Value.yMin;
+			int u = inter.Value.yMax;
+			int bufferL = PixelSelectionPixelRect.xMin;
+			int bufferD = PixelSelectionPixelRect.yMin;
+			for (int y = d; y < u; y++) {
+				for (int x = l; x < r; x++) {
+					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)];
+					if (buffer.a == 0) continue;
+					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
+					sprite.Pixels[index] = Util.MergeColor(buffer, sprite.Pixels[index]);
+				}
+			}
+			spData.PixelDirty = true;
+		}
+		SetDirty();
 	}
 
 
 	// Util
-	private IRect GetDraggingPixRect (bool forLeftButton) {
+	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize = -1) {
 		var downPos = Stage_to_Pixel(forLeftButton ? Input.MouseLeftDownGlobalPosition : Input.MouseRightDownGlobalPosition);
 		var pos = Stage_to_Pixel(Input.MouseGlobalPosition);
+		if (maxSize >= 0) {
+			pos.x = pos.x.Clamp(downPos.x - maxSize, downPos.x + maxSize);
+			pos.y = pos.y.Clamp(downPos.y - maxSize, downPos.y + maxSize);
+		}
 		return IRect.MinMaxRect(
 			Util.Min(downPos.x, pos.x),
 			Util.Min(downPos.y, pos.y),

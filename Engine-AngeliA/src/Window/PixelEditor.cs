@@ -72,7 +72,6 @@ public partial class PixelEditor : WindowUI {
 
 	// Api
 	public static PixelEditor Instance { get; private set; }
-	public bool HasPixelSelection => PixelSelectionPixelRect != default;
 	protected override bool BlockEvent => true;
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public static readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
@@ -95,6 +94,7 @@ public partial class PixelEditor : WindowUI {
 	private int ZoomLevel = 1;
 	private int LastGrowUndoFrame = -1;
 	private int GizmosThickness = 1;
+	private object PixelBufferGizmosTexture;
 	private Int2 MousePixelPos;
 	private Int2 MousePixelPosRound;
 	private FRect CanvasRect;
@@ -116,6 +116,7 @@ public partial class PixelEditor : WindowUI {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
+		Instance.PixelBufferGizmosTexture = Game.GetTextureFromPixels(Instance.PixelBuffer, MAX_SELECTION_SIZE, MAX_SELECTION_SIZE);
 		Renderer.AddAltSheet(Instance.Sheet);
 		Instance.TagPool.Clear();
 		for (int i = 0; i < SpriteTag.COUNT; i++) {
@@ -126,6 +127,12 @@ public partial class PixelEditor : WindowUI {
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
 			ATLAS_TYPE_NAMES[i] = ((AtlasType)i).ToString();
 		}
+	}
+
+
+	[OnGameQuitting]
+	internal static void OnGameQuitting_PixelEditor () {
+		Game.UnloadTexture(Instance.PixelBufferGizmosTexture);
 	}
 
 
@@ -140,6 +147,7 @@ public partial class PixelEditor : WindowUI {
 
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
+		Cursor.RequireCursor();
 		Sky.ForceSkyboxTint(BackgroundColor.Value);
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
@@ -398,7 +406,6 @@ public partial class PixelEditor : WindowUI {
 
 		if (Sheet.Atlas.Count <= 0 || !Interactable || !MouseInStage || !StageRect.MouseInside()) return;
 
-
 		// === For Slice Option ===
 
 		if (HoldingSliceOptionKey) {
@@ -412,7 +419,6 @@ public partial class PixelEditor : WindowUI {
 			return;
 		}
 
-
 		// === Move from Inside Cursor ===
 
 		if (
@@ -422,7 +428,6 @@ public partial class PixelEditor : WindowUI {
 			Cursor.SetCursorAsMove(1);
 			return;
 		}
-
 
 		// === Gizmos Mouse Cursor ===
 
@@ -485,8 +490,9 @@ public partial class PixelEditor : WindowUI {
 
 		// Pixel Selection
 		if (PixelSelectionPixelRect != default) {
-			var pixelSelectionStageRect = Pixel_to_Stage(PixelSelectionPixelRect);
+			var pixelSelectionStageRect = Pixel_to_Stage(PixelSelectionPixelRect, ignoreClamp: true);
 			DrawRendererDottedFrame(pixelSelectionStageRect, Color32.BLACK, Color32.WHITE, GizmosThickness);
+			DrawPixelBuffer(PixelSelectionPixelRect);
 		}
 
 		// All Sprites
@@ -607,47 +613,64 @@ public partial class PixelEditor : WindowUI {
 
 		// Ctrl
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
-			// Z
+			// Ctrl + Z
 			if (Input.KeyboardDown(KeyboardKey.Z)) {
 				Undo.Undo();
 			}
-			// Y
+			// Ctrl + Y
 			if (Input.KeyboardDown(KeyboardKey.Y)) {
 				Undo.Redo();
 			}
-			// S
+			// Ctrl + S
 			if (Input.KeyboardDown(KeyboardKey.S)) {
 				SaveSheetToDisk();
 			}
-			// C
+			// Ctrl + C
 			if (Input.KeyboardDown(KeyboardKey.C)) {
 				if (SelectingSpriteCount > 0) {
 					// Copy Sprites
+					ClearPixelSelectionRect();
 					SetSelectingSpritesAsCopyBuffer();
+				} else {
+					// Copy Pixel
+					ClearSpriteSelection();
+					CopyCutPixel(cut: false);
 				}
 			}
-			// X
+			// Ctrl + X
 			if (Input.KeyboardDown(KeyboardKey.X)) {
 				if (SelectingSpriteCount > 0) {
 					// Cut Sprites
+					ClearPixelSelectionRect();
 					SetSelectingSpritesAsCopyBuffer();
 					DeleteAllSelectingSprite();
+				} else {
+					// Cut Pixel
+					ClearSpriteSelection();
+					CopyCutPixel(cut: true);
 				}
 			}
-			// V
+			// Ctrl + V
 			if (Input.KeyboardDown(KeyboardKey.V)) {
 				ClearSpriteSelection();
 				if (SpriteCopyBuffer.Count > 0) {
+					// Paste Sprite
 					PasteSpriteCopyBufferIntoStage();
+				} else {
+					// Paste Pixel
+					PastePixel();
 				}
 			}
 		}
-		// Slice
-		if (SelectingSpriteCount > 0) {
-			// Delete
-			if (Input.KeyboardDown(KeyboardKey.Delete)) {
-				DeleteAllSelectingSprite();
-			}
+		// Delete
+		if (Input.KeyboardDown(KeyboardKey.Delete)) {
+			DeleteAllSelectingSprite();
+			DeleteSelectingPixels();
+		}
+		// ESC
+		if (Input.KeyboardDown(KeyboardKey.Escape)) {
+			ClearSpriteSelection();
+			ClearPixelSelectionRect();
 		}
 	}
 
@@ -819,8 +842,8 @@ public partial class PixelEditor : WindowUI {
 
 		// H
 		if (offset > 0) {
-			Renderer.DrawPixel(new IRect(l, d - thickness / 2, offset, thickness), startDark ? colorA : colorB, z: int.MaxValue);
-			Renderer.DrawPixel(new IRect(l, u - thickness / 2, offset, thickness), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(l, d - thickness / 2, offset.LessOrEquel(stageRect.width), thickness), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(l, u - thickness / 2, offset.LessOrEquel(stageRect.width), thickness), startDark ? colorA : colorB, z: int.MaxValue);
 		}
 		var rectA = new IRect(0, d - thickness / 2, gap, thickness);
 		var rectB = new IRect(0, u - thickness / 2, gap, thickness);
@@ -837,8 +860,8 @@ public partial class PixelEditor : WindowUI {
 
 		// V
 		if (offset > 0) {
-			Renderer.DrawPixel(new IRect(l - thickness / 2, d, thickness, offset), startDark ? colorA : colorB, z: int.MaxValue);
-			Renderer.DrawPixel(new IRect(r - thickness / 2, d, thickness, offset), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(l - thickness / 2, d, thickness, offset.LessOrEquel(stageRect.height)), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(r - thickness / 2, d, thickness, offset.LessOrEquel(stageRect.height)), startDark ? colorA : colorB, z: int.MaxValue);
 		}
 		rectA = new IRect(l - thickness / 2, 0, thickness, gap);
 		rectB = new IRect(r - thickness / 2, 0, thickness, gap);
@@ -852,6 +875,23 @@ public partial class PixelEditor : WindowUI {
 			dark = !dark;
 			y += rectA.height;
 		}
+	}
+
+
+	private void DrawPixelBuffer (IRect targetPixelRect) {
+		if (PixelBufferSize.Area <= 0) return;
+		var stageRect = Pixel_to_Stage(targetPixelRect, out var rectUV, out bool outside);
+		if (outside) return;
+		var uv = new FRect(0, 0, (float)PixelBufferSize.x / MAX_SELECTION_SIZE, (float)PixelBufferSize.y / MAX_SELECTION_SIZE);
+		if (rectUV.HasValue) {
+			uv = FRect.MinMaxRect(
+				Util.LerpUnclamped(uv.xMin, uv.xMax, rectUV.Value.xMin),
+				Util.LerpUnclamped(uv.yMin, uv.yMax, rectUV.Value.yMin),
+				Util.LerpUnclamped(uv.xMin, uv.xMax, rectUV.Value.xMax),
+				Util.LerpUnclamped(uv.yMin, uv.yMax, rectUV.Value.yMax)
+			);
+		}
+		Game.DrawGizmosTexture(stageRect, uv, PixelBufferGizmosTexture);
 	}
 
 

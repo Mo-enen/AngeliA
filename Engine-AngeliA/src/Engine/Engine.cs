@@ -63,10 +63,6 @@ internal class Engine {
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
-	private static bool RequireEventWaitingOn = false;
-	private static bool PrevMouseHoldingL = false;
-	private static bool PrevMouseHoldingR = false;
-	private static bool PrevMouseHoldingM = false;
 
 
 	#endregion
@@ -112,34 +108,6 @@ internal class Engine {
 	[OnGameFocused]
 	internal static void OnGameFocused () {
 		Setting.RefreshProjectFileExistsCache();
-	}
-
-
-	[OnGameUpdate(-4096)]
-	internal static void OnGameUpdate () {
-
-		// Cursor
-		Cursor.RequireCursor();
-
-		// Event Waiting
-		var pEditor = PixelEditor.Instance;
-		if (RequireEventWaitingOn && (!pEditor.Active || !pEditor.HasPixelSelection)) {
-			RequireEventWaitingOn = false;
-			Game.SetEventWaiting(true);
-		}
-
-		if (
-			(PrevMouseHoldingL != Game.IsMouseLeftHolding) ||
-			(PrevMouseHoldingM != Game.IsMouseMidHolding) ||
-			(PrevMouseHoldingR != Game.IsMouseRightHolding)
-		) {
-			RequireEventWaitingOn = true;
-			Game.SetEventWaiting(false);
-			PrevMouseHoldingL = Game.IsMouseLeftHolding;
-			PrevMouseHoldingM = Game.IsMouseMidHolding;
-			PrevMouseHoldingR = Game.IsMouseRightHolding;
-		}
-
 	}
 
 

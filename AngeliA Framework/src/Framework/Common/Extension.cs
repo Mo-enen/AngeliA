@@ -682,6 +682,16 @@ public static class Extension {
 	public static void SlideDown (ref this IRect rect, int padding = 0) => rect.y -= rect.height + padding;
 	public static void SlideUp (ref this IRect rect, int padding = 0) => rect.y += rect.height + padding;
 
+	public static IRect? Intersection (this IRect rect, IRect other) {
+		if (!rect.Overlaps(other)) return null;
+		return IRect.MinMaxRect(
+			Util.Max(rect.xMin, other.xMin),
+			Util.Max(rect.yMin, other.yMin),
+			Util.Min(rect.xMax, other.xMax),
+			Util.Min(rect.yMax, other.yMax)
+		);
+	}
+
 
 	// Misc
 	public static bool IsSame (this Color32 a, Color32 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);
