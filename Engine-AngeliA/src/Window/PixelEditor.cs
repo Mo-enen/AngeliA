@@ -430,6 +430,12 @@ public partial class PixelEditor : WindowUI {
 			return;
 		}
 
+		// === Just Trying to Cancel Pixel Selection
+		if (PixelSelectionPixelRect != default && !PixelSelectionPixelRect.Contains(MousePixelPos)) {
+			Cursor.SetCursorAsNormal();
+			return;
+		}
+
 		// === Gizmos Mouse Cursor ===
 
 		if (
@@ -492,7 +498,7 @@ public partial class PixelEditor : WindowUI {
 		// Pixel Selection
 		if (PixelSelectionPixelRect != default) {
 			var pixelSelectionStageRect = Pixel_to_Stage(PixelSelectionPixelRect, ignoreClamp: true);
-			DrawRendererDottedFrame(pixelSelectionStageRect, Color32.BLACK, Color32.WHITE, GizmosThickness);
+			DrawRendererDottedFrame(pixelSelectionStageRect.Expand(GizmosThickness), Color32.BLACK, Color32.WHITE, GizmosThickness);
 			DrawPixelBuffer(PixelSelectionPixelRect);
 		}
 

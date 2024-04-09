@@ -74,6 +74,7 @@ public partial class PixelEditor {
 		TryApplySliceInputFields();
 
 		if (HoldingSliceOptionKey) {
+			// Holding Option Key
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
 				DraggingStateLeft = DragStateLeft.ResizeSlice;
 				ResizingDirection = HoveringResizeDirection.Value;
@@ -90,6 +91,7 @@ public partial class PixelEditor {
 				ClearSpriteSelection();
 			}
 		} else {
+			// Not Holding Option Key
 			if (PixelSelectionPixelRect.Contains(MousePixelPos)) {
 				// Inside Pixel Selection
 				DraggingStateLeft = DragStateLeft.MovePixel;
@@ -100,6 +102,9 @@ public partial class PixelEditor {
 					SetSelectingPixelAsBuffer();
 				}
 				PixelSelectionPixelRect = oldSelectionRect;
+			} else if (PixelSelectionPixelRect != default) {
+				// Just Clear Pixel Selection
+				ClearPixelSelectionRect();
 			} else {
 				ClearPixelSelectionRect();
 				if (HoveringSpriteStageIndex < 0) {

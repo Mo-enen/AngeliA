@@ -41,7 +41,10 @@ public static class GizmosRender {
 			uv.Y = yMin;
 			uv.Height = yMax - yMin;
 			Raylib.DrawTexturePro(
-				rTexture, uv.ShrinkRectangle(0.01f), rect.ExpandRectangle(0.5f), new(0, 0), 0, Color.White
+				rTexture, 
+				uv.ShrinkRectangle(0.001f), 
+				rect.ExpandRectangle(0.001f), 
+				new(0, 0), 0, Color.White
 			);
 		}
 		GLTextureCount = 0;

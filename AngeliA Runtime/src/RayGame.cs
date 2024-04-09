@@ -108,6 +108,7 @@ public partial class RayGame : Game {
 		bool usingTextureMode = hasScreenEffectEnabled || hasCustomCursor;
 		if (usingTextureMode) {
 			if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
+				Raylib.UnloadRenderTexture(RenderTexture);
 				RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 				Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
 			}
@@ -162,7 +163,9 @@ public partial class RayGame : Game {
 		// Custom Cursor
 		if (hasCustomCursor && Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, -1, out var texture)) {
 			Raylib.BeginShaderMode(CursorShader);
-			Raylib.SetShaderValueTexture(CursorShader, ShaderPropIndex_CURSOR_TEXTURE, RenderTexture.Texture);
+			Raylib.SetShaderValueTexture(
+				CursorShader, ShaderPropIndex_CURSOR_TEXTURE, RenderTexture.Texture
+			);
 			Raylib.SetShaderValue(
 				CursorShader, ShaderPropIndex_CURSOR_SIZE,
 				new Vector2(ScreenWidth, ScreenHeight), ShaderUniformDataType.Vec2

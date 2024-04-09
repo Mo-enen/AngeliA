@@ -244,8 +244,8 @@ public partial class RayGame {
 					new Vector2(
 						pivotX * dest.Width,
 						pivotY * dest.Height
-					), 
-					cell.Rotation1000 / 1000f, 
+					),
+					cell.Rotation1000 / 1000f,
 					cell.Color.ToRaylib()
 				);
 
@@ -488,10 +488,10 @@ public partial class RayGame {
 		if (texture is not Texture2D rTexture) return;
 		var cameraRect = Renderer.CameraRect;
 		GizmosRender.DrawGizmosTexture(new Rectangle(
-			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, ScreenRenderRect.x, ScreenRenderRect.xMax, rect.x),
-			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, ScreenRenderRect.yMax, ScreenRenderRect.y, rect.yMax),
-			rect.width * ScreenRenderRect.width / cameraRect.width,
-			rect.height * ScreenRenderRect.height / cameraRect.height
+			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, ScreenRenderRect.x, ScreenRenderRect.xMax, (float)rect.x),
+			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, ScreenRenderRect.yMax, ScreenRenderRect.y, (float)rect.yMax),
+			(float)rect.width * ScreenRenderRect.width / cameraRect.width,
+			(float)rect.height * ScreenRenderRect.height / cameraRect.height
 		), new Rectangle(
 			uv.x * rTexture.Width,
 			uv.y * rTexture.Height,
