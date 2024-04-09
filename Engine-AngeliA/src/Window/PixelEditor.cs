@@ -188,6 +188,7 @@ public partial class PixelEditor : WindowUI {
 		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.Instance.Active;
 		HoveringResizeForBorder = false;
 		RuleEditorRect = OpeningTilingRuleEditor ? StageRect.CornerInside(Alignment.TopRight, Unify(200), Unify(250)) : default;
+		LastPixelSelectionPixelRect = PixelSelectionPixelRect != default ? PixelSelectionPixelRect : LastPixelSelectionPixelRect;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 

@@ -25,6 +25,7 @@ public partial class PixelEditor {
 	private IRect DraggingPixelRectLeft = default;
 	private IRect DraggingPixelRectRight = default;
 	private IRect PixelSelectionPixelRect = default;
+	private IRect LastPixelSelectionPixelRect = default;
 	private Color32 PaintingColor = Color32.CLEAR;
 	private DragStateLeft DraggingStateLeft = DragStateLeft.None;
 	private DragStateRight DraggingStateRight = DragStateRight.None;
@@ -635,7 +636,6 @@ public partial class PixelEditor {
 	}
 
 
-	// Sprite Copy/Paste
 	private void SetSelectingSpritesAsCopyBuffer () {
 		SpriteCopyBuffer.Clear();
 		CopyBufferPixRange = default;
@@ -716,43 +716,10 @@ public partial class PixelEditor {
 
 
 	private void SetSelectingPixelAsBuffer () {
-
 		PixelBufferSize.x = PixelSelectionPixelRect.width.Clamp(0, MAX_SELECTION_SIZE);
 		PixelBufferSize.y = PixelSelectionPixelRect.height.Clamp(0, MAX_SELECTION_SIZE);
-
 		if (PixelSelectionPixelRect == default) return;
-
-		// Clear Buffer
-		for (int j = 0; j < PixelBufferSize.y; j++) {
-			for (int i = 0; i < PixelBufferSize.x; i++) {
-				PixelBuffer[j * MAX_SELECTION_SIZE + i] = Color32.CLEAR;
-			}
-		}
-
-		// Set Buffer
-		for (int i = 0; i < StagedSprites.Count; i++) {
-			var spData = StagedSprites[i];
-			var sprite = spData.Sprite;
-			var pixelRect = sprite.PixelRect;
-			var inter = pixelRect.Intersection(PixelSelectionPixelRect);
-			if (!inter.HasValue) continue;
-			int l = inter.Value.xMin;
-			int r = inter.Value.xMax;
-			int d = inter.Value.yMin;
-			int u = inter.Value.yMax;
-			int bufferL = PixelSelectionPixelRect.xMin;
-			int bufferD = PixelSelectionPixelRect.yMin;
-			for (int y = d; y < u; y++) {
-				for (int x = l; x < r; x++) {
-					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
-					int bufferIndex = (y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL);
-					PixelBuffer[bufferIndex] = Util.MergeColor(sprite.Pixels[index], PixelBuffer[bufferIndex]);
-					sprite.Pixels[index] = Color32.CLEAR;
-				}
-			}
-			spData.PixelDirty = true;
-		}
-
+		PixelToBuffer(StagedSprites, PixelBuffer, PixelBufferSize, PixelSelectionPixelRect, true);
 		PixelSelectionPixelRect = default;
 		SetDirty();
 		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
@@ -797,26 +764,45 @@ public partial class PixelEditor {
 
 
 	private void CopyCutPixel (bool cut) {
-		if (PixelSelectionPixelRect == default) return;
-
-
-
-
+		if (PixelSelectionPixelRect == default || PixelSelectionPixelRect.width * PixelSelectionPixelRect.height <= 0) return;
+		if (PixelBufferSize == Int2.zero) {
+			// From Sprite
+			PixelCopyBufferSize = PixelSelectionPixelRect.size;
+			PixelToBuffer(StagedSprites, PixelCopyBuffer, PixelCopyBufferSize, PixelSelectionPixelRect, false);
+		} else {
+			// From Buffer
+			PixelCopyBufferSize = PixelBufferSize;
+			PixelBuffer.CopyTo(PixelCopyBuffer, 0);
+			TryApplyPixelBuffer();
+		}
+		if (cut) {
+			DeleteSelectingPixels();
+		}
 	}
 
 
 	private void PastePixel () {
 		TryApplyPixelBuffer();
 		if (PixelCopyBufferSize.Area <= 0) return;
-		if (PixelSelectionPixelRect == default) {
+		int padding = Unify(96);
+		var pixelSelectionRect = PixelSelectionPixelRect != default ? PixelSelectionPixelRect : LastPixelSelectionPixelRect;
+		if (
+			pixelSelectionRect != default &&
+			StageRect.Shrink(0, padding, 0, padding).Overlaps(Pixel_to_Stage(pixelSelectionRect, ignoreClamp: true))
+		) {
+			int delta = PixelSelectionPixelRect == default ? 0 : 4;
+			PixelSelectionPixelRect.x = pixelSelectionRect.x + delta;
+			PixelSelectionPixelRect.y = pixelSelectionRect.y + delta;
+		} else {
 			var pos = Stage_to_Pixel(StageRect.CenterInt() - PixelCopyBufferSize / 2);
-			PixelSelectionPixelRect.width = PixelCopyBufferSize.x;
-			PixelSelectionPixelRect.height = PixelCopyBufferSize.y;
 			PixelSelectionPixelRect.x = pos.x;
 			PixelSelectionPixelRect.y = pos.y;
 		}
+		PixelSelectionPixelRect.width = PixelCopyBufferSize.x;
+		PixelSelectionPixelRect.height = PixelCopyBufferSize.y;
 		PixelCopyBuffer.CopyTo(PixelBuffer, 0);
 		PixelBufferSize = PixelCopyBufferSize;
+		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
 		SetDirty();
 	}
 
@@ -938,6 +924,42 @@ public partial class PixelEditor {
 			ResizingDirection.IsBottom() ? spRect.yMax - spBorder.up / Const.ART_SCALE : spRect.yMax
 		);
 		return result;
+	}
+
+
+	private static void PixelToBuffer (List<SpriteData> stagedSprites, Color32[] buffer, Int2 bufferSize, IRect pixelRange, bool removePixels) {
+
+		// Clear Buffer
+		for (int j = 0; j < bufferSize.y; j++) {
+			for (int i = 0; i < bufferSize.x; i++) {
+				buffer[j * MAX_SELECTION_SIZE + i] = Color32.CLEAR;
+			}
+		}
+
+		// Set Buffer
+		for (int i = 0; i < stagedSprites.Count; i++) {
+			var spData = stagedSprites[i];
+			var sprite = spData.Sprite;
+			var pixelRect = sprite.PixelRect;
+			var inter = pixelRect.Intersection(pixelRange);
+			if (!inter.HasValue) continue;
+			int l = inter.Value.xMin;
+			int r = inter.Value.xMax;
+			int d = inter.Value.yMin;
+			int u = inter.Value.yMax;
+			int bufferL = pixelRange.xMin;
+			int bufferD = pixelRange.yMin;
+			for (int y = d; y < u; y++) {
+				for (int x = l; x < r; x++) {
+					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
+					int bufferIndex = (y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL);
+					buffer[bufferIndex] = Util.MergeColor(sprite.Pixels[index], buffer[bufferIndex]);
+					if (removePixels) sprite.Pixels[index] = Color32.CLEAR;
+				}
+			}
+			spData.PixelDirty = true;
+		}
+
 	}
 
 
