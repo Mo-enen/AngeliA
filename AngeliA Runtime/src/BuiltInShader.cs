@@ -160,10 +160,9 @@ void main() {
     finalColor.b = 1- tColor.b;
     finalColor.a = tColor.a;
 }";
-	public const string CURSOR_FS = @"
+	public const string INV_FS = @"
 #version 330
 in vec2 fragTexCoord;
-uniform vec2 cursorTexCoord;
 uniform vec2 screenSize;
 uniform sampler2D screenTexture;
 uniform sampler2D texture0;
@@ -181,6 +180,7 @@ void main() {
 	}
     finalColor.a = tColor.a;
 }";
+
 	public static readonly string[] EFFECTS = new string[Const.SCREEN_EFFECT_COUNT] { CHROMATIC_ABERRATION_FS, TINT_FS, RETRO_DARKEN_FS, RETRO_LIGHTEN_FS, VIGNETTE_FS, GREYSCALE_FS, INVERT_FS, };
 
 }

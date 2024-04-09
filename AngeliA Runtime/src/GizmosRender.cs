@@ -22,10 +22,14 @@ public class GLTexture {
 public static class GizmosRender {
 
 
+	public static bool HasInverseGizmos => InverseTextureCount > 0;
+
 	private static readonly GLRect[] GLRects = new GLRect[256 * 256].FillWithNewValue();
 	private static readonly GLTexture[] GLTextures = new GLTexture[1024].FillWithNewValue();
+	private static readonly GLTexture[] InverseTextures = new GLTexture[16].FillWithNewValue();
 	private static int GLRectCount = 0;
 	private static int GLTextureCount = 0;
+	private static int InverseTextureCount = 0;
 
 
 	public static void UpdateGizmos () {
@@ -41,9 +45,9 @@ public static class GizmosRender {
 			uv.Y = yMin;
 			uv.Height = yMax - yMin;
 			Raylib.DrawTexturePro(
-				rTexture, 
-				uv.ShrinkRectangle(0.001f), 
-				rect.ExpandRectangle(0.001f), 
+				rTexture,
+				uv.ShrinkRectangle(0.001f),
+				rect.ExpandRectangle(0.001f),
 				new(0, 0), 0, Color.White
 			);
 		}
@@ -62,6 +66,29 @@ public static class GizmosRender {
 			);
 		}
 		GLRectCount = 0;
+
+	}
+
+
+	public static void UpdateInverse () {
+		if (InverseTextureCount <= 0) return;
+		for (int i = 0; i < InverseTextureCount; i++) {
+			var glTexture = InverseTextures[i];
+			var rTexture = glTexture.Texture;
+			var rect = glTexture.Rect;
+			var uv = glTexture.UV;
+			float yMin = rTexture.Height - (uv.Y + uv.Height);
+			float yMax = rTexture.Height - uv.Y;
+			uv.Y = yMin;
+			uv.Height = yMax - yMin;
+			Raylib.DrawTexturePro(
+				rTexture,
+				uv.ShrinkRectangle(0.001f),
+				rect.ExpandRectangle(0.001f),
+				new(0, 0), 0, Color.White
+			);
+		}
+		InverseTextureCount = 0;
 	}
 
 
@@ -74,15 +101,23 @@ public static class GizmosRender {
 	}
 
 
-	public static void DrawGizmosTexture (Rectangle rect, Rectangle uv, Texture2D texture) {
-		if (GLTextureCount >= GLTextures.Length) return;
-		var glTexture = GLTextures[GLTextureCount];
-		glTexture.Rect = rect;
-		glTexture.Texture = texture;
-		glTexture.UV = uv;
-		GLTextureCount++;
+	public static void DrawGizmosTexture (Rectangle rect, Rectangle uv, Texture2D texture, bool inverse = false) {
+		if (inverse) {
+			if (InverseTextureCount >= InverseTextures.Length) return;
+			var glTexture = InverseTextures[InverseTextureCount];
+			glTexture.Rect = rect;
+			glTexture.Texture = texture;
+			glTexture.UV = uv;
+			InverseTextureCount++;
+		} else {
+			if (GLTextureCount >= GLTextures.Length) return;
+			var glTexture = GLTextures[GLTextureCount];
+			glTexture.Rect = rect;
+			glTexture.Texture = texture;
+			glTexture.UV = uv;
+			GLTextureCount++;
+		}
 	}
-
 
 
 }

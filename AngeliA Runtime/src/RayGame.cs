@@ -17,6 +17,7 @@ public partial class RayGame : Game {
 	private readonly Stopwatch GameWatch = new();
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
+	private bool PrevHasInverseGizmos = false;
 
 	// Saving
 	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
@@ -104,8 +105,7 @@ public partial class RayGame : Game {
 				break;
 			}
 		}
-		bool hasCustomCursor = Cursor.CurrentCursorIndex == Const.CURSOR_CUSTOM && Cursor.CustomCursorID != 0 && Raylib.IsCursorOnScreen();
-		bool usingTextureMode = hasScreenEffectEnabled || hasCustomCursor;
+		bool usingTextureMode = hasScreenEffectEnabled || PrevHasInverseGizmos;
 		if (usingTextureMode) {
 			if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
 				Raylib.UnloadRenderTexture(RenderTexture);
@@ -135,9 +135,24 @@ public partial class RayGame : Game {
 		// Update Gizmos
 		GizmosRender.UpdateGizmos();
 
-		// End Update
+		PrevHasInverseGizmos = GizmosRender.HasInverseGizmos;
+		if (PrevHasInverseGizmos) {
+			Raylib.BeginShaderMode(InverseShader);
+			Raylib.SetShaderValueTexture(
+				InverseShader, ShaderPropIndex_INV_TEXTURE, RenderTexture.Texture
+			);
+			Raylib.SetShaderValue(
+				InverseShader, ShaderPropIndex_INV_SCREEN_SIZE,
+				new Vector2(ScreenWidth, ScreenHeight), ShaderUniformDataType.Vec2
+			);
+			GizmosRender.UpdateInverse();
+			Raylib.EndShaderMode();
+		} else {
+			GizmosRender.UpdateInverse();
+		}
+
+		// Screen Effect >> Render Texture
 		if (hasScreenEffectEnabled) {
-			// Screen Effect >> Render Texture
 			UpdateScreenEffect();
 			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 				if (!ScreenEffectEnables[i]) continue;
@@ -161,15 +176,8 @@ public partial class RayGame : Game {
 		}
 
 		// Custom Cursor
+		bool hasCustomCursor = Cursor.CurrentCursorIndex == Const.CURSOR_CUSTOM && Cursor.CustomCursorID != 0 && Raylib.IsCursorOnScreen();
 		if (hasCustomCursor && Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, -1, out var texture)) {
-			Raylib.BeginShaderMode(CursorShader);
-			Raylib.SetShaderValueTexture(
-				CursorShader, ShaderPropIndex_CURSOR_TEXTURE, RenderTexture.Texture
-			);
-			Raylib.SetShaderValue(
-				CursorShader, ShaderPropIndex_CURSOR_SIZE,
-				new Vector2(ScreenWidth, ScreenHeight), ShaderUniformDataType.Vec2
-			);
 			float scale = ScreenHeight / 1024f;
 			Raylib.DrawTextureEx(
 				texture,
@@ -179,7 +187,6 @@ public partial class RayGame : Game {
 				),
 				rotation: 0, scale, Color.White
 			);
-			Raylib.EndShaderMode();
 		}
 
 		// Render Texture >> Screen

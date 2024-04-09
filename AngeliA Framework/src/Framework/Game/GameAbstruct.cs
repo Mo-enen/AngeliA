@@ -296,9 +296,9 @@ public abstract partial class Game {
 	public static void DrawGizmosRect (IRect rect, Color32 color) => Instance._DrawGizmosRect(rect, color);
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 color);
 
-	public static void DrawGizmosTexture (IRect rect, object texture) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture);
-	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture) => Instance._DrawGizmosTexture(rect, uv, texture);
-	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture);
+	public static void DrawGizmosTexture (IRect rect, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, inverse);
+	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, inverse);
+	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse);
 
 
 	// Text

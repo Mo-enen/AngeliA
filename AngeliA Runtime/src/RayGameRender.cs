@@ -20,7 +20,7 @@ public partial class RayGame {
 	private Shader LerpShader;
 	private Shader ColorShader;
 	private Shader TextShader;
-	private Shader CursorShader;
+	private Shader InverseShader;
 	private RenderTexture2D RenderTexture;
 	private int ShaderPropIndex_DarkenAmount;
 	private int ShaderPropIndex_LightenAmount;
@@ -37,8 +37,8 @@ public partial class RayGame {
 	private int ShaderPropIndex_CA_GREEN_Y;
 	private int ShaderPropIndex_CA_BLUE_X;
 	private int ShaderPropIndex_CA_BLUE_Y;
-	private int ShaderPropIndex_CURSOR_TEXTURE;
-	private int ShaderPropIndex_CURSOR_SIZE;
+	private int ShaderPropIndex_INV_TEXTURE;
+	private int ShaderPropIndex_INV_SCREEN_SIZE;
 
 
 	// MSG
@@ -48,7 +48,7 @@ public partial class RayGame {
 		LerpShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.LERP_FS);
 		ColorShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.COLOR_FS);
 		TextShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.TEXT_FS);
-		CursorShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.CURSOR_FS);
+		InverseShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.INV_FS);
 
 		// Effects
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
@@ -73,8 +73,8 @@ public partial class RayGame {
 		ShaderPropIndex_CA_GREEN_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "GreenY");
 		ShaderPropIndex_CA_BLUE_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueX");
 		ShaderPropIndex_CA_BLUE_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueY");
-		ShaderPropIndex_CURSOR_TEXTURE = Raylib.GetShaderLocation(CursorShader, "screenTexture");
-		ShaderPropIndex_CURSOR_SIZE = Raylib.GetShaderLocation(CursorShader, "screenSize");
+		ShaderPropIndex_INV_TEXTURE = Raylib.GetShaderLocation(InverseShader, "screenTexture");
+		ShaderPropIndex_INV_SCREEN_SIZE = Raylib.GetShaderLocation(InverseShader, "screenSize");
 	}
 
 	private void UpdateScreenEffect () {
@@ -484,7 +484,7 @@ public partial class RayGame {
 		), color);
 	}
 
-	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture) {
+	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
 		if (texture is not Texture2D rTexture) return;
 		var cameraRect = Renderer.CameraRect;
 		GizmosRender.DrawGizmosTexture(new Rectangle(
@@ -497,7 +497,7 @@ public partial class RayGame {
 			uv.y * rTexture.Height,
 			uv.width * rTexture.Width,
 			uv.height * rTexture.Height
-		), rTexture);
+		), rTexture, inverse);
 	}
 
 

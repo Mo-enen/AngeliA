@@ -478,7 +478,16 @@ public partial class PixelEditor : WindowUI {
 				DraggingStateLeft != DragStateLeft.ResizeSlice &&
 				DraggingStateLeft != DragStateLeft.SelectOrCreateSlice
 			) {
-				Cursor.SetCursorAsCustom(hasFrameCursor ? CURSOR_DOT : CURSOR_CROSS, -1);
+				if (Renderer.TryGetTextureFromSheet(
+					hasFrameCursor ? CURSOR_DOT : CURSOR_CROSS, -1, out object texture)
+				) {
+					int size = Unify(16);
+					Cursor.SetCursorAsCustom(1, -1);
+					Game.DrawGizmosTexture(
+						new IRect(mousePos.x - size / 2, mousePos.y - size / 2, size, size),
+						texture, inverse: true
+					);
+				}
 			}
 
 			return;
