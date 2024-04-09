@@ -154,9 +154,9 @@ public partial class PixelEditor : WindowUI {
 		Update_Cache();
 		Update_View();
 		Update_Cursor();
-		Update_Gizmos();
 		Update_LeftDrag();
 		Update_RightDrag();
+		Update_Gizmos();
 		Update_Rendering();
 		Update_StageToolbar();
 		Update_Hotkey();

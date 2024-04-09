@@ -6,63 +6,62 @@ using Raylib_cs;
 
 namespace AngeliaRuntime;
 
-public static class TextureUtil {
-	
+public unsafe static class TextureUnsafeUtil {
+
+	private static readonly Color[] FillPixelCache = new Color[512 * 512];
+
 	public static Texture2D? GetTextureFromPixels (Color32[] pixels, int width, int height) {
 		int len = width * height;
 		if (len == 0) return null;
-		unsafe {
-			Texture2D textureResult;
-			var image = new Image() {
-				Format = PixelFormat.UncompressedR8G8B8A8,
-				Width = width,
-				Height = height,
-				Mipmaps = 1,
-			};
-			if (pixels != null && pixels.Length == len) {
-				var bytes = new byte[pixels.Length * 4];
-				int index = 0;
-				for (int y = 0; y < height; y++) {
-					for (int x = 0; x < width; x++) {
-						int i = (height - y - 1) * width + x;
-						var p = pixels[i];
-						bytes[index * 4 + 0] = p.r;
-						bytes[index * 4 + 1] = p.g;
-						bytes[index * 4 + 2] = p.b;
-						bytes[index * 4 + 3] = p.a;
-						index++;
-					}
-				}
-				fixed (void* data = bytes) {
-					image.Data = data;
-					textureResult = Raylib.LoadTextureFromImage(image);
-				}
-			} else {
-				textureResult = Raylib.LoadTextureFromImage(image);
-			}
-			Raylib.SetTextureFilter(textureResult, TextureFilter.Point);
-			return textureResult;
-		}
-	}
-
-	public static Color32[] GetPixelsFromTexture (Texture2D texture) {
-		var image = Raylib.LoadImageFromTexture(texture);
-		unsafe {
-			int width = image.Width;
-			int height = image.Height;
-			var result = new Color32[width * height];
-			var colors = Raylib.LoadImageColors(image);
+		Texture2D textureResult;
+		var image = new Image() {
+			Format = PixelFormat.UncompressedR8G8B8A8,
+			Width = width,
+			Height = height,
+			Mipmaps = 1,
+		};
+		if (pixels != null && pixels.Length == len) {
+			var bytes = new byte[pixels.Length * 4];
 			int index = 0;
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
 					int i = (height - y - 1) * width + x;
-					result[index] = colors[i].ToAngelia();
+					var p = pixels[i];
+					bytes[index * 4 + 0] = p.r;
+					bytes[index * 4 + 1] = p.g;
+					bytes[index * 4 + 2] = p.b;
+					bytes[index * 4 + 3] = p.a;
 					index++;
 				}
 			}
-			Raylib.UnloadImageColors(colors);
-			return result;
+			fixed (void* data = bytes) {
+				image.Data = data;
+				textureResult = Raylib.LoadTextureFromImage(image);
+			}
+		} else {
+			textureResult = Raylib.LoadTextureFromImage(image);
 		}
+		Raylib.SetTextureFilter(textureResult, TextureFilter.Point);
+		return textureResult;
+
+	}
+
+	public static Color32[] GetPixelsFromTexture (Texture2D texture) {
+		var image = Raylib.LoadImageFromTexture(texture);
+		int width = image.Width;
+		int height = image.Height;
+		var result = new Color32[width * height];
+		var colors = Raylib.LoadImageColors(image);
+		int index = 0;
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				int i = (height - y - 1) * width + x;
+				result[index] = colors[i].ToAngelia();
+				index++;
+			}
+		}
+		Raylib.UnloadImageColors(colors);
+		return result;
 	}
 
 	public static void FillPixelsIntoTexture (Color32[] pixels, Texture2D texture) {
@@ -70,7 +69,7 @@ public static class TextureUtil {
 		int width = texture.Width;
 		int height = texture.Height;
 		if (pixels.Length != width * height) return;
-		var colors = new Color[pixels.Length];
+		var colors = pixels.Length <= FillPixelCache.Length ? FillPixelCache : new Color[pixels.Length];
 		int index = 0;
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {

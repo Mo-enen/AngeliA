@@ -435,7 +435,7 @@ public partial class RayGame {
 
 	// Texture
 	protected override object _GetTextureFromPixels (Color32[] pixels, int width, int height) {
-		var result = TextureUtil.GetTextureFromPixels(pixels, width, height);
+		var result = TextureUnsafeUtil.GetTextureFromPixels(pixels, width, height);
 		if (result.HasValue) {
 			Raylib.SetTextureFilter(result.Value, TextureFilter.Point);
 			Raylib.SetTextureWrap(result.Value, TextureWrap.Clamp);
@@ -447,24 +447,24 @@ public partial class RayGame {
 
 	protected override Color32[] _GetPixelsFromTexture (object texture) {
 		if (texture is not Texture2D rTexture) return System.Array.Empty<Color32>();
-		return TextureUtil.GetPixelsFromTexture(rTexture);
+		return TextureUnsafeUtil.GetPixelsFromTexture(rTexture);
 	}
 
 	protected override void _FillPixelsIntoTexture (Color32[] pixels, object texture) {
 		if (texture is not Texture2D rTexture) return;
-		TextureUtil.FillPixelsIntoTexture(pixels, rTexture);
+		TextureUnsafeUtil.FillPixelsIntoTexture(pixels, rTexture);
 	}
 
 	protected override Int2 _GetTextureSize (object texture) => texture is Texture2D rTexture ? new Int2(rTexture.Width, rTexture.Height) : default;
 
 	protected override object _PngBytesToTexture (byte[] bytes) {
-		var result = TextureUtil.PngBytesToTexture(bytes);
+		var result = TextureUnsafeUtil.PngBytesToTexture(bytes);
 		return result ?? EMPTY_TEXTURE;
 	}
 
 	protected override byte[] _TextureToPngBytes (object texture) {
 		if (texture is not Texture2D rTexture) return System.Array.Empty<byte>();
-		return TextureUtil.TextureToPngBytes(rTexture);
+		return TextureUnsafeUtil.TextureToPngBytes(rTexture);
 	}
 
 	protected override void _UnloadTexture (object texture) {
