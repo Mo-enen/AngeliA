@@ -134,8 +134,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			TypeID, X + Width / 2, Y,
 			500, 0, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
-			allowInvoke ? Color32.WHITE : Color32
-.WHITE_96
+			allowInvoke ? Color32.WHITE : Color32.WHITE_96
 		);
 		var act = this as IActionTarget;
 		if (act.IsHighlighted && !IsPlaying) {
@@ -228,12 +227,14 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 				BuiltInText.UI_RESTART, RestartGame,
 				BuiltInText.UI_QUIT, CloseMiniGame
 			);
+			GenericDialogUI.SetItemTint(Color32.WHITE, Color32.WHITE, Color32.RED_BETTER);
 		} else {
 			GenericDialogUI.SpawnDialog(
 				MENU_QUIT_MINI_GAME,
 				BuiltInText.UI_BACK, Const.EmptyMethod,
 				BuiltInText.UI_QUIT, CloseMiniGame
 			);
+			GenericDialogUI.SetItemTint(Color32.WHITE, Color32.RED_BETTER);
 		}
 	}
 

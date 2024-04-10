@@ -27,6 +27,7 @@ public class GenericDialogUI : MenuUI {
 	private Color32 ButtonTintA;
 	private Color32 ButtonTintB;
 	private Color32 ButtonTintC;
+	private bool UsingButtonStyle = false;
 
 
 	// MSG
@@ -51,11 +52,20 @@ public class GenericDialogUI : MenuUI {
 		DrawOption(OptionC, ButtonTintC);
 		void DrawOption (Option option, Color32 tint) {
 			if (option.Action == null) return;
-			using var _ = Scope.GUIBodyColor(tint);
-			if (DrawItem(option.Label)) {
-				option.Action();
-				Active = false;
-				Input.UseAllHoldingKeys();
+			if (UsingButtonStyle) {
+				using var _ = Scope.GUIBodyColor(tint);
+				if (DrawItem(option.Label)) {
+					option.Action();
+					Active = false;
+					Input.UseAllHoldingKeys();
+				}
+			} else {
+				using var _ = Scope.GUIContentColor(tint);
+				if (DrawItem(option.Label)) {
+					option.Action();
+					Active = false;
+					Input.UseAllHoldingKeys();
+				}
 			}
 		}
 	}
@@ -74,6 +84,7 @@ public class GenericDialogUI : MenuUI {
 	public static void SpawnDialog_Button (string message, string labelA, System.Action actionA, string labelB, System.Action actionB) => SpawnDialog_Button(message, labelA, actionA, labelB, actionB, null, null);
 	public static void SpawnDialog_Button (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
 		SpawnDialog(message, labelA, actionA, labelB, actionB, labelC, actionC);
+		Instance.UsingButtonStyle = true;
 		Instance.SetStyle(
 			Instance.ButtonMessageStyle, GUISkin.Label, GUISkin.DarkButton,
 			drawStyleBody: true, newWindowWidth: Unify(330), animationDuration: 0
@@ -100,12 +111,13 @@ public class GenericDialogUI : MenuUI {
 		Instance.ButtonTintA = Color32.WHITE;
 		Instance.ButtonTintB = Color32.WHITE;
 		Instance.ButtonTintC = Color32.WHITE;
+		Instance.UsingButtonStyle = false;
 	}
 
 
-	public static void SetButtonTint (Color32 tintA) => SetButtonTint(tintA, Color32.WHITE, Color32.WHITE);
-	public static void SetButtonTint (Color32 tintA, Color32 tintB) => SetButtonTint(tintA, tintB, Color32.WHITE);
-	public static void SetButtonTint (Color32 tintA, Color32 tintB, Color32 tintC) {
+	public static void SetItemTint (Color32 tintA) => SetItemTint(tintA, Color32.WHITE, Color32.WHITE);
+	public static void SetItemTint (Color32 tintA, Color32 tintB) => SetItemTint(tintA, tintB, Color32.WHITE);
+	public static void SetItemTint (Color32 tintA, Color32 tintB, Color32 tintC) {
 		Instance.ButtonTintA = tintA;
 		Instance.ButtonTintB = tintB;
 		Instance.ButtonTintC = tintC;

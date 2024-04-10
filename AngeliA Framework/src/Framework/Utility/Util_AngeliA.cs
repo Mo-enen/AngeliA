@@ -19,50 +19,53 @@ public static partial class Util {
 
 	// API
 	public static void ClampCells (Cell[] cells, IRect rect, int startIndex, int endIndex) {
-		var cellRect = new IRect();
 		for (int i = startIndex; i < endIndex; i++) {
-			var cell = cells[i];
-			cellRect.x = cell.X - (int)(cell.Width * cell.PivotX);
-			cellRect.y = cell.Y - (int)(cell.Height * cell.PivotY);
-			cellRect.width = cell.Width;
-			cellRect.height = cell.Height;
-			cellRect.FlipNegative();
-			if (!cellRect.Overlaps(rect)) {
-				cell.Width = 0;
-				continue;
+			ClampCell(cells[i], rect);
+		}
+	}
+
+	public static void ClampCell (Cell cell, IRect rect) {
+		var cellRect = new IRect();
+		cellRect.x = cell.X - (int)(cell.Width * cell.PivotX);
+		cellRect.y = cell.Y - (int)(cell.Height * cell.PivotY);
+		cellRect.width = cell.Width;
+		cellRect.height = cell.Height;
+		cellRect.FlipNegative();
+		if (!cellRect.Overlaps(rect)) {
+			cell.Width = 0;
+			return;
+		}
+		// Clamp
+		int cellL = cellRect.x;
+		int cellR = cellRect.x + cellRect.width;
+		int cellD = cellRect.y;
+		int cellU = cellRect.y + cellRect.height;
+		if (cellL < rect.x) {
+			if (cell.Width > 0) {
+				cell.Shift.left = rect.x - cellL;
+			} else {
+				cell.Shift.right = rect.x - cellL;
 			}
-			// Clamp
-			int cellL = cellRect.x;
-			int cellR = cellRect.x + cellRect.width;
-			int cellD = cellRect.y;
-			int cellU = cellRect.y + cellRect.height;
-			if (cellL < rect.x) {
-				if (cell.Width > 0) {
-					cell.Shift.left = rect.x - cellL;
-				} else {
-					cell.Shift.right = rect.x - cellL;
-				}
+		}
+		if (cellR > rect.x + rect.width) {
+			if (cell.Width > 0) {
+				cell.Shift.right = cellR - rect.x - rect.width;
+			} else {
+				cell.Shift.left = cellR - rect.x - rect.width;
 			}
-			if (cellR > rect.x + rect.width) {
-				if (cell.Width > 0) {
-					cell.Shift.right = cellR - rect.x - rect.width;
-				} else {
-					cell.Shift.left = cellR - rect.x - rect.width;
-				}
+		}
+		if (cellD < rect.y) {
+			if (cell.Height > 0) {
+				cell.Shift.down = rect.y - cellD;
+			} else {
+				cell.Shift.up = rect.y - cellD;
 			}
-			if (cellD < rect.y) {
-				if (cell.Height > 0) {
-					cell.Shift.down = rect.y - cellD;
-				} else {
-					cell.Shift.up = rect.y - cellD;
-				}
-			}
-			if (cellU > rect.y + rect.height) {
-				if (cell.Height > 0) {
-					cell.Shift.up = cellU - rect.y - rect.height;
-				} else {
-					cell.Shift.down = cellU - rect.y - rect.height;
-				}
+		}
+		if (cellU > rect.y + rect.height) {
+			if (cell.Height > 0) {
+				cell.Shift.up = cellU - rect.y - rect.height;
+			} else {
+				cell.Shift.down = cellU - rect.y - rect.height;
 			}
 		}
 	}

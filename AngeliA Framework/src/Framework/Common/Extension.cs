@@ -656,8 +656,8 @@ public static class Extension {
 		corner.IsBottom() ? rect.y : corner.IsTop() ? rect.yMax - height : rect.CenterY() - height / 2,
 		width, height
 	);
-	public static IRect CornerOutside (this IRect rect, Direction8 corner, int size) => CornerOutside(rect, corner, size, size);
-	public static IRect CornerOutside (this IRect rect, Direction8 corner, int width, int height) => new(
+	public static IRect CornerOutside (this IRect rect, Alignment corner, int size) => CornerOutside(rect, corner, size, size);
+	public static IRect CornerOutside (this IRect rect, Alignment corner, int width, int height) => new(
 		corner.IsLeft() ? rect.x - width : corner.IsRight() ? rect.xMax : rect.CenterX() - width / 2,
 		corner.IsBottom() ? rect.y - height : corner.IsTop() ? rect.yMax : rect.CenterY() - height / 2,
 		width, height
