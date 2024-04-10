@@ -23,10 +23,9 @@ public class WorldSquad : IBlockSquad {
 	public static WorldSquad Behind { get; set; } = null;
 	public static IBlockSquad FrontBlockSquad => Front;
 	public static MapChannel Channel { get; private set; } = MapChannel.General;
-	public static string MapRoot => Stream.MapRoot;
 
 	// Data
-	private static readonly WorldStream Stream = new();
+	private static WorldStream Stream = null;
 	private static event System.Action OnMapFolderChanged;
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
@@ -238,12 +237,12 @@ public class WorldSquad : IBlockSquad {
 			MapChannel.Procedure => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, folderName),
 			_ => UniverseSystem.CurrentUniverse.MapRoot,
 		};
-		Stream.Load(mapRoot, @readonly: true);
+		Stream = WorldStream.GetOrCreateStream(mapRoot);
 		OnMapFolderChanged?.Invoke();
 	}
 
 
-	public static void Reset () => Stream.Clear();
+	public static void Reset () => Stream?.Clear();
 
 
 	// Get Set Block

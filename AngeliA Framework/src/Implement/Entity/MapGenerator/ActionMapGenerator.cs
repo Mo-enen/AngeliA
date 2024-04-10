@@ -79,7 +79,7 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 
 	void IActionTarget.Invoke () {
 		if (!HasMapInDisk) {
-			StartGenerateAsync();
+			GenerateAsync();
 		} else {
 			Enter();
 		}

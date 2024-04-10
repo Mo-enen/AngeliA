@@ -29,6 +29,7 @@ public class IntToChars {
 		// Fill Int Value
 		int startIndex = Prefix.Length;
 		int digitCount = value.DigitCount();
+		if (value < 0) digitCount++;
 		Int_to_Chars(value, CharsValue, startIndex);
 		// Fill Suffix
 		startIndex += digitCount;

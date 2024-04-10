@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 
-
-
-
 namespace AngeliaGame;
+
 public class MiniGamePong : MiniGame {
 
 
@@ -38,6 +36,10 @@ public class MiniGamePong : MiniGame {
 	// Data
 	private readonly IntToChars PlayerScoreString = new();
 	private readonly IntToChars BotScoreString = new();
+	private readonly GUIStyle ScoreStyle = new(GUISkin.LargeCenterLabel) {
+		Alignment = Alignment.MidMid,
+		CharSize = 80,
+	};
 	private BadgesSaveData Saving;
 	private int ScorePlayer = 0;
 	private int ScoreBot = 0;
@@ -153,11 +155,11 @@ public class MiniGamePong : MiniGame {
 			ScorePlayer++;
 			ServeBall(false);
 			// Badget
-			if (ScorePlayer >= 10 && Saving.GetBadge(0) == 0) {
+			if (ScorePlayer - ScoreBot >= 10 && Saving.GetBadge(0) == 0) {
 				Saving.SetBadge(0, 1);
 				SaveGameDataToFile(Saving);
 			}
-			if (ScorePlayer >= 50 && Saving.GetBadge(1) == 0) {
+			if (ScorePlayer - ScoreBot >= 50 && Saving.GetBadge(1) == 0) {
 				Saving.SetBadge(1, 2);
 				SaveGameDataToFile(Saving);
 			}
@@ -193,17 +195,15 @@ public class MiniGamePong : MiniGame {
 		}
 
 		// Score
-		int charRectSize = Unify(64);
+		int charRectSize = Unify(128);
 		int scoreGap = size / 30;
-		int scoreWidth = windowRect.width / 2 - scoreGap;
+		int scoreWidth = windowRect.width;
 		int scoreY = windowRect.y + windowRect.height - charRectSize;
-		GUI.Label(
+		GUI.BackgroundLabel(
 			new IRect(windowRect.x, scoreY, scoreWidth, charRectSize),
-			PlayerScoreString.GetChars(ScorePlayer)
-		);
-		GUI.Label(
-			new IRect(midX + scoreGap, scoreY, scoreWidth, charRectSize),
-			BotScoreString.GetChars(ScoreBot)
+			PlayerScoreString.GetChars(ScorePlayer - ScoreBot),
+			Color32.BLACK, Unify(36),
+			ScoreStyle
 		);
 
 		// Paddle

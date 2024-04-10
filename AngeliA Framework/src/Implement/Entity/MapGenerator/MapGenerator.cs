@@ -25,12 +25,12 @@ public abstract class MapGenerator : Entity {
 	public bool HasMapInDisk {
 		get {
 			if (!_HasMapInDisk.HasValue) {
-				_HasMapInDisk = Util.HasFileIn(MapRoot, true, "*");
+				_HasMapInDisk = Util.HasFileIn(ProcedureMapRoot, true, "*");
 			}
 			return _HasMapInDisk.Value;
 		}
 	}
-	protected string MapRoot => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, GetType().Name);
+	protected string ProcedureMapRoot => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, GetType().Name);
 	protected string TempMapRoot => Util.CombinePaths(AngePath.ProcedureMapTempRoot, GetType().Name);
 	protected WorldStream SampleReader { get; private set; } = null;
 	protected WorldStream ResultWriter { get; private set; } = null;
@@ -92,19 +92,20 @@ public abstract class MapGenerator : Entity {
 	}
 
 
-	public void StartGenerateAsync () {
+	public void GenerateAsync () {
 		CancelAsyncGeneration();
-        GenerateMapTask = System.Threading.Tasks.Task.Factory.StartNew(StartGenerate, GenerateMapToken.Token);
+		GenerateMapTask = System.Threading.Tasks.Task.Factory.StartNew(Generate, GenerateMapToken.Token);
 	}
 
 
-	public void StartGenerate () {
+	public void Generate () {
 		try {
-			string mapRoot = MapRoot;
+			string procedureMapRoot = ProcedureMapRoot;
 			string tempMapRoot = TempMapRoot;
 
-			SampleReader = new WorldStream(WorldSquad.MapRoot, @readonly: true);
-			ResultWriter = new WorldStream(tempMapRoot, @readonly: false);
+			SampleReader = WorldStream.GetOrCreateStream(UniverseSystem.CurrentUniverse.MapRoot);
+			ResultWriter = new WorldStream();
+			ResultWriter.Load(tempMapRoot);
 
 			BeforeMapGenerate();
 
@@ -115,21 +116,20 @@ public abstract class MapGenerator : Entity {
 			OnMapGenerate();
 			_HasMapInDisk = null;
 
-			SampleReader.Dispose();
-			ResultWriter.Dispose();
+			ResultWriter.SaveAllDirty();
 
-			Util.DeleteFolder(mapRoot);
-			Util.MoveFolder(tempMapRoot, mapRoot);
-			IUnique.SaveToDisk(mapRoot);
-			WorldSquad.Reset();
+			Util.DeleteFolder(procedureMapRoot);
+			Util.MoveFolder(tempMapRoot, procedureMapRoot);
+			IUnique.SaveToDisk(procedureMapRoot);
 			Stage.SetViewZ(Stage.ViewZ);
 
 			AfterMapGenerate();
 		} catch (System.Exception ex) {
-			SampleReader?.Clear();
-			ResultWriter?.Clear();
 			Debug.LogException(ex);
 		}
+		ResultWriter?.Clear();
+		SampleReader = null;
+		ResultWriter = null;
 	}
 
 

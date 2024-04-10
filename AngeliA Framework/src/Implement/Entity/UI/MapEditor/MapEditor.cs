@@ -203,11 +203,7 @@ public sealed partial class MapEditor : WindowUI {
 			Initialized = true;
 			var universe = UniverseSystem.CurrentUniverse;
 			UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
-			if (Stream == null) {
-				Stream = new WorldStream(universe.MapRoot, false);
-			} else {
-				Stream.Load(universe.MapRoot, false);
-			}
+			Stream = WorldStream.GetOrCreateStream(universe.MapRoot);
 			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.MapRoot);
 			FrameworkUtil.DeleteAllEmptyMaps(universe.MapRoot);
 			Initialize_Pool();
@@ -1128,7 +1124,6 @@ public sealed partial class MapEditor : WindowUI {
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
 			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);
-			WorldSquad.Reset();
 		}
 	}
 

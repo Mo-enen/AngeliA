@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 [System.AttributeUsage(System.AttributeTargets.Method)]
 public class OnUniverseOpenAttribute : OrderedAttribute { public OnUniverseOpenAttribute (int order = 0) : base(order) { } }
+
+[System.AttributeUsage(System.AttributeTargets.Method)]
+public class BeforeUniverseOpenAttribute : OrderedAttribute { public BeforeUniverseOpenAttribute (int order = 0) : base(order) { } }
 
 
 public static class UniverseSystem {
 
 	// Event
 	private static event System.Action OnUniverseOpen;
+	private static event System.Action BeforeUniverseOpen;
 
 	// Api
 	public static Universe CurrentUniverse { get; private set; } = null;
@@ -55,17 +59,20 @@ public static class UniverseSystem {
 
 	// API
 	public static void OpenUniverse (Universe universe, bool ignoreCallback = false) {
+
 		if (universe == null) return;
-		// Open
+
+		if (!ignoreCallback) BeforeUniverseOpen?.Invoke();
+
 		CurrentUniverse = universe;
 		universe.CreateFolders();
 		universe.Info.ModifyDate = System.DateTime.Now.ToFileTime();
-		// Callback
-		if (!ignoreCallback) OnUniverseOpen?.Invoke();
-		// Sort
 		if (universe != BuiltInUniverse && UserUniverses.Contains(universe)) {
 			SortUniverseList(UserUniverses);
 		}
+
+		if (!ignoreCallback) OnUniverseOpen?.Invoke();
+
 	}
 
 	private static void SortUniverseList (List<Universe> universes) => universes.Sort((a, b) => b.Info.ModifyDate.CompareTo(a.Info.ModifyDate));
