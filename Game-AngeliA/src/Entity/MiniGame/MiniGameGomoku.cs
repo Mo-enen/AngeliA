@@ -38,6 +38,7 @@ public class MiniGameGomoku : MiniGame {
 	protected override Int2 WindowSize => new(618, 618);
 	protected override bool RequireMouseCursor => true;
 	protected override string DisplayName => Language.Get(TypeID, "Gomoku");
+	protected override int BadgeCount => 1;
 
 	// Short
 	private bool Interactable => PlayerTurn && Winner == null && Game.GlobalFrame > LastPlaceFrame + 12;
@@ -281,7 +282,7 @@ public class MiniGameGomoku : MiniGame {
 		if (win != GomokuAI.GomokuStone.None) {
 			Winner = win;
 			if (win == GomokuAI.GomokuStone.Black == PlayerIsBlack) {
-				SpawnBadge(1);
+				GiveBadge(0, false);
 			}
 		}
 		BlackTurn = !BlackTurn;

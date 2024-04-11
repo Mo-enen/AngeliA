@@ -29,6 +29,7 @@ public class MiniGamePong : MiniGame {
 	protected override Int2 WindowSize => new(800, 800);
 	protected override bool RequireMouseCursor => false;
 	protected override string DisplayName => Language.Get(TypeID, "Pong");
+	protected override int BadgeCount => 2;
 
 	// Short
 	private bool ServingBall => Game.GlobalFrame < ServeBallFrame + SERVE_BALL_DURATION;
@@ -40,7 +41,6 @@ public class MiniGamePong : MiniGame {
 		Alignment = Alignment.MidMid,
 		CharSize = 80,
 	};
-	private BadgesSaveData Saving;
 	private int ScorePlayer = 0;
 	private int ScoreBot = 0;
 	private int PlayerPaddleY = 500;
@@ -62,8 +62,6 @@ public class MiniGamePong : MiniGame {
 
 
 	protected override void StartMiniGame () {
-		Saving = LoadGameDataFromFile<BadgesSaveData>();
-		Saving.FixBadgeCount(2);
 		ScorePlayer = 0;
 		ScoreBot = 0;
 		PlayerPaddleY = 500;
@@ -155,13 +153,11 @@ public class MiniGamePong : MiniGame {
 			ScorePlayer++;
 			ServeBall(false);
 			// Badget
-			if (ScorePlayer - ScoreBot >= 10 && Saving.GetBadge(0) == 0) {
-				Saving.SetBadge(0, 1);
-				SaveGameDataToFile(Saving);
+			if (ScorePlayer - ScoreBot >= 10) {
+				GiveBadge(0, false);
 			}
-			if (ScorePlayer - ScoreBot >= 50 && Saving.GetBadge(1) == 0) {
-				Saving.SetBadge(1, 2);
-				SaveGameDataToFile(Saving);
+			if (ScorePlayer - ScoreBot >= 50) {
+				GiveBadge(1, true);
 			}
 		}
 
@@ -178,7 +174,7 @@ public class MiniGamePong : MiniGame {
 
 		// Badgets
 		int badgetSize = Unify(30);
-		DrawBadges(Saving, windowRect.x, windowRect.yMax - badgetSize, 0, badgetSize);
+		DrawBadges(windowRect.x, windowRect.yMax - badgetSize, badgetSize);
 
 		// Mid Line
 		const int LINE_DOT_COUNT = 12;

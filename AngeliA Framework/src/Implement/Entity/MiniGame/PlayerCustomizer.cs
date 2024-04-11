@@ -101,6 +101,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	protected override bool RequireMouseCursor => true;
 	protected override bool RequireQuitConfirm => false;
 	protected override string DisplayName => Language.Get(TypeID, "Player Maker");
+	protected override int BadgeCount => 0;
 
 	// Pattern
 	protected abstract string[] BodyPart_Heads { get; }

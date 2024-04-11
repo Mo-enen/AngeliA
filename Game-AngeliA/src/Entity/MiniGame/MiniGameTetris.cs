@@ -98,6 +98,7 @@ public class MiniGameTetris : MiniGame {
 	protected override Int2 WindowSize => new(400, 800);
 	protected override bool RequireMouseCursor => false;
 	protected override string DisplayName => Language.Get(TypeID, "Tetris");
+	protected override int BadgeCount => 2;
 
 	// Data
 	private readonly Queue<int> TetrominoQueue = new();
@@ -643,13 +644,11 @@ public class MiniGameTetris : MiniGame {
 	private void GrowClearedLines (int grow) {
 		int oldClearedLines = ClearedLines;
 		ClearedLines += grow;
-		// Iron Badge Check
 		if (oldClearedLines <= 50 && ClearedLines > 50) {
-			SpawnBadge(1);
+			GiveBadge(0, false);
 		}
-		// Hold Badge Check
 		if (oldClearedLines <= 100 && ClearedLines > 100) {
-			SpawnBadge(2);
+			GiveBadge(1, true);
 		}
 	}
 

@@ -81,10 +81,10 @@ public class MiniGameSokoban : MiniGame {
 	protected override bool RequireMouseCursor => false;
 	protected override string DisplayName => Language.Get(TypeID, "Sokoban");
 	protected override Int2 WindowSize => new(800, 800);
+	protected override int BadgeCount => LEVEL_COUNT;
 	private bool Celebrating => CurrentLevel >= Levels.Length || Game.GlobalFrame < LevelClearedFrame + 120;
 
 	// Data
-	private BadgesSaveData Saving;
 	private static IntToChars LevelLabelToString = null;
 	private BlockType[,] Blocks = null;
 	private int CurrentLevel = 0;
@@ -112,8 +112,6 @@ public class MiniGameSokoban : MiniGame {
 
 
 	protected override void StartMiniGame () {
-		Saving = LoadGameDataFromFile<BadgesSaveData>();
-		Saving.FixBadgeCount(LEVEL_COUNT);
 		LoadLevel(0);
 		PlayerMovedFrame = int.MinValue;
 		LevelClearedFrame = int.MinValue;
@@ -139,12 +137,7 @@ public class MiniGameSokoban : MiniGame {
 
 		// Next Level Check
 		if (LevelClearedFrame >= 0) {
-			if (Saving.GetBadge(CurrentLevel) <= 0) {
-				int currentBadge = CurrentLevel < IRON_BADGE_COUNT ? 1 : 2;
-				Saving.SetBadge(CurrentLevel, currentBadge);
-				SaveGameDataToFile(Saving);
-				SpawnBadge(currentBadge);
-			}
+			GiveBadge(CurrentLevel, CurrentLevel < IRON_BADGE_COUNT);
 			CurrentLevel++;
 			LoadLevel(CurrentLevel);
 			LevelClearedFrame = int.MinValue;
@@ -234,7 +227,7 @@ Color32.BLACK, Color32.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20
 		}
 
 		// Badges
-		DrawBadges(Saving, stageRect.x, stageRect.yMax, 2, Unify(36));
+		DrawBadges(stageRect.x, stageRect.yMax, Unify(36));
 
 		// Player
 		var playerRect = new IRect(stageRect.x + PlayerX * blockRect.width, stageRect.y + PlayerY * blockRect.height, blockRect.width, blockRect.height);

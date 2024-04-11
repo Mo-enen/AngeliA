@@ -33,7 +33,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
 	[System.Serializable]
-	protected class BadgesSaveData {
+	private class BadgesSaveData {
 		public int[] Badges;
 		public int GetBadge (int index) => Badges != null && index >= 0 && index < Badges.Length ? Badges[index] : 0;
 		public void SetBadge (int index, int quality) {
@@ -70,6 +70,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	protected virtual Int2 WindowSize => new(1000, 800);
 	protected abstract bool RequireMouseCursor { get; }
 	protected abstract string DisplayName { get; }
+	protected abstract int BadgeCount { get; }
 	protected virtual bool RequireQuitConfirm => true;
 	protected virtual bool ShowRestartOption => true;
 	protected IRect WindowRect => new(
@@ -78,11 +79,9 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 		GUI.Unify(WindowSize.x), GUI.Unify(WindowSize.y)
 	);
 	protected bool IsPlaying => Task.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
-	protected bool ShowingMenu => MenuEntity != null && MenuEntity.Active;
 
-	// Short
-	private GenericDialogUI MenuEntity => _MenuEntity ??= Stage.PeekOrGetEntity<GenericDialogUI>();
-	private GenericDialogUI _MenuEntity = null;
+	// Data
+	private readonly BadgesSaveData Badges = null;
 
 
 	#endregion
@@ -91,6 +90,17 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
 	#region --- MSG ---
+
+
+	public MiniGame () {
+		if (BadgeCount > 0) {
+			Badges = JsonUtil.LoadOrCreateJson<BadgesSaveData>(
+				rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
+				name: GetType().Name
+			);
+			Badges.FixBadgeCount(BadgeCount);
+		}
+	}
 
 
 	public override void OnInactivated () {
@@ -110,7 +120,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 		if (Game.IsPausing) return;
 		if (IsPlaying) {
 			ControlHintUI.ForceShowHint(1);
-			if (MenuEntity == null || !MenuEntity.Active) {
+			if (!GenericDialogUI.ShowingDialog) {
 				// Gaming
 				using (Scope.RendererLayerUI()) {
 					GameUpdate();
@@ -182,30 +192,27 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	protected static int Unify (float value) => GUI.Unify(value);
 
 
-	// Saving
-	protected T LoadGameDataFromFile<T> () where T : new() => JsonUtil.LoadOrCreateJson<T>(
-		rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
-		name: GetType().Name
-	);
+	// Badges
+	protected void GiveBadge (int index, bool isGold) {
+		if (index < 0 || index >= BadgeCount) return;
+		int quality = isGold ? 2 : 1;
+		if (Badges.GetBadge(index) >= quality) return;
+		Badges.SetBadge(index, quality);
+		JsonUtil.SaveJson(
+			Badges,
+			rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
+			name: GetType().Name
+		);
+		OnBadgeSpawn?.Invoke(quality);
+	}
 
 
-	protected void SaveGameDataToFile<T> (T data) => JsonUtil.SaveJson(
-		data,
-		rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
-		name: GetType().Name
-	);
-
-
-	protected void SpawnBadge (int quality) => OnBadgeSpawn?.Invoke(quality);
-
-
-	protected void DrawBadges (BadgesSaveData data, int x, int y, int z, int badgeSize, SpriteCode[] spriteIDs = null) {
-		if (data == null || data.Badges == null) return;
-		spriteIDs ??= DEFAULT_BADGE_CODES;
+	protected void DrawBadges (int x, int y, int badgeSize) {
+		if (Badges == null || Badges.Badges == null) return;
 		var badgeRect = new IRect(x, y, badgeSize, badgeSize);
-		for (int i = 0; i < data.Badges.Length; i++) {
-			int icon = spriteIDs[data.GetBadge(i).Clamp(0, spriteIDs.Length - 1)];
-			Renderer.Draw(icon, badgeRect, z);
+		for (int i = 0; i < Badges.Badges.Length; i++) {
+			int icon = DEFAULT_BADGE_CODES[Badges.GetBadge(i).Clamp(0, DEFAULT_BADGE_CODES.Length - 1)];
+			Renderer.Draw(icon, badgeRect);
 			badgeRect.x += badgeRect.width;
 		}
 	}

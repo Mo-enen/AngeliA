@@ -29,7 +29,7 @@ public class MiniGameSpaceBall : MiniGame {
 			for (int j = 0; j < Height; j++) {
 				for (int i = 0; i < Width; i++) {
 					char c = walls[Height - j - 1][i];
-					Walls[i, j] = c == '#';
+					Walls[i, j] = c == 'a';
 					if (c == 'P') {
 						PlayerPos = new Int2(i, j);
 					}
@@ -53,12 +53,13 @@ public class MiniGameSpaceBall : MiniGame {
 
 	// Const
 	private readonly LevelData[] Levels = {
-		new("           ","    ##     ","    #    G ","           ","           ","           ","           "," P    #    ","     ##    ","           "),
-		new("           ","  #        ","         # ","           ","           ","     G     ","        #  ","  P        ","           ","           "),
-		new("            ","   #        ","          # "," #          ","      #G    ","      ## #  ","  #         ","            ","   #    ##  "," P   #  ##  ","  #         ","         #  ","    #       ","            "),
-		new("                 # "," #                 ","              #    ","            #      ","                   ","                   ","    #     #   P   #","        #          ","                  #","  #                ","              #    ","                   ","  ##               ","      G    #       ","#                  "," #           #   # ","     # #           "),
-		new("          #     ","  #             ","             #  ","         #      ","#          #    ","                ","                ","                ","              # ","      #  P#G    ","     #          ","       # #      ","    #     #     ","           #    ","                ","                ","               #","            #   ","   #            "," # #            ","      #         ","              # "),
-
+		new("           ","    aa     ","    a    G ","           ","           ","           ","           "," P    a    ","     aa    ","           "),
+		new("           ","  a        ","         a ","           ","           ","     G     ","        a  ","  P        ","           ","           "),
+		new("            ","   a        ","          a "," a          ","      aG    ","      aa a  ","  a         ","            ","   a    aa  "," P   a  aa  ","  a         ","         a  ","    a       ","            "),
+		new("                 a "," a                 ","              a    ","            a      ","                   ","                   ","    a     a   P   a","        a          ","                  a","  a                ","              a    ","                   ","  aa               ","      G    a       ","a                  "," a           a   a ","     a a           "),
+		new("          a     ","  a             ","             a  ","         a      ","a          a    ","                ","                ","                ","              a ","      a  PaG    ","     a          ","       a a      ","    a     a     ","           a    ","                ","                ","               a","            a   ","   a            "," a a            ","      a         ","              a "),
+		new("aaa a a aaa a a a","      a       a  ","a a a a aaa a a a","a         a  G   ","a aaa a a a a aaa","            a a  ","a a a aaa a a a a","a         a      ","a a aaa a a a a a","  a   P          ","a a a a a a a a a","    a           a","a a a a aaa a a a","              a  ","a a a a aaaaa a a","        a        ","a aaa a a a a aaa"),
+		new("                    a a ","     a  a               ","               a        ","         a           a  "," a a  a                 ","                  a     ","         a              ","            G           ","    a                  a","                    a   ","       a               a","a                       ","              a         ","a                       ","  a                a P  ","          a             ","                        ","             a          ","     a                  ","   a             a      ","      a             a   ","                a       ","        a               "),
 	};
 	private static readonly LanguageCode LABEL_PREV_LEVEL = ("UI.SpaceBall.Prev", "Prev");
 	private static readonly LanguageCode LABEL_NEXT_LEVEL = ("UI.SpaceBall.Next", "Next");
@@ -71,11 +72,11 @@ public class MiniGameSpaceBall : MiniGame {
 	protected override bool ShowRestartOption => false;
 	protected override Int2 WindowSize => new(800, 800);
 	protected override string DisplayName => Language.Get(TypeID, "Space Ball");
+	protected override int BadgeCount => 3;
 
 	// Data
 	private readonly IntToChars LevelIndexToChars = new();
 	private readonly IntToChars LevelCountToChars = new();
-	private BadgesSaveData Saving;
 	private Int2 PrevMoveDirection;
 	private Int2 PlayerPrevPos;
 	private Int2 PlayerPos;
@@ -100,8 +101,6 @@ public class MiniGameSpaceBall : MiniGame {
 
 
 	protected override void StartMiniGame () {
-		Saving = LoadGameDataFromFile<BadgesSaveData>();
-		Saving.FixBadgeCount(5);
 		LoadLevel(CurrentLevel.Value);
 	}
 
@@ -148,7 +147,20 @@ public class MiniGameSpaceBall : MiniGame {
 			if (goal) {
 				Winning = true;
 				LastWinFrame = Game.GlobalFrame;
+				switch (CurrentLevel.Value) {
+					case 4:
+						GiveBadge(0, false);
+						Debug.Log(0);
+						break;
+					case 5:
+						GiveBadge(1, false);
+						break;
+					case 6:
+						GiveBadge(2, true);
+						break;
+				}
 			}
+
 		} else if (Winning) {
 			// Winning
 			if (Game.GlobalFrame > LastWinFrame + 96) {
@@ -327,6 +339,11 @@ public class MiniGameSpaceBall : MiniGame {
 			if (GUI.Button(rect, BuiltInText.UI_RESTART, GUISkin.SmallDarkButton)) {
 				LoadLevel(CurrentLevel.Value);
 			}
+
+			// Bagets
+			int bagetSize = Unify(42);
+			DrawBadges(windowRect.xMin, windowRect.yMax - bagetSize, bagetSize);
+
 		}
 
 	}
