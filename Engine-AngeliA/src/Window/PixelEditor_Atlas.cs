@@ -278,7 +278,7 @@ public partial class PixelEditor {
 			BuiltInText.UI_DELETE, DeleteAtlas,
 			BuiltInText.UI_CANCEL, Const.EmptyMethod
 		);
-		GenericDialogUI.SetButtonTint(Color32.RED_BETTER);
+		GenericDialogUI.SetItemTint(Color32.RED_BETTER);
 	}
 
 

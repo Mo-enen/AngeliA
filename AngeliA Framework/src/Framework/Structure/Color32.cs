@@ -69,11 +69,21 @@ public struct Color32 : IFormattable, IComparable {
 
 	public static Color32 Lerp (Color32 a, Color32 b, float t) {
 		t = t.Clamp01();
-		return new Color32((byte)((float)(int)a.r + (float)(b.r - a.r) * t), (byte)((float)(int)a.g + (float)(b.g - a.g) * t), (byte)((float)(int)a.b + (float)(b.b - a.b) * t), (byte)((float)(int)a.a + (float)(b.a - a.a) * t));
+		return new Color32(
+			(byte)((float)(int)a.r + (float)(b.r - a.r) * t), 
+			(byte)((float)(int)a.g + (float)(b.g - a.g) * t), 
+			(byte)((float)(int)a.b + (float)(b.b - a.b) * t), 
+			(byte)((float)(int)a.a + (float)(b.a - a.a) * t)
+		);
 	}
 
 	public static Color32 LerpUnclamped (Color32 a, Color32 b, float t) {
-		return new Color32((byte)((float)(int)a.r + (float)(b.r - a.r) * t), (byte)((float)(int)a.g + (float)(b.g - a.g) * t), (byte)((float)(int)a.b + (float)(b.b - a.b) * t), (byte)((float)(int)a.a + (float)(b.a - a.a) * t));
+		return new Color32(
+			(byte)((float)(int)a.r + (float)(b.r - a.r) * t), 
+			(byte)((float)(int)a.g + (float)(b.g - a.g) * t), 
+			(byte)((float)(int)a.b + (float)(b.b - a.b) * t), 
+			(byte)((float)(int)a.a + (float)(b.a - a.a) * t)
+		);
 	}
 
 	public override readonly string ToString () {

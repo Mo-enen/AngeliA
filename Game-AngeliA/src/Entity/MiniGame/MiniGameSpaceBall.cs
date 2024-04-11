@@ -53,40 +53,11 @@ public class MiniGameSpaceBall : MiniGame {
 
 	// Const
 	private readonly LevelData[] Levels = {
-		new(
-			"###########",
-			"#         #",
-			"#        G#",
-			"#         #",
-			"#         #",
-			"#         #",
-			"#         #",
-			"#P        #",
-			"#         #",
-			"###########"
-		),new(
-			"           ",
-			"    ###    ",
-			"    #    G ",
-			"           ",
-			"           ",
-			"           ",
-			"           ",
-			" P    #    ",
-			"     ##    ",
-			"           "
-		),new(
-			"           ",
-			"    ####   ",
-			"    #    G ",
-			"           ",
-			"           ",
-			"           ",
-			"           ",
-			" P    #    ",
-			"     ##    ",
-			"           "
-		),
+		new("           ","    ##     ","    #    G ","           ","           ","           ","           "," P    #    ","     ##    ","           "),
+		new("           ","  #        ","         # ","           ","           ","     G     ","        #  ","  P        ","           ","           "),
+		new("            ","   #        ","          # "," #          ","      #G    ","      ## #  ","  #         ","            ","   #    ##  "," P   #  ##  ","  #         ","         #  ","    #       ","            "),
+		new("                 # "," #                 ","              #    ","            #      ","                   ","                   ","    #     #   P   #","        #          ","                  #","  #                ","              #    ","                   ","  ##               ","      G    #       ","#                  "," #           #   # ","     # #           "),
+		new("          #     ","  #             ","             #  ","         #      ","#          #    ","                ","                ","                ","              # ","      #  P#G    ","     #          ","       # #      ","    #     #     ","           #    ","                ","                ","               #","            #   ","   #            "," # #            ","      #         ","              # "),
 
 	};
 	private static readonly LanguageCode LABEL_PREV_LEVEL = ("UI.SpaceBall.Prev", "Prev");
@@ -180,7 +151,7 @@ public class MiniGameSpaceBall : MiniGame {
 			}
 		} else if (Winning) {
 			// Winning
-			if (Game.GlobalFrame > LastWinFrame + 72) {
+			if (Game.GlobalFrame > LastWinFrame + 96) {
 				Winning = false;
 				// To Next Level
 				if (CurrentLevel.Value < Levels.Length - 1) {
@@ -191,7 +162,7 @@ public class MiniGameSpaceBall : MiniGame {
 			}
 		} else if (Outting) {
 			// Outting
-			if (Game.GlobalFrame > LastOutFrame + 72) {
+			if (Game.GlobalFrame > LastOutFrame + 96) {
 				Outting = false;
 				LoadLevel(CurrentLevel.Value);
 			}

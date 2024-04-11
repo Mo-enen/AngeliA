@@ -20,6 +20,8 @@ public partial class PixelEditor {
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
 	private readonly Color32[] PixelBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
+	private readonly Queue<Int2> BucketCacheQueue = new();
+	private readonly HashSet<Int2> BucketCacheHash = new();
 	private Int2 PixelBufferSize = Int2.zero;
 	private Int2 PixelCopyBufferSize = Int2.zero;
 	private IRect DraggingPixelRectLeft = default;
@@ -74,7 +76,7 @@ public partial class PixelEditor {
 		TryApplySliceInputFields();
 
 		if (HoldingSliceOptionKey) {
-			// Holding Option Key
+			// Holding Slice Option Key
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
 				DraggingStateLeft = DragStateLeft.ResizeSlice;
 				ResizingDirection = HoveringResizeDirection.Value;
@@ -89,6 +91,15 @@ public partial class PixelEditor {
 			} else {
 				// From Outside
 				ClearSpriteSelection();
+			}
+		} else if (HoldingPaintOptionKey) {
+			// Holding Paint Option Key
+			if (HoveringSpriteStageIndex >= 0) {
+				// Inside Sprite
+				DraggingStateLeft = DragStateLeft.Canceled;
+				ClearSpriteSelection();
+				ClearPixelSelectionRect();
+				BucketPixel(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y);
 			}
 		} else {
 			// Not Holding Option Key
@@ -251,7 +262,7 @@ public partial class PixelEditor {
 					for (int i = l; i < r; i++) {
 						int pIndex = j * pixelWidth + i;
 						if (pIndex < 0 || pIndex >= pixelCount) continue;
-						paintingSprite.Pixels[pIndex] = PaintingColor;
+						paintingSprite.Pixels[pIndex].Merge(PaintingColor, true);
 					}
 				}
 				paintingSpData.PixelDirty = true;
@@ -390,7 +401,9 @@ public partial class PixelEditor {
 
 	private void Update_RightDrag_Start () {
 		DragChanged = false;
-		DraggingStateRight = DragStateRight.SelectPixel;
+		DraggingStateRight =
+			HoldingPaintOptionKey || HoldingSliceOptionKey ? DragStateRight.Canceled :
+			DragStateRight.SelectPixel;
 		ClearPixelSelectionRect();
 	}
 
@@ -778,7 +791,7 @@ public partial class PixelEditor {
 			// From Buffer
 			PixelCopyBufferSize = PixelBufferSize;
 			PixelBuffer.CopyTo(PixelCopyBuffer, 0);
-			TryApplyPixelBuffer();
+			if (!cut) TryApplyPixelBuffer();
 		}
 		if (cut) {
 			DeleteSelectingPixels();
@@ -831,11 +844,59 @@ public partial class PixelEditor {
 					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)];
 					if (buffer.a == 0) continue;
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
-					sprite.Pixels[index] = Util.MergeColor(buffer, sprite.Pixels[index]);
+					sprite.Pixels[index].Merge(buffer);
 				}
 			}
 			spData.PixelDirty = true;
 		}
+		SetDirty();
+	}
+
+
+	private void BucketPixel (int spriteIndex, int pixelX, int pixelY) {
+		if (spriteIndex < 0 || spriteIndex >= StagedSprites.Count) return;
+		var spData = StagedSprites[spriteIndex];
+		var sprite = spData.Sprite;
+		var pixelRect = sprite.PixelRect;
+		if (!pixelRect.Contains(pixelX, pixelY)) return;
+		int localX = pixelX - pixelRect.xMin;
+		int localY = pixelY - pixelRect.yMin;
+		var targetColor = sprite.Pixels[localY * pixelRect.width + localX];
+		if (targetColor == PaintingColor) return;
+		BucketCacheQueue.Clear();
+		BucketCacheHash.Clear();
+		BucketCacheQueue.Enqueue(new Int2(localX, localY));
+		BucketCacheHash.Add(new Int2(localX, localY));
+		int safeCount = pixelRect.width * pixelRect.height + 1;
+		for (int safe = 0; safe < safeCount && BucketCacheQueue.Count > 0; safe++) {
+			var pos = BucketCacheQueue.Dequeue();
+			sprite.Pixels[pos.y * pixelRect.width + pos.x].Merge(PaintingColor, true);
+			// Check L
+			var l = new Int2(pos.x - 1, pos.y);
+			if (l.x >= 0 && !BucketCacheHash.Contains(l) && sprite.Pixels[l.y * pixelRect.width + l.x] == targetColor) {
+				BucketCacheQueue.Enqueue(l);
+				BucketCacheHash.Add(l);
+			}
+			// Check R
+			var r = new Int2(pos.x + 1, pos.y);
+			if (r.x < pixelRect.width && !BucketCacheHash.Contains(r) && sprite.Pixels[r.y * pixelRect.width + r.x] == targetColor) {
+				BucketCacheQueue.Enqueue(r);
+				BucketCacheHash.Add(r);
+			}
+			// Check D
+			var d = new Int2(pos.x, pos.y - 1);
+			if (d.y >= 0 && !BucketCacheHash.Contains(d) && sprite.Pixels[d.y * pixelRect.width + d.x] == targetColor) {
+				BucketCacheQueue.Enqueue(d);
+				BucketCacheHash.Add(d);
+			}
+			// Check U
+			var u = new Int2(pos.x, pos.y + 1);
+			if (u.y < pixelRect.height && !BucketCacheHash.Contains(u) && sprite.Pixels[u.y * pixelRect.width + u.x] == targetColor) {
+				BucketCacheQueue.Enqueue(u);
+				BucketCacheHash.Add(u);
+			}
+		}
+		spData.PixelDirty = true;
 		SetDirty();
 	}
 
@@ -958,7 +1019,7 @@ public partial class PixelEditor {
 				for (int x = l; x < r; x++) {
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					int bufferIndex = (y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL);
-					buffer[bufferIndex] = Util.MergeColor(sprite.Pixels[index], buffer[bufferIndex]);
+					buffer[bufferIndex].Merge(sprite.Pixels[index]);
 					if (removePixels) sprite.Pixels[index] = Color32.CLEAR;
 				}
 			}

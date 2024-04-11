@@ -36,6 +36,7 @@ public partial class MapEditor {
 	private int NavLoadedSlotX = int.MinValue;
 	private int NavLoadedSlotY = int.MinValue;
 	private int NavLoadedSlotZ = int.MinValue;
+	private int NavDragState = 0;
 
 
 	#endregion
@@ -101,15 +102,35 @@ public partial class MapEditor {
 			NavPosition.y -= Input.MouseGlobalPositionDelta.y * squadScale / totalRect.height;
 		}
 
-		// Jump to Mouse
-		if (Input.MouseLeftButtonDown && !CheckPointLaneRect.MouseInside() && !ToolbarRect.MouseInside()) {
-			var totalRect = camerarect.Envelope(1, 1);
-			int squadScale = NAV_WORLD_SIZE * Const.MAP * Const.CEL;
-			var delta = Input.MouseGlobalPosition - camerarect.CenterInt();
-			NavPosition.x += ((float)delta.x * squadScale / totalRect.height).RoundToInt();
-			NavPosition.y += ((float)delta.y * squadScale / totalRect.height).RoundToInt();
-			Input.UseAllHoldingKeys();
-			SetNavigating(false);
+		// Mouse Left Drag
+		if (Input.MouseLeftButtonDown) NavDragState = 1;
+		if (Input.MouseLeftButtonHolding) {
+			if (NavDragState == 1) {
+				int sqDis = Util.SquareDistance(Input.MouseGlobalPosition, Input.MouseLeftDownGlobalPosition);
+				if (sqDis > Unify(16 * 16)) NavDragState = 2;
+			}
+			if (NavDragState == 2) {
+				// Dragged and Dragging
+				var totalRect = camerarect.Envelope(1, 1);
+				int squadScale = NAV_WORLD_SIZE * Const.MAP * Const.CEL;
+				NavPosition.x -= Input.MouseGlobalPositionDelta.x * squadScale / totalRect.height;
+				NavPosition.y -= Input.MouseGlobalPositionDelta.y * squadScale / totalRect.height;
+			}
+		} else if (NavDragState != 0) {
+			if (NavDragState == 1) {
+				// Not Dragged
+				// Jump to Mouse
+				if (!CheckPointLaneRect.MouseInside() && !ToolbarRect.MouseInside()) {
+					var totalRect = camerarect.Envelope(1, 1);
+					int squadScale = NAV_WORLD_SIZE * Const.MAP * Const.CEL;
+					var delta = Input.MouseGlobalPosition - camerarect.CenterInt();
+					NavPosition.x += ((float)delta.x * squadScale / totalRect.height).RoundToInt();
+					NavPosition.y += ((float)delta.y * squadScale / totalRect.height).RoundToInt();
+					Input.UseAllHoldingKeys();
+					SetNavigating(false);
+				}
+			}
+			NavDragState = 0;
 		}
 
 		// Move with Direction Keys
@@ -265,6 +286,7 @@ public partial class MapEditor {
 		MouseDownPosition = null;
 		SelectionUnitRect = null;
 		DraggingUnitRect = null;
+		NavDragState = 0;
 		SearchingText = "";
 		SearchResult.Clear();
 	}
