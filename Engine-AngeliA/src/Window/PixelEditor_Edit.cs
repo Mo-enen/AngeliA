@@ -24,6 +24,7 @@ public partial class PixelEditor {
 	private readonly HashSet<Int2> BucketCacheHash = new();
 	private Int2 PixelBufferSize = Int2.zero;
 	private Int2 PixelCopyBufferSize = Int2.zero;
+	private Int2 MovePixelPixOffset;
 	private IRect DraggingPixelRectLeft = default;
 	private IRect DraggingPixelRectRight = default;
 	private IRect PixelSelectionPixelRect = default;
@@ -40,7 +41,6 @@ public partial class PixelEditor {
 	private bool DragChanged = false;
 	private bool ResizeForBorder = false;
 	private bool HoveringResizeForBorder = false;
-	private Int2 MovePixelPixOffset;
 
 
 	#endregion
@@ -258,11 +258,23 @@ public partial class PixelEditor {
 				int u = paintingRect.yMax - spritePixelRect.y;
 				int pixelWidth = spritePixelRect.width;
 				int pixelCount = paintingSprite.Pixels.Length;
-				for (int j = d; j < u; j++) {
-					for (int i = l; i < r; i++) {
-						int pIndex = j * pixelWidth + i;
-						if (pIndex < 0 || pIndex >= pixelCount) continue;
-						paintingSprite.Pixels[pIndex].Merge(PaintingColor, true);
+				if (PaintingColor.a != 0) {
+					// Paint
+					for (int j = d; j < u; j++) {
+						for (int i = l; i < r; i++) {
+							int pIndex = j * pixelWidth + i;
+							if (pIndex < 0 || pIndex >= pixelCount) continue;
+							paintingSprite.Pixels[pIndex].Merge(PaintingColor);
+						}
+					}
+				} else {
+					// Erase
+					for (int j = d; j < u; j++) {
+						for (int i = l; i < r; i++) {
+							int pIndex = j * pixelWidth + i;
+							if (pIndex < 0 || pIndex >= pixelCount) continue;
+							paintingSprite.Pixels[pIndex] = Color32.CLEAR;
+						}
 					}
 				}
 				paintingSpData.PixelDirty = true;
@@ -868,9 +880,14 @@ public partial class PixelEditor {
 		BucketCacheQueue.Enqueue(new Int2(localX, localY));
 		BucketCacheHash.Add(new Int2(localX, localY));
 		int safeCount = pixelRect.width * pixelRect.height + 1;
+		bool erase = PaintingColor.a == 0;
 		for (int safe = 0; safe < safeCount && BucketCacheQueue.Count > 0; safe++) {
 			var pos = BucketCacheQueue.Dequeue();
-			sprite.Pixels[pos.y * pixelRect.width + pos.x].Merge(PaintingColor, true);
+			if (erase) {
+				sprite.Pixels[pos.y * pixelRect.width + pos.x] = Color32.CLEAR;
+			} else {
+				sprite.Pixels[pos.y * pixelRect.width + pos.x].Merge(PaintingColor);
+			}
 			// Check L
 			var l = new Int2(pos.x - 1, pos.y);
 			if (l.x >= 0 && !BucketCacheHash.Contains(l) && sprite.Pixels[l.y * pixelRect.width + l.x] == targetColor) {

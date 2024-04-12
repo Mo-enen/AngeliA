@@ -331,7 +331,7 @@ public static partial class Util {
 	}
 
 
-	public static ColorF MergeColor (ColorF top, ColorF back) {
+	public static ColorF MergeColor_Over (ColorF top, ColorF back) {
 		float alpha = top.a + back.a * (1f - top.a);
 		return new ColorF(
 			(top.r * top.a + back.r * back.a * (1f - top.a)) / alpha,
@@ -340,6 +340,16 @@ public static partial class Util {
 			alpha
 		);
 	}
-	public static Color32 MergeColor (Color32 top, Color32 back) => MergeColor(top.ToColorF(), back.ToColorF()).ToColor32();
+	public static ColorF MergeColor_Premultiplied (ColorF top, ColorF back) {
+		float alpha = top.a + back.a * (1f - top.a);
+		return new ColorF(
+			top.r + back.r * (1f - top.a),
+			top.g + back.g * (1f - top.a),
+			top.b + back.b * (1f - top.a),
+			alpha
+		);
+	}
+	public static Color32 MergeColor_Over (Color32 top, Color32 back) => MergeColor_Over(top.ToColorF(), back.ToColorF()).ToColor32();
+	public static Color32 MergeColor_Premultiplied (Color32 top, Color32 back) => MergeColor_Premultiplied(top.ToColorF(), back.ToColorF()).ToColor32();
 
 }

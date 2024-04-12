@@ -98,6 +98,7 @@ public partial class RayGame : Game {
 		Raylib.UpdateMusicStream(CurrentBGM);
 
 		// Begin Draw
+		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		bool hasScreenEffectEnabled = false;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			if (ScreenEffectEnables[i]) {
@@ -133,10 +134,12 @@ public partial class RayGame : Game {
 		Update();
 
 		// Update Gizmos
+		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		GizmosRender.UpdateGizmos();
 
 		PrevHasInverseGizmos = GizmosRender.HasInverseGizmos;
 		if (PrevHasInverseGizmos) {
+			Raylib.BeginBlendMode(BlendMode.Alpha);
 			Raylib.BeginShaderMode(InverseShader);
 			Raylib.SetShaderValueTexture(
 				InverseShader, ShaderPropIndex_INV_TEXTURE, RenderTexture.Texture
@@ -147,6 +150,7 @@ public partial class RayGame : Game {
 			);
 			GizmosRender.UpdateInverse();
 			Raylib.EndShaderMode();
+			Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		} else {
 			GizmosRender.UpdateInverse();
 		}
@@ -201,6 +205,7 @@ public partial class RayGame : Game {
 		}
 
 		// End Game Rendering
+		Raylib.EndBlendMode();
 		Raylib.EndDrawing();
 
 	}

@@ -761,13 +761,8 @@ public static class Extension {
 	public static Color32 ToColor32 (this ColorF value) => new((byte)(value.r * 255), (byte)(value.g * 255), (byte)(value.b * 255), (byte)(value.a * 255));
 	public static ColorF ToColorF (this Color32 value) => new(value.r / 255f, value.g / 255f, value.b / 255f, value.a / 255f);
 	public static bool Almost (this ColorF a, ColorF b) => a == b;
-	public static void Merge (ref this Color32 back, Color32 top, bool ignoreClear = false) {
-		if (top.a == 0 && ignoreClear) {
-			back = top;
-		} else {
-			back = Util.MergeColor(top, back);
-		}
-	}
+	public static void Merge (ref this Color32 back, Color32 top) => back = Util.MergeColor_Premultiplied(top, back);
+	public static void Merge_Over (ref this Color32 back, Color32 top) => back = Util.MergeColor_Over(top, back);
 
 	// Enum
 	public static int EnumLength (this System.Type @enum) => System.Enum.GetValues(@enum).Length;
