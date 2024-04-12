@@ -77,14 +77,14 @@ public partial class PixelEditor : WindowUI {
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public static readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
 	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", false);
+	public static readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
 
 	// Data
 	private readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private readonly List<SpriteData> StagedSprites = new();
-	private readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
 	private readonly Dictionary<int, (string str, int index)> TagPool = new();
+	private event System.Action<IRect, string> RequireTooltip;
 	private string SheetPath = "";
-	private string ToolLabel = null;
 	private bool IsDirty = false;
 	private bool HoldingSliceOptionKey = false;
 	private bool HoldingPaintOptionKey = false;
@@ -102,7 +102,6 @@ public partial class PixelEditor : WindowUI {
 	private FRect CanvasRect;
 	private IRect CopyBufferPixRange;
 	private IRect StageRect;
-	private IRect ToolLabelRect;
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
@@ -138,7 +137,10 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	public PixelEditor () => Instance = this;
+	public PixelEditor (System.Action<IRect, string> requireTooltip = null) {
+		Instance = this;
+		Instance.RequireTooltip = requireTooltip;
+	}
 
 
 	public override void OnInactivated () {
@@ -162,7 +164,6 @@ public partial class PixelEditor : WindowUI {
 		Update_Rendering();
 		Update_StageToolbar();
 		Update_Hotkey();
-		Update_Final();
 	}
 
 
@@ -418,16 +419,16 @@ public partial class PixelEditor : WindowUI {
 			} else if (HoveringSpriteStageIndex >= 0) {
 				// Quick Move From Inside
 				Cursor.SetCursorAsMove(1);
+			} else if (AllowSpirteActionOnlyOnHoldingOptionKey.Value) {
+				// Outside Sprite for Create or Select
+				DrawPaintingCursor(true, out _);
 			}
 			return;
 		}
 
 		// Paint Option
 		if (HoldingPaintOptionKey) {
-			if (
-				HoveringSpriteStageIndex >= 0 &&
-				Renderer.TryGetTextureFromSheet(CURSOR_BUCKET, -1, out object texture)
-			) {
+			if (HoveringSpriteStageIndex >= 0) {
 				DrawSpriteAsCursor(CURSOR_BUCKET, Alignment.BottomLeft);
 				DrawPaintingCursor(false, out _);
 			}
@@ -436,6 +437,7 @@ public partial class PixelEditor : WindowUI {
 
 		// Move from Inside Cursor
 		if (
+			!AllowSpirteActionOnlyOnHoldingOptionKey.Value &&
 			(HoveringSpriteStageIndex >= 0 && StagedSprites[HoveringSpriteStageIndex].Selecting) ||
 			PixelSelectionPixelRect.Contains(MousePixelPos)
 		) {
@@ -451,7 +453,7 @@ public partial class PixelEditor : WindowUI {
 
 		// Gizmos Mouse Cursor
 		if (
-			(DraggingStateLeft == DragStateLeft.None ) &&
+			(DraggingStateLeft == DragStateLeft.None) &&
 			(DraggingStateRight == DragStateRight.None || DraggingStateRight == DragStateRight.SelectPixel)
 		) {
 			DrawPaintingCursor(true, out bool hasFrameCursor);
@@ -473,7 +475,6 @@ public partial class PixelEditor : WindowUI {
 	private void Update_Gizmos () {
 
 		if (Sheet.Atlas.Count <= 0) return;
-		if (!Interactable) return;
 
 		bool allowHighlight = DraggingStateLeft == DragStateLeft.None && DraggingStateRight == DragStateRight.None;
 		using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
@@ -665,31 +666,6 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_Final () {
-		// Tool Label
-		if (ToolLabel != null && Interactable) {
-			int endIndex = Renderer.GetTextUsedCellCount();
-			bool leftSide = ToolLabelRect.CenterX() < WindowRect.CenterX();
-			bool downSide = ToolLabelRect.CenterY() < WindowRect.CenterY();
-			TooltipStyle.Alignment =
-				leftSide && downSide ? Alignment.BottomLeft :
-				leftSide && !downSide ? Alignment.TopLeft :
-				!leftSide && downSide ? Alignment.BottomRight :
-				Alignment.TopRight;
-			GUI.BackgroundLabel(
-				ToolLabelRect.EdgeOutside(Direction4.Down, Unify(24)).Shift(
-					leftSide ? Unify(20) : Unify(-20),
-					downSide ? Unify(10) : Unify(-10)
-				),
-				ToolLabel, Color32.BLACK,
-				out var bounds, Unify(6), TooltipStyle
-			);
-			Renderer.ExcludeTextCells(bounds, 0, endIndex);
-			ToolLabel = null;
-		}
-	}
-
-
 	#endregion
 
 
@@ -726,14 +702,6 @@ public partial class PixelEditor : WindowUI {
 
 
 	#region --- LGC ---
-
-
-	// UI
-	private void RequireToolLabel (IRect buttonRect, string content) {
-		if (!buttonRect.MouseInside()) return;
-		ToolLabel = content;
-		ToolLabelRect = buttonRect;
-	}
 
 
 	private void ResetCamera () {

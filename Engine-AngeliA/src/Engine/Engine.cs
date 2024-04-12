@@ -24,6 +24,7 @@ internal class Engine {
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
 	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
+	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
 	private static readonly LanguageCode BTN_CREATE = ("Hub.Create", "Create New Project");
 	private static readonly LanguageCode BTN_ADD = ("Hub.Add", "Add Existing Project");
 	private static readonly LanguageCode CREATE_PRO_TITLE = ("UI.CreateProjectTitle", "New Project");
@@ -42,7 +43,7 @@ internal class Engine {
 		new GenericPopupUI() { Active = false, },
 		new GenericDialogUI() { Active = false, },
 		new FileBrowserUI() { Active = false, },
-		new PixelEditor(),
+		new PixelEditor(RequireTooltip),
 		new LanguageEditor(ignoreRequirements:true),
 		new SettingWindow(),
 	};
@@ -53,16 +54,23 @@ internal class Engine {
 		get => Setting.OpenLastProjectOnStart;
 		set => Setting.OpenLastProjectOnStart = value;
 	}
+	public static bool UseTooltip {
+		get => Setting.UseTooltip;
+		set => Setting.UseTooltip = value;
+	}
 
 	// Data
 	private static readonly GUIStyle ConfirmMsgStyle = new(GUISkin.CenterLabel) { CharSize = 18 };
 	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 18 };
+	private static readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
 	private static EngineSetting Setting;
 	private static WindowMode CurrentWindowMode;
 	private static bool SettingInitialized = false;
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
+	private static string ToolLabel = null;
+	private static IRect ToolLabelRect;
 
 
 	#endregion
@@ -128,6 +136,7 @@ internal class Engine {
 				} else {
 					OnGUI_Window();
 				}
+				OnGUI_Tooltip();
 				break;
 			case WindowMode.ConfirmQuit:
 				OnGUI_ConfirmQuit();
@@ -216,18 +225,36 @@ internal class Engine {
 
 				int border = GUI.Unify(8);
 				int padding = GUI.Unify(8);
+				int scrollWidth = GUI.Unify(12);
 				int itemHeight = GUI.Unify(52);
-				var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(padding);
+				int extendHeight = GUI.Unify(128);
+				var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
+					padding, padding + scrollWidth, padding, padding
+				);
 				var projects = Setting.Projects;
 
 				// BG
 				Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
 
-				// Project List
-				using (var scroll = Scope.GUIScroll(contentRect, HubPanelScroll, 0, Util.Max(0, projects.Count * itemHeight - contentRect.height))) {
-					HubPanelScroll = scroll.ScrollPosition.y;
+				// Big Label
+				if (Renderer.TryGetSprite(LABEL_PROJECTS, out var bigLabelSprite)) {
+					Renderer.Draw(
+						bigLabelSprite,
+						contentRect.Shift(GUI.Unify(-24), GUI.Unify(48)).CornerInside(
+							Alignment.BottomRight, GUI.Unify(256)
+						).Fit(bigLabelSprite, 1000, 0),
+						Color32.WHITE.WithNewA(4)
+					);
+				}
 
-					var STEP_TINT = new Color32(42, 42, 42, 255);
+				// Project List
+				using (var scroll = Scope.GUIScroll(
+					contentRect, HubPanelScroll,
+					0, Util.Max(0, projects.Count * itemHeight + extendHeight - contentRect.height))
+				) {
+					HubPanelScroll = scroll.ScrollPosition;
+
+					var STEP_TINT = new Color32(255, 255, 255, 6);
 					var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
 					bool stepTint = false;
 
@@ -240,62 +267,65 @@ internal class Engine {
 						if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
 						stepTint = !stepTint;
 
-						using (Scope.GUIEnable(folderExists)) {
+						// Red Highlight
+						if (GUI.Enable && !folderExists && rect.MouseInside()) {
+							Renderer.DrawPixel(rect, Color32.RED.WithNewA(32));
+						}
 
-							// Red Highlight
-							if (!folderExists && rect.MouseInside()) {
-								Renderer.DrawPixel(rect, Color32.RED.WithNewA(32));
-							}
+						// Button
+						if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
+							OpenProject(projectPath);
+						}
 
-							// Button
-							if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
-								OpenProject(projectPath);
-							}
-
-							// Icon
-							using (Scope.GUIContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
-								GUI.Icon(
-									itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
-									PROJECT_ICON
-								);
-							}
-
-							// Name
-							GUI.Label(
-								itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
-								Util.GetNameWithoutExtension(projectPath),
-								GUISkin.SmallLabel
+						// Icon
+						using (Scope.GUIContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+							GUI.Icon(
+								itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
+								PROJECT_ICON
 							);
+						}
 
-							// Path
-							GUI.Label(
-								itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
-								projectPath,
-								GUISkin.SmallGreyLabel
-							);
+						// Name
+						GUI.Label(
+							itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
+							Util.GetNameWithoutExtension(projectPath),
+							GUISkin.SmallLabel
+						);
 
-							// Click
-							if (GUI.Enable && rect.MouseInside()) {
-								// Menu
-								if (folderExists && Input.MouseRightButtonDown) {
-									Input.UseAllMouseKey();
-									OpenHubItemPopup(i);
+						// Path
+						GUI.Label(
+							itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
+							projectPath,
+							GUISkin.SmallGreyLabel
+						);
+
+						// Click
+						if (GUI.Enable && rect.MouseInside()) {
+							// Menu
+							if (folderExists && Input.MouseRightButtonDown) {
+								Input.UseAllMouseKey();
+								OpenHubItemPopup(i);
+							}
+
+							// Delete Not Exists
+							if (!folderExists) {
+								if (Input.MouseLeftButtonDown) {
+									CurrentProjectMenuIndex = i;
+									DeleteProjectConfirm();
 								}
-
-								// Delete Not Exists
-								if (!folderExists) {
-									if (Input.MouseLeftButtonDown) {
-										CurrentProjectMenuIndex = i;
-										DeleteProjectConfirm();
-									}
-									Cursor.SetCursorAsHand();
-								}
+								Cursor.SetCursorAsHand();
 							}
 						}
 
 						rect.SlideDown();
 					}
 				}
+
+				// Scrollbar
+				HubPanelScroll = GUI.ScrollBar(
+					701635, cameraRect.EdgeInside(Direction4.Right, scrollWidth),
+					HubPanelScroll, projects.Count * itemHeight + extendHeight, contentRect.height
+				);
 			}
 		}
 
@@ -458,6 +488,31 @@ internal class Engine {
 	}
 
 
+	private static void OnGUI_Tooltip () {
+		if (!UseTooltip || ToolLabel == null) return;
+		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog || FileBrowserUI.Instance.Active) return;
+		var cameraRect = Renderer.CameraRect;
+		int endIndex = Renderer.GetTextUsedCellCount();
+		bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
+		bool downSide = ToolLabelRect.CenterY() < cameraRect.CenterY();
+		TooltipStyle.Alignment =
+			leftSide && downSide ? Alignment.BottomLeft :
+			leftSide && !downSide ? Alignment.TopLeft :
+			!leftSide && downSide ? Alignment.BottomRight :
+			Alignment.TopRight;
+		GUI.BackgroundLabel(
+			ToolLabelRect.EdgeOutside(Direction4.Down, GUI.Unify(24)).Shift(
+				leftSide ? GUI.Unify(20) : GUI.Unify(-20),
+				downSide ? GUI.Unify(10) : GUI.Unify(-10)
+			),
+			ToolLabel, Color32.BLACK,
+			out var bounds, GUI.Unify(6), TooltipStyle
+		);
+		Renderer.ExcludeTextCells(bounds, 0, endIndex);
+		ToolLabel = null;
+	}
+
+
 	// Confirm Quit
 	private static void OnGUI_ConfirmQuit () {
 
@@ -484,6 +539,21 @@ internal class Engine {
 			SwitchWindowMode(WindowMode.Window);
 		}
 
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API --
+
+
+	public static void RequireTooltip (IRect buttonRect, string content) {
+		if (!buttonRect.MouseInside()) return;
+		ToolLabel = content;
+		ToolLabelRect = buttonRect;
 	}
 
 

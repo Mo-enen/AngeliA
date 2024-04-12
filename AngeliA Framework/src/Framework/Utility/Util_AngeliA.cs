@@ -25,11 +25,11 @@ public static partial class Util {
 	}
 
 	public static void ClampCell (Cell cell, IRect rect) {
-		var cellRect = new IRect();
-		cellRect.x = cell.X - (int)(cell.Width * cell.PivotX);
-		cellRect.y = cell.Y - (int)(cell.Height * cell.PivotY);
-		cellRect.width = cell.Width;
-		cellRect.height = cell.Height;
+		var cellRect = new IRect(
+			cell.X - (int)(cell.Width * cell.PivotX),
+			cell.Y - (int)(cell.Height * cell.PivotY),
+			cell.Width, cell.Height
+		);
 		cellRect.FlipNegative();
 		if (!cellRect.Overlaps(rect)) {
 			cell.Width = 0;

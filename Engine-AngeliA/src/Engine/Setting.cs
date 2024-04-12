@@ -22,6 +22,7 @@ public class EngineSetting {
 	public int WindowPositionY = 128;
 	public string LastOpenProject = "";
 	public bool OpenLastProjectOnStart = false;
+	public bool UseTooltip = true;
 	public List<ProjectData> Projects = new();
 
 	public void RefreshProjectFileExistsCache () {

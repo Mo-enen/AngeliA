@@ -175,6 +175,9 @@ public abstract partial class Game {
 	internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, isTextLayer, cells, cellCount);
 	protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount);
 
+	internal static bool TryGetTextureOfChar (char c, int fontIndex, out object texture) => Instance._TryGetTextureOfChar(c, fontIndex, out texture);
+	protected abstract bool _TryGetTextureOfChar (char c, int fontIndex, out object texture);
+
 
 	// Effect
 	[OnGameUpdatePauseless(4096)]

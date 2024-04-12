@@ -790,13 +790,11 @@ public static class GUI {
 	// Scrollbar
 	public static int ScrollBar (int controlID, IRect contentRect, int positionRow, int totalSize, int pageSize, GUIStyle style = null) {
 		if (pageSize >= totalSize) return 0;
-
 		style ??= GUISkin.Scrollbar;
-
-		int barHeight = contentRect.height * pageSize / totalSize;
+		int barHeight = (int)((long)(contentRect.height * pageSize) / totalSize);
 		var barRect = new IRect(
 			contentRect.x,
-			Util.RemapUnclamped(
+			RemapLarge(
 				0, totalSize - pageSize,
 				contentRect.yMax - barHeight, contentRect.y,
 				positionRow
@@ -804,6 +802,11 @@ public static class GUI {
 			contentRect.width,
 			barHeight
 		);
+		static int RemapLarge (int l, int r, int newL, int newR, int t) {
+			return l == r ?
+				newL :
+				newL + (int)((long)(newR - newL) * (t - l) / (r - l));
+		}
 		bool focusingBar = DraggingScrollbarID == controlID;
 		bool hoveringBar = barRect.MouseInside();
 		bool dragging = focusingBar && ScrollBarMouseDownPos.HasValue;

@@ -144,6 +144,16 @@ public partial class RayGame {
 		}
 	}
 
+	protected override bool _TryGetTextureOfChar (char c, int fontIndex, out object texture) {
+		texture = null;
+		if (fontIndex < 0 || fontIndex >= Fonts.Length) return false;
+		if (Fonts[fontIndex].TryGetTexture(c, out var texture2d)) {
+			texture = texture2d;
+			return true;
+		}
+		return false;
+	}
+
 	private void UpdateLayer_Cell (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
 		var cameraRect = Renderer.CameraRect;

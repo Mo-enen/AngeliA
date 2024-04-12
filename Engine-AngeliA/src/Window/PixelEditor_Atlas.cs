@@ -73,7 +73,7 @@ public partial class PixelEditor {
 			bool requireUseMouseButtons = false;
 
 			using (var scroll = Scope.GUIScroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
-				AtlasPanelScrollY = scroll.ScrollPosition.y;
+				AtlasPanelScrollY = scroll.ScrollPosition;
 				for (int i = 0; i < itemCount; i++) {
 
 					var atlas = Sheet.Atlas[i];
@@ -195,14 +195,14 @@ public partial class PixelEditor {
 		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
 			CreateAtlas();
 		}
-		RequireToolLabel(buttonRect, TIP_ADD_ATLAS);
+		RequireTooltip?.Invoke(buttonRect, TIP_ADD_ATLAS);
 		buttonRect.SlideRight(buttonPadding);
 
 		// Import from Ase
 		if (GUI.Button(buttonRect, ICON_IMPORT_ASE, GUISkin.SmallDarkButton)) {
 			ShowImportAtlasBrowser(true);
 		}
-		RequireToolLabel(buttonRect, TIP_IMPORT_ASE);
+		RequireTooltip?.Invoke(buttonRect, TIP_IMPORT_ASE);
 		buttonRect.SlideRight(buttonPadding);
 
 	}

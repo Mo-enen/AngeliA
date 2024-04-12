@@ -44,7 +44,7 @@ public class Scope : System.IDisposable {
 	private static readonly ScopeGroup GUILabelWidthInstance = new();
 
 	// Api
-	public Int2 ScrollPosition => Int2Data;
+	public int ScrollPosition => Int2Data.y;
 
 	// Data
 	private readonly ScopeGroup Group;
