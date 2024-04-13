@@ -84,10 +84,16 @@ public partial class PixelEditor {
 				ResizingStageIndex = HoveringResizeStageIndex;
 				ResizeForBorder = HoveringResizeForBorder;
 			} else if (HoveringSpriteStageIndex >= 0) {
-				// Quick Move From Inside
+				// Move From Inside
 				DraggingStateLeft = DragStateLeft.MoveSlice;
-				SetSpriteSelection(HoveringSpriteStageIndex);
-				hoveringData.DraggingStartRect = hoveringData.Sprite.PixelRect;
+				if (!AllowSpirteActionOnlyOnHoldingOptionKey.Value || !hoveringData.Selecting) {
+					SetSpriteSelection(HoveringSpriteStageIndex);
+					hoveringData.DraggingStartRect = hoveringData.Sprite.PixelRect;
+				} else {
+					foreach (var _spData in StagedSprites) {
+						_spData.DraggingStartRect = _spData.Sprite.PixelRect;
+					}
+				}
 			} else {
 				// From Outside
 				if (AllowSpirteActionOnlyOnHoldingOptionKey.Value) {
@@ -457,12 +463,14 @@ public partial class PixelEditor {
 			// Pick Color
 			var pixelPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 			PaintingColor = Color32.CLEAR;
+			PaintingColorF = default;
 			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 				var sprite = StagedSprites[i].Sprite;
 				var spRect = sprite.PixelRect;
 				if (sprite.Pixels.Length > 0 && spRect.Contains(pixelPos)) {
 					int pxIndex = (pixelPos.y - spRect.yMin) * spRect.width + (pixelPos.x - spRect.xMin);
 					PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
+					PaintingColorF = PaintingColor.ToColorF();
 					break;
 				}
 			}

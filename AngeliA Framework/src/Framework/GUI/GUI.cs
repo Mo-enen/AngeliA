@@ -971,25 +971,40 @@ public static class GUI {
 			int spriteID = forHue ? BuiltInSprite.COLOR_HUE : BuiltInSprite.COLOR_WHITE_BAR;
 			// Bar
 			Renderer.DrawPixel(rect, Color32.BLACK);
+			// Background
 			rect = rect.Shrink(Unify(2));
 			if (tintB.a.NotAlmostZero()) {
 				Renderer.DrawPixel(rect, tintB.ToColor32());
+			} else {
+				var cell = Renderer.Draw(BuiltInSprite.CHECKER_BOARD_16, rect.Envelope(1, 1));
+				cell.Shift.down = cell.Shift.up = (cell.Height - rect.height) / 2;
+				cell.Shift.left = cell.Shift.right = (cell.Width - rect.width) / 2;
 			}
-			if (forHue) tintF.a = tintF.a.Clamp(0.2f, 1f);
+			// Foreground
+			if (forHue) tintF.a = tintF.a.Clamp(0.5f, 1f);
 			Renderer.Draw(spriteID, rect, tintF.ToColor32());
 			// Cursor
 			int cursorWidth = Unify(1);
 			var cursorRect = new IRect(rect.x + (int)(rect.width * value) - cursorWidth / 2, rect.y, cursorWidth, rect.height);
 			Renderer.DrawPixel(cursorRect.Expand(cursorWidth / 2, cursorWidth / 2, 0, 0), Color32.BLACK);
 			Renderer.DrawPixel(cursorRect, Color32.WHITE);
-			// Logic
-			if (Enable && rect.Contains(Input.MouseLeftDownGlobalPosition) && Input.MouseLeftButtonHolding) {
-				value = Util.InverseLerp(rect.xMin, rect.xMax, Input.MouseGlobalPosition.x);
-				if (step.NotAlmostZero()) {
-					value = ((value / step).RoundToInt()) * step;
+			if (Enable) {
+				// Wheel
+				if (Input.MouseWheelDelta != 0 && rect.Contains(Input.MouseGlobalPosition)) {
+					value += Input.MouseWheelDelta * (forHue ? 0.02f : 0.01f);
+					if (forHue) value = value.UMod(1f);
+					changed = true;
 				}
-				changed = true;
+				// Click
+				if (rect.Contains(Input.MouseLeftDownGlobalPosition) && Input.MouseLeftButtonHolding) {
+					value = Util.InverseLerp(rect.xMin, rect.xMax, Input.MouseGlobalPosition.x);
+					if (step.NotAlmostZero()) {
+						value = (value / step).RoundToInt() * step;
+					}
+					changed = true;
+				}
 			}
+			value = value.Clamp01();
 			return changed;
 		}
 	}

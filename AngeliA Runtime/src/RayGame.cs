@@ -106,17 +106,12 @@ public partial class RayGame : Game {
 				break;
 			}
 		}
-		bool usingTextureMode = hasScreenEffectEnabled || PrevHasInverseGizmos;
-		if (usingTextureMode) {
-			if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
-				Raylib.UnloadRenderTexture(RenderTexture);
-				RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
-				Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
-			}
-			Raylib.BeginTextureMode(RenderTexture);
-		} else {
-			Raylib.BeginDrawing();
+		if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
+			Raylib.UnloadRenderTexture(RenderTexture);
+			RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
+			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
 		}
+		Raylib.BeginTextureMode(RenderTexture);
 
 		// Sky
 		var skyColorA = Sky.SkyTintBottomColor;
@@ -179,32 +174,14 @@ public partial class RayGame : Game {
 			Raylib.DrawRectangle(ScreenWidth - borderWidth, 0, borderWidth, ScreenHeight, Color.Black);
 		}
 
-		// Custom Cursor
-		bool hasCustomCursor = Cursor.CurrentCursorIndex == Const.CURSOR_CUSTOM && Cursor.CustomCursorID != 0 && Raylib.IsCursorOnScreen();
-		if (hasCustomCursor && Renderer.TryGetTextureFromSheet<Texture2D>(Cursor.CustomCursorID, -1, out var texture)) {
-			float scale = ScreenHeight / 1024f;
-			Raylib.DrawTextureEx(
-				texture,
-				Raylib.GetMousePosition() - new Vector2(
-					texture.Width * scale / 2f,
-					texture.Height * scale / 2f
-				),
-				rotation: 0, scale, Color.White
-			);
-		}
-
-		// Render Texture >> Screen
-		if (usingTextureMode) {
-			Raylib.EndTextureMode();
-			Raylib.BeginDrawing();
-			Raylib.DrawTextureRec(
-				RenderTexture.Texture,
-				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
-				new Vector2(0, 0), Color.White
-			);
-		}
-
-		// End Game Rendering
+		// End Rendering
+		Raylib.EndTextureMode();
+		Raylib.BeginDrawing();
+		Raylib.DrawTextureRec(
+			RenderTexture.Texture,
+			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+			default, Color.White
+		);
 		Raylib.EndBlendMode();
 		Raylib.EndDrawing();
 

@@ -5,7 +5,6 @@ public static class Cursor {
 
 	// Api
 	public static int CursorPriority { get; set; } = int.MinValue;
-	public static int CustomCursorID { get; private set; } = 0;
 	public static int CurrentCursorIndex { get; private set; } = -1;
 
 	// Data
@@ -29,7 +28,7 @@ public static class Cursor {
 			// Has Cursor
 			if (CursorPriority != int.MinValue) {
 				CursorPriority = int.MinValue;
-				if (CurrentCursorIndex == Const.CURSOR_CUSTOM) {
+				if (CurrentCursorIndex == Const.CURSOR_NONE) {
 					Game.HideCursor();
 					Game.SetCursor(CurrentCursorIndex);
 				} else {
@@ -63,7 +62,7 @@ public static class Cursor {
 		CursorPriority = priority;
 		CursorEndFrame = Game.GlobalFrame + 1;
 		if (cursorIndex < 0 || cursorIndex >= Const.CURSOR_COUNT) {
-			CurrentCursorIndex = cursorIndex == Const.CURSOR_CUSTOM ? Const.CURSOR_CUSTOM : -1;
+			CurrentCursorIndex = cursorIndex == Const.CURSOR_NONE ? Const.CURSOR_NONE : -1;
 		} else {
 			CurrentCursorIndex = cursorIndex;
 		}
@@ -85,10 +84,7 @@ public static class Cursor {
 	public static void SetCursorAsMove (IRect mouseRange, int priority = 0) => SetCursor(Const.CURSOR_RESIZE_CROSS, mouseRange, priority);
 
 
-	public static void SetCursorAsCustom (int spriteID, int priority = 0) {
-		SetCursor(Const.CURSOR_CUSTOM, priority);
-		CustomCursorID = spriteID;
-	}
+	public static void SetCursorAsNone (int priority = 0) => SetCursor(Const.CURSOR_NONE, priority);
 
 
 	public static int GetResizeCursorIndex (Direction8 direction) => direction switch {

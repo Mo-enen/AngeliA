@@ -119,5 +119,5 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode COLOR_WHITE_BAR = "ColorSlider.White";
 	public static readonly SpriteCode CHECKER_BOARD_16 = "Checkerboard 16";
 	public static readonly SpriteCode CHECKER_BOARD_8 = "Checkerboard 8";
-
+	
 }

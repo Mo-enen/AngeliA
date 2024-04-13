@@ -489,7 +489,11 @@ internal class Engine {
 
 
 	private static void OnGUI_Tooltip () {
-		if (!UseTooltip || ToolLabel == null) return;
+		if (ToolLabel == null) return;
+		if (!UseTooltip) {
+			ToolLabel = null;
+			return;
+		}
 		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog || FileBrowserUI.Instance.Active) return;
 		var cameraRect = Renderer.CameraRect;
 		int endIndex = Renderer.GetTextUsedCellCount();
@@ -551,7 +555,7 @@ internal class Engine {
 
 
 	public static void RequireTooltip (IRect buttonRect, string content) {
-		if (!buttonRect.MouseInside()) return;
+		if (!UseTooltip || !buttonRect.MouseInside()) return;
 		ToolLabel = content;
 		ToolLabelRect = buttonRect;
 	}

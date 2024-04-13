@@ -28,6 +28,8 @@ public partial class PixelEditor {
 	private static readonly string[] INPUT_TEXT = { "", "", "", "", "", "", "", "", "", "", "", };
 	private static readonly int ATLAS_TYPE_COUNT = typeof(AtlasType).EnumLength();
 	private static string[] ATLAS_TYPE_NAMES = null;
+
+	// Sprite
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
 	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
 	private static readonly SpriteCode ICON_TRIGGER_ON = "Icon.TriggerOn";
@@ -44,8 +46,11 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_RULE_EMPTY = "Icon.Empty";
 	private static readonly SpriteCode ICON_RULE_MODE_A = "Icon.RuleModeA";
 	private static readonly SpriteCode ICON_RULE_MODE_B = "Icon.RuleModeB";
+
+	// Language
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
 	private static readonly LanguageCode TIP_ATLAS_TYPE = ("Tip.AtlasType", "Type of the opening atlas");
+	private static readonly LanguageCode TIP_PAINTING_COLOR = ("Tip.PaintingColor", "Current painting color");
 	private static readonly LanguageCode TIP_PALETTE = ("Tip.Palette", "Create a sprite for palette");
 	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show background");
 	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset camera");
@@ -90,6 +95,7 @@ public partial class PixelEditor {
 	private bool? TilingRuleModeA = true;
 	private int RulePageIndex = 0;
 	private IRect RuleEditorRect = default;
+	private ColorF PaintingColorF = new(0, 0, 0, 0);
 
 
 	#endregion
@@ -113,7 +119,7 @@ public partial class PixelEditor {
 
 		if (SelectingSpriteCount == 0) {
 			// --- General ---
-			Update_GeneralToolbar(ref rect);
+			Update_GeneralToolbar(toolbarRect, ref rect);
 		} else {
 			// --- Slice ---
 			Update_SliceToolbar_Name(ref rect);
@@ -126,7 +132,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void Update_GeneralToolbar (ref IRect rect) {
+	private void Update_GeneralToolbar (IRect toolbarRect, ref IRect rect) {
 
 		int padding = Unify(4);
 
@@ -162,6 +168,22 @@ public partial class PixelEditor {
 		}
 		RequireTooltip?.Invoke(rect, TIP_ATLAS_TYPE);
 		rect.SlideRight(padding);
+
+
+
+
+
+		// Color
+		rect.width = Util.Min(Unify(512), toolbarRect.xMax - rect.x);
+		if (rect.width > rect.height) {
+			rect.x = toolbarRect.xMax - rect.width;
+			var newColorF = GUI.HorizontalColorField(PaintingColorF, rect, alpha: true);
+			if (newColorF != PaintingColorF) {
+				PaintingColorF = newColorF;
+				PaintingColor = newColorF.ToColor32();
+			}
+			RequireTooltip?.Invoke(rect, TIP_PAINTING_COLOR);
+		}
 
 	}
 

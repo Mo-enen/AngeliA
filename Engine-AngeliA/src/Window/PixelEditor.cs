@@ -687,6 +687,7 @@ public partial class PixelEditor : WindowUI {
 		CurrentAtlasIndex = -1;
 		DraggingStateLeft = DragStateLeft.None;
 		PaintingColor = Color32.CLEAR;
+		PaintingColorF = default;
 		Sheet.LoadFromDisk(sheetPath);
 	}
 
@@ -892,7 +893,7 @@ public partial class PixelEditor : WindowUI {
 		if (!Renderer.TryGetTextureFromSheet(spriteID, -1, out object texture)) return;
 		var mousePos = Input.MouseGlobalPosition;
 		size = size > 0 ? size : Unify(16);
-		Cursor.SetCursorAsCustom(1, -1);
+		Cursor.SetCursorAsNone(-1);
 		var alignmentNormal = alignment.Normal();
 		Game.DrawGizmosTexture(
 			new IRect(
