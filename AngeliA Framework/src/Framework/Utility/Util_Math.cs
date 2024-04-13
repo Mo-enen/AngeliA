@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public static partial class Util {
 
 
@@ -186,6 +187,70 @@ public static partial class Util {
 		} catch {
 			return false;
 		}
+	}
+
+
+	public static IEnumerable<Int2> DrawLine_DDA (int x0, int y0, int x1, int y1) {
+
+		// Calculate dx and dy 
+		int dx = x1 - x0;
+		int dy = y1 - y0;
+
+		int step;
+
+		// If dx > dy we will take step as dx 
+		// else we will take step as dy to draw the complete 
+		// line 
+		if (Math.Abs(dx) > Math.Abs(dy))
+			step = Math.Abs(dx);
+		else
+			step = Math.Abs(dy);
+
+		// Calculate x-increment and y-increment for each 
+		// step 
+		float x_incr = (float)dx / step;
+		float y_incr = (float)dy / step;
+
+		// Take the initial points as x and y 
+		float x = x0;
+		float y = y0;
+
+		for (int i = 0; i <= step; i++) {
+			yield return new(x.RoundToInt(), y.RoundToInt());
+			x += x_incr;
+			y += y_incr;
+		}
+	}
+
+
+	public static IEnumerable<IRect> DrawLineWithRect_DDA (int x0, int y0, int x1, int y1) {
+		var endPoint = new Int2(x1, y1);
+		var currentRect = new IRect(x0, y0, 1, 1);
+		foreach (var point in DrawLine_DDA(x0, y0, x1, y1)) {
+			bool difX = point.x != currentRect.x;
+			bool difY = point.y != currentRect.y;
+			if (difX && difY) {
+				// Perform
+				yield return currentRect;
+				currentRect.x = point.x;
+				currentRect.y = point.y;
+				currentRect.width = 1;
+				currentRect.height = 1;
+			} else {
+				// Grow
+				if (difX) {
+					currentRect.width++;
+					currentRect.x = Min(currentRect.x, point.x);
+				} else if (difY) {
+					currentRect.height++;
+					currentRect.y = Min(currentRect.y, point.y);
+				}
+			}
+			if (point == endPoint) {
+				yield return currentRect;
+			}
+		}
+
 	}
 
 

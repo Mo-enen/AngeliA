@@ -87,7 +87,8 @@ public partial class PixelEditor : WindowUI {
 	private string SheetPath = "";
 	private bool IsDirty = false;
 	private bool HoldingSliceOptionKey = false;
-	private bool HoldingPaintOptionKey = false;
+	private bool HoldingBucketOptionKey = false;
+	private bool HoldingLineOptionKey = false;
 	private bool Interactable = true;
 	private bool MouseInStage = false;
 	private bool MouseLeftDownInStage = false;
@@ -188,7 +189,8 @@ public partial class PixelEditor : WindowUI {
 		StageRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT));
 		HoveringResizeStageIndex = -1;
 		HoldingSliceOptionKey = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
-		HoldingPaintOptionKey = Input.KeyboardHolding(KeyboardKey.LeftAlt);
+		HoldingBucketOptionKey = Input.KeyboardHolding(KeyboardKey.LeftAlt);
+		HoldingLineOptionKey = Input.KeyboardHolding(KeyboardKey.LeftShift);
 		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.Instance.Active;
 		HoveringResizeForBorder = false;
 		RuleEditorRect = OpeningTilingRuleEditor ? StageRect.CornerInside(Alignment.TopRight, Unify(200), Unify(250)) : default;
@@ -427,7 +429,7 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Paint Option
-		if (HoldingPaintOptionKey) {
+		if (HoldingBucketOptionKey && DraggingStateLeft == DragStateLeft.None) {
 			if (HoveringSpriteStageIndex >= 0) {
 				DrawInverseCursor(CURSOR_BUCKET, Alignment.BottomLeft);
 				DrawPaintingCursor(false, out _);
