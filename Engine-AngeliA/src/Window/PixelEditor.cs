@@ -429,7 +429,7 @@ public partial class PixelEditor : WindowUI {
 		// Paint Option
 		if (HoldingPaintOptionKey) {
 			if (HoveringSpriteStageIndex >= 0) {
-				DrawSpriteAsCursor(CURSOR_BUCKET, Alignment.BottomLeft);
+				DrawInverseCursor(CURSOR_BUCKET, Alignment.BottomLeft);
 				DrawPaintingCursor(false, out _);
 			}
 			return;
@@ -453,9 +453,10 @@ public partial class PixelEditor : WindowUI {
 
 		// Gizmos Mouse Cursor
 		if (
-			(DraggingStateLeft == DragStateLeft.None) &&
+			(DraggingStateLeft == DragStateLeft.None || DraggingStateLeft == DragStateLeft.Paint) &&
 			(DraggingStateRight == DragStateRight.None || DraggingStateRight == DragStateRight.SelectPixel)
 		) {
+			// Painting Cursor
 			DrawPaintingCursor(true, out bool hasFrameCursor);
 			// Dot or Cross Cursor
 			if (
@@ -464,7 +465,7 @@ public partial class PixelEditor : WindowUI {
 				DraggingStateLeft != DragStateLeft.ResizeSlice &&
 				DraggingStateLeft != DragStateLeft.SelectOrCreateSlice
 			) {
-				DrawSpriteAsCursor(hasFrameCursor ? CURSOR_DOT : CURSOR_CROSS, Alignment.MidMid);
+				DrawInverseCursor(hasFrameCursor ? CURSOR_DOT : CURSOR_CROSS, Alignment.MidMid);
 			}
 			return;
 		}
@@ -885,7 +886,7 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void DrawSpriteAsCursor (int spriteID, Alignment alignment, int size = 0) {
+	private void DrawInverseCursor (int spriteID, Alignment alignment, int size = 0) {
 		if (!Renderer.TryGetTextureFromSheet(spriteID, -1, out object texture)) return;
 		var mousePos = Input.MouseGlobalPosition;
 		size = size > 0 ? size : Unify(16);
