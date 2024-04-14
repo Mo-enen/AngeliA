@@ -13,7 +13,6 @@ public partial class PixelEditor {
 
 
 	// Const
-	private const int ATLAS_POPUP_ID = 1278321;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
@@ -21,6 +20,10 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_ASE = ("Title.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_PNG = ("Title.ImportPNG", "Import PNG file");
+	private static readonly LanguageCode ATLAS_POPUP_TOP = ("UI.AtlasPopup.Top", "Move to Top");
+	private static readonly LanguageCode ATLAS_POPUP_UP = ("UI.AtlasPopup.Up", "Move Up");
+	private static readonly LanguageCode ATLAS_POPUP_DOWN = ("UI.AtlasPopup.Down", "Move Down");
+	private static readonly LanguageCode ATLAS_POPUP_BOTTOM = ("UI.AtlasPopup.Bottom", "Move to Bottom");
 
 	// Data
 	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUISkin.SmallLabel) {
@@ -169,15 +172,6 @@ public partial class PixelEditor {
 				ShowAtlasItemPopup(-1);
 			}
 
-			// Clamp Popup
-			var popup = GenericPopupUI.Instance;
-			if (popup.Active && popup.MenuID == ATLAS_POPUP_ID) {
-				popup.OffsetX = (popup.OffsetX + Renderer.CameraRect.x).Clamp(
-					WindowRect.x,
-					WindowRect.x + Unify(PANEL_WIDTH) - popup.Width
-				) - Renderer.CameraRect.x;
-			}
-
 		}
 
 	}
@@ -216,10 +210,10 @@ public partial class PixelEditor {
 	#region --- LGC ---
 
 
-	private void SetCurrentAtlas (int atlasIndex) {
+	private void SetCurrentAtlas (int atlasIndex, bool forceChange = false) {
 		if (Sheet.Atlas.Count == 0) return;
 		atlasIndex = atlasIndex.Clamp(0, Sheet.Atlas.Count - 1);
-		if (CurrentAtlasIndex == atlasIndex) return;
+		if (!forceChange && CurrentAtlasIndex == atlasIndex) return;
 		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
 		foreach (var sprite in Sheet.Sprites) {
@@ -243,56 +237,81 @@ public partial class PixelEditor {
 	private void ShowAtlasItemPopup (int atlasIndex) {
 
 		AtlasMenuTargetIndex = atlasIndex;
-		GenericPopupUI.BeginPopup(ATLAS_POPUP_ID);
+		GenericPopupUI.BeginPopup();
 
 		// Delete
-		if (atlasIndex >= 0) {
-			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: Sheet.Atlas.Count > 1);
+		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: Sheet.Atlas.Count > 1);
+
+		GenericPopupUI.AddSeparator();
+
+		// To Top
+		GenericPopupUI.AddItem(ATLAS_POPUP_TOP, MoveTop, enabled: atlasIndex > 0);
+
+		// Move Up
+		GenericPopupUI.AddItem(ATLAS_POPUP_UP, MoveUp, enabled: atlasIndex > 0);
+
+		// Move Down
+		GenericPopupUI.AddItem(ATLAS_POPUP_DOWN, MoveDown, enabled: atlasIndex < Sheet.Atlas.Count - 1);
+
+		// To Bottom
+		GenericPopupUI.AddItem(ATLAS_POPUP_BOTTOM, MoveBottom, enabled: atlasIndex < Sheet.Atlas.Count - 1);
+
+		// Func
+		static void DeleteAtlasConfirm () {
+			var atlasList = Instance.Sheet.Atlas;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (atlasList.Count <= 1) return;
+			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+			GenericDialogUI.SpawnDialog_Button(
+				string.Format(PIX_DELETE_ATLAS_MSG, atlasList[targetIndex].Name),
+				BuiltInText.UI_DELETE, DeleteAtlas,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+			GenericDialogUI.SetItemTint(Color32.RED_BETTER);
 		}
-
-		// Add
-		GenericPopupUI.AddItem(BuiltInText.UI_ADD, CreateAtlas);
-
-	}
-
-
-	private static void CreateAtlas () {
-		Instance.Sheet.Atlas.Add(new Atlas() {
-			AtlasZ = 0,
-			Name = "New Atlas",
-			Type = AtlasType.General,
-		});
-		Instance.SetDirty();
-		Instance.AtlasPanelScrollY = int.MaxValue;
-		Instance.SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
-		Instance.CreateSpriteForPalette(useDefaultPos: true);
-	}
-
-
-	private static void DeleteAtlasConfirm () {
-		var atlasList = Instance.Sheet.Atlas;
-		int targetIndex = Instance.AtlasMenuTargetIndex;
-		if (atlasList.Count <= 1) return;
-		if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
-		GenericDialogUI.SpawnDialog_Button(
-			string.Format(PIX_DELETE_ATLAS_MSG, atlasList[targetIndex].Name),
-			BuiltInText.UI_DELETE, DeleteAtlas,
-			BuiltInText.UI_CANCEL, Const.EmptyMethod
-		);
-		GenericDialogUI.SetItemTint(Color32.RED_BETTER);
-	}
-
-
-	private static void DeleteAtlas () {
-		var atlasList = Instance.Sheet.Atlas;
-		if (atlasList.Count <= 1) return;
-		int targetIndex = Instance.AtlasMenuTargetIndex;
-		if (targetIndex < 0 && targetIndex >= atlasList.Count) return;
-		int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
-		Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
-		Instance.SetDirty();
-		Instance.CurrentAtlasIndex = -1;
-		Instance.SetCurrentAtlas(newSelectingAtlasIndex);
+		static void DeleteAtlas () {
+			var atlasList = Instance.Sheet.Atlas;
+			if (atlasList.Count <= 1) return;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+			int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
+			Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
+			Instance.SetDirty();
+			Instance.CurrentAtlasIndex = -1;
+			Instance.SetCurrentAtlas(newSelectingAtlasIndex, true);
+		}
+		static void MoveTop () {
+			var atlasList = Instance.Sheet.Atlas;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+			Instance.Sheet.MoveAtlas(targetIndex, 0);
+			Instance.SetDirty();
+			Instance.SetCurrentAtlas(0, true);
+		}
+		static void MoveUp () {
+			var atlasList = Instance.Sheet.Atlas;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (targetIndex < 1 || targetIndex >= atlasList.Count) return;
+			Instance.Sheet.MoveAtlas(targetIndex, targetIndex - 1);
+			Instance.SetDirty();
+			Instance.SetCurrentAtlas(targetIndex - 1, true);
+		}
+		static void MoveDown () {
+			var atlasList = Instance.Sheet.Atlas;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (targetIndex < 0 || targetIndex >= atlasList.Count - 1) return;
+			Instance.Sheet.MoveAtlas(targetIndex, targetIndex + 1);
+			Instance.SetDirty();
+			Instance.SetCurrentAtlas(targetIndex + 1, true);
+		}
+		static void MoveBottom () {
+			var atlasList = Instance.Sheet.Atlas;
+			int targetIndex = Instance.AtlasMenuTargetIndex;
+			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+			Instance.Sheet.MoveAtlas(targetIndex, atlasList.Count - 1);
+			Instance.SetDirty();
+			Instance.SetCurrentAtlas(atlasList.Count - 1, true);
+		}
 	}
 
 
@@ -302,37 +321,49 @@ public partial class PixelEditor {
 		} else {
 			FileBrowserUI.OpenFile(TITLE_IMPORT_PNG, "png", ImportAtlas);
 		}
+		// Func
+		static void ImportAtlas (string path) {
+			if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
+			string ext = Util.GetExtension(path);
+			var sheet = Instance.Sheet;
+			if (ext == ".png") {
+				// PNG
+				var texture = Game.PngBytesToTexture(Util.FileToByte(path));
+				var size = Game.GetTextureSize(texture);
+				var sprite = sheet.CreateSprite(
+					sheet.GetAvailableSpriteName("New Sprite"),
+					new IRect(4, 4, size.x, size.y),
+					Instance.CurrentAtlasIndex
+				);
+				sprite.Pixels = Game.GetPixelsFromTexture(texture);
+				sheet.AddSprite(sprite);
+				Instance.StagedSprites.Add(new SpriteData() {
+					Sprite = sprite,
+					PixelDirty = true,
+					Selecting = true,
+				});
+			} else if (ext == ".ase") {
+				// ASE
+				var aseSheet = SheetUtil.CreateNewSheet(
+					AsepriteUtil.CreateSpritesFromAsepriteFiles(new string[1] { path }, "#ignore").ToArray()
+				);
+				sheet.CombineSheet(aseSheet);
+				Instance.SetCurrentAtlas(sheet.Atlas.Count - 1);
+			}
+		}
 	}
 
 
-	private static void ImportAtlas (string path) {
-		if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
-		string ext = Util.GetExtension(path);
-		var sheet = Instance.Sheet;
-		if (ext == ".png") {
-			// PNG
-			var texture = Game.PngBytesToTexture(Util.FileToByte(path));
-			var size = Game.GetTextureSize(texture);
-			var sprite = sheet.CreateSprite(
-				sheet.GetAvailableSpriteName("New Sprite"),
-				new IRect(4, 4, size.x, size.y),
-				Instance.CurrentAtlasIndex
-			);
-			sprite.Pixels = Game.GetPixelsFromTexture(texture);
-			sheet.AddSprite(sprite);
-			Instance.StagedSprites.Add(new SpriteData() {
-				Sprite = sprite,
-				PixelDirty = true,
-				Selecting = true,
-			});
-		} else if (ext == ".ase") {
-			// ASE
-			var aseSheet = SheetUtil.CreateNewSheet(
-				AsepriteUtil.CreateSpritesFromAsepriteFiles(new string[1] { path }, "#ignore").ToArray()
-			);
-			sheet.CombineSheet(aseSheet);
-			Instance.SetCurrentAtlas(sheet.Atlas.Count - 1);
-		}
+	private void CreateAtlas () {
+		Sheet.Atlas.Add(new Atlas() {
+			AtlasZ = 0,
+			Name = "New Atlas",
+			Type = AtlasType.General,
+		});
+		SetDirty();
+		AtlasPanelScrollY = int.MaxValue;
+		SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
+		CreateSpriteForPalette(useDefaultPos: true);
 	}
 
 

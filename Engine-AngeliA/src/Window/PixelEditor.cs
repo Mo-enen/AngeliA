@@ -14,17 +14,23 @@ public partial class PixelEditor : WindowUI {
 	#region --- SUB ---
 
 
-	private struct ViewUndoItem : IUndoItem {
+	private struct PaintUndoItem : IUndoItem {
 		public int Step { get; set; }
-
+		public IRect Rect;
+		public int SpriteID;
+		public int BufferIndex;
+		public PaintUndoItem (int spriteID, IRect rect, int bufferIndex) {
+			Rect = rect;
+			SpriteID = spriteID;
+			BufferIndex = bufferIndex;
+		}
 	}
-	private struct PixelUndoItem : IUndoItem {
-		public int Step { get; set; }
 
-	}
-	private struct SliceUndoItem : IUndoItem {
-		public int Step { get; set; }
 
+	private struct PixelUndoBuffer {
+		public Color32 From;
+		public Color32 To;
+		public int Step;
 	}
 
 

@@ -161,12 +161,14 @@ public class UndoRedo {
 	}
 
 
+	// Api
+	public int CurrentStep { get; private set; } = int.MinValue;
+
 	// Data
 	private readonly LinkedList<IUndoItem> UndoList = null;
 	private readonly LinkedList<IUndoItem> RedoList = null;
 	private readonly System.Action<IUndoItem> OnUndoPerformed = null;
 	private readonly System.Action<IUndoItem> OnRedoPerformed = null;
-	private int CurrentStep = int.MinValue;
 
 
 	// API

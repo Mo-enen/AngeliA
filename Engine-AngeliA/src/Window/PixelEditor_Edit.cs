@@ -16,7 +16,8 @@ public partial class PixelEditor {
 	private const int MAX_SELECTION_SIZE = 128;
 
 	// Data
-	private readonly UndoRedo Undo = new(16 * 16 * 128, OnUndoPerformed, OnRedoPerformed);
+	private readonly UndoRedo Undo = new(4096, OnUndoPerformed, OnRedoPerformed);
+	private readonly PixelUndoBuffer[] UndoPixelBuffer = new PixelUndoBuffer[1024 * 1024].FillWithValue(new PixelUndoBuffer() { Step = int.MaxValue });
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
 	private readonly Color32[] PixelBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
@@ -37,6 +38,7 @@ public partial class PixelEditor {
 	private int HoveringSpriteStageIndex;
 	private int HoveringResizeStageIndex = -1;
 	private int ResizingStageIndex = 0;
+	private int CurrentUndoPixelBufferIndex = 0;
 	private bool DragChanged = false;
 	private bool ResizeForBorder = false;
 	private bool HoveringResizeForBorder = false;
@@ -302,12 +304,12 @@ public partial class PixelEditor {
 
 			case DragStateLeft.ResizeSlice:
 				// Resize Slice
-				SetDirty();
 				var resizingSpData = StagedSprites[ResizingStageIndex];
 				var resizingSp = resizingSpData.Sprite;
 				var resizingPixRect = resizingSp.PixelRect;
 				if (ResizeForBorder) {
 					// Resize Border
+					var oldBorder = resizingSp.GlobalBorder;
 					var resizeBorderPixPos = GetResizingBorderPixPos();
 					if (resizeBorderPixPos.HasValue) {
 						switch (ResizingDirection) {
@@ -325,11 +327,16 @@ public partial class PixelEditor {
 								break;
 						}
 					}
+					if (resizingSp.GlobalBorder != oldBorder) {
+						SetDirty();
+					}
 				} else {
 					// Resize Size
 					var _resizingPxRect = GetResizeDraggingPixRect();
 					if (_resizingPxRect.HasValue) {
 						var resizingPxRect = _resizingPxRect.Value;
+						var oldSize = resizingPxRect.size;
+						var oldBorder = resizingSp.GlobalBorder;
 						resizingPxRect.width = resizingPxRect.width.Clamp(1, STAGE_SIZE);
 						resizingPxRect.height = resizingPxRect.height.Clamp(1, STAGE_SIZE);
 						resizingSpData.PixelDirty = true;
@@ -355,6 +362,12 @@ public partial class PixelEditor {
 							resizingSp.GlobalBorder.down = resizingSp.GlobalBorder.down.Clamp(0, resizingSp.GlobalHeight);
 							resizingSp.GlobalBorder.up = resizingSp.GlobalBorder.up.Clamp(0, resizingSp.GlobalHeight);
 						}
+						if (resizingPxRect.size != oldSize) {
+							SetDirty();
+						}
+						if (oldBorder != resizingSp.GlobalBorder) {
+							SetDirty();
+						}
 					}
 				}
 				RefreshSliceInputContent();
@@ -369,7 +382,6 @@ public partial class PixelEditor {
 
 				// Create Slice
 				if (!hasSelectionBefore && SelectingSpriteCount == 0 && DraggingPixelRectLeft.width > 0 && DraggingPixelRectLeft.height > 0) {
-					SetDirty();
 					// Create Sprite
 					var pixelRect = DraggingPixelRectLeft;
 					if (pixelRect.width > 0 && pixelRect.height > 0 && (pixelRect.width > 1 || pixelRect.height > 1)) {
@@ -382,12 +394,12 @@ public partial class PixelEditor {
 							Selecting = false,
 							DraggingStartRect = default,
 						});
+						SetDirty();
 					}
 				}
 				break;
 
 			case DragStateLeft.MoveSlice:
-				SetDirty();
 				DrawMovingSprites();
 				var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 				var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
@@ -400,6 +412,7 @@ public partial class PixelEditor {
 					var sprite = spData.Sprite;
 					sprite.PixelRect.x = spData.DraggingStartRect.x + pixDelta.x;
 					sprite.PixelRect.y = spData.DraggingStartRect.y + pixDelta.y;
+					SetDirty();
 				}
 				StagedSprites.Sort(SpriteDataComparer.Instance);
 				break;
@@ -548,9 +561,6 @@ public partial class PixelEditor {
 		if (!ignoreStep && LastGrowUndoFrame != Game.PauselessFrame) {
 			LastGrowUndoFrame = Game.PauselessFrame;
 			Undo.GrowStep();
-			Undo.Register(new ViewUndoItem() {
-
-			});
 		}
 		Undo.Register(item);
 	}
@@ -560,8 +570,65 @@ public partial class PixelEditor {
 	private static void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, true);
 	private static void OnUndoRedoPerformed (IUndoItem item, bool reverse) {
 
+		switch (item) {
+
+			case PaintUndoItem paint:
+				// Get Sprite
+				if (!Instance.Sheet.SpritePool.TryGetValue(
+					paint.SpriteID, out var sprite
+				)) break;
+				// Pixel Dirty
+				foreach (var spData in Instance.StagedSprites) {
+					if (spData.Sprite.ID == paint.SpriteID) {
+						spData.PixelDirty = true;
+						break;
+					}
+				}
+				// Buffer >> Sprite
+				var pixRect = sprite.PixelRect;
+				int len = paint.Rect.width * paint.Rect.height;
+				for (int i = 0; i < len; i++) {
+					if (!Instance.GetPixelUndoBuffer(paint.BufferIndex, i, paint.Step, out var buffer)) break;
+					int pixX = paint.Rect.x + i % paint.Rect.width;
+					int pixY = paint.Rect.y + i / paint.Rect.width;
+					int pixIndex = (pixY - pixRect.y) * pixRect.width + (pixX - pixRect.x);
+					sprite.Pixels[pixIndex] = reverse ? buffer.To : buffer.From;
+				}
+				break;
+
+		}
+		Instance.SetDirty();
+
+	}
 
 
+	private void SetPixelUndoBuffer (Color32 from, Color32 to, int step) {
+		ref var buffer = ref UndoPixelBuffer[CurrentUndoPixelBufferIndex];
+		// Clean Used Buffer
+		int targetStep = buffer.Step;
+		if (targetStep != int.MaxValue) {
+			int len = UndoPixelBuffer.Length;
+			for (int i = 0; i < len; i++) {
+				ref var cleaningBuffer = ref UndoPixelBuffer[(CurrentUndoPixelBufferIndex + i) % len];
+				if (cleaningBuffer.Step == targetStep) {
+					cleaningBuffer.Step = int.MaxValue;
+				} else break;
+			}
+		}
+		// Set Value
+		buffer.From = from;
+		buffer.To = to;
+		buffer.Step = step;
+		CurrentUndoPixelBufferIndex = (CurrentUndoPixelBufferIndex + 1) % UndoPixelBuffer.Length;
+	}
+
+
+	private bool GetPixelUndoBuffer (int start, int offset, int step, out PixelUndoBuffer result) {
+		result = default;
+		var buffer = UndoPixelBuffer[(start + offset) % UndoPixelBuffer.Length];
+		if (buffer.Step != step) return false;
+		result = buffer;
+		return true;
 	}
 
 
@@ -650,7 +717,7 @@ public partial class PixelEditor {
 		foreach (var spData in StagedSprites) {
 			if (!spData.Selecting) continue;
 			if (spData.Sprite.GlobalBorder.IsZero != enableBorder) continue;
-			changed = true;
+			var oldBorder = spData.Sprite.GlobalBorder;
 			if (enableBorder) {
 				if (spData.Sprite.GlobalBorder.IsZero) {
 					spData.Sprite.GlobalBorder = Int4.Direction(
@@ -663,9 +730,13 @@ public partial class PixelEditor {
 			} else {
 				spData.Sprite.GlobalBorder = Int4.zero;
 			}
+			if (oldBorder != spData.Sprite.GlobalBorder) {
+				changed = true;
+				SetDirty();
+
+			}
 		}
 		if (changed) {
-			SetDirty();
 			RefreshSliceInputContent();
 		}
 	}
@@ -679,9 +750,10 @@ public partial class PixelEditor {
 			if (spData.Sprite.IsTrigger == enableTrigger) continue;
 			changed = true;
 			spData.Sprite.IsTrigger = enableTrigger;
+			SetDirty();
+
 		}
 		if (changed) {
-			SetDirty();
 			RefreshSliceInputContent();
 		}
 	}
@@ -713,8 +785,6 @@ public partial class PixelEditor {
 	private void PasteSpriteCopyBufferIntoStage () {
 
 		if (SpriteCopyBuffer.Count == 0) return;
-		ClearSpriteSelection();
-		SetDirty();
 
 		// Get Offset
 		int offsetX;
@@ -752,6 +822,9 @@ public partial class PixelEditor {
 			});
 		}
 
+		SetDirty();
+
+
 		// Select
 		SetSpriteSelection(oldCount, StagedSprites.Count - oldCount);
 
@@ -770,9 +843,8 @@ public partial class PixelEditor {
 		PixelBufferSize.x = PixelSelectionPixelRect.width.Clamp(0, MAX_SELECTION_SIZE);
 		PixelBufferSize.y = PixelSelectionPixelRect.height.Clamp(0, MAX_SELECTION_SIZE);
 		if (PixelSelectionPixelRect == default) return;
-		PixelToBuffer(StagedSprites, PixelBuffer, PixelBufferSize, PixelSelectionPixelRect, removePixels);
+		PixelToBuffer(PixelBuffer, PixelBufferSize, PixelSelectionPixelRect, removePixels);
 		PixelSelectionPixelRect = default;
-		SetDirty();
 		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
 	}
 
@@ -819,7 +891,7 @@ public partial class PixelEditor {
 		if (PixelBufferSize == Int2.zero) {
 			// From Sprite
 			PixelCopyBufferSize = PixelSelectionPixelRect.size;
-			PixelToBuffer(StagedSprites, PixelCopyBuffer, PixelCopyBufferSize, PixelSelectionPixelRect, false);
+			PixelToBuffer(PixelCopyBuffer, PixelCopyBufferSize, PixelSelectionPixelRect, false);
 		} else {
 			// From Buffer
 			PixelCopyBufferSize = PixelBufferSize;
@@ -881,31 +953,33 @@ public partial class PixelEditor {
 				}
 			}
 			spData.PixelDirty = true;
+			SetDirty();
 		}
-		SetDirty();
 	}
 
 
-	private void PaintPixel (IRect pixelRange, Color32 targetColor) {
+	private void PaintPixel (IRect _pixelRange, Color32 targetColor) {
 		for (int spriteIndex = 0; spriteIndex < StagedSprites.Count; spriteIndex++) {
 			var paintingSpData = StagedSprites[spriteIndex];
 			var paintingSprite = paintingSpData.Sprite;
 			var spritePixelRect = paintingSprite.PixelRect;
-			if (!pixelRange.Overlaps(spritePixelRect)) continue;
-			pixelRange = pixelRange.Clamp(spritePixelRect);
+			if (!_pixelRange.Overlaps(spritePixelRect)) continue;
+			var pixelRange = _pixelRange.Clamp(spritePixelRect);
 			int l = pixelRange.xMin - spritePixelRect.x;
 			int r = pixelRange.xMax - spritePixelRect.x;
 			int d = pixelRange.yMin - spritePixelRect.y;
 			int u = pixelRange.yMax - spritePixelRect.y;
 			int pixelWidth = spritePixelRect.width;
-			int pixelCount = paintingSprite.Pixels.Length;
+			RegisterUndo(new PaintUndoItem(paintingSprite.ID, pixelRange, CurrentUndoPixelBufferIndex));
 			if (targetColor.a != 0) {
 				// Paint
 				for (int j = d; j < u; j++) {
 					for (int i = l; i < r; i++) {
 						int pIndex = j * pixelWidth + i;
-						if (pIndex < 0 || pIndex >= pixelCount) continue;
-						paintingSprite.Pixels[pIndex].Merge(targetColor);
+						var oldPixel = paintingSprite.Pixels[pIndex];
+						var newPixel = Util.MergeColor(targetColor, oldPixel);
+						paintingSprite.Pixels[pIndex] = newPixel;
+						SetPixelUndoBuffer(oldPixel, newPixel, Undo.CurrentStep);
 					}
 				}
 			} else {
@@ -913,8 +987,9 @@ public partial class PixelEditor {
 				for (int j = d; j < u; j++) {
 					for (int i = l; i < r; i++) {
 						int pIndex = j * pixelWidth + i;
-						if (pIndex < 0 || pIndex >= pixelCount) continue;
+						var oldPixel = paintingSprite.Pixels[pIndex];
 						paintingSprite.Pixels[pIndex] = Color32.CLEAR;
+						SetPixelUndoBuffer(oldPixel, Color32.CLEAR, Undo.CurrentStep);
 					}
 				}
 			}
@@ -1069,7 +1144,7 @@ public partial class PixelEditor {
 	}
 
 
-	private static void PixelToBuffer (List<SpriteData> stagedSprites, Color32[] buffer, Int2 bufferSize, IRect pixelRange, bool removePixels) {
+	private void PixelToBuffer (Color32[] buffer, Int2 bufferSize, IRect pixelRange, bool removePixels) {
 
 		// Clear Buffer
 		for (int j = 0; j < bufferSize.y; j++) {
@@ -1079,8 +1154,8 @@ public partial class PixelEditor {
 		}
 
 		// Set Buffer
-		for (int i = 0; i < stagedSprites.Count; i++) {
-			var spData = stagedSprites[i];
+		for (int i = 0; i < StagedSprites.Count; i++) {
+			var spData = StagedSprites[i];
 			var sprite = spData.Sprite;
 			var pixelRect = sprite.PixelRect;
 			var inter = pixelRect.Intersection(pixelRange);
@@ -1096,7 +1171,11 @@ public partial class PixelEditor {
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					int bufferIndex = (y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL);
 					buffer[bufferIndex].Merge(sprite.Pixels[index]);
-					if (removePixels) sprite.Pixels[index] = Color32.CLEAR;
+					if (removePixels) {
+						sprite.Pixels[index] = Color32.CLEAR;
+						SetDirty();
+
+					}
 				}
 			}
 			spData.PixelDirty = true;

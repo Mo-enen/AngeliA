@@ -73,6 +73,7 @@ public static class SheetUtil {
 					Name = flex.AtlasName,
 					Type = flex.AtlasType,
 					AtlasZ = flex.AtlasZ,
+					ID = flex.AtlasName.AngeHash(),
 				});
 			}
 

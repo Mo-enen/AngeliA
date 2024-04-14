@@ -203,6 +203,23 @@ public class Sheet {
 		return true;
 	}
 
+	public void MoveAtlas (int from, int to) {
+		var atlas = Atlas[from];
+		Atlas.RemoveAt(from);
+		Atlas.Insert(to, atlas);
+		int min = Util.Min(from, to);
+		int max = Util.Max(from, to);
+		int delta = (from - to).Sign3();
+		foreach (var sp in Sprites) {
+			if (sp.AtlasIndex == from) {
+				sp.AtlasIndex = to;
+				continue;
+			}
+			if (sp.AtlasIndex < min || sp.AtlasIndex > max) continue;
+			sp.AtlasIndex += delta;
+		}
+	}
+
 	// Find
 	public int IndexOfSprite (int id) => Sprites.FindIndex(s => s.ID == id);
 
@@ -217,6 +234,7 @@ public class Sheet {
 		if (sprite.ID == 0 || SpritePool.ContainsKey(sprite.ID)) return false;
 		Sprites.Add(sprite);
 		SpritePool.Add(sprite.ID, sprite);
+		SyncSpritePixelsIntoTexturePool(sprite);
 		return true;
 	}
 
@@ -225,10 +243,12 @@ public class Sheet {
 		foreach (var altas in sheet.Atlas) {
 			Atlas.Add(altas);
 		}
-		foreach (var group in sheet.Groups) {
-			if (GroupPool.ContainsKey(group.ID)) continue;
-			Groups.Add(group);
-			GroupPool.Add(group.ID, group);
+		if (!IgnoreGroups) {
+			foreach (var group in sheet.Groups) {
+				if (GroupPool.ContainsKey(group.ID)) continue;
+				Groups.Add(group);
+				GroupPool.Add(group.ID, group);
+			}
 		}
 		foreach (var sprite in sheet.Sprites) {
 			if (SpritePool.ContainsKey(sprite.ID)) continue;
