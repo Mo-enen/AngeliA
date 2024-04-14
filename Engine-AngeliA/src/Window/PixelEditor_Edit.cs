@@ -76,7 +76,7 @@ public partial class PixelEditor {
 		var hoveringData = HoveringSpriteStageIndex >= 0 ? StagedSprites[HoveringSpriteStageIndex] : null;
 
 		// Holding Slice Option Key
-		if (HoldingSliceOptionKey) {
+		if (HoldingCtrl && !PixelSelectionPixelRect.Contains(MousePixelPos)) {
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
 				// Resize
 				DraggingStateLeft = DragStateLeft.ResizeSlice;
@@ -106,7 +106,7 @@ public partial class PixelEditor {
 		}
 
 		// Holding Paint Option Key
-		if (HoldingBucketOptionKey) {
+		if (HoldingAlt) {
 			if (HoveringSpriteStageIndex >= 0) {
 				// Bucket Paint
 				ClearSpriteSelection();
@@ -124,8 +124,11 @@ public partial class PixelEditor {
 				MovePixelPixOffset = MousePixelPos - PixelSelectionPixelRect.position;
 				ClearSpriteSelection();
 				var oldSelectionRect = PixelSelectionPixelRect;
+				if (PixelBufferSize != Int2.zero && HoldingCtrl) {
+					TryApplyPixelBuffer();
+				}
 				if (PixelBufferSize == Int2.zero) {
-					SetSelectingPixelAsBuffer();
+					SetSelectingPixelAsBuffer(removePixels: !HoldingCtrl);
 				}
 				PixelSelectionPixelRect = oldSelectionRect;
 			} else {
@@ -174,7 +177,7 @@ public partial class PixelEditor {
 				break;
 
 			case DragStateLeft.Paint:
-				if (HoldingLineOptionKey) {
+				if (HoldingShift) {
 					// Painting Line
 					var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 					var endPixPoint = MousePixelPos;
@@ -282,7 +285,7 @@ public partial class PixelEditor {
 		switch (DraggingStateLeft) {
 
 			case DragStateLeft.Paint:
-				if (HoldingLineOptionKey) {
+				if (HoldingShift) {
 					// Paint Line
 					var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 					var endPixPoint = MousePixelPos;
@@ -430,7 +433,7 @@ public partial class PixelEditor {
 	private void Update_RightDrag_Start () {
 		DragChanged = false;
 		DraggingStateRight =
-			HoldingBucketOptionKey || HoldingSliceOptionKey ? DragStateRight.Canceled :
+			HoldingAlt || HoldingCtrl ? DragStateRight.Canceled :
 			DragStateRight.SelectPixel;
 		ClearPixelSelectionRect();
 	}
@@ -763,11 +766,11 @@ public partial class PixelEditor {
 	}
 
 
-	private void SetSelectingPixelAsBuffer () {
+	private void SetSelectingPixelAsBuffer (bool removePixels) {
 		PixelBufferSize.x = PixelSelectionPixelRect.width.Clamp(0, MAX_SELECTION_SIZE);
 		PixelBufferSize.y = PixelSelectionPixelRect.height.Clamp(0, MAX_SELECTION_SIZE);
 		if (PixelSelectionPixelRect == default) return;
-		PixelToBuffer(StagedSprites, PixelBuffer, PixelBufferSize, PixelSelectionPixelRect, true);
+		PixelToBuffer(StagedSprites, PixelBuffer, PixelBufferSize, PixelSelectionPixelRect, removePixels);
 		PixelSelectionPixelRect = default;
 		SetDirty();
 		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
@@ -930,7 +933,7 @@ public partial class PixelEditor {
 		int localX = pixelX - pixelRect.xMin;
 		int localY = pixelY - pixelRect.yMin;
 		var targetColor = sprite.Pixels[localY * pixelRect.width + localX];
-		if (targetColor == PaintingColor) return;
+		if (targetColor == PaintingColor && targetColor.a == 255) return;
 		BucketCacheQueue.Clear();
 		BucketCacheHash.Clear();
 		BucketCacheQueue.Enqueue(new Int2(localX, localY));

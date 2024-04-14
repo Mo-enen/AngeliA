@@ -86,9 +86,9 @@ public partial class PixelEditor : WindowUI {
 	private event System.Action<IRect, string> RequireTooltip;
 	private string SheetPath = "";
 	private bool IsDirty = false;
-	private bool HoldingSliceOptionKey = false;
-	private bool HoldingBucketOptionKey = false;
-	private bool HoldingLineOptionKey = false;
+	private bool HoldingCtrl = false;
+	private bool HoldingAlt = false;
+	private bool HoldingShift = false;
 	private bool Interactable = true;
 	private bool MouseInStage = false;
 	private bool MouseLeftDownInStage = false;
@@ -188,9 +188,9 @@ public partial class PixelEditor : WindowUI {
 		MousePixelPosRound = Stage_to_Pixel(Input.MouseGlobalPosition, round: true);
 		StageRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT));
 		HoveringResizeStageIndex = -1;
-		HoldingSliceOptionKey = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
-		HoldingBucketOptionKey = Input.KeyboardHolding(KeyboardKey.LeftAlt);
-		HoldingLineOptionKey = Input.KeyboardHolding(KeyboardKey.LeftShift);
+		HoldingCtrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
+		HoldingAlt = Input.KeyboardHolding(KeyboardKey.LeftAlt);
+		HoldingShift = Input.KeyboardHolding(KeyboardKey.LeftShift);
 		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.Instance.Active;
 		HoveringResizeForBorder = false;
 		RuleEditorRect = OpeningTilingRuleEditor ? StageRect.CornerInside(Alignment.TopRight, Unify(200), Unify(250)) : default;
@@ -218,7 +218,7 @@ public partial class PixelEditor : WindowUI {
 
 			// Resize
 			if (
-				HoldingSliceOptionKey &&
+				HoldingCtrl &&
 				!HoveringResizeDirection.HasValue &&
 				!dragging &&
 				rect.MouseInside()
@@ -414,7 +414,7 @@ public partial class PixelEditor : WindowUI {
 		if (Sheet.Atlas.Count <= 0 || !Interactable || !MouseInStage || !StageRect.MouseInside()) return;
 
 		// Slice Option
-		if (HoldingSliceOptionKey) {
+		if (HoldingCtrl) {
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
 				// Resize
 				Cursor.SetCursor(Cursor.GetResizeCursorIndex(HoveringResizeDirection.Value));
@@ -429,7 +429,7 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Paint Option
-		if (HoldingBucketOptionKey && DraggingStateLeft == DragStateLeft.None) {
+		if (HoldingAlt && DraggingStateLeft == DragStateLeft.None) {
 			if (HoveringSpriteStageIndex >= 0) {
 				DrawInverseCursor(CURSOR_BUCKET, Alignment.BottomLeft);
 				DrawPaintingCursor(false, out _);
@@ -515,7 +515,7 @@ public partial class PixelEditor : WindowUI {
 				// Normal Frame
 				DrawRendererFrame(
 					rect.Expand(GizmosThickness),
-					HoldingSliceOptionKey ? Color32.BLACK : Color32.BLACK_128,
+					HoldingCtrl ? Color32.BLACK : Color32.BLACK_128,
 					GizmosThickness
 				);
 			}
@@ -559,7 +559,7 @@ public partial class PixelEditor : WindowUI {
 				int posUp = rect.yMax - rect.height * border.up / sprite.GlobalHeight;
 				bool highlight = allowHighlight && HoveringResizeForBorder && HoveringResizeDirection.HasValue && HoveringResizeStageIndex == i;
 				bool dragging = ResizeForBorder && ResizingStageIndex == i;
-				var normalTint = HoldingSliceOptionKey ? Color32.BLACK_128 : Color32.BLACK_32;
+				var normalTint = HoldingCtrl ? Color32.BLACK_128 : Color32.BLACK_32;
 
 				// Frame L
 				if (border.left > 0 && (!dragging || ResizingDirection != Direction8.Left)) {
