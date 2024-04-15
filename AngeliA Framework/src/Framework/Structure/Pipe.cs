@@ -14,6 +14,7 @@ public class Pipe<T> {
 	// Api
 	public int Capacity { get; init; } = 1024;
 	public int Length { get; private set; } = 0;
+	public T this[int index] => Data[(Start + index) % Capacity];
 
 	// Data
 	private T[] Data { get; init; }
@@ -33,7 +34,6 @@ public class Pipe<T> {
 		Data = new T[capacity];
 		Start = 0;
 		Length = 0;
-
 	}
 
 
@@ -83,6 +83,7 @@ public class Pipe<T> {
 		data = default;
 		if (Length <= 0) return false;
 		data = Data[Start];
+		Data[Start] = default;
 		Start = (Start + 1) % Capacity;
 		Length--;
 		return true;
@@ -92,7 +93,9 @@ public class Pipe<T> {
 	public bool TryPopTail (out T data) {
 		data = default;
 		if (Length <= 0) return false;
-		data = Data[(Start + Length - 1) % Capacity];
+		int i = (Start + Length - 1) % Capacity;
+		data = Data[i];
+		Data[i] = default;
 		Length--;
 		return true;
 	}
@@ -102,15 +105,6 @@ public class Pipe<T> {
 		Start = 0;
 		Length = 0;
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion
