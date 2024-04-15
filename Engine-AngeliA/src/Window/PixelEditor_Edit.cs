@@ -16,8 +16,7 @@ public partial class PixelEditor {
 	private const int MAX_SELECTION_SIZE = 128;
 
 	// Data
-	private readonly UndoRedo Undo = new(4096, OnUndoPerformed, OnRedoPerformed);
-	private readonly PixelUndoBuffer[] UndoPixelBuffer = new PixelUndoBuffer[1024 * 1024].FillWithValue(new PixelUndoBuffer() { Step = int.MaxValue });
+	private readonly UndoRedo Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
 	private readonly Color32[] PixelBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
@@ -38,10 +37,12 @@ public partial class PixelEditor {
 	private int HoveringSpriteStageIndex;
 	private int HoveringResizeStageIndex = -1;
 	private int ResizingStageIndex = 0;
-	private int CurrentUndoPixelBufferIndex = 0;
 	private bool DragChanged = false;
 	private bool ResizeForBorder = false;
 	private bool HoveringResizeForBorder = false;
+	private AngeSprite CurrentUndoSprite;
+	private int CurrentUndoPixelIndex;
+	private IRect CurrentUndoPixelRect;
 
 
 	#endregion
@@ -572,7 +573,7 @@ public partial class PixelEditor {
 
 		switch (item) {
 
-			case PaintUndoItem paint:
+			case PaintUndoItem paint: {
 				// Get Sprite
 				if (!Instance.Sheet.SpritePool.TryGetValue(
 					paint.SpriteID, out var sprite
@@ -584,51 +585,30 @@ public partial class PixelEditor {
 						break;
 					}
 				}
-				// Buffer >> Sprite
-				var pixRect = sprite.PixelRect;
-				int len = paint.Rect.width * paint.Rect.height;
-				for (int i = 0; i < len; i++) {
-					if (!Instance.GetPixelUndoBuffer(paint.BufferIndex, i, paint.Step, out var buffer)) break;
-					int pixX = paint.Rect.x + i % paint.Rect.width;
-					int pixY = paint.Rect.y + i / paint.Rect.width;
-					int pixIndex = (pixY - pixRect.y) * pixRect.width + (pixX - pixRect.x);
-					sprite.Pixels[pixIndex] = reverse ? buffer.To : buffer.From;
-				}
+				// Cache
+				Instance.CurrentUndoSprite = sprite;
+				Instance.CurrentUndoPixelIndex = reverse ? 0 : paint.Rect.width * paint.Rect.height - 1;
+				Instance.CurrentUndoPixelRect = paint.Rect;
+			}
+			break;
+
+			case PixelUndoItem pixel: {
+				var sprite = Instance.CurrentUndoSprite;
+				if (sprite == null) break;
+				int i = Instance.CurrentUndoPixelIndex;
+				var pixRect = Instance.CurrentUndoSprite.PixelRect;
+				var paintRect = Instance.CurrentUndoPixelRect;
+				int pixX = paintRect.x + i % paintRect.width;
+				int pixY = paintRect.y + i / paintRect.width;
+				int pixIndex = (pixY - pixRect.y) * pixRect.width + (pixX - pixRect.x);
+				sprite.Pixels[pixIndex] = reverse ? pixel.To : pixel.From;
+				Instance.CurrentUndoPixelIndex += reverse ? 1 : -1;
 				break;
+			}
 
 		}
 		Instance.SetDirty();
 
-	}
-
-
-	private void SetPixelUndoBuffer (Color32 from, Color32 to, int step) {
-		ref var buffer = ref UndoPixelBuffer[CurrentUndoPixelBufferIndex];
-		// Clean Used Buffer
-		int targetStep = buffer.Step;
-		if (targetStep != int.MaxValue) {
-			int len = UndoPixelBuffer.Length;
-			for (int i = 0; i < len; i++) {
-				ref var cleaningBuffer = ref UndoPixelBuffer[(CurrentUndoPixelBufferIndex + i) % len];
-				if (cleaningBuffer.Step == targetStep) {
-					cleaningBuffer.Step = int.MaxValue;
-				} else break;
-			}
-		}
-		// Set Value
-		buffer.From = from;
-		buffer.To = to;
-		buffer.Step = step;
-		CurrentUndoPixelBufferIndex = (CurrentUndoPixelBufferIndex + 1) % UndoPixelBuffer.Length;
-	}
-
-
-	private bool GetPixelUndoBuffer (int start, int offset, int step, out PixelUndoBuffer result) {
-		result = default;
-		var buffer = UndoPixelBuffer[(start + offset) % UndoPixelBuffer.Length];
-		if (buffer.Step != step) return false;
-		result = buffer;
-		return true;
 	}
 
 
@@ -970,7 +950,7 @@ public partial class PixelEditor {
 			int d = pixelRange.yMin - spritePixelRect.y;
 			int u = pixelRange.yMax - spritePixelRect.y;
 			int pixelWidth = spritePixelRect.width;
-			RegisterUndo(new PaintUndoItem(paintingSprite.ID, pixelRange, CurrentUndoPixelBufferIndex));
+			RegisterUndo(new PaintUndoItem(paintingSprite.ID, pixelRange));
 			if (targetColor.a != 0) {
 				// Paint
 				for (int j = d; j < u; j++) {
@@ -979,7 +959,7 @@ public partial class PixelEditor {
 						var oldPixel = paintingSprite.Pixels[pIndex];
 						var newPixel = Util.MergeColor(targetColor, oldPixel);
 						paintingSprite.Pixels[pIndex] = newPixel;
-						SetPixelUndoBuffer(oldPixel, newPixel, Undo.CurrentStep);
+						RegisterUndo(new PixelUndoItem(oldPixel, newPixel));
 					}
 				}
 			} else {
@@ -989,10 +969,11 @@ public partial class PixelEditor {
 						int pIndex = j * pixelWidth + i;
 						var oldPixel = paintingSprite.Pixels[pIndex];
 						paintingSprite.Pixels[pIndex] = Color32.CLEAR;
-						SetPixelUndoBuffer(oldPixel, Color32.CLEAR, Undo.CurrentStep);
+						RegisterUndo(new PixelUndoItem(oldPixel, Color32.CLEAR));
 					}
 				}
 			}
+			RegisterUndo(new PaintUndoItem(paintingSprite.ID, pixelRange));
 			paintingSpData.PixelDirty = true;
 			SetDirty();
 		}

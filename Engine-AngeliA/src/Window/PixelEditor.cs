@@ -18,19 +18,21 @@ public partial class PixelEditor : WindowUI {
 		public int Step { get; set; }
 		public IRect Rect;
 		public int SpriteID;
-		public int BufferIndex;
-		public PaintUndoItem (int spriteID, IRect rect, int bufferIndex) {
+		public PaintUndoItem (int spriteID, IRect rect) {
 			Rect = rect;
 			SpriteID = spriteID;
-			BufferIndex = bufferIndex;
 		}
 	}
 
 
-	private struct PixelUndoBuffer {
+	private struct PixelUndoItem : IUndoItem {
+		public int Step { get; set; }
 		public Color32 From;
 		public Color32 To;
-		public int Step;
+		public PixelUndoItem (Color32 from, Color32 to) {
+			From = from;
+			To = to;
+		}
 	}
 
 
@@ -201,6 +203,7 @@ public partial class PixelEditor : WindowUI {
 		HoveringResizeForBorder = false;
 		RuleEditorRect = OpeningTilingRuleEditor ? StageRect.CornerInside(Alignment.TopRight, Unify(200), Unify(250)) : default;
 		LastPixelSelectionPixelRect = PixelSelectionPixelRect != default ? PixelSelectionPixelRect : LastPixelSelectionPixelRect;
+		CurrentUndoSprite = null;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
