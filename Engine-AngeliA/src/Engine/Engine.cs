@@ -510,7 +510,7 @@ internal class Engine {
 				downSide ? GUI.Unify(10) : GUI.Unify(-10)
 			),
 			ToolLabel, Color32.BLACK,
-			out var bounds, GUI.Unify(6), TooltipStyle
+			out var bounds, GUI.Unify(6), false, TooltipStyle
 		);
 		Renderer.ExcludeTextCells(bounds, 0, endIndex);
 		ToolLabel = null;

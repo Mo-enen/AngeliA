@@ -14,12 +14,13 @@ public partial class PixelEditor : WindowUI {
 	#region --- SUB ---
 
 
+	// Undo
 	private struct PaintUndoItem : IUndoItem {
 		public int Step { get; set; }
-		public IRect Rect;
+		public IRect LocalPixelRect;
 		public int SpriteID;
 		public PaintUndoItem (int spriteID, IRect rect) {
-			Rect = rect;
+			LocalPixelRect = rect;
 			SpriteID = spriteID;
 		}
 	}
@@ -36,6 +37,69 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	private struct IndexedPixelUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public Color32 From;
+		public Color32 To;
+		public int LocalPixelIndex;
+		public IndexedPixelUndoItem (Color32 from, Color32 to, int localPixelIndex) {
+			From = from;
+			To = to;
+			LocalPixelIndex = localPixelIndex;
+		}
+	}
+
+
+	private struct MoveSliceUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public int SpriteID;
+		public Int2 From;
+		public Int2 To;
+		public MoveSliceUndoItem (int spriteID, Int2 from, Int2 to) {
+			SpriteID = spriteID;
+			From = from;
+			To = to;
+		}
+	}
+
+
+	private struct SpriteObjectUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public AngeSprite Sprite;
+		public bool Create;
+		public SpriteObjectUndoItem (AngeSprite sprite, bool create) {
+			Sprite = sprite;
+			Create = create;
+		}
+	}
+
+
+	private struct SpriteTriggerUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public int SpriteID;
+		public bool To;
+		public SpriteTriggerUndoItem (int spriteId, bool to) {
+			SpriteID = spriteId;
+			To = to;
+		}
+	}
+
+
+	private struct SpriteBorderUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public int SpriteID;
+		public Int4 From;
+		public Int4 To;
+		public SpriteBorderUndoItem (int spriteID, Int4 from, Int4 to) {
+			SpriteID = spriteID;
+			From = from;
+			To = to;
+		}
+	}
+
+
+
+	// Sprite
 	private class SpriteDataComparer : IComparer<SpriteData> {
 		public static readonly SpriteDataComparer Instance = new();
 		public int Compare (SpriteData a, SpriteData b) {
@@ -56,6 +120,7 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	// Drag
 	private enum DragStateLeft { None, MoveSlice, SelectOrCreateSlice, ResizeSlice, Paint, MovePixel, Canceled, }
 	private enum DragStateRight { None, SelectPixel, Canceled, }
 
@@ -602,9 +667,7 @@ public partial class PixelEditor : WindowUI {
 					);
 				}
 			}
-
 		}
-
 
 	}
 
@@ -618,10 +681,16 @@ public partial class PixelEditor : WindowUI {
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
 			// Ctrl + Z
 			if (Input.KeyboardDown(KeyboardKey.Z)) {
+				TryApplyPixelBuffer(ignoreUndoStep: true);
+				PixelBufferSize = Int2.zero;
+				PixelSelectionPixelRect = default;
 				Undo.Undo();
 			}
 			// Ctrl + Y
 			if (Input.KeyboardDown(KeyboardKey.Y)) {
+				TryApplyPixelBuffer(ignoreUndoStep: true);
+				PixelBufferSize = Int2.zero;
+				PixelSelectionPixelRect = default;
 				Undo.Redo();
 			}
 			// Ctrl + S

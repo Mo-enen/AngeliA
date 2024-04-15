@@ -318,9 +318,14 @@ public static class GUI {
 		return scrollPosition;
 	}
 
-	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, text, backgroundColor, out _, backgroundPadding, style);
-	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null) {
+	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null) => BackgroundLabel(rect, text, backgroundColor, out _, backgroundPadding, forceInside, style);
+	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null) {
+		int startIndex = Renderer.GetTextUsedCellCount();
 		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
+		if (forceInside) {
+			bounds = rect;
+			Renderer.ClampTextCells(bounds, startIndex);
+		}
 		bounds = bounds.Expand(backgroundPadding);
 		Renderer.DrawPixel(bounds, Color * BodyColor * backgroundColor, z: 0);
 	}

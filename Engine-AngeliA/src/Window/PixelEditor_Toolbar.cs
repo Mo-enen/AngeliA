@@ -575,7 +575,7 @@ public partial class PixelEditor {
 						_ => 0,
 					});
 					spData.Sprite.Rule = Util.RuleByteToDigit(RuleCache);
-					SetDirty();
+					SetDirty();// undo
 				}
 				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
 				RequireTooltip?.Invoke(buttonRect, RuleNumberToTip(ruleIndex));
@@ -668,7 +668,7 @@ public partial class PixelEditor {
 				checkedCount++;
 				spData.Sprite.Tag = targetValue;
 			}
-			Instance.SetDirty();
+			Instance.SetDirty();// undo
 		}
 	}
 
@@ -688,7 +688,7 @@ public partial class PixelEditor {
 			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
 			var atlas = atlasList[currentAtlasIndex];
 			atlas.Type = (AtlasType)index;
-			Instance.SetDirty();
+			Instance.SetDirty();// undo
 		}
 	}
 
@@ -720,7 +720,7 @@ public partial class PixelEditor {
 			Selecting = false,
 			Sprite = sprite,
 		});
-		SetDirty();
+		SetDirty();// undo
 		// Select
 		SetSpriteSelection(StagedSprites.Count - 1);
 	}
@@ -874,7 +874,7 @@ public partial class PixelEditor {
 			}
 
 			// Final
-			SetDirty();
+			SetDirty();// undo
 		}
 
 		GUI.CancelTyping();
