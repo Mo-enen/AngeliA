@@ -16,7 +16,6 @@ public partial class PixelEditor {
 	private const int MAX_SELECTION_SIZE = 128;
 
 	// Data
-	private readonly UndoRedo Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
 	private readonly Color32[] PixelBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
@@ -40,9 +39,6 @@ public partial class PixelEditor {
 	private bool DragChanged = false;
 	private bool ResizeForBorder = false;
 	private bool HoveringResizeForBorder = false;
-	private AngeSprite CurrentUndoSprite;
-	private int CurrentUndoPixelIndex;
-	private IRect CurrentUndoPixelLocalRect;
 
 
 	#endregion
@@ -368,7 +364,8 @@ public partial class PixelEditor {
 							SetDirty();// undo
 						}
 						if (oldBorder != resizingSp.GlobalBorder) {
-							SetDirty();// undo
+							RegisterUndo(new SpriteBorderUndoItem(resizingSp.ID, oldBorder, resizingSp.GlobalBorder));
+							SetDirty();// done
 						}
 					}
 				}
@@ -558,121 +555,6 @@ public partial class PixelEditor {
 				GizmosThickness * 2
 			);
 		}
-	}
-
-
-	// Undo
-	private void RegisterUndo (IUndoItem item, bool ignoreStep = false) {
-		if (!ignoreStep && LastGrowUndoFrame != Game.PauselessFrame) {
-			LastGrowUndoFrame = Game.PauselessFrame;
-			Undo.GrowStep();
-		}
-		Undo.Register(item);
-	}
-
-
-	private static void OnUndoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, false);
-	private static void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, true);
-	private static void OnUndoRedoPerformed (IUndoItem item, bool reverse) {
-
-		switch (item) {
-
-			case PaintUndoItem paint: {
-				// Get Sprite
-				if (!Instance.Sheet.SpritePool.TryGetValue(
-					paint.SpriteID, out var sprite
-				)) break;
-				// Pixel Dirty
-				foreach (var spData in Instance.StagedSprites) {
-					if (spData.Sprite.ID == paint.SpriteID) {
-						spData.PixelDirty = true;
-						break;
-					}
-				}
-				// Cache
-				Instance.CurrentUndoSprite = sprite;
-				Instance.CurrentUndoPixelIndex = reverse ? 0 : paint.LocalPixelRect.width * paint.LocalPixelRect.height - 1;
-				Instance.CurrentUndoPixelLocalRect = paint.LocalPixelRect;
-			}
-			break;
-
-			case PixelUndoItem pixel: {
-				var sprite = Instance.CurrentUndoSprite;
-				if (sprite == null) break;
-				int i = Instance.CurrentUndoPixelIndex;
-				var pixRect = Instance.CurrentUndoSprite.PixelRect;
-				var paintRect = Instance.CurrentUndoPixelLocalRect;
-				int pixX = paintRect.x + i % paintRect.width;
-				int pixY = paintRect.y + i / paintRect.width;
-				int pixIndex = pixY * pixRect.width + pixX;
-				sprite.Pixels[pixIndex] = reverse ? pixel.To : pixel.From;
-				Instance.CurrentUndoPixelIndex += reverse ? 1 : -1;
-				break;
-			}
-
-			case IndexedPixelUndoItem iPixel: {
-				var sprite = Instance.CurrentUndoSprite;
-				if (sprite == null) break;
-				sprite.Pixels[iPixel.LocalPixelIndex] = reverse ? iPixel.To : iPixel.From;
-				break;
-			}
-
-			case MoveSliceUndoItem move: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
-					move.SpriteID, out var sprite
-				)) break;
-				sprite.PixelRect.x = reverse ? move.To.x : move.From.x;
-				sprite.PixelRect.y = reverse ? move.To.y : move.From.y;
-				break;
-			}
-
-			case SpriteObjectUndoItem spriteObj: {
-				bool create = spriteObj.Create == reverse;
-				if (create) {
-					var newSprite = spriteObj.Sprite.CreateCopy();
-					Instance.Sheet.AddSprite(newSprite);
-					Instance.StagedSprites.Add(new SpriteData() {
-						Sprite = newSprite,
-						PixelDirty = true,
-						Selecting = false,
-						DraggingStartRect = default,
-					});
-				} else {
-					int id = spriteObj.Sprite.ID;
-					int index = Instance.Sheet.IndexOfSprite(id);
-					if (index < 0) break;
-					Instance.Sheet.RemoveSprite(index);
-					var staged = Instance.StagedSprites;
-					for (int i = 0; i < staged.Count; i++) {
-						if (staged[i].Sprite.ID == id) {
-							staged.RemoveAt(i);
-							break;
-						}
-					}
-				}
-				break;
-			}
-
-			case SpriteTriggerUndoItem trigger: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
-					trigger.SpriteID, out var sprite
-				)) break;
-				sprite.IsTrigger = reverse ? trigger.To : !trigger.To;
-				break;
-			}
-
-
-			case SpriteBorderUndoItem border: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
-					border.SpriteID, out var sprite
-				)) break;
-				sprite.GlobalBorder = reverse ? border.To : border.From;
-				break;
-			}
-		}
-
-		Instance.SetDirty();// done
-
 	}
 
 

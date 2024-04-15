@@ -574,8 +574,13 @@ public partial class PixelEditor {
 						2 or 4 => 0,
 						_ => 0,
 					});
-					spData.Sprite.Rule = Util.RuleByteToDigit(RuleCache);
-					SetDirty();// undo
+					int oldRule = spData.Sprite.Rule;
+					int newRule = Util.RuleByteToDigit(RuleCache);
+					if (oldRule != newRule) {
+						spData.Sprite.Rule = newRule;
+						RegisterUndo(new SpriteRuleUndoItem(spData.Sprite.ID, oldRule, newRule));
+						SetDirty();// done
+					}
 				}
 				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
 				RequireTooltip?.Invoke(buttonRect, RuleNumberToTip(ruleIndex));
@@ -666,9 +671,13 @@ public partial class PixelEditor {
 				var spData = stagedSprites[i];
 				if (!spData.Selecting) continue;
 				checkedCount++;
-				spData.Sprite.Tag = targetValue;
+				int oldTag = spData.Sprite.Tag;
+				if (oldTag != targetValue) {
+					spData.Sprite.Tag = targetValue;
+					Instance.RegisterUndo(new SpriteTagUndoItem(spData.Sprite.ID, oldTag, targetValue));
+				}
 			}
-			Instance.SetDirty();// undo
+			Instance.SetDirty();// done
 		}
 	}
 
@@ -688,7 +697,7 @@ public partial class PixelEditor {
 			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
 			var atlas = atlasList[currentAtlasIndex];
 			atlas.Type = (AtlasType)index;
-			Instance.SetDirty();// undo
+			Instance.SetDirty();// no
 		}
 	}
 
@@ -720,7 +729,9 @@ public partial class PixelEditor {
 			Selecting = false,
 			Sprite = sprite,
 		});
-		SetDirty();// undo
+		RegisterUndo(new SpriteObjectUndoItem(sprite.CreateCopy(), true));
+		// done
+		SetDirty();
 		// Select
 		SetSpriteSelection(StagedSprites.Count - 1);
 	}
@@ -820,13 +831,17 @@ public partial class PixelEditor {
 			var pixRect = sprite.PixelRect;
 
 			// Border
-			var border = sprite.GlobalBorder;
-			sprite.GlobalBorder = Int4.Direction(
-				borderL >= 0 ? borderL.Clamp(0, sprite.GlobalWidth - border.right) : border.left,
-				borderR >= 0 ? borderR.Clamp(0, sprite.GlobalWidth - border.left) : border.right,
-				borderD >= 0 ? borderD.Clamp(0, sprite.GlobalHeight - border.up) : border.down,
-				borderU >= 0 ? borderU.Clamp(0, sprite.GlobalHeight - border.down) : border.up
+			var oldBorder = sprite.GlobalBorder;
+			var border = Int4.Direction(
+				borderL >= 0 ? borderL.Clamp(0, sprite.GlobalWidth - oldBorder.right) : oldBorder.left,
+				borderR >= 0 ? borderR.Clamp(0, sprite.GlobalWidth - oldBorder.left) : oldBorder.right,
+				borderD >= 0 ? borderD.Clamp(0, sprite.GlobalHeight - oldBorder.up) : oldBorder.down,
+				borderU >= 0 ? borderU.Clamp(0, sprite.GlobalHeight - oldBorder.down) : oldBorder.up
 			);
+			if (border != oldBorder) {
+				sprite.GlobalBorder = border;
+				RegisterUndo(new SpriteBorderUndoItem(sprite.ID, oldBorder, border));
+			}
 
 			// Size Changed
 			if (sizeX > 0 && sizeX != pixRect.width) {
@@ -835,6 +850,7 @@ public partial class PixelEditor {
 					resizeBorder: !border.IsZero
 				);
 				spData.PixelDirty = true;
+				//setdirty();// undo
 			}
 			if (sizeY > 0 && sizeY != pixRect.height) {
 				sprite.ResizePixelRect(
@@ -842,39 +858,49 @@ public partial class PixelEditor {
 					resizeBorder: !border.IsZero
 				);
 				spData.PixelDirty = true;
+				//setdirty();// undo
 			}
 
 			// Name
 			if (!string.IsNullOrEmpty(name)) {
+				bool renamed;
+				string oldName = sprite.RealName;
 				if (SelectingSpriteCount == 1) {
-					Sheet.RenameSprite(sprite, name);
+					renamed = Sheet.RenameSprite(sprite, name);
 				} else {
-					Sheet.RenameSprite(sprite, $"{name} {checkedCount - 1}");
+					renamed = Sheet.RenameSprite(sprite, $"{name} {checkedCount - 1}");
+				}
+				if (renamed) {
+					RegisterUndo(new SpriteNameUndoItem(sprite.ID, oldName, sprite.RealName));
 				}
 			}
 
 			// Pivot X
 			if (pivotX != int.MinValue && pivotX != sprite.PivotX) {
+				RegisterUndo(new SpritePivotUndoItem(sprite.ID, sprite.PivotX, pivotX, true));
 				sprite.PivotX = pivotX;
 			}
 
 			// Pivot Y
 			if (pivotY != int.MinValue && pivotY != sprite.PivotY) {
+				RegisterUndo(new SpritePivotUndoItem(sprite.ID, sprite.PivotY, pivotY, false));
 				sprite.PivotY = pivotY;
 			}
 
 			// Z
 			if (z != int.MinValue && z != sprite.LocalZ) {
+				RegisterUndo(new SpriteZUndoItem(sprite.ID, sprite.LocalZ, z));
 				sprite.LocalZ = z;
 			}
 
 			// Duration
 			if (duration > 0 && duration != sprite.Duration) {
+				RegisterUndo(new SpriteDurationUndoItem(sprite.ID, sprite.Duration, duration));
 				sprite.Duration = duration;
 			}
 
 			// Final
-			SetDirty();// undo
+			SetDirty();// done
 		}
 
 		GUI.CancelTyping();

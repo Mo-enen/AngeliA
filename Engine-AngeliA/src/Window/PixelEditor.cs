@@ -14,91 +14,6 @@ public partial class PixelEditor : WindowUI {
 	#region --- SUB ---
 
 
-	// Undo
-	private struct PaintUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public IRect LocalPixelRect;
-		public int SpriteID;
-		public PaintUndoItem (int spriteID, IRect rect) {
-			LocalPixelRect = rect;
-			SpriteID = spriteID;
-		}
-	}
-
-
-	private struct PixelUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public Color32 From;
-		public Color32 To;
-		public PixelUndoItem (Color32 from, Color32 to) {
-			From = from;
-			To = to;
-		}
-	}
-
-
-	private struct IndexedPixelUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public Color32 From;
-		public Color32 To;
-		public int LocalPixelIndex;
-		public IndexedPixelUndoItem (Color32 from, Color32 to, int localPixelIndex) {
-			From = from;
-			To = to;
-			LocalPixelIndex = localPixelIndex;
-		}
-	}
-
-
-	private struct MoveSliceUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public int SpriteID;
-		public Int2 From;
-		public Int2 To;
-		public MoveSliceUndoItem (int spriteID, Int2 from, Int2 to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
-	}
-
-
-	private struct SpriteObjectUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public AngeSprite Sprite;
-		public bool Create;
-		public SpriteObjectUndoItem (AngeSprite sprite, bool create) {
-			Sprite = sprite;
-			Create = create;
-		}
-	}
-
-
-	private struct SpriteTriggerUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public int SpriteID;
-		public bool To;
-		public SpriteTriggerUndoItem (int spriteId, bool to) {
-			SpriteID = spriteId;
-			To = to;
-		}
-	}
-
-
-	private struct SpriteBorderUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public int SpriteID;
-		public Int4 From;
-		public Int4 To;
-		public SpriteBorderUndoItem (int spriteID, Int4 from, Int4 to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
-	}
-
-
-
 	// Sprite
 	private class SpriteDataComparer : IComparer<SpriteData> {
 		public static readonly SpriteDataComparer Instance = new();
@@ -168,7 +83,6 @@ public partial class PixelEditor : WindowUI {
 	private bool MouseRightDownInStage = false;
 	private int SelectingSpriteCount = 0;
 	private int ZoomLevel = 1;
-	private int LastGrowUndoFrame = -1;
 	private int GizmosThickness = 1;
 	private object PixelBufferGizmosTexture;
 	private Int2 MousePixelPos;
@@ -685,6 +599,7 @@ public partial class PixelEditor : WindowUI {
 				PixelBufferSize = Int2.zero;
 				PixelSelectionPixelRect = default;
 				Undo.Undo();
+				RefreshSliceInputContent();
 			}
 			// Ctrl + Y
 			if (Input.KeyboardDown(KeyboardKey.Y)) {
@@ -692,6 +607,7 @@ public partial class PixelEditor : WindowUI {
 				PixelBufferSize = Int2.zero;
 				PixelSelectionPixelRect = default;
 				Undo.Redo();
+				RefreshSliceInputContent();
 			}
 			// Ctrl + S
 			if (Input.KeyboardDown(KeyboardKey.S)) {
