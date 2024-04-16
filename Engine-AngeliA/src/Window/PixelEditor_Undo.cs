@@ -16,10 +16,6 @@ public partial class PixelEditor {
 		public int Step { get; set; }
 		public IRect LocalPixelRect;
 		public int SpriteID;
-		public PaintUndoItem (int spriteID, IRect rect) {
-			LocalPixelRect = rect;
-			SpriteID = spriteID;
-		}
 	}
 
 
@@ -27,10 +23,6 @@ public partial class PixelEditor {
 		public int Step { get; set; }
 		public Color32 From;
 		public Color32 To;
-		public PixelUndoItem (Color32 from, Color32 to) {
-			From = from;
-			To = to;
-		}
 	}
 
 
@@ -39,11 +31,6 @@ public partial class PixelEditor {
 		public Color32 From;
 		public Color32 To;
 		public int LocalPixelIndex;
-		public IndexedPixelUndoItem (Color32 from, Color32 to, int localPixelIndex) {
-			From = from;
-			To = to;
-			LocalPixelIndex = localPixelIndex;
-		}
 	}
 
 
@@ -52,11 +39,6 @@ public partial class PixelEditor {
 		public int SpriteID;
 		public Int2 From;
 		public Int2 To;
-		public MoveSliceUndoItem (int spriteID, Int2 from, Int2 to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
 	}
 
 
@@ -64,10 +46,6 @@ public partial class PixelEditor {
 		public int Step { get; set; }
 		public AngeSprite Sprite;
 		public bool Create;
-		public SpriteObjectUndoItem (AngeSprite sprite, bool create) {
-			Sprite = sprite;
-			Create = create;
-		}
 	}
 
 
@@ -75,10 +53,6 @@ public partial class PixelEditor {
 		public int Step { get; set; }
 		public int SpriteID;
 		public bool To;
-		public SpriteTriggerUndoItem (int spriteId, bool to) {
-			SpriteID = spriteId;
-			To = to;
-		}
 	}
 
 
@@ -87,11 +61,6 @@ public partial class PixelEditor {
 		public int SpriteID;
 		public Int4 From;
 		public Int4 To;
-		public SpriteBorderUndoItem (int spriteID, Int4 from, Int4 to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
 	}
 
 
@@ -100,11 +69,6 @@ public partial class PixelEditor {
 		public int SpriteID;
 		public int From;
 		public int To;
-		public SpriteRuleUndoItem (int spriteID, int from, int to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
 	}
 
 
@@ -113,11 +77,6 @@ public partial class PixelEditor {
 		public int SpriteID;
 		public int From;
 		public int To;
-		public SpriteTagUndoItem (int spriteID, int from, int to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
 	}
 
 
@@ -126,11 +85,6 @@ public partial class PixelEditor {
 		public int SpriteID;
 		public string From;
 		public string To;
-		public SpriteNameUndoItem (int spriteID, string from, string to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
 	}
 
 
@@ -140,12 +94,6 @@ public partial class PixelEditor {
 		public int From;
 		public int To;
 		public bool X;
-		public SpritePivotUndoItem (int spriteID, int from, int to, bool x) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-			X = x;
-		}
 	}
 
 
@@ -154,11 +102,6 @@ public partial class PixelEditor {
 		public int SpriteID;
 		public int From;
 		public int To;
-		public SpriteZUndoItem (int spriteID, int from, int to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
 	}
 
 
@@ -167,11 +110,15 @@ public partial class PixelEditor {
 		public int SpriteID;
 		public int From;
 		public int To;
-		public SpriteDurationUndoItem (int spriteID, int from, int to) {
-			SpriteID = spriteID;
-			From = from;
-			To = to;
-		}
+	}
+
+
+	private struct SpriteRectUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public int SpriteID;
+		public IRect From;
+		public IRect To;
+		public bool Start;
 	}
 
 
@@ -191,7 +138,6 @@ public partial class PixelEditor {
 	private IRect CurrentUndoPixelLocalRect;
 
 
-
 	#endregion
 
 
@@ -207,6 +153,45 @@ public partial class PixelEditor {
 			Undo.GrowStep();
 		}
 		Undo.Register(item);
+	}
+
+
+	private void RegisterUndoForPixelChangesWhenResize (AngeSprite sprite, IRect oldPixelRect, Color32[] oldPixels) {
+		if (oldPixelRect == sprite.PixelRect) return;
+		var newPixelRect = sprite.PixelRect;
+		IRect inter = default;
+		if (newPixelRect.xMin > oldPixelRect.xMin) {
+			// L
+			inter = oldPixelRect.EdgeInside(Direction4.Left, newPixelRect.xMin - oldPixelRect.xMin);
+		} else if (newPixelRect.xMax < oldPixelRect.xMax) {
+			// R
+			inter = oldPixelRect.EdgeInside(Direction4.Right, oldPixelRect.xMax - newPixelRect.xMax);
+		} else if (newPixelRect.yMin > oldPixelRect.yMin) {
+			// D
+			inter = oldPixelRect.EdgeInside(Direction4.Down, newPixelRect.yMin - oldPixelRect.yMin);
+		} else if (newPixelRect.yMax < oldPixelRect.yMax) {
+			// U
+			inter = oldPixelRect.EdgeInside(Direction4.Up, oldPixelRect.yMax - newPixelRect.yMax);
+		}
+		if (inter.width == 0) return;
+		RegisterUndo(new PaintUndoItem() {
+			SpriteID = 0,
+			LocalPixelRect = default,
+		});
+		for (int j = 0; j < inter.height; j++) {
+			int y = j + inter.y;
+			for (int i = 0; i < inter.width; i++) {
+				int x = i + inter.x;
+				RegisterUndo(new PixelUndoItem() {
+					From = oldPixels[(y - oldPixelRect.y) * oldPixelRect.width + (x - oldPixelRect.x)],
+					To = Color32.CLEAR,
+				});
+			}
+		}
+		RegisterUndo(new PaintUndoItem() {
+			SpriteID = sprite.ID,
+			LocalPixelRect = inter.Shift(-oldPixelRect.x, -oldPixelRect.y),
+		});
 	}
 
 
@@ -366,9 +351,24 @@ public partial class PixelEditor {
 				break;
 			}
 
+			case SpriteRectUndoItem spRect: {
+				if (!Instance.Sheet.SpritePool.TryGetValue(
+					spRect.SpriteID, out var sprite
+				)) break;
+				sprite.ResizePixelRect(reverse ? spRect.To : spRect.From, false, out _);
+				// Pixel Dirty
+				foreach (var spData in Instance.StagedSprites) {
+					if (spData.Sprite.ID == sprite.ID) {
+						spData.PixelDirty = true;
+						break;
+					}
+				}
+				break;
+			}
+
 		}
 
-		Instance.SetDirty();// done
+		Instance.SetDirty();
 
 	}
 

@@ -325,47 +325,63 @@ public partial class PixelEditor {
 						}
 					}
 					if (resizingSp.GlobalBorder != oldBorder) {
-						RegisterUndo(new SpriteBorderUndoItem(resizingSp.ID, oldBorder, resizingSp.GlobalBorder));
-						SetDirty();// done
+						RegisterUndo(new SpriteBorderUndoItem() {
+							SpriteID = resizingSp.ID,
+							From = oldBorder,
+							To = resizingSp.GlobalBorder,
+						});
+						SetDirty();
 					}
 				} else {
 					// Resize Size
 					var _resizingPxRect = GetResizeDraggingPixRect();
 					if (_resizingPxRect.HasValue) {
 						var resizingPxRect = _resizingPxRect.Value;
-						var oldSize = resizingPxRect.size;
+						var oldRect = resizingSp.PixelRect;
 						var oldBorder = resizingSp.GlobalBorder;
+						var oldPixels = resizingSp.Pixels;
 						resizingPxRect.width = resizingPxRect.width.Clamp(1, STAGE_SIZE);
 						resizingPxRect.height = resizingPxRect.height.Clamp(1, STAGE_SIZE);
 						resizingSpData.PixelDirty = true;
+
+						if (resizingPxRect != oldRect) {
+							RegisterUndo(new SpriteRectUndoItem() {
+								SpriteID = resizingSp.ID,
+								From = oldRect,
+								To = resizingPxRect,
+								Start = true,
+							});
+							SetDirty();
+						}
+
 						resizingSp.ResizePixelRect(
 							resizingPxRect,
-							resizeBorder: !resizingSp.GlobalBorder.IsZero
+							resizeBorder: !resizingSp.GlobalBorder.IsZero,
+							out bool contentChanged
 						);
-						if (resizingSp.GlobalBorder.horizontal >= resizingSp.GlobalWidth) {
-							if (ResizingDirection.IsLeft()) {
-								resizingSp.GlobalBorder.left = resizingSp.GlobalWidth - resizingSp.GlobalBorder.right;
-							} else {
-								resizingSp.GlobalBorder.right = resizingSp.GlobalWidth - resizingSp.GlobalBorder.left;
-							}
-							resizingSp.GlobalBorder.left = resizingSp.GlobalBorder.left.Clamp(0, resizingSp.GlobalWidth);
-							resizingSp.GlobalBorder.right = resizingSp.GlobalBorder.right.Clamp(0, resizingSp.GlobalWidth);
+						if (contentChanged) {
+							RegisterUndoForPixelChangesWhenResize(resizingSp, oldRect, oldPixels);
+							SetDirty();
 						}
-						if (resizingSp.GlobalBorder.vertical >= resizingSp.GlobalHeight) {
-							if (ResizingDirection.IsBottom()) {
-								resizingSp.GlobalBorder.down = resizingSp.GlobalHeight - resizingSp.GlobalBorder.up;
-							} else {
-								resizingSp.GlobalBorder.up = resizingSp.GlobalHeight - resizingSp.GlobalBorder.down;
-							}
-							resizingSp.GlobalBorder.down = resizingSp.GlobalBorder.down.Clamp(0, resizingSp.GlobalHeight);
-							resizingSp.GlobalBorder.up = resizingSp.GlobalBorder.up.Clamp(0, resizingSp.GlobalHeight);
+
+						if (resizingPxRect != oldRect) {
+							RegisterUndo(new SpriteRectUndoItem() {
+								SpriteID = resizingSp.ID,
+								From = oldRect,
+								To = resizingPxRect,
+								Start = false,
+							});
+							SetDirty();
 						}
-						if (resizingPxRect.size != oldSize) {
-							SetDirty();// undo
-						}
+
+						resizingSp.ValidBorders(ResizingDirection);
 						if (oldBorder != resizingSp.GlobalBorder) {
-							RegisterUndo(new SpriteBorderUndoItem(resizingSp.ID, oldBorder, resizingSp.GlobalBorder));
-							SetDirty();// done
+							RegisterUndo(new SpriteBorderUndoItem() {
+								SpriteID = resizingSp.ID,
+								From = oldBorder,
+								To = resizingSp.GlobalBorder,
+							});
+							SetDirty();
 						}
 					}
 				}
@@ -393,8 +409,11 @@ public partial class PixelEditor {
 							Selecting = false,
 							DraggingStartRect = default,
 						});
-						RegisterUndo(new SpriteObjectUndoItem(sprite.CreateCopy(), true));
-						SetDirty();// done
+						RegisterUndo(new SpriteObjectUndoItem() {
+							Sprite = sprite.CreateCopy(),
+							Create = true,
+						});
+						SetDirty();
 					}
 				}
 				break;
@@ -413,8 +432,12 @@ public partial class PixelEditor {
 					var from = sprite.PixelRect.position;
 					sprite.PixelRect.x = spData.DraggingStartRect.x + pixDelta.x;
 					sprite.PixelRect.y = spData.DraggingStartRect.y + pixDelta.y;
-					RegisterUndo(new MoveSliceUndoItem(sprite.ID, from, sprite.PixelRect.position));
-					SetDirty();// done
+					RegisterUndo(new MoveSliceUndoItem() {
+						SpriteID = sprite.ID,
+						From = from,
+						To = sprite.PixelRect.position,
+					});
+					SetDirty();
 				}
 				StagedSprites.Sort(SpriteDataComparer.Instance);
 				break;
@@ -627,11 +650,14 @@ public partial class PixelEditor {
 				Sheet.RemoveSprite(index);
 			}
 			// Undo
-			RegisterUndo(new SpriteObjectUndoItem(sprite.CreateCopy(), false));
+			RegisterUndo(new SpriteObjectUndoItem() {
+				Sprite = sprite.CreateCopy(),
+				Create = false,
+			});
 		}
 		SelectingSpriteCount = 0;
 		if (changed) {
-			SetDirty();// done
+			SetDirty();
 			RefreshSliceInputContent();
 			RulePageIndex = 0;
 			OpeningTilingRuleEditor = false;
@@ -661,8 +687,12 @@ public partial class PixelEditor {
 			}
 			if (oldBorder != sprite.GlobalBorder) {
 				changed = true;
-				RegisterUndo(new SpriteBorderUndoItem(sprite.ID, oldBorder, sprite.GlobalBorder));
-				SetDirty();// done
+				RegisterUndo(new SpriteBorderUndoItem() {
+					SpriteID = sprite.ID,
+					From = oldBorder,
+					To = sprite.GlobalBorder,
+				});
+				SetDirty();
 			}
 		}
 		if (changed) {
@@ -679,8 +709,11 @@ public partial class PixelEditor {
 			if (spData.Sprite.IsTrigger == enableTrigger) continue;
 			changed = true;
 			spData.Sprite.IsTrigger = enableTrigger;
-			RegisterUndo(new SpriteTriggerUndoItem(spData.Sprite.ID, enableTrigger));
-			SetDirty();// done
+			RegisterUndo(new SpriteTriggerUndoItem() {
+				SpriteID = spData.Sprite.ID,
+				To = enableTrigger,
+			});
+			SetDirty();
 		}
 		if (changed) {
 			RefreshSliceInputContent();
@@ -748,10 +781,13 @@ public partial class PixelEditor {
 				Selecting = false,
 				DraggingStartRect = default,
 			});
-			RegisterUndo(new SpriteObjectUndoItem(sprite.CreateCopy(), true));
+			RegisterUndo(new SpriteObjectUndoItem() {
+				Sprite = sprite.CreateCopy(),
+				Create = true,
+			});
 		}
 
-		SetDirty();// done
+		SetDirty();
 
 		// Select
 		SetSpriteSelection(oldCount, StagedSprites.Count - oldCount);
@@ -784,7 +820,7 @@ public partial class PixelEditor {
 		if (PixelBufferSize.Area > 0 && PixelSelectionPixelRect != default) {
 			PixelBufferSize = Int2.zero;
 			PixelSelectionPixelRect = default;
-			SetDirty();// done
+			SetDirty();
 			return;
 		}
 
@@ -799,20 +835,29 @@ public partial class PixelEditor {
 			int d = inter.Value.yMin;
 			int u = inter.Value.yMax;
 			var localRect = inter.Value.Shift(-pixelRect.x, -pixelRect.y);
-			RegisterUndo(new PaintUndoItem(sprite.ID, localRect));
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = localRect,
+			});
 			for (int y = d; y < u; y++) {
 				for (int x = l; x < r; x++) {
 					int pixIndex = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					var oldPixel = sprite.Pixels[pixIndex];
 					sprite.Pixels[pixIndex] = Color32.CLEAR;
-					RegisterUndo(new PixelUndoItem(oldPixel, Color32.CLEAR));
+					RegisterUndo(new PixelUndoItem() {
+						From = oldPixel,
+						To = Color32.CLEAR,
+					});
 				}
 			}
-			RegisterUndo(new PaintUndoItem(sprite.ID, localRect));
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = localRect,
+			});
 			spData.PixelDirty = true;
 		}
 
-		SetDirty();// done
+		SetDirty();
 		PixelSelectionPixelRect = default;
 		PixelBufferSize = Int2.zero;
 	}
@@ -858,7 +903,7 @@ public partial class PixelEditor {
 		PixelCopyBuffer.CopyTo(PixelBuffer, 0);
 		PixelBufferSize = PixelCopyBufferSize;
 		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
-		SetDirty();// done
+		SetDirty();
 	}
 
 
@@ -877,7 +922,10 @@ public partial class PixelEditor {
 			int bufferL = PixelSelectionPixelRect.xMin;
 			int bufferD = PixelSelectionPixelRect.yMin;
 			var localRect = inter.Value.Shift(-pixelRect.x, -pixelRect.y);
-			RegisterUndo(new PaintUndoItem(sprite.ID, localRect), ignoreUndoStep);
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = localRect,
+			}, ignoreUndoStep);
 			for (int y = d; y < u; y++) {
 				for (int x = l; x < r; x++) {
 					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)];
@@ -885,12 +933,18 @@ public partial class PixelEditor {
 					var oldPixel = sprite.Pixels[index];
 					var newPixel = Util.MergeColor(buffer, oldPixel);
 					sprite.Pixels[index] = newPixel;
-					RegisterUndo(new PixelUndoItem(oldPixel, newPixel), ignoreUndoStep);
+					RegisterUndo(new PixelUndoItem() {
+						From = oldPixel,
+						To = newPixel,
+					}, ignoreUndoStep);
 				}
 			}
-			RegisterUndo(new PaintUndoItem(sprite.ID, localRect), ignoreUndoStep);
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = localRect,
+			}, ignoreUndoStep);
 			spData.PixelDirty = true;
-			SetDirty();// done
+			SetDirty();
 		}
 	}
 
@@ -908,7 +962,10 @@ public partial class PixelEditor {
 			int u = pixelRange.yMax - spritePixelRect.y;
 			int pixelWidth = spritePixelRect.width;
 			var localRect = pixelRange.Shift(-spritePixelRect.x, -spritePixelRect.y);
-			RegisterUndo(new PaintUndoItem(paintingSprite.ID, localRect));
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = paintingSprite.ID,
+				LocalPixelRect = localRect,
+			});
 			if (targetColor.a != 0) {
 				// Paint
 				for (int j = d; j < u; j++) {
@@ -917,7 +974,10 @@ public partial class PixelEditor {
 						var oldPixel = paintingSprite.Pixels[pIndex];
 						var newPixel = Util.MergeColor(targetColor, oldPixel);
 						paintingSprite.Pixels[pIndex] = newPixel;
-						RegisterUndo(new PixelUndoItem(oldPixel, newPixel));
+						RegisterUndo(new PixelUndoItem() {
+							From = oldPixel,
+							To = newPixel,
+						});
 					}
 				}
 			} else {
@@ -927,13 +987,19 @@ public partial class PixelEditor {
 						int pIndex = j * pixelWidth + i;
 						var oldPixel = paintingSprite.Pixels[pIndex];
 						paintingSprite.Pixels[pIndex] = Color32.CLEAR;
-						RegisterUndo(new PixelUndoItem(oldPixel, Color32.CLEAR));
+						RegisterUndo(new PixelUndoItem() {
+							From = oldPixel,
+							To = Color32.CLEAR,
+						});
 					}
 				}
 			}
-			RegisterUndo(new PaintUndoItem(paintingSprite.ID, localRect));
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = paintingSprite.ID,
+				LocalPixelRect = localRect,
+			});
 			paintingSpData.PixelDirty = true;
-			SetDirty();// done
+			SetDirty();
 		}
 	}
 
@@ -954,14 +1020,20 @@ public partial class PixelEditor {
 		BucketCacheHash.Add(new Int2(localX, localY));
 		int safeCount = pixelRect.width * pixelRect.height + 1;
 		bool erase = PaintingColor.a == 0;
-		RegisterUndo(new PaintUndoItem(sprite.ID, default));
+		RegisterUndo(new PaintUndoItem() {
+			SpriteID = sprite.ID,
+		});
 		for (int safe = 0; safe < safeCount && BucketCacheQueue.Count > 0; safe++) {
 			var pos = BucketCacheQueue.Dequeue();
 			int pixIndex = pos.y * pixelRect.width + pos.x;
 			var oldPixel = sprite.Pixels[pixIndex];
 			var newPixel = erase ? Color32.CLEAR : Util.MergeColor(PaintingColor, oldPixel);
 			sprite.Pixels[pixIndex] = newPixel;
-			RegisterUndo(new IndexedPixelUndoItem(oldPixel, newPixel, pixIndex));
+			RegisterUndo(new IndexedPixelUndoItem() {
+				LocalPixelIndex = pixIndex,
+				From = oldPixel,
+				To = newPixel,
+			});
 			// Check L
 			var l = new Int2(pos.x - 1, pos.y);
 			if (l.x >= 0 && !BucketCacheHash.Contains(l) && sprite.Pixels[l.y * pixelRect.width + l.x] == targetColor) {
@@ -987,9 +1059,11 @@ public partial class PixelEditor {
 				BucketCacheHash.Add(u);
 			}
 		}
-		RegisterUndo(new PaintUndoItem(sprite.ID, default));
+		RegisterUndo(new PaintUndoItem() {
+			SpriteID = sprite.ID,
+		});
 		spData.PixelDirty = true;
-		SetDirty();// done
+		SetDirty();
 	}
 
 
@@ -1108,7 +1182,10 @@ public partial class PixelEditor {
 			int bufferL = pixelRange.xMin;
 			int bufferD = pixelRange.yMin;
 			var localRect = pixelRange.Shift(-pixelRect.x, -pixelRect.y);
-			RegisterUndo(new PaintUndoItem(sprite.ID, localRect));
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = localRect,
+			});
 			for (int y = d; y < u; y++) {
 				for (int x = l; x < r; x++) {
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
@@ -1117,12 +1194,18 @@ public partial class PixelEditor {
 					if (removePixels) {
 						var oldPixel = sprite.Pixels[index];
 						sprite.Pixels[index] = Color32.CLEAR;
-						SetDirty();// done
-						RegisterUndo(new PixelUndoItem(oldPixel, Color32.CLEAR));
+						SetDirty();
+						RegisterUndo(new PixelUndoItem() {
+							From = oldPixel,
+							To = Color32.CLEAR,
+						});
 					}
 				}
 			}
-			RegisterUndo(new PaintUndoItem(sprite.ID, localRect));
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = localRect,
+			});
 			spData.PixelDirty = true;
 		}
 

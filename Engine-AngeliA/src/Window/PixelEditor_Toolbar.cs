@@ -578,8 +578,12 @@ public partial class PixelEditor {
 					int newRule = Util.RuleByteToDigit(RuleCache);
 					if (oldRule != newRule) {
 						spData.Sprite.Rule = newRule;
-						RegisterUndo(new SpriteRuleUndoItem(spData.Sprite.ID, oldRule, newRule));
-						SetDirty();// done
+						RegisterUndo(new SpriteRuleUndoItem() {
+							SpriteID = spData.Sprite.ID,
+							From = oldRule,
+							To = newRule,
+						});
+						SetDirty();
 					}
 				}
 				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
@@ -674,10 +678,14 @@ public partial class PixelEditor {
 				int oldTag = spData.Sprite.Tag;
 				if (oldTag != targetValue) {
 					spData.Sprite.Tag = targetValue;
-					Instance.RegisterUndo(new SpriteTagUndoItem(spData.Sprite.ID, oldTag, targetValue));
+					Instance.RegisterUndo(new SpriteTagUndoItem() {
+						SpriteID = spData.Sprite.ID,
+						From = oldTag,
+						To = targetValue,
+					});
 				}
 			}
-			Instance.SetDirty();// done
+			Instance.SetDirty();
 		}
 	}
 
@@ -697,7 +705,7 @@ public partial class PixelEditor {
 			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
 			var atlas = atlasList[currentAtlasIndex];
 			atlas.Type = (AtlasType)index;
-			Instance.SetDirty();// no
+			Instance.SetDirty();
 		}
 	}
 
@@ -729,7 +737,10 @@ public partial class PixelEditor {
 			Selecting = false,
 			Sprite = sprite,
 		});
-		RegisterUndo(new SpriteObjectUndoItem(sprite.CreateCopy(), true));
+		RegisterUndo(new SpriteObjectUndoItem() {
+			Sprite = sprite.CreateCopy(),
+			Create = true,
+		});
 		// done
 		SetDirty();
 		// Select
@@ -840,25 +851,39 @@ public partial class PixelEditor {
 			);
 			if (border != oldBorder) {
 				sprite.GlobalBorder = border;
-				RegisterUndo(new SpriteBorderUndoItem(sprite.ID, oldBorder, border));
+				RegisterUndo(new SpriteBorderUndoItem() {
+					SpriteID = sprite.ID,
+					From = oldBorder,
+					To = border,
+				});
 			}
 
 			// Size Changed
-			if (sizeX > 0 && sizeX != pixRect.width) {
+			if ((sizeX > 0 && sizeX != pixRect.width) || (sizeY > 0 && sizeY != pixRect.height)) {
+				var oldPixels = sprite.Pixels;
+				var oldRect = sprite.PixelRect;
+				var newRect = new IRect(pixRect.x, pixRect.y, sizeX, sizeY);
+				RegisterUndo(new SpriteRectUndoItem() {
+					SpriteID = sprite.ID,
+					From = oldRect,
+					To = newRect,
+					Start = true,
+				});
 				sprite.ResizePixelRect(
-					new IRect(pixRect.x, pixRect.y, sizeX, pixRect.height),
-					resizeBorder: !border.IsZero
+					newRect,
+					resizeBorder: !border.IsZero,
+					out bool contentChanged
 				);
 				spData.PixelDirty = true;
-				//setdirty();// undo
-			}
-			if (sizeY > 0 && sizeY != pixRect.height) {
-				sprite.ResizePixelRect(
-					new IRect(pixRect.x, pixRect.y, pixRect.width, sizeY),
-					resizeBorder: !border.IsZero
-				);
-				spData.PixelDirty = true;
-				//setdirty();// undo
+				if (contentChanged) {
+					RegisterUndoForPixelChangesWhenResize(sprite, oldRect, oldPixels);
+				}
+				RegisterUndo(new SpriteRectUndoItem() {
+					SpriteID = sprite.ID,
+					From = oldRect,
+					To = newRect,
+					Start = false,
+				});
 			}
 
 			// Name
@@ -871,36 +896,58 @@ public partial class PixelEditor {
 					renamed = Sheet.RenameSprite(sprite, $"{name} {checkedCount - 1}");
 				}
 				if (renamed) {
-					RegisterUndo(new SpriteNameUndoItem(sprite.ID, oldName, sprite.RealName));
+					RegisterUndo(new SpriteNameUndoItem() {
+						SpriteID = sprite.ID,
+						From = oldName,
+						To = sprite.RealName,
+					});
 				}
 			}
 
 			// Pivot X
 			if (pivotX != int.MinValue && pivotX != sprite.PivotX) {
-				RegisterUndo(new SpritePivotUndoItem(sprite.ID, sprite.PivotX, pivotX, true));
+				RegisterUndo(new SpritePivotUndoItem() {
+					SpriteID = sprite.ID,
+					From = sprite.PivotX,
+					To = pivotX,
+					X = true,
+				});
 				sprite.PivotX = pivotX;
 			}
 
 			// Pivot Y
 			if (pivotY != int.MinValue && pivotY != sprite.PivotY) {
-				RegisterUndo(new SpritePivotUndoItem(sprite.ID, sprite.PivotY, pivotY, false));
+				RegisterUndo(new SpritePivotUndoItem() {
+					SpriteID = sprite.ID,
+					From = sprite.PivotY,
+					To = pivotY,
+					X = false,
+				});
 				sprite.PivotY = pivotY;
 			}
 
 			// Z
 			if (z != int.MinValue && z != sprite.LocalZ) {
-				RegisterUndo(new SpriteZUndoItem(sprite.ID, sprite.LocalZ, z));
+				RegisterUndo(new SpriteZUndoItem() {
+					SpriteID = sprite.ID,
+					From = sprite.LocalZ,
+					To = z,
+				});
 				sprite.LocalZ = z;
 			}
 
 			// Duration
 			if (duration > 0 && duration != sprite.Duration) {
-				RegisterUndo(new SpriteDurationUndoItem(sprite.ID, sprite.Duration, duration));
+				RegisterUndo(new SpriteDurationUndoItem() {
+					SpriteID = sprite.ID,
+					From = sprite.Duration,
+					To = duration,
+				});
 				sprite.Duration = duration;
 			}
 
 			// Final
-			SetDirty();// done
+			SetDirty();
 		}
 
 		GUI.CancelTyping();

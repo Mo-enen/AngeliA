@@ -158,9 +158,22 @@ public class AngeSprite {
 		writer.BaseStream.Position = endPos;
 	}
 
-	public void ResizePixelRect (IRect newRect, bool resizeBorder) {
+	public void ResizePixelRect (IRect newRect, bool resizeBorder, out bool contentChanged) {
+		contentChanged = false;
 		// Pixels
-		if (newRect.width != PixelRect.width || newRect.height != PixelRect.height) {
+		if (newRect != PixelRect) {
+			// Check for Content Change
+			for (int i = 0; i < Pixels.Length; i++) {
+				var color = Pixels[i];
+				if (color.a == 0) continue;
+				int x = PixelRect.x + i % PixelRect.width;
+				int y = PixelRect.y + i / PixelRect.width;
+				if (!newRect.Contains(x, y)) {
+					contentChanged = true;
+					break;
+				}
+			}
+			// Change Pixels
 			int newLen = newRect.width * newRect.height;
 			var newPixels = new Color32[newLen];
 			int left = Util.Max(PixelRect.xMin, newRect.xMin);
@@ -228,6 +241,28 @@ public class AngeSprite {
 			SummaryTint = SummaryTint,
 			Pixels = pixels,
 		};
+	}
+
+	public void ValidBorders (Direction8? priority = null) {
+		priority ??= Direction8.BottomLeft;
+		if (GlobalBorder.horizontal >= GlobalWidth) {
+			if (priority.Value.IsLeft()) {
+				GlobalBorder.left = GlobalWidth - GlobalBorder.right;
+			} else {
+				GlobalBorder.right = GlobalWidth - GlobalBorder.left;
+			}
+			GlobalBorder.left = GlobalBorder.left.Clamp(0, GlobalWidth);
+			GlobalBorder.right = GlobalBorder.right.Clamp(0, GlobalWidth);
+		}
+		if (GlobalBorder.vertical >= GlobalHeight) {
+			if (priority.Value.IsBottom()) {
+				GlobalBorder.down = GlobalHeight - GlobalBorder.up;
+			} else {
+				GlobalBorder.up = GlobalHeight - GlobalBorder.down;
+			}
+			GlobalBorder.down = GlobalBorder.down.Clamp(0, GlobalHeight);
+			GlobalBorder.up = GlobalBorder.up.Clamp(0, GlobalHeight);
+		}
 	}
 
 }

@@ -129,7 +129,7 @@ public partial class PixelEditor {
 						);
 						if (changed || confirm) {
 							atlas.ID = atlas.Name.AngeHash();
-							SetDirty();// no
+							SetDirty();
 						}
 					} else {
 						GUI.Label(
@@ -276,7 +276,7 @@ public partial class PixelEditor {
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 			int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
 			Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
-			Instance.SetDirty();// no
+			Instance.SetDirty();
 			Instance.CurrentAtlasIndex = -1;
 			Instance.SetCurrentAtlas(newSelectingAtlasIndex, forceChange: true);
 		}
@@ -285,7 +285,7 @@ public partial class PixelEditor {
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 			Instance.Sheet.MoveAtlas(targetIndex, 0);
-			Instance.SetDirty();// no
+			Instance.SetDirty();
 			Instance.SetCurrentAtlas(0, forceChange: true, resetUndo: false);
 		}
 		static void MoveUp () {
@@ -293,7 +293,7 @@ public partial class PixelEditor {
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 1 || targetIndex >= atlasList.Count) return;
 			Instance.Sheet.MoveAtlas(targetIndex, targetIndex - 1);
-			Instance.SetDirty();// no
+			Instance.SetDirty();
 			Instance.SetCurrentAtlas(targetIndex - 1, forceChange: true, resetUndo: false);
 		}
 		static void MoveDown () {
@@ -301,7 +301,7 @@ public partial class PixelEditor {
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count - 1) return;
 			Instance.Sheet.MoveAtlas(targetIndex, targetIndex + 1);
-			Instance.SetDirty();// no
+			Instance.SetDirty();
 			Instance.SetCurrentAtlas(targetIndex + 1, forceChange: true, resetUndo: false);
 		}
 		static void MoveBottom () {
@@ -309,7 +309,7 @@ public partial class PixelEditor {
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 			Instance.Sheet.MoveAtlas(targetIndex, atlasList.Count - 1);
-			Instance.SetDirty();// no
+			Instance.SetDirty();
 			Instance.SetCurrentAtlas(atlasList.Count - 1, forceChange: true, resetUndo: false);
 		}
 	}
@@ -361,7 +361,7 @@ public partial class PixelEditor {
 			Type = AtlasType.General,
 			ID = "New Atlas".AngeHash(),
 		});
-		SetDirty();// no
+		SetDirty();
 		AtlasPanelScrollY = int.MaxValue;
 		SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
 		CreateSpriteForPalette(useDefaultPos: true);
