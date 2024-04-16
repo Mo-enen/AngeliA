@@ -189,14 +189,14 @@ public partial class PixelEditor {
 		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
 			CreateAtlas();
 		}
-		RequireTooltip?.Invoke(buttonRect, TIP_ADD_ATLAS);
+		RequireTooltip(buttonRect, TIP_ADD_ATLAS);
 		buttonRect.SlideRight(buttonPadding);
 
 		// Import from Ase
 		if (GUI.Button(buttonRect, ICON_IMPORT_ASE, GUISkin.SmallDarkButton)) {
 			ShowImportAtlasBrowser(true);
 		}
-		RequireTooltip?.Invoke(buttonRect, TIP_IMPORT_ASE);
+		RequireTooltip(buttonRect, TIP_IMPORT_ASE);
 		buttonRect.SlideRight(buttonPadding);
 
 	}

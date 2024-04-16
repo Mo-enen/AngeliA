@@ -7,7 +7,7 @@ namespace AngeliaEngine;
 
 [RequireSpriteFromField]
 [RequireLanguageFromField]
-internal class Engine {
+internal static class Engine {
 
 
 
@@ -39,38 +39,36 @@ internal class Engine {
 		("Title.Language", "Language"),
 		("Title.Setting", "Setting"),
 	};
+	private static readonly PixelEditor PixelEditor = new();
+	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
+	private static readonly SettingWindow SettingWindow = new();
 	private static readonly EntityUI[] ALL_UI = {
 		new GenericPopupUI() { Active = false, },
 		new GenericDialogUI() { Active = false, },
 		new FileBrowserUI() { Active = false, },
-		new PixelEditor(RequireTooltip),
-		new LanguageEditor(ignoreRequirements:true),
-		new SettingWindow(),
+		PixelEditor,
+		LanguageEditor,
+		SettingWindow,
 	};
 
-	// Api
-	public static Project CurrentProject { get; private set; } = null;
-	public static bool OpenLastProjectOnStart {
-		get => Setting.OpenLastProjectOnStart;
-		set => Setting.OpenLastProjectOnStart = value;
-	}
-	public static bool UseTooltip {
-		get => Setting.UseTooltip;
-		set => Setting.UseTooltip = value;
-	}
-
 	// Data
+	private static Project CurrentProject = null;
 	private static readonly GUIStyle ConfirmMsgStyle = new(GUISkin.CenterLabel) { CharSize = 18 };
 	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 18 };
 	private static readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
-	private static EngineSetting Setting;
+	private static readonly GUIStyle NotificationLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.MidRight, };
+	private static readonly GUIStyle NotificationSubLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.MidRight, };
+	private static EngineSetting EngineSetting;
 	private static WindowMode CurrentWindowMode;
-	private static bool SettingInitialized = false;
+	private static IRect ToolLabelRect;
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
+	private static bool SettingInitialized = false;
 	private static string ToolLabel = null;
-	private static IRect ToolLabelRect;
+	private static int NotificationStartFrame = int.MinValue;
+	private static string NotificationContent = null;
+	private static string NotificationSubContent = null;
 
 
 	#endregion
@@ -83,15 +81,19 @@ internal class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
-		Setting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
-		Setting.RefreshProjectFileExistsCache();
+		EngineSetting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
+		EngineSetting.RefreshProjectFileExistsCache();
 		SwitchWindowMode(WindowMode.Window);
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 		Game.SetEventWaiting(false);
-		if (Setting.OpenLastProjectOnStart) {
-			OpenProject(Setting.LastOpenProject);
+		if (EngineSetting.OpenLastProjectOnStart) {
+			OpenProject(EngineSetting.LastOpenProject);
 		}
+		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
+		SettingWindow.PixEditor_CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value.ToColorF();
+		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
+		SettingWindow.CanvasBackgroundColor_Default = PixelEditor.CanvasBackgroundColor.DefaultValue;
 	}
 
 
@@ -108,14 +110,14 @@ internal class Engine {
 
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
-		JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath, prettyPrint: true);
+		JsonUtil.SaveJson(EngineSetting, AngePath.PersistentDataPath, prettyPrint: true);
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
 	}
 
 
 	[OnGameFocused]
 	internal static void OnGameFocused () {
-		Setting.RefreshProjectFileExistsCache();
+		EngineSetting.RefreshProjectFileExistsCache();
 	}
 
 
@@ -137,6 +139,7 @@ internal class Engine {
 					OnGUI_Window();
 				}
 				OnGUI_Tooltip();
+				OnGUI_Notify();
 				break;
 			case WindowMode.ConfirmQuit:
 				OnGUI_ConfirmQuit();
@@ -195,7 +198,7 @@ internal class Engine {
 
 			// --- Panel ---
 			{
-				var panelRect = Setting.Projects.Count > 0 ?
+				var panelRect = EngineSetting.Projects.Count > 0 ?
 					cameraRect.EdgeInside(Direction4.Left, hubPanelWidth) :
 					new IRect(cameraRect.x + (cameraRect.width - hubPanelWidth) / 2, cameraRect.y, hubPanelWidth, cameraRect.height);
 				int itemPadding = GUI.Unify(8);
@@ -221,7 +224,7 @@ internal class Engine {
 			}
 
 			// --- Content ---
-			if (Setting.Projects.Count > 0) {
+			if (EngineSetting.Projects.Count > 0) {
 
 				int border = GUI.Unify(8);
 				int padding = GUI.Unify(8);
@@ -231,7 +234,7 @@ internal class Engine {
 				var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
 					padding, padding + scrollWidth, padding, padding
 				);
-				var projects = Setting.Projects;
+				var projects = EngineSetting.Projects;
 
 				// BG
 				Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
@@ -339,7 +342,7 @@ internal class Engine {
 
 		// Window
 		int contentPadding = GUI.Unify(8);
-		int barWidth = Setting.FullsizeMenu ? GUI.Unify(200) : GUI.Unify(42) + contentPadding;
+		int barWidth = EngineSetting.FullsizeMenu ? GUI.Unify(160) : GUI.Unify(42) + contentPadding;
 		int bodyBorder = GUI.Unify(6);
 		var cameraRect = Renderer.CameraRect;
 		int windowLen = CurrentProject == null ? 1 : WINDOW_UI_COUNT;
@@ -368,16 +371,12 @@ internal class Engine {
 
 				// Menu Button
 				if (GUI.BlankButton(rect, out _)) {
-					Setting.FullsizeMenu = !Setting.FullsizeMenu;
+					EngineSetting.FullsizeMenu = !EngineSetting.FullsizeMenu;
 				}
 
 				// Menu Icon
 				GUI.Icon(menuRect.EdgeInside(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
 
-				// Menu Label
-				if (Setting.FullsizeMenu) {
-					GUI.Label(menuRect.Shrink(menuRect.height + contentPadding, 0, 0, 0), BuiltInText.UI_MENU, GUISkin.SmallLabel);
-				}
 				rect.y -= rect.height;
 			}
 
@@ -408,7 +407,7 @@ internal class Engine {
 				Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
 
 				// Label
-				if (Setting.FullsizeMenu) {
+				if (EngineSetting.FullsizeMenu) {
 					GUI.Label(
 						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
 						UI_TITLES[i], GUISkin.SmallLabel
@@ -424,7 +423,7 @@ internal class Engine {
 			}
 
 			// Back to Hub
-			if (Setting.FullsizeMenu) {
+			if (EngineSetting.FullsizeMenu) {
 				if (GUI.Button(
 					barRect.EdgeInside(Direction4.Down, rect.height),
 					BuiltInText.UI_BACK, GUISkin.SmallCenterLabelButton
@@ -460,6 +459,15 @@ internal class Engine {
 			}
 		}
 
+		// Update Setting
+		SettingWindow.OpenLastProjectOnStart = EngineSetting.OpenLastProjectOnStart;
+		SettingWindow.UseTooltip = EngineSetting.UseTooltip;
+		SettingWindow.UseNotification = EngineSetting.UseNotification;
+		SettingWindow.BackgroundColor = PixelEditor.BackgroundColor.Value;
+		SettingWindow.CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value;
+		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
+		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
+
 		// Update UI
 		foreach (var ui in ALL_UI) {
 			if (!ui.Active) continue;
@@ -482,6 +490,27 @@ internal class Engine {
 			ui.LateUpdate();
 		}
 
+		// Update Setting
+		EngineSetting.OpenLastProjectOnStart = SettingWindow.OpenLastProjectOnStart;
+		EngineSetting.UseTooltip = SettingWindow.UseTooltip;
+		EngineSetting.UseNotification = SettingWindow.UseNotification;
+		PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
+		PixelEditor.CanvasBackgroundColor.Value = SettingWindow.CanvasBackgroundColor;
+		PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
+		PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
+
+		// Update Tooltip
+		RequireTooltip(PixelEditor.RequiringTooltipRect, PixelEditor.RequiringTooltipContent);
+		PixelEditor.RequiringTooltipContent = null;
+
+		// Update Notify
+		if (PixelEditor.NotificationContent != null) {
+			NotificationStartFrame = Game.GlobalFrame;
+			NotificationContent = PixelEditor.NotificationContent;
+			NotificationSubContent = PixelEditor.NotificationSubContent;
+		}
+		PixelEditor.NotificationContent = null;
+
 		// Final
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
 
@@ -490,7 +519,7 @@ internal class Engine {
 
 	private static void OnGUI_Tooltip () {
 		if (ToolLabel == null) return;
-		if (!UseTooltip) {
+		if (!EngineSetting.UseTooltip) {
 			ToolLabel = null;
 			return;
 		}
@@ -514,6 +543,38 @@ internal class Engine {
 		);
 		Renderer.ExcludeTextCells(bounds, 0, endIndex);
 		ToolLabel = null;
+	}
+
+
+	private static void OnGUI_Notify () {
+
+		const int DURATION = 120;
+
+		if (!EngineSetting.UseNotification || Game.GlobalFrame > NotificationStartFrame + DURATION) return;
+
+		int padding = GUI.Unify(6);
+		int labelHeight = GUI.Unify(28);
+		int subLabelHeight = GUI.Unify(20);
+		var rect = WindowUI.WindowRect.CornerInside(Alignment.BottomRight, GUI.Unify(384), labelHeight + subLabelHeight);
+		rect.y += padding * 2;
+		rect.x -= padding * 2;
+
+		// Main
+		int top = rect.yMax;
+		rect.y = top - labelHeight;
+		rect.height = labelHeight;
+		GUI.Label(rect, NotificationContent, out var bound, NotificationLabelStyle);
+
+		// Sub
+		rect.y = top - labelHeight - subLabelHeight;
+		rect.height = subLabelHeight;
+		GUI.Label(rect, NotificationSubContent, out var subBound, NotificationSubLabelStyle);
+
+		// BG
+		bound.xMin = Util.Min(bound.xMin, subBound.xMin);
+		bound.yMin = Util.Min(bound.yMin, subBound.yMin);
+		Renderer.DrawPixel(bound.Expand(padding), Color32.BLACK);
+
 	}
 
 
@@ -555,7 +616,7 @@ internal class Engine {
 
 
 	public static void RequireTooltip (IRect buttonRect, string content) {
-		if (!UseTooltip || !buttonRect.MouseInside()) return;
+		if (content == null || !EngineSetting.UseTooltip) return;
 		ToolLabel = content;
 		ToolLabelRect = buttonRect;
 	}
@@ -574,12 +635,13 @@ internal class Engine {
 		// Cache
 		if (SettingInitialized && CurrentWindowMode == WindowMode.Window) {
 			var windowPos = Game.GetWindowPosition();
-			Setting.Maximize = Game.IsWindowMaximized;
-			Setting.WindowSizeX = Game.ScreenWidth;
-			Setting.WindowSizeY = Game.ScreenHeight;
-			Setting.WindowPositionX = windowPos.x;
-			Setting.WindowPositionY = windowPos.y;
+			EngineSetting.Maximize = Game.IsWindowMaximized;
+			EngineSetting.WindowSizeX = Game.ScreenWidth;
+			EngineSetting.WindowSizeY = Game.ScreenHeight;
+			EngineSetting.WindowPositionX = windowPos.x;
+			EngineSetting.WindowPositionY = windowPos.y;
 		}
+		SettingInitialized = true;
 
 		Input.UseAllHoldingKeys();
 
@@ -593,15 +655,15 @@ internal class Engine {
 				Game.IsWindowDecorated = true;
 				Game.IsWindowTopmost = false;
 				Game.IsWindowResizable = true;
-				if (Setting.Maximize) {
+				if (EngineSetting.Maximize) {
 					Game.SetWindowPosition(0, 0);
 					targetWindowWidth = Game.MonitorWidth;
 					targetWindowHeight = Game.MonitorHeight;
 					Game.IsWindowMaximized = true;
 				} else {
-					Game.SetWindowPosition(Setting.WindowPositionX, Setting.WindowPositionY.GreaterOrEquel(24));
-					targetWindowWidth = Setting.WindowSizeX;
-					targetWindowHeight = Setting.WindowSizeY;
+					Game.SetWindowPosition(EngineSetting.WindowPositionX, EngineSetting.WindowPositionY.GreaterOrEquel(24));
+					targetWindowWidth = EngineSetting.WindowSizeX;
+					targetWindowHeight = EngineSetting.WindowSizeY;
 					Game.IsWindowMaximized = false;
 				}
 				break;
@@ -628,7 +690,6 @@ internal class Engine {
 			targetWindowHeight.GreaterOrEquel(minWindowSize)
 		);
 		CurrentWindowMode = newMode;
-		SettingInitialized = true;
 	}
 
 
@@ -641,8 +702,8 @@ internal class Engine {
 
 
 	private static void OpenProjectInExplorer () {
-		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Setting.Projects.Count) return;
-		string path = Setting.Projects[CurrentProjectMenuIndex].Path;
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= EngineSetting.Projects.Count) return;
+		string path = EngineSetting.Projects[CurrentProjectMenuIndex].Path;
 		if (Util.FolderExists(path)) {
 			Game.OpenUrl(path);
 		}
@@ -650,8 +711,8 @@ internal class Engine {
 
 
 	private static void DeleteProjectConfirm () {
-		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Setting.Projects.Count) return;
-		string name = Util.GetNameWithoutExtension(Setting.Projects[CurrentProjectMenuIndex].Path);
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= EngineSetting.Projects.Count) return;
+		string name = Util.GetNameWithoutExtension(EngineSetting.Projects[CurrentProjectMenuIndex].Path);
 		string msg = string.Format(DELETE_PROJECT_MSG, name);
 		GenericDialogUI.SpawnDialog_Button(
 			msg,
@@ -663,8 +724,8 @@ internal class Engine {
 
 
 	private static void DeleteProject () {
-		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Setting.Projects.Count) return;
-		Setting.Projects.RemoveAt(CurrentProjectMenuIndex);
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= EngineSetting.Projects.Count) return;
+		EngineSetting.Projects.RemoveAt(CurrentProjectMenuIndex);
 	}
 
 
@@ -674,9 +735,9 @@ internal class Engine {
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
 		CurrentProject = new Project(projectPath);
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
-		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		Game.SetWindowTitle($"{Game.DisplayTitle} - {Util.GetNameWithoutExtension(projectPath)}");
-		Setting.LastOpenProject = projectPath;
+		EngineSetting.LastOpenProject = projectPath;
 	}
 
 
@@ -689,7 +750,7 @@ internal class Engine {
 			}
 		}
 		LanguageEditor.Instance.SetLanguageRoot("");
-		PixelEditor.Instance.LoadSheetFromDisk("");
+		PixelEditor.LoadSheetFromDisk("");
 		Game.SetWindowTitle(Game.DisplayTitle);
 	}
 
@@ -704,14 +765,14 @@ internal class Engine {
 
 	private static void AddExistsProjectAt (string path) {
 		if (string.IsNullOrEmpty(path) || !Util.FolderExists(path)) return;
-		if (Setting != null && Project.IsValidProjectPath(path) && !Setting.Projects.Any(data => data.Path == path)) {
+		if (EngineSetting != null && Project.IsValidProjectPath(path) && !EngineSetting.Projects.Any(data => data.Path == path)) {
 			// Add to Path List
-			Setting.Projects.Add(new EngineSetting.ProjectData() {
+			EngineSetting.Projects.Add(new EngineSetting.ProjectData() {
 				Path = path,
 				FolderExists = true,
 			});
 			// Save Setting
-			JsonUtil.SaveJson(Setting, AngePath.PersistentDataPath);
+			JsonUtil.SaveJson(EngineSetting, AngePath.PersistentDataPath);
 		}
 	}
 

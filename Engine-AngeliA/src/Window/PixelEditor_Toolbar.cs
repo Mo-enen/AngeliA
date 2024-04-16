@@ -138,35 +138,35 @@ public partial class PixelEditor {
 
 		// Show BG
 		ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
-		RequireTooltip?.Invoke(rect, TIP_SHOW_BG);
+		RequireTooltip(rect, TIP_SHOW_BG);
 		rect.SlideRight(padding);
 
 		// Reset Camera
 		if (GUI.Button(rect, BuiltInSprite.ICON_REFRESH, GUISkin.SmallDarkButton)) {
 			ResetCamera();
 		}
-		RequireTooltip?.Invoke(rect, TIP_RESET_CAMERA);
+		RequireTooltip(rect, TIP_RESET_CAMERA);
 		rect.SlideRight(padding);
 
 		// Import from PNG
 		if (GUI.Button(rect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
 			ShowImportAtlasBrowser(false);
 		}
-		RequireTooltip?.Invoke(rect, TIP_IMPORT_PNG);
+		RequireTooltip(rect, TIP_IMPORT_PNG);
 		rect.SlideRight(padding);
 
 		// Palette
 		if (GUI.Button(rect, BuiltInSprite.ICON_PALETTE, GUISkin.SmallDarkButton)) {
 			CreateSpriteForPalette(useDefaultPos: false);
 		}
-		RequireTooltip?.Invoke(rect, TIP_PALETTE);
+		RequireTooltip(rect, TIP_PALETTE);
 		rect.SlideRight(padding);
 
 		// Atlas Type
 		if (GUI.Button(rect, ICON_ATLAS_TYPE, GUISkin.SmallDarkButton)) {
 			OpenAtlasTypeMenu();
 		}
-		RequireTooltip?.Invoke(rect, TIP_ATLAS_TYPE);
+		RequireTooltip(rect, TIP_ATLAS_TYPE);
 		rect.SlideRight(padding);
 
 
@@ -182,7 +182,7 @@ public partial class PixelEditor {
 				PaintingColorF = newColorF;
 				PaintingColor = newColorF.ToColor32();
 			}
-			RequireTooltip?.Invoke(rect, TIP_PAINTING_COLOR);
+			RequireTooltip(rect, TIP_PAINTING_COLOR);
 		}
 
 	}
@@ -202,7 +202,7 @@ public partial class PixelEditor {
 			TryApplySliceInputFields(forceApply: true);
 			RefreshSliceInputContent();
 		}
-		RequireTooltip?.Invoke(inputRect, TIP_SLICE_NAME);
+		RequireTooltip(inputRect, TIP_SLICE_NAME);
 		rect.SlideRight(padding);
 
 		rect.x += padding;
@@ -233,7 +233,7 @@ public partial class PixelEditor {
 			TryApplySliceInputFields(forceApply: true);
 			RefreshSliceInputContent();
 		}
-		RequireTooltip?.Invoke(inputRect, TIP_SIZE_X);
+		RequireTooltip(inputRect, TIP_SIZE_X);
 		rect.SlideRight(padding);
 		inputRect.SlideRight(padding);
 
@@ -242,7 +242,7 @@ public partial class PixelEditor {
 			TryApplySliceInputFields(forceApply: true);
 			RefreshSliceInputContent();
 		}
-		RequireTooltip?.Invoke(inputRect, TIP_SIZE_Y);
+		RequireTooltip(inputRect, TIP_SIZE_Y);
 		rect.SlideRight(padding);
 		inputRect.SlideRight(padding);
 
@@ -279,7 +279,7 @@ public partial class PixelEditor {
 			SelectingAnySpriteWithoutBorder = newSASWB;
 			MakeBorderForSelection(!newSASWB);
 		}
-		RequireTooltip?.Invoke(rect, SelectingAnySpriteWithoutBorder ? TIP_ENABLE_BORDER : TIP_DISABLE_BORDER);
+		RequireTooltip(rect, SelectingAnySpriteWithoutBorder ? TIP_ENABLE_BORDER : TIP_DISABLE_BORDER);
 		rect.SlideRight(padding);
 
 		// Borders
@@ -294,7 +294,7 @@ public partial class PixelEditor {
 				TryApplySliceInputFields(forceApply: true);
 				RefreshSliceInputContent();
 			}
-			RequireTooltip?.Invoke(inputRect, TIP_BORDER_L);
+			RequireTooltip(inputRect, TIP_BORDER_L);
 			rect.SlideRight(padding);
 			inputRect.SlideRight(padding);
 
@@ -303,7 +303,7 @@ public partial class PixelEditor {
 				TryApplySliceInputFields(forceApply: true);
 				RefreshSliceInputContent();
 			}
-			RequireTooltip?.Invoke(inputRect, TIP_BORDER_R);
+			RequireTooltip(inputRect, TIP_BORDER_R);
 			rect.SlideRight(padding);
 			inputRect.SlideRight(padding);
 
@@ -312,7 +312,7 @@ public partial class PixelEditor {
 				TryApplySliceInputFields(forceApply: true);
 				RefreshSliceInputContent();
 			}
-			RequireTooltip?.Invoke(inputRect, TIP_BORDER_D);
+			RequireTooltip(inputRect, TIP_BORDER_D);
 			rect.SlideRight(padding);
 			inputRect.SlideRight(padding);
 
@@ -321,7 +321,7 @@ public partial class PixelEditor {
 				TryApplySliceInputFields(forceApply: true);
 				RefreshSliceInputContent();
 			}
-			RequireTooltip?.Invoke(inputRect, TIP_BORDER_U);
+			RequireTooltip(inputRect, TIP_BORDER_U);
 			rect.SlideRight(padding);
 
 		}
@@ -359,7 +359,7 @@ public partial class PixelEditor {
 			TryApplySliceInputFields(forceApply: true);
 			RefreshSliceInputContent();
 		}
-		RequireTooltip?.Invoke(inputRect, TIP_PIVOT_X);
+		RequireTooltip(inputRect, TIP_PIVOT_X);
 		rect.SlideRight(padding);
 		inputRect.SlideRight(padding);
 
@@ -368,7 +368,7 @@ public partial class PixelEditor {
 			TryApplySliceInputFields(forceApply: true);
 			RefreshSliceInputContent();
 		}
-		RequireTooltip?.Invoke(inputRect, TIP_PIVOT_Y);
+		RequireTooltip(inputRect, TIP_PIVOT_Y);
 		rect.SlideRight(padding);
 
 		// Final
@@ -404,7 +404,7 @@ public partial class PixelEditor {
 			TryApplySliceInputFields(forceApply: true);
 			RefreshSliceInputContent();
 		}
-		RequireTooltip?.Invoke(inputRect, TIP_Z);
+		RequireTooltip(inputRect, TIP_Z);
 		rect.SlideRight(padding);
 		inputRect.SlideRight(padding);
 
@@ -421,7 +421,7 @@ public partial class PixelEditor {
 			TryApplySliceInputFields(forceApply: true);
 			RefreshSliceInputContent();
 		}
-		RequireTooltip?.Invoke(inputRect, TIP_DURATION);
+		RequireTooltip(inputRect, TIP_DURATION);
 		rect.SlideRight(padding * 2);
 
 		// Trigger Toggle
@@ -434,14 +434,14 @@ public partial class PixelEditor {
 			SelectingAnyNonTiggerSprite = newSNTS;
 			MakeTriggerForSelection(!newSNTS);
 		}
-		RequireTooltip?.Invoke(rect, TIP_TRIGGER);
+		RequireTooltip(rect, TIP_TRIGGER);
 		rect.SlideRight(padding);
 
 		// Tag
 		if (GUI.Button(rect, ICON_TAG, GUISkin.SmallDarkButton)) {
 			OpenSpriteTagMenu();
 		}
-		RequireTooltip?.Invoke(rect, TIP_TAG);
+		RequireTooltip(rect, TIP_TAG);
 		rect.SlideRight(padding);
 
 		// Rule
@@ -454,7 +454,7 @@ public partial class PixelEditor {
 					TilingRuleModeA = null;
 				}
 			}
-			RequireTooltip?.Invoke(rect, TIP_RULE);
+			RequireTooltip(rect, TIP_RULE);
 			rect.SlideRight(padding);
 		}
 
@@ -463,7 +463,7 @@ public partial class PixelEditor {
 		if (GUI.Button(rect, ICON_DELETE_SPRITE, GUISkin.SmallDarkButton)) {
 			DeleteAllSelectingSprite();
 		}
-		RequireTooltip?.Invoke(rect, TIP_DEL_SLICE);
+		RequireTooltip(rect, TIP_DEL_SLICE);
 		rect.SlideRight(padding);
 
 		// Final
@@ -498,7 +498,7 @@ public partial class PixelEditor {
 		if (GUI.Button(rect, TilingRuleModeA.HasValue && TilingRuleModeA.Value ? ICON_RULE_MODE_A : ICON_RULE_MODE_B, GUISkin.SmallIconButton)) {
 			TilingRuleModeA = !TilingRuleModeA.HasValue || !TilingRuleModeA.Value;
 		}
-		RequireTooltip?.Invoke(rect, TIP_RULE_MODE);
+		RequireTooltip(rect, TIP_RULE_MODE);
 		rect.SlideRight();
 
 		// Prev
@@ -587,7 +587,7 @@ public partial class PixelEditor {
 					}
 				}
 				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
-				RequireTooltip?.Invoke(buttonRect, RuleNumberToTip(ruleIndex));
+				RequireTooltip(buttonRect, RuleNumberToTip(ruleIndex));
 			}
 
 			break;

@@ -60,18 +60,21 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Color32[] PALETTE_PIXELS = { new(255, 34, 0, 255), new(255, 127, 0, 255), new(255, 242, 0, 255), new(0, 255, 34, 255), new(0, 255, 255, 255), new(0, 48, 255, 255), new(126, 0, 255, 255), new(255, 0, 255, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(34, 47, 64, 255), new(44, 43, 43, 255), new(54, 47, 47, 255), new(80, 59, 59, 255), new(139, 92, 92, 255), new(114, 76, 59, 255), new(139, 105, 82, 255), new(162, 134, 105, 255), new(186, 161, 126, 255), new(25, 22, 21, 255), new(37, 29, 28, 255), new(49, 38, 35, 255), new(61, 49, 43, 255), new(28, 25, 24, 255), new(46, 38, 36, 255), new(80, 63, 57, 255), new(159, 113, 81, 255), new(119, 95, 117, 255), new(164, 114, 155, 255), new(222, 142, 203, 255), new(244, 185, 223, 255), new(84, 70, 79, 255), new(110, 86, 97, 255), new(154, 126, 134, 255), new(187, 162, 161, 255), new(68, 19, 60, 255), new(90, 27, 67, 255), new(122, 39, 78, 255), new(160, 47, 83, 255), new(67, 18, 78, 255), new(100, 25, 99, 255), new(132, 36, 115, 255), new(170, 41, 128, 255), new(67, 6, 105, 255), new(98, 8, 138, 255), new(168, 39, 194, 255), new(236, 87, 225, 255), new(43, 20, 87, 255), new(64, 26, 115, 255), new(115, 56, 161, 255), new(176, 94, 196, 255), new(29, 29, 46, 255), new(39, 38, 60, 255), new(50, 47, 74, 255), new(87, 79, 105, 255), new(46, 40, 62, 255), new(55, 44, 74, 255), new(77, 58, 100, 255), new(111, 82, 131, 255), new(14, 51, 110, 255), new(29, 83, 150, 255), new(48, 136, 198, 255), new(0, 188, 255, 255), new(23, 77, 153, 255), new(43, 128, 207, 255), new(67, 210, 255, 255), new(160, 232, 255, 255), new(37, 44, 53, 255), new(42, 61, 74, 255), new(59, 106, 118, 255), new(77, 189, 189, 255), new(41, 46, 92, 255), new(44, 63, 130, 255), new(47, 86, 164, 255), new(52, 139, 216, 255), new(18, 97, 73, 255), new(39, 115, 88, 255), new(53, 166, 102, 255), new(83, 245, 113, 255), new(23, 101, 104, 255), new(10, 143, 134, 255), new(9, 181, 161, 255), new(0, 255, 204, 255), new(33, 69, 46, 255), new(59, 115, 61, 255), new(81, 166, 58, 255), new(151, 245, 83, 255), new(48, 77, 38, 255), new(94, 115, 59, 255), new(153, 166, 58, 255), new(245, 231, 83, 255), new(157, 139, 65, 255), new(191, 174, 60, 255), new(232, 216, 42, 255), new(255, 255, 0, 255), new(66, 67, 43, 255), new(117, 119, 48, 255), new(156, 148, 39, 255), new(217, 187, 36, 255), new(143, 98, 55, 255), new(209, 136, 60, 255), new(255, 165, 50, 255), new(252, 195, 81, 255), new(114, 89, 51, 255), new(172, 129, 59, 255), new(225, 171, 48, 255), new(252, 213, 74, 255), new(120, 50, 24, 255), new(153, 80, 24, 255), new(207, 123, 60, 255), new(245, 169, 83, 255), new(115, 64, 55, 255), new(140, 86, 70, 255), new(191, 133, 92, 255), new(232, 184, 111, 255), new(146, 85, 73, 255), new(177, 122, 102, 255), new(208, 158, 131, 255), new(239, 194, 160, 255), new(140, 84, 101, 255), new(170, 108, 114, 255), new(200, 132, 128, 255), new(231, 165, 146, 255), new(168, 35, 66, 255), new(199, 58, 74, 255), new(240, 86, 86, 255), new(255, 125, 102, 255), new(117, 59, 78, 255), new(150, 75, 84, 255), new(199, 104, 99, 255), new(255, 147, 120, 255), new(77, 77, 77, 255), new(142, 144, 144, 255), new(197, 203, 205, 255), new(237, 241, 245, 255), new(94, 88, 88, 255), new(138, 129, 127, 255), new(184, 172, 167, 255), new(240, 230, 218, 255), new(0, 0, 0, 255), new(85, 85, 85, 255), new(170, 170, 170, 255), new(255, 255, 255, 255), new(50, 50, 50, 255), new(93, 93, 93, 255), new(125, 125, 125, 255), new(190, 190, 190, 255), };
 
 	// Api
-	public static PixelEditor Instance { get; private set; }
 	protected override bool BlockEvent => true;
-	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
-	public static readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
-	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", false);
-	public static readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
+	public IRect RequiringTooltipRect { get; private set; } = default;
+	public string RequiringTooltipContent { get; set; } = null;
+	public string NotificationContent { get; set; } = null;
+	public string NotificationSubContent { get; set; } = null;
+	public readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
+	public readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
+	public readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", false);
+	public readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
 
 	// Data
+	private static PixelEditor Instance;
 	private readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private readonly List<SpriteData> StagedSprites = new();
 	private readonly Dictionary<int, (string str, int index)> TagPool = new();
-	private event System.Action<IRect, string> RequireTooltip;
 	private string SheetPath = "";
 	private bool IsDirty = false;
 	private bool HoldingCtrl = false;
@@ -125,9 +128,9 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	public PixelEditor (System.Action<IRect, string> requireTooltip = null) {
+	public PixelEditor () {
 		Instance = this;
-		Instance.RequireTooltip = requireTooltip;
+		Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
 	}
 
 
@@ -149,9 +152,9 @@ public partial class PixelEditor : WindowUI {
 		Update_LeftDrag();
 		Update_RightDrag();
 		Update_Gizmos();
+		Update_Hotkey();
 		Update_Rendering();
 		Update_StageToolbar();
-		Update_Hotkey();
 	}
 
 
@@ -686,20 +689,20 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	public void SaveSheetToDisk (bool forceSave = false) {
-		if (!forceSave && !IsDirty) return;
-		IsDirty = false;
-		if (string.IsNullOrEmpty(SheetPath)) return;
-		Sheet.SaveToDisk(SheetPath);
-	}
-
-
 	#endregion
 
 
 
 
 	#region --- LGC ---
+
+
+	private void SaveSheetToDisk (bool forceSave = false) {
+		if (!forceSave && !IsDirty) return;
+		IsDirty = false;
+		if (string.IsNullOrEmpty(SheetPath)) return;
+		Sheet.SaveToDisk(SheetPath);
+	}
 
 
 	private void ResetCamera () {
@@ -896,6 +899,19 @@ public partial class PixelEditor : WindowUI {
 				size, size
 			), texture, inverse: true
 		);
+	}
+
+
+	private void RequireNotification (string content, string subContent = null) {
+		NotificationContent = content;
+		NotificationSubContent = subContent;
+	}
+
+
+	private void RequireTooltip (IRect rect, string content) {
+		if (!rect.MouseInside()) return;
+		RequiringTooltipRect = rect;
+		RequiringTooltipContent = content;
 	}
 
 

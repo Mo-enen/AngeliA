@@ -14,6 +14,7 @@ public partial class PixelEditor {
 
 	// Const
 	private const int MAX_SELECTION_SIZE = 128;
+	private static LanguageCode NOTI_SLICE_CREATED = ("Noti.SliceCreated", "Slice Created");
 
 	// Data
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
@@ -414,6 +415,7 @@ public partial class PixelEditor {
 							Create = true,
 						});
 						SetDirty();
+						RequireNotification(NOTI_SLICE_CREATED, sprite.RealName);
 					}
 				}
 				break;
@@ -1013,7 +1015,8 @@ public partial class PixelEditor {
 		int localX = pixelX - pixelRect.xMin;
 		int localY = pixelY - pixelRect.yMin;
 		var targetColor = sprite.Pixels[localY * pixelRect.width + localX];
-		if (targetColor == PaintingColor && targetColor.a == 255) return;
+		if (targetColor.a == 255 && targetColor == PaintingColor) return;
+		if (PaintingColor.a == 0 && targetColor.a == 0) return;
 		BucketCacheQueue.Clear();
 		BucketCacheHash.Clear();
 		BucketCacheQueue.Enqueue(new Int2(localX, localY));

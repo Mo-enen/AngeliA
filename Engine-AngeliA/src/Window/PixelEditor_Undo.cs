@@ -131,9 +131,9 @@ public partial class PixelEditor {
 
 
 	// Data
-	private readonly UndoRedo Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
-	private int LastGrowUndoFrame = -1;
+	private UndoRedo Undo { get; init; }
 	private AngeSprite CurrentUndoSprite;
+	private int LastGrowUndoFrame = -1;
 	private int CurrentUndoPixelIndex;
 	private IRect CurrentUndoPixelLocalRect;
 
@@ -196,58 +196,58 @@ public partial class PixelEditor {
 
 
 	// Perform
-	private static void OnUndoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, false);
+	private void OnUndoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, false);
 
 
-	private static void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, true);
+	private void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, true);
 
 
-	private static void OnUndoRedoPerformed (IUndoItem item, bool reverse) {
+	private void OnUndoRedoPerformed (IUndoItem item, bool reverse) {
 
 		switch (item) {
 
 			case PaintUndoItem paint: {
 				// Get Sprite
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					paint.SpriteID, out var sprite
 				)) break;
 				// Pixel Dirty
-				foreach (var spData in Instance.StagedSprites) {
+				foreach (var spData in StagedSprites) {
 					if (spData.Sprite.ID == paint.SpriteID) {
 						spData.PixelDirty = true;
 						break;
 					}
 				}
 				// Cache
-				Instance.CurrentUndoSprite = sprite;
-				Instance.CurrentUndoPixelIndex = reverse ? 0 : paint.LocalPixelRect.width * paint.LocalPixelRect.height - 1;
-				Instance.CurrentUndoPixelLocalRect = paint.LocalPixelRect;
+				CurrentUndoSprite = sprite;
+				CurrentUndoPixelIndex = reverse ? 0 : paint.LocalPixelRect.width * paint.LocalPixelRect.height - 1;
+				CurrentUndoPixelLocalRect = paint.LocalPixelRect;
 			}
 			break;
 
 			case PixelUndoItem pixel: {
-				var sprite = Instance.CurrentUndoSprite;
+				var sprite = CurrentUndoSprite;
 				if (sprite == null) break;
-				int i = Instance.CurrentUndoPixelIndex;
-				var pixRect = Instance.CurrentUndoSprite.PixelRect;
-				var paintRect = Instance.CurrentUndoPixelLocalRect;
+				int i = CurrentUndoPixelIndex;
+				var pixRect = CurrentUndoSprite.PixelRect;
+				var paintRect = CurrentUndoPixelLocalRect;
 				int pixX = paintRect.x + i % paintRect.width;
 				int pixY = paintRect.y + i / paintRect.width;
 				int pixIndex = pixY * pixRect.width + pixX;
 				sprite.Pixels[pixIndex] = reverse ? pixel.To : pixel.From;
-				Instance.CurrentUndoPixelIndex += reverse ? 1 : -1;
+				CurrentUndoPixelIndex += reverse ? 1 : -1;
 				break;
 			}
 
 			case IndexedPixelUndoItem iPixel: {
-				var sprite = Instance.CurrentUndoSprite;
+				var sprite = CurrentUndoSprite;
 				if (sprite == null) break;
 				sprite.Pixels[iPixel.LocalPixelIndex] = reverse ? iPixel.To : iPixel.From;
 				break;
 			}
 
 			case MoveSliceUndoItem move: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					move.SpriteID, out var sprite
 				)) break;
 				sprite.PixelRect.x = reverse ? move.To.x : move.From.x;
@@ -259,8 +259,8 @@ public partial class PixelEditor {
 				bool create = spriteObj.Create == reverse;
 				if (create) {
 					var newSprite = spriteObj.Sprite.CreateCopy();
-					Instance.Sheet.AddSprite(newSprite);
-					Instance.StagedSprites.Add(new SpriteData() {
+					Sheet.AddSprite(newSprite);
+					StagedSprites.Add(new SpriteData() {
 						Sprite = newSprite,
 						PixelDirty = true,
 						Selecting = false,
@@ -268,10 +268,10 @@ public partial class PixelEditor {
 					});
 				} else {
 					int id = spriteObj.Sprite.ID;
-					int index = Instance.Sheet.IndexOfSprite(id);
+					int index = Sheet.IndexOfSprite(id);
 					if (index < 0) break;
-					Instance.Sheet.RemoveSprite(index);
-					var staged = Instance.StagedSprites;
+					Sheet.RemoveSprite(index);
+					var staged = StagedSprites;
 					for (int i = 0; i < staged.Count; i++) {
 						if (staged[i].Sprite.ID == id) {
 							staged.RemoveAt(i);
@@ -283,7 +283,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteTriggerUndoItem trigger: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					trigger.SpriteID, out var sprite
 				)) break;
 				sprite.IsTrigger = reverse ? trigger.To : !trigger.To;
@@ -292,7 +292,7 @@ public partial class PixelEditor {
 
 
 			case SpriteBorderUndoItem border: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					border.SpriteID, out var sprite
 				)) break;
 				sprite.GlobalBorder = reverse ? border.To : border.From;
@@ -300,7 +300,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteRuleUndoItem rule: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					rule.SpriteID, out var sprite
 				)) break;
 				sprite.Rule = reverse ? rule.To : rule.From;
@@ -308,7 +308,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteTagUndoItem tag: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					tag.SpriteID, out var sprite
 				)) break;
 				sprite.Tag = reverse ? tag.To : tag.From;
@@ -316,7 +316,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteNameUndoItem name: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					name.SpriteID, out var sprite
 				)) break;
 				sprite.RealName = reverse ? name.To : name.From;
@@ -324,7 +324,7 @@ public partial class PixelEditor {
 			}
 
 			case SpritePivotUndoItem pivot: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					pivot.SpriteID, out var sprite
 				)) break;
 				if (pivot.X) {
@@ -336,7 +336,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteZUndoItem z: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					z.SpriteID, out var sprite
 				)) break;
 				sprite.LocalZ = reverse ? z.To : z.From;
@@ -344,7 +344,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteDurationUndoItem duration: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					duration.SpriteID, out var sprite
 				)) break;
 				sprite.Duration = reverse ? duration.To : duration.From;
@@ -352,12 +352,12 @@ public partial class PixelEditor {
 			}
 
 			case SpriteRectUndoItem spRect: {
-				if (!Instance.Sheet.SpritePool.TryGetValue(
+				if (!Sheet.SpritePool.TryGetValue(
 					spRect.SpriteID, out var sprite
 				)) break;
 				sprite.ResizePixelRect(reverse ? spRect.To : spRect.From, false, out _);
 				// Pixel Dirty
-				foreach (var spData in Instance.StagedSprites) {
+				foreach (var spData in StagedSprites) {
 					if (spData.Sprite.ID == sprite.ID) {
 						spData.PixelDirty = true;
 						break;
@@ -368,7 +368,7 @@ public partial class PixelEditor {
 
 		}
 
-		Instance.SetDirty();
+		SetDirty();
 
 	}
 

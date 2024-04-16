@@ -23,6 +23,7 @@ public class EngineSetting {
 	public string LastOpenProject = "";
 	public bool OpenLastProjectOnStart = false;
 	public bool UseTooltip = true;
+	public bool UseNotification = true;
 	public List<ProjectData> Projects = new();
 
 	public void RefreshProjectFileExistsCache () {

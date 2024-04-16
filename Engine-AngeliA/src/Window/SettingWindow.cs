@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using AngeliA;
 
-
 namespace AngeliaEngine;
 
 [RequireLanguageFromField]
@@ -24,10 +23,22 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
 	private static readonly LanguageCode LABEL_ONLY_SPRITE_ON_OPTION = ("Setting.ASAOOHOK", "Only Modify Spirte on Holding Ctrl");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
+	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
+
+	// Api
+	public bool OpenLastProjectOnStart { get; set; }
+	public bool UseTooltip { get; set; }
+	public bool UseNotification { get; set; }
+	public Color32 BackgroundColor { get; set; }
+	public Color32 BackgroundColor_Default { get; set; }
+	public Color32 CanvasBackgroundColor { get; set; }
+	public Color32 CanvasBackgroundColor_Default { get; set; }
+	public bool SolidPaintingPreview { get; set; }
+	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
+	public ColorF PixEditor_BackgroundColor { get; set; }
+	public ColorF PixEditor_CanvasBackgroundColor { get; set; }
 
 	// Data
-	private ColorF PixEditor_BackgroundColor;
-	private ColorF PixEditor_CanvasBackgroundColor;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
 
@@ -38,13 +49,6 @@ public class SettingWindow : WindowUI {
 
 
 	#region --- MSG ---
-
-
-	public override void OnActivated () {
-		base.OnActivated();
-		PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
-		PixEditor_CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value.ToColorF();
-	}
 
 
 	public override void UpdateWindowUI () {
@@ -82,15 +86,22 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		// Open Last Project on Start
-		Engine.OpenLastProjectOnStart = GUI.Toggle(
-			rect, Engine.OpenLastProjectOnStart, LABEL_OPEN_LAST_PROJECT_ON_START,
+		OpenLastProjectOnStart = GUI.Toggle(
+			rect, OpenLastProjectOnStart, LABEL_OPEN_LAST_PROJECT_ON_START,
 			labelStyle: GUISkin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Use Tooltip
-		Engine.UseTooltip = GUI.Toggle(
-			rect, Engine.UseTooltip, LABEL_USE_TOOLTIP,
+		UseTooltip = GUI.Toggle(
+			rect, UseTooltip, LABEL_USE_TOOLTIP,
+			labelStyle: GUISkin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Use Notification
+		UseNotification = GUI.Toggle(
+			rect, UseNotification, LABEL_USE_NOTI,
 			labelStyle: GUISkin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
@@ -112,9 +123,9 @@ public class SettingWindow : WindowUI {
 			rect,
 			label: LABEL_PE_BG_COLOR,
 			labelStyle: GUISkin.SmallLabel,
-			defaultColor: PixelEditor.BackgroundColor.DefaultValue.ToColorF()
+			defaultColor: BackgroundColor_Default.ToColorF()
 		);
-		PixelEditor.BackgroundColor.Value = PixEditor_BackgroundColor.ToColor32();
+		BackgroundColor = PixEditor_BackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
 
 		// Canvas Background Color
@@ -123,21 +134,21 @@ public class SettingWindow : WindowUI {
 			rect,
 			label: LABEL_PE_CANVAS_COLOR,
 			labelStyle: GUISkin.SmallLabel,
-			defaultColor: PixelEditor.CanvasBackgroundColor.DefaultValue.ToColorF()
+			defaultColor: CanvasBackgroundColor_Default.ToColorF()
 		);
-		PixelEditor.CanvasBackgroundColor.Value = PixEditor_CanvasBackgroundColor.ToColor32();
+		CanvasBackgroundColor = PixEditor_CanvasBackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
 
 		// Solid Painting Preview
-		PixelEditor.SolidPaintingPreview.Value = GUI.Toggle(
-			rect, PixelEditor.SolidPaintingPreview.Value, LABEL_PE_SOLID_PAINTING,
+		SolidPaintingPreview = GUI.Toggle(
+			rect, SolidPaintingPreview, LABEL_PE_SOLID_PAINTING,
 			labelStyle: GUISkin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Allow Spirte Action Only On Holding Option Key
-		PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = GUI.Toggle(
-			rect, PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value, LABEL_ONLY_SPRITE_ON_OPTION,
+		AllowSpirteActionOnlyOnHoldingOptionKey = GUI.Toggle(
+			rect, AllowSpirteActionOnlyOnHoldingOptionKey, LABEL_ONLY_SPRITE_ON_OPTION,
 			labelStyle: GUISkin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
