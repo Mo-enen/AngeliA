@@ -258,7 +258,7 @@ public partial class PixelEditor {
 
 		// Func
 		static void DeleteAtlasConfirm () {
-			var atlasList = Instance.Sheet.Atlas;
+			var atlasList = Sheet.Atlas;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (atlasList.Count <= 1) return;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
@@ -270,45 +270,45 @@ public partial class PixelEditor {
 			GenericDialogUI.SetItemTint(Color32.RED_BETTER);
 		}
 		static void DeleteAtlas () {
-			var atlasList = Instance.Sheet.Atlas;
+			var atlasList = Sheet.Atlas;
 			if (atlasList.Count <= 1) return;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 			int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
-			Instance.Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
+			Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
 			Instance.SetDirty();
 			Instance.CurrentAtlasIndex = -1;
 			Instance.SetCurrentAtlas(newSelectingAtlasIndex, forceChange: true);
 		}
 		static void MoveTop () {
-			var atlasList = Instance.Sheet.Atlas;
+			var atlasList = Sheet.Atlas;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
-			Instance.Sheet.MoveAtlas(targetIndex, 0);
+			Sheet.MoveAtlas(targetIndex, 0);
 			Instance.SetDirty();
 			Instance.SetCurrentAtlas(0, forceChange: true, resetUndo: false);
 		}
 		static void MoveUp () {
-			var atlasList = Instance.Sheet.Atlas;
+			var atlasList = Sheet.Atlas;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 1 || targetIndex >= atlasList.Count) return;
-			Instance.Sheet.MoveAtlas(targetIndex, targetIndex - 1);
+			Sheet.MoveAtlas(targetIndex, targetIndex - 1);
 			Instance.SetDirty();
 			Instance.SetCurrentAtlas(targetIndex - 1, forceChange: true, resetUndo: false);
 		}
 		static void MoveDown () {
-			var atlasList = Instance.Sheet.Atlas;
+			var atlasList = Sheet.Atlas;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count - 1) return;
-			Instance.Sheet.MoveAtlas(targetIndex, targetIndex + 1);
+			Sheet.MoveAtlas(targetIndex, targetIndex + 1);
 			Instance.SetDirty();
 			Instance.SetCurrentAtlas(targetIndex + 1, forceChange: true, resetUndo: false);
 		}
 		static void MoveBottom () {
-			var atlasList = Instance.Sheet.Atlas;
+			var atlasList = Sheet.Atlas;
 			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
-			Instance.Sheet.MoveAtlas(targetIndex, atlasList.Count - 1);
+			Sheet.MoveAtlas(targetIndex, atlasList.Count - 1);
 			Instance.SetDirty();
 			Instance.SetCurrentAtlas(atlasList.Count - 1, forceChange: true, resetUndo: false);
 		}
@@ -325,7 +325,7 @@ public partial class PixelEditor {
 		static void ImportAtlas (string path) {
 			if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
 			string ext = Util.GetExtension(path);
-			var sheet = Instance.Sheet;
+			var sheet = Sheet;
 			if (ext == ".png") {
 				// PNG
 				var texture = Game.PngBytesToTexture(Util.FileToByte(path));
@@ -363,7 +363,7 @@ public partial class PixelEditor {
 		});
 		SetDirty();
 		AtlasPanelScrollY = int.MaxValue;
-		SetCurrentAtlas(Instance.Sheet.Atlas.Count - 1);
+		SetCurrentAtlas(Sheet.Atlas.Count - 1);
 		CreateSpriteForPalette(useDefaultPos: true);
 	}
 

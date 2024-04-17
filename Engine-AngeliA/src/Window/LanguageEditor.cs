@@ -44,8 +44,6 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
 
 	// Api
-	public static LanguageEditor Instance { get; private set; }
-	public static bool IsActived => Instance != null && Instance.Active;
 	public string LanguageRoot { get; private set; } = "";
 	public bool IgnoreRequirements { get; init; } = false;
 
@@ -54,7 +52,6 @@ public partial class LanguageEditor : WindowUI {
 	private readonly List<LanguageLine> Lines = new();
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
-	private bool IsDirty = false;
 
 
 	#endregion
@@ -66,7 +63,6 @@ public partial class LanguageEditor : WindowUI {
 
 
 	public LanguageEditor (bool ignoreRequirements = false) {
-		Instance = this;
 		IgnoreRequirements = ignoreRequirements;
 	}
 
@@ -85,12 +81,6 @@ public partial class LanguageEditor : WindowUI {
 		base.OnActivated();
 		ScrollY = 0;
 		SearchingText = string.Empty;
-	}
-
-
-	public override void OnInactivated () {
-		base.OnInactivated();
-		Save();
 	}
 
 
@@ -120,6 +110,10 @@ public partial class LanguageEditor : WindowUI {
 
 		Update_Bar(cameraRect.EdgeInside(Direction4.Up, Unify(84)));
 		Update_Content(cameraRect.EdgeInside(Direction4.Down, cameraRect.height - Unify(84)));
+
+		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl) && Input.KeyboardDown(KeyboardKey.S)) {
+			Save();
+		}
 	}
 
 
@@ -313,11 +307,8 @@ public partial class LanguageEditor : WindowUI {
 	#region --- API ---
 
 
-	public void SetDirty (bool dirty = true) => IsDirty = dirty;
-
-
-	public void Save (bool forceSave = false) {
-		if (forceSave || IsDirty) SetDirty(false);
+	public override void Save (bool forceSave = false) {
+		if (forceSave || IsDirty) IsDirty = false;
 		if (Lines.Count == 0 || string.IsNullOrEmpty(LanguageRoot)) return;
 		var list = new List<KeyValuePair<string, string>>();
 		for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
@@ -342,7 +333,7 @@ public partial class LanguageEditor : WindowUI {
 
 	private void Load (string languageRoot) {
 
-		SetDirty(false);
+		IsDirty = false;
 		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;
 		Lines.Clear();
 

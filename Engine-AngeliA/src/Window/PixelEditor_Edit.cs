@@ -14,7 +14,7 @@ public partial class PixelEditor {
 
 	// Const
 	private const int MAX_SELECTION_SIZE = 128;
-	private static LanguageCode NOTI_SLICE_CREATED = ("Noti.SliceCreated", "Slice Created");
+	private static readonly LanguageCode NOTI_SLICE_CREATED = ("Noti.SliceCreated", "Slice Created");
 
 	// Data
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
@@ -550,9 +550,6 @@ public partial class PixelEditor {
 
 
 	#region --- LGC ---
-
-
-	private void SetDirty () => IsDirty = true;
 
 
 	private void DrawMovingSprites () {

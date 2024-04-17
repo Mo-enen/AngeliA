@@ -153,7 +153,6 @@ public sealed partial class MapEditor : WindowUI {
 	private bool Initialized = false;
 	private bool PlayingGame = false;
 	private bool IsNavigating = false;
-	private bool IsDirty = false;
 	private bool DroppingPlayer = false;
 	private bool TaskingRoute = false;
 	private bool CtrlHolding = false;
@@ -1061,6 +1060,13 @@ public sealed partial class MapEditor : WindowUI {
 	#region --- LGC ---
 
 
+	public override void Save (bool forceSave = false) {
+		if (PlayingGame) return;
+		IsDirty = false;
+		Stream?.SaveAllDirty();
+	}
+
+
 	private void SetEditorMode (bool toPlayMode) {
 
 		if (toPlayMode && Game.GlobalFrame != 0) Save();
@@ -1136,13 +1142,6 @@ public sealed partial class MapEditor : WindowUI {
 		PlayerDropPos.z = 0;
 		SelectionUnitRect = null;
 		DraggingUnitRect = null;
-	}
-
-
-	private void Save () {
-		if (PlayingGame) return;
-		IsDirty = false;
-		Stream?.SaveAllDirty();
 	}
 
 

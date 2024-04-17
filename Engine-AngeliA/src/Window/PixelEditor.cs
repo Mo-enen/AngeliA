@@ -72,11 +72,10 @@ public partial class PixelEditor : WindowUI {
 
 	// Data
 	private static PixelEditor Instance;
-	private readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
+	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
+	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
-	private readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private string SheetPath = "";
-	private bool IsDirty = false;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
 	private bool HoldingShift = false;
@@ -87,7 +86,7 @@ public partial class PixelEditor : WindowUI {
 	private int SelectingSpriteCount = 0;
 	private int ZoomLevel = 1;
 	private int GizmosThickness = 1;
-	private object PixelBufferGizmosTexture;
+	private object PixelBufferGizmosTexture = null;
 	private Int2 MousePixelPos;
 	private Int2 MousePixelPosRound;
 	private FRect CanvasRect;
@@ -108,11 +107,10 @@ public partial class PixelEditor : WindowUI {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-		Instance.PixelBufferGizmosTexture = Game.GetTextureFromPixels(Instance.PixelBuffer, MAX_SELECTION_SIZE, MAX_SELECTION_SIZE);
-		Renderer.AddAltSheet(Instance.Sheet);
-		Instance.TagPool.Clear();
+		Renderer.AddAltSheet(Sheet);
+		TagPool.Clear();
 		for (int i = 0; i < SpriteTag.COUNT; i++) {
-			Instance.TagPool.TryAdd(SpriteTag.ALL_TAGS[i], (SpriteTag.ALL_TAGS_STRING[i], i));
+			TagPool.TryAdd(SpriteTag.ALL_TAGS[i], (SpriteTag.ALL_TAGS_STRING[i], i));
 		}
 		// Atlas Type Names
 		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
@@ -122,21 +120,9 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	[OnGameQuitting]
-	internal static void OnGameQuitting_PixelEditor () {
-		Game.UnloadTexture(Instance.PixelBufferGizmosTexture);
-	}
-
-
 	public PixelEditor () {
 		Instance = this;
 		Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
-	}
-
-
-	public override void OnInactivated () {
-		base.OnInactivated();
-		SaveSheetToDisk();
 	}
 
 
@@ -166,6 +152,7 @@ public partial class PixelEditor : WindowUI {
 		bool dragging = DraggingStateLeft != DragStateLeft.None && DraggingStateRight != DragStateRight.None;
 		var mousePos = Input.MouseGlobalPosition;
 
+		PixelBufferGizmosTexture ??= Game.GetTextureFromPixels(PixelBuffer, MAX_SELECTION_SIZE, MAX_SELECTION_SIZE);
 		GizmosThickness = Unify(1);
 		HoveringResizeDirection = null;
 		SelectingSpriteCount = 0;
@@ -181,7 +168,7 @@ public partial class PixelEditor : WindowUI {
 		HoldingCtrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
 		HoldingAlt = Input.KeyboardHolding(KeyboardKey.LeftAlt);
 		HoldingShift = Input.KeyboardHolding(KeyboardKey.LeftShift);
-		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.Instance.Active;
+		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.ShowingBrowser;
 		HoveringResizeForBorder = false;
 		RuleEditorRect = OpeningTilingRuleEditor ? StageRect.CornerInside(Alignment.TopRight, Unify(200), Unify(250)) : default;
 		LastPixelSelectionPixelRect = PixelSelectionPixelRect != default ? PixelSelectionPixelRect : LastPixelSelectionPixelRect;
@@ -614,7 +601,7 @@ public partial class PixelEditor : WindowUI {
 			}
 			// Ctrl + S
 			if (Input.KeyboardDown(KeyboardKey.S)) {
-				SaveSheetToDisk();
+				Save();
 			}
 			// Ctrl + C
 			if (Input.KeyboardDown(KeyboardKey.C)) {
@@ -689,20 +676,20 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	public override void Save (bool forceSave = false) {
+		if (!forceSave && !IsDirty) return;
+		IsDirty = false;
+		if (string.IsNullOrEmpty(SheetPath)) return;
+		Sheet.SaveToDisk(SheetPath);
+	}
+
+
 	#endregion
 
 
 
 
 	#region --- LGC ---
-
-
-	private void SaveSheetToDisk (bool forceSave = false) {
-		if (!forceSave && !IsDirty) return;
-		IsDirty = false;
-		if (string.IsNullOrEmpty(SheetPath)) return;
-		Sheet.SaveToDisk(SheetPath);
-	}
 
 
 	private void ResetCamera () {
@@ -780,8 +767,13 @@ public partial class PixelEditor : WindowUI {
 
 
 	private void DrawRendererFrame (IRect stageRect, Color32 color, int thickness) {
-		Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
-		Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+		if (color.a < 255) {
+			Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
+			Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+		} else {
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+		}
 		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z: int.MaxValue);
 		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z: int.MaxValue);
 	}

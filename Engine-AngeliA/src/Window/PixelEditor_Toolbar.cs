@@ -700,7 +700,7 @@ public partial class PixelEditor {
 		static void OnClick () {
 			int index = GenericPopupUI.Instance.InvokingItemIndex;
 			int currentAtlasIndex = Instance.CurrentAtlasIndex;
-			var atlasList = Instance.Sheet.Atlas;
+			var atlasList = Sheet.Atlas;
 			if (index < 0 || index >= ATLAS_TYPE_COUNT) return;
 			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
 			var atlas = atlasList[currentAtlasIndex];

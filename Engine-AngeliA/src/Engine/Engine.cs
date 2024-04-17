@@ -15,9 +15,6 @@ internal static class Engine {
 	#region --- VAR ---
 
 
-	// SUB
-	private enum WindowMode { Window, ConfirmQuit, }
-
 	// Const
 	private static int WINDOW_UI_COUNT = 2;
 	private const int HUB_PANEL_WIDTH = 360;
@@ -42,10 +39,11 @@ internal static class Engine {
 	private static readonly PixelEditor PixelEditor = new();
 	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
 	private static readonly SettingWindow SettingWindow = new();
+	private static readonly FileBrowserUI FileBrowser = new() { Active = false, };
 	private static readonly EntityUI[] ALL_UI = {
 		new GenericPopupUI() { Active = false, },
 		new GenericDialogUI() { Active = false, },
-		new FileBrowserUI() { Active = false, },
+		FileBrowser,
 		PixelEditor,
 		LanguageEditor,
 		SettingWindow,
@@ -53,22 +51,18 @@ internal static class Engine {
 
 	// Data
 	private static Project CurrentProject = null;
-	private static readonly GUIStyle ConfirmMsgStyle = new(GUISkin.CenterLabel) { CharSize = 18 };
-	private static readonly GUIStyle ConfirmBtnStyle = new(GUISkin.DarkButton) { CharSize = 18 };
 	private static readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
 	private static readonly GUIStyle NotificationLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.MidRight, };
 	private static readonly GUIStyle NotificationSubLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.MidRight, };
 	private static EngineSetting EngineSetting;
-	private static WindowMode CurrentWindowMode;
 	private static IRect ToolLabelRect;
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
-	private static bool SettingInitialized = false;
 	private static string ToolLabel = null;
-	private static int NotificationStartFrame = int.MinValue;
 	private static string NotificationContent = null;
 	private static string NotificationSubContent = null;
+	private static int NotificationStartFrame = int.MinValue;
 
 
 	#endregion
@@ -83,7 +77,12 @@ internal static class Engine {
 	internal static void OnGameInitialize () {
 		EngineSetting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
 		EngineSetting.RefreshProjectFileExistsCache();
-		SwitchWindowMode(WindowMode.Window);
+		if (EngineSetting.Maximize) {
+			Game.IsWindowMaximized = EngineSetting.Maximize;
+		} else {
+			Game.SetWindowPosition(EngineSetting.WindowPositionX, EngineSetting.WindowPositionY);
+			Game.SetWindowSize(EngineSetting.WindowSizeX, EngineSetting.WindowSizeY);
+		}
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 		Game.SetEventWaiting(false);
@@ -99,17 +98,43 @@ internal static class Engine {
 
 	[OnGameTryingToQuit]
 	internal static bool OnGameTryingToQuit () {
-		if (CurrentWindowMode != WindowMode.ConfirmQuit) {
-			SwitchWindowMode(WindowMode.ConfirmQuit);
-			return false;
+		if (PixelEditor.IsDirty || LanguageEditor.IsDirty) {
+			GenericDialogUI.SpawnDialog_Button(
+				QUIT_MSG,
+				BuiltInText.UI_SAVE, SaveAndQuit,
+				BuiltInText.UI_DONT_SAVE, Game.QuitApplication,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
 		} else {
-			return true;
+			GenericDialogUI.SpawnDialog_Button(
+				QUIT_MSG,
+				BuiltInText.UI_QUIT, Game.QuitApplication,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+			GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+		}
+		return false;
+		// Func
+		static void SaveAndQuit () {
+			if (PixelEditor.IsDirty) {
+				PixelEditor.Save(true);
+			}
+			if (LanguageEditor.IsDirty) {
+				LanguageEditor.Save(true);
+			}
+			Game.QuitApplication();
 		}
 	}
 
 
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
+		var windowPos = Game.GetWindowPosition();
+		EngineSetting.Maximize = Game.IsWindowMaximized;
+		EngineSetting.WindowSizeX = Game.ScreenWidth;
+		EngineSetting.WindowSizeY = Game.ScreenHeight;
+		EngineSetting.WindowPositionX = windowPos.x;
+		EngineSetting.WindowPositionY = windowPos.y;
 		JsonUtil.SaveJson(EngineSetting, AngePath.PersistentDataPath, prettyPrint: true);
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
 	}
@@ -131,27 +156,19 @@ internal static class Engine {
 		GUI.Enable = true;
 		GUI.UnifyBasedOnMonitor = true;
 		Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255));
-		switch (CurrentWindowMode) {
-			case WindowMode.Window:
-				if (CurrentProject == null) {
-					OnGUI_Hub();
-				} else {
-					OnGUI_Window();
-				}
-				OnGUI_Tooltip();
-				OnGUI_Notify();
-				break;
-			case WindowMode.ConfirmQuit:
-				OnGUI_ConfirmQuit();
-				break;
-		}
 
-		// Clamp Window Pos
-		if (Game.IsWindowDecorated) {
-			var windowPos = Game.GetWindowPosition();
-			if (windowPos.y < 24) {
-				Game.SetWindowPosition(windowPos.x, 24);
-			}
+		if (CurrentProject == null) {
+			OnGUI_Hub();
+		} else {
+			OnGUI_Window();
+		}
+		OnGUI_Tooltip();
+		OnGUI_Notify();
+
+		//var windowPos = Game.GetWindowPosition();
+		var windowPos = Game.GetWindowPosition();
+		if (windowPos.y < 24) {
+			Game.SetWindowPosition(windowPos.x, 24);
 		}
 
 	}
@@ -181,10 +198,9 @@ internal static class Engine {
 		}
 
 		// --- File Browser ---
-		var browser = FileBrowserUI.Instance;
-		if (browser.Active) {
-			browser.Width = GUI.Unify(800);
-			browser.Height = GUI.Unify(600);
+		if (FileBrowser.Active) {
+			FileBrowser.Width = GUI.Unify(800);
+			FileBrowser.Height = GUI.Unify(600);
 		}
 
 		using (Scope.RendererLayerUI()) {
@@ -404,7 +420,18 @@ internal static class Engine {
 
 				// Icon
 				int iconSize = contentRect.height;
-				Renderer.Draw(window.TypeID, contentRect.EdgeInside(Direction4.Left, iconSize));
+				var iconRect = contentRect.EdgeInside(Direction4.Left, iconSize);
+				Renderer.Draw(window.TypeID, iconRect);
+
+				// Dirty Mark
+				if (window.IsDirty) {
+					int markSize = GUI.Unify(10);
+					Renderer.Draw(
+						BuiltInSprite.CIRCLE_16,
+						new IRect(iconRect.xMax - markSize / 2, iconRect.yMax - markSize / 2, markSize, markSize),
+						Color32.ORANGE_BETTER
+					);
+				}
 
 				// Label
 				if (EngineSetting.FullsizeMenu) {
@@ -523,7 +550,7 @@ internal static class Engine {
 			ToolLabel = null;
 			return;
 		}
-		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog || FileBrowserUI.Instance.Active) return;
+		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog || FileBrowser.Active) return;
 		var cameraRect = Renderer.CameraRect;
 		int endIndex = Renderer.GetTextUsedCellCount();
 		bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
@@ -578,35 +605,6 @@ internal static class Engine {
 	}
 
 
-	// Confirm Quit
-	private static void OnGUI_ConfirmQuit () {
-
-		var cameraRect = Renderer.CameraRect;
-		int buttonHeight = GUI.Unify(64);
-		int btnPadding = GUI.Unify(8);
-
-		// MSG 
-		GUI.Label(
-			cameraRect.EdgeInside(Direction4.Up, cameraRect.height - buttonHeight).Shrink(GUI.Unify(8)),
-			QUIT_MSG, ConfirmMsgStyle
-		);
-
-		// Buttons 
-		var rect = new IRect(cameraRect.x, 0, cameraRect.width / 2, buttonHeight);
-		using (Scope.GUIBodyColor(Color32.RED_BETTER)) {
-			if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_QUIT, ConfirmBtnStyle)) {
-				Game.QuitApplication();
-			}
-		}
-
-		rect.x += rect.width;
-		if (GUI.Button(rect.Shrink(btnPadding), BuiltInText.UI_CANCEL, ConfirmBtnStyle)) {
-			SwitchWindowMode(WindowMode.Window);
-		}
-
-	}
-
-
 	#endregion
 
 
@@ -628,69 +626,6 @@ internal static class Engine {
 
 
 	#region --- LGC ---
-
-
-	private static void SwitchWindowMode (WindowMode newMode) {
-
-		// Cache
-		if (SettingInitialized && CurrentWindowMode == WindowMode.Window) {
-			var windowPos = Game.GetWindowPosition();
-			EngineSetting.Maximize = Game.IsWindowMaximized;
-			EngineSetting.WindowSizeX = Game.ScreenWidth;
-			EngineSetting.WindowSizeY = Game.ScreenHeight;
-			EngineSetting.WindowPositionX = windowPos.x;
-			EngineSetting.WindowPositionY = windowPos.y;
-		}
-		SettingInitialized = true;
-
-		Input.UseAllHoldingKeys();
-
-		// Set
-		int targetWindowWidth = Game.ScreenWidth;
-		int targetWindowHeight = Game.ScreenHeight;
-		int minWindowSize = Game.MonitorHeight / 5;
-		switch (newMode) {
-			case WindowMode.Window: {
-				// Window
-				Game.IsWindowDecorated = true;
-				Game.IsWindowTopmost = false;
-				Game.IsWindowResizable = true;
-				if (EngineSetting.Maximize) {
-					Game.SetWindowPosition(0, 0);
-					targetWindowWidth = Game.MonitorWidth;
-					targetWindowHeight = Game.MonitorHeight;
-					Game.IsWindowMaximized = true;
-				} else {
-					Game.SetWindowPosition(EngineSetting.WindowPositionX, EngineSetting.WindowPositionY.GreaterOrEquel(24));
-					targetWindowWidth = EngineSetting.WindowSizeX;
-					targetWindowHeight = EngineSetting.WindowSizeY;
-					Game.IsWindowMaximized = false;
-				}
-				break;
-			}
-			case WindowMode.ConfirmQuit: {
-				// ConfirmQuit
-				Game.IsWindowDecorated = true;
-				Game.IsWindowTopmost = false;
-				Game.IsWindowResizable = false;
-				int monitor = Game.CurrentMonitor;
-				int monitorWidth = Game.GetMonitorWidth(monitor);
-				int monitorHeight = Game.GetMonitorHeight(monitor);
-				int width = monitorHeight * 5 / 10;
-				int height = monitorHeight * 2 / 10;
-				targetWindowWidth = width;
-				targetWindowHeight = height;
-				Game.SetWindowPosition((monitorWidth - width) / 2, (monitorHeight - height) / 2);
-				break;
-			}
-		}
-		Game.SetWindowMinSize(minWindowSize);
-		Game.SetWindowSize(
-			targetWindowWidth.GreaterOrEquel(minWindowSize),
-			targetWindowHeight.GreaterOrEquel(minWindowSize)
-		);
-		CurrentWindowMode = newMode;
-	}
 
 
 	private static void OpenHubItemPopup (int index) {
@@ -734,7 +669,7 @@ internal static class Engine {
 		if (!Project.IsValidProjectPath(projectPath)) return;
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
 		CurrentProject = new Project(projectPath);
-		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
+		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		Game.SetWindowTitle($"{Game.DisplayTitle} - {Util.GetNameWithoutExtension(projectPath)}");
 		EngineSetting.LastOpenProject = projectPath;
@@ -749,7 +684,7 @@ internal static class Engine {
 				ui.OnInactivated();
 			}
 		}
-		LanguageEditor.Instance.SetLanguageRoot("");
+		LanguageEditor.SetLanguageRoot("");
 		PixelEditor.LoadSheetFromDisk("");
 		Game.SetWindowTitle(Game.DisplayTitle);
 	}

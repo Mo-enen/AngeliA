@@ -12,6 +12,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	// Api
 	public virtual IRect BackgroundRect => Rect;
 	public static IRect WindowRect { get; private set; }
+	public bool IsDirty { get; protected set; } = false;
 
 	// Data
 	private static int UpdatedFrame = -1;
@@ -74,5 +75,10 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 		WindowRectOverrideFrame = Game.PauselessFrame;
 		WindowRect = newRect;
 	}
+
+	public void SetDirty () => IsDirty = true;
+
+	public virtual void Save (bool forceSave = false) { }
+
 
 }
