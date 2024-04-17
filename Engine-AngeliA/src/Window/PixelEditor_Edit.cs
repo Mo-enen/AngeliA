@@ -15,6 +15,7 @@ public partial class PixelEditor {
 	// Const
 	private const int MAX_SELECTION_SIZE = 128;
 	private static readonly LanguageCode NOTI_SLICE_CREATED = ("Noti.SliceCreated", "Slice Created");
+	private static readonly LanguageCode NOTI_PAINT_IN_SPRITE = ("Noti.PaintInSprite", "Only paint in a sprite");
 
 	// Data
 	private readonly List<AngeSprite> SpriteCopyBuffer = new();
@@ -285,6 +286,7 @@ public partial class PixelEditor {
 		switch (DraggingStateLeft) {
 
 			case DragStateLeft.Paint:
+				bool painted = false;
 				if (HoldingShift) {
 					// Paint Line
 					var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
@@ -292,11 +294,14 @@ public partial class PixelEditor {
 					foreach (var pixelRect in Util.DrawLineWithRect_DDA(
 						startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
 					)) {
-						PaintPixel(pixelRect, PaintingColor);
+						PaintPixel(pixelRect, PaintingColor, out painted);
 					}
 				} else {
 					// Paint Rect
-					PaintPixel(DraggingPixelRectLeft, PaintingColor);
+					PaintPixel(DraggingPixelRectLeft, PaintingColor, out painted);
+				}
+				if (!painted) {
+					RequireNotification(NOTI_PAINT_IN_SPRITE);
 				}
 				break;
 
@@ -948,7 +953,8 @@ public partial class PixelEditor {
 	}
 
 
-	private void PaintPixel (IRect _pixelRange, Color32 targetColor) {
+	private void PaintPixel (IRect _pixelRange, Color32 targetColor, out bool painted) {
+		painted = false;
 		for (int spriteIndex = 0; spriteIndex < StagedSprites.Count; spriteIndex++) {
 			var paintingSpData = StagedSprites[spriteIndex];
 			var paintingSprite = paintingSpData.Sprite;
@@ -965,6 +971,7 @@ public partial class PixelEditor {
 				SpriteID = paintingSprite.ID,
 				LocalPixelRect = localRect,
 			});
+			painted = true;
 			if (targetColor.a != 0) {
 				// Paint
 				for (int j = d; j < u; j++) {

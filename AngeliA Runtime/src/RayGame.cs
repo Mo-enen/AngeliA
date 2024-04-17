@@ -98,7 +98,6 @@ public partial class RayGame : Game {
 		Raylib.UpdateMusicStream(CurrentBGM);
 
 		// Begin Draw
-		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		bool hasScreenEffectEnabled = false;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			if (ScreenEffectEnables[i]) {

@@ -36,7 +36,7 @@ public static partial class Util {
 
 
 	// Misc
-	public static void AddGetEnvironmentVariable (string key, string value) {
+	public static void AddEnvironmentVariable (string key, string value) {
 		string oldPath = System.Environment.GetEnvironmentVariable(
 			key, System.EnvironmentVariableTarget.Process
 		) ?? "";
@@ -132,7 +132,7 @@ public static partial class Util {
 				Debug.Log(process.StandardOutput.ReadToEnd());
 				Debug.LogError(process.StandardError.ReadToEnd());
 			}
-			process.WaitForExit(10_000);
+			process.WaitForExit(30_000);
 			return process.ExitCode;
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);

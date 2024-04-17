@@ -3,20 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-
 namespace AngeliA;
-
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : System.Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : OrderedAttribute { public OnGameUpdateAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : OrderedAttribute { public OnGameUpdateLaterAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : OrderedAttribute { public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : OrderedAttribute { public OnGameRestartAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : OrderedAttribute { public OnGameTryingToQuitAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : OrderedAttribute { public OnGameQuittingAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameFocusedAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameLostFocusAttribute : System.Attribute { }
-
 
 public abstract partial class Game {
 
@@ -55,6 +42,7 @@ public abstract partial class Game {
 	public static int MinorVersion { get; private set; } = 0;
 	public static int PatchVersion { get; private set; } = 0;
 	public static bool AllowMakerFeatures { get; private set; } = false;
+	public static bool UsePremultiplyBlendMode { get; private set; } = false;
 
 	// Event
 	private static event System.Action OnGameRestart;
@@ -112,7 +100,9 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<AngeliaAllowMakerFeaturesAttribute>()) {
 			AllowMakerFeatures = true;
 		}
-
+		if (Util.TryGetAttributeFromAllAssemblies<UsePremultiplyBlendModeAttribute>()) {
+			UsePremultiplyBlendMode = true;
+		}
 	}
 
 

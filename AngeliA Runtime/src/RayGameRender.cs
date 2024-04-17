@@ -167,7 +167,6 @@ public partial class RayGame {
 		int screenU = ScreenRenderRect.yMax;
 
 		bool usingShader = false;
-		bool usingBlend = false;
 
 		// Shader
 		switch (layerIndex) {
@@ -185,16 +184,12 @@ public partial class RayGame {
 				break;
 		}
 
-		// Blend
-		if (layerIndex == RenderLayer.MULT) {
-			Raylib.BeginBlendMode(BlendMode.Multiplied);
-			usingBlend = true;
-		}
-
-		if (layerIndex == RenderLayer.ADD) {
-			Raylib.BeginBlendMode(BlendMode.Additive);
-			usingBlend = true;
-		}
+		// Blend 
+		Raylib.BeginBlendMode(layerIndex switch {
+			RenderLayer.MULT => BlendMode.Multiplied,
+			RenderLayer.ADD => BlendMode.Additive,
+			_ => UsePremultiplyBlendMode ? BlendMode.AlphaPremultiply : BlendMode.Alpha,
+		});
 
 		for (int i = 0; i < cellCount; i++) {
 			try {
@@ -263,7 +258,7 @@ public partial class RayGame {
 		}
 
 		if (usingShader) Raylib.EndShaderMode();
-		if (usingBlend) Raylib.EndBlendMode();
+		Raylib.EndBlendMode();
 
 	}
 

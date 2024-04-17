@@ -52,8 +52,8 @@ internal static class Engine {
 	// Data
 	private static Project CurrentProject = null;
 	private static readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
-	private static readonly GUIStyle NotificationLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.MidRight, };
-	private static readonly GUIStyle NotificationSubLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.MidRight, };
+	private static readonly GUIStyle NotificationLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.BottomRight, };
+	private static readonly GUIStyle NotificationSubLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private static EngineSetting EngineSetting;
 	private static IRect ToolLabelRect;
 	private static int CurrentWindowIndex = 0;
@@ -93,6 +93,7 @@ internal static class Engine {
 		SettingWindow.PixEditor_CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
 		SettingWindow.CanvasBackgroundColor_Default = PixelEditor.CanvasBackgroundColor.DefaultValue;
+		Util.AddEnvironmentVariable("Path", EngineUtil.DotnetSdkPath);
 	}
 
 
@@ -579,27 +580,30 @@ internal static class Engine {
 
 		if (!EngineSetting.UseNotification || Game.GlobalFrame > NotificationStartFrame + DURATION) return;
 
-		int padding = GUI.Unify(6);
+		int padding = GUI.Unify(2);
 		int labelHeight = GUI.Unify(28);
 		int subLabelHeight = GUI.Unify(20);
 		var rect = WindowUI.WindowRect.CornerInside(Alignment.BottomRight, GUI.Unify(384), labelHeight + subLabelHeight);
 		rect.y += padding * 2;
 		rect.x -= padding * 2;
+		int top = rect.yMax;
+		bool hasSub = !string.IsNullOrEmpty(NotificationSubContent);
 
 		// Main
-		int top = rect.yMax;
-		rect.y = top - labelHeight;
+		rect.y = top - labelHeight - (hasSub ? 0 : subLabelHeight);
 		rect.height = labelHeight;
 		GUI.Label(rect, NotificationContent, out var bound, NotificationLabelStyle);
 
 		// Sub
-		rect.y = top - labelHeight - subLabelHeight;
-		rect.height = subLabelHeight;
-		GUI.Label(rect, NotificationSubContent, out var subBound, NotificationSubLabelStyle);
+		if (hasSub) {
+			rect.y = top - labelHeight - subLabelHeight;
+			rect.height = subLabelHeight;
+			GUI.Label(rect, NotificationSubContent, out var subBound, NotificationSubLabelStyle);
+			bound.xMin = Util.Min(bound.xMin, subBound.xMin);
+			bound.yMin = Util.Min(bound.yMin, subBound.yMin);
+		}
 
 		// BG
-		bound.xMin = Util.Min(bound.xMin, subBound.xMin);
-		bound.yMin = Util.Min(bound.yMin, subBound.yMin);
 		Renderer.DrawPixel(bound.Expand(padding), Color32.BLACK);
 
 	}

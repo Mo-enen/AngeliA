@@ -9,6 +9,7 @@ namespace AngeliaEngine;
 public static class EngineUtil {
 
 
+	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet");
 	public static string ProjectTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, TEMPLATE_NAME);
 	private const string TEMPLATE_NAME = "ProjectTemplate";
 	private static readonly StringBuilder CacheBuilder = new();
