@@ -967,6 +967,8 @@ public partial class PixelEditor {
 			int u = pixelRange.yMax - spritePixelRect.y;
 			int pixelWidth = spritePixelRect.width;
 			var localRect = pixelRange.Shift(-spritePixelRect.x, -spritePixelRect.y);
+			bool contentChanged = false;
+			Undo.MarkAsStabile();
 			RegisterUndo(new PaintUndoItem() {
 				SpriteID = paintingSprite.ID,
 				LocalPixelRect = localRect,
@@ -980,6 +982,7 @@ public partial class PixelEditor {
 						var oldPixel = paintingSprite.Pixels[pIndex];
 						var newPixel = Util.MergeColor(targetColor, oldPixel);
 						paintingSprite.Pixels[pIndex] = newPixel;
+						contentChanged = contentChanged || oldPixel.LookDifferent(newPixel);
 						RegisterUndo(new PixelUndoItem() {
 							From = oldPixel,
 							To = newPixel,
@@ -993,6 +996,7 @@ public partial class PixelEditor {
 						int pIndex = j * pixelWidth + i;
 						var oldPixel = paintingSprite.Pixels[pIndex];
 						paintingSprite.Pixels[pIndex] = Color32.CLEAR;
+						contentChanged = contentChanged || oldPixel.LookDifferent(Color32.CLEAR);
 						RegisterUndo(new PixelUndoItem() {
 							From = oldPixel,
 							To = Color32.CLEAR,
@@ -1000,10 +1004,15 @@ public partial class PixelEditor {
 					}
 				}
 			}
-			RegisterUndo(new PaintUndoItem() {
-				SpriteID = paintingSprite.ID,
-				LocalPixelRect = localRect,
-			});
+			if (contentChanged) {
+				RegisterUndo(new PaintUndoItem() {
+					SpriteID = paintingSprite.ID,
+					LocalPixelRect = localRect,
+				});
+				Undo.MarkAsStabile();
+			} else {
+				Undo.AbortUnstable();
+			}
 			paintingSpData.PixelDirty = true;
 			SetDirty();
 		}

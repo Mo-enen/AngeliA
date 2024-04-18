@@ -49,6 +49,14 @@ internal static class Engine {
 		SettingWindow,
 	};
 
+	// Short
+	private static bool AnyEditorDirty {
+		get {
+			foreach (var ui in ALL_UI) if (ui is WindowUI window && window.IsDirty) return true;
+			return false;
+		}
+	}
+
 	// Data
 	private static Project CurrentProject = null;
 	private static readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
@@ -99,7 +107,7 @@ internal static class Engine {
 
 	[OnGameTryingToQuit]
 	internal static bool OnGameTryingToQuit () {
-		if (PixelEditor.IsDirty || LanguageEditor.IsDirty) {
+		if (AnyEditorDirty) {
 			GenericDialogUI.SpawnDialog_Button(
 				QUIT_MSG,
 				BuiltInText.UI_SAVE, SaveAndQuit,
@@ -117,11 +125,10 @@ internal static class Engine {
 		return false;
 		// Func
 		static void SaveAndQuit () {
-			if (PixelEditor.IsDirty) {
-				PixelEditor.Save(true);
-			}
-			if (LanguageEditor.IsDirty) {
-				LanguageEditor.Save(true);
+			foreach (var ui in ALL_UI) {
+				if (ui is WindowUI window && window.IsDirty) {
+					window.Save();
+				}
 			}
 			Game.QuitApplication();
 		}
@@ -456,14 +463,14 @@ internal static class Engine {
 					barRect.EdgeInside(Direction4.Down, rect.height),
 					BuiltInText.UI_BACK, GUISkin.SmallCenterLabelButton
 				)) {
-					CloseProject();
+					TryCloseProject();
 				}
 			} else {
 				if (GUI.Button(
 					barRect.EdgeInside(Direction4.Down, rect.height),
 					BuiltInSprite.ICON_BACK, GUISkin.IconButton
 				)) {
-					CloseProject();
+					TryCloseProject();
 				}
 			}
 
@@ -680,17 +687,38 @@ internal static class Engine {
 	}
 
 
-	private static void CloseProject () {
-		CurrentProject = null;
-		foreach (var ui in ALL_UI) {
-			ui.Active = false;
-			if (ui is WindowUI) {
-				ui.OnInactivated();
-			}
+	private static void TryCloseProject () {
+		if (AnyEditorDirty) {
+			GenericDialogUI.SpawnDialog_Button(
+				QUIT_MSG,
+				BuiltInText.UI_SAVE, SaveAndClose,
+				BuiltInText.UI_DONT_SAVE, Close,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+		} else {
+			Close();
 		}
-		LanguageEditor.SetLanguageRoot("");
-		PixelEditor.LoadSheetFromDisk("");
-		Game.SetWindowTitle(Game.DisplayTitle);
+		// Func
+		static void SaveAndClose () {
+			foreach (var ui in ALL_UI) {
+				if (ui is WindowUI window && window.IsDirty) {
+					window.Save();
+				}
+			}
+			Close();
+		}
+		static void Close () {
+			CurrentProject = null;
+			foreach (var ui in ALL_UI) {
+				ui.Active = false;
+				if (ui is WindowUI) {
+					ui.OnInactivated();
+				}
+			}
+			LanguageEditor.SetLanguageRoot("");
+			PixelEditor.LoadSheetFromDisk("");
+			Game.SetWindowTitle(Game.DisplayTitle);
+		}
 	}
 
 

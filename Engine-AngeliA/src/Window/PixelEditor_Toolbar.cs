@@ -77,6 +77,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_RULE_ANY = ("Tip.Rule.Any", "Any tile");
 	private static readonly LanguageCode TIP_RULE_EMPTY = ("Tip.Rule.Empty", "Empty tile");
 	private static readonly LanguageCode TIP_RULE_MODE = ("Tip.Rule.Mode", "Rule setting mode. (Same/Not Same) or (Any/Empty)");
+	private static readonly LanguageCode TIP_CREATE_SPRITE = ("Tip.CreateSprite", "Create a new sprite");
 	private static readonly LanguageCode LABEL_BORDER = ("Label.Border", "Border");
 	private static readonly LanguageCode LABEL_PIVOT = ("Label.Pivot", "Pivot");
 	private static readonly LanguageCode LABEL_SIZE = ("Label.Size", "Size");
@@ -95,6 +96,7 @@ public partial class PixelEditor {
 	private bool? TilingRuleModeA = true;
 	private int RulePageIndex = 0;
 	private IRect RuleEditorRect = default;
+	private IRect CreateSpriteBigButtonRect = default;
 	private ColorF PaintingColorF = new(0, 0, 0, 0);
 
 
@@ -135,6 +137,31 @@ public partial class PixelEditor {
 	private void Update_GeneralToolbar (IRect toolbarRect, ref IRect rect) {
 
 		int padding = Unify(4);
+
+		// Create Sprite
+		if (StagedSprites.Count == 0) {
+			if (GUI.Button(
+				CreateSpriteBigButtonRect, BuiltInSprite.ICON_PLUS, GUISkin.DarkButton
+			)) {
+				string name = Sheet.GetAvailableSpriteName("New Sprite");
+				var sprite = Sheet.CreateSprite(name, new IRect(1, STAGE_SIZE - 33, 32, 32), CurrentAtlasIndex);
+				Sheet.AddSprite(sprite);
+				StagedSprites.Add(new SpriteData() {
+					DraggingStartRect = default,
+					PixelDirty = true,
+					Selecting = false,
+					Sprite = sprite,
+				});
+				RegisterUndo(new SpriteObjectUndoItem() {
+					Sprite = sprite.CreateCopy(),
+					Create = true,
+				});
+				SetDirty();
+				SetSpriteSelection(StagedSprites.Count - 1);
+				Input.UseMouseKey(0);
+			}
+			RequireTooltip(CreateSpriteBigButtonRect, TIP_CREATE_SPRITE);
+		}
 
 		// Show BG
 		ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
@@ -741,9 +768,7 @@ public partial class PixelEditor {
 			Sprite = sprite.CreateCopy(),
 			Create = true,
 		});
-		// done
 		SetDirty();
-		// Select
 		SetSpriteSelection(StagedSprites.Count - 1);
 	}
 

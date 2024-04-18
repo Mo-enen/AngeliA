@@ -763,6 +763,7 @@ public static class Extension {
 	public static bool Almost (this ColorF a, ColorF b) => a == b;
 	public static void Merge (ref this Color32 back, Color32 top) => back = Util.MergeColor(top, back);
 	public static void Merge_Over (ref this Color32 back, Color32 top) => back = Util.MergeColor_Over(top, back);
+	public static bool LookDifferent (this Color32 a, Color32 b) => (a.a > 0 || b.a > 0) && a != b;
 
 	// Enum
 	public static int EnumLength (this System.Type @enum) => System.Enum.GetValues(@enum).Length;

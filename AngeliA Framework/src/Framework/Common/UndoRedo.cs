@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
 
 
@@ -21,6 +20,7 @@ public class UndoRedo {
 	private readonly Pipe<IUndoItem> RedoList = null;
 	private readonly System.Action<IUndoItem> OnUndoPerformed = null;
 	private readonly System.Action<IUndoItem> OnRedoPerformed = null;
+	private int StableLength = 0;
 
 
 	// API
@@ -34,6 +34,7 @@ public class UndoRedo {
 		OnUndoPerformed = onUndoPerformed;
 		OnRedoPerformed = onRedoPerformed;
 		CurrentStep = int.MinValue;
+		StableLength = 0;
 	}
 
 
@@ -84,7 +85,22 @@ public class UndoRedo {
 	}
 
 
-	public void GrowStep () => CurrentStep++;
+	public void GrowStep () {
+		CurrentStep++;
+		StableLength = UndoList.Length;
+	}
+
+
+	public void MarkAsStabile () => StableLength = UndoList.Length;
+
+
+	public void AbortUnstable () {
+		if (UndoList.Length <= StableLength) return;
+		int count = UndoList.Length - StableLength;
+		for (int i = 0; i < count; i++) {
+			if (!UndoList.TryPopTail(out _)) break;
+		}
+	}
 
 
 }

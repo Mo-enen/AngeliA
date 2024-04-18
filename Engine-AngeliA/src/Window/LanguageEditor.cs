@@ -69,7 +69,6 @@ public partial class LanguageEditor : WindowUI {
 
 	public void SetLanguageRoot (string newRoot) {
 		if (newRoot == LanguageRoot) return;
-		Save();
 		Load(newRoot);
 		LanguageRoot = newRoot;
 		ScrollY = 0;

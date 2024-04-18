@@ -511,6 +511,7 @@ public static class GUI {
 	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionStyle);
 	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) {
 
+		text ??= "";
 		bodyStyle ??= GUISkin.InputField;
 		selectionStyle ??= GUISkin.GreenPixel;
 

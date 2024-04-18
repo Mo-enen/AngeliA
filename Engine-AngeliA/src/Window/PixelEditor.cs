@@ -170,6 +170,7 @@ public partial class PixelEditor : WindowUI {
 		Interactable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog && !FileBrowserUI.ShowingBrowser;
 		HoveringResizeForBorder = false;
 		RuleEditorRect = OpeningTilingRuleEditor ? StageRect.CornerInside(Alignment.TopRight, Unify(200), Unify(250)) : default;
+		CreateSpriteBigButtonRect = StageRect.CornerInside(Alignment.TopLeft, Unify(64)).Shift(Unify(12), -Unify(12));
 		LastPixelSelectionPixelRect = PixelSelectionPixelRect != default ? PixelSelectionPixelRect : LastPixelSelectionPixelRect;
 		CurrentUndoSprite = null;
 
@@ -292,15 +293,23 @@ public partial class PixelEditor : WindowUI {
 
 		}
 
+		var mldPos = Input.MouseLeftDownGlobalPosition;
+		var mrdPos = Input.MouseRightDownGlobalPosition;
+		var mPos = Input.MouseGlobalPosition;
+		bool showingTilingRuleEditor = SelectingSpriteCount != 0 && OpeningTilingRuleEditor;
+		bool showingAddSpriteBigButton = StagedSprites.Count == 0;
 		MouseLeftDownInStage =
-			StageRect.Contains(Input.MouseLeftDownGlobalPosition) &&
-			(SelectingSpriteCount == 0 || !OpeningTilingRuleEditor || !RuleEditorRect.Contains(Input.MouseLeftDownGlobalPosition));
+			StageRect.Contains(mldPos) &&
+			(!showingTilingRuleEditor || !RuleEditorRect.Contains(mldPos)) &&
+			(!showingAddSpriteBigButton || !CreateSpriteBigButtonRect.Contains(mldPos));
 		MouseRightDownInStage =
-			StageRect.Contains(Input.MouseRightDownGlobalPosition) &&
-			(SelectingSpriteCount == 0 || !OpeningTilingRuleEditor || !RuleEditorRect.Contains(Input.MouseRightDownGlobalPosition));
+			StageRect.Contains(mrdPos) &&
+			(!showingTilingRuleEditor || !RuleEditorRect.Contains(mrdPos)) &&
+			(!showingAddSpriteBigButton || !CreateSpriteBigButtonRect.Contains(mrdPos));
 		MouseInStage =
-			StageRect.Contains(Input.MouseGlobalPosition) &&
-			(SelectingSpriteCount == 0 || !OpeningTilingRuleEditor || !RuleEditorRect.Contains(Input.MouseGlobalPosition));
+			StageRect.Contains(mPos) &&
+			(!showingTilingRuleEditor || !RuleEditorRect.Contains(mPos)) &&
+			(!showingAddSpriteBigButton || !CreateSpriteBigButtonRect.Contains(mPos));
 	}
 
 
