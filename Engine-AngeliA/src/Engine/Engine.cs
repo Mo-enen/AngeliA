@@ -156,7 +156,6 @@ internal static class Engine {
 	}
 
 
-	// GUI
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 

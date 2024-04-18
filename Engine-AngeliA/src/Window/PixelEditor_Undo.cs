@@ -276,12 +276,7 @@ public partial class PixelEditor {
 				if (create) {
 					var newSprite = spriteObj.Sprite.CreateCopy();
 					Sheet.AddSprite(newSprite);
-					StagedSprites.Add(new SpriteData() {
-						Sprite = newSprite,
-						PixelDirty = true,
-						Selecting = false,
-						DraggingStartRect = default,
-					});
+					StagedSprites.Add(new SpriteData(newSprite));
 				} else {
 					int id = spriteObj.Sprite.ID;
 					int index = Sheet.IndexOfSprite(id);

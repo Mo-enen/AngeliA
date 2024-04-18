@@ -95,6 +95,7 @@ public partial class PixelEditor {
 	private bool OpeningTilingRuleEditor = false;
 	private bool? TilingRuleModeA = true;
 	private int RulePageIndex = 0;
+	private string SelectingSpriteTagLabel = null;
 	private IRect RuleEditorRect = default;
 	private IRect CreateSpriteBigButtonRect = default;
 	private ColorF PaintingColorF = new(0, 0, 0, 0);
@@ -146,12 +147,7 @@ public partial class PixelEditor {
 				string name = Sheet.GetAvailableSpriteName("New Sprite");
 				var sprite = Sheet.CreateSprite(name, new IRect(1, STAGE_SIZE - 33, 32, 32), CurrentAtlasIndex);
 				Sheet.AddSprite(sprite);
-				StagedSprites.Add(new SpriteData() {
-					DraggingStartRect = default,
-					PixelDirty = true,
-					Selecting = false,
-					Sprite = sprite,
-				});
+				StagedSprites.Add(new SpriteData(sprite));
 				RegisterUndo(new SpriteObjectUndoItem() {
 					Sprite = sprite.CreateCopy(),
 					Create = true,
@@ -468,6 +464,16 @@ public partial class PixelEditor {
 		if (GUI.Button(rect, ICON_TAG, GUISkin.SmallDarkButton)) {
 			OpenSpriteTagMenu();
 		}
+		if (SelectingSpriteTagLabel != null) {
+			GUI.BackgroundLabel(
+				rect.EdgeOutside(Direction4.Up, Unify(22)), 
+				SelectingSpriteTagLabel, 
+				Color32.BLACK, 
+				Unify(4), 
+				forceInside: true, 
+				GUISkin.SmallCenterLabel
+			);
+		}
 		RequireTooltip(rect, TIP_TAG);
 		rect.SlideRight(padding);
 
@@ -734,42 +740,6 @@ public partial class PixelEditor {
 			atlas.Type = (AtlasType)index;
 			Instance.SetDirty();
 		}
-	}
-
-
-	private void CreateSpriteForPalette (bool useDefaultPos) {
-		if (CurrentAtlasIndex < 0 || CurrentAtlasIndex >= Sheet.Atlas.Count) return;
-		const int PAL_WIDTH = 8;
-		int PAL_HEIGHT = PALETTE_PIXELS.Length / 8;
-		// Get Sprite Pos
-		Int2 spritePixPos = default;
-		if (useDefaultPos) {
-			spritePixPos.x = -PAL_WIDTH - 1;
-			spritePixPos.y = STAGE_SIZE - PAL_HEIGHT;
-		} else {
-			spritePixPos = Stage_to_Pixel(new Int2(StageRect.x, StageRect.yMax));
-			spritePixPos.x += 1;
-			spritePixPos.y -= PAL_HEIGHT + 1;
-		}
-		// Create Sprite
-		var atlas = Sheet.Atlas[CurrentAtlasIndex];
-		string name = Sheet.GetAvailableSpriteName($"{atlas.Name}.Palette");
-		var sprite = Sheet.CreateSprite(name, new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT), CurrentAtlasIndex);
-		sprite.Tag = SpriteTag.IGNORE_TAG;
-		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
-		Sheet.AddSprite(sprite);
-		StagedSprites.Add(new SpriteData() {
-			DraggingStartRect = default,
-			PixelDirty = true,
-			Selecting = false,
-			Sprite = sprite,
-		});
-		RegisterUndo(new SpriteObjectUndoItem() {
-			Sprite = sprite.CreateCopy(),
-			Create = true,
-		});
-		SetDirty();
-		SetSpriteSelection(StagedSprites.Count - 1);
 	}
 
 

@@ -159,6 +159,8 @@ public class AngeSprite {
 	}
 
 	public void ResizePixelRect (IRect newRect, bool resizeBorder, out bool contentChanged) {
+		newRect.width = newRect.width.GreaterOrEquel(1);
+		newRect.height = newRect.height.GreaterOrEquel(1);
 		contentChanged = false;
 		// Pixels
 		if (newRect != PixelRect) {

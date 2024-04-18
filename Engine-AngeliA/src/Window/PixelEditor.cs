@@ -30,7 +30,14 @@ public partial class PixelEditor : WindowUI {
 		public AngeSprite Sprite;
 		public bool PixelDirty;
 		public bool Selecting;
+		public bool SelectingPalette;
 		public IRect DraggingStartRect;
+		public SpriteData (AngeSprite sprite) {
+			Sprite = sprite;
+			PixelDirty = true;
+			Selecting = false;
+			SelectingPalette = false;
+		}
 	}
 
 
@@ -78,6 +85,7 @@ public partial class PixelEditor : WindowUI {
 	private bool MouseInStage = false;
 	private bool MouseLeftDownInStage = false;
 	private bool MouseRightDownInStage = false;
+	private bool HasPaletteSprite = false;
 	private int SelectingSpriteCount = 0;
 	private int ZoomLevel = 1;
 	private int GizmosThickness = 1;
@@ -87,6 +95,7 @@ public partial class PixelEditor : WindowUI {
 	private FRect CanvasRect;
 	private IRect CopyBufferPixRange;
 	private IRect StageRect;
+	private int SelectingPaletteIndex = -1;
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
@@ -155,6 +164,7 @@ public partial class PixelEditor : WindowUI {
 		SelectingAnySpriteWithBorder = false;
 		SelectingAnySpriteWithoutBorder = false;
 		SelectingAnyNonTiggerSprite = false;
+		HasPaletteSprite = false;
 		HoveringSpriteStageIndex = -1;
 		MousePixelPos = Stage_to_Pixel(Input.MouseGlobalPosition, round: false);
 		MousePixelPosRound = Stage_to_Pixel(Input.MouseGlobalPosition, round: true);
@@ -169,12 +179,17 @@ public partial class PixelEditor : WindowUI {
 		CreateSpriteBigButtonRect = StageRect.CornerInside(Alignment.TopLeft, Unify(64)).Shift(Unify(12), -Unify(12));
 		LastPixelSelectionPixelRect = PixelSelectionPixelRect != default ? PixelSelectionPixelRect : LastPixelSelectionPixelRect;
 		CurrentUndoSprite = null;
+		SelectingSpriteTagLabel = null;
+		SelectingPaletteIndex = -1;
+		int selectingSpritesTag = 0;
+		int firstPalIndex = -1;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 
 			var spData = StagedSprites[i];
 			var sprite = spData.Sprite;
 			var rect = Pixel_to_Stage(sprite.PixelRect);
+			bool isPal = sprite.Tag == SpriteTag.PALETTE_TAG;
 
 			// Selecting...
 			if (spData.Selecting) {
@@ -183,7 +198,21 @@ public partial class PixelEditor : WindowUI {
 				SelectingAnySpriteWithBorder = SelectingAnySpriteWithBorder || !sprite.GlobalBorder.IsZero;
 				SelectingAnyTiggerSprite = SelectingAnyTiggerSprite || sprite.IsTrigger;
 				SelectingAnyNonTiggerSprite = SelectingAnyNonTiggerSprite || !sprite.IsTrigger;
+				if (selectingSpritesTag != int.MaxValue && sprite.Tag != 0 && TagPool.TryGetValue(sprite.Tag, out var pair)) {
+					if (SelectingSpriteTagLabel == null) {
+						SelectingSpriteTagLabel = pair.str;
+						selectingSpritesTag = sprite.Tag;
+					} else if (sprite.Tag != selectingSpritesTag) {
+						SelectingSpriteTagLabel = "*";
+						selectingSpritesTag = int.MaxValue;
+					}
+				}
 			}
+
+			// Palette
+			HasPaletteSprite = HasPaletteSprite || isPal;
+			SelectingPaletteIndex = spData.SelectingPalette ? i : SelectingPaletteIndex;
+			firstPalIndex = firstPalIndex >= 0 || !isPal ? firstPalIndex : i;
 
 			// Mouse Hovering
 			if (HoveringSpriteStageIndex < 0 && sprite.PixelRect.Contains(MousePixelPos)) {
@@ -289,6 +318,11 @@ public partial class PixelEditor : WindowUI {
 
 		}
 
+		if (HasPaletteSprite && SelectingPaletteIndex < 0 && firstPalIndex >= 0) {
+			SelectingPaletteIndex = firstPalIndex;
+			StagedSprites[firstPalIndex].SelectingPalette = true;
+		}
+
 		var mldPos = Input.MouseLeftDownGlobalPosition;
 		var mrdPos = Input.MouseRightDownGlobalPosition;
 		var mPos = Input.MouseGlobalPosition;
@@ -325,14 +359,7 @@ public partial class PixelEditor : WindowUI {
 
 		// Zoom
 		if (StageRect.MouseInside() && Input.MouseWheelDelta != 0) {
-			ZoomLevel = (ZoomLevel + Input.MouseWheelDelta).Clamp(1, 32);
-			var mousePos = Input.MouseGlobalPosition;
-			var fittedStage = StageRect.Fit(1, 1);
-			CanvasRect = CanvasRect.ResizeFrom(
-				fittedStage.width * ZoomLevel,
-				fittedStage.height * ZoomLevel,
-				mousePos.x, mousePos.y
-			);
+			SetZoom(ZoomLevel + Input.MouseWheelDelta, Input.MouseGlobalPosition);
 		}
 
 	}
@@ -467,7 +494,7 @@ public partial class PixelEditor : WindowUI {
 		// Pixel Selection
 		if (PixelSelectionPixelRect != default) {
 			var pixelSelectionStageRect = Pixel_to_Stage(PixelSelectionPixelRect, ignoreClamp: true);
-			DrawRendererDottedFrame(pixelSelectionStageRect.Expand(GizmosThickness), Color32.BLACK, Color32.WHITE, GizmosThickness);
+			DrawDottedFrame(pixelSelectionStageRect.Expand(GizmosThickness), Color32.BLACK, Color32.WHITE, GizmosThickness);
 			DrawPixelBuffer(PixelSelectionPixelRect);
 		}
 
@@ -488,16 +515,16 @@ public partial class PixelEditor : WindowUI {
 				ResizingStageIndex != i
 			) {
 				// Selecting Frame
-				DrawRendererFrame(
+				DrawFrame(
 					rect.Expand(GizmosThickness),
 					Color32.WHITE,
 					GizmosThickness * 2
 				);
 			} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
 				// Normal Frame
-				DrawRendererFrame(
+				DrawFrame(
 					rect.Expand(GizmosThickness),
-					HoldingCtrl ? Color32.BLACK : Color32.BLACK_128,
+					i == SelectingPaletteIndex ? Color32.GREEN_DARK : Color32.BLACK,
 					GizmosThickness
 				);
 			}
@@ -575,6 +602,23 @@ public partial class PixelEditor : WindowUI {
 					);
 				}
 			}
+
+			// Palette
+			if (PaintingColor.a > 0 && i == SelectingPaletteIndex) {
+				for (int j = 0; j < sprite.Pixels.Length; j++) {
+					if (sprite.Pixels[j] == PaintingColor) {
+						int pixelSize = (CanvasRect.width / STAGE_SIZE).RoundToInt();
+						var palRect = new IRect(
+							rect.x + (j % sprite.PixelRect.width) * pixelSize,
+							rect.y + (j / sprite.PixelRect.width) * pixelSize,
+							pixelSize, pixelSize
+						);
+						DrawDottedFrame(palRect, Color32.WHITE, Color32.BLACK, GizmosThickness);
+						break;
+					}
+				}
+			}
+
 		}
 
 	}
@@ -584,6 +628,57 @@ public partial class PixelEditor : WindowUI {
 
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!Interactable) return;
+
+		// Delete
+		if (Input.KeyboardDown(KeyboardKey.Delete)) {
+			DeleteAllSelectingSprite();
+			DeleteSelectingPixels();
+		}
+
+		// ESC
+		if (Input.KeyboardDown(KeyboardKey.Escape)) {
+			ClearSpriteSelection();
+			ClearPixelSelectionRect();
+		}
+
+		// Q
+		if (Input.KeyboardDownGUI(KeyboardKey.Q)) {
+			ShiftPaintingColorFromPalette(false);
+		}
+
+		// E
+		if (Input.KeyboardDownGUI(KeyboardKey.E)) {
+			ShiftPaintingColorFromPalette(true);
+		}
+
+		// Move View
+		if (Input.KeyboardDownGUI(KeyboardKey.W)) {
+			CanvasRect = CanvasRect.Shift(0, -Unify(100));
+		}
+		if (Input.KeyboardDownGUI(KeyboardKey.A)) {
+			CanvasRect = CanvasRect.Shift(Unify(100), 0);
+		}
+		if (Input.KeyboardDownGUI(KeyboardKey.S)) {
+			CanvasRect = CanvasRect.Shift(0, Unify(100));
+		}
+		if (Input.KeyboardDownGUI(KeyboardKey.D)) {
+			CanvasRect = CanvasRect.Shift(-Unify(100), 0);
+		}
+
+		// 1
+		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
+			ResetCamera();
+		}
+
+		// 2
+		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
+			SetZoom(5, StageRect.CenterInt());
+		}
+
+		// 3
+		if (Input.KeyboardDown(KeyboardKey.Digit3)) {
+			SetZoom(10, StageRect.CenterInt());
+		}
 
 		// Ctrl
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
@@ -644,16 +739,7 @@ public partial class PixelEditor : WindowUI {
 				}
 			}
 		}
-		// Delete
-		if (Input.KeyboardDown(KeyboardKey.Delete)) {
-			DeleteAllSelectingSprite();
-			DeleteSelectingPixels();
-		}
-		// ESC
-		if (Input.KeyboardDown(KeyboardKey.Escape)) {
-			ClearSpriteSelection();
-			ClearPixelSelectionRect();
-		}
+
 	}
 
 
@@ -696,11 +782,112 @@ public partial class PixelEditor : WindowUI {
 	#region --- LGC ---
 
 
+	private void CreateSpriteForPalette (bool useDefaultPos) {
+		if (CurrentAtlasIndex < 0 || CurrentAtlasIndex >= Sheet.Atlas.Count) return;
+		const int PAL_WIDTH = 8;
+		int PAL_HEIGHT = PALETTE_PIXELS.Length / 8;
+		// Get Sprite Pos
+		Int2 spritePixPos = default;
+		if (useDefaultPos) {
+			spritePixPos.x = -PAL_WIDTH - 1;
+			spritePixPos.y = STAGE_SIZE - PAL_HEIGHT;
+		} else {
+			spritePixPos = Stage_to_Pixel(new Int2(StageRect.x, StageRect.yMax));
+			spritePixPos.x += 1;
+			spritePixPos.y -= PAL_HEIGHT + 1;
+		}
+		// Create Sprite
+		var atlas = Sheet.Atlas[CurrentAtlasIndex];
+		string name = Sheet.GetAvailableSpriteName($"Palette.{atlas.Name}");
+		var sprite = Sheet.CreateSprite(name, new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT), CurrentAtlasIndex);
+		sprite.Tag = SpriteTag.PALETTE_TAG;
+		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
+		Sheet.AddSprite(sprite);
+		StagedSprites.Add(new SpriteData(sprite));
+		RegisterUndo(new SpriteObjectUndoItem() {
+			Sprite = sprite.CreateCopy(),
+			Create = true,
+		});
+		SetDirty();
+		SetSpriteSelection(StagedSprites.Count - 1);
+	}
+
+
 	private void ResetCamera () {
 		CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
 		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
 		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
 		ZoomLevel = 1;
+	}
+
+
+	private void SetZoom (int newZoom, Int2 pivot) {
+		ZoomLevel = newZoom.Clamp(1, 32);
+		var fittedStage = StageRect.Fit(1, 1);
+		CanvasRect = CanvasRect.ResizeFrom(
+			fittedStage.width * ZoomLevel,
+			fittedStage.height * ZoomLevel,
+			pivot.x, pivot.y
+		);
+	}
+
+
+	private void ShiftPaintingColorFromPalette (bool toNext) {
+
+		if (!HasPaletteSprite || SelectingPaletteIndex < 0 || SelectingPaletteIndex >= StagedSprites.Count) return;
+		var palSprite = StagedSprites[SelectingPaletteIndex].Sprite;
+
+		if (PaintingColor.a == 0) {
+			PaintingColor = GetPixelFromPal(
+				palSprite.Pixels,
+				toNext ? 0 : palSprite.Pixels.Length - 1,
+				palSprite.PixelRect.width
+			);
+			return;
+		}
+
+		// Find
+		int targetIndex = -1;
+		AngeSprite targetSprite = null;
+		float minDis = float.MaxValue;
+		Util.RGBToHSV(PaintingColor, out float h, out float s, out float v);
+		var pixels = palSprite.Pixels;
+		for (int i = 0; i < PALETTE_PIXELS.Length; i++) {
+			var pal = GetPixelFromPal(pixels, i, palSprite.PixelRect.width);
+			if (pal == PaintingColor) {
+				targetIndex = i;
+				targetSprite = palSprite;
+				break;
+			}
+			Util.RGBToHSV(pal, out float pH, out float pS, out float pV);
+			float dis = (pH - h).Abs() * 4f + (pS - s).Abs() * 1f + (pV - v).Abs() * 2f;
+			if (dis < minDis) {
+				minDis = dis;
+				targetIndex = i;
+				targetSprite = palSprite;
+			}
+		}
+
+		// Set
+		if (targetIndex >= 0) {
+			var oldPaintingColor = PaintingColor;
+			int delta = toNext ? 1 : -1;
+			targetIndex = (targetIndex + delta).UMod(PALETTE_PIXELS.Length);
+			for (int safe = 0; safe < PALETTE_PIXELS.Length; safe++) {
+				var palPixel = GetPixelFromPal(targetSprite.Pixels, targetIndex, targetSprite.PixelRect.width);
+				if (palPixel != oldPaintingColor && palPixel.a > 0) {
+					PaintingColor = palPixel;
+					break;
+				}
+				targetIndex = (targetIndex + delta).UMod(PALETTE_PIXELS.Length);
+			}
+		}
+
+		// Func
+		static Color32 GetPixelFromPal (Color32[] pixels, int index, int width) {
+			int HEIGHT = pixels.Length / width;
+			return pixels[(HEIGHT - index / width - 1) * width + (index % width)];
+		}
 	}
 
 
@@ -748,29 +935,7 @@ public partial class PixelEditor : WindowUI {
 		);
 
 
-	private void DrawGizmosFrame (IRect pixelRect, Color32 color, int thickness) {
-		var rect = Pixel_to_Stage(pixelRect, out var uv, out bool outside);
-		if (!outside) {
-			DrawGizmosFrame(rect, uv, color, thickness);
-		}
-	}
-
-
-	private void DrawGizmosFrame (IRect stageRect, FRect? uv, Color32 color, int thickness) {
-		if (uv.HasValue) {
-			Game.DrawGizmosFrame(stageRect, color, Int4.Direction(
-				uv.Value.xMin.Almost(0f) ? thickness : 0,
-				uv.Value.xMax.Almost(1f) ? thickness : 0,
-				uv.Value.yMin.Almost(0f) ? thickness : 0,
-				uv.Value.yMax.Almost(1f) ? thickness : 0
-			));
-		} else {
-			Game.DrawGizmosFrame(stageRect, color, thickness);
-		}
-	}
-
-
-	private void DrawRendererFrame (IRect stageRect, Color32 color, int thickness) {
+	private void DrawFrame (IRect stageRect, Color32 color, int thickness) {
 		if (color.a < 255) {
 			Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
 			Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
@@ -783,22 +948,22 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void DrawRendererDottedFrame (IRect stageRect, Color32 colorA, Color32 colorB, int thickness) {
+	private void DrawDottedFrame (IRect rect, Color32 colorA, Color32 colorB, int thickness) {
 
-		int gap = Util.Max(Unify(16), (CanvasRect.width / STAGE_SIZE).RoundToInt());
+		int gap = Util.Max(Unify(12), (CanvasRect.width / 2 / STAGE_SIZE).RoundToInt());
 		int offset = (Game.PauselessFrame * gap * 2 / 42).UMod(gap * 2);
 		bool startDark = offset < gap;
 		offset = offset.UMod(gap);
 
-		int l = stageRect.xMin;
-		int r = stageRect.xMax;
-		int d = stageRect.yMin;
-		int u = stageRect.yMax;
+		int l = rect.xMin;
+		int r = rect.xMax;
+		int d = rect.yMin;
+		int u = rect.yMax;
 
 		// H
 		if (offset > 0) {
-			Renderer.DrawPixel(new IRect(l, d - thickness / 2, offset.LessOrEquel(stageRect.width), thickness), startDark ? colorA : colorB, z: int.MaxValue);
-			Renderer.DrawPixel(new IRect(l, u - thickness / 2, offset.LessOrEquel(stageRect.width), thickness), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(l, d - thickness / 2, offset.LessOrEquel(rect.width), thickness), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(l, u - thickness / 2, offset.LessOrEquel(rect.width), thickness), startDark ? colorA : colorB, z: int.MaxValue);
 		}
 		var rectA = new IRect(0, d - thickness / 2, gap, thickness);
 		var rectB = new IRect(0, u - thickness / 2, gap, thickness);
@@ -815,8 +980,8 @@ public partial class PixelEditor : WindowUI {
 
 		// V
 		if (offset > 0) {
-			Renderer.DrawPixel(new IRect(l - thickness / 2, d, thickness, offset.LessOrEquel(stageRect.height)), startDark ? colorA : colorB, z: int.MaxValue);
-			Renderer.DrawPixel(new IRect(r - thickness / 2, d, thickness, offset.LessOrEquel(stageRect.height)), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(l - thickness / 2, d, thickness, offset.LessOrEquel(rect.height)), startDark ? colorA : colorB, z: int.MaxValue);
+			Renderer.DrawPixel(new IRect(r - thickness / 2, d, thickness, offset.LessOrEquel(rect.height)), startDark ? colorA : colorB, z: int.MaxValue);
 		}
 		rectA = new IRect(l - thickness / 2, 0, thickness, gap);
 		rectB = new IRect(r - thickness / 2, 0, thickness, gap);

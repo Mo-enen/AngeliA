@@ -189,8 +189,8 @@ public partial class PixelEditor {
 							var stageRect = Pixel_to_Stage(pixelRect);
 							if (PaintingColor.a == 0) {
 								// Erase
-								DrawRendererFrame(stageRect, Color32.WHITE, GizmosThickness);
-								DrawRendererFrame(stageRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
+								DrawFrame(stageRect, Color32.WHITE, GizmosThickness);
+								DrawFrame(stageRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
 							} else {
 								// Paint
 								Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
@@ -202,8 +202,8 @@ public partial class PixelEditor {
 					var stageRect = Pixel_to_Stage(DraggingPixelRectLeft);
 					if (PaintingColor.a == 0) {
 						// Erase Rect
-						DrawRendererFrame(stageRect, Color32.WHITE, GizmosThickness);
-						DrawRendererFrame(stageRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
+						DrawFrame(stageRect, Color32.WHITE, GizmosThickness);
+						DrawFrame(stageRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
 						// Cross
 						var center = stageRect.CenterInt();
 						int length = Util.BabylonianSqrt(stageRect.width * stageRect.width + stageRect.height * stageRect.height);
@@ -222,7 +222,7 @@ public partial class PixelEditor {
 							if (SolidPaintingPreview.Value) {
 								Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
 							} else {
-								DrawRendererFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
+								DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
 							}
 						}
 					}
@@ -255,10 +255,10 @@ public partial class PixelEditor {
 					// Resize for Slice
 					var resizingPixRect = GetResizeDraggingPixRect();
 					if (resizingPixRect.HasValue) {
-						var resizingRect = Pixel_to_Stage(resizingPixRect.Value, out var uv);
-						DrawGizmosFrame(
+						var resizingRect = Pixel_to_Stage(resizingPixRect.Value);
+						DrawFrame(
 							resizingRect.Expand(GizmosThickness),
-							uv, Color32.GREY_196,
+							Color32.GREY_196,
 							GizmosThickness * 2
 						);
 					}
@@ -273,7 +273,8 @@ public partial class PixelEditor {
 
 			case DragStateLeft.SelectOrCreateSlice:
 				// Select / Create
-				DrawGizmosFrame(DraggingPixelRectLeft, Color32.WHITE, GizmosThickness);
+				var draggingRect = Pixel_to_Stage(DraggingPixelRectLeft);
+				DrawFrame(draggingRect, Color32.WHITE, GizmosThickness);
 				break;
 		}
 	}
@@ -409,12 +410,7 @@ public partial class PixelEditor {
 						string name = Sheet.GetAvailableSpriteName("New Sprite");
 						var sprite = Sheet.CreateSprite(name, pixelRect, CurrentAtlasIndex);
 						Sheet.AddSprite(sprite);
-						StagedSprites.Add(new SpriteData() {
-							Sprite = sprite,
-							PixelDirty = true,
-							Selecting = false,
-							DraggingStartRect = default,
-						});
+						StagedSprites.Add(new SpriteData(sprite));
 						RegisterUndo(new SpriteObjectUndoItem() {
 							Sprite = sprite.CreateCopy(),
 							Create = true,
@@ -495,7 +491,7 @@ public partial class PixelEditor {
 		switch (DraggingStateRight) {
 			case DragStateRight.SelectPixel:
 				if (DragChanged) {
-					DrawRendererDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
+					DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
 				}
 				break;
 		}
@@ -513,9 +509,14 @@ public partial class PixelEditor {
 			PaintingColor = Color32.CLEAR;
 			PaintingColorF = default;
 			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
-				var sprite = StagedSprites[i].Sprite;
+				var spData = StagedSprites[i];
+				var sprite = spData.Sprite;
 				var spRect = sprite.PixelRect;
 				if (sprite.Pixels.Length > 0 && spRect.Contains(pixelPos)) {
+					if (sprite.Tag == SpriteTag.PALETTE_TAG) {
+						foreach (var _spData in StagedSprites) _spData.SelectingPalette = false;
+						spData.SelectingPalette = true;
+					}
 					int pxIndex = (pixelPos.y - spRect.yMin) * spRect.width + (pixelPos.x - spRect.xMin);
 					PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
 					PaintingColorF = PaintingColor.ToColorF();
@@ -537,7 +538,7 @@ public partial class PixelEditor {
 						PixelSelectionPixelRect = DraggingPixelRectRight;
 						PixelBufferSize = Int2.zero;
 						if (DragChanged) {
-							DrawRendererDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
+							DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
 						}
 						ClearSpriteSelection();
 					}
@@ -576,7 +577,7 @@ public partial class PixelEditor {
 			var rect = Pixel_to_Stage(pxRect, out var uv, out bool outside, ignoreClamp: true);
 			if (outside) continue;
 			Renderer.Draw(sprite.ID, rect, z: int.MaxValue);
-			DrawRendererFrame(
+			DrawFrame(
 				rect.Expand(GizmosThickness),
 				Color32.WHITE,
 				GizmosThickness * 2
@@ -779,12 +780,7 @@ public partial class PixelEditor {
 			sprite.ID = sprite.RealName.AngeHash();
 			sprite.PixelRect = source.PixelRect.Shift(offsetX, offsetY);
 			Sheet.AddSprite(sprite);
-			StagedSprites.Add(new SpriteData() {
-				Sprite = sprite,
-				PixelDirty = true,
-				Selecting = false,
-				DraggingStartRect = default,
-			});
+			StagedSprites.Add(new SpriteData(sprite));
 			RegisterUndo(new SpriteObjectUndoItem() {
 				Sprite = sprite.CreateCopy(),
 				Create = true,

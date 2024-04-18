@@ -360,7 +360,7 @@ public class Sheet {
 			for (int i = 0; i < spriteCount; i++) {
 				var sprite = new AngeSprite();
 				sprite.LoadFromBinary_v0(reader);
-				if (!IgnoreSpriteWithIgnoreTag || sprite.Tag != SpriteTag.IGNORE_TAG) {
+				if (!IgnoreSpriteWithIgnoreTag || sprite.Tag != SpriteTag.PALETTE_TAG) {
 					Sprites.Add(sprite);
 				}
 			}

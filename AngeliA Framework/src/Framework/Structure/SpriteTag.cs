@@ -19,7 +19,7 @@ public static class SpriteTag {
 	public const string HIDE_LIMB_STRING = "HideLimb";
 	public const string LOOP_START_STRING = "LoopStart";
 	public const string RANDOM_STRING = "Random";
-	public const string IGNORE_STRING = "Ignore";
+	public const string PALETTE_STRING = "Palette";
 	public const string DAMAGE_STRING = "Damage";
 	public const string DAMAGE_EXPLOSIVE_STRING = "ExplosiveDamage";
 	public const string DAMAGE_MAGICAL_STRING = "MagicalDamage";
@@ -43,7 +43,7 @@ public static class SpriteTag {
 	public static readonly int HIDE_LIMB_TAG = HIDE_LIMB_STRING.AngeHash();
 	public static readonly int LOOP_START_TAG = LOOP_START_STRING.AngeHash();
 	public static readonly int RANDOM_TAG = RANDOM_STRING.AngeHash();
-	public static readonly int IGNORE_TAG = IGNORE_STRING.AngeHash();
+	public static readonly int PALETTE_TAG = PALETTE_STRING.AngeHash();
 	public static readonly int DAMAGE_TAG = DAMAGE_STRING.AngeHash();
 	public static readonly int DAMAGE_EXPLOSIVE_TAG = DAMAGE_EXPLOSIVE_STRING.AngeHash();
 	public static readonly int DAMAGE_MAGICAL_TAG = DAMAGE_MAGICAL_STRING.AngeHash();
@@ -70,7 +70,7 @@ public static class SpriteTag {
 		HIDE_LIMB_STRING,
 		LOOP_START_STRING,
 		RANDOM_STRING,
-		IGNORE_STRING,
+		PALETTE_STRING,
 		DAMAGE_STRING,
 		DAMAGE_EXPLOSIVE_STRING,
 		DAMAGE_MAGICAL_STRING,
@@ -95,7 +95,7 @@ public static class SpriteTag {
 		HIDE_LIMB_TAG,
 		LOOP_START_TAG,
 		RANDOM_TAG,
-		IGNORE_TAG,
+		PALETTE_TAG,
 		DAMAGE_TAG,
 		DAMAGE_EXPLOSIVE_TAG,
 		DAMAGE_MAGICAL_TAG,

@@ -218,11 +218,7 @@ public partial class PixelEditor {
 		StagedSprites.Clear();
 		foreach (var sprite in Sheet.Sprites) {
 			if (sprite.AtlasIndex != atlasIndex) continue;
-			StagedSprites.Add(new SpriteData() {
-				Sprite = sprite,
-				PixelDirty = false,
-				Selecting = false,
-			});
+			StagedSprites.Add(new SpriteData(sprite));
 		}
 		ResetCamera();
 		DraggingStateLeft = DragStateLeft.None;
@@ -230,6 +226,7 @@ public partial class PixelEditor {
 		PaintingColorF = default;
 		ResizingStageIndex = -1;
 		HoveringResizeDirection = null;
+		SelectingPaletteIndex = -1;
 		if (resetUndo) Undo.Reset();
 	}
 
@@ -337,11 +334,7 @@ public partial class PixelEditor {
 				);
 				sprite.Pixels = Game.GetPixelsFromTexture(texture);
 				sheet.AddSprite(sprite);
-				Instance.StagedSprites.Add(new SpriteData() {
-					Sprite = sprite,
-					PixelDirty = true,
-					Selecting = true,
-				});
+				Instance.StagedSprites.Add(new SpriteData(sprite) { Selecting = true, });
 			} else if (ext == ".ase") {
 				// ASE
 				var aseSheet = SheetUtil.CreateNewSheet(
