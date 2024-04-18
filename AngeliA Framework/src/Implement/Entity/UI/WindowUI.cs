@@ -13,6 +13,10 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	public virtual IRect BackgroundRect => Rect;
 	public static IRect WindowRect { get; private set; }
 	public bool IsDirty { get; protected set; } = false;
+	public IRect RequiringTooltipRect { get; private set; } = default;
+	public string RequiringTooltipContent { get; set; } = null;
+	public string NotificationContent { get; set; } = null;
+	public string NotificationSubContent { get; set; } = null;
 
 	// Data
 	private static int UpdatedFrame = -1;
@@ -80,5 +84,15 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	public virtual void Save (bool forceSave = false) { }
 
+	protected void RequireTooltip (IRect rect, string content) {
+		if (!rect.MouseInside()) return;
+		RequiringTooltipRect = rect;
+		RequiringTooltipContent = content;
+	}
+
+	protected void RequireNotification (string content, string subContent = null) {
+		NotificationContent = content;
+		NotificationSubContent = subContent;
+	}
 
 }

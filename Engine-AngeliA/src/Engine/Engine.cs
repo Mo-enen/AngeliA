@@ -16,6 +16,7 @@ internal static class Engine {
 
 
 	// Const
+	private const int NOTIFY_DURATION = 120;
 	private static int WINDOW_UI_COUNT = 2;
 	private const int HUB_PANEL_WIDTH = 360;
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
@@ -71,6 +72,7 @@ internal static class Engine {
 	private static string NotificationContent = null;
 	private static string NotificationSubContent = null;
 	private static int NotificationStartFrame = int.MinValue;
+	private static bool NotificationFlash = false;
 
 
 	#endregion
@@ -535,16 +537,27 @@ internal static class Engine {
 		PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 
 		// Update Tooltip
-		RequireTooltip(PixelEditor.RequiringTooltipRect, PixelEditor.RequiringTooltipContent);
-		PixelEditor.RequiringTooltipContent = null;
+		foreach (var ui in ALL_UI) {
+			if (ui is not WindowUI window) continue;
+			string content = window.RequiringTooltipContent;
+			if (content != null && EngineSetting.UseTooltip) {
+				ToolLabel = content;
+				ToolLabelRect = window.RequiringTooltipRect;
+			}
+			window.RequiringTooltipContent = null;
+		}
 
 		// Update Notify
-		if (PixelEditor.NotificationContent != null) {
-			NotificationStartFrame = Game.GlobalFrame;
-			NotificationContent = PixelEditor.NotificationContent;
-			NotificationSubContent = PixelEditor.NotificationSubContent;
+		foreach (var ui in ALL_UI) {
+			if (ui is not WindowUI window) continue;
+			if (window.NotificationContent != null && EngineSetting.UseNotification) {
+				NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
+				NotificationStartFrame = Game.GlobalFrame;
+				NotificationContent = window.NotificationContent;
+				NotificationSubContent = window.NotificationSubContent;
+			}
+			window.NotificationContent = null;
 		}
-		PixelEditor.NotificationContent = null;
 
 		// Final
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
@@ -583,9 +596,7 @@ internal static class Engine {
 
 	private static void OnGUI_Notify () {
 
-		const int DURATION = 120;
-
-		if (!EngineSetting.UseNotification || Game.GlobalFrame > NotificationStartFrame + DURATION) return;
+		if (!EngineSetting.UseNotification || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
 
 		int padding = GUI.Unify(2);
 		int labelHeight = GUI.Unify(28);
@@ -611,23 +622,14 @@ internal static class Engine {
 		}
 
 		// BG
-		Renderer.DrawPixel(bound.Expand(padding), Color32.BLACK);
+		Renderer.DrawPixel(
+			bound.Expand(GUI.Unify(6)),
+			NotificationFlash ? Color32.Lerp(
+				Color32.GREEN, Color32.BLACK,
+				(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
+			) : Color32.BLACK
+		);
 
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- API --
-
-
-	public static void RequireTooltip (IRect buttonRect, string content) {
-		if (content == null || !EngineSetting.UseTooltip) return;
-		ToolLabel = content;
-		ToolLabelRect = buttonRect;
 	}
 
 

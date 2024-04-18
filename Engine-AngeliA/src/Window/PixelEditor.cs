@@ -60,10 +60,6 @@ public partial class PixelEditor : WindowUI {
 
 	// Api
 	protected override bool BlockEvent => true;
-	public IRect RequiringTooltipRect { get; private set; } = default;
-	public string RequiringTooltipContent { get; set; } = null;
-	public string NotificationContent { get; set; } = null;
-	public string NotificationSubContent { get; set; } = null;
 	public readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
 	public readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", false);
@@ -899,19 +895,6 @@ public partial class PixelEditor : WindowUI {
 				size, size
 			), texture, inverse: true
 		);
-	}
-
-
-	private void RequireNotification (string content, string subContent = null) {
-		NotificationContent = content;
-		NotificationSubContent = subContent;
-	}
-
-
-	private void RequireTooltip (IRect rect, string content) {
-		if (!rect.MouseInside()) return;
-		RequiringTooltipRect = rect;
-		RequiringTooltipContent = content;
 	}
 
 

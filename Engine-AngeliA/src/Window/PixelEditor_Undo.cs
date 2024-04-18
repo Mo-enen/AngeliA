@@ -130,6 +130,20 @@ public partial class PixelEditor {
 	#region --- VAR ---
 
 
+	// Const
+	private static readonly LanguageCode NOTI_UNDO_PAINT = ("Noti.UndoPaint", "Undo: Paint");
+	private static readonly LanguageCode NOTI_REDO_PAINT = ("Noti.RedoPaint", "Redo: Paint");
+	private static readonly LanguageCode NOTI_UNDO_MOVE_SPRITE = ("Noti.UndoMoveSprite", "Undo: Move sprite");
+	private static readonly LanguageCode NOTI_REDO_MOVE_SPRITE = ("Noti.RedoMoveSprite", "Redo: Move sprite");
+	private static readonly LanguageCode NOTI_UNDO_CREATE_SPRITE = ("Noti.UndoCreateSprite", "Undo: Create sprite");
+	private static readonly LanguageCode NOTI_REDO_CREATE_SPRITE = ("Noti.RedoCreateSprite", "Redo: Create sprite");
+	private static readonly LanguageCode NOTI_UNDO_DELETE_SPRITE = ("Noti.UndoDeleteSprite", "Undo: Delete sprite");
+	private static readonly LanguageCode NOTI_REDO_DELETE_SPRITE = ("Noti.RedoDeleteSprite", "Redo: Delete sprite");
+	private static readonly LanguageCode NOTI_UNDO_SPRITE_META = ("Noti.UndoSpriteMeta", "Undo: Sprite meta");
+	private static readonly LanguageCode NOTI_REDO_SPRITE_META = ("Noti.RedoSpriteMeta", "Redo: Sprite meta");
+	private static readonly LanguageCode NOTI_UNDO_SPRITE_SIZE = ("Noti.UndoSpriteSize", "Undo: Sprite size");
+	private static readonly LanguageCode NOTI_REDO_SPRITE_SIZE = ("Noti.RedoSpriteSize", "Redo: Sprite size");
+
 	// Data
 	private UndoRedo Undo { get; init; }
 	private AngeSprite CurrentUndoSprite;
@@ -202,7 +216,7 @@ public partial class PixelEditor {
 	private void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, true);
 
 
-	private void OnUndoRedoPerformed (IUndoItem item, bool reverse) {
+	private void OnUndoRedoPerformed (IUndoItem item, bool redo) {
 
 		switch (item) {
 
@@ -220,8 +234,9 @@ public partial class PixelEditor {
 				}
 				// Cache
 				CurrentUndoSprite = sprite;
-				CurrentUndoPixelIndex = reverse ? 0 : paint.LocalPixelRect.width * paint.LocalPixelRect.height - 1;
+				CurrentUndoPixelIndex = redo ? 0 : paint.LocalPixelRect.width * paint.LocalPixelRect.height - 1;
 				CurrentUndoPixelLocalRect = paint.LocalPixelRect;
+				RequireNotification(redo ? NOTI_REDO_PAINT : NOTI_UNDO_PAINT);
 			}
 			break;
 
@@ -234,15 +249,15 @@ public partial class PixelEditor {
 				int pixX = paintRect.x + i % paintRect.width;
 				int pixY = paintRect.y + i / paintRect.width;
 				int pixIndex = pixY * pixRect.width + pixX;
-				sprite.Pixels[pixIndex] = reverse ? pixel.To : pixel.From;
-				CurrentUndoPixelIndex += reverse ? 1 : -1;
+				sprite.Pixels[pixIndex] = redo ? pixel.To : pixel.From;
+				CurrentUndoPixelIndex += redo ? 1 : -1;
 				break;
 			}
 
 			case IndexedPixelUndoItem iPixel: {
 				var sprite = CurrentUndoSprite;
 				if (sprite == null) break;
-				sprite.Pixels[iPixel.LocalPixelIndex] = reverse ? iPixel.To : iPixel.From;
+				sprite.Pixels[iPixel.LocalPixelIndex] = redo ? iPixel.To : iPixel.From;
 				break;
 			}
 
@@ -250,13 +265,14 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					move.SpriteID, out var sprite
 				)) break;
-				sprite.PixelRect.x = reverse ? move.To.x : move.From.x;
-				sprite.PixelRect.y = reverse ? move.To.y : move.From.y;
+				sprite.PixelRect.x = redo ? move.To.x : move.From.x;
+				sprite.PixelRect.y = redo ? move.To.y : move.From.y;
+				RequireNotification(redo ? NOTI_REDO_MOVE_SPRITE : NOTI_UNDO_MOVE_SPRITE);
 				break;
 			}
 
 			case SpriteObjectUndoItem spriteObj: {
-				bool create = spriteObj.Create == reverse;
+				bool create = spriteObj.Create == redo;
 				if (create) {
 					var newSprite = spriteObj.Sprite.CreateCopy();
 					Sheet.AddSprite(newSprite);
@@ -279,6 +295,10 @@ public partial class PixelEditor {
 						}
 					}
 				}
+				RequireNotification(spriteObj.Create ?
+					(redo ? NOTI_REDO_CREATE_SPRITE : NOTI_UNDO_CREATE_SPRITE) :
+					(redo ? NOTI_REDO_DELETE_SPRITE : NOTI_UNDO_DELETE_SPRITE)
+				);
 				break;
 			}
 
@@ -286,7 +306,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					trigger.SpriteID, out var sprite
 				)) break;
-				sprite.IsTrigger = reverse ? trigger.To : !trigger.To;
+				sprite.IsTrigger = redo ? trigger.To : !trigger.To;
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -295,7 +316,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					border.SpriteID, out var sprite
 				)) break;
-				sprite.GlobalBorder = reverse ? border.To : border.From;
+				sprite.GlobalBorder = redo ? border.To : border.From;
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -303,7 +325,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					rule.SpriteID, out var sprite
 				)) break;
-				sprite.Rule = reverse ? rule.To : rule.From;
+				sprite.Rule = redo ? rule.To : rule.From;
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -311,7 +334,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					tag.SpriteID, out var sprite
 				)) break;
-				sprite.Tag = reverse ? tag.To : tag.From;
+				sprite.Tag = redo ? tag.To : tag.From;
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -319,7 +343,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					name.SpriteID, out var sprite
 				)) break;
-				sprite.RealName = reverse ? name.To : name.From;
+				sprite.RealName = redo ? name.To : name.From;
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -328,10 +353,11 @@ public partial class PixelEditor {
 					pivot.SpriteID, out var sprite
 				)) break;
 				if (pivot.X) {
-					sprite.PivotX = reverse ? pivot.To : pivot.From;
+					sprite.PivotX = redo ? pivot.To : pivot.From;
 				} else {
-					sprite.PivotY = reverse ? pivot.To : pivot.From;
+					sprite.PivotY = redo ? pivot.To : pivot.From;
 				}
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -339,7 +365,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					z.SpriteID, out var sprite
 				)) break;
-				sprite.LocalZ = reverse ? z.To : z.From;
+				sprite.LocalZ = redo ? z.To : z.From;
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -347,7 +374,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					duration.SpriteID, out var sprite
 				)) break;
-				sprite.Duration = reverse ? duration.To : duration.From;
+				sprite.Duration = redo ? duration.To : duration.From;
+				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
@@ -355,7 +383,8 @@ public partial class PixelEditor {
 				if (!Sheet.SpritePool.TryGetValue(
 					spRect.SpriteID, out var sprite
 				)) break;
-				sprite.ResizePixelRect(reverse ? spRect.To : spRect.From, false, out _);
+				sprite.ResizePixelRect(redo ? spRect.To : spRect.From, false, out _);
+				RequireNotification(redo ? NOTI_REDO_SPRITE_SIZE : NOTI_UNDO_SPRITE_SIZE);
 				// Pixel Dirty
 				foreach (var spData in StagedSprites) {
 					if (spData.Sprite.ID == sprite.ID) {
