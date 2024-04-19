@@ -52,6 +52,9 @@ public partial class RayGame : Game {
 		Debug.OnLogError += RayUtil.LogError;
 		Debug.OnLog += RayUtil.Log;
 		Debug.OnLogWarning += RayUtil.LogWarning;
+		Rlgl.SetBlendFactorsSeparate(
+			Rlgl.SRC_ALPHA, Rlgl.ONE_MINUS_SRC_ALPHA, Rlgl.ONE, Rlgl.ONE, Rlgl.FUNC_ADD, Rlgl.MAX
+		);
 
 		// Pipeline
 		Fonts = RayUtil.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));

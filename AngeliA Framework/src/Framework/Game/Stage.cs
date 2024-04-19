@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 
-
 namespace AngeliA;
-
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLayerFrameUpdateAttribute : System.Attribute { }

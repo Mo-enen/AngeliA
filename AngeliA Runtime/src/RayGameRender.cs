@@ -188,9 +188,8 @@ public partial class RayGame {
 		Raylib.BeginBlendMode(layerIndex switch {
 			RenderLayer.MULT => BlendMode.Multiplied,
 			RenderLayer.ADD => BlendMode.Additive,
-			RenderLayer.SHADOW => BlendMode.AlphaPremultiply,
-			RenderLayer.DEFAULT => UsePremultiplyBlendMode ? BlendMode.AlphaPremultiply : BlendMode.Alpha,
-			_ => BlendMode.Alpha,
+			RenderLayer.DEFAULT => UsePremultiplyBlendMode ? BlendMode.AlphaPremultiply : BlendMode.CustomSeparate,
+			_ => BlendMode.CustomSeparate,
 		});
 
 		for (int i = 0; i < cellCount; i++) {
