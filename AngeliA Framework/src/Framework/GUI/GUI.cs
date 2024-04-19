@@ -345,6 +345,13 @@ public static class GUI {
 		ContentColor = oldC;
 		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
 	}
+	public static void ShadowLabel (IRect rect, char[] chars, int shadowDistance = 3, GUIStyle style = null) {
+		var oldC = ContentColor;
+		ContentColor = Color32.GREY_20;
+		LabelLogic(rect.Shift(0, -UnifyMonitor(shadowDistance)), null, chars, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+		ContentColor = oldC;
+		LabelLogic(rect, null, chars, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+	}
 
 
 	// Style

@@ -167,20 +167,18 @@ public class ItemInsufficientParticle : Particle {
 			float ease01 = Ease.OutExpo(lerp01);
 			int deltaX = (int)Util.Lerp(-Const.HALF / 2, Const.HALF / 2, Util.PingPong(ease01 * 4.5f, 1f));
 			const int deltaY = Const.CEL * 2 + Const.HALF;
-			byte alpha = (byte)Util.Lerp(1024, 0, lerp01).Clamp(0, 255);
 
 			// Draw
+			Renderer.DrawPixel(
+				X + deltaX, Y + deltaY, 500, 500, 0,
+				Width * 10 / 8, Height * 10 / 8,
+				new Color32(255, 64, 64)
+			);
 			Renderer.Draw(
 				ItemID,
 				X + deltaX, Y + deltaY, 500, 500, 0,
 				Width, Height,
-				new Color32(255, 255, 255, alpha), 0
-			);
-			Renderer.Draw(
-				Const.PIXEL,
-				X + deltaX, Y + deltaY, 500, 500, 0,
-				Width * 10 / 8, Height * 10 / 8,
-				new Color32(255, 64, 64, alpha), -1
+				new Color32(255, 255, 255)
 			);
 		}
 	}

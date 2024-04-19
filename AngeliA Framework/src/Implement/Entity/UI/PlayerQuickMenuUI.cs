@@ -234,9 +234,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 					),
 					weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemName(weaponID),
 					backgroundColor: Color32.BLACK,
-					backgroundPadding: 4,
+					backgroundPadding: Unify(6),
 					false,
-					GUISkin.SmallCenterLabel
+					GUISkin.CenterLabel
 				);
 
 			}

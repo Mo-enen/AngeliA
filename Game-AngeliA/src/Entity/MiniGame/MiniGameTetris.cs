@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 
-
-
-
 namespace AngeliaGame;
+
 [RequireSpriteFromField]
 [RequireLanguageFromField]
 public class MiniGameTetris : MiniGame {
@@ -105,6 +103,7 @@ public class MiniGameTetris : MiniGame {
 	private readonly int[,] StagedBlocks = new int[WIDTH, HEIGHT];
 	private readonly int[] SevenBag = { 0, 1, 2, 3, 4, 5, 6 };
 	private readonly IntToChars LinesString = new();
+	private static readonly GUIStyle LineLabelStyle = new(GUISkin.Label) { Alignment = Alignment.MidRight };
 	private System.Random BagRandom = new();
 	private bool GameOver = false;
 	private bool HoldAvailable = true;
@@ -344,6 +343,13 @@ public class MiniGameTetris : MiniGame {
 		int queueBlockSize = blockSize / 2;
 		var queueRect = new IRect(0, 0, queueBlockSize, queueBlockSize);
 		foreach (int tetIndex in TetrominoQueue) {
+			Renderer.DrawPixel(
+				new IRect(
+					stageRect.xMax + QUEUE_PADDING - BG_PADDING,
+					stageRect.yMax - (renderedCount + 1) * 4 * queueBlockSize,
+					4 * queueBlockSize + BG_PADDING * 2, 4 * queueBlockSize
+				), Color32.BLACK, 0
+			);
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					var tetromino = TETROMINOES[tetIndex];
@@ -353,14 +359,6 @@ public class MiniGameTetris : MiniGame {
 					Renderer.Draw(BLOCK_CODE, queueRect, tetromino.Tint, 1);
 				}
 			}
-			Renderer.Draw(
-				Const.PIXEL,
-				new IRect(
-					stageRect.xMax + QUEUE_PADDING - BG_PADDING,
-					stageRect.yMax - (renderedCount + 1) * 4 * queueBlockSize,
-					4 * queueBlockSize + BG_PADDING * 2, 4 * queueBlockSize
-				), Color32.BLACK, 0
-			);
 			renderedCount++;
 			if (renderedCount >= 6) break;
 		}
@@ -371,23 +369,22 @@ public class MiniGameTetris : MiniGame {
 			int holdingBlockSize = blockSize / 2;
 			var holdingRect = new IRect(0, 0, holdingBlockSize, holdingBlockSize);
 			var holdingTetromino = TETROMINOES[CurrentHoldingTetrominoIndex];
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					if (!holdingTetromino[i, j, 0]) continue;
-					holdingRect.x = stageRect.xMin - 4 * holdingBlockSize + i * holdingBlockSize - HOLDING_PADDING;
-					holdingRect.y = stageRect.yMax - 4 * holdingBlockSize + j * holdingBlockSize;
-					Renderer.Draw(BLOCK_CODE, holdingRect, holdingTetromino.Tint, 1);
-				}
-			}
-			Renderer.Draw(
-				Const.PIXEL,
+			Renderer.DrawPixel(
 				new IRect(
 					stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
 					stageRect.yMax - 4 * holdingBlockSize,
 					4 * holdingBlockSize,
 					4 * holdingBlockSize
-				), Color32.BLACK, 0
+				), Color32.BLACK
 			);
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					if (!holdingTetromino[i, j, 0]) continue;
+					holdingRect.x = stageRect.xMin - 4 * holdingBlockSize + i * holdingBlockSize - HOLDING_PADDING;
+					holdingRect.y = stageRect.yMax - 4 * holdingBlockSize + j * holdingBlockSize;
+					Renderer.Draw(BLOCK_CODE, holdingRect, holdingTetromino.Tint);
+				}
+			}
 			// Label
 			GUI.Label(new IRect(
 				stageRect.xMin - 4 * holdingBlockSize - HOLDING_PADDING,
@@ -408,7 +405,7 @@ public class MiniGameTetris : MiniGame {
 
 		// Lines
 		GUI.Label(stateRect, UI_CLR_LINE, out var lineBounds);
-		GUI.Label(stateRect, LinesString.GetChars(ClearedLines), out var lineNumberBounds);
+		GUI.Label(stateRect, LinesString.GetChars(ClearedLines), out var lineNumberBounds, LineLabelStyle);
 		Renderer.Draw(Const.PIXEL, new IRect(
 			lineBounds.x, lineBounds.y,
 			lineNumberBounds.xMax - lineBounds.x, lineBounds.height

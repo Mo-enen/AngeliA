@@ -128,12 +128,10 @@ public partial class RayGame : Game {
 		Update();
 
 		// Update Gizmos
-		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		GizmosRender.UpdateGizmos();
 
 		PrevHasInverseGizmos = GizmosRender.HasInverseGizmos;
 		if (PrevHasInverseGizmos) {
-			Raylib.BeginBlendMode(BlendMode.Alpha);
 			Raylib.BeginShaderMode(InverseShader);
 			Raylib.SetShaderValueTexture(
 				InverseShader, ShaderPropIndex_INV_TEXTURE, RenderTexture.Texture
@@ -144,7 +142,6 @@ public partial class RayGame : Game {
 			);
 			GizmosRender.UpdateInverse();
 			Raylib.EndShaderMode();
-			Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		} else {
 			GizmosRender.UpdateInverse();
 		}

@@ -629,59 +629,9 @@ public partial class PixelEditor : WindowUI {
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!Interactable) return;
 
-		// Delete
-		if (Input.KeyboardDown(KeyboardKey.Delete)) {
-			DeleteAllSelectingSprite();
-			DeleteSelectingPixels();
-		}
-
-		// ESC
-		if (Input.KeyboardDown(KeyboardKey.Escape)) {
-			ClearSpriteSelection();
-			ClearPixelSelectionRect();
-		}
-
-		// Q
-		if (Input.KeyboardDownGUI(KeyboardKey.Q)) {
-			ShiftPaintingColorFromPalette(false);
-		}
-
-		// E
-		if (Input.KeyboardDownGUI(KeyboardKey.E)) {
-			ShiftPaintingColorFromPalette(true);
-		}
-
-		// Move View
-		if (Input.KeyboardDownGUI(KeyboardKey.W)) {
-			CanvasRect = CanvasRect.Shift(0, -Unify(100));
-		}
-		if (Input.KeyboardDownGUI(KeyboardKey.A)) {
-			CanvasRect = CanvasRect.Shift(Unify(100), 0);
-		}
-		if (Input.KeyboardDownGUI(KeyboardKey.S)) {
-			CanvasRect = CanvasRect.Shift(0, Unify(100));
-		}
-		if (Input.KeyboardDownGUI(KeyboardKey.D)) {
-			CanvasRect = CanvasRect.Shift(-Unify(100), 0);
-		}
-
-		// 1
-		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-			ResetCamera();
-		}
-
-		// 2
-		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
-			SetZoom(5, StageRect.CenterInt());
-		}
-
-		// 3
-		if (Input.KeyboardDown(KeyboardKey.Digit3)) {
-			SetZoom(10, StageRect.CenterInt());
-		}
-
 		// Ctrl
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+
 			// Ctrl + Z
 			if (Input.KeyboardDown(KeyboardKey.Z)) {
 				TryApplyPixelBuffer(ignoreUndoStep: true);
@@ -690,6 +640,7 @@ public partial class PixelEditor : WindowUI {
 				Undo.Undo();
 				RefreshSliceInputContent();
 			}
+
 			// Ctrl + Y
 			if (Input.KeyboardDown(KeyboardKey.Y)) {
 				TryApplyPixelBuffer(ignoreUndoStep: true);
@@ -698,10 +649,12 @@ public partial class PixelEditor : WindowUI {
 				Undo.Redo();
 				RefreshSliceInputContent();
 			}
+
 			// Ctrl + S
 			if (Input.KeyboardDown(KeyboardKey.S)) {
 				Save();
 			}
+
 			// Ctrl + C
 			if (Input.KeyboardDown(KeyboardKey.C)) {
 				if (SelectingSpriteCount > 0) {
@@ -714,6 +667,7 @@ public partial class PixelEditor : WindowUI {
 					CopyCutPixel(cut: false);
 				}
 			}
+
 			// Ctrl + X
 			if (Input.KeyboardDown(KeyboardKey.X)) {
 				if (SelectingSpriteCount > 0) {
@@ -727,6 +681,7 @@ public partial class PixelEditor : WindowUI {
 					CopyCutPixel(cut: true);
 				}
 			}
+
 			// Ctrl + V
 			if (Input.KeyboardDown(KeyboardKey.V)) {
 				ClearSpriteSelection();
@@ -738,6 +693,60 @@ public partial class PixelEditor : WindowUI {
 					PastePixel();
 				}
 			}
+
+		} else {
+
+			// Delete
+			if (Input.KeyboardDown(KeyboardKey.Delete)) {
+				DeleteAllSelectingSprite();
+				DeleteSelectingPixels();
+			}
+
+			// ESC
+			if (Input.KeyboardDown(KeyboardKey.Escape)) {
+				ClearSpriteSelection();
+				ClearPixelSelectionRect();
+			}
+
+			// Q
+			if (Input.KeyboardDownGUI(KeyboardKey.Q)) {
+				ShiftPaintingColorFromPalette(false);
+			}
+
+			// E
+			if (Input.KeyboardDownGUI(KeyboardKey.E)) {
+				ShiftPaintingColorFromPalette(true);
+			}
+
+			// Move View
+			if (Input.KeyboardDownGUI(KeyboardKey.W)) {
+				CanvasRect = CanvasRect.Shift(0, -Unify(100));
+			}
+			if (Input.KeyboardDownGUI(KeyboardKey.A)) {
+				CanvasRect = CanvasRect.Shift(Unify(100), 0);
+			}
+			if (Input.KeyboardDownGUI(KeyboardKey.S)) {
+				CanvasRect = CanvasRect.Shift(0, Unify(100));
+			}
+			if (Input.KeyboardDownGUI(KeyboardKey.D)) {
+				CanvasRect = CanvasRect.Shift(-Unify(100), 0);
+			}
+
+			// 1
+			if (Input.KeyboardDown(KeyboardKey.Digit1)) {
+				ResetCamera();
+			}
+
+			// 2
+			if (Input.KeyboardDown(KeyboardKey.Digit2)) {
+				SetZoom(5, StageRect.CenterInt());
+			}
+
+			// 3
+			if (Input.KeyboardDown(KeyboardKey.Digit3)) {
+				SetZoom(10, StageRect.CenterInt());
+			}
+
 		}
 
 	}
@@ -937,14 +946,70 @@ public partial class PixelEditor : WindowUI {
 
 	private void DrawFrame (IRect stageRect, Color32 color, int thickness) {
 		if (color.a < 255) {
-			Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
-			Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+			if (stageRect.height > thickness) {
+				Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
+				if (stageRect.width > thickness) {
+					Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+				}
+			}
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z: int.MaxValue);
+			if (stageRect.height > thickness) {
+				Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z: int.MaxValue);
+			}
 		} else {
 			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
 			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z: int.MaxValue);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z: int.MaxValue);
 		}
-		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z: int.MaxValue);
-		Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z: int.MaxValue);
+	}
+
+
+	private void DrawFrameWithGap (IRect rect, Color32 color, Int4 thickness, Int4 gap = default) {
+		// Down
+		if (thickness.down > 0) {
+			var edge = rect.EdgeInside(Direction4.Down, thickness.down);
+			if (gap.down == 0) {
+				Renderer.DrawPixel(edge, color);
+			} else {
+				int shrink = edge.width - (edge.width - gap.down) / 2;
+				Renderer.DrawPixel(edge.Shrink(shrink, 0, 0, 0), color);
+				Renderer.DrawPixel(edge.Shrink(0, shrink, 0, 0), color);
+			}
+		}
+		// Up
+		if (thickness.up > 0) {
+			var edge = rect.EdgeInside(Direction4.Up, thickness.up);
+			if (gap.up == 0) {
+				Renderer.DrawPixel(edge, color);
+			} else {
+				int shrink = edge.width - (edge.width - gap.up) / 2;
+				Renderer.DrawPixel(edge.Shrink(shrink, 0, 0, 0), color);
+				Renderer.DrawPixel(edge.Shrink(0, shrink, 0, 0), color);
+			}
+		}
+		// Left
+		if (thickness.left > 0) {
+			var edge = rect.EdgeInside(Direction4.Left, thickness.left);
+			if (gap.left == 0) {
+				Renderer.DrawPixel(edge, color);
+			} else {
+				int shrink = edge.height - (edge.height - gap.left) / 2;
+				Renderer.DrawPixel(edge.Shrink(0, 0, shrink, 0), color);
+				Renderer.DrawPixel(edge.Shrink(0, 0, 0, shrink), color);
+			}
+		}
+		// Right
+		if (thickness.right > 0) {
+			var edge = rect.EdgeInside(Direction4.Right, thickness.right);
+			if (gap.right == 0) {
+				Renderer.DrawPixel(edge, color);
+			} else {
+				int shrink = edge.height - (edge.height - gap.right) / 2;
+				Renderer.DrawPixel(edge.Shrink(0, 0, shrink, 0), color);
+				Renderer.DrawPixel(edge.Shrink(0, 0, 0, shrink), color);
+			}
+		}
 	}
 
 
@@ -1028,20 +1093,23 @@ public partial class PixelEditor : WindowUI {
 			// Inside Sprite
 			if (PaintingColor.a == 0) {
 				// Empty
-				Game.DrawGizmosFrame(cursorRect, Color32.WHITE, GizmosThickness);
-				Game.DrawGizmosFrame(cursorRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
+				DrawFrame(cursorRect, Color32.WHITE, GizmosThickness);
+				DrawFrame(cursorRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
 				hasFrame = true;
-			} else {
+			} else if (DraggingStateLeft == DragStateLeft.None) {
 				// Color
-				Game.DrawGizmosRect(cursorRect.Expand((int)(pixSize / 30f)), PaintingColor);
+				using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+					Renderer.DrawPixel(cursorRect.Expand((int)(pixSize / 30f)), PaintingColor, z: int.MaxValue);
+				}
 			}
 		} else if (allowOutsideSprite) {
 			// Outside Sprite
-			Game.DrawGizmosFrame(
+			int gap = cursorRect.height / 2;
+			DrawFrameWithGap(
 				cursorRect,
 				PaintingColor.IsSame(Color32.CLEAR) ? Color32.WHITE : PaintingColor.WithNewA(255),
-				GizmosThickness,
-				gap: cursorRect.height / 2
+				new Int4(GizmosThickness, GizmosThickness, GizmosThickness, GizmosThickness),
+				new Int4(gap, gap, gap, gap)
 			);
 		}
 	}

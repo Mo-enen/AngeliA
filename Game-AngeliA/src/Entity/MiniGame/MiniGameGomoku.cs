@@ -27,7 +27,7 @@ public class MiniGameGomoku : MiniGame {
 	private static readonly Color32 GRID_TINT = new(16, 16, 16, 255);
 	private static readonly Color32 BLACK_STONE_TINT = new(16, 16, 16, 255);
 	private static readonly Color32 WHITE_STONE_TINT = new(230, 230, 230, 255);
-	private static readonly Color32 LAST_PLACED = new(255, 255, 0, 255);
+	private static readonly Color32 LAST_PLACED = new(220, 220, 0, 255);
 	private static readonly LanguageCode GOMOKU_YOU_ARE = ("UI.Gomoku.YouAre", "You Are:");
 	private static readonly LanguageCode GOMOKU_PLACE = ("UI.Gomoku.Place", "Place");
 	private static readonly LanguageCode MENU_GOMOKU_WIN = ("Menu.Gomoku.Win", "You Win");
@@ -212,8 +212,8 @@ public class MiniGameGomoku : MiniGame {
 			// Last Placed Highlight
 			if (LastPlacePositionX >= 0 && LastPlacePositionY >= 0) {
 				var (x, y) = StagePos_to_GlobalPos(LastPlacePositionX, LastPlacePositionY);
-				Renderer.Draw(
-					Const.PIXEL,
+				Renderer.Draw_9Slice(
+					BuiltInSprite.FRAME_16,
 					x, y, 500, 500, 0,
 					StageCellSize, StageCellSize,
 					LAST_PLACED
@@ -229,8 +229,8 @@ public class MiniGameGomoku : MiniGame {
 					var stone = Stones[x, y];
 					if (stone != Winner.Value) break;
 					var (posX, posY) = StagePos_to_GlobalPos(x, y);
-					Renderer.Draw(
-						Const.PIXEL,
+					Renderer.Draw_9Slice(
+						BuiltInSprite.FRAME_16,
 						posX, posY, 500, 500, 0,
 						StageCellSize, StageCellSize,
 						LAST_PLACED

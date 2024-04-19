@@ -137,7 +137,7 @@ public class MiniGameSokoban : MiniGame {
 
 		// Next Level Check
 		if (LevelClearedFrame >= 0) {
-			GiveBadge(CurrentLevel, CurrentLevel < IRON_BADGE_COUNT);
+			GiveBadge(CurrentLevel, CurrentLevel >= IRON_BADGE_COUNT);
 			CurrentLevel++;
 			LoadLevel(CurrentLevel);
 			LevelClearedFrame = int.MinValue;
@@ -195,14 +195,14 @@ public class MiniGameSokoban : MiniGame {
 		var bgTint = Color32.BLACK;
 		if (Celebrating) {
 			bgTint = Color32.LerpUnclamped(
-Color32.BLACK, Color32.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20) / 20f
+				Color32.BLACK, Color32.GREEN, (Game.GlobalFrame - LevelClearedFrame).PingPong(20) / 20f
 			);
 		}
 		Renderer.Draw(Const.PIXEL, windowRect.Expand(0, 0, 0, barHeight), bgTint, 0);
 
-		// Label
-		GUI.Label(
-			new IRect(stageRect.x, stageRect.yMax + barHeight / 10, stageRect.width, barHeight),
+		// Level Label
+		GUI.ShadowLabel(
+			stageRect.EdgeInside(Direction4.Up, barHeight).Shift(Unify(6), 0),
 			LevelLabelToString.GetChars(CurrentLevel + 1)
 		);
 
