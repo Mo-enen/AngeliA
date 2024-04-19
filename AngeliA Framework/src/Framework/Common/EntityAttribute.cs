@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public static class EntityAttribute {
 
 
@@ -19,7 +19,7 @@ public static class EntityAttribute {
 	public class ExcludeInMapEditorAttribute : System.Attribute { }
 
 
-	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+	[System.AttributeUsage(System.AttributeTargets.Class, Inherited = true)]
 	public class MapEditorGroupAttribute : System.Attribute {
 		public string GroupName = "";
 		public MapEditorGroupAttribute (string groupName) => GroupName = groupName;

@@ -80,7 +80,7 @@ public static class ItemSystem {
 
 	[OnGameInitialize(-128)]
 	internal static void OnGameInitialize () {
-		if (Game.ProjectType != ProjectType.Game) return;
+		if (Game.IsToolApplication) return;
 		ItemPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -98,7 +98,7 @@ public static class ItemSystem {
 
 	[OnUniverseOpen(31)]
 	public static void OnUniverseOpen () {
-		if (Game.ProjectType != ProjectType.Game) return;
+		if (Game.IsToolApplication) return;
 		CreateItemCombinationHelperFiles(UniverseSystem.CurrentUniverse.SavingRoot);
 		CreateCombinationFileFromCode(UniverseSystem.CurrentUniverse.UniverseRoot, false);
 		CombinationPool.Clear();

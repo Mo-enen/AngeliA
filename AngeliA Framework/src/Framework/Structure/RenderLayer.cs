@@ -17,23 +17,5 @@ public static class RenderLayer {
 		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
 	};
 
-	public static readonly int[] CAPACITY = new int[COUNT] {
-		WALLPAPER_CAPACITY,
-		BEHIND_CAPACITY,
-		SHADOW_CAPACITY,
-		DEFAULT_CAPACITY,
-		COLOR_CAPACITY,
-		MULT_CAPACITY,
-		ADD_CAPACITY,
-		UI_CAPACITY,
-	};
-	public const int WALLPAPER_CAPACITY = 256;
-	public const int BEHIND_CAPACITY = 8192;
-	public const int SHADOW_CAPACITY = 4096;
-	public const int DEFAULT_CAPACITY = 16384;
-	public const int COLOR_CAPACITY = 256;
-	public const int MULT_CAPACITY = 128;
-	public const int ADD_CAPACITY = 128;
-	public const int UI_CAPACITY = 4096;
-
+	
 }

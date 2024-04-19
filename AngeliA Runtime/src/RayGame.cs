@@ -67,7 +67,7 @@ public partial class RayGame : Game {
 
 		// Raylib Window
 		GameWatch.Start();
-		if (ProjectType == ProjectType.Game) {
+		if (!IsToolApplication) {
 			if (WindowMaximized.Value) {
 				Raylib.MaximizeWindow();
 			} else if (!Raylib.IsWindowFullscreen()) {

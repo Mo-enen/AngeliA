@@ -1,7 +1,7 @@
 ﻿using AngeliA;
 
-[assembly: AngeliaGameTitle("AngeliA Engine")]
-[assembly: AngeliaGameDeveloper("Moenen", " ")]
-[assembly: AngeliaVersion(0, 0, 1)]
-[assembly: AngeliaProjectType(ProjectType.Application)]
+[assembly: Title("AngeliA Engine")]
+[assembly: Developer("Moenen", " ")]
+[assembly: Version(0, 0, 1)]
+[assembly: ToolApplication]
 [assembly: UsePremultiplyBlendMode]

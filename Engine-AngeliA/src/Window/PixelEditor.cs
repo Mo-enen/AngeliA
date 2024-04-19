@@ -902,7 +902,6 @@ public partial class PixelEditor : WindowUI {
 
 	// Util
 	private IRect Pixel_to_Stage (IRect pixRect, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out _, out _, ignoreClamp);
-	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out uv, out _, ignoreClamp);
 	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, out bool outside, bool ignoreClamp = false) {
 		uv = null;
 		outside = false;

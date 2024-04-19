@@ -12,7 +12,7 @@ public partial class RayGame {
 	protected override void _ShowCursor () {
 		if (!Raylib.IsCursorHidden()) return;
 		Raylib.ShowCursor();
-		if (ProjectType == ProjectType.Game) {
+		if (!IsToolApplication) {
 			Raylib.EnableCursor();
 		}
 	}
@@ -20,7 +20,7 @@ public partial class RayGame {
 	protected override void _HideCursor () {
 		if (Raylib.IsCursorHidden()) return;
 		Raylib.HideCursor();
-		if (ProjectType == ProjectType.Game) {
+		if (!IsToolApplication) {
 			Raylib.DisableCursor();
 		}
 	}

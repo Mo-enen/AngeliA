@@ -16,48 +16,69 @@
 
 // Project
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliaGameTitleAttribute : System.Attribute {
+public class TitleAttribute : System.Attribute {
 	public readonly string Title = "";
-	public readonly string DisTitle = "";
-	public AngeliaGameTitleAttribute (string title, string displayTitle = "") {
+	public readonly string DisplayTitle = "";
+	public TitleAttribute (string title, string displayTitle = "") {
 		Title = title;
-		DisTitle = string.IsNullOrEmpty(displayTitle) ? title : displayTitle;
+		DisplayTitle = string.IsNullOrEmpty(displayTitle) ? title : displayTitle;
 	}
 }
 
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliaGameDeveloperAttribute : System.Attribute {
+public class DeveloperAttribute : System.Attribute {
 	public readonly string Developer = "";
-	public readonly string DisName = "";
-	public AngeliaGameDeveloperAttribute (string developer, string displayName = "") {
+	public readonly string DisplayName = "";
+	public DeveloperAttribute (string developer, string displayName = "") {
 		Developer = developer;
-		DisName = string.IsNullOrEmpty(displayName) ? developer : displayName;
+		DisplayName = string.IsNullOrEmpty(displayName) ? developer : displayName;
 	}
 }
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliaVersionAttribute : System.Attribute {
+public class VersionAttribute : System.Attribute {
 	public readonly Int3 Version = Int3.zero;
-	public AngeliaVersionAttribute (int majorVersion, int minorVersion, int patchVersion) => Version = new Int3(majorVersion, minorVersion, patchVersion);
+	public VersionAttribute (int majorVersion, int minorVersion, int patchVersion) => Version = new Int3(majorVersion, minorVersion, patchVersion);
 }
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliaAllowMakerFeaturesAttribute : System.Attribute { }
+public class AllowMakerFeaturesAttribute : System.Attribute { }
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AngeliaProjectTypeAttribute : System.Attribute {
-	public readonly ProjectType Type = ProjectType.Game;
-	public AngeliaProjectTypeAttribute (ProjectType type) => Type = type;
-}
+public class ToolApplicationAttribute : System.Attribute { }
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class UsePremultiplyBlendModeAttribute : System.Attribute { }
+
+
+
+[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
+public class EntityLayerCapacityAttribute : System.Attribute {
+	public int Layer;
+	public int Capacity;
+	public EntityLayerCapacityAttribute (int layer, int capacity) {
+		Layer = layer;
+		Capacity = capacity;
+	}
+}
+
+
+[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
+public class RenderLayerCapacityAttribute : System.Attribute {
+	public int Layer;
+	public int Capacity;
+	public RenderLayerCapacityAttribute (int layer, int capacity) {
+		Layer = layer;
+		Capacity = capacity;
+	}
+}
+
 
 
 // Item

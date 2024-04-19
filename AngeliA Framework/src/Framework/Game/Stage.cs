@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-
 namespace AngeliA;
 
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLayerFrameUpdateAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLayerFrameUpdateAttribute : System.Attribute { }
-
 
 public static class Stage {
 
@@ -95,7 +93,7 @@ public static class Stage {
 
 
 	// Const
-	private static readonly int[] ENTITY_CAPACITY = new int[EntityLayer.COUNT] {
+	private static readonly int[] DEFAULT_ENTITY_CAPACITY = new int[EntityLayer.COUNT] {
 		64,		//UI
 		4096,	//GAME
 		512,	//CHARACTER
@@ -144,8 +142,8 @@ public static class Stage {
 	[OnGameInitialize(-64)]
 	public static void OnGameInitialize () {
 
-		Enable = Game.ProjectType == ProjectType.Game;
-		ViewRect = new(
+		Enable = !Game.IsToolApplication;
+		ViewRect = new IRect(
 			0, 0,
 			Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000,
 			Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight)
@@ -154,9 +152,15 @@ public static class Stage {
 
 		if (!Enable) return;
 
+		var capacities = new int[EntityLayer.COUNT];
+		DEFAULT_ENTITY_CAPACITY.CopyTo(capacities, 0);
+		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<EntityLayerCapacityAttribute>()) {
+			if (att.Layer < 0 || att.Layer >= EntityLayer.COUNT) continue;
+			capacities[att.Layer] = att.Capacity;
+		}
 		Entities = new Entity[EntityLayer.COUNT][];
 		for (int i = 0; i < EntityLayer.COUNT; i++) {
-			Entities[i] = new Entity[ENTITY_CAPACITY[i]];
+			Entities[i] = new Entity[capacities[i]];
 		}
 		EntityPool.Clear();
 

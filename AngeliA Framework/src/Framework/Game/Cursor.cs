@@ -34,7 +34,7 @@ public static class Cursor {
 				} else {
 					if (!Game.CursorVisible) {
 						Game.ShowCursor();
-						if (Game.ProjectType == ProjectType.Game) {
+						if (!Game.IsToolApplication) {
 							Game.CenterCursor();
 						}
 					}

@@ -119,7 +119,7 @@ public abstract partial class Game {
 		OnGameQuitting?.Invoke();
 	}
 	public static bool InvokeGameTryingToQuit () {
-		if (ProjectType == ProjectType.Game && !IsPausing) PauseGame();
+		if (!IsToolApplication && !IsPausing) PauseGame();
 		foreach (var method in OnGameTryingToQuitMethods) {
 			if (method.Invoke(null, null) is bool result && !result) {
 				return false;

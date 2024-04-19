@@ -33,7 +33,6 @@ public abstract partial class Game {
 	public static int ProcedureAudioVolume { get; set; } = 1000;
 
 	// Attribute Info
-	public static ProjectType ProjectType { get; private set; } = ProjectType.Game;
 	public static string Title { get; private set; } = "";
 	public static string DisplayTitle { get; private set; } = "";
 	public static string Developer { get; private set; } = "";
@@ -41,6 +40,7 @@ public abstract partial class Game {
 	public static int MajorVersion { get; private set; } = 0;
 	public static int MinorVersion { get; private set; } = 0;
 	public static int PatchVersion { get; private set; } = 0;
+	public static bool IsToolApplication { get; private set; } = false;
 	public static bool AllowMakerFeatures { get; private set; } = false;
 	public static bool UsePremultiplyBlendMode { get; private set; } = false;
 
@@ -71,7 +71,9 @@ public abstract partial class Game {
 
 
 	public Game () {
+
 		Instance = this;
+
 		// Assembly
 		Util.AllAssemblies.AddDistinct(typeof(Game).Assembly);
 		Util.AllAssemblies.AddDistinct(Assembly.GetCallingAssembly());
@@ -80,24 +82,25 @@ public abstract partial class Game {
 				Util.AllAssemblies.AddDistinct(assembly);
 			}
 		}
+
 		// Attribute >> Game
-		if (Util.TryGetAttributeFromAllAssemblies<AngeliaProjectTypeAttribute>(out var _project)) {
-			ProjectType = _project.Type;
+		if (Util.TryGetAttributeFromAllAssemblies<ToolApplicationAttribute>()) {
+			IsToolApplication = true;
 		}
-		if (Util.TryGetAttributeFromAllAssemblies<AngeliaGameTitleAttribute>(out var _title)) {
+		if (Util.TryGetAttributeFromAllAssemblies<TitleAttribute>(out var _title)) {
 			Title = _title.Title;
-			DisplayTitle = _title.DisTitle;
+			DisplayTitle = _title.DisplayTitle;
 		}
-		if (Util.TryGetAttributeFromAllAssemblies<AngeliaGameDeveloperAttribute>(out var _dev)) {
+		if (Util.TryGetAttributeFromAllAssemblies<DeveloperAttribute>(out var _dev)) {
 			Developer = _dev.Developer;
-			DeveloperDisplayName = _dev.DisName;
+			DeveloperDisplayName = _dev.DisplayName;
 		}
-		if (Util.TryGetAttributeFromAllAssemblies<AngeliaVersionAttribute>(out var _ver)) {
+		if (Util.TryGetAttributeFromAllAssemblies<VersionAttribute>(out var _ver)) {
 			MajorVersion = _ver.Version.x;
 			MinorVersion = _ver.Version.y;
 			PatchVersion = _ver.Version.z;
 		}
-		if (Util.TryGetAttributeFromAllAssemblies<AngeliaAllowMakerFeaturesAttribute>()) {
+		if (Util.TryGetAttributeFromAllAssemblies<AllowMakerFeaturesAttribute>()) {
 			AllowMakerFeatures = true;
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<UsePremultiplyBlendModeAttribute>()) {
@@ -139,21 +142,17 @@ public abstract partial class Game {
 			System.GC.Collect();
 
 			// Start Game !!
-			switch (ProjectType) {
-				case ProjectType.Game:
-					if (IsEdittime) {
-						WindowUI.OpenWindow(MapEditor.TYPE_ID);
-					} else if (AllowMakerFeatures) {
-						WindowUI.OpenWindow(HomeScreen.TYPE_ID);
-					} else {
-						RestartGame();
-					}
-					break;
-				case ProjectType.Application:
-					StopGame();
-					break;
+			if (IsToolApplication) {
+				StopGame();
+			} else {
+				if (IsEdittime) {
+					WindowUI.OpenWindow(MapEditor.TYPE_ID);
+				} else if (AllowMakerFeatures) {
+					WindowUI.OpenWindow(HomeScreen.TYPE_ID);
+				} else {
+					RestartGame();
+				}
 			}
-
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 
@@ -169,7 +168,7 @@ public abstract partial class Game {
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
-			if (ProjectType == ProjectType.Game && Input.GameKeyUp(Gamekey.Start)) {
+			if (!IsToolApplication && Input.GameKeyUp(Gamekey.Start)) {
 				if (IsPlaying) {
 					PauseGame();
 				} else {

@@ -20,7 +20,7 @@ public static partial class Util {
 
 
 	// All Class
-	public static readonly List<Assembly> AllAssemblies = new();
+	public static List<Assembly> AllAssemblies { get; } = new();
 	public static Type[] AllTypes {
 		get {
 			if (_AllTypes == null) {
@@ -55,9 +55,11 @@ public static partial class Util {
 
 	public static IEnumerable<(Assembly assembly, A attribyte)> ForAllAssemblyWithAttribute<A> () where A : Attribute {
 		foreach (var assembly in AllAssemblies) {
-			var att = assembly.GetCustomAttribute<A>();
-			if (att == null) continue;
-			yield return new(assembly, att);
+			var atts = assembly.GetCustomAttributes<A>();
+			if (atts == null) continue;
+			foreach (var att in atts) {
+				yield return new(assembly, att);
+			}
 		}
 	}
 
@@ -71,6 +73,7 @@ public static partial class Util {
 		attribute = null;
 		return false;
 	}
+
 
 
 	// For All Types
