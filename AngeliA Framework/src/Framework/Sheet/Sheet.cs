@@ -432,7 +432,10 @@ public class Sheet {
 			sprite.Atlas = Atlas[sprite.AtlasIndex];
 			sprite.SortingZ = sprite.Atlas.AtlasZ * 1024 + sprite.LocalZ;
 			sprite.Group = null;
-			SpritePool.TryAdd(sprite.ID, Sprites[i]);
+			if (!SpritePool.TryAdd(sprite.ID, Sprites[i])) {
+				Sprites.RemoveAt(i);
+				i--;
+			}
 		}
 		// Make Groups
 		GroupPool.Clear();

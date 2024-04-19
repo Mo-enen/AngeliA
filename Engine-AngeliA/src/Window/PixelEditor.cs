@@ -618,7 +618,7 @@ public partial class PixelEditor : WindowUI {
 					}
 				}
 			}
-
+			
 		}
 
 	}
@@ -629,59 +629,9 @@ public partial class PixelEditor : WindowUI {
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!Interactable) return;
 
-		// Delete
-		if (Input.KeyboardDown(KeyboardKey.Delete)) {
-			DeleteAllSelectingSprite();
-			DeleteSelectingPixels();
-		}
-
-		// ESC
-		if (Input.KeyboardDown(KeyboardKey.Escape)) {
-			ClearSpriteSelection();
-			ClearPixelSelectionRect();
-		}
-
-		// Q
-		if (Input.KeyboardDownGUI(KeyboardKey.Q)) {
-			ShiftPaintingColorFromPalette(false);
-		}
-
-		// E
-		if (Input.KeyboardDownGUI(KeyboardKey.E)) {
-			ShiftPaintingColorFromPalette(true);
-		}
-
-		// Move View
-		if (Input.KeyboardDownGUI(KeyboardKey.W)) {
-			CanvasRect = CanvasRect.Shift(0, -Unify(100));
-		}
-		if (Input.KeyboardDownGUI(KeyboardKey.A)) {
-			CanvasRect = CanvasRect.Shift(Unify(100), 0);
-		}
-		if (Input.KeyboardDownGUI(KeyboardKey.S)) {
-			CanvasRect = CanvasRect.Shift(0, Unify(100));
-		}
-		if (Input.KeyboardDownGUI(KeyboardKey.D)) {
-			CanvasRect = CanvasRect.Shift(-Unify(100), 0);
-		}
-
-		// 1
-		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-			ResetCamera();
-		}
-
-		// 2
-		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
-			SetZoom(5, StageRect.CenterInt());
-		}
-
-		// 3
-		if (Input.KeyboardDown(KeyboardKey.Digit3)) {
-			SetZoom(10, StageRect.CenterInt());
-		}
-
 		// Ctrl
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+
 			// Ctrl + Z
 			if (Input.KeyboardDown(KeyboardKey.Z)) {
 				TryApplyPixelBuffer(ignoreUndoStep: true);
@@ -690,6 +640,7 @@ public partial class PixelEditor : WindowUI {
 				Undo.Undo();
 				RefreshSliceInputContent();
 			}
+
 			// Ctrl + Y
 			if (Input.KeyboardDown(KeyboardKey.Y)) {
 				TryApplyPixelBuffer(ignoreUndoStep: true);
@@ -698,10 +649,12 @@ public partial class PixelEditor : WindowUI {
 				Undo.Redo();
 				RefreshSliceInputContent();
 			}
+
 			// Ctrl + S
 			if (Input.KeyboardDown(KeyboardKey.S)) {
 				Save();
 			}
+
 			// Ctrl + C
 			if (Input.KeyboardDown(KeyboardKey.C)) {
 				if (SelectingSpriteCount > 0) {
@@ -714,6 +667,7 @@ public partial class PixelEditor : WindowUI {
 					CopyCutPixel(cut: false);
 				}
 			}
+
 			// Ctrl + X
 			if (Input.KeyboardDown(KeyboardKey.X)) {
 				if (SelectingSpriteCount > 0) {
@@ -727,6 +681,7 @@ public partial class PixelEditor : WindowUI {
 					CopyCutPixel(cut: true);
 				}
 			}
+
 			// Ctrl + V
 			if (Input.KeyboardDown(KeyboardKey.V)) {
 				ClearSpriteSelection();
@@ -738,6 +693,60 @@ public partial class PixelEditor : WindowUI {
 					PastePixel();
 				}
 			}
+
+		} else {
+
+			// Delete
+			if (Input.KeyboardDown(KeyboardKey.Delete)) {
+				DeleteAllSelectingSprite();
+				DeleteSelectingPixels();
+			}
+
+			// ESC
+			if (Input.KeyboardDown(KeyboardKey.Escape)) {
+				ClearSpriteSelection();
+				ClearPixelSelectionRect();
+			}
+
+			// Q
+			if (Input.KeyboardDownGUI(KeyboardKey.Q)) {
+				ShiftPaintingColorFromPalette(false);
+			}
+
+			// E
+			if (Input.KeyboardDownGUI(KeyboardKey.E)) {
+				ShiftPaintingColorFromPalette(true);
+			}
+
+			// Move View
+			if (Input.KeyboardDownGUI(KeyboardKey.W)) {
+				CanvasRect = CanvasRect.Shift(0, -Unify(100));
+			}
+			if (Input.KeyboardDownGUI(KeyboardKey.A)) {
+				CanvasRect = CanvasRect.Shift(Unify(100), 0);
+			}
+			if (Input.KeyboardDownGUI(KeyboardKey.S)) {
+				CanvasRect = CanvasRect.Shift(0, Unify(100));
+			}
+			if (Input.KeyboardDownGUI(KeyboardKey.D)) {
+				CanvasRect = CanvasRect.Shift(-Unify(100), 0);
+			}
+
+			// 1
+			if (Input.KeyboardDown(KeyboardKey.Digit1)) {
+				ResetCamera();
+			}
+
+			// 2
+			if (Input.KeyboardDown(KeyboardKey.Digit2)) {
+				SetZoom(5, StageRect.CenterInt());
+			}
+
+			// 3
+			if (Input.KeyboardDown(KeyboardKey.Digit3)) {
+				SetZoom(10, StageRect.CenterInt());
+			}
+
 		}
 
 	}

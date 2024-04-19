@@ -181,8 +181,8 @@ internal static class Engine {
 		}
 
 	}
-
-
+	
+	
 	// Window
 	private static void OnGUI_Hub () {
 
@@ -361,7 +361,7 @@ internal static class Engine {
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
 
 	}
-
+	
 
 	private static void OnGUI_Window () {
 
@@ -436,7 +436,7 @@ internal static class Engine {
 				if (window.IsDirty) {
 					int markSize = GUI.Unify(10);
 					Renderer.Draw(
-						BuiltInSprite.CIRCLE_16,
+						BuiltInSprite.ICON_STAR,
 						new IRect(iconRect.xMax - markSize / 2, iconRect.yMax - markSize / 2, markSize, markSize),
 						Color32.ORANGE_BETTER
 					);
