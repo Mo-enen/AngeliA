@@ -10,7 +10,10 @@ public interface IWindowEntityUI {
 	private static int[] EndIndexCache = null;
 
 	[OnGameUpdatePauseless(31)]
-	internal static void OnGameUpdatePauseless () => ClipTextForAllUI(Stage.Entities[EntityLayer.UI], Stage.EntityCounts[EntityLayer.UI]);
+	internal static void OnGameUpdatePauseless () {
+		if (!Stage.Enable) return;
+		ClipTextForAllUI(Stage.Entities[EntityLayer.UI], Stage.EntityCounts[EntityLayer.UI]);
+	}
 
 
 	public static void ClipTextForAllUI (IEnumerable<Entity> entities, int count) {

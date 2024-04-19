@@ -151,12 +151,14 @@ public static class Stage {
 			Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight)
 		);
 		SpawnRect = ViewRect.Expand(Const.SPAWN_PADDING);
+
+		if (!Enable) return;
+
 		Entities = new Entity[EntityLayer.COUNT][];
 		for (int i = 0; i < EntityLayer.COUNT; i++) {
 			Entities[i] = new Entity[ENTITY_CAPACITY[i]];
 		}
 		EntityPool.Clear();
-		if (!Enable) return;
 
 		var allEntityTypes = new List<System.Type>(typeof(Entity).AllChildClass());
 		for (int tIndex = 0; tIndex < allEntityTypes.Count; tIndex++) {
@@ -205,6 +207,7 @@ public static class Stage {
 			}
 			EntityPool.TryAdd(id, stack);
 		}
+
 		// Event
 		Util.LinkEventWithAttribute<OnViewZChangedAttribute>(typeof(Stage), nameof(OnViewZChanged));
 		Util.LinkEventWithAttribute<BeforeLayerFrameUpdateAttribute>(typeof(Stage), nameof(BeforeLayerFrameUpdate));
@@ -492,6 +495,7 @@ public static class Stage {
 
 	public static bool TryGetEntity<E> (out E result) where E : Entity {
 		result = null;
+		if (!Enable) return false;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 			int count = EntityCounts[layer];
 			var entities = Entities[layer];
@@ -507,6 +511,7 @@ public static class Stage {
 	}
 	public static bool TryGetEntity (int typeID, out Entity result) {
 		result = null;
+		if (!Enable) return false;
 		if (!TryGetEntityLayer(typeID, out int layer)) return false;
 		int count = EntityCounts[layer];
 		var entities = Entities[layer];
@@ -522,6 +527,7 @@ public static class Stage {
 	}
 	public static bool TryGetEntityNearby<E> (Int2 pos, out E finalTarget) where E : Entity {
 		finalTarget = null;
+		if (!Enable) return false;
 		int finalDistance = int.MaxValue;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 			int count = EntityCounts[layer];
@@ -546,7 +552,7 @@ public static class Stage {
 
 
 	public static bool TryGetEntities (int layer, out Entity[] entities, out int count) {
-		if (layer >= 0 && layer < EntityLayer.COUNT) {
+		if (Enable && layer >= 0 && layer < EntityLayer.COUNT) {
 			count = EntityCounts[layer];
 			entities = Entities[layer];
 			return true;
@@ -562,6 +568,7 @@ public static class Stage {
 
 
 	public static IEnumerable<E> ForAllActiveEntities<E> (int entityLayer = -1) where E : Entity {
+		if (!Enable) yield break;
 		int startLayer = entityLayer < 0 ? 0 : entityLayer;
 		int endLayer = entityLayer < 0 ? EntityLayer.COUNT - 1 : entityLayer;
 		for (int layer = startLayer; layer <= endLayer; layer++) {
@@ -580,6 +587,7 @@ public static class Stage {
 
 	// Despawn
 	public static void DespawnAllEntitiesOfType<E> (int targetLayer = -1) where E : Entity {
+		if (!Enable) return;
 		int start = targetLayer < 0 ? 0 : targetLayer;
 		int end = targetLayer < 0 ? EntityLayer.COUNT : targetLayer + 1;
 		for (int layer = start; layer < end; layer++) {
@@ -597,6 +605,7 @@ public static class Stage {
 
 	// Stage Workflow
 	public static void DespawnAllNonUiEntities () {
+		if (!Enable) return;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 			if (layer == EntityLayer.UI) continue;
 			var entities = Entities[layer];
@@ -654,6 +663,8 @@ public static class Stage {
 
 
 	private static void RefreshStagedEntities (int layer) {
+
+		if (!Enable) return;
 
 		var entities = Entities[layer];
 		int count = EntityCounts[layer];

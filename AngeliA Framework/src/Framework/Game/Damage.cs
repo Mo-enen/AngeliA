@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public struct Damage {
@@ -29,6 +29,7 @@ public interface IDamageReceiver {
 
 	[OnGameUpdateLater]
 	public static void DamageUpdateFromLevel () {
+		if (!Stage.Enable) return;
 		PerformDamageCheck(EntityLayer.GAME);
 		PerformDamageCheck(EntityLayer.CHARACTER);
 		static void PerformDamageCheck (int entityLayer) {

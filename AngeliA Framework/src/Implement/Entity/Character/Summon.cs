@@ -181,7 +181,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	// Summon
 	public static T CreateSummon<T> (Character owner, int x, int y) where T : Summon => CreateSummon(owner, typeof(T).AngeHash(), x, y) as T;
 	public static Summon CreateSummon (Character owner, int typeID, int x, int y) {
-		if (owner == null) return null;
+		if (owner == null || !Stage.Enable) return null;
 		if (Stage.SpawnEntity(typeID, x, y) is Summon summon) {
 			// Create New
 			summon.Owner = owner;

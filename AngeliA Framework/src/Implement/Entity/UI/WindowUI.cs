@@ -26,6 +26,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	// MSG
 	[OnGameQuitting]
 	public static void OnGameQuitting () {
+		if (!Stage.Enable) return;
 		int len = Stage.EntityCounts[EntityLayer.UI];
 		var entities = Stage.Entities[EntityLayer.UI];
 		for (int i = 0; i < len; i++) {
@@ -67,6 +68,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	public static void OpenWindow (int typeID) => Stage.SpawnEntity(typeID, 0, 0);
 
 	public static void CloseWindow (int typeID) {
+		if (!Stage.Enable) return;
 		int len = Stage.EntityCounts[EntityLayer.UI];
 		var entities = Stage.Entities[EntityLayer.UI];
 		for (int i = 0; i < len; i++) {
