@@ -160,10 +160,7 @@ public static class Stage {
 		}
 		EntityPool.Clear();
 
-		var allEntityTypes = new List<System.Type>(typeof(Entity).AllChildClass());
-		for (int tIndex = 0; tIndex < allEntityTypes.Count; tIndex++) {
-
-			var eType = allEntityTypes[tIndex];
+		foreach (var eType in typeof(Entity).AllChildClass()) {
 
 			int id = eType.AngeHash();
 			int preSpawn = 0;
