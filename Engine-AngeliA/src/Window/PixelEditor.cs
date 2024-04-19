@@ -618,7 +618,7 @@ public partial class PixelEditor : WindowUI {
 					}
 				}
 			}
-
+			
 		}
 
 	}
