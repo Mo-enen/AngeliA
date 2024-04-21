@@ -4,8 +4,12 @@ using System.IO;
 
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public static partial class Util {
+
+
+	private static readonly char[] INVALID_PATH_CHARS = Path.GetInvalidPathChars();
+	private static readonly char[] INVALID_NAME_CHARS = Path.GetInvalidFileNameChars();
 
 
 	public static string GetParentPath (string path) {
@@ -111,6 +115,17 @@ public static partial class Util {
 
 	public static bool IsFolderHidden (string path) => (new DirectoryInfo(path).Attributes & FileAttributes.Hidden) != 0;
 
+
+	public static bool IsPathValid (string path) {
+		if (path == null) return false;
+		if (!Path.IsPathFullyQualified(path)) return false;
+		if (path.IndexOfAny(INVALID_PATH_CHARS) >= 0) return false;
+		while (!string.IsNullOrEmpty(path)) {
+			if (GetNameWithExtension(path).IndexOfAny(INVALID_NAME_CHARS) >= 0) return false;
+			path = GetParentPath(path);
+		}
+		return true;
+	}
 
 
 }

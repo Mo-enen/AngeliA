@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 [ItemCombination(typeof(iRuneWater), typeof(iRuneFire), typeof(iTreeTrunk), 1)]
 public class iChessPawn : Item { }
@@ -541,7 +541,8 @@ public class iBrokenBone : Item { }
 [ItemCombination(typeof(iPaper), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
 public class iHandFan : Item { }
 
-[ItemCombination(typeof(iABC), typeof(iPaper), 1)]
+[ItemCombination(typeof(iWord), typeof(iPaper), 1)]
+[ItemCombination(typeof(iABC), typeof(iABC), typeof(iPaper), 1)]
 public class iLetter : Item { }
 
 [ItemCombination(typeof(iProcessor), typeof(iBeetle), typeof(iElectricWire), typeof(iBattery), 1)]
@@ -592,6 +593,12 @@ public class iElectronicChip : Item { }
 
 [ItemCombination(typeof(iHandbag), typeof(iBolt), 1)]
 public class iToolbox : Item { }
+
+[ItemCombination(typeof(iPencil), typeof(iCottonBall), 1)]
+public class iPaintBrush : Item { }
+
+[ItemCombination(typeof(iABC), typeof(iABC), 1)]
+public class iWord : Item { }
 
 public class iCursedSoul : Item { }
 public class iFist : Item { }

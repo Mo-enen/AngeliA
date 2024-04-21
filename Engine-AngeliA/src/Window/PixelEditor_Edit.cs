@@ -38,6 +38,7 @@ public partial class PixelEditor {
 	private int HoveringSpriteStageIndex;
 	private int HoveringResizeStageIndex = -1;
 	private int ResizingStageIndex = 0;
+	private int PaintFailedCount = 0;
 	private bool DragChanged = false;
 	private bool ResizeForBorder = false;
 	private bool HoveringResizeForBorder = false;
@@ -145,6 +146,7 @@ public partial class PixelEditor {
 			// Outside Sprite
 			if (AllowSpirteActionOnlyOnHoldingOptionKey.Value) {
 				DraggingStateLeft = DragStateLeft.Paint;
+				if (SelectingSpriteCount > 0) PaintFailedCount = 0;
 				ClearSpriteSelection();
 			} else {
 				DraggingStateLeft = DragStateLeft.SelectOrCreateSlice;
@@ -302,7 +304,13 @@ public partial class PixelEditor {
 					PaintPixel(DraggingPixelRectLeft, PaintingColor, out painted);
 				}
 				if (!painted) {
-					RequireNotification(NOTI_PAINT_IN_SPRITE);
+					PaintFailedCount++;
+					if (PaintFailedCount >= 3) {
+						PaintFailedCount = 0;
+						RequireNotification(NOTI_PAINT_IN_SPRITE);
+					}
+				} else {
+					PaintFailedCount = 0;
 				}
 				break;
 

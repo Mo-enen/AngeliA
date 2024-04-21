@@ -9,6 +9,11 @@ namespace AngeliaEngine;
 public static class EngineUtil {
 
 
+	public const int ERROR_PROJECT_OBJECT_IS_NULL = -2;
+	public const int ERROR_PUBLISH_DIR_INVALID = -402;
+	public const int ERROR_OUTPUT_PATH_INVALID = -403;
+	public const int ERROR_PROJECT_FOLDER_INVALID = -401;
+	public const int ERROR_PROJECT_FOLDER_NOT_EXISTS = -404;
 	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet", "dotnet.exe");
 	public static string ProjectTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate");
 	public static string DebugRuntimePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "AngeliA Runtime Debug.exe");
@@ -54,7 +59,16 @@ public static class EngineUtil {
 	}
 
 
-	public static int BuildAngeliaProject (string projectFolder, string outputPath, string publishDir) {
+	public static int BuildAngeliaProject (
+		Project project, string outputPath, string publishDir, bool publish, bool debug
+	) {
+		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
+		if (!Util.IsPathValid(project.ProjectPath)) return ERROR_PROJECT_FOLDER_INVALID;
+		if (!Util.IsPathValid(outputPath)) return ERROR_OUTPUT_PATH_INVALID;
+		if (!Util.IsPathValid(publishDir)) return ERROR_PUBLISH_DIR_INVALID;
+		if (!Util.FolderExists(project.ProjectPath)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
+
+
 
 
 
