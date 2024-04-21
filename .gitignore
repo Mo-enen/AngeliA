@@ -7,3 +7,4 @@ dotnet/
 *.vsconfig
 *.editorconfig
 *.ini
+Properties/

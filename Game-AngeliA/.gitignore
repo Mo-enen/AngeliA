@@ -1,8 +1,0 @@
-/.vs
-/obj
-/bin
-/Properties
-*.vsconfig
-*.editorconfig
-*.csproj.user
-*.ini
