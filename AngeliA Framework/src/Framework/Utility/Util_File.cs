@@ -73,13 +73,12 @@ public static partial class Util {
 
 
 	public static void CreateFolder (string path) {
-		if (!string.IsNullOrEmpty(path) && !FolderExists(path)) {
-			string pPath = GetParentPath(path);
-			if (!FolderExists(pPath)) {
-				CreateFolder(pPath);
-			}
-			Directory.CreateDirectory(path);
+		if (string.IsNullOrEmpty(path) || FolderExists(path)) return;
+		string pPath = GetParentPath(path);
+		if (!FolderExists(pPath)) {
+			CreateFolder(pPath);
 		}
+		Directory.CreateDirectory(path);
 	}
 
 
@@ -326,6 +325,12 @@ public static partial class Util {
 	public static long GetFileModifyDate (string path) {
 		if (!FileExists(path)) return 0;
 		return File.GetLastWriteTime(path).ToFileTime();
+	}
+
+
+	public static long GetFolderModifyDate (string path) {
+		if (!FolderExists(path)) return 0;
+		return Directory.GetLastWriteTime(path).ToFileTime();
 	}
 
 

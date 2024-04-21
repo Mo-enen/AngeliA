@@ -615,10 +615,12 @@ public static class Renderer {
 		Util.ClampCells(Layers[layerIndex].Cells, rect, startIndex, endIndex);
 	}
 	public static void ClampTextCells (IRect rect, int startIndex, int endIndex = -1) {
+		if (CurrentTextLayerIndex < 0 || CurrentTextLayerIndex >= TextLayers.Length) return;
 		if (endIndex < 0) endIndex = GetTextUsedCellCount(CurrentTextLayerIndex);
 		Util.ClampCells(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
 	}
 	public static void ClampTextCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
+		if (CurrentTextLayerIndex < 0 || CurrentTextLayerIndex >= TextLayers.Length) return;
 		if (endIndex < 0) endIndex = GetTextUsedCellCount(layerIndex);
 		Util.ClampCells(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
 	}
@@ -641,16 +643,17 @@ public static class Renderer {
 		ExcludeCellsLogic(Layers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
 	}
 	public static void ExcludeTextCellsForAllLayers (IRect rect) {
-		int count = TextLayerCount;
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < TextLayers.Length; i++) {
 			ExcludeCellsLogic(TextLayers[i].Cells, i, rect, 0, GetTextUsedCellCount(i));
 		}
 	}
 	public static void ExcludeTextCells (IRect rect, int startIndex, int endIndex = -1) {
+		if (CurrentTextLayerIndex < 0 || CurrentTextLayerIndex >= TextLayers.Length) return;
 		if (endIndex < 0) endIndex = GetTextUsedCellCount(CurrentTextLayerIndex);
 		ExcludeCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, CurrentTextLayerIndex, rect, startIndex, endIndex);
 	}
 	public static void ExcludeTextCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
+		if (layerIndex < 0 || layerIndex >= TextLayers.Length) return;
 		if (endIndex < 0) endIndex = GetTextUsedCellCount(layerIndex);
 		ExcludeCellsLogic(TextLayers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
 	}
@@ -763,7 +766,7 @@ public static class Renderer {
 	}
 	public static bool GetTextCells (out Cell[] cells, out int count) => GetTextCells(CurrentTextLayerIndex, out cells, out count);
 	public static bool GetTextCells (int layer, out Cell[] cells, out int count) {
-		if (layer >= 0 && layer < TextLayerCount) {
+		if (layer >= 0 && layer < TextLayers.Length) {
 			var item = TextLayers[layer];
 			count = item.Count;
 			cells = item.Cells;

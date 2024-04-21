@@ -1,7 +1,6 @@
 ﻿using AngeliA;
 
-[assembly: Title("AngeliA Engine")]
-[assembly: Developer("Moenen", " ")]
-[assembly: Version(0, 0, 1)]
+[assembly: ProductName("AngeliA Engine")]
+[assembly: OrganizationName("Moenen")]
 [assembly: ToolApplication]
 [assembly: UsePremultiplyBlendMode]

@@ -192,6 +192,8 @@ public static class ItemSystem {
 	// Combination
 	public static void CreateItemCombinationHelperFiles (string savingFolder) {
 
+		if (string.IsNullOrWhiteSpace(savingFolder)) return;
+
 		string itemCusRoot = AngePath.GetItemCustomizationRoot(savingFolder);
 
 		// Create User Combination Template

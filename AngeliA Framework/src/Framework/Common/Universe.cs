@@ -52,9 +52,11 @@ public class Universe {
 
 		// Saving
 		SavingRoot = savingFolder;
-		ItemCustomizationRoot = AngePath.GetItemCustomizationRoot(savingFolder);
-		SavingMetaRoot = AngePath.GetSavingMetaRoot(savingFolder);
-		ProcedureMapRoot = AngePath.GetProcedureMapRoot(savingFolder);
+		if (!string.IsNullOrWhiteSpace(savingFolder)) {
+			ItemCustomizationRoot = AngePath.GetItemCustomizationRoot(savingFolder);
+			SavingMetaRoot = AngePath.GetSavingMetaRoot(savingFolder);
+			ProcedureMapRoot = AngePath.GetProcedureMapRoot(savingFolder);
+		}
 
 		// Create Folders 
 		CreateFolders();

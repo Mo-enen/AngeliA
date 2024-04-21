@@ -28,7 +28,9 @@ internal static class Engine {
 	private static readonly LanguageCode CREATE_PRO_TITLE = ("UI.CreateProjectTitle", "New Project");
 	private static readonly LanguageCode ADD_PRO_TITLE = ("UI.AddProjectTitle", "Add Existing Project");
 	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
-	private static readonly LanguageCode DELETE_PROJECT_MSG = ("UI.DeleteProjectMsg", "Remove project {0}? This will NOT delete files in the disk.");
+	private static readonly LanguageCode DELETE_PROJECT_MSG = ("UI.DeleteProjectMsg", "Remove project {0}?\nThis will NOT delete files in the disk.");
+	private static readonly LanguageCode MENU_SORT_BY_NAME = ("Menu.SortProjectByName", "Sort by Name");
+	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
 	private static readonly LanguageCode[] UI_TITLES = {
 		("", ""),
 		("", ""),
@@ -49,14 +51,6 @@ internal static class Engine {
 		LanguageEditor,
 		SettingWindow,
 	};
-
-	// Short
-	private static bool AnyEditorDirty {
-		get {
-			foreach (var ui in ALL_UI) if (ui is WindowUI window && window.IsDirty) return true;
-			return false;
-		}
-	}
 
 	// Data
 	private static Project CurrentProject = null;
@@ -86,7 +80,8 @@ internal static class Engine {
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
 		EngineSetting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
-		EngineSetting.RefreshProjectFileExistsCache();
+		EngineSetting.RefreshProjectCache();
+		EngineSetting.SortProjects();
 		if (EngineSetting.Maximize) {
 			Game.IsWindowMaximized = EngineSetting.Maximize;
 		} else {
@@ -96,20 +91,22 @@ internal static class Engine {
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 		Game.SetEventWaiting(false);
-		if (EngineSetting.OpenLastProjectOnStart) {
+		if (
+			EngineSetting.OpenLastProjectOnStart &&
+			EngineSetting.Projects.Any(data => data.Path == EngineSetting.LastOpenProject)
+		) {
 			OpenProject(EngineSetting.LastOpenProject);
 		}
 		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
 		SettingWindow.PixEditor_CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
 		SettingWindow.CanvasBackgroundColor_Default = PixelEditor.CanvasBackgroundColor.DefaultValue;
-		Util.AddEnvironmentVariable("Path", EngineUtil.DotnetSdkPath);
 	}
 
 
 	[OnGameTryingToQuit]
 	internal static bool OnGameTryingToQuit () {
-		if (AnyEditorDirty) {
+		if (CheckAnyEditorDirty()) {
 			GenericDialogUI.SpawnDialog_Button(
 				QUIT_MSG,
 				BuiltInText.UI_SAVE, SaveAndQuit,
@@ -152,7 +149,7 @@ internal static class Engine {
 
 	[OnGameFocused]
 	internal static void OnGameFocused () {
-		EngineSetting.RefreshProjectFileExistsCache();
+		EngineSetting.RefreshProjectCache();
 	}
 
 
@@ -181,8 +178,8 @@ internal static class Engine {
 		}
 
 	}
-	
-	
+
+
 	// Window
 	private static void OnGUI_Hub () {
 
@@ -223,9 +220,7 @@ internal static class Engine {
 
 			// --- Panel ---
 			{
-				var panelRect = EngineSetting.Projects.Count > 0 ?
-					cameraRect.EdgeInside(Direction4.Left, hubPanelWidth) :
-					new IRect(cameraRect.x + (cameraRect.width - hubPanelWidth) / 2, cameraRect.y, hubPanelWidth, cameraRect.height);
+				var panelRect = cameraRect.EdgeInside(Direction4.Left, hubPanelWidth);
 				int itemPadding = GUI.Unify(8);
 
 				var rect = new IRect(
@@ -249,119 +244,126 @@ internal static class Engine {
 			}
 
 			// --- Content ---
-			if (EngineSetting.Projects.Count > 0) {
 
-				int border = GUI.Unify(8);
-				int padding = GUI.Unify(8);
-				int scrollWidth = GUI.Unify(12);
-				int itemHeight = GUI.Unify(52);
-				int extendHeight = GUI.Unify(128);
-				var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
-					padding, padding + scrollWidth, padding, padding
-				);
-				var projects = EngineSetting.Projects;
+			int border = GUI.Unify(8);
+			int padding = GUI.Unify(8);
+			int scrollWidth = GUI.Unify(12);
+			int itemHeight = GUI.Unify(52);
+			int extendHeight = GUI.Unify(128);
+			var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
+				padding, padding + scrollWidth, padding, padding
+			);
+			var projects = EngineSetting.Projects;
 
-				// BG
-				Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
+			// BG
+			Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
 
-				// Big Label
-				if (Renderer.TryGetSprite(LABEL_PROJECTS, out var bigLabelSprite)) {
-					Renderer.Draw(
-						bigLabelSprite,
-						contentRect.Shift(GUI.Unify(-24), GUI.Unify(48)).CornerInside(
-							Alignment.BottomRight, GUI.Unify(256)
-						).Fit(bigLabelSprite, 1000, 0),
-						Color32.WHITE.WithNewA(4)
-					);
-				}
-
-				// Project List
-				using (var scroll = Scope.GUIScroll(
-					contentRect, HubPanelScroll,
-					0, Util.Max(0, projects.Count * itemHeight + extendHeight - contentRect.height))
-				) {
-					HubPanelScroll = scroll.ScrollPosition;
-
-					var STEP_TINT = new Color32(255, 255, 255, 6);
-					var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
-					bool stepTint = false;
-
-					for (int i = 0; i < projects.Count; i++) {
-						string projectPath = projects[i].Path;
-						bool folderExists = projects[i].FolderExists;
-						var itemContentRect = rect.Shrink(padding);
-
-						// Step Tint
-						if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
-						stepTint = !stepTint;
-
-						// Red Highlight
-						if (GUI.Enable && !folderExists && rect.MouseInside()) {
-							Renderer.DrawPixel(rect, Color32.RED.WithNewA(32));
-						}
-
-						// Button
-						if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
-							OpenProject(projectPath);
-						}
-
-						// Icon
-						using (Scope.GUIContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
-							GUI.Icon(
-								itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
-								PROJECT_ICON
-							);
-						}
-
-						// Name
-						GUI.Label(
-							itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
-							Util.GetNameWithoutExtension(projectPath),
-							GUISkin.SmallLabel
-						);
-
-						// Path
-						GUI.Label(
-							itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
-							projectPath,
-							GUISkin.SmallGreyLabel
-						);
-
-						// Click
-						if (GUI.Enable && rect.MouseInside()) {
-							// Menu
-							if (folderExists && Input.MouseRightButtonDown) {
-								Input.UseAllMouseKey();
-								OpenHubItemPopup(i);
-							}
-
-							// Delete Not Exists
-							if (!folderExists) {
-								if (Input.MouseLeftButtonDown) {
-									CurrentProjectMenuIndex = i;
-									DeleteProjectConfirm();
-								}
-								Cursor.SetCursorAsHand();
-							}
-						}
-
-						rect.SlideDown();
-					}
-				}
-
-				// Scrollbar
-				HubPanelScroll = GUI.ScrollBar(
-					701635, cameraRect.EdgeInside(Direction4.Right, scrollWidth),
-					HubPanelScroll, projects.Count * itemHeight + extendHeight, contentRect.height
+			// Big Label
+			if (Renderer.TryGetSprite(LABEL_PROJECTS, out var bigLabelSprite)) {
+				Renderer.Draw(
+					bigLabelSprite,
+					contentRect.Shift(GUI.Unify(-24), GUI.Unify(48)).CornerInside(
+						Alignment.BottomRight, GUI.Unify(256)
+					).Fit(bigLabelSprite, 1000, 0),
+					Color32.WHITE.WithNewA(4)
 				);
 			}
+
+			// Project List
+			using (var scroll = Scope.GUIScroll(
+				contentRect, HubPanelScroll,
+				0, Util.Max(0, projects.Count * itemHeight + extendHeight - contentRect.height))
+			) {
+				HubPanelScroll = scroll.ScrollPosition;
+
+				var STEP_TINT = new Color32(255, 255, 255, 6);
+				var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
+				bool stepTint = false;
+
+				for (int i = 0; i < projects.Count; i++) {
+					string projectPath = projects[i].Path;
+					bool folderExists = projects[i].FolderExists;
+					var itemContentRect = rect.Shrink(padding);
+
+					using var _ = Scope.GUIEnable(folderExists);
+
+					// Step Tint
+					if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
+					stepTint = !stepTint;
+
+					// Red Highlight
+					if (!folderExists && rect.MouseInside()) {
+						Renderer.DrawPixel(rect, Color32.RED.WithNewA(32));
+					}
+
+					// Button
+					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
+						OpenProject(projectPath);
+					}
+
+					// Icon
+					using (Scope.GUIContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+						GUI.Icon(
+							itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
+							PROJECT_ICON
+						);
+					}
+
+					// Name
+					GUI.Label(
+						itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
+						Util.GetNameWithoutExtension(projectPath),
+						GUISkin.SmallLabel
+					);
+
+					// Path
+					GUI.Label(
+						itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
+						projectPath,
+						GUISkin.SmallGreyLabel
+					);
+
+					// Click
+					if (rect.MouseInside()) {
+						// Menu
+						if (Input.MouseRightButtonDown) {
+							Input.UseAllMouseKey();
+							OpenHubItemPopup(i, folderExists);
+						}
+
+						// Delete Not Exists
+						if (!folderExists) {
+							if (Input.MouseLeftButtonDown) {
+								CurrentProjectMenuIndex = i;
+								DeleteProjectConfirm();
+							}
+							Cursor.SetCursorAsHand();
+						}
+					}
+
+					rect.SlideDown();
+				}
+
+				if (Input.MouseRightButtonDown) {
+					Input.UseAllMouseKey();
+					OpenHubPanelPopup();
+				}
+
+			}
+
+			// Scrollbar
+			HubPanelScroll = GUI.ScrollBar(
+				701635, cameraRect.EdgeInside(Direction4.Right, scrollWidth),
+				HubPanelScroll, projects.Count * itemHeight + extendHeight, contentRect.height
+			);
+
 		}
 
 		// Final
 		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
 
 	}
-	
+
 
 	private static void OnGUI_Window () {
 
@@ -640,11 +642,34 @@ internal static class Engine {
 	#region --- LGC ---
 
 
-	private static void OpenHubItemPopup (int index) {
+	private static void OpenHubItemPopup (int index, bool folderExists) {
 		CurrentProjectMenuIndex = index;
 		GenericPopupUI.BeginPopup();
-		GenericPopupUI.AddItem(BuiltInText.UI_EXPLORE, OpenProjectInExplorer);
+		GenericPopupUI.AddItem(BuiltInText.UI_EXPLORE, OpenProjectInExplorer, enabled: folderExists);
 		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteProjectConfirm);
+	}
+
+
+	private static void OpenHubPanelPopup () {
+		GenericPopupUI.BeginPopup();
+		GenericPopupUI.AddItem(
+			MENU_SORT_BY_NAME,
+			SortByName,
+			@checked: EngineSetting.ProjectSort == EngineSetting.ProjectSortMode.Name
+		);
+		GenericPopupUI.AddItem(
+			MENU_SORT_BY_TIME,
+			SortByTime,
+			@checked: EngineSetting.ProjectSort == EngineSetting.ProjectSortMode.OpenTime
+		);
+		static void SortByName () {
+			EngineSetting.ProjectSort = EngineSetting.ProjectSortMode.Name;
+			EngineSetting.SortProjects();
+		}
+		static void SortByTime () {
+			EngineSetting.ProjectSort = EngineSetting.ProjectSortMode.OpenTime;
+			EngineSetting.SortProjects();
+		}
 	}
 
 
@@ -676,20 +701,33 @@ internal static class Engine {
 	}
 
 
+	private static bool CheckAnyEditorDirty () {
+		foreach (var ui in ALL_UI) if (ui is WindowUI window && window.IsDirty) return true;
+		return false;
+	}
+
+
 	// Workflow
 	private static void OpenProject (string projectPath) {
-		if (!Project.IsValidProjectPath(projectPath)) return;
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
+		if (!Util.FolderExists(projectPath)) return;
 		CurrentProject = new Project(projectPath);
 		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
-		Game.SetWindowTitle($"{Game.DisplayTitle} - {Util.GetNameWithoutExtension(projectPath)}");
+		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
 		EngineSetting.LastOpenProject = projectPath;
+		foreach (var project in EngineSetting.Projects) {
+			if (project.Path == projectPath) {
+				project.LastEditTime = Util.GetLongTime();
+				break;
+			}
+		}
+		EngineSetting.SortProjects();
 	}
 
 
 	private static void TryCloseProject () {
-		if (AnyEditorDirty) {
+		if (CheckAnyEditorDirty()) {
 			GenericDialogUI.SpawnDialog_Button(
 				QUIT_MSG,
 				BuiltInText.UI_SAVE, SaveAndClose,
@@ -718,27 +756,30 @@ internal static class Engine {
 			}
 			LanguageEditor.SetLanguageRoot("");
 			PixelEditor.LoadSheetFromDisk("");
-			Game.SetWindowTitle(Game.DisplayTitle);
+			Game.SetWindowTitle("AngeliA Engine");
 		}
 	}
 
 
 	private static void CreateNewProjectAt (string path) {
-		if (string.IsNullOrEmpty(path)) return;
-		if (Project.CreateProjectToDisk(path)) {
-			AddExistsProjectAt(path);
-		}
+		if (string.IsNullOrWhiteSpace(path)) return;
+		Project.CreateProjectToDisk(path);
+		AddExistsProjectAt(path);
 	}
 
 
 	private static void AddExistsProjectAt (string path) {
 		if (string.IsNullOrEmpty(path) || !Util.FolderExists(path)) return;
-		if (EngineSetting != null && Project.IsValidProjectPath(path) && !EngineSetting.Projects.Any(data => data.Path == path)) {
+		if (EngineSetting != null && !EngineSetting.Projects.Any(data => data.Path == path)) {
 			// Add to Path List
-			EngineSetting.Projects.Add(new EngineSetting.ProjectData() {
+			var item = new EngineSetting.ProjectData() {
+				Name = Util.GetNameWithoutExtension(path),
 				Path = path,
 				FolderExists = true,
-			});
+				LastEditTime = Util.GetLongTime(),
+			};
+			EngineSetting.Projects.Add(item);
+			EngineSetting.SortProjects();
 			// Save Setting
 			JsonUtil.SaveJson(EngineSetting, AngePath.PersistentDataPath);
 		}

@@ -1,7 +1,6 @@
 ﻿using AngeliA;
 
-[assembly: Title("AngeliA")]
-[assembly: Developer("Moenen")]
-[assembly: Version(0, 0, 1)]
+[assembly: ProductName("AngeliA")]
+[assembly: OrganizationName("Moenen")]
 
 

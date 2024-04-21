@@ -19,6 +19,8 @@ public static partial class Util {
 
 	// API
 	public static void ClampCells (Cell[] cells, IRect rect, int startIndex, int endIndex) {
+		if (cells == null) return;
+		endIndex = endIndex.LessOrEquel(cells.Length);
 		for (int i = startIndex; i < endIndex; i++) {
 			ClampCell(cells[i], rect);
 		}

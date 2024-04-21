@@ -16,32 +16,21 @@
 
 // Project
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class TitleAttribute : System.Attribute {
+public class ProductNameAttribute : System.Attribute {
 	public readonly string Title = "";
-	public readonly string DisplayTitle = "";
-	public TitleAttribute (string title, string displayTitle = "") {
+	public ProductNameAttribute (string title) {
 		Title = title;
-		DisplayTitle = string.IsNullOrEmpty(displayTitle) ? title : displayTitle;
 	}
 }
 
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class DeveloperAttribute : System.Attribute {
-	public readonly string Developer = "";
-	public readonly string DisplayName = "";
-	public DeveloperAttribute (string developer, string displayName = "") {
-		Developer = developer;
-		DisplayName = string.IsNullOrEmpty(displayName) ? developer : displayName;
+public class OrganizationNameAttribute : System.Attribute {
+	public readonly string Name = "";
+	public OrganizationNameAttribute (string developer) {
+		Name = developer;
 	}
-}
-
-
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class VersionAttribute : System.Attribute {
-	public readonly Int3 Version = Int3.zero;
-	public VersionAttribute (int majorVersion, int minorVersion, int patchVersion) => Version = new Int3(majorVersion, minorVersion, patchVersion);
 }
 
 

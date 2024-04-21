@@ -9,18 +9,20 @@ namespace AngeliaEngine;
 public static class EngineUtil {
 
 
-	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet");
-	public static string ProjectTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, TEMPLATE_NAME);
-	private const string TEMPLATE_NAME = "ProjectTemplate";
+	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet", "dotnet.exe");
+	public static string ProjectTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate");
+	public static string DebugRuntimePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "AngeliA Runtime Debug.exe");
+	public static string ReleaseRuntimePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "AngeliA Runtime Release.exe");
+
 	private static readonly StringBuilder CacheBuilder = new();
 
 
-	// API
-	public static int BuildProject (
-		string projectPath, string sdkPath, string outputFolderPath,
-		string assemblyName,
-		bool logMessage = true, string versionString = ""
+	public static int BuildDotnetProject (
+		string projectFolder, string sdkPath, bool publish, bool debug,
+		string assemblyName = "", string version = "", string outputPath = "", string publishDir = ""
 	) {
+
+		if (!Util.FolderExists(projectFolder)) return -1;
 
 		CacheBuilder.Clear();
 
@@ -28,38 +30,37 @@ public static class EngineUtil {
 		CacheBuilder.AppendWithDoubleQuotes(sdkPath);
 
 		// Build
-		CacheBuilder.Append(" build ");
-		CacheBuilder.AppendWithDoubleQuotes(projectPath);
+		CacheBuilder.Append(publish ? " publish " : " build ");
 
-		// Property
-		if (!string.IsNullOrEmpty(versionString)) CacheBuilder.Append($" -p:Version={versionString}");
-		CacheBuilder.Append(" -p:OutputType=Library");
-		CacheBuilder.Append(" -p:ProduceReferenceAssembly=false");
-		CacheBuilder.Append(" -p:GenerateDependencyFile=false");
-		CacheBuilder.Append(" -p:GenerateDocumentationFile=false");
-		CacheBuilder.Append(" -p:DebugType=none");
-		CacheBuilder.Append($" -p:AssemblyName={assemblyName}");
+		// Config
+		CacheBuilder.Append(debug ? " -c debug" : " -c release");
 
-		// Dep
-		CacheBuilder.Append(" --no-dependencies");
-
-		// Self
-		CacheBuilder.Append(" --self-contained");
-
-		// Output
-		CacheBuilder.Append(" -o ");
-		CacheBuilder.AppendWithDoubleQuotes(outputFolderPath);
-
-		// Architecture
-		CacheBuilder.Append(" -a x64");
-
-		// Release
-		CacheBuilder.Append(" -c release");
+		// Prop
+		if (!string.IsNullOrWhiteSpace(assemblyName)) {
+			CacheBuilder.Append($" -p:AssemblyName=\"{assemblyName}\"");
+		}
+		if (!string.IsNullOrWhiteSpace(version)) {
+			CacheBuilder.Append($" -p:Version={version}");
+		}
+		if (!string.IsNullOrWhiteSpace(outputPath)) {
+			CacheBuilder.Append($" -p:OutputPath=\"{outputPath}\"");
+		}
+		if (!string.IsNullOrWhiteSpace(publishDir)) {
+			CacheBuilder.Append($" -p:PublishDir=\"{publishDir}\"");
+		}
 
 		// Execute
-		int exitCode = Util.ExecuteCommand(Util.GetParentPath(projectPath), CacheBuilder.ToString(), logMessage);
-		CacheBuilder.Clear();
-		return exitCode;
+		return Util.ExecuteCommand(projectFolder, CacheBuilder.ToString());
+	}
+
+
+	public static int BuildAngeliaProject (string projectFolder, string outputPath, string publishDir) {
+
+
+
+
+
+		return 0;
 	}
 
 

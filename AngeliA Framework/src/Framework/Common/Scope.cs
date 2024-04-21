@@ -109,7 +109,7 @@ public class Scope : System.IDisposable {
 
 		result.RectData = rect;
 		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
-		result.IntDataAlt = Renderer.GetTextUsedCellCount(0);
+		result.IntDataAlt = Renderer.GetTextUsedCellCount();
 		result.Int2DataAlt = Input.MousePositionShift;
 		if (!mouseInside) Input.IgnoreMouseInput();
 
@@ -192,19 +192,23 @@ public class Scope : System.IDisposable {
 				Input.SetMousePositionShift(Int2DataAlt.x, Int2DataAlt.y);
 				Input.CancelIgnoreMouseInput();
 				int startIndex = IntData;
-				if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
-					for (int i = startIndex; i < count; i++) {
-						cells[i].Y += Int2Data.y;
+				if (startIndex >= 0) {
+					if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
+						for (int i = startIndex; i < count; i++) {
+							cells[i].Y += Int2Data.y;
+						}
 					}
+					Renderer.ClampCells(RenderLayer.UI, RectData, startIndex);
 				}
 				int tStartIndex = IntDataAlt;
-				if (Renderer.GetTextCells(0, out var tCells, out int tCount)) {
-					for (int i = tStartIndex; i < tCount; i++) {
-						tCells[i].Y += Int2Data.y;
+				if (tStartIndex >= 0) {
+					if (Renderer.GetTextCells(0, out var tCells, out int tCount)) {
+						for (int i = tStartIndex; i < tCount; i++) {
+							tCells[i].Y += Int2Data.y;
+						}
 					}
+					Renderer.ClampTextCells(RectData, tStartIndex);
 				}
-				Renderer.ClampCells(RenderLayer.UI, RectData, startIndex);
-				Renderer.ClampTextCells(RectData, tStartIndex);
 				break;
 
 			case var _ when Group == SheetInstance:

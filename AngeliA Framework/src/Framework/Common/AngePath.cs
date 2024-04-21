@@ -36,16 +36,16 @@ public static class AngePath {
 
 	public static string PersistentDataPath => _PersistentDataPath ??= Util.CombinePaths(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-		Util.TryGetAttributeFromAllAssemblies<DeveloperAttribute>(out var dev) ? dev.Developer : "(No Developer)",
-		Util.TryGetAttributeFromAllAssemblies<TitleAttribute>(out var tit) ? tit.Title : "(No Title)"
+		Util.TryGetAttributeFromAllAssemblies<OrganizationNameAttribute>(out var dev) ? dev.Name : "(No Developer)",
+		Util.TryGetAttributeFromAllAssemblies<ProductNameAttribute>(out var tit) ? tit.Title : "(No Title)"
 	);
 	private static string _PersistentDataPath = null;
 
 	public static string TempDataPath => _TempDataPath ??= Util.CombinePaths(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 		"Temp",
-		Util.TryGetAttributeFromAllAssemblies<DeveloperAttribute>(out var dev) ? dev.Developer : "(No Developer)",
-		Util.TryGetAttributeFromAllAssemblies<TitleAttribute>(out var tit) ? tit.Title : "(No Title)"
+		Util.TryGetAttributeFromAllAssemblies<OrganizationNameAttribute>(out var dev) ? dev.Name : "(No Developer)",
+		Util.TryGetAttributeFromAllAssemblies<ProductNameAttribute>(out var tit) ? tit.Title : "(No Title)"
 	);
 	private static string _TempDataPath = null;
 

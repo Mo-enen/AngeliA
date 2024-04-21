@@ -7,7 +7,7 @@
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<ErrorReport>none</ErrorReport>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
@@ -16,8 +16,11 @@
 		<Optimize>True</Optimize>
 		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 
+
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
+		
+		
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
@@ -30,30 +33,27 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugType>none</DebugType>
-
 	</PropertyGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\AngeliA Runtime\AngeliA Runtime.csproj" />
-	</ItemGroup>
 
 	<!--Remove-->
 	<ItemGroup>
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
+		<Compile Remove="Properties\**" />
 		<Compile Remove="Universe\**" />
+		<EmbeddedResource Remove="Properties\**" />
 		<EmbeddedResource Remove="Universe\**" />
 		<None Remove="dotnet sdk\**" />
+		<None Remove="Properties\**" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->
 	<Target Name="CopyDLL" AfterTargets="Build">
 		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
-	</Target>
-
-	<!--Rename Exe File when Release-->
-	<Target Name="RenameExe" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Move SourceFiles="$(OutputPath)AngeliA Runtime.exe" DestinationFiles="$(OutputPath)AngeliA_Engine.exe" ContinueOnError="true" />
 	</Target>
 
 </Project>
