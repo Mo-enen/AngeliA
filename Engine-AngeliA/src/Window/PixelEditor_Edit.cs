@@ -568,7 +568,6 @@ public partial class PixelEditor {
 
 	private void DrawMovingSprites () {
 		using var _ = Scope.RendererLayer(RenderLayer.DEFAULT);
-		using var _sheet = Scope.Sheet(SHEET_INDEX);
 		var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 		var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 		var pixDelta = mousePixPos - mouseDownPixPos;
@@ -584,7 +583,23 @@ public partial class PixelEditor {
 			pxRect.y = spData.DraggingStartRect.y + pixDelta.y;
 			var rect = Pixel_to_Stage(pxRect, out var uv, out bool outside, ignoreClamp: true);
 			if (outside) continue;
-			Renderer.Draw(sprite.ID, rect, z: int.MaxValue);
+			// Draw BG
+			if (OnlyShowBGInSprite.Value) {
+				Renderer.Draw(
+					BuiltInSprite.SHADOW_LINE_16,
+					rect.EdgeOutside(Direction4.Down, PixelStageSize),
+					color: Color32.BLACK_64,
+					z: int.MinValue + 1
+				);
+				if (ShowBackground.Value) {
+					Renderer.DrawPixel(rect, CanvasBackgroundColor.Value, z: int.MinValue + 1);
+				} else {
+					DrawCheckerBoard(rect, pxRect.size);
+				}
+			}
+			// Renerer
+			DrawSheetSprite(sprite, rect, z: int.MaxValue);
+			// Gizmos
 			DrawFrame(
 				rect.Expand(GizmosThickness),
 				Color32.WHITE,

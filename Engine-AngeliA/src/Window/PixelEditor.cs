@@ -58,7 +58,6 @@ public partial class PixelEditor : WindowUI {
 	private const int STAGE_SIZE = 512;
 	private const int PANEL_WIDTH = 240;
 	private const int TOOLBAR_HEIGHT = 42;
-	private const int SHEET_INDEX = 0;
 	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
 	private static readonly SpriteCode CURSOR_DOT = "Cursor.Dot";
 	private static readonly SpriteCode CURSOR_CROSS = "Cursor.Cross";
@@ -71,12 +70,14 @@ public partial class PixelEditor : WindowUI {
 	public readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
 	public readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", false);
 	public readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
+	public readonly SavingBool OnlyShowBGInSprite = new("PixEdt.OnlyShowBGInSprite", true);
 
 	// Data
 	private static PixelEditor Instance;
 	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
+	private static int SheetIndex = 0;
 	private string SheetPath = "";
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
@@ -96,6 +97,7 @@ public partial class PixelEditor : WindowUI {
 	private IRect CopyBufferPixRange;
 	private IRect StageRect;
 	private int SelectingPaletteIndex = -1;
+	private int PixelStageSize = 1;
 
 	// Saving
 	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
@@ -111,7 +113,7 @@ public partial class PixelEditor : WindowUI {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-		Renderer.AddAltSheet(Sheet);
+		SheetIndex = Renderer.AddAltSheet(Sheet);
 		TagPool.Clear();
 		for (int i = 0; i < SpriteTag.COUNT; i++) {
 			TagPool.TryAdd(SpriteTag.ALL_TAGS[i], (SpriteTag.ALL_TAGS_STRING[i], i));
@@ -181,6 +183,7 @@ public partial class PixelEditor : WindowUI {
 		CurrentUndoSprite = null;
 		SelectingSpriteTagLabel = null;
 		SelectingPaletteIndex = -1;
+		PixelStageSize = (CanvasRect.height / STAGE_SIZE).RoundToInt();
 		int selectingSpritesTag = 0;
 		int firstPalIndex = -1;
 
@@ -368,32 +371,27 @@ public partial class PixelEditor : WindowUI {
 	private void Update_Rendering () {
 
 		if (Sheet.Atlas.Count <= 0) return;
+		using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
 
 		// BG
-		if (Renderer.TryGetSprite(ShowBackground.Value ? Const.PIXEL : UI_CHECKER_BOARD, out var checkerSprite)) {
-			using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
-			var stageRectInt = CanvasRect.ToIRect();
-			var tint = ShowBackground.Value ? CanvasBackgroundColor.Value : Color32.WHITE;
-			const int CHECKER_COUNT = STAGE_SIZE / 32;
-			int sizeX = stageRectInt.width / CHECKER_COUNT;
-			int sizeY = stageRectInt.height / CHECKER_COUNT;
-			for (int x = 0; x < CHECKER_COUNT; x++) {
-				int globalX = x * sizeX + stageRectInt.x;
-				if (globalX < StageRect.x - sizeX) continue;
-				if (globalX > StageRect.xMax) break;
-				for (int y = 0; y < CHECKER_COUNT; y++) {
-					int globalY = y * sizeY + stageRectInt.y;
-					if (globalY < StageRect.y - sizeY) continue;
-					if (globalY > StageRect.yMax) break;
-					Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, tint, z: int.MinValue);
+		var canvasRectInt = CanvasRect.ToIRect();
+		if (canvasRectInt.Overlaps(StageRect)) {
+			if (!OnlyShowBGInSprite.Value) {
+				if (ShowBackground.Value) {
+					// Color
+					Renderer.DrawPixel(canvasRectInt.Clamp(StageRect), CanvasBackgroundColor.Value, z: int.MinValue + 2);
+				} else {
+					// Checker
+					DrawCheckerBoard(canvasRectInt, new Int2(STAGE_SIZE, STAGE_SIZE), precise: true);
 				}
+			} else {
+				// Axis Frame
+				DrawFrame(canvasRectInt, Color32.BLACK_96, GizmosThickness, z: int.MinValue + 2);
 			}
 		}
 
 		// Content
-		using var _sheet = Scope.Sheet(SHEET_INDEX);
-		using var __layer = Scope.RendererLayer(RenderLayer.DEFAULT);
-
+		using var _sheet = Scope.Sheet(-1);
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spriteData = StagedSprites[i];
 			var sprite = spriteData.Sprite;
@@ -409,8 +407,24 @@ public partial class PixelEditor : WindowUI {
 			var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
 			if (outside) continue;
 
+			if (OnlyShowBGInSprite.Value) {
+				// Draw Shadow
+				Renderer.Draw(
+					BuiltInSprite.SHADOW_LINE_16,
+					rect.EdgeOutside(Direction4.Down, PixelStageSize),
+					color: Color32.BLACK_64,
+					z: int.MinValue + 1
+				);
+				// Draw BG
+				if (ShowBackground.Value) {
+					Renderer.DrawPixel(rect, CanvasBackgroundColor.Value, z: int.MinValue + 2);
+				} else {
+					DrawCheckerBoard(rect, sprite.PixelRect.size);
+				}
+			}
+
 			// Draw Sprite
-			Renderer.Draw(sprite, rect, z: 0);
+			DrawSheetSprite(sprite, rect);
 
 		}
 
@@ -618,7 +632,7 @@ public partial class PixelEditor : WindowUI {
 					}
 				}
 			}
-			
+
 		}
 
 	}
@@ -739,12 +753,12 @@ public partial class PixelEditor : WindowUI {
 
 			// 2
 			if (Input.KeyboardDown(KeyboardKey.Digit2)) {
-				SetZoom(5, StageRect.CenterInt());
+				SetZoom(5, Input.MouseGlobalPosition);
 			}
 
 			// 3
 			if (Input.KeyboardDown(KeyboardKey.Digit3)) {
-				SetZoom(10, StageRect.CenterInt());
+				SetZoom(10, Input.MouseGlobalPosition);
 			}
 
 		}
@@ -943,23 +957,31 @@ public partial class PixelEditor : WindowUI {
 		);
 
 
-	private void DrawFrame (IRect stageRect, Color32 color, int thickness) {
+	// Drawing Util
+	private void DrawSheetSprite (AngeSprite sprite, IRect rect, int z = 0) {
+		Renderer.CurrentSheetIndex = SheetIndex;
+		Renderer.Draw(sprite, rect, z);
+		Renderer.CurrentSheetIndex = -1;
+	}
+
+
+	private void DrawFrame (IRect stageRect, Color32 color, int thickness, int z = int.MaxValue) {
 		if (color.a < 255) {
 			if (stageRect.height > thickness) {
-				Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
+				Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z);
 				if (stageRect.width > thickness) {
-					Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
+					Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z);
 				}
 			}
-			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z: int.MaxValue);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z);
 			if (stageRect.height > thickness) {
-				Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z: int.MaxValue);
+				Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z);
 			}
 		} else {
-			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Left, thickness), color, z: int.MaxValue);
-			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Right, thickness), color, z: int.MaxValue);
-			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z: int.MaxValue);
-			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z: int.MaxValue);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Left, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Right, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z);
 		}
 	}
 
@@ -1127,6 +1149,35 @@ public partial class PixelEditor : WindowUI {
 				size, size
 			), texture, inverse: true
 		);
+	}
+
+
+	private void DrawCheckerBoard (IRect rect, Int2 pixelSize, bool precise = false) {
+		if (!Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) return;
+		var clampRect = rect;
+		var canvasRectInt = CanvasRect.ToIRect();
+		int sizeX = canvasRectInt.width / 16;
+		int sizeY = canvasRectInt.height / 16;
+		int countX = pixelSize.x.CeilDivide(32);
+		int countY = pixelSize.y.CeilDivide(32);
+		if (!precise) {
+			countX++;
+			countY++;
+			rect.x = (rect.x - canvasRectInt.x).UDivide(sizeX) * sizeX + canvasRectInt.x;
+			rect.y = (rect.y - canvasRectInt.y).UDivide(sizeY) * sizeY + canvasRectInt.y;
+		}
+		for (int x = 0; x < countX; x++) {
+			int globalX = x * sizeX + rect.x;
+			if (globalX < StageRect.x - sizeX) continue;
+			if (globalX > StageRect.xMax) break;
+			for (int y = 0; y < countY; y++) {
+				int globalY = y * sizeY + rect.y;
+				if (globalY < StageRect.y - sizeY) continue;
+				if (globalY > StageRect.yMax) break;
+				var cell = Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, z: int.MinValue + 2);
+				Util.ClampCell(cell, clampRect);
+			}
+		}
 	}
 
 

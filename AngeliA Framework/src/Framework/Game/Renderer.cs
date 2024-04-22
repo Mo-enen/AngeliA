@@ -303,7 +303,10 @@ public static class Renderer {
 	}
 
 
-	public static void AddAltSheet (Sheet sheet) => AltSheets.Add(sheet);
+	public static int AddAltSheet (Sheet sheet) {
+		AltSheets.Add(sheet);
+		return AltSheets.Count - 1;
+	}
 
 
 	public static void RemoveAltSheet (int index) => AltSheets.RemoveAt(index);

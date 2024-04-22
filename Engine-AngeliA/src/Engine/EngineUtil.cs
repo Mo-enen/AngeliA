@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using AngeliA;
 
@@ -24,7 +23,8 @@ public static class EngineUtil {
 
 	public static int BuildDotnetProject (
 		string projectFolder, string sdkPath, bool publish, bool debug,
-		string assemblyName = "", string version = "", string outputPath = "", string publishDir = ""
+		string assemblyName = "", string version = "", string outputPath = "", string publishDir = "",
+		string iconPath = ""
 	) {
 
 		if (!Util.FolderExists(projectFolder)) return -1;
@@ -53,6 +53,9 @@ public static class EngineUtil {
 		if (!string.IsNullOrWhiteSpace(publishDir)) {
 			CacheBuilder.Append($" -p:PublishDir=\"{publishDir}\"");
 		}
+		if (!string.IsNullOrWhiteSpace(iconPath)) {
+			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
+		}
 
 		// Execute
 		return Util.ExecuteCommand(projectFolder, CacheBuilder.ToString());
@@ -67,9 +70,6 @@ public static class EngineUtil {
 		if (!Util.IsPathValid(outputPath)) return ERROR_OUTPUT_PATH_INVALID;
 		if (!Util.IsPathValid(publishDir)) return ERROR_PUBLISH_DIR_INVALID;
 		if (!Util.FolderExists(project.ProjectPath)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
-
-
-
 
 
 

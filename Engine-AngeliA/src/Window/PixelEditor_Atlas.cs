@@ -114,7 +114,7 @@ public partial class PixelEditor {
 
 					if (Sheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
 						var iconSize = Game.GetTextureSize(iconTexture);
-						using (Scope.Sheet(SHEET_INDEX)) {
+						using (Scope.Sheet(SheetIndex)) {
 							GUI.Icon(iconRect.Fit(iconSize.x, iconSize.y), atlas.ID);
 						}
 					} else {

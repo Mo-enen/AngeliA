@@ -511,6 +511,7 @@ internal static class Engine {
 		SettingWindow.CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value;
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
 		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
+		SettingWindow.OnlyShowBGInSprite = PixelEditor.OnlyShowBGInSprite.Value;
 
 		// Update UI
 		foreach (var ui in ALL_UI) {
@@ -542,6 +543,7 @@ internal static class Engine {
 		PixelEditor.CanvasBackgroundColor.Value = SettingWindow.CanvasBackgroundColor;
 		PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
 		PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
+		PixelEditor.OnlyShowBGInSprite.Value = SettingWindow.OnlyShowBGInSprite;
 
 		// Update Tooltip
 		foreach (var ui in ALL_UI) {

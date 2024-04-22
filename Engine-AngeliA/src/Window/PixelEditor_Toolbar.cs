@@ -592,7 +592,7 @@ public partial class PixelEditor {
 			}
 
 			// Icon
-			using (Scope.Sheet(SHEET_INDEX)) {
+			using (Scope.Sheet(SheetIndex)) {
 				Renderer.Draw(spData.Sprite, panelRect.CornerInside(Alignment.MidMid, buttonSize).Fit(spData.Sprite));
 			}
 

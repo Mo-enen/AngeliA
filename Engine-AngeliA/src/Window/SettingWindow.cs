@@ -24,6 +24,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_ONLY_SPRITE_ON_OPTION = ("Setting.ASAOOHOK", "Only Modify Spirte on Holding Ctrl");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
+	private static readonly LanguageCode LABEL_ONLY_BG_IN_SPRITE = ("Setting.OnlyShowBGInSprite", "Only Show Background Inside Sprite");
 
 	// Api
 	public bool OpenLastProjectOnStart { get; set; }
@@ -35,6 +36,7 @@ public class SettingWindow : WindowUI {
 	public Color32 CanvasBackgroundColor_Default { get; set; }
 	public bool SolidPaintingPreview { get; set; }
 	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
+	public bool OnlyShowBGInSprite { get; set; }
 	public ColorF PixEditor_BackgroundColor { get; set; }
 	public ColorF PixEditor_CanvasBackgroundColor { get; set; }
 
@@ -134,7 +136,8 @@ public class SettingWindow : WindowUI {
 			rect,
 			label: LABEL_PE_CANVAS_COLOR,
 			labelStyle: GUISkin.SmallLabel,
-			defaultColor: CanvasBackgroundColor_Default.ToColorF()
+			defaultColor: CanvasBackgroundColor_Default.ToColorF(),
+			alpha: true
 		);
 		CanvasBackgroundColor = PixEditor_CanvasBackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
@@ -149,6 +152,13 @@ public class SettingWindow : WindowUI {
 		// Allow Spirte Action Only On Holding Option Key
 		AllowSpirteActionOnlyOnHoldingOptionKey = GUI.Toggle(
 			rect, AllowSpirteActionOnlyOnHoldingOptionKey, LABEL_ONLY_SPRITE_ON_OPTION,
+			labelStyle: GUISkin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Only Show BG In Sprite
+		OnlyShowBGInSprite = GUI.Toggle(
+			rect, OnlyShowBGInSprite, LABEL_ONLY_BG_IN_SPRITE,
 			labelStyle: GUISkin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

@@ -33,6 +33,7 @@ public static partial class Util {
 			cell.Width, cell.Height
 		);
 		cellRect.FlipNegative();
+		if (cellRect.CompleteInside(rect)) return;
 		if (!cellRect.Overlaps(rect)) {
 			cell.Width = 0;
 			return;
