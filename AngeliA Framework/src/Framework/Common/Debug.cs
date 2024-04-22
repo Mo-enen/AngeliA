@@ -13,7 +13,7 @@ public static class Debug {
 
 	public static void LogError (object message) => OnLogError?.Invoke(message);
 
-	public static void LogException (System.Exception ex) => OnLogException?.Invoke(ex);
+	public static void LogException (Exception ex) => OnLogException?.Invoke(ex);
 
 	public static void LogWarning (object message) => OnLogWarning?.Invoke(message);
 

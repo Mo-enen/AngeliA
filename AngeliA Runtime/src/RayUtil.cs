@@ -134,30 +134,4 @@ public static class RayUtil {
 		Console.WriteLine();
 	}
 
-	public static void Log (object msg) {
-		Console.ResetColor();
-		Console.WriteLine(msg);
-	}
-
-	public static void LogWarning (object msg) {
-		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine(msg);
-		Console.ResetColor();
-	}
-
-	public static void LogError (object msg) {
-		Console.ForegroundColor = ConsoleColor.Red;
-		Console.WriteLine(msg);
-		Console.ResetColor();
-	}
-
-	public static void LogException (Exception ex) {
-		Console.ForegroundColor = ConsoleColor.Red;
-		Console.WriteLine(ex.Source);
-		Console.WriteLine(ex.GetType().Name);
-		Console.WriteLine(ex.Message);
-		Console.WriteLine();
-		Console.ResetColor();
-	}
-
 }

@@ -38,12 +38,14 @@ internal static class Engine {
 		("Title.Pixel", "Artwork"),
 		("Title.Language", "Language"),
 		("Title.Item", "Item"),
+		("Title.Console", "Console"),
 		("Title.Project", "Project"),
 		("Title.Setting", "Setting"),
 	};
 	private static readonly PixelEditor PixelEditor = new();
 	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
 	private static readonly ItemEditor ItemEditor = new();
+	private static readonly Console Console = new();
 	private static readonly ProjectEditor ProjectEditor = new();
 	private static readonly SettingWindow SettingWindow = new();
 	private static readonly FileBrowserUI FileBrowser = new() { Active = false, };
@@ -54,6 +56,7 @@ internal static class Engine {
 		PixelEditor,
 		LanguageEditor,
 		ItemEditor,
+		Console,
 		ProjectEditor,
 		SettingWindow,
 	};

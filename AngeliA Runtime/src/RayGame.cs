@@ -48,10 +48,34 @@ public partial class RayGame : Game {
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 		SetWindowMinSize(256);
-		Debug.OnLogException += RayUtil.LogException;
-		Debug.OnLogError += RayUtil.LogError;
-		Debug.OnLog += RayUtil.Log;
-		Debug.OnLogWarning += RayUtil.LogWarning;
+#if DEBUG
+		Debug.OnLogException += LogException;
+		Debug.OnLogError += LogError;
+		Debug.OnLog += Log;
+		Debug.OnLogWarning += LogWarning;
+		static void Log (object msg) {
+			Console.ResetColor();
+			Console.WriteLine(msg);
+		}
+		static void LogWarning (object msg) {
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine(msg);
+			Console.ResetColor();
+		}
+		static void LogError (object msg) {
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(msg);
+			Console.ResetColor();
+		}
+		static void LogException (Exception ex) {
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(ex.Source);
+			Console.WriteLine(ex.GetType().Name);
+			Console.WriteLine(ex.Message);
+			Console.WriteLine();
+			Console.ResetColor();
+		}
+#endif
 		Rlgl.SetBlendFactorsSeparate(
 			Rlgl.SRC_ALPHA, Rlgl.ONE_MINUS_SRC_ALPHA, Rlgl.ONE, Rlgl.ONE, Rlgl.FUNC_ADD, Rlgl.MAX
 		);
