@@ -14,6 +14,7 @@ public class BeforeUniverseOpenAttribute : OrderedAttribute { public BeforeUnive
 
 public static class UniverseSystem {
 
+
 	// Event
 	private static event System.Action OnUniverseOpen;
 	private static event System.Action BeforeUniverseOpen;
@@ -24,6 +25,7 @@ public static class UniverseSystem {
 	public static List<Universe> UserUniverses { get; } = new();
 	public static List<Universe> DownloadedUniverses { get; } = new();
 
+
 	// MSG
 	[OnGameInitialize(int.MinValue)]
 	public static void OnGameInitializeMin () {
@@ -31,17 +33,22 @@ public static class UniverseSystem {
 		Util.LinkEventWithAttribute<OnUniverseOpenAttribute>(typeof(UniverseSystem), nameof(OnUniverseOpen));
 
 		// Load BuiltIn Universe
-		CurrentUniverse = BuiltInUniverse = new(
+		CurrentUniverse = BuiltInUniverse = Universe.LoadUniverse(
 			Util.CombinePaths(AngePath.BuiltInUniverseRoot),
-			Util.CombinePaths(AngePath.BuiltInSavingRoot),
-			@readonly: !Game.IsEdittime
+			@readonly: !Game.IsEdittime,
+			useBuiltInSavingRoot: true
 		);
+
+		OpenUniverse(BuiltInUniverse, ignoreCallback: true);
 
 		// Fill User Universes
 		UserUniverses.Clear();
 		Util.CreateFolder(AngePath.WorkspaceRoot);
 		foreach (var folder in Util.EnumerateFolders(AngePath.WorkspaceRoot, true)) {
-			UserUniverses.Add(new Universe(folder, @readonly: false));
+			UserUniverses.Add(Universe.LoadUniverse(
+				AngePath.GetUniverseRoot(folder),
+				@readonly: false
+			));
 		}
 		SortUniverseList(UserUniverses);
 
@@ -49,13 +56,21 @@ public static class UniverseSystem {
 		DownloadedUniverses.Clear();
 		Util.CreateFolder(AngePath.DownloadRoot);
 		foreach (var folder in Util.EnumerateFolders(AngePath.DownloadRoot, true)) {
-			DownloadedUniverses.Add(new Universe(folder, @readonly: true));
+			DownloadedUniverses.Add(Universe.LoadUniverse(
+				AngePath.GetUniverseRoot(folder),
+				@readonly: true
+			));
 		}
 
 	}
 
+
 	[OnGameInitialize(int.MaxValue)]
-	public static void OnGameInitializeMax () => OpenUniverse(BuiltInUniverse);
+	public static void OnGameInitializeMax () {
+		BeforeUniverseOpen?.Invoke();
+		OnUniverseOpen?.Invoke();
+	}
+
 
 	// API
 	public static void OpenUniverse (Universe universe, bool ignoreCallback = false) {
@@ -70,11 +85,15 @@ public static class UniverseSystem {
 		if (universe != BuiltInUniverse && UserUniverses.Contains(universe)) {
 			SortUniverseList(UserUniverses);
 		}
+		AngePath.DeveloperName = universe.Info.DeveloperName;
+		AngePath.ProductName = universe.Info.ProductName;
 
 		if (!ignoreCallback) OnUniverseOpen?.Invoke();
 
 	}
 
+
 	private static void SortUniverseList (List<Universe> universes) => universes.Sort((a, b) => b.Info.ModifyDate.CompareTo(a.Info.ModifyDate));
+
 
 }

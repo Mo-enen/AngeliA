@@ -33,8 +33,6 @@ public abstract partial class Game {
 	public static int ProcedureAudioVolume { get; set; } = 1000;
 
 	// Attribute Info
-	public static string ProductName { get; private set; } = "";
-	public static string OrganizationName { get; private set; } = "";
 	public static bool IsToolApplication { get; private set; } = false;
 	public static bool AllowMakerFeatures { get; private set; } = false;
 	public static bool UsePremultiplyBlendMode { get; private set; } = false;
@@ -82,12 +80,6 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<ToolApplicationAttribute>()) {
 			IsToolApplication = true;
 		}
-		if (Util.TryGetAttributeFromAllAssemblies<ProductNameAttribute>(out var _title)) {
-			ProductName = _title.Title;
-		}
-		if (Util.TryGetAttributeFromAllAssemblies<OrganizationNameAttribute>(out var _dev)) {
-			OrganizationName = _dev.Name;
-		}
 		if (Util.TryGetAttributeFromAllAssemblies<AllowMakerFeaturesAttribute>()) {
 			AllowMakerFeatures = true;
 		}
@@ -103,8 +95,6 @@ public abstract partial class Game {
 			GlobalFrame = 0;
 			if (IsEdittime) _IsFullscreen.Value = false;
 
-			_SetWindowTitle(ProductName);
-			
 			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 			Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
@@ -137,6 +127,7 @@ public abstract partial class Game {
 					RestartGame();
 				}
 			}
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 

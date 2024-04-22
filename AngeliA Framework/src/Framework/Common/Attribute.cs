@@ -16,25 +16,6 @@
 
 // Project
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class ProductNameAttribute : System.Attribute {
-	public readonly string Title = "";
-	public ProductNameAttribute (string title) {
-		Title = title;
-	}
-}
-
-
-
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class OrganizationNameAttribute : System.Attribute {
-	public readonly string Name = "";
-	public OrganizationNameAttribute (string developer) {
-		Name = developer;
-	}
-}
-
-
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class AllowMakerFeaturesAttribute : System.Attribute { }
 
 

@@ -3,72 +3,61 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+
+[System.Serializable]
+public class UniverseInfo {
+	public string ProductName = "";
+	public string DeveloperName = "";
+	public long ModifyDate = 0;
+	public int MajorVersion = 0;
+	public int MinorVersion = 0;
+	public int PatchVersion = 0;
+}
+
+
 public class Universe {
 
-	// SUB
-	[System.Serializable]
-	public class UniverseInfo {
-		public string UniverseName = "(no name)";
-		public string Creator = "";
-		public long CreatedDate = 0;
-		public long ModifyDate = 0;
-		public int EditorMajorVersion = -1;
-		public int EditorMinorVersion = -1;
-		public int EditorPatchVersion = -1;
-	}
-
 	// Path
-	public string UniverseRoot { get; init; }
-	public string SheetPath { get; init; }
-	public string ConversationRoot { get; init; }
-	public string EditableConversationRoot { get; init; }
-	public string UniverseMetaRoot { get; init; }
-	public string MapRoot { get; init; }
-	public string ArtworkRoot { get; init; }
-	public string SavingRoot { get; init; }
-	public string ItemCustomizationRoot { get; init; }
-	public string SavingMetaRoot { get; init; }
-	public string ProcedureMapRoot { get; init; }
+	public string UniverseRoot { get; private set; }
+	public string SheetPath { get; private set; }
+	public string ConversationRoot { get; private set; }
+	public string EditableConversationRoot { get; private set; }
+	public string UniverseMetaRoot { get; private set; }
+	public string MapRoot { get; private set; }
+	public string ArtworkRoot { get; private set; }
+	public string SavingRoot { get; private set; }
+	public string ItemCustomizationRoot { get; private set; }
+	public string SavingMetaRoot { get; private set; }
+	public string ProcedureMapRoot { get; private set; }
 
 	// Api
-	public UniverseInfo Info { get; init; }
-	public bool Readonly { get; init; }
+	public UniverseInfo Info { get; private set; }
+	public bool Readonly { get; private set; }
 
 	// MSG
-	public Universe (string projectFolder, bool @readonly) : this(Util.CombinePaths(projectFolder, "Universe"), Util.CombinePaths(projectFolder, "Saving"), @readonly) { }
-
-	public Universe (string universeFolder, string savingFolder, bool @readonly) {
-
-		Readonly = @readonly;
-
-		// Universe
-		UniverseRoot = universeFolder;
-		SheetPath = AngePath.GetSheetPath(universeFolder);
-		ConversationRoot = AngePath.GetConversationRoot(universeFolder);
-		EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder);
-		UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
-		MapRoot = AngePath.GetMapRoot(universeFolder);
-		ArtworkRoot = AngePath.GetAsepriteRoot(universeFolder);
-
-		// Saving
-		SavingRoot = savingFolder;
-		if (!string.IsNullOrWhiteSpace(savingFolder)) {
-			ItemCustomizationRoot = AngePath.GetItemCustomizationRoot(savingFolder);
-			SavingMetaRoot = AngePath.GetSavingMetaRoot(savingFolder);
-			ProcedureMapRoot = AngePath.GetProcedureMapRoot(savingFolder);
-		}
-
-		// Create Folders 
-		CreateFolders();
-
-		// Load Info
-		Info = JsonUtil.LoadOrCreateJson<UniverseInfo>(universeFolder);
-
+	public static Universe LoadUniverse (string universeFolder, bool @readonly, bool useBuiltInSavingRoot = false) {
+		var result = new Universe {
+			Readonly = @readonly,
+			UniverseRoot = universeFolder,
+			SheetPath = AngePath.GetSheetPath(universeFolder),
+			ConversationRoot = AngePath.GetConversationRoot(universeFolder),
+			EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder),
+			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder),
+			MapRoot = AngePath.GetMapRoot(universeFolder),
+			ArtworkRoot = AngePath.GetAsepriteRoot(universeFolder),
+			Info = JsonUtil.LoadJsonFromPath<UniverseInfo>(Util.CombinePaths(universeFolder, "Info.json")),
+		};
+		result.SavingRoot = useBuiltInSavingRoot ?
+			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :
+			Util.CombinePaths(universeFolder, "Saving");
+		result.ItemCustomizationRoot = AngePath.GetItemCustomizationRoot(result.SavingRoot);
+		result.SavingMetaRoot = AngePath.GetSavingMetaRoot(result.SavingRoot);
+		result.ProcedureMapRoot = AngePath.GetProcedureMapRoot(result.SavingRoot);
+		result.CreateFolders();
+		return result;
 	}
 
 	// API
-	public void SaveUniverseInfoToDisk () => JsonUtil.SaveJson(Info, UniverseRoot);
-
 	public void CreateFolders () {
 		Util.CreateFolder(ConversationRoot);
 		Util.CreateFolder(UniverseMetaRoot);

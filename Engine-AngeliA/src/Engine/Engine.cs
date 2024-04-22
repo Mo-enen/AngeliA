@@ -88,6 +88,7 @@ internal static class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
+		Debug.Log(AngePath.PersistentDataPath);
 		EngineSetting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
 		EngineSetting.RefreshProjectCache();
 		EngineSetting.SortProjects();
@@ -722,7 +723,7 @@ internal static class Engine {
 	private static void OpenProject (string projectPath) {
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
 		if (!Util.FolderExists(projectPath)) return;
-		CurrentProject = new Project(projectPath);
+		CurrentProject = Project.LoadProject(projectPath);
 		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
@@ -774,7 +775,7 @@ internal static class Engine {
 
 	private static void CreateNewProjectAt (string path) {
 		if (string.IsNullOrWhiteSpace(path)) return;
-		Project.CreateProjectToDisk(path);
+		Util.CopyFolder(EngineUtil.ProjectTemplatePath, path, true, true);
 		AddExistsProjectAt(path);
 	}
 
