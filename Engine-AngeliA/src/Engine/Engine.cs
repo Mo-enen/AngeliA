@@ -602,7 +602,7 @@ internal static class Engine {
 			// Ctrl + R
 			if (Input.KeyboardDown(KeyboardKey.R)) {
 				if (CurrentProject != null) {
-					EngineUtil.RunAngeliaProject(CurrentProject);
+					EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
 				}
 			}
 		}
@@ -805,6 +805,7 @@ internal static class Engine {
 			}
 			LanguageEditor.SetLanguageRoot("");
 			PixelEditor.LoadSheetFromDisk("");
+			ProjectEditor.CurrentProject = null;
 			Game.SetWindowTitle("AngeliA Engine");
 		}
 	}
@@ -819,13 +820,15 @@ internal static class Engine {
 
 		// Change Info
 		string infoPath = AngePath.GetUniverseInfoPath(AngePath.GetUniverseRoot(projectFolder));
-		if (Util.FileExists(infoPath)) {
-			var info = JsonUtil.LoadJsonFromPath<UniverseInfo>(infoPath);
-			if (info != null) {
-				info.ProductName = Util.GetNameWithoutExtension(projectFolder);
-				info.ModifyDate = Util.GetLongTime();
-			}
-		}
+		var info = new UniverseInfo {
+			ProductName = Util.GetNameWithoutExtension(projectFolder),
+			DeveloperName = System.Environment.UserName,
+			ModifyDate = Util.GetLongTime(),
+			MajorVersion = 0,
+			MinorVersion = 0,
+			PatchVersion = 0,
+		};
+		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
 
 		// Add Project into List
 		AddExistsProjectAt(projectFolder);

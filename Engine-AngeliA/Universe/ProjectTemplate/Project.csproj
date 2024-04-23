@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<OutputType>Library</OutputType>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<UseWindowsForms>False</UseWindowsForms>
+		<StartupObject></StartupObject>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<SignAssembly>False</SignAssembly>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<GenerateDependencyFile>False</GenerateDependencyFile>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
+		<AnalysisLevel>none</AnalysisLevel>
+		<Deterministic>True</Deterministic>
+		<Optimize>True</Optimize>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		
+	</PropertyGroup>
+
+	
+	<!--Debug Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+	
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Reference Include="AngeliA Framework.dll">
+			<HintPath>lib\Debug\AngeliA Framework.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	
+	
+	<!--Release Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<Reference Include="AngeliA Framework.dll">
+			<HintPath>lib\Release\AngeliA Framework.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+			
+</Project>

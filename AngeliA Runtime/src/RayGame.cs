@@ -20,7 +20,7 @@ public partial class RayGame : Game {
 	private bool PrevHasInverseGizmos = false;
 
 	// Saving
-	private readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
+	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
 
 
 	// MSG
@@ -76,6 +76,7 @@ public partial class RayGame : Game {
 			Console.ResetColor();
 		}
 #endif
+
 		Rlgl.SetBlendFactorsSeparate(
 			Rlgl.SRC_ALPHA, Rlgl.ONE_MINUS_SRC_ALPHA, Rlgl.ONE, Rlgl.ONE, Rlgl.FUNC_ADD, Rlgl.MAX
 		);
@@ -235,7 +236,11 @@ public partial class RayGame : Game {
 
 #if DEBUG
 	[OnGameQuitting(int.MaxValue)]
-	internal static void CloseCMD () => Process.GetProcessesByName("WindowsTerminal").ToList().ForEach(item => item.CloseMainWindow());
+	internal static void CloseCMD () {
+		if (UniverseSystem.BuiltInUniverse.Info.CloseCmdOnQuit) {
+			Process.GetProcessesByName("WindowsTerminal").ToList().ForEach(item => item.CloseMainWindow());
+		}
+	}
 #endif
 
 

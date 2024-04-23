@@ -48,6 +48,7 @@
 	<!--Remove-->
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="build.bat" />
     <None Remove="desktop.ini" />
   </ItemGroup>
 

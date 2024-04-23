@@ -18,11 +18,17 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
 	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
 	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
+	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
 	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Build and run the project (Ctrl + R)");
+	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
+	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
+	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
+	private static readonly LanguageCode LOG_DEV_NAME_EMPTY = ("Log.DevNameEmpty", "Developer name can not be empty");
+	private static readonly LanguageCode LABEL_CLOSE_CMD = ("Setting.CloseCmd", "Close Command Window on Game Quit");
 
 	// Api
 	protected override bool BlockEvent => true;
-	public Project CurrentProject { get; set; }
+	public static Project CurrentProject { get; set; }
 
 	// Data
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUISkin.DarkButton) { CharSize = 20, };
@@ -46,6 +52,7 @@ public class ProjectEditor : WindowUI {
 
 	public override void UpdateWindowUI () {
 		if (CurrentProject == null) return;
+		using var _ = Scope.GUILabelWidth(384);
 		var panelRect = WindowRect.Shrink(Unify(128), Unify(128), Unify(42), Unify(42));
 		var rect = panelRect.EdgeInside(Direction4.Up, Unify(64));
 		int extendedContentSize;
@@ -80,17 +87,24 @@ public class ProjectEditor : WindowUI {
 
 		// Run
 		if (GUI.Button(_rect.Shrink(padding, padding / 2, 0, 0), LABEL_RUN, WorkflowButtonStyle)) {
-			EngineUtil.RunAngeliaProject(CurrentProject);
+			EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
 		}
 		RequireTooltip(_rect, TIP_RUN);
 		_rect.SlideRight();
 
 		// Publish
 		if (GUI.Button(_rect.Shrink(padding / 2, padding, 0, 0), LABEL_PUBLISH, WorkflowButtonStyle)) {
-
+			FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
 		}
 		rect.SlideDown();
 
+		// Func
+		static void PublishProject (string path) {
+			EngineUtil.PublishAngeliaProject(CurrentProject, path);
+			if (Util.FolderExists(path)) {
+				Game.OpenUrl(path);
+			}
+		}
 	}
 
 
@@ -105,8 +119,14 @@ public class ProjectEditor : WindowUI {
 		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);
 		string newProductName = GUI.SmallInputField(834267, rect.Shrink(labelWidth, 0, 0, 0), info.ProductName);
 		if (newProductName != info.ProductName) {
-			info.ProductName = newProductName;
-			SetDirty();
+			if (string.IsNullOrWhiteSpace(newProductName)) {
+				Debug.LogWarning(LOG_PRODUCT_NAME_EMPTY);
+			} else if (!Util.IsValidForFileName(newProductName)) {
+				Debug.LogWarning(LOG_PRODUCT_NAME_INVALID);
+			} else {
+				info.ProductName = newProductName;
+				SetDirty();
+			}
 		}
 		rect.SlideDown(padding);
 
@@ -114,8 +134,14 @@ public class ProjectEditor : WindowUI {
 		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_DEV_NAME);
 		string newDevName = GUI.SmallInputField(834268, rect.ShrinkLeft(labelWidth), info.DeveloperName);
 		if (newDevName != info.DeveloperName) {
-			info.DeveloperName = newDevName;
-			SetDirty();
+			if (string.IsNullOrWhiteSpace(newDevName)) {
+				Debug.LogWarning(LOG_DEV_NAME_EMPTY);
+			} else if (!Util.IsValidForFileName(newDevName)) {
+				Debug.LogWarning(LOG_DEV_NAME_INVALID);
+			} else {
+				info.DeveloperName = newDevName;
+				SetDirty();
+			}
 		}
 		rect.SlideDown(padding);
 
@@ -136,6 +162,13 @@ public class ProjectEditor : WindowUI {
 		versionRect.SlideRight();
 		if (vChanged) SetDirty();
 
+		rect.SlideDown(padding);
+
+		// Close Command Window on Game Quit
+		info.CloseCmdOnQuit = GUI.Toggle(
+			rect, info.CloseCmdOnQuit, LABEL_CLOSE_CMD,
+			labelStyle: GUISkin.SmallLabel
+		);
 		rect.SlideDown(padding);
 
 	}
@@ -159,6 +192,8 @@ public class ProjectEditor : WindowUI {
 
 
 	#region --- LGC ---
+
+
 
 
 

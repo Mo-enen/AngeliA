@@ -113,10 +113,13 @@ public static partial class Util {
 	public static bool IsFolderHidden (string path) => (new DirectoryInfo(path).Attributes & FileAttributes.Hidden) != 0;
 
 
+	public static bool IsValidForFileName (string content) => content.IndexOfAny(INVALID_PATH_CHARS) < 0;
+
+
 	public static bool IsPathValid (string path) {
 		if (path == null) return false;
 		if (!Path.IsPathFullyQualified(path)) return false;
-		if (path.IndexOfAny(INVALID_PATH_CHARS) >= 0) return false;
+		if (!IsValidForFileName(path)) return false;
 		while (!string.IsNullOrEmpty(path)) {
 			if (GetNameWithExtension(path).IndexOfAny(INVALID_NAME_CHARS) >= 0) return false;
 			path = GetParentPath(path);

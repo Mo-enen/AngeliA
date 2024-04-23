@@ -15,8 +15,12 @@ public abstract partial class Game {
 
 
 	// System
-	public static bool IsEdittime => Instance._GetIsEdittime();
-	protected abstract bool _GetIsEdittime ();
+#if DEBUG
+	public static bool IsEdittime => true;
+#else
+	public static bool IsEdittime => false;
+#endif
+
 
 	internal static bool IsFullscreen {
 		get => _IsFullscreen.Value;

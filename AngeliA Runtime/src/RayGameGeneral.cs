@@ -9,14 +9,6 @@ public partial class RayGame {
 
 
 	// System
-	protected override bool _GetIsEdittime () {
-#if DEBUG
-		return true;
-#else
-		return false;
-#endif
-	}
-
 	protected override void _SetFullscreen (bool fullScreen) {
 		if (Raylib.IsWindowFullscreen() == fullScreen) return;
 		Raylib.ToggleFullscreen();

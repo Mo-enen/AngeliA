@@ -31,7 +31,7 @@ public abstract partial class Game {
 	public static float ScaledMusicVolume => Util.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
-
+	
 	// Attribute Info
 	public static bool IsToolApplication { get; private set; } = false;
 	public static bool AllowMakerFeatures { get; private set; } = false;
@@ -53,6 +53,7 @@ public abstract partial class Game {
 	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 1000);
 	private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9);
 	private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024);
+	private static readonly SavingBool _CloseCmdOnQuit = new("Game.CloseCmdOnQuit", true);
 
 
 	#endregion

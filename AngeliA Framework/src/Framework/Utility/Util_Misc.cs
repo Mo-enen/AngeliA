@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-
-
 namespace AngeliA;
+
 public static partial class Util {
 
 
@@ -115,7 +114,7 @@ public static partial class Util {
 	}
 
 
-	public static int ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true) {
+	public static int ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true, bool wait = true) {
 		try {
 			var process = Process.Start(new ProcessStartInfo {
 				Verb = "runas",
@@ -132,8 +131,12 @@ public static partial class Util {
 				Debug.Log(process.StandardOutput.ReadToEnd());
 				Debug.LogError(process.StandardError.ReadToEnd());
 			}
-			process.WaitForExit(30_000);
-			return process.ExitCode;
+			if (wait) {
+				process.WaitForExit(30_000);
+				return process.ExitCode;
+			} else {
+				return 0;
+			}
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
 			return -1;
