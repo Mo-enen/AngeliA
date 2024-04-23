@@ -148,7 +148,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Renderer.Draw(BuiltInSprite.SOFT_LINE_V, new IRect(X + favPanelWidth - lineSize / 2, Y + controlPanelHeight, lineSize, Height - controlPanelHeight - navBarHeight), Color32.GREY_20, z: 1);
 
 		// Title
-		GUI.Label(Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0), Title, GUISkin.SmallLabel);
+		GUI.SmallLabel(Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0), Title);
 
 		// Panels
 		Update_NavigationBar(Rect.EdgeInside(Direction4.Up, navBarHeight).Shift(0, -titleHeight));
@@ -182,7 +182,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		// Address
 		rect.x += buttonSize + buttonPadding;
 		rect.width = barRect.xMax - rect.x;
-		NavbarText = GUI.InputField(12124, rect, NavbarText, out _, out bool confirm, GUISkin.SmallInputField);
+		NavbarText = GUI.SmallInputField(12124, rect, NavbarText, out _, out bool confirm);
 		if (confirm) Explore(NavbarText);
 
 	}
@@ -248,7 +248,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 				}
 
 				// Name Label
-				GUI.Label(paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding), item.DisplayName, GUISkin.SmallLabel);
+				GUI.SmallLabel(paddedRect.Shrink(iconSize + itemPadding, 0, 0, itemPadding), item.DisplayName);
 
 				// Click
 				if (rect.MouseInside() && Input.MouseLeftButtonDown) {
@@ -339,13 +339,12 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		if (ActionType == BrowserActionType.Save) {
 			// Name Field
-			CurrentName = GUI.InputField(091253, fieldRect, CurrentName, GUISkin.SmallInputField);
+			CurrentName = GUI.SmallInputField(091253, fieldRect, CurrentName);
 
 			// Name Label
-			GUI.Label(
+			GUI.SmallLabel(
 				fieldRect.EdgeOutside(Direction4.Left, labelWidth).Shift(-padding * 2, 0),
-				TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME,
-				GUISkin.SmallLabel
+				TargetType == BrowserTargetType.Folder ? FOLDER_NAME : FILE_NAME
 			);
 		}
 
@@ -359,7 +358,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Error Msg
 		if (!string.IsNullOrEmpty(ErrorMessage)) {
-			GUI.Label(panelRect.EdgeInside(Direction4.Down, buttonHeight), ErrorMessage, GUISkin.SmallLabel);
+			GUI.SmallLabel(panelRect.EdgeInside(Direction4.Down, buttonHeight), ErrorMessage);
 		}
 
 		// Cancel Button

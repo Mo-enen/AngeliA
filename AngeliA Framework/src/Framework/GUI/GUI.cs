@@ -36,6 +36,7 @@ public static class GUI {
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
+	private static readonly IntToChars IntDialToChars = new();
 	private static int BeamIndex = 0;
 	private static int BeamLength = 0;
 	private static int BeamBlinkFrame = int.MinValue;
@@ -111,6 +112,13 @@ public static class GUI {
 
 
 	// Label
+	public static void SmallLabel (IRect rect, string text) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	public static void SmallLabel (IRect rect, char[] text) => LabelLogic(rect, "", text, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	public static void SmallLabel (IRect rect, string text, out IRect bounds) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	public static void SmallLabel (IRect rect, char[] text, out IRect bounds) => LabelLogic(rect, "", text, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	public static void SmallLabel (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+	public static void SmallLabel (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
+
 	public static void Label (IRect rect, string text, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
 	public static void Label (IRect rect, char[] text, GUIStyle style = null) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
 	public static void Label (IRect rect, string text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
@@ -515,6 +523,8 @@ public static class GUI {
 
 
 	// Text Field
+	public static string SmallInputField (int controlID, IRect rect, string text, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, GUISkin.SmallInputField, selectionStyle);
+	public static string SmallInputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out changed, out confirm, GUISkin.SmallInputField, selectionStyle);
 	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionStyle);
 	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) {
 
@@ -797,6 +807,37 @@ public static class GUI {
 		}
 
 		return text;
+	}
+
+
+	// Int Field
+	public static int SmallIntDial (IRect rect, int value, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, GUISkin.SmallLabel, GUISkin.SmallCenterLabel, GUISkin.SmallDarkButton, delta, min, max);
+	public static int SmallIntDial (IRect rect, int value, out bool changed, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out changed, label, GUISkin.SmallLabel, GUISkin.SmallCenterLabel, GUISkin.SmallDarkButton, delta, min, max);
+	public static int IntDial (IRect rect, int value, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, labelStyle, bodyStyle, dialButtonStyle, delta, min, max);
+	public static int IntDial (IRect rect, int value, out bool changed, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) {
+		bodyStyle ??= GUISkin.CenterLabel;
+		dialButtonStyle ??= GUISkin.SmallDarkButton;
+		int oldValue = value;
+		// Label
+		if (label != null) {
+			int labelWidth = Unify(LabelWidth);
+			labelStyle ??= GUISkin.Label;
+			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
+			rect = rect.ShrinkLeft(labelWidth);
+		}
+		int buttonSize = Unify(42);
+		// Value
+		Label(rect.ShrinkRight(buttonSize), IntDialToChars.GetChars(value), bodyStyle);
+		// Buttons
+		rect = rect.EdgeInside(Direction4.Right, buttonSize);
+		if (Button(rect.TopHalf(), BuiltInSprite.ICON_TRIANGLE_UP, dialButtonStyle)) {
+			value = (value + delta).Clamp(min, max);
+		}
+		if (Button(rect.BottomHalf(), BuiltInSprite.ICON_TRIANGLE_DOWN, dialButtonStyle)) {
+			value = (value - delta).Clamp(min, max);
+		}
+		changed = value != oldValue;
+		return value;
 	}
 
 

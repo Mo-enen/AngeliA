@@ -466,11 +466,11 @@ public partial class PixelEditor {
 		}
 		if (SelectingSpriteTagLabel != null) {
 			GUI.BackgroundLabel(
-				rect.EdgeOutside(Direction4.Up, Unify(22)), 
-				SelectingSpriteTagLabel, 
-				Color32.BLACK, 
-				Unify(4), 
-				forceInside: true, 
+				rect.EdgeOutside(Direction4.Up, Unify(22)),
+				SelectingSpriteTagLabel,
+				Color32.BLACK,
+				Unify(4),
+				forceInside: true,
 				GUISkin.SmallCenterLabel
 			);
 		}
@@ -746,9 +746,9 @@ public partial class PixelEditor {
 	// Input Field
 	private bool InputField (InputName name, IRect rect) {
 		int index = (int)name;
-		INPUT_TEXT[index] = GUI.InputField(
+		INPUT_TEXT[index] = GUI.SmallInputField(
 			BASIC_INPUT_ID + index, rect, INPUT_TEXT[index],
-			out _, out bool confirm, GUISkin.SmallInputField
+			out _, out bool confirm
 		);
 		return confirm;
 	}

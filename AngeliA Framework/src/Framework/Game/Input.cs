@@ -24,54 +24,6 @@ public static class Input {
 	}
 
 
-	[System.Serializable]
-	private class InputConfig : IJsonSerializationCallback {
-
-		public int[] KeyboardConfig = {
-			(int)KeyboardKey.A, (int)KeyboardKey.D, (int)KeyboardKey.S, (int)KeyboardKey.W,
-			(int)KeyboardKey.L, (int)KeyboardKey.P, (int)KeyboardKey.Escape, (int)KeyboardKey.Space,
-		};
-		public int[] GamepadConfig = {
-			(int)GamepadKey.DpadLeft, (int)GamepadKey.DpadRight,
-			(int)GamepadKey.DpadDown, (int)GamepadKey.DpadUp,
-			(int)GamepadKey.East, (int)GamepadKey.South,
-			(int)GamepadKey.Start, (int)GamepadKey.Select,
-		};
-
-		public void Valid () {
-
-			if (KeyboardConfig == null) KEYBOARD_DEFAULT.CopyTo(KeyboardConfig, 0);
-			if (GamepadConfig == null) GAMEPAD_DEFAULT.CopyTo(KeyboardConfig, 0);
-
-			if (KeyboardConfig.Length != 8) {
-				var newArray = new int[8];
-				for (int i = 0; i < KeyboardConfig.Length && i < newArray.Length; i++) {
-					newArray[i] = KeyboardConfig[i];
-				}
-				for (int i = KeyboardConfig.Length; i < newArray.Length; i++) {
-					newArray[i] = KEYBOARD_DEFAULT[i];
-				}
-				KeyboardConfig = newArray;
-			}
-
-			if (GamepadConfig.Length != 8) {
-				var newArray = new int[8];
-				for (int i = 0; i < GamepadConfig.Length && i < newArray.Length; i++) {
-					newArray[i] = GamepadConfig[i];
-				}
-				for (int i = GamepadConfig.Length; i < newArray.Length; i++) {
-					newArray[i] = GAMEPAD_DEFAULT[i];
-				}
-				GamepadConfig = newArray;
-			}
-
-		}
-		void IJsonSerializationCallback.OnAfterLoadedFromDisk () => Valid();
-		void IJsonSerializationCallback.OnBeforeSaveToDisk () => Valid();
-
-	}
-
-
 	#endregion
 
 
@@ -200,7 +152,27 @@ public static class Input {
 	private static Int2 _MouseMidDownGlobalPosition = default;
 
 	// Saving
-	private static readonly SavingBool s_AllowGamepad = new("FrameInput.AllowGamepad", true);
+	private static readonly SavingBool s_AllowGamepad = new("Input.AllowGamepad", true);
+	private static readonly SavingInt[] KeyboardConfigSaving = {
+		new("Input.Left", KEYBOARD_DEFAULT[(int)Gamekey.Left]),
+		new("Input.Right", KEYBOARD_DEFAULT[(int)Gamekey.Right]),
+		new("Input.Down", KEYBOARD_DEFAULT[(int)Gamekey.Down]),
+		new("Input.Up", KEYBOARD_DEFAULT[(int)Gamekey.Up]),
+		new("Input.Action", KEYBOARD_DEFAULT[(int)Gamekey.Action]),
+		new("Input.Jump", KEYBOARD_DEFAULT[(int)Gamekey.Jump]),
+		new("Input.Start", KEYBOARD_DEFAULT[(int)Gamekey.Start]),
+		new("Input.Select", KEYBOARD_DEFAULT[(int)Gamekey.Select]),
+	};
+	private static readonly SavingInt[] GamepadConfigSaving = {
+		new("Input.Pad.Left", GAMEPAD_DEFAULT[(int)Gamekey.Left]),
+		new("Input.Pad.Right", GAMEPAD_DEFAULT[(int)Gamekey.Right]),
+		new("Input.Pad.Down", GAMEPAD_DEFAULT[(int)Gamekey.Down]),
+		new("Input.Pad.Up", GAMEPAD_DEFAULT[(int)Gamekey.Up]),
+		new("Input.Pad.Action", GAMEPAD_DEFAULT[(int)Gamekey.Action]),
+		new("Input.Pad.Jump", GAMEPAD_DEFAULT[(int)Gamekey.Jump]),
+		new("Input.Pad.Start", GAMEPAD_DEFAULT[(int)Gamekey.Start]),
+		new("Input.Pad.Select", GAMEPAD_DEFAULT[(int)Gamekey.Select]),
+	};
 
 
 	#endregion
@@ -258,9 +230,8 @@ public static class Input {
 	[OnUniverseOpen]
 	public static void OnUniverseOpen () {
 		// Load Config
-		var iConfig = JsonUtil.LoadOrCreateJson<InputConfig>(UniverseSystem.CurrentUniverse.SavingMetaRoot);
 		for (int i = 0; i < 8; i++) {
-			KeyMap[(Gamekey)i] = new Int2(iConfig.KeyboardConfig[i], iConfig.GamepadConfig[i]);
+			KeyMap[(Gamekey)i] = new Int2(KeyboardConfigSaving[i].Value, GamepadConfigSaving[i].Value);
 		}
 		KeyMap[Gamekey.Start] = new Int2((int)KeyboardKey.Escape, (int)GamepadKey.Start);
 	}
@@ -808,28 +779,12 @@ public static class Input {
 	#region --- LGC ---
 
 
-	private static void SaveInputToDisk () => JsonUtil.SaveJson(new InputConfig() {
-		KeyboardConfig = new int[8] {
-			KeyMap[(Gamekey)0].x,
-			KeyMap[(Gamekey)1].x,
-			KeyMap[(Gamekey)2].x,
-			KeyMap[(Gamekey)3].x,
-			KeyMap[(Gamekey)4].x,
-			KeyMap[(Gamekey)5].x,
-			(int)KeyboardKey.Escape,
-			KeyMap[(Gamekey)7].x,
-		},
-		GamepadConfig = new int[8] {
-			KeyMap[(Gamekey)0].y,
-			KeyMap[(Gamekey)1].y,
-			KeyMap[(Gamekey)2].y,
-			KeyMap[(Gamekey)3].y,
-			KeyMap[(Gamekey)4].y,
-			KeyMap[(Gamekey)5].y,
-			(int)GamepadKey.Start,
-			KeyMap[(Gamekey)7].y,
-		},
-	}, AngePath.PersistentDataPath, prettyPrint: true);
+	private static void SaveInputToDisk () {
+		for (int i = 0; i < 8; i++) {
+			KeyboardConfigSaving[i].Value = KeyMap[(Gamekey)i].x;
+			GamepadConfigSaving[i].Value = KeyMap[(Gamekey)i].y;
+		}
+	}
 
 
 	private static bool SearchAnyGamepadButtonHolding (out GamepadKey button) {

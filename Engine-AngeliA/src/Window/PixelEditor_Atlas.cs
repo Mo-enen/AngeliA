@@ -123,9 +123,9 @@ public partial class PixelEditor {
 
 					// Label
 					if (renaming) {
-						atlas.Name = GUI.InputField(
+						atlas.Name = GUI.SmallInputField(
 							ATLAS_INPUT_ID + i, contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
-							atlas.Name, out bool changed, out bool confirm, GUISkin.SmallInputField
+							atlas.Name, out bool changed, out bool confirm
 						);
 						if (changed || confirm) {
 							atlas.ID = atlas.Name.AngeHash();

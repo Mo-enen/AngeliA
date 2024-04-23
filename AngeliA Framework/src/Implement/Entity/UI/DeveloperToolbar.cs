@@ -331,7 +331,7 @@ public static class DeveloperToolbar {
 			rect.y -= itemHeight + itemPadding;
 
 			// Label
-			GUI.Label(rect, Const.SCREEN_EFFECT_NAMES[i], GUISkin.SmallLabel);
+			GUI.SmallLabel(rect, Const.SCREEN_EFFECT_NAMES[i]);
 
 			// Toggle
 			var enableRect = rect.EdgeInside(Direction4.Right, rect.height);

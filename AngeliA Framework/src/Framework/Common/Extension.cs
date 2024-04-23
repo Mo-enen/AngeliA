@@ -566,6 +566,24 @@ public static class Extension {
 		rect.height -= offset.down + offset.up;
 		return rect;
 	}
+	public static IRect ShrinkLeft (this IRect rect, int left) {
+		rect.x += left;
+		rect.width -= left;
+		return rect;
+	}
+	public static IRect ShrinkRight (this IRect rect, int right) {
+		rect.width -= right;
+		return rect;
+	}
+	public static IRect ShrinkDown (this IRect rect, int down) {
+		rect.y += down;
+		rect.height -= down;
+		return rect;
+	}
+	public static IRect ShrinkUp (this IRect rect, int up) {
+		rect.height -= up;
+		return rect;
+	}
 	public static void FlipHorizontal (this ref IRect rect) {
 		rect.x += rect.width;
 		rect.width = -rect.width;
@@ -681,6 +699,26 @@ public static class Extension {
 	public static void SlideRight (ref this IRect rect, int padding = 0) => rect.x += rect.width + padding;
 	public static void SlideDown (ref this IRect rect, int padding = 0) => rect.y -= rect.height + padding;
 	public static void SlideUp (ref this IRect rect, int padding = 0) => rect.y += rect.height + padding;
+	public static IRect TopHalf (this IRect rect) {
+		int delta = rect.height / 2;
+		rect.y = rect.yMax - delta;
+		rect.height -= delta;
+		return rect;
+	}
+	public static IRect BottomHalf (this IRect rect) {
+		rect.height /= 2;
+		return rect;
+	}
+	public static IRect RightHalf (this IRect rect) {
+		int delta = rect.width / 2;
+		rect.x = rect.xMax - delta;
+		rect.width -= delta;
+		return rect;
+	}
+	public static IRect LeftHalf (this IRect rect) {
+		rect.width /= 2;
+		return rect;
+	}
 
 	public static IRect? Intersection (this IRect rect, IRect other) {
 		if (!rect.Overlaps(other)) return null;

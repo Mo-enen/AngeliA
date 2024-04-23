@@ -68,6 +68,9 @@ internal static class Engine {
 	private static readonly GUIStyle NotificationSubLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private static EngineSetting EngineSetting;
 	private static IRect ToolLabelRect;
+	private static IRect LastHoveringToolLabelRect;
+	private static IRect ToolLabelDrawingBounds;
+	private static int HoveringTooltipDuration = 0;
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
@@ -88,7 +91,6 @@ internal static class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
-		Debug.Log(AngePath.PersistentDataPath);
 		EngineSetting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
 		EngineSetting.RefreshProjectCache();
 		EngineSetting.SortProjects();
@@ -173,15 +175,26 @@ internal static class Engine {
 		GUI.UnifyBasedOnMonitor = true;
 		Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255));
 
+
+		if (ToolLabelDrawingBounds != default) {
+			using (Scope.RendererLayerUI()) {
+				Renderer.DrawPixel(ToolLabelDrawingBounds, Color32.BLACK);
+			}
+			ToolLabelDrawingBounds = default;
+		}
+
 		if (CurrentProject == null) {
 			OnGUI_Hub();
 		} else {
 			OnGUI_Window();
+			OnGUI_Hotkey();
 		}
-		OnGUI_Tooltip();
-		OnGUI_Notify();
 
-		//var windowPos = Game.GetWindowPosition();
+		using (Scope.RendererLayerUI()) {
+			OnGUI_Tooltip();
+			OnGUI_Notify();
+		}
+
 		var windowPos = Game.GetWindowPosition();
 		if (windowPos.y < 24) {
 			Game.SetWindowPosition(windowPos.x, 24);
@@ -320,10 +333,9 @@ internal static class Engine {
 					}
 
 					// Name
-					GUI.Label(
+					GUI.SmallLabel(
 						itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
-						Util.GetNameWithoutExtension(projectPath),
-						GUISkin.SmallLabel
+						Util.GetNameWithoutExtension(projectPath)
 					);
 
 					// Path
@@ -456,10 +468,7 @@ internal static class Engine {
 
 				// Label
 				if (EngineSetting.FullsizeMenu) {
-					GUI.Label(
-						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
-						UI_TITLES[i], GUISkin.SmallLabel
-					);
+					GUI.SmallLabel(contentRect.Shrink(iconSize + contentPadding, 0, 0, 0), UI_TITLES[i]);
 				}
 
 				// Click
@@ -550,15 +559,24 @@ internal static class Engine {
 		PixelEditor.OnlyShowBGInSprite.Value = SettingWindow.OnlyShowBGInSprite;
 
 		// Update Tooltip
+		bool hoveringSameRect = false;
 		foreach (var ui in ALL_UI) {
-			if (ui is not WindowUI window) continue;
+			if (ui is not WindowUI window || !window.Active) continue;
 			string content = window.RequiringTooltipContent;
 			if (content != null && EngineSetting.UseTooltip) {
 				ToolLabel = content;
 				ToolLabelRect = window.RequiringTooltipRect;
+				if (ToolLabelRect.MouseInside()) {
+					LastHoveringToolLabelRect = ToolLabelRect;
+					if (!hoveringSameRect && LastHoveringToolLabelRect == ToolLabelRect) {
+						HoveringTooltipDuration++;
+						hoveringSameRect = true;
+					}
+				}
 			}
 			window.RequiringTooltipContent = null;
 		}
+		if (!hoveringSameRect) HoveringTooltipDuration = 0;
 
 		// Update Notify
 		foreach (var ui in ALL_UI) {
@@ -578,17 +596,33 @@ internal static class Engine {
 	}
 
 
+	private static void OnGUI_Hotkey () {
+
+		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+			// Ctrl + R
+			if (Input.KeyboardDown(KeyboardKey.R)) {
+				if (CurrentProject != null) {
+					EngineUtil.RunAngeliaProject(CurrentProject);
+				}
+			}
+		}
+
+	}
+
+
 	private static void OnGUI_Tooltip () {
+		ToolLabelDrawingBounds = default;
 		if (ToolLabel == null) return;
 		if (!EngineSetting.UseTooltip) {
 			ToolLabel = null;
 			return;
 		}
 		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog || FileBrowser.Active) return;
+		if (HoveringTooltipDuration < 60) return;
 		var cameraRect = Renderer.CameraRect;
-		int endIndex = Renderer.GetTextUsedCellCount();
 		bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
 		bool downSide = ToolLabelRect.CenterY() < cameraRect.CenterY();
+		int endIndex = Renderer.GetTextUsedCellCount();
 		TooltipStyle.Alignment =
 			leftSide && downSide ? Alignment.BottomLeft :
 			leftSide && !downSide ? Alignment.TopLeft :
@@ -603,6 +637,7 @@ internal static class Engine {
 			out var bounds, GUI.Unify(6), false, TooltipStyle
 		);
 		Renderer.ExcludeTextCells(bounds, 0, endIndex);
+		ToolLabelDrawingBounds = bounds;
 		ToolLabel = null;
 	}
 
@@ -640,7 +675,8 @@ internal static class Engine {
 			NotificationFlash ? Color32.Lerp(
 				Color32.GREEN, Color32.BLACK,
 				(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
-			) : Color32.BLACK
+			) : Color32.BLACK,
+			z: int.MaxValue
 		);
 
 	}
@@ -726,6 +762,7 @@ internal static class Engine {
 		CurrentProject = Project.LoadProject(projectPath);
 		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		ProjectEditor.CurrentProject = CurrentProject;
 		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
 		EngineSetting.LastOpenProject = projectPath;
 		foreach (var project in EngineSetting.Projects) {
@@ -807,8 +844,6 @@ internal static class Engine {
 			};
 			EngineSetting.Projects.Add(item);
 			EngineSetting.SortProjects();
-			// Save Setting
-			JsonUtil.SaveJson(EngineSetting, AngePath.PersistentDataPath);
 		}
 	}
 

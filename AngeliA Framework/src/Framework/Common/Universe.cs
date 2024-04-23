@@ -48,7 +48,7 @@ public class Universe {
 			MapRoot = AngePath.GetMapRoot(universeFolder),
 			ArtworkRoot = AngePath.GetAsepriteRoot(universeFolder),
 			InfoPath = infoPath,
-			Info = JsonUtil.LoadJsonFromPath<UniverseInfo>(infoPath),
+			Info = JsonUtil.LoadOrCreateJsonFromPath<UniverseInfo>(infoPath),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :

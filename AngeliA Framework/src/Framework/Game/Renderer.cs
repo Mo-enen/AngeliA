@@ -727,7 +727,7 @@ public static class Renderer {
 				if (source.Sprite != null) {
 					int oldLayer = CurrentLayerIndex;
 					SetLayer(layerIndex);
-					target = Draw(Const.PIXEL, default, 0);
+					target = Draw(Const.PIXEL, new IRect(1, 1, 1, 1));
 					SetLayer(oldLayer);
 				} else {
 					int oldLayer = CurrentTextLayerIndex;

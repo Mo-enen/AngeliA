@@ -27,7 +27,7 @@ public static class EngineUtil {
 		string iconPath = ""
 	) {
 
-		if (!Util.FolderExists(projectFolder)) return -1;
+		if (!Util.FolderExists(projectFolder)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
 
 		CacheBuilder.Clear();
 
@@ -76,6 +76,28 @@ public static class EngineUtil {
 
 		return 0;
 	}
+
+
+	public static bool CheckScriptChanged (Project project) {
+
+		return false;
+	}
+
+
+	public static int RunAngeliaProject (Project project) {
+		if (CheckScriptChanged(project)) {
+			int result = BuildAngeliaProject(project, project.BuildPath, project.BuildPath, false, true);
+			if (result != 0) return result;
+		}
+		// Run
+
+
+
+		return 0;
+	}
+
+
+
 
 
 }
