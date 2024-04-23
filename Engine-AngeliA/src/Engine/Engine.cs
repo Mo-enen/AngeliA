@@ -730,7 +730,7 @@ internal static class Engine {
 		EngineSetting.LastOpenProject = projectPath;
 		foreach (var project in EngineSetting.Projects) {
 			if (project.Path == projectPath) {
-				project.LastEditTime = Util.GetLongTime();
+				project.LastOpenTime = Util.GetLongTime();
 				break;
 			}
 		}
@@ -773,10 +773,25 @@ internal static class Engine {
 	}
 
 
-	private static void CreateNewProjectAt (string path) {
-		if (string.IsNullOrWhiteSpace(path)) return;
-		Util.CopyFolder(EngineUtil.ProjectTemplatePath, path, true, true);
-		AddExistsProjectAt(path);
+	private static void CreateNewProjectAt (string projectFolder) {
+
+		if (string.IsNullOrWhiteSpace(projectFolder)) return;
+
+		// Copy from Template
+		Util.CopyFolder(EngineUtil.ProjectTemplatePath, projectFolder, true, true);
+
+		// Change Info
+		string infoPath = AngePath.GetUniverseInfoPath(AngePath.GetUniverseRoot(projectFolder));
+		if (Util.FileExists(infoPath)) {
+			var info = JsonUtil.LoadJsonFromPath<UniverseInfo>(infoPath);
+			if (info != null) {
+				info.ProductName = Util.GetNameWithoutExtension(projectFolder);
+				info.ModifyDate = Util.GetLongTime();
+			}
+		}
+
+		// Add Project into List
+		AddExistsProjectAt(projectFolder);
 	}
 
 
@@ -788,7 +803,7 @@ internal static class Engine {
 				Name = Util.GetNameWithoutExtension(path),
 				Path = path,
 				FolderExists = true,
-				LastEditTime = Util.GetLongTime(),
+				LastOpenTime = Util.GetLongTime(),
 			};
 			EngineSetting.Projects.Add(item);
 			EngineSetting.SortProjects();

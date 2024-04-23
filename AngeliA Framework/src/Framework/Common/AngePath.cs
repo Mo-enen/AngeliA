@@ -16,26 +16,6 @@ public static class AngePath {
 	public const string SHEET_FILE_EXT = "sheet";
 
 	// System
-	public static string ProductName {
-		get => _ProductName;
-		set {
-			_ProductName = value;
-			_PersistentDataPath = null;
-			_TempDataPath = null;
-		}
-	}
-	public static string _ProductName = null;
-
-	public static string DeveloperName {
-		get => _DeveloperName;
-		set {
-			_DeveloperName = value;
-			_PersistentDataPath = null;
-			_TempDataPath = null;
-		}
-	}
-	public static string _DeveloperName = null;
-
 	public static string ApplicationDataPath {
 		get {
 			if (!string.IsNullOrEmpty(_ApplicationDataPath)) return _ApplicationDataPath;
@@ -54,11 +34,8 @@ public static class AngePath {
 	}
 	private static string _ApplicationDataPath = null;
 
-	public static string PersistentDataPath => _PersistentDataPath ??= GetPersistentDataPath(DeveloperName, ProductName);
-	private static string _PersistentDataPath = null;
-
-	public static string TempDataPath => _TempDataPath ??= GetTempDataPath(DeveloperName, ProductName);
-	private static string _TempDataPath = null;
+	public static string PersistentDataPath { get; private set; }
+	public static string TempDataPath { get; private set; }
 
 	// Framework
 	public static string BuiltInUniverseRoot => _BuiltInUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, "Universe");
@@ -73,22 +50,33 @@ public static class AngePath {
 	public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(BuiltInUniverseRoot, "Language");
 	private static string _LanguageRoot = null;
 
+
 	// Temp
 	public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(TempDataPath, "Generating Map");
 	private static string _ProcedureMapTempRoot = null;
 
+
 	// Sys
+	public static void SetCurrentUserPath (string devName, string productName) {
+		PersistentDataPath = GetPersistentDataPath(devName, productName);
+		TempDataPath = GetTempDataPath(devName, productName);
+	}
+
+
 	public static string GetPersistentDataPath (string devName, string productName) => Util.CombinePaths(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 		devName ?? "(No Developer)",
 		productName ?? "(No Title)"
 	);
+
+
 	public static string GetTempDataPath (string devName, string productName) => Util.CombinePaths(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
 		"Temp",
 		devName ?? "(No Developer)",
 		productName ?? "(No Title)"
 	);
+
 
 	// Universe
 	public static string GetUniverseRoot (string projectFolder) => Util.CombinePaths(projectFolder, "Universe");
@@ -101,8 +89,10 @@ public static class AngePath {
 	public static string GetUniverseCoverPath (string universeFolder) => Util.CombinePaths(universeFolder, "Cover.png");
 	public static string GetAsepriteRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Aseprite");
 	public static string GetLanguageRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Language");
+	public static string GetUniverseInfoPath (string universeFolder) => Util.CombinePaths(universeFolder, "Info.json");
 	public static string GetItemCustomizationRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Item Customization");
 	public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
 	public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
+
 
 }

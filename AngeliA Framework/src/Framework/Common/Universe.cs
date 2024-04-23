@@ -29,6 +29,7 @@ public class Universe {
 	public string ItemCustomizationRoot { get; private set; }
 	public string SavingMetaRoot { get; private set; }
 	public string ProcedureMapRoot { get; private set; }
+	public string InfoPath { get; private set; }
 
 	// Api
 	public UniverseInfo Info { get; private set; }
@@ -36,6 +37,7 @@ public class Universe {
 
 	// MSG
 	public static Universe LoadUniverse (string universeFolder, bool @readonly, bool useBuiltInSavingRoot = false) {
+		string infoPath = AngePath.GetUniverseInfoPath(universeFolder);
 		var result = new Universe {
 			Readonly = @readonly,
 			UniverseRoot = universeFolder,
@@ -45,7 +47,8 @@ public class Universe {
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder),
 			MapRoot = AngePath.GetMapRoot(universeFolder),
 			ArtworkRoot = AngePath.GetAsepriteRoot(universeFolder),
-			Info = JsonUtil.LoadJsonFromPath<UniverseInfo>(Util.CombinePaths(universeFolder, "Info.json")),
+			InfoPath = infoPath,
+			Info = JsonUtil.LoadJsonFromPath<UniverseInfo>(infoPath),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :

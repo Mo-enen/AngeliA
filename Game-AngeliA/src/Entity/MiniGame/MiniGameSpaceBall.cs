@@ -66,6 +66,11 @@ public class MiniGameSpaceBall : MiniGame {
 	private static readonly SpriteCode SPRITE_PLAYER = "Space Ball Player";
 	private static readonly SpriteCode SPRITE_WALL = "Space Ball Wall";
 	private static readonly SpriteCode SPRITE_GOAL = "Space Ball Goal";
+	private LanguageCode[] BADGE_HINTS = {
+		("SpaceBall.BadgeHint.0", "Complete level 5"),
+		("SpaceBall.BadgeHint.1", "Complete level 6"),
+		("SpaceBall.BadgeHint.2", "Complete level 7"),
+	};
 
 	// Api
 	protected override bool RequireMouseCursor => true;
@@ -73,6 +78,7 @@ public class MiniGameSpaceBall : MiniGame {
 	protected override Int2 WindowSize => new(800, 800);
 	protected override string DisplayName => Language.Get(TypeID, "Space Ball");
 	protected override int BadgeCount => 3;
+	protected override LanguageCode[] BadgeHints => BADGE_HINTS;
 
 	// Data
 	private readonly IntToChars LevelIndexToChars = new();
@@ -340,11 +346,10 @@ public class MiniGameSpaceBall : MiniGame {
 				LoadLevel(CurrentLevel.Value);
 			}
 
-			// Bagets
-			int bagetSize = Unify(42);
-			DrawBadges(windowRect.xMin, windowRect.yMax - bagetSize, bagetSize);
-
 		}
+
+		// Badges
+		DrawBadges(WindowRect.EdgeOutside(Direction4.Up, Unify(42)));
 
 	}
 

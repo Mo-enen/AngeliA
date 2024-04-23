@@ -34,7 +34,7 @@ public static class UniverseSystem {
 
 		// Load BuiltIn Universe
 		CurrentUniverse = BuiltInUniverse = Universe.LoadUniverse(
-			Util.CombinePaths(AngePath.BuiltInUniverseRoot),
+			AngePath.BuiltInUniverseRoot,
 			@readonly: !Game.IsEdittime,
 			useBuiltInSavingRoot: true
 		);
@@ -85,8 +85,7 @@ public static class UniverseSystem {
 		if (universe != BuiltInUniverse && UserUniverses.Contains(universe)) {
 			SortUniverseList(UserUniverses);
 		}
-		AngePath.DeveloperName = universe.Info.DeveloperName;
-		AngePath.ProductName = universe.Info.ProductName;
+		AngePath.SetCurrentUserPath(universe.Info.DeveloperName, universe.Info.ProductName);
 
 		if (!ignoreCallback) OnUniverseOpen?.Invoke();
 

@@ -79,6 +79,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 		GUI.Unify(WindowSize.x), GUI.Unify(WindowSize.y)
 	);
 	protected bool IsPlaying => Task.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
+	protected virtual LanguageCode[] BadgeHints { get; } = null;
 
 	// Data
 	private readonly BadgesSaveData Badges = null;
@@ -207,13 +208,30 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	}
 
 
-	protected void DrawBadges (int x, int y, int badgeSize) {
+	protected void DrawBadges (IRect panelRect) => DrawBadges(panelRect, Color32.BLACK);
+	protected void DrawBadges (IRect panelRect, Color32 backgroundColor) {
 		if (Badges == null || Badges.Badges == null) return;
-		var badgeRect = new IRect(x, y, badgeSize, badgeSize);
+		int padding = Unify(4);
+		Renderer.DrawPixel(panelRect, backgroundColor);
+		panelRect = panelRect.Shrink(padding);
+		int itemSize = panelRect.height;
+		var rect = panelRect;
+		rect.x += padding;
+		rect.y += padding;
+		rect.width = itemSize;
+		var hints = BadgeHints;
 		for (int i = 0; i < Badges.Badges.Length; i++) {
-			int icon = DEFAULT_BADGE_CODES[Badges.GetBadge(i).Clamp(0, DEFAULT_BADGE_CODES.Length - 1)];
-			Renderer.Draw(icon, badgeRect);
-			badgeRect.x += badgeRect.width;
+			int badgeIndex = Badges.GetBadge(i).Clamp(0, DEFAULT_BADGE_CODES.Length - 1);
+			int icon = DEFAULT_BADGE_CODES[badgeIndex];
+			Renderer.Draw(icon, rect);
+			if (hints != null && rect.MouseInside() && i < hints.Length) {
+				using var _ = Scope.GUIContentColor(badgeIndex == 0 ? Color32.GREY_245 : Color32.GREEN);
+				GUI.BackgroundLabel(
+					new IRect(rect.x, rect.y - itemSize, 1, itemSize),
+					hints[i], Color32.BLACK, padding
+				);
+			}
+			rect.SlideRight(padding);
 		}
 	}
 
@@ -243,6 +261,10 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			);
 			GenericDialogUI.SetItemTint(Color32.WHITE, Color32.RED_BETTER);
 		}
+		GenericDialogUI.Instance.SetStyle(
+			GUISkin.CenterMessage, GUISkin.LargeCenterLabel, GUISkin.LargeCenterLabel,
+			drawStyleBody: false, newWindowWidth: Unify(330), animationDuration: 0
+		);
 	}
 
 

@@ -13,7 +13,7 @@ public class EngineSetting {
 		public string Name;
 		public string Path;
 		public bool FolderExists;
-		public long LastEditTime;
+		public long LastOpenTime;
 	}
 
 	public enum ProjectSortMode { Name, OpenTime, }
@@ -43,7 +43,7 @@ public class EngineSetting {
 				Projects.Sort((a, b) => a.Name.CompareTo(b.Name));
 				break;
 			case ProjectSortMode.OpenTime:
-				Projects.Sort((a, b) => b.LastEditTime.CompareTo(a.LastEditTime));
+				Projects.Sort((a, b) => b.LastOpenTime.CompareTo(a.LastOpenTime));
 				break;
 		}
 	}

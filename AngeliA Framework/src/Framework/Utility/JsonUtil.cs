@@ -72,7 +72,7 @@ public static class JsonUtil {
 					return target;
 				}
 			}
-		} catch (System.Exception ex) { Debug.LogException(ex); }
+		} catch (Exception ex) { Debug.LogException(ex); }
 		return default;
 	}
 

@@ -24,12 +24,17 @@ public class MiniGamePong : MiniGame {
 	private const int SERVE_BALL_SPEED_Y = 24;
 	private const int MAX_BALL_SPEED_Y = 32;
 	private const int BALL_SPEED_RATE_FROM_PADDLE = 300;
+	private LanguageCode[] BADGE_HINTS = {
+		("Pong.BadgeHint.0", "Reach score 10"),
+		("Pong.BadgeHint.1", "Reach score 50"),
+	};
 
 	// Api
 	protected override Int2 WindowSize => new(800, 800);
 	protected override bool RequireMouseCursor => false;
 	protected override string DisplayName => Language.Get(TypeID, "Pong");
 	protected override int BadgeCount => 2;
+	protected override LanguageCode[] BadgeHints => BADGE_HINTS;
 
 	// Short
 	private bool ServingBall => Game.GlobalFrame < ServeBallFrame + SERVE_BALL_DURATION;
@@ -172,10 +177,6 @@ public class MiniGamePong : MiniGame {
 		// BG
 		Renderer.Draw(Const.PIXEL, windowRect, Color32.BLACK, int.MinValue);
 
-		// Badgets
-		int badgetSize = Unify(30);
-		DrawBadges(windowRect.x, windowRect.yMax - badgetSize, badgetSize);
-
 		// Mid Line
 		const int LINE_DOT_COUNT = 12;
 		int midX = windowRect.x + windowRect.width / 2;
@@ -194,7 +195,7 @@ public class MiniGamePong : MiniGame {
 		int charRectSize = Unify(128);
 		int scoreGap = size / 30;
 		int scoreWidth = windowRect.width;
-		int scoreY = windowRect.y + windowRect.height - charRectSize;
+		int scoreY = windowRect.y + windowRect.height - charRectSize - scoreGap;
 		GUI.BackgroundLabel(
 			new IRect(windowRect.x, scoreY, scoreWidth, charRectSize),
 			PlayerScoreString.GetChars(ScorePlayer - ScoreBot),
@@ -228,6 +229,9 @@ public class MiniGamePong : MiniGame {
 				500, 500, 0, ballSize, ballSize
 			);
 		}
+
+		// Badges
+		DrawBadges(WindowRect.EdgeOutside(Direction4.Up, Unify(42)));
 	}
 
 

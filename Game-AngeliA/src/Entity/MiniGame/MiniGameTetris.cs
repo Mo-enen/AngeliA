@@ -91,12 +91,17 @@ public class MiniGameTetris : MiniGame {
 	private const int AUTO_REPEAT_RATE = 2;
 	private const int ENTRY_DELAY = 6;
 	private const int STABILIZE_DELAY = 4;
+	private LanguageCode[] BADGE_HINTS = {
+		("Tetris.BadgeHint.0", "Clear more than 50 lines"),
+		("Tetris.BadgeHint.1", "Clear more than 100 lines"),
+	};
 
 	// Api
 	protected override Int2 WindowSize => new(400, 800);
 	protected override bool RequireMouseCursor => false;
 	protected override string DisplayName => Language.Get(TypeID, "Tetris");
 	protected override int BadgeCount => 2;
+	protected override LanguageCode[] BadgeHints => BADGE_HINTS;
 
 	// Data
 	private readonly Queue<int> TetrominoQueue = new();
@@ -315,9 +320,9 @@ public class MiniGameTetris : MiniGame {
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					if (!currentTetromino[i, j, CurrentTetrominoRotation]) continue;
+					if (CurrentTetrominoY + j >= STAGE_HEIGHT) continue;
 					currentBlockRect.x = stageRect.x + (CurrentTetrominoX + i) * blockSize;
 					currentBlockRect.y = stageRect.y + (CurrentTetrominoY + j) * blockSize;
-					tint.a = (byte)(CurrentTetrominoY + j < STAGE_HEIGHT ? 255 : 128);
 					Renderer.Draw(BLOCK_CODE, currentBlockRect, tint, 1);
 				}
 			}
@@ -410,6 +415,9 @@ public class MiniGameTetris : MiniGame {
 			lineBounds.x, lineBounds.y,
 			lineNumberBounds.xMax - lineBounds.x, lineBounds.height
 		).Expand(Unify(6)), Color32.BLACK, 0);
+
+		// Badges
+		DrawBadges(stageRect.EdgeOutside(Direction4.Up, Unify(42)));
 
 	}
 

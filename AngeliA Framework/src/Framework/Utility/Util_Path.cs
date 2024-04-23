@@ -25,13 +25,10 @@ public static partial class Util {
 	public static string GetFolderFullPath (string path) => new DirectoryInfo(path).FullName;
 
 
-	public static string CombinePaths (params string[] paths) {
-		string path = "";
-		for (int i = 0; i < paths.Length; i++) {
-			path = Path.Combine(path, paths[i]);
-		}
-		return path;
-	}
+	public static string CombinePaths (string path1, string path2) => Path.Combine(path1, path2);
+	public static string CombinePaths (string path1, string path2, string path3) => Path.Combine(path1, path2, path3);
+	public static string CombinePaths (string path1, string path2, string path3, string path4) => Path.Combine(path1, path2, path3, path4);
+	public static string CombinePaths (params string[] paths) => Path.Combine(paths);
 
 
 	public static string GetExtension (string path) => Path.GetExtension(path);//.txt

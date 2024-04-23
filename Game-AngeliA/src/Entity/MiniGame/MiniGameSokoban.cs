@@ -76,13 +76,25 @@ public class MiniGameSokoban : MiniGame {
 	};
 	private static readonly LanguageCode MENU_ALL_CLEAR = ("Menu.Sokoban.AllCleared", "You Win");
 	private static readonly LanguageCode UI_Level = ("UI.Sokoban.Level", "Level:");
+	private LanguageCode[] BADGE_HINTS = new LanguageCode[LEVEL_COUNT]{
+		("Sokoban.BadgeHint.0", "Complete level 1"),
+		("Sokoban.BadgeHint.1", "Complete level 2"),
+		("Sokoban.BadgeHint.2", "Complete level 3"),
+		("Sokoban.BadgeHint.3", "Complete level 4"),
+		("Sokoban.BadgeHint.4", "Complete level 5"),
+		("Sokoban.BadgeHint.5", "Complete level 6"),
+		("Sokoban.BadgeHint.6", "Complete level 7"),
+		("Sokoban.BadgeHint.7", "Complete level 8"),
+		("Sokoban.BadgeHint.8", "Complete level 9"),
+	};
 
 	// Api
 	protected override bool RequireMouseCursor => false;
 	protected override string DisplayName => Language.Get(TypeID, "Sokoban");
 	protected override Int2 WindowSize => new(800, 800);
-	protected override int BadgeCount => LEVEL_COUNT;
 	private bool Celebrating => CurrentLevel >= Levels.Length || Game.GlobalFrame < LevelClearedFrame + 120;
+	protected override int BadgeCount => LEVEL_COUNT;
+	protected override LanguageCode[] BadgeHints => BADGE_HINTS;
 
 	// Data
 	private static IntToChars LevelLabelToString = null;
@@ -226,9 +238,6 @@ public class MiniGameSokoban : MiniGame {
 			}
 		}
 
-		// Badges
-		DrawBadges(stageRect.x, stageRect.yMax, Unify(36));
-
 		// Player
 		var playerRect = new IRect(stageRect.x + PlayerX * blockRect.width, stageRect.y + PlayerY * blockRect.height, blockRect.width, blockRect.height);
 		if (!PlayerFacingRight) playerRect.FlipHorizontal();
@@ -243,9 +252,11 @@ public class MiniGameSokoban : MiniGame {
 			playerRect.height -= (int)Util.LerpUnclamped(blockRect.height / 5, 0, lerp01);
 		}
 
-		// Draw
+		// Draw Player
 		Renderer.Draw(PLAYER_CODE, playerRect, 2);
 
+		// Badges
+		DrawBadges(WindowRect.EdgeOutside(Direction4.Up, Unify(42)));
 	}
 
 

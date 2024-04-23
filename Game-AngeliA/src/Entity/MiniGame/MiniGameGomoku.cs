@@ -33,12 +33,16 @@ public class MiniGameGomoku : MiniGame {
 	private static readonly LanguageCode MENU_GOMOKU_WIN = ("Menu.Gomoku.Win", "You Win");
 	private static readonly LanguageCode MENU_GOMOKU_LOSE = ("Menu.Gomoku.Lose", "You Lose");
 	private static readonly LanguageCode MENU_GOMOKU_DRAW = ("Menu.Gomoku.Draw", "Tie");
+	private LanguageCode[] BADGE_HINTS = {
+		("Gomoku.BadgeHint.0", "Just win the game"),
+	};
 
 	// Api
 	protected override Int2 WindowSize => new(618, 618);
 	protected override bool RequireMouseCursor => true;
 	protected override string DisplayName => Language.Get(TypeID, "Gomoku");
 	protected override int BadgeCount => 1;
+	protected override LanguageCode[] BadgeHints => BADGE_HINTS;
 
 	// Short
 	private bool Interactable => PlayerTurn && Winner == null && Game.GlobalFrame > LastPlaceFrame + 12;
@@ -262,6 +266,10 @@ public class MiniGameGomoku : MiniGame {
 			var rect = new IRect(x - StageCellSize / 2, y - StageCellSize / 2, StageCellSize, StageCellSize);
 			Renderer.Draw_9Slice(FRAME_CODE, rect, PlayerIsBlack ? Color32.BLACK : Color32.WHITE);
 		}
+
+		// Badges
+		int paddingShift = Unify(6);
+		DrawBadges(WindowRect.CornerOutside(Alignment.TopRight, Unify(42)).Shift(-paddingShift, -paddingShift), Color32.CLEAR);
 
 	}
 
