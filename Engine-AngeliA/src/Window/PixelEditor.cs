@@ -642,6 +642,7 @@ public partial class PixelEditor : WindowUI {
 
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!Interactable) return;
+		if (GUI.IsTyping) return;
 
 		// Ctrl
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {

@@ -661,6 +661,11 @@ public static class GUI {
 						beamIndex = BeamIndex = beamIndex + clipboardText.Length;
 						changed = true;
 						break;
+					case Const.CONTROL_SELECT_ALL:
+						// Select All
+						beamIndex = BeamIndex = text.Length;
+						beamLength = BeamLength = -text.Length;
+						break;
 					default:
 						if (text.Length >= MAX_INPUT_CHAR) break;
 						// Append Char
@@ -1079,6 +1084,7 @@ public static class GUI {
 				case Const.CONTROL_CUT:
 				case Const.CONTROL_COPY:
 				case Const.CONTROL_PASTE:
+				case Const.CONTROL_SELECT_ALL:
 					break;
 				default:
 					return;

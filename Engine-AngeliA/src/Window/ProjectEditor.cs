@@ -165,10 +165,14 @@ public class ProjectEditor : WindowUI {
 		rect.SlideDown(padding);
 
 		// Close Command Window on Game Quit
-		info.CloseCmdOnQuit = GUI.Toggle(
+		bool newCloseCmd = GUI.Toggle(
 			rect, info.CloseCmdOnQuit, LABEL_CLOSE_CMD,
 			labelStyle: GUISkin.SmallLabel
 		);
+		if (info.CloseCmdOnQuit != newCloseCmd) {
+			info.CloseCmdOnQuit = newCloseCmd;
+			SetDirty();
+		}
 		rect.SlideDown(padding);
 
 	}

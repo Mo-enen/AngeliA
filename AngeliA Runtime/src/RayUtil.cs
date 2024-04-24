@@ -38,6 +38,11 @@ public static class RayUtil {
 						onTextInput?.Invoke(Const.CONTROL_PASTE);
 					}
 					break;
+				case KeyboardKey.A:
+					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
+						onTextInput?.Invoke(Const.CONTROL_SELECT_ALL);
+					}
+					break;
 				case KeyboardKey.Backspace:
 					onTextInput?.Invoke(Const.BACKSPACE_SIGN);
 					break;

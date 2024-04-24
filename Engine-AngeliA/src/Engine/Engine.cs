@@ -299,7 +299,6 @@ internal static class Engine {
 			) {
 				HubPanelScroll = scroll.ScrollPosition;
 
-				var STEP_TINT = new Color32(255, 255, 255, 6);
 				var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
 				bool stepTint = false;
 
@@ -311,7 +310,7 @@ internal static class Engine {
 					using var _ = Scope.GUIEnable(folderExists);
 
 					// Step Tint
-					if (stepTint) Renderer.DrawPixel(rect, STEP_TINT);
+					if (stepTint) Renderer.DrawPixel(rect, Color32.WHITE_6);
 					stepTint = !stepTint;
 
 					// Red Highlight

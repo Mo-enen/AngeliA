@@ -73,6 +73,7 @@ public static class Const {
 	public const int MAX_CHARACTER_HEIGHT = 251;
 
 	// GUI
+	public const char CONTROL_SELECT_ALL = (char)6;
 	public const char CONTROL_CUT = (char)24;
 	public const char CONTROL_COPY = (char)3;
 	public const char CONTROL_PASTE = (char)22;

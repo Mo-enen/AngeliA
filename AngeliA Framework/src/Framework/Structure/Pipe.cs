@@ -14,6 +14,7 @@ public class Pipe<T> {
 	// Api
 	public int Capacity { get; init; } = 1024;
 	public int Length { get; private set; } = 0;
+	public bool IsFull => Length >= Capacity;
 	public T this[int index] => Data[(Start + index) % Capacity];
 
 	// Data
