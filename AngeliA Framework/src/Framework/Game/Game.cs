@@ -53,8 +53,7 @@ public abstract partial class Game {
 	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 1000);
 	private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9);
 	private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024);
-	private static readonly SavingBool _CloseCmdOnQuit = new("Game.CloseCmdOnQuit", true);
-
+	
 
 	#endregion
 

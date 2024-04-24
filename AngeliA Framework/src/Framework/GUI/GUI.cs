@@ -842,9 +842,10 @@ public static class GUI {
 
 
 	// Scrollbar
-	public static int ScrollBar (int controlID, IRect contentRect, int positionRow, int totalSize, int pageSize, GUIStyle style = null) {
+	public static int ScrollBar (int controlID, IRect contentRect, int positionRow, int totalSize, int pageSize, GUIStyle handleStyle = null, GUIStyle bgStyle = null) {
 		if (pageSize >= totalSize) return 0;
-		style ??= GUISkin.Scrollbar;
+		handleStyle ??= GUISkin.Scrollbar;
+		bgStyle ??= GUISkin.WeakPixel;
 		int barHeight = (int)((long)(contentRect.height * pageSize) / totalSize);
 		var barRect = new IRect(
 			contentRect.x,
@@ -865,12 +866,16 @@ public static class GUI {
 		bool hoveringBar = barRect.MouseInside();
 		bool dragging = focusingBar && ScrollBarMouseDownPos.HasValue;
 
+		// BG
+		DrawStyleBody(contentRect, bgStyle, !Enable ? GUIState.Disable : GUIState.Normal);
+
+		// Handle
 		var state =
 			!Enable ? GUIState.Disable :
 			dragging ? GUIState.Press :
 			hoveringBar ? GUIState.Hover :
 			GUIState.Normal;
-		DrawStyleBody(barRect, style, state);
+		DrawStyleBody(barRect, handleStyle, state);
 
 		// Dragging
 		if (dragging) {

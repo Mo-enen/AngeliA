@@ -49,7 +49,9 @@ public struct Color32 : IFormattable, IComparable {
 	public static readonly Color32 GREY_96 = new(96, 96, 96, 255);
 	public static readonly Color32 GREY_64 = new(64, 64, 64, 255);
 	public static readonly Color32 GREY_56 = new(56, 56, 56, 255);
+	public static readonly Color32 GREY_46 = new(46, 46, 46, 255);
 	public static readonly Color32 GREY_42 = new(42, 42, 42, 255);
+	public static readonly Color32 GREY_38 = new(38, 38, 38, 255);
 	public static readonly Color32 GREY_32 = new(32, 32, 32, 255);
 	public static readonly Color32 GREY_20 = new(20, 20, 20, 255);
 	public static readonly Color32 GREY_12 = new(12, 12, 12, 255);
@@ -70,18 +72,18 @@ public struct Color32 : IFormattable, IComparable {
 	public static Color32 Lerp (Color32 a, Color32 b, float t) {
 		t = t.Clamp01();
 		return new Color32(
-			(byte)((float)(int)a.r + (float)(b.r - a.r) * t), 
-			(byte)((float)(int)a.g + (float)(b.g - a.g) * t), 
-			(byte)((float)(int)a.b + (float)(b.b - a.b) * t), 
+			(byte)((float)(int)a.r + (float)(b.r - a.r) * t),
+			(byte)((float)(int)a.g + (float)(b.g - a.g) * t),
+			(byte)((float)(int)a.b + (float)(b.b - a.b) * t),
 			(byte)((float)(int)a.a + (float)(b.a - a.a) * t)
 		);
 	}
 
 	public static Color32 LerpUnclamped (Color32 a, Color32 b, float t) {
 		return new Color32(
-			(byte)((float)(int)a.r + (float)(b.r - a.r) * t), 
-			(byte)((float)(int)a.g + (float)(b.g - a.g) * t), 
-			(byte)((float)(int)a.b + (float)(b.b - a.b) * t), 
+			(byte)((float)(int)a.r + (float)(b.r - a.r) * t),
+			(byte)((float)(int)a.g + (float)(b.g - a.g) * t),
+			(byte)((float)(int)a.b + (float)(b.b - a.b) * t),
 			(byte)((float)(int)a.a + (float)(b.a - a.a) * t)
 		);
 	}

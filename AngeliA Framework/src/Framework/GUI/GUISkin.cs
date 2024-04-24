@@ -25,6 +25,17 @@ public static partial class GUISkin {
 		BodyColorDisable = Color32.CLEAR,
 	};
 
+	public static readonly GUIStyle WeakPixel = new() {
+		BodySprite = Const.PIXEL,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = Const.PIXEL,
+		BodyColor = new Color32(26, 26, 26, 255),
+		BodyColorHover = new Color32(26, 26, 26, 255),
+		BodyColorDown = Color32.GREY_20,
+		BodyColorDisable = Color32.CLEAR,
+	};
+
 	public static readonly GUIStyle GreenPixel = new() {
 		BodySprite = Const.PIXEL,
 		BodySpriteHover = Const.PIXEL,
@@ -47,10 +58,14 @@ public static partial class GUISkin {
 	};
 
 	public static readonly GUIStyle Scrollbar = new() {
-		BodySprite = BuiltInSprite.UI_SCROLL_BAR,
-		BodySpriteHover = BuiltInSprite.UI_SCROLL_BAR,
-		BodySpriteDown = BuiltInSprite.UI_SCROLL_BAR_DOWN,
-		BodySpriteDisable = BuiltInSprite.UI_SCROLL_BAR,
+		BodySprite = Const.PIXEL,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = Const.PIXEL,
+		BodyColor = Color32.GREY_42,
+		BodyColorHover = Color32.GREY_46,
+		BodyColorDown = Color32.GREY_38,
+		BodyColorDisable = Color32.CLEAR,
 	};
 
 	// Toggle

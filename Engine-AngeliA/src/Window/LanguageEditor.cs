@@ -50,6 +50,8 @@ public partial class LanguageEditor : WindowUI {
 	// Data
 	private readonly List<string> Languages = new();
 	private readonly List<LanguageLine> Lines = new();
+	private readonly IntToChars IndexToChars = new();
+	private readonly GUIStyle IndexLabelStyle = new(GUISkin.SmallGreyLabel) { Alignment = Alignment.MidRight };
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
 
@@ -89,26 +91,26 @@ public partial class LanguageEditor : WindowUI {
 
 		Cursor.RequireCursor();
 
-		var cameraRect = WindowRect;
+		var windowRect = WindowRect;
 		int column = Languages.Count + 1;
-		int fieldWidth = cameraRect.width / column;
+		int fieldWidth = windowRect.width / column;
 
-		cameraRect.x += (cameraRect.width - fieldWidth * column) / 2;
-		cameraRect.width = fieldWidth * column;
-		X = cameraRect.x;
-		Y = cameraRect.y;
-		Width = cameraRect.width;
-		Height = cameraRect.height;
+		windowRect.x += (windowRect.width - fieldWidth * column) / 2;
+		windowRect.width = fieldWidth * column;
+		X = windowRect.x;
+		Y = windowRect.y;
+		Width = windowRect.width;
+		Height = windowRect.height;
 
 		int frameThickness = Unify(2);
 		Renderer.Draw_9Slice(
-			BuiltInSprite.FRAME_16, cameraRect.Expand(frameThickness),
+			BuiltInSprite.FRAME_16, windowRect.Expand(frameThickness),
 			frameThickness, frameThickness, frameThickness, frameThickness,
 			Color32.GREY_12, int.MinValue
 		);
 
-		Update_Bar(cameraRect.EdgeInside(Direction4.Up, Unify(84)));
-		Update_Content(cameraRect.EdgeInside(Direction4.Down, cameraRect.height - Unify(84)));
+		Update_Bar(windowRect.EdgeInside(Direction4.Up, Unify(84)));
+		Update_Content(windowRect.EdgeInside(Direction4.Down, windowRect.height - Unify(84)));
 
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl) && Input.KeyboardDown(KeyboardKey.S)) {
 			Save();
@@ -122,7 +124,6 @@ public partial class LanguageEditor : WindowUI {
 		Renderer.DrawPixel(panelRect, Color32.GREY_32, 0);
 
 		// Shift Panel Rect
-		int labelWidth = (panelRect.width - Unify(24)) / (Languages.Count + 1);
 		int labelHeight = panelRect.height - Unify(42);
 		panelRect.height = Unify(42);
 		panelRect.y += labelHeight;
@@ -189,7 +190,9 @@ public partial class LanguageEditor : WindowUI {
 		}
 
 		// Labels
-		var labelRect = new IRect(panelRect.x + Unify(12), panelRect.y - labelHeight, labelWidth, labelHeight);
+		int panelPadding = Unify(64);
+		int labelWidth = (panelRect.width - Unify(24) - panelPadding * 2) / (Languages.Count + 1);
+		var labelRect = new IRect(panelRect.x + panelPadding + Unify(12), panelRect.y - labelHeight, labelWidth, labelHeight);
 		GUI.Label(labelRect, UI_LABEL_KEY, GUISkin.SmallGreyLabel);
 		labelRect.x += labelRect.width;
 		for (int i = 0; i < Languages.Count; i++) {
@@ -208,12 +211,14 @@ public partial class LanguageEditor : WindowUI {
 
 		Renderer.DrawPixel(panelRect, Color32.GREY_32, 0);
 
-		int scrollBarWidth = Unify(12);
+		int scrollBarWidth = Unify(16);
 		int labelHeight = Unify(22);
 		int labelPadding = Unify(12);
 		int itemSpaceX = Unify(5);
 		int itemSpaceY = Unify(1);
-		panelRect = panelRect.Shrink(0, scrollBarWidth, 0, 0);
+		int panelPadding = Unify(64);
+		int indexWidth = Unify(32);
+		panelRect = panelRect.Shrink(panelPadding, panelPadding + scrollBarWidth, 0, 0);
 		int pageCount = panelRect.height.CeilDivide(itemHeight);
 		int shiftedItemCount = Lines.Count + 6;
 		if (pageCount > shiftedItemCount) {
@@ -224,8 +229,6 @@ public partial class LanguageEditor : WindowUI {
 		int startLine = ScrollY.GreaterOrEquelThanZero();
 		int ctrlID = 23186 + startLine * (Languages.Count + 1);
 		var rect = new IRect(0, panelRect.yMax, panelRect.width / (Languages.Count + 1), itemHeight);
-		int startCellIndex = Renderer.GetUsedCellCount();
-		int startTextCellIndex = Renderer.GetTextUsedCellCount();
 		string prevLabel = startLine - 1 >= 0 && startLine - 1 < Lines.Count ? Lines[startLine - 1].Label : string.Empty;
 		bool searching = !string.IsNullOrEmpty(SearchingText);
 
@@ -254,6 +257,12 @@ public partial class LanguageEditor : WindowUI {
 			// New Line
 			rect.y -= itemHeight;
 
+			// Index
+			GUI.Label(
+				rect.EdgeOutside(Direction4.Left, indexWidth).Shift(-itemSpaceX, 0),
+				IndexToChars.GetChars(i), IndexLabelStyle
+			);
+
 			// Key
 			if (!IgnoreRequirements && line.Required) {
 				int _textIndex = Renderer.GetTextUsedCellCount();
@@ -281,13 +290,9 @@ public partial class LanguageEditor : WindowUI {
 
 		}
 
-		// Clamp
-		Renderer.ClampCells(panelRect, startCellIndex);
-		Renderer.ClampTextCells(panelRect, startTextCellIndex);
-
 		// Scrollbar
 		ScrollY = GUI.ScrollBar(
-			56093, panelRect.EdgeOutside(Direction4.Right, scrollBarWidth),
+			56093, WindowRect.ShrinkUp(Unify(42)).EdgeInside(Direction4.Right, scrollBarWidth),
 			ScrollY, shiftedItemCount, pageCount
 		);
 		if (Input.MouseWheelDelta != 0 && pageCount <= shiftedItemCount) {
@@ -415,7 +420,7 @@ public partial class LanguageEditor : WindowUI {
 	private void ShowDeleteLanguageDialog (int index) {
 		int lanIndex = index;
 		string lanName = Util.GetLanguageDisplayName(Languages[lanIndex]);
-		GenericDialogUI.SpawnDialog(
+		GenericDialogUI.SpawnDialog_Button(
 			string.Format(DELETE_MSG, lanName),
 			BuiltInText.UI_DELETE,
 			() => {
@@ -430,6 +435,7 @@ public partial class LanguageEditor : WindowUI {
 			BuiltInText.UI_CANCEL,
 			Const.EmptyMethod
 		);
+		GenericDialogUI.SetItemTint(Color32.RED_BETTER, Color32.GREY_245);
 	}
 
 
