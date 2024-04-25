@@ -2,13 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using System.Text;
 using System;
 
-
-
 namespace AngeliA;
-
 
 public abstract class OrderedAttribute : System.Attribute {
 	public int Order { get; init; }
@@ -20,20 +16,25 @@ public static partial class Util {
 
 
 	// All Class
-	public static List<Assembly> AllAssemblies { get; } = new();
-	public static Type[] AllTypes {
-		get {
-			if (_AllTypes == null) {
-				var list = new List<System.Type>();
-				foreach (var assembly in AllAssemblies) {
-					list.AddRange(assembly.GetTypes());
-				}
-				_AllTypes = list.ToArray();
+	public static readonly List<Assembly> AllAssemblies = new();
+	public static readonly Type[] AllTypes;
+
+
+	static Util () {
+		AllAssemblies.Clear();
+		AllAssemblies.AddDistinct(typeof(Util).Assembly);
+		AllAssemblies.AddDistinct(Assembly.GetEntryAssembly());
+		foreach (var dllpath in EnumerateFiles("Library", false, "*.dll")) {
+			if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
+				AllAssemblies.AddDistinct(assembly);
 			}
-			return _AllTypes;
 		}
+		var list = new List<Type>();
+		foreach (var assembly in AllAssemblies) {
+			list.AddRange(assembly.GetTypes());
+		}
+		AllTypes = list.ToArray();
 	}
-	private static Type[] _AllTypes = null;
 
 
 	public static IEnumerable<Type> AllChildClass (this Type type, bool includeAbstract = false, bool includeInterface = false) {
@@ -48,9 +49,6 @@ public static partial class Util {
 			(includeInterface || !t.IsInterface) &&
 			(t.IsSubclassOf(type) || (t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == type))
 		);
-
-
-	public static void ClearAllTypeCache () => _AllTypes = null;
 
 
 	public static IEnumerable<(Assembly assembly, A attribyte)> ForAllAssemblyWithAttribute<A> () where A : Attribute {

@@ -48,6 +48,7 @@ public partial class RayGame : Game {
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
 		SetWindowMinSize(256);
+
 #if DEBUG
 		Debug.OnLogException += LogException;
 		Debug.OnLogError += LogError;
@@ -102,6 +103,7 @@ public partial class RayGame : Game {
 				);
 			}
 		}
+
 	}
 
 

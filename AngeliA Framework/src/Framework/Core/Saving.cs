@@ -1,23 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Reflection;
 
 namespace AngeliA;
 
-
 public static class SavingSystem {
 
+
+	// Api
 	public static readonly Dictionary<int, (string key, string value)> Pool = new();
-	private static readonly StringBuilder Builder = new();
+	public static bool FileLoaded { get; private set; } = false;
+	public static bool IsDirty { get; set; } = true;
+	public static int PoolVersion { get; private set; } = 0;
+
+	// Data
+	public static readonly HashSet<int> RegistedKey = new();
+	private static readonly StringBuilder CacheBuilder = new();
 	private static string SavingPath = "";
-	public static bool FileLoaded = false;
-	public static bool IsDirty = true;
-	public static int PoolVersion = 0;
+
+
+	// MSG
+	[OnGameInitialize(int.MinValue)]
+	internal static void RegisterAllKeys () {
+		RegistedKey.Clear();
+		var TYPE_SAVING = typeof(Saving<>);
+		foreach (var assembly in Util.AllAssemblies) {
+			foreach (var type in assembly.GetTypes()) {
+				foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)) {
+					var fieldType = field.FieldType;
+					if (fieldType.IsArray) {
+						var eType = fieldType.GetElementType();
+						var baseType = eType.BaseType;
+						if (baseType.IsGenericType) {
+							var gType = baseType.GetGenericTypeDefinition();
+							if (gType == TYPE_SAVING) {
+								var detaultValue = field.GetValue(null);
+								if (detaultValue != null) {
+									var arr = detaultValue as Saving[];
+									foreach (var value in arr) {
+										RegistedKey.TryAdd(value.ID);
+									}
+								}
+							}
+						}
+					} else {
+						var baseType = fieldType.BaseType;
+						if (baseType.IsGenericType) {
+							var gType = baseType.GetGenericTypeDefinition();
+							if (gType == TYPE_SAVING) {
+								var detaultValue = field.GetValue(null);
+								if (detaultValue != null) {
+									RegistedKey.TryAdd((detaultValue as Saving).ID);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 
 	[OnGameInitialize(int.MinValue + 1)]
-	public static void OnGameInitialize () {
+	internal static void Reload () {
 		SavingPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Saving.txt");
 		FileLoaded = false;
 		LoadFromFile();
@@ -25,58 +71,66 @@ public static class SavingSystem {
 
 
 	[OnUniverseOpen(int.MinValue + 1)]
-	public static void OnUniverseOpen () {
+	internal static void OnUniverseOpen () {
 		if (Game.GlobalFrame == 0) return;
-		OnGameInitialize();
+		Reload();
 	}
 
 
 	[OnGameQuitting(4096)]
-	public static void OnGameQuitting () {
-		if (FileLoaded && IsDirty) SaveToFile();
+	internal static void OnGameQuitting () {
+		if (FileLoaded) SaveToFile();
 	}
 
 
 	[OnGameUpdate]
-	public static void OnGameUpdate () {
+	internal static void OnGameUpdate () {
 		if (!FileLoaded) LoadFromFile();
 		if (IsDirty) SaveToFile();
 	}
 
 
+	// API
 	public static void LoadFromFile () {
 		FileLoaded = true;
 		Pool.Clear();
 		PoolVersion++;
-		foreach (string line in Util.ForAllLines(SavingPath, Encoding.ASCII)) {
+		foreach (string line in Util.ForAllLines(SavingPath, Encoding.Unicode)) {
 			int midIndex = line.IndexOf(':');
 			if (midIndex <= 0 || midIndex > line.Length) continue;
 			string key = line[..midIndex];
 			string value = line[(midIndex + 1)..];
-			Pool.TryAdd(key.AngeHash(), (key, value));
+			int id = key.AngeHash();
+			Pool.TryAdd(id, (key, value));
 		}
 	}
 
 
 	public static void SaveToFile () {
 		IsDirty = false;
-		Builder.Clear();
-		foreach (var (_, value) in Pool) {
-			Builder.Append(value.key);
-			Builder.Append(':');
-			Builder.Append(value.value);
-			Builder.Append('\n');
+		CacheBuilder.Clear();
+		foreach (var (id, value) in Pool) {
+			if (!RegistedKey.Contains(id)) continue;
+			CacheBuilder.Append(value.key);
+			CacheBuilder.Append(':');
+			CacheBuilder.Append(value.value);
+			CacheBuilder.Append('\n');
 		}
-		Util.TextToFile(Builder.ToString(), SavingPath, Encoding.ASCII);
+		Util.TextToFile(CacheBuilder.ToString(), SavingPath, Encoding.Unicode);
 	}
+
 
 }
 
 
-public abstract class Saving<T> {
-
+public abstract class Saving {
 	public string Key { get; init; }
 	public int ID { get; init; }
+}
+
+
+public abstract class Saving<T> : Saving {
+
 	public T Value {
 		get {
 			if (!SavingSystem.FileLoaded) {
@@ -107,7 +161,6 @@ public abstract class Saving<T> {
 		}
 	}
 	public T DefaultValue { get; init; }
-
 	private T _Value;
 	private int PoolVersion;
 

@@ -63,15 +63,8 @@ internal static class Engine {
 	private static readonly ProjectEditor ProjectEditor = new();
 	private static readonly SettingWindow SettingWindow = new();
 	private static readonly EntityUI[] ALL_UI = {
-		GenericPopup,
-		GenericDialog,
-		FileBrowser,
-		PixelEditor,
-		LanguageEditor,
-		ItemEditor,
-		Console,
-		ProjectEditor,
-		SettingWindow,
+		GenericPopup, GenericDialog, FileBrowser, // Generic
+		PixelEditor, LanguageEditor, ItemEditor, Console, ProjectEditor, SettingWindow, // Window UI
 	};
 
 	// Data
