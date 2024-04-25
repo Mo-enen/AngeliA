@@ -334,6 +334,12 @@ public static partial class Util {
 	}
 
 
+	public static void SetFolderModifyDate (string path, long fileTime) {
+		if (!FolderExists(path)) return;
+		Directory.SetLastWriteTime(path, System.DateTime.FromFileTime(fileTime));
+	}
+
+
 	public static long GetFileCreationDate (string path) {
 		if (!FileExists(path)) return 0;
 		return File.GetCreationTime(path).ToFileTime();

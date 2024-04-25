@@ -31,7 +31,7 @@ public static class SavingSystem {
 	}
 
 
-	[OnGameQuitting]
+	[OnGameQuitting(4096)]
 	public static void OnGameQuitting () {
 		if (FileLoaded && IsDirty) SaveToFile();
 	}

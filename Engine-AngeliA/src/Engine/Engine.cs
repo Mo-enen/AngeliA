@@ -12,6 +12,25 @@ internal static class Engine {
 
 
 
+	#region --- SUB ---
+
+
+	private class ProjectData {
+		public string Name;
+		public string Path;
+		public bool FolderExists;
+		public long LastOpenTime;
+	}
+
+
+	private enum ProjectSortMode { Name, OpenTime, }
+
+
+	#endregion
+
+
+
+
 	#region --- VAR ---
 
 
@@ -54,10 +73,11 @@ internal static class Engine {
 
 	// Data
 	private static Project CurrentProject = null;
+	private static ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
 	private static readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
 	private static readonly GUIStyle NotificationLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private static readonly GUIStyle NotificationSubLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.BottomRight, };
-	private static EngineSetting EngineSetting;
+	private static readonly List<ProjectData> Projects = new();
 	private static IRect ToolLabelRect;
 	private static IRect LastHoveringToolLabelRect;
 	private static IRect ToolLabelDrawingBounds;
@@ -71,6 +91,19 @@ internal static class Engine {
 	private static int NotificationStartFrame = int.MinValue;
 	private static bool NotificationFlash = false;
 
+	// Saving
+	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
+	private static readonly SavingString LastOpenProject = new("Engine.LastOpenProject", "");
+	private static readonly SavingBool Maximize = new("Engine.Maximize", true);
+	private static readonly SavingBool FullsizeMenu = new("Engine.FullsizeMenu", true);
+	private static readonly SavingBool OpenLastProjectOnStart = new("Engine.OpenLastProjectOnStart", false);
+	private static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true);
+	private static readonly SavingBool UseNotification = new("Engine.UseNotification", true);
+	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024);
+	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024);
+	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128);
+	private static readonly SavingInt WindowPositionY = new("Engine.WindowPosY", 128);
+
 
 	#endregion
 
@@ -82,24 +115,41 @@ internal static class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
-		EngineSetting = JsonUtil.LoadOrCreateJson<EngineSetting>(AngePath.PersistentDataPath);
-		EngineSetting.RefreshProjectCache();
-		EngineSetting.SortProjects();
-		if (EngineSetting.Maximize) {
-			Game.IsWindowMaximized = EngineSetting.Maximize;
-		} else {
-			Game.SetWindowPosition(EngineSetting.WindowPositionX, EngineSetting.WindowPositionY);
-			Game.SetWindowSize(EngineSetting.WindowSizeX, EngineSetting.WindowSizeY);
+		// Projects
+		Projects.Clear();
+		var projectPaths = ProjectPaths.Value.Split(';');
+		if (projectPaths != null) {
+			foreach (var path in projectPaths) {
+				if (string.IsNullOrWhiteSpace(path)) continue;
+				Projects.Add(new ProjectData() {
+					Path = path,
+					Name = Util.GetNameWithoutExtension(path),
+					FolderExists = Util.FolderExists(path),
+					LastOpenTime = Util.GetFolderModifyDate(path),
+				});
+			}
 		}
+		RefreshProjectCache();
+		SortProjects();
+		if (
+			OpenLastProjectOnStart.Value &&
+			Projects.Any(data => data.Path == LastOpenProject.Value)
+		) {
+			OpenProject(LastOpenProject.Value);
+		}
+
+		// Engine Window
+		if (Maximize.Value) {
+			Game.IsWindowMaximized = Maximize.Value;
+		} else {
+			Game.SetWindowPosition(WindowPositionX.Value, WindowPositionY.Value);
+			Game.SetWindowSize(WindowSizeX.Value, WindowSizeY.Value);
+		}
+		Game.SetEventWaiting(false);
+
+		// UI Window
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
-		Game.SetEventWaiting(false);
-		if (
-			EngineSetting.OpenLastProjectOnStart &&
-			EngineSetting.Projects.Any(data => data.Path == EngineSetting.LastOpenProject)
-		) {
-			OpenProject(EngineSetting.LastOpenProject);
-		}
 		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
 		SettingWindow.PixEditor_CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
@@ -140,19 +190,13 @@ internal static class Engine {
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
 		var windowPos = Game.GetWindowPosition();
-		EngineSetting.Maximize = Game.IsWindowMaximized;
-		EngineSetting.WindowSizeX = Game.ScreenWidth;
-		EngineSetting.WindowSizeY = Game.ScreenHeight;
-		EngineSetting.WindowPositionX = windowPos.x;
-		EngineSetting.WindowPositionY = windowPos.y;
-		JsonUtil.SaveJson(EngineSetting, AngePath.PersistentDataPath, prettyPrint: true);
+		Maximize.Value = Game.IsWindowMaximized;
+		WindowSizeX.Value = Game.ScreenWidth;
+		WindowSizeY.Value = Game.ScreenHeight;
+		WindowPositionX.Value = windowPos.x;
+		WindowPositionY.Value = windowPos.y;
+		ProjectPaths.Value = Projects.JoinArray(p => p.Path, ';');
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
-	}
-
-
-	[OnGameFocused]
-	internal static void OnGameFocused () {
-		EngineSetting.RefreshProjectCache();
 	}
 
 
@@ -267,7 +311,7 @@ internal static class Engine {
 			var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
 				padding, padding + scrollWidth, padding, padding
 			);
-			var projects = EngineSetting.Projects;
+			var projects = Projects;
 
 			// BG
 			Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
@@ -381,7 +425,7 @@ internal static class Engine {
 
 		// Window
 		int contentPadding = GUI.Unify(8);
-		int barWidth = EngineSetting.FullsizeMenu ? GUI.Unify(160) : GUI.Unify(42) + contentPadding;
+		int barWidth = FullsizeMenu.Value ? GUI.Unify(160) : GUI.Unify(42) + contentPadding;
 		int bodyBorder = GUI.Unify(6);
 		var cameraRect = Renderer.CameraRect;
 		int windowLen = CurrentProject == null ? 1 : WINDOW_UI_COUNT;
@@ -410,7 +454,7 @@ internal static class Engine {
 
 				// Menu Button
 				if (GUI.BlankButton(rect, out _)) {
-					EngineSetting.FullsizeMenu = !EngineSetting.FullsizeMenu;
+					FullsizeMenu.Value = !FullsizeMenu.Value;
 				}
 
 				// Menu Icon
@@ -457,7 +501,7 @@ internal static class Engine {
 				}
 
 				// Label
-				if (EngineSetting.FullsizeMenu) {
+				if (FullsizeMenu.Value) {
 					GUI.SmallLabel(
 						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
 						Language.Get(window.TypeID, window.DefaultName)
@@ -473,7 +517,7 @@ internal static class Engine {
 			}
 
 			// Back to Hub
-			if (EngineSetting.FullsizeMenu) {
+			if (FullsizeMenu.Value) {
 				if (GUI.Button(
 					barRect.EdgeInside(Direction4.Down, rect.height),
 					BuiltInText.UI_BACK, GUISkin.SmallCenterLabelButton
@@ -510,9 +554,9 @@ internal static class Engine {
 		}
 
 		// Update Setting
-		SettingWindow.OpenLastProjectOnStart = EngineSetting.OpenLastProjectOnStart;
-		SettingWindow.UseTooltip = EngineSetting.UseTooltip;
-		SettingWindow.UseNotification = EngineSetting.UseNotification;
+		SettingWindow.OpenLastProjectOnStart = OpenLastProjectOnStart.Value;
+		SettingWindow.UseTooltip = UseTooltip.Value;
+		SettingWindow.UseNotification = UseNotification.Value;
 		SettingWindow.BackgroundColor = PixelEditor.BackgroundColor.Value;
 		SettingWindow.CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value;
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
@@ -542,9 +586,9 @@ internal static class Engine {
 		}
 
 		// Update Setting
-		EngineSetting.OpenLastProjectOnStart = SettingWindow.OpenLastProjectOnStart;
-		EngineSetting.UseTooltip = SettingWindow.UseTooltip;
-		EngineSetting.UseNotification = SettingWindow.UseNotification;
+		OpenLastProjectOnStart.Value = SettingWindow.OpenLastProjectOnStart;
+		UseTooltip.Value = SettingWindow.UseTooltip;
+		UseNotification.Value = SettingWindow.UseNotification;
 		PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
 		PixelEditor.CanvasBackgroundColor.Value = SettingWindow.CanvasBackgroundColor;
 		PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
@@ -556,7 +600,7 @@ internal static class Engine {
 		foreach (var ui in ALL_UI) {
 			if (ui is not WindowUI window || !window.Active) continue;
 			string content = window.RequiringTooltipContent;
-			if (content != null && EngineSetting.UseTooltip) {
+			if (content != null && UseTooltip.Value) {
 				ToolLabel = content;
 				ToolLabelRect = window.RequiringTooltipRect;
 				if (ToolLabelRect.MouseInside()) {
@@ -574,7 +618,7 @@ internal static class Engine {
 		// Update Notify
 		foreach (var ui in ALL_UI) {
 			if (ui is not WindowUI window) continue;
-			if (window.NotificationContent != null && EngineSetting.UseNotification) {
+			if (window.NotificationContent != null && UseNotification.Value) {
 				NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
 				NotificationStartFrame = Game.GlobalFrame;
 				NotificationContent = window.NotificationContent;
@@ -606,7 +650,7 @@ internal static class Engine {
 	private static void OnGUI_Tooltip () {
 		ToolLabelDrawingBounds = default;
 		if (ToolLabel == null) return;
-		if (!EngineSetting.UseTooltip) {
+		if (!UseTooltip.Value) {
 			ToolLabel = null;
 			return;
 		}
@@ -637,7 +681,7 @@ internal static class Engine {
 
 	private static void OnGUI_Notify () {
 
-		if (!EngineSetting.UseNotification || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
+		if (!UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
 
 		int padding = GUI.Unify(2);
 		int labelHeight = GUI.Unify(28);
@@ -696,27 +740,27 @@ internal static class Engine {
 		GenericPopupUI.AddItem(
 			MENU_SORT_BY_NAME,
 			SortByName,
-			@checked: EngineSetting.ProjectSort == EngineSetting.ProjectSortMode.Name
+			@checked: ProjectSort == ProjectSortMode.Name
 		);
 		GenericPopupUI.AddItem(
 			MENU_SORT_BY_TIME,
 			SortByTime,
-			@checked: EngineSetting.ProjectSort == EngineSetting.ProjectSortMode.OpenTime
+			@checked: ProjectSort == ProjectSortMode.OpenTime
 		);
 		static void SortByName () {
-			EngineSetting.ProjectSort = EngineSetting.ProjectSortMode.Name;
-			EngineSetting.SortProjects();
+			ProjectSort = ProjectSortMode.Name;
+			SortProjects();
 		}
 		static void SortByTime () {
-			EngineSetting.ProjectSort = EngineSetting.ProjectSortMode.OpenTime;
-			EngineSetting.SortProjects();
+			ProjectSort = ProjectSortMode.OpenTime;
+			SortProjects();
 		}
 	}
 
 
 	private static void OpenProjectInExplorer () {
-		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= EngineSetting.Projects.Count) return;
-		string path = EngineSetting.Projects[CurrentProjectMenuIndex].Path;
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Projects.Count) return;
+		string path = Projects[CurrentProjectMenuIndex].Path;
 		if (Util.FolderExists(path)) {
 			Game.OpenUrl(path);
 		}
@@ -724,8 +768,8 @@ internal static class Engine {
 
 
 	private static void DeleteProjectConfirm () {
-		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= EngineSetting.Projects.Count) return;
-		string name = Util.GetNameWithoutExtension(EngineSetting.Projects[CurrentProjectMenuIndex].Path);
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Projects.Count) return;
+		string name = Util.GetNameWithoutExtension(Projects[CurrentProjectMenuIndex].Path);
 		string msg = string.Format(DELETE_PROJECT_MSG, name);
 		GenericDialogUI.SpawnDialog_Button(
 			msg,
@@ -737,8 +781,8 @@ internal static class Engine {
 
 
 	private static void DeleteProject () {
-		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= EngineSetting.Projects.Count) return;
-		EngineSetting.Projects.RemoveAt(CurrentProjectMenuIndex);
+		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Projects.Count) return;
+		Projects.RemoveAt(CurrentProjectMenuIndex);
 	}
 
 
@@ -757,14 +801,16 @@ internal static class Engine {
 		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		ProjectEditor.CurrentProject = CurrentProject;
 		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
-		EngineSetting.LastOpenProject = projectPath;
-		foreach (var project in EngineSetting.Projects) {
+		LastOpenProject.Value = projectPath;
+		foreach (var project in Projects) {
 			if (project.Path == projectPath) {
-				project.LastOpenTime = Util.GetLongTime();
+				long time = Util.GetLongTime();
+				project.LastOpenTime = time;
+				Util.SetFolderModifyDate(projectPath, time);
 				break;
 			}
 		}
-		EngineSetting.SortProjects();
+		SortProjects();
 	}
 
 
@@ -830,16 +876,39 @@ internal static class Engine {
 
 	private static void AddExistsProjectAt (string path) {
 		if (string.IsNullOrEmpty(path) || !Util.FolderExists(path)) return;
-		if (EngineSetting != null && !EngineSetting.Projects.Any(data => data.Path == path)) {
+		if (!Projects.Any(data => data.Path == path)) {
 			// Add to Path List
-			var item = new EngineSetting.ProjectData() {
+			long time = Util.GetLongTime();
+			var item = new ProjectData() {
 				Name = Util.GetNameWithoutExtension(path),
 				Path = path,
 				FolderExists = true,
-				LastOpenTime = Util.GetLongTime(),
+				LastOpenTime = time,
 			};
-			EngineSetting.Projects.Add(item);
-			EngineSetting.SortProjects();
+			Util.SetFolderModifyDate(path, time);
+			Projects.Add(item);
+			SortProjects();
+		}
+	}
+
+
+	// Project
+	[OnGameFocused]
+	private static void RefreshProjectCache () {
+		foreach (var project in Projects) {
+			project.FolderExists = Util.FolderExists(project.Path);
+		}
+	}
+
+
+	private static void SortProjects () {
+		switch (ProjectSort) {
+			case ProjectSortMode.Name:
+				Projects.Sort((a, b) => a.Name.CompareTo(b.Name));
+				break;
+			case ProjectSortMode.OpenTime:
+				Projects.Sort((a, b) => b.LastOpenTime.CompareTo(a.LastOpenTime));
+				break;
 		}
 	}
 

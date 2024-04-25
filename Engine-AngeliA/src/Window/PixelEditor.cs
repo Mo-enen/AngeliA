@@ -69,7 +69,7 @@ public partial class PixelEditor : WindowUI {
 	public override string DefaultName => "Artwork";
 	public readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
-	public readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", false);
+	public readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
 	public readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
 	public readonly SavingBool OnlyShowBGInSprite = new("PixEdt.OnlyShowBGInSprite", true);
 

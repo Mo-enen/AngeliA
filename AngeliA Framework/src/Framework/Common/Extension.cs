@@ -860,6 +860,23 @@ public static class Extension {
 		return false;
 	}
 
+	private static readonly StringBuilder JoinArrayBuilder = new();
+	public static string JoinArray<T> (this IEnumerable<T> arr, System.Func<T, string> toString, char separator = '\0') {
+		JoinArrayBuilder.Clear();
+		using var enumerator = arr.GetEnumerator();
+		var last = !enumerator.MoveNext();
+		T current;
+		while (!last) {
+			current = enumerator.Current;
+			JoinArrayBuilder.Append(toString(current));
+			last = !enumerator.MoveNext();
+			if (separator != '\0' && !last) {
+				JoinArrayBuilder.Append(separator);
+			}
+		}
+		return JoinArrayBuilder.ToString();
+	}
+
 	// Ref
 	public static IEnumerable<T> ForAllStaticFieldValue<T> (this System.Type type, BindingFlags binding = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, bool inherited = true) {
 		var tType = typeof(T);
