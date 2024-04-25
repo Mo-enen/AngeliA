@@ -125,7 +125,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 		// Items
 		Cell highlightCell = null;
-		int textStart = Renderer.GetTextUsedCellCount();
+		int textStart = Renderer.GetUsedCellCount();
 		int indent = Unify(36);
 		var rect = new IRect(panelRect.x, panelRect.yMax, panelRect.width, itemHeight);
 		int checkShrink = itemHeight / 6;
@@ -198,7 +198,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		bgCell.Height = BackgroundRect.height;
 
 		// Clamp Text
-		Renderer.ClampTextCells(panelRect, textStart);
+		Renderer.ClampCells(panelRect, textStart);
 
 		// Block Input
 		Input.IgnoreMouseInput();

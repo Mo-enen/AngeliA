@@ -801,7 +801,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		var cursorRect = new IRect(0, 0, 0, 0);
 		var rect = new IRect(patternRect.x, 0, patternRect.width, itemHeight);
 		int cellStart = Renderer.GetUsedCellCount();
-		int cellTextStart = Renderer.GetTextUsedCellCount();
 		if (!Input.LastActionFromMouse) {
 			PatternPickerScrollRow = PatternPickerScrollRow.Clamp(HighlightingPatternRow - pageRow + 1, HighlightingPatternRow);
 		}
@@ -926,7 +925,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 		var clampRect = patternRect.Expand(itemHeight * 6, scrollBarWidth, 0, 0);
 		Renderer.ClampCells(Renderer.CurrentLayerIndex, clampRect, cellStart);
-		Renderer.ClampTextCells(Renderer.CurrentTextLayerIndex, clampRect, cellTextStart);
 
 		// Cursor
 		if (cursorRect.width > 0) {

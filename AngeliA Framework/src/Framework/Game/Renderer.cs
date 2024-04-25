@@ -21,11 +21,6 @@ public static class Renderer {
 			0;
 	}
 
-	private class TextLayer : Layer {
-		public readonly Dictionary<int, CharSprite> TextIDMap = new();
-	}
-
-
 	private class Layer {
 		public int Count => Util.Min(Cells.Length, FocusedCell >= 0 ? FocusedCell : Cells.Length);
 		public Cell[] Cells;
@@ -75,10 +70,10 @@ public static class Renderer {
 	public static int LayerCount => Layers.Length;
 	public static int SpriteCount => Sheet.Sprites.Count;
 	public static int GroupCount => Sheet.Groups.Count;
-	public static int TextLayerCount => TextLayers.Length;
+	public static int FontCount => CharSpritePool.Length;
 	public static int CurrentLayerIndex { get; private set; } = 0;
-	public static int CurrentTextLayerIndex { get; private set; } = 0;
-	public static bool TextReady => TextLayers.Length > 0;
+	public static int CurrentFontIndex { get; private set; } = 0;
+	public static bool TextReady => CharSpritePool.Length > 0;
 	public static int CurrentSheetIndex { get; set; } = -1;
 	public static int AltSheetCount => AltSheets.Count;
 	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? Sheet : AltSheets[CurrentSheetIndex];
@@ -87,7 +82,7 @@ public static class Renderer {
 	private static readonly Sheet Sheet = new();
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
-	private static TextLayer[] TextLayers = System.Array.Empty<TextLayer>();
+	private static Dictionary<int, CharSprite>[] CharSpritePool = { };
 	private static bool IsDrawing = false;
 
 
@@ -115,43 +110,25 @@ public static class Renderer {
 			string name = RenderLayer.NAMES[i];
 			int order = i;
 			bool uiLayer = i == RenderLayer.UI;
-			Layers[i] = CreateLayer(name, uiLayer, order, capacity, textLayer: false);
+			Layers[i] = new Layer {
+				Name = name,
+				Cells = new Cell[capacity].FillWithNewValue(),
+				CellCount = capacity,
+				FocusedCell = 0,
+				PrevCellCount = 0,
+				SortedIndex = 0,
+				SortingOrder = order,
+				UiLayer = uiLayer
+			};
 			Game.OnRenderingLayerCreated(i, name, order, capacity);
 		}
 
-		// Text Layer
-		int textLayerCount = Game.TextLayerCount;
-		const int TEXT_CAPACITY = 2048;
-		TextLayers = new TextLayer[textLayerCount];
-		for (int i = 0; i < textLayerCount; i++) {
-			string name = Game.GetTextLayerName(i);
-			int sortingOrder = Layers.Length + i;
-			TextLayers[i] = CreateLayer(
-				name,
-				uiLayer: true,
-				sortingOrder,
-				TEXT_CAPACITY,
-				textLayer: true
-			) as TextLayer;
-			Game.OnTextLayerCreated(i, name, sortingOrder, TEXT_CAPACITY);
-		}
+		// Create Char Sprite Pool
+		CharSpritePool = new Dictionary<int, CharSprite>[Game.FontCount].FillWithNewValue();
 
 		// Load Sheet
 		LoadSheet(UniverseSystem.BuiltInUniverse);
 
-		// Func
-		static Layer CreateLayer (string name, bool uiLayer, int sortingOrder, int renderCapacity, bool textLayer) {
-			var layer = textLayer ? new TextLayer() : new Layer();
-			layer.Name = name;
-			layer.Cells = new Cell[renderCapacity].FillWithNewValue();
-			layer.CellCount = renderCapacity;
-			layer.FocusedCell = 0;
-			layer.PrevCellCount = 0;
-			layer.SortedIndex = 0;
-			layer.SortingOrder = sortingOrder;
-			layer.UiLayer = uiLayer;
-			return layer;
-		}
 	}
 
 
@@ -210,26 +187,15 @@ public static class Renderer {
 	[OnGameUpdatePauseless(32)]
 	internal static void FrameUpdate () {
 		IsDrawing = false;
-		// Cell
-		try {
-			for (int i = 0; i < Layers.Length; i++) {
+		for (int i = 0; i < Layers.Length; i++) {
+			try {
 				var layer = Layers[i];
 				if (!layer.UiLayer) layer.ZSort();
 				int prevCount = layer.Count;
-				Game.OnLayerUpdate(i, layer.UiLayer, false, layer.Cells, layer.Count);
+				Game.OnLayerUpdate(i, layer.UiLayer, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
-			}
-		} catch (System.Exception ex) { Debug.LogException(ex); }
-		// Text
-		try {
-			for (int i = 0; i < TextLayers.Length; i++) {
-				var layer = TextLayers[i];
-				layer.ZSort();
-				int prevCount = layer.Count;
-				Game.OnLayerUpdate(i, layer.UiLayer, true, layer.Cells, layer.Count);
-				layer.PrevCellCount = prevCount;
-			}
-		} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
 	}
 
 
@@ -251,11 +217,6 @@ public static class Renderer {
 				layer.FocusedCell = 0;
 				layer.SortedIndex = 0;
 			}
-		}
-		for (int i = 0; i < TextLayers.Length; i++) {
-			var tLayer = TextLayers[i];
-			tLayer.FocusedCell = 0;
-			tLayer.SortedIndex = 0;
 		}
 	}
 
@@ -323,7 +284,6 @@ public static class Renderer {
 			CurrentLayerIndex = index.Clamp(0, Layers.Length - 1);
 		}
 	}
-	public static void SetTextLayer (int index) => CurrentTextLayerIndex = index.Clamp(0, TextLayers.Length - 1);
 	public static void SetLayerToWallpaper () => CurrentLayerIndex = RenderLayer.WALLPAPER;
 	public static void SetLayerToBehind () => CurrentLayerIndex = RenderLayer.BEHIND;
 	public static void SetLayerToShadow () => CurrentLayerIndex = RenderLayer.SHADOW;
@@ -338,23 +298,21 @@ public static class Renderer {
 		layer.SortedIndex = 0;
 	}
 
+
 	public static void SortLayer (int layerIndex) => Layers[layerIndex].ZSort();
 	public static void ReverseUnsortedCells (int layerIndex) => Layers[layerIndex].ReverseUnsorted();
 	public static void AbandonLayerSort (int layerIndex) => Layers[layerIndex].AbandonZSort();
 
 	public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Name : "";
-	public static string GetTextLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < TextLayers.Length ? TextLayers[layerIndex].Name : "";
 
 
 	public static int GetUsedCellCount () => GetUsedCellCount(CurrentLayerIndex);
 	public static int GetUsedCellCount (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Count : 0;
-	public static int GetTextUsedCellCount () => GetTextUsedCellCount(CurrentTextLayerIndex);
-	public static int GetTextUsedCellCount (int layerIndex) => layerIndex >= 0 && layerIndex < TextLayers.Length ? TextLayers[layerIndex].Count : 0;
-
 
 	public static int GetLayerCapacity (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Cells.Length : 0;
-	public static int GetTextLayerCapacity () => GetTextLayerCapacity(CurrentTextLayerIndex);
-	public static int GetTextLayerCapacity (int layerIndex) => layerIndex >= 0 && layerIndex < TextLayers.Length ? TextLayers[layerIndex].Cells.Length : 0;
+
+
+	public static void SetFontIndex (int newIndex) => CurrentFontIndex = newIndex.Clamp(0, FontCount - 1);
 
 
 	// Draw
@@ -424,16 +382,15 @@ public static class Renderer {
 
 	public static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
 		if (!IsDrawing || !TextReady) return Cell.EMPTY;
-		var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
-		if (!layer.TextIDMap.TryGetValue(c, out var tSprite)) return Cell.EMPTY;
+		var charPool = CharSpritePool[CurrentFontIndex];
+		if (!charPool.TryGetValue(c, out var tSprite)) return Cell.EMPTY;
 		return DrawChar(tSprite, x, y, width, height, color);
 	}
-
 	public static Cell DrawChar (CharSprite sprite, int x, int y, int width, int height, Color32 color) {
 
 		if (!IsDrawing || !TextReady || sprite == null) return Cell.EMPTY;
 
-		var layer = TextLayers[CurrentTextLayerIndex.Clamp(0, TextLayers.Length - 1)];
+		var layer = Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
 		if (layer.FocusedCell < 0) return Cell.EMPTY;
 
 		var cell = layer.Cells[layer.FocusedCell];
@@ -617,16 +574,6 @@ public static class Renderer {
 		if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
 		Util.ClampCells(Layers[layerIndex].Cells, rect, startIndex, endIndex);
 	}
-	public static void ClampTextCells (IRect rect, int startIndex, int endIndex = -1) {
-		if (CurrentTextLayerIndex < 0 || CurrentTextLayerIndex >= TextLayers.Length) return;
-		if (endIndex < 0) endIndex = GetTextUsedCellCount(CurrentTextLayerIndex);
-		Util.ClampCells(TextLayers[CurrentTextLayerIndex].Cells, rect, startIndex, endIndex);
-	}
-	public static void ClampTextCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
-		if (CurrentTextLayerIndex < 0 || CurrentTextLayerIndex >= TextLayers.Length) return;
-		if (endIndex < 0) endIndex = GetTextUsedCellCount(layerIndex);
-		Util.ClampCells(TextLayers[layerIndex].Cells, rect, startIndex, endIndex);
-	}
 	public static void ClampCells (Cell[] cells, IRect rect) => Util.ClampCells(cells, rect, 0, cells.Length);
 
 
@@ -644,21 +591,6 @@ public static class Renderer {
 	public static void ExcludeCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
 		ExcludeCellsLogic(Layers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
-	}
-	public static void ExcludeTextCellsForAllLayers (IRect rect) {
-		for (int i = 0; i < TextLayers.Length; i++) {
-			ExcludeCellsLogic(TextLayers[i].Cells, i, rect, 0, GetTextUsedCellCount(i));
-		}
-	}
-	public static void ExcludeTextCells (IRect rect, int startIndex, int endIndex = -1) {
-		if (CurrentTextLayerIndex < 0 || CurrentTextLayerIndex >= TextLayers.Length) return;
-		if (endIndex < 0) endIndex = GetTextUsedCellCount(CurrentTextLayerIndex);
-		ExcludeCellsLogic(TextLayers[CurrentTextLayerIndex].Cells, CurrentTextLayerIndex, rect, startIndex, endIndex);
-	}
-	public static void ExcludeTextCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
-		if (layerIndex < 0 || layerIndex >= TextLayers.Length) return;
-		if (endIndex < 0) endIndex = GetTextUsedCellCount(layerIndex);
-		ExcludeCellsLogic(TextLayers[layerIndex].Cells, layerIndex, rect, startIndex, endIndex);
 	}
 	private static void ExcludeCellsLogic (Cell[] cells, int layerIndex, IRect rect, int startIndex, int endIndex) {
 
@@ -724,18 +656,10 @@ public static class Renderer {
 			// Func
 			static void MakeCell (Cell source, IRect originalRect, IRect targetRect, int layerIndex) {
 				Cell target;
-				if (source.Sprite != null) {
-					int oldLayer = CurrentLayerIndex;
-					SetLayer(layerIndex);
-					target = Draw(Const.PIXEL, new IRect(1, 1, 1, 1));
-					SetLayer(oldLayer);
-				} else {
-					int oldLayer = CurrentTextLayerIndex;
-					SetTextLayer(layerIndex);
-					target = DrawChar('a', 0, 0, 10, 10, Color32.WHITE);
-					SetTextLayer(oldLayer);
-				}
-				if (target.Sprite == null && target.TextSprite == null) return;
+				int oldLayer = CurrentLayerIndex;
+				SetLayer(layerIndex);
+				target = Draw(Const.PIXEL, new IRect(1, 1, 1, 1));
+				SetLayer(oldLayer);
 				target.CopyFrom(source);
 				target.X = originalRect.x;
 				target.Y = originalRect.y;
@@ -767,31 +691,18 @@ public static class Renderer {
 			return false;
 		}
 	}
-	public static bool GetTextCells (out Cell[] cells, out int count) => GetTextCells(CurrentTextLayerIndex, out cells, out count);
-	public static bool GetTextCells (int layer, out Cell[] cells, out int count) {
-		if (layer >= 0 && layer < TextLayers.Length) {
-			var item = TextLayers[layer];
-			count = item.Count;
-			cells = item.Cells;
-			return true;
-		} else {
-			count = 0;
-			cells = null;
-			return false;
-		}
-	}
 
 
 	// Internal
 	internal static bool RequireCharForPool (char c, out CharSprite charSprite) {
-		var tLayer = TextLayers[CurrentTextLayerIndex];
-		if (tLayer.TextIDMap.TryGetValue(c, out var textSprite)) {
+		var pool = CharSpritePool[CurrentFontIndex];
+		if (pool.TryGetValue(c, out var textSprite)) {
 			// Get Exists
 			charSprite = textSprite;
 		} else {
 			// Require Char from Font
-			charSprite = Game.GetCharSprite(CurrentTextLayerIndex, c);
-			tLayer.TextIDMap.Add(c, charSprite);
+			charSprite = Game.GetCharSprite(CurrentFontIndex, c);
+			pool.Add(c, charSprite);
 		}
 		return charSprite != null;
 	}

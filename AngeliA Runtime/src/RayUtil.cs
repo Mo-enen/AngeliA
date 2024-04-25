@@ -50,68 +50,6 @@ public static class RayUtil {
 		}
 	}
 
-	public static FontData[] LoadFontDataFromFile (string fontRoot) {
-		var fontList = new List<FontData>(8);
-		foreach (var fontPath in Util.EnumerateFiles(fontRoot, true, "*.ttf")) {
-			string name = Util.GetNameWithoutExtension(fontPath);
-			if (!Util.TryGetIntFromString(name, 0, out int layerIndex, out _)) continue;
-			var targetData = fontList.Find(data => data.LayerIndex == layerIndex);
-			if (targetData == null) {
-				int hashIndex = name.IndexOf('#');
-				fontList.Add(targetData = new FontData() {
-					Name = (hashIndex >= 0 ? name[..hashIndex] : name).TrimStart_Numbers(),
-					LayerIndex = layerIndex,
-					FullsetSize = 42,
-					FullsetScale = 1f,
-					PrioritizedSize = 42,
-					PrioritizedScale = 1f,
-				});
-			}
-			bool isFullset = name.Contains("#fullset", StringComparison.OrdinalIgnoreCase);
-			// Size
-			int sizeTagIndex = name.IndexOf("#size=", StringComparison.OrdinalIgnoreCase);
-			if (sizeTagIndex >= 0 && Util.TryGetIntFromString(name, sizeTagIndex + 6, out int size, out _)) {
-				if (isFullset) {
-					targetData.FullsetSize = Util.Max(42, size);
-				} else {
-					targetData.PrioritizedSize = Util.Max(42, size);
-				}
-			}
-			// Scale
-			int scaleTagIndex = name.IndexOf("#scale=", StringComparison.OrdinalIgnoreCase);
-			if (scaleTagIndex >= 0 && Util.TryGetIntFromString(name, scaleTagIndex + 7, out int scale, out _)) {
-				if (isFullset) {
-					targetData.FullsetScale = (scale / 100f).Clamp(0.01f, 10f);
-				} else {
-					targetData.PrioritizedScale = (scale / 100f).Clamp(0.01f, 10f);
-				}
-			}
-			// Data
-			targetData.LoadData(fontPath, !isFullset);
-		}
-		fontList.Sort((a, b) => a.LayerIndex.CompareTo(b.LayerIndex));
-		return fontList.ToArray();
-	}
-
-	public static CharSprite CreateCharSprite (FontData fontData, char c) {
-		if (!fontData.TryGetCharData(c, out var info, out _)) return null;
-		bool fullset = FontData.IsFullsetChar(c);
-		float fontSize = fullset ? 
-			fontData.FullsetSize / fontData.FullsetScale : 
-			fontData.PrioritizedSize / fontData.PrioritizedScale;
-		return new CharSprite {
-			Char = c,
-			Advance = info.AdvanceX / fontSize,
-			Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
-				xmin: info.OffsetX / fontSize,
-				ymin: (fontSize - info.OffsetY - info.Image.Height) / fontSize,
-				xmax: (info.OffsetX + info.Image.Width) / fontSize,
-				ymax: (fontSize - info.OffsetY) / fontSize
-			)
-		};
-	}
-
-
 	// Debug
 	public static void WritePixelsToConsole (Color32[] pixels, int width) {
 

@@ -40,7 +40,7 @@ public partial class RayGame : Game {
 	private void InitializeGame () {
 
 		// Init Window
-		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Warning : TraceLogLevel.None);
+		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Error : TraceLogLevel.None);
 		Raylib.SetTargetFPS(60);
 		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
 		Raylib.SetConfigFlags(windowConfig);
@@ -82,7 +82,7 @@ public partial class RayGame : Game {
 		);
 
 		// Pipeline
-		Fonts = RayUtil.LoadFontDataFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
+		Fonts = FontData.LoadFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
 		InitializeShader();
 		InitializeAudio();
 		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
@@ -214,13 +214,9 @@ public partial class RayGame : Game {
 
 	private void QuitGame () {
 
-		// Unload Font
-		foreach (var font in Fonts) font.Unload();
-
 		// Unload Shader
 		Raylib.UnloadShader(LerpShader);
 		Raylib.UnloadShader(ColorShader);
-		Raylib.UnloadShader(TextShader);
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) Raylib.UnloadShader(ScreenEffectShaders[i]);
 
 		// Unload Texture

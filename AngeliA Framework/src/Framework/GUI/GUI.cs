@@ -136,7 +136,7 @@ public static class GUI {
 
 		// Draw
 		style ??= GUISkin.Label;
-		Renderer.GetTextCells(out var textCells, out int textCountInLayer);
+		Renderer.GetCells(out var textCells, out int textCountInLayer);
 		rect = GetContentRect(rect, style, state);
 		var color = Color * ContentColor * style.GetContentColor(state);
 
@@ -306,36 +306,36 @@ public static class GUI {
 	// Label Extra
 	public static int ScrollLabel (string text, IRect rect, int scrollPosition, GUIStyle style) {
 		style ??= GUISkin.Label;
-		int before = Renderer.GetTextUsedCellCount();
+		int before = Renderer.GetUsedCellCount();
 		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out var bounds, out _, out _);
 		if (bounds.height < rect.height) {
 			scrollPosition = 0;
 			return scrollPosition;
 		}
 		scrollPosition = scrollPosition.Clamp(0, bounds.height - rect.height + Unify(style.CharSize * 2));
-		int after = Renderer.GetTextUsedCellCount();
+		int after = Renderer.GetUsedCellCount();
 		if (before == after) return scrollPosition;
 		// Clamp
-		if (Renderer.GetTextCells(out var cells, out int count)) {
+		if (Renderer.GetCells(out var cells, out int count)) {
 			for (int i = before; i < after && i < count; i++) {
 				var cell = cells[i];
 				cell.Y += scrollPosition;
 			}
 		}
-		Renderer.ClampTextCells(rect, before, after);
+		Renderer.ClampCells(rect, before, after);
 		return scrollPosition;
 	}
 
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null) => BackgroundLabel(rect, text, backgroundColor, out _, backgroundPadding, forceInside, style);
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null) {
-		int startIndex = Renderer.GetTextUsedCellCount();
+		int startIndex = Renderer.GetUsedCellCount();
+		var bg = Renderer.DrawPixel(default, Color * BodyColor * backgroundColor, z: 0);
 		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
 		if (forceInside) {
 			bounds = rect;
-			Renderer.ClampTextCells(bounds, startIndex);
+			Renderer.ClampCells(bounds, startIndex);
 		}
-		bounds = bounds.Expand(backgroundPadding);
-		Renderer.DrawPixel(bounds, Color * BodyColor * backgroundColor, z: 0);
+		bg.SetRect(bounds.Expand(backgroundPadding));
 	}
 
 	public static void BackgroundLabel (IRect rect, char[] chars, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, chars, backgroundColor, out _, backgroundPadding, style);
@@ -523,14 +523,14 @@ public static class GUI {
 
 
 	// Text Field
-	public static string SmallInputField (int controlID, IRect rect, string text, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, GUISkin.SmallInputField, selectionStyle);
-	public static string SmallInputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out changed, out confirm, GUISkin.SmallInputField, selectionStyle);
-	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionStyle);
-	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, GUIStyle selectionStyle = null) {
+	public static string SmallInputField (int controlID, IRect rect, string text, Color32? selectionColor = null) => InputField(controlID, rect, text, out _, out _, GUISkin.SmallInputField, selectionColor);
+	public static string SmallInputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, Color32? selectionColor = null) => InputField(controlID, rect, text, out changed, out confirm, GUISkin.SmallInputField, selectionColor);
+	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, Color32? selectionColor = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionColor);
+	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, Color32? selectionColor = null) {
 
 		text ??= "";
 		bodyStyle ??= GUISkin.InputField;
-		selectionStyle ??= GUISkin.GreenPixel;
+		selectionColor ??= Color32.GREEN;
 
 		changed = false;
 		confirm = false;
@@ -706,7 +706,10 @@ public static class GUI {
 		if (changed) BeamBlinkFrame = Game.PauselessFrame;
 
 		// Rendering
-		int startCellIndex = Renderer.GetTextUsedCellCount();
+		var beamCell = Renderer.DrawPixel(default);
+		var selectionCell = Renderer.DrawPixel(default, selectionColor.Value);
+
+		int startCellIndex = Renderer.GetUsedCellCount();
 		var labelRect = rect;
 		if (bodyStyle.ContentBorder.HasValue) {
 			rect = rect.Shrink(bodyStyle.ContentBorder.Value);
@@ -725,15 +728,16 @@ public static class GUI {
 		}
 
 		// Draw Beam
-		Cell beamCell = null;
 		if (!startTyping && typing && (Game.PauselessFrame - BeamBlinkFrame) % 56 < 28) {
 			beamRect.y = labelRect.y + beamShrink;
 			beamRect.height = labelRect.height - beamShrink * 2;
-			beamCell = Renderer.DrawPixel(beamRect, Color32.WHITE, int.MaxValue);
+			beamCell.SetRect(beamRect);
+		} else {
+			beamCell.Color = Color32.CLEAR;
 		}
-		int endCellIndex = Renderer.GetTextUsedCellCount();
+		int endCellIndex = Renderer.GetUsedCellCount();
 
-		if (startCellIndex != endCellIndex && Renderer.GetTextCells(out var cells, out int count)) {
+		if (startCellIndex != endCellIndex && Renderer.GetCells(out var cells, out int count)) {
 
 			// Scroll X from Beam 
 			int beamCellIndex = typing ? (beamIndex + startCellIndex).Clamp(startCellIndex, endCellIndex - 1) : startCellIndex;
@@ -744,7 +748,7 @@ public static class GUI {
 			int labelRight = labelRect.xMax - Unify(22);
 			if (beamCharCell.X + beamCharCell.Width / 2 >= labelRight) {
 				shiftX = labelRight - beamCharCell.X;
-				if (beamCell != null) beamCell.X += shiftX;
+				if (beamCell.Color != Color32.CLEAR) beamCell.X += shiftX;
 			}
 
 			// Clip
@@ -776,7 +780,7 @@ public static class GUI {
 					Util.Min(endCell.X + endCell.Width, rect.xMax),
 					Util.Min(labelRect.yMax - beamShrink, rect.yMax)
 				);
-				DrawStyleBody(selectionRect, selectionStyle, GUIState.Normal);
+				selectionCell.SetRect(selectionRect);
 			}
 
 			// Move Beam from Mouse

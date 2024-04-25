@@ -105,9 +105,9 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 		Renderer.DrawPixel(panelRect, Color32.BLACK, 0);
 
 		// Content
-		int cellStartIndex = Renderer.GetTextUsedCellCount();
+		int cellStartIndex = Renderer.GetUsedCellCount();
 		GUI.Label(contentRect, Content, StartIndex, true, out _, out EndIndex, GUISkin.LargeTextArea);
-		if (Renderer.GetTextCells(out var cells, out int count)) {
+		if (Renderer.GetCells(out var cells, out int count)) {
 			int charIndex = StartIndex;
 			int visibleIndex = StartIndex + (Game.GlobalFrame - RolledFrame) * RollingSpeed;
 			for (int i = cellStartIndex; i < count; i++) {

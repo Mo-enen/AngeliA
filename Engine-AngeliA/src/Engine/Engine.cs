@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 
+[assembly: ToolApplication]
+[assembly: UsePremultiplyBlendMode]
+
 namespace AngeliaEngine;
 
 [RequireSpriteFromField]
@@ -80,7 +83,6 @@ internal static class Engine {
 	private static readonly List<ProjectData> Projects = new();
 	private static IRect ToolLabelRect;
 	private static IRect LastHoveringToolLabelRect;
-	private static IRect ToolLabelDrawingBounds;
 	private static int HoveringTooltipDuration = 0;
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
@@ -210,12 +212,9 @@ internal static class Engine {
 		GUI.UnifyBasedOnMonitor = true;
 		Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255));
 
-
-		if (ToolLabelDrawingBounds != default) {
-			using (Scope.RendererLayerUI()) {
-				Renderer.DrawPixel(ToolLabelDrawingBounds, Color32.BLACK);
-			}
-			ToolLabelDrawingBounds = default;
+		using (Scope.RendererLayerUI()) {
+			OnGUI_Tooltip();
+			OnGUI_Notify();
 		}
 
 		if (CurrentProject == null) {
@@ -223,11 +222,6 @@ internal static class Engine {
 		} else {
 			OnGUI_Window();
 			OnGUI_Hotkey();
-		}
-
-		using (Scope.RendererLayerUI()) {
-			OnGUI_Tooltip();
-			OnGUI_Notify();
 		}
 
 		var windowPos = Game.GetWindowPosition();
@@ -414,9 +408,6 @@ internal static class Engine {
 			);
 
 		}
-
-		// Final
-		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
 
 	}
 
@@ -627,9 +618,6 @@ internal static class Engine {
 			window.NotificationContent = null;
 		}
 
-		// Final
-		IWindowEntityUI.ClipTextForAllUI(ALL_UI, ALL_UI.Length);
-
 	}
 
 
@@ -648,7 +636,6 @@ internal static class Engine {
 
 
 	private static void OnGUI_Tooltip () {
-		ToolLabelDrawingBounds = default;
 		if (ToolLabel == null) return;
 		if (!UseTooltip.Value) {
 			ToolLabel = null;
@@ -659,7 +646,6 @@ internal static class Engine {
 		var cameraRect = Renderer.CameraRect;
 		bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
 		bool downSide = ToolLabelRect.CenterY() < cameraRect.CenterY();
-		int endIndex = Renderer.GetTextUsedCellCount();
 		TooltipStyle.Alignment =
 			leftSide && downSide ? Alignment.BottomLeft :
 			leftSide && !downSide ? Alignment.TopLeft :
@@ -671,10 +657,8 @@ internal static class Engine {
 				downSide ? GUI.Unify(10) : GUI.Unify(-10)
 			),
 			ToolLabel, Color32.BLACK,
-			out var bounds, GUI.Unify(6), false, TooltipStyle
+			GUI.Unify(6), false, TooltipStyle
 		);
-		Renderer.ExcludeTextCells(bounds, 0, endIndex);
-		ToolLabelDrawingBounds = bounds;
 		ToolLabel = null;
 	}
 
@@ -692,6 +676,16 @@ internal static class Engine {
 		int top = rect.yMax;
 		bool hasSub = !string.IsNullOrEmpty(NotificationSubContent);
 
+		// BG
+		var bg = Renderer.DrawPixel(
+			default,
+			NotificationFlash ? Color32.Lerp(
+				Color32.GREEN, Color32.BLACK,
+				(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
+			) : Color32.BLACK,
+			z: int.MaxValue
+		);
+
 		// Main
 		rect.y = top - labelHeight - (hasSub ? 0 : subLabelHeight);
 		rect.height = labelHeight;
@@ -707,14 +701,7 @@ internal static class Engine {
 		}
 
 		// BG
-		Renderer.DrawPixel(
-			bound.Expand(GUI.Unify(6)),
-			NotificationFlash ? Color32.Lerp(
-				Color32.GREEN, Color32.BLACK,
-				(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
-			) : Color32.BLACK,
-			z: int.MaxValue
-		);
+		bg.SetRect(bound.Expand(GUI.Unify(6)));
 
 	}
 

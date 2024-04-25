@@ -375,7 +375,6 @@ public static class Stage {
 				if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
 					try {
 						Renderer.SetLayerToDefault();
-						Renderer.SetTextLayer(0);
 						e.LateUpdate();
 						e.FrameUpdated = true;
 					} catch (System.Exception ex) { Debug.LogException(ex); }

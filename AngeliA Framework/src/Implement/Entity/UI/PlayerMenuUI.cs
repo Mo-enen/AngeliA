@@ -478,12 +478,6 @@ public class PlayerMenuUI : EntityUI {
 			new IRect(Input.MouseGlobalPosition.x - size / 2, Input.MouseGlobalPosition.y - size / 2, size, size) :
 			HoveringItemUiRect;
 
-		// Exclude Text for Count Mark
-		var countRect = itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3);
-		for (int i = 0; i < Renderer.TextLayerCount; i++) {
-			Renderer.ExcludeTextCells(i, countRect, 0);
-		}
-
 		// Item Icon
 		Renderer.Draw(
 			TakingID,
@@ -491,6 +485,7 @@ public class PlayerMenuUI : EntityUI {
 			size, size, Color32.WHITE, int.MaxValue
 		);
 		// Item Count
+		var countRect = itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3);
 		DrawItemCount(countRect, TakingCount);
 	}
 

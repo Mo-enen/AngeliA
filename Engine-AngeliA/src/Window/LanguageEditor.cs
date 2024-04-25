@@ -266,10 +266,10 @@ public partial class LanguageEditor : WindowUI {
 
 			// Key
 			if (!IgnoreRequirements && line.Required) {
-				int _textIndex = Renderer.GetTextUsedCellCount();
+				int _textIndex = Renderer.GetUsedCellCount();
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
 				GUI.Label(shrinkedRect, line.Key, GUISkin.SmallCenterLabel);
-				Renderer.ClampTextCells(shrinkedRect, _textIndex);
+				Renderer.ClampCells(shrinkedRect, _textIndex);
 				ctrlID++;
 			} else {
 				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);

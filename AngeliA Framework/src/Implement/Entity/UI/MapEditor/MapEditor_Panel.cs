@@ -690,7 +690,7 @@ public partial class MapEditor {
 		var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(TOOL_BAR_HEIGHT * 2)).Shrink(Unify(6));
 		bool mouseInPanel = searchRect.MouseInside();
 		bool interactable = !TaskingRoute;
-		int clampStartIndex = Renderer.GetTextUsedCellCount();
+		int clampStartIndex = Renderer.GetUsedCellCount();
 		if (mouseInPanel) {
 			int wheel = Input.MouseWheelDelta;
 			if (wheel != 0) PaletteSearchScrollY -= wheel * 2;
@@ -753,7 +753,7 @@ public partial class MapEditor {
 			if (rect.y + rect.height < searchRect.y) break;
 
 		}
-		Renderer.ClampTextCells(searchRect, clampStartIndex);
+		Renderer.ClampCells(searchRect, clampStartIndex);
 
 		PaletteSearchScrollY = GUI.ScrollBar(
 			-3457, new IRect(

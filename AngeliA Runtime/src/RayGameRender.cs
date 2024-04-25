@@ -19,7 +19,6 @@ public partial class RayGame {
 	private IRect ScreenRenderRect;
 	private Shader LerpShader;
 	private Shader ColorShader;
-	private Shader TextShader;
 	private Shader InverseShader;
 	private RenderTexture2D RenderTexture;
 	private int ShaderPropIndex_DarkenAmount;
@@ -47,7 +46,6 @@ public partial class RayGame {
 		// Shaders
 		LerpShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.LERP_FS);
 		ColorShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.COLOR_FS);
-		TextShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.TEXT_FS);
 		InverseShader = Raylib.LoadShaderFromMemory(BuiltInShader.BASIC_VS, BuiltInShader.INV_FS);
 
 		// Effects
@@ -135,26 +133,9 @@ public partial class RayGame {
 			);
 	}
 
-	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount) {
+	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
+
 		if (PauselessFrame < 4) return;
-		if (isTextLayer) {
-			UpdateLayer_Text(layerIndex, cells, cellCount);
-		} else {
-			UpdateLayer_Cell(layerIndex, isUiLayer, cells, cellCount);
-		}
-	}
-
-	protected override bool _TryGetTextureOfChar (char c, int fontIndex, out object texture) {
-		texture = null;
-		if (fontIndex < 0 || fontIndex >= Fonts.Length) return false;
-		if (Fonts[fontIndex].TryGetTexture(c, out var texture2d)) {
-			texture = texture2d;
-			return true;
-		}
-		return false;
-	}
-
-	private void UpdateLayer_Cell (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
 		var cameraRect = Renderer.CameraRect;
 		int cameraL = cameraRect.x;
@@ -198,205 +179,180 @@ public partial class RayGame {
 				var cell = cells[isUiLayer ? cellCount - i - 1 : i];
 
 				// Cell
-				var sprite = cell.Sprite;
-				if (sprite == null || cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
-				if (!Renderer.TryGetTextureFromSheet<Texture2D>(sprite.ID, cell.SheetIndex, out var texture)) continue;
+				if (cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;
 
-				// UV
-				int pixelWidth = sprite.PixelRect.width;
-				int pixelHeight = sprite.PixelRect.height;
-				float sourceL, sourceR, sourceD, sourceU;
-				if (cell.BorderSide == Alignment.Full) {
-					sourceL = 0f;
-					sourceR = pixelWidth;
-					sourceD = 0f;
-					sourceU = pixelHeight;
-				} else {
-					Util.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
-					sourceL = bl.x * sprite.PixelRect.width;
-					sourceR = tr.x * sprite.PixelRect.width;
-					sourceD = pixelHeight - tr.y * pixelHeight;
-					sourceU = pixelHeight - bl.y * pixelHeight;
+				if (cell.Sprite != null) {
+
+					// === Render as Artwork ===
+
+					var sprite = cell.Sprite;
+					if (!Renderer.TryGetTextureFromSheet<Texture2D>(sprite.ID, cell.SheetIndex, out var texture)) continue;
+
+					// UV
+					int pixelWidth = sprite.PixelRect.width;
+					int pixelHeight = sprite.PixelRect.height;
+					float sourceL, sourceR, sourceD, sourceU;
+					if (cell.BorderSide == Alignment.Full) {
+						sourceL = 0f;
+						sourceR = pixelWidth;
+						sourceD = 0f;
+						sourceU = pixelHeight;
+					} else {
+						Util.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
+						sourceL = bl.x * sprite.PixelRect.width;
+						sourceR = tr.x * sprite.PixelRect.width;
+						sourceD = pixelHeight - tr.y * pixelHeight;
+						sourceU = pixelHeight - bl.y * pixelHeight;
+					}
+					var source = new Rectangle(
+						sourceL,
+						sourceD,
+						sourceR - sourceL,
+						sourceU - sourceD
+					);
+
+					// Pos
+					var dest = new Rectangle(
+						Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
+						Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
+						cell.Width.Abs() * ScreenRenderRect.width / (float)cameraRect.width,
+						cell.Height.Abs() * ScreenRenderRect.height / (float)cameraRect.height
+					);
+
+					float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
+					float pivotY = cell.Height > 0 ? 1f - cell.PivotY : cell.PivotY;
+
+					// Shift
+					ShiftCell(cell, ref source, ref dest, ref pivotX, ref pivotY, out bool skipCell);
+					if (skipCell) continue;
+
+					// Draw
+					source.Width *= cell.Width.Sign();
+					source.Height *= cell.Height.Sign();
+					Raylib.DrawTexturePro(
+						texture,
+						source.ShrinkRectangle(0.001f),
+						dest.ExpandRectangle(0.001f),
+						new Vector2(
+							pivotX * dest.Width,
+							pivotY * dest.Height
+						),
+						cell.Rotation1000 / 1000f,
+						cell.Color.ToRaylib()
+					);
+
+				} else if (cell.TextSprite != null) {
+
+					// === Render as Char ===
+
+					var cSprite = cell.TextSprite;
+
+					var fontData = Fonts[cSprite.FontIndex];
+					var texture = fontData[cSprite.Char];
+					if (!texture.HasValue) continue;
+
+					// Source
+					var source = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);
+
+					// Pos
+					var dest = new Rectangle(
+						Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
+						Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
+						cell.Width * ScreenRenderRect.width / (float)cameraRect.width,
+						cell.Height * ScreenRenderRect.height / (float)cameraRect.height
+					);
+
+					float pivotX = 0f;
+					float pivotY = 1f;
+
+					// Shift
+					ShiftCell(cell, ref source, ref dest, ref pivotX, ref pivotY, out bool skipCell);
+					if (skipCell) continue;
+
+					// Draw
+					Raylib.DrawTexturePro(
+						texture.Value, source, dest,
+						new Vector2(
+							pivotX * dest.Width,
+							pivotY * dest.Height
+						), rotation: 0, cell.Color.ToRaylib()
+					);
 				}
-				var source = new Rectangle(
-					sourceL,
-					sourceD,
-					sourceR - sourceL,
-					sourceU - sourceD
-				);
-
-				// Pos
-				var dest = new Rectangle(
-					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
-					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
-					cell.Width.Abs() * ScreenRenderRect.width / (float)cameraRect.width,
-					cell.Height.Abs() * ScreenRenderRect.height / (float)cameraRect.height
-				);
-
-				float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
-				float pivotY = cell.Height > 0 ? 1f - cell.PivotY : cell.PivotY;
-
-				// Shift
-				ShiftCell(cell, ref source, ref dest, ref pivotX, ref pivotY, out bool skipCell);
-				if (skipCell) continue;
-
-				// Draw
-				source.Width *= cell.Width.Sign();
-				source.Height *= cell.Height.Sign();
-				Raylib.DrawTexturePro(
-					texture,
-					source.ShrinkRectangle(0.001f),
-					dest.ExpandRectangle(0.001f),
-					new Vector2(
-						pivotX * dest.Width,
-						pivotY * dest.Height
-					),
-					cell.Rotation1000 / 1000f,
-					cell.Color.ToRaylib()
-				);
-
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 		if (usingShader) Raylib.EndShaderMode();
 		Raylib.EndBlendMode();
 
-	}
+		// Func
+		static void ShiftCell (Cell cell, ref Rectangle source, ref Rectangle dest, ref float pivotX, ref float pivotY, out bool skipCell) {
 
-	private void UpdateLayer_Text (int layerIndex, Cell[] cells, int cellCount) {
+			skipCell = false;
 
-		var cameraRect = Renderer.CameraRect;
-		int cameraL = cameraRect.x;
-		int cameraR = cameraRect.xMax;
-		int cameraD = cameraRect.y;
-		int cameraU = cameraRect.yMax;
-		int screenL = ScreenRenderRect.x;
-		int screenR = ScreenRenderRect.xMax;
-		int screenD = ScreenRenderRect.y;
-		int screenU = ScreenRenderRect.yMax;
+			if (cell.Shift.IsZero) return;
+			if (cell.Shift.horizontal >= cell.Width.Abs()) goto _SKIP_;
+			if (cell.Shift.vertical >= cell.Height.Abs()) goto _SKIP_;
 
-		bool usingShader = false;
+			float shiftL = ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
+			float shiftR = ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
+			float shiftD = ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
+			float shiftU = ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
 
-		if (TextShader.Id != 0) {
-			Raylib.BeginShaderMode(TextShader);
-			usingShader = true;
-		}
+			// Shift Dest/Source
+			var newDest = dest;
+			var newSource = source;
 
-		for (int i = 0; i < cellCount; i++) {
-			try {
-
-				var cell = cells[i];
-				var sprite = cell.TextSprite;
-
-				if (sprite == null || cell.Width == 0 || cell.Height == 0) continue;
-
-				var fontData = Fonts[layerIndex];
-				if (!fontData.TryGetTexture(sprite.Char, out var texture)) continue;
-
-				// Source
-				var source = new Rectangle(0, 0, texture.Width, texture.Height);
-
-				// Pos
-				var dest = new Rectangle(
-					Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
-					Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
-					cell.Width * ScreenRenderRect.width / (float)cameraRect.width,
-					cell.Height * ScreenRenderRect.height / (float)cameraRect.height
-				);
-
-				float pivotX = 0f;
-				float pivotY = 1f;
-
-				// Shift
-				ShiftCell(cell, ref source, ref dest, ref pivotX, ref pivotY, out bool skipCell);
-				if (skipCell) continue;
-
-				// Draw
-				Raylib.DrawTexturePro(
-					texture, source, dest,
-					new Vector2(
-						pivotX * dest.Width,
-						pivotY * dest.Height
-					), rotation: 0, cell.Color.ToRaylib()
-				);
-
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
+			// L
+			if (cell.Width != 0) {
+				float shift = dest.Width * shiftL;
+				newDest.X -= cell.Width < 0 ? shift : 0;
+				newDest.Width -= shift;
+				shift = source.Width * shiftL;
+				newSource.X += shift;
+				newSource.Width -= shift;
 			}
-		}
 
-		if (usingShader) Raylib.EndShaderMode();
+			// R
+			if (cell.Width != 0) {
+				float shift = dest.Width * shiftR;
+				newDest.X += cell.Width < 0 ? shift : 0;
+				newDest.Width -= shift;
+				newSource.Width -= source.Width * shiftR;
+			}
+
+			// D
+			if (cell.Height != 0) {
+				float shift = dest.Height * shiftD;
+				newDest.Y += cell.Height < 0 ? shift : 0;
+				newDest.Height -= dest.Height * shiftD;
+				newSource.Height -= source.Height * shiftD;
+			}
+
+			// U
+			if (cell.Height != 0) {
+				float shift = dest.Height * shiftU;
+				newDest.Y -= cell.Height < 0 ? shift : 0;
+				newDest.Height -= shift;
+				shift = source.Height * shiftU;
+				newSource.Y += shift;
+				newSource.Height -= shift;
+			}
+
+			if (newDest.Width.AlmostZero() || newDest.Height.AlmostZero()) goto _SKIP_;
+
+			// Shift Pivot
+			pivotX = (pivotX - shiftL) * dest.Width / newDest.Width;
+			pivotY = (pivotY - shiftU) * dest.Height / newDest.Height;
+			dest = newDest;
+			source = newSource;
+
+			return;
+			_SKIP_:;
+			skipCell = true;
+		}
 
 	}
 
-	private static void ShiftCell (Cell cell, ref Rectangle source, ref Rectangle dest, ref float pivotX, ref float pivotY, out bool skipCell) {
-
-		skipCell = false;
-
-		if (cell.Shift.IsZero) return;
-		if (cell.Shift.horizontal >= cell.Width.Abs()) goto _SKIP_;
-		if (cell.Shift.vertical >= cell.Height.Abs()) goto _SKIP_;
-
-		float shiftL = ((float)cell.Shift.left / cell.Width.Abs()).Clamp01();
-		float shiftR = ((float)cell.Shift.right / cell.Width.Abs()).Clamp01();
-		float shiftD = ((float)cell.Shift.down / cell.Height.Abs()).Clamp01();
-		float shiftU = ((float)cell.Shift.up / cell.Height.Abs()).Clamp01();
-
-		// Shift Dest/Source
-		var newDest = dest;
-		var newSource = source;
-
-		// L
-		if (cell.Width != 0) {
-			float shift = dest.Width * shiftL;
-			newDest.X -= cell.Width < 0 ? shift : 0;
-			newDest.Width -= shift;
-			shift = source.Width * shiftL;
-			newSource.X += shift;
-			newSource.Width -= shift;
-		}
-
-		// R
-		if (cell.Width != 0) {
-			float shift = dest.Width * shiftR;
-			newDest.X += cell.Width < 0 ? shift : 0;
-			newDest.Width -= shift;
-			newSource.Width -= source.Width * shiftR;
-		}
-
-		// D
-		if (cell.Height != 0) {
-			float shift = dest.Height * shiftD;
-			newDest.Y += cell.Height < 0 ? shift : 0;
-			newDest.Height -= dest.Height * shiftD;
-			newSource.Height -= source.Height * shiftD;
-		}
-
-		// U
-		if (cell.Height != 0) {
-			float shift = dest.Height * shiftU;
-			newDest.Y -= cell.Height < 0 ? shift : 0;
-			newDest.Height -= shift;
-			shift = source.Height * shiftU;
-			newSource.Y += shift;
-			newSource.Height -= shift;
-		}
-
-		if (newDest.Width.AlmostZero() || newDest.Height.AlmostZero()) goto _SKIP_;
-
-		// Shift Pivot
-		pivotX = (pivotX - shiftL) * dest.Width / newDest.Width;
-		pivotY = (pivotY - shiftU) * dest.Height / newDest.Height;
-		dest = newDest;
-		source = newSource;
-
-		return;
-		_SKIP_:;
-		skipCell = true;
-	}
-
-
-	// Effect
 	protected override bool _GetEffectEnable (int effectIndex) => ScreenEffectEnables[effectIndex];
 
 	protected override void _SetEffectEnable (int effectIndex, bool enable) => ScreenEffectEnables[effectIndex] = enable;
@@ -508,13 +464,29 @@ public partial class RayGame {
 
 
 	// Text
-	protected override void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) { }
-
-	protected override int _GetTextLayerCount () => Fonts.Length;
+	protected override int _GetFontCount () => Fonts.Length;
 
 	protected override string _GetTextLayerName (int index) => Fonts[index].Name;
 
-	protected override CharSprite _GetCharSprite (int layerIndex, char c) => RayUtil.CreateCharSprite(Fonts[layerIndex], c);
+	protected override CharSprite _GetCharSprite (int fontIndex, char c) {
+		var fontData = Fonts[fontIndex];
+		if (!fontData.TryGetCharData(c, out var info, out _)) return null;
+		bool fullset = c >= 256;
+		float fontSize = fullset ?
+			fontData.FullsetSize / fontData.FullsetScale :
+			fontData.PrioritizedSize / fontData.PrioritizedScale;
+		return new CharSprite {
+			Char = c,
+			Advance = info.AdvanceX / fontSize,
+			Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
+				xmin: info.OffsetX / fontSize,
+				ymin: (fontSize - info.OffsetY - info.Image.Height) / fontSize,
+				xmax: (info.OffsetX + info.Image.Width) / fontSize,
+				ymax: (fontSize - info.OffsetY) / fontSize
+			),
+			FontIndex = fontIndex,
+		};
+	}
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();
 

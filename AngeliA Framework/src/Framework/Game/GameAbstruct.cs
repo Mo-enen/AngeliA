@@ -176,11 +176,8 @@ public abstract partial class Game {
 	internal static void OnCameraUpdate () => Instance._OnCameraUpdate();
 	protected abstract void _OnCameraUpdate ();
 
-	internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, isTextLayer, cells, cellCount);
-	protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, bool isTextLayer, Cell[] cells, int cellCount);
-
-	internal static bool TryGetTextureOfChar (char c, int fontIndex, out object texture) => Instance._TryGetTextureOfChar(c, fontIndex, out texture);
-	protected abstract bool _TryGetTextureOfChar (char c, int fontIndex, out object texture);
+	internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, cells, cellCount);
+	protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount);
 
 
 	// Effect
@@ -309,17 +306,14 @@ public abstract partial class Game {
 
 
 	// Text
-	internal static void OnTextLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnTextLayerCreated(index, name, sortingOrder, capacity);
-	protected abstract void _OnTextLayerCreated (int index, string name, int sortingOrder, int capacity);
-
-	public static int TextLayerCount => Instance._GetTextLayerCount();
-	protected abstract int _GetTextLayerCount ();
+	public static int FontCount => Instance._GetFontCount();
+	protected abstract int _GetFontCount ();
 
 	internal static string GetTextLayerName (int index) => Instance._GetTextLayerName(index);
 	protected abstract string _GetTextLayerName (int index);
 
-	internal static CharSprite GetCharSprite (int layerIndex, char c) => Instance._GetCharSprite(layerIndex, c);
-	protected abstract CharSprite _GetCharSprite (int layerIndex, char c);
+	internal static CharSprite GetCharSprite (int fontIndex, char c) => Instance._GetCharSprite(fontIndex, c);
+	protected abstract CharSprite _GetCharSprite (int fontIndex, char c);
 
 	public static string GetClipboardText () => Instance?._GetClipboardText();
 	protected abstract string _GetClipboardText ();

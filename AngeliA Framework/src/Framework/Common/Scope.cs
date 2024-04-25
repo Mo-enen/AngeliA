@@ -50,7 +50,6 @@ public class Scope : System.IDisposable {
 	private readonly ScopeGroup Group;
 	private Color32 ColorData;
 	private int IntData;
-	private int IntDataAlt;
 	private IRect RectData;
 	private Int2 Int2Data;
 	private Int2 Int2DataAlt;
@@ -109,7 +108,6 @@ public class Scope : System.IDisposable {
 
 		result.RectData = rect;
 		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
-		result.IntDataAlt = Renderer.GetTextUsedCellCount();
 		result.Int2DataAlt = Input.MousePositionShift;
 		if (!mouseInside) Input.IgnoreMouseInput();
 
@@ -199,15 +197,6 @@ public class Scope : System.IDisposable {
 						}
 					}
 					Renderer.ClampCells(RenderLayer.UI, RectData, startIndex);
-				}
-				int tStartIndex = IntDataAlt;
-				if (tStartIndex >= 0) {
-					if (Renderer.GetTextCells(0, out var tCells, out int tCount)) {
-						for (int i = tStartIndex; i < tCount; i++) {
-							tCells[i].Y += Int2Data.y;
-						}
-					}
-					Renderer.ClampTextCells(RectData, tStartIndex);
 				}
 				break;
 

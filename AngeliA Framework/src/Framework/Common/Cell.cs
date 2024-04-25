@@ -21,6 +21,12 @@ public class Cell {
 	public Color32 Color;
 	public Int4 Shift;
 	public Alignment BorderSide;
+	public void SetRect (IRect rect) {
+		X = rect.x;
+		Y = rect.y;
+		Width = rect.width;
+		Height = rect.height;
+	}
 	public void CopyFrom (Cell other) {
 		Sprite = other.Sprite;
 		TextSprite = other.TextSprite;
