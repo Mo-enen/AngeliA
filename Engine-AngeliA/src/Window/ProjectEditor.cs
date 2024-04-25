@@ -29,6 +29,7 @@ public class ProjectEditor : WindowUI {
 	// Api
 	protected override bool BlockEvent => true;
 	public static Project CurrentProject { get; set; }
+	public override string DefaultName => "Project";
 
 	// Data
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUISkin.DarkButton) { CharSize = 20, };

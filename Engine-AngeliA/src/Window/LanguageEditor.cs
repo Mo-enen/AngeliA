@@ -46,6 +46,7 @@ public partial class LanguageEditor : WindowUI {
 	// Api
 	public string LanguageRoot { get; private set; } = "";
 	public bool IgnoreRequirements { get; init; } = false;
+	public override string DefaultName => "Language";
 
 	// Data
 	private readonly List<string> Languages = new();

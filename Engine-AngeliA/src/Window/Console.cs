@@ -36,6 +36,9 @@ public class Console : WindowUI {
 	private static readonly SpriteCode ICON_WARNING = "Console.Warning";
 	private static readonly SpriteCode ICON_ERROR = "Console.Error";
 
+	// Api
+	public override string DefaultName => "Console";
+
 	// Data
 	private readonly Pipe<Line> Lines = new(512);
 	private int ScrollY = 0;

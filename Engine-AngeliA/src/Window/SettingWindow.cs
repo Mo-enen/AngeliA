@@ -39,6 +39,7 @@ public class SettingWindow : WindowUI {
 	public bool OnlyShowBGInSprite { get; set; }
 	public ColorF PixEditor_BackgroundColor { get; set; }
 	public ColorF PixEditor_CanvasBackgroundColor { get; set; }
+	public override string DefaultName => "Setting";
 
 	// Data
 	private int MasterScroll = 0;

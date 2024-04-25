@@ -12,6 +12,7 @@ public class ItemEditor : WindowUI {
 	#region --- VAR ---
 
 
+	public override string DefaultName => "Item";
 	protected override bool BlockEvent => true;
 
 

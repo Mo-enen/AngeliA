@@ -31,27 +31,18 @@ internal static class Engine {
 	private static readonly LanguageCode DELETE_PROJECT_MSG = ("UI.DeleteProjectMsg", "Remove project {0}?\nThis will NOT delete files in the disk.");
 	private static readonly LanguageCode MENU_SORT_BY_NAME = ("Menu.SortProjectByName", "Sort by Name");
 	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
-	private static readonly LanguageCode[] UI_TITLES = {
-		("", ""),
-		("", ""),
-		("", ""),
-		("Title.Pixel", "Artwork"),
-		("Title.Language", "Language"),
-		("Title.Item", "Item"),
-		("Title.Console", "Console"),
-		("Title.Project", "Project"),
-		("Title.Setting", "Setting"),
-	};
+	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
+	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
+	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
 	private static readonly PixelEditor PixelEditor = new();
 	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
 	private static readonly ItemEditor ItemEditor = new();
 	private static readonly Console Console = new();
 	private static readonly ProjectEditor ProjectEditor = new();
 	private static readonly SettingWindow SettingWindow = new();
-	private static readonly FileBrowserUI FileBrowser = new() { Active = false, };
 	private static readonly EntityUI[] ALL_UI = {
-		new GenericPopupUI() { Active = false, },
-		new GenericDialogUI() { Active = false, },
+		GenericPopup,
+		GenericDialog,
 		FileBrowser,
 		PixelEditor,
 		LanguageEditor,
@@ -467,7 +458,10 @@ internal static class Engine {
 
 				// Label
 				if (EngineSetting.FullsizeMenu) {
-					GUI.SmallLabel(contentRect.Shrink(iconSize + contentPadding, 0, 0, 0), UI_TITLES[i]);
+					GUI.SmallLabel(
+						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
+						Language.Get(window.TypeID, window.DefaultName)
+					);
 				}
 
 				// Click

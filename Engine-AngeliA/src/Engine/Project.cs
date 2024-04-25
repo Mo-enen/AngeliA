@@ -9,7 +9,6 @@ public class Project {
 	public string ProjectPath { get; init; }
 	public string SourceCodePath { get; init; }
 	public string BuildPath { get; init; }
-	public string PublishPath { get; init; }
 	public string UniversePath { get; init; }
 	public string IconPath { get; init; }
 	public Universe Universe { get; init; }
