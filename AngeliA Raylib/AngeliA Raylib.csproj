@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>AngeliA Raylib</AssemblyName>
+		<RootNamespace>AngeliaRaylib</RootNamespace>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<StartupObject></StartupObject>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+		<Optimize>True</Optimize>
+
+		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<PublishDir>$(SolutionDir)Publish</PublishDir>
+		
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+
+	</PropertyGroup>
+
+	<!--Debug Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+
+	<!--Release Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
+	</ItemGroup>
+	
+	<!--Ref Project-->
+	<ItemGroup>
+		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+	</ItemGroup>
+
+	<!--Remove-->
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+	</ItemGroup>
+
+	<!--Ref-->
+	<ItemGroup>
+		<Reference Include="raylib-cs">
+			<HintPath>lib\raylib-cs.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<!--Sync Dll-->
+	<ItemGroup>
+		<ContentWithTargetPath Include="lib\raylib.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>raylib.dll</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
+
+</Project>

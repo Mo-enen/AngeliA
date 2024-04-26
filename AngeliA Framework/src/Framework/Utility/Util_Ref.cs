@@ -17,23 +17,13 @@ public static partial class Util {
 
 	// All Class
 	public static readonly List<Assembly> AllAssemblies = new();
-	public static readonly Type[] AllTypes;
+	public static readonly List<Type> AllTypes = new();
 
 
-	static Util () {
-		AllAssemblies.Clear();
-		AllAssemblies.AddDistinct(typeof(Util).Assembly);
-		AllAssemblies.AddDistinct(Assembly.GetEntryAssembly());
-		foreach (var dllpath in EnumerateFiles("Library", false, "*.dll")) {
-			if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
-				AllAssemblies.AddDistinct(assembly);
-			}
-		}
-		var list = new List<Type>();
-		foreach (var assembly in AllAssemblies) {
-			list.AddRange(assembly.GetTypes());
-		}
-		AllTypes = list.ToArray();
+	public static void AddAssembly (Assembly assembly) {
+		if (AllAssemblies.Contains(assembly)) return;
+		AllAssemblies.Add(assembly);
+		AllTypes.AddRange(assembly.GetTypes());
 	}
 
 
@@ -41,15 +31,12 @@ public static partial class Util {
 		foreach (var t in AllChildClass(type, AllTypes, includeAbstract, includeInterface))
 			yield return t;
 	}
-	public static IEnumerable<Type> AllChildClass (this Type type, Assembly assembly, bool includeAbstract = false, bool includeInterface = false) =>
-		AllChildClass(type, assembly.GetTypes(), includeAbstract, includeInterface);
-	private static IEnumerable<Type> AllChildClass (this Type type, Type[] types, bool includeAbstract = false, bool includeInterface = false) =>
+	private static IEnumerable<Type> AllChildClass (this Type type, List<Type> types, bool includeAbstract = false, bool includeInterface = false) =>
 		types.Where(t =>
 			(includeAbstract || !t.IsAbstract) &&
 			(includeInterface || !t.IsInterface) &&
 			(t.IsSubclassOf(type) || (t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == type))
 		);
-
 
 	public static IEnumerable<(Assembly assembly, A attribyte)> ForAllAssemblyWithAttribute<A> () where A : Attribute {
 		foreach (var assembly in AllAssemblies) {

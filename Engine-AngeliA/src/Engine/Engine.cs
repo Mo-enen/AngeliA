@@ -110,6 +110,12 @@ internal static class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
+
+
+
+		
+
+
 		// Projects
 		Projects.Clear();
 		var projectPaths = ProjectPaths.Value.Split(';');

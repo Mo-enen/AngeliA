@@ -1,3 +1,0 @@
-dotnet publish -c debug -p:OutputPath="Build/Debug" -p:PublishDir="Publish/Debug" -p:PublishSingleFile="true" -p:SelfContained="true" -p:PublishTrimmed="false" -p:RuntimeIdentifier="win-x64" -p:IncludeAllContentForSelfExtract="false" -p:PublishReadyToRun="false" -p:IncludeNativeLibrariesForSelfExtract="true" -p:EnableCompressionInSingleFile="true"
-dotnet publish -c release -p:OutputPath="Build/Release" -p:PublishDir="Publish/Release"
-@RD /S /Q "Build"

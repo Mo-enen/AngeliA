@@ -20,15 +20,7 @@ public static class GUI {
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
 	public static bool UnifyBasedOnMonitor { get; set; } = false;
-	public static int TypingTextFieldID {
-		get => _TypingTextFieldID;
-		private set {
-			if (_TypingTextFieldID != value) {
-				_TypingTextFieldID = value;
-				Game.SetImeCompositionMode(value != 0);
-			}
-		}
-	}
+	public static int TypingTextFieldID { get; private set; }
 	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
@@ -42,7 +34,6 @@ public static class GUI {
 	private static int BeamBlinkFrame = int.MinValue;
 	private static int DraggingScrollbarID = 0;
 	private static int InvokeTypingStartID = 0;
-	private static int _TypingTextFieldID = 0;
 	private static int TypingTextFieldUpdateFrame = -1;
 	private static Int2? ScrollBarMouseDownPos = null;
 

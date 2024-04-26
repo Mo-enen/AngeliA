@@ -355,4 +355,31 @@ public static partial class Util {
 	public static Color32 MergeColor_Over (Color32 top, Color32 back) => MergeColor_Over(top.ToColorF(), back.ToColorF()).ToColor32();
 	public static Color32 MergeColor (Color32 top, Color32 back) => MergeColor(top.ToColorF(), back.ToColorF()).ToColor32();
 
+
+	public static void WritePixelsToConsole (Color32[] pixels, int width) {
+
+		int height = pixels.Length / width;
+
+		for (int y = height - 1; y >= 0; y--) {
+			System.Console.ResetColor();
+			System.Console.WriteLine();
+			for (int x = 0; x < width; x++) {
+				var p = pixels[(y).Clamp(0, height - 1) * width + (x).Clamp(0, width - 1)];
+				RGBToHSV(p, out float h, out float s, out float v);
+				System.Console.BackgroundColor = (v * s < 0.2f) ?
+					(v < 0.33f ? System.ConsoleColor.Black : v > 0.66f ? System.ConsoleColor.White : System.ConsoleColor.Gray) :
+					(h < 0.08f ? (v > 0.5f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed) :
+					h < 0.25f ? (v > 0.5f ? System.ConsoleColor.Yellow : System.ConsoleColor.DarkYellow) :
+					h < 0.42f ? (v > 0.5f ? System.ConsoleColor.Green : System.ConsoleColor.DarkGreen) :
+					h < 0.58f ? (v > 0.5f ? System.ConsoleColor.Cyan : System.ConsoleColor.DarkCyan) :
+					h < 0.75f ? (v > 0.5f ? System.ConsoleColor.Blue : System.ConsoleColor.DarkBlue) :
+					h < 0.92f ? (v > 0.5f ? System.ConsoleColor.Magenta : System.ConsoleColor.DarkMagenta) :
+					(v > 0.6f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed));
+				System.Console.Write(" ");
+			}
+		}
+		System.Console.ResetColor();
+		System.Console.WriteLine();
+	}
+
 }

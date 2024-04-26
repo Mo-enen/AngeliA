@@ -33,8 +33,7 @@ public static class EngineUtil {
 	// API
 	public static int BuildDotnetProject (
 		string projectFolder, string sdkPath, bool publish, bool debug,
-		string assemblyName = "", string version = "", string outputPath = "", string publishDir = "",
-		string iconPath = ""
+		string assemblyName = "", string version = "", string outputPath = "", string publishDir = ""
 	) {
 
 		if (!Util.FolderExists(projectFolder)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
@@ -62,9 +61,6 @@ public static class EngineUtil {
 		}
 		if (!string.IsNullOrWhiteSpace(publishDir)) {
 			CacheBuilder.Append($" -p:PublishDir=\"{publishDir}\"");
-		}
-		if (!string.IsNullOrWhiteSpace(iconPath) && Util.FileExists(iconPath)) {
-			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
 		}
 
 		// Execute
@@ -97,8 +93,7 @@ public static class EngineUtil {
 			assemblyName: assemblyName,
 			version: $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}",
 			outputPath: project.BuildPath,
-			publishDir: publishDir,
-			iconPath: project.IconPath
+			publishDir: publishDir
 		);
 
 		if (returnCode != 0) return returnCode;
@@ -135,6 +130,7 @@ public static class EngineUtil {
 		Util.CopyFile(runtimeSourcePath, runtimeBuildResultPath);
 		if (publish) {
 			Util.CopyFile(runtimeSourcePath, runtimePubResultPath);
+			//IconChanger.ChangeIcon(runtimePubResultPath, project.IconPath);
 		}
 
 		// Copy Universe into Publish Folder

@@ -63,6 +63,18 @@ public abstract partial class Game {
 	#region --- MSG ---
 
 
+	static Game () {
+		// Framework
+		Util.AddAssembly(typeof(Game).Assembly);
+		// Game Libs
+		foreach (var dllpath in Util.EnumerateFiles("Library", false, "*.dll")) {
+			if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
+				Util.AddAssembly(assembly);
+			}
+		}
+	}
+
+
 	public Game () {
 
 		Instance = this;

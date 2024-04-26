@@ -312,17 +312,14 @@ public abstract partial class Game {
 	internal static string GetTextLayerName (int index) => Instance._GetTextLayerName(index);
 	protected abstract string _GetTextLayerName (int index);
 
-	internal static CharSprite GetCharSprite (int fontIndex, char c) => Instance._GetCharSprite(fontIndex, c);
-	protected abstract CharSprite _GetCharSprite (int fontIndex, char c);
-
 	public static string GetClipboardText () => Instance?._GetClipboardText();
 	protected abstract string _GetClipboardText ();
 
 	public static void SetClipboardText (string text) => Instance?._SetClipboardText(text);
 	protected abstract void _SetClipboardText (string text);
 
-	public static void SetImeCompositionMode (bool on) => Instance?._SetImeCompositionMode(on);
-	protected abstract void _SetImeCompositionMode (bool on);
+	public static CharSprite GetCharSprite (int fontIndex, char c) => Instance._GetCharSprite(fontIndex, c);
+	protected abstract CharSprite _GetCharSprite (int fontIndex, char c);
 
 
 	// Music
