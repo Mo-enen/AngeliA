@@ -16,7 +16,6 @@
 		<ErrorReport>none</ErrorReport>
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<Optimize>True</Optimize>
-		<ApplicationIcon>Icon.ico</ApplicationIcon>
 
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
@@ -35,7 +34,6 @@
 		<IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
 		<PublishReadyToRun>False</PublishReadyToRun>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-
 		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 
 	</PropertyGroup>

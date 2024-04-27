@@ -88,7 +88,10 @@ public class ProjectEditor : WindowUI {
 
 		// Run
 		if (GUI.Button(_rect.Shrink(padding, padding / 2, 0, 0), LABEL_RUN, WorkflowButtonStyle)) {
-			EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
+			int returnCode = EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
+			if (returnCode != 0) {
+				Debug.LogError(returnCode);
+			}
 		}
 		RequireTooltip(_rect, TIP_RUN);
 		_rect.SlideRight();
@@ -101,7 +104,10 @@ public class ProjectEditor : WindowUI {
 
 		// Func
 		static void PublishProject (string path) {
-			EngineUtil.PublishAngeliaProject(CurrentProject, path);
+			int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, path);
+			if (returnCode != 0) {
+				Debug.LogError(returnCode);
+			}
 			if (Util.FolderExists(path)) {
 				Game.OpenUrl(path);
 			}
