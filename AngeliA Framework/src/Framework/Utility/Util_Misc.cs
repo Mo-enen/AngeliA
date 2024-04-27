@@ -128,8 +128,13 @@ public static partial class Util {
 				WorkingDirectory = workingDirectory,
 			});
 			if (logMessage) {
-				Debug.Log(process.StandardOutput.ReadToEnd());
-				Debug.LogError(process.StandardError.ReadToEnd());
+				string line;
+				while ((line = process.StandardOutput.ReadLine()) != null) {
+					Debug.Log(line);
+				}
+				while ((line = process.StandardError.ReadLine()) != null) {
+					Debug.LogError(line);
+				}
 			}
 			if (wait) {
 				process.WaitForExit(30_000);

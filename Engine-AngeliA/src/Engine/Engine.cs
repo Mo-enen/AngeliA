@@ -85,6 +85,7 @@ internal static class Engine {
 	private static string NotificationSubContent = null;
 	private static int NotificationStartFrame = int.MinValue;
 	private static bool NotificationFlash = false;
+	private static int RequireBuildProjectFrame = int.MinValue;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -110,11 +111,6 @@ internal static class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
-
-
-
-		
-
 
 		// Projects
 		Projects.Clear();
@@ -585,6 +581,11 @@ internal static class Engine {
 		PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 		PixelEditor.OnlyShowBGInSprite.Value = SettingWindow.OnlyShowBGInSprite;
 
+		// Building Project Tint
+		if (Game.GlobalFrame == ProjectEditor.BuildProjectRequiredFrame || Game.GlobalFrame == RequireBuildProjectFrame - 1) {
+			Game.DrawGizmosRect(Renderer.CameraRect, Color32.BLACK_64);
+		}
+
 		// Update Tooltip
 		bool hoveringSameRect = false;
 		foreach (var ui in ALL_UI) {
@@ -622,14 +623,21 @@ internal static class Engine {
 
 	private static void OnGUI_Hotkey () {
 
-		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
-			// Ctrl + R
-			if (Input.KeyboardDown(KeyboardKey.R)) {
-				if (CurrentProject != null) {
-					EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
-				}
+		bool ctrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
+
+		// Ctrl + R
+		if (ctrl && Input.KeyboardDown(KeyboardKey.R)) {
+			RequireBuildProjectFrame = Game.GlobalFrame + 2;
+		}
+		if (Game.GlobalFrame == RequireBuildProjectFrame) {
+			RequireBuildProjectFrame = int.MinValue;
+			if (CurrentProject != null) {
+				EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
 			}
 		}
+
+
+
 
 	}
 

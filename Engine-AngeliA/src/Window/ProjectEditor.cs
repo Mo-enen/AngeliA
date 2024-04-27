@@ -30,9 +30,11 @@ public class ProjectEditor : WindowUI {
 	protected override bool BlockEvent => true;
 	public static Project CurrentProject { get; set; }
 	public override string DefaultName => "Project";
+	public static int BuildProjectRequiredFrame { get; private set; } = int.MaxValue;
 
 	// Data
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUISkin.DarkButton) { CharSize = 20, };
+	private static string PublishProjectRequiredPath = null;
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
 
@@ -43,7 +45,6 @@ public class ProjectEditor : WindowUI {
 
 
 	#region --- MSG ---
-
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
@@ -70,6 +71,25 @@ public class ProjectEditor : WindowUI {
 			891236, WindowRect.EdgeInside(Direction4.Right, Unify(12)),
 			MasterScrollPos, extendedContentSize, panelRect.height
 		);
+		// Workflow
+		if (Game.GlobalFrame > BuildProjectRequiredFrame) {
+			if (PublishProjectRequiredPath == null) {
+				int returnCode = EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
+				if (returnCode != 0) {
+					Debug.LogError(returnCode);
+				}
+			} else {
+				int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, PublishProjectRequiredPath);
+				if (returnCode != 0) {
+					Debug.LogError(returnCode);
+				}
+				if (Util.FolderExists(PublishProjectRequiredPath)) {
+					Game.OpenUrl(PublishProjectRequiredPath);
+				}
+			}
+			BuildProjectRequiredFrame = int.MaxValue;
+			PublishProjectRequiredPath = null;
+		}
 		// Hotkey
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
 			// Ctrl + S
@@ -88,10 +108,8 @@ public class ProjectEditor : WindowUI {
 
 		// Run
 		if (GUI.Button(_rect.Shrink(padding, padding / 2, 0, 0), LABEL_RUN, WorkflowButtonStyle)) {
-			int returnCode = EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
-			if (returnCode != 0) {
-				Debug.LogError(returnCode);
-			}
+			BuildProjectRequiredFrame = Game.GlobalFrame;
+			PublishProjectRequiredPath = null;
 		}
 		RequireTooltip(_rect, TIP_RUN);
 		_rect.SlideRight();
@@ -104,13 +122,9 @@ public class ProjectEditor : WindowUI {
 
 		// Func
 		static void PublishProject (string path) {
-			int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, path);
-			if (returnCode != 0) {
-				Debug.LogError(returnCode);
-			}
-			if (Util.FolderExists(path)) {
-				Game.OpenUrl(path);
-			}
+			if (string.IsNullOrWhiteSpace(path)) return;
+			BuildProjectRequiredFrame = Game.GlobalFrame;
+			PublishProjectRequiredPath = path;
 		}
 	}
 

@@ -41,8 +41,11 @@
 
   <ItemGroup>
     <Compile Remove="Build\**" />
+    <Compile Remove="Publish\**" />
     <EmbeddedResource Remove="Build\**" />
+    <EmbeddedResource Remove="Publish\**" />
     <None Remove="Build\**" />
+    <None Remove="Publish\**" />
   </ItemGroup>
 
 	<!--Remove-->
