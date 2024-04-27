@@ -54,8 +54,14 @@
 
 	<ItemGroup>
 		<Compile Remove="Properties\**" />
+		<Compile Remove="Publish\**" />
+		<Compile Remove="Universe\**" />
 		<EmbeddedResource Remove="Properties\**" />
+		<EmbeddedResource Remove="Publish\**" />
+		<EmbeddedResource Remove="Universe\**" />
 		<None Remove="Properties\**" />
+		<None Remove="Publish\**" />
+		<None Remove="Universe\**" />
 	</ItemGroup>
 
 	<!--Ref Project-->
