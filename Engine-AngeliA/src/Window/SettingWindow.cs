@@ -17,6 +17,7 @@ public class SettingWindow : WindowUI {
 	// Const
 	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Pixel Editor");
+	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
 	private static readonly LanguageCode LABEL_PE_CANVAS_COLOR = ("Setting.PE.CanvasBgColor", "Canvas Background Color");
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
@@ -25,8 +26,11 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
 	private static readonly LanguageCode LABEL_ONLY_BG_IN_SPRITE = ("Setting.OnlyShowBGInSprite", "Only Show Background Inside Sprite");
+	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
 
 	// Api
+	public override string DefaultName => "Setting";
+	public bool Changed { get; private set; } = false;
 	public bool OpenLastProjectOnStart { get; set; }
 	public bool UseTooltip { get; set; }
 	public bool UseNotification { get; set; }
@@ -39,7 +43,7 @@ public class SettingWindow : WindowUI {
 	public bool OnlyShowBGInSprite { get; set; }
 	public ColorF PixEditor_BackgroundColor { get; set; }
 	public ColorF PixEditor_CanvasBackgroundColor { get; set; }
-	public override string DefaultName => "Setting";
+	public bool ShowLogTime { get; set; }
 
 	// Data
 	private int MasterScroll = 0;
@@ -64,8 +68,11 @@ public class SettingWindow : WindowUI {
 				Unify(96), Unify(96), Unify(42), Unify(42)
 			).EdgeInside(Direction4.Up, itemHeight);
 
+			GUI.BeginChangeCheck();
 			DrawPanel(ref rect, 0);
 			DrawPanel(ref rect, 1);
+			DrawPanel(ref rect, 2);
+			Changed = GUI.EndChangeCheck();
 
 			extendedUISize = WindowRect.yMax - rect.yMax + Unify(128);
 			UIHeight = (extendedUISize - WindowRect.height).GreaterOrEquelThanZero();
@@ -167,6 +174,24 @@ public class SettingWindow : WindowUI {
 	}
 
 
+	private void Update_Console (ref IRect rect) {
+
+		int itemPadding = Unify(4);
+
+		// Label - Console
+		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_CONSOLE, GUISkin.SmallGreyLabel);
+		rect.SlideDown(itemPadding);
+
+		// Show Log Time
+		ShowLogTime = GUI.Toggle(
+			rect, ShowLogTime, LABEL_SHOW_LOG_TIME,
+			labelStyle: GUISkin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+	}
+
+
 	#endregion
 
 
@@ -185,6 +210,7 @@ public class SettingWindow : WindowUI {
 		switch (panelID) {
 			case 0: Update_Engine(ref rect); break;
 			case 1: Update_PixelEditor(ref rect); break;
+			case 2: Update_Console(ref rect); break;
 		}
 		box.X = boxLeft - boxPadding - labelOffset;
 		box.Y = rect.yMax - boxPadding;

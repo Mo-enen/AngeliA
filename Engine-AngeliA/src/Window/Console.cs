@@ -16,9 +16,17 @@ public class Console : WindowUI {
 	private struct Line {
 		public int Level;
 		public string Content;
-		public Line (int level, string content) {
+		public int Hour;
+		public int Minute;
+		public int Second;
+		public int Frame;
+		public Line (int level, string content, int frame) {
 			Level = level;
 			Content = content;
+			Hour = frame / 3600 / 60;
+			Minute = (frame / 3600) % 60;
+			Second = (frame / 60) % 60;
+			Frame = frame % 60;
 		}
 	}
 
@@ -38,6 +46,7 @@ public class Console : WindowUI {
 
 	// Api
 	public override string DefaultName => "Console";
+	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", true);
 
 	// Data
 	private readonly Pipe<Line> Lines = new(512);
@@ -60,14 +69,6 @@ public class Console : WindowUI {
 	}
 
 
-	~Console () {
-		Debug.OnLog -= OnLog;
-		Debug.OnLogError -= OnLogError;
-		Debug.OnLogWarning -= OnLogWarning;
-		Debug.OnLogException -= OnLogException;
-	}
-
-
 	public override void UpdateWindowUI () {
 
 		var windowRect = WindowRect.Shrink(Unify(12));
@@ -83,6 +84,10 @@ public class Console : WindowUI {
 		int iconSize = lineHeight;
 		int iconShrink = iconSize / 10;
 		int padding = Unify(6);
+		int smallPadding = Unify(3);
+		int scrollBarWidth = Unify(16);
+		bool showLogTime = ShowLogTime.Value;
+
 		for (int i = start; i < end; i++) {
 			var line = Lines[Lines.Length - i - 1];
 			// Step Tint
@@ -93,9 +98,23 @@ public class Console : WindowUI {
 				rect.EdgeInside(Direction4.Left, iconSize).Shrink(iconShrink)
 			);
 			// Label
-			GUI.InputField(86754 + i, rect.ShrinkLeft(iconSize + padding), line.Content, bodyStyle: GUISkin.SmallLabel);
+			GUI.InputField(
+				86754 + i,
+				rect.ShrinkLeft(iconSize + padding),
+				line.Content,
+				bodyStyle: GUISkin.SmallLabel
+			);
+			// Time
+			if (showLogTime) {
+				var tChars = GUI.GetTimeChars(line.Hour, line.Minute, line.Second, line.Frame);
+				GUI.BackgroundLabel(
+					rect.ShrinkRight(scrollBarWidth + padding),
+					tChars, Color32.BLACK, smallPadding, GUISkin.SmallRightLabel
+				);
+			}
 			rect.SlideDown();
 		}
+
 		// Scroll
 		if (scrollMax >= 0) {
 			// Wheel
@@ -105,7 +124,7 @@ public class Console : WindowUI {
 			}
 			// Scroll Bar
 			ScrollY = GUI.ScrollBar(
-				89234111, WindowRect.EdgeInside(Direction4.Right, Unify(16)),
+				89234111, WindowRect.EdgeInside(Direction4.Right, scrollBarWidth),
 				ScrollY, scrollMax + pageLineCount, pageLineCount
 			);
 		}
@@ -128,7 +147,7 @@ public class Console : WindowUI {
 	private void LogLogic (string content, int level) {
 		if (string.IsNullOrEmpty(content)) return;
 		if (Lines.IsFull && !Lines.TryPopHead(out _)) return;
-		Lines.LinkToTail(new Line(level, content.Replace("\n", "; ").Replace("\r", "")));
+		Lines.LinkToTail(new Line(level, content.Replace("\n", "; ").Replace("\r", ""), Game.GlobalFrame));
 	}
 
 

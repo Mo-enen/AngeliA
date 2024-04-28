@@ -29,6 +29,7 @@ public static class GUI {
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
 	private static readonly IntToChars IntDialToChars = new();
+	private static readonly char[] TimingChars = new char[12]; // 99+°59'59"59
 	private static int BeamIndex = 0;
 	private static int BeamLength = 0;
 	private static int BeamBlinkFrame = int.MinValue;
@@ -36,6 +37,8 @@ public static class GUI {
 	private static int InvokeTypingStartID = 0;
 	private static int TypingTextFieldUpdateFrame = -1;
 	private static Int2? ScrollBarMouseDownPos = null;
+	private static int ContentVersion = int.MinValue;
+	private static int CheckingContentVersion = int.MinValue;
 
 
 	#endregion
@@ -331,9 +334,9 @@ public static class GUI {
 
 	public static void BackgroundLabel (IRect rect, char[] chars, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, chars, backgroundColor, out _, backgroundPadding, style);
 	public static void BackgroundLabel (IRect rect, char[] chars, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null) {
+		var bg = Renderer.DrawPixel(default, Color * BodyColor * backgroundColor, z: 0);
 		LabelLogic(rect, null, chars, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
-		bounds = bounds.Expand(backgroundPadding);
-		Renderer.DrawPixel(bounds, Color * BodyColor * backgroundColor, z: 0);
+		bg.SetRect(bounds.Expand(backgroundPadding));
 	}
 
 
@@ -491,7 +494,10 @@ public static class GUI {
 		return isOn;
 	}
 	public static bool BlankToggle (IRect rect, bool isOn, out GUIState state) {
-		if (BlankButton(rect, out state)) isOn = !isOn;
+		if (BlankButton(rect, out state)) {
+			isOn = !isOn;
+			ContentVersion++;
+		}
 		state =
 			state == GUIState.Disable ? GUIState.Disable :
 			isOn ? GUIState.Press :
@@ -620,10 +626,12 @@ public static class GUI {
 								text = text.Remove(removeIndex, 1);
 								beamIndex = BeamIndex = beamIndex - 1;
 								changed = true;
+								ContentVersion++;
 							}
 						} else {
 							RemoveSelection();
 							changed = true;
+							ContentVersion++;
 						}
 						break;
 					case Const.RETURN_SIGN:
@@ -641,6 +649,7 @@ public static class GUI {
 						if (c == Const.CONTROL_CUT) {
 							RemoveSelection();
 							changed = true;
+							ContentVersion++;
 						}
 						break;
 					case Const.CONTROL_PASTE:
@@ -651,6 +660,7 @@ public static class GUI {
 						text = text.Insert(beamIndex, clipboardText);
 						beamIndex = BeamIndex = beamIndex + clipboardText.Length;
 						changed = true;
+						ContentVersion++;
 						break;
 					case Const.CONTROL_SELECT_ALL:
 						// Select All
@@ -664,6 +674,7 @@ public static class GUI {
 						text = text.Insert(beamIndex, c.ToString());
 						beamIndex = BeamIndex = beamIndex + 1;
 						changed = true;
+						ContentVersion++;
 						break;
 				}
 			}
@@ -677,10 +688,12 @@ public static class GUI {
 						// Delete One Char
 						text = text.Remove(removeIndex, 1);
 						changed = true;
+						ContentVersion++;
 					} else {
 						// Delete Selection
 						RemoveSelection();
 						changed = true;
+						ContentVersion++;
 					}
 				}
 			}
@@ -837,6 +850,7 @@ public static class GUI {
 			value = (value - delta).Clamp(min, max);
 		}
 		changed = value != oldValue;
+		if (changed) ContentVersion++;
 		return value;
 	}
 
@@ -986,6 +1000,7 @@ public static class GUI {
 			if (changed) {
 				color = Util.HsvToRgbF(h.Clamp(0f, 0.99999f), s.Clamp(0.00001f, 1f), v.Clamp(0.00001f, 1f));
 				color.a = a;
+				ContentVersion++;
 			}
 		} else {
 			// RGB
@@ -1014,12 +1029,14 @@ public static class GUI {
 				color.g = g;
 				color.b = b;
 				color.a = a;
+				ContentVersion++;
 			}
 		}
 
 		// Default
 		if (defaultColor.HasValue && Button(defaultRect, BuiltInSprite.ICON_REFRESH, GUISkin.SmallDarkButton)) {
 			color = defaultColor.Value;
+			ContentVersion++;
 		}
 
 		return color;
@@ -1087,6 +1104,61 @@ public static class GUI {
 		}
 		TypingBuilder.Append(c);
 	}
+
+
+	public static char[] GetTimeChars (int hour, int min, int sec, int frame = -1, bool ignoreZero = true) {
+
+		int index = 0;
+
+		// Hour
+		if (hour > 0 || (hour == 0 && !ignoreZero)) {
+			if (hour < 100) {
+				IntToChars.Int_to_Chars(hour, TimingChars, ref index);
+				TimingChars[index] = '°';
+				index++;
+			} else {
+				TimingChars[0] = '9';
+				TimingChars[1] = '9';
+				TimingChars[2] = '+';
+				TimingChars[3] = '°';
+				index = 4;
+			}
+		}
+
+		// Min
+		if (min > 0 || (min == 0 && !ignoreZero)) {
+			min %= 60;
+			TimingChars[index] = (char)('0' + (min / 10));
+			TimingChars[index + 1] = (char)('0' + (min % 10));
+			TimingChars[index + 2] = '\'';
+			index += 3;
+		}
+
+		// Sec
+		if (sec > 0 || (sec == 0 && !ignoreZero)) {
+			sec %= 60;
+			TimingChars[index] = (char)('0' + (sec / 10));
+			TimingChars[index + 1] = (char)('0' + (sec % 10));
+			TimingChars[index + 2] = '\'';
+			index += 3;
+		}
+
+		// Frame
+		if (frame > 0 || (frame == 0 && !ignoreZero)) {
+			frame %= 60;
+			TimingChars[index] = (char)('0' + (frame / 10));
+			TimingChars[index + 1] = (char)('0' + (frame % 10));
+			TimingChars[index + 2] = '\'';
+		}
+
+		return TimingChars;
+	}
+
+
+	public static void BeginChangeCheck () => CheckingContentVersion = ContentVersion;
+
+
+	public static bool EndChangeCheck () => CheckingContentVersion != ContentVersion;
 
 
 	#endregion

@@ -80,12 +80,17 @@ public static partial class GUISkin {
 	public static readonly GUIStyle LargeDarkLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Dark);
 	public static readonly GUIStyle AutoDarkLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Dark);
 
-
 	// Center
 	public static readonly GUIStyle LargeCenterLabel = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid);
 	public static readonly GUIStyle CenterLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid);
 	public static readonly GUIStyle SmallCenterLabel = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid);
 	public static readonly GUIStyle AutoCenterLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.MidMid);
+
+	// Right
+	public static readonly GUIStyle LargeRightLabel = new(ProduceLabel(LabelPattern.Large)) { Alignment = Alignment.MidRight };
+	public static readonly GUIStyle RightLabel = new(ProduceLabel(LabelPattern.Normal)) { Alignment = Alignment.MidRight };
+	public static readonly GUIStyle SmallRightLabel = new(ProduceLabel(LabelPattern.Small)) { Alignment = Alignment.MidRight };
+	public static readonly GUIStyle AutoRightLabel = new(ProduceLabel(LabelPattern.Auto)) { Alignment = Alignment.MidRight };
 
 	// MSG
 	public static readonly GUIStyle SmallMessage = ProduceLabel(LabelPattern.Small | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.SmallBorder);

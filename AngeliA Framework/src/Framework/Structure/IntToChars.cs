@@ -28,11 +28,8 @@ public class IntToChars {
 		IntValue = value;
 		// Fill Int Value
 		int startIndex = Prefix.Length;
-		int digitCount = value.DigitCount();
-		if (value < 0) digitCount++;
-		Int_to_Chars(value, CharsValue, startIndex);
+		Int_to_Chars(value, CharsValue, ref startIndex);
 		// Fill Suffix
-		startIndex += digitCount;
 		if (Suffix.Length > 0) {
 			for (int i = 0; i < Suffix.Length; i++) {
 				CharsValue[startIndex + i] = Suffix[i];
@@ -46,7 +43,7 @@ public class IntToChars {
 		return CharsValue;
 	}
 
-	public static void Int_to_Chars (int intValue, char[] charsValue, int startIndex = 0) {
+	public static void Int_to_Chars (int intValue, char[] charsValue, ref int startIndex) {
 		int digitCount = intValue.DigitCount();
 		if (intValue < 0) {
 			intValue = -intValue;

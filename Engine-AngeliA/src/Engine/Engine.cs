@@ -548,6 +548,7 @@ internal static class Engine {
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
 		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
 		SettingWindow.OnlyShowBGInSprite = PixelEditor.OnlyShowBGInSprite.Value;
+		SettingWindow.ShowLogTime = Console.ShowLogTime.Value;
 
 		// Update UI
 		foreach (var ui in ALL_UI) {
@@ -572,14 +573,17 @@ internal static class Engine {
 		}
 
 		// Update Setting
-		OpenLastProjectOnStart.Value = SettingWindow.OpenLastProjectOnStart;
-		UseTooltip.Value = SettingWindow.UseTooltip;
-		UseNotification.Value = SettingWindow.UseNotification;
-		PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
-		PixelEditor.CanvasBackgroundColor.Value = SettingWindow.CanvasBackgroundColor;
-		PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
-		PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
-		PixelEditor.OnlyShowBGInSprite.Value = SettingWindow.OnlyShowBGInSprite;
+		if (SettingWindow.Changed) {
+			OpenLastProjectOnStart.Value = SettingWindow.OpenLastProjectOnStart;
+			UseTooltip.Value = SettingWindow.UseTooltip;
+			UseNotification.Value = SettingWindow.UseNotification;
+			PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
+			PixelEditor.CanvasBackgroundColor.Value = SettingWindow.CanvasBackgroundColor;
+			PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
+			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
+			PixelEditor.OnlyShowBGInSprite.Value = SettingWindow.OnlyShowBGInSprite;
+			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
+		}
 
 		// Building Project Tint
 		if (Game.GlobalFrame == ProjectEditor.BuildProjectRequiredFrame || Game.GlobalFrame == RequireBuildProjectFrame - 1) {

@@ -58,14 +58,15 @@ public static partial class GUISkin {
 	};
 
 	public static readonly GUIStyle Scrollbar = new() {
-		BodySprite = Const.PIXEL,
-		BodySpriteHover = Const.PIXEL,
-		BodySpriteDown = Const.PIXEL,
-		BodySpriteDisable = Const.PIXEL,
+		BodySprite = BuiltInSprite.UI_SCROLL_BAR,
+		BodySpriteHover = BuiltInSprite.UI_SCROLL_BAR,
+		BodySpriteDown = BuiltInSprite.UI_SCROLL_BAR,
+		BodySpriteDisable = BuiltInSprite.UI_SCROLL_BAR,
 		BodyColor = Color32.GREY_42,
 		BodyColorHover = Color32.GREY_46,
 		BodyColorDown = Color32.GREY_38,
 		BodyColorDisable = Color32.CLEAR,
+		BodyBorder = Int4.Direction(Const.ART_SCALE / 2, Const.ART_SCALE / 2, Const.ART_SCALE / 2, Const.ART_SCALE / 2),
 	};
 
 	// Toggle
