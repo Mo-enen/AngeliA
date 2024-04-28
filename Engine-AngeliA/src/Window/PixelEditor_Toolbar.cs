@@ -19,6 +19,7 @@ public partial class PixelEditor {
 
 
 
+
 	#region --- VAR ---
 
 
@@ -116,7 +117,7 @@ public partial class PixelEditor {
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 
 		// BG
-		Renderer.DrawPixel(toolbarRect, Color32.GREY_20);
+		Renderer.DrawPixel(toolbarRect, Skin.Background_Panel);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
 
@@ -142,7 +143,7 @@ public partial class PixelEditor {
 		// Create Sprite
 		if (StagedSprites.Count == 0) {
 			if (GUI.Button(
-				CreateSpriteBigButtonRect, BuiltInSprite.ICON_PLUS, GUISkin.DarkButton
+				CreateSpriteBigButtonRect, BuiltInSprite.ICON_PLUS, Skin.DarkButton
 			)) {
 				string name = Sheet.GetAvailableSpriteName("New Sprite");
 				var sprite = Sheet.CreateSprite(name, new IRect(1, STAGE_SIZE - 33, 32, 32), CurrentAtlasIndex);
@@ -160,33 +161,33 @@ public partial class PixelEditor {
 		}
 
 		// Show BG
-		ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, GUISkin.SmallDarkButton);
+		ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, Skin.SmallDarkButton);
 		RequireTooltip(rect, TIP_SHOW_BG);
 		rect.SlideRight(padding);
 
 		// Reset Camera
-		if (GUI.Button(rect, BuiltInSprite.ICON_REFRESH, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, BuiltInSprite.ICON_REFRESH, Skin.SmallDarkButton)) {
 			ResetCamera();
 		}
 		RequireTooltip(rect, TIP_RESET_CAMERA);
 		rect.SlideRight(padding);
 
 		// Import from PNG
-		if (GUI.Button(rect, ICON_IMPORT_PNG, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, ICON_IMPORT_PNG, Skin.SmallDarkButton)) {
 			ShowImportAtlasBrowser(false);
 		}
 		RequireTooltip(rect, TIP_IMPORT_PNG);
 		rect.SlideRight(padding);
 
 		// Palette
-		if (GUI.Button(rect, BuiltInSprite.ICON_PALETTE, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, BuiltInSprite.ICON_PALETTE, Skin.SmallDarkButton)) {
 			CreateSpriteForPalette(useDefaultPos: false);
 		}
 		RequireTooltip(rect, TIP_PALETTE);
 		rect.SlideRight(padding);
 
 		// Atlas Type
-		if (GUI.Button(rect, ICON_ATLAS_TYPE, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, ICON_ATLAS_TYPE, Skin.SmallDarkButton)) {
 			OpenAtlasTypeMenu();
 		}
 		RequireTooltip(rect, TIP_ATLAS_TYPE);
@@ -244,7 +245,7 @@ public partial class PixelEditor {
 		// Size Label
 		rect.x += padding;
 		rect.width = Unify(42);
-		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_SIZE, out var labelBounds, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_SIZE, out var labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 
 		// Input
@@ -292,7 +293,7 @@ public partial class PixelEditor {
 		// Border Label
 		rect.x += padding;
 		rect.width = Unify(52);
-		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_BORDER, out var labelBounds, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_BORDER, out var labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 
 		// Make Border
@@ -370,7 +371,7 @@ public partial class PixelEditor {
 		// Pivot Label
 		rect.x += padding;
 		rect.width = Unify(52);
-		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_PIVOT, out var labelBounds, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_PIVOT, out var labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 
 		// Input Fields
@@ -417,7 +418,7 @@ public partial class PixelEditor {
 		// Z Label
 		rect.x += padding;
 		rect.width = Unify(24);
-		GUI.Label(rect.Shrink(0, 0, 0, padding), "z", out var labelBounds, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shrink(0, 0, 0, padding), "z", out var labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 
 		// Local Z
@@ -434,7 +435,7 @@ public partial class PixelEditor {
 		// Duration Label
 		rect.x += padding;
 		rect.width = Unify(42);
-		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_DURATION, out labelBounds, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_DURATION, out labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 
 		// Duration
@@ -452,7 +453,7 @@ public partial class PixelEditor {
 		int triggerIcon =
 			SelectingAnyNonTiggerSprite && SelectingAnyTiggerSprite ? ICON_TRIGGER_MIX :
 			SelectingAnyTiggerSprite ? ICON_TRIGGER_ON : ICON_TRIGGER_OFF;
-		bool newSNTS = !GUI.ToggleButton(rect, !SelectingAnyNonTiggerSprite, triggerIcon, GUISkin.SmallDarkButton);
+		bool newSNTS = !GUI.ToggleButton(rect, !SelectingAnyNonTiggerSprite, triggerIcon, Skin.SmallDarkButton);
 		if (newSNTS != SelectingAnyNonTiggerSprite) {
 			SelectingAnyNonTiggerSprite = newSNTS;
 			MakeTriggerForSelection(!newSNTS);
@@ -461,7 +462,7 @@ public partial class PixelEditor {
 		rect.SlideRight(padding);
 
 		// Tag
-		if (GUI.Button(rect, ICON_TAG, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, ICON_TAG, Skin.SmallDarkButton)) {
 			OpenSpriteTagMenu();
 		}
 		if (SelectingSpriteTagLabel != null) {
@@ -471,7 +472,7 @@ public partial class PixelEditor {
 				Color32.BLACK,
 				Unify(4),
 				forceInside: true,
-				GUISkin.SmallCenterLabel
+				Skin.SmallCenterLabel
 			);
 		}
 		RequireTooltip(rect, TIP_TAG);
@@ -480,7 +481,7 @@ public partial class PixelEditor {
 		// Rule
 		var atlas = Sheet.Atlas[CurrentAtlasIndex];
 		if (atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background) {
-			if (GUI.Button(rect, ICON_RULE, GUISkin.SmallDarkButton)) {
+			if (GUI.Button(rect, ICON_RULE, Skin.SmallDarkButton)) {
 				OpeningTilingRuleEditor = !OpeningTilingRuleEditor;
 				if (OpeningTilingRuleEditor) {
 					StagedSprites.Sort(SpriteDataComparer.Instance);
@@ -493,7 +494,7 @@ public partial class PixelEditor {
 
 		// Delete Sprite
 		rect.width = buttonWidth;
-		if (GUI.Button(rect, ICON_DELETE_SPRITE, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, ICON_DELETE_SPRITE, Skin.SmallDarkButton)) {
 			DeleteAllSelectingSprite();
 		}
 		RequireTooltip(rect, TIP_DEL_SLICE);
@@ -514,7 +515,7 @@ public partial class PixelEditor {
 		if (!OpeningTilingRuleEditor || SelectingSpriteCount == 0) return;
 
 		// BG
-		Renderer.DrawPixel(RuleEditorRect, Color32.BLACK);
+		Renderer.DrawPixel(RuleEditorRect, Skin.Background_Panel);
 
 		var panelRect = RuleEditorRect.Shrink(Unify(8));
 		int pageBarHeight = (panelRect.height - panelRect.width) / 2;
@@ -528,7 +529,7 @@ public partial class PixelEditor {
 		var rect = panelRect.CornerInside(Alignment.TopLeft, helpButtonWidth, pageBarHeight);
 
 		// Switch Mode Button
-		if (GUI.Button(rect, TilingRuleModeA.HasValue && TilingRuleModeA.Value ? ICON_RULE_MODE_A : ICON_RULE_MODE_B, GUISkin.SmallIconButton)) {
+		if (GUI.Button(rect, TilingRuleModeA.HasValue && TilingRuleModeA.Value ? ICON_RULE_MODE_A : ICON_RULE_MODE_B, Skin.SmallIconButton)) {
 			TilingRuleModeA = !TilingRuleModeA.HasValue || !TilingRuleModeA.Value;
 		}
 		RequireTooltip(rect, TIP_RULE_MODE);
@@ -536,24 +537,24 @@ public partial class PixelEditor {
 
 		// Prev
 		rect.width = (panelRect.width - helpButtonWidth * 2) / 3;
-		if (GUI.Button(rect, BuiltInSprite.LEFT_ARROW, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, BuiltInSprite.LEFT_ARROW, Skin.SmallDarkButton)) {
 			RulePageIndex = (RulePageIndex - 1).Clamp(0, SelectingSpriteCount - 1);
 		}
 		rect.SlideRight();
 
 		// Index
-		GUI.Label(rect, RulePageToChars.GetChars(RulePageIndex), GUISkin.SmallCenterGreyLabel);
+		GUI.Label(rect, RulePageToChars.GetChars(RulePageIndex), Skin.SmallCenterGreyLabel);
 		rect.SlideRight();
 
 		// Next
-		if (GUI.Button(rect, BuiltInSprite.RIGHT_ARROW, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(rect, BuiltInSprite.RIGHT_ARROW, Skin.SmallDarkButton)) {
 			RulePageIndex = (RulePageIndex + 1).Clamp(0, SelectingSpriteCount - 1);
 		}
 		rect.SlideRight();
 
 		// Help
 		rect.width = helpButtonWidth;
-		if (GUI.Button(rect, BuiltInSprite.QUESTION_MARK_16, GUISkin.SmallIconButton)) {
+		if (GUI.Button(rect, BuiltInSprite.QUESTION_MARK_16, Skin.SmallIconButton)) {
 			GenericDialogUI.SpawnDialog_Button(RULE_HELP_MSG, BuiltInText.UI_OK, Const.EmptyMethod);
 		}
 
@@ -588,7 +589,7 @@ public partial class PixelEditor {
 
 			// Name Label
 			if (labelRect.width > 0) {
-				GUI.Label(labelRect, spData.Sprite.RealName, GUISkin.SmallCenterLabel);
+				GUI.Label(labelRect, spData.Sprite.RealName, Skin.SmallCenterLabel);
 			}
 
 			// Icon
@@ -599,7 +600,7 @@ public partial class PixelEditor {
 			// Buttons
 			for (int ruleIndex = 0; ruleIndex < 8; ruleIndex++) {
 				var buttonRect = panelRect.CornerInside((Alignment)(ruleIndex < 4 ? ruleIndex : ruleIndex + 1), buttonSize);
-				if (GUI.Button(buttonRect, RuleNumberToIcon(ruleIndex), GUISkin.IconButton)) {
+				if (GUI.Button(buttonRect, RuleNumberToIcon(ruleIndex), Skin.IconButton)) {
 					bool modeA = TilingRuleModeA.Value;
 					RuleCache[ruleIndex] = (byte)(RuleCache[ruleIndex] switch {
 						0 => modeA ? 1 : 3,

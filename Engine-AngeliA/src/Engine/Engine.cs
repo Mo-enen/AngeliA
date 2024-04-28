@@ -70,10 +70,12 @@ internal static class Engine {
 	// Data
 	private static Project CurrentProject = null;
 	private static ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
-	private static readonly GUIStyle TooltipStyle = new(GUISkin.SmallLabel);
-	private static readonly GUIStyle NotificationLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.BottomRight, };
-	private static readonly GUIStyle NotificationSubLabelStyle = new(GUISkin.AutoLabel) { Alignment = Alignment.BottomRight, };
+	private static readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
+	private static readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
+	private static readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private static readonly List<ProjectData> Projects = new();
+	private static readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
+	private static readonly GUISkin ThemeSkin = new();
 	private static IRect ToolLabelRect;
 	private static IRect LastHoveringToolLabelRect;
 	private static int HoveringTooltipDuration = 0;
@@ -86,6 +88,7 @@ internal static class Engine {
 	private static int NotificationStartFrame = int.MinValue;
 	private static bool NotificationFlash = false;
 	private static int RequireBuildProjectFrame = int.MinValue;
+	private static int UiSheetIndex = -1;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -151,6 +154,10 @@ internal static class Engine {
 		SettingWindow.PixEditor_CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
 		SettingWindow.CanvasBackgroundColor_Default = PixelEditor.CanvasBackgroundColor.DefaultValue;
+
+		// Sheet
+		UiSheetIndex = Renderer.AddAltSheet(ThemeSheet);
+
 	}
 
 
@@ -205,7 +212,10 @@ internal static class Engine {
 		// On GUI
 		GUI.Enable = true;
 		GUI.UnifyBasedOnMonitor = true;
-		Sky.ForceSkyboxTint(new Color32(38, 38, 38, 255));
+		Sky.ForceSkyboxTint(GUI.Skin.Background);
+
+		using var _ = Scope.Sheet(ThemeSheet.NotEmpty ? UiSheetIndex : -1);
+		using var __ = Scope.GuiSkin(ThemeSkin);
 
 		using (Scope.RendererLayerUI()) {
 			OnGUI_Tooltip();
@@ -343,7 +353,7 @@ internal static class Engine {
 					}
 
 					// Button
-					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
+					if (GUI.Button(rect, 0, GUI.Skin.HighlightPixel)) {
 						OpenProject(projectPath);
 					}
 
@@ -365,7 +375,7 @@ internal static class Engine {
 					GUI.Label(
 						itemContentRect.Shrink(itemContentRect.height + padding, 0, 0, itemContentRect.height / 2),
 						projectPath,
-						GUISkin.SmallGreyLabel
+						GUI.Skin.SmallGreyLabel
 					);
 
 					// Click
@@ -506,14 +516,14 @@ internal static class Engine {
 			if (FullsizeMenu.Value) {
 				if (GUI.Button(
 					barRect.EdgeInside(Direction4.Down, rect.height),
-					BuiltInText.UI_BACK, GUISkin.SmallCenterLabelButton
+					BuiltInText.UI_BACK, GUI.Skin.SmallCenterLabelButton
 				)) {
 					TryCloseProject();
 				}
 			} else {
 				if (GUI.Button(
 					barRect.EdgeInside(Direction4.Down, rect.height),
-					BuiltInSprite.ICON_BACK, GUISkin.IconButton
+					BuiltInSprite.ICON_BACK, GUI.Skin.IconButton
 				)) {
 					TryCloseProject();
 				}
@@ -583,6 +593,14 @@ internal static class Engine {
 			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 			PixelEditor.OnlyShowBGInSprite.Value = SettingWindow.OnlyShowBGInSprite;
 			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
+		}
+		if (SettingWindow.RequireThemePath != null) {
+			if (!Util.FileExists(SettingWindow.RequireThemePath)) return;
+			if (ThemeSheet.LoadFromDisk(SettingWindow.RequireThemePath)) {
+				ThemeSkin.LoadColorFromSheet(ThemeSheet);
+			} else {
+				ThemeSkin.LoadColorFromSkin(GUISkin.Default);
+			}
 		}
 
 		// Building Project Tint

@@ -77,7 +77,7 @@ public class NotificationUI : EntityUI {
 		// Label
 		GUI.Label(
 			panelRect.Shrink(panelRect.height + Unify(12), 0, 0, 0),
-			Content, GUISkin.CenterLabel
+			Content, GUI.Skin.CenterLabel
 		);
 
 	}

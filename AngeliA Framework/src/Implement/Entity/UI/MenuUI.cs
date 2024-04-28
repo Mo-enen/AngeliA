@@ -73,9 +73,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		ActiveFrame = Game.GlobalFrame;
 		AnimationFrame = 0;
 		Input.UseAllHoldingKeys();
-		MessageStyle = GUISkin.Message;
-		LabelStyle = GUISkin.Label;
-		ContentStyle = GUISkin.CenterLabel;
+		MessageStyle = GUI.Skin.Message;
+		LabelStyle = GUI.Skin.Label;
+		ContentStyle = GUI.Skin.CenterLabel;
 		DrawStyleBody = false;
 		OverrideWindowWidth = -1;
 		AnimationDuration = 8;
@@ -516,9 +516,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		GUIStyle message, GUIStyle label, GUIStyle content,
 		bool drawStyleBody, int newWindowWidth = -1, int animationDuration = 8
 	) {
-		MessageStyle = message ?? GUISkin.Message;
-		LabelStyle = label ?? GUISkin.Label;
-		ContentStyle = content ?? GUISkin.CenterLabel;
+		MessageStyle = message ?? GUI.Skin.Message;
+		LabelStyle = label ?? GUI.Skin.Label;
+		ContentStyle = content ?? GUI.Skin.CenterLabel;
 		DrawStyleBody = drawStyleBody;
 		OverrideWindowWidth = newWindowWidth;
 		AnimationDuration = animationDuration;

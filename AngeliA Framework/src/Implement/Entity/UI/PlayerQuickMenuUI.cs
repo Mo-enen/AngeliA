@@ -236,7 +236,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 					backgroundColor: Color32.BLACK,
 					backgroundPadding: Unify(6),
 					false,
-					GUISkin.CenterLabel
+					GUI.Skin.CenterLabel
 				);
 
 			}

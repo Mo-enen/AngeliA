@@ -293,7 +293,7 @@ public static class DeveloperToolbar {
 			Renderer.DrawPixel(new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
 			// Label
 			int startIndex = Renderer.GetUsedCellCount();
-			GUI.Label(rect, data.I2C.GetChars(data.Value), GUISkin.SmallCenterLabel);
+			GUI.Label(rect, data.I2C.GetChars(data.Value), GUI.Skin.SmallCenterLabel);
 			if (Renderer.GetCells(out var cells, out int count)) {
 				for (int i = startIndex; i < count && i < startIndex + data.I2C.Prefix.Length; i++) {
 					cells[i].Color = new Color32(96, 96, 96, 255);

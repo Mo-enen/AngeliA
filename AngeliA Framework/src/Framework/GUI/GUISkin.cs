@@ -3,18 +3,15 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public static partial class GUISkin {
+public partial class GUISkin {
+
+
+	public static readonly GUISkin Default = new() { Readonly = true };
+	public bool Readonly = false;
 
 
 	// Misc
-	public static readonly GUIStyle None = new() {
-		BodySprite = 0,
-		BodySpriteHover = 0,
-		BodySpriteDown = 0,
-		BodySpriteDisable = 0,
-	};
-
-	public static readonly GUIStyle HighlightPixel = new() {
+	public readonly GUIStyle HighlightPixel = new() {
 		BodySprite = Const.PIXEL,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -25,7 +22,7 @@ public static partial class GUISkin {
 		BodyColorDisable = Color32.CLEAR,
 	};
 
-	public static readonly GUIStyle WeakPixel = new() {
+	public readonly GUIStyle WeakPixel = new() {
 		BodySprite = Const.PIXEL,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -36,7 +33,7 @@ public static partial class GUISkin {
 		BodyColorDisable = Color32.CLEAR,
 	};
 
-	public static readonly GUIStyle GreenPixel = new() {
+	public readonly GUIStyle GreenPixel = new() {
 		BodySprite = Const.PIXEL,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -47,7 +44,7 @@ public static partial class GUISkin {
 		BodyColorDisable = Color32.GREEN,
 	};
 
-	public static readonly GUIStyle ItemFrame = new() {
+	public readonly GUIStyle ItemFrame = new() {
 		BodySprite = BuiltInSprite.UI_ITEM_FRAME,
 		BodySpriteHover = BuiltInSprite.UI_ITEM_FRAME,
 		BodySpriteDown = BuiltInSprite.UI_ITEM_FRAME,
@@ -57,7 +54,7 @@ public static partial class GUISkin {
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 	};
 
-	public static readonly GUIStyle Scrollbar = new() {
+	public readonly GUIStyle Scrollbar = new() {
 		BodySprite = BuiltInSprite.UI_SCROLL_BAR,
 		BodySpriteHover = BuiltInSprite.UI_SCROLL_BAR,
 		BodySpriteDown = BuiltInSprite.UI_SCROLL_BAR,
@@ -70,7 +67,7 @@ public static partial class GUISkin {
 	};
 
 	// Toggle
-	public static readonly GUIStyle Toggle = new() {
+	public readonly GUIStyle Toggle = new() {
 		BodySprite = BuiltInSprite.UI_TOGGLE,
 		BodySpriteHover = BuiltInSprite.UI_TOGGLE_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_TOGGLE_DOWN,
@@ -81,7 +78,7 @@ public static partial class GUISkin {
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 	};
 
-	public static readonly GUIStyle ToggleMark = new() {
+	public readonly GUIStyle ToggleMark = new() {
 		BodySprite = BuiltInSprite.UI_TOGGLE_MARK,
 		BodySpriteHover = BuiltInSprite.UI_TOGGLE_MARK,
 		BodySpriteDown = BuiltInSprite.UI_TOGGLE_MARK,
@@ -93,7 +90,7 @@ public static partial class GUISkin {
 
 
 	// Input Field
-	public static readonly GUIStyle LargeInputField = new() {
+	public readonly GUIStyle LargeInputField = new() {
 
 		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD,
@@ -111,7 +108,7 @@ public static partial class GUISkin {
 		CharSize = 28,
 		Wrap = WrapMode.NoWrap,
 	};
-	public static readonly GUIStyle InputField = new() {
+	public readonly GUIStyle InputField = new() {
 
 		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD,
@@ -129,7 +126,7 @@ public static partial class GUISkin {
 		CharSize = 21,
 		Wrap = WrapMode.NoWrap,
 	};
-	public static readonly GUIStyle SmallInputField = new() {
+	public readonly GUIStyle SmallInputField = new() {
 
 		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD,

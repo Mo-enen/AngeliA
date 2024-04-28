@@ -67,7 +67,7 @@ public class PauseMenuUI : MenuUI {
 	private readonly GamepadKey[] GamepadKeys = new GamepadKey[8];
 	private readonly IntToChars MusicVolumeCache = new();
 	private readonly IntToChars SoundVolumeCache = new();
-	private readonly GUIStyle MessageStyle = new(GUISkin.Message) { Alignment = Alignment.MidMid, };
+	private readonly GUIStyle MessageStyle = new(GUI.Skin.Message) { Alignment = Alignment.MidMid, };
 	private MenuMode Mode = MenuMode.Root;
 	private MenuMode RequireMode = MenuMode.Root;
 	private int RecordingKey = -1;
@@ -116,7 +116,7 @@ public class PauseMenuUI : MenuUI {
 		BackgroundTint = new(0, 0, 0, 255);
 		MaxItemCount = 11;
 		ContentPadding = Int4.Direction(32, 32, 32, 32);
-		SetStyle(MessageStyle, GUISkin.LargeLabel, GUISkin.LargeCenterLabel, false);
+		SetStyle(MessageStyle, GUI.Skin.LargeLabel, GUI.Skin.LargeCenterLabel, false);
 	}
 
 

@@ -68,18 +68,18 @@ public static class Renderer {
 	public static float CameraRestrictionRate { get; private set; } = 1f;
 	public static int LastDrawnID { get; private set; } = 0;
 	public static int LayerCount => Layers.Length;
-	public static int SpriteCount => Sheet.Sprites.Count;
-	public static int GroupCount => Sheet.Groups.Count;
+	public static int SpriteCount => BuiltInSheet.Sprites.Count;
+	public static int GroupCount => BuiltInSheet.Groups.Count;
 	public static int FontCount => CharSpritePool.Length;
 	public static int CurrentLayerIndex { get; private set; } = 0;
 	public static int CurrentFontIndex { get; private set; } = 0;
 	public static bool TextReady => CharSpritePool.Length > 0;
 	public static int CurrentSheetIndex { get; set; } = -1;
 	public static int AltSheetCount => AltSheets.Count;
-	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? Sheet : AltSheets[CurrentSheetIndex];
+	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? BuiltInSheet : AltSheets[CurrentSheetIndex];
+	public static readonly Sheet BuiltInSheet = new();
 
 	// Data
-	private static readonly Sheet Sheet = new();
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static Dictionary<int, CharSprite>[] CharSpritePool = { };
@@ -200,7 +200,7 @@ public static class Renderer {
 
 
 	[OnGameQuitting]
-	internal static void OnGameQuitting () => Sheet.Clear();
+	internal static void OnGameQuitting () => BuiltInSheet.Clear();
 
 
 	[OnGameUpdate(-512)]
@@ -238,7 +238,7 @@ public static class Renderer {
 
 	// Sheet
 	public static bool TryGetTextureFromSheet<T> (int spriteID, int sheetIndex, out T texture) {
-		var sheet = sheetIndex < 0 || sheetIndex >= AltSheets.Count ? Sheet : AltSheets[sheetIndex];
+		var sheet = sheetIndex < 0 || sheetIndex >= AltSheets.Count ? BuiltInSheet : AltSheets[sheetIndex];
 		if (sheet.TexturePool.TryGetValue(spriteID, out object textureObj) && textureObj is T result) {
 			texture = result;
 			return true;
@@ -255,8 +255,8 @@ public static class Renderer {
 		SheetUtil.RecreateSheetIfArtworkModified(project.SheetPath, project.ArtworkRoot);
 
 		// Load Sheet
-		if (!Sheet.LoadFromDisk(project.SheetPath) && project != UniverseSystem.BuiltInUniverse) {
-			Sheet.LoadFromDisk(UniverseSystem.BuiltInUniverse.SheetPath);
+		if (!BuiltInSheet.LoadFromDisk(project.SheetPath) && project != UniverseSystem.BuiltInUniverse) {
+			BuiltInSheet.LoadFromDisk(UniverseSystem.BuiltInUniverse.SheetPath);
 		}
 
 		// Event

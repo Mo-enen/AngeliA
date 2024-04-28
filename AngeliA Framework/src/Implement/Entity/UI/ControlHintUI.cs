@@ -51,7 +51,7 @@ public class ControlHintUI : EntityUI {
 		("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 	};
 	private static int CurrentHintOffsetY = 0;
-	private readonly GUIStyle HintKeyLabelStyle = new(GUISkin.LargeLabel) { CharSize = 18, ContentColor = Color32.GREY_20, };
+	private readonly GUIStyle HintKeyLabelStyle = new(GUI.Skin.LargeLabel) { CharSize = 18, ContentColor = Color32.GREY_20, };
 	private Int4 ButtonBorder = default;
 	private int ForceHintFrame = int.MinValue;
 	private int ForceHideGamepadFrame = int.MinValue;

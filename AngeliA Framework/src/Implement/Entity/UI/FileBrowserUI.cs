@@ -171,7 +171,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Parent
 		rect.x += buttonPadding;
-		if (GUI.Button(rect, BuiltInSprite.ICON_TRIANGLE_LEFT, GUISkin.IconButton) || Input.KeyboardDown(KeyboardKey.Backspace)) {
+		if (GUI.Button(rect, BuiltInSprite.ICON_TRIANGLE_LEFT, GUI.Skin.IconButton) || Input.KeyboardDown(KeyboardKey.Backspace)) {
 			string parentPath = Util.GetParentPath(CurrentFolder);
 			if (!string.IsNullOrEmpty(parentPath)) {
 				CurrentName = ActionType == BrowserActionType.Open ? Util.GetNameWithExtension(CurrentFolder) : CurrentName;
@@ -311,7 +311,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Func
 		void DrawButton (string label, string path, int icon) {
-			if (GUI.Button(rect, label, GUISkin.SmallLabelButton)) Explore(path);
+			if (GUI.Button(rect, label, GUI.Skin.SmallLabelButton)) Explore(path);
 			Renderer.Draw(icon, new IRect(rect.x - buttonSize - padding, rect.y, buttonSize, buttonSize).Shrink(iconShrink));
 			rect.y -= rect.height;
 		}
@@ -350,7 +350,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Type Field
 		if (TargetType == BrowserTargetType.File) {
-			GUI.Label(typeRect, TargetExtension, GUISkin.SmallCenterLabel);
+			GUI.Label(typeRect, TargetExtension, GUI.Skin.SmallCenterLabel);
 			Renderer.Draw_9Slice(
 				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
 			);
@@ -364,7 +364,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		// Cancel Button
 		var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 		buttonRect.x -= buttonRect.width + padding;
-		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUI.Skin.SmallDarkButton)) {
 			ErrorMessage = string.Empty;
 			OnPathPicked = null;
 			Active = false;
@@ -379,7 +379,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		)) {
 			if (GUI.Button(
 				buttonRect, ActionType == BrowserActionType.Open ? BuiltInText.UI_OPEN : BuiltInText.UI_SAVE,
-				GUISkin.SmallDarkButton
+				GUI.Skin.SmallDarkButton
 			)) {
 				PerformPick();
 			}

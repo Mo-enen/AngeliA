@@ -896,17 +896,26 @@ public static class Extension {
 		}
 	}
 
-	public static IEnumerable<(string name, T value)> AllFieldsForInstance<T> (this object target, BindingFlags binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static, bool inherited = true) {
+	public static IEnumerable<(FieldInfo field, T value)> ForAllFields<T> (this object target, BindingFlags binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static, bool inherited = true) {
 		var type = target.GetType();
 		var tType = typeof(T);
 		foreach (var field in type.GetFields(binding)) {
 			if (field.FieldType == tType || (inherited && field.FieldType.IsSubclassOf(tType))) {
-				yield return (field.Name, (T)field.GetValue(target));
+				yield return (field, (T)field.GetValue(target));
 			}
 		}
 	}
 
-	public static IEnumerable<(string name, T value)> AllProperties<T> (this object target) {
+	public static IEnumerable<FieldInfo> ForAllFields<T> (this System.Type type, BindingFlags binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static, bool inherited = true) {
+		var tType = typeof(T);
+		foreach (var field in type.GetFields(binding)) {
+			if (field.FieldType == tType || (inherited && field.FieldType.IsSubclassOf(tType))) {
+				yield return field;
+			}
+		}
+	}
+
+	public static IEnumerable<(string name, T value)> ForAllProperties<T> (this object target) {
 		var type = target.GetType();
 		var tType = typeof(T);
 		foreach (var pro in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {

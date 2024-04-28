@@ -430,7 +430,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 					CurrentSubMenu = null;
 				}
 			}
-			GUI.Label(buttonRect, BuiltInText.UI_BACK, GUISkin.LargeCenterLabel);
+			GUI.Label(buttonRect, BuiltInText.UI_BACK, GUI.Skin.LargeCenterLabel);
 			Cursor.SetCursorAsHand(buttonRect, 1);
 
 			// End

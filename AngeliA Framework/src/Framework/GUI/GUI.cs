@@ -25,6 +25,7 @@ public static class GUI {
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
 	public static int LabelWidth { get; set; } = 196;
+	public static GUISkin Skin { get; set; } = GUISkin.Default;
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
@@ -106,12 +107,12 @@ public static class GUI {
 
 
 	// Label
-	public static void SmallLabel (IRect rect, string text) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
-	public static void SmallLabel (IRect rect, char[] text) => LabelLogic(rect, "", text, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
-	public static void SmallLabel (IRect rect, string text, out IRect bounds) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
-	public static void SmallLabel (IRect rect, char[] text, out IRect bounds) => LabelLogic(rect, "", text, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
-	public static void SmallLabel (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
-	public static void SmallLabel (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) => LabelLogic(rect, text, null, GUISkin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
+	public static void SmallLabel (IRect rect, string text) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	public static void SmallLabel (IRect rect, char[] text) => LabelLogic(rect, "", text, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	public static void SmallLabel (IRect rect, string text, out IRect bounds) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	public static void SmallLabel (IRect rect, char[] text, out IRect bounds) => LabelLogic(rect, "", text, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	public static void SmallLabel (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+	public static void SmallLabel (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
 
 	public static void Label (IRect rect, string text, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
 	public static void Label (IRect rect, char[] text, GUIStyle style = null) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
@@ -129,7 +130,7 @@ public static class GUI {
 		}
 
 		// Draw
-		style ??= GUISkin.Label;
+		style ??= Skin.Label;
 		Renderer.GetCells(out var textCells, out int textCountInLayer);
 		rect = GetContentRect(rect, style, state);
 		var color = Color * ContentColor * style.GetContentColor(state);
@@ -299,7 +300,7 @@ public static class GUI {
 
 	// Label Extra
 	public static int ScrollLabel (string text, IRect rect, int scrollPosition, GUIStyle style) {
-		style ??= GUISkin.Label;
+		style ??= Skin.Label;
 		int before = Renderer.GetUsedCellCount();
 		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out var bounds, out _, out _);
 		if (bounds.height < rect.height) {
@@ -394,10 +395,10 @@ public static class GUI {
 
 
 	// Button
-	public static bool DarkButton (IRect rect, string label) => Button(rect, label, GUISkin.DarkButton);
-	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, GUISkin.DarkButton);
+	public static bool DarkButton (IRect rect, string label) => Button(rect, label, Skin.DarkButton);
+	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, Skin.DarkButton);
 	public static bool Button (IRect rect, string label, GUIStyle style = null) {
-		style ??= GUISkin.Button;
+		style ??= Skin.Button;
 		bool result = BlankButton(rect, out var state);
 		DrawStyleBody(rect, style, state);
 		// Label
@@ -407,7 +408,7 @@ public static class GUI {
 		return result;
 	}
 	public static bool Button (IRect rect, int icon, GUIStyle style = null) {
-		style ??= GUISkin.Button;
+		style ??= Skin.Button;
 		bool result = BlankButton(rect, out var state);
 		DrawStyleBody(rect, style, state);
 		Icon(rect, icon, style, state);
@@ -433,7 +434,7 @@ public static class GUI {
 
 	// Toggle
 	public static bool IconToggle (IRect rect, bool isOn, int icon, GUIStyle markStyle = null, GUIStyle iconStyle = null) {
-		markStyle ??= GUISkin.GreenPixel;
+		markStyle ??= Skin.GreenPixel;
 		isOn = BlankToggle(rect, isOn, out var state);
 		// Mark
 		if (isOn) {
@@ -448,9 +449,9 @@ public static class GUI {
 		return isOn;
 	}
 	public static bool ToggleLeft (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle labelStyle = null, GUIStyle markStyle = null) {
-		bodyStyle ??= GUISkin.Toggle;
-		labelStyle ??= GUISkin.Label;
-		markStyle ??= GUISkin.ToggleMark;
+		bodyStyle ??= Skin.Toggle;
+		labelStyle ??= Skin.Label;
+		markStyle ??= Skin.ToggleMark;
 		var boxRect = rect.EdgeInside(Direction4.Left, rect.height);
 		isOn = BlankToggle(boxRect, isOn, out var state);
 		DrawStyleBody(boxRect, bodyStyle, state);
@@ -461,14 +462,14 @@ public static class GUI {
 		return isOn;
 	}
 	public static bool ToggleButton (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null) {
-		bodyStyle ??= GUISkin.DarkButton;
+		bodyStyle ??= Skin.DarkButton;
 		isOn = BlankToggle(rect, isOn, out var state);
 		DrawStyleBody(rect, bodyStyle, state, isOn ? Color32.GREY_160 : Color32.WHITE);
 		LabelLogic(rect, label, null, bodyStyle, state, -1, 0, false, out _, out _, out _);
 		return isOn;
 	}
 	public static bool ToggleButton (IRect rect, bool isOn, int icon, GUIStyle style = null) {
-		style ??= GUISkin.DarkButton;
+		style ??= Skin.DarkButton;
 		isOn = BlankToggle(rect, isOn, out var state);
 		DrawStyleBody(rect, style, state, isOn ? Color32.GREY_160 : Color32.WHITE);
 		Icon(rect, icon, style, state);
@@ -477,10 +478,10 @@ public static class GUI {
 	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) =>
 		Toggle(rect, isOn, null, bodyStyle, markStyle, null);
 	public static bool Toggle (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle markStyle = null, GUIStyle labelStyle = null) {
-		bodyStyle ??= GUISkin.Toggle;
-		markStyle ??= GUISkin.ToggleMark;
+		bodyStyle ??= Skin.Toggle;
+		markStyle ??= Skin.ToggleMark;
 		if (label != null) {
-			labelStyle ??= GUISkin.Label;
+			labelStyle ??= Skin.Label;
 			int labelWidth = Unify(LabelWidth);
 			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
 			rect = rect.Shrink(labelWidth, 0, 0, 0);
@@ -520,13 +521,13 @@ public static class GUI {
 
 
 	// Text Field
-	public static string SmallInputField (int controlID, IRect rect, string text, Color32? selectionColor = null) => InputField(controlID, rect, text, out _, out _, GUISkin.SmallInputField, selectionColor);
-	public static string SmallInputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, Color32? selectionColor = null) => InputField(controlID, rect, text, out changed, out confirm, GUISkin.SmallInputField, selectionColor);
+	public static string SmallInputField (int controlID, IRect rect, string text, Color32? selectionColor = null) => InputField(controlID, rect, text, out _, out _, Skin.SmallInputField, selectionColor);
+	public static string SmallInputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, Color32? selectionColor = null) => InputField(controlID, rect, text, out changed, out confirm, Skin.SmallInputField, selectionColor);
 	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, Color32? selectionColor = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionColor);
 	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, Color32? selectionColor = null) {
 
 		text ??= "";
-		bodyStyle ??= GUISkin.InputField;
+		bodyStyle ??= Skin.InputField;
 		selectionColor ??= Color32.GREEN;
 
 		changed = false;
@@ -824,17 +825,17 @@ public static class GUI {
 
 
 	// Int Field
-	public static int SmallIntDial (IRect rect, int value, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, GUISkin.SmallLabel, GUISkin.SmallCenterLabel, GUISkin.SmallDarkButton, delta, min, max);
-	public static int SmallIntDial (IRect rect, int value, out bool changed, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out changed, label, GUISkin.SmallLabel, GUISkin.SmallCenterLabel, GUISkin.SmallDarkButton, delta, min, max);
+	public static int SmallIntDial (IRect rect, int value, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, Skin.SmallLabel, Skin.SmallCenterLabel, Skin.SmallDarkButton, delta, min, max);
+	public static int SmallIntDial (IRect rect, int value, out bool changed, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out changed, label, Skin.SmallLabel, Skin.SmallCenterLabel, Skin.SmallDarkButton, delta, min, max);
 	public static int IntDial (IRect rect, int value, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, labelStyle, bodyStyle, dialButtonStyle, delta, min, max);
 	public static int IntDial (IRect rect, int value, out bool changed, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) {
-		bodyStyle ??= GUISkin.CenterLabel;
-		dialButtonStyle ??= GUISkin.SmallDarkButton;
+		bodyStyle ??= Skin.CenterLabel;
+		dialButtonStyle ??= Skin.SmallDarkButton;
 		int oldValue = value;
 		// Label
 		if (label != null) {
 			int labelWidth = Unify(LabelWidth);
-			labelStyle ??= GUISkin.Label;
+			labelStyle ??= Skin.Label;
 			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
 			rect = rect.ShrinkLeft(labelWidth);
 		}
@@ -858,8 +859,8 @@ public static class GUI {
 	// Scrollbar
 	public static int ScrollBar (int controlID, IRect contentRect, int positionRow, int totalSize, int pageSize, GUIStyle handleStyle = null, GUIStyle bgStyle = null) {
 		if (pageSize >= totalSize) return 0;
-		handleStyle ??= GUISkin.Scrollbar;
-		bgStyle ??= GUISkin.WeakPixel;
+		handleStyle ??= Skin.Scrollbar;
+		bgStyle ??= Skin.WeakPixel;
 		int barHeight = (int)((long)(contentRect.height * pageSize) / totalSize);
 		var barRect = new IRect(
 			contentRect.x,
@@ -946,7 +947,7 @@ public static class GUI {
 
 		// Label
 		if (label != null) {
-			labelStyle ??= GUISkin.Label;
+			labelStyle ??= Skin.Label;
 			int labelWidth = Unify(LabelWidth);
 			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
 			rect = rect.Shrink(labelWidth, 0, 0, 0);
@@ -1034,7 +1035,7 @@ public static class GUI {
 		}
 
 		// Default
-		if (defaultColor.HasValue && Button(defaultRect, BuiltInSprite.ICON_REFRESH, GUISkin.SmallDarkButton)) {
+		if (defaultColor.HasValue && Button(defaultRect, BuiltInSprite.ICON_REFRESH, Skin.SmallDarkButton)) {
 			color = defaultColor.Value;
 			ContentVersion++;
 		}

@@ -162,7 +162,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					}
 
 					// Label
-					GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds, GUISkin.SmallDarkLabel);
+					GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds, GUI.Skin.SmallDarkLabel);
 					maxWidth = Util.Max(
 						maxWidth,
 						labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)

@@ -31,6 +31,7 @@ public class SettingWindow : WindowUI {
 	// Api
 	public override string DefaultName => "Setting";
 	public bool Changed { get; private set; } = false;
+	public string RequireThemePath { get; private set; } = null;
 	public bool OpenLastProjectOnStart { get; set; }
 	public bool UseTooltip { get; set; }
 	public bool UseNotification { get; set; }
@@ -92,27 +93,27 @@ public class SettingWindow : WindowUI {
 		int itemPadding = Unify(4);
 
 		// Label - Engine
-		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_ENGINE, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_ENGINE, Skin.SmallGreyLabel);
 		rect.SlideDown(itemPadding);
 
 		// Open Last Project on Start
 		OpenLastProjectOnStart = GUI.Toggle(
 			rect, OpenLastProjectOnStart, LABEL_OPEN_LAST_PROJECT_ON_START,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Use Tooltip
 		UseTooltip = GUI.Toggle(
 			rect, UseTooltip, LABEL_USE_TOOLTIP,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Use Notification
 		UseNotification = GUI.Toggle(
 			rect, UseNotification, LABEL_USE_NOTI,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
@@ -124,7 +125,7 @@ public class SettingWindow : WindowUI {
 		int itemPadding = Unify(4);
 
 		// Label - PixEditor
-		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_PIXEL_EDITOR, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_PIXEL_EDITOR, Skin.SmallGreyLabel);
 		rect.SlideDown(itemPadding);
 
 		// Background Color
@@ -132,7 +133,7 @@ public class SettingWindow : WindowUI {
 			PixEditor_BackgroundColor,
 			rect,
 			label: LABEL_PE_BG_COLOR,
-			labelStyle: GUISkin.SmallLabel,
+			labelStyle: Skin.SmallLabel,
 			defaultColor: BackgroundColor_Default.ToColorF()
 		);
 		BackgroundColor = PixEditor_BackgroundColor.ToColor32();
@@ -143,7 +144,7 @@ public class SettingWindow : WindowUI {
 			PixEditor_CanvasBackgroundColor,
 			rect,
 			label: LABEL_PE_CANVAS_COLOR,
-			labelStyle: GUISkin.SmallLabel,
+			labelStyle: Skin.SmallLabel,
 			defaultColor: CanvasBackgroundColor_Default.ToColorF(),
 			alpha: true
 		);
@@ -153,21 +154,21 @@ public class SettingWindow : WindowUI {
 		// Solid Painting Preview
 		SolidPaintingPreview = GUI.Toggle(
 			rect, SolidPaintingPreview, LABEL_PE_SOLID_PAINTING,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Allow Spirte Action Only On Holding Option Key
 		AllowSpirteActionOnlyOnHoldingOptionKey = GUI.Toggle(
 			rect, AllowSpirteActionOnlyOnHoldingOptionKey, LABEL_ONLY_SPRITE_ON_OPTION,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Only Show BG In Sprite
 		OnlyShowBGInSprite = GUI.Toggle(
 			rect, OnlyShowBGInSprite, LABEL_ONLY_BG_IN_SPRITE,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
@@ -179,13 +180,13 @@ public class SettingWindow : WindowUI {
 		int itemPadding = Unify(4);
 
 		// Label - Console
-		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_CONSOLE, GUISkin.SmallGreyLabel);
+		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_CONSOLE, Skin.SmallGreyLabel);
 		rect.SlideDown(itemPadding);
 
 		// Show Log Time
 		ShowLogTime = GUI.Toggle(
 			rect, ShowLogTime, LABEL_SHOW_LOG_TIME,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 

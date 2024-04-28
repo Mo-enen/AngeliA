@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public static partial class GUISkin {
+public partial class GUISkin {
 
 
 	[System.Flags]
@@ -57,53 +57,53 @@ public static partial class GUISkin {
 	}
 
 	// Label
-	public static readonly GUIStyle LargeLabel = ProduceLabel(LabelPattern.Large);
-	public static readonly GUIStyle Label = ProduceLabel(LabelPattern.Normal);
-	public static readonly GUIStyle SmallLabel = ProduceLabel(LabelPattern.Small);
-	public static readonly GUIStyle AutoLabel = ProduceLabel(LabelPattern.Auto);
+	public readonly GUIStyle LargeLabel = ProduceLabel(LabelPattern.Large);
+	public readonly GUIStyle Label = ProduceLabel(LabelPattern.Normal);
+	public readonly GUIStyle SmallLabel = ProduceLabel(LabelPattern.Small);
+	public readonly GUIStyle AutoLabel = ProduceLabel(LabelPattern.Auto);
 
 	// Grey
-	public static readonly GUIStyle SmallGreyLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Grey);
-	public static readonly GUIStyle GreyLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Grey);
-	public static readonly GUIStyle LargeGreyLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Grey);
-	public static readonly GUIStyle AutoGreyLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Grey);
+	public readonly GUIStyle SmallGreyLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Grey);
+	public readonly GUIStyle GreyLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Grey);
+	public readonly GUIStyle LargeGreyLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Grey);
+	public readonly GUIStyle AutoGreyLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Grey);
 
 	// Center Grey
-	public static readonly GUIStyle SmallCenterGreyLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Grey | LabelPattern.MidMid);
-	public static readonly GUIStyle CenterGreyLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Grey | LabelPattern.MidMid);
-	public static readonly GUIStyle LargeCenterGreyLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Grey | LabelPattern.MidMid);
-	public static readonly GUIStyle AutoCenterGreyLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Grey | LabelPattern.MidMid);
+	public readonly GUIStyle SmallCenterGreyLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Grey | LabelPattern.MidMid);
+	public readonly GUIStyle CenterGreyLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Grey | LabelPattern.MidMid);
+	public readonly GUIStyle LargeCenterGreyLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Grey | LabelPattern.MidMid);
+	public readonly GUIStyle AutoCenterGreyLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Grey | LabelPattern.MidMid);
 
 	// Dark
-	public static readonly GUIStyle SmallDarkLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Dark);
-	public static readonly GUIStyle DarkLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Dark);
-	public static readonly GUIStyle LargeDarkLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Dark);
-	public static readonly GUIStyle AutoDarkLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Dark);
+	public readonly GUIStyle SmallDarkLabel = ProduceLabel(LabelPattern.Small | LabelPattern.Dark);
+	public readonly GUIStyle DarkLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.Dark);
+	public readonly GUIStyle LargeDarkLabel = ProduceLabel(LabelPattern.Large | LabelPattern.Dark);
+	public readonly GUIStyle AutoDarkLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.Dark);
 
 	// Center
-	public static readonly GUIStyle LargeCenterLabel = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid);
-	public static readonly GUIStyle CenterLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid);
-	public static readonly GUIStyle SmallCenterLabel = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid);
-	public static readonly GUIStyle AutoCenterLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.MidMid);
+	public readonly GUIStyle LargeCenterLabel = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid);
+	public readonly GUIStyle CenterLabel = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid);
+	public readonly GUIStyle SmallCenterLabel = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid);
+	public readonly GUIStyle AutoCenterLabel = ProduceLabel(LabelPattern.Auto | LabelPattern.MidMid);
 
 	// Right
-	public static readonly GUIStyle LargeRightLabel = new(ProduceLabel(LabelPattern.Large)) { Alignment = Alignment.MidRight };
-	public static readonly GUIStyle RightLabel = new(ProduceLabel(LabelPattern.Normal)) { Alignment = Alignment.MidRight };
-	public static readonly GUIStyle SmallRightLabel = new(ProduceLabel(LabelPattern.Small)) { Alignment = Alignment.MidRight };
-	public static readonly GUIStyle AutoRightLabel = new(ProduceLabel(LabelPattern.Auto)) { Alignment = Alignment.MidRight };
+	public readonly GUIStyle LargeRightLabel = new(ProduceLabel(LabelPattern.Large)) { Alignment = Alignment.MidRight };
+	public readonly GUIStyle RightLabel = new(ProduceLabel(LabelPattern.Normal)) { Alignment = Alignment.MidRight };
+	public readonly GUIStyle SmallRightLabel = new(ProduceLabel(LabelPattern.Small)) { Alignment = Alignment.MidRight };
+	public readonly GUIStyle AutoRightLabel = new(ProduceLabel(LabelPattern.Auto)) { Alignment = Alignment.MidRight };
 
 	// MSG
-	public static readonly GUIStyle SmallMessage = ProduceLabel(LabelPattern.Small | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.SmallBorder);
-	public static readonly GUIStyle Message = ProduceLabel(LabelPattern.Normal | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Border);
-	public static readonly GUIStyle LargeMessage = ProduceLabel(LabelPattern.Large | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.LargeBorder);
-	public static readonly GUIStyle SmallCenterMessage = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.SmallBorder);
-	public static readonly GUIStyle CenterMessage = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Border);
-	public static readonly GUIStyle LargeCenterMessage = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.LargeBorder);
+	public readonly GUIStyle SmallMessage = ProduceLabel(LabelPattern.Small | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.SmallBorder);
+	public readonly GUIStyle Message = ProduceLabel(LabelPattern.Normal | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Border);
+	public readonly GUIStyle LargeMessage = ProduceLabel(LabelPattern.Large | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.LargeBorder);
+	public readonly GUIStyle SmallCenterMessage = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.SmallBorder);
+	public readonly GUIStyle CenterMessage = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Border);
+	public readonly GUIStyle LargeCenterMessage = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.LargeBorder);
 
 	// Text Area
-	public static readonly GUIStyle LargeTextArea = ProduceLabel(LabelPattern.Large | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);
-	public static readonly GUIStyle TextArea = ProduceLabel(LabelPattern.Normal | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);
-	public static readonly GUIStyle SmallTextArea = ProduceLabel(LabelPattern.Small | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);
+	public readonly GUIStyle LargeTextArea = ProduceLabel(LabelPattern.Large | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);
+	public readonly GUIStyle TextArea = ProduceLabel(LabelPattern.Normal | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);
+	public readonly GUIStyle SmallTextArea = ProduceLabel(LabelPattern.Small | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);
 
 
 

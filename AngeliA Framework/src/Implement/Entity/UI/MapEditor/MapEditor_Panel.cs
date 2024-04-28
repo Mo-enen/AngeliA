@@ -334,7 +334,7 @@ public partial class MapEditor {
 				tabRect.Shrink(tabRect.height / 2, 0, 0, 0),
 				i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
 				out var labelBounds,
-				GUISkin.CenterLabel
+				Skin.CenterLabel
 			);
 
 			// Icon
@@ -854,7 +854,7 @@ public partial class MapEditor {
 
 			if (btnRect.yMax < CheckPointLaneRect.y) break;
 
-			if (GUI.Button(btnRect, id, GUISkin.ItemFrame)) {
+			if (GUI.Button(btnRect, id, Skin.ItemFrame)) {
 				TargetViewRect.x = globalUnitPos.x.ToGlobal() - TargetViewRect.width / 2;
 				TargetViewRect.y = globalUnitPos.y.ToGlobal() - Player.GetCameraShiftOffset(TargetViewRect.height);
 				NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
@@ -901,7 +901,7 @@ public partial class MapEditor {
 			!string.IsNullOrEmpty(SearchingText) &&
 			GUI.Button(
 				searchPanel.EdgeInside(Direction4.Right, searchPanel.height).Shrink(PADDING),
-				BuiltInSprite.ICON_CROSS, GUISkin.IconButton
+				BuiltInSprite.ICON_CROSS, Skin.IconButton
 			)
 		) {
 			SearchingText = "";

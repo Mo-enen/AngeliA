@@ -42,6 +42,7 @@ public class Scope : System.IDisposable {
 	private static readonly ScopeGroup SheetInstance = new();
 	private static readonly ScopeGroup IgnoreInputInstance = new();
 	private static readonly ScopeGroup GUILabelWidthInstance = new();
+	private static readonly ScopeGroup GUISkinInstance = new();
 
 	// Api
 	public int ScrollPosition => Int2Data.y;
@@ -53,6 +54,7 @@ public class Scope : System.IDisposable {
 	private IRect RectData;
 	private Int2 Int2Data;
 	private Int2 Int2DataAlt;
+	private object ObjData;
 
 	// MSG
 	private Scope (ScopeGroup group) => Group = group;
@@ -158,6 +160,14 @@ public class Scope : System.IDisposable {
 		return result;
 	}
 
+	public static Scope GuiSkin (GUISkin skin) {
+		var result = GUILabelWidthInstance.Start();
+		if (result == null) return EmptyScope;
+		result.ObjData = GUI.Skin;
+		GUI.Skin = skin;
+		return result;
+	}
+
 	public void Dispose () {
 
 		Group?.End();
@@ -219,6 +229,10 @@ public class Scope : System.IDisposable {
 
 			case var _ when Group == GUILabelWidthInstance:
 				GUI.LabelWidth = IntData;
+				break;
+
+			case var _ when Group == GUISkinInstance:
+				GUI.Skin = ObjData is GUISkin skin ? skin : GUISkin.Default;
 				break;
 		}
 	}

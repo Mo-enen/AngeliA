@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public static partial class GUISkin {
+public partial class GUISkin {
 
 
-	public static readonly GUIStyle Button = new() {
+	public readonly GUIStyle Button = new() {
 		BodySprite = BuiltInSprite.UI_BUTTON,
 		BodySpriteHover = BuiltInSprite.UI_BUTTON_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_BUTTON_DOWN,
@@ -24,7 +24,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle IconButton = new() {
+	public readonly GUIStyle IconButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -42,7 +42,7 @@ public static partial class GUISkin {
 
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 3, Const.ART_SCALE * 3, Const.ART_SCALE * 3, Const.ART_SCALE * 3),
 	};
-	public static readonly GUIStyle SmallIconButton = new() {
+	public readonly GUIStyle SmallIconButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -61,7 +61,7 @@ public static partial class GUISkin {
 		ContentBorder = Int4.Direction(Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE),
 	};
 
-	public static readonly GUIStyle DarkButton = new() {
+	public readonly GUIStyle DarkButton = new() {
 		BodySprite = BuiltInSprite.UI_DARK_BUTTON,
 		BodySpriteHover = BuiltInSprite.UI_DARK_BUTTON_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_DARK_BUTTON_DOWN,
@@ -79,7 +79,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle SmallDarkButton = new() {
+	public readonly GUIStyle SmallDarkButton = new() {
 
 		BodySprite = BuiltInSprite.UI_MINI_BUTTON_DARK,
 		BodySpriteHover = BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER,
@@ -100,7 +100,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle LargeLabelButton = new() {
+	public readonly GUIStyle LargeLabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -120,7 +120,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidLeft,
 	};
 
-	public static readonly GUIStyle LabelButton = new() {
+	public readonly GUIStyle LabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -140,7 +140,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidLeft,
 	};
 
-	public static readonly GUIStyle SmallLabelButton = new() {
+	public readonly GUIStyle SmallLabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -160,7 +160,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidLeft,
 	};
 
-	public static readonly GUIStyle LargeCenterLabelButton = new() {
+	public readonly GUIStyle LargeCenterLabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -180,7 +180,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle CenterLabelButton = new() {
+	public readonly GUIStyle CenterLabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,
@@ -200,7 +200,7 @@ public static partial class GUISkin {
 		Alignment = Alignment.MidMid,
 	};
 
-	public static readonly GUIStyle SmallCenterLabelButton = new() {
+	public readonly GUIStyle SmallCenterLabelButton = new() {
 		BodySprite = 0,
 		BodySpriteHover = Const.PIXEL,
 		BodySpriteDown = Const.PIXEL,

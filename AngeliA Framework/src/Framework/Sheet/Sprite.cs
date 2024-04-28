@@ -29,9 +29,12 @@ public class AngeSprite {
 	public Color32 SummaryTint;
 	public Color32[] Pixels;
 
+	private bool PixelDirty = false;
+
 	public void LoadFromBinary_v0 (BinaryReader reader) {
 		uint byteLen = reader.ReadUInt32();
 		long endPos = reader.BaseStream.Position + byteLen;
+		PixelDirty = false;
 		try {
 			// Name
 			int nameLen = reader.ReadByte();
@@ -100,6 +103,10 @@ public class AngeSprite {
 		long markPos = writer.BaseStream.Position;
 		writer.Write((uint)0);
 		long startPos = writer.BaseStream.Position;
+		if (PixelDirty) {
+			PixelDirty = false;
+			SummaryTint = SheetUtil.GetSummaryTint(Pixels);
+		}
 		try {
 
 			// Name
@@ -266,6 +273,8 @@ public class AngeSprite {
 			GlobalBorder.up = GlobalBorder.up.Clamp(0, GlobalHeight);
 		}
 	}
+
+	public void SetPixelDirty () => PixelDirty = true;
 
 }
 

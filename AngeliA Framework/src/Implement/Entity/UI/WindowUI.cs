@@ -18,6 +18,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	public string RequiringTooltipContent { get; set; } = null;
 	public string NotificationContent { get; set; } = null;
 	public string NotificationSubContent { get; set; } = null;
+	protected GUISkin Skin { get; private set; }
 
 	// Data
 	private static int UpdatedFrame = -1;
@@ -42,6 +43,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	public sealed override void UpdateUI () {
 		base.UpdateUI();
+		Skin = GUI.Skin;
 		WindowRect = Game.PauselessFrame > WindowRectOverrideFrame ? Renderer.CameraRect : WindowRect;
 		if (Game.PauselessFrame > UpdatedFrame) {
 			// First

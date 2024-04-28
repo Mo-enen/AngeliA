@@ -33,7 +33,7 @@ public class ProjectEditor : WindowUI {
 	public static int BuildProjectRequiredFrame { get; private set; } = int.MaxValue;
 
 	// Data
-	private static readonly GUIStyle WorkflowButtonStyle = new(GUISkin.DarkButton) { CharSize = 20, };
+	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 20, };
 	private static string PublishProjectRequiredPath = null;
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
@@ -188,7 +188,7 @@ public class ProjectEditor : WindowUI {
 		// Close Command Window on Game Quit
 		bool newCloseCmd = GUI.Toggle(
 			rect, info.CloseCmdOnQuit, LABEL_CLOSE_CMD,
-			labelStyle: GUISkin.SmallLabel
+			labelStyle: Skin.SmallLabel
 		);
 		if (info.CloseCmdOnQuit != newCloseCmd) {
 			info.CloseCmdOnQuit = newCloseCmd;

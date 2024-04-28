@@ -180,91 +180,13 @@ public partial class PixelEditor {
 				break;
 
 			case DragStateLeft.Paint:
-				if (HoldingShift) {
-					// Painting Line
-					var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
-					var endPixPoint = MousePixelPos;
-					using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
-						foreach (var pixelRect in Util.DrawLineWithRect_DDA(
-							startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
-						)) {
-							var stageRect = Pixel_to_Stage(pixelRect);
-							if (PaintingColor.a == 0) {
-								// Erase
-								DrawFrame(stageRect, Color32.WHITE, GizmosThickness);
-								DrawFrame(stageRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
-							} else {
-								// Paint
-								Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
-							}
-						}
-					}
-				} else {
-					// Painting Rect
-					var stageRect = Pixel_to_Stage(DraggingPixelRectLeft);
-					if (PaintingColor.a == 0) {
-						// Erase Rect
-						DrawFrame(stageRect, Color32.WHITE, GizmosThickness);
-						DrawFrame(stageRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
-						// Cross
-						var center = stageRect.CenterInt();
-						int length = Util.BabylonianSqrt(stageRect.width * stageRect.width + stageRect.height * stageRect.height);
-						float angle = Util.Atan(stageRect.width, stageRect.height);
-						var cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
-						cell.Rotation1000 = (angle * 1000).RoundToInt();
-						cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Color32.BLACK, z: int.MaxValue);
-						cell.Rotation1000 = (angle * -1000).RoundToInt();
-						cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
-						cell.Rotation1000 = (angle * 1000).RoundToInt();
-						cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Color32.WHITE, z: int.MaxValue);
-						cell.Rotation1000 = (angle * -1000).RoundToInt();
-					} else {
-						// Painting Rect
-						using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
-							if (SolidPaintingPreview.Value) {
-								Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
-							} else {
-								DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
-							}
-						}
-					}
-				}
+				DrawPaintingSprites();
 				break;
 
 			case DragStateLeft.ResizeSlice:
 				// Resize Slice
 				Cursor.SetCursor(Cursor.GetResizeCursorIndex(ResizingDirection), 2);
-				if (ResizeForBorder) {
-					// Resize for Border
-					var resizeBorderPixPos = GetResizingBorderPixPos();
-					if (resizeBorderPixPos.HasValue) {
-						// Resize for Border
-						var spData = StagedSprites[ResizingStageIndex];
-						var rect = Pixel_to_Stage(spData.Sprite.PixelRect);
-						var mousePos = Pixel_to_Stage(resizeBorderPixPos.Value).RoundToInt();
-						var line = ResizingDirection switch {
-							Direction8.Left or Direction8.Right => new IRect(
-								mousePos.x - GizmosThickness / 2, rect.y, GizmosThickness, rect.height
-							),
-							Direction8.Bottom or Direction8.Top => new IRect(
-								rect.x, mousePos.y - GizmosThickness / 2, rect.width, GizmosThickness
-							),
-							_ => default,
-						};
-						Renderer.DrawPixel(line, Color32.WHITE, z: int.MaxValue);
-					}
-				} else {
-					// Resize for Slice
-					var resizingPixRect = GetResizeDraggingPixRect();
-					if (resizingPixRect.HasValue) {
-						var resizingRect = Pixel_to_Stage(resizingPixRect.Value);
-						DrawFrame(
-							resizingRect.Expand(GizmosThickness),
-							Color32.GREY_196,
-							GizmosThickness * 2
-						);
-					}
-				}
+				DrawResizingSprites();
 				break;
 
 			case DragStateLeft.MoveSlice:
@@ -276,7 +198,7 @@ public partial class PixelEditor {
 			case DragStateLeft.SelectOrCreateSlice:
 				// Select / Create
 				var draggingRect = Pixel_to_Stage(DraggingPixelRectLeft);
-				DrawFrame(draggingRect, Color32.WHITE, GizmosThickness);
+				DrawFrame(draggingRect, Skin.GizmosDragging, GizmosThickness);
 				break;
 		}
 	}
@@ -430,7 +352,6 @@ public partial class PixelEditor {
 				break;
 
 			case DragStateLeft.MoveSlice:
-				DrawMovingSprites();
 				var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 				var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 				var pixDelta = mousePixPos - mouseDownPixPos;
@@ -491,15 +412,14 @@ public partial class PixelEditor {
 	private void Update_RightDrag_Dragging () {
 
 		DraggingPixelRectRight = GetDraggingPixRect(false, MAX_SELECTION_SIZE);
-		DragChanged = DragChanged || (
-			//(DraggingPixelRectRight.width > 1 || DraggingPixelRectRight.height > 1) &&
-			(Util.SquareDistance(Input.MouseGlobalPosition, Input.MouseRightDownGlobalPosition) > Unify(3600))
-		);
+		DragChanged =
+			DragChanged ||
+			Util.SquareDistance(Input.MouseGlobalPosition, Input.MouseRightDownGlobalPosition) > Unify(3600);
 
 		switch (DraggingStateRight) {
 			case DragStateRight.SelectPixel:
 				if (DragChanged) {
-					DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
+					DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), GizmosThickness);
 				}
 				break;
 		}
@@ -546,7 +466,7 @@ public partial class PixelEditor {
 						PixelSelectionPixelRect = DraggingPixelRectRight;
 						PixelBufferSize = Int2.zero;
 						if (DragChanged) {
-							DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), Color32.BLACK, Color32.WHITE, GizmosThickness);
+							DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectRight), GizmosThickness);
 						}
 						ClearSpriteSelection();
 					}
@@ -564,6 +484,95 @@ public partial class PixelEditor {
 
 
 	#region --- LGC ---
+
+
+	// Draw for Dragging
+	private void DrawPaintingSprites () {
+		if (HoldingShift) {
+			// Painting Line
+			var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
+			var endPixPoint = MousePixelPos;
+			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+				foreach (var pixelRect in Util.DrawLineWithRect_DDA(
+					startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
+				)) {
+					var stageRect = Pixel_to_Stage(pixelRect);
+					if (PaintingColor.a == 0) {
+						// Erase
+						DrawFrame(stageRect, Skin.GizmosDragging, GizmosThickness);
+						DrawFrame(stageRect.Expand(GizmosThickness), Skin.GizmosDraggingAlt, GizmosThickness);
+					} else {
+						// Paint
+						Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
+					}
+				}
+			}
+		} else {
+			// Painting Rect
+			var stageRect = Pixel_to_Stage(DraggingPixelRectLeft);
+			if (PaintingColor.a == 0) {
+				// Erase Rect
+				DrawFrame(stageRect, Skin.GizmosDragging, GizmosThickness);
+				DrawFrame(stageRect.Expand(GizmosThickness), Skin.GizmosDraggingAlt, GizmosThickness);
+				// Cross
+				var center = stageRect.CenterInt();
+				int length = Util.BabylonianSqrt(stageRect.width * stageRect.width + stageRect.height * stageRect.height);
+				float angle = Util.Atan(stageRect.width, stageRect.height);
+				var cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Skin.GizmosDraggingAlt, z: int.MaxValue);
+				cell.Rotation1000 = (angle * 1000).RoundToInt();
+				cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Skin.GizmosDraggingAlt, z: int.MaxValue);
+				cell.Rotation1000 = (angle * -1000).RoundToInt();
+				cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Skin.GizmosDragging, z: int.MaxValue);
+				cell.Rotation1000 = (angle * 1000).RoundToInt();
+				cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Skin.GizmosDragging, z: int.MaxValue);
+				cell.Rotation1000 = (angle * -1000).RoundToInt();
+			} else {
+				// Painting Rect
+				using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+					if (SolidPaintingPreview.Value) {
+						Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
+					} else {
+						DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
+					}
+				}
+			}
+		}
+	}
+
+
+	private void DrawResizingSprites () {
+		if (ResizeForBorder) {
+			// Resize for Border
+			var resizeBorderPixPos = GetResizingBorderPixPos();
+			if (resizeBorderPixPos.HasValue) {
+				// Resize for Border
+				var spData = StagedSprites[ResizingStageIndex];
+				var rect = Pixel_to_Stage(spData.Sprite.PixelRect);
+				var mousePos = Pixel_to_Stage(resizeBorderPixPos.Value).RoundToInt();
+				var line = ResizingDirection switch {
+					Direction8.Left or Direction8.Right => new IRect(
+						mousePos.x - GizmosThickness / 2, rect.y, GizmosThickness, rect.height
+					),
+					Direction8.Bottom or Direction8.Top => new IRect(
+						rect.x, mousePos.y - GizmosThickness / 2, rect.width, GizmosThickness
+					),
+					_ => default,
+				};
+				Renderer.DrawPixel(line, Skin.GizmosDragging, z: int.MaxValue);
+			}
+		} else {
+			// Resize for Slice
+			var resizingPixRect = GetResizeDraggingPixRect();
+			if (resizingPixRect.HasValue) {
+				var resizingRect = Pixel_to_Stage(resizingPixRect.Value);
+				DrawFrame(
+					resizingRect.Expand(GizmosThickness),
+					Skin.GizmosDragging.WithNewA(128),
+					GizmosThickness * 2
+				);
+			}
+		}
+	}
 
 
 	private void DrawMovingSprites () {
@@ -602,7 +611,7 @@ public partial class PixelEditor {
 			// Gizmos
 			DrawFrame(
 				rect.Expand(GizmosThickness),
-				Color32.WHITE,
+				Skin.GizmosSelecting,
 				GizmosThickness * 2
 			);
 		}

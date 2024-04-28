@@ -106,27 +106,28 @@ public static class SheetUtil {
 		// Create
 		return new Sheet(spriteList, atlases);
 
-		// Func
-		static Color32 GetSummaryTint (Color32[] pixels) {
-			if (pixels == null || pixels.Length == 0) return Color32.CLEAR;
-			var sum = Float3.zero;
-			float len = 0;
-			for (int i = 0; i < pixels.Length; i++) {
-				var pixel = pixels[i];
-				if (pixel.a != 0) {
-					sum.x += pixel.r / 255f;
-					sum.y += pixel.g / 255f;
-					sum.z += pixel.b / 255f;
-					len++;
-				}
+	}
+
+
+	public static Color32 GetSummaryTint (Color32[] pixels) {
+		if (pixels == null || pixels.Length == 0) return Color32.CLEAR;
+		var sum = Float3.zero;
+		float len = 0;
+		for (int i = 0; i < pixels.Length; i++) {
+			var pixel = pixels[i];
+			if (pixel.a != 0) {
+				sum.x += pixel.r / 255f;
+				sum.y += pixel.g / 255f;
+				sum.z += pixel.b / 255f;
+				len++;
 			}
-			return new Color32(
-				(byte)(sum.x * 255f / len),
-				(byte)(sum.y * 255f / len),
-				(byte)(sum.z * 255f / len),
-				255
-			);
 		}
+		return new Color32(
+			(byte)(sum.x * 255f / len),
+			(byte)(sum.y * 255f / len),
+			(byte)(sum.z * 255f / len),
+			255
+		);
 	}
 
 

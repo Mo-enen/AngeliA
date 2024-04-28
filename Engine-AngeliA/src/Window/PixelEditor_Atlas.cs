@@ -26,7 +26,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode ATLAS_POPUP_BOTTOM = ("UI.AtlasPopup.Bottom", "Move to Bottom");
 
 	// Data
-	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUISkin.SmallLabel) {
+	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
 		ContentColor = Color32.ORANGE_BETTER,
 		ContentColorHover = Color32.ORANGE_BETTER,
 		ContentColorDown = Color32.ORANGE_BETTER,
@@ -52,7 +52,7 @@ public partial class PixelEditor {
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 
 		// BG
-		Renderer.DrawPixel(panelRect, Color32.GREY_20);
+		Renderer.DrawPixel(panelRect, Skin.Background_Panel);
 		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_HEIGHT));
 
 		// Rename Hotkey
@@ -88,16 +88,19 @@ public partial class PixelEditor {
 						renaming = false;
 					}
 					var contentRect = rect.Shrink(0, 0, itemPadding, itemPadding);
+					int iconWidth = contentRect.height;
 
 					// Button
-					if (GUI.Button(rect, 0, GUISkin.HighlightPixel)) {
+					if (GUI.Button(rect, 0, Skin.HighlightPixel)) {
 						if (selecting) {
-							TryApplySliceInputFields();
-							RefreshSliceInputContent();
-							GUI.CancelTyping();
-							RenamingAtlasIndex = i;
-							renaming = true;
-							GUI.StartTyping(ATLAS_INPUT_ID + i);
+							if (rect.ShrinkLeft(iconWidth).MouseInside()) {
+								TryApplySliceInputFields();
+								RefreshSliceInputContent();
+								GUI.CancelTyping();
+								RenamingAtlasIndex = i;
+								renaming = true;
+								GUI.StartTyping(ATLAS_INPUT_ID + i);
+							}
 						} else {
 							newSelectingIndex = i;
 							RenamingAtlasIndex = -1;
@@ -106,11 +109,11 @@ public partial class PixelEditor {
 
 					// Selection Mark
 					if (!renaming && selecting) {
-						Renderer.DrawPixel(contentRect, Color32.GREEN_DARK);
+						Renderer.DrawPixel(contentRect, Skin.HighlightColorAlt);
 					}
 
 					// Icon
-					var iconRect = contentRect.EdgeInside(Direction4.Left, contentRect.height);
+					var iconRect = contentRect.EdgeInside(Direction4.Left, iconWidth);
 
 					if (Sheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
 						var iconSize = Game.GetTextureSize(iconTexture);
@@ -128,14 +131,15 @@ public partial class PixelEditor {
 							atlas.Name, out bool changed, out bool confirm
 						);
 						if (changed || confirm) {
+							int oldID = atlas.ID;
 							atlas.ID = atlas.Name.AngeHash();
-							SetDirty();
+							if (oldID != atlas.ID) SetDirty();
 						}
 					} else {
 						GUI.Label(
 							contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name,
-							atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background ? LevelBgAtlasLabelStyle : GUISkin.SmallLabel
+							atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background ? LevelBgAtlasLabelStyle : Skin.SmallLabel
 						);
 					}
 
@@ -186,14 +190,14 @@ public partial class PixelEditor {
 		var buttonRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
 
 		// Add
-		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, Skin.SmallDarkButton)) {
 			CreateAtlas();
 		}
 		RequireTooltip(buttonRect, TIP_ADD_ATLAS);
 		buttonRect.SlideRight(buttonPadding);
 
 		// Import from Ase
-		if (GUI.Button(buttonRect, ICON_IMPORT_ASE, GUISkin.SmallDarkButton)) {
+		if (GUI.Button(buttonRect, ICON_IMPORT_ASE, Skin.SmallDarkButton)) {
 			ShowImportAtlasBrowser(true);
 		}
 		RequireTooltip(buttonRect, TIP_IMPORT_ASE);
@@ -322,26 +326,25 @@ public partial class PixelEditor {
 		static void ImportAtlas (string path) {
 			if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
 			string ext = Util.GetExtension(path);
-			var sheet = Sheet;
 			if (ext == ".png") {
 				// PNG
 				var texture = Game.PngBytesToTexture(Util.FileToByte(path));
 				var size = Game.GetTextureSize(texture);
-				var sprite = sheet.CreateSprite(
-					sheet.GetAvailableSpriteName("New Sprite"),
+				var sprite = Sheet.CreateSprite(
+					Sheet.GetAvailableSpriteName("New Sprite"),
 					new IRect(4, 4, size.x, size.y),
 					Instance.CurrentAtlasIndex
 				);
 				sprite.Pixels = Game.GetPixelsFromTexture(texture);
-				sheet.AddSprite(sprite);
+				Sheet.AddSprite(sprite);
 				Instance.StagedSprites.Add(new SpriteData(sprite) { Selecting = true, });
 			} else if (ext == ".ase") {
 				// ASE
 				var aseSheet = SheetUtil.CreateNewSheet(
 					AsepriteUtil.CreateSpritesFromAsepriteFiles(new string[1] { path }, "#ignore").ToArray()
 				);
-				sheet.CombineSheet(aseSheet);
-				Instance.SetCurrentAtlas(sheet.Atlas.Count - 1);
+				Sheet.CombineSheet(aseSheet);
+				Instance.SetCurrentAtlas(Sheet.Atlas.Count - 1);
 			}
 		}
 	}

@@ -102,14 +102,14 @@ public class Console : WindowUI {
 				86754 + i,
 				rect.ShrinkLeft(iconSize + padding),
 				line.Content,
-				bodyStyle: GUISkin.SmallLabel
+				bodyStyle: GUI.Skin.SmallLabel
 			);
 			// Time
 			if (showLogTime) {
 				var tChars = GUI.GetTimeChars(line.Hour, line.Minute, line.Second, line.Frame);
 				GUI.BackgroundLabel(
 					rect.ShrinkRight(scrollBarWidth + padding),
-					tChars, Color32.BLACK, smallPadding, GUISkin.SmallRightLabel
+					tChars, Color32.BLACK, smallPadding, GUI.Skin.SmallRightLabel
 				);
 			}
 			rect.SlideDown();

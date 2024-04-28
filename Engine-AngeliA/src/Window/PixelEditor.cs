@@ -28,15 +28,23 @@ public partial class PixelEditor : WindowUI {
 
 	private class SpriteData {
 		public AngeSprite Sprite;
-		public bool PixelDirty;
+		public bool PixelDirty {
+			get => _PixelDirty;
+			set {
+				if (value) Sprite?.SetPixelDirty();
+				_PixelDirty = value;
+			}
+		}
 		public bool Selecting;
 		public bool SelectingPalette;
 		public IRect DraggingStartRect;
+		private bool _PixelDirty;
 		public SpriteData (AngeSprite sprite) {
 			Sprite = sprite;
-			PixelDirty = true;
+			_PixelDirty = false;
 			Selecting = false;
 			SelectingPalette = false;
+			Sheet?.SyncSpritePixelsIntoTexturePool(sprite);
 		}
 	}
 
@@ -78,7 +86,7 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
-	private static int SheetIndex = 0;
+	private static int SheetIndex = -1;
 	private string SheetPath = "";
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
@@ -387,7 +395,7 @@ public partial class PixelEditor : WindowUI {
 				}
 			} else {
 				// Axis Frame
-				DrawFrame(canvasRectInt, Color32.BLACK_96, GizmosThickness, z: int.MinValue + 2);
+				DrawFrame(canvasRectInt, Skin.GizmosNormal.WithNewA(96), GizmosThickness, z: int.MinValue + 2);
 			}
 		}
 
@@ -509,7 +517,7 @@ public partial class PixelEditor : WindowUI {
 		// Pixel Selection
 		if (PixelSelectionPixelRect != default) {
 			var pixelSelectionStageRect = Pixel_to_Stage(PixelSelectionPixelRect, ignoreClamp: true);
-			DrawDottedFrame(pixelSelectionStageRect.Expand(GizmosThickness), Color32.BLACK, Color32.WHITE, GizmosThickness);
+			DrawDottedFrame(pixelSelectionStageRect.Expand(GizmosThickness), GizmosThickness);
 			DrawPixelBuffer(PixelSelectionPixelRect);
 		}
 
@@ -532,14 +540,14 @@ public partial class PixelEditor : WindowUI {
 				// Selecting Frame
 				DrawFrame(
 					rect.Expand(GizmosThickness),
-					Color32.WHITE,
+					Skin.GizmosSelecting,
 					GizmosThickness * 2
 				);
 			} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
 				// Normal Frame
 				DrawFrame(
 					rect.Expand(GizmosThickness),
-					i == SelectingPaletteIndex ? Color32.GREEN_DARK : Color32.BLACK,
+					i == SelectingPaletteIndex ? Skin.HighlightColorAlt : Skin.GizmosNormal,
 					GizmosThickness
 				);
 			}
@@ -550,25 +558,25 @@ public partial class PixelEditor : WindowUI {
 				if (hrDir.IsLeft()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Left, GizmosThickness),
-						Color32.GREEN, z: int.MaxValue
+						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsRight()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Right, GizmosThickness),
-						Color32.GREEN, z: int.MaxValue
+						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsBottom()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Down, GizmosThickness),
-						Color32.GREEN, z: int.MaxValue
+						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsTop()) {
 					Renderer.DrawPixel(
 						rect.EdgeInside(Direction4.Up, GizmosThickness),
-						Color32.GREEN, z: int.MaxValue
+						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
 			}
@@ -583,13 +591,13 @@ public partial class PixelEditor : WindowUI {
 				int posUp = rect.yMax - rect.height * border.up / sprite.GlobalHeight;
 				bool highlight = allowHighlight && HoveringResizeForBorder && HoveringResizeDirection.HasValue && HoveringResizeStageIndex == i;
 				bool dragging = ResizeForBorder && ResizingStageIndex == i;
-				var normalTint = HoldingCtrl ? Color32.BLACK_128 : Color32.BLACK_32;
+				var normalTint = HoldingCtrl ? Skin.GizmosNormal.WithNewA(128) : Skin.GizmosNormal.WithNewA(32);
 
 				// Frame L
 				if (border.left > 0 && (!dragging || ResizingDirection != Direction8.Left)) {
 					Renderer.DrawPixel(
 						new IRect(posLeft - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
-						highlight && HoveringResizeDirection.Value == Direction8.Left ? Color32.GREEN : normalTint, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Left ? Skin.HighlightColor : normalTint, int.MaxValue
 					);
 				}
 
@@ -597,7 +605,7 @@ public partial class PixelEditor : WindowUI {
 				if (border.right > 0 && (!dragging || ResizingDirection != Direction8.Right)) {
 					Renderer.DrawPixel(
 						new IRect(posRight - GizmosThickness / 2, rect.y, GizmosThickness, rect.height),
-						highlight && HoveringResizeDirection.Value == Direction8.Right ? Color32.GREEN : normalTint, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Right ? Skin.HighlightColor : normalTint, int.MaxValue
 					);
 				}
 
@@ -605,7 +613,7 @@ public partial class PixelEditor : WindowUI {
 				if (border.down > 0 && (!dragging || ResizingDirection != Direction8.Bottom)) {
 					Renderer.DrawPixel(
 						new IRect(rect.x, posDown - GizmosThickness / 2, rect.width, GizmosThickness),
-						highlight && HoveringResizeDirection.Value == Direction8.Bottom ? Color32.GREEN : normalTint, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Bottom ? Skin.HighlightColor : normalTint, int.MaxValue
 					);
 				}
 
@@ -613,7 +621,7 @@ public partial class PixelEditor : WindowUI {
 				if (border.up > 0 && (!dragging || ResizingDirection != Direction8.Top)) {
 					Renderer.DrawPixel(
 						new IRect(rect.x, posUp - GizmosThickness / 2, rect.width, GizmosThickness),
-						highlight && HoveringResizeDirection.Value == Direction8.Top ? Color32.GREEN : normalTint, int.MaxValue
+						highlight && HoveringResizeDirection.Value == Direction8.Top ? Skin.HighlightColor : normalTint, int.MaxValue
 					);
 				}
 			}
@@ -628,7 +636,7 @@ public partial class PixelEditor : WindowUI {
 							rect.y + (j / sprite.PixelRect.width) * pixelSize,
 							pixelSize, pixelSize
 						);
-						DrawDottedFrame(palRect, Color32.WHITE, Color32.BLACK, GizmosThickness);
+						DrawDottedFrame(palRect, GizmosThickness);
 						break;
 					}
 				}
@@ -1036,6 +1044,7 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	private void DrawDottedFrame (IRect rect, int thickness) => DrawDottedFrame(rect, Skin.GizmosDotted, Skin.GizmosDottedAlt, thickness);
 	private void DrawDottedFrame (IRect rect, Color32 colorA, Color32 colorB, int thickness) {
 
 		int gap = Util.Max(Unify(12), (CanvasRect.width / 2 / STAGE_SIZE).RoundToInt());
@@ -1116,8 +1125,8 @@ public partial class PixelEditor : WindowUI {
 			// Inside Sprite
 			if (PaintingColor.a == 0) {
 				// Empty
-				DrawFrame(cursorRect, Color32.WHITE, GizmosThickness);
-				DrawFrame(cursorRect.Expand(GizmosThickness), Color32.BLACK, GizmosThickness);
+				DrawFrame(cursorRect, Skin.GizmosCursor, GizmosThickness);
+				DrawFrame(cursorRect.Expand(GizmosThickness), Skin.GizmosCursorAlt, GizmosThickness);
 				hasFrame = true;
 			} else if (DraggingStateLeft == DragStateLeft.None) {
 				// Color
@@ -1130,7 +1139,7 @@ public partial class PixelEditor : WindowUI {
 			int gap = cursorRect.height / 2;
 			DrawFrameWithGap(
 				cursorRect,
-				PaintingColor.IsSame(Color32.CLEAR) ? Color32.WHITE : PaintingColor.WithNewA(255),
+				PaintingColor.IsSame(Color32.CLEAR) ? Skin.GizmosCursor : PaintingColor.WithNewA(255),
 				new Int4(GizmosThickness, GizmosThickness, GizmosThickness, GizmosThickness),
 				new Int4(gap, gap, gap, gap)
 			);
