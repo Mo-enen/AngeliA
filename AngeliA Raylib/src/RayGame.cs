@@ -197,6 +197,7 @@ public partial class RayGame : Game {
 		// Update Gizmos
 		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		GizmosRender.UpdateGizmos();
+		Raylib.EndBlendMode();
 
 		PrevHasInverseGizmos = GizmosRender.HasInverseGizmos;
 		if (PrevHasInverseGizmos) {
@@ -213,7 +214,6 @@ public partial class RayGame : Game {
 		} else {
 			GizmosRender.UpdateInverse();
 		}
-		Raylib.EndBlendMode();
 
 		// Screen Effect >> Render Texture
 		if (hasScreenEffectEnabled) {

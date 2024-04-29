@@ -19,13 +19,11 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Pixel Editor");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
-	private static readonly LanguageCode LABEL_PE_CANVAS_COLOR = ("Setting.PE.CanvasBgColor", "Canvas Background Color");
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
 	private static readonly LanguageCode LABEL_ONLY_SPRITE_ON_OPTION = ("Setting.ASAOOHOK", "Only Modify Spirte on Holding Ctrl");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
-	private static readonly LanguageCode LABEL_ONLY_BG_IN_SPRITE = ("Setting.OnlyShowBGInSprite", "Only Show Background Inside Sprite");
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
 
 	// Api
@@ -37,11 +35,8 @@ public class SettingWindow : WindowUI {
 	public bool UseNotification { get; set; }
 	public Color32 BackgroundColor { get; set; }
 	public Color32 BackgroundColor_Default { get; set; }
-	public Color32 CanvasBackgroundColor { get; set; }
-	public Color32 CanvasBackgroundColor_Default { get; set; }
 	public bool SolidPaintingPreview { get; set; }
 	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
-	public bool OnlyShowBGInSprite { get; set; }
 	public ColorF PixEditor_BackgroundColor { get; set; }
 	public ColorF PixEditor_CanvasBackgroundColor { get; set; }
 	public bool ShowLogTime { get; set; }
@@ -139,18 +134,6 @@ public class SettingWindow : WindowUI {
 		BackgroundColor = PixEditor_BackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
 
-		// Canvas Background Color
-		PixEditor_CanvasBackgroundColor = GUI.HorizontalColorField(
-			PixEditor_CanvasBackgroundColor,
-			rect,
-			label: LABEL_PE_CANVAS_COLOR,
-			labelStyle: Skin.SmallLabel,
-			defaultColor: CanvasBackgroundColor_Default.ToColorF(),
-			alpha: true
-		);
-		CanvasBackgroundColor = PixEditor_CanvasBackgroundColor.ToColor32();
-		rect.SlideDown(itemPadding);
-
 		// Solid Painting Preview
 		SolidPaintingPreview = GUI.Toggle(
 			rect, SolidPaintingPreview, LABEL_PE_SOLID_PAINTING,
@@ -161,13 +144,6 @@ public class SettingWindow : WindowUI {
 		// Allow Spirte Action Only On Holding Option Key
 		AllowSpirteActionOnlyOnHoldingOptionKey = GUI.Toggle(
 			rect, AllowSpirteActionOnlyOnHoldingOptionKey, LABEL_ONLY_SPRITE_ON_OPTION,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Only Show BG In Sprite
-		OnlyShowBGInSprite = GUI.Toggle(
-			rect, OnlyShowBGInSprite, LABEL_ONLY_BG_IN_SPRITE,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

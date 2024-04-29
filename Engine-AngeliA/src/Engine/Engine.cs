@@ -151,9 +151,7 @@ internal static class Engine {
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
-		SettingWindow.PixEditor_CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
-		SettingWindow.CanvasBackgroundColor_Default = PixelEditor.CanvasBackgroundColor.DefaultValue;
 
 		// Sheet
 		UiSheetIndex = Renderer.AddAltSheet(ThemeSheet);
@@ -442,7 +440,7 @@ internal static class Engine {
 		using (Scope.RendererLayerUI()) {
 
 			// Tab BG
-			Renderer.DrawPixel(barRect, Color32.GREY_12);
+			Renderer.DrawPixel(barRect, GUI.Skin.Background_Panel);
 
 			// Menu
 			{
@@ -468,17 +466,26 @@ internal static class Engine {
 				if (index >= windowLen) break;
 
 				bool selecting = index == CurrentWindowIndex;
-				bool hovering = rect.Contains(mousePos);
+				bool hovering = GUI.Enable && rect.Contains(mousePos);
 
 				// Cursor
-				if (GUI.Enable && !selecting && hovering) Cursor.SetCursorAsHand();
+				if (!selecting && hovering) Cursor.SetCursorAsHand();
 
-				// Body
-				Renderer.Draw_9Slice(
-					Const.PIXEL, rect,
-					bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-					selecting ? Color32.GREY_32 : Color32.GREY_12
-				);
+				if (selecting) {
+					// Select Highlight
+					Renderer.Draw_9Slice(
+						Const.PIXEL, rect,
+						bodyBorder, bodyBorder, bodyBorder, bodyBorder,
+						Color32.GREY_32
+					);
+				} else if (hovering) {
+					// Hovering Highlight
+					Renderer.Draw_9Slice(
+						Const.PIXEL, rect,
+						bodyBorder, bodyBorder, bodyBorder, bodyBorder,
+						Color32.GREY_20
+					);
+				}
 				var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
 
 				// Icon
@@ -505,7 +512,7 @@ internal static class Engine {
 				}
 
 				// Click
-				if (GUI.Enable && mousePress && hovering) CurrentWindowIndex = index;
+				if (mousePress && hovering) CurrentWindowIndex = index;
 
 				// Next
 				rect.SlideDown();
@@ -554,10 +561,8 @@ internal static class Engine {
 		SettingWindow.UseTooltip = UseTooltip.Value;
 		SettingWindow.UseNotification = UseNotification.Value;
 		SettingWindow.BackgroundColor = PixelEditor.BackgroundColor.Value;
-		SettingWindow.CanvasBackgroundColor = PixelEditor.CanvasBackgroundColor.Value;
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
 		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
-		SettingWindow.OnlyShowBGInSprite = PixelEditor.OnlyShowBGInSprite.Value;
 		SettingWindow.ShowLogTime = Console.ShowLogTime.Value;
 
 		// Update UI
@@ -588,10 +593,8 @@ internal static class Engine {
 			UseTooltip.Value = SettingWindow.UseTooltip;
 			UseNotification.Value = SettingWindow.UseNotification;
 			PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
-			PixelEditor.CanvasBackgroundColor.Value = SettingWindow.CanvasBackgroundColor;
 			PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
 			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
-			PixelEditor.OnlyShowBGInSprite.Value = SettingWindow.OnlyShowBGInSprite;
 			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
 		}
 		if (SettingWindow.RequireThemePath != null) {

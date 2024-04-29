@@ -592,20 +592,6 @@ public partial class PixelEditor {
 			pxRect.y = spData.DraggingStartRect.y + pixDelta.y;
 			var rect = Pixel_to_Stage(pxRect, out var uv, out bool outside, ignoreClamp: true);
 			if (outside) continue;
-			// Draw BG
-			if (OnlyShowBGInSprite.Value) {
-				Renderer.Draw(
-					BuiltInSprite.SHADOW_LINE_16,
-					rect.EdgeOutside(Direction4.Down, PixelStageSize),
-					color: Color32.BLACK_64,
-					z: int.MinValue + 1
-				);
-				if (ShowBackground.Value) {
-					Renderer.DrawPixel(rect, CanvasBackgroundColor.Value, z: int.MinValue + 1);
-				} else {
-					DrawCheckerBoard(rect, pxRect.size);
-				}
-			}
 			// Renerer
 			DrawSheetSprite(sprite, rect, z: int.MaxValue);
 			// Gizmos

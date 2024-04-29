@@ -19,7 +19,8 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
 	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
 	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
-	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Build and run the project (Ctrl + R)");
+	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Build and run the project in debug mode (Ctrl + R)");
+	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Publish the project in release mode");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
@@ -118,6 +119,7 @@ public class ProjectEditor : WindowUI {
 		if (GUI.Button(_rect.Shrink(padding / 2, padding, 0, 0), LABEL_PUBLISH, WorkflowButtonStyle)) {
 			FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
 		}
+		RequireTooltip(_rect, TIP_PUBLISH);
 		rect.SlideDown();
 
 		// Func

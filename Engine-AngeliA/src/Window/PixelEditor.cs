@@ -76,10 +76,8 @@ public partial class PixelEditor : WindowUI {
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Artwork";
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
-	public static readonly SavingColor32 CanvasBackgroundColor = new("PixEdt.CanvasBGColor", new Color32(34, 47, 64, 255));
 	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
 	public static readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
-	public static readonly SavingBool OnlyShowBGInSprite = new("PixEdt.OnlyShowBGInSprite", true);
 
 	// Data
 	private static PixelEditor Instance;
@@ -109,7 +107,8 @@ public partial class PixelEditor : WindowUI {
 	private int PixelStageSize = 1;
 
 	// Saving
-	private static readonly SavingBool ShowBackground = new("PixEdt.ShowBG", true);
+	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false);
+	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true);
 
 
 	#endregion
@@ -148,7 +147,6 @@ public partial class PixelEditor : WindowUI {
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();
-		Update_View();
 		Update_Cursor();
 		Update_LeftDrag();
 		Update_RightDrag();
@@ -156,6 +154,7 @@ public partial class PixelEditor : WindowUI {
 		Update_Hotkey();
 		Update_Rendering();
 		Update_StageToolbar();
+		Update_View();
 	}
 
 
@@ -355,51 +354,35 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void Update_View () {
-
-		if (Sheet.Atlas.Count <= 0) return;
-		if (!Interactable) return;
-
-		// Move
-		if (
-			(Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
-			(Input.MouseLeftButtonHolding && Input.KeyboardHolding(KeyboardKey.Space) && StageRect.Contains(Input.MouseLeftDownGlobalPosition))
-		) {
-			var delta = Input.MouseGlobalPositionDelta;
-			CanvasRect = CanvasRect.Shift(delta.x, delta.y);
-		}
-
-		// Zoom
-		if (StageRect.MouseInside() && Input.MouseWheelDelta != 0) {
-			SetZoom(ZoomLevel + Input.MouseWheelDelta, Input.MouseGlobalPosition);
-		}
-
-	}
-
-
 	private void Update_Rendering () {
 
 		if (Sheet.Atlas.Count <= 0) return;
 		using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
 
-		// BG
+		// BG Gizmos
 		var canvasRectInt = CanvasRect.ToIRect();
-		if (canvasRectInt.Overlaps(StageRect)) {
-			if (!OnlyShowBGInSprite.Value) {
-				if (ShowBackground.Value) {
-					// Color
-					Renderer.DrawPixel(canvasRectInt.Clamp(StageRect), CanvasBackgroundColor.Value, z: int.MinValue + 2);
-				} else {
-					// Checker
-					DrawCheckerBoard(canvasRectInt, new Int2(STAGE_SIZE, STAGE_SIZE), precise: true);
+		if (ShowCheckerBoard.Value && Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) {
+			// Checker Board
+			var rect = StageRect;
+			int sizeX = canvasRectInt.width / 16;
+			int sizeY = canvasRectInt.height / 16;
+			int countX = (rect.width / PixelStageSize).CeilDivide(32);
+			int countY = (rect.height / PixelStageSize).CeilDivide(32);
+			countX++;
+			countY++;
+			rect.x = (rect.x - canvasRectInt.x).UDivide(sizeX) * sizeX + canvasRectInt.x;
+			rect.y = (rect.y - canvasRectInt.y).UDivide(sizeY) * sizeY + canvasRectInt.y;
+			for (int x = 0; x < countX; x++) {
+				int globalX = x * sizeX + rect.x;
+				for (int y = 0; y < countY; y++) {
+					int globalY = y * sizeY + rect.y;
+					var cell = Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, z: int.MinValue + 2);
+					Util.ClampCell(cell, StageRect);
 				}
-			} else {
-				// Axis Frame
-				DrawFrame(canvasRectInt, Skin.GizmosNormal.WithNewA(96), GizmosThickness, z: int.MinValue + 2);
 			}
 		}
 
-		// Content
+		// Sprite Content
 		using var _sheet = Scope.Sheet(-1);
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spriteData = StagedSprites[i];
@@ -416,27 +399,18 @@ public partial class PixelEditor : WindowUI {
 			var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
 			if (outside) continue;
 
-			if (OnlyShowBGInSprite.Value) {
-				// Draw Shadow
-				Renderer.Draw(
-					BuiltInSprite.SHADOW_LINE_16,
-					rect.EdgeOutside(Direction4.Down, PixelStageSize),
-					color: Color32.BLACK_64,
-					z: int.MinValue + 1
-				);
-				// Draw BG
-				if (ShowBackground.Value) {
-					Renderer.DrawPixel(rect, CanvasBackgroundColor.Value, z: int.MinValue + 2);
-				} else {
-					DrawCheckerBoard(rect, sprite.PixelRect.size);
-				}
-			}
+			// Draw Shadow
+			Renderer.Draw(
+				BuiltInSprite.SHADOW_LINE_16,
+				rect.EdgeOutside(Direction4.Down, PixelStageSize),
+				color: Color32.BLACK_64,
+				z: int.MinValue + 1
+			);
 
 			// Draw Sprite
 			DrawSheetSprite(sprite, rect);
 
 		}
-
 
 	}
 
@@ -513,6 +487,33 @@ public partial class PixelEditor : WindowUI {
 
 		bool allowHighlight = DraggingStateLeft == DragStateLeft.None && DraggingStateRight == DragStateRight.None;
 		using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
+
+		// Axis
+		if (ShowAxis.Value) {
+			using var _ = Scope.GUIContentColor(Color32.WHITE_128);
+			var tint = Skin.GizmosNormal.WithNewA(128);
+			var canvasRectInt = CanvasRect.ToIRect();
+			GUI.DrawAxis(
+				canvasRectInt.position, canvasRectInt.size, new(32, 32), 16,
+				GizmosThickness, 
+				Util.Min(Unify(20), PixelStageSize * 2),
+				z: int.MinValue + 3,
+				colorX: tint,
+				colorY: tint,
+				clampRect: StageRect,
+				labelHeight: 0
+			);
+			// U
+			var xRect = canvasRectInt.EdgeInside(Direction4.Up, GizmosThickness);
+			if (xRect.Overlaps(StageRect)) {
+				Renderer.DrawPixel(xRect.Clamp(StageRect), tint, z: int.MinValue + 3);
+			}
+			// R
+			var yRect = canvasRectInt.EdgeInside(Direction4.Right, GizmosThickness);
+			if (yRect.Overlaps(StageRect)) {
+				Renderer.DrawPixel(yRect.Clamp(StageRect), tint, z: int.MinValue + 3);
+			}
+		}
 
 		// Pixel Selection
 		if (PixelSelectionPixelRect != default) {
@@ -771,6 +772,28 @@ public partial class PixelEditor : WindowUI {
 				SetZoom(10, Input.MouseGlobalPosition);
 			}
 
+		}
+
+	}
+
+
+	private void Update_View () {
+
+		if (Sheet.Atlas.Count <= 0) return;
+		if (!Interactable) return;
+
+		// Move
+		if (
+			(Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
+			(Input.MouseLeftButtonHolding && Input.KeyboardHolding(KeyboardKey.Space) && StageRect.Contains(Input.MouseLeftDownGlobalPosition))
+		) {
+			var delta = Input.MouseGlobalPositionDelta;
+			CanvasRect = CanvasRect.Shift(delta.x, delta.y);
+		}
+
+		// Zoom
+		if (StageRect.MouseInside() && Input.MouseWheelDelta != 0) {
+			SetZoom(ZoomLevel + Input.MouseWheelDelta, Input.MouseGlobalPosition);
 		}
 
 	}
@@ -1160,35 +1183,6 @@ public partial class PixelEditor : WindowUI {
 				size, size
 			), texture, inverse: true
 		);
-	}
-
-
-	private void DrawCheckerBoard (IRect rect, Int2 pixelSize, bool precise = false) {
-		if (!Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) return;
-		var clampRect = rect;
-		var canvasRectInt = CanvasRect.ToIRect();
-		int sizeX = canvasRectInt.width / 16;
-		int sizeY = canvasRectInt.height / 16;
-		int countX = pixelSize.x.CeilDivide(32);
-		int countY = pixelSize.y.CeilDivide(32);
-		if (!precise) {
-			countX++;
-			countY++;
-			rect.x = (rect.x - canvasRectInt.x).UDivide(sizeX) * sizeX + canvasRectInt.x;
-			rect.y = (rect.y - canvasRectInt.y).UDivide(sizeY) * sizeY + canvasRectInt.y;
-		}
-		for (int x = 0; x < countX; x++) {
-			int globalX = x * sizeX + rect.x;
-			if (globalX < StageRect.x - sizeX) continue;
-			if (globalX > StageRect.xMax) break;
-			for (int y = 0; y < countY; y++) {
-				int globalY = y * sizeY + rect.y;
-				if (globalY < StageRect.y - sizeY) continue;
-				if (globalY > StageRect.yMax) break;
-				var cell = Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, z: int.MinValue + 2);
-				Util.ClampCell(cell, clampRect);
-			}
-		}
 	}
 
 

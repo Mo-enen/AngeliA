@@ -32,7 +32,8 @@ public partial class PixelEditor {
 
 	// Sprite
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
-	private static readonly SpriteCode ICON_SHOW_BG = "Icon.ShowBackground";
+	private static readonly SpriteCode ICON_SHOW_CHECKER = "Icon.ShowCheckerBoard";
+	private static readonly SpriteCode ICON_SHOW_AXIS = "Icon.Axis";
 	private static readonly SpriteCode ICON_TRIGGER_ON = "Icon.TriggerOn";
 	private static readonly SpriteCode ICON_TRIGGER_OFF = "Icon.TriggerOff";
 	private static readonly SpriteCode ICON_TRIGGER_MIX = "Icon.TriggerMix";
@@ -53,7 +54,8 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_ATLAS_TYPE = ("Tip.AtlasType", "Type of the opening atlas");
 	private static readonly LanguageCode TIP_PAINTING_COLOR = ("Tip.PaintingColor", "Current painting color");
 	private static readonly LanguageCode TIP_PALETTE = ("Tip.Palette", "Create a sprite for palette");
-	private static readonly LanguageCode TIP_SHOW_BG = ("Tip.ShowBG", "Show background");
+	private static readonly LanguageCode TIP_SHOW_CHECKER = ("Tip.ShowCheckerBoard", "Show Checker Board");
+	private static readonly LanguageCode TIP_SHOW_AXIS = ("Tip.ShowAxis", "Show Axis");
 	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset camera");
 	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete sprite");
 	private static readonly LanguageCode TIP_ENABLE_BORDER = ("Tip.EnableBorder", "Enable borders");
@@ -160,9 +162,14 @@ public partial class PixelEditor {
 			RequireTooltip(CreateSpriteBigButtonRect, TIP_CREATE_SPRITE);
 		}
 
-		// Show BG
-		ShowBackground.Value = GUI.ToggleButton(rect, ShowBackground.Value, ICON_SHOW_BG, Skin.SmallDarkButton);
-		RequireTooltip(rect, TIP_SHOW_BG);
+		// Show Checker Board
+		ShowCheckerBoard.Value = GUI.ToggleButton(rect, ShowCheckerBoard.Value, ICON_SHOW_CHECKER, Skin.SmallDarkButton);
+		RequireTooltip(rect, TIP_SHOW_CHECKER);
+		rect.SlideRight(padding);
+
+		// Show Axis
+		ShowAxis.Value = GUI.ToggleButton(rect, ShowAxis.Value, ICON_SHOW_AXIS, Skin.SmallDarkButton);
+		RequireTooltip(rect, TIP_SHOW_AXIS);
 		rect.SlideRight(padding);
 
 		// Reset Camera

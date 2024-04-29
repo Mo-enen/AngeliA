@@ -30,6 +30,7 @@ public static class GUI {
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
 	private static readonly IntToChars IntDialToChars = new();
+	private static readonly IntToChars AxisLabalToChars = new();
 	private static readonly char[] TimingChars = new char[12]; // 99+°59'59"59
 	private static int BeamIndex = 0;
 	private static int BeamLength = 0;
@@ -1160,6 +1161,71 @@ public static class GUI {
 
 
 	public static bool EndChangeCheck () => CheckingContentVersion != ContentVersion;
+
+
+	public static void DrawAxis (Int2 position, Int2 length, Int2 stepCount, int stepNumberGap, int thickness, int stepThickness, int z, Color32 colorX, Color32 colorY, int labelHeight = 0, GUIStyle labelStyle = null, IRect clampRect = default) {
+
+		var rect = new IRect(position, length);
+		IRect stepRect = default;
+		var stepLabelRect = new IRect(0, 0, 1, labelHeight);
+		int labelPadding = labelHeight / 4;
+		labelStyle ??= Skin.AutoDarkLabel;
+
+		// X
+		var xRect = rect.EdgeInside(Direction4.Down, thickness);
+		if (clampRect.width > 0) xRect = xRect.Clamp(clampRect);
+		Renderer.DrawPixel(xRect, color: colorX, z: z);
+		if (stepCount.x > 1) {
+			int stepLengthX = length.x / stepCount.x;
+			float f_stepLenX = (float)length.x / stepCount.x;
+			int stepL = (xRect.x - position.x).UDivide(stepLengthX) * stepLengthX + position.x;
+			int stepR = rect.xMax;
+			if (clampRect.width > 0) stepR = Util.Min(stepR, clampRect.xMax);
+			stepR = (stepR - position.x).UDivide(stepLengthX) * stepLengthX + position.x;
+			stepRect.width = thickness;
+			stepRect.height = stepThickness;
+			stepRect.y = xRect.yMin;
+			stepLabelRect.y = xRect.yMin;
+			int currentIndex = (stepL - position.x) / stepLengthX;
+			for (int i = stepL; i < stepR && currentIndex <= stepCount.x; currentIndex++) {
+				i = position.x + (currentIndex * f_stepLenX).RoundToInt() - thickness / 2;
+				stepRect.x = i;
+				stepLabelRect.x = i + labelPadding;
+				Renderer.DrawPixel(stepRect, color: colorX, z: z);
+				if (labelHeight > 0) {
+					Label(stepLabelRect, AxisLabalToChars.GetChars(currentIndex * stepNumberGap), labelStyle);
+				}
+			}
+		}
+
+		// Y
+		var yRect = rect.EdgeInside(Direction4.Left, thickness);
+		if (clampRect.height > 0) yRect = yRect.Clamp(clampRect);
+		Renderer.DrawPixel(yRect, color: colorY, z: z);
+		if (stepCount.y > 1) {
+			int stepLengthY = length.y / stepCount.y;
+			float f_stepLenY = (float)length.y / stepCount.y;
+			int stepD = (yRect.y - position.y).UDivide(stepLengthY) * stepLengthY + position.y;
+			int stepU = rect.yMax;
+			if (clampRect.height > 0) stepU = Util.Min(stepU, clampRect.yMax);
+			stepU = (stepU - position.y).UDivide(stepLengthY) * stepLengthY + position.y;
+			stepRect.width = stepThickness;
+			stepRect.height = thickness;
+			stepRect.x = yRect.xMin;
+			stepLabelRect.x = yRect.xMin + labelPadding;
+			int currentIndex = (stepD - position.y) / stepLengthY;
+			for (int j = stepD; j < stepU && currentIndex <= stepCount.y; currentIndex++) {
+				j = position.y + (currentIndex * f_stepLenY).RoundToInt() - thickness / 2;
+				stepRect.y = j;
+				stepLabelRect.y = j + labelPadding;
+				Renderer.DrawPixel(stepRect, color: colorY, z: z);
+				if (labelHeight > 0 && currentIndex > 0) {
+					Label(stepLabelRect, AxisLabalToChars.GetChars(currentIndex * stepNumberGap), labelStyle);
+				}
+			}
+		}
+
+	}
 
 
 	#endregion
