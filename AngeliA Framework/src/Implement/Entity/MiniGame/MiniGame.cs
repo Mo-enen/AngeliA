@@ -80,6 +80,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	);
 	protected bool IsPlaying => Task.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
 	protected virtual LanguageCode[] BadgeHints { get; } = null;
+	protected GUISkin Skin { get; private set; }
 
 	// Data
 	private readonly BadgesSaveData Badges = null;
@@ -113,6 +114,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Skin = GUI.Skin;
 	}
 
 

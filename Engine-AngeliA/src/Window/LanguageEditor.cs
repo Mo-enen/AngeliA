@@ -122,7 +122,7 @@ public partial class LanguageEditor : WindowUI {
 	private void Update_Bar (IRect panelRect) {
 
 		// BG
-		Renderer.DrawPixel(panelRect, Skin.Background_Panel, 0);
+		Renderer.DrawPixel(panelRect, Skin.BackgroundPanel, 0);
 
 		// Shift Panel Rect
 		int labelHeight = panelRect.height - Unify(42);
@@ -210,7 +210,7 @@ public partial class LanguageEditor : WindowUI {
 		int itemHeight = Unify(36);
 		if (panelRect.height <= itemHeight) return;
 
-		Renderer.DrawPixel(panelRect, Skin.Background_Panel, 0);
+		Renderer.DrawPixel(panelRect, Skin.BackgroundPanel, 0);
 
 		int scrollBarWidth = Unify(16);
 		int labelHeight = Unify(22);
@@ -436,7 +436,7 @@ public partial class LanguageEditor : WindowUI {
 			BuiltInText.UI_CANCEL,
 			Const.EmptyMethod
 		);
-		GenericDialogUI.SetItemTint(Color32.RED_BETTER, Color32.GREY_245);
+		GenericDialogUI.SetItemTint(Skin.DeleteTint, Color32.GREY_245);
 	}
 
 

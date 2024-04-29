@@ -310,7 +310,7 @@ public class MiniGameSpaceBall : MiniGame {
 			rect.x = windowRect.CenterX() - buttonWidth - labelWidth - slashWidth / 2;
 			if (
 				CurrentLevel.Value > 0 &&
-				GUI.Button(rect, LABEL_PREV_LEVEL, GUISkin.SmallDarkButton)
+				GUI.Button(rect, LABEL_PREV_LEVEL, Skin.SmallDarkButton)
 			) {
 				LoadLevel(CurrentLevel.Value - 1);
 			}
@@ -318,31 +318,31 @@ public class MiniGameSpaceBall : MiniGame {
 
 			// Level Label
 			rect.width = labelWidth;
-			GUI.Label(rect, LevelIndexToChars.GetChars(CurrentLevel.Value + 1), GUISkin.LargeCenterLabel);
+			GUI.Label(rect, LevelIndexToChars.GetChars(CurrentLevel.Value + 1), Skin.LargeCenterLabel);
 			rect.SlideRight();
 
 			// Label /
 			rect.width = slashWidth;
-			GUI.Label(rect, "/", GUISkin.LargeCenterLabel);
+			GUI.Label(rect, "/", Skin.LargeCenterLabel);
 			rect.SlideRight();
 
 			// Level Count Label
 			rect.width = labelWidth;
-			GUI.Label(rect, LevelCountToChars.GetChars(Levels.Length), GUISkin.LargeCenterLabel);
+			GUI.Label(rect, LevelCountToChars.GetChars(Levels.Length), Skin.LargeCenterLabel);
 			rect.SlideRight();
 
 			// Next Button
 			rect.width = buttonWidth;
 			if (
 				CurrentLevel.Value < UnlockedLevel.Value &&
-				GUI.Button(rect, LABEL_NEXT_LEVEL, GUISkin.SmallDarkButton)
+				GUI.Button(rect, LABEL_NEXT_LEVEL, Skin.SmallDarkButton)
 			) {
 				LoadLevel(CurrentLevel.Value + 1);
 			}
 
 			// Reset
 			rect = windowRect.CornerInside(Alignment.TopRight, buttonWidth, buttonHeight);
-			if (GUI.Button(rect, BuiltInText.UI_RESTART, GUISkin.SmallDarkButton)) {
+			if (GUI.Button(rect, BuiltInText.UI_RESTART, Skin.SmallDarkButton)) {
 				LoadLevel(CurrentLevel.Value);
 			}
 

@@ -53,7 +53,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AngeliA Runtime\AngeliA Runtime.csproj" />
+		<ProjectReference Include="..\AngeliA Raylib\AngeliA Raylib.csproj" />
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->

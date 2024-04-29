@@ -114,6 +114,10 @@ public sealed partial class MapEditor : WindowUI {
 		get => s_ShowState.Value;
 		set => s_ShowState.Value = value;
 	}
+	public bool ShowBehind {
+		get => s_ShowBehind.Value;
+		set => s_ShowBehind.Value = value;
+	}
 	public override IRect BackgroundRect => default;
 
 	// Pools
@@ -172,6 +176,7 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly SavingBool s_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
 	private static readonly SavingBool s_AutoZoom = new("MapEditor.AutoZoom", true);
 	private static readonly SavingBool s_ShowState = new("MapEditor.ShowState", false);
+	private static readonly SavingBool s_ShowBehind = new("MapEditor.ShowBehind", true);
 
 
 	#endregion
@@ -880,16 +885,66 @@ public sealed partial class MapEditor : WindowUI {
 
 		if (IsPlaying) return;
 
-		var cameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - Renderer.CameraRect.x, 0, 0, 0);
+		var cameraRect = Renderer.CameraRect;
+		var fixedCameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - Renderer.CameraRect.x, 0, 0, 0);
 
+		// Behind
+		if (s_ShowBehind.Value) {
+			using var _ = Scope.RendererLayer(RenderLayer.BEHIND);
+			var behindCameraRect = cameraRect.ScaleFrom(Game.WorldBehindParallax, cameraRect.CenterX(), cameraRect.CenterY());
+			int blockSize = Const.CEL * 1000 / Game.WorldBehindParallax;
+
+			int z = CurrentZ + 1;
+			int left = behindCameraRect.xMin.ToUnit() - 1;
+			int right = behindCameraRect.xMax.ToUnit() + 1;
+			int down = behindCameraRect.yMin.ToUnit() - 1;
+			int up = behindCameraRect.yMax.ToUnit() + 1;
+
+			// BG
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
+					if (id == 0) continue;
+					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, false);
+				}
+			}
+
+			// Level
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
+					if (id == 0) continue;
+					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, false);
+				}
+			}
+
+			// Entity
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
+					if (id == 0) continue;
+					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, true);
+				}
+			}
+
+			// Unique
+			for (int y = down; y <= up; y++) {
+				for (int x = left; x <= right; x++) {
+					if (!IUnique.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
+					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, true);
+				}
+			}
+
+		}
+
+		// Current
 		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
 
-
 			int z = CurrentZ;
-			int left = cameraRect.xMin.ToUnit() - 1;
-			int right = cameraRect.xMax.ToUnit() + 1;
-			int down = cameraRect.yMin.ToUnit() - 1;
-			int up = cameraRect.yMax.ToUnit() + 1;
+			int left = fixedCameraRect.xMin.ToUnit() - 1;
+			int right = fixedCameraRect.xMax.ToUnit() + 1;
+			int down = fixedCameraRect.yMin.ToUnit() - 1;
+			int up = fixedCameraRect.yMax.ToUnit() + 1;
 			int index = 0;
 			int blinkCountDown = RequireWorldRenderBlinkIndex + 1;
 			int unusedCellCount = Renderer.GetLayerCapacity(Renderer.CurrentLayerIndex) - Renderer.GetUsedCellCount();
@@ -930,7 +985,7 @@ public sealed partial class MapEditor : WindowUI {
 				}
 			}
 
-			// Global Pos
+			// Unique
 			for (int y = down; y <= up; y++) {
 				for (int x = left; x <= right; x++) {
 					if (!IUnique.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
@@ -956,6 +1011,7 @@ public sealed partial class MapEditor : WindowUI {
 			bool requireRepaint = RequireWorldRenderBlinkIndex > 0;
 			RequireWorldRenderBlinkIndex = -1;
 			if (requireRepaint) Update_RenderWorld();
+
 			return;
 
 			_REQUIRE_BLINK_:;
@@ -1339,6 +1395,40 @@ public sealed partial class MapEditor : WindowUI {
 	private void DrawBlock (int id, int unitX, int unitY) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		Renderer.Draw(id, rect);
+	}
+
+
+	private void DrawBlockBehind (IRect cameraRect, IRect paraCameraRect, int blockSize, int id, int unitX, int unitY, bool fixRatio) {
+
+		var rect = new IRect(
+			Util.RemapUnclamped(paraCameraRect.xMin, paraCameraRect.xMax, cameraRect.xMin, cameraRect.xMax, unitX * Const.CEL),
+			Util.RemapUnclamped(paraCameraRect.yMin, paraCameraRect.yMax, cameraRect.yMin, cameraRect.yMax, unitY * Const.CEL),
+			blockSize, blockSize
+		);
+
+		if (
+			!Renderer.TryGetSprite(id, out var sprite) &&
+			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
+		) return;
+
+		if (
+			fixRatio &&
+			(sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL)
+		) {
+			int width = sprite.GlobalWidth * rect.width / Const.CEL;
+			int height = sprite.GlobalHeight * rect.height / Const.CEL;
+			rect.x -= Util.RemapUnclamped(0, 1000, 0, width - rect.width, sprite.PivotX);
+			rect.y -= Util.RemapUnclamped(0, 1000, 0, height - rect.height, sprite.PivotY);
+			rect.width = width;
+			rect.height = height;
+		}
+		var tint = Color32.LerpUnclamped(
+			Sky.SkyTintBottomColor, Sky.SkyTintTopColor,
+			Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
+		);
+
+		tint.a = Game.WorldBehindAlpha;
+		Renderer.Draw(sprite, rect, tint, 0);
 	}
 
 

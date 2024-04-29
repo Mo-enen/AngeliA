@@ -27,7 +27,6 @@ public partial class PixelEditor : WindowUI {
 
 
 	private class SpriteData {
-		public AngeSprite Sprite;
 		public bool PixelDirty {
 			get => _PixelDirty;
 			set {
@@ -35,9 +34,10 @@ public partial class PixelEditor : WindowUI {
 				_PixelDirty = value;
 			}
 		}
+		public AngeSprite Sprite;
+		public IRect DraggingStartRect;
 		public bool Selecting;
 		public bool SelectingPalette;
-		public IRect DraggingStartRect;
 		private bool _PixelDirty;
 		public SpriteData (AngeSprite sprite) {
 			Sprite = sprite;
@@ -400,12 +400,14 @@ public partial class PixelEditor : WindowUI {
 			if (outside) continue;
 
 			// Draw Shadow
-			Renderer.Draw(
-				BuiltInSprite.SHADOW_LINE_16,
-				rect.EdgeOutside(Direction4.Down, PixelStageSize),
-				color: Color32.BLACK_64,
-				z: int.MinValue + 1
-			);
+			if (DraggingStateLeft == DragStateLeft.None) {
+				Renderer.Draw(
+					BuiltInSprite.SHADOW_LINE_16,
+					rect.EdgeOutside(Direction4.Down, PixelStageSize),
+					color: Color32.BLACK_64,
+					z: int.MinValue + 1
+				);
+			}
 
 			// Draw Sprite
 			DrawSheetSprite(sprite, rect);
@@ -495,7 +497,7 @@ public partial class PixelEditor : WindowUI {
 			var canvasRectInt = CanvasRect.ToIRect();
 			GUI.DrawAxis(
 				canvasRectInt.position, canvasRectInt.size, new(32, 32), 16,
-				GizmosThickness, 
+				GizmosThickness,
 				Util.Min(Unify(20), PixelStageSize * 2),
 				z: int.MinValue + 3,
 				colorX: tint,

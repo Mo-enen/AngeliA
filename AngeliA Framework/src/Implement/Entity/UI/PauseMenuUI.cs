@@ -49,6 +49,7 @@ public class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_MEDT_AUTO_ZOOM = ("Menu.MEDTSetting.AutoZoom", "Auto Zoom");
 	private static readonly LanguageCode MENU_MEDT_PLAYER_DROP = ("Menu.MEDTSetting.PlayerDrop", "Quick Player Drop");
 	private static readonly LanguageCode MENU_MEDT_STATE = ("Menu.MEDTSetting.ShowState", "Show State Info");
+	private static readonly LanguageCode MENU_MEDT_BEHIND = ("Menu.MEDTSetting.ShowBehind", "Show Map Behind");
 	private static readonly LanguageCode MENU_EDITOR_QUIT = ("Menu.WindowEditor.Quit", "Quit Editing");
 	private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
 		($"UI.GameKey.{Gamekey.Left}", "Left"),
@@ -133,7 +134,7 @@ public class PauseMenuUI : MenuUI {
 			RefreshAnimation();
 		}
 		Interactable = (Mode != MenuMode.Setter_Gamepad && Mode != MenuMode.Setter_Keyboard) || RecordingKey < 0;
-		
+
 		ControlHintUI.ForceShowHint();
 
 		base.LateUpdate();
@@ -365,6 +366,14 @@ public class PauseMenuUI : MenuUI {
 				mapEditor.ShowState ? BuiltInText.UI_ON : BuiltInText.UI_OFF
 			)) {
 				mapEditor.ShowState = !mapEditor.ShowState;
+			}
+
+			// Show Behind
+			if (DrawItem(
+				MENU_MEDT_BEHIND,
+				mapEditor.ShowBehind ? BuiltInText.UI_ON : BuiltInText.UI_OFF
+			)) {
+				mapEditor.ShowBehind = !mapEditor.ShowBehind;
 			}
 		}
 

@@ -108,7 +108,7 @@ public class MiniGameTetris : MiniGame {
 	private readonly int[,] StagedBlocks = new int[WIDTH, HEIGHT];
 	private readonly int[] SevenBag = { 0, 1, 2, 3, 4, 5, 6 };
 	private readonly IntToChars LinesString = new();
-	private static readonly GUIStyle LineLabelStyle = new(GUISkin.Label) { Alignment = Alignment.MidRight };
+	private static readonly GUIStyle LineLabelStyle = new(GUI.Skin.Label) { Alignment = Alignment.MidRight };
 	private System.Random BagRandom = new();
 	private bool GameOver = false;
 	private bool HoldAvailable = true;

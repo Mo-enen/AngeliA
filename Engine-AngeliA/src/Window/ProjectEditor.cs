@@ -136,7 +136,7 @@ public class ProjectEditor : WindowUI {
 		int padding = Unify(6);
 		rect.yMin = rect.yMax - Unify(32);
 		var info = CurrentProject.Universe.Info;
-		int labelWidth = Unify(GUI.LabelWidth);
+		int labelWidth = Unify(GUI.LabelUnitWidth);
 
 		// Product Name
 		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);

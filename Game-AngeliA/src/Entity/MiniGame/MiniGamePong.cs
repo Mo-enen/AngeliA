@@ -42,7 +42,7 @@ public class MiniGamePong : MiniGame {
 	// Data
 	private readonly IntToChars PlayerScoreString = new();
 	private readonly IntToChars BotScoreString = new();
-	private readonly GUIStyle ScoreStyle = new(GUISkin.LargeCenterLabel) {
+	private readonly GUIStyle ScoreStyle = new(GUI.Skin.LargeCenterLabel) {
 		Alignment = Alignment.MidMid,
 		CharSize = 80,
 	};

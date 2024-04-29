@@ -53,6 +53,7 @@ internal static class Engine {
 	private static readonly LanguageCode DELETE_PROJECT_MSG = ("UI.DeleteProjectMsg", "Remove project {0}?\nThis will NOT delete files in the disk.");
 	private static readonly LanguageCode MENU_SORT_BY_NAME = ("Menu.SortProjectByName", "Sort by Name");
 	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
+	private static readonly LanguageCode NOTI_THEME_LOADED = ("Noti.ThemeLoaded", "Theme Loaded");
 	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
 	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
 	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
@@ -75,7 +76,7 @@ internal static class Engine {
 	private static readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private static readonly List<ProjectData> Projects = new();
 	private static readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
-	private static readonly GUISkin ThemeSkin = new();
+	private static readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
 	private static IRect ToolLabelRect;
 	private static IRect LastHoveringToolLabelRect;
 	private static int HoveringTooltipDuration = 0;
@@ -153,10 +154,14 @@ internal static class Engine {
 		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
 
-		// Sheet
+		// Theme
 		UiSheetIndex = Renderer.AddAltSheet(ThemeSheet);
 
 	}
+
+
+	[OnGameFocused]
+	internal static void OnGameFocused () => SettingWindow.RequireReloadThemePath();
 
 
 	[OnGameTryingToQuit]
@@ -174,7 +179,7 @@ internal static class Engine {
 				BuiltInText.UI_QUIT, Game.QuitApplication,
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
-			GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+			GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
 		}
 		return false;
 		// Func
@@ -440,7 +445,7 @@ internal static class Engine {
 		using (Scope.RendererLayerUI()) {
 
 			// Tab BG
-			Renderer.DrawPixel(barRect, GUI.Skin.Background_Panel);
+			Renderer.DrawPixel(barRect, GUI.Skin.BackgroundDarkPanel);
 
 			// Menu
 			{
@@ -476,14 +481,14 @@ internal static class Engine {
 					Renderer.Draw_9Slice(
 						Const.PIXEL, rect,
 						bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-						Color32.GREY_32
+						GUI.Skin.HighlightColorWeak
 					);
 				} else if (hovering) {
 					// Hovering Highlight
 					Renderer.Draw_9Slice(
 						Const.PIXEL, rect,
 						bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-						Color32.GREY_20
+						GUI.Skin.HighlightColorWeak.WithNewA(128)
 					);
 				}
 				var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
@@ -597,13 +602,24 @@ internal static class Engine {
 			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
 		}
-		if (SettingWindow.RequireThemePath != null) {
-			if (!Util.FileExists(SettingWindow.RequireThemePath)) return;
-			if (ThemeSheet.LoadFromDisk(SettingWindow.RequireThemePath)) {
+
+		// Change Theme
+		if (SettingWindow.RequireChangeThemePath != null) {
+			string path = SettingWindow.RequireChangeThemePath;
+			SettingWindow.RequireChangeThemePath = null;
+			if (path != "" && Util.FileExists(path) && ThemeSheet.LoadFromDisk(path)) {
+				ThemeSkin.Name = Util.GetDisplayName(Util.GetNameWithoutExtension(path));
 				ThemeSkin.LoadColorFromSheet(ThemeSheet);
 			} else {
+				ThemeSheet.Clear();
+				ThemeSkin.Name = "Built-in";
 				ThemeSkin.LoadColorFromSkin(GUISkin.Default);
 			}
+			// Notify
+			NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
+			NotificationStartFrame = Game.GlobalFrame;
+			NotificationContent = NOTI_THEME_LOADED;
+			NotificationSubContent = ThemeSkin.Name;
 		}
 
 		// Building Project Tint
@@ -795,7 +811,7 @@ internal static class Engine {
 			BuiltInText.UI_DELETE, DeleteProject,
 			BuiltInText.UI_CANCEL, Const.EmptyMethod
 		);
-		GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+		GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
 	}
 
 

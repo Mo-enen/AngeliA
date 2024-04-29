@@ -7,11 +7,15 @@ namespace AngeliA;
 public partial class GUISkin {
 
 
+	public Color32 DeleteTint = Color32.RED_BETTER;
+
 	public Color32 HighlightColor = Color32.GREEN;
 	public Color32 HighlightColorAlt = Color32.GREEN_DARK;
-
+	public Color32 HighlightColorWeak = Color32.GREY_32;
+	
 	public Color32 Background = Color32.GREY_38;
-	public Color32 Background_Panel = Color32.GREY_20;
+	public Color32 BackgroundPanel = Color32.GREY_20;
+	public Color32 BackgroundDarkPanel = Color32.BLACK;
 
 	public Color32 GizmosNormal = Color32.BLACK;
 	public Color32 GizmosSelecting = Color32.WHITE;

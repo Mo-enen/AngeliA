@@ -119,7 +119,7 @@ public partial class PixelEditor {
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 
 		// BG
-		Renderer.DrawPixel(toolbarRect, Skin.Background_Panel);
+		Renderer.DrawPixel(toolbarRect, Skin.BackgroundPanel);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
 
@@ -522,7 +522,7 @@ public partial class PixelEditor {
 		if (!OpeningTilingRuleEditor || SelectingSpriteCount == 0) return;
 
 		// BG
-		Renderer.DrawPixel(RuleEditorRect, Skin.Background_Panel);
+		Renderer.DrawPixel(RuleEditorRect, Skin.BackgroundPanel);
 
 		var panelRect = RuleEditorRect.Shrink(Unify(8));
 		int pageBarHeight = (panelRect.height - panelRect.width) / 2;

@@ -52,7 +52,7 @@ public partial class PixelEditor {
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 
 		// BG
-		Renderer.DrawPixel(panelRect, Skin.Background_Panel);
+		Renderer.DrawPixel(panelRect, Skin.BackgroundPanel);
 		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_HEIGHT));
 
 		// Rename Hotkey
@@ -268,7 +268,7 @@ public partial class PixelEditor {
 				BuiltInText.UI_DELETE, DeleteAtlas,
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
-			GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+			GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
 		}
 		static void DeleteAtlas () {
 			var atlasList = Sheet.Atlas;

@@ -155,8 +155,8 @@ public class Scope : System.IDisposable {
 	public static Scope GUILabelWidth (int width) {
 		var result = GUILabelWidthInstance.Start();
 		if (result == null) return EmptyScope;
-		result.IntData = GUI.LabelWidth;
-		GUI.LabelWidth = width;
+		result.IntData = GUI.LabelUnitWidth;
+		GUI.LabelUnitWidth = width;
 		return result;
 	}
 
@@ -228,7 +228,7 @@ public class Scope : System.IDisposable {
 				break;
 
 			case var _ when Group == GUILabelWidthInstance:
-				GUI.LabelWidth = IntData;
+				GUI.LabelUnitWidth = IntData;
 				break;
 
 			case var _ when Group == GUISkinInstance:

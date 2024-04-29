@@ -25,23 +25,26 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
+	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
+	private static readonly LanguageCode LABEL_THEME = ("Menu.Theme", "Theme");
 
 	// Api
+	public static string RequireChangeThemePath { get; set; } = null;
 	public override string DefaultName => "Setting";
 	public bool Changed { get; private set; } = false;
-	public string RequireThemePath { get; private set; } = null;
 	public bool OpenLastProjectOnStart { get; set; }
 	public bool UseTooltip { get; set; }
 	public bool UseNotification { get; set; }
-	public Color32 BackgroundColor { get; set; }
-	public Color32 BackgroundColor_Default { get; set; }
 	public bool SolidPaintingPreview { get; set; }
 	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
+	public Color32 BackgroundColor { get; set; }
+	public Color32 BackgroundColor_Default { get; set; }
 	public ColorF PixEditor_BackgroundColor { get; set; }
-	public ColorF PixEditor_CanvasBackgroundColor { get; set; }
 	public bool ShowLogTime { get; set; }
 
 	// Data
+	private static readonly List<(string path, string name)> ThemePaths = new();
+	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
 
@@ -112,6 +115,13 @@ public class SettingWindow : WindowUI {
 		);
 		rect.SlideDown(itemPadding);
 
+		// Theme
+		GUI.SmallLabel(rect, LABEL_THEME);
+		if (GUI.DarkButton(rect.ShrinkLeft(Unify(GUI.LabelUnitWidth)), Skin.Name)) {
+			ShowThemeMenu();
+		}
+		rect.SlideDown(itemPadding);
+
 	}
 
 
@@ -174,6 +184,17 @@ public class SettingWindow : WindowUI {
 
 
 
+	#region --- API ---
+
+
+	public void RequireReloadThemePath () => RequiringReloadThemePath = true;
+
+
+	#endregion
+
+
+
+
 	#region --- LGC ---
 
 
@@ -194,6 +215,40 @@ public class SettingWindow : WindowUI {
 		box.Width = boxRight - boxLeft + boxPadding * 2 + labelOffset;
 		box.Height = boxTop - rect.yMax + boxPadding * 2;
 		rect.y -= Unify(24);
+	}
+
+
+	private void ShowThemeMenu () {
+
+		// Reload
+		if (RequiringReloadThemePath) {
+			RequiringReloadThemePath = false;
+			ThemePaths.Clear();
+			string themeFolder = Util.CombinePaths(UniverseSystem.BuiltInUniverse.UniverseRoot, "Theme");
+			if (!Util.FolderExists(themeFolder)) return;
+			foreach (var path in Util.EnumerateFiles(themeFolder, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+				ThemePaths.Add((path, Util.GetDisplayName(Util.GetNameWithoutExtension(path))));
+			}
+		}
+
+		// Show Menu
+		GenericPopupUI.BeginPopup();
+		GenericPopupUI.AddItem(LABEL_THEME_BUILT_IN, MenuInvoked, @checked: GUI.Skin.Name == "Built-in");
+		foreach (var (path, name) in ThemePaths) {
+			GenericPopupUI.AddItem(name, MenuInvoked, @checked: GUI.Skin.Name == name);
+		}
+
+		// Func
+		static void MenuInvoked () {
+			int index = GenericPopupUI.Instance.InvokingItemIndex;
+			if (index <= 0) {
+				// Built In
+				RequireChangeThemePath = "";
+			} else if (ThemePaths.Count > 0) {
+				// Custom
+				RequireChangeThemePath = ThemePaths[(index - 1).Clamp(0, ThemePaths.Count - 1)].path;
+			}
+		}
 	}
 
 

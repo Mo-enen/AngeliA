@@ -24,7 +24,7 @@ public static class GUI {
 	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
-	public static int LabelWidth { get; set; } = 196;
+	public static int LabelUnitWidth { get; set; } = 196;
 	public static GUISkin Skin { get; set; } = GUISkin.Default;
 
 	// Data
@@ -483,7 +483,7 @@ public static class GUI {
 		markStyle ??= Skin.ToggleMark;
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			int labelWidth = Unify(LabelWidth);
+			int labelWidth = Unify(LabelUnitWidth);
 			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
 			rect = rect.Shrink(labelWidth, 0, 0, 0);
 		}
@@ -835,7 +835,7 @@ public static class GUI {
 		int oldValue = value;
 		// Label
 		if (label != null) {
-			int labelWidth = Unify(LabelWidth);
+			int labelWidth = Unify(LabelUnitWidth);
 			labelStyle ??= Skin.Label;
 			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
 			rect = rect.ShrinkLeft(labelWidth);
@@ -949,7 +949,7 @@ public static class GUI {
 		// Label
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			int labelWidth = Unify(LabelWidth);
+			int labelWidth = Unify(LabelUnitWidth);
 			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
 			rect = rect.Shrink(labelWidth, 0, 0, 0);
 		}

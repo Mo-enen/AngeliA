@@ -6,9 +6,8 @@ namespace AngeliA;
 public partial class GUISkin {
 
 
-	public static readonly GUISkin Default = new() { Readonly = true };
-	public bool Readonly = false;
-
+	public static readonly GUISkin Default = new() { Name = "Built-in" };
+	public string Name = "";
 
 	// Misc
 	public readonly GUIStyle HighlightPixel = new() {
@@ -73,8 +72,8 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_TOGGLE_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_TOGGLE,
 		ContentShift = new(0, Const.ART_SCALE * 2),
-		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
 		ContentShiftHover = new(0, Const.ART_SCALE * 2),
+		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
 	};
 
@@ -83,9 +82,6 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_TOGGLE_MARK,
 		BodySpriteDown = BuiltInSprite.UI_TOGGLE_MARK,
 		BodySpriteDisable = BuiltInSprite.UI_TOGGLE_MARK,
-		ContentShift = new(0, Const.ART_SCALE * 2),
-		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
-		ContentShiftHover = new(0, Const.ART_SCALE * 2),
 	};
 
 
