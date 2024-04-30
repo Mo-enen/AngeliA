@@ -400,12 +400,12 @@ public partial class PixelEditor : WindowUI {
 			if (outside) continue;
 
 			// Draw Shadow
-			if (DraggingStateLeft == DragStateLeft.None) {
+			if (DraggingStateLeft != DragStateLeft.ResizeSlice || ResizingStageIndex != i || ResizeForBorder) {
 				Renderer.Draw(
 					BuiltInSprite.SHADOW_LINE_16,
 					rect.EdgeOutside(Direction4.Down, PixelStageSize),
 					color: Color32.BLACK_64,
-					z: int.MinValue + 1
+					z: int.MinValue + 3
 				);
 			}
 

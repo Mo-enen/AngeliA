@@ -97,8 +97,10 @@ public partial class PixelEditor {
 	private bool SelectingAnySpriteWithoutBorder;
 	private bool OpeningTilingRuleEditor = false;
 	private bool? TilingRuleModeA = true;
+	private bool FoldingColorField = true;
 	private int RulePageIndex = 0;
 	private string SelectingSpriteTagLabel = null;
+	private string ColorFieldCode = "";
 	private IRect RuleEditorRect = default;
 	private IRect CreateSpriteBigButtonRect = default;
 	private ColorF PaintingColorF = new(0, 0, 0, 0);
@@ -200,20 +202,52 @@ public partial class PixelEditor {
 		RequireTooltip(rect, TIP_ATLAS_TYPE);
 		rect.SlideRight(padding);
 
-
-
-
-
-		// Color
-		rect.width = Util.Min(Unify(512), toolbarRect.xMax - rect.x);
-		if (rect.width > rect.height) {
-			rect.x = toolbarRect.xMax - rect.width;
-			var newColorF = GUI.HorizontalColorField(PaintingColorF, rect, alpha: true);
+		// Color Field
+		rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
+		if (rect.width >= rect.height) {
+			// Color Field
+			var newColorF = GUI.HorizontalColorField(
+				PaintingColorF, rect,
+				stepped: false, alpha: true, folded: FoldingColorField
+			);
 			if (newColorF != PaintingColorF) {
 				PaintingColorF = newColorF;
 				PaintingColor = newColorF.ToColor32();
+				if (!FoldingColorField) ColorFieldCode = Util.ColorToHtml(PaintingColor);
 			}
+			// Code Field
+			if (!FoldingColorField) {
+				var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
+				rect = rect.Expand(0, codeFieldRect.width, 0, 0);
+				ColorFieldCode = GUI.SmallInputField(
+					10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
+				);
+				if (confirm) {
+					if (Util.HtmlToColor(ColorFieldCode, out var newColor)) {
+						PaintingColor = newColor;
+						PaintingColorF = newColor.ToColorF();
+					}
+					ColorFieldCode = Util.ColorToHtml(PaintingColor);
+				}
+			}
+			// Hovering / Click
+			if (rect.MouseInside()) {
+				if (FoldingColorField) {
+					Cursor.SetCursorAsHand();
+					if (Input.MouseLeftButtonDown) {
+						FoldingColorField = false;
+						ColorFieldCode = Util.ColorToHtml(PaintingColor);
+					}
+				} else if (rect.EdgeInside(Direction4.Left, rect.height).MouseInside()) {
+					if (Input.MouseLeftButtonDown) FoldingColorField = true;
+					Cursor.SetCursorAsHand();
+				}
+			} else if (!FoldingColorField && Input.MouseLeftButtonDown) {
+				FoldingColorField = true;
+			}
+			// Final
 			RequireTooltip(rect, TIP_PAINTING_COLOR);
+			rect.SlideRight(padding);
 		}
 
 	}

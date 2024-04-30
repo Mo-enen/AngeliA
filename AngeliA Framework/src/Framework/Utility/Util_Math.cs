@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 
 
 namespace AngeliA;
@@ -176,6 +177,28 @@ public static partial class Util {
 
 	public static Color32 IntToColor (int i) => new((byte)(i >> 24), (byte)(i >> 16), (byte)(i >> 8), (byte)(i));
 	public static int ColorToInt (Color32 color) => color.r << 24 | color.g << 16 | color.b << 8 | color.a;
+
+
+	public static string ColorToHtml (Color32 color, bool ignoreAlpha = false) => ignoreAlpha ? $"#{color.r:X2}{color.g:X2}{color.b:X2}" : $"#{color.r:X2}{color.g:X2}{color.b:X2}{color.a:X2}";
+	public static bool HtmlToColor (string html, out Color32 color) {
+		color = default;
+		if (string.IsNullOrEmpty(html)) return false;
+		int offset = html[0] == '#' ? 1 : 0;
+		if (html.Length != offset + 8 && html.Length != offset + 6) return false;
+		try {
+			color.r = byte.Parse(html[(offset + 0)..(offset + 2)], System.Globalization.NumberStyles.HexNumber);
+			color.g = byte.Parse(html[(offset + 2)..(offset + 4)], System.Globalization.NumberStyles.HexNumber);
+			color.b = byte.Parse(html[(offset + 4)..(offset + 6)], System.Globalization.NumberStyles.HexNumber);
+			if (html.Length == offset + 8) {
+				color.a = byte.Parse(html[(offset + 6)..], System.Globalization.NumberStyles.HexNumber);
+			} else {
+				color.a = 255;
+			}
+			return true;
+		} catch {
+			return false;
+		}
+	}
 
 
 	private static readonly System.Data.DataTable DataTable = new();

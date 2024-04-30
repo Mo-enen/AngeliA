@@ -57,6 +57,7 @@ internal static class Engine {
 	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
 	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
 	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
+	private static readonly QuickMenu QuickMenu = new() { Active = false };
 	private static readonly PixelEditor PixelEditor = new();
 	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
 	private static readonly ItemEditor ItemEditor = new();
@@ -64,7 +65,7 @@ internal static class Engine {
 	private static readonly ProjectEditor ProjectEditor = new();
 	private static readonly SettingWindow SettingWindow = new();
 	private static readonly EntityUI[] ALL_UI = {
-		GenericPopup, GenericDialog, FileBrowser, // Generic
+		GenericPopup, GenericDialog, FileBrowser, QuickMenu, // Generic
 		PixelEditor, LanguageEditor, ItemEditor, Console, ProjectEditor, SettingWindow, // Window UI
 	};
 
@@ -571,6 +572,7 @@ internal static class Engine {
 		SettingWindow.ShowLogTime = Console.ShowLogTime.Value;
 
 		// Update UI
+		bool oldE = GUI.Enable;
 		foreach (var ui in ALL_UI) {
 			if (!ui.Active) continue;
 			GUI.Enable = interactable || ui is not WindowUI;
@@ -591,6 +593,7 @@ internal static class Engine {
 			GUI.Enable = interactable || ui is not WindowUI;
 			ui.LateUpdate();
 		}
+		GUI.Enable = oldE;
 
 		// Update Setting
 		if (SettingWindow.Changed) {
@@ -677,8 +680,10 @@ internal static class Engine {
 			}
 		}
 
-
-
+		// Ctrl + Space
+		if (ctrl && Input.KeyboardDown(KeyboardKey.Space) && !QuickMenu.Active) {
+			QuickMenu.Show();
+		}
 
 	}
 
