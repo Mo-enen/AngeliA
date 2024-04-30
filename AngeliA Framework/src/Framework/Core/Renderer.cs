@@ -57,7 +57,7 @@ public static class Renderer {
 
 	// Const
 	private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
-	public static readonly int[] DEFAULT_CAPACITY = new int[RenderLayer.COUNT] { 256, 8192, 4096, 16384, 256, 128, 128, 4096, };
+	private static readonly int[] DEFAULT_CAPACITY = new int[RenderLayer.COUNT] { 256, 8192, 4096, 16384, 256, 128, 128, 8192, };
 
 	// Event
 	public static event System.Action OnSheetLoaded;

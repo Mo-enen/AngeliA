@@ -862,9 +862,10 @@ public partial class PixelEditor {
 					int pixIndex = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					var oldPixel = sprite.Pixels[pixIndex];
 					sprite.Pixels[pixIndex] = Color32.CLEAR;
-					RegisterUndo(new PixelUndoItem() {
+					RegisterUndo(new IndexedPixelUndoItem() {
 						From = oldPixel,
 						To = Color32.CLEAR,
+						LocalPixelIndex = pixIndex,
 					});
 				}
 			}
@@ -951,9 +952,10 @@ public partial class PixelEditor {
 					var oldPixel = sprite.Pixels[index];
 					var newPixel = Util.MergeColor(buffer, oldPixel);
 					sprite.Pixels[index] = newPixel;
-					RegisterUndo(new PixelUndoItem() {
+					RegisterUndo(new IndexedPixelUndoItem() {
 						From = oldPixel,
 						To = newPixel,
+						LocalPixelIndex = index,
 					}, ignoreUndoStep);
 				}
 			}
@@ -997,9 +999,10 @@ public partial class PixelEditor {
 						var newPixel = Util.MergeColor(targetColor, oldPixel);
 						paintingSprite.Pixels[pIndex] = newPixel;
 						contentChanged = contentChanged || oldPixel.LookDifferent(newPixel);
-						RegisterUndo(new PixelUndoItem() {
+						RegisterUndo(new IndexedPixelUndoItem() {
 							From = oldPixel,
 							To = newPixel,
+							LocalPixelIndex = pIndex,
 						});
 					}
 				}
@@ -1011,9 +1014,10 @@ public partial class PixelEditor {
 						var oldPixel = paintingSprite.Pixels[pIndex];
 						paintingSprite.Pixels[pIndex] = Color32.CLEAR;
 						contentChanged = contentChanged || oldPixel.LookDifferent(Color32.CLEAR);
-						RegisterUndo(new PixelUndoItem() {
+						RegisterUndo(new IndexedPixelUndoItem() {
 							From = oldPixel,
 							To = Color32.CLEAR,
+							LocalPixelIndex = pIndex,
 						});
 					}
 				}
@@ -1225,9 +1229,10 @@ public partial class PixelEditor {
 						var oldPixel = sprite.Pixels[index];
 						sprite.Pixels[index] = Color32.CLEAR;
 						SetDirty();
-						RegisterUndo(new PixelUndoItem() {
+						RegisterUndo(new IndexedPixelUndoItem() {
 							From = oldPixel,
 							To = Color32.CLEAR,
+							LocalPixelIndex = index,
 						});
 					}
 				}

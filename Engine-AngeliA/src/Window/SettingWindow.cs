@@ -59,7 +59,6 @@ public class SettingWindow : WindowUI {
 
 	public override void UpdateWindowUI () {
 		int itemHeight = Unify(32);
-		using var _ = Scope.GUILabelWidth(384);
 		int extendedUISize = 1;
 		using (var scroll = Scope.GUIScroll(WindowRect, MasterScroll, 0, UIHeight)) {
 			MasterScroll = scroll.ScrollPosition;
@@ -67,6 +66,7 @@ public class SettingWindow : WindowUI {
 				Unify(96), Unify(96), Unify(42), Unify(42)
 			).EdgeInside(Direction4.Up, itemHeight);
 
+			using var _ = Scope.GUILabelWidth(Util.Min(Unify(384), rect.width / 2));
 			GUI.BeginChangeCheck();
 			DrawPanel(ref rect, 0);
 			DrawPanel(ref rect, 1);
@@ -117,7 +117,7 @@ public class SettingWindow : WindowUI {
 
 		// Theme
 		GUI.SmallLabel(rect, LABEL_THEME);
-		if (GUI.DarkButton(rect.ShrinkLeft(Unify(GUI.LabelUnitWidth)), Skin.Name)) {
+		if (GUI.DarkButton(rect.ShrinkLeft(GUI.LabelWidth).LeftHalf(), Skin.Name)) {
 			ShowThemeMenu();
 		}
 		rect.SlideDown(itemPadding);

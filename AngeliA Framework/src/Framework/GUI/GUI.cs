@@ -24,7 +24,7 @@ public static class GUI {
 	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
-	public static int LabelUnitWidth { get; set; } = 196;
+	public static int LabelWidth { get; set; } = 1;
 	public static GUISkin Skin { get; set; } = GUISkin.Default;
 
 	// Data
@@ -61,6 +61,7 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.Escape);
 		}
 		if (!Input.MouseLeftButtonHolding) ScrollBarMouseDownPos = null;
+		LabelWidth = Unify(196);
 	}
 
 
@@ -487,9 +488,8 @@ public static class GUI {
 		markStyle ??= Skin.ToggleMark;
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			int labelWidth = Unify(LabelUnitWidth);
-			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
-			rect = rect.Shrink(labelWidth, 0, 0, 0);
+			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
+			rect = rect.Shrink(LabelWidth, 0, 0, 0);
 		}
 		rect.width = rect.height;
 		isOn = BlankToggle(rect, isOn, out var state);
@@ -587,6 +587,29 @@ public static class GUI {
 
 		TypingTextFieldUpdateFrame = typing ? Game.PauselessFrame : TypingTextFieldUpdateFrame;
 
+		// Rendering
+		var beamCell = Renderer.DrawPixel(default);
+		var selectionCell = Renderer.DrawPixel(default, selectionColor.Value);
+
+		int startCellIndex = Renderer.GetUsedCellCount();
+		var labelRect = rect;
+		if (bodyStyle.ContentBorder.HasValue) {
+			rect = rect.Shrink(bodyStyle.ContentBorder.Value);
+		}
+		int beamShrink = rect.height / 12;
+		var beamRect = new IRect(
+			labelRect.x, labelRect.y + beamShrink, Unify(2), labelRect.height - beamShrink * 2
+		);
+
+		// Draw Text
+		if (!string.IsNullOrEmpty(text)) {
+			LabelLogic(
+				labelRect, text, null, bodyStyle, state,
+				beamIndex, 0, false, out _, out beamRect, out _
+			);
+		}
+
+		// Edit
 		if (typing) {
 
 			// Clear
@@ -715,28 +738,6 @@ public static class GUI {
 
 		if (changed) BeamBlinkFrame = Game.PauselessFrame;
 
-		// Rendering
-		var beamCell = Renderer.DrawPixel(default);
-		var selectionCell = Renderer.DrawPixel(default, selectionColor.Value);
-
-		int startCellIndex = Renderer.GetUsedCellCount();
-		var labelRect = rect;
-		if (bodyStyle.ContentBorder.HasValue) {
-			rect = rect.Shrink(bodyStyle.ContentBorder.Value);
-		}
-		int beamShrink = rect.height / 12;
-		var beamRect = new IRect(
-			labelRect.x, labelRect.y + beamShrink, Unify(2), labelRect.height - beamShrink * 2
-		);
-
-		// Draw Text
-		if (!string.IsNullOrEmpty(text)) {
-			LabelLogic(
-				labelRect, text, null, bodyStyle, state,
-				beamIndex, 0, false, out _, out beamRect, out _
-			);
-		}
-
 		// Draw Beam
 		if (!startTyping && typing && (Game.PauselessFrame - BeamBlinkFrame) % 56 < 28) {
 			beamRect.y = labelRect.y + beamShrink;
@@ -839,10 +840,9 @@ public static class GUI {
 		int oldValue = value;
 		// Label
 		if (label != null) {
-			int labelWidth = Unify(LabelUnitWidth);
 			labelStyle ??= Skin.Label;
-			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
-			rect = rect.ShrinkLeft(labelWidth);
+			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
+			rect = rect.ShrinkLeft(LabelWidth);
 		}
 		int buttonSize = Unify(42);
 		// Value
@@ -953,9 +953,8 @@ public static class GUI {
 		// Label
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			int labelWidth = Unify(LabelUnitWidth);
-			Label(rect.EdgeInside(Direction4.Left, labelWidth), label, labelStyle);
-			rect = rect.Shrink(labelWidth, 0, 0, 0);
+			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
+			rect = rect.Shrink(LabelWidth, 0, 0, 0);
 		}
 
 		// Result

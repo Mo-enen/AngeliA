@@ -55,7 +55,7 @@ public class ProjectEditor : WindowUI {
 
 	public override void UpdateWindowUI () {
 		if (CurrentProject == null) return;
-		using var _ = Scope.GUILabelWidth(384);
+		using var _ = Scope.GUILabelWidth(Unify(384));
 		var panelRect = WindowRect.Shrink(Unify(128), Unify(128), Unify(42), Unify(42));
 		var rect = panelRect.EdgeInside(Direction4.Up, Unify(64));
 		int extendedContentSize;
@@ -136,7 +136,7 @@ public class ProjectEditor : WindowUI {
 		int padding = Unify(6);
 		rect.yMin = rect.yMax - Unify(32);
 		var info = CurrentProject.Universe.Info;
-		int labelWidth = Unify(GUI.LabelUnitWidth);
+		int labelWidth = GUI.LabelWidth;
 
 		// Product Name
 		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);

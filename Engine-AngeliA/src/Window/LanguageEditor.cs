@@ -42,6 +42,7 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
+	private const int SEARCH_ID = -19223;
 
 	// Api
 	public string LanguageRoot { get; private set; } = "";
@@ -122,7 +123,7 @@ public partial class LanguageEditor : WindowUI {
 	private void Update_Bar (IRect panelRect) {
 
 		// BG
-		Renderer.DrawPixel(panelRect, Skin.BackgroundPanel, 0);
+		Renderer.DrawPixel(panelRect.TopHalf(), Skin.BackgroundPanel, 0);
 
 		// Shift Panel Rect
 		int labelHeight = panelRect.height - Unify(42);
@@ -164,9 +165,9 @@ public partial class LanguageEditor : WindowUI {
 
 		// Search
 		rect.width = panelRect.xMax - rect.x;
-		var searchRect = rect.Shrink(Unify(6));
-		SearchingText = GUI.InputField(-19223, searchRect, SearchingText, out _, out bool confirm);
-		if (GUI.TypingTextFieldID != -19223 && string.IsNullOrEmpty(SearchingText)) {
+		var searchRect = rect.Shrink(Unify(6)).MidHalf();
+		SearchingText = GUI.SmallInputField(SEARCH_ID, searchRect, SearchingText, out _, out bool confirm);
+		if (GUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
 			GUI.Icon(
 				searchRect.EdgeInside(Direction4.Left, searchRect.height * 8 / 10).Shift(searchRect.height / 6, 0),
 				BuiltInSprite.ICON_SEARCH
@@ -174,18 +175,22 @@ public partial class LanguageEditor : WindowUI {
 		}
 		if (confirm) {
 			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
-			for (int i = 0; i < Lines.Count; i++) {
-				var line = Lines[i];
-				line.Visible = false;
-				if (!line.Key.Contains(SearchingText, OIC)) {
-					foreach (var value in line.Value) {
-						if (value.Contains(SearchingText, OIC)) {
-							line.Visible = true;
-							break;
+			if (string.IsNullOrWhiteSpace(SearchingText)) {
+				foreach (var line in Lines) line.Visible = true;
+			} else {
+				for (int i = 0; i < Lines.Count; i++) {
+					var line = Lines[i];
+					line.Visible = false;
+					if (!line.Key.Contains(SearchingText, OIC)) {
+						foreach (var value in line.Value) {
+							if (value.Contains(SearchingText, OIC)) {
+								line.Visible = true;
+								break;
+							}
 						}
+					} else {
+						line.Visible = true;
 					}
-				} else {
-					line.Visible = true;
 				}
 			}
 		}
@@ -210,8 +215,6 @@ public partial class LanguageEditor : WindowUI {
 		int itemHeight = Unify(36);
 		if (panelRect.height <= itemHeight) return;
 
-		Renderer.DrawPixel(panelRect, Skin.BackgroundPanel, 0);
-
 		int scrollBarWidth = Unify(16);
 		int labelHeight = Unify(22);
 		int labelPadding = Unify(12);
@@ -231,7 +234,7 @@ public partial class LanguageEditor : WindowUI {
 		int ctrlID = 23186 + startLine * (Languages.Count + 1);
 		var rect = new IRect(0, panelRect.yMax, panelRect.width / (Languages.Count + 1), itemHeight);
 		string prevLabel = startLine - 1 >= 0 && startLine - 1 < Lines.Count ? Lines[startLine - 1].Label : string.Empty;
-		bool searching = !string.IsNullOrEmpty(SearchingText);
+		bool searching = !string.IsNullOrEmpty(SearchingText) && GUI.TypingTextFieldID != SEARCH_ID;
 
 		for (int i = startLine; i < Lines.Count; i++) {
 			var line = Lines[i];

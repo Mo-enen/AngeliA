@@ -57,7 +57,6 @@ internal static class Engine {
 	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
 	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
 	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
-	private static readonly QuickMenu QuickMenu = new() { Active = false };
 	private static readonly PixelEditor PixelEditor = new();
 	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
 	private static readonly ItemEditor ItemEditor = new();
@@ -65,7 +64,7 @@ internal static class Engine {
 	private static readonly ProjectEditor ProjectEditor = new();
 	private static readonly SettingWindow SettingWindow = new();
 	private static readonly EntityUI[] ALL_UI = {
-		GenericPopup, GenericDialog, FileBrowser, QuickMenu, // Generic
+		GenericPopup, GenericDialog, FileBrowser, // Generic
 		PixelEditor, LanguageEditor, ItemEditor, Console, ProjectEditor, SettingWindow, // Window UI
 	};
 
@@ -445,6 +444,8 @@ internal static class Engine {
 		using (Scope.GUIEnable(interactable))
 		using (Scope.RendererLayerUI()) {
 
+			bool menuButtonClicked = false;
+
 			// Tab BG
 			Renderer.DrawPixel(barRect, GUI.Skin.BackgroundDarkPanel);
 
@@ -454,7 +455,7 @@ internal static class Engine {
 
 				// Menu Button
 				if (GUI.BlankButton(rect, out _)) {
-					FullsizeMenu.Value = !FullsizeMenu.Value;
+					menuButtonClicked = true;
 				}
 
 				// Menu Icon
@@ -540,6 +541,11 @@ internal static class Engine {
 				)) {
 					TryCloseProject();
 				}
+			}
+
+			// Menu Cache
+			if (menuButtonClicked) {
+				FullsizeMenu.Value = !FullsizeMenu.Value;
 			}
 
 		}
@@ -668,6 +674,7 @@ internal static class Engine {
 	private static void OnGUI_Hotkey () {
 
 		bool ctrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
+		//bool shift = Input.KeyboardHolding(KeyboardKey.LeftShift);
 
 		// Ctrl + R
 		if (ctrl && Input.KeyboardDown(KeyboardKey.R)) {
@@ -678,11 +685,6 @@ internal static class Engine {
 			if (CurrentProject != null) {
 				EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
 			}
-		}
-
-		// Ctrl + Space
-		if (ctrl && Input.KeyboardDown(KeyboardKey.Space) && !QuickMenu.Active) {
-			QuickMenu.Show();
 		}
 
 	}

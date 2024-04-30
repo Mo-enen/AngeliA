@@ -20,13 +20,6 @@ public partial class PixelEditor {
 	}
 
 
-	private struct PixelUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public Color32 From;
-		public Color32 To;
-	}
-
-
 	private struct IndexedPixelUndoItem : IUndoItem {
 		public int Step { get; set; }
 		public Color32 From;
@@ -197,9 +190,11 @@ public partial class PixelEditor {
 			int y = j + inter.y;
 			for (int i = 0; i < inter.width; i++) {
 				int x = i + inter.x;
-				RegisterUndo(new PixelUndoItem() {
-					From = oldPixels[(y - oldPixelRect.y) * oldPixelRect.width + (x - oldPixelRect.x)],
+				int index = (y - oldPixelRect.y) * oldPixelRect.width + (x - oldPixelRect.x);
+				RegisterUndo(new IndexedPixelUndoItem() {
+					From = oldPixels[index],
 					To = Color32.CLEAR,
+					LocalPixelIndex = index,
 				});
 			}
 		}
@@ -240,20 +235,6 @@ public partial class PixelEditor {
 				RequireNotification(redo ? NOTI_REDO_PAINT : NOTI_UNDO_PAINT);
 			}
 			break;
-
-			case PixelUndoItem pixel: {
-				var sprite = CurrentUndoSprite;
-				if (sprite == null) break;
-				int i = CurrentUndoPixelIndex;
-				var pixRect = CurrentUndoSprite.PixelRect;
-				var paintRect = CurrentUndoPixelLocalRect;
-				int pixX = paintRect.x + i % paintRect.width;
-				int pixY = paintRect.y + i / paintRect.width;
-				int pixIndex = pixY * pixRect.width + pixX;
-				sprite.Pixels[pixIndex] = redo ? pixel.To : pixel.From;
-				CurrentUndoPixelIndex += redo ? 1 : -1;
-				break;
-			}
 
 			case IndexedPixelUndoItem iPixel: {
 				var sprite = CurrentUndoSprite;
@@ -400,7 +381,7 @@ public partial class PixelEditor {
 
 	#endregion
 
-	
-	
+
+
 
 }

@@ -719,6 +719,11 @@ public static class Extension {
 		rect.width /= 2;
 		return rect;
 	}
+	public static IRect MidHalf (this IRect rect) {
+		rect.width /= 2;
+		rect.x += rect.width / 2;
+		return rect;
+	}
 
 	public static IRect? Intersection (this IRect rect, IRect other) {
 		if (!rect.Overlaps(other)) return null;

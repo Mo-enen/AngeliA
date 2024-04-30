@@ -38,7 +38,7 @@ public partial class GUISkin {
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,
 		ContentColorDown = Color32.GREY_230,
-		ContentColorDisable = Color32.CLEAR,
+		ContentColorDisable = Color32.WHITE_128,
 
 		ContentBorder = Int4.Direction(Const.ART_SCALE * 3, Const.ART_SCALE * 3, Const.ART_SCALE * 3, Const.ART_SCALE * 3),
 	};

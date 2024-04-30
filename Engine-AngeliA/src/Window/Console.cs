@@ -43,6 +43,7 @@ public class Console : WindowUI {
 	private static readonly SpriteCode ICON_INFO = "Console.Info";
 	private static readonly SpriteCode ICON_WARNING = "Console.Warning";
 	private static readonly SpriteCode ICON_ERROR = "Console.Error";
+	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
 
 	// Api
 	public override string DefaultName => "Console";
@@ -71,16 +72,22 @@ public class Console : WindowUI {
 
 	public override void UpdateWindowUI () {
 
-		var windowRect = WindowRect.Shrink(Unify(12));
+		var panelRect = WindowRect.Shrink(Unify(12));
+
+		// Empty Hint
+		if (Lines.Length == 0) {
+			GUI.Label(panelRect.EdgeInside(Direction4.Up, Unify(42)), HINT_EMPTY_MSG, Skin.SmallCenterGreyLabel);
+			return;
+		}
 
 		// Lines
 		int lineHeight = Unify(32);
-		int pageHeight = windowRect.height;
+		int pageHeight = panelRect.height;
 		int pageLineCount = pageHeight / lineHeight;
 		int scrollMax = (Lines.Length - pageLineCount + 6).GreaterOrEquelThanZero();
 		int start = ScrollY.Clamp(0, scrollMax);
 		int end = Util.Min(Lines.Length, start + pageLineCount);
-		var rect = windowRect.EdgeInside(Direction4.Up, lineHeight);
+		var rect = panelRect.EdgeInside(Direction4.Up, lineHeight);
 		int iconSize = lineHeight;
 		int iconShrink = iconSize / 10;
 		int padding = Unify(6);
@@ -128,7 +135,6 @@ public class Console : WindowUI {
 				ScrollY, scrollMax + pageLineCount, pageLineCount
 			);
 		}
-
 	}
 
 
@@ -145,8 +151,12 @@ public class Console : WindowUI {
 	private void OnLogError (object obj) => LogLogic(obj.ToString(), 2);
 	private void OnLogException (System.Exception ex) => OnLogError($"{ex.Source}; {ex.GetType().Name}; {ex.Message}");
 	private void LogLogic (string content, int level) {
+		const int MAX_CHAR_COUNT = 256;
 		if (string.IsNullOrEmpty(content)) return;
 		if (Lines.IsFull && !Lines.TryPopHead(out _)) return;
+		if (content.Length > MAX_CHAR_COUNT) {
+			content = content[..MAX_CHAR_COUNT];
+		}
 		Lines.LinkToTail(new Line(level, content.Replace("\n", "; ").Replace("\r", ""), Game.GlobalFrame));
 	}
 
