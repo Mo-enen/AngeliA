@@ -46,7 +46,7 @@ public static class SavingSystem {
 						}
 					} else {
 						var baseType = fieldType.BaseType;
-						if (baseType.IsGenericType) {
+						if (baseType != null && baseType.IsGenericType) {
 							var gType = baseType.GetGenericTypeDefinition();
 							if (gType == TYPE_SAVING) {
 								var detaultValue = field.GetValue(null);

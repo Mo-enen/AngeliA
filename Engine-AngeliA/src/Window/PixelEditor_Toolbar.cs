@@ -595,7 +595,7 @@ public partial class PixelEditor {
 
 		// Help
 		rect.width = helpButtonWidth;
-		if (GUI.Button(rect, BuiltInSprite.QUESTION_MARK_16, Skin.SmallIconButton)) {
+		if (GUI.Button(rect, BuiltInSprite.ICON_QUESTION_MARK, Skin.SmallIconButton)) {
 			GenericDialogUI.SpawnDialog_Button(RULE_HELP_MSG, BuiltInText.UI_OK, Const.EmptyMethod);
 		}
 

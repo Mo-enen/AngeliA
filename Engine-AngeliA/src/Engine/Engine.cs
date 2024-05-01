@@ -59,13 +59,12 @@ internal static class Engine {
 	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
 	private static readonly PixelEditor PixelEditor = new();
 	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
-	private static readonly ItemEditor ItemEditor = new();
 	private static readonly Console Console = new();
 	private static readonly ProjectEditor ProjectEditor = new();
 	private static readonly SettingWindow SettingWindow = new();
 	private static readonly EntityUI[] ALL_UI = {
 		GenericPopup, GenericDialog, FileBrowser, // Generic
-		PixelEditor, LanguageEditor, ItemEditor, Console, ProjectEditor, SettingWindow, // Window UI
+		PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
 	};
 
 	// Data
@@ -103,6 +102,8 @@ internal static class Engine {
 	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024);
 	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128);
 	private static readonly SavingInt WindowPositionY = new("Engine.WindowPosY", 128);
+	private static readonly SavingInt StartWithWindowIndex = new("Engine.StartWithWindowIndex", -1);
+	private static readonly SavingInt LastOpenedWindowIndex = new("Engine.LastOpenedWindowIndex", 0);
 
 
 	#endregion
@@ -115,6 +116,8 @@ internal static class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitialize () {
+
+		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
 		// Projects
 		Projects.Clear();
@@ -153,6 +156,7 @@ internal static class Engine {
 		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
+		SettingWindow.InitializeData(ALL_UI);
 
 		// Theme
 		UiSheetIndex = Renderer.AddAltSheet(ThemeSheet);
@@ -161,7 +165,9 @@ internal static class Engine {
 
 
 	[OnGameFocused]
-	internal static void OnGameFocused () => SettingWindow.RequireReloadThemePath();
+	internal static void OnGameFocused () {
+		SettingWindow.RequireReloadThemePath();
+	}
 
 
 	[OnGameTryingToQuit]
@@ -236,7 +242,6 @@ internal static class Engine {
 		if (windowPos.y < 24) {
 			Game.SetWindowPosition(windowPos.x, 24);
 		}
-
 	}
 
 
@@ -519,7 +524,10 @@ internal static class Engine {
 				}
 
 				// Click
-				if (mousePress && hovering) CurrentWindowIndex = index;
+				if (mousePress && hovering) {
+					CurrentWindowIndex = index;
+					LastOpenedWindowIndex.Value = index;
+				}
 
 				// Next
 				rect.SlideDown();
@@ -576,6 +584,7 @@ internal static class Engine {
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
 		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
 		SettingWindow.ShowLogTime = Console.ShowLogTime.Value;
+		SettingWindow.StartWithWindowIndex = StartWithWindowIndex.Value;
 
 		// Update UI
 		bool oldE = GUI.Enable;
@@ -611,6 +620,7 @@ internal static class Engine {
 			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
 		}
+		StartWithWindowIndex.Value = SettingWindow.StartWithWindowIndex;
 
 		// Change Theme
 		if (SettingWindow.RequireChangeThemePath != null) {
@@ -836,13 +846,11 @@ internal static class Engine {
 
 	// Workflow
 	private static void OpenProject (string projectPath) {
+
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
 		if (!Util.FolderExists(projectPath)) return;
+
 		CurrentProject = Project.LoadProject(projectPath);
-		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
-		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
-		ProjectEditor.CurrentProject = CurrentProject;
-		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
 		LastOpenProject.Value = projectPath;
 		foreach (var project in Projects) {
 			if (project.Path == projectPath) {
@@ -853,6 +861,19 @@ internal static class Engine {
 			}
 		}
 		SortProjects();
+		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
+
+		// Windows
+		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
+		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		ProjectEditor.CurrentProject = CurrentProject;
+
+		// Switch Opening Window
+		if (StartWithWindowIndex.Value >= 0) {
+			CurrentWindowIndex = StartWithWindowIndex.Value;
+			LastOpenedWindowIndex.Value = StartWithWindowIndex.Value;
+		}
+
 	}
 
 

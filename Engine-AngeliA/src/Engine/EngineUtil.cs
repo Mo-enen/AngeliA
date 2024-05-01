@@ -94,7 +94,7 @@ public static class EngineUtil {
 		// ===== Build =====
 
 		// Delete Build Library Folder
-		Util.DeleteFolder(Util.CombinePaths(project.BuildPath, "Library"));
+		Util.DeleteFolder(project.BuildLibraryPath);
 
 		// Build Dotnet Project
 		int returnCode = BuildDotnetProject(
@@ -114,9 +114,8 @@ public static class EngineUtil {
 
 		// Result Dll to Lib Folder
 		string gameLibDllName = Util.GetNameWithExtension(resultDllPath);
-		string libFolderBuildPath = Util.CombinePaths(project.BuildPath, "Library");
-		string gameLibBuildPath = Util.CombinePaths(libFolderBuildPath, gameLibDllName);
-		Util.CreateFolder(libFolderBuildPath);
+		string gameLibBuildPath = Util.CombinePaths(project.BuildLibraryPath, gameLibDllName);
+		Util.CreateFolder(project.BuildLibraryPath);
 		Util.CopyFile(resultDllPath, gameLibBuildPath);
 
 		// Copy Runtime into Build Folder
@@ -172,9 +171,6 @@ public static class EngineUtil {
 			string universePublishFolderPath = Util.CombinePaths(publishDir, "Universe");
 			Util.CopyFolder(project.UniversePath, universePublishFolderPath, true, true);
 
-			// Delete Temp Folder
-			Util.DeleteFolder(project.TempRoot);
-
 			// Run
 			if (runAfterBuild) {
 				string exePath = pubResultExePath;
@@ -187,7 +183,30 @@ public static class EngineUtil {
 
 		}
 
+		// Delete Temp Folder
+		Util.DeleteFolder(project.TempRoot);
+
 		return 0;
+	}
+
+
+	public static long GetScriptModifyDate (Project project) {
+		if (project == null || !Util.FolderExists(project.SourceCodePath)) return 0;
+		long result = 0;
+		foreach (var path in Util.EnumerateFiles(project.SourceCodePath, false, "*.cs")) {
+			result = System.Math.Max(result, Util.GetFileModifyDate(path));
+		}
+		return result;
+	}
+
+
+	public static long GetBuildLibraryModifyDate (Project project) {
+		if (project == null || !Util.FolderExists(project.BuildLibraryPath)) return 0;
+		long result = 0;
+		foreach (string path in Util.EnumerateFiles(project.BuildLibraryPath, true, "*.dll")) {
+			result = System.Math.Max(result, Util.GetFileModifyDate(path));
+		}
+		return result;
 	}
 
 

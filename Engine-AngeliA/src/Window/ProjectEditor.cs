@@ -15,17 +15,22 @@ public class ProjectEditor : WindowUI {
 	// Const
 	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
 	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
+	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
 	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
 	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
 	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
 	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Build and run the project in debug mode (Ctrl + R)");
 	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Publish the project in release mode");
+	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open sln/csproj file in this project with default application");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_DEV_NAME_EMPTY = ("Log.DevNameEmpty", "Developer name can not be empty");
 	private static readonly LanguageCode LABEL_CLOSE_CMD = ("Setting.CloseCmd", "Close Command Window on Game Quit");
+	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
+	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
+	private static readonly LanguageCode LABEL_LINK_SAVING = ("Setting.Link.Saving", "Saving Folder");
 
 	// Api
 	protected override bool BlockEvent => true;
@@ -54,24 +59,29 @@ public class ProjectEditor : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+
 		if (CurrentProject == null) return;
+
 		using var _ = Scope.GUILabelWidth(Unify(384));
 		var panelRect = WindowRect.Shrink(Unify(128), Unify(128), Unify(42), Unify(42));
 		var rect = panelRect.EdgeInside(Direction4.Up, Unify(64));
 		int extendedContentSize;
+
 		using (var scroll = Scope.GUIScroll(panelRect, MasterScrollPos, 0, MasterScrollMax)) {
 			MasterScrollPos = scroll.ScrollPosition;
-			int top = rect.yMax;
+
 			Update_WorkflowButton(ref rect);
-			rect.y -= Unify(12);
+			rect.y -= Unify(20);
+
 			Update_Config(ref rect);
-			extendedContentSize = top - rect.yMax + Unify(64);
+			extendedContentSize = panelRect.yMax - rect.yMax + Unify(64);
 			MasterScrollMax = (extendedContentSize - panelRect.height).GreaterOrEquelThanZero();
 		}
 		MasterScrollPos = GUI.ScrollBar(
 			891236, WindowRect.EdgeInside(Direction4.Right, Unify(12)),
 			MasterScrollPos, extendedContentSize, panelRect.height
 		);
+
 		// Workflow
 		if (Game.GlobalFrame > BuildProjectRequiredFrame) {
 			if (PublishProjectRequiredPath == null) {
@@ -91,6 +101,7 @@ public class ProjectEditor : WindowUI {
 			BuildProjectRequiredFrame = int.MaxValue;
 			PublishProjectRequiredPath = null;
 		}
+
 		// Hotkey
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
 			// Ctrl + S
@@ -104,8 +115,8 @@ public class ProjectEditor : WindowUI {
 	private void Update_WorkflowButton (ref IRect rect) {
 
 		var _rect = rect;
-		_rect.width /= 2;
-		int padding = Unify(24);
+		_rect.width /= 3;
+		int padding = Unify(18);
 
 		// Run
 		if (GUI.Button(_rect.Shrink(padding, padding / 2, 0, 0), LABEL_RUN, WorkflowButtonStyle)) {
@@ -116,10 +127,28 @@ public class ProjectEditor : WindowUI {
 		_rect.SlideRight();
 
 		// Publish
-		if (GUI.Button(_rect.Shrink(padding / 2, padding, 0, 0), LABEL_PUBLISH, WorkflowButtonStyle)) {
+		if (GUI.Button(_rect.Shrink(padding / 2, padding / 2, 0, 0), LABEL_PUBLISH, WorkflowButtonStyle)) {
 			FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
 		}
 		RequireTooltip(_rect, TIP_PUBLISH);
+		_rect.SlideRight();
+
+		// Edit
+		if (GUI.Button(_rect.Shrink(padding / 2, padding, 0, 0), LABEL_EDIT, WorkflowButtonStyle)) {
+			bool found = false;
+			foreach (var path in Util.EnumerateFiles(CurrentProject.ProjectPath, true, "*.sln")) {
+				found = true;
+				Game.OpenUrl(path);
+				break;
+			}
+			if (!found) {
+				foreach (var path in Util.EnumerateFiles(CurrentProject.ProjectPath, true, "*.csproj")) {
+					Game.OpenUrl(path);
+					break;
+				}
+			}
+		}
+		RequireTooltip(_rect, TIP_EDIT);
 		rect.SlideDown();
 
 		// Func
@@ -134,6 +163,7 @@ public class ProjectEditor : WindowUI {
 	private void Update_Config (ref IRect rect) {
 
 		int padding = Unify(6);
+		int innerPadding = Unify(6);
 		rect.yMin = rect.yMax - Unify(32);
 		var info = CurrentProject.Universe.Info;
 		int labelWidth = GUI.LabelWidth;
@@ -197,6 +227,20 @@ public class ProjectEditor : WindowUI {
 			SetDirty();
 		}
 		rect.SlideDown(padding);
+
+		// Open Project Folder
+		GUI.SmallLabel(rect, LABEL_LINK);
+		var _rect = rect.ShrinkLeft(GUI.LabelWidth);
+		if (GUI.SmallLinkButton(_rect, LABEL_LINK_PROJECT, out var bounds)) {
+			Game.OpenUrl(CurrentProject.ProjectPath);
+		}
+		_rect.xMin = bounds.xMax + innerPadding;
+		if (GUI.SmallLinkButton(_rect, LABEL_LINK_SAVING)) {
+			Game.OpenUrl(CurrentProject.Universe.SavingRoot);
+		}
+		rect.SlideDown(padding);
+
+
 
 	}
 

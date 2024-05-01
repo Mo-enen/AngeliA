@@ -42,6 +42,7 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
+	private static readonly LanguageCode MSG_HELP = ("UI.LanguageEditor.HelpMsg", "Empty keys will be deleted when open the project next time");
 	private const int SEARCH_ID = -19223;
 
 	// Api
@@ -193,6 +194,11 @@ public partial class LanguageEditor : WindowUI {
 					}
 				}
 			}
+		}
+
+		// Help Button
+		if (GUI.Button(panelRect.EdgeInside(Direction4.Right, Unify(36)), "?", Skin.SmallCenterLabelButton)) {
+			GenericDialogUI.SpawnDialog_Button(MSG_HELP, BuiltInText.UI_OK, Const.EmptyMethod);
 		}
 
 		// Labels

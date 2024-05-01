@@ -100,7 +100,10 @@ public static class ItemSystem {
 	public static void OnUniverseOpen () {
 		if (Game.IsToolApplication) return;
 		CreateItemCombinationHelperFiles(UniverseSystem.CurrentUniverse.SavingRoot);
-		CreateCombinationFileFromCode(UniverseSystem.CurrentUniverse.UniverseRoot, false);
+		CreateCombinationFileFromCode(Util.CombinePaths(
+			AngePath.GetUniverseMetaRoot(UniverseSystem.CurrentUniverse.UniverseRoot),
+			AngePath.COMBINATION_FILE_NAME
+		), false);
 		CombinationPool.Clear();
 		LoadCombinationFromFile(Util.CombinePaths(UniverseSystem.CurrentUniverse.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME));
 		LoadCombinationFromFile(Util.CombinePaths(UniverseSystem.CurrentUniverse.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME));
@@ -236,15 +239,13 @@ public static class ItemSystem {
 	}
 
 
-	public static void CreateCombinationFileFromCode (string universeFolder, bool forceCreate) {
+	public static void CreateCombinationFileFromCode (string resultPath, bool forceCreate) => CreateCombinationFileFromCode(typeof(Item).AllChildClass(), resultPath, forceCreate);
+	public static void CreateCombinationFileFromCode (IEnumerable<System.Type> itemTypes, string resultPath, bool forceCreate) {
 
-		string metaRoot = AngePath.GetUniverseMetaRoot(universeFolder);
-
-		string builtInPath = Util.CombinePaths(metaRoot, AngePath.COMBINATION_FILE_NAME);
-		if (!forceCreate && Util.FileExists(builtInPath)) return;
+		if (!forceCreate && Util.FileExists(resultPath)) return;
 
 		var builder = new StringBuilder();
-		foreach (var type in typeof(Item).AllChildClass()) {
+		foreach (var type in itemTypes) {
 			string result = type.AngeName();
 			var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
 			if (iComs == null) continue;
@@ -290,7 +291,7 @@ public static class ItemSystem {
 				builder.Append('\n');
 			}
 		}
-		Util.TextToFile(builder.ToString(), builtInPath);
+		Util.TextToFile(builder.ToString(), resultPath);
 	}
 
 

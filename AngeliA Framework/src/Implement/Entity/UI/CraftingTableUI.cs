@@ -15,7 +15,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	private const int DOC_ITEM_HEIGHT = 32;
 	private const int DOC_ITEM_PADDING = 6;
 	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
-	private static readonly int QUESTION_MARK_CODE = BuiltInSprite.QUESTION_MARK_16;
+	private static readonly int QUESTION_MARK_CODE = BuiltInSprite.ICON_QUESTION_MARK;
 	private static readonly int PLUS_CODE = BuiltInSprite.PLUS_16;
 	private static readonly int EQUAL_CODE = BuiltInSprite.EQUAL_16;
 	private static readonly int ARROW_CODE = BuiltInSprite.TRIANGLE_RIGHT_13;

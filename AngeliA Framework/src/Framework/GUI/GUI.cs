@@ -397,6 +397,38 @@ public static class GUI {
 
 
 	// Button
+	public static bool SmallLinkButton (IRect rect, string label, bool useUnderLine = true) => LinkButton(rect, label, out _, Skin.SmallLabel, useUnderLine);
+	public static bool SmallLinkButton (IRect rect, string label, out IRect bounds, bool useUnderLine = true) => LinkButton(rect, label, out bounds, Skin.SmallLabel, useUnderLine);
+	public static bool LinkButton (IRect rect, string label, GUIStyle labelStyle = null, bool useUnderLine = true) => LinkButton(rect, label, out _, labelStyle, useUnderLine);
+	public static bool LinkButton (IRect rect, string label, out IRect bounds, GUIStyle labelStyle = null, bool useUnderLine = true) {
+
+		bounds = default;
+		if (string.IsNullOrEmpty(label)) return false;
+
+		// Label
+		labelStyle ??= Skin.Label;
+		int cellStart = Renderer.GetUsedCellCount();
+		LabelLogic(rect, label, null, labelStyle, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
+
+		// Button
+		bool result = BlankButton(bounds, out var state);
+		var tint = state == GUIState.Hover ? Skin.LinkTintHover : Skin.LinkTint;
+		tint.a = (byte)(state == GUIState.Disable ? 128 : 255);
+
+		// Tint
+		if (Renderer.GetCells(out var cells, out int count)) {
+			for (int i = cellStart; i < count; i++) {
+				cells[i].Color *= tint;
+			}
+		}
+
+		// Under Line
+		if (useUnderLine) {
+			Renderer.DrawPixel(bounds.EdgeOutside(Direction4.Down, Unify(1)), tint);
+		}
+
+		return result;
+	}
 	public static bool DarkButton (IRect rect, string label) => Button(rect, label, Skin.DarkButton);
 	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, Skin.DarkButton);
 	public static bool Button (IRect rect, string label, GUIStyle style = null) {
@@ -1200,11 +1232,13 @@ public static class GUI {
 			int currentIndex = (stepL - position.x) / stepLengthX;
 			for (int i = stepL; i < stepR && currentIndex <= stepCount.x; currentIndex++) {
 				i = position.x + (currentIndex * f_stepLenX).RoundToInt() - thickness / 2;
-				stepRect.x = i;
-				stepLabelRect.x = i + labelPadding;
-				Renderer.DrawPixel(stepRect, color: colorX, z: z);
-				if (labelHeight > 0) {
-					Label(stepLabelRect, AxisLabalToChars.GetChars(currentIndex * stepNumberGap), labelStyle);
+				if (currentIndex != 0) {
+					stepRect.x = i;
+					Renderer.DrawPixel(stepRect, color: colorX, z: z);
+					if (labelHeight > 0) {
+						stepLabelRect.x = i + labelPadding;
+						Label(stepLabelRect, AxisLabalToChars.GetChars(currentIndex * stepNumberGap), labelStyle);
+					}
 				}
 			}
 		}
@@ -1227,16 +1261,21 @@ public static class GUI {
 			int currentIndex = (stepD - position.y) / stepLengthY;
 			for (int j = stepD; j < stepU && currentIndex <= stepCount.y; currentIndex++) {
 				j = position.y + (currentIndex * f_stepLenY).RoundToInt() - thickness / 2;
-				stepRect.y = j;
-				stepLabelRect.y = j + labelPadding;
-				Renderer.DrawPixel(stepRect, color: colorY, z: z);
+				if (currentIndex != 0) {
+					stepRect.y = j;
+					Renderer.DrawPixel(stepRect, color: colorY, z: z);
+				}
 				if (labelHeight > 0 && currentIndex > 0) {
+					stepLabelRect.y = j + labelPadding;
 					Label(stepLabelRect, AxisLabalToChars.GetChars(currentIndex * stepNumberGap), labelStyle);
 				}
 			}
 		}
 
 	}
+
+
+	public static void SetChange () => ContentVersion++;
 
 
 	#endregion

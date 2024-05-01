@@ -106,5 +106,4 @@ public partial class GUISkin {
 	public readonly GUIStyle SmallTextArea = ProduceLabel(LabelPattern.Small | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);
 
 
-
 }

@@ -212,7 +212,7 @@ public partial class GUISkin {
 		BodyColorDisable = Color32.CLEAR,
 
 		ContentColor = Color32.GREY_230,
-		ContentColorHover = Color32.GREY_230,
+		ContentColorHover = Color32.WHITE,
 		ContentColorDown = Color32.GREY_230,
 		ContentColorDisable = Color32.GREY_230,
 

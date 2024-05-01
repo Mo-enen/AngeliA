@@ -16,7 +16,7 @@ public class SettingWindow : WindowUI {
 
 	// Const
 	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
-	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Pixel Editor");
+	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Artwork");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
@@ -26,10 +26,12 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
-	private static readonly LanguageCode LABEL_THEME = ("Menu.Theme", "Theme");
+	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
+	private static readonly LanguageCode LABEL_START_WITH_WINDOW = ("Setting.StartWithWindow", "Start with Window");
+	private static readonly LanguageCode LABEL_START_WITH_WINDOW_LAST_OPEN = ("Setting.StartWithWindowLastOpen", "(Last Opened))");
 
 	// Api
-	public static string RequireChangeThemePath { get; set; } = null;
+	public string RequireChangeThemePath { get; set; } = null;
 	public override string DefaultName => "Setting";
 	public bool Changed { get; private set; } = false;
 	public bool OpenLastProjectOnStart { get; set; }
@@ -41,9 +43,12 @@ public class SettingWindow : WindowUI {
 	public Color32 BackgroundColor_Default { get; set; }
 	public ColorF PixEditor_BackgroundColor { get; set; }
 	public bool ShowLogTime { get; set; }
+	public int StartWithWindowIndex { get; set; }
 
 	// Data
-	private static readonly List<(string path, string name)> ThemePaths = new();
+	private static SettingWindow Instance;
+	private readonly List<(string path, string name)> ThemePaths = new();
+	private (int id, string defaultName)[] AllWindowNames;
 	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
@@ -55,6 +60,9 @@ public class SettingWindow : WindowUI {
 
 
 	#region --- MSG ---
+
+
+	public SettingWindow () => Instance = this;
 
 
 	public override void UpdateWindowUI () {
@@ -119,6 +127,20 @@ public class SettingWindow : WindowUI {
 		GUI.SmallLabel(rect, LABEL_THEME);
 		if (GUI.DarkButton(rect.ShrinkLeft(GUI.LabelWidth).LeftHalf(), Skin.Name)) {
 			ShowThemeMenu();
+		}
+		rect.SlideDown(itemPadding);
+
+		// Start with Window
+		GUI.SmallLabel(rect, LABEL_START_WITH_WINDOW);
+		string selectingStartWithWindow;
+		if (StartWithWindowIndex < 0) {
+			selectingStartWithWindow = LABEL_START_WITH_WINDOW_LAST_OPEN;
+		} else {
+			var (id, dName) = AllWindowNames[StartWithWindowIndex.Clamp(0, AllWindowNames.Length - 1)];
+			selectingStartWithWindow = Language.Get(id, dName);
+		}
+		if (GUI.DarkButton(rect.ShrinkLeft(GUI.LabelWidth).LeftHalf(), selectingStartWithWindow)) {
+			ShowStartWithWindowMenu();
 		}
 		rect.SlideDown(itemPadding);
 
@@ -187,6 +209,16 @@ public class SettingWindow : WindowUI {
 	#region --- API ---
 
 
+	public void InitializeData (EntityUI[] allUIs) {
+		var list = new List<(int id, string defaultName)>();
+		foreach (var ui in allUIs) {
+			if (ui is not WindowUI window) continue;
+			list.Add((window.TypeID, window.DefaultName));
+		}
+		AllWindowNames = list.ToArray();
+	}
+
+
 	public void RequireReloadThemePath () => RequiringReloadThemePath = true;
 
 
@@ -243,11 +275,24 @@ public class SettingWindow : WindowUI {
 			int index = GenericPopupUI.Instance.InvokingItemIndex;
 			if (index <= 0) {
 				// Built In
-				RequireChangeThemePath = "";
-			} else if (ThemePaths.Count > 0) {
+				Instance.RequireChangeThemePath = "";
+			} else if (Instance.ThemePaths.Count > 0) {
 				// Custom
-				RequireChangeThemePath = ThemePaths[(index - 1).Clamp(0, ThemePaths.Count - 1)].path;
+				Instance.RequireChangeThemePath = Instance.ThemePaths[(index - 1).Clamp(0, Instance.ThemePaths.Count - 1)].path;
 			}
+		}
+	}
+
+
+	private void ShowStartWithWindowMenu () {
+		GenericPopupUI.BeginPopup();
+		GenericPopupUI.AddItem(LABEL_START_WITH_WINDOW_LAST_OPEN, MenuInvoked, @checked: StartWithWindowIndex < 0);
+		for (int i = 0; i < AllWindowNames.Length; i++) {
+			var (id, name) = AllWindowNames[i];
+			GenericPopupUI.AddItem(Language.Get(id, name), MenuInvoked, @checked: StartWithWindowIndex == i);
+		}
+		static void MenuInvoked () {
+			Instance.StartWithWindowIndex = GenericPopupUI.Instance.InvokingItemIndex - 1;
 		}
 	}
 
