@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AngeliA;
 
 [assembly: ToolApplication]
@@ -39,7 +39,6 @@ internal static class Engine {
 
 	// Const
 	private const int NOTIFY_DURATION = 120;
-	private static int WINDOW_UI_COUNT = 2;
 	private const int HUB_PANEL_WIDTH = 360;
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
@@ -115,7 +114,7 @@ internal static class Engine {
 
 
 	[OnGameInitializeLater]
-	internal static void OnGameInitialize () {
+	internal static void OnGameInitializeLater () {
 
 		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
@@ -153,7 +152,6 @@ internal static class Engine {
 
 		// UI Window
 		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
-		WINDOW_UI_COUNT = ALL_UI.Count(ui => ui is WindowUI);
 		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
 		SettingWindow.InitializeData(ALL_UI);
@@ -161,12 +159,6 @@ internal static class Engine {
 		// Theme
 		UiSheetIndex = Renderer.AddAltSheet(ThemeSheet);
 
-	}
-
-
-	[OnGameFocused]
-	internal static void OnGameFocused () {
-		SettingWindow.RequireReloadThemePath();
 	}
 
 
@@ -204,10 +196,12 @@ internal static class Engine {
 	internal static void OnGameQuitting () {
 		var windowPos = Game.GetWindowPosition();
 		Maximize.Value = Game.IsWindowMaximized;
-		WindowSizeX.Value = Game.ScreenWidth;
-		WindowSizeY.Value = Game.ScreenHeight;
-		WindowPositionX.Value = windowPos.x;
-		WindowPositionY.Value = windowPos.y;
+		if (!Game.IsWindowMinimized) {
+			WindowSizeX.Value = Game.ScreenWidth;
+			WindowSizeY.Value = Game.ScreenHeight;
+			WindowPositionX.Value = windowPos.x;
+			WindowPositionY.Value = windowPos.y;
+		}
 		ProjectPaths.Value = Projects.JoinArray(p => p.Path, ';');
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
 	}
@@ -215,8 +209,6 @@ internal static class Engine {
 
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
-
-		if (Game.IsWindowMinimized) return;
 
 		// On GUI
 		GUI.Enable = true;
@@ -427,12 +419,14 @@ internal static class Engine {
 
 	private static void OnGUI_Window () {
 
+		if (CurrentProject == null) return;
+
 		// Window
 		int contentPadding = GUI.Unify(8);
 		int barWidth = FullsizeMenu.Value ? GUI.Unify(160) : GUI.Unify(42) + contentPadding;
 		int bodyBorder = GUI.Unify(6);
 		var cameraRect = Renderer.CameraRect;
-		int windowLen = CurrentProject == null ? 1 : WINDOW_UI_COUNT;
+		int windowLen = 0;
 		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
@@ -440,9 +434,10 @@ internal static class Engine {
 		bool interactable = true;
 
 		foreach (var ui in ALL_UI) {
-			if (ui is not WindowUI && ui.Active) {
+			if (ui is WindowUI) {
+				windowLen++;
+			} else if (ui.Active) {
 				interactable = false;
-				break;
 			}
 		}
 

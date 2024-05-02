@@ -11,11 +11,11 @@ public partial class RayGame {
 
 
 	// Data
-	private Texture2D EMPTY_TEXTURE;
+	private readonly static Color[] FillPixelCache = new Color[512 * 512];
 	private readonly static System.Random CA_Ran = new(2353456);
 	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
-	private static readonly Color[] FillPixelCache = new Color[512 * 512];
+	private Texture2D EMPTY_TEXTURE;
 	private FontData[] Fonts;
 	private FRect CameraRange = new(0, 0, 1f, 1f);
 	private IRect ScreenRenderRect;

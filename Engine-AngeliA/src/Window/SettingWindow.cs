@@ -65,6 +65,10 @@ public class SettingWindow : WindowUI {
 	public SettingWindow () => Instance = this;
 
 
+	[OnGameFocused]
+	internal static void OnGameFocused () => Instance?.RequireReloadThemePath();
+
+
 	public override void UpdateWindowUI () {
 		int itemHeight = Unify(32);
 		int extendedUISize = 1;

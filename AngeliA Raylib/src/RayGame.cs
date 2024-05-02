@@ -113,9 +113,28 @@ public partial class RayGame : Game {
 
 	private void UpdateGame () {
 
+		// Fix Window Pos in Screen
+		var windowPos = new Rectangle(
+			Raylib.GetWindowPosition(), new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight())
+		).ToAngelia();
+		int monitor = Raylib.GetCurrentMonitor();
+		var monitorRect = new IRect(0, 0, Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
+		monitorRect = monitorRect.Shrink(monitorRect.height / 20);
+		if (!windowPos.Overlaps(monitorRect)) {
+			windowPos.ClampPositionInside(monitorRect);
+			Raylib.SetWindowPosition(windowPos.x, windowPos.y);
+		}
+
 		// Trying to Quit Check
 		if (!RequireQuitGame && Raylib.WindowShouldClose()) {
 			RequireQuitGame = InvokeGameTryingToQuit();
+			if (Raylib.IsWindowMinimized()) Raylib.ClearWindowState(ConfigFlags.MinimizedWindow);
+		}
+
+		// Minimize Check
+		if (Raylib.IsWindowMinimized()) {
+			Raylib.EndDrawing();
+			return;
 		}
 
 		// Text Input
