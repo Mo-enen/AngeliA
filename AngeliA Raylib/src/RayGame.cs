@@ -32,7 +32,11 @@ public partial class RayGame : Game {
 		InitializeGame();
 		while (!RequireQuitGame) {
 			try {
-				UpdateGame();
+				UpdateWindow();
+				if (!Raylib.IsWindowMinimized()) {
+					UpdateGame();
+					UpdateRendering();
+				}
 			} catch (Exception ex) {
 				Debug.LogException(ex);
 			}
@@ -111,7 +115,7 @@ public partial class RayGame : Game {
 	}
 
 
-	private void UpdateGame () {
+	private void UpdateWindow () {
 
 		// Fix Window Pos in Screen
 		var windowPos = new Rectangle(
@@ -131,11 +135,22 @@ public partial class RayGame : Game {
 			if (Raylib.IsWindowMinimized()) Raylib.ClearWindowState(ConfigFlags.MinimizedWindow);
 		}
 
+		// Window Focus
+		bool windowFocus = Raylib.IsWindowFocused();
+		if (windowFocus != WindowFocused) {
+			WindowFocused = windowFocus;
+			InvokeWindowFocusChanged(windowFocus);
+		}
+
 		// Minimize Check
 		if (Raylib.IsWindowMinimized()) {
 			Raylib.EndDrawing();
-			return;
 		}
+
+	}
+
+
+	private void UpdateGame () {
 
 		// Text Input
 		int current;
@@ -173,16 +188,13 @@ public partial class RayGame : Game {
 			}
 		}
 
-		// Window Focus
-		bool windowFocus = Raylib.IsWindowFocused();
-		if (windowFocus != WindowFocused) {
-			WindowFocused = windowFocus;
-			InvokeWindowFocusChanged(windowFocus);
-		}
-
 		// Music
 		Raylib.UpdateMusicStream(CurrentBGM);
 
+	}
+
+
+	private void UpdateRendering () {
 		// Begin Draw
 		bool hasScreenEffectEnabled = false;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
@@ -268,7 +280,6 @@ public partial class RayGame : Game {
 		);
 		Raylib.EndBlendMode();
 		Raylib.EndDrawing();
-
 	}
 
 

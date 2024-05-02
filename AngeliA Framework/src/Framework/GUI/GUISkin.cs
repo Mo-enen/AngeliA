@@ -139,6 +139,82 @@ public partial class GUISkin {
 
 		CharSize = 14,
 		Wrap = WrapMode.NoWrap,
+
+		BodyBorder = Int4.Direction(Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE),
+
+	};
+
+	// Dropdown
+	public readonly GUIStyle DarkDropdown = new() {
+		BodySprite = BuiltInSprite.UI_DARK_DROPDOWN,
+		BodySpriteHover = BuiltInSprite.UI_DARK_DROPDOWN_HOVER,
+		BodySpriteDown = BuiltInSprite.UI_DARK_DROPDOWN_DOWN,
+		BodySpriteDisable = BuiltInSprite.UI_DARK_DROPDOWN,
+		ContentShift = new(0, Const.ART_SCALE * 2),
+		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
+		ContentShiftHover = new(0, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+
+		ContentColor = Color32.WHITE,
+		ContentColorHover = Color32.WHITE,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.GREY_196,
+		CharSize = -1,
+		Alignment = Alignment.MidMid,
+	};
+
+	public readonly GUIStyle Dropdown = new() {
+		BodySprite = BuiltInSprite.UI_DROPDOWN,
+		BodySpriteHover = BuiltInSprite.UI_DROPDOWN_HOVER,
+		BodySpriteDown = BuiltInSprite.UI_DROPDOWN_DOWN,
+		BodySpriteDisable = BuiltInSprite.UI_DROPDOWN,
+		ContentShift = new(0, Const.ART_SCALE * 2),
+		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
+		ContentShiftHover = new(0, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+
+		ContentColor = Color32.WHITE,
+		ContentColorHover = Color32.WHITE,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.GREY_196,
+		CharSize = -1,
+		Alignment = Alignment.MidMid,
+	};
+
+	public readonly GUIStyle SmallDarkDropdown = new() {
+		BodySprite = BuiltInSprite.UI_SMALL_DARK_DROPDOWN,
+		BodySpriteHover = BuiltInSprite.UI_SMALL_DARK_DROPDOWN_HOVER,
+		BodySpriteDown = BuiltInSprite.UI_SMALL_DARK_DROPDOWN_DOWN,
+		BodySpriteDisable = BuiltInSprite.UI_SMALL_DARK_DROPDOWN,
+		ContentShift = new(0, Const.ART_SCALE * 2),
+		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
+		ContentShiftHover = new(0, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+
+		ContentColor = Color32.WHITE,
+		ContentColorHover = Color32.WHITE,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.GREY_196,
+		CharSize = -1,
+		Alignment = Alignment.MidMid,
+	};
+
+	public readonly GUIStyle SmallDropdown = new() {
+		BodySprite = BuiltInSprite.UI_SMALL_DROPDOWN,
+		BodySpriteHover = BuiltInSprite.UI_SMALL_DROPDOWN_HOVER,
+		BodySpriteDown = BuiltInSprite.UI_SMALL_DROPDOWN_DOWN,
+		BodySpriteDisable = BuiltInSprite.UI_SMALL_DROPDOWN,
+		ContentShift = new(0, Const.ART_SCALE * 2),
+		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
+		ContentShiftHover = new(0, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+
+		ContentColor = Color32.WHITE,
+		ContentColorHover = Color32.WHITE,
+		ContentColorDown = Color32.GREY_230,
+		ContentColorDisable = Color32.GREY_196,
+		CharSize = -1,
+		Alignment = Alignment.MidMid,
 	};
 
 }

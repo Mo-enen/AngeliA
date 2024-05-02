@@ -129,8 +129,9 @@ public class SettingWindow : WindowUI {
 
 		// Theme
 		GUI.SmallLabel(rect, LABEL_THEME);
-		if (GUI.DarkButton(rect.ShrinkLeft(GUI.LabelWidth).LeftHalf(), Skin.Name)) {
-			ShowThemeMenu();
+		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
+		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkDropdown)) {
+			ShowThemeMenu(popRect);
 		}
 		rect.SlideDown(itemPadding);
 
@@ -143,8 +144,9 @@ public class SettingWindow : WindowUI {
 			var (id, dName) = AllWindowNames[StartWithWindowIndex.Clamp(0, AllWindowNames.Length - 1)];
 			selectingStartWithWindow = Language.Get(id, dName);
 		}
-		if (GUI.DarkButton(rect.ShrinkLeft(GUI.LabelWidth).LeftHalf(), selectingStartWithWindow)) {
-			ShowStartWithWindowMenu();
+		popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
+		if (GUI.Button(popRect, selectingStartWithWindow, Skin.SmallDarkDropdown)) {
+			ShowStartWithWindowMenu(popRect);
 		}
 		rect.SlideDown(itemPadding);
 
@@ -254,7 +256,7 @@ public class SettingWindow : WindowUI {
 	}
 
 
-	private void ShowThemeMenu () {
+	private void ShowThemeMenu (IRect rect) {
 
 		// Reload
 		if (RequiringReloadThemePath) {
@@ -268,7 +270,7 @@ public class SettingWindow : WindowUI {
 		}
 
 		// Show Menu
-		GenericPopupUI.BeginPopup();
+		GenericPopupUI.BeginPopup(new Int2(rect.x + Unify(4), rect.y));
 		GenericPopupUI.AddItem(LABEL_THEME_BUILT_IN, MenuInvoked, @checked: GUI.Skin.Name == "Built-in");
 		foreach (var (path, name) in ThemePaths) {
 			GenericPopupUI.AddItem(name, MenuInvoked, @checked: GUI.Skin.Name == name);
@@ -288,8 +290,8 @@ public class SettingWindow : WindowUI {
 	}
 
 
-	private void ShowStartWithWindowMenu () {
-		GenericPopupUI.BeginPopup();
+	private void ShowStartWithWindowMenu (IRect rect) {
+		GenericPopupUI.BeginPopup(new Int2(rect.x + Unify(4), rect.y));
 		GenericPopupUI.AddItem(LABEL_START_WITH_WINDOW_LAST_OPEN, MenuInvoked, @checked: StartWithWindowIndex < 0);
 		for (int i = 0; i < AllWindowNames.Length; i++) {
 			var (id, name) = AllWindowNames[i];

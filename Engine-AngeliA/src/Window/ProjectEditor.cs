@@ -116,25 +116,10 @@ public class ProjectEditor : WindowUI {
 
 		var _rect = rect;
 		_rect.width /= 3;
-		int padding = Unify(18);
-
-		// Run
-		if (GUI.Button(_rect.Shrink(padding, padding / 2, 0, 0), LABEL_RUN, WorkflowButtonStyle)) {
-			BuildProjectRequiredFrame = Game.GlobalFrame;
-			PublishProjectRequiredPath = null;
-		}
-		RequireTooltip(_rect, TIP_RUN);
-		_rect.SlideRight();
-
-		// Publish
-		if (GUI.Button(_rect.Shrink(padding / 2, padding / 2, 0, 0), LABEL_PUBLISH, WorkflowButtonStyle)) {
-			FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
-		}
-		RequireTooltip(_rect, TIP_PUBLISH);
-		_rect.SlideRight();
+		int padding = Unify(9);
 
 		// Edit
-		if (GUI.Button(_rect.Shrink(padding / 2, padding, 0, 0), LABEL_EDIT, WorkflowButtonStyle)) {
+		if (GUI.Button(_rect, LABEL_EDIT, WorkflowButtonStyle)) {
 			bool found = false;
 			foreach (var path in Util.EnumerateFiles(CurrentProject.ProjectPath, true, "*.sln")) {
 				found = true;
@@ -149,6 +134,22 @@ public class ProjectEditor : WindowUI {
 			}
 		}
 		RequireTooltip(_rect, TIP_EDIT);
+		_rect.SlideRight(padding);
+
+		// Run
+		if (GUI.Button(_rect, LABEL_RUN, WorkflowButtonStyle)) {
+			BuildProjectRequiredFrame = Game.GlobalFrame;
+			PublishProjectRequiredPath = null;
+		}
+		RequireTooltip(_rect, TIP_RUN);
+		_rect.SlideRight(padding);
+
+		// Publish
+		if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
+			FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
+		}
+		RequireTooltip(_rect, TIP_PUBLISH);
+		_rect.SlideRight(padding);
 		rect.SlideDown();
 
 		// Func
@@ -239,8 +240,6 @@ public class ProjectEditor : WindowUI {
 			Game.OpenUrl(CurrentProject.Universe.SavingRoot);
 		}
 		rect.SlideDown(padding);
-
-
 
 	}
 

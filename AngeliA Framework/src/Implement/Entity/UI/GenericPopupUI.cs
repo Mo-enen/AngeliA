@@ -227,7 +227,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
-	public static void BeginPopup (int menuID = 0) {
+	public static void BeginPopup (int menuID = 0) => BeginPopup(Input.UnshiftedMouseGlobalPosition, menuID);
+	public static void BeginPopup (Int2 globalOffset, int menuID = 0) {
 		if (Instance == null) return;
 		if (Stage.Enable) {
 			Stage.SpawnEntity(Instance.TypeID, 0, 0);
@@ -239,8 +240,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		ClearItems();
 		Instance.InvokingItemIndex = -1;
 		Instance.ItemCount = 0;
-		Instance.OffsetX = Input.UnshiftedMouseGlobalPosition.x - Renderer.CameraRect.x;
-		Instance.OffsetY = Input.UnshiftedMouseGlobalPosition.y - Renderer.CameraRect.y;
+		Instance.OffsetX = globalOffset.x - Renderer.CameraRect.x;
+		Instance.OffsetY = globalOffset.y - Renderer.CameraRect.y;
 		Instance.MenuID = menuID;
 	}
 
