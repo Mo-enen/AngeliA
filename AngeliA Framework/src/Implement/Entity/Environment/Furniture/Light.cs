@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public class LightA : Light { }
@@ -31,7 +31,11 @@ public abstract class Light : Furniture, ICombustible {
 	public override void OnActivated () {
 		base.OnActivated();
 		int hour = System.DateTime.Now.Hour;
-		OpenLight = Game.IsEdittime || hour <= 6 || hour >= 18;
+#if DEBUG
+		OpenLight = true;
+#else
+		OpenLight = hour <= 6 || hour >= 18;
+#endif
 	}
 
 	public override void FirstUpdate () {

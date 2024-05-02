@@ -18,12 +18,12 @@ public static class Cursor {
 			// No Cursor
 			CursorPriority = int.MinValue;
 			CursorEndFrame = int.MinValue;
-			if (Game.IsEdittime) {
-				Game.ShowCursor();
-				Game.SetCursorToNormal();
-			} else {
-				Game.HideCursor();
-			}
+#if DEBUG
+			Game.ShowCursor();
+			Game.SetCursorToNormal();
+#else
+			Game.HideCursor();
+#endif
 		} else {
 			// Has Cursor
 			if (CursorPriority != int.MinValue) {

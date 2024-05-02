@@ -63,7 +63,7 @@ public static class SavingSystem {
 
 
 	[OnGameInitialize(int.MinValue + 1)]
-	internal static void Reload () {
+	internal static void OnGameInitialize () {
 		SavingPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Saving.txt");
 		FileLoaded = false;
 		LoadFromFile();
@@ -73,14 +73,14 @@ public static class SavingSystem {
 	[OnUniverseOpen(int.MinValue + 1)]
 	internal static void OnUniverseOpen () {
 		if (Game.GlobalFrame == 0) return;
-		Reload();
+		SavingPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Saving.txt");
+		FileLoaded = false;
+		LoadFromFile();
 	}
 
 
 	[OnGameQuitting(4096)]
-	internal static void OnGameQuitting () {
-		if (FileLoaded) SaveToFile();
-	}
+	internal static void OnGameQuitting () => SaveToFile();
 
 
 	[OnGameUpdate]
@@ -109,6 +109,7 @@ public static class SavingSystem {
 	public static void SaveToFile () {
 		IsDirty = false;
 		CacheBuilder.Clear();
+		if (!FileLoaded) return;
 		foreach (var (id, value) in Pool) {
 			if (!RegistedKey.Contains(id)) continue;
 			CacheBuilder.Append(value.key);

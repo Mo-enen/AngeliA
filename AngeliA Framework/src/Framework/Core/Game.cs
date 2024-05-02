@@ -14,7 +14,6 @@ public abstract partial class Game {
 
 
 	// Api
-	public static Game Instance { get; private set; } = null;
 	public static int GlobalFrame { get; private set; } = 0;
 	public static int SettleFrame => GlobalFrame - Stage.LastSettleFrame;
 	public static int PauselessFrame { get; private set; } = 0;
@@ -46,6 +45,9 @@ public abstract partial class Game {
 	private static event System.Action OnGameFocused;
 	private static event System.Action OnGameLostFocus;
 	private static MethodInfo[] OnGameTryingToQuitMethods;
+
+	// Data
+	private static Game Instance = null;
 
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
@@ -96,8 +98,9 @@ public abstract partial class Game {
 		try {
 
 			GlobalFrame = 0;
-			if (IsEdittime) _IsFullscreen.Value = false;
-
+#if DEBUG
+			_IsFullscreen.Value = false;
+#endif
 			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
 			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
 			Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
@@ -122,13 +125,15 @@ public abstract partial class Game {
 			if (IsToolApplication) {
 				StopGame();
 			} else {
-				if (IsEdittime) {
-					WindowUI.OpenWindow(MapEditor.TYPE_ID);
-				} else if (AllowMakerFeatures) {
+#if DEBUG
+				WindowUI.OpenWindow(MapEditor.TYPE_ID);
+#else
+				if (AllowMakerFeatures) {
 					WindowUI.OpenWindow(HomeScreen.TYPE_ID);
 				} else {
 					RestartGame();
 				}
+#endif
 			}
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }

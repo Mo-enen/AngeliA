@@ -48,7 +48,11 @@ public partial class RayGame : Game {
 	private void InitializeGame () {
 
 		// Init Window
-		Raylib.SetTraceLogLevel(IsEdittime ? TraceLogLevel.Error : TraceLogLevel.None);
+#if DEBUG
+		Raylib.SetTraceLogLevel(TraceLogLevel.Error);
+#else
+		Raylib.SetTraceLogLevel(TraceLogLevel.None);
+#endif
 		Raylib.SetTargetFPS(60);
 		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
 		Raylib.SetConfigFlags(windowConfig);

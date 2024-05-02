@@ -33,9 +33,15 @@ public static class UniverseSystem {
 		Util.LinkEventWithAttribute<OnUniverseOpenAttribute>(typeof(UniverseSystem), nameof(OnUniverseOpen));
 
 		// Load BuiltIn Universe
+#if DEBUG
+		bool _readonly = false;
+#else
+		bool _readonly = true;
+#endif
+
 		CurrentUniverse = BuiltInUniverse = Universe.LoadUniverse(
 			AngePath.BuiltInUniverseRoot,
-			@readonly: !Game.IsEdittime,
+			@readonly: _readonly,
 			useBuiltInSavingRoot: true
 		);
 

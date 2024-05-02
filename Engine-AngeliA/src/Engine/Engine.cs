@@ -81,13 +81,13 @@ internal static class Engine {
 	private static int CurrentWindowIndex = 0;
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
+	private static int NotificationStartFrame = int.MinValue;
+	private static int RequireBuildProjectFrame = int.MinValue;
+	private static int UiSheetIndex = -1;
+	private static bool NotificationFlash = false;
 	private static string ToolLabel = null;
 	private static string NotificationContent = null;
 	private static string NotificationSubContent = null;
-	private static int NotificationStartFrame = int.MinValue;
-	private static bool NotificationFlash = false;
-	private static int RequireBuildProjectFrame = int.MinValue;
-	private static int UiSheetIndex = -1;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -210,7 +210,6 @@ internal static class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
-		// On GUI
 		GUI.Enable = true;
 		GUI.UnifyBasedOnMonitor = true;
 		Sky.ForceSkyboxTint(GUI.Skin.Background);
@@ -230,10 +229,6 @@ internal static class Engine {
 			OnGUI_Hotkey();
 		}
 
-		var windowPos = Game.GetWindowPosition();
-		if (windowPos.y < 24) {
-			Game.SetWindowPosition(windowPos.x, 24);
-		}
 	}
 
 

@@ -59,7 +59,11 @@ public static class DeveloperToolbar {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-		Enable = Game.IsEdittime && !Game.IsToolApplication;
+#if DEBUG
+		Enable = !Game.IsToolApplication;
+#else
+		Enable = false;
+#endif
 		if (!Enable) return;
 		for (int i = 0; i < RenderingUsages.Length; i++) {
 			int capa = Renderer.GetLayerCapacity(i);

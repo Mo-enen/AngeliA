@@ -703,11 +703,11 @@ public static class Stage {
 				StagedEntityHash.Contains(globalUnitPos)
 			) return null;
 			if (!EntityPool.TryGetValue(typeID, out var eMeta)) {
-				if (Game.IsEdittime) {
-					if (typeID != 0 && !EntityPool.ContainsKey(typeID)) {
-						Debug.LogWarning($"Invalid Entity Type ID {typeID}");
-					}
+#if DEBUG
+				if (typeID != 0 && !EntityPool.ContainsKey(typeID)) {
+					Debug.LogWarning($"Invalid Entity Type ID {typeID}");
 				}
+#endif
 				return null;
 			}
 			if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
