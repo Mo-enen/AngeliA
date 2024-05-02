@@ -142,8 +142,6 @@ public partial class PixelEditor {
 	private UndoRedo Undo { get; init; }
 	private AngeSprite CurrentUndoSprite;
 	private int LastGrowUndoFrame = -1;
-	private int CurrentUndoPixelIndex;
-	private IRect CurrentUndoPixelLocalRect;
 
 
 	#endregion
@@ -230,8 +228,6 @@ public partial class PixelEditor {
 				}
 				// Cache
 				CurrentUndoSprite = sprite;
-				CurrentUndoPixelIndex = redo ? 0 : paint.LocalPixelRect.width * paint.LocalPixelRect.height - 1;
-				CurrentUndoPixelLocalRect = paint.LocalPixelRect;
 				RequireNotification(redo ? NOTI_REDO_PAINT : NOTI_UNDO_PAINT);
 			}
 			break;

@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.IO;
+using System.IO.Pipes;
 using AngeliA;
 
 namespace AngeliaEngine;
@@ -27,6 +30,7 @@ public static class EngineUtil {
 	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet", "dotnet.exe");
 	public static string ProjectTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate");
 	public static string EntryExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Entry.exe");
+	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
 
 
@@ -190,6 +194,24 @@ public static class EngineUtil {
 	}
 
 
+	// Rig
+	public static Process StartRiggedExe (string exePath, AnonymousPipeServerStream serverPipe) {
+
+		if (!Util.FileExists(exePath)) return null;
+
+		var process = new Process();
+		process.StartInfo.FileName = exePath;
+		process.StartInfo.Arguments = serverPipe.GetClientHandleAsString();
+		process.StartInfo.UseShellExecute = false;
+		process.StartInfo.CreateNoWindow = false;
+		process.Start();
+		serverPipe.DisposeLocalCopyOfClientHandle();
+
+		return process;
+	}
+
+
+	// Modyfy Date
 	public static long GetScriptModifyDate (Project project) {
 		if (project == null || !Util.FolderExists(project.SourceCodePath)) return 0;
 		long result = 0;

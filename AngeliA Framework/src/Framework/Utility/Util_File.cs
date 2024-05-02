@@ -32,9 +32,9 @@ public static partial class Util {
 	}
 
 
-	public static void TextToFile (string data, string path) {
+	public static void TextToFile (string data, string path, bool append = false) {
 		CreateFolder(GetParentPath(path));
-		using FileStream fs = new(path, FileMode.Create);
+		using FileStream fs = new(path, append ? FileMode.Append : FileMode.Create);
 		using StreamWriter sw = new(fs, Encoding.ASCII);
 		sw.Write(data);
 		sw.Close();
@@ -42,9 +42,9 @@ public static partial class Util {
 	}
 
 
-	public static void TextToFile (string data, string path, Encoding encoding) {
+	public static void TextToFile (string data, string path, Encoding encoding, bool append = false) {
 		CreateFolder(GetParentPath(path));
-		using FileStream fs = new(path, FileMode.Create);
+		using FileStream fs = new(path, append ? FileMode.Append : FileMode.Create);
 		using StreamWriter sw = new(fs, encoding);
 		sw.Write(data);
 		sw.Close();

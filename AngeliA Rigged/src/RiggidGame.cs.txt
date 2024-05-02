@@ -1,0 +1,372 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using AngeliA;
+
+namespace AngeliaRigged;
+
+public class RiggidGame : Game {
+
+
+
+
+	#region --- VAR ---
+
+
+	// Data
+	private bool r_CursorVisible = true;
+
+
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	public void Run (params string[] args) {
+
+
+
+
+
+	}
+
+
+	// Override
+	protected override void _CenterCursor () { }
+
+	protected override bool _CursorInScreen () => r_CursorVisible;
+
+	protected override bool _CursorVisible () {
+		// TODO
+	}
+
+	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
+		// TODO
+	}
+
+	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
+		// TODO
+	}
+
+	protected override void _Effect_SetDarkenParams (float amount, float step) {
+		// TODO
+	}
+
+	protected override void _Effect_SetLightenParams (float amount, float step) {
+		// TODO
+	}
+
+	protected override void _Effect_SetTintParams (Color32 color) {
+		// TODO
+	}
+
+	protected override void _Effect_SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round) {
+		// TODO
+	}
+
+	protected override void _FillPixelsIntoTexture (Color32[] pixels, object texture) {
+		// TODO
+	}
+
+	protected override FRect _GetCameraScreenLocacion () {
+		// TODO
+	}
+
+	protected override CharSprite _GetCharSprite (int fontIndex, char c) {
+		// TODO
+	}
+
+	protected override string _GetClipboardText () {
+		// TODO
+	}
+
+	protected override int _GetCurrentMonitor () {
+		// TODO
+	}
+
+	protected override bool _GetEffectEnable (int effectIndex) {
+		// TODO
+	}
+
+	protected override int _GetFontCount () {
+		// TODO
+	}
+
+	protected override Float2 _GetGamepadLeftStickDirection () {
+		// TODO
+	}
+
+	protected override Float2 _GetGamepadRightStickDirection () {
+		// TODO
+	}
+
+	protected override int _GetMonitorHeight (int monitor) {
+		// TODO
+	}
+
+	protected override int _GetMonitorWidth (int monitor) {
+		// TODO
+	}
+
+	protected override Int2 _GetMouseScreenPosition () {
+		// TODO
+	}
+
+	protected override int _GetMouseScrollDelta () {
+		// TODO
+	}
+
+	protected override Color32[] _GetPixelsFromTexture (object texture) {
+		// TODO
+	}
+
+	protected override int _GetScreenHeight () {
+		// TODO
+	}
+
+	protected override int _GetScreenWidth () {
+		// TODO
+	}
+
+	protected override string _GetTextLayerName (int index) {
+		// TODO
+	}
+
+	protected override object _GetTextureFromPixels (Color32[] pixels, int width, int height) {
+		// TODO
+	}
+
+	protected override Int2 _GetTextureSize (object texture) {
+		// TODO
+	}
+
+	protected override bool _GetWindowDecorated () {
+		// TODO
+	}
+
+	protected override bool _GetWindowMaximized () {
+		// TODO
+	}
+
+	protected override bool _GetWindowMinimized () {
+		// TODO
+	}
+
+	protected override Int2 _GetWindowPosition () {
+		// TODO
+	}
+
+	protected override bool _GetWindowResizable () {
+		// TODO
+	}
+
+	protected override bool _GetWindowTopmost () {
+		// TODO
+	}
+
+	protected override void _HideCursor () {
+		// TODO
+	}
+
+	protected override bool _IsGamepadAvailable () {
+		// TODO
+	}
+
+	protected override bool _IsGamepadKeyHolding (GamepadKey key) {
+		// TODO
+	}
+
+	protected override bool _IsGamepadLeftStickHolding (Direction4 direction) {
+		// TODO
+	}
+
+	protected override bool _IsGamepadRightStickHolding (Direction4 direction) {
+		// TODO
+	}
+
+	protected override bool _IsKeyboardAvailable () {
+		// TODO
+	}
+
+	protected override bool _IsKeyboardKeyHolding (KeyboardKey key) {
+		// TODO
+	}
+
+	protected override bool _IsMouseAvailable () {
+		// TODO
+	}
+
+	protected override bool _IsMouseLeftHolding () {
+		// TODO
+	}
+
+	protected override bool _IsMouseMidHolding () {
+		// TODO
+	}
+
+	protected override bool _IsMouseRightHolding () {
+		// TODO
+	}
+
+	protected override bool _IsMusicPlaying () {
+		// TODO
+	}
+
+	protected override bool _IsWindowFocused () {
+		// TODO
+	}
+
+	protected override void _MakeWindowFocused () {
+		// TODO
+	}
+
+	protected override void _OnCameraUpdate () {
+		// TODO
+	}
+
+	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
+		// TODO
+	}
+
+	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) {
+		// TODO
+	}
+
+	protected override void _OpenUrl (string url) {
+		// TODO
+	}
+
+	protected override void _PauseMusic () {
+		// TODO
+	}
+
+	protected override void _PlayMusic (int id) {
+		// TODO
+	}
+
+	protected override void _PlaySound (int id, float volume) {
+		// TODO
+	}
+
+	protected override object _PngBytesToTexture (byte[] bytes) {
+		// TODO
+	}
+
+	protected override void _QuitApplication () {
+		// TODO
+	}
+
+	protected override void _SetCameraScreenLocacion (FRect rect) {
+		// TODO
+	}
+
+	protected override void _SetClipboardText (string text) {
+		// TODO
+	}
+
+	protected override void _SetCursor (int index) {
+		// TODO
+	}
+
+	protected override void _SetCursorToNormal () {
+		// TODO
+	}
+
+	protected override void _SetEffectEnable (int effectIndex, bool enable) {
+		// TODO
+	}
+
+	protected override void _SetEventWaiting (bool enable) {
+		// TODO
+	}
+
+	protected override void _SetFullscreen (bool fullScreen) {
+		// TODO
+	}
+
+	protected override void _SetMusicVolume (int volume) {
+		// TODO
+	}
+
+	protected override void _SetSoundVolume (int volume) {
+		// TODO
+	}
+
+	protected override void _SetWindowDecorated (bool decorated) {
+		// TODO
+	}
+
+	protected override void _SetWindowMaximized (bool maximized) {
+		// TODO
+	}
+
+	protected override void _SetWindowMinimized (bool minimized) {
+		// TODO
+	}
+
+	protected override void _SetWindowMinSize (int size) {
+		// TODO
+	}
+
+	protected override void _SetWindowPosition (int x, int y) {
+		// TODO
+	}
+
+	protected override void _SetWindowResizable (bool resizable) {
+		// TODO
+	}
+
+	protected override void _SetWindowSize (int x, int y) {
+		// TODO
+	}
+
+	protected override void _SetWindowTitle (string title) {
+		// TODO
+	}
+
+	protected override void _SetWindowTopmost (bool topmost) {
+		// TODO
+	}
+
+	protected override void _ShowCursor () {
+		// TODO
+	}
+
+	protected override void _StopAllSounds () {
+		// TODO
+	}
+
+	protected override void _StopMusic () {
+		// TODO
+	}
+
+	protected override byte[] _TextureToPngBytes (object texture) {
+		// TODO
+	}
+
+	protected override void _UnloadTexture (object texture) {
+		// TODO
+	}
+
+	protected override void _UnPauseMusic () {
+		// TODO
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
+
+
+}

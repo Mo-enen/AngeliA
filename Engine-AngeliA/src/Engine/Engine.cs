@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using AngeliA;
+using Debug = AngeliA.Debug;
 
 [assembly: ToolApplication]
 [assembly: UsePremultiplyBlendMode]
@@ -88,6 +92,9 @@ internal static class Engine {
 	private static string ToolLabel = null;
 	private static string NotificationContent = null;
 	private static string NotificationSubContent = null;
+	private static AnonymousPipeServerStream RigPipeServerStream = null;
+	private static StreamWriter RigPipeServerWriter = null;
+	private static Process RigPipeClientProcess = null;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -228,6 +235,26 @@ internal static class Engine {
 			OnGUI_Window();
 			OnGUI_Hotkey();
 		}
+
+
+
+
+		///////////////////////////////////////
+		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
+			RestartRiggedGame();
+		}
+		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
+			if (RigPipeServerWriter != null) {
+				string line = "write by server: " + Util.RandomInt();
+				RigPipeServerWriter.WriteLine(line);
+				Debug.Log("sending: " + line);
+			} else {
+				Debug.LogWarning("writer is null");
+			}
+		}
+		///////////////////////////////////////
+
+
 
 	}
 
@@ -963,6 +990,53 @@ internal static class Engine {
 				Projects.Sort((a, b) => b.LastOpenTime.CompareTo(a.LastOpenTime));
 				break;
 		}
+	}
+
+
+	// Rig
+	private static void RestartRiggedGame () {
+
+		// Dispose Current
+		if (RigPipeClientProcess != null) {
+			if (!RigPipeClientProcess.HasExited) {
+				RigPipeClientProcess.Kill();
+			}
+			RigPipeClientProcess = null;
+		}
+
+		if (RigPipeServerStream != null) {
+			RigPipeServerStream = null;
+		}
+
+		if (RigPipeServerWriter != null) {
+			RigPipeServerWriter.Dispose();
+			RigPipeServerWriter = null;
+		}
+
+		// Start New
+		var pipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
+		var process = EngineUtil.StartRiggedExe(EngineUtil.RiggedExePath, pipeServer);
+		var writer = new StreamWriter(pipeServer) { AutoFlush = true };
+		if (process == null) {
+			// Fail
+			pipeServer.Dispose();
+			writer.Dispose();
+			return;
+		}
+
+		RigPipeClientProcess = process;
+		RigPipeServerStream = pipeServer;
+		RigPipeServerWriter = writer;
+
+		Debug.Log("Start: " + process);
+
+
+
+
+
+
+
+
 	}
 
 
