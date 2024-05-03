@@ -194,23 +194,6 @@ public static class EngineUtil {
 	}
 
 
-	// Rig
-	public static Process StartRiggedExe (string exePath, AnonymousPipeServerStream serverPipe) {
-
-		if (!Util.FileExists(exePath)) return null;
-
-		var process = new Process();
-		process.StartInfo.FileName = exePath;
-		process.StartInfo.Arguments = serverPipe.GetClientHandleAsString();
-		process.StartInfo.UseShellExecute = false;
-		process.StartInfo.CreateNoWindow = false;
-		process.Start();
-		serverPipe.DisposeLocalCopyOfClientHandle();
-
-		return process;
-	}
-
-
 	// Modyfy Date
 	public static long GetScriptModifyDate (Project project) {
 		if (project == null || !Util.FolderExists(project.SourceCodePath)) return 0;

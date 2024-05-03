@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿global using Debug = AngeliA.Debug;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Runtime.InteropServices;
 using AngeliA;
-using Debug = AngeliA.Debug;
 
 [assembly: ToolApplication]
 [assembly: UsePremultiplyBlendMode]
@@ -92,9 +93,7 @@ internal static class Engine {
 	private static string ToolLabel = null;
 	private static string NotificationContent = null;
 	private static string NotificationSubContent = null;
-	private static AnonymousPipeServerStream RigPipeServerStream = null;
-	private static StreamWriter RigPipeServerWriter = null;
-	private static Process RigPipeClientProcess = null;
+	private static RiggedGame RiggedGame = null;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -123,6 +122,7 @@ internal static class Engine {
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
 
+		RiggedGame = new(EngineUtil.RiggedExePath);
 		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
 		// Projects
@@ -241,17 +241,19 @@ internal static class Engine {
 
 		///////////////////////////////////////
 		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-			RestartRiggedGame();
+			RiggedGame.Restart();
 		}
 		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
-			if (RigPipeServerWriter != null) {
-				string line = "write by server: " + Util.RandomInt();
-				RigPipeServerWriter.WriteLine(line);
-				Debug.Log("sending: " + line);
-			} else {
-				Debug.LogWarning("writer is null");
-			}
+			string line = Util.RandomInt().ToString();
+			RiggedGame.WriteLine(line);
+			Debug.Log(line);
 		}
+
+		string readLine = RiggedGame.ReadLine();
+		if (readLine != null) {
+			Debug.Log("msg from client: " + readLine);
+		}
+
 		///////////////////////////////////////
 
 
@@ -990,53 +992,6 @@ internal static class Engine {
 				Projects.Sort((a, b) => b.LastOpenTime.CompareTo(a.LastOpenTime));
 				break;
 		}
-	}
-
-
-	// Rig
-	private static void RestartRiggedGame () {
-
-		// Dispose Current
-		if (RigPipeClientProcess != null) {
-			if (!RigPipeClientProcess.HasExited) {
-				RigPipeClientProcess.Kill();
-			}
-			RigPipeClientProcess = null;
-		}
-
-		if (RigPipeServerStream != null) {
-			RigPipeServerStream = null;
-		}
-
-		if (RigPipeServerWriter != null) {
-			RigPipeServerWriter.Dispose();
-			RigPipeServerWriter = null;
-		}
-
-		// Start New
-		var pipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
-		var process = EngineUtil.StartRiggedExe(EngineUtil.RiggedExePath, pipeServer);
-		var writer = new StreamWriter(pipeServer) { AutoFlush = true };
-		if (process == null) {
-			// Fail
-			pipeServer.Dispose();
-			writer.Dispose();
-			return;
-		}
-
-		RigPipeClientProcess = process;
-		RigPipeServerStream = pipeServer;
-		RigPipeServerWriter = writer;
-
-		Debug.Log("Start: " + process);
-
-
-
-
-
-
-
-
 	}
 
 
