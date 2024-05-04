@@ -199,6 +199,7 @@ public partial class RayGame : Game {
 
 
 	private void UpdateRendering () {
+
 		// Begin Draw
 		bool hasScreenEffectEnabled = false;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
@@ -230,7 +231,7 @@ public partial class RayGame : Game {
 		Update();
 
 		// Update Gizmos
-		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
+		Raylib.BeginBlendMode(UsePremultiplyBlendMode ? BlendMode.AlphaPremultiply : BlendMode.CustomSeparate);
 		GizmosRender.UpdateGizmos();
 		Raylib.EndBlendMode();
 
@@ -268,8 +269,8 @@ public partial class RayGame : Game {
 		}
 
 		// Black Side Border
-		if (CameraRange.x.NotAlmostZero()) {
-			int borderWidth = (int)(ScreenWidth * CameraRange.x);
+		if (Renderer.CameraRange.x.NotAlmostZero()) {
+			int borderWidth = (int)(ScreenWidth * Renderer.CameraRange.x);
 			Raylib.DrawRectangle(0, 0, borderWidth, ScreenHeight, Color.Black);
 			Raylib.DrawRectangle(ScreenWidth - borderWidth, 0, borderWidth, ScreenHeight, Color.Black);
 		}

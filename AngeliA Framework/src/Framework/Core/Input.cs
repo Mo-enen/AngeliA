@@ -285,7 +285,7 @@ public static class Input {
 		AnyMouseButtonDown = false;
 		AnyMouseButtonHolding = false;
 		if (available) {
-			var uCameraRect = Game.CameraScreenLocacion;
+			var uCameraRect = Renderer.CameraRange;
 			var mousePos = Game.MouseScreenPosition;
 			MouseScreenPositionDelta = mousePos - MouseScreenPosition;
 			MouseMove = mousePos != MouseScreenPosition;

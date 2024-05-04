@@ -65,6 +65,8 @@ public static class Renderer {
 	// Api
 	public static IRect ViewRect { get; private set; } = new IRect(0, 0, 1, 1);
 	public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);
+	public static FRect CameraRange { get; private set; } = new(0, 0, 1f, 1f);
+	public static IRect ScreenRenderRect { get; private set; }
 	public static float CameraRestrictionRate { get; private set; } = 1f;
 	public static int LastDrawnID { get; private set; } = 0;
 	public static int LayerCount => Layers.Length;
@@ -157,9 +159,7 @@ public static class Renderer {
 		} else {
 			CameraRestrictionRate = 1f;
 		}
-		if (Game.CameraScreenLocacion.NotAlmost(rect)) {
-			Game.CameraScreenLocacion = rect;
-		}
+		CameraRange = rect;
 
 		// Camera Rect
 		float cameraAspect = Util.Min(ratio, maxRatio);
@@ -184,6 +184,21 @@ public static class Renderer {
 	}
 
 
+	[OnGameUpdatePauseless(-4096)]
+	internal static void OnGameUpdatePauselessLate () {
+		int width = Game.ScreenWidth;
+		int height = Game.ScreenHeight;
+		ScreenRenderRect = CameraRange.x.AlmostZero() ?
+			new IRect(0, 0, width, height) :
+			new IRect(
+				Util.LerpUnclamped(0, width, CameraRange.x).RoundToInt(),
+				0,
+				(width * CameraRange.width).RoundToInt(),
+				height
+			);
+	}
+
+
 	[OnGameUpdatePauseless(32)]
 	internal static void FrameUpdate () {
 		IsDrawing = false;
@@ -192,6 +207,7 @@ public static class Renderer {
 				var layer = Layers[i];
 				if (!layer.UiLayer) layer.ZSort();
 				int prevCount = layer.Count;
+				if (Game.PauselessFrame < 4) continue;
 				Game.OnLayerUpdate(i, layer.UiLayer, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
 			} catch (System.Exception ex) { Debug.LogException(ex); }

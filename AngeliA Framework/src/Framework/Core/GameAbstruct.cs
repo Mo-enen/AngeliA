@@ -127,15 +127,6 @@ public abstract partial class Game {
 	public static void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
 
 
-	// Camera
-	internal static FRect CameraScreenLocacion {
-		get => Instance._GetCameraScreenLocacion();
-		set => Instance._SetCameraScreenLocacion(value);
-	}
-	protected abstract FRect _GetCameraScreenLocacion ();
-	protected abstract void _SetCameraScreenLocacion (FRect rect);
-
-
 	// View
 	public static int DefaultViewHeight => Instance._DefaultViewHeight;
 	protected virtual int _DefaultViewHeight => 26 * Const.CEL;
@@ -164,10 +155,6 @@ public abstract partial class Game {
 	// Render
 	internal static void OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnRenderingLayerCreated(index, name, sortingOrder, capacity);
 	protected abstract void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity);
-
-	[OnGameUpdatePauseless(-4096)]
-	internal static void OnCameraUpdate () => Instance._OnCameraUpdate();
-	protected abstract void _OnCameraUpdate ();
 
 	internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, cells, cellCount);
 	protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount);

@@ -17,8 +17,6 @@ public partial class RayGame {
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
 	private Texture2D EMPTY_TEXTURE;
 	private FontData[] Fonts;
-	private FRect CameraRange = new(0, 0, 1f, 1f);
-	private IRect ScreenRenderRect;
 	private Shader LerpShader;
 	private Shader ColorShader;
 	private Shader InverseShader;
@@ -116,38 +114,23 @@ public partial class RayGame {
 	}
 
 
-	// Camera
-	protected override FRect _GetCameraScreenLocacion () => CameraRange;
-	protected override void _SetCameraScreenLocacion (FRect rect) => CameraRange = rect;
-
-
 	// Render
 	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) { }
-
-	protected override void _OnCameraUpdate () {
-		ScreenRenderRect = CameraRange.x.AlmostZero() ?
-			new IRect(0, 0, ScreenWidth, ScreenHeight) :
-			new IRect(
-				Util.LerpUnclamped(0, ScreenWidth, CameraRange.x).RoundToInt(),
-				0,
-				(ScreenWidth * CameraRange.width).RoundToInt(),
-				ScreenHeight
-			);
-	}
 
 	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
 		if (PauselessFrame < 4) return;
 
 		var cameraRect = Renderer.CameraRect;
+		var screenRenderRect = Renderer.ScreenRenderRect;
 		int cameraL = cameraRect.x;
 		int cameraR = cameraRect.xMax;
 		int cameraD = cameraRect.y;
 		int cameraU = cameraRect.yMax;
-		int screenL = ScreenRenderRect.x;
-		int screenR = ScreenRenderRect.xMax;
-		int screenD = ScreenRenderRect.y;
-		int screenU = ScreenRenderRect.yMax;
+		int screenL = screenRenderRect.x;
+		int screenR = screenRenderRect.xMax;
+		int screenD = screenRenderRect.y;
+		int screenU = screenRenderRect.yMax;
 
 		bool usingShader = false;
 
@@ -217,8 +200,8 @@ public partial class RayGame {
 					var dest = new Rectangle(
 						Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
 						Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
-						cell.Width.Abs() * ScreenRenderRect.width / (float)cameraRect.width,
-						cell.Height.Abs() * ScreenRenderRect.height / (float)cameraRect.height
+						cell.Width.Abs() * screenRenderRect.width / (float)cameraRect.width,
+						cell.Height.Abs() * screenRenderRect.height / (float)cameraRect.height
 					);
 
 					float pivotX = cell.Width > 0 ? cell.PivotX : 1f - cell.PivotX;
@@ -260,8 +243,8 @@ public partial class RayGame {
 					var dest = new Rectangle(
 						Util.RemapUnclamped(cameraL, cameraR, screenL, screenR, (float)cell.X),
 						Util.RemapUnclamped(cameraD, cameraU, screenU, screenD, (float)cell.Y),
-						cell.Width * ScreenRenderRect.width / (float)cameraRect.width,
-						cell.Height * ScreenRenderRect.height / (float)cameraRect.height
+						cell.Width * screenRenderRect.width / (float)cameraRect.width,
+						cell.Height * screenRenderRect.height / (float)cameraRect.height
 					);
 
 					float pivotX = 0f;
@@ -518,22 +501,24 @@ public partial class RayGame {
 	// GL Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
 		var cameraRect = Renderer.CameraRect;
+		var screenRenderRect = Renderer.ScreenRenderRect;
 		GizmosRender.DrawGizmosRect(new Rectangle(
-			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, ScreenRenderRect.x, ScreenRenderRect.xMax, rect.x),
-			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, ScreenRenderRect.yMax, ScreenRenderRect.y, rect.yMax),
-			rect.width * ScreenRenderRect.width / cameraRect.width,
-			rect.height * ScreenRenderRect.height / cameraRect.height
+			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, rect.x),
+			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, rect.yMax),
+			rect.width * screenRenderRect.width / cameraRect.width,
+			rect.height * screenRenderRect.height / cameraRect.height
 		), color);
 	}
 
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
 		if (texture is not Texture2D rTexture) return;
 		var cameraRect = Renderer.CameraRect;
+		var screenRenderRect = Renderer.ScreenRenderRect;
 		GizmosRender.DrawGizmosTexture(new Rectangle(
-			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, ScreenRenderRect.x, ScreenRenderRect.xMax, (float)rect.x),
-			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, ScreenRenderRect.yMax, ScreenRenderRect.y, (float)rect.yMax),
-			(float)rect.width * ScreenRenderRect.width / cameraRect.width,
-			(float)rect.height * ScreenRenderRect.height / cameraRect.height
+			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x),
+			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
+			(float)rect.width * screenRenderRect.width / cameraRect.width,
+			(float)rect.height * screenRenderRect.height / cameraRect.height
 		), new Rectangle(
 			uv.x * rTexture.Width,
 			uv.y * rTexture.Height,

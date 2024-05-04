@@ -22,13 +22,20 @@ public class RiggedGame {
 	public const int ERROR_EXE_FILE_NOT_FOUND = -100;
 	public const int ERROR_PROCESS_FAIL_TO_START = -101;
 
+	// Api
+	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
+	public bool ReadTaskRunning => ReadingTask != null && ReadingTask.Status == TaskStatus.Running;
+	public bool WriteTaskRunning => WritingTask != null && WritingTask.Status == TaskStatus.Running;
 
 	// Data
 	private NamedPipeServerStream RigPipeServerStream = null;
 	private StreamReader RigPipeServerReader = null;
 	private StreamWriter RigPipeServerWriter = null;
 	private Process RigPipeClientProcess = null;
-	private CancellationTokenSource ReadWriteLineTokenSource = new();
+	private Task ReadingTask = null;
+	private Task WritingTask = null;
+	private CancellationTokenSource ReadLineTokenSource = null;
+	private CancellationTokenSource WriteLineTokenSource = null;
 	private CancellationToken ReadlineCancelToken;
 	private CancellationToken WritelineCancelToken;
 	private readonly string Exepath;
@@ -59,8 +66,6 @@ public class RiggedGame {
 
 	public int Restart () {
 
-		if (!Util.FileExists(Exepath)) return ERROR_EXE_FILE_NOT_FOUND;
-
 		// Discard Current
 		if (RigPipeServerStream != null) {
 			RigPipeServerStream = null;
@@ -74,28 +79,36 @@ public class RiggedGame {
 		}
 
 		if (RigPipeServerReader != null) {
-			RigPipeServerReader.Dispose();
 			RigPipeServerReader = null;
 		}
 
 		if (RigPipeServerWriter != null) {
-			RigPipeServerWriter.Dispose();
 			RigPipeServerWriter = null;
 		}
 
-		if (ReadWriteLineTokenSource != null) {
-			ReadWriteLineTokenSource.Cancel();
-			ReadWriteLineTokenSource = null;
+		if (ReadLineTokenSource != null) {
+			ReadLineTokenSource.Cancel();
+			ReadLineTokenSource = null;
 		}
 
-		ReadWriteLineTokenSource = new();
-		ReadlineCancelToken = ReadWriteLineTokenSource.Token;
-		WritelineCancelToken = ReadWriteLineTokenSource.Token;
+		if (WriteLineTokenSource != null) {
+			WriteLineTokenSource.Cancel();
+			WriteLineTokenSource = null;
+		}
+
+		// Gate
+		if (!Util.FileExists(Exepath)) return ERROR_EXE_FILE_NOT_FOUND;
 
 		// Start New
+		ReadLineTokenSource = new();
+		WriteLineTokenSource = new();
+		ReadlineCancelToken = ReadLineTokenSource.Token;
+		WritelineCancelToken = WriteLineTokenSource.Token;
+
 		var pipeServer = new NamedPipeServerStream(
-			Const.RIG_PIPE_SERVER_NAME, PipeDirection.InOut, maxNumberOfServerInstances: 1,
-			transmissionMode: PipeTransmissionMode.Byte,
+			Const.RIG_PIPE_SERVER_NAME, PipeDirection.InOut,
+			maxNumberOfServerInstances: 16,
+			transmissionMode: PipeTransmissionMode.Message,
 			options: PipeOptions.Asynchronous
 		);
 
@@ -103,6 +116,7 @@ public class RiggedGame {
 		process.StartInfo.FileName = Exepath;
 		process.StartInfo.UseShellExecute = false;
 		process.StartInfo.CreateNoWindow = false;
+
 		process.Start();
 
 		pipeServer.WaitForConnection();
@@ -123,16 +137,16 @@ public class RiggedGame {
 		RigPipeServerWriter = writer;
 		RigPipeServerReader = reader;
 
-		Task.Run(WriteLineUpdate, ReadlineCancelToken);
-		Task.Run(ReadLineUpdate, WritelineCancelToken);
+		WritingTask = Task.Run(WriteLineUpdate, WritelineCancelToken);
+		ReadingTask = Task.Run(ReadLineUpdate, ReadlineCancelToken);
 
-		Debug.Log("Started: " + process);
+		Debug.Log("Rig Started: " + process);
 
 		return 0;
 	}
 
 
-	public void WriteLine (string line) => WritingQueue.Enqueue(line);
+	public void Write (string value) => WritingQueue.Enqueue(value);
 
 
 	public string ReadLine () => ResultQueue.Count > 0 ? ResultQueue.Dequeue() : null;
@@ -153,7 +167,9 @@ public class RiggedGame {
 			if (RigPipeServerStream == null || !RigPipeServerStream.IsConnected) continue;
 			if (RigPipeServerWriter == null) continue;
 			while (WritingQueue.Count > 0) {
-				RigPipeServerWriter.WriteLine(WritingQueue.Dequeue());
+				string line = WritingQueue.Dequeue();
+				Debug.Log(">> " + line);
+				RigPipeServerWriter.WriteLine(line);
 			}
 		}
 	}
@@ -167,6 +183,7 @@ public class RiggedGame {
 			if (RigPipeServerReader == null) continue;
 			string line = RigPipeServerReader.ReadLine();
 			if (line != null) {
+				Debug.Log("<< " + line);
 				ResultQueue.Enqueue(line);
 			}
 		}

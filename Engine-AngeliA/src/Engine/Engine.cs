@@ -1,11 +1,7 @@
 ﻿global using Debug = AngeliA.Debug;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Pipes;
 using System.Linq;
-using System.Runtime.InteropServices;
 using AngeliA;
 
 [assembly: ToolApplication]
@@ -245,14 +241,11 @@ internal static class Engine {
 		}
 		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
 			string line = Util.RandomInt().ToString();
-			RiggedGame.WriteLine(line);
-			Debug.Log(line);
+			RiggedGame.Write(line);
 		}
 
-		string readLine = RiggedGame.ReadLine();
-		if (readLine != null) {
-			Debug.Log("msg from client: " + readLine);
-		}
+		RiggedGame.ReadLine();
+		
 
 		///////////////////////////////////////
 
