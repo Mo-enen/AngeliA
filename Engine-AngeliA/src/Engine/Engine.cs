@@ -76,6 +76,7 @@ internal static class Engine {
 	private static readonly List<ProjectData> Projects = new();
 	private static readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private static readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
+	private static readonly RiggedGame RiggedGame = new(EngineUtil.RiggedExePath);
 	private static IRect ToolLabelRect;
 	private static IRect LastHoveringToolLabelRect;
 	private static int HoveringTooltipDuration = 0;
@@ -84,12 +85,11 @@ internal static class Engine {
 	private static int CurrentProjectMenuIndex = -1;
 	private static int NotificationStartFrame = int.MinValue;
 	private static int RequireBuildProjectFrame = int.MinValue;
-	private static int UiSheetIndex = -1;
+	private static int ThemeSheetIndex = -1;
 	private static bool NotificationFlash = false;
 	private static string ToolLabel = null;
 	private static string NotificationContent = null;
 	private static string NotificationSubContent = null;
-	private static RiggedGame RiggedGame = null;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -118,7 +118,6 @@ internal static class Engine {
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
 
-		RiggedGame = new(EngineUtil.RiggedExePath);
 		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
 		// Projects
@@ -160,7 +159,7 @@ internal static class Engine {
 		SettingWindow.InitializeData(ALL_UI);
 
 		// Theme
-		UiSheetIndex = Renderer.AddAltSheet(ThemeSheet);
+		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
 
 	}
 
@@ -217,7 +216,7 @@ internal static class Engine {
 		GUI.UnifyBasedOnMonitor = true;
 		Sky.ForceSkyboxTint(GUI.Skin.Background);
 
-		using var _ = Scope.Sheet(ThemeSheet.NotEmpty ? UiSheetIndex : -1);
+		using var _ = Scope.Sheet(ThemeSheet.NotEmpty ? ThemeSheetIndex : -1);
 		using var __ = Scope.GuiSkin(ThemeSkin);
 
 		using (Scope.RendererLayerUI()) {
@@ -237,16 +236,13 @@ internal static class Engine {
 
 		///////////////////////////////////////
 		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-			RiggedGame.Restart();
-		}
-		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
-			string line = Util.RandomInt().ToString();
-			RiggedGame.Write(line);
+			RiggedGame.Start();
 		}
 
-		RiggedGame.ReadLine();
-		
-
+		if (RiggedGame.RigProcessRunning) {
+			RiggedGame.Call();
+			RiggedGame.Respond();
+		}
 		///////////////////////////////////////
 
 

@@ -75,6 +75,7 @@ public partial class PixelEditor : WindowUI {
 	// Api
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Artwork";
+	public static int SheetIndex { get; private set; } = -1;
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
 	public static readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
@@ -84,7 +85,6 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
-	private static int SheetIndex = -1;
 	private string SheetPath = "";
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
