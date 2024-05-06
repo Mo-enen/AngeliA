@@ -35,6 +35,7 @@ public abstract partial class Game {
 	public static bool IsToolApplication { get; private set; } = false;
 	public static bool AllowMakerFeatures { get; private set; } = false;
 	public static bool UsePremultiplyBlendMode { get; private set; } = false;
+	public static bool AllowPause { get; private set; } = true;
 
 	// Event
 	private static event System.Action OnGameRestart;
@@ -91,6 +92,10 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<UsePremultiplyBlendModeAttribute>()) {
 			UsePremultiplyBlendMode = true;
 		}
+		if (Util.TryGetAttributeFromAllAssemblies<DisablePauseAttribute>()) {
+			AllowPause = false;
+		}
+
 	}
 
 
@@ -151,7 +156,7 @@ public abstract partial class Game {
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
-			if (!IsToolApplication && Input.GameKeyUp(Gamekey.Start)) {
+			if (AllowPause && Input.GameKeyUp(Gamekey.Start)) {
 				if (IsPlaying) {
 					PauseGame();
 				} else {
@@ -215,7 +220,7 @@ public abstract partial class Game {
 
 
 	public static void PauseGame () {
-		if (!IsPlaying) return;
+		if (!IsPlaying || !AllowPause) return;
 		StopAllSounds();
 		IsPlaying = false;
 	}

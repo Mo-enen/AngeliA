@@ -114,7 +114,7 @@ public static partial class Util {
 	}
 
 
-	public static int ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true, bool wait = true) {
+	public static int ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true, bool logError = true, bool wait = true) {
 		try {
 			var process = Process.Start(new ProcessStartInfo {
 				Verb = "runas",
@@ -132,6 +132,9 @@ public static partial class Util {
 				while ((line = process.StandardOutput.ReadLine()) != null) {
 					Debug.Log(line);
 				}
+			}
+			if (logError) {
+				string line;
 				while ((line = process.StandardError.ReadLine()) != null) {
 					Debug.LogError(line);
 				}

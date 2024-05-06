@@ -19,6 +19,7 @@ public class RiggedGame {
 	// Const 
 	public const int ERROR_EXE_FILE_NOT_FOUND = -100;
 	public const int ERROR_PROCESS_FAIL_TO_START = -101;
+	public const int ERROR_UNKNOWN = -102;
 
 	// Api
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
@@ -99,15 +100,18 @@ public class RiggedGame {
 		ReadlineCancelToken = ReadLineTokenSource.Token;
 		WritelineCancelToken = WriteLineTokenSource.Token;
 
+		int nameID = Util.RandomInt(0, 99999);
+		string pipeNameIn = $"pipe.{nameID}.in";
+		string pipeNameOut = $"pipe.{nameID}.out";
 		var pipeServerIn = new NamedPipeServerStream(
-			Const.RIG_PIPE_SERVER_NAME_IN,
+			pipeNameIn,
 			PipeDirection.In,
 			maxNumberOfServerInstances: 2,
 			transmissionMode: PipeTransmissionMode.Byte,
 			options: PipeOptions.Asynchronous
 		);
 		var pipeServerOut = new NamedPipeServerStream(
-			Const.RIG_PIPE_SERVER_NAME_OUT,
+			pipeNameOut,
 			PipeDirection.Out,
 			maxNumberOfServerInstances: 2,
 			transmissionMode: PipeTransmissionMode.Byte,
@@ -117,7 +121,8 @@ public class RiggedGame {
 		var process = new Process();
 		process.StartInfo.FileName = Exepath;
 		process.StartInfo.UseShellExecute = false;
-		process.StartInfo.CreateNoWindow = false;
+		process.StartInfo.CreateNoWindow = true;
+		process.StartInfo.Arguments = $"{pipeNameIn} {pipeNameOut}";
 
 		bool processStarted = process.Start();
 		if (!processStarted) {
@@ -126,23 +131,37 @@ public class RiggedGame {
 			return ERROR_PROCESS_FAIL_TO_START;
 		}
 
-		pipeServerOut.WaitForConnection();
-		pipeServerIn.WaitForConnection();
-		var reader = new BinaryReader(pipeServerIn);
-		var writer = new BinaryWriter(pipeServerOut);
+		try {
 
-		RigPipeClientProcess = process;
-		RigPipeServerIn = pipeServerIn;
-		RigPipeServerOut = pipeServerOut;
-		RigPipeServerWriter = writer;
-		RigPipeServerReader = reader;
+			pipeServerOut.WaitForConnection();
+			pipeServerIn.WaitForConnection();
+			var reader = new BinaryReader(pipeServerIn);
+			var writer = new BinaryWriter(pipeServerOut);
 
-		WritingTask = System.Threading.Tasks.Task.Run(WriteUpdate, WritelineCancelToken);
-		ReadingTask = System.Threading.Tasks.Task.Run(ReadUpdate, ReadlineCancelToken);
+			RigPipeClientProcess = process;
+			RigPipeServerIn = pipeServerIn;
+			RigPipeServerOut = pipeServerOut;
+			RigPipeServerWriter = writer;
+			RigPipeServerReader = reader;
 
-		Debug.Log("Rig Started: " + process);
+			WritingTask = System.Threading.Tasks.Task.Run(WriteUpdate, WritelineCancelToken);
+			ReadingTask = System.Threading.Tasks.Task.Run(ReadUpdate, ReadlineCancelToken);
+
+		} catch (System.Exception ex) {
+			Debug.LogException(ex);
+			return ERROR_UNKNOWN;
+		}
+
+		//Debug.Log("Rig Started: " + process);
 
 		return 0;
+	}
+
+
+	public void Abort () {
+		if (RigPipeClientProcess != null && !RigPipeClientProcess.HasExited) {
+			RigPipeClientProcess.Kill();
+		}
 	}
 
 
@@ -179,8 +198,16 @@ public class RiggedGame {
 				if (RigPipeServerWriter == null) break;
 				if (!RequiringCall) continue;
 				CallingCache.WriteDataToPipe(RigPipeServerWriter);
-				Debug.Log("Write >>");
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+				//Debug.Log("Write >>");
+			} catch (System.Exception ex) {
+#if DEBUG
+				System.Console.ForegroundColor = System.ConsoleColor.Red;
+				System.Console.WriteLine(ex.Source);
+				System.Console.WriteLine(ex.Message);
+				System.Console.WriteLine(ex.StackTrace);
+				System.Console.ForegroundColor = System.ConsoleColor.White;
+#endif
+			}
 			RequiringCall = false;
 		}
 	}
@@ -196,8 +223,16 @@ public class RiggedGame {
 				if (!RespondHandled) continue;
 				try {
 					RespondCache.ReadDataFromPipe(RigPipeServerReader);
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-				Debug.Log("Read<< ");
+				} catch (System.Exception ex) {
+#if DEBUG
+					System.Console.ForegroundColor = System.ConsoleColor.Red;
+					System.Console.WriteLine(ex.Source);
+					System.Console.WriteLine(ex.Message);
+					System.Console.WriteLine(ex.StackTrace);
+					System.Console.ForegroundColor = System.ConsoleColor.White;
+#endif
+				}
+				//Debug.Log("Read<< ");
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			RespondHandled = false;
 		}

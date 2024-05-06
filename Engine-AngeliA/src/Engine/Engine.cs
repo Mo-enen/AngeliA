@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using AngeliA;
 
+
 [assembly: ToolApplication]
 [assembly: UsePremultiplyBlendMode]
+[assembly: DisablePause]
+
 
 namespace AngeliaEngine;
+
 
 [RequireSpriteFromField]
 [RequireLanguageFromField]
@@ -57,6 +61,7 @@ internal static class Engine {
 	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
 	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
 	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
+	private static readonly RiggedMapEditor RiggedMapEditor = new();
 	private static readonly PixelEditor PixelEditor = new();
 	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
 	private static readonly Console Console = new();
@@ -64,7 +69,7 @@ internal static class Engine {
 	private static readonly SettingWindow SettingWindow = new();
 	private static readonly EntityUI[] ALL_UI = {
 		GenericPopup, GenericDialog, FileBrowser, // Generic
-		PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
+		RiggedMapEditor, PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
 	};
 
 	// Data
@@ -90,6 +95,10 @@ internal static class Engine {
 	private static string ToolLabel = null;
 	private static string NotificationContent = null;
 	private static string NotificationSubContent = null;
+	private static int RigGameFailToStartCount = 0;
+	private static int RigGameFailToStartFrame = int.MinValue;
+	private static int RigMapEditorWindowIndex = -1;
+	private static long RequireBackgroundBuildDate = 0;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -153,13 +162,32 @@ internal static class Engine {
 		Game.SetEventWaiting(false);
 
 		// UI Window
-		ALL_UI.ForEach<WindowUI>(win => win.OnActivated());
+		ALL_UI.ForEach<WindowUI>((win, index) => {
+			win.OnActivated();
+			if (win is RiggedMapEditor) RigMapEditorWindowIndex = index;
+		});
 		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
 		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
 		SettingWindow.InitializeData(ALL_UI);
+		RiggedMapEditor.SetRiggedGame(RiggedGame);
 
 		// Theme
 		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
+
+	}
+
+
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+
+		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
+		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
+
+		if (srcModifyDate > dllModifyDate) {
+			RequireBackgroundBuildDate = srcModifyDate;
+		} else {
+			RequireBackgroundBuildDate = 0;
+		}
 
 	}
 
@@ -231,22 +259,7 @@ internal static class Engine {
 			OnGUI_Hotkey();
 		}
 
-
-
-
-		///////////////////////////////////////
-		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-			RiggedGame.Start();
-		}
-
-		if (RiggedGame.RigProcessRunning) {
-			RiggedGame.Call();
-			RiggedGame.Respond();
-		}
-		///////////////////////////////////////
-
-
-
+		OnGUI_Rig();
 	}
 
 
@@ -650,7 +663,10 @@ internal static class Engine {
 		}
 
 		// Building Project Tint
-		if (Game.GlobalFrame == ProjectEditor.BuildProjectRequiredFrame || Game.GlobalFrame == RequireBuildProjectFrame - 1) {
+		if (
+			Game.GlobalFrame == ProjectEditor.BuildProjectRequiredFrame ||
+			Game.GlobalFrame == RequireBuildProjectFrame - 1
+		) {
 			Game.DrawGizmosRect(Renderer.CameraRect, Color32.BLACK_64);
 		}
 
@@ -695,7 +711,7 @@ internal static class Engine {
 		//bool shift = Input.KeyboardHolding(KeyboardKey.LeftShift);
 
 		// Ctrl + R
-		if (ctrl && Input.KeyboardDown(KeyboardKey.R)) {
+		if (ctrl && Input.KeyboardDown(KeyboardKey.R) && !EngineUtil.BuildingProjectInBackground) {
 			RequireBuildProjectFrame = Game.GlobalFrame + 2;
 		}
 		if (Game.GlobalFrame == RequireBuildProjectFrame) {
@@ -737,45 +753,105 @@ internal static class Engine {
 
 
 	private static void OnGUI_Notify () {
+		if (EngineUtil.BuildingProjectInBackground) {
 
-		if (!UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
+			// Building In Background
+			int padding = GUI.Unify(6);
+			int size = GUI.Unify(32);
+			int x = WindowUI.WindowRect.xMax - size / 2 - padding;
+			int y = WindowUI.WindowRect.yMin + size / 2 + padding;
 
-		int padding = GUI.Unify(2);
-		int labelHeight = GUI.Unify(28);
-		int subLabelHeight = GUI.Unify(20);
-		var rect = WindowUI.WindowRect.CornerInside(Alignment.BottomRight, GUI.Unify(384), labelHeight + subLabelHeight);
-		rect.y += padding * 2;
-		rect.x -= padding * 2;
-		int top = rect.yMax;
-		bool hasSub = !string.IsNullOrEmpty(NotificationSubContent);
+			Renderer.Draw(
+				BuiltInSprite.ICON_REFRESH,
+				x, y, 500, 500, Game.GlobalFrame * 10,
+				size, size, Color32.GREY_128
+			);
 
-		// BG
-		var bg = Renderer.DrawPixel(
-			default,
-			NotificationFlash ? Color32.Lerp(
-				Color32.GREEN, Color32.BLACK,
-				(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
-			) : Color32.BLACK,
-			z: int.MaxValue
-		);
+		} else {
 
-		// Main
-		rect.y = top - labelHeight - (hasSub ? 0 : subLabelHeight);
-		rect.height = labelHeight;
-		GUI.Label(rect, NotificationContent, out var bound, NotificationLabelStyle);
+			if (!UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
 
-		// Sub
-		if (hasSub) {
-			rect.y = top - labelHeight - subLabelHeight;
-			rect.height = subLabelHeight;
-			GUI.Label(rect, NotificationSubContent, out var subBound, NotificationSubLabelStyle);
-			bound.xMin = Util.Min(bound.xMin, subBound.xMin);
-			bound.yMin = Util.Min(bound.yMin, subBound.yMin);
+			int padding = GUI.Unify(2);
+			int labelHeight = GUI.Unify(28);
+			int subLabelHeight = GUI.Unify(20);
+			var rect = WindowUI.WindowRect.CornerInside(Alignment.BottomRight, GUI.Unify(384), labelHeight + subLabelHeight);
+			rect.y += padding * 2;
+			rect.x -= padding * 2;
+			int top = rect.yMax;
+			bool hasSub = !string.IsNullOrEmpty(NotificationSubContent);
+
+			// BG
+			var bg = Renderer.DrawPixel(
+				default,
+				NotificationFlash ? Color32.Lerp(
+					Color32.GREEN, Color32.BLACK,
+					(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
+				) : Color32.BLACK
+			);
+
+			// Main
+			rect.y = top - labelHeight - (hasSub ? 0 : subLabelHeight);
+			rect.height = labelHeight;
+			GUI.Label(rect, NotificationContent, out var bound, NotificationLabelStyle);
+
+			// Sub
+			if (hasSub) {
+				rect.y = top - labelHeight - subLabelHeight;
+				rect.height = subLabelHeight;
+				GUI.Label(rect, NotificationSubContent, out var subBound, NotificationSubLabelStyle);
+				bound.xMin = Util.Min(bound.xMin, subBound.xMin);
+				bound.yMin = Util.Min(bound.yMin, subBound.yMin);
+			}
+
+			// BG
+			bg.SetRect(bound.Expand(GUI.Unify(6)));
 		}
 
-		// BG
-		bg.SetRect(bound.Expand(GUI.Unify(6)));
+	}
 
+
+	private static void OnGUI_Rig () {
+
+		bool buildingInBackground = EngineUtil.BuildingProjectInBackground;
+
+		// Rebuild Check
+		if (!buildingInBackground && RequireBackgroundBuildDate > 0) {
+			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
+			buildingInBackground = true;
+			RequireBackgroundBuildDate = 0;
+		}
+
+		// Abort when Building
+		if (RiggedGame.RigProcessRunning && buildingInBackground) {
+			RiggedGame.Abort();
+		}
+
+		if (buildingInBackground) return;
+
+		// Update Rig
+		if (RiggedGame.RigProcessRunning) {
+			// Rig Running
+			if (CurrentWindowIndex == RigMapEditorWindowIndex) {
+				RiggedGame.Call();
+				System.Threading.Thread.Sleep(10);
+				RiggedGame.Respond();
+			}
+		} else if (
+			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
+			Game.GlobalFrame > RigGameFailToStartFrame + 6000
+		) {
+			// No Rig Game Running
+			int code = RiggedGame.Start();
+			if (code == 0) {
+				// Start
+				RigGameFailToStartCount = 0;
+				RigGameFailToStartFrame = int.MinValue;
+			} else {
+				// Fail to Start
+				RigGameFailToStartFrame = Game.GlobalFrame;
+				RigGameFailToStartCount++;
+			}
+		}
 	}
 
 

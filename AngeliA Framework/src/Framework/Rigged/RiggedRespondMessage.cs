@@ -7,15 +7,15 @@ namespace AngeliA;
 public class RiggedRespondMessage {
 
 
-	int testA;
-	int testB;
+	private int GlobalFrame;
+	private int PauselessFrame;
 
 	// API
 	public void SetDataToFramework () {
 
 		// Rendering
 
-		Debug.Log(testA + " " + testB);
+
 
 
 
@@ -29,8 +29,8 @@ public class RiggedRespondMessage {
 
 	public void ReadDataFromPipe (BinaryReader reader) {
 
-		testA = reader.ReadInt32();
-		testB = reader.ReadInt32();
+		GlobalFrame = reader.ReadInt32(); // End of stream excp
+		PauselessFrame = reader.ReadInt32();
 
 	}
 

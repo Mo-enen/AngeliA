@@ -30,13 +30,13 @@
 
 	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputType>Exe</OutputType>
+		<OutputType>WinExe</OutputType>
 		<DebugType>portable</DebugType>
 	</PropertyGroup>
 
 	<!--Release Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutputType>Exe</OutputType>
+		<OutputType>WinExe</OutputType>
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 
@@ -54,7 +54,7 @@
 
 	<!--Ref Project-->
 	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
 	</ItemGroup>
 
 	<!--Remove-->

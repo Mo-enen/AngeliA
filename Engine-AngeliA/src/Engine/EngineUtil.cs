@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Text;
-using System.IO;
-using System.IO.Pipes;
 using AngeliA;
+using Task = System.Threading.Tasks.Task;
 
 namespace AngeliaEngine;
 
@@ -32,16 +31,31 @@ public static class EngineUtil {
 	public static string EntryExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Entry.exe");
 	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
+	public static bool BuildingProjectInBackground => BuildProjectTask != null && BuildProjectTask.Status == TaskStatus.Running;
+	public static long LastBackgroundBuildSrcModifyDate { get; private set; }
+	public static int LastBackgroundBuildReturnCode { get; private set; }
+
+	// Cache
+	private static string c_ProjectPath;
+	private static string c_ProductName;
+	private static string c_BuildLibraryPath;
+	private static string c_VersionString;
+	private static string c_TempBuildPath;
+	private static string c_BuildPath;
+	private static string c_TempRoot;
+	private static string c_UniversePath;
 
 
 	// Data
 	private static readonly StringBuilder CacheBuilder = new();
+	private static Task BuildProjectTask = null;
 
 
 	// API
 	public static int BuildDotnetProject (
-		string projectFolder, string sdkPath, bool publish, bool debug,
-		string assemblyName = "", string version = "", string outputPath = "", string publishDir = "", string iconPath = ""
+		string projectFolder, string sdkPath, bool publish, bool debug, bool logMessage, bool logError,
+		string assemblyName = "", string version = "", string outputPath = "",
+		string publishDir = "", string iconPath = ""
 	) {
 
 		if (!Util.FolderExists(projectFolder)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
@@ -53,6 +67,9 @@ public static class EngineUtil {
 
 		// Build
 		CacheBuilder.Append(publish ? " publish " : " build ");
+
+		// Project Folder
+		CacheBuilder.AppendWithDoubleQuotes(projectFolder);
 
 		// Config
 		CacheBuilder.Append(debug ? " -c debug" : " -c release");
@@ -74,58 +91,129 @@ public static class EngineUtil {
 			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
 		}
 
-		// Execute
-		return Util.ExecuteCommand(projectFolder, CacheBuilder.ToString());
+		return Util.ExecuteCommand(
+			projectFolder, CacheBuilder.ToString(),
+			logMessage: logMessage,
+			logError: logError
+		);
 	}
 
 
-	public static int BuildAngeliaProject (Project project, bool runAfterBuild) => BuildAngeliaProjectLogic(project, "", false, runAfterBuild);
-	public static int PublishAngeliaProject (Project project, string publishDir) => BuildAngeliaProjectLogic(project, publishDir, true, false);
-	private static int BuildAngeliaProjectLogic (Project project, string publishDir, bool publish, bool runAfterBuild) {
-
+	public static int BuildAngeliaProject (Project project, bool runAfterBuild) {
 		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
-		if (!Util.IsPathValid(project.ProjectPath)) return ERROR_PROJECT_FOLDER_INVALID;
+		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
+		var info = project.Universe.Info;
+		string verStr = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
+		return BuildAngeliaProjectLogic(
+			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
+			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
+			project.IconPath, project.UniversePath,
+			"", publish: false, runAfterBuild: runAfterBuild, logMessage: true, logError: true
+		);
+	}
+
+
+	public static int PublishAngeliaProject (Project project, string publishDir) {
+		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
+		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
+		var info = project.Universe.Info;
+		string verStr = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
+		return BuildAngeliaProjectLogic(
+			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
+			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
+			project.IconPath, project.UniversePath,
+			publishDir, publish: true, runAfterBuild: false, logMessage: true, logError: true
+		);
+	}
+
+
+	public static bool BuildAngeliaProjectInBackground (Project project, long srcModifyDate) {
+
+		// Gate
+		if (project == null) return false;
+		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return false;
+		if (BuildingProjectInBackground) return false;
+
+		// Project >> Cache
+		var info = project.Universe.Info;
+		c_ProjectPath = project.ProjectPath;
+		c_ProductName = info.ProductName;
+		c_VersionString = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
+		c_BuildLibraryPath = project.BuildLibraryPath;
+		c_TempBuildPath = project.TempBuildPath;
+		c_BuildPath = project.BuildPath;
+		c_TempRoot = project.TempRoot;
+		c_UniversePath = project.UniversePath;
+		LastBackgroundBuildReturnCode = int.MinValue;
+		LastBackgroundBuildSrcModifyDate = srcModifyDate;
+
+		// Task
+		BuildProjectTask = Task.Run(BuildFromCache);
+
+		return true;
+
+		// Func
+		static void BuildFromCache () {
+			LastBackgroundBuildReturnCode = BuildAngeliaProjectLogic(
+				c_ProjectPath, c_ProductName, c_BuildLibraryPath, c_VersionString,
+				c_TempBuildPath, c_BuildPath, "", c_TempRoot,
+				"", c_UniversePath,
+				"", publish: false, runAfterBuild: false,
+				logMessage: false, logError: false
+			);
+		}
+	}
+
+
+	private static int BuildAngeliaProjectLogic (
+		string projectPath, string productName, string buildLibraryPath, string versionStr,
+		string tempBuildPath, string buildPath, string tempPublishPath, string tempRoot,
+		string iconPath, string universePath,
+		string publishDir, bool publish, bool runAfterBuild, bool logMessage, bool logError
+	) {
+
+		if (!Util.IsPathValid(projectPath)) return ERROR_PROJECT_FOLDER_INVALID;
 		if (publish && !Util.IsPathValid(publishDir)) return ERROR_PUBLISH_DIR_INVALID;
 		if (publish && !Util.FolderExists(EntryProjectFolder)) return ERROR_ENTRY_PROJECT_NOT_FOUND;
-		if (!Util.FolderExists(project.ProjectPath)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
+		if (!Util.FolderExists(projectPath)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
 		if (!Util.FileExists(DotnetSdkPath)) return ERROR_DOTNET_SDK_NOT_FOUND;
-		if (!Util.IsValidForFileName(project.Universe.Info.ProductName)) return ERROR_PRODUCT_NAME_INVALID;
-		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
+		if (!Util.IsValidForFileName(productName)) return ERROR_PRODUCT_NAME_INVALID;
 
-		var info = project.Universe.Info;
-		string libAssemblyName = $"lib.{info.ProductName}";
+		string libAssemblyName = $"lib.{productName}";
 
 		// ===== Build =====
 
 		// Delete Build Library Folder
-		Util.DeleteFolder(project.BuildLibraryPath);
+		Util.DeleteFolder(buildLibraryPath);
 
 		// Build Dotnet Project
 		int returnCode = BuildDotnetProject(
-			project.ProjectPath,
+			projectPath,
 			DotnetSdkPath,
 			publish: false,
 			debug: !publish,
 			assemblyName: libAssemblyName,
-			version: $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}",
-			outputPath: project.TempBuildPath
+			version: versionStr,
+			outputPath: tempBuildPath,
+			logMessage: logMessage,
+			logError: logError
 		);
 
 		if (returnCode != 0) return returnCode;
 
-		string resultDllPath = Util.CombinePaths(project.TempBuildPath, $"{libAssemblyName}.dll");
+		string resultDllPath = Util.CombinePaths(tempBuildPath, $"{libAssemblyName}.dll");
 		if (!Util.FileExists(resultDllPath)) return ERROR_RESULT_DLL_NOT_FOUND;
 
 		// Result Dll to Lib Folder
 		string gameLibDllName = Util.GetNameWithExtension(resultDllPath);
-		string gameLibBuildPath = Util.CombinePaths(project.BuildLibraryPath, gameLibDllName);
-		Util.CreateFolder(project.BuildLibraryPath);
+		string gameLibBuildPath = Util.CombinePaths(buildLibraryPath, gameLibDllName);
+		Util.CreateFolder(buildLibraryPath);
 		Util.CopyFile(resultDllPath, gameLibBuildPath);
 
 		// Copy Runtime into Build Folder
 		string entrySourcePath = EntryExePath;
 		string entryBuildName = Util.GetNameWithExtension(entrySourcePath);
-		string entryBuildPath = Util.CombinePaths(project.BuildPath, entryBuildName);
+		string entryBuildPath = Util.CombinePaths(buildPath, entryBuildName);
 		if (!Util.FileExists(entrySourcePath)) return ERROR_RUNTIME_FILE_NOT_FOUND;
 		if (!Util.FileExists(entryBuildPath)) {
 			Util.CopyFile(entrySourcePath, entryBuildPath);
@@ -135,7 +223,7 @@ public static class EngineUtil {
 		if (!publish && runAfterBuild) {
 			string exePath = entryBuildPath;
 			if (Util.FileExists(exePath)) {
-				Util.ExecuteCommand(project.BuildPath, exePath, logMessage: false, wait: false);
+				Util.ExecuteCommand(buildPath, exePath, logMessage: false, wait: false);
 			} else {
 				return ERROR_EXE_FOR_RUN_NOT_FOUND;
 			}
@@ -151,18 +239,20 @@ public static class EngineUtil {
 				DotnetSdkPath,
 				publish: true,
 				debug: false,
-				assemblyName: info.ProductName,
-				version: $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}",
-				outputPath: project.TempBuildPath,
-				publishDir: project.TempPublishPath,
-				iconPath: project.IconPath
+				assemblyName: productName,
+				version: versionStr,
+				outputPath: tempBuildPath,
+				publishDir: tempPublishPath,
+				iconPath: iconPath,
+				logMessage: logMessage,
+				logError: logError
 			);
 			if (pubReturnCode != 0) return returnCode;
 
 			// Move Result Exe to Publish Folder
-			string resultExePath = Util.CombinePaths(project.TempPublishPath, $"{info.ProductName}.exe");
+			string resultExePath = Util.CombinePaths(tempPublishPath, $"{productName}.exe");
 			if (!Util.FileExists(resultExePath)) return ERROR_ENTRY_RESULT_NOT_FOUND;
-			string pubResultExePath = Util.CombinePaths(publishDir, $"{info.ProductName}.exe");
+			string pubResultExePath = Util.CombinePaths(publishDir, $"{productName}.exe");
 			Util.CopyFile(resultExePath, pubResultExePath);
 
 			// Copy Game Libs to Publish Folder
@@ -170,10 +260,10 @@ public static class EngineUtil {
 			Util.CopyFile(gameLibBuildPath, Util.CombinePaths(publishDir, "Library", gameLibDllName));
 
 			// Copy Universe to Publish Folder
-			if (!Util.FolderExists(project.UniversePath)) return ERROR_UNIVERSE_FOLDER_NOT_FOUND;
+			if (!Util.FolderExists(universePath)) return ERROR_UNIVERSE_FOLDER_NOT_FOUND;
 			Util.CreateFolder(publishDir);
 			string universePublishFolderPath = Util.CombinePaths(publishDir, "Universe");
-			Util.CopyFolder(project.UniversePath, universePublishFolderPath, true, true);
+			Util.CopyFolder(universePath, universePublishFolderPath, true, true);
 
 			// Run
 			if (runAfterBuild) {
@@ -188,7 +278,7 @@ public static class EngineUtil {
 		}
 
 		// Delete Temp Folder
-		Util.DeleteFolder(project.TempRoot);
+		Util.DeleteFolder(tempRoot);
 
 		return 0;
 	}

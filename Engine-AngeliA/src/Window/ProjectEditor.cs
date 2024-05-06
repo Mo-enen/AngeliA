@@ -84,18 +84,20 @@ public class ProjectEditor : WindowUI {
 
 		// Workflow
 		if (Game.GlobalFrame > BuildProjectRequiredFrame) {
-			if (PublishProjectRequiredPath == null) {
-				int returnCode = EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
-				if (returnCode != 0) {
-					Debug.LogError(returnCode);
-				}
-			} else {
-				int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, PublishProjectRequiredPath);
-				if (returnCode != 0) {
-					Debug.LogError(returnCode);
-				}
-				if (Util.FolderExists(PublishProjectRequiredPath)) {
-					Game.OpenUrl(PublishProjectRequiredPath);
+			if (!EngineUtil.BuildingProjectInBackground) {
+				if (PublishProjectRequiredPath == null) {
+					int returnCode = EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
+					if (returnCode != 0) {
+						Debug.LogError(returnCode);
+					}
+				} else {
+					int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, PublishProjectRequiredPath);
+					if (returnCode != 0) {
+						Debug.LogError(returnCode);
+					}
+					if (Util.FolderExists(PublishProjectRequiredPath)) {
+						Game.OpenUrl(PublishProjectRequiredPath);
+					}
 				}
 			}
 			BuildProjectRequiredFrame = int.MaxValue;
@@ -137,20 +139,22 @@ public class ProjectEditor : WindowUI {
 		_rect.SlideRight(padding);
 
 		// Run
-		if (GUI.Button(_rect, LABEL_RUN, WorkflowButtonStyle)) {
-			BuildProjectRequiredFrame = Game.GlobalFrame;
-			PublishProjectRequiredPath = null;
-		}
-		RequireTooltip(_rect, TIP_RUN);
-		_rect.SlideRight(padding);
+		using (Scope.GUIEnable(!EngineUtil.BuildingProjectInBackground)) {
+			if (GUI.Button(_rect, LABEL_RUN, WorkflowButtonStyle)) {
+				BuildProjectRequiredFrame = Game.GlobalFrame;
+				PublishProjectRequiredPath = null;
+			}
+			RequireTooltip(_rect, TIP_RUN);
+			_rect.SlideRight(padding);
 
-		// Publish
-		if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
-			FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
+			// Publish
+			if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
+				FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
+			}
+			RequireTooltip(_rect, TIP_PUBLISH);
+			_rect.SlideRight(padding);
+			rect.SlideDown();
 		}
-		RequireTooltip(_rect, TIP_PUBLISH);
-		_rect.SlideRight(padding);
-		rect.SlideDown();
 
 		// Func
 		static void PublishProject (string path) {

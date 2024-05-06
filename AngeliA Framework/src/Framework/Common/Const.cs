@@ -71,10 +71,6 @@ public static class Const {
 	public static void EmptyMethod () { }
 	public const int MIN_CHARACTER_HEIGHT = 65;
 	public const int MAX_CHARACTER_HEIGHT = 251;
-	public const string RIG_PIPE_SERVER_NAME_IN = "AngeliA Rig Pipe In";
-	public const string RIG_PIPE_SERVER_NAME_OUT = "AngeliA Rig Pipe Out";
-	public const string RIG_PIPE_CLIENT_NAME_IN = RIG_PIPE_SERVER_NAME_OUT;
-	public const string RIG_PIPE_CLIENT_NAME_OUT = RIG_PIPE_SERVER_NAME_IN;
 
 	// GUI
 	public const char CONTROL_SELECT_ALL = (char)6;

@@ -42,6 +42,16 @@ public static class Extension {
 		}
 	}
 
+	public static void ForEach<T> (this object[] arr, System.Action<T, int> action) {
+		int index = 0;
+		foreach (var a in arr) {
+			if (a is T t) {
+				action(t, index);
+				index++;
+			}
+		}
+	}
+
 	public static void AppendWithDoubleQuotes (this StringBuilder builder, string content) {
 		builder.Append('"');
 		builder.Append(content);

@@ -27,6 +27,9 @@ public class ToolApplicationAttribute : System.Attribute { }
 public class UsePremultiplyBlendModeAttribute : System.Attribute { }
 
 
+[System.AttributeUsage(System.AttributeTargets.Assembly)]
+public class DisablePauseAttribute : System.Attribute { }
+
 
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
 public class EntityLayerCapacityAttribute : System.Attribute {
