@@ -39,11 +39,9 @@ public class SettingWindow : WindowUI {
 	public bool UseNotification { get; set; }
 	public bool SolidPaintingPreview { get; set; }
 	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
-	public Color32 BackgroundColor { get; set; }
-	public Color32 BackgroundColor_Default { get; set; }
-	public ColorF PixEditor_BackgroundColor { get; set; }
 	public bool ShowLogTime { get; set; }
 	public int StartWithWindowIndex { get; set; }
+	public Color32 BackgroundColor { get; set; }
 
 	// Data
 	private static SettingWindow Instance;
@@ -52,6 +50,8 @@ public class SettingWindow : WindowUI {
 	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
+	private ColorF PixEditorBackgroundColor;
+	private Color32 BackgroundColorDefault;
 
 
 	#endregion
@@ -162,14 +162,14 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		// Background Color
-		PixEditor_BackgroundColor = GUI.HorizontalColorField(
-			PixEditor_BackgroundColor,
+		PixEditorBackgroundColor = GUI.HorizontalColorField(
+			PixEditorBackgroundColor,
 			rect,
 			label: LABEL_PE_BG_COLOR,
 			labelStyle: Skin.SmallLabel,
-			defaultColor: BackgroundColor_Default.ToColorF()
+			defaultColor: BackgroundColorDefault.ToColorF()
 		);
-		BackgroundColor = PixEditor_BackgroundColor.ToColor32();
+		BackgroundColor = PixEditorBackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
 
 		// Solid Painting Preview
@@ -215,13 +215,17 @@ public class SettingWindow : WindowUI {
 	#region --- API ---
 
 
-	public void InitializeData (EntityUI[] allUIs) {
+	public void Initialize (EntityUI[] allUIs, ColorF pixEditorBackgroundColor, Color32 backgroundColorDefault) {
+		// Names
 		var list = new List<(int id, string defaultName)>();
 		foreach (var ui in allUIs) {
 			if (ui is not WindowUI window) continue;
 			list.Add((window.TypeID, window.DefaultName));
 		}
 		AllWindowNames = list.ToArray();
+		// Config
+		PixEditorBackgroundColor = pixEditorBackgroundColor;
+		BackgroundColorDefault = backgroundColorDefault;
 	}
 
 

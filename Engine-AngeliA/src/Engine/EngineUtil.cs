@@ -52,53 +52,6 @@ public static class EngineUtil {
 
 
 	// API
-	public static int BuildDotnetProject (
-		string projectFolder, string sdkPath, bool publish, bool debug, bool logMessage, bool logError,
-		string assemblyName = "", string version = "", string outputPath = "",
-		string publishDir = "", string iconPath = ""
-	) {
-
-		if (!Util.FolderExists(projectFolder)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
-
-		CacheBuilder.Clear();
-
-		// SDK
-		CacheBuilder.AppendWithDoubleQuotes(sdkPath);
-
-		// Build
-		CacheBuilder.Append(publish ? " publish " : " build ");
-
-		// Project Folder
-		CacheBuilder.AppendWithDoubleQuotes(projectFolder);
-
-		// Config
-		CacheBuilder.Append(debug ? " -c debug" : " -c release");
-
-		// Prop
-		if (!string.IsNullOrWhiteSpace(assemblyName)) {
-			CacheBuilder.Append($" -p:AssemblyName=\"{assemblyName}\"");
-		}
-		if (!string.IsNullOrWhiteSpace(version)) {
-			CacheBuilder.Append($" -p:Version={version}");
-		}
-		if (!string.IsNullOrWhiteSpace(outputPath)) {
-			CacheBuilder.Append($" -p:OutputPath=\"{outputPath}\"");
-		}
-		if (!string.IsNullOrWhiteSpace(publishDir)) {
-			CacheBuilder.Append($" -p:PublishDir=\"{publishDir}\"");
-		}
-		if (!string.IsNullOrWhiteSpace(iconPath) && Util.FileExists(iconPath)) {
-			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
-		}
-
-		return Util.ExecuteCommand(
-			projectFolder, CacheBuilder.ToString(),
-			logMessage: logMessage,
-			logError: logError
-		);
-	}
-
-
 	public static int BuildAngeliaProject (Project project, bool runAfterBuild) {
 		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
 		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
@@ -154,13 +107,17 @@ public static class EngineUtil {
 
 		// Func
 		static void BuildFromCache () {
-			LastBackgroundBuildReturnCode = BuildAngeliaProjectLogic(
-				c_ProjectPath, c_ProductName, c_BuildLibraryPath, c_VersionString,
-				c_TempBuildPath, c_BuildPath, "", c_TempRoot,
-				"", c_UniversePath,
-				"", publish: false, runAfterBuild: false,
-				logMessage: false, logError: false
-			);
+			try {
+				LastBackgroundBuildReturnCode = BuildAngeliaProjectLogic(
+					c_ProjectPath, c_ProductName, c_BuildLibraryPath, c_VersionString,
+					c_TempBuildPath, c_BuildPath, "", c_TempRoot,
+					"", c_UniversePath,
+					"", publish: false, runAfterBuild: false,
+					logMessage: false, logError: false
+				);
+			} catch (System.Exception ex) {
+				System.Console.WriteLine(ex.Message + "\n" + ex.Source);
+			}
 		}
 	}
 
@@ -302,6 +259,54 @@ public static class EngineUtil {
 			result = System.Math.Max(result, Util.GetFileModifyDate(path));
 		}
 		return result;
+	}
+
+
+	// Logic
+	private static int BuildDotnetProject (
+		string projectFolder, string sdkPath, bool publish, bool debug, bool logMessage, bool logError,
+		string assemblyName = "", string version = "", string outputPath = "",
+		string publishDir = "", string iconPath = ""
+	) {
+
+		if (!Util.FolderExists(projectFolder)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
+
+		CacheBuilder.Clear();
+
+		// SDK
+		CacheBuilder.AppendWithDoubleQuotes(sdkPath);
+
+		// Build
+		CacheBuilder.Append(publish ? " publish " : " build ");
+
+		// Project Folder
+		CacheBuilder.AppendWithDoubleQuotes(projectFolder);
+
+		// Config
+		CacheBuilder.Append(debug ? " -c debug" : " -c release");
+
+		// Prop
+		if (!string.IsNullOrWhiteSpace(assemblyName)) {
+			CacheBuilder.Append($" -p:AssemblyName=\"{assemblyName}\"");
+		}
+		if (!string.IsNullOrWhiteSpace(version)) {
+			CacheBuilder.Append($" -p:Version={version}");
+		}
+		if (!string.IsNullOrWhiteSpace(outputPath)) {
+			CacheBuilder.Append($" -p:OutputPath=\"{outputPath}\"");
+		}
+		if (!string.IsNullOrWhiteSpace(publishDir)) {
+			CacheBuilder.Append($" -p:PublishDir=\"{publishDir}\"");
+		}
+		if (!string.IsNullOrWhiteSpace(iconPath) && Util.FileExists(iconPath)) {
+			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
+		}
+
+		return Util.ExecuteCommand(
+			projectFolder, CacheBuilder.ToString(),
+			logMessage: logMessage,
+			logError: logError
+		);
 	}
 
 

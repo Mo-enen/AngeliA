@@ -89,7 +89,6 @@ internal static class Engine {
 	private static int HubPanelScroll = 0;
 	private static int CurrentProjectMenuIndex = -1;
 	private static int NotificationStartFrame = int.MinValue;
-	private static int RequireBuildProjectFrame = int.MinValue;
 	private static int ThemeSheetIndex = -1;
 	private static bool NotificationFlash = false;
 	private static string ToolLabel = null;
@@ -166,10 +165,13 @@ internal static class Engine {
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = index;
 		});
-		SettingWindow.PixEditor_BackgroundColor = PixelEditor.BackgroundColor.Value.ToColorF();
-		SettingWindow.BackgroundColor_Default = PixelEditor.BackgroundColor.DefaultValue;
-		SettingWindow.InitializeData(ALL_UI);
-		RiggedMapEditor.SetRiggedGame(RiggedGame);
+		SettingWindow.Initialize(
+			ALL_UI,
+			PixelEditor.BackgroundColor.Value.ToColorF(),
+			PixelEditor.BackgroundColor.DefaultValue
+		);
+		RiggedMapEditor.Initialize(RiggedGame);
+		ProjectEditor.Initialize(RiggedGame);
 
 		// Theme
 		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
@@ -257,9 +259,9 @@ internal static class Engine {
 		} else {
 			OnGUI_Window();
 			OnGUI_Hotkey();
+			OnGUI_BackgroundBuild();
 		}
 
-		OnGUI_Rig();
 	}
 
 
@@ -662,14 +664,6 @@ internal static class Engine {
 			NotificationSubContent = ThemeSkin.Name;
 		}
 
-		// Building Project Tint
-		if (
-			Game.GlobalFrame == ProjectEditor.BuildProjectRequiredFrame ||
-			Game.GlobalFrame == RequireBuildProjectFrame - 1
-		) {
-			Game.DrawGizmosRect(Renderer.CameraRect, Color32.BLACK_64);
-		}
-
 		// Update Tooltip
 		bool hoveringSameRect = false;
 		foreach (var ui in ALL_UI) {
@@ -707,19 +701,9 @@ internal static class Engine {
 
 	private static void OnGUI_Hotkey () {
 
-		bool ctrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
+		//bool ctrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
 		//bool shift = Input.KeyboardHolding(KeyboardKey.LeftShift);
 
-		// Ctrl + R
-		if (ctrl && Input.KeyboardDown(KeyboardKey.R) && !EngineUtil.BuildingProjectInBackground) {
-			RequireBuildProjectFrame = Game.GlobalFrame + 2;
-		}
-		if (Game.GlobalFrame == RequireBuildProjectFrame) {
-			RequireBuildProjectFrame = int.MinValue;
-			if (CurrentProject != null) {
-				EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
-			}
-		}
 
 	}
 
@@ -810,12 +794,13 @@ internal static class Engine {
 	}
 
 
-	private static void OnGUI_Rig () {
+	private static void OnGUI_BackgroundBuild () {
 
 		bool buildingInBackground = EngineUtil.BuildingProjectInBackground;
 
 		// Rebuild Check
 		if (!buildingInBackground && RequireBackgroundBuildDate > 0) {
+			RiggedGame.Abort();
 			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 			buildingInBackground = true;
 			RequireBackgroundBuildDate = 0;
@@ -841,7 +826,7 @@ internal static class Engine {
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
-			int code = RiggedGame.Start();
+			int code = RiggedGame.Start(CurrentProject.BuildLibraryPath);
 			if (code == 0) {
 				// Start
 				RigGameFailToStartCount = 0;

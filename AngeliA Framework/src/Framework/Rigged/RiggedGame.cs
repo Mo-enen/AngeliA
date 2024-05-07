@@ -20,6 +20,7 @@ public class RiggedGame {
 	public const int ERROR_EXE_FILE_NOT_FOUND = -100;
 	public const int ERROR_PROCESS_FAIL_TO_START = -101;
 	public const int ERROR_UNKNOWN = -102;
+	public const int ERROR_LIB_FILE_NOT_FOUND = -103;
 
 	// Api
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
@@ -40,7 +41,7 @@ public class RiggedGame {
 	private CancellationTokenSource WriteLineTokenSource = null;
 	private CancellationToken ReadlineCancelToken;
 	private CancellationToken WritelineCancelToken;
-	private readonly string Exepath;
+	private readonly string ExePath;
 	private bool RequiringCall = false;
 	private bool RespondHandled = true;
 
@@ -53,7 +54,7 @@ public class RiggedGame {
 	#region --- MSG ---
 
 
-	public RiggedGame (string exePath) => Exepath = exePath;
+	public RiggedGame (string exePath) => ExePath = exePath;
 
 
 	#endregion
@@ -64,7 +65,7 @@ public class RiggedGame {
 	#region --- API ---
 
 
-	public int Start () {
+	public int Start (string gameLibFolder) {
 
 		// Discard Current
 		RigPipeServerIn = null;
@@ -90,7 +91,8 @@ public class RiggedGame {
 		}
 
 		// Gate
-		if (!Util.FileExists(Exepath)) return ERROR_EXE_FILE_NOT_FOUND;
+		if (!Util.FileExists(ExePath)) return ERROR_EXE_FILE_NOT_FOUND;
+		if (!Util.FolderExists(gameLibFolder)) return ERROR_LIB_FILE_NOT_FOUND;
 
 		// Start New
 		RequiringCall = false;
@@ -119,10 +121,11 @@ public class RiggedGame {
 		);
 
 		var process = new Process();
-		process.StartInfo.FileName = Exepath;
+		process.StartInfo.FileName = ExePath;
 		process.StartInfo.UseShellExecute = false;
 		process.StartInfo.CreateNoWindow = true;
-		process.StartInfo.Arguments = $"{pipeNameIn} {pipeNameOut}";
+		process.StartInfo.Arguments =
+			$"{pipeNameIn} {pipeNameOut} {Util.GetArgumentForAssemblyPath(gameLibFolder)} -pID:{Process.GetCurrentProcess().Id}";
 
 		bool processStarted = process.Start();
 		if (!processStarted) {
@@ -152,15 +155,16 @@ public class RiggedGame {
 			return ERROR_UNKNOWN;
 		}
 
-		//Debug.Log("Rig Started: " + process);
-
 		return 0;
 	}
 
 
-	public void Abort () {
+	public void Abort (bool waitForExit = true) {
 		if (RigPipeClientProcess != null && !RigPipeClientProcess.HasExited) {
 			RigPipeClientProcess.Kill();
+			if (waitForExit) {
+				RigPipeClientProcess.WaitForExit(5000);
+			}
 		}
 	}
 
@@ -198,16 +202,7 @@ public class RiggedGame {
 				if (RigPipeServerWriter == null) break;
 				if (!RequiringCall) continue;
 				CallingCache.WriteDataToPipe(RigPipeServerWriter);
-				//Debug.Log("Write >>");
-			} catch (System.Exception ex) {
-#if DEBUG
-				System.Console.ForegroundColor = System.ConsoleColor.Red;
-				System.Console.WriteLine(ex.Source);
-				System.Console.WriteLine(ex.Message);
-				System.Console.WriteLine(ex.StackTrace);
-				System.Console.ForegroundColor = System.ConsoleColor.White;
-#endif
-			}
+			} catch { }
 			RequiringCall = false;
 		}
 	}
@@ -223,16 +218,7 @@ public class RiggedGame {
 				if (!RespondHandled) continue;
 				try {
 					RespondCache.ReadDataFromPipe(RigPipeServerReader);
-				} catch (System.Exception ex) {
-#if DEBUG
-					System.Console.ForegroundColor = System.ConsoleColor.Red;
-					System.Console.WriteLine(ex.Source);
-					System.Console.WriteLine(ex.Message);
-					System.Console.WriteLine(ex.StackTrace);
-					System.Console.ForegroundColor = System.ConsoleColor.White;
-#endif
-				}
-				//Debug.Log("Read<< ");
+				} catch { }
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 			RespondHandled = false;
 		}

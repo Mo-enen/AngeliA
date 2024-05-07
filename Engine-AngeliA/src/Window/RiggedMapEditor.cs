@@ -37,7 +37,7 @@ public class RiggedMapEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public void SetRiggedGame (RiggedGame riggedGame) {
+	public void Initialize (RiggedGame riggedGame) {
 		RiggedGame = riggedGame;
 	}
 

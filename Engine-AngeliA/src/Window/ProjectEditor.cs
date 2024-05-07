@@ -13,14 +13,12 @@ public class ProjectEditor : WindowUI {
 
 
 	// Const
-	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
 	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
 	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
 	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
 	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
-	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Build and run the project in debug mode (Ctrl + R)");
 	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Publish the project in release mode");
 	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open sln/csproj file in this project with default application");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
@@ -36,13 +34,13 @@ public class ProjectEditor : WindowUI {
 	protected override bool BlockEvent => true;
 	public static Project CurrentProject { get; set; }
 	public override string DefaultName => "Project";
-	public static int BuildProjectRequiredFrame { get; private set; } = int.MaxValue;
 
 	// Data
+	private static ProjectEditor Instance;
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 20, };
-	private static string PublishProjectRequiredPath = null;
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
+	private RiggedGame RiggedGame;
 
 
 	#endregion
@@ -51,6 +49,13 @@ public class ProjectEditor : WindowUI {
 
 
 	#region --- MSG ---
+
+
+	public ProjectEditor () => Instance = this;
+
+
+	public void Initialize (RiggedGame riggedGame) => RiggedGame = riggedGame;
+
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
@@ -82,28 +87,6 @@ public class ProjectEditor : WindowUI {
 			MasterScrollPos, extendedContentSize, panelRect.height
 		);
 
-		// Workflow
-		if (Game.GlobalFrame > BuildProjectRequiredFrame) {
-			if (!EngineUtil.BuildingProjectInBackground) {
-				if (PublishProjectRequiredPath == null) {
-					int returnCode = EngineUtil.BuildAngeliaProject(CurrentProject, runAfterBuild: true);
-					if (returnCode != 0) {
-						Debug.LogError(returnCode);
-					}
-				} else {
-					int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, PublishProjectRequiredPath);
-					if (returnCode != 0) {
-						Debug.LogError(returnCode);
-					}
-					if (Util.FolderExists(PublishProjectRequiredPath)) {
-						Game.OpenUrl(PublishProjectRequiredPath);
-					}
-				}
-			}
-			BuildProjectRequiredFrame = int.MaxValue;
-			PublishProjectRequiredPath = null;
-		}
-
 		// Hotkey
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
 			// Ctrl + S
@@ -117,8 +100,8 @@ public class ProjectEditor : WindowUI {
 	private void Update_WorkflowButton (ref IRect rect) {
 
 		var _rect = rect;
-		_rect.width /= 3;
-		int padding = Unify(9);
+		_rect.width /= 2;
+		int padding = Unify(16);
 
 		// Edit
 		if (GUI.Button(_rect, LABEL_EDIT, WorkflowButtonStyle)) {
@@ -138,15 +121,7 @@ public class ProjectEditor : WindowUI {
 		RequireTooltip(_rect, TIP_EDIT);
 		_rect.SlideRight(padding);
 
-		// Run
 		using (Scope.GUIEnable(!EngineUtil.BuildingProjectInBackground)) {
-			if (GUI.Button(_rect, LABEL_RUN, WorkflowButtonStyle)) {
-				BuildProjectRequiredFrame = Game.GlobalFrame;
-				PublishProjectRequiredPath = null;
-			}
-			RequireTooltip(_rect, TIP_RUN);
-			_rect.SlideRight(padding);
-
 			// Publish
 			if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
 				FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
@@ -159,8 +134,17 @@ public class ProjectEditor : WindowUI {
 		// Func
 		static void PublishProject (string path) {
 			if (string.IsNullOrWhiteSpace(path)) return;
-			BuildProjectRequiredFrame = Game.GlobalFrame;
-			PublishProjectRequiredPath = path;
+			if (EngineUtil.BuildingProjectInBackground) return;
+			if (Instance.RiggedGame.RigProcessRunning) {
+				Instance.RiggedGame.Abort();
+			}
+			int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, path);
+			if (returnCode != 0) {
+				Debug.LogError(returnCode);
+			}
+			if (Util.FolderExists(path)) {
+				Game.OpenUrl(path);
+			}
 		}
 	}
 
