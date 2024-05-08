@@ -7,6 +7,7 @@ namespace AngeliA;
 public partial class GUISkin {
 
 	public Color32 DeleteTint = Color32.RED_BETTER;
+	public Color32 ErrorTint = Color32.RED_BETTER;
 	public Color32 LinkTint = new(133, 196, 255, 255);
 	public Color32 LinkTintHover = new(163, 226, 255, 255);
 

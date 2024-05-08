@@ -59,7 +59,6 @@ internal static class Engine {
 	private static readonly LanguageCode NOTI_THEME_LOADED = ("Noti.ThemeLoaded", "Theme Loaded");
 	private static readonly LanguageCode LOG_BUILD_UNKNOWN = ("Log.BuildError.Unknown", "Unknown error on building project in background. Error code:{0}");
 
-
 	private static readonly LanguageCode LOG_ERROR_PROJECT_OBJECT_IS_NULL = ("Log.BuildError.ProjectObjectIsNull", "Build Error: Project object is Null");
 	private static readonly LanguageCode LOG_ERROR_PROJECT_FOLDER_INVALID = ("Log.BuildError.ProjectFolderInvalid", "Build Error: Project folder path invalid");
 	private static readonly LanguageCode LOG_ERROR_PUBLISH_DIR_INVALID = ("Log.BuildError.PublishDirInvalid", "Build Error: Publish folder path invalid");
@@ -73,8 +72,6 @@ internal static class Engine {
 	private static readonly LanguageCode LOG_ERROR_DOTNET_SDK_NOT_FOUND = ("Log.BuildError.DotnetSdkNotFound", "Build Error: Dotnet Sdk not found in the engine universe folder");
 	private static readonly LanguageCode LOG_ERROR_ENTRY_PROJECT_NOT_FOUND = ("Log.BuildError.EntryProjectNotFound", "Build Error: Entry exe file for the project not found");
 	private static readonly LanguageCode LOG_ERROR_ENTRY_RESULT_NOT_FOUND = ("Log.BuildError.EntryResultNotFound", "Build Error: Entry exe file result not found");
-
-
 
 	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
 	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
@@ -235,17 +232,29 @@ internal static class Engine {
 			case 0:
 				RigGameFailToStartCount = 0;
 				RigGameFailToStartFrame = int.MinValue;
+				Console.RemoveAllCompileErrors();
 				break;
 
 			default:
 				Debug.LogError(string.Format(LOG_BUILD_UNKNOWN, code));
 				break;
 
-			case 1:
-			case 2:
-
-
-
+			case EngineUtil.ERROR_USER_CODE_COMPILE_ERROR:
+				bool keywordFound = false;
+				Console.BeginCompileError();
+				try {
+					while (EngineUtil.BackgroundBuildMessages.Count > 0) {
+						string msg = EngineUtil.BackgroundBuildMessages.Dequeue();
+						if (keywordFound) {
+							if (!msg.StartsWith("Time Elapsed", System.StringComparison.OrdinalIgnoreCase)) {
+								Debug.LogError(msg);
+							}
+						} else if (msg.StartsWith("Build FAILED", System.StringComparison.OrdinalIgnoreCase)) {
+							keywordFound = true;
+						}
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+				Console.EndCompileError();
 				break;
 
 			case EngineUtil.ERROR_PROJECT_OBJECT_IS_NULL:
@@ -548,7 +557,6 @@ internal static class Engine {
 		// Window
 		int contentPadding = GUI.Unify(8);
 		int barWidth = FullsizeMenu.Value ? GUI.Unify(160) : GUI.Unify(42) + contentPadding;
-		int bodyBorder = GUI.Unify(6);
 		var cameraRect = Renderer.CameraRect;
 		int windowLen = 0;
 		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
@@ -604,20 +612,20 @@ internal static class Engine {
 
 				if (selecting) {
 					// Select Highlight
-					Renderer.Draw_9Slice(
-						Const.PIXEL, rect,
-						bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-						GUI.Skin.HighlightColorWeak
-					);
+					Renderer.DrawPixel(rect, GUI.Skin.HighlightColorWeak);
 				} else if (hovering) {
 					// Hovering Highlight
-					Renderer.Draw_9Slice(
-						Const.PIXEL, rect,
-						bodyBorder, bodyBorder, bodyBorder, bodyBorder,
-						GUI.Skin.HighlightColorWeak.WithNewA(128)
-					);
+					Renderer.DrawPixel(rect, GUI.Skin.HighlightColorWeak.WithNewA(128));
 				}
 				var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+
+				// Special Highlight
+				if (window is Console console && console.HasCompileError) {
+					Renderer.DrawPixel(
+						rect,
+						Color32.LerpUnclamped(GUI.Skin.ErrorTint.WithNewA(0), GUI.Skin.ErrorTint, Ease.InOutQuad(Game.GlobalFrame.PingPong(60) / 60f))
+					);
+				}
 
 				// Icon
 				int iconSize = contentRect.height;
@@ -805,10 +813,12 @@ internal static class Engine {
 
 	private static void OnGUI_Hotkey () {
 
-		//bool ctrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
-		//bool shift = Input.KeyboardHolding(KeyboardKey.LeftShift);
+		bool ctrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
+		bool shift = Input.KeyboardHolding(KeyboardKey.LeftShift);
 
-
+		if (ctrl && shift && Input.KeyboardDown(KeyboardKey.C)) {
+			Console.Clear();
+		}
 	}
 
 

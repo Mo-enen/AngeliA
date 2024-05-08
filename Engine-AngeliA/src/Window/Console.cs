@@ -43,16 +43,21 @@ public class Console : WindowUI {
 	private static readonly SpriteCode ICON_INFO = "Console.Info";
 	private static readonly SpriteCode ICON_WARNING = "Console.Warning";
 	private static readonly SpriteCode ICON_ERROR = "Console.Error";
+	private static readonly SpriteCode PANEL_BG = "UI.GeneralPanel";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
 	private static readonly LanguageCode TIP_CLEAR = ("Tip.ConsoleClear", "Clear messages (Ctrl + Shift + C)");
 
 	// Api
+	public bool HasCompileError => CompileErrorLines.Length > 0;
 	public override string DefaultName => "Console";
 	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);
 
 	// Data
 	private readonly Pipe<Line> Lines = new(512);
+	private readonly Pipe<Line> CompileErrorLines = new(128);
 	private int ScrollY = 0;
+	private int ScrollErrorY = 0;
+	private bool LoggingCompileError = false;
 
 
 	#endregion
@@ -72,13 +77,38 @@ public class Console : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+
+		bool hasError = CompileErrorLines.Length > 0;
+
+		// Toolbar
 		int barHeight = Unify(42);
 		OnGUI_Toolbar(WindowRect.EdgeInside(Direction4.Up, barHeight));
-		OnGUI_Lines(WindowRect.ShrinkUp(barHeight).Shrink(Unify(12)));
-		// Hotkey
-		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl) && Input.KeyboardHolding(KeyboardKey.LeftShift) && Input.KeyboardDown(KeyboardKey.C)) {
-			Lines.Reset();
+
+		// Lines
+		var errorPanelRect = hasError ? WindowRect.ShrinkUp(barHeight).TopHalf().Shrink(Unify(48)) : default;
+		if (!hasError || Lines.Length > 0) {
+			OnGUI_Lines(
+				37823176,
+				WindowRect.ShrinkUp(barHeight),
+				Lines, ref ScrollY,
+				errorPanelRect.MouseInside(),
+				extraSpaces: 6
+			);
 		}
+
+		// Error Lines
+		if (hasError) {
+			errorPanelRect = WindowRect.EdgeInside(Direction4.Up, Unify(400)).Shrink(Unify(48), Unify(48), 0, barHeight + Unify(32));
+			GUI.Draw_9Slice(PANEL_BG, errorPanelRect, Color32.WHITE);
+			OnGUI_Lines(
+				23783177,
+				errorPanelRect,
+				CompileErrorLines, ref ScrollErrorY,
+				!errorPanelRect.MouseInside(),
+				extraSpaces: 1
+			);
+		}
+
 	}
 
 
@@ -93,32 +123,33 @@ public class Console : WindowUI {
 
 		// Clear Button
 		if (GUI.Button(rect, BuiltInSprite.ICON_CLEAR, Skin.SmallDarkButton)) {
-			Lines.Reset();
+			Clear();
 		}
 		RequireTooltip(rect, TIP_CLEAR);
 		rect.SlideRight(padding);
 
-
-
-
 	}
 
 
-	private void OnGUI_Lines (IRect panelRect) {
+	private void OnGUI_Lines (int controlID, IRect panelRect, Pipe<Line> lines, ref int scrollY, bool ignoreScrollWheel, int extraSpaces) {
 
 		// Empty Hint
-		if (Lines.Length == 0) {
+		if (lines.Length == 0) {
 			GUI.Label(panelRect.EdgeInside(Direction4.Up, Unify(42)), HINT_EMPTY_MSG, Skin.SmallCenterGreyLabel);
 			return;
 		}
 
 		// Lines
+		var fullPanelRect = panelRect;
+		panelRect = panelRect.Shrink(Unify(12));
+		bool hasCompileError = CompileErrorLines.Length > 0;
 		int lineHeight = Unify(32);
 		int pageHeight = panelRect.height;
 		int pageLineCount = pageHeight / lineHeight;
-		int scrollMax = (Lines.Length - pageLineCount + 6).GreaterOrEquelThanZero();
-		int start = ScrollY.Clamp(0, scrollMax);
-		int end = Util.Min(Lines.Length, start + pageLineCount);
+		int scrollMin = hasCompileError ? 0 : -pageLineCount / 2 - 1;
+		int scrollMax = (lines.Length - pageLineCount + extraSpaces).GreaterOrEquelThanZero();
+		int start = scrollY.Clamp(scrollMin, scrollMax);
+		int end = Util.Min(lines.Length, start + pageLineCount);
 		var rect = panelRect.EdgeInside(Direction4.Up, lineHeight);
 		int iconSize = lineHeight;
 		int iconShrink = iconSize / 10;
@@ -128,9 +159,14 @@ public class Console : WindowUI {
 		bool showLogTime = ShowLogTime.Value;
 
 		for (int i = start; i < end; i++) {
-			var line = Lines[Lines.Length - i - 1];
 			// Step Tint
-			if (i % 2 == 0) Renderer.DrawPixel(rect, Color32.WHITE_6);
+			if (i.UMod(2) == 0) Renderer.DrawPixel(rect, Color32.WHITE_6);
+			// Line
+			if (i < 0) {
+				rect.SlideDown();
+				continue;
+			}
+			var line = lines[lines.Length - i - 1];
 			// Icon
 			Renderer.Draw(
 				line.Level == 0 ? ICON_INFO : line.Level == 1 ? ICON_WARNING : ICON_ERROR,
@@ -138,7 +174,7 @@ public class Console : WindowUI {
 			);
 			// Label
 			GUI.InputField(
-				86754 + i,
+				controlID + i,
 				rect.ShrinkLeft(iconSize + padding),
 				line.Content,
 				bodyStyle: GUI.Skin.SmallLabel
@@ -157,17 +193,40 @@ public class Console : WindowUI {
 		// Scroll
 		if (scrollMax >= 0) {
 			// Wheel
-			int delta = Input.MouseWheelDelta;
-			if (delta != 0) {
-				ScrollY = (ScrollY - delta).Clamp(0, scrollMax);
+			if (!ignoreScrollWheel) {
+				int delta = Input.MouseWheelDelta;
+				if (delta != 0) {
+					scrollY = (scrollY - delta).Clamp(scrollMin, scrollMax);
+				}
 			}
 			// Scroll Bar
-			ScrollY = GUI.ScrollBar(
-				89234111, WindowRect.EdgeInside(Direction4.Right, scrollBarWidth),
-				ScrollY, scrollMax + pageLineCount, pageLineCount
+			scrollY = GUI.ScrollBar(
+				controlID,
+				fullPanelRect.EdgeInside(Direction4.Right, Unify(12)),
+				scrollY, scrollMax + pageLineCount, pageLineCount
 			);
 		}
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public void Clear () => Lines.Reset();
+
+
+	public void RemoveAllCompileErrors () => CompileErrorLines.Reset();
+
+
+	public void BeginCompileError () => LoggingCompileError = true;
+
+
+	public void EndCompileError () => LoggingCompileError = false;
 
 
 	#endregion
@@ -185,11 +244,12 @@ public class Console : WindowUI {
 	private void LogLogic (string content, int level) {
 		const int MAX_CHAR_COUNT = 256;
 		if (string.IsNullOrEmpty(content)) return;
-		if (Lines.IsFull && !Lines.TryPopHead(out _)) return;
+		var lines = LoggingCompileError ? CompileErrorLines : Lines;
+		if (lines.IsFull && !lines.TryPopHead(out _)) return;
 		if (content.Length > MAX_CHAR_COUNT) {
 			content = content[..MAX_CHAR_COUNT];
 		}
-		Lines.LinkToTail(new Line(level, content.Replace("\n", "; ").Replace("\r", ""), Game.GlobalFrame));
+		lines.LinkToTail(new Line(level, content.Replace("\n", "; ").Replace("\r", ""), Game.GlobalFrame));
 	}
 
 

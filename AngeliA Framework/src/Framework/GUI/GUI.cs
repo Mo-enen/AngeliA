@@ -359,7 +359,7 @@ public static class GUI {
 	}
 
 
-	// Style
+	// Draw
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) => DrawStyleBody(rect, style, state, Color32.WHITE);
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
 		int sprite = style.GetBodySprite(state);
@@ -395,6 +395,22 @@ public static class GUI {
 		}
 	}
 
+	public static Cell[] Draw_9Slice (int spriteID, IRect rect, Color32 color) {
+		if (Renderer.TryGetSprite(spriteID, out var sprite)) {
+			return Draw_9Slice(sprite, rect, color);
+		}
+		return null;
+	}
+	public static Cell[] Draw_9Slice (AngeSprite sprite, IRect rect, Color32 color) {
+		var border = sprite.GlobalBorder;
+		if (UnifyBasedOnMonitor) {
+			border.left = border.left * Game.MonitorHeight / Game.ScreenHeight;
+			border.right = border.right * Game.MonitorHeight / Game.ScreenHeight;
+			border.down = border.down * Game.MonitorHeight / Game.ScreenHeight;
+			border.up = border.up * Game.MonitorHeight / Game.ScreenHeight;
+		}
+		return Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
+	}
 
 	// Button
 	public static bool SmallLinkButton (IRect rect, string label, bool useUnderLine = true) => LinkButton(rect, label, out _, Skin.SmallLabel, useUnderLine);
