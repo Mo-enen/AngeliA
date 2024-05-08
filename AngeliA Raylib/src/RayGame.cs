@@ -85,14 +85,17 @@ public partial class RayGame : Game {
 		Raylib.SetConfigFlags(windowConfig);
 		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
-		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
+		Raylib.SetExitKey(KeyboardKey.Null);
 		SetWindowMinSize(256);
 
 		// Blend
 		Rlgl.SetBlendFactorsSeparate(
-			Rlgl.SRC_ALPHA, Rlgl.ONE_MINUS_SRC_ALPHA, 
-			Rlgl.ONE, Rlgl.ONE, 
-			Rlgl.FUNC_ADD, Rlgl.MAX
+			Rlgl.SRC_ALPHA,
+			Rlgl.ONE_MINUS_SRC_ALPHA,
+			Rlgl.ONE,
+			Rlgl.ONE_MINUS_SRC_ALPHA,
+			Rlgl.FUNC_ADD,
+			Rlgl.FUNC_ADD
 		);
 
 		// Pipeline
@@ -232,7 +235,7 @@ public partial class RayGame : Game {
 		Update();
 
 		// Update Gizmos
-		Raylib.BeginBlendMode(UsePremultiplyBlendMode ? BlendMode.AlphaPremultiply : BlendMode.CustomSeparate);
+		Raylib.BeginBlendMode(BlendMode.CustomSeparate);
 		GizmosRender.UpdateGizmos();
 		Raylib.EndBlendMode();
 

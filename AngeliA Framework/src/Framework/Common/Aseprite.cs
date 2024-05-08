@@ -319,7 +319,7 @@ public class Aseprite {
 					var fromC = colors[y * chunkWidth + x];
 					if (fromC.a == 0) { continue; }
 					int toIndex = (y + offsetY) * width + x + chunk.X;
-					pixels[toIndex] = layerChunk.MergeColor(fromC, pixels[toIndex]);
+					pixels[toIndex] = Util.MergeColor_Editor(fromC, pixels[toIndex]);
 				}
 			}
 		}
@@ -707,17 +707,6 @@ public class Aseprite {
 
 		public bool CheckFlag (LayerFlag flag) {
 			return ((LayerFlag)Flag & flag) == flag;
-		}
-
-
-		public Color32 MergeColor (Color32 top, Color32 back) {
-			byte oldTopAlpha = top.a;
-			top.r = (byte)Util.Clamp(top.r, 0, 255);
-			top.g = (byte)Util.Clamp(top.g, 0, 255);
-			top.b = (byte)Util.Clamp(top.b, 0, 255);
-			top = Color32.Lerp(back, top, (oldTopAlpha / 255f) * (Opacity / 255f));
-			top.a = (byte)Util.Clamp((1f - (1f - oldTopAlpha / 255f) * (1f - back.a / 255f)) * 255f, 0, 255);
-			return top;
 		}
 
 

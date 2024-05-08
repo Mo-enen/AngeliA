@@ -13,23 +13,14 @@ public struct ColorF {
 	public float a;
 
 	public ColorF (float r, float g, float b, float a = 1f) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
+		this.r = r.Clamp01();
+		this.g = g.Clamp01();
+		this.b = b.Clamp01();
+		this.a = a.Clamp01();
 	}
 
 	public static ColorF Lerp (ColorF a, ColorF b, float t) {
 		t = t.Clamp01();
-		return new ColorF(
-			a.r + (b.r - a.r) * t,
-			a.g + (b.g - a.g) * t,
-			a.b + (b.b - a.b) * t,
-			a.a + (b.a - a.a) * t
-		);
-	}
-
-	public static ColorF LerpUnclamped (ColorF a, ColorF b, float t) {
 		return new ColorF(
 			a.r + (b.r - a.r) * t,
 			a.g + (b.g - a.g) * t,
@@ -69,7 +60,5 @@ public struct ColorF {
 	public static bool operator != (ColorF a, ColorF b) => !a.r.Almost(b.r) || !a.g.Almost(b.g) || !a.b.Almost(b.b) || !a.a.Almost(b.a);
 
 	public static ColorF operator * (ColorF a, ColorF b) => new(a.r * b.r, a.g * b.g, a.b * b.b, a.a * b.a);
-
-
 
 }

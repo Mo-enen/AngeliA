@@ -24,10 +24,6 @@ public class ToolApplicationAttribute : System.Attribute { }
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class UsePremultiplyBlendModeAttribute : System.Attribute { }
-
-
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class DisablePauseAttribute : System.Attribute { }
 
 

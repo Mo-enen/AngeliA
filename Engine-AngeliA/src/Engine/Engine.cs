@@ -6,7 +6,6 @@ using AngeliA;
 
 
 [assembly: ToolApplication]
-//[assembly: UsePremultiplyBlendMode]
 [assembly: DisablePause]
 
 

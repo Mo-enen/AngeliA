@@ -448,6 +448,7 @@ public partial class PixelEditor {
 					int pxIndex = (pixelPos.y - spRect.yMin) * spRect.width + (pixelPos.x - spRect.xMin);
 					PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
 					PaintingColorF = PaintingColor.ToColorF();
+					ColorFieldCode = Util.ColorToHtml(PaintingColor);
 					break;
 				}
 			}
@@ -950,7 +951,7 @@ public partial class PixelEditor {
 					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)];
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					var oldPixel = sprite.Pixels[index];
-					var newPixel = Util.MergeColor(buffer, oldPixel);
+					var newPixel = Util.MergeColor_Editor(buffer, oldPixel);
 					sprite.Pixels[index] = newPixel;
 					RegisterUndo(new IndexedPixelUndoItem() {
 						From = oldPixel,
@@ -996,7 +997,7 @@ public partial class PixelEditor {
 					for (int i = l; i < r; i++) {
 						int pIndex = j * pixelWidth + i;
 						var oldPixel = paintingSprite.Pixels[pIndex];
-						var newPixel = Util.MergeColor(targetColor, oldPixel);
+						var newPixel = Util.MergeColor_Editor(targetColor, oldPixel);
 						paintingSprite.Pixels[pIndex] = newPixel;
 						contentChanged = contentChanged || oldPixel.LookDifferent(newPixel);
 						RegisterUndo(new IndexedPixelUndoItem() {
@@ -1061,7 +1062,7 @@ public partial class PixelEditor {
 			var pos = BucketCacheQueue.Dequeue();
 			int pixIndex = pos.y * pixelRect.width + pos.x;
 			var oldPixel = sprite.Pixels[pixIndex];
-			var newPixel = erase ? Color32.CLEAR : Util.MergeColor(PaintingColor, oldPixel);
+			var newPixel = erase ? Color32.CLEAR : Util.MergeColor_Editor(PaintingColor, oldPixel);
 			sprite.Pixels[pixIndex] = newPixel;
 			RegisterUndo(new IndexedPixelUndoItem() {
 				LocalPixelIndex = pixIndex,
@@ -1224,7 +1225,7 @@ public partial class PixelEditor {
 				for (int x = l; x < r; x++) {
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					int bufferIndex = (y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL);
-					buffer[bufferIndex].Merge(sprite.Pixels[index]);
+					buffer[bufferIndex] = Util.MergeColor_Editor(sprite.Pixels[index], buffer[bufferIndex]);
 					if (removePixels) {
 						var oldPixel = sprite.Pixels[index];
 						sprite.Pixels[index] = Color32.CLEAR;

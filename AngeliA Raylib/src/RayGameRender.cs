@@ -154,7 +154,7 @@ public partial class RayGame {
 		Raylib.BeginBlendMode(layerIndex switch {
 			RenderLayer.MULT => BlendMode.Multiplied,
 			RenderLayer.ADD => BlendMode.Additive,
-			RenderLayer.DEFAULT => UsePremultiplyBlendMode ? BlendMode.AlphaPremultiply : BlendMode.CustomSeparate,
+			RenderLayer.DEFAULT => BlendMode.CustomSeparate,
 			_ => BlendMode.CustomSeparate,
 		});
 

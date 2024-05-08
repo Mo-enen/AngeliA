@@ -34,7 +34,6 @@ public abstract partial class Game {
 	// Attribute Info
 	public static bool IsToolApplication { get; private set; } = false;
 	public static bool AllowMakerFeatures { get; private set; } = false;
-	public static bool UsePremultiplyBlendMode { get; private set; } = false;
 	public static bool AllowPause { get; private set; } = true;
 
 	// Event
@@ -88,9 +87,6 @@ public abstract partial class Game {
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<AllowMakerFeaturesAttribute>()) {
 			AllowMakerFeatures = true;
-		}
-		if (Util.TryGetAttributeFromAllAssemblies<UsePremultiplyBlendModeAttribute>()) {
-			UsePremultiplyBlendMode = true;
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<DisablePauseAttribute>()) {
 			AllowPause = false;

@@ -347,7 +347,7 @@ public static partial class Util {
 	}
 
 
-	public static ColorF MergeColor_Over (ColorF top, ColorF back) {
+	public static ColorF MergeColor_Overlay (ColorF top, ColorF back) {
 		float alpha = top.a + back.a * (1f - top.a);
 		return new ColorF(
 			(top.r * top.a + back.r * back.a * (1f - top.a)) / alpha,
@@ -356,17 +356,48 @@ public static partial class Util {
 			alpha
 		);
 	}
-	public static ColorF MergeColor (ColorF top, ColorF back) {
-		float alpha = top.a + back.a * (1f - top.a);
+	public static ColorF MergeColor_Lerp (ColorF top, ColorF back) {
+		if (back.a.AlmostZero()) return top;
+		float lerp = Min(top.a / back.a, 1f);
 		return new ColorF(
-			top.r + back.r * (1f - top.a),
-			top.g + back.g * (1f - top.a),
-			top.b + back.b * (1f - top.a),
-			alpha
+			back.r + (top.r - back.r) * lerp,
+			back.g + (top.g - back.g) * lerp,
+			back.b + (top.b - back.b) * lerp,
+			top.a + back.a * (1f - top.a)
 		);
 	}
-	public static Color32 MergeColor_Over (Color32 top, Color32 back) => MergeColor_Over(top.ToColorF(), back.ToColorF()).ToColor32();
+	public static ColorF MergeColor (ColorF top, ColorF back) => new(
+		top.r * top.a + back.r * (1f - top.a),
+		top.g * top.a + back.g * (1f - top.a),
+		top.b * top.a + back.b * (1f - top.a),
+		top.a + back.a * (1f - top.a)
+	);
+
+
+	public static Color32 MergeColor_Overlay (Color32 top, Color32 back) => MergeColor_Overlay(top.ToColorF(), back.ToColorF()).ToColor32();
+	public static Color32 MergeColor_Lerp (Color32 top, Color32 back) => MergeColor_Lerp(top.ToColorF(), back.ToColorF()).ToColor32();
 	public static Color32 MergeColor (Color32 top, Color32 back) => MergeColor(top.ToColorF(), back.ToColorF()).ToColor32();
+
+
+	public static Color32 MergeColor_Editor (Color32 top, Color32 back) {
+		
+		//return new Color32(
+		//	(byte)((top.r * top.a + back.r * (255 - top.a)) / 255).Clamp(0, 255),
+		//	(byte)((top.g * top.a + back.g * (255 - top.a)) / 255).Clamp(0, 255),
+		//	(byte)((top.b * top.a + back.b * (255 - top.a)) / 255).Clamp(0, 255),
+		//	(byte)(top.a + back.a * (255 - top.a) / 255).Clamp(0, 255)
+		//);
+
+		if (back.a == 0) return top;
+		const int AMOUNT = 1024;
+		int lerp = Min(top.a * AMOUNT / back.a, AMOUNT);
+		return new Color32(
+			(byte)(back.r + (top.r - back.r) * lerp / AMOUNT).Clamp(0, 255),
+			(byte)(back.g + (top.g - back.g) * lerp / AMOUNT).Clamp(0, 255),
+			(byte)(back.b + (top.b - back.b) * lerp / AMOUNT).Clamp(0, 255),
+			(byte)(top.a + back.a * (255 - top.a) / 255).Clamp(0, 255)
+		);
+	}
 
 
 	public static void WritePixelsToConsole (Color32[] pixels, int width) {
