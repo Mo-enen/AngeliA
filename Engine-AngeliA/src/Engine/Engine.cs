@@ -6,7 +6,7 @@ using AngeliA;
 
 
 [assembly: ToolApplication]
-[assembly: UsePremultiplyBlendMode]
+//[assembly: UsePremultiplyBlendMode]
 [assembly: DisablePause]
 
 
@@ -58,6 +58,25 @@ internal static class Engine {
 	private static readonly LanguageCode MENU_SORT_BY_NAME = ("Menu.SortProjectByName", "Sort by Name");
 	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
 	private static readonly LanguageCode NOTI_THEME_LOADED = ("Noti.ThemeLoaded", "Theme Loaded");
+	private static readonly LanguageCode LOG_BUILD_UNKNOWN = ("Log.BuildError.Unknown", "Unknown error on building project in background. Error code:{0}");
+
+
+	private static readonly LanguageCode LOG_ERROR_PROJECT_OBJECT_IS_NULL = ("Log.BuildError.ProjectObjectIsNull", "Build Error: Project object is Null");
+	private static readonly LanguageCode LOG_ERROR_PROJECT_FOLDER_INVALID = ("Log.BuildError.ProjectFolderInvalid", "Build Error: Project folder path invalid");
+	private static readonly LanguageCode LOG_ERROR_PUBLISH_DIR_INVALID = ("Log.BuildError.PublishDirInvalid", "Build Error: Publish folder path invalid");
+	private static readonly LanguageCode LOG_ERROR_PROJECT_FOLDER_NOT_EXISTS = ("Log.BuildError.ProjectFolderNotExists", "Build Error: Project folder not exists");
+	private static readonly LanguageCode LOG_ERROR_PRODUCT_NAME_INVALID = ("Log.BuildError.ProductNameInvalid", "Build Error: Product name invalid");
+	private static readonly LanguageCode LOG_ERROR_DEV_NAME_INVALID = ("Log.BuildError.DevNameInvalid", "Build Error: Developer name invalid");
+	private static readonly LanguageCode LOG_ERROR_RESULT_DLL_NOT_FOUND = ("Log.BuildError.ResultDllNotFound", "Build Error: Result dll file not found");
+	private static readonly LanguageCode LOG_ERROR_RUNTIME_FILE_NOT_FOUND = ("Log.BuildError.RuntimeFileNotFound", "Build Error: Runtime file not found in the engine universe folder");
+	private static readonly LanguageCode LOG_ERROR_UNIVERSE_FOLDER_NOT_FOUND = ("Log.BuildError.UniverseFolderNotFound", "Build Error: Universe folder not found");
+	private static readonly LanguageCode LOG_ERROR_EXE_FOR_RUN_NOT_FOUND = ("Log.BuildError.ExeForRunNotFound", "Build Error: No Exe file to run");
+	private static readonly LanguageCode LOG_ERROR_DOTNET_SDK_NOT_FOUND = ("Log.BuildError.DotnetSdkNotFound", "Build Error: Dotnet Sdk not found in the engine universe folder");
+	private static readonly LanguageCode LOG_ERROR_ENTRY_PROJECT_NOT_FOUND = ("Log.BuildError.EntryProjectNotFound", "Build Error: Entry exe file for the project not found");
+	private static readonly LanguageCode LOG_ERROR_ENTRY_RESULT_NOT_FOUND = ("Log.BuildError.EntryResultNotFound", "Build Error: Entry exe file result not found");
+
+
+
 	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
 	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
 	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
@@ -98,6 +117,7 @@ internal static class Engine {
 	private static int RigGameFailToStartFrame = int.MinValue;
 	private static int RigMapEditorWindowIndex = -1;
 	private static long RequireBackgroundBuildDate = 0;
+	private static int RigLastCalledFrame = -1;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -179,21 +199,6 @@ internal static class Engine {
 	}
 
 
-	[OnGameFocused]
-	internal static void OnGameFocused () {
-
-		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
-		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
-
-		if (srcModifyDate > dllModifyDate) {
-			RequireBackgroundBuildDate = srcModifyDate;
-		} else {
-			RequireBackgroundBuildDate = 0;
-		}
-
-	}
-
-
 	[OnGameTryingToQuit]
 	internal static bool OnGameTryingToQuit () {
 		if (CheckAnyEditorDirty()) {
@@ -224,6 +229,81 @@ internal static class Engine {
 	}
 
 
+	[OnProjectBuiltInBackground]
+	internal static void OnProjectBuiltInBackground (int code) {
+		switch (code) {
+
+			case 0:
+				RigGameFailToStartCount = 0;
+				RigGameFailToStartFrame = int.MinValue;
+				break;
+
+			default:
+				Debug.LogError(string.Format(LOG_BUILD_UNKNOWN, code));
+				break;
+
+			case 1:
+			case 2:
+
+
+
+				break;
+
+			case EngineUtil.ERROR_PROJECT_OBJECT_IS_NULL:
+				Debug.LogError(LOG_ERROR_PROJECT_OBJECT_IS_NULL);
+				break;
+
+			case EngineUtil.ERROR_PROJECT_FOLDER_INVALID:
+				Debug.LogError(LOG_ERROR_PROJECT_FOLDER_INVALID);
+				break;
+
+			case EngineUtil.ERROR_PUBLISH_DIR_INVALID:
+				Debug.LogError(LOG_ERROR_PUBLISH_DIR_INVALID);
+				break;
+
+			case EngineUtil.ERROR_PROJECT_FOLDER_NOT_EXISTS:
+				Debug.LogError(LOG_ERROR_PROJECT_FOLDER_NOT_EXISTS);
+				break;
+
+			case EngineUtil.ERROR_PRODUCT_NAME_INVALID:
+				Debug.LogError(LOG_ERROR_PRODUCT_NAME_INVALID);
+				break;
+
+			case EngineUtil.ERROR_DEV_NAME_INVALID:
+				Debug.LogError(LOG_ERROR_DEV_NAME_INVALID);
+				break;
+
+			case EngineUtil.ERROR_RESULT_DLL_NOT_FOUND:
+				Debug.LogError(LOG_ERROR_RESULT_DLL_NOT_FOUND);
+				break;
+
+			case EngineUtil.ERROR_RUNTIME_FILE_NOT_FOUND:
+				Debug.LogError(LOG_ERROR_RUNTIME_FILE_NOT_FOUND);
+				break;
+
+			case EngineUtil.ERROR_UNIVERSE_FOLDER_NOT_FOUND:
+				Debug.LogError(LOG_ERROR_UNIVERSE_FOLDER_NOT_FOUND);
+				break;
+
+			case EngineUtil.ERROR_EXE_FOR_RUN_NOT_FOUND:
+				Debug.LogError(LOG_ERROR_EXE_FOR_RUN_NOT_FOUND);
+				break;
+
+			case EngineUtil.ERROR_DOTNET_SDK_NOT_FOUND:
+				Debug.LogError(LOG_ERROR_DOTNET_SDK_NOT_FOUND);
+				break;
+
+			case EngineUtil.ERROR_ENTRY_PROJECT_NOT_FOUND:
+				Debug.LogError(LOG_ERROR_ENTRY_PROJECT_NOT_FOUND);
+				break;
+
+			case EngineUtil.ERROR_ENTRY_RESULT_NOT_FOUND:
+				Debug.LogError(LOG_ERROR_ENTRY_RESULT_NOT_FOUND);
+				break;
+		}
+	}
+
+
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
 		var windowPos = Game.GetWindowPosition();
@@ -236,6 +316,23 @@ internal static class Engine {
 		}
 		ProjectPaths.Value = Projects.JoinArray(p => p.Path, ';');
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
+	}
+
+
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+
+		// Update Rig
+		if (
+			CurrentProject != null &&
+			!EngineUtil.BuildingProjectInBackground &&
+			RiggedGame.RigProcessRunning &&
+			CurrentWindowIndex == RigMapEditorWindowIndex
+		) {
+			RiggedGame.Call();
+			RigLastCalledFrame = Game.GlobalFrame;
+		}
+
 	}
 
 
@@ -259,8 +356,8 @@ internal static class Engine {
 		} else {
 			OnGUI_Window();
 			OnGUI_Hotkey();
-			OnGUI_BackgroundBuild();
 		}
+		OnGUI_BackgroundBuild();
 
 	}
 
@@ -645,6 +742,14 @@ internal static class Engine {
 		}
 		StartWithWindowIndex.Value = SettingWindow.StartWithWindowIndex;
 
+		// Update Project Editor
+		if (Input.KeyboardDownWithCtrl(KeyboardKey.R) || ProjectEditor.RequiringRebuildFrame == Game.GlobalFrame) {
+			RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
+			if (RequireBackgroundBuildDate == 0) {
+				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
+			}
+		}
+
 		// Change Theme
 		if (SettingWindow.RequireChangeThemePath != null) {
 			string path = SettingWindow.RequireChangeThemePath;
@@ -796,29 +901,34 @@ internal static class Engine {
 
 	private static void OnGUI_BackgroundBuild () {
 
-		bool buildingInBackground = EngineUtil.BuildingProjectInBackground;
+		if (CurrentProject == null) {
+			if (RiggedGame.RigProcessRunning) {
+				RiggedGame.Abort();
+			}
+			return;
+		}
+
+		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
 
 		// Rebuild Check
-		if (!buildingInBackground && RequireBackgroundBuildDate > 0) {
+		if (!buildingProjectInBackground && RequireBackgroundBuildDate > 0) {
 			RiggedGame.Abort();
 			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
-			buildingInBackground = true;
+			buildingProjectInBackground = true;
 			RequireBackgroundBuildDate = 0;
 		}
 
 		// Abort when Building
-		if (RiggedGame.RigProcessRunning && buildingInBackground) {
+		if (RiggedGame.RigProcessRunning && buildingProjectInBackground) {
 			RiggedGame.Abort();
 		}
 
-		if (buildingInBackground) return;
+		if (buildingProjectInBackground) return;
 
 		// Update Rig
 		if (RiggedGame.RigProcessRunning) {
 			// Rig Running
-			if (CurrentWindowIndex == RigMapEditorWindowIndex) {
-				RiggedGame.Call();
-				System.Threading.Thread.Sleep(10);
+			if (RigLastCalledFrame == Game.GlobalFrame) {
 				RiggedGame.Respond();
 			}
 		} else if (
@@ -943,6 +1053,7 @@ internal static class Engine {
 			LastOpenedWindowIndex.Value = StartWithWindowIndex.Value;
 		}
 
+		CheckScriptChanged();
 	}
 
 
@@ -1021,6 +1132,21 @@ internal static class Engine {
 			Projects.Add(item);
 			SortProjects();
 		}
+	}
+
+
+	[OnGameFocused]
+	private static void CheckScriptChanged () {
+
+		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
+		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
+
+		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {
+			RequireBackgroundBuildDate = srcModifyDate;
+		} else {
+			RequireBackgroundBuildDate = 0;
+		}
+
 	}
 
 

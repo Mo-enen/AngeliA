@@ -114,7 +114,7 @@ public static partial class Util {
 	}
 
 
-	public static int ExecuteCommand (string workingDirectory, string arguments, bool logMessage = true, bool logError = true, bool wait = true) {
+	public static int ExecuteCommand (string workingDirectory, string arguments, int logID = -1, bool wait = true) {
 		try {
 			var process = Process.Start(new ProcessStartInfo {
 				Verb = "runas",
@@ -127,16 +127,21 @@ public static partial class Util {
 				RedirectStandardError = true,
 				WorkingDirectory = workingDirectory,
 			});
-			if (logMessage) {
+			if (logID >= 0) {
 				string line;
 				while ((line = process.StandardOutput.ReadLine()) != null) {
-					Debug.Log(line);
+					if (logID == 0) {
+						Debug.Log(line);
+					} else {
+						Debug.LogInternal(logID, line);
+					}
 				}
-			}
-			if (logError) {
-				string line;
 				while ((line = process.StandardError.ReadLine()) != null) {
-					Debug.LogError(line);
+					if (logID == 0) {
+						Debug.LogError(line);
+					} else {
+						Debug.LogErrorInternal(logID, line);
+					}
 				}
 			}
 			if (wait) {
@@ -389,5 +394,6 @@ public static partial class Util {
 		System.Console.ResetColor();
 		System.Console.WriteLine();
 	}
+
 
 }

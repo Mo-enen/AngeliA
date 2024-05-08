@@ -13,12 +13,14 @@ public class ProjectEditor : WindowUI {
 
 
 	// Const
+	private static readonly LanguageCode LABEL_BUILD = ("Label.Build", "Build");
 	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
 	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
 	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
 	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
+	private static readonly LanguageCode TIP_BUILD = ("Tip.Build", "Manually rebuild the project (Ctrl + R)");
 	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Publish the project in release mode");
 	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open sln/csproj file in this project with default application");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
@@ -34,6 +36,7 @@ public class ProjectEditor : WindowUI {
 	protected override bool BlockEvent => true;
 	public static Project CurrentProject { get; set; }
 	public override string DefaultName => "Project";
+	public int RequiringRebuildFrame { get; private set; } = -2;
 
 	// Data
 	private static ProjectEditor Instance;
@@ -100,7 +103,7 @@ public class ProjectEditor : WindowUI {
 	private void Update_WorkflowButton (ref IRect rect) {
 
 		var _rect = rect;
-		_rect.width /= 2;
+		_rect.width /= 3;
 		int padding = Unify(16);
 
 		// Edit
@@ -122,6 +125,14 @@ public class ProjectEditor : WindowUI {
 		_rect.SlideRight(padding);
 
 		using (Scope.GUIEnable(!EngineUtil.BuildingProjectInBackground)) {
+			// Build
+			if (GUI.Button(_rect, LABEL_BUILD, WorkflowButtonStyle)) {
+				RequiringRebuildFrame = Game.GlobalFrame;
+			}
+			RequireTooltip(_rect, TIP_BUILD);
+			_rect.SlideRight(padding);
+			rect.SlideDown();
+
 			// Publish
 			if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
 				FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);

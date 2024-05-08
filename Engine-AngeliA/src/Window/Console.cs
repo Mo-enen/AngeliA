@@ -44,10 +44,11 @@ public class Console : WindowUI {
 	private static readonly SpriteCode ICON_WARNING = "Console.Warning";
 	private static readonly SpriteCode ICON_ERROR = "Console.Error";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
+	private static readonly LanguageCode TIP_CLEAR = ("Tip.ConsoleClear", "Clear messages (Ctrl + Shift + C)");
 
 	// Api
 	public override string DefaultName => "Console";
-	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", true);
+	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);
 
 	// Data
 	private readonly Pipe<Line> Lines = new(512);
@@ -71,8 +72,39 @@ public class Console : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+		int barHeight = Unify(42);
+		OnGUI_Toolbar(WindowRect.EdgeInside(Direction4.Up, barHeight));
+		OnGUI_Lines(WindowRect.ShrinkUp(barHeight).Shrink(Unify(12)));
+		// Hotkey
+		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl) && Input.KeyboardHolding(KeyboardKey.LeftShift) && Input.KeyboardDown(KeyboardKey.C)) {
+			Lines.Reset();
+		}
+	}
 
-		var panelRect = WindowRect.Shrink(Unify(12));
+
+	private void OnGUI_Toolbar (IRect barRect) {
+
+		// BG
+		Renderer.DrawPixel(barRect, Skin.BackgroundPanel);
+
+		int padding = Unify(6);
+		barRect = barRect.Shrink(padding);
+		var rect = barRect.EdgeInside(Direction4.Left, barRect.height);
+
+		// Clear Button
+		if (GUI.Button(rect, BuiltInSprite.ICON_CLEAR, Skin.SmallDarkButton)) {
+			Lines.Reset();
+		}
+		RequireTooltip(rect, TIP_CLEAR);
+		rect.SlideRight(padding);
+
+
+
+
+	}
+
+
+	private void OnGUI_Lines (IRect panelRect) {
 
 		// Empty Hint
 		if (Lines.Length == 0) {

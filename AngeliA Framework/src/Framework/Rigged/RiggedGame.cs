@@ -24,19 +24,15 @@ public class RiggedGame {
 
 	// Api
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
-	public bool ReadTaskRunning => ReadingTask != null && ReadingTask.Status == TaskStatus.Running;
-	public bool WriteTaskRunning => WritingTask != null && WritingTask.Status == TaskStatus.Running;
+	public RiggedCallingMessage CallingCache { get; } = new();
+	public RiggedRespondMessage RespondCache { get; } = new();
 
 	// Data
-	private readonly RiggedCallingMessage CallingCache = new();
-	private readonly RiggedRespondMessage RespondCache = new();
 	private NamedPipeServerStream RigPipeServerIn = null;
 	private NamedPipeServerStream RigPipeServerOut = null;
 	private BinaryReader RigPipeServerReader = null;
 	private BinaryWriter RigPipeServerWriter = null;
 	private Process RigPipeClientProcess = null;
-	private System.Threading.Tasks.Task ReadingTask = null;
-	private System.Threading.Tasks.Task WritingTask = null;
 	private CancellationTokenSource ReadLineTokenSource = null;
 	private CancellationTokenSource WriteLineTokenSource = null;
 	private CancellationToken ReadlineCancelToken;
@@ -147,8 +143,8 @@ public class RiggedGame {
 			RigPipeServerWriter = writer;
 			RigPipeServerReader = reader;
 
-			WritingTask = System.Threading.Tasks.Task.Run(WriteUpdate, WritelineCancelToken);
-			ReadingTask = System.Threading.Tasks.Task.Run(ReadUpdate, ReadlineCancelToken);
+			System.Threading.Tasks.Task.Run(WriteUpdate, WritelineCancelToken);
+			System.Threading.Tasks.Task.Run(ReadUpdate, ReadlineCancelToken);
 
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
@@ -177,9 +173,18 @@ public class RiggedGame {
 	}
 
 
-	public void Respond () {
+	public void Respond (bool wait = true) {
 		// Rig >> Engine
-		if (RespondHandled) return;
+		if (RespondHandled) {
+			if (wait) {
+				for (int safe = 0; safe < 8; safe++) {
+					Thread.Sleep(2);
+					if (!RespondHandled) break;
+				}
+				if (RespondHandled) return;
+			}
+			return;
+		}
 		RespondCache.SetDataToFramework();
 		RespondHandled = true;
 	}

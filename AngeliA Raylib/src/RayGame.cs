@@ -50,18 +50,6 @@ public partial class RayGame : Game {
 		// Init Window
 #if DEBUG
 		Raylib.SetTraceLogLevel(TraceLogLevel.Error);
-#else
-		Raylib.SetTraceLogLevel(TraceLogLevel.None);
-#endif
-		Raylib.SetTargetFPS(60);
-		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
-		Raylib.SetConfigFlags(windowConfig);
-		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
-		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
-		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
-		SetWindowMinSize(256);
-
-#if DEBUG
 		Debug.OnLogException += LogException;
 		Debug.OnLogError += LogError;
 		Debug.OnLog += Log;
@@ -88,10 +76,23 @@ public partial class RayGame : Game {
 			Console.WriteLine();
 			Console.ResetColor();
 		}
+#else
+		Raylib.SetTraceLogLevel(TraceLogLevel.None);
 #endif
 
+		Raylib.SetTargetFPS(60);
+		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
+		Raylib.SetConfigFlags(windowConfig);
+		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
+		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
+		Raylib.SetExitKey(Raylib_cs.KeyboardKey.Null);
+		SetWindowMinSize(256);
+
+		// Blend
 		Rlgl.SetBlendFactorsSeparate(
-			Rlgl.SRC_ALPHA, Rlgl.ONE_MINUS_SRC_ALPHA, Rlgl.ONE, Rlgl.ONE, Rlgl.FUNC_ADD, Rlgl.MAX
+			Rlgl.SRC_ALPHA, Rlgl.ONE_MINUS_SRC_ALPHA, 
+			Rlgl.ONE, Rlgl.ONE, 
+			Rlgl.FUNC_ADD, Rlgl.MAX
 		);
 
 		// Pipeline

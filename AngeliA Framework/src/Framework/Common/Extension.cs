@@ -816,7 +816,12 @@ public static class Extension {
 	// Color
 	public static Color32 WithNewA (this Color32 value, int a) => new(value.r, value.g, value.b, (byte)(a.Clamp(0, 255)));
 	public static ColorF WithNewA (this ColorF value, float a) => new(value.r, value.g, value.b, a.Clamp01());
-	public static Color32 ToColor32 (this ColorF value) => new((byte)(value.r * 255), (byte)(value.g * 255), (byte)(value.b * 255), (byte)(value.a * 255));
+	public static Color32 ToColor32 (this ColorF value) => new(
+		(byte)(value.r * 255).Clamp(0, 255),
+		(byte)(value.g * 255).Clamp(0, 255),
+		(byte)(value.b * 255).Clamp(0, 255),
+		(byte)(value.a * 255).Clamp(0, 255)
+	);
 	public static ColorF ToColorF (this Color32 value) => new(value.r / 255f, value.g / 255f, value.b / 255f, value.a / 255f);
 	public static bool Almost (this ColorF a, ColorF b) => a == b;
 	public static void Merge (ref this Color32 back, Color32 top) => back = Util.MergeColor(top, back);

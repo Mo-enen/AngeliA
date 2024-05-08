@@ -146,8 +146,8 @@ public partial class PixelEditor {
 
 		// Create Sprite
 		if (StagedSprites.Count == 0) {
-			if (GUI.Button(
-				CreateSpriteBigButtonRect, BuiltInSprite.ICON_PLUS, Skin.DarkButton
+			if (GUI.DarkButton(
+				CreateSpriteBigButtonRect, BuiltInSprite.ICON_PLUS
 			)) {
 				string name = Sheet.GetAvailableSpriteName("New Sprite");
 				var sprite = Sheet.CreateSprite(name, new IRect(1, STAGE_SIZE - 33, 32, 32), CurrentAtlasIndex);
@@ -179,13 +179,6 @@ public partial class PixelEditor {
 			ResetCamera();
 		}
 		RequireTooltip(rect, TIP_RESET_CAMERA);
-		rect.SlideRight(padding);
-
-		// Import from PNG
-		if (GUI.Button(rect, ICON_IMPORT_PNG, Skin.SmallDarkButton)) {
-			ShowImportAtlasBrowser(false);
-		}
-		RequireTooltip(rect, TIP_IMPORT_PNG);
 		rect.SlideRight(padding);
 
 		// Palette

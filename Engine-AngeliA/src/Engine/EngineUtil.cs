@@ -7,23 +7,26 @@ using Task = System.Threading.Tasks.Task;
 
 namespace AngeliaEngine;
 
+[System.AttributeUsage(System.AttributeTargets.Method)] public class OnProjectBuiltInBackgroundAttribute : OrderedAttribute { public OnProjectBuiltInBackgroundAttribute (int order = 0) : base(order) { } }
+
 public static class EngineUtil {
 
 
 	// Const
-	private const int ERROR_PROJECT_OBJECT_IS_NULL = -100;
-	private const int ERROR_PROJECT_FOLDER_INVALID = -101;
-	private const int ERROR_PUBLISH_DIR_INVALID = -102;
-	private const int ERROR_PROJECT_FOLDER_NOT_EXISTS = -103;
-	private const int ERROR_PRODUCT_NAME_INVALID = -104;
-	private const int ERROR_DEV_NAME_INVALID = -105;
-	private const int ERROR_RESULT_DLL_NOT_FOUND = -106;
-	private const int ERROR_RUNTIME_FILE_NOT_FOUND = -107;
-	private const int ERROR_UNIVERSE_FOLDER_NOT_FOUND = -108;
-	private const int ERROR_EXE_FOR_RUN_NOT_FOUND = -109;
-	private const int ERROR_DOTNET_SDK_NOT_FOUND = -110;
-	private const int ERROR_ENTRY_PROJECT_NOT_FOUND = -111;
-	private const int ERROR_ENTRY_RESULT_NOT_FOUND = -112;
+	public const int ERROR_PROJECT_OBJECT_IS_NULL = -100;
+	public const int ERROR_PROJECT_FOLDER_INVALID = -101;
+	public const int ERROR_PUBLISH_DIR_INVALID = -102;
+	public const int ERROR_PROJECT_FOLDER_NOT_EXISTS = -103;
+	public const int ERROR_PRODUCT_NAME_INVALID = -104;
+	public const int ERROR_DEV_NAME_INVALID = -105;
+	public const int ERROR_RESULT_DLL_NOT_FOUND = -106;
+	public const int ERROR_RUNTIME_FILE_NOT_FOUND = -107;
+	public const int ERROR_UNIVERSE_FOLDER_NOT_FOUND = -108;
+	public const int ERROR_EXE_FOR_RUN_NOT_FOUND = -109;
+	public const int ERROR_DOTNET_SDK_NOT_FOUND = -110;
+	public const int ERROR_ENTRY_PROJECT_NOT_FOUND = -111;
+	public const int ERROR_ENTRY_RESULT_NOT_FOUND = -112;
+	private const int INTERNAL_LOG_ID = 102735648;
 
 	// Api
 	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet", "dotnet.exe");
@@ -32,10 +35,11 @@ public static class EngineUtil {
 	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
 	public static bool BuildingProjectInBackground => BuildProjectTask != null && BuildProjectTask.Status == TaskStatus.Running;
-	public static long LastBackgroundBuildSrcModifyDate { get; private set; }
+	public static long LastBackgroundBuildModifyDate { get; private set; }
 	public static int LastBackgroundBuildReturnCode { get; private set; }
 
 	// Cache
+	private static event System.Action<int> OnProjectBuiltInBackgroundHandler;
 	private static string c_ProjectPath;
 	private static string c_ProductName;
 	private static string c_BuildLibraryPath;
@@ -51,6 +55,15 @@ public static class EngineUtil {
 	private static Task BuildProjectTask = null;
 
 
+	// MSG
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () {
+		Util.LinkEventWithAttribute<OnProjectBuiltInBackgroundAttribute>(typeof(EngineUtil), nameof(OnProjectBuiltInBackgroundHandler));
+		Debug.OnLogInternal += OnLogMessage;
+		Debug.OnLogErrorInternal += OnLogMessage;
+	}
+
+
 	// API
 	public static int BuildAngeliaProject (Project project, bool runAfterBuild) {
 		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
@@ -61,7 +74,7 @@ public static class EngineUtil {
 			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
 			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
 			project.IconPath, project.UniversePath,
-			"", publish: false, runAfterBuild: runAfterBuild, logMessage: true, logError: true
+			"", publish: false, runAfterBuild: runAfterBuild, logID: 0
 		);
 	}
 
@@ -75,7 +88,7 @@ public static class EngineUtil {
 			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
 			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
 			project.IconPath, project.UniversePath,
-			publishDir, publish: true, runAfterBuild: false, logMessage: true, logError: true
+			publishDir, publish: true, runAfterBuild: false, logID: 0
 		);
 	}
 
@@ -98,7 +111,7 @@ public static class EngineUtil {
 		c_TempRoot = project.TempRoot;
 		c_UniversePath = project.UniversePath;
 		LastBackgroundBuildReturnCode = int.MinValue;
-		LastBackgroundBuildSrcModifyDate = srcModifyDate;
+		LastBackgroundBuildModifyDate = srcModifyDate;
 
 		// Task
 		BuildProjectTask = Task.Run(BuildFromCache);
@@ -112,9 +125,9 @@ public static class EngineUtil {
 					c_ProjectPath, c_ProductName, c_BuildLibraryPath, c_VersionString,
 					c_TempBuildPath, c_BuildPath, "", c_TempRoot,
 					"", c_UniversePath,
-					"", publish: false, runAfterBuild: false,
-					logMessage: false, logError: false
+					"", publish: false, runAfterBuild: false
 				);
+				OnProjectBuiltInBackgroundHandler?.Invoke(LastBackgroundBuildReturnCode);
 			} catch (System.Exception ex) {
 				System.Console.WriteLine(ex.Message + "\n" + ex.Source);
 			}
@@ -126,7 +139,7 @@ public static class EngineUtil {
 		string projectPath, string productName, string buildLibraryPath, string versionStr,
 		string tempBuildPath, string buildPath, string tempPublishPath, string tempRoot,
 		string iconPath, string universePath,
-		string publishDir, bool publish, bool runAfterBuild, bool logMessage, bool logError
+		string publishDir, bool publish, bool runAfterBuild, int logID = INTERNAL_LOG_ID
 	) {
 
 		if (!Util.IsPathValid(projectPath)) return ERROR_PROJECT_FOLDER_INVALID;
@@ -152,8 +165,7 @@ public static class EngineUtil {
 			assemblyName: libAssemblyName,
 			version: versionStr,
 			outputPath: tempBuildPath,
-			logMessage: logMessage,
-			logError: logError
+			logID: logID
 		);
 
 		if (returnCode != 0) return returnCode;
@@ -180,7 +192,7 @@ public static class EngineUtil {
 		if (!publish && runAfterBuild) {
 			string exePath = entryBuildPath;
 			if (Util.FileExists(exePath)) {
-				Util.ExecuteCommand(buildPath, exePath, logMessage: false, wait: false);
+				Util.ExecuteCommand(buildPath, exePath, wait: false);
 			} else {
 				return ERROR_EXE_FOR_RUN_NOT_FOUND;
 			}
@@ -201,8 +213,7 @@ public static class EngineUtil {
 				outputPath: tempBuildPath,
 				publishDir: tempPublishPath,
 				iconPath: iconPath,
-				logMessage: logMessage,
-				logError: logError
+				logID: -1
 			);
 			if (pubReturnCode != 0) return returnCode;
 
@@ -226,7 +237,7 @@ public static class EngineUtil {
 			if (runAfterBuild) {
 				string exePath = pubResultExePath;
 				if (Util.FileExists(exePath)) {
-					Util.ExecuteCommand(publishDir, exePath, logMessage: false, wait: false);
+					Util.ExecuteCommand(publishDir, exePath, wait: false);
 				} else {
 					return ERROR_EXE_FOR_RUN_NOT_FOUND;
 				}
@@ -264,7 +275,7 @@ public static class EngineUtil {
 
 	// Logic
 	private static int BuildDotnetProject (
-		string projectFolder, string sdkPath, bool publish, bool debug, bool logMessage, bool logError,
+		string projectFolder, string sdkPath, bool publish, bool debug, int logID,
 		string assemblyName = "", string version = "", string outputPath = "",
 		string publishDir = "", string iconPath = ""
 	) {
@@ -302,11 +313,15 @@ public static class EngineUtil {
 			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
 		}
 
-		return Util.ExecuteCommand(
-			projectFolder, CacheBuilder.ToString(),
-			logMessage: logMessage,
-			logError: logError
-		);
+		return Util.ExecuteCommand(projectFolder, CacheBuilder.ToString(), logID: logID);
+	}
+
+
+	private static void OnLogMessage (int id, string message) {
+		if (id != INTERNAL_LOG_ID) return;
+
+
+
 	}
 
 

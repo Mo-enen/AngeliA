@@ -632,6 +632,9 @@ public static class Input {
 
 
 	// Keyboard Key
+	public static bool KeyboardDownWithCtrl (KeyboardKey key) => KeyboardHolding(KeyboardKey.LeftCtrl) && KeyboardDown(key);
+	public static bool KeyboardDownWithShift (KeyboardKey key) => KeyboardHolding(KeyboardKey.LeftShift) && KeyboardDown(key);
+	public static bool KeyboardDownWithAlt (KeyboardKey key) => KeyboardHolding(KeyboardKey.LeftAlt) && KeyboardDown(key);
 	public static bool KeyboardDown (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
 	public static bool KeyboardDownGUI (KeyboardKey key) {
 		if (IgnoringKeyInput) return false;

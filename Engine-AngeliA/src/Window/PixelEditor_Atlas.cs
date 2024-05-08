@@ -186,22 +186,29 @@ public partial class PixelEditor {
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 		toolbarRect = toolbarRect.Shrink(Unify(6));
-		int buttonPadding = Unify(4);
-		var buttonRect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
+		int padding = Unify(4);
+		var rect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
 
 		// Add
-		if (GUI.Button(buttonRect, BuiltInSprite.ICON_PLUS, Skin.SmallDarkButton)) {
+		if (GUI.Button(rect, BuiltInSprite.ICON_PLUS, Skin.SmallDarkButton)) {
 			CreateAtlas();
 		}
-		RequireTooltip(buttonRect, TIP_ADD_ATLAS);
-		buttonRect.SlideRight(buttonPadding);
+		RequireTooltip(rect, TIP_ADD_ATLAS);
+		rect.SlideRight(padding);
 
 		// Import from Ase
-		if (GUI.Button(buttonRect, ICON_IMPORT_ASE, Skin.SmallDarkButton)) {
+		if (GUI.Button(rect, ICON_IMPORT_ASE, Skin.SmallDarkButton)) {
 			ShowImportAtlasBrowser(true);
 		}
-		RequireTooltip(buttonRect, TIP_IMPORT_ASE);
-		buttonRect.SlideRight(buttonPadding);
+		RequireTooltip(rect, TIP_IMPORT_ASE);
+		rect.SlideRight(padding);
+
+		// Import from PNG
+		if (GUI.Button(rect, ICON_IMPORT_PNG, Skin.SmallDarkButton)) {
+			ShowImportAtlasBrowser(false);
+		}
+		RequireTooltip(rect, TIP_IMPORT_PNG);
+		rect.SlideRight(padding);
 
 	}
 
