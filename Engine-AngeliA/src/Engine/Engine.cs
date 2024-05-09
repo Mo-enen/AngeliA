@@ -96,7 +96,7 @@ internal static class Engine {
 	private static readonly List<ProjectData> Projects = new();
 	private static readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private static readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
-	private static readonly RiggedGame RiggedGame = new(EngineUtil.RiggedExePath);
+	private static readonly RiggedTransceiver RiggedGame = new(EngineUtil.RiggedExePath);
 	private static IRect ToolLabelRect;
 	private static IRect LastHoveringToolLabelRect;
 	private static int HoveringTooltipDuration = 0;

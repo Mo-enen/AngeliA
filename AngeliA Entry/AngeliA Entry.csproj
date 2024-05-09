@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>AngeliA Entry</AssemblyName>
 		<TargetFramework>net7.0-windows</TargetFramework>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>

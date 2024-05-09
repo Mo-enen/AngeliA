@@ -11,21 +11,123 @@ public class RiggedCallingMessage {
 
 
 
+	// Init
+	public int FontCount;
+	private readonly int KeyboardKeyCount;
+	private readonly int GamepadKeyCount;
+
 	// Data
-	private int GlobalFrame;
-	private int PauselessFrame;
+	public int GlobalFrame;
+	public int PauselessFrame;
+	public bool CursorInScreen;
+	public int MonitorWidth;
+	public int MonitorHeight;
+	public int ScreenWidth;
+	public int ScreenHeight;
+	public byte EffectEnable;
+	public bool IsMusicPlaying;
+	public byte DeviceData;
+	public int MouseScrollDelta;
+	public int MousePosX;
+	public int MousePosY;
+	public readonly byte[] KeyboardHolding;
+	public readonly byte[] GamepadHolding;
+	public byte GamepadStickHolding;
+	public float GamepadLeftStickDirectionX;
+	public float GamepadLeftStickDirectionY;
+	public float GamepadRightStickDirectionX;
+	public float GamepadRightStickDirectionY;
 
 
 	// API
+	public RiggedCallingMessage () {
+		KeyboardKeyCount = typeof(KeyboardKey).EnumLength();
+		KeyboardHolding = new byte[KeyboardKeyCount / 8 + 1];
+		GamepadKeyCount = typeof(GamepadKey).EnumLength();
+		GamepadHolding = new byte[GamepadKeyCount / 8 + 1];
+	}
+
+
 	public void LoadDataFromFramework () {
 
-		// Frame
+		int mouseScroll = Game.MouseScrollDelta;
+		var mousePos = Game.MouseScreenPosition;
+		var stickL = Game.GamepadLeftStickDirection;
+		var stickR = Game.GamepadRightStickDirection;
+
 		GlobalFrame = Game.GlobalFrame;
 		PauselessFrame = Game.PauselessFrame;
+		CursorInScreen = Game.CursorInScreen;
+		MonitorWidth = Game.MonitorWidth;
+		MonitorHeight = Game.MonitorHeight;
+		ScreenWidth = Game.ScreenWidth;
+		ScreenHeight = Game.ScreenHeight;
+		FontCount = Game.FontCount;
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			EffectEnable.SetBit(i, Game.GetEffectEnable(i));
+		}
+		IsMusicPlaying = Game.IsMusicPlaying;
+		DeviceData.SetBit(0, Game.IsMouseAvailable);
+		DeviceData.SetBit(1, Game.IsMouseLeftHolding);
+		DeviceData.SetBit(2, Game.IsMouseRightHolding);
+		DeviceData.SetBit(3, Game.IsMouseMidHolding);
+		DeviceData.SetBit(4, mouseScroll != 0);
+		DeviceData.SetBit(5, Game.IsKeyboardAvailable);
+		DeviceData.SetBit(6, Game.IsGamepadAvailable);
+		MouseScrollDelta = mouseScroll;
+		MousePosX = mousePos.x;
+		MousePosY = mousePos.y;
+		for (int i = 0; i < KeyboardKeyCount; i++) {
+			KeyboardHolding[i / 8].SetBit(i % 8, Game.IsKeyboardKeyHolding((KeyboardKey)i));
+		}
+		for (int i = 0; i < GamepadKeyCount; i++) {
+			GamepadHolding[i / 8].SetBit(i % 8, Game.IsGamepadKeyHolding((GamepadKey)i));
+		}
+		GamepadStickHolding.SetBit(0, Game.IsGamepadLeftStickHolding(Direction4.Left));
+		GamepadStickHolding.SetBit(1, Game.IsGamepadLeftStickHolding(Direction4.Right));
+		GamepadStickHolding.SetBit(2, Game.IsGamepadLeftStickHolding(Direction4.Down));
+		GamepadStickHolding.SetBit(3, Game.IsGamepadLeftStickHolding(Direction4.Up));
+		GamepadStickHolding.SetBit(4, Game.IsGamepadRightStickHolding(Direction4.Left));
+		GamepadStickHolding.SetBit(5, Game.IsGamepadRightStickHolding(Direction4.Right));
+		GamepadStickHolding.SetBit(6, Game.IsGamepadRightStickHolding(Direction4.Down));
+		GamepadStickHolding.SetBit(7, Game.IsGamepadRightStickHolding(Direction4.Up));
+		GamepadLeftStickDirectionX = stickL.x;
+		GamepadLeftStickDirectionY = stickL.y;
+		GamepadRightStickDirectionX = stickR.x;
+		GamepadRightStickDirectionY = stickR.y;
 
 
-		// Input
+	}
 
+
+	public void ReadDataFromPipe (BinaryReader reader) {
+
+		// Updating Data
+		GlobalFrame = reader.ReadInt32();
+		PauselessFrame = reader.ReadInt32();
+		CursorInScreen = reader.ReadBoolean();
+		MonitorWidth = reader.ReadInt32();
+		MonitorHeight = reader.ReadInt32();
+		ScreenWidth = reader.ReadInt32();
+		ScreenHeight = reader.ReadInt32();
+		FontCount = reader.ReadInt32();
+		EffectEnable = reader.ReadByte();
+		IsMusicPlaying = reader.ReadBoolean();
+		DeviceData = reader.ReadByte();
+		MouseScrollDelta = DeviceData.GetBit(4) ? reader.ReadInt32() : 0;
+		MousePosX = reader.ReadInt32();
+		MousePosY = reader.ReadInt32();
+		for (int i = 0; i < KeyboardHolding.Length; i++) {
+			KeyboardHolding[i] = reader.ReadByte();
+		}
+		for (int i = 0; i < GamepadHolding.Length; i++) {
+			GamepadHolding[i] = reader.ReadByte();
+		}
+		GamepadStickHolding = reader.ReadByte();
+		GamepadLeftStickDirectionX = reader.ReadSingle();
+		GamepadLeftStickDirectionY = reader.ReadSingle();
+		GamepadRightStickDirectionX = reader.ReadSingle();
+		GamepadRightStickDirectionY = reader.ReadSingle();
 
 
 	}
@@ -33,10 +135,32 @@ public class RiggedCallingMessage {
 
 	public void WriteDataToPipe (BinaryWriter writer) {
 
+		// Updating Data
 		writer.Write(GlobalFrame);
 		writer.Write(PauselessFrame);
-
-
+		writer.Write(CursorInScreen);
+		writer.Write(MonitorWidth);
+		writer.Write(MonitorHeight);
+		writer.Write(ScreenWidth);
+		writer.Write(ScreenHeight);
+		writer.Write(FontCount);
+		writer.Write(EffectEnable);
+		writer.Write(IsMusicPlaying);
+		writer.Write(DeviceData);
+		if (MouseScrollDelta != 0) writer.Write(MouseScrollDelta);
+		writer.Write(MousePosX);
+		writer.Write(MousePosY);
+		for (int i = 0; i < KeyboardHolding.Length; i++) {
+			writer.Write(KeyboardHolding[i]);
+		}
+		for (int i = 0; i < GamepadHolding.Length; i++) {
+			writer.Write(GamepadHolding[i]);
+		}
+		writer.Write(GamepadStickHolding);
+		writer.Write(GamepadLeftStickDirectionX);
+		writer.Write(GamepadLeftStickDirectionY);
+		writer.Write(GamepadRightStickDirectionX);
+		writer.Write(GamepadRightStickDirectionY);
 
 	}
 

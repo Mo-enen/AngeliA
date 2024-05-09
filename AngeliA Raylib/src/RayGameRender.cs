@@ -115,8 +115,6 @@ public partial class RayGame {
 
 
 	// Render
-	protected override void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) { }
-
 	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
 		if (PauselessFrame < 4) return;
@@ -531,16 +529,15 @@ public partial class RayGame {
 	// Text
 	protected override int _GetFontCount () => Fonts.Length;
 
-	protected override string _GetTextLayerName (int index) => Fonts[index].Name;
-
-	protected override CharSprite _GetCharSprite (int fontIndex, char c) {
+	protected override bool _GetCharSprite (int fontIndex, char c, out CharSprite result) {
 		var fontData = Fonts[fontIndex];
-		if (!fontData.TryGetCharData(c, out var info, out var texture)) return null;
+		result = null;
+		if (!fontData.TryGetCharData(c, out var info, out var texture)) return true;
 		bool fullset = c >= 256;
 		float fontSize = fullset ?
 			fontData.FullsetSize / fontData.FullsetScale :
 			fontData.PrioritizedSize / fontData.PrioritizedScale;
-		return new CharSprite {
+		result = new CharSprite {
 			Char = c,
 			Advance = info.AdvanceX / fontSize,
 			Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
@@ -552,6 +549,7 @@ public partial class RayGame {
 			FontIndex = fontIndex,
 			Texture = texture,
 		};
+		return true;
 	}
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();

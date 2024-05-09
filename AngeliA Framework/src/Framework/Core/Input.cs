@@ -603,7 +603,7 @@ public static class Input {
 
 	// Any Key
 	public static bool TryGetHoldingGamepadButton (out GamepadKey button) {
-		button = GamepadKey.A;
+		button = GamepadKey.East;
 		if (IgnoringKeyInput) return false;
 		return Game.IsGamepadAvailable && SearchAnyGamepadButtonHolding(out button);
 	}

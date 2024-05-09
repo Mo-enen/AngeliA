@@ -109,24 +109,6 @@ public abstract partial class Game {
 	protected abstract void _SetEventWaiting (bool enable);
 
 
-	// Listener
-	public static void InvokeGameQuitting () {
-		_LastUsedWindowWidth.Value = ScreenWidth;
-		_LastUsedWindowHeight.Value = ScreenHeight;
-		OnGameQuitting?.Invoke();
-	}
-	public static bool InvokeGameTryingToQuit () {
-		if (!IsToolApplication && !IsPausing) PauseGame();
-		foreach (var method in OnGameTryingToQuitMethods) {
-			if (method.Invoke(null, null) is bool result && !result) {
-				return false;
-			}
-		}
-		return true;
-	}
-	public static void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
-
-
 	// View
 	public static int DefaultViewHeight => Instance._DefaultViewHeight;
 	protected virtual int _DefaultViewHeight => 26 * Const.CEL;
@@ -153,9 +135,6 @@ public abstract partial class Game {
 
 
 	// Render
-	internal static void OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity) => Instance._OnRenderingLayerCreated(index, name, sortingOrder, capacity);
-	protected abstract void _OnRenderingLayerCreated (int index, string name, int sortingOrder, int capacity);
-
 	internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, cells, cellCount);
 	protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount);
 
@@ -198,6 +177,8 @@ public abstract partial class Game {
 	public static void PassEffect_Invert (int duration = 0) {
 		ScreenEffectEnableFrames[Const.SCREEN_EFFECT_INVERT] = PauselessFrame + duration;
 	}
+	public static bool GetEffectEnable (int effectIndex) => Instance._GetEffectEnable(effectIndex);
+	public static void SetEffectEnable (int effectIndex, bool enable) => Instance._SetEffectEnable(effectIndex, enable);
 	protected abstract bool _GetEffectEnable (int effectIndex);
 	protected abstract void _SetEffectEnable (int effectIndex, bool enable);
 	protected abstract void _Effect_SetDarkenParams (float amount, float step);
@@ -289,17 +270,14 @@ public abstract partial class Game {
 	public static int FontCount => Instance._GetFontCount();
 	protected abstract int _GetFontCount ();
 
-	internal static string GetTextLayerName (int index) => Instance._GetTextLayerName(index);
-	protected abstract string _GetTextLayerName (int index);
-
 	public static string GetClipboardText () => Instance?._GetClipboardText();
 	protected abstract string _GetClipboardText ();
 
 	public static void SetClipboardText (string text) => Instance?._SetClipboardText(text);
 	protected abstract void _SetClipboardText (string text);
 
-	public static CharSprite GetCharSprite (int fontIndex, char c) => Instance._GetCharSprite(fontIndex, c);
-	protected abstract CharSprite _GetCharSprite (int fontIndex, char c);
+	public static bool GetCharSprite (int fontIndex, char c, out CharSprite result) => Instance._GetCharSprite(fontIndex, c, out result);
+	protected abstract bool _GetCharSprite (int fontIndex, char c, out CharSprite result);
 
 
 	// Music

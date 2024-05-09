@@ -2,11 +2,12 @@
 
   <PropertyGroup>
 		<AssemblyName>AngeliA Framework</AssemblyName>
-    <RootNamespace>AngeliA</RootNamespace>
+		<RootNamespace>AngeliA</RootNamespace>
 		<TargetFramework>net7.0-windows</TargetFramework>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 		<OutputType>Library</OutputType>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
 		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
@@ -16,7 +17,6 @@
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<ErrorReport>none</ErrorReport>
 
-
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
 		
@@ -24,7 +24,7 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
-
+		
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

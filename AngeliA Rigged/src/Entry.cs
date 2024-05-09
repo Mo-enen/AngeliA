@@ -2,15 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Pipes;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Reflection;
-using AngeliA;
 using System.Diagnostics;
-//using AngeliaRigged; 
+using AngeliA;
+using AngeliaRigged;
 
 
 [assembly: DisablePause]
+
+
+Util.DeleteFile(@"C:\Users\Mo_enen\Desktop\Log.txt");
+Util.DeleteFile(@"C:\Users\Mo_enen\Desktop\Client Error.txt");
 
 
 if (args.Length < 2) return -1;
@@ -53,19 +54,21 @@ pipeClientOut.Connect();
 using var reader = new BinaryReader(pipeClientIn);
 using var writer = new BinaryWriter(pipeClientOut);
 
+
+
 Util.TextToFile("\nClient Started\n\n", @"C:\Users\Mo_enen\Desktop\Log.txt", true);
+
+var riggedGame = new RiggedGame();
 
 // Main Loop
 while (true) {
 	try {
 
 		if (hostProcess != null && hostProcess.HasExited) return 0;
+		riggedGame.UpdateWithPipe(reader, writer);
 
-		int a = reader.ReadInt32();
-		int b = reader.ReadInt32();
-		writer.Write(a);
-		writer.Write(b);
-		Util.TextToFile(a + " ", @"C:\Users\Mo_enen\Desktop\Log.txt", true);
+		Util.TextToFile(riggedGame.CallingMessage.GlobalFrame + " ", @"C:\Users\Mo_enen\Desktop\Log.txt", true);
+
 
 	} catch (System.Exception ex) {
 		Util.TextToFile($"{ex.Message}\n{ex.Source}" + "\n", @"C:\Users\Mo_enen\Desktop\Client Error.txt", true);

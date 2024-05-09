@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>AngeliA Rigged</AssemblyName>
 		<TargetFramework>net7.0-windows</TargetFramework>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -18,7 +19,7 @@
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<Optimize>True</Optimize>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
-
+		
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
 
@@ -54,7 +55,7 @@
 
 	<!--Ref Project-->
 	<ItemGroup>
-		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+		<ProjectReference Include="..\AngeliA Raylib\AngeliA Raylib.csproj" />
 	</ItemGroup>
 
 	<!--Remove-->

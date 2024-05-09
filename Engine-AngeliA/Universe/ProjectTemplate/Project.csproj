@@ -4,6 +4,7 @@
 		
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<OutputType>Library</OutputType>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<UseWindowsForms>False</UseWindowsForms>

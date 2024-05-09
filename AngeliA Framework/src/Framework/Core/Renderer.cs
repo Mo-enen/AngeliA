@@ -122,7 +122,6 @@ public static class Renderer {
 				SortingOrder = order,
 				UiLayer = uiLayer
 			};
-			Game.OnRenderingLayerCreated(i, name, order, capacity);
 		}
 
 		// Create Char Sprite Pool
@@ -715,9 +714,8 @@ public static class Renderer {
 		if (pool.TryGetValue(c, out var textSprite)) {
 			// Get Exists
 			charSprite = textSprite;
-		} else {
+		} else if (Game.GetCharSprite(CurrentFontIndex, c, out charSprite)) {
 			// Require Char from Font
-			charSprite = Game.GetCharSprite(CurrentFontIndex, c);
 			pool.Add(c, charSprite);
 		}
 		return charSprite != null;

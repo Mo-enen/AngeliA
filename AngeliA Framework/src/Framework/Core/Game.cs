@@ -222,6 +222,26 @@ public abstract partial class Game {
 	}
 
 
+	// Invoke
+	protected void InvokeGameQuitting () {
+		_LastUsedWindowWidth.Value = ScreenWidth;
+		_LastUsedWindowHeight.Value = ScreenHeight;
+		OnGameQuitting?.Invoke();
+	}
+
+	protected bool InvokeGameTryingToQuit () {
+		if (!IsToolApplication && !IsPausing) PauseGame();
+		foreach (var method in OnGameTryingToQuitMethods) {
+			if (method.Invoke(null, null) is bool result && !result) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	protected void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
+
+
 	#endregion
 
 

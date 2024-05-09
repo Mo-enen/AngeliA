@@ -27,7 +27,7 @@ public class RiggedMapEditor : WindowUI {
 
 	// Data
 	private readonly GUIStyle FailHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
-	private RiggedGame RiggedGame;
+	private RiggedTransceiver RiggedGame;
 	private int NoGameRunningFrameCount = 0;
 
 
@@ -39,7 +39,7 @@ public class RiggedMapEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public void Initialize (RiggedGame riggedGame) => RiggedGame = riggedGame;
+	public void Initialize (RiggedTransceiver riggedGame) => RiggedGame = riggedGame;
 
 
 	public override void UpdateWindowUI () {

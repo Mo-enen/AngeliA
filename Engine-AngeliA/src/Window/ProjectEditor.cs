@@ -43,7 +43,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 20, };
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
-	private RiggedGame RiggedGame;
+	private RiggedTransceiver RiggedGame;
 
 
 	#endregion
@@ -57,7 +57,7 @@ public class ProjectEditor : WindowUI {
 	public ProjectEditor () => Instance = this;
 
 
-	public void Initialize (RiggedGame riggedGame) => RiggedGame = riggedGame;
+	public void Initialize (RiggedTransceiver riggedGame) => RiggedGame = riggedGame;
 
 
 	public override void BeforeUpdate () {
