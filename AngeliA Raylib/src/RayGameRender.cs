@@ -10,12 +10,11 @@ namespace AngeliaRaylib;
 public partial class RayGame {
 
 
+
 	// Data
-	private readonly static Color[] FillPixelCache = new Color[512 * 512];
 	private readonly static System.Random CA_Ran = new(2353456);
 	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
-	private Texture2D EMPTY_TEXTURE;
 	private FontData[] Fonts;
 	private Shader LerpShader;
 	private Shader ColorShader;
@@ -379,121 +378,21 @@ public partial class RayGame {
 
 
 	// Texture
-	protected override object _GetTextureFromPixels (Color32[] pixels, int width, int height) {
-		var result = GetTextureFromPixelsLogic(pixels, width, height);
-		if (result.HasValue) {
-			Raylib.SetTextureFilter(result.Value, TextureFilter.Point);
-			Raylib.SetTextureWrap(result.Value, TextureWrap.Clamp);
-			return result.Value;
-		} else {
-			return EMPTY_TEXTURE;
-		}
-		// Func
-		static unsafe Texture2D? GetTextureFromPixelsLogic (Color32[] pixels, int width, int height) {
-			int len = width * height;
-			if (len == 0) return null;
-			Texture2D textureResult;
-			var image = new Image() {
-				Format = PixelFormat.UncompressedR8G8B8A8,
-				Width = width,
-				Height = height,
-				Mipmaps = 1,
-			};
-			if (pixels != null && pixels.Length == len) {
-				var bytes = new byte[pixels.Length * 4];
-				int index = 0;
-				for (int y = 0; y < height; y++) {
-					for (int x = 0; x < width; x++) {
-						int i = (height - y - 1) * width + x;
-						var p = pixels[i];
-						bytes[index * 4 + 0] = p.r;
-						bytes[index * 4 + 1] = p.g;
-						bytes[index * 4 + 2] = p.b;
-						bytes[index * 4 + 3] = p.a;
-						index++;
-					}
-				}
-				fixed (void* data = bytes) {
-					image.Data = data;
-					textureResult = Raylib.LoadTextureFromImage(image);
-				}
-			} else {
-				textureResult = Raylib.LoadTextureFromImage(image);
-			}
-			Raylib.SetTextureFilter(textureResult, TextureFilter.Point);
-			return textureResult;
+	protected override object _GetTextureFromPixels (Color32[] pixels, int width, int height) => RayUtil.GetTextureFromPixels(pixels, width, height);
 
-		}
-	}
+	protected override Color32[] _GetPixelsFromTexture (object texture) => RayUtil.GetPixelsFromTexture(texture);
 
-	protected override unsafe Color32[] _GetPixelsFromTexture (object texture) {
-		if (texture is not Texture2D rTexture) return System.Array.Empty<Color32>();
-		var image = Raylib.LoadImageFromTexture(rTexture);
-		int width = image.Width;
-		int height = image.Height;
-		var result = new Color32[width * height];
-		var colors = Raylib.LoadImageColors(image);
-		int index = 0;
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				int i = (height - y - 1) * width + x;
-				result[index] = colors[i].ToAngelia();
-				index++;
-			}
-		}
-		Raylib.UnloadImageColors(colors);
-		return result;
-	}
+	protected override void _FillPixelsIntoTexture (Color32[] pixels, object texture) => RayUtil.FillPixelsIntoTexture(pixels, texture);
 
-	protected override void _FillPixelsIntoTexture (Color32[] pixels, object texture) {
-		if (texture is not Texture2D rTexture) return;
-		if (pixels == null) return;
-		int width = rTexture.Width;
-		int height = rTexture.Height;
-		if (pixels.Length != width * height) return;
-		var colors = pixels.Length <= FillPixelCache.Length ? FillPixelCache : new Color[pixels.Length];
-		int index = 0;
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				int i = (height - y - 1) * width + x;
-				colors[index] = pixels[i].ToRaylib();
-				index++;
-			}
-		}
-		Raylib.UpdateTexture(rTexture, colors);
-	}
+	protected override Int2 _GetTextureSize (object texture) => RayUtil.GetTextureSize(texture);
 
-	protected override Int2 _GetTextureSize (object texture) => texture is Texture2D rTexture ? new Int2(rTexture.Width, rTexture.Height) : default;
+	protected override object _PngBytesToTexture (byte[] bytes) => RayUtil.PngBytesToTexture(bytes);
 
-	protected override object _PngBytesToTexture (byte[] bytes) {
-		if (bytes == null || bytes.Length == 0) return EMPTY_TEXTURE;
-		var image = Raylib.LoadImageFromMemory(".png", bytes);
-		var result = Raylib.LoadTextureFromImage(image);
-		Raylib.SetTextureFilter(result, TextureFilter.Point);
-		return result;
-	}
+	protected override byte[] _TextureToPngBytes (object texture) => RayUtil.TextureToPngBytes(texture);
 
-	protected override unsafe byte[] _TextureToPngBytes (object texture) {
-		if (texture is not Texture2D rTexture) return System.Array.Empty<byte>();
-		var fileType = Marshal.StringToHGlobalAnsi(".png");
-		int fileSize = 0;
-		char* result = Raylib.ExportImageToMemory(
-			Raylib.LoadImageFromTexture(rTexture),
-			(sbyte*)fileType.ToPointer(),
-			&fileSize
-		);
-		if (fileSize == 0) return System.Array.Empty<byte>();
-		var resultBytes = new byte[fileSize];
-		Marshal.Copy((nint)result, resultBytes, 0, fileSize);
-		Marshal.FreeHGlobal((nint)result);
-		Marshal.FreeHGlobal(fileType);
-		return resultBytes;
-	}
+	protected override void _UnloadTexture (object texture) => RayUtil.UnloadTexture(texture);
 
-	protected override void _UnloadTexture (object texture) {
-		if (texture is not Texture2D rTexture) return;
-		Raylib.UnloadTexture(rTexture);
-	}
+	protected override uint? _GetTextureID (object texture) => RayUtil.GetTextureID(texture);
 
 
 	// GL Gizmos

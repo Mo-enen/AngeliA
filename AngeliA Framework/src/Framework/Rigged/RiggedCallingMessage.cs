@@ -10,6 +10,19 @@ namespace AngeliA;
 public class RiggedCallingMessage {
 
 
+	// SUB
+	public struct CharRequirementData {
+		public bool Valid;
+		public char Char;
+		public int FontIndex;
+		public FRect Offset;
+		public float Advance;
+	}
+
+
+	// Const
+	public const int REQUIRE_CHAR_MAX_COUNT = 128;
+	public const int REQUIRE_GIZMOS_TEXTURE_MAX_COUNT = 128;
 
 	// Init
 	public int FontCount;
@@ -17,8 +30,6 @@ public class RiggedCallingMessage {
 	private readonly int GamepadKeyCount;
 
 	// Data
-	public int GlobalFrame;
-	public int PauselessFrame;
 	public bool CursorInScreen;
 	public int MonitorWidth;
 	public int MonitorHeight;
@@ -37,6 +48,10 @@ public class RiggedCallingMessage {
 	public float GamepadLeftStickDirectionY;
 	public float GamepadRightStickDirectionX;
 	public float GamepadRightStickDirectionY;
+	public int CharRequiredCount;
+	public CharRequirementData[] RequiredChars = new CharRequirementData[REQUIRE_CHAR_MAX_COUNT];
+	public int RequiringGizmosTextureIDCount = 0;
+	public uint[] RequiringGizmosTextureIDs = new uint[REQUIRE_GIZMOS_TEXTURE_MAX_COUNT];
 
 
 	// API
@@ -55,8 +70,6 @@ public class RiggedCallingMessage {
 		var stickL = Game.GamepadLeftStickDirection;
 		var stickR = Game.GamepadRightStickDirection;
 
-		GlobalFrame = Game.GlobalFrame;
-		PauselessFrame = Game.PauselessFrame;
 		CursorInScreen = Game.CursorInScreen;
 		MonitorWidth = Game.MonitorWidth;
 		MonitorHeight = Game.MonitorHeight;
@@ -96,15 +109,12 @@ public class RiggedCallingMessage {
 		GamepadRightStickDirectionX = stickR.x;
 		GamepadRightStickDirectionY = stickR.y;
 
-
 	}
 
 
 	public void ReadDataFromPipe (BinaryReader reader) {
 
 		// Updating Data
-		GlobalFrame = reader.ReadInt32();
-		PauselessFrame = reader.ReadInt32();
 		CursorInScreen = reader.ReadBoolean();
 		MonitorWidth = reader.ReadInt32();
 		MonitorHeight = reader.ReadInt32();
@@ -129,15 +139,43 @@ public class RiggedCallingMessage {
 		GamepadRightStickDirectionX = reader.ReadSingle();
 		GamepadRightStickDirectionY = reader.ReadSingle();
 
+		CharRequiredCount = reader.ReadInt32();
+		for (int i = 0; i < CharRequiredCount; i++) {
+			char c = reader.ReadChar();
+			int fontIndex = reader.ReadInt32();
+			bool valid = reader.ReadBoolean();
+			if (valid) {
+				float advance = reader.ReadSingle();
+				var offset = new FRect(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+				RequiredChars[i] = new CharRequirementData() {
+					Char = c,
+					Advance = advance,
+					FontIndex = fontIndex,
+					Offset = offset,
+					Valid = valid,
+				};
+			} else {
+				RequiredChars[i] = new CharRequirementData() {
+					Char = c,
+					FontIndex = fontIndex,
+					Valid = valid,
+					Advance = default,
+					Offset = default,
+				};
+			}
+		}
+
+		RequiringGizmosTextureIDCount = reader.ReadInt32();
+		for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
+			RequiringGizmosTextureIDs[i] = reader.ReadUInt32();
+		}
+
 
 	}
 
 
 	public void WriteDataToPipe (BinaryWriter writer) {
 
-		// Updating Data
-		writer.Write(GlobalFrame);
-		writer.Write(PauselessFrame);
 		writer.Write(CursorInScreen);
 		writer.Write(MonitorWidth);
 		writer.Write(MonitorHeight);
@@ -147,7 +185,7 @@ public class RiggedCallingMessage {
 		writer.Write(EffectEnable);
 		writer.Write(IsMusicPlaying);
 		writer.Write(DeviceData);
-		if (MouseScrollDelta != 0) writer.Write(MouseScrollDelta);
+		if (DeviceData.GetBit(4)) writer.Write(MouseScrollDelta);
 		writer.Write(MousePosX);
 		writer.Write(MousePosY);
 		for (int i = 0; i < KeyboardHolding.Length; i++) {
@@ -161,6 +199,26 @@ public class RiggedCallingMessage {
 		writer.Write(GamepadLeftStickDirectionY);
 		writer.Write(GamepadRightStickDirectionX);
 		writer.Write(GamepadRightStickDirectionY);
+
+		writer.Write(CharRequiredCount);
+		for (int i = 0; i < CharRequiredCount; i++) {
+			var data = RequiredChars[i];
+			writer.Write(data.Char);
+			writer.Write(data.FontIndex);
+			writer.Write(data.Valid);
+			if (data.Valid) {
+				writer.Write(data.Advance);
+				writer.Write(data.Offset.x);
+				writer.Write(data.Offset.y);
+				writer.Write(data.Offset.width);
+				writer.Write(data.Offset.height);
+			}
+		}
+
+		writer.Write(RequiringGizmosTextureIDCount);
+		for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
+			writer.Write(RequiringGizmosTextureIDs[i]);
+		}
 
 	}
 

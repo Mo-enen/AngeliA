@@ -102,7 +102,6 @@ public partial class RayGame : Game {
 		Fonts = FontData.LoadFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
 		InitializeShader();
 		InitializeAudio();
-		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
 
 		// Init AngeliA
 		Initialize();
@@ -300,7 +299,6 @@ public partial class RayGame : Game {
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) Raylib.UnloadShader(ScreenEffectShaders[i]);
 
 		// Unload Texture
-		Raylib.UnloadTexture(EMPTY_TEXTURE);
 		Raylib.UnloadRenderTexture(RenderTexture);
 
 		// Quit Game

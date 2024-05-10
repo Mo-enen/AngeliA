@@ -5,6 +5,7 @@ using System.IO.Pipes;
 using System.Diagnostics;
 using AngeliA;
 using AngeliaRigged;
+using AngeliaRaylib;
 
 
 [assembly: DisablePause]
@@ -56,21 +57,30 @@ using var writer = new BinaryWriter(pipeClientOut);
 
 
 
-Util.TextToFile("\nClient Started\n\n", @"C:\Users\Mo_enen\Desktop\Log.txt", true);
+System.Console.WriteLine("\nClient Started\n\n", @"C:\Users\Mo_enen\Desktop\Log.txt", true);
 
+
+
+// Init Raylib
+RayUtil.InitWindowForRiggedGame();
+
+// Init AngeliA
 var riggedGame = new RiggedGame();
+riggedGame.Initialize();
+
 
 // Main Loop
+int test = 0;
 while (true) {
 	try {
 
 		if (hostProcess != null && hostProcess.HasExited) return 0;
+
 		riggedGame.UpdateWithPipe(reader, writer);
 
-		Util.TextToFile(riggedGame.CallingMessage.GlobalFrame + " ", @"C:\Users\Mo_enen\Desktop\Log.txt", true);
-
+		System.Console.WriteLine("updated: " + test++);
 
 	} catch (System.Exception ex) {
-		Util.TextToFile($"{ex.Message}\n{ex.Source}" + "\n", @"C:\Users\Mo_enen\Desktop\Client Error.txt", true);
+		System.Console.WriteLine($"{ex.Message}\n{ex.Source}" + "\n", @"C:\Users\Mo_enen\Desktop\Client Error.txt", true);
 	}
 }

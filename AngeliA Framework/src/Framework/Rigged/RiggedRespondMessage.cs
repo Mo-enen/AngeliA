@@ -7,8 +7,25 @@ namespace AngeliA;
 public class RiggedRespondMessage {
 
 
-	public int GlobalFrame;
-	public int PauselessFrame;
+	public struct GizmosRectData {
+		public IRect Rect;
+		public Color32 Color;
+	}
+
+	public struct GizmosTextureData {
+		public IRect Rect;
+		public FRect Uv;
+		public bool Inverse;
+		public uint TextureRigID;
+		public int PngDataLength;
+		public byte[] PngData;
+	}
+
+
+	public const int REQUIRE_CHAR_MAX_COUNT = 64;
+	public const int REQUIRE_GIZMOS_MAX_COUNT = 1024;
+
+	public readonly Dictionary<uint, object> GizmosTexturePool = new();
 	public int RequireSetCursorIndex;
 	public byte EffectEnable;
 	public byte HasEffectParams;
@@ -28,6 +45,13 @@ public class RiggedRespondMessage {
 	public int RequirePlaySoundID;
 	public float RequirePlaySoundVolume;
 	public int RequireSetSoundVolume;
+	public int CharRequiringCount;
+	public char[] RequireChars = new char[REQUIRE_CHAR_MAX_COUNT];
+	public int[] RequireCharsFontIndex = new int[REQUIRE_CHAR_MAX_COUNT];
+	public int RequireGizmosRectCount;
+	public GizmosRectData[] RequireGizmosRects = new GizmosRectData[REQUIRE_GIZMOS_MAX_COUNT];
+	public int RequireGizmosTextureCount;
+	public GizmosTextureData[] RequireGizmosTextures = new GizmosTextureData[REQUIRE_GIZMOS_MAX_COUNT];
 
 
 
@@ -41,16 +65,69 @@ public class RiggedRespondMessage {
 		RequirePlaySoundID = 0;
 		RequirePlaySoundVolume = -1f;
 		RequireSetSoundVolume = -1;
+		CharRequiringCount = 0;
+		RequireGizmosRectCount = 0;
+		RequireGizmosTextureCount = 0;
 	}
 
 
-	public void SetDataToFramework () {
+	public void SetDataToFramework (RiggedCallingMessage callingMessage) {
 
 		if (RequireSetCursorIndex != int.MinValue) {
 			if (RequireSetCursorIndex == -3) {
 				Game.SetCursorToNormal();
 			} else {
 				Game.SetCursor(RequireSetCursorIndex);
+			}
+		}
+
+		// Char Requirement
+		callingMessage.CharRequiredCount = CharRequiringCount;
+		for (int i = 0; i < CharRequiringCount; i++) {
+			char c = RequireChars[i];
+			int fontIndex = RequireCharsFontIndex[i];
+			if (Game.GetCharSprite(fontIndex, c, out var sprite)) {
+				callingMessage.RequiredChars[i] = new() {
+					Valid = true,
+					Char = c,
+					FontIndex = fontIndex,
+					Advance = sprite.Advance,
+					Offset = sprite.Offset,
+				};
+			} else {
+				callingMessage.RequiredChars[i] = new() {
+					Char = c,
+					FontIndex = fontIndex,
+					Valid = false,
+				};
+			}
+		}
+
+		// Gizmos
+		callingMessage.RequiringGizmosTextureIDCount = 0;
+		for (int i = 0; i < RequireGizmosRectCount; i++) {
+			var data = RequireGizmosRects[i];
+			Game.DrawGizmosRect(data.Rect, data.Color);
+		}
+		for (int i = 0; i < RequireGizmosTextureCount; i++) {
+			var data = RequireGizmosTextures[i];
+			if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) {
+				texture = null;
+				if (data.PngData != null) {
+					// Add Texture to Pool
+					texture = Game.PngBytesToTexture(data.PngData);
+					GizmosTexturePool.Add(data.TextureRigID, texture);
+				} else if (callingMessage.RequiringGizmosTextureIDCount < RiggedCallingMessage.REQUIRE_GIZMOS_TEXTURE_MAX_COUNT) {
+					// Require Back for the Texture
+					callingMessage.RequiringGizmosTextureIDs[callingMessage.RequiringGizmosTextureIDCount] = data.TextureRigID;
+					callingMessage.RequiringGizmosTextureIDCount++;
+				}
+			}
+			// Draw Texture
+			if (texture != null) {
+
+
+
 			}
 		}
 
@@ -72,8 +149,6 @@ public class RiggedRespondMessage {
 
 	public void ReadDataFromPipe (BinaryReader reader) {
 
-		GlobalFrame = reader.ReadInt32();
-		PauselessFrame = reader.ReadInt32();
 		RequireSetCursorIndex = reader.ReadInt32();
 		EffectEnable = reader.ReadByte();
 		HasEffectParams = reader.ReadByte();
@@ -107,16 +182,45 @@ public class RiggedRespondMessage {
 		RequirePlaySoundVolume = reader.ReadSingle();
 		RequireSetSoundVolume = reader.ReadInt32();
 
+		CharRequiringCount = reader.ReadInt32();
+		for (int i = 0; i < CharRequiringCount; i++) {
+			RequireCharsFontIndex[i] = reader.ReadInt32();
+			RequireChars[i] = reader.ReadChar();
+		}
 
+		RequireGizmosRectCount = reader.ReadInt32();
+		for (int i = 0; i < RequireGizmosRectCount; i++) {
+			var rect = new IRect(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+			var color = new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+			RequireGizmosRects[i] = new GizmosRectData() {
+				Rect = rect,
+				Color = color,
+			};
+		}
 
+		RequireGizmosTextureCount = reader.ReadInt32();
+		for (int i = 0; i < RequireGizmosTextureCount; i++) {
+			uint id = reader.ReadUInt32();
+			var rect = new IRect(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+			var uv = new FRect(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+			var inverse = reader.ReadBoolean();
+			int pngLength = reader.ReadInt32();
+			var png = pngLength > 0 ? reader.ReadBytes(pngLength) : null;
+			RequireGizmosTextures[i] = new GizmosTextureData() {
+				TextureRigID = id,
+				Rect = rect,
+				Uv = uv,
+				Inverse = inverse,
+				PngDataLength = pngLength,
+				PngData = png,
+			};
+		}
 
 	}
 
 
 	public void WriteDataToPipe (BinaryWriter writer) {
 
-		writer.Write(GlobalFrame);
-		writer.Write(PauselessFrame);
 		writer.Write(RequireSetCursorIndex);
 		writer.Write(EffectEnable);
 		writer.Write(HasEffectParams);
@@ -150,9 +254,43 @@ public class RiggedRespondMessage {
 		writer.Write(RequirePlaySoundVolume);
 		writer.Write(RequireSetSoundVolume);
 
+		writer.Write(CharRequiringCount);
+		for (int i = 0; i < CharRequiringCount; i++) {
+			writer.Write(RequireCharsFontIndex[i]);
+			writer.Write(RequireChars[i]);
+		}
 
+		writer.Write(RequireGizmosRectCount);
+		for (int i = 0; i < RequireGizmosRectCount; i++) {
+			var data = RequireGizmosRects[i];
+			writer.Write(data.Rect.x);
+			writer.Write(data.Rect.y);
+			writer.Write(data.Rect.width);
+			writer.Write(data.Rect.height);
+			writer.Write(data.Color.r);
+			writer.Write(data.Color.g);
+			writer.Write(data.Color.b);
+			writer.Write(data.Color.a);
+		}
 
-
+		writer.Write(RequireGizmosTextureCount);
+		for (int i = 0; i < RequireGizmosTextureCount; i++) {
+			var data = RequireGizmosTextures[i];
+			writer.Write(data.TextureRigID);
+			writer.Write(data.Rect.x);
+			writer.Write(data.Rect.y);
+			writer.Write(data.Rect.width);
+			writer.Write(data.Rect.height);
+			writer.Write(data.Uv.x);
+			writer.Write(data.Uv.y);
+			writer.Write(data.Uv.width);
+			writer.Write(data.Uv.height);
+			writer.Write(data.Inverse);
+			writer.Write(data.PngDataLength);
+			if (data.PngDataLength > 0) {
+				writer.Write(data.PngData);
+			}
+		}
 
 	}
 

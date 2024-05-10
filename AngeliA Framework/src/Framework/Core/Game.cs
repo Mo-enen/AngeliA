@@ -97,7 +97,7 @@ public abstract partial class Game {
 
 	public void Initialize () {
 		try {
-
+			
 			GlobalFrame = 0;
 #if DEBUG
 			_IsFullscreen.Value = false;

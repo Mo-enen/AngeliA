@@ -209,6 +209,9 @@ public abstract partial class Game {
 	public static void UnloadTexture (object texture) => Instance._UnloadTexture(texture);
 	protected abstract void _UnloadTexture (object texture);
 
+	public static uint? GetTextureID (object texture) => Instance._GetTextureID(texture);
+	protected abstract uint? _GetTextureID (object texture);
+
 
 	// GL Gizmos
 	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness, int gap = 0) => DrawGizmosFrame(rect, color, new Int4(thickness, thickness, thickness, thickness), new Int4(gap, gap, gap, gap));
