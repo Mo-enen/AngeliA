@@ -24,6 +24,7 @@ public class RiggedTransceiver {
 
 	// Api
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
+	public bool HasProcess => RigPipeClientProcess != null;
 
 	// Data
 	private readonly RiggedCallingMessage CallingMessage = new();
@@ -61,7 +62,7 @@ public class RiggedTransceiver {
 	#region --- API ---
 
 
-	public int Start (string gameLibFolder) {
+	public int Start (string gameBuildFolder, string gameLibFolder) {
 
 		// Discard Current
 		RigPipeServerIn = null;
@@ -71,9 +72,7 @@ public class RiggedTransceiver {
 		RespondMessage.GizmosTexturePool.Clear();
 
 		if (RigPipeClientProcess != null) {
-			if (!RigPipeClientProcess.HasExited) {
-				RigPipeClientProcess.Kill();
-			}
+			RigPipeClientProcess.Kill();
 			RigPipeClientProcess = null;
 		}
 
@@ -123,6 +122,7 @@ public class RiggedTransceiver {
 		process.StartInfo.CreateNoWindow = true;
 		process.StartInfo.Arguments =
 			$"{pipeNameIn} {pipeNameOut} {Util.GetArgumentForAssemblyPath(gameLibFolder)} -pID:{Process.GetCurrentProcess().Id}";
+		process.StartInfo.WorkingDirectory = gameBuildFolder;
 #if DEBUG
 		process.StartInfo.RedirectStandardOutput = true;
 		process.StartInfo.RedirectStandardError = true;
@@ -156,7 +156,7 @@ public class RiggedTransceiver {
 				try {
 					string line;
 					while ((line = RigPipeClientProcess.StandardOutput.ReadLine()) != null) {
-						Debug.Log(line);
+						Debug.Log("[rig]" + line);
 					}
 				} catch { }
 			});
@@ -164,7 +164,7 @@ public class RiggedTransceiver {
 				try {
 					string line;
 					while ((line = RigPipeClientProcess.StandardError.ReadLine()) != null) {
-						Debug.LogError(line);
+						Debug.LogError("[rig]" + line);
 					}
 				} catch { }
 			});

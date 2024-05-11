@@ -27,6 +27,36 @@ public partial class RiggedGame : Game {
 	#region --- MSG ---
 
 
+	public RiggedGame () {
+		Debug.OnLogException += LogException;
+		Debug.OnLogError += LogError;
+		Debug.OnLog += Log;
+		Debug.OnLogWarning += LogWarning;
+		static void Log (object msg) {
+			System.Console.ResetColor();
+			System.Console.WriteLine(msg);
+		}
+		static void LogWarning (object msg) {
+			System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+			System.Console.WriteLine(msg);
+			System.Console.ResetColor();
+		}
+		static void LogError (object msg) {
+			System.Console.ForegroundColor = System.ConsoleColor.Red;
+			System.Console.WriteLine(msg);
+			System.Console.ResetColor();
+		}
+		static void LogException (System.Exception ex) {
+			System.Console.ForegroundColor = System.ConsoleColor.Red;
+			System.Console.WriteLine(ex.Source);
+			System.Console.WriteLine(ex.GetType().Name);
+			System.Console.WriteLine(ex.Message);
+			System.Console.WriteLine();
+			System.Console.ResetColor();
+		}
+	}
+
+
 	public void UpdateWithPipe (BinaryReader reader, BinaryWriter writer) {
 
 		CallingMessage.ReadDataFromPipe(reader);
@@ -65,12 +95,15 @@ public partial class RiggedGame : Game {
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
 
 		// Update
-		Update();
+		//Update();
 
 		// Finish
 		RespondMessage.WriteDataToPipe(writer);
 
 	}
+	
+
+	public void OnQuitting () => InvokeGameQuitting();
 
 
 	#endregion

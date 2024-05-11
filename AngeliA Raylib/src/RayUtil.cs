@@ -26,6 +26,7 @@ public static unsafe class RayUtil {
 
 
 	public static void InitWindowForRiggedGame () {
+		Raylib.SetTraceLogLevel(TraceLogLevel.Error);
 		Raylib.SetWindowState(ConfigFlags.HiddenWindow);
 		Raylib.InitWindow(1, 1, "");
 	}

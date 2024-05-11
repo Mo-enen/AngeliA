@@ -945,7 +945,7 @@ internal static class Engine {
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
-			int code = RiggedGame.Start(CurrentProject.BuildLibraryPath);
+			int code = RiggedGame.Start(CurrentProject.BuildPath, CurrentProject.BuildLibraryPath);
 			if (code == 0) {
 				// Start
 				RigGameFailToStartCount = 0;
