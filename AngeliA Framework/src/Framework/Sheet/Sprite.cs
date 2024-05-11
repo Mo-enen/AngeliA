@@ -31,7 +31,7 @@ public class AngeSprite {
 
 	private bool PixelDirty = false;
 
-	public void LoadFromBinary_v0 (BinaryReader reader) {
+	public void LoadFromBinary_v0 (BinaryReader reader, bool ignorePixels) {
 		uint byteLen = reader.ReadUInt32();
 		long endPos = reader.BaseStream.Position + byteLen;
 		PixelDirty = false;
@@ -92,8 +92,13 @@ public class AngeSprite {
 			Group = null;
 
 			// Pixels
-			var bytes = reader.ReadBytes(PixelRect.width * PixelRect.height * 4);
-			Pixels = bytes.Bytes_to_Pixels(PixelRect.width, PixelRect.height);
+			if (ignorePixels) {
+				Pixels = new Color32[PixelRect.width * PixelRect.height];
+				reader.BaseStream.Seek(PixelRect.width * PixelRect.height * 4, SeekOrigin.Current);
+			} else {
+				var bytes = reader.ReadBytes(PixelRect.width * PixelRect.height * 4);
+				Pixels = bytes.Bytes_to_Pixels(PixelRect.width, PixelRect.height);
+			}
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 		reader.BaseStream.Position = endPos;

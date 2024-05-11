@@ -79,9 +79,9 @@ public static class Renderer {
 	public static int CurrentSheetIndex { get; set; } = -1;
 	public static int AltSheetCount => AltSheets.Count;
 	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? BuiltInSheet : AltSheets[CurrentSheetIndex];
-	public static readonly Sheet BuiltInSheet = new();
 
 	// Data
+	private static readonly Sheet BuiltInSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static Dictionary<int, CharSprite>[] CharSpritePool = { };
@@ -128,7 +128,7 @@ public static class Renderer {
 		CharSpritePool = new Dictionary<int, CharSprite>[Game.FontCount].FillWithNewValue();
 
 		// Load Sheet
-		LoadSheet(UniverseSystem.BuiltInUniverse);
+		LoadBuiltInSheet(UniverseSystem.BuiltInUniverse);
 
 	}
 
@@ -136,7 +136,7 @@ public static class Renderer {
 	[OnUniverseOpen]
 	internal static void OnUniverseOpen () {
 		if (Game.GlobalFrame == 0) return;
-		LoadSheet(UniverseSystem.CurrentUniverse);
+		LoadBuiltInSheet(UniverseSystem.CurrentUniverse);
 	}
 
 
@@ -264,7 +264,7 @@ public static class Renderer {
 	}
 
 
-	public static void LoadSheet (Universe project) {
+	public static void LoadBuiltInSheet (Universe project) {
 
 		// Artwork >> Sheet
 		SheetUtil.RecreateSheetIfArtworkModified(project.SheetPath, project.ArtworkRoot);

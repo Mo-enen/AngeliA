@@ -11,6 +11,8 @@ public partial class RiggedGame {
 	// VAR
 	private Dictionary<char, CharSprite>[] CharPool = null;
 	private readonly HashSet<uint> RequiredGizmosTextures = new();
+	private readonly int[] KeyboardHoldingFrames;
+	private readonly int[] GamepadHoldingFrames;
 
 
 	// System
@@ -235,18 +237,12 @@ public partial class RiggedGame {
 
 	// Keyboard
 	protected override bool _IsKeyboardAvailable () => CallingMessage.DeviceData.GetBit(5);
-	protected override bool _IsKeyboardKeyHolding (KeyboardKey key) {
-		int index = (int)key;
-		return CallingMessage.KeyboardHolding[index / 8].GetBit(index % 8);
-	}
+	protected override bool _IsKeyboardKeyHolding (KeyboardKey key) => KeyboardHoldingFrames[(int)key] == PauselessFrame;
 
 
 	// Gamepad
 	protected override bool _IsGamepadAvailable () => CallingMessage.DeviceData.GetBit(6);
-	protected override bool _IsGamepadKeyHolding (GamepadKey key) {
-		int index = (int)key;
-		return CallingMessage.GamepadHolding[index / 8].GetBit(index % 8);
-	}
+	protected override bool _IsGamepadKeyHolding (GamepadKey key) => GamepadHoldingFrames[(int)key] == PauselessFrame;
 	protected override bool _IsGamepadLeftStickHolding (Direction4 direction) => CallingMessage.GamepadStickHolding.GetBit(direction switch {
 		Direction4.Left => 0,
 		Direction4.Right => 1,

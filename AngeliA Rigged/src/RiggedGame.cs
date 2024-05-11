@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using AngeliA;
 using AngeliaRaylib;
 
@@ -18,6 +20,11 @@ public partial class RiggedGame : Game {
 	public readonly RiggedCallingMessage CallingMessage = new();
 	public readonly RiggedRespondMessage RespondMessage = new();
 
+	// Data
+	private readonly Process HostProcess;
+	private readonly BinaryReader Reader;
+	private readonly BinaryWriter Writer;
+
 
 	#endregion
 
@@ -27,7 +34,52 @@ public partial class RiggedGame : Game {
 	#region --- MSG ---
 
 
-	public RiggedGame () {
+	static RiggedGame () => Util.AddAssembly(typeof(RiggedGame).Assembly);
+
+
+	public RiggedGame (params string[] args) {
+
+		// Load Game Assemblies
+		Util.AddAssembliesFromArgs(args);
+
+		// Get Host pID
+		foreach (var arg in args) {
+			// Host Process
+			if (arg.StartsWith("-pID:")) {
+				if (int.TryParse(arg[5..], out int pID)) {
+					try {
+						HostProcess = Process.GetProcessById(pID);
+					} catch { }
+				}
+			}
+		}
+
+		// Start Pipe Stream
+		var pipeClientIn = new NamedPipeClientStream(
+			".",
+			args[1],
+			PipeDirection.In,
+			PipeOptions.Asynchronous
+		);
+		var pipeClientOut = new NamedPipeClientStream(
+			".",
+			args[0],
+			PipeDirection.Out,
+			PipeOptions.Asynchronous
+		);
+
+		pipeClientIn.Connect();
+		pipeClientOut.Connect();
+
+		Reader = new BinaryReader(pipeClientIn);
+		Writer = new BinaryWriter(pipeClientOut);
+
+		// Init Raylib
+		RayUtil.InitWindowForRiggedGame();
+
+		// Debug
+		KeyboardHoldingFrames = new int[typeof(KeyboardKey).EnumLength()].FillWithValue(-1);
+		GamepadHoldingFrames = new int[typeof(GamepadKey).EnumLength()].FillWithValue(-1);
 		Debug.OnLogException += LogException;
 		Debug.OnLogError += LogError;
 		Debug.OnLog += Log;
@@ -51,15 +103,18 @@ public partial class RiggedGame : Game {
 			System.Console.WriteLine(ex.Source);
 			System.Console.WriteLine(ex.GetType().Name);
 			System.Console.WriteLine(ex.Message);
+			System.Console.WriteLine(ex.StackTrace);
 			System.Console.WriteLine();
 			System.Console.ResetColor();
 		}
 	}
 
 
-	public void UpdateWithPipe (BinaryReader reader, BinaryWriter writer) {
+	public bool UpdateWithPipe () {
 
-		CallingMessage.ReadDataFromPipe(reader);
+		if (HostProcess != null && HostProcess.HasExited) return false;
+
+		CallingMessage.ReadDataFromPipe(Reader);
 
 		// Char Pool
 		int fontCount = CallingMessage.FontCount;
@@ -85,6 +140,16 @@ public partial class RiggedGame : Game {
 			} : null);
 		}
 
+		// Input
+		for (int i = 0; i < CallingMessage.HoldingKeyboardKeyCount; i++) {
+			int keyIndex = CallingMessage.HoldingKeyboardKeys[i];
+			KeyboardHoldingFrames[keyIndex] = PauselessFrame;
+		}
+		for (int i = 0; i < CallingMessage.HoldingGamepadKeyCount; i++) {
+			int keyIndex = CallingMessage.HoldingGamepadKeys[i];
+			GamepadHoldingFrames[keyIndex] = PauselessFrame;
+		}
+
 		// Gizmos Texture Requirement
 		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);
@@ -95,24 +160,15 @@ public partial class RiggedGame : Game {
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
 
 		// Update
-		//Update();
+		Update();
 
 		// Finish
-		RespondMessage.WriteDataToPipe(writer);
-
+		RespondMessage.WriteDataToPipe(Writer);
+		return true;
 	}
-	
+
 
 	public void OnQuitting () => InvokeGameQuitting();
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion

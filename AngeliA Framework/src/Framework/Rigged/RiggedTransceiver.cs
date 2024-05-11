@@ -198,18 +198,16 @@ public class RiggedTransceiver {
 	}
 
 
-	public void Respond (bool wait = true) {
+	public void Respond () {
 		// Rig >> Engine
 		if (RespondHandled) {
-			if (wait) {
-				for (int safe = 0; safe < 8; safe++) {
-					Thread.Sleep(2);
-					if (!RespondHandled) break;
-				}
-				if (RespondHandled) return;
+			for (int safe = 0; safe < 8; safe++) {
+				Thread.Sleep(2);
+				if (!RespondHandled) goto _HANDLE_;
 			}
 			return;
 		}
+		_HANDLE_:;
 		RespondMessage.SetDataToFramework(CallingMessage);
 		// Finish
 		RespondHandled = true;

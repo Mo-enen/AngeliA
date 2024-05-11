@@ -27,6 +27,10 @@ public class ToolApplicationAttribute : System.Attribute { }
 public class DisablePauseAttribute : System.Attribute { }
 
 
+[System.AttributeUsage(System.AttributeTargets.Assembly)]
+public class IgnoreArtworkPixelsAttribute : System.Attribute { }
+
+
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
 public class EntityLayerCapacityAttribute : System.Attribute {
 	public int Layer;

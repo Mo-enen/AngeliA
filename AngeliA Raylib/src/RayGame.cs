@@ -73,6 +73,7 @@ public partial class RayGame : Game {
 			Console.WriteLine(ex.Source);
 			Console.WriteLine(ex.GetType().Name);
 			Console.WriteLine(ex.Message);
+			Console.WriteLine(ex.StackTrace);
 			Console.WriteLine();
 			Console.ResetColor();
 		}

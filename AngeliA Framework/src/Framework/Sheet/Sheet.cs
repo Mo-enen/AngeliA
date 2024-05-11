@@ -13,15 +13,18 @@ public class Sheet {
 	#region --- VAR ---
 
 
-	public bool NotEmpty => Sprites.Count > 0;
+	// Api
 	public readonly List<AngeSprite> Sprites = new();
 	public readonly List<SpriteGroup> Groups = new();
 	public readonly List<Atlas> Atlas = new();
 	public readonly Dictionary<int, AngeSprite> SpritePool = new();
 	public readonly Dictionary<int, SpriteGroup> GroupPool = new();
 	public readonly Dictionary<int, object> TexturePool = new();
-	private bool IgnoreGroups { get; init; } = false;
-	private bool IgnoreSpriteWithIgnoreTag { get; init; } = true;
+
+	// Data
+	private readonly bool IgnoreGroups = false;
+	private readonly bool IgnoreSpriteWithIgnoreTag = true;
+	private readonly bool IgnoreTextureAndPixels = false;
 
 
 	#endregion
@@ -32,13 +35,22 @@ public class Sheet {
 	#region --- MSG ---
 
 
-	public Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = true) {
+	public Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = true, bool ignoreTextureAndPixels = false) {
 		IgnoreGroups = ignoreGroups;
 		IgnoreSpriteWithIgnoreTag = ignoreSpriteWithIgnoreTag;
+		IgnoreTextureAndPixels = ignoreTextureAndPixels;
 	}
 
 
-	public Sheet (List<AngeSprite> sprites, List<Atlas> atlasInfo, bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = true) : this(ignoreGroups, ignoreSpriteWithIgnoreTag) => SetData(sprites, atlasInfo);
+	public Sheet (
+		List<AngeSprite> sprites,
+		List<Atlas> atlasInfo,
+		bool ignoreGroups = false,
+		bool ignoreSpriteWithIgnoreTag = true,
+		bool ignoreTextureAndPixels = false
+	) : this(ignoreGroups, ignoreSpriteWithIgnoreTag, ignoreTextureAndPixels) {
+		SetData(sprites, atlasInfo);
+	}
 
 
 	#endregion
@@ -142,7 +154,7 @@ public class Sheet {
 
 	public bool TryGetTextureFromPool (int spriteID, out object texture) {
 		texture = null;
-		if (!SpritePool.TryGetValue(spriteID, out var sprite)) return false;
+		if (IgnoreTextureAndPixels || !SpritePool.TryGetValue(spriteID, out var sprite)) return false;
 		if (TexturePool.TryGetValue(spriteID, out texture)) {
 			return texture != null;
 		} else {
@@ -156,6 +168,7 @@ public class Sheet {
 	}
 
 	public void SyncSpritePixelsIntoTexturePool (AngeSprite sprite) {
+		if (IgnoreTextureAndPixels) return;
 		if (TexturePool.TryGetValue(sprite.ID, out var texture)) {
 			var size = Game.GetTextureSize(texture);
 			if (size.x != sprite.PixelRect.width || size.y != sprite.PixelRect.height) {
@@ -359,7 +372,7 @@ public class Sheet {
 		try {
 			for (int i = 0; i < spriteCount; i++) {
 				var sprite = new AngeSprite();
-				sprite.LoadFromBinary_v0(reader);
+				sprite.LoadFromBinary_v0(reader, IgnoreTextureAndPixels);
 				if (!IgnoreSpriteWithIgnoreTag || sprite.Tag != SpriteTag.PALETTE_TAG) {
 					Sprites.Add(sprite);
 				}
@@ -493,7 +506,9 @@ public class Sheet {
 		// Texture Pool
 		foreach (var texture in TexturePool) Game.UnloadTexture(texture);
 		TexturePool.Clear();
-		foreach (var sprite in Sprites) SyncSpritePixelsIntoTexturePool(sprite);
+		if (!IgnoreTextureAndPixels) {
+			foreach (var sprite in Sprites) SyncSpritePixelsIntoTexturePool(sprite);
+		}
 	}
 
 	private void RemoveSpriteFromGroup (int spriteIndex) {

@@ -96,7 +96,7 @@ internal static class Engine {
 	private static readonly List<ProjectData> Projects = new();
 	private static readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private static readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
-	private static readonly RiggedTransceiver RiggedGame = new(EngineUtil.RiggedExePath);
+	private static readonly RiggedTransceiver Transceiver = new(EngineUtil.RiggedExePath);
 	private static IRect ToolLabelRect;
 	private static IRect LastHoveringToolLabelRect;
 	private static int HoveringTooltipDuration = 0;
@@ -186,8 +186,8 @@ internal static class Engine {
 			PixelEditor.BackgroundColor.Value.ToColorF(),
 			PixelEditor.BackgroundColor.DefaultValue
 		);
-		RiggedMapEditor.Initialize(RiggedGame);
-		ProjectEditor.Initialize(RiggedGame);
+		RiggedMapEditor.Initialize(Transceiver);
+		ProjectEditor.Initialize(Transceiver);
 
 		// Theme
 		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
@@ -334,10 +334,10 @@ internal static class Engine {
 		if (
 			CurrentProject != null &&
 			!EngineUtil.BuildingProjectInBackground &&
-			RiggedGame.RigProcessRunning &&
+			Transceiver.RigProcessRunning &&
 			CurrentWindowIndex == RigMapEditorWindowIndex
 		) {
-			RiggedGame.Call();
+			Transceiver.Call();
 			RigLastCalledFrame = Game.GlobalFrame;
 		}
 
@@ -351,7 +351,7 @@ internal static class Engine {
 		GUI.UnifyBasedOnMonitor = true;
 		Sky.ForceSkyboxTint(GUI.Skin.Background);
 
-		using var _ = Scope.Sheet(ThemeSheet.NotEmpty ? ThemeSheetIndex : -1);
+		using var _ = Scope.Sheet(ThemeSheet.Sprites.Count > 0 ? ThemeSheetIndex : -1);
 		using var __ = Scope.GuiSkin(ThemeSkin);
 
 		using (Scope.RendererLayerUI()) {
@@ -911,8 +911,8 @@ internal static class Engine {
 	private static void OnGUI_BackgroundBuild () {
 
 		if (CurrentProject == null) {
-			if (RiggedGame.RigProcessRunning) {
-				RiggedGame.Abort();
+			if (Transceiver.RigProcessRunning) {
+				Transceiver.Abort();
 			}
 			return;
 		}
@@ -921,31 +921,31 @@ internal static class Engine {
 
 		// Rebuild Check
 		if (!buildingProjectInBackground && RequireBackgroundBuildDate > 0) {
-			RiggedGame.Abort();
+			Transceiver.Abort();
 			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 			buildingProjectInBackground = true;
 			RequireBackgroundBuildDate = 0;
 		}
 
 		// Abort when Building
-		if (RiggedGame.RigProcessRunning && buildingProjectInBackground) {
-			RiggedGame.Abort();
+		if (Transceiver.RigProcessRunning && buildingProjectInBackground) {
+			Transceiver.Abort();
 		}
 
 		if (buildingProjectInBackground) return;
 
 		// Update Rig
-		if (RiggedGame.RigProcessRunning) {
+		if (Transceiver.RigProcessRunning) {
 			// Rig Running
 			if (RigLastCalledFrame == Game.GlobalFrame) {
-				RiggedGame.Respond();
+				Transceiver.Respond();
 			}
 		} else if (
 			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
-			int code = RiggedGame.Start(CurrentProject.BuildPath, CurrentProject.BuildLibraryPath);
+			int code = Transceiver.Start(CurrentProject.BuildPath, CurrentProject.BuildLibraryPath);
 			if (code == 0) {
 				// Start
 				RigGameFailToStartCount = 0;

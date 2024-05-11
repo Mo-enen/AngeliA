@@ -54,7 +54,6 @@ public class RiggedRespondMessage {
 	public GizmosTextureData[] RequireGizmosTextures = new GizmosTextureData[REQUIRE_GIZMOS_MAX_COUNT];
 
 
-
 	// API
 	public void Reset () {
 		RequireSetCursorIndex = int.MinValue;
@@ -125,13 +124,9 @@ public class RiggedRespondMessage {
 			}
 			// Draw Texture
 			if (texture != null) {
-
-
-
+				Game.DrawGizmosTexture(data.Rect, texture, data.Inverse);
 			}
 		}
-
-
 
 		// Rendering
 
@@ -139,9 +134,50 @@ public class RiggedRespondMessage {
 
 
 
+
+
 		// Audio
+		if (RequirePlayMusicID != 0) {
+			Game.PlayMusic(RequirePlayMusicID);
+		}
+		if (RequirePlaySoundID != 0) {
+			Game.PlaySound(RequirePlaySoundID, RequirePlaySoundVolume);
+		}
+		if (AudioActionRequirement.GetBit(0)) {
+			Game.StopMusic();
+		}
+		if (AudioActionRequirement.GetBit(1)) {
+			Game.PauseMusic();
+		}
+		if (AudioActionRequirement.GetBit(2)) {
+			Game.UnpauseMusic();
+		}
+		if (AudioActionRequirement.GetBit(3)) {
+			Game.StopAllSounds();
+		}
+		if (RequireSetMusicVolume >= 0) {
+			Game.SetMusicVolume(RequireSetMusicVolume);
+		}
+		if (RequireSetSoundVolume >= 0) {
+			Game.SetSoundVolume(RequireSetSoundVolume);
+		}
 
-
+		// Effect
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			Game.SetEffectEnable(i, EffectEnable.GetBit(i));
+		}
+		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_RETRO_DARKEN) && HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
+			Game.PassEffect_RetroDarken(e_DarkenAmount, e_DarkenStep, 1);
+		}
+		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_RETRO_LIGHTEN) && HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
+			Game.PassEffect_RetroLighten(e_LightenAmount, e_LightenStep, 1);
+		}
+		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_TINT) && HasEffectParams.GetBit(Const.SCREEN_EFFECT_TINT)) {
+			Game.PassEffect_Tint(e_TintColor, 1);
+		}
+		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_VIGNETTE) && HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
+			Game.PassEffect_Vignette(e_VigRadius, e_VigFeather, e_VigOffsetX, e_VigOffsetY, e_VigRound, 1);
+		}
 
 
 	}

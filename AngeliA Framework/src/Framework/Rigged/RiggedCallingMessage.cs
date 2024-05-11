@@ -23,11 +23,11 @@ public class RiggedCallingMessage {
 	// Const
 	public const int REQUIRE_CHAR_MAX_COUNT = 128;
 	public const int REQUIRE_GIZMOS_TEXTURE_MAX_COUNT = 128;
+	private static readonly int KeyboardKeyCount = typeof(KeyboardKey).EnumLength();
+	private static readonly int GamepadKeyCount = typeof(GamepadKey).EnumLength();
 
 	// Init
 	public int FontCount;
-	private readonly int KeyboardKeyCount;
-	private readonly int GamepadKeyCount;
 
 	// Data
 	public bool CursorInScreen;
@@ -41,8 +41,10 @@ public class RiggedCallingMessage {
 	public int MouseScrollDelta;
 	public int MousePosX;
 	public int MousePosY;
-	public readonly byte[] KeyboardHolding;
-	public readonly byte[] GamepadHolding;
+	public byte HoldingKeyboardKeyCount;
+	public byte HoldingGamepadKeyCount;
+	public readonly int[] HoldingKeyboardKeys = new int[16];
+	public readonly int[] HoldingGamepadKeys = new int[16];
 	public byte GamepadStickHolding;
 	public float GamepadLeftStickDirectionX;
 	public float GamepadLeftStickDirectionY;
@@ -55,14 +57,6 @@ public class RiggedCallingMessage {
 
 
 	// API
-	public RiggedCallingMessage () {
-		KeyboardKeyCount = typeof(KeyboardKey).EnumLength();
-		KeyboardHolding = new byte[KeyboardKeyCount / 8 + 1];
-		GamepadKeyCount = typeof(GamepadKey).EnumLength();
-		GamepadHolding = new byte[GamepadKeyCount / 8 + 1];
-	}
-
-
 	public void LoadDataFromFramework () {
 
 		int mouseScroll = Game.MouseScrollDelta;
@@ -90,11 +84,21 @@ public class RiggedCallingMessage {
 		MouseScrollDelta = mouseScroll;
 		MousePosX = mousePos.x;
 		MousePosY = mousePos.y;
+		HoldingKeyboardKeyCount = 0;
 		for (int i = 0; i < KeyboardKeyCount; i++) {
-			KeyboardHolding[i / 8].SetBit(i % 8, Game.IsKeyboardKeyHolding((KeyboardKey)i));
+			if (Game.IsKeyboardKeyHolding((KeyboardKey)i)) {
+				HoldingKeyboardKeys[HoldingKeyboardKeyCount] = i;
+				HoldingKeyboardKeyCount++;
+				if (HoldingKeyboardKeyCount >= HoldingKeyboardKeys.Length) break;
+			}
 		}
+		HoldingGamepadKeyCount = 0;
 		for (int i = 0; i < GamepadKeyCount; i++) {
-			GamepadHolding[i / 8].SetBit(i % 8, Game.IsGamepadKeyHolding((GamepadKey)i));
+			if (Game.IsGamepadKeyHolding((GamepadKey)i)) {
+				HoldingGamepadKeys[HoldingGamepadKeyCount] = i;
+				HoldingGamepadKeyCount++;
+				if (HoldingGamepadKeyCount >= HoldingGamepadKeys.Length) break;
+			}
 		}
 		GamepadStickHolding.SetBit(0, Game.IsGamepadLeftStickHolding(Direction4.Left));
 		GamepadStickHolding.SetBit(1, Game.IsGamepadLeftStickHolding(Direction4.Right));
@@ -127,11 +131,13 @@ public class RiggedCallingMessage {
 		MouseScrollDelta = DeviceData.GetBit(4) ? reader.ReadInt32() : 0;
 		MousePosX = reader.ReadInt32();
 		MousePosY = reader.ReadInt32();
-		for (int i = 0; i < KeyboardHolding.Length; i++) {
-			KeyboardHolding[i] = reader.ReadByte();
+		HoldingKeyboardKeyCount = reader.ReadByte();
+		for (int i = 0; i < HoldingKeyboardKeyCount; i++) {
+			HoldingKeyboardKeys[i] = reader.ReadInt32();
 		}
-		for (int i = 0; i < GamepadHolding.Length; i++) {
-			GamepadHolding[i] = reader.ReadByte();
+		HoldingGamepadKeyCount = reader.ReadByte();
+		for (int i = 0; i < HoldingGamepadKeyCount; i++) {
+			HoldingGamepadKeys[i] = reader.ReadInt32();
 		}
 		GamepadStickHolding = reader.ReadByte();
 		GamepadLeftStickDirectionX = reader.ReadSingle();
@@ -170,7 +176,6 @@ public class RiggedCallingMessage {
 			RequiringGizmosTextureIDs[i] = reader.ReadUInt32();
 		}
 
-
 	}
 
 
@@ -188,11 +193,13 @@ public class RiggedCallingMessage {
 		if (DeviceData.GetBit(4)) writer.Write(MouseScrollDelta);
 		writer.Write(MousePosX);
 		writer.Write(MousePosY);
-		for (int i = 0; i < KeyboardHolding.Length; i++) {
-			writer.Write(KeyboardHolding[i]);
+		writer.Write(HoldingKeyboardKeyCount);
+		for (int i = 0; i < HoldingKeyboardKeyCount; i++) {
+			writer.Write(HoldingKeyboardKeys[i]);
 		}
-		for (int i = 0; i < GamepadHolding.Length; i++) {
-			writer.Write(GamepadHolding[i]);
+		writer.Write(HoldingGamepadKeyCount);
+		for (int i = 0; i < HoldingGamepadKeyCount; i++) {
+			writer.Write(HoldingGamepadKeys[i]);
 		}
 		writer.Write(GamepadStickHolding);
 		writer.Write(GamepadLeftStickDirectionX);

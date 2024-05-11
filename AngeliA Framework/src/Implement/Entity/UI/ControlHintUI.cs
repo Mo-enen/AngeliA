@@ -51,7 +51,12 @@ public class ControlHintUI : EntityUI {
 		("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 	};
 	private static int CurrentHintOffsetY = 0;
-	private readonly GUIStyle HintKeyLabelStyle = new(GUI.Skin.LargeLabel) { CharSize = 18, ContentColor = Color32.GREY_20, };
+	private readonly GUIStyle HintKeyLabelStyle = new(GUI.Skin.Label) {
+		CharSize = 18,
+		ContentColor = Color32.GREY_20,
+		Clip = false,
+		Wrap = WrapMode.NoWrap,
+	};
 	private Int4 ButtonBorder = default;
 	private int ForceHintFrame = int.MinValue;
 	private int ForceHideGamepadFrame = int.MinValue;
@@ -306,7 +311,7 @@ public class ControlHintUI : EntityUI {
 		using (Scope.RendererLayerUI()) {
 			rect.width = widthA;
 			if (background) {
-				bgCell = Renderer.DrawPixel(rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), 0);
+				bgCell = Renderer.DrawPixel(rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), z: 0);
 			}
 
 			// Button A
@@ -316,9 +321,11 @@ public class ControlHintUI : EntityUI {
 				);
 				Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
-				GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
-				int targetWidth = keyBounds.width + border.horizontal;
-				if (rect.width < targetWidth) rect.width = targetWidth;
+				using (Scope.RendererLayerUI()) {
+					GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
+					int targetWidth = keyBounds.width + border.horizontal;
+					if (rect.width < targetWidth) rect.width = targetWidth;
+				}
 				Renderer.Draw_9Slice(
 					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 				);
@@ -335,9 +342,11 @@ public class ControlHintUI : EntityUI {
 					);
 					Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 				} else {
-					GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
-					int targetWidth = keyBounds.width + border.horizontal;
-					if (rect.width < targetWidth) rect.width = targetWidth;
+					using (Scope.RendererLayerUI()) {
+						GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
+						int targetWidth = keyBounds.width + border.horizontal;
+						if (rect.width < targetWidth) rect.width = targetWidth;
+					}
 					Renderer.Draw_9Slice(
 						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 					);
@@ -347,11 +356,13 @@ public class ControlHintUI : EntityUI {
 
 			// Label
 			rect.width = 1;
-			GUI.Label(rect, label, out var bounds);
-			if (bgCell != null) {
-				bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
-				bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
-				bgCell.Height = Util.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
+			using (Scope.RendererLayerUI()) {
+				GUI.Label(rect, label, out var bounds);
+				if (bgCell != null) {
+					bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
+					bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
+					bgCell.Height = Util.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
+				}
 			}
 		}
 	}

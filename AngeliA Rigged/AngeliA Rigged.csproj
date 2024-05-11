@@ -57,11 +57,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\AngeliA Raylib\AngeliA Raylib.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Reference Include="raylib-cs">
-	    <HintPath>..\AngeliA Raylib\lib\raylib-cs.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
 
 	<!--Remove-->
 	<ItemGroup>
