@@ -35,7 +35,6 @@ public partial class RayGame : Game {
 				UpdateWindow();
 				if (!Raylib.IsWindowMinimized()) {
 					UpdateGame();
-					UpdateRendering();
 				}
 			} catch (Exception ex) {
 				Debug.LogException(ex);
@@ -160,49 +159,8 @@ public partial class RayGame : Game {
 
 	private void UpdateGame () {
 
-		// Text Input
-		int current;
-		for (int safe = 0; (current = Raylib.GetCharPressed()) > 0 && safe < 1024; safe++) {
-			GUI.OnTextInput((char)current);
-		}
-		for (int safe = 0; (current = Raylib.GetKeyPressed()) > 0 && safe < 1024; safe++) {
-			switch ((KeyboardKey)current) {
-				case KeyboardKey.Enter:
-					GUI.OnTextInput(Const.RETURN_SIGN);
-					break;
-				case KeyboardKey.C:
-					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
-						GUI.OnTextInput(Const.CONTROL_COPY);
-					}
-					break;
-				case KeyboardKey.X:
-					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
-						GUI.OnTextInput(Const.CONTROL_CUT);
-					}
-					break;
-				case KeyboardKey.V:
-					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
-						GUI.OnTextInput(Const.CONTROL_PASTE);
-					}
-					break;
-				case KeyboardKey.A:
-					if (Raylib.IsKeyDown(KeyboardKey.LeftControl)) {
-						GUI.OnTextInput(Const.CONTROL_SELECT_ALL);
-					}
-					break;
-				case KeyboardKey.Backspace:
-					GUI.OnTextInput(Const.BACKSPACE_SIGN);
-					break;
-			}
-		}
-
 		// Music
 		Raylib.UpdateMusicStream(CurrentBGM);
-
-	}
-
-
-	private void UpdateRendering () {
 
 		// Begin Draw
 		bool hasScreenEffectEnabled = false;

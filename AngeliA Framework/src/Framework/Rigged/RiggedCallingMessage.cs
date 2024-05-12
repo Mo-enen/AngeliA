@@ -53,6 +53,10 @@ public class RiggedCallingMessage {
 	public int RequiringGizmosTextureIDCount = 0;
 	public uint[] RequiringGizmosTextureIDs = new uint[REQUIRE_GIZMOS_TEXTURE_MAX_COUNT];
 	public byte RequireGameMessageInvoke;
+	public byte PressedCharCount;
+	public char[] PressedChars;
+	public byte PressedKeyCount;
+	public int[] PressedGuiKeys;
 
 
 	// API
@@ -111,6 +115,7 @@ public class RiggedCallingMessage {
 		GamepadLeftStickDirectionY = stickL.y;
 		GamepadRightStickDirectionX = stickR.x;
 		GamepadRightStickDirectionY = stickR.y;
+
 
 	}
 
@@ -177,6 +182,16 @@ public class RiggedCallingMessage {
 
 		RequireGameMessageInvoke = reader.ReadByte();
 
+		PressedCharCount = reader.ReadByte();
+		for (int i = 0; i < PressedCharCount; i++) {
+			PressedChars[i] = reader.ReadChar();
+		}
+
+		PressedKeyCount = reader.ReadByte();
+		for (int i = 0; i < PressedKeyCount; i++) {
+			PressedGuiKeys[i] = reader.ReadInt32();
+		}
+
 	}
 
 
@@ -230,6 +245,16 @@ public class RiggedCallingMessage {
 
 		writer.Write(RequireGameMessageInvoke);
 		RequireGameMessageInvoke = 0;
+
+		writer.Write(PressedCharCount);
+		for (int i = 0; i < PressedCharCount; i++) {
+			writer.Write(PressedChars[i]);
+		}
+
+		writer.Write(PressedKeyCount);
+		for (int i = 0; i < PressedKeyCount; i++) {
+			writer.Write(PressedGuiKeys[i]);
+		}
 
 	}
 

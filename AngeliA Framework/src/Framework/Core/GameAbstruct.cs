@@ -6,7 +6,13 @@ namespace AngeliA;
 public abstract partial class Game {
 
 
-	// VAR
+	// Api
+	public readonly char[] PressingCharsForCurrentFrame = new char[256];
+	public readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
+	public int PressingCharCount { get; private set; } = 0;
+	public int PressingKeyCount { get; private set; } = 0;
+
+	// Data
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
 	private int ForceMinViewHeightValue;
 	private int ForceMinViewHeightFrame = -1;
@@ -369,6 +375,20 @@ public abstract partial class Game {
 
 	public static bool IsKeyboardKeyHolding (KeyboardKey key) => Instance._IsKeyboardKeyHolding(key);
 	protected abstract bool _IsKeyboardKeyHolding (KeyboardKey key);
+
+	public static IEnumerable<char> ForAllPressingCharsThisFrame () {
+		for (int i = 0; i < Instance.PressingCharCount; i++) {
+			yield return Instance.PressingCharsForCurrentFrame[i];
+		}
+	}
+	protected abstract char GetCharPressed ();
+
+	public static IEnumerable<KeyboardKey> ForAllPressingKeysThisFrame () {
+		for (int i = 0; i < Instance.PressingKeyCount; i++) {
+			yield return Instance.PressingKeysForCurrentFrame[i];
+		}
+	}
+	protected abstract KeyboardKey? GetKeyPressed ();
 
 
 	// Gamepad

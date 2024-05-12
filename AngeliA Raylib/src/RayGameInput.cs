@@ -62,6 +62,14 @@ public partial class RayGame {
 
 	protected override bool _IsKeyboardKeyHolding (AngeliA.KeyboardKey key) => Raylib.IsKeyDown(key.ToRaylib());
 
+	protected override char GetCharPressed () => (char)Raylib.GetCharPressed();
+
+	protected override AngeliA.KeyboardKey? GetKeyPressed () {
+		int index = Raylib.GetKeyPressed();
+		if (index == 0) return null;
+		return ((Raylib_cs.KeyboardKey)index).ToAngeliA();
+	}
+
 
 	// Gamepad
 	protected override bool _IsGamepadAvailable () => Raylib.IsGamepadAvailable(0);

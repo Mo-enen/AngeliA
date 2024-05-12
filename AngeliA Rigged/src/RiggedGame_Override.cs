@@ -13,6 +13,8 @@ public partial class RiggedGame {
 	private readonly HashSet<uint> RequiredGizmosTextures = new();
 	private readonly int[] KeyboardHoldingFrames;
 	private readonly int[] GamepadHoldingFrames;
+	private int CurrentPressedCharIndex;
+	private int CurrentPressedKeyIndex;
 
 
 	// System
@@ -238,6 +240,22 @@ public partial class RiggedGame {
 	// Keyboard
 	protected override bool _IsKeyboardAvailable () => CallingMessage.DeviceData.GetBit(5);
 	protected override bool _IsKeyboardKeyHolding (KeyboardKey key) => KeyboardHoldingFrames[(int)key] == PauselessFrame;
+	protected override char GetCharPressed () {
+		if (CurrentPressedCharIndex < CallingMessage.PressedCharCount) {
+			char result = CallingMessage.PressedChars[CurrentPressedCharIndex];
+			CurrentPressedCharIndex++;
+			return result;
+		}
+		return '\0';
+	}
+	protected override KeyboardKey? GetKeyPressed () {
+		if (CurrentPressedKeyIndex < CallingMessage.PressedKeyCount) {
+			var result = CallingMessage.PressedGuiKeys[CurrentPressedKeyIndex];
+			CurrentPressedKeyIndex++;
+			return (KeyboardKey)result;
+		}
+		return null;
+	}
 
 
 	// Gamepad

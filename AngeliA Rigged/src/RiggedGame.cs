@@ -115,6 +115,8 @@ public partial class RiggedGame : Game {
 		if (HostProcess != null && HostProcess.HasExited) return false;
 
 		CallingMessage.ReadDataFromPipe(Reader);
+		CurrentPressedCharIndex = 0;
+		CurrentPressedKeyIndex = 0;
 
 		// Char Pool
 		int fontCount = CallingMessage.FontCount;

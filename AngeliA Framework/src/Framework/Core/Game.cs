@@ -107,6 +107,8 @@ public abstract partial class Game {
 		try {
 
 			GlobalFrame = 0;
+			ScreenSizeCache();
+
 #if DEBUG
 			_IsFullscreen.Value = false;
 #endif
@@ -153,10 +155,13 @@ public abstract partial class Game {
 		try {
 
 			// Update Callbacks
+			UpdateGuiInput();
 			if (IsPlaying) {
+				ScreenSizeCache();
 				OnGameUpdate?.Invoke();
 				OnGameUpdateLater?.Invoke();
 			}
+			LoadOrStopMusic();
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
@@ -176,8 +181,61 @@ public abstract partial class Game {
 	}
 
 
-	[OnGameUpdatePauseless(int.MinValue)]
-	internal static void LoadOrStopMusic () {
+	private void UpdateGuiInput () {
+		try {
+			// Update Pressing Chars
+			char c;
+			PressingCharCount = 0;
+			for (int safe = 0; (c = GetCharPressed()) > 0 && safe < 256; safe++) {
+				// GUI
+				GUI.OnTextInput(c);
+				// List
+				PressingCharsForCurrentFrame[PressingCharCount] = c;
+				PressingCharCount++;
+			}
+			// Update Pressing Keys
+			KeyboardKey? key;
+			PressingKeyCount = 0;
+			bool ctrl = IsKeyboardKeyHolding(KeyboardKey.LeftCtrl);
+			for (int safe = 0; (key = GetKeyPressed()).HasValue && safe < 256; safe++) {
+				// GUI
+				switch (key) {
+					case KeyboardKey.Enter:
+						GUI.OnTextInput(Const.RETURN_SIGN);
+						break;
+					case KeyboardKey.C:
+						if (ctrl) {
+							GUI.OnTextInput(Const.CONTROL_COPY);
+						}
+						break;
+					case KeyboardKey.X:
+						if (ctrl) {
+							GUI.OnTextInput(Const.CONTROL_CUT);
+						}
+						break;
+					case KeyboardKey.V:
+						if (ctrl) {
+							GUI.OnTextInput(Const.CONTROL_PASTE);
+						}
+						break;
+					case KeyboardKey.A:
+						if (ctrl) {
+							GUI.OnTextInput(Const.CONTROL_SELECT_ALL);
+						}
+						break;
+					case KeyboardKey.Backspace:
+						GUI.OnTextInput(Const.BACKSPACE_SIGN);
+						break;
+				}
+				// List
+				PressingKeysForCurrentFrame[PressingKeyCount] = key.Value;
+				PressingKeyCount++;
+			}
+		} catch (System.Exception ex) { Debug.LogException(ex); }
+	}
+
+
+	private void LoadOrStopMusic () {
 		bool requireMusic = IsPlaying && ScaledMusicVolume > 0 && !MapEditor.IsEditing;
 		if (requireMusic != IsMusicPlaying) {
 			if (requireMusic) {
@@ -189,9 +247,7 @@ public abstract partial class Game {
 	}
 
 
-	[OnGameInitialize(int.MinValue)]
-	[OnGameUpdate(int.MinValue)]
-	internal static void ScreenSizeCache () {
+	private void ScreenSizeCache () {
 		int monitor = Instance._GetCurrentMonitor();
 		ScreenWidth = Instance._GetScreenWidth();
 		ScreenHeight = Instance._GetScreenHeight();
