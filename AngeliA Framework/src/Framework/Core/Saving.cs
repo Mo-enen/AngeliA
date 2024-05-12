@@ -15,53 +15,11 @@ public static class SavingSystem {
 	public static int PoolVersion { get; private set; } = 0;
 
 	// Data
-	public static readonly HashSet<int> RegistedKey = new();
 	private static readonly StringBuilder CacheBuilder = new();
 	private static string SavingPath = "";
 
 
 	// MSG
-	[OnGameInitialize(int.MinValue)]
-	internal static void RegisterAllKeys () {
-		RegistedKey.Clear();
-		var TYPE_SAVING = typeof(Saving<>);
-		foreach (var assembly in Util.AllAssemblies) {
-			foreach (var type in assembly.GetTypes()) {
-				foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)) {
-					var fieldType = field.FieldType;
-					if (fieldType.IsArray) {
-						var eType = fieldType.GetElementType();
-						var baseType = eType.BaseType;
-						if (baseType.IsGenericType) {
-							var gType = baseType.GetGenericTypeDefinition();
-							if (gType == TYPE_SAVING) {
-								var detaultValue = field.GetValue(null);
-								if (detaultValue != null) {
-									var arr = detaultValue as Saving[];
-									foreach (var value in arr) {
-										RegistedKey.TryAdd(value.ID);
-									}
-								}
-							}
-						}
-					} else {
-						var baseType = fieldType.BaseType;
-						if (baseType != null && baseType.IsGenericType) {
-							var gType = baseType.GetGenericTypeDefinition();
-							if (gType == TYPE_SAVING) {
-								var detaultValue = field.GetValue(null);
-								if (detaultValue != null) {
-									RegistedKey.TryAdd((detaultValue as Saving).ID);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-
 	[OnGameInitialize(int.MinValue + 1)]
 	internal static void OnGameInitialize () {
 		SavingPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Saving.txt");
@@ -110,8 +68,7 @@ public static class SavingSystem {
 		IsDirty = false;
 		CacheBuilder.Clear();
 		if (!FileLoaded) return;
-		foreach (var (id, value) in Pool) {
-			if (!RegistedKey.Contains(id)) continue;
+		foreach (var (_, value) in Pool) {
 			CacheBuilder.Append(value.key);
 			CacheBuilder.Append(':');
 			CacheBuilder.Append(value.value);

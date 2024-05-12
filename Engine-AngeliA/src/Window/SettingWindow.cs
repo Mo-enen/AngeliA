@@ -10,7 +10,6 @@ public class SettingWindow : WindowUI {
 
 
 
-
 	#region --- VAR ---
 
 
@@ -24,11 +23,10 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_ONLY_SPRITE_ON_OPTION = ("Setting.ASAOOHOK", "Only Modify Spirte on Holding Ctrl");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
+	private static readonly LanguageCode LABEL_SYNC_DLL = ("Setting.SyncFrameworkDll", "Sync Framework Dll from Engine");
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
-	private static readonly LanguageCode LABEL_START_WITH_WINDOW = ("Setting.StartWithWindow", "Start with Window");
-	private static readonly LanguageCode LABEL_START_WITH_WINDOW_LAST_OPEN = ("Setting.StartWithWindowLastOpen", "(Last Opened))");
 
 	// Api
 	public string RequireChangeThemePath { get; set; } = null;
@@ -37,16 +35,15 @@ public class SettingWindow : WindowUI {
 	public bool OpenLastProjectOnStart { get; set; }
 	public bool UseTooltip { get; set; }
 	public bool UseNotification { get; set; }
+	public bool SyncFrameworkDll { get; set; }
 	public bool SolidPaintingPreview { get; set; }
 	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
 	public bool ShowLogTime { get; set; }
-	public int StartWithWindowIndex { get; set; }
 	public Color32 BackgroundColor { get; set; }
 
 	// Data
 	private static SettingWindow Instance;
 	private readonly List<(string path, string name)> ThemePaths = new();
-	private (int id, string defaultName)[] AllWindowNames;
 	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
@@ -80,9 +77,9 @@ public class SettingWindow : WindowUI {
 
 			using var _ = Scope.GUILabelWidth(Util.Min(Unify(384), rect.width / 2));
 			GUI.BeginChangeCheck();
-			DrawPanel(ref rect, 0);
-			DrawPanel(ref rect, 1);
-			DrawPanel(ref rect, 2);
+			DrawPanel(ref rect, Update_Engine);
+			DrawPanel(ref rect, Update_PixelEditor);
+			DrawPanel(ref rect, Update_Console);
 			Changed = GUI.EndChangeCheck();
 
 			extendedUISize = WindowRect.yMax - rect.yMax + Unify(128);
@@ -98,7 +95,7 @@ public class SettingWindow : WindowUI {
 	}
 
 
-	private void Update_Engine (ref IRect rect) {
+	private IRect Update_Engine (IRect rect) {
 
 		int itemPadding = Unify(4);
 
@@ -127,6 +124,13 @@ public class SettingWindow : WindowUI {
 		);
 		rect.SlideDown(itemPadding);
 
+		// Sync Framework Dll
+		SyncFrameworkDll = GUI.Toggle(
+			rect, SyncFrameworkDll, LABEL_SYNC_DLL,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
 		// Theme
 		GUI.SmallLabel(rect, LABEL_THEME);
 		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
@@ -135,25 +139,11 @@ public class SettingWindow : WindowUI {
 		}
 		rect.SlideDown(itemPadding);
 
-		// Start with Window
-		GUI.SmallLabel(rect, LABEL_START_WITH_WINDOW);
-		string selectingStartWithWindow;
-		if (StartWithWindowIndex < 0) {
-			selectingStartWithWindow = LABEL_START_WITH_WINDOW_LAST_OPEN;
-		} else {
-			var (id, dName) = AllWindowNames[StartWithWindowIndex.Clamp(0, AllWindowNames.Length - 1)];
-			selectingStartWithWindow = Language.Get(id, dName);
-		}
-		popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, selectingStartWithWindow, Skin.SmallDarkDropdown)) {
-			ShowStartWithWindowMenu(popRect);
-		}
-		rect.SlideDown(itemPadding);
-
+		return rect;
 	}
 
 
-	private void Update_PixelEditor (ref IRect rect) {
+	private IRect Update_PixelEditor (IRect rect) {
 
 		int itemPadding = Unify(4);
 
@@ -185,11 +175,12 @@ public class SettingWindow : WindowUI {
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
+		return rect;
 
 	}
 
 
-	private void Update_Console (ref IRect rect) {
+	private IRect Update_Console (IRect rect) {
 
 		int itemPadding = Unify(4);
 
@@ -203,6 +194,7 @@ public class SettingWindow : WindowUI {
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
+		return rect;
 
 	}
 
@@ -215,15 +207,7 @@ public class SettingWindow : WindowUI {
 	#region --- API ---
 
 
-	public void Initialize (EntityUI[] allUIs, ColorF pixEditorBackgroundColor, Color32 backgroundColorDefault) {
-		// Names
-		var list = new List<(int id, string defaultName)>();
-		foreach (var ui in allUIs) {
-			if (ui is not WindowUI window) continue;
-			list.Add((window.TypeID, window.DefaultName));
-		}
-		AllWindowNames = list.ToArray();
-		// Config
+	public void Initialize (ColorF pixEditorBackgroundColor, Color32 backgroundColorDefault) {
 		PixEditorBackgroundColor = pixEditorBackgroundColor;
 		BackgroundColorDefault = backgroundColorDefault;
 	}
@@ -240,18 +224,14 @@ public class SettingWindow : WindowUI {
 	#region --- LGC ---
 
 
-	private void DrawPanel (ref IRect rect, int panelID) {
+	private void DrawPanel (ref IRect rect, System.Func<IRect, IRect> panelGUI) {
 		int labelOffset = Unify(32);
 		int boxPadding = Unify(8);
 		var box = Renderer.DrawPixel(default, Color32.WHITE_12);
 		int boxTop = rect.yMax;
 		int boxLeft = rect.xMin;
 		int boxRight = rect.xMax;
-		switch (panelID) {
-			case 0: Update_Engine(ref rect); break;
-			case 1: Update_PixelEditor(ref rect); break;
-			case 2: Update_Console(ref rect); break;
-		}
+		rect = panelGUI(rect);
 		box.X = boxLeft - boxPadding - labelOffset;
 		box.Y = rect.yMax - boxPadding;
 		box.Width = boxRight - boxLeft + boxPadding * 2 + labelOffset;
@@ -290,19 +270,6 @@ public class SettingWindow : WindowUI {
 				// Custom
 				Instance.RequireChangeThemePath = Instance.ThemePaths[(index - 1).Clamp(0, Instance.ThemePaths.Count - 1)].path;
 			}
-		}
-	}
-
-
-	private void ShowStartWithWindowMenu (IRect rect) {
-		GenericPopupUI.BeginPopup(new Int2(rect.x + Unify(4), rect.y));
-		GenericPopupUI.AddItem(LABEL_START_WITH_WINDOW_LAST_OPEN, MenuInvoked, @checked: StartWithWindowIndex < 0);
-		for (int i = 0; i < AllWindowNames.Length; i++) {
-			var (id, name) = AllWindowNames[i];
-			GenericPopupUI.AddItem(Language.Get(id, name), MenuInvoked, @checked: StartWithWindowIndex == i);
-		}
-		static void MenuInvoked () {
-			Instance.StartWithWindowIndex = GenericPopupUI.Instance.InvokingItemIndex - 1;
 		}
 	}
 

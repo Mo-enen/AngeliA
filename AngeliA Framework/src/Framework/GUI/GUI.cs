@@ -1210,6 +1210,18 @@ public static class GUI {
 			TimingChars[index] = (char)('0' + (frame / 10));
 			TimingChars[index + 1] = (char)('0' + (frame % 10));
 			TimingChars[index + 2] = '\'';
+			index += 3;
+		}
+
+		// Zero
+		if (index == 0) {
+			TimingChars[0] = '0';
+			index++;
+		}
+
+		// End
+		if (index < TimingChars.Length) {
+			TimingChars[index] = '\0';
 		}
 
 		return TimingChars;

@@ -7,6 +7,7 @@ using AngeliA;
 
 [assembly: ToolApplication]
 [assembly: DisablePause]
+[assembly: CloseWindowsTerminalOnQuit]
 
 
 namespace AngeliaEngine;
@@ -114,6 +115,7 @@ internal static class Engine {
 	private static int RigMapEditorWindowIndex = -1;
 	private static long RequireBackgroundBuildDate = 0;
 	private static int RigLastCalledFrame = -1;
+	private static int WindowCount = 0;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -123,11 +125,11 @@ internal static class Engine {
 	private static readonly SavingBool OpenLastProjectOnStart = new("Engine.OpenLastProjectOnStart", false);
 	private static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true);
 	private static readonly SavingBool UseNotification = new("Engine.UseNotification", true);
+	private static readonly SavingBool SyncFrameworkDll = new("Engine.SyncFrameworkDll", true);
 	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024);
 	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024);
 	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128);
 	private static readonly SavingInt WindowPositionY = new("Engine.WindowPosY", 128);
-	private static readonly SavingInt StartWithWindowIndex = new("Engine.StartWithWindowIndex", -1);
 	private static readonly SavingInt LastOpenedWindowIndex = new("Engine.LastOpenedWindowIndex", 0);
 
 
@@ -177,12 +179,13 @@ internal static class Engine {
 		Game.SetEventWaiting(false);
 
 		// UI Window
+		WindowCount = 0;
 		ALL_UI.ForEach<WindowUI>((win, index) => {
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = index;
+			WindowCount++;
 		});
 		SettingWindow.Initialize(
-			ALL_UI,
 			PixelEditor.BackgroundColor.Value.ToColorF(),
 			PixelEditor.BackgroundColor.DefaultValue
 		);
@@ -192,36 +195,6 @@ internal static class Engine {
 		// Theme
 		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
 
-	}
-
-
-	[OnGameTryingToQuit]
-	internal static bool OnGameTryingToQuit () {
-		if (CheckAnyEditorDirty()) {
-			GenericDialogUI.SpawnDialog_Button(
-				QUIT_MSG,
-				BuiltInText.UI_SAVE, SaveAndQuit,
-				BuiltInText.UI_DONT_SAVE, Game.QuitApplication,
-				BuiltInText.UI_CANCEL, Const.EmptyMethod
-			);
-		} else {
-			GenericDialogUI.SpawnDialog_Button(
-				QUIT_MSG,
-				BuiltInText.UI_QUIT, Game.QuitApplication,
-				BuiltInText.UI_CANCEL, Const.EmptyMethod
-			);
-			GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
-		}
-		return false;
-		// Func
-		static void SaveAndQuit () {
-			foreach (var ui in ALL_UI) {
-				if (ui is WindowUI window && window.IsDirty) {
-					window.Save();
-				}
-			}
-			Game.QuitApplication();
-		}
 	}
 
 
@@ -312,6 +285,37 @@ internal static class Engine {
 	}
 
 
+	// Quit
+	[OnGameTryingToQuit]
+	internal static bool OnGameTryingToQuit () {
+		if (CheckAnyEditorDirty()) {
+			GenericDialogUI.SpawnDialog_Button(
+				QUIT_MSG,
+				BuiltInText.UI_SAVE, SaveAndQuit,
+				BuiltInText.UI_DONT_SAVE, Game.QuitApplication,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+		} else {
+			GenericDialogUI.SpawnDialog_Button(
+				QUIT_MSG,
+				BuiltInText.UI_QUIT, Game.QuitApplication,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+			GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
+		}
+		return false;
+		// Func
+		static void SaveAndQuit () {
+			foreach (var ui in ALL_UI) {
+				if (ui is WindowUI window && window.IsDirty) {
+					window.Save();
+				}
+			}
+			Game.QuitApplication();
+		}
+	}
+
+
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
 		var windowPos = Game.GetWindowPosition();
@@ -327,20 +331,17 @@ internal static class Engine {
 	}
 
 
+	// Update
 	[OnGameUpdate]
-	internal static void OnGameUpdate () {
-
-		// Update Rig
+	internal static void UpdateRiggedGame () {
 		if (
-			CurrentProject != null &&
-			!EngineUtil.BuildingProjectInBackground &&
-			Transceiver.RigProcessRunning &&
-			CurrentWindowIndex == RigMapEditorWindowIndex
-		) {
-			Transceiver.Call();
-			RigLastCalledFrame = Game.GlobalFrame;
-		}
-
+			CurrentProject == null ||
+			EngineUtil.BuildingProjectInBackground ||
+			!Transceiver.RigProcessRunning ||
+			CurrentWindowIndex != RigMapEditorWindowIndex
+		) return;
+		Transceiver.Call();
+		RigLastCalledFrame = Game.GlobalFrame;
 	}
 
 
@@ -365,12 +366,12 @@ internal static class Engine {
 			OnGUI_Window();
 			OnGUI_Hotkey();
 		}
-		OnGUI_BackgroundBuild();
+		OnGUI_RiggedGame();
 
 	}
 
 
-	// Window
+	// GUI no Project
 	private static void OnGUI_Hub () {
 
 		var cameraRect = Renderer.CameraRect;
@@ -550,6 +551,7 @@ internal static class Engine {
 	}
 
 
+	// GUI with Project
 	private static void OnGUI_Window () {
 
 		if (CurrentProject == null) return;
@@ -558,7 +560,6 @@ internal static class Engine {
 		int contentPadding = GUI.Unify(8);
 		int barWidth = FullsizeMenu.Value ? GUI.Unify(160) : GUI.Unify(42) + contentPadding;
 		var cameraRect = Renderer.CameraRect;
-		int windowLen = 0;
 		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
@@ -566,9 +567,7 @@ internal static class Engine {
 		bool interactable = true;
 
 		foreach (var ui in ALL_UI) {
-			if (ui is WindowUI) {
-				windowLen++;
-			} else if (ui.Active) {
+			if (ui is not WindowUI && ui.Active) {
 				interactable = false;
 			}
 		}
@@ -597,12 +596,13 @@ internal static class Engine {
 			}
 
 			// Window Tabs
-			CurrentWindowIndex = CurrentWindowIndex.Clamp(0, windowLen - 1);
+			SetCurrentWindowIndex(CurrentWindowIndex);
+
 			int index = 0;
 			for (int i = 0; i < ALL_UI.Length; i++) {
 
 				if (ALL_UI[i] is not WindowUI window) continue;
-				if (index >= windowLen) break;
+				if (index >= WindowCount) break;
 
 				bool selecting = index == CurrentWindowIndex;
 				bool hovering = GUI.Enable && rect.Contains(mousePos);
@@ -652,8 +652,7 @@ internal static class Engine {
 
 				// Click
 				if (mousePress && hovering) {
-					CurrentWindowIndex = index;
-					LastOpenedWindowIndex.Value = index;
+					SetCurrentWindowIndex(index);
 				}
 
 				// Next
@@ -707,11 +706,11 @@ internal static class Engine {
 		SettingWindow.OpenLastProjectOnStart = OpenLastProjectOnStart.Value;
 		SettingWindow.UseTooltip = UseTooltip.Value;
 		SettingWindow.UseNotification = UseNotification.Value;
+		SettingWindow.SyncFrameworkDll = SyncFrameworkDll.Value;
 		SettingWindow.BackgroundColor = PixelEditor.BackgroundColor.Value;
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
 		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
 		SettingWindow.ShowLogTime = Console.ShowLogTime.Value;
-		SettingWindow.StartWithWindowIndex = StartWithWindowIndex.Value;
 
 		// Update UI
 		bool oldE = GUI.Enable;
@@ -742,12 +741,12 @@ internal static class Engine {
 			OpenLastProjectOnStart.Value = SettingWindow.OpenLastProjectOnStart;
 			UseTooltip.Value = SettingWindow.UseTooltip;
 			UseNotification.Value = SettingWindow.UseNotification;
+			SyncFrameworkDll.Value = SettingWindow.SyncFrameworkDll;
 			PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
 			PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
 			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
 		}
-		StartWithWindowIndex.Value = SettingWindow.StartWithWindowIndex;
 
 		// Update Project Editor
 		if (Input.KeyboardDownWithCtrl(KeyboardKey.R) || ProjectEditor.RequiringRebuildFrame == Game.GlobalFrame) {
@@ -908,7 +907,7 @@ internal static class Engine {
 	}
 
 
-	private static void OnGUI_BackgroundBuild () {
+	private static void OnGUI_RiggedGame () {
 
 		if (CurrentProject == null) {
 			if (Transceiver.RigProcessRunning) {
@@ -1032,6 +1031,18 @@ internal static class Engine {
 	}
 
 
+	private static void SetCurrentWindowIndex (int index) {
+		index = index.Clamp(0, WindowCount - 1);
+		if (index == RigMapEditorWindowIndex && CurrentWindowIndex != index) {
+			if (Transceiver.RigProcessRunning) Transceiver.RequireFocusInvoke();
+		} else if (index != RigMapEditorWindowIndex && CurrentWindowIndex == index) {
+			if (Transceiver.RigProcessRunning) Transceiver.RequireLostFocusInvoke();
+		}
+		CurrentWindowIndex = index;
+		LastOpenedWindowIndex.Value = index;
+	}
+
+
 	// Workflow
 	private static void OpenProject (string projectPath) {
 
@@ -1056,13 +1067,17 @@ internal static class Engine {
 		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		ProjectEditor.CurrentProject = CurrentProject;
 
-		// Switch Opening Window
-		if (StartWithWindowIndex.Value >= 0) {
-			CurrentWindowIndex = StartWithWindowIndex.Value;
-			LastOpenedWindowIndex.Value = StartWithWindowIndex.Value;
+		// Script
+		CheckScriptChanged();
+		if (SyncFrameworkDll.Value) {
+			string sourcePath = EngineUtil.TemplateFrameworkDllFolder;
+			if (Util.FolderExists(sourcePath)) {
+				string targetPath = CurrentProject.FrameworkLibraryPath;
+				Util.DeleteFolder(targetPath);
+				Util.CopyFolder(sourcePath, targetPath, true, false);
+			}
 		}
 
-		CheckScriptChanged();
 	}
 
 

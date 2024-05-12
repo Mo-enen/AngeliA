@@ -12,7 +12,6 @@ public class UniverseInfo {
 	public int MajorVersion = 0;
 	public int MinorVersion = 0;
 	public int PatchVersion = 0;
-	public bool CloseCmdOnQuit = true;
 }
 
 

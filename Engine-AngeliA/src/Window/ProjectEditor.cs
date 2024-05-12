@@ -27,7 +27,6 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_DEV_NAME_EMPTY = ("Log.DevNameEmpty", "Developer name can not be empty");
-	private static readonly LanguageCode LABEL_CLOSE_CMD = ("Setting.CloseCmd", "Close Command Window on Game Quit");
 	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
 	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
 	private static readonly LanguageCode LABEL_LINK_SAVING = ("Setting.Link.Saving", "Saving Folder");
@@ -79,7 +78,7 @@ public class ProjectEditor : WindowUI {
 			MasterScrollPos = scroll.ScrollPosition;
 
 			Update_WorkflowButton(ref rect);
-			rect.y -= Unify(20);
+			//rect.y -= Unify(12);
 
 			Update_Config(ref rect);
 			extendedContentSize = panelRect.yMax - rect.yMax + Unify(64);
@@ -131,7 +130,6 @@ public class ProjectEditor : WindowUI {
 			}
 			RequireTooltip(_rect, TIP_BUILD);
 			_rect.SlideRight(padding);
-			rect.SlideDown();
 
 			// Publish
 			if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
@@ -139,8 +137,9 @@ public class ProjectEditor : WindowUI {
 			}
 			RequireTooltip(_rect, TIP_PUBLISH);
 			_rect.SlideRight(padding);
-			rect.SlideDown();
 		}
+
+		rect.SlideDown(padding);
 
 		// Func
 		static void PublishProject (string path) {
@@ -217,17 +216,6 @@ public class ProjectEditor : WindowUI {
 
 		rect.SlideDown(padding);
 
-		// Close Command Window on Game Quit
-		bool newCloseCmd = GUI.Toggle(
-			rect, info.CloseCmdOnQuit, LABEL_CLOSE_CMD,
-			labelStyle: Skin.SmallLabel
-		);
-		if (info.CloseCmdOnQuit != newCloseCmd) {
-			info.CloseCmdOnQuit = newCloseCmd;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
 		// Open Project Folder
 		GUI.SmallLabel(rect, LABEL_LINK);
 		var _rect = rect.ShrinkLeft(GUI.LabelWidth);
@@ -254,7 +242,7 @@ public class ProjectEditor : WindowUI {
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
 	}
 
-
+	
 	#endregion
 
 

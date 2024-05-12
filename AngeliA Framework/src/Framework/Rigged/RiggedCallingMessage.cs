@@ -26,15 +26,13 @@ public class RiggedCallingMessage {
 	private static readonly int KeyboardKeyCount = typeof(KeyboardKey).EnumLength();
 	private static readonly int GamepadKeyCount = typeof(GamepadKey).EnumLength();
 
-	// Init
-	public int FontCount;
-
 	// Data
 	public bool CursorInScreen;
 	public int MonitorWidth;
 	public int MonitorHeight;
 	public int ScreenWidth;
 	public int ScreenHeight;
+	public ushort FontCount;
 	public byte EffectEnable;
 	public bool IsMusicPlaying;
 	public byte DeviceData;
@@ -54,6 +52,7 @@ public class RiggedCallingMessage {
 	public CharRequirementData[] RequiredChars = new CharRequirementData[REQUIRE_CHAR_MAX_COUNT];
 	public int RequiringGizmosTextureIDCount = 0;
 	public uint[] RequiringGizmosTextureIDs = new uint[REQUIRE_GIZMOS_TEXTURE_MAX_COUNT];
+	public byte RequireGameMessageInvoke;
 
 
 	// API
@@ -69,7 +68,7 @@ public class RiggedCallingMessage {
 		MonitorHeight = Game.MonitorHeight;
 		ScreenWidth = Game.ScreenWidth;
 		ScreenHeight = Game.ScreenHeight;
-		FontCount = Game.FontCount;
+		FontCount = (ushort)Game.FontCount;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			EffectEnable.SetBit(i, Game.GetEffectEnable(i));
 		}
@@ -124,7 +123,7 @@ public class RiggedCallingMessage {
 		MonitorHeight = reader.ReadInt32();
 		ScreenWidth = reader.ReadInt32();
 		ScreenHeight = reader.ReadInt32();
-		FontCount = reader.ReadInt32();
+		FontCount = reader.ReadUInt16();
 		EffectEnable = reader.ReadByte();
 		IsMusicPlaying = reader.ReadBoolean();
 		DeviceData = reader.ReadByte();
@@ -176,6 +175,8 @@ public class RiggedCallingMessage {
 			RequiringGizmosTextureIDs[i] = reader.ReadUInt32();
 		}
 
+		RequireGameMessageInvoke = reader.ReadByte();
+
 	}
 
 
@@ -226,6 +227,9 @@ public class RiggedCallingMessage {
 		for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
 			writer.Write(RequiringGizmosTextureIDs[i]);
 		}
+
+		writer.Write(RequireGameMessageInvoke);
+		RequireGameMessageInvoke = 0;
 
 	}
 

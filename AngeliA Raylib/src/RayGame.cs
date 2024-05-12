@@ -309,15 +309,4 @@ public partial class RayGame : Game {
 	}
 
 
-#if DEBUG
-	[OnGameQuitting(int.MaxValue)]
-	internal static void CloseCMD () {
-		if (UniverseSystem.BuiltInUniverse.Info.CloseCmdOnQuit) {
-			Debug.Log("Close");
-			Process.GetProcessesByName("WindowsTerminal").ToList().ForEach(item => item.CloseMainWindow());
-		}
-	}
-#endif
-
-
 }

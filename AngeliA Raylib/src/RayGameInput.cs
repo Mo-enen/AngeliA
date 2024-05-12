@@ -68,52 +68,30 @@ public partial class RayGame {
 
 	protected override bool _IsGamepadKeyHolding (GamepadKey key) => Raylib.IsGamepadButtonDown(0, key.ToRaylib());
 
-	protected override bool _IsGamepadLeftStickHolding (Direction4 direction) {
-		float value = 0f;
-		switch (direction) {
-			case Direction4.Up:
-				value = Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftY);
-				break;
-			case Direction4.Down:
-				value = -Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftY);
-				break;
-			case Direction4.Left:
-				value = -Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftX);
-				break;
-			case Direction4.Right:
-				value = Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftX);
-				break;
-		}
-		return value > 0.1f;
-	}
+	protected override bool _IsGamepadLeftStickHolding (Direction4 direction) => direction switch {
+		Direction4.Up => -Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftY) > 0.75f,
+		Direction4.Down => Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftY) > 0.75f,
+		Direction4.Left => -Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftX) > 0.5f,
+		Direction4.Right => Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftX) > 0.5f,
+		_ => false,
+	};
 
-	protected override bool _IsGamepadRightStickHolding (Direction4 direction) {
-		float value = 0f;
-		switch (direction) {
-			case Direction4.Up:
-				value = Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightY);
-				break;
-			case Direction4.Down:
-				value = -Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightY);
-				break;
-			case Direction4.Left:
-				value = -Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightX);
-				break;
-			case Direction4.Right:
-				value = Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightX);
-				break;
-		}
-		return value > 0.1f;
-	}
+	protected override bool _IsGamepadRightStickHolding (Direction4 direction) => direction switch {
+		Direction4.Up => -Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightY) > 0.75f,
+		Direction4.Down => Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightY) > 0.75f,
+		Direction4.Left => -Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightX) > 0.5f,
+		Direction4.Right => Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightX) > 0.5f,
+		_ => false,
+	};
 
 	protected override Float2 _GetGamepadLeftStickDirection () => new(
 		Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftX),
-		Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftY)
+		-Raylib.GetGamepadAxisMovement(0, GamepadAxis.LeftY)
 	);
 
 	protected override Float2 _GetGamepadRightStickDirection () => new(
 		Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightX),
-		Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightY)
+		-Raylib.GetGamepadAxisMovement(0, GamepadAxis.RightY)
 	);
 
 

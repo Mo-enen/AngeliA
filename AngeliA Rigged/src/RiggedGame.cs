@@ -150,6 +150,14 @@ public partial class RiggedGame : Game {
 			GamepadHoldingFrames[keyIndex] = PauselessFrame;
 		}
 
+		// Event
+		if (CallingMessage.RequireGameMessageInvoke.GetBit(1)) {
+			InvokeWindowFocusChanged(false);
+		}
+		if (CallingMessage.RequireGameMessageInvoke.GetBit(0)) {
+			InvokeWindowFocusChanged(true);
+		}
+
 		// Gizmos Texture Requirement
 		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);

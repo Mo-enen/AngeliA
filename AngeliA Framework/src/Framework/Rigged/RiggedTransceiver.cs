@@ -214,6 +214,10 @@ public class RiggedTransceiver {
 	}
 
 
+	public void RequireFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(0, true);
+	public void RequireLostFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(1, true);
+
+
 	#endregion
 
 

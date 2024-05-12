@@ -10,6 +10,7 @@ public class Project {
 	public string SourceCodePath { get; init; }
 	public string BuildPath { get; init; }
 	public string BuildLibraryPath { get; init; }
+	public string FrameworkLibraryPath { get; init; }
 	public string TempBuildPath { get; init; }
 	public string TempPublishPath { get; init; }
 	public string TempRoot { get; init; }
@@ -22,6 +23,7 @@ public class Project {
 		SourceCodePath = Util.CombinePaths(projectPath, "src"),
 		BuildPath = Util.CombinePaths(projectPath, "Build"),
 		BuildLibraryPath = Util.CombinePaths(projectPath, "Build", "Library"),
+		FrameworkLibraryPath = Util.CombinePaths(projectPath, "lib"),
 		TempRoot = Util.CombinePaths(projectPath, "Temp"),
 		TempBuildPath = Util.CombinePaths(projectPath, "Temp", "Build"),
 		TempPublishPath = Util.CombinePaths(projectPath, "Temp", "Publish"),
