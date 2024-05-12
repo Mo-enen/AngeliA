@@ -21,6 +21,7 @@ public static class Renderer {
 			0;
 	}
 
+
 	private class Layer {
 		public int Count => Util.Min(Cells.Length, FocusedCell >= 0 ? FocusedCell : Cells.Length);
 		public Cell[] Cells;
@@ -70,22 +71,24 @@ public static class Renderer {
 	public static float CameraRestrictionRate { get; private set; } = 1f;
 	public static int LastDrawnID { get; private set; } = 0;
 	public static int LayerCount => Layers.Length;
-	public static int SpriteCount => BuiltInSheet.Sprites.Count;
-	public static int GroupCount => BuiltInSheet.Groups.Count;
+	public static int SpriteCount => MainSheet.Sprites.Count;
+	public static int GroupCount => MainSheet.Groups.Count;
 	public static int FontCount => CharSpritePool.Length;
 	public static int CurrentLayerIndex { get; private set; } = 0;
 	public static int CurrentFontIndex { get; private set; } = 0;
 	public static bool TextReady => CharSpritePool.Length > 0;
 	public static int CurrentSheetIndex { get; set; } = -1;
 	public static int AltSheetCount => AltSheets.Count;
-	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? BuiltInSheet : AltSheets[CurrentSheetIndex];
+	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? MainSheet : AltSheets[CurrentSheetIndex];
 
 	// Data
-	private static readonly Sheet BuiltInSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
+	private static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static Dictionary<int, CharSprite>[] CharSpritePool = { };
 	private static bool IsDrawing = false;
+	private static long MainSheetFileModifyDate = 0;
+	private static string MainSheetFilePath = "";
 
 
 	#endregion
@@ -128,7 +131,7 @@ public static class Renderer {
 		CharSpritePool = new Dictionary<int, CharSprite>[Game.FontCount].FillWithNewValue();
 
 		// Load Sheet
-		LoadBuiltInSheet(UniverseSystem.BuiltInUniverse);
+		LoadMainSheet();
 
 	}
 
@@ -136,7 +139,17 @@ public static class Renderer {
 	[OnUniverseOpen]
 	internal static void OnUniverseOpen () {
 		if (Game.GlobalFrame == 0) return;
-		LoadBuiltInSheet(UniverseSystem.CurrentUniverse);
+		LoadMainSheet();
+	}
+
+
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+		// Reload Main Sheet on Changed
+		long date = Util.GetFileModifyDate(MainSheetFilePath);
+		if (date > MainSheetFileModifyDate) {
+			LoadMainSheet();
+		}
 	}
 
 
@@ -215,7 +228,7 @@ public static class Renderer {
 
 
 	[OnGameQuitting]
-	internal static void OnGameQuitting () => BuiltInSheet.Clear();
+	internal static void OnGameQuitting () => MainSheet.Clear();
 
 
 	[OnGameUpdate(-512)]
@@ -253,7 +266,7 @@ public static class Renderer {
 
 	// Sheet
 	public static bool TryGetTextureFromSheet<T> (int spriteID, int sheetIndex, out T texture) {
-		var sheet = sheetIndex < 0 || sheetIndex >= AltSheets.Count ? BuiltInSheet : AltSheets[sheetIndex];
+		var sheet = sheetIndex < 0 || sheetIndex >= AltSheets.Count ? MainSheet : AltSheets[sheetIndex];
 		if (sheet.TexturePool.TryGetValue(spriteID, out object textureObj) && textureObj is T result) {
 			texture = result;
 			return true;
@@ -264,14 +277,28 @@ public static class Renderer {
 	}
 
 
-	public static void LoadBuiltInSheet (Universe project) {
+	public static void LoadMainSheet () {
+
+		var universe = UniverseSystem.CurrentUniverse;
 
 		// Artwork >> Sheet
-		SheetUtil.RecreateSheetIfArtworkModified(project.SheetPath, project.ArtworkRoot);
+		SheetUtil.RecreateSheetIfArtworkModified(universe.SheetPath, universe.ArtworkRoot);
 
 		// Load Sheet
-		if (!BuiltInSheet.LoadFromDisk(project.SheetPath) && project != UniverseSystem.BuiltInUniverse) {
-			BuiltInSheet.LoadFromDisk(UniverseSystem.BuiltInUniverse.SheetPath);
+		MainSheetFileModifyDate = 0;
+		MainSheetFilePath = "";
+		bool loaded = MainSheet.LoadFromDisk(universe.SheetPath);
+		if (loaded) {
+			MainSheetFilePath = universe.SheetPath;
+			MainSheetFileModifyDate = Util.GetFileModifyDate(universe.SheetPath);
+		}
+		if (!loaded && universe != UniverseSystem.BuiltInUniverse) {
+			string path = UniverseSystem.BuiltInUniverse.SheetPath;
+			loaded = MainSheet.LoadFromDisk(path);
+			if (loaded) {
+				MainSheetFilePath = path;
+				MainSheetFileModifyDate = Util.GetFileModifyDate(path);
+			}
 		}
 
 		// Event
