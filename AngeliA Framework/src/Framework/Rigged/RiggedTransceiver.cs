@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -190,10 +189,10 @@ public class RiggedTransceiver {
 	}
 
 
-	public void Call () {
+	public void Call (bool ignoreInput = false) {
 		// Engine >> Rig
 		if (RequiringCall) return;
-		CallingMessage.LoadDataFromFramework();
+		CallingMessage.LoadDataFromEngine(ignoreInput);
 		RequiringCall = true;
 	}
 
@@ -208,7 +207,7 @@ public class RiggedTransceiver {
 			return;
 		}
 		_HANDLE_:;
-		RespondMessage.SetDataToFramework(CallingMessage);
+		RespondMessage.ApplyToEngine(CallingMessage);
 		// Finish
 		RespondHandled = true;
 	}

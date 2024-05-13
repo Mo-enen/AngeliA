@@ -116,6 +116,7 @@ internal static class Engine {
 	private static long RequireBackgroundBuildDate = 0;
 	private static int RigLastCalledFrame = -1;
 	private static int WindowCount = 0;
+	private static int LastShowingGenericUIFrame = int.MinValue;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -340,7 +341,12 @@ internal static class Engine {
 			!Transceiver.RigProcessRunning ||
 			CurrentWindowIndex != RigMapEditorWindowIndex
 		) return;
-		Transceiver.Call();
+		Transceiver.Call(ignoreInput:
+			(Input.MouseLeftButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseLeftDownGlobalPosition)) ||
+			(Input.MouseRightButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseRightDownGlobalPosition)) ||
+			(Input.MouseMidButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseMidDownGlobalPosition)) ||
+			Game.PauselessFrame < LastShowingGenericUIFrame + 6
+		);
 		RigLastCalledFrame = Game.GlobalFrame;
 	}
 
@@ -569,6 +575,8 @@ internal static class Engine {
 		foreach (var ui in ALL_UI) {
 			if (ui is not WindowUI && ui.Active) {
 				interactable = false;
+				LastShowingGenericUIFrame = Game.PauselessFrame;
+				break;
 			}
 		}
 
@@ -735,6 +743,11 @@ internal static class Engine {
 			ui.LateUpdate();
 		}
 		GUI.Enable = oldE;
+
+		// Misc
+		if (GenericDialogUI.ShowingDialog) {
+			Game.IgnoreGizmos(1);
+		}
 
 		// Update Setting
 		if (SettingWindow.Changed) {

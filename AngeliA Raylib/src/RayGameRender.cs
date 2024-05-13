@@ -399,7 +399,7 @@ public partial class RayGame {
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
-		GizmosRender.DrawGizmosRect(new Rectangle(
+		GizmosRender.AddGizmosRect(new Rectangle(
 			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, rect.x),
 			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, rect.yMax),
 			rect.width * screenRenderRect.width / cameraRect.width,
@@ -411,7 +411,7 @@ public partial class RayGame {
 		if (texture is not Texture2D rTexture) return;
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
-		GizmosRender.DrawGizmosTexture(new Rectangle(
+		GizmosRender.AddGizmosTexture(new Rectangle(
 			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x),
 			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
 			(float)rect.width * screenRenderRect.width / cameraRect.width,
@@ -423,6 +423,8 @@ public partial class RayGame {
 			uv.height * rTexture.Height
 		), rTexture, inverse);
 	}
+
+	protected override void _IgnoreGizmos (int duration = 0) => GizmosRender.IgnoreGizmos(duration);
 
 
 	// Text

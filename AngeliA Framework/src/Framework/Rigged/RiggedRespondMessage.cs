@@ -1,16 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace AngeliA;
 
 public class RiggedRespondMessage {
 
 
+
+
+	#region --- SUB ---
+
+
 	public struct GizmosRectData {
 		public IRect Rect;
 		public Color32 Color;
 	}
+
 
 	public struct GizmosTextureData {
 		public IRect Rect;
@@ -22,10 +28,26 @@ public class RiggedRespondMessage {
 	}
 
 
+	#endregion
+
+
+
+
+	#region --- VAR ---
+
+
+	// Const
 	public const int REQUIRE_CHAR_MAX_COUNT = 64;
 	public const int REQUIRE_GIZMOS_MAX_COUNT = 1024;
 
+	// Api
 	public readonly Dictionary<uint, object> GizmosTexturePool = new();
+
+	// Pipe
+	public int ViewX;
+	public int ViewY;
+	public int ViewWidth;
+	public int ViewHeight;
 	public int RequireSetCursorIndex;
 	public byte EffectEnable;
 	public byte HasEffectParams;
@@ -54,7 +76,14 @@ public class RiggedRespondMessage {
 	public GizmosTextureData[] RequireGizmosTextures = new GizmosTextureData[REQUIRE_GIZMOS_MAX_COUNT];
 
 
-	// API
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
 	public void Reset () {
 		RequireSetCursorIndex = int.MinValue;
 		HasEffectParams = 0;
@@ -70,8 +99,9 @@ public class RiggedRespondMessage {
 	}
 
 
-	public void SetDataToFramework (RiggedCallingMessage callingMessage) {
+	public void ApplyToEngine (RiggedCallingMessage callingMessage) {
 
+		// Cursor
 		if (RequireSetCursorIndex != int.MinValue) {
 			if (RequireSetCursorIndex == -3) {
 				Game.SetCursorToNormal();
@@ -103,6 +133,10 @@ public class RiggedRespondMessage {
 		}
 
 		// Gizmos
+		Stage.SetViewRectImmediately(
+			new IRect(ViewX, ViewY, ViewWidth, ViewHeight),
+			remapAllRenderingCells: true
+		);
 		callingMessage.RequiringGizmosTextureIDCount = 0;
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
@@ -124,11 +158,11 @@ public class RiggedRespondMessage {
 			}
 			// Draw Texture
 			if (texture != null) {
-				Game.DrawGizmosTexture(data.Rect, texture, data.Inverse);
+				Game.DrawGizmosTexture(data.Rect, data.Uv, texture, data.Inverse);
 			}
 		}
 
-		// Rendering
+		// Rendering Cells
 
 
 
@@ -179,12 +213,15 @@ public class RiggedRespondMessage {
 			Game.PassEffect_Vignette(e_VigRadius, e_VigFeather, e_VigOffsetX, e_VigOffsetY, e_VigRound, 1);
 		}
 
-
 	}
 
 
 	public void ReadDataFromPipe (BinaryReader reader) {
 
+		ViewX = reader.ReadInt32();
+		ViewY = reader.ReadInt32();
+		ViewWidth = reader.ReadInt32();
+		ViewHeight = reader.ReadInt32();
 		RequireSetCursorIndex = reader.ReadInt32();
 		EffectEnable = reader.ReadByte();
 		HasEffectParams = reader.ReadByte();
@@ -257,6 +294,10 @@ public class RiggedRespondMessage {
 
 	public void WriteDataToPipe (BinaryWriter writer) {
 
+		writer.Write(ViewX);
+		writer.Write(ViewY);
+		writer.Write(ViewWidth);
+		writer.Write(ViewHeight);
 		writer.Write(RequireSetCursorIndex);
 		writer.Write(EffectEnable);
 		writer.Write(HasEffectParams);
@@ -329,6 +370,11 @@ public class RiggedRespondMessage {
 		}
 
 	}
+
+
+	#endregion
+
+
 
 
 }

@@ -30,9 +30,16 @@ public static class GizmosRender {
 	private static int GLRectCount = 0;
 	private static int GLTextureCount = 0;
 	private static int InverseTextureCount = 0;
+	private static int IgnoreGizmosFrame = -1;
 
 
 	public static void UpdateGizmos () {
+
+		if (Game.PauselessFrame <= IgnoreGizmosFrame) {
+			GLRectCount = 0;
+			GLTextureCount = 0;
+			return;
+		}
 
 		// Texture
 		for (int i = 0; i < GLTextureCount; i++) {
@@ -71,7 +78,13 @@ public static class GizmosRender {
 
 
 	public static void UpdateInverse () {
+
 		if (InverseTextureCount <= 0) return;
+		if (Game.PauselessFrame <= IgnoreGizmosFrame) {
+			InverseTextureCount = 0;
+			return;
+		}
+
 		for (int i = 0; i < InverseTextureCount; i++) {
 			var glTexture = InverseTextures[i];
 			var rTexture = glTexture.Texture;
@@ -92,7 +105,7 @@ public static class GizmosRender {
 	}
 
 
-	public static void DrawGizmosRect (Rectangle rect, Color32 color) {
+	public static void AddGizmosRect (Rectangle rect, Color32 color) {
 		if (GLRectCount >= GLRects.Length) return;
 		var glRect = GLRects[GLRectCount];
 		glRect.Rect = rect;
@@ -101,7 +114,7 @@ public static class GizmosRender {
 	}
 
 
-	public static void DrawGizmosTexture (Rectangle rect, Rectangle uv, Texture2D texture, bool inverse = false) {
+	public static void AddGizmosTexture (Rectangle rect, Rectangle uv, Texture2D texture, bool inverse = false) {
 		if (inverse) {
 			if (InverseTextureCount >= InverseTextures.Length) return;
 			var glTexture = InverseTextures[InverseTextureCount];
@@ -116,6 +129,16 @@ public static class GizmosRender {
 			glTexture.Texture = texture;
 			glTexture.UV = uv;
 			GLTextureCount++;
+		}
+	}
+
+
+	public static void IgnoreGizmos (int duration) {
+		IgnoreGizmosFrame = Game.PauselessFrame + duration;
+		if (duration >= 0) {
+			GLRectCount = 0;
+			GLTextureCount = 0;
+			InverseTextureCount = 0;
 		}
 	}
 

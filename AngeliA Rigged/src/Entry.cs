@@ -7,7 +7,7 @@ using AngeliaRigged;
 
 if (args.Length < 2) return -1;
 
-System.Console.Write("\n\n === Client Started ===\n\n");
+//System.Console.Write("\n\n === Client Started ===\n\n");
 
 var riggedGame = new RiggedGame(args);
 riggedGame.Initialize();

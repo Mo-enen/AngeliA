@@ -399,6 +399,51 @@ public static class Stage {
 	public static void SetViewZ (int newZ) => RequireSetViewZ = newZ;
 
 
+	public static void SetViewRectImmediately (IRect newRect, bool remapAllRenderingCells = false) {
+
+		newRect.width = newRect.width.GreaterOrEquel(1);
+		newRect.height = newRect.height.GreaterOrEquel(1);
+
+		// Stop Delay
+		ViewDelayX.value = null;
+		ViewDelayY.value = null;
+		ViewDelayHeight.value = null;
+		ViewDelayX.priority = int.MinValue;
+		ViewDelayY.priority = int.MinValue;
+		ViewDelayHeight.priority = int.MinValue;
+
+		// Remap Rendering Cells
+		if (remapAllRenderingCells) {
+			int oldL = ViewRect.xMin;
+			int oldR = ViewRect.xMax;
+			int oldD = ViewRect.yMin;
+			int oldU = ViewRect.yMax;
+			int oldW = ViewRect.width;
+			int oldH = ViewRect.height;
+			int newL = newRect.xMin;
+			int newR = newRect.xMax;
+			int newD = newRect.yMin;
+			int newU = newRect.yMax;
+			int newW = newRect.width;
+			int newH = newRect.height;
+			for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+				if (!Renderer.GetCells(layer, out var cells, out int count)) continue;
+				for (int i = 0; i < count; i++) {
+					var cell = cells[i];
+					cell.X = Util.RemapUnclamped(oldL, oldR, newL, newR, (float)cell.X).RoundToInt();
+					cell.Y = Util.RemapUnclamped(oldD, oldU, newD, newU, (float)cell.Y).RoundToInt();
+					cell.Width = ((float)cell.Width * newW / oldW).RoundToInt();
+					cell.Height = ((float)cell.Height * newH / oldH).RoundToInt();
+				}
+			}
+		}
+
+		// Apply Changes
+		ViewRect = newRect;
+		Renderer.UpdateCameraRect();
+	}
+
+
 	// View Position
 	public static void SetViewPositionDelay (int x, int y, int lerp = 1000, int priority = int.MinValue) {
 		if (priority >= ViewDelayX.priority) ViewDelayX = (x, priority);

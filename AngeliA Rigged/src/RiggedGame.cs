@@ -173,6 +173,10 @@ public partial class RiggedGame : Game {
 		Update();
 
 		// Finish
+		RespondMessage.ViewX = Stage.ViewRect.x;
+		RespondMessage.ViewY = Stage.ViewRect.y;
+		RespondMessage.ViewWidth = Stage.ViewRect.width;
+		RespondMessage.ViewHeight = Stage.ViewRect.height;
 		RespondMessage.WriteDataToPipe(Writer);
 		return true;
 	}

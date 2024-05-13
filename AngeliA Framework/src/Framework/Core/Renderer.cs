@@ -64,7 +64,6 @@ public static class Renderer {
 	public static event System.Action OnSheetLoaded;
 
 	// Api
-	public static IRect ViewRect { get; private set; } = new IRect(0, 0, 1, 1);
 	public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);
 	public static FRect CameraRange { get; private set; } = new(0, 0, 1f, 1f);
 	public static IRect ScreenRenderRect { get; private set; }
@@ -155,7 +154,7 @@ public static class Renderer {
 
 	// Update
 	[OnGameUpdate(-2048)]
-	internal static void CameraUpdate () {
+	internal static void UpdateCameraRect () {
 
 		var viewRect = Stage.ViewRect;
 
@@ -184,7 +183,6 @@ public static class Renderer {
 		int cOffsetX = (viewRect.width - cRect.width) / 2;
 		cRect.x += cOffsetX;
 		CameraRect = cRect;
-		ViewRect = viewRect;
 
 	}
 
@@ -192,7 +190,7 @@ public static class Renderer {
 	[OnGameUpdatePauseless(-2048)]
 	internal static void PausingUpdate () {
 		if (Game.IsPlaying) return;
-		CameraUpdate();
+		UpdateCameraRect();
 	}
 
 

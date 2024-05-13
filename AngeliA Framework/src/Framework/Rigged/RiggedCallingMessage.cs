@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AngeliA;
 
 public class RiggedCallingMessage {
 
 
-	// SUB
+
+
+	#region --- SUB ---
+
+
 	public struct CharRequirementData {
 		public bool Valid;
 		public char Char;
@@ -20,13 +21,21 @@ public class RiggedCallingMessage {
 	}
 
 
+	#endregion
+
+
+
+
+	#region --- VAR ---
+
+
 	// Const
 	public const int REQUIRE_CHAR_MAX_COUNT = 128;
 	public const int REQUIRE_GIZMOS_TEXTURE_MAX_COUNT = 128;
 	private static readonly int KeyboardKeyCount = typeof(KeyboardKey).EnumLength();
 	private static readonly int GamepadKeyCount = typeof(GamepadKey).EnumLength();
 
-	// Data
+	// Pipe
 	public bool CursorInScreen;
 	public int MonitorWidth;
 	public int MonitorHeight;
@@ -59,8 +68,15 @@ public class RiggedCallingMessage {
 	public int[] PressedGuiKeys;
 
 
-	// API
-	public void LoadDataFromFramework () {
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public void LoadDataFromEngine (bool ignoreInput = false) {
 
 		int mouseScroll = Game.MouseScrollDelta;
 		var mousePos = Game.MouseScreenPosition;
@@ -78,45 +94,51 @@ public class RiggedCallingMessage {
 		}
 		IsMusicPlaying = Game.IsMusicPlaying;
 		DeviceData.SetBit(0, Game.IsMouseAvailable);
-		DeviceData.SetBit(1, Game.IsMouseLeftHolding);
-		DeviceData.SetBit(2, Game.IsMouseRightHolding);
-		DeviceData.SetBit(3, Game.IsMouseMidHolding);
-		DeviceData.SetBit(4, mouseScroll != 0);
+		DeviceData.SetBit(1, !ignoreInput && Game.IsMouseLeftHolding);
+		DeviceData.SetBit(2, !ignoreInput && Game.IsMouseRightHolding);
+		DeviceData.SetBit(3, !ignoreInput && Game.IsMouseMidHolding);
+		DeviceData.SetBit(4, !ignoreInput && mouseScroll != 0);
 		DeviceData.SetBit(5, Game.IsKeyboardAvailable);
 		DeviceData.SetBit(6, Game.IsGamepadAvailable);
-		MouseScrollDelta = mouseScroll;
+		MouseScrollDelta = ignoreInput ? 0 : mouseScroll;
 		MousePosX = mousePos.x;
 		MousePosY = mousePos.y;
 		HoldingKeyboardKeyCount = 0;
-		for (int i = 0; i < KeyboardKeyCount; i++) {
-			if (Game.IsKeyboardKeyHolding((KeyboardKey)i)) {
-				HoldingKeyboardKeys[HoldingKeyboardKeyCount] = i;
-				HoldingKeyboardKeyCount++;
-				if (HoldingKeyboardKeyCount >= HoldingKeyboardKeys.Length) break;
-			}
-		}
 		HoldingGamepadKeyCount = 0;
-		for (int i = 0; i < GamepadKeyCount; i++) {
-			if (Game.IsGamepadKeyHolding((GamepadKey)i)) {
-				HoldingGamepadKeys[HoldingGamepadKeyCount] = i;
-				HoldingGamepadKeyCount++;
-				if (HoldingGamepadKeyCount >= HoldingGamepadKeys.Length) break;
+		if (!ignoreInput) {
+			for (int i = 0; i < KeyboardKeyCount; i++) {
+				if (Game.IsKeyboardKeyHolding((KeyboardKey)i)) {
+					HoldingKeyboardKeys[HoldingKeyboardKeyCount] = i;
+					HoldingKeyboardKeyCount++;
+					if (HoldingKeyboardKeyCount >= HoldingKeyboardKeys.Length) break;
+				}
 			}
+			for (int i = 0; i < GamepadKeyCount; i++) {
+				if (Game.IsGamepadKeyHolding((GamepadKey)i)) {
+					HoldingGamepadKeys[HoldingGamepadKeyCount] = i;
+					HoldingGamepadKeyCount++;
+					if (HoldingGamepadKeyCount >= HoldingGamepadKeys.Length) break;
+				}
+			}
+			GamepadStickHolding.SetBit(0, Game.IsGamepadLeftStickHolding(Direction4.Left));
+			GamepadStickHolding.SetBit(1, Game.IsGamepadLeftStickHolding(Direction4.Right));
+			GamepadStickHolding.SetBit(2, Game.IsGamepadLeftStickHolding(Direction4.Down));
+			GamepadStickHolding.SetBit(3, Game.IsGamepadLeftStickHolding(Direction4.Up));
+			GamepadStickHolding.SetBit(4, Game.IsGamepadRightStickHolding(Direction4.Left));
+			GamepadStickHolding.SetBit(5, Game.IsGamepadRightStickHolding(Direction4.Right));
+			GamepadStickHolding.SetBit(6, Game.IsGamepadRightStickHolding(Direction4.Down));
+			GamepadStickHolding.SetBit(7, Game.IsGamepadRightStickHolding(Direction4.Up));
+			GamepadLeftStickDirectionX = stickL.x;
+			GamepadLeftStickDirectionY = stickL.y;
+			GamepadRightStickDirectionX = stickR.x;
+			GamepadRightStickDirectionY = stickR.y;
+		} else {
+			GamepadStickHolding = 0;
+			GamepadLeftStickDirectionX = 0f;
+			GamepadLeftStickDirectionY = 0f;
+			GamepadRightStickDirectionX = 0f;
+			GamepadRightStickDirectionY = 0f;
 		}
-		GamepadStickHolding.SetBit(0, Game.IsGamepadLeftStickHolding(Direction4.Left));
-		GamepadStickHolding.SetBit(1, Game.IsGamepadLeftStickHolding(Direction4.Right));
-		GamepadStickHolding.SetBit(2, Game.IsGamepadLeftStickHolding(Direction4.Down));
-		GamepadStickHolding.SetBit(3, Game.IsGamepadLeftStickHolding(Direction4.Up));
-		GamepadStickHolding.SetBit(4, Game.IsGamepadRightStickHolding(Direction4.Left));
-		GamepadStickHolding.SetBit(5, Game.IsGamepadRightStickHolding(Direction4.Right));
-		GamepadStickHolding.SetBit(6, Game.IsGamepadRightStickHolding(Direction4.Down));
-		GamepadStickHolding.SetBit(7, Game.IsGamepadRightStickHolding(Direction4.Up));
-		GamepadLeftStickDirectionX = stickL.x;
-		GamepadLeftStickDirectionY = stickL.y;
-		GamepadRightStickDirectionX = stickR.x;
-		GamepadRightStickDirectionY = stickR.y;
-
-
 	}
 
 
@@ -257,6 +279,11 @@ public class RiggedCallingMessage {
 		}
 
 	}
+
+
+	#endregion
+
+
 
 
 }

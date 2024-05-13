@@ -274,6 +274,9 @@ public abstract partial class Game {
 	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, inverse);
 	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse);
 
+	public static void IgnoreGizmos (int duration = 0) => Instance._IgnoreGizmos(duration);
+	protected abstract void _IgnoreGizmos (int duration = 0);
+
 
 	// Text
 	public static int FontCount => Instance._GetFontCount();
