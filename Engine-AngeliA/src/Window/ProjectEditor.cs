@@ -216,7 +216,7 @@ public class ProjectEditor : WindowUI {
 
 		rect.SlideDown(padding);
 
-		// Open Project Folder
+		// Open Project Folders
 		GUI.SmallLabel(rect, LABEL_LINK);
 		var _rect = rect.ShrinkLeft(GUI.LabelWidth);
 		if (GUI.SmallLinkButton(_rect, LABEL_LINK_PROJECT, out var bounds)) {
@@ -242,7 +242,7 @@ public class ProjectEditor : WindowUI {
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
 	}
 
-	
+
 	#endregion
 
 

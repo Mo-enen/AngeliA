@@ -171,6 +171,8 @@ public partial class RiggedGame {
 		RespondMessage.RequireGizmosTextureCount++;
 	}
 
+	protected override void _IgnoreGizmos (int duration = 0) { }
+
 
 	// Text
 	protected override int _GetFontCount () => CallingMessage.FontCount;

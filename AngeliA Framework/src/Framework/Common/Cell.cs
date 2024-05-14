@@ -1,7 +1,9 @@
 ﻿namespace AngeliA;
 
 public class Cell {
+	
 	public static readonly Cell EMPTY = new() { Sprite = null, TextSprite = null, SheetIndex = -1, };
+	
 	public AngeSprite Sprite;
 	public CharSprite TextSprite;
 	public int SheetIndex;
@@ -21,6 +23,7 @@ public class Cell {
 	public Color32 Color;
 	public Int4 Shift;
 	public Alignment BorderSide;
+
 	public void SetRect (IRect rect) {
 		X = rect.x;
 		Y = rect.y;
@@ -114,4 +117,5 @@ public class Cell {
 		Width = Width * scale / 1000;
 		Height = Height * scale / 1000;
 	}
+
 }

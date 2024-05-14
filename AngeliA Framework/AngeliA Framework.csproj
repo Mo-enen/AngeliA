@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
 		<AssemblyName>AngeliA Framework</AssemblyName>
 		<RootNamespace>AngeliA</RootNamespace>
 		<TargetFramework>net7.0-windows</TargetFramework>
@@ -8,7 +8,7 @@
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -19,40 +19,40 @@
 
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
-		
-		
+
+
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
-		
-  </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-    <DebugType>portable</DebugType>
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-    <DebugType>none</DebugType>
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<DebugType>portable</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Build\**" />
-    <Compile Remove="Publish\**" />
-    <EmbeddedResource Remove="Build\**" />
-    <EmbeddedResource Remove="Publish\**" />
-    <None Remove="Build\**" />
-    <None Remove="Publish\**" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<DebugType>none</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Build\**" />
+		<Compile Remove="Publish\**" />
+		<EmbeddedResource Remove="Build\**" />
+		<EmbeddedResource Remove="Publish\**" />
+		<None Remove="Build\**" />
+		<None Remove="Publish\**" />
+	</ItemGroup>
 
 	<!--Remove-->
-  <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Remove="build.bat" />
-    <None Remove="desktop.ini" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="build.bat" />
+		<None Remove="desktop.ini" />
+	</ItemGroup>
 
 </Project>

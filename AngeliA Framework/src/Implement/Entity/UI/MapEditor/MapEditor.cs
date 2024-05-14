@@ -243,14 +243,8 @@ public sealed partial class MapEditor : WindowUI {
 		IUnique.LoadFromDisk(Stream.MapRoot);
 
 		// Start
-		if (Game.GlobalFrame == 0) {
-			Game.RestartGame();
-			SetEditorMode(true);
-			Game.PassEffect_RetroDarken(1f);
-		} else {
-			SetEditorMode(false);
-		}
-
+		SetEditorMode(toPlayMode: false);
+		
 		// View
 		ResetCamera(true);
 

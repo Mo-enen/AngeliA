@@ -142,141 +142,140 @@ public class RiggedCallingMessage {
 	}
 
 
-	public void ReadDataFromPipe (BinaryReader reader) {
+	public unsafe void ReadDataFromPipe (byte* start, int maxSize) {
 
-		// Updating Data
-		CursorInScreen = reader.ReadBoolean();
-		MonitorWidth = reader.ReadInt32();
-		MonitorHeight = reader.ReadInt32();
-		ScreenWidth = reader.ReadInt32();
-		ScreenHeight = reader.ReadInt32();
-		FontCount = reader.ReadUInt16();
-		EffectEnable = reader.ReadByte();
-		IsMusicPlaying = reader.ReadBoolean();
-		DeviceData = reader.ReadByte();
-		MouseScrollDelta = DeviceData.GetBit(4) ? reader.ReadInt32() : 0;
-		MousePosX = reader.ReadInt32();
-		MousePosY = reader.ReadInt32();
-		HoldingKeyboardKeyCount = reader.ReadByte();
-		for (int i = 0; i < HoldingKeyboardKeyCount; i++) {
-			HoldingKeyboardKeys[i] = reader.ReadInt32();
-		}
-		HoldingGamepadKeyCount = reader.ReadByte();
-		for (int i = 0; i < HoldingGamepadKeyCount; i++) {
-			HoldingGamepadKeys[i] = reader.ReadInt32();
-		}
-		GamepadStickHolding = reader.ReadByte();
-		GamepadLeftStickDirectionX = reader.ReadSingle();
-		GamepadLeftStickDirectionY = reader.ReadSingle();
-		GamepadRightStickDirectionX = reader.ReadSingle();
-		GamepadRightStickDirectionY = reader.ReadSingle();
-
-		CharRequiredCount = reader.ReadInt32();
-		for (int i = 0; i < CharRequiredCount; i++) {
-			char c = reader.ReadChar();
-			int fontIndex = reader.ReadInt32();
-			bool valid = reader.ReadBoolean();
-			if (valid) {
-				float advance = reader.ReadSingle();
-				var offset = new FRect(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-				RequiredChars[i] = new CharRequirementData() {
-					Char = c,
-					Advance = advance,
-					FontIndex = fontIndex,
-					Offset = offset,
-					Valid = valid,
-				};
-			} else {
-				RequiredChars[i] = new CharRequirementData() {
-					Char = c,
-					FontIndex = fontIndex,
-					Valid = valid,
-					Advance = default,
-					Offset = default,
-				};
-			}
-		}
-
-		RequiringGizmosTextureIDCount = reader.ReadInt32();
-		for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
-			RequiringGizmosTextureIDs[i] = reader.ReadUInt32();
-		}
-
-		RequireGameMessageInvoke = reader.ReadByte();
-
-		PressedCharCount = reader.ReadByte();
-		for (int i = 0; i < PressedCharCount; i++) {
-			PressedChars[i] = reader.ReadChar();
-		}
-
-		PressedKeyCount = reader.ReadByte();
-		for (int i = 0; i < PressedKeyCount; i++) {
-			PressedGuiKeys[i] = reader.ReadInt32();
-		}
+		//CursorInScreen = reader.ReadBoolean();
+		//MonitorWidth = reader.ReadInt32();
+		//MonitorHeight = reader.ReadInt32();
+		//ScreenWidth = reader.ReadInt32();
+		//ScreenHeight = reader.ReadInt32();
+		//FontCount = reader.ReadUInt16();
+		//EffectEnable = reader.ReadByte();
+		//IsMusicPlaying = reader.ReadBoolean();
+		//DeviceData = reader.ReadByte();
+		//MouseScrollDelta = DeviceData.GetBit(4) ? reader.ReadInt32() : 0;
+		//MousePosX = reader.ReadInt32();
+		//MousePosY = reader.ReadInt32();
+		//HoldingKeyboardKeyCount = reader.ReadByte();
+		//for (int i = 0; i < HoldingKeyboardKeyCount; i++) {
+		//	HoldingKeyboardKeys[i] = reader.ReadInt32();
+		//}
+		//HoldingGamepadKeyCount = reader.ReadByte();
+		//for (int i = 0; i < HoldingGamepadKeyCount; i++) {
+		//	HoldingGamepadKeys[i] = reader.ReadInt32();
+		//}
+		//GamepadStickHolding = reader.ReadByte();
+		//GamepadLeftStickDirectionX = reader.ReadSingle();
+		//GamepadLeftStickDirectionY = reader.ReadSingle();
+		//GamepadRightStickDirectionX = reader.ReadSingle();
+		//GamepadRightStickDirectionY = reader.ReadSingle();
+		//
+		//CharRequiredCount = reader.ReadInt32();
+		//for (int i = 0; i < CharRequiredCount; i++) {
+		//	char c = reader.ReadChar();
+		//	int fontIndex = reader.ReadInt32();
+		//	bool valid = reader.ReadBoolean();
+		//	if (valid) {
+		//		float advance = reader.ReadSingle();
+		//		var offset = new FRect(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+		//		RequiredChars[i] = new CharRequirementData() {
+		//			Char = c,
+		//			Advance = advance,
+		//			FontIndex = fontIndex,
+		//			Offset = offset,
+		//			Valid = valid,
+		//		};
+		//	} else {
+		//		RequiredChars[i] = new CharRequirementData() {
+		//			Char = c,
+		//			FontIndex = fontIndex,
+		//			Valid = valid,
+		//			Advance = default,
+		//			Offset = default,
+		//		};
+		//	}
+		//}
+		//
+		//RequiringGizmosTextureIDCount = reader.ReadInt32();
+		//for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
+		//	RequiringGizmosTextureIDs[i] = reader.ReadUInt32();
+		//}
+		//
+		//RequireGameMessageInvoke = reader.ReadByte();
+		//
+		//PressedCharCount = reader.ReadByte();
+		//for (int i = 0; i < PressedCharCount; i++) {
+		//	PressedChars[i] = reader.ReadChar();
+		//}
+		//
+		//PressedKeyCount = reader.ReadByte();
+		//for (int i = 0; i < PressedKeyCount; i++) {
+		//	PressedGuiKeys[i] = reader.ReadInt32();
+		//}
 
 	}
 
 
-	public void WriteDataToPipe (BinaryWriter writer) {
+	public unsafe void WriteDataToPipe (byte* start, int maxSize) {
 
-		writer.Write(CursorInScreen);
-		writer.Write(MonitorWidth);
-		writer.Write(MonitorHeight);
-		writer.Write(ScreenWidth);
-		writer.Write(ScreenHeight);
-		writer.Write(FontCount);
-		writer.Write(EffectEnable);
-		writer.Write(IsMusicPlaying);
-		writer.Write(DeviceData);
-		if (DeviceData.GetBit(4)) writer.Write(MouseScrollDelta);
-		writer.Write(MousePosX);
-		writer.Write(MousePosY);
-		writer.Write(HoldingKeyboardKeyCount);
-		for (int i = 0; i < HoldingKeyboardKeyCount; i++) {
-			writer.Write(HoldingKeyboardKeys[i]);
-		}
-		writer.Write(HoldingGamepadKeyCount);
-		for (int i = 0; i < HoldingGamepadKeyCount; i++) {
-			writer.Write(HoldingGamepadKeys[i]);
-		}
-		writer.Write(GamepadStickHolding);
-		writer.Write(GamepadLeftStickDirectionX);
-		writer.Write(GamepadLeftStickDirectionY);
-		writer.Write(GamepadRightStickDirectionX);
-		writer.Write(GamepadRightStickDirectionY);
-
-		writer.Write(CharRequiredCount);
-		for (int i = 0; i < CharRequiredCount; i++) {
-			var data = RequiredChars[i];
-			writer.Write(data.Char);
-			writer.Write(data.FontIndex);
-			writer.Write(data.Valid);
-			if (data.Valid) {
-				writer.Write(data.Advance);
-				writer.Write(data.Offset.x);
-				writer.Write(data.Offset.y);
-				writer.Write(data.Offset.width);
-				writer.Write(data.Offset.height);
-			}
-		}
-
-		writer.Write(RequiringGizmosTextureIDCount);
-		for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
-			writer.Write(RequiringGizmosTextureIDs[i]);
-		}
-
-		writer.Write(RequireGameMessageInvoke);
-		RequireGameMessageInvoke = 0;
-
-		writer.Write(PressedCharCount);
-		for (int i = 0; i < PressedCharCount; i++) {
-			writer.Write(PressedChars[i]);
-		}
-
-		writer.Write(PressedKeyCount);
-		for (int i = 0; i < PressedKeyCount; i++) {
-			writer.Write(PressedGuiKeys[i]);
-		}
+		//writer.Write(CursorInScreen);
+		//writer.Write(MonitorWidth);
+		//writer.Write(MonitorHeight);
+		//writer.Write(ScreenWidth);
+		//writer.Write(ScreenHeight);
+		//writer.Write(FontCount);
+		//writer.Write(EffectEnable);
+		//writer.Write(IsMusicPlaying);
+		//writer.Write(DeviceData);
+		//if (DeviceData.GetBit(4)) writer.Write(MouseScrollDelta);
+		//writer.Write(MousePosX);
+		//writer.Write(MousePosY);
+		//writer.Write(HoldingKeyboardKeyCount);
+		//for (int i = 0; i < HoldingKeyboardKeyCount; i++) {
+		//	writer.Write(HoldingKeyboardKeys[i]);
+		//}
+		//writer.Write(HoldingGamepadKeyCount);
+		//for (int i = 0; i < HoldingGamepadKeyCount; i++) {
+		//	writer.Write(HoldingGamepadKeys[i]);
+		//}
+		//writer.Write(GamepadStickHolding);
+		//writer.Write(GamepadLeftStickDirectionX);
+		//writer.Write(GamepadLeftStickDirectionY);
+		//writer.Write(GamepadRightStickDirectionX);
+		//writer.Write(GamepadRightStickDirectionY);
+		//
+		//writer.Write(CharRequiredCount);
+		//for (int i = 0; i < CharRequiredCount; i++) {
+		//	var data = RequiredChars[i];
+		//	writer.Write(data.Char);
+		//	writer.Write(data.FontIndex);
+		//	writer.Write(data.Valid);
+		//	if (data.Valid) {
+		//		writer.Write(data.Advance);
+		//		writer.Write(data.Offset.x);
+		//		writer.Write(data.Offset.y);
+		//		writer.Write(data.Offset.width);
+		//		writer.Write(data.Offset.height);
+		//	}
+		//}
+		//
+		//writer.Write(RequiringGizmosTextureIDCount);
+		//for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
+		//	writer.Write(RequiringGizmosTextureIDs[i]);
+		//}
+		//
+		//writer.Write(RequireGameMessageInvoke);
+		//RequireGameMessageInvoke = 0;
+		//
+		//writer.Write(PressedCharCount);
+		//for (int i = 0; i < PressedCharCount; i++) {
+		//	writer.Write(PressedChars[i]);
+		//}
+		//
+		//writer.Write(PressedKeyCount);
+		//for (int i = 0; i < PressedKeyCount; i++) {
+		//	writer.Write(PressedGuiKeys[i]);
+		//}
 
 	}
 

@@ -1,6 +1,7 @@
 ﻿global using Debug = AngeliA.Debug;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using AngeliA;
 
@@ -349,6 +350,7 @@ internal static class Engine {
 		);
 		RigLastCalledFrame = Game.GlobalFrame;
 	}
+
 
 
 	[OnGameUpdateLater(-4096)]
@@ -950,7 +952,7 @@ internal static class Engine {
 		if (Transceiver.RigProcessRunning) {
 			// Rig Running
 			if (RigLastCalledFrame == Game.GlobalFrame) {
-				Transceiver.Respond();
+				Transceiver.Respond(PixelEditor.SheetIndex);
 			}
 		} else if (
 			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
@@ -1050,6 +1052,10 @@ internal static class Engine {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireFocusInvoke();
 		} else if (index != RigMapEditorWindowIndex && CurrentWindowIndex == index) {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireLostFocusInvoke();
+			Stage.SetViewRectImmediately(
+				new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000, Game.DefaultViewHeight),
+				remapAllRenderingCells: true
+			);
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;

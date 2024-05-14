@@ -6,7 +6,7 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
-		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 		<StartupObject></StartupObject>
 		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
@@ -19,7 +19,7 @@
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<Optimize>True</Optimize>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
-		
+
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
 
