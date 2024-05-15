@@ -116,6 +116,18 @@ public abstract partial class Game {
 
 
 	// View
+	public static IRect GetCameraRectFromViewRect (IRect viewRect) {
+		float ratio = (float)ScreenWidth / ScreenHeight;
+		var cRect = new IRect(
+			viewRect.x,
+			viewRect.y,
+			(int)(viewRect.height * ratio),
+			viewRect.height
+		);
+		int cOffsetX = (viewRect.width - cRect.width) / 2;
+		cRect.x += cOffsetX;
+		return cRect;
+	}
 	public static int GetViewWidthFromViewHeight (int viewHeight) => Const.VIEW_RATIO * viewHeight / 1000;
 	public static int DefaultViewHeight => Instance._DefaultViewHeight;
 	protected virtual int _DefaultViewHeight => 26 * Const.CEL;

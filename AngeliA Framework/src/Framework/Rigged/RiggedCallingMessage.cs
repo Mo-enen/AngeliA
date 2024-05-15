@@ -75,18 +75,21 @@ public class RiggedCallingMessage {
 	#region --- API ---
 
 
-	public void LoadDataFromEngine (bool ignoreInput = false) {
+	public void LoadDataFromEngine (bool ignoreInput, int leftPadding) {
 
 		int mouseScroll = Game.MouseScrollDelta;
 		var mousePos = Game.MouseScreenPosition;
 		var stickL = Game.GamepadLeftStickDirection;
 		var stickR = Game.GamepadRightStickDirection;
+		int screenLeftPadding = leftPadding * Game.ScreenWidth / Renderer.CameraRect.width;
+		mousePos.x -= screenLeftPadding;
 
 		CursorInScreen = Game.CursorInScreen;
 		MonitorWidth = Game.MonitorWidth;
 		MonitorHeight = Game.MonitorHeight;
-		ScreenWidth = Game.ScreenWidth;
+		ScreenWidth = Game.ScreenWidth - screenLeftPadding;
 		ScreenHeight = Game.ScreenHeight;
+
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			EffectEnable.SetBit(i, Game.GetEffectEnable(i));
 		}
@@ -137,6 +140,7 @@ public class RiggedCallingMessage {
 			GamepadRightStickDirectionX = 0f;
 			GamepadRightStickDirectionY = 0f;
 		}
+
 	}
 
 
@@ -228,7 +232,6 @@ public class RiggedCallingMessage {
 
 	public unsafe void WriteDataToPipe (byte* pointer) {
 
-
 		try {
 
 			Util.Write(ref pointer, CursorInScreen);
@@ -236,6 +239,7 @@ public class RiggedCallingMessage {
 			Util.Write(ref pointer, MonitorHeight);
 			Util.Write(ref pointer, ScreenWidth);
 			Util.Write(ref pointer, ScreenHeight);
+
 			Util.Write(ref pointer, EffectEnable);
 			Util.Write(ref pointer, IsMusicPlaying);
 			Util.Write(ref pointer, DeviceData);

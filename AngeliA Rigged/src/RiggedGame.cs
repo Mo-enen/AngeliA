@@ -221,6 +221,9 @@ public partial class RiggedGame : Game {
 		RespondMessage.ViewX = Stage.ViewRect.x;
 		RespondMessage.ViewY = Stage.ViewRect.y;
 		RespondMessage.ViewHeight = Stage.ViewRect.height;
+		RespondMessage.SkyBottom = Sky.SkyTintBottomColor;
+		RespondMessage.SkyTop = Sky.SkyTintTopColor;
+
 		unsafe {
 			RespondMessage.WriteDataToPipe(BufferPointer + 1);
 			*BufferPointer = 1;

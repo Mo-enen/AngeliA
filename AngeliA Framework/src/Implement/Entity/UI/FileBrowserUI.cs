@@ -326,7 +326,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		int buttonWidth = Unify(108);
 		int typeFieldWidth = Unify(108);
 		int labelWidth = Unify(128);
-		int frameBorder = Unify(1.5f);
+		int frameBorder = Unify(1);
 		int fieldHeight = Unify(32);
 		var fieldRect = new IRect(
 			panelRect.x + labelWidth + padding * 2,

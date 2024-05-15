@@ -50,7 +50,7 @@ public partial class GUISkin {
 		BodySpriteDisable = BuiltInSprite.UI_ITEM_FRAME,
 
 		ContentColorDisable = Color32.WHITE_128,
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
 	public readonly GUIStyle Scrollbar = new() {
@@ -62,7 +62,7 @@ public partial class GUISkin {
 		BodyColorHover = Color32.GREY_46,
 		BodyColorDown = Color32.GREY_38,
 		BodyColorDisable = Color32.CLEAR,
-		BodyBorder = Int4.Direction(Const.ART_SCALE / 2, Const.ART_SCALE / 2, Const.ART_SCALE / 2, Const.ART_SCALE / 2),
+		BodyBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
 	// Toggle
@@ -71,10 +71,10 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_TOGGLE_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_TOGGLE_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_TOGGLE,
-		ContentShift = new(0, Const.ART_SCALE * 2),
-		ContentShiftHover = new(0, Const.ART_SCALE * 2),
-		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentShift = new(0, 2),
+		ContentShiftHover = new(0, 2),
+		ContentShiftDisable = new(0, 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
 	public readonly GUIStyle ToggleMark = new() {
@@ -93,7 +93,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -111,7 +111,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -129,7 +129,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -150,10 +150,10 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_DARK_DROPDOWN_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_DARK_DROPDOWN_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_DARK_DROPDOWN,
-		ContentShift = new(0, Const.ART_SCALE * 2),
-		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
-		ContentShiftHover = new(0, Const.ART_SCALE * 2),
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentShift = new(0, 2),
+		ContentShiftDisable = new(0, 2),
+		ContentShiftHover = new(0, 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,
@@ -168,10 +168,10 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_DROPDOWN_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_DROPDOWN_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_DROPDOWN,
-		ContentShift = new(0, Const.ART_SCALE * 2),
-		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
-		ContentShiftHover = new(0, Const.ART_SCALE * 2),
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentShift = new(0, 2),
+		ContentShiftDisable = new(0, 2),
+		ContentShiftHover = new(0, 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,
@@ -186,10 +186,10 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_SMALL_DARK_DROPDOWN_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_SMALL_DARK_DROPDOWN_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_SMALL_DARK_DROPDOWN,
-		ContentShift = new(0, Const.ART_SCALE * 2),
-		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
-		ContentShiftHover = new(0, Const.ART_SCALE * 2),
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentShift = new(0, 2),
+		ContentShiftDisable = new(0, 2),
+		ContentShiftHover = new(0, 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,
@@ -204,10 +204,10 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_SMALL_DROPDOWN_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_SMALL_DROPDOWN_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_SMALL_DROPDOWN,
-		ContentShift = new(0, Const.ART_SCALE * 2),
-		ContentShiftDisable = new(0, Const.ART_SCALE * 2),
-		ContentShiftHover = new(0, Const.ART_SCALE * 2),
-		ContentBorder = Int4.Direction(Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2, Const.ART_SCALE * 2),
+		ContentShift = new(0, 2),
+		ContentShiftDisable = new(0, 2),
+		ContentShiftHover = new(0, 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,

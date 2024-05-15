@@ -115,8 +115,6 @@ public partial class MapEditor {
 
 	private void Initialize_Palette () {
 
-		Renderer.TryGetSprite("Cloud 0".AngeHash(), out var testSP);
-
 		DraggingForReorderPaletteGroup = -1;
 		DraggingForReorderPaletteItem = -1;
 		CurrentPaletteTab = PaletteTabType.BuiltIn;

@@ -72,6 +72,8 @@ public class RiggedRespondMessage {
 	public int ViewY;
 	public int ViewHeight;
 	public int RequireSetCursorIndex;
+	public Color32 SkyTop;
+	public Color32 SkyBottom;
 	public byte EffectEnable;
 	public byte HasEffectParams;
 	public float e_DarkenAmount;
@@ -119,6 +121,8 @@ public class RiggedRespondMessage {
 			}
 			Layers[i].CellCount = 0;
 		}
+		SkyTop.a = 255;
+		SkyBottom.a = 255;
 	}
 
 
@@ -137,19 +141,28 @@ public class RiggedRespondMessage {
 	}
 
 
-	public void ApplyToEngine (RiggedCallingMessage callingMessage, int sheetIndex, bool renderingOnly) {
+	public void ApplyToEngine (
+		RiggedCallingMessage callingMessage, int sheetIndex, bool renderingOnly, bool ignoreInput, int leftPadding
+	) {
 
 		if (renderingOnly) goto _RENDER_;
 
 		// View
 		ViewHeight = ViewHeight.GreaterOrEquel(Game.MinViewHeight);
+		int oldViewHeight = Stage.ViewRect.height;
 		Stage.SetViewRectImmediately(
 			new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight),
 			remapAllRenderingCells: true
 		);
+		if (oldViewHeight != ViewHeight) {
+			leftPadding = leftPadding * ViewHeight / oldViewHeight;
+		}
+
+		// Sky
+		Sky.ForceSkyboxTint(SkyTop, SkyBottom, 3);
 
 		// Cursor
-		if (RequireSetCursorIndex != int.MinValue) {
+		if (!ignoreInput && RequireSetCursorIndex != int.MinValue) {
 			if (RequireSetCursorIndex == -3) {
 				Game.SetCursorToNormal();
 			} else {
@@ -182,7 +195,7 @@ public class RiggedRespondMessage {
 		// Gizmos Rect
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
-			Game.DrawGizmosRect(data.Rect, data.Color);
+			Game.DrawGizmosRect(data.Rect.Shift(leftPadding / 2, 0), data.Color);
 		}
 
 		// Gizmos Texture
@@ -207,7 +220,7 @@ public class RiggedRespondMessage {
 			}
 			// Draw Texture
 			if (texture != null) {
-				Game.DrawGizmosTexture(data.Rect, data.Uv, texture, data.Inverse);
+				Game.DrawGizmosTexture(data.Rect.Shift(leftPadding / 2, 0), data.Uv, texture, data.Inverse);
 			}
 		}
 
@@ -240,7 +253,6 @@ public class RiggedRespondMessage {
 
 		_RENDER_:;
 
-
 		// Message Layer/Cells >> Renderer Layer/Cells
 		int oldLayer = Renderer.CurrentLayerIndex;
 		int oldSheetIndex = Renderer.CurrentSheetIndex;
@@ -261,7 +273,7 @@ public class RiggedRespondMessage {
 					if (rCell.TextSprite == null) rCell = null;
 				}
 				if (rCell == null) continue;
-				rCell.X = cell.X;
+				rCell.X = cell.X + leftPadding / 2;
 				rCell.Y = cell.Y;
 				rCell.Z = cell.Z;
 				rCell.Width = cell.Width;
@@ -294,7 +306,6 @@ public class RiggedRespondMessage {
 			Game.PassEffect_Vignette(e_VigRadius, e_VigFeather, e_VigOffsetX, e_VigOffsetY, e_VigRound, 1);
 		}
 
-
 	}
 
 
@@ -306,6 +317,15 @@ public class RiggedRespondMessage {
 			ViewY = Util.ReadInt(ref pointer);
 			ViewHeight = Util.ReadInt(ref pointer);
 			RequireSetCursorIndex = Util.ReadInt(ref pointer);
+
+			SkyTop.r = Util.ReadByte(ref pointer);
+			SkyTop.g = Util.ReadByte(ref pointer);
+			SkyTop.b = Util.ReadByte(ref pointer);
+
+			SkyBottom.r = Util.ReadByte(ref pointer);
+			SkyBottom.g = Util.ReadByte(ref pointer);
+			SkyBottom.b = Util.ReadByte(ref pointer);
+
 			EffectEnable = Util.ReadByte(ref pointer);
 			HasEffectParams = Util.ReadByte(ref pointer);
 
@@ -419,6 +439,15 @@ public class RiggedRespondMessage {
 			Util.Write(ref pointer, ViewY);
 			Util.Write(ref pointer, ViewHeight);
 			Util.Write(ref pointer, RequireSetCursorIndex);
+
+			Util.Write(ref pointer, SkyTop.r);
+			Util.Write(ref pointer, SkyTop.g);
+			Util.Write(ref pointer, SkyTop.b);
+
+			Util.Write(ref pointer, SkyBottom.r);
+			Util.Write(ref pointer, SkyBottom.g);
+			Util.Write(ref pointer, SkyBottom.b);
+
 			Util.Write(ref pointer, EffectEnable);
 			Util.Write(ref pointer, HasEffectParams);
 

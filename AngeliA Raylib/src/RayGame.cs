@@ -160,7 +160,7 @@ public partial class RayGame : Game {
 
 		// Music
 		Raylib.UpdateMusicStream(CurrentBGM);
-
+		
 		// Begin Draw
 		bool hasScreenEffectEnabled = false;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {

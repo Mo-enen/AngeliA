@@ -46,6 +46,8 @@ internal static class Engine {
 	// Const
 	private const int NOTIFY_DURATION = 120;
 	private const int HUB_PANEL_WIDTH = 360;
+	private const int WINDOW_BAR_WIDTH_FULL = 160;
+	private const int WINDOW_BAR_WIDTH_NORMAL = 42;
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
 	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
@@ -343,23 +345,27 @@ internal static class Engine {
 			!Transceiver.RigProcessRunning ||
 			CurrentWindowIndex != RigMapEditorWindowIndex
 		) return;
-		Transceiver.Call(ignoreInput:
-			(Input.MouseLeftButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseLeftDownGlobalPosition)) ||
-			(Input.MouseRightButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseRightDownGlobalPosition)) ||
-			(Input.MouseMidButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseMidDownGlobalPosition)) ||
-			Game.PauselessFrame < LastShowingGenericUIFrame + 6
+		Transceiver.Call(
+			ignoreInput:
+				(Input.MouseLeftButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseLeftDownGlobalPosition)) ||
+				(Input.MouseRightButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseRightDownGlobalPosition)) ||
+				(Input.MouseMidButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseMidDownGlobalPosition)) ||
+				Game.PauselessFrame < LastShowingGenericUIFrame + 6,
+			leftPadding:
+				(FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8)
 		);
 		RigLastCalledFrame = Game.GlobalFrame;
 	}
-
 
 
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
 		GUI.Enable = true;
-		GUI.UnifyBasedOnMonitor = true;
-		Sky.ForceSkyboxTint(GUI.Skin.Background);
+		GUI.ForceUnifyBasedOnMonitor = true;
+		if (CurrentWindowIndex != RigMapEditorWindowIndex) {
+			Sky.ForceSkyboxTint(GUI.Skin.Background);
+		}
 
 		using var _ = Scope.Sheet(ThemeSheet.Sprites.Count > 0 ? ThemeSheetIndex : -1);
 		using var __ = Scope.GuiSkin(ThemeSkin);
@@ -567,7 +573,7 @@ internal static class Engine {
 
 		// Window
 		int contentPadding = GUI.Unify(8);
-		int barWidth = FullsizeMenu.Value ? GUI.Unify(160) : GUI.Unify(42) + contentPadding;
+		int barWidth = (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + contentPadding;
 		var cameraRect = Renderer.CameraRect;
 		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
 		var mousePos = Input.MouseGlobalPosition;

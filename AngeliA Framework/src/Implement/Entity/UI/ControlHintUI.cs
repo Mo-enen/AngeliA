@@ -138,7 +138,7 @@ public class ControlHintUI : EntityUI {
 				Const.PIXEL, DPadCenterPos.x + x + screenRect.x, DPadCenterPos.y + y + screenRect.y,
 				500, 0, (int)Float3.SignedAngle(Float3.up, (Float2)nDir, Float3.back),
 				Unify(3),
-				Unify(nDir.magnitude / 50f),
+				Unify(nDir.magnitude.RoundToInt() / 50),
 				DirectionTint
 			);
 		}

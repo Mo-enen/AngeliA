@@ -50,9 +50,9 @@ public static class Sky {
 	}
 
 
-	public static void ForceSkyboxTint (Color32 color) => ForceSkyboxTint(color, color);
-	public static void ForceSkyboxTint (Color32 top, Color32 bottom) {
-		ForceBackgroundTintFrame = Game.GlobalFrame + 1;
+	public static void ForceSkyboxTint (Color32 color, int duration = 1) => ForceSkyboxTint(color, color, duration);
+	public static void ForceSkyboxTint (Color32 top, Color32 bottom, int duration = 1) {
+		ForceBackgroundTintFrame = Game.GlobalFrame + duration;
 		SkyTintTopColor = top;
 		SkyTintBottomColor = bottom;
 	}

@@ -165,12 +165,16 @@ public abstract partial class Game {
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
-			if (AllowPause && Input.GameKeyUp(Gamekey.Start)) {
-				if (IsPlaying) {
-					PauseGame();
-				} else {
-					UnpauseGame();
+			if (AllowPause) {
+				if (Input.GameKeyUp(Gamekey.Start)) {
+					if (IsPlaying) {
+						PauseGame();
+					} else {
+						UnpauseGame();
+					}
 				}
+			} else if (IsPausing) {
+				UnpauseGame();
 			}
 
 			// Grow Frame
@@ -273,10 +277,7 @@ public abstract partial class Game {
 	}
 
 
-	public static void UnpauseGame () {
-		if (IsPlaying) return;
-		IsPlaying = true;
-	}
+	public static void UnpauseGame () => IsPlaying = true;
 
 
 	public static void PauseGame () {

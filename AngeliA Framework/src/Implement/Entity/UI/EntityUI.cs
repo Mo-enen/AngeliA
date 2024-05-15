@@ -65,6 +65,5 @@ public abstract class EntityUI : Entity {
 
 	// API
 	protected static int Unify (int value) => GUI.Unify(value);
-	protected static int Unify (float value) => GUI.Unify(value);
 
 }

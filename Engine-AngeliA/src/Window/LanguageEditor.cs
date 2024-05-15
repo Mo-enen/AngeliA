@@ -132,7 +132,7 @@ public partial class LanguageEditor : WindowUI {
 		panelRect.y += labelHeight;
 
 		// Line
-		Renderer.DrawPixel(panelRect.EdgeInside(Direction4.Down, Unify(1.5f)), Color32.GREY_12, 1);
+		Renderer.DrawPixel(panelRect.EdgeInside(Direction4.Down, Unify(1)), Color32.GREY_12, 1);
 
 		// + Key
 		var rect = panelRect;
@@ -151,7 +151,7 @@ public partial class LanguageEditor : WindowUI {
 		rect.x += rect.width;
 
 		// Line
-		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1.5f)), Color32.GREY_12, 2);
+		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
 
 		// + Language
 		rect.width = Unify(108);

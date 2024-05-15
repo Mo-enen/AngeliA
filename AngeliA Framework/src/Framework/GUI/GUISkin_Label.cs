@@ -38,9 +38,9 @@ public partial class GUISkin {
 			ContentColorDisable = (dark ? Color32.GREY_32 : grey ? Color32.GREY_128 : Color32.GREY_245).WithNewA(128),
 
 			ContentBorder =
-				pattern.HasFlag(LabelPattern.LargeBorder) ? Int4.one * Const.ART_SCALE * 4 :
-				pattern.HasFlag(LabelPattern.SmallBorder) ? Int4.one * Const.ART_SCALE :
-				pattern.HasFlag(LabelPattern.Border) ? Int4.one * Const.ART_SCALE * 2 :
+				pattern.HasFlag(LabelPattern.LargeBorder) ? Int4.one * 4 :
+				pattern.HasFlag(LabelPattern.SmallBorder) ? Int4.one * 1 :
+				pattern.HasFlag(LabelPattern.Border) ? Int4.one * 2 :
 				null,
 			CharSize =
 				pattern.HasFlag(LabelPattern.Auto) ? -1 :

@@ -435,6 +435,8 @@ public sealed partial class MapEditor : WindowUI {
 		Width = mainRect.width;
 		Height = mainRect.height;
 
+		UpdatePanelRect(Renderer.CameraRect);
+
 		// Cursor
 		if (!IsPlaying) Cursor.RequireCursor(int.MinValue);
 
@@ -459,34 +461,6 @@ public sealed partial class MapEditor : WindowUI {
 		}
 		if (DraggingForReorderPaletteGroup >= 0 && DraggingForReorderPaletteItem >= 0) {
 			DraggingForReorderPaletteGroup = -1;
-		}
-
-		// Panel Rect
-		PanelRect.width = Unify(PANEL_WIDTH);
-		PanelRect.height = mainRect.height;
-		PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width, 200);
-		PanelRect.x = mainRect.x + PanelOffsetX;
-		PanelRect.y = mainRect.y;
-
-		// Toolbar Rect
-		int HEIGHT = Unify(TOOL_BAR_HEIGHT);
-		ToolbarRect.width = PanelRect.width;
-		ToolbarRect.height = HEIGHT;
-		ToolbarRect.y = mainRect.yMax - HEIGHT;
-		ToolbarOffsetX = ToolbarOffsetX.LerpTo(IsPlaying || DroppingPlayer ? -ToolbarRect.width : 0, 200);
-		ToolbarRect.x = mainRect.x + ToolbarOffsetX;
-
-		// Check Point Lane Rect
-		CheckPointLaneRect.x = mainRect.x;
-		CheckPointLaneRect.y = mainRect.y;
-		CheckPointLaneRect.width = Unify(PANEL_WIDTH);
-		CheckPointLaneRect.height = ToolbarRect.y - CheckPointLaneRect.y;
-
-		// Hint
-		if (IsEditing) {
-			ControlHintUI.ForceShowHint();
-			ControlHintUI.ForceHideGamepad();
-			ControlHintUI.ForceOffset(Util.Max(PanelRect.xMax, CheckPointLaneRect.xMax) - mainRect.x, 0);
 		}
 
 		// Auto Save
@@ -601,6 +575,7 @@ public sealed partial class MapEditor : WindowUI {
 				TargetViewRect.y = (pivotY - newCameraHeight * mousePosY01 - (newHeight - newCameraHeight) / 2f).RoundToInt();
 				TargetViewRect.width = newWidth;
 				TargetViewRect.height = newHeight;
+
 			}
 		}
 
@@ -610,8 +585,12 @@ public sealed partial class MapEditor : WindowUI {
 		if (ViewRect != TargetViewRect) {
 			ViewRect = ViewRect.LerpTo(TargetViewRect, 300);
 		}
-		Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue);
-		Stage.SetViewSizeDelay(ViewRect.height, 1000, int.MaxValue);
+
+		Stage.SetViewRectImmediately(ViewRect, true);
+		UpdatePanelRect(Renderer.CameraRect);
+
+		//Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue);
+		//Stage.SetViewSizeDelay(ViewRect.height, 1000, int.MaxValue);
 	}
 
 
@@ -1284,6 +1263,39 @@ public sealed partial class MapEditor : WindowUI {
 			SelectingPaletteItem = SearchResult[index];
 			PaletteSearchScrollY = index - 3;
 		}
+	}
+
+
+	private void UpdatePanelRect (IRect mainRect) {
+
+		// Panel Rect
+		PanelRect.width = Unify(PANEL_WIDTH);
+		PanelRect.height = mainRect.height;
+		PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width, 200);
+		PanelRect.x = mainRect.x + PanelOffsetX;
+		PanelRect.y = mainRect.y;
+
+		// Toolbar Rect
+		int HEIGHT = Unify(TOOL_BAR_HEIGHT);
+		ToolbarRect.width = PanelRect.width;
+		ToolbarRect.height = HEIGHT;
+		ToolbarRect.y = mainRect.yMax - HEIGHT;
+		ToolbarOffsetX = ToolbarOffsetX.LerpTo(IsPlaying || DroppingPlayer ? -ToolbarRect.width : 0, 200);
+		ToolbarRect.x = mainRect.x + ToolbarOffsetX;
+
+		// Check Point Lane Rect
+		CheckPointLaneRect.x = mainRect.x;
+		CheckPointLaneRect.y = mainRect.y;
+		CheckPointLaneRect.width = Unify(PANEL_WIDTH);
+		CheckPointLaneRect.height = ToolbarRect.y - CheckPointLaneRect.y;
+
+		// Hint
+		if (IsEditing) {
+			ControlHintUI.ForceShowHint();
+			ControlHintUI.ForceHideGamepad();
+			ControlHintUI.ForceOffset(Util.Max(PanelRect.xMax, CheckPointLaneRect.xMax) - mainRect.x, 0);
+		}
+
 	}
 
 

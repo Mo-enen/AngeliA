@@ -192,7 +192,6 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 
 	protected static int Unify (int value) => GUI.Unify(value);
-	protected static int Unify (float value) => GUI.Unify(value);
 
 
 	// Badges

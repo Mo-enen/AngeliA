@@ -36,6 +36,8 @@ public class RiggedTransceiver {
 	private unsafe byte* BufferPointer;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
+	private int IgnoreInputFrame = -1;
+	private int LeftPadding = 0;
 
 
 	#endregion
@@ -152,10 +154,12 @@ public class RiggedTransceiver {
 	}
 
 
-	public unsafe void Call (bool ignoreInput = false) {
+	public unsafe void Call (bool ignoreInput, int leftPadding) {
 		// Engine >> Rig
+		IgnoreInputFrame = ignoreInput ? Game.PauselessFrame : IgnoreInputFrame;
 		if (*BufferPointer == 0) return;
-		CallingMessage.LoadDataFromEngine(ignoreInput);
+		LeftPadding = leftPadding;
+		CallingMessage.LoadDataFromEngine(ignoreInput, leftPadding);
 		CallingMessage.WriteDataToPipe(BufferPointer + 1);
 		*BufferPointer = 0;
 	}
@@ -163,33 +167,35 @@ public class RiggedTransceiver {
 
 	public unsafe void Respond (int sheetIndex) {
 		// Rig >> Engine
+		bool ignoreInput = Game.PauselessFrame == IgnoreInputFrame || !WindowUI.WindowRect.MouseInside();
 		if (*BufferPointer == 0) {
 			for (int safe = 0; safe < 8; safe++) {
 				Thread.Sleep(2);
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
-			RespondMessage.ApplyToEngine(CallingMessage, sheetIndex, renderingOnly: true);
+			RespondMessage.ApplyToEngine(
+				CallingMessage,
+				sheetIndex,
+				renderingOnly: true,
+				ignoreInput: ignoreInput,
+				leftPadding: LeftPadding
+			);
 			return;
 		}
 		_HANDLE_:;
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
-		RespondMessage.ApplyToEngine(CallingMessage, sheetIndex, renderingOnly: false);
+		RespondMessage.ApplyToEngine(
+			CallingMessage,
+			sheetIndex,
+			renderingOnly: false,
+			ignoreInput: ignoreInput,
+			leftPadding: LeftPadding
+		);
 	}
 
 
 	public void RequireFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(0, true);
 	public void RequireLostFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(1, true);
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-
 
 
 	#endregion
