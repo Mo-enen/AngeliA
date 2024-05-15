@@ -186,6 +186,7 @@ public partial class MapEditor {
 						slot.WorldY = worldY;
 						slot.IsEmpty = !Stream.TryGetMapFilePath(new(slot.WorldX, slot.WorldY, z), out string path);
 						World.LoadMapIntoTexture(path, slot.Texture);
+						Game.ForceRequireGizmosTexture(slot.Texture);
 					}
 				}
 			}

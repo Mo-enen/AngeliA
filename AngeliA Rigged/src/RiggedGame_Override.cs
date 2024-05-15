@@ -13,6 +13,7 @@ public partial class RiggedGame {
 	private readonly HashSet<uint> RequiredGizmosTextures = new();
 	private readonly int[] KeyboardHoldingFrames;
 	private readonly int[] GamepadHoldingFrames;
+	private readonly int RiggedFontCount;
 	private int CurrentPressedCharIndex;
 	private int CurrentPressedKeyIndex;
 
@@ -141,17 +142,18 @@ public partial class RiggedGame {
 
 	// GL Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
-		if (RespondMessage.RequireGizmosRectCount >= RiggedRespondMessage.REQUIRE_GIZMOS_MAX_COUNT) return;
-		var data = RespondMessage.RequireGizmosRects[RespondMessage.RequireGizmosRectCount];
-		data.Rect = rect;
-		data.Color = color;
+		if (RespondMessage.RequireGizmosRectCount >= RespondMessage.RequireGizmosRects.Length) return;
+		RespondMessage.RequireGizmosRects[RespondMessage.RequireGizmosRectCount] = new() {
+			Rect = rect,
+			Color = color,
+		};
 		RespondMessage.RequireGizmosRectCount++;
 	}
 
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
 		var _id = _GetTextureID(texture);
 		if (!_id.HasValue) return;
-		if (RespondMessage.RequireGizmosTextureCount >= RiggedRespondMessage.REQUIRE_GIZMOS_MAX_COUNT) return;
+		if (RespondMessage.RequireGizmosTextureCount >= RespondMessage.RequireGizmosTextures.Length) return;
 		uint id = _id.Value;
 		var data = new RiggedRespondMessage.GizmosTextureData() {
 			TextureRigID = id,
@@ -171,11 +173,18 @@ public partial class RiggedGame {
 		RespondMessage.RequireGizmosTextureCount++;
 	}
 
+	protected override void _ForceRequireGizmosTexture (object texture) {
+		var _id = _GetTextureID(texture);
+		if (_id.HasValue) {
+			RequiredGizmosTextures.Remove(_id.Value);
+		}
+	}
+
 	protected override void _IgnoreGizmos (int duration = 0) { }
 
 
 	// Text
-	protected override int _GetFontCount () => CallingMessage.FontCount;
+	protected override int _GetFontCount () => RiggedFontCount;
 
 	protected override string _GetClipboardText () => RayUtil.GetClipboardText();
 

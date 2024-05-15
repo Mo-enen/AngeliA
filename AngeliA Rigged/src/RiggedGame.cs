@@ -26,9 +26,9 @@ public partial class RiggedGame : Game {
 	// Data
 	private readonly Process HostProcess;
 	private readonly string MapName = "RiggedGameMapName";
-	private unsafe byte* StatePointer = null;
 	private unsafe byte* BufferPointer = null;
-	private bool Initialized = false;
+	private MemoryMappedFile MemMap = null;
+	private MemoryMappedViewAccessor ViewAccessor = null;
 
 
 	#endregion
@@ -48,6 +48,7 @@ public partial class RiggedGame : Game {
 		Util.AddAssembliesFromArgs(args);
 
 		// Get Host pID
+		RiggedFontCount = 0;
 		foreach (var arg in args) {
 			// Host Process
 			if (arg.StartsWith("-pID:")) {
@@ -60,6 +61,12 @@ public partial class RiggedGame : Game {
 			// Memory Name
 			if (arg.StartsWith("-map:")) {
 				MapName = arg[5..];
+			}
+			// Font Count
+			if (arg.StartsWith("-fontCount:")) {
+				if (int.TryParse(arg[11..], out int fCount)) {
+					RiggedFontCount = fCount;
+				}
 			}
 		}
 
@@ -106,35 +113,31 @@ public partial class RiggedGame : Game {
 
 		if (HostProcess != null && HostProcess.HasExited) return false;
 
-		if (!Initialized) {
-			Initialized = true;
-			var map = MemoryMappedFile.CreateOrOpen(MapName, capacity: Const.RIG_BUFFER_SIZE + 1);
-			var stateAccess = map.CreateViewAccessor(offset: 0, size: 1);
-			var bufferAccess = map.CreateViewAccessor(offset: 1, size: Const.RIG_BUFFER_SIZE);
+		// Init Map
+		if (MemMap == null) {
+			MemMap = MemoryMappedFile.CreateOrOpen(MapName, capacity: Const.RIG_BUFFER_SIZE);
+			ViewAccessor = MemMap.CreateViewAccessor(offset: 0, size: Const.RIG_BUFFER_SIZE);
 			unsafe {
-				stateAccess.SafeMemoryMappedViewHandle.AcquirePointer(ref StatePointer);
-				bufferAccess.SafeMemoryMappedViewHandle.AcquirePointer(ref BufferPointer);
-				Debug.Log(MapName + " " + (ulong)StatePointer);
+				ViewAccessor.SafeMemoryMappedViewHandle.AcquirePointer(ref BufferPointer);
 			}
 			RespondMessage.TransationStart();
 		}
 
+		// Sync Buffer
 		unsafe {
-			while (*StatePointer != 2) {
+			while (*BufferPointer == 1) {
 				Thread.Sleep(2);
 				if (HostProcess != null && HostProcess.HasExited) return false;
 			}
-			Debug.Log("update " + *BufferPointer);
-			CallingMessage.ReadDataFromPipe(BufferPointer, Const.RIG_BUFFER_SIZE);
+			CallingMessage.ReadDataFromPipe(BufferPointer + 1);
 		}
 		CurrentPressedCharIndex = 0;
 		CurrentPressedKeyIndex = 0;
 
 		// Char Pool
-		int fontCount = CallingMessage.FontCount;
-		if (CharPool == null && fontCount > 0) {
-			CharPool = new Dictionary<char, CharSprite>[fontCount];
-			for (int i = 0; i < fontCount; i++) {
+		if (CharPool == null && RiggedFontCount > 0) {
+			CharPool = new Dictionary<char, CharSprite>[RiggedFontCount];
+			for (int i = 0; i < RiggedFontCount; i++) {
 				CharPool[i] = new();
 			}
 		}
@@ -144,7 +147,7 @@ public partial class RiggedGame : Game {
 			var data = CallingMessage.RequiredChars[i];
 			if (data.FontIndex >= CharPool.Length) continue;
 			var pool = CharPool[data.FontIndex];
-			if (!pool.ContainsKey(data.Char)) continue;
+			if (pool.ContainsKey(data.Char)) continue;
 			pool.Add(data.Char, data.Valid ? new CharSprite() {
 				Char = data.Char,
 				Advance = data.Advance,
@@ -153,6 +156,10 @@ public partial class RiggedGame : Game {
 				Texture = null,
 			} : null);
 		}
+
+		// Update Effect
+
+
 
 		// Input
 		for (int i = 0; i < CallingMessage.HoldingKeyboardKeyCount; i++) {
@@ -177,12 +184,12 @@ public partial class RiggedGame : Game {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);
 		}
 
-		// Update
-		Update();
-
 		// Reset
 		RespondMessage.Reset();
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
+
+		// Update
+		Update();
 
 		// Renderer Layer/Cells >> Message Layer/Cells
 		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
@@ -213,21 +220,18 @@ public partial class RiggedGame : Game {
 		// Finish
 		RespondMessage.ViewX = Stage.ViewRect.x;
 		RespondMessage.ViewY = Stage.ViewRect.y;
-		RespondMessage.ViewWidth = Stage.ViewRect.width;
 		RespondMessage.ViewHeight = Stage.ViewRect.height;
 		unsafe {
-			RespondMessage.WriteDataToPipe(BufferPointer, Const.RIG_BUFFER_SIZE);
-			*StatePointer = 0;
+			RespondMessage.WriteDataToPipe(BufferPointer + 1);
+			*BufferPointer = 1;
 		}
 		return true;
 	}
 
 
 	public void OnQuitting () {
-		unsafe {
-			Marshal.FreeCoTaskMem((nint)StatePointer);
-			Marshal.FreeCoTaskMem((nint)BufferPointer);
-		}
+		MemMap?.Dispose();
+		ViewAccessor?.Dispose();
 		InvokeGameQuitting();
 	}
 

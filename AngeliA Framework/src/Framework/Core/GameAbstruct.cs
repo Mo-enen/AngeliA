@@ -116,6 +116,7 @@ public abstract partial class Game {
 
 
 	// View
+	public static int GetViewWidthFromViewHeight (int viewHeight) => Const.VIEW_RATIO * viewHeight / 1000;
 	public static int DefaultViewHeight => Instance._DefaultViewHeight;
 	protected virtual int _DefaultViewHeight => 26 * Const.CEL;
 
@@ -273,6 +274,9 @@ public abstract partial class Game {
 	public static void DrawGizmosTexture (IRect rect, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, inverse);
 	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, inverse);
 	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse);
+
+	public static void ForceRequireGizmosTexture (object texture) => Instance._ForceRequireGizmosTexture(texture);
+	protected abstract void _ForceRequireGizmosTexture (object texture);
 
 	public static void IgnoreGizmos (int duration = 0) => Instance._IgnoreGizmos(duration);
 	protected abstract void _IgnoreGizmos (int duration = 0);

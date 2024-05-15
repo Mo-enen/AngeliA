@@ -330,6 +330,7 @@ internal static class Engine {
 		}
 		ProjectPaths.Value = Projects.JoinArray(p => p.Path, ';');
 		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
+		Transceiver.Quit();
 	}
 
 
@@ -1053,7 +1054,7 @@ internal static class Engine {
 		} else if (index != RigMapEditorWindowIndex && CurrentWindowIndex == index) {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireLostFocusInvoke();
 			Stage.SetViewRectImmediately(
-				new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000, Game.DefaultViewHeight),
+				new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight / 1000, Game.DefaultViewHeight),
 				remapAllRenderingCells: true
 			);
 		}

@@ -66,12 +66,10 @@ public class RiggedRespondMessage {
 
 	// Const
 	public const int REQUIRE_CHAR_MAX_COUNT = 64;
-	public const int REQUIRE_GIZMOS_MAX_COUNT = 1024;
 
 	// Pipe
 	public int ViewX;
 	public int ViewY;
-	public int ViewWidth;
 	public int ViewHeight;
 	public int RequireSetCursorIndex;
 	public byte EffectEnable;
@@ -96,9 +94,9 @@ public class RiggedRespondMessage {
 	public char[] RequireChars = new char[REQUIRE_CHAR_MAX_COUNT];
 	public int[] RequireCharsFontIndex = new int[REQUIRE_CHAR_MAX_COUNT];
 	public int RequireGizmosRectCount;
-	public GizmosRectData[] RequireGizmosRects = new GizmosRectData[REQUIRE_GIZMOS_MAX_COUNT];
+	public GizmosRectData[] RequireGizmosRects = new GizmosRectData[256 * 256];
 	public int RequireGizmosTextureCount;
-	public GizmosTextureData[] RequireGizmosTextures = new GizmosTextureData[REQUIRE_GIZMOS_MAX_COUNT];
+	public GizmosTextureData[] RequireGizmosTextures = new GizmosTextureData[1024];
 	public RenderingLayerData[] Layers = new RenderingLayerData[RenderLayer.COUNT];
 
 	// Data
@@ -139,13 +137,14 @@ public class RiggedRespondMessage {
 	}
 
 
-	public void ApplyToEngine (RiggedCallingMessage callingMessage, int sheetIndex) {
+	public void ApplyToEngine (RiggedCallingMessage callingMessage, int sheetIndex, bool renderingOnly) {
+
+		if (renderingOnly) goto _RENDER_;
 
 		// View
-		ViewWidth = ViewWidth.GreaterOrEquel(Const.CEL * 4);
-		ViewHeight = ViewHeight.GreaterOrEquel(Const.CEL * 4);
+		ViewHeight = ViewHeight.GreaterOrEquel(Game.MinViewHeight);
 		Stage.SetViewRectImmediately(
-			new IRect(ViewX, ViewY, ViewWidth, ViewHeight),
+			new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight),
 			remapAllRenderingCells: true
 		);
 
@@ -180,18 +179,20 @@ public class RiggedRespondMessage {
 			}
 		}
 
-		// Gizmos
-		callingMessage.RequiringGizmosTextureIDCount = 0;
+		// Gizmos Rect
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
 			Game.DrawGizmosRect(data.Rect, data.Color);
 		}
+
+		// Gizmos Texture
+		callingMessage.RequiringGizmosTextureIDCount = 0;
 		for (int i = 0; i < RequireGizmosTextureCount; i++) {
 			var data = RequireGizmosTextures[i];
+			// Get Texture
 			if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) {
 				texture = null;
-				if (data.PngData != null) {
-					// Add Texture to Pool
+				if (data.PngDataLength > 0) {
 					texture = Game.PngBytesToTexture(data.PngData);
 					GizmosTexturePool.Add(data.TextureRigID, texture);
 				} else if (callingMessage.RequiringGizmosTextureIDCount < RiggedCallingMessage.REQUIRE_GIZMOS_TEXTURE_MAX_COUNT) {
@@ -199,48 +200,16 @@ public class RiggedRespondMessage {
 					callingMessage.RequiringGizmosTextureIDs[callingMessage.RequiringGizmosTextureIDCount] = data.TextureRigID;
 					callingMessage.RequiringGizmosTextureIDCount++;
 				}
+			} else if (data.PngDataLength > 0) {
+				// Override Texture
+				Game.UnloadTexture(texture);
+				texture = Game.PngBytesToTexture(data.PngData);
 			}
 			// Draw Texture
 			if (texture != null) {
 				Game.DrawGizmosTexture(data.Rect, data.Uv, texture, data.Inverse);
 			}
 		}
-
-		// Message Layer/Cells >> Renderer Layer/Cells
-		int oldLayer = Renderer.CurrentLayerIndex;
-		int oldSheetIndex = Renderer.CurrentSheetIndex;
-		Renderer.CurrentSheetIndex = sheetIndex;
-		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
-			var layerData = Layers[layer];
-			int count = layerData.CellCount;
-			Renderer.SetLayer(layer);
-			for (int i = 0; i < count; i++) {
-				var cell = layerData.Cells[i];
-				Cell rCell = null;
-				if (cell.SpriteID != 0) {
-					if (Renderer.TryGetSprite(cell.SpriteID, out var sprite, ignoreAnimation: true)) {
-						rCell = Renderer.Draw(sprite, default);
-					}
-				} else if (cell.TextSpriteChar != '\0') {
-					rCell = Renderer.DrawChar(cell.TextSpriteChar, 0, 0, 1, 1, Color32.WHITE);
-					if (rCell.TextSprite == null) rCell = null;
-				}
-				if (rCell == null) continue;
-				rCell.X = cell.X;
-				rCell.Y = cell.Y;
-				rCell.Z = cell.Z;
-				rCell.Width = cell.Width;
-				rCell.Height = cell.Height;
-				rCell.Rotation1000 = cell.Rotation1000;
-				rCell.PivotX = cell.PivotX;
-				rCell.PivotY = cell.PivotY;
-				rCell.Color = cell.Color;
-				rCell.Shift = cell.Shift;
-				rCell.BorderSide = cell.BorderSide;
-			}
-		}
-		Renderer.SetLayer(oldLayer);
-		Renderer.CurrentSheetIndex = oldSheetIndex;
 
 		// Audio
 		if (RequirePlayMusicID != 0) {
@@ -268,6 +237,46 @@ public class RiggedRespondMessage {
 			Game.SetSoundVolume(RequireSetSoundVolume);
 		}
 
+
+		_RENDER_:;
+
+
+		// Message Layer/Cells >> Renderer Layer/Cells
+		int oldLayer = Renderer.CurrentLayerIndex;
+		int oldSheetIndex = Renderer.CurrentSheetIndex;
+		Renderer.CurrentSheetIndex = sheetIndex;
+		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+			var layerData = Layers[layer];
+			int count = layerData.CellCount;
+			Renderer.SetLayer(layer);
+			for (int i = 0; i < count; i++) {
+				var cell = layerData.Cells[i];
+				Cell rCell = null;
+				if (cell.SpriteID != 0) {
+					if (Renderer.TryGetSprite(cell.SpriteID, out var sprite, ignoreAnimation: true)) {
+						rCell = Renderer.Draw(sprite, default);
+					}
+				} else if (Renderer.RequireCharForPool(cell.TextSpriteChar, out var charSprite)) {
+					rCell = Renderer.DrawChar(charSprite, 0, 0, 1, 1, Color32.WHITE);
+					if (rCell.TextSprite == null) rCell = null;
+				}
+				if (rCell == null) continue;
+				rCell.X = cell.X;
+				rCell.Y = cell.Y;
+				rCell.Z = cell.Z;
+				rCell.Width = cell.Width;
+				rCell.Height = cell.Height;
+				rCell.Rotation1000 = cell.Rotation1000;
+				rCell.PivotX = cell.PivotX;
+				rCell.PivotY = cell.PivotY;
+				rCell.Color = cell.Color;
+				rCell.Shift = cell.Shift;
+				rCell.BorderSide = cell.BorderSide;
+			}
+		}
+		Renderer.SetLayer(oldLayer);
+		Renderer.CurrentSheetIndex = oldSheetIndex;
+
 		// Effect
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			Game.SetEffectEnable(i, EffectEnable.GetBit(i));
@@ -289,212 +298,224 @@ public class RiggedRespondMessage {
 	}
 
 
-	public unsafe void ReadDataFromPipe (byte* start, int maxSize) {
+	public unsafe void ReadDataFromPipe (byte* pointer) {
 
-		//ViewX = reader.ReadInt32();
-		//ViewY = reader.ReadInt32();
-		//ViewWidth = reader.ReadInt32();
-		//ViewHeight = reader.ReadInt32();
-		//RequireSetCursorIndex = reader.ReadInt32();
-		//EffectEnable = reader.ReadByte();
-		//HasEffectParams = reader.ReadByte();
-		//
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
-		//	e_DarkenAmount = reader.ReadSingle();
-		//	e_DarkenStep = reader.ReadSingle();
-		//}
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
-		//	e_LightenAmount = reader.ReadSingle();
-		//	e_LightenStep = reader.ReadSingle();
-		//}
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_TINT)) {
-		//	e_TintColor.r = reader.ReadByte();
-		//	e_TintColor.g = reader.ReadByte();
-		//	e_TintColor.b = reader.ReadByte();
-		//	e_TintColor.a = reader.ReadByte();
-		//}
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
-		//	e_VigRadius = reader.ReadSingle();
-		//	e_VigFeather = reader.ReadSingle();
-		//	e_VigOffsetX = reader.ReadSingle();
-		//	e_VigOffsetY = reader.ReadSingle();
-		//	e_VigRound = reader.ReadSingle();
-		//}
-		//
-		//RequirePlayMusicID = reader.ReadInt32();
-		//AudioActionRequirement = reader.ReadByte();
-		//RequireSetMusicVolume = reader.ReadInt32();
-		//RequirePlaySoundID = reader.ReadInt32();
-		//RequirePlaySoundVolume = reader.ReadSingle();
-		//RequireSetSoundVolume = reader.ReadInt32();
-		//
-		//CharRequiringCount = reader.ReadInt32();
-		//for (int i = 0; i < CharRequiringCount; i++) {
-		//	RequireCharsFontIndex[i] = reader.ReadInt32();
-		//	RequireChars[i] = reader.ReadChar();
-		//}
-		//
-		//RequireGizmosRectCount = reader.ReadInt32();
-		//for (int i = 0; i < RequireGizmosRectCount; i++) {
-		//	var rect = new IRect(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-		//	var color = new Color32(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-		//	RequireGizmosRects[i] = new GizmosRectData() {
-		//		Rect = rect,
-		//		Color = color,
-		//	};
-		//}
-		//
-		//RequireGizmosTextureCount = reader.ReadInt32();
-		//for (int i = 0; i < RequireGizmosTextureCount; i++) {
-		//	uint id = reader.ReadUInt32();
-		//	var rect = new IRect(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-		//	var uv = new FRect(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-		//	var inverse = reader.ReadBoolean();
-		//	int pngLength = reader.ReadInt32();
-		//	var png = pngLength > 0 ? reader.ReadBytes(pngLength) : null;
-		//	RequireGizmosTextures[i] = new GizmosTextureData() {
-		//		TextureRigID = id,
-		//		Rect = rect,
-		//		Uv = uv,
-		//		Inverse = inverse,
-		//		PngDataLength = pngLength,
-		//		PngData = png,
-		//	};
-		//}
-		//
-		//for (int index = 0; index < RenderLayer.COUNT; index++) {
-		//	var layer = Layers[index];
-		//	layer.CellCount = reader.ReadInt32();
-		//	for (int i = 0; i < layer.CellCount; i++) {
-		//		var cell = layer.Cells[i];
-		//		cell.SpriteID = reader.ReadInt32();
-		//		cell.TextSpriteChar = reader.ReadChar();
-		//		cell.X = reader.ReadInt32();
-		//		cell.Y = reader.ReadInt32();
-		//		cell.Z = reader.ReadInt32();
-		//		cell.Width = reader.ReadInt32();
-		//		cell.Height = reader.ReadInt32();
-		//		cell.Rotation1000 = reader.ReadInt32();
-		//		cell.PivotX = reader.ReadSingle();
-		//		cell.PivotY = reader.ReadSingle();
-		//		cell.Color.r = reader.ReadByte();
-		//		cell.Color.g = reader.ReadByte();
-		//		cell.Color.b = reader.ReadByte();
-		//		cell.Color.a = reader.ReadByte();
-		//		cell.Shift.left = reader.ReadInt32();
-		//		cell.Shift.right = reader.ReadInt32();
-		//		cell.Shift.down = reader.ReadInt32();
-		//		cell.Shift.up = reader.ReadInt32();
-		//		cell.BorderSide = (Alignment)reader.ReadInt32();
-		//	}
-		//}
+		try {
+
+			ViewX = Util.ReadInt(ref pointer);
+			ViewY = Util.ReadInt(ref pointer);
+			ViewHeight = Util.ReadInt(ref pointer);
+			RequireSetCursorIndex = Util.ReadInt(ref pointer);
+			EffectEnable = Util.ReadByte(ref pointer);
+			HasEffectParams = Util.ReadByte(ref pointer);
+
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
+				e_DarkenAmount = Util.ReadFloat(ref pointer);
+				e_DarkenStep = Util.ReadFloat(ref pointer);
+			}
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
+				e_LightenAmount = Util.ReadFloat(ref pointer);
+				e_LightenStep = Util.ReadFloat(ref pointer);
+			}
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_TINT)) {
+				e_TintColor.r = Util.ReadByte(ref pointer);
+				e_TintColor.g = Util.ReadByte(ref pointer);
+				e_TintColor.b = Util.ReadByte(ref pointer);
+				e_TintColor.a = Util.ReadByte(ref pointer);
+			}
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
+				e_VigRadius = Util.ReadFloat(ref pointer);
+				e_VigFeather = Util.ReadFloat(ref pointer);
+				e_VigOffsetX = Util.ReadFloat(ref pointer);
+				e_VigOffsetY = Util.ReadFloat(ref pointer);
+				e_VigRound = Util.ReadFloat(ref pointer);
+			}
+
+			RequirePlayMusicID = Util.ReadInt(ref pointer);
+			AudioActionRequirement = Util.ReadByte(ref pointer);
+			RequireSetMusicVolume = Util.ReadInt(ref pointer);
+			RequirePlaySoundID = Util.ReadInt(ref pointer);
+			RequirePlaySoundVolume = Util.ReadFloat(ref pointer);
+			RequireSetSoundVolume = Util.ReadInt(ref pointer);
+
+			CharRequiringCount = Util.ReadInt(ref pointer);
+			for (int i = 0; i < CharRequiringCount; i++) {
+				RequireCharsFontIndex[i] = Util.ReadInt(ref pointer);
+				RequireChars[i] = Util.ReadChar(ref pointer);
+			}
+
+			RequireGizmosRectCount = Util.ReadInt(ref pointer);
+			for (int i = 0; i < RequireGizmosRectCount; i++) {
+				int x = Util.ReadInt(ref pointer);
+				int y = Util.ReadInt(ref pointer);
+				int w = Util.ReadInt(ref pointer);
+				int h = Util.ReadInt(ref pointer);
+				byte r = Util.ReadByte(ref pointer);
+				byte g = Util.ReadByte(ref pointer);
+				byte b = Util.ReadByte(ref pointer);
+				byte a = Util.ReadByte(ref pointer);
+				var rect = new IRect(x, y, w, h);
+				var color = new Color32(r, g, b, a);
+				RequireGizmosRects[i] = new GizmosRectData() {
+					Rect = rect,
+					Color = color,
+				};
+			}
+
+			RequireGizmosTextureCount = Util.ReadInt(ref pointer);
+			for (int i = 0; i < RequireGizmosTextureCount; i++) {
+				uint id = Util.ReadUInt(ref pointer);
+				var rect = new IRect(Util.ReadInt(ref pointer), Util.ReadInt(ref pointer), Util.ReadInt(ref pointer), Util.ReadInt(ref pointer));
+				var uv = new FRect(Util.ReadFloat(ref pointer), Util.ReadFloat(ref pointer), Util.ReadFloat(ref pointer), Util.ReadFloat(ref pointer));
+				var inverse = Util.ReadBool(ref pointer);
+				int pngLength = Util.ReadInt(ref pointer);
+				var png = pngLength > 0 ? Util.ReadBytes(ref pointer, pngLength) : null;
+				RequireGizmosTextures[i] = new GizmosTextureData() {
+					TextureRigID = id,
+					Rect = rect,
+					Uv = uv,
+					Inverse = inverse,
+					PngDataLength = pngLength,
+					PngData = png,
+				};
+			}
+
+			for (int index = 0; index < RenderLayer.COUNT; index++) {
+				var layer = Layers[index];
+				layer.CellCount = Util.ReadInt(ref pointer);
+				for (int i = 0; i < layer.CellCount; i++) {
+					var cell = layer.Cells[i];
+					cell.SpriteID = Util.ReadInt(ref pointer);
+					cell.TextSpriteChar = Util.ReadChar(ref pointer);
+					cell.X = Util.ReadInt(ref pointer);
+					cell.Y = Util.ReadInt(ref pointer);
+					cell.Z = Util.ReadInt(ref pointer);
+					cell.Width = Util.ReadInt(ref pointer);
+					cell.Height = Util.ReadInt(ref pointer);
+					cell.Rotation1000 = Util.ReadInt(ref pointer);
+					cell.PivotX = Util.ReadFloat(ref pointer);
+					cell.PivotY = Util.ReadFloat(ref pointer);
+					cell.Color.r = Util.ReadByte(ref pointer);
+					cell.Color.g = Util.ReadByte(ref pointer);
+					cell.Color.b = Util.ReadByte(ref pointer);
+					cell.Color.a = Util.ReadByte(ref pointer);
+					cell.Shift.left = Util.ReadInt(ref pointer);
+					cell.Shift.right = Util.ReadInt(ref pointer);
+					cell.Shift.down = Util.ReadInt(ref pointer);
+					cell.Shift.up = Util.ReadInt(ref pointer);
+					cell.BorderSide = (Alignment)Util.ReadInt(ref pointer);
+				}
+			}
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}
 
 
-	public unsafe void WriteDataToPipe (byte* start, int maxSize) {
+	public unsafe void WriteDataToPipe (byte* pointer) {
 
-		//writer.Write(ViewX);
-		//writer.Write(ViewY);
-		//writer.Write(ViewWidth);
-		//writer.Write(ViewHeight);
-		//writer.Write(RequireSetCursorIndex);
-		//writer.Write(EffectEnable);
-		//writer.Write(HasEffectParams);
-		//
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
-		//	writer.Write(e_DarkenAmount);
-		//	writer.Write(e_DarkenStep);
-		//}
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
-		//	writer.Write(e_LightenAmount);
-		//	writer.Write(e_LightenStep);
-		//}
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_TINT)) {
-		//	writer.Write(e_TintColor.r);
-		//	writer.Write(e_TintColor.g);
-		//	writer.Write(e_TintColor.b);
-		//	writer.Write(e_TintColor.a);
-		//}
-		//if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
-		//	writer.Write(e_VigRadius);
-		//	writer.Write(e_VigFeather);
-		//	writer.Write(e_VigOffsetX);
-		//	writer.Write(e_VigOffsetY);
-		//	writer.Write(e_VigRound);
-		//}
-		//
-		//writer.Write(RequirePlayMusicID);
-		//writer.Write(AudioActionRequirement);
-		//writer.Write(RequireSetMusicVolume);
-		//writer.Write(RequirePlaySoundID);
-		//writer.Write(RequirePlaySoundVolume);
-		//writer.Write(RequireSetSoundVolume);
-		//
-		//writer.Write(CharRequiringCount);
-		//for (int i = 0; i < CharRequiringCount; i++) {
-		//	writer.Write(RequireCharsFontIndex[i]);
-		//	writer.Write(RequireChars[i]);
-		//}
-		//
-		//writer.Write(RequireGizmosRectCount);
-		//for (int i = 0; i < RequireGizmosRectCount; i++) {
-		//	var data = RequireGizmosRects[i];
-		//	writer.Write(data.Rect.x);
-		//	writer.Write(data.Rect.y);
-		//	writer.Write(data.Rect.width);
-		//	writer.Write(data.Rect.height);
-		//	writer.Write(data.Color.r);
-		//	writer.Write(data.Color.g);
-		//	writer.Write(data.Color.b);
-		//	writer.Write(data.Color.a);
-		//}
-		//
-		//writer.Write(RequireGizmosTextureCount);
-		//for (int i = 0; i < RequireGizmosTextureCount; i++) {
-		//	var data = RequireGizmosTextures[i];
-		//	writer.Write(data.TextureRigID);
-		//	writer.Write(data.Rect.x);
-		//	writer.Write(data.Rect.y);
-		//	writer.Write(data.Rect.width);
-		//	writer.Write(data.Rect.height);
-		//	writer.Write(data.Uv.x);
-		//	writer.Write(data.Uv.y);
-		//	writer.Write(data.Uv.width);
-		//	writer.Write(data.Uv.height);
-		//	writer.Write(data.Inverse);
-		//	writer.Write(data.PngDataLength);
-		//	if (data.PngDataLength > 0) {
-		//		writer.Write(data.PngData);
-		//	}
-		//}
-		//
-		//for (int index = 0; index < RenderLayer.COUNT; index++) {
-		//	var layer = Layers[index];
-		//	writer.Write(layer.CellCount);
-		//	for (int i = 0; i < layer.CellCount; i++) {
-		//		var cell = layer.Cells[i];
-		//		writer.Write(cell.SpriteID);
-		//		writer.Write(cell.TextSpriteChar);
-		//		writer.Write(cell.X);
-		//		writer.Write(cell.Y);
-		//		writer.Write(cell.Z);
-		//		writer.Write(cell.Width);
-		//		writer.Write(cell.Height);
-		//		writer.Write(cell.Rotation1000);
-		//		writer.Write(cell.PivotX);
-		//		writer.Write(cell.PivotY);
-		//		writer.Write(cell.Color.r);
-		//		writer.Write(cell.Color.g);
-		//		writer.Write(cell.Color.b);
-		//		writer.Write(cell.Color.a);
-		//		writer.Write(cell.Shift.left);
-		//		writer.Write(cell.Shift.right);
-		//		writer.Write(cell.Shift.down);
-		//		writer.Write(cell.Shift.up);
-		//		writer.Write((int)cell.BorderSide);
-		//	}
-		//}
+		try {
+
+			Util.Write(ref pointer, ViewX);
+			Util.Write(ref pointer, ViewY);
+			Util.Write(ref pointer, ViewHeight);
+			Util.Write(ref pointer, RequireSetCursorIndex);
+			Util.Write(ref pointer, EffectEnable);
+			Util.Write(ref pointer, HasEffectParams);
+
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
+				Util.Write(ref pointer, e_DarkenAmount);
+				Util.Write(ref pointer, e_DarkenStep);
+			}
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
+				Util.Write(ref pointer, e_LightenAmount);
+				Util.Write(ref pointer, e_LightenStep);
+			}
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_TINT)) {
+				Util.Write(ref pointer, e_TintColor.r);
+				Util.Write(ref pointer, e_TintColor.g);
+				Util.Write(ref pointer, e_TintColor.b);
+				Util.Write(ref pointer, e_TintColor.a);
+			}
+			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
+				Util.Write(ref pointer, e_VigRadius);
+				Util.Write(ref pointer, e_VigFeather);
+				Util.Write(ref pointer, e_VigOffsetX);
+				Util.Write(ref pointer, e_VigOffsetY);
+				Util.Write(ref pointer, e_VigRound);
+			}
+
+			Util.Write(ref pointer, RequirePlayMusicID);
+			Util.Write(ref pointer, AudioActionRequirement);
+			Util.Write(ref pointer, RequireSetMusicVolume);
+			Util.Write(ref pointer, RequirePlaySoundID);
+			Util.Write(ref pointer, RequirePlaySoundVolume);
+			Util.Write(ref pointer, RequireSetSoundVolume);
+
+			Util.Write(ref pointer, CharRequiringCount);
+			for (int i = 0; i < CharRequiringCount; i++) {
+				Util.Write(ref pointer, RequireCharsFontIndex[i]);
+				Util.Write(ref pointer, RequireChars[i]);
+			}
+
+			Util.Write(ref pointer, RequireGizmosRectCount);
+			for (int i = 0; i < RequireGizmosRectCount; i++) {
+				var data = RequireGizmosRects[i];
+				Util.Write(ref pointer, data.Rect.x);
+				Util.Write(ref pointer, data.Rect.y);
+				Util.Write(ref pointer, data.Rect.width);
+				Util.Write(ref pointer, data.Rect.height);
+				Util.Write(ref pointer, data.Color.r);
+				Util.Write(ref pointer, data.Color.g);
+				Util.Write(ref pointer, data.Color.b);
+				Util.Write(ref pointer, data.Color.a);
+			}
+
+			Util.Write(ref pointer, RequireGizmosTextureCount);
+			for (int i = 0; i < RequireGizmosTextureCount; i++) {
+				var data = RequireGizmosTextures[i];
+				Util.Write(ref pointer, data.TextureRigID);
+				Util.Write(ref pointer, data.Rect.x);
+				Util.Write(ref pointer, data.Rect.y);
+				Util.Write(ref pointer, data.Rect.width);
+				Util.Write(ref pointer, data.Rect.height);
+				Util.Write(ref pointer, data.Uv.x);
+				Util.Write(ref pointer, data.Uv.y);
+				Util.Write(ref pointer, data.Uv.width);
+				Util.Write(ref pointer, data.Uv.height);
+				Util.Write(ref pointer, data.Inverse);
+				Util.Write(ref pointer, data.PngDataLength);
+				if (data.PngDataLength > 0) {
+					Util.Write(ref pointer, data.PngData);
+				}
+			}
+
+			for (int index = 0; index < RenderLayer.COUNT; index++) {
+				var layer = Layers[index];
+				Util.Write(ref pointer, layer.CellCount);
+				for (int i = 0; i < layer.CellCount; i++) {
+					var cell = layer.Cells[i];
+					Util.Write(ref pointer, cell.SpriteID);
+					Util.Write(ref pointer, cell.TextSpriteChar);
+					Util.Write(ref pointer, cell.X);
+					Util.Write(ref pointer, cell.Y);
+					Util.Write(ref pointer, cell.Z);
+					Util.Write(ref pointer, cell.Width);
+					Util.Write(ref pointer, cell.Height);
+					Util.Write(ref pointer, cell.Rotation1000);
+					Util.Write(ref pointer, cell.PivotX);
+					Util.Write(ref pointer, cell.PivotY);
+					Util.Write(ref pointer, cell.Color.r);
+					Util.Write(ref pointer, cell.Color.g);
+					Util.Write(ref pointer, cell.Color.b);
+					Util.Write(ref pointer, cell.Color.a);
+					Util.Write(ref pointer, cell.Shift.left);
+					Util.Write(ref pointer, cell.Shift.right);
+					Util.Write(ref pointer, cell.Shift.down);
+					Util.Write(ref pointer, cell.Shift.up);
+					Util.Write(ref pointer, (int)cell.BorderSide);
+				}
+			}
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 
 	}

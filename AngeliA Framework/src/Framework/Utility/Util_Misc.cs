@@ -380,7 +380,7 @@ public static partial class Util {
 
 
 	public static Color32 MergeColor_Editor (Color32 top, Color32 back) {
-		
+
 		//return new Color32(
 		//	(byte)((top.r * top.a + back.r * (255 - top.a)) / 255).Clamp(0, 255),
 		//	(byte)((top.g * top.a + back.g * (255 - top.a)) / 255).Clamp(0, 255),
@@ -425,6 +425,145 @@ public static partial class Util {
 		System.Console.ResetColor();
 		System.Console.WriteLine();
 	}
+
+
+	// Pointer
+	public static unsafe byte ReadByte (ref byte* p) {
+		byte result = *p;
+		p++;
+		return result;
+	}
+	public static unsafe sbyte ReadSByte (ref byte* p) {
+		sbyte result = *(sbyte*)p;
+		p++;
+		return result;
+	}
+	public static unsafe bool ReadBool (ref byte* p) {
+		bool result = *p == 1;
+		p++;
+		return result;
+	}
+	public static unsafe char ReadChar (ref byte* p) {
+		char result = *(char*)p;
+		p += 2;
+		return result;
+	}
+	public static unsafe short ReadShort (ref byte* p) {
+		short result = *(short*)p;
+		p += 2;
+		return result;
+	}
+	public static unsafe ushort ReadUShort (ref byte* p) {
+		ushort result = *(ushort*)p;
+		p += 2;
+		return result;
+	}
+	public static unsafe int ReadInt (ref byte* p) {
+		int result = *(int*)p;
+		p += 4;
+		return result;
+	}
+	public static unsafe uint ReadUInt (ref byte* p) {
+		uint result = *(uint*)p;
+		p += 4;
+		return result;
+	}
+	public static unsafe float ReadFloat (ref byte* p) {
+		float result = *(float*)p;
+		p += 4;
+		return result;
+	}
+	public static unsafe long ReadLong (ref byte* p) {
+		long result = *(long*)p;
+		p += 8;
+		return result;
+	}
+	public static unsafe ulong ReadULong (ref byte* p) {
+		ulong result = *(ulong*)p;
+		p += 8;
+		return result;
+	}
+	public static unsafe double ReadDouble (ref byte* p) {
+		double result = *(double*)p;
+		p += 8;
+		return result;
+	}
+	public static unsafe byte[] ReadBytes (ref byte* p, int length) {
+		var result = new byte[length];
+		for (int i = 0; i < length; i++) {
+			result[i] = *p;
+			p++;
+		}
+		return result;
+	}
+
+
+	public static unsafe void Write (ref byte* p, byte value) {
+		*p = value;
+		p++;
+	}
+	public static unsafe void Write (ref byte* p, sbyte value) {
+		var _p = (sbyte*)p;
+		*_p = value;
+		p++;
+	}
+	public static unsafe void Write (ref byte* p, bool value) {
+		*p = (byte)(value ? 1 : 0);
+		p++;
+	}
+	public static unsafe void Write (ref byte* p, char value) {
+		var _p = (char*)p;
+		*_p = value;
+		p += 2;
+	}
+	public static unsafe void Write (ref byte* p, short value) {
+		var _p = (short*)p;
+		*_p = value;
+		p += 2;
+	}
+	public static unsafe void Write (ref byte* p, ushort value) {
+		var _p = (ushort*)p;
+		*_p = value;
+		p += 2;
+	}
+	public static unsafe void Write (ref byte* p, int value) {
+		var _p = (int*)p;
+		*_p = value;
+		p += 4;
+	}
+	public static unsafe void Write (ref byte* p, uint value) {
+		var _p = (uint*)p;
+		*_p = value;
+		p += 4;
+	}
+	public static unsafe void Write (ref byte* p, float value) {
+		var _p = (float*)p;
+		*_p = value;
+		p += 4;
+	}
+	public static unsafe void Write (ref byte* p, long value) {
+		var _p = (long*)p;
+		*_p = value;
+		p += 8;
+	}
+	public static unsafe void Write (ref byte* p, ulong value) {
+		var _p = (ulong*)p;
+		*_p = value;
+		p += 8;
+	}
+	public static unsafe void Write (ref byte* p, double value) {
+		var _p = (double*)p;
+		*_p = value;
+		p += 8;
+	}
+	public static unsafe void Write (ref byte* p, byte[] bytes, int length = -1) {
+		length = length < 0 ? bytes.Length : length;
+		for (int i = 0; i < length; i++) {
+			*p = bytes[i];
+			p++;
+		}
+	}
+
 
 
 }

@@ -71,7 +71,7 @@ public static class Const {
 	public static void EmptyMethod () { }
 	public const int MIN_CHARACTER_HEIGHT = 65;
 	public const int MAX_CHARACTER_HEIGHT = 251;
-	public const int RIG_BUFFER_SIZE = 2_000_000; // 2MB
+	public const int RIG_BUFFER_SIZE = 5_000_000; // 5MB
 
 	// GUI
 	public const char CONTROL_SELECT_ALL = (char)6;

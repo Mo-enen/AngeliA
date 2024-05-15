@@ -244,7 +244,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Start
 		SetEditorMode(toPlayMode: false);
-		
+
 		// View
 		ResetCamera(true);
 
@@ -885,7 +885,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Behind
 		if (s_ShowBehind.Value) {
 			using var _ = Scope.RendererLayer(RenderLayer.BEHIND);
-			var behindCameraRect = cameraRect.ScaleFrom(Game.WorldBehindParallax, cameraRect.CenterX(), cameraRect.CenterY());
+			var behindCameraRect = cameraRect.ScaleFrom(Game.WorldBehindParallax / 1000f, cameraRect.CenterX(), cameraRect.CenterY());
 			int blockSize = Const.CEL * 1000 / Game.WorldBehindParallax;
 
 			int z = CurrentZ + 1;
@@ -1395,8 +1395,8 @@ public sealed partial class MapEditor : WindowUI {
 	private void DrawBlockBehind (IRect cameraRect, IRect paraCameraRect, int blockSize, int id, int unitX, int unitY, bool fixRatio) {
 
 		var rect = new IRect(
-			Util.RemapUnclamped(paraCameraRect.xMin, paraCameraRect.xMax, cameraRect.xMin, cameraRect.xMax, unitX * Const.CEL),
-			Util.RemapUnclamped(paraCameraRect.yMin, paraCameraRect.yMax, cameraRect.yMin, cameraRect.yMax, unitY * Const.CEL),
+			Util.RemapUnclamped(paraCameraRect.xMin, paraCameraRect.xMax, cameraRect.xMin, cameraRect.xMax, (float)unitX * Const.CEL).RoundToInt(),
+			Util.RemapUnclamped(paraCameraRect.yMin, paraCameraRect.yMax, cameraRect.yMin, cameraRect.yMax, (float)unitY * Const.CEL).RoundToInt(),
 			blockSize, blockSize
 		);
 

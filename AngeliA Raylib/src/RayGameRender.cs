@@ -426,6 +426,8 @@ public partial class RayGame {
 
 	protected override void _IgnoreGizmos (int duration = 0) => GizmosRender.IgnoreGizmos(duration);
 
+	protected override void _ForceRequireGizmosTexture (object texture) { }
+
 
 	// Text
 	protected override int _GetFontCount () => Fonts.Length;

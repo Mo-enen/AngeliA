@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.IO.Pipes;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace AngeliA;
@@ -30,17 +31,11 @@ public class RiggedTransceiver {
 	private readonly RiggedCallingMessage CallingMessage = new();
 	private readonly RiggedRespondMessage RespondMessage = new();
 	private Process RigPipeClientProcess = null;
-	private CancellationTokenSource ReadLineTokenSource = null;
-	private CancellationTokenSource WriteLineTokenSource = null;
-	private CancellationToken ReadlineCancelToken;
-	private CancellationToken WritelineCancelToken;
 	private readonly string ExePath;
 	private readonly string MapName;
-	private unsafe byte* StatePointer;
 	private unsafe byte* BufferPointer;
-	private bool RequiringCall = false;
-	private bool RespondHandled = true;
-	private bool Initialized = false;
+	private MemoryMappedFile MemMap = null;
+	private MemoryMappedViewAccessor ViewAccessor = null;
 
 
 	#endregion
@@ -75,41 +70,20 @@ public class RiggedTransceiver {
 			RigPipeClientProcess = null;
 		}
 
-		if (ReadLineTokenSource != null) {
-			ReadLineTokenSource.Cancel();
-			ReadLineTokenSource = null;
-		}
-
-		if (WriteLineTokenSource != null) {
-			WriteLineTokenSource.Cancel();
-			WriteLineTokenSource = null;
-		}
-
 		// Gate
 		if (!Util.FileExists(ExePath)) return ERROR_EXE_FILE_NOT_FOUND;
 		if (!Util.FolderExists(gameLibFolder)) return ERROR_LIB_FILE_NOT_FOUND;
 
 		// Start New
-
-		RequiringCall = false;
-		RespondHandled = true;
-		ReadLineTokenSource = new();
-		WriteLineTokenSource = new();
-		ReadlineCancelToken = ReadLineTokenSource.Token;
-		WritelineCancelToken = WriteLineTokenSource.Token;
-
-		if (!Initialized) {
-			var map = MemoryMappedFile.CreateOrOpen(MapName, capacity: Const.RIG_BUFFER_SIZE + 1);
-			var stateAccess = map.CreateViewAccessor(offset: 0, size: 1);
-			var bufferAccess = map.CreateViewAccessor(offset: 1, size: Const.RIG_BUFFER_SIZE);
+		if (MemMap == null) {
+			MemMap = MemoryMappedFile.CreateOrOpen(MapName, capacity: Const.RIG_BUFFER_SIZE);
+			ViewAccessor = MemMap.CreateViewAccessor(offset: 0, size: Const.RIG_BUFFER_SIZE);
 			unsafe {
-				stateAccess.SafeMemoryMappedViewHandle.AcquirePointer(ref StatePointer);
-				bufferAccess.SafeMemoryMappedViewHandle.AcquirePointer(ref BufferPointer);
-				Debug.Log(MapName + " " + (ulong)StatePointer);
+				ViewAccessor.SafeMemoryMappedViewHandle.AcquirePointer(ref BufferPointer);
 			}
 		}
 		unsafe {
-			*StatePointer = 1;
+			*BufferPointer = 0;
 		}
 
 		var process = new Process();
@@ -117,7 +91,7 @@ public class RiggedTransceiver {
 		process.StartInfo.UseShellExecute = false;
 		process.StartInfo.CreateNoWindow = true;
 		process.StartInfo.Arguments =
-			$"-map:{MapName} {Util.GetArgumentForAssemblyPath(gameLibFolder)} -pID:{Process.GetCurrentProcess().Id}";
+			$"-map:{MapName} {Util.GetArgumentForAssemblyPath(gameLibFolder)} -pID:{Process.GetCurrentProcess().Id} -fontCount:{Game.FontCount}";
 		process.StartInfo.WorkingDirectory = gameBuildFolder;
 #if DEBUG
 		process.StartInfo.RedirectStandardOutput = true;
@@ -132,9 +106,6 @@ public class RiggedTransceiver {
 		try {
 
 			RigPipeClientProcess = process;
-
-			System.Threading.Tasks.Task.Run(WriteUpdate, WritelineCancelToken);
-			System.Threading.Tasks.Task.Run(ReadUpdate, ReadlineCancelToken);
 
 #if DEBUG
 			System.Threading.Tasks.Task.Run(() => {
@@ -174,27 +145,35 @@ public class RiggedTransceiver {
 	}
 
 
-	public void Call (bool ignoreInput = false) {
-		// Engine >> Rig
-		if (RequiringCall) return;
-		CallingMessage.LoadDataFromEngine(ignoreInput);
-		RequiringCall = true;
+	public void Quit () {
+		ViewAccessor?.SafeMemoryMappedViewHandle.ReleasePointer();
+		MemMap?.Dispose();
+		ViewAccessor?.Dispose();
 	}
 
 
-	public void Respond (int sheetIndex) {
+	public unsafe void Call (bool ignoreInput = false) {
+		// Engine >> Rig
+		if (*BufferPointer == 0) return;
+		CallingMessage.LoadDataFromEngine(ignoreInput);
+		CallingMessage.WriteDataToPipe(BufferPointer + 1);
+		*BufferPointer = 0;
+	}
+
+
+	public unsafe void Respond (int sheetIndex) {
 		// Rig >> Engine
-		if (RespondHandled) {
+		if (*BufferPointer == 0) {
 			for (int safe = 0; safe < 8; safe++) {
 				Thread.Sleep(2);
-				if (!RespondHandled) goto _HANDLE_;
+				if (*BufferPointer == 1) goto _HANDLE_;
 			}
+			RespondMessage.ApplyToEngine(CallingMessage, sheetIndex, renderingOnly: true);
 			return;
 		}
 		_HANDLE_:;
-		RespondMessage.ApplyToEngine(CallingMessage, sheetIndex);
-		// Finish
-		RespondHandled = true;
+		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
+		RespondMessage.ApplyToEngine(CallingMessage, sheetIndex, renderingOnly: false);
 	}
 
 
@@ -210,38 +189,7 @@ public class RiggedTransceiver {
 	#region --- LGC ---
 
 
-	private unsafe void WriteUpdate () {
-		while (true) {
-			try {
-				if (WritelineCancelToken.IsCancellationRequested) break;
-				if (RigPipeClientProcess == null || RigPipeClientProcess.HasExited) break;
-				if (!RequiringCall) continue;
-				while (*StatePointer != 1) Thread.Sleep(1);
-				CallingMessage.WriteDataToPipe(BufferPointer, Const.RIG_BUFFER_SIZE);
-			} catch { }
-			RequiringCall = false;
-			*StatePointer = 2;
-			Debug.Log("ser write " + *StatePointer);
-		}
-	}
 
-
-	private unsafe void ReadUpdate () {
-		while (true) {
-			try {
-				if (ReadlineCancelToken.IsCancellationRequested) break;
-				if (RigPipeClientProcess == null || RigPipeClientProcess.HasExited) break;
-				if (!RespondHandled) continue;
-				try {
-					while (*StatePointer != 0) Thread.Sleep(1);
-					RespondMessage.ReadDataFromPipe(BufferPointer, Const.RIG_BUFFER_SIZE);
-				} catch { }
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			RespondHandled = false;
-			*StatePointer = 1;
-			Debug.Log("ser read " + *StatePointer);
-		}
-	}
 
 
 	#endregion
