@@ -141,6 +141,20 @@ public class RiggedCallingMessage {
 			GamepadRightStickDirectionY = 0f;
 		}
 
+		PressedCharCount = 0;
+		foreach (char c in Game.ForAllPressingCharsThisFrame()) {
+			PressedChars[PressedCharCount] = c;
+			PressedCharCount++;
+			if (PressedCharCount >= PressedChars.Length) break;
+		}
+
+		PressedKeyCount = 0;
+		foreach (var key in Game.ForAllPressingKeysThisFrame()) {
+			PressedGuiKeys[PressedKeyCount] = (int)key;
+			PressedKeyCount++;
+			if (PressedKeyCount >= PressedGuiKeys.Length) break;
+		}
+
 	}
 
 
@@ -148,48 +162,50 @@ public class RiggedCallingMessage {
 
 		try {
 
-			CursorInScreen = Util.ReadBool(ref pointer);
+			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
 
-			MonitorWidth = Util.ReadInt(ref pointer);
-			MonitorHeight = Util.ReadInt(ref pointer);
-			ScreenWidth = Util.ReadInt(ref pointer);
-			ScreenHeight = Util.ReadInt(ref pointer);
+			CursorInScreen = Util.ReadBool(ref pointer, end);
 
-			EffectEnable = Util.ReadByte(ref pointer);
-			IsMusicPlaying = Util.ReadBool(ref pointer);
-			DeviceData = Util.ReadByte(ref pointer);
+			MonitorWidth = Util.ReadInt(ref pointer, end);
+			MonitorHeight = Util.ReadInt(ref pointer, end);
+			ScreenWidth = Util.ReadInt(ref pointer, end);
+			ScreenHeight = Util.ReadInt(ref pointer, end);
 
-			MouseScrollDelta = DeviceData.GetBit(4) ? Util.ReadInt(ref pointer) : 0;
+			EffectEnable = Util.ReadByte(ref pointer, end);
+			IsMusicPlaying = Util.ReadBool(ref pointer, end);
+			DeviceData = Util.ReadByte(ref pointer, end);
 
-			MousePosX = Util.ReadInt(ref pointer);
-			MousePosY = Util.ReadInt(ref pointer);
+			MouseScrollDelta = DeviceData.GetBit(4) ? Util.ReadInt(ref pointer, end) : 0;
 
-			HoldingKeyboardKeyCount = Util.ReadByte(ref pointer);
+			MousePosX = Util.ReadInt(ref pointer, end);
+			MousePosY = Util.ReadInt(ref pointer, end);
+
+			HoldingKeyboardKeyCount = Util.ReadByte(ref pointer, end);
 			for (int i = 0; i < HoldingKeyboardKeyCount && i < HoldingKeyboardKeys.Length; i++) {
-				HoldingKeyboardKeys[i] = Util.ReadInt(ref pointer);
+				HoldingKeyboardKeys[i] = Util.ReadInt(ref pointer, end);
 			}
-			HoldingGamepadKeyCount = Util.ReadByte(ref pointer);
+			HoldingGamepadKeyCount = Util.ReadByte(ref pointer, end);
 			for (int i = 0; i < HoldingGamepadKeyCount && i < HoldingGamepadKeys.Length; i++) {
-				HoldingGamepadKeys[i] = Util.ReadInt(ref pointer);
+				HoldingGamepadKeys[i] = Util.ReadInt(ref pointer, end);
 			}
-			GamepadStickHolding = Util.ReadByte(ref pointer);
-			GamepadLeftStickDirectionX = Util.ReadFloat(ref pointer);
-			GamepadLeftStickDirectionY = Util.ReadFloat(ref pointer);
-			GamepadRightStickDirectionX = Util.ReadFloat(ref pointer);
-			GamepadRightStickDirectionY = Util.ReadFloat(ref pointer);
+			GamepadStickHolding = Util.ReadByte(ref pointer, end);
+			GamepadLeftStickDirectionX = Util.ReadFloat(ref pointer, end);
+			GamepadLeftStickDirectionY = Util.ReadFloat(ref pointer, end);
+			GamepadRightStickDirectionX = Util.ReadFloat(ref pointer, end);
+			GamepadRightStickDirectionY = Util.ReadFloat(ref pointer, end);
 
-			CharRequiredCount = Util.ReadInt(ref pointer);
+			CharRequiredCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < CharRequiredCount && i < RequiredChars.Length; i++) {
-				char c = Util.ReadChar(ref pointer);
-				int fontIndex = Util.ReadInt(ref pointer);
-				bool valid = Util.ReadBool(ref pointer);
+				char c = Util.ReadChar(ref pointer, end);
+				int fontIndex = Util.ReadInt(ref pointer, end);
+				bool valid = Util.ReadBool(ref pointer, end);
 				if (valid) {
-					float advance = Util.ReadFloat(ref pointer);
+					float advance = Util.ReadFloat(ref pointer, end);
 					var offset = new FRect(
-						Util.ReadFloat(ref pointer),
-						Util.ReadFloat(ref pointer),
-						Util.ReadFloat(ref pointer),
-						Util.ReadFloat(ref pointer)
+						Util.ReadFloat(ref pointer, end),
+						Util.ReadFloat(ref pointer, end),
+						Util.ReadFloat(ref pointer, end),
+						Util.ReadFloat(ref pointer, end)
 					);
 					RequiredChars[i] = new CharRequirementData() {
 						Char = c,
@@ -209,22 +225,23 @@ public class RiggedCallingMessage {
 				}
 			}
 
-			RequiringGizmosTextureIDCount = Util.ReadInt(ref pointer);
+			RequiringGizmosTextureIDCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < RequiringGizmosTextureIDCount && i < REQUIRE_GIZMOS_TEXTURE_MAX_COUNT; i++) {
-				RequiringGizmosTextureIDs[i] = Util.ReadUInt(ref pointer);
+				RequiringGizmosTextureIDs[i] = Util.ReadUInt(ref pointer, end);
 			}
 
-			RequireGameMessageInvoke = Util.ReadByte(ref pointer);
+			RequireGameMessageInvoke = Util.ReadByte(ref pointer, end);
 
-			PressedCharCount = Util.ReadByte(ref pointer);
+			PressedCharCount = Util.ReadByte(ref pointer, end);
 			for (int i = 0; i < PressedCharCount && i < PressedChars.Length; i++) {
-				PressedChars[i] = Util.ReadChar(ref pointer);
+				PressedChars[i] = Util.ReadChar(ref pointer, end);
 			}
 
-			PressedKeyCount = Util.ReadByte(ref pointer);
+			PressedKeyCount = Util.ReadByte(ref pointer, end);
 			for (int i = 0; i < PressedKeyCount && i < PressedGuiKeys.Length; i++) {
-				PressedGuiKeys[i] = Util.ReadInt(ref pointer);
+				PressedGuiKeys[i] = Util.ReadInt(ref pointer, end);
 			}
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}
@@ -234,64 +251,67 @@ public class RiggedCallingMessage {
 
 		try {
 
-			Util.Write(ref pointer, CursorInScreen);
-			Util.Write(ref pointer, MonitorWidth);
-			Util.Write(ref pointer, MonitorHeight);
-			Util.Write(ref pointer, ScreenWidth);
-			Util.Write(ref pointer, ScreenHeight);
+			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
 
-			Util.Write(ref pointer, EffectEnable);
-			Util.Write(ref pointer, IsMusicPlaying);
-			Util.Write(ref pointer, DeviceData);
-			if (DeviceData.GetBit(4)) Util.Write(ref pointer, MouseScrollDelta);
-			Util.Write(ref pointer, MousePosX);
-			Util.Write(ref pointer, MousePosY);
-			Util.Write(ref pointer, HoldingKeyboardKeyCount);
+			Util.Write(ref pointer, CursorInScreen, end);
+			Util.Write(ref pointer, MonitorWidth, end);
+			Util.Write(ref pointer, MonitorHeight, end);
+			Util.Write(ref pointer, ScreenWidth, end);
+			Util.Write(ref pointer, ScreenHeight, end);
+
+			Util.Write(ref pointer, EffectEnable, end);
+			Util.Write(ref pointer, IsMusicPlaying, end);
+			Util.Write(ref pointer, DeviceData, end);
+			if (DeviceData.GetBit(4)) Util.Write(ref pointer, MouseScrollDelta, end);
+			Util.Write(ref pointer, MousePosX, end);
+			Util.Write(ref pointer, MousePosY, end);
+			Util.Write(ref pointer, HoldingKeyboardKeyCount, end);
 			for (int i = 0; i < HoldingKeyboardKeyCount; i++) {
-				Util.Write(ref pointer, HoldingKeyboardKeys[i]);
+				Util.Write(ref pointer, HoldingKeyboardKeys[i], end);
 			}
-			Util.Write(ref pointer, HoldingGamepadKeyCount);
+			Util.Write(ref pointer, HoldingGamepadKeyCount, end);
 			for (int i = 0; i < HoldingGamepadKeyCount; i++) {
-				Util.Write(ref pointer, HoldingGamepadKeys[i]);
+				Util.Write(ref pointer, HoldingGamepadKeys[i], end);
 			}
-			Util.Write(ref pointer, GamepadStickHolding);
-			Util.Write(ref pointer, GamepadLeftStickDirectionX);
-			Util.Write(ref pointer, GamepadLeftStickDirectionY);
-			Util.Write(ref pointer, GamepadRightStickDirectionX);
-			Util.Write(ref pointer, GamepadRightStickDirectionY);
+			Util.Write(ref pointer, GamepadStickHolding, end);
+			Util.Write(ref pointer, GamepadLeftStickDirectionX, end);
+			Util.Write(ref pointer, GamepadLeftStickDirectionY, end);
+			Util.Write(ref pointer, GamepadRightStickDirectionX, end);
+			Util.Write(ref pointer, GamepadRightStickDirectionY, end);
 
-			Util.Write(ref pointer, CharRequiredCount);
+			Util.Write(ref pointer, CharRequiredCount, end);
 			for (int i = 0; i < CharRequiredCount; i++) {
 				var data = RequiredChars[i];
-				Util.Write(ref pointer, data.Char);
-				Util.Write(ref pointer, data.FontIndex);
-				Util.Write(ref pointer, data.Valid);
+				Util.Write(ref pointer, data.Char, end);
+				Util.Write(ref pointer, data.FontIndex, end);
+				Util.Write(ref pointer, data.Valid, end);
 				if (data.Valid) {
-					Util.Write(ref pointer, data.Advance);
-					Util.Write(ref pointer, data.Offset.x);
-					Util.Write(ref pointer, data.Offset.y);
-					Util.Write(ref pointer, data.Offset.width);
-					Util.Write(ref pointer, data.Offset.height);
+					Util.Write(ref pointer, data.Advance, end);
+					Util.Write(ref pointer, data.Offset.x, end);
+					Util.Write(ref pointer, data.Offset.y, end);
+					Util.Write(ref pointer, data.Offset.width, end);
+					Util.Write(ref pointer, data.Offset.height, end);
 				}
 			}
 
-			Util.Write(ref pointer, RequiringGizmosTextureIDCount);
+			Util.Write(ref pointer, RequiringGizmosTextureIDCount, end);
 			for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
-				Util.Write(ref pointer, RequiringGizmosTextureIDs[i]);
+				Util.Write(ref pointer, RequiringGizmosTextureIDs[i], end);
 			}
 
-			Util.Write(ref pointer, RequireGameMessageInvoke);
+			Util.Write(ref pointer, RequireGameMessageInvoke, end);
 			RequireGameMessageInvoke = 0;
 
-			Util.Write(ref pointer, PressedCharCount);
+			Util.Write(ref pointer, PressedCharCount, end);
 			for (int i = 0; i < PressedCharCount; i++) {
-				Util.Write(ref pointer, PressedChars[i]);
+				Util.Write(ref pointer, PressedChars[i], end);
 			}
 
-			Util.Write(ref pointer, PressedKeyCount);
+			Util.Write(ref pointer, PressedKeyCount, end);
 			for (int i = 0; i < PressedKeyCount; i++) {
-				Util.Write(ref pointer, PressedGuiKeys[i]);
+				Util.Write(ref pointer, PressedGuiKeys[i], end);
 			}
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}

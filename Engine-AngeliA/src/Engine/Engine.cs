@@ -361,13 +361,6 @@ internal static class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
-		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-			Game.PlaySound("Test0".AngeHash());
-		}
-		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
-			Game.PlaySound("Test1".AngeHash());
-		}
-
 		GUI.Enable = true;
 		GUI.ForceUnifyBasedOnMonitor = true;
 		if (CurrentWindowIndex != RigMapEditorWindowIndex) {
@@ -1099,6 +1092,12 @@ internal static class Engine {
 		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		ProjectEditor.CurrentProject = CurrentProject;
+
+		// Audio
+		Game.SyncAudioPool(
+			UniverseSystem.BuiltInUniverse.UniverseRoot,
+			CurrentProject.UniversePath
+		);
 
 		// Script
 		CheckScriptChanged();

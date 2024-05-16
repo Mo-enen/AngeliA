@@ -63,14 +63,9 @@ public class RiggedTransceiver {
 
 	public int Start (string gameBuildFolder, string gameLibFolder) {
 
-		// Discard Current
-		RespondMessage.TransationStart();
+		Abort();
 
-		if (RigPipeClientProcess != null) {
-			RigPipeClientProcess.Kill();
-			RigPipeClientProcess.Dispose();
-			RigPipeClientProcess = null;
-		}
+		RespondMessage.TransationStart();
 
 		// Gate
 		if (!Util.FileExists(ExePath)) return ERROR_EXE_FILE_NOT_FOUND;
@@ -137,12 +132,14 @@ public class RiggedTransceiver {
 	}
 
 
-	public void Abort (bool waitForExit = true) {
+	public void Abort () {
 		if (RigPipeClientProcess == null || RigPipeClientProcess.HasExited) return;
-		RigPipeClientProcess.Kill();
-		if (waitForExit) {
-			RigPipeClientProcess.WaitForExit(5000);
+		unsafe {
+			for (int safe = 0; safe < 64; safe++) {
+				*BufferPointer = 255;
+			}
 		}
+		RigPipeClientProcess.WaitForExit(5000);
 		RigPipeClientProcess.Dispose();
 		RigPipeClientProcess = null;
 	}

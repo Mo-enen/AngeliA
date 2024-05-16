@@ -123,7 +123,7 @@ public abstract partial class Game {
 
 			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
-			LoadAudioPool();
+			SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot);
 			_SetFullscreen(_IsFullscreen.Value);
 			_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
 			_SetMusicVolume(MusicVolume);

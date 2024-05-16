@@ -16,6 +16,8 @@ public abstract partial class Game {
 	// Data
 	protected static readonly Dictionary<int, object> SoundPool = new();
 	protected static readonly Dictionary<int, string> MusicPool = new();
+	private static readonly HashSet<int> CacheForAudioSync = new();
+	private static readonly List<int> CacheForAudioSyncRemove = new();
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
 	private int ForceMinViewHeightValue;
 	private int ForceMinViewHeightFrame = -1;
@@ -312,21 +314,48 @@ public abstract partial class Game {
 
 
 	// Audio
-	public static void LoadAudioPool () {
+	public static void SyncAudioPool (params string[] universeRoots) {
 
 		// Music
-		string musicRoot = UniverseSystem.CurrentUniverse.MusicRoot;
-		foreach (var path in Util.EnumerateFiles(musicRoot, false, "*.wav", "*.mp3", "*.ogg")) {
-			MusicPool.TryAdd(Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash(), path);
+		CacheForAudioSync.Clear();
+		CacheForAudioSyncRemove.Clear();
+		foreach (string root in universeRoots) {
+			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseMusicRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
+				int id = Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash();
+				CacheForAudioSync.TryAdd(id);
+				MusicPool.TryAdd(id, path);
+			}
+		}
+		foreach (var (id, _) in MusicPool) {
+			if (!CacheForAudioSync.Contains(id)) {
+				CacheForAudioSyncRemove.Add(id);
+			}
+		}
+		foreach (int id in CacheForAudioSyncRemove) {
+			MusicPool.Remove(id);
 		}
 
 		// Sound
-		SoundPool.Clear();
-		string soundRoot = UniverseSystem.CurrentUniverse.SoundRoot;
-		foreach (var path in Util.EnumerateFiles(soundRoot, false, "*.wav", "*.mp3", "*.ogg")) {
-			var soundObj = LoadSound(path);
-			if (soundObj == null) continue;
-			SoundPool.TryAdd(Util.GetNameWithoutExtension(path).AngeHash(), soundObj);
+		CacheForAudioSync.Clear();
+		CacheForAudioSyncRemove.Clear();
+		foreach (string root in universeRoots) {
+			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseSoundRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
+				int id = Util.GetNameWithoutExtension(path).AngeHash();
+				CacheForAudioSync.TryAdd(id);
+				if (SoundPool.ContainsKey(id)) continue;
+				var soundObj = LoadSound(path);
+				if (soundObj == null) continue;
+				SoundPool.Add(id, soundObj);
+			}
+		}
+		foreach (var (id, sound) in SoundPool) {
+			if (!CacheForAudioSync.Contains(id)) {
+				UnloadSound(sound);
+				CacheForAudioSyncRemove.Add(id);
+			}
+		}
+		foreach (int id in CacheForAudioSyncRemove) {
+			SoundPool.Remove(id);
 		}
 
 	}

@@ -129,6 +129,7 @@ public partial class RiggedGame : Game {
 				Thread.Sleep(2);
 				if (HostProcess != null && HostProcess.HasExited) return false;
 			}
+			if (*BufferPointer == 255) return false;
 			CallingMessage.ReadDataFromPipe(BufferPointer + 1);
 		}
 		CurrentPressedCharIndex = 0;
@@ -193,6 +194,10 @@ public partial class RiggedGame : Game {
 		// Update
 		Update();
 
+		unsafe {
+			if (*BufferPointer == 255) return false;
+		}
+
 		// Renderer Layer/Cells >> Message Layer/Cells
 		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
 			var layerData = RespondMessage.Layers[layer];
@@ -228,6 +233,9 @@ public partial class RiggedGame : Game {
 
 		unsafe {
 			RespondMessage.WriteDataToPipe(BufferPointer + 1);
+			unsafe {
+				if (*BufferPointer == 255) return false;
+			}
 			*BufferPointer = 1;
 		}
 		return true;

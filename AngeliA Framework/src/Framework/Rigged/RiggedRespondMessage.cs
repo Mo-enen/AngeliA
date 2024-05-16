@@ -313,67 +313,69 @@ public class RiggedRespondMessage {
 
 		try {
 
-			ViewX = Util.ReadInt(ref pointer);
-			ViewY = Util.ReadInt(ref pointer);
-			ViewHeight = Util.ReadInt(ref pointer);
-			RequireSetCursorIndex = Util.ReadInt(ref pointer);
+			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
 
-			SkyTop.r = Util.ReadByte(ref pointer);
-			SkyTop.g = Util.ReadByte(ref pointer);
-			SkyTop.b = Util.ReadByte(ref pointer);
+			ViewX = Util.ReadInt(ref pointer, end);
+			ViewY = Util.ReadInt(ref pointer, end);
+			ViewHeight = Util.ReadInt(ref pointer, end);
+			RequireSetCursorIndex = Util.ReadInt(ref pointer, end);
 
-			SkyBottom.r = Util.ReadByte(ref pointer);
-			SkyBottom.g = Util.ReadByte(ref pointer);
-			SkyBottom.b = Util.ReadByte(ref pointer);
+			SkyTop.r = Util.ReadByte(ref pointer, end);
+			SkyTop.g = Util.ReadByte(ref pointer, end);
+			SkyTop.b = Util.ReadByte(ref pointer, end);
 
-			EffectEnable = Util.ReadByte(ref pointer);
-			HasEffectParams = Util.ReadByte(ref pointer);
+			SkyBottom.r = Util.ReadByte(ref pointer, end);
+			SkyBottom.g = Util.ReadByte(ref pointer, end);
+			SkyBottom.b = Util.ReadByte(ref pointer, end);
+
+			EffectEnable = Util.ReadByte(ref pointer, end);
+			HasEffectParams = Util.ReadByte(ref pointer, end);
 
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
-				e_DarkenAmount = Util.ReadFloat(ref pointer);
-				e_DarkenStep = Util.ReadFloat(ref pointer);
+				e_DarkenAmount = Util.ReadFloat(ref pointer, end);
+				e_DarkenStep = Util.ReadFloat(ref pointer, end);
 			}
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
-				e_LightenAmount = Util.ReadFloat(ref pointer);
-				e_LightenStep = Util.ReadFloat(ref pointer);
+				e_LightenAmount = Util.ReadFloat(ref pointer, end);
+				e_LightenStep = Util.ReadFloat(ref pointer, end);
 			}
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_TINT)) {
-				e_TintColor.r = Util.ReadByte(ref pointer);
-				e_TintColor.g = Util.ReadByte(ref pointer);
-				e_TintColor.b = Util.ReadByte(ref pointer);
-				e_TintColor.a = Util.ReadByte(ref pointer);
+				e_TintColor.r = Util.ReadByte(ref pointer, end);
+				e_TintColor.g = Util.ReadByte(ref pointer, end);
+				e_TintColor.b = Util.ReadByte(ref pointer, end);
+				e_TintColor.a = Util.ReadByte(ref pointer, end);
 			}
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
-				e_VigRadius = Util.ReadFloat(ref pointer);
-				e_VigFeather = Util.ReadFloat(ref pointer);
-				e_VigOffsetX = Util.ReadFloat(ref pointer);
-				e_VigOffsetY = Util.ReadFloat(ref pointer);
-				e_VigRound = Util.ReadFloat(ref pointer);
+				e_VigRadius = Util.ReadFloat(ref pointer, end);
+				e_VigFeather = Util.ReadFloat(ref pointer, end);
+				e_VigOffsetX = Util.ReadFloat(ref pointer, end);
+				e_VigOffsetY = Util.ReadFloat(ref pointer, end);
+				e_VigRound = Util.ReadFloat(ref pointer, end);
 			}
 
-			RequirePlayMusicID = Util.ReadInt(ref pointer);
-			AudioActionRequirement = Util.ReadByte(ref pointer);
-			RequireSetMusicVolume = Util.ReadInt(ref pointer);
-			RequirePlaySoundID = Util.ReadInt(ref pointer);
-			RequirePlaySoundVolume = Util.ReadFloat(ref pointer);
-			RequireSetSoundVolume = Util.ReadInt(ref pointer);
+			RequirePlayMusicID = Util.ReadInt(ref pointer, end);
+			AudioActionRequirement = Util.ReadByte(ref pointer, end);
+			RequireSetMusicVolume = Util.ReadInt(ref pointer, end);
+			RequirePlaySoundID = Util.ReadInt(ref pointer, end);
+			RequirePlaySoundVolume = Util.ReadFloat(ref pointer, end);
+			RequireSetSoundVolume = Util.ReadInt(ref pointer, end);
 
-			CharRequiringCount = Util.ReadInt(ref pointer);
+			CharRequiringCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < CharRequiringCount; i++) {
-				RequireCharsFontIndex[i] = Util.ReadInt(ref pointer);
-				RequireChars[i] = Util.ReadChar(ref pointer);
+				RequireCharsFontIndex[i] = Util.ReadInt(ref pointer, end);
+				RequireChars[i] = Util.ReadChar(ref pointer, end);
 			}
 
-			RequireGizmosRectCount = Util.ReadInt(ref pointer);
+			RequireGizmosRectCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < RequireGizmosRectCount; i++) {
-				int x = Util.ReadInt(ref pointer);
-				int y = Util.ReadInt(ref pointer);
-				int w = Util.ReadInt(ref pointer);
-				int h = Util.ReadInt(ref pointer);
-				byte r = Util.ReadByte(ref pointer);
-				byte g = Util.ReadByte(ref pointer);
-				byte b = Util.ReadByte(ref pointer);
-				byte a = Util.ReadByte(ref pointer);
+				int x = Util.ReadInt(ref pointer, end);
+				int y = Util.ReadInt(ref pointer, end);
+				int w = Util.ReadInt(ref pointer, end);
+				int h = Util.ReadInt(ref pointer, end);
+				byte r = Util.ReadByte(ref pointer, end);
+				byte g = Util.ReadByte(ref pointer, end);
+				byte b = Util.ReadByte(ref pointer, end);
+				byte a = Util.ReadByte(ref pointer, end);
 				var rect = new IRect(x, y, w, h);
 				var color = new Color32(r, g, b, a);
 				RequireGizmosRects[i] = new GizmosRectData() {
@@ -382,14 +384,14 @@ public class RiggedRespondMessage {
 				};
 			}
 
-			RequireGizmosTextureCount = Util.ReadInt(ref pointer);
+			RequireGizmosTextureCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < RequireGizmosTextureCount; i++) {
-				uint id = Util.ReadUInt(ref pointer);
-				var rect = new IRect(Util.ReadInt(ref pointer), Util.ReadInt(ref pointer), Util.ReadInt(ref pointer), Util.ReadInt(ref pointer));
-				var uv = new FRect(Util.ReadFloat(ref pointer), Util.ReadFloat(ref pointer), Util.ReadFloat(ref pointer), Util.ReadFloat(ref pointer));
-				var inverse = Util.ReadBool(ref pointer);
-				int pngLength = Util.ReadInt(ref pointer);
-				var png = pngLength > 0 ? Util.ReadBytes(ref pointer, pngLength) : null;
+				uint id = Util.ReadUInt(ref pointer, end);
+				var rect = new IRect(Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end));
+				var uv = new FRect(Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end));
+				var inverse = Util.ReadBool(ref pointer, end);
+				int pngLength = Util.ReadInt(ref pointer, end);
+				var png = pngLength > 0 ? Util.ReadBytes(ref pointer, pngLength, end) : null;
 				RequireGizmosTextures[i] = new GizmosTextureData() {
 					TextureRigID = id,
 					Rect = rect,
@@ -402,28 +404,28 @@ public class RiggedRespondMessage {
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
 				var layer = Layers[index];
-				layer.CellCount = Util.ReadInt(ref pointer);
+				layer.CellCount = Util.ReadInt(ref pointer, end);
 				for (int i = 0; i < layer.CellCount; i++) {
 					var cell = layer.Cells[i];
-					cell.SpriteID = Util.ReadInt(ref pointer);
-					cell.TextSpriteChar = Util.ReadChar(ref pointer);
-					cell.X = Util.ReadInt(ref pointer);
-					cell.Y = Util.ReadInt(ref pointer);
-					cell.Z = Util.ReadInt(ref pointer);
-					cell.Width = Util.ReadInt(ref pointer);
-					cell.Height = Util.ReadInt(ref pointer);
-					cell.Rotation1000 = Util.ReadInt(ref pointer);
-					cell.PivotX = Util.ReadFloat(ref pointer);
-					cell.PivotY = Util.ReadFloat(ref pointer);
-					cell.Color.r = Util.ReadByte(ref pointer);
-					cell.Color.g = Util.ReadByte(ref pointer);
-					cell.Color.b = Util.ReadByte(ref pointer);
-					cell.Color.a = Util.ReadByte(ref pointer);
-					cell.Shift.left = Util.ReadInt(ref pointer);
-					cell.Shift.right = Util.ReadInt(ref pointer);
-					cell.Shift.down = Util.ReadInt(ref pointer);
-					cell.Shift.up = Util.ReadInt(ref pointer);
-					cell.BorderSide = (Alignment)Util.ReadInt(ref pointer);
+					cell.SpriteID = Util.ReadInt(ref pointer, end);
+					cell.TextSpriteChar = Util.ReadChar(ref pointer, end);
+					cell.X = Util.ReadInt(ref pointer, end);
+					cell.Y = Util.ReadInt(ref pointer, end);
+					cell.Z = Util.ReadInt(ref pointer, end);
+					cell.Width = Util.ReadInt(ref pointer, end);
+					cell.Height = Util.ReadInt(ref pointer, end);
+					cell.Rotation1000 = Util.ReadInt(ref pointer, end);
+					cell.PivotX = Util.ReadFloat(ref pointer, end);
+					cell.PivotY = Util.ReadFloat(ref pointer, end);
+					cell.Color.r = Util.ReadByte(ref pointer, end);
+					cell.Color.g = Util.ReadByte(ref pointer, end);
+					cell.Color.b = Util.ReadByte(ref pointer, end);
+					cell.Color.a = Util.ReadByte(ref pointer, end);
+					cell.Shift.left = Util.ReadInt(ref pointer, end);
+					cell.Shift.right = Util.ReadInt(ref pointer, end);
+					cell.Shift.down = Util.ReadInt(ref pointer, end);
+					cell.Shift.up = Util.ReadInt(ref pointer, end);
+					cell.BorderSide = (Alignment)Util.ReadInt(ref pointer, end);
 				}
 			}
 		} catch (System.Exception ex) { Debug.LogException(ex); }
@@ -435,113 +437,115 @@ public class RiggedRespondMessage {
 
 		try {
 
-			Util.Write(ref pointer, ViewX);
-			Util.Write(ref pointer, ViewY);
-			Util.Write(ref pointer, ViewHeight);
-			Util.Write(ref pointer, RequireSetCursorIndex);
+			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
 
-			Util.Write(ref pointer, SkyTop.r);
-			Util.Write(ref pointer, SkyTop.g);
-			Util.Write(ref pointer, SkyTop.b);
+			Util.Write(ref pointer, ViewX, end);
+			Util.Write(ref pointer, ViewY, end);
+			Util.Write(ref pointer, ViewHeight, end);
+			Util.Write(ref pointer, RequireSetCursorIndex, end);
 
-			Util.Write(ref pointer, SkyBottom.r);
-			Util.Write(ref pointer, SkyBottom.g);
-			Util.Write(ref pointer, SkyBottom.b);
+			Util.Write(ref pointer, SkyTop.r, end);
+			Util.Write(ref pointer, SkyTop.g, end);
+			Util.Write(ref pointer, SkyTop.b, end);
 
-			Util.Write(ref pointer, EffectEnable);
-			Util.Write(ref pointer, HasEffectParams);
+			Util.Write(ref pointer, SkyBottom.r, end);
+			Util.Write(ref pointer, SkyBottom.g, end);
+			Util.Write(ref pointer, SkyBottom.b, end);
+
+			Util.Write(ref pointer, EffectEnable, end);
+			Util.Write(ref pointer, HasEffectParams, end);
 
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_DARKEN)) {
-				Util.Write(ref pointer, e_DarkenAmount);
-				Util.Write(ref pointer, e_DarkenStep);
+				Util.Write(ref pointer, e_DarkenAmount, end);
+				Util.Write(ref pointer, e_DarkenStep, end);
 			}
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_RETRO_LIGHTEN)) {
-				Util.Write(ref pointer, e_LightenAmount);
-				Util.Write(ref pointer, e_LightenStep);
+				Util.Write(ref pointer, e_LightenAmount, end);
+				Util.Write(ref pointer, e_LightenStep, end);
 			}
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_TINT)) {
-				Util.Write(ref pointer, e_TintColor.r);
-				Util.Write(ref pointer, e_TintColor.g);
-				Util.Write(ref pointer, e_TintColor.b);
-				Util.Write(ref pointer, e_TintColor.a);
+				Util.Write(ref pointer, e_TintColor.r, end);
+				Util.Write(ref pointer, e_TintColor.g, end);
+				Util.Write(ref pointer, e_TintColor.b, end);
+				Util.Write(ref pointer, e_TintColor.a, end);
 			}
 			if (HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
-				Util.Write(ref pointer, e_VigRadius);
-				Util.Write(ref pointer, e_VigFeather);
-				Util.Write(ref pointer, e_VigOffsetX);
-				Util.Write(ref pointer, e_VigOffsetY);
-				Util.Write(ref pointer, e_VigRound);
+				Util.Write(ref pointer, e_VigRadius, end);
+				Util.Write(ref pointer, e_VigFeather, end);
+				Util.Write(ref pointer, e_VigOffsetX, end);
+				Util.Write(ref pointer, e_VigOffsetY, end);
+				Util.Write(ref pointer, e_VigRound, end);
 			}
 
-			Util.Write(ref pointer, RequirePlayMusicID);
-			Util.Write(ref pointer, AudioActionRequirement);
-			Util.Write(ref pointer, RequireSetMusicVolume);
-			Util.Write(ref pointer, RequirePlaySoundID);
-			Util.Write(ref pointer, RequirePlaySoundVolume);
-			Util.Write(ref pointer, RequireSetSoundVolume);
+			Util.Write(ref pointer, RequirePlayMusicID, end);
+			Util.Write(ref pointer, AudioActionRequirement, end);
+			Util.Write(ref pointer, RequireSetMusicVolume, end);
+			Util.Write(ref pointer, RequirePlaySoundID, end);
+			Util.Write(ref pointer, RequirePlaySoundVolume, end);
+			Util.Write(ref pointer, RequireSetSoundVolume, end);
 
-			Util.Write(ref pointer, CharRequiringCount);
+			Util.Write(ref pointer, CharRequiringCount, end);
 			for (int i = 0; i < CharRequiringCount; i++) {
-				Util.Write(ref pointer, RequireCharsFontIndex[i]);
-				Util.Write(ref pointer, RequireChars[i]);
+				Util.Write(ref pointer, RequireCharsFontIndex[i], end);
+				Util.Write(ref pointer, RequireChars[i], end);
 			}
 
-			Util.Write(ref pointer, RequireGizmosRectCount);
+			Util.Write(ref pointer, RequireGizmosRectCount, end);
 			for (int i = 0; i < RequireGizmosRectCount; i++) {
 				var data = RequireGizmosRects[i];
-				Util.Write(ref pointer, data.Rect.x);
-				Util.Write(ref pointer, data.Rect.y);
-				Util.Write(ref pointer, data.Rect.width);
-				Util.Write(ref pointer, data.Rect.height);
-				Util.Write(ref pointer, data.Color.r);
-				Util.Write(ref pointer, data.Color.g);
-				Util.Write(ref pointer, data.Color.b);
-				Util.Write(ref pointer, data.Color.a);
+				Util.Write(ref pointer, data.Rect.x, end);
+				Util.Write(ref pointer, data.Rect.y, end);
+				Util.Write(ref pointer, data.Rect.width, end);
+				Util.Write(ref pointer, data.Rect.height, end);
+				Util.Write(ref pointer, data.Color.r, end);
+				Util.Write(ref pointer, data.Color.g, end);
+				Util.Write(ref pointer, data.Color.b, end);
+				Util.Write(ref pointer, data.Color.a, end);
 			}
 
-			Util.Write(ref pointer, RequireGizmosTextureCount);
+			Util.Write(ref pointer, RequireGizmosTextureCount, end);
 			for (int i = 0; i < RequireGizmosTextureCount; i++) {
 				var data = RequireGizmosTextures[i];
-				Util.Write(ref pointer, data.TextureRigID);
-				Util.Write(ref pointer, data.Rect.x);
-				Util.Write(ref pointer, data.Rect.y);
-				Util.Write(ref pointer, data.Rect.width);
-				Util.Write(ref pointer, data.Rect.height);
-				Util.Write(ref pointer, data.Uv.x);
-				Util.Write(ref pointer, data.Uv.y);
-				Util.Write(ref pointer, data.Uv.width);
-				Util.Write(ref pointer, data.Uv.height);
-				Util.Write(ref pointer, data.Inverse);
-				Util.Write(ref pointer, data.PngDataLength);
+				Util.Write(ref pointer, data.TextureRigID, end);
+				Util.Write(ref pointer, data.Rect.x, end);
+				Util.Write(ref pointer, data.Rect.y, end);
+				Util.Write(ref pointer, data.Rect.width, end);
+				Util.Write(ref pointer, data.Rect.height, end);
+				Util.Write(ref pointer, data.Uv.x, end);
+				Util.Write(ref pointer, data.Uv.y, end);
+				Util.Write(ref pointer, data.Uv.width, end);
+				Util.Write(ref pointer, data.Uv.height, end);
+				Util.Write(ref pointer, data.Inverse, end);
+				Util.Write(ref pointer, data.PngDataLength, end);
 				if (data.PngDataLength > 0) {
-					Util.Write(ref pointer, data.PngData);
+					Util.Write(ref pointer, data.PngData, data.PngData.Length, end);
 				}
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
 				var layer = Layers[index];
-				Util.Write(ref pointer, layer.CellCount);
+				Util.Write(ref pointer, layer.CellCount, end);
 				for (int i = 0; i < layer.CellCount; i++) {
 					var cell = layer.Cells[i];
-					Util.Write(ref pointer, cell.SpriteID);
-					Util.Write(ref pointer, cell.TextSpriteChar);
-					Util.Write(ref pointer, cell.X);
-					Util.Write(ref pointer, cell.Y);
-					Util.Write(ref pointer, cell.Z);
-					Util.Write(ref pointer, cell.Width);
-					Util.Write(ref pointer, cell.Height);
-					Util.Write(ref pointer, cell.Rotation1000);
-					Util.Write(ref pointer, cell.PivotX);
-					Util.Write(ref pointer, cell.PivotY);
-					Util.Write(ref pointer, cell.Color.r);
-					Util.Write(ref pointer, cell.Color.g);
-					Util.Write(ref pointer, cell.Color.b);
-					Util.Write(ref pointer, cell.Color.a);
-					Util.Write(ref pointer, cell.Shift.left);
-					Util.Write(ref pointer, cell.Shift.right);
-					Util.Write(ref pointer, cell.Shift.down);
-					Util.Write(ref pointer, cell.Shift.up);
-					Util.Write(ref pointer, (int)cell.BorderSide);
+					Util.Write(ref pointer, cell.SpriteID, end);
+					Util.Write(ref pointer, cell.TextSpriteChar, end);
+					Util.Write(ref pointer, cell.X, end);
+					Util.Write(ref pointer, cell.Y, end);
+					Util.Write(ref pointer, cell.Z, end);
+					Util.Write(ref pointer, cell.Width, end);
+					Util.Write(ref pointer, cell.Height, end);
+					Util.Write(ref pointer, cell.Rotation1000, end);
+					Util.Write(ref pointer, cell.PivotX, end);
+					Util.Write(ref pointer, cell.PivotY, end);
+					Util.Write(ref pointer, cell.Color.r, end);
+					Util.Write(ref pointer, cell.Color.g, end);
+					Util.Write(ref pointer, cell.Color.b, end);
+					Util.Write(ref pointer, cell.Color.a, end);
+					Util.Write(ref pointer, cell.Shift.left, end);
+					Util.Write(ref pointer, cell.Shift.right, end);
+					Util.Write(ref pointer, cell.Shift.down, end);
+					Util.Write(ref pointer, cell.Shift.up, end);
+					Util.Write(ref pointer, (int)cell.BorderSide, end);
 				}
 			}
 		} catch (System.Exception ex) { Debug.LogException(ex); }

@@ -2,7 +2,7 @@
 using AngeliA;
 using AngeliaRigged;
 
-[assembly: DisablePause]
+//[assembly: DisablePause]
 [assembly: IgnoreArtworkPixels]
 
 var riggedGame = new RiggedGame(args);
