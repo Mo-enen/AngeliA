@@ -586,11 +586,11 @@ public sealed partial class MapEditor : WindowUI {
 			ViewRect = ViewRect.LerpTo(TargetViewRect, 300);
 		}
 
-		Stage.SetViewRectImmediately(ViewRect, true);
-		UpdatePanelRect(Renderer.CameraRect);
+		//Stage.SetViewRectImmediately(ViewRect, true);
+		//UpdatePanelRect(Renderer.CameraRect);
 
-		//Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue);
-		//Stage.SetViewSizeDelay(ViewRect.height, 1000, int.MaxValue);
+		Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue);
+		Stage.SetViewSizeDelay(ViewRect.height, 1000, int.MaxValue);
 	}
 
 

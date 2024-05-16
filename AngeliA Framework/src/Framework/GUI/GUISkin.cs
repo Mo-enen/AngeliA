@@ -93,7 +93,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
+		ContentBorder = Int4.one * 12,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -103,6 +103,8 @@ public partial class GUISkin {
 
 		CharSize = 28,
 		Wrap = WrapMode.NoWrap,
+
+		BodyBorder = Int4.one * 6,
 	};
 	public readonly GUIStyle InputField = new() {
 
@@ -111,7 +113,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
+		ContentBorder = Int4.one * 12,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -121,6 +123,8 @@ public partial class GUISkin {
 
 		CharSize = 21,
 		Wrap = WrapMode.NoWrap,
+
+		BodyBorder = Int4.one * 6,
 	};
 	public readonly GUIStyle SmallInputField = new() {
 
@@ -129,7 +133,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
+		ContentBorder = Int4.one * 12,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -140,7 +144,7 @@ public partial class GUISkin {
 		CharSize = 14,
 		Wrap = WrapMode.NoWrap,
 
-		BodyBorder = Int4.Direction(Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE, Const.ART_SCALE),
+		BodyBorder = Int4.one * 6,
 
 	};
 
@@ -153,7 +157,7 @@ public partial class GUISkin {
 		ContentShift = new(0, 2),
 		ContentShiftDisable = new(0, 2),
 		ContentShiftHover = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
+		ContentBorder = Int4.one,
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,

@@ -164,10 +164,12 @@ public partial class RiggedGame : Game {
 		// Input
 		for (int i = 0; i < CallingMessage.HoldingKeyboardKeyCount; i++) {
 			int keyIndex = CallingMessage.HoldingKeyboardKeys[i];
+			if (keyIndex < 0 || keyIndex >= KeyboardHoldingFrames.Length) continue;
 			KeyboardHoldingFrames[keyIndex] = PauselessFrame;
 		}
 		for (int i = 0; i < CallingMessage.HoldingGamepadKeyCount; i++) {
 			int keyIndex = CallingMessage.HoldingGamepadKeys[i];
+			if (keyIndex < 0 || keyIndex >= GamepadHoldingFrames.Length) continue;
 			GamepadHoldingFrames[keyIndex] = PauselessFrame;
 		}
 

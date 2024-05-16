@@ -123,6 +123,7 @@ public abstract partial class Game {
 
 			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
+			LoadAudioPool();
 			_SetFullscreen(_IsFullscreen.Value);
 			_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
 			_SetMusicVolume(MusicVolume);
@@ -291,6 +292,7 @@ public abstract partial class Game {
 	protected void InvokeGameQuitting () {
 		_LastUsedWindowWidth.Value = ScreenWidth;
 		_LastUsedWindowHeight.Value = ScreenHeight;
+		ClearAndUnloadAudioPool();
 		OnGameQuitting?.Invoke();
 #if DEBUG
 		if (CloseWindowsTerminalOnQuit) {

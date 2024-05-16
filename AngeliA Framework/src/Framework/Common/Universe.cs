@@ -31,6 +31,8 @@ public class Universe {
 	public string SavingMetaRoot { get; private set; }
 	public string ProcedureMapRoot { get; private set; }
 	public string InfoPath { get; private set; }
+	public string MusicRoot { get; private set; }
+	public string SoundRoot { get; private set; }
 
 	// Api
 	public UniverseInfo Info { get; private set; }
@@ -50,6 +52,8 @@ public class Universe {
 			ArtworkRoot = AngePath.GetAsepriteRoot(universeFolder),
 			InfoPath = infoPath,
 			Info = JsonUtil.LoadOrCreateJsonFromPath<UniverseInfo>(infoPath),
+			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),
+			SoundRoot = AngePath.GetUniverseSoundRoot(universeFolder),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :

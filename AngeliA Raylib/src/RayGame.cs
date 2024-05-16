@@ -100,7 +100,7 @@ public partial class RayGame : Game {
 		// Pipeline
 		Fonts = FontData.LoadFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
 		InitializeShader();
-		InitializeAudio();
+		Raylib.InitAudioDevice();
 
 		// Init AngeliA
 		Initialize();
@@ -159,8 +159,8 @@ public partial class RayGame : Game {
 	private void UpdateGame () {
 
 		// Music
-		Raylib.UpdateMusicStream(CurrentBGM);
-		
+		if (CurrentBGM != null) Raylib.UpdateMusicStream((Music)CurrentBGM);
+
 		// Begin Draw
 		bool hasScreenEffectEnabled = false;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {

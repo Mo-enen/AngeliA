@@ -85,6 +85,8 @@ public static class AngePath {
 	public static string GetConversationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Conversation");
 	public static string GetEditableConversationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Editable Conversation");
 	public static string GetUniverseMetaRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Meta");
+	public static string GetUniverseMusicRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Audio", "Music");
+	public static string GetUniverseSoundRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Audio", "Sound");
 	public static string GetMapRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Map");
 	public static string GetUniverseCoverPath (string universeFolder) => Util.CombinePaths(universeFolder, "Cover.png");
 	public static string GetAsepriteRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Aseprite");

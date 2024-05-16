@@ -11,8 +11,11 @@ public abstract partial class Game {
 	public readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
 	public int PressingCharCount { get; private set; } = 0;
 	public int PressingKeyCount { get; private set; } = 0;
+	protected object CurrentBGM { get; set; }
 
 	// Data
+	protected static readonly Dictionary<int, object> SoundPool = new();
+	protected static readonly Dictionary<int, string> MusicPool = new();
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
 	private int ForceMinViewHeightValue;
 	private int ForceMinViewHeightFrame = -1;
@@ -308,7 +311,40 @@ public abstract partial class Game {
 	protected abstract bool _GetCharSprite (int fontIndex, char c, out CharSprite result);
 
 
+	// Audio
+	public static void LoadAudioPool () {
+
+		// Music
+		string musicRoot = UniverseSystem.CurrentUniverse.MusicRoot;
+		foreach (var path in Util.EnumerateFiles(musicRoot, false, "*.wav", "*.mp3", "*.ogg")) {
+			MusicPool.TryAdd(Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash(), path);
+		}
+
+		// Sound
+		SoundPool.Clear();
+		string soundRoot = UniverseSystem.CurrentUniverse.SoundRoot;
+		foreach (var path in Util.EnumerateFiles(soundRoot, false, "*.wav", "*.mp3", "*.ogg")) {
+			var soundObj = LoadSound(path);
+			if (soundObj == null) continue;
+			SoundPool.TryAdd(Util.GetNameWithoutExtension(path).AngeHash(), soundObj);
+		}
+
+	}
+
+	public static void ClearAndUnloadAudioPool () {
+		UnloadMusic(Instance.CurrentBGM);
+		foreach (var (_, sound) in SoundPool) {
+			UnloadSound(sound);
+		}
+		MusicPool.Clear();
+		SoundPool.Clear();
+	}
+
+
 	// Music
+	public static void UnloadMusic (object music) => Instance._UnloadMusic(music);
+	protected abstract void _UnloadMusic (object music);
+
 	public static void PlayMusic (int id) => Instance._PlayMusic(id);
 	protected abstract void _PlayMusic (int id);
 
@@ -332,6 +368,12 @@ public abstract partial class Game {
 
 
 	// Sound
+	public static object LoadSound (string filePath) => Instance._LoadSound(filePath);
+	protected abstract object _LoadSound (string filePath);
+
+	public static void UnloadSound (object sound) => Instance._UnloadSound(sound);
+	protected abstract void _UnloadSound (object sound);
+
 	public static void PlaySound (int id, float volume = 1f) => Instance._PlaySound(id, volume);
 	protected abstract void _PlaySound (int id, float volume);
 

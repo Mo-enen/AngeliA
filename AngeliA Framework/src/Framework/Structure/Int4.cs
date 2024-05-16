@@ -10,6 +10,8 @@ public struct Int4 : IEquatable<Int4>, IFormattable {
 
 	public static readonly Int4 zero = new(0, 0, 0, 0);
 	public static readonly Int4 one = new(1, 1, 1, 1);
+	public static readonly Int4 two = new(2, 2, 2, 2);
+	public static readonly Int4 three = new(3, 3, 3, 3);
 	public int this[int index] {
 		readonly get => index switch {
 			0 => x,

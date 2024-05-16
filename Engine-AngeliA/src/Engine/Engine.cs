@@ -361,6 +361,13 @@ internal static class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
+		if (Input.KeyboardDown(KeyboardKey.Digit1)) {
+			Game.PlaySound("Test0".AngeHash());
+		}
+		if (Input.KeyboardDown(KeyboardKey.Digit2)) {
+			Game.PlaySound("Test1".AngeHash());
+		}
+
 		GUI.Enable = true;
 		GUI.ForceUnifyBasedOnMonitor = true;
 		if (CurrentWindowIndex != RigMapEditorWindowIndex) {

@@ -25,7 +25,6 @@ public class RiggedTransceiver {
 
 	// Api
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
-	public bool HasProcess => RigPipeClientProcess != null;
 
 	// Data
 	private readonly RiggedCallingMessage CallingMessage = new();
@@ -69,6 +68,7 @@ public class RiggedTransceiver {
 
 		if (RigPipeClientProcess != null) {
 			RigPipeClientProcess.Kill();
+			RigPipeClientProcess.Dispose();
 			RigPipeClientProcess = null;
 		}
 
@@ -85,7 +85,7 @@ public class RiggedTransceiver {
 			}
 		}
 		unsafe {
-			*BufferPointer = 0;
+			*BufferPointer = 1;
 		}
 
 		var process = new Process();
@@ -138,12 +138,13 @@ public class RiggedTransceiver {
 
 
 	public void Abort (bool waitForExit = true) {
-		if (RigPipeClientProcess != null && !RigPipeClientProcess.HasExited) {
-			RigPipeClientProcess.Kill();
-			if (waitForExit) {
-				RigPipeClientProcess.WaitForExit(5000);
-			}
+		if (RigPipeClientProcess == null || RigPipeClientProcess.HasExited) return;
+		RigPipeClientProcess.Kill();
+		if (waitForExit) {
+			RigPipeClientProcess.WaitForExit(5000);
 		}
+		RigPipeClientProcess.Dispose();
+		RigPipeClientProcess = null;
 	}
 
 
