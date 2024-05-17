@@ -34,7 +34,6 @@ public static class DeveloperToolbar {
 	private static readonly SpriteCode BTN_BOUND = "DeveloperToolbox.Bound";
 	private static readonly SpriteCode BTN_PROFILER = "DeveloperToolbox.Profiler";
 	private static readonly SpriteCode BTN_EFFECT = "DeveloperToolbox.Effect";
-	private static readonly SpriteCode BTN_MAP = "DeveloperToolbox.MapEditor";
 
 	// Data
 	private static readonly BarData[] RenderingUsages = new BarData[RenderLayer.COUNT];
@@ -124,21 +123,6 @@ public static class DeveloperToolbar {
 		// Effect Btn
 		EffectPanelOpening = GUI.IconToggle(rect, EffectPanelOpening, BTN_EFFECT);
 		rect.x -= rect.width + padding;
-
-		// Map Editor Btn
-		bool isMapEditorActived = MapEditor.IsActived;
-		bool newIsOn = GUI.IconToggle(rect, isMapEditorActived, BTN_MAP);
-		if (newIsOn != isMapEditorActived) {
-			if (isMapEditorActived) {
-				WindowUI.CloseWindow(MapEditor.TYPE_ID);
-				Game.RestartGame();
-			} else {
-				WindowUI.OpenWindow(MapEditor.TYPE_ID);
-			}
-		}
-		rect.x -= padding;
-		panelRect.width = panelRect.x - rect.x;
-		panelRect.x = rect.x;
 
 		// Draw Panels
 		if (ProfilerPanelOpening) DrawProfilerPanel(ref panelRect);

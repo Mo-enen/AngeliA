@@ -36,6 +36,7 @@ public class RiggedCallingMessage {
 	private static readonly int GamepadKeyCount = typeof(GamepadKey).EnumLength();
 
 	// Pipe
+	public byte RequiringWindowIndex;
 	public bool CursorInScreen;
 	public int MonitorWidth;
 	public int MonitorHeight;
@@ -75,7 +76,7 @@ public class RiggedCallingMessage {
 	#region --- API ---
 
 
-	public void LoadDataFromEngine (bool ignoreInput, int leftPadding) {
+	public void LoadDataFromEngine (bool ignoreInput, int leftPadding, byte requiringWindowIndex) {
 
 		int mouseScroll = Game.MouseScrollDelta;
 		var mousePos = Game.MouseScreenPosition;
@@ -84,6 +85,7 @@ public class RiggedCallingMessage {
 		int screenLeftPadding = leftPadding * Game.ScreenWidth / Renderer.CameraRect.width;
 		mousePos.x -= screenLeftPadding;
 
+		RequiringWindowIndex = requiringWindowIndex;
 		CursorInScreen = Game.CursorInScreen;
 		MonitorWidth = Game.MonitorWidth;
 		MonitorHeight = Game.MonitorHeight;
@@ -163,6 +165,8 @@ public class RiggedCallingMessage {
 		try {
 
 			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
+
+			RequiringWindowIndex = Util.ReadByte(ref pointer, end);
 
 			CursorInScreen = Util.ReadBool(ref pointer, end);
 
@@ -253,7 +257,10 @@ public class RiggedCallingMessage {
 
 			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
 
+			Util.Write(ref pointer, RequiringWindowIndex, end);
+
 			Util.Write(ref pointer, CursorInScreen, end);
+
 			Util.Write(ref pointer, MonitorWidth, end);
 			Util.Write(ref pointer, MonitorHeight, end);
 			Util.Write(ref pointer, ScreenWidth, end);

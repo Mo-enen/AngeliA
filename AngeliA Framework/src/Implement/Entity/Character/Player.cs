@@ -5,9 +5,16 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
-public sealed class DefaultPlayer : Player {
+public sealed class DefaultPlayer : Player, IConfigurableCharacter {
 	public static readonly int TYPE_ID = typeof(DefaultPlayer).AngeHash();
+	public IConfigurableCharacter.CharacterConfig Config { get; set; } = new();
+
+	public override void OnActivated () {
+		base.OnActivated();
+		(this as IConfigurableCharacter).LoadCharacterFromConfig();
+	}
+
+
 }
 
 

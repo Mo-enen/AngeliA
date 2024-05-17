@@ -29,6 +29,7 @@ public partial class RiggedGame : Game {
 	private unsafe byte* BufferPointer = null;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
+	private readonly WindowUI[] EditorWindows = new WindowUI[2];
 
 
 	#endregion
@@ -135,6 +136,26 @@ public partial class RiggedGame : Game {
 		CurrentPressedCharIndex = 0;
 		CurrentPressedKeyIndex = 0;
 
+		// Refresh Editor Windows
+		for (int i = 0; i < EditorWindows.Length; i++) {
+			if (EditorWindows[i] == null) {
+				EditorWindows[i] = i switch {
+					0 => MapEditor.Instance,
+					_ => null,
+				};
+			}
+			var window = EditorWindows[i];
+			if (window == null) continue;
+			bool shouldActive = CallingMessage.RequiringWindowIndex == i;
+			if (window.Active != shouldActive) {
+				if (shouldActive) {
+					Stage.SpawnEntity(window.TypeID, 0, 0);
+				} else {
+					window.Active = false;
+				}
+			}
+		}
+
 		// Char Pool
 		if (CharPool == null && RiggedFontCount > 0) {
 			CharPool = new Dictionary<char, CharSprite>[RiggedFontCount];
@@ -190,6 +211,11 @@ public partial class RiggedGame : Game {
 		// Reset
 		RespondMessage.Reset();
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
+
+		// Switch Window
+
+
+
 
 		// Update
 		Update();

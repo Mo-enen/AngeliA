@@ -120,6 +120,7 @@ internal static class Engine {
 	private static int RigLastCalledFrame = -1;
 	private static int WindowCount = 0;
 	private static int LastShowingGenericUIFrame = int.MinValue;
+	private static bool IgnoreInputForRig = false;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -349,22 +350,29 @@ internal static class Engine {
 	// Update
 	[OnGameUpdate]
 	internal static void UpdateRiggedGame () {
+
 		if (
 			CurrentProject == null ||
 			EngineUtil.BuildingProjectInBackground ||
 			!Transceiver.RigProcessRunning ||
 			CurrentWindowIndex != RigMapEditorWindowIndex
 		) return;
+
+		if (Input.AnyMouseButtonDown) {
+			IgnoreInputForRig = IgnoreInputForRig || !WindowUI.WindowRect.Contains(Input.MouseGlobalPosition);
+		}
+		if (!Input.AnyMouseButtonHolding) {
+			IgnoreInputForRig = false;
+		}
+
 		Transceiver.Call(
-			ignoreInput:
-				(Input.MouseLeftButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseLeftDownGlobalPosition)) ||
-				(Input.MouseRightButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseRightDownGlobalPosition)) ||
-				(Input.MouseMidButtonHolding && !WindowUI.WindowRect.Contains(Input.MouseMidDownGlobalPosition)) ||
-				Game.PauselessFrame < LastShowingGenericUIFrame + 6,
-			leftPadding:
-				(FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8)
+			ignoreInput: IgnoreInputForRig || Game.PauselessFrame < LastShowingGenericUIFrame + 6,
+			leftPadding: (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
+			requiringWindowIndex: (byte)(CurrentWindowIndex == RigMapEditorWindowIndex ? 0 : 0)
 		);
+
 		RigLastCalledFrame = Game.GlobalFrame;
+
 	}
 
 

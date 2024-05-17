@@ -63,6 +63,7 @@
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 		<None Remove="Icon.ico" />
+		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
 	</ItemGroup>
 

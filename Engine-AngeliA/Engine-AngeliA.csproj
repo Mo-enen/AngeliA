@@ -40,6 +40,7 @@
 	<ItemGroup>
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
+		<None Remove="publish.bat" />
 		<Compile Remove="Properties\**" />
 		<Compile Remove="Universe\**" />
 		<EmbeddedResource Remove="Properties\**" />

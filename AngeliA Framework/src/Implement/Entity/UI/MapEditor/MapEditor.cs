@@ -188,12 +188,16 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	[OnUniverseOpen]
-	public static void OnUniverseOpen () {
+	internal static void OnUniverseOpen () {
 		if (Game.GlobalFrame > 0 && Stage.PeekOrGetEntity(TYPE_ID) is MapEditor editor) {
 			editor.Initialized = false;
 			if (editor.Active) editor.Active = false;
 		}
 	}
+
+
+	[OnGameQuitting]
+	internal static void OnGameQuitting_Editor () => Instance?.OnEditorQuit();
 
 
 	// Active
@@ -202,9 +206,12 @@ public sealed partial class MapEditor : WindowUI {
 
 	public override void OnActivated () {
 		base.OnActivated();
+
 		// Init
 		if (!Initialized) {
 			Initialized = true;
+
+			// Init Pool
 			var universe = UniverseSystem.CurrentUniverse;
 			UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
 			Stream = WorldStream.GetOrCreateStream(universe.MapRoot);
@@ -213,53 +220,49 @@ public sealed partial class MapEditor : WindowUI {
 			Initialize_Pool();
 			Initialize_Palette();
 			Initialize_Nav();
+			System.GC.Collect();
+
+			// Start
+			SetEditorMode(toPlayMode: false);
+			ResetCamera(true);
+
+			CurrentZ = 0;
+			PastingBuffer.Clear();
+			CopyBuffer.Clear();
+			UndoRedo.Reset();
+			DroppingPlayer = false;
+			SelectingPaletteItem = null;
+			MouseDownPosition = null;
+			SelectionUnitRect = null;
+			DraggingUnitRect = null;
+			PaintingThumbnailStartIndex = 0;
+			PaintingThumbnailRect = default;
+			MouseInSelection = false;
+			MouseDownInSelection = false;
+			Pasting = false;
+			MouseDownOutsideBoundary = false;
+			MouseOutsideBoundary = false;
+			PaletteScrollY = 0;
+			SearchResult.Clear();
+			PanelOffsetX = 0;
+			SearchingText = "";
+			PaletteSearchScrollY = 0;
+			LastUndoRegisterFrame = -1;
+			LastUndoPerformedFrame = -1;
+			SetNavigating(false);
+			ToolbarOffsetX = 0;
+			IUnique.LoadFromDisk(Stream.MapRoot);
 		}
-		// Cache
-		CurrentZ = 0;
-		PastingBuffer.Clear();
-		CopyBuffer.Clear();
-		UndoRedo.Reset();
-		DroppingPlayer = false;
-		SelectingPaletteItem = null;
-		MouseDownPosition = null;
-		SelectionUnitRect = null;
-		DraggingUnitRect = null;
-		PaintingThumbnailStartIndex = 0;
-		PaintingThumbnailRect = default;
-		MouseInSelection = false;
-		MouseDownInSelection = false;
-		Pasting = false;
-		MouseDownOutsideBoundary = false;
-		MouseOutsideBoundary = false;
-		PaletteScrollY = 0;
-		SearchResult.Clear();
-		PanelOffsetX = 0;
-		SearchingText = "";
-		PaletteSearchScrollY = 0;
-		LastUndoRegisterFrame = -1;
-		LastUndoPerformedFrame = -1;
-		SetNavigating(false);
-		ToolbarOffsetX = 0;
-		IUnique.LoadFromDisk(Stream.MapRoot);
-
-		// Start
-		SetEditorMode(toPlayMode: false);
-
-		// View
-		ResetCamera(true);
 
 		// Panel
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
 
-		System.GC.Collect();
-
 	}
 
 
-	public override void OnInactivated () {
-		base.OnInactivated();
+	private void OnEditorQuit () {
 
 		if (!PlayingGame) {
 			ApplyPaste();
@@ -280,8 +283,6 @@ public sealed partial class MapEditor : WindowUI {
 		MouseDownOutsideBoundary = false;
 		SearchResult.Clear();
 		Stream?.Clear();
-
-		System.GC.Collect();
 
 	}
 
@@ -583,7 +584,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Lerp
 		if (ViewRect != TargetViewRect) {
-			ViewRect = ViewRect.LerpTo(TargetViewRect, 300);
+			ViewRect = ViewRect.LerpTo(TargetViewRect, 600);
 		}
 
 		//Stage.SetViewRectImmediately(ViewRect, true);
@@ -865,7 +866,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (s_ShowBehind.Value) {
 			using var _ = Scope.RendererLayer(RenderLayer.BEHIND);
 			var behindCameraRect = cameraRect.ScaleFrom(Game.WorldBehindParallax / 1000f, cameraRect.CenterX(), cameraRect.CenterY());
-			int blockSize = Const.CEL * 1000 / Game.WorldBehindParallax;
+			int blockSize = (Const.CEL * 1000).CeilDivide(Game.WorldBehindParallax);
 
 			int z = CurrentZ + 1;
 			int left = behindCameraRect.xMin.ToUnit() - 1;
@@ -1407,8 +1408,8 @@ public sealed partial class MapEditor : WindowUI {
 	private void DrawBlockBehind (IRect cameraRect, IRect paraCameraRect, int blockSize, int id, int unitX, int unitY, bool fixRatio) {
 
 		var rect = new IRect(
-			Util.RemapUnclamped(paraCameraRect.xMin, paraCameraRect.xMax, cameraRect.xMin, cameraRect.xMax, (float)unitX * Const.CEL).RoundToInt(),
-			Util.RemapUnclamped(paraCameraRect.yMin, paraCameraRect.yMax, cameraRect.yMin, cameraRect.yMax, (float)unitY * Const.CEL).RoundToInt(),
+			Util.RemapUnclamped(paraCameraRect.xMin, paraCameraRect.xMax, cameraRect.xMin, cameraRect.xMax, (float)unitX * Const.CEL).FloorToInt(),
+			Util.RemapUnclamped(paraCameraRect.yMin, paraCameraRect.yMax, cameraRect.yMin, cameraRect.yMax, (float)unitY * Const.CEL).FloorToInt(),
 			blockSize, blockSize
 		);
 

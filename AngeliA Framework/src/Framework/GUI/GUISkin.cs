@@ -62,7 +62,7 @@ public partial class GUISkin {
 		BodyColorHover = Color32.GREY_46,
 		BodyColorDown = Color32.GREY_38,
 		BodyColorDisable = Color32.CLEAR,
-		BodyBorder = Int4.Direction(2, 2, 2, 2),
+		BodyBorder = Int4.Direction(1, 1, 1, 1),
 	};
 
 	// Toggle
@@ -158,60 +158,6 @@ public partial class GUISkin {
 		ContentShiftDisable = new(0, 2),
 		ContentShiftHover = new(0, 2),
 		ContentBorder = Int4.one,
-
-		ContentColor = Color32.WHITE,
-		ContentColorHover = Color32.WHITE,
-		ContentColorDown = Color32.GREY_230,
-		ContentColorDisable = Color32.GREY_196,
-		CharSize = -1,
-		Alignment = Alignment.MidMid,
-	};
-
-	public readonly GUIStyle Dropdown = new() {
-		BodySprite = BuiltInSprite.UI_DROPDOWN,
-		BodySpriteHover = BuiltInSprite.UI_DROPDOWN_HOVER,
-		BodySpriteDown = BuiltInSprite.UI_DROPDOWN_DOWN,
-		BodySpriteDisable = BuiltInSprite.UI_DROPDOWN,
-		ContentShift = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
-
-		ContentColor = Color32.WHITE,
-		ContentColorHover = Color32.WHITE,
-		ContentColorDown = Color32.GREY_230,
-		ContentColorDisable = Color32.GREY_196,
-		CharSize = -1,
-		Alignment = Alignment.MidMid,
-	};
-
-	public readonly GUIStyle SmallDarkDropdown = new() {
-		BodySprite = BuiltInSprite.UI_SMALL_DARK_DROPDOWN,
-		BodySpriteHover = BuiltInSprite.UI_SMALL_DARK_DROPDOWN_HOVER,
-		BodySpriteDown = BuiltInSprite.UI_SMALL_DARK_DROPDOWN_DOWN,
-		BodySpriteDisable = BuiltInSprite.UI_SMALL_DARK_DROPDOWN,
-		ContentShift = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
-
-		ContentColor = Color32.WHITE,
-		ContentColorHover = Color32.WHITE,
-		ContentColorDown = Color32.GREY_230,
-		ContentColorDisable = Color32.GREY_196,
-		CharSize = -1,
-		Alignment = Alignment.MidMid,
-	};
-
-	public readonly GUIStyle SmallDropdown = new() {
-		BodySprite = BuiltInSprite.UI_SMALL_DROPDOWN,
-		BodySpriteHover = BuiltInSprite.UI_SMALL_DROPDOWN_HOVER,
-		BodySpriteDown = BuiltInSprite.UI_SMALL_DROPDOWN_DOWN,
-		BodySpriteDisable = BuiltInSprite.UI_SMALL_DROPDOWN,
-		ContentShift = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,

@@ -152,12 +152,12 @@ public class RiggedTransceiver {
 	}
 
 
-	public unsafe void Call (bool ignoreInput, int leftPadding) {
+	public unsafe void Call (bool ignoreInput, int leftPadding, byte requiringWindowIndex) {
 		// Engine >> Rig
 		IgnoreInputFrame = ignoreInput ? Game.PauselessFrame : IgnoreInputFrame;
 		if (*BufferPointer == 0) return;
 		LeftPadding = leftPadding;
-		CallingMessage.LoadDataFromEngine(ignoreInput, leftPadding);
+		CallingMessage.LoadDataFromEngine(ignoreInput, leftPadding, requiringWindowIndex);
 		CallingMessage.WriteDataToPipe(BufferPointer + 1);
 		*BufferPointer = 0;
 	}

@@ -125,9 +125,10 @@ public class SettingWindow : WindowUI {
 		// Theme
 		GUI.SmallLabel(rect, LABEL_THEME);
 		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkDropdown)) {
+		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkButton)) {
 			ShowThemeMenu(popRect);
 		}
+		GUI.PopupTriangleIcon(popRect);
 		rect.SlideDown(itemPadding);
 
 		return rect;

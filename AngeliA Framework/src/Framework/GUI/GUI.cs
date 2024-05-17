@@ -518,6 +518,10 @@ public static class GUI {
 			Renderer.Draw(icon, rect.Fit(icon), Color * ContentColor);
 		}
 	}
+	public static void PopupTriangleIcon (IRect rect, int iconSprite = 0) {
+		iconSprite = iconSprite == 0 ? BuiltInSprite.ICON_TRIANGLE_DOWN : iconSprite;
+		Renderer.Draw(iconSprite, rect.EdgeInside(Direction4.Right, rect.height).Shrink(rect.height / 10));
+	}
 
 
 	// Text Field
