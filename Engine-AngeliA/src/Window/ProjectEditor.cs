@@ -13,16 +13,18 @@ public class ProjectEditor : WindowUI {
 
 
 	// Const
-	private static readonly LanguageCode LABEL_BUILD = ("Label.Build", "Build");
-	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
+	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
+	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
+	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
+	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open .sln or .csproj file in this project folder with default application");
+	private static readonly LanguageCode TIP_RECOMPILE = ("Tip.Recompile", "Manually rebuild the project in debug mode (Ctrl + R)");
+	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Run the current built project in a new window in debug mode (Ctrl + Shift + R)");
+	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Build the project for final product in release mode");
 	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
 	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
 	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
 	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
-	private static readonly LanguageCode TIP_BUILD = ("Tip.Build", "Manually rebuild the project (Ctrl + R)");
-	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Publish the project in release mode");
-	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open sln/csproj file in this project with default application");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
@@ -102,8 +104,8 @@ public class ProjectEditor : WindowUI {
 	private void Update_WorkflowButton (ref IRect rect) {
 
 		var _rect = rect;
-		_rect.width /= 3;
 		int padding = Unify(16);
+		_rect.width = rect.width / 4 - padding;
 
 		// Edit
 		if (GUI.Button(_rect, LABEL_EDIT, WorkflowButtonStyle)) {
@@ -124,11 +126,19 @@ public class ProjectEditor : WindowUI {
 		_rect.SlideRight(padding);
 
 		using (Scope.GUIEnable(!EngineUtil.BuildingProjectInBackground)) {
-			// Build
-			if (GUI.Button(_rect, LABEL_BUILD, WorkflowButtonStyle)) {
+
+			// Recompile
+			if (GUI.Button(_rect, LABEL_RECOMPILE, WorkflowButtonStyle)) {
 				RequiringRebuildFrame = Game.GlobalFrame;
 			}
-			RequireTooltip(_rect, TIP_BUILD);
+			RequireTooltip(_rect, TIP_RECOMPILE);
+			_rect.SlideRight(padding);
+
+			// Run
+			if (GUI.Button(_rect, LABEL_RUN, WorkflowButtonStyle)) {
+				EngineUtil.RunAngeliaBuild(CurrentProject);
+			}
+			RequireTooltip(_rect, TIP_RUN);
 			_rect.SlideRight(padding);
 
 			// Publish
@@ -137,6 +147,7 @@ public class ProjectEditor : WindowUI {
 			}
 			RequireTooltip(_rect, TIP_PUBLISH);
 			_rect.SlideRight(padding);
+
 		}
 
 		rect.SlideDown(padding);

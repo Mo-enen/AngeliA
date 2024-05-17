@@ -23,7 +23,6 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_ONLY_SPRITE_ON_OPTION = ("Setting.ASAOOHOK", "Only Modify Spirte on Holding Ctrl");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
-	private static readonly LanguageCode LABEL_SYNC_DLL = ("Setting.SyncFrameworkDll", "Sync Framework Dll from Engine");
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
@@ -35,7 +34,6 @@ public class SettingWindow : WindowUI {
 	public bool OpenLastProjectOnStart { get; set; }
 	public bool UseTooltip { get; set; }
 	public bool UseNotification { get; set; }
-	public bool SyncFrameworkDll { get; set; }
 	public bool SolidPaintingPreview { get; set; }
 	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
 	public bool ShowLogTime { get; set; }
@@ -120,13 +118,6 @@ public class SettingWindow : WindowUI {
 		// Use Notification
 		UseNotification = GUI.Toggle(
 			rect, UseNotification, LABEL_USE_NOTI,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Sync Framework Dll
-		SyncFrameworkDll = GUI.Toggle(
-			rect, SyncFrameworkDll, LABEL_SYNC_DLL,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

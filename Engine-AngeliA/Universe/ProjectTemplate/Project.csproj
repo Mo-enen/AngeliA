@@ -28,6 +28,9 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		
+		<OutputPath>Temp</OutputPath>
+		<PublishDir>Publish</PublishDir>
+		
 	</PropertyGroup>
 
 	

@@ -87,7 +87,7 @@ public static class EngineUtil {
 	#region --- API ---
 
 
-	// Build
+	// AngeliA
 	public static int BuildAngeliaProject (Project project, bool runAfterBuild) {
 		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
 		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
@@ -156,6 +156,39 @@ public static class EngineUtil {
 				System.Console.WriteLine(ex.Message + "\n" + ex.Source);
 			}
 		}
+	}
+
+
+	public static void RunAngeliaBuild (Project project) {
+		string entryPath = Util.CombinePaths(project.BuildPath, Util.GetNameWithExtension(EntryExePath));
+		if (Util.FileExists(entryPath)) {
+			Util.ExecuteCommand(project.BuildPath, entryPath, wait: false);
+		}
+	}
+
+
+	// Sync
+	public static void SyncProjectWithEngine (Project project) {
+
+		if (project == null) return;
+
+		// Framework Dll Files
+		string sourceDllPath = TemplateFrameworkDllFolder;
+		if (Util.FolderExists(sourceDllPath)) {
+			string targetPath = project.FrameworkLibraryPath;
+			Util.DeleteFolder(targetPath);
+			Util.CopyFolder(sourceDllPath, targetPath, true, false);
+		}
+
+		// Entry Exe File
+		string sourceEntryPath = EntryExePath;
+		if (Util.FileExists(sourceEntryPath)) {
+			Util.CopyFile(
+				sourceEntryPath,
+				Util.CombinePaths(project.BuildPath, Util.GetNameWithExtension(sourceEntryPath))
+			);
+		}
+
 	}
 
 

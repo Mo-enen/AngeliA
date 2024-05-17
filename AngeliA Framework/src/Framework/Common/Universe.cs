@@ -8,11 +8,11 @@ namespace AngeliA;
 public class UniverseInfo {
 	public string ProductName = "";
 	public string DeveloperName = "";
-	public string BuildArgs = "";
 	public long ModifyDate = 0;
 	public int MajorVersion = 0;
 	public int MinorVersion = 0;
 	public int PatchVersion = 0;
+	public uint EngineBuildVersion = 0;
 }
 
 

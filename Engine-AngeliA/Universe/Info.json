@@ -1,9 +1,9 @@
-{
-	"ProductName":"AngeliA Engine",
-	"DeveloperName":"Moenen",
-	"ModifyDate":0,
-	"MajorVersion":0,
-	"MinorVersion":0,
-	"PatchVersion":0,
-	"CloseCmdOnQuit":true
+﻿{
+  "ProductName": "AngeliA Engine",
+  "DeveloperName": "Moenen",
+  "ModifyDate": 133604150656455403,
+  "MajorVersion": 0,
+  "MinorVersion": 0,
+  "PatchVersion": 0,
+  "EngineBuildVersion": 2
 }

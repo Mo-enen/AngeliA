@@ -129,7 +129,6 @@ internal static class Engine {
 	private static readonly SavingBool OpenLastProjectOnStart = new("Engine.OpenLastProjectOnStart", false);
 	private static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true);
 	private static readonly SavingBool UseNotification = new("Engine.UseNotification", true);
-	private static readonly SavingBool SyncFrameworkDll = new("Engine.SyncFrameworkDll", true);
 	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024);
 	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024);
 	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128);
@@ -147,6 +146,17 @@ internal static class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
+
+#if DEBUG
+		// Grow Engine Version
+		string obsoleteInfoPath = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Obsolete Info.json");
+		if (Util.FileExists(obsoleteInfoPath)) {
+			var universe = UniverseSystem.BuiltInUniverse;
+			universe.Info.EngineBuildVersion++;
+			JsonUtil.SaveJsonToPath(universe.Info, universe.InfoPath, prettyPrint: true);
+			Util.DeleteFile(obsoleteInfoPath);
+		}
+#endif
 
 		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
@@ -723,7 +733,6 @@ internal static class Engine {
 		SettingWindow.OpenLastProjectOnStart = OpenLastProjectOnStart.Value;
 		SettingWindow.UseTooltip = UseTooltip.Value;
 		SettingWindow.UseNotification = UseNotification.Value;
-		SettingWindow.SyncFrameworkDll = SyncFrameworkDll.Value;
 		SettingWindow.BackgroundColor = PixelEditor.BackgroundColor.Value;
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
 		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
@@ -763,19 +772,10 @@ internal static class Engine {
 			OpenLastProjectOnStart.Value = SettingWindow.OpenLastProjectOnStart;
 			UseTooltip.Value = SettingWindow.UseTooltip;
 			UseNotification.Value = SettingWindow.UseNotification;
-			SyncFrameworkDll.Value = SettingWindow.SyncFrameworkDll;
 			PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
 			PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
 			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
-		}
-
-		// Update Project Editor
-		if (Input.KeyboardDownWithCtrl(KeyboardKey.R) || ProjectEditor.RequiringRebuildFrame == Game.GlobalFrame) {
-			RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
-			if (RequireBackgroundBuildDate == 0) {
-				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
-			}
 		}
 
 		// Change Theme
@@ -834,12 +834,24 @@ internal static class Engine {
 
 	private static void OnGUI_Hotkey () {
 
-		bool ctrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
-		bool shift = Input.KeyboardHolding(KeyboardKey.LeftShift);
-
-		if (ctrl && shift && Input.KeyboardDown(KeyboardKey.C)) {
+		// Clear Console
+		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.C)) {
 			Console.Clear();
 		}
+
+		// Update Project Editor
+		if (Input.KeyboardDownWithCtrl(KeyboardKey.R) || ProjectEditor.RequiringRebuildFrame == Game.GlobalFrame) {
+			RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
+			if (RequireBackgroundBuildDate == 0) {
+				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
+			}
+		}
+
+		// Run Game
+		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.R)) {
+			EngineUtil.RunAngeliaBuild(CurrentProject);
+		}
+
 	}
 
 
@@ -1101,13 +1113,12 @@ internal static class Engine {
 
 		// Script
 		CheckScriptChanged();
-		if (SyncFrameworkDll.Value) {
-			string sourcePath = EngineUtil.TemplateFrameworkDllFolder;
-			if (Util.FolderExists(sourcePath)) {
-				string targetPath = CurrentProject.FrameworkLibraryPath;
-				Util.DeleteFolder(targetPath);
-				Util.CopyFolder(sourcePath, targetPath, true, false);
-			}
+
+		// Sync Engine Version
+		if (UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
+			CurrentProject.Universe.Info.EngineBuildVersion = UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion;
+			EngineUtil.SyncProjectWithEngine(CurrentProject);
+			JsonUtil.SaveJsonToPath(CurrentProject.Universe.Info, CurrentProject.Universe.InfoPath, true);
 		}
 
 	}
@@ -1165,6 +1176,7 @@ internal static class Engine {
 			MajorVersion = 0,
 			MinorVersion = 0,
 			PatchVersion = 0,
+			EngineBuildVersion = UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion,
 		};
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
 
@@ -1193,16 +1205,13 @@ internal static class Engine {
 
 	[OnGameFocused]
 	private static void CheckScriptChanged () {
-
 		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
 		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
-
 		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {
 			RequireBackgroundBuildDate = srcModifyDate;
 		} else {
 			RequireBackgroundBuildDate = 0;
 		}
-
 	}
 
 
