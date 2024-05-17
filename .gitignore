@@ -9,4 +9,4 @@ dotnet/
 *.editorconfig
 *.ini
 Properties/
-/Engine-AngeliA/Universe/Runtime/
+*/Universe/Runtime/
