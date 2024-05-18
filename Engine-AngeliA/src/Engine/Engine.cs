@@ -1157,10 +1157,7 @@ public class Engine {
 		ProjectEditor.CurrentProject = CurrentProject;
 
 		// Audio
-		Game.SyncAudioPool(
-			UniverseSystem.BuiltInUniverse.UniverseRoot,
-			CurrentProject.UniversePath
-		);
+		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
 
 		// Script
 		CheckScriptChanged();
@@ -1265,7 +1262,6 @@ public class Engine {
 	}
 
 
-	// Project
 	private void RefreshProjectCache () {
 		foreach (var project in Projects) {
 			project.FolderExists = Util.FolderExists(project.Path);

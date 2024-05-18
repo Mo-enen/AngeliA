@@ -13,6 +13,7 @@ public class ProjectEditor : WindowUI {
 
 
 	// Const
+	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
@@ -71,7 +72,8 @@ public class ProjectEditor : WindowUI {
 
 		if (CurrentProject == null) return;
 
-		var panelRect = WindowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(42));
+		var windowRect = WindowRect;
+		var panelRect = windowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(196));
 		int maxPanelWidth = Unify(612);
 		if (panelRect.width > maxPanelWidth) {
 			panelRect.x += (panelRect.width - maxPanelWidth) / 2;
@@ -83,20 +85,28 @@ public class ProjectEditor : WindowUI {
 		var rect = panelRect.EdgeInside(Direction4.Up, Unify(50));
 		int extendedContentSize;
 
-		using (var scroll = Scope.GUIScroll(panelRect, MasterScrollPos, 0, MasterScrollMax)) {
+		using (var scroll = Scope.GUIScroll(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
 			MasterScrollPos = scroll.ScrollPosition;
 
+			// Window
 			Update_WorkflowButton(ref rect);
-
 			Update_Config(ref rect);
 
 			extendedContentSize = panelRect.yMax - rect.yMax + Unify(64);
 			MasterScrollMax = (extendedContentSize - panelRect.height).GreaterOrEquelThanZero();
+
 		}
 		MasterScrollPos = GUI.ScrollBar(
-			891236, WindowRect.EdgeInside(Direction4.Right, Unify(12)),
+			891236, windowRect.EdgeInside(Direction4.Right, Unify(12)),
 			MasterScrollPos, extendedContentSize, panelRect.height
 		);
+
+		// BG
+		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+			var range = new IRect(panelRect.x, WindowRect.y, panelRect.width, panelRect.yMax - WindowRect.yMin + MasterScrollPos);
+
+			Renderer.Draw(PANEL_BACKGROUND, range);
+		}
 
 		// Hotkey
 		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
@@ -259,17 +269,6 @@ public class ProjectEditor : WindowUI {
 		var info = CurrentProject.Universe.Info;
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-
 
 
 	#endregion

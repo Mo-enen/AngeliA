@@ -59,7 +59,7 @@ public class TeleportTask : TaskItem {
 			int PARA = Game.WorldBehindParallax;
 			float scale = ToBehind ? 1000f / PARA : PARA / 1000f;
 			float z01 = Util.InverseLerp(WaitDuration, Duration, LocalFrame);
-			float lerp = Util.LerpUnclamped(scale, 1f, z01);
+			float lerp = Util.LerpUnclamped(scale, 1f, Ease.InOutSine(z01));
 			var center = Renderer.CameraRect.center.CeilToInt();
 			// Behind
 			if (Renderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
@@ -112,7 +112,7 @@ public class TeleportTask : TaskItem {
 	// API
 	public static TeleportTask Teleport (
 		int fromX, int fromY, int toX, int toY, int toZ,
-		int waitDuration = 6, int duration = 24, bool useVignette = false, bool useParallax = true, bool withPortal = false,
+		int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true, bool withPortal = false,
 		MapChannel? newChannel = null, string channelName = ""
 	) {
 		if (Task.HasTask()) return null;

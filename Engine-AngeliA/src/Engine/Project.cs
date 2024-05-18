@@ -29,7 +29,11 @@ public class Project {
 		TempPublishPath = Util.CombinePaths(projectPath, "Temp", "Publish"),
 		IconPath = Util.CombinePaths(projectPath, "Icon.ico"),
 		UniversePath = AngePath.GetUniverseRoot(projectPath),
-		Universe = Universe.LoadUniverse(AngePath.GetUniverseRoot(projectPath), @readonly: false),
+		Universe = Universe.LoadUniverse(
+			AngePath.GetUniverseRoot(projectPath),
+			useBuiltInSavingRoot: true,
+			@readonly: false
+		),
 	};
 
 }
