@@ -20,7 +20,6 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
-	private static readonly LanguageCode LABEL_ONLY_SPRITE_ON_OPTION = ("Setting.ASAOOHOK", "Only Modify Spirte on Holding Ctrl");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
@@ -35,7 +34,6 @@ public class SettingWindow : WindowUI {
 	public bool UseTooltip { get; set; }
 	public bool UseNotification { get; set; }
 	public bool SolidPaintingPreview { get; set; }
-	public bool AllowSpirteActionOnlyOnHoldingOptionKey { get; set; }
 	public bool ShowLogTime { get; set; }
 	public Color32 BackgroundColor { get; set; }
 
@@ -65,15 +63,20 @@ public class SettingWindow : WindowUI {
 
 
 	public override void UpdateWindowUI () {
-		int itemHeight = Unify(32);
 		int extendedUISize = 1;
 		using (var scroll = Scope.GUIScroll(WindowRect, MasterScroll, 0, UIHeight)) {
 			MasterScroll = scroll.ScrollPosition;
-			var rect = WindowRect.Shrink(
-				Unify(96), Unify(96), Unify(42), Unify(42)
-			).EdgeInside(Direction4.Up, itemHeight);
 
-			using var _ = Scope.GUILabelWidth(Util.Min(Unify(384), rect.width / 2));
+			var panelRect = WindowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(42));
+			int maxPanelWidth = Unify(612);
+			if (panelRect.width > maxPanelWidth) {
+				panelRect.x += (panelRect.width - maxPanelWidth) / 2;
+				panelRect.width = maxPanelWidth;
+			}
+
+			var rect = panelRect.EdgeInside(Direction4.Up, GUI.FieldHeight);
+
+			using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), rect.width / 2));
 			GUI.BeginChangeCheck();
 			DrawPanel(ref rect, Update_Engine);
 			DrawPanel(ref rect, Update_PixelEditor);
@@ -95,7 +98,7 @@ public class SettingWindow : WindowUI {
 
 	private IRect Update_Engine (IRect rect) {
 
-		int itemPadding = Unify(4);
+		int itemPadding = GUI.FieldPadding;
 
 		// Label - Engine
 		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_ENGINE, Skin.SmallGreyLabel);
@@ -137,7 +140,7 @@ public class SettingWindow : WindowUI {
 
 	private IRect Update_PixelEditor (IRect rect) {
 
-		int itemPadding = Unify(4);
+		int itemPadding = GUI.FieldPadding;
 
 		// Label - PixEditor
 		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_PIXEL_EDITOR, Skin.SmallGreyLabel);
@@ -161,12 +164,6 @@ public class SettingWindow : WindowUI {
 		);
 		rect.SlideDown(itemPadding);
 
-		// Allow Spirte Action Only On Holding Option Key
-		AllowSpirteActionOnlyOnHoldingOptionKey = GUI.Toggle(
-			rect, AllowSpirteActionOnlyOnHoldingOptionKey, LABEL_ONLY_SPRITE_ON_OPTION,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
 		return rect;
 
 	}
@@ -174,7 +171,7 @@ public class SettingWindow : WindowUI {
 
 	private IRect Update_Console (IRect rect) {
 
-		int itemPadding = Unify(4);
+		int itemPadding = GUI.FieldPadding;
 
 		// Label - Console
 		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_CONSOLE, Skin.SmallGreyLabel);

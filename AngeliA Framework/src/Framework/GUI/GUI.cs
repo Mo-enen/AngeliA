@@ -19,6 +19,7 @@ public static class GUI {
 	// Api
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
+	public static bool Interactable { get; set; } = true;
 	public static bool ForceUnifyBasedOnMonitor { get; set; } = false;
 	public static int TypingTextFieldID { get; private set; }
 	public static Color32 Color { get; set; } = Color32.WHITE;
@@ -26,6 +27,8 @@ public static class GUI {
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
 	public static int LabelWidth { get; set; } = 1;
 	public static GUISkin Skin { get; set; } = GUISkin.Default;
+	public static int FieldHeight { get; private set; } = 1;
+	public static int FieldPadding { get; private set; } = 1;
 
 	// Data
 	private static readonly StringBuilder TypingBuilder = new();
@@ -80,6 +83,8 @@ public static class GUI {
 		Color = Color32.WHITE;
 		BodyColor = Color32.WHITE;
 		ContentColor = Color32.WHITE;
+		FieldHeight = Unify(26);
+		FieldPadding = Unify(8);
 	}
 
 
@@ -342,7 +347,6 @@ public static class GUI {
 		bg.SetRect(bounds.Expand(backgroundPadding));
 	}
 
-
 	public static void ShadowLabel (IRect rect, string text, int shadowDistance = 3, GUIStyle style = null) {
 		var oldC = ContentColor;
 		ContentColor = Color32.GREY_20;
@@ -415,6 +419,8 @@ public static class GUI {
 		state = GUIState.Normal;
 		if (!Enable) {
 			state = GUIState.Disable;
+			return false;
+		} else if (!Interactable) {
 			return false;
 		}
 		bool hover = !Input.IgnoringMouseInput && rect.MouseInside();
@@ -555,10 +561,10 @@ public static class GUI {
 
 		DrawStyleBody(rect, bodyStyle, state);
 
-		if ((!inCamera || !Enable) && TypingTextFieldID == controlID) TypingTextFieldID = 0;
+		if ((!inCamera || !Enable || !Interactable) && TypingTextFieldID == controlID) TypingTextFieldID = 0;
 
 		// Start Typing
-		if (Enable && inCamera && Input.MouseLeftButtonDown && mouseDownPosInRect) {
+		if (Enable && Interactable && inCamera && Input.MouseLeftButtonDown && mouseDownPosInRect) {
 			TypingTextFieldID = controlID;
 			BeamBlinkFrame = Game.PauselessFrame;
 			startTyping = true;
@@ -568,7 +574,7 @@ public static class GUI {
 		startTyping = startTyping || invokeStart;
 
 		// Typing 
-		bool typing = Enable && TypingTextFieldID == controlID;
+		bool typing = Enable && Interactable && TypingTextFieldID == controlID;
 		int beamIndex = typing ? BeamIndex : 0;
 		int beamLength = typing ? BeamLength : 0;
 
@@ -834,9 +840,11 @@ public static class GUI {
 	public static int SmallIntDial (IRect rect, int value, out bool changed, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out changed, label, Skin.SmallLabel, Skin.SmallCenterLabel, Skin.SmallDarkButton, delta, min, max);
 	public static int IntDial (IRect rect, int value, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, labelStyle, bodyStyle, dialButtonStyle, delta, min, max);
 	public static int IntDial (IRect rect, int value, out bool changed, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) {
-		bodyStyle ??= Skin.CenterLabel;
+
+		bodyStyle ??= Skin.SmallCenterLabel;
 		dialButtonStyle ??= Skin.SmallDarkButton;
 		int oldValue = value;
+
 		// Label
 		if (label != null) {
 			labelStyle ??= Skin.Label;
@@ -844,8 +852,12 @@ public static class GUI {
 			rect = rect.ShrinkLeft(LabelWidth);
 		}
 		int buttonSize = Unify(42);
+
 		// Value
-		Label(rect.ShrinkRight(buttonSize), IntDialToChars.GetChars(value), bodyStyle);
+		var labelRect = rect.ShrinkRight(buttonSize);
+		DrawStyleBody(labelRect, bodyStyle, Enable ? GUIState.Normal : GUIState.Disable);
+		Label(labelRect, IntDialToChars.GetChars(value), bodyStyle);
+
 		// Buttons
 		rect = rect.EdgeInside(Direction4.Right, buttonSize);
 		if (Button(rect.TopHalf(), BuiltInSprite.ICON_TRIANGLE_UP, dialButtonStyle)) {
@@ -856,6 +868,7 @@ public static class GUI {
 		}
 		changed = value != oldValue;
 		if (changed) ContentVersion++;
+
 		return value;
 	}
 
@@ -905,7 +918,7 @@ public static class GUI {
 		}
 
 		// Mouse Down
-		if (Input.MouseLeftButtonDown) {
+		if (Interactable && Enable && Input.MouseLeftButtonDown) {
 			if (hoveringBar) {
 				// Start Drag
 				ScrollBarMouseDownPos = new Int2(
@@ -1072,7 +1085,7 @@ public static class GUI {
 			var cursorRect = new IRect(rect.x + (int)(rect.width * value) - cursorWidth / 2, rect.y, cursorWidth, rect.height);
 			Renderer.DrawPixel(cursorRect.Expand(cursorWidth / 2, cursorWidth / 2, 0, 0), Color32.BLACK);
 			Renderer.DrawPixel(cursorRect, Color32.WHITE);
-			if (Enable) {
+			if (Enable && Interactable) {
 				// Wheel
 				if (Input.MouseWheelDelta != 0 && rect.Contains(Input.MouseGlobalPosition)) {
 					value += Input.MouseWheelDelta * (forHue ? 0.02f : 0.01f);

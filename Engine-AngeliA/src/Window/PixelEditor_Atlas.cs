@@ -94,8 +94,8 @@ public partial class PixelEditor {
 					if (GUI.Button(rect, 0, Skin.HighlightPixel)) {
 						if (selecting) {
 							if (rect.ShrinkLeft(iconWidth).MouseInside()) {
-								TryApplySliceInputFields();
-								RefreshSliceInputContent();
+								TryApplySpriteInputFields();
+								RefreshSpriteInputContent();
 								GUI.CancelTyping();
 								RenamingAtlasIndex = i;
 								renaming = true;

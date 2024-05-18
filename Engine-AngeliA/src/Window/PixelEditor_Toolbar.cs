@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 
@@ -57,7 +58,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_SHOW_CHECKER = ("Tip.ShowCheckerBoard", "Show Checker Board");
 	private static readonly LanguageCode TIP_SHOW_AXIS = ("Tip.ShowAxis", "Show Axis");
 	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset camera");
-	private static readonly LanguageCode TIP_DEL_SLICE = ("Tip.DeleteSlice", "Delete sprite");
+	private static readonly LanguageCode TIP_DEL_SPRITE = ("Tip.DeleteSprite", "Delete sprite");
 	private static readonly LanguageCode TIP_ENABLE_BORDER = ("Tip.EnableBorder", "Enable borders");
 	private static readonly LanguageCode TIP_DISABLE_BORDER = ("Tip.DisableBorder", "Disable borders");
 	private static readonly LanguageCode TIP_SIZE_X = ("Tip.SizeX", "Width");
@@ -70,7 +71,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_PIVOT_Y = ("Tip.PivotY", "Pivot Y");
 	private static readonly LanguageCode TIP_Z = ("Tip.Z", "Sprite Z");
 	private static readonly LanguageCode TIP_DURATION = ("Tip.Dration", "Animation duration");
-	private static readonly LanguageCode TIP_SLICE_NAME = ("Tip.SpriteName", "Name");
+	private static readonly LanguageCode TIP_SPRITE_NAME = ("Tip.SpriteName", "Name");
 	private static readonly LanguageCode TIP_TRIGGER = ("Tip.Trigger", "Is trigger sprite");
 	private static readonly LanguageCode TIP_TAG = ("Tip.Tag", "Tag");
 	private static readonly LanguageCode TIP_RULE = ("Tip.Rule", "Tiling rule for auto level sprite");
@@ -129,16 +130,15 @@ public partial class PixelEditor {
 			// --- General ---
 			Update_GeneralToolbar(toolbarRect, ref rect);
 		} else {
-			// --- Slice ---
-			Update_SliceToolbar_Name(ref rect);
-			Update_SliceToolbar_Size(ref rect);
-			Update_SliceToolbar_Border(ref rect);
-			Update_SliceToolbar_Pivot(ref rect);
-			Update_SliceToolbar_Alt(ref rect);
+			// --- Sprite ---
+			Update_SpriteToolbar_Name(ref rect);
+			Update_SpriteToolbar_Size(ref rect);
+			Update_SpriteToolbar_Border(ref rect);
+			Update_SpriteToolbar_Pivot(ref rect);
+			Update_SpriteToolbar_Alt(ref rect);
 			Update_RuleEditor();
 		}
 	}
-
 
 	private void Update_GeneralToolbar (IRect toolbarRect, ref IRect rect) {
 
@@ -246,7 +246,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void Update_SliceToolbar_Name (ref IRect rect) {
+	private void Update_SpriteToolbar_Name (ref IRect rect) {
 
 		if (SelectingSpriteCount == 0) return;
 
@@ -257,17 +257,17 @@ public partial class PixelEditor {
 		rect.width = fieldWidth;
 		var inputRect = rect.Shrink(0, 0, 0, padding);
 		if (InputField(InputName.Name, inputRect)) {
-			TryApplySliceInputFields(forceApply: true);
-			RefreshSliceInputContent();
+			TryApplySpriteInputFields(forceApply: true);
+			RefreshSpriteInputContent();
 		}
-		RequireTooltip(inputRect, TIP_SLICE_NAME);
+		RequireTooltip(inputRect, TIP_SPRITE_NAME);
 		rect.SlideRight(padding);
 
 		rect.x += padding;
 	}
 
 
-	private void Update_SliceToolbar_Size (ref IRect rect) {
+	private void Update_SpriteToolbar_Size (ref IRect rect) {
 
 		int padding = Unify(4);
 		int boxPadding = Unify(2);
@@ -288,8 +288,8 @@ public partial class PixelEditor {
 
 		// Width
 		if (InputField(InputName.Width, inputRect)) {
-			TryApplySliceInputFields(forceApply: true);
-			RefreshSliceInputContent();
+			TryApplySpriteInputFields(forceApply: true);
+			RefreshSpriteInputContent();
 		}
 		RequireTooltip(inputRect, TIP_SIZE_X);
 		rect.SlideRight(padding);
@@ -297,8 +297,8 @@ public partial class PixelEditor {
 
 		// Height
 		if (InputField(InputName.Height, inputRect)) {
-			TryApplySliceInputFields(forceApply: true);
-			RefreshSliceInputContent();
+			TryApplySpriteInputFields(forceApply: true);
+			RefreshSpriteInputContent();
 		}
 		RequireTooltip(inputRect, TIP_SIZE_Y);
 		rect.SlideRight(padding);
@@ -314,7 +314,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void Update_SliceToolbar_Border (ref IRect rect) {
+	private void Update_SpriteToolbar_Border (ref IRect rect) {
 
 		int padding = Unify(4);
 		int boxPadding = Unify(2);
@@ -349,8 +349,8 @@ public partial class PixelEditor {
 
 			// Border L
 			if (InputField(InputName.BorderL, inputRect)) {
-				TryApplySliceInputFields(forceApply: true);
-				RefreshSliceInputContent();
+				TryApplySpriteInputFields(forceApply: true);
+				RefreshSpriteInputContent();
 			}
 			RequireTooltip(inputRect, TIP_BORDER_L);
 			rect.SlideRight(padding);
@@ -358,8 +358,8 @@ public partial class PixelEditor {
 
 			// Border R
 			if (InputField(InputName.BorderR, inputRect)) {
-				TryApplySliceInputFields(forceApply: true);
-				RefreshSliceInputContent();
+				TryApplySpriteInputFields(forceApply: true);
+				RefreshSpriteInputContent();
 			}
 			RequireTooltip(inputRect, TIP_BORDER_R);
 			rect.SlideRight(padding);
@@ -367,8 +367,8 @@ public partial class PixelEditor {
 
 			// Border D
 			if (InputField(InputName.BorderD, inputRect)) {
-				TryApplySliceInputFields(forceApply: true);
-				RefreshSliceInputContent();
+				TryApplySpriteInputFields(forceApply: true);
+				RefreshSpriteInputContent();
 			}
 			RequireTooltip(inputRect, TIP_BORDER_D);
 			rect.SlideRight(padding);
@@ -376,8 +376,8 @@ public partial class PixelEditor {
 
 			// Border U
 			if (InputField(InputName.BorderU, inputRect)) {
-				TryApplySliceInputFields(forceApply: true);
-				RefreshSliceInputContent();
+				TryApplySpriteInputFields(forceApply: true);
+				RefreshSpriteInputContent();
 			}
 			RequireTooltip(inputRect, TIP_BORDER_U);
 			rect.SlideRight(padding);
@@ -393,7 +393,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void Update_SliceToolbar_Pivot (ref IRect rect) {
+	private void Update_SpriteToolbar_Pivot (ref IRect rect) {
 
 		int padding = Unify(4);
 		int boxPadding = Unify(2);
@@ -414,8 +414,8 @@ public partial class PixelEditor {
 
 		// Pivot X
 		if (InputField(InputName.PivotX, inputRect)) {
-			TryApplySliceInputFields(forceApply: true);
-			RefreshSliceInputContent();
+			TryApplySpriteInputFields(forceApply: true);
+			RefreshSpriteInputContent();
 		}
 		RequireTooltip(inputRect, TIP_PIVOT_X);
 		rect.SlideRight(padding);
@@ -423,8 +423,8 @@ public partial class PixelEditor {
 
 		// Pivot Y
 		if (InputField(InputName.PivotY, inputRect)) {
-			TryApplySliceInputFields(forceApply: true);
-			RefreshSliceInputContent();
+			TryApplySpriteInputFields(forceApply: true);
+			RefreshSpriteInputContent();
 		}
 		RequireTooltip(inputRect, TIP_PIVOT_Y);
 		rect.SlideRight(padding);
@@ -439,7 +439,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void Update_SliceToolbar_Alt (ref IRect rect) {
+	private void Update_SpriteToolbar_Alt (ref IRect rect) {
 
 		int padding = Unify(4);
 		int boxPadding = Unify(2);
@@ -459,8 +459,8 @@ public partial class PixelEditor {
 		rect.width = fieldWidth;
 		var inputRect = rect.Shrink(0, 0, 0, padding);
 		if (InputField(InputName.Z, inputRect)) {
-			TryApplySliceInputFields(forceApply: true);
-			RefreshSliceInputContent();
+			TryApplySpriteInputFields(forceApply: true);
+			RefreshSpriteInputContent();
 		}
 		RequireTooltip(inputRect, TIP_Z);
 		rect.SlideRight(padding);
@@ -476,8 +476,8 @@ public partial class PixelEditor {
 		rect.width = fieldWidth;
 		inputRect = rect.Shrink(0, 0, 0, padding);
 		if (InputField(InputName.Duration, inputRect)) {
-			TryApplySliceInputFields(forceApply: true);
-			RefreshSliceInputContent();
+			TryApplySpriteInputFields(forceApply: true);
+			RefreshSpriteInputContent();
 		}
 		RequireTooltip(inputRect, TIP_DURATION);
 		rect.SlideRight(padding * 2);
@@ -531,7 +531,7 @@ public partial class PixelEditor {
 		if (GUI.Button(rect, ICON_DELETE_SPRITE, Skin.SmallDarkButton)) {
 			DeleteAllSelectingSprite();
 		}
-		RequireTooltip(rect, TIP_DEL_SLICE);
+		RequireTooltip(rect, TIP_DEL_SPRITE);
 		rect.SlideRight(padding);
 
 		// Final
@@ -789,7 +789,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void TryApplySliceInputFields (bool forceApply = false) {
+	private void TryApplySpriteInputFields (bool forceApply = false) {
 
 		if (SelectingSpriteCount == 0) return;
 
@@ -984,7 +984,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void RefreshSliceInputContent () {
+	private void RefreshSpriteInputContent () {
 
 		if (SelectingSpriteCount == 0) {
 			INPUT_TEXT.FillWithValue("");

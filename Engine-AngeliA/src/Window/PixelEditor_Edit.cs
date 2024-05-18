@@ -14,7 +14,7 @@ public partial class PixelEditor {
 
 	// Const
 	private const int MAX_SELECTION_SIZE = 128;
-	private static readonly LanguageCode NOTI_SLICE_CREATED = ("Noti.SliceCreated", "Slice Created");
+	private static readonly LanguageCode NOTI_SPRITE_CREATED = ("Noti.SpriteCreated", "Sprite Created");
 	private static readonly LanguageCode NOTI_PAINT_IN_SPRITE = ("Noti.PaintInSprite", "Only paint in a sprite");
 
 	// Data
@@ -74,21 +74,21 @@ public partial class PixelEditor {
 
 		DragChanged = false;
 		DraggingStateLeft = DragStateLeft.Canceled;
-		TryApplySliceInputFields();
+		TryApplySpriteInputFields();
 		var hoveringData = HoveringSpriteStageIndex >= 0 ? StagedSprites[HoveringSpriteStageIndex] : null;
 
-		// Holding Slice Option Key
+		// Holding Sprite Option Key
 		if (HoldingCtrl && !PixelSelectionPixelRect.Contains(MousePixelPos)) {
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
 				// Resize
-				DraggingStateLeft = DragStateLeft.ResizeSlice;
+				DraggingStateLeft = DragStateLeft.ResizeSprite;
 				ResizingDirection = HoveringResizeDirection.Value;
 				ResizingStageIndex = HoveringResizeStageIndex;
 				ResizeForBorder = HoveringResizeForBorder;
 			} else if (HoveringSpriteStageIndex >= 0) {
 				// Move From Inside
-				DraggingStateLeft = DragStateLeft.MoveSlice;
-				if (!AllowSpirteActionOnlyOnHoldingOptionKey.Value || !hoveringData.Selecting) {
+				DraggingStateLeft = DragStateLeft.MoveSprite;
+				if (!AllowSpirteActionOnlyOnHoldingOptionKey || !hoveringData.Selecting) {
 					SetSpriteSelection(HoveringSpriteStageIndex);
 					hoveringData.DraggingStartRect = hoveringData.Sprite.PixelRect;
 				} else {
@@ -98,8 +98,8 @@ public partial class PixelEditor {
 				}
 			} else {
 				// From Outside
-				if (AllowSpirteActionOnlyOnHoldingOptionKey.Value) {
-					DraggingStateLeft = DragStateLeft.SelectOrCreateSlice;
+				if (AllowSpirteActionOnlyOnHoldingOptionKey) {
+					DraggingStateLeft = DragStateLeft.SelectOrCreateSprite;
 				} else {
 					ClearSpriteSelection();
 				}
@@ -144,16 +144,16 @@ public partial class PixelEditor {
 		ClearPixelSelectionRect();
 		if (HoveringSpriteStageIndex < 0) {
 			// Outside Sprite
-			if (AllowSpirteActionOnlyOnHoldingOptionKey.Value) {
+			if (AllowSpirteActionOnlyOnHoldingOptionKey) {
 				DraggingStateLeft = DragStateLeft.Paint;
 				if (SelectingSpriteCount > 0) PaintFailedCount = 0;
 				ClearSpriteSelection();
 			} else {
-				DraggingStateLeft = DragStateLeft.SelectOrCreateSlice;
+				DraggingStateLeft = DragStateLeft.SelectOrCreateSprite;
 			}
-		} else if (hoveringData.Selecting && !AllowSpirteActionOnlyOnHoldingOptionKey.Value) {
+		} else if (hoveringData.Selecting && !AllowSpirteActionOnlyOnHoldingOptionKey) {
 			// Inside Selecting Sprite
-			DraggingStateLeft = DragStateLeft.MoveSlice;
+			DraggingStateLeft = DragStateLeft.MoveSprite;
 			foreach (var _spData in StagedSprites) {
 				_spData.DraggingStartRect = _spData.Sprite.PixelRect;
 			}
@@ -183,19 +183,19 @@ public partial class PixelEditor {
 				DrawPaintingSprites();
 				break;
 
-			case DragStateLeft.ResizeSlice:
-				// Resize Slice
+			case DragStateLeft.ResizeSprite:
+				// Resize Sprite
 				Cursor.SetCursor(Cursor.GetResizeCursorIndex(ResizingDirection), 2);
 				DrawResizingSprites();
 				break;
 
-			case DragStateLeft.MoveSlice:
-				// Move Slice
+			case DragStateLeft.MoveSprite:
+				// Move Sprite
 				Cursor.SetCursorAsMove();
 				DrawMovingSprites();
 				break;
 
-			case DragStateLeft.SelectOrCreateSlice:
+			case DragStateLeft.SelectOrCreateSprite:
 				// Select / Create
 				var draggingRect = Pixel_to_Stage(DraggingPixelRectLeft);
 				DrawFrame(draggingRect, Skin.GizmosDragging, GizmosThickness);
@@ -236,8 +236,8 @@ public partial class PixelEditor {
 				}
 				break;
 
-			case DragStateLeft.ResizeSlice:
-				// Resize Slice
+			case DragStateLeft.ResizeSprite:
+				// Resize Sprite
 				var resizingSpData = StagedSprites[ResizingStageIndex];
 				var resizingSp = resizingSpData.Sprite;
 				var resizingPixRect = resizingSp.PixelRect;
@@ -322,17 +322,17 @@ public partial class PixelEditor {
 						}
 					}
 				}
-				RefreshSliceInputContent();
+				RefreshSpriteInputContent();
 				break;
 
-			case DragStateLeft.SelectOrCreateSlice:
+			case DragStateLeft.SelectOrCreateSprite:
 
 				bool hasSelectionBefore = SelectingSpriteCount > 0;
 
-				// Select Slice
+				// Select Sprite
 				SelectSpritesOverlap(DraggingPixelRectLeft);
 
-				// Create Slice
+				// Create Sprite
 				if (!hasSelectionBefore && SelectingSpriteCount == 0 && DraggingPixelRectLeft.width > 0 && DraggingPixelRectLeft.height > 0) {
 					// Create Sprite
 					var pixelRect = DraggingPixelRectLeft;
@@ -346,12 +346,12 @@ public partial class PixelEditor {
 							Create = true,
 						});
 						SetDirty();
-						RequireNotification(NOTI_SLICE_CREATED, sprite.RealName);
+						RequireNotification(NOTI_SPRITE_CREATED, sprite.RealName);
 					}
 				}
 				break;
 
-			case DragStateLeft.MoveSlice:
+			case DragStateLeft.MoveSprite:
 				var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 				var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 				var pixDelta = mousePixPos - mouseDownPixPos;
@@ -364,7 +364,7 @@ public partial class PixelEditor {
 					var from = sprite.PixelRect.position;
 					sprite.PixelRect.x = spData.DraggingStartRect.x + pixDelta.x;
 					sprite.PixelRect.y = spData.DraggingStartRect.y + pixDelta.y;
-					RegisterUndo(new MoveSliceUndoItem() {
+					RegisterUndo(new MoveSpriteUndoItem() {
 						SpriteID = sprite.ID,
 						From = from,
 						To = sprite.PixelRect.position,
@@ -562,7 +562,7 @@ public partial class PixelEditor {
 				Renderer.DrawPixel(line, Skin.GizmosDragging, z: int.MaxValue);
 			}
 		} else {
-			// Resize for Slice
+			// Resize for Sprite
 			var resizingPixRect = GetResizeDraggingPixRect();
 			if (resizingPixRect.HasValue) {
 				var resizingRect = Pixel_to_Stage(resizingPixRect.Value);
@@ -608,14 +608,14 @@ public partial class PixelEditor {
 	// Sprite
 	private void SetSpriteSelection (int index, int length = 1) {
 		if (length <= 0 || index < 0 || index + length - 1 >= StagedSprites.Count) return;
-		TryApplySliceInputFields();
+		TryApplySpriteInputFields();
 		SelectingSpriteCount = 0;
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			bool select = i >= index && i < index + length;
 			StagedSprites[i].Selecting = select;
 			if (select) SelectingSpriteCount++;
 		}
-		RefreshSliceInputContent();
+		RefreshSpriteInputContent();
 		RulePageIndex = 0;
 		OpeningTilingRuleEditor = false;
 		ClearPixelSelectionRect();
@@ -623,7 +623,7 @@ public partial class PixelEditor {
 
 
 	private void SelectSpritesOverlap (IRect pixelRange) {
-		TryApplySliceInputFields();
+		TryApplySpriteInputFields();
 		int count = StagedSprites.Count;
 		SelectingSpriteCount = 0;
 		for (int i = 0; i < count; i++) {
@@ -631,7 +631,7 @@ public partial class PixelEditor {
 			spData.Selecting = spData.Sprite.PixelRect.Overlaps(pixelRange);
 			if (spData.Selecting) SelectingSpriteCount++;
 		}
-		RefreshSliceInputContent();
+		RefreshSpriteInputContent();
 		RulePageIndex = 0;
 		OpeningTilingRuleEditor = false;
 		ClearPixelSelectionRect();
@@ -640,7 +640,7 @@ public partial class PixelEditor {
 
 	private void ClearSpriteSelection () {
 		if (SelectingSpriteCount == 0) return;
-		TryApplySliceInputFields();
+		TryApplySpriteInputFields();
 		int checkedCount = 0;
 		for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
 			var spData = StagedSprites[i];
@@ -649,7 +649,7 @@ public partial class PixelEditor {
 			spData.Selecting = false;
 		}
 		SelectingSpriteCount = 0;
-		RefreshSliceInputContent();
+		RefreshSpriteInputContent();
 		RulePageIndex = 0;
 		OpeningTilingRuleEditor = false;
 	}
@@ -657,7 +657,7 @@ public partial class PixelEditor {
 
 	private void DeleteAllSelectingSprite () {
 		if (SelectingSpriteCount == 0) return;
-		TryApplySliceInputFields();
+		TryApplySpriteInputFields();
 		bool changed = false;
 		int checkedCount = 0;
 		for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
@@ -682,7 +682,7 @@ public partial class PixelEditor {
 		SelectingSpriteCount = 0;
 		if (changed) {
 			SetDirty();
-			RefreshSliceInputContent();
+			RefreshSpriteInputContent();
 			RulePageIndex = 0;
 			OpeningTilingRuleEditor = false;
 		}
@@ -690,7 +690,7 @@ public partial class PixelEditor {
 
 
 	private void MakeBorderForSelection (bool enableBorder) {
-		TryApplySliceInputFields();
+		TryApplySpriteInputFields();
 		bool changed = false;
 		foreach (var spData in StagedSprites) {
 			if (!spData.Selecting) continue;
@@ -720,13 +720,13 @@ public partial class PixelEditor {
 			}
 		}
 		if (changed) {
-			RefreshSliceInputContent();
+			RefreshSpriteInputContent();
 		}
 	}
 
 
 	private void MakeTriggerForSelection (bool enableTrigger) {
-		TryApplySliceInputFields();
+		TryApplySpriteInputFields();
 		bool changed = false;
 		foreach (var spData in StagedSprites) {
 			if (!spData.Selecting) continue;
@@ -740,7 +740,7 @@ public partial class PixelEditor {
 			SetDirty();
 		}
 		if (changed) {
-			RefreshSliceInputContent();
+			RefreshSpriteInputContent();
 		}
 	}
 

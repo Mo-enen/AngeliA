@@ -16,10 +16,10 @@ public partial class GUISkin {
 		ContentShiftHover = new(0, 2),
 		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
-		ContentColor = Color32.WHITE,
-		ContentColorHover = Color32.WHITE,
-		ContentColorDown = Color32.GREY_230,
-		ContentColorDisable = Color32.GREY_196,
+		ContentColor = Color32.GREY_32,
+		ContentColorHover = Color32.GREY_32,
+		ContentColorDown = Color32.GREY_32,
+		ContentColorDisable = Color32.GREY_64,
 		CharSize = -1,
 		Alignment = Alignment.MidMid,
 	};

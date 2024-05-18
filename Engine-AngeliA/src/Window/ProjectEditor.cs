@@ -41,7 +41,7 @@ public class ProjectEditor : WindowUI {
 
 	// Data
 	private static ProjectEditor Instance;
-	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 20, };
+	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 16, };
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
 	private RiggedTransceiver RiggedGame;
@@ -71,18 +71,25 @@ public class ProjectEditor : WindowUI {
 
 		if (CurrentProject == null) return;
 
-		using var _ = Scope.GUILabelWidth(Unify(384));
-		var panelRect = WindowRect.Shrink(Unify(128), Unify(128), Unify(42), Unify(42));
-		var rect = panelRect.EdgeInside(Direction4.Up, Unify(64));
+		var panelRect = WindowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(42));
+		int maxPanelWidth = Unify(612);
+		if (panelRect.width > maxPanelWidth) {
+			panelRect.x += (panelRect.width - maxPanelWidth) / 2;
+			panelRect.width = maxPanelWidth;
+		}
+
+		using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), panelRect.width / 2));
+
+		var rect = panelRect.EdgeInside(Direction4.Up, Unify(50));
 		int extendedContentSize;
 
 		using (var scroll = Scope.GUIScroll(panelRect, MasterScrollPos, 0, MasterScrollMax)) {
 			MasterScrollPos = scroll.ScrollPosition;
 
 			Update_WorkflowButton(ref rect);
-			//rect.y -= Unify(12);
 
 			Update_Config(ref rect);
+
 			extendedContentSize = panelRect.yMax - rect.yMax + Unify(64);
 			MasterScrollMax = (extendedContentSize - panelRect.height).GreaterOrEquelThanZero();
 		}
@@ -104,7 +111,7 @@ public class ProjectEditor : WindowUI {
 	private void Update_WorkflowButton (ref IRect rect) {
 
 		var _rect = rect;
-		int padding = Unify(16);
+		int padding = Unify(8);
 		_rect.width = rect.width / 4 - padding;
 
 		// Edit
@@ -172,9 +179,9 @@ public class ProjectEditor : WindowUI {
 
 	private void Update_Config (ref IRect rect) {
 
-		int padding = Unify(6);
-		int innerPadding = Unify(6);
-		rect.yMin = rect.yMax - Unify(32);
+		int padding = GUI.FieldPadding;
+		int itemHeight = GUI.FieldHeight;
+		rect.yMin = rect.yMax - itemHeight;
 		var info = CurrentProject.Universe.Info;
 		int labelWidth = GUI.LabelWidth;
 
@@ -233,7 +240,7 @@ public class ProjectEditor : WindowUI {
 		if (GUI.SmallLinkButton(_rect, LABEL_LINK_PROJECT, out var bounds)) {
 			Game.OpenUrl(CurrentProject.ProjectPath);
 		}
-		_rect.xMin = bounds.xMax + innerPadding;
+		_rect.xMin = bounds.xMax + Unify(12);
 		if (GUI.SmallLinkButton(_rect, LABEL_LINK_SAVING)) {
 			Game.OpenUrl(CurrentProject.Universe.SavingRoot);
 		}

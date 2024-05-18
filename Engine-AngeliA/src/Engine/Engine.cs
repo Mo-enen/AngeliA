@@ -8,7 +8,6 @@ using AngeliA;
 
 [assembly: ToolApplication]
 [assembly: DisablePause]
-[assembly: CloseWindowsTerminalOnQuit]
 
 
 namespace AngeliaEngine;
@@ -16,7 +15,7 @@ namespace AngeliaEngine;
 
 [RequireSpriteFromField]
 [RequireLanguageFromField]
-internal static class Engine {
+public class Engine {
 
 
 
@@ -77,50 +76,48 @@ internal static class Engine {
 	private static readonly LanguageCode LOG_ERROR_ENTRY_PROJECT_NOT_FOUND = ("Log.BuildError.EntryProjectNotFound", "Build Error: Entry exe file for the project not found");
 	private static readonly LanguageCode LOG_ERROR_ENTRY_RESULT_NOT_FOUND = ("Log.BuildError.EntryResultNotFound", "Build Error: Entry exe file result not found");
 
-	private static readonly GenericPopupUI GenericPopup = new() { Active = false };
-	private static readonly GenericDialogUI GenericDialog = new() { Active = false };
-	private static readonly FileBrowserUI FileBrowser = new() { Active = false };
-	private static readonly RiggedMapEditor RiggedMapEditor = new();
-	private static readonly PixelEditor PixelEditor = new();
-	private static readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
-	private static readonly Console Console = new();
-	private static readonly ProjectEditor ProjectEditor = new();
-	private static readonly SettingWindow SettingWindow = new();
-	private static readonly EntityUI[] ALL_UI = {
-		GenericPopup, GenericDialog, FileBrowser, // Generic
-		RiggedMapEditor, PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
-	};
+	private readonly GenericPopupUI GenericPopup = new() { Active = false };
+	private readonly GenericDialogUI GenericDialog = new() { Active = false };
+	private readonly FileBrowserUI FileBrowser = new() { Active = false };
+	private readonly RiggedMapEditor RiggedMapEditor = new();
+	private readonly PixelEditor PixelEditor = new();
+	private readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
+	private readonly Console Console = new();
+	private readonly ProjectEditor ProjectEditor = new();
+	private readonly SettingWindow SettingWindow = new();
+	private readonly EntityUI[] ALL_UI;
 
 	// Data
-	private static Project CurrentProject = null;
-	private static ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
-	private static readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
-	private static readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
-	private static readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
-	private static readonly List<ProjectData> Projects = new();
-	private static readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
-	private static readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
-	private static readonly RiggedTransceiver Transceiver = new(EngineUtil.RiggedExePath);
-	private static IRect ToolLabelRect;
-	private static IRect LastHoveringToolLabelRect;
-	private static int HoveringTooltipDuration = 0;
-	private static int CurrentWindowIndex = 0;
-	private static int HubPanelScroll = 0;
-	private static int CurrentProjectMenuIndex = -1;
-	private static int NotificationStartFrame = int.MinValue;
-	private static int ThemeSheetIndex = -1;
-	private static bool NotificationFlash = false;
-	private static string ToolLabel = null;
-	private static string NotificationContent = null;
-	private static string NotificationSubContent = null;
-	private static int RigGameFailToStartCount = 0;
-	private static int RigGameFailToStartFrame = int.MinValue;
-	private static int RigMapEditorWindowIndex = -1;
-	private static long RequireBackgroundBuildDate = 0;
-	private static int RigLastCalledFrame = -1;
-	private static int WindowCount = 0;
-	private static int LastShowingGenericUIFrame = int.MinValue;
-	private static bool IgnoreInputForRig = false;
+	private static readonly Engine Instance = new();
+	private Project CurrentProject = null;
+	private ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
+	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
+	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
+	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
+	private readonly List<ProjectData> Projects = new();
+	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
+	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
+	private readonly RiggedTransceiver Transceiver = new(EngineUtil.RiggedExePath);
+	private IRect ToolLabelRect;
+	private IRect LastHoveringToolLabelRect;
+	private int HoveringTooltipDuration = 0;
+	private int CurrentWindowIndex = 0;
+	private int HubPanelScroll = 0;
+	private int CurrentProjectMenuIndex = -1;
+	private int NotificationStartFrame = int.MinValue;
+	private int ThemeSheetIndex = -1;
+	private bool NotificationFlash = false;
+	private string ToolLabel = null;
+	private string NotificationContent = null;
+	private string NotificationSubContent = null;
+	private int RigGameFailToStartCount = 0;
+	private int RigGameFailToStartFrame = int.MinValue;
+	private int RigMapEditorWindowIndex = -1;
+	private long RequireBackgroundBuildDate = 0;
+	private int RigLastCalledFrame = -1;
+	private int WindowCount = 0;
+	private int LastShowingGenericUIFrame = int.MinValue;
+	private bool IgnoreInputForRig = false;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -145,6 +142,15 @@ internal static class Engine {
 	#region --- MSG ---
 
 
+	// Init
+	private Engine () {
+		ALL_UI = new EntityUI[]{
+			GenericPopup, GenericDialog, FileBrowser, // Generic
+			RiggedMapEditor, PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
+		};
+	}
+
+
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
 
@@ -158,6 +164,13 @@ internal static class Engine {
 			Util.DeleteFile(obsoleteInfoPath);
 		}
 #endif
+
+		Instance?.InitializeEngine();
+
+	}
+
+
+	private void InitializeEngine () {
 
 		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
@@ -213,8 +226,13 @@ internal static class Engine {
 	}
 
 
+	// Rebuild
 	[OnProjectBuiltInBackground]
-	internal static void OnProjectBuiltInBackground (int code) {
+	internal static void OnProjectBuiltInBackground (int code) => Instance?.RiggedGameRebuild(code);
+
+
+	private void RiggedGameRebuild (int code) {
+
 		switch (code) {
 
 			case 0:
@@ -297,13 +315,23 @@ internal static class Engine {
 				Debug.LogError(LOG_ERROR_ENTRY_RESULT_NOT_FOUND);
 				break;
 		}
+
+	}
+
+
+	// Focus
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+		Instance?.CheckScriptChanged();
+		Instance?.RefreshProjectCache();
 	}
 
 
 	// Quit
 	[OnGameTryingToQuit]
 	internal static bool OnGameTryingToQuit () {
-		if (CheckAnyEditorDirty()) {
+		if (Instance == null) return true;
+		if (Instance.CheckAnyEditorDirty()) {
 			GenericDialogUI.SpawnDialog_Button(
 				QUIT_MSG,
 				BuiltInText.UI_SAVE, SaveAndQuit,
@@ -321,7 +349,7 @@ internal static class Engine {
 		return false;
 		// Func
 		static void SaveAndQuit () {
-			foreach (var ui in ALL_UI) {
+			foreach (var ui in Instance.ALL_UI) {
 				if (ui is WindowUI window && window.IsDirty) {
 					window.Save();
 				}
@@ -333,6 +361,7 @@ internal static class Engine {
 
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
+		if (Instance == null) return;
 		var windowPos = Game.GetWindowPosition();
 		Maximize.Value = Game.IsWindowMaximized;
 		if (!Game.IsWindowMinimized) {
@@ -341,15 +370,28 @@ internal static class Engine {
 			WindowPositionX.Value = windowPos.x;
 			WindowPositionY.Value = windowPos.y;
 		}
-		ProjectPaths.Value = Projects.JoinArray(p => p.Path, ';');
-		ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
-		Transceiver.Quit();
+		ProjectPaths.Value = Instance.Projects.JoinArray(p => p.Path, ';');
+		Instance.ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
+		Instance.Transceiver.Quit();
 	}
+
+
+#if DEBUG
+	[OnGameQuitting(int.MaxValue)]
+	internal static void CloseWindowsTerminal () {
+		System.Diagnostics.Process.GetProcessesByName(
+			"WindowsTerminal"
+		).ToList().ForEach(item => item.CloseMainWindow());
+	}
+#endif
 
 
 	// Update
 	[OnGameUpdate]
-	internal static void UpdateRiggedGame () {
+	internal static void OnGameUpdate () => Instance.UpdateRiggedGame();
+
+
+	private void UpdateRiggedGame () {
 
 		if (
 			CurrentProject == null ||
@@ -377,7 +419,10 @@ internal static class Engine {
 
 
 	[OnGameUpdateLater(-4096)]
-	internal static void OnGUI () {
+	internal static void OnGameUpdateLater () => Instance.OnGUI();
+
+
+	private void OnGUI () {
 
 		GUI.Enable = true;
 		GUI.ForceUnifyBasedOnMonitor = true;
@@ -404,8 +449,8 @@ internal static class Engine {
 	}
 
 
-	// GUI no Project
-	private static void OnGUI_Hub () {
+	// GUI Hub
+	private void OnGUI_Hub () {
 
 		var cameraRect = Renderer.CameraRect;
 		int hubPanelWidth = GUI.Unify(HUB_PANEL_WIDTH);
@@ -584,8 +629,8 @@ internal static class Engine {
 	}
 
 
-	// GUI with Project
-	private static void OnGUI_Window () {
+	// GUI Window
+	private void OnGUI_Window () {
 
 		if (CurrentProject == null) return;
 
@@ -607,7 +652,7 @@ internal static class Engine {
 			}
 		}
 
-		using (Scope.GUIEnable(interactable))
+		using (Scope.GUIEnable(true, interactable))
 		using (Scope.RendererLayerUI()) {
 
 			bool menuButtonClicked = false;
@@ -743,32 +788,31 @@ internal static class Engine {
 		SettingWindow.UseNotification = UseNotification.Value;
 		SettingWindow.BackgroundColor = PixelEditor.BackgroundColor.Value;
 		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
-		SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey = PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value;
 		SettingWindow.ShowLogTime = Console.ShowLogTime.Value;
 
 		// Update UI
-		bool oldE = GUI.Enable;
+		bool oldE = GUI.Interactable;
 		foreach (var ui in ALL_UI) {
 			if (!ui.Active) continue;
-			GUI.Enable = interactable || ui is not WindowUI;
+			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.FirstUpdate();
 		}
 		foreach (var ui in ALL_UI) {
 			if (!ui.Active) continue;
-			GUI.Enable = interactable || ui is not WindowUI;
+			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.BeforeUpdate();
 		}
 		foreach (var ui in ALL_UI) {
 			if (!ui.Active) continue;
-			GUI.Enable = interactable || ui is not WindowUI;
+			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.Update();
 		}
 		foreach (var ui in ALL_UI) {
 			if (!ui.Active) continue;
-			GUI.Enable = interactable || ui is not WindowUI;
+			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.LateUpdate();
 		}
-		GUI.Enable = oldE;
+		GUI.Interactable = oldE;
 
 		// Misc
 		if (GenericDialogUI.ShowingDialog) {
@@ -782,7 +826,6 @@ internal static class Engine {
 			UseNotification.Value = SettingWindow.UseNotification;
 			PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
 			PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
-			PixelEditor.AllowSpirteActionOnlyOnHoldingOptionKey.Value = SettingWindow.AllowSpirteActionOnlyOnHoldingOptionKey;
 			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
 		}
 
@@ -840,7 +883,7 @@ internal static class Engine {
 	}
 
 
-	private static void OnGUI_Hotkey () {
+	private void OnGUI_Hotkey () {
 
 		// Clear Console
 		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.C)) {
@@ -863,7 +906,7 @@ internal static class Engine {
 	}
 
 
-	private static void OnGUI_Tooltip () {
+	private void OnGUI_Tooltip () {
 		if (ToolLabel == null) return;
 		if (!UseTooltip.Value) {
 			ToolLabel = null;
@@ -891,7 +934,7 @@ internal static class Engine {
 	}
 
 
-	private static void OnGUI_Notify () {
+	private void OnGUI_Notify () {
 		if (EngineUtil.BuildingProjectInBackground) {
 
 			// Building In Background
@@ -949,7 +992,7 @@ internal static class Engine {
 	}
 
 
-	private static void OnGUI_RiggedGame () {
+	private void OnGUI_RiggedGame () {
 
 		if (CurrentProject == null) {
 			if (Transceiver.RigProcessRunning) {
@@ -1008,7 +1051,7 @@ internal static class Engine {
 	#region --- LGC ---
 
 
-	private static void OpenHubItemPopup (int index, bool folderExists) {
+	private void OpenHubItemPopup (int index, bool folderExists) {
 		CurrentProjectMenuIndex = index;
 		GenericPopupUI.BeginPopup();
 		GenericPopupUI.AddItem(BuiltInText.UI_EXPLORE, OpenProjectInExplorer, enabled: folderExists);
@@ -1016,7 +1059,7 @@ internal static class Engine {
 	}
 
 
-	private static void OpenHubPanelPopup () {
+	private void OpenHubPanelPopup () {
 		GenericPopupUI.BeginPopup();
 		GenericPopupUI.AddItem(
 			MENU_SORT_BY_NAME,
@@ -1029,17 +1072,17 @@ internal static class Engine {
 			@checked: ProjectSort == ProjectSortMode.OpenTime
 		);
 		static void SortByName () {
-			ProjectSort = ProjectSortMode.Name;
-			SortProjects();
+			Instance.ProjectSort = ProjectSortMode.Name;
+			Instance.SortProjects();
 		}
 		static void SortByTime () {
-			ProjectSort = ProjectSortMode.OpenTime;
-			SortProjects();
+			Instance.ProjectSort = ProjectSortMode.OpenTime;
+			Instance.SortProjects();
 		}
 	}
 
 
-	private static void OpenProjectInExplorer () {
+	private void OpenProjectInExplorer () {
 		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Projects.Count) return;
 		string path = Projects[CurrentProjectMenuIndex].Path;
 		if (Util.FolderExists(path)) {
@@ -1048,7 +1091,7 @@ internal static class Engine {
 	}
 
 
-	private static void DeleteProjectConfirm () {
+	private void DeleteProjectConfirm () {
 		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Projects.Count) return;
 		string name = Util.GetNameWithoutExtension(Projects[CurrentProjectMenuIndex].Path);
 		string msg = string.Format(DELETE_PROJECT_MSG, name);
@@ -1061,19 +1104,19 @@ internal static class Engine {
 	}
 
 
-	private static void DeleteProject () {
+	private void DeleteProject () {
 		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Projects.Count) return;
 		Projects.RemoveAt(CurrentProjectMenuIndex);
 	}
 
 
-	private static bool CheckAnyEditorDirty () {
+	private bool CheckAnyEditorDirty () {
 		foreach (var ui in ALL_UI) if (ui is WindowUI window && window.IsDirty) return true;
 		return false;
 	}
 
 
-	private static void SetCurrentWindowIndex (int index) {
+	private void SetCurrentWindowIndex (int index) {
 		index = index.Clamp(0, WindowCount - 1);
 		if (index == RigMapEditorWindowIndex && CurrentWindowIndex != index) {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireFocusInvoke();
@@ -1090,7 +1133,7 @@ internal static class Engine {
 
 
 	// Workflow
-	private static void OpenProject (string projectPath) {
+	private void OpenProject (string projectPath) {
 
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
 		if (!Util.FolderExists(projectPath)) return;
@@ -1132,7 +1175,7 @@ internal static class Engine {
 	}
 
 
-	private static void TryCloseProject () {
+	private void TryCloseProject () {
 		if (CheckAnyEditorDirty()) {
 			GenericDialogUI.SpawnDialog_Button(
 				QUIT_MSG,
@@ -1145,7 +1188,7 @@ internal static class Engine {
 		}
 		// Func
 		static void SaveAndClose () {
-			foreach (var ui in ALL_UI) {
+			foreach (var ui in Instance.ALL_UI) {
 				if (ui is WindowUI window && window.IsDirty) {
 					window.Save();
 				}
@@ -1153,22 +1196,22 @@ internal static class Engine {
 			Close();
 		}
 		static void Close () {
-			CurrentProject = null;
-			foreach (var ui in ALL_UI) {
+			Instance.CurrentProject = null;
+			foreach (var ui in Instance.ALL_UI) {
 				ui.Active = false;
 				if (ui is WindowUI) {
 					ui.OnInactivated();
 				}
 			}
-			LanguageEditor.SetLanguageRoot("");
-			PixelEditor.LoadSheetFromDisk("");
+			Instance.LanguageEditor.SetLanguageRoot("");
+			Instance.PixelEditor.LoadSheetFromDisk("");
 			ProjectEditor.CurrentProject = null;
 			Game.SetWindowTitle("AngeliA Engine");
 		}
 	}
 
 
-	private static void CreateNewProjectAt (string projectFolder) {
+	private void CreateNewProjectAt (string projectFolder) {
 
 		if (string.IsNullOrWhiteSpace(projectFolder)) return;
 
@@ -1193,7 +1236,7 @@ internal static class Engine {
 	}
 
 
-	private static void AddExistsProjectAt (string path) {
+	private void AddExistsProjectAt (string path) {
 		if (string.IsNullOrEmpty(path) || !Util.FolderExists(path)) return;
 		if (!Projects.Any(data => data.Path == path)) {
 			// Add to Path List
@@ -1211,8 +1254,7 @@ internal static class Engine {
 	}
 
 
-	[OnGameFocused]
-	private static void CheckScriptChanged () {
+	private void CheckScriptChanged () {
 		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
 		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
 		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {
@@ -1224,15 +1266,14 @@ internal static class Engine {
 
 
 	// Project
-	[OnGameFocused]
-	private static void RefreshProjectCache () {
+	private void RefreshProjectCache () {
 		foreach (var project in Projects) {
 			project.FolderExists = Util.FolderExists(project.Path);
 		}
 	}
 
 
-	private static void SortProjects () {
+	private void SortProjects () {
 		switch (ProjectSort) {
 			case ProjectSortMode.Name:
 				Projects.Sort((a, b) => a.Name.CompareTo(b.Name));

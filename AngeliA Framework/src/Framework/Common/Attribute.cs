@@ -31,10 +31,6 @@ public class DisablePauseAttribute : System.Attribute { }
 public class IgnoreArtworkPixelsAttribute : System.Attribute { }
 
 
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class CloseWindowsTerminalOnQuitAttribute : System.Attribute { }
-
-
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
 public class EntityLayerCapacityAttribute : System.Attribute {
 	public int Layer;

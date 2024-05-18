@@ -125,6 +125,8 @@ public static class DeveloperToolbar {
 		rect.x -= rect.width + padding;
 
 		// Draw Panels
+		panelRect.width = panelRect.x - rect.xMax;
+		panelRect.x = rect.xMax;
 		if (ProfilerPanelOpening) DrawProfilerPanel(ref panelRect);
 		if (EffectPanelOpening) DrawEffectPanel(ref panelRect);
 

@@ -28,10 +28,10 @@ public static class Const {
 	public const int TEAM_ALL = 0b1111;
 
 	// Rendering
+	public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };
 	public const int ORIGINAL_SIZE = int.MaxValue;
 	public const int ORIGINAL_SIZE_NEGATAVE = int.MinValue;
 	public const int PIXEL = 11254534;//"Pixel".AngeHash();
-	public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };
 
 	// Screen Effect
 	public const int SCREEN_EFFECT_CHROMATIC_ABERRATION = 0;

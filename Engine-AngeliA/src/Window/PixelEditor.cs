@@ -50,7 +50,7 @@ public partial class PixelEditor : WindowUI {
 
 
 	// Drag
-	private enum DragStateLeft { None, MoveSlice, SelectOrCreateSlice, ResizeSlice, Paint, MovePixel, Canceled, }
+	private enum DragStateLeft { None, MoveSprite, SelectOrCreateSprite, ResizeSprite, Paint, MovePixel, Canceled, }
 	private enum DragStateRight { None, SelectPixel, Canceled, }
 
 
@@ -78,7 +78,6 @@ public partial class PixelEditor : WindowUI {
 	public static int SheetIndex { get; private set; } = -1;
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
-	public static readonly SavingBool AllowSpirteActionOnlyOnHoldingOptionKey = new("PixEdt.ASAOOHOK", false);
 
 	// Data
 	private static PixelEditor Instance;
@@ -86,6 +85,7 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
 	private string SheetPath = "";
+	private bool AllowSpirteActionOnlyOnHoldingOptionKey = true;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
 	private bool HoldingShift = false;
@@ -394,13 +394,13 @@ public partial class PixelEditor : WindowUI {
 				Sheet.SyncSpritePixelsIntoTexturePool(sprite);
 			}
 
-			if (DraggingStateLeft == DragStateLeft.MoveSlice && spriteData.Selecting) continue;
+			if (DraggingStateLeft == DragStateLeft.MoveSprite && spriteData.Selecting) continue;
 
 			var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
 			if (outside) continue;
 
 			// Draw Shadow
-			if (DraggingStateLeft != DragStateLeft.ResizeSlice || ResizingStageIndex != i || ResizeForBorder) {
+			if (DraggingStateLeft != DragStateLeft.ResizeSprite || ResizingStageIndex != i || ResizeForBorder) {
 				Renderer.Draw(
 					BuiltInSprite.SHADOW_LINE_16,
 					rect.EdgeOutside(Direction4.Down, PixelStageSize),
@@ -421,7 +421,7 @@ public partial class PixelEditor : WindowUI {
 
 		if (Sheet.Atlas.Count <= 0 || !Interactable || !MouseInStage || !StageRect.MouseInside()) return;
 
-		// Slice Option
+		// Sprite Option
 		if (HoldingCtrl) {
 			if (HoveringResizeDirection.HasValue && HoveringResizeStageIndex >= 0) {
 				// Resize
@@ -429,7 +429,7 @@ public partial class PixelEditor : WindowUI {
 			} else if (HoveringSpriteStageIndex >= 0) {
 				// Quick Move From Inside
 				Cursor.SetCursorAsMove(1);
-			} else if (AllowSpirteActionOnlyOnHoldingOptionKey.Value) {
+			} else if (AllowSpirteActionOnlyOnHoldingOptionKey) {
 				// Outside Sprite for Create or Select
 				DrawPaintingCursor(true, out _);
 			}
@@ -447,7 +447,7 @@ public partial class PixelEditor : WindowUI {
 
 		// Move from Inside Cursor
 		if (
-			!AllowSpirteActionOnlyOnHoldingOptionKey.Value &&
+			!AllowSpirteActionOnlyOnHoldingOptionKey &&
 			(HoveringSpriteStageIndex >= 0 && StagedSprites[HoveringSpriteStageIndex].Selecting) ||
 			PixelSelectionPixelRect.Contains(MousePixelPos)
 		) {
@@ -471,9 +471,9 @@ public partial class PixelEditor : WindowUI {
 			// Dot or Cross Cursor
 			if (
 				HoveringSpriteStageIndex >= 0 &&
-				DraggingStateLeft != DragStateLeft.MoveSlice &&
-				DraggingStateLeft != DragStateLeft.ResizeSlice &&
-				DraggingStateLeft != DragStateLeft.SelectOrCreateSlice
+				DraggingStateLeft != DragStateLeft.MoveSprite &&
+				DraggingStateLeft != DragStateLeft.ResizeSprite &&
+				DraggingStateLeft != DragStateLeft.SelectOrCreateSprite
 			) {
 				DrawInverseCursor(hasFrameCursor ? CURSOR_DOT : CURSOR_CROSS, Alignment.MidMid);
 			}
@@ -537,7 +537,7 @@ public partial class PixelEditor : WindowUI {
 			// Frame Gizmos
 			if (
 				spData.Selecting &&
-				DraggingStateLeft != DragStateLeft.MoveSlice &&
+				DraggingStateLeft != DragStateLeft.MoveSprite &&
 				ResizingStageIndex != i
 			) {
 				// Selecting Frame
@@ -546,7 +546,7 @@ public partial class PixelEditor : WindowUI {
 					Skin.GizmosSelecting,
 					GizmosThickness * 2
 				);
-			} else if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
+			} else if (DraggingStateLeft != DragStateLeft.MoveSprite || !spData.Selecting) {
 				// Normal Frame
 				DrawFrame(
 					rect.Expand(GizmosThickness),
@@ -585,7 +585,7 @@ public partial class PixelEditor : WindowUI {
 			}
 
 			// Border Gizmos
-			if (DraggingStateLeft != DragStateLeft.MoveSlice || !spData.Selecting) {
+			if (DraggingStateLeft != DragStateLeft.MoveSprite || !spData.Selecting) {
 
 				var border = sprite.GlobalBorder;
 				int posLeft = rect.x + rect.width * border.left / sprite.GlobalWidth;
@@ -665,7 +665,7 @@ public partial class PixelEditor : WindowUI {
 				PixelBufferSize = Int2.zero;
 				PixelSelectionPixelRect = default;
 				Undo.Undo();
-				RefreshSliceInputContent();
+				RefreshSpriteInputContent();
 			}
 
 			// Ctrl + Y
@@ -674,7 +674,7 @@ public partial class PixelEditor : WindowUI {
 				PixelBufferSize = Int2.zero;
 				PixelSelectionPixelRect = default;
 				Undo.Redo();
-				RefreshSliceInputContent();
+				RefreshSpriteInputContent();
 			}
 
 			// Ctrl + S

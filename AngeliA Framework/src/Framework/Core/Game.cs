@@ -49,9 +49,6 @@ public abstract partial class Game {
 
 	// Data
 	private static Game Instance = null;
-#if DEBUG
-	private static bool CloseWindowsTerminalOnQuit = false;
-#endif
 
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
@@ -98,11 +95,7 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<IgnoreArtworkPixelsAttribute>()) {
 			IgnoreArtworkPixels = true;
 		}
-#if DEBUG
-		if (Util.TryGetAttributeFromAllAssemblies<CloseWindowsTerminalOnQuitAttribute>()) {
-			CloseWindowsTerminalOnQuit = true;
-		}
-#endif
+
 	}
 
 
@@ -293,17 +286,14 @@ public abstract partial class Game {
 
 	// Invoke
 	protected void InvokeGameQuitting () {
-		_LastUsedWindowWidth.Value = ScreenWidth;
-		_LastUsedWindowHeight.Value = ScreenHeight;
+		int width = _GetScreenWidth();
+		int height = _GetScreenHeight();
+		if (width > 0 && height > 0) {
+			_LastUsedWindowWidth.Value = width;
+			_LastUsedWindowHeight.Value = height;
+		}
 		ClearAndUnloadAudioPool();
 		OnGameQuitting?.Invoke();
-#if DEBUG
-		if (CloseWindowsTerminalOnQuit) {
-			System.Diagnostics.Process.GetProcessesByName(
-				"WindowsTerminal"
-			).ToList().ForEach(item => item.CloseMainWindow());
-		}
-#endif
 	}
 
 	protected bool InvokeGameTryingToQuit () {

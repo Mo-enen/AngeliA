@@ -269,9 +269,9 @@ public partial class RiggedGame : Game {
 
 
 	public void OnQuitting () {
+		InvokeGameQuitting();
 		MemMap?.Dispose();
 		ViewAccessor?.Dispose();
-		InvokeGameQuitting();
 	}
 
 

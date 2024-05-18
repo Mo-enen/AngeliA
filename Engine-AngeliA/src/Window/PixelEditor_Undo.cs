@@ -28,7 +28,7 @@ public partial class PixelEditor {
 	}
 
 
-	private struct MoveSliceUndoItem : IUndoItem {
+	private struct MoveSpriteUndoItem : IUndoItem {
 		public int Step { get; set; }
 		public int SpriteID;
 		public Int2 From;
@@ -239,7 +239,7 @@ public partial class PixelEditor {
 				break;
 			}
 
-			case MoveSliceUndoItem move: {
+			case MoveSpriteUndoItem move: {
 				if (!Sheet.SpritePool.TryGetValue(
 					move.SpriteID, out var sprite
 				)) break;

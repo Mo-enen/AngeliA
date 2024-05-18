@@ -16,6 +16,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode GAMEPAD_UP = "k_Gamepad Up";
 	public static readonly SpriteCode UPARROW = "k_UpArrow";
 	public static readonly SpriteCode FRAME_16 = "Frame16";
+	public static readonly SpriteCode BUTTON_FRAME = "ButtonFrame";
 	public static readonly SpriteCode MENU_SELECTION_MARK = "Menu Selection Mark";
 	public static readonly SpriteCode SOFT_LINE_H = "Soft Line H";
 	public static readonly SpriteCode SOFT_LINE_V = "Soft Line V";
@@ -132,5 +133,5 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode SHADOW_LINE_16 = "ShadowLine16";
 	public static readonly SpriteCode UI_SCROLL_BAR = "UI.Scrollbar";
 	public static readonly SpriteCode ICON_CLEAR = "Icon.Clear";
-	
+
 }

@@ -47,6 +47,7 @@ public static partial class Util {
 		using FileStream fs = new(path, append ? FileMode.Append : FileMode.Create);
 		using StreamWriter sw = new(fs, encoding);
 		sw.Write(data);
+		fs.Flush();
 		sw.Close();
 		fs.Close();
 	}

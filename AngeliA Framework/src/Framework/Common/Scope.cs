@@ -94,11 +94,14 @@ public class Scope : System.IDisposable {
 		return result;
 	}
 
-	public static Scope GUIEnable (bool enable) {
+	public static Scope GUIEnable (bool enable) => GUIEnable(enable, GUI.Interactable);
+	public static Scope GUIEnable (bool enable, bool interactable) {
 		var result = EnableInstance.Start();
 		if (result == null) return EmptyScope;
-		result.IntData = GUI.Enable ? 1 : 0;
+		result.Int2Data.x = GUI.Enable ? 1 : 0;
+		result.Int2Data.y = GUI.Interactable ? 1 : 0;
 		GUI.Enable = enable;
+		GUI.Interactable = interactable;
 		return result;
 	}
 
@@ -193,7 +196,8 @@ public class Scope : System.IDisposable {
 				break;
 
 			case var _ when Group == EnableInstance:
-				GUI.Enable = IntData == 1;
+				GUI.Enable = Int2Data.x == 1;
+				GUI.Interactable = Int2Data.y == 1;
 				break;
 
 			case var _ when Group == ScrollInstance:

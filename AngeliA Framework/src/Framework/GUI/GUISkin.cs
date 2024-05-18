@@ -21,6 +21,18 @@ public partial class GUISkin {
 		BodyColorDisable = Color32.CLEAR,
 	};
 
+	public readonly GUIStyle Frame = new() {
+		BodySprite = BuiltInSprite.FRAME_16,
+		BodySpriteHover = BuiltInSprite.FRAME_16,
+		BodySpriteDown = BuiltInSprite.FRAME_16,
+		BodySpriteDisable = BuiltInSprite.FRAME_16,
+		BodyColor = Color32.GREY_20,
+		BodyColorHover = Color32.GREY_20,
+		BodyColorDown = Color32.GREY_20,
+		BodyColorDisable = Color32.GREY_20,
+		BodyBorder = Int4.Direction(2, 2, 2, 2),
+	};
+
 	public readonly GUIStyle WeakPixel = new() {
 		BodySprite = Const.PIXEL,
 		BodySpriteHover = Const.PIXEL,
@@ -75,6 +87,7 @@ public partial class GUISkin {
 		ContentShiftHover = new(0, 2),
 		ContentShiftDisable = new(0, 2),
 		ContentBorder = Int4.Direction(2, 2, 2, 2),
+		BodyBorder = Int4.Direction(8, 8, 8, 8),
 	};
 
 	public readonly GUIStyle ToggleMark = new() {
