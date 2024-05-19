@@ -531,7 +531,7 @@ public static class Renderer {
 	);
 	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z) {
 		DrawSliceOrTile(
-			sprite, x, y, pivotX, pivotY, Alignment.Full, default, rotation, width, height,
+			sprite, x, y, pivotX, pivotY, Alignment.Full, default, -1, -1, rotation, width, height,
 			borderL, borderR, borderD, borderU, partIgnore, color, z
 		);
 		return SLICE_RESULT;
@@ -605,7 +605,11 @@ public static class Renderer {
 		borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z
 	);
 	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) => DrawSliceOrTile(
-		sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height,
+		sprite, x, y, pivotX, pivotY, alignment, adapt, -1, -1, rotation, width, height,
+		borderL, borderR, borderD, borderU, partIgnore, color, z
+	);
+	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int tileWidth, int tileHeight, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) => DrawSliceOrTile(
+		sprite, x, y, pivotX, pivotY, alignment, adapt, tileWidth, tileHeight, rotation, width, height,
 		borderL, borderR, borderD, borderU, partIgnore, color, z
 	);
 
@@ -713,7 +717,7 @@ public static class Renderer {
 
 	internal static void DrawSliceOrTile (
 		AngeSprite sprite, int x, int y, int pivotX, int pivotY,
-		Alignment tileAlignment, bool tileAdapt,
+		Alignment tileAlignment, bool tileAdapt, int tileWidth, int tileHeight,
 		int rotation, int width, int height,
 		int borderL, int borderR, int borderD, int borderU,
 		bool[] partIgnore, Color32 color, int z
@@ -820,12 +824,50 @@ public static class Renderer {
 					SLICE_RESULT[4] = cell;
 				} else {
 					// Tile
-					var tileAligNormal = tileAlignment.Normal();
-
-
-
-
-
+					var midRect = new IRect(x + borderL, y + borderD, width - borderL - borderR, height - borderD - borderU);
+					int basicX = midRect.x;
+					int basicY = midRect.y;
+					float basicW = tileWidth < 0 ? sprite.GlobalWidth - sprite.GlobalBorder.horizontal : tileWidth;
+					float basicH = tileHeight < 0 ? sprite.GlobalHeight - sprite.GlobalBorder.vertical : tileHeight;
+					int offsetX = 0;
+					int offsetY = 0;
+					int countX;
+					int countY;
+					if (tileAdapt) {
+						countX = (midRect.width / (float)basicW).RoundToInt();
+						countY = (midRect.height / (float)basicH).RoundToInt();
+						basicW = midRect.width / countX;
+						basicH = midRect.height / countY;
+					} else {
+						countX = midRect.width.CeilDivide((int)basicW);
+						countY = midRect.height.CeilDivide((int)basicH);
+						offsetX = tileAlignment switch {
+							Alignment.BottomLeft or Alignment.MidLeft or Alignment.TopLeft => 0,
+							Alignment.BottomMid or Alignment.MidMid or Alignment.TopMid => -((basicW - midRect.width % basicW) / 2f).RoundToInt(),
+							Alignment.BottomRight or Alignment.MidRight or Alignment.TopRight => -(basicW - midRect.width % basicW).RoundToInt(),
+							_ => 0,
+						};
+						offsetY = tileAlignment switch {
+							Alignment.BottomLeft or Alignment.BottomMid or Alignment.BottomRight => 0,
+							Alignment.MidLeft or Alignment.MidMid or Alignment.MidRight => -((basicH - midRect.height % basicH) / 2f).RoundToInt(),
+							Alignment.TopLeft or Alignment.TopMid or Alignment.TopRight => -(basicH - midRect.height % basicH).RoundToInt(),
+							_ => 0,
+						};
+					}
+					for (int i = 0; i < countX; i++) {
+						for (int j = 0; j < countY; j++) {
+							var cell = Draw(
+								sprite,
+								(basicX + basicW * i + offsetX).RoundToInt(),
+								(basicY + basicH * j + offsetY).RoundToInt(),
+								0, 0,
+								rotation, basicW.RoundToInt(), basicH.RoundToInt(),
+								color, z
+							);
+							cell.BorderSide = Alignment.MidMid;
+							Util.ClampCell(cell, midRect);
+						}
+					}
 				}
 			}
 			// MR

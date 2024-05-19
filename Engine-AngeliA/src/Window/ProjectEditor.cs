@@ -107,13 +107,8 @@ public class ProjectEditor : WindowUI {
 				var range = new IRect(panelRect.x, WindowRect.y, panelRect.width, panelRect.yMax - WindowRect.yMin + MasterScrollPos);
 				var border = GUI.UnifyBorder(sprite.GlobalBorder, true);
 				range = range.Expand(border);
-
-
-
-
-
 				Renderer.DrawTile(
-					sprite, range, Alignment.MidMid, adapt: false,
+					sprite, range, Alignment.TopMid, adapt: false,
 					borderL: border.left, borderR: border.right, borderD: border.down, borderU: border.up
 				);
 			}
