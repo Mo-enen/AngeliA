@@ -161,7 +161,7 @@ public abstract class Tail : BodyGadget {
 			if (sprite.GlobalBorder.IsZero) {
 				Renderer.Draw(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
 			} else {
-				Renderer.Draw_9Slice(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
+				Renderer.DrawSlice(sprite, x + offsetX, y + offsetY, px, py, r, w, h, z);
 			}
 
 			// to Next

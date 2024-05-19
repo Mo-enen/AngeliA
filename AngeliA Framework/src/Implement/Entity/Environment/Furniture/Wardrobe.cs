@@ -354,7 +354,7 @@ Color32.BLACK, 0
 
 			// Current Highlight
 			if (i == CurrentPatternIndex) {
-				Renderer.Draw_9Slice(FRAME, rect, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, Color32.GREY_96, 3);
+				Renderer.DrawSlice(FRAME, rect, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, FRAME_BORDER, Color32.GREY_96, 3);
 			}
 
 			// Suit Highlight

@@ -74,7 +74,6 @@ public partial class GUISkin {
 		BodyColorHover = Color32.GREY_46,
 		BodyColorDown = Color32.GREY_38,
 		BodyColorDisable = Color32.CLEAR,
-		BodyBorder = Int4.Direction(1, 1, 1, 1),
 	};
 
 	// Toggle
@@ -87,7 +86,6 @@ public partial class GUISkin {
 		ContentShiftHover = new(0, 2),
 		ContentShiftDisable = new(0, 2),
 		ContentBorder = Int4.Direction(2, 2, 2, 2),
-		BodyBorder = Int4.Direction(8, 8, 8, 8),
 	};
 
 	public readonly GUIStyle ToggleMark = new() {
@@ -101,10 +99,10 @@ public partial class GUISkin {
 	// Input Field
 	public readonly GUIStyle LargeInputField = new() {
 
-		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
-		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD,
-		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
-		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
+		BodySprite = BuiltInSprite.UI_INPUT_FIELD_LARGE,
+		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD_LARGE,
+		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD_LARGE,
+		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD_LARGE,
 
 		ContentBorder = Int4.one * 12,
 		Alignment = Alignment.MidLeft,
@@ -117,7 +115,6 @@ public partial class GUISkin {
 		CharSize = 28,
 		Wrap = WrapMode.NoWrap,
 
-		BodyBorder = Int4.one * 6,
 	};
 	public readonly GUIStyle InputField = new() {
 
@@ -137,14 +134,13 @@ public partial class GUISkin {
 		CharSize = 21,
 		Wrap = WrapMode.NoWrap,
 
-		BodyBorder = Int4.one * 6,
 	};
 	public readonly GUIStyle SmallInputField = new() {
 
-		BodySprite = BuiltInSprite.UI_INPUT_FIELD,
-		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD,
-		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
-		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
+		BodySprite = BuiltInSprite.UI_INPUT_FIELD_SMALL,
+		BodySpriteHover = BuiltInSprite.UI_INPUT_FIELD_SMALL,
+		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD_SMALL,
+		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD_SMALL,
 
 		ContentBorder = Int4.one * 12,
 		Alignment = Alignment.MidLeft,
@@ -157,7 +153,6 @@ public partial class GUISkin {
 		CharSize = 14,
 		Wrap = WrapMode.NoWrap,
 
-		BodyBorder = Int4.one * 6,
 
 	};
 

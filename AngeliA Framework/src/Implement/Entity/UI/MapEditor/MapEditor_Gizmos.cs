@@ -69,12 +69,12 @@ public partial class MapEditor {
 
 		// Rect Frame
 		if (MouseDownButton != 0 || SelectingPaletteItem == null || !SelectingPaletteItem.IsUnique) {
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				BuiltInSprite.FRAME_16, draggingRect.Shrink(thickness),
 				thickness, thickness, thickness, thickness, Color32.BLACK
 			);
 
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				BuiltInSprite.FRAME_16, draggingRect,
 				thickness, thickness, thickness, thickness, Color32.WHITE
 			);
@@ -133,7 +133,7 @@ public partial class MapEditor {
 		// Rect Frame
 		int thickness = Unify(1);
 		var frameRect = pastingUnitRect.ToGlobal();
-		Renderer.Draw_9Slice(
+		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_16, frameRect,
 			thickness, thickness, thickness, thickness, Color32.WHITE
 		);
@@ -168,7 +168,7 @@ public partial class MapEditor {
 		}
 
 		// Black Frame
-		Renderer.Draw_9Slice(
+		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_16, selectionRect,
 			thickness, thickness, thickness, thickness,
 			Color32.BLACK
@@ -220,13 +220,13 @@ public partial class MapEditor {
 		);
 		int thickness = Unify(1);
 
-		Renderer.Draw_9Slice(
+		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect.Shrink(thickness),
 			thickness, thickness, thickness, thickness,
 			CURSOR_TINT_DARK
 		);
 
-		Renderer.Draw_9Slice(
+		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect,
 			thickness, thickness, thickness, thickness,
 			CURSOR_TINT
@@ -406,7 +406,7 @@ public class MapEditorBlinkParticle : Particle {
 		Renderer.SetLayerToAdditive();
 		var tint = Tint;
 		tint.a = (byte)((Duration - LocalFrame) * Tint.a / 2 / Duration).Clamp(0, 255);
-		Renderer.Draw_9Slice(SpriteID, Rect, tint, int.MaxValue);
+		Renderer.DrawSlice(SpriteID, Rect, tint, int.MaxValue);
 		Renderer.SetLayerToDefault();
 	}
 }

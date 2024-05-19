@@ -654,7 +654,7 @@ public partial class PixelEditor {
 						SetDirty();
 					}
 				}
-				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
+				Renderer.DrawSlice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
 				RequireTooltip(buttonRect, RuleNumberToTip(ruleIndex));
 			}
 

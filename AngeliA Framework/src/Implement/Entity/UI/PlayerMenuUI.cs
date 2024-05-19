@@ -584,7 +584,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Frame
 		int frameBorder = Unify(1);
-		Renderer.Draw_9Slice(
+		Renderer.DrawSlice(
 			frameCode,
 			itemRect.x,
 			itemRect.y, 0, 0, 0, itemRect.width, itemRect.height,
@@ -776,7 +776,7 @@ public class PlayerMenuUI : EntityUI {
 		// Item Frame
 		if (equipAvailable) {
 			int border = Unify(4);
-			Renderer.Draw_9Slice(ITEM_FRAME_CODE, itemRect, border, border, border, border, enableTint, int.MinValue + 2);
+			Renderer.DrawSlice(ITEM_FRAME_CODE, itemRect, border, border, border, border, enableTint, int.MinValue + 2);
 		}
 
 		// Icon

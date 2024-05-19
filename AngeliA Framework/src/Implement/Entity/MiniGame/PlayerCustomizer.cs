@@ -854,7 +854,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			}
 
 			// Frame
-			if (!isLabel) Renderer.Draw_9Slice(
+			if (!isLabel) Renderer.DrawSlice(
 				FRAME_CODE, rect,
 				itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness, Color32.GREY_32, EDITOR_BASIC_Z + 4
 			);

@@ -103,9 +103,20 @@ public class ProjectEditor : WindowUI {
 
 		// BG
 		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
-			var range = new IRect(panelRect.x, WindowRect.y, panelRect.width, panelRect.yMax - WindowRect.yMin + MasterScrollPos);
+			if (Renderer.TryGetSprite(PANEL_BACKGROUND, out var sprite)) {
+				var range = new IRect(panelRect.x, WindowRect.y, panelRect.width, panelRect.yMax - WindowRect.yMin + MasterScrollPos);
+				var border = GUI.UnifyBorder(sprite.GlobalBorder, true);
+				range = range.Expand(border);
 
-			Renderer.Draw(PANEL_BACKGROUND, range);
+
+
+
+
+				Renderer.DrawTile(
+					sprite, range, Alignment.MidMid, adapt: false,
+					borderL: border.left, borderR: border.right, borderD: border.down, borderU: border.up
+				);
+			}
 		}
 
 		// Hotkey

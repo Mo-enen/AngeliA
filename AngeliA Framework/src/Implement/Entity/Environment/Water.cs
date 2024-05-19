@@ -382,7 +382,7 @@ public abstract class Water : Entity {
 			if (showBottomBorder) {
 				rect = rect.Expand(0, 0, sprite.GlobalBorder.down, 0);
 			}
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				sprite, rect,
 				sprite.GlobalBorder.left,
 				sprite.GlobalBorder.right,

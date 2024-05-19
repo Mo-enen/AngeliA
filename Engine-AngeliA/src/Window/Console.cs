@@ -50,7 +50,6 @@ public class Console : WindowUI {
 	// Api
 	public bool HasCompileError => CompileErrorLines.Length > 0;
 	public override string DefaultName => "Console";
-	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);
 
 	// Data
 	private readonly Pipe<Line> Lines = new(512);
@@ -99,7 +98,7 @@ public class Console : WindowUI {
 		// Error Lines
 		if (hasError) {
 			errorPanelRect = WindowRect.EdgeInside(Direction4.Up, Unify(400)).Shrink(Unify(48), Unify(48), 0, barHeight + Unify(32));
-			GUI.Draw_9Slice(PANEL_BG, errorPanelRect, Color32.WHITE);
+			GUI.DrawSlice(PANEL_BG, errorPanelRect, Color32.WHITE);
 			OnGUI_Lines(
 				23783177,
 				errorPanelRect,
@@ -156,7 +155,7 @@ public class Console : WindowUI {
 		int padding = Unify(6);
 		int smallPadding = Unify(3);
 		int scrollBarWidth = Unify(16);
-		bool showLogTime = ShowLogTime.Value;
+		bool showLogTime = EngineSetting.ShowLogTime.Value;
 
 		for (int i = start; i < end; i++) {
 			// Step Tint

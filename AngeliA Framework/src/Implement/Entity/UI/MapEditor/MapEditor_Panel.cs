@@ -308,7 +308,7 @@ public partial class MapEditor {
 			bool tabInteractable = !GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog;
 
 			// Button
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				UI_TAB, tabRect,
 				tabBorder, tabBorder, tabBorder, tabBorder,
 				selecting ? Color32.GREY_128 : Color32.GREY_64
@@ -317,7 +317,7 @@ public partial class MapEditor {
 
 			// Highlight
 			if (selecting) {
-				var cells = Renderer.Draw_9Slice(
+				var cells = Renderer.DrawSlice(
 					UI_TAB, tabRect.EdgeOutside(Direction4.Up, tabBorder).Shift(0, -tabBorder),
 					tabBorder, tabBorder, 0, tabBorder,
 					new Color32(225, 171, 48, 255)
@@ -373,13 +373,13 @@ public partial class MapEditor {
 
 			// Button
 			if (selecting) {
-				Renderer.Draw_9Slice(
+				Renderer.DrawSlice(
 					BUTTON_DARK_DOWN,
 					rect.x, rect.y, 0, 0, 0, rect.width, rect.height + buttonDownShiftY,
 					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
 				);
 			} else {
-				Renderer.Draw_9Slice(
+				Renderer.DrawSlice(
 					BUTTON_DARK, rect,
 					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
 				);
@@ -561,7 +561,7 @@ public partial class MapEditor {
 			}
 
 			// Frame
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				ITEM_FRAME, rect,
 				BORDER, BORDER, BORDER, BORDER
 			);
@@ -580,7 +580,7 @@ public partial class MapEditor {
 
 			// Selecting
 			if (SelectingPaletteItem == pal) {
-				Renderer.Draw_9Slice(
+				Renderer.DrawSlice(
 					BuiltInSprite.FRAME_16, rect,
 					BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT,
 					pal.IsUnique ? Color32.ORANGE : Color32.GREEN
@@ -730,7 +730,7 @@ public partial class MapEditor {
 
 			// Selecting Highlight
 			if (pal == SelectingPaletteItem) {
-				Renderer.Draw_9Slice(BuiltInSprite.FRAME_16, rect, Color32.GREEN);
+				Renderer.DrawSlice(BuiltInSprite.FRAME_16, rect, Color32.GREEN);
 			}
 
 			// Click

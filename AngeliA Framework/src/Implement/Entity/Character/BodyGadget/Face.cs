@@ -152,7 +152,7 @@ public abstract class Face : BodyGadget {
 
 
 		// Draw
-		var cells = Renderer.Draw_9Slice(
+		var cells = Renderer.DrawSlice(
 			sprite,
 			faceRect.CenterX(), faceRect.y, 500, 0, 0, faceRect.width, faceRect.height,
 Color32.WHITE, 33

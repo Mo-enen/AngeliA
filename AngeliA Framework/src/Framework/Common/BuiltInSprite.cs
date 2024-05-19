@@ -122,7 +122,9 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode UI_TOGGLE_DOWN = "UI.ToggleDown";
 	public static readonly SpriteCode UI_TOGGLE_HOVER = "UI.ToggleHover";
 	public static readonly SpriteCode UI_TOGGLE_MARK = "UI.ToggleMark";
+	public static readonly SpriteCode UI_INPUT_FIELD_LARGE = "UI.InputFieldLarge";
 	public static readonly SpriteCode UI_INPUT_FIELD = "UI.InputField";
+	public static readonly SpriteCode UI_INPUT_FIELD_SMALL = "UI.InputFieldSmall";
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK = "UI.MiniButtonDark";
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK_HOVER = "UI.MiniButtonDarkHover";
 	public static readonly SpriteCode UI_MINI_BUTTON_DARK_DOWN = "UI.MiniButtonDarkDown";

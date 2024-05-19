@@ -317,7 +317,7 @@ public class ControlHintUI : EntityUI {
 
 		// Button A
 		if (keyIdA != 0) {
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
 			);
 			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
@@ -328,7 +328,7 @@ public class ControlHintUI : EntityUI {
 			int targetWidth = keyBounds.width + border.horizontal;
 			if (rect.width < targetWidth) rect.width = targetWidth;
 
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 			);
 		}
@@ -339,7 +339,7 @@ public class ControlHintUI : EntityUI {
 			// Button B
 			rect.width = widthB;
 			if (keyIdB != 0) {
-				Renderer.Draw_9Slice(
+				Renderer.DrawSlice(
 					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue - 1
 				);
 				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
@@ -350,7 +350,7 @@ public class ControlHintUI : EntityUI {
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 
-				Renderer.Draw_9Slice(
+				Renderer.DrawSlice(
 					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
 				);
 			}

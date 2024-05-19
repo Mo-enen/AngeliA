@@ -199,7 +199,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 			int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
 			itemRect.x = panelRect.x + (i % 2) * itemSize;
 			itemRect.y = panelRect.y + (i / 2) * itemSize;
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				CRAFTING_FRAME_CODE, itemRect.Shrink(itemSize / 32),
 				itemBorder, itemBorder, itemBorder, itemBorder
 			);
@@ -325,7 +325,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		}
 
 		// Item Frame
-		Renderer.Draw_9Slice(ITEM_FRAME_CODE, resultItemRect, Color32.WHITE, int.MinValue + 3);
+		Renderer.DrawSlice(ITEM_FRAME_CODE, resultItemRect, Color32.WHITE, int.MinValue + 3);
 
 		// Item
 		if (CombineResultID != 0) {

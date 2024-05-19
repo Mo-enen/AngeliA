@@ -287,7 +287,7 @@ public abstract class BodyCloth : Cloth {
 
 			// Draw
 			int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
-			var cells = Renderer.Draw_9Slice(
+			var cells = Renderer.DrawSlice(
 				sprite,
 				body.GlobalX, body.GlobalY + body.Height,
 				500, 1000, 0,
@@ -650,7 +650,7 @@ public abstract class FootCloth : Cloth {
 					foot.Z + localZ
 				);
 			} else {
-				Renderer.Draw_9Slice(
+				Renderer.DrawSlice(
 					sprite, location.x, location.y,
 					0, 0, foot.Rotation,
 					foot.Width.Sign() * width, sprite.GlobalHeight,
@@ -752,7 +752,7 @@ public abstract class Cloth {
 			result = SINGLE_CELL;
 			result[0] = cell;
 		} else {
-			result = Renderer.Draw_9Slice(
+			result = Renderer.DrawSlice(
 				sprite, location.x, location.y,
 				sprite.PivotX, sprite.PivotY, bodyPart.Rotation + localRotation,
 				(bodyPart.Width > 0 ? sprite.GlobalWidth : -sprite.GlobalWidth) * widthAmount / 1000,
@@ -784,7 +784,7 @@ public abstract class Cloth {
 			);
 			result = SINGLE_CELL;
 		} else {
-			result = Renderer.Draw_9Slice(
+			result = Renderer.DrawSlice(
 				sprite, bodyPart.GlobalX, bodyPart.GlobalY,
 				bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation,
 				bodyPart.Width, bodyPart.Height, tint, bodyPart.Z + localZ

@@ -93,6 +93,20 @@ public static class GUI {
 	public static int UnifyMonitor (int value) => (
 		value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight.GreaterOrEquel(1)
 	).RoundToInt();
+	public static Int4 UnifyBorder (Int4 border, bool fromSprite) {
+		if (fromSprite) {
+			border.left = Unify(border.left / 10);
+			border.right = Unify(border.right / 10);
+			border.down = Unify(border.down / 10);
+			border.up = Unify(border.up / 10);
+		} else {
+			border.left = Unify(border.left);
+			border.right = Unify(border.right);
+			border.down = Unify(border.down);
+			border.up = Unify(border.up);
+		}
+		return border;
+	}
 
 
 	// Typing
@@ -947,7 +961,7 @@ public static class GUI {
 	public static void HighlightCursor (int spriteID, IRect rect, Color32 color) {
 		int border = Unify(4);
 		int thickness = Unify(8);
-		Renderer.Draw_9Slice(
+		Renderer.DrawSlice(
 			spriteID, rect.Expand(Game.GlobalFrame.PingPong(thickness)),
 			border, border, border, border,
 			Color * BodyColor * color
@@ -1277,8 +1291,8 @@ public static class GUI {
 		if (sprite == 0 || !Renderer.TryGetSprite(sprite, out var _sprite)) return;
 		var color = tint * Color * BodyColor * style.GetBodyColor(state);
 		if (color.a == 0) return;
-		var border = GetUnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
-		Renderer.Draw_9Slice(_sprite, rect, border.left, border.right, border.down, border.up, color);
+		var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
+		Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
 	}
 
 
@@ -1290,21 +1304,21 @@ public static class GUI {
 		if (ignoreSlice) {
 			Renderer.Draw(_sprite, rect, color);
 		} else {
-			var border = GetUnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
-			Renderer.Draw_9Slice(_sprite, rect, border.left, border.right, border.down, border.up, color);
+			var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
+			Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
 		}
 	}
 
 
-	public static Cell[] Draw_9Slice (int spriteID, IRect rect, Color32 color) {
+	public static Cell[] DrawSlice (int spriteID, IRect rect, Color32 color) {
 		if (Renderer.TryGetSprite(spriteID, out var sprite)) {
-			return Draw_9Slice(sprite, rect, color);
+			return DrawSlice(sprite, rect, color);
 		}
 		return null;
 	}
-	public static Cell[] Draw_9Slice (AngeSprite sprite, IRect rect, Color32 color) {
-		var border = GetUnifyBorder(sprite.GlobalBorder, true);
-		return Renderer.Draw_9Slice(sprite, rect, border.left, border.right, border.down, border.up, color);
+	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect, Color32 color) {
+		var border = UnifyBorder(sprite.GlobalBorder, true);
+		return Renderer.DrawSlice(sprite, rect, border.left, border.right, border.down, border.up, color);
 	}
 
 
@@ -1362,22 +1376,6 @@ public static class GUI {
 		}
 		wordLength = index - startIndex + 1;
 		return room >= 0;
-	}
-
-
-	private static Int4 GetUnifyBorder (Int4 border, bool fromSprite) {
-		if (fromSprite) {
-			border.left = Unify(border.left / 10);
-			border.right = Unify(border.right / 10);
-			border.down = Unify(border.down / 10);
-			border.up = Unify(border.up / 10);
-		} else {
-			border.left = Unify(border.left);
-			border.right = Unify(border.right);
-			border.down = Unify(border.down);
-			border.up = Unify(border.up);
-		}
-		return border;
 	}
 
 

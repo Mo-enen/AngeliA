@@ -124,9 +124,6 @@ public class Engine {
 	private static readonly SavingString LastOpenProject = new("Engine.LastOpenProject", "");
 	private static readonly SavingBool Maximize = new("Engine.Maximize", true);
 	private static readonly SavingBool FullsizeMenu = new("Engine.FullsizeMenu", true);
-	private static readonly SavingBool OpenLastProjectOnStart = new("Engine.OpenLastProjectOnStart", false);
-	private static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true);
-	private static readonly SavingBool UseNotification = new("Engine.UseNotification", true);
 	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024);
 	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024);
 	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128);
@@ -191,7 +188,7 @@ public class Engine {
 		RefreshProjectCache();
 		SortProjects();
 		if (
-			OpenLastProjectOnStart.Value &&
+			EngineSetting.OpenLastProjectOnStart.Value &&
 			Projects.Any(data => data.Path == LastOpenProject.Value)
 		) {
 			OpenProject(LastOpenProject.Value);
@@ -214,8 +211,8 @@ public class Engine {
 			WindowCount++;
 		});
 		SettingWindow.Initialize(
-			PixelEditor.BackgroundColor.Value.ToColorF(),
-			PixelEditor.BackgroundColor.DefaultValue
+			EngineSetting.BackgroundColor.Value.ToColorF(),
+			EngineSetting.BackgroundColor.DefaultValue
 		);
 		RiggedMapEditor.Initialize(Transceiver);
 		ProjectEditor.Initialize(Transceiver);
@@ -482,7 +479,7 @@ public class Engine {
 
 			// --- BG ---
 			int bodyBorder = GUI.Unify(6);
-			Renderer.Draw_9Slice(
+			Renderer.DrawSlice(
 				UI_WINDOW_BG, cameraRect,
 				bodyBorder, bodyBorder, bodyBorder, bodyBorder
 			);
@@ -525,7 +522,7 @@ public class Engine {
 			var projects = Projects;
 
 			// BG
-			Renderer.Draw_9Slice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
+			Renderer.DrawSlice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
 
 			// Big Label
 			if (Renderer.TryGetSprite(LABEL_PROJECTS, out var bigLabelSprite)) {
@@ -782,14 +779,6 @@ public class Engine {
 			}
 		}
 
-		// Update Setting
-		SettingWindow.OpenLastProjectOnStart = OpenLastProjectOnStart.Value;
-		SettingWindow.UseTooltip = UseTooltip.Value;
-		SettingWindow.UseNotification = UseNotification.Value;
-		SettingWindow.BackgroundColor = PixelEditor.BackgroundColor.Value;
-		SettingWindow.SolidPaintingPreview = PixelEditor.SolidPaintingPreview.Value;
-		SettingWindow.ShowLogTime = Console.ShowLogTime.Value;
-
 		// Update UI
 		bool oldE = GUI.Interactable;
 		foreach (var ui in ALL_UI) {
@@ -819,16 +808,6 @@ public class Engine {
 			Game.IgnoreGizmos(1);
 		}
 
-		// Update Setting
-		if (SettingWindow.Changed) {
-			OpenLastProjectOnStart.Value = SettingWindow.OpenLastProjectOnStart;
-			UseTooltip.Value = SettingWindow.UseTooltip;
-			UseNotification.Value = SettingWindow.UseNotification;
-			PixelEditor.BackgroundColor.Value = SettingWindow.BackgroundColor;
-			PixelEditor.SolidPaintingPreview.Value = SettingWindow.SolidPaintingPreview;
-			Console.ShowLogTime.Value = SettingWindow.ShowLogTime;
-		}
-
 		// Change Theme
 		if (SettingWindow.RequireChangeThemePath != null) {
 			string path = SettingWindow.RequireChangeThemePath;
@@ -853,7 +832,7 @@ public class Engine {
 		foreach (var ui in ALL_UI) {
 			if (ui is not WindowUI window || !window.Active) continue;
 			string content = window.RequiringTooltipContent;
-			if (content != null && UseTooltip.Value) {
+			if (content != null && EngineSetting.UseTooltip.Value) {
 				ToolLabel = content;
 				ToolLabelRect = window.RequiringTooltipRect;
 				if (ToolLabelRect.MouseInside()) {
@@ -871,7 +850,7 @@ public class Engine {
 		// Update Notify
 		foreach (var ui in ALL_UI) {
 			if (ui is not WindowUI window) continue;
-			if (window.NotificationContent != null && UseNotification.Value) {
+			if (window.NotificationContent != null && EngineSetting.UseNotification.Value) {
 				NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
 				NotificationStartFrame = Game.GlobalFrame;
 				NotificationContent = window.NotificationContent;
@@ -908,7 +887,7 @@ public class Engine {
 
 	private void OnGUI_Tooltip () {
 		if (ToolLabel == null) return;
-		if (!UseTooltip.Value) {
+		if (!EngineSetting.UseTooltip.Value) {
 			ToolLabel = null;
 			return;
 		}
@@ -951,7 +930,7 @@ public class Engine {
 
 		} else {
 
-			if (!UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
+			if (!EngineSetting.UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
 
 			int padding = GUI.Unify(2);
 			int labelHeight = GUI.Unify(28);

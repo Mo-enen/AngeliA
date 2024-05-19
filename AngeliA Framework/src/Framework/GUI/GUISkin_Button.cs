@@ -15,7 +15,7 @@ public partial class GUISkin {
 		ContentShiftDisable = new(0, 2),
 		ContentShiftHover = new(0, 2),
 		ContentBorder = Int4.Direction(2, 2, 2, 2),
-
+		
 		ContentColor = Color32.GREY_32,
 		ContentColorHover = Color32.GREY_32,
 		ContentColorDown = Color32.GREY_32,

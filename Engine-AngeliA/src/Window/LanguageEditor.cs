@@ -106,7 +106,7 @@ public partial class LanguageEditor : WindowUI {
 		Height = windowRect.height;
 
 		int frameThickness = Unify(2);
-		Renderer.Draw_9Slice(
+		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_16, windowRect.Expand(frameThickness),
 			frameThickness, frameThickness, frameThickness, frameThickness,
 			Color32.GREY_12, int.MinValue

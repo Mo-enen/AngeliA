@@ -164,7 +164,7 @@ public class Explosion : Entity {
 			var ringColor = RingColor;
 			ringColor.a = (byte)Util.LerpUnclamped(255, 0, ease01Ex);
 			int ringRadius = Radius * 9 / 10;
-			Renderer.Draw_9Slice(RingArtwork, X, Y, 500, 500, (int)(ease01Ex * 720), ringRadius, ringRadius, ringColor, 1025);
+			Renderer.DrawSlice(RingArtwork, X, Y, 500, 500, (int)(ease01Ex * 720), ringRadius, ringRadius, ringColor, 1025);
 		}
 
 

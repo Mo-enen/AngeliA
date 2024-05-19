@@ -167,7 +167,7 @@ public abstract class BraidHair : Hair {
 				SINGLE_CELL[0] = Renderer.Draw(sprite, x, y, px, py, rot, width, height, z);
 				return SINGLE_CELL;
 			} else {
-				return Renderer.Draw_9Slice(sprite, x, y, px, py, rot, width, height, z);
+				return Renderer.DrawSlice(sprite, x, y, px, py, rot, width, height, z);
 			}
 		}
 		static void TwistRotateHair (PoseCharacter character, Cell[] cells, bool isRight) {
@@ -319,7 +319,7 @@ public abstract class Hair : BodyGadget {
 			if (flipX) hairRect.FlipHorizontal();
 
 			// Draw Hair
-			return Renderer.Draw_9Slice(
+			return Renderer.DrawSlice(
 				hairSprite,
 				hairRect.CenterX(), hairRect.y + hairRect.height,
 				500, 1000, 0,

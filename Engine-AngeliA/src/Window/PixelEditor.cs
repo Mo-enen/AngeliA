@@ -76,8 +76,6 @@ public partial class PixelEditor : WindowUI {
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Artwork";
 	public static int SheetIndex { get; private set; } = -1;
-	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
-	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
 
 	// Data
 	private static PixelEditor Instance;
@@ -143,7 +141,7 @@ public partial class PixelEditor : WindowUI {
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath)) return;
 		Cursor.RequireCursor();
-		Sky.ForceSkyboxTint(BackgroundColor.Value);
+		Sky.ForceSkyboxTint(EngineSetting.BackgroundColor.Value);
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();

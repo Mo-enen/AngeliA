@@ -29,13 +29,6 @@ public class SettingWindow : WindowUI {
 	// Api
 	public string RequireChangeThemePath { get; set; } = null;
 	public override string DefaultName => "Setting";
-	public bool Changed { get; private set; } = false;
-	public bool OpenLastProjectOnStart { get; set; }
-	public bool UseTooltip { get; set; }
-	public bool UseNotification { get; set; }
-	public bool SolidPaintingPreview { get; set; }
-	public bool ShowLogTime { get; set; }
-	public Color32 BackgroundColor { get; set; }
 
 	// Data
 	private static SettingWindow Instance;
@@ -77,11 +70,10 @@ public class SettingWindow : WindowUI {
 			var rect = panelRect.EdgeInside(Direction4.Up, GUI.FieldHeight);
 
 			using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), rect.width / 2));
-			GUI.BeginChangeCheck();
+			
 			DrawPanel(ref rect, Update_Engine);
 			DrawPanel(ref rect, Update_PixelEditor);
 			DrawPanel(ref rect, Update_Console);
-			Changed = GUI.EndChangeCheck();
 
 			extendedUISize = WindowRect.yMax - rect.yMax + Unify(128);
 			UIHeight = (extendedUISize - WindowRect.height).GreaterOrEquelThanZero();
@@ -105,22 +97,22 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		// Open Last Project on Start
-		OpenLastProjectOnStart = GUI.Toggle(
-			rect, OpenLastProjectOnStart, LABEL_OPEN_LAST_PROJECT_ON_START,
+		EngineSetting.OpenLastProjectOnStart.Value = GUI.Toggle(
+			rect, EngineSetting.OpenLastProjectOnStart.Value, LABEL_OPEN_LAST_PROJECT_ON_START,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Use Tooltip
-		UseTooltip = GUI.Toggle(
-			rect, UseTooltip, LABEL_USE_TOOLTIP,
+		EngineSetting.UseTooltip.Value = GUI.Toggle(
+			rect, EngineSetting.UseTooltip.Value, LABEL_USE_TOOLTIP,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
 		// Use Notification
-		UseNotification = GUI.Toggle(
-			rect, UseNotification, LABEL_USE_NOTI,
+		EngineSetting.UseNotification.Value = GUI.Toggle(
+			rect, EngineSetting.UseNotification.Value, LABEL_USE_NOTI,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
@@ -154,12 +146,12 @@ public class SettingWindow : WindowUI {
 			labelStyle: Skin.SmallLabel,
 			defaultColor: BackgroundColorDefault.ToColorF()
 		);
-		BackgroundColor = PixEditorBackgroundColor.ToColor32();
+		EngineSetting.BackgroundColor.Value = PixEditorBackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
 
 		// Solid Painting Preview
-		SolidPaintingPreview = GUI.Toggle(
-			rect, SolidPaintingPreview, LABEL_PE_SOLID_PAINTING,
+		EngineSetting.SolidPaintingPreview.Value = GUI.Toggle(
+			rect, EngineSetting.SolidPaintingPreview.Value, LABEL_PE_SOLID_PAINTING,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
@@ -178,8 +170,8 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		// Show Log Time
-		ShowLogTime = GUI.Toggle(
-			rect, ShowLogTime, LABEL_SHOW_LOG_TIME,
+		EngineSetting.ShowLogTime.Value = GUI.Toggle(
+			rect, EngineSetting.ShowLogTime.Value, LABEL_SHOW_LOG_TIME,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

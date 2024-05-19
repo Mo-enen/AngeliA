@@ -151,7 +151,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		if (ScreenTint.a > 0) {
 			Renderer.DrawPixel(Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
 		}
-		Renderer.Draw_9Slice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
+		Renderer.DrawSlice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
 
 		// Message
 		if (hasMsg) {

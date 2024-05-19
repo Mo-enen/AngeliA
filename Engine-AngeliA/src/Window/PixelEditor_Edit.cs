@@ -530,7 +530,7 @@ public partial class PixelEditor {
 			} else {
 				// Painting Rect
 				using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
-					if (SolidPaintingPreview.Value) {
+					if (EngineSetting.SolidPaintingPreview.Value) {
 						Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
 					} else {
 						DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());

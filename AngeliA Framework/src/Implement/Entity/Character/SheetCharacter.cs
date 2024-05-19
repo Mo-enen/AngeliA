@@ -164,7 +164,7 @@ public abstract class SheetCharacter : Character {
 
 		// Damage
 		if (TakingDamage) {
-			Renderer.DrawAnimation(
+			DrawAnimation(
 				sheet.Damaging,
 				X, Y, 500, 0, 0,
 				FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
@@ -177,7 +177,7 @@ public abstract class SheetCharacter : Character {
 		// Door
 		if (Teleporting) {
 			LastRequireBounceFrame = int.MinValue;
-			Renderer.DrawAnimation(
+			DrawAnimation(
 				TeleportEndFrame > 0 ? sheet.DoorFront : sheet.DoorBack,
 				X, Y, 500, 0, 0,
 				FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
@@ -196,7 +196,7 @@ public abstract class SheetCharacter : Character {
 				BounceCellForSheet(RenderedCell, CurrentRenderingBounce);
 				break;
 			case CharacterState.Sleep:
-				RenderedCell = Renderer.DrawAnimation(
+				RenderedCell = DrawAnimation(
 					sheet.Sleep, X, Y, 500, 0, 0,
 					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, Game.GlobalFrame
 				);
@@ -207,7 +207,7 @@ public abstract class SheetCharacter : Character {
 				}
 				break;
 			case CharacterState.PassOut:
-				RenderedCell = Renderer.DrawAnimation(
+				RenderedCell = DrawAnimation(
 					sheet.PassOut,
 					X, Y,
 					500, 0, 0,
@@ -244,7 +244,7 @@ public abstract class SheetCharacter : Character {
 
 		// Draw
 		if (Renderer.TryGetSprite(ani, out var sprite)) {
-			return Renderer.DrawAnimation(
+			return DrawAnimation(
 				ani, X, Y, sprite.PivotX, sprite.PivotY, 0,
 				FacingRight || IsClimbing || IsPounding ? sprite.GlobalWidth : -sprite.GlobalWidth,
 				sprite.GlobalHeight, CurrentAnimationFrame
@@ -265,6 +265,21 @@ public abstract class SheetCharacter : Character {
 			cell.Width += cell.Width * (1000 - bounce) / 1000;
 			cell.Height = cell.Height * bounce / 1000;
 		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- UTL ---
+
+
+	private static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame) {
+		if (!Renderer.TryGetSpriteGroup(chainID, out var group) || !group.Animated) return Cell.EMPTY;
+		int id = Renderer.CurrentSheet.GetSpriteIdFromAnimationFrame(group, frame);
+		return Renderer.Draw(id, x, y, pivotX, pivotY, rotation, width, height);
 	}
 
 
