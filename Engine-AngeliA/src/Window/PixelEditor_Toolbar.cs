@@ -28,8 +28,6 @@ public partial class PixelEditor {
 	// Const
 	private const int BASIC_INPUT_ID = 123631253;
 	private static readonly string[] INPUT_TEXT = { "", "", "", "", "", "", "", "", "", "", "", };
-	private static readonly int ATLAS_TYPE_COUNT = typeof(AtlasType).EnumLength();
-	private static string[] ATLAS_TYPE_NAMES = null;
 
 	// Sprite
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
@@ -42,7 +40,6 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_RULE = "Icon.Rule";
 	private static readonly SpriteCode ICON_MIX = "Icon.Mix";
 	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
-	private static readonly SpriteCode ICON_ATLAS_TYPE = "Icon.AtlasType";
 	private static readonly SpriteCode ICON_RULE_SAME = "Icon.Same";
 	private static readonly SpriteCode ICON_RULE_NOT_SAME = "Icon.NotSame";
 	private static readonly SpriteCode ICON_RULE_ANY = "Icon.Any";
@@ -52,7 +49,6 @@ public partial class PixelEditor {
 
 	// Language
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
-	private static readonly LanguageCode TIP_ATLAS_TYPE = ("Tip.AtlasType", "Type of the opening atlas");
 	private static readonly LanguageCode TIP_PAINTING_COLOR = ("Tip.PaintingColor", "Current painting color");
 	private static readonly LanguageCode TIP_PALETTE = ("Tip.Palette", "Create a sprite for palette");
 	private static readonly LanguageCode TIP_SHOW_CHECKER = ("Tip.ShowCheckerBoard", "Show Checker Board");
@@ -186,13 +182,6 @@ public partial class PixelEditor {
 			CreateSpriteForPalette(useDefaultPos: false);
 		}
 		RequireTooltip(rect, TIP_PALETTE);
-		rect.SlideRight(padding);
-
-		// Atlas Type
-		if (GUI.Button(rect, ICON_ATLAS_TYPE, Skin.SmallDarkButton)) {
-			OpenAtlasTypeMenu();
-		}
-		RequireTooltip(rect, TIP_ATLAS_TYPE);
 		rect.SlideRight(padding);
 
 		// Color Field
@@ -753,26 +742,6 @@ public partial class PixelEditor {
 					});
 				}
 			}
-			Instance.SetDirty();
-		}
-	}
-
-
-	private void OpenAtlasTypeMenu () {
-		int currentType = (int)Sheet.Atlas[CurrentAtlasIndex].Type;
-		GenericPopupUI.BeginPopup();
-		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
-			GenericPopupUI.AddItem(ATLAS_TYPE_NAMES[i], OnClick, enabled: true, @checked: currentType == i);
-		}
-		// Func
-		static void OnClick () {
-			int index = GenericPopupUI.Instance.InvokingItemIndex;
-			int currentAtlasIndex = Instance.CurrentAtlasIndex;
-			var atlasList = Sheet.Atlas;
-			if (index < 0 || index >= ATLAS_TYPE_COUNT) return;
-			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
-			var atlas = atlasList[currentAtlasIndex];
-			atlas.Type = (AtlasType)index;
 			Instance.SetDirty();
 		}
 	}

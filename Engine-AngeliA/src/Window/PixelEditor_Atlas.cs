@@ -11,8 +11,9 @@ public partial class PixelEditor {
 
 	#region --- VAR ---
 
-
 	// Const
+	private static readonly int ATLAS_TYPE_COUNT = typeof(AtlasType).EnumLength();
+	private static string[] ATLAS_TYPE_NAMES = null;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
@@ -252,17 +253,16 @@ public partial class PixelEditor {
 
 		GenericPopupUI.AddSeparator();
 
-		// To Top
-		GenericPopupUI.AddItem(ATLAS_POPUP_TOP, MoveTop, enabled: atlasIndex > 0);
+		// Type
+		int currentType = (int)Sheet.Atlas[atlasIndex].Type;
+		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
+			GenericPopupUI.AddItem(ATLAS_TYPE_NAMES[i], AtlasType, enabled: true, @checked: currentType == i);
+		}
 
-		// Move Up
-		GenericPopupUI.AddItem(ATLAS_POPUP_UP, MoveUp, enabled: atlasIndex > 0);
-
-		// Move Down
-		GenericPopupUI.AddItem(ATLAS_POPUP_DOWN, MoveDown, enabled: atlasIndex < Sheet.Atlas.Count - 1);
-
-		// To Bottom
-		GenericPopupUI.AddItem(ATLAS_POPUP_BOTTOM, MoveBottom, enabled: atlasIndex < Sheet.Atlas.Count - 1);
+		//GenericPopupUI.AddItem(ATLAS_POPUP_TOP, MoveTop, enabled: atlasIndex > 0);
+		//GenericPopupUI.AddItem(ATLAS_POPUP_UP, MoveUp, enabled: atlasIndex > 0);
+		//GenericPopupUI.AddItem(ATLAS_POPUP_DOWN, MoveDown, enabled: atlasIndex < Sheet.Atlas.Count - 1);
+		//GenericPopupUI.AddItem(ATLAS_POPUP_BOTTOM, MoveBottom, enabled: atlasIndex < Sheet.Atlas.Count - 1);
 
 		// Func
 		static void DeleteAtlasConfirm () {
@@ -276,50 +276,60 @@ public partial class PixelEditor {
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
 			GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
+			static void DeleteAtlas () {
+				var atlasList = Sheet.Atlas;
+				if (atlasList.Count <= 1) return;
+				int targetIndex = Instance.AtlasMenuTargetIndex;
+				if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+				int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
+				Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
+				Instance.SetDirty();
+				Instance.CurrentAtlasIndex = -1;
+				Instance.SetCurrentAtlas(newSelectingAtlasIndex, forceChange: true);
+			}
 		}
-		static void DeleteAtlas () {
+		static void AtlasType () {
+			int index = GenericPopupUI.Instance.InvokingItemIndex - 1;
+			int currentAtlasIndex = Instance.AtlasMenuTargetIndex;
 			var atlasList = Sheet.Atlas;
-			if (atlasList.Count <= 1) return;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
-			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
-			int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
-			Sheet.RemoveAtlasAndAllSpritesInside(targetIndex);
+			if (index < 0 || index >= ATLAS_TYPE_COUNT) return;
+			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
+			var atlas = atlasList[currentAtlasIndex];
+			atlas.Type = (AtlasType)index;
 			Instance.SetDirty();
-			Instance.CurrentAtlasIndex = -1;
-			Instance.SetCurrentAtlas(newSelectingAtlasIndex, forceChange: true);
 		}
-		static void MoveTop () {
-			var atlasList = Sheet.Atlas;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
-			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
-			Sheet.MoveAtlas(targetIndex, 0);
-			Instance.SetDirty();
-			Instance.SetCurrentAtlas(0, forceChange: true, resetUndo: false);
-		}
-		static void MoveUp () {
-			var atlasList = Sheet.Atlas;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
-			if (targetIndex < 1 || targetIndex >= atlasList.Count) return;
-			Sheet.MoveAtlas(targetIndex, targetIndex - 1);
-			Instance.SetDirty();
-			Instance.SetCurrentAtlas(targetIndex - 1, forceChange: true, resetUndo: false);
-		}
-		static void MoveDown () {
-			var atlasList = Sheet.Atlas;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
-			if (targetIndex < 0 || targetIndex >= atlasList.Count - 1) return;
-			Sheet.MoveAtlas(targetIndex, targetIndex + 1);
-			Instance.SetDirty();
-			Instance.SetCurrentAtlas(targetIndex + 1, forceChange: true, resetUndo: false);
-		}
-		static void MoveBottom () {
-			var atlasList = Sheet.Atlas;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
-			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
-			Sheet.MoveAtlas(targetIndex, atlasList.Count - 1);
-			Instance.SetDirty();
-			Instance.SetCurrentAtlas(atlasList.Count - 1, forceChange: true, resetUndo: false);
-		}
+		//static void MoveTop () {
+		//	var atlasList = Sheet.Atlas;
+		//	int targetIndex = Instance.AtlasMenuTargetIndex;
+		//	if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+		//	Sheet.MoveAtlas(targetIndex, 0);
+		//	Instance.SetDirty();
+		//	Instance.SetCurrentAtlas(0, forceChange: true, resetUndo: false);
+		//}
+		//static void MoveUp () {
+		//	var atlasList = Sheet.Atlas;
+		//	int targetIndex = Instance.AtlasMenuTargetIndex;
+		//	if (targetIndex < 1 || targetIndex >= atlasList.Count) return;
+		//	Sheet.MoveAtlas(targetIndex, targetIndex - 1);
+		//	Instance.SetDirty();
+		//	Instance.SetCurrentAtlas(targetIndex - 1, forceChange: true, resetUndo: false);
+		//}
+		//static void MoveDown () {
+		//	var atlasList = Sheet.Atlas;
+		//	int targetIndex = Instance.AtlasMenuTargetIndex;
+		//	if (targetIndex < 0 || targetIndex >= atlasList.Count - 1) return;
+		//	Sheet.MoveAtlas(targetIndex, targetIndex + 1);
+		//	Instance.SetDirty();
+		//	Instance.SetCurrentAtlas(targetIndex + 1, forceChange: true, resetUndo: false);
+		//}
+		//static void MoveBottom () {
+		//	var atlasList = Sheet.Atlas;
+		//	int targetIndex = Instance.AtlasMenuTargetIndex;
+		//	if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+		//	Sheet.MoveAtlas(targetIndex, atlasList.Count - 1);
+		//	Instance.SetDirty();
+		//	Instance.SetCurrentAtlas(atlasList.Count - 1, forceChange: true, resetUndo: false);
+		//}
 	}
 
 

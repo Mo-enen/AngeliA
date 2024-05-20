@@ -127,7 +127,8 @@ public partial class PixelEditor : WindowUI {
 		// Atlas Type Names
 		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
-			ATLAS_TYPE_NAMES[i] = ((AtlasType)i).ToString();
+			string rawName = ((AtlasType)i).ToString();
+			ATLAS_TYPE_NAMES[i] = Language.Get($"AtlasType.{rawName}".AngeHash(), rawName);
 		}
 	}
 

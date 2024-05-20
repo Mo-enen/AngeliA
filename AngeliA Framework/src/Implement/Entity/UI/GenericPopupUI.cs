@@ -131,6 +131,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		int checkShrink = itemHeight / 6;
 		int maxWidth = panelWidth;
 		int iconPadding = Unify(4);
+		int invokeIndex = 0;
 		for (int i = 0; i < ItemCount; i++) {
 
 			var item = Items[i];
@@ -180,10 +181,13 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 					// Click
 					if (hover && item.Enabled && Input.MouseLeftButtonDown) {
-						InvokingItemIndex = i;
+						InvokingItemIndex = invokeIndex;
 						item.Action?.Invoke();
 					}
 				}
+
+				invokeIndex++;
+
 			}
 
 		}
