@@ -46,6 +46,7 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_RULE_EMPTY = "Icon.Empty";
 	private static readonly SpriteCode ICON_RULE_MODE_A = "Icon.RuleModeA";
 	private static readonly SpriteCode ICON_RULE_MODE_B = "Icon.RuleModeB";
+	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
 
 	// Language
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
@@ -118,7 +119,7 @@ public partial class PixelEditor {
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
 
 		// BG
-		Renderer.DrawPixel(toolbarRect, Skin.BackgroundPanel);
+		Renderer.DrawSlice(UI_TOOLBAR, toolbarRect);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
 
@@ -135,6 +136,7 @@ public partial class PixelEditor {
 			Update_RuleEditor();
 		}
 	}
+
 
 	private void Update_GeneralToolbar (IRect toolbarRect, ref IRect rect) {
 
@@ -538,7 +540,7 @@ public partial class PixelEditor {
 		if (!OpeningTilingRuleEditor || SelectingSpriteCount == 0) return;
 
 		// BG
-		Renderer.DrawPixel(RuleEditorRect, Skin.BackgroundPanel);
+		Renderer.DrawSlice(UI_ENGINE_PANEL, RuleEditorRect);
 
 		var panelRect = RuleEditorRect.Shrink(Unify(8));
 		int pageBarHeight = (panelRect.height - panelRect.width) / 2;

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 using AngeliA;
 using Raylib_cs;
@@ -263,6 +264,7 @@ public partial class RayGame : Game {
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
 		InvokeGameQuitting();
 		Raylib.CloseWindow();
+
 	}
 
 

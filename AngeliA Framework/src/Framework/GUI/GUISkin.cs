@@ -55,6 +55,13 @@ public partial class GUISkin {
 		BodyColorDisable = Color32.GREEN,
 	};
 
+	public readonly GUIStyle DialogBG = new() {
+		BodySprite = BuiltInSprite.UI_DIALOG_BG,
+		BodySpriteHover = BuiltInSprite.UI_DIALOG_BG,
+		BodySpriteDown = BuiltInSprite.UI_DIALOG_BG,
+		BodySpriteDisable = BuiltInSprite.UI_DIALOG_BG,
+	};
+
 	public readonly GUIStyle ItemFrame = new() {
 		BodySprite = BuiltInSprite.UI_ITEM_FRAME,
 		BodySpriteHover = BuiltInSprite.UI_ITEM_FRAME,

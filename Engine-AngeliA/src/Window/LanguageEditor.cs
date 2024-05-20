@@ -38,6 +38,7 @@ public partial class LanguageEditor : WindowUI {
 
 	// Const
 	public static readonly int TYPE_ID = typeof(LanguageEditor).AngeHash();
+	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
 	private static readonly LanguageCode DELETE_MSG = ("UI.LanguageEditor.DeleteMsg", "Delete Language {0}?");
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
@@ -124,7 +125,7 @@ public partial class LanguageEditor : WindowUI {
 	private void Update_Bar (IRect panelRect) {
 
 		// BG
-		Renderer.DrawPixel(panelRect.TopHalf(), Skin.BackgroundPanel, 0);
+		Renderer.DrawSlice(UI_TOOLBAR, panelRect.TopHalf());
 
 		// Shift Panel Rect
 		int labelHeight = panelRect.height - Unify(42);

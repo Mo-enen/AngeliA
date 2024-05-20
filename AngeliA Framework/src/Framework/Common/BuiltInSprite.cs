@@ -135,5 +135,6 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode SHADOW_LINE_16 = "ShadowLine16";
 	public static readonly SpriteCode UI_SCROLL_BAR = "UI.Scrollbar";
 	public static readonly SpriteCode ICON_CLEAR = "Icon.Clear";
+	public static readonly SpriteCode UI_DIALOG_BG = "UI.DialogBackground";
 
 }

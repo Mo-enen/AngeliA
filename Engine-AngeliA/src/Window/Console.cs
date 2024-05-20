@@ -40,6 +40,7 @@ public class Console : WindowUI {
 
 
 	// Const
+	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
 	private static readonly SpriteCode ICON_INFO = "Console.Info";
 	private static readonly SpriteCode ICON_WARNING = "Console.Warning";
 	private static readonly SpriteCode ICON_ERROR = "Console.Error";
@@ -114,7 +115,7 @@ public class Console : WindowUI {
 	private void OnGUI_Toolbar (IRect barRect) {
 
 		// BG
-		Renderer.DrawPixel(barRect, Skin.BackgroundPanel);
+		Renderer.DrawSlice(UI_TOOLBAR, barRect);
 
 		int padding = Unify(6);
 		barRect = barRect.Shrink(padding);

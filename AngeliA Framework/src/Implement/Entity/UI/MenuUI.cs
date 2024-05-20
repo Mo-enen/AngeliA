@@ -42,6 +42,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected int AnimationAmount = -32;
 
 	// Data
+	private GUIStyle BackgroundStyle;
 	private GUIStyle MessageStyle;
 	private GUIStyle LabelStyle;
 	private GUIStyle ContentStyle;
@@ -76,6 +77,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		MessageStyle = GUI.Skin.Message;
 		LabelStyle = GUI.Skin.Label;
 		ContentStyle = GUI.Skin.CenterLabel;
+		BackgroundStyle = null;
 		DrawStyleBody = false;
 		OverrideWindowWidth = -1;
 		AnimationDuration = 8;
@@ -151,7 +153,11 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		if (ScreenTint.a > 0) {
 			Renderer.DrawPixel(Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
 		}
-		Renderer.DrawSlice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
+		if (BackgroundStyle == null) {
+			Renderer.DrawSlice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
+		} else {
+			GUI.DrawStyleBody(bgRect, BackgroundStyle, GUIState.Normal);
+		}
 
 		// Message
 		if (hasMsg) {
@@ -513,12 +519,13 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	public void SetStyle (
-		GUIStyle message, GUIStyle label, GUIStyle content,
+		GUIStyle message, GUIStyle label, GUIStyle content, GUIStyle background,
 		bool drawStyleBody, int newWindowWidth = -1, int animationDuration = 8
 	) {
 		MessageStyle = message ?? GUI.Skin.Message;
 		LabelStyle = label ?? GUI.Skin.Label;
 		ContentStyle = content ?? GUI.Skin.CenterLabel;
+		BackgroundStyle = background;
 		DrawStyleBody = drawStyleBody;
 		OverrideWindowWidth = newWindowWidth;
 		AnimationDuration = animationDuration;

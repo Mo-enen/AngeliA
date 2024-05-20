@@ -47,15 +47,21 @@ public class Engine {
 	private const int HUB_PANEL_WIDTH = 360;
 	private const int WINDOW_BAR_WIDTH_FULL = 160;
 	private const int WINDOW_BAR_WIDTH_NORMAL = 42;
+
 	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
+	private static readonly SpriteCode UI_ENGINE_BAR = "UI.EngineSideBar";
+	private static readonly SpriteCode UI_ENGINE_BAR_BTN = "UI.EngineSideButton";
+	private static readonly SpriteCode UI_ENGINE_BAR_BTN_HIGHLIGHT = "UI.EngineSideButtonHighlight";
+	private static readonly SpriteCode UI_ENGINE_BAR_BTN_WARNING = "UI.EngineSideButtonWarning";
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
 	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
 	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
+
 	private static readonly LanguageCode BTN_CREATE = ("Hub.Create", "Create New Project");
 	private static readonly LanguageCode BTN_ADD = ("Hub.Add", "Add Existing Project");
 	private static readonly LanguageCode CREATE_PRO_TITLE = ("UI.CreateProjectTitle", "New Project");
 	private static readonly LanguageCode ADD_PRO_TITLE = ("UI.AddProjectTitle", "Add Existing Project");
-	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Quit editor?");
+	private static readonly LanguageCode QUIT_MSG = ("UI.QuitMessage", "Close engine window ?");
 	private static readonly LanguageCode DELETE_PROJECT_MSG = ("UI.DeleteProjectMsg", "Remove project {0}?\nThis will NOT delete files in the disk.");
 	private static readonly LanguageCode MENU_SORT_BY_NAME = ("Menu.SortProjectByName", "Sort by Name");
 	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
@@ -76,6 +82,8 @@ public class Engine {
 	private static readonly LanguageCode LOG_ERROR_ENTRY_PROJECT_NOT_FOUND = ("Log.BuildError.EntryProjectNotFound", "Build Error: Entry exe file for the project not found");
 	private static readonly LanguageCode LOG_ERROR_ENTRY_RESULT_NOT_FOUND = ("Log.BuildError.EntryResultNotFound", "Build Error: Entry exe file result not found");
 
+	// Data
+	private static readonly Engine Instance = new();
 	private readonly GenericPopupUI GenericPopup = new() { Active = false };
 	private readonly GenericDialogUI GenericDialog = new() { Active = false };
 	private readonly FileBrowserUI FileBrowser = new() { Active = false };
@@ -86,9 +94,6 @@ public class Engine {
 	private readonly ProjectEditor ProjectEditor = new();
 	private readonly SettingWindow SettingWindow = new();
 	private readonly EntityUI[] ALL_UI;
-
-	// Data
-	private static readonly Engine Instance = new();
 	private Project CurrentProject = null;
 	private ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
 	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
@@ -149,7 +154,8 @@ public class Engine {
 
 
 	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () {
+	internal static void OnGameInitializeLater () => Instance?.InitializeEngine();
+	private void InitializeEngine () {
 
 #if DEBUG
 		// Grow Engine Version
@@ -161,13 +167,6 @@ public class Engine {
 			Util.DeleteFile(obsoleteInfoPath);
 		}
 #endif
-
-		Instance?.InitializeEngine();
-
-	}
-
-
-	private void InitializeEngine () {
 
 		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
@@ -226,8 +225,6 @@ public class Engine {
 	// Rebuild
 	[OnProjectBuiltInBackground]
 	internal static void OnProjectBuiltInBackground (int code) => Instance?.RiggedGameRebuild(code);
-
-
 	private void RiggedGameRebuild (int code) {
 
 		switch (code) {
@@ -243,18 +240,10 @@ public class Engine {
 				break;
 
 			case EngineUtil.ERROR_USER_CODE_COMPILE_ERROR:
-				bool keywordFound = false;
 				Console.BeginCompileError();
 				try {
 					while (EngineUtil.BackgroundBuildMessages.Count > 0) {
-						string msg = EngineUtil.BackgroundBuildMessages.Dequeue();
-						if (keywordFound) {
-							if (!msg.StartsWith("Time Elapsed", System.StringComparison.OrdinalIgnoreCase)) {
-								Debug.LogError(msg);
-							}
-						} else if (msg.StartsWith("Build FAILED", System.StringComparison.OrdinalIgnoreCase)) {
-							keywordFound = true;
-						}
+						Debug.LogError(EngineUtil.BackgroundBuildMessages.Dequeue());
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 				Console.EndCompileError();
@@ -655,22 +644,18 @@ public class Engine {
 			bool menuButtonClicked = false;
 
 			// Tab BG
-			Renderer.DrawPixel(barRect, GUI.Skin.BackgroundDarkPanel);
+			Renderer.DrawSlice(UI_ENGINE_BAR, barRect);
 
-			// Menu
-			{
-				var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
-
-				// Menu Button
-				if (GUI.BlankButton(rect, out _)) {
-					menuButtonClicked = true;
-				}
-
-				// Menu Icon
-				GUI.Icon(menuRect.EdgeInside(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
-
-				rect.y -= rect.height;
+			// Menu Button
+			var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+			Renderer.DrawSlice(UI_ENGINE_BAR_BTN, rect);
+			if (GUI.BlankButton(rect, out _)) {
+				menuButtonClicked = true;
 			}
+
+			// Menu Icon
+			GUI.Icon(menuRect.EdgeInside(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
+			rect.y -= rect.height;
 
 			// Window Tabs
 			SetCurrentWindowIndex(CurrentWindowIndex);
@@ -687,22 +672,29 @@ public class Engine {
 				// Cursor
 				if (!selecting && hovering) Cursor.SetCursorAsHand();
 
-				if (selecting) {
-					// Select Highlight
-					Renderer.DrawPixel(rect, GUI.Skin.HighlightColorWeak);
-				} else if (hovering) {
-					// Hovering Highlight
-					Renderer.DrawPixel(rect, GUI.Skin.HighlightColorWeak.WithNewA(128));
-				}
-				var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+				// Body
+				Renderer.DrawSlice(UI_ENGINE_BAR_BTN, rect);
 
-				// Special Highlight
-				if (window is Console console && console.HasCompileError) {
-					Renderer.DrawPixel(
-						rect,
-						Color32.LerpUnclamped(GUI.Skin.ErrorTint.WithNewA(0), GUI.Skin.ErrorTint, Ease.InOutQuad(Game.GlobalFrame.PingPong(60) / 60f))
-					);
+				// Highlight
+				var bodyTint = Color32.CLEAR;
+				int bodyID = UI_ENGINE_BAR_BTN_HIGHLIGHT;
+				if (selecting) {
+					bodyTint = Color32.WHITE;
+				} else if (hovering) {
+					bodyTint = Color32.WHITE_128;
 				}
+				if (window is Console console && console.HasCompileError) {
+					bodyTint = Color32.WHITE.WithNewA(
+						(byte)(Ease.InOutQuad(Game.GlobalFrame.PingPong(60) / 60f) * 255)
+					);
+					bodyID = UI_ENGINE_BAR_BTN_WARNING;
+				}
+				if (bodyTint.a > 0) {
+					Renderer.DrawSlice(bodyID, rect, bodyTint);
+				}
+
+				// Content
+				var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
 
 				// Icon
 				int iconSize = contentRect.height;
@@ -1097,9 +1089,10 @@ public class Engine {
 
 	private void SetCurrentWindowIndex (int index) {
 		index = index.Clamp(0, WindowCount - 1);
+		if (index == CurrentWindowIndex) return;
 		if (index == RigMapEditorWindowIndex && CurrentWindowIndex != index) {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireFocusInvoke();
-		} else if (index != RigMapEditorWindowIndex && CurrentWindowIndex == index) {
+		} else if (index != RigMapEditorWindowIndex) {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireLostFocusInvoke();
 			Stage.SetViewRectImmediately(
 				new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight / 1000, Game.DefaultViewHeight),

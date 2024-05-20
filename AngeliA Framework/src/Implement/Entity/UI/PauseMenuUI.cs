@@ -117,7 +117,7 @@ public class PauseMenuUI : MenuUI {
 		BackgroundTint = new(0, 0, 0, 255);
 		MaxItemCount = 11;
 		ContentPadding = Int4.Direction(32, 32, 32, 32);
-		SetStyle(MessageStyle, GUI.Skin.LargeLabel, GUI.Skin.LargeCenterLabel, false);
+		SetStyle(MessageStyle, GUI.Skin.LargeLabel, GUI.Skin.LargeCenterLabel, null, false);
 	}
 
 

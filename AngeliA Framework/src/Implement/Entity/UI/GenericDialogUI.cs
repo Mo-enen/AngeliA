@@ -86,7 +86,7 @@ public class GenericDialogUI : MenuUI {
 		SpawnDialog(message, labelA, actionA, labelB, actionB, labelC, actionC);
 		Instance.UsingButtonStyle = true;
 		Instance.SetStyle(
-			Instance.ButtonMessageStyle, GUI.Skin.Label, GUI.Skin.DarkButton,
+			Instance.ButtonMessageStyle, GUI.Skin.Label, GUI.Skin.DarkButton, GUI.Skin.DialogBG,
 			drawStyleBody: true, newWindowWidth: Unify(330), animationDuration: 0
 		);
 	}
