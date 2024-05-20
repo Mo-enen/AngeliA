@@ -216,7 +216,9 @@ public class Sheet {
 		return true;
 	}
 
-	public void MoveAtlas (int from, int to) {
+	public int MoveAtlas (int from, int to) {
+		if (from == to) return to;
+		if (to > from) to--;
 		var atlas = Atlas[from];
 		Atlas.RemoveAt(from);
 		Atlas.Insert(to, atlas);
@@ -231,6 +233,7 @@ public class Sheet {
 			if (sp.AtlasIndex < min || sp.AtlasIndex > max) continue;
 			sp.AtlasIndex += delta;
 		}
+		return to;
 	}
 
 	// Find

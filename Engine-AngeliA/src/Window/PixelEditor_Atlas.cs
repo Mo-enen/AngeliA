@@ -37,6 +37,7 @@ public partial class PixelEditor {
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasMenuTargetIndex = -1;
+	private int AtlasItemReorderIndex = -1;
 
 
 	#endregion
@@ -75,6 +76,8 @@ public partial class PixelEditor {
 			bool hasScrollbar = scrollMax > 0;
 			if (hasScrollbar) rect.width -= scrollbarWidth;
 			bool requireUseMouseButtons = false;
+			int requireReorderFrom = -1;
+			int requireReorderTo = -1;
 
 			using (var scroll = Scope.GUIScroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
 				AtlasPanelScrollY = scroll.ScrollPosition;
@@ -91,8 +94,35 @@ public partial class PixelEditor {
 					var contentRect = rect.Shrink(0, 0, itemPadding, itemPadding);
 					int iconWidth = contentRect.height;
 
+					// Reorder
+					var reorderRect = rect.EdgeInside(Direction4.Left, iconWidth);
+					if (reorderRect.MouseInside()) {
+						// Highlight
+						Renderer.DrawPixel(reorderRect, Color32.WHITE_20);
+						// Click
+						if (Input.MouseLeftButtonDown) {
+							AtlasItemReorderIndex = i;
+						}
+					}
+					Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL, reorderRect);
+
+					// Reordering
+					if (hover && AtlasItemReorderIndex >= 0 && AtlasItemReorderIndex != i) {
+						// Draw Mark
+						bool topHalf = Input.MouseGlobalPosition.y > rect.CenterY();
+						Renderer.DrawPixel(
+							rect.EdgeExact(topHalf ? Direction4.Up : Direction4.Down, Unify(2)),
+							Color32.GREEN
+						);
+						// Perform Reorder
+						if (!Input.MouseLeftButtonHolding) {
+							requireReorderFrom = AtlasItemReorderIndex;
+							requireReorderTo = topHalf ? i : i + 1;
+						}
+					}
+
 					// Button
-					if (GUI.Button(rect, 0, Skin.HighlightPixel)) {
+					if (GUI.Button(rect.ShrinkLeft(iconWidth), 0, Skin.HighlightPixel)) {
 						if (selecting) {
 							if (rect.ShrinkLeft(iconWidth).MouseInside()) {
 								TryApplySpriteInputFields();
@@ -157,6 +187,19 @@ public partial class PixelEditor {
 
 			if (requireUseMouseButtons) Input.UseAllMouseKey();
 
+			if (requireReorderFrom >= 0 && requireReorderTo >= 0) {
+				Atlas currentAtlas = null;
+				if (CurrentAtlasIndex >= 0 && CurrentAtlasIndex < Sheet.Atlas.Count) {
+					currentAtlas = Sheet.Atlas[CurrentAtlasIndex];
+				}
+				Sheet.MoveAtlas(requireReorderFrom, requireReorderTo);
+				if (currentAtlas != null && Sheet.Atlas[CurrentAtlasIndex] != currentAtlas) {
+					int newIndex = Sheet.Atlas.IndexOf(currentAtlas);
+					SetCurrentAtlas(newIndex, forceChange: true, resetUndo: false);
+				}
+				SetDirty();
+			}
+
 			// Change Selection
 			if (newSelectingIndex >= 0 && CurrentAtlasIndex != newSelectingIndex) {
 				SetCurrentAtlas(newSelectingIndex);
@@ -178,6 +221,8 @@ public partial class PixelEditor {
 			}
 
 		}
+
+		if (!Input.MouseLeftButtonHolding) AtlasItemReorderIndex = -1;
 
 	}
 
@@ -259,11 +304,6 @@ public partial class PixelEditor {
 			GenericPopupUI.AddItem(ATLAS_TYPE_NAMES[i], AtlasType, enabled: true, @checked: currentType == i);
 		}
 
-		//GenericPopupUI.AddItem(ATLAS_POPUP_TOP, MoveTop, enabled: atlasIndex > 0);
-		//GenericPopupUI.AddItem(ATLAS_POPUP_UP, MoveUp, enabled: atlasIndex > 0);
-		//GenericPopupUI.AddItem(ATLAS_POPUP_DOWN, MoveDown, enabled: atlasIndex < Sheet.Atlas.Count - 1);
-		//GenericPopupUI.AddItem(ATLAS_POPUP_BOTTOM, MoveBottom, enabled: atlasIndex < Sheet.Atlas.Count - 1);
-
 		// Func
 		static void DeleteAtlasConfirm () {
 			var atlasList = Sheet.Atlas;
@@ -298,38 +338,6 @@ public partial class PixelEditor {
 			atlas.Type = (AtlasType)index;
 			Instance.SetDirty();
 		}
-		//static void MoveTop () {
-		//	var atlasList = Sheet.Atlas;
-		//	int targetIndex = Instance.AtlasMenuTargetIndex;
-		//	if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
-		//	Sheet.MoveAtlas(targetIndex, 0);
-		//	Instance.SetDirty();
-		//	Instance.SetCurrentAtlas(0, forceChange: true, resetUndo: false);
-		//}
-		//static void MoveUp () {
-		//	var atlasList = Sheet.Atlas;
-		//	int targetIndex = Instance.AtlasMenuTargetIndex;
-		//	if (targetIndex < 1 || targetIndex >= atlasList.Count) return;
-		//	Sheet.MoveAtlas(targetIndex, targetIndex - 1);
-		//	Instance.SetDirty();
-		//	Instance.SetCurrentAtlas(targetIndex - 1, forceChange: true, resetUndo: false);
-		//}
-		//static void MoveDown () {
-		//	var atlasList = Sheet.Atlas;
-		//	int targetIndex = Instance.AtlasMenuTargetIndex;
-		//	if (targetIndex < 0 || targetIndex >= atlasList.Count - 1) return;
-		//	Sheet.MoveAtlas(targetIndex, targetIndex + 1);
-		//	Instance.SetDirty();
-		//	Instance.SetCurrentAtlas(targetIndex + 1, forceChange: true, resetUndo: false);
-		//}
-		//static void MoveBottom () {
-		//	var atlasList = Sheet.Atlas;
-		//	int targetIndex = Instance.AtlasMenuTargetIndex;
-		//	if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
-		//	Sheet.MoveAtlas(targetIndex, atlasList.Count - 1);
-		//	Instance.SetDirty();
-		//	Instance.SetCurrentAtlas(atlasList.Count - 1, forceChange: true, resetUndo: false);
-		//}
 	}
 
 

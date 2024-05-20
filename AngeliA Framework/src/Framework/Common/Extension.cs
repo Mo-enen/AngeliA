@@ -671,6 +671,13 @@ public static class Extension {
 		Direction4.Right => rect.Shrink(rect.width - size, 0, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+	public static IRect EdgeExact (this IRect rect, Direction4 edge, int size = 1) => edge switch {
+		Direction4.Up => rect.Shrink(0, 0, rect.height - size / 2, -size / 2),
+		Direction4.Down => rect.Shrink(0, 0, -size / 2, rect.height - size / 2),
+		Direction4.Left => rect.Shrink(-size / 2, rect.width - size / 2, 0, 0),
+		Direction4.Right => rect.Shrink(rect.width - size / 2, -size / 2, 0, 0),
+		_ => throw new System.NotImplementedException(),
+	};
 	public static IRect EdgeOutside (this IRect rect, Direction4 edge, int size = 1) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.height, -size),
 		Direction4.Down => rect.Shrink(0, 0, -size, rect.height),
