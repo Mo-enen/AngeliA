@@ -467,11 +467,7 @@ public class Engine {
 		using (Scope.RendererLayerUI()) {
 
 			// --- BG ---
-			int bodyBorder = GUI.Unify(6);
-			Renderer.DrawSlice(
-				UI_WINDOW_BG, cameraRect,
-				bodyBorder, bodyBorder, bodyBorder, bodyBorder
-			);
+			GUI.DrawSliceOrTile(UI_WINDOW_BG, cameraRect);
 
 			// --- Panel ---
 			{
@@ -500,7 +496,6 @@ public class Engine {
 
 			// --- Content ---
 
-			int border = GUI.Unify(8);
 			int padding = GUI.Unify(8);
 			int scrollWidth = GUI.Unify(12);
 			int itemHeight = GUI.Unify(52);
@@ -511,7 +506,7 @@ public class Engine {
 			var projects = Projects;
 
 			// BG
-			Renderer.DrawSlice(PANEL_BG, contentRect, border, border, border, border, Color32.WHITE, z: 0);
+			GUI.DrawSliceOrTile(PANEL_BG, contentRect);
 
 			// Big Label
 			if (Renderer.TryGetSprite(LABEL_PROJECTS, out var bigLabelSprite)) {
@@ -531,7 +526,10 @@ public class Engine {
 			) {
 				HubPanelScroll = scroll.ScrollPosition;
 
-				var rect = contentRect.Shrink(border).EdgeInside(Direction4.Up, itemHeight);
+				var rect = contentRect.Shrink(
+					Renderer.TryGetSprite(PANEL_BG, out var bgSprite) ? bgSprite.GlobalBorder : Int4.zero
+				).EdgeInside(Direction4.Up, itemHeight);
+
 				bool stepTint = false;
 
 				for (int i = 0; i < projects.Count; i++) {
@@ -644,11 +642,11 @@ public class Engine {
 			bool menuButtonClicked = false;
 
 			// Tab BG
-			Renderer.DrawSlice(UI_ENGINE_BAR, barRect);
+			GUI.DrawSliceOrTile(UI_ENGINE_BAR, barRect);
 
 			// Menu Button
 			var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
-			Renderer.DrawSlice(UI_ENGINE_BAR_BTN, rect);
+			GUI.DrawSliceOrTile(UI_ENGINE_BAR_BTN, rect);
 			if (GUI.BlankButton(rect, out _)) {
 				menuButtonClicked = true;
 			}
@@ -673,7 +671,7 @@ public class Engine {
 				if (!selecting && hovering) Cursor.SetCursorAsHand();
 
 				// Body
-				Renderer.DrawSlice(UI_ENGINE_BAR_BTN, rect);
+				GUI.DrawSliceOrTile(UI_ENGINE_BAR_BTN, rect);
 
 				// Highlight
 				var bodyTint = Color32.CLEAR;
@@ -690,7 +688,9 @@ public class Engine {
 					bodyID = UI_ENGINE_BAR_BTN_WARNING;
 				}
 				if (bodyTint.a > 0) {
-					Renderer.DrawSlice(bodyID, rect, bodyTint);
+					using (Scope.GUIColor(bodyTint)) {
+						GUI.DrawSliceOrTile(bodyID, rect);
+					}
 				}
 
 				// Content

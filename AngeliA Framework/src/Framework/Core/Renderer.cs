@@ -715,7 +715,15 @@ public static class Renderer {
 	}
 
 
-	internal static void DrawSliceOrTile (
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private static void DrawSliceOrTile (
 		AngeSprite sprite, int x, int y, int pivotX, int pivotY,
 		Alignment tileAlignment, bool tileAdapt, int tileWidth, int tileHeight,
 		int rotation, int width, int height,

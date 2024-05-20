@@ -171,6 +171,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoPerformedFrame = -1;
 	private int CurrentZ = 0;
 	private int RequireWorldRenderBlinkIndex = -1;
+	private bool? RequireSetEditMode = null;
 
 	// Saving
 	private static readonly SavingBool s_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
@@ -223,9 +224,10 @@ public sealed partial class MapEditor : WindowUI {
 			System.GC.Collect();
 
 			// Start
-			SetEditorMode(toPlayMode: false);
+			SetEditorMode(false);
 			ResetCamera(true);
 
+			RequireSetEditMode = null;
 			CurrentZ = 0;
 			PastingBuffer.Clear();
 			CopyBuffer.Clear();
@@ -708,6 +710,18 @@ public sealed partial class MapEditor : WindowUI {
 				}
 			}
 
+			// Shift + ...
+			if (ShiftHolding && !CtrlHolding) {
+				// Play from Start
+				if (Input.KeyboardDown(KeyboardKey.Space)) {
+					SetEditorMode(true);
+					Task.AddToLast(RestartGameTask.TYPE_ID);
+					Input.UseAllHoldingKeys();
+					Input.UseGameKey(Gamekey.Start);
+				}
+				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_PLAY_FROM_BEGIN);
+			}
+
 			// Ctrl + ...
 			if (CtrlHolding && !ShiftHolding) {
 				// Save
@@ -738,14 +752,6 @@ public sealed partial class MapEditor : WindowUI {
 					SelectionUnitRect = null;
 					UndoRedo.Redo();
 				}
-				// Play from Start
-				if (Input.KeyboardDown(KeyboardKey.Space)) {
-					SetEditorMode(true);
-					Task.AddToLast(RestartGameTask.TYPE_ID);
-					Input.UseAllHoldingKeys();
-					Input.UseGameKey(Gamekey.Start);
-				}
-				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_PLAY_FROM_BEGIN);
 				// Reset Camera
 				if (Input.KeyboardDown(KeyboardKey.R)) {
 					ResetCamera();
@@ -800,6 +806,8 @@ public sealed partial class MapEditor : WindowUI {
 		}
 		if (player == null) return;
 
+		player.OnActivated();
+
 		PlayerDropPos.x = PlayerDropPos.x.LerpTo(Input.MouseGlobalPosition.x, 400);
 		PlayerDropPos.y = PlayerDropPos.y.LerpTo(Input.MouseGlobalPosition.y, 400);
 		PlayerDropPos.z = PlayerDropPos.z.LerpTo(((Input.MouseGlobalPosition.x - PlayerDropPos.x) / 20).Clamp(-45, 45), 300);
@@ -847,7 +855,7 @@ public sealed partial class MapEditor : WindowUI {
 				player.Y = PlayerDropPos.y - Const.CEL * 2;
 			}
 			player.SetCharacterState(CharacterState.GamePlay);
-			SetEditorMode(true);
+			RequireSetEditMode = true;
 		} else {
 			if (player.Active) player.Active = false;
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue - 1);
@@ -1077,6 +1085,11 @@ public sealed partial class MapEditor : WindowUI {
 		if (!Input.MouseLeftButtonHolding) {
 			DraggingForReorderPaletteItem = -1;
 			DraggingForReorderPaletteGroup = -1;
+		}
+
+		if (RequireSetEditMode.HasValue) {
+			SetEditorMode(RequireSetEditMode.Value);
+			RequireSetEditMode = null;
 		}
 
 	}

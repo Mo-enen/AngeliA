@@ -99,7 +99,7 @@ public class Console : WindowUI {
 		// Error Lines
 		if (hasError) {
 			errorPanelRect = WindowRect.EdgeInside(Direction4.Up, Unify(400)).Shrink(Unify(48), Unify(48), 0, barHeight + Unify(32));
-			GUI.DrawSlice(PANEL_BG, errorPanelRect, Color32.WHITE);
+			GUI.DrawSlice(PANEL_BG, errorPanelRect);
 			OnGUI_Lines(
 				23783177,
 				errorPanelRect,
@@ -115,7 +115,7 @@ public class Console : WindowUI {
 	private void OnGUI_Toolbar (IRect barRect) {
 
 		// BG
-		Renderer.DrawSlice(UI_TOOLBAR, barRect);
+		GUI.DrawSliceOrTile(UI_TOOLBAR, barRect);
 
 		int padding = Unify(6);
 		barRect = barRect.Shrink(padding);

@@ -125,7 +125,7 @@ public partial class LanguageEditor : WindowUI {
 	private void Update_Bar (IRect panelRect) {
 
 		// BG
-		Renderer.DrawSlice(UI_TOOLBAR, panelRect.TopHalf());
+		GUI.DrawSliceOrTile(UI_TOOLBAR, panelRect.TopHalf());
 
 		// Shift Panel Rect
 		int labelHeight = panelRect.height - Unify(42);

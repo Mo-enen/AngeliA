@@ -109,6 +109,85 @@ public static class GUI {
 	}
 
 
+	// Draw
+	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) => DrawStyleBody(rect, style, state, Color32.WHITE);
+	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
+		int sprite = style.GetBodySprite(state);
+		if (sprite == 0 || !Renderer.TryGetSprite(sprite, out var _sprite)) return;
+		var color = tint * Color * BodyColor * style.GetBodyColor(state);
+		if (color.a == 0) return;
+		var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
+		if (border.IsZero) {
+			Renderer.Draw(_sprite, rect, color);
+		} else if (_sprite.IsTrigger) {
+			Renderer.DrawTile(_sprite, rect, _sprite.GetAlignmentFromPivot(), _sprite.Tag != 0, border.left, border.right, border.down, border.up, color);
+		} else {
+			Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
+		}
+	}
+
+
+	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
+		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
+		var color = Color * ContentColor * style.GetContentColor(state);
+		if (color.a == 0) return;
+		rect = GetContentRect(rect, style, state);
+		if (ignoreSlice || _sprite.GlobalBorder.IsZero) {
+			Renderer.Draw(_sprite, rect, color);
+		} else {
+			var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
+			if (_sprite.IsTrigger) {
+				Renderer.DrawTile(_sprite, rect, _sprite.GetAlignmentFromPivot(), _sprite.Tag != 0, border.left, border.right, border.down, border.up, color);
+			} else {
+				Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
+			}
+		}
+	}
+
+
+	public static void DrawSliceOrTile (int spriteID, IRect rect) {
+		if (Renderer.TryGetSprite(spriteID, out var sprite)) {
+			DrawSliceOrTile(sprite, rect);
+		}
+	}
+	public static void DrawSliceOrTile (SpriteCode spriteCode, IRect rect) {
+		if (Renderer.TryGetSprite(spriteCode.ID, out var sprite)) {
+			DrawSliceOrTile(sprite, rect);
+		}
+	}
+	public static void DrawSliceOrTile (AngeSprite sprite, IRect rect) {
+		if (sprite.GlobalBorder.IsZero) {
+			Renderer.Draw(sprite, rect, Color);
+		} else if (sprite.IsTrigger) {
+			DrawTile(sprite, rect, sprite.GetAlignmentFromPivot(), sprite.Tag != 0);
+		} else {
+			DrawSlice(sprite, rect);
+		}
+	}
+
+
+	public static Cell[] DrawSlice (int spriteID, IRect rect) {
+		if (Renderer.TryGetSprite(spriteID, out var sprite)) {
+			return DrawSlice(sprite, rect);
+		}
+		return null;
+	}
+	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect) {
+		var border = UnifyBorder(sprite.GlobalBorder, true);
+		return Renderer.DrawSlice(sprite, rect, border.left, border.right, border.down, border.up, Color);
+	}
+
+
+	public static void DrawTile (int spriteID, IRect rect, Alignment alignment, bool adapt) {
+		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
+		DrawTile(sprite, rect, alignment, adapt);
+	}
+	public static void DrawTile (AngeSprite sprite, IRect rect, Alignment alignment, bool adapt) {
+		var border = UnifyBorder(sprite.GlobalBorder, true);
+		Renderer.DrawTile(sprite, rect, alignment, adapt, border.left, border.right, border.down, border.up, Color);
+	}
+
+
 	// Typing
 	public static void StartTyping (int controlID) {
 		TypingTextFieldID = controlID;
@@ -1282,44 +1361,6 @@ public static class GUI {
 
 
 	public static void SetChange () => ContentVersion++;
-
-
-	// Draw
-	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) => DrawStyleBody(rect, style, state, Color32.WHITE);
-	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
-		int sprite = style.GetBodySprite(state);
-		if (sprite == 0 || !Renderer.TryGetSprite(sprite, out var _sprite)) return;
-		var color = tint * Color * BodyColor * style.GetBodyColor(state);
-		if (color.a == 0) return;
-		var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
-		Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
-	}
-
-
-	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
-		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
-		var color = Color * ContentColor * style.GetContentColor(state);
-		if (color.a == 0) return;
-		rect = GetContentRect(rect, style, state);
-		if (ignoreSlice) {
-			Renderer.Draw(_sprite, rect, color);
-		} else {
-			var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
-			Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
-		}
-	}
-
-
-	public static Cell[] DrawSlice (int spriteID, IRect rect, Color32 color) {
-		if (Renderer.TryGetSprite(spriteID, out var sprite)) {
-			return DrawSlice(sprite, rect, color);
-		}
-		return null;
-	}
-	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect, Color32 color) {
-		var border = UnifyBorder(sprite.GlobalBorder, true);
-		return Renderer.DrawSlice(sprite, rect, border.left, border.right, border.down, border.up, color);
-	}
 
 
 	#endregion

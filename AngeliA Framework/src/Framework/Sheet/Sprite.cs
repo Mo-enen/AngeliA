@@ -281,6 +281,13 @@ public class AngeSprite {
 
 	public void SetPixelDirty () => PixelDirty = true;
 
+	public Alignment GetAlignmentFromPivot () =>
+		PivotX < 333 ?
+			(PivotY < 333 ? Alignment.BottomLeft : PivotY < 666 ? Alignment.MidLeft : Alignment.TopLeft) :
+		PivotX < 666 ?
+			(PivotY < 333 ? Alignment.BottomMid : PivotY < 666 ? Alignment.MidMid : Alignment.TopMid) :
+			(PivotY < 333 ? Alignment.BottomRight : PivotY < 666 ? Alignment.MidRight : Alignment.TopRight);
+
 }
 
 

@@ -50,7 +50,6 @@ public class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_MEDT_PLAYER_DROP = ("Menu.MEDTSetting.PlayerDrop", "Quick Player Drop");
 	private static readonly LanguageCode MENU_MEDT_STATE = ("Menu.MEDTSetting.ShowState", "Show State Info");
 	private static readonly LanguageCode MENU_MEDT_BEHIND = ("Menu.MEDTSetting.ShowBehind", "Show Map Behind");
-	private static readonly LanguageCode MENU_EDITOR_QUIT = ("Menu.WindowEditor.Quit", "Quit Editing");
 	private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
 		($"UI.GameKey.{Gamekey.Left}", "Left"),
 		($"UI.GameKey.{Gamekey.Right}", "Right"),
@@ -414,16 +413,6 @@ public class PauseMenuUI : MenuUI {
 		if (DrawItem(BuiltInText.UI_CONTINUE) || Input.GameKeyDown(Gamekey.Jump)) {
 			RequireMode = MenuMode.Root;
 			SetSelection(1024);
-		}
-
-		// Quit Editing
-		if (MapEditor.IsActived) {
-			if (DrawItem(MENU_EDITOR_QUIT)) {
-				Active = false;
-				Input.UseAllHoldingKeys();
-				WindowUI.CloseWindow(MapEditor.TYPE_ID);
-				Game.RestartGame();
-			}
 		}
 
 		// Quit Game

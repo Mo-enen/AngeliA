@@ -21,11 +21,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_ASE = ("Title.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_PNG = ("Title.ImportPNG", "Import PNG file");
-	private static readonly LanguageCode ATLAS_POPUP_TOP = ("UI.AtlasPopup.Top", "Move to Top");
-	private static readonly LanguageCode ATLAS_POPUP_UP = ("UI.AtlasPopup.Up", "Move Up");
-	private static readonly LanguageCode ATLAS_POPUP_DOWN = ("UI.AtlasPopup.Down", "Move Down");
-	private static readonly LanguageCode ATLAS_POPUP_BOTTOM = ("UI.AtlasPopup.Bottom", "Move to Bottom");
-
+	
 	// Data
 	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
 		ContentColor = Color32.ORANGE_BETTER,
@@ -54,7 +50,7 @@ public partial class PixelEditor {
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 
 		// BG
-		Renderer.DrawSlice(UI_ENGINE_PANEL, panelRect);
+		GUI.DrawSliceOrTile(UI_ENGINE_PANEL, panelRect);
 		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_HEIGHT));
 
 		// Rename Hotkey
