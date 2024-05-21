@@ -18,7 +18,7 @@ public class RiggedMapEditor : WindowUI {
 
 
 	// Const
-	private static readonly LanguageCode BUILDING_HINT = ("UI.Rig.BuildingHint", "game rebuilding...");
+	private static readonly LanguageCode BUILDING_HINT = ("UI.Rig.BuildingHint", "Recompiling...");
 	private static readonly LanguageCode BUILD_ERROR_HINT = ("UI.Rig.BuildError", "Error in game script :(\nAll errors must be fixed before the game can run");
 	private static readonly LanguageCode RIG_FAIL_HINT = ("UI.Rig.NotRunning", "Rigged Game Not Running :(\nThis should not happen. Please contact the developer and report this problem.");
 
@@ -48,13 +48,22 @@ public class RiggedMapEditor : WindowUI {
 
 		if (!RiggedGame.RigProcessRunning) {
 			if (building) {
-				GUI.Label(WindowRect, BUILDING_HINT, FailHintStyle);
+				GUI.BackgroundLabel(
+					WindowRect, BUILDING_HINT, Color32.BLACK,
+					backgroundPadding: Unify(12), style: FailHintStyle
+				);
 			} else if (EngineUtil.LastBackgroundBuildReturnCode != 0) {
-				GUI.Label(WindowRect, BUILD_ERROR_HINT, FailHintStyle);
+				GUI.BackgroundLabel(
+					WindowRect, BUILD_ERROR_HINT, Color32.BLACK,
+					backgroundPadding: Unify(12), style: FailHintStyle
+				);
 			} else {
 				NoGameRunningFrameCount++;
 				if (NoGameRunningFrameCount > 60) {
-					GUI.Label(WindowRect, RIG_FAIL_HINT, FailHintStyle);
+					GUI.BackgroundLabel(
+						WindowRect, RIG_FAIL_HINT, Color32.BLACK,
+						backgroundPadding: Unify(12), style: FailHintStyle
+					);
 				}
 			}
 			return;
@@ -62,12 +71,6 @@ public class RiggedMapEditor : WindowUI {
 		NoGameRunningFrameCount = 0;
 
 		if (building) return;
-
-		// Rig Game Running
-
-
-
-
 
 	}
 

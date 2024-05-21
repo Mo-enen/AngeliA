@@ -30,6 +30,8 @@ public partial class RiggedGame : Game {
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
 	private readonly WindowUI[] EditorWindows = new WindowUI[2];
+	private IRect StartWithView = default;
+	private readonly int StartWithZ = 0;
 
 
 	#endregion
@@ -50,7 +52,7 @@ public partial class RiggedGame : Game {
 
 		// Get Host pID
 		RiggedFontCount = 0;
-		foreach (var arg in args) {
+		foreach (string arg in args) {
 			// Host Process
 			if (arg.StartsWith("-pID:")) {
 				if (int.TryParse(arg[5..], out int pID)) {
@@ -69,7 +71,32 @@ public partial class RiggedGame : Game {
 					RiggedFontCount = fCount;
 				}
 			}
+			// View
+			if (arg.StartsWith("-view:")) {
+				string[] viewStrs = arg[6..].Split(',');
+				int _viewX = StartWithView.x;
+				int _viewY = StartWithView.y;
+				int _viewWidth = StartWithView.width;
+				int _viewHeight = StartWithView.height;
+				int _z = 0;
+				if (viewStrs.Length >= 4) {
+					if (int.TryParse(viewStrs[0], out _viewX)) { }
+					if (int.TryParse(viewStrs[1], out _viewY)) { }
+					if (int.TryParse(viewStrs[2], out _viewHeight)) {
+						_viewHeight = _viewHeight.GreaterOrEquel(1);
+						_viewWidth = GetViewWidthFromViewHeight(_viewHeight);
+					}
+					if (int.TryParse(viewStrs[3], out _z)) { }
+					StartWithView.x = _viewX;
+					StartWithView.y = _viewY;
+					StartWithView.width = _viewWidth;
+					StartWithView.height = _viewHeight;
+					StartWithZ = _z;
+				}
+			}
 		}
+
+		MapEditor.ResetCameraAtStart = StartWithView == default;
 
 		// Init Stream
 		Debug.OnLogException += LogException;
@@ -179,10 +206,6 @@ public partial class RiggedGame : Game {
 			} : null);
 		}
 
-		// Update Effect
-
-
-
 		// Input
 		for (int i = 0; i < CallingMessage.HoldingKeyboardKeyCount; i++) {
 			int keyIndex = CallingMessage.HoldingKeyboardKeys[i];
@@ -212,10 +235,11 @@ public partial class RiggedGame : Game {
 		RespondMessage.Reset();
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
 
-		// Switch Window
-
-
-
+		// Start View
+		if (StartWithView != default) {
+			MapEditor.Instance?.SetView(StartWithView, StartWithZ);
+			StartWithView = default;
+		}
 
 		// Update
 		Update();
@@ -253,6 +277,7 @@ public partial class RiggedGame : Game {
 		// Finish
 		RespondMessage.ViewX = Stage.ViewRect.x;
 		RespondMessage.ViewY = Stage.ViewRect.y;
+		RespondMessage.ViewZ = MapEditor.Instance != null ? MapEditor.Instance.CurrentZ : 0;
 		RespondMessage.ViewHeight = Stage.ViewRect.height;
 		RespondMessage.SkyBottom = Sky.SkyTintBottomColor;
 		RespondMessage.SkyTop = Sky.SkyTintTopColor;

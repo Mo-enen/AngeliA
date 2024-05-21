@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.IO.Pipes;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 
 namespace AngeliA;
@@ -32,6 +33,7 @@ public class RiggedTransceiver {
 	private Process RigPipeClientProcess = null;
 	private readonly string ExePath;
 	private readonly string MapName;
+	private readonly StringBuilder RigArgBuilder = new();
 	private unsafe byte* BufferPointer;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
@@ -87,8 +89,7 @@ public class RiggedTransceiver {
 		process.StartInfo.FileName = ExePath;
 		process.StartInfo.UseShellExecute = false;
 		process.StartInfo.CreateNoWindow = true;
-		process.StartInfo.Arguments =
-			$"-map:{MapName} {Util.GetArgumentForAssemblyPath(gameLibFolder)} -pID:{Process.GetCurrentProcess().Id} -fontCount:{Game.FontCount}";
+		process.StartInfo.Arguments = GetArgumentsForRigGame(gameLibFolder);
 		process.StartInfo.WorkingDirectory = gameBuildFolder;
 #if DEBUG
 		process.StartInfo.RedirectStandardOutput = true;
@@ -171,29 +172,63 @@ public class RiggedTransceiver {
 				Thread.Sleep(2);
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
-			RespondMessage.ApplyToEngine(
-				CallingMessage,
-				sheetIndex,
-				renderingOnly: true,
-				ignoreInput: ignoreInput,
-				leftPadding: LeftPadding
-			);
+			UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
 			return;
 		}
 		_HANDLE_:;
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
-		RespondMessage.ApplyToEngine(
-			CallingMessage,
-			sheetIndex,
-			renderingOnly: false,
-			ignoreInput: ignoreInput,
-			leftPadding: LeftPadding
-		);
+		RespondMessage.ApplyToEngine(CallingMessage, ignoreInput: ignoreInput);
+		RespondMessage.UpdateRendering(sheetIndex, LeftPadding);
+	}
+
+
+	public void UpdateLastRespondedRender (int sheetIndex, bool coverWithBlackTint = false) {
+		if (coverWithBlackTint) {
+			int oldLayer = Renderer.CurrentLayerIndex;
+			Renderer.SetLayer(RenderLayer.UI);
+			Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_128);
+			Renderer.SetLayer(oldLayer);
+		}
+		RespondMessage.UpdateRendering(sheetIndex, LeftPadding);
 	}
 
 
 	public void RequireFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(0, true);
+
+
 	public void RequireLostFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(1, true);
+
+
+	#endregion
+
+
+
+	#region --- LGC ---
+
+
+	private string GetArgumentsForRigGame (string gameLibFolder) {
+
+		RigArgBuilder.Clear();
+
+		RigArgBuilder.Append($"-map:{MapName}");
+		RigArgBuilder.Append(' ');
+
+		RigArgBuilder.Append(Util.GetArgumentForAssemblyPath(gameLibFolder));
+		RigArgBuilder.Append(' ');
+
+		RigArgBuilder.Append($"-pID:{Process.GetCurrentProcess().Id}");
+		RigArgBuilder.Append(' ');
+
+		RigArgBuilder.Append($"-fontCount:{Game.FontCount}");
+		RigArgBuilder.Append(' ');
+
+		if (RespondMessage.ViewHeight > 0) {
+			RigArgBuilder.Append($"-view:{RespondMessage.ViewX},{RespondMessage.ViewY},{RespondMessage.ViewHeight},{RespondMessage.ViewZ}");
+			RigArgBuilder.Append(' ');
+		}
+
+		return RigArgBuilder.ToString();
+	}
 
 
 	#endregion

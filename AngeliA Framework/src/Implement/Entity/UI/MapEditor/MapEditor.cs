@@ -102,6 +102,7 @@ public sealed partial class MapEditor : WindowUI {
 	public static bool IsActived => Instance != null && Instance.Active;
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
 	public static bool IsPlaying => IsActived && Instance.PlayingGame;
+	public static bool ResetCameraAtStart { get; set; } = true;
 	public bool QuickPlayerDrop {
 		get => s_QuickPlayerDrop.Value && !IgnoreQuickPlayerDropThisTime;
 		set => s_QuickPlayerDrop.Value = value;
@@ -118,6 +119,7 @@ public sealed partial class MapEditor : WindowUI {
 		get => s_ShowBehind.Value;
 		set => s_ShowBehind.Value = value;
 	}
+	public int CurrentZ { get; private set; } = 0;
 	public override IRect BackgroundRect => default;
 
 	// Pools
@@ -169,7 +171,6 @@ public sealed partial class MapEditor : WindowUI {
 	private int ToolbarOffsetX = 0;
 	private int LastUndoRegisterFrame = -1;
 	private int LastUndoPerformedFrame = -1;
-	private int CurrentZ = 0;
 	private int RequireWorldRenderBlinkIndex = -1;
 	private bool? RequireSetEditMode = null;
 
@@ -225,8 +226,9 @@ public sealed partial class MapEditor : WindowUI {
 
 			// Start
 			SetEditorMode(false);
-			ResetCamera(true);
+			if (ResetCameraAtStart) ResetCamera(true);
 
+			// Reset
 			RequireSetEditMode = null;
 			CurrentZ = 0;
 			PastingBuffer.Clear();
@@ -504,6 +506,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Playing
 		if (IsPlaying) {
+			CurrentZ = Stage.ViewZ;
 			int newHeight = Game.DefaultViewHeight;
 			var viewRect = Stage.ViewRect;
 			if (viewRect.height != newHeight) {
@@ -1092,6 +1095,22 @@ public sealed partial class MapEditor : WindowUI {
 			RequireSetEditMode = null;
 		}
 
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public void SetView (IRect view, int z, bool remapAllRenderingCells = false) {
+		TargetViewRect = ViewRect = view;
+		SetViewZ(z);
+		Stage.SetViewRectImmediately(view, remapAllRenderingCells);
+		Stage.SetViewZ(z, immediately: true);
 	}
 
 

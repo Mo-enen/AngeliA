@@ -123,6 +123,7 @@ public class Engine {
 	private int WindowCount = 0;
 	private int LastShowingGenericUIFrame = int.MinValue;
 	private bool IgnoreInputForRig = false;
+	private bool CurrentWindowRequireRigGame = false;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -167,8 +168,6 @@ public class Engine {
 			Util.DeleteFile(obsoleteInfoPath);
 		}
 #endif
-
-		CurrentWindowIndex = LastOpenedWindowIndex.Value;
 
 		// Projects
 		Projects.Clear();
@@ -215,6 +214,8 @@ public class Engine {
 		);
 		RiggedMapEditor.Initialize(Transceiver);
 		ProjectEditor.Initialize(Transceiver);
+
+		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
 
 		// Theme
 		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
@@ -383,7 +384,7 @@ public class Engine {
 			CurrentProject == null ||
 			EngineUtil.BuildingProjectInBackground ||
 			!Transceiver.RigProcessRunning ||
-			CurrentWindowIndex != RigMapEditorWindowIndex
+			!CurrentWindowRequireRigGame
 		) return;
 
 		if (Input.AnyMouseButtonDown) {
@@ -412,7 +413,7 @@ public class Engine {
 
 		GUI.Enable = true;
 		GUI.ForceUnifyBasedOnMonitor = true;
-		if (CurrentWindowIndex != RigMapEditorWindowIndex) {
+		if (!CurrentWindowRequireRigGame) {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
 		}
 
@@ -656,8 +657,6 @@ public class Engine {
 			rect.y -= rect.height;
 
 			// Window Tabs
-			SetCurrentWindowIndex(CurrentWindowIndex);
-
 			int index = 0;
 			for (int i = 0; i < ALL_UI.Length; i++) {
 
@@ -987,7 +986,12 @@ public class Engine {
 			Transceiver.Abort();
 		}
 
-		if (buildingProjectInBackground) return;
+		if (buildingProjectInBackground) {
+			if (CurrentWindowRequireRigGame) {
+				Transceiver.UpdateLastRespondedRender(PixelEditor.SheetIndex, coverWithBlackTint: true);
+			}
+			return;
+		}
 
 		// Update Rig
 		if (Transceiver.RigProcessRunning) {
@@ -1009,6 +1013,10 @@ public class Engine {
 				// Fail to Start
 				RigGameFailToStartFrame = Game.GlobalFrame;
 				RigGameFailToStartCount++;
+			}
+			if (CurrentWindowRequireRigGame) {
+				// Still Render Last Image
+				Transceiver.UpdateLastRespondedRender(PixelEditor.SheetIndex, coverWithBlackTint: true);
 			}
 		}
 	}
@@ -1087,12 +1095,13 @@ public class Engine {
 	}
 
 
-	private void SetCurrentWindowIndex (int index) {
+	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
 		index = index.Clamp(0, WindowCount - 1);
-		if (index == CurrentWindowIndex) return;
-		if (index == RigMapEditorWindowIndex && CurrentWindowIndex != index) {
+		if (!forceChange && index == CurrentWindowIndex) return;
+		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex;
+		if (CurrentWindowRequireRigGame) {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireFocusInvoke();
-		} else if (index != RigMapEditorWindowIndex) {
+		} else {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireLostFocusInvoke();
 			Stage.SetViewRectImmediately(
 				new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight / 1000, Game.DefaultViewHeight),

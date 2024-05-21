@@ -70,6 +70,7 @@ public class RiggedRespondMessage {
 	// Pipe
 	public int ViewX;
 	public int ViewY;
+	public int ViewZ;
 	public int ViewHeight;
 	public int RequireSetCursorIndex;
 	public Color32 SkyTop;
@@ -119,7 +120,6 @@ public class RiggedRespondMessage {
 			if (Layers[i] == null) {
 				Layers[i] = new RenderingLayerData(Renderer.GetLayerCapacity(i));
 			}
-			Layers[i].CellCount = 0;
 		}
 		SkyTop.a = 255;
 		SkyBottom.a = 255;
@@ -141,22 +141,7 @@ public class RiggedRespondMessage {
 	}
 
 
-	public void ApplyToEngine (
-		RiggedCallingMessage callingMessage, int sheetIndex, bool renderingOnly, bool ignoreInput, int leftPadding
-	) {
-
-		if (renderingOnly) goto _RENDER_;
-
-		// View
-		ViewHeight = ViewHeight.GreaterOrEquel(Game.MinViewHeight);
-		int oldViewHeight = Stage.ViewRect.height;
-		Stage.SetViewRectImmediately(
-			new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight),
-			remapAllRenderingCells: true
-		);
-		if (oldViewHeight != ViewHeight) {
-			leftPadding = leftPadding * ViewHeight / oldViewHeight;
-		}
+	public void ApplyToEngine (RiggedCallingMessage callingMessage, bool ignoreInput) {
 
 		// Sky
 		Sky.ForceSkyboxTint(SkyTop, SkyBottom, 3);
@@ -192,19 +177,12 @@ public class RiggedRespondMessage {
 			}
 		}
 
-		// Gizmos Rect
-		for (int i = 0; i < RequireGizmosRectCount; i++) {
-			var data = RequireGizmosRects[i];
-			Game.DrawGizmosRect(data.Rect.Shift(leftPadding / 2, 0), data.Color);
-		}
-
 		// Gizmos Texture
 		callingMessage.RequiringGizmosTextureIDCount = 0;
 		for (int i = 0; i < RequireGizmosTextureCount; i++) {
 			var data = RequireGizmosTextures[i];
 			// Get Texture
 			if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) {
-				texture = null;
 				if (data.PngDataLength > 0) {
 					texture = Game.PngBytesToTexture(data.PngData);
 					GizmosTexturePool.Add(data.TextureRigID, texture);
@@ -217,10 +195,7 @@ public class RiggedRespondMessage {
 				// Override Texture
 				Game.UnloadTexture(texture);
 				texture = Game.PngBytesToTexture(data.PngData);
-			}
-			// Draw Texture
-			if (texture != null) {
-				Game.DrawGizmosTexture(data.Rect.Shift(leftPadding / 2, 0), data.Uv, texture, data.Inverse);
+				GizmosTexturePool[data.TextureRigID] = texture;
 			}
 		}
 
@@ -250,8 +225,34 @@ public class RiggedRespondMessage {
 			Game.SetSoundVolume(RequireSetSoundVolume);
 		}
 
+	}
 
-		_RENDER_:;
+
+	public void UpdateRendering (int sheetIndex, int leftPadding) {
+
+		// View
+		ViewHeight = ViewHeight.GreaterOrEquel(Game.MinViewHeight);
+		int oldViewHeight = Stage.ViewRect.height;
+		Stage.SetViewRectImmediately(
+			new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight),
+			remapAllRenderingCells: true
+		);
+		if (oldViewHeight != ViewHeight) {
+			leftPadding = leftPadding * ViewHeight / oldViewHeight;
+		}
+
+		// Gizmos Rect
+		for (int i = 0; i < RequireGizmosRectCount; i++) {
+			var data = RequireGizmosRects[i];
+			Game.DrawGizmosRect(data.Rect.Shift(leftPadding / 2, 0), data.Color);
+		}
+
+		// Gizmos Texture
+		for (int i = 0; i < RequireGizmosTextureCount; i++) {
+			var data = RequireGizmosTextures[i];
+			if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) continue;
+			Game.DrawGizmosTexture(data.Rect.Shift(leftPadding / 2, 0), data.Uv, texture, data.Inverse);
+		}
 
 		// Message Layer/Cells >> Renderer Layer/Cells
 		int oldLayer = Renderer.CurrentLayerIndex;
@@ -314,7 +315,6 @@ public class RiggedRespondMessage {
 		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_VIGNETTE) && HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
 			Game.PassEffect_Vignette(e_VigRadius, e_VigFeather, e_VigOffsetX, e_VigOffsetY, e_VigRound, 1);
 		}
-
 	}
 
 
@@ -326,6 +326,7 @@ public class RiggedRespondMessage {
 
 			ViewX = Util.ReadInt(ref pointer, end);
 			ViewY = Util.ReadInt(ref pointer, end);
+			ViewZ = Util.ReadInt(ref pointer, end);
 			ViewHeight = Util.ReadInt(ref pointer, end);
 			RequireSetCursorIndex = Util.ReadInt(ref pointer, end);
 
@@ -450,6 +451,7 @@ public class RiggedRespondMessage {
 
 			Util.Write(ref pointer, ViewX, end);
 			Util.Write(ref pointer, ViewY, end);
+			Util.Write(ref pointer, ViewZ, end);
 			Util.Write(ref pointer, ViewHeight, end);
 			Util.Write(ref pointer, RequireSetCursorIndex, end);
 

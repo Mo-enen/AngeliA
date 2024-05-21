@@ -396,7 +396,10 @@ public static class Stage {
 	#region --- API ---
 
 
-	public static void SetViewZ (int newZ) => RequireSetViewZ = newZ;
+	public static void SetViewZ (int newZ, bool immediately = false) {
+		if (immediately) ViewZ = newZ;
+		RequireSetViewZ = newZ;
+	}
 
 
 	public static void SetViewRectImmediately (IRect newRect, bool remapAllRenderingCells = false) {
