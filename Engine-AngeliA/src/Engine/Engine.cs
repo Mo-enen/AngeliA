@@ -57,6 +57,9 @@ public class Engine {
 	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
 	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
 
+	private static readonly LanguageCode BUILDING_HINT = ("UI.Rig.BuildingHint", "Recompiling");
+	private static readonly LanguageCode BUILD_ERROR_HINT = ("UI.Rig.BuildError", "Error in game script :(\nAll errors must be fixed before the game can run");
+	private static readonly LanguageCode RIG_FAIL_HINT = ("UI.Rig.NotRunning", "Rigged Game Not Running :(\nThis should not happen. Please contact the developer and report this problem.");
 	private static readonly LanguageCode BTN_CREATE = ("Hub.Create", "Create New Project");
 	private static readonly LanguageCode BTN_ADD = ("Hub.Add", "Add Existing Project");
 	private static readonly LanguageCode CREATE_PRO_TITLE = ("UI.CreateProjectTitle", "New Project");
@@ -88,21 +91,23 @@ public class Engine {
 	private readonly GenericDialogUI GenericDialog = new() { Active = false };
 	private readonly FileBrowserUI FileBrowser = new() { Active = false };
 	private readonly RiggedMapEditor RiggedMapEditor = new();
+	private readonly RiggedItemEditor RiggedItemEditor = new();
 	private readonly PixelEditor PixelEditor = new();
 	private readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
 	private readonly Console Console = new();
 	private readonly ProjectEditor ProjectEditor = new();
 	private readonly SettingWindow SettingWindow = new();
 	private readonly EntityUI[] ALL_UI;
-	private Project CurrentProject = null;
-	private ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
 	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
 	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
+	private readonly GUIStyle RigGameFailHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
 	private readonly List<ProjectData> Projects = new();
 	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
 	private readonly RiggedTransceiver Transceiver = new(EngineUtil.RiggedExePath);
+	private Project CurrentProject = null;
+	private ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
 	private IRect ToolLabelRect;
 	private IRect LastHoveringToolLabelRect;
 	private int HoveringTooltipDuration = 0;
@@ -118,12 +123,14 @@ public class Engine {
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
 	private int RigMapEditorWindowIndex = -1;
+	private int RigItemEditorWindowIndex = -1;
 	private long RequireBackgroundBuildDate = 0;
 	private int RigLastCalledFrame = -1;
 	private int WindowCount = 0;
 	private int LastShowingGenericUIFrame = int.MinValue;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
+	private int NoGameRunningFrameCount = 0;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -149,7 +156,7 @@ public class Engine {
 	private Engine () {
 		ALL_UI = new EntityUI[]{
 			GenericPopup, GenericDialog, FileBrowser, // Generic
-			RiggedMapEditor, PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
+			RiggedMapEditor, RiggedItemEditor, PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
 		};
 	}
 
@@ -201,18 +208,27 @@ public class Engine {
 		}
 		Game.SetEventWaiting(false);
 
+		if (EngineSetting.LastMapEditorViewHeight.Value > 0) {
+			Transceiver.SetStartViewPos(
+				EngineSetting.LastMapEditorViewX.Value,
+				EngineSetting.LastMapEditorViewY.Value,
+				EngineSetting.LastMapEditorViewZ.Value,
+				EngineSetting.LastMapEditorViewHeight.Value
+			);
+		}
+
 		// UI Window
 		WindowCount = 0;
 		ALL_UI.ForEach<WindowUI>((win, index) => {
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = index;
+			if (win is RiggedItemEditor) RigItemEditorWindowIndex = index;
 			WindowCount++;
 		});
 		SettingWindow.Initialize(
 			EngineSetting.BackgroundColor.Value.ToColorF(),
 			EngineSetting.BackgroundColor.DefaultValue
 		);
-		RiggedMapEditor.Initialize(Transceiver);
 		ProjectEditor.Initialize(Transceiver);
 
 		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
@@ -316,7 +332,7 @@ public class Engine {
 
 	// Quit
 	[OnGameTryingToQuit]
-	internal static bool OnGameTryingToQuit () {
+	internal static bool OnEngineTryingToQuit () {
 		if (Instance == null) return true;
 		if (Instance.CheckAnyEditorDirty()) {
 			GenericDialogUI.SpawnDialog_Button(
@@ -347,7 +363,7 @@ public class Engine {
 
 
 	[OnGameQuitting]
-	internal static void OnGameQuitting () {
+	internal static void OnEngineQuitting () {
 		if (Instance == null) return;
 		var windowPos = Game.GetWindowPosition();
 		Maximize.Value = Game.IsWindowMaximized;
@@ -360,6 +376,16 @@ public class Engine {
 		ProjectPaths.Value = Instance.Projects.JoinArray(p => p.Path, ';');
 		Instance.ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
 		Instance.Transceiver.Quit();
+		var viewPos = Instance.Transceiver.LastRigViewPos;
+		var viewHeight = Instance.Transceiver.LastRigViewHeight;
+		if (viewPos.HasValue) {
+			EngineSetting.LastMapEditorViewX.Value = viewPos.Value.x;
+			EngineSetting.LastMapEditorViewY.Value = viewPos.Value.y;
+			EngineSetting.LastMapEditorViewZ.Value = viewPos.Value.z;
+		}
+		if (viewHeight.HasValue) {
+			EngineSetting.LastMapEditorViewHeight.Value = viewHeight.Value;
+		}
 	}
 
 
@@ -397,7 +423,11 @@ public class Engine {
 		Transceiver.Call(
 			ignoreInput: IgnoreInputForRig || Game.PauselessFrame < LastShowingGenericUIFrame + 6,
 			leftPadding: (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
-			requiringWindowIndex: (byte)(CurrentWindowIndex == RigMapEditorWindowIndex ? 0 : 0)
+			requiringWindowIndex: (byte)(
+				CurrentWindowIndex == RigMapEditorWindowIndex ? 0 :
+				CurrentWindowIndex == RigItemEditorWindowIndex ? 1 :
+				0
+			)
 		);
 
 		RigLastCalledFrame = Game.GlobalFrame;
@@ -905,64 +935,51 @@ public class Engine {
 
 
 	private void OnGUI_Notify () {
-		if (EngineUtil.BuildingProjectInBackground) {
+		if (EngineUtil.BuildingProjectInBackground) return;
+		if (!EngineSetting.UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
 
-			// Building In Background
-			int padding = GUI.Unify(6);
-			int size = GUI.Unify(32);
-			int x = WindowUI.WindowRect.xMax - size / 2 - padding;
-			int y = WindowUI.WindowRect.yMin + size / 2 + padding;
+		int padding = GUI.Unify(2);
+		int labelHeight = GUI.Unify(28);
+		int subLabelHeight = GUI.Unify(20);
+		var rect = WindowUI.WindowRect.CornerInside(Alignment.BottomRight, GUI.Unify(384), labelHeight + subLabelHeight);
+		rect.y += padding * 2;
+		rect.x -= padding * 2;
+		int top = rect.yMax;
+		bool hasSub = !string.IsNullOrEmpty(NotificationSubContent);
 
-			Renderer.Draw(
-				BuiltInSprite.ICON_REFRESH,
-				x, y, 500, 500, Game.GlobalFrame * 10,
-				size, size, Color32.GREY_128
-			);
+		// BG
+		var bg = Renderer.DrawPixel(
+			default,
+			NotificationFlash ? Color32.Lerp(
+				Color32.GREEN, Color32.BLACK,
+				(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
+			) : Color32.BLACK
+		);
 
-		} else {
+		// Main
+		rect.y = top - labelHeight - (hasSub ? 0 : subLabelHeight);
+		rect.height = labelHeight;
+		GUI.Label(rect, NotificationContent, out var bound, NotificationLabelStyle);
 
-			if (!EngineSetting.UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
-
-			int padding = GUI.Unify(2);
-			int labelHeight = GUI.Unify(28);
-			int subLabelHeight = GUI.Unify(20);
-			var rect = WindowUI.WindowRect.CornerInside(Alignment.BottomRight, GUI.Unify(384), labelHeight + subLabelHeight);
-			rect.y += padding * 2;
-			rect.x -= padding * 2;
-			int top = rect.yMax;
-			bool hasSub = !string.IsNullOrEmpty(NotificationSubContent);
-
-			// BG
-			var bg = Renderer.DrawPixel(
-				default,
-				NotificationFlash ? Color32.Lerp(
-					Color32.GREEN, Color32.BLACK,
-					(Game.GlobalFrame - NotificationStartFrame) / (NOTIFY_DURATION / 4f)
-				) : Color32.BLACK
-			);
-
-			// Main
-			rect.y = top - labelHeight - (hasSub ? 0 : subLabelHeight);
-			rect.height = labelHeight;
-			GUI.Label(rect, NotificationContent, out var bound, NotificationLabelStyle);
-
-			// Sub
-			if (hasSub) {
-				rect.y = top - labelHeight - subLabelHeight;
-				rect.height = subLabelHeight;
-				GUI.Label(rect, NotificationSubContent, out var subBound, NotificationSubLabelStyle);
-				bound.xMin = Util.Min(bound.xMin, subBound.xMin);
-				bound.yMin = Util.Min(bound.yMin, subBound.yMin);
-			}
-
-			// BG
-			bg.SetRect(bound.Expand(GUI.Unify(6)));
+		// Sub
+		if (hasSub) {
+			rect.y = top - labelHeight - subLabelHeight;
+			rect.height = subLabelHeight;
+			GUI.Label(rect, NotificationSubContent, out var subBound, NotificationSubLabelStyle);
+			bound.xMin = Util.Min(bound.xMin, subBound.xMin);
+			bound.yMin = Util.Min(bound.yMin, subBound.yMin);
 		}
+
+		// BG
+		bg.SetRect(bound.Expand(GUI.Unify(6)));
 
 	}
 
 
 	private void OnGUI_RiggedGame () {
+
+		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
+		NoGameRunningFrameCount = Transceiver.RigProcessRunning || buildingProjectInBackground ? 0 : NoGameRunningFrameCount + 1;
 
 		if (CurrentProject == null) {
 			if (Transceiver.RigProcessRunning) {
@@ -970,8 +987,6 @@ public class Engine {
 			}
 			return;
 		}
-
-		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
 
 		// Rebuild Check
 		if (!buildingProjectInBackground && RequireBackgroundBuildDate > 0) {
@@ -986,18 +1001,55 @@ public class Engine {
 			Transceiver.Abort();
 		}
 
+		// Hint - Circle
+		if (!CurrentWindowRequireRigGame && buildingProjectInBackground) {
+			var windowRect = WindowUI.WindowRect;
+			int padding = GUI.Unify(6);
+			int size = GUI.Unify(32);
+			int x = windowRect.xMax - size / 2 - padding;
+			int y = windowRect.yMin + size / 2 + padding;
+			Renderer.Draw(
+				BuiltInSprite.ICON_REFRESH,
+				x, y, 500, 500, Game.GlobalFrame * 10,
+				size, size, Color32.GREY_128
+			);
+		}
+
+		// Hint - Label
+		if (CurrentWindowRequireRigGame) {
+			var windowRect = WindowUI.WindowRect;
+			using var _ = Scope.RendererLayerUI();
+			if (!Transceiver.RigProcessRunning) {
+				if (buildingProjectInBackground) {
+					GUI.BackgroundLabel(
+						windowRect, BUILDING_HINT, Color32.BLACK,
+						backgroundPadding: GUI.Unify(12), style: RigGameFailHintStyle
+					);
+				} else if (EngineUtil.LastBackgroundBuildReturnCode != 0) {
+					GUI.BackgroundLabel(
+						windowRect, BUILD_ERROR_HINT, Color32.BLACK,
+						backgroundPadding: GUI.Unify(12), style: RigGameFailHintStyle
+					);
+				} else {
+					if (NoGameRunningFrameCount > 60) {
+						GUI.BackgroundLabel(
+							windowRect, RIG_FAIL_HINT, Color32.BLACK,
+							backgroundPadding: GUI.Unify(12), style: RigGameFailHintStyle
+						);
+					}
+				}
+			}
+		}
+
 		if (buildingProjectInBackground) {
+			// Building in Background
 			if (CurrentWindowRequireRigGame) {
 				Transceiver.UpdateLastRespondedRender(PixelEditor.SheetIndex, coverWithBlackTint: true);
 			}
-			return;
-		}
-
-		// Update Rig
-		if (Transceiver.RigProcessRunning) {
+		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
 			if (RigLastCalledFrame == Game.GlobalFrame) {
-				Transceiver.Respond(PixelEditor.SheetIndex);
+				Transceiver.Respond(PixelEditor.SheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
 			}
 		} else if (
 			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
@@ -1019,6 +1071,7 @@ public class Engine {
 				Transceiver.UpdateLastRespondedRender(PixelEditor.SheetIndex, coverWithBlackTint: true);
 			}
 		}
+
 	}
 
 
@@ -1098,7 +1151,7 @@ public class Engine {
 	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
 		index = index.Clamp(0, WindowCount - 1);
 		if (!forceChange && index == CurrentWindowIndex) return;
-		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex;
+		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex || index == RigItemEditorWindowIndex;
 		if (CurrentWindowRequireRigGame) {
 			if (Transceiver.RigProcessRunning) Transceiver.RequireFocusInvoke();
 		} else {

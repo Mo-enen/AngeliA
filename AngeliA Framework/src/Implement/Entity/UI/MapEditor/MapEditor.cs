@@ -172,7 +172,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoRegisterFrame = -1;
 	private int LastUndoPerformedFrame = -1;
 	private int RequireWorldRenderBlinkIndex = -1;
-	private bool? RequireSetEditMode = null;
+	private bool? RequireSetMode = null;
 
 	// Saving
 	private static readonly SavingBool s_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
@@ -210,55 +210,58 @@ public sealed partial class MapEditor : WindowUI {
 		base.OnActivated();
 
 		// Init
-		if (!Initialized) {
-			Initialized = true;
-
-			// Init Pool
-			var universe = UniverseSystem.CurrentUniverse;
-			UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
-			Stream = WorldStream.GetOrCreateStream(universe.MapRoot);
-			EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.MapRoot);
-			FrameworkUtil.DeleteAllEmptyMaps(universe.MapRoot);
-			Initialize_Pool();
-			Initialize_Palette();
-			Initialize_Nav();
-			System.GC.Collect();
-
-			// Start
-			SetEditorMode(false);
-			if (ResetCameraAtStart) ResetCamera(true);
-
-			// Reset
-			RequireSetEditMode = null;
-			CurrentZ = 0;
-			PastingBuffer.Clear();
-			CopyBuffer.Clear();
-			UndoRedo.Reset();
-			DroppingPlayer = false;
-			SelectingPaletteItem = null;
-			MouseDownPosition = null;
-			SelectionUnitRect = null;
-			DraggingUnitRect = null;
-			PaintingThumbnailStartIndex = 0;
-			PaintingThumbnailRect = default;
-			MouseInSelection = false;
-			MouseDownInSelection = false;
-			Pasting = false;
-			MouseDownOutsideBoundary = false;
-			MouseOutsideBoundary = false;
-			PaletteScrollY = 0;
-			SearchResult.Clear();
-			PanelOffsetX = 0;
-			SearchingText = "";
-			PaletteSearchScrollY = 0;
-			LastUndoRegisterFrame = -1;
-			LastUndoPerformedFrame = -1;
-			SetNavigating(false);
-			ToolbarOffsetX = 0;
-			IUnique.LoadFromDisk(Stream.MapRoot);
+		if (Initialized) {
+			if (IsPlaying && !WorldSquad.Enable) {
+				DropPlayerLogic();
+				SetEditorMode(true);
+			}
+			return;
 		}
+		Initialized = true;
 
-		// Panel
+		// Init Pool
+		var universe = UniverseSystem.CurrentUniverse;
+		UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
+		Stream = WorldStream.GetOrCreateStream(universe.MapRoot);
+		EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.MapRoot);
+		FrameworkUtil.DeleteAllEmptyMaps(universe.MapRoot);
+		Initialize_Pool();
+		Initialize_Palette();
+		Initialize_Nav();
+		System.GC.Collect();
+
+		// Start
+		SetEditorMode(false);
+		if (ResetCameraAtStart) ResetCamera(true);
+
+		// Reset
+		RequireSetMode = null;
+		CurrentZ = 0;
+		PastingBuffer.Clear();
+		CopyBuffer.Clear();
+		UndoRedo.Reset();
+		DroppingPlayer = false;
+		SelectingPaletteItem = null;
+		MouseDownPosition = null;
+		SelectionUnitRect = null;
+		DraggingUnitRect = null;
+		PaintingThumbnailStartIndex = 0;
+		PaintingThumbnailRect = default;
+		MouseInSelection = false;
+		MouseDownInSelection = false;
+		Pasting = false;
+		MouseDownOutsideBoundary = false;
+		MouseOutsideBoundary = false;
+		PaletteScrollY = 0;
+		SearchResult.Clear();
+		PanelOffsetX = 0;
+		SearchingText = "";
+		PaletteSearchScrollY = 0;
+		LastUndoRegisterFrame = -1;
+		LastUndoPerformedFrame = -1;
+		SetNavigating(false);
+		ToolbarOffsetX = 0;
+		IUnique.LoadFromDisk(Stream.MapRoot);
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
@@ -851,14 +854,7 @@ public sealed partial class MapEditor : WindowUI {
 			drop = true;
 		}
 		if (drop) {
-			if (!player.Active) {
-				Stage.SpawnEntity(player.TypeID, PlayerDropPos.x, PlayerDropPos.y - Const.CEL * 2);
-			} else {
-				player.X = PlayerDropPos.x;
-				player.Y = PlayerDropPos.y - Const.CEL * 2;
-			}
-			player.SetCharacterState(CharacterState.GamePlay);
-			RequireSetEditMode = true;
+			DropPlayerLogic(PlayerDropPos.x, PlayerDropPos.y - Const.CEL * 2);
 		} else {
 			if (player.Active) player.Active = false;
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue - 1);
@@ -1090,9 +1086,9 @@ public sealed partial class MapEditor : WindowUI {
 			DraggingForReorderPaletteGroup = -1;
 		}
 
-		if (RequireSetEditMode.HasValue) {
-			SetEditorMode(RequireSetEditMode.Value);
-			RequireSetEditMode = null;
+		if (RequireSetMode.HasValue) {
+			SetEditorMode(RequireSetMode.Value);
+			RequireSetMode = null;
 		}
 
 	}
@@ -1329,6 +1325,26 @@ public sealed partial class MapEditor : WindowUI {
 			ControlHintUI.ForceOffset(Util.Max(PanelRect.xMax, CheckPointLaneRect.xMax) - mainRect.x, 0);
 		}
 
+	}
+
+
+	private void DropPlayerLogic (int posX = int.MinValue, int posY = int.MinValue) {
+		var player = Player.Selecting;
+		if (player == null) return;
+		if (posX == int.MinValue) {
+			posX = player.X;
+		}
+		if (posY == int.MinValue) {
+			posY = player.Y;
+		}
+		if (!player.Active) {
+			Stage.SpawnEntity(player.TypeID, posX, posY);
+		} else {
+			player.X = posX;
+			player.Y = posY;
+		}
+		player.SetCharacterState(CharacterState.GamePlay);
+		RequireSetMode = true;
 	}
 
 

@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.IO.MemoryMappedFiles;
-using System.IO.Pipes;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
@@ -26,6 +23,8 @@ public class RiggedTransceiver {
 
 	// Api
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
+	public Int3? LastRigViewPos { get; private set; } = null;
+	public int? LastRigViewHeight { get; private set; } = null;
 
 	// Data
 	private readonly RiggedCallingMessage CallingMessage = new();
@@ -164,21 +163,27 @@ public class RiggedTransceiver {
 	}
 
 
-	public unsafe void Respond (int sheetIndex) {
+	public unsafe void Respond (int sheetIndex, bool updateViewCache) {
 		// Rig >> Engine
 		bool ignoreInput = Game.PauselessFrame == IgnoreInputFrame || !WindowUI.WindowRect.MouseInside();
 		if (*BufferPointer == 0) {
 			for (int safe = 0; safe < 8; safe++) {
-				Thread.Sleep(2);
+				Thread.Sleep(1);
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
 			UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
 			return;
 		}
 		_HANDLE_:;
+		// Handle Respon
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
 		RespondMessage.ApplyToEngine(CallingMessage, ignoreInput: ignoreInput);
 		RespondMessage.UpdateRendering(sheetIndex, LeftPadding);
+		// Update Setting
+		if (updateViewCache) {
+			LastRigViewPos = new Int3(RespondMessage.ViewX, RespondMessage.ViewY, RespondMessage.ViewZ);
+			LastRigViewHeight = RespondMessage.ViewHeight;
+		}
 	}
 
 
@@ -197,6 +202,14 @@ public class RiggedTransceiver {
 
 
 	public void RequireLostFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(1, true);
+
+
+	public void SetStartViewPos (int viewX, int viewY, int viewZ, int viewHeight) {
+		RespondMessage.ViewX = viewX;
+		RespondMessage.ViewY = viewY;
+		RespondMessage.ViewZ = viewZ;
+		RespondMessage.ViewHeight = viewHeight.GreaterOrEquel(1);
+	}
 
 
 	#endregion

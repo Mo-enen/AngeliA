@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using AngeliA;
+﻿using AngeliA;
 
 namespace AngeliaEngine;
 
@@ -18,5 +16,10 @@ public class EngineSetting {
 	// Console
 	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);
 
+	// Map Editor
+	public static readonly SavingInt LastMapEditorViewX = new("Map.LastMapEditorViewX", 0);
+	public static readonly SavingInt LastMapEditorViewY = new("Map.LastMapEditorViewY", 0);
+	public static readonly SavingInt LastMapEditorViewZ = new("Map.LastMapEditorViewZ", 0);
+	public static readonly SavingInt LastMapEditorViewHeight = new("Map.LastMapEditorViewHeight", -1);
 
 }

@@ -29,7 +29,7 @@ public partial class RiggedGame : Game {
 	private unsafe byte* BufferPointer = null;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
-	private readonly WindowUI[] EditorWindows = new WindowUI[2];
+	private WindowUI[] EditorWindows = null;
 	private IRect StartWithView = default;
 	private readonly int StartWithZ = 0;
 
@@ -151,10 +151,16 @@ public partial class RiggedGame : Game {
 			RespondMessage.TransationStart();
 		}
 
+		// Init Windows
+		EditorWindows ??= new WindowUI[] {
+			MapEditor.Instance ?? Stage.GetOrAddEntity<MapEditor>(0, 0),
+			ItemEditor.Instance ?? Stage.GetOrAddEntity<ItemEditor>(0, 0),
+		};
+
 		// Sync Buffer
 		unsafe {
 			while (*BufferPointer == 1) {
-				Thread.Sleep(2);
+				Thread.Sleep(1);
 				if (HostProcess != null && HostProcess.HasExited) return false;
 			}
 			if (*BufferPointer == 255) return false;
@@ -165,12 +171,6 @@ public partial class RiggedGame : Game {
 
 		// Refresh Editor Windows
 		for (int i = 0; i < EditorWindows.Length; i++) {
-			if (EditorWindows[i] == null) {
-				EditorWindows[i] = i switch {
-					0 => MapEditor.Instance,
-					_ => null,
-				};
-			}
 			var window = EditorWindows[i];
 			if (window == null) continue;
 			bool shouldActive = CallingMessage.RequiringWindowIndex == i;
@@ -244,6 +244,7 @@ public partial class RiggedGame : Game {
 		// Update
 		Update();
 
+		// Quit Check
 		unsafe {
 			if (*BufferPointer == 255) return false;
 		}
@@ -282,6 +283,7 @@ public partial class RiggedGame : Game {
 		RespondMessage.SkyBottom = Sky.SkyTintBottomColor;
 		RespondMessage.SkyTop = Sky.SkyTintTopColor;
 
+		// Respond
 		unsafe {
 			RespondMessage.WriteDataToPipe(BufferPointer + 1);
 			unsafe {
