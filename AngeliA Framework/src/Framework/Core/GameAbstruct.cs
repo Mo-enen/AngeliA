@@ -6,25 +6,6 @@ namespace AngeliA;
 public abstract partial class Game {
 
 
-	// Api
-	public readonly char[] PressingCharsForCurrentFrame = new char[256];
-	public readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
-	public int PressingCharCount { get; private set; } = 0;
-	public int PressingKeyCount { get; private set; } = 0;
-	protected object CurrentBGM { get; set; }
-
-	// Data
-	protected static readonly Dictionary<int, object> SoundPool = new();
-	protected static readonly Dictionary<int, string> MusicPool = new();
-	private static readonly HashSet<int> CacheForAudioSync = new();
-	private static readonly List<int> CacheForAudioSyncRemove = new();
-	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
-	private int ForceMinViewHeightValue;
-	private int ForceMinViewHeightFrame = -1;
-	private int ForceMaxViewHeightValue;
-	private int ForceMaxViewHeightFrame = -1;
-
-
 	// System
 	internal static bool IsFullscreen {
 		get => _IsFullscreen.Value;
@@ -300,74 +281,20 @@ public abstract partial class Game {
 
 
 	// Text
+	public static int BuiltInFontCount { get; private set; } = 0;
 	public static int FontCount => Instance._GetFontCount();
 	protected abstract int _GetFontCount ();
 
-	public static string GetClipboardText () => Instance?._GetClipboardText();
+	public static string GetClipboardText () => Instance._GetClipboardText();
 	protected abstract string _GetClipboardText ();
 
-	public static void SetClipboardText (string text) => Instance?._SetClipboardText(text);
+	public static void SetClipboardText (string text) => Instance._SetClipboardText(text);
 	protected abstract void _SetClipboardText (string text);
 
 	public static bool GetCharSprite (int fontIndex, char c, out CharSprite result) => Instance._GetCharSprite(fontIndex, c, out result);
 	protected abstract bool _GetCharSprite (int fontIndex, char c, out CharSprite result);
 
-
-	// Audio
-	public static void SyncAudioPool (params string[] universeRoots) {
-
-		// Music
-		CacheForAudioSync.Clear();
-		CacheForAudioSyncRemove.Clear();
-		foreach (string root in universeRoots) {
-			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseMusicRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
-				int id = Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash();
-				CacheForAudioSync.TryAdd(id);
-				MusicPool.TryAdd(id, path);
-			}
-		}
-		foreach (var (id, _) in MusicPool) {
-			if (!CacheForAudioSync.Contains(id)) {
-				CacheForAudioSyncRemove.Add(id);
-			}
-		}
-		foreach (int id in CacheForAudioSyncRemove) {
-			MusicPool.Remove(id);
-		}
-
-		// Sound
-		CacheForAudioSync.Clear();
-		CacheForAudioSyncRemove.Clear();
-		foreach (string root in universeRoots) {
-			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseSoundRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
-				int id = Util.GetNameWithoutExtension(path).AngeHash();
-				CacheForAudioSync.TryAdd(id);
-				if (SoundPool.ContainsKey(id)) continue;
-				var soundObj = LoadSound(path);
-				if (soundObj == null) continue;
-				SoundPool.Add(id, soundObj);
-			}
-		}
-		foreach (var (id, sound) in SoundPool) {
-			if (!CacheForAudioSync.Contains(id)) {
-				UnloadSound(sound);
-				CacheForAudioSyncRemove.Add(id);
-			}
-		}
-		foreach (int id in CacheForAudioSyncRemove) {
-			SoundPool.Remove(id);
-		}
-
-	}
-
-	public static void ClearAndUnloadAudioPool () {
-		UnloadMusic(Instance.CurrentBGM);
-		foreach (var (_, sound) in SoundPool) {
-			UnloadSound(sound);
-		}
-		MusicPool.Clear();
-		SoundPool.Clear();
-	}
+	protected abstract FontData CreateNewFontData ();
 
 
 	// Music

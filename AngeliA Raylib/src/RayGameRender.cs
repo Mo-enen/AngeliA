@@ -15,7 +15,6 @@ public partial class RayGame {
 	private readonly static System.Random CA_Ran = new(2353456);
 	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
-	private FontData[] Fonts;
 	private Shader LerpShader;
 	private Shader ColorShader;
 	private Shader InverseShader;
@@ -430,34 +429,23 @@ public partial class RayGame {
 
 
 	// Text
-	protected override int _GetFontCount () => Fonts.Length;
+	protected override int _GetFontCount () => Fonts.Count;
 
 	protected override bool _GetCharSprite (int fontIndex, char c, out CharSprite result) {
-		var fontData = Fonts[fontIndex];
 		result = null;
-		if (!fontData.TryGetCharData(c, out var info, out var texture)) return true;
-		bool fullset = c >= 256;
-		float fontSize = fullset ?
-			fontData.FullsetSize / fontData.FullsetScale :
-			fontData.PrioritizedSize / fontData.PrioritizedScale;
-		result = new CharSprite {
-			Char = c,
-			Advance = info.AdvanceX / fontSize,
-			Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
-				xmin: info.OffsetX / fontSize,
-				ymin: (fontSize - info.OffsetY - info.Image.Height) / fontSize,
-				xmax: (info.OffsetX + info.Image.Width) / fontSize,
-				ymax: (fontSize - info.OffsetY) / fontSize
-			),
-			FontIndex = fontIndex,
-			Texture = texture,
-		};
-		return true;
+		if (fontIndex < 0 || fontIndex >= Fonts.Count) return false;
+		bool got = Fonts[fontIndex].TryGetCharSprite(c, out result);
+		if (result != null) {
+			result.FontIndex = fontIndex;
+		}
+		return got;
 	}
 
 	protected override string _GetClipboardText () => Raylib.GetClipboardText_();
 
 	protected override void _SetClipboardText (string text) => Raylib.SetClipboardText(text);
+
+	protected override FontData CreateNewFontData () => new RayFontData();
 
 
 }

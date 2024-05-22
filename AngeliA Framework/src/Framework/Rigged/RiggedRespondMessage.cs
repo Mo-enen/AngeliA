@@ -32,6 +32,7 @@ public class RiggedRespondMessage {
 	public class RenderingCellData {
 		public int SpriteID;
 		public char TextSpriteChar;
+		public int FontIndex;
 		public int X;
 		public int Y;
 		public int Z;
@@ -116,11 +117,6 @@ public class RiggedRespondMessage {
 
 	public void TransationStart () {
 		GizmosTexturePool.Clear();
-		for (int i = 0; i < RenderLayer.COUNT; i++) {
-			if (Layers[i] == null) {
-				Layers[i] = new RenderingLayerData(Renderer.GetLayerCapacity(i));
-			}
-		}
 		SkyTop.a = 255;
 		SkyBottom.a = 255;
 	}
@@ -156,11 +152,12 @@ public class RiggedRespondMessage {
 		}
 
 		// Char Requirement
+		int fontIndexOffset = Game.BuiltInFontCount;
 		callingMessage.CharRequiredCount = CharRequiringCount;
 		for (int i = 0; i < CharRequiringCount; i++) {
 			char c = RequireChars[i];
 			int fontIndex = RequireCharsFontIndex[i];
-			if (Game.GetCharSprite(fontIndex, c, out var sprite)) {
+			if (Game.GetCharSprite(fontIndex + fontIndexOffset, c, out var sprite)) {
 				callingMessage.RequiredChars[i] = new() {
 					Valid = true,
 					Char = c,
@@ -258,7 +255,11 @@ public class RiggedRespondMessage {
 		int oldLayer = Renderer.CurrentLayerIndex;
 		int oldSheetIndex = Renderer.CurrentSheetIndex;
 		Renderer.CurrentSheetIndex = sheetIndex;
+		int fontIndexOffset = Game.BuiltInFontCount;
 		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+			if (Layers[layer] == null) {
+				Layers[layer] = new RenderingLayerData(Renderer.GetLayerCapacity(layer));
+			}
 			var layerData = Layers[layer];
 			int count = layerData.CellCount;
 			Renderer.SetLayer(layer);
@@ -269,9 +270,12 @@ public class RiggedRespondMessage {
 					if (Renderer.TryGetSprite(cell.SpriteID, out var sprite, ignoreAnimation: true)) {
 						rCell = Renderer.Draw(sprite, default);
 					}
-				} else if (Renderer.RequireCharForPool(cell.TextSpriteChar, out var charSprite)) {
-					rCell = Renderer.DrawChar(charSprite, 0, 0, 1, 1, Color32.WHITE);
-					if (rCell.TextSprite == null) rCell = null;
+				} else if (cell.TextSpriteChar != '\0') {
+					if (Renderer.RequireCharForPool(cell.TextSpriteChar, cell.FontIndex + fontIndexOffset, out var charSprite)) {
+						rCell = Renderer.DrawChar(charSprite, 0, 0, 1, 1, Color32.WHITE);
+						rCell.TextSprite = charSprite;
+						if (rCell.TextSprite == null) rCell = null;
+					}
 				}
 				if (rCell == null) continue;
 				rCell.X = cell.X + leftPadding / 2;
@@ -419,6 +423,7 @@ public class RiggedRespondMessage {
 					var cell = layer.Cells[i];
 					cell.SpriteID = Util.ReadInt(ref pointer, end);
 					cell.TextSpriteChar = Util.ReadChar(ref pointer, end);
+					cell.FontIndex = Util.ReadInt(ref pointer, end);
 					cell.X = Util.ReadInt(ref pointer, end);
 					cell.Y = Util.ReadInt(ref pointer, end);
 					cell.Z = Util.ReadInt(ref pointer, end);
@@ -540,6 +545,7 @@ public class RiggedRespondMessage {
 					var cell = layer.Cells[i];
 					Util.Write(ref pointer, cell.SpriteID, end);
 					Util.Write(ref pointer, cell.TextSpriteChar, end);
+					Util.Write(ref pointer, cell.FontIndex, end);
 					Util.Write(ref pointer, cell.X, end);
 					Util.Write(ref pointer, cell.Y, end);
 					Util.Write(ref pointer, cell.Z, end);

@@ -116,30 +116,27 @@ public partial class RiggedGame : Game {
 			System.Console.WriteLine(msg);
 		}
 		static void LogWarning (object msg) {
-			System.Console.ForegroundColor = System.ConsoleColor.Yellow;
 			System.Console.WriteLine(msg);
-			System.Console.ResetColor();
 		}
 		static void LogError (object msg) {
-			System.Console.ForegroundColor = System.ConsoleColor.Red;
 			System.Console.WriteLine(msg);
-			System.Console.ResetColor();
 		}
 		static void LogException (System.Exception ex) {
-			System.Console.ForegroundColor = System.ConsoleColor.Red;
 			System.Console.WriteLine(ex.Source);
 			System.Console.WriteLine(ex.GetType().Name);
 			System.Console.WriteLine(ex.Message);
+			if (ex.TargetSite != null) {
+				System.Console.WriteLine(ex.TargetSite.Name);
+			}
 			System.Console.WriteLine(ex.StackTrace);
 			System.Console.WriteLine();
-			System.Console.ResetColor();
 		}
 	}
 
 
 	public bool UpdateWithPipe () {
 
-		if (HostProcess != null && HostProcess.HasExited) return false;
+		if (HostProcess == null || HostProcess.HasExited) return false;
 
 		// Init Map
 		if (MemMap == null) {
@@ -161,7 +158,7 @@ public partial class RiggedGame : Game {
 		unsafe {
 			while (*BufferPointer == 1) {
 				Thread.Sleep(1);
-				if (HostProcess != null && HostProcess.HasExited) return false;
+				if (HostProcess == null || HostProcess.HasExited) return false;
 			}
 			if (*BufferPointer == 255) return false;
 			CallingMessage.ReadDataFromPipe(BufferPointer + 1);
@@ -183,21 +180,13 @@ public partial class RiggedGame : Game {
 			}
 		}
 
-		// Char Pool
-		if (CharPool == null && RiggedFontCount > 0) {
-			CharPool = new Dictionary<char, CharSprite>[RiggedFontCount];
-			for (int i = 0; i < RiggedFontCount; i++) {
-				CharPool[i] = new();
-			}
-		}
 
 		// Char Requirement
 		for (int i = 0; i < CallingMessage.CharRequiredCount; i++) {
 			var data = CallingMessage.RequiredChars[i];
-			if (data.FontIndex >= CharPool.Length) continue;
-			var pool = CharPool[data.FontIndex];
-			if (pool.ContainsKey(data.Char)) continue;
-			pool.Add(data.Char, data.Valid ? new CharSprite() {
+			var key = new Int2(data.Char, data.FontIndex);
+			if (CharPool.ContainsKey(key)) continue;
+			CharPool.Add(key, data.Valid ? new CharSprite() {
 				Char = data.Char,
 				Advance = data.Advance,
 				FontIndex = data.FontIndex,
@@ -219,11 +208,14 @@ public partial class RiggedGame : Game {
 		}
 
 		// Event
+		if (CallingMessage.RequireGameMessageInvoke.GetBit(0)) {
+			InvokeWindowFocusChanged(true);
+		}
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(1)) {
 			InvokeWindowFocusChanged(false);
 		}
-		if (CallingMessage.RequireGameMessageInvoke.GetBit(0)) {
-			InvokeWindowFocusChanged(true);
+		if (CallingMessage.RequireGameMessageInvoke.GetBit(2)) {
+			CharPool.Clear();
 		}
 
 		// Gizmos Texture Requirement
@@ -251,6 +243,9 @@ public partial class RiggedGame : Game {
 
 		// Renderer Layer/Cells >> Message Layer/Cells
 		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+			if (RespondMessage.Layers[layer] == null) {
+				RespondMessage.Layers[layer] = new RiggedRespondMessage.RenderingLayerData(Renderer.GetLayerCapacity(layer));
+			}
 			var layerData = RespondMessage.Layers[layer];
 			layerData.CellCount = 0;
 			if (!Renderer.GetCells(layer, out var cells, out int count)) continue;
@@ -261,6 +256,7 @@ public partial class RiggedGame : Game {
 				var target = layerData.Cells[i];
 				target.SpriteID = source.Sprite != null ? source.Sprite.ID : 0;
 				target.TextSpriteChar = source.TextSprite != null ? source.TextSprite.Char : '\0';
+				target.FontIndex = source.TextSprite != null ? source.TextSprite.FontIndex : 0;
 				target.X = source.X;
 				target.Y = source.Y;
 				target.Z = source.Z;

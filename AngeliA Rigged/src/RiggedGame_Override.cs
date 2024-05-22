@@ -9,7 +9,7 @@ public partial class RiggedGame {
 
 
 	// VAR
-	private Dictionary<char, CharSprite>[] CharPool = null;
+	private readonly Dictionary<Int2, CharSprite> CharPool = new();
 	private readonly HashSet<uint> RequiredGizmosTextures = new();
 	private readonly int[] KeyboardHoldingFrames;
 	private readonly int[] GamepadHoldingFrames;
@@ -192,18 +192,18 @@ public partial class RiggedGame {
 
 	protected override bool _GetCharSprite (int fontIndex, char c, out CharSprite result) {
 		result = null;
-		if (CharPool == null || fontIndex >= CharPool.Length) return false;
 		int reqCount = RespondMessage.CharRequiringCount;
 		if (reqCount >= RiggedRespondMessage.REQUIRE_CHAR_MAX_COUNT) return false;
 		// Get From Pool
-		var pool = CharPool[fontIndex];
-		if (pool.TryGetValue(c, out result)) return true;
+		if (CharPool.TryGetValue(new(c, fontIndex), out result)) return true;
 		// Require
 		RespondMessage.RequireChars[reqCount] = c;
 		RespondMessage.RequireCharsFontIndex[reqCount] = fontIndex;
 		RespondMessage.CharRequiringCount++;
 		return false;
 	}
+
+	protected override FontData CreateNewFontData () => null;
 
 
 	// Music

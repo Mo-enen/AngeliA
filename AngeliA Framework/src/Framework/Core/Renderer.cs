@@ -69,15 +69,12 @@ public static class Renderer {
 	public static FRect CameraRange { get; private set; } = new(0, 0, 1f, 1f);
 	public static IRect ScreenRenderRect { get; private set; }
 	public static float CameraRestrictionRate { get; private set; } = 1f;
-	public static int LastDrawnID { get; private set; } = 0;
 	public static int LayerCount => Layers.Length;
 	public static int SpriteCount => MainSheet.Sprites.Count;
 	public static int GroupCount => MainSheet.Groups.Count;
-	public static int FontCount => CharSpritePool.Length;
+	public static int CurrentSheetIndex { get; set; } = -1;
 	public static int CurrentLayerIndex { get; private set; } = 0;
 	public static int CurrentFontIndex { get; private set; } = 0;
-	public static bool TextReady => CharSpritePool.Length > 0;
-	public static int CurrentSheetIndex { get; set; } = -1;
 	public static int AltSheetCount => AltSheets.Count;
 	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? MainSheet : AltSheets[CurrentSheetIndex];
 
@@ -85,7 +82,7 @@ public static class Renderer {
 	private static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
-	private static Dictionary<int, CharSprite>[] CharSpritePool = { };
+	private static readonly Dictionary<Int2, CharSprite> CharSpritePool = new();
 	private static bool IsDrawing = false;
 	private static long MainSheetFileModifyDate = 0;
 	private static string MainSheetFilePath = "";
@@ -126,9 +123,6 @@ public static class Renderer {
 				UiLayer = uiLayer
 			};
 		}
-
-		// Create Char Sprite Pool
-		CharSpritePool = new Dictionary<int, CharSprite>[Game.FontCount].FillWithNewValue();
 
 		// Load Sheet
 		LoadMainSheet();
@@ -238,6 +232,8 @@ public static class Renderer {
 		Cell.EMPTY.Color = Color32.CLEAR;
 		SetLayerToDefault();
 		CurrentSheetIndex = -1;
+		CurrentFontIndex = 0;
+		CurrentLayerIndex = RenderLayer.DEFAULT;
 		for (int i = 0; i < Layers.Length; i++) {
 			var layer = Layers[i];
 			if (Game.IsPlaying || layer.UiLayer) {
@@ -261,6 +257,9 @@ public static class Renderer {
 
 
 	#region --- API ---
+
+
+	public static void ClearCharSpritePool () => CharSpritePool.Clear();
 
 
 	// Sheet
@@ -339,7 +338,6 @@ public static class Renderer {
 		layer.SortedIndex = 0;
 	}
 
-
 	public static void SortLayer (int layerIndex) => Layers[layerIndex].ZSort();
 	public static void ReverseUnsortedCells (int layerIndex) => Layers[layerIndex].ReverseUnsorted();
 	public static void AbandonLayerSort (int layerIndex) => Layers[layerIndex].AbandonZSort();
@@ -353,7 +351,7 @@ public static class Renderer {
 	public static int GetLayerCapacity (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Cells.Length : 0;
 
 
-	public static void SetFontIndex (int newIndex) => CurrentFontIndex = newIndex.Clamp(0, FontCount - 1);
+	public static void SetFontIndex (int newIndex) => CurrentFontIndex = newIndex;
 
 
 	// Draw
@@ -411,7 +409,6 @@ public static class Renderer {
 		if (layer.FocusedCell >= layer.CellCount) {
 			layer.FocusedCell = -1;
 		}
-		LastDrawnID = sprite.ID;
 		return cell;
 	}
 
@@ -423,14 +420,13 @@ public static class Renderer {
 
 	// Char
 	public static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
-		if (!IsDrawing || !TextReady) return Cell.EMPTY;
-		var charPool = CharSpritePool[CurrentFontIndex];
-		if (!charPool.TryGetValue(c, out var tSprite)) return Cell.EMPTY;
+		if (!IsDrawing) return Cell.EMPTY;
+		if (!CharSpritePool.TryGetValue(new(c, CurrentFontIndex), out var tSprite)) return Cell.EMPTY;
 		return DrawChar(tSprite, x, y, width, height, color);
 	}
 	public static Cell DrawChar (CharSprite sprite, int x, int y, int width, int height, Color32 color) {
 
-		if (!IsDrawing || !TextReady || sprite == null) return Cell.EMPTY;
+		if (!IsDrawing || sprite == null) return Cell.EMPTY;
 
 		var layer = Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
 		if (layer.FocusedCell < 0) return Cell.EMPTY;
@@ -458,7 +454,6 @@ public static class Renderer {
 		if (layer.FocusedCell >= layer.CellCount) {
 			layer.FocusedCell = -1;
 		}
-		LastDrawnID = sprite.Char;
 		return cell;
 	}
 
@@ -702,14 +697,14 @@ public static class Renderer {
 
 
 	// Internal
-	internal static bool RequireCharForPool (char c, out CharSprite charSprite) {
-		var pool = CharSpritePool[CurrentFontIndex];
-		if (pool.TryGetValue(c, out var textSprite)) {
+	internal static bool RequireCharForPool (char c, out CharSprite charSprite) => RequireCharForPool(c, CurrentFontIndex, out charSprite);
+	internal static bool RequireCharForPool (char c, int fontIndex, out CharSprite charSprite) {
+		if (CharSpritePool.TryGetValue(new(c, fontIndex), out var textSprite)) {
 			// Get Exists
 			charSprite = textSprite;
-		} else if (Game.GetCharSprite(CurrentFontIndex, c, out charSprite)) {
+		} else if (Game.GetCharSprite(fontIndex, c, out charSprite)) {
 			// Require Char from Font
-			pool.Add(c, charSprite);
+			CharSpritePool.Add(new(c, fontIndex), charSprite);
 		}
 		return charSprite != null;
 	}

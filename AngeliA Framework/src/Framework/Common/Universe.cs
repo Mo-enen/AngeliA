@@ -33,6 +33,7 @@ public class Universe {
 	public string InfoPath { get; private set; }
 	public string MusicRoot { get; private set; }
 	public string SoundRoot { get; private set; }
+	public string FontRoot { get; private set; }
 
 	// Api
 	public UniverseInfo Info { get; private set; }
@@ -54,6 +55,7 @@ public class Universe {
 			Info = JsonUtil.LoadOrCreateJsonFromPath<UniverseInfo>(infoPath),
 			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),
 			SoundRoot = AngePath.GetUniverseSoundRoot(universeFolder),
+			FontRoot = AngePath.GetUniverseFontRoot(universeFolder),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :

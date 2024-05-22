@@ -222,7 +222,7 @@ public static class GUI {
 	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
 	private static void LabelLogic (IRect rect, string text, char[] chars, GUIStyle style, GUIState state, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
 
-		if (!Renderer.TextReady || (text == null && chars == null)) {
+		if (Game.FontCount == 0 || (text == null && chars == null)) {
 			endIndex = startIndex;
 			bounds = rect;
 			beamRect = new IRect(rect.x, rect.y, 1, rect.height);

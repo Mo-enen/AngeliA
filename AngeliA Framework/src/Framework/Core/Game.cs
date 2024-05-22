@@ -30,6 +30,7 @@ public abstract partial class Game {
 	public static float ScaledMusicVolume => Util.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
+	protected object CurrentBGM { get; set; }
 
 	// Attribute Info
 	public static bool IsToolApplication { get; private set; } = false;
@@ -48,7 +49,21 @@ public abstract partial class Game {
 	private static MethodInfo[] OnGameTryingToQuitMethods;
 
 	// Data
+	protected static readonly Dictionary<int, object> SoundPool = new();
+	protected static readonly Dictionary<int, string> MusicPool = new();
+	protected static readonly List<FontData> Fonts = new();
 	private static Game Instance = null;
+	private static readonly HashSet<int> CacheForAudioSync = new();
+	private static readonly List<int> CacheForAudioSyncRemove = new();
+	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
+	private readonly char[] PressingCharsForCurrentFrame = new char[256];
+	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
+	private int PressingCharCount = 0;
+	private int PressingKeyCount = 0;
+	private int ForceMinViewHeightValue;
+	private int ForceMinViewHeightFrame = -1;
+	private int ForceMaxViewHeightValue;
+	private int ForceMaxViewHeightFrame = -1;
 
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
@@ -104,6 +119,7 @@ public abstract partial class Game {
 
 			GlobalFrame = 0;
 			ScreenSizeCache();
+			LoadFontsIntoPool(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"), builtIn: true);
 
 #if DEBUG
 			_IsFullscreen.Value = false;
@@ -267,20 +283,156 @@ public abstract partial class Game {
 
 	public static void RestartGame () => OnGameRestart?.Invoke();
 
-
 	public static void StopGame () {
 		WorldSquad.Enable = false;
 		Stage.DespawnAllNonUiEntities();
 	}
 
-
 	public static void UnpauseGame () => IsPlaying = true;
-
 
 	public static void PauseGame () {
 		if (!IsPlaying || !AllowPause) return;
 		StopAllSounds();
 		IsPlaying = false;
+	}
+
+
+	// Fonts
+	public static void LoadFontsIntoPool (string rootPath, bool builtIn) {
+		if (builtIn) {
+			for (int i = 0; i < Fonts.Count; i++) {
+				var font = Fonts[i];
+				if (font.BuiltIn) {
+					font.Unload();
+					Fonts.RemoveAt(i);
+					i--;
+				}
+			}
+		}
+		foreach (var fontPath in Util.EnumerateFiles(rootPath, true, "*.ttf")) {
+			if (Fonts.Any(font => font.FilePath == fontPath)) continue;
+			var data = Instance.CreateNewFontData();
+			if (data == null || !data.LoadFromFile(fontPath, builtIn)) continue;
+			Fonts.Add(data);
+		}
+		Fonts.Sort((a, b) => {
+			int result = b.BuiltIn.CompareTo(a.BuiltIn);
+			return result != 0 ? result : a.LocalLayerIndex.CompareTo(b.LocalLayerIndex);
+		});
+		if (builtIn) {
+			BuiltInFontCount = Fonts.Count(font => font.BuiltIn);
+		}
+	}
+
+	public static bool SyncFontsWithPool (string rootPath) {
+		bool fontChanged = false;
+		for (int i = 0; i < Fonts.Count; i++) {
+			var font = Fonts[i];
+			if (font.BuiltIn) continue;
+			if (!Util.FileExists(font.FilePath)) {
+				// File Deleted
+				font.Unload();
+				Fonts.RemoveAt(i);
+				i--;
+				fontChanged = true;
+				continue;
+			}
+			if (Util.GetFileModifyDate(font.FilePath) != font.FileModifyDate) {
+				// File Modified
+				font.Unload();
+				bool loaded = font.LoadFromFile(font.FilePath, font.BuiltIn);
+				if (!loaded) {
+					Fonts.RemoveAt(i);
+					i--;
+				}
+				fontChanged = true;
+			}
+		}
+		foreach (var fontPath in Util.EnumerateFiles(rootPath, true, "*.ttf")) {
+			if (Fonts.Any(font => font.FilePath == fontPath)) continue;
+			// Load New Font
+			var data = Instance.CreateNewFontData();
+			if (data == null || !data.LoadFromFile(fontPath, builtIn: false)) continue;
+			Fonts.Add(data);
+			fontChanged = true;
+		}
+		if (fontChanged) {
+			Fonts.Sort((a, b) => {
+				int result = b.BuiltIn.CompareTo(a.BuiltIn);
+				return result != 0 ? result : a.LocalLayerIndex.CompareTo(b.LocalLayerIndex);
+			});
+			Renderer.ClearCharSpritePool();
+		}
+		return fontChanged;
+	}
+
+	public static void UnloadFontsFromPool (bool ignoreBuiltIn = true) {
+		for (int i = 0; i < Fonts.Count; i++) {
+			var font = Fonts[i];
+			if (ignoreBuiltIn && font.BuiltIn) continue;
+			font.Unload();
+			Fonts.RemoveAt(i);
+			i--;
+		}
+		Renderer.ClearCharSpritePool();
+		if (!ignoreBuiltIn) BuiltInFontCount = 0;
+	}
+
+
+	// Audio
+	public static void SyncAudioPool (params string[] universeRoots) {
+
+		// Music
+		CacheForAudioSync.Clear();
+		CacheForAudioSyncRemove.Clear();
+		foreach (string root in universeRoots) {
+			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseMusicRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
+				int id = Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash();
+				CacheForAudioSync.TryAdd(id);
+				MusicPool.TryAdd(id, path);
+			}
+		}
+		foreach (var (id, _) in MusicPool) {
+			if (!CacheForAudioSync.Contains(id)) {
+				CacheForAudioSyncRemove.Add(id);
+			}
+		}
+		foreach (int id in CacheForAudioSyncRemove) {
+			MusicPool.Remove(id);
+		}
+
+		// Sound
+		CacheForAudioSync.Clear();
+		CacheForAudioSyncRemove.Clear();
+		foreach (string root in universeRoots) {
+			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseSoundRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
+				int id = Util.GetNameWithoutExtension(path).AngeHash();
+				CacheForAudioSync.TryAdd(id);
+				if (SoundPool.ContainsKey(id)) continue;
+				var soundObj = LoadSound(path);
+				if (soundObj == null) continue;
+				SoundPool.Add(id, soundObj);
+			}
+		}
+		foreach (var (id, sound) in SoundPool) {
+			if (!CacheForAudioSync.Contains(id)) {
+				UnloadSound(sound);
+				CacheForAudioSyncRemove.Add(id);
+			}
+		}
+		foreach (int id in CacheForAudioSyncRemove) {
+			SoundPool.Remove(id);
+		}
+
+	}
+
+	public static void ClearAndUnloadAudioPool () {
+		UnloadMusic(Instance.CurrentBGM);
+		foreach (var (_, sound) in SoundPool) {
+			UnloadSound(sound);
+		}
+		MusicPool.Clear();
+		SoundPool.Clear();
 	}
 
 
@@ -293,6 +445,7 @@ public abstract partial class Game {
 			_LastUsedWindowHeight.Value = height;
 		}
 		ClearAndUnloadAudioPool();
+		UnloadFontsFromPool(ignoreBuiltIn: false);
 		OnGameQuitting?.Invoke();
 	}
 

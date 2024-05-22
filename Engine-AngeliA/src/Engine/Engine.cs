@@ -162,7 +162,7 @@ public class Engine {
 
 
 	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () => Instance?.InitializeEngine();
+	internal static void OnGameInitializeLater () => Instance.InitializeEngine();
 	private void InitializeEngine () {
 
 #if DEBUG
@@ -241,7 +241,7 @@ public class Engine {
 
 	// Rebuild
 	[OnProjectBuiltInBackground]
-	internal static void OnProjectBuiltInBackground (int code) => Instance?.RiggedGameRebuild(code);
+	internal static void OnProjectBuiltInBackground (int code) => Instance.RiggedGameRebuild(code);
 	private void RiggedGameRebuild (int code) {
 
 		switch (code) {
@@ -325,8 +325,9 @@ public class Engine {
 	// Focus
 	[OnGameFocused]
 	internal static void OnGameFocused () {
-		Instance?.CheckScriptChanged();
-		Instance?.RefreshProjectCache();
+		Instance.CheckScriptChanged();
+		Instance.RefreshProjectCache();
+		Instance.CheckFontChanged();
 	}
 
 
@@ -1056,7 +1057,7 @@ public class Engine {
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
-			int code = Transceiver.Start(CurrentProject.BuildPath, CurrentProject.BuildLibraryPath);
+			int code = Transceiver.Start(CurrentProject.Universe.FontRoot, CurrentProject.BuildPath, CurrentProject.BuildLibraryPath);
 			if (code == 0) {
 				// Start
 				RigGameFailToStartCount = 0;
@@ -1193,6 +1194,10 @@ public class Engine {
 		// Audio
 		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
 
+		// Font
+		Game.UnloadFontsFromPool(ignoreBuiltIn: true);
+		Game.LoadFontsIntoPool(CurrentProject.Universe.FontRoot, builtIn: false);
+
 		// Script
 		CheckScriptChanged();
 
@@ -1299,6 +1304,15 @@ public class Engine {
 	private void RefreshProjectCache () {
 		foreach (var project in Projects) {
 			project.FolderExists = Util.FolderExists(project.Path);
+		}
+	}
+
+
+	private void CheckFontChanged () {
+		if (CurrentProject == null) return;
+		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
+		if (changed) {
+			Transceiver.RequireClearCharPoolInvoke();
 		}
 	}
 

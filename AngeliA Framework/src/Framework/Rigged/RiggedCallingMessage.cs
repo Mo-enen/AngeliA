@@ -324,6 +324,11 @@ public class RiggedCallingMessage {
 	}
 
 
+	public void RequireFocusInvoke () => RequireGameMessageInvoke.SetBit(0, true);
+	public void RequireLostFocusInvoke () => RequireGameMessageInvoke.SetBit(1, true);
+	public void RequireClearCharPoolInvoke () => RequireGameMessageInvoke.SetBit(2, true);
+
+
 	#endregion
 
 

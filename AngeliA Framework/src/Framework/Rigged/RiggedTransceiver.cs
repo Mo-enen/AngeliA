@@ -62,45 +62,44 @@ public class RiggedTransceiver {
 	#region --- API ---
 
 
-	public int Start (string gameBuildFolder, string gameLibFolder) {
+	public int Start (string fontFolder, string gameBuildFolder, string gameLibFolder) {
+		try {
 
-		Abort();
+			Abort();
 
-		RespondMessage.TransationStart();
+			RespondMessage.TransationStart();
 
-		// Gate
-		if (!Util.FileExists(ExePath)) return ERROR_EXE_FILE_NOT_FOUND;
-		if (!Util.FolderExists(gameLibFolder)) return ERROR_LIB_FILE_NOT_FOUND;
+			// Gate
+			if (!Util.FileExists(ExePath)) return ERROR_EXE_FILE_NOT_FOUND;
+			if (!Util.FolderExists(gameLibFolder)) return ERROR_LIB_FILE_NOT_FOUND;
 
-		// Start New
-		if (MemMap == null) {
-			MemMap = MemoryMappedFile.CreateOrOpen(MapName, capacity: Const.RIG_BUFFER_SIZE);
-			ViewAccessor = MemMap.CreateViewAccessor(offset: 0, size: Const.RIG_BUFFER_SIZE);
-			unsafe {
-				ViewAccessor.SafeMemoryMappedViewHandle.AcquirePointer(ref BufferPointer);
+			// Start New
+			if (MemMap == null) {
+				MemMap = MemoryMappedFile.CreateOrOpen(MapName, capacity: Const.RIG_BUFFER_SIZE);
+				ViewAccessor = MemMap.CreateViewAccessor(offset: 0, size: Const.RIG_BUFFER_SIZE);
+				unsafe {
+					ViewAccessor.SafeMemoryMappedViewHandle.AcquirePointer(ref BufferPointer);
+				}
 			}
-		}
-		unsafe {
-			*BufferPointer = 1;
-		}
+			unsafe {
+				*BufferPointer = 1;
+			}
 
-		var process = new Process();
-		process.StartInfo.FileName = ExePath;
-		process.StartInfo.UseShellExecute = false;
-		process.StartInfo.CreateNoWindow = true;
-		process.StartInfo.Arguments = GetArgumentsForRigGame(gameLibFolder);
-		process.StartInfo.WorkingDirectory = gameBuildFolder;
+			var process = new Process();
+			process.StartInfo.FileName = ExePath;
+			process.StartInfo.UseShellExecute = false;
+			process.StartInfo.CreateNoWindow = true;
+			process.StartInfo.Arguments = GetArgumentsForRigGame(gameLibFolder);
+			process.StartInfo.WorkingDirectory = gameBuildFolder;
 #if DEBUG
-		process.StartInfo.RedirectStandardOutput = true;
-		process.StartInfo.RedirectStandardError = true;
+			process.StartInfo.RedirectStandardOutput = true;
+			process.StartInfo.RedirectStandardError = true;
 #endif
 
-		bool processStarted = process.Start();
-		if (!processStarted) {
-			return ERROR_PROCESS_FAIL_TO_START;
-		}
-
-		try {
+			bool processStarted = process.Start();
+			if (!processStarted) {
+				return ERROR_PROCESS_FAIL_TO_START;
+			}
 
 			RigPipeClientProcess = process;
 
@@ -109,7 +108,7 @@ public class RiggedTransceiver {
 				try {
 					string line;
 					while ((line = RigPipeClientProcess.StandardOutput.ReadLine()) != null) {
-						Debug.Log("[rig]" + line);
+						Debug.Log("|" + line);
 					}
 				} catch { }
 			});
@@ -117,7 +116,7 @@ public class RiggedTransceiver {
 				try {
 					string line;
 					while ((line = RigPipeClientProcess.StandardError.ReadLine()) != null) {
-						Debug.LogError("[rig]" + line);
+						Debug.LogError("|" + line);
 					}
 				} catch { }
 			});
@@ -171,7 +170,7 @@ public class RiggedTransceiver {
 				Thread.Sleep(1);
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
-			UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
+			UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: false);
 			return;
 		}
 		_HANDLE_:;
@@ -198,18 +197,17 @@ public class RiggedTransceiver {
 	}
 
 
-	public void RequireFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(0, true);
-
-
-	public void RequireLostFocusInvoke () => CallingMessage.RequireGameMessageInvoke.SetBit(1, true);
-
-
 	public void SetStartViewPos (int viewX, int viewY, int viewZ, int viewHeight) {
 		RespondMessage.ViewX = viewX;
 		RespondMessage.ViewY = viewY;
 		RespondMessage.ViewZ = viewZ;
 		RespondMessage.ViewHeight = viewHeight.GreaterOrEquel(1);
 	}
+
+
+	public void RequireFocusInvoke () => CallingMessage.RequireFocusInvoke();
+	public void RequireLostFocusInvoke () => CallingMessage.RequireLostFocusInvoke();
+	public void RequireClearCharPoolInvoke () => CallingMessage.RequireClearCharPoolInvoke();
 
 
 	#endregion
@@ -232,7 +230,7 @@ public class RiggedTransceiver {
 		RigArgBuilder.Append($"-pID:{Process.GetCurrentProcess().Id}");
 		RigArgBuilder.Append(' ');
 
-		RigArgBuilder.Append($"-fontCount:{Game.FontCount}");
+		RigArgBuilder.Append($"-fontCount:{Game.FontCount - Game.BuiltInFontCount}");
 		RigArgBuilder.Append(' ');
 
 		if (RespondMessage.ViewHeight > 0) {

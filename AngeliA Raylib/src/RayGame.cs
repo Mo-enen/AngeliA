@@ -99,7 +99,6 @@ public partial class RayGame : Game {
 		);
 
 		// Pipeline
-		Fonts = FontData.LoadFromFile(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"));
 		InitializeShader();
 		Raylib.InitAudioDevice();
 
