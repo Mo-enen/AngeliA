@@ -57,6 +57,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	};
 
 	// Api
+	public static FileBrowserUI Instance { get; private set; }
 	public static bool ShowingBrowser => Instance != null && Instance.Active;
 	public IRect BackgroundRect { get; private set; }
 	protected override bool BlockEvent => true;
@@ -66,7 +67,6 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	public string Title { get; set; } = "";
 
 	// Data
-	private static FileBrowserUI Instance = null;
 	private static readonly List<string> Disks = new();
 	private readonly List<ItemData> Items = new();
 	private System.Action<string> OnPathPicked = null;

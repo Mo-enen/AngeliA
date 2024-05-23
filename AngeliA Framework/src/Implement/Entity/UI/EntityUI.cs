@@ -24,6 +24,8 @@ public abstract class EntityUI : Entity {
 	private static int BlockingEventFrame = -1;
 
 	// MSG
+	public EntityUI () => Active = false;
+
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		if (BlockEvent) Input.IgnoreAllInput(0);

@@ -216,6 +216,7 @@ public partial class RiggedGame : Game {
 		}
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(2)) {
 			CharPool.Clear();
+			Renderer.ClearCharSpritePool();
 		}
 
 		// Gizmos Texture Requirement

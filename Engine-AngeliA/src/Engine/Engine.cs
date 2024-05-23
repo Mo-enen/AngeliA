@@ -86,18 +86,9 @@ public class Engine {
 	private static readonly LanguageCode LOG_ERROR_ENTRY_RESULT_NOT_FOUND = ("Log.BuildError.EntryResultNotFound", "Build Error: Entry exe file result not found");
 
 	// Data
-	private static readonly Engine Instance = new();
-	private readonly GenericPopupUI GenericPopup = new() { Active = false };
-	private readonly GenericDialogUI GenericDialog = new() { Active = false };
-	private readonly FileBrowserUI FileBrowser = new() { Active = false };
-	private readonly RiggedMapEditor RiggedMapEditor = new();
-	private readonly RiggedItemEditor RiggedItemEditor = new();
-	private readonly PixelEditor PixelEditor = new();
-	private readonly LanguageEditor LanguageEditor = new(ignoreRequirements: true);
-	private readonly Console Console = new();
-	private readonly ProjectEditor ProjectEditor = new();
-	private readonly SettingWindow SettingWindow = new();
-	private readonly EntityUI[] ALL_UI;
+	private static Engine Instance = null;
+	private readonly EntityUI[] AllGenericUIs;
+	private readonly WindowUI[] AllWindows;
 	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
 	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
@@ -126,7 +117,6 @@ public class Engine {
 	private int RigItemEditorWindowIndex = -1;
 	private long RequireBackgroundBuildDate = 0;
 	private int RigLastCalledFrame = -1;
-	private int WindowCount = 0;
 	private int LastShowingGenericUIFrame = int.MinValue;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
@@ -154,11 +144,25 @@ public class Engine {
 
 	// Init
 	private Engine () {
-		ALL_UI = new EntityUI[]{
-			GenericPopup, GenericDialog, FileBrowser, // Generic
-			RiggedMapEditor, RiggedItemEditor, PixelEditor, LanguageEditor, Console, ProjectEditor, SettingWindow, // Window UI
+		AllGenericUIs = new EntityUI[] {
+			new GenericPopupUI(),
+			new GenericDialogUI(),
+			new FileBrowserUI(),
+		};
+		AllWindows = new WindowUI[]{
+			new RiggedMapEditor(),
+			new RiggedItemEditor(),
+			new PixelEditor(),
+			new LanguageEditor(),
+			new Console(),
+			new ProjectEditor(Transceiver),
+			new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
 		};
 	}
+
+
+	[OnGameInitialize(-4096)]
+	internal static void OnGameInitialize () => Instance = new();
 
 
 	[OnGameInitializeLater]
@@ -218,18 +222,12 @@ public class Engine {
 		}
 
 		// UI Window
-		WindowCount = 0;
-		ALL_UI.ForEach<WindowUI>((win, index) => {
+		for (int i = 0; i < AllWindows.Length; i++) {
+			var win = AllWindows[i];
 			win.OnActivated();
-			if (win is RiggedMapEditor) RigMapEditorWindowIndex = index;
-			if (win is RiggedItemEditor) RigItemEditorWindowIndex = index;
-			WindowCount++;
-		});
-		SettingWindow.Initialize(
-			EngineSetting.BackgroundColor.Value.ToColorF(),
-			EngineSetting.BackgroundColor.DefaultValue
-		);
-		ProjectEditor.Initialize(Transceiver);
+			if (win is RiggedMapEditor) RigMapEditorWindowIndex = i;
+			if (win is RiggedItemEditor) RigItemEditorWindowIndex = i;
+		}
 
 		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
 
@@ -249,7 +247,7 @@ public class Engine {
 			case 0:
 				RigGameFailToStartCount = 0;
 				RigGameFailToStartFrame = int.MinValue;
-				Console.RemoveAllCompileErrors();
+				Console.Instance.RemoveAllCompileErrors();
 				break;
 
 			default:
@@ -257,13 +255,13 @@ public class Engine {
 				break;
 
 			case EngineUtil.ERROR_USER_CODE_COMPILE_ERROR:
-				Console.BeginCompileError();
+				Console.Instance.BeginCompileError();
 				try {
 					while (EngineUtil.BackgroundBuildMessages.Count > 0) {
 						Debug.LogError(EngineUtil.BackgroundBuildMessages.Dequeue());
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
-				Console.EndCompileError();
+				Console.Instance.EndCompileError();
 				break;
 
 			case EngineUtil.ERROR_PROJECT_OBJECT_IS_NULL:
@@ -353,10 +351,8 @@ public class Engine {
 		return false;
 		// Func
 		static void SaveAndQuit () {
-			foreach (var ui in Instance.ALL_UI) {
-				if (ui is WindowUI window && window.IsDirty) {
-					window.Save();
-				}
+			foreach (var window in Instance.AllWindows) {
+				if (window.IsDirty) window.Save();
 			}
 			Game.QuitApplication();
 		}
@@ -375,7 +371,7 @@ public class Engine {
 			WindowPositionY.Value = windowPos.y;
 		}
 		ProjectPaths.Value = Instance.Projects.JoinArray(p => p.Path, ';');
-		Instance.ALL_UI.ForEach<WindowUI>(win => win.OnInactivated());
+		foreach (var win in Instance.AllWindows) win.OnInactivated();
 		Instance.Transceiver.Quit();
 		var viewPos = Instance.Transceiver.LastRigViewPos;
 		var viewHeight = Instance.Transceiver.LastRigViewHeight;
@@ -474,26 +470,22 @@ public class Engine {
 		int hubPanelWidth = GUI.Unify(HUB_PANEL_WIDTH);
 
 		// --- Generic UI ---
-		foreach (var ui in ALL_UI) {
-			if (ui is WindowUI) {
-				ui.Active = false;
-				continue;
-			}
-			if (ui.Active) {
-				ui.FirstUpdate();
-				ui.BeforeUpdate();
-				ui.Update();
-				ui.LateUpdate();
-				if (GUI.Enable && ui is not WindowUI) {
-					GUI.Enable = false;
-				}
+		foreach (var win in AllWindows) win.Active = false;
+		foreach (var ui in AllGenericUIs) {
+			if (!ui.Active) continue;
+			ui.FirstUpdate();
+			ui.BeforeUpdate();
+			ui.Update();
+			ui.LateUpdate();
+			if (GUI.Enable && ui is not WindowUI) {
+				GUI.Enable = false;
 			}
 		}
 
 		// --- File Browser ---
-		if (FileBrowser.Active) {
-			FileBrowser.Width = GUI.Unify(800);
-			FileBrowser.Height = GUI.Unify(600);
+		if (FileBrowserUI.Instance.Active) {
+			FileBrowserUI.Instance.Width = GUI.Unify(800);
+			FileBrowserUI.Instance.Height = GUI.Unify(600);
 		}
 
 		using (Scope.RendererLayerUI()) {
@@ -658,15 +650,15 @@ public class Engine {
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
-		bool interactable = true;
 
-		foreach (var ui in ALL_UI) {
-			if (ui is not WindowUI && ui.Active) {
-				interactable = false;
-				LastShowingGenericUIFrame = Game.PauselessFrame;
-				break;
-			}
+		bool interactable = true;
+		foreach (var ui in AllGenericUIs) {
+			if (!ui.Active) continue;
+			interactable = false;
+			LastShowingGenericUIFrame = Game.PauselessFrame;
 		}
+
+		PixelEditor.Instance.Interactable = interactable;
 
 		using (Scope.GUIEnable(true, interactable))
 		using (Scope.RendererLayerUI()) {
@@ -688,11 +680,9 @@ public class Engine {
 			rect.y -= rect.height;
 
 			// Window Tabs
-			int index = 0;
-			for (int i = 0; i < ALL_UI.Length; i++) {
+			for (int index = 0; index < AllWindows.Length; index++) {
 
-				if (ALL_UI[i] is not WindowUI window) continue;
-				if (index >= WindowCount) break;
+				var window = AllWindows[index];
 
 				bool selecting = index == CurrentWindowIndex;
 				bool hovering = GUI.Enable && rect.Contains(mousePos);
@@ -756,7 +746,6 @@ public class Engine {
 
 				// Next
 				rect.SlideDown();
-				index++;
 			}
 
 			// Back to Hub
@@ -784,46 +773,57 @@ public class Engine {
 		}
 
 		// Switch Active Window
-		{
-			WindowUI.ForceWindowRect(cameraRect.Shrink(barWidth, 0, 0, 0));
-			int index = 0;
-			foreach (var ui in ALL_UI) {
-				if (ui is not WindowUI win) continue;
-				bool active = index == CurrentWindowIndex;
-				index++;
-				if (active == win.Active) continue;
-				win.Active = active;
-				if (active) {
-					win.OnActivated();
-				} else {
-					win.OnInactivated();
-				}
+		WindowUI.ForceWindowRect(cameraRect.Shrink(barWidth, 0, 0, 0));
+		for (int i = 0; i < AllWindows.Length; i++) {
+			var win = AllWindows[i];
+			bool active = i == CurrentWindowIndex;
+			if (active == win.Active) continue;
+			win.Active = active;
+			if (active) {
+				win.OnActivated();
+			} else {
+				win.OnInactivated();
 			}
 		}
 
-		// Update UI
+		// Update Generic UI
 		bool oldE = GUI.Interactable;
-		foreach (var ui in ALL_UI) {
+		GUI.Interactable = true;
+		foreach (var ui in AllGenericUIs) {
 			if (!ui.Active) continue;
-			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.FirstUpdate();
 		}
-		foreach (var ui in ALL_UI) {
+		foreach (var ui in AllGenericUIs) {
 			if (!ui.Active) continue;
-			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.BeforeUpdate();
 		}
-		foreach (var ui in ALL_UI) {
+		foreach (var ui in AllGenericUIs) {
 			if (!ui.Active) continue;
-			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.Update();
 		}
-		foreach (var ui in ALL_UI) {
+		foreach (var ui in AllGenericUIs) {
 			if (!ui.Active) continue;
-			GUI.Interactable = interactable || ui is not WindowUI;
 			ui.LateUpdate();
 		}
 		GUI.Interactable = oldE;
+
+		// Update Window UI
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.FirstUpdate();
+		}
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.BeforeUpdate();
+		}
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.Update();
+		}
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.LateUpdate();
+		}
 
 		// Misc
 		if (GenericDialogUI.ShowingDialog) {
@@ -831,9 +831,9 @@ public class Engine {
 		}
 
 		// Change Theme
-		if (SettingWindow.RequireChangeThemePath != null) {
-			string path = SettingWindow.RequireChangeThemePath;
-			SettingWindow.RequireChangeThemePath = null;
+		if (SettingWindow.Instance.RequireChangeThemePath != null) {
+			string path = SettingWindow.Instance.RequireChangeThemePath;
+			SettingWindow.Instance.RequireChangeThemePath = null;
 			if (path != "" && Util.FileExists(path) && ThemeSheet.LoadFromDisk(path)) {
 				ThemeSkin.Name = Util.GetDisplayName(Util.GetNameWithoutExtension(path));
 				ThemeSkin.LoadColorFromSheet(ThemeSheet);
@@ -851,8 +851,8 @@ public class Engine {
 
 		// Update Tooltip
 		bool hoveringSameRect = false;
-		foreach (var ui in ALL_UI) {
-			if (ui is not WindowUI window || !window.Active) continue;
+		foreach (var window in AllWindows) {
+			if (!window.Active) continue;
 			string content = window.RequiringTooltipContent;
 			if (content != null && EngineSetting.UseTooltip.Value) {
 				ToolLabel = content;
@@ -870,8 +870,7 @@ public class Engine {
 		if (!hoveringSameRect) HoveringTooltipDuration = 0;
 
 		// Update Notify
-		foreach (var ui in ALL_UI) {
-			if (ui is not WindowUI window) continue;
+		foreach (var window in AllWindows) {
 			if (window.NotificationContent != null && EngineSetting.UseNotification.Value) {
 				NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
 				NotificationStartFrame = Game.GlobalFrame;
@@ -888,11 +887,11 @@ public class Engine {
 
 		// Clear Console
 		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.C)) {
-			Console.Clear();
+			Console.Instance.Clear();
 		}
 
 		// Update Project Editor
-		if (Input.KeyboardDownWithCtrl(KeyboardKey.R) || ProjectEditor.RequiringRebuildFrame == Game.GlobalFrame) {
+		if (Input.KeyboardDownWithCtrl(KeyboardKey.R) || ProjectEditor.Instance.RequiringRebuildFrame == Game.GlobalFrame) {
 			RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
 			if (RequireBackgroundBuildDate == 0) {
 				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
@@ -913,7 +912,7 @@ public class Engine {
 			ToolLabel = null;
 			return;
 		}
-		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog || FileBrowser.Active) return;
+		if (Game.PauselessFrame <= LastShowingGenericUIFrame + 1) return;
 		if (HoveringTooltipDuration < 60) return;
 		var cameraRect = Renderer.CameraRect;
 		bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
@@ -1042,15 +1041,16 @@ public class Engine {
 			}
 		}
 
+		int sheetIndex = PixelEditor.Instance.SheetIndex;
 		if (buildingProjectInBackground) {
 			// Building in Background
 			if (CurrentWindowRequireRigGame) {
-				Transceiver.UpdateLastRespondedRender(PixelEditor.SheetIndex, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
 			}
 		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
 			if (RigLastCalledFrame == Game.GlobalFrame) {
-				Transceiver.Respond(PixelEditor.SheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
+				Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
 			}
 		} else if (
 			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
@@ -1069,7 +1069,7 @@ public class Engine {
 			}
 			if (CurrentWindowRequireRigGame) {
 				// Still Render Last Image
-				Transceiver.UpdateLastRespondedRender(PixelEditor.SheetIndex, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
 			}
 		}
 
@@ -1144,13 +1144,13 @@ public class Engine {
 
 
 	private bool CheckAnyEditorDirty () {
-		foreach (var ui in ALL_UI) if (ui is WindowUI window && window.IsDirty) return true;
+		foreach (var window in AllWindows) if (window.IsDirty) return true;
 		return false;
 	}
 
 
 	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
-		index = index.Clamp(0, WindowCount - 1);
+		index = index.Clamp(0, AllWindows.Length - 1);
 		if (!forceChange && index == CurrentWindowIndex) return;
 		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex || index == RigItemEditorWindowIndex;
 		if (CurrentWindowRequireRigGame) {
@@ -1187,8 +1187,8 @@ public class Engine {
 		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
 
 		// Windows
-		LanguageEditor.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
-		PixelEditor.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
+		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		ProjectEditor.CurrentProject = CurrentProject;
 
 		// Audio
@@ -1224,23 +1224,23 @@ public class Engine {
 		}
 		// Func
 		static void SaveAndClose () {
-			foreach (var ui in Instance.ALL_UI) {
-				if (ui is WindowUI window && window.IsDirty) {
-					window.Save();
-				}
+			foreach (var window in Instance.AllWindows) {
+				if (window.IsDirty) window.Save();
 			}
 			Close();
 		}
 		static void Close () {
 			Instance.CurrentProject = null;
-			foreach (var ui in Instance.ALL_UI) {
+			foreach (var ui in Instance.AllWindows) {
 				ui.Active = false;
-				if (ui is WindowUI) {
-					ui.OnInactivated();
-				}
+				ui.OnInactivated();
 			}
-			Instance.LanguageEditor.SetLanguageRoot("");
-			Instance.PixelEditor.LoadSheetFromDisk("");
+			foreach (var ui in Instance.AllGenericUIs) {
+				ui.Active = false;
+				ui.OnInactivated();
+			}
+			LanguageEditor.Instance.SetLanguageRoot("");
+			PixelEditor.Instance.LoadSheetFromDisk("");
 			ProjectEditor.CurrentProject = null;
 			Game.SetWindowTitle("AngeliA Engine");
 		}

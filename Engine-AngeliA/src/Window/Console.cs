@@ -49,6 +49,7 @@ public class Console : WindowUI {
 	private static readonly LanguageCode TIP_CLEAR = ("Tip.ConsoleClear", "Clear messages (Ctrl + Shift + C)");
 
 	// Api
+	public static Console Instance { get; private set; }
 	public bool HasCompileError => CompileErrorLines.Length > 0;
 	public override string DefaultName => "Console";
 
@@ -69,6 +70,7 @@ public class Console : WindowUI {
 
 
 	public Console () {
+		Instance = this;
 		Debug.OnLog += OnLog;
 		Debug.OnLogError += OnLogError;
 		Debug.OnLogWarning += OnLogWarning;

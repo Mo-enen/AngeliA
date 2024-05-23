@@ -33,7 +33,7 @@ public abstract class FontData {
 		Size = 42;
 		Scale = 1f;
 		BuiltIn = builtIn;
-
+		
 		// Size
 		int sizeTagIndex = name.IndexOf("#size=", StringComparison.OrdinalIgnoreCase);
 		if (sizeTagIndex >= 0 && Util.TryGetIntFromString(name, sizeTagIndex + 6, out int size, out _)) {

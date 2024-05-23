@@ -27,11 +27,11 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
 
 	// Api
+	public static SettingWindow Instance { get; private set; }
 	public string RequireChangeThemePath { get; set; } = null;
 	public override string DefaultName => "Setting";
 
 	// Data
-	private static SettingWindow Instance;
 	private readonly List<(string path, string name)> ThemePaths = new();
 	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
@@ -48,8 +48,11 @@ public class SettingWindow : WindowUI {
 	#region --- MSG ---
 
 
-	public SettingWindow () => Instance = this;
-
+	public SettingWindow (ColorF pixEditorBackgroundColor, Color32 backgroundColorDefault) {
+		Instance = this;
+		PixEditorBackgroundColor = pixEditorBackgroundColor;
+		BackgroundColorDefault = backgroundColorDefault;
+	}
 
 	[OnGameFocused]
 	internal static void OnGameFocused () => Instance?.RequireReloadThemePath();
@@ -70,7 +73,7 @@ public class SettingWindow : WindowUI {
 			var rect = panelRect.EdgeInside(Direction4.Up, GUI.FieldHeight);
 
 			using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), rect.width / 2));
-			
+
 			DrawPanel(ref rect, Update_Engine);
 			DrawPanel(ref rect, Update_PixelEditor);
 			DrawPanel(ref rect, Update_Console);
@@ -186,12 +189,6 @@ public class SettingWindow : WindowUI {
 
 
 	#region --- API ---
-
-
-	public void Initialize (ColorF pixEditorBackgroundColor, Color32 backgroundColorDefault) {
-		PixEditorBackgroundColor = pixEditorBackgroundColor;
-		BackgroundColorDefault = backgroundColorDefault;
-	}
 
 
 	public void RequireReloadThemePath () => RequiringReloadThemePath = true;

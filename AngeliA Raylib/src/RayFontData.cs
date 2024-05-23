@@ -11,45 +11,19 @@ public class RayFontData : FontData {
 	private unsafe byte* Data = null;
 	private int ByteSize = 0;
 
-	public unsafe bool TryGetCharData (char c, out GlyphInfo info, out Texture2D texture) {
-
-		info = default;
-		texture = default;
-
-		if (ByteSize == 0) return false;
-
-		var data = Data;
-		int dataSize = ByteSize;
-		int charInt = c;
-		var infoPtr = Raylib.LoadFontData(data, dataSize, Size, &charInt, 1, FontType.Default);
-		if (infoPtr == null) return false;
-
-		info = infoPtr[0];
-		var img = info.Image;
-		int imgLen = img.Width * img.Height;
-		if (imgLen != 0) {
-			Raylib.ImageFormat(ref img, PixelFormat.UncompressedR32G32B32A32);
-			Raylib.ImageColorReplace(ref img, Color.Black, Color.Blank);
-			texture = Raylib.LoadTextureFromImage(img);
-			Raylib.SetTextureFilter(texture, TextureFilter.Bilinear);
-			Raylib.SetTextureWrap(texture, TextureWrap.Clamp);
-			return true;
-		}
-		return false;
-	}
-
+	// API
 	public override bool TryGetCharSprite (char c, out CharSprite result) {
 		result = null;
-		if (!TryGetCharData(c, out var info, out var texture)) return true;
+		if (!TryGetCharData(c, out Int2 offset, out int advance, out Int2 imageSize, out var texture)) return true;
 		float finalFontSize = Size / Scale;
 		result = new CharSprite {
 			Char = c,
-			Advance = info.AdvanceX / finalFontSize,
+			Advance = advance / finalFontSize,
 			Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
-				xmin: info.OffsetX / finalFontSize,
-				ymin: (finalFontSize - info.OffsetY - info.Image.Height) / finalFontSize,
-				xmax: (info.OffsetX + info.Image.Width) / finalFontSize,
-				ymax: (finalFontSize - info.OffsetY) / finalFontSize
+				xmin: offset.x / finalFontSize,
+				ymin: (finalFontSize - offset.y - imageSize.y) / finalFontSize,
+				xmax: (offset.x + imageSize.x) / finalFontSize,
+				ymax: (finalFontSize - offset.y) / finalFontSize
 			),
 			Texture = texture,
 		};
@@ -69,6 +43,41 @@ public class RayFontData : FontData {
 			Data = null;
 			ByteSize = 0;
 		} catch (Exception ex) { Debug.LogException(ex); }
+	}
+
+	// LGC
+	private unsafe bool TryGetCharData (char c, out Int2 offset, out int advance, out Int2 imageSize, out Texture2D texture) {
+
+		offset = Int2.zero;
+		advance = 0;
+		imageSize = Int2.zero;
+		texture = default;
+
+		if (ByteSize == 0) return false;
+
+		var data = Data;
+		int dataSize = ByteSize;
+		int charInt = c;
+
+		var infoPtr = Raylib.LoadFontData(data, dataSize, Size, &charInt, 1, FontType.Default);
+		if (infoPtr == null) return false;
+
+		GlyphInfo info = infoPtr[0];
+		offset = new(info.OffsetX, info.OffsetY);
+		advance = info.AdvanceX;
+		imageSize = new(info.Image.Width, info.Image.Height);
+		var img = info.Image;
+
+		int imgLen = img.Width * img.Height;
+		if (imgLen != 0) {
+			Raylib.ImageFormat(ref img, PixelFormat.UncompressedR32G32B32A32);
+			Raylib.ImageColorReplace(ref img, Color.Black, Color.Blank);
+			texture = Raylib.LoadTextureFromImage(img);
+			Raylib.SetTextureFilter(texture, TextureFilter.Bilinear);
+			Raylib.SetTextureWrap(texture, TextureWrap.Clamp);
+		}
+
+		return imgLen != 0;
 	}
 
 }

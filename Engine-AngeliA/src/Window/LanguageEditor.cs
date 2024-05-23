@@ -47,6 +47,7 @@ public partial class LanguageEditor : WindowUI {
 	private const int SEARCH_ID = -19223;
 
 	// Api
+	public static LanguageEditor Instance { get; private set; }
 	public string LanguageRoot { get; private set; } = "";
 	public bool IgnoreRequirements { get; init; } = false;
 	public override string DefaultName => "Language";
@@ -69,6 +70,7 @@ public partial class LanguageEditor : WindowUI {
 
 
 	public LanguageEditor (bool ignoreRequirements = false) {
+		Instance = this;
 		IgnoreRequirements = ignoreRequirements;
 	}
 

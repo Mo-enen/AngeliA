@@ -25,7 +25,7 @@ public class RiggedTransceiver {
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
 	public Int3? LastRigViewPos { get; private set; } = null;
 	public int? LastRigViewHeight { get; private set; } = null;
-
+	
 	// Data
 	private readonly RiggedCallingMessage CallingMessage = new();
 	private readonly RiggedRespondMessage RespondMessage = new();

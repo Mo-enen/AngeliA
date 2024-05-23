@@ -35,17 +35,17 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_LINK_SAVING = ("Setting.Link.Saving", "Saving Folder");
 
 	// Api
-	protected override bool BlockEvent => true;
+	public static ProjectEditor Instance { get; private set; }
 	public static Project CurrentProject { get; set; }
-	public override string DefaultName => "Project";
 	public int RequiringRebuildFrame { get; private set; } = -2;
+	protected override bool BlockEvent => true;
+	public override string DefaultName => "Project";
 
 	// Data
-	private static ProjectEditor Instance;
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 16, };
+	private readonly RiggedTransceiver Transceiver;
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
-	private RiggedTransceiver RiggedGame;
 
 
 	#endregion
@@ -56,10 +56,10 @@ public class ProjectEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public ProjectEditor () => Instance = this;
-
-
-	public void Initialize (RiggedTransceiver riggedGame) => RiggedGame = riggedGame;
+	public ProjectEditor (RiggedTransceiver transceiver) {
+		Instance = this;
+		Transceiver = transceiver;
+	}
 
 
 	public override void BeforeUpdate () {
@@ -179,8 +179,8 @@ public class ProjectEditor : WindowUI {
 		static void PublishProject (string path) {
 			if (string.IsNullOrWhiteSpace(path)) return;
 			if (EngineUtil.BuildingProjectInBackground) return;
-			if (Instance.RiggedGame.RigProcessRunning) {
-				Instance.RiggedGame.Abort();
+			if (Instance.Transceiver.RigProcessRunning) {
+				Instance.Transceiver.Abort();
 			}
 			int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, path);
 			if (returnCode != 0) {
