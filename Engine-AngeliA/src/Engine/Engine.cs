@@ -87,8 +87,6 @@ public class Engine {
 
 	// Data
 	private static Engine Instance = null;
-	private readonly EntityUI[] AllGenericUIs;
-	private readonly WindowUI[] AllWindows;
 	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
 	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
@@ -97,6 +95,8 @@ public class Engine {
 	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
 	private readonly RiggedTransceiver Transceiver = new(EngineUtil.RiggedExePath);
+	private EntityUI[] AllGenericUIs;
+	private WindowUI[] AllWindows;
 	private Project CurrentProject = null;
 	private ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
 	private IRect ToolLabelRect;
@@ -116,7 +116,6 @@ public class Engine {
 	private int RigMapEditorWindowIndex = -1;
 	private int RigItemEditorWindowIndex = -1;
 	private long RequireBackgroundBuildDate = 0;
-	private int RigLastCalledFrame = -1;
 	private int LastShowingGenericUIFrame = int.MinValue;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
@@ -143,30 +142,28 @@ public class Engine {
 
 
 	// Init
-	private Engine () {
-		AllGenericUIs = new EntityUI[] {
-			new GenericPopupUI(),
-			new GenericDialogUI(),
-			new FileBrowserUI(),
-		};
-		AllWindows = new WindowUI[]{
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () {
+		var engine = new Engine();
+		engine.AllWindows = new WindowUI[]{
 			new RiggedMapEditor(),
 			new RiggedItemEditor(),
 			new PixelEditor(),
 			new LanguageEditor(),
 			new Console(),
-			new ProjectEditor(Transceiver),
+			new ProjectEditor(engine.Transceiver),
 			new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
 		};
+		engine.AllGenericUIs = new EntityUI[] {
+			new GenericPopupUI(),
+			new GenericDialogUI(),
+			new FileBrowserUI(),
+		};
+		Instance = engine;
+		engine.InitializeEngine();
 	}
 
 
-	[OnGameInitialize(-4096)]
-	internal static void OnGameInitialize () => Instance = new();
-
-
-	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () => Instance.InitializeEngine();
 	private void InitializeEngine () {
 
 #if DEBUG
@@ -239,14 +236,15 @@ public class Engine {
 
 	// Rebuild
 	[OnProjectBuiltInBackground]
-	internal static void OnProjectBuiltInBackground (int code) => Instance.RiggedGameRebuild(code);
-	private void RiggedGameRebuild (int code) {
+	internal static void RiggedGameRebuild (int code) {
+
+		if (Instance == null) return;
 
 		switch (code) {
 
 			case 0:
-				RigGameFailToStartCount = 0;
-				RigGameFailToStartFrame = int.MinValue;
+				Instance.RigGameFailToStartCount = 0;
+				Instance.RigGameFailToStartFrame = int.MinValue;
 				Console.Instance.RemoveAllCompileErrors();
 				break;
 
@@ -323,9 +321,10 @@ public class Engine {
 	// Focus
 	[OnGameFocused]
 	internal static void OnGameFocused () {
-		Instance.CheckScriptChanged();
-		Instance.RefreshProjectCache();
-		Instance.CheckFontChanged();
+		Instance?.CheckScriptChanged();
+		Instance?.RefreshProjectCache();
+		Instance?.CheckFontChanged();
+		Instance?.CheckAudioChanged();
 	}
 
 
@@ -397,41 +396,6 @@ public class Engine {
 
 
 	// Update
-	[OnGameUpdate]
-	internal static void OnGameUpdate () => Instance.UpdateRiggedGame();
-
-
-	private void UpdateRiggedGame () {
-
-		if (
-			CurrentProject == null ||
-			EngineUtil.BuildingProjectInBackground ||
-			!Transceiver.RigProcessRunning ||
-			!CurrentWindowRequireRigGame
-		) return;
-
-		if (Input.AnyMouseButtonDown) {
-			IgnoreInputForRig = IgnoreInputForRig || !WindowUI.WindowRect.Contains(Input.MouseGlobalPosition);
-		}
-		if (!Input.AnyMouseButtonHolding) {
-			IgnoreInputForRig = false;
-		}
-
-		Transceiver.Call(
-			ignoreInput: IgnoreInputForRig || Game.PauselessFrame < LastShowingGenericUIFrame + 6,
-			leftPadding: (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
-			requiringWindowIndex: (byte)(
-				CurrentWindowIndex == RigMapEditorWindowIndex ? 0 :
-				CurrentWindowIndex == RigItemEditorWindowIndex ? 1 :
-				0
-			)
-		);
-
-		RigLastCalledFrame = Game.GlobalFrame;
-
-	}
-
-
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGameUpdateLater () => Instance.OnGUI();
 
@@ -458,6 +422,7 @@ public class Engine {
 			OnGUI_Window();
 			OnGUI_Hotkey();
 		}
+
 		OnGUI_RiggedGame();
 
 	}
@@ -477,9 +442,7 @@ public class Engine {
 			ui.BeforeUpdate();
 			ui.Update();
 			ui.LateUpdate();
-			if (GUI.Enable && ui is not WindowUI) {
-				GUI.Enable = false;
-			}
+			if (GUI.Enable) GUI.Enable = false;
 		}
 
 		// --- File Browser ---
@@ -561,19 +524,17 @@ public class Engine {
 					bool folderExists = projects[i].FolderExists;
 					var itemContentRect = rect.Shrink(padding);
 
-					using var _ = Scope.GUIEnable(folderExists);
-
 					// Step Tint
 					if (stepTint) Renderer.DrawPixel(rect, Color32.WHITE_6);
 					stepTint = !stepTint;
 
 					// Red Highlight
-					if (!folderExists && rect.MouseInside()) {
+					if (!folderExists && GUI.Enable && rect.MouseInside()) {
 						Renderer.DrawPixel(rect, Color32.RED.WithNewA(32));
 					}
 
 					// Button
-					if (GUI.Button(rect, 0, GUI.Skin.HighlightPixel)) {
+					if (GUI.Button(rect, 0, GUI.Skin.HighlightPixel) && folderExists) {
 						OpenProject(projectPath);
 					}
 
@@ -599,7 +560,8 @@ public class Engine {
 					);
 
 					// Click
-					if (rect.MouseInside()) {
+					if (GUI.Enable && rect.MouseInside()) {
+
 						// Menu
 						if (Input.MouseRightButtonDown) {
 							Input.UseAllMouseKey();
@@ -619,7 +581,7 @@ public class Engine {
 					rect.SlideDown();
 				}
 
-				if (Input.MouseRightButtonDown) {
+				if (GUI.Enable && Input.MouseRightButtonDown) {
 					Input.UseAllMouseKey();
 					OpenHubPanelPopup();
 				}
@@ -671,8 +633,11 @@ public class Engine {
 			// Menu Button
 			var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
 			GUI.DrawSliceOrTile(UI_ENGINE_BAR_BTN, rect);
-			if (GUI.BlankButton(rect, out _)) {
+			if (GUI.BlankButton(rect, out var menuState)) {
 				menuButtonClicked = true;
+			}
+			if (menuState == GUIState.Hover) {
+				GUI.DrawSliceOrTile(UI_ENGINE_BAR_BTN_HIGHLIGHT, rect);
 			}
 
 			// Menu Icon
@@ -978,6 +943,35 @@ public class Engine {
 
 	private void OnGUI_RiggedGame () {
 
+		// Call
+		bool called = false;
+		if (
+			CurrentProject != null &&
+			!EngineUtil.BuildingProjectInBackground &&
+			Transceiver.RigProcessRunning &&
+			CurrentWindowRequireRigGame
+		) {
+			if (Input.AnyMouseButtonDown) {
+				IgnoreInputForRig = IgnoreInputForRig || !WindowUI.WindowRect.Contains(Input.MouseGlobalPosition);
+			}
+			if (!Input.AnyMouseButtonHolding) {
+				IgnoreInputForRig = false;
+			}
+
+			Transceiver.Call(
+				ignoreInput: IgnoreInputForRig || Game.PauselessFrame < LastShowingGenericUIFrame + 6,
+				leftPadding: (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
+				requiringWindowIndex: (byte)(
+					CurrentWindowIndex == RigMapEditorWindowIndex ? 0 :
+					CurrentWindowIndex == RigItemEditorWindowIndex ? 1 :
+					0
+				)
+			);
+
+			called = true;
+		}
+
+		// Respond
 		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
 		NoGameRunningFrameCount = Transceiver.RigProcessRunning || buildingProjectInBackground ? 0 : NoGameRunningFrameCount + 1;
 
@@ -1049,7 +1043,7 @@ public class Engine {
 			}
 		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
-			if (RigLastCalledFrame == Game.GlobalFrame) {
+			if (called) {
 				Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
 			}
 		} else if (
@@ -1134,12 +1128,13 @@ public class Engine {
 			BuiltInText.UI_CANCEL, Const.EmptyMethod
 		);
 		GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
-	}
-
-
-	private void DeleteProject () {
-		if (CurrentProjectMenuIndex < 0 || CurrentProjectMenuIndex >= Projects.Count) return;
-		Projects.RemoveAt(CurrentProjectMenuIndex);
+		// Func
+		static void DeleteProject () {
+			if (Instance == null) return;
+			int menuIndex = Instance.CurrentProjectMenuIndex;
+			if (menuIndex < 0 || menuIndex >= Instance.Projects.Count) return;
+			Instance.Projects.RemoveAt(menuIndex);
+		}
 	}
 
 
@@ -1290,6 +1285,7 @@ public class Engine {
 	}
 
 
+	// Change Check
 	private void CheckScriptChanged () {
 		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
 		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
@@ -1301,18 +1297,25 @@ public class Engine {
 	}
 
 
-	private void RefreshProjectCache () {
-		foreach (var project in Projects) {
-			project.FolderExists = Util.FolderExists(project.Path);
-		}
-	}
-
-
 	private void CheckFontChanged () {
 		if (CurrentProject == null) return;
 		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
 		if (changed) {
 			Transceiver.RequireClearCharPoolInvoke();
+		}
+	}
+
+
+	private void CheckAudioChanged () {
+		if (CurrentProject == null) return;
+		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
+	}
+
+
+	// Misc
+	private void RefreshProjectCache () {
+		foreach (var project in Projects) {
+			project.FolderExists = Util.FolderExists(project.Path);
 		}
 	}
 

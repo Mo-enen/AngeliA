@@ -30,6 +30,9 @@ public abstract partial class Game {
 	public static void OpenUrl (string url) => Instance._OpenUrl(url);
 	protected abstract void _OpenUrl (string url);
 
+	public static string[] GetDroppedFiles () => Instance._GetDroppedFiles();
+	protected virtual string[] _GetDroppedFiles () => null;
+
 
 	// Window
 	public static bool IsWindowFocused => Instance._IsWindowFocused();

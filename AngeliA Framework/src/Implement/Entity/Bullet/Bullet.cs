@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
@@ -64,7 +64,7 @@ public abstract class Bullet : Entity {
 			if (hit.Entity is not IDamageReceiver receiver) continue;
 			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 			if (receiver is Entity e && !e.Active) continue;
-			receiver.TakeDamage(new Damage(Damage, Sender, DamageType));
+			receiver.TakeDamage(new Damage(Damage, Sender, Rect, DamageType));
 			if (DestroyOnHitReceiver) {
 				Active = false;
 				BeforeDespawn(receiver);

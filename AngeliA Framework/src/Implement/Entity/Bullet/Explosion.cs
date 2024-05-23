@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [EntityAttribute.Layer(EntityLayer.BULLET)]
 [RequireSpriteFromField]
 [RequireSprite("{0}")]
@@ -43,7 +43,7 @@ public class Explosion : Entity {
 	// Data
 	private readonly Int3[] FirePos = new Int3[10];
 	private readonly Int3[] SmokePos = new Int3[2];
-	private bool Exploded = false;
+	private int ExplodedFrame = -1;
 
 
 	#endregion
@@ -56,9 +56,13 @@ public class Explosion : Entity {
 
 	public override void OnActivated () {
 		base.OnActivated();
+		if (FromWorld) {
+			X += Const.HALF;
+			Y += Const.HALF;
+		}
 		Sender = null;
 		BreakObjectArtwork = 0;
-		Exploded = false;
+		ExplodedFrame = -1;
 		int seed = Game.GlobalFrame;
 		for (int i = 0; i < FirePos.Length; i++) {
 			FirePos[i] = new Int3(
@@ -79,7 +83,7 @@ public class Explosion : Entity {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		if (Game.GlobalFrame >= SpawnFrame + Duration) {
+		if (ExplodedFrame >= 0 && Game.GlobalFrame >= ExplodedFrame + Duration) {
 			Active = false;
 			return;
 		}
@@ -90,8 +94,8 @@ public class Explosion : Entity {
 		base.Update();
 		if (!Active) return;
 		// Explode
-		if (!Exploded) {
-			Exploded = true;
+		if (ExplodedFrame < 0 && (!FromWorld || Stage.ViewRect.Shrink(Const.CEL * 0).Overlaps(Rect))) {
+			ExplodedFrame = Game.GlobalFrame;
 			var hits = Physics.OverlapAll(
 				CollisionMask,
 				new IRect(X - Radius, Y - Radius, Radius * 2, Radius * 2),
@@ -103,20 +107,18 @@ public class Explosion : Entity {
 				if (receiver is Entity e && !e.Active) continue;
 				var hitRect = hits[i].Rect;
 				if (!Util.OverlapRectCircle(Radius, X, Y, hitRect.xMin, hitRect.yMin, hitRect.xMax, hitRect.yMax)) continue;
-				receiver.TakeDamage(new Damage(Damage, Sender, SpriteTag.DAMAGE_EXPLOSIVE_TAG));
+				receiver.TakeDamage(new Damage(Damage, Sender, Rect, SpriteTag.DAMAGE_EXPLOSIVE_TAG));
 			}
+			SpawnSmoke();
+			SpawnBreakingObject();
 		}
 	}
 
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		if (!Active) return;
+		if (!Active || ExplodedFrame < 0) return;
 		RenderExplosion();
-		if (Game.GlobalFrame == SpawnFrame) {
-			SpawnSmoke();
-			SpawnBreakingObject();
-		}
 	}
 
 
@@ -130,7 +132,7 @@ public class Explosion : Entity {
 
 	protected virtual void RenderExplosion () {
 
-		float lerp01 = (float)(Game.GlobalFrame - SpawnFrame) / Duration;
+		float lerp01 = (float)(Game.GlobalFrame - ExplodedFrame) / Duration;
 		float ease01Cub = Ease.OutCubic(lerp01);
 		float ease01Ex = Ease.OutExpo(lerp01);
 		int radiusShrink = (int)Util.LerpUnclamped(Radius, Radius / 2, ease01Ex);

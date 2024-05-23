@@ -269,7 +269,11 @@ public partial class MapEditor {
 
 
 	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) {
-		if (sprite == null && !Renderer.TryGetSpriteFromGroup(artworkID, 0, out sprite)) {
+		if (
+			sprite == null && 
+			!Renderer.TryGetSprite(artworkID, out sprite) && 
+			!Renderer.TryGetSpriteFromGroup(artworkID, 0, out sprite
+		)) {
 			if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
 				Renderer.TryGetSprite(newID, out sprite);
 			}

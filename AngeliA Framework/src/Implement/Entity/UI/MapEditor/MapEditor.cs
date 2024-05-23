@@ -1205,6 +1205,7 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void DrawTooltip (IRect rect, string tip) {
 		if (GenericPopupUI.ShowingPopup) return;
+		rect.width = Unify(128);
 		TooltipDuration = rect == TooltipRect ? TooltipDuration + 1 : 0;
 		TooltipRect = rect;
 		if (TooltipDuration <= 60) return;
@@ -1215,7 +1216,7 @@ public sealed partial class MapEditor : WindowUI {
 			Util.Max(rect.y - height - Unify(12), Renderer.CameraRect.y),
 			rect.width, height
 		);
-		GUI.BackgroundLabel(tipRect, tip, Color32.BLACK, gap, true);
+		GUI.BackgroundLabel(tipRect, tip, Color32.BLACK, gap);
 	}
 
 

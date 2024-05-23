@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 
 
@@ -88,7 +88,7 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 		if (damage.Sender is Character character) {
 			RollingSpeed = (character.FacingRight ? 1 : -1) * ROLL_SPEED;
 		} else {
-			RollingSpeed = (Rect.CenterX() - damage.Sender.Rect.CenterX()).Sign3() * ROLL_SPEED;
+			RollingSpeed = (Rect.CenterX() - damage.SenderRect.CenterX()).Sign3() * ROLL_SPEED;
 		}
 	}
 

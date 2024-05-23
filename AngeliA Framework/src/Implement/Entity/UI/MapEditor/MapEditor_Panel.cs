@@ -566,17 +566,8 @@ public partial class MapEditor {
 				BORDER, BORDER, BORDER, BORDER
 			);
 
-			// Cover
-			int drawingID = 0;
-			if (Renderer.TryGetSpriteFromGroup(pal.ArtworkID, 0, out var sprite, ignoreAnimatedWhenFailback: false)) {
-				drawingID = sprite.ID;
-			}
-			if (drawingID != 0) {
-				Renderer.Draw(
-					drawingID,
-					rect.Shrink(COVER_SHRINK).Fit(sprite, sprite.PivotX, sprite.PivotY)
-				);
-			}
+			// Icon
+			DrawSpriteGizmos(pal.ArtworkID, rect, true);
 
 			// Selecting
 			if (SelectingPaletteItem == pal) {
