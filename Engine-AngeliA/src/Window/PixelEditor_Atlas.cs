@@ -388,7 +388,7 @@ public partial class PixelEditor {
 		// Func
 		static void ImportAtlas (string path) {
 			if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
-			string ext = Util.GetExtension(path);
+			string ext = Util.GetExtensionWithDot(path);
 			if (ext == ".png") {
 				// PNG
 				var texture = Game.PngBytesToTexture(Util.FileToByte(path));

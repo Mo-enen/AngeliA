@@ -115,11 +115,15 @@ public static unsafe class RayUtil {
 	}
 
 	public static void UnloadTexture (object texture) {
-		if (texture is not Texture2D rTexture) return;
-		Raylib.UnloadTexture(rTexture);
+		if (texture is not Texture2D rTexture || rTexture.Id == 0) return;
+		if (Raylib.IsTextureReady(rTexture)) {
+			Raylib.UnloadTexture(rTexture);
+		}
 	}
 
 	public static uint? GetTextureID (object texture) => texture is Texture2D rTexture ? rTexture.Id : null;
+
+	public static bool IsTextureReady (object texture) => texture is Texture2D rTexture && rTexture.Id != 0 && Raylib.IsTextureReady(rTexture);
 
 
 	// LGC

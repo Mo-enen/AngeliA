@@ -6,4 +6,5 @@ public class CharSprite {
 	public FRect Offset;
 	public float Advance;
 	public object Texture;
+	~CharSprite () => Game.UnloadTexture(Texture);
 }

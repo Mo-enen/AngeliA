@@ -12,6 +12,7 @@
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : OrderedAttribute { public OnGameQuittingAttribute (int order = 0) : base(order) { } }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameFocusedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameLostFocusAttribute : System.Attribute { }
+[System.AttributeUsage(System.AttributeTargets.Method)] public class OnFileDroppedAttribute : System.Attribute { }
 
 
 // Project

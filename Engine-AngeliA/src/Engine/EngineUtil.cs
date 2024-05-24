@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text;
 using AngeliA;
 using Task = System.Threading.Tasks.Task;
+using System.IO;
 
 namespace AngeliaEngine;
 
@@ -213,6 +214,132 @@ public static class EngineUtil {
 	}
 
 
+	// Res
+	public static object[] LoadTexturesFromIco (string icoPath) {
+
+		using var stream = File.OpenRead(icoPath);
+		using var reader = new BinaryReader(stream);
+
+		reader.ReadUInt16(); // ignore. Should be 0
+
+		ushort type = reader.ReadUInt16();
+		if (type != 1) {
+			throw new System.Exception("Invalid type. The stream is not an icon file");
+		}
+
+		ushort num_of_images = reader.ReadUInt16();
+
+		var results = new object[num_of_images];
+		var cache = new (uint offset, uint size, int bpp)[num_of_images];
+
+		for (var i = 0; i < num_of_images; i++) {
+			var width = reader.ReadByte();
+			var height = reader.ReadByte();
+			var colors = reader.ReadByte();
+			reader.ReadByte(); // ignore. Should be 0
+
+			var color_planes = reader.ReadUInt16(); // should be 0 or 1
+
+			ushort bits_per_pixel = reader.ReadUInt16();
+
+			uint size = reader.ReadUInt32();
+
+			uint offset = reader.ReadUInt32();
+
+			cache[i] = (offset, size, bits_per_pixel / 8);
+
+		}
+
+		for (int imgIndex = 0; imgIndex < num_of_images; imgIndex++) {
+			var (offset, size, bpp) = cache[imgIndex];
+			if (reader.BaseStream.Position < offset) {
+				var dummy_bytes_to_read = (int)(offset - reader.BaseStream.Position);
+				reader.ReadBytes(dummy_bytes_to_read);
+			}
+			var bytes = reader.ReadBytes((int)size);
+
+			if (bytes == null || bytes.Length <= 4) continue;
+
+			if (bytes[0] == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4e && bytes[3] == 0x47) {
+				// PNG
+				results[imgIndex] = Game.PngBytesToTexture(bytes);
+			} else {
+				// BMP
+				int dataOffset = bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24);
+				int width = bytes[4] | (bytes[5] << 8) | (bytes[6] << 16) | (bytes[7] << 24);
+				int height = (bytes[8] | (bytes[9] << 8) | (bytes[10] << 16) | (bytes[11] << 24)).Abs() / 2;
+				if (width != height) {
+					Debug.LogWarning($"Icon with must be same with height ({width} x {height})");
+					continue;
+				}
+				if (width * height > 1024 * 1024) continue;
+				var colors = new Color32[width * height];
+				int index = 0;
+				if (bpp == 4) {
+					// BGRA
+					for (int i = dataOffset; i < bytes.Length - 3 && index < colors.Length; i += 4, index++) {
+						colors[index].b = bytes[i + 0];
+						colors[index].g = bytes[i + 1];
+						colors[index].r = bytes[i + 2];
+						colors[index].a = bytes[i + 3];
+					}
+				} else if (bpp == 3) {
+					// BGR
+					for (int i = dataOffset; i < bytes.Length - 2 && index < colors.Length; i += 3, index++) {
+						colors[index].b = bytes[i + 0];
+						colors[index].g = bytes[i + 1];
+						colors[index].r = bytes[i + 2];
+						colors[index].a = 255;
+					}
+				} else if (bpp == 1) {
+					// Grey
+					for (int i = dataOffset; i < bytes.Length && index < colors.Length; i++, index++) {
+						byte value = bytes[i];
+						colors[index].a = 255;
+						colors[index].r = value;
+						colors[index].g = value;
+						colors[index].b = value;
+					}
+				}
+
+				results[imgIndex] = Game.GetTextureFromPixels(colors, width, height);
+
+			}
+
+		}
+
+		return results;
+	}
+
+
+	public static bool CreateIcoFromPng (byte[] pngBytes, string icoPath) {
+		if (pngBytes == null || pngBytes.Length == 0) return false;
+
+		using var stream = File.OpenWrite(icoPath);
+		using var writer = new BinaryWriter(stream);
+
+		writer.Write((ushort)0); // (ignore)
+
+		writer.Write((ushort)1); // type
+		writer.Write((ushort)1); // num_of_images
+
+		writer.Write((byte)0); // w
+		writer.Write((byte)0); // h
+		writer.Write((byte)0); // colors
+		writer.Write((byte)0); // (ignore)
+
+		writer.Write((ushort)1); // color_planes
+		writer.Write((ushort)32); // bits_per_pixel
+		writer.Write((uint)pngBytes.Length);   // size
+		writer.Write((uint)(writer.BaseStream.Position + 4));   // offset
+
+		writer.Write(pngBytes); // data
+
+		writer.Flush();
+		return true;
+	}
+
+
 	#endregion
 
 
@@ -296,7 +423,7 @@ public static class EngineUtil {
 			outputPath: tempBuildPath,
 			logID: logID
 		);
-		
+
 		if (returnCode != 0) return ERROR_USER_CODE_COMPILE_ERROR;
 
 		string resultDllPath = Util.CombinePaths(tempBuildPath, $"{libAssemblyName}.dll");

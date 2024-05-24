@@ -30,8 +30,6 @@ public partial class RayGame {
 
 	protected override void _OpenUrl (string url) => Raylib.OpenURL(url);
 
-	protected override string[] _GetDroppedFiles () => Raylib.IsFileDropped() ? Raylib.GetDroppedFiles() : null;
-
 
 	// Window
 	protected override void _SetWindowSize (int width, int height) {

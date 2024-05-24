@@ -420,7 +420,7 @@ public static partial class Util {
 		return fVolume * fVolume;
 	}
 
-
+	
 	// Random
 	public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 	public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
@@ -571,7 +571,7 @@ public static partial class Util {
 		}
 	}
 
-	
+
 	// Rule
 	public static string DigitToRuleString (int digit) {
 		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error

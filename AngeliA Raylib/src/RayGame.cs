@@ -176,6 +176,13 @@ public partial class RayGame : Game {
 		}
 		Raylib.BeginTextureMode(RenderTexture);
 
+		// File Drop
+		if (Raylib.IsFileDropped()) {
+			foreach (string path in Raylib.GetDroppedFiles()) {
+				InvokeFileDropped(path);
+			}
+		}
+
 		// Sky
 		var skyColorA = Sky.SkyTintBottomColor;
 		var skyColorB = Sky.SkyTintTopColor;

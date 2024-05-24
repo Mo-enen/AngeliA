@@ -46,6 +46,7 @@ public abstract partial class Game {
 	private static event System.Action OnGameUpdatePauseless;
 	private static event System.Action OnGameFocused;
 	private static event System.Action OnGameLostFocus;
+	private static event System.Action<string> OnFileDropped;
 	private static MethodInfo[] OnGameTryingToQuitMethods;
 
 	// Data
@@ -131,6 +132,8 @@ public abstract partial class Game {
 			Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
 			Util.LinkEventWithAttribute<OnGameFocusedAttribute>(typeof(Game), nameof(OnGameFocused));
 			Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
+			Util.LinkEventWithAttribute<OnFileDroppedAttribute>(typeof(Game), nameof(OnFileDropped));
+
 			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
 
 			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
@@ -460,6 +463,8 @@ public abstract partial class Game {
 	}
 
 	protected void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
+
+	protected void InvokeFileDropped (string path) => OnFileDropped?.Invoke(path);
 
 
 	#endregion

@@ -30,9 +30,6 @@ public abstract partial class Game {
 	public static void OpenUrl (string url) => Instance._OpenUrl(url);
 	protected abstract void _OpenUrl (string url);
 
-	public static string[] GetDroppedFiles () => Instance._GetDroppedFiles();
-	protected virtual string[] _GetDroppedFiles () => null;
-
 
 	// Window
 	public static bool IsWindowFocused => Instance._IsWindowFocused();
@@ -219,6 +216,9 @@ public abstract partial class Game {
 
 	public static uint? GetTextureID (object texture) => Instance._GetTextureID(texture);
 	protected abstract uint? _GetTextureID (object texture);
+
+	public static bool IsTextureReady (object texture) => Instance._IsTextureReady(texture);
+	protected abstract bool _IsTextureReady (object texture);
 
 
 	// GL Gizmos

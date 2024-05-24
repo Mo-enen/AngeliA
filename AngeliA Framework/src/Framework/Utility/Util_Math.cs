@@ -8,6 +8,8 @@ namespace AngeliA;
 public static partial class Util {
 
 
+	public static bool IsPowerOfTwo (int x) => (x != 0) && (x & (x - 1)) == 0;
+
 	public static int SquareDistance (Int2 a, Int2 b) {
 		int x = a.x - b.x;
 		int y = a.y - b.y;

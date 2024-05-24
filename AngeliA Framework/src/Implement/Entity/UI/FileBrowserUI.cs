@@ -464,7 +464,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 			if (Util.IsFileHidden(filePath)) continue;
 			string name = Util.GetNameWithExtension(filePath);
 			int fileSpriteID = FileIconPool.TryGetValue(
-				Util.GetExtension(name).AngeHash(), out var fileSpriteCode
+				Util.GetExtensionWithDot(name).AngeHash(), out var fileSpriteCode
 			) ? fileSpriteCode : 0;
 			Items.Add(new ItemData() {
 				DisplayName = name.Length <= MAX_NAME_LEN ? name : $"{name[..(MAX_NAME_LEN - 2)]}..",
@@ -517,7 +517,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 						Explore(selectingItem.Path);
 						return;
 					}
-					string ext = Util.GetExtension(selectingItem.Path);
+					string ext = Util.GetExtensionWithDot(selectingItem.Path);
 					targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}{ext}");
 				} else {
 					return;

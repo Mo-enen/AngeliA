@@ -318,7 +318,7 @@ public class Engine {
 	}
 
 
-	// Focus
+	// Misc
 	[OnGameFocused]
 	internal static void OnGameFocused () {
 		Instance?.CheckScriptChanged();
@@ -326,6 +326,34 @@ public class Engine {
 		Instance?.CheckFontChanged();
 		Instance?.CheckAudioChanged();
 	}
+
+
+	[OnFileDropped]
+	internal static void OnFileDropped (string path) {
+		string ex = Util.GetExtensionWithDot(path);
+		switch (ex) {
+			case ".ase":
+			case ".aseprite":
+
+
+				break;
+			case ".png":
+
+
+				break;
+			case ".ico":
+
+
+				break;
+			case ".wav":
+			case ".mp3":
+			case ".ogg":
+
+
+				break;
+		}
+	}
+
 
 
 	// Quit

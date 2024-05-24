@@ -393,6 +393,8 @@ public partial class RayGame {
 
 	protected override uint? _GetTextureID (object texture) => RayUtil.GetTextureID(texture);
 
+	protected override bool _IsTextureReady (object texture) => RayUtil.IsTextureReady(texture);
+
 
 	// GL Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {

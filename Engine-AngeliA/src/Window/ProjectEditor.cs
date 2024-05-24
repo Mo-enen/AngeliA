@@ -30,6 +30,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_DEV_NAME_EMPTY = ("Log.DevNameEmpty", "Developer name can not be empty");
+	private static readonly LanguageCode LABEL_ICON = ("Setting.Icon", "Icon");
 	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
 	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
 	private static readonly LanguageCode LABEL_LINK_SAVING = ("Setting.Link.Saving", "Saving Folder");
@@ -249,6 +250,19 @@ public class ProjectEditor : WindowUI {
 		if (vChanged) SetDirty();
 
 		rect.SlideDown(padding);
+
+		// Icon
+		GUI.SmallLabel(rect, LABEL_ICON);
+		int iconButtonSize = Unify(56);
+		rect.y = rect.yMax - iconButtonSize;
+		rect.height = iconButtonSize;
+		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).EdgeInside(Direction4.Left, iconButtonSize);
+		if (GUI.DarkButton(iconButtonRect, 0)) {
+			
+		}
+		//Game.DrawGizmosTexture(iconButtonRect.Shrink(6),);
+		rect.SlideDown(padding);
+		rect.height = itemHeight;
 
 		// Open Project Folders
 		GUI.SmallLabel(rect, LABEL_LINK);

@@ -40,7 +40,7 @@ public class AsepriteUtil {
 
 			try {
 				// Path
-				string ex = Util.GetExtension(path);
+				string ex = Util.GetExtensionWithDot(path);
 
 				// Ase Data
 				var data = Aseprite.CreateFromBytes(Util.FileToByte(fullPath));

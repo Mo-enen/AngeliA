@@ -31,7 +31,7 @@ public static partial class Util {
 	public static string CombinePaths (params string[] paths) => Path.Combine(paths);
 
 
-	public static string GetExtension (string path) => Path.GetExtension(path);//.txt
+	public static string GetExtensionWithDot (string path) => Path.GetExtension(path);//.txt
 
 
 	public static string GetNameWithoutExtension (string path) => Path.GetFileNameWithoutExtension(path);
