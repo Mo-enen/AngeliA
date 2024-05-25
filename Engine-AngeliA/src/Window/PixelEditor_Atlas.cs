@@ -391,7 +391,7 @@ public partial class PixelEditor {
 			string ext = Util.GetExtensionWithDot(path);
 			if (ext == ".png") {
 				// PNG
-				var texture = Game.PngBytesToTexture(Util.FileToByte(path));
+				var texture = Game.PngBytesToTexture(Util.FileToBytes(path));
 				var size = Game.GetTextureSize(texture);
 				var sprite = Sheet.CreateSprite(
 					Sheet.GetAvailableSpriteName("New Sprite"),

@@ -139,7 +139,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 	public static void Unlock (int checkPointID) {
 		if (UnlockedCheckPoint.Contains(checkPointID)) return;
 		UnlockedCheckPoint.Add(checkPointID);
-		Util.ByteToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
+		Util.BytesToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
 	}
 
 

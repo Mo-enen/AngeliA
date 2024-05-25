@@ -43,7 +43,7 @@ public class AsepriteUtil {
 				string ex = Util.GetExtensionWithDot(path);
 
 				// Ase Data
-				var data = Aseprite.CreateFromBytes(Util.FileToByte(fullPath));
+				var data = Aseprite.CreateFromBytes(Util.FileToBytes(fullPath));
 
 				if (data != null || data.FrameDatas == null || data.FrameDatas.Count == 0 || data.FrameDatas[0].Chunks == null) {
 

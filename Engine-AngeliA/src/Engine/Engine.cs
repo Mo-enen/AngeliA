@@ -70,6 +70,9 @@ public class Engine {
 	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
 	private static readonly LanguageCode NOTI_THEME_LOADED = ("Noti.ThemeLoaded", "Theme Loaded");
 	private static readonly LanguageCode LOG_BUILD_UNKNOWN = ("Log.BuildError.Unknown", "Unknown error on building project in background. Error code:{0}");
+	private static readonly LanguageCode FILE_DROP_MSG_PNG = ("UI.FileDropMsg.Png", "Import image {0} as:");
+	private static readonly LanguageCode FILE_DROP_LABEL_ICON = ("UI.FileDropLabel.Icon", "Icon");
+	private static readonly LanguageCode FILE_DROP_LABEL_ART = ("UI.FileDropLabel.Art", "Artwork");
 
 	private static readonly LanguageCode LOG_ERROR_PROJECT_OBJECT_IS_NULL = ("Log.BuildError.ProjectObjectIsNull", "Build Error: Project object is Null");
 	private static readonly LanguageCode LOG_ERROR_PROJECT_FOLDER_INVALID = ("Log.BuildError.ProjectFolderInvalid", "Build Error: Project folder path invalid");
@@ -120,6 +123,8 @@ public class Engine {
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
 	private int NoGameRunningFrameCount = 0;
+	private int IgnoreFileDropFrame = int.MinValue;
+	private string DroppingFilePath = "";
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
@@ -323,37 +328,62 @@ public class Engine {
 	internal static void OnGameFocused () {
 		Instance?.CheckScriptChanged();
 		Instance?.RefreshProjectCache();
-		Instance?.CheckFontChanged();
-		Instance?.CheckAudioChanged();
+		Instance?.CheckResourceChanged();
 	}
 
 
 	[OnFileDropped]
 	internal static void OnFileDropped (string path) {
+
+		var project = Instance.CurrentProject;
+		if (project == null || Game.PauselessFrame <= Instance.IgnoreFileDropFrame) return;
+
+		Instance.DroppingFilePath = path;
+
 		string ex = Util.GetExtensionWithDot(path);
 		switch (ex) {
 			case ".ase":
 			case ".aseprite":
 
 
+				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".png":
-
-
+				GenericDialogUI.SpawnDialog_Button(
+					string.Format(FILE_DROP_MSG_PNG, Util.GetNameWithExtension(path)),
+					FILE_DROP_LABEL_ICON, ImportForIcon,
+					FILE_DROP_LABEL_ART, ImportForArtwork,
+					BuiltInText.UI_CANCEL, Const.EmptyMethod
+				);
+				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".ico":
-
-
+				Util.CopyFile(path, project.IconPath);
+				ProjectEditor.Instance.ReloadIconUI();
+				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".wav":
 			case ".mp3":
 			case ".ogg":
 
 
+				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 		}
-	}
+		// Func
+		static void ImportForIcon () {
+			string path = Instance.DroppingFilePath;
+			var project = Instance.CurrentProject;
+			bool success = EngineUtil.CreateIcoFromPng(path, project.IconPath);
+			if (success) ProjectEditor.Instance.ReloadIconUI();
+		}
+		static void ImportForArtwork () {
+			string path = Instance.DroppingFilePath;
 
+
+
+		}
+	}
 
 
 	// Quit
@@ -1212,7 +1242,7 @@ public class Engine {
 		// Windows
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
-		ProjectEditor.CurrentProject = CurrentProject;
+		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 
 		// Audio
 		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
@@ -1264,7 +1294,7 @@ public class Engine {
 			}
 			LanguageEditor.Instance.SetLanguageRoot("");
 			PixelEditor.Instance.LoadSheetFromDisk("");
-			ProjectEditor.CurrentProject = null;
+			ProjectEditor.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 		}
 	}
@@ -1325,18 +1355,19 @@ public class Engine {
 	}
 
 
-	private void CheckFontChanged () {
+	private void CheckResourceChanged () {
 		if (CurrentProject == null) return;
+		// Fonts
 		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
 		if (changed) {
 			Transceiver.RequireClearCharPoolInvoke();
 		}
-	}
-
-
-	private void CheckAudioChanged () {
-		if (CurrentProject == null) return;
+		// Audio
 		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
+		// Icon
+		if (ProjectEditor.Instance.IconFileModified()) {
+			ProjectEditor.Instance.ReloadIconUI();
+		}
 	}
 
 

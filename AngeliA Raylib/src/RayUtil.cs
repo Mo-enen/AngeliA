@@ -125,6 +125,22 @@ public static unsafe class RayUtil {
 
 	public static bool IsTextureReady (object texture) => texture is Texture2D rTexture && rTexture.Id != 0 && Raylib.IsTextureReady(rTexture);
 
+	public static object GetResizedTexture (object texture, int newWidth, int newHeight, bool nearestNeighbor = true) {
+		if (texture is not Texture2D rTexture) return null;
+		var img = Raylib.LoadImageFromTexture(rTexture);
+		if (!Raylib.IsImageReady(img)) return null;
+		if (nearestNeighbor) {
+			Raylib.ImageResizeNN(ref img, newWidth, newHeight);
+		} else {
+			Raylib.ImageResize(ref img, newWidth, newHeight);
+		}
+		if (!Raylib.IsImageReady(img)) return null;
+		var result = Raylib.LoadTextureFromImage(img);
+		Raylib.UnloadImage(img);
+		if (!Raylib.IsTextureReady(result)) return null;
+		return result;
+	}
+
 
 	// LGC
 	private static Texture2D? GetTextureFromPixelsLogic (Color32[] pixels, int width, int height) {

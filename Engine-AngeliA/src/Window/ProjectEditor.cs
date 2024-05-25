@@ -34,10 +34,11 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
 	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
 	private static readonly LanguageCode LABEL_LINK_SAVING = ("Setting.Link.Saving", "Saving Folder");
+	private static readonly LanguageCode TITLE_PICK_ICON = ("Title.PickPngForIcon", "Pick a .png file for game icon");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }
-	public static Project CurrentProject { get; set; }
+	public Project CurrentProject { get; private set; }
 	public int RequiringRebuildFrame { get; private set; } = -2;
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Project";
@@ -47,6 +48,8 @@ public class ProjectEditor : WindowUI {
 	private readonly RiggedTransceiver Transceiver;
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
+	private object IconTexture = null;
+	private long IconFileModifyDate = 0;
 
 
 	#endregion
@@ -183,7 +186,7 @@ public class ProjectEditor : WindowUI {
 			if (Instance.Transceiver.RigProcessRunning) {
 				Instance.Transceiver.Abort();
 			}
-			int returnCode = EngineUtil.PublishAngeliaProject(CurrentProject, path);
+			int returnCode = EngineUtil.PublishAngeliaProject(Instance.CurrentProject, path);
 			if (returnCode != 0) {
 				Debug.LogError(returnCode);
 			}
@@ -257,10 +260,14 @@ public class ProjectEditor : WindowUI {
 		rect.y = rect.yMax - iconButtonSize;
 		rect.height = iconButtonSize;
 		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).EdgeInside(Direction4.Left, iconButtonSize);
-		if (GUI.DarkButton(iconButtonRect, 0)) {
-			
+		if (GUI.Button(iconButtonRect, 0, out var state, Skin.DarkButton)) {
+			FileBrowserUI.OpenFile(TITLE_PICK_ICON, "png", SetIconFromPNG);
 		}
-		//Game.DrawGizmosTexture(iconButtonRect.Shrink(6),);
+		if (Game.IsTextureReady(IconTexture) && !FileBrowserUI.ShowingBrowser) {
+			var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
+			contentRect.y += MasterScrollPos;
+			Game.DrawGizmosTexture(contentRect.Shrink(iconButtonRect.height / 8), IconTexture);
+		}
 		rect.SlideDown(padding);
 		rect.height = itemHeight;
 
@@ -276,6 +283,12 @@ public class ProjectEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
+		// Func
+		static void SetIconFromPNG (string path) {
+			if (!Util.FileExists(path) || Instance.CurrentProject == null) return;
+			bool success = EngineUtil.CreateIcoFromPng(path, Instance.CurrentProject.IconPath);
+			if (success) Instance.ReloadIconUI();
+		}
 	}
 
 
@@ -288,6 +301,43 @@ public class ProjectEditor : WindowUI {
 		string infoPath = CurrentProject.Universe.InfoPath;
 		var info = CurrentProject.Universe.Info;
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public void SetCurrentProject (Project project) {
+		CurrentProject = project;
+		ReloadIconUI();
+	}
+
+
+	public bool IconFileModified () {
+		if (CurrentProject == null) return false;
+		string path = CurrentProject.IconPath;
+		if (!Util.FileExists(path)) return false;
+		return Util.GetFileModifyDate(path) != IconFileModifyDate;
+	}
+
+
+	public void ReloadIconUI () {
+		IconFileModifyDate = 0;
+		Game.UnloadTexture(IconTexture);
+		if (CurrentProject == null) return;
+		string path = CurrentProject.IconPath;
+		if (!Util.FileExists(path)) return;
+		IconFileModifyDate = Util.GetFileModifyDate(path);
+		var results = EngineUtil.LoadTexturesFromIco(path, true);
+		if (results != null && results.Length > 0) {
+			IconTexture = results[0];
+		}
+		if (!Game.IsTextureReady(IconTexture)) IconTexture = null;
 	}
 
 

@@ -459,7 +459,7 @@ public static class ItemSystem {
 		string unlockPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, UNLOCK_NAME);
 		if (!Util.FileExists(unlockPath)) return;
 		foreach (var (_, data) in ItemPool) data.Unlocked = false;
-		var bytes = Util.FileToByte(unlockPath);
+		var bytes = Util.FileToBytes(unlockPath);
 		for (int i = 0; i < bytes.Length - 3; i += 4) {
 			int id =
 				(bytes[i + 0]) |

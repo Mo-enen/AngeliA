@@ -83,7 +83,7 @@ public static partial class Util {
 	}
 
 
-	public static byte[] FileToByte (string path) {
+	public static byte[] FileToBytes (string path) {
 		byte[] bytes = null;
 		if (FileExists(path)) {
 			bytes = File.ReadAllBytes(path);
@@ -92,51 +92,12 @@ public static partial class Util {
 	}
 
 
-	public static Color32[] FileToByte4 (string path) {
-		Color32[] bytes = null;
-		if (FileExists(path)) {
-			using FileStream fs = new(path, FileMode.Open);
-			using BinaryReader sr = new(fs);
-			bytes = new Color32[fs.Length / 4];
-			for (int i = 0; i < bytes.Length; i++) {
-				bytes[i] = new Color32(
-					sr.ReadByte(),
-					sr.ReadByte(),
-					sr.ReadByte(),
-					sr.ReadByte()
-				);
-			}
-			fs.Close();
-			sr.Close();
-		}
-		return bytes ?? new Color32[0];
-	}
-
-
-	public static void ByteToFile (byte[] bytes, string path, int length = -1) {
+	public static void BytesToFile (byte[] bytes, string path, int length = -1) {
 		string parentPath = GetParentPath(path);
 		CreateFolder(parentPath);
 		FileStream fs = new(path, FileMode.Create, FileAccess.Write);
 		bytes ??= new byte[0];
 		fs.Write(bytes, 0, length < 0 ? bytes.Length : length);
-		fs.Close();
-		fs.Dispose();
-	}
-
-
-	public static void Byte4ToFile (Color32[] bytes, string path) {
-		string parentPath = GetParentPath(path);
-		CreateFolder(parentPath);
-		FileStream fs = new(path, FileMode.Create, FileAccess.Write);
-		bytes ??= new Color32[0];
-		for (int i = 0; i < bytes.Length; i++) {
-			var byte4 = bytes[i];
-			Byte4Cache[0] = byte4.r;
-			Byte4Cache[1] = byte4.g;
-			Byte4Cache[2] = byte4.b;
-			Byte4Cache[3] = byte4.a;
-			fs.Write(Byte4Cache, 0, 4);
-		}
 		fs.Close();
 		fs.Dispose();
 	}
@@ -209,10 +170,10 @@ public static partial class Util {
 	}
 
 
-	public static void CopyFile (string from, string to) {
+	public static void CopyFile (string from, string to, bool overwrite = true) {
 		if (FileExists(from)) {
 			CreateFolder(GetParentPath(to));
-			File.Copy(from, to, true);
+			File.Copy(from, to, overwrite);
 		}
 	}
 

@@ -141,6 +141,8 @@ public partial class RiggedGame {
 
 	protected override bool _IsTextureReady (object texture) => RayUtil.IsTextureReady(texture);
 
+	protected override object _GetResizedTexture (object texture, int newWidth, int newHeight) => RayUtil.GetResizedTexture(texture, newWidth, newHeight);
+
 
 	// GL Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {

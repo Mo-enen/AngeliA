@@ -109,6 +109,26 @@ public static class GUI {
 	}
 
 
+	public static IRect GetContentRect (IRect rect, GUIStyle style, GUIState state) {
+		// Border
+		if (style.ContentBorder.HasValue) {
+			var border = style.ContentBorder.Value;
+			border.left = Unify(border.left);
+			border.right = Unify(border.right);
+			border.down = Unify(border.down);
+			border.up = Unify(border.up);
+			rect = rect.Shrink(border);
+		}
+		// Shift
+		var shift = style.GetContentShift(state);
+		shift.x = Unify(shift.x);
+		shift.y = Unify(shift.y);
+		rect = rect.Shift(shift.x, shift.y);
+		// Final
+		return rect;
+	}
+
+
 	// Draw
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) => DrawStyleBody(rect, style, state, Color32.WHITE);
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
@@ -491,9 +511,10 @@ public static class GUI {
 	}
 	public static bool DarkButton (IRect rect, string label) => Button(rect, label, Skin.DarkButton);
 	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, Skin.DarkButton);
-	public static bool Button (IRect rect, string label, GUIStyle style = null) {
+	public static bool Button (IRect rect, string label, GUIStyle style = null) => Button(rect, label, out _, style);
+	public static bool Button (IRect rect, string label, out GUIState state, GUIStyle style = null) {
 		style ??= Skin.Button;
-		bool result = BlankButton(rect, out var state);
+		bool result = BlankButton(rect, out state);
 		DrawStyleBody(rect, style, state);
 		// Label
 		if (!string.IsNullOrEmpty(label)) {
@@ -501,9 +522,10 @@ public static class GUI {
 		}
 		return result;
 	}
-	public static bool Button (IRect rect, int icon, GUIStyle style = null) {
+	public static bool Button (IRect rect, int icon, GUIStyle style = null) => Button(rect, icon, out _, style);
+	public static bool Button (IRect rect, int icon, out GUIState state, GUIStyle style = null) {
 		style ??= Skin.Button;
-		bool result = BlankButton(rect, out var state);
+		bool result = BlankButton(rect, out state);
 		DrawStyleBody(rect, style, state);
 		Icon(rect, icon, style, state);
 		return result;
@@ -1369,26 +1391,6 @@ public static class GUI {
 
 
 	#region --- LGC ---
-
-
-	private static IRect GetContentRect (IRect rect, GUIStyle style, GUIState state) {
-		// Border
-		if (style.ContentBorder.HasValue) {
-			var border = style.ContentBorder.Value;
-			border.left = Unify(border.left);
-			border.right = Unify(border.right);
-			border.down = Unify(border.down);
-			border.up = Unify(border.up);
-			rect = rect.Shrink(border);
-		}
-		// Shift
-		var shift = style.GetContentShift(state);
-		shift.x = Unify(shift.x);
-		shift.y = Unify(shift.y);
-		rect = rect.Shift(shift.x, shift.y);
-		// Final
-		return rect;
-	}
 
 
 	private static bool IsLineBreakingChar (char c) =>

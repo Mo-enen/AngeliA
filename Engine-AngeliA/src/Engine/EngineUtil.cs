@@ -34,6 +34,7 @@ public static class EngineUtil {
 	public const int ERROR_ENTRY_RESULT_NOT_FOUND = -112;
 	public const int ERROR_USER_CODE_COMPILE_ERROR = -113;
 	private const int BACK_GROUND_BUILD_LOG_ID = 102735648;
+	private static readonly int[] ICON_SIZES = { 64, 128, 256, 512, 1024, 2048 };
 
 	// Api
 	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet", "dotnet.exe");
@@ -215,7 +216,7 @@ public static class EngineUtil {
 
 
 	// Res
-	public static object[] LoadTexturesFromIco (string icoPath) {
+	public static object[] LoadTexturesFromIco (string icoPath, bool firstOneOnly = false) {
 
 		using var stream = File.OpenRead(icoPath);
 		using var reader = new BinaryReader(stream);
@@ -226,9 +227,11 @@ public static class EngineUtil {
 		if (type != 1) {
 			throw new System.Exception("Invalid type. The stream is not an icon file");
 		}
-
 		ushort num_of_images = reader.ReadUInt16();
 
+		if (num_of_images == 0) return System.Array.Empty<object>();
+
+		if (firstOneOnly) num_of_images = 1;
 		var results = new object[num_of_images];
 		var cache = new (uint offset, uint size, int bpp)[num_of_images];
 
@@ -237,24 +240,22 @@ public static class EngineUtil {
 			var height = reader.ReadByte();
 			var colors = reader.ReadByte();
 			reader.ReadByte(); // ignore. Should be 0
-
 			var color_planes = reader.ReadUInt16(); // should be 0 or 1
-
 			ushort bits_per_pixel = reader.ReadUInt16();
-
 			uint size = reader.ReadUInt32();
-
 			uint offset = reader.ReadUInt32();
-
 			cache[i] = (offset, size, bits_per_pixel / 8);
-
 		}
 
 		for (int imgIndex = 0; imgIndex < num_of_images; imgIndex++) {
 			var (offset, size, bpp) = cache[imgIndex];
 			if (reader.BaseStream.Position < offset) {
 				var dummy_bytes_to_read = (int)(offset - reader.BaseStream.Position);
-				reader.ReadBytes(dummy_bytes_to_read);
+				if (stream.CanSeek) {
+					stream.Seek(dummy_bytes_to_read, SeekOrigin.Current);
+				} else {
+					reader.ReadBytes(dummy_bytes_to_read);
+				}
 			}
 			var bytes = reader.ReadBytes((int)size);
 
@@ -272,7 +273,7 @@ public static class EngineUtil {
 					Debug.LogWarning($"Icon with must be same with height ({width} x {height})");
 					continue;
 				}
-				if (width * height > 1024 * 1024) continue;
+				if (width > 4096 || height > 4096) continue;
 				var colors = new Color32[width * height];
 				int index = 0;
 				if (bpp == 4) {
@@ -312,28 +313,60 @@ public static class EngineUtil {
 	}
 
 
-	public static bool CreateIcoFromPng (byte[] pngBytes, string icoPath) {
+	public static bool CreateIcoFromPng (string pngPath, string icoPath) {
+		if (
+			!Util.FileExists(pngPath) ||
+			Game.PngBytesToTexture(Util.FileToBytes(pngPath)) is not object texture ||
+			!Game.IsTextureReady(texture)
+		) return false;
+		var pngBytes = new byte[ICON_SIZES.Length][];
+		for (int i = 0; i < ICON_SIZES.Length; i++) {
+			int size = ICON_SIZES[i];
+			var newTexture = Game.GetResizedTexture(texture, size, size);
+			if (Game.IsTextureReady(newTexture)) {
+				pngBytes[i] = Game.TextureToPngBytes(newTexture);
+			} else {
+				return false;
+			}
+			Game.UnloadTexture(newTexture);
+		}
+		Game.UnloadTexture(texture);
+		return CreateIcoFromPng(pngBytes, icoPath);
+	}
+
+
+	public static bool CreateIcoFromPng (byte[][] pngBytes, string icoPath) {
 		if (pngBytes == null || pngBytes.Length == 0) return false;
 
 		using var stream = File.OpenWrite(icoPath);
 		using var writer = new BinaryWriter(stream);
 
+		int numOfImage = pngBytes.Length;
+
 		writer.Write((ushort)0); // (ignore)
 
 		writer.Write((ushort)1); // type
-		writer.Write((ushort)1); // num_of_images
+		writer.Write((ushort)numOfImage); // num_of_images
 
-		writer.Write((byte)0); // w
-		writer.Write((byte)0); // h
-		writer.Write((byte)0); // colors
-		writer.Write((byte)0); // (ignore)
+		const int INFO_SIZE = 16;
+		int offsetHead = (int)writer.BaseStream.Position + INFO_SIZE * numOfImage;
+		int currentOffset = offsetHead;
 
-		writer.Write((ushort)1); // color_planes
-		writer.Write((ushort)32); // bits_per_pixel
-		writer.Write((uint)pngBytes.Length);   // size
-		writer.Write((uint)(writer.BaseStream.Position + 4));   // offset
+		for (int i = 0; i < numOfImage; i++) {
+			writer.Write((byte)0); // w
+			writer.Write((byte)0); // h
+			writer.Write((byte)0); // colors
+			writer.Write((byte)0); // (ignore)
+			writer.Write((ushort)1); // color_planes
+			writer.Write((ushort)32); // bits_per_pixel
+			writer.Write((uint)pngBytes[i].Length);   // size
+			writer.Write((uint)currentOffset);   // offset
+			currentOffset += pngBytes[i].Length;
+		}
 
-		writer.Write(pngBytes); // data
+		for (int i = 0; i < numOfImage; i++) {
+			writer.Write(pngBytes[i]); // data
+		}
 
 		writer.Flush();
 		return true;

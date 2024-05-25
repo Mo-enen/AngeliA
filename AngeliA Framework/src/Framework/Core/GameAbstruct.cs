@@ -220,6 +220,9 @@ public abstract partial class Game {
 	public static bool IsTextureReady (object texture) => Instance._IsTextureReady(texture);
 	protected abstract bool _IsTextureReady (object texture);
 
+	public static object GetResizedTexture (object texture, int newWidth, int newHeight) => Instance._GetResizedTexture(texture, newWidth, newHeight);
+	protected abstract object _GetResizedTexture (object texture, int newWidth, int newHeight);
+
 
 	// GL Gizmos
 	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness, int gap = 0) => DrawGizmosFrame(rect, color, new Int4(thickness, thickness, thickness, thickness), new Int4(gap, gap, gap, gap));

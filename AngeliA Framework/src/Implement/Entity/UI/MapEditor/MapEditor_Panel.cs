@@ -505,7 +505,6 @@ public partial class MapEditor {
 		int ITEM_SIZE = Unify(46);
 		int ITEM_GAP = Unify(3);
 		int PADDING = Unify(6);
-		int COVER_SHRINK = Unify(6);
 		int BORDER = Unify(2);
 		int BORDER_ALT = Unify(2);
 		int SCROLL_BAR_WIDTH = Unify(12);
