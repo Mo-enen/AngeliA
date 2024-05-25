@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public struct PhysicsCell {
@@ -64,11 +64,11 @@ public static class Physics {
 	private const int DEPTH = 8;
 
 	// Api
-	internal static int PositionX { get; private set; } = 0;
-	internal static int PositionY { get; private set; } = 0;
-	internal static int CellWidth { get; private set; } = 1;
-	internal static int CellHeight { get; private set; } = 1;
-	internal static uint CurrentFrame { get; private set; } = uint.MinValue;
+	public static int PositionX { get; private set; } = 0;
+	public static int PositionY { get; private set; } = 0;
+	public static int CellWidth { get; private set; } = 1;
+	public static int CellHeight { get; private set; } = 1;
+	public static uint CurrentFrame { get; private set; } = uint.MinValue;
 
 	// Data
 	private static readonly PhysicsCell[] c_RoomOneway = new PhysicsCell[32];

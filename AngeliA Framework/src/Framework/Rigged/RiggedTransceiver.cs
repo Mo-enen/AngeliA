@@ -22,13 +22,13 @@ public class RiggedTransceiver {
 	public const int ERROR_LIB_FILE_NOT_FOUND = -103;
 
 	// Api
+	public readonly RiggedCallingMessage CallingMessage = new();
+	public readonly RiggedRespondMessage RespondMessage = new();
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
 	public Int3? LastRigViewPos { get; private set; } = null;
 	public int? LastRigViewHeight { get; private set; } = null;
-	
+
 	// Data
-	private readonly RiggedCallingMessage CallingMessage = new();
-	private readonly RiggedRespondMessage RespondMessage = new();
 	private Process RigPipeClientProcess = null;
 	private readonly string ExePath;
 	private readonly string MapName;
@@ -36,7 +36,7 @@ public class RiggedTransceiver {
 	private unsafe byte* BufferPointer;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
-	private int IgnoreInputFrame = -1;
+	private int IgnoreMouseInputFrame = -1;
 	private int LeftPadding = 0;
 
 
@@ -151,12 +151,12 @@ public class RiggedTransceiver {
 	}
 
 
-	public unsafe void Call (bool ignoreInput, int leftPadding, byte requiringWindowIndex) {
+	public unsafe void Call (bool ignoreMouseInput, bool ignoreKeyInput, int leftPadding, byte requiringWindowIndex) {
 		// Engine >> Rig
-		IgnoreInputFrame = ignoreInput ? Game.PauselessFrame : IgnoreInputFrame;
+		IgnoreMouseInputFrame = ignoreMouseInput ? Game.PauselessFrame : IgnoreMouseInputFrame;
 		if (*BufferPointer == 0) return;
 		LeftPadding = leftPadding;
-		CallingMessage.LoadDataFromEngine(ignoreInput, leftPadding, requiringWindowIndex);
+		CallingMessage.LoadDataFromEngine(ignoreMouseInput, ignoreKeyInput, leftPadding, requiringWindowIndex);
 		CallingMessage.WriteDataToPipe(BufferPointer + 1);
 		*BufferPointer = 0;
 	}
@@ -164,7 +164,7 @@ public class RiggedTransceiver {
 
 	public unsafe void Respond (int sheetIndex, bool updateViewCache) {
 		// Rig >> Engine
-		bool ignoreInput = Game.PauselessFrame == IgnoreInputFrame || !WindowUI.WindowRect.MouseInside();
+		bool ignoreMouseInput = Game.PauselessFrame == IgnoreMouseInputFrame || !WindowUI.WindowRect.MouseInside();
 		if (*BufferPointer == 0) {
 			for (int safe = 0; safe < 8; safe++) {
 				Thread.Sleep(1);
@@ -176,7 +176,7 @@ public class RiggedTransceiver {
 		_HANDLE_:;
 		// Handle Respon
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
-		RespondMessage.ApplyToEngine(CallingMessage, ignoreInput: ignoreInput);
+		RespondMessage.ApplyToEngine(CallingMessage, ignoreMouseInput: ignoreMouseInput);
 		RespondMessage.UpdateRendering(sheetIndex, LeftPadding);
 		// Update Setting
 		if (updateViewCache) {
@@ -203,11 +203,6 @@ public class RiggedTransceiver {
 		RespondMessage.ViewZ = viewZ;
 		RespondMessage.ViewHeight = viewHeight.GreaterOrEquel(1);
 	}
-
-
-	public void RequireFocusInvoke () => CallingMessage.RequireFocusInvoke();
-	public void RequireLostFocusInvoke () => CallingMessage.RequireLostFocusInvoke();
-	public void RequireClearCharPoolInvoke () => CallingMessage.RequireClearCharPoolInvoke();
 
 
 	#endregion

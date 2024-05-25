@@ -167,8 +167,6 @@ public class Engine {
 		Instance = engine;
 		engine.InitializeEngine();
 	}
-
-
 	private void InitializeEngine () {
 
 #if DEBUG
@@ -1000,8 +998,13 @@ public class Engine {
 
 	private void OnGUI_RiggedGame () {
 
+		var rigEdt = RiggedMapEditor.Instance;
+
 		// Call
 		bool called = false;
+		bool runGame = !rigEdt.FrameDebugging || rigEdt.RequireNextFrame;
+		rigEdt.RequireNextFrame = false;
+
 		if (
 			CurrentProject != null &&
 			!EngineUtil.BuildingProjectInBackground &&
@@ -1009,22 +1012,37 @@ public class Engine {
 			CurrentWindowRequireRigGame
 		) {
 			if (Input.AnyMouseButtonDown) {
-				IgnoreInputForRig = IgnoreInputForRig || !WindowUI.WindowRect.Contains(Input.MouseGlobalPosition);
+				IgnoreInputForRig = IgnoreInputForRig ||
+					!WindowUI.WindowRect.Contains(Input.MouseGlobalPosition) ||
+					rigEdt.PanelRect.MouseInside();
 			}
 			if (!Input.AnyMouseButtonHolding) {
 				IgnoreInputForRig = false;
 			}
 
-			Transceiver.Call(
-				ignoreInput: IgnoreInputForRig || Game.PauselessFrame < LastShowingGenericUIFrame + 6,
-				leftPadding: (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
-				requiringWindowIndex: (byte)(
-					CurrentWindowIndex == RigMapEditorWindowIndex ? 0 :
-					CurrentWindowIndex == RigItemEditorWindowIndex ? 1 :
-					0
-				)
-			);
+			if (rigEdt.DrawCollider) {
+				Transceiver.CallingMessage.RequireDrawColliderGizmos();
+			}
+			if (rigEdt.DrawBounds) {
+				Transceiver.CallingMessage.RequireDrawBoundsGizmos();
+			}
 
+			if (runGame) {
+				Transceiver.Call(
+					ignoreMouseInput:
+						IgnoreInputForRig ||
+						Game.PauselessFrame < LastShowingGenericUIFrame + 6,
+					ignoreKeyInput: 
+						false,
+					leftPadding:
+						(FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
+					requiringWindowIndex: (byte)(
+						CurrentWindowIndex == RigMapEditorWindowIndex ? 0 :
+						CurrentWindowIndex == RigItemEditorWindowIndex ? 1 :
+						0
+					)
+				);
+			}
 			called = true;
 		}
 
@@ -1101,7 +1119,18 @@ public class Engine {
 		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
 			if (called) {
-				Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
+				if (runGame) {
+					Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
+					rigEdt.UpdateUsageData(
+						Transceiver.RespondMessage.RenderUsages,
+						Transceiver.RespondMessage.RenderCapacities,
+						Transceiver.RespondMessage.EntityUsages,
+						Transceiver.RespondMessage.EntityCapacities
+					);
+					rigEdt.HavingGamePlay = Transceiver.RespondMessage.GamePlaying;
+				} else {
+					Transceiver.UpdateLastRespondedRender(sheetIndex);
+				}
 			}
 		} else if (
 			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
@@ -1206,9 +1235,9 @@ public class Engine {
 		if (!forceChange && index == CurrentWindowIndex) return;
 		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex || index == RigItemEditorWindowIndex;
 		if (CurrentWindowRequireRigGame) {
-			if (Transceiver.RigProcessRunning) Transceiver.RequireFocusInvoke();
+			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();
 		} else {
-			if (Transceiver.RigProcessRunning) Transceiver.RequireLostFocusInvoke();
+			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireLostFocusInvoke();
 			Stage.SetViewRectImmediately(
 				new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight / 1000, Game.DefaultViewHeight),
 				remapAllRenderingCells: true
@@ -1361,7 +1390,7 @@ public class Engine {
 		// Fonts
 		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
 		if (changed) {
-			Transceiver.RequireClearCharPoolInvoke();
+			Transceiver.CallingMessage.RequireClearCharPoolInvoke();
 		}
 		// Audio
 		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);

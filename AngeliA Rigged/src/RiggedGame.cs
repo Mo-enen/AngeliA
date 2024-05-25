@@ -19,19 +19,26 @@ public partial class RiggedGame : Game {
 	#region --- VAR ---
 
 
+	// Const
+	private static readonly Color32[] COLLIDER_TINTS = { Color32.RED_BETTER, Color32.ORANGE_BETTER, Color32.YELLOW, Color32.GREEN, Color32.CYAN, Color32.BLUE, Color32.GREY_128, };
+
 	// Api
 	public readonly RiggedCallingMessage CallingMessage = new();
 	public readonly RiggedRespondMessage RespondMessage = new();
 
 	// Data
+	private static RiggedGame Instance;
 	private readonly Process HostProcess;
 	private readonly string MapName = "RiggedGameMapName";
+	private readonly int StartWithZ = 0;
+	private readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
 	private unsafe byte* BufferPointer = null;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
 	private WindowUI[] EditorWindows = null;
 	private IRect StartWithView = default;
-	private readonly int StartWithZ = 0;
+	private bool DrawCollider = false;
+	private bool DrawBounds = false;
 
 
 	#endregion
@@ -46,6 +53,8 @@ public partial class RiggedGame : Game {
 
 
 	public RiggedGame (params string[] args) {
+
+		Instance = this;
 
 		// Load Game Assemblies
 		Util.AddAssembliesFromArgs(args);
@@ -209,14 +218,29 @@ public partial class RiggedGame : Game {
 
 		// Event
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(0)) {
+			// Require Focus
 			InvokeWindowFocusChanged(true);
 		}
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(1)) {
+			// Require Lost Focus
 			InvokeWindowFocusChanged(false);
 		}
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(2)) {
+			// Require Clear Char Cache
 			CharPool.Clear();
 			Renderer.ClearCharSpritePool();
+		}
+
+		// Require Draw Colliders
+		DrawCollider = CallingMessage.RequireGameMessageInvoke.GetBit(3);
+
+		// Require Draw Entity Bounds
+		DrawBounds = CallingMessage.RequireGameMessageInvoke.GetBit(4);
+
+		if (CallingMessage.RequireGameMessageInvoke.GetBit(5)) {
+			// Require Frame Debug
+
+
 		}
 
 		// Gizmos Texture Requirement
@@ -273,12 +297,21 @@ public partial class RiggedGame : Game {
 		}
 
 		// Finish
+		RespondMessage.GamePlaying = WorldSquad.Enable;
 		RespondMessage.ViewX = Stage.ViewRect.x;
 		RespondMessage.ViewY = Stage.ViewRect.y;
 		RespondMessage.ViewZ = MapEditor.Instance != null ? MapEditor.Instance.CurrentZ : 0;
 		RespondMessage.ViewHeight = Stage.ViewRect.height;
 		RespondMessage.SkyBottom = Sky.SkyTintBottomColor;
 		RespondMessage.SkyTop = Sky.SkyTintTopColor;
+		for (int i = 0; i < RenderLayer.COUNT; i++) {
+			RespondMessage.RenderUsages[i] = Renderer.GetUsedCellCount(i);
+			RespondMessage.RenderCapacities[i] = Renderer.GetLayerCapacity(i);
+		}
+		for (int i = 0; i < EntityLayer.COUNT; i++) {
+			RespondMessage.EntityUsages[i] = Stage.EntityCounts[i];
+			RespondMessage.EntityCapacities[i] = Stage.Entities[i].Length;
+		}
 
 		// Respond
 		unsafe {
@@ -296,6 +329,78 @@ public partial class RiggedGame : Game {
 		InvokeGameQuitting();
 		MemMap?.Dispose();
 		ViewAccessor?.Dispose();
+	}
+
+
+	[OnGameUpdateLater(4096)]
+	internal static void OnGameUpdateLater () => Instance?.UpdateGizmos();
+	private void UpdateGizmos () {
+
+		if (PlayerMenuUI.ShowingUI) return;
+
+		// Draw Colliders
+		if (DrawCollider) {
+			// Init Cells
+			if (CellPhysicsCells.Count == 0) {
+				try {
+					var layers = Util.GetStaticFieldValue(typeof(Physics), "Layers") as System.Array;
+					for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
+						var layerObj = layers.GetValue(layerIndex);
+						CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+				if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
+			}
+			// Draw Cells
+			if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
+				var cameraRect = Renderer.CameraRect;
+				int thick = GUI.Unify(1);
+				for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
+					try {
+						var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
+						var cells = CellPhysicsCells[layer];
+						int cellWidth = cells.GetLength(0);
+						int cellHeight = cells.GetLength(1);
+						int celDepth = cells.GetLength(2);
+						for (int y = 0; y < cellHeight; y++) {
+							for (int x = 0; x < cellWidth; x++) {
+								for (int d = 0; d < celDepth; d++) {
+									var cell = cells[x, y, d];
+									if (cell.Frame != Physics.CurrentFrame) break;
+									if (!cell.Rect.Overlaps(cameraRect)) continue;
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Down, thick), tint);
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Up, thick), tint);
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Left, thick), tint);
+									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Right, thick), tint);
+								}
+							}
+						}
+					} catch (System.Exception ex) { Debug.LogException(ex); }
+				}
+			}
+		}
+
+		// Draw Bounds
+		if (DrawBounds) {
+			int thick = GUI.Unify(1);
+			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+				var entities = Stage.Entities[layer];
+				int count = Stage.EntityCounts[layer];
+				for (int i = 0; i < count; i++) {
+					var e = entities[i];
+					if (!e.Active) continue;
+					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Down, thick), Color32.CYAN_BETTER);
+					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Up, thick), Color32.CYAN_BETTER);
+					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Left, thick), Color32.CYAN_BETTER);
+					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Right, thick), Color32.CYAN_BETTER);
+				}
+			}
+		}
+
+		// Func
+		static void DrawGizmosRectAsLine (IRect rect, Color32 color) {
+			DrawGizmosRect(rect, color);
+		}
 	}
 
 

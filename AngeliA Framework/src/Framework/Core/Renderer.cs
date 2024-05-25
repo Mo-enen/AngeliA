@@ -25,7 +25,6 @@ public static class Renderer {
 	private class Layer {
 		public int Count => Util.Min(Cells.Length, FocusedCell >= 0 ? FocusedCell : Cells.Length);
 		public Cell[] Cells;
-		public string Name;
 		public int CellCount;
 		public int FocusedCell;
 		public int PrevCellCount;
@@ -109,11 +108,9 @@ public static class Renderer {
 		}
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
 			int capacity = capacities[i];
-			string name = RenderLayer.NAMES[i];
 			int order = i;
 			bool uiLayer = i == RenderLayer.UI;
 			Layers[i] = new Layer {
-				Name = name,
 				Cells = new Cell[capacity].FillWithNewValue(),
 				CellCount = capacity,
 				FocusedCell = 0,
@@ -341,8 +338,6 @@ public static class Renderer {
 	public static void SortLayer (int layerIndex) => Layers[layerIndex].ZSort();
 	public static void ReverseUnsortedCells (int layerIndex) => Layers[layerIndex].ReverseUnsorted();
 	public static void AbandonLayerSort (int layerIndex) => Layers[layerIndex].AbandonZSort();
-
-	public static string GetLayerName (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Name : "";
 
 
 	public static int GetUsedCellCount () => GetUsedCellCount(CurrentLayerIndex);

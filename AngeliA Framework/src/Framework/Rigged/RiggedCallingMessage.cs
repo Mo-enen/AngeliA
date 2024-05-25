@@ -76,7 +76,7 @@ public class RiggedCallingMessage {
 	#region --- API ---
 
 
-	public void LoadDataFromEngine (bool ignoreInput, int leftPadding, byte requiringWindowIndex) {
+	public void LoadDataFromEngine (bool ignoreMouseInput, bool ignoreKeyInput, int leftPadding, byte requiringWindowIndex) {
 
 		int mouseScroll = Game.MouseScrollDelta;
 		var mousePos = Game.MouseScreenPosition;
@@ -97,18 +97,18 @@ public class RiggedCallingMessage {
 		}
 		IsMusicPlaying = Game.IsMusicPlaying;
 		DeviceData.SetBit(0, Game.IsMouseAvailable);
-		DeviceData.SetBit(1, !ignoreInput && Game.IsMouseLeftHolding);
-		DeviceData.SetBit(2, !ignoreInput && Game.IsMouseRightHolding);
-		DeviceData.SetBit(3, !ignoreInput && Game.IsMouseMidHolding);
-		DeviceData.SetBit(4, !ignoreInput && mouseScroll != 0);
+		DeviceData.SetBit(1, !ignoreMouseInput && Game.IsMouseLeftHolding);
+		DeviceData.SetBit(2, !ignoreMouseInput && Game.IsMouseRightHolding);
+		DeviceData.SetBit(3, !ignoreMouseInput && Game.IsMouseMidHolding);
+		DeviceData.SetBit(4, !ignoreMouseInput && mouseScroll != 0);
 		DeviceData.SetBit(5, Game.IsKeyboardAvailable);
 		DeviceData.SetBit(6, Game.IsGamepadAvailable);
-		MouseScrollDelta = ignoreInput ? 0 : mouseScroll;
+		MouseScrollDelta = ignoreMouseInput ? 0 : mouseScroll;
 		MousePosX = mousePos.x;
 		MousePosY = mousePos.y;
 		HoldingKeyboardKeyCount = 0;
 		HoldingGamepadKeyCount = 0;
-		if (!ignoreInput) {
+		if (!ignoreKeyInput) {
 			for (int i = 0; i < KeyboardKeyCount; i++) {
 				if (Game.IsKeyboardKeyHolding((KeyboardKey)i)) {
 					HoldingKeyboardKeys[HoldingKeyboardKeyCount] = i;
@@ -327,6 +327,9 @@ public class RiggedCallingMessage {
 	public void RequireFocusInvoke () => RequireGameMessageInvoke.SetBit(0, true);
 	public void RequireLostFocusInvoke () => RequireGameMessageInvoke.SetBit(1, true);
 	public void RequireClearCharPoolInvoke () => RequireGameMessageInvoke.SetBit(2, true);
+	public void RequireDrawColliderGizmos () => RequireGameMessageInvoke.SetBit(3, true);
+	public void RequireDrawBoundsGizmos () => RequireGameMessageInvoke.SetBit(4, true);
+	public void RequireFrameDebug () => RequireGameMessageInvoke.SetBit(5, true);
 
 
 	#endregion

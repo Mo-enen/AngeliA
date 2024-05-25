@@ -102,6 +102,11 @@ public class RiggedRespondMessage {
 	public int RequireGizmosTextureCount;
 	public GizmosTextureData[] RequireGizmosTextures = new GizmosTextureData[1024];
 	public RenderingLayerData[] Layers = new RenderingLayerData[RenderLayer.COUNT];
+	public int[] RenderUsages = new int[RenderLayer.COUNT];
+	public int[] EntityUsages = new int[EntityLayer.COUNT];
+	public int[] RenderCapacities = new int[RenderLayer.COUNT];
+	public int[] EntityCapacities = new int[EntityLayer.COUNT];
+	public bool GamePlaying;
 
 	// Data
 	private readonly Dictionary<uint, object> GizmosTexturePool = new();
@@ -137,13 +142,13 @@ public class RiggedRespondMessage {
 	}
 
 
-	public void ApplyToEngine (RiggedCallingMessage callingMessage, bool ignoreInput) {
+	public void ApplyToEngine (RiggedCallingMessage callingMessage, bool ignoreMouseInput) {
 
 		// Sky
 		Sky.ForceSkyboxTint(SkyTop, SkyBottom, 3);
 
 		// Cursor
-		if (!ignoreInput && RequireSetCursorIndex != int.MinValue) {
+		if (!ignoreMouseInput && RequireSetCursorIndex != int.MinValue) {
 			if (RequireSetCursorIndex == -3) {
 				Game.SetCursorToNormal();
 			} else {
@@ -443,6 +448,19 @@ public class RiggedRespondMessage {
 					cell.BorderSide = (Alignment)Util.ReadInt(ref pointer, end);
 				}
 			}
+
+			for (int i = 0; i < RenderLayer.COUNT; i++) {
+				RenderUsages[i] = Util.ReadInt(ref pointer, end);
+				RenderCapacities[i] = Util.ReadInt(ref pointer, end);
+			}
+
+			for (int i = 0; i < EntityLayer.COUNT; i++) {
+				EntityUsages[i] = Util.ReadInt(ref pointer, end);
+				EntityCapacities[i] = Util.ReadInt(ref pointer, end);
+			}
+
+			GamePlaying = Util.ReadBool(ref pointer, end);
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}
@@ -565,6 +583,19 @@ public class RiggedRespondMessage {
 					Util.Write(ref pointer, (int)cell.BorderSide, end);
 				}
 			}
+
+			for (int i = 0; i < RenderLayer.COUNT; i++) {
+				Util.Write(ref pointer, RenderUsages[i], end);
+				Util.Write(ref pointer, RenderCapacities[i], end);
+			}
+
+			for (int i = 0; i < EntityLayer.COUNT; i++) {
+				Util.Write(ref pointer, EntityUsages[i], end);
+				Util.Write(ref pointer, EntityCapacities[i], end);
+			}
+
+			Util.Write(ref pointer, GamePlaying, end);
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 
