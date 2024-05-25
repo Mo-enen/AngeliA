@@ -85,7 +85,7 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
 	private string SheetPath = "";
-	private const bool AllowSpirteActionOnlyOnHoldingOptionKey = true;
+	private readonly bool AllowSpirteActionOnlyOnHoldingOptionKey = true;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
 	private bool HoldingShift = false;

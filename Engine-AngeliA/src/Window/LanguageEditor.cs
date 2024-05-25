@@ -42,8 +42,10 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode DELETE_MSG = ("UI.LanguageEditor.DeleteMsg", "Delete Language {0}?");
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
+	private static readonly LanguageCode REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmpty", "Remove Empty");
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
 	private static readonly LanguageCode MSG_HELP = ("UI.LanguageEditor.HelpMsg", "Empty keys will be deleted when open the project next time");
+	private static readonly LanguageCode MSG_REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmptyMsg", "Remove all lines without any content? Lines with only a key will also be removed.");
 	private const int SEARCH_ID = -19223;
 
 	// Api
@@ -151,7 +153,7 @@ public partial class LanguageEditor : WindowUI {
 			SetDirty();
 		}
 		Cursor.SetCursorAsHand(rect);
-		rect.x += rect.width;
+		rect.SlideRight();
 
 		// Line
 		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
@@ -162,7 +164,20 @@ public partial class LanguageEditor : WindowUI {
 			OpenAddLanguagePopup();
 		}
 		Cursor.SetCursorAsHand(rect);
-		rect.x += rect.width;
+		rect.SlideRight();
+
+		// Line
+		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
+
+		// Remove Empty
+		rect.width = Unify(128);
+		if (GUI.Button(rect, REMOVE_EMPTY, Skin.SmallCenterLabelButton)) {
+			GenericDialogUI.SpawnDialog_Button(
+				MSG_REMOVE_EMPTY, BuiltInText.UI_DELETE, RemoveAllEmptyLines, BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+		}
+		Cursor.SetCursorAsHand(rect);
+		rect.SlideRight();
 
 		// Line
 		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
@@ -216,6 +231,8 @@ public partial class LanguageEditor : WindowUI {
 			labelRect.x += labelRect.width;
 		}
 
+		// Func
+		static void RemoveAllEmptyLines () => Instance?.RemoveAllEmptyLines();
 	}
 
 
@@ -457,6 +474,26 @@ public partial class LanguageEditor : WindowUI {
 		int dot = key.IndexOf('.');
 		if (dot < 0) return char.IsLetter(key[0]) || char.IsNumber(key[0]) ? key : key[0].ToString();
 		return key[..dot];
+	}
+
+
+	private void RemoveAllEmptyLines () {
+		ScrollY = 0;
+		for (int i = 0; i < Lines.Count; i++) {
+			var line = Lines[i];
+			bool empty = true;
+			foreach (var value in line.Value) {
+				if (!string.IsNullOrWhiteSpace(value)) {
+					empty = false;
+					break;
+				}
+			}
+			if (empty) {
+				Lines.RemoveAt(i);
+				i--;
+			}
+		}
+		SetDirty();
 	}
 
 

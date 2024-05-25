@@ -25,6 +25,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
+	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
 
 	// Api
 	public static SettingWindow Instance { get; private set; }
@@ -116,6 +117,13 @@ public class SettingWindow : WindowUI {
 		// Use Notification
 		EngineSetting.UseNotification.Value = GUI.Toggle(
 			rect, EngineSetting.UseNotification.Value, LABEL_USE_NOTI,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Auto Recompile
+		EngineSetting.AutoRecompile.Value = GUI.Toggle(
+			rect, EngineSetting.AutoRecompile.Value, LABEL_AUTO_RECOMPILE,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

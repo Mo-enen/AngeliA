@@ -154,7 +154,7 @@ public class Engine {
 			new RiggedMapEditor(),
 			new RiggedItemEditor(),
 			new PixelEditor(),
-			new LanguageEditor(),
+			new LanguageEditor(ignoreRequirements:true),
 			new Console(),
 			new ProjectEditor(engine.Transceiver),
 			new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
@@ -244,6 +244,8 @@ public class Engine {
 	internal static void RiggedGameRebuild (int code) {
 
 		if (Instance == null) return;
+
+		RiggedMapEditor.Instance.CleanDirty();
 
 		switch (code) {
 
@@ -455,33 +457,30 @@ public class Engine {
 
 	// Update
 	[OnGameUpdateLater(-4096)]
-	internal static void OnGameUpdateLater () => Instance.OnGUI();
-
-
-	private void OnGUI () {
+	internal static void OnGUI () {
 
 		GUI.Enable = true;
 		GUI.ForceUnifyBasedOnMonitor = true;
-		if (!CurrentWindowRequireRigGame) {
+		if (!Instance.CurrentWindowRequireRigGame) {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
 		}
 
-		using var _ = Scope.Sheet(ThemeSheet.Sprites.Count > 0 ? ThemeSheetIndex : -1);
-		using var __ = Scope.GuiSkin(ThemeSkin);
+		using var _ = Scope.Sheet(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
+		using var __ = Scope.GuiSkin(Instance.ThemeSkin);
 
 		using (Scope.RendererLayerUI()) {
-			OnGUI_Tooltip();
-			OnGUI_Notify();
+			Instance.OnGUI_Tooltip();
+			Instance.OnGUI_Notify();
 		}
 
-		if (CurrentProject == null) {
-			OnGUI_Hub();
+		if (Instance.CurrentProject == null) {
+			Instance.OnGUI_Hub();
 		} else {
-			OnGUI_Window();
-			OnGUI_Hotkey();
+			Instance.OnGUI_Window();
+			Instance.OnGUI_Hotkey();
 		}
 
-		OnGUI_RiggedGame();
+		Instance.OnGUI_RiggedGame();
 
 	}
 
@@ -1243,6 +1242,7 @@ public class Engine {
 		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
 		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
+		RiggedMapEditor.Instance.CleanDirty();
 
 		// Audio
 		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
@@ -1348,7 +1348,8 @@ public class Engine {
 		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
 		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
 		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {
-			RequireBackgroundBuildDate = srcModifyDate;
+			RiggedMapEditor.Instance.SetDirty();
+			RequireBackgroundBuildDate = EngineSetting.AutoRecompile.Value ? srcModifyDate : 0;
 		} else {
 			RequireBackgroundBuildDate = 0;
 		}

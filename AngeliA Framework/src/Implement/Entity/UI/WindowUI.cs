@@ -87,6 +87,8 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	public void SetDirty () => IsDirty = true;
 
+	public void CleanDirty () => IsDirty = false;
+
 	public virtual void Save (bool forceSave = false) { }
 
 	protected void RequireTooltip (IRect rect, string content) {
