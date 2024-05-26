@@ -460,10 +460,7 @@ public class Engine {
 		using var _ = Scope.Sheet(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
 		using var __ = Scope.GuiSkin(Instance.ThemeSkin);
 
-		using (Scope.RendererLayerUI()) {
-			Instance.OnGUI_Tooltip();
-			Instance.OnGUI_NotifyAndHint();
-		}
+		Instance.OnGUI_Hint();
 
 		if (Instance.CurrentProject == null) {
 			Instance.OnGUI_Hub();
@@ -927,35 +924,35 @@ public class Engine {
 	}
 
 
-	private void OnGUI_Tooltip () {
-		if (ToolLabel == null) return;
-		if (!EngineSetting.UseTooltip.Value) {
-			ToolLabel = null;
-			return;
+	private void OnGUI_Hint () {
+
+		using var _ = Scope.RendererLayerUI();
+
+		// Tooltip
+		if (
+			ToolLabel != null &&
+			EngineSetting.UseTooltip.Value &&
+			Game.PauselessFrame > LastNotInteractableFrame + 1 &&
+			HoveringTooltipDuration >= 60
+		) {
+			var cameraRect = Renderer.CameraRect;
+			bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
+			bool downSide = ToolLabelRect.CenterY() < cameraRect.CenterY();
+			TooltipStyle.Alignment =
+				leftSide && downSide ? Alignment.BottomLeft :
+				leftSide && !downSide ? Alignment.TopLeft :
+				!leftSide && downSide ? Alignment.BottomRight :
+				Alignment.TopRight;
+			GUI.BackgroundLabel(
+				ToolLabelRect.EdgeOutside(Direction4.Down, GUI.Unify(24)).Shift(
+					leftSide ? GUI.Unify(20) : GUI.Unify(-20),
+					downSide ? GUI.Unify(10) : GUI.Unify(-10)
+				),
+				ToolLabel, Color32.BLACK,
+				GUI.Unify(6), false, TooltipStyle
+			);
 		}
-		if (Game.PauselessFrame <= LastNotInteractableFrame + 1) return;
-		if (HoveringTooltipDuration < 60) return;
-		var cameraRect = Renderer.CameraRect;
-		bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
-		bool downSide = ToolLabelRect.CenterY() < cameraRect.CenterY();
-		TooltipStyle.Alignment =
-			leftSide && downSide ? Alignment.BottomLeft :
-			leftSide && !downSide ? Alignment.TopLeft :
-			!leftSide && downSide ? Alignment.BottomRight :
-			Alignment.TopRight;
-		GUI.BackgroundLabel(
-			ToolLabelRect.EdgeOutside(Direction4.Down, GUI.Unify(24)).Shift(
-				leftSide ? GUI.Unify(20) : GUI.Unify(-20),
-				downSide ? GUI.Unify(10) : GUI.Unify(-10)
-			),
-			ToolLabel, Color32.BLACK,
-			GUI.Unify(6), false, TooltipStyle
-		);
 		ToolLabel = null;
-	}
-
-
-	private void OnGUI_NotifyAndHint () {
 
 		// Hint
 		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
@@ -989,7 +986,6 @@ public class Engine {
 			// Hint - Label
 			if (CurrentWindowRequireRigGame) {
 				var windowRect = WindowUI.WindowRect;
-				using var _ = Scope.RendererLayerUI();
 				if (!Transceiver.RigProcessRunning) {
 					if (buildingProjectInBackground) {
 						GUI.BackgroundLabel(

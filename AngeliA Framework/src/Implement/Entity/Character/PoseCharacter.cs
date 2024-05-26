@@ -18,7 +18,7 @@ public enum CharacterAnimationType {
 public abstract class PoseCharacter : Character {
 
 
-
+	
 
 	#region --- VAR ---
 
