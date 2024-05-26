@@ -73,6 +73,7 @@ public class Engine {
 	private static readonly LanguageCode FILE_DROP_MSG_PNG = ("UI.FileDropMsg.Png", "Import image {0} as:");
 	private static readonly LanguageCode FILE_DROP_LABEL_ICON = ("UI.FileDropLabel.Icon", "Icon");
 	private static readonly LanguageCode FILE_DROP_LABEL_ART = ("UI.FileDropLabel.Art", "Artwork");
+	private static readonly LanguageCode HINT_PUBLISHING = ("Hint.Publishing", "Publishing");
 
 	private static readonly LanguageCode LOG_ERROR_PROJECT_OBJECT_IS_NULL = ("Log.BuildError.ProjectObjectIsNull", "Build Error: Project object is Null");
 	private static readonly LanguageCode LOG_ERROR_PROJECT_FOLDER_INVALID = ("Log.BuildError.ProjectFolderInvalid", "Build Error: Project folder path invalid");
@@ -93,7 +94,7 @@ public class Engine {
 	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
 	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
-	private readonly GUIStyle RigGameFailHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
+	private readonly GUIStyle RigGameHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
 	private readonly List<ProjectData> Projects = new();
 	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
@@ -116,10 +117,11 @@ public class Engine {
 	private string NotificationSubContent = null;
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
-	private int RigMapEditorWindowIndex = -1;
-	private int RigItemEditorWindowIndex = -1;
+	private int RigMapEditorWindowIndex = 0;
+	private int RigItemEditorWindowIndex = 0;
+	private int ConsoleWindowIndex = 0;
 	private long RequireBackgroundBuildDate = 0;
-	private int LastShowingGenericUIFrame = int.MinValue;
+	private int LastNotInteractableFrame = int.MinValue;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
 	private int NoGameRunningFrameCount = 0;
@@ -149,20 +151,21 @@ public class Engine {
 	// Init
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-		var engine = new Engine();
-		engine.AllWindows = new WindowUI[]{
-			new RiggedMapEditor(),
-			new RiggedItemEditor(),
-			new PixelEditor(),
-			new LanguageEditor(ignoreRequirements:true),
-			new Console(),
-			new ProjectEditor(engine.Transceiver),
-			new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
-		};
-		engine.AllGenericUIs = new EntityUI[] {
-			new GenericPopupUI(),
-			new GenericDialogUI(),
-			new FileBrowserUI(),
+		var engine = new Engine {
+			AllWindows = new WindowUI[]{
+				new RiggedMapEditor(),
+				new RiggedItemEditor(),
+				new PixelEditor(),
+				new LanguageEditor(ignoreRequirements:true),
+				new Console(),
+				new ProjectEditor(),
+				new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
+			},
+			AllGenericUIs = new EntityUI[] {
+				new GenericPopupUI(),
+				new GenericDialogUI(),
+				new FileBrowserUI(),
+			}
 		};
 		Instance = engine;
 		engine.InitializeEngine();
@@ -227,6 +230,7 @@ public class Engine {
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = i;
 			if (win is RiggedItemEditor) RigItemEditorWindowIndex = i;
+			if (win is Console) ConsoleWindowIndex = i;
 		}
 
 		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
@@ -468,7 +472,7 @@ public class Engine {
 
 		using (Scope.RendererLayerUI()) {
 			Instance.OnGUI_Tooltip();
-			Instance.OnGUI_Notify();
+			Instance.OnGUI_NotifyAndHint();
 		}
 
 		if (Instance.CurrentProject == null) {
@@ -479,6 +483,7 @@ public class Engine {
 		}
 
 		Instance.OnGUI_RiggedGame();
+		Instance.OnGUI_Requirement();
 
 	}
 
@@ -668,15 +673,21 @@ public class Engine {
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
 
-		bool interactable = true;
-		foreach (var ui in AllGenericUIs) {
-			if (!ui.Active) continue;
-			interactable = false;
-			LastShowingGenericUIFrame = Game.PauselessFrame;
+		// Interactable
+		bool interactable = Game.GlobalFrame > ProjectEditor.Instance.RequiringPublishFrame + 2;
+		if (interactable) {
+			foreach (var ui in AllGenericUIs) {
+				if (!ui.Active) continue;
+				interactable = false;
+				break;
+			}
 		}
-
+		if (!interactable) {
+			LastNotInteractableFrame = Game.PauselessFrame;
+		}
 		PixelEditor.Instance.Interactable = interactable;
 
+		// UI
 		using (Scope.GUIEnable(true, interactable))
 		using (Scope.RendererLayerUI()) {
 
@@ -932,7 +943,7 @@ public class Engine {
 			ToolLabel = null;
 			return;
 		}
-		if (Game.PauselessFrame <= LastShowingGenericUIFrame + 1) return;
+		if (Game.PauselessFrame <= LastNotInteractableFrame + 1) return;
 		if (HoveringTooltipDuration < 60) return;
 		var cameraRect = Renderer.CameraRect;
 		bool leftSide = ToolLabelRect.CenterX() < cameraRect.CenterX();
@@ -954,8 +965,66 @@ public class Engine {
 	}
 
 
-	private void OnGUI_Notify () {
-		if (EngineUtil.BuildingProjectInBackground) return;
+	private void OnGUI_NotifyAndHint () {
+
+		// Hint
+		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
+		if (CurrentProject != null) {
+
+			// Publishing Hint
+			if (Game.GlobalFrame <= ProjectEditor.Instance.RequiringPublishFrame + 3) {
+				using (Scope.RendererLayerUI()) {
+					Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_96);
+					GUI.BackgroundLabel(
+						Renderer.CameraRect, HINT_PUBLISHING, Color32.BLACK, GUI.Unify(12),
+						style: GUI.Skin.CenterLabel
+					);
+				}
+			}
+
+			// Hint - Circle
+			if (!CurrentWindowRequireRigGame && buildingProjectInBackground) {
+				var windowRect = WindowUI.WindowRect;
+				int hintPadding = GUI.Unify(6);
+				int size = GUI.Unify(32);
+				int x = windowRect.xMax - size / 2 - hintPadding;
+				int y = windowRect.yMin + size / 2 + hintPadding;
+				Renderer.Draw(
+					BuiltInSprite.ICON_REFRESH,
+					x, y, 500, 500, Game.GlobalFrame * 10,
+					size, size, Color32.GREY_128
+				);
+			}
+
+			// Hint - Label
+			if (CurrentWindowRequireRigGame) {
+				var windowRect = WindowUI.WindowRect;
+				using var _ = Scope.RendererLayerUI();
+				if (!Transceiver.RigProcessRunning) {
+					if (buildingProjectInBackground) {
+						GUI.BackgroundLabel(
+							windowRect, BUILDING_HINT, Color32.BLACK,
+							backgroundPadding: GUI.Unify(12), style: RigGameHintStyle
+						);
+					} else if (EngineUtil.LastBackgroundBuildReturnCode != 0) {
+						GUI.BackgroundLabel(
+							windowRect, BUILD_ERROR_HINT, Color32.BLACK,
+							backgroundPadding: GUI.Unify(12), style: RigGameHintStyle
+						);
+					} else {
+						if (NoGameRunningFrameCount > 60) {
+							GUI.BackgroundLabel(
+								windowRect, RIG_FAIL_HINT, Color32.BLACK,
+								backgroundPadding: GUI.Unify(12), style: RigGameHintStyle
+							);
+						}
+					}
+				}
+			}
+		}
+
+		// Notification
+		if (buildingProjectInBackground) return;
 		if (!EngineSetting.UseNotification.Value || Game.GlobalFrame > NotificationStartFrame + NOTIFY_DURATION) return;
 
 		int padding = GUI.Unify(2);
@@ -1031,8 +1100,8 @@ public class Engine {
 				Transceiver.Call(
 					ignoreMouseInput:
 						IgnoreInputForRig ||
-						Game.PauselessFrame < LastShowingGenericUIFrame + 6,
-					ignoreKeyInput: 
+						Game.PauselessFrame < LastNotInteractableFrame + 6,
+					ignoreKeyInput:
 						false,
 					leftPadding:
 						(FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
@@ -1057,57 +1126,9 @@ public class Engine {
 			return;
 		}
 
-		// Rebuild Check
-		if (!buildingProjectInBackground && RequireBackgroundBuildDate > 0) {
-			Transceiver.Abort();
-			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
-			buildingProjectInBackground = true;
-			RequireBackgroundBuildDate = 0;
-		}
-
 		// Abort when Building
 		if (Transceiver.RigProcessRunning && buildingProjectInBackground) {
 			Transceiver.Abort();
-		}
-
-		// Hint - Circle
-		if (!CurrentWindowRequireRigGame && buildingProjectInBackground) {
-			var windowRect = WindowUI.WindowRect;
-			int padding = GUI.Unify(6);
-			int size = GUI.Unify(32);
-			int x = windowRect.xMax - size / 2 - padding;
-			int y = windowRect.yMin + size / 2 + padding;
-			Renderer.Draw(
-				BuiltInSprite.ICON_REFRESH,
-				x, y, 500, 500, Game.GlobalFrame * 10,
-				size, size, Color32.GREY_128
-			);
-		}
-
-		// Hint - Label
-		if (CurrentWindowRequireRigGame) {
-			var windowRect = WindowUI.WindowRect;
-			using var _ = Scope.RendererLayerUI();
-			if (!Transceiver.RigProcessRunning) {
-				if (buildingProjectInBackground) {
-					GUI.BackgroundLabel(
-						windowRect, BUILDING_HINT, Color32.BLACK,
-						backgroundPadding: GUI.Unify(12), style: RigGameFailHintStyle
-					);
-				} else if (EngineUtil.LastBackgroundBuildReturnCode != 0) {
-					GUI.BackgroundLabel(
-						windowRect, BUILD_ERROR_HINT, Color32.BLACK,
-						backgroundPadding: GUI.Unify(12), style: RigGameFailHintStyle
-					);
-				} else {
-					if (NoGameRunningFrameCount > 60) {
-						GUI.BackgroundLabel(
-							windowRect, RIG_FAIL_HINT, Color32.BLACK,
-							backgroundPadding: GUI.Unify(12), style: RigGameFailHintStyle
-						);
-					}
-				}
-			}
 		}
 
 		int sheetIndex = PixelEditor.Instance.SheetIndex;
@@ -1150,6 +1171,38 @@ public class Engine {
 			if (CurrentWindowRequireRigGame) {
 				// Still Render Last Image
 				Transceiver.UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
+			}
+		}
+
+	}
+
+
+	private void OnGUI_Requirement () {
+
+		if (EngineUtil.BuildingProjectInBackground) return;
+
+		// Rebuild
+		if (RequireBackgroundBuildDate > 0) {
+			Transceiver.Abort();
+			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
+			RequireBackgroundBuildDate = 0;
+		}
+
+		// Publish
+		if (Game.GlobalFrame == ProjectEditor.Instance.RequiringPublishFrame) {
+			SetCurrentWindowIndex(ConsoleWindowIndex);
+		} else if (Game.GlobalFrame == ProjectEditor.Instance.RequiringPublishFrame + 2) {
+			Transceiver.Abort();
+			if (Instance.Transceiver.RigProcessRunning) {
+				Instance.Transceiver.Abort();
+			}
+			string path = ProjectEditor.Instance.RequiringPublishPath;
+			int returnCode = EngineUtil.PublishAngeliaProject(Instance.CurrentProject, path);
+			if (returnCode != 0) {
+				Debug.LogError("Error on publishing, code:" + returnCode);
+			}
+			if (Util.FolderExists(path)) {
+				Game.OpenUrl(path);
 			}
 		}
 

@@ -15,6 +15,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	public int SelectionIndex { get; private set; } = 0;
 	public string Message { get; set; } = "";
 	public IRect BackgroundRect { get; private set; }
+	public int OverrideWindowWidth { get; set; } = -1;
+	public int AnimationDuration { get; set; } = 8;
+	public GUIStyle BackgroundStyle { get; set; }
+	public GUIStyle MessageStyle { get; set; }
 	protected override bool BlockEvent => true;
 
 	// Config
@@ -38,15 +42,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected bool Interactable = true;
 	protected bool AllowMouseClick = true;
 	protected bool QuitOnPressStartOrEscKey = true;
-	protected int AnimationDuration = 8;
 	protected int AnimationAmount = -32;
 
 	// Data
-	private GUIStyle BackgroundStyle;
-	private GUIStyle MessageStyle;
-	private GUIStyle LabelStyle;
-	private GUIStyle ContentStyle;
-	private bool DrawStyleBody;
 	private int ItemCount;
 	private int ScrollY = 0;
 	private int MarkPingPongFrame = 0;
@@ -55,7 +53,6 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	private int TargetItemCount;
 	private int AnimationFrame = 0;
 	private bool Layout;
-	private int OverrideWindowWidth = -1;
 	private int MessageHeight = 0;
 
 
@@ -74,11 +71,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		ActiveFrame = Game.GlobalFrame;
 		AnimationFrame = 0;
 		Input.UseAllHoldingKeys();
-		MessageStyle = GUI.Skin.Message;
-		LabelStyle = GUI.Skin.Label;
-		ContentStyle = GUI.Skin.CenterLabel;
+		MessageStyle = GUI.Skin.CenterMessage;
 		BackgroundStyle = null;
-		DrawStyleBody = false;
 		OverrideWindowWidth = -1;
 		AnimationDuration = 8;
 	}
@@ -300,12 +294,19 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	// Draw Item
-	protected bool DrawItem (string label, int icon = 0) => DrawItemLogic(label, "", null, icon, false, false, out _);
-	protected bool DrawItem (string label, string content, int icon = 0) => DrawItemLogic(label, content, null, icon, false, false, out _);
-	protected bool DrawArrowItem (string label, string content, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, content, null, icon, leftArrow, rightArrow, out delta);
-	protected bool DrawItem (string label, char[] chars, int icon = 0) => DrawItemLogic(label, "", chars, icon, false, false, out _);
-	protected bool DrawArrowItem (string label, char[] chars, bool leftArrow, bool rightArrow, out int delta, int icon = 0) => DrawItemLogic(label, "", chars, icon, leftArrow, rightArrow, out delta);
-	private bool DrawItemLogic (string label, string content, char[] chars, int icon, bool useLeftArrow, bool useRightArrow, out int delta) {
+	protected bool DrawItem (string label, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, "", null, icon, false, false, out _, labelStyle, contentStyle, drawStyleBody);
+	protected bool DrawItem (string label, string content, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, content, null, icon, false, false, out _, labelStyle, contentStyle, drawStyleBody);
+	protected bool DrawArrowItem (string label, string content, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, content, null, icon, leftArrow, rightArrow, out delta, labelStyle, contentStyle, drawStyleBody);
+	protected bool DrawItem (string label, char[] chars, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, "", chars, icon, false, false, out _, labelStyle, contentStyle, drawStyleBody);
+	protected bool DrawArrowItem (string label, char[] chars, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, "", chars, icon, leftArrow, rightArrow, out delta, labelStyle, contentStyle, drawStyleBody);
+	private bool DrawItemLogic (
+		string label, string content, char[] chars, int icon,
+		bool useLeftArrow, bool useRightArrow, out int delta,
+		GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false
+	) {
+
+		labelStyle ??= GUI.Skin.Label;
+		contentStyle ??= GUI.Skin.CenterLabel;
 
 		delta = 0;
 		if (Layout) {
@@ -358,17 +359,17 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				bounds = hoverCheckingRect.Shrink(markSize.x * 2, markSize.x * 2, 0, 0);
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
-					if (!DrawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
+					if (!drawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
 						Renderer.DrawPixel(hoverCheckingRect, MouseHighlightTint);
 					}
 				}
 
 				// Single Label
-				if (DrawStyleBody) {
-					GUI.DrawStyleBody(labelRect, ContentStyle, GUIState.Normal);
+				if (drawStyleBody) {
+					GUI.DrawStyleBody(labelRect, contentStyle, GUIState.Normal);
 				}
 
-				GUI.Label(labelRect, label, ContentStyle);
+				GUI.Label(labelRect, label, contentStyle);
 
 			} else {
 
@@ -379,24 +380,24 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				// Mouse Highlight
 				if (!useArrows) {
 					mouseHoverLabel = AllowMouseClick && Interactable && hoverCheckingRect.MouseInside();
-					if (!DrawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
+					if (!drawStyleBody && mouseHoverLabel && Input.LastActionFromMouse) {
 						Renderer.DrawPixel(hoverCheckingRect, MouseHighlightTint, int.MaxValue - 3);
 					}
 				}
 
 				// Double Labels
 				var labelBounds = secLabelRect;
-				GUI.Label(labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0), label, LabelStyle);
+				GUI.Label(labelRect.Shrink(selectionMarkSize.x, labelRect.width / 2, 0, 0), label, labelStyle);
 
 				// Content Label
 				if (hasContent) {
-					if (DrawStyleBody) {
-						GUI.DrawStyleBody(secLabelRect, ContentStyle, GUIState.Normal);
+					if (drawStyleBody) {
+						GUI.DrawStyleBody(secLabelRect, contentStyle, GUIState.Normal);
 					}
 					if (useStringContent) {
-						GUI.Label(secLabelRect, content, out labelBounds, ContentStyle);
+						GUI.Label(secLabelRect, content, out labelBounds, contentStyle);
 					} else {
-						GUI.Label(secLabelRect, chars, out labelBounds, ContentStyle);
+						GUI.Label(secLabelRect, chars, out labelBounds, contentStyle);
 					}
 				}
 
@@ -516,20 +517,6 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	protected void RefreshAnimation () => AnimationFrame = 0;
-
-
-	public void SetStyle (
-		GUIStyle message, GUIStyle label, GUIStyle content, GUIStyle background,
-		bool drawStyleBody, int newWindowWidth = -1, int animationDuration = 8
-	) {
-		MessageStyle = message ?? GUI.Skin.Message;
-		LabelStyle = label ?? GUI.Skin.Label;
-		ContentStyle = content ?? GUI.Skin.CenterLabel;
-		BackgroundStyle = background;
-		DrawStyleBody = drawStyleBody;
-		OverrideWindowWidth = newWindowWidth;
-		AnimationDuration = animationDuration;
-	}
 
 
 	#endregion

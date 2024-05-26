@@ -54,7 +54,12 @@ public class GenericDialogUI : MenuUI {
 			if (option.Action == null) return;
 			if (UsingButtonStyle) {
 				using var _ = Scope.GUIBodyColor(tint);
-				if (DrawItem(option.Label)) {
+				if (DrawItem(
+					option.Label,
+					labelStyle: GUI.Skin.Label,
+					contentStyle: GUI.Skin.DarkButton,
+					drawStyleBody: true
+				)) {
 					option.Action();
 					Active = false;
 					Input.UseAllHoldingKeys();
@@ -85,10 +90,8 @@ public class GenericDialogUI : MenuUI {
 	public static void SpawnDialog_Button (string message, string labelA, System.Action actionA, string labelB, System.Action actionB, string labelC, System.Action actionC) {
 		SpawnDialog(message, labelA, actionA, labelB, actionB, labelC, actionC);
 		Instance.UsingButtonStyle = true;
-		Instance.SetStyle(
-			Instance.ButtonMessageStyle, GUI.Skin.Label, GUI.Skin.DarkButton, GUI.Skin.DialogBG,
-			drawStyleBody: true, newWindowWidth: Unify(330), animationDuration: 0
-		);
+		Instance.MessageStyle = Instance.ButtonMessageStyle;
+		Instance.OverrideWindowWidth = Unify(330);
 	}
 	public static void SpawnDialog (string message, string label, System.Action action) => SpawnDialog(message, label, action, null, null, null, null);
 	public static void SpawnDialog (string message, string labelA, System.Action actionA, string labelB, System.Action actionB) => SpawnDialog(message, labelA, actionA, labelB, actionB, null, null);

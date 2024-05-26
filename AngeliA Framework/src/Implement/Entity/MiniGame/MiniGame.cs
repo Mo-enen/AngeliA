@@ -262,10 +262,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			);
 			GenericDialogUI.SetItemTint(Color32.WHITE, Color32.RED_BETTER);
 		}
-		GenericDialogUI.Instance.SetStyle(
-			GUI.Skin.CenterMessage, GUI.Skin.LargeCenterLabel, GUI.Skin.LargeCenterLabel, null,
-			drawStyleBody: false, newWindowWidth: Unify(330), animationDuration: 0
-		);
+		GenericDialogUI.Instance.OverrideWindowWidth = Unify(330);
 	}
 
 

@@ -40,12 +40,13 @@ public class ProjectEditor : WindowUI {
 	public static ProjectEditor Instance { get; private set; }
 	public Project CurrentProject { get; private set; }
 	public int RequiringRebuildFrame { get; private set; } = -2;
+	public int RequiringPublishFrame { get; private set; } = int.MinValue;
+	public string RequiringPublishPath { get; private set; } = "";
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Project";
 
 	// Data
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 16, };
-	private readonly RiggedTransceiver Transceiver;
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
 	private object IconTexture = null;
@@ -60,10 +61,7 @@ public class ProjectEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public ProjectEditor (RiggedTransceiver transceiver) {
-		Instance = this;
-		Transceiver = transceiver;
-	}
+	public ProjectEditor () => Instance = this;
 
 
 	public override void BeforeUpdate () {
@@ -183,16 +181,8 @@ public class ProjectEditor : WindowUI {
 		static void PublishProject (string path) {
 			if (string.IsNullOrWhiteSpace(path)) return;
 			if (EngineUtil.BuildingProjectInBackground) return;
-			if (Instance.Transceiver.RigProcessRunning) {
-				Instance.Transceiver.Abort();
-			}
-			int returnCode = EngineUtil.PublishAngeliaProject(Instance.CurrentProject, path);
-			if (returnCode != 0) {
-				Debug.LogError(returnCode);
-			}
-			if (Util.FolderExists(path)) {
-				Game.OpenUrl(path);
-			}
+			Instance.RequiringPublishFrame = Game.GlobalFrame;
+			Instance.RequiringPublishPath = path;
 		}
 	}
 

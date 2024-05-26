@@ -68,6 +68,30 @@ public class RiggedMapEditor : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+		OnGUI_Hotkey();
+		OnGUI_Toolbar();
+	}
+
+
+	private void OnGUI_Hotkey () {
+
+		// Next Frame
+		if (Input.KeyboardDownGUI(KeyboardKey.Period)) {
+			FrameDebugging = true;
+			RequireNextFrame = true;
+		}
+
+		if (FrameDebugging) {
+			// Cancel Frame Debugging
+			if (Input.KeyboardDown(KeyboardKey.Escape)) {
+				FrameDebugging = false;
+			}
+		}
+
+	}
+
+
+	private void OnGUI_Toolbar () {
 
 		using var _ = Scope.RendererLayerUI();
 
