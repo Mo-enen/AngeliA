@@ -72,8 +72,11 @@ public class Engine {
 	private static readonly LanguageCode NOTI_THEME_LOADED = ("Noti.ThemeLoaded", "Theme Loaded");
 	private static readonly LanguageCode LOG_BUILD_UNKNOWN = ("Log.BuildError.Unknown", "Unknown error on building project in background. Error code:{0}");
 	private static readonly LanguageCode FILE_DROP_MSG_PNG = ("UI.FileDropMsg.Png", "Import image {0} as:");
+	private static readonly LanguageCode FILE_DROP_MSG_AUDIO = ("UI.FileDropMsg.Audio", "Import audio file {0} as:");
 	private static readonly LanguageCode FILE_DROP_LABEL_ICON = ("UI.FileDropLabel.Icon", "Icon");
 	private static readonly LanguageCode FILE_DROP_LABEL_ART = ("UI.FileDropLabel.Art", "Artwork");
+	private static readonly LanguageCode FILE_DROP_LABEL_MUSIC = ("UI.FileDropLabel.Music", "Music");
+	private static readonly LanguageCode FILE_DROP_LABEL_SOUND = ("UI.FileDropLabel.Sound", "Sound");
 	private static readonly LanguageCode HINT_PUBLISHING = ("Hint.Publishing", "Publishing");
 
 	private static readonly LanguageCode LOG_ERROR_PROJECT_OBJECT_IS_NULL = ("Log.BuildError.ProjectObjectIsNull", "Build Error: Project object is Null");
@@ -349,8 +352,7 @@ public class Engine {
 		switch (ex) {
 			case ".ase":
 			case ".aseprite":
-
-
+				PixelEditor.ImportAtlasFromFile(path);
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".png":
@@ -370,8 +372,12 @@ public class Engine {
 			case ".wav":
 			case ".mp3":
 			case ".ogg":
-
-
+				GenericDialogUI.SpawnDialog_Button(
+					string.Format(FILE_DROP_MSG_AUDIO, Util.GetNameWithExtension(path)),
+					FILE_DROP_LABEL_MUSIC, ImportForMusic,
+					FILE_DROP_LABEL_SOUND, ImportForSound,
+					BuiltInText.UI_CANCEL, Const.EmptyMethod
+				);
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 		}
@@ -379,14 +385,33 @@ public class Engine {
 		static void ImportForIcon () {
 			string path = Instance.DroppingFilePath;
 			var project = Instance.CurrentProject;
+			if (project == null) return;
 			bool success = EngineUtil.CreateIcoFromPng(path, project.IconPath);
 			if (success) ProjectEditor.Instance.ReloadIconUI();
 		}
 		static void ImportForArtwork () {
 			string path = Instance.DroppingFilePath;
-
-
-
+			PixelEditor.ImportAtlasFromFile(path);
+		}
+		static void ImportForMusic () {
+			string path = Instance.DroppingFilePath;
+			var project = Instance.CurrentProject;
+			if (project == null) return;
+			Util.CopyFile(path, Util.CombinePaths(
+				project.Universe.MusicRoot,
+				Util.GetNameWithExtension(path)
+			));
+			Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, project.UniversePath);
+		}
+		static void ImportForSound () {
+			string path = Instance.DroppingFilePath;
+			var project = Instance.CurrentProject;
+			if (project == null) return;
+			Util.CopyFile(path, Util.CombinePaths(
+				project.Universe.SoundRoot,
+				Util.GetNameWithExtension(path)
+			));
+			Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, project.UniversePath);
 		}
 	}
 

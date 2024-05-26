@@ -21,7 +21,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_ASE = ("Title.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_PNG = ("Title.ImportPNG", "Import PNG file");
-	
+
 	// Data
 	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
 		ContentColor = Color32.ORANGE_BETTER,
@@ -282,18 +282,51 @@ public partial class PixelEditor {
 
 		// Import from Ase
 		if (GUI.Button(rect, ICON_IMPORT_ASE, Skin.SmallDarkButton)) {
-			ShowImportAtlasBrowser(true);
+			FileBrowserUI.OpenFile(TITLE_IMPORT_ASE, "ase", ImportAtlasFromFile);
 		}
 		RequireTooltip(rect, TIP_IMPORT_ASE);
 		rect.SlideRight(padding);
 
 		// Import from PNG
 		if (GUI.Button(rect, ICON_IMPORT_PNG, Skin.SmallDarkButton)) {
-			ShowImportAtlasBrowser(false);
+			FileBrowserUI.OpenFile(TITLE_IMPORT_PNG, "png", ImportAtlasFromFile);
 		}
 		RequireTooltip(rect, TIP_IMPORT_PNG);
 		rect.SlideRight(padding);
 
+	}
+
+
+	#endregion
+
+
+
+	#region --- API ---
+
+
+	public static void ImportAtlasFromFile (string path) {
+		if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
+		string ext = Util.GetExtensionWithDot(path);
+		if (ext == ".png") {
+			// PNG
+			var texture = Game.PngBytesToTexture(Util.FileToBytes(path));
+			var size = Game.GetTextureSize(texture);
+			var sprite = Sheet.CreateSprite(
+				Sheet.GetAvailableSpriteName("New Sprite"),
+				new IRect(4, 4, size.x, size.y),
+				Instance.CurrentAtlasIndex
+			);
+			sprite.Pixels = Game.GetPixelsFromTexture(texture);
+			Sheet.AddSprite(sprite);
+			Instance.StagedSprites.Add(new SpriteData(sprite) { Selecting = true, });
+		} else if (ext == ".ase") {
+			// ASE
+			var aseSheet = SheetUtil.CreateNewSheet(
+				AsepriteUtil.CreateSpritesFromAsepriteFiles(new string[1] { path }, "#ignore").ToArray()
+			);
+			Sheet.CombineSheet(aseSheet);
+			Instance.SetCurrentAtlas(Sheet.Atlas.Count - 1);
+		}
 	}
 
 
@@ -375,40 +408,6 @@ public partial class PixelEditor {
 			var atlas = atlasList[currentAtlasIndex];
 			atlas.Type = (AtlasType)index;
 			Instance.SetDirty();
-		}
-	}
-
-
-	private void ShowImportAtlasBrowser (bool fromAseprite) {
-		if (fromAseprite) {
-			FileBrowserUI.OpenFile(TITLE_IMPORT_ASE, "ase", ImportAtlas);
-		} else {
-			FileBrowserUI.OpenFile(TITLE_IMPORT_PNG, "png", ImportAtlas);
-		}
-		// Func
-		static void ImportAtlas (string path) {
-			if (string.IsNullOrEmpty(path) || !Util.FileExists(path)) return;
-			string ext = Util.GetExtensionWithDot(path);
-			if (ext == ".png") {
-				// PNG
-				var texture = Game.PngBytesToTexture(Util.FileToBytes(path));
-				var size = Game.GetTextureSize(texture);
-				var sprite = Sheet.CreateSprite(
-					Sheet.GetAvailableSpriteName("New Sprite"),
-					new IRect(4, 4, size.x, size.y),
-					Instance.CurrentAtlasIndex
-				);
-				sprite.Pixels = Game.GetPixelsFromTexture(texture);
-				Sheet.AddSprite(sprite);
-				Instance.StagedSprites.Add(new SpriteData(sprite) { Selecting = true, });
-			} else if (ext == ".ase") {
-				// ASE
-				var aseSheet = SheetUtil.CreateNewSheet(
-					AsepriteUtil.CreateSpritesFromAsepriteFiles(new string[1] { path }, "#ignore").ToArray()
-				);
-				Sheet.CombineSheet(aseSheet);
-				Instance.SetCurrentAtlas(Sheet.Atlas.Count - 1);
-			}
 		}
 	}
 

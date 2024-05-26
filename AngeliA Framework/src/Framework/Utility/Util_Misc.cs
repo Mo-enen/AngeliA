@@ -383,7 +383,7 @@ public static partial class Util {
 	public static Color32 MergeColor_Editor (Color32 top, Color32 back) {
 		if (back.a == 0) return top;
 		const int AMOUNT = 10240;
-		int lerp = top.a * AMOUNT / (top.a + back.a);
+		int lerp = top.a * AMOUNT / 255;
 		return new Color32(
 			(byte)(back.r + (top.r - back.r) * lerp / AMOUNT).Clamp(0, 255),
 			(byte)(back.g + (top.g - back.g) * lerp / AMOUNT).Clamp(0, 255),

@@ -98,8 +98,9 @@ public class ProjectEditor : WindowUI {
 			MasterScrollPos = scroll.ScrollPosition;
 
 			// Window
-			Update_WorkflowButton(ref rect);
-			Update_Config(ref rect);
+			OnGUI_WorkflowButton(ref rect);
+			OnGUI_Config(ref rect);
+			OnGUI_Resource(ref rect);
 
 			extendedContentSize = panelRect.yMax - rect.yMax + Unify(64);
 			MasterScrollMax = (extendedContentSize - panelRect.height).GreaterOrEquelThanZero();
@@ -133,7 +134,7 @@ public class ProjectEditor : WindowUI {
 	}
 
 
-	private void Update_WorkflowButton (ref IRect rect) {
+	private void OnGUI_WorkflowButton (ref IRect rect) {
 
 		var _rect = rect;
 		int padding = Unify(8);
@@ -194,13 +195,13 @@ public class ProjectEditor : WindowUI {
 	}
 
 
-	private void Update_Config (ref IRect rect) {
+	private void OnGUI_Config (ref IRect rect) {
 
 		int padding = GUI.FieldPadding;
 		int itemHeight = GUI.FieldHeight;
 		rect.yMin = rect.yMax - itemHeight;
-		var info = CurrentProject.Universe.Info;
 		int labelWidth = GUI.LabelWidth;
+		var info = CurrentProject.Universe.Info;
 
 		// Product Name
 		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);
@@ -280,6 +281,21 @@ public class ProjectEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
+		// Func
+		static void SetIconFromPNG (string path) {
+			if (!Util.FileExists(path) || Instance.CurrentProject == null) return;
+			bool success = EngineUtil.CreateIcoFromPng(path, Instance.CurrentProject.IconPath);
+			if (success) Instance.ReloadIconUI();
+		}
+	}
+
+
+	private void OnGUI_Resource (ref IRect rect) {
+
+		int padding = GUI.FieldPadding;
+		int itemHeight = GUI.FieldHeight;
+		rect.yMin = rect.yMax - itemHeight;
+		int labelWidth = GUI.LabelWidth;
 
 		// Music
 
@@ -293,12 +309,6 @@ public class ProjectEditor : WindowUI {
 
 
 
-		// Func
-		static void SetIconFromPNG (string path) {
-			if (!Util.FileExists(path) || Instance.CurrentProject == null) return;
-			bool success = EngineUtil.CreateIcoFromPng(path, Instance.CurrentProject.IconPath);
-			if (success) Instance.ReloadIconUI();
-		}
 	}
 
 
