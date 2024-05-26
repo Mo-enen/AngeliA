@@ -447,16 +447,6 @@ public class Engine {
 	}
 
 
-#if DEBUG
-	[OnGameQuitting(int.MaxValue)]
-	internal static void CloseWindowsTerminal () {
-		System.Diagnostics.Process.GetProcessesByName(
-			"WindowsTerminal"
-		).ToList().ForEach(item => item.CloseMainWindow());
-	}
-#endif
-
-
 	// Update
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {

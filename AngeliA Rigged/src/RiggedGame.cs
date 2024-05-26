@@ -55,7 +55,7 @@ public partial class RiggedGame : Game {
 	public RiggedGame (params string[] args) {
 
 		Instance = this;
-
+		
 		// Load Game Assemblies
 		Util.AddAssembliesFromArgs(args);
 

@@ -1036,17 +1036,24 @@ public sealed partial class MapEditor : WindowUI {
 				);
 
 				if (!IsNavigating) {
-
 					int y = Input.MouseGlobalPosition.y.ToUnit();
 					GUI.Label(
-						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						 new IRect(
+							Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING),
+							cameraRect.y + PADDING,
+							LABEL_WIDTH, LABEL_HEIGHT
+						),
 						StateYLabelToString.GetChars(y),
 						out var boundsY
 					);
 
 					int x = Input.MouseGlobalPosition.x.ToUnit();
 					GUI.Label(
-						new IRect(Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING), cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						 new IRect(
+							Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING),
+							cameraRect.y + PADDING,
+							LABEL_WIDTH, LABEL_HEIGHT
+						),
 						StateXLabelToString.GetChars(x)
 					);
 

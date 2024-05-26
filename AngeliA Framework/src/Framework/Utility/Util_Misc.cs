@@ -116,17 +116,18 @@ public static partial class Util {
 
 	public static int ExecuteCommand (string workingDirectory, string arguments, int logID = -1, bool wait = true) {
 		try {
-			var process = Process.Start(new ProcessStartInfo {
+			var info = new ProcessStartInfo {
 				Verb = "runas",
 				FileName = "cmd.exe",
-				Arguments = $"/C \"{arguments}\"",
+				Arguments = $"/C {arguments}",
 				WindowStyle = ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
 				CreateNoWindow = true,
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				WorkingDirectory = workingDirectory,
-			});
+			};
+			var process = Process.Start(info);
 			if (logID >= 0) {
 				string line;
 				while ((line = process.StandardOutput.ReadLine()) != null) {

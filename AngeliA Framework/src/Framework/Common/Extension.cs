@@ -32,6 +32,9 @@ public static class Extension {
 	}
 
 	// Misc
+	public static string ToStringWithDoubleQuotes (this string str) => $"\"{str}\"";
+	public static string ToStringWithDoubleQuotes (this StringBuilder builder) => $"\"{builder}\"";
+
 	public static void AddDistinct<T> (this IList<T> list, T item) {
 		if (!list.Contains(item)) list.Add(item);
 	}

@@ -90,7 +90,7 @@ public static class EngineUtil {
 
 
 	// AngeliA
-	public static int BuildAngeliaProject (Project project, bool runAfterBuild) {
+	public static int BuildAngeliaProject (Project project) {
 		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
 		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
 		var info = project.Universe.Info;
@@ -99,7 +99,7 @@ public static class EngineUtil {
 			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
 			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
 			project.IconPath, project.UniversePath,
-			"", publish: false, runAfterBuild: runAfterBuild, logID: 0
+			"", publish: false, logID: 0
 		);
 	}
 
@@ -113,7 +113,7 @@ public static class EngineUtil {
 			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
 			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
 			project.IconPath, project.UniversePath,
-			publishDir, publish: true, runAfterBuild: false, logID: 0
+			publishDir, publish: true, logID: 0
 		);
 	}
 
@@ -151,7 +151,7 @@ public static class EngineUtil {
 					c_ProjectPath, c_ProductName, c_BuildLibraryPath, c_VersionString,
 					c_TempBuildPath, c_BuildPath, "", c_TempRoot,
 					"", c_UniversePath,
-					"", publish: false, runAfterBuild: false
+					"", publish: false
 				);
 				OnProjectBuiltInBackgroundHandler?.Invoke(LastBackgroundBuildReturnCode);
 			} catch (System.Exception ex) {
@@ -164,7 +164,7 @@ public static class EngineUtil {
 	public static void RunAngeliaBuild (Project project) {
 		string entryPath = Util.CombinePaths(project.BuildPath, Util.GetNameWithExtension(EntryExePath));
 		if (Util.FileExists(entryPath)) {
-			Util.ExecuteCommand(project.BuildPath, entryPath, wait: false);
+			Util.ExecuteCommand(project.BuildPath, $"\"{entryPath}\" DontCloseCmd", logID: 0, wait: false);
 		}
 	}
 
@@ -403,6 +403,9 @@ public static class EngineUtil {
 		// Config
 		CacheBuilder.Append(debug ? " -c debug" : " -c release");
 
+		// Dependencies
+		CacheBuilder.Append(" --no-dependencies");
+
 		// Prop
 		if (!string.IsNullOrWhiteSpace(assemblyName)) {
 			CacheBuilder.Append($" -p:AssemblyName=\"{assemblyName}\"");
@@ -420,7 +423,7 @@ public static class EngineUtil {
 			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
 		}
 
-		return Util.ExecuteCommand(projectFolder, CacheBuilder.ToString(), logID: logID);
+		return Util.ExecuteCommand(projectFolder, CacheBuilder.ToStringWithDoubleQuotes(), logID: logID);
 	}
 
 
@@ -428,7 +431,7 @@ public static class EngineUtil {
 		string projectPath, string productName, string buildLibraryPath, string versionStr,
 		string tempBuildPath, string buildPath, string tempPublishPath, string tempRoot,
 		string iconPath, string universePath,
-		string publishDir, bool publish, bool runAfterBuild, int logID = BACK_GROUND_BUILD_LOG_ID
+		string publishDir, bool publish, int logID = BACK_GROUND_BUILD_LOG_ID
 	) {
 
 		if (!Util.IsPathValid(projectPath)) return ERROR_PROJECT_FOLDER_INVALID;
@@ -477,15 +480,6 @@ public static class EngineUtil {
 			Util.CopyFile(entrySourcePath, entryBuildPath);
 		}
 
-		// Run
-		if (!publish && runAfterBuild) {
-			string exePath = entryBuildPath;
-			if (Util.FileExists(exePath)) {
-				Util.ExecuteCommand(buildPath, exePath, wait: false);
-			} else {
-				return ERROR_EXE_FOR_RUN_NOT_FOUND;
-			}
-		}
 
 		// ===== Publish =====
 
@@ -521,16 +515,6 @@ public static class EngineUtil {
 			Util.CreateFolder(publishDir);
 			string universePublishFolderPath = Util.CombinePaths(publishDir, "Universe");
 			Util.CopyFolder(universePath, universePublishFolderPath, true, true);
-
-			// Run
-			if (runAfterBuild) {
-				string exePath = pubResultExePath;
-				if (Util.FileExists(exePath)) {
-					Util.ExecuteCommand(publishDir, exePath, wait: false);
-				} else {
-					return ERROR_EXE_FOR_RUN_NOT_FOUND;
-				}
-			}
 
 		}
 

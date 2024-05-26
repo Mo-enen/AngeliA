@@ -1,1 +1,1 @@
-﻿new AngeliaRaylib.RayGame().Run();
+﻿new AngeliaRaylib.RayGame(args).Run();

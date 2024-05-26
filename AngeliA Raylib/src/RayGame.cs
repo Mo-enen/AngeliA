@@ -14,6 +14,11 @@ namespace AngeliaRaylib;
 public partial class RayGame : Game {
 
 
+	// Api
+#if DEBUG
+	protected readonly bool CloseWindowsTerminalOnQuit = true;
+#endif
+
 	// Data
 	private readonly Stopwatch GameWatch = new();
 	private bool RequireQuitGame = false;
@@ -26,6 +31,11 @@ public partial class RayGame : Game {
 
 	// MSG
 	static RayGame () => Util.AddAssembly(typeof(RayGame).Assembly);
+
+
+	public RayGame (string[] args) {
+		CloseWindowsTerminalOnQuit = !args.Any(arg => arg.Equals("DontCloseCMD", StringComparison.OrdinalIgnoreCase));
+	}
 
 
 	public void Run () {
@@ -270,6 +280,14 @@ public partial class RayGame : Game {
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
 		InvokeGameQuitting();
 		Raylib.CloseWindow();
+
+#if DEBUG
+		if (CloseWindowsTerminalOnQuit) {
+			Process.GetProcessesByName(
+				"WindowsTerminal"
+			).ToList().ForEach(item => item.CloseMainWindow());
+		}
+#endif
 
 	}
 
