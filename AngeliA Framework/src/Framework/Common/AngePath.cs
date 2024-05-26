@@ -95,6 +95,7 @@ public static class AngePath {
 	public static string GetUniverseInfoPath (string universeFolder) => Util.CombinePaths(universeFolder, "Info.json");
 	public static string GetItemCustomizationRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Item Customization");
 	public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
+	public static string GetSavingMetaCharacterConfigRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta", "Character Config");
 	public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
 
 

@@ -18,7 +18,7 @@ public enum CharacterAnimationType {
 public abstract class PoseCharacter : Character {
 
 
-	
+
 
 	#region --- VAR ---
 
@@ -100,7 +100,7 @@ public abstract class PoseCharacter : Character {
 	public int Suit_Foot { get; set; } = 0;
 
 	// Data
-	private static readonly Dictionary<int, BodyPartConfig> BodyPartConfigPool = new();
+	private static readonly Dictionary<int, CharacterConfig> ConfigPool = new();
 	private readonly BodyPart[] BodyParts = null;
 	private readonly int[] PoseAnimationIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
 	private readonly int[] PoseHandheldIDs = { 0, 0, 0, 0, 0, 0, 0, 0, };
@@ -125,6 +125,7 @@ public abstract class PoseCharacter : Character {
 
 	[OnUniverseOpen(32)]
 	public static void OnUniverseOpen_Pose () {
+		if (Game.IsToolApplication) return;
 		if (Game.GlobalFrame != 0) InitializePose();
 	}
 
@@ -132,54 +133,76 @@ public abstract class PoseCharacter : Character {
 	[OnGameInitialize]
 	public static void InitializePose () {
 
+		if (Game.IsToolApplication) return;
+
 		// Require Reload
 		CachedConfigVersion++;
 
 		// Config Pool
-		BodyPartConfigPool.Clear();
+		ConfigPool.Clear();
+		string metaRoot = UniverseSystem.CurrentUniverse.CharacterConfigRoot;
+		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
 		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
 
 			int typeID = type.AngeHash();
-			string basicName = type.Name;
-			if (basicName[0] == 'e') basicName = basicName[1..];
-			int len = DEFAULT_BODY_PART_ID.Length;
-			var config = new BodyPartConfig() {
-				BodyParts = new int[len],
-			};
+			string name = type.Name;
 
-			// Body Parts
-			for (int i = 0; i < len; i++) {
-				int id = DEFAULT_BODY_PART_ID[i];
-				int newID = $"{basicName}.{BODY_PART_NAME[i]}".AngeHash();
-				if (i == 0) {
-					// For Head
-					if (Renderer.HasSpriteGroup(newID) || Renderer.HasSprite(newID)) {
-						id = newID;
+			// Load From File
+			string configPath = Util.CombinePaths(metaRoot, $"{name}.json");
+			var config = JsonUtil.LoadJsonFromPath<CharacterConfig>(configPath);
+
+			// Create Default Config
+			if (config == null) {
+				config = new CharacterConfig();
+
+				// Body Parts
+				for (int i = 0; i < bodyPartLen; i++) {
+					int id = DEFAULT_BODY_PART_ID[i];
+					int newID = $"{name}.{BODY_PART_NAME[i]}".AngeHash();
+					if (i == 0) {
+						// For Head
+						if (Renderer.HasSpriteGroup(newID) || Renderer.HasSprite(newID)) {
+							id = newID;
+						}
+					} else {
+						// For Other
+						if (Renderer.HasSprite(newID)) id = newID;
 					}
-				} else {
-					// For Other
-					if (Renderer.HasSprite(newID)) id = newID;
+					switch (i) {
+						case 0: config.Head = id; break;
+						case 1: config.Body = id; break;
+						case 2: config.Hip = id; break;
+						case 3 or 4: config.Shoulder = id; break;
+						case 5 or 6: config.UpperArm = id; break;
+						case 7 or 8: config.LowerArm = id; break;
+						case 9 or 10: config.Hand = id; break;
+						case 11 or 12: config.UpperLeg = id; break;
+						case 13 or 14: config.LowerLeg = id; break;
+						case 15 or 16: config.Foot = id; break;
+					}
 				}
-				config.BodyParts[i] = id;
+
+				// Gadget
+				config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultID) ? defaultID : 0;
+				config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out defaultID) ? defaultID : 0;
+				config.Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out defaultID) ? defaultID : 0;
+				config.Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out defaultID) ? defaultID : 0;
+				config.Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out defaultID) ? defaultID : 0;
+				config.Horn = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out defaultID) ? defaultID : 0;
+
+				// Suit
+				config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
+				config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out suitID) ? suitID : 0;
+				config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out suitID) ? suitID : 0;
+				config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out suitID) ? suitID : 0;
+				config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out suitID) ? suitID : 0;
+
+				JsonUtil.SaveJsonToPath(config, configPath, prettyPrint: true);
+
 			}
 
-			// Gadget
-			config.FaceID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultID) ? defaultID : 0;
-			config.HairID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out defaultID) ? defaultID : 0;
-			config.EarID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out defaultID) ? defaultID : 0;
-			config.TailID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out defaultID) ? defaultID : 0;
-			config.WingID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out defaultID) ? defaultID : 0;
-			config.HornID = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out defaultID) ? defaultID : 0;
-
-			// Suit
-			config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
-			config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out suitID) ? suitID : 0;
-			config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out suitID) ? suitID : 0;
-			config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out suitID) ? suitID : 0;
-			config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out suitID) ? suitID : 0;
-
 			// Final
-			BodyPartConfigPool.Add(typeID, config);
+			ConfigPool.Add(typeID, config);
 
 		}
 
@@ -190,11 +213,11 @@ public abstract class PoseCharacter : Character {
 		int len = DEFAULT_BODY_PART_ID.Length;
 		BodyParts = new BodyPart[len];
 		for (int i = 0; i < len; i++) {
-			var bodyPart = BodyParts[i] = new BodyPart();
-			bodyPart.SetData(DEFAULT_BODY_PART_ID[i],
-				i == 9 || i == 10 || i == 15 || i == 16,
-				(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
+			var bodyPart = BodyParts[i] = new BodyPart(
+				parent: (i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null,
+				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16
 			);
+			bodyPart.SetData(DEFAULT_BODY_PART_ID[i]);
 		}
 		Head = BodyParts[0];
 		Body = BodyParts[1];
@@ -611,6 +634,17 @@ public abstract class PoseCharacter : Character {
 	#region --- API ---
 
 
+	public void LoadCharacterFromConfig () {
+		// TODO
+	}
+
+
+	public void SaveCharacterToConfig () {
+		// TODO
+
+	}
+
+
 	public void IgnoreBodyGadget (BodyGadgetType type, int duration = 1) {
 		switch (type) {
 			case BodyGadgetType.Face:
@@ -706,25 +740,34 @@ public abstract class PoseCharacter : Character {
 
 	private void LoadCharacterFromConfigPool () {
 		int len = DEFAULT_BODY_PART_ID.Length;
-		if (BodyPartConfigPool.TryGetValue(TypeID, out var config) && config != null) {
+		if (ConfigPool.TryGetValue(TypeID, out var config) && config != null) {
 
 			// Body Part
-			for (int i = 0; i < len; i++) {
-				var bodyPartID = config.BodyParts[i];
-				BodyParts[i].SetData(
-					bodyPartID,
-					i == 9 || i == 10 || i == 15 || i == 16,
-					(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
-				);
-			}
+			Head.SetData(config.Head);
+			Body.SetData(config.Body);
+			Hip.SetData(config.Hip);
+			ShoulderL.SetData(config.Shoulder);
+			ShoulderR.SetData(config.Shoulder);
+			UpperArmL.SetData(config.UpperArm);
+			UpperArmR.SetData(config.UpperArm);
+			LowerArmL.SetData(config.LowerArm);
+			LowerArmR.SetData(config.LowerArm);
+			HandL.SetData(config.Hand);
+			HandR.SetData(config.Hand);
+			UpperLegL.SetData(config.UpperLeg);
+			UpperLegR.SetData(config.UpperLeg);
+			LowerLegL.SetData(config.LowerLeg);
+			LowerLegR.SetData(config.LowerLeg);
+			FootL.SetData(config.Foot);
+			FootR.SetData(config.Foot);
 
 			// Gadget
-			FaceID = config.FaceID;
-			HairID = config.HairID;
-			EarID = config.EarID;
-			TailID = config.TailID;
-			WingID = config.WingID;
-			HornID = config.HornID;
+			FaceID = config.Face;
+			HairID = config.Hair;
+			EarID = config.Ear;
+			TailID = config.Tail;
+			WingID = config.Wing;
+			HornID = config.Horn;
 
 			// Suit
 			Suit_Head = config.SuitHead;
@@ -736,11 +779,7 @@ public abstract class PoseCharacter : Character {
 		} else {
 			// Load Default Bodypart
 			for (int i = 0; i < len; i++) {
-				BodyParts[i].SetData(
-					DEFAULT_BODY_PART_ID[i],
-					i == 9 || i == 10 || i == 15 || i == 16,
-					(i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null
-				);
+				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
 			}
 		}
 

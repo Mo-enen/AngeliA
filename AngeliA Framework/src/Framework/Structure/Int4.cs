@@ -61,6 +61,13 @@ public struct Int4 : IEquatable<Int4>, IFormattable {
 		a.w *= b;
 		return a;
 	}
+	public static Int4 operator + (Int4 a, Int4 b) {
+		a.x += b.x;
+		a.y += b.y;
+		a.z += b.z;
+		a.w += b.w;
+		return a;
+	}
 
 	public override readonly bool Equals (object other) {
 		if (other is not Int4) return false;

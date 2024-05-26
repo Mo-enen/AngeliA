@@ -2,29 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
-
-
-
-public class BodyPartConfig {
-
-	public int[] BodyParts;
-
-	public int SuitHead;
-	public int SuitBody;
-	public int SuitHip;
-	public int SuitHand;
-	public int SuitFoot;
-
-	public int FaceID;
-	public int HairID;
-	public int EarID;
-	public int TailID;
-	public int WingID;
-	public int HornID;
-}
-
-
+namespace AngeliA;
 
 public class BodyPart {
 
@@ -39,8 +17,8 @@ public class BodyPart {
 	public int SpritePivotY { get; private set; } = 0;
 	public int SizeX { get; private set; } = Const.CEL;
 	public int SizeY { get; private set; } = Const.CEL;
-	public bool UseLimbFlip { get; private set; } = false;
-	public BodyPart LimbParent { get; private set; } = null;
+	public bool UseLimbFlip { get; init; } = false;
+	public BodyPart LimbParent { get; init; } = null;
 	public bool IsFullCovered => Covered == CoverMode.FullCovered;
 
 	public int GlobalX;
@@ -59,7 +37,13 @@ public class BodyPart {
 
 
 	// API
-	public void SetData (int id = 0, bool useLimbFlip = false, BodyPart parent = null) {
+	public BodyPart (BodyPart parent, bool useLimbFlip) {
+		LimbParent = parent;
+		UseLimbFlip = useLimbFlip;
+	}
+
+
+	public void SetData (int id) {
 		if (Renderer.TryGetSpriteFromGroup(id, 0, out var sprite, false, true)) {
 			SizeX = sprite.GlobalWidth;
 			SizeY = sprite.GlobalHeight;
@@ -74,8 +58,6 @@ public class BodyPart {
 			SpritePivotY = 0;
 		}
 		ID = id;
-		LimbParent = parent;
-		UseLimbFlip = useLimbFlip;
 	}
 
 

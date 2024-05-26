@@ -256,7 +256,12 @@ public static class Renderer {
 	#region --- API ---
 
 
-	public static void ClearCharSpritePool () => CharSpritePool.Clear();
+	public static void ClearCharSpritePool () {
+		foreach (var (_, sprite) in CharSpritePool) {
+			Game.UnloadTexture(sprite.Texture);
+		}
+		CharSpritePool.Clear();
+	}
 
 
 	// Sheet

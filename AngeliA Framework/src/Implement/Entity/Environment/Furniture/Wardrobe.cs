@@ -108,15 +108,13 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 
 	protected override void OnUiClose () {
 		base.OnUiClose();
-		if (Player.Selecting is IConfigurableCharacter cPlayer) {
-			cPlayer.SaveCharacterToConfig();
-		}
+		Player.Selecting?.SaveCharacterToConfig();
 	}
 
 
 	protected override void FrameUpdateUI (IRect windowRect) {
-		if (Player.Selecting is not IConfigurableCharacter) return;
 		var player = Player.Selecting;
+		if (player == null) return;
 		windowRect.x = player.Rect.CenterX() - windowRect.width / 2;
 		windowRect.y = player.Y + Const.CEL * 2 + Unify(64);
 		Update_GameLogic(windowRect);
@@ -402,7 +400,7 @@ Color32.BLACK, 0
 	}
 
 
-	bool IActionTarget.AllowInvoke () => Player.Selecting is IConfigurableCharacter && !Task.HasTask();
+	bool IActionTarget.AllowInvoke () => Player.Selecting != null && !Task.HasTask();
 
 
 	#endregion
@@ -434,7 +432,7 @@ Color32.BLACK, 0
 
 
 	private int GetPlayerSuitIndex (ClothType type) {
-		if (Player.Selecting is not IConfigurableCharacter) return -1;
+		if (Player.Selecting == null) return -1;
 		var suitPatterns = GetPattern(type);
 		int playerPattern = GetPlayerSuitID(type);
 		for (int i = 0; i < suitPatterns.Count; i++) {

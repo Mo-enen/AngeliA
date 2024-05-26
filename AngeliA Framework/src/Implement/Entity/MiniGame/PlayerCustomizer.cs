@@ -159,7 +159,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	#region --- MSG ---
 
 
-	bool IActionTarget.AllowInvoke () => Player.Selecting is IConfigurableCharacter;
+	bool IActionTarget.AllowInvoke () => Player.Selecting != null;
 
 
 	public PlayerCustomizer () {
@@ -186,7 +186,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	protected override void GameUpdate () {
 
 		var player = Player.Selecting;
-		if (player is not IConfigurableCharacter) return;
+		if (player == null) return;
 
 		// Quit
 		if (Input.GameKeyDown(Gamekey.Select)) {
@@ -288,12 +288,12 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	// Game
 	protected override void StartMiniGame () {
 		var player = Player.Selecting;
-		if (player is not IConfigurableCharacter cPlayer) {
+		if (player == null) {
 			CloseMiniGame();
 			return;
 		}
 		LoadPatternsFromFile();
-		cPlayer.LoadCharacterFromConfig();
+		player.LoadCharacterFromConfig();
 		PlayerFacingRight = player.FacingRight;
 		HighlightingMainIndex = 0;
 		HighlightingPatternRow = 0;
@@ -304,9 +304,8 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	protected override void CloseMiniGame () {
 		base.CloseMiniGame();
-		if (Player.Selecting is IConfigurableCharacter player) {
-			player.SaveCharacterToConfig();
-		}
+		var player = Player.Selecting;
+		player?.SaveCharacterToConfig();
 		// Clear Patterns
 		Patterns_Head.Clear();
 		Patterns_BodyHip.Clear();

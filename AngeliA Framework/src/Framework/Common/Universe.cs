@@ -34,6 +34,7 @@ public class Universe {
 	public string MusicRoot { get; private set; }
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
+	public string CharacterConfigRoot { get; private set; }
 
 	// Api
 	public UniverseInfo Info { get; private set; }
@@ -63,6 +64,7 @@ public class Universe {
 		result.ItemCustomizationRoot = AngePath.GetItemCustomizationRoot(result.SavingRoot);
 		result.SavingMetaRoot = AngePath.GetSavingMetaRoot(result.SavingRoot);
 		result.ProcedureMapRoot = AngePath.GetProcedureMapRoot(result.SavingRoot);
+		result.CharacterConfigRoot = AngePath.GetSavingMetaCharacterConfigRoot(result.SavingRoot);
 		result.CreateFolders();
 		return result;
 	}

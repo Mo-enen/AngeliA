@@ -56,6 +56,7 @@ public class Engine {
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
 	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
 	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
+	private static readonly SpriteCode ICON_TAB_BACK = "Icon.MainTabBack";
 
 	private static readonly LanguageCode BUILDING_HINT = ("UI.Rig.BuildingHint", "Recompiling");
 	private static readonly LanguageCode BUILD_ERROR_HINT = ("UI.Rig.BuildError", "Error in game script :(\nAll errors must be fixed before the game can run");
@@ -777,7 +778,7 @@ public class Engine {
 			} else {
 				if (GUI.Button(
 					barRect.EdgeInside(Direction4.Down, rect.height),
-					BuiltInSprite.ICON_BACK, GUI.Skin.IconButton
+					ICON_TAB_BACK, GUI.Skin.IconButton
 				)) {
 					TryCloseProject();
 				}

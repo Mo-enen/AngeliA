@@ -4,6 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
+[RequireSpriteFromField]
 [RequireLanguageFromField]
 public class SettingWindow : WindowUI {
 
@@ -14,6 +15,8 @@ public class SettingWindow : WindowUI {
 
 
 	// Const
+	private static readonly SpriteCode UI_LANEL_SETTING = "UI.Panel.Setting";
+
 	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Artwork");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
@@ -54,6 +57,7 @@ public class SettingWindow : WindowUI {
 		PixEditorBackgroundColor = pixEditorBackgroundColor;
 		BackgroundColorDefault = backgroundColorDefault;
 	}
+
 
 	[OnGameFocused]
 	internal static void OnGameFocused () => Instance?.RequireReloadThemePath();
@@ -211,18 +215,30 @@ public class SettingWindow : WindowUI {
 
 
 	private void DrawPanel (ref IRect rect, System.Func<IRect, IRect> panelGUI) {
+
 		int labelOffset = Unify(32);
-		int boxPadding = Unify(8);
-		var box = Renderer.DrawPixel(default, Color32.WHITE_12);
+		var boxPadding = Int4.Direction(Unify(20), Unify(20), Unify(6), Unify(12));
 		int boxTop = rect.yMax;
 		int boxLeft = rect.xMin;
 		int boxRight = rect.xMax;
+
 		rect = panelGUI(rect);
-		box.X = boxLeft - boxPadding - labelOffset;
-		box.Y = rect.yMax - boxPadding;
-		box.Width = boxRight - boxLeft + boxPadding * 2 + labelOffset;
-		box.Height = boxTop - rect.yMax + boxPadding * 2;
-		rect.y -= Unify(24);
+
+		if (
+			Renderer.TryGetSprite(UI_LANEL_SETTING, out var sprite) ||
+			Renderer.TryGetSprite(Const.PIXEL, out sprite)
+		) {
+			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+				var tint = sprite.ID == Const.PIXEL ? Color32.WHITE_12 : Color32.WHITE;
+				Renderer.DrawSlice(sprite, new IRect(
+					boxLeft - boxPadding.left - labelOffset,
+					rect.yMax - boxPadding.down + MasterScroll,
+					boxRight - boxLeft + boxPadding.horizontal + labelOffset,
+					boxTop - rect.yMax + boxPadding.vertical
+				), tint);
+			}
+		}
+		rect.y -= boxPadding.vertical + Unify(6);
 	}
 
 

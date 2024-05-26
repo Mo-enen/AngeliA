@@ -14,6 +14,7 @@ public class ProjectEditor : WindowUI {
 
 	// Const
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
+
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
@@ -74,8 +75,14 @@ public class ProjectEditor : WindowUI {
 
 		if (CurrentProject == null) return;
 
+		Renderer.TryGetSprite(PANEL_BACKGROUND, out var panelBgSprite);
+		var panelBorder = Int4.Direction(Unify(12), Unify(12), Unify(42), Unify(96));
+		if (panelBgSprite != null) {
+			panelBorder += panelBgSprite.GlobalBorder;
+		}
+
 		var windowRect = WindowRect;
-		var panelRect = windowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(196));
+		var panelRect = windowRect.Shrink(panelBorder);
 		int maxPanelWidth = Unify(612);
 		if (panelRect.width > maxPanelWidth) {
 			panelRect.x += (panelRect.width - maxPanelWidth) / 2;
@@ -104,13 +111,13 @@ public class ProjectEditor : WindowUI {
 		);
 
 		// BG
-		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
-			if (Renderer.TryGetSprite(PANEL_BACKGROUND, out var sprite)) {
+		if (panelBgSprite != null) {
+			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
 				var range = new IRect(panelRect.x, WindowRect.y, panelRect.width, panelRect.yMax - WindowRect.yMin + MasterScrollPos);
-				var border = GUI.UnifyBorder(sprite.GlobalBorder, true);
+				var border = GUI.UnifyBorder(panelBgSprite.GlobalBorder, true);
 				range = range.Expand(border);
 				Renderer.DrawTile(
-					sprite, range, Alignment.TopMid, adapt: false,
+					panelBgSprite, range, Alignment.TopMid, adapt: false,
 					borderL: border.left, borderR: border.right, borderD: border.down, borderU: border.up
 				);
 			}
@@ -258,8 +265,8 @@ public class ProjectEditor : WindowUI {
 			contentRect.y += MasterScrollPos;
 			Game.DrawGizmosTexture(contentRect.Shrink(iconButtonRect.height / 8), IconTexture);
 		}
-		rect.SlideDown(padding);
 		rect.height = itemHeight;
+		rect.SlideDown(padding);
 
 		// Open Project Folders
 		GUI.SmallLabel(rect, LABEL_LINK);
@@ -272,6 +279,19 @@ public class ProjectEditor : WindowUI {
 			Game.OpenUrl(CurrentProject.Universe.SavingRoot);
 		}
 		rect.SlideDown(padding);
+
+
+		// Music
+
+
+
+		// Sound
+
+
+		// Font
+
+
+
 
 		// Func
 		static void SetIconFromPNG (string path) {
