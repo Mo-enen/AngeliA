@@ -20,7 +20,7 @@
 		<Optimize>True</Optimize>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
 
-		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<OutputPath>..\AngeliA Engine\Universe\Runtime\Debug</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
 
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

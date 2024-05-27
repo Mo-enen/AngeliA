@@ -9,6 +9,21 @@ public class ProjectEditor : WindowUI {
 
 
 
+	#region --- SUB ---
+
+
+	private struct ResourceData {
+		public int ID;
+		public string Name;
+		public string Path;
+	}
+
+
+	#endregion
+
+
+
+
 	#region --- VAR ---
 
 
@@ -43,8 +58,8 @@ public class ProjectEditor : WindowUI {
 	public int RequiringRebuildFrame { get; private set; } = -2;
 	public int RequiringPublishFrame { get; private set; } = int.MinValue;
 	public string RequiringPublishPath { get; private set; } = "";
-	protected override bool BlockEvent => true;
 	public override string DefaultName => "Project";
+	protected override bool BlockEvent => true;
 
 	// Data
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 16, };
@@ -298,14 +313,22 @@ public class ProjectEditor : WindowUI {
 		int labelWidth = GUI.LabelWidth;
 
 		// Music
+		foreach (var (_, data) in Game.ForAllMusic()) {
 
 
+		}
 
 		// Sound
+		foreach (var (_, data) in Game.ForAllSound()) {
 
+
+		}
 
 		// Font
+		foreach (var fontData in Game.ForAllFonts()) {
 
+
+		}
 
 
 

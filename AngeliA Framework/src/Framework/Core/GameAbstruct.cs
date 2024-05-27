@@ -333,8 +333,8 @@ public abstract partial class Game {
 	public static object LoadSound (string filePath) => Instance._LoadSound(filePath);
 	protected abstract object _LoadSound (string filePath);
 
-	public static void UnloadSound (object sound) => Instance._UnloadSound(sound);
-	protected abstract void _UnloadSound (object sound);
+	public static void UnloadSound (SoundData sound) => Instance._UnloadSound(sound);
+	protected abstract void _UnloadSound (SoundData sound);
 
 	public static void PlaySound (int id, float volume = 1f) => Instance._PlaySound(id, volume);
 	protected abstract void _PlaySound (int id, float volume);

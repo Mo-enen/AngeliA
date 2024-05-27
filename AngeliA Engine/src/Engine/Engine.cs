@@ -1,7 +1,6 @@
 ﻿global using Debug = AngeliA.Debug;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO.MemoryMappedFiles;
 using System.Linq;
 using AngeliA;
 
@@ -381,6 +380,7 @@ public class Engine {
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 		}
+
 		// Func
 		static void ImportForIcon () {
 			string path = Instance.DroppingFilePath;

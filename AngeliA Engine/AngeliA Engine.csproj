@@ -17,15 +17,13 @@
 		<Optimize>True</Optimize>
 		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 
-
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
-		
-		
+
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
-		
+
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,14 +46,23 @@
 		<None Remove="dotnet sdk\**" />
 		<None Remove="Properties\**" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->
-	<Target Name="CopyDLL" AfterTargets="Build">
+	<Target Name="CopyDll" AfterTargets="Build">
 		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
+	</Target>
+
+	<!--Copy Framework dll to Runtime Folder-->
+	<Target Name="Copy AngeFramework Dll" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Copy SourceFiles="$(OutputPath)AngeliA Framework.dll" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Framework.dll" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="Copy AngeRaylib Dll" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Copy SourceFiles="$(OutputPath)AngeliA Raylib.dll" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Raylib.dll" ContinueOnError="true" />
 	</Target>
 
 </Project>

@@ -50,10 +50,10 @@ public abstract partial class Game {
 	private static MethodInfo[] OnGameTryingToQuitMethods;
 
 	// Data
-	protected static readonly Dictionary<int, object> SoundPool = new();
-	protected static readonly Dictionary<int, string> MusicPool = new();
-	protected static readonly List<FontData> Fonts = new();
 	private static Game Instance = null;
+	protected static readonly Dictionary<int, SoundData> SoundPool = new();
+	protected static readonly Dictionary<int, MusicData> MusicPool = new();
+	protected static readonly List<FontData> Fonts = new();
 	private static readonly HashSet<int> CacheForAudioSync = new();
 	private static readonly List<int> CacheForAudioSyncRemove = new();
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
@@ -300,6 +300,12 @@ public abstract partial class Game {
 	}
 
 
+	// Res
+	public static IReadOnlyCollection<FontData> ForAllFonts () => Fonts;
+	public static IReadOnlyCollection<KeyValuePair<int, MusicData>> ForAllMusic () => MusicPool;
+	public static IReadOnlyCollection<KeyValuePair<int, SoundData>> ForAllSound () => SoundPool;
+
+
 	// Fonts
 	public static void LoadFontsIntoPool (string rootPath, bool builtIn) {
 		if (builtIn) {
@@ -392,7 +398,13 @@ public abstract partial class Game {
 			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseMusicRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
 				int id = Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash();
 				CacheForAudioSync.TryAdd(id);
-				MusicPool.TryAdd(id, path);
+				if (!MusicPool.ContainsKey(id)) {
+					MusicPool.Add(id, new MusicData() {
+						ID = id,
+						Name = Util.GetNameWithoutExtension(path),
+						Path = path,
+					});
+				}
 			}
 		}
 		foreach (var (id, _) in MusicPool) {
@@ -414,7 +426,12 @@ public abstract partial class Game {
 				if (SoundPool.ContainsKey(id)) continue;
 				var soundObj = LoadSound(path);
 				if (soundObj == null) continue;
-				SoundPool.Add(id, soundObj);
+				SoundPool.Add(id, new SoundData() {
+					ID = id,
+					Name = Util.GetNameWithoutExtension(path),
+					Path = path,
+					Data = soundObj,
+				});
 			}
 		}
 		foreach (var (id, sound) in SoundPool) {

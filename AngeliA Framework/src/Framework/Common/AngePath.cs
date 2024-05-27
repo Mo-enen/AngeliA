@@ -8,12 +8,13 @@ public static class AngePath {
 
 	public const string COMBINATION_FILE_NAME = "Item Combination.txt";
 
-	// Ext
+	// Ext 
 	public const string MAP_FILE_EXT = "ibb";
 	public const string CONVERSATION_FILE_EXT = "txt";
 	public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
 	public const string LANGUAGE_FILE_EXT = "txt";
 	public const string SHEET_FILE_EXT = "sheet";
+
 
 	// System
 	public static string ApplicationDataPath {

@@ -10,13 +10,13 @@ public partial class RayGame {
 
 	// Music
 	protected override void _UnloadMusic (object music) {
-		if (CurrentBGM == null) return;
+		if (music == null) return;
 		Raylib.UnloadMusicStream((Music)music);
 	}
 
 	protected override void _PlayMusic (int id) {
 
-		if (!MusicPool.TryGetValue(id, out var path)) return;
+		if (!MusicPool.TryGetValue(id, out var data)) return;
 
 		// Stop Current
 		if (CurrentBGM is Music bgm && Raylib.IsMusicStreamPlaying(bgm)) {
@@ -25,10 +25,12 @@ public partial class RayGame {
 		}
 
 		// Play New
-		var music = Raylib.LoadMusicStream(path);
-		Raylib.PlayMusicStream(music);
-		music.Looping = true;
-		CurrentBGM = music;
+		if (Util.FileExists(data.Path)) {
+			var music = Raylib.LoadMusicStream(data.Path);
+			Raylib.PlayMusicStream(music);
+			music.Looping = true;
+			CurrentBGM = music;
+		}
 
 	}
 
@@ -61,14 +63,18 @@ public partial class RayGame {
 	// Sound
 	protected override object _LoadSound (string filePath) => Raylib.LoadSound(filePath);
 
-	protected override void _UnloadSound (object sound) {
+	protected override void _UnloadSound (SoundData sound) {
 		if (sound == null) return;
-		Raylib.UnloadSound((Sound)sound);
+		var s = (Sound)sound.Data;
+		if (Raylib.IsSoundReady(s)) {
+			Raylib.UnloadSound(s);
+		}
 	}
 
 	protected override void _PlaySound (int id, float volume) {
 		if (!SoundPool.TryGetValue(id, out var soundObj) || soundObj == null) return;
-		var sound = (Sound)soundObj;
+		var sound = (Sound)soundObj.Data;
+		if (!Raylib.IsSoundReady(sound)) return;
 		Raylib.PlaySound(sound);
 		Raylib.SetSoundVolume(sound, ScaledSoundVolume * volume);
 	}
@@ -76,7 +82,10 @@ public partial class RayGame {
 	protected override void _StopAllSounds () {
 		foreach (var (_, soundObj) in SoundPool) {
 			if (soundObj == null) continue;
-			Raylib.StopSound((Sound)soundObj);
+			var sound = (Sound)soundObj.Data;
+			if (Raylib.IsSoundReady(sound)) {
+				Raylib.StopSound(sound);
+			}
 		}
 	}
 

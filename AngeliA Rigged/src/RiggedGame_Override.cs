@@ -228,7 +228,7 @@ public partial class RiggedGame {
 
 	// Sounds
 	protected override object _LoadSound (string filePath) => null;
-	protected override void _UnloadSound (object sound) { }
+	protected override void _UnloadSound (SoundData sound) { }
 	protected override void _PlaySound (int id, float volume) {
 		RespondMessage.RequirePlaySoundID = id;
 		RespondMessage.RequirePlaySoundVolume = volume;

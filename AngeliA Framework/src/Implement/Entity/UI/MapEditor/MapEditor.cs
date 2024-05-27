@@ -15,7 +15,12 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Undo
-	private struct ViewUndoItem : IUndoItem {
+	private struct ViewStartUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public IRect ViewRect;
+		public int ViewZ;
+	}
+	private struct ViewEndUndoItem : IUndoItem {
 		public int Step { get; set; }
 		public IRect ViewRect;
 		public int ViewZ;
@@ -27,6 +32,7 @@ public sealed partial class MapEditor : WindowUI {
 		public BlockType Type;
 		public int UnitX;
 		public int UnitY;
+		public int UnitZ;
 	}
 	private struct GlobalPosUndoItem : IUndoItem {
 		public int Step { get; set; }
@@ -1081,7 +1087,7 @@ public sealed partial class MapEditor : WindowUI {
 		// End Undo Register for Current Frame
 		if (LastUndoRegisterFrame == Game.PauselessFrame) {
 			LastUndoRegisterFrame = -1;
-			UndoRedo.Register(new ViewUndoItem() {
+			UndoRedo.Register(new ViewEndUndoItem() {
 				ViewRect = TargetViewRect,
 				ViewZ = CurrentZ,
 			});
@@ -1363,7 +1369,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (LastUndoRegisterFrame != Game.PauselessFrame) {
 			LastUndoRegisterFrame = Game.PauselessFrame;
 			if (!ignoreStep) UndoRedo.GrowStep();
-			UndoRedo.Register(new ViewUndoItem() {
+			UndoRedo.Register(new ViewStartUndoItem() {
 				ViewRect = TargetViewRect,
 				ViewZ = CurrentZ,
 			});
@@ -1392,7 +1398,7 @@ public sealed partial class MapEditor : WindowUI {
 			case BlockUndoItem blockItem:
 				// Block
 				Stream.SetBlockAt(
-					blockItem.UnitX, blockItem.UnitY, CurrentZ, blockItem.Type,
+					blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ, blockItem.Type,
 					reversed ? blockItem.FromID : blockItem.ToID
 				);
 				if (blockItem.Type == BlockType.Level || blockItem.Type == BlockType.Background) {
@@ -1413,13 +1419,21 @@ public sealed partial class MapEditor : WindowUI {
 					IUnique.SetPosition(targetID, targetPos);
 				}
 				break;
-			case ViewUndoItem viewItem:
+			case ViewStartUndoItem viewItem:
 				// View
+				if (!reversed) break;
 				if (CurrentZ != viewItem.ViewZ) {
 					SetViewZ(viewItem.ViewZ);
 				}
-				TargetViewRect = ViewRect = viewItem.ViewRect;
-				//WorldSquaad.Front.UpdateWorldDataImmediately(viewItem.ViewRect, viewItem.ViewZ);
+				TargetViewRect = viewItem.ViewRect;
+				break;
+			case ViewEndUndoItem viewItem:
+				// View
+				if (reversed) break;
+				if (CurrentZ != viewItem.ViewZ) {
+					SetViewZ(viewItem.ViewZ);
+				}
+				TargetViewRect = viewItem.ViewRect;
 				break;
 		}
 	}

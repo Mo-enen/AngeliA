@@ -529,6 +529,7 @@ public partial class MapEditor {
 				Type = type,
 				UnitX = unitX,
 				UnitY = unitY,
+				UnitZ = CurrentZ,
 			}, ignoreStep);
 			return true;
 		}
@@ -548,6 +549,7 @@ public partial class MapEditor {
 				Type = type,
 				UnitX = unitX,
 				UnitY = unitY,
+				UnitZ = CurrentZ,
 			}, ignoreStep);
 		}
 	}
