@@ -442,7 +442,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void Update_Before () {
-
+		
 		var mainRect = Renderer.CameraRect;
 		X = mainRect.x;
 		Y = mainRect.y;

@@ -237,6 +237,7 @@ public class Engine {
 		}
 
 		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
+		ResetViewRect();
 
 		// Theme
 		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
@@ -678,8 +679,7 @@ public class Engine {
 		if (CurrentProject == null) return;
 
 		// Window
-		int contentPadding = GUI.Unify(8);
-		int barWidth = (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + contentPadding;
+		int barWidth = GetEngineLeftBarWidth(out int contentPadding);
 		var cameraRect = Renderer.CameraRect;
 		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
 		var mousePos = Input.MouseGlobalPosition;
@@ -1116,7 +1116,7 @@ public class Engine {
 					ignoreKeyInput:
 						false,
 					leftPadding:
-						(FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + GUI.Unify(8),
+						GetEngineLeftBarWidth(out _),
 					requiringWindowIndex: (byte)(
 						CurrentWindowIndex == RigMapEditorWindowIndex ? 0 :
 						CurrentWindowIndex == RigItemEditorWindowIndex ? 1 :
@@ -1303,10 +1303,7 @@ public class Engine {
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();
 		} else {
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireLostFocusInvoke();
-			Stage.SetViewRectImmediately(
-				new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight / 1000, Game.DefaultViewHeight),
-				remapAllRenderingCells: true
-			);
+			ResetViewRect(true);
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;
@@ -1483,6 +1480,21 @@ public class Engine {
 				Projects.Sort((a, b) => b.LastOpenTime.CompareTo(a.LastOpenTime));
 				break;
 		}
+	}
+
+
+	private void ResetViewRect (bool remapAllRenderingCells = false) {
+		Stage.SetViewRectImmediately(
+			new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight / 1000, Game.DefaultViewHeight),
+			remapAllRenderingCells
+		);
+		WindowUI.ForceWindowRect(Renderer.CameraRect.Shrink(GetEngineLeftBarWidth(out _), 0, 0, 0));
+	}
+
+
+	private int GetEngineLeftBarWidth (out int contentPadding) {
+		contentPadding = GUI.Unify(8);
+		return (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + contentPadding;
 	}
 
 

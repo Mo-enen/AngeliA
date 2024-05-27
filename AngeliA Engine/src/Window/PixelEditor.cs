@@ -828,6 +828,14 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	public void ResetCamera () {
+		CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
+		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
+		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
+		ZoomLevel = 1;
+	}
+
+
 	#endregion
 
 
@@ -864,14 +872,6 @@ public partial class PixelEditor : WindowUI {
 		});
 		SetDirty();
 		SetSpriteSelection(StagedSprites.Count - 1);
-	}
-
-
-	private void ResetCamera () {
-		CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, Unify(TOOLBAR_HEIGHT)).Fit(1, 1).ToFRect();
-		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
-		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
-		ZoomLevel = 1;
 	}
 
 
