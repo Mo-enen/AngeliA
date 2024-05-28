@@ -237,12 +237,6 @@ public partial class RiggedGame : Game {
 		// Require Draw Entity Bounds
 		DrawBounds = CallingMessage.RequireGameMessageInvoke.GetBit(4);
 
-		if (CallingMessage.RequireGameMessageInvoke.GetBit(5)) {
-			// Require Frame Debug
-
-
-		}
-
 		// Gizmos Texture Requirement
 		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);

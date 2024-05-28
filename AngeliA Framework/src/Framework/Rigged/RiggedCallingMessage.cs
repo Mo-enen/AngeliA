@@ -329,7 +329,6 @@ public class RiggedCallingMessage {
 	public void RequireClearCharPoolInvoke () => RequireGameMessageInvoke.SetBit(2, true);
 	public void RequireDrawColliderGizmos () => RequireGameMessageInvoke.SetBit(3, true);
 	public void RequireDrawBoundsGizmos () => RequireGameMessageInvoke.SetBit(4, true);
-	public void RequireFrameDebug () => RequireGameMessageInvoke.SetBit(5, true);
 
 
 	#endregion

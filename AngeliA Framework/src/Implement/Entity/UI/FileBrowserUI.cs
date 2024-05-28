@@ -54,6 +54,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		{ ".json".AngeHash(), "FileIcon.Text"},
 		{ ".png".AngeHash(), "FileIcon.Image"},
 		{ ".jpg".AngeHash(), "FileIcon.Image"},
+		{ ".ttf".AngeHash(), "FileIcon.Font"},
 	};
 
 	// Api

@@ -442,7 +442,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void Update_Before () {
-		
+
 		var mainRect = Renderer.CameraRect;
 		X = mainRect.x;
 		Y = mainRect.y;
@@ -877,8 +877,14 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Behind
 		if (s_ShowBehind.Value) {
+
 			using var _ = Scope.RendererLayer(RenderLayer.BEHIND);
-			var behindCameraRect = cameraRect.ScaleFrom(Game.WorldBehindParallax / 1000f, cameraRect.CenterX(), cameraRect.CenterY());
+			var cameraRectF = cameraRect.ToFRect();
+			var behindCameraRect = cameraRectF.ScaleFrom(
+				Game.WorldBehindParallax / 1000f,
+				cameraRectF.x + cameraRectF.width / 2,
+				cameraRectF.y + cameraRectF.height / 2
+			).ToIRect();
 			int blockSize = (Const.CEL * 1000).CeilDivide(Game.WorldBehindParallax);
 
 			int z = CurrentZ + 1;

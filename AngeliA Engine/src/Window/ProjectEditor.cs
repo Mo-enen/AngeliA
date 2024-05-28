@@ -29,6 +29,8 @@ public class ProjectEditor : WindowUI {
 
 	// Const
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
+	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
+	private static readonly SpriteCode ICON_Font = "FileIcon.Font";
 
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
@@ -51,6 +53,9 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
 	private static readonly LanguageCode LABEL_LINK_SAVING = ("Setting.Link.Saving", "Saving Folder");
 	private static readonly LanguageCode TITLE_PICK_ICON = ("Title.PickPngForIcon", "Pick a .png file for game icon");
+	private static readonly LanguageCode LABEL_MUSIC = ("Label.Project.Music", "Music");
+	private static readonly LanguageCode LABEL_SOUND = ("Label.Project.Sound", "Sound");
+	private static readonly LanguageCode LABEL_FONT = ("Label.Project.Font", "Font");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }
@@ -313,24 +318,38 @@ public class ProjectEditor : WindowUI {
 		int labelWidth = GUI.LabelWidth;
 
 		// Music
+		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_MUSIC);
 		foreach (var (_, data) in Game.ForAllMusic()) {
-
-
+			var _rect = rect.ShrinkLeft(labelWidth);
+			// Icon
+			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
+			// Name
+			GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
+			rect.SlideDown(padding);
 		}
 
 		// Sound
+		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_SOUND);
 		foreach (var (_, data) in Game.ForAllSound()) {
-
-
+			var _rect = rect.ShrinkLeft(labelWidth);
+			// Icon
+			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
+			// Name
+			GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
+			rect.SlideDown(padding);
 		}
 
 		// Font
+		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_FONT);
 		foreach (var fontData in Game.ForAllFonts()) {
-
-
+			if (fontData.BuiltIn) continue;
+			var _rect = rect.ShrinkLeft(labelWidth);
+			// Icon
+			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_Font);
+			// Name
+			GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), fontData.Name);
+			rect.SlideDown(padding);
 		}
-
-
 
 	}
 

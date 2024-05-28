@@ -13,7 +13,7 @@ public class RiggedTransceiver {
 
 
 	#region --- VAR ---
-
+	
 
 	// Const 
 	public const int ERROR_EXE_FILE_NOT_FOUND = -100;

@@ -337,6 +337,7 @@ public class Engine {
 		Instance?.CheckScriptChanged();
 		Instance?.RefreshProjectCache();
 		Instance?.CheckResourceChanged();
+		Instance?.CheckEngineResourceChanged();
 	}
 
 
@@ -1344,11 +1345,11 @@ public class Engine {
 
 		// Script
 		CheckScriptChanged();
+		CheckEngineResourceChanged();
 
 		// Sync Engine Version
 		if (UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
 			CurrentProject.Universe.Info.EngineBuildVersion = UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion;
-			EngineUtil.SyncProjectWithEngine(CurrentProject);
 			JsonUtil.SaveJsonToPath(CurrentProject.Universe.Info, CurrentProject.Universe.InfoPath, true);
 		}
 
@@ -1460,6 +1461,48 @@ public class Engine {
 		if (ProjectEditor.Instance.IconFileModified()) {
 			ProjectEditor.Instance.ReloadIconUI();
 		}
+	}
+
+
+	private void CheckEngineResourceChanged () {
+
+		if (CurrentProject == null) return;
+
+		// Framework Dll Files
+		string sourceDllDebug = EngineUtil.TemplateFrameworkDll_Debug;
+		if (Util.FileExists(sourceDllDebug)) {
+			string targetPath = CurrentProject.FrameworkDllPath_Debug;
+			long sourceDate = Util.GetFileModifyDate(sourceDllDebug);
+			long targetDate = Util.GetFileModifyDate(targetPath);
+			if (sourceDate != targetDate) {
+				Util.CopyFile(sourceDllDebug, targetPath, true);
+				Util.SetFileModifyDate(targetPath, sourceDate);
+			}
+		}
+		string sourceDllRelease = EngineUtil.TemplateFrameworkDll_Release;
+		if (Util.FileExists(sourceDllRelease)) {
+			string targetPath = CurrentProject.FrameworkDllPath_Release;
+			long sourceDate = Util.GetFileModifyDate(sourceDllRelease);
+			long targetDate = Util.GetFileModifyDate(targetPath);
+			if (sourceDate != targetDate) {
+				Util.CopyFile(sourceDllRelease, targetPath, true);
+				Util.SetFileModifyDate(targetPath, sourceDate);
+			}
+		}
+
+		// Entry Exe File
+		string sourceEntryPath = EngineUtil.EntryExePath;
+		if (Util.FileExists(sourceEntryPath)) {
+			var targetEntryPath = Util.CombinePaths(CurrentProject.BuildPath, Util.GetNameWithExtension(sourceEntryPath));
+			long sourceDate = Util.GetFileModifyDate(sourceEntryPath);
+			long targetDate = Util.GetFileModifyDate(sourceEntryPath);
+			if (sourceDate != targetDate) {
+				Util.CopyFile(sourceEntryPath, targetEntryPath, true);
+				Util.SetFileModifyDate(targetEntryPath, sourceDate);
+			}
+		}
+
+
 	}
 
 

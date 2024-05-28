@@ -39,7 +39,8 @@ public static class EngineUtil {
 	// Api
 	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet", "dotnet.exe");
 	public static string ProjectTemplatePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate");
-	public static string TemplateFrameworkDllFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate", "lib");
+	public static string TemplateFrameworkDll_Debug => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate", "lib", "Debug", "AngeliA Framework.dll");
+	public static string TemplateFrameworkDll_Release => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate", "lib", "Release", "AngeliA Framework.dll");
 	public static string EntryExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Entry.exe");
 	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
@@ -166,31 +167,6 @@ public static class EngineUtil {
 		if (Util.FileExists(entryPath)) {
 			Util.ExecuteCommand(project.BuildPath, $"\"{entryPath}\" DontCloseCmd", logID: 0, wait: false);
 		}
-	}
-
-
-	// Sync
-	public static void SyncProjectWithEngine (Project project) {
-
-		if (project == null) return;
-
-		// Framework Dll Files
-		string sourceDllPath = TemplateFrameworkDllFolder;
-		if (Util.FolderExists(sourceDllPath)) {
-			string targetPath = project.FrameworkLibraryPath;
-			Util.DeleteFolder(targetPath);
-			Util.CopyFolder(sourceDllPath, targetPath, true, false);
-		}
-
-		// Entry Exe File
-		string sourceEntryPath = EntryExePath;
-		if (Util.FileExists(sourceEntryPath)) {
-			Util.CopyFile(
-				sourceEntryPath,
-				Util.CombinePaths(project.BuildPath, Util.GetNameWithExtension(sourceEntryPath))
-			);
-		}
-
 	}
 
 
