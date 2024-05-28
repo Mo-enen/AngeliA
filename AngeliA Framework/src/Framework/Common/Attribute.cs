@@ -52,32 +52,3 @@ public class RenderLayerCapacityAttribute : System.Attribute {
 		Capacity = capacity;
 	}
 }
-
-
-// Item
-[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
-public class ItemCombinationAttribute : System.Attribute {
-	public System.Type ItemA = null;
-	public System.Type ItemB = null;
-	public System.Type ItemC = null;
-	public System.Type ItemD = null;
-	public int Count = 1;
-	public bool ConsumeA = true;
-	public bool ConsumeB = true;
-	public bool ConsumeC = true;
-	public bool ConsumeD = true;
-	public ItemCombinationAttribute (System.Type itemA, int count = 1, bool consumeA = true) : this(itemA, null, null, null, count, consumeA, true, true, true) { }
-	public ItemCombinationAttribute (System.Type itemA, System.Type itemB, int count = 1, bool consumeA = true, bool consumeB = true) : this(itemA, itemB, null, null, count, consumeA, consumeB, true, true) { }
-	public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true) : this(itemA, itemB, itemC, null, count, consumeA, consumeB, consumeC, true) { }
-	public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, System.Type itemD, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true) {
-		ItemA = itemA;
-		ItemB = itemB;
-		ItemC = itemC;
-		ItemD = itemD;
-		Count = count;
-		ConsumeA = consumeA;
-		ConsumeB = consumeB;
-		ConsumeC = consumeC;
-		ConsumeD = consumeD;
-	}
-}

@@ -24,6 +24,7 @@ public partial class RayGame : Game {
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
 	private bool PrevHasInverseGizmos = false;
+	private int CurrentBgmID = 0;
 
 	// Saving
 	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);

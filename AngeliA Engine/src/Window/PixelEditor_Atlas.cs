@@ -54,10 +54,10 @@ public partial class PixelEditor {
 		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_HEIGHT));
 
 		// Rename Hotkey
-		if (Input.KeyboardDown(KeyboardKey.F2) && RenamingAtlasIndex < 0 && CurrentAtlasIndex >= 0) {
-			RenamingAtlasIndex = CurrentAtlasIndex;
-			GUI.StartTyping(ATLAS_INPUT_ID + CurrentAtlasIndex);
-		}
+		//if (Input.KeyboardDown(KeyboardKey.F2) && RenamingAtlasIndex < 0 && CurrentAtlasIndex >= 0) {
+		//	RenamingAtlasIndex = CurrentAtlasIndex;
+		//	GUI.StartTyping(ATLAS_INPUT_ID + CurrentAtlasIndex);
+		//}
 
 		int itemCount = Sheet.Atlas.Count;
 		if (itemCount > 0) {

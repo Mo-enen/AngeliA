@@ -14,7 +14,10 @@ public class ItemEditor : WindowUI {
 	#region --- VAR ---
 
 
+	// Api
 	public static ItemEditor Instance { get; private set; }
+
+	// Data
 
 
 	#endregion
@@ -32,6 +35,16 @@ public class ItemEditor : WindowUI {
 
 		if (WorldSquad.Enable) Game.StopGame();
 
+
+
+
+
+	}
+
+
+	public override void Save (bool forceSave = false) {
+		base.Save(forceSave);
+		if (!IsDirty && !forceSave) return;
 
 
 

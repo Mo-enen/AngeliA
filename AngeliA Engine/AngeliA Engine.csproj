@@ -45,10 +45,12 @@
 		<EmbeddedResource Remove="Universe\**" />
 		<None Remove="dotnet sdk\**" />
 		<None Remove="Properties\**" />
+		<None Remove="Universe\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+		<ProjectReference Include="..\AngeliA Rigged\AngeliA Rigged.csproj" />
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->

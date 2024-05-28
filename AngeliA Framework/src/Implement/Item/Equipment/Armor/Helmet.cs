@@ -7,7 +7,7 @@ namespace AngeliA;
 
 
 // Wood
-[ItemCombination(typeof(iTreeStump), typeof(iTreeTrunk), 1)]
+
 public class iHelmetWood : Helmet<iHelmetWoodBroken, iHelmetWood> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 	protected override bool HideEar => true;
@@ -22,7 +22,7 @@ public class iHelmetWoodBroken : Helmet<iHelmetWoodBroken, iHelmetWood> {
 
 
 // Iron
-[ItemCombination(typeof(iHelmetWood), typeof(iIngotIron), 1)]
+
 public class iHelmetIron : Helmet<iHelmetIronCracked, iHelmetIron> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 	protected override bool HideEar => true;
@@ -42,7 +42,7 @@ public class iHelmetIronBroken : Helmet<iHelmetIronBroken, iHelmetIronCracked> {
 
 
 // Gold
-[ItemCombination(typeof(iHelmetIron), typeof(iIngotGold), 1)]
+
 public class iHelmetGold : Helmet<iHelmetGoldDented, iHelmetGold> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 	protected override bool HideEar => true;
@@ -73,7 +73,7 @@ public class iHelmetGoldBroken : Helmet<iHelmetGoldBroken, iHelmetGoldCracked> {
 
 
 // Safety
-[ItemCombination(typeof(iHelmetWood), typeof(iCone), 1)]
+
 public class iSafetyHelmet : Helmet<iSafetyHelmetBroken, iSafetyHelmet> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideEar => true;
@@ -88,7 +88,7 @@ public class iSafetyHelmetBroken : Helmet<iSafetyHelmetBroken, iSafetyHelmet> {
 
 
 // Pirate
-[ItemCombination(typeof(iSkull), typeof(iMeatBone), typeof(iMeatBone), typeof(iTopHat), 1)]
+
 public class iPirateHat : Helmet<iPirateHatBroken, iPirateHat> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideEar => true;
@@ -103,7 +103,7 @@ public class iPirateHatBroken : Helmet<iPirateHatBroken, iPirateHat> {
 
 
 // Wizard
-[ItemCombination(typeof(iRuneCube), typeof(iTopHat), 1)]
+
 public class iWizardHat : Helmet<iWizardHatBroken, iWizardHat> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideEar => true;
@@ -118,7 +118,7 @@ public class iWizardHatBroken : Helmet<iWizardHatBroken, iWizardHat> {
 
 
 // TopHat
-[ItemCombination(typeof(iBucketIron), typeof(iFabric), typeof(iRibbon), 1)]
+
 public class iTopHat : Helmet<iTopHatBroken, iTopHat> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideEar => true;
@@ -132,7 +132,7 @@ public class iTopHatBroken : Helmet<iTopHatBroken, iTopHat> {
 
 
 // Fox
-[ItemCombination(typeof(iItemWoodBoard), typeof(iPaw), typeof(iRope), 1)]
+
 public class iFoxMask : Helmet<iFoxMaskBroken, iFoxMask> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideFace => true;
@@ -146,7 +146,7 @@ public class iFoxMaskBroken : Helmet<iFoxMaskBroken, iFoxMask> {
 
 
 // Circlet
-[ItemCombination(typeof(iWheel), typeof(iIngotGold), 1)]
+
 public class iCirclet : Helmet<iCircletBroken, iCirclet> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 }
@@ -159,7 +159,7 @@ public class iCircletBroken : Helmet<iCircletBroken, iCirclet> {
 
 
 // Full
-[ItemCombination(typeof(iHelmetIron), typeof(iIngotIron), 1)]
+
 public class iHelmetFull : Helmet<iHelmetFullCracked, iHelmetFull> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 	protected override bool HideFace => true;
@@ -184,7 +184,7 @@ public class iHelmetFullBroken : Helmet<iHelmetFullBroken, iHelmetFullCracked> {
 
 
 // Crown
-[ItemCombination(typeof(iIngotGold), typeof(iIngotGold), typeof(iIngotGold), typeof(iCirclet), 1)]
+
 public class iCrown : Helmet<iCrownBroken, iCrown> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override int Scale => 618;
@@ -199,7 +199,7 @@ public class iCrownBroken : Helmet<iCrownBroken, iCrown> {
 
 
 // Gas Mask
-[ItemCombination(typeof(iRunePoison), typeof(iHelmetWood), 1)]
+
 public class iGasMask : Helmet<iGasMaskBroken, iGasMask> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideFace => true;
@@ -213,7 +213,7 @@ public class iGasMaskBroken : Helmet<iGasMaskBroken, iGasMask> {
 
 
 // Viking
-[ItemCombination(typeof(iHelmetIron), typeof(iHorn), typeof(iHorn), 1)]
+
 public class iHelmetViking : Helmet<iHelmetVikingCracked, iHelmetViking> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideEar => true;
@@ -232,7 +232,7 @@ public class iHelmetVikingBroken : Helmet<iHelmetVikingBroken, iHelmetVikingCrac
 
 
 // Knight
-[ItemCombination(typeof(iHelmetIron), typeof(iHelmetIron), 1)]
+
 public class iHelmetKnight : Helmet<iHelmetKnightCracked, iHelmetKnight> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Cover;
 	protected override bool HideEar => true;
@@ -258,7 +258,7 @@ public class iHelmetKnightBroken : Helmet<iHelmetKnightBroken, iHelmetKnightCrac
 
 
 // Bandit
-[ItemCombination(typeof(iRope), typeof(iFabric), 1)]
+
 public class iHelmetBandit : Helmet<iHelmetBanditBroken, iHelmetBandit> {
 	protected override HelmetWearingMode WearingMode => HelmetWearingMode.Attach;
 	protected override bool HideFace => true;

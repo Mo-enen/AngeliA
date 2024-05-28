@@ -4,9 +4,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-
-
 namespace AngeliA;
+
 public static class ItemSystem {
 
 
@@ -33,16 +32,6 @@ public static class ItemSystem {
 	}
 
 
-	private class CombinationData {
-		public int Result;
-		public int ResultCount;
-		public int IgnoreConsume0;
-		public int IgnoreConsume1;
-		public int IgnoreConsume2;
-		public int IgnoreConsume3;
-	}
-
-
 	#endregion
 
 
@@ -64,9 +53,11 @@ public static class ItemSystem {
 		BuiltInSprite.ITEM_ICON_ITEM,
 	};
 
+	// Api
+	public static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
+
 	// Data
 	private static readonly Dictionary<int, ItemData> ItemPool = new();
-	private static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
 	private static bool IsUnlockDirty = false;
 
 
@@ -99,14 +90,9 @@ public static class ItemSystem {
 	[OnUniverseOpen(31)]
 	public static void OnUniverseOpen () {
 		if (Game.IsToolApplication) return;
-		CreateItemCombinationHelperFiles(UniverseSystem.CurrentUniverse.SavingRoot);
-		CreateCombinationFileFromCode(Util.CombinePaths(
-			AngePath.GetUniverseMetaRoot(UniverseSystem.CurrentUniverse.UniverseRoot),
-			AngePath.COMBINATION_FILE_NAME
-		), false);
+		string path = UniverseSystem.CurrentUniverse.ItemCombinationPath;
 		CombinationPool.Clear();
-		LoadCombinationFromFile(Util.CombinePaths(UniverseSystem.CurrentUniverse.ItemCustomizationRoot, AngePath.COMBINATION_FILE_NAME));
-		LoadCombinationFromFile(Util.CombinePaths(UniverseSystem.CurrentUniverse.UniverseMetaRoot, AngePath.COMBINATION_FILE_NAME));
+		ItemCombination.LoadCombinationFromFile(CombinationPool, path);
 		LoadUnlockDataFromFile();
 	}
 
@@ -193,161 +179,14 @@ public static class ItemSystem {
 
 
 	// Combination
-	public static void CreateItemCombinationHelperFiles (string savingFolder) {
-
-		if (string.IsNullOrWhiteSpace(savingFolder)) return;
-
-		string itemCusRoot = AngePath.GetItemCustomizationRoot(savingFolder);
-
-		// Create User Combination Template
-		string combineFilePath = Util.CombinePaths(itemCusRoot, AngePath.COMBINATION_FILE_NAME);
-		if (!Util.FileExists(combineFilePath)) {
-			Util.TextToFile(@"
-#
-# Custom Item Combination Formula
-# 
-#
-# Remove '#' for the lines below will change
-# 'TreeTrunk' to 'ItemCoin' for making chess pieces
-# 
-# Item names can be found in the helper file next to
-# this file
-#
-# Example:
-#
-# ItemCoin + RuneWater + RuneFire = ChessPawn
-# ItemCoin + RuneFire + RuneLightning = ChessKnight
-# ItemCoin + RunePoison + RuneFire = ChessBishop
-# ItemCoin + RuneWater + RuneLightning = ChessRook
-# ItemCoin + RuneWater + RunePoison = ChessQueen
-# ItemCoin + RunePoison + RuneLightning = ChessKing
-#
-#
-#", combineFilePath);
-		}
-
-		// Create Item Name Helper
-		string helperPath = Util.CombinePaths(itemCusRoot, "Item Name Helper.txt");
-		if (!Util.FileExists(helperPath)) {
-			var builder = new StringBuilder();
-			foreach (var type in typeof(Item).AllChildClass()) {
-				builder.AppendLine(type.AngeName());
-			}
-			Util.TextToFile(builder.ToString(), helperPath);
-		}
-
-	}
-
-
-	public static void CreateCombinationFileFromCode (string resultPath, bool forceCreate) => CreateCombinationFileFromCode(typeof(Item).AllChildClass(), resultPath, forceCreate);
-	public static void CreateCombinationFileFromCode (IEnumerable<System.Type> itemTypes, string resultPath, bool forceCreate) {
-
-		if (!forceCreate && Util.FileExists(resultPath)) return;
-
-		var builder = new StringBuilder();
-		foreach (var type in itemTypes) {
-			string result = type.AngeName();
-			var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
-			if (iComs == null) continue;
-			foreach (var com in iComs) {
-				if (com.Count <= 0) continue;
-				if (
-					com.ItemA == null && com.ItemB == null &&
-					com.ItemC == null && com.ItemD == null
-				) continue;
-				if (com.ItemA != null) {
-					if (!com.ConsumeA) builder.Append('^');
-					builder.Append(com.ItemA.AngeName());
-				}
-				if (com.ItemB != null) {
-					builder.Append(' ');
-					builder.Append('+');
-					builder.Append(' ');
-					if (!com.ConsumeB) builder.Append('^');
-					builder.Append(com.ItemB.AngeName());
-				}
-				if (com.ItemC != null) {
-					builder.Append(' ');
-					builder.Append('+');
-					builder.Append(' ');
-					if (!com.ConsumeC) builder.Append('^');
-					builder.Append(com.ItemC.AngeName());
-				}
-				if (com.ItemD != null) {
-					builder.Append(' ');
-					builder.Append('+');
-					builder.Append(' ');
-					if (!com.ConsumeD) builder.Append('^');
-					builder.Append(com.ItemD.AngeName());
-				}
-				builder.Append(' ');
-				builder.Append('=');
-				if (com.Count > 1) {
-					builder.Append(' ');
-					builder.Append(com.Count);
-				}
-				builder.Append(' ');
-				builder.Append(result);
-				builder.Append('\n');
-			}
-		}
-		Util.TextToFile(builder.ToString(), resultPath);
-	}
-
-
-	public static void AddCombination (
-		int item0, int item1, int item2, int item3,
-		int result, int resultCount,
-		bool consumeA, bool consumeB, bool consumeC, bool consumeD
-	) {
-
-		if (result == 0 || resultCount <= 0) {
-#if DEBUG
-			if (result == 0) Debug.LogWarning("Result of combination should not be zero.");
-			if (resultCount == 0) Debug.LogWarning("ResultCount of combination should not be zero.");
-#endif
-			return;
-		}
-
-		var from = GetSortedCombination(item0, item1, item2, item3);
-		if (CombinationPool.ContainsKey(from)) {
-#if DEBUG
-			Debug.LogError($"Combination already exists. ({GetItem(CombinationPool[from].Result).GetType().Name}) & ({GetItem(result).GetType().Name})");
-#endif
-			return;
-		}
-
-		CombinationPool[from] = new CombinationData() {
-			Result = result,
-			ResultCount = resultCount,
-			IgnoreConsume0 = consumeA ? 0 : item0,
-			IgnoreConsume1 = consumeB ? 0 : item1,
-			IgnoreConsume2 = consumeC ? 0 : item2,
-			IgnoreConsume3 = consumeD ? 0 : item3,
-		};
-	}
-
-
 	public static bool TryGetCombination (
 		int item0, int item1, int item2, int item3,
 		out int result, out int resultCount,
 		out int ignoreConsume0, out int ignoreConsume1, out int ignoreConsume2, out int ignoreConsume3
-	) {
-		var from = GetSortedCombination(item0, item1, item2, item3);
-		if (CombinationPool.TryGetValue(from, out var resultValue)) {
-			result = resultValue.Result;
-			resultCount = resultValue.ResultCount;
-			ignoreConsume0 = resultValue.IgnoreConsume0;
-			ignoreConsume1 = resultValue.IgnoreConsume1;
-			ignoreConsume2 = resultValue.IgnoreConsume2;
-			ignoreConsume3 = resultValue.IgnoreConsume3;
-			return true;
-		}
-		result = 0;
-		resultCount = 0;
-		ignoreConsume0 = ignoreConsume1 = ignoreConsume2 = ignoreConsume3 = 0;
-		return false;
-	}
+	) => ItemCombination.TryGetCombinationFromPool(
+		CombinationPool, item0, item1, item2, item3, out result, out resultCount,
+		out ignoreConsume0, out ignoreConsume1, out ignoreConsume2, out ignoreConsume3
+	);
 
 
 	public static void ClearCombination () => CombinationPool.Clear();
@@ -368,28 +207,6 @@ public static class ItemSystem {
 			if (combination.w != 0 && !_craft.Swap(combination.w, 0)) continue;
 			output.Add(craft);
 		}
-	}
-
-
-	public static Int4 GetSortedCombination (int a, int b, int c, int d) {
-
-		// Sort for Zero
-		if (a == 0 && b != 0) (a, b) = (b, a);
-		if (b == 0 && c != 0) (b, c) = (c, b);
-		if (c == 0 && d != 0) (c, d) = (d, c);
-		if (a == 0 && b != 0) (a, b) = (b, a);
-		if (b == 0 && c != 0) (b, c) = (c, b);
-		if (a == 0 && b != 0) (a, b) = (b, a);
-
-		// Sort for Size
-		if (a != 0 && b != 0 && a > b) (a, b) = (b, a);
-		if (b != 0 && c != 0 && b > c) (b, c) = (c, b);
-		if (c != 0 && d != 0 && c > d) (c, d) = (d, c);
-		if (a != 0 && b != 0 && a > b) (a, b) = (b, a);
-		if (b != 0 && c != 0 && b > c) (b, c) = (c, b);
-		if (a != 0 && b != 0 && a > b) (a, b) = (b, a);
-
-		return new Int4(a, b, c, d);
 	}
 
 
@@ -486,62 +303,6 @@ public static class ItemSystem {
 		}
 		fs.Close();
 		fs.Dispose();
-	}
-
-
-	// Combination
-	private static void LoadCombinationFromFile (string filePath) {
-		if (!Util.FileExists(filePath)) return;
-		var builder = new StringBuilder();
-		foreach (string _line in Util.ForAllLines(filePath)) {
-			if (string.IsNullOrEmpty(_line)) continue;
-			string line = _line.TrimWhiteForStartAndEnd();
-			if (line.StartsWith('#')) continue;
-			builder.Clear();
-			var com = Int4.zero;
-			var consume = Int4.zero;
-			int appendingComIndex = 0;
-			bool appendingResultCount = false;
-			int resultID = 0;
-			int resultCount = 1;
-			foreach (var c in line) {
-				if (c == ' ') continue;
-				if (c == '+' || c == '=') {
-					if (builder.Length > 0 && appendingComIndex < 4) {
-						if (builder[0] == '^') {
-							builder.Remove(0, 1);
-							consume[appendingComIndex] = 1;
-						}
-						com[appendingComIndex] = builder.ToString().AngeHash();
-						appendingComIndex++;
-					}
-					if (c == '=') {
-						appendingResultCount = true;
-					}
-					builder.Clear();
-				} else {
-					if (appendingResultCount && !char.IsDigit(c)) {
-						appendingResultCount = false;
-						if (builder.Length > 0 && int.TryParse(builder.ToString(), out int _resultCount)) {
-							resultCount = _resultCount;
-						}
-						builder.Clear();
-					}
-					if (c != ' ') builder.Append(c);
-				}
-			}
-
-			// Result
-			if (builder.Length > 0) {
-				resultID = builder.ToString().AngeHash();
-			}
-
-			// Add to Pool
-			if (com != Int4.zero && resultCount >= 1 && resultID != 0) {
-				AddCombination(com.x, com.y, com.z, com.w, resultID, resultCount, consume[0] == 0, consume[1] == 0, consume[2] == 0, consume[3] == 0);
-			}
-
-		}
 	}
 
 

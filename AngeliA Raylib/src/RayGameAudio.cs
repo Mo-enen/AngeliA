@@ -16,6 +16,7 @@ public partial class RayGame {
 
 	protected override void _PlayMusic (int id) {
 
+		CurrentBgmID = 0;
 		if (!MusicPool.TryGetValue(id, out var data)) return;
 
 		// Stop Current
@@ -30,6 +31,7 @@ public partial class RayGame {
 			Raylib.PlayMusicStream(music);
 			music.Looping = true;
 			CurrentBGM = music;
+			CurrentBgmID = id;
 		}
 
 	}
@@ -37,6 +39,7 @@ public partial class RayGame {
 	protected override void _StopMusic () {
 		if (CurrentBGM == null) return;
 		Raylib.StopMusicStream((Music)CurrentBGM);
+		CurrentBgmID = 0;
 	}
 
 	protected override void _PauseMusic () {
@@ -58,6 +61,8 @@ public partial class RayGame {
 		if (CurrentBGM == null) return false;
 		return Raylib.IsMusicStreamPlaying((Music)CurrentBGM);
 	}
+
+	protected override int _GetCurrentMusicID () => CurrentBgmID;
 
 
 	// Sound

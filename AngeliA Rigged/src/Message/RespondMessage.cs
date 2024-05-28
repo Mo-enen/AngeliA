@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliaRigged;
 
-public class RiggedRespondMessage {
+public class RigRespondMessage {
 
 
 
@@ -107,6 +107,9 @@ public class RiggedRespondMessage {
 	public int[] RenderCapacities = new int[RenderLayer.COUNT];
 	public int[] EntityCapacities = new int[EntityLayer.COUNT];
 	public bool GamePlaying;
+	public int MusicVolume;
+	public int SoundVolume;
+	public bool IsTyping;
 
 	// Data
 	private readonly Dictionary<uint, object> GizmosTexturePool = new();
@@ -142,10 +145,10 @@ public class RiggedRespondMessage {
 	}
 
 
-	public void ApplyToEngine (RiggedCallingMessage callingMessage, bool ignoreMouseInput) {
+	public void ApplyToEngine (RigCallingMessage callingMessage, bool ignoreMouseInput) {
 
-		// Sky
-		Sky.ForceSkyboxTint(SkyTop, SkyBottom, 3);
+		Game.MusicVolume = MusicVolume;
+		Game.SoundVolume = SoundVolume;
 
 		// Cursor
 		if (!ignoreMouseInput && RequireSetCursorIndex != int.MinValue) {
@@ -188,7 +191,7 @@ public class RiggedRespondMessage {
 				if (data.PngDataLength > 0) {
 					texture = Game.PngBytesToTexture(data.PngData);
 					GizmosTexturePool.Add(data.TextureRigID, texture);
-				} else if (callingMessage.RequiringGizmosTextureIDCount < RiggedCallingMessage.REQUIRE_GIZMOS_TEXTURE_MAX_COUNT) {
+				} else if (callingMessage.RequiringGizmosTextureIDCount < RigCallingMessage.REQUIRE_GIZMOS_TEXTURE_MAX_COUNT) {
 					// Require Back for the Texture
 					callingMessage.RequiringGizmosTextureIDs[callingMessage.RequiringGizmosTextureIDCount] = data.TextureRigID;
 					callingMessage.RequiringGizmosTextureIDCount++;
@@ -422,6 +425,9 @@ public class RiggedRespondMessage {
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
+				if (Layers[index] == null) {
+					Layers[index] = new RenderingLayerData(Renderer.GetLayerCapacity(index));
+				}
 				var layer = Layers[index];
 				layer.CellCount = Util.ReadInt(ref pointer, end);
 				for (int i = 0; i < layer.CellCount; i++) {
@@ -460,6 +466,9 @@ public class RiggedRespondMessage {
 			}
 
 			GamePlaying = Util.ReadBool(ref pointer, end);
+			MusicVolume = Util.ReadInt(ref pointer, end);
+			SoundVolume = Util.ReadInt(ref pointer, end);
+			IsTyping = Util.ReadBool(ref pointer, end);
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
@@ -557,6 +566,9 @@ public class RiggedRespondMessage {
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
+				if (Layers[index] == null) {
+					Layers[index] = new RenderingLayerData(Renderer.GetLayerCapacity(index));
+				}
 				var layer = Layers[index];
 				Util.Write(ref pointer, layer.CellCount, end);
 				for (int i = 0; i < layer.CellCount; i++) {
@@ -595,6 +607,9 @@ public class RiggedRespondMessage {
 			}
 
 			Util.Write(ref pointer, GamePlaying, end);
+			Util.Write(ref pointer, MusicVolume, end);
+			Util.Write(ref pointer, SoundVolume, end);
+			Util.Write(ref pointer, IsTyping, end);
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 

@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.IO.MemoryMappedFiles;
-using System.IO.Pipes;
-using System.Runtime.InteropServices;
 using System.Threading;
 using AngeliA;
 using AngeliaRaylib;
@@ -23,8 +20,8 @@ public partial class RiggedGame : Game {
 	private static readonly Color32[] COLLIDER_TINTS = { Color32.RED_BETTER, Color32.ORANGE_BETTER, Color32.YELLOW, Color32.GREEN, Color32.CYAN, Color32.BLUE, Color32.GREY_128, };
 
 	// Api
-	public readonly RiggedCallingMessage CallingMessage = new();
-	public readonly RiggedRespondMessage RespondMessage = new();
+	public readonly RigCallingMessage CallingMessage = new();
+	public readonly RigRespondMessage RespondMessage = new();
 
 	// Data
 	private static RiggedGame Instance;
@@ -55,7 +52,7 @@ public partial class RiggedGame : Game {
 	public RiggedGame (params string[] args) {
 
 		Instance = this;
-		
+
 		// Load Game Assemblies
 		Util.AddAssembliesFromArgs(args);
 
@@ -263,7 +260,7 @@ public partial class RiggedGame : Game {
 		// Renderer Layer/Cells >> Message Layer/Cells
 		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
 			if (RespondMessage.Layers[layer] == null) {
-				RespondMessage.Layers[layer] = new RiggedRespondMessage.RenderingLayerData(Renderer.GetLayerCapacity(layer));
+				RespondMessage.Layers[layer] = new RigRespondMessage.RenderingLayerData(Renderer.GetLayerCapacity(layer));
 			}
 			var layerData = RespondMessage.Layers[layer];
 			layerData.CellCount = 0;
@@ -306,6 +303,9 @@ public partial class RiggedGame : Game {
 			RespondMessage.EntityUsages[i] = Stage.EntityCounts[i];
 			RespondMessage.EntityCapacities[i] = Stage.Entities[i].Length;
 		}
+		RespondMessage.MusicVolume = MusicVolume;
+		RespondMessage.SoundVolume = SoundVolume;
+		RespondMessage.IsTyping = GUI.IsTyping;
 
 		// Respond
 		unsafe {

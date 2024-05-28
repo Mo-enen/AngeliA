@@ -4,6 +4,8 @@ namespace AngeliaEngine;
 
 [RequireLanguageFromField]
 public class RiggedItemEditor : WindowUI {
-	public override string DefaultName => "Item Editor";
-	public override void UpdateWindowUI () { }
+	public override string DefaultName => "Item";
+	public override void UpdateWindowUI () { 
+		Sky.ForceSkyboxTint(GUI.Skin.Background); 
+	}
 }

@@ -758,21 +758,6 @@ public partial class PixelEditor : WindowUI {
 				CanvasRect = CanvasRect.Shift(-Unify(100), 0);
 			}
 
-			// 1
-			if (Input.KeyboardDown(KeyboardKey.Digit1)) {
-				ResetCamera();
-			}
-
-			// 2
-			if (Input.KeyboardDown(KeyboardKey.Digit2)) {
-				SetZoom(5, Input.MouseGlobalPosition);
-			}
-
-			// 3
-			if (Input.KeyboardDown(KeyboardKey.Digit3)) {
-				SetZoom(10, Input.MouseGlobalPosition);
-			}
-
 		}
 
 	}

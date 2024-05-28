@@ -319,14 +319,17 @@ public abstract partial class Game {
 	public static void UnpauseMusic () => Instance._UnPauseMusic();
 	protected abstract void _UnPauseMusic ();
 
-	internal static void SetMusicVolume (int volume) {
+	public static void SetMusicVolume (int volume) {
 		_MusicVolume.Value = volume;
 		Instance._SetMusicVolume(volume);
 	}
 	protected abstract void _SetMusicVolume (int volume);
 
-	internal static bool IsMusicPlaying => Instance._IsMusicPlaying();
+	public static bool IsMusicPlaying => Instance._IsMusicPlaying();
 	protected abstract bool _IsMusicPlaying ();
+
+	public static int CurrentMusicID => Instance._GetCurrentMusicID();
+	protected abstract int _GetCurrentMusicID ();
 
 
 	// Sound
@@ -339,10 +342,10 @@ public abstract partial class Game {
 	public static void PlaySound (int id, float volume = 1f) => Instance._PlaySound(id, volume);
 	protected abstract void _PlaySound (int id, float volume);
 
-	internal static void StopAllSounds () => Instance._StopAllSounds();
+	public static void StopAllSounds () => Instance._StopAllSounds();
 	protected abstract void _StopAllSounds ();
 
-	internal static void SetSoundVolume (int volume) {
+	public static void SetSoundVolume (int volume) {
 		_SoundVolume.Value = volume;
 		Instance._SetSoundVolume(volume);
 	}

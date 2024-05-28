@@ -15,7 +15,7 @@ public abstract class MagicWeapon : ProjectileWeapon {
 
 
 // Implement
-[ItemCombination(typeof(iBook), typeof(iRuneCube), typeof(iTreeBranch), 1)]
+
 public class iWand : MagicWeapon<iWand.WandBullet> {
 	public class WandBullet : MovableBullet {
 
@@ -24,7 +24,7 @@ public class iWand : MagicWeapon<iWand.WandBullet> {
 }
 
 
-[ItemCombination(typeof(iWand), typeof(iCrystalBall), 1)]
+
 public class iWandOrb : MagicWeapon<iWandOrb.WandOrbBullet> {
 	public class WandOrbBullet : MovableBullet {
 
@@ -33,7 +33,7 @@ public class iWandOrb : MagicWeapon<iWandOrb.WandOrbBullet> {
 }
 
 
-[ItemCombination(typeof(iRuneFire), typeof(iBookRed), typeof(iRubyRed), typeof(iBoStaffWood), 1)]
+
 public class iStaffFire : MagicWeapon<iStaffFire.StaffFireBullet> {
 	public class StaffFireBullet : MovableBullet {
 
@@ -42,7 +42,7 @@ public class iStaffFire : MagicWeapon<iStaffFire.StaffFireBullet> {
 }
 
 
-[ItemCombination(typeof(iRuneWater), typeof(iBoStaffWood), typeof(iBookBlue), typeof(iRubyBlue), 1)]
+
 public class iStaffWater : MagicWeapon<iStaffWater.StaffWaterBullet> {
 	public class StaffWaterBullet : MovableBullet {
 
@@ -51,7 +51,7 @@ public class iStaffWater : MagicWeapon<iStaffWater.StaffWaterBullet> {
 }
 
 
-[ItemCombination(typeof(iRubyOrange), typeof(iBoStaffWood), typeof(iBookYellow), typeof(iRuneLightning), 1)]
+
 public class iStaffLightning : MagicWeapon<iStaffLightning.StaffLightningBullet> {
 	public class StaffLightningBullet : MovableBullet {
 
@@ -60,7 +60,7 @@ public class iStaffLightning : MagicWeapon<iStaffLightning.StaffLightningBullet>
 }
 
 
-[ItemCombination(typeof(iRunePoison), typeof(iBoStaffWood), typeof(iBookGreen), typeof(iRubyGreen), 1)]
+
 public class iStaffPoision : MagicWeapon<iStaffPoision.StaffPoisionBullet> {
 	public class StaffPoisionBullet : MovableBullet {
 
@@ -69,7 +69,7 @@ public class iStaffPoision : MagicWeapon<iStaffPoision.StaffPoisionBullet> {
 }
 
 
-[ItemCombination(typeof(iRunePoison), typeof(iRuneFire), typeof(iSkull), typeof(iRuneLightning), 1)]
+
 public class iRitualSkull : MagicWeapon<iRitualSkull.RitualSkullBullet> {
 	public class RitualSkullBullet : MovableBullet {
 
@@ -78,7 +78,7 @@ public class iRitualSkull : MagicWeapon<iRitualSkull.RitualSkullBullet> {
 }
 
 
-[ItemCombination(typeof(iItemWoodBoard), typeof(iBook), typeof(iScroll), 1)]
+
 public class iBambooSlips : MagicWeapon<iBambooSlips.BambooSlipsBullet> {
 	public class BambooSlipsBullet : MovableBullet {
 
@@ -87,7 +87,7 @@ public class iBambooSlips : MagicWeapon<iBambooSlips.BambooSlipsBullet> {
 }
 
 
-[ItemCombination(typeof(iRunePoison), typeof(iRuneFire), typeof(iRuneCube), typeof(iRuneLightning), 1)]
+
 public class iRitualRuneCube : MagicWeapon<iRitualRuneCube.RitualRuneCubeBullet> {
 	public class RitualRuneCubeBullet : MovableBullet {
 
@@ -96,7 +96,7 @@ public class iRitualRuneCube : MagicWeapon<iRitualRuneCube.RitualRuneCubeBullet>
 }
 
 
-[ItemCombination(typeof(iRunePoison), typeof(iRuneFire), typeof(iGoblinHead), typeof(iRuneLightning), 1)]
+
 public class iGoblinTrophy : MagicWeapon<iGoblinTrophy.GoblinTrophyBullet> {
 	public class GoblinTrophyBullet : MovableBullet {
 
@@ -105,7 +105,7 @@ public class iGoblinTrophy : MagicWeapon<iGoblinTrophy.GoblinTrophyBullet> {
 }
 
 
-[ItemCombination(typeof(iRuneCube), typeof(iCrystalBall), 1)]
+
 public class iMagicOrb : MagicWeapon<iMagicOrb.MagicOrbBullet> {
 	public class MagicOrbBullet : MovableBullet {
 
@@ -114,7 +114,7 @@ public class iMagicOrb : MagicWeapon<iMagicOrb.MagicOrbBullet> {
 }
 
 
-[ItemCombination(typeof(iEyeBall), typeof(iRuneCube), 1)]
+
 public class iMagicEyeball : MagicWeapon<iMagicEyeball.MagicEyeballBullet> {
 	public class MagicEyeballBullet : MovableBullet {
 
@@ -123,7 +123,7 @@ public class iMagicEyeball : MagicWeapon<iMagicEyeball.MagicEyeballBullet> {
 }
 
 
-[ItemCombination(typeof(iPotionBlue), typeof(iPotionRed), typeof(iRuneCube), 1)]
+
 public class iMagicPotion : MagicWeapon<iMagicPotion.MagicPotionBullet> {
 	public class MagicPotionBullet : MovableBullet {
 
@@ -132,7 +132,7 @@ public class iMagicPotion : MagicWeapon<iMagicPotion.MagicPotionBullet> {
 }
 
 
-[ItemCombination(typeof(iWand), typeof(iStar), 1)]
+
 public class iWandStar : MagicWeapon<iWandStar.WandStarBullet> {
 	public class WandStarBullet : MovableBullet {
 
@@ -141,7 +141,7 @@ public class iWandStar : MagicWeapon<iWandStar.WandStarBullet> {
 }
 
 
-[ItemCombination(typeof(iWand), typeof(iCuteGhost), 1)]
+
 public class iWandFairy : MagicWeapon<iWandFairy.WandFairyBullet> {
 	public class WandFairyBullet : MovableBullet {
 

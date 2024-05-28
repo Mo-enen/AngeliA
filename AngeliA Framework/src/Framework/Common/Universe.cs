@@ -27,7 +27,6 @@ public class Universe {
 	public string MapRoot { get; private set; }
 	public string ArtworkRoot { get; private set; }
 	public string SavingRoot { get; private set; }
-	public string ItemCustomizationRoot { get; private set; }
 	public string SavingMetaRoot { get; private set; }
 	public string ProcedureMapRoot { get; private set; }
 	public string InfoPath { get; private set; }
@@ -35,6 +34,7 @@ public class Universe {
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
 	public string CharacterConfigRoot { get; private set; }
+	public string ItemCombinationPath { get; private set; }
 
 	// Api
 	public UniverseInfo Info { get; private set; }
@@ -57,11 +57,11 @@ public class Universe {
 			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),
 			SoundRoot = AngePath.GetUniverseSoundRoot(universeFolder),
 			FontRoot = AngePath.GetUniverseFontRoot(universeFolder),
+			ItemCombinationPath = AngePath.GetItemCombinationPath(universeFolder),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :
 			Util.CombinePaths(universeFolder, "Saving");
-		result.ItemCustomizationRoot = AngePath.GetItemCustomizationRoot(result.SavingRoot);
 		result.SavingMetaRoot = AngePath.GetSavingMetaRoot(result.SavingRoot);
 		result.ProcedureMapRoot = AngePath.GetProcedureMapRoot(result.SavingRoot);
 		result.CharacterConfigRoot = AngePath.GetSavingMetaCharacterConfigRoot(result.SavingRoot);
@@ -74,7 +74,6 @@ public class Universe {
 		Util.CreateFolder(ConversationRoot);
 		Util.CreateFolder(UniverseMetaRoot);
 		Util.CreateFolder(MapRoot);
-		Util.CreateFolder(ItemCustomizationRoot);
 		Util.CreateFolder(ProcedureMapRoot);
 		Util.CreateFolder(SavingRoot);
 		Util.CreateFolder(SavingMetaRoot);

@@ -697,8 +697,8 @@ public static class Renderer {
 
 
 	// Internal
-	internal static bool RequireCharForPool (char c, out CharSprite charSprite) => RequireCharForPool(c, CurrentFontIndex, out charSprite);
-	internal static bool RequireCharForPool (char c, int fontIndex, out CharSprite charSprite) {
+	public static bool RequireCharForPool (char c, out CharSprite charSprite) => RequireCharForPool(c, CurrentFontIndex, out charSprite);
+	public static bool RequireCharForPool (char c, int fontIndex, out CharSprite charSprite) {
 		if (CharSpritePool.TryGetValue(new(c, fontIndex), out var textSprite)) {
 			// Get Exists
 			charSprite = textSprite;

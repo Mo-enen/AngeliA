@@ -4,10 +4,11 @@ using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
 using System.Text;
 using System.Threading;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliaRigged;
 
-public class RiggedTransceiver {
+public class RigTransceiver {
 
 
 
@@ -22,8 +23,8 @@ public class RiggedTransceiver {
 	public const int ERROR_LIB_FILE_NOT_FOUND = -103;
 
 	// Api
-	public readonly RiggedCallingMessage CallingMessage = new();
-	public readonly RiggedRespondMessage RespondMessage = new();
+	public readonly RigCallingMessage CallingMessage = new();
+	public readonly RigRespondMessage RespondMessage = new();
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
 	public Int3? LastRigViewPos { get; private set; } = null;
 	public int? LastRigViewHeight { get; private set; } = null;
@@ -48,7 +49,7 @@ public class RiggedTransceiver {
 	#region --- MSG ---
 
 
-	public RiggedTransceiver (string exePath) {
+	public RigTransceiver (string exePath) {
 		ExePath = exePath;
 		MapName = $"AngeliA_Map_{Util.RandomInt(0, 99999)}";
 	}

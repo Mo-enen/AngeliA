@@ -9,21 +9,6 @@ public class ProjectEditor : WindowUI {
 
 
 
-	#region --- SUB ---
-
-
-	private struct ResourceData {
-		public int ID;
-		public string Name;
-		public string Path;
-	}
-
-
-	#endregion
-
-
-
-
 	#region --- VAR ---
 
 
@@ -56,6 +41,9 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_MUSIC = ("Label.Project.Music", "Music");
 	private static readonly LanguageCode LABEL_SOUND = ("Label.Project.Sound", "Sound");
 	private static readonly LanguageCode LABEL_FONT = ("Label.Project.Font", "Font");
+	private static readonly LanguageCode MSG_DELETE_MUSIC = ("UI.Project.DeleteMusicMsg", "Delete music \"{0}\" ? This will delete the file.");
+	private static readonly LanguageCode MSG_DELETE_SOUND = ("UI.Project.DeleteSoundMsg", "Delete sound \"{0}\" ? This will delete the file.");
+	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }
@@ -72,6 +60,7 @@ public class ProjectEditor : WindowUI {
 	private int MasterScrollMax = 1;
 	private object IconTexture = null;
 	private long IconFileModifyDate = 0;
+	private object MenuItem = null;
 
 
 	#endregion
@@ -83,6 +72,14 @@ public class ProjectEditor : WindowUI {
 
 
 	public ProjectEditor () => Instance = this;
+
+
+	public override void OnInactivated () {
+		base.OnInactivated();
+		MenuItem = null;
+		Game.StopMusic();
+		Game.StopAllSounds();
+	}
 
 
 	public override void BeforeUpdate () {
@@ -134,11 +131,11 @@ public class ProjectEditor : WindowUI {
 		// BG
 		if (panelBgSprite != null) {
 			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
-				var range = new IRect(panelRect.x, WindowRect.y, panelRect.width, panelRect.yMax - WindowRect.yMin + MasterScrollPos);
+				var range = new IRect(panelRect.x, rect.yMax + MasterScrollPos, panelRect.width, panelRect.yMax - rect.yMax);
 				var border = GUI.UnifyBorder(panelBgSprite.GlobalBorder, true);
 				range = range.Expand(border);
-				Renderer.DrawTile(
-					panelBgSprite, range, Alignment.TopMid, adapt: false,
+				Renderer.DrawSlice(
+					panelBgSprite, range,
 					borderL: border.left, borderR: border.right, borderD: border.down, borderU: border.up
 				);
 			}
@@ -316,15 +313,31 @@ public class ProjectEditor : WindowUI {
 		int itemHeight = GUI.FieldHeight;
 		rect.yMin = rect.yMax - itemHeight;
 		int labelWidth = GUI.LabelWidth;
+		bool rightButtonDown = Input.MouseRightButtonDown;
 
 		// Music
 		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_MUSIC);
 		foreach (var (_, data) in Game.ForAllMusic()) {
 			var _rect = rect.ShrinkLeft(labelWidth);
+			bool hover = GUI.Enable && _rect.MouseInside();
+			// Button
+			if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
+				if (Game.CurrentMusicID != data.ID) {
+					Game.PlayMusic(data.ID);
+				} else {
+					Game.StopMusic();
+				}
+			}
+			// Menu
+			if (rightButtonDown && _rect.MouseInside()) {
+				ShowMenu(data);
+			}
 			// Icon
 			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
 			// Name
-			GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
+			using (Scope.GUIContentColor(Game.CurrentMusicID == data.ID ? Color32.GREEN_BETTER : Color32.WHITE)) {
+				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
+			}
 			rect.SlideDown(padding);
 		}
 
@@ -332,6 +345,15 @@ public class ProjectEditor : WindowUI {
 		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_SOUND);
 		foreach (var (_, data) in Game.ForAllSound()) {
 			var _rect = rect.ShrinkLeft(labelWidth);
+			// Click
+			if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
+				Game.StopAllSounds();
+				Game.PlaySound(data.ID);
+			}
+			// Menu
+			if (rightButtonDown && _rect.MouseInside()) {
+				ShowMenu(data);
+			}
 			// Icon
 			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
 			// Name
@@ -344,6 +366,14 @@ public class ProjectEditor : WindowUI {
 		foreach (var fontData in Game.ForAllFonts()) {
 			if (fontData.BuiltIn) continue;
 			var _rect = rect.ShrinkLeft(labelWidth);
+			// Click
+			if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
+				Game.OpenUrl(fontData.FilePath);
+			}
+			// Menu
+			if (rightButtonDown && _rect.MouseInside()) {
+				ShowMenu(fontData);
+			}
 			// Icon
 			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_Font);
 			// Name
@@ -351,6 +381,61 @@ public class ProjectEditor : WindowUI {
 			rect.SlideDown(padding);
 		}
 
+		// Func
+		static void ShowMenu (object data) {
+			Instance.MenuItem = data;
+			GenericPopupUI.BeginPopup();
+			GenericPopupUI.AddItem(BuiltInText.UI_EXPLORE, ShowItemInExplore);
+			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteItemDialog);
+		}
+		static void DeleteItemDialog () {
+			switch (Instance.MenuItem) {
+				case MusicData music:
+					GenericDialogUI.SpawnDialog_Button(string.Format(MSG_DELETE_MUSIC, music.Name), BuiltInText.UI_DELETE, DeleteMusic, BuiltInText.UI_CANCEL, Const.EmptyMethod);
+					GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+					static void DeleteMusic () {
+						if (Instance.MenuItem is not MusicData music) return;
+						if (Instance.CurrentProject == null) return;
+						Util.DeleteFile(music.Path);
+						Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, Instance.CurrentProject.UniversePath);
+					}
+					break;
+				case SoundData sound:
+					GenericDialogUI.SpawnDialog_Button(string.Format(MSG_DELETE_SOUND, sound.Name), BuiltInText.UI_DELETE, DeleteSound, BuiltInText.UI_CANCEL, Const.EmptyMethod);
+					GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+					static void DeleteSound () {
+						if (Instance.MenuItem is not SoundData sound) return;
+						if (Instance.CurrentProject == null) return;
+						Util.DeleteFile(sound.Path);
+						Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, Instance.CurrentProject.UniversePath);
+					}
+					break;
+				case FontData font:
+					GenericDialogUI.SpawnDialog_Button(string.Format(MSG_DELETE_FONT, font.Name), BuiltInText.UI_DELETE, DeleteFont, BuiltInText.UI_CANCEL, Const.EmptyMethod);
+					GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+					static void DeleteFont () {
+						if (Instance.MenuItem is not FontData font) return;
+						if (Instance.CurrentProject == null) return;
+						Util.DeleteFile(font.FilePath);
+						Game.SyncFontsWithPool(Instance.CurrentProject.Universe.FontRoot);
+					}
+					break;
+			}
+		}
+		static void ShowItemInExplore () {
+			if (Instance.MenuItem == null) return;
+			switch (Instance.MenuItem) {
+				case MusicData music:
+					Game.OpenUrl(Util.GetParentPath(music.Path));
+					break;
+				case SoundData sound:
+					Game.OpenUrl(Util.GetParentPath(sound.Path));
+					break;
+				case FontData font:
+					Game.OpenUrl(Util.GetParentPath(font.FilePath));
+					break;
+			}
+		}
 	}
 
 

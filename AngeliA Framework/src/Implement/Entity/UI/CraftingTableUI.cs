@@ -75,7 +75,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		int invItem1 = Inventory.GetItemAt(InventoryID, 1);
 		int invItem2 = Inventory.GetItemAt(InventoryID, 2);
 		int invItem3 = Inventory.GetItemAt(InventoryID, 3);
-		var crafting = ItemSystem.GetSortedCombination(invItem0, invItem1, invItem2, invItem3);
+		var crafting = ItemCombination.GetSortedCombination(invItem0, invItem1, invItem2, invItem3);
 		if (crafting != CurrentCraftingItems) {
 			CurrentCraftingItems = crafting;
 			DocumentContent.Clear();

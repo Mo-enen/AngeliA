@@ -6,8 +6,6 @@ namespace AngeliA;
 
 public static class AngePath {
 
-	public const string COMBINATION_FILE_NAME = "Item Combination.txt";
-
 	// Ext  
 	public const string MAP_FILE_EXT = "ibb";
 	public const string CONVERSATION_FILE_EXT = "txt";
@@ -94,10 +92,11 @@ public static class AngePath {
 	public static string GetAsepriteRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Aseprite");
 	public static string GetLanguageRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Language");
 	public static string GetUniverseInfoPath (string universeFolder) => Util.CombinePaths(universeFolder, "Info.json");
-	public static string GetItemCustomizationRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Item Customization");
+	public static string GetItemCombinationPath (string universeFolder) => Util.CombinePaths(universeFolder, "Meta", "Item Combination.txt");
+
+	// Saving
 	public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
 	public static string GetSavingMetaCharacterConfigRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta", "Character Config");
 	public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
-
 
 }

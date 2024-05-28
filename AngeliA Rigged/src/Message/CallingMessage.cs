@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliaRigged;
 
-public class RiggedCallingMessage {
+public class RigCallingMessage {
 
 
 

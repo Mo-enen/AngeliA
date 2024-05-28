@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AngeliA;
+using AngeliaRigged;
 
 
 [assembly: ToolApplication]
@@ -101,7 +102,7 @@ public class Engine {
 	private readonly List<ProjectData> Projects = new();
 	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
-	private readonly RiggedTransceiver Transceiver = new(EngineUtil.RiggedExePath);
+	private readonly RigTransceiver Transceiver = new(EngineUtil.RiggedExePath);
 	private EntityUI[] AllGenericUIs;
 	private WindowUI[] AllWindows;
 	private Project CurrentProject = null;
@@ -217,6 +218,7 @@ public class Engine {
 			Game.SetWindowSize(WindowSizeX.Value, WindowSizeY.Value);
 		}
 		Game.SetEventWaiting(false);
+		Game.ProcedureAudioVolume = 1000;
 
 		if (EngineSetting.LastMapEditorViewHeight.Value > 0) {
 			Transceiver.SetStartViewPos(
@@ -681,8 +683,7 @@ public class Engine {
 
 		// Window
 		int barWidth = GetEngineLeftBarWidth(out int contentPadding);
-		var cameraRect = Renderer.CameraRect;
-		var barRect = cameraRect.EdgeInside(Direction4.Left, barWidth);
+		var barRect = Renderer.CameraRect.EdgeInside(Direction4.Left, barWidth);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
@@ -818,7 +819,7 @@ public class Engine {
 		}
 
 		// Switch Active Window
-		WindowUI.ForceWindowRect(cameraRect.Shrink(barWidth, 0, 0, 0));
+		WindowUI.ForceWindowRect(Renderer.CameraRect.Shrink(barWidth, 0, 0, 0));
 		for (int i = 0; i < AllWindows.Length; i++) {
 			var win = AllWindows[i];
 			bool active = i == CurrentWindowIndex;
@@ -930,6 +931,8 @@ public class Engine {
 
 	private void OnGUI_Hotkey () {
 
+		if (GUI.IsTyping || Transceiver.RespondMessage.IsTyping) return;
+
 		// Clear Console
 		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.C)) {
 			Console.Instance.Clear();
@@ -946,6 +949,29 @@ public class Engine {
 		// Run Game
 		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.R)) {
 			EngineUtil.RunAngeliaBuild(CurrentProject);
+		}
+
+		// Switch Window
+		if (Input.KeyboardDown(KeyboardKey.F1)) {
+			SetCurrentWindowIndex(0);
+		}
+		if (Input.KeyboardDown(KeyboardKey.F2)) {
+			SetCurrentWindowIndex(1);
+		}
+		if (Input.KeyboardDown(KeyboardKey.F3)) {
+			SetCurrentWindowIndex(2);
+		}
+		if (Input.KeyboardDown(KeyboardKey.F4)) {
+			SetCurrentWindowIndex(3);
+		}
+		if (Input.KeyboardDown(KeyboardKey.F5)) {
+			SetCurrentWindowIndex(4);
+		}
+		if (Input.KeyboardDown(KeyboardKey.F6)) {
+			SetCurrentWindowIndex(5);
+		}
+		if (Input.KeyboardDown(KeyboardKey.F7)) {
+			SetCurrentWindowIndex(6);
 		}
 
 	}
@@ -1162,6 +1188,9 @@ public class Engine {
 						Transceiver.RespondMessage.EntityCapacities
 					);
 					rigEdt.HavingGamePlay = Transceiver.RespondMessage.GamePlaying;
+					if (CurrentWindowIndex == RigMapEditorWindowIndex) {
+						Sky.ForceSkyboxTint(Transceiver.RespondMessage.SkyTop, Transceiver.RespondMessage.SkyBottom, 3);
+					}
 				} else {
 					Transceiver.UpdateLastRespondedRender(sheetIndex);
 				}
@@ -1301,10 +1330,14 @@ public class Engine {
 		if (!forceChange && index == CurrentWindowIndex) return;
 		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex || index == RigItemEditorWindowIndex;
 		if (CurrentWindowRequireRigGame) {
+			// Rig Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();
 		} else {
+			// Normal Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireLostFocusInvoke();
 			ResetViewRect(true);
+			Game.MusicVolume = 1000;
+			Game.SoundVolume = 1000;
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;

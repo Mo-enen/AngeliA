@@ -16,6 +16,7 @@ public partial class RiggedGame {
 	private readonly int RiggedFontCount;
 	private int CurrentPressedCharIndex;
 	private int CurrentPressedKeyIndex;
+	private int CurrentBgmID = 0;
 
 
 	// System
@@ -159,7 +160,7 @@ public partial class RiggedGame {
 		if (!_id.HasValue) return;
 		if (RespondMessage.RequireGizmosTextureCount >= RespondMessage.RequireGizmosTextures.Length) return;
 		uint id = _id.Value;
-		var data = new RiggedRespondMessage.GizmosTextureData() {
+		var data = new RigRespondMessage.GizmosTextureData() {
 			TextureRigID = id,
 			Inverse = inverse,
 			Rect = rect,
@@ -197,7 +198,7 @@ public partial class RiggedGame {
 	protected override bool _GetCharSprite (int fontIndex, char c, out CharSprite result) {
 		result = null;
 		int reqCount = RespondMessage.CharRequiringCount;
-		if (reqCount >= RiggedRespondMessage.REQUIRE_CHAR_MAX_COUNT) return false;
+		if (reqCount >= RigRespondMessage.REQUIRE_CHAR_MAX_COUNT) return false;
 		// Get From Pool
 		if (CharPool.TryGetValue(new(c, fontIndex), out result)) return true;
 		// Require
@@ -213,7 +214,10 @@ public partial class RiggedGame {
 	// Music
 	protected override void _UnloadMusic (object music) { }
 
-	protected override void _PlayMusic (int id) => RespondMessage.RequirePlayMusicID = id;
+	protected override void _PlayMusic (int id) {
+		RespondMessage.RequirePlayMusicID = id;
+		CurrentBgmID = id;
+	}
 
 	protected override void _StopMusic () => RespondMessage.AudioActionRequirement.SetBit(0, true);
 
@@ -224,6 +228,8 @@ public partial class RiggedGame {
 	protected override void _SetMusicVolume (int volume) => RespondMessage.RequireSetMusicVolume = volume;
 
 	protected override bool _IsMusicPlaying () => CallingMessage.IsMusicPlaying;
+
+	protected override int _GetCurrentMusicID () => CurrentBgmID;
 
 
 	// Sounds
