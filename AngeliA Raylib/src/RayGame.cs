@@ -16,7 +16,7 @@ public partial class RayGame : Game {
 
 	// Api
 #if DEBUG
-	protected readonly bool CloseWindowsTerminalOnQuit = true;
+	private readonly bool CloseWindowsTerminalOnQuit = true;
 #endif
 
 	// Data
@@ -34,8 +34,10 @@ public partial class RayGame : Game {
 	static RayGame () => Util.AddAssembly(typeof(RayGame).Assembly);
 
 
-	public RayGame (string[] args) {
+	public RayGame (string[] args) : base(args) {
+#if DEBUG
 		CloseWindowsTerminalOnQuit = !args.Any(arg => arg.Equals("DontCloseCMD", StringComparison.OrdinalIgnoreCase));
+#endif
 	}
 
 

@@ -94,9 +94,42 @@ public abstract partial class Game {
 	}
 
 
-	public Game () {
+	public Game (params string[] args) {
 
 		Instance = this;
+
+		// Args
+		string universeRoot = null;
+		for (int i = 0; i < args.Length; i++) {
+			string arg = args[i];
+			try {
+				// Load Assemblies from Args
+				if (arg.StartsWith("-lib:")) {
+					string path = Util.ArgPath_to_Path(arg[5..]);
+					if (Util.PathIsFolder(path)) {
+						if (!Util.FolderExists(path)) continue;
+						foreach (var dllpath in Util.EnumerateFiles(path, false, "*.dll")) {
+							if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
+								Util.AddAssembly(assembly);
+							}
+						}
+					} else {
+						if (!Util.FileExists(path)) continue;
+						if (Assembly.LoadFrom(path) is Assembly assembly) {
+							Util.AddAssembly(assembly);
+						}
+					}
+				} else if (arg.StartsWith("-uni:")) {
+					// Set Universe Path from Args
+					universeRoot = Util.ArgPath_to_Path(arg[5..]);
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+		universeRoot ??= AngePath.GetUniverseRoot(System.Environment.CurrentDirectory);
+		if (!Util.FolderExists(universeRoot)) {
+			universeRoot = AngePath.GetUniverseRoot(Util.GetParentPath(System.Environment.CurrentDirectory));
+		}
+		AngePath.BuiltInUniverseRoot = universeRoot;
 
 		// Attribute >> Game
 		if (Util.TryGetAttributeFromAllAssemblies<ToolApplicationAttribute>()) {

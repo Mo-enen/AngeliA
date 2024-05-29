@@ -20,33 +20,6 @@ public static partial class Util {
 	public static readonly List<Type> AllTypes = new();
 
 
-	public static string GetArgumentForAssemblyPath (string path) => $"-lib:\"{path.Replace(" ", "#")}\"";
-
-
-	public static void AddAssembliesFromArgs (string[] args) {
-		for (int i = 0; i < args.Length; i++) {
-			string arg = args[i];
-			if (!arg.StartsWith("-lib:")) continue;
-			try {
-				string path = arg[5..].Replace("#", " ").Replace("\"", "");
-				if (PathIsFolder(path)) {
-					if (!FolderExists(path)) continue;
-					foreach (var dllpath in EnumerateFiles(path, false, "*.dll")) {
-						if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
-							AddAssembly(assembly);
-						}
-					}
-				} else {
-					if (!FileExists(path)) continue;
-					if (Assembly.LoadFrom(path) is Assembly assembly) {
-						AddAssembly(assembly);
-					}
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-	}
-
-
 	public static void AddAssembly (Assembly assembly) {
 		if (AllAssemblies.Contains(assembly)) return;
 		AllAssemblies.Add(assembly);

@@ -15,30 +15,11 @@ public static class AngePath {
 
 
 	// System 
-	public static string ApplicationDataPath {
-		get {
-			if (!string.IsNullOrEmpty(_ApplicationDataPath)) return _ApplicationDataPath;
-#if DEBUG
-			string path = Util.GetParentPath(Environment.CurrentDirectory);
-			for (int safe = 0; safe < 12; safe++) {
-				foreach (var filePath in Util.EnumerateFiles(path, true, "*.csproj")) {
-					return _ApplicationDataPath = path;
-				}
-				path = Util.GetParentPath(path);
-				if (string.IsNullOrEmpty(path)) break;
-			}
-#endif
-			return _ApplicationDataPath = Environment.CurrentDirectory;
-		}
-	}
-	private static string _ApplicationDataPath = null;
-
 	public static string PersistentDataPath { get; private set; }
 	public static string TempDataPath { get; private set; }
 
 	// Framework
-	public static string BuiltInUniverseRoot => _BuiltInUniverseRoot ??= Util.CombinePaths(ApplicationDataPath, "Universe");
-	private static string _BuiltInUniverseRoot = null;
+	public static string BuiltInUniverseRoot { get; internal set; }
 
 	public static string WorkspaceRoot => _WorkspaceRoot ??= Util.CombinePaths(PersistentDataPath, "Workspace");
 	private static string _WorkspaceRoot = null;

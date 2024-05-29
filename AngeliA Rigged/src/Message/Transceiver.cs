@@ -14,7 +14,7 @@ public class RigTransceiver {
 
 
 	#region --- VAR ---
-	
+
 
 	// Const 
 	public const int ERROR_EXE_FILE_NOT_FOUND = -100;
@@ -90,7 +90,7 @@ public class RigTransceiver {
 			process.StartInfo.FileName = ExePath;
 			process.StartInfo.UseShellExecute = false;
 			process.StartInfo.CreateNoWindow = true;
-			process.StartInfo.Arguments = GetArgumentsForRigGame(gameLibFolder);
+			process.StartInfo.Arguments = GetArgumentsForRigGame(gameBuildFolder, gameLibFolder);
 			process.StartInfo.WorkingDirectory = gameBuildFolder;
 #if DEBUG
 			process.StartInfo.RedirectStandardOutput = true;
@@ -213,20 +213,23 @@ public class RigTransceiver {
 	#region --- LGC ---
 
 
-	private string GetArgumentsForRigGame (string gameLibFolder) {
+	private string GetArgumentsForRigGame (string gameBuildFolder, string gameLibFolder) {
 
 		RigArgBuilder.Clear();
 
 		RigArgBuilder.Append($"-map:{MapName}");
 		RigArgBuilder.Append(' ');
 
-		RigArgBuilder.Append(Util.GetArgumentForAssemblyPath(gameLibFolder));
+		RigArgBuilder.Append($"-lib:{Util.Path_to_ArgPath(gameLibFolder)}");
 		RigArgBuilder.Append(' ');
 
 		RigArgBuilder.Append($"-pID:{Process.GetCurrentProcess().Id}");
 		RigArgBuilder.Append(' ');
 
 		RigArgBuilder.Append($"-fontCount:{Game.FontCount - Game.BuiltInFontCount}");
+		RigArgBuilder.Append(' ');
+
+		RigArgBuilder.Append($"-uni:{Util.Path_to_ArgPath(AngePath.GetUniverseRoot(gameBuildFolder))}");
 		RigArgBuilder.Append(' ');
 
 		if (RespondMessage.ViewHeight > 0) {

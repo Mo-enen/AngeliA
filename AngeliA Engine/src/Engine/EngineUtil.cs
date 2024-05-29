@@ -5,6 +5,7 @@ using System.Text;
 using AngeliA;
 using Task = System.Threading.Tasks.Task;
 using System.IO;
+using System.Diagnostics;
 
 namespace AngeliaEngine;
 
@@ -163,9 +164,15 @@ public static class EngineUtil {
 
 
 	public static void RunAngeliaBuild (Project project) {
-		string entryPath = Util.CombinePaths(project.BuildPath, Util.GetNameWithExtension(EntryExePath));
+		string entryPath = EntryExePath;
 		if (Util.FileExists(entryPath)) {
-			Util.ExecuteCommand(project.BuildPath, $"\"{entryPath}\" DontCloseCmd", logID: 0, wait: false);
+			var process = new Process();
+			process.StartInfo.FileName = entryPath;
+			process.StartInfo.UseShellExecute = false;
+			process.StartInfo.CreateNoWindow = false;
+			process.StartInfo.Arguments = $"DontCloseCmd -uni:{Util.Path_to_ArgPath(project.UniversePath)} -lib:{Util.Path_to_ArgPath(project.BuildLibraryPath)}";
+			process.StartInfo.WorkingDirectory = Util.GetParentPath(entryPath);
+			process.Start();
 		}
 	}
 

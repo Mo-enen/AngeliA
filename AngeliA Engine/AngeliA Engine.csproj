@@ -38,6 +38,7 @@
 	<ItemGroup>
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
+		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
 		<Compile Remove="Properties\**" />
 		<Compile Remove="Universe\**" />
@@ -75,4 +76,12 @@
 		<Copy SourceFiles="$(OutputPath)AngeliA Entry.exe" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.exe" ContinueOnError="true" />
 	</Target>
 
+	<Target Name="Copy Entry Dll" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Copy SourceFiles="$(OutputPath)AngeliA Entry.dll" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.dll" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="Copy Entry Config Json" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Copy SourceFiles="$(OutputPath)AngeliA Entry.runtimeconfig.json" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.runtimeconfig.json" ContinueOnError="true" />
+	</Target>
+	
 </Project>

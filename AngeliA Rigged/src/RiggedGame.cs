@@ -49,12 +49,9 @@ public partial class RiggedGame : Game {
 	static RiggedGame () => Util.AddAssembly(typeof(RiggedGame).Assembly);
 
 
-	public RiggedGame (params string[] args) {
+	public RiggedGame (params string[] args) : base(args) {
 
 		Instance = this;
-
-		// Load Game Assemblies
-		Util.AddAssembliesFromArgs(args);
 
 		// Get Host pID
 		RiggedFontCount = 0;

@@ -128,4 +128,8 @@ public static partial class Util {
 	}
 
 
+	public static string Path_to_ArgPath (string path) => $"{path.Replace(" ", "#")}";
+	public static string ArgPath_to_Path (string path) => path.Replace("#", " ");
+
+
 }
