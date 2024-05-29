@@ -232,7 +232,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 						rect.y - labelHeight,
 						labelWidth, labelHeight
 					),
-					weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemName(weaponID),
+					weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemDisplayName(weaponID),
 					backgroundColor: Color32.BLACK,
 					backgroundPadding: Unify(6),
 					false,

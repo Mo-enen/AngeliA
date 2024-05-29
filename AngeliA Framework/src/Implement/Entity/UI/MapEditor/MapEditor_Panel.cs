@@ -259,7 +259,7 @@ public partial class MapEditor {
 		foreach (var group in PaletteGroups) {
 			foreach (var item in group.Items) {
 				if (item == null || string.IsNullOrEmpty(item.Name)) continue;
-				PaletteTrie.AddForSearching(item.Name.TrimEnd_NumbersEmpty_(), item);
+				PaletteTrie.AddForSearching(item.Name, item);
 			}
 		}
 

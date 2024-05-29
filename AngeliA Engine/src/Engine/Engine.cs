@@ -122,7 +122,6 @@ public class Engine {
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
 	private int RigMapEditorWindowIndex = 0;
-	private int RigItemEditorWindowIndex = 0;
 	private int ConsoleWindowIndex = 0;
 	private long RequireBackgroundBuildDate = 0;
 	private int LastNotInteractableFrame = int.MinValue;
@@ -158,9 +157,9 @@ public class Engine {
 		var engine = new Engine {
 			AllWindows = new WindowUI[]{
 				new RiggedMapEditor(),
-				new RiggedItemEditor(),
 				new PixelEditor(),
 				new LanguageEditor(ignoreRequirements:true),
+				new ItemEditor(),
 				new Console(),
 				new ProjectEditor(),
 				new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
@@ -234,7 +233,6 @@ public class Engine {
 			var win = AllWindows[i];
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = i;
-			if (win is RiggedItemEditor) RigItemEditorWindowIndex = i;
 			if (win is Console) ConsoleWindowIndex = i;
 		}
 
@@ -788,6 +786,7 @@ public class Engine {
 				// Click
 				if (mousePress && hovering) {
 					SetCurrentWindowIndex(index);
+					barWidth = GetEngineLeftBarWidth(out contentPadding);
 				}
 
 				// Next
@@ -1144,11 +1143,7 @@ public class Engine {
 						false,
 					leftPadding:
 						GetEngineLeftBarWidth(out _),
-					requiringWindowIndex: (byte)(
-						CurrentWindowIndex == RigMapEditorWindowIndex ? 0 :
-						CurrentWindowIndex == RigItemEditorWindowIndex ? 1 :
-						0
-					)
+					requiringWindowIndex: 0
 				);
 			}
 			called = true;
@@ -1328,14 +1323,14 @@ public class Engine {
 	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
 		index = index.Clamp(0, AllWindows.Length - 1);
 		if (!forceChange && index == CurrentWindowIndex) return;
-		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex || index == RigItemEditorWindowIndex;
+		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex;
 		if (CurrentWindowRequireRigGame) {
 			// Rig Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();
 		} else {
 			// Normal Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireLostFocusInvoke();
-			ResetViewRect(true);
+			ResetViewRect(remapAllRenderingCells: true);
 			Game.MusicVolume = 1000;
 			Game.SoundVolume = 1000;
 		}
@@ -1368,6 +1363,7 @@ public class Engine {
 		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
+		ItemEditor.Instance.SetCurrentProject(CurrentProject);
 
 		// Audio
 		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
@@ -1420,6 +1416,7 @@ public class Engine {
 			LanguageEditor.Instance.SetLanguageRoot("");
 			PixelEditor.Instance.LoadSheetFromDisk("");
 			ProjectEditor.Instance.SetCurrentProject(null);
+			ItemEditor.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 		}
 	}

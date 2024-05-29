@@ -14,7 +14,7 @@ public static class ItemSystem {
 	#region --- SUB ---
 
 
-	private class ItemData {
+	public class ItemData {
 		public Item Item;
 		public int NameID;
 		public int DescriptionID;
@@ -55,9 +55,9 @@ public static class ItemSystem {
 
 	// Api
 	public static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
+	public static readonly Dictionary<int, ItemData> ItemPool = new();
 
 	// Data
-	private static readonly Dictionary<int, ItemData> ItemPool = new();
 	private static bool IsUnlockDirty = false;
 
 
@@ -87,12 +87,14 @@ public static class ItemSystem {
 	}
 
 
-	[OnUniverseOpen(31)]
+	[OnUniverseOpen(30)]
 	public static void OnUniverseOpen () {
 		if (Game.IsToolApplication) return;
 		string path = UniverseSystem.CurrentUniverse.ItemCombinationPath;
 		CombinationPool.Clear();
-		ItemCombination.LoadCombinationFromFile(CombinationPool, path);
+		foreach (var (com, data) in ItemCombination.ForAllCombinationInFile(path)) {
+			CombinationPool.TryAdd(com, data);
+		}
 		LoadUnlockDataFromFile();
 	}
 
@@ -117,7 +119,7 @@ public static class ItemSystem {
 
 	// Item
 	public static Item GetItem (int id) => ItemPool.TryGetValue(id, out var item) ? item.Item : null;
-	public static string GetItemName (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.NameID, item.DefaultName) : "";
+	public static string GetItemDisplayName (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.NameID, item.DefaultName) : "";
 	public static string GetItemDescription (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.DescriptionID) : "";
 	public static int GetItemMaxStackCount (int id) => ItemPool.TryGetValue(id, out var item) ? item.MaxStackCount : 0;
 
@@ -182,10 +184,10 @@ public static class ItemSystem {
 	public static bool TryGetCombination (
 		int item0, int item1, int item2, int item3,
 		out int result, out int resultCount,
-		out int ignoreConsume0, out int ignoreConsume1, out int ignoreConsume2, out int ignoreConsume3
+		out int keep0, out int keep1, out int keep2, out int keep3
 	) => ItemCombination.TryGetCombinationFromPool(
 		CombinationPool, item0, item1, item2, item3, out result, out resultCount,
-		out ignoreConsume0, out ignoreConsume1, out ignoreConsume2, out ignoreConsume3
+		out keep0, out keep1, out keep2, out keep3
 	);
 
 

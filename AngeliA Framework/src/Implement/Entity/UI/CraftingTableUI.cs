@@ -287,7 +287,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		if (tipID != 0) {
 			GUI.Label(
 				new IRect(tipRect.x - tipRect.width * 2, tipRect.yMax + tipRect.height / 2, tipRect.width * 5, tipRect.height),
-				ItemSystem.GetItemName(tipID),
+				ItemSystem.GetItemDisplayName(tipID),
 				out var tipBounds
 			);
 			Renderer.DrawPixel(tipBounds, Color32.BLACK, int.MaxValue);

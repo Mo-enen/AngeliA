@@ -154,7 +154,6 @@ public partial class RiggedGame : Game {
 		// Init Windows
 		EditorWindows ??= new WindowUI[] {
 			MapEditor.Instance ?? Stage.GetOrAddEntity<MapEditor>(0, 0),
-			ItemEditor.Instance ?? Stage.GetOrAddEntity<ItemEditor>(0, 0),
 		};
 
 		// Sync Buffer
@@ -170,6 +169,7 @@ public partial class RiggedGame : Game {
 		CurrentPressedKeyIndex = 0;
 
 		// Refresh Editor Windows
+		GUI.ForceUnifyBasedOnMonitor = CallingMessage.RequiringWindowIndex == 1;
 		for (int i = 0; i < EditorWindows.Length; i++) {
 			var window = EditorWindows[i];
 			if (window == null) continue;
@@ -182,7 +182,6 @@ public partial class RiggedGame : Game {
 				}
 			}
 		}
-
 
 		// Char Requirement
 		for (int i = 0; i < CallingMessage.CharRequiredCount; i++) {

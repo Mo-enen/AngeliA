@@ -253,7 +253,7 @@ public class PlayerMenuUI : EntityUI {
 		// Name
 		var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
 		using (Scope.GUIContentColor(Color32.ORANGE_BETTER)) {
-			GUI.SmallLabel(nameRect, ItemSystem.GetItemName(itemID));
+			GUI.SmallLabel(nameRect, ItemSystem.GetItemDisplayName(itemID));
 		}
 
 		// Description
