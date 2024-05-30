@@ -76,7 +76,6 @@ public partial class PixelEditor : WindowUI {
 	// Api
 	public static PixelEditor Instance { get; private set; }
 	public int SheetIndex { get; private set; } = -1;
-	public bool Interactable { get; set; } = true;
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Artwork";
 
@@ -418,7 +417,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Cursor () {
 
-		if (Sheet.Atlas.Count <= 0 || !Interactable || !MouseInStage || !StageRect.MouseInside()) return;
+		if (Sheet.Atlas.Count <= 0 || !GUI.Interactable || !MouseInStage || !StageRect.MouseInside()) return;
 
 		// Sprite Option
 		if (HoldingCtrl) {
@@ -652,7 +651,7 @@ public partial class PixelEditor : WindowUI {
 	private void Update_Hotkey () {
 
 		if (Sheet.Atlas.Count <= 0) return;
-		if (!Interactable) return;
+		if (!GUI.Interactable) return;
 		if (GUI.IsTyping) return;
 
 		// Ctrl
@@ -766,7 +765,7 @@ public partial class PixelEditor : WindowUI {
 	private void Update_View () {
 
 		if (Sheet.Atlas.Count <= 0) return;
-		if (!Interactable) return;
+		if (!GUI.Interactable) return;
 
 		// Move
 		if (Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) {

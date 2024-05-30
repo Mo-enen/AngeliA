@@ -267,10 +267,11 @@ public partial class MapEditor {
 	}
 
 
-	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) {
+	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) => DrawSpriteGizmos(artworkID, rect, Color32.WHITE, shrink, sprite);
+	private void DrawSpriteGizmos (int artworkID, IRect rect, Color32 tint, bool shrink = false, AngeSprite sprite = null) {
 		if (
-			sprite == null && 
-			!Renderer.TryGetSprite(artworkID, out sprite) && 
+			sprite == null &&
+			!Renderer.TryGetSprite(artworkID, out sprite) &&
 			!Renderer.TryGetSpriteFromGroup(artworkID, 0, out sprite
 		)) {
 			if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
@@ -279,7 +280,7 @@ public partial class MapEditor {
 		}
 		if (sprite == null) return;
 		if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY));
+		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), tint);
 	}
 
 

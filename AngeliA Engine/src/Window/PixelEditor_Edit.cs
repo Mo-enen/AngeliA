@@ -56,7 +56,7 @@ public partial class PixelEditor {
 	private void Update_LeftDrag () {
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!MouseLeftDownInStage) return;
-		if (Interactable && Input.MouseLeftButtonHolding) {
+		if (GUI.Interactable && Input.MouseLeftButtonHolding) {
 			if (DraggingStateLeft == DragStateLeft.None) {
 				Update_LeftDrag_Start();
 			}
@@ -386,7 +386,7 @@ public partial class PixelEditor {
 	private void Update_RightDrag () {
 		if (Sheet.Atlas.Count <= 0) return;
 		if (!MouseRightDownInStage) return;
-		if (Interactable && !Input.MouseLeftButtonHolding && Input.MouseRightButtonHolding) {
+		if (GUI.Interactable && !Input.MouseLeftButtonHolding && Input.MouseRightButtonHolding) {
 			if (DraggingStateRight == DragStateRight.None) {
 				Update_RightDrag_Start();
 			}

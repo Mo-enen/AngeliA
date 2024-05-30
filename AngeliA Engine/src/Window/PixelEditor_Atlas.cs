@@ -53,12 +53,6 @@ public partial class PixelEditor {
 		GUI.DrawSliceOrTile(UI_ENGINE_PANEL, panelRect);
 		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_HEIGHT));
 
-		// Rename Hotkey
-		//if (Input.KeyboardDown(KeyboardKey.F2) && RenamingAtlasIndex < 0 && CurrentAtlasIndex >= 0) {
-		//	RenamingAtlasIndex = CurrentAtlasIndex;
-		//	GUI.StartTyping(ATLAS_INPUT_ID + CurrentAtlasIndex);
-		//}
-
 		int itemCount = Sheet.Atlas.Count;
 		if (itemCount > 0) {
 
@@ -136,7 +130,9 @@ public partial class PixelEditor {
 					var buttonRect = rect.ShrinkLeft(iconWidth);
 					if (buttonRect.MouseInside() && AtlasItemReorderIndex < 0) {
 						// Highlight
-						Renderer.DrawPixel(buttonRect, Color32.WHITE_20);
+						if (GUI.Enable && GUI.Interactable) {
+							Renderer.DrawPixel(buttonRect, Color32.WHITE_20);
+						}
 						// Click
 						if (Input.MouseLeftButtonDown) {
 							if (selecting) {
@@ -248,12 +244,6 @@ public partial class PixelEditor {
 				);
 			}
 
-			// Right Click on Empty
-			if (panelRect.MouseInside() && Input.MouseRightButtonDown) {
-				Input.UseAllMouseKey();
-				ShowAtlasItemPopup(-1);
-			}
-
 		}
 
 		if (!Input.MouseLeftButtonHolding) AtlasItemReorderIndex = -1;
@@ -361,6 +351,8 @@ public partial class PixelEditor {
 
 	private void ShowAtlasItemPopup (int atlasIndex) {
 
+		if (atlasIndex < 0 || atlasIndex >= Sheet.Atlas.Count) return;
+
 		AtlasMenuTargetIndex = atlasIndex;
 		GenericPopupUI.BeginPopup();
 
@@ -369,10 +361,28 @@ public partial class PixelEditor {
 
 		GenericPopupUI.AddSeparator();
 
+
+		GenericPopupUI.AddItem("Test Root", Const.EmptyMethod);
+
+		GenericPopupUI.BeginSubItem();
+
+		GenericPopupUI.AddItem("Test 0", Const.EmptyMethod);
+		GenericPopupUI.AddItem("Test 1", Const.EmptyMethod);
+		GenericPopupUI.AddItem("Test 2", Const.EmptyMethod);
+		GenericPopupUI.AddItem("Test 3", Const.EmptyMethod);
+
+
+
+		GenericPopupUI.EndSubItem();
+
+
 		// Type
 		int currentType = (int)Sheet.Atlas[atlasIndex].Type;
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
-			GenericPopupUI.AddItem(ATLAS_TYPE_NAMES[i], AtlasType, enabled: true, @checked: currentType == i);
+			GenericPopupUI.AddItem(
+				ATLAS_TYPE_NAMES[i], AtlasType,
+				enabled: true, @checked: currentType == i, data: i
+			);
 		}
 
 		// Func
@@ -400,7 +410,7 @@ public partial class PixelEditor {
 			}
 		}
 		static void AtlasType () {
-			int index = GenericPopupUI.Instance.InvokingItemIndex - 1;
+			if (GenericPopupUI.Instance.InvokingItemData is not int index) return;
 			int currentAtlasIndex = Instance.AtlasMenuTargetIndex;
 			var atlasList = Sheet.Atlas;
 			if (index < 0 || index >= ATLAS_TYPE_COUNT) return;

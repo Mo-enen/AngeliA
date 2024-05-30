@@ -255,7 +255,10 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 
 	private void Update_Action () {
 
-		if (TakingDamage || Task.HasTask()) return;
+		if (TakingDamage || Task.HasTask()) {
+			TargetActionEntity = null;
+			return;
+		}
 
 		// Search for Active Trigger
 		if (TargetActionEntity == null || !TargetActionEntity.LockInput) {
@@ -314,8 +317,8 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 			}
 		}
 
-		if (!LockingInput && TargetActionEntity != null && TargetActionEntity.LockInput) {
-			LockInput(0);
+		if (TargetActionEntity != null && TargetActionEntity.LockInput) {
+			LockInput(1);
 		}
 
 	}

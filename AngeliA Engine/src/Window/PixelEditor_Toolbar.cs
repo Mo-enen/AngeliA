@@ -709,7 +709,7 @@ public partial class PixelEditor {
 		GenericPopupUI.AddItem(
 			BuiltInText.UI_NONE, 0, default,
 			noneTagedCount == 0 ? 0 : noneTagedCount == SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
-			OnClick, enabled: true, @checked: noneTagedCount > 0
+			OnClick, enabled: true, @checked: noneTagedCount > 0, data: 0
 		);
 
 		for (int i = 0; i < SpriteTag.COUNT; i++) {
@@ -717,13 +717,13 @@ public partial class PixelEditor {
 			GenericPopupUI.AddItem(
 				SpriteTag.ALL_TAGS_STRING[i], 0, default,
 				tagedCount == 0 ? 0 : tagedCount == SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
-				OnClick, enabled: true, @checked: tagedCount > 0
+				OnClick, enabled: true, @checked: tagedCount > 0, data: i + 1
 			);
 		}
 
 		// Func
 		static void OnClick () {
-			int tagIndex = GenericPopupUI.Instance.InvokingItemIndex - 1;
+			if (GenericPopupUI.Instance.InvokingItemData is not int tagIndex) return;
 			if (tagIndex < -1 || tagIndex >= SpriteTag.COUNT) return;
 			int checkedCount = 0;
 			var stagedSprites = Instance.StagedSprites;

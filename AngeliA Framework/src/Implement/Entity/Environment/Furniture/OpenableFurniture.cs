@@ -1,4 +1,5 @@
 namespace AngeliA;
+
 public abstract class OpenableUiFurniture : OpenableFurniture {
 
 
@@ -58,6 +59,12 @@ public abstract class OpenableFurniture : Furniture, IActionTarget {
 	bool IActionTarget.IsHighlighted => !Open && GetIsHighlighted();
 
 
+	public override void OnActivated () {
+		base.OnActivated();
+		Open = false;
+	}
+
+
 	public override void LateUpdate () {
 
 		var act = this as IActionTarget;
@@ -74,6 +81,7 @@ public abstract class OpenableFurniture : Furniture, IActionTarget {
 				SetOpen(false);
 				Input.UseGameKey(Gamekey.Select);
 			}
+
 			ControlHintUI.AddHint(Gamekey.Select, BuiltInText.UI_CANCEL, int.MinValue + 1);
 		}
 	}

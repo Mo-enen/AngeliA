@@ -698,7 +698,6 @@ public class Engine {
 		if (!interactable) {
 			LastNotInteractableFrame = Game.PauselessFrame;
 		}
-		PixelEditor.Instance.Interactable = interactable;
 
 		// UI
 		using (Scope.GUIEnable(true, interactable))
@@ -853,6 +852,7 @@ public class Engine {
 		GUI.Interactable = oldE;
 
 		// Update Window UI
+		GUI.Interactable = interactable;
 		foreach (var ui in AllWindows) {
 			if (!ui.Active) continue;
 			ui.FirstUpdate();
@@ -869,6 +869,7 @@ public class Engine {
 			if (!ui.Active) continue;
 			ui.LateUpdate();
 		}
+		GUI.Interactable = oldE;
 
 		// Misc
 		if (GenericDialogUI.ShowingDialog) {

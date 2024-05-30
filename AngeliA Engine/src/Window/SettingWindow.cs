@@ -311,19 +311,20 @@ public class SettingWindow : WindowUI {
 		// Show Menu
 		GenericPopupUI.BeginPopup(new Int2(rect.x + Unify(4), rect.y));
 		GenericPopupUI.AddItem(LABEL_THEME_BUILT_IN, MenuInvoked, @checked: GUI.Skin.Name == "Built-in");
+		int index = 0;
 		foreach (var (path, name) in ThemePaths) {
-			GenericPopupUI.AddItem(name, MenuInvoked, @checked: GUI.Skin.Name == name);
+			GenericPopupUI.AddItem(name, MenuInvoked, @checked: GUI.Skin.Name == name, data: index);
+			index++;
 		}
 
 		// Func
 		static void MenuInvoked () {
-			int index = GenericPopupUI.Instance.InvokingItemIndex;
-			if (index <= 0) {
+			if (GenericPopupUI.Instance.InvokingItemData is not int index) {
 				// Built In
 				Instance.RequireChangeThemePath = "";
-			} else if (Instance.ThemePaths.Count > 0) {
+			} else if (Instance.ThemePaths.Count > 0 && index >= 0) {
 				// Custom
-				Instance.RequireChangeThemePath = Instance.ThemePaths[(index - 1).Clamp(0, Instance.ThemePaths.Count - 1)].path;
+				Instance.RequireChangeThemePath = Instance.ThemePaths[index.Clamp(0, Instance.ThemePaths.Count - 1)].path;
 			}
 		}
 	}

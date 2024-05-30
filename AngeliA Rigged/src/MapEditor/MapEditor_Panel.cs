@@ -102,6 +102,7 @@ public partial class MapEditor {
 	private string SearchingText = "";
 	private int DraggingForReorderPaletteGroup = -1;
 	private int DraggingForReorderPaletteItem = -1;
+	private PaletteItem MenuingPalItem;
 
 
 	#endregion
@@ -385,13 +386,10 @@ public partial class MapEditor {
 			}
 
 			// Cover
-			if (Renderer.TryGetSprite(coverID, out var coverSprite)) {
-				Renderer.Draw(
-					coverSprite,
-					rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0).Fit(coverSprite),
-					selecting ? Color32.GREY_196 : Color32.WHITE
-				);
-			}
+			DrawSpriteGizmos(
+				coverID, rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0),
+				selecting ? Color32.GREY_128 : Color32.WHITE
+			);
 
 			// Tooltip
 			if (interactable && mouseHovering) {
@@ -936,6 +934,7 @@ public partial class MapEditor {
 
 		if (pal == null) return;
 
+		MenuingPalItem = pal;
 		GenericPopupUI.BeginPopup();
 
 		// Add to Lists
@@ -947,16 +946,23 @@ public partial class MapEditor {
 					MENU_PALETTE_ADD_TO_LIST :
 					MENU_PALETTE_REMOVE_FROM_LIST,
 				list.Icon, Direction2.Right, 0,
-				() => {
-					if (!hasItem) {
-						if (list.Items.Count == 0) list.Icon = pal.ArtworkID;
-						list.Items.Add(pal.ID);
-					} else {
-						list.Items.Remove(pal.ID);
-						if (list.Items.Count == 0) list.Icon = UI_DEFAULT_LIST_COVER;
-					}
-				}, true, hasItem
+				AddToList, true, hasItem, data: i
 			);
+			// Func
+			static void AddToList () {
+				var pal = Instance.MenuingPalItem;
+				if (pal == null) return;
+				if (GenericPopupUI.Instance.InvokingItemData is not int listIndex) return;
+				var list = Instance.EditorMeta.PinnedLists[listIndex];
+				bool hasItem = list.Items.Contains(pal.ID);
+				if (!hasItem) {
+					if (list.Items.Count == 0) list.Icon = pal.ArtworkID;
+					list.Items.Add(pal.ID);
+				} else {
+					list.Items.Remove(pal.ID);
+					if (list.Items.Count == 0) list.Icon = UI_DEFAULT_LIST_COVER;
+				}
+			}
 		}
 
 		if (GenericPopupUI.CurrentItemCount > 0) {
