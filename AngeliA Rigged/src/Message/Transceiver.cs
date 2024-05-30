@@ -15,7 +15,7 @@ public class RigTransceiver {
 
 	#region --- VAR ---
 
-
+	
 	// Const 
 	public const int ERROR_EXE_FILE_NOT_FOUND = -100;
 	public const int ERROR_PROCESS_FAIL_TO_START = -101;

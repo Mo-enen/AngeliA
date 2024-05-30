@@ -17,8 +17,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	public IRect BackgroundRect { get; private set; }
 	public int OverrideWindowWidth { get; set; } = -1;
 	public int AnimationDuration { get; set; } = 8;
-	public GUIStyle BackgroundStyle { get; set; }
-	public GUIStyle MessageStyle { get; set; }
+	protected GUIStyle BackgroundStyle { get; set; }
+	protected GUIStyle MessageStyle { get; set; }
+	protected GUIStyle DefaultLabelStyle { get; init; } = null;
+	protected GUIStyle DefaultContentStyle { get; init; } = null;
 	protected override bool BlockEvent => true;
 
 	// Config
@@ -305,8 +307,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false
 	) {
 
-		labelStyle ??= GUI.Skin.Label;
-		contentStyle ??= GUI.Skin.CenterLabel;
+		labelStyle ??= DefaultLabelStyle ?? GUI.Skin.Label;
+		contentStyle ??= DefaultContentStyle ?? GUI.Skin.CenterLabel;
 
 		delta = 0;
 		if (Layout) {

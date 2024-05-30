@@ -16,7 +16,7 @@ public class PauseMenuUI : MenuUI {
 	#region --- SUB ---
 
 
-	private enum MenuMode { Root, Setting, EditorSetting, KeySetter, Restart, Quit, Setter_Keyboard, Setter_Gamepad }
+	private enum MenuMode { Root, Setting, KeySetter, Restart, Quit, Setter_Keyboard, Setter_Gamepad }
 
 
 	#endregion
@@ -45,11 +45,6 @@ public class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_CONTROL_HINT = ("Menu.Setting.UseControlHint", "Show Control Hint");
 	private static readonly LanguageCode MENU_GAMEPAD_HINT = ("Menu.Setting.UseGamepadHint", "Show Gamepad Hint");
 	private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
-	private static readonly LanguageCode MENU_MEDT_SETTING = ("Menu.Pause.MEDTSetting", "Editor Setting");
-	private static readonly LanguageCode MENU_MEDT_AUTO_ZOOM = ("Menu.MEDTSetting.AutoZoom", "Auto Zoom");
-	private static readonly LanguageCode MENU_MEDT_PLAYER_DROP = ("Menu.MEDTSetting.PlayerDrop", "Quick Player Drop");
-	private static readonly LanguageCode MENU_MEDT_STATE = ("Menu.MEDTSetting.ShowState", "Show State Info");
-	private static readonly LanguageCode MENU_MEDT_BEHIND = ("Menu.MEDTSetting.ShowBehind", "Show Map Behind");
 	private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
 		($"UI.GameKey.{Gamekey.Left}", "Left"),
 		($"UI.GameKey.{Gamekey.Right}", "Right"),
@@ -73,6 +68,7 @@ public class PauseMenuUI : MenuUI {
 	private bool RecordLock = true;
 	private bool RecordDirty = false;
 	private bool KeySetterConfirming = false;
+	private bool BgmPlayingBefore = false;
 
 
 	#endregion
@@ -83,7 +79,11 @@ public class PauseMenuUI : MenuUI {
 	#region --- MSG ---
 
 
-	public PauseMenuUI () => Instance = this;
+	public PauseMenuUI () {
+		Instance = this;
+		DefaultLabelStyle = GUI.Skin.LargeLabel;
+		DefaultContentStyle = GUI.Skin.LargeCenterLabel;
+	}
 
 
 	[OnGameTryingToQuit]
@@ -97,30 +97,29 @@ public class PauseMenuUI : MenuUI {
 
 	[OnGameUpdatePauseless]
 	public static void OnGameUpdatePauseless () {
-		if (Instance == null) return;
-		if (Game.IsPausing) {
-			if (!Instance.Active) {
-				Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
-				Instance.Mode = Instance.RequireMode = MenuMode.Root;
-			}
-		} else {
-			if (Instance.Active) Instance.Active = false;
-		}
+		if (Instance == null || !Game.IsPausing || Instance.Active) return;
+		Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
 	}
 
 
 	public override void OnActivated () {
 		base.OnActivated();
+		Mode = RequireMode = MenuMode.Root;
 		ScreenTint = new(0, 0, 0, 128);
 		BackgroundTint = new(0, 0, 0, 255);
 		MaxItemCount = 11;
 		ContentPadding = Int4.Direction(32, 32, 32, 32);
+		BgmPlayingBefore = Game.IsMusicPlaying;
+		Game.PauseMusic();
 	}
 
 
 	public override void OnInactivated () {
 		base.OnInactivated();
 		Game.UnpauseGame();
+		if (BgmPlayingBefore) {
+			Game.UnpauseMusic();
+		}
 	}
 
 
@@ -136,6 +135,10 @@ public class PauseMenuUI : MenuUI {
 
 		base.LateUpdate();
 
+		if (Game.IsPlaying) {
+			Active = false;
+		}
+
 	}
 
 
@@ -150,9 +153,6 @@ public class PauseMenuUI : MenuUI {
 				break;
 			case MenuMode.Setting:
 				MenuSetting();
-				break;
-			case MenuMode.EditorSetting:
-				MenuMapEditorSetting();
 				break;
 			case MenuMode.Restart:
 				MenuRestart();
@@ -193,16 +193,8 @@ public class PauseMenuUI : MenuUI {
 			SetSelection(0);
 		}
 
-		if (MapEditor.IsEditing) {
-			// 3-Map Editor Setting
-			if (DrawItem(MENU_MEDT_SETTING)) {
-				RequireMode = MenuMode.EditorSetting;
-				SetSelection(0);
-			}
-		}
-
-		if (!MapEditor.IsEditing) {
-			// 3-Restart Game
+		// 3-Restart Game
+		if (Game.AllowPlayerRestart) {
 			if (DrawItem(BuiltInText.UI_RESTART)) {
 				RequireMode = MenuMode.Restart;
 				SetSelection(0);
@@ -332,52 +324,6 @@ public class PauseMenuUI : MenuUI {
 		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
 			RequireMode = MenuMode.Root;
 			SetSelection(2);
-		}
-	}
-
-
-	private void MenuMapEditorSetting () {
-
-		if (MapEditor.IsActived) {
-			var mapEditor = MapEditor.Instance;
-
-			// Auto Zoom
-			if (DrawItem(
-				MENU_MEDT_AUTO_ZOOM,
-				mapEditor.AutoZoom ? BuiltInText.UI_ON : BuiltInText.UI_OFF
-			)) {
-				mapEditor.AutoZoom = !mapEditor.AutoZoom;
-			}
-
-			// Drop Player
-			if (DrawItem(
-				MENU_MEDT_PLAYER_DROP,
-				mapEditor.QuickPlayerDrop ? BuiltInText.UI_ON : BuiltInText.UI_OFF
-			)) {
-				mapEditor.QuickPlayerDrop = !mapEditor.QuickPlayerDrop;
-			}
-
-			// Show State
-			if (DrawItem(
-				MENU_MEDT_STATE,
-				mapEditor.ShowState ? BuiltInText.UI_ON : BuiltInText.UI_OFF
-			)) {
-				mapEditor.ShowState = !mapEditor.ShowState;
-			}
-
-			// Show Behind
-			if (DrawItem(
-				MENU_MEDT_BEHIND,
-				mapEditor.ShowBehind ? BuiltInText.UI_ON : BuiltInText.UI_OFF
-			)) {
-				mapEditor.ShowBehind = !mapEditor.ShowBehind;
-			}
-		}
-
-		// Back
-		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
-			RequireMode = MenuMode.Root;
-			SetSelection(3);
 		}
 	}
 

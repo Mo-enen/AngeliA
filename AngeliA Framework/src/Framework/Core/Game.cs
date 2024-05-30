@@ -34,9 +34,9 @@ public abstract partial class Game {
 
 	// Attribute Info
 	public static bool IsToolApplication { get; private set; } = false;
-	public static bool AllowMakerFeatures { get; private set; } = false;
 	public static bool AllowPause { get; private set; } = true;
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
+	public static bool AllowPlayerRestart { get; private set; } = true;
 
 	// Event
 	private static event System.Action OnGameRestart;
@@ -135,14 +135,14 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<ToolApplicationAttribute>()) {
 			IsToolApplication = true;
 		}
-		if (Util.TryGetAttributeFromAllAssemblies<AllowMakerFeaturesAttribute>()) {
-			AllowMakerFeatures = true;
-		}
 		if (Util.TryGetAttributeFromAllAssemblies<DisablePauseAttribute>()) {
 			AllowPause = false;
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<IgnoreArtworkPixelsAttribute>()) {
 			IgnoreArtworkPixels = true;
+		}
+		if (Util.TryGetAttributeFromAllAssemblies<PlayerCanNotRestartGameAttribute>()) {
+			AllowPlayerRestart = false;
 		}
 
 	}
@@ -185,15 +185,7 @@ public abstract partial class Game {
 			if (IsToolApplication) {
 				StopGame();
 			} else {
-#if DEBUG
-				WindowUI.OpenWindow(MapEditor.TYPE_ID);
-#else
-				if (AllowMakerFeatures) {
-					WindowUI.OpenWindow(HomeScreen.TYPE_ID);
-				} else {
-					RestartGame();
-				}
-#endif
+				RestartGame();
 			}
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
@@ -210,7 +202,6 @@ public abstract partial class Game {
 				OnGameUpdate?.Invoke();
 				OnGameUpdateLater?.Invoke();
 			}
-			LoadOrStopMusic();
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
@@ -285,18 +276,6 @@ public abstract partial class Game {
 				PressingKeyCount++;
 			}
 		} catch (System.Exception ex) { Debug.LogException(ex); }
-	}
-
-
-	private void LoadOrStopMusic () {
-		bool requireMusic = IsPlaying && ScaledMusicVolume > 0 && !MapEditor.IsEditing;
-		if (requireMusic != IsMusicPlaying) {
-			if (requireMusic) {
-				UnpauseMusic();
-			} else {
-				PauseMusic();
-			}
-		}
 	}
 
 

@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using GeorgeMamaladze;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliaRigged;
+
 [RequireLanguageFromField]
 [EntityAttribute.StageOrder(-4096)]
 public sealed partial class MapEditor : WindowUI {
@@ -109,23 +111,11 @@ public sealed partial class MapEditor : WindowUI {
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
 	public static bool IsPlaying => IsActived && Instance.PlayingGame;
 	public static bool ResetCameraAtStart { get; set; } = true;
-	public bool QuickPlayerDrop {
-		get => s_QuickPlayerDrop.Value && !IgnoreQuickPlayerDropThisTime;
-		set => s_QuickPlayerDrop.Value = value;
-	}
-	public bool AutoZoom {
-		get => s_AutoZoom.Value;
-		set => s_AutoZoom.Value = value;
-	}
-	public bool ShowState {
-		get => s_ShowState.Value;
-		set => s_ShowState.Value = value;
-	}
-	public bool ShowBehind {
-		get => s_ShowBehind.Value;
-		set => s_ShowBehind.Value = value;
-	}
 	public int CurrentZ { get; private set; } = 0;
+	public bool QuickPlayerDrop { get; set; } = false;
+	public bool AutoZoom { get; set; } = true;
+	public bool ShowState { get; set; } = false;
+	public bool ShowBehind { get; set; } = true;
 	public override IRect BackgroundRect => default;
 
 	// Pools
@@ -170,7 +160,6 @@ public sealed partial class MapEditor : WindowUI {
 	private bool CtrlHolding = false;
 	private bool ShiftHolding = false;
 	private bool AltHolding = false;
-	private bool IgnoreQuickPlayerDropThisTime = false;
 	private int DropHintWidth = Const.CEL;
 	private int TooltipDuration = 0;
 	private int PanelOffsetX = 0;
@@ -179,12 +168,6 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoPerformedFrame = -1;
 	private int RequireWorldRenderBlinkIndex = -1;
 	private bool? RequireSetMode = null;
-
-	// Saving
-	private static readonly SavingBool s_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
-	private static readonly SavingBool s_AutoZoom = new("MapEditor.AutoZoom", true);
-	private static readonly SavingBool s_ShowState = new("MapEditor.ShowState", false);
-	private static readonly SavingBool s_ShowBehind = new("MapEditor.ShowBehind", true);
 
 
 	#endregion
@@ -632,13 +615,9 @@ public sealed partial class MapEditor : WindowUI {
 				// Switch Mode
 				if (!CtrlHolding) {
 					if (Input.KeyboardDown(KeyboardKey.Space)) {
-						IgnoreQuickPlayerDropThisTime = false;
 						StartDropPlayer();
 					}
-					ControlHintUI.AddHint(
-						KeyboardKey.Space,
-						HINT_MEDT_SWITCH_PLAY
-					);
+					ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
 				}
 
 				// Start Search
@@ -787,7 +766,6 @@ public sealed partial class MapEditor : WindowUI {
 			// Switch Mode
 			if (!CtrlHolding) {
 				if (Input.KeyboardUp(KeyboardKey.Escape)) {
-					IgnoreQuickPlayerDropThisTime = false;
 					SetEditorMode(false);
 					Input.UseKeyboardKey(KeyboardKey.Escape);
 					Input.UseGameKey(Gamekey.Start);
@@ -876,7 +854,7 @@ public sealed partial class MapEditor : WindowUI {
 		var fixedCameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - Renderer.CameraRect.x, 0, 0, 0);
 
 		// Behind
-		if (s_ShowBehind.Value) {
+		if (ShowBehind) {
 
 			using var _ = Scope.RendererLayer(RenderLayer.BEHIND);
 			var cameraRectF = cameraRect.ToFRect();

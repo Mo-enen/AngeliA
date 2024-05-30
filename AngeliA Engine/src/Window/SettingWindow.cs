@@ -18,11 +18,16 @@ public class SettingWindow : WindowUI {
 	private static readonly SpriteCode UI_LANEL_SETTING = "UI.Panel.Setting";
 
 	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
+	private static readonly LanguageCode LABEL_MAP_EDITOR = ("Setting.MapEditorLabel", "Map Editor");
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Artwork");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
+	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Quick Player Drop");
+	private static readonly LanguageCode LABEL_MEDT_SHOW_STATE = ("Setting.MEDT.ShowState", "Show State Info");
+	private static readonly LanguageCode LABEL_MEDT_SHOW_BEHIND = ("Setting.MEDT.ShowBehind", "Show Map Behind");
+	private static readonly LanguageCode LABEL_MEDT_AUTO_ZOOM = ("Setting.MEDT.AutoZoom", "Auto Zoom");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
@@ -33,6 +38,7 @@ public class SettingWindow : WindowUI {
 	// Api
 	public static SettingWindow Instance { get; private set; }
 	public string RequireChangeThemePath { get; set; } = null;
+	public bool RigSettingChanged { get; set; } = false;
 	public override string DefaultName => "Setting";
 
 	// Data
@@ -80,6 +86,7 @@ public class SettingWindow : WindowUI {
 			using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), rect.width / 2));
 
 			DrawPanel(ref rect, Update_Engine);
+			DrawPanel(ref rect, Update_MapEditor);
 			DrawPanel(ref rect, Update_PixelEditor);
 			DrawPanel(ref rect, Update_Console);
 
@@ -142,6 +149,52 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		return rect;
+	}
+
+
+	private IRect Update_MapEditor (IRect rect) {
+
+		int itemPadding = GUI.FieldPadding;
+
+		// Label - MapEditor
+		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_MAP_EDITOR, Skin.SmallGreyLabel);
+		rect.SlideDown(itemPadding);
+
+		GUI.BeginChangeCheck();
+
+		// Quick Drop
+		EngineSetting.MapEditor_QuickPlayerDrop.Value = GUI.Toggle(
+			rect, EngineSetting.MapEditor_QuickPlayerDrop.Value, LABEL_MEDT_QUICK_DROP,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Auto Zoom
+		EngineSetting.MapEditor_AutoZoom.Value = GUI.Toggle(
+			rect, EngineSetting.MapEditor_AutoZoom.Value, LABEL_MEDT_AUTO_ZOOM,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Show Behind
+		EngineSetting.MapEditor_ShowBehind.Value = GUI.Toggle(
+			rect, EngineSetting.MapEditor_ShowBehind.Value, LABEL_MEDT_SHOW_BEHIND,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Show State
+		EngineSetting.MapEditor_ShowState.Value = GUI.Toggle(
+			rect, EngineSetting.MapEditor_ShowState.Value, LABEL_MEDT_SHOW_STATE,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Final
+		RigSettingChanged = RigSettingChanged || GUI.EndChangeCheck();
+
+		return rect;
+
 	}
 
 

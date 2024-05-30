@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 public enum FittingPose {
 	Unknown = 0,
@@ -49,7 +49,7 @@ public abstract class EnvironmentEntity : Entity {
 	[AfterLayerFrameUpdate]
 	public static void AfterLayerFrameUpdate (int layerIndex) {
 		if (layerIndex != EntityLayer.ENVIRONMENT || CellUpdateFrame != Game.GlobalFrame) return;
-		if (MapEditor.IsEditing) return;
+		if (!WorldSquad.Enable) return;
 		if (Renderer.GetCells(RenderLayer.DEFAULT, out var cells, out int count)) {
 			Renderer.SetLayerToShadow();
 			for (int i = CellStartIndex; i < count; i++) {

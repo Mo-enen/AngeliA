@@ -205,8 +205,8 @@ public class ControlHintUI : EntityUI {
 	// API
 	public static void AddHint (Gamekey key, string label, int priority = int.MinValue) => Instance?.AddHintLogic(key, key, label, priority);
 	public static void AddHint (Gamekey keyA, Gamekey keyB, string label, int priority = int.MinValue) => Instance?.AddHintLogic(keyA, keyB, label, priority);
-	internal static void AddHint (KeyboardKey key, string label) => AddHint(key, key, label);
-	internal static void AddHint (KeyboardKey keyA, KeyboardKey keyB, string label) {
+	public static void AddHint (KeyboardKey key, string label) => AddHint(key, key, label);
+	public static void AddHint (KeyboardKey keyA, KeyboardKey keyB, string label) {
 		if (Instance == null || !Instance.HintVisible) return;
 		int x =
 			Renderer.CameraRect.x +

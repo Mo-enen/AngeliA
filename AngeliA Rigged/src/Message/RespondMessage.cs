@@ -16,7 +16,7 @@ public class RigRespondMessage {
 		public IRect Rect;
 		public Color32 Color;
 	}
-
+	
 
 	public struct GizmosTextureData {
 		public IRect Rect;
@@ -151,8 +151,8 @@ public class RigRespondMessage {
 		Game.SoundVolume = SoundVolume;
 
 		// Cursor
-		if (!ignoreMouseInput && RequireSetCursorIndex != int.MinValue) {
-			if (RequireSetCursorIndex == -3) {
+		if (!ignoreMouseInput) {
+			if (RequireSetCursorIndex <= -3) {
 				Game.SetCursorToNormal();
 			} else {
 				Game.SetCursor(RequireSetCursorIndex);

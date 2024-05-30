@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GeorgeMamaladze;
-
+using AngeliA;
 
 [assembly: AngeliA.RequireGlobalSprite(atlas: "UI",
 	"Cover.Background",
@@ -26,8 +25,8 @@ using GeorgeMamaladze;
 	"Cover.Wallpaper"
 )]
 
+namespace AngeliaRigged;
 
-namespace AngeliA;
 [RequireSpriteFromField]
 public partial class MapEditor {
 
@@ -797,7 +796,6 @@ public partial class MapEditor {
 		// Play
 		btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
 		if (!IsNavigating && !DroppingPlayer && GUI.DarkButton(btnRect, GAMEPAD_ICON)) {
-			IgnoreQuickPlayerDropThisTime = true;
 			if (IsEditing) {
 				StartDropPlayer();
 			} else {

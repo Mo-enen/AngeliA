@@ -1106,6 +1106,8 @@ public class Engine {
 	private void OnGUI_RiggedGame () {
 
 		var rigEdt = RiggedMapEditor.Instance;
+		var calling = Transceiver.CallingMessage;
+		var resp = Transceiver.RespondMessage;
 
 		// Call
 		bool called = false;
@@ -1128,10 +1130,19 @@ public class Engine {
 			}
 
 			if (rigEdt.DrawCollider) {
-				Transceiver.CallingMessage.RequireDrawColliderGizmos();
+				calling.RequireDrawColliderGizmos();
 			}
 			if (rigEdt.DrawBounds) {
-				Transceiver.CallingMessage.RequireDrawBoundsGizmos();
+				calling.RequireDrawBoundsGizmos();
+			}
+
+			if (SettingWindow.Instance.RigSettingChanged) {
+				SettingWindow.Instance.RigSettingChanged = false;
+				calling.RequireSettingChange = true;
+				calling.Setting_MEDT_AutoZoom = EngineSetting.MapEditor_AutoZoom.Value;
+				calling.Setting_MEDT_QuickPlayerDrop = EngineSetting.MapEditor_QuickPlayerDrop.Value;
+				calling.Setting_MEDT_ShowBehind = EngineSetting.MapEditor_ShowBehind.Value;
+				calling.Setting_MEDT_ShowState = EngineSetting.MapEditor_ShowState.Value;
 			}
 
 			if (runGame) {
@@ -1177,14 +1188,14 @@ public class Engine {
 				if (runGame) {
 					Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
 					rigEdt.UpdateUsageData(
-						Transceiver.RespondMessage.RenderUsages,
-						Transceiver.RespondMessage.RenderCapacities,
-						Transceiver.RespondMessage.EntityUsages,
-						Transceiver.RespondMessage.EntityCapacities
+						resp.RenderUsages,
+						resp.RenderCapacities,
+						resp.EntityUsages,
+						resp.EntityCapacities
 					);
-					rigEdt.HavingGamePlay = Transceiver.RespondMessage.GamePlaying;
+					rigEdt.HavingGamePlay = resp.GamePlaying;
 					if (CurrentWindowIndex == RigMapEditorWindowIndex) {
-						Sky.ForceSkyboxTint(Transceiver.RespondMessage.SkyTop, Transceiver.RespondMessage.SkyBottom, 3);
+						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}
 				} else {
 					Transceiver.UpdateLastRespondedRender(sheetIndex);
@@ -1195,11 +1206,16 @@ public class Engine {
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
-			int code = Transceiver.Start(CurrentProject.Universe.FontRoot, CurrentProject.BuildPath, CurrentProject.BuildLibraryPath);
+			int code = Transceiver.Start(
+				CurrentProject.Universe.FontRoot,
+				CurrentProject.BuildPath,
+				CurrentProject.BuildLibraryPath
+			);
 			if (code == 0) {
 				// Start
 				RigGameFailToStartCount = 0;
 				RigGameFailToStartFrame = int.MinValue;
+				SettingWindow.Instance.RigSettingChanged = true;
 			} else {
 				// Fail to Start
 				RigGameFailToStartFrame = Game.GlobalFrame;

@@ -245,6 +245,16 @@ public partial class RiggedGame : Game {
 			StartWithView = default;
 		}
 
+		// Setting Changed
+		if (CallingMessage.RequireSettingChange) {
+			if (MapEditor.Instance != null) {
+				MapEditor.Instance.AutoZoom = CallingMessage.Setting_MEDT_AutoZoom;
+				MapEditor.Instance.QuickPlayerDrop = CallingMessage.Setting_MEDT_QuickPlayerDrop;
+				MapEditor.Instance.ShowBehind = CallingMessage.Setting_MEDT_ShowBehind;
+				MapEditor.Instance.ShowState = CallingMessage.Setting_MEDT_ShowState;
+			}
+		}
+
 		// Update
 		Update();
 

@@ -17,10 +17,6 @@
 
 // Project
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class AllowMakerFeaturesAttribute : System.Attribute { }
-
-
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class ToolApplicationAttribute : System.Attribute { }
 
 
@@ -30,6 +26,10 @@ public class DisablePauseAttribute : System.Attribute { }
 
 [System.AttributeUsage(System.AttributeTargets.Assembly)]
 public class IgnoreArtworkPixelsAttribute : System.Attribute { }
+
+
+[System.AttributeUsage(System.AttributeTargets.Assembly)]
+public class PlayerCanNotRestartGameAttribute : System.Attribute { }
 
 
 [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]

@@ -67,6 +67,11 @@ public class RigCallingMessage {
 	public readonly char[] PressedChars = new char[256];
 	public byte PressedKeyCount;
 	public readonly int[] PressedGuiKeys = new int[256];
+	public bool RequireSettingChange = false;
+	public bool Setting_MEDT_QuickPlayerDrop;
+	public bool Setting_MEDT_AutoZoom;
+	public bool Setting_MEDT_ShowState;
+	public bool Setting_MEDT_ShowBehind;
 
 
 	#endregion
@@ -247,6 +252,14 @@ public class RigCallingMessage {
 				PressedGuiKeys[i] = Util.ReadInt(ref pointer, end);
 			}
 
+			RequireSettingChange = Util.ReadBool(ref pointer, end);
+			if (RequireSettingChange) {
+				Setting_MEDT_QuickPlayerDrop = Util.ReadBool(ref pointer, end);
+				Setting_MEDT_AutoZoom = Util.ReadBool(ref pointer, end);
+				Setting_MEDT_ShowState = Util.ReadBool(ref pointer, end);
+				Setting_MEDT_ShowBehind = Util.ReadBool(ref pointer, end);
+			}
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}
@@ -318,6 +331,14 @@ public class RigCallingMessage {
 			Util.Write(ref pointer, PressedKeyCount, end);
 			for (int i = 0; i < PressedKeyCount; i++) {
 				Util.Write(ref pointer, PressedGuiKeys[i], end);
+			}
+
+			Util.Write(ref pointer, RequireSettingChange, end);
+			if (RequireSettingChange) {
+				Util.Write(ref pointer, Setting_MEDT_QuickPlayerDrop, end);
+				Util.Write(ref pointer, Setting_MEDT_AutoZoom, end);
+				Util.Write(ref pointer, Setting_MEDT_ShowState, end);
+				Util.Write(ref pointer, Setting_MEDT_ShowBehind, end);
 			}
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
