@@ -422,6 +422,7 @@ public class Engine {
 	[OnGameTryingToQuit]
 	internal static bool OnEngineTryingToQuit () {
 		if (Instance == null) return true;
+		GenericPopupUI.Instance.Active = false;
 		if (Instance.CheckAnyEditorDirty()) {
 			GenericDialogUI.SpawnDialog_Button(
 				QUIT_MSG,

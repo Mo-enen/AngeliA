@@ -21,6 +21,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_ASE = ("Title.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_PNG = ("Title.ImportPNG", "Import PNG file");
+	private static readonly LanguageCode MENU_ATLAS_TYPE = ("Menu.AtlasType", "Type");
 
 	// Data
 	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
@@ -361,22 +362,9 @@ public partial class PixelEditor {
 
 		GenericPopupUI.AddSeparator();
 
-
-		GenericPopupUI.AddItem("Test Root", Const.EmptyMethod);
-
-		GenericPopupUI.BeginSubItem();
-
-		GenericPopupUI.AddItem("Test 0", Const.EmptyMethod);
-		GenericPopupUI.AddItem("Test 1", Const.EmptyMethod);
-		GenericPopupUI.AddItem("Test 2", Const.EmptyMethod);
-		GenericPopupUI.AddItem("Test 3", Const.EmptyMethod);
-
-
-
-		GenericPopupUI.EndSubItem();
-
-
 		// Type
+		GenericPopupUI.AddItem(MENU_ATLAS_TYPE, Const.EmptyMethod);
+		GenericPopupUI.BeginSubItem();
 		int currentType = (int)Sheet.Atlas[atlasIndex].Type;
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
 			GenericPopupUI.AddItem(
@@ -384,6 +372,7 @@ public partial class PixelEditor {
 				enabled: true, @checked: currentType == i, data: i
 			);
 		}
+		GenericPopupUI.EndSubItem();
 
 		// Func
 		static void DeleteAtlasConfirm () {
