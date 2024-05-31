@@ -945,6 +945,9 @@ public class Engine {
 			if (RequireBackgroundBuildDate == 0) {
 				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
 			}
+			if (RequireBackgroundBuildDate == 0) {
+				RequireBackgroundBuildDate = 1;
+			}
 		}
 
 		// Run Game
@@ -1239,6 +1242,8 @@ public class Engine {
 		// Rebuild
 		if (RequireBackgroundBuildDate > 0) {
 			Transceiver.Abort();
+			Util.DeleteFile(CurrentProject.Universe.ItemNamePath);
+			ItemEditor.Instance.LastItemNameCheckFrame = int.MinValue;
 			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 			RequireBackgroundBuildDate = 0;
 		}
@@ -1400,6 +1405,8 @@ public class Engine {
 			JsonUtil.SaveJsonToPath(CurrentProject.Universe.Info, CurrentProject.Universe.InfoPath, true);
 		}
 
+		RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
+
 	}
 
 
@@ -1436,6 +1443,7 @@ public class Engine {
 			ProjectEditor.Instance.SetCurrentProject(null);
 			ItemEditor.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
+			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 		}
 	}
 

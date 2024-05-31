@@ -9,6 +9,7 @@ public enum AtlasType {
 	General = 0,
 	Level = 1,
 	Background = 2,
+	Character = 3,
 }
 
 

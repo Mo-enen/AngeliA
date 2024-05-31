@@ -116,7 +116,7 @@ public class DialogueTask : TaskItem {
 		var currentColor = Color32.WHITE;
 		var builder = new StringBuilder();
 		var colors = new List<Color32>();
-		foreach (string line in Util.ForAllLines(conversationPath, Encoding.UTF8)) {
+		foreach (string line in Util.ForAllLinesInFile(conversationPath, Encoding.UTF8)) {
 
 			// Empty Line
 			if (string.IsNullOrWhiteSpace(line)) {

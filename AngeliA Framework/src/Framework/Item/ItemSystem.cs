@@ -18,14 +18,14 @@ public static class ItemSystem {
 		public Item Item;
 		public int NameID;
 		public int DescriptionID;
-		public string DefaultName;
+		public string TypeName;
 		public int MaxStackCount;
 		public bool Unlocked;
-		public ItemData (Item item, int nameID, int descriptionID, string defaultName, int maxStackCount) {
+		public ItemData (Item item, int nameID, int descriptionID, string typeName, int maxStackCount) {
 			Item = item;
 			NameID = nameID;
 			DescriptionID = descriptionID;
-			DefaultName = defaultName;
+			TypeName = typeName;
 			MaxStackCount = maxStackCount;
 			Unlocked = false;
 		}
@@ -72,6 +72,7 @@ public static class ItemSystem {
 	[OnGameInitialize(-128)]
 	internal static void OnGameInitialize () {
 		if (Game.IsToolApplication) return;
+		// Init Pool
 		ItemPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -83,6 +84,11 @@ public static class ItemSystem {
 				angeName,
 				item.MaxStackCount.Clamp(1, 256)
 			));
+		}
+		// Create Item Names File
+		string nameFilePath = UniverseSystem.BuiltInUniverse.ItemNamePath;
+		if (!Util.FileExists(nameFilePath)) {
+			CreateItemNamesFileFromCode(nameFilePath);
 		}
 	}
 
@@ -119,7 +125,7 @@ public static class ItemSystem {
 
 	// Item
 	public static Item GetItem (int id) => ItemPool.TryGetValue(id, out var item) ? item.Item : null;
-	public static string GetItemDisplayName (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.NameID, item.DefaultName) : "";
+	public static string GetItemDisplayName (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.NameID, item.TypeName) : "";
 	public static string GetItemDescription (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.DescriptionID) : "";
 	public static int GetItemMaxStackCount (int id) => ItemPool.TryGetValue(id, out var item) ? item.MaxStackCount : 0;
 
@@ -271,6 +277,24 @@ public static class ItemSystem {
 
 
 	#region --- LGC ---
+
+
+	private static void CreateItemNamesFileFromCode (string path) {
+		var builder = new StringBuilder();
+		var typeItem = typeof(Item);
+		foreach (var (_, data) in ItemPool) {
+			builder.Append(data.TypeName);
+			builder.Append(' ');
+			int baseIndex = builder.Length;
+			var type = data.Item.GetType();
+			for (int safe = 0; safe < 1024 && type != typeItem; safe++) {
+				builder.Insert(baseIndex, type.BaseType == typeItem ? type.AngeName() : $"/{type.AngeName()}");
+				type = type.BaseType;
+			}
+			builder.Append('\n');
+		}
+		Util.TextToFile(builder.ToString(), path);
+	}
 
 
 	// Unlock

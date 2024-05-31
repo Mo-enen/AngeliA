@@ -137,7 +137,7 @@ public static partial class Util {
 			string currentIso = "en";
 			bool contentFlag0 = false;
 			bool contentFlag1 = false;
-			foreach (string line in ForAllLines(path, Encoding.UTF8)) {
+			foreach (string line in ForAllLinesInFile(path, Encoding.UTF8)) {
 
 				string trimedLine = line.TrimStart(' ', '\t');
 

@@ -15,7 +15,7 @@ public class SettingWindow : WindowUI {
 
 
 	// Const
-	private static readonly SpriteCode UI_LANEL_SETTING = "UI.Panel.Setting";
+	private static readonly SpriteCode UI_PANEL_SETTING = "UI.Panel.Setting";
 
 	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
 	private static readonly LanguageCode LABEL_MAP_EDITOR = ("Setting.MapEditorLabel", "Map Editor");
@@ -278,7 +278,7 @@ public class SettingWindow : WindowUI {
 		rect = panelGUI(rect);
 
 		if (
-			Renderer.TryGetSprite(UI_LANEL_SETTING, out var sprite) ||
+			Renderer.TryGetSprite(UI_PANEL_SETTING, out var sprite) ||
 			Renderer.TryGetSprite(Const.PIXEL, out sprite)
 		) {
 			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {

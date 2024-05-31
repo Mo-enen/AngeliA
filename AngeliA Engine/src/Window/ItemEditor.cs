@@ -21,6 +21,12 @@ public class ItemEditor : WindowUI {
 	}
 
 
+	private class ItemNameComparer : IComparer<ItemName> {
+		public static readonly ItemNameComparer Instance = new();
+		public int Compare (ItemName x, ItemName y) => x.TypePath.CompareTo(y.TypePath);
+	}
+
+
 	private class CombinationLine {
 		public int Order = 0;
 		public string NameA = "";
@@ -41,6 +47,13 @@ public class ItemEditor : WindowUI {
 	}
 
 
+	private struct ItemName {
+		public string TypePath;
+		public string Name;
+		public int ID;
+	}
+
+
 	#endregion
 
 
@@ -49,14 +62,19 @@ public class ItemEditor : WindowUI {
 	#region --- VAR ---
 
 
+	// Const
+	private static readonly SpriteCode UI_PANEL_ITEM = "UI.Panel.Item";
+
 	// Api
 	public static ItemEditor Instance { get; private set; }
 	public override string DefaultName => "Item";
 	public Project CurrentProject { get; private set; }
+	public int LastItemNameCheckFrame { get; set; } = int.MinValue;
 
 	// Data
 	private readonly List<CombinationLine> Lines = new();
-	private readonly Trie<Item> SearchTrie = new();
+	private readonly Trie<ItemName> SearchTrie = new();
+	private readonly List<ItemName> ItemNames = new();
 	private int MasterScroll = 0;
 
 
@@ -86,8 +104,9 @@ public class ItemEditor : WindowUI {
 	public override void UpdateWindowUI () {
 		if (WorldSquad.Enable) Game.StopGame();
 		GUI_Toolbar(WindowRect.EdgeInside(Direction4.Up, Unify(32)));
-		GUI_Editor(WindowRect.Shrink(Unify(24), Unify(24), 0, Unify(32)));
+		GUI_Editor(WindowRect.Shrink(Unify(24), Unify(24), 0, Unify(42)));
 		GUI_Hotkey();
+		CheckItemNamesChange();
 	}
 
 
@@ -105,28 +124,41 @@ public class ItemEditor : WindowUI {
 	private void GUI_Editor (IRect panelRect) {
 
 		int fieldPadding = Unify(6);
-		int fieldHeight = Unify(96);
+		int fieldHeight = Unify(128);
 		int fieldWidth = fieldHeight * 2;
 		int column = (panelRect.width / (fieldWidth + fieldPadding)).GreaterOrEquel(1);
 		int row = Lines.Count.CeilDivide(column);
 		int extendedContentHeight = row * (fieldHeight + fieldPadding) + Unify(64);
+		int offsetX = (panelRect.width - column * (fieldWidth + fieldPadding)) / 2;
 
 		using (var scroll = Scope.GUIScroll(panelRect, MasterScroll, 0, (extendedContentHeight - panelRect.height).GreaterOrEquelThanZero())) {
 			MasterScroll = scroll.ScrollPosition;
 			var rect = new IRect(0, 0, fieldWidth, fieldHeight);
 			for (int index = 0; index < Lines.Count; index++) {
 				var line = Lines[index];
-				rect.x = panelRect.x + (index % column) * (rect.width + fieldPadding);
+				rect.x = panelRect.x + (index % column) * (rect.width + fieldPadding) + offsetX;
 				rect.y = panelRect.yMax - ((index / column) + 1) * (rect.height + fieldPadding);
 
-				Renderer.DrawPixel(rect);
+				// BG
+				Renderer.DrawSlice(UI_PANEL_ITEM, rect);
+
+				// Com Icons
+
+
+
+
+				// Result Icon
+
+
+
+
 
 			}
 		}
 
 		MasterScroll = GUI.ScrollBar(
 			234622,
-			panelRect.EdgeInside(Direction4.Right, Unify(16)),
+			WindowRect.EdgeInside(Direction4.Right, Unify(16)).ShrinkUp(Unify(32)),
 			MasterScroll,
 			extendedContentHeight,
 			panelRect.height
@@ -154,6 +186,8 @@ public class ItemEditor : WindowUI {
 		CurrentProject = project;
 		Lines.Clear();
 		SearchTrie.Clear();
+		ItemNames.Clear();
+		LastItemNameCheckFrame = int.MinValue;
 		if (project == null) return;
 		LoadFromFile(project.Universe.ItemCombinationPath);
 	}
@@ -246,7 +280,29 @@ public class ItemEditor : WindowUI {
 	#region --- LGC ---
 
 
-
+	private void CheckItemNamesChange () {
+		if (LastItemNameCheckFrame == int.MaxValue || CurrentProject == null) return;
+		if (Game.PauselessFrame < LastItemNameCheckFrame + 30) return;
+		LastItemNameCheckFrame = Game.PauselessFrame;
+		string path = CurrentProject.Universe.ItemNamePath;
+		if (!Util.FileExists(path)) return;
+		ItemNames.Clear();
+		SearchTrie.Clear();
+		foreach (string line in Util.ForAllLinesInFile(path)) {
+			int emptyIndex = line.IndexOf(' ');
+			if (emptyIndex < 0) continue;
+			string name = line[..emptyIndex];
+			var iName = new ItemName() {
+				ID = name.AngeHash(),
+				Name = name,
+				TypePath = line[(emptyIndex + 1)..],
+			};
+			ItemNames.Add(iName);
+			SearchTrie.AddForSearching(name, iName);
+		}
+		ItemNames.Sort(ItemNameComparer.Instance);
+		LastItemNameCheckFrame = int.MaxValue;
+	}
 
 
 	#endregion

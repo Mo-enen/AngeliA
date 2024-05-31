@@ -74,6 +74,7 @@ public static class AngePath {
 	public static string GetLanguageRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Language");
 	public static string GetUniverseInfoPath (string universeFolder) => Util.CombinePaths(universeFolder, "Info.json");
 	public static string GetItemCombinationPath (string universeFolder) => Util.CombinePaths(universeFolder, "Meta", "Item Combination.txt");
+	public static string GetItemNamePath (string universeFolder) => Util.CombinePaths(universeFolder, "Meta", "Item Names.txt");
 
 	// Saving
 	public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");

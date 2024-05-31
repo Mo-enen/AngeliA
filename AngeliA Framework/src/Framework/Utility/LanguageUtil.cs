@@ -15,7 +15,7 @@ public static partial class LanguageUtil {
 	// Api
 	public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromDisk (string languageRoot, string language) => LoadAllPairsFromDiskAtPath(GetLanguageFilePath(languageRoot, language));
 	public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromDiskAtPath (string path) {
-		foreach (var line in Util.ForAllLines(path, Encoding.UTF8)) {
+		foreach (var line in Util.ForAllLinesInFile(path, Encoding.UTF8)) {
 			if (string.IsNullOrWhiteSpace(line)) continue;
 			int colon = line.IndexOf(':');
 			if (colon <= 0) continue;

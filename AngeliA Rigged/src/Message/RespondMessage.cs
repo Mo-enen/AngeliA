@@ -16,7 +16,7 @@ public class RigRespondMessage {
 		public IRect Rect;
 		public Color32 Color;
 	}
-	
+
 
 	public struct GizmosTextureData {
 		public IRect Rect;
@@ -130,7 +130,7 @@ public class RigRespondMessage {
 	}
 
 
-	public void Reset () {
+	public void Reset (bool clearLastRendering = false) {
 		RequireSetCursorIndex = int.MinValue;
 		HasEffectParams = 0;
 		RequirePlayMusicID = 0;
@@ -142,6 +142,12 @@ public class RigRespondMessage {
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
 		RequireGizmosTextureCount = 0;
+		if (clearLastRendering) {
+			foreach (var layer in Layers) {
+				if (layer == null) continue;
+				layer.CellCount = 0;
+			}
+		}
 	}
 
 

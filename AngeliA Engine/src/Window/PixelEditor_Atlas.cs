@@ -24,11 +24,17 @@ public partial class PixelEditor {
 	private static readonly LanguageCode MENU_ATLAS_TYPE = ("Menu.AtlasType", "Type");
 
 	// Data
-	private static readonly GUIStyle LevelBgAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
+	private static readonly GUIStyle LevelBlockAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
 		ContentColor = Color32.ORANGE_BETTER,
 		ContentColorHover = Color32.ORANGE_BETTER,
 		ContentColorDown = Color32.ORANGE_BETTER,
 		ContentColorDisable = Color32.ORANGE_BETTER,
+	};
+	private static readonly GUIStyle LevelCharacterAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
+		ContentColor = Color32.CYAN_BETTER,
+		ContentColorHover = Color32.CYAN_BETTER,
+		ContentColorDown = Color32.CYAN_BETTER,
+		ContentColorDisable = Color32.CYAN_BETTER,
 	};
 	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
@@ -186,7 +192,9 @@ public partial class PixelEditor {
 							GUI.Label(
 								contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 								atlas.Name,
-								atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background ? LevelBgAtlasLabelStyle : Skin.SmallLabel
+								atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background ? LevelBlockAtlasLabelStyle :
+								atlas.Type == AtlasType.Character ? LevelCharacterAtlasLabelStyle :
+								Skin.SmallLabel
 							);
 						}
 					}

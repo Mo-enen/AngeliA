@@ -53,7 +53,7 @@ public static class SavingSystem {
 		FileLoaded = true;
 		Pool.Clear();
 		PoolVersion++;
-		foreach (string line in Util.ForAllLines(SavingPath, Encoding.Unicode)) {
+		foreach (string line in Util.ForAllLinesInFile(SavingPath, Encoding.Unicode)) {
 			int midIndex = line.IndexOf(':');
 			if (midIndex <= 0 || midIndex > line.Length) continue;
 			string key = line[..midIndex];

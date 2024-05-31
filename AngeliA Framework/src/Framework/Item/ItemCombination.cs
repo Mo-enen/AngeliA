@@ -39,7 +39,7 @@ public static class ItemCombination {
 
 		int count = 0;
 		var builder = new StringBuilder();
-		foreach (string _line in Util.ForAllLines(filePath)) {
+		foreach (string _line in Util.ForAllLinesInFile(filePath)) {
 			if (string.IsNullOrEmpty(_line)) continue;
 			string line = _line.TrimWhiteForStartAndEnd();
 			if (line.StartsWith('#')) continue;
