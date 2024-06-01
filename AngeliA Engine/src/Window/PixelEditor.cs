@@ -83,6 +83,8 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
+	private readonly List<string> AllRigCharacterNames = new();
+	private Project CurrentProject;
 	private string SheetPath = "";
 	private readonly bool AllowSpirteActionOnlyOnHoldingOptionKey = true;
 	private bool HoldingCtrl = false;
@@ -103,6 +105,7 @@ public partial class PixelEditor : WindowUI {
 	private IRect StageRect;
 	private int SelectingPaletteIndex = -1;
 	private int PixelStageSize = 1;
+	private int CharacterNamesCheckingFrame = int.MaxValue;
 
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false);
@@ -140,7 +143,7 @@ public partial class PixelEditor : WindowUI {
 
 
 	public override void UpdateWindowUI () {
-		if (string.IsNullOrEmpty(SheetPath)) return;
+		if (string.IsNullOrEmpty(SheetPath) || CurrentProject == null) return;
 		Cursor.RequireCursor();
 		Sky.ForceSkyboxTint(EngineSetting.BackgroundColor.Value);
 		Update_AtlasPanel();
@@ -187,10 +190,8 @@ public partial class PixelEditor : WindowUI {
 		CreateSpriteBigButtonRect = StageRect.CornerInside(Alignment.TopLeft, Unify(64)).Shift(Unify(12), -Unify(12));
 		LastPixelSelectionPixelRect = PixelSelectionPixelRect != default ? PixelSelectionPixelRect : LastPixelSelectionPixelRect;
 		CurrentUndoSprite = null;
-		SelectingSpriteTagLabel = null;
 		SelectingPaletteIndex = -1;
 		PixelStageSize = (CanvasRect.height / STAGE_SIZE).RoundToInt();
-		int selectingSpritesTag = 0;
 		int firstPalIndex = -1;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
@@ -207,15 +208,6 @@ public partial class PixelEditor : WindowUI {
 				SelectingAnySpriteWithBorder = SelectingAnySpriteWithBorder || !sprite.GlobalBorder.IsZero;
 				SelectingAnyTiggerSprite = SelectingAnyTiggerSprite || sprite.IsTrigger;
 				SelectingAnyNonTiggerSprite = SelectingAnyNonTiggerSprite || !sprite.IsTrigger;
-				if (selectingSpritesTag != int.MaxValue && sprite.Tag != 0 && TagPool.TryGetValue(sprite.Tag, out var pair)) {
-					if (SelectingSpriteTagLabel == null) {
-						SelectingSpriteTagLabel = pair.str;
-						selectingSpritesTag = sprite.Tag;
-					} else if (sprite.Tag != selectingSpritesTag) {
-						SelectingSpriteTagLabel = "*";
-						selectingSpritesTag = int.MaxValue;
-					}
-				}
 			}
 
 			// Palette
@@ -349,6 +341,18 @@ public partial class PixelEditor : WindowUI {
 			StageRect.Contains(mPos) &&
 			(!showingTilingRuleEditor || !RuleEditorRect.Contains(mPos)) &&
 			(!showingAddSpriteBigButton || !CreateSpriteBigButtonRect.Contains(mPos));
+
+		// Character Name
+		if (Game.GlobalFrame - 30 > CharacterNamesCheckingFrame) {
+			CharacterNamesCheckingFrame = Game.GlobalFrame;
+			var path = CurrentProject.Universe.CharacterInfoPath;
+			if (Util.FileExists(path)) {
+				AllRigCharacterNames.Clear();
+				AllRigCharacterNames.AddRange(Util.ForAllLinesInFile(path));
+				CharacterNamesCheckingFrame = int.MaxValue;
+			}
+		}
+
 	}
 
 
@@ -789,18 +793,20 @@ public partial class PixelEditor : WindowUI {
 	#region --- API ---
 
 
-	public void LoadSheetFromDisk (string sheetPath) {
-		SheetPath = sheetPath;
-		if (string.IsNullOrEmpty(sheetPath)) {
+	public void SetCurrentProject (Project project) {
+		CurrentProject = project;
+		if (project == null) {
 			Sheet.Clear();
 			return;
 		}
+		SheetPath = project.Universe.SheetPath;
 		IsDirty = false;
 		CurrentAtlasIndex = -1;
 		DraggingStateLeft = DragStateLeft.None;
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
-		Sheet.LoadFromDisk(sheetPath);
+		Sheet.LoadFromDisk(SheetPath);
+		ResetCharacterNameList();
 	}
 
 
@@ -820,6 +826,12 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	public void ResetCharacterNameList () {
+		CharacterNamesCheckingFrame = int.MinValue;
+		AllRigCharacterNames.Clear();
+	}
+
+
 	#endregion
 
 
@@ -828,24 +840,33 @@ public partial class PixelEditor : WindowUI {
 	#region --- LGC ---
 
 
-	private void CreateSpriteForPalette (bool useDefaultPos) {
+	private void CreateSpriteForPalette (bool useDefaultPos, Int2? pixelPos = null) {
 		if (CurrentAtlasIndex < 0 || CurrentAtlasIndex >= Sheet.Atlas.Count) return;
 		const int PAL_WIDTH = 8;
 		int PAL_HEIGHT = PALETTE_PIXELS.Length / 8;
 		// Get Sprite Pos
 		Int2 spritePixPos = default;
-		if (useDefaultPos) {
-			spritePixPos.x = -PAL_WIDTH - 1;
-			spritePixPos.y = STAGE_SIZE - PAL_HEIGHT;
+		if (pixelPos.HasValue) {
+			spritePixPos = pixelPos.Value;
+			spritePixPos.y -= PAL_HEIGHT;
 		} else {
-			spritePixPos = Stage_to_Pixel(new Int2(StageRect.x, StageRect.yMax));
-			spritePixPos.x += 1;
-			spritePixPos.y -= PAL_HEIGHT + 1;
+			if (useDefaultPos) {
+				spritePixPos.x = -PAL_WIDTH - 1;
+				spritePixPos.y = STAGE_SIZE - PAL_HEIGHT;
+			} else {
+				spritePixPos = Stage_to_Pixel(new Int2(StageRect.x, StageRect.yMax));
+				spritePixPos.x += 1;
+				spritePixPos.y -= PAL_HEIGHT + 1;
+			}
 		}
 		// Create Sprite
 		var atlas = Sheet.Atlas[CurrentAtlasIndex];
 		string name = Sheet.GetAvailableSpriteName($"Palette.{atlas.Name}");
-		var sprite = Sheet.CreateSprite(name, new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT), CurrentAtlasIndex);
+		var sprite = Sheet.CreateSprite(
+			name,
+			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
+			CurrentAtlasIndex
+		);
 		sprite.Tag = SpriteTag.PALETTE_TAG;
 		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
 		Sheet.AddSprite(sprite);
@@ -855,7 +876,13 @@ public partial class PixelEditor : WindowUI {
 			Create = true,
 		});
 		SetDirty();
-		SetSpriteSelection(StagedSprites.Count - 1);
+	}
+
+
+	private void CreateSpritesForCharacter (string characterName, Int2? pixelPos = null) {
+
+
+
 	}
 
 
@@ -926,6 +953,24 @@ public partial class PixelEditor : WindowUI {
 			int HEIGHT = pixels.Length / width;
 			return pixels[(HEIGHT - index / width - 1) * width + (index % width)];
 		}
+	}
+
+
+	private void CreateNewSprite (string basicName = "New Sprite", bool select = true, Int2? pixelPos = null) {
+		string name = Sheet.GetAvailableSpriteName(basicName);
+		var sprite = Sheet.CreateSprite(
+			name,
+			pixelPos.HasValue ? new IRect(pixelPos.Value.x, pixelPos.Value.y - 32, 32, 32) : new IRect(1, STAGE_SIZE - 33, 32, 32),
+			CurrentAtlasIndex
+		);
+		Sheet.AddSprite(sprite);
+		StagedSprites.Add(new SpriteData(sprite));
+		RegisterUndo(new SpriteObjectUndoItem() {
+			Sprite = sprite.CreateCopy(),
+			Create = true,
+		});
+		SetDirty();
+		if (select) SetSpriteSelection(StagedSprites.Count - 1);
 	}
 
 

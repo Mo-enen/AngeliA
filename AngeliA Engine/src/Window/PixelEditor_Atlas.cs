@@ -30,12 +30,6 @@ public partial class PixelEditor {
 		ContentColorDown = Color32.ORANGE_BETTER,
 		ContentColorDisable = Color32.ORANGE_BETTER,
 	};
-	private static readonly GUIStyle LevelCharacterAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
-		ContentColor = Color32.CYAN_BETTER,
-		ContentColorHover = Color32.CYAN_BETTER,
-		ContentColorDown = Color32.CYAN_BETTER,
-		ContentColorDisable = Color32.CYAN_BETTER,
-	};
 	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
@@ -193,7 +187,6 @@ public partial class PixelEditor {
 								contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 								atlas.Name,
 								atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background ? LevelBlockAtlasLabelStyle :
-								atlas.Type == AtlasType.Character ? LevelCharacterAtlasLabelStyle :
 								Skin.SmallLabel
 							);
 						}
@@ -429,7 +422,13 @@ public partial class PixelEditor {
 		SetDirty();
 		AtlasPanelScrollY = int.MaxValue;
 		SetCurrentAtlas(Sheet.Atlas.Count - 1);
+
+		// Create Palette Sprite
 		CreateSpriteForPalette(useDefaultPos: true);
+
+		// Create First Sprite
+		var atlas = Sheet.Atlas[CurrentAtlasIndex];
+		CreateNewSprite($"{atlas.Name}.NewSprite");
 	}
 
 

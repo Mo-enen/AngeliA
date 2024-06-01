@@ -266,6 +266,7 @@ public partial class MapEditor {
 
 
 	private void SetNavigating (bool navigating) {
+		Input.UseAllHoldingKeys();
 		ApplyPaste();
 		if (IsNavigating != navigating) {
 			IsNavigating = navigating;

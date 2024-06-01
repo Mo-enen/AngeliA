@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 
 [assembly: AngeliA.RequireGlobalSprite(atlas: "Character",
@@ -104,7 +105,10 @@ public abstract partial class Character : Rigidbody {
 
 
 	[OnUniverseOpen(4096)]
-	public static void OnUniverseOpen () => GlobalInventoryInitVersion++;
+	public static void OnUniverseOpen () {
+		GlobalInventoryInitVersion++;
+		TryCreateCharacterInfo();
+	}
 
 
 	public override void OnActivated () {
@@ -620,6 +624,17 @@ public abstract partial class Character : Rigidbody {
 			bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);
 		}
 		return reverse ? -bounce : bounce;
+	}
+
+
+	private static void TryCreateCharacterInfo () {
+		string path = UniverseSystem.CurrentUniverse.CharacterInfoPath;
+		if (Util.FileExists(path)) return;
+		var builder = new StringBuilder();
+		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
+			builder.AppendLine(type.AngeName());
+		}
+		Util.TextToFile(builder.ToString(), path);
 	}
 
 

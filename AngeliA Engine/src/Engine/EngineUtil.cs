@@ -57,7 +57,6 @@ public static class EngineUtil {
 	private static string c_BuildLibraryPath;
 	private static string c_VersionString;
 	private static string c_TempBuildPath;
-	private static string c_BuildPath;
 	private static string c_TempRoot;
 	private static string c_UniversePath;
 
@@ -99,7 +98,7 @@ public static class EngineUtil {
 		string verStr = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
 		return BuildAngeliaProjectLogic(
 			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
-			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
+			project.TempBuildPath, project.TempPublishPath, project.TempRoot,
 			project.IconPath, project.UniversePath,
 			"", publish: false, logID: 0
 		);
@@ -113,7 +112,7 @@ public static class EngineUtil {
 		string verStr = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
 		return BuildAngeliaProjectLogic(
 			project.ProjectPath, info.ProductName, project.BuildLibraryPath, verStr,
-			project.TempBuildPath, project.BuildPath, project.TempPublishPath, project.TempRoot,
+			project.TempBuildPath, project.TempPublishPath, project.TempRoot,
 			project.IconPath, project.UniversePath,
 			publishDir, publish: true, logID: 0
 		);
@@ -134,7 +133,6 @@ public static class EngineUtil {
 		c_VersionString = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
 		c_BuildLibraryPath = project.BuildLibraryPath;
 		c_TempBuildPath = project.TempBuildPath;
-		c_BuildPath = project.BuildPath;
 		c_TempRoot = project.TempRoot;
 		c_UniversePath = project.UniversePath;
 		LastBackgroundBuildReturnCode = int.MinValue;
@@ -151,7 +149,7 @@ public static class EngineUtil {
 				BackgroundBuildMessages.Clear();
 				LastBackgroundBuildReturnCode = BuildAngeliaProjectLogic(
 					c_ProjectPath, c_ProductName, c_BuildLibraryPath, c_VersionString,
-					c_TempBuildPath, c_BuildPath, "", c_TempRoot,
+					c_TempBuildPath, "", c_TempRoot,
 					"", c_UniversePath,
 					"", publish: false
 				);
@@ -412,7 +410,7 @@ public static class EngineUtil {
 
 	private static int BuildAngeliaProjectLogic (
 		string projectPath, string productName, string buildLibraryPath, string versionStr,
-		string tempBuildPath, string buildPath, string tempPublishPath, string tempRoot,
+		string tempBuildPath, string tempPublishPath, string tempRoot,
 		string iconPath, string universePath,
 		string publishDir, bool publish, int logID = BACK_GROUND_BUILD_LOG_ID
 	) {
@@ -453,15 +451,6 @@ public static class EngineUtil {
 		string gameLibBuildPath = Util.CombinePaths(buildLibraryPath, gameLibDllName);
 		Util.CreateFolder(buildLibraryPath);
 		Util.CopyFile(resultDllPath, gameLibBuildPath);
-
-		// Copy Runtime into Build Folder
-		string entrySourcePath = EntryExePath;
-		string entryBuildName = Util.GetNameWithExtension(entrySourcePath);
-		string entryBuildPath = Util.CombinePaths(buildPath, entryBuildName);
-		if (!Util.FileExists(entrySourcePath)) return ERROR_RUNTIME_FILE_NOT_FOUND;
-		if (!Util.FileExists(entryBuildPath)) {
-			Util.CopyFile(entrySourcePath, entryBuildPath);
-		}
 
 
 		// ===== Publish =====

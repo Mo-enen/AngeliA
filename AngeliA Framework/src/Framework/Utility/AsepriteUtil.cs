@@ -224,7 +224,6 @@ public class AsepriteUtil {
 			sheetType =
 				layer.Name.Contains("#level", System.StringComparison.OrdinalIgnoreCase) ? AtlasType.Level :
 				layer.Name.Contains("#background", System.StringComparison.OrdinalIgnoreCase) ? AtlasType.Background :
-				layer.Name.Contains("#character", System.StringComparison.OrdinalIgnoreCase) ? AtlasType.Character :
 				sheetType;
 
 			// Z

@@ -25,6 +25,7 @@ public class Universe {
 	public string EditableConversationRoot { get; private set; }
 	public string UniverseMetaRoot { get; private set; }
 	public string MapRoot { get; private set; }
+	public string LanguageRoot { get; private set; }
 	public string ArtworkRoot { get; private set; }
 	public string SavingRoot { get; private set; }
 	public string SavingMetaRoot { get; private set; }
@@ -34,6 +35,7 @@ public class Universe {
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
 	public string CharacterConfigRoot { get; private set; }
+	public string CharacterInfoPath { get; private set; }
 
 	// Api
 	public UniverseInfo Info { get; private set; }
@@ -49,6 +51,7 @@ public class Universe {
 			ConversationRoot = AngePath.GetConversationRoot(universeFolder),
 			EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder),
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder),
+			LanguageRoot = AngePath.GetLanguageRoot(universeFolder),
 			MapRoot = AngePath.GetMapRoot(universeFolder),
 			ArtworkRoot = AngePath.GetAsepriteRoot(universeFolder),
 			InfoPath = infoPath,
@@ -56,6 +59,7 @@ public class Universe {
 			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),
 			SoundRoot = AngePath.GetUniverseSoundRoot(universeFolder),
 			FontRoot = AngePath.GetUniverseFontRoot(universeFolder),
+			CharacterInfoPath = AngePath.GetCharacterInfoPath(universeFolder),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :

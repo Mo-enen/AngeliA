@@ -33,6 +33,7 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
 	private static readonly SpriteCode ICON_SHOW_CHECKER = "Icon.ShowCheckerBoard";
 	private static readonly SpriteCode ICON_SHOW_AXIS = "Icon.Axis";
+	private static readonly SpriteCode ICON_NEW_SPRITE = "Icon.NewSprite";
 	private static readonly SpriteCode ICON_TRIGGER_ON = "Icon.TriggerOn";
 	private static readonly SpriteCode ICON_TRIGGER_OFF = "Icon.TriggerOff";
 	private static readonly SpriteCode ICON_TRIGGER_MIX = "Icon.TriggerMix";
@@ -51,10 +52,10 @@ public partial class PixelEditor {
 	// Language
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
 	private static readonly LanguageCode TIP_PAINTING_COLOR = ("Tip.PaintingColor", "Current painting color");
-	private static readonly LanguageCode TIP_PALETTE = ("Tip.Palette", "Create a sprite for palette");
 	private static readonly LanguageCode TIP_SHOW_CHECKER = ("Tip.ShowCheckerBoard", "Show Checker Board");
 	private static readonly LanguageCode TIP_SHOW_AXIS = ("Tip.ShowAxis", "Show Axis");
 	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset camera");
+	private static readonly LanguageCode TIP_NEW_SPRITE = ("Tip.NewSprite", "Create a New Sprite");
 	private static readonly LanguageCode TIP_DEL_SPRITE = ("Tip.DeleteSprite", "Delete sprite");
 	private static readonly LanguageCode TIP_ENABLE_BORDER = ("Tip.EnableBorder", "Enable borders");
 	private static readonly LanguageCode TIP_DISABLE_BORDER = ("Tip.DisableBorder", "Disable borders");
@@ -84,6 +85,10 @@ public partial class PixelEditor {
 	private static readonly LanguageCode LABEL_SIZE = ("Label.Size", "Size");
 	private static readonly LanguageCode LABEL_DURATION = ("Label.Duration", "Duration");
 	private static readonly LanguageCode RULE_HELP_MSG = ("UI.RuleHelpMsg", "Rule applies to auto-update blocks in map editor.\n\nThe sprite must be placed inside a group for this to work. \n\nName several sprites like: sprite 0, sprite 1, sprite 2... to make them a group.");
+	private static readonly LanguageCode MENU_NEW_SPRITE = ("Menu.CreateNewSprite", "New Sprite");
+	private static readonly LanguageCode MENU_NEW_PAL_SPRITE = ("Menu.CreateNewPalette", "New Palette");
+	private static readonly LanguageCode MENU_NEW_CHAR_SPRITE = ("Menu.CreateNewCharacterSprite", "New Character Sprites");
+
 
 	// Data
 	private static readonly byte[] RuleCache = new byte[8];
@@ -97,7 +102,6 @@ public partial class PixelEditor {
 	private bool? TilingRuleModeA = true;
 	private bool FoldingColorField = true;
 	private int RulePageIndex = 0;
-	private string SelectingSpriteTagLabel = null;
 	private string ColorFieldCode = "";
 	private IRect RuleEditorRect = default;
 	private IRect CreateSpriteBigButtonRect = default;
@@ -147,20 +151,18 @@ public partial class PixelEditor {
 			if (GUI.DarkButton(
 				CreateSpriteBigButtonRect, BuiltInSprite.ICON_PLUS
 			)) {
-				string name = Sheet.GetAvailableSpriteName("New Sprite");
-				var sprite = Sheet.CreateSprite(name, new IRect(1, STAGE_SIZE - 33, 32, 32), CurrentAtlasIndex);
-				Sheet.AddSprite(sprite);
-				StagedSprites.Add(new SpriteData(sprite));
-				RegisterUndo(new SpriteObjectUndoItem() {
-					Sprite = sprite.CreateCopy(),
-					Create = true,
-				});
-				SetDirty();
-				SetSpriteSelection(StagedSprites.Count - 1);
+				CreateNewSprite();
 				Input.UseMouseKey(0);
 			}
 			RequireTooltip(CreateSpriteBigButtonRect, TIP_CREATE_SPRITE);
 		}
+
+		// Create New Sprite
+		if (GUI.Button(rect, ICON_NEW_SPRITE, Skin.SmallDarkButton)) {
+			OpenCreateSpriteMenu(rect);
+		}
+		RequireTooltip(rect, TIP_NEW_SPRITE);
+		rect.SlideRight(padding);
 
 		// Show Checker Board
 		ShowCheckerBoard.Value = GUI.ToggleButton(rect, ShowCheckerBoard.Value, ICON_SHOW_CHECKER, Skin.SmallDarkButton);
@@ -177,13 +179,6 @@ public partial class PixelEditor {
 			ResetCamera();
 		}
 		RequireTooltip(rect, TIP_RESET_CAMERA);
-		rect.SlideRight(padding);
-
-		// Palette
-		if (GUI.Button(rect, BuiltInSprite.ICON_PALETTE, Skin.SmallDarkButton)) {
-			CreateSpriteForPalette(useDefaultPos: false);
-		}
-		RequireTooltip(rect, TIP_PALETTE);
 		rect.SlideRight(padding);
 
 		// Color Field
@@ -490,16 +485,6 @@ public partial class PixelEditor {
 		if (GUI.Button(rect, ICON_TAG, Skin.SmallDarkButton)) {
 			OpenSpriteTagMenu();
 		}
-		if (SelectingSpriteTagLabel != null) {
-			GUI.BackgroundLabel(
-				rect.EdgeOutside(Direction4.Up, Unify(22)),
-				SelectingSpriteTagLabel,
-				Color32.BLACK,
-				Unify(4),
-				forceInside: true,
-				Skin.SmallCenterLabel
-			);
-		}
 		RequireTooltip(rect, TIP_TAG);
 		rect.SlideRight(padding);
 
@@ -745,6 +730,44 @@ public partial class PixelEditor {
 				}
 			}
 			Instance.SetDirty();
+		}
+	}
+
+
+	private void OpenCreateSpriteMenu (IRect buttonRect) {
+		GenericPopupUI.BeginPopup(buttonRect.position);
+		var pixPos = Instance.Stage_to_Pixel(
+			new Int2(buttonRect.xMax + Unify(32), buttonRect.y - Unify(32))
+		);
+		GenericPopupUI.AddItem(MENU_NEW_SPRITE, CreateNew, data: pixPos);
+		GenericPopupUI.AddItem(MENU_NEW_PAL_SPRITE, NewPalette, data: pixPos);
+		if (AllRigCharacterNames.Count > 0) {
+			GenericPopupUI.AddItem(MENU_NEW_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
+			GenericPopupUI.BeginSubItem();
+			for (int i = 0; i < AllRigCharacterNames.Count; i++) {
+				GenericPopupUI.AddItem(AllRigCharacterNames[i], NewCharSprite, data: (i, pixPos));
+			}
+			GenericPopupUI.EndSubItem();
+		}
+		// Func
+		static void CreateNew () {
+			if (GenericPopupUI.Instance.InvokingItemData is not Int2 pixPos) return;
+			Instance.CreateNewSprite(pixelPos: pixPos);
+		}
+		static void NewPalette () {
+			if (GenericPopupUI.Instance.InvokingItemData is not Int2 pixPos) return;
+			Instance.CreateSpriteForPalette(false, pixelPos: pixPos);
+		}
+		static void NewCharSprite () {
+			if (GenericPopupUI.Instance.InvokingItemData is not (int index, Int2 pixPos)) return;
+			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
+			string name = Instance.AllRigCharacterNames[index];
+
+
+
+
+			
+
 		}
 	}
 

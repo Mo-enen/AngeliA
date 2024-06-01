@@ -251,6 +251,10 @@ public class Engine {
 		if (Instance == null) return;
 
 		RiggedMapEditor.Instance.CleanDirty();
+		PixelEditor.Instance.ResetCharacterNameList();
+		if (Instance.CurrentProject != null) {
+			Util.DeleteFile(Instance.CurrentProject.Universe.CharacterInfoPath);
+		}
 
 		switch (code) {
 
@@ -429,6 +433,7 @@ public class Engine {
 				BuiltInText.UI_DONT_SAVE, Game.QuitApplication,
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
+			GenericDialogUI.SetItemTint(Color32.GREEN_BETTER);
 		} else {
 			GenericDialogUI.SpawnDialog_Button(
 				QUIT_MSG,
@@ -1379,8 +1384,8 @@ public class Engine {
 		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
 
 		// Windows
-		LanguageEditor.Instance.SetLanguageRoot(AngePath.GetLanguageRoot(CurrentProject.UniversePath));
-		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
+		LanguageEditor.Instance.SetLanguageRoot(CurrentProject.Universe.LanguageRoot);
+		PixelEditor.Instance.SetCurrentProject(CurrentProject);
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
 
@@ -1435,7 +1440,7 @@ public class Engine {
 				ui.OnInactivated();
 			}
 			LanguageEditor.Instance.SetLanguageRoot("");
-			PixelEditor.Instance.LoadSheetFromDisk("");
+			PixelEditor.Instance.SetCurrentProject(null);
 			ProjectEditor.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
