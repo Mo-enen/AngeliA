@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 // Throwing
@@ -16,7 +16,7 @@ public abstract class ThrowingWeapon : ProjectileWeapon {
 
 
 // Implement
-
+[ItemCombination(typeof(iBanana), typeof(iTreeBranch), 1)]
 public class iBoomerang : ThrowingWeapon<iBoomerang.BoomerangBullet> {
 	public class BoomerangBullet : MovableBullet {
 		public override int RotateSpeed => 24;
@@ -26,7 +26,7 @@ public class iBoomerang : ThrowingWeapon<iBoomerang.BoomerangBullet> {
 }
 
 
-
+[ItemCombination(typeof(iNinjaStar), 2)]
 public class iNinjaStarHalf : ThrowingWeapon<iNinjaStarHalf.NinjaStarHalfBullet> {
 	public class NinjaStarHalfBullet : MovableBullet {
 		public override int RotateSpeed => 24;
@@ -37,7 +37,7 @@ public class iNinjaStarHalf : ThrowingWeapon<iNinjaStarHalf.NinjaStarHalfBullet>
 }
 
 
-
+[ItemCombination(typeof(iStar), typeof(iIngotIron), 1)]
 public class iNinjaStar : ThrowingWeapon<iNinjaStar.NinjaStarBullet> {
 	public class NinjaStarBullet : MovableBullet {
 		public override int RotateSpeed => 24;
@@ -46,7 +46,7 @@ public class iNinjaStar : ThrowingWeapon<iNinjaStar.NinjaStarBullet> {
 }
 
 
-
+[ItemCombination(typeof(iThrowingKnife), typeof(iIngotIron), 1)]
 public class iKunai : ThrowingWeapon<iKunai.KunaiBullet> {
 	public class KunaiBullet : MovableBullet {
 		public override int RotateSpeed => 24;
@@ -57,7 +57,7 @@ public class iKunai : ThrowingWeapon<iKunai.KunaiBullet> {
 }
 
 
-
+[ItemCombination(typeof(iAxeWood), typeof(iBraceletIron), 1)]
 public class iChakram : ThrowingWeapon<iChakram.ChakramBullet> {
 	public class ChakramBullet : MovableBullet {
 		public override int SpeedX => 32;
@@ -69,7 +69,7 @@ public class iChakram : ThrowingWeapon<iChakram.ChakramBullet> {
 }
 
 
-
+[ItemCombination(typeof(iFlintPolished), typeof(iIngotIron), 1)]
 public class iThrowingKnife : ThrowingWeapon<iThrowingKnife.ThrowingKnifeBullet> {
 	public class ThrowingKnifeBullet : MovableBullet {
 		public override int RotateSpeed => 24;
@@ -79,7 +79,7 @@ public class iThrowingKnife : ThrowingWeapon<iThrowingKnife.ThrowingKnifeBullet>
 }
 
 
-
+[ItemCombination(typeof(iFlintPolished), typeof(iIngotIron), typeof(iTreeBranch), 1)]
 public class iThrowingAxe : ThrowingWeapon<iThrowingAxe.ThrowingAxeBullet> {
 	public class ThrowingAxeBullet : MovableBullet {
 		public override int RotateSpeed => 24;
@@ -89,7 +89,7 @@ public class iThrowingAxe : ThrowingWeapon<iThrowingAxe.ThrowingAxeBullet> {
 }
 
 
-
+[ItemCombination(typeof(iIronWire), typeof(iIronWire), typeof(iIronWire), 1)]
 public class iNeedle : ThrowingWeapon<iNeedle.NeedleBullet> {
 	public class NeedleBullet : MovableBullet {
 		public override int StartRotation => 90;
@@ -99,7 +99,7 @@ public class iNeedle : ThrowingWeapon<iNeedle.NeedleBullet> {
 }
 
 
-
+[ItemCombination(typeof(iChainSpikeBall), typeof(iChainSpikeBall), typeof(iChain), 1)]
 public class iChainMaceBall : ThrowingWeapon<iChainMaceBall.ChainMaceBallBullet> {
 	public class ChainMaceBallBullet : MovableBullet {
 		protected override bool DestroyOnHitReceiver => false;
@@ -112,7 +112,7 @@ public class iChainMaceBall : ThrowingWeapon<iChainMaceBall.ChainMaceBallBullet>
 }
 
 
-
+[ItemCombination(typeof(iBowlingBall), typeof(iGunpowder), 1)]
 public class iBomb : ThrowingWeapon<iBomb.BombBullet> {
 	public class BombBullet : ExplosiveMovableBullet {
 		public override int SpeedX => 42;
@@ -131,7 +131,7 @@ public class iBomb : ThrowingWeapon<iBomb.BombBullet> {
 }
 
 
-
+[ItemCombination(typeof(iIronHook), typeof(iIngotIron), typeof(iIngotIron), typeof(iIngotIron), 1)]
 public class iAnchor : ThrowingWeapon<iAnchor.AnchorBullet> {
 	public class AnchorBullet : MovableBullet {
 		public override int StartRotation => 90;
@@ -141,7 +141,7 @@ public class iAnchor : ThrowingWeapon<iAnchor.AnchorBullet> {
 }
 
 
-
+[ItemCombination(typeof(iThrowingAxe), typeof(iIngotGold), 1)]
 public class iCrossAxe : ThrowingWeapon<iCrossAxe.CrossAxeBullet> {
 	public class CrossAxeBullet : MovableBullet {
 		public override int RotateSpeed => 24;
@@ -151,7 +151,7 @@ public class iCrossAxe : ThrowingWeapon<iCrossAxe.CrossAxeBullet> {
 }
 
 
-
+[ItemCombination(typeof(iGrapePurple), typeof(iGunpowder), 1)]
 public class iGrapeBomb : ThrowingWeapon<iGrapeBomb.GrapeBombBullet> {
 	public class GrapeBombBullet : ExplosiveMovableBullet {
 		public override int SpeedX => 42;
@@ -170,7 +170,7 @@ public class iGrapeBomb : ThrowingWeapon<iGrapeBomb.GrapeBombBullet> {
 }
 
 
-
+[ItemCombination(typeof(iPotionEmpty), typeof(iBlackPepper), typeof(iGunpowder), 1)]
 public class iTearGas : ThrowingWeapon<iTearGas.TearGasBullet> {
 	public class TearGasBullet : ExplosiveMovableBullet {
 		public override int SpeedX => 64;
@@ -189,7 +189,7 @@ public class iTearGas : ThrowingWeapon<iTearGas.TearGasBullet> {
 }
 
 
-
+[ItemCombination(typeof(iPotionEmpty), typeof(iGunpowder), 1)]
 public class iGrenade : ThrowingWeapon<iGrenade.GrenadeBullet> {
 	public class GrenadeBullet : ExplosiveMovableBullet {
 		public override int SpeedX => 64;

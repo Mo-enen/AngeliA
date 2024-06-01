@@ -159,7 +159,6 @@ public class Engine {
 				new RiggedMapEditor(),
 				new PixelEditor(),
 				new LanguageEditor(ignoreRequirements:true),
-				new ItemEditor(),
 				new Console(),
 				new ProjectEditor(),
 				new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
@@ -1242,8 +1241,6 @@ public class Engine {
 		// Rebuild
 		if (RequireBackgroundBuildDate > 0) {
 			Transceiver.Abort();
-			Util.DeleteFile(CurrentProject.Universe.ItemNamePath);
-			ItemEditor.Instance.LastItemNameCheckFrame = int.MinValue;
 			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 			RequireBackgroundBuildDate = 0;
 		}
@@ -1386,7 +1383,6 @@ public class Engine {
 		PixelEditor.Instance.LoadSheetFromDisk(AngePath.GetSheetPath(CurrentProject.UniversePath));
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
-		ItemEditor.Instance.SetCurrentProject(CurrentProject);
 
 		// Audio
 		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
@@ -1441,7 +1437,6 @@ public class Engine {
 			LanguageEditor.Instance.SetLanguageRoot("");
 			PixelEditor.Instance.LoadSheetFromDisk("");
 			ProjectEditor.Instance.SetCurrentProject(null);
-			ItemEditor.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 		}

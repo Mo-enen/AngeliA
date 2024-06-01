@@ -117,12 +117,12 @@ public partial class LanguageEditor : WindowUI {
 			Color32.GREY_12, int.MinValue
 		);
 
-		Update_Bar(windowRect.EdgeInside(Direction4.Up, Unify(84)));
-		Update_Content(windowRect.EdgeInside(Direction4.Down, windowRect.height - Unify(84)));
-
-		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl) && Input.KeyboardDown(KeyboardKey.S)) {
+		if (Game.IsKeyboardKeyHolding(KeyboardKey.LeftCtrl) && Game.IsKeyboardKeyHolding(KeyboardKey.S)) {
 			Save();
 		}
+
+		Update_Bar(windowRect.EdgeInside(Direction4.Up, Unify(84)));
+		Update_Content(windowRect.EdgeInside(Direction4.Down, windowRect.height - Unify(84)));
 	}
 
 

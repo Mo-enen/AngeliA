@@ -34,8 +34,6 @@ public class Universe {
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
 	public string CharacterConfigRoot { get; private set; }
-	public string ItemCombinationPath { get; private set; }
-	public string ItemNamePath { get; private set; }
 
 	// Api
 	public UniverseInfo Info { get; private set; }
@@ -58,8 +56,6 @@ public class Universe {
 			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),
 			SoundRoot = AngePath.GetUniverseSoundRoot(universeFolder),
 			FontRoot = AngePath.GetUniverseFontRoot(universeFolder),
-			ItemCombinationPath = AngePath.GetItemCombinationPath(universeFolder),
-			ItemNamePath = AngePath.GetItemNamePath(universeFolder),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :

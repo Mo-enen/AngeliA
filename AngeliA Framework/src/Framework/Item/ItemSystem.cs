@@ -85,22 +85,14 @@ public static class ItemSystem {
 				item.MaxStackCount.Clamp(1, 256)
 			));
 		}
-		// Create Item Names File
-		string nameFilePath = UniverseSystem.BuiltInUniverse.ItemNamePath;
-		if (!Util.FileExists(nameFilePath)) {
-			CreateItemNamesFileFromCode(nameFilePath);
-		}
+		// Load Combination from Code
+		ItemCombination.LoadCombinationPoolFromCode(CombinationPool);
 	}
 
 
 	[OnUniverseOpen(30)]
 	public static void OnUniverseOpen () {
 		if (Game.IsToolApplication) return;
-		string path = UniverseSystem.CurrentUniverse.ItemCombinationPath;
-		CombinationPool.Clear();
-		foreach (var (com, data) in ItemCombination.ForAllCombinationInFile(path)) {
-			CombinationPool.TryAdd(com, data);
-		}
 		LoadUnlockDataFromFile();
 	}
 
@@ -277,24 +269,6 @@ public static class ItemSystem {
 
 
 	#region --- LGC ---
-
-
-	private static void CreateItemNamesFileFromCode (string path) {
-		var builder = new StringBuilder();
-		var typeItem = typeof(Item);
-		foreach (var (_, data) in ItemPool) {
-			builder.Append(data.TypeName);
-			builder.Append(' ');
-			int baseIndex = builder.Length;
-			var type = data.Item.GetType();
-			for (int safe = 0; safe < 1024 && type != typeItem; safe++) {
-				builder.Insert(baseIndex, type.BaseType == typeItem ? type.AngeName() : $"/{type.AngeName()}");
-				type = type.BaseType;
-			}
-			builder.Append('\n');
-		}
-		Util.TextToFile(builder.ToString(), path);
-	}
 
 
 	// Unlock

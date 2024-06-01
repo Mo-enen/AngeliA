@@ -232,7 +232,7 @@ public abstract partial class Game {
 			PressingCharCount = 0;
 			for (int safe = 0; (c = GetCharPressed()) > 0 && safe < 256; safe++) {
 				// GUI
-				GUI.OnTextInput(c);
+				if (GUI.IsTyping) GUI.OnTextInput(c);
 				// List
 				PressingCharsForCurrentFrame[PressingCharCount] = c;
 				PressingCharCount++;
@@ -243,33 +243,32 @@ public abstract partial class Game {
 			bool ctrl = IsKeyboardKeyHolding(KeyboardKey.LeftCtrl);
 			for (int safe = 0; (key = GetKeyPressed()).HasValue && safe < 256; safe++) {
 				// GUI
-				switch (key) {
-					case KeyboardKey.Enter:
-						GUI.OnTextInput(Const.RETURN_SIGN);
-						break;
-					case KeyboardKey.C:
-						if (ctrl) {
-							GUI.OnTextInput(Const.CONTROL_COPY);
-						}
-						break;
-					case KeyboardKey.X:
-						if (ctrl) {
-							GUI.OnTextInput(Const.CONTROL_CUT);
-						}
-						break;
-					case KeyboardKey.V:
-						if (ctrl) {
-							GUI.OnTextInput(Const.CONTROL_PASTE);
-						}
-						break;
-					case KeyboardKey.A:
-						if (ctrl) {
-							GUI.OnTextInput(Const.CONTROL_SELECT_ALL);
-						}
-						break;
-					case KeyboardKey.Backspace:
-						GUI.OnTextInput(Const.BACKSPACE_SIGN);
-						break;
+				if (GUI.IsTyping) {
+					switch (key) {
+						case KeyboardKey.Enter:
+							GUI.OnTextInput(Const.RETURN_SIGN);
+							break;
+						case KeyboardKey.C:
+							if (ctrl) {
+								GUI.OnTextInput(Const.CONTROL_COPY);
+							}
+							break;
+						case KeyboardKey.X:
+							if (ctrl) {
+								GUI.OnTextInput(Const.CONTROL_CUT);
+							}
+							break;
+						case KeyboardKey.V:
+							if (ctrl) {
+								GUI.OnTextInput(Const.CONTROL_PASTE);
+							}
+							break;
+						case KeyboardKey.A:
+							if (ctrl) {
+								GUI.OnTextInput(Const.CONTROL_SELECT_ALL);
+							}
+							break;
+					}
 				}
 				// List
 				PressingKeysForCurrentFrame[PressingKeyCount] = key.Value;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 // Shooting
@@ -154,7 +154,7 @@ public abstract class Bow : ArrowWeapon {
 
 
 // Implement
-
+[ItemCombination(typeof(iRope), typeof(iTreeBranch), 1)]
 public class iBowWood : Bow<iBowWood.BowWoodBullet, iArrowWood> {
 	public class BowWoodBullet : ArrowBullet {
 		public override int SpeedX => 42;
@@ -162,7 +162,7 @@ public class iBowWood : Bow<iBowWood.BowWoodBullet, iArrowWood> {
 }
 
 
-
+[ItemCombination(typeof(iBowWood), typeof(iIngotIron), 1)]
 public class iBowIron : Bow<iBowIron.BowIronBullet, iArrowIron> {
 	public class BowIronBullet : ArrowBullet {
 		protected override bool DestroyOnHitReceiver => false;
@@ -171,7 +171,7 @@ public class iBowIron : Bow<iBowIron.BowIronBullet, iArrowIron> {
 }
 
 
-
+[ItemCombination(typeof(iBowIron), typeof(iIngotGold), 1)]
 public class iBowGold : Bow<iBowGold.BowGoldBullet, iArrowGold> {
 	public class BowGoldBullet : ArrowBullet {
 		protected override bool DestroyOnHitReceiver => false;
@@ -180,13 +180,13 @@ public class iBowGold : Bow<iBowGold.BowGoldBullet, iArrowGold> {
 }
 
 
-
+[ItemCombination(typeof(iRope), typeof(iTreeBranch), typeof(iTreeBranch), 1)]
 public class iCrossbowWood : Shooting<iCrossbowWood.CrossbowWoodBullet, iBoltsWood> {
 	public class CrossbowWoodBullet : ArrowBullet { }
 }
 
 
-
+[ItemCombination(typeof(iCrossbowWood), typeof(iIngotIron), 1)]
 public class iCrossbowIron : Shooting<iCrossbowIron.CrossbowIronBullet, iBoltsIron> {
 	public class CrossbowIronBullet : ArrowBullet {
 		protected override bool DestroyOnHitReceiver => false;
@@ -194,7 +194,7 @@ public class iCrossbowIron : Shooting<iCrossbowIron.CrossbowIronBullet, iBoltsIr
 }
 
 
-
+[ItemCombination(typeof(iCrossbowIron), typeof(iIngotGold), 1)]
 public class iCrossbowGold : Shooting<iCrossbowGold.CrossbowGoldBullet, iBoltsGold> {
 	public class CrossbowGoldBullet : ArrowBullet {
 		protected override bool DestroyOnHitReceiver => false;
@@ -202,7 +202,7 @@ public class iCrossbowGold : Shooting<iCrossbowGold.CrossbowGoldBullet, iBoltsGo
 }
 
 
-
+[ItemCombination(typeof(iRunePoison), typeof(iNeedle), typeof(iTreeBranch), 1)]
 public class iBlowgun : Shooting<iBlowgun.BlowgunBullet, iPoisonDarts> {
 	public class BlowgunBullet : ArrowBullet {
 		protected override int DamageType => SpriteTag.DAMAGE_POISON_TAG;
@@ -210,7 +210,7 @@ public class iBlowgun : Shooting<iBlowgun.BlowgunBullet, iPoisonDarts> {
 }
 
 
-
+[ItemCombination(typeof(iRubberBall), typeof(iRibbon), typeof(iIngotIron), 1)]
 public class iSlingshot : Bow<iSlingshot.SlingshotBullet, iMarbles> {
 	public class SlingshotBullet : ArrowBullet {
 		public override int ArtworkID => Renderer.TryGetSpriteFromGroup(
@@ -220,7 +220,7 @@ public class iSlingshot : Bow<iSlingshot.SlingshotBullet, iMarbles> {
 }
 
 
-
+[ItemCombination(typeof(iBowIron), typeof(iBowIron), 1)]
 public class iCompoundBow : Bow<iCompoundBow.CompoundBowBullet, iArrowIron> {
 	public class CompoundBowBullet : ArrowBullet {
 		protected override bool DestroyOnHitReceiver => false;
@@ -228,7 +228,7 @@ public class iCompoundBow : Bow<iCompoundBow.CompoundBowBullet, iArrowIron> {
 }
 
 
-
+[ItemCombination(typeof(iBowWood), typeof(iBowWood), 1)]
 public class iRepeatingCrossbow : Shooting<iRepeatingCrossbow.RepeatingCrossbowBullet, iBoltsWood> {
 	public override int AttackDuration => 12;
 	public override int AttackCooldown => 0;
@@ -237,7 +237,7 @@ public class iRepeatingCrossbow : Shooting<iRepeatingCrossbow.RepeatingCrossbowB
 }
 
 
-
+[ItemCombination(typeof(iBowWood), typeof(iLeaf), 1)]
 public class iBowNature : Bow<iBowNature.BowNatureBullet, iLeaf> {
 	public class BowNatureBullet : ArrowBullet {
 		public override int StartRotation => 45;
@@ -246,7 +246,7 @@ public class iBowNature : Bow<iBowNature.BowNatureBullet, iLeaf> {
 }
 
 
-
+[ItemCombination(typeof(iBowWood), typeof(iSkull), typeof(iSkull), typeof(iRibbon), 1)]
 public class iBowSkull : Bow<iBowSkull.BowSkullBullet, iSkull> {
 	public class BowSkullBullet : ArrowBullet {
 		public override int RotateSpeed => 12;
@@ -255,7 +255,7 @@ public class iBowSkull : Bow<iBowSkull.BowSkullBullet, iSkull> {
 }
 
 
-
+[ItemCombination(typeof(iBowIron), typeof(iRuneCube), 1)]
 public class iBowMage : Bow<iBowMage.BowMageBullet> {
 	public class BowMageBullet : MovableBullet {
 		public override int SpeedX => 96;
@@ -281,7 +281,7 @@ public class iBowMage : Bow<iBowMage.BowMageBullet> {
 }
 
 
-
+[ItemCombination(typeof(iBowNature), typeof(iLeafLegend), 1)]
 public class iBowSky : Bow<iBowSky.BowSkyBullet, iLeaf> {
 	[EntityAttribute.Capacity(24, 0)]
 	public class BowSkyBullet : ArrowBullet {
@@ -295,7 +295,7 @@ public class iBowSky : Bow<iBowSky.BowSkyBullet, iLeaf> {
 }
 
 
-
+[ItemCombination(typeof(iBowGold), typeof(iRope), typeof(iRope), typeof(iRope), 1)]
 public class iBowHarp : Bow<iBowHarp.BowHarpBullet, iArrowGold> {
 	[EntityAttribute.Capacity(24, 0)]
 	public class BowHarpBullet : ArrowBullet {

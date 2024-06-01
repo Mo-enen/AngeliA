@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace AngeliA;
 
 
 public class CombinationData {
-	public int Order;
 	public int Result;
 	public int ResultCount;
 	public int Keep0;
@@ -33,71 +33,31 @@ public static class ItemCombination {
 	#region --- API ---
 
 
-	public static IEnumerable<KeyValuePair<Int4, CombinationData>> ForAllCombinationInFile (string filePath) {
-
-		if (!Util.FileExists(filePath)) yield break;
-
-		int count = 0;
-		var builder = new StringBuilder();
-		foreach (string _line in Util.ForAllLinesInFile(filePath)) {
-			if (string.IsNullOrEmpty(_line)) continue;
-			string line = _line.TrimWhiteForStartAndEnd();
-			if (line.StartsWith('#')) continue;
-			// Order
-			builder.Clear();
-			var com = Int4.zero;
-			var keep = Int4.zero;
-			int appendingComIndex = 0;
-			bool appendingResultCount = false;
-			int resultID = 0;
-			int resultCount = 1;
-			foreach (var c in line) {
-				if (c == ' ') continue;
-				if (c == '+' || c == '=') {
-					if (builder.Length > 0 && appendingComIndex < 4) {
-						bool keepCurrent = false;
-						if (builder[0] == '^') {
-							builder.Remove(0, 1);
-							keepCurrent = true;
-						}
-						com[appendingComIndex] = builder.ToString().AngeHash();
-						keep[appendingComIndex] = keepCurrent ? com[appendingComIndex] : 0;
-						appendingComIndex++;
-					}
-					if (c == '=') {
-						appendingResultCount = true;
-					}
-					builder.Clear();
-				} else {
-					if (appendingResultCount && !char.IsDigit(c)) {
-						appendingResultCount = false;
-						if (builder.Length > 0 && int.TryParse(builder.ToString(), out int _resultCount)) {
-							resultCount = _resultCount;
-						}
-						builder.Clear();
-					}
-					builder.Append(c);
-				}
-			}
-
-			// Result
-			if (builder.Length > 0) {
-				resultID = builder.ToString().AngeHash();
-			}
-
-			// Add to Pool
-			if (com != Int4.zero && resultCount >= 1 && resultID != 0) {
-				var from = GetSortedCombination(com.x, com.y, com.z, com.w);
-				yield return new(from, new CombinationData() {
-					Order = count,
-					Result = resultID,
-					ResultCount = resultCount,
-					Keep0 = keep[0],
-					Keep1 = keep[1],
-					Keep2 = keep[2],
-					Keep3 = keep[3],
+	public static void LoadCombinationPoolFromCode (Dictionary<Int4, CombinationData> pool) {
+		pool.Clear();
+		foreach (var type in typeof(Item).AllChildClass()) {
+			var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
+			if (iComs == null) continue;
+			foreach (var com in iComs) {
+				if (com.Count <= 0) continue;
+				if (
+					com.ItemA == null && com.ItemB == null &&
+					com.ItemC == null && com.ItemD == null
+				) continue;
+				int idA = com.ItemA != null ? com.ItemA.AngeHash() : 0;
+				int idB = com.ItemB != null ? com.ItemB.AngeHash() : 0;
+				int idC = com.ItemC != null ? com.ItemC.AngeHash() : 0;
+				int idD = com.ItemD != null ? com.ItemD.AngeHash() : 0;
+				var key = GetSortedCombination(idA, idB, idC, idD);
+				if (pool.ContainsKey(key)) continue;
+				pool.Add(key, new CombinationData() {
+					Result = type.AngeHash(),
+					ResultCount = com.Count,
+					Keep0 = com.ConsumeA ? 0 : idA,
+					Keep1 = com.ConsumeB ? 0 : idB,
+					Keep2 = com.ConsumeC ? 0 : idC,
+					Keep3 = com.ConsumeD ? 0 : idD,
 				});
-				count++;
 			}
 		}
 	}
@@ -145,15 +105,6 @@ public static class ItemCombination {
 
 		return new Int4(a, b, c, d);
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion

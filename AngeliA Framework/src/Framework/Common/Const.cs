@@ -79,6 +79,5 @@ public static class Const {
 	public const char CONTROL_COPY = (char)3;
 	public const char CONTROL_PASTE = (char)22;
 	public const char RETURN_SIGN = '\r';
-	public const char BACKSPACE_SIGN = '\b';
 
 }

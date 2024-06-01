@@ -61,7 +61,9 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.LeftArrow);
 			Input.UnuseKeyboardKey(KeyboardKey.RightArrow);
 			Input.UnuseKeyboardKey(KeyboardKey.Delete);
+			Input.UnuseKeyboardKey(KeyboardKey.Backspace);
 			Input.UnuseKeyboardKey(KeyboardKey.Escape);
+			Input.UnuseKeyboardKey(KeyboardKey.LeftCtrl);
 		}
 		if (!Input.MouseLeftButtonHolding) ScrollBarMouseDownPos = null;
 		LabelWidth = Unify(196);
@@ -767,22 +769,6 @@ public static class GUI {
 			for (int i = 0; i < TypingBuilder.Length; i++) {
 				char c = TypingBuilder[i];
 				switch (c) {
-					case Const.BACKSPACE_SIGN:
-						// Backspace
-						if (beamLength == 0) {
-							int removeIndex = beamIndex - 1;
-							if (removeIndex >= 0 && removeIndex < text.Length) {
-								text = text.Remove(removeIndex, 1);
-								beamIndex = BeamIndex = beamIndex - 1;
-								changed = true;
-								ContentVersion++;
-							}
-						} else {
-							RemoveSelection();
-							changed = true;
-							ContentVersion++;
-						}
-						break;
 					case Const.RETURN_SIGN:
 						// Enter
 						confirm = true;
@@ -830,7 +816,6 @@ public static class GUI {
 
 			// Delete
 			if (Input.KeyboardDownGUI(KeyboardKey.Delete)) {
-				Input.UseKeyboardKey(KeyboardKey.Delete);
 				int removeIndex = beamIndex;
 				if (removeIndex >= 0 && removeIndex < text.Length) {
 					if (beamLength == 0) {
@@ -845,6 +830,32 @@ public static class GUI {
 						ContentVersion++;
 					}
 				}
+			}
+
+			// Backspace
+			if (Input.KeyboardDownGUI(KeyboardKey.Backspace)) {
+				if (beamLength == 0) {
+					int removeIndex = beamIndex - 1;
+					if (removeIndex >= 0 && removeIndex < text.Length) {
+						text = text.Remove(removeIndex, 1);
+						beamIndex = BeamIndex = beamIndex - 1;
+						changed = true;
+						ContentVersion++;
+					}
+				} else {
+					RemoveSelection();
+					changed = true;
+					ContentVersion++;
+				}
+			}
+
+			// Tab
+			if (Input.KeyboardDown(KeyboardKey.Tab)) {
+
+
+
+
+
 			}
 
 			// Func
@@ -1227,11 +1238,9 @@ public static class GUI {
 
 
 	// Misc
-	public static void OnTextInput (char c) {
-		if (!IsTyping) return;
+	internal static void OnTextInput (char c) {
 		if (char.IsControl(c)) {
 			switch (c) {
-				case Const.BACKSPACE_SIGN:
 				case Const.RETURN_SIGN:
 				case Const.CONTROL_CUT:
 				case Const.CONTROL_COPY:
