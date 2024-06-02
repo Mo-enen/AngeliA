@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 public class BedWoodA : Bed, ICombustible {
 	int ICombustible.BurnStartFrame { get; set; }
@@ -69,19 +69,15 @@ public abstract class Bed : Furniture, IActionTarget {
 		Target = target;
 
 		// Get Bed Left and Right
+		int unitX = (X + Const.HALF).ToUnit();
+		int unitY = (Y + Const.HALF).ToUnit();
 		int xMin = X;
 		int xMax = X + Const.CEL;
-		if (WorldSquad.Front.FindBlock(
-			TypeID, (X - Const.HALF).UDivide(Const.CEL), (Y + Const.HALF).UDivide(Const.CEL),
-			Direction4.Left, BlockType.Entity, out int leftX, out _
-		)) {
-			xMin = leftX * Const.CEL;
+		if (WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity) == TypeID) {
+			xMin = X - Const.CEL;
 		}
-		if (WorldSquad.Front.FindBlock(
-			TypeID, (X + Const.CEL + Const.HALF).UDivide(Const.CEL), (Y + Const.HALF).UDivide(Const.CEL),
-			Direction4.Right, BlockType.Entity, out int rightX, out _
-		)) {
-			xMax = rightX * Const.CEL + Const.CEL;
+		if (WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity) == TypeID) {
+			xMax = X + 2 * Const.CEL;
 		}
 
 		// Get Offset Y

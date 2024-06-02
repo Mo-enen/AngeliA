@@ -43,6 +43,7 @@ public class Scope : System.IDisposable {
 	private static readonly ScopeGroup IgnoreInputInstance = new();
 	private static readonly ScopeGroup GUILabelWidthInstance = new();
 	private static readonly ScopeGroup GUISkinInstance = new();
+	private static readonly ScopeGroup ReverseCellsInstance = new();
 
 	// Api
 	public int ScrollPosition => Int2Data.y;
@@ -67,6 +68,14 @@ public class Scope : System.IDisposable {
 		if (result == null) return EmptyScope;
 		result.IntData = Renderer.CurrentLayerIndex;
 		Renderer.SetLayer(layer);
+		return result;
+	}
+
+	public static Scope ReverseCells () {
+		var result = ReverseCellsInstance.Start();
+		if (result == null) return EmptyScope;
+		result.Int2Data.x = Renderer.CurrentLayerIndex;
+		result.Int2Data.y = Renderer.GetUsedCellCount();
 		return result;
 	}
 
@@ -182,6 +191,14 @@ public class Scope : System.IDisposable {
 				}
 				Renderer.SetLayer(IntData);
 				break;
+
+			case var _ when Group == ReverseCellsInstance: {
+				int start = Int2Data.y;
+				if (Renderer.GetCells(Int2Data.x, out var cells, out int count) && start < count) {
+					System.Array.Reverse(cells, start, count - start);
+				}
+			}
+			break;
 
 			case var _ when Group == ColorInstance:
 				GUI.Color = ColorData;

@@ -16,15 +16,22 @@ public class SettingWindow : WindowUI {
 
 	// Const
 	private static readonly SpriteCode UI_PANEL_SETTING = "UI.Panel.Setting";
+	private static readonly SpriteCode ICON_ENGINE = "Icon.SettingFold.Engine";
+	private static readonly SpriteCode ICON_MAP_EDITOR = "Icon.SettingFold.MapEditor";
+	private static readonly SpriteCode ICON_PIXEL_EDITOR = "Icon.SettingFold.PixelEditor";
+	private static readonly SpriteCode ICON_CONSOLE = "Icon.SettingFold.Console";
+	private static readonly SpriteCode ICON_HOTKEY = "Icon.SettingFold.Hotkey";
 
 	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
 	private static readonly LanguageCode LABEL_MAP_EDITOR = ("Setting.MapEditorLabel", "Map Editor");
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Artwork");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
+	private static readonly LanguageCode LABEL_HOTKEY = ("Setting.HotkeyLabel", "Hotkey");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
 	private static readonly LanguageCode LABEL_PE_GRADIENT_BG = ("Setting.PE.GradientBG", "Gradient Background");
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
+	private static readonly LanguageCode LABEL_MEDT_ENABLE = ("Setting.MEDT.Enable", "Use Map Editor in Engine");
 	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Drop Player when Release Space Key");
 	private static readonly LanguageCode LABEL_MEDT_SHOW_STATE = ("Setting.MEDT.ShowState", "Show State Info");
 	private static readonly LanguageCode LABEL_MEDT_SHOW_BEHIND = ("Setting.MEDT.ShowBehind", "Show Map Behind");
@@ -49,6 +56,11 @@ public class SettingWindow : WindowUI {
 	private int UIHeight = 0;
 	private ColorF PixEditorBackgroundColor;
 	private Color32 BackgroundColorDefault;
+	private bool PanelFolding_Engine = false;
+	private bool PanelFolding_MapEditor = true;
+	private bool PanelFolding_PixelEditor = true;
+	private bool PanelFolding_Console = true;
+	private bool PanelFolding_Hotkey = true;
 
 
 	#endregion
@@ -67,7 +79,11 @@ public class SettingWindow : WindowUI {
 
 
 	[OnGameFocused]
-	internal static void OnGameFocused () => Instance?.RequireReloadThemePath();
+	internal static void OnGameFocused () {
+		if (Instance != null) {
+			Instance.RequiringReloadThemePath = true;
+		}
+	}
 
 
 	public override void UpdateWindowUI () {
@@ -86,10 +102,11 @@ public class SettingWindow : WindowUI {
 
 			using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), rect.width / 2));
 
-			DrawPanel(ref rect, Update_Engine);
-			DrawPanel(ref rect, Update_MapEditor);
-			DrawPanel(ref rect, Update_PixelEditor);
-			DrawPanel(ref rect, Update_Console);
+			DrawPanel(ref rect, LABEL_ENGINE, ICON_ENGINE, Update_Engine, ref PanelFolding_Engine);
+			DrawPanel(ref rect, LABEL_MAP_EDITOR, ICON_MAP_EDITOR, Update_MapEditor, ref PanelFolding_MapEditor);
+			DrawPanel(ref rect, LABEL_PIXEL_EDITOR, ICON_PIXEL_EDITOR, Update_PixelEditor, ref PanelFolding_PixelEditor);
+			DrawPanel(ref rect, LABEL_CONSOLE, ICON_CONSOLE, Update_Console, ref PanelFolding_Console);
+			DrawPanel(ref rect, LABEL_HOTKEY, ICON_HOTKEY, Update_Hotkey, ref PanelFolding_Hotkey);
 
 			extendedUISize = WindowRect.yMax - rect.yMax + Unify(128);
 			UIHeight = (extendedUISize - WindowRect.height).GreaterOrEquelThanZero();
@@ -107,10 +124,6 @@ public class SettingWindow : WindowUI {
 	private IRect Update_Engine (IRect rect) {
 
 		int itemPadding = GUI.FieldPadding;
-
-		// Label - Engine
-		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_ENGINE, Skin.SmallGreyLabel);
-		rect.SlideDown(itemPadding);
 
 		// Open Last Project on Start
 		EngineSetting.OpenLastProjectOnStart.Value = GUI.Toggle(
@@ -157,39 +170,45 @@ public class SettingWindow : WindowUI {
 
 		int itemPadding = GUI.FieldPadding;
 
-		// Label - MapEditor
-		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_MAP_EDITOR, Skin.SmallGreyLabel);
-		rect.SlideDown(itemPadding);
-
 		GUI.BeginChangeCheck();
 
-		// Quick Drop
-		EngineSetting.MapEditor_QuickPlayerDrop.Value = GUI.Toggle(
-			rect, EngineSetting.MapEditor_QuickPlayerDrop.Value, LABEL_MEDT_QUICK_DROP,
+		// Enable
+		EngineSetting.MapEditor_Enable.Value = GUI.Toggle(
+			rect, EngineSetting.MapEditor_Enable.Value, LABEL_MEDT_ENABLE,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
 
-		// Auto Zoom
-		EngineSetting.MapEditor_AutoZoom.Value = GUI.Toggle(
-			rect, EngineSetting.MapEditor_AutoZoom.Value, LABEL_MEDT_AUTO_ZOOM,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
+		if (EngineSetting.MapEditor_Enable.Value) {
 
-		// Show Behind
-		EngineSetting.MapEditor_ShowBehind.Value = GUI.Toggle(
-			rect, EngineSetting.MapEditor_ShowBehind.Value, LABEL_MEDT_SHOW_BEHIND,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
+			// Quick Drop
+			EngineSetting.MapEditor_QuickPlayerDrop.Value = GUI.Toggle(
+				rect, EngineSetting.MapEditor_QuickPlayerDrop.Value, LABEL_MEDT_QUICK_DROP,
+				labelStyle: Skin.SmallLabel
+			);
+			rect.SlideDown(itemPadding);
 
-		// Show State
-		EngineSetting.MapEditor_ShowState.Value = GUI.Toggle(
-			rect, EngineSetting.MapEditor_ShowState.Value, LABEL_MEDT_SHOW_STATE,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
+			// Auto Zoom
+			EngineSetting.MapEditor_AutoZoom.Value = GUI.Toggle(
+				rect, EngineSetting.MapEditor_AutoZoom.Value, LABEL_MEDT_AUTO_ZOOM,
+				labelStyle: Skin.SmallLabel
+			);
+			rect.SlideDown(itemPadding);
+
+			// Show Behind
+			EngineSetting.MapEditor_ShowBehind.Value = GUI.Toggle(
+				rect, EngineSetting.MapEditor_ShowBehind.Value, LABEL_MEDT_SHOW_BEHIND,
+				labelStyle: Skin.SmallLabel
+			);
+			rect.SlideDown(itemPadding);
+
+			// Show State
+			EngineSetting.MapEditor_ShowState.Value = GUI.Toggle(
+				rect, EngineSetting.MapEditor_ShowState.Value, LABEL_MEDT_SHOW_STATE,
+				labelStyle: Skin.SmallLabel
+			);
+			rect.SlideDown(itemPadding);
+		}
 
 		// Final
 		RigSettingChanged = RigSettingChanged || GUI.EndChangeCheck();
@@ -202,10 +221,6 @@ public class SettingWindow : WindowUI {
 	private IRect Update_PixelEditor (IRect rect) {
 
 		int itemPadding = GUI.FieldPadding;
-
-		// Label - PixEditor
-		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_PIXEL_EDITOR, Skin.SmallGreyLabel);
-		rect.SlideDown(itemPadding);
 
 		// Background Color
 		PixEditorBackgroundColor = GUI.HorizontalColorField(
@@ -242,16 +257,34 @@ public class SettingWindow : WindowUI {
 
 		int itemPadding = GUI.FieldPadding;
 
-		// Label - Console
-		GUI.Label(rect.Shift(-Unify(32), 0), LABEL_CONSOLE, Skin.SmallGreyLabel);
-		rect.SlideDown(itemPadding);
-
 		// Show Log Time
 		EngineSetting.ShowLogTime.Value = GUI.Toggle(
 			rect, EngineSetting.ShowLogTime.Value, LABEL_SHOW_LOG_TIME,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
+
+
+		return rect;
+
+	}
+
+
+	private IRect Update_Hotkey (IRect rect) {
+
+		int itemPadding = GUI.FieldPadding;
+
+
+
+
+
+
+
+
+
+
+
+
 		return rect;
 
 	}
@@ -262,29 +295,35 @@ public class SettingWindow : WindowUI {
 
 
 
-	#region --- API ---
-
-
-	public void RequireReloadThemePath () => RequiringReloadThemePath = true;
-
-
-	#endregion
-
-
-
-
 	#region --- LGC ---
 
 
-	private void DrawPanel (ref IRect rect, System.Func<IRect, IRect> panelGUI) {
+	private void DrawPanel (ref IRect rect, string label, int icon, System.Func<IRect, IRect> panelGUI, ref bool folding) {
 
-		int labelOffset = Unify(32);
-		var boxPadding = Int4.Direction(Unify(20), Unify(20), Unify(6), Unify(12));
+		var boxPadding = Int4.Direction(Unify(24), Unify(4), Unify(3), Unify(3));
 		int boxTop = rect.yMax;
 		int boxLeft = rect.xMin;
 		int boxRight = rect.xMax;
 
-		rect = panelGUI(rect);
+		// Fold Icon
+		GUI.Icon(rect.EdgeInside(Direction4.Left, rect.height * 3 / 4).Shift(-boxPadding.left / 5, 0), icon);
+
+		// Fold Label
+		if (GUI.Button(rect.Expand(boxPadding.left, boxPadding.right, 0, 0), 0, Skin.WeakHighlightPixel)) folding = !folding;
+		GUI.Label(rect.ShrinkLeft(rect.height), label, Skin.SmallGreyLabel);
+
+		// Fold Triangle
+		using (Scope.GUIColor(Color32.GREY_128)) {
+			GUI.Icon(
+				rect.EdgeOutside(Direction4.Left, rect.height * 2 / 3).Shift(-boxPadding.left / 4, 0),
+				folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
+			);
+		}
+		rect.SlideDown(folding ? 0 : GUI.FieldPadding);
+
+		if (!folding) {
+			rect = panelGUI(rect);
+		}
 
 		if (
 			Renderer.TryGetSprite(UI_PANEL_SETTING, out var sprite) ||
@@ -293,9 +332,9 @@ public class SettingWindow : WindowUI {
 			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
 				var tint = sprite.ID == Const.PIXEL ? Color32.WHITE_12 : Color32.WHITE;
 				Renderer.DrawSlice(sprite, new IRect(
-					boxLeft - boxPadding.left - labelOffset,
+					boxLeft - boxPadding.left,
 					rect.yMax - boxPadding.down + MasterScroll,
-					boxRight - boxLeft + boxPadding.horizontal + labelOffset,
+					boxRight - boxLeft + boxPadding.horizontal,
 					boxTop - rect.yMax + boxPadding.vertical
 				), tint);
 			}

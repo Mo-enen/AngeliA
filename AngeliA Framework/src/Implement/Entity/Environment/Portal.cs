@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 [EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
@@ -49,13 +49,13 @@ public abstract class CircleFlamePortal : Portal {
 
 		// Light
 		if (Renderer.TryGetSprite(LightCode, out var light)) {
-			int lightSize = CircleSize;
+			int lightSize = CircleSize * scale / 1000;
 			if (!light.GlobalBorder.IsZero) {
 				lightSize += CircleSize * light.GlobalBorder.horizontal / light.GlobalWidth;
 			}
 			lightSize += (int)Util.PingPong(Game.GlobalFrame, 36);
-			var tint = new Color32(255, 255, 255, (byte)(Util.PingPong(Game.GlobalFrame, 36) * 2 + 90).Clamp(0, 255));
-			Renderer.SetLayerToAdditive();
+			var tint = new Color32(0, 0, 0, (byte)(Util.PingPong(Game.GlobalFrame, 36) * 2 + 120).Clamp(0, 255));
+			Renderer.SetLayerToMultiply();
 			Renderer.Draw(
 				light, centerX, centerY,
 				500, 500, (Game.GlobalFrame * 6).UMod(360),

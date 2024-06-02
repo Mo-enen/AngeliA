@@ -23,6 +23,7 @@ public class EngineSetting {
 	public static readonly SavingInt LastMapEditorViewY = new("Map.LastMapEditorViewY", 0);
 	public static readonly SavingInt LastMapEditorViewZ = new("Map.LastMapEditorViewZ", 0);
 	public static readonly SavingInt LastMapEditorViewHeight = new("Map.LastMapEditorViewHeight", -1);
+	public static readonly SavingBool MapEditor_Enable = new("MapEditor.Enable", true);
 	public static readonly SavingBool MapEditor_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
 	public static readonly SavingBool MapEditor_AutoZoom = new("MapEditor.AutoZoom", true);
 	public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", false);

@@ -346,6 +346,7 @@ public class Engine {
 		Instance?.RefreshProjectCache();
 		Instance?.CheckResourceChanged();
 		Instance?.CheckEngineResourceChanged();
+		
 	}
 
 
@@ -1153,6 +1154,7 @@ public class Engine {
 			if (SettingWindow.Instance.RigSettingChanged) {
 				SettingWindow.Instance.RigSettingChanged = false;
 				calling.RequireSettingChange = true;
+				calling.Setting_MEDT_Enable = EngineSetting.MapEditor_Enable.Value;
 				calling.Setting_MEDT_AutoZoom = EngineSetting.MapEditor_AutoZoom.Value;
 				calling.Setting_MEDT_QuickPlayerDrop = EngineSetting.MapEditor_QuickPlayerDrop.Value;
 				calling.Setting_MEDT_ShowBehind = EngineSetting.MapEditor_ShowBehind.Value;

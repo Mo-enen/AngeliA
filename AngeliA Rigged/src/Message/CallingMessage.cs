@@ -68,6 +68,7 @@ public class RigCallingMessage {
 	public byte PressedKeyCount;
 	public readonly int[] PressedGuiKeys = new int[256];
 	public bool RequireSettingChange = false;
+	public bool Setting_MEDT_Enable;
 	public bool Setting_MEDT_QuickPlayerDrop;
 	public bool Setting_MEDT_AutoZoom;
 	public bool Setting_MEDT_ShowState;
@@ -254,6 +255,7 @@ public class RigCallingMessage {
 
 			RequireSettingChange = Util.ReadBool(ref pointer, end);
 			if (RequireSettingChange) {
+				Setting_MEDT_Enable = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_QuickPlayerDrop = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_AutoZoom = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_ShowState = Util.ReadBool(ref pointer, end);
@@ -335,6 +337,7 @@ public class RigCallingMessage {
 
 			Util.Write(ref pointer, RequireSettingChange, end);
 			if (RequireSettingChange) {
+				Util.Write(ref pointer, Setting_MEDT_Enable, end);
 				Util.Write(ref pointer, Setting_MEDT_QuickPlayerDrop, end);
 				Util.Write(ref pointer, Setting_MEDT_AutoZoom, end);
 				Util.Write(ref pointer, Setting_MEDT_ShowState, end);

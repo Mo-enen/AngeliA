@@ -21,6 +21,17 @@ public partial class GUISkin {
 		BodyColorDisable = Color32.CLEAR,
 	};
 
+	public readonly GUIStyle WeakHighlightPixel = new() {
+		BodySprite = Const.PIXEL,
+		BodySpriteHover = Const.PIXEL,
+		BodySpriteDown = Const.PIXEL,
+		BodySpriteDisable = Const.PIXEL,
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.WHITE_6,
+		BodyColorDown = new Color32(255, 255, 255, 8),
+		BodyColorDisable = Color32.CLEAR,
+	};
+
 	public readonly GUIStyle Frame = new() {
 		BodySprite = BuiltInSprite.FRAME_16,
 		BodySpriteHover = BuiltInSprite.FRAME_16,

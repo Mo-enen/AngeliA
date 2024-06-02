@@ -32,7 +32,6 @@ public partial class RiggedGame : Game {
 	private unsafe byte* BufferPointer = null;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
-	private WindowUI[] EditorWindows = null;
 	private IRect StartWithView = default;
 	private bool DrawCollider = false;
 	private bool DrawBounds = false;
@@ -151,11 +150,6 @@ public partial class RiggedGame : Game {
 			RespondMessage.TransationStart();
 		}
 
-		// Init Windows
-		EditorWindows ??= new WindowUI[] {
-			MapEditor.Instance ?? Stage.GetOrAddEntity<MapEditor>(0, 0),
-		};
-
 		// Sync Buffer
 		unsafe {
 			while (*BufferPointer == 1) {
@@ -167,21 +161,6 @@ public partial class RiggedGame : Game {
 		}
 		CurrentPressedCharIndex = 0;
 		CurrentPressedKeyIndex = 0;
-
-		// Refresh Editor Windows
-		GUI.ForceUnifyBasedOnMonitor = CallingMessage.RequiringWindowIndex == 1;
-		for (int i = 0; i < EditorWindows.Length; i++) {
-			var window = EditorWindows[i];
-			if (window == null) continue;
-			bool shouldActive = CallingMessage.RequiringWindowIndex == i;
-			if (window.Active != shouldActive) {
-				if (shouldActive) {
-					Stage.SpawnEntity(window.TypeID, 0, 0);
-				} else {
-					window.Active = false;
-				}
-			}
-		}
 
 		// Char Requirement
 		for (int i = 0; i < CallingMessage.CharRequiredCount; i++) {
@@ -240,18 +219,29 @@ public partial class RiggedGame : Game {
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
 
 		// Start View
-		if (StartWithView != default) {
-			MapEditor.Instance?.SetView(StartWithView, StartWithZ);
+		if (StartWithView != default && MapEditor.Instance != null) {
+			MapEditor.Instance.SetView(StartWithView, StartWithZ);
 			StartWithView = default;
 		}
 
 		// Setting Changed
 		if (CallingMessage.RequireSettingChange) {
+			bool mapEditorActive = false;
 			if (MapEditor.Instance != null) {
 				MapEditor.Instance.AutoZoom = CallingMessage.Setting_MEDT_AutoZoom;
 				MapEditor.Instance.QuickPlayerDrop = CallingMessage.Setting_MEDT_QuickPlayerDrop;
 				MapEditor.Instance.ShowBehind = CallingMessage.Setting_MEDT_ShowBehind;
 				MapEditor.Instance.ShowState = CallingMessage.Setting_MEDT_ShowState;
+				mapEditorActive = MapEditor.Instance.Active;
+			}
+			bool enableMapEditor = CallingMessage.Setting_MEDT_Enable;
+			if (mapEditorActive != enableMapEditor) {
+				if (enableMapEditor) {
+					Stage.SpawnEntity(MapEditor.TYPE_ID, 0, 0);
+				} else {
+					MapEditor.Instance.Active = false;
+					RestartGame();
+				}
 			}
 		}
 

@@ -279,11 +279,8 @@ public class ControlHintUI : EntityUI {
 	}
 	private void DrawKeyLogic (int x, int y, int keyIdA, int keyIdB, string keyTextA, string keyTextB, string label, bool background) {
 
-		using var _ = Scope.RendererLayer(RenderLayer.DEFAULT);
+		using var _ = Scope.RendererLayerUI();
 
-		const int BG_PADDING_X = 32;
-		const int BG_PADDING_Y = 32;
-		Cell bgCell = null;
 		var border = ButtonBorder;
 		border.left = Unify(border.left);
 		border.right = Unify(border.right);
@@ -309,12 +306,6 @@ public class ControlHintUI : EntityUI {
 			}
 		}
 
-		// Draw
-		rect.width = widthA;
-		if (background) {
-			bgCell = Renderer.DrawPixel(rect.Expand(BG_PADDING_X), new(12, 12, 12, 255), z: 0);
-		}
-
 		// Button A
 		if (keyIdA != 0) {
 			Renderer.DrawSlice(
@@ -322,15 +313,14 @@ public class ControlHintUI : EntityUI {
 			);
 			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 		} else {
-			Renderer.SetLayer(RenderLayer.UI);
-			GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
-			Renderer.SetLayer(RenderLayer.DEFAULT);
-			int targetWidth = keyBounds.width + border.horizontal;
-			if (rect.width < targetWidth) rect.width = targetWidth;
-
-			Renderer.DrawSlice(
-				HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
-			);
+			using (Scope.ReverseCells()) {
+				GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
+				int targetWidth = keyBounds.width + border.horizontal;
+				if (rect.width < targetWidth) rect.width = targetWidth;
+				Renderer.DrawSlice(
+					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
+				);
+			}
 		}
 		rect.x += rect.width + gap;
 
@@ -344,30 +334,26 @@ public class ControlHintUI : EntityUI {
 				);
 				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
-				Renderer.SetLayer(RenderLayer.UI);
-				GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
-				Renderer.SetLayer(RenderLayer.DEFAULT);
-				int targetWidth = keyBounds.width + border.horizontal;
-				if (rect.width < targetWidth) rect.width = targetWidth;
-
-				Renderer.DrawSlice(
-					HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
-				);
+				using (Scope.ReverseCells()) {
+					GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
+					int targetWidth = keyBounds.width + border.horizontal;
+					if (rect.width < targetWidth) rect.width = targetWidth;
+					Renderer.DrawSlice(
+						HINT_BUTTON_CODE, rect, border.left, border.right, border.down, border.up, int.MaxValue
+					);
+				}
 			}
 			rect.x += rect.width + gap;
 		}
 
 		// Label
 		rect.width = 1;
-		Renderer.SetLayer(RenderLayer.UI);
-		GUI.Label(rect, label, out var bounds);
-		Renderer.SetLayer(RenderLayer.DEFAULT);
-		if (bgCell != null) {
-			bgCell.Y = Util.Min(bgCell.Y, bounds.y - BG_PADDING_Y);
-			bgCell.Width = Util.Max(bgCell.Width, bounds.xMax - bgCell.X + BG_PADDING_X);
-			bgCell.Height = Util.Max(bgCell.Height, bounds.yMax - bgCell.Y + BG_PADDING_Y);
+		if (background) {
+			GUI.BackgroundLabel(rect, label, Color32.BLACK, 32);
+		} else {
+			GUI.Label(rect, label, out var bounds);
 		}
-
+		GUI.Label(rect, label);
 
 	}
 
