@@ -92,6 +92,7 @@ public class Engine {
 	private static readonly LanguageCode LOG_ERROR_DOTNET_SDK_NOT_FOUND = ("Log.BuildError.DotnetSdkNotFound", "Build Error: Dotnet Sdk not found in the engine universe folder");
 	private static readonly LanguageCode LOG_ERROR_ENTRY_PROJECT_NOT_FOUND = ("Log.BuildError.EntryProjectNotFound", "Build Error: Entry exe file for the project not found");
 	private static readonly LanguageCode LOG_ERROR_ENTRY_RESULT_NOT_FOUND = ("Log.BuildError.EntryResultNotFound", "Build Error: Entry exe file result not found");
+	private static readonly LanguageCode LOG_ERROR_CSPROJ_NOT_EXISTS = ("Log.BuildError.CsprojNotExists", "Csproj file not found");
 
 	// Data
 	private static Engine Instance = null;
@@ -328,6 +329,10 @@ public class Engine {
 
 			case EngineUtil.ERROR_ENTRY_RESULT_NOT_FOUND:
 				Debug.LogError(LOG_ERROR_ENTRY_RESULT_NOT_FOUND);
+				break;
+
+			case EngineUtil.ERROR_CSPROJ_NOT_EXISTS:
+				Debug.LogError(LOG_ERROR_CSPROJ_NOT_EXISTS);
 				break;
 		}
 
@@ -1216,9 +1221,8 @@ public class Engine {
 		) {
 			// No Rig Game Running
 			int code = Transceiver.Start(
-				CurrentProject.Universe.FontRoot,
 				CurrentProject.BuildPath,
-				CurrentProject.BuildLibraryPath
+				CurrentProject.UniversePath
 			);
 			if (code == 0) {
 				// Start

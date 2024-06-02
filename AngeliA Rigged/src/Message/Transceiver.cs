@@ -15,7 +15,7 @@ public class RigTransceiver {
 
 	#region --- VAR ---
 
-	
+
 	// Const 
 	public const int ERROR_EXE_FILE_NOT_FOUND = -100;
 	public const int ERROR_PROCESS_FAIL_TO_START = -101;
@@ -63,7 +63,7 @@ public class RigTransceiver {
 	#region --- API ---
 
 
-	public int Start (string fontFolder, string gameBuildFolder, string gameLibFolder) {
+	public int Start (string gameBuildFolder, string universePath) {
 		try {
 
 			Abort();
@@ -72,7 +72,7 @@ public class RigTransceiver {
 
 			// Gate
 			if (!Util.FileExists(ExePath)) return ERROR_EXE_FILE_NOT_FOUND;
-			if (!Util.FolderExists(gameLibFolder)) return ERROR_LIB_FILE_NOT_FOUND;
+			if (!Util.FolderExists(gameBuildFolder)) return ERROR_LIB_FILE_NOT_FOUND;
 
 			// Start New
 			if (MemMap == null) {
@@ -90,7 +90,7 @@ public class RigTransceiver {
 			process.StartInfo.FileName = ExePath;
 			process.StartInfo.UseShellExecute = false;
 			process.StartInfo.CreateNoWindow = true;
-			process.StartInfo.Arguments = GetArgumentsForRigGame(gameBuildFolder, gameLibFolder);
+			process.StartInfo.Arguments = GetArgumentsForRigGame(gameBuildFolder, universePath);
 			process.StartInfo.WorkingDirectory = gameBuildFolder;
 #if DEBUG
 			process.StartInfo.RedirectStandardOutput = true;
@@ -213,14 +213,14 @@ public class RigTransceiver {
 	#region --- LGC ---
 
 
-	private string GetArgumentsForRigGame (string gameBuildFolder, string gameLibFolder) {
+	private string GetArgumentsForRigGame (string gameBuildFolder, string universePath) {
 
 		RigArgBuilder.Clear();
 
 		RigArgBuilder.Append($"-map:{MapName}");
 		RigArgBuilder.Append(' ');
 
-		RigArgBuilder.Append($"-lib:{Util.Path_to_ArgPath(gameLibFolder)}");
+		RigArgBuilder.Append($"-lib:{Util.Path_to_ArgPath(gameBuildFolder)}");
 		RigArgBuilder.Append(' ');
 
 		RigArgBuilder.Append($"-pID:{Process.GetCurrentProcess().Id}");
@@ -229,7 +229,7 @@ public class RigTransceiver {
 		RigArgBuilder.Append($"-fontCount:{Game.FontCount - Game.BuiltInFontCount}");
 		RigArgBuilder.Append(' ');
 
-		RigArgBuilder.Append($"-uni:{Util.Path_to_ArgPath(AngePath.GetUniverseRoot(gameBuildFolder))}");
+		RigArgBuilder.Append($"-uni:{Util.Path_to_ArgPath(universePath)}");
 		RigArgBuilder.Append(' ');
 
 		if (RespondMessage.ViewHeight > 0) {

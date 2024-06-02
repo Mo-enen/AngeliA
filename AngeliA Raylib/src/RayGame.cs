@@ -197,15 +197,15 @@ public partial class RayGame : Game {
 		}
 
 		// Sky
-		var skyColorA = Sky.SkyTintBottomColor;
-		var skyColorB = Sky.SkyTintTopColor;
-		if (skyColorA != skyColorB) {
+		var skyColorBottom = Sky.SkyTintBottomColor;
+		var skyColorTop = Sky.SkyTintTopColor;
+		if (skyColorBottom != skyColorTop) {
 			Raylib.DrawRectangleGradientV(
 				0, 0, ScreenWidth, ScreenHeight,
-				skyColorA.ToRaylib(), skyColorB.ToRaylib()
+				 skyColorTop.ToRaylib(), skyColorBottom.ToRaylib()
 			);
 		} else {
-			Raylib.ClearBackground(skyColorA.ToRaylib());
+			Raylib.ClearBackground(skyColorBottom.ToRaylib());
 		}
 
 		// Update AngeliA

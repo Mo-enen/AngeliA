@@ -145,7 +145,10 @@ public partial class PixelEditor : WindowUI {
 	public override void UpdateWindowUI () {
 		if (string.IsNullOrEmpty(SheetPath) || CurrentProject == null) return;
 		Cursor.RequireCursor();
-		Sky.ForceSkyboxTint(EngineSetting.BackgroundColor.Value);
+		Sky.ForceSkyboxTint(
+			EngineSetting.BackgroundColor.Value,
+			EngineSetting.GradientBackground.Value ? Color32.Lerp(EngineSetting.BackgroundColor.Value, Color32.WHITE, 0.1f) : EngineSetting.BackgroundColor.Value
+		);
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();
@@ -880,6 +883,13 @@ public partial class PixelEditor : WindowUI {
 
 
 	private void CreateSpritesForCharacter (string characterName, Int2? pixelPos = null) {
+
+
+
+
+
+
+
 
 
 

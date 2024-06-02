@@ -44,6 +44,7 @@ public static class GUI {
 	private static Int2? ScrollBarMouseDownPos = null;
 	private static int ContentVersion = int.MinValue;
 	private static int CheckingContentVersion = int.MinValue;
+	private static int InternalRequiringControlID = int.MinValue;
 
 
 	#endregion
@@ -64,6 +65,7 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.Backspace);
 			Input.UnuseKeyboardKey(KeyboardKey.Escape);
 			Input.UnuseKeyboardKey(KeyboardKey.LeftCtrl);
+			Input.UnuseKeyboardKey(KeyboardKey.Tab);
 		}
 		if (!Input.MouseLeftButtonHolding) ScrollBarMouseDownPos = null;
 		LabelWidth = Unify(196);
@@ -75,6 +77,10 @@ public static class GUI {
 		if (TypingBuilder.Length > 0) TypingBuilder.Clear();
 		if (TypingTextFieldID != 0 && Game.PauselessFrame > TypingTextFieldUpdateFrame) {
 			CancelTyping();
+		}
+		if (InternalRequiringControlID != int.MinValue) {
+			TypingTextFieldID = InternalRequiringControlID;
+			InternalRequiringControlID = int.MinValue;
 		}
 	}
 
@@ -850,12 +856,11 @@ public static class GUI {
 			}
 
 			// Tab
-			if (Input.KeyboardDown(KeyboardKey.Tab)) {
-
-
-
-
-
+			if (Input.KeyboardDownGUI(KeyboardKey.Tab)) {
+				confirm = true;
+				CancelTyping();
+				InternalRequiringControlID = Game.IsKeyboardKeyHolding(KeyboardKey.LeftShift) ? controlID - 1 : controlID + 1;
+				BeamBlinkFrame = Game.PauselessFrame;
 			}
 
 			// Func

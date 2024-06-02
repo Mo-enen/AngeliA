@@ -12,6 +12,7 @@ public class EngineSetting {
 
 	// Pixel Editor
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
+	public static readonly SavingBool GradientBackground = new("PixEdt.GradientBackground", true);
 	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
 
 	// Console

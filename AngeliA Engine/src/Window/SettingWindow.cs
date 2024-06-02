@@ -22,6 +22,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Artwork");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
+	private static readonly LanguageCode LABEL_PE_GRADIENT_BG = ("Setting.PE.GradientBG", "Gradient Background");
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
 	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Drop Player when Release Space Key");
@@ -217,12 +218,20 @@ public class SettingWindow : WindowUI {
 		EngineSetting.BackgroundColor.Value = PixEditorBackgroundColor.ToColor32();
 		rect.SlideDown(itemPadding);
 
+		// Gradient Background
+		EngineSetting.GradientBackground.Value = GUI.Toggle(
+			rect, EngineSetting.GradientBackground.Value, LABEL_PE_GRADIENT_BG,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
 		// Solid Painting Preview
 		EngineSetting.SolidPaintingPreview.Value = GUI.Toggle(
 			rect, EngineSetting.SolidPaintingPreview.Value, LABEL_PE_SOLID_PAINTING,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);
+
 
 		return rect;
 
