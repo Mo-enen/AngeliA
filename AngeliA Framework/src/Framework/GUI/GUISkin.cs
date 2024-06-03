@@ -174,23 +174,4 @@ public partial class GUISkin {
 
 	};
 
-	// Dropdown
-	public readonly GUIStyle DarkDropdown = new() {
-		BodySprite = BuiltInSprite.UI_DARK_DROPDOWN,
-		BodySpriteHover = BuiltInSprite.UI_DARK_DROPDOWN_HOVER,
-		BodySpriteDown = BuiltInSprite.UI_DARK_DROPDOWN_DOWN,
-		BodySpriteDisable = BuiltInSprite.UI_DARK_DROPDOWN,
-		ContentShift = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentBorder = Int4.one,
-
-		ContentColor = Color32.WHITE,
-		ContentColorHover = Color32.WHITE,
-		ContentColorDown = Color32.GREY_230,
-		ContentColorDisable = Color32.GREY_196,
-		CharSize = -1,
-		Alignment = Alignment.MidMid,
-	};
-
 }

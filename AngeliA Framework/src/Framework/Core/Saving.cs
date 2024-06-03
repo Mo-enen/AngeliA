@@ -164,3 +164,10 @@ public class SavingString : Saving<string> {
 	protected override string ValueToString (string value) => value;
 	protected override string StringToValue (string str) => str;
 }
+
+
+public class SavingHotkey : Saving<Hotkey> {
+	public SavingHotkey (string key, Hotkey defaultValue = default) : base(key, defaultValue) { }
+	protected override string ValueToString (Hotkey value) => value.GetStringData();
+	protected override Hotkey StringToValue (string str) => new(str);
+}

@@ -97,6 +97,7 @@ public static class Extension {
 
 	public static bool GetBit (this ulong value, int index) => (value & (1UL << index)) != 0;
 	public static bool GetBit (this int value, int index) => (value & (1 << index)) != 0;
+	public static bool GetBit (this uint value, int index) => (value & (1U << index)) != 0;
 	public static bool GetBit (this ushort value, int index) => (value & (1 << index)) != 0;
 	public static bool GetBit (this byte value, int index) => (value & (1 << index)) != 0;
 
@@ -108,6 +109,11 @@ public static class Extension {
 	public static void SetBit (this ref int value, int index, bool bitValue) {
 		if (index < 0 || index > 31) return;
 		var val = 1 << index;
+		value = bitValue ? (value | val) : (value & ~val);
+	}
+	public static void SetBit (this ref uint value, int index, bool bitValue) {
+		if (index < 0 || index > 31) return;
+		uint val = (uint)(1 << index);
 		value = bitValue ? (value | val) : (value & ~val);
 	}
 	public static void SetBit (this ref byte value, int index, bool bitValue) {

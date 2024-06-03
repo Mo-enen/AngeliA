@@ -42,6 +42,20 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
 	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
+	private static readonly LanguageCode LABEL_HOTKEY_RECOMPILE = ("Setting.Hotkey.Recompile", "Recompile");
+	private static readonly LanguageCode LABEL_HOTKEY_RUN = ("Setting.Hotkey.Run", "Run");
+	private static readonly LanguageCode LABEL_HOTKEY_CLEAR_CONSOLE = ("Setting.Hotkey.ClearConsole", "Clear Console");
+	private static readonly LanguageCode LABEL_HOTKEY_MEDT = ("Setting.Hotkey.MEDT", "Open Map Editor");
+	private static readonly LanguageCode LABEL_HOTKEY_ART = ("Setting.Hotkey.Artwork", "Open Artwork");
+	private static readonly LanguageCode LABEL_HOTKEY_LANGUAGE = ("Setting.Hotkey.Language", "Open Language Editor");
+	private static readonly LanguageCode LABEL_HOTKEY_CONSOLE = ("Setting.Hotkey.Console", "Open Console");
+	private static readonly LanguageCode LABEL_HOTKEY_PROJECT = ("Setting.Hotkey.Project", "Open Project Editor");
+	private static readonly LanguageCode LABEL_HOTKEY_SETTING = ("Setting.Hotkey.Setting", "Open Setting");
+
+	private static readonly LanguageCode MENU_CATA_LETTER = ("Menu.Group.Letter", "Letter");
+	private static readonly LanguageCode MENU_CATA_NUMBER = ("Menu.Group.Number", "Number");
+	private static readonly LanguageCode MENU_CATA_SIGN = ("Menu.Group.Sign", "Sign");
+	private static readonly LanguageCode MENU_CATA_OTHER = ("Menu.Group.Other", "Fn");
 
 	// Api
 	public static SettingWindow Instance { get; private set; }
@@ -61,6 +75,7 @@ public class SettingWindow : WindowUI {
 	private bool PanelFolding_PixelEditor = true;
 	private bool PanelFolding_Console = true;
 	private bool PanelFolding_Hotkey = true;
+	private SavingHotkey ActivatedSetting = null;
 
 
 	#endregion
@@ -159,7 +174,7 @@ public class SettingWindow : WindowUI {
 		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkButton)) {
 			ShowThemeMenu(popRect);
 		}
-		GUI.PopupTriangleIcon(popRect);
+		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
 		rect.SlideDown(itemPadding);
 
 		return rect;
@@ -274,19 +289,36 @@ public class SettingWindow : WindowUI {
 
 		int itemPadding = GUI.FieldPadding;
 
+		HotkeyField(rect, EngineSetting.Hotkey_Recompile, LABEL_HOTKEY_RECOMPILE);
+		rect.SlideDown(itemPadding);
 
+		HotkeyField(rect, EngineSetting.Hotkey_Run, LABEL_HOTKEY_RUN);
+		rect.SlideDown(itemPadding);
 
+		HotkeyField(rect, EngineSetting.Hotkey_ClearConsole, LABEL_HOTKEY_CLEAR_CONSOLE);
+		rect.SlideDown(itemPadding);
 
+		// Window
+		HotkeyField(rect, EngineSetting.Hotkey_Window_MapEditor, LABEL_HOTKEY_MEDT);
+		rect.SlideDown(itemPadding);
 
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Artwork, LABEL_HOTKEY_MEDT);
+		rect.SlideDown(itemPadding);
 
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Language, LABEL_HOTKEY_MEDT);
+		rect.SlideDown(itemPadding);
 
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Console, LABEL_HOTKEY_MEDT);
+		rect.SlideDown(itemPadding);
 
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Project, LABEL_HOTKEY_MEDT);
+		rect.SlideDown(itemPadding);
 
-
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Setting, LABEL_HOTKEY_MEDT);
+		rect.SlideDown(itemPadding);
 
 
 		return rect;
-
 	}
 
 
@@ -330,7 +362,7 @@ public class SettingWindow : WindowUI {
 			Renderer.TryGetSprite(Const.PIXEL, out sprite)
 		) {
 			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
-				var tint = sprite.ID == Const.PIXEL ? Color32.WHITE_12 : Color32.WHITE;
+				var tint = sprite.ID == Const.PIXEL ? new Color32(23, 23, 23, 255) : Color32.WHITE;
 				Renderer.DrawSlice(sprite, new IRect(
 					boxLeft - boxPadding.left,
 					rect.yMax - boxPadding.down + MasterScroll,
@@ -374,6 +406,139 @@ public class SettingWindow : WindowUI {
 				// Custom
 				Instance.RequireChangeThemePath = Instance.ThemePaths[index.Clamp(0, Instance.ThemePaths.Count - 1)].path;
 			}
+		}
+	}
+
+
+	private void HotkeyField (IRect rect, SavingHotkey saving, string label) {
+
+		int padding = Unify(4);
+
+		// Label
+		GUI.SmallLabel(rect, label);
+		rect = rect.ShrinkLeft(GUI.LabelWidth);
+
+		// Key
+		rect.width = Unify(96);
+		if (GUI.Button(rect, Util.GetKeyDisplayName(saving.Value.Key), Skin.SmallDarkButton)) {
+			ActivatedSetting = saving;
+			ShowKeyboardKeyPopup(rect);
+		}
+		GUI.PopupTriangleIcon(rect.Shrink(rect.height / 8));
+		rect.SlideRight(padding * 4);
+
+		// CSA
+		rect.width = rect.height;
+
+		GUI.BeginChangeCheck();
+
+		// Ctrl
+		rect.x += padding;
+		GUI.Label(rect, "Ctrl", out var bounds, Skin.SmallGreyLabel);
+		rect.x += bounds.width + padding;
+		bool ctrl = GUI.Toggle(rect, saving.Value.Ctrl);
+		rect.SlideRight(padding);
+
+		// Shift
+		rect.x += padding;
+		GUI.Label(rect, "Shift", out bounds, Skin.SmallGreyLabel);
+		rect.x += bounds.width + padding;
+		bool shift = GUI.Toggle(rect, saving.Value.Shift);
+		rect.SlideRight(padding);
+
+		// Alt
+		rect.x += padding;
+		GUI.Label(rect, "Alt", out bounds, Skin.SmallGreyLabel);
+		rect.x += bounds.width + padding;
+		bool alt = GUI.Toggle(rect, saving.Value.Alt);
+		rect.SlideRight(padding);
+
+		if (GUI.EndChangeCheck()) {
+			saving.Value = new Hotkey(saving.Value.Key, ctrl, shift, alt);
+		}
+	}
+
+
+	private void ShowKeyboardKeyPopup (IRect rect) {
+
+		if (Instance == null || ActivatedSetting == null) return;
+
+		GenericPopupUI.BeginPopup(rect.BottomLeft());
+
+		// Letter
+		GenericPopupUI.AddItem(MENU_CATA_LETTER, Const.EmptyMethod);
+		GenericPopupUI.BeginSubItem();
+		for (int i = (int)KeyboardKey.A; i <= (int)KeyboardKey.Z; i++) {
+			Add((KeyboardKey)i);
+		}
+		GenericPopupUI.EndSubItem();
+
+		// Number
+		GenericPopupUI.AddItem(MENU_CATA_NUMBER, Const.EmptyMethod);
+		GenericPopupUI.BeginSubItem();
+		for (int i = (int)KeyboardKey.Digit1; i <= (int)KeyboardKey.Digit0; i++) {
+			Add((KeyboardKey)i);
+		}
+		for (int i = (int)KeyboardKey.Numpad0; i <= (int)KeyboardKey.Numpad9; i++) {
+			Add((KeyboardKey)i);
+		}
+		GenericPopupUI.EndSubItem();
+
+		// Sign
+		GenericPopupUI.AddItem(MENU_CATA_SIGN, Const.EmptyMethod);
+		GenericPopupUI.BeginSubItem();
+
+		Add(KeyboardKey.Backquote);
+		Add(KeyboardKey.Backslash);
+		Add(KeyboardKey.Comma);
+		Add(KeyboardKey.Equals);
+		Add(KeyboardKey.LeftBracket);
+		Add(KeyboardKey.Minus);
+		Add(KeyboardKey.NumpadDivide);
+		Add(KeyboardKey.NumpadEquals);
+		Add(KeyboardKey.NumpadMinus);
+		Add(KeyboardKey.NumpadMultiply);
+		Add(KeyboardKey.NumpadPeriod);
+		Add(KeyboardKey.NumpadPlus);
+		Add(KeyboardKey.Period);
+		Add(KeyboardKey.Quote);
+		Add(KeyboardKey.RightBracket);
+		Add(KeyboardKey.Semicolon);
+		Add(KeyboardKey.Slash);
+
+		GenericPopupUI.EndSubItem();
+
+		// Other
+		GenericPopupUI.AddItem(MENU_CATA_OTHER, Const.EmptyMethod);
+		GenericPopupUI.BeginSubItem();
+
+		Add(KeyboardKey.F1);
+		Add(KeyboardKey.F2);
+		Add(KeyboardKey.F3);
+		Add(KeyboardKey.F4);
+		Add(KeyboardKey.F5);
+		Add(KeyboardKey.F6);
+		Add(KeyboardKey.F7);
+		Add(KeyboardKey.F8);
+		Add(KeyboardKey.F9);
+		Add(KeyboardKey.F10);
+		Add(KeyboardKey.F11);
+		Add(KeyboardKey.F12);
+
+		GenericPopupUI.EndSubItem();
+
+		// Func
+		static void Add (KeyboardKey _k) => GenericPopupUI.AddItem(
+			Util.GetKeyDisplayName(_k),
+			Invoke,
+			data: _k,
+			@checked: Instance.ActivatedSetting.Value.Key == _k
+		);
+		static void Invoke () {
+			if (Instance == null || Instance.ActivatedSetting == null) return;
+			if (GenericPopupUI.Instance.InvokingItemData is not KeyboardKey newKey) return;
+			var value = Instance.ActivatedSetting.Value;
+			Instance.ActivatedSetting.Value = new Hotkey(newKey, value.Ctrl, value.Shift, value.Alt);
 		}
 	}
 

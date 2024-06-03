@@ -346,7 +346,7 @@ public class Engine {
 		Instance?.RefreshProjectCache();
 		Instance?.CheckResourceChanged();
 		Instance?.CheckEngineResourceChanged();
-		
+
 	}
 
 
@@ -945,12 +945,12 @@ public class Engine {
 		if (GUI.IsTyping || Transceiver.RespondMessage.IsTyping) return;
 
 		// Clear Console
-		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.C)) {
+		if (EngineSetting.Hotkey_ClearConsole.Value.Down()) {
 			Console.Instance.Clear();
 		}
 
 		// Update Project Editor
-		if (Input.KeyboardDownWithCtrl(KeyboardKey.R) || ProjectEditor.Instance.RequiringRebuildFrame == Game.GlobalFrame) {
+		if (EngineSetting.Hotkey_Recompile.Value.Down() || ProjectEditor.Instance.RequiringRebuildFrame == Game.GlobalFrame) {
 			RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
 			if (RequireBackgroundBuildDate == 0) {
 				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
@@ -961,33 +961,29 @@ public class Engine {
 		}
 
 		// Run Game
-		if (Input.KeyboardDownWithCtrlAndShift(KeyboardKey.R)) {
+		if (EngineSetting.Hotkey_Run.Value.Down()) {
 			EngineUtil.RunAngeliaBuild(CurrentProject);
 		}
 
 		// Switch Window
-		if (Input.KeyboardDown(KeyboardKey.F1)) {
-			SetCurrentWindowIndex(0);
+		if (EngineSetting.Hotkey_Window_MapEditor.Value.Down()) {
+			SetCurrentWindowIndex<RiggedMapEditor>();
 		}
-		if (Input.KeyboardDown(KeyboardKey.F2)) {
-			SetCurrentWindowIndex(1);
+		if (EngineSetting.Hotkey_Window_Artwork.Value.Down()) {
+			SetCurrentWindowIndex<PixelEditor>();
 		}
-		if (Input.KeyboardDown(KeyboardKey.F3)) {
-			SetCurrentWindowIndex(2);
+		if (EngineSetting.Hotkey_Window_Language.Value.Down()) {
+			SetCurrentWindowIndex<LanguageEditor>();
 		}
-		if (Input.KeyboardDown(KeyboardKey.F4)) {
-			SetCurrentWindowIndex(3);
+		if (EngineSetting.Hotkey_Window_Console.Value.Down()) {
+			SetCurrentWindowIndex<Console>();
 		}
-		if (Input.KeyboardDown(KeyboardKey.F5)) {
-			SetCurrentWindowIndex(4);
+		if (EngineSetting.Hotkey_Window_Project.Value.Down()) {
+			SetCurrentWindowIndex<ProjectEditor>();
 		}
-		if (Input.KeyboardDown(KeyboardKey.F6)) {
-			SetCurrentWindowIndex(5);
+		if (EngineSetting.Hotkey_Window_Setting.Value.Down()) {
+			SetCurrentWindowIndex<SettingWindow>();
 		}
-		if (Input.KeyboardDown(KeyboardKey.F7)) {
-			SetCurrentWindowIndex(6);
-		}
-
 	}
 
 
@@ -1351,6 +1347,14 @@ public class Engine {
 	}
 
 
+	private void SetCurrentWindowIndex<W> (bool forceChange = false) where W : WindowUI {
+		for (int i = 0; i < AllWindows.Length; i++) {
+			if (AllWindows[i] is W) {
+				SetCurrentWindowIndex(i, forceChange);
+				return;
+			}
+		}
+	}
 	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
 		index = index.Clamp(0, AllWindows.Length - 1);
 		if (!forceChange && index == CurrentWindowIndex) return;
