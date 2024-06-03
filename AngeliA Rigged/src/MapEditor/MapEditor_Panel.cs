@@ -3,28 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AngeliA;
 
-[assembly: AngeliA.RequireGlobalSprite(atlas: "UI",
-	"Cover.Background",
-	"Cover.LevelBack",
-	"Cover.LevelFront",
-	"Cover.Character",
-	"Cover.CheckPoint",
-	"Cover.Collectable",
-	"Cover.Default",
-	"Cover.Entity",
-	"Cover.Furniture",
-	"Cover.Item",
-	"Cover.ItemEquipment",
-	"Cover.ItemFood",
-	"Cover.ItemWeapon",
-	"Cover.MapGenerator",
-	"Cover.MiniGame",
-	"Cover.Platform",
-	"Cover.System",
-	"Cover.Vegetation",
-	"Cover.Wallpaper"
-)]
-
 namespace AngeliaRigged;
 
 [RequireSpriteFromField]
@@ -92,6 +70,7 @@ public partial class MapEditor {
 	private const int SEARCH_BAR_ID = 3983472;
 
 	// Data
+	private readonly Dictionary<int, PaletteGroup> PaletteGroupCache = new();
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
 	private int SelectingPaletteGroupIndex = 0;
@@ -113,16 +92,38 @@ public partial class MapEditor {
 	#region --- MSG ---
 
 
-	private void Initialize_Palette () {
+	[OnSheetReload]
+	internal static void OnSheetReload () {
+		Instance?.LoadLevelPaletteFromSheetToPool(clearExists: true);
+		Instance?.ApplyPalettePoolChanges();
+	}
 
+
+	private void Initialize_Palette () {
 		DraggingForReorderPaletteGroup = -1;
 		DraggingForReorderPaletteItem = -1;
 		CurrentPaletteTab = PaletteTabType.BuiltIn;
 		PaletteGroups.Clear();
-		PalettePool.Clear();
+		LoadLevelPaletteFromSheetToPool();
+		LoadItemPaletteFromSheetToPool();
+		ApplyPalettePoolChanges();
+	}
+
+
+	private void LoadLevelPaletteFromSheetToPool (bool clearExists = false) {
+
+		// Clear Exists
+		if (clearExists) {
+			PaletteGroups.RemoveAll(
+				group => group.AtlasType == AtlasType.Level || group.AtlasType == AtlasType.Background
+			);
+		}
+
+		// Load New
+		PaletteGroupCache.Clear();
+
 		int spriteCount = Renderer.SpriteCount;
 		int groupCount = Renderer.GroupCount;
-		var palGroupPool = new Dictionary<string, PaletteGroup>();
 
 		// For all Sprite Groups
 		for (int index = 0; index < groupCount; index++) {
@@ -134,13 +135,14 @@ public partial class MapEditor {
 			if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
 
 			string atlasName = firstSprite.Atlas.Name;
-			if (!palGroupPool.TryGetValue(atlasName, out var palGroup)) {
-				palGroupPool.Add(atlasName, palGroup = new PaletteGroup() {
+			int atlasID = firstSprite.Atlas.ID;
+			if (!PaletteGroupCache.TryGetValue(atlasID, out var palGroup)) {
+				PaletteGroupCache.Add(atlasID, palGroup = new PaletteGroup() {
 					Items = new List<PaletteItem>(),
 					GroupName = atlasName,
 					AtlasType = atlasType,
-					CoverID = $"Cover.{atlasName}".AngeHash(),
-					DisplayNameID = $"Palette.{atlasName}".AngeHash(),
+					CoverID = atlasID,
+					DisplayNameID = atlasID,
 				});
 			}
 			palGroup.Items.Add(new PaletteItem() {
@@ -163,13 +165,14 @@ public partial class MapEditor {
 			if (sp.Group != null) continue;
 
 			string atlasName = sp.Atlas.Name;
-			if (!palGroupPool.TryGetValue(atlasName, out var group)) {
-				palGroupPool.Add(atlasName, group = new PaletteGroup() {
+			int atlasID = sp.Atlas.ID;
+			if (!PaletteGroupCache.TryGetValue(atlasID, out var group)) {
+				PaletteGroupCache.Add(atlasID, group = new PaletteGroup() {
 					Items = new List<PaletteItem>(),
 					GroupName = atlasName,
 					AtlasType = atlasType,
-					CoverID = $"Cover.{atlasName}".AngeHash(),
-					DisplayNameID = $"Palette.{atlasName}".AngeHash(),
+					CoverID = atlasID,
+					DisplayNameID = atlasID,
 				});
 			}
 			group.Items.Add(new PaletteItem() {
@@ -181,10 +184,17 @@ public partial class MapEditor {
 			});
 		}
 
-		foreach (var pair in palGroupPool) {
+		foreach (var pair in PaletteGroupCache) {
 			pair.Value.Items.Sort((a, b) => a.Name.CompareTo(b.Name));
 			PaletteGroups.Add(pair.Value);
 		}
+
+		PaletteGroupCache.Clear();
+
+	}
+
+
+	private void LoadItemPaletteFromSheetToPool () {
 
 		// Fill IMapEditorItem
 		var entityGroupPool = new Dictionary<string, PaletteGroup> {{
@@ -239,6 +249,11 @@ public partial class MapEditor {
 			PaletteGroups.Add(group);
 		}
 
+	}
+
+
+	private void ApplyPalettePoolChanges () {
+
 		// Sort Groups
 		PaletteGroups.Sort((a, b) => {
 			int result = a.AtlasType.CompareTo(b.AtlasType);
@@ -246,6 +261,7 @@ public partial class MapEditor {
 		});
 
 		// Palette Pool
+		PalettePool.Clear();
 		for (int i = 0; i < PaletteGroups.Count; i++) {
 			var group = PaletteGroups[i];
 			foreach (var item in group.Items) {
@@ -262,7 +278,6 @@ public partial class MapEditor {
 				PaletteTrie.AddForSearching(item.Name, item);
 			}
 		}
-
 	}
 
 

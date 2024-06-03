@@ -149,7 +149,7 @@ public partial class MapEditor {
 				UserEraseUnique(i, j, z);
 			}
 		}
-		RedirectForRule(unitRect);
+		RedirectForRule(unitRect, z);
 		SelectionUnitRect = null;
 		IsDirty = true;
 	}
@@ -257,7 +257,7 @@ public partial class MapEditor {
 			}
 		}
 		if (!idUniqueEntity) SpawnBlinkParticle(unitRect.ToGlobal(), id);
-		RedirectForRule(unitRect);
+		RedirectForRule(unitRect, z);
 		IsDirty = true;
 	}
 
@@ -326,7 +326,7 @@ public partial class MapEditor {
 		}
 		if (removeOriginal) {
 			SelectionUnitRect = null;
-			RedirectForRule(unitRect);
+			RedirectForRule(unitRect, z);
 			IsDirty = true;
 		}
 		// Func
@@ -405,7 +405,7 @@ public partial class MapEditor {
 				UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true);
 			}
 		}
-		RedirectForRule(unitRect);
+		RedirectForRule(unitRect, z);
 		IsDirty = true;
 		SelectionUnitRect = null;
 		PastingBuffer.Clear();
@@ -435,7 +435,7 @@ public partial class MapEditor {
 			}
 		}
 		if (removeOriginal) {
-			RedirectForRule(unitRect);
+			RedirectForRule(unitRect, z);
 			IsDirty = true;
 		}
 		// Func
@@ -475,30 +475,30 @@ public partial class MapEditor {
 
 
 	// Rule
-	private void RedirectForRule (IRect unitRange) {
+	private void RedirectForRule (IRect unitRange, int z) {
 		unitRange = unitRange.Expand(1);
 		for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
 			for (int j = unitRange.yMin; j < unitRange.yMax; j++) {
-				RedirectForRule(i, j, BlockType.Level);
-				RedirectForRule(i, j, BlockType.Background);
+				RedirectForRule(i, j, z, BlockType.Level);
+				RedirectForRule(i, j, z, BlockType.Background);
 			}
 		}
 	}
-	private void RedirectForRule (int i, int j, BlockType type) {
-		int id = Stream.GetBlockAt(i, j, CurrentZ, type);
+	private void RedirectForRule (int i, int j, int z, BlockType type) {
+		int id = Stream.GetBlockAt(i, j, z, type);
 		if (id == 0) return;
 		int oldID = id;
 		if (ReversedChainPool.TryGetValue(id, out int realRuleID)) id = realRuleID;
 		if (!IdChainPool.TryGetValue(id, out var idChain)) return;
 		if (!ChainRulePool.TryGetValue(id, out string fullRuleString)) return;
-		int tl0 = Stream.GetBlockAt(i - 1, j + 1, CurrentZ, type);
-		int tm0 = Stream.GetBlockAt(i + 0, j + 1, CurrentZ, type);
-		int tr0 = Stream.GetBlockAt(i + 1, j + 1, CurrentZ, type);
-		int ml0 = Stream.GetBlockAt(i - 1, j + 0, CurrentZ, type);
-		int mr0 = Stream.GetBlockAt(i + 1, j + 0, CurrentZ, type);
-		int bl0 = Stream.GetBlockAt(i - 1, j - 1, CurrentZ, type);
-		int bm0 = Stream.GetBlockAt(i + 0, j - 1, CurrentZ, type);
-		int br0 = Stream.GetBlockAt(i + 1, j - 1, CurrentZ, type);
+		int tl0 = Stream.GetBlockAt(i - 1, j + 1, z, type);
+		int tm0 = Stream.GetBlockAt(i + 0, j + 1, z, type);
+		int tr0 = Stream.GetBlockAt(i + 1, j + 1, z, type);
+		int ml0 = Stream.GetBlockAt(i - 1, j + 0, z, type);
+		int mr0 = Stream.GetBlockAt(i + 1, j + 0, z, type);
+		int bl0 = Stream.GetBlockAt(i - 1, j - 1, z, type);
+		int bm0 = Stream.GetBlockAt(i + 0, j - 1, z, type);
+		int br0 = Stream.GetBlockAt(i + 1, j - 1, z, type);
 		int tl1 = ReversedChainPool.TryGetValue(tl0, out int _tl) ? _tl : tl0;
 		int tm1 = ReversedChainPool.TryGetValue(tm0, out int _tm) ? _tm : tm0;
 		int tr1 = ReversedChainPool.TryGetValue(tr0, out int _tr) ? _tr : tr0;
@@ -515,7 +515,7 @@ public partial class MapEditor {
 		if (ruleIndex < 0 || ruleIndex >= idChain.Length) return;
 		int newID = idChain[ruleIndex];
 		if (newID == oldID) return;
-		Stream.SetBlockAt(i, j, CurrentZ, type, newID);
+		Stream.SetBlockAt(i, j, z, type, newID);
 	}
 
 

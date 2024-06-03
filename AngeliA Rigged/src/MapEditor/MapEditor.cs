@@ -17,16 +17,6 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Undo
-	private struct ViewStartUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public IRect ViewRect;
-		public int ViewZ;
-	}
-	private struct ViewEndUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public IRect ViewRect;
-		public int ViewZ;
-	}
 	private struct BlockUndoItem : IUndoItem {
 		public int Step { get; set; }
 		public int FromID;
@@ -168,6 +158,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoPerformedFrame = -1;
 	private int RequireWorldRenderBlinkIndex = -1;
 	private bool? RequireSetMode = null;
+	private Long4? TargetUndoViewPos = null;
 
 
 	#endregion
@@ -487,6 +478,7 @@ public sealed partial class MapEditor : WindowUI {
 			Game.ForceMinViewHeight(MIN_VIEW_HEIGHT);
 			Game.ForceMaxViewHeight(MAX_VIEW_HEIGHT);
 		}
+		TargetUndoViewPos = null;
 
 	}
 
@@ -1055,6 +1047,28 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_Final () {
 
+		// End Undo Register for Current Frame
+		if (LastUndoRegisterFrame == Game.PauselessFrame) {
+			LastUndoRegisterFrame = -1;
+		}
+
+		// Move View for Undo
+		if (TargetUndoViewPos.HasValue) {
+			var pos = TargetUndoViewPos.Value;
+			int x = (int)(pos.x / pos.w) * Const.CEL;
+			int y = (int)(pos.y / pos.w) * Const.CEL;
+			int z = (int)(pos.z / pos.w);
+
+			if (CurrentZ != z) SetViewZ(z);
+
+			if (!Renderer.CameraRect.Shrink(PanelRect.width, Const.CEL * 2, Const.CEL * 2, Const.CEL * 2).Contains(x, y)) {
+				TargetViewRect.x = x - TargetViewRect.width / 2 - PanelRect.width / 2;
+				TargetViewRect.y = y - TargetViewRect.height / 2;
+			}
+
+			TargetUndoViewPos = null;
+		}
+
 		// End Undo Perform for Current Frame
 		if (LastUndoPerformedFrame == Game.PauselessFrame) {
 			LastUndoPerformedFrame = -1;
@@ -1062,19 +1076,10 @@ public sealed partial class MapEditor : WindowUI {
 				RedirectForRule(IRect.MinMaxRect(
 					CurrentUndoRuleMin.x - 1, CurrentUndoRuleMin.y - 1,
 					CurrentUndoRuleMax.x + 2, CurrentUndoRuleMax.y + 2
-				));
+				), CurrentZ);
 			}
 			CurrentUndoRuleMin = default;
 			CurrentUndoRuleMax = default;
-		}
-
-		// End Undo Register for Current Frame
-		if (LastUndoRegisterFrame == Game.PauselessFrame) {
-			LastUndoRegisterFrame = -1;
-			UndoRedo.Register(new ViewEndUndoItem() {
-				ViewRect = TargetViewRect,
-				ViewZ = CurrentZ,
-			});
 		}
 
 		// Mouse Event
@@ -1353,10 +1358,6 @@ public sealed partial class MapEditor : WindowUI {
 		if (LastUndoRegisterFrame != Game.PauselessFrame) {
 			LastUndoRegisterFrame = Game.PauselessFrame;
 			if (!ignoreStep) UndoRedo.GrowStep();
-			UndoRedo.Register(new ViewStartUndoItem() {
-				ViewRect = TargetViewRect,
-				ViewZ = CurrentZ,
-			});
 		}
 
 		// Register
@@ -1377,10 +1378,13 @@ public sealed partial class MapEditor : WindowUI {
 			CurrentUndoRuleMax.y = int.MinValue;
 		}
 
+		Int3? targetUnitPos = null;
+
 		// Perform
 		switch (item) {
 			case BlockUndoItem blockItem:
 				// Block
+				targetUnitPos = new(blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ);
 				Stream.SetBlockAt(
 					blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ, blockItem.Type,
 					reversed ? blockItem.FromID : blockItem.ToID
@@ -1397,29 +1401,32 @@ public sealed partial class MapEditor : WindowUI {
 				int targetID = reversed ? globalPosItem.FromID : globalPosItem.ToID;
 				if (targetID == 0) {
 					int targetIdAlt = reversed ? globalPosItem.ToID : globalPosItem.FromID;
+					if (IUnique.TryGetPositionFromID(targetIdAlt, out var removingPos)) {
+						targetUnitPos = removingPos;
+					}
 					IUnique.RemoveID(targetIdAlt);
 				} else {
 					var targetPos = reversed ? globalPosItem.FromUnitPos : globalPosItem.ToUnitPos;
 					IUnique.SetPosition(targetID, targetPos);
+					targetUnitPos = targetPos;
 				}
-				break;
-			case ViewStartUndoItem viewItem:
-				// View
-				if (!reversed) break;
-				if (CurrentZ != viewItem.ViewZ) {
-					SetViewZ(viewItem.ViewZ);
-				}
-				TargetViewRect = viewItem.ViewRect;
-				break;
-			case ViewEndUndoItem viewItem:
-				// View
-				if (reversed) break;
-				if (CurrentZ != viewItem.ViewZ) {
-					SetViewZ(viewItem.ViewZ);
-				}
-				TargetViewRect = viewItem.ViewRect;
 				break;
 		}
+
+		// Move View
+		if (targetUnitPos.HasValue) {
+			if (TargetUndoViewPos.HasValue) {
+				var pos = TargetUndoViewPos.Value;
+				pos.x += targetUnitPos.Value.x;
+				pos.y += targetUnitPos.Value.y;
+				pos.z += targetUnitPos.Value.z;
+				pos.w++;
+				TargetUndoViewPos = pos;
+			} else {
+				TargetUndoViewPos = new Long4(targetUnitPos.Value.x, targetUnitPos.Value.y, targetUnitPos.Value.z, 1);
+			}
+		}
+
 	}
 
 

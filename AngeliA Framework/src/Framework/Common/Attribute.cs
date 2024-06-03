@@ -13,6 +13,7 @@
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameFocusedAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameLostFocusAttribute : System.Attribute { }
 [System.AttributeUsage(System.AttributeTargets.Method)] public class OnFileDroppedAttribute : System.Attribute { }
+[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSheetReloadAttribute : System.Attribute { }
 
 
 // Project

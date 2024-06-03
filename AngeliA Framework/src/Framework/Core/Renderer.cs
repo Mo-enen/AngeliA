@@ -99,6 +99,8 @@ public static class Renderer {
 	[OnGameInitialize(-4096)]
 	internal static void Initialize () {
 
+		Util.LinkEventWithAttribute<OnSheetReloadAttribute>(typeof(Renderer), nameof(OnSheetLoaded));
+
 		// Create Layers
 		var capacities = new int[RenderLayer.COUNT];
 		DEFAULT_CAPACITY.CopyTo(capacities, 0);
@@ -282,7 +284,7 @@ public static class Renderer {
 		var universe = UniverseSystem.CurrentUniverse;
 
 		// Artwork >> Sheet
-		SheetUtil.RecreateSheetIfArtworkModified(universe.SheetPath, universe.ArtworkRoot);
+		SheetUtil.RecreateSheetIfArtworkModified(universe.SheetPath, universe.AsepriteRoot);
 
 		// Load Sheet
 		MainSheetFileModifyDate = 0;
