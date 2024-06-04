@@ -22,16 +22,7 @@ public static class SavingSystem {
 	// MSG
 	[OnGameInitialize(int.MinValue + 1)]
 	internal static void OnGameInitialize () {
-		SavingPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Saving.txt");
-		FileLoaded = false;
-		LoadFromFile();
-	}
-
-
-	[OnUniverseOpen(int.MinValue + 1)]
-	internal static void OnUniverseOpen () {
-		if (Game.GlobalFrame == 0) return;
-		SavingPath = Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Saving.txt");
+		SavingPath = Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Saving.txt");
 		FileLoaded = false;
 		LoadFromFile();
 	}

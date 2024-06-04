@@ -227,8 +227,8 @@ public static class Input {
 	}
 
 
-	[OnUniverseOpen]
-	public static void OnUniverseOpen () {
+	[OnGameInitializeLater]
+	public static void OnGameInitializeLater () {
 		// Load Config
 		for (int i = 0; i < 8; i++) {
 			KeyMap[(Gamekey)i] = new Int2(KeyboardConfigSaving[i].Value, GamepadConfigSaving[i].Value);

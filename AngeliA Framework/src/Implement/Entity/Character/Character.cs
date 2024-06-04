@@ -86,13 +86,11 @@ public abstract partial class Character : Rigidbody {
 
 	// Data
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
-	private static int GlobalInventoryInitVersion = 0;
 	protected int LastRequireBounceFrame = int.MinValue;
 	private int _TeleportEndFrame = 0;
 	private int _TeleportDuration = 0;
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
-	private int LocalInventoryInitVersion = -1;
 	private int IgnoreInventoryFrame = int.MinValue;
 
 
@@ -104,10 +102,36 @@ public abstract partial class Character : Rigidbody {
 	#region --- MSG ---
 
 
-	[OnUniverseOpen(4096)]
-	public static void OnUniverseOpen () {
-		GlobalInventoryInitVersion++;
-		TryCreateCharacterInfo();
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () {
+		// Create All Character Name File
+		string path = Universe.BuiltIn.CharacterInfoPath;
+		if (Util.FileExists(path)) return;
+		var builder = new StringBuilder();
+		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
+			builder.AppendLine(type.AngeName());
+		}
+		Util.TextToFile(builder.ToString(), path);
+	}
+
+
+	public Character () => InitInventory();
+
+
+	private void InitInventory () {
+		// Init Inventory
+		if (IsCharacterWithInventory) {
+			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
+			if (Inventory.HasInventory(TypeID)) {
+				int invCount = Inventory.GetInventoryCapacity(TypeID);
+				if (invCount != COUNT) {
+					Inventory.ResizeItems(TypeID, COUNT);
+				}
+			} else {
+				// Create New
+				Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
+			}
+		}
 	}
 
 
@@ -124,24 +148,6 @@ public abstract partial class Character : Rigidbody {
 	}
 
 
-	private void Update_InitInventory () {
-		// Init Inventory
-		if (IsCharacterWithInventory && GlobalInventoryInitVersion != LocalInventoryInitVersion) {
-			LocalInventoryInitVersion = GlobalInventoryInitVersion;
-			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-			if (Inventory.HasInventory(TypeID)) {
-				int invCount = Inventory.GetInventoryCapacity(TypeID);
-				if (invCount != COUNT) {
-					Inventory.ResizeItems(TypeID, COUNT);
-				}
-			} else {
-				// Create New
-				Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
-			}
-		}
-	}
-
-
 	// Physics Update
 	public override void FirstUpdate () {
 		if (CharacterState == CharacterState.GamePlay) {
@@ -152,7 +158,6 @@ public abstract partial class Character : Rigidbody {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		Update_InitInventory();
 		BeforeUpdate_BuffValue();
 	}
 
@@ -624,17 +629,6 @@ public abstract partial class Character : Rigidbody {
 			bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);
 		}
 		return reverse ? -bounce : bounce;
-	}
-
-
-	private static void TryCreateCharacterInfo () {
-		string path = UniverseSystem.CurrentUniverse.CharacterInfoPath;
-		if (Util.FileExists(path)) return;
-		var builder = new StringBuilder();
-		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
-			builder.AppendLine(type.AngeName());
-		}
-		Util.TextToFile(builder.ToString(), path);
 	}
 
 

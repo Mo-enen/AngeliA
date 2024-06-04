@@ -6,7 +6,7 @@ namespace AngeliA;
 public abstract class FontData {
 
 	public string Name;
-	public string FilePath;
+	public string Path;
 	public long FileModifyDate;
 	public int LocalLayerIndex;
 	public int Size = 42;
@@ -27,7 +27,7 @@ public abstract class FontData {
 		int hashIndex = name.IndexOf('#');
 
 		Name = (hashIndex >= 0 ? name[..hashIndex] : name).TrimStart_Numbers();
-		FilePath = fontPath;
+		Path = fontPath;
 		FileModifyDate = Util.GetFileModifyDate(fontPath);
 		LocalLayerIndex = layerIndex;
 		Size = 42;
@@ -55,20 +55,27 @@ public abstract class FontData {
 }
 
 
-public class MusicData {
+public abstract class AudioData {
 
 	public int ID;
 	public string Name;
 	public string Path;
+
+	[OnGameInitializeLater(4096)]
+	internal static void OnGameInitializeLater () {
+		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot);
+	}
 
 }
 
 
-public class SoundData {
+public class MusicData : AudioData {
 
-	public int ID;
-	public string Name;
-	public string Path;
+}
+
+
+public class SoundData : AudioData {
+
 	public object Data;
 
 }

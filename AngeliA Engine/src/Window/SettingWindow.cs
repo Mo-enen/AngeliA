@@ -302,19 +302,19 @@ public class SettingWindow : WindowUI {
 		HotkeyField(rect, EngineSetting.Hotkey_Window_MapEditor, LABEL_HOTKEY_MEDT);
 		rect.SlideDown(itemPadding);
 
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Artwork, LABEL_HOTKEY_MEDT);
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Artwork, LABEL_HOTKEY_ART);
 		rect.SlideDown(itemPadding);
 
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Language, LABEL_HOTKEY_MEDT);
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Language, LABEL_HOTKEY_LANGUAGE);
 		rect.SlideDown(itemPadding);
 
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Console, LABEL_HOTKEY_MEDT);
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Console, LABEL_HOTKEY_CONSOLE);
 		rect.SlideDown(itemPadding);
 
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Project, LABEL_HOTKEY_MEDT);
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Project, LABEL_HOTKEY_PROJECT);
 		rect.SlideDown(itemPadding);
 
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Setting, LABEL_HOTKEY_MEDT);
+		HotkeyField(rect, EngineSetting.Hotkey_Window_Setting, LABEL_HOTKEY_SETTING);
 		rect.SlideDown(itemPadding);
 
 
@@ -381,7 +381,7 @@ public class SettingWindow : WindowUI {
 		if (RequiringReloadThemePath) {
 			RequiringReloadThemePath = false;
 			ThemePaths.Clear();
-			string themeFolder = Util.CombinePaths(UniverseSystem.BuiltInUniverse.UniverseRoot, "Theme");
+			string themeFolder = Util.CombinePaths(Universe.BuiltIn.UniverseRoot, "Theme");
 			if (!Util.FolderExists(themeFolder)) return;
 			foreach (var path in Util.EnumerateFiles(themeFolder, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
 				ThemePaths.Add((path, Util.GetDisplayName(Util.GetNameWithoutExtension(path))));

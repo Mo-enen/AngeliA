@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 public abstract class CheckPoint : EnvironmentEntity {
@@ -20,7 +20,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 	public static int LastTriggeredCheckPointID { get; private set; } = 0;
 
 	// Short
-	private static string UnlockFolderPath => Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "Unlocked CP");
+	private static string UnlockFolderPath => Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Unlocked CP");
 
 	// Data
 	private static readonly HashSet<int> UnlockedCheckPoint = new();
@@ -35,8 +35,16 @@ public abstract class CheckPoint : EnvironmentEntity {
 	#region --- MSG ---
 
 
-	[OnUniverseOpen]
-	public static void OnUniverseOpen () => LoadUnlockFromFile();
+	[OnGameInitializeLater]
+	public static void OnGameInitializeLater () {
+		// Load Unlock from File
+		UnlockedCheckPoint.Clear();
+		foreach (var path in Util.EnumerateFiles(UnlockFolderPath, true, "*")) {
+			if (int.TryParse(Util.GetNameWithoutExtension(path), out int id)) {
+				UnlockedCheckPoint.TryAdd(id);
+			}
+		}
+	}
 
 
 	[OnGameRestart]
@@ -162,24 +170,6 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 
 	protected virtual bool TryGetAltarPosition (out Int3 altarUnitPos) => IUnique.TryGetPositionFromID(LinkedAltarID, out altarUnitPos);
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private static void LoadUnlockFromFile () {
-		UnlockedCheckPoint.Clear();
-		foreach (var path in Util.EnumerateFiles(UnlockFolderPath, true, "*")) {
-			if (int.TryParse(Util.GetNameWithoutExtension(path), out int id)) {
-				UnlockedCheckPoint.TryAdd(id);
-			}
-		}
-	}
 
 
 	#endregion

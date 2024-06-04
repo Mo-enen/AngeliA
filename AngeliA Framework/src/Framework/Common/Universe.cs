@@ -18,7 +18,8 @@ public class UniverseInfo {
 
 public class Universe {
 
-	// Path
+	public static Universe BuiltIn { get; private set; }
+
 	public string UniverseRoot { get; private set; }
 	public string SheetPath { get; private set; }
 	public string ConversationRoot { get; private set; }
@@ -36,16 +37,24 @@ public class Universe {
 	public string FontRoot { get; private set; }
 	public string CharacterConfigRoot { get; private set; }
 	public string CharacterInfoPath { get; private set; }
-
-	// Api
 	public UniverseInfo Info { get; private set; }
-	public bool Readonly { get; private set; }
 
 	// MSG
-	public static Universe LoadUniverse (string universeFolder, bool @readonly, bool useBuiltInSavingRoot = false) {
+	[OnGameInitialize(int.MinValue)]
+	internal static void OnGameInitializeMin () {
+		BuiltIn = LoadFromFile(
+			AngePath.BuiltInUniverseRoot,
+			useBuiltInSavingRoot: true
+		);
+		BuiltIn.CreateFolders();
+		BuiltIn.Info.ModifyDate = System.DateTime.Now.ToFileTime();
+		AngePath.SetCurrentUserPath(BuiltIn.Info.DeveloperName, BuiltIn.Info.ProductName);
+	}
+
+	// API
+	public static Universe LoadFromFile (string universeFolder, bool useBuiltInSavingRoot = false) {
 		string infoPath = AngePath.GetUniverseInfoPath(universeFolder);
 		var result = new Universe {
-			Readonly = @readonly,
 			UniverseRoot = universeFolder,
 			SheetPath = AngePath.GetSheetPath(universeFolder),
 			ConversationRoot = AngePath.GetConversationRoot(universeFolder),
@@ -71,7 +80,6 @@ public class Universe {
 		return result;
 	}
 
-	// API
 	public void CreateFolders () {
 		Util.CreateFolder(ConversationRoot);
 		Util.CreateFolder(UniverseMetaRoot);

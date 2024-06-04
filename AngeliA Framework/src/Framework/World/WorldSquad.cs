@@ -53,8 +53,8 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
-	[OnUniverseOpen]
-	public static void OnUniverseOpen () {
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () {
 		SwitchToCraftedMode(forceOperate: true);
 		Reset();
 	}
@@ -233,9 +233,9 @@ public class WorldSquad : IBlockSquad {
 		if (!forceOperate && newChannel == Channel) return;
 		Channel = newChannel;
 		string mapRoot = newChannel switch {
-			MapChannel.General => UniverseSystem.CurrentUniverse.MapRoot,
-			MapChannel.Procedure => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, folderName),
-			_ => UniverseSystem.CurrentUniverse.MapRoot,
+			MapChannel.General => Universe.BuiltIn.MapRoot,
+			MapChannel.Procedure => Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, folderName),
+			_ => Universe.BuiltIn.MapRoot,
 		};
 		Stream = WorldStream.GetOrCreateStream(mapRoot);
 		OnMapFolderChanged?.Invoke();

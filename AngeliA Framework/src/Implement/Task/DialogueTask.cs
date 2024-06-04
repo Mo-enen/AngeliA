@@ -47,16 +47,6 @@ public class DialogueTask : TaskItem {
 	#region --- MSG ---
 
 
-	[OnUniverseOpen]
-	internal static void OnUniverseOpen () {
-		Util.TryCompileDialogueFiles(
-			UniverseSystem.CurrentUniverse.EditableConversationRoot,
-			UniverseSystem.CurrentUniverse.ConversationRoot,
-			forceCompile: false
-		);
-	}
-
-
 	public DialogueTask () => Main = this;
 
 
@@ -94,7 +84,7 @@ public class DialogueTask : TaskItem {
 	public static void StartConversation<D> (string globalName) where D : DialogueUI {
 
 		string conversationPath = Util.CombinePaths(
-			UniverseSystem.CurrentUniverse.ConversationRoot, globalName,
+			Universe.BuiltIn.ConversationRoot, globalName,
 			$"{Language.CurrentLanguage}.{AngePath.CONVERSATION_FILE_EXT}"
 		);
 		if (Main == null || Task.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;

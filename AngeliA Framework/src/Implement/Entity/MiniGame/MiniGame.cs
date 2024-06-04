@@ -97,7 +97,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	public MiniGame () {
 		if (BadgeCount > 0) {
 			Badges = JsonUtil.LoadOrCreateJson<BadgesSaveData>(
-				rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
+				rootPath: Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "MiniGame"),
 				name: GetType().Name
 			);
 			Badges.FixBadgeCount(BadgeCount);
@@ -202,7 +202,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 		Badges.SetBadge(index, quality);
 		JsonUtil.SaveJson(
 			Badges,
-			rootPath: Util.CombinePaths(UniverseSystem.CurrentUniverse.SavingMetaRoot, "MiniGame"),
+			rootPath: Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "MiniGame"),
 			name: GetType().Name
 		);
 		OnBadgeSpawn?.Invoke(quality);

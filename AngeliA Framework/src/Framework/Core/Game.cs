@@ -171,7 +171,6 @@ public abstract partial class Game {
 
 			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
 
-			SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot);
 			_SetFullscreen(_IsFullscreen.Value);
 			_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
 			_SetMusicVolume(MusicVolume);
@@ -330,7 +329,7 @@ public abstract partial class Game {
 			}
 		}
 		foreach (var fontPath in Util.EnumerateFiles(rootPath, true, "*.ttf")) {
-			if (Fonts.Any(font => font.FilePath == fontPath)) continue;
+			if (Fonts.Any(font => font.Path == fontPath)) continue;
 			var data = Instance.CreateNewFontData();
 			if (data == null || !data.LoadFromFile(fontPath, builtIn)) continue;
 			Fonts.Add(data);
@@ -349,7 +348,7 @@ public abstract partial class Game {
 		for (int i = 0; i < Fonts.Count; i++) {
 			var font = Fonts[i];
 			if (font.BuiltIn) continue;
-			if (!Util.FileExists(font.FilePath)) {
+			if (!Util.FileExists(font.Path)) {
 				// File Deleted
 				font.Unload();
 				Fonts.RemoveAt(i);
@@ -357,10 +356,10 @@ public abstract partial class Game {
 				fontChanged = true;
 				continue;
 			}
-			if (Util.GetFileModifyDate(font.FilePath) != font.FileModifyDate) {
+			if (Util.GetFileModifyDate(font.Path) != font.FileModifyDate) {
 				// File Modified
 				font.Unload();
-				bool loaded = font.LoadFromFile(font.FilePath, font.BuiltIn);
+				bool loaded = font.LoadFromFile(font.Path, font.BuiltIn);
 				if (!loaded) {
 					Fonts.RemoveAt(i);
 					i--;
@@ -369,7 +368,7 @@ public abstract partial class Game {
 			}
 		}
 		foreach (var fontPath in Util.EnumerateFiles(rootPath, true, "*.ttf")) {
-			if (Fonts.Any(font => font.FilePath == fontPath)) continue;
+			if (Fonts.Any(font => font.Path == fontPath)) continue;
 			// Load New Font
 			var data = Instance.CreateNewFontData();
 			if (data == null || !data.LoadFromFile(fontPath, builtIn: false)) continue;

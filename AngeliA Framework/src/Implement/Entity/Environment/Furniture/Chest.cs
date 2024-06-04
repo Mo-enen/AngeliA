@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 // Map Chest
 public class MapChestWood : MapChest, ICombustible {
@@ -17,6 +17,6 @@ public class PlayerItemChest : InventoryChest, ICombustible {
 	protected override int InventoryColumn => 10;
 	protected override int InventoryRow => 8;
 	int ICombustible.BurnStartFrame { get; set; }
-	[OnUniverseOpen(32)]
-	public static void OnUniverseOpen () => Inventory.SetUnlockItemsInside(TYPE_ID, true);
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () => Inventory.SetUnlockItemsInside(TYPE_ID, true);
 }

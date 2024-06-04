@@ -169,15 +169,6 @@ public sealed partial class MapEditor : WindowUI {
 	#region --- MSG ---
 
 
-	[OnUniverseOpen]
-	internal static void OnUniverseOpen () {
-		if (Game.GlobalFrame > 0 && Stage.PeekOrGetEntity(TYPE_ID) is MapEditor editor) {
-			editor.Initialized = false;
-			if (editor.Active) editor.Active = false;
-		}
-	}
-
-
 	[OnGameQuitting]
 	internal static void OnGameQuitting_Editor () => Instance?.OnEditorQuit();
 
@@ -200,7 +191,7 @@ public sealed partial class MapEditor : WindowUI {
 		Initialized = true;
 
 		// Init Pool
-		var universe = UniverseSystem.CurrentUniverse;
+		var universe = Universe.BuiltIn;
 		UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
 		Stream = WorldStream.GetOrCreateStream(universe.MapRoot);
 		EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.MapRoot);
@@ -256,8 +247,8 @@ public sealed partial class MapEditor : WindowUI {
 			Save();
 		}
 
-		JsonUtil.SaveJson(EditorMeta, UniverseSystem.CurrentUniverse.MapRoot);
-		FrameworkUtil.DeleteAllEmptyMaps(UniverseSystem.CurrentUniverse.MapRoot);
+		JsonUtil.SaveJson(EditorMeta, Universe.BuiltIn.MapRoot);
+		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.MapRoot);
 		IUnique.SaveToDisk(Stream.MapRoot);
 		WorldSquad.SwitchToCraftedMode();
 		WorldSquad.Enable = true;

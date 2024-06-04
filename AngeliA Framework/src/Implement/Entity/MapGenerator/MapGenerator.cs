@@ -30,7 +30,7 @@ public abstract class MapGenerator : Entity {
 			return _HasMapInDisk.Value;
 		}
 	}
-	protected string ProcedureMapRoot => Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, GetType().Name);
+	protected string ProcedureMapRoot => Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, GetType().Name);
 	protected string TempMapRoot => Util.CombinePaths(AngePath.ProcedureMapTempRoot, GetType().Name);
 	protected WorldStream SampleReader { get; private set; } = null;
 	protected WorldStream ResultWriter { get; private set; } = null;
@@ -49,14 +49,14 @@ public abstract class MapGenerator : Entity {
 	#region --- MSG ---
 
 
-	[OnUniverseOpen]
-	public static void OnUniverseOpen () {
-		Util.DeleteFolder(UniverseSystem.CurrentUniverse.ProcedureMapRoot);
-		Util.CreateFolder(UniverseSystem.CurrentUniverse.ProcedureMapRoot);
+	[OnGameInitializeLater]
+	public static void OnGameInitializeLater () {
+		Util.DeleteFolder(Universe.BuiltIn.ProcedureMapRoot);
+		Util.CreateFolder(Universe.BuiltIn.ProcedureMapRoot);
 		Util.DeleteFolder(AngePath.ProcedureMapTempRoot);
 		Util.CreateFolder(AngePath.ProcedureMapTempRoot);
 		foreach (var type in typeof(MapGenerator).AllChildClass()) {
-			Util.CreateFolder(Util.CombinePaths(UniverseSystem.CurrentUniverse.ProcedureMapRoot, type.Name));
+			Util.CreateFolder(Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, type.Name));
 			Util.CreateFolder(Util.CombinePaths(AngePath.ProcedureMapTempRoot, type.Name));
 		}
 	}
@@ -85,7 +85,7 @@ public abstract class MapGenerator : Entity {
 			generator.CancelAsyncGeneration();
 		}
 		// Delete Files
-		foreach (string path in Util.EnumerateFolders(UniverseSystem.CurrentUniverse.ProcedureMapRoot, true)) {
+		foreach (string path in Util.EnumerateFolders(Universe.BuiltIn.ProcedureMapRoot, true)) {
 			Util.DeleteFolder(path);
 			Util.CreateFolder(path);
 		}
@@ -103,7 +103,7 @@ public abstract class MapGenerator : Entity {
 			string procedureMapRoot = ProcedureMapRoot;
 			string tempMapRoot = TempMapRoot;
 
-			SampleReader = WorldStream.GetOrCreateStream(UniverseSystem.CurrentUniverse.MapRoot);
+			SampleReader = WorldStream.GetOrCreateStream(Universe.BuiltIn.MapRoot);
 			ResultWriter = new WorldStream();
 			ResultWriter.Load(tempMapRoot);
 

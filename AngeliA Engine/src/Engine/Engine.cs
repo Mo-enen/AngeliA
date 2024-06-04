@@ -179,7 +179,7 @@ public class Engine {
 		// Grow Engine Version
 		string obsoleteInfoPath = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Obsolete Info.json");
 		if (Util.FileExists(obsoleteInfoPath)) {
-			var universe = UniverseSystem.BuiltInUniverse;
+			var universe = Universe.BuiltIn;
 			universe.Info.EngineBuildVersion++;
 			JsonUtil.SaveJsonToPath(universe.Info, universe.InfoPath, prettyPrint: true);
 			Util.DeleteFile(obsoleteInfoPath);
@@ -346,7 +346,7 @@ public class Engine {
 		Instance?.RefreshProjectCache();
 		Instance?.CheckResourceChanged();
 		Instance?.CheckEngineResourceChanged();
-
+		Instance?.CheckDialogChanged();
 	}
 
 
@@ -412,7 +412,7 @@ public class Engine {
 				project.Universe.MusicRoot,
 				Util.GetNameWithExtension(path)
 			));
-			Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, project.UniversePath);
+			Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, project.UniversePath);
 		}
 		static void ImportForSound () {
 			string path = Instance.DroppingFilePath;
@@ -422,7 +422,7 @@ public class Engine {
 				project.Universe.SoundRoot,
 				Util.GetNameWithExtension(path)
 			));
-			Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, project.UniversePath);
+			Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, project.UniversePath);
 		}
 	}
 
@@ -1400,19 +1400,20 @@ public class Engine {
 		RiggedMapEditor.Instance.CleanDirty();
 
 		// Audio
-		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
+		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
 
 		// Font
 		Game.UnloadFontsFromPool(ignoreBuiltIn: true);
 		Game.LoadFontsIntoPool(CurrentProject.Universe.FontRoot, builtIn: false);
 
-		// Script
+		// Change Check
 		CheckScriptChanged();
 		CheckEngineResourceChanged();
+		CheckDialogChanged();
 
 		// Sync Engine Version
-		if (UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
-			CurrentProject.Universe.Info.EngineBuildVersion = UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion;
+		if (Universe.BuiltIn.Info.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
+			CurrentProject.Universe.Info.EngineBuildVersion = Universe.BuiltIn.Info.EngineBuildVersion;
 			JsonUtil.SaveJsonToPath(CurrentProject.Universe.Info, CurrentProject.Universe.InfoPath, true);
 		}
 
@@ -1474,7 +1475,7 @@ public class Engine {
 			MajorVersion = 0,
 			MinorVersion = 0,
 			PatchVersion = 0,
-			EngineBuildVersion = UniverseSystem.BuiltInUniverse.Info.EngineBuildVersion,
+			EngineBuildVersion = Universe.BuiltIn.Info.EngineBuildVersion,
 		};
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
 
@@ -1522,7 +1523,7 @@ public class Engine {
 			Transceiver.CallingMessage.RequireClearCharPoolInvoke();
 		}
 		// Audio
-		Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, CurrentProject.UniversePath);
+		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
 		// Icon
 		if (ProjectEditor.Instance.IconFileModified()) {
 			ProjectEditor.Instance.ReloadIconUI();
@@ -1570,6 +1571,13 @@ public class Engine {
 
 
 	}
+
+
+	private void CheckDialogChanged () => EngineUtil.TryCompileDialogueFiles(
+		Universe.BuiltIn.EditableConversationRoot,
+		Universe.BuiltIn.ConversationRoot,
+		forceCompile: false
+	);
 
 
 	// Misc

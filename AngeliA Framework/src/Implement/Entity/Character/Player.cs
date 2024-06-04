@@ -104,8 +104,8 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 	#region --- MSG ---
 
 
-	[OnUniverseOpen]
-	public static void OnUniverseOpen_Player () => SelectPlayer(LastPlayerID.Value);
+	[OnGameInitializeLater]
+	public static void OnGameInitializeLaterPlayer () => SelectPlayer(LastPlayerID.Value);
 
 
 	public override void OnActivated () {

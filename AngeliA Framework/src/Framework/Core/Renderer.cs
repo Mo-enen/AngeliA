@@ -129,13 +129,6 @@ public static class Renderer {
 	}
 
 
-	[OnUniverseOpen]
-	internal static void OnUniverseOpen () {
-		if (Game.GlobalFrame == 0) return;
-		LoadMainSheet();
-	}
-
-
 	[OnGameFocused]
 	internal static void OnGameFocused () {
 		// Reload Main Sheet on Changed
@@ -281,7 +274,7 @@ public static class Renderer {
 
 	public static void LoadMainSheet () {
 
-		var universe = UniverseSystem.CurrentUniverse;
+		var universe = Universe.BuiltIn;
 
 		// Artwork >> Sheet
 		SheetUtil.RecreateSheetIfArtworkModified(universe.SheetPath, universe.AsepriteRoot);
@@ -294,8 +287,8 @@ public static class Renderer {
 			MainSheetFilePath = universe.SheetPath;
 			MainSheetFileModifyDate = Util.GetFileModifyDate(universe.SheetPath);
 		}
-		if (!loaded && universe != UniverseSystem.BuiltInUniverse) {
-			string path = UniverseSystem.BuiltInUniverse.SheetPath;
+		if (!loaded && universe != Universe.BuiltIn) {
+			string path = Universe.BuiltIn.SheetPath;
 			loaded = MainSheet.LoadFromDisk(path);
 			if (loaded) {
 				MainSheetFilePath = path;

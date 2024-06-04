@@ -368,7 +368,7 @@ public class ProjectEditor : WindowUI {
 			var _rect = rect.ShrinkLeft(labelWidth);
 			// Click
 			if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
-				Game.OpenUrl(fontData.FilePath);
+				Game.OpenUrl(fontData.Path);
 			}
 			// Menu
 			if (rightButtonDown && _rect.MouseInside()) {
@@ -397,7 +397,7 @@ public class ProjectEditor : WindowUI {
 						if (Instance.MenuItem is not MusicData music) return;
 						if (Instance.CurrentProject == null) return;
 						Util.DeleteFile(music.Path);
-						Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, Instance.CurrentProject.UniversePath);
+						Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, Instance.CurrentProject.UniversePath);
 					}
 					break;
 				case SoundData sound:
@@ -407,7 +407,7 @@ public class ProjectEditor : WindowUI {
 						if (Instance.MenuItem is not SoundData sound) return;
 						if (Instance.CurrentProject == null) return;
 						Util.DeleteFile(sound.Path);
-						Game.SyncAudioPool(UniverseSystem.BuiltInUniverse.UniverseRoot, Instance.CurrentProject.UniversePath);
+						Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, Instance.CurrentProject.UniversePath);
 					}
 					break;
 				case FontData font:
@@ -416,7 +416,7 @@ public class ProjectEditor : WindowUI {
 					static void DeleteFont () {
 						if (Instance.MenuItem is not FontData font) return;
 						if (Instance.CurrentProject == null) return;
-						Util.DeleteFile(font.FilePath);
+						Util.DeleteFile(font.Path);
 						Game.SyncFontsWithPool(Instance.CurrentProject.Universe.FontRoot);
 					}
 					break;
@@ -432,7 +432,7 @@ public class ProjectEditor : WindowUI {
 					Game.OpenUrl(Util.GetParentPath(sound.Path));
 					break;
 				case FontData font:
-					Game.OpenUrl(Util.GetParentPath(font.FilePath));
+					Game.OpenUrl(Util.GetParentPath(font.Path));
 					break;
 			}
 		}

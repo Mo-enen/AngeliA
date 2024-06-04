@@ -32,13 +32,11 @@ public class Project {
 		IconPath = Util.CombinePaths(projectPath, "Icon.ico"),
 		UniversePath = AngePath.GetUniverseRoot(projectPath),
 		CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(""),
-		Universe = Universe.LoadUniverse(
+		Universe = Universe.LoadFromFile(
 			AngePath.GetUniverseRoot(projectPath),
-			useBuiltInSavingRoot: true,
-			@readonly: false
+			useBuiltInSavingRoot: true
 		),
 	};
-
 
 
 }

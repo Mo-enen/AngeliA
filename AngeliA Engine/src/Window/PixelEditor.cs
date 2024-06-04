@@ -87,7 +87,6 @@ public partial class PixelEditor : WindowUI {
 	private readonly List<SpriteData> StagedSprites = new();
 	private readonly List<string> AllRigCharacterNames = new();
 	private Project CurrentProject;
-	private string SheetPath = "";
 	private readonly bool AllowSpirteActionOnlyOnHoldingOptionKey = true;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
@@ -123,7 +122,7 @@ public partial class PixelEditor : WindowUI {
 	#region --- MSG ---
 
 
-	[OnGameInitializeLater]
+	[OnGameInitializeLater(32)]
 	internal static void OnGameInitializeLater () {
 		if (Instance == null) return;
 		Instance.SheetIndex = Renderer.AddAltSheet(Sheet);
@@ -165,7 +164,7 @@ public partial class PixelEditor : WindowUI {
 			DrawAsepriteExistsHint();
 			return;
 		}
-		if (string.IsNullOrEmpty(SheetPath) || CurrentProject == null) return;
+		if (CurrentProject == null) return;
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();
@@ -830,27 +829,26 @@ public partial class PixelEditor : WindowUI {
 			Sheet.Clear();
 			return;
 		}
-		SheetPath = project.Universe.SheetPath;
 		IsDirty = false;
 		CurrentAtlasIndex = -1;
 		DraggingStateLeft = DragStateLeft.None;
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
-		Sheet.LoadFromDisk(SheetPath);
+		Sheet.LoadFromDisk(project.Universe.SheetPath);
 		ResetCharacterNameList();
 		AsepriteFolderExists = Util.FolderExists(project.Universe.AsepriteRoot);
 	}
 
 
 	public override void Save (bool forceSave = false) {
-		if (AsepriteFolderExists) {
+		if (AsepriteFolderExists || CurrentProject == null) {
 			IsDirty = false;
 			return;
 		}
 		if (!forceSave && !IsDirty) return;
 		IsDirty = false;
-		if (string.IsNullOrEmpty(SheetPath)) return;
-		Sheet.SaveToDisk(SheetPath);
+		if (string.IsNullOrEmpty(CurrentProject.Universe.SheetPath)) return;
+		Sheet.SaveToDisk(CurrentProject.Universe.SheetPath);
 	}
 
 

@@ -123,13 +123,6 @@ public abstract class PoseCharacter : Character {
 	#region --- MSG ---
 
 
-	[OnUniverseOpen(32)]
-	public static void OnUniverseOpen_Pose () {
-		if (Game.IsToolApplication) return;
-		if (Game.GlobalFrame != 0) InitializePose();
-	}
-
-
 	[OnGameInitialize]
 	public static void InitializePose () {
 
@@ -140,7 +133,7 @@ public abstract class PoseCharacter : Character {
 
 		// Config Pool
 		ConfigPool.Clear();
-		string metaRoot = UniverseSystem.CurrentUniverse.CharacterConfigRoot;
+		string metaRoot = Universe.BuiltIn.CharacterConfigRoot;
 		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
 		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
 

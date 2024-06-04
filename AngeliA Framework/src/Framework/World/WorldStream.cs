@@ -49,23 +49,6 @@ public sealed class WorldStream : IBlockSquad {
 
 
 
-	#region --- MSG ---
-
-
-	[BeforeUniverseOpen]
-	internal static void BeforeUniverseOpen () {
-		string oldPath = UniverseSystem.CurrentUniverse.MapRoot;
-		if (StreamPool.Remove(oldPath, out var stream)) {
-			stream.Clear();
-		}
-	}
-
-
-	#endregion
-
-
-
-
 	#region --- API ---
 
 

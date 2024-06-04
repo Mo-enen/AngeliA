@@ -59,8 +59,8 @@ public interface IUnique {
 	}
 
 
-	[OnUniverseOpen]
-	public static void OnUniverseOpen () => LoadFromDisk(UniverseSystem.CurrentUniverse.MapRoot);
+	[OnGameInitializeLater]
+	public static void OnGameInitializeLater () => LoadFromDisk(Universe.BuiltIn.MapRoot);
 
 
 	#endregion
