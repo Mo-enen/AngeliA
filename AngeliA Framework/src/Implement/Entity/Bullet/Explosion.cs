@@ -5,8 +5,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 [EntityAttribute.Layer(EntityLayer.BULLET)]
-[RequireSpriteFromField]
-[RequireSprite("{0}")]
+
 public class Explosion : Entity {
 
 

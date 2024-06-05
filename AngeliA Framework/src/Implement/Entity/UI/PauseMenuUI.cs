@@ -6,7 +6,7 @@ namespace AngeliA;
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(1, 1)]
-[RequireLanguageFromField]
+
 [EntityAttribute.StageOrder(4096)]
 public class PauseMenuUI : MenuUI {
 

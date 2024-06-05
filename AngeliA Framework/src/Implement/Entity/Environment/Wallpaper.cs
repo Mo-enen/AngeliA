@@ -1,17 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-[assembly: AngeliA.RequireGlobalSprite(atlas: "Entity", "Wallpaper")]
-
-
 namespace AngeliA;
+
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Wallpaper")]
-[RequireSprite("{0}")]
 public abstract class Wallpaper : Entity {
 
 

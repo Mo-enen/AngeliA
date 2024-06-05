@@ -673,6 +673,10 @@ public static class Extension {
 		from.width.LerpTo(to.width, lerp),
 		from.height.LerpTo(to.height, lerp)
 	);
+	public static IRect EdgeLeft (this IRect rect, int size) => rect.Shrink(0, rect.width - size, 0, 0);
+	public static IRect EdgeRight (this IRect rect, int size) => rect.Shrink(rect.width - size, 0, 0, 0);
+	public static IRect EdgeDown (this IRect rect, int size) => rect.Shrink(0, 0, 0, rect.height - size);
+	public static IRect EdgeUp (this IRect rect, int size) => rect.Shrink(0, 0, rect.height - size, 0);
 	public static IRect EdgeInside (this IRect rect, Direction4 edge, int size = 1) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.height - size, 0),
 		Direction4.Down => rect.Shrink(0, 0, 0, rect.height - size),
@@ -765,6 +769,43 @@ public static class Extension {
 			Util.Min(rect.xMax, other.xMax),
 			Util.Min(rect.yMax, other.yMax)
 		);
+	}
+
+	public static bool Dodge (this IRect rect, IRect dodge, out IRect? resultTop, out IRect? resultMidL, out IRect? resultMidR, out IRect? resultBottom) {
+		resultTop = null;
+		resultMidL = null;
+		resultMidR = null;
+		resultBottom = null;
+		if (!rect.Overlaps(dodge) || rect.CompleteInside(dodge)) return false;
+
+		// Top
+		int topHeight = rect.yMax - dodge.yMax;
+		if (topHeight > 0) {
+			resultTop = rect.EdgeInside(Direction4.Up, topHeight);
+		}
+
+		// Bottom
+		int bottomHeight = dodge.y - rect.y;
+		if (bottomHeight > 0) {
+			resultBottom = rect.EdgeInside(Direction4.Down, bottomHeight);
+		}
+
+		int midTop = Util.Min(rect.yMax, dodge.yMax);
+		int midBottom = Util.Max(rect.y, dodge.y);
+
+		// Mid L
+		int midLWidth = dodge.x - rect.x;
+		if (midLWidth > 0) {
+			resultMidL = new IRect(rect.x, midBottom, midLWidth, midTop - midBottom);
+		}
+
+		// Mid R
+		int midRWidth = rect.xMax - dodge.xMax;
+		if (midRWidth > 0) {
+			resultMidR = new IRect(dodge.xMax, midBottom, midRWidth, midTop - midBottom);
+		}
+
+		return true;
 	}
 
 

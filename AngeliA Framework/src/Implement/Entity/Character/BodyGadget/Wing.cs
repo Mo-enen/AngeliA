@@ -10,8 +10,6 @@ public class DevilWing : Wing { protected override int Scale => 600; }
 public class PropellerWing : Wing { }
 
 
-[RequireSprite("{1}.Wing")]
-[RequireLanguage("{1}.Wing")]
 public abstract class Wing : BodyGadget {
 
 

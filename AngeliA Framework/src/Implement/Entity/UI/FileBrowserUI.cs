@@ -5,8 +5,8 @@ using System.Collections.Generic;
 namespace AngeliA;
 [EntityAttribute.StageOrder(4095)]
 [EntityAttribute.Capacity(1, 0)]
-[RequireLanguageFromField]
-[RequireSpriteFromField]
+
+
 public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 

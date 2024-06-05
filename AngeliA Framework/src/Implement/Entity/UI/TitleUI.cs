@@ -16,7 +16,6 @@ public class PassTitleUI : TitleUI {
 
 
 [EntityAttribute.MapEditorGroup("System")]
-[RequireSprite("{0}")]
 public abstract class TitleUI : Entity {
 
 

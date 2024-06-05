@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA; 
-[RequireSpriteFromField]
+
 public class PassOutStarParticle : Particle {
 
 	private static readonly int TYPE_ID = typeof(PassOutStarParticle).AngeHash();

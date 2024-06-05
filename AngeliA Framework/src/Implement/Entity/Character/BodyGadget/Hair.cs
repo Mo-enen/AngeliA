@@ -5,7 +5,11 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-[RequireSprite("{1}.BraidL", "{1}.BraidR")]
+public sealed class DefaultHair : Hair {
+	public static readonly int TYPE_ID = typeof(DefaultHair).AngeHash();
+}
+
+
 public abstract class BraidHair : Hair {
 
 	private static readonly Cell[] SINGLE_CELL = new Cell[] { new() };
@@ -213,8 +217,6 @@ public abstract class BraidHair : Hair {
 }
 
 
-[RequireSprite("{1}.HairFFL", "{1}.HairFFR", "{1}.HairFB", "{1}.HairBF")]
-[RequireLanguage("{1}.Hair")]
 public abstract class Hair : BodyGadget {
 
 
@@ -324,7 +326,7 @@ public abstract class Hair : BodyGadget {
 				hairRect.CenterX(), hairRect.y + hairRect.height,
 				500, 1000, 0,
 				hairRect.width, hairRect.height,
-				character.HairColor, z
+				z
 			);
 
 		}

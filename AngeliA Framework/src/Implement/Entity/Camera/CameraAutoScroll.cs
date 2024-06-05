@@ -6,7 +6,6 @@ namespace AngeliA;
 [EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("System")]
 [EntityAttribute.UpdateOutOfRange]
-[RequireSprite("{0}")]
 public sealed class CameraAutoScroll : Entity {
 
 

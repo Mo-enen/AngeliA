@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[RequireSpriteFromField]
+
 public static class BuiltInSprite {
 
 	public static readonly SpriteCode NPC = "NPC";

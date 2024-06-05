@@ -12,7 +12,6 @@ public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, Ma
 
 
 [EntityAttribute.MapEditorGroup("ItemWeapon")]
-[RequireSprite("{0}.Main")]
 public abstract class Weapon : Equipment {
 
 	// VAR

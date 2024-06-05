@@ -1,14 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.Globalization;
-
-[assembly: AngeliA.RequireGlobalLanguage("Language.Creator")]
-
 
 namespace AngeliA; 
-
 
 [System.AttributeUsage(System.AttributeTargets.Method)]
 public class OnLanguageChangedAttribute : System.Attribute { }

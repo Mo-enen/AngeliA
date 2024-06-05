@@ -313,7 +313,7 @@ public static partial class Util {
 		return fVolume * fVolume;
 	}
 
-	
+
 	// Random
 	public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
 	public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();

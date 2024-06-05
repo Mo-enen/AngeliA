@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 [EntityAttribute.Capacity(1, 0)]
-[RequireLanguageFromField]
+
 public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
@@ -16,7 +16,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	protected enum SubMenuType {
 		Head, Body, ShoulderArmArmHand, LegLegFoot,
 		Face, Hair, Ear, Tail, Wing, Horn,
-		SkinColor, HairColor,
 		Suit_Head, Suit_BodyShoulderArmArm, Suit_HipSkirtLegLeg, Suit_Hand, Suit_Foot,
 		Height,
 	}
@@ -66,8 +65,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		("UI.BodyPart.Tail", "Tail"),
 		("UI.BodyPart.Wing", "Wing"),
 		("UI.BodyPart.Horn", "Horn"),
-		("UI.BodyPart.SkinColor", "Skin Color"),
-		("UI.BodyPart.HairColor", "Hair Color"),
 		("UI.Suit.Hat", "Hat"),
 		("UI.Suit.Bodysuit", "Body Suit"),
 		("UI.Suit.Pants", "Pants"),
@@ -86,8 +83,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		BuiltInSprite.ICON_BODY_PART_TAIL,
 		BuiltInSprite.ICON_BODY_PART_WING,
 		BuiltInSprite.ICON_BODY_PART_HORN,
-		BuiltInSprite.ICON_BODY_PART_SKIN_COLOR,
-		BuiltInSprite.ICON_BODY_PART_HAIR_COLOR,
 		BuiltInSprite.ICON_SUIT_HAT,
 		BuiltInSprite.ICON_SUIT_BODYSUIT,
 		BuiltInSprite.ICON_SUIT_PANTS,
@@ -119,8 +114,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	protected abstract string[] Suit_HipSkirtLegLegs { get; }
 	protected abstract string[] Suit_Foots { get; }
 	protected abstract string[] Suit_Hands { get; }
-	protected abstract string[] Colors_Skin { get; }
-	protected abstract string[] Colors_Hair { get; }
 
 	// Pattern List
 	private static readonly List<PatternUnit> Patterns_Head = new();
@@ -138,8 +131,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	private static readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = new();
 	private static readonly List<PatternUnit> Patterns_Suit_Hand = new();
 	private static readonly List<PatternUnit> Patterns_Suit_Foot = new();
-	private static readonly List<PatternUnit> Patterns_ColorSkin = new();
-	private static readonly List<PatternUnit> Patterns_ColorHair = new();
 
 	// Data
 	private readonly SubMenuType[] MainMenu = null;
@@ -268,19 +259,12 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
 			);
 			Renderer.DrawPixel(hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
-			//DrawFrame(hitboxRect, 12, 12);
-			//static void DrawFrame (RectInt rect, int thickX, int thickY) {
-			//	CellRenderer.DrawPixel(new RectInt(rect.x - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
-			//	CellRenderer.DrawPixel(new RectInt(rect.xMax - thickX, rect.y - thickY, thickX * 2, rect.height + thickY * 2), Const.GREEN, int.MaxValue - 1);
-			//	CellRenderer.DrawPixel(new RectInt(rect.x, rect.y - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
-			//	CellRenderer.DrawPixel(new RectInt(rect.x, rect.yMax - thickY, rect.width, thickY * 2), Const.GREEN, int.MaxValue - 1);
-			//}
 		}
 
 		// Editor
 		int padding = Unify(16);
 		var rightPanelRect = windowRect.Shrink(leftPanelWidth + padding, 0, 0, 0);
-		EditorUI(rightPanelRect, player);
+		EditorUI(rightPanelRect);
 
 	}
 
@@ -323,13 +307,11 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		Patterns_Suit_HipSkirtLegLeg.Clear();
 		Patterns_Suit_Hand.Clear();
 		Patterns_Suit_Foot.Clear();
-		Patterns_ColorSkin.Clear();
-		Patterns_ColorHair.Clear();
 	}
 
 
 	// Rendering
-	private void MainMenuUI (IRect panelRect, Player player) {
+	private void MainMenuUI (IRect panelRect) {
 
 		int fieldHeight = Unify(60);
 		int fieldPadding = Unify(16);
@@ -354,12 +336,26 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			string label = MAIN_MENU_LABELS[(int)_menuType];
 			bool mouseInField = fieldRect.MouseInside();
 
+			// Highlight
+			if (Input.LastActionFromMouse) {
+				// Using Mouse
+				if (mouseInField) {
+					HighlightingMainIndex = i;
+					Renderer.DrawPixel(fieldRect, Color32.GREY_32, EDITOR_BASIC_Z + 1);
+					Cursor.SetCursorAsHand(1);
+				}
+			} else {
+				// Using Key
+				if (i == HighlightingMainIndex) {
+					GUI.HighlightCursor(FRAME_CODE, fieldRect);
+				}
+			}
+
 			// Icon
 			Renderer.Draw(
 				MAIN_MENU_ICONS[(int)_menuType],
 				fieldRect.Shrink(0, fieldRect.width - fieldRect.height, 0, 0).Shrink(iconPadding),
-				_menuType == SubMenuType.SkinColor ? player.SkinColor :
-				_menuType == SubMenuType.HairColor ? player.HairColor : Color32.WHITE,
+				Color32.WHITE,
 				EDITOR_BASIC_Z + 3
 			);
 
@@ -375,21 +371,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 					fieldRect.width, lineSize
 				), Color32.GREY_32, EDITOR_BASIC_Z + 2
 			);
-
-			// Highlight
-			if (Input.LastActionFromMouse) {
-				// Using Mouse
-				if (mouseInField) {
-					HighlightingMainIndex = i;
-					Renderer.DrawPixel(fieldRect, Color32.GREY_32, EDITOR_BASIC_Z + 1);
-					Cursor.SetCursorAsHand(1);
-				}
-			} else {
-				// Using Key
-				if (i == HighlightingMainIndex) {
-					GUI.HighlightCursor(FRAME_CODE, fieldRect);
-				}
-			}
 
 			// Invoke
 			bool invokeSubMenu = false;
@@ -410,7 +391,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	}
 
 
-	private void EditorUI (IRect panelRect, Player player) {
+	private void EditorUI (IRect panelRect) {
 
 		// Background
 		Renderer.DrawPixel(panelRect, Color32.BLACK, EDITOR_BASIC_Z);
@@ -439,7 +420,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		// Content
 		if (!CurrentSubMenu.HasValue) {
 			// Main Content
-			MainMenuUI(panelRect, player);
+			MainMenuUI(panelRect);
 		} else {
 			// Sub Content
 			switch (CurrentSubMenu) {
@@ -488,12 +469,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				case SubMenuType.Hair:
 					SubEditor_Hair(panelRect);
 					break;
-				case SubMenuType.SkinColor:
-					SubEditor_SkinColor(panelRect);
-					break;
-				case SubMenuType.HairColor:
-					SubEditor_HairColor(panelRect);
-					break;
 				case SubMenuType.Height:
 					SubEditor_BodyHeight(panelRect);
 					break;
@@ -506,41 +481,36 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	// Sub Editor
 	private void SubEditor_Head (IRect panelRect) {
 		var player = Player.Selecting;
-		bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 		if (PatternMenuUI(
 			panelRect, Patterns_Head,
-			skinColorAvailable ? player.SkinColor : Color32.WHITE,
+			Color32.WHITE,
 			new Int4(player.Head.ID, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Head[invokingIndex];
 			player.Head.SetSpriteID(pat.A);
-			if (!skinColorAvailable) player.SkinColor = Color32.WHITE;
 		}
 	}
 
 
 	private void SubEditor_Body (IRect panelRect) {
 		var player = Player.Selecting;
-		bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 		if (PatternMenuUI(
 			panelRect, Patterns_BodyHip,
-			skinColorAvailable ? player.SkinColor : Color32.WHITE,
+			Color32.WHITE,
 			new Int4(player.Body.ID, player.Hip.ID, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_BodyHip[invokingIndex];
 			player.Body.SetSpriteID(pat.A);
 			player.Hip.SetSpriteID(pat.B);
-			if (!skinColorAvailable) player.SkinColor = Color32.WHITE;
 		}
 	}
 
 
 	private void SubEditor_ArmLimb (IRect panelRect) {
 		var player = Player.Selecting;
-		bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 		if (PatternMenuUI(
 			panelRect, Patterns_ShoulderArmArmHand,
-			skinColorAvailable ? player.SkinColor : Color32.WHITE,
+			Color32.WHITE,
 			new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
 			out int invokingIndex
 		)) {
@@ -553,17 +523,15 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			player.UpperArmR.SetSpriteID(pat.B);
 			player.LowerArmR.SetSpriteID(pat.C);
 			player.HandR.SetSpriteID(pat.D);
-			if (!skinColorAvailable) player.SkinColor = Color32.WHITE;
 		}
 	}
 
 
 	private void SubEditor_LegLimb (IRect panelRect) {
 		var player = Player.Selecting;
-		bool skinColorAvailable = SubMenuAvailable(SubMenuType.SkinColor);
 		if (PatternMenuUI(
 			panelRect, Patterns_LegLegFoot,
-			skinColorAvailable ? player.SkinColor : Color32.WHITE,
+			Color32.WHITE,
 			new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
 			out int invokingIndex
 		)) {
@@ -574,7 +542,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			player.UpperLegR.SetSpriteID(pat.A);
 			player.LowerLegR.SetSpriteID(pat.B);
 			player.FootR.SetSpriteID(pat.C);
-			if (!skinColorAvailable) player.SkinColor = Color32.WHITE;
 		}
 	}
 
@@ -718,55 +685,15 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	private void SubEditor_Hair (IRect panelRect) {
 		var player = Player.Selecting;
-		bool hairColorAvailable = SubMenuAvailable(SubMenuType.HairColor);
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Hair,
-			hairColorAvailable ? player.HairColor : Color32.WHITE,
+			Color32.WHITE,
 			new Int4(player.HairID, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Hair[invokingIndex];
 			player.HairID = pat.A;
-			if (!hairColorAvailable) player.HairColor = Color32.WHITE;
-		}
-	}
-
-
-	private void SubEditor_SkinColor (IRect panelRect) {
-		var player = Player.Selecting;
-		panelRect.height -= Unify(16);
-		if (PatternMenuUI(
-			panelRect, Patterns_ColorSkin, Color32.WHITE,
-			new Int4(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
-			out int invokingIndex
-		)) {
-			var pat = Patterns_ColorSkin[invokingIndex];
-			player.SkinColor = new Color32(
-				(byte)pat.A.Clamp(0, 255),
-				(byte)pat.B.Clamp(0, 255),
-				(byte)pat.C.Clamp(0, 255),
-				255
-			);
-		}
-	}
-
-
-	private void SubEditor_HairColor (IRect panelRect) {
-		var player = Player.Selecting;
-		panelRect.height -= Unify(16);
-		if (PatternMenuUI(
-			panelRect, Patterns_ColorHair, Color32.WHITE,
-			new Int4(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
-			out int invokingIndex
-		)) {
-			var pat = Patterns_ColorHair[invokingIndex];
-			player.HairColor = new Color32(
-				(byte)pat.A.Clamp(0, 255),
-				(byte)pat.B.Clamp(0, 255),
-				(byte)pat.C.Clamp(0, 255),
-				255
-			);
 		}
 	}
 
@@ -839,11 +766,10 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			var pat = patterns[index].Data;
 			string displayName = patterns[index].DisplayName;
 			bool isLabel = patterns[index].IsLabel;
-			bool forColor = pat.w == int.MinValue;
 			bool isEmpty = patterns[index].IsEmpty;
 
 			// Selecting Highlight
-			if (!isLabel && IsSamePattern(pat, selectingPattern, forColor)) {
+			if (!isLabel && IsSamePattern(pat, selectingPattern)) {
 				int iconSize = rect.height * 8 / 10;
 				Renderer.Draw(
 					SELECTION_MARK,
@@ -858,48 +784,35 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				itemFrameThickness, itemFrameThickness, itemFrameThickness, itemFrameThickness, Color32.GREY_32, EDITOR_BASIC_Z + 4
 			);
 
-			if (!forColor) {
-				// Icon
-				int iconID = pat.x;
-				if (iconID == 0) iconID = pat.y;
-				if (iconID == 0) iconID = pat.z;
-				if (iconID == 0) iconID = pat.w;
-				if (iconID != 0 && Renderer.TryGetSpriteFromGroup(iconID, 0, out var sprite, false, true)) {
-					Renderer.Draw(
-						sprite,
-						rect.Shift(contentPadding, 0).Shrink(iconPadding, rect.width + iconPadding * 2 - rect.height, iconPadding, iconPadding).Fit(sprite),
-						iconTint, EDITOR_BASIC_Z + 3
-					);
-				}
-
-				if (isEmpty) {
-					// Empty Name
-					GUI.Label(rect.Shift(contentPadding * 2, 0), BuiltInText.UI_NONE);
-				} else {
-					if (!isLabel) {
-						// Item Name
-						GUI.Label(
-							rect.Shift(contentPadding * 2, 0).Shrink(rect.height + iconPadding, 0, 0, 0),
-							displayName
-						);
-					} else {
-						// Item Label
-						GUI.Label(rect.Shift(contentPadding * 2, 0), displayName);
-					}
-				}
-			} else {
-				// Color
+			// Icon
+			int iconID = pat.x;
+			if (iconID == 0) iconID = pat.y;
+			if (iconID == 0) iconID = pat.z;
+			if (iconID == 0) iconID = pat.w;
+			if (iconID != 0 && Renderer.TryGetSpriteFromGroup(iconID, 0, out var sprite, false, true)) {
 				Renderer.Draw(
-					Const.PIXEL, rect.Shrink(iconPadding),
-					new Color32(
-						(byte)pat.x.Clamp(0, 255),
-						(byte)pat.y.Clamp(0, 255),
-						(byte)pat.z.Clamp(0, 255),
-						255
-					),
-					EDITOR_BASIC_Z + 3
+					sprite,
+					rect.Shift(contentPadding, 0).Shrink(iconPadding, rect.width + iconPadding * 2 - rect.height, iconPadding, iconPadding).Fit(sprite),
+					iconTint, EDITOR_BASIC_Z + 3
 				);
 			}
+
+			if (isEmpty) {
+				// Empty Name
+				GUI.Label(rect.Shift(contentPadding * 2, 0), BuiltInText.UI_NONE);
+			} else {
+				if (!isLabel) {
+					// Item Name
+					GUI.Label(
+						rect.Shift(contentPadding * 2, 0).Shrink(rect.height + iconPadding, 0, 0, 0),
+						displayName
+					);
+				} else {
+					// Item Label
+					GUI.Label(rect.Shift(contentPadding * 2, 0), displayName);
+				}
+			}
+
 
 			// Hovering Highlight
 			if (!isLabel) {
@@ -987,8 +900,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		SubMenuType.Tail => Patterns_Tail,
 		SubMenuType.Wing => Patterns_Wing,
 		SubMenuType.Horn => Patterns_Horn,
-		SubMenuType.SkinColor => Patterns_ColorSkin,
-		SubMenuType.HairColor => Patterns_ColorHair,
 		SubMenuType.Suit_Head => Patterns_Suit_Head,
 		SubMenuType.Suit_BodyShoulderArmArm => Patterns_Suit_BodyShoulderArmArm,
 		SubMenuType.Suit_Hand => Patterns_Suit_Hand,
@@ -1024,8 +935,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		Patterns_Suit_HipSkirtLegLeg.Clear();
 		Patterns_Suit_Hand.Clear();
 		Patterns_Suit_Foot.Clear();
-		Patterns_ColorSkin.Clear();
-		Patterns_ColorHair.Clear();
 
 		Cloth cloth;
 
@@ -1168,25 +1077,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Foot.Count == 0,
 			});
 
-		// Skin Color
-		foreach (var colorStr in Colors_Skin) {
-			var dColor = System.Drawing.ColorTranslator.FromHtml(colorStr);
-			Patterns_ColorSkin.Add(new PatternUnit() {
-				Data = new Int4(dColor.R, dColor.G, dColor.B, int.MinValue),
-				IsEmpty = false,
-			});
-		}
-
-		// Hair Color
-		foreach (var colorStr in Colors_Hair) {
-			var dColor = System.Drawing.ColorTranslator.FromHtml(colorStr);
-			Patterns_ColorHair.Add(new PatternUnit() {
-				Data = new Int4(dColor.R, dColor.G, dColor.B, int.MinValue),
-				IsEmpty = false,
-			});
-
-		}
-
 	}
 
 
@@ -1210,14 +1100,11 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			SubMenuType.Suit_HipSkirtLegLeg => new Int4(player.Suit_Hip, 0, 0, 0),
 			SubMenuType.Suit_Foot => new Int4(player.Suit_Foot, 0, 0, 0),
 			SubMenuType.Hair => new Int4(player.HairID, 0, 0, 0),
-			SubMenuType.SkinColor => new Int4(player.SkinColor.r, player.SkinColor.g, player.SkinColor.b, int.MinValue + 1),
-			SubMenuType.HairColor => new Int4(player.HairColor.r, player.HairColor.g, player.HairColor.b, int.MinValue + 1),
 			_ => default,
 		};
 		if (patterns == null) return false;
-		bool forColor = type == SubMenuType.HairColor || type == SubMenuType.SkinColor;
 		for (int i = 0; i < patterns.Count; i++) {
-			if (!patterns[i].IsLabel && IsSamePattern(patterns[i].Data, selectingPattern, forColor)) {
+			if (!patterns[i].IsLabel && IsSamePattern(patterns[i].Data, selectingPattern)) {
 				row = i;
 				return true;
 			}
@@ -1226,18 +1113,11 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	}
 
 
-	private static bool IsSamePattern (Int4 x, Int4 y, bool forColor) {
-		if (forColor) {
-			return x.x == y.x && x.y == y.y && x.z == y.z;
-		} else {
-			return
-				(x.IsZero && y.IsZero) ||
-				(x.x != 0 && x.x == y.x) ||
-				(x.y != 0 && x.y == y.y) ||
-				(x.z != 0 && x.z == y.z) ||
-				(x.w != 0 && x.w == y.w);
-		}
-	}
+	private static bool IsSamePattern (Int4 x, Int4 y) => (x.IsZero && y.IsZero) ||
+		(x.x != 0 && x.x == y.x) ||
+		(x.y != 0 && x.y == y.y) ||
+		(x.z != 0 && x.z == y.z) ||
+		(x.w != 0 && x.w == y.w);
 
 
 	#endregion

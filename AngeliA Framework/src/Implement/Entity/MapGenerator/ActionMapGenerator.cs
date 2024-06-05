@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-[RequireLanguageFromField]
+
 public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 
 

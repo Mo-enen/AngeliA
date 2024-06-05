@@ -14,7 +14,6 @@ public enum CharacterAnimationType {
 }
 
 
-[RequireSprite("{0}.Head 0", "{0}.Head 1", "{0}.Body", "{0}.Foot", "{0}.Hand", "{0}.Hip", "{0}.LowerArm", "{0}.LowerLeg", "{0}.Shoulder", "{0}.UpperArm", "{0}.UpperLeg")]
 public abstract class PoseCharacter : Character {
 
 
@@ -56,8 +55,6 @@ public abstract class PoseCharacter : Character {
 	public int HandGrabAttackTwistL { get; set; } = 1000;
 	public int HandGrabAttackTwistR { get; set; } = 1000;
 	public int HideBraidFrame { get; set; } = -1;
-	public Color32 SkinColor { get; set; } = new(239, 194, 160, 255);
-	public Color32 HairColor { get; set; } = new(51, 51, 51, 255);
 	public int CharacterHeight { get; set; } = 160; // in CM
 	public bool BodyPartsReady => BodyParts != null;
 	public override bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
@@ -176,8 +173,8 @@ public abstract class PoseCharacter : Character {
 				}
 
 				// Gadget
-				config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultID) ? defaultID : 0;
-				config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out defaultID) ? defaultID : 0;
+				config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultID) ? defaultID : DefaultFace.TYPE_ID;
+				config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out defaultID) ? defaultID : DefaultHair.TYPE_ID;
 				config.Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out defaultID) ? defaultID : 0;
 				config.Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out defaultID) ? defaultID : 0;
 				config.Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out defaultID) ? defaultID : 0;
@@ -185,10 +182,10 @@ public abstract class PoseCharacter : Character {
 
 				// Suit
 				config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
-				config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out suitID) ? suitID : 0;
-				config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out suitID) ? suitID : 0;
+				config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out suitID) ? suitID : DefaultBodySuit.TYPE_ID;
+				config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out suitID) ? suitID : DefaultHipSuit.TYPE_ID;
 				config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out suitID) ? suitID : 0;
-				config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out suitID) ? suitID : 0;
+				config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out suitID) ? suitID : DefaultFootSuit.TYPE_ID;
 
 				JsonUtil.SaveJsonToPath(config, configPath, prettyPrint: true);
 
@@ -291,7 +288,7 @@ public abstract class PoseCharacter : Character {
 			bodypart.Rotation = 0;
 			bodypart.FrontSide = FacingFront;
 			if (!motionOnly) {
-				bodypart.Tint = SkinColor;
+				bodypart.Tint = Color32.WHITE;
 				bodypart.Covered = BodyPart.CoverMode.None;
 			}
 		}

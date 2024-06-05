@@ -792,18 +792,12 @@ public partial class PixelEditor {
 		// Paste
 		int oldCount = StagedSprites.Count;
 		foreach (var source in SpriteCopyBuffer) {
-			var sprite = source.CreateCopy();
-			sprite.AtlasIndex = CurrentAtlasIndex;
-			sprite.Atlas = Sheet.Atlas[CurrentAtlasIndex];
-			sprite.RealName = Sheet.GetAvailableSpriteName(source.RealName);
-			sprite.ID = sprite.RealName.AngeHash();
-			sprite.PixelRect = source.PixelRect.Shift(offsetX, offsetY);
-			Sheet.AddSprite(sprite);
-			StagedSprites.Add(new SpriteData(sprite));
-			RegisterUndo(new SpriteObjectUndoItem() {
-				Sprite = sprite.CreateCopy(),
-				Create = true,
-			});
+			CopySpriteToStage(
+				source,
+				source.PixelRect.x + offsetX,
+				source.PixelRect.y + offsetY,
+				source.RealName
+			);
 		}
 
 		SetDirty();

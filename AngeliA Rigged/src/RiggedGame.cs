@@ -140,6 +140,27 @@ public partial class RiggedGame : Game {
 
 		if (HostProcess == null || HostProcess.HasExited) return false;
 
+		bool success = Update_MemoryMap();
+		if (!success) return false;
+
+		Update_Calling();
+
+		RespondMessage.Reset();
+		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
+
+		Update_MapEditor();
+
+		Update();
+
+		success = Update_Respond();
+		if (!success) return false;
+
+		return true;
+	}
+
+
+	private bool Update_MemoryMap () {
+
 		// Init Map
 		if (MemMap == null) {
 			MemMap = MemoryMappedFile.CreateOrOpen(MapName, capacity: Const.RIG_BUFFER_SIZE);
@@ -150,7 +171,7 @@ public partial class RiggedGame : Game {
 			RespondMessage.TransationStart();
 		}
 
-		// Sync Buffer
+		// Read Calling from Pipe Mem
 		unsafe {
 			while (*BufferPointer == 1) {
 				Thread.Sleep(1);
@@ -161,6 +182,12 @@ public partial class RiggedGame : Game {
 		}
 		CurrentPressedCharIndex = 0;
 		CurrentPressedKeyIndex = 0;
+
+		return true;
+	}
+
+
+	private void Update_Calling () {
 
 		// Char Requirement
 		for (int i = 0; i < CallingMessage.CharRequiredCount; i++) {
@@ -188,7 +215,7 @@ public partial class RiggedGame : Game {
 			GamepadHoldingFrames[keyIndex] = PauselessFrame;
 		}
 
-		// Event
+		// Requirement
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(0)) {
 			// Require Focus
 			InvokeWindowFocusChanged(true);
@@ -213,11 +240,10 @@ public partial class RiggedGame : Game {
 		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);
 		}
+	}
 
-		// Reset
-		RespondMessage.Reset();
-		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
 
+	private void Update_MapEditor () {
 		// Start View
 		if (StartWithView != default && MapEditor.Instance != null) {
 			MapEditor.Instance.SetView(StartWithView, StartWithZ);
@@ -244,9 +270,10 @@ public partial class RiggedGame : Game {
 				}
 			}
 		}
+	}
 
-		// Update
-		Update();
+
+	private bool Update_Respond () {
 
 		// Quit Check
 		unsafe {
@@ -258,6 +285,7 @@ public partial class RiggedGame : Game {
 			if (RespondMessage.Layers[layer] == null) {
 				RespondMessage.Layers[layer] = new RigRespondMessage.RenderingLayerData(Renderer.GetLayerCapacity(layer));
 			}
+			if (GlobalFrame < 3) continue;
 			var layerData = RespondMessage.Layers[layer];
 			layerData.CellCount = 0;
 			if (!Renderer.GetCells(layer, out var cells, out int count)) continue;
@@ -303,7 +331,7 @@ public partial class RiggedGame : Game {
 		RespondMessage.SoundVolume = SoundVolume;
 		RespondMessage.IsTyping = GUI.IsTyping;
 
-		// Respond
+		// Respond to Memory
 		unsafe {
 			RespondMessage.WriteDataToPipe(BufferPointer + 1);
 			unsafe {
@@ -311,6 +339,7 @@ public partial class RiggedGame : Game {
 			}
 			*BufferPointer = 1;
 		}
+
 		return true;
 	}
 
@@ -330,6 +359,7 @@ public partial class RiggedGame : Game {
 
 		// Draw Colliders
 		if (DrawCollider) {
+
 			// Init Cells
 			if (CellPhysicsCells.Count == 0) {
 				try {
@@ -341,10 +371,11 @@ public partial class RiggedGame : Game {
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 				if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
 			}
+
 			// Draw Cells
 			if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
-				var cameraRect = Renderer.CameraRect;
 				int thick = GUI.Unify(1);
+				var cameraRect = Renderer.CameraRect;
 				for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
 					try {
 						var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
@@ -358,10 +389,10 @@ public partial class RiggedGame : Game {
 									var cell = cells[x, y, d];
 									if (cell.Frame != Physics.CurrentFrame) break;
 									if (!cell.Rect.Overlaps(cameraRect)) continue;
-									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Down, thick), tint);
-									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Up, thick), tint);
-									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Left, thick), tint);
-									DrawGizmosRectAsLine(cell.Rect.EdgeInside(Direction4.Right, thick), tint);
+									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Down, thick), tint);
+									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Up, thick), tint);
+									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Left, thick), tint);
+									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Right, thick), tint);
 								}
 							}
 						}
@@ -379,18 +410,14 @@ public partial class RiggedGame : Game {
 				for (int i = 0; i < count; i++) {
 					var e = entities[i];
 					if (!e.Active) continue;
-					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Down, thick), Color32.CYAN_BETTER);
-					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Up, thick), Color32.CYAN_BETTER);
-					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Left, thick), Color32.CYAN_BETTER);
-					DrawGizmosRectAsLine(e.GlobalBounds.EdgeInside(Direction4.Right, thick), Color32.CYAN_BETTER);
+					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Down, thick), Color32.CYAN_BETTER);
+					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Up, thick), Color32.CYAN_BETTER);
+					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Left, thick), Color32.CYAN_BETTER);
+					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Right, thick), Color32.CYAN_BETTER);
 				}
 			}
 		}
 
-		// Func
-		static void DrawGizmosRectAsLine (IRect rect, Color32 color) {
-			DrawGizmosRect(rect, color);
-		}
 	}
 
 

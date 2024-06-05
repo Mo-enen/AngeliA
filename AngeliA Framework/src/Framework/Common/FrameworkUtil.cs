@@ -179,33 +179,6 @@ public static class FrameworkUtil {
 	}
 
 
-	// Requirement
-	public static IEnumerable<KeyValuePair<string, string>> ForAllSpriteNameRequirements () {
-		foreach (var pair in RequireSpriteFromField.ForAllRequirement()) {
-			yield return pair;
-		}
-		foreach (var pair in RequireGlobalSpriteAttribute.ForAllRequirement()) {
-			yield return pair;
-		}
-		foreach (var pair in RequireSpriteAttribute.ForAllRequirement()) {
-			yield return pair;
-		}
-	}
-
-
-	public static IEnumerable<string> ForAllLanguageKeyRequirements () {
-		foreach (var name in RequireLanguageFromField.ForAllRequirement()) {
-			yield return name;
-		}
-		foreach (var name in RequireGlobalLanguageAttribute.ForAllRequirement()) {
-			yield return name;
-		}
-		foreach (var name in RequireLanguageAttribute.ForAllRequirement()) {
-			yield return name;
-		}
-	}
-
-
 	// Input
 	internal static readonly Dictionary<GamepadKey, int> GAMEPAD_CODE = new() {
 		{ GamepadKey.DpadLeft, BuiltInSprite.GAMEPAD_LEFT},

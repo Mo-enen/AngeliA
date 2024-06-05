@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-[RequireSpriteFromField]
+
 public class Console : WindowUI {
 
 
@@ -47,7 +47,7 @@ public class Console : WindowUI {
 	private static readonly SpriteCode PANEL_BG = "UI.GeneralPanel";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
 	private static readonly LanguageCode TIP_CLEAR = ("Tip.ConsoleClear", "Clear messages (Ctrl + Shift + C)");
-
+	
 	// Api
 	public static Console Instance { get; private set; }
 	public bool HasCompileError => CompileErrorLines.Length > 0;

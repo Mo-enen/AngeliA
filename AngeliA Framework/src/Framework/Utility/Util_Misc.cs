@@ -14,7 +14,7 @@ public static partial class Util {
 		public static volatile float FloatMinDenormal = float.Epsilon;
 		public static bool IsFlushToZeroEnabled = FloatMinDenormal == 0f;
 	}
-
+	
 	public const float Rad2Deg = 57.29578f;
 	public const float Deg2Rad = PI / 180f;
 	public const float PI = 3.14159274F;
@@ -181,20 +181,34 @@ public static partial class Util {
 	);
 
 
-	public static float RemapUnclamped (float l, float r, float newL, float newR, float t) {
-		return l == r ? newL : LerpUnclamped(
-			newL, newR,
-			(t - l) / (r - l)
-		);
-	}
 	public static float Remap (float l, float r, float newL, float newR, float t) {
 		return l == r ? newL : Lerp(
 			newL, newR,
 			(t - l) / (r - l)
 		);
 	}
-	public static int RemapUnclamped (int l, int r, int newL, int newR, int t) => l == r ? newL : newL + (newR - newL) * (t - l) / (r - l);
-	public static int Remap (int l, int r, int newL, int newR, int t) => (l == r ? newL : newL + (newR - newL) * (t - l) / (r - l)).Clamp(newL < newR ? newL : newR, newL > newR ? newL : newR);
+	public static float RemapUnclamped (float l, float r, float newL, float newR, float t) {
+		return l == r ? newL : LerpUnclamped(
+			newL, newR,
+			(t - l) / (r - l)
+		);
+	}
+	public static int Remap (int l, int r, int newL, int newR, int t) => RemapUnclamped(l, r, newL, newR, t.Clamp(l, r));
+	public static int RemapUnclamped (int l, int r, int newL, int newR, int t) {
+		if (l == r) return newL;
+		int deltaNew = newR - newL;
+		int deltaT = t - l;
+		int deltaR = r - l;
+		try {
+			return checked(newL + deltaNew * deltaT / deltaR);
+		} catch {
+			if (deltaNew > deltaT) {
+				return newL + deltaNew / deltaR * deltaT;
+			} else {
+				return newL + deltaT / deltaR * deltaNew;
+			}
+		}
+	}
 
 	public static float InverseLerp (float from, float to, float value) {
 		if (from != to) {

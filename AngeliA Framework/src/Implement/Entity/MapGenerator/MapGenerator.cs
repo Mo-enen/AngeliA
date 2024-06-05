@@ -11,7 +11,6 @@ namespace AngeliA;
 [EntityAttribute.MapEditorGroup("MapGenerator")]
 [EntityAttribute.ForceSpawn]
 [EntityAttribute.Layer(EntityLayer.GAME)]
-[RequireSprite("{0}")]
 public abstract class MapGenerator : Entity {
 
 

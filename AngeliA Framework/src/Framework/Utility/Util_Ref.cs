@@ -132,7 +132,9 @@ public static partial class Util {
 		foreach (var (method, _) in methods) {
 			try {
 				method.Invoke(null, null);
-			} catch (Exception ex) { Debug.LogException(ex); }
+			} catch (Exception ex) {
+				Debug.LogException(ex);
+			}
 		}
 	}
 

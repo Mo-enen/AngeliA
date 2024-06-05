@@ -5,8 +5,8 @@ using System.Collections.Generic;
 namespace AngeliA;
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
-[RequireLanguageFromField]
-[RequireSpriteFromField]
+
+
 public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 

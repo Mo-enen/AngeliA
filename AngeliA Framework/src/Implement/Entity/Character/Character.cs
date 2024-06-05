@@ -3,20 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 
-[assembly: AngeliA.RequireGlobalSprite(atlas: "Character",
-	"DefaultCharacter.Head",
-	"DefaultCharacter.Body",
-	"DefaultCharacter.Hip",
-	"DefaultCharacter.Shoulder",
-	"DefaultCharacter.UpperArm",
-	"DefaultCharacter.LowerArm",
-	"DefaultCharacter.Hand",
-	"DefaultCharacter.LowerLeg",
-	"DefaultCharacter.UpperLeg",
-	"DefaultCharacter.Foot"
-)]
-
-
 namespace AngeliA;
 
 
@@ -31,8 +17,6 @@ public enum CharacterState {
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-[RequireSprite("{0}")]
-[RequireLanguage("@{0}")]
 public abstract partial class Character : Rigidbody {
 
 

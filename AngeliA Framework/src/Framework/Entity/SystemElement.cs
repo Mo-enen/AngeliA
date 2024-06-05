@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 [EntityAttribute.MapEditorGroup("System")]
-[RequireSprite("{0}")]
 public abstract class SystemElement : IMapItem { }
 
 // Number

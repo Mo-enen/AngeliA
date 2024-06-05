@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-[RequireLanguageFromField]
+
 public partial class LanguageEditor : WindowUI {
 
 
@@ -16,7 +16,6 @@ public partial class LanguageEditor : WindowUI {
 	private class LanguageLine {
 		public string Key;
 		public string Label;
-		public bool Required;
 		public bool Visible;
 		public List<string> Value;
 	}
@@ -51,7 +50,6 @@ public partial class LanguageEditor : WindowUI {
 	// Api
 	public static LanguageEditor Instance { get; private set; }
 	public string LanguageRoot { get; private set; } = "";
-	public bool IgnoreRequirements { get; init; } = false;
 	public override string DefaultName => "Language";
 
 	// Data
@@ -71,10 +69,7 @@ public partial class LanguageEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public LanguageEditor (bool ignoreRequirements = false) {
-		Instance = this;
-		IgnoreRequirements = ignoreRequirements;
-	}
+	public LanguageEditor () => Instance = this;
 
 
 	public void SetLanguageRoot (string newRoot) {
@@ -147,7 +142,6 @@ public partial class LanguageEditor : WindowUI {
 			Lines.Insert(0, new LanguageLine() {
 				Key = string.Empty,
 				Label = string.Empty,
-				Required = false,
 				Value = new List<string>(new string[Languages.Count].FillWithValue(string.Empty)),
 			});
 			SetDirty();
@@ -294,26 +288,18 @@ public partial class LanguageEditor : WindowUI {
 			);
 
 			// Key
-			if (!IgnoreRequirements && line.Required) {
-				int _textIndex = Renderer.GetUsedCellCount();
-				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				GUI.Label(shrinkedRect, line.Key, Skin.SmallCenterLabel);
-				Renderer.ClampCells(shrinkedRect, _textIndex);
-				ctrlID++;
-			} else {
-				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Key = GUI.SmallInputField(ctrlID++, shrinkedRect, line.Key, out bool changed, out _);
-				if (changed) {
-					line.Label = Key_to_Label(line.Key);
-					SetDirty();
-				}
+			var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
+			line.Key = GUI.SmallInputField(ctrlID++, shrinkedRect, line.Key, out bool changed, out _);
+			if (changed) {
+				line.Label = Key_to_Label(line.Key);
+				SetDirty();
 			}
 			rect.x += rect.width;
 
 			// Contents
 			for (int j = 0; j < line.Value.Count; j++) {
-				var shrinkedRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Value[j] = GUI.SmallInputField(ctrlID++, shrinkedRect, line.Value[j], out bool changed, out _);
+				var shrinkedContentRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
+				line.Value[j] = GUI.SmallInputField(ctrlID++, shrinkedContentRect, line.Value[j], out changed, out _);
 				if (changed) SetDirty();
 				rect.x += rect.width;
 			}
@@ -392,7 +378,6 @@ public partial class LanguageEditor : WindowUI {
 						Key = key,
 						Label = Key_to_Label(key),
 						Value = new List<string>(new string[count].FillWithValue(string.Empty)),
-						Required = false,
 					};
 					pool.Add(key, Lines.Count);
 					Lines.Add(data);
@@ -400,23 +385,6 @@ public partial class LanguageEditor : WindowUI {
 				data.Value[languageIndex] = value;
 			}
 		}
-
-		// Fill Missing Requirements
-		if (!IgnoreRequirements)
-			foreach (var requiredKey in FrameworkUtil.ForAllLanguageKeyRequirements()) {
-				if (pool.TryGetValue(requiredKey, out int index)) {
-					Lines[index].Required = true;
-					continue;
-				}
-				pool.Add(requiredKey, Lines.Count);
-				Lines.Add(new LanguageLine() {
-					Key = requiredKey,
-					Label = Key_to_Label(requiredKey),
-					Value = new List<string>(new string[count].FillWithValue(string.Empty)),
-					Required = true,
-				});
-				SetDirty();
-			}
 
 		// Sort
 		Lines.Sort(LineComparer.Instance);

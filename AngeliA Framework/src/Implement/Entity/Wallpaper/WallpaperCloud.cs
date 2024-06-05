@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA; 
-[RequireSpriteFromField]
+
 public class WallpaperCloud : Wallpaper {
 
 

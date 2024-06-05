@@ -239,7 +239,7 @@ public class RigRespondMessage {
 	}
 
 
-	public void UpdateRendering (int sheetIndex, int leftPadding) {
+	public void UpdateRendering (int sheetIndex, int leftPadding, IRect dodgingRect) {
 
 		// View
 		ViewHeight = ViewHeight.GreaterOrEquel(Game.MinViewHeight);
@@ -253,9 +253,29 @@ public class RigRespondMessage {
 		}
 
 		// Gizmos Rect
+		var leftTabBarRect = Renderer.CameraRect.EdgeLeft(leftPadding);
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
-			Game.DrawGizmosRect(data.Rect.Shift(leftPadding / 2, 0), data.Color);
+			var rect = data.Rect.Shift(leftPadding / 2, 0);
+			// Dodge Left
+			if (rect.width > rect.height) {
+				// Line H
+				if (rect.x < leftTabBarRect.xMax) {
+					rect.xMin = leftTabBarRect.xMax;
+				}
+			} else {
+				// Line V
+				if (rect.x < leftTabBarRect.xMax) continue;
+			}
+			// Dodge Panel
+			if (rect.Dodge(dodgingRect, out var result0, out var result1, out var result2, out var result3)) {
+				if (result0.HasValue) Game.DrawGizmosRect(result0.Value, data.Color);
+				if (result1.HasValue) Game.DrawGizmosRect(result1.Value, data.Color);
+				if (result2.HasValue) Game.DrawGizmosRect(result2.Value, data.Color);
+				if (result3.HasValue) Game.DrawGizmosRect(result3.Value, data.Color);
+			} else if (!rect.Overlaps(dodgingRect)) {
+				Game.DrawGizmosRect(rect, data.Color);
+			}
 		}
 
 		// Gizmos Texture

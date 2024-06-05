@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-[assembly: AngeliA.RequireGlobalSprite(atlas: "Entity", "Entity")]
 
 namespace AngeliA; 
 

@@ -2,19 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliA.RequireGlobalSprite(atlas: "Character",
-	"DefaultCharacterFace",
-	"DefaultCharacterFace.Face.Normal",
-	"DefaultCharacterFace.Face.Blink",
-	"DefaultCharacterFace.Face.Sleep",
-	"DefaultCharacterFace.Face.Attack",
-	"DefaultCharacterFace.Face.Suffer",
-	"DefaultCharacterFace.Face.PassOut",
-	"DefaultCharacterFace.Face.Damage"
-)]
-
-
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public enum CharacterFaceType {
@@ -28,52 +16,39 @@ public enum CharacterFaceType {
 }
 
 
-public class FaceSpriteID {
+public sealed class DefaultFace : Face {
+	public static readonly int TYPE_ID = typeof(DefaultFace).AngeHash();
+}
 
-	private static readonly int FACE_TYPE_COUNT = typeof(CharacterFaceType).EnumLength();
-	private static int[] DEFAULT_ID = null;
 
-	public int this[CharacterFaceType type] => SpriteIDs[(int)type];
+public abstract class Face : BodyGadget {
 
-	private int[] SpriteIDs { get; init; }
 
-	public FaceSpriteID (string keyword) {
+	// SUB
+	private class FaceSpriteID {
 
-		// Init Default
-		if (DEFAULT_ID == null) {
-			DEFAULT_ID = new int[FACE_TYPE_COUNT];
-			for (int i = 0; i < DEFAULT_ID.Length; i++) {
-				DEFAULT_ID[i] = $"DefaultCharacterFace.Face.{(CharacterFaceType)i}".AngeHash();
-			}
-		}
+		public int this[CharacterFaceType type] => SpriteIDs[(int)type];
 
-		// Set IDs
-		SpriteIDs = new int[FACE_TYPE_COUNT];
-		if (!string.IsNullOrEmpty(keyword)) {
+		private int[] SpriteIDs { get; init; }
+
+		public FaceSpriteID (string keyword) {
+			SpriteIDs = new int[FACE_TYPE_COUNT];
+			if (string.IsNullOrEmpty(keyword)) return;
 			for (int i = 0; i < FACE_TYPE_COUNT; i++) {
 				int id = $"{keyword}.Face.{(CharacterFaceType)i}".AngeHash();
-				if (!Renderer.HasSpriteGroup(id) && !Renderer.HasSprite(id))
-					id = DEFAULT_ID[i];
-				SpriteIDs[i] = id;
+				if (Renderer.HasSpriteGroup(id) || Renderer.HasSprite(id)) {
+					SpriteIDs[i] = id;
+				}
 			}
-		} else {
-			DEFAULT_ID.CopyTo(SpriteIDs, 0);
 		}
 
 	}
 
-}
-
-
-[RequireSprite("{1}.Face.Attack", "{1}.Face.Blink", "{1}.Face.Damage", "{1}.Face.Normal", "{1}.Face.PassOut", "{1}.Face.Sleep", "{1}.Face.Suffer")]
-[RequireLanguage("{1}.Face")]
-public abstract class Face : BodyGadget {
-
 
 	// VAR
+	private static readonly int FACE_TYPE_COUNT = typeof(CharacterFaceType).EnumLength();
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Face;
 	private FaceSpriteID SpriteID { get; init; }
-	private static readonly FaceSpriteID DefaultSpriteID = new("");
 
 
 	// API
@@ -81,11 +56,8 @@ public abstract class Face : BodyGadget {
 
 
 	public static void DrawGadgetFromPool (PoseCharacter character) {
-		if (character.FaceID != 0 && TryGetGadget(character.FaceID, out var face)) {
-			face.DrawGadget(character);
-		} else {
-			DrawSpriteAsFace(character, DefaultSpriteID[GetCurrentFaceType(character)]);
-		}
+		if (character.FaceID == 0 || !TryGetGadget(character.FaceID, out var face)) return;
+		face.DrawGadget(character);
 	}
 
 
@@ -209,13 +181,13 @@ Color32.WHITE, 33
 		var cellL = Renderer.Draw(
 			spriteL,
 			faceRect.x + offsetXL, faceRect.yMax, 1000, 1000, 0,
-			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, character.SkinColor,
+			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
 			facingRight ? 33 : -33
 		);
 		var cellR = Renderer.Draw(
 			spriteR,
 			faceRect.xMax + offsetXR, faceRect.yMax, 0, 1000, 0,
-			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, character.SkinColor,
+			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
 			facingRight ? -33 : 33
 		);
 

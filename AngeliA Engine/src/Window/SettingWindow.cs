@@ -4,8 +4,8 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-[RequireSpriteFromField]
-[RequireLanguageFromField]
+
+
 public class SettingWindow : WindowUI {
 
 
@@ -42,6 +42,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
 	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
+	private static readonly LanguageCode LABEL_CLEAR_CHAR_CONFIG = ("Setting.ClearCharConfig", "Clear Character Config Before Game Start");
 	private static readonly LanguageCode LABEL_HOTKEY_RECOMPILE = ("Setting.Hotkey.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_HOTKEY_RUN = ("Setting.Hotkey.Run", "Run");
 	private static readonly LanguageCode LABEL_HOTKEY_CLEAR_CONSOLE = ("Setting.Hotkey.ClearConsole", "Clear Console");
@@ -164,6 +165,13 @@ public class SettingWindow : WindowUI {
 		// Auto Recompile
 		EngineSetting.AutoRecompile.Value = GUI.Toggle(
 			rect, EngineSetting.AutoRecompile.Value, LABEL_AUTO_RECOMPILE,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Auto Recompile
+		EngineSetting.ClearCharacterConfigBeforeGameStart.Value = GUI.Toggle(
+			rect, EngineSetting.ClearCharacterConfigBeforeGameStart.Value, LABEL_CLEAR_CHAR_CONFIG,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

@@ -8,7 +8,7 @@ namespace AngeliA;
 // Wood
 public class ConveyorWoodLeft : ConveyorWood { protected override int MoveSpeed => -12; }
 public class ConveyorWoodRight : ConveyorWood { protected override int MoveSpeed => 12; }
-[RequireSpriteFromField]
+
 public abstract class ConveyorWood : Conveyor {
 
 	private static readonly SpriteCode CODE_L = "ConveyorWood Left";
@@ -27,7 +27,7 @@ public abstract class ConveyorWood : Conveyor {
 // Iron
 public class ConveyorIronLeft : ConveyorIron { protected override int MoveSpeed => -24; }
 public class ConveyorIronRight : ConveyorIron { protected override int MoveSpeed => 24; }
-[RequireSpriteFromField]
+
 public abstract class ConveyorIron : Conveyor {
 
 	private static readonly SpriteCode CODE_L = "ConveyorIron Left";

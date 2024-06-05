@@ -19,7 +19,7 @@ public class PortalBack : CircleFlamePortal {
 }
 
 
-[RequireSpriteFromField]
+
 public abstract class CircleFlamePortal : Portal {
 	private static readonly SpriteCode CIRCLE_CODE = "PortalCircle";
 	private static readonly SpriteCode FLAME_CODE = "PortalFlame";
@@ -141,7 +141,6 @@ public abstract class CircleFlamePortal : Portal {
 }
 
 
-[RequireSprite("{0}")]
 public abstract class Portal : Entity {
 
 	protected abstract Int3 TargetGlobalPosition { get; }

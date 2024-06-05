@@ -18,7 +18,7 @@ public class WoodDoorBack : Door {
 
 
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
-[RequireLanguageFromField]
+
 public abstract class Door : EnvironmentEntity {
 
 

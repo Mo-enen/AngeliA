@@ -4,7 +4,6 @@ using System.Reflection;
 
 
 namespace AngeliA;
-[RequireSprite("{0}.Idle", "{0}.Walk", "{0}.Run", "{0}.JumpU", "{0}.JumpD", "{0}.Roll", "{0}.Dash", "{0}.Rush", "{0}.SquatIdle", "{0}.SquatMove", "{0}.SwimIdle", "{0}.SwimMove", "{0}.SwimDash", "{0}.Pound", "{0}.Climb", "{0}.Fly", "{0}.Slide", "{0}.GrabTop", "{0}.GrabTopMove", "{0}.GrabSide", "{0}.GrabSideMove", "{0}.GrabFlip", "{0}.Sleep", "{0}.Damage", "{0}.PassOut", "{0}.DoorFront", "{0}.DoorBack", "{0}.Attack")]
 public abstract class SheetCharacter : Character {
 
 

@@ -12,7 +12,6 @@ public abstract class Shooting<B, A> : Shooting where B : ArrowBullet where A : 
 		ArrowItemID = typeof(A).AngeHash();
 	}
 }
-[RequireSprite("{0}.Attack")]
 public abstract class Shooting : ArrowWeapon {
 	public sealed override WeaponType WeaponType => WeaponType.Ranged;
 	public sealed override WeaponHandheld Handheld => WeaponHandheld.Shooting;
@@ -64,7 +63,6 @@ public abstract class Bow<B> : Bow where B : MovableBullet {
 		ArrowItemID = 0;
 	}
 }
-[RequireSprite("{0}.String")]
 public abstract class Bow : ArrowWeapon {
 
 	public sealed override WeaponType WeaponType => WeaponType.Ranged;

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliA; 
-[RequireSprite("{1}.Tail")]
-[RequireLanguage("{1}.Tail")]
 public abstract class Tail : BodyGadget {
 
 

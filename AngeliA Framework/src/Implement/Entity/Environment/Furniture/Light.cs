@@ -21,7 +21,7 @@ public class LampD : Light { }
 
 
 
-[RequireSpriteFromField]
+
 public abstract class Light : Furniture, ICombustible {
 
 	private static readonly SpriteCode LIGHT = "Lamp Light";

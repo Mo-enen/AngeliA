@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-[RequireLanguageFromField]
+
 public static class BuiltInText {
 
 	// Hint
@@ -36,6 +36,7 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_ADD = ("UI.Add", "Add");
 	public static readonly LanguageCode UI_MENU = ("UI.Menu", "Menu");
 	public static readonly LanguageCode UI_EXPLORE = ("UI.Explore", "Open in Explorer");
+	public static readonly LanguageCode UI_IGNORE = ("UI.Ignore", "Ignore");
 
 	// Label
 	public static readonly LanguageCode LABEL_L = ("Label.L", "L");

@@ -31,7 +31,7 @@ public abstract class WardrobeWood : Wardrobe, ICombustible {
 }
 
 
-[RequireLanguageFromField]
+
 public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 
 

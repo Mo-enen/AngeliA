@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-[RequireSpriteFromField]
-[RequireLanguageFromField]
+
+
 public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 

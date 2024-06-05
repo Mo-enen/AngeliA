@@ -10,7 +10,6 @@ namespace AngeliA;
 public enum HelmetWearingMode { Attach, Cover, }
 
 
-[RequireSprite("{0}.Main", "{0}.Back")]
 public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.Helmet;
 	private int SpriteFront { get; init; } = 0;
@@ -72,7 +71,6 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 
 
 
-[RequireSprite("{0}.Body", "{0}.BodyL", "{0}.BodyR", "{0}.Hip", "{0}.Skirt", "{0}.Shoulder", "{0}.UpperArm", "{0}.LowerArm", "{0}.UpperLeg", "{0}.LowerLeg")]
 public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.BodyArmor;
 	private int BodyId { get; init; } = 0;
@@ -149,7 +147,6 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 
 
 
-[RequireSprite("{0}.Main")]
 public abstract class Gloves<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.Gloves;
 	private int SpriteID { get; init; } = 0;
@@ -163,7 +160,6 @@ public abstract class Gloves<P, N> : Armor<P, N> where P : Equipment where N : E
 
 
 
-[RequireSprite("{0}.Main")]
 public abstract class Shoes<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.Shoes;
 	private int SpriteID { get; init; } = 0;

@@ -13,7 +13,6 @@ public class DefaultParticle : Particle {
 [EntityAttribute.Capacity(512)]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.DECORATE)]
-[RequireSprite("{0}")]
 public abstract class Particle : Entity {
 
 

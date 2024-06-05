@@ -16,12 +16,10 @@ public enum FittingPose {
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-[RequireSprite("{0}")]
 public abstract class EnvironmentRigidbody : Rigidbody { }
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-[RequireSprite("{0}")]
 public abstract class EnvironmentEntity : Entity {
 
 

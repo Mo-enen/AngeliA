@@ -35,8 +35,4 @@ public class CharacterConfig {
 	public int SuitHand;
 	public int SuitFoot;
 
-	// Color
-	public int SkinColor = Util.ColorToInt(new Color32(245, 217, 196, 255));
-	public int HairColor = 858993663;
-
 }

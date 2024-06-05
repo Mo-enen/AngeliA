@@ -40,8 +40,8 @@ public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
 
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
-[RequireSpriteFromField]
-[RequireLanguageFromField]
+
+
 public class PlayerMenuUI : EntityUI {
 
 

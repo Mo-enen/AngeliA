@@ -6,7 +6,7 @@ using AngeliA;
 
 namespace AngeliaRigged;
 
-[RequireLanguageFromField]
+
 [EntityAttribute.StageOrder(-4096)]
 public sealed partial class MapEditor : WindowUI {
 

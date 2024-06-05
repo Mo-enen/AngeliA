@@ -2,8 +2,8 @@
 
 namespace AngeliaEngine;
 
-[RequireLanguageFromField]
-[RequireSpriteFromField]
+
+
 public class RiggedMapEditor : WindowUI {
 
 
@@ -169,7 +169,7 @@ public class RiggedMapEditor : WindowUI {
 		if (ProfilerPanelOpening) DrawProfilerPanel(ref panelRect);
 		if (EffectPanelOpening) DrawEffectPanel(ref panelRect);
 
-		// BG
+		// Panel
 		PanelRect = new IRect(panelRect.x, panelRect.y, panelRect.width, panelYMax - panelRect.y);
 		bgCell.X = PanelRect.x;
 		bgCell.Y = PanelRect.y;

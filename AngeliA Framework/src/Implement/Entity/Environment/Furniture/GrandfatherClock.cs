@@ -5,7 +5,7 @@ namespace AngeliA;
 public class GrandfatherClockA : GrandfatherClock { }
 public class GrandfatherClockB : GrandfatherClock { }
 
-[RequireSpriteFromField]
+
 public abstract class GrandfatherClock : Furniture, ICombustible {
 
 	private static readonly SpriteCode HAND_CODE = "Clock Hand";

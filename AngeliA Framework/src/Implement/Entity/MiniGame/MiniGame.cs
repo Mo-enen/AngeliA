@@ -21,9 +21,8 @@ public class MiniGameTask : TaskItem {
 [EntityAttribute.Capacity(1, 0)]
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.MapEditorGroup("MiniGame")]
-[RequireSpriteFromField]
-[RequireLanguageFromField]
-[RequireLanguage("{0}")]
+
+
 public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 
 

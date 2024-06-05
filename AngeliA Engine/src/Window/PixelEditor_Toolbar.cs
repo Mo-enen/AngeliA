@@ -752,6 +752,7 @@ public partial class PixelEditor {
 		// Func
 		static void CreateNew () {
 			if (GenericPopupUI.Instance.InvokingItemData is not Int2 pixPos) return;
+			pixPos.y -= 32;
 			Instance.CreateNewSprite(pixelPos: pixPos);
 		}
 		static void NewPalette () {
@@ -762,12 +763,7 @@ public partial class PixelEditor {
 			if (GenericPopupUI.Instance.InvokingItemData is not (int index, Int2 pixPos)) return;
 			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
 			string name = Instance.AllRigCharacterNames[index];
-
-
-
-
-			
-
+			Instance.CreateSpritesForCharacter(name, pixelPos: pixPos);
 		}
 	}
 

@@ -2,40 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public enum BodyGadgetType { Face, Hair, Ear, Horn, Tail, Wing, }
 
 
-[RequireSprite("{2}")]
 public abstract class BodyGadget {
 
 
 	protected abstract BodyGadgetType GadgetType { get; }
 	private static readonly Dictionary<int, BodyGadget> Pool = new();
-	private static readonly Dictionary<int, int[]> DefaultPool = new();
 	private static readonly int BodyGadgetTypeLength = typeof(BodyGadgetType).EnumLength();
+	private static Dictionary<int, int>[] DefaultPool = null;
 
 
 	// MSG
 	[OnGameInitialize(-127)]
 	public static void BeforeGameInitialize () {
+		DefaultPool = new Dictionary<int, int>[BodyGadgetTypeLength].FillWithNewValue();
 		Pool.Clear();
-		var charType = typeof(Character);
+		var charType = typeof(PoseCharacter);
 		foreach (var type in typeof(BodyGadget).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not BodyGadget gadget) continue;
-			// ID
-			int id = type.AngeHash();
-			Pool.TryAdd(id, gadget);
-			// Default
 			var dType = type.DeclaringType;
 			if (dType != null && dType.IsSubclassOf(charType)) {
-				int dTypeID = dType.AngeHash();
-				if (!DefaultPool.TryGetValue(dTypeID, out int[] ids)) {
-					DefaultPool.Add(dTypeID, ids = new int[BodyGadgetTypeLength]);
-				}
-				ids[(int)gadget.GadgetType] = id;
+				// Declaring
+				int id = $"{dType.AngeName()}.{type.AngeName()}".AngeHash();
+				Pool.TryAdd(id, gadget);
+				// Default
+				var dPool = DefaultPool[(int)gadget.GadgetType];
+				dPool[dType.AngeHash()] = id;
+			} else {
+				// Normal
+				int id = type.AngeHash();
+				Pool.TryAdd(id, gadget);
 			}
 		}
 	}
@@ -46,8 +47,7 @@ public abstract class BodyGadget {
 
 	// API
 	public static bool TryGetDefaultGadgetID (int characterID, BodyGadgetType type, out int gadgetID) {
-		if (DefaultPool.TryGetValue(characterID, out var gadgetsID)) {
-			gadgetID = gadgetsID[(int)type];
+		if (DefaultPool[(int)type].TryGetValue(characterID, out gadgetID)) {
 			return true;
 		} else {
 			gadgetID = 0;

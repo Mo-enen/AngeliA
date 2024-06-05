@@ -5,16 +5,11 @@ using System.Linq;
 using AngeliA;
 using AngeliaRigged;
 
-
 [assembly: ToolApplication]
 [assembly: DisablePause]
 
-
 namespace AngeliaEngine;
 
-
-[RequireSpriteFromField]
-[RequireLanguageFromField]
 public class Engine {
 
 
@@ -159,7 +154,7 @@ public class Engine {
 			AllWindows = new WindowUI[]{
 				new RiggedMapEditor(),
 				new PixelEditor(),
-				new LanguageEditor(ignoreRequirements:true),
+				new LanguageEditor(),
 				new Console(),
 				new ProjectEditor(),
 				new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
@@ -1122,7 +1117,7 @@ public class Engine {
 
 		// Call
 		bool called = false;
-		bool runGame = !rigEdt.FrameDebugging || rigEdt.RequireNextFrame;
+		bool runningGame = !rigEdt.FrameDebugging || rigEdt.RequireNextFrame;
 		rigEdt.RequireNextFrame = false;
 
 		if (
@@ -1157,7 +1152,7 @@ public class Engine {
 				calling.Setting_MEDT_ShowState = EngineSetting.MapEditor_ShowState.Value;
 			}
 
-			if (runGame) {
+			if (runningGame) {
 				Transceiver.Call(
 					ignoreMouseInput:
 						IgnoreInputForRig ||
@@ -1166,7 +1161,8 @@ public class Engine {
 						false,
 					leftPadding:
 						GetEngineLeftBarWidth(out _),
-					requiringWindowIndex: 0
+					requiringWindowIndex:
+						0
 				);
 			}
 			called = true;
@@ -1188,17 +1184,18 @@ public class Engine {
 			Transceiver.Abort();
 		}
 
+		var toolPanelRect = RiggedMapEditor.Instance.PanelRect;
 		int sheetIndex = PixelEditor.Instance.SheetIndex;
 		if (buildingProjectInBackground) {
 			// Building in Background
 			if (CurrentWindowRequireRigGame) {
-				Transceiver.UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}
 		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
 			if (called) {
-				if (runGame) {
-					Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex);
+				if (runningGame) {
+					Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex, toolPanelRect);
 					rigEdt.UpdateUsageData(
 						resp.RenderUsages,
 						resp.RenderCapacities,
@@ -1210,7 +1207,7 @@ public class Engine {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}
 				} else {
-					Transceiver.UpdateLastRespondedRender(sheetIndex);
+					Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect);
 				}
 			}
 		} else if (
@@ -1218,6 +1215,11 @@ public class Engine {
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
+			if (EngineSetting.ClearCharacterConfigBeforeGameStart.Value) {
+				string configFolder = CurrentProject.Universe.CharacterConfigRoot;
+				Util.DeleteFolder(configFolder);
+				Util.CreateFolder(configFolder);
+			}
 			int code = Transceiver.Start(
 				CurrentProject.BuildPath,
 				CurrentProject.UniversePath
@@ -1234,7 +1236,7 @@ public class Engine {
 			}
 			if (CurrentWindowRequireRigGame) {
 				// Still Render Last Image
-				Transceiver.UpdateLastRespondedRender(sheetIndex, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}
 		}
 
@@ -1417,7 +1419,10 @@ public class Engine {
 			JsonUtil.SaveJsonToPath(CurrentProject.Universe.Info, CurrentProject.Universe.InfoPath, true);
 		}
 
-		RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
+		// Rebuild
+		Util.DeleteFolder(CurrentProject.BuildPath);
+		EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
+		RequireBackgroundBuildDate = 0;
 
 	}
 

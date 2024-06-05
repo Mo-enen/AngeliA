@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[assembly: AngeliA.RequireGlobalSprite(atlas: "Character", "Player")]
 
 namespace AngeliA;
 
@@ -18,7 +17,7 @@ public sealed class DefaultPlayer : Player {
 [EntityAttribute.ForceSpawn]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]
-[RequireLanguageFromField]
+
 public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionTarget {
 
 

@@ -169,7 +169,6 @@ public static class Stage {
 			int id = eType.AngeHash();
 			int preSpawn = 0;
 			int capacity = 64;
-
 			var att_Layer = eType.GetCustomAttribute<EntityAttribute.LayerAttribute>(true);
 			var att_Capacity = eType.GetCustomAttribute<EntityAttribute.CapacityAttribute>(true);
 			var att_Bound = eType.GetCustomAttribute<EntityAttribute.BoundsAttribute>(true);
@@ -213,6 +212,7 @@ public static class Stage {
 		Util.LinkEventWithAttribute<OnViewZChangedAttribute>(typeof(Stage), nameof(OnViewZChanged));
 		Util.LinkEventWithAttribute<BeforeLayerFrameUpdateAttribute>(typeof(Stage), nameof(BeforeLayerFrameUpdate));
 		Util.LinkEventWithAttribute<AfterLayerFrameUpdateAttribute>(typeof(Stage), nameof(AfterLayerFrameUpdate));
+
 	}
 
 

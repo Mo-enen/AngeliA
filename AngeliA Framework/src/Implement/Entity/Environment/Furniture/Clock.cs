@@ -13,7 +13,7 @@ public class ClockPurple : Clock, ICombustible {
 }
 
 
-[RequireSpriteFromField]
+
 public abstract class Clock : Furniture {
 
 	private static readonly SpriteCode HAND_CODE = "Clock Hand";

@@ -8,7 +8,6 @@ namespace AngeliA;
 
 // Element
 [EntityAttribute.MapEditorGroup("MapGenerator")]
-[RequireSprite("{0}")]
 public abstract class MapGeneratorElement : IMapItem { }
 public class RoomWall : MapGeneratorElement { }
 public class RoomTunnel : MapGeneratorElement { }

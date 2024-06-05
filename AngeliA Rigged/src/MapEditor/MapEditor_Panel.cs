@@ -5,7 +5,6 @@ using AngeliA;
 
 namespace AngeliaRigged;
 
-[RequireSpriteFromField]
 public partial class MapEditor {
 
 
