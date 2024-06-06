@@ -6,10 +6,7 @@ namespace AngeliA;
 
 
 // Throwing
-public abstract class ThrowingWeapon<B> : ThrowingWeapon where B : MovableBullet {
-	public ThrowingWeapon () => BulletID = typeof(B).AngeHash();
-}
-public abstract class ThrowingWeapon : ProjectileWeapon {
+public abstract class ThrowingWeapon<B> : ProjectileWeapon<B> where B : MovableBullet {
 	public sealed override WeaponType WeaponType => WeaponType.Throwing;
 	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 }

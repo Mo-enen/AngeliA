@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA; 
+
 public class ArrowBullet : MovableBullet {
 
 	public int ArrowItemID { get; set; } = 0;

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA; 
+
 [EntityAttribute.Capacity(4, 0)]
 public abstract class MovableBullet : Bullet {
 

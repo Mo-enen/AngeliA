@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, }
@@ -11,11 +11,16 @@ public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook,
 public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Shooting, Float, }
 
 
+public abstract class Weapon<B> : Weapon where B : Bullet {
+	public Weapon () : base() => BulletID = typeof(B).AngeHash();
+}
+
 [EntityAttribute.MapEditorGroup("ItemWeapon")]
 public abstract class Weapon : Equipment {
 
+
 	// VAR
-	protected int BulletID { get; init; } = 0;
+	protected int BulletID { get; init; }
 	protected int SpriteID { get; init; }
 	public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 	public abstract WeaponType WeaponType { get; }
@@ -45,11 +50,13 @@ public abstract class Weapon : Equipment {
 	public virtual bool AttackWhenPounding => false;
 	protected virtual bool IgnoreGrabTwist => false;
 
+
 	// MSG
 	public Weapon () {
 		SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
 		if (!Renderer.HasSprite(SpriteID)) SpriteID = 0;
 	}
+
 
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
@@ -63,12 +70,125 @@ public abstract class Weapon : Equipment {
 			!Renderer.TryGetSprite(SpriteID, out var sprite)
 		) return;
 
-		DrawWeaponLogic(character, sprite);
+		// Weapon Handheld
+		switch (character.EquippingWeaponHeld) {
+			default:
+			case WeaponHandheld.Float:
+				DrawWeapon_Float(character, sprite);
+				break;
+
+			case WeaponHandheld.SingleHanded:
+				DrawWeapon_SingleHanded(character, sprite);
+				break;
+
+			case WeaponHandheld.DoubleHanded:
+			case WeaponHandheld.Shooting:
+				DrawWeapon_Double_Shoot(character, sprite);
+				break;
+
+			case WeaponHandheld.OneOnEachHand:
+				DrawWeapon_Each(character, sprite);
+				break;
+
+			case WeaponHandheld.Pole:
+				DrawWeapon_Pole(character, sprite);
+				break;
+
+			case WeaponHandheld.Bow:
+				DrawWeapon_Bow(character, sprite);
+				break;
+
+		}
+
 
 	}
 
-	private void DrawWeaponLogic (PoseCharacter character, AngeSprite sprite) {
 
+	private void DrawWeapon_Float (PoseCharacter character, AngeSprite sprite) {
+		const int SHIFT_X = 148;
+		int grabScaleL = character.IsAttacking ? character.HandGrabScaleL : 700;
+		int facingSign = character.FacingRight ? 1 : -1;
+		int moveDeltaX = -character.DeltaPositionX * 2;
+		int moveDeltaY = -character.DeltaPositionY;
+		int facingFrame = Game.GlobalFrame - character.LastFacingChangeFrame;
+		if (facingFrame < 30) {
+			moveDeltaX += (int)Util.LerpUnclamped(
+				facingSign * SHIFT_X * 2, 0,
+				Ease.OutBack(facingFrame / 30f)
+			);
+		}
+		DrawWeaponSprite(
+			character,
+			character.X + (facingSign * -SHIFT_X) + moveDeltaX,
+			character.Y + Const.CEL * character.CharacterHeight / 263 + Game.GlobalFrame.PingPong(240) / 4 + moveDeltaY,
+			sprite.GlobalWidth,
+			sprite.GlobalHeight,
+			0,
+			(sprite.IsTrigger ? facingSign : 1) * grabScaleL,
+			sprite,
+			36
+		);
+	}
+
+
+	private void DrawWeapon_SingleHanded (PoseCharacter character, AngeSprite sprite) {
+		bool attacking = character.IsAttacking;
+		int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
+		int facingSign = character.FacingRight ? 1 : -1;
+		int grabScale = character.HandGrabScaleR;
+		int grabRotation = character.HandGrabRotationR;
+		int z = character.HandR.Z - 1;
+		if (character.EquippingWeaponType == WeaponType.Throwing) {
+			if (
+				attacking &&
+				Game.GlobalFrame - character.LastAttackFrame > AttackDuration / 6
+			) return;
+			grabScale = 700;
+			z = character.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
+		}
+		// Fix Rotation
+		if (sprite.IsTrigger) {
+			if (!attacking) {
+				grabRotation = 0;
+			} else {
+				grabRotation = Util.RemapUnclamped(
+					0, AttackDuration,
+					facingSign * 90, 0,
+					Game.GlobalFrame - character.LastAttackFrame
+				);
+			}
+		}
+		// Draw
+		var center = character.HandR.GlobalLerp(0.5f, 0.5f);
+		DrawWeaponSprite(
+			character,
+			center.x, center.y,
+			sprite.GlobalWidth * twistR / 1000,
+			sprite.GlobalHeight,
+			grabRotation, grabScale,
+			sprite, z
+		);
+	}
+
+
+	private void DrawWeapon_Double_Shoot (PoseCharacter character, AngeSprite sprite) {
+		int twistR = character.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
+		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
+		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+		DrawWeaponSprite(
+			character,
+			(centerL.x + centerR.x) / 2,
+			(centerL.y + centerR.y) / 2,
+			sprite.GlobalWidth * twistR / 1000,
+			sprite.GlobalHeight,
+			character.HandGrabRotationL,
+			character.HandGrabScaleL, sprite,
+			character.HandR.Z - 1
+		);
+	}
+
+
+	private void DrawWeapon_Each (PoseCharacter character, AngeSprite sprite) {
 		bool attacking = character.IsAttacking;
 		int grabScaleL = character.HandGrabScaleL;
 		int grabScaleR = character.HandGrabScaleR;
@@ -76,190 +196,87 @@ public abstract class Weapon : Equipment {
 		int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
 		int zLeft = character.HandL.Z - 1;
 		int zRight = character.HandR.Z - 1;
-		int facingSign = character.FacingRight ? 1 : -1;
-
-		if (character.EquippingWeaponType == WeaponType.Claw) {
-			grabScaleL = grabScaleL * 700 / 1000;
-			grabScaleR = grabScaleR * 700 / 1000;
-			if (sprite.IsTrigger) {
-				zLeft = character.HandL.Z + 1;
-				zRight = character.HandR.Z + 1;
-			}
-		}
-
-		// Draw
-		switch (character.EquippingWeaponHeld) {
-
-			default:
-			case WeaponHandheld.Float: {
-				// Floating
-				const int SHIFT_X = 148;
-				int moveDeltaX = -character.DeltaPositionX * 2;
-				int moveDeltaY = -character.DeltaPositionY;
-				int facingFrame = Game.GlobalFrame - character.LastFacingChangeFrame;
-				if (facingFrame < 30) {
-					moveDeltaX += (int)Util.LerpUnclamped(
-						facingSign * SHIFT_X * 2, 0,
-						Ease.OutBack(facingFrame / 30f)
-					);
-				}
-				DrawWeaponSprite(
-					character,
-					character.X + (facingSign * -SHIFT_X) + moveDeltaX,
-					character.Y + Const.CEL * character.CharacterHeight / 263 + Game.GlobalFrame.PingPong(240) / 4 + moveDeltaY,
-					sprite.GlobalWidth,
-					sprite.GlobalHeight,
-					0,
-					(sprite.IsTrigger ? facingSign : 1) * (attacking ? grabScaleL : 700),
-					sprite,
-					36
-				);
-				break;
-			}
-
-			case WeaponHandheld.SingleHanded: {
-				// Single 
-				int grabScale = grabScaleR;
-				int grabRotation = character.HandGrabRotationR;
-				int z = zRight;
-				if (character.EquippingWeaponType == WeaponType.Throwing) {
-					if (
-						attacking &&
-						Game.GlobalFrame - character.LastAttackFrame > AttackDuration / 6
-					) break;
-					grabScale = 700;
-					z = character.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
-				}
-				// Fix Rotation
-				if (sprite.IsTrigger) {
-					if (!attacking) {
-						grabRotation = 0;
-					} else {
-						grabRotation = Util.RemapUnclamped(
-							0, AttackDuration,
-							facingSign * 90, 0,
-							Game.GlobalFrame - character.LastAttackFrame
-						);
-					}
-				}
-				// Draw
-				var center = character.HandR.GlobalLerp(0.5f, 0.5f);
-				DrawWeaponSprite(
-					character,
-					center.x, center.y,
-					sprite.GlobalWidth * twistR / 1000,
-					sprite.GlobalHeight,
-					grabRotation, grabScale,
-					sprite, z
-				);
-				break;
-			}
-
-			case WeaponHandheld.DoubleHanded:
-			case WeaponHandheld.Shooting: {
-				// Double
-				var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
-				var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
-				DrawWeaponSprite(
-					character,
-					(centerL.x + centerR.x) / 2,
-					(centerL.y + centerR.y) / 2,
-					sprite.GlobalWidth * twistR / 1000,
-					sprite.GlobalHeight,
-					character.HandGrabRotationL,
-					grabScaleL, sprite,
-					zRight
-				);
-				break;
-			}
-
-			case WeaponHandheld.OneOnEachHand: {
-				// Each Hand
-				var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
-				var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
-				DrawWeaponSprite(
-					character,
-					centerL.x, centerL.y,
-					sprite.GlobalWidth * twistL / 1000,
-					sprite.GlobalHeight,
-					character.HandGrabRotationL,
-					grabScaleL, sprite,
-					zLeft
-				);
-				DrawWeaponSprite(
-					character,
-					centerR.x, centerR.y,
-					sprite.GlobalWidth * twistR / 1000,
-					sprite.GlobalHeight,
-					character.HandGrabRotationR,
-					grabScaleR, sprite,
-					zRight
-				);
-				break;
-			}
-
-			case WeaponHandheld.Pole: {
-				// Polearm
-				var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
-				var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
-				DrawWeaponSprite(
-					character,
-					(centerL.x + centerR.x) / 2,
-					(centerL.y + centerR.y) / 2,
-					sprite.GlobalWidth * twistR / 1000,
-					sprite.GlobalHeight,
-					character.HandGrabRotationR,
-					grabScaleR,
-					sprite,
-					zRight
-				);
-				break;
-			}
-
-			case WeaponHandheld.Bow: {
-				if (attacking) {
-					// Attacking
-					var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
-					int width = sprite.GlobalWidth;
-					int height = sprite.GlobalHeight;
-					if (!sprite.IsTrigger) {
-						int localFrame = Game.GlobalFrame - character.LastAttackFrame;
-						if (localFrame < AttackDuration / 2) {
-							// Pulling
-							float ease01 = Ease.OutQuad(localFrame / (AttackDuration / 2f));
-							width += Util.LerpUnclamped(0, width * 2 / 3, ease01).RoundToInt();
-							height -= Util.LerpUnclamped(0, height / 2, ease01).RoundToInt();
-						} else {
-							// Release
-							float ease01 = Ease.OutQuad((localFrame - AttackDuration / 2f) / (AttackDuration / 2f));
-							width += Util.LerpUnclamped(width * 2 / 3, 0, ease01).RoundToInt();
-							height -= Util.LerpUnclamped(height / 2, 0, ease01).RoundToInt();
-						}
-					}
-					DrawWeaponSprite(
-						character, center.x, center.y, width, height,
-						0, facingSign * 1000,
-						sprite, character.FacingRight ? zRight : zLeft
-					);
-				} else {
-					// Holding
-					var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
-					DrawWeaponSprite(
-						character, center.x, center.y,
-						sprite.GlobalWidth, sprite.GlobalHeight,
-						character.HandGrabRotationL,
-						grabScaleL, sprite,
-						zRight
-					);
-				}
-				break;
-			}
-
-		}
-
-
+		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
+		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+		DrawWeaponSprite(
+			character,
+			centerL.x, centerL.y,
+			sprite.GlobalWidth * twistL / 1000,
+			sprite.GlobalHeight,
+			character.HandGrabRotationL,
+			grabScaleL, sprite,
+			zLeft
+		);
+		DrawWeaponSprite(
+			character,
+			centerR.x, centerR.y,
+			sprite.GlobalWidth * twistR / 1000,
+			sprite.GlobalHeight,
+			character.HandGrabRotationR,
+			grabScaleR, sprite,
+			zRight
+		);
 	}
 
+
+	private void DrawWeapon_Pole (PoseCharacter character, AngeSprite sprite) {
+		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
+		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+		int twistR = character.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
+		DrawWeaponSprite(
+			character,
+			(centerL.x + centerR.x) / 2,
+			(centerL.y + centerR.y) / 2,
+			sprite.GlobalWidth * twistR / 1000,
+			sprite.GlobalHeight,
+			character.HandGrabRotationR,
+			character.HandGrabScaleR,
+			sprite,
+			character.HandR.Z - 1
+		);
+	}
+
+
+	private void DrawWeapon_Bow (PoseCharacter character, AngeSprite sprite) {
+		if (character.IsAttacking) {
+			// Attacking
+			var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
+			int width = sprite.GlobalWidth;
+			int height = sprite.GlobalHeight;
+			if (!sprite.IsTrigger) {
+				int localFrame = Game.GlobalFrame - character.LastAttackFrame;
+				if (localFrame < AttackDuration / 2) {
+					// Pulling
+					float ease01 = Ease.OutQuad(localFrame / (AttackDuration / 2f));
+					width += Util.LerpUnclamped(0, width * 2 / 3, ease01).RoundToInt();
+					height -= Util.LerpUnclamped(0, height / 2, ease01).RoundToInt();
+				} else {
+					// Release
+					float ease01 = Ease.OutQuad((localFrame - AttackDuration / 2f) / (AttackDuration / 2f));
+					width += Util.LerpUnclamped(width * 2 / 3, 0, ease01).RoundToInt();
+					height -= Util.LerpUnclamped(height / 2, 0, ease01).RoundToInt();
+				}
+			}
+			DrawWeaponSprite(
+				character, center.x, center.y, width, height,
+				0, character.FacingSign * 1000,
+				sprite, character.FacingRight ? character.HandR.Z - 1 : character.HandL.Z - 1
+			);
+		} else {
+			// Holding
+			var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
+			DrawWeaponSprite(
+				character, center.x, center.y,
+				sprite.GlobalWidth, sprite.GlobalHeight,
+				character.HandGrabRotationL,
+				character.HandGrabScaleL, sprite,
+				character.HandR.Z - 1
+			);
+		}
+	}
+
+
+	// API
 	protected virtual Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => Renderer.Draw(
 		sprite,
 		x, y,
@@ -269,13 +286,18 @@ public abstract class Weapon : Equipment {
 		z
 	);
 
+
 	public virtual bool AllowingAttack (PoseCharacter character) => true;
+
 
 	public virtual int GetOverrideHandheldAnimationID (Character character) => 0;
 
+
 	public virtual int GetOverrideAttackAnimationID (Character character) => 0;
 
+
 	public virtual Bullet SpawnBullet (Character sender) => SpawnRawBullet(sender, BulletID);
+
 
 	public static Bullet SpawnRawBullet (Character sender, int bulletID) {
 		if (sender == null || bulletID == 0) return null;

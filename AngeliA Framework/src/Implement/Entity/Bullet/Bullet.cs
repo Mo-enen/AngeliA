@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]

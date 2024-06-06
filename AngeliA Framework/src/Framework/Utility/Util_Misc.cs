@@ -14,7 +14,7 @@ public static partial class Util {
 		public static volatile float FloatMinDenormal = float.Epsilon;
 		public static bool IsFlushToZeroEnabled = FloatMinDenormal == 0f;
 	}
-	
+
 	public const float Rad2Deg = 57.29578f;
 	public const float Deg2Rad = PI / 180f;
 	public const float PI = 3.14159274F;
@@ -193,7 +193,7 @@ public static partial class Util {
 			(t - l) / (r - l)
 		);
 	}
-	public static int Remap (int l, int r, int newL, int newR, int t) => RemapUnclamped(l, r, newL, newR, t.Clamp(l, r));
+	public static int Remap (int l, int r, int newL, int newR, int t) => RemapUnclamped(l, r, newL, newR, t.ClampDisorder(l, r));
 	public static int RemapUnclamped (int l, int r, int newL, int newR, int t) {
 		if (l == r) return newL;
 		int deltaNew = newR - newL;
@@ -202,7 +202,7 @@ public static partial class Util {
 		try {
 			return checked(newL + deltaNew * deltaT / deltaR);
 		} catch {
-			if (deltaNew > deltaT) {
+			if (deltaNew.Abs() > deltaT.Abs()) {
 				return newL + deltaNew / deltaR * deltaT;
 			} else {
 				return newL + deltaT / deltaR * deltaNew;

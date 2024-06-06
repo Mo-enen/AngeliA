@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
 public abstract partial class Character {
 
 
@@ -273,8 +273,10 @@ public abstract partial class Character {
 						NavJumpFrame
 					);
 					int newY = Util.Remap(
-						0, NavJumpDuration,
-						NavJumpFromPosition.y, targetY,
+						0,
+						NavJumpDuration,
+						NavJumpFromPosition.y,
+						targetY,
 						NavJumpFrame
 					);
 					if (NavJumpDuration > 3) {

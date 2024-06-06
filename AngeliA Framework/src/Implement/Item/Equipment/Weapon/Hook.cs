@@ -7,9 +7,6 @@ namespace AngeliA;
 
 
 // Hook
-public abstract class Hook<B> : Hook where B : MeleeBullet {
-	public Hook () => BulletID = typeof(B).AngeHash();
-}
 public abstract class Hook : MeleeWeapon {
 	public sealed override WeaponType WeaponType => WeaponType.Hook;
 	public override int RangeXLeft => 275;

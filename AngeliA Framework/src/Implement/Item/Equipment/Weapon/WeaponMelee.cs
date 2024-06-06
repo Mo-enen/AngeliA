@@ -1,12 +1,9 @@
-namespace AngeliA; 
-public abstract class MeleeWeapon<B> : MeleeWeapon where B : MeleeBullet {
-	public MeleeWeapon () => BulletID = typeof(B).AngeHash();
-}
-public abstract class MeleeWeapon : Weapon {
+namespace AngeliA;
+
+public abstract class MeleeWeapon : Weapon<MeleeBullet> {
 	public abstract int RangeXLeft { get; }
 	public abstract int RangeXRight { get; }
 	public abstract int RangeY { get; }
-	public MeleeWeapon () => BulletID = MeleeBullet.TYPE_ID;
 	public override Bullet SpawnBullet (Character sender) {
 
 		if (base.SpawnBullet(sender) is not MeleeBullet bullet) return null;

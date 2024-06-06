@@ -180,7 +180,7 @@ public class SettingWindow : WindowUI {
 		GUI.SmallLabel(rect, LABEL_THEME);
 		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
 		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkButton)) {
-			ShowThemeMenu(popRect);
+			ShowThemeMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
 		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
 		rect.SlideDown(itemPadding);
@@ -383,7 +383,7 @@ public class SettingWindow : WindowUI {
 	}
 
 
-	private void ShowThemeMenu (IRect rect) {
+	private void ShowThemeMenu (Int2 pos) {
 
 		// Reload
 		if (RequiringReloadThemePath) {
@@ -397,7 +397,7 @@ public class SettingWindow : WindowUI {
 		}
 
 		// Show Menu
-		GenericPopupUI.BeginPopup(new Int2(rect.x + Unify(4), rect.y));
+		GenericPopupUI.BeginPopup(pos);
 		GenericPopupUI.AddItem(LABEL_THEME_BUILT_IN, MenuInvoked, @checked: GUI.Skin.Name == "Built-in");
 		int index = 0;
 		foreach (var (path, name) in ThemePaths) {
@@ -430,7 +430,7 @@ public class SettingWindow : WindowUI {
 		rect.width = Unify(96);
 		if (GUI.Button(rect, Util.GetKeyDisplayName(saving.Value.Key), Skin.SmallDarkButton)) {
 			ActivatedSetting = saving;
-			ShowKeyboardKeyPopup(rect);
+			ShowKeyboardKeyPopup(rect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
 		GUI.PopupTriangleIcon(rect.Shrink(rect.height / 8));
 		rect.SlideRight(padding * 4);
@@ -467,11 +467,11 @@ public class SettingWindow : WindowUI {
 	}
 
 
-	private void ShowKeyboardKeyPopup (IRect rect) {
+	private void ShowKeyboardKeyPopup (Int2 pos) {
 
 		if (Instance == null || ActivatedSetting == null) return;
 
-		GenericPopupUI.BeginPopup(rect.BottomLeft());
+		GenericPopupUI.BeginPopup(pos);
 
 		// Letter
 		GenericPopupUI.AddItem(MENU_CATA_LETTER, Const.EmptyMethod);

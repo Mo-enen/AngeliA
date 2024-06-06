@@ -6,10 +6,7 @@ namespace AngeliA;
 
 
 // Magic
-public abstract class MagicWeapon<B> : MagicWeapon where B : MovableBullet {
-	public MagicWeapon () => BulletID = typeof(B).AngeHash();
-}
-public abstract class MagicWeapon : ProjectileWeapon {
+public abstract class MagicWeapon<B> : ProjectileWeapon<B> where B : MovableBullet {
 	public sealed override WeaponType WeaponType => WeaponType.Magic;
 }
 
@@ -17,18 +14,14 @@ public abstract class MagicWeapon : ProjectileWeapon {
 // Implement
 [ItemCombination(typeof(iBook), typeof(iRuneCube), typeof(iTreeBranch), 1)]
 public class iWand : MagicWeapon<iWand.WandBullet> {
-	public class WandBullet : MovableBullet {
-
-	}
+	public class WandBullet : MovableBullet { }
 	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 }
 
 
 [ItemCombination(typeof(iWand), typeof(iCrystalBall), 1)]
 public class iWandOrb : MagicWeapon<iWandOrb.WandOrbBullet> {
-	public class WandOrbBullet : MovableBullet {
-
-	}
+	public class WandOrbBullet : MovableBullet { }
 	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 }
 

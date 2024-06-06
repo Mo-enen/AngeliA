@@ -135,11 +135,21 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 				panelRect.x += panelRect.width + panelPadding * 2;
 			}
 			panelRect.width = panelWidth;
-
 			if (dep == 0 && cameraRect.y + OffsetY < cameraRect.y + panelRect.height) {
 				panelRect.y += panelRect.height;
 			}
-			panelRect.ClampPositionInside(cameraRect);
+
+			// Clamp or Slide
+			if (panelRect.height < cameraRect.height) {
+				panelRect.ClampPositionInside(cameraRect);
+			} else {
+				int padding = Unify(64);
+				panelRect.y = Util.RemapUnclamped(
+					cameraRect.y + padding, cameraRect.yMax - padding,
+					cameraRect.y, cameraRect.y - panelRect.height + cameraRect.height,
+					Input.MouseGlobalPosition.y
+				);
+			}
 
 			// BG
 			var bgCell = Renderer.DrawPixel(default, new Color32(249, 249, 249, 255));
@@ -267,7 +277,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			panelRect.width = Util.Max(panelRect.width, maxWidth);
 			if (highlightCell != null) highlightCell.Width = panelRect.width;
 			if (menuHeadCell != null) menuHeadCell.Width = panelRect.width;
-			
+
 			// BG
 			BackgroundRect = panelRect.Expand(panelPadding);
 			bgCell.X = BackgroundRect.x;

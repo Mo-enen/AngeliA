@@ -6,9 +6,6 @@ namespace AngeliA;
 
 
 // Claw
-public abstract class Claw<B> : Claw where B : MeleeBullet {
-	public Claw () => BulletID = typeof(B).AngeHash();
-}
 public abstract class Claw : MeleeWeapon {
 	public sealed override WeaponType WeaponType => WeaponType.Claw;
 	public sealed override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;

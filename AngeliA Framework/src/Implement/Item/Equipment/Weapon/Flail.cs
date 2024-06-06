@@ -6,9 +6,6 @@ namespace AngeliA;
 
 
 // Flail
-public abstract class Flail<B> : Flail where B : MeleeBullet {
-	public Flail () => BulletID = typeof(B).AngeHash();
-}
 public abstract class Flail : MeleeWeapon {
 
 	public sealed override WeaponType WeaponType => WeaponType.Flail;

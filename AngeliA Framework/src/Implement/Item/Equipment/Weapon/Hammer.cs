@@ -6,9 +6,6 @@ namespace AngeliA;
 
 
 // Hammer
-public abstract class Hammer<B> : Hammer where B : MeleeBullet {
-	public Hammer () => BulletID = typeof(B).AngeHash();
-}
 public abstract class Hammer : MeleeWeapon {
 	public sealed override WeaponType WeaponType => WeaponType.Hammer;
 	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;

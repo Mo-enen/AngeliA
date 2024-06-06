@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
-public abstract class ProjectileWeapon<B> : ProjectileWeapon where B : MovableBullet {
-	public ProjectileWeapon () => BulletID = typeof(B).AngeHash();
-}
-public abstract class ProjectileWeapon : Weapon {
+public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 	protected virtual int BulletPivotY => 500;
 	public override Bullet SpawnBullet (Character sender) {
 		if (base.SpawnBullet(sender) is not MovableBullet bullet) return null;

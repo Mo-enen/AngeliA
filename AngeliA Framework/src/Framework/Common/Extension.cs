@@ -166,6 +166,12 @@ public static class Extension {
 		value > 0 ? value - (value % gap) :
 		value - (value % gap) - gap;
 
+	public static int ClampDisorder (this int a, int rangeA, int rangeB) {
+		if (rangeA > rangeB) {
+			(rangeA, rangeB) = (rangeB, rangeA);
+		}
+		return a.Clamp(rangeA, rangeB);
+	}
 	public static int Clamp (this int a, int min, int max) => a < min ? min : a > max ? max : a;
 	public static float Clamp (this float a, float min, float max) => a < min ? min : a > max ? max : a;
 	public static float Clamp01 (this float value) => value < 0f ? 0f : value > 1f ? 1f : value;

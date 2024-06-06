@@ -6,9 +6,6 @@ namespace AngeliA;
 
 
 // Polearm
-public abstract class Polearm<B> : Polearm where B : MeleeBullet {
-	public Polearm () => BulletID = typeof(B).AngeHash();
-}
 public abstract class Polearm : MeleeWeapon {
 	public sealed override WeaponType WeaponType => WeaponType.Polearm;
 	public sealed override WeaponHandheld Handheld => WeaponHandheld.Pole;
