@@ -29,6 +29,7 @@ public abstract class Weapon : Equipment {
 	protected virtual int BulletDelay => 0;
 	public virtual int AttackDuration => 12;
 	public virtual int AttackCooldown => 2;
+	public virtual int HoldAttackPunish => 4;
 	public virtual int ChargeAttackDuration => int.MaxValue;
 	public virtual int? DefaultSpeedLoseOnAttack => null;
 	public virtual int? WalkingSpeedLoseOnAttack => null;

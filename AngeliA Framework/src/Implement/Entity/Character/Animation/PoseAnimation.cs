@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [System.Serializable]
 public abstract class PoseAnimation {
 
@@ -15,6 +15,9 @@ public abstract class PoseAnimation {
 	// Const
 	protected const int POSE_Z_HAND = 36;
 	protected const int A2G = Const.CEL / Const.ART_CEL;
+
+	// Api
+	protected virtual bool ValidHeadPosition => true;
 
 	// Data
 	private static readonly Dictionary<int, PoseAnimation> Pool = new();
@@ -69,8 +72,14 @@ public abstract class PoseAnimation {
 
 
 	public static void AnimateFromPool (int id, PoseCharacter character) {
+		bool validHeadPos = true;
 		if (Pool.TryGetValue(id, out var result)) {
 			result.Animate(character);
+			validHeadPos = result.ValidHeadPosition;
+		}
+		if (validHeadPos) {
+			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
+			Body.Height = Body.Height.GreaterOrEquel(1);
 		}
 	}
 

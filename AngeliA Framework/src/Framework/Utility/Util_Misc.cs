@@ -234,8 +234,8 @@ public static partial class Util {
 	public static int Max (int a, int b) => (a > b) ? a : b;
 	public static float Min (float a, float b) => (a < b) ? a : b;
 	public static float Max (float a, float b) => (a > b) ? a : b;
-	public static float Sin (float f) => (float)System.Math.Sin(f);
-	public static float Cos (float f) => (float)System.Math.Cos(f);
+	public static float Sin (float radAngle) => (float)System.Math.Sin(radAngle);
+	public static float Cos (float radAngle) => (float)System.Math.Cos(radAngle);
 	public static int Abs (int value) => value > 0 ? value : -value;
 	public static float Abs (float value) => value > 0f ? value : -value;
 	public static bool Approximately (float a, float b) => Abs(b - a) < Max(1E-06f * Max(Abs(a), Abs(b)), Epsilon * 8f);

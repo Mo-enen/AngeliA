@@ -483,8 +483,6 @@ public abstract class PoseCharacter : Character {
 
 		PoseAnimation.AnimateFromPool(GetPoseAnimationID(AnimationType), this);
 
-		Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
-		Body.Height = Body.Height.GreaterOrEquel(1);
 		CalculateBodypartGlobalPosition();
 
 		// Handheld

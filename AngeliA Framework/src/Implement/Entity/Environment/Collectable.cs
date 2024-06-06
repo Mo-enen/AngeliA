@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliA; 
-public class Coin : ItemCollectable<iItemCoin> {
-
-}
 
 
 public abstract class ItemCollectable<TItem> : Collectable where TItem : Item {

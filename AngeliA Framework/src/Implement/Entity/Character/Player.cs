@@ -17,7 +17,6 @@ public sealed class DefaultPlayer : Player {
 [EntityAttribute.ForceSpawn]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]
-
 public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionTarget {
 
 
@@ -469,6 +468,9 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 				Gamekey.Action, BuiltInText.UI_CONTINUE, background: true
 			);
 		}
+
+		// Close Menu UI
+		if (PlayerMenuUI.ShowingUI) PlayerMenuUI.CloseMenu();
 
 		// Reload Game After Player PassOut
 		if (IsFullPassOut && Input.GameKeyDown(Gamekey.Action)) {

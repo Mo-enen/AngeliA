@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 // General
@@ -120,6 +120,9 @@ public class PoseAnimation_Sleep : PoseAnimation {
 }
 
 public class PoseAnimation_PassOut : PoseAnimation {
+
+	protected override bool ValidHeadPosition => false;
+
 	protected override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
@@ -171,6 +174,7 @@ public class PoseAnimation_PassOut : PoseAnimation {
 		FootL.LimbRotate(FacingRight ? 0 : 1);
 		FootR.LimbRotate(FacingRight ? 0 : 1);
 	}
+
 }
 
 
@@ -1169,7 +1173,7 @@ public class PoseAnimation_Climb : PoseAnimation {
 		FootR.LimbRotate(1);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation - 90;
+		Target.HandGrabRotationL = LowerArmL.Rotation + 90;
 		Target.HandGrabRotationR = LowerArmR.Rotation + 90;
 		Target.HandGrabScaleL = 1000;
 		Target.HandGrabScaleR = 1000;

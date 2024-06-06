@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 [EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
@@ -61,8 +61,6 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 	// Const
 	private static readonly int[] LEAF_OFFSET_SEEDS = new int[] { 0, 6, 2, 8, 3, 7, 2, 3, 5, 2, 2, 6, 9, 3, 6, 1, 9, 0, 1, 7, 4, 2, 8, 4, 6, 5, 2, 4, 8, 7, };
 	private const byte LEAF_HIDE_ALPHA = 42;
-	private static readonly int LEAF_ITEM_CODE = typeof(iLeaf).AngeHash();
-	private static readonly int LEAF_LEGEND_ITEM_CODE = typeof(iLeafLegend).AngeHash();
 
 
 	// Virtual
@@ -131,13 +129,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 	}
 
 
-	protected virtual void OnBreak () {
-		if (Util.RandomInt() % 3 == 0) {
-			ItemSystem.SpawnItem(LEAF_ITEM_CODE, X, Y);
-		} else if (Util.RandomInt() % 16384 == 0) {
-			ItemSystem.SpawnItem(LEAF_LEGEND_ITEM_CODE, X, Y);
-		}
-	}
+	protected virtual void OnLeafBreak () { }
 
 
 	#endregion
@@ -170,7 +162,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 		Stage.MarkAsLocalAntiSpawn(this);
 		// Disable
 		Active = false;
-		OnBreak();
+		OnLeafBreak();
 	}
 
 

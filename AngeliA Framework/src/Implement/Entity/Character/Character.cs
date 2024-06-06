@@ -165,42 +165,38 @@ public abstract partial class Character : Rigidbody {
 				item.BeforeItemUpdate_FromEquipment(this);
 				if (item is Weapon weapon) {
 					weaponFilled = true;
-					Fill(this, weapon);
+					AttackDuration = weapon.AttackDuration;
+					AttackCooldown = weapon.AttackCooldown;
+					MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
+					RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
+					LockFacingOnAttack = weapon.LockFacingOnAttack;
+					HoldAttackPunish.Override(weapon.HoldAttackPunish);
+					DefaultSpeedLoseOnAttack.Override(weapon.DefaultSpeedLoseOnAttack);
+					WalkingSpeedLoseOnAttack.Override(weapon.WalkingSpeedLoseOnAttack);
+					RunningSpeedLoseOnAttack.Override(weapon.RunningSpeedLoseOnAttack);
+					AttackInAir.Override(weapon.AttackInAir);
+					AttackInWater.Override(weapon.AttackInWater);
+					AttackWhenWalking.Override(weapon.AttackWhenWalking);
+					AttackWhenRunning.Override(weapon.AttackWhenRunning);
+					AttackWhenClimbing.Override(weapon.AttackWhenClimbing);
+					AttackWhenFlying.Override(weapon.AttackWhenFlying);
+					AttackWhenRolling.Override(weapon.AttackWhenRolling);
+					AttackWhenSquatting.Override(weapon.AttackWhenSquatting);
+					AttackWhenDashing.Override(weapon.AttackWhenDashing);
+					AttackWhenSliding.Override(weapon.AttackWhenSliding);
+					AttackWhenGrabbing.Override(weapon.AttackWhenGrabbing);
+					AttackWhenRush.Override(weapon.AttackWhenRush);
+					AttackWhenPounding.Override(weapon.AttackWhenPounding);
 				}
 			}
 		}
-		if (!weaponFilled) Fill(this, null);
-		// Func
-		static void Fill (Character character, Weapon weapon) {
-			if (weapon != null) {
-				character.AttackDuration = weapon.AttackDuration;
-				character.AttackCooldown = weapon.AttackCooldown;
-				character.MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
-				character.RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
-				character.LockFacingOnAttack = weapon.LockFacingOnAttack;
-				character.DefaultSpeedLoseOnAttack.Override(weapon.DefaultSpeedLoseOnAttack);
-				character.WalkingSpeedLoseOnAttack.Override(weapon.WalkingSpeedLoseOnAttack);
-				character.RunningSpeedLoseOnAttack.Override(weapon.RunningSpeedLoseOnAttack);
-				character.AttackInAir.Override(weapon.AttackInAir);
-				character.AttackInWater.Override(weapon.AttackInWater);
-				character.AttackWhenWalking.Override(weapon.AttackWhenWalking);
-				character.AttackWhenRunning.Override(weapon.AttackWhenRunning);
-				character.AttackWhenClimbing.Override(weapon.AttackWhenClimbing);
-				character.AttackWhenFlying.Override(weapon.AttackWhenFlying);
-				character.AttackWhenRolling.Override(weapon.AttackWhenRolling);
-				character.AttackWhenSquatting.Override(weapon.AttackWhenSquatting);
-				character.AttackWhenDashing.Override(weapon.AttackWhenDashing);
-				character.AttackWhenSliding.Override(weapon.AttackWhenSliding);
-				character.AttackWhenGrabbing.Override(weapon.AttackWhenGrabbing);
-				character.AttackWhenRush.Override(weapon.AttackWhenRush);
-				character.AttackWhenPounding.Override(weapon.AttackWhenPounding);
-			} else {
-				character.AttackDuration = 12;
-				character.AttackCooldown = 2;
-				character.MinimalChargeAttackDuration = int.MaxValue;
-				character.RepeatAttackWhenHolding = false;
-				character.LockFacingOnAttack = false;
-			}
+		if (!weaponFilled) {
+			// Default
+			AttackDuration = 12;
+			AttackCooldown = 2;
+			MinimalChargeAttackDuration = int.MaxValue;
+			RepeatAttackWhenHolding = false;
+			LockFacingOnAttack = false;
 		}
 	}
 
@@ -303,7 +299,7 @@ public abstract partial class Character : Rigidbody {
 		if (blinking) return;
 
 		int oldLayerIndex = Renderer.CurrentLayerIndex;
-		bool colorFlash = TakingDamage && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
+		bool colorFlash = TakingDamage && HealthPoint > 0 && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
 		if (colorFlash) Renderer.SetLayerToColor();
 		int cellIndexStart = Renderer.GetUsedCellCount();
 
