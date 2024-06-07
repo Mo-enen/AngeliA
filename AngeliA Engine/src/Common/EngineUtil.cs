@@ -484,6 +484,7 @@ public static class EngineUtil {
 		if (publish && !Util.IsPathValid(publishDir)) return ERROR_PUBLISH_DIR_INVALID;
 		if (publish && !Util.FolderExists(EntryProjectFolder)) return ERROR_ENTRY_PROJECT_NOT_FOUND;
 		if (!Util.FolderExists(projectPath)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
+		if (!Util.FileExists(csprojPath)) return ERROR_CSPROJ_NOT_EXISTS;
 		if (!Util.FileExists(DotnetSdkPath)) return ERROR_DOTNET_SDK_NOT_FOUND;
 		if (!Util.IsValidForFileName(productName)) return ERROR_PRODUCT_NAME_INVALID;
 

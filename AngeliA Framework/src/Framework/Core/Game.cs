@@ -51,9 +51,9 @@ public abstract partial class Game {
 
 	// Data
 	private static Game Instance = null;
-	protected static readonly Dictionary<int, SoundData> SoundPool = new();
-	protected static readonly Dictionary<int, MusicData> MusicPool = new();
-	protected static readonly List<FontData> Fonts = new();
+	public static readonly Dictionary<int, SoundData> SoundPool = new();
+	public static readonly Dictionary<int, MusicData> MusicPool = new();
+	public static readonly List<FontData> Fonts = new();
 	private static readonly HashSet<int> CacheForAudioSync = new();
 	private static readonly List<int> CacheForAudioSyncRemove = new();
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
@@ -308,12 +308,6 @@ public abstract partial class Game {
 		StopAllSounds();
 		IsPlaying = false;
 	}
-
-
-	// Res
-	public static IReadOnlyCollection<FontData> ForAllFonts () => Fonts;
-	public static IReadOnlyCollection<KeyValuePair<int, MusicData>> ForAllMusic () => MusicPool;
-	public static IReadOnlyCollection<KeyValuePair<int, SoundData>> ForAllSound () => SoundPool;
 
 
 	// Fonts

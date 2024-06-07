@@ -316,69 +316,75 @@ public class ProjectEditor : WindowUI {
 		bool rightButtonDown = Input.MouseRightButtonDown;
 
 		// Music
-		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_MUSIC);
-		foreach (var (_, data) in Game.ForAllMusic()) {
-			var _rect = rect.ShrinkLeft(labelWidth);
-			bool hover = GUI.Enable && _rect.MouseInside();
-			// Button
-			if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
-				if (Game.CurrentMusicID != data.ID) {
-					Game.PlayMusic(data.ID);
-				} else {
-					Game.StopMusic();
+		if (Game.MusicPool.Count > 0) {
+			GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_MUSIC);
+			foreach (var (_, data) in Game.MusicPool) {
+				var _rect = rect.ShrinkLeft(labelWidth);
+				bool hover = GUI.Enable && _rect.MouseInside();
+				// Button
+				if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
+					if (Game.CurrentMusicID != data.ID) {
+						Game.PlayMusic(data.ID);
+					} else {
+						Game.StopMusic();
+					}
 				}
+				// Menu
+				if (rightButtonDown && _rect.MouseInside()) {
+					ShowMenu(data);
+				}
+				// Icon
+				GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
+				// Name
+				using (Scope.GUIContentColor(Game.CurrentMusicID == data.ID ? Color32.GREEN_BETTER : Color32.WHITE)) {
+					GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
+				}
+				rect.SlideDown(padding);
 			}
-			// Menu
-			if (rightButtonDown && _rect.MouseInside()) {
-				ShowMenu(data);
-			}
-			// Icon
-			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
-			// Name
-			using (Scope.GUIContentColor(Game.CurrentMusicID == data.ID ? Color32.GREEN_BETTER : Color32.WHITE)) {
-				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
-			}
-			rect.SlideDown(padding);
 		}
 
 		// Sound
-		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_SOUND);
-		foreach (var (_, data) in Game.ForAllSound()) {
-			var _rect = rect.ShrinkLeft(labelWidth);
-			// Click
-			if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
-				Game.StopAllSounds();
-				Game.PlaySound(data.ID);
+		if (Game.SoundPool.Count > 0) {
+			GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_SOUND);
+			foreach (var (_, data) in Game.SoundPool) {
+				var _rect = rect.ShrinkLeft(labelWidth);
+				// Click
+				if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
+					Game.StopAllSounds();
+					Game.PlaySound(data.ID);
+				}
+				// Menu
+				if (rightButtonDown && _rect.MouseInside()) {
+					ShowMenu(data);
+				}
+				// Icon
+				GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
+				// Name
+				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
+				rect.SlideDown(padding);
 			}
-			// Menu
-			if (rightButtonDown && _rect.MouseInside()) {
-				ShowMenu(data);
-			}
-			// Icon
-			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
-			// Name
-			GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
-			rect.SlideDown(padding);
 		}
 
 		// Font
-		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_FONT);
-		foreach (var fontData in Game.ForAllFonts()) {
-			if (fontData.BuiltIn) continue;
-			var _rect = rect.ShrinkLeft(labelWidth);
-			// Click
-			if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
-				Game.OpenUrl(fontData.Path);
+		if (Game.Fonts.Count > 0) {
+			GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_FONT);
+			foreach (var fontData in Game.Fonts) {
+				if (fontData.BuiltIn) continue;
+				var _rect = rect.ShrinkLeft(labelWidth);
+				// Click
+				if (GUI.Button(_rect, 0, Skin.HighlightPixel)) {
+					Game.OpenUrl(fontData.Path);
+				}
+				// Menu
+				if (rightButtonDown && _rect.MouseInside()) {
+					ShowMenu(fontData);
+				}
+				// Icon
+				GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_Font);
+				// Name
+				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), fontData.Name);
+				rect.SlideDown(padding);
 			}
-			// Menu
-			if (rightButtonDown && _rect.MouseInside()) {
-				ShowMenu(fontData);
-			}
-			// Icon
-			GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_Font);
-			// Name
-			GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), fontData.Name);
-			rect.SlideDown(padding);
 		}
 
 		// Func

@@ -31,7 +31,10 @@ public class Project {
 		TempPublishPath = Util.CombinePaths(projectPath, "Temp", "Publish"),
 		IconPath = Util.CombinePaths(projectPath, "Icon.ico"),
 		UniversePath = AngePath.GetUniverseRoot(projectPath),
-		CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(""),
+		CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(
+			path => !path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase),
+			defaultValue: ""
+		),
 		Universe = Universe.LoadFromFile(
 			AngePath.GetUniverseRoot(projectPath),
 			useBuiltInSavingRoot: true

@@ -251,19 +251,18 @@ public partial class Engine {
 
 	private void AddExistsProjectAt (string path) {
 		if (string.IsNullOrEmpty(path) || !Util.FolderExists(path)) return;
-		if (!Projects.Any(data => data.Path == path)) {
-			// Add to Path List
-			long time = Util.GetLongTime();
-			var item = new ProjectData() {
-				Name = Util.GetNameWithoutExtension(path),
-				Path = path,
-				FolderExists = true,
-				LastOpenTime = time,
-			};
-			Util.SetFolderModifyDate(path, time);
-			Projects.Add(item);
-			SortProjects();
-		}
+		if (Projects.Any(data => data.Path == path)) return;
+		// Add to Path List
+		long time = Util.GetLongTime();
+		var item = new ProjectData() {
+			Name = Util.GetNameWithoutExtension(path),
+			Path = path,
+			FolderExists = true,
+			LastOpenTime = time,
+		};
+		Util.SetFolderModifyDate(path, time);
+		Projects.Add(item);
+		SortProjects();
 	}
 
 

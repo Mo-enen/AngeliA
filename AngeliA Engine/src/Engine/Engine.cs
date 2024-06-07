@@ -200,18 +200,24 @@ public partial class Engine {
 	internal static void OnFileDropped (string path) {
 
 		var project = Instance.CurrentProject;
-		if (project == null || Game.PauselessFrame <= Instance.IgnoreFileDropFrame) return;
+		if (Game.PauselessFrame <= Instance.IgnoreFileDropFrame) return;
 
 		Instance.DroppingFilePath = path;
 
 		string ex = Util.GetExtensionWithDot(path);
 		switch (ex) {
+			case "":
+				if (project != null) break;
+				Instance.AddExistsProjectAt(path);
+				break;
 			case ".ase":
 			case ".aseprite":
+				if (project == null) break;
 				PixelEditor.ImportAtlasFromFile(path);
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".png":
+				if (project == null) break;
 				GenericDialogUI.SpawnDialog_Button(
 					string.Format(FILE_DROP_MSG_PNG, Util.GetNameWithExtension(path)),
 					FILE_DROP_LABEL_ICON, ImportForIcon,
@@ -221,6 +227,7 @@ public partial class Engine {
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".ico":
+				if (project == null) break;
 				Util.CopyFile(path, project.IconPath);
 				ProjectEditor.Instance.ReloadIconUI();
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
@@ -228,6 +235,7 @@ public partial class Engine {
 			case ".wav":
 			case ".mp3":
 			case ".ogg":
+				if (project == null) break;
 				GenericDialogUI.SpawnDialog_Button(
 					string.Format(FILE_DROP_MSG_AUDIO, Util.GetNameWithExtension(path)),
 					FILE_DROP_LABEL_MUSIC, ImportForMusic,
