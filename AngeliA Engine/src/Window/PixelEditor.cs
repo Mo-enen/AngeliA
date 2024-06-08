@@ -796,6 +796,7 @@ public partial class PixelEditor : WindowUI {
 					SetSelectingSpritesAsCopyBuffer();
 				} else {
 					// Copy Pixel
+					ClearSpriteCopyBuffer();
 					ClearSpriteSelection();
 					CopyCutPixel(cut: false);
 				}

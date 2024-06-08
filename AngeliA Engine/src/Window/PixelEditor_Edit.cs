@@ -745,6 +745,12 @@ public partial class PixelEditor {
 	}
 
 
+	private void ClearSpriteCopyBuffer () {
+		SpriteCopyBuffer.Clear();
+		CopyBufferPixRange = default;
+	}
+
+
 	private void SetSelectingSpritesAsCopyBuffer () {
 		SpriteCopyBuffer.Clear();
 		CopyBufferPixRange = default;
