@@ -306,6 +306,9 @@ public static class Extension {
 	public static Int2 MoveTowards (this Int2 v, Int2 target, Int2 delta) => new(
 		v.x.MoveTowards(target.x, delta.x), v.y.MoveTowards(target.y, delta.y)
 	);
+	public static Int2 Shift (this Int2 v, int x, int y) => new(v.x + x, v.y + y);
+	public static Int2 ShiftX (this Int2 v, int x) => new(v.x + x, v.y);
+	public static Int2 ShiftY (this Int2 v, int y) => new(v.x, v.y + y);
 
 	public static bool Almost (this Float3 a, Float3 b) => Util.Approximately(a.x, b.x) && Util.Approximately(a.y, b.y) && Util.Approximately(a.z, b.z);
 	public static bool Almost (this Float2 a, Float2 b) => Util.Approximately(a.x, b.x) && Util.Approximately(a.y, b.y);
