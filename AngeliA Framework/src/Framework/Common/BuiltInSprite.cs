@@ -67,6 +67,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode GAMEPAD_HINT_B = "GamePad Hint B";
 	public static readonly SpriteCode GAMEPAD_HINT_DOWN = "GamePad Hint Down";
 	public static readonly SpriteCode CIRCLE_16 = "Circle16";
+	public static readonly SpriteCode RING_24 = "Ring24";
 	public static readonly SpriteCode ICON_BODY_PART_EAR = "Icon.BodyPart.Ear";
 	public static readonly SpriteCode ICON_SUIT_GLOVE = "Icon.Suit.Glove";
 	public static readonly SpriteCode ICON_SUIT_PANTS = "Icon.Suit.Pants";
