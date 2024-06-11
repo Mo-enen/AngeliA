@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public enum CharacterMovementState {
@@ -440,7 +440,7 @@ public abstract partial class Character {
 
 		int frame = Game.GlobalFrame;
 
-		bool movementAllowJump = !IsSquatting && !IsGrabbingTop && !IsInsideGround && !IsRushing && !IsGrabFlipping;
+		bool movementAllowJump = !IsSquatting && !IsGrabbingTop && !IsInsideGround && !IsRushing && !IsGrabFlipping && !IsCrashing;
 
 		// Perform Jump/Fly
 		if (movementAllowJump && (!IsClimbing || JumpWhenClimbAvailable)) {
