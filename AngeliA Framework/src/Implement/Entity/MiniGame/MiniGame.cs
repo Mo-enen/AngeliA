@@ -45,7 +45,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			if (Badges.Length != targetCount) {
 				var oldArr = Badges;
 				Badges = new int[targetCount].FillWithValue(0);
-				oldArr.CopyTo(Badges, Util.Min(targetCount, oldArr.Length));
+				oldArr.CopyTo(Badges, 0);
 			}
 		}
 	}
@@ -124,7 +124,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			ControlHintUI.ForceShowHint(1);
 			if (!GenericDialogUI.ShowingDialog) {
 				// Gaming
-				using (Scope.RendererLayerUI()) {
+				using (new UILayerScope()) {
 					GameUpdate();
 				}
 				// Quit
@@ -225,7 +225,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 			int icon = DEFAULT_BADGE_CODES[badgeIndex];
 			Renderer.Draw(icon, rect);
 			if (hints != null && rect.MouseInside() && i < hints.Length) {
-				using var _ = Scope.GUIContentColor(badgeIndex == 0 ? Color32.GREY_245 : Color32.GREEN);
+				using var _ = new GUIContentColorScope(badgeIndex == 0 ? Color32.GREY_245 : Color32.GREEN);
 				GUI.BackgroundLabel(
 					new IRect(rect.x, rect.y - itemSize, 1, itemSize),
 					hints[i], Color32.BLACK, padding

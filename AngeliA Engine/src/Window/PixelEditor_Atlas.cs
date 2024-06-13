@@ -73,8 +73,8 @@ public partial class PixelEditor {
 			int reorderGhostID = 0;
 			string reorderGhostLabel = null;
 
-			using (var scroll = Scope.GUIScroll(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
-				AtlasPanelScrollY = scroll.ScrollPosition;
+			using (var scroll = new GUIScrollScope(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
+				AtlasPanelScrollY = scroll.PositionY;
 				for (int i = 0; i < itemCount; i++) {
 
 					var atlas = Sheet.Atlas[i];
@@ -164,7 +164,7 @@ public partial class PixelEditor {
 
 						if (Sheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
 							var iconSize = Game.GetTextureSize(iconTexture);
-							using (Scope.Sheet(SheetIndex)) {
+							using (new SheetIndexScope(SheetIndex)) {
 								GUI.Icon(iconRect.Fit(iconSize.x, iconSize.y), atlas.ID);
 							}
 						} else {
@@ -206,7 +206,7 @@ public partial class PixelEditor {
 				if (reorderGhostID != 0) {
 					reorderGhostRect.x += Unify(12);
 					if (reorderGhostID != ICON_SPRITE_ATLAS) {
-						using (Scope.Sheet(SheetIndex)) {
+						using (new SheetIndexScope(SheetIndex)) {
 							GUI.Icon(reorderGhostRect, reorderGhostID);
 						}
 					} else {

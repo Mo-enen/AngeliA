@@ -1,156 +1,149 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿namespace AngeliA;
 
-namespace AngeliA;
 
-public class Scope : System.IDisposable {
 
-	// SUB
-	private class ScopeGroup {
-		private const int COUNT = 32;
-		public Scope[] Scopes;
-		public int CurrentIndex;
-		public ScopeGroup () {
-			CurrentIndex = 0;
-			Scopes = new Scope[COUNT];
-			for (int i = 0; i < COUNT; i++) {
-				Scopes[i] = new Scope(this);
-			}
-		}
-		public Scope Start () {
-			if (CurrentIndex >= COUNT) {
-#if DEBUG
-				Debug.LogWarning("Too many layers of GUIScope");
-#endif
-				return null;
-			}
-			var scope = Scopes[CurrentIndex];
-			CurrentIndex++;
-			return scope;
-		}
-		public void End () => CurrentIndex--;
-	}
-
-	// Const
-	private static readonly Scope EmptyScope = new(null);
-	private static readonly ScopeGroup LayerInstance = new();
-	private static readonly ScopeGroup ColorInstance = new();
-	private static readonly ScopeGroup ContentColorInstance = new();
-	private static readonly ScopeGroup BodyColorInstance = new();
-	private static readonly ScopeGroup EnableInstance = new();
-	private static readonly ScopeGroup ScrollInstance = new();
-	private static readonly ScopeGroup SheetInstance = new();
-	private static readonly ScopeGroup IgnoreInputInstance = new();
-	private static readonly ScopeGroup GUILabelWidthInstance = new();
-	private static readonly ScopeGroup GUISkinInstance = new();
-	private static readonly ScopeGroup ReverseCellsInstance = new();
-
-	// Api
-	public int ScrollPosition => Int2Data.y;
-
-	// Data
-	private readonly ScopeGroup Group;
-	private Color32 ColorData;
-	private int IntData;
-	private IRect RectData;
-	private Int2 Int2Data;
-	private Int2 Int2DataAlt;
-	private object ObjData;
-
-	// MSG
-	private Scope (ScopeGroup group) => Group = group;
-
-	// API
-	public static Scope RendererLayerUI () => RendererLayer(RenderLayer.UI);
-
-	public static Scope RendererLayer (int layer) {
-		var result = LayerInstance.Start();
-		if (result == null) return EmptyScope;
-		result.IntData = Renderer.CurrentLayerIndex;
+public readonly struct LayerScope : System.IDisposable {
+	private readonly int OldLayer;
+	public LayerScope (int layer) {
+		OldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayer(layer);
-		return result;
 	}
-
-	public static Scope ReverseCells () {
-		var result = ReverseCellsInstance.Start();
-		if (result == null) return EmptyScope;
-		result.Int2Data.x = Renderer.CurrentLayerIndex;
-		result.Int2Data.y = Renderer.GetUsedCellCount();
-		return result;
+	public readonly void Dispose () {
+		if (Renderer.CurrentLayerIndex == RenderLayer.UI) {
+			Renderer.ReverseUnsortedCells(RenderLayer.UI);
+		}
+		Renderer.SetLayer(OldLayer);
 	}
+}
 
-	public static Scope GUIColor (Color32 color) {
-		var result = ColorInstance.Start();
-		if (result == null) return EmptyScope;
-		result.ColorData = GUI.Color;
+
+
+public readonly struct UILayerScope : System.IDisposable {
+	private readonly int OldLayer;
+	public UILayerScope () {
+		OldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayer(RenderLayer.UI);
+	}
+	public readonly void Dispose () {
+		Renderer.ReverseUnsortedCells(RenderLayer.UI);
+		Renderer.SetLayer(OldLayer);
+	}
+}
+
+
+
+public readonly struct DefaultLayerScope : System.IDisposable {
+	private readonly int OldLayer;
+	public DefaultLayerScope () {
+		OldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayer(RenderLayer.DEFAULT);
+	}
+	public readonly void Dispose () => Renderer.SetLayer(OldLayer);
+}
+
+
+
+public readonly struct GUIColorScope : System.IDisposable {
+	private readonly Color32 OldColor;
+	public GUIColorScope (Color32 color) {
+		OldColor = GUI.Color;
 		GUI.Color = color;
-		return result;
 	}
+	public readonly void Dispose () => GUI.Color = OldColor;
+}
 
-	public static Scope GUIContentColor (Color32 color) {
-		var result = ContentColorInstance.Start();
-		if (result == null) return EmptyScope;
-		result.ColorData = GUI.ContentColor;
+
+
+public readonly struct GUIContentColorScope : System.IDisposable {
+	private readonly Color32 OldColor;
+	public GUIContentColorScope (Color32 color) {
+		OldColor = GUI.ContentColor;
 		GUI.ContentColor = color;
-		return result;
 	}
+	public readonly void Dispose () => GUI.ContentColor = OldColor;
+}
 
-	public static Scope GUIBodyColor (Color32 color) {
-		var result = BodyColorInstance.Start();
-		if (result == null) return EmptyScope;
-		result.ColorData = GUI.BodyColor;
+
+
+public readonly struct GUIBodyColorScope : System.IDisposable {
+	private readonly Color32 OldColor;
+	public GUIBodyColorScope (Color32 color) {
+		OldColor = GUI.BodyColor;
 		GUI.BodyColor = color;
-		return result;
 	}
+	public readonly void Dispose () => GUI.BodyColor = OldColor;
+}
 
-	public static Scope GUIEnable (bool enable) => GUIEnable(enable, GUI.Interactable);
-	public static Scope GUIEnable (bool enable, bool interactable) {
-		var result = EnableInstance.Start();
-		if (result == null) return EmptyScope;
-		result.Int2Data.x = GUI.Enable ? 1 : 0;
-		result.Int2Data.y = GUI.Interactable ? 1 : 0;
+
+
+public readonly struct GUIEnableScope : System.IDisposable {
+	private readonly bool OldEnable;
+	public GUIEnableScope (bool enable) {
+		OldEnable = GUI.Enable;
 		GUI.Enable = enable;
-		GUI.Interactable = interactable;
-		return result;
 	}
+	public readonly void Dispose () => GUI.Enable = OldEnable;
+}
 
-	public static Scope GUIScroll (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
 
-		var result = ScrollInstance.Start();
-		if (result == null) return EmptyScope;
+
+public readonly struct GUIScrollScope : System.IDisposable {
+	public readonly int PositionY;
+	public readonly IRect Rect;
+	public readonly int CellCount;
+	public readonly Int2 MousePosShift;
+	public GUIScrollScope (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
+
 		bool mouseInside = rect.MouseInside();
-
-		result.RectData = rect;
-		result.IntData = Renderer.GetUsedCellCount(RenderLayer.UI);
-		result.Int2DataAlt = Input.MousePositionShift;
+		Rect = rect;
+		CellCount = Renderer.GetUsedCellCount(RenderLayer.UI);
+		MousePosShift = Input.MousePositionShift;
 		if (!mouseInside) Input.IgnoreMouseInput();
 
 		// Scroll by Mouse Wheel
 		if (mouseInside && Input.MouseWheelDelta != 0) {
 			positionY -= Input.MouseWheelDelta * GUI.Unify(96);
 		}
-		positionY = positionY.Clamp(min, max);
-		result.Int2Data = new Int2(0, positionY);
+		PositionY = positionY.Clamp(min, max);
 
 		// Shift Input
 		Input.SetMousePositionShift(0, -positionY);
 
-		return result;
 	}
-
-	public static Scope Sheet (int index) {
-		var result = SheetInstance.Start();
-		if (result == null) return EmptyScope;
-		result.IntData = Renderer.CurrentSheetIndex;
-		Renderer.CurrentSheetIndex = index;
-		return result;
+	public readonly void Dispose () {
+		Input.SetMousePositionShift(MousePosShift.x, MousePosShift.y);
+		Input.CancelIgnoreMouseInput();
+		int startIndex = CellCount;
+		if (startIndex >= 0) {
+			if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
+				for (int i = startIndex; i < count; i++) {
+					cells[i].Y += PositionY;
+				}
+			}
+			Renderer.ClampCells(RenderLayer.UI, Rect, startIndex);
+		}
 	}
+}
 
-	public static Scope IgnoreInput (bool ignoreKey = true, bool ignoreMouse = true) {
-		var result = IgnoreInputInstance.Start();
-		if (result == null) return EmptyScope;
-		result.Int2Data.x = Input.IgnoringKeyInput ? 1 : 0;
-		result.Int2Data.y = Input.IgnoringMouseInput ? 1 : 0;
+
+
+public readonly struct SheetIndexScope : System.IDisposable {
+	private readonly int OldSheet;
+	public SheetIndexScope (int sheet) {
+		OldSheet = Renderer.CurrentSheetIndex;
+		Renderer.CurrentSheetIndex = sheet;
+	}
+	public readonly void Dispose () => Renderer.CurrentSheetIndex = OldSheet;
+}
+
+
+
+public readonly struct IgnoreInputScope : System.IDisposable {
+	private readonly bool OldIgnoreKey;
+	private readonly bool OldIgnoreMouse;
+	public IgnoreInputScope (bool ignoreKey = true, bool ignoreMouse = true) {
+		OldIgnoreKey = Input.IgnoringKeyInput;
+		OldIgnoreMouse = Input.IgnoringMouseInput;
 		if (ignoreKey) {
 			Input.IgnoreKeyInput();
 		} else {
@@ -161,101 +154,58 @@ public class Scope : System.IDisposable {
 		} else {
 			Input.CancelIgnoreMouseInput();
 		}
-		return result;
 	}
-
-	public static Scope GUILabelWidth (int width) {
-		var result = GUILabelWidthInstance.Start();
-		if (result == null) return EmptyScope;
-		result.IntData = GUI.LabelWidth;
-		GUI.LabelWidth = width;
-		return result;
-	}
-
-	public static Scope GuiSkin (GUISkin skin) {
-		var result = GUILabelWidthInstance.Start();
-		if (result == null) return EmptyScope;
-		result.ObjData = GUI.Skin;
-		GUI.Skin = skin;
-		return result;
-	}
-
-	public void Dispose () {
-
-		Group?.End();
-
-		switch (0) {
-			case var _ when Group == LayerInstance:
-				if (Renderer.CurrentLayerIndex == RenderLayer.UI) {
-					Renderer.ReverseUnsortedCells(RenderLayer.UI);
-				}
-				Renderer.SetLayer(IntData);
-				break;
-
-			case var _ when Group == ReverseCellsInstance: {
-				int start = Int2Data.y;
-				if (Renderer.GetCells(Int2Data.x, out var cells, out int count) && start < count) {
-					System.Array.Reverse(cells, start, count - start);
-				}
-			}
-			break;
-
-			case var _ when Group == ColorInstance:
-				GUI.Color = ColorData;
-				break;
-
-			case var _ when Group == ContentColorInstance:
-				GUI.ContentColor = ColorData;
-				break;
-
-			case var _ when Group == BodyColorInstance:
-				GUI.BodyColor = ColorData;
-				break;
-
-			case var _ when Group == EnableInstance:
-				GUI.Enable = Int2Data.x == 1;
-				GUI.Interactable = Int2Data.y == 1;
-				break;
-
-			case var _ when Group == ScrollInstance:
-				Input.SetMousePositionShift(Int2DataAlt.x, Int2DataAlt.y);
-				Input.CancelIgnoreMouseInput();
-				int startIndex = IntData;
-				if (startIndex >= 0) {
-					if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
-						for (int i = startIndex; i < count; i++) {
-							cells[i].Y += Int2Data.y;
-						}
-					}
-					Renderer.ClampCells(RenderLayer.UI, RectData, startIndex);
-				}
-				break;
-
-			case var _ when Group == SheetInstance:
-				Renderer.CurrentSheetIndex = IntData;
-				break;
-
-			case var _ when Group == IgnoreInputInstance:
-				if (Int2Data.x == 1) {
-					Input.IgnoreKeyInput();
-				} else {
-					Input.CancelIgnoreKeyInput();
-				}
-				if (Int2Data.y == 1) {
-					Input.IgnoreMouseInput();
-				} else {
-					Input.CancelIgnoreMouseInput();
-				}
-				break;
-
-			case var _ when Group == GUILabelWidthInstance:
-				GUI.LabelWidth = IntData;
-				break;
-
-			case var _ when Group == GUISkinInstance:
-				GUI.Skin = ObjData is GUISkin skin ? skin : GUISkin.Default;
-				break;
+	public readonly void Dispose () {
+		if (OldIgnoreKey) {
+			Input.IgnoreKeyInput();
+		} else {
+			Input.CancelIgnoreKeyInput();
+		}
+		if (OldIgnoreMouse) {
+			Input.IgnoreMouseInput();
+		} else {
+			Input.CancelIgnoreMouseInput();
 		}
 	}
-
 }
+
+
+
+public readonly struct GUILabelWidthScope : System.IDisposable {
+	private readonly int OldWidth;
+	public GUILabelWidthScope (int width) {
+		OldWidth = GUI.LabelWidth;
+		GUI.LabelWidth = width;
+	}
+	public readonly void Dispose () => GUI.LabelWidth = OldWidth;
+}
+
+
+
+public readonly struct GUISkinScope : System.IDisposable {
+	private readonly GUISkin OldSkin;
+	public GUISkinScope (GUISkin skin) {
+		OldSkin = GUI.Skin;
+		GUI.Skin = skin;
+	}
+	public readonly void Dispose () => GUI.Skin = OldSkin;
+}
+
+
+
+public readonly struct ReverseCellsScope : System.IDisposable {
+	private readonly int LayerIndex;
+	private readonly int UsedCount;
+	public ReverseCellsScope () {
+		LayerIndex = Renderer.CurrentLayerIndex;
+		UsedCount = Renderer.GetUsedCellCount();
+	}
+	public readonly void Dispose () {
+		int start = UsedCount;
+		if (Renderer.GetCells(LayerIndex, out var cells, out int count) && start < count) {
+			System.Array.Reverse(cells, start, count - start);
+		}
+	}
+}
+
+

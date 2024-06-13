@@ -839,7 +839,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Behind
 		if (ShowBehind) {
 
-			using var _ = Scope.RendererLayer(RenderLayer.BEHIND);
+			using var _ = new LayerScope(RenderLayer.BEHIND);
 			var cameraRectF = cameraRect.ToFRect();
 			var behindCameraRect = cameraRectF.ScaleFrom(
 				Game.WorldBehindParallax / 1000f,
@@ -892,7 +892,7 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// Current
-		using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+		using (new DefaultLayerScope()) {
 
 			int z = CurrentZ;
 			int left = fixedCameraRect.xMin.ToUnit() - 1;
@@ -983,7 +983,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (RequireWorldRenderBlinkIndex > 0) {
 			var cameraRect = Renderer.CameraRect;
 			int hintWidth = Unify(120);
-			using (Scope.GUIBodyColor(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
+			using (new GUIBodyColorScope(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
 				GUI.BackgroundLabel(
 					new IRect(cameraRect.CenterX() - hintWidth / 2, cameraRect.yMax - Unify(32), hintWidth, Unify(22)),
 					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), false, Skin.SmallCenterLabel
@@ -994,7 +994,7 @@ public sealed partial class MapEditor : WindowUI {
 		// State
 		if (ShowState) {
 
-			using (Scope.GUIContentColor(Color32.GREY_196)) {
+			using (new GUIContentColorScope(Color32.GREY_196)) {
 
 				var cameraRect = Renderer.CameraRect;
 				int LABEL_HEIGHT = Unify(22);

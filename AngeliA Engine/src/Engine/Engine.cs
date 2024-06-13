@@ -339,8 +339,8 @@ public partial class Engine {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
 		}
 
-		using var _ = Scope.Sheet(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
-		using var __ = Scope.GuiSkin(Instance.ThemeSkin);
+		using var _ = new SheetIndexScope(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
+		using var __ = new GUISkinScope(Instance.ThemeSkin);
 
 		Instance.OnGUI_Hint();
 		if (Instance.CurrentProject == null) {
@@ -359,7 +359,7 @@ public partial class Engine {
 	// GUI Window
 	private void OnGUI_Hint () {
 
-		using var _ = Scope.RendererLayerUI();
+		using var _ = new UILayerScope();
 
 		// Tooltip
 		if (
@@ -393,7 +393,7 @@ public partial class Engine {
 
 			// Publishing Hint
 			if (Game.GlobalFrame <= ProjectEditor.Instance.RequiringPublishFrame + 3) {
-				using (Scope.RendererLayerUI()) {
+				using (new UILayerScope()) {
 					Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_96);
 					GUI.BackgroundLabel(
 						Renderer.CameraRect, HINT_PUBLISHING, Color32.BLACK, GUI.Unify(12),
@@ -510,7 +510,7 @@ public partial class Engine {
 		GUI.Interactable = interactable;
 
 		// UI
-		using (Scope.RendererLayerUI()) {
+		using (new UILayerScope()) {
 
 			bool menuButtonClicked = false;
 
@@ -560,7 +560,7 @@ public partial class Engine {
 					bodyID = UI_ENGINE_BAR_BTN_WARNING;
 				}
 				if (bodyTint.a > 0) {
-					using (Scope.GUIColor(bodyTint)) {
+					using (new GUIColorScope(bodyTint)) {
 						GUI.DrawSliceOrTile(bodyID, rect);
 					}
 				}

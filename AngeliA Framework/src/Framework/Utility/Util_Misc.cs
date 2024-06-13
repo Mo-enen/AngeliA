@@ -89,14 +89,14 @@ public static partial class Util {
 		int lo = min;
 		int hi = max;
 		T pvt = cells[(min + max) / 2];
-		T swp;
 		while (lo <= hi) {
 			while (comparer.Compare(cells[lo], pvt) < 0) lo++;
 			while (comparer.Compare(cells[hi], pvt) > 0) hi--;
 			if (lo > hi) break;
-			swp = cells[lo];
-			cells[lo] = cells[hi];
-			cells[hi] = swp;
+			//swp = cells[lo];
+			//cells[lo] = cells[hi];
+			//cells[hi] = swp;
+			(cells[lo], cells[hi]) = (cells[hi], cells[lo]);
 			lo++;
 			hi--;
 		}

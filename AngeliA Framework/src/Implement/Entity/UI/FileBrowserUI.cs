@@ -373,7 +373,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// OK Button
 		buttonRect.x -= buttonRect.width + padding;
-		using (Scope.GUIEnable(
+		using (new GUIEnableScope(
 			ActionType != BrowserActionType.Open ||
 			TargetType != BrowserTargetType.File ||
 			(SelectingIndex >= 0 && !Items[SelectingIndex].IsFolder)

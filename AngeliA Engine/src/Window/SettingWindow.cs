@@ -104,8 +104,8 @@ public class SettingWindow : WindowUI {
 
 	public override void UpdateWindowUI () {
 		int extendedUISize = 1;
-		using (var scroll = Scope.GUIScroll(WindowRect, MasterScroll, 0, UIHeight)) {
-			MasterScroll = scroll.ScrollPosition;
+		using (var scroll = new GUIScrollScope(WindowRect, MasterScroll, 0, UIHeight)) {
+			MasterScroll = scroll.PositionY;
 
 			var panelRect = WindowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(42));
 			int maxPanelWidth = Unify(612);
@@ -116,7 +116,7 @@ public class SettingWindow : WindowUI {
 
 			var rect = panelRect.EdgeInside(Direction4.Up, GUI.FieldHeight);
 
-			using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), rect.width / 2));
+			using var _ = new GUILabelWidthScope(Util.Min(Unify(256), rect.width / 2));
 
 			DrawPanel(ref rect, LABEL_ENGINE, ICON_ENGINE, Update_Engine, ref PanelFolding_Engine);
 			DrawPanel(ref rect, LABEL_MAP_EDITOR, ICON_MAP_EDITOR, Update_MapEditor, ref PanelFolding_MapEditor);
@@ -353,7 +353,7 @@ public class SettingWindow : WindowUI {
 		GUI.Label(rect.ShrinkLeft(rect.height), label, Skin.SmallGreyLabel);
 
 		// Fold Triangle
-		using (Scope.GUIColor(Color32.GREY_128)) {
+		using (new GUIColorScope(Color32.GREY_128)) {
 			GUI.Icon(
 				rect.EdgeOutside(Direction4.Left, rect.height * 2 / 3).Shift(-boxPadding.left / 4, 0),
 				folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
@@ -369,7 +369,7 @@ public class SettingWindow : WindowUI {
 			Renderer.TryGetSprite(UI_PANEL_SETTING, out var sprite) ||
 			Renderer.TryGetSprite(Const.PIXEL, out sprite)
 		) {
-			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+			using (new DefaultLayerScope()) {
 				var tint = sprite.ID == Const.PIXEL ? new Color32(23, 23, 23, 255) : Color32.WHITE;
 				Renderer.DrawSlice(sprite, new IRect(
 					boxLeft - boxPadding.left,

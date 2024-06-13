@@ -53,7 +53,7 @@ public class GenericDialogUI : MenuUI {
 		void DrawOption (Option option, Color32 tint) {
 			if (option.Action == null) return;
 			if (UsingButtonStyle) {
-				using var _ = Scope.GUIBodyColor(tint);
+				using var _ = new GUIBodyColorScope(tint);
 				if (DrawItem(
 					option.Label,
 					labelStyle: GUI.Skin.Label,
@@ -65,7 +65,7 @@ public class GenericDialogUI : MenuUI {
 					Input.UseAllHoldingKeys();
 				}
 			} else {
-				using var _ = Scope.GUIContentColor(tint);
+				using var _ = new GUIContentColorScope(tint);
 				if (DrawItem(option.Label)) {
 					option.Action();
 					Active = false;

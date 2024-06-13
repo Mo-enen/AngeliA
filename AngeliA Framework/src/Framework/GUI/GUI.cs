@@ -702,7 +702,7 @@ public static class GUI {
 		int beamLength = typing ? BeamLength : 0;
 
 		// Cancel on Click Outside
-		using (Scope.IgnoreInput(ignoreKey: false, ignoreMouse: false)) {
+		using (new IgnoreInputScope(ignoreKey: false, ignoreMouse: false)) {
 			if (typing && !startTyping && Input.MouseLeftButtonDown && !rect.MouseInside()) {
 				typing = false;
 				confirm = true;

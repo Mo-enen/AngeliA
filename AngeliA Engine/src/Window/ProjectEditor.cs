@@ -106,13 +106,13 @@ public class ProjectEditor : WindowUI {
 			panelRect.width = maxPanelWidth;
 		}
 
-		using var _ = Scope.GUILabelWidth(Util.Min(Unify(256), panelRect.width / 2));
+		using var _ = new GUILabelWidthScope(Util.Min(Unify(256), panelRect.width / 2));
 
 		var rect = panelRect.EdgeInside(Direction4.Up, Unify(50));
 		int extendedContentSize;
 
-		using (var scroll = Scope.GUIScroll(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
-			MasterScrollPos = scroll.ScrollPosition;
+		using (var scroll = new GUIScrollScope(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
+			MasterScrollPos = scroll.PositionY;
 
 			// Window
 			OnGUI_WorkflowButton(ref rect);
@@ -130,7 +130,7 @@ public class ProjectEditor : WindowUI {
 
 		// BG
 		if (panelBgSprite != null) {
-			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+			using (new DefaultLayerScope()) {
 				var range = new IRect(panelRect.x, rect.yMax + MasterScrollPos, panelRect.width, panelRect.yMax - rect.yMax);
 				var border = GUI.UnifyBorder(panelBgSprite.GlobalBorder, true);
 				range = range.Expand(border);
@@ -175,7 +175,7 @@ public class ProjectEditor : WindowUI {
 		RequireTooltip(_rect, TIP_EDIT);
 		_rect.SlideRight(padding);
 
-		using (Scope.GUIEnable(!EngineUtil.BuildingProjectInBackground)) {
+		using (new GUIEnableScope(!EngineUtil.BuildingProjectInBackground)) {
 
 			// Recompile
 			if (GUI.Button(_rect, LABEL_RECOMPILE, WorkflowButtonStyle)) {
@@ -336,7 +336,7 @@ public class ProjectEditor : WindowUI {
 				// Icon
 				GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
 				// Name
-				using (Scope.GUIContentColor(Game.CurrentMusicID == data.ID ? Color32.GREEN_BETTER : Color32.WHITE)) {
+				using (new GUIContentColorScope(Game.CurrentMusicID == data.ID ? Color32.GREEN_BETTER : Color32.WHITE)) {
 					GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
 				}
 				rect.SlideDown(padding);

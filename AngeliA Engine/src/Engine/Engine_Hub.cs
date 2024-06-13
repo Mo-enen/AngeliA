@@ -67,7 +67,7 @@ public partial class Engine {
 			FileBrowserUI.Instance.Height = GUI.Unify(600);
 		}
 
-		using (Scope.RendererLayerUI()) {
+		using (new UILayerScope()) {
 
 			// --- BG ---
 			GUI.DrawSliceOrTile(UI_WINDOW_BG, cameraRect);
@@ -123,11 +123,11 @@ public partial class Engine {
 			}
 
 			// Project List
-			using (var scroll = Scope.GUIScroll(
+			using (var scroll = new GUIScrollScope(
 				contentRect, HubPanelScroll,
 				0, Util.Max(0, projects.Count * itemHeight + extendHeight - contentRect.height))
 			) {
-				HubPanelScroll = scroll.ScrollPosition;
+				HubPanelScroll = scroll.PositionY;
 
 				var rect = contentRect.Shrink(
 					Renderer.TryGetSprite(PANEL_BG, out var bgSprite) ? bgSprite.GlobalBorder : Int4.zero
@@ -155,7 +155,7 @@ public partial class Engine {
 					}
 
 					// Icon
-					using (Scope.GUIContentColor(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+					using (new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
 						GUI.Icon(
 							itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height),
 							PROJECT_ICON

@@ -493,7 +493,7 @@ public partial class PixelEditor {
 			// Painting Line
 			var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 			var endPixPoint = MousePixelPos;
-			using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+			using (new DefaultLayerScope()) {
 				foreach (var pixelRect in Util.DrawLineWithRect_DDA(
 					startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
 				)) {
@@ -529,7 +529,7 @@ public partial class PixelEditor {
 				cell.Rotation1000 = (angle * -1000).RoundToInt();
 			} else {
 				// Painting Rect
-				using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+				using (new DefaultLayerScope()) {
 					if (EngineSetting.SolidPaintingPreview.Value) {
 						Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
 					} else {
@@ -577,7 +577,7 @@ public partial class PixelEditor {
 
 
 	private void DrawMovingSprites () {
-		using var _ = Scope.RendererLayer(RenderLayer.DEFAULT);
+		using var _ = new DefaultLayerScope();
 		var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 		var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 		var pixDelta = mousePixPos - mouseDownPixPos;

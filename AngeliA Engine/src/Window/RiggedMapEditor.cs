@@ -93,7 +93,7 @@ public class RiggedMapEditor : WindowUI {
 
 	private void OnGUI_Toolbar () {
 
-		using var _ = Scope.RendererLayerUI();
+		using var _ = new UILayerScope();
 
 		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
 		int panelYMax = panelRect.y;
@@ -210,7 +210,7 @@ public class RiggedMapEditor : WindowUI {
 			// Label
 			int padding = Unify(6);
 			GUI.Label(rect.ShrinkLeft(padding), data.Name, GUI.Skin.SmallLabel);
-			using (Scope.GUIColor(new Color32(96, 96, 96, 255))) {
+			using (new GUIColorScope(new Color32(96, 96, 96, 255))) {
 				GUI.Label(rect.ShrinkRight(padding), data.I2C_Capa.GetChars(data.Capacity), out var bounds, GUI.Skin.SmallRightLabel);
 				GUI.Label(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), "/", out bounds, GUI.Skin.SmallRightLabel);
 				GUI.Label(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), data.I2C.GetChars(data.Value), GUI.Skin.SmallRightLabel);

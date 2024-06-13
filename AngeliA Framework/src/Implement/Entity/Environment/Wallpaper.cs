@@ -86,7 +86,7 @@ public abstract class Wallpaper : Entity {
 			return;
 		}
 		base.LateUpdate();
-		using (Scope.RendererLayer(RenderLayer.WALLPAPER)) {
+		using (new LayerScope(RenderLayer.WALLPAPER)) {
 			DrawBackground(Renderer.CameraRect);
 		}
 	}

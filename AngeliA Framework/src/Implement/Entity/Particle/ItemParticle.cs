@@ -39,7 +39,7 @@ public class ItemCollectParticle : Particle {
 			255, 255, 255,
 			(byte)Util.RemapUnclamped(0, Duration, 512, 1, LocalFrame).Clamp(0, 255)
 		);
-		using (Scope.RendererLayerUI()) {
+		using (new UILayerScope()) {
 			Renderer.Draw((int)UserData, Rect, Tint, 0);
 		}
 	}
@@ -105,27 +105,26 @@ public class ItemDamageParticle : Particle {
 	}
 	public override void DrawParticle () {
 		base.DrawParticle();
-		using (Scope.RendererLayerUI()) {
+		using var _ = new UILayerScope();
 
-			float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
-			float ease010 = Util.PingPong(ease01, 0.5f) * 2f;
-			int deltaSize = (int)Util.Lerp(Const.CEL, -Const.CEL, ease010).Clamp(-Const.HALF / 4, 0);
-			int rotation = ease01 < 0.5f ? (int)(ease01 * 30f * (LocalFrame % 2 == 0 ? 1f : -1f)) : 0;
+		float ease01 = Ease.OutCirc((float)LocalFrame / Duration);
+		float ease010 = Util.PingPong(ease01, 0.5f) * 2f;
+		int deltaSize = (int)Util.Lerp(Const.CEL, -Const.CEL, ease010).Clamp(-Const.HALF / 4, 0);
+		int rotation = ease01 < 0.5f ? (int)(ease01 * 30f * (LocalFrame % 2 == 0 ? 1f : -1f)) : 0;
 
-			byte rgb = (byte)Util.Lerp(512, 196, ease01).Clamp(0, 255);
-			var tint = new Color32(
-				rgb, rgb, rgb,
-				(byte)Util.Lerp(512, 0, ease01).Clamp(0, 255)
-			);
+		byte rgb = (byte)Util.Lerp(512, 196, ease01).Clamp(0, 255);
+		var tint = new Color32(
+			rgb, rgb, rgb,
+			(byte)Util.Lerp(512, 0, ease01).Clamp(0, 255)
+		);
 
-			// Draw
-			Renderer.Draw(
-				ease01 < 0.5f ? ItemBeforeID : ItemAfterID,
-				X, Y, 500, 500, rotation,
-				Width + deltaSize, Height + deltaSize,
-				tint, 0
-			);
-		}
+		// Draw
+		Renderer.Draw(
+			ease01 < 0.5f ? ItemBeforeID : ItemAfterID,
+			X, Y, 500, 500, rotation,
+			Width + deltaSize, Height + deltaSize,
+			tint, 0
+		);
 	}
 }
 
@@ -161,25 +160,25 @@ public class ItemInsufficientParticle : Particle {
 		X = Holder.X;
 		Y = Holder.Y;
 
-		using (Scope.RendererLayerUI()) {
+		using var _ = new UILayerScope();
 
-			float lerp01 = (float)LocalFrame / Duration;
-			float ease01 = Ease.OutExpo(lerp01);
-			int deltaX = (int)Util.Lerp(-Const.HALF / 2, Const.HALF / 2, Util.PingPong(ease01 * 4.5f, 1f));
-			const int deltaY = Const.CEL * 2 + Const.HALF;
+		float lerp01 = (float)LocalFrame / Duration;
+		float ease01 = Ease.OutExpo(lerp01);
+		int deltaX = (int)Util.Lerp(-Const.HALF / 2, Const.HALF / 2, Util.PingPong(ease01 * 4.5f, 1f));
+		const int deltaY = Const.CEL * 2 + Const.HALF;
 
-			// Draw
-			Renderer.DrawPixel(
-				X + deltaX, Y + deltaY, 500, 500, 0,
-				Width * 10 / 8, Height * 10 / 8,
-				new Color32(255, 64, 64)
-			);
-			Renderer.Draw(
-				ItemID,
-				X + deltaX, Y + deltaY, 500, 500, 0,
-				Width, Height,
-				new Color32(255, 255, 255)
-			);
-		}
+		// Draw
+		Renderer.DrawPixel(
+			X + deltaX, Y + deltaY, 500, 500, 0,
+			Width * 10 / 8, Height * 10 / 8,
+			new Color32(255, 64, 64)
+		);
+		Renderer.Draw(
+			ItemID,
+			X + deltaX, Y + deltaY, 500, 500, 0,
+			Width, Height,
+			new Color32(255, 255, 255)
+		);
+
 	}
 }

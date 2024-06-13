@@ -252,7 +252,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Name
 		var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
-		using (Scope.GUIContentColor(Color32.ORANGE_BETTER)) {
+		using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
 			GUI.SmallLabel(nameRect, ItemSystem.GetItemDisplayName(itemID));
 		}
 
@@ -784,7 +784,7 @@ public class PlayerMenuUI : EntityUI {
 		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
 		// Label
-		using (Scope.GUIContentColor(enableTint)) {
+		using (new GUIContentColorScope(enableTint)) {
 			GUI.Label(
 				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label
 			);

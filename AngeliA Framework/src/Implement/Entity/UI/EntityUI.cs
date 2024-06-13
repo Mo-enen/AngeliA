@@ -42,7 +42,7 @@ public abstract class EntityUI : Entity {
 	public override void LateUpdate () {
 		base.LateUpdate();
 
-		using (Scope.RendererLayerUI()) {
+		using (new UILayerScope()) {
 
 			if (Game.PauselessFrame == BlockingEventFrame) {
 				Input.IgnoreAllInput(0);

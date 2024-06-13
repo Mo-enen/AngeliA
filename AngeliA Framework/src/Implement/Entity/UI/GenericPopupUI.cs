@@ -228,7 +228,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					}
 
 					// Content
-					using (Scope.GUIEnable(item.Enabled)) {
+					using (new GUIEnableScope(item.Enabled)) {
 
 						// Check Mark
 						if (item.Checked) {

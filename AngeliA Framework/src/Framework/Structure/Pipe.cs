@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Linq;
-using System.Collections.Generic;
-
-namespace AngeliA;
+﻿namespace AngeliA;
 
 public class Pipe<T> {
 
@@ -65,7 +61,7 @@ public class Pipe<T> {
 
 	public bool LinkToHead (T data) {
 		if (Length >= Capacity) return false;
-		Start = (Start - 1).UMod(Capacity);
+		Start = Start <= 0 ? Capacity - 1 : Start - 1;
 		Data[Start] = data;
 		Length++;
 		return true;

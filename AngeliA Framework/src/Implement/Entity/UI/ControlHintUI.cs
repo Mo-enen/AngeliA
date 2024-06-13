@@ -104,7 +104,7 @@ public class ControlHintUI : EntityUI {
 
 	private void DrawGamePad () {
 
-		using var _ = Scope.RendererLayerUI();
+		using var _ = new UILayerScope();
 
 		int x = Unify(6);
 		int y = Unify(6);
@@ -279,7 +279,7 @@ public class ControlHintUI : EntityUI {
 	}
 	private void DrawKeyLogic (int x, int y, int keyIdA, int keyIdB, string keyTextA, string keyTextB, string label, bool background) {
 
-		using var _ = Scope.RendererLayerUI();
+		using var _ = new UILayerScope();
 
 		var border = ButtonBorder;
 		border.left = Unify(border.left);
@@ -313,7 +313,7 @@ public class ControlHintUI : EntityUI {
 			);
 			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 		} else {
-			using (Scope.ReverseCells()) {
+			using (new ReverseCellsScope()) {
 				GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
@@ -334,7 +334,7 @@ public class ControlHintUI : EntityUI {
 				);
 				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
-				using (Scope.ReverseCells()) {
+				using (new ReverseCellsScope()) {
 					GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
 					int targetWidth = keyBounds.width + border.horizontal;
 					if (rect.width < targetWidth) rect.width = targetWidth;

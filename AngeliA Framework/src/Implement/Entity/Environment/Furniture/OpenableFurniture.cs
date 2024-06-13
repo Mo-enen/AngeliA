@@ -16,12 +16,12 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 			UiUpdateFrame = Game.GlobalFrame;
 			Cursor.RequireCursor();
 			var size = WindowSize;
-			using (Scope.RendererLayerUI()) {
+			using (new UILayerScope()) {
 				FrameUpdateUI(new IRect(
-				Renderer.CameraRect.CenterX() - Unify(size.x) / 2,
-				Renderer.CameraRect.CenterY() - Unify(size.y) / 2,
-				Unify(size.x), Unify(size.y)
-			));
+					Renderer.CameraRect.CenterX() - Unify(size.x) / 2,
+					Renderer.CameraRect.CenterY() - Unify(size.y) / 2,
+					Unify(size.x), Unify(size.y)
+				));
 			}
 		}
 		base.LateUpdate();

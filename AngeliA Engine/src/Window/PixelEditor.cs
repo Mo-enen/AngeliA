@@ -443,7 +443,7 @@ public partial class PixelEditor : WindowUI {
 	private void Update_Rendering () {
 
 		if (Sheet.Atlas.Count <= 0) return;
-		using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
+		using var _layer = new DefaultLayerScope();
 
 		// BG Gizmos
 		var canvasRectInt = CanvasRect.ToIRect();
@@ -469,7 +469,7 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Sprite Content
-		using var _sheet = Scope.Sheet(-1);
+		using var _sheet = new SheetIndexScope(-1);
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spriteData = StagedSprites[i];
 			var sprite = spriteData.Sprite;
@@ -574,11 +574,11 @@ public partial class PixelEditor : WindowUI {
 		if (Sheet.Atlas.Count <= 0) return;
 
 		bool allowHighlight = DraggingStateLeft == DragStateLeft.None && DraggingStateRight == DragStateRight.None;
-		using var _layer = Scope.RendererLayer(RenderLayer.DEFAULT);
+		using var _layer = new DefaultLayerScope();
 
 		// Axis
 		if (ShowAxis.Value) {
-			using var _ = Scope.GUIContentColor(Color32.WHITE_128);
+			using var _ = new GUIContentColorScope(Color32.WHITE_128);
 			var tint = Skin.GizmosNormal.WithNewA(128);
 			var canvasRectInt = CanvasRect.ToIRect();
 			GUI.DrawAxis(
@@ -1353,7 +1353,7 @@ public partial class PixelEditor : WindowUI {
 				hasFrame = true;
 			} else if (DraggingStateLeft == DragStateLeft.None) {
 				// Color
-				using (Scope.RendererLayer(RenderLayer.DEFAULT)) {
+				using (new DefaultLayerScope()) {
 					Renderer.DrawPixel(cursorRect.Expand((int)(pixSize / 30f)), PaintingColor, z: int.MaxValue);
 				}
 			}
