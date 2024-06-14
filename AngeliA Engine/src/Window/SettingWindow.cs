@@ -52,6 +52,13 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_HOTKEY_CONSOLE = ("Setting.Hotkey.Console", "Open Console");
 	private static readonly LanguageCode LABEL_HOTKEY_PROJECT = ("Setting.Hotkey.Project", "Open Project Editor");
 	private static readonly LanguageCode LABEL_HOTKEY_SETTING = ("Setting.Hotkey.Setting", "Open Setting");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_RECT = ("Setting.Hotkey.Pix.Rect", "Artwork - Rect Tool");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_LINE = ("Setting.Hotkey.Pix.Line", "Artwork - Line Tool");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_BUCKET = ("Setting.Hotkey.Pix.Bucket", "Artwork - Bucket Tool");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_SELECT = ("Setting.Hotkey.Pix.Select", "Artwork - Select Tool");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_SPRITE = ("Setting.Hotkey.Pix.Sprite", "Artwork - Sprite Tool");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_PREV = ("Setting.Hotkey.Pix.PalPrev", "Artwork - Prev Palette Color");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_NEXT = ("Setting.Hotkey.Pix.PalNext", "Artwork - Next Palette Color");
 
 	private static readonly LanguageCode MENU_CATA_LETTER = ("Menu.Group.Letter", "Letter");
 	private static readonly LanguageCode MENU_CATA_NUMBER = ("Menu.Group.Number", "Number");
@@ -325,6 +332,27 @@ public class SettingWindow : WindowUI {
 		HotkeyField(rect, EngineSetting.Hotkey_Window_Setting, LABEL_HOTKEY_SETTING);
 		rect.SlideDown(itemPadding);
 
+		// Pix Tool
+		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Rect, LABEL_HOTKEY_PIX_TOOL_RECT);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Line, LABEL_HOTKEY_PIX_TOOL_LINE);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Bucket, LABEL_HOTKEY_PIX_TOOL_BUCKET);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Select, LABEL_HOTKEY_PIX_TOOL_SELECT);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Sprite, LABEL_HOTKEY_PIX_TOOL_SPRITE);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_Pix_PalettePrev, LABEL_HOTKEY_PIX_PAL_PREV);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_Pix_PaletteNext, LABEL_HOTKEY_PIX_PAL_NEXT);
+		rect.SlideDown(itemPadding);
 
 		return rect;
 	}

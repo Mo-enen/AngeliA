@@ -52,7 +52,7 @@ public partial class PixelEditor {
 
 		// BG
 		GUI.DrawSliceOrTile(UI_ENGINE_PANEL, panelRect);
-		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_HEIGHT));
+		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_SIZE));
 
 		int itemCount = Sheet.Atlas.Count;
 		if (itemCount > 0) {
@@ -256,7 +256,7 @@ public partial class PixelEditor {
 	private void Update_AtlasToolbar () {
 
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
-		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
+		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(TOOLBAR_SIZE));
 
 		// BG
 		Renderer.Draw(UI_TOOLBAR, toolbarRect);
@@ -341,7 +341,7 @@ public partial class PixelEditor {
 			StagedSprites.Add(new SpriteData(sprite));
 		}
 		ResetCamera();
-		DraggingStateLeft = DragStateLeft.None;
+		DraggingState = DragState.None;
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
 		ResizingStageIndex = -1;

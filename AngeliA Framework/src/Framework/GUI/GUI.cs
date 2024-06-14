@@ -31,10 +31,11 @@ public static class GUI {
 	public static int FieldPadding { get; private set; } = 1;
 
 	// Data
-	private static readonly StringBuilder TypingBuilder = new();
+	private static readonly char[] TypingBuilder = new char[1024];
 	private static readonly IntToChars IntDialToChars = new();
 	private static readonly IntToChars AxisLabalToChars = new();
 	private static readonly char[] TimingChars = new char[12]; // 99+°59'59"59
+	private static int TypingBuilderCount = 0;
 	private static int BeamIndex = 0;
 	private static int BeamLength = 0;
 	private static int BeamBlinkFrame = int.MinValue;
@@ -74,7 +75,7 @@ public static class GUI {
 
 	[OnGameUpdateLater(4096)]
 	internal static void LateUpdate () {
-		if (TypingBuilder.Length > 0) TypingBuilder.Clear();
+		if (TypingBuilder.Length > 0) TypingBuilderCount = 0;
 		if (TypingTextFieldID != 0 && Game.PauselessFrame > TypingTextFieldUpdateFrame) {
 			CancelTyping();
 		}
@@ -227,7 +228,7 @@ public static class GUI {
 
 	public static void CancelTyping () {
 		TypingTextFieldID = 0;
-		TypingBuilder.Clear();
+		TypingBuilderCount = 0;
 		BeamIndex = 0;
 		BeamLength = 0;
 		InvokeTypingStartID = 0;
@@ -707,7 +708,7 @@ public static class GUI {
 				typing = false;
 				confirm = true;
 				TypingTextFieldID = 0;
-				TypingBuilder.Clear();
+				TypingBuilderCount = 0;
 				BeamIndex = beamIndex = 0;
 				BeamLength = beamLength = 0;
 			}
@@ -772,7 +773,7 @@ public static class GUI {
 			beamIndex = BeamIndex = beamIndex.Clamp(0, text.Length);
 			beamLength = BeamLength = beamLength.Clamp(-beamIndex, text.Length - beamIndex);
 
-			for (int i = 0; i < TypingBuilder.Length; i++) {
+			for (int i = 0; i < TypingBuilderCount; i++) {
 				char c = TypingBuilder[i];
 				switch (c) {
 					case Const.RETURN_SIGN:
@@ -1244,6 +1245,7 @@ public static class GUI {
 
 	// Misc
 	internal static void OnTextInput (char c) {
+		if (TypingBuilderCount >= TypingBuilder.Length) return;
 		if (char.IsControl(c)) {
 			switch (c) {
 				case Const.RETURN_SIGN:
@@ -1256,7 +1258,8 @@ public static class GUI {
 					return;
 			}
 		}
-		TypingBuilder.Append(c);
+		TypingBuilder[TypingBuilderCount] = c;
+		TypingBuilderCount++;
 	}
 
 

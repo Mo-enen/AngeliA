@@ -48,6 +48,13 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_RULE_MODE_A = "Icon.RuleModeA";
 	private static readonly SpriteCode ICON_RULE_MODE_B = "Icon.RuleModeB";
 	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
+	private static readonly SpriteCode[] UI_TOOL = {
+		"UI.Tool.Rect",
+		"UI.Tool.Line",
+		"UI.Tool.Bucket",
+		"UI.Tool.Select",
+		"UI.Tool.Sprite",
+	};
 
 	// Language
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
@@ -94,6 +101,7 @@ public partial class PixelEditor {
 	private static readonly byte[] RuleCache = new byte[8];
 	private readonly int[] TagCheckedCountCache = new int[SpriteTag.COUNT + 1];
 	private readonly IntToChars RulePageToChars = new();
+	private readonly int ToolCount = typeof(Tool).EnumLength();
 	private bool SelectingAnyTiggerSprite;
 	private bool SelectingAnyNonTiggerSprite;
 	private bool SelectingAnySpriteWithBorder;
@@ -120,7 +128,8 @@ public partial class PixelEditor {
 
 		if (Sheet.Atlas.Count <= 0) return;
 
-		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, Unify(TOOLBAR_HEIGHT));
+		int toolbarSize = Unify(TOOLBAR_SIZE);
+		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, toolbarSize).Expand(0, toolbarSize, 0, 0);
 
 		// BG
 		GUI.DrawSliceOrTile(UI_TOOLBAR, toolbarRect);
@@ -139,6 +148,22 @@ public partial class PixelEditor {
 			Update_SpriteToolbar_Alt(ref rect);
 			Update_RuleEditor();
 		}
+
+		// Tools
+		int padding = Unify(4);
+		var toolRect = WindowRect.EdgeRight(toolbarSize).ShrinkUp(toolbarSize);
+		GUI.DrawSliceOrTile(UI_TOOLBAR, toolRect);
+		toolRect = toolRect.Shrink(Unify(6));
+		rect = toolRect.EdgeInside(Direction4.Up, Unify(30));
+		for (int i = 0; i < ToolCount; i++) {
+			bool selecting = CurrentTool == (Tool)i;
+			bool newSelecting = GUI.ToggleButton(rect, selecting, UI_TOOL[i], Skin.SmallDarkButton);
+			if (newSelecting && !selecting) {
+				SetCurrentTool((Tool)i);
+			}
+			rect.SlideDown(padding);
+		}
+
 	}
 
 

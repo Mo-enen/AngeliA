@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace AngeliA;
+﻿namespace AngeliA;
 
 public readonly struct Hotkey {
 	private const uint CTRL_MARK = 0b10000000000000000000000000000000;
@@ -31,21 +29,21 @@ public readonly struct Hotkey {
 		}
 	}
 	public readonly bool Holding () {
-		if (Ctrl && !Input.KeyboardHolding(KeyboardKey.LeftCtrl)) return false;
-		if (Shift && !Input.KeyboardHolding(KeyboardKey.LeftShift)) return false;
-		if (Alt && !Input.KeyboardHolding(KeyboardKey.LeftAlt)) return false;
+		if (Ctrl != Input.KeyboardHolding(KeyboardKey.LeftCtrl)) return false;
+		if (Shift != Input.KeyboardHolding(KeyboardKey.LeftShift)) return false;
+		if (Alt != Input.KeyboardHolding(KeyboardKey.LeftAlt)) return false;
 		return Input.KeyboardHolding(Key);
 	}
 	public readonly bool Down () {
-		if (Ctrl && !Input.KeyboardHolding(KeyboardKey.LeftCtrl)) return false;
-		if (Shift && !Input.KeyboardHolding(KeyboardKey.LeftShift)) return false;
-		if (Alt && !Input.KeyboardHolding(KeyboardKey.LeftAlt)) return false;
+		if (Ctrl != Input.KeyboardHolding(KeyboardKey.LeftCtrl)) return false;
+		if (Shift != Input.KeyboardHolding(KeyboardKey.LeftShift)) return false;
+		if (Alt != Input.KeyboardHolding(KeyboardKey.LeftAlt)) return false;
 		return Input.KeyboardDown(Key);
 	}
 	public readonly bool DownGUI () {
-		if (Ctrl && !Input.KeyboardHolding(KeyboardKey.LeftCtrl)) return false;
-		if (Shift && !Input.KeyboardHolding(KeyboardKey.LeftShift)) return false;
-		if (Alt && !Input.KeyboardHolding(KeyboardKey.LeftAlt)) return false;
+		if (Ctrl != Input.KeyboardHolding(KeyboardKey.LeftCtrl)) return false;
+		if (Shift != Input.KeyboardHolding(KeyboardKey.LeftShift)) return false;
+		if (Alt != Input.KeyboardHolding(KeyboardKey.LeftAlt)) return false;
 		return Input.KeyboardDownGUI(Key);
 	}
 	public readonly string GetStringData () => ((uint)Key | (Ctrl ? CTRL_MARK : 0) | (Shift ? SHIFT_MARK : 0) | (Alt ? ALT_MARK : 0)).ToString();
