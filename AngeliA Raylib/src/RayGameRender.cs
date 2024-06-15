@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using AngeliA;
@@ -153,10 +154,11 @@ public partial class RayGame {
 			_ => BlendMode.CustomSeparate,
 		});
 
+		var span = new ReadOnlySpan<Cell>(cells);
 		for (int i = 0; i < cellCount; i++) {
 			try {
 
-				var cell = cells[isUiLayer ? cellCount - i - 1 : i];
+				var cell = span[isUiLayer ? cellCount - i - 1 : i];
 
 				// Cell
 				if (cell.Width == 0 || cell.Height == 0 || cell.Color.a == 0) continue;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -93,9 +94,23 @@ public static partial class Util {
 			while (comparer.Compare(cells[lo], pvt) < 0) lo++;
 			while (comparer.Compare(cells[hi], pvt) > 0) hi--;
 			if (lo > hi) break;
-			//swp = cells[lo];
-			//cells[lo] = cells[hi];
-			//cells[hi] = swp;
+			(cells[lo], cells[hi]) = (cells[hi], cells[lo]);
+			lo++;
+			hi--;
+		}
+		if (min < hi) QuickSort(cells, min, hi, comparer);
+		if (lo < max) QuickSort(cells, lo, max, comparer);
+	}
+
+
+	public static void QuickSort<T> (Span<T> cells, int min, int max, IComparer<T> comparer) where T : class {
+		int lo = min;
+		int hi = max;
+		T pvt = cells[(min + max) / 2];
+		while (lo <= hi) {
+			while (comparer.Compare(cells[lo], pvt) < 0) lo++;
+			while (comparer.Compare(cells[hi], pvt) > 0) hi--;
+			if (lo > hi) break;
 			(cells[lo], cells[hi]) = (cells[hi], cells[lo]);
 			lo++;
 			hi--;

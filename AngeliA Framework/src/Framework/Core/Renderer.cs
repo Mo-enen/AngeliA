@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AngeliA;
@@ -33,7 +34,8 @@ public static class Renderer {
 		public bool UiLayer;
 		public void ZSort () {
 			if (SortedIndex < Count - 1) {
-				Util.QuickSort(Cells, SortedIndex, Count - 1, CellComparer.Instance);
+				var span = new Span<Cell>(Cells);
+				Util.QuickSort(span, SortedIndex, Count - 1, CellComparer.Instance);
 			}
 			SortedIndex = Count;
 		}
@@ -61,7 +63,7 @@ public static class Renderer {
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 
 	// Event
-	public static event System.Action OnSheetLoaded;
+	public static event Action OnSheetLoaded;
 
 	// Api
 	public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);

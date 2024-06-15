@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -199,7 +200,7 @@ public static class Stage {
 					var e = stack.CreateInstance();
 					if (e == null) break;
 					stack.Entities.Push(e);
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (Exception ex) { Debug.LogException(ex); }
 			}
 			EntityPool.TryAdd(id, stack);
 		}
@@ -318,44 +319,40 @@ public static class Stage {
 		}
 
 		// First (Fill Physics)
-
 		for (int layer = startLayer; layer < endLayer; layer++) {
-			var entities = Entities[layer];
-			int count = EntityCounts[layer];
-			count = count.Clamp(0, entities.Length);
+			var span = new ReadOnlySpan<Entity>(Entities[layer]);
+			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				try {
-					entities[index].FirstUpdate();
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+					span[index].FirstUpdate();
+				} catch (Exception ex) { Debug.LogException(ex); }
 			}
 		}
 
 		// Before
 		for (int layer = startLayer; layer < endLayer; layer++) {
-			var entities = Entities[layer];
-			int count = EntityCounts[layer];
-			count = count.Clamp(0, entities.Length);
+			var span = new ReadOnlySpan<Entity>(Entities[layer]);
+			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
-				var e = entities[index];
+				var e = span[index];
 				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
 						e.BeforeUpdate();
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+					} catch (Exception ex) { Debug.LogException(ex); }
 				}
 			}
 		}
 
 		// Update
 		for (int layer = startLayer; layer < endLayer; layer++) {
-			var entities = Entities[layer];
-			int count = EntityCounts[layer];
-			count = count.Clamp(0, entities.Length);
+			var span = new ReadOnlySpan<Entity>(Entities[layer]);
+			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
-				var e = entities[index];
+				var e = span[index];
 				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
 						e.Update();
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+					} catch (Exception ex) { Debug.LogException(ex); }
 				}
 			}
 		}
@@ -363,18 +360,17 @@ public static class Stage {
 		// Late
 		var cullCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
 		for (int layer = startLayer; layer < endLayer; layer++) {
-			var entities = Entities[layer];
-			int count = EntityCounts[layer];
-			count = count.Clamp(0, entities.Length);
+			var span = new ReadOnlySpan<Entity>(Entities[layer]);
+			int count = EntityCounts[layer].Clamp(0, span.Length);
 			BeforeLayerFrameUpdate?.Invoke(layer);
 			for (int index = 0; index < count; index++) {
-				var e = entities[index];
+				var e = span[index];
 				if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
 					try {
 						Renderer.SetLayerToDefault();
 						e.LateUpdate();
 						e.FrameUpdated = true;
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+					} catch (Exception ex) { Debug.LogException(ex); }
 				}
 			}
 			AfterLayerFrameUpdate?.Invoke(layer);
@@ -711,8 +707,8 @@ public static class Stage {
 
 		if (!Enable) return;
 
-		var entities = Entities[layer];
-		int count = EntityCounts[layer];
+		var entities = new Span<Entity>(Entities[layer]);
+		int count = EntityCounts[layer].Clamp(0, entities.Length);
 
 		// Inactive Out of Range Entities
 		for (int i = 0; i < count; i++) {
@@ -803,7 +799,7 @@ public static class Stage {
 				entity.SpawnFrame = Game.GlobalFrame;
 				return entity;
 			}
-		} catch (System.Exception ex) { Debug.LogException(ex); }
+		} catch (Exception ex) { Debug.LogException(ex); }
 		return null;
 	}
 
@@ -812,7 +808,7 @@ public static class Stage {
 		entity.Active = false;
 		try {
 			entity.OnInactivated();
-		} catch (System.Exception ex) { Debug.LogException(ex); }
+		} catch (Exception ex) { Debug.LogException(ex); }
 		entity.FrameUpdated = false;
 		StagedEntityHash.Remove(entity.InstanceID);
 		if (meta == null && EntityPool.TryGetValue(entity.TypeID, out meta)) {
