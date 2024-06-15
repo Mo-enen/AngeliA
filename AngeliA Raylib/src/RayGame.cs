@@ -187,6 +187,11 @@ public partial class RayGame : Game {
 			RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
 		}
+		if (!Raylib.IsRenderTextureReady(RenderTexture)) {
+			RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
+			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
+			Debug.LogWarning("Render Texture Force Reloaded.");
+		}
 		Raylib.BeginTextureMode(RenderTexture);
 
 		// File Drop

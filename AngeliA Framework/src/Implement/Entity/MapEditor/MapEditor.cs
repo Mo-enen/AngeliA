@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using GeorgeMamaladze;
-using AngeliA;
 
-namespace AngeliaRigged;
+namespace AngeliA;
 
 
 [EntityAttribute.StageOrder(-4096)]

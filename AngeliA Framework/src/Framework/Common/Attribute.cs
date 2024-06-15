@@ -58,6 +58,11 @@ public class RenderLayerCapacityAttribute : System.Attribute {
 }
 
 
+// Stage
+[System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }
+[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLayerFrameUpdateAttribute : System.Attribute { }
+[System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLayerFrameUpdateAttribute : System.Attribute { }
+
 
 // Item
 [System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]

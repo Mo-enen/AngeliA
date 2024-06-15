@@ -161,12 +161,18 @@ public class ProjectEditor : WindowUI {
 		if (GUI.Button(_rect, LABEL_EDIT, WorkflowButtonStyle)) {
 			bool found = false;
 			foreach (var path in Util.EnumerateFiles(CurrentProject.ProjectPath, true, "*.sln")) {
+				if (path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase)) {
+					continue;
+				}
 				found = true;
 				Game.OpenUrl(path);
 				break;
 			}
 			if (!found) {
 				foreach (var path in Util.EnumerateFiles(CurrentProject.ProjectPath, true, "*.csproj")) {
+					if (path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase)) {
+						continue;
+					}
 					Game.OpenUrl(path);
 					break;
 				}

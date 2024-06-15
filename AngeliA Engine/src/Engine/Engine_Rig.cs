@@ -161,16 +161,6 @@ public partial class Engine {
 	}
 
 
-	[OnGameFocused]
-	internal static void OnGameFocused () {
-		Instance?.CheckScriptChanged();
-		Instance?.RefreshProjectCache();
-		Instance?.CheckResourceChanged();
-		Instance?.CheckEngineResourceChanged();
-		Instance?.CheckDialogChanged();
-	}
-
-
 	private void OnGUI_RiggedGame () {
 
 		var rigEdt = RiggedMapEditor.Instance;
@@ -303,92 +293,6 @@ public partial class Engine {
 		}
 
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	// Change Check
-	private void CheckScriptChanged () {
-		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
-		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
-		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {
-			RiggedMapEditor.Instance.SetDirty();
-			RequireBackgroundBuildDate = EngineSetting.AutoRecompile.Value ? srcModifyDate : 0;
-		} else {
-			RequireBackgroundBuildDate = 0;
-		}
-	}
-
-
-	private void CheckResourceChanged () {
-		if (CurrentProject == null) return;
-		// Fonts
-		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
-		if (changed) {
-			Transceiver.CallingMessage.RequireClearCharPoolInvoke();
-		}
-		// Audio
-		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
-		// Icon
-		if (ProjectEditor.Instance.IconFileModified()) {
-			ProjectEditor.Instance.ReloadIconUI();
-		}
-	}
-
-
-	private void CheckEngineResourceChanged () {
-
-		if (CurrentProject == null) return;
-
-		// Framework Dll Files
-		string sourceDllDebug = EngineUtil.TemplateFrameworkDll_Debug;
-		if (Util.FileExists(sourceDllDebug)) {
-			string targetPath = CurrentProject.FrameworkDllPath_Debug;
-			long sourceDate = Util.GetFileModifyDate(sourceDllDebug);
-			long targetDate = Util.GetFileModifyDate(targetPath);
-			if (sourceDate != targetDate) {
-				Util.CopyFile(sourceDllDebug, targetPath, true);
-				Util.SetFileModifyDate(targetPath, sourceDate);
-			}
-		}
-		string sourceDllRelease = EngineUtil.TemplateFrameworkDll_Release;
-		if (Util.FileExists(sourceDllRelease)) {
-			string targetPath = CurrentProject.FrameworkDllPath_Release;
-			long sourceDate = Util.GetFileModifyDate(sourceDllRelease);
-			long targetDate = Util.GetFileModifyDate(targetPath);
-			if (sourceDate != targetDate) {
-				Util.CopyFile(sourceDllRelease, targetPath, true);
-				Util.SetFileModifyDate(targetPath, sourceDate);
-			}
-		}
-
-		// Entry Exe File
-		string sourceEntryPath = EngineUtil.EntryExePath;
-		if (Util.FileExists(sourceEntryPath)) {
-			var targetEntryPath = Util.CombinePaths(CurrentProject.BuildPath, Util.GetNameWithExtension(sourceEntryPath));
-			long sourceDate = Util.GetFileModifyDate(sourceEntryPath);
-			long targetDate = Util.GetFileModifyDate(sourceEntryPath);
-			if (sourceDate != targetDate) {
-				Util.CopyFile(sourceEntryPath, targetEntryPath, true);
-				Util.SetFileModifyDate(targetEntryPath, sourceDate);
-			}
-		}
-
-
-	}
-
-
-	private void CheckDialogChanged () => EngineUtil.TryCompileDialogueFiles(
-		Universe.BuiltIn.EditableConversationRoot,
-		Universe.BuiltIn.ConversationRoot,
-		forceCompile: false
-	);
 
 
 	#endregion

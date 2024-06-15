@@ -281,6 +281,16 @@ public partial class Engine {
 	}
 
 
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+		Instance?.CheckScriptChanged();
+		Instance?.RefreshProjectCache();
+		Instance?.CheckResourceChanged();
+		Instance?.CheckFrameworkDllChanged();
+		Instance?.CheckDialogChanged();
+	}
+
+
 	// Quit
 	[OnGameTryingToQuit]
 	internal static bool OnEngineTryingToQuit () {
@@ -897,8 +907,9 @@ public partial class Engine {
 
 		// Change Check
 		CheckScriptChanged();
-		CheckEngineResourceChanged();
+		CheckFrameworkDllChanged();
 		CheckDialogChanged();
+		CheckResourceChanged();
 
 		// Sync Engine Version
 		if (Universe.BuiltIn.Info.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
@@ -984,6 +995,67 @@ public partial class Engine {
 		contentPadding = GUI.Unify(8);
 		return (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + contentPadding;
 	}
+
+
+	// Change Check
+	private void CheckScriptChanged () {
+		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
+		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
+		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {
+			RiggedMapEditor.Instance.SetDirty();
+			RequireBackgroundBuildDate = EngineSetting.AutoRecompile.Value ? srcModifyDate : 0;
+		} else {
+			RequireBackgroundBuildDate = 0;
+		}
+	}
+
+
+	private void CheckResourceChanged () {
+		if (CurrentProject == null) return;
+		// Fonts
+		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
+		if (changed) {
+			Transceiver.CallingMessage.RequireClearCharPoolInvoke();
+		}
+		// Audio
+		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
+		// Icon
+		if (ProjectEditor.Instance.IconFileModified()) {
+			ProjectEditor.Instance.ReloadIconUI();
+		}
+	}
+
+
+	private void CheckFrameworkDllChanged () {
+
+		if (CurrentProject == null) return;
+
+		// Framework Dll Files
+		string sourceDllDebug = EngineUtil.TemplateFrameworkDll_Debug;
+		if (Util.FileExists(sourceDllDebug)) {
+			string targetPath = CurrentProject.FrameworkDllPath_Debug;
+			long sourceDate = Util.GetFileModifyDate(sourceDllDebug);
+			long targetDate = Util.GetFileModifyDate(targetPath);
+			if (sourceDate != targetDate) {
+				Util.CopyFile(sourceDllDebug, targetPath, true);
+				Util.SetFileModifyDate(targetPath, sourceDate);
+			}
+		}
+		string sourceDllRelease = EngineUtil.TemplateFrameworkDll_Release;
+		if (Util.FileExists(sourceDllRelease)) {
+			string targetPath = CurrentProject.FrameworkDllPath_Release;
+			long sourceDate = Util.GetFileModifyDate(sourceDllRelease);
+			long targetDate = Util.GetFileModifyDate(targetPath);
+			if (sourceDate != targetDate) {
+				Util.CopyFile(sourceDllRelease, targetPath, true);
+				Util.SetFileModifyDate(targetPath, sourceDate);
+			}
+		}
+
+	}
+
+
+	private void CheckDialogChanged () => EngineUtil.TryCompileDialogueFiles(Universe.BuiltIn.EditableConversationRoot, Universe.BuiltIn.ConversationRoot, forceCompile: false);
 
 
 	#endregion

@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliA;
 
-namespace AngeliaRigged;
+namespace AngeliA;
 
 public partial class MapEditor {
 

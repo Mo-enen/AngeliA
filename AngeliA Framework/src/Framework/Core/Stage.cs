@@ -4,10 +4,6 @@ using System.Reflection;
 
 namespace AngeliA;
 
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLayerFrameUpdateAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLayerFrameUpdateAttribute : System.Attribute { }
-
 public static class Stage {
 
 
@@ -321,7 +317,8 @@ public static class Stage {
 			RefreshStagedEntities(layer);
 		}
 
-		// First Physics
+		// First (Fill Physics)
+
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
 			int count = EntityCounts[layer];
@@ -333,7 +330,7 @@ public static class Stage {
 			}
 		}
 
-		// Before Update
+		// Before
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
 			int count = EntityCounts[layer];
@@ -363,7 +360,7 @@ public static class Stage {
 			}
 		}
 
-		// Late Update
+		// Late
 		var cullCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var entities = Entities[layer];
