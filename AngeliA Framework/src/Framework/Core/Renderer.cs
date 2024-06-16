@@ -278,9 +278,6 @@ public static class Renderer {
 
 		var universe = Universe.BuiltIn;
 
-		// Artwork >> Sheet
-		SheetUtil.RecreateSheetIfArtworkModified(universe.SheetPath, universe.AsepriteRoot);
-
 		// Load Sheet
 		MainSheetFileModifyDate = 0;
 		MainSheetFilePath = "";

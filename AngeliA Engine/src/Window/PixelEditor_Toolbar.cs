@@ -827,10 +827,10 @@ public partial class PixelEditor {
 			if (forceApply || GUI.TypingTextFieldID == BASIC_INPUT_ID + i) {
 				var type = (InputName)i;
 				if (type == InputName.Name) {
-					// String Field
+					// Name Field
 					name = text.TrimEnd();
 				} else {
-					// Name Field
+					// String Field
 					if (!int.TryParse(text, out int result)) continue;
 					switch (type) {
 						case InputName.Width:
@@ -1025,11 +1025,13 @@ public partial class PixelEditor {
 			var border = spData.Sprite.GlobalBorder;
 
 			// Name
-			if (name == null) {
-				name = spData.Sprite.RealName;
-			} else {
-				name = "*";
-				starCount++;
+			if (name != "*") {
+				if (name == null) {
+					name = spData.Sprite.RealName;
+				} else {
+					name = "*";
+					starCount++;
+				}
 			}
 
 			// Width

@@ -416,7 +416,7 @@ public static partial class Util {
 	}
 
 
-	// Drawing
+	// Rendering
 	public static void GetSlicedUvBorder (AngeSprite sprite, Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
 
 		bl = new(0f, 0f);
@@ -462,6 +462,28 @@ public static partial class Util {
 				bl.x = tl.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
 				break;
 		}
+	}
+
+
+	public static Color32 GetSummaryTint (Color32[] pixels) {
+		if (pixels == null || pixels.Length == 0) return Color32.CLEAR;
+		var sum = Float3.zero;
+		float len = 0;
+		for (int i = 0; i < pixels.Length; i++) {
+			var pixel = pixels[i];
+			if (pixel.a != 0) {
+				sum.x += pixel.r / 255f;
+				sum.y += pixel.g / 255f;
+				sum.z += pixel.b / 255f;
+				len++;
+			}
+		}
+		return new Color32(
+			(byte)(sum.x * 255f / len),
+			(byte)(sum.y * 255f / len),
+			(byte)(sum.z * 255f / len),
+			255
+		);
 	}
 
 

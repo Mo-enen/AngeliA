@@ -110,7 +110,7 @@ public class AngeSprite {
 		long startPos = writer.BaseStream.Position;
 		if (PixelDirty) {
 			PixelDirty = false;
-			SummaryTint = SheetUtil.GetSummaryTint(Pixels);
+			SummaryTint = Util.GetSummaryTint(Pixels);
 		}
 		try {
 
@@ -288,26 +288,4 @@ public class AngeSprite {
 			(PivotY < 333 ? Alignment.BottomMid : PivotY < 666 ? Alignment.MidMid : Alignment.TopMid) :
 			(PivotY < 333 ? Alignment.BottomRight : PivotY < 666 ? Alignment.MidRight : Alignment.TopRight);
 
-}
-
-
-public class FlexSprite {
-	public static readonly FlexSprite PIXEL = new() {
-		AngePivot = default,
-		AtlasName = "(Procedure)",
-		AtlasType = AtlasType.General,
-		AtlasZ = 0,
-		Border = default,
-		FullName = "Pixel",
-		Pixels = new Color32[1] { Color32.WHITE },
-		PixelRect = new(0, 0, 1, 1),
-	};
-	public string FullName;
-	public Int2 AngePivot;
-	public Int4 Border;
-	public IRect PixelRect;
-	public int AtlasZ;
-	public string AtlasName;
-	public AtlasType AtlasType;
-	public Color32[] Pixels;
 }

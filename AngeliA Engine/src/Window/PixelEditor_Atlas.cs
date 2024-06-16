@@ -313,9 +313,7 @@ public partial class PixelEditor {
 			Instance.StagedSprites.Add(new SpriteData(sprite) { Selecting = true, });
 		} else if (ext == ".ase") {
 			// ASE
-			var aseSheet = SheetUtil.CreateNewSheet(
-				AsepriteUtil.CreateSpritesFromAsepriteFiles(new string[1] { path }, "#ignore").ToArray()
-			);
+			var aseSheet = SheetUtil.CreateNewSheet(new string[1] { path });
 			Sheet.CombineSheet(aseSheet);
 			Instance.SetCurrentAtlas(Sheet.Atlas.Count - 1);
 		}

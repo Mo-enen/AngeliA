@@ -1012,6 +1012,8 @@ public partial class Engine {
 
 	private void CheckResourceChanged () {
 		if (CurrentProject == null) return;
+		// Ase
+		SheetUtil.RecreateSheetIfArtworkModified(CurrentProject.Universe.SheetPath, CurrentProject.Universe.AsepriteRoot);
 		// Fonts
 		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
 		if (changed) {

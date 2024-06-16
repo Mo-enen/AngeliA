@@ -1,10 +1,35 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using AngeliA;
+
+namespace AngeliaEngine;
+
+public static class SheetUtil {
 
 
-namespace AngeliA;
+	// SUB
+	private class FlexSprite {
+		public static readonly FlexSprite PIXEL = new() {
+			AngePivot = default,
+			AtlasName = "(Procedure)",
+			AtlasType = AtlasType.General,
+			AtlasZ = 0,
+			Border = default,
+			FullName = "Pixel",
+			Pixels = new Color32[1] { Color32.WHITE },
+			PixelRect = new(0, 0, 1, 1),
+		};
+		public string FullName;
+		public Int2 AngePivot;
+		public Int4 Border;
+		public IRect PixelRect;
+		public int AtlasZ;
+		public string AtlasName;
+		public AtlasType AtlasType;
+		public Color32[] Pixels;
+	}
 
-public class AsepriteUtil {
 
 	private struct SpriteMetaData {
 		public string name;
@@ -21,7 +46,114 @@ public class AsepriteUtil {
 		public SpriteMetaData[] Sprites;
 	}
 
-	public static List<FlexSprite> CreateSpritesFromAsepriteFiles (string[] asePaths, string ignoreTag = "") {
+
+	// Sheet
+	public static void RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
+		long sheetDate = Util.GetFileCreationDate(sheetPath);
+		bool requireCreateSheet = false;
+		bool hasArtwork = false;
+		// Check Modify
+		foreach (var filePath in Util.EnumerateFiles(asepriteRoot, false, "*.ase", "*.aseprite")) {
+			string fileName = Util.GetNameWithExtension(filePath);
+			if (fileName.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase)) continue;
+			hasArtwork = true;
+			if (Util.GetFileModifyDate(filePath) <= sheetDate) continue;
+			requireCreateSheet = true;
+			break;
+		}
+		if (!requireCreateSheet && hasArtwork && !Util.FileExists(sheetPath)) {
+			requireCreateSheet = true;
+		}
+		// Recreate
+		if (requireCreateSheet) {
+			var paths = new List<string>();
+			foreach (var filePath in Util.EnumerateFiles(asepriteRoot, false, "*.ase", "*.aseprite")) {
+				string fileName = Util.GetNameWithExtension(filePath);
+				if (fileName.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase)) continue;
+				paths.Add(filePath);
+			}
+			CreateNewSheet(paths)?.SaveToDisk(sheetPath);
+		}
+	}
+
+
+	public static Sheet CreateNewSheet (ICollection<string> asePaths) {
+
+		var flexSprites = CreateSpritesFromAsepriteFiles(asePaths);
+		var spriteList = new List<AngeSprite>();
+		var atlases = new List<Atlas>();
+		var atlasPool = new Dictionary<string, int>(); // Name, Index
+
+		// Load Sprites
+		for (int i = 0; i < flexSprites.Count; i++) {
+			var flex = flexSprites[i];
+			Util.GetSpriteInfoFromName(
+				flex.FullName, out string realName,
+				out bool isTrigger, out string tagStr,
+				out string ruleStr, out bool noCollider, out int offsetZ,
+				out int aniDuration, out int? pivotX, out int? pivotY
+			);
+			int tag = string.IsNullOrEmpty(tagStr) ? 0 : tagStr.AngeHash();
+			int rule = Util.RuleStringToDigit(ruleStr);
+			int globalWidth = flex.PixelRect.width * Const.ART_SCALE;
+			int globalHeight = flex.PixelRect.height * Const.ART_SCALE;
+			var globalBorder = Int4.Direction(
+				Util.Clamp(flex.Border.left * Const.ART_SCALE, 0, globalWidth),
+				Util.Clamp(flex.Border.right * Const.ART_SCALE, 0, globalWidth),
+				Util.Clamp(flex.Border.down * Const.ART_SCALE, 0, globalHeight),
+				Util.Clamp(flex.Border.up * Const.ART_SCALE, 0, globalHeight)
+			);
+			if (noCollider) {
+				globalBorder.left = globalWidth;
+				globalBorder.right = globalWidth;
+			}
+			int globalID = realName.AngeHash();
+
+			if (!atlasPool.TryGetValue(flex.AtlasName, out int atlasIndex)) {
+				atlasIndex = atlases.Count;
+				atlasPool.Add(flex.AtlasName, atlasIndex);
+				atlases.Add(new Atlas() {
+					Name = flex.AtlasName,
+					Type = flex.AtlasType,
+					AtlasZ = flex.AtlasZ,
+					ID = flex.AtlasName.AngeHash(),
+				});
+			}
+
+			var newSprite = new AngeSprite() {
+				ID = globalID,
+				GlobalWidth = globalWidth,
+				GlobalHeight = globalHeight,
+				PixelRect = flex.PixelRect,
+				GlobalBorder = globalBorder,
+				LocalZ = offsetZ,
+				SortingZ = flex.AtlasZ * 1024 + offsetZ,
+				PivotX = pivotX ?? flex.AngePivot.x,
+				PivotY = pivotY ?? flex.AngePivot.y,
+				RealName = Util.GetBlockRealName(flex.FullName),
+				AtlasIndex = atlasIndex,
+				Atlas = atlases[atlasIndex],
+				Tag = tag,
+				Rule = rule,
+				IsTrigger = isTrigger,
+				Group = null,
+				SummaryTint = Util.GetSummaryTint(flex.Pixels),
+				Pixels = flex.Pixels,
+				Duration = aniDuration,
+			};
+
+			spriteList.Add(newSprite);
+
+		}
+
+		// Create
+		return new Sheet(spriteList, atlases);
+
+	}
+
+
+	// Aseprite
+	private static List<FlexSprite> CreateSpritesFromAsepriteFiles (ICollection<string> asePaths) {
 
 		bool hasError = false;
 		string errorMsg = "";
@@ -54,7 +186,7 @@ public class AsepriteUtil {
 					var result = CreateResult(data, new Float2(
 						pivotX.HasValue ? pivotX.Value / 1000f : 0.5f,
 						pivotY.HasValue ? pivotY.Value / 1000f : 0.5f
-					), ignoreTag);
+					), "#ignore");
 
 					// File
 					MakeFiles(result, name, sheetZ, atlasType, out var flexSprites);
@@ -75,14 +207,6 @@ public class AsepriteUtil {
 		System.GC.Collect();
 		if (hasError) Debug.LogWarning(errorMsg);
 		return textureResults;
-	}
-
-	public static IEnumerable<string> ForAllAsepriteFiles (string rootFolder, string ignoreKeyword = "#ignore") {
-		foreach (var filePath in Util.EnumerateFiles(rootFolder, false, "*.ase", "*.aseprite")) {
-			string fileName = Util.GetNameWithExtension(filePath);
-			if (fileName.IndexOf(ignoreKeyword, System.StringComparison.OrdinalIgnoreCase) >= 0) continue;
-			yield return filePath;
-		}
 	}
 
 	private static void MakeFiles (TaskResult result, string AseName, int sheetZ, AtlasType atlasType, out FlexSprite[] spriteResults) {
@@ -280,5 +404,6 @@ public class AsepriteUtil {
 		pivotX = _pivotX;
 		pivotY = _pivotY;
 	}
+
 
 }
