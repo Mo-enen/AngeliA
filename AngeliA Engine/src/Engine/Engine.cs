@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AngeliA;
-using AngeliaRigged;
 
 [assembly: ToolApplication]
 [assembly: DisablePause]

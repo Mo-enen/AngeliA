@@ -7,6 +7,7 @@ namespace AngeliA;
 
 public sealed class DefaultHair : Hair {
 	public static readonly int TYPE_ID = typeof(DefaultHair).AngeHash();
+	public DefaultHair () => FillFromPool(GetType().AngeName());
 }
 
 
@@ -217,22 +218,21 @@ public abstract class BraidHair : Hair {
 }
 
 
-public abstract class Hair : BodyGadget {
+public class Hair : BodyGadget {
 
 
 	// Const
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Hair;
 	protected virtual int FlowAmountX => 500;
 	protected virtual int FlowAmountY => 500;
-	protected int SpriteFFL { get; init; }
-	protected int SpriteFFR { get; init; }
-	protected int SpriteFB { get; init; }
-	protected int SpriteBF { get; init; }
+	protected int SpriteFFL;
+	protected int SpriteFFR;
+	protected int SpriteFB;
+	protected int SpriteBF;
 
 
 	// API
-	public Hair () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromPool (string name) {
 		SpriteFFL = $"{name}.HairFFL".AngeHash();
 		SpriteFFR = $"{name}.HairFFR".AngeHash();
 		SpriteFB = $"{name}.HairFB".AngeHash();
@@ -241,6 +241,7 @@ public abstract class Hair : BodyGadget {
 		if (!Renderer.HasSprite(SpriteFFR)) SpriteFFR = 0;
 		if (!Renderer.HasSprite(SpriteFB)) SpriteFB = 0;
 		if (!Renderer.HasSprite(SpriteBF)) SpriteBF = 0;
+		return SpriteFFL != 0 || SpriteFFR != 0 || SpriteFB != 0 || SpriteBF != 0;
 	}
 
 

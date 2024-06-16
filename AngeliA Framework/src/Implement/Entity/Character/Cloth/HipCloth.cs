@@ -6,17 +6,16 @@ public sealed class DefaultHipSuit : HipCloth {
 }
 
 
-public abstract class HipCloth : Cloth {
+public class HipCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hip;
 	protected virtual bool CoverLegs => true;
-	private int SpriteIdHip { get; init; }
-	private int SpriteIdSkirt { get; init; }
-	private int SpriteIdUpperLeg { get; init; }
-	private int SpriteIdLowerLeg { get; init; }
+	private int SpriteIdHip;
+	private int SpriteIdSkirt;
+	private int SpriteIdUpperLeg;
+	private int SpriteIdLowerLeg;
 
-	public HipCloth () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromSheet (string name) {
 		SpriteIdHip = $"{name}.HipSuit".AngeHash();
 		SpriteIdSkirt = $"{name}.SkirtSuit".AngeHash();
 		SpriteIdUpperLeg = $"{name}.UpperLegSuit".AngeHash();
@@ -25,6 +24,7 @@ public abstract class HipCloth : Cloth {
 		if (!Renderer.HasSprite(SpriteIdSkirt) && !Renderer.HasSpriteGroup(SpriteIdSkirt)) SpriteIdSkirt = 0;
 		if (!Renderer.HasSprite(SpriteIdUpperLeg) && !Renderer.HasSpriteGroup(SpriteIdUpperLeg)) SpriteIdUpperLeg = 0;
 		if (!Renderer.HasSprite(SpriteIdLowerLeg) && !Renderer.HasSpriteGroup(SpriteIdLowerLeg)) SpriteIdLowerLeg = 0;
+		return SpriteIdHip != 0 || SpriteIdSkirt != 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {

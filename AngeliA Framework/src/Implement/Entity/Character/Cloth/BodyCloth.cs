@@ -12,19 +12,18 @@ public sealed class DefaultBodySuit : BodyCloth {
 }
 
 
-public abstract class BodyCloth : Cloth {
+public class BodyCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Body;
-	private int SpriteIdFrontL { get; init; }
-	private int SpriteIdFrontR { get; init; }
-	private int SpriteIdShoulder { get; init; }
-	private int SpriteIdUpperArm { get; init; }
-	private int SpriteIdLowerArm { get; init; }
+	private int SpriteIdFrontL;
+	private int SpriteIdFrontR;
+	private int SpriteIdShoulder;
+	private int SpriteIdUpperArm;
+	private int SpriteIdLowerArm;
 	protected virtual int TwistShiftTopAmount => 300;
 	protected virtual int LocalZ => 7;
 
-	public BodyCloth () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromSheet (string name) {
 		SpriteIdFrontL = SpriteIdFrontR = $"{name}.BodySuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteIdFrontL) && !Renderer.HasSpriteGroup(SpriteIdFrontL)) SpriteIdFrontL = 0;
 		if (SpriteIdFrontL == 0) {
@@ -39,6 +38,7 @@ public abstract class BodyCloth : Cloth {
 		if (!Renderer.HasSprite(SpriteIdShoulder) && !Renderer.HasSpriteGroup(SpriteIdShoulder)) SpriteIdShoulder = 0;
 		if (!Renderer.HasSprite(SpriteIdUpperArm) && !Renderer.HasSpriteGroup(SpriteIdUpperArm)) SpriteIdUpperArm = 0;
 		if (!Renderer.HasSprite(SpriteIdLowerArm) && !Renderer.HasSpriteGroup(SpriteIdLowerArm)) SpriteIdLowerArm = 0;
+		return SpriteIdFrontL != 0 || SpriteIdFrontR != 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {

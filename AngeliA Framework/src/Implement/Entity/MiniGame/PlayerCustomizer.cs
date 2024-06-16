@@ -981,7 +981,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(BodyPart_Faces, ""))
 			Patterns_Face.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = BodyGadget.TryGetGadget(pat.x, out var face) ? face.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = BodyGadget.TryGetGadget(pat.x, out var face) ? face.GetDisplayName("Face") : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Face.Count == 0,
 			});
@@ -990,7 +990,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(BodyPart_Hairs, ""))
 			Patterns_Hair.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = BodyGadget.TryGetGadget(pat.x, out var hair) ? hair.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = BodyGadget.TryGetGadget(pat.x, out var hair) ? hair.GetDisplayName("Hair") : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Hair.Count == 0,
 			});
@@ -999,7 +999,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(BodyPart_Ears, ""))
 			Patterns_Ear.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = BodyGadget.TryGetGadget(pat.x, out var ear) ? ear.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = BodyGadget.TryGetGadget(pat.x, out var ear) ? ear.GetDisplayName("Ear") : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Ear.Count == 0,
 			});
@@ -1008,7 +1008,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(BodyPart_Tails, ""))
 			Patterns_Tail.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = BodyGadget.TryGetGadget(pat.x, out var tail) ? tail.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = BodyGadget.TryGetGadget(pat.x, out var tail) ? tail.GetDisplayName("Tail") : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Tail.Count == 0,
 			});
@@ -1017,7 +1017,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(BodyPart_Wings, ""))
 			Patterns_Wing.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = BodyGadget.TryGetGadget(pat.x, out var wing) ? wing.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = BodyGadget.TryGetGadget(pat.x, out var wing) ? wing.GetDisplayName("Wing") : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Wing.Count == 0,
 			});
@@ -1026,7 +1026,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(BodyPart_Horns, ""))
 			Patterns_Horn.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = BodyGadget.TryGetGadget(pat.x, out var horn) ? horn.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = BodyGadget.TryGetGadget(pat.x, out var horn) ? horn.GetDisplayName("Horn") : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Horn.Count == 0,
 			});

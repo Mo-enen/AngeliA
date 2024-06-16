@@ -17,31 +17,42 @@ public abstract class Cloth {
 
 	// Data
 	protected static readonly Dictionary<int, Cloth> Pool = new();
-	protected static readonly Dictionary<int, int[]> DefaultPool = new();
-	private static readonly int ClothTypeCount = typeof(ClothType).EnumLength();
+	protected static Dictionary<int, int>[] DefaultPool = null;
 
 
 	// MSG
 	[OnGameInitialize(-127)]
 	public static void BeforeGameInitialize () {
+		// Init Pool
 		Pool.Clear();
-		var charType = typeof(PoseCharacter);
-		foreach (var type in typeof(Cloth).AllChildClass()) {
-			if (System.Activator.CreateInstance(type) is not Cloth cloth) continue;
-			int suitID = type.AngeHash();
-			Pool.TryAdd(suitID, cloth);
-		}
-		// Default Suit
-		foreach (var (suitID, cloth) in Pool) {
-			var dType = cloth.GetType().DeclaringType;
-			if (dType == null || !dType.IsSubclassOf(charType)) continue;
-			int charID = dType.AngeHash();
-			if (DefaultPool.TryGetValue(charID, out var suitArray)) {
-				suitArray[(int)cloth.ClothType] = suitID;
+		var clothType = typeof(Cloth);
+		var cTypes = new List<System.Type>();
+		foreach (var type in clothType.AllChildClass()) {
+			if (type.BaseType == clothType) {
+				cTypes.Add(type);
 			} else {
-				var arr = new int[ClothTypeCount];
-				arr[(int)cloth.ClothType] = suitID;
-				DefaultPool.TryAdd(charID, arr);
+				if (System.Activator.CreateInstance(type) is not Cloth cloth) continue;
+				cloth.FillFromSheet(type.AngeName());
+				int suitID = type.AngeHash();
+				Pool.TryAdd(suitID, cloth);
+			}
+		}
+		// Init Default Pool
+		DefaultPool = new Dictionary<int, int>[cTypes.Count].FillWithNewValue();
+		var templates = new Cloth[cTypes.Count];
+		foreach (var charType in typeof(PoseCharacter).AllChildClass()) {
+			string cName = charType.AngeName();
+			int cID = cName.AngeHash();
+			for (int i = 0; i < cTypes.Count; i++) {
+				var cType = cTypes[i];
+				var temp = templates[i];
+				temp ??= templates[i] = System.Activator.CreateInstance(cType) as Cloth;
+				if (temp == null) continue;
+				if (!temp.FillFromSheet(cName)) continue;
+				templates[i] = null;
+				int sID = $"{cName}.{cType.AngeName()}".AngeHash();
+				Pool.TryAdd(sID, temp);
+				DefaultPool[i].TryAdd(cID, sID);
 			}
 		}
 	}
@@ -50,6 +61,7 @@ public abstract class Cloth {
 
 	public abstract void Draw (PoseCharacter character);
 
+	protected abstract bool FillFromSheet (string name);
 
 	// Pool
 	public static bool HasCloth (int clothID) => Pool.ContainsKey(clothID);
@@ -57,11 +69,13 @@ public abstract class Cloth {
 
 
 	public static bool TryGetDefaultClothID (int characterID, ClothType suitType, out int suitID) {
-		if (DefaultPool.TryGetValue(characterID, out var suitArray)) {
-			suitID = suitArray[(int)suitType];
+		suitID = 0;
+		int typeIndex = (int)suitType;
+		if (typeIndex >= DefaultPool.Length) return false;
+		var pool = DefaultPool[typeIndex];
+		if (pool.TryGetValue(characterID, out suitID)) {
 			return true;
 		}
-		suitID = 0;
 		return false;
 	}
 

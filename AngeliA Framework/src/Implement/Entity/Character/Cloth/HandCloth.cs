@@ -4,15 +4,15 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public abstract class HandCloth : Cloth {
+public class HandCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hand;
-	private int SpriteID { get; init; }
+	private int SpriteID;
 
-	public HandCloth () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.HandSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		return SpriteID != 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {

@@ -10,19 +10,17 @@ namespace AngeliA;
 public enum HatFrontMode { FrontOfHead, BackOfHead, AlwaysFrontOfHead, AlwaysBackOfHead, }
 
 
-public abstract class HeadCloth : Cloth {
+public class HeadCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Head;
 	protected virtual HatFrontMode Front => HatFrontMode.FrontOfHead;
 	protected virtual bool PixelShiftForLeft => true;
-	private int SpriteID { get; init; } = 0;
+	private int SpriteID;
 
-
-	// MSG
-	public HeadCloth () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.HeadSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		return SpriteID != 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {

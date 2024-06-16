@@ -1,32 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
-public abstract class Ear : BodyGadget {
+public class Ear : BodyGadget {
 
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
-	private int SpriteIdL { get; init; }
-	private int SpriteIdR { get; init; }
-	private int SpriteIdLBack { get; init; }
-	private int SpriteIdRBack { get; init; }
+	private int SpriteIdL { get; set; }
+	private int SpriteIdR { get; set; }
+	private int SpriteIdLBack { get; set; }
+	private int SpriteIdRBack { get; set; }
 	protected virtual int FacingLeftOffsetX => 0;
 	protected virtual int MotionAmount => 618;
 
 
 	// MSG
-	public Ear () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
-		SpriteIdL = $"{name}.EarL".AngeHash();
-		SpriteIdR = $"{name}.EarR".AngeHash();
-		SpriteIdLBack = $"{name}.EarLB".AngeHash();
-		SpriteIdRBack = $"{name}.EarRB".AngeHash();
+	protected override bool FillFromPool (string basicName) {
+		SpriteIdL = $"{basicName}.EarL".AngeHash();
+		SpriteIdR = $"{basicName}.EarR".AngeHash();
+		SpriteIdLBack = $"{basicName}.EarLB".AngeHash();
+		SpriteIdRBack = $"{basicName}.EarRB".AngeHash();
 		if (!Renderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
 		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
 		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
 		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
+		return SpriteIdL != 0 || SpriteIdR != 0;
 	}
 
 

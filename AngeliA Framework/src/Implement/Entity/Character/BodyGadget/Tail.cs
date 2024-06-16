@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
-public abstract class Tail : BodyGadget {
+public class Tail : BodyGadget {
 
 
 	// Data
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Tail;
-	protected int SpriteGroupID { get; init; }
+	protected int SpriteGroupID { get; private set; }
 	protected virtual int LimbGrow => 1000;
 	protected virtual int AngleAmountRoot => 1000;
 	protected virtual int AngleAmountSubsequent => 1000;
@@ -21,10 +21,10 @@ public abstract class Tail : BodyGadget {
 	protected virtual int OffsetY => 0;
 
 
-	public Tail () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromPool (string name) {
 		SpriteGroupID = $"{name}.Tail".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
+		return SpriteGroupID != 0;
 	}
 
 

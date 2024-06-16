@@ -4,39 +4,52 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
 public enum BodyGadgetType { Face, Hair, Ear, Horn, Tail, Wing, }
-
 
 public abstract class BodyGadget {
 
 
-	protected abstract BodyGadgetType GadgetType { get; }
 	private static readonly Dictionary<int, BodyGadget> Pool = new();
-	private static readonly int BodyGadgetTypeLength = typeof(BodyGadgetType).EnumLength();
 	private static Dictionary<int, int>[] DefaultPool = null;
+	protected abstract BodyGadgetType GadgetType { get; }
 
 
 	// MSG
 	[OnGameInitialize(-127)]
 	public static void BeforeGameInitialize () {
-		DefaultPool = new Dictionary<int, int>[BodyGadgetTypeLength].FillWithNewValue();
+		// Init Pool
 		Pool.Clear();
-		var charType = typeof(PoseCharacter);
-		foreach (var type in typeof(BodyGadget).AllChildClass()) {
-			if (System.Activator.CreateInstance(type) is not BodyGadget gadget) continue;
-			var dType = type.DeclaringType;
-			if (dType != null && dType.IsSubclassOf(charType)) {
-				// Declaring
-				int id = $"{dType.AngeName()}.{type.AngeName()}".AngeHash();
-				Pool.TryAdd(id, gadget);
-				// Default
-				var dPool = DefaultPool[(int)gadget.GadgetType];
-				dPool[dType.AngeHash()] = id;
+		var bodyGadBaseType = typeof(BodyGadget);
+		var bgTypes = new List<System.Type>();
+		foreach (var type in bodyGadBaseType.AllChildClass()) {
+			if (type.BaseType == bodyGadBaseType) {
+				bgTypes.Add(type);
 			} else {
-				// Normal
+				if (System.Activator.CreateInstance(type) is not BodyGadget gadget) continue;
+				gadget.FillFromPool(type.AngeName());
 				int id = type.AngeHash();
 				Pool.TryAdd(id, gadget);
+			}
+		}
+		// Init DefaultPool
+		var templates = new BodyGadget[bgTypes.Count];
+		DefaultPool = new Dictionary<int, int>[bgTypes.Count].FillWithNewValue();
+		foreach (var charType in typeof(PoseCharacter).AllChildClass()) {
+			string charName = charType.AngeName();
+			int charID = charName.AngeHash();
+			for (int i = 0; i < bgTypes.Count; i++) {
+				var gType = bgTypes[i];
+				if (gType == null) break;
+				// Create Template
+				var temp = templates[i];
+				temp ??= templates[i] = System.Activator.CreateInstance(gType) as BodyGadget;
+				if (temp == null) continue;
+				if (!temp.FillFromPool(charName)) continue;
+				// Founded
+				templates[i] = null;
+				int ggID = $"{charName}.{gType.AngeName()}".AngeHash();
+				Pool.TryAdd(ggID, temp);
+				DefaultPool[i].TryAdd(charID, ggID);
 			}
 		}
 	}
@@ -45,12 +58,17 @@ public abstract class BodyGadget {
 	public abstract void DrawGadget (PoseCharacter character);
 
 
+	protected abstract bool FillFromPool (string basicName);
+
+
 	// API
 	public static bool TryGetDefaultGadgetID (int characterID, BodyGadgetType type, out int gadgetID) {
-		if (DefaultPool[(int)type].TryGetValue(characterID, out gadgetID)) {
-			return true;
+		gadgetID = 0;
+		int typeIndex = (int)type;
+		if (typeIndex < 0 || typeIndex >= DefaultPool.Length) return false;
+		if (DefaultPool[typeIndex].TryGetValue(characterID, out gadgetID)) {
+			return gadgetID != 0;
 		} else {
-			gadgetID = 0;
 			return false;
 		}
 	}
@@ -59,9 +77,9 @@ public abstract class BodyGadget {
 	public static bool TryGetGadget (int gadgetID, out BodyGadget gadget) => Pool.TryGetValue(gadgetID, out gadget);
 
 
-	public string GetDisplayName () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
-		return Language.Get($"{name}.{GadgetType}".AngeHash(), Util.GetDisplayName(name));
+	public string GetDisplayName (string typeName) {
+		string name = GetType().AngeName();
+		return Language.Get($"{name}.{typeName}".AngeHash(), Util.GetDisplayName(name));
 	}
 
 

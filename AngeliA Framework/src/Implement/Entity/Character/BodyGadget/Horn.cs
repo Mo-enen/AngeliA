@@ -1,23 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
-public abstract class Horn : BodyGadget {
+public class Horn : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
-	private int SpriteIdL { get; init; }
-	private int SpriteIdR { get; init; }
-	private int SpriteIdLBack { get; init; }
-	private int SpriteIdRBack { get; init; }
+	private int SpriteIdL;
+	private int SpriteIdR;
+	private int SpriteIdLBack;
+	private int SpriteIdRBack;
 	protected virtual bool AnchorOnFace => false;
 	protected virtual int FacingLeftOffsetX => 0;
 
 
 	// MSG
-	public Horn () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromPool (string name) {
 		SpriteIdL = $"{name}.HornL".AngeHash();
 		SpriteIdR = $"{name}.HornR".AngeHash();
 		SpriteIdLBack = $"{name}.HornLB".AngeHash();
@@ -26,6 +25,7 @@ public abstract class Horn : BodyGadget {
 		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
 		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
 		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
+		return SpriteIdL != 0 || SpriteIdR != 0 || SpriteIdLBack != 0 || SpriteIdRBack != 0;
 	}
 
 

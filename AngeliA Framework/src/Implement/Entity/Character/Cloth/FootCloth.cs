@@ -7,15 +7,15 @@ public sealed class DefaultFootSuit : FootCloth {
 	public static readonly int TYPE_ID = typeof(DefaultFootSuit).AngeHash();
 }
 
-public abstract class FootCloth : Cloth {
+public class FootCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Foot;
-	private int SpriteID { get; init; }
+	private int SpriteID;
 
-	public FootCloth () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.FootSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		return SpriteID != 0;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {

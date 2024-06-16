@@ -18,26 +18,25 @@ public enum CharacterExpression {
 
 public sealed class DefaultFace : Face {
 	public static readonly int TYPE_ID = typeof(DefaultFace).AngeHash();
+	public DefaultFace () => FillFromPool(GetType().AngeName());
 }
 
 
-public abstract class Face : BodyGadget {
+public class Face : BodyGadget {
 
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Face;
-	private int Sprite_Eye { get; init; }
-	private int Sprite_Sclera { get; init; }
-	private int Sprite_Eyelash { get; init; }
-	private int Sprite_Eyebrow { get; init; }
-	private int Sprite_Mouth { get; init; }
-	private int Sprite_Tooth { get; init; }
+	private int Sprite_Eye;
+	private int Sprite_Sclera;
+	private int Sprite_Eyelash;
+	private int Sprite_Eyebrow;
+	private int Sprite_Mouth;
+	private int Sprite_Tooth;
 
 
 	// API
-	public Face () {
-		string keyword = new((GetType().DeclaringType ?? GetType()).AngeName());
-		if (string.IsNullOrEmpty(keyword)) return;
+	protected override bool FillFromPool (string keyword) {
 
 		Sprite_Eye = GetSpriteID(keyword, "Eye");
 		Sprite_Sclera = GetSpriteID(keyword, "Sclera");
@@ -45,6 +44,8 @@ public abstract class Face : BodyGadget {
 		Sprite_Eyebrow = GetSpriteID(keyword, "Eyebrow");
 		Sprite_Mouth = GetSpriteID(keyword, "Mouth");
 		Sprite_Tooth = GetSpriteID(keyword, "Tooth");
+
+		return Sprite_Eye != 0;
 
 		// Func
 		static int GetSpriteID (string keyword, string typeName) {

@@ -1,27 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-namespace AngeliA; 
-
+namespace AngeliA;
 
 public class AngelWing : Wing { protected override int Scale => 600; }
 public class DevilWing : Wing { protected override int Scale => 600; }
 public class PropellerWing : Wing { }
 
 
-public abstract class Wing : BodyGadget {
+public class Wing : BodyGadget {
 
 
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Wing;
-	private int SpriteGroupID { get; init; }
-	public bool IsPropeller { get; init; } = false;
+	private int SpriteGroupID;
+	public bool IsPropeller { get; private set; } = false;
 	protected virtual int Scale => 1000;
 
 
 	// API
-	public Wing () {
-		string name = (GetType().DeclaringType ?? GetType()).AngeName();
+	protected override bool FillFromPool (string name) {
 		SpriteGroupID = $"{name}.Wing".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		if (
@@ -30,6 +27,7 @@ public abstract class Wing : BodyGadget {
 		) {
 			IsPropeller = sprite.IsTrigger;
 		}
+		return SpriteGroupID != 0;
 	}
 
 
