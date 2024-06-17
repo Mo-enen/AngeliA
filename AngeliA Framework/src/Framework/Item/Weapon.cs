@@ -291,12 +291,6 @@ public abstract class Weapon : Equipment {
 	public virtual bool AllowingAttack (PoseCharacter character) => true;
 
 
-	public virtual int GetOverrideHandheldAnimationID (Character character) => 0;
-
-
-	public virtual int GetOverrideAttackAnimationID (Character character) => 0;
-
-
 	public virtual Bullet SpawnBullet (Character sender) => SpawnRawBullet(sender, BulletID);
 
 

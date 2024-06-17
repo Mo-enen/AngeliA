@@ -1,8 +1,9 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 [System.Serializable]
 public abstract class PoseAnimation {
 
@@ -21,6 +22,9 @@ public abstract class PoseAnimation {
 
 	// Data
 	private static readonly Dictionary<int, PoseAnimation> Pool = new();
+	private static readonly Dictionary<int, int>[] PoseDefaultPool = new Dictionary<int, int>[typeof(CharacterAnimationType).EnumLength()].FillWithNewValue();
+	private static readonly Dictionary<int, int>[] HandheldDefaultPool = new Dictionary<int, int>[typeof(WeaponHandheld).EnumLength()].FillWithNewValue();
+	private static readonly Dictionary<int, int>[] AttackDefaultPool = new Dictionary<int, int>[typeof(WeaponType).EnumLength()].FillWithNewValue();
 
 	// Cache
 	protected static PoseCharacter Target = null;
@@ -61,14 +65,72 @@ public abstract class PoseAnimation {
 	#region --- MSG ---
 
 
-	[OnGameInitialize(-1)]
+	[OnGameInitialize(-129)]
 	public static void OnGameInitialize () {
+
 		Pool.Clear();
+
+		// Code >> Pool
 		foreach (var type in typeof(PoseAnimation).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not PoseAnimation ani) continue;
-			Pool.TryAdd(type.AngeHash(), ani);
+			int aniID = type.AngeHash();
+			Pool.TryAdd(aniID, ani);
+			// Attribute >> Default
+			int tIndex;
+			foreach (var att in type.GetCustomAttributes(false)) {
+				switch (att) {
+					case DefaultCharacterAnimationAttribute aniAtt:
+						tIndex = (int)aniAtt.Type;
+						if (tIndex < 0 || tIndex >= PoseDefaultPool.Length) break;
+						PoseDefaultPool[tIndex].TryAdd(aniAtt.CharacterID, aniID);
+						break;
+					case DefaultCharacterHandheldAnimationAttribute heldAtt:
+						tIndex = (int)heldAtt.Held;
+						if (tIndex < 0 || tIndex >= HandheldDefaultPool.Length) break;
+						HandheldDefaultPool[tIndex].TryAdd(heldAtt.CharacterID, aniID);
+						break;
+					case DefaultCharacterAttackAnimationAttribute attAtt:
+						tIndex = (int)attAtt.Type;
+						if (tIndex < 0 || tIndex >= AttackDefaultPool.Length) break;
+						AttackDefaultPool[tIndex].TryAdd(attAtt.CharacterID, aniID);
+						break;
+				}
+			}
 		}
+
+		// File >> Pool
+		foreach (var path in Util.EnumerateFiles(Universe.BuiltIn.CharacterAnimationRoot, true, "*.json")) {
+			if (JsonUtil.LoadJsonFromPath<ModularAnimation>(path) is not ModularAnimation ani) continue;
+			ani.Name = Util.GetNameWithoutExtension(path);
+			ani.ID = ani.Name.AngeHash();
+			Pool.TryAdd(ani.ID, ani);
+			// Default Check
+			int tIndex;
+			switch (ani.Override) {
+				case ModularAnimation.CharacterOverrideType.Pose:
+					tIndex = (int)ani.PoseType;
+					if (tIndex < 0 || tIndex >= PoseDefaultPool.Length) break;
+					PoseDefaultPool[tIndex].TryAdd(ani.CharacterName.AngeHash(), ani.ID);
+					break;
+				case ModularAnimation.CharacterOverrideType.Handheld:
+					tIndex = (int)ani.Handheld;
+					if (tIndex < 0 || tIndex >= HandheldDefaultPool.Length) break;
+					HandheldDefaultPool[tIndex].TryAdd(ani.CharacterName.AngeHash(), ani.ID);
+					break;
+				case ModularAnimation.CharacterOverrideType.Attack:
+					tIndex = (int)ani.AttackType;
+					if (tIndex < 0 || tIndex >= AttackDefaultPool.Length) break;
+					AttackDefaultPool[tIndex].TryAdd(ani.CharacterName.AngeHash(), ani.ID);
+					break;
+			}
+		}
+
 	}
+
+
+	public static bool TryGetPoseAnimationDefaultID (int characterID, CharacterAnimationType type, out int animationID) => PoseDefaultPool[(int)type].TryGetValue(characterID, out animationID);
+	public static bool TryGetHandheldDefaultID (int characterID, WeaponHandheld handheld, out int animationID) => HandheldDefaultPool[(int)handheld].TryGetValue(characterID, out animationID);
+	public static bool TryGetAttackDefaultID (int characterID, WeaponType type, out int animationID) => AttackDefaultPool[(int)type].TryGetValue(characterID, out animationID);
 
 
 	public static void AnimateFromPool (int id, PoseCharacter character) {

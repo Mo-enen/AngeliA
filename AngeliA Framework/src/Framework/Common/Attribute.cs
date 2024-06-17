@@ -91,3 +91,35 @@ public class ItemCombinationAttribute : System.Attribute {
 		ConsumeD = consumeD;
 	}
 }
+
+
+// Animation
+[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
+public class DefaultCharacterAnimationAttribute : System.Attribute {
+	public int CharacterID;
+	public CharacterAnimationType Type;
+	public DefaultCharacterAnimationAttribute (System.Type character, CharacterAnimationType type) {
+		CharacterID = character.AngeHash();
+		Type = type;
+	}
+}
+
+[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
+public class DefaultCharacterHandheldAnimationAttribute : System.Attribute {
+	public int CharacterID;
+	public WeaponHandheld Held;
+	public DefaultCharacterHandheldAnimationAttribute (System.Type character, WeaponHandheld held) {
+		CharacterID = character.AngeHash();
+		Held = held;
+	}
+}
+
+[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
+public class DefaultCharacterAttackAnimationAttribute : System.Attribute {
+	public int CharacterID;
+	public WeaponType Type;
+	public DefaultCharacterAttackAnimationAttribute (System.Type character, WeaponType type) {
+		CharacterID = character.AngeHash();
+		Type = type;
+	}
+}

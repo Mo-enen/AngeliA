@@ -36,7 +36,7 @@ public class Universe {
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
 	public string CharacterConfigRoot { get; private set; }
-	public string CharacterInfoPath { get; private set; }
+	public string CharacterAnimationRoot { get; private set; }
 	public UniverseInfo Info { get; private set; }
 
 	// MSG
@@ -68,7 +68,7 @@ public class Universe {
 			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),
 			SoundRoot = AngePath.GetUniverseSoundRoot(universeFolder),
 			FontRoot = AngePath.GetUniverseFontRoot(universeFolder),
-			CharacterInfoPath = AngePath.GetCharacterInfoPath(universeFolder),
+			CharacterAnimationRoot = AngePath.GetCharacterAnimationRoot(universeFolder),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :

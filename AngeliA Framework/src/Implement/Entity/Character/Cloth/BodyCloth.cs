@@ -43,7 +43,7 @@ public class BodyCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
-		if (character.Suit_Body != 0 && Pool.TryGetValue(character.Suit_Body, out var cloth)) {
+		if (character.SuitBody != 0 && Pool.TryGetValue(character.SuitBody, out var cloth)) {
 			cloth.Draw(character);
 		}
 	}

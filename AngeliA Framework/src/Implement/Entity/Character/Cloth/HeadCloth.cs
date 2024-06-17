@@ -24,7 +24,7 @@ public class HeadCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
-		if (character.Suit_Head != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.Suit_Head, out var cloth)) {
+		if (character.SuitHead != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitHead, out var cloth)) {
 			cloth.Draw(character);
 		}
 	}

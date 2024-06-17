@@ -15,7 +15,7 @@ public abstract class BodyGadget {
 
 
 	// MSG
-	[OnGameInitialize(-127)]
+	[OnGameInitialize(-129)]
 	public static void BeforeGameInitialize () {
 		// Init Pool
 		Pool.Clear();
@@ -49,7 +49,7 @@ public abstract class BodyGadget {
 				templates[i] = null;
 				int ggID = $"{charName}.{gType.AngeName()}".AngeHash();
 				Pool.TryAdd(ggID, temp);
-				DefaultPool[i].TryAdd(charID, ggID);
+				DefaultPool[(int)temp.GadgetType].TryAdd(charID, ggID);
 			}
 		}
 	}

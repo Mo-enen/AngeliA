@@ -58,10 +58,6 @@ public partial class Engine {
 		if (Instance == null) return;
 
 		RiggedMapEditor.Instance.CleanDirty();
-		PixelEditor.Instance.ResetCharacterNameList();
-		if (Instance.CurrentProject != null) {
-			Util.DeleteFile(Instance.CurrentProject.Universe.CharacterInfoPath);
-		}
 
 		switch (code) {
 
@@ -164,6 +160,7 @@ public partial class Engine {
 	private void OnGUI_RiggedGame () {
 
 		var rigEdt = RiggedMapEditor.Instance;
+		var pixEdt = PixelEditor.Instance;
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
 
@@ -236,8 +233,8 @@ public partial class Engine {
 			Transceiver.Abort();
 		}
 
-		var toolPanelRect = RiggedMapEditor.Instance.PanelRect;
-		int sheetIndex = PixelEditor.Instance.SheetIndex;
+		var toolPanelRect = rigEdt.PanelRect;
+		int sheetIndex = pixEdt.SheetIndex;
 		if (buildingProjectInBackground) {
 			// Building in Background
 			if (CurrentWindowRequireRigGame) {
@@ -247,7 +244,11 @@ public partial class Engine {
 			// Rig Running
 			if (called) {
 				if (runningGame) {
-					Transceiver.Respond(sheetIndex, CurrentWindowIndex == RigMapEditorWindowIndex, toolPanelRect);
+					Transceiver.Respond(
+						sheetIndex,
+						CurrentWindowIndex == RigMapEditorWindowIndex,
+						toolPanelRect
+					);
 					rigEdt.UpdateUsageData(
 						resp.RenderUsages,
 						resp.RenderCapacities,
@@ -257,6 +258,10 @@ public partial class Engine {
 					rigEdt.HavingGamePlay = resp.GamePlaying;
 					if (CurrentWindowIndex == RigMapEditorWindowIndex) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
+					}
+					// Char Names
+					if (resp.CharacterNames != null) {
+						pixEdt.SetRigCharacterNames(resp.CharacterNames);
 					}
 				} else {
 					Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect);

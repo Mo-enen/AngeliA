@@ -153,7 +153,7 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
-	private readonly List<string> AllRigCharacterNames = new();
+	private string[] AllRigCharacterNames = null;
 	private Project CurrentProject;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
@@ -173,7 +173,6 @@ public partial class PixelEditor : WindowUI {
 	private IRect StageRect;
 	private int SelectingPaletteIndex = -1;
 	private int PixelStageSize = 1;
-	private int CharacterNamesCheckingFrame = int.MaxValue;
 	private bool AsepriteFolderExists = false;
 	private Tool CurrentTool = Tool.Rect;
 
@@ -428,17 +427,6 @@ public partial class PixelEditor : WindowUI {
 			StageRect.Contains(mPos) &&
 			(!showingTilingRuleEditor || !RuleEditorRect.Contains(mPos)) &&
 			(!showingAddSpriteBigButton || !CreateSpriteBigButtonRect.Contains(mPos));
-
-		// Character Name
-		if (Game.GlobalFrame - 30 > CharacterNamesCheckingFrame) {
-			CharacterNamesCheckingFrame = Game.GlobalFrame;
-			var path = CurrentProject.Universe.CharacterInfoPath;
-			if (Util.FileExists(path)) {
-				AllRigCharacterNames.Clear();
-				AllRigCharacterNames.AddRange(Util.ForAllLinesInFile(path));
-				CharacterNamesCheckingFrame = int.MaxValue;
-			}
-		}
 
 	}
 
@@ -927,9 +915,12 @@ public partial class PixelEditor : WindowUI {
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
 		Sheet.LoadFromDisk(project.Universe.SheetPath);
-		ResetCharacterNameList();
+		AllRigCharacterNames = null;
 		AsepriteFolderExists = Util.FolderExists(project.Universe.AsepriteRoot);
 	}
+
+
+	public void SetRigCharacterNames (string[] names) => AllRigCharacterNames = names;
 
 
 	public override void Save (bool forceSave = false) {
@@ -950,12 +941,6 @@ public partial class PixelEditor : WindowUI {
 		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
 		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
 		ZoomLevel = 1;
-	}
-
-
-	public void ResetCharacterNameList () {
-		CharacterNamesCheckingFrame = int.MinValue;
-		AllRigCharacterNames.Clear();
 	}
 
 

@@ -13,6 +13,4 @@ public abstract class Equipment : Item {
 	public abstract EquipmentType EquipmentType { get; }
 	public sealed override int MaxStackCount => 1;
 
-	public virtual int GetOverrideMovementAnimationID (CharacterAnimationType type, Character character) => 0;
-
 }

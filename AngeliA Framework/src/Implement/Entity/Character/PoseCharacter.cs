@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
 
 
@@ -27,9 +26,12 @@ public abstract class PoseCharacter : Character {
 	private const int A2G = Const.CEL / Const.ART_CEL;
 	private static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
 	private static readonly string[] BODY_PART_NAME = { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
-	private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
-	private static readonly int[] DEFAULT_POSE_HANDHELD_IDS = { typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Shooting).AngeHash(), typeof(PoseHandheld_Float).AngeHash(), };
-	private static readonly int[] DEFAULT_POSE_ATTACK_IDS = { typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Arrow).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), };
+	private static readonly int[] FAILBACK_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
+	private static readonly int[] FAILBACK_POSE_HANDHELD_IDS = { typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Shooting).AngeHash(), typeof(PoseHandheld_Float).AngeHash(), };
+	private static readonly int[] FAILBACK_POSE_ATTACK_IDS = { typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Arrow).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), };
+	private static readonly int ANI_TYPE_COUNT = typeof(CharacterAnimationType).EnumLength();
+	private static readonly int HAND_HELD_COUNT = typeof(WeaponHandheld).EnumLength();
+	private static readonly int WEAPON_TYPE_COUNT = typeof(WeaponType).EnumLength();
 	private const int POSE_Z_HEAD = 10;
 	private const int POSE_Z_BODY = 0;
 	private const int POSE_Z_UPPERARM = 8;
@@ -82,34 +84,26 @@ public abstract class PoseCharacter : Character {
 	public BodyPart FootR { get; init; } = null;
 
 	// Gadget
-	public int FaceID { get; set; } = 0;
-	public int HairID { get; set; } = 0;
-	public int EarID { get; set; } = 0;
-	public int TailID { get; set; } = 0;
-	public int WingID { get; set; } = 0;
-	public int HornID { get; set; } = 0;
+	public readonly BuffInt FaceID = new(0);
+	public readonly BuffInt HairID = new(0);
+	public readonly BuffInt EarID = new(0);
+	public readonly BuffInt TailID = new(0);
+	public readonly BuffInt WingID = new(0);
+	public readonly BuffInt HornID = new(0);
 
 	// Suit
-	public int Suit_Head { get; set; } = 0;
-	public int Suit_Body { get; set; } = 0;
-	public int Suit_Hip { get; set; } = 0;
-	public int Suit_Hand { get; set; } = 0;
-	public int Suit_Foot { get; set; } = 0;
+	public readonly BuffInt SuitHead = new(0);
+	public readonly BuffInt SuitBody = new(0);
+	public readonly BuffInt SuitHip = new(0);
+	public readonly BuffInt SuitHand = new(0);
+	public readonly BuffInt SuitFoot = new(0);
 
 	// Data
 	private static readonly Dictionary<int, CharacterConfig> ConfigPool = new();
 	private readonly BodyPart[] BodyParts = null;
-	private readonly int[] PoseAnimationIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
-	private readonly int[] PoseHandheldIDs = { 0, 0, 0, 0, 0, 0, 0, 0, };
-	private readonly int[] PoseAttackIDs = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
-	private int IgnoreTailFrame = -1;
-	private int IgnoreEarFrame = -1;
-	private int IgnoreHairFrame = -1;
-	private int IgnoreFaceFrame = -1;
-	private int IgnoreHornFrame = -1;
-	private int IgnoreWingFrame = -1;
-	private static int CachedConfigVersion = 0;
-	private int LoadedConfigVersion = 0;
+	private readonly BuffInt[] PoseAnimationIDs;
+	private readonly BuffInt[] PoseHandheldIDs;
+	private readonly BuffInt[] PoseAttackIDs;
 
 
 	#endregion
@@ -120,13 +114,22 @@ public abstract class PoseCharacter : Character {
 	#region --- MSG ---
 
 
-	[OnGameInitialize]
+	[OnGameInitialize(-128)] // > Renderer.Initialize()
 	public static void InitializePose () {
 
 		if (Game.IsToolApplication) return;
 
-		// Require Reload
-		CachedConfigVersion++;
+#if DEBUG
+		if (FAILBACK_POSE_ANIMATION_IDS.Length != ANI_TYPE_COUNT) {
+			Debug.LogWarning($"FAILBACK_POSE_ANIMATION_IDS length have to be {ANI_TYPE_COUNT}");
+		}
+		if (FAILBACK_POSE_HANDHELD_IDS.Length != HAND_HELD_COUNT) {
+			Debug.LogWarning($"FAILBACK_POSE_HANDHELD_IDS length have to be {HAND_HELD_COUNT}");
+		}
+		if (FAILBACK_POSE_ATTACK_IDS.Length != WEAPON_TYPE_COUNT) {
+			Debug.LogWarning($"FAILBACK_POSE_ATTACK_IDS length have to be {WEAPON_TYPE_COUNT}");
+		}
+#endif
 
 		// Config Pool
 		ConfigPool.Clear();
@@ -173,26 +176,28 @@ public abstract class PoseCharacter : Character {
 				}
 
 				// Gadget
-				config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultID) ? defaultID : DefaultFace.TYPE_ID;
-				config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out defaultID) ? defaultID : DefaultHair.TYPE_ID;
-				config.Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out defaultID) ? defaultID : 0;
-				config.Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out defaultID) ? defaultID : 0;
-				config.Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out defaultID) ? defaultID : 0;
-				config.Horn = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out defaultID) ? defaultID : 0;
+				config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultId0) ? defaultId0 : DefaultFace.TYPE_ID;
+				config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out int defaultId1) ? defaultId1 : DefaultHair.TYPE_ID;
+				config.Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out int defaultId2) ? defaultId2 : 0;
+				config.Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out int defaultId3) ? defaultId3 : 0;
+				config.Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out int defaultId4) ? defaultId4 : 0;
+				config.Horn = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out int defaultId5) ? defaultId5 : 0;
 
 				// Suit
-				config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitID) ? suitID : 0;
-				config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out suitID) ? suitID : DefaultBodySuit.TYPE_ID;
-				config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out suitID) ? suitID : DefaultHipSuit.TYPE_ID;
-				config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out suitID) ? suitID : 0;
-				config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out suitID) ? suitID : DefaultFootSuit.TYPE_ID;
+				config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitId0) ? suitId0 : 0;
+				config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out int suitId1) ? suitId1 : DefaultBodySuit.TYPE_ID;
+				config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out int suitId2) ? suitId2 : DefaultHipSuit.TYPE_ID;
+				config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out int suitId3) ? suitId3 : 0;
+				config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out int suitId4) ? suitId4 : DefaultFootSuit.TYPE_ID;
 
 				JsonUtil.SaveJsonToPath(config, configPath, prettyPrint: true);
 
 			}
 
 			// Final
-			ConfigPool.Add(typeID, config);
+			if (config != null) {
+				ConfigPool.Add(typeID, config);
+			}
 
 		}
 
@@ -200,6 +205,8 @@ public abstract class PoseCharacter : Character {
 
 
 	public PoseCharacter () {
+		// [order -64 from stage]
+		// Body Part
 		int len = DEFAULT_BODY_PART_ID.Length;
 		BodyParts = new BodyPart[len];
 		for (int i = 0; i < len; i++) {
@@ -226,15 +233,25 @@ public abstract class PoseCharacter : Character {
 		LowerLegR = BodyParts[14];
 		FootL = BodyParts[15];
 		FootR = BodyParts[16];
-	}
-
-
-	public override void OnActivated () {
-		base.OnActivated();
-		if (CachedConfigVersion != LoadedConfigVersion) {
-			LoadedConfigVersion = CachedConfigVersion;
-			LoadCharacterFromConfigPool();
+		// Ani
+		PoseAnimationIDs = new BuffInt[ANI_TYPE_COUNT].FillWithNewValue();
+		PoseHandheldIDs = new BuffInt[HAND_HELD_COUNT].FillWithNewValue();
+		PoseAttackIDs = new BuffInt[WEAPON_TYPE_COUNT].FillWithNewValue();
+		// Load Default Ani
+		for (int i = 0; i < ANI_TYPE_COUNT; i++) {
+			PoseAnimation.TryGetPoseAnimationDefaultID(TypeID, (CharacterAnimationType)i, out int id);
+			PoseAnimationIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_ANIMATION_IDS[i];
 		}
+		for (int i = 0; i < HAND_HELD_COUNT; i++) {
+			PoseAnimation.TryGetHandheldDefaultID(TypeID, (WeaponHandheld)i, out int id);
+			PoseHandheldIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_HANDHELD_IDS[i];
+		}
+		for (int i = 0; i < WEAPON_TYPE_COUNT; i++) {
+			PoseAnimation.TryGetAttackDefaultID(TypeID, (WeaponType)i, out int id);
+			PoseAttackIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_ATTACK_IDS[i];
+		}
+		// Load From Pool
+		LoadCharacterFromConfigPool();
 	}
 
 
@@ -254,12 +271,12 @@ public abstract class PoseCharacter : Character {
 		PoseUpdate_HeadTwist();
 		PoseUpdate_Items();
 
-		if (Game.GlobalFrame > IgnoreWingFrame) Wing.DrawGadgetFromPool(this);
-		if (Game.GlobalFrame > IgnoreTailFrame) Tail.DrawGadgetFromPool(this);
-		if (Game.GlobalFrame > IgnoreFaceFrame) Face.DrawGadgetFromPool(this);
-		if (Game.GlobalFrame > IgnoreHairFrame) Hair.DrawGadgetFromPool(this);
-		if (Game.GlobalFrame > IgnoreEarFrame) Ear.DrawGadgetFromPool(this);
-		if (Game.GlobalFrame > IgnoreHornFrame) Horn.DrawGadgetFromPool(this);
+		Wing.DrawGadgetFromPool(this);
+		Tail.DrawGadgetFromPool(this);
+		Face.DrawGadgetFromPool(this);
+		Hair.DrawGadgetFromPool(this);
+		Ear.DrawGadgetFromPool(this);
+		Horn.DrawGadgetFromPool(this);
 
 		HeadCloth.DrawClothFromPool(this);
 		BodyCloth.DrawClothFromPool(this);
@@ -481,7 +498,7 @@ public abstract class PoseCharacter : Character {
 		HandGrabScaleL = FacingRight ? 1000 : -1000;
 		HandGrabScaleR = FacingRight ? 1000 : -1000;
 
-		PoseAnimation.AnimateFromPool(GetPoseAnimationID(AnimationType), this);
+		PoseAnimation.AnimateFromPool(PoseAnimationIDs[(int)AnimationType], this);
 
 		CalculateBodypartGlobalPosition();
 
@@ -504,7 +521,7 @@ public abstract class PoseCharacter : Character {
 				case CharacterAnimationType.Dash when EquippingWeaponHeld == WeaponHandheld.Pole:
 				case CharacterAnimationType.Rolling when EquippingWeaponHeld == WeaponHandheld.Bow || EquippingWeaponHeld == WeaponHandheld.Shooting:
 					// Override Handheld
-					PoseAnimation.AnimateFromPool(GetPoseHandheldID(EquippingWeaponHeld), this);
+					PoseAnimation.AnimateFromPool(PoseHandheldIDs[(int)EquippingWeaponHeld], this);
 					CalculateBodypartGlobalPosition();
 					break;
 				default:
@@ -524,7 +541,7 @@ public abstract class PoseCharacter : Character {
 			if (CurrentSpeedLoseOnAttack == 0) ResetPoseToDefault(true);
 			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
-			PoseAnimation.AnimateFromPool(GetPoseAttackID(EquippingWeaponType), this);
+			PoseAnimation.AnimateFromPool(PoseAttackIDs[(int)EquippingWeaponType], this);
 			CalculateBodypartGlobalPosition();
 		}
 
@@ -622,113 +639,11 @@ public abstract class PoseCharacter : Character {
 	#region --- API ---
 
 
-	public void LoadCharacterFromConfig () {
-		// TODO
-	}
+	// Config
+	public void LoadCharacterFromConfigPool () {
+		if (ConfigPool.TryGetValue(TypeID, out var config)) {
 
-
-	public void SaveCharacterToConfig () {
-		// TODO
-
-	}
-
-
-	public void IgnoreBodyGadget (BodyGadgetType type, int duration = 1) {
-		switch (type) {
-			case BodyGadgetType.Face:
-				IgnoreFaceFrame = Game.GlobalFrame + duration;
-				break;
-			case BodyGadgetType.Hair:
-				IgnoreHairFrame = Game.GlobalFrame + duration;
-				break;
-			case BodyGadgetType.Ear:
-				IgnoreEarFrame = Game.GlobalFrame + duration;
-				break;
-			case BodyGadgetType.Horn:
-				IgnoreHornFrame = Game.GlobalFrame + duration;
-				break;
-			case BodyGadgetType.Tail:
-				IgnoreTailFrame = Game.GlobalFrame + duration;
-				break;
-			case BodyGadgetType.Wing:
-				IgnoreWingFrame = Game.GlobalFrame + duration;
-				break;
-		}
-	}
-
-
-	// Animation ID
-	public int GetPoseAnimationID (CharacterAnimationType type) {
-		// From Equipment
-		for (int i = 0; i < EquipmentTypeCount; i++) {
-			if (GetEquippingItem((EquipmentType)i) is not Equipment equip) continue;
-			int equipResult = equip.GetOverrideMovementAnimationID(type, this);
-			if (equipResult != 0) return equipResult;
-		}
-		// From Character Config
-		int charResult = PoseAnimationIDs[(int)type];
-		if (charResult != 0) return charResult;
-		// From Default
-		return DEFAULT_POSE_ANIMATION_IDS[(int)type];
-	}
-
-
-	public void SetPoseAnimationID (CharacterAnimationType type, int id) => PoseAnimationIDs[(int)type] = id;
-
-
-	public int GetPoseHandheldID (WeaponHandheld handheld) {
-		// From Equipment
-		if (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon) {
-			int equipResult = weapon.GetOverrideHandheldAnimationID(this);
-			if (equipResult != 0) return equipResult;
-		}
-		// From Character Config
-		int charResult = PoseHandheldIDs[(int)handheld];
-		if (charResult != 0) return charResult;
-		// From Default
-		return DEFAULT_POSE_HANDHELD_IDS[(int)handheld];
-	}
-
-
-	public void SetPoseHandheldID (WeaponHandheld handheld, int id) => PoseHandheldIDs[(int)handheld] = id;
-
-
-	public int GetPoseAttackID (WeaponType type) {
-		// From Equipment
-		if (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon) {
-			int equipResult = weapon.GetOverrideAttackAnimationID(this);
-			if (equipResult != 0) return equipResult;
-		}
-		// From Character Config
-		int charResult = PoseAttackIDs[(int)type];
-		if (charResult != 0) return charResult;
-		// From Default
-		return DEFAULT_POSE_ATTACK_IDS[(int)type];
-	}
-
-
-	public void SetPoseAttackID (WeaponType type, int id) => PoseAttackIDs[(int)type] = id;
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private void CalculateBodypartGlobalPosition () {
-		foreach (var part in BodyParts) {
-			part.GlobalX = X + PoseRootX + part.X;
-			part.GlobalY = Y + PoseRootY + part.Y;
-		}
-	}
-
-
-	private void LoadCharacterFromConfigPool () {
-		int len = DEFAULT_BODY_PART_ID.Length;
-		if (ConfigPool.TryGetValue(TypeID, out var config) && config != null) {
+			CharacterHeight = config.CharacterHeight;
 
 			// Body Part
 			Head.SetData(config.Head);
@@ -750,27 +665,96 @@ public abstract class PoseCharacter : Character {
 			FootR.SetData(config.Foot);
 
 			// Gadget
-			FaceID = config.Face;
-			HairID = config.Hair;
-			EarID = config.Ear;
-			TailID = config.Tail;
-			WingID = config.Wing;
-			HornID = config.Horn;
+			FaceID.BaseValue = config.Face;
+			HairID.BaseValue = config.Hair;
+			EarID.BaseValue = config.Ear;
+			TailID.BaseValue = config.Tail;
+			WingID.BaseValue = config.Wing;
+			HornID.BaseValue = config.Horn;
 
 			// Suit
-			Suit_Head = config.SuitHead;
-			Suit_Body = config.SuitBody;
-			Suit_Hip = config.SuitHip;
-			Suit_Hand = config.SuitHand;
-			Suit_Foot = config.SuitFoot;
+			SuitHead.BaseValue = config.SuitHead;
+			SuitBody.BaseValue = config.SuitBody;
+			SuitHip.BaseValue = config.SuitHip;
+			SuitHand.BaseValue = config.SuitHand;
+			SuitFoot.BaseValue = config.SuitFoot;
 
 		} else {
 			// Load Default Bodypart
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
 				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
 			}
 		}
 
+	}
+
+
+	public void SaveCharacterToConfig () {
+
+		if (!ConfigPool.TryGetValue(TypeID, out var config)) return;
+
+		config.CharacterHeight = CharacterHeight;
+
+		// Body Part
+		config.Head = Head.ID;
+		config.Body = Body.ID;
+		config.Hip = Hip.ID;
+		config.Shoulder = ShoulderL.ID;
+		config.Shoulder = ShoulderR.ID;
+		config.UpperArm = UpperArmL.ID;
+		config.UpperArm = UpperArmR.ID;
+		config.LowerArm = LowerArmL.ID;
+		config.LowerArm = LowerArmR.ID;
+		config.Hand = HandL.ID;
+		config.Hand = HandR.ID;
+		config.UpperLeg = UpperLegL.ID;
+		config.UpperLeg = UpperLegR.ID;
+		config.LowerLeg = LowerLegL.ID;
+		config.LowerLeg = LowerLegR.ID;
+		config.Foot = FootL.ID;
+		config.Foot = FootR.ID;
+
+		// Gadget
+		config.Face = FaceID.BaseValue;
+		config.Hair = HairID.BaseValue;
+		config.Ear = EarID.BaseValue;
+		config.Tail = TailID.BaseValue;
+		config.Wing = WingID.BaseValue;
+		config.Horn = HornID.BaseValue;
+
+		// Suit
+		config.SuitHead = SuitHead.BaseValue;
+		config.SuitBody = SuitBody.BaseValue;
+		config.SuitHip = SuitHip.BaseValue;
+		config.SuitHand = SuitHand.BaseValue;
+		config.SuitFoot = SuitFoot.BaseValue;
+
+	}
+
+
+	// Animation ID
+	public void OverridePoseAnimation (CharacterAnimationType type, int id, int duration = 1) => PoseAnimationIDs[(int)type].Override(id, duration);
+
+
+	public void OverridePoseHandheldAnimation (WeaponHandheld handheld, int id, int duration = 1) => PoseHandheldIDs[(int)handheld].Override(id, duration);
+
+
+	public void OverridePoseAttackAnimation (WeaponType type, int id, int duration = 1) => PoseAttackIDs[(int)type].Override(id, duration);
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private void CalculateBodypartGlobalPosition () {
+		foreach (var part in BodyParts) {
+			part.GlobalX = X + PoseRootX + part.X;
+			part.GlobalY = Y + PoseRootY + part.Y;
+		}
 	}
 
 

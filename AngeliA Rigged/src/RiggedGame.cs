@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
+using System.Text;
 using System.Threading;
 using AngeliA;
 using AngeliaRaylib;
@@ -148,6 +149,7 @@ public partial class RiggedGame : Game {
 		RespondMessage.Reset();
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
 
+		Update_InitInfo();
 		Update_MapEditor();
 
 		Update();
@@ -240,6 +242,22 @@ public partial class RiggedGame : Game {
 		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);
 		}
+	}
+
+
+	private void Update_InitInfo () {
+
+		if (GlobalFrame != 0) return;
+
+		// Character Names
+		var names = new List<string>();
+		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
+			names.Add(type.AngeName());
+		}
+		RespondMessage.CharacterNames = names.ToArray();
+
+
+
 	}
 
 

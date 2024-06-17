@@ -20,7 +20,7 @@ public class FootCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
-		if (character.Suit_Foot != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.Suit_Foot, out var cloth)) {
+		if (character.SuitFoot != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitFoot, out var cloth)) {
 			cloth.Draw(character);
 		}
 	}

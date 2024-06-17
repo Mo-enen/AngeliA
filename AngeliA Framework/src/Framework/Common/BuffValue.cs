@@ -10,7 +10,11 @@ public class BuffInt {
 	public int OverrideFrame = -1;
 	public int OverrideValue;
 
-	public BuffInt (int value = 0) {
+	public BuffInt () {
+		BaseValue = 0;
+		OverrideFrame = -1;
+	}
+	public BuffInt (int value) {
 		BaseValue = value;
 		OverrideFrame = -1;
 	}

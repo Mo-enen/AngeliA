@@ -766,10 +766,10 @@ public partial class PixelEditor {
 		);
 		GenericPopupUI.AddItem(MENU_NEW_SPRITE, CreateNew, data: pixPos);
 		GenericPopupUI.AddItem(MENU_NEW_PAL_SPRITE, NewPalette, data: pixPos);
-		if (AllRigCharacterNames.Count > 0) {
+		if (AllRigCharacterNames != null && AllRigCharacterNames.Length > 0) {
 			GenericPopupUI.AddItem(MENU_NEW_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 			GenericPopupUI.BeginSubItem();
-			for (int i = 0; i < AllRigCharacterNames.Count; i++) {
+			for (int i = 0; i < AllRigCharacterNames.Length; i++) {
 				GenericPopupUI.AddItem(AllRigCharacterNames[i], NewCharSprite, data: (i, pixPos));
 			}
 			GenericPopupUI.EndSubItem();
@@ -786,7 +786,7 @@ public partial class PixelEditor {
 		}
 		static void NewCharSprite () {
 			if (GenericPopupUI.Instance.InvokingItemData is not (int index, Int2 pixPos)) return;
-			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
+			if (Instance.AllRigCharacterNames != null && index < 0 || index >= Instance.AllRigCharacterNames.Length) return;
 			string name = Instance.AllRigCharacterNames[index];
 			Instance.CreateSpritesForCharacter(name, pixelPos: pixPos);
 		}

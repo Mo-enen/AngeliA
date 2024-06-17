@@ -41,7 +41,7 @@ public class Wing : BodyGadget {
 	public override void DrawGadget (PoseCharacter character) {
 		DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
 		if (IsPropeller && character.AnimationType == CharacterAnimationType.Fly) {
-			character.IgnoreBodyGadget(BodyGadgetType.Tail);
+			character.TailID.Override(0, 1);
 		}
 	}
 

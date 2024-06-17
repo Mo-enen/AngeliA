@@ -21,15 +21,15 @@ public abstract class Cloth {
 
 
 	// MSG
-	[OnGameInitialize(-127)]
+	[OnGameInitialize(-129)]
 	public static void BeforeGameInitialize () {
 		// Init Pool
 		Pool.Clear();
 		var clothType = typeof(Cloth);
-		var cTypes = new List<System.Type>();
+		var clTypes = new List<System.Type>();
 		foreach (var type in clothType.AllChildClass()) {
 			if (type.BaseType == clothType) {
-				cTypes.Add(type);
+				clTypes.Add(type);
 			} else {
 				if (System.Activator.CreateInstance(type) is not Cloth cloth) continue;
 				cloth.FillFromSheet(type.AngeName());
@@ -38,21 +38,21 @@ public abstract class Cloth {
 			}
 		}
 		// Init Default Pool
-		DefaultPool = new Dictionary<int, int>[cTypes.Count].FillWithNewValue();
-		var templates = new Cloth[cTypes.Count];
+		DefaultPool = new Dictionary<int, int>[clTypes.Count].FillWithNewValue();
+		var templates = new Cloth[clTypes.Count];
 		foreach (var charType in typeof(PoseCharacter).AllChildClass()) {
 			string cName = charType.AngeName();
 			int cID = cName.AngeHash();
-			for (int i = 0; i < cTypes.Count; i++) {
-				var cType = cTypes[i];
+			for (int i = 0; i < clTypes.Count; i++) {
+				var clType = clTypes[i];
 				var temp = templates[i];
-				temp ??= templates[i] = System.Activator.CreateInstance(cType) as Cloth;
+				temp ??= templates[i] = System.Activator.CreateInstance(clType) as Cloth;
 				if (temp == null) continue;
 				if (!temp.FillFromSheet(cName)) continue;
 				templates[i] = null;
-				int sID = $"{cName}.{cType.AngeName()}".AngeHash();
+				int sID = $"{cName}.{clType.AngeName()}".AngeHash();
 				Pool.TryAdd(sID, temp);
-				DefaultPool[i].TryAdd(cID, sID);
+				DefaultPool[(int)temp.ClothType].TryAdd(cID, sID);
 			}
 		}
 	}

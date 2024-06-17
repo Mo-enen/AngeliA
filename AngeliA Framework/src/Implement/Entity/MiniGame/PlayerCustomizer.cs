@@ -277,7 +277,6 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			return;
 		}
 		LoadPatternsFromFile();
-		player.LoadCharacterFromConfig();
 		PlayerFacingRight = player.FacingRight;
 		HighlightingMainIndex = 0;
 		HighlightingPatternRow = 0;
@@ -288,8 +287,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	protected override void CloseMiniGame () {
 		base.CloseMiniGame();
-		var player = Player.Selecting;
-		player?.SaveCharacterToConfig();
+		Player.Selecting?.SaveCharacterToConfig();
 		// Clear Patterns
 		Patterns_Head.Clear();
 		Patterns_BodyHip.Clear();
@@ -555,7 +553,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Face[invokingIndex];
-			player.FaceID = pat.A;
+			player.FaceID.BaseValue = pat.A;
 		}
 	}
 
@@ -569,7 +567,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Ear[invokingIndex];
-			player.EarID = pat.A;
+			player.EarID.BaseValue = pat.A;
 		}
 	}
 
@@ -583,7 +581,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Tail[invokingIndex];
-			player.TailID = pat.A;
+			player.TailID.BaseValue = pat.A;
 		}
 	}
 
@@ -597,7 +595,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Wing[invokingIndex];
-			player.WingID = pat.A;
+			player.WingID.BaseValue = pat.A;
 		}
 	}
 
@@ -611,7 +609,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Horn[invokingIndex];
-			player.HornID = pat.A;
+			player.HornID.BaseValue = pat.A;
 		}
 	}
 
@@ -621,10 +619,10 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_Head, Color32.WHITE,
-			new Int4(player.Suit_Head, 0, 0, 0), out int invokingIndex
+			new Int4(player.SuitHead, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_Head[invokingIndex];
-			player.Suit_Head = pat.A;
+			player.SuitHead.BaseValue = pat.A;
 		}
 	}
 
@@ -634,11 +632,11 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_BodyShoulderArmArm, Color32.WHITE,
-			new Int4(player.Suit_Body, 0, 0, 0),
+			new Int4(player.SuitBody, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_BodyShoulderArmArm[invokingIndex];
-			player.Suit_Body = pat.A;
+			player.SuitBody.BaseValue = pat.A;
 		}
 	}
 
@@ -648,10 +646,10 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_Hand, Color32.WHITE,
-			new Int4(player.Suit_Hand, 0, 0, 0), out int invokingIndex
+			new Int4(player.SuitHand, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_Hand[invokingIndex];
-			player.Suit_Hand = pat.A;
+			player.SuitHand.BaseValue = pat.A;
 		}
 	}
 
@@ -661,11 +659,11 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_HipSkirtLegLeg, Color32.WHITE,
-			new Int4(player.Suit_Hip, 0, 0, 0),
+			new Int4(player.SuitHip, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_HipSkirtLegLeg[invokingIndex];
-			player.Suit_Hip = pat.A;
+			player.SuitHip.BaseValue = pat.A;
 		}
 	}
 
@@ -675,10 +673,10 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_Foot, Color32.WHITE,
-			new Int4(player.Suit_Foot, 0, 0, 0), out int invokingIndex
+			new Int4(player.SuitFoot, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_Foot[invokingIndex];
-			player.Suit_Foot = pat.A;
+			player.SuitFoot.BaseValue = pat.A;
 		}
 	}
 
@@ -693,7 +691,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Hair[invokingIndex];
-			player.HairID = pat.A;
+			player.HairID.BaseValue = pat.A;
 		}
 	}
 
@@ -1094,11 +1092,11 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			SubMenuType.Tail => new Int4(player.TailID, 0, 0, 0),
 			SubMenuType.Wing => new Int4(player.WingID, 0, 0, 0),
 			SubMenuType.Horn => new Int4(player.HornID, 0, 0, 0),
-			SubMenuType.Suit_Head => new Int4(player.Suit_Head, 0, 0, 0),
-			SubMenuType.Suit_BodyShoulderArmArm => new Int4(player.Suit_Body, 0, 0, 0),
-			SubMenuType.Suit_Hand => new Int4(player.Suit_Hand, 0, 0, 0),
-			SubMenuType.Suit_HipSkirtLegLeg => new Int4(player.Suit_Hip, 0, 0, 0),
-			SubMenuType.Suit_Foot => new Int4(player.Suit_Foot, 0, 0, 0),
+			SubMenuType.Suit_Head => new Int4(player.SuitHead, 0, 0, 0),
+			SubMenuType.Suit_BodyShoulderArmArm => new Int4(player.SuitBody, 0, 0, 0),
+			SubMenuType.Suit_Hand => new Int4(player.SuitHand, 0, 0, 0),
+			SubMenuType.Suit_HipSkirtLegLeg => new Int4(player.SuitHip, 0, 0, 0),
+			SubMenuType.Suit_Foot => new Int4(player.SuitFoot, 0, 0, 0),
 			SubMenuType.Hair => new Int4(player.HairID, 0, 0, 0),
 			_ => default,
 		};

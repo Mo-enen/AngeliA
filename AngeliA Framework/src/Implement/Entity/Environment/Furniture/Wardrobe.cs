@@ -445,12 +445,12 @@ Color32.BLACK, 0
 	private int GetPlayerSuitID (ClothType type) {
 		var player = Player.Selecting;
 		return type switch {
-			ClothType.Head => player.Suit_Head,
-			ClothType.Body => player.Suit_Body,
-			ClothType.Hand => player.Suit_Hand,
-			ClothType.Hip => player.Suit_Hip,
-			ClothType.Foot => player.Suit_Foot,
-			_ => player.Suit_Head,
+			ClothType.Head => player.SuitHead,
+			ClothType.Body => player.SuitBody,
+			ClothType.Hand => player.SuitHand,
+			ClothType.Hip => player.SuitHip,
+			ClothType.Foot => player.SuitFoot,
+			_ => player.SuitHead,
 		};
 	}
 
@@ -469,19 +469,19 @@ Color32.BLACK, 0
 		var player = Player.Selecting;
 		switch (type) {
 			case ClothType.Head:
-				player.Suit_Head = suitID;
+				player.SuitHead.BaseValue = suitID;
 				break;
 			case ClothType.Body:
-				player.Suit_Body = suitID;
+				player.SuitBody.BaseValue = suitID;
 				break;
 			case ClothType.Hand:
-				player.Suit_Hand = suitID;
+				player.SuitHand.BaseValue = suitID;
 				break;
 			case ClothType.Hip:
-				player.Suit_Hip = suitID;
+				player.SuitHip.BaseValue = suitID;
 				break;
 			case ClothType.Foot:
-				player.Suit_Foot = suitID;
+				player.SuitFoot.BaseValue = suitID;
 				break;
 		}
 	}

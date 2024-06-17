@@ -29,7 +29,7 @@ public class HipCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
-		if (character.Suit_Hip != 0 && Pool.TryGetValue(character.Suit_Hip, out var cloth)) {
+		if (character.SuitHip != 0 && Pool.TryGetValue(character.SuitHip, out var cloth)) {
 			cloth.Draw(character);
 		}
 	}

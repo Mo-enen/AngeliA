@@ -256,12 +256,12 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 		DrawArmor(character);
 
 		// Hide Gadget
-		if (HideEar) character.IgnoreBodyGadget(BodyGadgetType.Ear);
-		if (HideHorn) character.IgnoreBodyGadget(BodyGadgetType.Horn);
-		if (HideHair) character.IgnoreBodyGadget(BodyGadgetType.Hair);
-		if (HideTail) character.IgnoreBodyGadget(BodyGadgetType.Tail);
-		if (HideFace) character.IgnoreBodyGadget(BodyGadgetType.Face);
-		if (HideWing) character.IgnoreBodyGadget(BodyGadgetType.Wing);
+		if (HideEar) character.EarID.Override(0, 1);
+		if (HideHorn) character.HornID.Override(0, 1);
+		if (HideHair) character.HairID.Override(0, 1);
+		if (HideTail) character.TailID.Override(0, 1);
+		if (HideFace) character.FaceID.Override(0, 1);
+		if (HideWing) character.WingID.Override(0, 1);
 
 	}
 

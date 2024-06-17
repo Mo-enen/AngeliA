@@ -71,13 +71,13 @@ public partial class Engine {
 	private int CurrentProjectMenuIndex = -1;
 	private int NotificationStartFrame = int.MinValue;
 	private int ThemeSheetIndex = -1;
+	private int ConsoleWindowIndex = 0;
+	private int LastNotInteractableFrame = int.MinValue;
+	private int IgnoreFileDropFrame = int.MinValue;
 	private bool NotificationFlash = false;
 	private string ToolLabel = null;
 	private string NotificationContent = null;
 	private string NotificationSubContent = null;
-	private int ConsoleWindowIndex = 0;
-	private int LastNotInteractableFrame = int.MinValue;
-	private int IgnoreFileDropFrame = int.MinValue;
 	private string DroppingFilePath = "";
 
 	// Saving

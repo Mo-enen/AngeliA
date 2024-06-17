@@ -86,19 +86,6 @@ public abstract partial class Character : Rigidbody {
 	#region --- MSG ---
 
 
-	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () {
-		// Create All Character Name File
-		string path = Universe.BuiltIn.CharacterInfoPath;
-		if (Util.FileExists(path)) return;
-		var builder = new StringBuilder();
-		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
-			builder.AppendLine(type.AngeName());
-		}
-		Util.TextToFile(builder.ToString(), path);
-	}
-
-
 	public Character () => InitInventory();
 
 
