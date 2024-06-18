@@ -310,8 +310,8 @@ public class WorldSquad : IBlockSquad {
 		if (!ignoreCollider) {
 			// Collider
 			if (!Renderer.TryGetSprite(id, out var sp)) return;
-			if (sp.Tag == SpriteTag.DAMAGE_TAG) {
-				Physics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, 1);
+			if (sp.Tag.HasTag(TagUtil.Damage)) {
+				Physics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, sp.Tag);
 			}
 			rect = rect.Shrink(
 				sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up

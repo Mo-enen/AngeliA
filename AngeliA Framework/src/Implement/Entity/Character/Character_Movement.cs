@@ -895,7 +895,7 @@ public abstract partial class Character {
 			up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 			this,
 			OperationMode.TriggerOnly,
-			SpriteTag.CLIMB_TAG
+			Tag.Climb
 		)) {
 			return true;
 		}
@@ -905,7 +905,7 @@ public abstract partial class Character {
 			out var info,
 			this,
 			OperationMode.TriggerOnly,
-			SpriteTag.CLIMB_STABLE_TAG
+			Tag.ClimbStable
 		)) {
 			ClimbPositionCorrect = info.Rect.CenterInt().x;
 			return true;
@@ -930,15 +930,13 @@ public abstract partial class Character {
 			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, this, OperationMode.ColliderOnly);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
-				if (hit.Tag == SpriteTag.NO_SLIDE_TAG) continue;
-				if (hit.Tag == SpriteTag.GRAB_TOP_TAG) continue;
-				if (hit.Tag == SpriteTag.GRAB_SIDE_TAG) continue;
+				if (hit.Tag.HasTag(Tag.NoSlide | Tag.GrabTop | Tag.GrabSide)) continue;
 				return true;
 			}
 			return false;
 		} else {
 			return Physics.Overlap(
-				PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, SpriteTag.SLIDE_TAG
+				PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, Tag.Slide
 			);
 		}
 	}
@@ -960,10 +958,10 @@ public abstract partial class Character {
 		);
 		if (Physics.Overlap(
 			PhysicsMask.MAP, rect, out var hit, this,
-			OperationMode.ColliderOnly, SpriteTag.GRAB_TOP_TAG
+			OperationMode.ColliderOnly, Tag.GrabTop
 		) || Physics.Overlap(
 			PhysicsMask.MAP, rect, out hit, this,
-			OperationMode.ColliderOnly, SpriteTag.GRAB_TAG
+			OperationMode.ColliderOnly, Tag.Grab
 		)) {
 			grabbingY = hit.Rect.yMin - (GrowingHeight * GrabTopHeightAmount / 1000);
 			return true;
@@ -993,18 +991,18 @@ public abstract partial class Character {
 			Hitbox.height / 4
 		);
 		bool allowGrab =
-			(AllowCheck(rectD, SpriteTag.GRAB_SIDE_TAG) || AllowCheck(rectD, SpriteTag.GRAB_TAG)) &&
-			(AllowCheck(rectU, SpriteTag.GRAB_SIDE_TAG) || AllowCheck(rectU, SpriteTag.GRAB_TAG));
+			(AllowCheck(rectD, Tag.GrabSide) || AllowCheck(rectD, Tag.Grab)) &&
+			(AllowCheck(rectU, Tag.GrabSide) || AllowCheck(rectU, Tag.Grab));
 		if (allowGrab) {
 			allowMoveUp = Physics.Overlap(
-				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, SpriteTag.GRAB_SIDE_TAG
+				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Tag.GrabSide
 			) || Physics.Overlap(
-				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, SpriteTag.GRAB_TAG
+				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Tag.Grab
 			);
 		}
 		return allowGrab;
 		// Func
-		bool AllowCheck (IRect rect, int tag) => Physics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
+		bool AllowCheck (IRect rect, Tag tag) => Physics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
 	}
 
 
@@ -1013,7 +1011,7 @@ public abstract partial class Character {
 		if (Physics.Overlap(PhysicsMask.MAP, rect, this)) return false;
 		var hits = Physics.OverlapAll(
 			PhysicsMask.MAP, rect, out int count, this,
-			OperationMode.TriggerOnly, SpriteTag.ONEWAY_UP_TAG
+			OperationMode.TriggerOnly, Tag.OnewayUp
 		);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
@@ -1047,7 +1045,7 @@ public abstract partial class Character {
 			var hits = Physics.OverlapAll(
 				PhysicsMask.MAP,
 				new IRect(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4), out int count,
-				this, OperationMode.ColliderOnly, SpriteTag.GRAB_TOP_TAG
+				this, OperationMode.ColliderOnly, Tag.GrabTop
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];

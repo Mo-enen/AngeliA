@@ -70,7 +70,7 @@ public abstract class EnvironmentEntity : Entity {
 	}
 
 
-	protected static FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+	protected static FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		left_down = null;
 		right_up = null;
 		int unitX = entity.X.ToUnit();

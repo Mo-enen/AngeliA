@@ -65,7 +65,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 		}
 		var border = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 		Physics.FillBlock(
-			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, SpriteTag.ONEWAY_UP_TAG
+			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Tag.OnewayUp
 		);
 	}
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public enum NavigationOperateMotion {
@@ -492,7 +492,7 @@ public static class Navigation {
 		} else {
 			int platformY = y + Const.CEL;
 			// Liquid Check
-			if (Physics.Overlap(PhysicsMask.MAP, centerRect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
+			if (Physics.Overlap(PhysicsMask.MAP, centerRect, null, OperationMode.TriggerOnly, Tag.Water)) {
 				cell.BlockType = BlockType.Liquid;
 				platformY = y + Const.HALF;
 			}

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class SpinningBlade : EnvironmentEntity {
 
-	 
-	public override void FirstUpdate () => Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect.Expand(1), true, 1);
+
+	public override void FirstUpdate () => Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect.Expand(1), true, Tag.GeneralDamage);
 
 
 	public override void LateUpdate () {

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-
+using System.Linq;
 
 namespace AngeliA;
+
 public static partial class Util {
 
 
@@ -79,33 +80,30 @@ public static partial class Util {
 		return name.TrimEnd(' ');
 	}
 
-	public static int GetOnewayTag (Direction4 gateDirection) =>
-	gateDirection switch {
-		Direction4.Down => SpriteTag.ONEWAY_DOWN_TAG,
-		Direction4.Up => SpriteTag.ONEWAY_UP_TAG,
-		Direction4.Left => SpriteTag.ONEWAY_LEFT_TAG,
-		Direction4.Right => SpriteTag.ONEWAY_RIGHT_TAG,
-		_ => SpriteTag.ONEWAY_UP_TAG,
+	public static Tag GetOnewayTag (Direction4 gateDirection) => gateDirection switch {
+		Direction4.Down => Tag.OnewayDown,
+		Direction4.Up => Tag.OnewayUp,
+		Direction4.Left => Tag.OnewayLeft,
+		Direction4.Right => Tag.OnewayRight,
+		_ => Tag.OnewayUp,
 	};
 
-	public static bool IsOnewayTag (int tag) => tag == SpriteTag.ONEWAY_UP_TAG || tag == SpriteTag.ONEWAY_DOWN_TAG || tag == SpriteTag.ONEWAY_LEFT_TAG || tag == SpriteTag.ONEWAY_RIGHT_TAG;
+	public static bool IsOnewayTag (Tag tag) => tag.HasTag(Tag.OnewayUp | Tag.OnewayDown | Tag.OnewayLeft | Tag.OnewayRight);
 
-	public static bool TryGetOnewayDirection (int tag, out Direction4 direction) {
-		if (tag == SpriteTag.ONEWAY_LEFT_TAG) {
-			direction = Direction4.Left;
-			return true;
-		}
-		if (tag == SpriteTag.ONEWAY_RIGHT_TAG) {
-			direction = Direction4.Right;
-			return true;
-		}
-		if (tag == SpriteTag.ONEWAY_DOWN_TAG) {
-			direction = Direction4.Down;
-			return true;
-		}
-		if (tag == SpriteTag.ONEWAY_UP_TAG) {
-			direction = Direction4.Up;
-			return true;
+	public static bool TryGetOnewayDirection (Tag tag, out Direction4 direction) {
+		switch (tag) {
+			case Tag.OnewayUp:
+				direction = Direction4.Up;
+				return true;
+			case Tag.OnewayDown:
+				direction = Direction4.Down;
+				return true;
+			case Tag.OnewayLeft:
+				direction = Direction4.Left;
+				return true;
+			case Tag.OnewayRight:
+				direction = Direction4.Right;
+				return true;
 		}
 		direction = default;
 		return false;
@@ -142,9 +140,9 @@ public static partial class Util {
 		}
 	}
 
-	public static void GetSpriteInfoFromName (string name, out string realName, out bool isTrigger, out string tag, out string rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
+	public static void GetSpriteInfoFromName (string name, out string realName, out bool isTrigger, out Tag tag, out string rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
+		tag = Tag.None;
 		isTrigger = false;
-		tag = "";
 		rule = "";
 		noCollider = false;
 		offsetZ = 0;
@@ -167,9 +165,10 @@ public static partial class Util {
 
 				// Tag
 				bool tagFinded = false;
-				foreach (string _tag in SpriteTag.ALL_TAGS_STRING) {
+				for (int i = 1; i < TagUtil.ALL_TAG_NAMES.Length; i++) {
+					string _tag = TagUtil.ALL_TAG_NAMES[i];
 					if (hashTag.Equals(_tag, OIC)) {
-						tag = _tag;
+						tag |= (Tag)(1 << (i - 1));
 						tagFinded = true;
 						break;
 					}
@@ -178,7 +177,7 @@ public static partial class Util {
 
 				// Bool-Group
 				if (hashTag.Equals("loopStart", OIC)) {
-					tag = SpriteTag.LOOP_START_STRING;
+					tag |= Tag.LoopStart;
 					continue;
 				}
 
@@ -188,7 +187,7 @@ public static partial class Util {
 				}
 
 				if (hashTag.Equals("random", OIC) || hashTag.Equals("ran", OIC)) {
-					tag = SpriteTag.RANDOM_STRING;
+					tag |= Tag.Random;
 					continue;
 				}
 
@@ -207,7 +206,11 @@ public static partial class Util {
 				}
 
 				if (hashTag.StartsWith("tag=", OIC)) {
-					tag = hashTag[4..];
+					string _tagStr = hashTag[4..];
+					int _tagIndex = System.Array.FindIndex(TagUtil.ALL_TAG_NAMES, _t => _t.Equals(_tagStr, System.StringComparison.OrdinalIgnoreCase));
+					if (_tagIndex >= 0) {
+						tag |= TagUtil.GetTagAt(_tagIndex);
+					}
 					continue;
 				}
 
@@ -280,9 +283,9 @@ public static partial class Util {
 
 		// Always Trigger Check
 		isTrigger = isTrigger ||
-			IsOnewayTag(tag.AngeHash()) ||
-			tag == SpriteTag.WATER_STRING ||
-			tag == SpriteTag.QUICKSAND_STRING;
+			IsOnewayTag(tag) ||
+			tag.HasTag(Tag.Water) ||
+			tag.HasTag(Tag.Quicksand);
 
 		// Name
 		realName = name.TrimEnd(' ');

@@ -69,8 +69,8 @@ public partial class PixelEditor {
 	private struct SpriteTagUndoItem : IUndoItem {
 		public int Step { get; set; }
 		public int SpriteID;
-		public int From;
-		public int To;
+		public Tag From;
+		public Tag To;
 	}
 
 

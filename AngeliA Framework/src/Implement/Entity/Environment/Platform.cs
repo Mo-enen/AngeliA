@@ -117,7 +117,7 @@ public abstract class Platform : EnvironmentEntity {
 
 	public override void FirstUpdate () {
 		if (OneWay) {
-			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
+			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
 		} else {
 			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 		}

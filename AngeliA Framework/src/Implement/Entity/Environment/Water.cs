@@ -104,7 +104,7 @@ public abstract class Water : Entity {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Physics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.WATER_TAG);
+		Physics.FillEntity(IsGrounded ? PhysicsLayer.LEVEL : PhysicsLayer.ENVIRONMENT, this, true, Tag.Water);
 	}
 
 
@@ -127,7 +127,7 @@ public abstract class Water : Entity {
 		// Try Merge
 		if (Physics.GetEntity(
 				TypeID, IsGrounded ? new IRect(X + Width / 2, Y, 1, 1) : Rect,
-				PhysicsMask.MAP, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
+				PhysicsMask.MAP, this, OperationMode.TriggerOnly, Tag.Water
 			) is Water overlapWater
 		) {
 			MergeWater(this, overlapWater);
@@ -140,22 +140,22 @@ public abstract class Water : Entity {
 			// Get Neighbors
 			WaterLeft = Physics.GetEntity(
 				TypeID, rect.Shift(-Const.CEL, 0), PhysicsMask.LEVEL,
-				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
+				this, OperationMode.TriggerOnly, Tag.Water
 			) as Water;
 
 			WaterRight = Physics.GetEntity(
 				TypeID, rect.Shift(Const.CEL, 0), PhysicsMask.LEVEL,
-				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
+				this, OperationMode.TriggerOnly, Tag.Water
 			) as Water;
 
 			WaterDown = Physics.GetEntity(
 				TypeID, rect.Shift(0, -Const.CEL), PhysicsMask.LEVEL,
-				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
+				this, OperationMode.TriggerOnly, Tag.Water
 			) as Water;
 
 			WaterUp = Physics.GetEntity(
 				TypeID, rect.Shift(0, Const.CEL), PhysicsMask.LEVEL,
-				this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
+				this, OperationMode.TriggerOnly, Tag.Water
 			) as Water;
 
 			// Transfer
@@ -461,7 +461,7 @@ public abstract class Water : Entity {
 	private bool GroundCheck () {
 		if (IsGrounded && Physics.Overlap(
 			PhysicsMask.LEVEL, new IRect(X + 1, Y - Const.CEL + 1, Const.CEL - 2, Const.CEL - 2),
-			out var hit, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG
+			out var hit, this, OperationMode.TriggerOnly, Tag.Water
 		) && hit.Entity is Water water && water.IsGrounded) return true;
 		return !Physics.RoomCheck(
 			PhysicsMask.LEVEL, Rect, this, Direction4.Down

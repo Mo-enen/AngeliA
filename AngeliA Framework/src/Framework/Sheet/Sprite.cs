@@ -24,7 +24,7 @@ public class AngeSprite {
 	public SpriteGroup Group;
 	public bool IsTrigger;
 	public int Rule;
-	public int Tag;
+	public Tag Tag;
 	public int Duration;
 	public Color32 SummaryTint;
 	public Color32[] Pixels;
@@ -83,7 +83,16 @@ public class AngeSprite {
 			Rule = reader.ReadInt32();
 
 			// Tag
-			Tag = reader.ReadInt32();
+			Tag = (Tag)reader.ReadInt32();
+			//int oldTag = reader.ReadInt32();
+			//for (int i = 0; i < TagUtil.TAG_COUNT; i++) {
+			//	string name = TagUtil.ALL_TAG_NAMES[i];
+			//	int id = name.AngeHash();
+			//	if (oldTag == id) {
+			//		Tag = TagUtil.GetTagAt(i);
+			//		break;
+			//	}
+			//}
 
 			// Duration
 			Duration = reader.ReadUInt16();

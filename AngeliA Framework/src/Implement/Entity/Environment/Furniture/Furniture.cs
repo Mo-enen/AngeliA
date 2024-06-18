@@ -43,7 +43,7 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 
 
 	public override void FirstUpdate () {
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
 	}
 
 

@@ -151,7 +151,6 @@ public partial class PixelEditor : WindowUI {
 
 	// Data
 	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
-	private static readonly Dictionary<int, (string str, int index)> TagPool = new();
 	private readonly List<SpriteData> StagedSprites = new();
 	private string[] AllRigCharacterNames = null;
 	private Project CurrentProject;
@@ -193,10 +192,6 @@ public partial class PixelEditor : WindowUI {
 	internal static void OnGameInitializeLater () {
 		if (Instance == null) return;
 		Instance.SheetIndex = Renderer.AddAltSheet(Sheet);
-		TagPool.Clear();
-		for (int i = 0; i < SpriteTag.COUNT; i++) {
-			TagPool.TryAdd(SpriteTag.ALL_TAGS[i], (SpriteTag.ALL_TAGS_STRING[i], i));
-		}
 		// Atlas Type Names
 		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
@@ -285,7 +280,7 @@ public partial class PixelEditor : WindowUI {
 			var spData = StagedSprites[i];
 			var sprite = spData.Sprite;
 			var rect = Pixel_to_Stage(sprite.PixelRect);
-			bool isPal = sprite.Tag == SpriteTag.PALETTE_TAG;
+			bool isPal = sprite.Tag.HasTag(Tag.Palette);
 
 			// Selecting...
 			if (spData.Selecting) {
@@ -999,7 +994,7 @@ public partial class PixelEditor : WindowUI {
 			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
 			CurrentAtlasIndex
 		);
-		sprite.Tag = SpriteTag.PALETTE_TAG;
+		sprite.Tag.HasTag(Tag.Palette);
 		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
 		Sheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData(sprite));

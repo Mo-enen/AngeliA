@@ -15,7 +15,7 @@ public abstract class Bullet : Entity {
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
 	protected virtual int Duration => 60;
 	protected virtual int Damage => 1;
-	protected virtual int DamageType => 0;
+	protected virtual Tag DamageType => Tag.GeneralDamage;
 	protected virtual int SpawnWidth => Const.CEL;
 	protected virtual int SpawnHeight => Const.CEL;
 	protected virtual bool DestroyOnHitEnvironment => false;
@@ -76,7 +76,7 @@ public abstract class Bullet : Entity {
 		groundTint = Color32.WHITE;
 		bool grounded =
 			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
-			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, SpriteTag.ONEWAY_UP_TAG);
+			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, Tag.OnewayUp);
 		if (grounded && Renderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
 			groundTint = groundSprite.SummaryTint;
 		}

@@ -83,7 +83,7 @@ public abstract class Fire : Entity {
 		}
 
 		// Put Out when Hit Water
-		if (Physics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
+		if (Physics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, Tag.Water)) {
 			PutOut();
 			Active = false;
 			return;

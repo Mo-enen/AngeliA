@@ -99,9 +99,9 @@ public partial class PixelEditor {
 
 	// Data
 	private static readonly byte[] RuleCache = new byte[8];
-	private readonly int[] TagCheckedCountCache = new int[SpriteTag.COUNT + 1];
 	private readonly IntToChars RulePageToChars = new();
 	private readonly int ToolCount = typeof(Tool).EnumLength();
+	private readonly int[] TagCheckedCountCache = new int[TagUtil.TAG_COUNT];
 	private bool SelectingAnyTiggerSprite;
 	private bool SelectingAnyNonTiggerSprite;
 	private bool SelectingAnySpriteWithBorder;
@@ -695,17 +695,20 @@ public partial class PixelEditor {
 		if (SelectingSpriteCount == 0) return;
 
 		// Cache
-		System.Array.Clear(TagCheckedCountCache);
+		Array.Clear(TagCheckedCountCache);
 		int checkedCount = 0;
-		for (int i = 0; i < StagedSprites.Count; i++) {
-			var spData = StagedSprites[i];
+		int noneCount = 0;
+		for (int spriteIndex = 0; spriteIndex < StagedSprites.Count; spriteIndex++) {
+			var spData = StagedSprites[spriteIndex];
 			if (!spData.Selecting) continue;
-			int tag = spData.Sprite.Tag;
-			if (tag == 0) {
-				TagCheckedCountCache[^1]++;
+			Tag tag = spData.Sprite.Tag;
+			if (tag == Tag.None) {
+				noneCount++;
 			} else {
-				if (TagPool.TryGetValue(tag, out var pair)) {
-					TagCheckedCountCache[pair.index]++;
+				for (int i = 0; i < TagUtil.TAG_COUNT; i++) {
+					if (tag.HasFlag(TagUtil.GetTagAt(i))) {
+						TagCheckedCountCache[i]++;
+					}
 				}
 			}
 			checkedCount++;
@@ -715,42 +718,73 @@ public partial class PixelEditor {
 		// Popup
 		GenericPopupUI.BeginPopup();
 
-		int noneTagedCount = TagCheckedCountCache[^1];
+		// None
 		GenericPopupUI.AddItem(
-			BuiltInText.UI_NONE, 0, default,
-			noneTagedCount == 0 ? 0 : noneTagedCount == SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
-			OnClick, enabled: true, @checked: noneTagedCount > 0, data: 0
+			BuiltInText.UI_NONE,
+			icon: 0,
+			iconPosition: default,
+			checkMark: noneCount == 0 ? 0 : noneCount >= SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
+			OnClickNone,
+			enabled: true,
+			@checked: noneCount > 0
 		);
-
-		for (int i = 0; i < SpriteTag.COUNT; i++) {
+		// Tags
+		for (int i = 0; i < TagUtil.TAG_COUNT; i++) {
 			int tagedCount = TagCheckedCountCache[i];
 			GenericPopupUI.AddItem(
-				SpriteTag.ALL_TAGS_STRING[i], 0, default,
-				tagedCount == 0 ? 0 : tagedCount == SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
-				OnClick, enabled: true, @checked: tagedCount > 0, data: i + 1
+				TagUtil.ALL_TAG_NAMES[i],
+				icon: 0,
+				iconPosition: default,
+				checkMark: tagedCount == 0 ? 0 : tagedCount >= SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
+				OnClick,
+				enabled: true,
+				@checked: tagedCount > 0,
+				data: i
 			);
 		}
 
 		// Func
-		static void OnClick () {
-			if (GenericPopupUI.Instance.InvokingItemData is not int tagIndex) return;
-			if (tagIndex < -1 || tagIndex >= SpriteTag.COUNT) return;
+		static void OnClickNone () {
 			int checkedCount = 0;
 			var stagedSprites = Instance.StagedSprites;
-			var checkedCache = Instance.TagCheckedCountCache;
 			int selectingCount = Instance.SelectingSpriteCount;
-			int targetValue = tagIndex < 0 || checkedCache[tagIndex] == selectingCount ? 0 : SpriteTag.ALL_TAGS[tagIndex];
 			for (int i = 0; i < stagedSprites.Count && checkedCount < selectingCount; i++) {
 				var spData = stagedSprites[i];
 				if (!spData.Selecting) continue;
 				checkedCount++;
-				int oldTag = spData.Sprite.Tag;
-				if (oldTag != targetValue) {
-					spData.Sprite.Tag = targetValue;
+				Tag oldTag = spData.Sprite.Tag;
+				if (oldTag != Tag.None) {
+					spData.Sprite.Tag = Tag.None;
 					Instance.RegisterUndo(new SpriteTagUndoItem() {
 						SpriteID = spData.Sprite.ID,
 						From = oldTag,
-						To = targetValue,
+						To = Tag.None,
+					});
+				}
+			}
+			Instance.SetDirty();
+		}
+		static void OnClick () {
+			if (GenericPopupUI.Instance.InvokingItemData is not int tagIndex) return;
+			if (tagIndex < 0 || tagIndex >= TagUtil.TAG_COUNT) return;
+			int checkedCount = 0;
+			var stagedSprites = Instance.StagedSprites;
+			var checkedCache = Instance.TagCheckedCountCache;
+			int selectingCount = Instance.SelectingSpriteCount;
+			bool setFlag = checkedCache[tagIndex] < selectingCount;
+			Tag flag = TagUtil.GetTagAt(tagIndex);
+			for (int i = 0; i < stagedSprites.Count && checkedCount < selectingCount; i++) {
+				var spData = stagedSprites[i];
+				if (!spData.Selecting) continue;
+				checkedCount++;
+				Tag oldTag = spData.Sprite.Tag;
+				Tag newTag = setFlag ? oldTag | flag : oldTag & ~flag;
+				if (oldTag != newTag) {
+					spData.Sprite.Tag = newTag;
+					Instance.RegisterUndo(new SpriteTagUndoItem() {
+						SpriteID = spData.Sprite.ID,
+						From = oldTag,
+						To = newTag,
 					});
 				}
 			}

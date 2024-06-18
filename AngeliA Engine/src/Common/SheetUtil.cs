@@ -89,11 +89,10 @@ public static class SheetUtil {
 			var flex = flexSprites[i];
 			Util.GetSpriteInfoFromName(
 				flex.FullName, out string realName,
-				out bool isTrigger, out string tagStr,
+				out bool isTrigger, out Tag tag,
 				out string ruleStr, out bool noCollider, out int offsetZ,
 				out int aniDuration, out int? pivotX, out int? pivotY
 			);
-			int tag = string.IsNullOrEmpty(tagStr) ? 0 : tagStr.AngeHash();
 			int rule = Util.RuleStringToDigit(ruleStr);
 			int globalWidth = flex.PixelRect.width * Const.ART_SCALE;
 			int globalHeight = flex.PixelRect.height * Const.ART_SCALE;

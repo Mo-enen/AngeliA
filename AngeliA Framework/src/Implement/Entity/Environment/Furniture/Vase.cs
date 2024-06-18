@@ -8,7 +8,7 @@ public class Vase : Furniture {
 
 	public override void FirstUpdate () {
 		if (Pose == FittingPose.Up || Pose == FittingPose.Single) {
-			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, SpriteTag.ONEWAY_UP_TAG);
+			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
 		} else {
 			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		}

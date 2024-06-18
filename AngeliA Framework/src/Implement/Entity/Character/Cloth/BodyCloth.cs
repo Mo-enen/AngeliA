@@ -123,7 +123,7 @@ public class BodyCloth : Cloth {
 		}
 
 		// Hide Limb
-		body.Covered = suitSprite.Tag == SpriteTag.HIDE_LIMB_TAG ?
+		body.Covered = suitSprite.Tag.HasTag(Tag.HideLimb) ?
 			 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 	}

@@ -22,7 +22,7 @@ public class LeafPalm : Leaf {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Physics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, SpriteTag.ONEWAY_UP_TAG);
+		Physics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, Tag.OnewayUp);
 	}
 
 	public override void LateUpdate () {
@@ -39,7 +39,7 @@ public class LeafWillow : Leaf {
 		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID,
 			Rect.Shrink(0, 0, 0, Height / 2),
-			true, SpriteTag.CLIMB_TAG
+			true, Tag.Climb
 		);
 	}
 

@@ -62,7 +62,7 @@ public class FootCloth : Cloth {
 				);
 			}
 
-			foot.Covered = sprite.Tag != SpriteTag.SHOW_LIMB_TAG ?
+			foot.Covered = !sprite.Tag.HasTag(Tag.ShowLimb) ?
 				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 		}

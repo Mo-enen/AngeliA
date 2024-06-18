@@ -32,7 +32,7 @@ public abstract class MovableBullet : Bullet {
 		if (!Active) return;
 
 		var vel = Velocity;
-		if (Physics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG)) {
+		if (Physics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, Tag.Water)) {
 			vel.x = vel.x * WaterSpeedRate / 1000;
 			vel.y = vel.y * WaterSpeedRate / 1000;
 		}

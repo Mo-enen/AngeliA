@@ -112,10 +112,10 @@ public abstract class Cloth {
 			);
 		}
 		if (defaultHideLimb) {
-			bodyPart.Covered = sprite.Tag != SpriteTag.SHOW_LIMB_TAG ?
+			bodyPart.Covered = !sprite.Tag.HasTag(Tag.ShowLimb) ?
 				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 		} else {
-			bodyPart.Covered = sprite.Tag == SpriteTag.HIDE_LIMB_TAG ?
+			bodyPart.Covered = sprite.Tag.HasTag(Tag.HideLimb) ?
 				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 		}
 		return result;
@@ -142,10 +142,10 @@ public abstract class Cloth {
 			);
 		}
 		if (defaultHideLimb) {
-			bodyPart.Covered = sprite.Tag != SpriteTag.SHOW_LIMB_TAG ?
+			bodyPart.Covered = !sprite.Tag.HasTag(Tag.ShowLimb) ?
 				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 		} else {
-			bodyPart.Covered = sprite.Tag == SpriteTag.HIDE_LIMB_TAG ?
+			bodyPart.Covered = sprite.Tag.HasTag(Tag.HideLimb) ?
 				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 		}
 		return result;

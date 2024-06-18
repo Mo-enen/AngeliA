@@ -101,9 +101,9 @@ public abstract class Rigidbody : Entity {
 		bool prevInWater = InWater;
 		bool prevInSand = InSand;
 		int checkingMask = PhysicsMask.MAP & CollisionMask;
-		InWater = Physics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, SpriteTag.WATER_TAG);
-		InSand = !InWater && Physics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, SpriteTag.QUICKSAND_TAG);
-		OnSlippy = !InWater && !InSand && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, SpriteTag.SLIP_TAG);
+		InWater = Physics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
+		InSand = !InWater && Physics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, Tag.Quicksand);
+		OnSlippy = !InWater && !InSand && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Tag.Slip);
 		IsInsideGround = InsideGroundCheck();
 
 		if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {

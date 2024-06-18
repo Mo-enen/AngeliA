@@ -1,4 +1,4 @@
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public class WoodLogSlopeA : Slope, ICombustible {
@@ -66,11 +66,11 @@ public abstract class Slope : EnvironmentEntity {
 		base.FirstUpdate();
 		Physics.FillEntity(
 			PhysicsLayer.ENVIRONMENT, this, true,
-			DirectionHorizontal == Direction2.Left ? SpriteTag.ONEWAY_RIGHT_TAG : SpriteTag.ONEWAY_LEFT_TAG
+			DirectionHorizontal == Direction2.Left ? Tag.OnewayRight : Tag.OnewayLeft
 		);
 		Physics.FillEntity(
 			PhysicsLayer.ENVIRONMENT, this, true,
-			DirectionVertical == Direction2.Down ? SpriteTag.ONEWAY_UP_TAG : SpriteTag.ONEWAY_DOWN_TAG
+			DirectionVertical == Direction2.Down ? Tag.OnewayUp : Tag.OnewayDown
 		);
 	}
 

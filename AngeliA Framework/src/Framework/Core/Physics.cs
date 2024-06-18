@@ -13,7 +13,7 @@ public struct PhysicsCell {
 	public Entity Entity;
 	public uint Frame;
 	public bool IsTrigger;
-	public int Tag;
+	public Tag Tag;
 	public int SourceID;
 
 }
@@ -113,14 +113,14 @@ public static class Physics {
 	}
 
 
-	public static void FillBlock (int layer, int blockID, IRect globalRect, bool isTrigger = false, int tag = 0) => FillLogic(layer, blockID, globalRect, null, 0, 0, isTrigger, tag);
+	public static void FillBlock (int layer, int blockID, IRect globalRect, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, blockID, globalRect, null, 0, 0, isTrigger, tag);
 
 
-	public static void FillEntity (int layer, Entity entity, bool isTrigger = false, int tag = 0) => FillLogic(layer, entity != null ? entity.TypeID : 0, entity.Rect, entity, 0, 0, isTrigger, tag);
+	public static void FillEntity (int layer, Entity entity, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, entity != null ? entity.TypeID : 0, entity.Rect, entity, 0, 0, isTrigger, tag);
 
 
 	// Overlap
-	public static bool Overlap (int mask, IRect globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+	public static bool Overlap (int mask, IRect globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 			if ((mask & (1 << layerIndex)) == 0) continue;
 			if (OverlapLogic(layerIndex, globalRect, ignore, mode, tag, out _)) return true;
@@ -129,7 +129,7 @@ public static class Physics {
 	}
 
 
-	public static bool Overlap (int mask, IRect globalRect, out PhysicsCell info, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+	public static bool Overlap (int mask, IRect globalRect, out PhysicsCell info, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 			if ((mask & (1 << layerIndex)) == 0) continue;
 			if (OverlapLogic(layerIndex, globalRect, ignore, mode, tag, out info)) return true;
@@ -141,7 +141,7 @@ public static class Physics {
 
 	public static PhysicsCell[] OverlapAll (
 		int mask, IRect globalRect, out int count, Entity ignore = null,
-		OperationMode mode = OperationMode.ColliderOnly, int tag = 0
+		OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0
 	) {
 		count = OverlapAll(c_GeneralHits, mask, globalRect, ignore, mode, tag);
 		return c_GeneralHits;
@@ -150,7 +150,7 @@ public static class Physics {
 
 	private static int OverlapAll (
 		PhysicsCell[] hits, int mask, IRect globalRect, Entity ignore = null,
-		OperationMode mode = OperationMode.ColliderOnly, int tag = 0
+		OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0
 	) {
 		int count = 0;
 		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
@@ -162,7 +162,7 @@ public static class Physics {
 
 
 	// Entity
-	public static T GetEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) where T : Entity {
+	public static T GetEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) where T : Entity {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 		for (int i = 0; i < count; i++) {
 			var e = c_GetEntity[i].Entity;
@@ -170,7 +170,7 @@ public static class Physics {
 		}
 		return null;
 	}
-	public static Entity GetEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+	public static Entity GetEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 		for (int i = 0; i < count; i++) {
 			var e = c_GetEntity[i].Entity;
@@ -180,7 +180,7 @@ public static class Physics {
 		}
 		return null;
 	}
-	public static Entity GetEntity (int typeID, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) {
+	public static Entity GetEntity (int typeID, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 		for (int i = 0; i < count; i++) {
 			var e = c_GetEntity[i].Entity;
@@ -190,13 +190,13 @@ public static class Physics {
 	}
 
 
-	public static bool HasEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) where T : Entity => GetEntity<T>(globalRect, mask, ignore, mode, tag) != null;
-	public static bool HasEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => GetEntity(type, globalRect, mask, ignore, mode, tag) != null;
+	public static bool HasEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) where T : Entity => GetEntity<T>(globalRect, mask, ignore, mode, tag) != null;
+	public static bool HasEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) => GetEntity(type, globalRect, mask, ignore, mode, tag) != null;
 
 
 	// Room Check
-	public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => RoomCheck(mask, rect, entity, direction, out _, mode, tag);
-	public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, OperationMode mode = OperationMode.ColliderOnly, int tag = 0) => !Overlap(mask, rect.EdgeOutside(direction), out hit, entity, mode, tag);
+	public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) => RoomCheck(mask, rect, entity, direction, out _, mode, tag);
+	public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) => !Overlap(mask, rect.EdgeOutside(direction), out hit, entity, mode, tag);
 
 
 	public static bool RoomCheckOneway (int mask, IRect rect, Entity entity, Direction4 direction, bool overlapCheck = false, bool blockOnly = false) =>
@@ -256,7 +256,7 @@ public static class Physics {
 	#region --- LGC ---
 
 
-	private static bool OverlapLogic (int layer, IRect globalRect, Entity ignore, OperationMode mode, int tag, out PhysicsCell info) {
+	private static bool OverlapLogic (int layer, IRect globalRect, Entity ignore, OperationMode mode, Tag tag, out PhysicsCell info) {
 		var layerItem = Layers[layer];
 		int l = Util.Max(GlobalX_to_CellX(globalRect.xMin) - 1, 0);
 		int d = Util.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
@@ -270,7 +270,7 @@ public static class Physics {
 					ref var cell = ref layerItem.Cells[i, j, dep];
 					if (cell.Frame != CurrentFrame) break;
 					if (ignore != null && cell.Entity == ignore) continue;
-					if (tag != 0 && cell.Tag != tag) continue;
+					if (tag != Tag.None && !cell.Tag.HasTag(tag)) continue;
 					if ((!cell.IsTrigger || !useTrigger) && (cell.IsTrigger || !useCollider)) continue;
 					if (globalRect.Overlaps(cell.Entity != null ? cell.Entity.Rect : cell.Rect)) {
 						info = cell;
@@ -286,7 +286,7 @@ public static class Physics {
 
 	private static int OverlapAllLogic (
 		PhysicsCell[] hits, int startIndex, int layer,
-		IRect globalRect, Entity ignore, OperationMode mode, int tag, bool ignoreStamp
+		IRect globalRect, Entity ignore, OperationMode mode, Tag tag, bool ignoreStamp
 	) {
 		int count = startIndex;
 		int maxLength = hits.Length;
@@ -305,7 +305,7 @@ public static class Physics {
 					ref var cell = ref layerItem.Cells[i, j, dep];
 					if (cell.Frame != CurrentFrame) { break; }
 					if (ignore != null && cell.Entity == ignore) continue;
-					if (tag != 0 && cell.Tag != tag) continue;
+					if (tag != Tag.None && !cell.Tag.HasTag(tag)) continue;
 					if ((!cell.IsTrigger || !useTrigger) && (cell.IsTrigger || !useCollider)) continue;
 					if (!ignoreStamp && cell.Entity != null && cell.Entity.PhysicsOperationStamp == entityStamp) continue;
 					if (globalRect.Overlaps(cell.Entity != null ? cell.Entity.Rect : cell.Rect)) {
@@ -321,7 +321,7 @@ public static class Physics {
 	}
 
 
-	private static void FillLogic (int layer, int sourceId, IRect globalRect, Entity entity, int speedX, int speedY, bool isTrigger, int tag) {
+	private static void FillLogic (int layer, int sourceId, IRect globalRect, Entity entity, int speedX, int speedY, bool isTrigger, Tag tag) {
 
 		if (globalRect.width > Const.CEL || globalRect.height > Const.CEL) {
 			// Too Large
