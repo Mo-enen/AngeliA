@@ -15,8 +15,9 @@ public class BodyPart {
 	public Int4 Border { get; private set; } = default;
 	public int SpritePivotX { get; private set; } = 0;
 	public int SpritePivotY { get; private set; } = 0;
-	public int SizeX { get; private set; } = Const.CEL;
-	public int SizeY { get; private set; } = Const.CEL;
+	public int SizeX { get; private set; } = Const.HALF;
+	public int SizeY { get; private set; } = Const.HALF;
+	public int FlexableSizeY { get; set; } = Const.HALF;
 	public bool UseLimbFlip { get; init; } = false;
 	public BodyPart LimbParent { get; init; } = null;
 	public bool IsFullCovered => Covered == CoverMode.FullCovered;
@@ -46,13 +47,13 @@ public class BodyPart {
 	public void SetData (int id) {
 		if (Renderer.TryGetSpriteFromGroup(id, 0, out var sprite, false, true)) {
 			SizeX = sprite.GlobalWidth;
-			SizeY = sprite.GlobalHeight;
+			SizeY = FlexableSizeY = sprite.GlobalHeight;
 			Border = sprite.GlobalBorder;
 			SpritePivotX = sprite.PivotX;
 			SpritePivotY = sprite.PivotY;
 		} else {
-			SizeX = Const.CEL;
-			SizeY = Const.CEL;
+			SizeX = Const.HALF;
+			SizeY = FlexableSizeY = Const.HALF;
 			Border = default;
 			SpritePivotX = 0;
 			SpritePivotY = 0;
@@ -139,7 +140,7 @@ public class BodyPart {
 		Renderer.TryGetSpriteFromGroup(newID, 0, out var sprite, false, true);
 		if (sprite == null) return;
 		SizeX = sprite.GlobalWidth;
-		SizeY = sprite.GlobalHeight;
+		SizeY = FlexableSizeY = sprite.GlobalHeight;
 		Border = sprite.GlobalBorder;
 		SpritePivotX = sprite.PivotX;
 		SpritePivotY = sprite.PivotY;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public class PoseAttack_Hand : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		character.AttackStyleLoop = 2;
 		switch (character.AttackStyleIndex % character.AttackStyleLoop) {
@@ -208,7 +208,7 @@ public class PoseAttack_Hand : PoseAnimation {
 }
 
 public class PoseAttack_Wave : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		int style;
 		var handheld = character.EquippingWeaponHeld;
@@ -1014,7 +1014,7 @@ public class PoseAttack_Wave : PoseAnimation {
 }
 
 public class PoseAttack_Polearm : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		character.AttackStyleLoop = 8;
 		int style = character.LastAttackCharged ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
@@ -1271,7 +1271,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 }
 
 public class PoseAttack_Scratch : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		character.AttackStyleLoop = 3;
 		int style = character.LastAttackCharged ? 2 : character.AttackStyleIndex % character.AttackStyleLoop;
@@ -1420,7 +1420,7 @@ public class PoseAttack_Scratch : PoseAnimation {
 }
 
 public class PoseAttack_Arrow : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		character.AttackStyleLoop = 1;
 		if (character.EquippingWeaponHeld == WeaponHandheld.Bow) {
@@ -1512,7 +1512,7 @@ public class PoseAttack_Arrow : PoseAnimation {
 }
 
 public class PoseAttack_Magic : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		character.AttackStyleLoop = 1;
 		switch (character.EquippingWeaponHeld) {

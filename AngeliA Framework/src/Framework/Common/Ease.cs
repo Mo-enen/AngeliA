@@ -1,11 +1,14 @@
-namespace AngeliA; 
+namespace AngeliA;
+
+public enum EaseType : byte { Const, InLiner, OutLiner, InOutLiner, InQuad, OutQuad, InOutQuad, InCubic, OutCubic, InOutCubic, InQuart, OutQuart, InOutQuart, InQuint, OutQuint, InOutQuint, InSine, OutSine, InOutSine, InCirc, OutCirc, InOutCirc, InElastic, OutElastic, InOutElastic, InExpo, OutExpo, InOutExpo, InBack, OutBack, InOutBack, InBounce, OutBounce, InOutBounce, }
+
 public static class Ease {
 
 
-	public enum EaseType : byte { InLiner, OutLiner, InOutLiner, InQuad, OutQuad, InOutQuad, InCubic, OutCubic, InOutCubic, InQuart, OutQuart, InOutQuart, InQuint, OutQuint, InOutQuint, InSine, OutSine, InOutSine, InCirc, OutCirc, InOutCirc, InElastic, OutElastic, InOutElastic, InExpo, OutExpo, InOutExpo, InBack, OutBack, InOutBack, InBounce, OutBounce, InOutBounce, }
 
 
 	public static float Invoke (EaseType type, float ease) => type switch {
+		EaseType.Const => 0f,
 		EaseType.InLiner => InLiner(ease),
 		EaseType.OutLiner => OutLiner(ease),
 		EaseType.InOutLiner => InOutLiner(ease),

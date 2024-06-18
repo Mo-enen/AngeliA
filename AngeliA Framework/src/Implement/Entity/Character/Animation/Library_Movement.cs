@@ -7,7 +7,7 @@ namespace AngeliA;
 
 // General
 public class PoseAnimation_Animation_TakingDamage : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		bool alt = CurrentAnimationFrame.UMod(8) >= 4;
@@ -59,7 +59,7 @@ public class PoseAnimation_Animation_TakingDamage : PoseAnimation {
 }
 
 public class PoseAnimation_Sleep : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		bool alt = CurrentAnimationFrame.UMod(120) >= 60;
 
@@ -123,7 +123,7 @@ public class PoseAnimation_PassOut : PoseAnimation {
 
 	protected override bool ValidHeadPosition => false;
 
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		Target.PoseRootY = 0;
@@ -180,7 +180,7 @@ public class PoseAnimation_PassOut : PoseAnimation {
 
 // Motion
 public class PoseAnimation_Idle : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		const int LOOP = 128;
@@ -241,7 +241,7 @@ public class PoseAnimation_Idle : PoseAnimation {
 public class PoseAnimation_Walk : PoseAnimation {
 	private static readonly float[] EASE = { 0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, };
 	private static readonly int[,] ROTS = { { -20, 20, 25, -25, 0, 0, }, { -17, 17, 21, -25, 0, 0, }, { -15, 15, 17, -27, 30, 20, }, { -7, 7, 17, -15, 45, 10, }, { 0, 0, -5, -5, 60, 0, }, { 7, -7, -5, 7, 75, 0, }, { 15, -15, -27, 17, 90, 0, }, { 17, -17, -26, 21, 45, 0, }, { 20, -20, -25, 25, 0, 0, }, { 17, -17, -26, 21, 10, 15, }, { 15, -15, -27, 17, 20, 30, }, { 7, -7, -15, 7, 10, 45, }, { 0, 0, -5, -5, 0, 60, }, { -7, 7, 5, -10, 0, 75, }, { -15, 15, 17, -27, 0, 90, }, { -17, 17, 21, -26, 0, 45, }, };
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		const int FRAME_LENGTH = 16;
@@ -295,7 +295,7 @@ public class PoseAnimation_Walk : PoseAnimation {
 public class PoseAnimation_Run : PoseAnimation {
 	private static readonly float[] EASE = { 0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, };
 	private static readonly int[,] ROTS = { { -10, 80, -65, -90, 45, -55, 80, 60, }, { -10, 80, -65, -90, 45, -55, 80, 60, }, { 1, 68, -68, -86, 32, -42, 90, 29, }, { 1, 68, -68, -86, 32, -42, 90, 29, }, { 35, 35, -77, -77, -5, -5, 90, 0, }, { 35, 35, -77, -77, -5, -5, 90, 0, }, { 68, 1, -86, -68, -42, 32, 90, 0, }, { 68, 1, -86, -68, -42, 32, 90, 0, }, { 80, -10, -90, -65, -55, 45, 60, 80, }, { 80, -10, -90, -65, -55, 45, 60, 80, }, { 68, 1, -86, -68, -42, 32, 29, 90, }, { 68, 1, -86, -68, -42, 32, 29, 90, }, { 35, 35, -77, -77, -5, -5, 0, 90, }, { 35, 35, -77, -77, -5, -5, 0, 90, }, { 1, 68, -68, -86, 32, -42, 0, 90, }, { 1, 68, -68, -86, 32, -42, 0, 90, }, };
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		const int FRAME_LENGTH = 16;
@@ -360,7 +360,7 @@ public class PoseAnimation_Run : PoseAnimation {
 }
 
 public class PoseAnimation_JumpUp : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		bool alt = CurrentAnimationFrame.UMod(8) >= 4;
@@ -423,7 +423,7 @@ public class PoseAnimation_JumpUp : PoseAnimation {
 }
 
 public class PoseAnimation_JumpDown : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		bool alt = CurrentAnimationFrame.UMod(8) >= 4;
@@ -486,7 +486,7 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 }
 
 public class PoseAnimation_SwimIdle : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int frame0121 = CurrentAnimationFrame.UMod(64) / 16;
@@ -532,7 +532,7 @@ public class PoseAnimation_SwimIdle : PoseAnimation {
 }
 
 public class PoseAnimation_SwimMove : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int loop = Util.Max((1200 / Target.SwimSpeed.FinalValue).Clamp(1, 128) / 4 * 4, 1);
@@ -610,7 +610,7 @@ public class PoseAnimation_SwimMove : PoseAnimation {
 }
 
 public class PoseAnimation_SquatIdle : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int arrFrame = CurrentAnimationFrame.UMod(64) / 16;
@@ -704,7 +704,7 @@ public class PoseAnimation_SquatIdle : PoseAnimation {
 
 public class PoseAnimation_SquatMove : PoseAnimation {
 	private static readonly float[] EASE = { 0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, };
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		const int FRAME_LENGTH = 16;
@@ -781,7 +781,7 @@ public class PoseAnimation_SquatMove : PoseAnimation {
 }
 
 public class PoseAnimation_Dash : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int aFrame = CurrentAnimationFrame.UMod(8) / 4;
@@ -874,7 +874,7 @@ public class PoseAnimation_Dash : PoseAnimation {
 
 public class PoseAnimation_Rolling : PoseAnimation {
 	private static readonly int[,] ROLLING = { { 1450, +100, -000, 0900, 0500, -020, -025, -015, -040, 70, 80, }, { 1200, +450, -000, 0800, 0250, +025, +030, -025, -030, 75, 85, }, { 0850, +800, -000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0300, +450, -000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0650, -100, +000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0850, -450, +000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0950, -800, +000, 0800, 0250, -065, -065, -025, -030, 75, 85, }, { 1200, -450, +000, 0900, 0750, -040, -045, -015, -040, 70, 80, }, };
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int arrFrame = CurrentAnimationFrame.UMod(24) / 3;
@@ -956,7 +956,7 @@ public class PoseAnimation_Rolling : PoseAnimation {
 }
 
 public class PoseAnimation_Rush : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int aFrame = CurrentAnimationFrame.Abs() / 3;
@@ -1037,7 +1037,7 @@ public class PoseAnimation_Rush : PoseAnimation {
 }
 
 public class PoseAnimation_Crash : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		Target.PoseRootY = 0;
@@ -1092,7 +1092,7 @@ public class PoseAnimation_Crash : PoseAnimation {
 }
 
 public class PoseAnimation_Pound : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		bool alt = CurrentAnimationFrame % 8 < 4;
@@ -1138,7 +1138,7 @@ public class PoseAnimation_Pound : PoseAnimation {
 }
 
 public class PoseAnimation_Climb : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int frameRate = Util.Max(560 / Target.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
@@ -1181,7 +1181,7 @@ public class PoseAnimation_Climb : PoseAnimation {
 }
 
 public class PoseAnimation_Fly : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int frame = CurrentAnimationFrame.UMod(16) / 2;
@@ -1243,7 +1243,7 @@ public class PoseAnimation_Fly : PoseAnimation {
 }
 
 public class PoseAnimation_Slide : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		bool alt = (CurrentAnimationFrame / 4) % 2 == 0;
@@ -1305,7 +1305,7 @@ public class PoseAnimation_Slide : PoseAnimation {
 }
 
 public class PoseAnimation_GrabTop : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		int loop = Util.Max((700 / Target.GrabMoveSpeedX.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 		int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
@@ -1351,7 +1351,7 @@ public class PoseAnimation_GrabTop : PoseAnimation {
 }
 
 public class PoseAnimation_GrabSide : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int loop = Util.Max((700 / Target.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
@@ -1405,7 +1405,7 @@ public class PoseAnimation_GrabSide : PoseAnimation {
 }
 
 public class PoseAnimation_Spin : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		int aFrame = CurrentAnimationFrame.UMod(8);

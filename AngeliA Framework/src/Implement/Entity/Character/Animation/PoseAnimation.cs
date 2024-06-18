@@ -146,7 +146,7 @@ public abstract class PoseAnimation {
 	}
 
 
-	protected virtual void Animate (PoseCharacter character) {
+	public virtual void Animate (PoseCharacter character) {
 		if (character == Target && character.CurrentAnimationFrame == CurrentAnimationFrame) return;
 		Target = character;
 		CurrentAnimationFrame = character.CurrentAnimationFrame;
@@ -181,12 +181,6 @@ public abstract class PoseAnimation {
 
 
 	#region --- API ---
-
-
-	public static bool TryGetAnimation (int id, out PoseAnimation result) => Pool.TryGetValue(id, out result);
-
-
-	public static bool TryAddAnimation (int id, PoseAnimation animation) => Pool.TryAdd(id, animation);
 
 
 	protected static void ResetShoulderAndUpperArm (bool resetLeft = true, bool resetRight = true) {

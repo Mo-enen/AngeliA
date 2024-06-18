@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA; 
 
 public class PoseHandheld_Double : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (!Target.IsChargingAttack) {
 			// Holding
@@ -41,7 +41,9 @@ public class PoseHandheld_Double : PoseAnimation {
 			) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 		} else {
 			// Charging
-			float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
+			float ease01 = 1f - Ease.OutBack(
+				((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()
+			);
 			AttackHeadDown(ease01, 100, 800, 1000, 100);
 			ResetShoulderAndUpperArm();
 
@@ -95,7 +97,7 @@ public class PoseHandheld_Double : PoseAnimation {
 }
 
 public class PoseHandheld_Bow : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (!Target.IsChargingAttack) {
 			// Holding
@@ -166,7 +168,7 @@ public class PoseHandheld_Bow : PoseAnimation {
 }
 
 public class PoseHandheld_Shooting : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (!Target.IsChargingAttack) {
 			// Holding
@@ -242,7 +244,7 @@ public class PoseHandheld_Shooting : PoseAnimation {
 }
 
 public class PoseHandheld_Pole : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
 		if (!Target.IsChargingAttack) {
@@ -331,7 +333,7 @@ public class PoseHandheld_Pole : PoseAnimation {
 }
 
 public class PoseHandheld_MagicPole : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (!Target.IsChargingAttack) {
 			// Normal
@@ -411,7 +413,7 @@ public class PoseHandheld_MagicPole : PoseAnimation {
 }
 
 public class PoseHandheld_EachHand : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (Target.IsChargingAttack) {
 			float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
@@ -458,7 +460,7 @@ public class PoseHandheld_EachHand : PoseAnimation {
 }
 
 public class PoseHandheld_Single : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (Target.IsChargingAttack) {
 			// Charging
@@ -501,7 +503,7 @@ public class PoseHandheld_Single : PoseAnimation {
 }
 
 public class PoseHandheld_Float : PoseAnimation {
-	protected override void Animate (PoseCharacter character) {
+	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (Target.IsChargingAttack) {
 			// Charging

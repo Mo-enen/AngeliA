@@ -103,6 +103,38 @@ public partial class Engine {
 	// Init
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
+
+		// TEST
+		//var test = new ModularAnimation() {
+		//	PoseType = CharacterAnimationType.Idle,
+		//	Override = ModularAnimation.CharacterOverrideType.Pose,
+		//	ID = "Test Ani".AngeHash(),
+		//	Name = "Test Ani",
+		//	KeyLayers = new ModularAnimation.KeyLayer[]{
+		//		new () {
+		//			Binding = ModularAnimation.Binding.Rot_Head,
+		//			KeyFrames = new ModularAnimation.KeyFrame []{
+		//				new(0, 0, EaseType.OutCubic),
+		//				new(30, 45, EaseType.OutCubic),
+		//				new(60, -45, EaseType.OutCubic),
+		//				new(90, 0, EaseType.OutCubic),
+		//			},
+		//		},
+		//		new () {
+		//			Binding = ModularAnimation.Binding.Width_Body,
+		//			KeyFrames = new ModularAnimation.KeyFrame []{
+		//				new(0, 0, EaseType.OutBounce),
+		//				new(60, 128, EaseType.OutBounce),
+		//				new(120, 0, EaseType.OutBounce),
+		//			},
+		//		},
+		//	},
+		//	CharacterName = "",
+		//};
+		//
+		//JsonUtil.SaveJsonToPath(test, "C:\\Data\\Test.json", true);
+
+
 		var engine = new Engine {
 			AllWindows = new WindowUI[]{
 				new RiggedMapEditor(),
