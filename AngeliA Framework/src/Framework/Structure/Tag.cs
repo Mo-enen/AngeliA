@@ -10,7 +10,6 @@ public enum Tag : int {
 	OnewayDown = 1 << 1,
 	OnewayLeft = 1 << 2,
 	OnewayRight = 1 << 3,
-	//Oneway = OnewayUp | OnewayDown | OnewayLeft | OnewayRight,
 
 	Climb = 1 << 4,
 	ClimbStable = 1 << 5,
@@ -43,9 +42,11 @@ public static class TagUtil {
 
 	public static Tag GetTagAt (int index) => (Tag)(1 << index);
 
-	public static readonly Tag Damage = Tag.GeneralDamage | Tag.ExplosiveDamage | Tag.MagicalDamage | Tag.PoisonDamage;
+	public static readonly Tag DamageMusk = Tag.GeneralDamage | Tag.ExplosiveDamage | Tag.MagicalDamage | Tag.PoisonDamage;
 
-	public static bool HasTag (this Tag self, Tag flag) => (self & flag) == flag;
+	public static bool HasAll (this Tag self, Tag flag) => (self & flag) == flag;
+
+	public static bool HasAny (this Tag self, Tag musk) => (self & musk) != 0;
 
 	public const int TAG_COUNT = 23;
 

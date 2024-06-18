@@ -270,7 +270,7 @@ public static class Physics {
 					ref var cell = ref layerItem.Cells[i, j, dep];
 					if (cell.Frame != CurrentFrame) break;
 					if (ignore != null && cell.Entity == ignore) continue;
-					if (tag != Tag.None && !cell.Tag.HasTag(tag)) continue;
+					if (tag != Tag.None && !cell.Tag.HasAll(tag)) continue;
 					if ((!cell.IsTrigger || !useTrigger) && (cell.IsTrigger || !useCollider)) continue;
 					if (globalRect.Overlaps(cell.Entity != null ? cell.Entity.Rect : cell.Rect)) {
 						info = cell;
@@ -305,7 +305,7 @@ public static class Physics {
 					ref var cell = ref layerItem.Cells[i, j, dep];
 					if (cell.Frame != CurrentFrame) { break; }
 					if (ignore != null && cell.Entity == ignore) continue;
-					if (tag != Tag.None && !cell.Tag.HasTag(tag)) continue;
+					if (tag != Tag.None && !cell.Tag.HasAll(tag)) continue;
 					if ((!cell.IsTrigger || !useTrigger) && (cell.IsTrigger || !useCollider)) continue;
 					if (!ignoreStamp && cell.Entity != null && cell.Entity.PhysicsOperationStamp == entityStamp) continue;
 					if (globalRect.Overlaps(cell.Entity != null ? cell.Entity.Rect : cell.Rect)) {

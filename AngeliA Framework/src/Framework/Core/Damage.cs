@@ -6,9 +6,9 @@ namespace AngeliA;
 
 
 public struct Damage {
-	public readonly bool IsPhysical => Type == Tag.None || Type.HasTag(Tag.GeneralDamage);
-	public readonly bool IsExplosive => Type.HasTag(Tag.ExplosiveDamage);
-	public readonly bool IsMagical => Type.HasTag(Tag.MagicalDamage);
+	public readonly bool IsPhysical => Type == Tag.None || Type.HasAll(Tag.GeneralDamage);
+	public readonly bool IsExplosive => Type.HasAll(Tag.ExplosiveDamage);
+	public readonly bool IsMagical => Type.HasAll(Tag.MagicalDamage);
 	public int Amount;
 	public Tag Type;
 	public IRect SenderRect;

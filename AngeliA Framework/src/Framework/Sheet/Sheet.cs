@@ -376,7 +376,7 @@ public class Sheet {
 			for (int i = 0; i < spriteCount; i++) {
 				var sprite = new AngeSprite();
 				sprite.LoadFromBinary_v0(reader, IgnoreTextureAndPixels);
-				if (!IgnoreSpriteWithIgnoreTag || !sprite.Tag.HasTag(Tag.Palette)) {
+				if (!IgnoreSpriteWithIgnoreTag || !sprite.Tag.HasAll(Tag.Palette)) {
 					Sprites.Add(sprite);
 				}
 			}
@@ -497,8 +497,8 @@ public class Sheet {
 				// Extra Info
 				if (sprite.Duration > 0) group.Animated = true;
 				if (sprite.Rule != 0) group.WithRule = true;
-				if (sprite.Tag.HasTag(Tag.LoopStart)) group.LoopStart = groupIndex;
-				if (sprite.Tag.HasTag(Tag.Random)) group.Random = true;
+				if (sprite.Tag.HasAll(Tag.LoopStart)) group.LoopStart = groupIndex;
+				if (sprite.Tag.HasAll(Tag.Random)) group.Random = true;
 
 			}
 			// Remove Null

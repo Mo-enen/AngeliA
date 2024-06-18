@@ -930,7 +930,7 @@ public abstract partial class Character {
 			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, this, OperationMode.ColliderOnly);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
-				if (hit.Tag.HasTag(Tag.NoSlide | Tag.GrabTop | Tag.GrabSide)) continue;
+				if (hit.Tag.HasAny(Tag.NoSlide | Tag.GrabTop | Tag.GrabSide)) continue;
 				return true;
 			}
 			return false;

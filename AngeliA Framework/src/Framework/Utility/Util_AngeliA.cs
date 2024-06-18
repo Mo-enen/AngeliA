@@ -88,7 +88,7 @@ public static partial class Util {
 		_ => Tag.OnewayUp,
 	};
 
-	public static bool IsOnewayTag (Tag tag) => tag.HasTag(Tag.OnewayUp | Tag.OnewayDown | Tag.OnewayLeft | Tag.OnewayRight);
+	public static bool IsOnewayTag (Tag tag) => tag.HasAny(Tag.OnewayUp | Tag.OnewayDown | Tag.OnewayLeft | Tag.OnewayRight);
 
 	public static bool TryGetOnewayDirection (Tag tag, out Direction4 direction) {
 		switch (tag) {
@@ -284,8 +284,8 @@ public static partial class Util {
 		// Always Trigger Check
 		isTrigger = isTrigger ||
 			IsOnewayTag(tag) ||
-			tag.HasTag(Tag.Water) ||
-			tag.HasTag(Tag.Quicksand);
+			tag.HasAll(Tag.Water) ||
+			tag.HasAll(Tag.Quicksand);
 
 		// Name
 		realName = name.TrimEnd(' ');

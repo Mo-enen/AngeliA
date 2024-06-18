@@ -280,7 +280,7 @@ public partial class PixelEditor : WindowUI {
 			var spData = StagedSprites[i];
 			var sprite = spData.Sprite;
 			var rect = Pixel_to_Stage(sprite.PixelRect);
-			bool isPal = sprite.Tag.HasTag(Tag.Palette);
+			bool isPal = sprite.Tag.HasAll(Tag.Palette);
 
 			// Selecting...
 			if (spData.Selecting) {
@@ -994,7 +994,7 @@ public partial class PixelEditor : WindowUI {
 			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
 			CurrentAtlasIndex
 		);
-		sprite.Tag.HasTag(Tag.Palette);
+		sprite.Tag.HasAll(Tag.Palette);
 		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
 		Sheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData(sprite));

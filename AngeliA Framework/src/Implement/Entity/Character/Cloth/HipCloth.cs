@@ -70,7 +70,7 @@ public class HipCloth : Cloth {
 		}
 
 		// Limb
-		hip.Covered = sprite.Tag.HasTag(Tag.HideLimb) ?
+		hip.Covered = sprite.Tag.HasAll(Tag.HideLimb) ?
 			 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 		// Draw
@@ -131,7 +131,7 @@ public class HipCloth : Cloth {
 		);
 
 		// Limb
-		hip.Covered = sprite.Tag.HasTag(Tag.HideLimb) ?
+		hip.Covered = sprite.Tag.HasAll(Tag.HideLimb) ?
 			BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 		// Func

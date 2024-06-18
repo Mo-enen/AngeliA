@@ -401,7 +401,7 @@ public partial class PixelEditor {
 				var sprite = spData.Sprite;
 				var spRect = sprite.PixelRect;
 				if (sprite.Pixels.Length > 0 && spRect.Contains(pixelPos)) {
-					if (sprite.Tag.HasTag(Tag.Palette)) {
+					if (sprite.Tag.HasAll(Tag.Palette)) {
 						foreach (var _spData in StagedSprites) _spData.SelectingPalette = false;
 						spData.SelectingPalette = true;
 					}
