@@ -135,24 +135,26 @@ public partial class Engine {
 		//JsonUtil.SaveJsonToPath(test, "C:\\Data\\Test.json", true);
 
 
-		var engine = new Engine {
-			AllWindows = new WindowUI[]{
-				new RiggedMapEditor(),
-				new PixelEditor(),
-				new LanguageEditor(),
-				new Console(),
-				new ProjectEditor(),
-				new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
-			},
-			AllGenericUIs = new EntityUI[] {
-				new GenericPopupUI(),
-				new GenericDialogUI(),
-				new FileBrowserUI(),
-			}
+		var engine = new Engine();
+		engine.AllWindows = new WindowUI[]{
+			new RiggedMapEditor(),
+			new PixelEditor(engine.AllRigCharacterNames),
+			new CharacterAnimationEditorWindow(engine.AllRigCharacterNames),
+			new LanguageEditor(),
+			new Console(),
+			new ProjectEditor(),
+			new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
+		};
+		engine.AllGenericUIs = new EntityUI[] {
+			new GenericPopupUI(),
+			new GenericDialogUI(),
+			new FileBrowserUI(),
 		};
 		Instance = engine;
 		engine.InitializeEngine();
 	}
+
+
 	private void InitializeEngine () {
 
 #if DEBUG
@@ -165,6 +167,8 @@ public partial class Engine {
 			Util.DeleteFile(obsoleteInfoPath);
 		}
 #endif
+
+		CheckEngineAsepriteChanged();
 
 		// Projects
 		Projects.Clear();
@@ -319,6 +323,7 @@ public partial class Engine {
 		Instance?.CheckResourceChanged();
 		Instance?.CheckFrameworkDllChanged();
 		Instance?.CheckDialogChanged();
+		Instance?.CheckEngineAsepriteChanged();
 	}
 
 
@@ -927,6 +932,7 @@ public partial class Engine {
 		LanguageEditor.Instance.SetLanguageRoot(CurrentProject.Universe.LanguageRoot);
 		PixelEditor.Instance.SetCurrentProject(CurrentProject);
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
+		CharacterAnimationEditorWindow.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
 
 		// Audio
@@ -1089,6 +1095,17 @@ public partial class Engine {
 
 
 	private void CheckDialogChanged () => EngineUtil.TryCompileDialogueFiles(Universe.BuiltIn.EditableConversationRoot, Universe.BuiltIn.ConversationRoot, forceCompile: false);
+
+
+	private void CheckEngineAsepriteChanged () {
+		bool recreated = SheetUtil.RecreateSheetIfArtworkModified(
+			Universe.BuiltIn.SheetPath,
+			Universe.BuiltIn.AsepriteRoot
+		);
+		if (recreated) {
+			Renderer.LoadMainSheet();
+		}
+	}
 
 
 	#endregion

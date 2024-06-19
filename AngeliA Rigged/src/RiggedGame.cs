@@ -35,7 +35,11 @@ public partial class RiggedGame : Game {
 	private MemoryMappedViewAccessor ViewAccessor = null;
 	private IRect StartWithView = default;
 	private bool DrawCollider = false;
-	private bool DrawBounds = false;
+	private bool EntityClickerOn = false;
+	private Entity DraggingEntity = null;
+	private Entity HoveringEntity = null;
+	private Int2 DraggingEntityOffset;
+	private string HoveringEntityName = "";
 
 
 	#endregion
@@ -149,7 +153,6 @@ public partial class RiggedGame : Game {
 		RespondMessage.Reset();
 		RespondMessage.EffectEnable = CallingMessage.EffectEnable;
 
-		Update_InitInfo();
 		Update_MapEditor();
 
 		Update();
@@ -235,28 +238,13 @@ public partial class RiggedGame : Game {
 		// Require Draw Colliders
 		DrawCollider = CallingMessage.RequireGameMessageInvoke.GetBit(3);
 
-		// Require Draw Entity Bounds
-		DrawBounds = CallingMessage.RequireGameMessageInvoke.GetBit(4);
+		// Require Entity Clicker
+		EntityClickerOn = CallingMessage.RequireGameMessageInvoke.GetBit(4);
 
 		// Gizmos Texture Requirement
 		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);
 		}
-	}
-
-
-	private void Update_InitInfo () {
-
-		if (GlobalFrame != 0) return;
-
-		// Character Names
-		var names = new List<string>();
-		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
-			names.Add(type.AngeName());
-		}
-		RespondMessage.CharacterNames = names.ToArray();
-
-
 
 	}
 
@@ -370,69 +358,134 @@ public partial class RiggedGame : Game {
 
 
 	[OnGameUpdateLater(4096)]
-	internal static void OnGameUpdateLater () => Instance?.UpdateGizmos();
-	private void UpdateGizmos () {
+	internal static void OnGameUpdateLater () {
+		Instance?.UpdateColliderGizmos();
+		Instance?.UpdateEntityClicker();
+	}
 
-		if (PlayerMenuUI.ShowingUI) return;
 
-		// Draw Colliders
-		if (DrawCollider) {
+	private void UpdateColliderGizmos () {
 
-			// Init Cells
-			if (CellPhysicsCells.Count == 0) {
+		if (PlayerMenuUI.ShowingUI || !DrawCollider) return;
+
+		// Init Cells
+		if (CellPhysicsCells.Count == 0) {
+			try {
+				var layers = Util.GetStaticFieldValue(typeof(Physics), "Layers") as System.Array;
+				for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
+					var layerObj = layers.GetValue(layerIndex);
+					CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+			if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
+		}
+
+		// Draw Cells
+		if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
+			int thick = GUI.Unify(1);
+			var cameraRect = Renderer.CameraRect;
+			for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
 				try {
-					var layers = Util.GetStaticFieldValue(typeof(Physics), "Layers") as System.Array;
-					for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
-						var layerObj = layers.GetValue(layerIndex);
-						CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
-					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-				if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
-			}
-
-			// Draw Cells
-			if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
-				int thick = GUI.Unify(1);
-				var cameraRect = Renderer.CameraRect;
-				for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
-					try {
-						var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
-						var cells = CellPhysicsCells[layer];
-						int cellWidth = cells.GetLength(0);
-						int cellHeight = cells.GetLength(1);
-						int celDepth = cells.GetLength(2);
-						for (int y = 0; y < cellHeight; y++) {
-							for (int x = 0; x < cellWidth; x++) {
-								for (int d = 0; d < celDepth; d++) {
-									var cell = cells[x, y, d];
-									if (cell.Frame != Physics.CurrentFrame) break;
-									if (!cell.Rect.Overlaps(cameraRect)) continue;
-									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Down, thick), tint);
-									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Up, thick), tint);
-									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Left, thick), tint);
-									DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Right, thick), tint);
-								}
+					var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
+					var cells = CellPhysicsCells[layer];
+					int cellWidth = cells.GetLength(0);
+					int cellHeight = cells.GetLength(1);
+					int celDepth = cells.GetLength(2);
+					for (int y = 0; y < cellHeight; y++) {
+						for (int x = 0; x < cellWidth; x++) {
+							for (int d = 0; d < celDepth; d++) {
+								var cell = cells[x, y, d];
+								if (cell.Frame != Physics.CurrentFrame) break;
+								if (!cell.Rect.Overlaps(cameraRect)) continue;
+								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Down, thick), tint);
+								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Up, thick), tint);
+								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Left, thick), tint);
+								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Right, thick), tint);
 							}
 						}
-					} catch (System.Exception ex) { Debug.LogException(ex); }
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+		}
+	}
+
+
+	private void UpdateEntityClicker () {
+
+		if (PlayerMenuUI.ShowingUI || !EntityClickerOn) return;
+
+		Input.IgnoreMouseToActionJump(ignoreAction: true, ignoreJump: false, useMidButtonAsAction: true);
+		bool mouseDown = Input.MouseLeftButtonDown;
+		bool mouseHolding = Input.MouseLeftButtonHolding;
+		if (!mouseHolding) DraggingEntity = null;
+		int thick = GUI.Unify(1);
+
+		// For all Entity
+		bool hoverFlag = false;
+		bool dragging = mouseHolding && DraggingEntity != null;
+		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+			var entities = Stage.Entities[layer];
+			int count = Stage.EntityCounts[layer];
+			for (int i = 0; i < count; i++) {
+				var e = entities[i];
+				if (!e.Active) continue;
+				var bounds = e.GlobalBounds;
+				var gizmosTint = Color32.CYAN_BETTER;
+				// Click
+				bool mouseInside = bounds.MouseInside();
+				if (!dragging && !hoverFlag && mouseInside) {
+					hoverFlag = true;
+					if (e != HoveringEntity) {
+						HoveringEntityName = e.GetType().AngeName();
+					}
+					HoveringEntity = e;
+					gizmosTint = Color32.WHITE;
 				}
+				if (mouseDown && mouseInside) {
+					DraggingEntity = e;
+					dragging = mouseHolding;
+					DraggingEntityOffset = Input.MouseGlobalPosition - bounds.position;
+				}
+				// Gizmos
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Down, thick), gizmosTint);
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Up, thick), gizmosTint);
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Left, thick), gizmosTint);
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Right, thick), gizmosTint);
 			}
 		}
 
-		// Draw Bounds
-		if (DrawBounds) {
-			int thick = GUI.Unify(1);
-			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
-				var entities = Stage.Entities[layer];
-				int count = Stage.EntityCounts[layer];
-				for (int i = 0; i < count; i++) {
-					var e = entities[i];
-					if (!e.Active) continue;
-					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Down, thick), Color32.CYAN_BETTER);
-					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Up, thick), Color32.CYAN_BETTER);
-					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Left, thick), Color32.CYAN_BETTER);
-					DrawGizmosRect(e.GlobalBounds.EdgeInside(Direction4.Right, thick), Color32.CYAN_BETTER);
+		// Entity Dragging
+		if (dragging) {
+			if (DraggingEntity.Active) {
+				var mousePos = Input.MouseGlobalPosition;
+				var bounds = DraggingEntity.GlobalBounds;
+				int deltaX = mousePos.x - bounds.x - DraggingEntityOffset.x;
+				int deltaY = mousePos.y - bounds.y - DraggingEntityOffset.y;
+				DraggingEntity.X += deltaX;
+				DraggingEntity.Y += deltaY;
+				// Snap
+				if (IsKeyboardKeyHolding(KeyboardKey.LeftAlt)) {
+					const int SNAP = Const.HALF / 2;
+					DraggingEntity.X = ((float)DraggingEntity.X / SNAP).RoundToInt() * SNAP;
+					DraggingEntity.Y = ((float)DraggingEntity.Y / SNAP).RoundToInt() * SNAP;
 				}
+				// Delete
+				if (Input.KeyboardDown(KeyboardKey.Delete)) {
+					DraggingEntity.Active = false;
+					DraggingEntity = null;
+				}
+			} else {
+				DraggingEntity = null;
+			}
+		} else if (hoverFlag && HoveringEntity != null && !string.IsNullOrEmpty(HoveringEntityName)) {
+			// Entity Name
+			var mousePos = Input.MouseGlobalPosition;
+			using (new UILayerScope()) {
+				GUI.ShadowLabel(
+					new IRect(mousePos.x, mousePos.y + GUI.Unify(24), 1, GUI.Unify(24)),
+					HoveringEntityName,
+					style: GUISkin.Default.SmallCenterLabel
+				);
 			}
 		}
 

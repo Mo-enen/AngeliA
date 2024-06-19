@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class Rock : Breakable {
 
 	private static readonly int CODE = "Rock".AngeHash();
 	private int ArtworkCode = 0;
-	private IRect FullRect = default;
+	private Int4 ArtworkOffset = default;
 	protected override bool ReceivePhysicalDamage => false;
 
 	public override void OnActivated () {
 		base.OnActivated();
-		FullRect = new(X, Y, Const.CEL, Const.CEL);
 		Width = Height = Const.CEL;
 		int artworkIndex = X.UDivide(Const.CEL) + Y.UDivide(Const.CEL);
 		if (Renderer.TryGetSpriteFromGroup(CODE, artworkIndex, out var sprite)) {
-			var rect = base.Rect.Shrink(sprite.GlobalBorder.left, sprite.GlobalBorder.right, sprite.GlobalBorder.down, sprite.GlobalBorder.up);
+			var rect = Rect.Shrink(sprite.GlobalBorder);
+			ArtworkOffset = sprite.GlobalBorder;
 			X = rect.x;
 			Y = rect.y;
 			Width = rect.width;
@@ -31,7 +31,7 @@ public class Rock : Breakable {
 	}
 
 	public override void LateUpdate () {
-		Renderer.Draw(ArtworkCode, FullRect);
+		Renderer.Draw(ArtworkCode, Rect.Expand(ArtworkOffset));
 	}
 
 }

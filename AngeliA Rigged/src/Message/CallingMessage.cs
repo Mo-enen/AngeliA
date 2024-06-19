@@ -353,7 +353,7 @@ public class RigCallingMessage {
 	public void RequireLostFocusInvoke () => RequireGameMessageInvoke.SetBit(1, true);
 	public void RequireClearCharPoolInvoke () => RequireGameMessageInvoke.SetBit(2, true);
 	public void RequireDrawColliderGizmos () => RequireGameMessageInvoke.SetBit(3, true);
-	public void RequireDrawBoundsGizmos () => RequireGameMessageInvoke.SetBit(4, true);
+	public void RequireEntityClicker () => RequireGameMessageInvoke.SetBit(4, true);
 
 
 	#endregion

@@ -34,6 +34,7 @@ public partial class Engine {
 	// Data
 	private readonly GUIStyle RigGameHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
 	private readonly RigTransceiver Transceiver = new(EngineUtil.RiggedExePath);
+	private readonly List<string> AllRigCharacterNames = new();
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
 	private int RigMapEditorWindowIndex = 0;
@@ -187,8 +188,8 @@ public partial class Engine {
 			if (rigEdt.DrawCollider) {
 				calling.RequireDrawColliderGizmos();
 			}
-			if (rigEdt.DrawBounds) {
-				calling.RequireDrawBoundsGizmos();
+			if (rigEdt.EntityClickerOn) {
+				calling.RequireEntityClicker();
 			}
 
 			if (SettingWindow.Instance.RigSettingChanged) {
@@ -244,7 +245,7 @@ public partial class Engine {
 			// Rig Running
 			if (called) {
 				if (runningGame) {
-					Transceiver.Respond(
+					bool responded = Transceiver.Respond(
 						sheetIndex,
 						CurrentWindowIndex == RigMapEditorWindowIndex,
 						toolPanelRect
@@ -259,9 +260,8 @@ public partial class Engine {
 					if (CurrentWindowIndex == RigMapEditorWindowIndex) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}
-					// Char Names
-					if (resp.CharacterNames != null) {
-						pixEdt.SetRigCharacterNames(resp.CharacterNames);
+					if (responded && resp.RespondCount == 1) {
+						ReloadCharacterNames();
 					}
 				} else {
 					Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect);
@@ -297,6 +297,17 @@ public partial class Engine {
 			}
 		}
 
+	}
+
+
+	private void ReloadCharacterNames () {
+		AllRigCharacterNames.Clear();
+		if (CurrentProject == null) return;
+		string path = CurrentProject.Universe.CharacterConfigRoot;
+		foreach (var filePath in Util.EnumerateFiles(path, true, "*.json")) {
+			string name = Util.GetNameWithoutExtension(filePath);
+			AllRigCharacterNames.Add(name);
+		}
 	}
 
 

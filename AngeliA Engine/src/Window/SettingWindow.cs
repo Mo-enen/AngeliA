@@ -59,6 +59,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_SPRITE = ("Setting.Hotkey.Pix.Sprite", "Artwork - Sprite Tool");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_PREV = ("Setting.Hotkey.Pix.PalPrev", "Artwork - Prev Palette Color");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_NEXT = ("Setting.Hotkey.Pix.PalNext", "Artwork - Next Palette Color");
+	private static readonly LanguageCode LABEL_HOTKEY_FD_NEXT = ("Setting.Hotkey.FrameDebug.Next", "Frame Debug - Next Frame");
 
 	private static readonly LanguageCode MENU_CATA_LETTER = ("Menu.Group.Letter", "Letter");
 	private static readonly LanguageCode MENU_CATA_NUMBER = ("Menu.Group.Number", "Number");
@@ -354,6 +355,10 @@ public class SettingWindow : WindowUI {
 		HotkeyField(rect, EngineSetting.Hotkey_Pix_PaletteNext, LABEL_HOTKEY_PIX_PAL_NEXT);
 		rect.SlideDown(itemPadding);
 
+		// FDebug
+		HotkeyField(rect, EngineSetting.Hotkey_FrameDebug_Next, LABEL_HOTKEY_FD_NEXT);
+		rect.SlideDown(itemPadding);
+		
 		return rect;
 	}
 

@@ -92,7 +92,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 	public override void UpdateUI () {
 
-		Input.IgnoreMouseToActionJumpForThisFrame = true;
+		Input.IgnoreMouseToActionJump();
 		Cursor.RequireCursor();
 		int msgPadding = Unify(24);
 		string msg = Message;

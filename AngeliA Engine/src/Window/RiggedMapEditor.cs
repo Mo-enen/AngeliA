@@ -31,7 +31,7 @@ public class RiggedMapEditor : WindowUI {
 
 	// Const
 	private static readonly SpriteCode BTN_COLLIDER = "Engine.MapEditor.Collider";
-	private static readonly SpriteCode BTN_BOUND = "Engine.MapEditor.Bound";
+	private static readonly SpriteCode BTN_ENTITY_CLICKER = "Engine.MapEditor.Entity";
 	private static readonly SpriteCode BTN_PROFILER = "Engine.MapEditor.Profiler";
 	private static readonly SpriteCode BTN_EFFECT = "Engine.MapEditor.Effect";
 	private static readonly SpriteCode BTN_NEXT = "Engine.MapEditor.NextFrame";
@@ -42,7 +42,7 @@ public class RiggedMapEditor : WindowUI {
 	public static RiggedMapEditor Instance { get; private set; }
 	public override string DefaultName => "Map Editor";
 	public bool DrawCollider { get; private set; } = false;
-	public bool DrawBounds { get; private set; } = false;
+	public bool EntityClickerOn { get; private set; } = false;
 	public IRect PanelRect { get; private set; }
 	public bool FrameDebugging { get; private set; } = false;
 	public bool RequireNextFrame { get; set; } = false;
@@ -76,7 +76,7 @@ public class RiggedMapEditor : WindowUI {
 	private void OnGUI_Hotkey () {
 
 		// Next Frame
-		if (Input.KeyboardDownGUI(KeyboardKey.Period)) {
+		if (EngineSetting.Hotkey_FrameDebug_Next.Value.DownGUI()) {
 			FrameDebugging = true;
 			RequireNextFrame = true;
 		}
@@ -113,19 +113,6 @@ public class RiggedMapEditor : WindowUI {
 			buttonSize, buttonSize
 		);
 
-		if (HavingGamePlay) {
-			// Collider Btn
-			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
-			rect.x -= rect.width + padding;
-
-			// Bound Btn
-			DrawBounds = GUI.IconToggle(rect, DrawBounds, BTN_BOUND);
-			rect.x -= rect.width + padding;
-		} else {
-			DrawCollider = false;
-			DrawBounds = false;
-		}
-
 		// Profiler Btn
 		ProfilerPanelOpening = GUI.IconToggle(rect, ProfilerPanelOpening, BTN_PROFILER);
 		rect.x -= rect.width + padding;
@@ -135,7 +122,16 @@ public class RiggedMapEditor : WindowUI {
 		rect.x -= rect.width + padding;
 
 		if (HavingGamePlay) {
-			// Next Frame Btn
+
+			// Collider
+			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
+			rect.x -= rect.width + padding;
+
+			// Entity Clicker
+			EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
+			rect.x -= rect.width + padding;
+
+			// Next Frame
 			if (GUI.Button(rect, BTN_NEXT, Skin.IconButton)) {
 				if (!FrameDebugging) {
 					FrameDebugging = true;
@@ -145,13 +141,16 @@ public class RiggedMapEditor : WindowUI {
 			}
 			rect.x -= rect.width + padding;
 
-			// Play/Pause Btn
+			// Play/Pause
 			if (GUI.Button(rect, FrameDebugging ? BTN_PLAY : BTN_PAUSE, Skin.IconButton)) {
 				FrameDebugging = !FrameDebugging;
 				RequireNextFrame = false;
 			}
 			rect.x -= rect.width + padding;
+
 		} else {
+			DrawCollider = false;
+			EntityClickerOn = false;
 			FrameDebugging = false;
 			RequireNextFrame = false;
 		}

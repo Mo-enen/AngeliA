@@ -118,7 +118,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		Input.IgnoreMouseToActionJumpForThisFrame = true;
+		Input.IgnoreMouseToActionJump();
 	}
 
 

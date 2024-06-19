@@ -163,7 +163,7 @@ public class RigTransceiver {
 	}
 
 
-	public unsafe void Respond (int sheetIndex, bool updateViewCache, IRect gizmosDodgeRect) {
+	public unsafe bool Respond (int sheetIndex, bool updateViewCache, IRect gizmosDodgeRect) {
 		// Rig >> Engine
 		bool ignoreMouseInput = Game.PauselessFrame == IgnoreMouseInputFrame || !WindowUI.WindowRect.MouseInside();
 		if (*BufferPointer == 0) {
@@ -172,7 +172,7 @@ public class RigTransceiver {
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
 			UpdateLastRespondedRender(sheetIndex, gizmosDodgeRect, coverWithBlackTint: false);
-			return;
+			return false;
 		}
 		_HANDLE_:;
 		// Handle Respon
@@ -184,6 +184,7 @@ public class RigTransceiver {
 			LastRigViewPos = new Int3(RespondMessage.ViewX, RespondMessage.ViewY, RespondMessage.ViewZ);
 			LastRigViewHeight = RespondMessage.ViewHeight;
 		}
+		return true;
 	}
 
 

@@ -150,9 +150,9 @@ public partial class PixelEditor : WindowUI {
 	public override string DefaultName => "Artwork";
 
 	// Data
+	private List<string> AllRigCharacterNames { get; init; }
 	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private readonly List<SpriteData> StagedSprites = new();
-	private string[] AllRigCharacterNames = null;
 	private Project CurrentProject;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
@@ -210,9 +210,10 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	public PixelEditor () {
+	public PixelEditor (List<string> allRigCharacterNames) {
 		Instance = this;
 		Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
+		AllRigCharacterNames = allRigCharacterNames;
 	}
 
 
@@ -910,12 +911,8 @@ public partial class PixelEditor : WindowUI {
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
 		Sheet.LoadFromDisk(project.Universe.SheetPath);
-		AllRigCharacterNames = null;
 		AsepriteFolderExists = Util.FolderExists(project.Universe.AsepriteRoot);
 	}
-
-
-	public void SetRigCharacterNames (string[] names) => AllRigCharacterNames = names;
 
 
 	public override void Save (bool forceSave = false) {

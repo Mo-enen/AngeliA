@@ -69,6 +69,9 @@ public class RigRespondMessage {
 	// Const
 	public const int REQUIRE_CHAR_MAX_COUNT = 64;
 
+	// Api
+	public int RespondCount { get; private set; } = 0;
+
 	// Pipe
 	public int ViewX;
 	public int ViewY;
@@ -111,7 +114,6 @@ public class RigRespondMessage {
 	public int MusicVolume;
 	public int SoundVolume;
 	public bool IsTyping;
-	public string[] CharacterNames;
 
 	// Data
 	private readonly Dictionary<uint, object> GizmosTexturePool = new();
@@ -129,6 +131,7 @@ public class RigRespondMessage {
 		GizmosTexturePool.Clear();
 		SkyTop.a = 255;
 		SkyBottom.a = 255;
+		RespondCount = 0;
 	}
 
 
@@ -144,7 +147,6 @@ public class RigRespondMessage {
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
 		RequireGizmosTextureCount = 0;
-		CharacterNames = null;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
@@ -361,6 +363,8 @@ public class RigRespondMessage {
 
 	public unsafe void ReadDataFromPipe (byte* pointer) {
 
+		RespondCount++;
+
 		try {
 
 			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
@@ -498,14 +502,6 @@ public class RigRespondMessage {
 			MusicVolume = Util.ReadInt(ref pointer, end);
 			SoundVolume = Util.ReadInt(ref pointer, end);
 			IsTyping = Util.ReadBool(ref pointer, end);
-			int nameCharCount = Util.ReadInt(ref pointer, end).Clamp(0, 1024 * 20);
-			if (nameCharCount > 0) {
-				if (pointer > end - (nameCharCount * 2 - 1)) {
-					throw new System.IndexOutOfRangeException();
-				}
-				CharacterNames = new string((char*)pointer, 0, nameCharCount).Split(',');
-				pointer += nameCharCount * 2;
-			}
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
@@ -647,23 +643,6 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, MusicVolume, end);
 			Util.Write(ref pointer, SoundVolume, end);
 			Util.Write(ref pointer, IsTyping, end);
-
-			if (CharacterNames == null || CharacterNames.Length == 0) {
-				Util.Write(ref pointer, 0, end);
-			} else {
-				string value = string.Join(',', CharacterNames);
-				int nameCharCount = value.Length;
-				if (pointer > end - (nameCharCount * 2 - 1)) {
-					throw new System.IndexOutOfRangeException();
-				}
-				Util.Write(ref pointer, nameCharCount, end);
-				var cPointer = (char*)pointer;
-				for (int i = 0; i < nameCharCount; i++) {
-					*cPointer = value[i];
-					cPointer++;
-				}
-				pointer += nameCharCount * 2;
-			}
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 

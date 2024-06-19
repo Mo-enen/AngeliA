@@ -276,23 +276,15 @@ public static class Renderer {
 
 	public static void LoadMainSheet () {
 
-		var universe = Universe.BuiltIn;
+		string path = Universe.BuiltIn.SheetPath;
 
 		// Load Sheet
 		MainSheetFileModifyDate = 0;
 		MainSheetFilePath = "";
-		bool loaded = MainSheet.LoadFromDisk(universe.SheetPath);
+		bool loaded = MainSheet.LoadFromDisk(path);
 		if (loaded) {
-			MainSheetFilePath = universe.SheetPath;
-			MainSheetFileModifyDate = Util.GetFileModifyDate(universe.SheetPath);
-		}
-		if (!loaded && universe != Universe.BuiltIn) {
-			string path = Universe.BuiltIn.SheetPath;
-			loaded = MainSheet.LoadFromDisk(path);
-			if (loaded) {
-				MainSheetFilePath = path;
-				MainSheetFileModifyDate = Util.GetFileModifyDate(path);
-			}
+			MainSheetFilePath = path;
+			MainSheetFileModifyDate = Util.GetFileModifyDate(path);
 		}
 
 		// Event

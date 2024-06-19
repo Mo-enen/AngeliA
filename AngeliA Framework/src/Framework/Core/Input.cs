@@ -83,7 +83,9 @@ public static class Input {
 	public static bool MouseLeftButtonDown => !IgnoringMouseInput && !MouseLeftState.Ignored && MouseLeftState.Down;
 	public static bool MouseRightButtonDown => !IgnoringMouseInput && !MouseRightState.Ignored && MouseRightState.Down;
 	public static bool MouseMidButtonDown => !IgnoringMouseInput && !MouseMidState.Ignored && MouseMidState.Down;
-	public static bool IgnoreMouseToActionJumpForThisFrame { get; set; } = false;
+	public static int IgnoreMouseToActionFrame { get; private set; } = int.MinValue;
+	public static int IgnoreMouseToJumpFrame { get; private set; } = int.MinValue;
+	public static int MidMouseToActionFrame { get; private set; } = int.MinValue;
 	public static bool LastActionFromMouse { get; private set; } = false;
 	public static int MouseWheelDelta => IgnoringMouseInput ? 0 : _MouseWheelDelta;
 	public static bool IgnoringMouseInput => Game.GlobalFrame <= IgnoreMouseInputFrame;
@@ -269,7 +271,6 @@ public static class Input {
 
 		// Final
 		GlobalFrame++;
-		IgnoreMouseToActionJumpForThisFrame = false;
 
 	}
 
@@ -448,14 +449,21 @@ public static class Input {
 			// Check Action/Jump for Mouse
 			if (
 				(key == Gamekey.Action || key == Gamekey.Jump) &&
-				mouseAvailable && !state.Holding && !IgnoreMouseToActionJumpForThisFrame
+				mouseAvailable && !state.Holding
 			) {
 				switch (key) {
 					case Gamekey.Jump:
-						state.Holding = MouseRightButtonHolding;
+						if (Game.PauselessFrame > IgnoreMouseToJumpFrame) {
+							state.Holding = MouseRightButtonHolding;
+						}
 						break;
 					case Gamekey.Action:
-						state.Holding = MouseLeftButtonHolding;
+						if (Game.PauselessFrame > IgnoreMouseToActionFrame) {
+							state.Holding = MouseLeftButtonHolding;
+						}
+						if (Game.PauselessFrame <= MidMouseToActionFrame) {
+							state.Holding = MouseMidButtonHolding;
+						}
 						break;
 				}
 			}
@@ -747,6 +755,14 @@ public static class Input {
 		MouseRightState.Ignored = false;
 		MouseMidState.Ignored = false;
 	}
+
+
+	public static void IgnoreMouseToActionJump (bool ignoreAction = true, bool ignoreJump = true, bool useMidButtonAsAction = false, int duration = 1) {
+		if (ignoreAction) IgnoreMouseToActionFrame = Game.PauselessFrame + duration;
+		if (ignoreJump) IgnoreMouseToJumpFrame = Game.PauselessFrame + duration;
+		if (useMidButtonAsAction) MidMouseToActionFrame = Game.PauselessFrame + duration;
+	}
+
 
 	// Key Map
 	public static KeyboardKey GetKeyboardMap (Gamekey key) => (KeyboardKey)KeyMap[key].x;

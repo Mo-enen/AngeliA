@@ -48,7 +48,7 @@ public static class SheetUtil {
 
 
 	// Sheet
-	public static void RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
+	public static bool RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
 		long sheetDate = Util.GetFileCreationDate(sheetPath);
 		bool requireCreateSheet = false;
 		bool hasArtwork = false;
@@ -74,6 +74,7 @@ public static class SheetUtil {
 			}
 			CreateNewSheet(paths)?.SaveToDisk(sheetPath);
 		}
+		return requireCreateSheet;
 	}
 
 

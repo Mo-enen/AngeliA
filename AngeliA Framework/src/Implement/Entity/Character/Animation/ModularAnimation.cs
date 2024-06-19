@@ -28,6 +28,10 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 		Height_Head, Height_Body, Height_ShoulderL, Height_ShoulderR, Height_UpperArmL, Height_UpperArmR, Height_LowerArmL, Height_LowerArmR, Height_HandL, Height_HandR, Height_UpperLegL, Height_UpperLegR, Height_LowerLegL, Height_LowerLegR, Height_FootL, Height_FootR,
 
+		X_Head, X_Body, X_ShoulderL, X_ShoulderR, X_UpperArmL, X_UpperArmR, X_LowerArmL, X_LowerArmR, X_HandL, X_HandR, X_UpperLegL, X_UpperLegR, X_LowerLegL, X_LowerLegR, X_FootL, X_FootR,
+
+		Y_Head, Y_Body, Y_ShoulderL, Y_ShoulderR, Y_UpperArmL, Y_UpperArmR, Y_LowerArmL, Y_LowerArmR, Y_HandL, Y_HandR, Y_UpperLegL, Y_UpperLegR, Y_LowerLegL, Y_LowerLegR, Y_FootL, Y_FootR,
+
 	}
 
 
@@ -129,13 +133,18 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 		int frame = Override switch {
 			CharacterOverrideType.Attack => Game.GlobalFrame - character.LastAttackFrame,
 			CharacterOverrideType.Pose => character.CurrentAnimationFrame,
-			CharacterOverrideType.Handheld => character.IsChargingAttack ? GetFrameForCharging(character) : character.CurrentAnimationFrame,
+			CharacterOverrideType.Handheld => character.IsChargingAttack ? GetFrameForCharging(character, Duration) : character.CurrentAnimationFrame,
 			_ => character.CurrentAnimationFrame,
 		};
 		if (UseRawData) {
 			AnimateFromRawData(character, frame);
 		} else {
 			AnimateFromKeyFrame(character, frame);
+		}
+		// Func
+		static int GetFrameForCharging (PoseCharacter character, int duration) {
+			float lerp01 = ((float)(Game.GlobalFrame - character.AttackChargeStartFrame.Value) / Util.Max(character.MinimalChargeAttackDuration * 2, 1)).Clamp01();
+			return (lerp01 * duration).RoundToInt();
 		}
 	}
 
@@ -383,13 +392,108 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			case Binding.Height_FootR:
 				character.FootR.Height = character.FootR.FlexableSizeY + data;
 				break;
+
+			// X
+			case Binding.X_Head:
+				character.Head.X += data;
+				break;
+			case Binding.X_Body:
+				character.Body.X += data;
+				break;
+			case Binding.X_ShoulderL:
+				character.ShoulderL.X += data;
+				break;
+			case Binding.X_ShoulderR:
+				character.ShoulderR.X += data;
+				break;
+			case Binding.X_UpperArmL:
+				character.UpperArmL.X += data;
+				break;
+			case Binding.X_UpperArmR:
+				character.UpperArmR.X += data;
+				break;
+			case Binding.X_LowerArmL:
+				character.LowerArmL.X += data;
+				break;
+			case Binding.X_LowerArmR:
+				character.LowerArmR.X += data;
+				break;
+			case Binding.X_HandL:
+				character.HandL.X += data;
+				break;
+			case Binding.X_HandR:
+				character.HandR.X += data;
+				break;
+			case Binding.X_UpperLegL:
+				character.UpperLegL.X += data;
+				break;
+			case Binding.X_UpperLegR:
+				character.UpperLegR.X += data;
+				break;
+			case Binding.X_LowerLegL:
+				character.LowerLegL.X += data;
+				break;
+			case Binding.X_LowerLegR:
+				character.LowerLegR.X += data;
+				break;
+			case Binding.X_FootL:
+				character.FootL.X += data;
+				break;
+			case Binding.X_FootR:
+				character.FootR.X += data;
+				break;
+
+			// Y
+			case Binding.Y_Head:
+				character.Head.Y += data;
+				break;
+			case Binding.Y_Body:
+				character.Body.Y += data;
+				break;
+			case Binding.Y_ShoulderL:
+				character.ShoulderL.Y += data;
+				break;
+			case Binding.Y_ShoulderR:
+				character.ShoulderR.Y += data;
+				break;
+			case Binding.Y_UpperArmL:
+				character.UpperArmL.Y += data;
+				break;
+			case Binding.Y_UpperArmR:
+				character.UpperArmR.Y += data;
+				break;
+			case Binding.Y_LowerArmL:
+				character.LowerArmL.Y += data;
+				break;
+			case Binding.Y_LowerArmR:
+				character.LowerArmR.Y += data;
+				break;
+			case Binding.Y_HandL:
+				character.HandL.Y += data;
+				break;
+			case Binding.Y_HandR:
+				character.HandR.Y += data;
+				break;
+			case Binding.Y_UpperLegL:
+				character.UpperLegL.Y += data;
+				break;
+			case Binding.Y_UpperLegR:
+				character.UpperLegR.Y += data;
+				break;
+			case Binding.Y_LowerLegL:
+				character.LowerLegL.Y += data;
+				break;
+			case Binding.Y_LowerLegR:
+				character.LowerLegR.Y += data;
+				break;
+			case Binding.Y_FootL:
+				character.FootL.Y += data;
+				break;
+			case Binding.Y_FootR:
+				character.FootR.Y += data;
+				break;
+
 		}
-	}
-
-
-	private int GetFrameForCharging (PoseCharacter character) {
-		float lerp01 = ((float)(Game.GlobalFrame - character.AttackChargeStartFrame.Value) / Util.Max(character.MinimalChargeAttackDuration * 2, 1)).Clamp01();
-		return (lerp01 * Duration).RoundToInt();
 	}
 
 
