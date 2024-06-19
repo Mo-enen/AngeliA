@@ -186,12 +186,6 @@ public partial class Engine {
 		}
 		RefreshProjectCache();
 		SortProjects();
-		if (
-			EngineSetting.OpenLastProjectOnStart.Value &&
-			Projects.Any(data => data.Path == LastOpenProject.Value)
-		) {
-			OpenProject(LastOpenProject.Value);
-		}
 
 		// Engine Window
 		if (Maximize.Value) {
@@ -219,6 +213,7 @@ public partial class Engine {
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = i;
 			if (win is Console) ConsoleWindowIndex = i;
+			if (win is CharacterAnimationEditorWindow) CharAniEditorWindowIndex = i;
 		}
 
 		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
@@ -227,6 +222,17 @@ public partial class Engine {
 		// Theme
 		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
 
+	}
+
+
+	[OnGameInitializeLater(4096)]
+	internal static void OpenProjectOnStart () {
+		if (
+			EngineSetting.OpenLastProjectOnStart.Value &&
+			Instance.Projects.Any(data => data.Path == LastOpenProject.Value)
+		) {
+			Instance.OpenProject(LastOpenProject.Value);
+		}
 	}
 
 
@@ -735,6 +741,7 @@ public partial class Engine {
 		if (GenericDialogUI.ShowingDialog) {
 			Game.IgnoreGizmos(1);
 		}
+		CharacterAnimationEditorWindow.Instance.SheetIndex = PixelEditor.Instance.SheetIndex;
 
 		// Update Tooltip
 		bool hoveringSameRect = false;
@@ -903,6 +910,13 @@ public partial class Engine {
 			ResetViewRect(remapAllRenderingCells: true);
 			Game.MusicVolume = 1000;
 			Game.SoundVolume = 1000;
+			// To Char Ani Editor
+			if (index == CharAniEditorWindowIndex) {
+				if (PixelEditor.Instance.IsGroupDataDirty) {
+					PixelEditor.Instance.IsGroupDataDirty = false;
+					PixelEditor.Sheet.CalculateExtraData();
+				}
+			}
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;

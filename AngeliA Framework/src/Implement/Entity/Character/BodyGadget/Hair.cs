@@ -232,7 +232,7 @@ public class Hair : BodyGadget {
 
 
 	// API
-	protected override bool FillFromPool (string name) {
+	public override bool FillFromPool (string name) {
 		SpriteFFL = $"{name}.HairFFL".AngeHash();
 		SpriteFFR = $"{name}.HairFFR".AngeHash();
 		SpriteFB = $"{name}.HairFB".AngeHash();

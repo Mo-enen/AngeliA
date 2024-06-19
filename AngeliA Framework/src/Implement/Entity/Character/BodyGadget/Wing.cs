@@ -18,7 +18,7 @@ public class Wing : BodyGadget {
 
 
 	// API
-	protected override bool FillFromPool (string name) {
+	public override bool FillFromPool (string name) {
 		SpriteGroupID = $"{name}.Wing".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		if (

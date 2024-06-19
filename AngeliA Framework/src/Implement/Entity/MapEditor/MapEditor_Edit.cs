@@ -150,7 +150,7 @@ public partial class MapEditor {
 		}
 		RedirectForRule(unitRect, z);
 		SelectionUnitRect = null;
-		IsDirty = true;
+		SetDirty();
 	}
 
 
@@ -257,7 +257,7 @@ public partial class MapEditor {
 		}
 		if (!idUniqueEntity) SpawnBlinkParticle(unitRect.ToGlobal(), id);
 		RedirectForRule(unitRect, z);
-		IsDirty = true;
+		SetDirty();
 	}
 
 
@@ -326,7 +326,7 @@ public partial class MapEditor {
 		if (removeOriginal) {
 			SelectionUnitRect = null;
 			RedirectForRule(unitRect, z);
-			IsDirty = true;
+			SetDirty();
 		}
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {
@@ -405,7 +405,7 @@ public partial class MapEditor {
 			}
 		}
 		RedirectForRule(unitRect, z);
-		IsDirty = true;
+		SetDirty();
 		SelectionUnitRect = null;
 		PastingBuffer.Clear();
 	}
@@ -435,7 +435,7 @@ public partial class MapEditor {
 		}
 		if (removeOriginal) {
 			RedirectForRule(unitRect, z);
-			IsDirty = true;
+			SetDirty();
 		}
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {

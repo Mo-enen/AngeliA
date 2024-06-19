@@ -36,7 +36,7 @@ public class Face : BodyGadget {
 
 
 	// API
-	protected override bool FillFromPool (string keyword) {
+	public override bool FillFromPool (string keyword) {
 
 		Sprite_Eye = GetSpriteID(keyword, "Eye");
 		Sprite_Sclera = GetSpriteID(keyword, "Sclera");

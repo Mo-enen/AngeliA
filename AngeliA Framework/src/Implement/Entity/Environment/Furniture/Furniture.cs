@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-
-namespace AngeliA; 
 [EntityAttribute.MapEditorGroup("Furniture")]
 [EntityAttribute.Capacity(32)]
 public abstract class Furniture : EnvironmentEntity, IActionTarget {
@@ -65,17 +64,14 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 			// Shrink Rect
 			var sprite = GetSpriteFromPose();
 			if (sprite != null) {
-				X -= (sprite.GlobalWidth - Width) / 2;
-				Width = sprite.GlobalWidth;
-				Height = sprite.GlobalHeight;
-				ColliderBorder.left = sprite.GlobalBorder.left;
-				ColliderBorder.right = sprite.GlobalBorder.right;
-				ColliderBorder.down = sprite.GlobalBorder.down;
-				ColliderBorder.up = sprite.GlobalBorder.up;
-				X += ColliderBorder.left;
-				Y += ColliderBorder.down;
-				Width -= ColliderBorder.horizontal;
-				Height -= ColliderBorder.vertical;
+				ColliderBorder = sprite.GlobalBorder;
+				if (ColliderBorder != Int4.zero) {
+					var rect = Rect.Shrink(ColliderBorder);
+					X = rect.x;
+					Y = rect.y;
+					Width = rect.width;
+					Height = rect.height;
+				}
 			}
 		}
 	}

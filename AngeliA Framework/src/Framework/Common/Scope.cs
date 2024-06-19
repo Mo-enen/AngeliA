@@ -20,12 +20,17 @@ public readonly struct LayerScope : System.IDisposable {
 
 public readonly struct UILayerScope : System.IDisposable {
 	private readonly int OldLayer;
-	public UILayerScope () {
+	private readonly bool IgnoreSorting;
+	public UILayerScope () : this(false) { }
+	public UILayerScope (bool ignoreSorting) {
 		OldLayer = Renderer.CurrentLayerIndex;
+		IgnoreSorting = ignoreSorting;
 		Renderer.SetLayer(RenderLayer.UI);
 	}
 	public readonly void Dispose () {
-		Renderer.ReverseUnsortedCells(RenderLayer.UI);
+		if (!IgnoreSorting) {
+			Renderer.ReverseUnsortedCells(RenderLayer.UI);
+		}
 		Renderer.SetLayer(OldLayer);
 	}
 }
@@ -107,7 +112,7 @@ public readonly struct GUIScrollScope : System.IDisposable {
 		PositionY = positionY.Clamp(min, max);
 
 		// Shift Input
-		Input.SetMousePositionShift(0, -positionY);
+		Input.SetMousePositionShift(0, -PositionY);
 
 	}
 	public readonly void Dispose () {

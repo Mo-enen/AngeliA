@@ -328,7 +328,7 @@ public partial class LanguageEditor : WindowUI {
 
 
 	public override void Save (bool forceSave = false) {
-		if (forceSave || IsDirty) IsDirty = false;
+		if (forceSave || IsDirty) CleanDirty();
 		if (Lines.Count == 0 || string.IsNullOrEmpty(LanguageRoot)) return;
 		var list = new List<KeyValuePair<string, string>>();
 		for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
@@ -353,7 +353,7 @@ public partial class LanguageEditor : WindowUI {
 
 	private void Load (string languageRoot) {
 
-		IsDirty = false;
+		CleanDirty();
 		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;
 		Lines.Clear();
 

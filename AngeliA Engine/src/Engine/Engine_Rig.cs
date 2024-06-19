@@ -38,6 +38,7 @@ public partial class Engine {
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
 	private int RigMapEditorWindowIndex = 0;
+	private int CharAniEditorWindowIndex = 0;
 	private long RequireBackgroundBuildDate = 0;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;

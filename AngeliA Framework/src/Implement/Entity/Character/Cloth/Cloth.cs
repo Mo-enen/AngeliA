@@ -61,7 +61,7 @@ public abstract class Cloth {
 
 	public abstract void Draw (PoseCharacter character);
 
-	protected abstract bool FillFromSheet (string name);
+	public abstract bool FillFromSheet (string name);
 
 	// Pool
 	public static bool HasCloth (int clothID) => Pool.ContainsKey(clothID);

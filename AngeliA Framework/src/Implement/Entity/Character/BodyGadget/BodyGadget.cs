@@ -58,7 +58,7 @@ public abstract class BodyGadget {
 	public abstract void DrawGadget (PoseCharacter character);
 
 
-	protected abstract bool FillFromPool (string basicName);
+	public abstract bool FillFromPool (string basicName);
 
 
 	// API

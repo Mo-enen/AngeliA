@@ -256,7 +256,7 @@ public sealed partial class MapEditor : WindowUI {
 		PastingBuffer.Clear();
 		CopyBuffer.Clear();
 		UndoRedo.Reset();
-		IsDirty = false;
+		CleanDirty();
 		MouseDownOutsideBoundary = false;
 		SearchResult.Clear();
 		Stream?.Clear();
@@ -794,7 +794,7 @@ public sealed partial class MapEditor : WindowUI {
 				PlayerDropPos.y - Const.CEL * 2,
 				Const.CEL, Const.CEL * 2
 			),
-			player, Game.GlobalFrame, 0, out _, out _
+			player, Game.GlobalFrame, out _, out _
 		);
 		int endIndex = Renderer.GetUsedCellCount();
 
@@ -1112,7 +1112,7 @@ public sealed partial class MapEditor : WindowUI {
 
 	public override void Save (bool forceSave = false) {
 		if (PlayingGame) return;
-		IsDirty = false;
+		CleanDirty();
 		Stream?.SaveAllDirty();
 	}
 

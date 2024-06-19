@@ -103,6 +103,80 @@ public class Sheet {
 		Util.ByteToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
 	}
 
+	public void CalculateExtraData () {
+		// Sprites
+		SpritePool.Clear();
+		for (int i = 0; i < Sprites.Count; i++) {
+			var sprite = Sprites[i];
+			sprite.Atlas = Atlas[sprite.AtlasIndex];
+			sprite.SortingZ = sprite.Atlas.AtlasZ * 1024 + sprite.LocalZ;
+			sprite.Group = null;
+			if (!SpritePool.TryAdd(sprite.ID, Sprites[i])) {
+				Sprites.RemoveAt(i);
+				i--;
+			}
+		}
+		// Make Groups
+		GroupPool.Clear();
+		if (!IgnoreGroups) {
+			// Create Groups
+			for (int i = 0; i < Sprites.Count; i++) {
+				var sprite = Sprites[i];
+
+				if (!Util.GetGroupInfoFromSpriteRealName(
+					sprite.RealName, out string groupName, out int groupIndex
+				)) continue;
+
+				// Get or Create Group
+				groupIndex = groupIndex.Clamp(0, SpriteGroup.MAX_COUNT - 1);
+				int groupId = groupName.AngeHash();
+				if (!GroupPool.TryGetValue(groupId, out var group)) {
+					group = new SpriteGroup() {
+						ID = groupId,
+						Name = groupName,
+						SpriteIDs = new(),
+						LoopStart = 0,
+						Animated = false,
+						WithRule = false,
+						Random = false,
+					};
+					Groups.Add(group);
+					GroupPool.Add(groupId, group);
+				}
+				sprite.Group = group;
+
+				// Add Sprite ID into Group
+				if (groupIndex < group.Count) {
+					group[groupIndex] = sprite.ID;
+				} else if (groupIndex == group.Count) {
+					group.Add(sprite.ID);
+				} else {
+					for (int safe = 0; groupIndex > group.Count && safe < SpriteGroup.MAX_COUNT; safe++) {
+						group.Add(0);
+					}
+					group.Add(sprite.ID);
+				}
+
+				// Extra Info
+				if (sprite.Duration > 0) group.Animated = true;
+				if (sprite.Rule != 0) group.WithRule = true;
+				if (sprite.Tag.HasAll(Tag.LoopStart)) group.LoopStart = groupIndex;
+				if (sprite.Tag.HasAll(Tag.Random)) group.Random = true;
+
+			}
+			// Remove Null
+			foreach (var group in Groups) {
+				group.SpriteIDs.RemoveAll(id => id == 0);
+			}
+		}
+		// Texture Pool
+		foreach (var texture in TexturePool) Game.UnloadTexture(texture);
+		TexturePool.Clear();
+		if (!IgnoreTextureAndPixels) {
+			foreach (var sprite in Sprites) SyncSpritePixelsIntoTexturePool(sprite);
+		}
+	}
+
 	public void Clear () {
 		Sprites.Clear();
 		Groups.Clear();
@@ -438,80 +512,6 @@ public class Sheet {
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
-	}
-
-	private void CalculateExtraData () {
-		// Sprites
-		SpritePool.Clear();
-		for (int i = 0; i < Sprites.Count; i++) {
-			var sprite = Sprites[i];
-			sprite.Atlas = Atlas[sprite.AtlasIndex];
-			sprite.SortingZ = sprite.Atlas.AtlasZ * 1024 + sprite.LocalZ;
-			sprite.Group = null;
-			if (!SpritePool.TryAdd(sprite.ID, Sprites[i])) {
-				Sprites.RemoveAt(i);
-				i--;
-			}
-		}
-		// Make Groups
-		GroupPool.Clear();
-		if (!IgnoreGroups) {
-			// Create Groups
-			for (int i = 0; i < Sprites.Count; i++) {
-				var sprite = Sprites[i];
-
-				if (!Util.GetGroupInfoFromSpriteRealName(
-					sprite.RealName, out string groupName, out int groupIndex
-				)) continue;
-
-				// Get or Create Group
-				groupIndex = groupIndex.Clamp(0, SpriteGroup.MAX_COUNT - 1);
-				int groupId = groupName.AngeHash();
-				if (!GroupPool.TryGetValue(groupId, out var group)) {
-					group = new SpriteGroup() {
-						ID = groupId,
-						Name = groupName,
-						SpriteIDs = new(),
-						LoopStart = 0,
-						Animated = false,
-						WithRule = false,
-						Random = false,
-					};
-					Groups.Add(group);
-					GroupPool.Add(groupId, group);
-				}
-				sprite.Group = group;
-
-				// Add Sprite ID into Group
-				if (groupIndex < group.Count) {
-					group[groupIndex] = sprite.ID;
-				} else if (groupIndex == group.Count) {
-					group.Add(sprite.ID);
-				} else {
-					for (int safe = 0; groupIndex > group.Count && safe < SpriteGroup.MAX_COUNT; safe++) {
-						group.Add(0);
-					}
-					group.Add(sprite.ID);
-				}
-
-				// Extra Info
-				if (sprite.Duration > 0) group.Animated = true;
-				if (sprite.Rule != 0) group.WithRule = true;
-				if (sprite.Tag.HasAll(Tag.LoopStart)) group.LoopStart = groupIndex;
-				if (sprite.Tag.HasAll(Tag.Random)) group.Random = true;
-
-			}
-			// Remove Null
-			foreach (var group in Groups) {
-				group.SpriteIDs.RemoveAll(id => id == 0);
-			}
-		}
-		// Texture Pool
-		foreach (var texture in TexturePool) Game.UnloadTexture(texture);
-		TexturePool.Clear();
-		if (!IgnoreTextureAndPixels) {
-			foreach (var sprite in Sprites) SyncSpritePixelsIntoTexturePool(sprite);
-		}
 	}
 
 	private void RemoveSpriteFromGroup (int spriteIndex) {

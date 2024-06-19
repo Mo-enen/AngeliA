@@ -16,7 +16,7 @@ public class HipCloth : Cloth {
 	private int SpriteIdUpperLeg;
 	private int SpriteIdLowerLeg;
 
-	protected override bool FillFromSheet (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteIdHip = $"{name}.HipSuit".AngeHash();
 		SpriteIdSkirt = $"{name}.SkirtSuit".AngeHash();
 		SpriteIdUpperLeg = $"{name}.UpperLegSuit".AngeHash();

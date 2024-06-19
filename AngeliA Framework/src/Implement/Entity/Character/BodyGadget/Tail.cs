@@ -21,7 +21,7 @@ public class Tail : BodyGadget {
 	protected virtual int OffsetY => 0;
 
 
-	protected override bool FillFromPool (string name) {
+	public override bool FillFromPool (string name) {
 		SpriteGroupID = $"{name}.Tail".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		return SpriteGroupID != 0;

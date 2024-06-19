@@ -242,7 +242,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		player.AnimationType = flying ? CharacterAnimationType.Fly : CharacterAnimationType.Idle;
 		player.LockFacingRight(PlayerFacingRight);
 		FrameworkUtil.DrawPoseCharacterAsUI(
-			leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, 0, out var rectFrom, out var rectTo
+			leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, out var rectFrom, out var rectTo
 		);
 		if (Input.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
 			PlayerFacingRight = !PlayerFacingRight;

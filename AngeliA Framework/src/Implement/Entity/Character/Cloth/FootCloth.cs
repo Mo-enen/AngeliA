@@ -13,7 +13,7 @@ public class FootCloth : Cloth {
 	protected sealed override ClothType ClothType => ClothType.Foot;
 	private int SpriteID;
 
-	protected override bool FillFromSheet (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.FootSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		return SpriteID != 0;

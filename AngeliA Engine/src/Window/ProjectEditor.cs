@@ -452,10 +452,9 @@ public class ProjectEditor : WindowUI {
 
 
 	public override void Save (bool forceSave = false) {
-		base.Save(forceSave);
 		if (CurrentProject == null) return;
 		if (!IsDirty && !forceSave) return;
-		IsDirty = false;
+		CleanDirty();
 		// Save Universe Info to Disk
 		string infoPath = CurrentProject.Universe.InfoPath;
 		var info = CurrentProject.Universe.Info;

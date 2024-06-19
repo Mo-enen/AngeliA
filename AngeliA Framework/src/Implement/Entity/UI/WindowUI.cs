@@ -13,7 +13,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	public virtual IRect BackgroundRect => Rect;
 	public virtual string DefaultName => "";
 	public static IRect WindowRect { get; private set; }
-	public bool IsDirty { get; protected set; } = false;
+	public bool IsDirty { get; private set; } = false;
 	public IRect RequiringTooltipRect { get; private set; } = default;
 	public string RequiringTooltipContent { get; set; } = null;
 	public string NotificationContent { get; set; } = null;
@@ -85,9 +85,9 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 		WindowRect = newRect;
 	}
 
-	public void SetDirty () => IsDirty = true;
+	public virtual void SetDirty () => IsDirty = true;
 
-	public void CleanDirty () => IsDirty = false;
+	public virtual void CleanDirty () => IsDirty = false;
 
 	public virtual void Save (bool forceSave = false) { }
 

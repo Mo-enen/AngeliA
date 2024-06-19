@@ -17,7 +17,7 @@ public class Ear : BodyGadget {
 
 
 	// MSG
-	protected override bool FillFromPool (string basicName) {
+	public override bool FillFromPool (string basicName) {
 		SpriteIdL = $"{basicName}.EarL".AngeHash();
 		SpriteIdR = $"{basicName}.EarR".AngeHash();
 		SpriteIdLBack = $"{basicName}.EarLB".AngeHash();

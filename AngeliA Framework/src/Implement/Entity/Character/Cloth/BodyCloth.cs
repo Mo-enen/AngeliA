@@ -24,7 +24,7 @@ public class BodyCloth : Cloth {
 	protected virtual int TwistShiftTopAmount => 300;
 	protected virtual int LocalZ => 7;
 
-	protected override bool FillFromSheet (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteIdFrontL = SpriteIdFrontR = $"{name}.BodySuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteIdFrontL) && !Renderer.HasSpriteGroup(SpriteIdFrontL)) SpriteIdFrontL = 0;
 		if (SpriteIdFrontL == 0) {

@@ -16,7 +16,7 @@ public class Horn : BodyGadget {
 
 
 	// MSG
-	protected override bool FillFromPool (string name) {
+	public override bool FillFromPool (string name) {
 		SpriteIdL = $"{name}.HornL".AngeHash();
 		SpriteIdR = $"{name}.HornR".AngeHash();
 		SpriteIdLBack = $"{name}.HornLB".AngeHash();

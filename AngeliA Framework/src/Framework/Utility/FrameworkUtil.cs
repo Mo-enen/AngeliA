@@ -97,7 +97,7 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame, int z, out IRect globalRect, out IRect uiRect) {
+	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame, out IRect globalRect, out IRect uiRect) {
 
 		globalRect = default;
 		uiRect = default;
@@ -105,16 +105,14 @@ public static class FrameworkUtil {
 		// Draw Player
 		int cellIndexStart;
 		int cellIndexEnd;
-		int oldLayer = Renderer.CurrentLayerIndex;
-		Renderer.SetLayer(RenderLayer.UI);
-		cellIndexStart = Renderer.GetUsedCellCount();
-		int oldAniFrame = character.CurrentAnimationFrame;
-		character.CurrentAnimationFrame = animationFrame;
-		character.LateUpdate();
-		character.CurrentAnimationFrame = oldAniFrame;
-		cellIndexEnd = Renderer.GetUsedCellCount();
-		Renderer.SetLayer(oldLayer);
-
+		using (new UILayerScope(ignoreSorting: true)) {
+			cellIndexStart = Renderer.GetUsedCellCount();
+			int oldAniFrame = character.CurrentAnimationFrame;
+			character.CurrentAnimationFrame = animationFrame;
+			character.LateUpdate();
+			character.CurrentAnimationFrame = oldAniFrame;
+			cellIndexEnd = Renderer.GetUsedCellCount();
+		}
 		if (cellIndexStart == cellIndexEnd) return false;
 
 		if (!Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) return false;
@@ -157,7 +155,7 @@ public static class FrameworkUtil {
 		if (minZ != int.MaxValue) {
 			for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
 				var cell = cells[i];
-				cell.Z = z + cell.Z - minZ;
+				cell.Z -= minZ;
 			}
 		}
 

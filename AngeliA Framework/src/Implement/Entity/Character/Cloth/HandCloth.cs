@@ -9,7 +9,7 @@ public class HandCloth : Cloth {
 	protected sealed override ClothType ClothType => ClothType.Hand;
 	private int SpriteID;
 
-	protected override bool FillFromSheet (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.HandSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		return SpriteID != 0;

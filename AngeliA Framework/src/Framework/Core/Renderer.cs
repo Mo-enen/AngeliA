@@ -73,17 +73,26 @@ public static class Renderer {
 	public static int LayerCount => Layers.Length;
 	public static int SpriteCount => MainSheet.Sprites.Count;
 	public static int GroupCount => MainSheet.Groups.Count;
-	public static int CurrentSheetIndex { get; set; } = -1;
+	public static int CurrentSheetIndex {
+		get => _CurrentSheetIndex;
+		set {
+			if (value != _CurrentSheetIndex) {
+				_CurrentSheetIndex = value;
+				CurrentSheet = CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? MainSheet : AltSheets[CurrentSheetIndex];
+			}
+		}
+	}
 	public static int CurrentLayerIndex { get; private set; } = 0;
 	public static int CurrentFontIndex { get; private set; } = 0;
 	public static int AltSheetCount => AltSheets.Count;
-	public static Sheet CurrentSheet => CurrentSheetIndex < 0 || CurrentSheetIndex >= AltSheets.Count ? MainSheet : AltSheets[CurrentSheetIndex];
+	public static Sheet CurrentSheet { get; private set; }
 
 	// Data
 	private static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static readonly Dictionary<Int2, CharSprite> CharSpritePool = new();
+	private static int _CurrentSheetIndex = -1;
 	private static bool IsDrawing = false;
 	private static long MainSheetFileModifyDate = 0;
 	private static string MainSheetFilePath = "";
@@ -127,6 +136,7 @@ public static class Renderer {
 
 		// Load Sheet
 		LoadMainSheet();
+		CurrentSheet = MainSheet;
 
 	}
 
@@ -635,7 +645,9 @@ public static class Renderer {
 				sprite = null;
 				return false;
 			}
-		} else return TryGetSprite(groupID, out sprite, ignoreAnimatedWhenFailback);
+		} else {
+			return TryGetSprite(groupID, out sprite, ignoreAnimatedWhenFailback);
+		}
 	}
 
 

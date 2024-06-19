@@ -117,8 +117,6 @@ public abstract class PoseCharacter : Character {
 	[OnGameInitialize(-128)] // > Renderer.Initialize()
 	public static void InitializePose () {
 
-		if (Game.IsToolApplication) return;
-
 #if DEBUG
 		if (FAILBACK_POSE_ANIMATION_IDS.Length != ANI_TYPE_COUNT) {
 			Debug.LogWarning($"FAILBACK_POSE_ANIMATION_IDS length have to be {ANI_TYPE_COUNT}");
@@ -134,7 +132,6 @@ public abstract class PoseCharacter : Character {
 		// Config Pool
 		ConfigPool.Clear();
 		string metaRoot = Universe.BuiltIn.CharacterConfigRoot;
-		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
 		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
 
 			int typeID = type.AngeHash();
@@ -146,50 +143,7 @@ public abstract class PoseCharacter : Character {
 
 			// Create Default Config
 			if (config == null) {
-				config = new CharacterConfig();
-
-				// Body Parts
-				for (int i = 0; i < bodyPartLen; i++) {
-					int id = DEFAULT_BODY_PART_ID[i];
-					int newID = $"{name}.{BODY_PART_NAME[i]}".AngeHash();
-					if (i == 0) {
-						// For Head
-						if (Renderer.HasSpriteGroup(newID) || Renderer.HasSprite(newID)) {
-							id = newID;
-						}
-					} else {
-						// For Other
-						if (Renderer.HasSprite(newID)) id = newID;
-					}
-					switch (i) {
-						case 0: config.Head = id; break;
-						case 1: config.Body = id; break;
-						case 2: config.Hip = id; break;
-						case 3 or 4: config.Shoulder = id; break;
-						case 5 or 6: config.UpperArm = id; break;
-						case 7 or 8: config.LowerArm = id; break;
-						case 9 or 10: config.Hand = id; break;
-						case 11 or 12: config.UpperLeg = id; break;
-						case 13 or 14: config.LowerLeg = id; break;
-						case 15 or 16: config.Foot = id; break;
-					}
-				}
-
-				// Gadget
-				config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultId0) ? defaultId0 : DefaultFace.TYPE_ID;
-				config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out int defaultId1) ? defaultId1 : DefaultHair.TYPE_ID;
-				config.Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out int defaultId2) ? defaultId2 : 0;
-				config.Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out int defaultId3) ? defaultId3 : 0;
-				config.Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out int defaultId4) ? defaultId4 : 0;
-				config.Horn = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out int defaultId5) ? defaultId5 : 0;
-
-				// Suit
-				config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitId0) ? suitId0 : 0;
-				config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out int suitId1) ? suitId1 : DefaultBodySuit.TYPE_ID;
-				config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out int suitId2) ? suitId2 : DefaultHipSuit.TYPE_ID;
-				config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out int suitId3) ? suitId3 : 0;
-				config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out int suitId4) ? suitId4 : DefaultFootSuit.TYPE_ID;
-
+				config = CreateCharacterConfigFromSheet(name);
 				JsonUtil.SaveJsonToPath(config, configPath, prettyPrint: true);
 
 			}
@@ -617,7 +571,6 @@ public abstract class PoseCharacter : Character {
 					bodyPart.Tint, bodyPart.Z
 				);
 			}
-
 		}
 
 		// Z Offset
@@ -640,52 +593,110 @@ public abstract class PoseCharacter : Character {
 
 
 	// Config
+	public static CharacterConfig CreateCharacterConfigFromSheet (string characterAngeName) {
+
+		int typeID = characterAngeName.AngeHash();
+		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
+		var config = new CharacterConfig();
+
+		// Body Parts
+		for (int i = 0; i < bodyPartLen; i++) {
+			int id = DEFAULT_BODY_PART_ID[i];
+			int newID = $"{characterAngeName}.{BODY_PART_NAME[i]}".AngeHash();
+			if (i == 0) {
+				// For Head
+				if (Renderer.HasSpriteGroup(newID) || Renderer.HasSprite(newID)) {
+					id = newID;
+				}
+			} else {
+				// For Other
+				if (Renderer.HasSprite(newID)) id = newID;
+			}
+
+			switch (i) {
+				case 0: config.Head = id; break;
+				case 1: config.Body = id; break;
+				case 2: config.Hip = id; break;
+				case 3 or 4: config.Shoulder = id; break;
+				case 5 or 6: config.UpperArm = id; break;
+				case 7 or 8: config.LowerArm = id; break;
+				case 9 or 10: config.Hand = id; break;
+				case 11 or 12: config.UpperLeg = id; break;
+				case 13 or 14: config.LowerLeg = id; break;
+				case 15 or 16: config.Foot = id; break;
+			}
+		}
+
+		// Gadget
+		config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultId0) ? defaultId0 : DefaultFace.TYPE_ID;
+		config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out int defaultId1) ? defaultId1 : DefaultHair.TYPE_ID;
+		config.Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out int defaultId2) ? defaultId2 : 0;
+		config.Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out int defaultId3) ? defaultId3 : 0;
+		config.Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out int defaultId4) ? defaultId4 : 0;
+		config.Horn = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out int defaultId5) ? defaultId5 : 0;
+
+		// Suit
+		config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitId0) ? suitId0 : 0;
+		config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out int suitId1) ? suitId1 : DefaultBodySuit.TYPE_ID;
+		config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out int suitId2) ? suitId2 : DefaultHipSuit.TYPE_ID;
+		config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out int suitId3) ? suitId3 : 0;
+		config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out int suitId4) ? suitId4 : DefaultFootSuit.TYPE_ID;
+
+		return config;
+
+	}
+
+
+	public void LoadCharacterFromConfig (CharacterConfig config) {
+
+		CharacterHeight = config.CharacterHeight;
+
+		// Body Part
+		Head.SetData(config.Head);
+		Body.SetData(config.Body);
+		Hip.SetData(config.Hip);
+		ShoulderL.SetData(config.Shoulder);
+		ShoulderR.SetData(config.Shoulder);
+		UpperArmL.SetData(config.UpperArm);
+		UpperArmR.SetData(config.UpperArm);
+		LowerArmL.SetData(config.LowerArm);
+		LowerArmR.SetData(config.LowerArm);
+		HandL.SetData(config.Hand);
+		HandR.SetData(config.Hand);
+		UpperLegL.SetData(config.UpperLeg);
+		UpperLegR.SetData(config.UpperLeg);
+		LowerLegL.SetData(config.LowerLeg);
+		LowerLegR.SetData(config.LowerLeg);
+		FootL.SetData(config.Foot);
+		FootR.SetData(config.Foot);
+
+		// Gadget
+		FaceID.BaseValue = config.Face;
+		HairID.BaseValue = config.Hair;
+		EarID.BaseValue = config.Ear;
+		TailID.BaseValue = config.Tail;
+		WingID.BaseValue = config.Wing;
+		HornID.BaseValue = config.Horn;
+
+		// Suit
+		SuitHead.BaseValue = config.SuitHead;
+		SuitBody.BaseValue = config.SuitBody;
+		SuitHip.BaseValue = config.SuitHip;
+		SuitHand.BaseValue = config.SuitHand;
+		SuitFoot.BaseValue = config.SuitFoot;
+
+	}
+
+
 	public void LoadCharacterFromConfigPool () {
 		if (ConfigPool.TryGetValue(TypeID, out var config)) {
-
-			CharacterHeight = config.CharacterHeight;
-
-			// Body Part
-			Head.SetData(config.Head);
-			Body.SetData(config.Body);
-			Hip.SetData(config.Hip);
-			ShoulderL.SetData(config.Shoulder);
-			ShoulderR.SetData(config.Shoulder);
-			UpperArmL.SetData(config.UpperArm);
-			UpperArmR.SetData(config.UpperArm);
-			LowerArmL.SetData(config.LowerArm);
-			LowerArmR.SetData(config.LowerArm);
-			HandL.SetData(config.Hand);
-			HandR.SetData(config.Hand);
-			UpperLegL.SetData(config.UpperLeg);
-			UpperLegR.SetData(config.UpperLeg);
-			LowerLegL.SetData(config.LowerLeg);
-			LowerLegR.SetData(config.LowerLeg);
-			FootL.SetData(config.Foot);
-			FootR.SetData(config.Foot);
-
-			// Gadget
-			FaceID.BaseValue = config.Face;
-			HairID.BaseValue = config.Hair;
-			EarID.BaseValue = config.Ear;
-			TailID.BaseValue = config.Tail;
-			WingID.BaseValue = config.Wing;
-			HornID.BaseValue = config.Horn;
-
-			// Suit
-			SuitHead.BaseValue = config.SuitHead;
-			SuitBody.BaseValue = config.SuitBody;
-			SuitHip.BaseValue = config.SuitHip;
-			SuitHand.BaseValue = config.SuitHand;
-			SuitFoot.BaseValue = config.SuitFoot;
-
+			LoadCharacterFromConfig(config);
 		} else {
 			// Load Default Bodypart
 			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
 				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
 			}
 		}
-
 	}
 
 

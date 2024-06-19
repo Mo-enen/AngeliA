@@ -17,7 +17,7 @@ public class HeadCloth : Cloth {
 	protected virtual bool PixelShiftForLeft => true;
 	private int SpriteID;
 
-	protected override bool FillFromSheet (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.HeadSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		return SpriteID != 0;

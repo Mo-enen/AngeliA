@@ -144,14 +144,15 @@ public partial class PixelEditor : WindowUI {
 	};
 
 	// Api
+	public static readonly Sheet Sheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: false);
 	public static PixelEditor Instance { get; private set; }
 	public int SheetIndex { get; private set; } = -1;
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Artwork";
+	public bool IsGroupDataDirty { get; set; } = false;
 
 	// Data
 	private List<string> AllRigCharacterNames { get; init; }
-	private static readonly Sheet Sheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: false);
 	private readonly List<SpriteData> StagedSprites = new();
 	private Project CurrentProject;
 	private bool HoldingCtrl = false;
@@ -905,7 +906,7 @@ public partial class PixelEditor : WindowUI {
 			Sheet.Clear();
 			return;
 		}
-		IsDirty = false;
+		CleanDirty();
 		CurrentAtlasIndex = -1;
 		DraggingState = DragState.None;
 		PaintingColor = Color32.CLEAR;
@@ -917,14 +918,26 @@ public partial class PixelEditor : WindowUI {
 
 	public override void Save (bool forceSave = false) {
 		if (AsepriteFolderExists || CurrentProject == null) {
-			IsDirty = false;
+			CleanDirty();
 			return;
 		}
 		if (!forceSave && !IsDirty) return;
-		IsDirty = false;
+		CleanDirty();
 		if (string.IsNullOrEmpty(CurrentProject.Universe.SheetPath)) return;
 		TryApplyPixelBuffer(true);
 		Sheet.SaveToDisk(CurrentProject.Universe.SheetPath);
+	}
+
+
+	public override void SetDirty () {
+		base.SetDirty();
+		IsGroupDataDirty = true;
+	}
+
+
+	public override void CleanDirty () {
+		base.CleanDirty();
+		IsGroupDataDirty = false;
 	}
 
 
