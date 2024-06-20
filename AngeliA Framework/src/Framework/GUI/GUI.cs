@@ -29,6 +29,8 @@ public static class GUI {
 	public static GUISkin Skin { get; set; } = GUISkin.Default;
 	public static int FieldHeight { get; private set; } = 1;
 	public static int FieldPadding { get; private set; } = 1;
+	public static int ToolbarSize { get; private set; } = 42;
+	public static int ScrollbarSize { get; private set; } = 12;
 
 	// Data
 	private static readonly char[] TypingBuilder = new char[1024];
@@ -94,6 +96,8 @@ public static class GUI {
 		ContentColor = Color32.WHITE;
 		FieldHeight = Unify(26);
 		FieldPadding = Unify(8);
+		ToolbarSize = Unify(42);
+		ScrollbarSize = Unify(12);
 	}
 
 
@@ -148,8 +152,6 @@ public static class GUI {
 		var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
 		if (border.IsZero) {
 			Renderer.Draw(_sprite, rect, color);
-		} else if (_sprite.IsTrigger) {
-			Renderer.DrawTile(_sprite, rect, _sprite.GetAlignmentFromPivot(), _sprite.Tag != 0, border.left, border.right, border.down, border.up, color);
 		} else {
 			Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
 		}
@@ -165,32 +167,7 @@ public static class GUI {
 			Renderer.Draw(_sprite, rect, color);
 		} else {
 			var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
-			if (_sprite.IsTrigger) {
-				Renderer.DrawTile(_sprite, rect, _sprite.GetAlignmentFromPivot(), _sprite.Tag != 0, border.left, border.right, border.down, border.up, color);
-			} else {
-				Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
-			}
-		}
-	}
-
-
-	public static void DrawSliceOrTile (int spriteID, IRect rect) {
-		if (Renderer.TryGetSprite(spriteID, out var sprite)) {
-			DrawSliceOrTile(sprite, rect);
-		}
-	}
-	public static void DrawSliceOrTile (SpriteCode spriteCode, IRect rect) {
-		if (Renderer.TryGetSprite(spriteCode.ID, out var sprite)) {
-			DrawSliceOrTile(sprite, rect);
-		}
-	}
-	public static void DrawSliceOrTile (AngeSprite sprite, IRect rect) {
-		if (sprite.GlobalBorder.IsZero) {
-			Renderer.Draw(sprite, rect, Color);
-		} else if (sprite.IsTrigger) {
-			DrawTile(sprite, rect, sprite.GetAlignmentFromPivot(), sprite.Tag != 0);
-		} else {
-			DrawSlice(sprite, rect);
+			Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
 		}
 	}
 
@@ -204,16 +181,6 @@ public static class GUI {
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect) {
 		var border = UnifyBorder(sprite.GlobalBorder, true);
 		return Renderer.DrawSlice(sprite, rect, border.left, border.right, border.down, border.up, Color);
-	}
-
-
-	public static void DrawTile (int spriteID, IRect rect, Alignment alignment, bool adapt) {
-		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
-		DrawTile(sprite, rect, alignment, adapt);
-	}
-	public static void DrawTile (AngeSprite sprite, IRect rect, Alignment alignment, bool adapt) {
-		var border = UnifyBorder(sprite.GlobalBorder, true);
-		Renderer.DrawTile(sprite, rect, alignment, adapt, border.left, border.right, border.down, border.up, Color);
 	}
 
 

@@ -51,13 +51,13 @@ public partial class PixelEditor {
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 
 		// BG
-		GUI.DrawSliceOrTile(UI_ENGINE_PANEL, panelRect);
-		panelRect = panelRect.Shrink(0, 0, 0, Unify(TOOLBAR_SIZE));
+		GUI.DrawSlice(EngineSprite.UI_ENGINE_PANEL, panelRect);
+		panelRect = panelRect.Shrink(0, 0, 0, GUI.ToolbarSize);
 
 		int itemCount = Sheet.Atlas.Count;
 		if (itemCount > 0) {
 
-			int scrollbarWidth = Unify(12);
+			int scrollbarWidth = GUI.ScrollbarSize;
 			int labelPadding = Unify(4);
 			int itemPadding = Unify(2);
 			SetCurrentAtlas(CurrentAtlasIndex.Clamp(0, itemCount - 1));
@@ -256,10 +256,10 @@ public partial class PixelEditor {
 	private void Update_AtlasToolbar () {
 
 		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
-		var toolbarRect = panelRect.EdgeInside(Direction4.Up, Unify(TOOLBAR_SIZE));
+		var toolbarRect = panelRect.EdgeInside(Direction4.Up, GUI.ToolbarSize);
 
 		// BG
-		Renderer.Draw(UI_TOOLBAR, toolbarRect);
+		Renderer.Draw(EngineSprite.UI_TOOLBAR, toolbarRect);
 
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		int padding = Unify(4);

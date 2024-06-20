@@ -137,7 +137,7 @@ public class SettingWindow : WindowUI {
 		}
 		MasterScroll = GUI.ScrollBar(
 			92645,
-			WindowRect.EdgeInside(Direction4.Right, Unify(12)),
+			WindowRect.EdgeInside(Direction4.Right, GUI.ScrollbarSize),
 			MasterScroll,
 			extendedUISize,
 			WindowRect.height
@@ -358,7 +358,7 @@ public class SettingWindow : WindowUI {
 		// FDebug
 		HotkeyField(rect, EngineSetting.Hotkey_FrameDebug_Next, LABEL_HOTKEY_FD_NEXT);
 		rect.SlideDown(itemPadding);
-		
+
 		return rect;
 	}
 

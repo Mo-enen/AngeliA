@@ -242,7 +242,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		player.AnimationType = flying ? CharacterAnimationType.Fly : CharacterAnimationType.Idle;
 		player.LockFacingRight(PlayerFacingRight);
 		FrameworkUtil.DrawPoseCharacterAsUI(
-			leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, out var rectFrom, out var rectTo
+			leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, out var rectFrom, out var rectTo, null
 		);
 		if (Input.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
 			PlayerFacingRight = !PlayerFacingRight;
@@ -713,7 +713,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		int panelPadding = Unify(32);
 		int contentPadding = Unify(12);
 		int itemFrameThickness = Unify(2);
-		int scrollBarWidth = Unify(24);
+		int scrollBarWidth = GUI.ScrollbarSize;
 		int itemHeight = Unify(52);
 		int padding = Unify(8);
 		int iconPadding = Unify(2);

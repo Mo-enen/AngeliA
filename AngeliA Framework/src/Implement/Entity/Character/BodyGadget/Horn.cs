@@ -7,6 +7,7 @@ public class Horn : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
+	public override bool SpriteLoaded => SpriteIdL != 0 || SpriteIdR != 0 || SpriteIdLBack != 0 || SpriteIdRBack != 0;
 	private int SpriteIdL;
 	private int SpriteIdR;
 	private int SpriteIdLBack;
@@ -16,7 +17,7 @@ public class Horn : BodyGadget {
 
 
 	// MSG
-	public override bool FillFromPool (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteIdL = $"{name}.HornL".AngeHash();
 		SpriteIdR = $"{name}.HornR".AngeHash();
 		SpriteIdLBack = $"{name}.HornLB".AngeHash();
@@ -25,7 +26,7 @@ public class Horn : BodyGadget {
 		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
 		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
 		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
-		return SpriteIdL != 0 || SpriteIdR != 0 || SpriteIdLBack != 0 || SpriteIdRBack != 0;
+		return SpriteLoaded;
 	}
 
 
@@ -38,6 +39,9 @@ public class Horn : BodyGadget {
 
 
 	public override void DrawGadget (PoseCharacter character) {
+
+		if (!SpriteLoaded) return;
+
 		int idL = character.FacingFront ? SpriteIdL : SpriteIdLBack;
 		int idR = character.FacingFront ? SpriteIdR : SpriteIdRBack;
 		DrawSpriteAsHorn(

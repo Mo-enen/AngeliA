@@ -8,6 +8,7 @@ public class Tail : BodyGadget {
 
 	// Data
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Tail;
+	public override bool SpriteLoaded => SpriteGroupID != 0;
 	protected int SpriteGroupID { get; private set; }
 	protected virtual int LimbGrow => 1000;
 	protected virtual int AngleAmountRoot => 1000;
@@ -21,10 +22,10 @@ public class Tail : BodyGadget {
 	protected virtual int OffsetY => 0;
 
 
-	public override bool FillFromPool (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteGroupID = $"{name}.Tail".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
-		return SpriteGroupID != 0;
+		return SpriteLoaded;
 	}
 
 
@@ -36,6 +37,7 @@ public class Tail : BodyGadget {
 
 
 	public override void DrawGadget (PoseCharacter character) {
+		if (!SpriteLoaded) return;
 		if (
 			character.AnimationType == CharacterAnimationType.Fly &&
 			character.WingID != 0 &&

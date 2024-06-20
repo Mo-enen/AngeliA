@@ -124,7 +124,7 @@ public class ProjectEditor : WindowUI {
 
 		}
 		MasterScrollPos = GUI.ScrollBar(
-			891236, windowRect.EdgeInside(Direction4.Right, Unify(12)),
+			891236, windowRect.EdgeInside(Direction4.Right, GUI.ScrollbarSize),
 			MasterScrollPos, extendedContentSize, panelRect.height
 		);
 

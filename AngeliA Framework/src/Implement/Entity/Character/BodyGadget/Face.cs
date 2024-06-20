@@ -18,7 +18,7 @@ public enum CharacterExpression {
 
 public sealed class DefaultFace : Face {
 	public static readonly int TYPE_ID = typeof(DefaultFace).AngeHash();
-	public DefaultFace () => FillFromPool(GetType().AngeName());
+	public DefaultFace () => FillFromSheet(GetType().AngeName());
 }
 
 
@@ -27,6 +27,7 @@ public class Face : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Face;
+	public override bool SpriteLoaded => Sprite_Eye != 0;
 	private int Sprite_Eye;
 	private int Sprite_Sclera;
 	private int Sprite_Eyelash;
@@ -36,7 +37,7 @@ public class Face : BodyGadget {
 
 
 	// API
-	public override bool FillFromPool (string keyword) {
+	public override bool FillFromSheet (string keyword) {
 
 		Sprite_Eye = GetSpriteID(keyword, "Eye");
 		Sprite_Sclera = GetSpriteID(keyword, "Sclera");
@@ -45,7 +46,7 @@ public class Face : BodyGadget {
 		Sprite_Mouth = GetSpriteID(keyword, "Mouth");
 		Sprite_Tooth = GetSpriteID(keyword, "Tooth");
 
-		return Sprite_Eye != 0;
+		return SpriteLoaded;
 
 		// Func
 		static int GetSpriteID (string keyword, string typeName) {
@@ -62,6 +63,8 @@ public class Face : BodyGadget {
 
 
 	public override void DrawGadget (PoseCharacter character) {
+
+		if (!SpriteLoaded) return;
 
 		var head = character.Head;
 		if (head.IsFullCovered || !head.FrontSide) return;

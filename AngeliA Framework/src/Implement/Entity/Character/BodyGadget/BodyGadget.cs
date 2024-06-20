@@ -12,6 +12,7 @@ public abstract class BodyGadget {
 	private static readonly Dictionary<int, BodyGadget> Pool = new();
 	private static Dictionary<int, int>[] DefaultPool = null;
 	protected abstract BodyGadgetType GadgetType { get; }
+	public virtual bool SpriteLoaded => true;
 
 
 	// MSG
@@ -26,7 +27,7 @@ public abstract class BodyGadget {
 				bgTypes.Add(type);
 			} else {
 				if (System.Activator.CreateInstance(type) is not BodyGadget gadget) continue;
-				gadget.FillFromPool(type.AngeName());
+				gadget.FillFromSheet(type.AngeName());
 				int id = type.AngeHash();
 				Pool.TryAdd(id, gadget);
 			}
@@ -44,7 +45,7 @@ public abstract class BodyGadget {
 				var temp = templates[i];
 				temp ??= templates[i] = System.Activator.CreateInstance(gType) as BodyGadget;
 				if (temp == null) continue;
-				if (!temp.FillFromPool(charName)) continue;
+				if (!temp.FillFromSheet(charName)) continue;
 				// Founded
 				templates[i] = null;
 				int ggID = $"{charName}.{gType.AngeName()}".AngeHash();
@@ -58,7 +59,7 @@ public abstract class BodyGadget {
 	public abstract void DrawGadget (PoseCharacter character);
 
 
-	public abstract bool FillFromPool (string basicName);
+	public abstract bool FillFromSheet (string basicName);
 
 
 	// API

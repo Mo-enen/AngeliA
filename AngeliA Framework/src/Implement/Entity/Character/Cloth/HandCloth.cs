@@ -7,21 +7,25 @@ namespace AngeliA;
 public class HandCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hand;
+	public override bool SpriteLoaded => SpriteID != 0;
 	private int SpriteID;
 
 	public override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.HandSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
-		return SpriteID != 0;
+		return SpriteLoaded;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
 		if (character.SuitHand != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitHand, out var cloth)) {
-			cloth.Draw(character);
+			cloth.DrawCloth(character);
 		}
 	}
 
-	public override void Draw (PoseCharacter character) => DrawClothForHand(character, SpriteID);
+	public override void DrawCloth (PoseCharacter character) {
+		if (!SpriteLoaded) return;
+		DrawClothForHand(character, SpriteID);
+	}
 
 	public static void DrawClothForHand (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;

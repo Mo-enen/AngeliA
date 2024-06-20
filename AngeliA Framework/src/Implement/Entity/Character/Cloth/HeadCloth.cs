@@ -13,6 +13,7 @@ public enum HatFrontMode { FrontOfHead, BackOfHead, AlwaysFrontOfHead, AlwaysBac
 public class HeadCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Head;
+	public override bool SpriteLoaded => SpriteID != 0;
 	protected virtual HatFrontMode Front => HatFrontMode.FrontOfHead;
 	protected virtual bool PixelShiftForLeft => true;
 	private int SpriteID;
@@ -20,16 +21,19 @@ public class HeadCloth : Cloth {
 	public override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.HeadSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
-		return SpriteID != 0;
+		return SpriteLoaded;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
 		if (character.SuitHead != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitHead, out var cloth)) {
-			cloth.Draw(character);
+			cloth.DrawCloth(character);
 		}
 	}
 
-	public override void Draw (PoseCharacter character) => DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
+	public override void DrawCloth (PoseCharacter character) {
+		if (!SpriteLoaded) return;
+		DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
+	}
 
 	public static void DrawClothForHead (PoseCharacter character, int spriteGroupID, HatFrontMode frontMode, bool pixelShiftForLeft) {
 

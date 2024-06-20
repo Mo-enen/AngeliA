@@ -34,6 +34,9 @@ public partial class Engine {
 
 	// Const
 	private const int HUB_PANEL_WIDTH = 360;
+	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
+	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
+	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
 
 
 	#endregion
@@ -69,7 +72,7 @@ public partial class Engine {
 		using (new UILayerScope()) {
 
 			// --- BG ---
-			GUI.DrawSliceOrTile(UI_WINDOW_BG, cameraRect);
+			GUI.DrawSlice(EngineSprite.UI_WINDOW_BG, cameraRect);
 
 			// --- Panel ---
 			{
@@ -99,7 +102,7 @@ public partial class Engine {
 			// --- Content ---
 
 			int padding = GUI.Unify(8);
-			int scrollWidth = GUI.Unify(12);
+			int scrollWidth = GUI.ScrollbarSize;
 			int itemHeight = GUI.Unify(52);
 			int extendHeight = GUI.Unify(128);
 			var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
@@ -108,7 +111,7 @@ public partial class Engine {
 			var projects = Projects;
 
 			// BG
-			GUI.DrawSliceOrTile(PANEL_BG, contentRect);
+			GUI.DrawSlice(PANEL_BG, contentRect);
 
 			// Big Label
 			if (Renderer.TryGetSprite(LABEL_PROJECTS, out var bigLabelSprite)) {

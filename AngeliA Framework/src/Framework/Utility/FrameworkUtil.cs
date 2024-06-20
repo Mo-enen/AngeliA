@@ -97,7 +97,8 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame, out IRect globalRect, out IRect uiRect) {
+	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame) => DrawPoseCharacterAsUI(rect, character, animationFrame, out _, out _, null);
+	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame, out IRect globalRect, out IRect uiRect, System.Action<PoseCharacter> onRenderCharacter) {
 
 		globalRect = default;
 		uiRect = default;
@@ -110,6 +111,7 @@ public static class FrameworkUtil {
 			int oldAniFrame = character.CurrentAnimationFrame;
 			character.CurrentAnimationFrame = animationFrame;
 			character.LateUpdate();
+			onRenderCharacter?.Invoke(character);
 			character.CurrentAnimationFrame = oldAniFrame;
 			cellIndexEnd = Renderer.GetUsedCellCount();
 		}

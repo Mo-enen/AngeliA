@@ -216,31 +216,35 @@ public abstract class PoseCharacter : Character {
 
 
 	protected override void RenderCharacter () {
-
 		if (!BodyPartsReady) return;
 		int cellIndexStart = Renderer.GetUsedCellCount();
-
 		ResetPoseToDefault(false);
 		PerformPoseAnimation();
 		PoseUpdate_HeadTwist();
 		PoseUpdate_Items();
+		RenderBodyGadgets();
+		RenderCloths();
+		PoseUpdate_HeadRotate();
+		DrawBodyPart(cellIndexStart);
+	}
 
+
+	protected virtual void RenderBodyGadgets () {
 		Wing.DrawGadgetFromPool(this);
 		Tail.DrawGadgetFromPool(this);
 		Face.DrawGadgetFromPool(this);
 		Hair.DrawGadgetFromPool(this);
 		Ear.DrawGadgetFromPool(this);
 		Horn.DrawGadgetFromPool(this);
+	}
 
+
+	protected virtual void RenderCloths () {
 		HeadCloth.DrawClothFromPool(this);
 		BodyCloth.DrawClothFromPool(this);
 		HipCloth.DrawClothFromPool(this);
 		HandCloth.DrawClothFromPool(this);
 		FootCloth.DrawClothFromPool(this);
-
-		PoseUpdate_HeadRotate();
-		DrawBodyPart(cellIndexStart);
-
 	}
 
 
@@ -293,6 +297,7 @@ public abstract class PoseCharacter : Character {
 		FootL.FlexableSizeY = FootR.FlexableSizeY = FootL.SizeY * PoseRootY / legRootSize;
 		UpperArmL.FlexableSizeY = UpperArmR.FlexableSizeY = UpperArmL.SizeY * targetUnitHeight / defaultCharHeight;
 		LowerArmL.FlexableSizeY = LowerArmR.FlexableSizeY = LowerArmL.SizeY * targetUnitHeight / defaultCharHeight;
+		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight;
 		int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
 		int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
 		int hipBorderL = FacingRight ? Hip.Border.left : Hip.Border.right;
@@ -327,14 +332,14 @@ public abstract class PoseCharacter : Character {
 
 		// Shoulder
 		ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-		ShoulderL.Y = Body.Y + Body.Height - Body.Border.up;
+		ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
 		ShoulderL.Width = ShoulderL.SizeX;
 		ShoulderL.Height = ShoulderL.SizeY;
 		ShoulderL.PivotX = 1000;
 		ShoulderL.PivotY = 1000;
 
 		ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-		ShoulderR.Y = Body.Y + Body.Height - Body.Border.up;
+		ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
 		ShoulderR.Width = -ShoulderR.SizeX;
 		ShoulderR.Height = ShoulderR.SizeY;
 		ShoulderR.PivotX = 1000;

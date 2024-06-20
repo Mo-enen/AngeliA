@@ -11,21 +11,25 @@ public sealed class DefaultFootSuit : FootCloth {
 public class FootCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Foot;
+	public override bool SpriteLoaded => SpriteID != 0;
 	private int SpriteID;
 
 	public override bool FillFromSheet (string name) {
 		SpriteID = $"{name}.FootSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
-		return SpriteID != 0;
+		return SpriteLoaded;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
 		if (character.SuitFoot != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitFoot, out var cloth)) {
-			cloth.Draw(character);
+			cloth.DrawCloth(character);
 		}
 	}
 
-	public override void Draw (PoseCharacter character) => DrawClothForFoot(character, SpriteID);
+	public override void DrawCloth (PoseCharacter character) {
+		if (!SpriteLoaded) return;
+		DrawClothForFoot(character, SpriteID);
+	}
 
 	public static void DrawClothForFoot (PoseCharacter character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;

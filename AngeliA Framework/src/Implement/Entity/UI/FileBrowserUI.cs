@@ -193,7 +193,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		if (!Util.FolderExists(CurrentFolder)) return;
 
-		int scrollBarWidth = Unify(10);
+		int scrollBarWidth = GUI.ScrollbarSize;
 		panelRect.width -= scrollBarWidth;
 		var paddedPanelRect = panelRect.Shrink(Unify(12));
 		int itemWidth = Unify(184);

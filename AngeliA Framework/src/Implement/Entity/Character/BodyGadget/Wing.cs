@@ -12,13 +12,14 @@ public class Wing : BodyGadget {
 
 
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Wing;
+	public override bool SpriteLoaded => SpriteGroupID != 0;
 	private int SpriteGroupID;
 	public bool IsPropeller { get; private set; } = false;
 	protected virtual int Scale => 1000;
 
 
 	// API
-	public override bool FillFromPool (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteGroupID = $"{name}.Wing".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		if (
@@ -27,7 +28,7 @@ public class Wing : BodyGadget {
 		) {
 			IsPropeller = sprite.IsTrigger;
 		}
-		return SpriteGroupID != 0;
+		return SpriteLoaded;
 	}
 
 
@@ -39,6 +40,9 @@ public class Wing : BodyGadget {
 
 
 	public override void DrawGadget (PoseCharacter character) {
+
+		if (!SpriteLoaded) return;
+
 		DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
 		if (IsPropeller && character.AnimationType == CharacterAnimationType.Fly) {
 			character.TailID.Override(0, 1);

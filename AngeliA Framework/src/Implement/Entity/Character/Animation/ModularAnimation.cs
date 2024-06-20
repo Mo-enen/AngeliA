@@ -65,7 +65,6 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			System.Array.Sort(KeyFrames, KeyFrameComparer.Instance);
 		}
 
-
 		public int Evaluate (int frame) => Evaluate(frame, 0, out _);
 		internal int Evaluate (int frame, int fromKeyFrame, out int keyFrame) {
 			keyFrame = 0;
@@ -102,6 +101,9 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 	#region --- VAR ---
 
+
+	// Const
+	public const int MAX_LENGTH = 600;
 
 	// Api
 	[JsonIgnore] public bool UseRawData => !Game.IsToolApplication;
@@ -221,7 +223,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 				continue;
 			}
 			int rawFrameCount = sourceKeyFrames[^1].Frame - 1;
-			rawFrameCount = rawFrameCount.Clamp(1, 600);
+			rawFrameCount = rawFrameCount.Clamp(1, MAX_LENGTH);
 			rawLayer.RawData = new int[rawFrameCount];
 			int cacheKeyFrame = 0;
 			for (int f = 0; f < rawFrameCount; f++) {

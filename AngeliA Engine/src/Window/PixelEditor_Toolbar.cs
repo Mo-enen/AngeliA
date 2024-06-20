@@ -47,7 +47,6 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_RULE_EMPTY = "Icon.Empty";
 	private static readonly SpriteCode ICON_RULE_MODE_A = "Icon.RuleModeA";
 	private static readonly SpriteCode ICON_RULE_MODE_B = "Icon.RuleModeB";
-	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
 	private static readonly SpriteCode[] UI_TOOL = {
 		"UI.Tool.Rect",
 		"UI.Tool.Line",
@@ -128,11 +127,11 @@ public partial class PixelEditor {
 
 		if (Sheet.Atlas.Count <= 0) return;
 
-		int toolbarSize = Unify(TOOLBAR_SIZE);
+		int toolbarSize = GUI.ToolbarSize;
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, toolbarSize).Expand(0, toolbarSize, 0, 0);
 
 		// BG
-		GUI.DrawSliceOrTile(UI_TOOLBAR, toolbarRect);
+		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
 
@@ -152,7 +151,7 @@ public partial class PixelEditor {
 		// Tools
 		int padding = Unify(4);
 		var toolRect = WindowRect.EdgeRight(toolbarSize).ShrinkUp(toolbarSize);
-		GUI.DrawSliceOrTile(UI_TOOLBAR, toolRect);
+		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolRect);
 		toolRect = toolRect.Shrink(Unify(6));
 		rect = toolRect.EdgeInside(Direction4.Up, Unify(30));
 		for (int i = 0; i < ToolCount; i++) {
@@ -550,7 +549,7 @@ public partial class PixelEditor {
 		if (!OpeningTilingRuleEditor || SelectingSpriteCount == 0) return;
 
 		// BG
-		GUI.DrawSliceOrTile(UI_ENGINE_PANEL, RuleEditorRect);
+		GUI.DrawSlice(EngineSprite.UI_ENGINE_PANEL, RuleEditorRect);
 
 		var panelRect = RuleEditorRect.Shrink(Unify(8));
 		int pageBarHeight = (panelRect.height - panelRect.width) / 2;

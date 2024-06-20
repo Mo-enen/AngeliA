@@ -10,6 +10,7 @@ public sealed class DefaultHipSuit : HipCloth {
 public class HipCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hip;
+	public override bool SpriteLoaded => SpriteIdHip != 0 || SpriteIdSkirt != 0;
 	protected virtual bool CoverLegs => true;
 	private int SpriteIdHip;
 	private int SpriteIdSkirt;
@@ -25,16 +26,17 @@ public class HipCloth : Cloth {
 		if (!Renderer.HasSprite(SpriteIdSkirt) && !Renderer.HasSpriteGroup(SpriteIdSkirt)) SpriteIdSkirt = 0;
 		if (!Renderer.HasSprite(SpriteIdUpperLeg) && !Renderer.HasSpriteGroup(SpriteIdUpperLeg)) SpriteIdUpperLeg = 0;
 		if (!Renderer.HasSprite(SpriteIdLowerLeg) && !Renderer.HasSpriteGroup(SpriteIdLowerLeg)) SpriteIdLowerLeg = 0;
-		return SpriteIdHip != 0 || SpriteIdSkirt != 0;
+		return SpriteLoaded;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
 		if (character.SuitHip != 0 && Pool.TryGetValue(character.SuitHip, out var cloth)) {
-			cloth.Draw(character);
+			cloth.DrawCloth(character);
 		}
 	}
 
-	public override void Draw (PoseCharacter character) {
+	public override void DrawCloth (PoseCharacter character) {
+		if (!SpriteLoaded) return;
 		DrawClothForHip(character, SpriteIdHip, CoverLegs ? 4 : 1);
 		DrawClothForSkirt(character, SpriteIdSkirt, CoverLegs ? 6 : 1);
 		DrawClothForUpperLeg(character, SpriteIdUpperLeg);

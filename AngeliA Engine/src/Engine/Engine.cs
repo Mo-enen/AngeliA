@@ -22,14 +22,10 @@ public partial class Engine {
 	private const int WINDOW_BAR_WIDTH_FULL = 160;
 	private const int WINDOW_BAR_WIDTH_NORMAL = 42;
 
-	private static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
 	private static readonly SpriteCode UI_ENGINE_BAR = "UI.EngineSideBar";
 	private static readonly SpriteCode UI_ENGINE_BAR_BTN = "UI.EngineSideButton";
 	private static readonly SpriteCode UI_ENGINE_BAR_BTN_HIGHLIGHT = "UI.EngineSideButtonHighlight";
 	private static readonly SpriteCode UI_ENGINE_BAR_BTN_WARNING = "UI.EngineSideButtonWarning";
-	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
-	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
-	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
 	private static readonly SpriteCode ICON_TAB_BACK = "Icon.MainTabBack";
 
 	private static readonly LanguageCode BUILDING_HINT = ("UI.Rig.BuildingHint", "Recompiling");
@@ -567,16 +563,16 @@ public partial class Engine {
 			bool menuButtonClicked = false;
 
 			// Tab BG
-			GUI.DrawSliceOrTile(UI_ENGINE_BAR, barRect);
+			GUI.DrawSlice(UI_ENGINE_BAR, barRect);
 
 			// Menu Button
 			var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
-			GUI.DrawSliceOrTile(UI_ENGINE_BAR_BTN, rect);
+			GUI.DrawSlice(UI_ENGINE_BAR_BTN, rect);
 			if (GUI.BlankButton(rect, out var menuState)) {
 				menuButtonClicked = true;
 			}
 			if (menuState == GUIState.Hover) {
-				GUI.DrawSliceOrTile(UI_ENGINE_BAR_BTN_HIGHLIGHT, rect);
+				GUI.DrawSlice(UI_ENGINE_BAR_BTN_HIGHLIGHT, rect);
 			}
 
 			// Menu Icon
@@ -595,7 +591,7 @@ public partial class Engine {
 				if (!selecting && hovering) Cursor.SetCursorAsHand();
 
 				// Body
-				GUI.DrawSliceOrTile(UI_ENGINE_BAR_BTN, rect);
+				GUI.DrawSlice(UI_ENGINE_BAR_BTN, rect);
 
 				// Highlight
 				var bodyTint = Color32.CLEAR;
@@ -613,7 +609,7 @@ public partial class Engine {
 				}
 				if (bodyTint.a > 0) {
 					using (new GUIColorScope(bodyTint)) {
-						GUI.DrawSliceOrTile(bodyID, rect);
+						GUI.DrawSlice(bodyID, rect);
 					}
 				}
 
@@ -961,6 +957,7 @@ public partial class Engine {
 		CheckFrameworkDllChanged();
 		CheckDialogChanged();
 		CheckResourceChanged();
+		ReloadCharacterNames();
 
 		// Sync Engine Version
 		if (Universe.BuiltIn.Info.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {

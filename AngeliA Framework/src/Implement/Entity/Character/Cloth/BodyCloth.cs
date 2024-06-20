@@ -16,6 +16,7 @@ public sealed class DefaultBodySuit : BodyCloth {
 public class BodyCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Body;
+	public override bool SpriteLoaded => SpriteIdFrontL != 0 || SpriteIdFrontR != 0;
 	private int SpriteIdFrontL;
 	private int SpriteIdFrontR;
 	private int SpriteIdShoulder;
@@ -39,16 +40,17 @@ public class BodyCloth : Cloth {
 		if (!Renderer.HasSprite(SpriteIdShoulder) && !Renderer.HasSpriteGroup(SpriteIdShoulder)) SpriteIdShoulder = 0;
 		if (!Renderer.HasSprite(SpriteIdUpperArm) && !Renderer.HasSpriteGroup(SpriteIdUpperArm)) SpriteIdUpperArm = 0;
 		if (!Renderer.HasSprite(SpriteIdLowerArm) && !Renderer.HasSpriteGroup(SpriteIdLowerArm)) SpriteIdLowerArm = 0;
-		return SpriteIdFrontL != 0 || SpriteIdFrontR != 0;
+		return SpriteLoaded;
 	}
 
 	public static void DrawClothFromPool (PoseCharacter character) {
 		if (character.SuitBody != 0 && Pool.TryGetValue(character.SuitBody, out var cloth)) {
-			cloth.Draw(character);
+			cloth.DrawCloth(character);
 		}
 	}
 
-	public override void Draw (PoseCharacter character) {
+	public override void DrawCloth (PoseCharacter character) {
+		if (!SpriteLoaded) return;
 		DrawClothForBody(character, SpriteIdFrontL, SpriteIdFrontR, LocalZ, TwistShiftTopAmount);
 		DrawCape(character, TypeID);
 		DrawClothForShoulder(character, SpriteIdShoulder);

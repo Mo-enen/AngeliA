@@ -47,7 +47,7 @@ public class Console : WindowUI {
 	private static readonly SpriteCode PANEL_BG = "UI.GeneralPanel";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
 	private static readonly LanguageCode TIP_CLEAR = ("Tip.ConsoleClear", "Clear messages (Ctrl + Shift + C)");
-	
+
 	// Api
 	public static Console Instance { get; private set; }
 	public bool HasCompileError => CompileErrorLines.Length > 0;
@@ -83,7 +83,7 @@ public class Console : WindowUI {
 		bool hasError = CompileErrorLines.Length > 0;
 
 		// Toolbar
-		int barHeight = Unify(42);
+		int barHeight = GUI.ToolbarSize;
 		OnGUI_Toolbar(WindowRect.EdgeInside(Direction4.Up, barHeight));
 
 		// Lines
@@ -117,7 +117,7 @@ public class Console : WindowUI {
 	private void OnGUI_Toolbar (IRect barRect) {
 
 		// BG
-		GUI.DrawSliceOrTile(UI_TOOLBAR, barRect);
+		GUI.DrawSlice(UI_TOOLBAR, barRect);
 
 		int padding = Unify(6);
 		barRect = barRect.Shrink(padding);
@@ -204,7 +204,7 @@ public class Console : WindowUI {
 			// Scroll Bar
 			scrollY = GUI.ScrollBar(
 				controlID,
-				fullPanelRect.EdgeInside(Direction4.Right, Unify(12)),
+				fullPanelRect.EdgeInside(Direction4.Right, GUI.ScrollbarSize),
 				scrollY, scrollMax + pageLineCount, pageLineCount
 			);
 		}

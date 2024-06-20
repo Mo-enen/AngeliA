@@ -517,7 +517,7 @@ public partial class MapEditor {
 		int PADDING = Unify(6);
 		int BORDER = Unify(2);
 		int BORDER_ALT = Unify(2);
-		int SCROLL_BAR_WIDTH = Unify(12);
+		int scrollbarSize = GUI.ScrollbarSize;
 		int TOOLBAR_HEIGHT = Unify(TOOL_BAR_HEIGHT * 2);
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 		int targetReorderReleaseIndex = -1;
@@ -544,7 +544,7 @@ public partial class MapEditor {
 		}
 		int startIndex = (PaletteScrollY * columnCount);
 		int offsetX = contentRect.x + (contentRect.width - columnCount * ITEM_SIZE - (columnCount - 1) * ITEM_GAP) / 2;
-		if (pageRowCount < rowCount + EXTRA_ROW) offsetX -= SCROLL_BAR_WIDTH / 2;
+		if (pageRowCount < rowCount + EXTRA_ROW) offsetX -= scrollbarSize / 2;
 		var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
 		for (int index = startIndex; index < itemCount; index++) {
 
@@ -660,9 +660,9 @@ public partial class MapEditor {
 		// Scroll Bar
 		PaletteScrollY = GUI.ScrollBar(
 			1324235, new IRect(
-				contentRect.xMax - SCROLL_BAR_WIDTH,
+				contentRect.xMax - scrollbarSize,
 				contentRect.y,
-				SCROLL_BAR_WIDTH,
+				scrollbarSize,
 				contentRect.height
 			), PaletteScrollY, rowCount + EXTRA_ROW, pageRowCount
 		);
@@ -682,7 +682,7 @@ public partial class MapEditor {
 		Renderer.DrawPixel(PanelRect, Color32.BLACK);
 		if (SearchResult.Count == 0) return;
 
-		int SCROLL_BAR_WIDTH = Unify(12);
+		int SCROLL_BAR_WIDTH = GUI.ScrollbarSize;
 		int itemSize = Unify(42);
 		int itemGap = Unify(6);
 		var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(TOOL_BAR_HEIGHT * 2)).Shrink(Unify(6));

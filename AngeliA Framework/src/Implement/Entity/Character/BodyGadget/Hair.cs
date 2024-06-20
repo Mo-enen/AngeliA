@@ -7,7 +7,7 @@ namespace AngeliA;
 
 public sealed class DefaultHair : Hair {
 	public static readonly int TYPE_ID = typeof(DefaultHair).AngeHash();
-	public DefaultHair () => FillFromPool(GetType().AngeName());
+	public DefaultHair () => FillFromSheet(GetType().AngeName());
 }
 
 
@@ -225,6 +225,7 @@ public class Hair : BodyGadget {
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Hair;
 	protected virtual int FlowAmountX => 500;
 	protected virtual int FlowAmountY => 500;
+	public override bool SpriteLoaded => SpriteFFL != 0 || SpriteFFR != 0 || SpriteFB != 0 || SpriteBF != 0;
 	protected int SpriteFFL;
 	protected int SpriteFFR;
 	protected int SpriteFB;
@@ -232,7 +233,7 @@ public class Hair : BodyGadget {
 
 
 	// API
-	public override bool FillFromPool (string name) {
+	public override bool FillFromSheet (string name) {
 		SpriteFFL = $"{name}.HairFFL".AngeHash();
 		SpriteFFR = $"{name}.HairFFR".AngeHash();
 		SpriteFB = $"{name}.HairFB".AngeHash();
@@ -241,7 +242,7 @@ public class Hair : BodyGadget {
 		if (!Renderer.HasSprite(SpriteFFR)) SpriteFFR = 0;
 		if (!Renderer.HasSprite(SpriteFB)) SpriteFB = 0;
 		if (!Renderer.HasSprite(SpriteBF)) SpriteBF = 0;
-		return SpriteFFL != 0 || SpriteFFR != 0 || SpriteFB != 0 || SpriteBF != 0;
+		return SpriteLoaded;
 	}
 
 
@@ -252,7 +253,10 @@ public class Hair : BodyGadget {
 	}
 
 
-	public override void DrawGadget (PoseCharacter character) => DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
+	public override void DrawGadget (PoseCharacter character) {
+		if (!SpriteLoaded) return;
+		DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
+	}
 
 
 	public static Cell[] DrawSpriteAsHair (PoseCharacter character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {

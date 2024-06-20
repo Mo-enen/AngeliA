@@ -124,7 +124,7 @@ public partial class LanguageEditor : WindowUI {
 	private void Update_Bar (IRect panelRect) {
 
 		// BG
-		GUI.DrawSliceOrTile(UI_TOOLBAR, panelRect.TopHalf());
+		GUI.DrawSlice(UI_TOOLBAR, panelRect.TopHalf());
 
 		// Shift Panel Rect
 		int labelHeight = panelRect.height - Unify(42);
@@ -235,7 +235,7 @@ public partial class LanguageEditor : WindowUI {
 		int itemHeight = Unify(36);
 		if (panelRect.height <= itemHeight) return;
 
-		int scrollBarWidth = Unify(16);
+		int scrollBarWidth = GUI.ScrollbarSize;
 		int labelHeight = Unify(22);
 		int labelPadding = Unify(12);
 		int itemSpaceX = Unify(5);

@@ -8,6 +8,7 @@ public class Ear : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
+	public override bool SpriteLoaded => SpriteIdL != 0 || SpriteIdR != 0;
 	private int SpriteIdL { get; set; }
 	private int SpriteIdR { get; set; }
 	private int SpriteIdLBack { get; set; }
@@ -17,7 +18,7 @@ public class Ear : BodyGadget {
 
 
 	// MSG
-	public override bool FillFromPool (string basicName) {
+	public override bool FillFromSheet (string basicName) {
 		SpriteIdL = $"{basicName}.EarL".AngeHash();
 		SpriteIdR = $"{basicName}.EarR".AngeHash();
 		SpriteIdLBack = $"{basicName}.EarLB".AngeHash();
@@ -26,7 +27,7 @@ public class Ear : BodyGadget {
 		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
 		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
 		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
-		return SpriteIdL != 0 || SpriteIdR != 0;
+		return SpriteLoaded;
 	}
 
 
@@ -37,15 +38,17 @@ public class Ear : BodyGadget {
 	}
 
 
-	public override void DrawGadget (PoseCharacter character) => DrawSpriteAsEar(
-		character,
-		character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
-		character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
-		FrontOfHeadL(character), FrontOfHeadR(character),
-		character.Head.FrontSide == character.FacingRight ? 0 : FacingLeftOffsetX,
-		MotionAmount, selfMotion: true
-	);
-
+	public override void DrawGadget (PoseCharacter character) {
+		if (!SpriteLoaded) return;
+		DrawSpriteAsEar(
+			character,
+			character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
+			character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
+			FrontOfHeadL(character), FrontOfHeadR(character),
+			character.Head.FrontSide == character.FacingRight ? 0 : FacingLeftOffsetX,
+			MotionAmount, selfMotion: true
+		);
+	}
 
 	protected virtual bool FrontOfHeadL (PoseCharacter character) => true;
 	protected virtual bool FrontOfHeadR (PoseCharacter character) => true;

@@ -14,6 +14,7 @@ public abstract class Cloth {
 	// Api
 	public int TypeID { get; init; }
 	protected abstract ClothType ClothType { get; }
+	public virtual bool SpriteLoaded => true;
 
 	// Data
 	protected static readonly Dictionary<int, Cloth> Pool = new();
@@ -59,7 +60,7 @@ public abstract class Cloth {
 
 	public Cloth () => TypeID = GetType().AngeHash();
 
-	public abstract void Draw (PoseCharacter character);
+	public abstract void DrawCloth (PoseCharacter character);
 
 	public abstract bool FillFromSheet (string name);
 

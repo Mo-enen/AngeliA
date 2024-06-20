@@ -521,88 +521,164 @@ public static class Renderer {
 		borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z
 	);
 	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z) {
-		DrawSliceOrTile(
-			sprite, x, y, pivotX, pivotY, Alignment.Full, default, -1, -1, rotation, width, height,
-			borderL, borderR, borderD, borderU, partIgnore, color, z
-		);
+		
+		SLICE_RESULT[0] = SLICE_RESULT[1] = SLICE_RESULT[2] = Cell.EMPTY;
+		SLICE_RESULT[3] = SLICE_RESULT[4] = SLICE_RESULT[5] = Cell.EMPTY;
+		SLICE_RESULT[6] = SLICE_RESULT[7] = SLICE_RESULT[8] = Cell.EMPTY;
+
+		// Original Size
+		if (sprite != null && width != 0 && height != 0) {
+			if (width == Const.ORIGINAL_SIZE) {
+				width = sprite.GlobalWidth;
+			} else if (width == Const.ORIGINAL_SIZE_NEGATAVE) {
+				width = -sprite.GlobalWidth;
+			}
+			if (height == Const.ORIGINAL_SIZE) {
+				height = sprite.GlobalHeight;
+			} else if (height == Const.ORIGINAL_SIZE_NEGATAVE) {
+				height = -sprite.GlobalHeight;
+			}
+		} else return SLICE_RESULT;
+
+		bool flipX = width < 0;
+		bool flipY = height < 0;
+		width = width.Abs();
+		height = height.Abs();
+
+		borderL = borderL.Clamp(0, width);
+		borderR = borderR.Clamp(0, width);
+		borderD = borderD.Clamp(0, height);
+		borderU = borderU.Clamp(0, height);
+
+		bool hasL = borderL > 0;
+		bool hasM = borderL + borderR < width;
+		bool hasR = borderR > 0;
+		int mWidth = width - borderL - borderR;
+		int mHeight = height - borderD - borderU;
+
+		float _px0 = width * pivotX / 1000f / borderL;
+		float _px1 = (width * pivotX / 1000f - borderL) / mWidth;
+		float _px2 = (borderR - width * (1000 - pivotX) / 1000f) / borderR;
+
+		if (borderU > 0) {
+			float _py = (borderU - height * (1000 - pivotY) / 1000f) / borderU;
+			// TL
+			if (hasL && !partIgnore[0]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, borderL, borderU, color, z
+				);
+				cell.BorderSide = Alignment.TopLeft;
+				cell.PivotX = _px0;
+				cell.PivotY = _py;
+				SLICE_RESULT[0] = cell;
+			}
+			// TM
+			if (hasM && !partIgnore[1]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, mWidth, borderU, color, z
+				);
+				cell.BorderSide = Alignment.TopMid;
+				cell.PivotX = _px1;
+				cell.PivotY = _py;
+				SLICE_RESULT[1] = cell;
+			}
+			// TR
+			if (hasR && !partIgnore[2]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, borderR, borderU, color, z
+				);
+				cell.PivotX = _px2;
+				cell.PivotY = _py;
+				cell.BorderSide = Alignment.TopRight;
+				SLICE_RESULT[2] = cell;
+			}
+		}
+		if (borderD + borderU < height) {
+			float _py = (height * pivotY / 1000f - borderD) / mHeight;
+			// ML
+			if (hasL && !partIgnore[3]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, borderL, mHeight, color, z
+				);
+				cell.BorderSide = Alignment.MidLeft;
+				cell.PivotX = _px0;
+				cell.PivotY = _py;
+				SLICE_RESULT[3] = cell;
+			}
+			// MM
+			if (hasM && !partIgnore[4]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, mWidth, mHeight, color, z
+				);
+				cell.BorderSide = Alignment.MidMid;
+				cell.PivotX = _px1;
+				cell.PivotY = _py;
+				SLICE_RESULT[4] = cell;
+			}
+			// MR
+			if (hasR && !partIgnore[5]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, borderR, mHeight, color, z
+				);
+				cell.BorderSide = Alignment.MidRight;
+				cell.PivotX = _px2;
+				cell.PivotY = _py;
+				SLICE_RESULT[5] = cell;
+			}
+		}
+		if (borderD > 0) {
+			float _py = height * pivotY / 1000f / borderD;
+			// DL
+			if (hasL && !partIgnore[6]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, borderL, borderD, color, z
+				);
+				cell.BorderSide = Alignment.BottomLeft;
+				cell.PivotX = _px0;
+				cell.PivotY = _py;
+				SLICE_RESULT[6] = cell;
+			}
+			// DM
+			if (hasM && !partIgnore[7]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, mWidth, borderD, color, z
+				);
+				cell.BorderSide = Alignment.BottomMid;
+				cell.PivotX = _px1;
+				cell.PivotY = _py;
+				SLICE_RESULT[7] = cell;
+			}
+			// DR
+			if (hasR && !partIgnore[8]) {
+				var cell = Draw(
+					sprite, x, y, 0, 0,
+					rotation, borderR, borderD, color, z
+				);
+				cell.BorderSide = Alignment.BottomRight;
+				cell.PivotX = _px2;
+				cell.PivotY = _py;
+				SLICE_RESULT[8] = cell;
+			}
+		}
+
+		// Flip for Negative Size
+		if (flipX) {
+			foreach (var cell in SLICE_RESULT) cell.Width = -cell.Width;
+		}
+		if (flipY) {
+			foreach (var cell in SLICE_RESULT) cell.Height = -cell.Height;
+		}
+
 		return SLICE_RESULT;
 	}
-
-
-	// Tile
-	public static void DrawTile (int globalID, IRect rect, Alignment alignment, bool adapt) => DrawTile(globalID, rect, alignment, adapt, Color32.WHITE);
-	public static void DrawTile (int globalID, IRect rect, Alignment alignment, bool adapt, Color32 color, int z = int.MinValue) => DrawTile(globalID, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, color, z);
-	public static void DrawTile (int globalID, IRect rect, Alignment alignment, bool adapt, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawTile(globalID, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
-	public static void DrawTile (int globalID, IRect rect, Alignment alignment, bool adapt, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawTile(globalID, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
-	public static void DrawTile (int globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int z = int.MinValue) => DrawTile(globalID, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, Color32.WHITE, z);
-	public static void DrawTile (int globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
-		var border = TryGetSprite(globalID, out var sprite) ? sprite.GlobalBorder : default;
-		DrawTile(
-			sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height,
-			border.left, border.right,
-			border.down, border.up, DEFAULT_PART_IGNORE,
-			color, z
-		);
-	}
-	public static void DrawTile (int globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawTile(globalID, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
-	public static void DrawTile (int globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawTile(globalID, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
-	public static void DrawTile (int globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) {
-		TryGetSprite(globalID, out var sprite);
-		DrawTile(
-			sprite, x, y, pivotX, pivotY, alignment, adapt,
-			rotation, width, height,
-			borderL, borderR, borderD, borderU, partIgnore, color, z
-		);
-	}
-	public static void DrawTile (SpriteCode globalID, IRect rect, Alignment alignment, bool adapt) => DrawTile(globalID.ID, rect, alignment, adapt, Color32.WHITE);
-	public static void DrawTile (SpriteCode globalID, IRect rect, Alignment alignment, bool adapt, Color32 color, int z = int.MinValue) => DrawTile(globalID.ID, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, color, z);
-	public static void DrawTile (SpriteCode globalID, IRect rect, Alignment alignment, bool adapt, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawTile(globalID.ID, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
-	public static void DrawTile (SpriteCode globalID, IRect rect, Alignment alignment, bool adapt, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawTile(globalID.ID, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
-	public static void DrawTile (SpriteCode globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int z = int.MinValue) => DrawTile(globalID.ID, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, Color32.WHITE, z);
-	public static void DrawTile (SpriteCode globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
-		var border = TryGetSprite(globalID.ID, out var sprite) ? sprite.GlobalBorder : default;
-		DrawTile(
-			sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height,
-			border.left, border.right,
-			border.down, border.up, DEFAULT_PART_IGNORE,
-			color, z
-		);
-	}
-	public static void DrawTile (SpriteCode globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawTile(globalID.ID, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
-	public static void DrawTile (SpriteCode globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawTile(globalID.ID, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
-	public static void DrawTile (SpriteCode globalID, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) {
-		TryGetSprite(globalID.ID, out var sprite);
-		DrawTile(
-			sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height,
-			borderL, borderR, borderD, borderU, partIgnore, color, z
-		);
-	}
-	public static void DrawTile (AngeSprite sprite, IRect rect, Alignment alignment, bool adapt) => DrawTile(sprite, rect, alignment, adapt, Color32.WHITE);
-	public static void DrawTile (AngeSprite sprite, IRect rect, Alignment alignment, bool adapt, Color32 color, int z = int.MinValue) => DrawTile(sprite, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, color, z);
-	public static void DrawTile (AngeSprite sprite, IRect rect, Alignment alignment, bool adapt, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawTile(sprite, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
-	public static void DrawTile (AngeSprite sprite, IRect rect, Alignment alignment, bool adapt, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawTile(sprite, rect.x, rect.y, 0, 0, alignment, adapt, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
-	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int z = int.MinValue) => DrawTile(sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, Color32.WHITE, z);
-	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
-		DrawTile(
-			sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height,
-			sprite.GlobalBorder.left, sprite.GlobalBorder.right,
-			sprite.GlobalBorder.down, sprite.GlobalBorder.up,
-			DEFAULT_PART_IGNORE, color, z
-		);
-	}
-	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawTile(sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
-	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawTile(
-		sprite, x, y, pivotX, pivotY, alignment, adapt, rotation, width, height,
-		borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z
-	);
-	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) => DrawSliceOrTile(
-		sprite, x, y, pivotX, pivotY, alignment, adapt, -1, -1, rotation, width, height,
-		borderL, borderR, borderD, borderU, partIgnore, color, z
-	);
-	public static void DrawTile (AngeSprite sprite, int x, int y, int pivotX, int pivotY, Alignment alignment, bool adapt, int tileWidth, int tileHeight, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) => DrawSliceOrTile(
-		sprite, x, y, pivotX, pivotY, alignment, adapt, tileWidth, tileHeight, rotation, width, height,
-		borderL, borderR, borderD, borderU, partIgnore, color, z
-	);
 
 
 	// Sprite Data
@@ -705,229 +781,6 @@ public static class Renderer {
 			CharSpritePool.Add(new(c, fontIndex), charSprite);
 		}
 		return charSprite != null;
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private static void DrawSliceOrTile (
-		AngeSprite sprite, int x, int y, int pivotX, int pivotY,
-		Alignment tileAlignment, bool tileAdapt, int tileWidth, int tileHeight,
-		int rotation, int width, int height,
-		int borderL, int borderR, int borderD, int borderU,
-		bool[] partIgnore, Color32 color, int z
-	) {
-
-		SLICE_RESULT[0] = SLICE_RESULT[1] = SLICE_RESULT[2] = Cell.EMPTY;
-		SLICE_RESULT[3] = SLICE_RESULT[4] = SLICE_RESULT[5] = Cell.EMPTY;
-		SLICE_RESULT[6] = SLICE_RESULT[7] = SLICE_RESULT[8] = Cell.EMPTY;
-
-		// Original Size
-		if (sprite != null && width != 0 && height != 0) {
-			if (width == Const.ORIGINAL_SIZE) {
-				width = sprite.GlobalWidth;
-			} else if (width == Const.ORIGINAL_SIZE_NEGATAVE) {
-				width = -sprite.GlobalWidth;
-			}
-			if (height == Const.ORIGINAL_SIZE) {
-				height = sprite.GlobalHeight;
-			} else if (height == Const.ORIGINAL_SIZE_NEGATAVE) {
-				height = -sprite.GlobalHeight;
-			}
-		} else return;
-
-		bool flipX = width < 0;
-		bool flipY = height < 0;
-		width = width.Abs();
-		height = height.Abs();
-
-		borderL = borderL.Clamp(0, width);
-		borderR = borderR.Clamp(0, width);
-		borderD = borderD.Clamp(0, height);
-		borderU = borderU.Clamp(0, height);
-
-		bool hasL = borderL > 0;
-		bool hasM = borderL + borderR < width;
-		bool hasR = borderR > 0;
-		int mWidth = width - borderL - borderR;
-		int mHeight = height - borderD - borderU;
-
-		float _px0 = width * pivotX / 1000f / borderL;
-		float _px1 = (width * pivotX / 1000f - borderL) / mWidth;
-		float _px2 = (borderR - width * (1000 - pivotX) / 1000f) / borderR;
-
-		if (borderU > 0) {
-			float _py = (borderU - height * (1000 - pivotY) / 1000f) / borderU;
-			// TL
-			if (hasL && !partIgnore[0]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, borderL, borderU, color, z
-				);
-				cell.BorderSide = Alignment.TopLeft;
-				cell.PivotX = _px0;
-				cell.PivotY = _py;
-				SLICE_RESULT[0] = cell;
-			}
-			// TM
-			if (hasM && !partIgnore[1]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, mWidth, borderU, color, z
-				);
-				cell.BorderSide = Alignment.TopMid;
-				cell.PivotX = _px1;
-				cell.PivotY = _py;
-				SLICE_RESULT[1] = cell;
-			}
-			// TR
-			if (hasR && !partIgnore[2]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, borderR, borderU, color, z
-				);
-				cell.PivotX = _px2;
-				cell.PivotY = _py;
-				cell.BorderSide = Alignment.TopRight;
-				SLICE_RESULT[2] = cell;
-			}
-		}
-		if (borderD + borderU < height) {
-			float _py = (height * pivotY / 1000f - borderD) / mHeight;
-			// ML
-			if (hasL && !partIgnore[3]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, borderL, mHeight, color, z
-				);
-				cell.BorderSide = Alignment.MidLeft;
-				cell.PivotX = _px0;
-				cell.PivotY = _py;
-				SLICE_RESULT[3] = cell;
-			}
-			// MM
-			if (hasM && !partIgnore[4]) {
-				if (tileAlignment == Alignment.Full) {
-					// 9-Slice
-					var cell = Draw(
-						sprite, x, y, 0, 0,
-						rotation, mWidth, mHeight, color, z
-					);
-					cell.BorderSide = Alignment.MidMid;
-					cell.PivotX = _px1;
-					cell.PivotY = _py;
-					SLICE_RESULT[4] = cell;
-				} else {
-					// Tile
-					var midRect = new IRect(x + borderL, y + borderD, width - borderL - borderR, height - borderD - borderU);
-					int basicX = midRect.x;
-					int basicY = midRect.y;
-					float basicW = tileWidth < 0 ? sprite.GlobalWidth - sprite.GlobalBorder.horizontal : tileWidth;
-					float basicH = tileHeight < 0 ? sprite.GlobalHeight - sprite.GlobalBorder.vertical : tileHeight;
-					int offsetX = 0;
-					int offsetY = 0;
-					int countX;
-					int countY;
-					if (tileAdapt) {
-						countX = (midRect.width / (float)basicW).RoundToInt();
-						countY = (midRect.height / (float)basicH).RoundToInt();
-						basicW = midRect.width / countX;
-						basicH = midRect.height / countY;
-					} else {
-						countX = midRect.width.CeilDivide((int)basicW);
-						countY = midRect.height.CeilDivide((int)basicH);
-						offsetX = tileAlignment switch {
-							Alignment.BottomLeft or Alignment.MidLeft or Alignment.TopLeft => 0,
-							Alignment.BottomMid or Alignment.MidMid or Alignment.TopMid => -((basicW - midRect.width % basicW) / 2f).RoundToInt(),
-							Alignment.BottomRight or Alignment.MidRight or Alignment.TopRight => -(basicW - midRect.width % basicW).RoundToInt(),
-							_ => 0,
-						};
-						offsetY = tileAlignment switch {
-							Alignment.BottomLeft or Alignment.BottomMid or Alignment.BottomRight => 0,
-							Alignment.MidLeft or Alignment.MidMid or Alignment.MidRight => -((basicH - midRect.height % basicH) / 2f).RoundToInt(),
-							Alignment.TopLeft or Alignment.TopMid or Alignment.TopRight => -(basicH - midRect.height % basicH).RoundToInt(),
-							_ => 0,
-						};
-					}
-					for (int i = 0; i < countX; i++) {
-						for (int j = 0; j < countY; j++) {
-							var cell = Draw(
-								sprite,
-								(basicX + basicW * i + offsetX).RoundToInt(),
-								(basicY + basicH * j + offsetY).RoundToInt(),
-								0, 0,
-								rotation, basicW.RoundToInt(), basicH.RoundToInt(),
-								color, z
-							);
-							cell.BorderSide = Alignment.MidMid;
-							Util.ClampCell(cell, midRect);
-						}
-					}
-				}
-			}
-			// MR
-			if (hasR && !partIgnore[5]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, borderR, mHeight, color, z
-				);
-				cell.BorderSide = Alignment.MidRight;
-				cell.PivotX = _px2;
-				cell.PivotY = _py;
-				SLICE_RESULT[5] = cell;
-			}
-		}
-		if (borderD > 0) {
-			float _py = height * pivotY / 1000f / borderD;
-			// DL
-			if (hasL && !partIgnore[6]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, borderL, borderD, color, z
-				);
-				cell.BorderSide = Alignment.BottomLeft;
-				cell.PivotX = _px0;
-				cell.PivotY = _py;
-				SLICE_RESULT[6] = cell;
-			}
-			// DM
-			if (hasM && !partIgnore[7]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, mWidth, borderD, color, z
-				);
-				cell.BorderSide = Alignment.BottomMid;
-				cell.PivotX = _px1;
-				cell.PivotY = _py;
-				SLICE_RESULT[7] = cell;
-			}
-			// DR
-			if (hasR && !partIgnore[8]) {
-				var cell = Draw(
-					sprite, x, y, 0, 0,
-					rotation, borderR, borderD, color, z
-				);
-				cell.BorderSide = Alignment.BottomRight;
-				cell.PivotX = _px2;
-				cell.PivotY = _py;
-				SLICE_RESULT[8] = cell;
-			}
-		}
-
-		// Flip for Negative Size
-		if (flipX) {
-			foreach (var cell in SLICE_RESULT) cell.Width = -cell.Width;
-		}
-		if (flipY) {
-			foreach (var cell in SLICE_RESULT) cell.Height = -cell.Height;
-		}
-
 	}
 
 
