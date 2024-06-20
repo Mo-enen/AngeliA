@@ -58,10 +58,10 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 		}
 
 		// Head Rotate
-		if (cells != null && character.HeadRotation != 0) {
-			int offsetY = character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+		if (cells != null && character.Head.Rotation != 0) {
+			int offsetY = character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
 			foreach (var cell in cells) {
-				cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
 				cell.Y -= offsetY;
 			}
 		}

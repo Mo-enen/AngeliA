@@ -167,9 +167,9 @@ public class Ear : BodyGadget {
 				(earSpriteL.GlobalHeight + expandSizeL.y) * (flipY ? -1 : 1),
 				frontOfHeadL ? z : -z
 			);
-			if (character.HeadRotation != 0) {
-				cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-				cell.Y -= character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+			if (character.Head.Rotation != 0) {
+				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+				cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
 			}
 		}
 		if (Renderer.TryGetSprite(rightEarID, out var earSpriteR)) {
@@ -182,9 +182,9 @@ public class Ear : BodyGadget {
 				(earSpriteR.GlobalHeight + expandSizeR.y) * (flipY ? -1 : 1),
 				frontOfHeadR ? z : -z
 			);
-			if (character.HeadRotation != 0) {
-				cell.RotateAround(character.HeadRotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-				cell.Y -= character.Head.Height.Abs() * character.HeadRotation.Abs() / 360;
+			if (character.Head.Rotation != 0) {
+				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+				cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
 			}
 		}
 

@@ -246,7 +246,7 @@ public abstract class PoseAnimation {
 
 		Head.X -= headOffsetX.Clamp(-A2G * 2, A2G * 2);
 		Head.Y = (Head.Y + headOffsetY).GreaterOrEquel(Body.Y + 1);
-		Target.HeadRotation = headRotate;
+		Head.Rotation = headRotate;
 
 		// Body
 		int bodyOffsetY = (int)(ease01 * A2G) + A2G * 2;

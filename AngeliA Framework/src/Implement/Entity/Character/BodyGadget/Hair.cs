@@ -187,7 +187,7 @@ public abstract class BraidHair : Hair {
 				}
 			}
 			// Rotate
-			int headRot = character.HeadRotation;
+			int headRot = character.Head.Rotation;
 			if (headRot != 0) {
 				var body = character.Body;
 				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
@@ -432,7 +432,7 @@ public class Hair : BodyGadget {
 				width > 0 == offset > 0 || offset.Abs() < width.Abs() ? width + offset : 0;
 		}
 		static void RotateHair (PoseCharacter character, Cell[] cells) {
-			int headRot = character.HeadRotation;
+			int headRot = character.Head.Rotation;
 			if (headRot == 0 || cells == null) return;
 			var body = character.Body;
 			int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;

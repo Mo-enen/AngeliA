@@ -47,7 +47,6 @@ public abstract class PoseCharacter : Character {
 	public int BasicRootY { get; private set; } = 0;
 	public int PoseRootX { get; set; } = 0;
 	public int PoseRootY { get; set; } = 0;
-	public int HeadRotation { get; set; } = 0;
 	public int HeadTwist { get; set; } = 0;
 	public int BodyTwist { get; set; } = 0;
 	public int HandGrabRotationL { get; set; } = 0;
@@ -219,7 +218,7 @@ public abstract class PoseCharacter : Character {
 		if (!BodyPartsReady) return;
 		int cellIndexStart = Renderer.GetUsedCellCount();
 		ResetPoseToDefault(false);
-		PerformPoseAnimation();
+		AnimateForPose();
 		PoseUpdate_HeadTwist();
 		PoseUpdate_Items();
 		RenderBodyGadgets();
@@ -248,6 +247,11 @@ public abstract class PoseCharacter : Character {
 	}
 
 
+	protected virtual void PerformPoseAnimation () {
+		PoseAnimation.AnimateFromPool(PoseAnimationIDs[(int)AnimationType], this);
+	}
+
+
 	// Pipeline
 	private void ResetPoseToDefault (bool motionOnly) {
 
@@ -257,7 +261,6 @@ public abstract class PoseCharacter : Character {
 		PoseRootX = 0;
 		BodyTwist = 0;
 		HeadTwist = 0;
-		HeadRotation = 0;
 
 		foreach (var bodypart in BodyParts) {
 			bodypart.Rotation = 0;
@@ -451,13 +454,13 @@ public abstract class PoseCharacter : Character {
 	}
 
 
-	private void PerformPoseAnimation () {
+	private void AnimateForPose () {
 
 		// Movement
 		HandGrabScaleL = FacingRight ? 1000 : -1000;
 		HandGrabScaleR = FacingRight ? 1000 : -1000;
 
-		PoseAnimation.AnimateFromPool(PoseAnimationIDs[(int)AnimationType], this);
+		PerformPoseAnimation();
 
 		CalculateBodypartGlobalPosition();
 
@@ -536,8 +539,8 @@ public abstract class PoseCharacter : Character {
 
 
 	private void PoseUpdate_HeadRotate () {
-		if (HeadRotation == 0) return;
-		Head.Rotation = HeadRotation.Clamp(-90, 90);
+		if (Head.Rotation == 0) return;
+		Head.Rotation = Head.Rotation.Clamp(-90, 90);
 		int offsetY = Head.Height.Abs() * Head.Rotation.Abs() / 360;
 		Head.Y -= offsetY;
 		Head.GlobalY -= offsetY;

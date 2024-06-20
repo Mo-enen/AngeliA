@@ -31,6 +31,10 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			Instance.PreviewCloth_Foot.DrawCloth(this);
 		}
 
+		protected override void PerformPoseAnimation () {
+			Instance.Animation?.Animate(Instance.Preview);
+		}
+
 	}
 
 
@@ -47,9 +51,11 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	private static readonly SpriteCode ICON_CHAR_PREVIEW = "Icon.PreviewCharacter";
 	private static readonly SpriteCode ICON_ZOOM_M = "Icon.CharPreviewZoomMin";
 	private static readonly SpriteCode ICON_ZOOM_P = "Icon.CharPreviewZoomPlus";
+	private static readonly SpriteCode ICON_FLIP = "Icon.CharPreviewFlip";
+	private static readonly SpriteCode ICON_PLAY = "Icon.CharEditor.Play";
+	private static readonly SpriteCode ICON_PAUSE = "Icon.CharEditor.Pause";
 	private static readonly LanguageCode TIP_PREVIEW = ("Tip.PreviewChar", "Select a character for preview the animation");
-	private static readonly LanguageCode TIP_ZOOM_M = ("Tip.ZoomMin", "Zoom out the preview");
-	private static readonly LanguageCode TIP_ZOOM_P = ("Tip.ZoomPlus", "Zoom in the preview");
+	private static readonly LanguageCode LABEL_EDITING_ANI = ("Label.CharEditor.EditingAni", "Animation");
 
 	// Api
 	public static CharacterAnimationEditorWindow Instance { get; private set; }
@@ -71,11 +77,13 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	private readonly HipCloth PreviewCloth_Hip = new();
 	private readonly HandCloth PreviewCloth_Hand = new();
 	private readonly FootCloth PreviewCloth_Foot = new();
-	private string PreviewCharacterName = "";
 	private Project CurrentProject = null;
+	private ModularAnimation Animation = new();
+	private string PreviewCharacterName = "";
 	private int AnimationFrame = 0;
-	private bool PreviewInitialized = false;
 	private int PreviewZoom = 1000;
+	private bool PreviewInitialized = false;
+	private bool IsPlaying = false;
 
 	// Saving
 	private static readonly SavingString LastPreviewCharacter = new("CharAniEditor.LastPreview", nameof(DefaultPlayer));
@@ -103,6 +111,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+
 		if (CurrentProject == null) return;
 
 		var windowRect = WindowRect;
@@ -126,10 +135,14 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			Color32.WHITE_20
 		);
 
+		// Play
+		AnimationFrame += IsPlaying ? 1 : 0;
+
 		// Panel
 		Update_Preview(previewRect);
 		Update_Inspector(insRect);
 		Update_Timeline(timelineRect);
+		Update_Hotkey();
 
 	}
 
@@ -150,6 +163,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		int padding = Unify(6);
 		var previewRect = panelRect.Shrink(padding, padding, padding, padding + GUI.ToolbarSize);
 		using (new SheetIndexScope(SheetIndex)) {
+			Preview.AnimationType = CharacterAnimationType.Idle;
 			FrameworkUtil.DrawPoseCharacterAsUI(previewRect.ScaleFrom(PreviewZoom, previewRect.CenterX(), previewRect.y), Preview, AnimationFrame);
 		}
 
@@ -165,12 +179,18 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		RequireTooltip(rect, TIP_PREVIEW);
 		rect.SlideRight(padding);
 
+		// Flip
+		if (GUI.Button(rect, ICON_FLIP, Skin.SmallDarkButton)) {
+			Preview.FacingRight = !Preview.FacingRight;
+			Preview.Bounce();
+		}
+		rect.SlideRight(padding);
+
 		// Zoom Button -
 		if (GUI.Button(rect, ICON_ZOOM_M, Skin.SmallDarkButton)) {
 			PreviewZoom = (PreviewZoom - 100).Clamp(500, 1500);
 			LastPreviewZoom.Value = PreviewZoom;
 		}
-		RequireTooltip(rect, TIP_ZOOM_M);
 		rect.SlideRight(padding);
 
 		// Zoom Button +
@@ -178,9 +198,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			PreviewZoom = (PreviewZoom + 100).Clamp(500, 1500);
 			LastPreviewZoom.Value = PreviewZoom;
 		}
-		RequireTooltip(rect, TIP_ZOOM_P);
 		rect.SlideRight(padding);
-
 
 		// Zoom with Wheel
 		if (previewRect.MouseInside() && Input.MouseWheelDelta != 0) {
@@ -199,8 +217,18 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		var toolbarRect = panelRect.EdgeUp(GUI.ToolbarSize);
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
 
+		// Content
+		panelRect = panelRect.Shrink(Unify(12));
+		int padding = Unify(6);
+		var rect = panelRect.ShrinkUp(GUI.ToolbarSize).EdgeUp(GUI.FieldHeight);
 
-
+		// Animation
+		GUI.SmallLabel(rect, LABEL_EDITING_ANI);
+		if (GUI.DarkButton(rect.ShrinkLeft(GUI.LabelWidth), Animation.Name)) {
+			ShowAnimationMenu(rect.ShrinkLeft(GUI.LabelWidth));
+		}
+		GUI.PopupTriangleIcon(rect.ShrinkDown(padding));
+		rect.SlideDown(padding);
 
 
 	}
@@ -208,6 +236,45 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 	private void Update_Timeline (IRect panelRect) {
 
+		// Toolbar
+		var toolbarRect = panelRect.EdgeDown(GUI.ToolbarSize);
+		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
+		toolbarRect = toolbarRect.Shrink(Unify(6));
+		var rect = toolbarRect.EdgeLeft(toolbarRect.height);
+		int padding = Unify(6);
+
+		// Play/Pause
+		if (GUI.Button(rect, IsPlaying ? ICON_PAUSE : ICON_PLAY, Skin.SmallDarkButton)) {
+			IsPlaying = !IsPlaying;
+		}
+		rect.SlideRight(padding);
+
+
+
+		// Content
+		for (int layerIndex = 0; layerIndex < Animation.KeyLayers.Length; layerIndex++) {
+
+		}
+
+
+
+	}
+
+
+	private void Update_Hotkey () {
+
+		if (!GUI.Interactable || GUI.IsTyping) return;
+
+		// Play/Pause
+		if (Input.KeyboardDown(KeyboardKey.Space)) {
+			IsPlaying = !IsPlaying;
+		}
+
+		// Flip
+		if (Input.KeyboardDown(KeyboardKey.Tab)) {
+			Preview.FacingRight = !Preview.FacingRight;
+			Preview.Bounce();
+		}
 
 
 	}
@@ -235,6 +302,10 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		CurrentProject = project;
 		ConfigPool.Clear();
 		PreviewZoom = LastPreviewZoom.Value;
+		foreach (string path in Util.EnumerateFiles(CurrentProject.Universe.CharacterAnimationRoot, true, "*.json")) {
+			LoadCurrentAnimationFromFile(path);
+			break;
+		}
 	}
 
 
@@ -275,8 +346,17 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	}
 
 
+	private void LoadCurrentAnimationFromFile (string path) {
+		if (!Util.FileExists(path)) return;
+		Animation = JsonUtil.LoadOrCreateJsonFromPath<ModularAnimation>(path);
+		Animation.Name = Util.GetNameWithoutExtension(path);
+		Animation.ID = Animation.Name.AngeHash();
+	}
+
+
 	// Menu
 	private void ShowPreviewCharacterMenu (IRect rect) {
+		if (CurrentProject == null) return;
 		if (AllRigCharacterNames.Count == 0) return;
 		GenericPopupUI.BeginPopup(rect.BottomLeft());
 		for (int i = 0; i < AllRigCharacterNames.Count; i++) {
@@ -292,6 +372,25 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			if (GenericPopupUI.Instance.InvokingItemData is not int index) return;
 			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
 			Instance.SetPreviewCharacter(Instance.AllRigCharacterNames[index]);
+		}
+	}
+
+
+	private void ShowAnimationMenu (IRect rect) {
+		if (CurrentProject == null) return;
+		GenericPopupUI.BeginPopup(rect.BottomLeft());
+		foreach (string path in Util.EnumerateFiles(CurrentProject.Universe.CharacterAnimationRoot, true, "*.json")) {
+			string name = Util.GetNameWithoutExtension(path);
+			GenericPopupUI.AddItem(
+				name, Click,
+				@checked: name == Animation.Name,
+				data: path
+			);
+		}
+		// Func
+		static void Click () {
+			if (GenericPopupUI.Instance.InvokingItemData is not string path) return;
+			Instance.LoadCurrentAnimationFromFile(path);
 		}
 	}
 

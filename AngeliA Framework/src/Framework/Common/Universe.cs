@@ -22,6 +22,7 @@ public class Universe {
 
 	public string UniverseRoot { get; private set; }
 	public string SheetPath { get; private set; }
+	public string InfoPath { get; private set; }
 	public string ConversationRoot { get; private set; }
 	public string EditableConversationRoot { get; private set; }
 	public string UniverseMetaRoot { get; private set; }
@@ -31,7 +32,6 @@ public class Universe {
 	public string SavingRoot { get; private set; }
 	public string SavingMetaRoot { get; private set; }
 	public string ProcedureMapRoot { get; private set; }
-	public string InfoPath { get; private set; }
 	public string MusicRoot { get; private set; }
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
@@ -82,11 +82,18 @@ public class Universe {
 
 	public void CreateFolders () {
 		Util.CreateFolder(ConversationRoot);
+		Util.CreateFolder(EditableConversationRoot);
 		Util.CreateFolder(UniverseMetaRoot);
 		Util.CreateFolder(MapRoot);
-		Util.CreateFolder(ProcedureMapRoot);
+		Util.CreateFolder(LanguageRoot);
 		Util.CreateFolder(SavingRoot);
 		Util.CreateFolder(SavingMetaRoot);
+		Util.CreateFolder(ProcedureMapRoot);
+		Util.CreateFolder(MusicRoot);
+		Util.CreateFolder(SoundRoot);
+		Util.CreateFolder(FontRoot);
+		Util.CreateFolder(CharacterConfigRoot);
+		Util.CreateFolder(CharacterAnimationRoot);
 	}
 
 }

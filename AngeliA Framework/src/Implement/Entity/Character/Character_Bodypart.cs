@@ -21,6 +21,8 @@ public class BodyPart {
 	public bool UseLimbFlip { get; init; } = false;
 	public BodyPart LimbParent { get; init; } = null;
 	public bool IsFullCovered => Covered == CoverMode.FullCovered;
+	public int FacingSign => Width.Sign();
+	public bool FacingRight => Width > 0;
 
 	public int GlobalX;
 	public int GlobalY;

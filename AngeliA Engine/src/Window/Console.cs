@@ -239,9 +239,9 @@ public class Console : WindowUI {
 	#region --- LGC ---
 
 
-	private void OnLog (object obj) => LogLogic(obj.ToString(), 0);
-	private void OnLogWarning (object obj) => LogLogic(obj.ToString(), 1);
-	private void OnLogError (object obj) => LogLogic(obj.ToString(), 2);
+	private void OnLog (object obj) => LogLogic(obj != null ? obj.ToString() : "null", 0);
+	private void OnLogWarning (object obj) => LogLogic(obj != null ? obj.ToString() : "null", 1);
+	private void OnLogError (object obj) => LogLogic(obj != null ? obj.ToString() : "null", 2);
 	private void OnLogException (System.Exception ex) => OnLogError($"{ex.Source}; {ex.GetType().Name}; {ex.Message}");
 	private void LogLogic (string content, int level) {
 		const int MAX_CHAR_COUNT = 256;

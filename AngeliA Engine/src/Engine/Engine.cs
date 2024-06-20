@@ -102,33 +102,30 @@ public partial class Engine {
 
 		// TEST
 		//var test = new ModularAnimation() {
-		//	PoseType = CharacterAnimationType.Idle,
-		//	Override = ModularAnimation.CharacterOverrideType.Pose,
-		//	ID = "Test Ani".AngeHash(),
-		//	Name = "Test Ani",
 		//	KeyLayers = new ModularAnimation.KeyLayer[]{
 		//		new () {
-		//			Binding = ModularAnimation.Binding.Rot_Head,
+		//			BindingType = ModularAnimation.BindingType.Rotation,
+		//			BindingTarget = ModularAnimation.BindingTarget.Head,
 		//			KeyFrames = new ModularAnimation.KeyFrame []{
-		//				new(0, 0, EaseType.OutCubic),
-		//				new(30, 45, EaseType.OutCubic),
-		//				new(60, -45, EaseType.OutCubic),
-		//				new(90, 0, EaseType.OutCubic),
+		//				new(0, new(0, true), EaseType.OutCubic),
+		//				new(30,new(45, true) , EaseType.OutCubic),
+		//				new(60, new(-45, true), EaseType.OutCubic),
+		//				new(90, new(0, true), EaseType.OutCubic),
 		//			},
 		//		},
 		//		new () {
-		//			Binding = ModularAnimation.Binding.Width_Body,
+		//			BindingType = ModularAnimation.BindingType.Width,
+		//			BindingTarget = ModularAnimation.BindingTarget.Body,
 		//			KeyFrames = new ModularAnimation.KeyFrame []{
-		//				new(0, 0, EaseType.OutBounce),
-		//				new(60, 128, EaseType.OutBounce),
-		//				new(120, 0, EaseType.OutBounce),
+		//				new(0, new(0, true), EaseType.OutBounce),
+		//				new(60, new(128, true), EaseType.OutBounce),
+		//				new(120, new(0, true), EaseType.OutBounce),
 		//			},
 		//		},
 		//	},
-		//	CharacterName = "",
 		//};
 		//
-		//JsonUtil.SaveJsonToPath(test, "C:\\Data\\Test.json", true);
+		//JsonUtil.SaveJsonToPath(test, "C:\\Data\\Test.json", false);
 
 
 		var engine = new Engine();
