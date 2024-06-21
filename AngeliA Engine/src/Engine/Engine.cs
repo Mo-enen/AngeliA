@@ -802,6 +802,9 @@ public partial class Engine {
 		if (EngineSetting.Hotkey_Window_Artwork.Value.Down()) {
 			SetCurrentWindowIndex<PixelEditor>();
 		}
+		if (EngineSetting.Hotkey_Window_CharAni.Value.Down()) {
+			SetCurrentWindowIndex<CharacterAnimationEditorWindow>();
+		}
 		if (EngineSetting.Hotkey_Window_Language.Value.Down()) {
 			SetCurrentWindowIndex<LanguageEditor>();
 		}

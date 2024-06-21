@@ -973,21 +973,30 @@ public static class GUI {
 
 
 	// Scrollbar
-	public static int ScrollBar (int controlID, IRect contentRect, int positionRow, int totalSize, int pageSize, GUIStyle handleStyle = null, GUIStyle bgStyle = null) {
+	public static int ScrollBar (int controlID, IRect contentRect, int position, int totalSize, int pageSize, GUIStyle handleStyle = null, GUIStyle bgStyle = null, bool vertical = true) {
+
 		if (pageSize >= totalSize) return 0;
+
 		handleStyle ??= Skin.Scrollbar;
 		bgStyle ??= Skin.WeakPixel;
-		int barHeight = (int)((long)(contentRect.height * pageSize) / totalSize);
+
+		int barWidth = vertical ? contentRect.width : (int)((long)(contentRect.width * pageSize) / totalSize);
+		int barHeight = vertical ? (int)((long)(contentRect.height * pageSize) / totalSize) : contentRect.height;
 		var barRect = new IRect(
-			contentRect.x,
-			RemapLarge(
+			vertical ? contentRect.x : RemapLarge(
+				0, totalSize - pageSize,
+				contentRect.x, contentRect.xMax - barWidth,
+				position
+			),
+			vertical ? RemapLarge(
 				0, totalSize - pageSize,
 				contentRect.yMax - barHeight, contentRect.y,
-				positionRow
-			),
-			contentRect.width,
+				position
+			) : contentRect.y,
+			barWidth,
 			barHeight
 		);
+
 		static int RemapLarge (int l, int r, int newL, int newR, int t) {
 			return l == r ?
 				newL :
@@ -1008,12 +1017,17 @@ public static class GUI {
 			GUIState.Normal;
 		DrawStyleBody(barRect, handleStyle, state);
 
+		int axis = vertical ? 1 : 0;
 		// Dragging
 		if (dragging) {
-			int mouseY = Input.MouseGlobalPosition.y;
-			int mouseDownY = ScrollBarMouseDownPos.Value.x;
-			int scrollDownY = ScrollBarMouseDownPos.Value.y;
-			positionRow = scrollDownY + (mouseDownY - mouseY) * totalSize / contentRect.height;
+			int mousePos = Input.MouseGlobalPosition[axis];
+			int mouseDownPos = ScrollBarMouseDownPos.Value.x;
+			int scrollDownPos = ScrollBarMouseDownPos.Value.y;
+			if (vertical) {
+				position = scrollDownPos + (mouseDownPos - mousePos) * totalSize / contentRect.height;
+			} else {
+				position = scrollDownPos + (mouseDownPos - mousePos) * totalSize / -contentRect.width;
+			}
 		}
 
 		// Mouse Down
@@ -1021,23 +1035,24 @@ public static class GUI {
 			if (hoveringBar) {
 				// Start Drag
 				ScrollBarMouseDownPos = new Int2(
-					Input.MouseGlobalPosition.y, positionRow
+					Input.MouseGlobalPosition[axis], position
 				);
 				DraggingScrollbarID = controlID;
 			} else if (contentRect.MouseInside()) {
 				// Jump on Click
-				int mouseY = Input.MouseGlobalPosition.y;
-				positionRow = Util.RemapUnclamped(
-					contentRect.y, contentRect.yMax,
+				int mousePos = Input.MouseGlobalPosition[axis];
+				position = Util.RemapUnclamped(
+					vertical ? contentRect.y : contentRect.xMax,
+					vertical ? contentRect.yMax : contentRect.x,
 					totalSize - pageSize / 2, -pageSize / 2,
-					mouseY
+					mousePos
 				);
-				ScrollBarMouseDownPos = new Int2(mouseY, positionRow);
+				ScrollBarMouseDownPos = new Int2(mousePos, position);
 				DraggingScrollbarID = controlID;
 			}
 		}
 
-		return positionRow.Clamp(0, totalSize - pageSize);
+		return position.Clamp(0, totalSize - pageSize);
 	}
 
 

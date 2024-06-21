@@ -7,7 +7,10 @@ public sealed class DefaultHipSuit : HipCloth {
 }
 
 
-public class HipCloth : Cloth {
+public sealed class ModularHipSuit : HipCloth, IModularCloth {}
+
+
+public abstract class HipCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hip;
 	public override bool SpriteLoaded => SpriteIdHip != 0 || SpriteIdSkirt != 0;

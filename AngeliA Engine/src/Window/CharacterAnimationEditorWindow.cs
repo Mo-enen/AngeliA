@@ -66,22 +66,23 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	private readonly Dictionary<int, CharacterConfig> ConfigPool = new();
 	private readonly List<string> AllRigCharacterNames;
 	private readonly PreviewCharacter Preview = new() { Active = true, };
-	private readonly Face Preview_Face = new();
-	private readonly Horn Preview_Horn = new();
-	private readonly Wing Preview_Wing = new();
-	private readonly Tail Preview_Tail = new();
-	private readonly Ear Preview_Ear = new();
-	private readonly Hair Preview_Hair = new();
-	private readonly HeadCloth PreviewCloth_Head = new();
-	private readonly BodyCloth PreviewCloth_Body = new();
-	private readonly HipCloth PreviewCloth_Hip = new();
-	private readonly HandCloth PreviewCloth_Hand = new();
-	private readonly FootCloth PreviewCloth_Foot = new();
+	private readonly ModularFace Preview_Face = new();
+	private readonly ModularHorn Preview_Horn = new();
+	private readonly ModularWing Preview_Wing = new();
+	private readonly ModularTail Preview_Tail = new();
+	private readonly ModularEar Preview_Ear = new();
+	private readonly ModularHair Preview_Hair = new();
+	private readonly ModularHeadSuit PreviewCloth_Head = new();
+	private readonly ModularBodySuit PreviewCloth_Body = new();
+	private readonly ModularHipSuit PreviewCloth_Hip = new();
+	private readonly ModularHandSuit PreviewCloth_Hand = new();
+	private readonly ModularFootSuit PreviewCloth_Foot = new();
 	private Project CurrentProject = null;
 	private ModularAnimation Animation = new();
 	private string PreviewCharacterName = "";
 	private int AnimationFrame = 0;
 	private int PreviewZoom = 1000;
+	private int ContentScrollX = 0;
 	private bool PreviewInitialized = false;
 	private bool IsPlaying = false;
 
@@ -236,11 +237,15 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 	private void Update_Timeline (IRect panelRect) {
 
+		int leftPanelWidth = Unify(196);
+		int frameWidth = Unify(12);
+		var contentRect = panelRect.Shrink(leftPanelWidth, 0, GUI.ToolbarSize, 0);
+		int pageCount = contentRect.width.CeilDivide(frameWidth);
+
 		// Toolbar
 		var toolbarRect = panelRect.EdgeDown(GUI.ToolbarSize);
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
-		toolbarRect = toolbarRect.Shrink(Unify(6));
-		var rect = toolbarRect.EdgeLeft(toolbarRect.height);
+		var rect = toolbarRect.Shrink(Unify(6)).EdgeLeft(toolbarRect.height - Unify(12));
 		int padding = Unify(6);
 
 		// Play/Pause
@@ -249,12 +254,51 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		}
 		rect.SlideRight(padding);
 
-
-
-		// Content
+		// Left Panel
+		var leftPanelRect = panelRect.Shrink(0, panelRect.width - leftPanelWidth, GUI.ToolbarSize, 0);
+		var panelLayerRect = leftPanelRect.EdgeUp(GUI.FieldHeight);
 		for (int layerIndex = 0; layerIndex < Animation.KeyLayers.Length; layerIndex++) {
 
+
+
+			panelLayerRect.SlideDown();
 		}
+
+		// Content
+		int maxScroll = (Animation.Duration * frameWidth - contentRect.width + Unify(96)).GreaterOrEquelThanZero();
+		using (var scroll = new GUIHorizontalScrollScope(contentRect, ContentScrollX, 0, maxScroll)) {
+
+			ContentScrollX = scroll.PositionX;
+			int startFrame = ContentScrollX / frameWidth;
+
+			// Layers
+			var layerRect = contentRect.EdgeUp(GUI.FieldHeight);
+			for (int layerIndex = 0; layerIndex < Animation.KeyLayers.Length; layerIndex++) {
+
+
+				layerRect.SlideDown();
+			}
+		}
+
+		// Ruler
+		rect = toolbarRect.ShrinkLeft(leftPanelWidth).EdgeLeft(Unify(2)).TopHalf();
+		rect.x += frameWidth - ContentScrollX.UMod(frameWidth);
+		for (int i = 0; i < pageCount; i++) {
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_V, rect, Color32.WHITE_20);
+			rect.x += frameWidth;
+		}
+
+		// Scrollbar
+		if (maxScroll > 0) {
+			ContentScrollX = GUI.ScrollBar(
+				96624128,
+				toolbarRect.ShrinkLeft(leftPanelWidth).BottomHalf(),
+				ContentScrollX, Animation.Duration * frameWidth + Unify(96), contentRect.width,
+				vertical: false
+			);
+		}
+
+		// Frame Line
 
 
 

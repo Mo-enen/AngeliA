@@ -22,7 +22,10 @@ public sealed class DefaultFace : Face {
 }
 
 
-public class Face : BodyGadget {
+public sealed class ModularFace : Face, IModularBodyGadget { }
+
+
+public abstract class Face : BodyGadget {
 
 
 	// VAR

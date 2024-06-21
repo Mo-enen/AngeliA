@@ -8,7 +8,11 @@ public sealed class DefaultFootSuit : FootCloth {
 	public DefaultFootSuit () => FillFromSheet(GetType().AngeName());
 }
 
-public class FootCloth : Cloth {
+
+public sealed class ModularFootSuit : FootCloth, IModularCloth {}
+
+
+public abstract class FootCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Foot;
 	public override bool SpriteLoaded => SpriteID != 0;

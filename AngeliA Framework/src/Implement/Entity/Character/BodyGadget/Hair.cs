@@ -11,6 +11,9 @@ public sealed class DefaultHair : Hair {
 }
 
 
+public sealed class ModularHair : Hair, IModularBodyGadget { }
+
+
 public abstract class BraidHair : Hair {
 
 	private static readonly Cell[] SINGLE_CELL = new Cell[] { new() };
@@ -218,7 +221,7 @@ public abstract class BraidHair : Hair {
 }
 
 
-public class Hair : BodyGadget {
+public abstract class Hair : BodyGadget {
 
 
 	// Const

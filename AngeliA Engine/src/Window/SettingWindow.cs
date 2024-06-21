@@ -33,7 +33,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
 	private static readonly LanguageCode LABEL_MEDT_ENABLE = ("Setting.MEDT.Enable", "Use Map Editor in Engine");
 	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Drop Player when Release Space Key");
-	private static readonly LanguageCode LABEL_MEDT_SHOW_STATE = ("Setting.MEDT.ShowState", "Show State Info");
+	private static readonly LanguageCode LABEL_MEDT_SHOW_STATE = ("Setting.MEDT.ShowState", "Show State Info on Bottom-Right");
 	private static readonly LanguageCode LABEL_MEDT_SHOW_BEHIND = ("Setting.MEDT.ShowBehind", "Show Map Behind");
 	private static readonly LanguageCode LABEL_MEDT_AUTO_ZOOM = ("Setting.MEDT.AutoZoom", "Auto Zoom when Editing");
 	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
@@ -48,6 +48,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_HOTKEY_CLEAR_CONSOLE = ("Setting.Hotkey.ClearConsole", "Clear Console");
 	private static readonly LanguageCode LABEL_HOTKEY_MEDT = ("Setting.Hotkey.MEDT", "Open Map Editor");
 	private static readonly LanguageCode LABEL_HOTKEY_ART = ("Setting.Hotkey.Artwork", "Open Artwork");
+	private static readonly LanguageCode LABEL_HOTKEY_ANI = ("Setting.Hotkey.CharAni", "Open Character Animation");
 	private static readonly LanguageCode LABEL_HOTKEY_LANGUAGE = ("Setting.Hotkey.Language", "Open Language Editor");
 	private static readonly LanguageCode LABEL_HOTKEY_CONSOLE = ("Setting.Hotkey.Console", "Open Console");
 	private static readonly LanguageCode LABEL_HOTKEY_PROJECT = ("Setting.Hotkey.Project", "Open Project Editor");
@@ -319,6 +320,9 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		HotkeyField(rect, EngineSetting.Hotkey_Window_Artwork, LABEL_HOTKEY_ART);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_Window_CharAni, LABEL_HOTKEY_ANI);
 		rect.SlideDown(itemPadding);
 
 		HotkeyField(rect, EngineSetting.Hotkey_Window_Language, LABEL_HOTKEY_LANGUAGE);

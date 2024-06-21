@@ -131,6 +131,44 @@ public readonly struct GUIScrollScope : System.IDisposable {
 }
 
 
+public readonly struct GUIHorizontalScrollScope : System.IDisposable {
+	public readonly int PositionX;
+	public readonly IRect Rect;
+	public readonly int CellCount;
+	public readonly Int2 MousePosShift;
+	public GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue) {
+
+		bool mouseInside = rect.MouseInside();
+		Rect = rect;
+		CellCount = Renderer.GetUsedCellCount(RenderLayer.UI);
+		MousePosShift = Input.MousePositionShift;
+		if (!mouseInside) Input.IgnoreMouseInput();
+
+		// Scroll by Mouse Wheel
+		if (mouseInside && Input.MouseWheelDelta != 0) {
+			positionX -= Input.MouseWheelDelta * GUI.Unify(96);
+		}
+		PositionX = positionX.Clamp(min, max);
+
+		// Shift Input
+		Input.SetMousePositionShift(-PositionX, 0);
+
+	}
+	public readonly void Dispose () {
+		Input.SetMousePositionShift(MousePosShift.x, MousePosShift.y);
+		Input.CancelIgnoreMouseInput();
+		int startIndex = CellCount;
+		if (startIndex >= 0) {
+			if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
+				for (int i = startIndex; i < count; i++) {
+					cells[i].X += PositionX;
+				}
+			}
+			Renderer.ClampCells(RenderLayer.UI, Rect, startIndex);
+		}
+	}
+}
+
 
 public readonly struct SheetIndexScope : System.IDisposable {
 	private readonly int OldSheet;

@@ -5,6 +5,8 @@ namespace AngeliA;
 
 public enum ClothType { Head, Body, Hand, Hip, Foot, }
 
+internal interface IModularCloth { }
+
 public abstract class Cloth {
 
 
@@ -24,45 +26,69 @@ public abstract class Cloth {
 	// MSG
 	[OnGameInitialize(-129)]
 	public static void BeforeGameInitialize () {
+
 		// Init Pool
 		Pool.Clear();
 		var clothType = typeof(Cloth);
-		var clTypes = new List<System.Type>();
 		foreach (var type in clothType.AllChildClass()) {
-			if (type.BaseType == clothType) {
-				clTypes.Add(type);
-			} else {
-				if (System.Activator.CreateInstance(type) is not Cloth cloth) continue;
-				cloth.FillFromSheet(type.AngeName());
-				int suitID = type.AngeHash();
-				Pool.TryAdd(suitID, cloth);
-			}
+			if (System.Activator.CreateInstance(type) is not Cloth cloth) continue;
+			cloth.FillFromSheet(type.AngeName());
+			int suitID = type.AngeHash();
+			Pool.TryAdd(suitID, cloth);
 		}
+
+		// Get Modular Types
+		int clothTypeCount = typeof(ClothType).EnumLength();
+		var modularTypes = new System.Type[clothTypeCount];
+		foreach (var mType in typeof(IModularCloth).AllClassImplemented()) {
+			if (System.Activator.CreateInstance(mType) is not Cloth cloth) continue;
+			int typeIndex = (int)cloth.ClothType;
+			modularTypes[typeIndex] = mType;
+		}
+
 		// Init Default Pool
-		DefaultPool = new Dictionary<int, int>[clTypes.Count].FillWithNewValue();
-		var templates = new Cloth[clTypes.Count];
+		DefaultPool = new Dictionary<int, int>[clothTypeCount].FillWithNewValue();
 		foreach (var charType in typeof(PoseCharacter).AllChildClass()) {
 			string cName = charType.AngeName();
-			int cID = cName.AngeHash();
-			for (int i = 0; i < clTypes.Count; i++) {
-				var clType = clTypes[i];
-				var temp = templates[i];
-				temp ??= templates[i] = System.Activator.CreateInstance(clType) as Cloth;
-				if (temp == null) continue;
+			int charID = cName.AngeHash();
+			// From Attribute
+			foreach (var att in charType.GetCustomAttributes(typeof(DefaultClothAttribute), inherit: false)) {
+				if (att is not DefaultClothAttribute bAtt) continue;
+				string gName = bAtt.TargetClothName;
+				var gType = bAtt.Type;
+				var dPool = DefaultPool[(int)gType];
+				if (dPool.ContainsKey(charID)) continue;
+				int gID = gName.AngeHash();
+				if (!Pool.ContainsKey(gID)) {
+					if (System.Activator.CreateInstance(modularTypes[(int)gType]) is not Cloth temp) continue;
+					Pool.TryAdd(gID, temp);
+				}
+				dPool.Add(charID, gID);
+			}
+			// From Sheet
+			for (int i = 0; i < clothTypeCount; i++) {
+				var clType = modularTypes[i];
+				var dPool = DefaultPool[i];
+				if (dPool.ContainsKey(charID)) continue;
+				if (System.Activator.CreateInstance(clType) is not Cloth temp) continue;
 				if (!temp.FillFromSheet(cName)) continue;
-				templates[i] = null;
 				int sID = $"{cName}.{clType.AngeName()}".AngeHash();
 				Pool.TryAdd(sID, temp);
-				DefaultPool[(int)temp.ClothType].TryAdd(cID, sID);
+				dPool.Add(charID, sID);
 			}
 		}
+
 	}
+
 
 	public Cloth () => TypeID = GetType().AngeHash();
 
+
 	public abstract void DrawCloth (PoseCharacter character);
 
+
 	public abstract bool FillFromSheet (string name);
+
 
 	// Pool
 	public static bool HasCloth (int clothID) => Pool.ContainsKey(clothID);

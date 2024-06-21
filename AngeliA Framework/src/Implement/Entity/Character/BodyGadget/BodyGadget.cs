@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace AngeliA;
 
 public enum BodyGadgetType { Face, Hair, Ear, Horn, Tail, Wing, }
+
+internal interface IModularBodyGadget { }
 
 public abstract class BodyGadget {
 
@@ -18,39 +20,55 @@ public abstract class BodyGadget {
 	// MSG
 	[OnGameInitialize(-129)]
 	public static void BeforeGameInitialize () {
+
+
 		// Init Pool
 		Pool.Clear();
-		var bodyGadBaseType = typeof(BodyGadget);
-		var bgTypes = new List<System.Type>();
-		foreach (var type in bodyGadBaseType.AllChildClass()) {
-			if (type.BaseType == bodyGadBaseType) {
-				bgTypes.Add(type);
-			} else {
-				if (System.Activator.CreateInstance(type) is not BodyGadget gadget) continue;
-				gadget.FillFromSheet(type.AngeName());
-				int id = type.AngeHash();
-				Pool.TryAdd(id, gadget);
-			}
+		foreach (var type in typeof(BodyGadget).AllChildClass()) {
+			if (System.Activator.CreateInstance(type) is not BodyGadget gadget) continue;
+			gadget.FillFromSheet(type.AngeName());
+			int id = type.AngeHash();
+			Pool.TryAdd(id, gadget);
 		}
-		// Init DefaultPool
-		var templates = new BodyGadget[bgTypes.Count];
-		DefaultPool = new Dictionary<int, int>[bgTypes.Count].FillWithNewValue();
+
+		// Get Modular Types
+		int gadgetTypeCount = typeof(BodyGadgetType).EnumLength();
+		var modularTypes = new System.Type[gadgetTypeCount];
+		foreach (var mType in typeof(IModularBodyGadget).AllClassImplemented()) {
+			if (System.Activator.CreateInstance(mType) is not BodyGadget gadget) continue;
+			int typeIndex = (int)gadget.GadgetType;
+			modularTypes[typeIndex] = mType;
+		}
+
+		// Fill Default
+		DefaultPool = new Dictionary<int, int>[gadgetTypeCount].FillWithNewValue();
 		foreach (var charType in typeof(PoseCharacter).AllChildClass()) {
 			string charName = charType.AngeName();
 			int charID = charName.AngeHash();
-			for (int i = 0; i < bgTypes.Count; i++) {
-				var gType = bgTypes[i];
-				if (gType == null) break;
-				// Create Template
-				var temp = templates[i];
-				temp ??= templates[i] = System.Activator.CreateInstance(gType) as BodyGadget;
-				if (temp == null) continue;
+			// Get Default from Attribute
+			foreach (var att in charType.GetCustomAttributes(typeof(DefaultBodyGadgetAttribute), inherit: false)) {
+				if (att is not DefaultBodyGadgetAttribute bAtt) continue;
+				string gName = bAtt.TargetGadgetName;
+				var gType = bAtt.Type;
+				var dPool = DefaultPool[(int)gType];
+				if (dPool.ContainsKey(charID)) continue;
+				int gID = gName.AngeHash();
+				if (!Pool.ContainsKey(gID)) {
+					if (System.Activator.CreateInstance(modularTypes[(int)gType]) is not BodyGadget temp) continue;
+					Pool.TryAdd(gID, temp);
+				}
+				dPool.Add(charID, gID);
+			}
+			// Get Default from Sheet
+			for (int i = 0; i < gadgetTypeCount; i++) {
+				var gType = modularTypes[i];
+				var dPool = DefaultPool[i];
+				if (dPool.ContainsKey(charID)) continue;
+				if (System.Activator.CreateInstance(gType) is not BodyGadget temp) continue;
 				if (!temp.FillFromSheet(charName)) continue;
-				// Founded
-				templates[i] = null;
 				int ggID = $"{charName}.{gType.AngeName()}".AngeHash();
 				Pool.TryAdd(ggID, temp);
-				DefaultPool[(int)temp.GadgetType].TryAdd(charID, ggID);
+				dPool.Add(charID, ggID);
 			}
 		}
 	}

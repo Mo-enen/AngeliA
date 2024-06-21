@@ -22,10 +22,11 @@ public abstract class PoseCharacter : Character {
 
 
 	// Const
+	public const int BODY_PART_COUNT = 17;
 	private const int CM_PER_PX = 5;
 	private const int A2G = Const.CEL / Const.ART_CEL;
-	private static readonly int[] DEFAULT_BODY_PART_ID = { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
-	private static readonly string[] BODY_PART_NAME = { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
+	private static readonly int[] DEFAULT_BODY_PART_ID = new int[BODY_PART_COUNT] { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
+	private static readonly string[] BODY_PART_NAME = new string[BODY_PART_COUNT] { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
 	private static readonly int[] FAILBACK_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
 	private static readonly int[] FAILBACK_POSE_HANDHELD_IDS = { typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Shooting).AngeHash(), typeof(PoseHandheld_Float).AngeHash(), };
 	private static readonly int[] FAILBACK_POSE_ATTACK_IDS = { typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Arrow).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), };
@@ -64,6 +65,7 @@ public abstract class PoseCharacter : Character {
 	public override int GrowingHeight => base.GrowingHeight * CharacterHeight / 160;
 
 	// BodyPart
+	public readonly BodyPart[] BodyParts = new BodyPart[BODY_PART_COUNT];
 	public BodyPart Head { get; init; } = null;
 	public BodyPart Body { get; init; } = null;
 	public BodyPart Hip { get; init; } = null;
@@ -99,7 +101,6 @@ public abstract class PoseCharacter : Character {
 
 	// Data
 	private static readonly Dictionary<int, CharacterConfig> ConfigPool = new();
-	private readonly BodyPart[] BodyParts = null;
 	private readonly BuffInt[] PoseAnimationIDs;
 	private readonly BuffInt[] PoseHandheldIDs;
 	private readonly BuffInt[] PoseAttackIDs;
@@ -160,9 +161,7 @@ public abstract class PoseCharacter : Character {
 	public PoseCharacter () {
 		// [order -64 from stage]
 		// Body Part
-		int len = DEFAULT_BODY_PART_ID.Length;
-		BodyParts = new BodyPart[len];
-		for (int i = 0; i < len; i++) {
+		for (int i = 0; i < BODY_PART_COUNT; i++) {
 			var bodyPart = BodyParts[i] = new BodyPart(
 				parent: (i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null,
 				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16
@@ -301,10 +300,10 @@ public abstract class PoseCharacter : Character {
 		UpperArmL.FlexableSizeY = UpperArmR.FlexableSizeY = UpperArmL.SizeY * targetUnitHeight / defaultCharHeight;
 		LowerArmL.FlexableSizeY = LowerArmR.FlexableSizeY = LowerArmL.SizeY * targetUnitHeight / defaultCharHeight;
 		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight;
-		int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
-		int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
-		int hipBorderL = FacingRight ? Hip.Border.left : Hip.Border.right;
-		int hipBorderR = FacingRight ? Hip.Border.right : Hip.Border.left;
+		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
+		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
+		int hipBorderL = (FacingRight ? Hip.Border.left : Hip.Border.right) * Hip.Width.Abs() / Hip.SizeX;
+		int hipBorderR = (FacingRight ? Hip.Border.right : Hip.Border.left) * Hip.Width.Abs() / Hip.SizeX;
 
 		// Head
 		Head.X = 0;
@@ -747,6 +746,62 @@ public abstract class PoseCharacter : Character {
 		config.SuitHip = SuitHip.BaseValue;
 		config.SuitHand = SuitHand.BaseValue;
 		config.SuitFoot = SuitFoot.BaseValue;
+
+	}
+
+
+	// Animation
+	public void ResetAllLimbsPosition () {
+
+		int targetUnitHeight = CharacterHeight * A2G / CM_PER_PX - Head.SizeY;
+		int defaultCharHeight = Body.SizeY + Hip.SizeY + UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
+		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight;
+		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
+		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
+		int hipBorderL = (FacingRight ? Hip.Border.left : Hip.Border.right) * Hip.Width.Abs() / Hip.SizeX;
+		int hipBorderR = (FacingRight ? Hip.Border.right : Hip.Border.left) * Hip.Width.Abs() / Hip.SizeX;
+
+		ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+		ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
+
+		ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
+		ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
+
+		UpperArmL.X = ShoulderL.X;
+		UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+
+		UpperArmR.X = ShoulderR.X;
+		UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+
+		LowerArmL.X = UpperArmL.X;
+		LowerArmL.Y = UpperArmL.Y - UpperArmL.Height;
+
+		LowerArmR.X = UpperArmR.X;
+		LowerArmR.Y = UpperArmR.Y - UpperArmR.Height;
+
+		HandL.X = LowerArmL.X;
+		HandL.Y = LowerArmL.Y - LowerArmL.Height;
+
+		HandR.X = LowerArmR.X;
+		HandR.Y = LowerArmR.Y - LowerArmR.Height;
+
+		UpperLegL.X = Hip.X - Hip.Width.Abs() / 2 + hipBorderL;
+		UpperLegL.Y = Hip.Y;
+
+		UpperLegR.X = Hip.X + Hip.Width.Abs() / 2 - hipBorderR;
+		UpperLegR.Y = Hip.Y;
+
+		LowerLegL.X = UpperLegL.X;
+		LowerLegL.Y = UpperLegL.Y - UpperLegL.Height;
+
+		LowerLegR.X = UpperLegR.X;
+		LowerLegR.Y = UpperLegR.Y - UpperLegR.Height;
+
+		FootL.X = FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
+		FootL.Y = LowerLegL.Y - LowerLegL.Height;
+
+		FootR.X = FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
+		FootR.Y = LowerLegR.Y - LowerLegR.Height;
 
 	}
 

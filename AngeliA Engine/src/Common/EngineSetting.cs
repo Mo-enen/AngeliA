@@ -36,10 +36,11 @@ public class EngineSetting {
 	public static readonly SavingHotkey Hotkey_ClearConsole = new("Hotkey.ClearConsole", new Hotkey(KeyboardKey.C, ctrl: true, shift: true));
 	public static readonly SavingHotkey Hotkey_Window_MapEditor = new("Hotkey.Window.MapEditor", new Hotkey(KeyboardKey.F1));
 	public static readonly SavingHotkey Hotkey_Window_Artwork = new("Hotkey.Window.Artwork", new Hotkey(KeyboardKey.F2));
-	public static readonly SavingHotkey Hotkey_Window_Language = new("Hotkey.Window.Language", new Hotkey(KeyboardKey.F3));
-	public static readonly SavingHotkey Hotkey_Window_Console = new("Hotkey.Window.Console", new Hotkey(KeyboardKey.F4));
-	public static readonly SavingHotkey Hotkey_Window_Project = new("Hotkey.Window.Project", new Hotkey(KeyboardKey.F5));
-	public static readonly SavingHotkey Hotkey_Window_Setting = new("Hotkey.Window.Setting", new Hotkey(KeyboardKey.F6));
+	public static readonly SavingHotkey Hotkey_Window_CharAni = new("Hotkey.Window.CharAni", new Hotkey(KeyboardKey.F3));
+	public static readonly SavingHotkey Hotkey_Window_Language = new("Hotkey.Window.Language", new Hotkey(KeyboardKey.F4));
+	public static readonly SavingHotkey Hotkey_Window_Console = new("Hotkey.Window.Console", new Hotkey(KeyboardKey.F5));
+	public static readonly SavingHotkey Hotkey_Window_Project = new("Hotkey.Window.Project", new Hotkey(KeyboardKey.F6));
+	public static readonly SavingHotkey Hotkey_Window_Setting = new("Hotkey.Window.Setting", new Hotkey(KeyboardKey.F7));
 	public static readonly SavingHotkey Hotkey_PixTool_Rect = new("Hotkey.Pix.Rect", new Hotkey(KeyboardKey.U));
 	public static readonly SavingHotkey Hotkey_PixTool_Line = new("Hotkey.Pix.Line", new Hotkey(KeyboardKey.L));
 	public static readonly SavingHotkey Hotkey_PixTool_Bucket = new("Hotkey.Pix.Bucket", new Hotkey(KeyboardKey.G));

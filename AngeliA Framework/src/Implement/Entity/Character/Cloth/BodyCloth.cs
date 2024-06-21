@@ -13,7 +13,10 @@ public sealed class DefaultBodySuit : BodyCloth {
 }
 
 
-public class BodyCloth : Cloth {
+public sealed class ModularBodySuit : BodyCloth, IModularCloth { }
+
+
+public abstract class BodyCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Body;
 	public override bool SpriteLoaded => SpriteIdFrontL != 0 || SpriteIdFrontR != 0;

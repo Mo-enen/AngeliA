@@ -8,7 +8,10 @@ public class DevilWing : Wing { protected override int Scale => 600; }
 public class PropellerWing : Wing { }
 
 
-public class Wing : BodyGadget {
+public sealed class ModularWing : Wing, IModularBodyGadget { }
+
+
+public abstract class Wing : BodyGadget {
 
 
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Wing;

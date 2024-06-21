@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class Ear : BodyGadget {
+public sealed class ModularEar : Ear, IModularBodyGadget { }
+
+public abstract class Ear : BodyGadget {
 
 
 	// VAR

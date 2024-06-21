@@ -1,43 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace AngeliA;
 
 
 // Game
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeAttribute : System.Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : System.Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateAttribute : OrderedAttribute { public OnGameUpdateAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : OrderedAttribute { public OnGameUpdateLaterAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : OrderedAttribute { public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameRestartAttribute : OrderedAttribute { public OnGameRestartAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : OrderedAttribute { public OnGameTryingToQuitAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameQuittingAttribute : OrderedAttribute { public OnGameQuittingAttribute (int order = 0) : base(order) { } }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameFocusedAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnGameLostFocusAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnFileDroppedAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnSheetReloadAttribute : System.Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeAttribute : Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameUpdateAttribute : OrderedAttribute { public OnGameUpdateAttribute (int order = 0) : base(order) { } }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : OrderedAttribute { public OnGameUpdateLaterAttribute (int order = 0) : base(order) { } }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : OrderedAttribute { public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { } }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameRestartAttribute : OrderedAttribute { public OnGameRestartAttribute (int order = 0) : base(order) { } }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameTryingToQuitAttribute : OrderedAttribute { public OnGameTryingToQuitAttribute (int order = 0) : base(order) { } }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameQuittingAttribute : OrderedAttribute { public OnGameQuittingAttribute (int order = 0) : base(order) { } }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameFocusedAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameLostFocusAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class OnFileDroppedAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class OnSheetReloadAttribute : Attribute { }
 
 
 // Project
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class ToolApplicationAttribute : System.Attribute { }
+[AttributeUsage(AttributeTargets.Assembly)]
+public class ToolApplicationAttribute : Attribute { }
 
 
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class DisablePauseAttribute : System.Attribute { }
+[AttributeUsage(AttributeTargets.Assembly)]
+public class DisablePauseAttribute : Attribute { }
 
 
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class IgnoreArtworkPixelsAttribute : System.Attribute { }
+[AttributeUsage(AttributeTargets.Assembly)]
+public class IgnoreArtworkPixelsAttribute : Attribute { }
 
 
-[System.AttributeUsage(System.AttributeTargets.Assembly)]
-public class PlayerCanNotRestartGameAttribute : System.Attribute { }
+[AttributeUsage(AttributeTargets.Assembly)]
+public class PlayerCanNotRestartGameAttribute : Attribute { }
 
 
-[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
-public class EntityLayerCapacityAttribute : System.Attribute {
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class EntityLayerCapacityAttribute : Attribute {
 	public int Layer;
 	public int Capacity;
 	public EntityLayerCapacityAttribute (int layer, int capacity) {
@@ -47,8 +48,8 @@ public class EntityLayerCapacityAttribute : System.Attribute {
 }
 
 
-[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
-public class RenderLayerCapacityAttribute : System.Attribute {
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class RenderLayerCapacityAttribute : Attribute {
 	public int Layer;
 	public int Capacity;
 	public RenderLayerCapacityAttribute (int layer, int capacity) {
@@ -58,28 +59,51 @@ public class RenderLayerCapacityAttribute : System.Attribute {
 }
 
 
+// Character Default
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class DefaultBodyGadgetAttribute : Attribute {
+	public BodyGadgetType Type;
+	public string TargetGadgetName;
+	public DefaultBodyGadgetAttribute (BodyGadgetType type, string targetGadgetName) {
+		Type = type;
+		TargetGadgetName = targetGadgetName;
+	}
+}
+
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class DefaultClothAttribute : Attribute {
+	public ClothType Type;
+	public string TargetClothName;
+	public DefaultClothAttribute (ClothType type, string targetClothName) {
+		Type = type;
+		TargetClothName = targetClothName;
+	}
+}
+
+
 // Stage
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnViewZChangedAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLayerFrameUpdateAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLayerFrameUpdateAttribute : System.Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class OnViewZChangedAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class BeforeLayerFrameUpdateAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class AfterLayerFrameUpdateAttribute : Attribute { }
 
 
 // Item
-[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
-public class ItemCombinationAttribute : System.Attribute {
-	public System.Type ItemA = null;
-	public System.Type ItemB = null;
-	public System.Type ItemC = null;
-	public System.Type ItemD = null;
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ItemCombinationAttribute : Attribute {
+	public Type ItemA = null;
+	public Type ItemB = null;
+	public Type ItemC = null;
+	public Type ItemD = null;
 	public int Count = 1;
 	public bool ConsumeA = true;
 	public bool ConsumeB = true;
 	public bool ConsumeC = true;
 	public bool ConsumeD = true;
-	public ItemCombinationAttribute (System.Type itemA, int count = 1, bool consumeA = true) : this(itemA, null, null, null, count, consumeA, true, true, true) { }
-	public ItemCombinationAttribute (System.Type itemA, System.Type itemB, int count = 1, bool consumeA = true, bool consumeB = true) : this(itemA, itemB, null, null, count, consumeA, consumeB, true, true) { }
-	public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true) : this(itemA, itemB, itemC, null, count, consumeA, consumeB, consumeC, true) { }
-	public ItemCombinationAttribute (System.Type itemA, System.Type itemB, System.Type itemC, System.Type itemD, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true) {
+	public ItemCombinationAttribute (Type itemA, int count = 1, bool consumeA = true) : this(itemA, null, null, null, count, consumeA, true, true, true) { }
+	public ItemCombinationAttribute (Type itemA, Type itemB, int count = 1, bool consumeA = true, bool consumeB = true) : this(itemA, itemB, null, null, count, consumeA, consumeB, true, true) { }
+	public ItemCombinationAttribute (Type itemA, Type itemB, Type itemC, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true) : this(itemA, itemB, itemC, null, count, consumeA, consumeB, consumeC, true) { }
+	public ItemCombinationAttribute (Type itemA, Type itemB, Type itemC, Type itemD, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true) {
 		ItemA = itemA;
 		ItemB = itemB;
 		ItemC = itemC;
@@ -94,32 +118,35 @@ public class ItemCombinationAttribute : System.Attribute {
 
 
 // Animation
-[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
-public class DefaultCharacterAnimationAttribute : System.Attribute {
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+public class DefaultCharacterAnimationAttribute : Attribute {
 	public int CharacterID;
 	public CharacterAnimationType Type;
-	public DefaultCharacterAnimationAttribute (System.Type character, CharacterAnimationType type) {
+	public DefaultCharacterAnimationAttribute (Type character, CharacterAnimationType type) {
 		CharacterID = character.AngeHash();
 		Type = type;
 	}
 }
 
-[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
-public class DefaultCharacterHandheldAnimationAttribute : System.Attribute {
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+public class DefaultCharacterHandheldAnimationAttribute : Attribute {
 	public int CharacterID;
 	public WeaponHandheld Held;
-	public DefaultCharacterHandheldAnimationAttribute (System.Type character, WeaponHandheld held) {
+	public DefaultCharacterHandheldAnimationAttribute (Type character, WeaponHandheld held) {
 		CharacterID = character.AngeHash();
 		Held = held;
 	}
 }
 
-[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
-public class DefaultCharacterAttackAnimationAttribute : System.Attribute {
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+public class DefaultCharacterAttackAnimationAttribute : Attribute {
 	public int CharacterID;
 	public WeaponType Type;
-	public DefaultCharacterAttackAnimationAttribute (System.Type character, WeaponType type) {
+	public DefaultCharacterAttackAnimationAttribute (Type character, WeaponType type) {
 		CharacterID = character.AngeHash();
 		Type = type;
 	}
 }
+

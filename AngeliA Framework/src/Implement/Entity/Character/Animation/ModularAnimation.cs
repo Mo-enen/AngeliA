@@ -65,27 +65,24 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 		public BindingType BindingType;
 		public BindingTarget BindingTarget;
-		public KeyFrame[] KeyFrames;
+		public List<KeyFrame> KeyFrames = new();
 
-		public void Sort () {
-			if (KeyFrames == null) return;
-			System.Array.Sort(KeyFrames, KeyFrameComparer.Instance);
-		}
+		public void Sort () => KeyFrames.Sort(KeyFrameComparer.Instance);
 
 		public FrameValue Evaluate (int frame) => Evaluate(frame, 0, out _);
 		internal FrameValue Evaluate (int frame, int fromKeyFrame, out int keyFrame) {
 			keyFrame = 0;
-			if (KeyFrames.Length == 0) return default;
-			if (KeyFrames.Length == 1) return KeyFrames[0].Value;
+			if (KeyFrames.Count == 0) return default;
+			if (KeyFrames.Count == 1) return KeyFrames[0].Value;
 			int index = -1;
-			for (int i = fromKeyFrame; i < KeyFrames.Length; i++) {
+			for (int i = fromKeyFrame; i < KeyFrames.Count; i++) {
 				var k = KeyFrames[i];
 				if (k.Frame > frame) break;
 				index = i;
 			}
 			if (index == -1) return KeyFrames[0].Value;
-			keyFrame = KeyFrames.Length - 1;
-			if (index == KeyFrames.Length - 1) return KeyFrames[^1].Value;
+			keyFrame = KeyFrames.Count - 1;
+			if (index == KeyFrames.Count - 1) return KeyFrames[^1].Value;
 			keyFrame = index;
 			var left = KeyFrames[index];
 			var right = KeyFrames[index + 1];
@@ -118,10 +115,11 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 
 	// Const
-	public const int MAX_LENGTH = 600;
+	public const int MAX_RAW_LENGTH = 600;
 
 	// Api
 	[JsonIgnore] public bool UseRawData => !Game.IsToolApplication;
+	[JsonIgnore] public int Duration { get; private set; } = 1;
 
 	// Ser
 	[JsonIgnore] public int ID;
@@ -135,7 +133,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 	// Data
 	[JsonIgnore] RawLayer[] RawLayers = System.Array.Empty<RawLayer>();
-	[JsonIgnore] int Duration = 1;
+	[JsonIgnore] readonly Int2[] BodyPartPos = new Int2[PoseCharacter.BODY_PART_COUNT];
 
 
 	#endregion
@@ -168,25 +166,58 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 	private void AnimateFromKeyFrame (PoseCharacter character, int frame) {
 		if (KeyLayers == null || KeyLayers.Length == 0) return;
-		base.Animate(character);
+		//base.Animate(character);
+		ResetLimbCache(character);
 		for (int i = 0; i < KeyLayers.Length; i++) {
 			var layer = KeyLayers[i];
 			var value = layer.Evaluate(frame.UMod(Duration));
 			PerformFrame(character, layer.BindingType, layer.BindingTarget, value);
 		}
+		ApplyForLimb(character);
 	}
 
 
 	private void AnimateFromRawData (PoseCharacter character, int frame) {
 		if (RawLayers == null) Key_to_Raw();
 		if (RawLayers == null || RawLayers.Length == 0) return;
-		base.Animate(character);
+		//base.Animate(character);
+		ResetLimbCache(character);
 		for (int i = 0; i < RawLayers.Length; i++) {
 			var layer = RawLayers[i];
 			if (layer.RawData.Length == 0) continue;
 			int _frame = frame.UMod(layer.RawData.Length);
 			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.RawData[_frame]);
 		};
+		ApplyForLimb(character);
+	}
+
+
+	private void ResetLimbCache (PoseCharacter character) {
+		for (int i = 0; i < BodyPartPos.Length; i++) {
+			var part = character.BodyParts[i];
+			BodyPartPos[i] = new Int2(part.X, part.Y);
+		}
+	}
+
+
+	private void ApplyForLimb (PoseCharacter character) {
+		// Make into Offset
+		for (int i = 0; i < BodyPartPos.Length; i++) {
+			var part = character.BodyParts[i];
+			var old = BodyPartPos[i];
+			BodyPartPos[i] = new(part.X - old.x, part.Y - old.y);
+		}
+		// Limb Animate
+		character.ResetAllLimbsPosition();
+		// Apply Offset
+		for (int i = 0; i < BodyPartPos.Length; i++) {
+			var part = character.BodyParts[i];
+			var offset = BodyPartPos[i];
+			part.X += offset.x;
+			part.Y += offset.y;
+			part.GlobalX = character.X + character.PoseRootX + part.X;
+			part.GlobalY = character.Y + character.PoseRootY + part.Y;
+		}
 	}
 
 
@@ -200,15 +231,31 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 	public void OnAfterLoadedFromDisk () {
 		KeyLayers ??= new KeyLayer[0];
-		Duration = 1;
 		foreach (var layer in KeyLayers) {
 			layer.Sort();
-			if (layer.KeyFrames.Length > 0) {
-				Duration = Util.Max(Duration, layer.KeyFrames[^1].Frame - 1);
-			}
+			layer.KeyFrames ??= new();
 		}
+		CalculateDuration();
 		if (UseRawData) {
 			Key_to_Raw();
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public void CalculateDuration () {
+		Duration = 1;
+		foreach (var layer in KeyLayers) {
+			if (layer.KeyFrames.Count > 0) {
+				Duration = Util.Max(Duration, layer.KeyFrames[^1].Frame - 1);
+			}
 		}
 	}
 
@@ -234,12 +281,12 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			var rawLayer = RawLayers[layerIndex];
 			rawLayer.BindingType = sourceLayer.BindingType;
 			rawLayer.BindingTarget = sourceLayer.BindingTarget;
-			if (sourceKeyFrames == null || sourceKeyFrames.Length == 0) {
+			if (sourceKeyFrames == null || sourceKeyFrames.Count == 0) {
 				rawLayer.RawData = new FrameValue[0];
 				continue;
 			}
 			int rawFrameCount = sourceKeyFrames[^1].Frame - 1;
-			rawFrameCount = rawFrameCount.Clamp(1, MAX_LENGTH);
+			rawFrameCount = rawFrameCount.Clamp(1, MAX_RAW_LENGTH);
 			rawLayer.RawData = new FrameValue[rawFrameCount];
 			int cacheKeyFrame = 0;
 			for (int f = 0; f < rawFrameCount; f++) {

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class Tail : BodyGadget {
+
+public sealed class ModularTail : Tail, IModularBodyGadget { }
+
+
+public abstract class Tail : BodyGadget {
 
 
 	// Data

@@ -4,7 +4,11 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public class HandCloth : Cloth {
+
+public sealed class ModularHandSuit : HandCloth, IModularCloth {}
+
+
+public abstract class HandCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hand;
 	public override bool SpriteLoaded => SpriteID != 0;

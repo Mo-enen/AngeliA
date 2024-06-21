@@ -10,7 +10,10 @@ namespace AngeliA;
 public enum HatFrontMode { FrontOfHead, BackOfHead, AlwaysFrontOfHead, AlwaysBackOfHead, }
 
 
-public class HeadCloth : Cloth {
+public sealed class ModularHeadSuit : HeadCloth, IModularCloth {}
+
+
+public abstract class HeadCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Head;
 	public override bool SpriteLoaded => SpriteID != 0;

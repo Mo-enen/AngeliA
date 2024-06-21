@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class Horn : BodyGadget {
+
+public sealed class ModularHorn : Horn, IModularBodyGadget { }
+
+
+public abstract class Horn : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
