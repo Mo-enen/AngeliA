@@ -19,12 +19,14 @@ public class SettingWindow : WindowUI {
 	private static readonly SpriteCode ICON_ENGINE = "Icon.SettingFold.Engine";
 	private static readonly SpriteCode ICON_MAP_EDITOR = "Icon.SettingFold.MapEditor";
 	private static readonly SpriteCode ICON_PIXEL_EDITOR = "Icon.SettingFold.PixelEditor";
+	private static readonly SpriteCode ICON_CHAR_ANI_EDITOR = "Icon.SettingFold.CharAnimation";
 	private static readonly SpriteCode ICON_CONSOLE = "Icon.SettingFold.Console";
 	private static readonly SpriteCode ICON_HOTKEY = "Icon.SettingFold.Hotkey";
 
 	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
 	private static readonly LanguageCode LABEL_MAP_EDITOR = ("Setting.MapEditorLabel", "Map Editor");
 	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Artwork");
+	private static readonly LanguageCode LABEL_CHAR_ANI_EDITOR = ("Setting.CharAniEditorLabel", "Animation");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
 	private static readonly LanguageCode LABEL_HOTKEY = ("Setting.HotkeyLabel", "Hotkey");
 	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
@@ -43,6 +45,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
 	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
 	private static readonly LanguageCode LABEL_CLEAR_CHAR_CONFIG = ("Setting.ClearCharConfig", "Clear Character Config Before Game Start");
+	private static readonly LanguageCode LABEL_CHAR_ANI_REVERSE_SCROLL = ("Setting.CharAni.ReverseScroll", "Reverse Mouse Scroll for Timeline");
 	private static readonly LanguageCode LABEL_HOTKEY_RECOMPILE = ("Setting.Hotkey.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_HOTKEY_RUN = ("Setting.Hotkey.Run", "Run");
 	private static readonly LanguageCode LABEL_HOTKEY_CLEAR_CONSOLE = ("Setting.Hotkey.ClearConsole", "Clear Console");
@@ -83,6 +86,7 @@ public class SettingWindow : WindowUI {
 	private bool PanelFolding_Engine = false;
 	private bool PanelFolding_MapEditor = true;
 	private bool PanelFolding_PixelEditor = true;
+	private bool PanelFolding_CharAniEditor = true;
 	private bool PanelFolding_Console = true;
 	private bool PanelFolding_Hotkey = true;
 	private SavingHotkey ActivatedSetting = null;
@@ -113,7 +117,7 @@ public class SettingWindow : WindowUI {
 
 	public override void UpdateWindowUI () {
 		int extendedUISize = 1;
-		using (var scroll = new GUIScrollScope(WindowRect, MasterScroll, 0, UIHeight)) {
+		using (var scroll = new GUIVerticalScrollScope(WindowRect, MasterScroll, 0, UIHeight)) {
 			MasterScroll = scroll.PositionY;
 
 			var panelRect = WindowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(42));
@@ -130,6 +134,7 @@ public class SettingWindow : WindowUI {
 			DrawPanel(ref rect, LABEL_ENGINE, ICON_ENGINE, Update_Engine, ref PanelFolding_Engine);
 			DrawPanel(ref rect, LABEL_MAP_EDITOR, ICON_MAP_EDITOR, Update_MapEditor, ref PanelFolding_MapEditor);
 			DrawPanel(ref rect, LABEL_PIXEL_EDITOR, ICON_PIXEL_EDITOR, Update_PixelEditor, ref PanelFolding_PixelEditor);
+			DrawPanel(ref rect, LABEL_CHAR_ANI_EDITOR, ICON_CHAR_ANI_EDITOR, Update_CharAniEditor, ref PanelFolding_CharAniEditor);
 			DrawPanel(ref rect, LABEL_CONSOLE, ICON_CONSOLE, Update_Console, ref PanelFolding_Console);
 			DrawPanel(ref rect, LABEL_HOTKEY, ICON_HOTKEY, Update_Hotkey, ref PanelFolding_Hotkey);
 
@@ -279,6 +284,22 @@ public class SettingWindow : WindowUI {
 		);
 		rect.SlideDown(itemPadding);
 
+
+		return rect;
+
+	}
+
+
+	private IRect Update_CharAniEditor (IRect rect) {
+
+		int itemPadding = GUI.FieldPadding;
+
+		// Reverse Mouse Scroll for Timeline
+		EngineSetting.ReverseMouseScrollForTimeline.Value = GUI.Toggle(
+			rect, EngineSetting.ReverseMouseScrollForTimeline.Value, LABEL_CHAR_ANI_REVERSE_SCROLL,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
 
 		return rect;
 

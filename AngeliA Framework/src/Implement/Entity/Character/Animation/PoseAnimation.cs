@@ -98,33 +98,6 @@ public abstract class PoseAnimation {
 			}
 		}
 
-		// File >> Pool
-		foreach (var path in Util.EnumerateFiles(Universe.BuiltIn.CharacterAnimationRoot, true, "*.json")) {
-			if (JsonUtil.LoadJsonFromPath<ModularAnimation>(path) is not ModularAnimation ani) continue;
-			ani.Name = Util.GetNameWithoutExtension(path);
-			ani.ID = ani.Name.AngeHash();
-			Pool.TryAdd(ani.ID, ani);
-			// Default Check
-			int tIndex;
-			switch (ani.Override) {
-				case ModularAnimation.CharacterOverrideType.Pose:
-					tIndex = (int)ani.PoseType;
-					if (tIndex < 0 || tIndex >= PoseDefaultPool.Length) break;
-					PoseDefaultPool[tIndex].TryAdd(ani.CharacterName.AngeHash(), ani.ID);
-					break;
-				case ModularAnimation.CharacterOverrideType.Handheld:
-					tIndex = (int)ani.Handheld;
-					if (tIndex < 0 || tIndex >= HandheldDefaultPool.Length) break;
-					HandheldDefaultPool[tIndex].TryAdd(ani.CharacterName.AngeHash(), ani.ID);
-					break;
-				case ModularAnimation.CharacterOverrideType.Attack:
-					tIndex = (int)ani.AttackType;
-					if (tIndex < 0 || tIndex >= AttackDefaultPool.Length) break;
-					AttackDefaultPool[tIndex].TryAdd(ani.CharacterName.AngeHash(), ani.ID);
-					break;
-			}
-		}
-
 	}
 
 

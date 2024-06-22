@@ -92,51 +92,33 @@ public readonly struct GUIEnableScope : System.IDisposable {
 
 
 
-public readonly struct GUIScrollScope : System.IDisposable {
-	public readonly int PositionY;
-	public readonly IRect Rect;
-	public readonly int CellCount;
-	public readonly Int2 MousePosShift;
-	public GUIScrollScope (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
-
-		bool mouseInside = rect.MouseInside();
-		Rect = rect;
-		CellCount = Renderer.GetUsedCellCount(RenderLayer.UI);
-		MousePosShift = Input.MousePositionShift;
-		if (!mouseInside) Input.IgnoreMouseInput();
-
-		// Scroll by Mouse Wheel
-		if (mouseInside && Input.MouseWheelDelta != 0) {
-			positionY -= Input.MouseWheelDelta * GUI.Unify(96);
-		}
-		PositionY = positionY.Clamp(min, max);
-
-		// Shift Input
-		Input.SetMousePositionShift(0, -PositionY);
-
+public readonly struct GUIVerticalScrollScope : System.IDisposable {
+	public readonly int PositionY => Scope.Position.y;
+	public readonly GUIScrollScope Scope;
+	public GUIVerticalScrollScope (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
+		Scope = new GUIScrollScope(rect, new Int2(0, positionY), new Int2(0, min), new Int2(0, max), true);
 	}
-	public readonly void Dispose () {
-		Input.SetMousePositionShift(MousePosShift.x, MousePosShift.y);
-		Input.CancelIgnoreMouseInput();
-		int startIndex = CellCount;
-		if (startIndex >= 0) {
-			if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
-				for (int i = startIndex; i < count; i++) {
-					cells[i].Y += PositionY;
-				}
-			}
-			Renderer.ClampCells(RenderLayer.UI, Rect, startIndex);
-		}
-	}
+	public readonly void Dispose () => Scope.Dispose();
 }
 
 
 public readonly struct GUIHorizontalScrollScope : System.IDisposable {
-	public readonly int PositionX;
+	public readonly int PositionX => Scope.Position.x;
+	public readonly GUIScrollScope Scope;
+	public GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue) {
+		Scope = new GUIScrollScope(rect, new Int2(positionX, 0), new Int2(min, 0), new Int2(max, 0), false);
+	}
+	public readonly void Dispose () => Scope.Dispose();
+}
+
+
+public readonly struct GUIScrollScope : System.IDisposable {
+	public readonly Int2 Position;
 	public readonly IRect Rect;
 	public readonly int CellCount;
 	public readonly Int2 MousePosShift;
-	public GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue) {
+	public GUIScrollScope (IRect rect, Int2 position, bool mouseWheelForVertical = true) : this(rect, position, new Int2(int.MinValue, int.MinValue), new Int2(int.MaxValue, int.MaxValue), mouseWheelForVertical) { }
+	public GUIScrollScope (IRect rect, Int2 position, Int2 min, Int2 max, bool mouseWheelForVertical = true, bool reverseMouseWheel = false) {
 
 		bool mouseInside = rect.MouseInside();
 		Rect = rect;
@@ -146,12 +128,14 @@ public readonly struct GUIHorizontalScrollScope : System.IDisposable {
 
 		// Scroll by Mouse Wheel
 		if (mouseInside && Input.MouseWheelDelta != 0) {
-			positionX -= Input.MouseWheelDelta * GUI.Unify(96);
+			int delta = reverseMouseWheel ? Input.MouseWheelDelta * GUI.Unify(-96) : Input.MouseWheelDelta * GUI.Unify(96);
+			position[mouseWheelForVertical ? 1 : 0] -= delta;
 		}
-		PositionX = positionX.Clamp(min, max);
+		Position.x = position.x.Clamp(min.x, max.x);
+		Position.y = position.y.Clamp(min.y, max.y);
 
 		// Shift Input
-		Input.SetMousePositionShift(-PositionX, 0);
+		Input.SetMousePositionShift(Position.x, -Position.y);
 
 	}
 	public readonly void Dispose () {
@@ -161,7 +145,8 @@ public readonly struct GUIHorizontalScrollScope : System.IDisposable {
 		if (startIndex >= 0) {
 			if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
 				for (int i = startIndex; i < count; i++) {
-					cells[i].X += PositionX;
+					cells[i].X -= Position.x;
+					cells[i].Y += Position.y;
 				}
 			}
 			Renderer.ClampCells(RenderLayer.UI, Rect, startIndex);
@@ -252,3 +237,22 @@ public readonly struct ReverseCellsScope : System.IDisposable {
 }
 
 
+public readonly struct ClampCellsScope : System.IDisposable {
+	private readonly int LayerIndex;
+	private readonly int UsedCount;
+	private readonly IRect Rect;
+	public ClampCellsScope (IRect rect) {
+		Rect = rect;
+		LayerIndex = Renderer.CurrentLayerIndex;
+		UsedCount = Renderer.GetUsedCellCount();
+	}
+	public readonly void Dispose () {
+		Renderer.ClampCells(LayerIndex, Rect, UsedCount);
+	}
+}
+
+
+
+public readonly struct EmptyScope : System.IDisposable {
+	public readonly void Dispose () { }
+}

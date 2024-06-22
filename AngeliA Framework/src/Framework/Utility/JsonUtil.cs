@@ -7,6 +7,7 @@ using System.Text.Json;
 
 namespace AngeliA;
 
+
 public interface IJsonSerializationCallback {
 	void OnBeforeSaveToDisk ();
 	void OnAfterLoadedFromDisk ();

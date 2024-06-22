@@ -16,6 +16,9 @@ public class EngineSetting {
 	public static readonly SavingBool GradientBackground = new("PixEdt.GradientBackground", true);
 	public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
 
+	// Char Ani Editor
+	public static readonly SavingBool ReverseMouseScrollForTimeline = new("CharAni.TimelineReverseMouseScroll", false);
+
 	// Console
 	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);
 

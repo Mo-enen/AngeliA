@@ -73,7 +73,7 @@ public partial class PixelEditor {
 			int reorderGhostID = 0;
 			string reorderGhostLabel = null;
 
-			using (var scroll = new GUIScrollScope(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
+			using (var scroll = new GUIVerticalScrollScope(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
 				AtlasPanelScrollY = scroll.PositionY;
 				for (int i = 0; i < itemCount; i++) {
 

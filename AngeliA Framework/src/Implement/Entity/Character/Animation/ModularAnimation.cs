@@ -32,22 +32,11 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 
 	[System.Serializable]
-	public struct FrameValue {
-		[JsonPropertyName("v")] public int Value;
-		[JsonPropertyName("f")] public bool FlipFacing;
-		public FrameValue (int value, bool flipFacing) {
-			Value = value;
-			FlipFacing = flipFacing;
-		}
-	}
-
-
-	[System.Serializable]
 	public struct KeyFrame {
 		[JsonPropertyName("f")] public int Frame;
-		[JsonPropertyName("v")] public FrameValue Value;
+		[JsonPropertyName("v")] public int Value;
 		[JsonPropertyName("e")] public EaseType Ease;
-		public KeyFrame (int frame, FrameValue value, EaseType ease = EaseType.Const) {
+		public KeyFrame (int frame, int value, EaseType ease = EaseType.Const) {
 			Frame = frame;
 			Value = value;
 			Ease = ease;
@@ -65,12 +54,13 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 		public BindingType BindingType;
 		public BindingTarget BindingTarget;
+		public bool FlipFacing = false;
 		public List<KeyFrame> KeyFrames = new();
 
 		public void Sort () => KeyFrames.Sort(KeyFrameComparer.Instance);
 
-		public FrameValue Evaluate (int frame) => Evaluate(frame, 0, out _);
-		internal FrameValue Evaluate (int frame, int fromKeyFrame, out int keyFrame) {
+		public int Evaluate (int frame) => Evaluate(frame, 0, out _);
+		internal int Evaluate (int frame, int fromKeyFrame, out int keyFrame) {
 			keyFrame = 0;
 			if (KeyFrames.Count == 0) return default;
 			if (KeyFrames.Count == 1) return KeyFrames[0].Value;
@@ -88,12 +78,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			var right = KeyFrames[index + 1];
 			float lerp01 = Util.InverseLerpUnclamped(left.Frame, right.Frame, frame);
 			lerp01 = Ease.Invoke(left.Ease, lerp01);
-			int resultValue = Util.LerpUnclamped(
-				left.Value.Value,
-				right.Value.Value,
-				lerp01
-			).RoundToInt();
-			return new FrameValue(resultValue, left.Value.FlipFacing);
+			return Util.LerpUnclamped(left.Value, right.Value, lerp01).RoundToInt();
 		}
 
 	}
@@ -102,7 +87,8 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	private class RawLayer {
 		public BindingType BindingType;
 		public BindingTarget BindingTarget;
-		public FrameValue[] RawData;
+		public bool FlipFacing;
+		public int[] RawData;
 	}
 
 
@@ -114,8 +100,29 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	#region --- VAR ---
 
 
+
 	// Const
 	public const int MAX_RAW_LENGTH = 600;
+	private static readonly bool[,] VALID_MAP = {// [ Target-17, Type-9 ]
+						// Rot,   Twist, GrabR, GrabS, GrabT, W,     H,     X,     Y,
+		/* Head */		{  true , true , false, false, false, true , true , true , true , },
+		/* Body */		{  false, true , false, false, false, true , true , true , true , },
+		/* Hip */		{  false, false, false, false, false, true , true , true , true , },
+		/* ShoulderL */	{  false, false, false, false, false, true , true , true , true , },
+		/* ShoulderR */	{  false, false, false, false, false, true , true , true , true , },
+		/* UpperArmL */	{  true , false, false, false, false, true , true , true , true , },
+		/* UpperArmR */	{  true , false, false, false, false, true , true , true , true , },
+		/* LowerArmL */	{  true , false, false, false, false, true , true , true , true , },
+		/* LowerArmR */	{  true , false, false, false, false, true , true , true , true , },
+		/* HandL */		{  false, false, true , true , true , true , true , true , true , },
+		/* HandR */		{  false, false, true , true , true , true , true , true , true , },
+		/* UpperLegL */	{  true , false, false, false, false, true , true , true , true , },
+		/* UpperLegR */	{  true , false, false, false, false, true , true , true , true , },
+		/* LowerLegL */	{  true , false, false, false, false, true , true , true , true , },
+		/* LowerLegR */	{  true , false, false, false, false, true , true , true , true , },
+		/* FootL */		{  false, false, false, false, false, true , true , true , true , },
+		/* FootR */		{  false, false, false, false, false, true , true , true , true , },
+	};
 
 	// Api
 	[JsonIgnore] public bool UseRawData => !Game.IsToolApplication;
@@ -124,11 +131,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	// Ser
 	[JsonIgnore] public int ID;
 	[JsonIgnore] public string Name = string.Empty;
-	public string CharacterName = string.Empty;
-	public CharacterOverrideType Override = CharacterOverrideType.None;
-	public CharacterAnimationType PoseType = CharacterAnimationType.Idle;
-	public WeaponHandheld Handheld = WeaponHandheld.SingleHanded;
-	public WeaponType AttackType = WeaponType.Hand;
+	[JsonIgnore] public CharacterOverrideType Override = CharacterOverrideType.None;
 	public KeyLayer[] KeyLayers = System.Array.Empty<KeyLayer>();
 
 	// Data
@@ -166,12 +169,11 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 	private void AnimateFromKeyFrame (PoseCharacter character, int frame) {
 		if (KeyLayers == null || KeyLayers.Length == 0) return;
-		//base.Animate(character);
 		ResetLimbCache(character);
 		for (int i = 0; i < KeyLayers.Length; i++) {
 			var layer = KeyLayers[i];
 			var value = layer.Evaluate(frame.UMod(Duration));
-			PerformFrame(character, layer.BindingType, layer.BindingTarget, value);
+			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.FlipFacing, value);
 		}
 		ApplyForLimb(character);
 	}
@@ -180,13 +182,12 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	private void AnimateFromRawData (PoseCharacter character, int frame) {
 		if (RawLayers == null) Key_to_Raw();
 		if (RawLayers == null || RawLayers.Length == 0) return;
-		//base.Animate(character);
 		ResetLimbCache(character);
 		for (int i = 0; i < RawLayers.Length; i++) {
 			var layer = RawLayers[i];
 			if (layer.RawData.Length == 0) continue;
 			int _frame = frame.UMod(layer.RawData.Length);
-			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.RawData[_frame]);
+			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.FlipFacing, layer.RawData[_frame]);
 		};
 		ApplyForLimb(character);
 	}
@@ -254,7 +255,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 		Duration = 1;
 		foreach (var layer in KeyLayers) {
 			if (layer.KeyFrames.Count > 0) {
-				Duration = Util.Max(Duration, layer.KeyFrames[^1].Frame - 1);
+				Duration = Util.Max(Duration, layer.KeyFrames[^1].Frame);
 			}
 		}
 	}
@@ -281,13 +282,14 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			var rawLayer = RawLayers[layerIndex];
 			rawLayer.BindingType = sourceLayer.BindingType;
 			rawLayer.BindingTarget = sourceLayer.BindingTarget;
+			rawLayer.FlipFacing = sourceLayer.FlipFacing;
 			if (sourceKeyFrames == null || sourceKeyFrames.Count == 0) {
-				rawLayer.RawData = new FrameValue[0];
+				rawLayer.RawData = new int[0];
 				continue;
 			}
 			int rawFrameCount = sourceKeyFrames[^1].Frame - 1;
 			rawFrameCount = rawFrameCount.Clamp(1, MAX_RAW_LENGTH);
-			rawLayer.RawData = new FrameValue[rawFrameCount];
+			rawLayer.RawData = new int[rawFrameCount];
 			int cacheKeyFrame = 0;
 			for (int f = 0; f < rawFrameCount; f++) {
 				// Source >> Raw
@@ -298,7 +300,16 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
-	private void PerformFrame (PoseCharacter character, BindingType bindingType, BindingTarget bindingTarget, FrameValue value) {
+	private void PerformFrame (PoseCharacter character, BindingType bindingType, BindingTarget bindingTarget, bool flipFacing, int value) {
+
+		// Gate
+		int targetIndex = (int)bindingTarget;
+		int typeIndex = (int)bindingType;
+		if (
+			targetIndex < 0 || targetIndex >= VALID_MAP.GetLength(0) ||
+			typeIndex < 0 || typeIndex >= VALID_MAP.GetLength(1) ||
+			!VALID_MAP[(int)bindingTarget, (int)bindingType]
+		) return;
 
 		(var bodypart, bool facingRight) = bindingTarget switch {
 			BindingTarget.Head => (character.Head, character.Head.FacingRight),
@@ -321,7 +332,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			_ => (character.Head, character.Head.FacingRight),
 		};
 
-		int flippedValue = !value.FlipFacing || facingRight ? value.Value : -value.Value;
+		int flippedValue = !flipFacing || facingRight ? value : -value;
 
 		switch (bindingType) {
 			default:
@@ -360,13 +371,13 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 				bodypart.Width += flippedValue;
 				break;
 			case BindingType.Height:
-				bodypart.Height += value.Value;
+				bodypart.Height += value;
 				break;
 			case BindingType.X:
 				bodypart.X += flippedValue;
 				break;
 			case BindingType.Y:
-				bodypart.Y += value.Value;
+				bodypart.Y += value;
 				break;
 		}
 

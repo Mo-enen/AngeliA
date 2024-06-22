@@ -125,7 +125,7 @@ public partial class Engine {
 			}
 
 			// Project List
-			using (var scroll = new GUIScrollScope(
+			using (var scroll = new GUIVerticalScrollScope(
 				contentRect, HubPanelScroll,
 				0, Util.Max(0, projects.Count * itemHeight + extendHeight - contentRect.height))
 			) {

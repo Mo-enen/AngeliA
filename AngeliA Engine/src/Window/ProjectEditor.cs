@@ -111,7 +111,7 @@ public class ProjectEditor : WindowUI {
 		var rect = panelRect.EdgeInside(Direction4.Up, Unify(50));
 		int extendedContentSize;
 
-		using (var scroll = new GUIScrollScope(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
+		using (var scroll = new GUIVerticalScrollScope(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
 			MasterScrollPos = scroll.PositionY;
 
 			// Window

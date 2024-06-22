@@ -93,7 +93,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	protected void RequireTooltip (IRect rect, string content) {
 		if (!rect.MouseInside()) return;
-		RequiringTooltipRect = rect;
+		RequiringTooltipRect = rect.Shift(-Input.MousePositionShift.x, -Input.MousePositionShift.y);
 		RequiringTooltipContent = content;
 	}
 
