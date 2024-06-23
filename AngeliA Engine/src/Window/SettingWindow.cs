@@ -29,23 +29,30 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_CHAR_ANI_EDITOR = ("Setting.CharAniEditorLabel", "Animation");
 	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
 	private static readonly LanguageCode LABEL_HOTKEY = ("Setting.HotkeyLabel", "Hotkey");
-	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
-	private static readonly LanguageCode LABEL_PE_GRADIENT_BG = ("Setting.PE.GradientBG", "Gradient Background");
-	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
+
 	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
+	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
+	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
+	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
+	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
+	private static readonly LanguageCode LABEL_CLEAR_CHAR_CONFIG = ("Setting.ClearCharConfig", "Clear Character Config Before Game Start");
+
 	private static readonly LanguageCode LABEL_MEDT_ENABLE = ("Setting.MEDT.Enable", "Use Map Editor in Engine");
 	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Drop Player when Release Space Key");
 	private static readonly LanguageCode LABEL_MEDT_SHOW_STATE = ("Setting.MEDT.ShowState", "Show State Info on Bottom-Right");
 	private static readonly LanguageCode LABEL_MEDT_SHOW_BEHIND = ("Setting.MEDT.ShowBehind", "Show Map Behind");
 	private static readonly LanguageCode LABEL_MEDT_AUTO_ZOOM = ("Setting.MEDT.AutoZoom", "Auto Zoom when Editing");
-	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
-	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
+
+	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
+	private static readonly LanguageCode LABEL_PE_GRADIENT_BG = ("Setting.PE.GradientBG", "Gradient Background");
+	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
+
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
-	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
-	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
-	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
-	private static readonly LanguageCode LABEL_CLEAR_CHAR_CONFIG = ("Setting.ClearCharConfig", "Clear Character Config Before Game Start");
+
 	private static readonly LanguageCode LABEL_CHAR_ANI_REVERSE_SCROLL = ("Setting.CharAni.ReverseScroll", "Reverse Mouse Scroll for Timeline");
+	private static readonly LanguageCode LABEL_CHAR_ANI_VERTICAL_SCROLL = ("Setting.CharAni.VerticalScroll", "Mouse Scroll Vertically for Timeline");
+	private static readonly LanguageCode LABEL_CHAR_ANI_DRAG_HORI_ONLY = ("Setting.CharAni.MidDragHoriOnly", "Mid Drag Only Move Timeline Horizontally");
+
 	private static readonly LanguageCode LABEL_HOTKEY_RECOMPILE = ("Setting.Hotkey.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_HOTKEY_RUN = ("Setting.Hotkey.Run", "Run");
 	private static readonly LanguageCode LABEL_HOTKEY_CLEAR_CONSOLE = ("Setting.Hotkey.ClearConsole", "Clear Console");
@@ -65,6 +72,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_NEXT = ("Setting.Hotkey.Pix.PalNext", "Artwork - Next Palette Color");
 	private static readonly LanguageCode LABEL_HOTKEY_FD_NEXT = ("Setting.Hotkey.FrameDebug.Next", "Frame Debug - Next Frame");
 
+	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode MENU_CATA_LETTER = ("Menu.Group.Letter", "Letter");
 	private static readonly LanguageCode MENU_CATA_NUMBER = ("Menu.Group.Number", "Number");
 	private static readonly LanguageCode MENU_CATA_SIGN = ("Menu.Group.Sign", "Sign");
@@ -297,6 +305,20 @@ public class SettingWindow : WindowUI {
 		// Reverse Mouse Scroll for Timeline
 		EngineSetting.ReverseMouseScrollForTimeline.Value = GUI.Toggle(
 			rect, EngineSetting.ReverseMouseScrollForTimeline.Value, LABEL_CHAR_ANI_REVERSE_SCROLL,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Mouse Scroll Vertical for Timeline
+		EngineSetting.MouseScrollVerticalForTimeline.Value = GUI.Toggle(
+			rect, EngineSetting.MouseScrollVerticalForTimeline.Value, LABEL_CHAR_ANI_VERTICAL_SCROLL,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Mid Drag Horizontal Only for Timeline
+		EngineSetting.MidDragHorizontalOnlyForTimeline.Value = GUI.Toggle(
+			rect, EngineSetting.MidDragHorizontalOnlyForTimeline.Value, LABEL_CHAR_ANI_DRAG_HORI_ONLY,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

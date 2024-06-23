@@ -54,7 +54,6 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 		public BindingType BindingType;
 		public BindingTarget BindingTarget;
-		public bool FlipFacing = false;
 		public List<KeyFrame> KeyFrames = new();
 
 		public void Sort () => KeyFrames.Sort(KeyFrameComparer.Instance);
@@ -87,7 +86,6 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	private class RawLayer {
 		public BindingType BindingType;
 		public BindingTarget BindingTarget;
-		public bool FlipFacing;
 		public int[] RawData;
 	}
 
@@ -173,7 +171,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 		for (int i = 0; i < KeyLayers.Length; i++) {
 			var layer = KeyLayers[i];
 			var value = layer.Evaluate(frame.UMod(Duration));
-			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.FlipFacing, value);
+			PerformFrame(character, layer.BindingType, layer.BindingTarget, value);
 		}
 		ApplyForLimb(character);
 	}
@@ -187,7 +185,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			var layer = RawLayers[i];
 			if (layer.RawData.Length == 0) continue;
 			int _frame = frame.UMod(layer.RawData.Length);
-			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.FlipFacing, layer.RawData[_frame]);
+			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.RawData[_frame]);
 		};
 		ApplyForLimb(character);
 	}
@@ -243,6 +241,11 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
+	public void SortAllLayers () {
+		foreach (var layer in KeyLayers) layer.Sort();
+	}
+
+
 	#endregion
 
 
@@ -282,7 +285,6 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			var rawLayer = RawLayers[layerIndex];
 			rawLayer.BindingType = sourceLayer.BindingType;
 			rawLayer.BindingTarget = sourceLayer.BindingTarget;
-			rawLayer.FlipFacing = sourceLayer.FlipFacing;
 			if (sourceKeyFrames == null || sourceKeyFrames.Count == 0) {
 				rawLayer.RawData = new int[0];
 				continue;
@@ -300,7 +302,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
-	private void PerformFrame (PoseCharacter character, BindingType bindingType, BindingTarget bindingTarget, bool flipFacing, int value) {
+	private void PerformFrame (PoseCharacter character, BindingType bindingType, BindingTarget bindingTarget, int value) {
 
 		// Gate
 		int targetIndex = (int)bindingTarget;
@@ -332,7 +334,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			_ => (character.Head, character.Head.FacingRight),
 		};
 
-		int flippedValue = !flipFacing || facingRight ? value : -value;
+		int flippedValue = facingRight ? value : -value;
 
 		switch (bindingType) {
 			default:

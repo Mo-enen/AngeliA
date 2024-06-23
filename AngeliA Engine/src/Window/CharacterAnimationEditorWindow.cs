@@ -48,6 +48,8 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 	// Const
 	private static readonly SpriteCode TIMELINE_BG = "UI.Panel.CharAniTimeline";
+	private static readonly SpriteCode FRAME_BG = "UI.CharAni.TimelineFrameBG";
+	private static readonly SpriteCode FRAME_BODY = "UI.CharAni.TimelineFrameBody";
 	private static readonly SpriteCode ICON_CHAR_PREVIEW = "Icon.PreviewCharacter";
 	private static readonly SpriteCode ICON_ZOOM_M = "Icon.CharPreviewZoomMin";
 	private static readonly SpriteCode ICON_ZOOM_P = "Icon.CharPreviewZoomPlus";
@@ -60,6 +62,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	private static readonly LanguageCode LABEL_EDITING_ANI = ("Label.CharEditor.EditingAni", "Animation");
 	private static readonly LanguageCode[] LABEL_BTYPE = new LanguageCode[typeof(ModularAnimation.BindingType).EnumLength()];
 	private static readonly LanguageCode[] LABEL_BTARGET = new LanguageCode[typeof(ModularAnimation.BindingTarget).EnumLength()];
+	private const int CONTENT_LEFT_GAP = 24;
 
 	// Api
 	public static CharacterAnimationEditorWindow Instance { get; private set; }
@@ -88,6 +91,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	private string PreviewCharacterName = "";
 	private bool PreviewInitialized = false;
 	private bool IsPlaying = false;
+	private bool RequireScrollXClamp = false;
 	private int AnimationFrame = 0;
 	private int PreviewZoom = 1000;
 	private int ContentScrollX = 0;
@@ -98,6 +102,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	// Saving
 	private static readonly SavingString LastPreviewCharacter = new("CharAniEditor.LastPreview", nameof(DefaultPlayer));
 	private static readonly SavingInt LastPreviewZoom = new("CharAniEditor.PreviewZoom", 1000);
+	private static readonly SavingBool FoldingLeftPanel = new("CharAniEditor.FoldLPanel", false);
 
 
 	#endregion
@@ -139,10 +144,11 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		var windowRect = WindowRect;
 		int timelineHeight = Util.Min(Unify(256), windowRect.height / 2);
 		int editorHeight = windowRect.height - timelineHeight;
+		int inspectorWidth = Util.Min(WindowRect.width / 2, Unify(384));
 
 		var timelineRect = windowRect.EdgeDown(timelineHeight);
-		var previewRect = windowRect.EdgeUp(editorHeight).LeftHalf();
-		var insRect = windowRect.EdgeUp(editorHeight).RightHalf();
+		var previewRect = windowRect.EdgeUp(editorHeight).ShrinkRight(inspectorWidth);
+		var insRect = windowRect.EdgeUp(editorHeight).EdgeRight(inspectorWidth);
 
 		// Line
 		int lineThickness = Unify(2);
@@ -241,42 +247,61 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		// Toolbar
 		var toolbarRect = panelRect.EdgeUp(GUI.ToolbarSize);
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect.Expand(Unify(1), 0, 0, 0));
+		panelRect = panelRect.ShrinkUp(GUI.ToolbarSize);
 
+		// Content 
 		int extendedTotalHeight = InspectorTotalHeight + Unify(96);
 		int maxScroll = (extendedTotalHeight - panelRect.height).GreaterOrEquelThanZero();
-		using var scroll = new GUIVerticalScrollScope(panelRect, InspectorScroll, 0, maxScroll);
-		InspectorScroll = scroll.PositionY;
+		using (var scroll = new GUIVerticalScrollScope(panelRect, InspectorScroll, 0, maxScroll)) {
+			InspectorScroll = scroll.PositionY;
+			var fixedPanelRect = panelRect.Shrink(Unify(24));
 
-		// Content
-		panelRect = panelRect.Shrink(Unify(12));
-		int padding = Unify(6);
-		var rect = panelRect.ShrinkUp(GUI.ToolbarSize).EdgeUp(GUI.FieldHeight);
+			// Content
+			using var _ = new GUILabelWidthScope(Util.Min(fixedPanelRect.width / 2, Unify(196)));
+			int padding = Unify(6);
+			var rect = fixedPanelRect.EdgeUp(GUI.FieldHeight);
 
-		// Animation
-		GUI.SmallLabel(rect, LABEL_EDITING_ANI);
-		if (GUI.DarkButton(rect.ShrinkLeft(GUI.LabelWidth), Animation.Name)) {
-			ShowAnimationMenu(rect.ShrinkLeft(GUI.LabelWidth));
+			// Animation
+			GUI.SmallLabel(rect, LABEL_EDITING_ANI);
+			if (GUI.Button(rect.ShrinkLeft(GUI.LabelWidth), Animation.Name, Skin.SmallDarkButton)) {
+				ShowAnimationMenu(rect.ShrinkLeft(GUI.LabelWidth));
+			}
+			GUI.PopupTriangleIcon(rect.ShrinkDown(padding));
+			rect.SlideDown(padding);
+
+
+
+
+
+
+			// Final
+			InspectorTotalHeight = fixedPanelRect.yMax - rect.yMax;
 		}
-		GUI.PopupTriangleIcon(rect.ShrinkDown(padding));
-		rect.SlideDown(padding);
 
-		InspectorTotalHeight = panelRect.yMax - rect.yMax;
+		// Scrollbar
+		if (maxScroll > 0) {
+			InspectorScroll = GUI.ScrollBar(
+				97653136, panelRect.EdgeRight(GUI.ScrollbarSize),
+				InspectorScroll, extendedTotalHeight, panelRect.height
+			);
+		}
 
 	}
 
 
 	// Timeline
 	private void Update_Timeline (IRect panelRect) {
-		int leftPanelWidth = Unify(196);
+		int leftPanelWidth = FoldingLeftPanel.Value ? Unify(72) : Unify(196);
 		int frameWidth = Unify(12);
 		int extendedTotalWidth = Animation.Duration * frameWidth + Unify(96);
 		int extendedTotalHeight = Animation.KeyLayers.Length * GUI.FieldHeight + Unify(96);
-		GUI.DrawSlice(TIMELINE_BG, panelRect.ShrinkDown(GUI.ToolbarSize));
+		int topGap = Unify(12);
+		GUI.DrawSlice(TIMELINE_BG, panelRect.Shrink(0, 0, GUI.ToolbarSize, topGap));
 		Update_Timeline_LeftPanel(
-			panelRect, leftPanelWidth, extendedTotalHeight
+			panelRect.ShrinkUp(topGap), leftPanelWidth, extendedTotalHeight
 		);
 		Update_Timeline_Content(
-			panelRect, leftPanelWidth, frameWidth, extendedTotalWidth, extendedTotalHeight
+			panelRect.ShrinkUp(topGap), leftPanelWidth, frameWidth, extendedTotalWidth, extendedTotalHeight
 		);
 		Update_Timeline_BottomBar(
 			panelRect.EdgeDown(GUI.ToolbarSize), leftPanelWidth, frameWidth, extendedTotalWidth
@@ -294,28 +319,42 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			ContentScrollY = scroll.PositionY;
 			var layerRect = leftPanelRect.EdgeUp(GUI.FieldHeight);
 			int fieldPadding = Unify(2);
-			int buttonPadding = Unify(4);
+			bool folding = FoldingLeftPanel.Value;
+			bool buttonClick = false;
 			for (int layerIndex = 0; layerIndex < Animation.KeyLayers.Length; layerIndex++) {
 				var layer = Animation.KeyLayers[layerIndex];
-				var pLayerRect = layerRect.Shrink(0, 0, fieldPadding, fieldPadding);
-				var rect = pLayerRect.EdgeLeft(pLayerRect.height);
+				var pLayerRect = layerRect.Shrink(0, GUI.ScrollbarSize, fieldPadding, fieldPadding);
+				var rect = pLayerRect.Part(0, 2);
 
 				// BG
 				Renderer.DrawPixel(layerRect, layerIndex % 2 == 0 ? new Color32(40, 40, 40, 255) : new Color32(36, 36, 36, 255));
 
 				// Binding Type
-				if (GUI.Button(rect, ICON_BTYPE[(int)layer.BindingType], Skin.IconButton)) {
-					ShowBindingTypeMenu(rect, layerIndex);
+				int icon = ICON_BTYPE[(int)layer.BindingType];
+				string label = LABEL_BTYPE[(int)layer.BindingType];
+				if (folding) {
+					buttonClick = GUI.Button(rect, icon, Skin.IconButton);
+					RequireTooltip(rect, label);
+				} else {
+					buttonClick = GUI.Button(rect, 0, Skin.IconButton);
+					GUI.Icon(rect.EdgeLeft(rect.height).Shrink(fieldPadding), icon);
+					GUI.Label(rect.ShrinkLeft(rect.height), label, Skin.AutoCenterLabel);
 				}
-				RequireTooltip(rect, LABEL_BTYPE[(int)layer.BindingType]);
-				rect.SlideRight(buttonPadding);
+				if (buttonClick) ShowBindingTypeMenu(rect, layerIndex);
+				rect.SlideRight();
 
 				// Binding Target
-				if (GUI.Button(rect, ICON_BTARGET[(int)layer.BindingTarget], Skin.IconButton)) {
-					ShowBindingTargetMenu(rect, layerIndex);
+				icon = ICON_BTARGET[(int)layer.BindingTarget];
+				label = LABEL_BTARGET[(int)layer.BindingTarget];
+				if (folding) {
+					buttonClick = GUI.Button(rect, icon, Skin.IconButton);
+				} else {
+					buttonClick = GUI.Button(rect, 0, Skin.IconButton);
+					GUI.Icon(rect.EdgeLeft(rect.height).Shrink(fieldPadding), icon);
+					GUI.Label(rect.ShrinkLeft(rect.height), label, Skin.AutoCenterLabel);
 				}
-				RequireTooltip(rect, LABEL_BTARGET[(int)layer.BindingTarget]);
-				rect.SlideRight(buttonPadding);
+				if (buttonClick) ShowBindingTargetMenu(rect, layerIndex);
+				rect.SlideRight();
 
 				// Next
 				layerRect.SlideDown();
@@ -335,33 +374,32 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 	private void Update_Timeline_Content (IRect panelRect, int leftPanelWidth, int frameWidth, int extendedTotalWidth, int extendedTotalHeight) {
 
-		var contentRect = panelRect.Shrink(leftPanelWidth, 0, GUI.ToolbarSize, 0);
+		int contentLeftGap = Unify(CONTENT_LEFT_GAP);
+		var contentRect = panelRect.Shrink(leftPanelWidth + contentLeftGap, 0, GUI.ToolbarSize, 0);
+		bool mouseLeftDown = contentRect.MouseInside() && Input.MouseLeftButtonDown;
 		bool mouseFrameDragging = Input.MouseRightButtonHolding && contentRect.Contains(Input.MouseRightDownGlobalPosition);
 		bool mouseScrollDragging = Input.MouseMidButtonHolding && contentRect.Contains(Input.MouseMidDownGlobalPosition);
 		int maxScrollX = (extendedTotalWidth - contentRect.width).GreaterOrEquelThanZero();
 		int maxScrollY = (extendedTotalHeight - contentRect.height).GreaterOrEquelThanZero();
 		int pageCount = contentRect.width.CeilDivide(frameWidth);
+		int frameHeight = GUI.FieldHeight;
 
 		// Play Scroll
-		if (IsPlaying) {
+		if (IsPlaying || RequireScrollXClamp) {
 			ContentScrollX = ContentScrollX.Clamp(
-				(AnimationFrame - pageCount + 1) * frameWidth,
-				(AnimationFrame - 1) * frameWidth
+				(AnimationFrame - pageCount + 6) * frameWidth,
+				(AnimationFrame - 6) * frameWidth
 			);
+			RequireScrollXClamp = false;
 		}
 
 		// Drag to Scroll
 		if (mouseScrollDragging) {
 			ContentScrollX = (ContentScrollX - Input.MouseGlobalPositionDelta.x).Clamp(0, maxScrollX);
-			ContentScrollY = (ContentScrollY + Input.MouseGlobalPositionDelta.y).Clamp(0, maxScrollY);
+			if (!EngineSetting.MidDragHorizontalOnlyForTimeline.Value) {
+				ContentScrollY = (ContentScrollY + Input.MouseGlobalPositionDelta.y).Clamp(0, maxScrollY);
+			}
 		}
-
-		// Frame Content
-		int frameLineX = Util.RemapUnclamped(
-			0, Animation.Duration,
-			contentRect.x, contentRect.x + Animation.Duration * frameWidth,
-			AnimationFrame
-		);
 
 		// Draw Lines
 		var lineRect = new IRect(
@@ -384,33 +422,89 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			contentRect, new(ContentScrollX, ContentScrollY),
 			Int2.zero,
 			new(maxScrollX, maxScrollY),
-			mouseWheelForVertical: false,
+			mouseWheelForVertical: EngineSetting.MouseScrollVerticalForTimeline.Value != Input.KeyboardHolding(KeyboardKey.LeftCtrl),
 			reverseMouseWheel: EngineSetting.ReverseMouseScrollForTimeline.Value
 		);
 		ContentScrollX = scroll.Position.x;
 		ContentScrollY = scroll.Position.y;
-		int startFrame = ContentScrollX / frameWidth;
 
 		// Draw Frames
-		var layerRect = contentRect.EdgeUp(GUI.FieldHeight);
-		for (int layerIndex = 0; layerIndex < Animation.KeyLayers.Length; layerIndex++) {
+		var layerRect = contentRect.EdgeUp(frameHeight);
+		int layerStart = ContentScrollY.UDivide(frameHeight);
+		int layerEnd = Util.Min(
+			layerStart + contentRect.height.CeilDivide(frameHeight) + 1,
+			Animation.KeyLayers.Length
+		);
+		layerRect.y -= layerStart * frameHeight;
+		int startFrame = ContentScrollX / frameWidth;
+		int endFrame = Util.Min(startFrame + pageCount + 1, Animation.Duration);
+		for (int layerIndex = layerStart; layerIndex < layerEnd; layerIndex++) {
+			var layer = Animation.KeyLayers[layerIndex];
+
+			// Layer BG
+			if (layerIndex % 2 == 0) {
+				Renderer.DrawPixel(layerRect.Shift(scroll.Position.x, 0), Color32.WHITE_6);
+			}
+
+			// Frames
+			for (int i = 0; i < layer.KeyFrames.Count; i++) {
+				var frameData = layer.KeyFrames[i];
+				int frame = frameData.Frame;
+				if (frame < startFrame) continue;
+				if (frame > endFrame) break;
+				var rect = LayerFrame_to_TimelineFrameRect(contentRect, frameWidth, frameHeight, layerIndex, frame);
+				// BG
+				GUI.DrawSlice(FRAME_BG, rect);
+
+				// Body
+				GUI.DrawSlice(FRAME_BODY, rect);
+
+				// Hover
+				if (rect.MouseInside()) {
+					Cursor.SetCursorAsHand();
+					// Click
+					if (mouseLeftDown) {
 
 
 
+						mouseLeftDown = false;
+					}
+				}
+			}
 
-
+			// Next
 			layerRect.SlideDown();
 		}
 
+		// Frame Hover Highlight
+		var mousePos = Input.MouseGlobalPosition;
+		if (TimelinePos_to_LayerFrame(
+			contentRect, frameWidth, frameHeight,
+			mousePos.x, mousePos.y, out int hoverLayer, out int hoverFrame
+		)) {
+			Renderer.DrawPixel(LayerFrame_to_TimelineFrameRect(
+				contentRect, frameWidth, frameHeight, hoverLayer, hoverFrame
+			), Color32.WHITE_20);
+		}
+
 		// Frame Line
-		Renderer.DrawPixel(
-			new IRect(frameLineX, contentRect.y - scroll.Position.y, frameWidth, contentRect.height),
-			Color32.WHITE_20
+		int frameLineX = Util.RemapUnclamped(
+			0, Animation.Duration,
+			contentRect.x, contentRect.x + Animation.Duration * frameWidth,
+			AnimationFrame
+		);
+		Renderer.Draw(
+			BuiltInSprite.SOFT_LINE_V,
+			frameLineX + frameWidth / 2,
+			contentRect.y - scroll.Position.y,
+			500, 0, 0, Unify(4),
+			contentRect.height,
+			Color32.GREY_196
 		);
 
 		// Drag to Move Frame
-		if (mouseFrameDragging) {
-			AnimationFrame = ((Input.MouseGlobalPosition.x - contentRect.x) / frameWidth).Clamp(0, Animation.Duration);
+		if (mouseFrameDragging || mouseLeftDown) {
+			AnimationFrame = ((mousePos.x - contentRect.x) / frameWidth).Clamp(0, Animation.Duration);
 		}
 
 	}
@@ -418,42 +512,48 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 	private void Update_Timeline_BottomBar (IRect toolbarRect, int leftPanelWidth, int frameWidth, int extendedTotalWidth) {
 
-		int contentWidth = toolbarRect.width - leftPanelWidth;
+		int leftGap = Unify(CONTENT_LEFT_GAP);
+		int contentWidth = toolbarRect.width - leftPanelWidth - leftGap;
 		int padding = Unify(6);
 		int maxScrollX = (extendedTotalWidth - contentWidth).GreaterOrEquelThanZero();
 		int pageCount = contentWidth.CeilDivide(frameWidth);
 
 		// Toolbar
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
-		var rect = toolbarRect.Shrink(Unify(6)).EdgeLeft(toolbarRect.height - Unify(12));
+		var leftBarRect = toolbarRect.EdgeLeft(leftPanelWidth - GUI.ScrollbarSize);
 
 		// Play/Pause
-		if (GUI.Button(rect, IsPlaying ? ICON_PAUSE : ICON_PLAY, Skin.SmallDarkButton)) {
+		var rect = FoldingLeftPanel.Value ? leftBarRect.RightHalf() : leftBarRect.EdgeRight(leftBarRect.height).Shrink(padding);
+		if (GUI.Button(rect, IsPlaying ? ICON_PAUSE : ICON_PLAY, Skin.IconButton)) {
 			IsPlaying = !IsPlaying;
 		}
-		rect.SlideRight(padding);
 
-		// Add Layer
-		if (GUI.Button(rect, BuiltInSprite.ICON_PLUS, Skin.SmallDarkButton)) {
-			ShowAddLayerMenu(rect);
+		// Fold Left Panel
+		rect = FoldingLeftPanel.Value ? leftBarRect.LeftHalf() : leftBarRect.EdgeLeft(leftBarRect.height).Shrink(padding);
+		if (GUI.Button(rect, BuiltInSprite.ICON_MENU, Skin.IconButton)) {
+			FoldingLeftPanel.Value = !FoldingLeftPanel.Value;
 		}
-		rect.SlideRight(padding);
 
 		// Ruler
-		var rulerRect = toolbarRect.Shrink(leftPanelWidth, 0, GUI.ScrollbarSize, 0);
+		var rulerRect = toolbarRect.Shrink(leftPanelWidth + leftGap, 0, GUI.ScrollbarSize, 0);
 		int tinyShiftForLabel = Unify(3);
 		rect = rulerRect.EdgeLeft(frameWidth);
 		rect.x += -ContentScrollX.UMod(frameWidth);
 		using (new ClampCellsScope(rulerRect)) {
-			// Current Frame Highlight
-			var currentFrameRect = new IRect(rect.x + (AnimationFrame - ContentScrollX / frameWidth) * frameWidth, rect.y, frameWidth, rect.height);
-			Renderer.DrawPixel(currentFrameRect, Color32.WHITE_20);
+			// Frame Line
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_V,
+				rect.x + (AnimationFrame - ContentScrollX / frameWidth) * frameWidth + frameWidth / 2,
+				rulerRect.y, 500, 0, 0,
+				Unify(4), rect.height, Color32.GREY_96
+			);
 			// Prev Label
 			int prevFrame = ContentScrollX / frameWidth;
 			var prevRect = rect;
 			prevRect.x -= frameWidth * (prevFrame % 5);
 			prevFrame = prevFrame / 5 * 5;
-			Renderer.DrawPixel(prevRect, Color32.WHITE_12);
+			if (prevRect.x < rulerRect.x) {
+				Renderer.DrawPixel(prevRect, Color32.WHITE_12);
+			}
 			using (new GUIContentColorScope(prevFrame % 60 == 0 ? Color32.GREEN : Color32.WHITE)) {
 				GUI.Label(
 					prevRect.Shift(tinyShiftForLabel, tinyShiftForLabel),
@@ -531,6 +631,24 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			Preview.FacingRight = !Preview.FacingRight;
 		}
 
+		// Move Frame Line
+		if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow) || Input.KeyboardDownGUI(KeyboardKey.A)) {
+			if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+				AnimationFrame = 0;
+			} else {
+				AnimationFrame = (AnimationFrame - 1).UMod(Animation.Duration + 1);
+			}
+			RequireScrollXClamp = true;
+		}
+		if (Input.KeyboardDownGUI(KeyboardKey.RightArrow) || Input.KeyboardDownGUI(KeyboardKey.D)) {
+			if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+				AnimationFrame = Animation.Duration;
+			} else {
+				AnimationFrame = (AnimationFrame + 1).UMod(Animation.Duration + 1);
+			}
+			RequireScrollXClamp = true;
+		}
+
 
 	}
 
@@ -606,6 +724,24 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		Animation = JsonUtil.LoadOrCreateJsonFromPath<ModularAnimation>(path);
 		Animation.Name = Util.GetNameWithoutExtension(path);
 		Animation.ID = Animation.Name.AngeHash();
+		Animation.SortAllLayers();
+	}
+
+
+	private bool TimelinePos_to_LayerFrame (IRect contentRect, int frameWidth, int frameHeight, int x, int y, out int layer, out int frame) {
+		int layerCount = Animation.KeyLayers.Length;
+		layer = (contentRect.yMax - y).UDivide(frameHeight);
+		frame = (x - contentRect.x).UDivide(frameWidth);
+		return layer >= 0 && layer < layerCount && frame >= 0 && frame <= Animation.Duration;
+	}
+
+
+	private IRect LayerFrame_to_TimelineFrameRect (IRect contentRect, int frameWidth, int frameHeight, int layer, int frame) {
+		return new IRect(
+			contentRect.x + frame * frameWidth,
+			contentRect.yMax - (layer + 1) * frameHeight,
+			frameWidth, frameHeight
+		);
 	}
 
 
@@ -649,16 +785,6 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			if (GenericPopupUI.Instance.InvokingItemData is not string path) return;
 			Instance.LoadCurrentAnimationFromFile(path);
 		}
-	}
-
-
-	private void ShowAddLayerMenu (IRect rect) {
-		if (CurrentProject == null) return;
-		rect.x += Unify(4);
-		rect.y += ContentScrollY;
-
-
-
 	}
 
 

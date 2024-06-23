@@ -18,6 +18,8 @@ public class EngineSetting {
 
 	// Char Ani Editor
 	public static readonly SavingBool ReverseMouseScrollForTimeline = new("CharAni.TimelineReverseMouseScroll", false);
+	public static readonly SavingBool MouseScrollVerticalForTimeline = new("CharAni.TimelineMouseScrollVertical", true);
+	public static readonly SavingBool MidDragHorizontalOnlyForTimeline = new("CharAni.TimelineMidDragHorizontalOnly", true);
 
 	// Console
 	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);

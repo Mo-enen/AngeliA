@@ -71,7 +71,6 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.Tab);
 		}
 		if (!Input.MouseLeftButtonHolding) ScrollBarMouseDownPos = null;
-		LabelWidth = Unify(196);
 	}
 
 
@@ -98,6 +97,7 @@ public static class GUI {
 		FieldPadding = Unify(8);
 		ToolbarSize = Unify(42);
 		ScrollbarSize = Unify(12);
+		LabelWidth = Unify(196);
 	}
 
 
