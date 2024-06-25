@@ -149,12 +149,12 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Renderer.Draw(BuiltInSprite.SOFT_LINE_V, new IRect(X + favPanelWidth - lineSize / 2, Y + controlPanelHeight, lineSize, Height - controlPanelHeight - navBarHeight), Color32.GREY_20, z: 1);
 
 		// Title
-		GUI.SmallLabel(Rect.EdgeInside(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0), Title);
+		GUI.SmallLabel(Rect.Edge(Direction4.Up, titleHeight).Shrink(Unify(6), 0, 0, 0), Title);
 
 		// Panels
-		Update_NavigationBar(Rect.EdgeInside(Direction4.Up, navBarHeight).Shift(0, -titleHeight));
+		Update_NavigationBar(Rect.Edge(Direction4.Up, navBarHeight).Shift(0, -titleHeight));
 		Update_Favorite(Rect.Shrink(0, Width - favPanelWidth, controlPanelHeight, navBarHeight + titleHeight));
-		Update_ControlPanel(Rect.EdgeInside(Direction4.Down, controlPanelHeight));
+		Update_ControlPanel(Rect.Edge(Direction4.Down, controlPanelHeight));
 		Update_Explorer(Rect.Shrink(favPanelWidth, 0, controlPanelHeight, navBarHeight + titleHeight));
 
 		// Final
@@ -168,7 +168,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		int buttonSize = barRect.height;
 		int buttonPadding = Unify(2);
-		var rect = barRect.EdgeInside(Direction4.Left, buttonSize);
+		var rect = barRect.Edge(Direction4.Left, buttonSize);
 
 		// Parent
 		rect.x += buttonPadding;
@@ -290,7 +290,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		int buttonSize = Unify(32);
 		int iconShrink = Unify(6);
 		int padding = Unify(4);
-		var rect = panelRect.EdgeInside(Direction4.Up, buttonSize);
+		var rect = panelRect.Edge(Direction4.Up, buttonSize);
 		rect = rect.Shrink(buttonSize + padding, 0, 0, 0);
 
 		// Buttons
@@ -359,7 +359,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Error Msg
 		if (!string.IsNullOrEmpty(ErrorMessage)) {
-			GUI.SmallLabel(panelRect.EdgeInside(Direction4.Down, buttonHeight), ErrorMessage);
+			GUI.SmallLabel(panelRect.Edge(Direction4.Down, buttonHeight), ErrorMessage);
 		}
 
 		// Cancel Button

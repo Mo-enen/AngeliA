@@ -21,7 +21,6 @@ public class WorldSquad : IBlockSquad {
 	public static bool Enable { get; set; } = true;
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
-	public static IBlockSquad FrontBlockSquad => Front;
 	public static MapChannel Channel { get; private set; } = MapChannel.General;
 
 	// Data
@@ -127,10 +126,12 @@ public class WorldSquad : IBlockSquad {
 				int r = System.Math.Min(unitRect_Level.xMax, worldUnitRect.xMax);
 				int d = System.Math.Max(unitRect_Level.y, worldUnitRect.y);
 				int u = System.Math.Min(unitRect_Level.yMax, worldUnitRect.yMax);
+				var bgSpan = new System.ReadOnlySpan<int>(world.Backgrounds);
+				var lvSpan = new System.ReadOnlySpan<int>(world.Levels);
 				for (int j = d; j < u; j++) {
 					int index = (j - worldUnitRect.y) * Const.MAP + (l - worldUnitRect.x);
 					for (int i = l; i < r; i++, index++) {
-						var bg = world.Backgrounds[index];
+						var bg = bgSpan[index];
 						if (bg != 0) {
 							if (isBehind) {
 								DrawBehind(bg, i, j, false);
@@ -138,7 +139,7 @@ public class WorldSquad : IBlockSquad {
 								DrawBackgroundBlock(bg, i, j);
 							}
 						}
-						var lv = world.Levels[index];
+						var lv = lvSpan[index];
 						if (lv != 0) {
 							if (isBehind) {
 								DrawBehind(lv, i, j, false);
@@ -171,7 +172,7 @@ public class WorldSquad : IBlockSquad {
 				int r = System.Math.Min(unitRect_Entity.xMax, worldUnitRect.xMax);
 				int d = System.Math.Max(unitRect_Entity.y, worldUnitRect.y);
 				int u = System.Math.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
-
+				var eSpan = new System.ReadOnlySpan<int>(world.Entities);
 				if (!isBehind) {
 					// Entity
 					for (int j = d; j < u; j++) {
@@ -179,7 +180,7 @@ public class WorldSquad : IBlockSquad {
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
 							// Entity
-							var entityID = world.Entities[index];
+							var entityID = eSpan[index];
 							if (entityID != 0) {
 								DrawEntity(entityID, i, j, z);
 							}
@@ -196,7 +197,7 @@ public class WorldSquad : IBlockSquad {
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
 							// Entity
-							var entityID = world.Entities[index];
+							var entityID = eSpan[index];
 							if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
 								DrawBehind(entityID, i, j, true);
 							}
@@ -287,10 +288,10 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
-	int IBlockSquad.GetBlockAt (int unitX, int unitY, int z, BlockType type) => GetBlockAt(unitX, unitY, type);
+	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => GetBlockAt(unitX, unitY, type);
 
 
-	void IBlockSquad.SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) { }
+	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) { }
 
 
 	// Draw

@@ -229,7 +229,7 @@ public abstract partial class Game {
 	public static void DrawGizmosFrame (IRect rect, Color32 color, Int4 thickness, Int4 gap = default) {
 		// Down
 		if (thickness.down > 0) {
-			var edge = rect.EdgeInside(Direction4.Down, thickness.down);
+			var edge = rect.Edge(Direction4.Down, thickness.down);
 			if (gap.down == 0) {
 				Instance._DrawGizmosRect(edge, color);
 			} else {
@@ -240,7 +240,7 @@ public abstract partial class Game {
 		}
 		// Up
 		if (thickness.up > 0) {
-			var edge = rect.EdgeInside(Direction4.Up, thickness.up);
+			var edge = rect.Edge(Direction4.Up, thickness.up);
 			if (gap.up == 0) {
 				Instance._DrawGizmosRect(edge, color);
 			} else {
@@ -251,7 +251,7 @@ public abstract partial class Game {
 		}
 		// Left
 		if (thickness.left > 0) {
-			var edge = rect.EdgeInside(Direction4.Left, thickness.left);
+			var edge = rect.Edge(Direction4.Left, thickness.left);
 			if (gap.left == 0) {
 				Instance._DrawGizmosRect(edge, color);
 			} else {
@@ -262,7 +262,7 @@ public abstract partial class Game {
 		}
 		// Right
 		if (thickness.right > 0) {
-			var edge = rect.EdgeInside(Direction4.Right, thickness.right);
+			var edge = rect.Edge(Direction4.Right, thickness.right);
 			if (gap.right == 0) {
 				Instance._DrawGizmosRect(edge, color);
 			} else {

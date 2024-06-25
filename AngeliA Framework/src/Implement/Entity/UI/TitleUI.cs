@@ -37,7 +37,7 @@ public abstract class TitleUI : Entity {
 		base.OnActivated();
 		TriggeredFrame = int.MinValue;
 		PrevCameraX = Renderer.CameraRect.CenterX();
-		if (WorldSquad.FrontBlockSquad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Down, out int titleIndex)) {
+		if ((WorldSquad.Front as IBlockSquad).ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Down, out int titleIndex)) {
 			Title = Language.Get($"UI.Title.{titleIndex}".AngeHash(), "");
 			SubTitle = Language.Get($"UI.SubTitle.{titleIndex}".AngeHash(), "");
 		} else {

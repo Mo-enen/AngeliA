@@ -232,7 +232,7 @@ public class RiggedMapEditor : WindowUI {
 			GUI.SmallLabel(rect, Const.SCREEN_EFFECT_NAMES[i]);
 
 			// Toggle
-			var enableRect = rect.EdgeInside(Direction4.Right, rect.height);
+			var enableRect = rect.Edge(Direction4.Right, rect.height);
 			EffectsEnabled[i] = GUI.Toggle(enableRect, EffectsEnabled[i]);
 		}
 

@@ -17,6 +17,7 @@ public class GenericDialogUI : MenuUI {
 	// Api
 	public static GenericDialogUI Instance { get; private set; }
 	public static bool ShowingDialog => Instance != null && Instance.Active;
+	public static object InvokingData { get; private set; }
 	protected override bool BlockEvent => true;
 
 	// Data
@@ -27,6 +28,9 @@ public class GenericDialogUI : MenuUI {
 	private Color32 ButtonTintA;
 	private Color32 ButtonTintB;
 	private Color32 ButtonTintC;
+	private object DataA = null;
+	private object DataB = null;
+	private object DataC = null;
 	private bool UsingButtonStyle = false;
 
 
@@ -47,10 +51,10 @@ public class GenericDialogUI : MenuUI {
 
 
 	protected override void DrawMenu () {
-		DrawOption(OptionA, ButtonTintA);
-		DrawOption(OptionB, ButtonTintB);
-		DrawOption(OptionC, ButtonTintC);
-		void DrawOption (Option option, Color32 tint) {
+		DrawOption(OptionA, ButtonTintA, DataA);
+		DrawOption(OptionB, ButtonTintB, DataB);
+		DrawOption(OptionC, ButtonTintC, DataC);
+		void DrawOption (Option option, Color32 tint, object data) {
 			if (option.Action == null) return;
 			if (UsingButtonStyle) {
 				using var _ = new GUIBodyColorScope(tint);
@@ -60,14 +64,18 @@ public class GenericDialogUI : MenuUI {
 					contentStyle: GUI.Skin.DarkButton,
 					drawStyleBody: true
 				)) {
+					InvokingData = data;
 					option.Action();
+					InvokingData = null;
 					Active = false;
 					Input.UseAllHoldingKeys();
 				}
 			} else {
 				using var _ = new GUIContentColorScope(tint);
 				if (DrawItem(option.Label)) {
+					InvokingData = data;
 					option.Action();
+					InvokingData = null;
 					Active = false;
 					Input.UseAllHoldingKeys();
 				}
@@ -111,6 +119,9 @@ public class GenericDialogUI : MenuUI {
 		Instance.OptionA.Action = actionA;
 		Instance.OptionB.Action = actionB;
 		Instance.OptionC.Action = actionC;
+		Instance.DataA = null;
+		Instance.DataB = null;
+		Instance.DataC = null;
 		Instance.ButtonTintA = Color32.WHITE;
 		Instance.ButtonTintB = Color32.WHITE;
 		Instance.ButtonTintC = Color32.WHITE;
@@ -124,6 +135,13 @@ public class GenericDialogUI : MenuUI {
 		Instance.ButtonTintA = tintA;
 		Instance.ButtonTintB = tintB;
 		Instance.ButtonTintC = tintC;
+	}
+
+
+	public static void SetCustomData (object dataA = null, object dataB = null, object dataC = null) {
+		Instance.DataA = dataA;
+		Instance.DataB = dataB;
+		Instance.DataC = dataC;
 	}
 
 

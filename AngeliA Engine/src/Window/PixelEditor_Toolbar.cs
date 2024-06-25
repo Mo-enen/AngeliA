@@ -133,7 +133,7 @@ public partial class PixelEditor {
 		// BG
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
-		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
+		var rect = toolbarRect.Edge(Direction4.Left, Unify(30));
 
 		if (SelectingSpriteCount == 0) {
 			// --- General ---
@@ -153,7 +153,7 @@ public partial class PixelEditor {
 		var toolRect = WindowRect.EdgeRight(toolbarSize).ShrinkUp(toolbarSize);
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolRect);
 		toolRect = toolRect.Shrink(Unify(6));
-		rect = toolRect.EdgeInside(Direction4.Up, Unify(30));
+		rect = toolRect.Edge(Direction4.Up, Unify(30));
 		for (int i = 0; i < ToolCount; i++) {
 			bool selecting = CurrentTool == (Tool)i;
 			bool newSelecting = GUI.ToggleButton(rect, selecting, UI_TOOL[i], Skin.SmallDarkButton);
@@ -241,7 +241,7 @@ public partial class PixelEditor {
 						FoldingColorField = false;
 						ColorFieldCode = Util.ColorToHtml(PaintingColor);
 					}
-				} else if (rect.EdgeInside(Direction4.Left, rect.height).MouseInside()) {
+				} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
 					if (Input.MouseLeftButtonDown) FoldingColorField = true;
 					Cursor.SetCursorAsHand();
 				}
@@ -555,7 +555,7 @@ public partial class PixelEditor {
 		int pageBarHeight = (panelRect.height - panelRect.width) / 2;
 
 		// Label
-		var labelRect = panelRect.EdgeInside(Direction4.Up, pageBarHeight).Shift(0, -pageBarHeight);
+		var labelRect = panelRect.Edge(Direction4.Up, pageBarHeight).Shift(0, -pageBarHeight);
 
 		// Page
 		int helpButtonWidth = pageBarHeight;
@@ -722,7 +722,7 @@ public partial class PixelEditor {
 			BuiltInText.UI_NONE,
 			icon: 0,
 			iconPosition: default,
-			checkMark: noneCount == 0 ? 0 : noneCount >= SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
+			checkMarkSprite: noneCount == 0 ? 0 : noneCount >= SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
 			OnClickNone,
 			enabled: true,
 			@checked: noneCount > 0
@@ -734,7 +734,7 @@ public partial class PixelEditor {
 				TagUtil.ALL_TAG_NAMES[i],
 				icon: 0,
 				iconPosition: default,
-				checkMark: tagedCount == 0 ? 0 : tagedCount >= SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
+				checkMarkSprite: tagedCount == 0 ? 0 : tagedCount >= SelectingSpriteCount ? BuiltInSprite.CHECK_MARK_32 : ICON_MIX,
 				OnClick,
 				enabled: true,
 				@checked: tagedCount > 0,
@@ -764,7 +764,7 @@ public partial class PixelEditor {
 			Instance.SetDirty();
 		}
 		static void OnClick () {
-			if (GenericPopupUI.Instance.InvokingItemData is not int tagIndex) return;
+			if (GenericPopupUI.InvokingItemData is not int tagIndex) return;
 			if (tagIndex < 0 || tagIndex >= TagUtil.TAG_COUNT) return;
 			int checkedCount = 0;
 			var stagedSprites = Instance.StagedSprites;
@@ -809,16 +809,16 @@ public partial class PixelEditor {
 		}
 		// Func
 		static void CreateNew () {
-			if (GenericPopupUI.Instance.InvokingItemData is not Int2 pixPos) return;
+			if (GenericPopupUI.InvokingItemData is not Int2 pixPos) return;
 			pixPos.y -= 32;
 			Instance.CreateNewSprite(pixelPos: pixPos);
 		}
 		static void NewPalette () {
-			if (GenericPopupUI.Instance.InvokingItemData is not Int2 pixPos) return;
+			if (GenericPopupUI.InvokingItemData is not Int2 pixPos) return;
 			Instance.CreateSpriteForPalette(false, pixelPos: pixPos);
 		}
 		static void NewCharSprite () {
-			if (GenericPopupUI.Instance.InvokingItemData is not (int index, Int2 pixPos)) return;
+			if (GenericPopupUI.InvokingItemData is not (int index, Int2 pixPos)) return;
 			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
 			string name = Instance.AllRigCharacterNames[index];
 			Instance.CreateSpritesForCharacter(name, pixelPos: pixPos);

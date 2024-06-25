@@ -203,7 +203,7 @@ public partial class MapEditor {
 		int slotRectHeight = totalRect.height / NAV_WORLD_SIZE;
 		int globalOffsetX = -(NavPosition.x.UMod(MAP_GLOBAL_SIZE) * slotRectWidth / MAP_GLOBAL_SIZE);
 		int globalOffsetY = -(NavPosition.y.UMod(MAP_GLOBAL_SIZE) * slotRectHeight / MAP_GLOBAL_SIZE);
-		var navPanelRect = camerarect.EdgeInside(Direction4.Left, PanelRect.width);
+		var navPanelRect = camerarect.Edge(Direction4.Left, PanelRect.width);
 		for (int j = 0; j < slotSize; j++) {
 			for (int i = 0; i < slotSize; i++) {
 				var slot = NavSlots[i, j];

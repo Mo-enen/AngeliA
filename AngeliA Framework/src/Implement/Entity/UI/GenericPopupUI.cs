@@ -44,7 +44,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	public IRect BackgroundRect { get; private set; }
 	public int OffsetX { get; set; } = 0;
 	public int OffsetY { get; set; } = 0;
-	public object InvokingItemData { get; private set; }
+	public static object InvokingItemData { get; private set; }
 	public int MenuID { get; private set; } = 0;
 	public int CurrentSubLevel { get; set; } = 0;
 
@@ -291,7 +291,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			// Line Left
 			Renderer.Draw(
 				BuiltInSprite.SOFT_LINE_V,
-				BackgroundRect.EdgeInside(Direction4.Left, lineThickness / 2),
+				BackgroundRect.Edge(Direction4.Left, lineThickness / 2),
 				Color32.GREY_196
 			);
 
@@ -363,7 +363,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false, object data = null) => AddItem(label, 0, default, 0, action, enabled, @checked, data);
 
 
-	public static void AddItem (string label, int icon, Direction2 iconPosition, int checkMark, System.Action action, bool enabled = true, bool @checked = false, object data = null) {
+	public static void AddItem (string label, int icon, Direction2 iconPosition, int checkMarkSprite, System.Action action, bool enabled = true, bool @checked = false, object data = null) {
 		if (Instance == null || Instance.ItemCount >= Instance.Items.Length - 1) return;
 		int level = Instance.CurrentSubLevel;
 		var item = Instance.Items[Instance.ItemCount];
@@ -373,7 +373,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		item.Action = action;
 		item.Enabled = enabled;
 		item.Checked = @checked;
-		item.Mark = checkMark;
+		item.Mark = checkMarkSprite;
 		item.Level = level;
 		item.IsSubMenu = false;
 		item.Data = data;

@@ -56,13 +56,19 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	private static readonly SpriteCode ICON_FLIP = "Icon.CharPreviewFlip";
 	private static readonly SpriteCode ICON_PLAY = "Icon.CharEditor.Play";
 	private static readonly SpriteCode ICON_PAUSE = "Icon.CharEditor.Pause";
+	private static readonly SpriteCode ICON_ANI = "Icon.CharEditor.Animation";
+	private static readonly SpriteCode ICON_ADD_ANI = "Icon.CharEditor.AddAni";
 	private static readonly SpriteCode[] ICON_BTYPE = new SpriteCode[typeof(ModularAnimation.BindingType).EnumLength()];
 	private static readonly SpriteCode[] ICON_BTARGET = new SpriteCode[typeof(ModularAnimation.BindingTarget).EnumLength()];
+
 	private static readonly LanguageCode TIP_PREVIEW = ("Tip.PreviewChar", "Select a character for preview the animation");
-	private static readonly LanguageCode LABEL_EDITING_ANI = ("Label.CharEditor.EditingAni", "Animation");
+	private static readonly LanguageCode MSG_DELETE_ANI = ("UI.CharEditor.DeleteAniMsg", "Delete animation \"{0}\" ?");
 	private static readonly LanguageCode[] LABEL_BTYPE = new LanguageCode[typeof(ModularAnimation.BindingType).EnumLength()];
 	private static readonly LanguageCode[] LABEL_BTARGET = new LanguageCode[typeof(ModularAnimation.BindingTarget).EnumLength()];
 	private const int CONTENT_LEFT_GAP = 24;
+
+	private static readonly int BINDING_TYPE_COUNT = typeof(ModularAnimation.BindingType).EnumLength();
+	private static readonly int BINDING_TARGET_COUNT = typeof(ModularAnimation.BindingTarget).EnumLength();
 
 	// Api
 	public static CharacterAnimationEditorWindow Instance { get; private set; }
@@ -72,6 +78,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	// Data
 	private readonly Dictionary<int, CharacterConfig> ConfigPool = new();
 	private readonly List<string> AllRigCharacterNames;
+	private readonly List<string> AllAnimationNames = new();
 	private readonly PreviewCharacter Preview = new() { Active = true, };
 	private readonly ModularFace Preview_Face = new();
 	private readonly ModularHorn Preview_Horn = new();
@@ -96,12 +103,16 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	private int PreviewZoom = 1000;
 	private int ContentScrollX = 0;
 	private int ContentScrollY = 0;
-	private int InspectorScroll = 0;
-	private int InspectorTotalHeight = 1;
+	private int SelectorScroll = 0;
+	private int SelectorTotalHeight = 1;
+	private Int2 MouseDraggingLayerFrame = new(-1, -1);
+	private int? AdjustingTimelineStartHeight = null;
+	private string RenamingAnimationName = null;
 
 	// Saving
 	private static readonly SavingString LastPreviewCharacter = new("CharAniEditor.LastPreview", nameof(DefaultPlayer));
 	private static readonly SavingInt LastPreviewZoom = new("CharAniEditor.PreviewZoom", 1000);
+	private static readonly SavingInt TimelineHeight = new("CharAniEditor.TimelineHeight", -1);
 	private static readonly SavingBool FoldingLeftPanel = new("CharAniEditor.FoldLPanel", false);
 
 
@@ -111,6 +122,12 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 
 	#region --- MSG ---
+
+
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+		Instance?.ReloadAllAnimationNamesFromFile();
+	}
 
 
 	public CharacterAnimationEditorWindow (List<string> allRigCharacterNames) {
@@ -134,6 +151,9 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		Cursor.RequireCursor();
+		if (TimelineHeight.Value < 0) {
+			TimelineHeight.Value = Unify(256);
+		}
 	}
 
 
@@ -142,13 +162,12 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		if (CurrentProject == null) return;
 
 		var windowRect = WindowRect;
-		int timelineHeight = Util.Min(Unify(256), windowRect.height / 2);
+		int timelineHeight = Unify(TimelineHeight.Value).Clamp(Unify(64), windowRect.height - Unify(64));
 		int editorHeight = windowRect.height - timelineHeight;
-		int inspectorWidth = Util.Min(WindowRect.width / 2, Unify(384));
-
+		int selectorWidth = Util.Min(windowRect.width / 2, Unify(384));
 		var timelineRect = windowRect.EdgeDown(timelineHeight);
-		var previewRect = windowRect.EdgeUp(editorHeight).ShrinkRight(inspectorWidth);
-		var insRect = windowRect.EdgeUp(editorHeight).EdgeRight(inspectorWidth);
+		var previewRect = windowRect.EdgeUp(editorHeight).ShrinkLeft(selectorWidth);
+		var aniSelectorRect = windowRect.EdgeUp(editorHeight).EdgeLeft(selectorWidth);
 
 		// Line
 		int lineThickness = Unify(2);
@@ -159,7 +178,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		);
 		Renderer.Draw(
 			BuiltInSprite.SOFT_LINE_V,
-			previewRect.EdgeRight(lineThickness).Shift(lineThickness / 2, 0),
+			previewRect.EdgeLeft(lineThickness).Shift(lineThickness / 2, 0),
 			Color32.WHITE_20
 		);
 
@@ -168,37 +187,62 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			AnimationFrame = (AnimationFrame + 1).UMod(Animation.Duration);
 		}
 
+		// Drag to Adjust Timeline
+		if (!AdjustingTimelineStartHeight.HasValue) {
+			// Normal
+			if (timelineRect.EdgeExact(Direction4.Up, Unify(12)).MouseInside()) {
+				Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL);
+				if (Input.MouseLeftButtonDown) {
+					AdjustingTimelineStartHeight = timelineHeight;
+				}
+			}
+		} else if (Input.MouseLeftButtonHolding) {
+			// Dragging
+			Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL);
+			int mouseShiftY = Input.MouseGlobalPosition.y - Input.MouseLeftDownGlobalPosition.y;
+			timelineHeight = (AdjustingTimelineStartHeight.Value + mouseShiftY).Clamp(0, windowRect.height);
+			TimelineHeight.Value = GUI.ReverseUnify(timelineHeight);
+		} else {
+			AdjustingTimelineStartHeight = null;
+		}
+
 		// Panel
-		Update_Preview(previewRect);
-		Update_Inspector(insRect);
-		Update_Timeline(timelineRect);
+		Update_Preview_Toolbar(previewRect.EdgeUp(GUI.ToolbarSize));
+		Update_Preview(previewRect.ShrinkUp(GUI.ToolbarSize));
+
+		Update_AniSelector_Toolbar(aniSelectorRect);
+		Update_AniSelector_Content(aniSelectorRect.ShrinkUp(GUI.ToolbarSize));
+
+		// Timeline
+		int leftPanelWidth = FoldingLeftPanel.Value ? Unify(72) : Unify(196);
+		int frameWidth = Unify(12);
+		int extendedTotalWidth = Animation.Duration * frameWidth + Unify(96);
+		int extendedTotalHeight = Animation.KeyLayers.Length * GUI.FieldHeight + Unify(96);
+		int topGap = Unify(12);
+		GUI.DrawSlice(TIMELINE_BG, timelineRect.Shrink(0, 0, GUI.ToolbarSize, topGap));
+
+		Update_Timeline_LeftPanel(
+			timelineRect.ShrinkUp(topGap).EdgeLeft(leftPanelWidth), extendedTotalHeight
+		);
+		Update_Timeline_Content(
+			timelineRect.Shrink(leftPanelWidth, 0, 0, topGap), frameWidth, extendedTotalWidth, extendedTotalHeight
+		);
+		Update_Timeline_BottomBar(
+			timelineRect.EdgeDown(GUI.ToolbarSize), leftPanelWidth, frameWidth, extendedTotalWidth
+		);
+
+		// Hotkey
 		Update_Hotkey();
 
 	}
 
 
 	// Preview
-	private void Update_Preview (IRect panelRect) {
+	private void Update_Preview_Toolbar (IRect toolbarRect) {
 
-		if (Game.PauselessFrame < 2) return;
-
-		// Init
-		if (!PreviewInitialized) {
-			PreviewInitialized = true;
-			SetPreviewCharacter(LastPreviewCharacter.Value);
-		}
-
-		var toolbarRect = panelRect.EdgeUp(GUI.ToolbarSize);
-
-		// Preview Character
 		int padding = Unify(6);
-		var previewRect = panelRect.Shrink(padding, padding, padding, padding + GUI.ToolbarSize);
-		using (new SheetIndexScope(SheetIndex)) {
-			Preview.AnimationType = CharacterAnimationType.Idle;
-			FrameworkUtil.DrawPoseCharacterAsUI(previewRect.ScaleFrom(PreviewZoom, previewRect.CenterX(), previewRect.y), Preview, AnimationFrame);
-		}
 
-		// Toolbar
+		// BG
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var rect = toolbarRect.EdgeLeft(toolbarRect.height);
@@ -230,6 +274,29 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		}
 		rect.SlideRight(padding);
 
+	}
+
+
+	private void Update_Preview (IRect panelRect) {
+
+		if (Game.PauselessFrame < 2) return;
+
+		// Init
+		if (!PreviewInitialized) {
+			PreviewInitialized = true;
+			SetPreviewCharacter(LastPreviewCharacter.Value);
+		}
+
+		// Preview Character
+		int padding = Unify(6);
+		var previewRect = panelRect.Shrink(padding, padding, padding, padding);
+		using (new SheetIndexScope(SheetIndex)) {
+			Preview.AnimationType = CharacterAnimationType.Idle;
+			FrameworkUtil.DrawPoseCharacterAsUI(previewRect.ScaleFrom(PreviewZoom, previewRect.CenterX(), previewRect.y), Preview, AnimationFrame);
+		}
+
+
+
 		// Zoom with Wheel
 		if (previewRect.MouseInside() && Input.MouseWheelDelta != 0) {
 			int delta = Input.MouseWheelDelta;
@@ -241,48 +308,117 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	}
 
 
-	// Inspector
-	private void Update_Inspector (IRect panelRect) {
+	// Selector
+	private void Update_AniSelector_Toolbar (IRect panelRect) {
+
+		int padding = Unify(6);
 
 		// Toolbar
 		var toolbarRect = panelRect.EdgeUp(GUI.ToolbarSize);
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect.Expand(Unify(1), 0, 0, 0));
-		panelRect = panelRect.ShrinkUp(GUI.ToolbarSize);
+		toolbarRect = toolbarRect.Shrink(padding);
 
-		// Content 
-		int extendedTotalHeight = InspectorTotalHeight + Unify(96);
+		// Add New
+		var toolRect = toolbarRect.EdgeLeft(toolbarRect.height);
+		if (
+			GUI.Button(toolRect, ICON_ADD_ANI, Skin.SmallDarkButton) &&
+			TryGetValidAnimationFileName("New Animation", out string newName)
+		) {
+			AllAnimationNames.Add(newName);
+			string path = Util.CombinePaths(CurrentProject.Universe.CharacterAnimationRoot, $"{newName}.json");
+			JsonUtil.SaveJsonToPath(new ModularAnimation(), path);
+			LoadCurrentAnimationFromFile(path);
+			SelectorScroll = int.MaxValue;
+		}
+		toolRect.SlideRight(padding);
+
+	}
+
+
+	private void Update_AniSelector_Content (IRect panelRect) {
+
+		int panelPadding = Unify(6);
+		int iconPadding = Unify(3);
+		int extendedTotalHeight = SelectorTotalHeight + Unify(96);
 		int maxScroll = (extendedTotalHeight - panelRect.height).GreaterOrEquelThanZero();
-		using (var scroll = new GUIVerticalScrollScope(panelRect, InspectorScroll, 0, maxScroll)) {
-			InspectorScroll = scroll.PositionY;
-			var fixedPanelRect = panelRect.Shrink(Unify(24));
+		bool rightClick = panelRect.MouseInside() && Input.MouseRightButtonDown;
 
-			// Content
-			using var _ = new GUILabelWidthScope(Util.Min(fixedPanelRect.width / 2, Unify(196)));
-			int padding = Unify(6);
+		// Content
+		using (var scroll = new GUIVerticalScrollScope(panelRect, SelectorScroll, 0, maxScroll)) {
+			SelectorScroll = scroll.PositionY;
+			var fixedPanelRect = panelRect.Shrink(panelPadding, panelPadding + GUI.ScrollbarSize, panelPadding, panelPadding);
 			var rect = fixedPanelRect.EdgeUp(GUI.FieldHeight);
 
 			// Animation
-			GUI.SmallLabel(rect, LABEL_EDITING_ANI);
-			if (GUI.Button(rect.ShrinkLeft(GUI.LabelWidth), Animation.Name, Skin.SmallDarkButton)) {
-				ShowAnimationMenu(rect.ShrinkLeft(GUI.LabelWidth));
+			for (int i = 0; i < AllAnimationNames.Count; i++) {
+				string name = AllAnimationNames[i];
+				bool selecting = Animation.Name == name;
+				bool renaming = selecting && RenamingAnimationName != null;
+				const int RENAME_ID = 974221;
+
+				// Button
+				if (!renaming) {
+					if (GUI.Button(rect, 0, Skin.IconButton)) {
+						if (selecting) {
+							// Start Rename
+							RenamingAnimationName = name;
+							renaming = true;
+							GUI.StartTyping(RENAME_ID);
+						} else {
+							// Load Animation File
+							LoadCurrentAnimationFromFile(Util.CombinePaths(CurrentProject.Universe.CharacterAnimationRoot, $"{name}.json"));
+						}
+					}
+					// Highlight
+					if (selecting) {
+						Renderer.DrawPixel(rect, Skin.HighlightColorAlt);
+					}
+					// Label
+					GUI.SmallLabel(rect.ShrinkLeft(rect.height), name);
+					// Menu
+					if (rightClick && rect.MouseInside()) {
+						ShowAnimationFileMenu(rect, i);
+					}
+				}
+
+				// Rename
+				if (renaming) {
+					RenamingAnimationName = GUI.SmallInputField(
+						RENAME_ID, rect.ShrinkLeft(rect.height), RenamingAnimationName, out _, out bool confirm
+					);
+					if (confirm) {
+						RenamingAnimationName = RenamingAnimationName.TrimEnd();
+					}
+					if (confirm && RenamingAnimationName != Animation.Name && TryGetValidAnimationFileName(RenamingAnimationName, out string result)) {
+						string oldName = Animation.Name;
+						Animation.Name = result;
+						AllAnimationNames[i] = result;
+						string rootPath = CurrentProject.Universe.CharacterAnimationRoot;
+						Util.MoveFile(
+							Util.CombinePaths(rootPath, $"{oldName}.json"),
+							Util.CombinePaths(rootPath, $"{result}.json")
+						);
+					}
+				}
+
+				// Icon
+				GUI.Icon(rect.EdgeLeft(rect.height).Shrink(iconPadding), ICON_ANI);
+
+				// Next
+				rect.SlideDown();
 			}
-			GUI.PopupTriangleIcon(rect.ShrinkDown(padding));
-			rect.SlideDown(padding);
-
-
-
-
-
 
 			// Final
-			InspectorTotalHeight = fixedPanelRect.yMax - rect.yMax;
+			SelectorTotalHeight = fixedPanelRect.yMax - rect.yMax;
 		}
+
+		if (!GUI.IsTyping) RenamingAnimationName = null;
 
 		// Scrollbar
 		if (maxScroll > 0) {
-			InspectorScroll = GUI.ScrollBar(
+			SelectorScroll = GUI.ScrollBar(
 				97653136, panelRect.EdgeRight(GUI.ScrollbarSize),
-				InspectorScroll, extendedTotalHeight, panelRect.height
+				SelectorScroll, extendedTotalHeight, panelRect.height
 			);
 		}
 
@@ -290,28 +426,9 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 
 	// Timeline
-	private void Update_Timeline (IRect panelRect) {
-		int leftPanelWidth = FoldingLeftPanel.Value ? Unify(72) : Unify(196);
-		int frameWidth = Unify(12);
-		int extendedTotalWidth = Animation.Duration * frameWidth + Unify(96);
-		int extendedTotalHeight = Animation.KeyLayers.Length * GUI.FieldHeight + Unify(96);
-		int topGap = Unify(12);
-		GUI.DrawSlice(TIMELINE_BG, panelRect.Shrink(0, 0, GUI.ToolbarSize, topGap));
-		Update_Timeline_LeftPanel(
-			panelRect.ShrinkUp(topGap), leftPanelWidth, extendedTotalHeight
-		);
-		Update_Timeline_Content(
-			panelRect.ShrinkUp(topGap), leftPanelWidth, frameWidth, extendedTotalWidth, extendedTotalHeight
-		);
-		Update_Timeline_BottomBar(
-			panelRect.EdgeDown(GUI.ToolbarSize), leftPanelWidth, frameWidth, extendedTotalWidth
-		);
-	}
+	private void Update_Timeline_LeftPanel (IRect panelRect, int extendedTotalHeight) {
 
-
-	private void Update_Timeline_LeftPanel (IRect panelRect, int leftPanelWidth, int extendedTotalHeight) {
-
-		var leftPanelRect = panelRect.Shrink(0, panelRect.width - leftPanelWidth, GUI.ToolbarSize, 0);
+		var leftPanelRect = panelRect.Shrink(0, 0, GUI.ToolbarSize, 0);
 		int maxScrollY = (extendedTotalHeight - leftPanelRect.height).GreaterOrEquelThanZero();
 
 		// Panel
@@ -320,45 +437,44 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			var layerRect = leftPanelRect.EdgeUp(GUI.FieldHeight);
 			int fieldPadding = Unify(2);
 			bool folding = FoldingLeftPanel.Value;
-			bool buttonClick = false;
 			for (int layerIndex = 0; layerIndex < Animation.KeyLayers.Length; layerIndex++) {
 				var layer = Animation.KeyLayers[layerIndex];
 				var pLayerRect = layerRect.Shrink(0, GUI.ScrollbarSize, fieldPadding, fieldPadding);
-				var rect = pLayerRect.Part(0, 2);
 
 				// BG
 				Renderer.DrawPixel(layerRect, layerIndex % 2 == 0 ? new Color32(40, 40, 40, 255) : new Color32(36, 36, 36, 255));
 
-				// Binding Type
-				int icon = ICON_BTYPE[(int)layer.BindingType];
-				string label = LABEL_BTYPE[(int)layer.BindingType];
-				if (folding) {
-					buttonClick = GUI.Button(rect, icon, Skin.IconButton);
-					RequireTooltip(rect, label);
-				} else {
-					buttonClick = GUI.Button(rect, 0, Skin.IconButton);
-					GUI.Icon(rect.EdgeLeft(rect.height).Shrink(fieldPadding), icon);
-					GUI.Label(rect.ShrinkLeft(rect.height), label, Skin.AutoCenterLabel);
+				// Button
+				if (GUI.Button(pLayerRect, 0, Skin.IconButton)) {
+					ShowBindingMenu(pLayerRect, layerIndex);
 				}
-				if (buttonClick) ShowBindingTypeMenu(rect, layerIndex);
-				rect.SlideRight();
 
-				// Binding Target
-				icon = ICON_BTARGET[(int)layer.BindingTarget];
-				label = LABEL_BTARGET[(int)layer.BindingTarget];
-				if (folding) {
-					buttonClick = GUI.Button(rect, icon, Skin.IconButton);
-				} else {
-					buttonClick = GUI.Button(rect, 0, Skin.IconButton);
-					GUI.Icon(rect.EdgeLeft(rect.height).Shrink(fieldPadding), icon);
-					GUI.Label(rect.ShrinkLeft(rect.height), label, Skin.AutoCenterLabel);
+				// Icons
+				var rect = folding ? pLayerRect.LeftHalf() : pLayerRect.EdgeLeft(pLayerRect.height);
+				GUI.Icon(rect.Shrink(fieldPadding), ICON_BTARGET[(int)layer.BindingTarget]);
+				rect.SlideRight(fieldPadding);
+				if (folding) rect = pLayerRect.RightHalf();
+				GUI.Icon(rect.Shrink(fieldPadding), ICON_BTYPE[(int)layer.BindingType]);
+				rect.SlideRight(fieldPadding);
+
+				// Label
+				if (!folding) {
+					using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
+						GUI.Label(rect, LABEL_BTARGET[(int)layer.BindingTarget], out var bounds, Skin.AutoLabel);
+						rect.x += bounds.width + fieldPadding * 2;
+					}
+					GUI.Label(rect, LABEL_BTYPE[(int)layer.BindingType], Skin.AutoLabel);
 				}
-				if (buttonClick) ShowBindingTargetMenu(rect, layerIndex);
-				rect.SlideRight();
 
 				// Next
 				layerRect.SlideDown();
 			}
+
+			// Add Layer Button
+
+
+
+
 		}
 
 		// Scrollbar
@@ -372,17 +488,20 @@ public class CharacterAnimationEditorWindow : WindowUI {
 	}
 
 
-	private void Update_Timeline_Content (IRect panelRect, int leftPanelWidth, int frameWidth, int extendedTotalWidth, int extendedTotalHeight) {
+	private void Update_Timeline_Content (IRect panelRect, int frameWidth, int extendedTotalWidth, int extendedTotalHeight) {
 
 		int contentLeftGap = Unify(CONTENT_LEFT_GAP);
-		var contentRect = panelRect.Shrink(leftPanelWidth + contentLeftGap, 0, GUI.ToolbarSize, 0);
+		var contentRect = panelRect.Shrink(contentLeftGap, 0, GUI.ToolbarSize, 0);
+		bool anyMouseHolding = Input.AnyMouseButtonHolding;
 		bool mouseLeftDown = contentRect.MouseInside() && Input.MouseLeftButtonDown;
+		bool mouseLeftHolding = contentRect.Contains(Input.MouseLeftDownGlobalPosition) && Input.MouseLeftButtonHolding;
 		bool mouseFrameDragging = Input.MouseRightButtonHolding && contentRect.Contains(Input.MouseRightDownGlobalPosition);
 		bool mouseScrollDragging = Input.MouseMidButtonHolding && contentRect.Contains(Input.MouseMidDownGlobalPosition);
 		int maxScrollX = (extendedTotalWidth - contentRect.width).GreaterOrEquelThanZero();
 		int maxScrollY = (extendedTotalHeight - contentRect.height).GreaterOrEquelThanZero();
 		int pageCount = contentRect.width.CeilDivide(frameWidth);
 		int frameHeight = GUI.FieldHeight;
+		int layerCount = Animation.KeyLayers.Length;
 
 		// Play Scroll
 		if (IsPlaying || RequireScrollXClamp) {
@@ -401,11 +520,13 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			}
 		}
 
-		// Draw Lines
+		// Draw Vertical Content Lines
+		int verticalLinesDown = Util.Max(contentRect.y, contentRect.yMax - layerCount * frameHeight + ContentScrollY);
 		var lineRect = new IRect(
 			contentRect.x - Unify(1) - (ContentScrollX % frameWidth),
-			contentRect.y,
-			Unify(2), contentRect.height
+			verticalLinesDown,
+			Unify(2),
+			contentRect.yMax - verticalLinesDown
 		);
 		for (int i = 0; i <= pageCount; i++) {
 			int frame = ContentScrollX / frameWidth + i;
@@ -433,7 +554,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		int layerStart = ContentScrollY.UDivide(frameHeight);
 		int layerEnd = Util.Min(
 			layerStart + contentRect.height.CeilDivide(frameHeight) + 1,
-			Animation.KeyLayers.Length
+			layerCount
 		);
 		layerRect.y -= layerStart * frameHeight;
 		int startFrame = ContentScrollX / frameWidth;
@@ -453,20 +574,19 @@ public class CharacterAnimationEditorWindow : WindowUI {
 				if (frame < startFrame) continue;
 				if (frame > endFrame) break;
 				var rect = LayerFrame_to_TimelineFrameRect(contentRect, frameWidth, frameHeight, layerIndex, frame);
+
 				// BG
 				GUI.DrawSlice(FRAME_BG, rect);
 
 				// Body
-				GUI.DrawSlice(FRAME_BODY, rect);
+				Renderer.Draw(FRAME_BODY, rect.CenterX(), rect.CenterY(), 500, 500, 0, Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE);
 
 				// Hover
 				if (rect.MouseInside()) {
-					Cursor.SetCursorAsHand();
+					if (!anyMouseHolding) Cursor.SetCursorAsHand();
 					// Click
 					if (mouseLeftDown) {
-
-
-
+						MouseDraggingLayerFrame = new Int2(layerIndex, frame);
 						mouseLeftDown = false;
 					}
 				}
@@ -478,13 +598,20 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 		// Frame Hover Highlight
 		var mousePos = Input.MouseGlobalPosition;
-		if (TimelinePos_to_LayerFrame(
+		if (!anyMouseHolding && TimelinePos_to_LayerFrame(
 			contentRect, frameWidth, frameHeight,
 			mousePos.x, mousePos.y, out int hoverLayer, out int hoverFrame
 		)) {
 			Renderer.DrawPixel(LayerFrame_to_TimelineFrameRect(
 				contentRect, frameWidth, frameHeight, hoverLayer, hoverFrame
 			), Color32.WHITE_20);
+		}
+
+		// Cancel Drag
+		if (mouseLeftHolding) {
+			IsPlaying = false;
+		} else {
+			MouseDraggingLayerFrame = new(-1, -1);
 		}
 
 		// Frame Line
@@ -505,6 +632,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		// Drag to Move Frame
 		if (mouseFrameDragging || mouseLeftDown) {
 			AnimationFrame = ((mousePos.x - contentRect.x) / frameWidth).Clamp(0, Animation.Duration);
+			IsPlaying = false;
 		}
 
 	}
@@ -538,7 +666,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		var rulerRect = toolbarRect.Shrink(leftPanelWidth + leftGap, 0, GUI.ScrollbarSize, 0);
 		int tinyShiftForLabel = Unify(3);
 		rect = rulerRect.EdgeLeft(frameWidth);
-		rect.x += -ContentScrollX.UMod(frameWidth);
+		rect.x -= ContentScrollX.UMod(frameWidth);
 		using (new ClampCellsScope(rulerRect)) {
 			// Frame Line
 			Renderer.Draw(BuiltInSprite.SOFT_LINE_V,
@@ -598,6 +726,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			// Click
 			if (mouseDownInRuler && mouseHolding && mousePos.x > rect.x && mousePos.x <= rect.xMax) {
 				AnimationFrame = frame.Clamp(0, Animation.Duration);
+				IsPlaying = false;
 			}
 			// Next
 			rect.x += frameWidth;
@@ -631,6 +760,11 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			Preview.FacingRight = !Preview.FacingRight;
 		}
 
+		// Save
+		if (Input.KeyboardDownWithCtrl(KeyboardKey.S)) {
+			Save(forceSave: true);
+		}
+
 		// Move Frame Line
 		if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow) || Input.KeyboardDownGUI(KeyboardKey.A)) {
 			if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
@@ -638,6 +772,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			} else {
 				AnimationFrame = (AnimationFrame - 1).UMod(Animation.Duration + 1);
 			}
+			IsPlaying = false;
 			RequireScrollXClamp = true;
 		}
 		if (Input.KeyboardDownGUI(KeyboardKey.RightArrow) || Input.KeyboardDownGUI(KeyboardKey.D)) {
@@ -646,6 +781,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			} else {
 				AnimationFrame = (AnimationFrame + 1).UMod(Animation.Duration + 1);
 			}
+			IsPlaying = false;
 			RequireScrollXClamp = true;
 		}
 
@@ -663,11 +799,10 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 	public override void Save (bool forceSave = false) {
 		if (!forceSave && !IsDirty) return;
+		if (CurrentProject == null || Animation == null || string.IsNullOrEmpty(Animation.Name)) return;
 		CleanDirty();
-
-
-
-
+		string path = Util.CombinePaths(CurrentProject.Universe.CharacterAnimationRoot, $"{Animation.Name}.json");
+		JsonUtil.SaveJsonToPath(Animation, path, false);
 	}
 
 
@@ -679,6 +814,7 @@ public class CharacterAnimationEditorWindow : WindowUI {
 			LoadCurrentAnimationFromFile(path);
 			break;
 		}
+		ReloadAllAnimationNamesFromFile();
 	}
 
 
@@ -720,11 +856,35 @@ public class CharacterAnimationEditorWindow : WindowUI {
 
 
 	private void LoadCurrentAnimationFromFile (string path) {
+		Save();
 		if (!Util.FileExists(path)) return;
 		Animation = JsonUtil.LoadOrCreateJsonFromPath<ModularAnimation>(path);
 		Animation.Name = Util.GetNameWithoutExtension(path);
 		Animation.ID = Animation.Name.AngeHash();
 		Animation.SortAllLayers();
+	}
+
+
+	private void ReloadAllAnimationNamesFromFile () {
+		AllAnimationNames.Clear();
+		foreach (string path in Util.EnumerateFiles(CurrentProject.Universe.CharacterAnimationRoot, true, "*.json")) {
+			AllAnimationNames.Add(Util.GetNameWithoutExtension(path));
+		}
+	}
+
+
+	private bool TryGetValidAnimationFileName (string basicName, out string result) {
+		result = basicName;
+		if (CurrentProject == null || !Util.IsValidForFileName(basicName)) return false;
+		int index = 0;
+		string root = CurrentProject.Universe.CharacterAnimationRoot;
+		string path = Util.CombinePaths(root, $"{result}.json");
+		while (Util.FileExists(path)) {
+			index++;
+			result = $"{basicName} ({index})";
+			path = Util.CombinePaths(root, $"{result}.json");
+		}
+		return true;
 	}
 
 
@@ -760,49 +920,107 @@ public class CharacterAnimationEditorWindow : WindowUI {
 		}
 		// Func
 		static void Click () {
-			if (GenericPopupUI.Instance.InvokingItemData is not int index) return;
+			if (GenericPopupUI.InvokingItemData is not int index) return;
 			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
 			Instance.SetPreviewCharacter(Instance.AllRigCharacterNames[index]);
 		}
 	}
 
 
-	private void ShowAnimationMenu (IRect rect) {
+	private void ShowBindingMenu (IRect rect, int layerIndex) {
+
 		if (CurrentProject == null) return;
 		rect.x += Unify(4);
-		rect.y += InspectorScroll;
-		GenericPopupUI.BeginPopup(rect.BottomLeft());
-		foreach (string path in Util.EnumerateFiles(CurrentProject.Universe.CharacterAnimationRoot, true, "*.json")) {
-			string name = Util.GetNameWithoutExtension(path);
+		rect.y += ContentScrollY;
+		var layer = Animation.KeyLayers[layerIndex];
+		var currentTarget = layer.BindingTarget;
+		var currentType = layer.BindingType;
+
+		GenericPopupUI.BeginPopup(rect.position);
+
+		for (int targetIndex = 0; targetIndex < BINDING_TARGET_COUNT; targetIndex++) {
+			var target = (ModularAnimation.BindingTarget)targetIndex;
+
 			GenericPopupUI.AddItem(
-				name, Click,
-				@checked: name == Animation.Name,
-				data: path
+				LABEL_BTARGET[targetIndex], ICON_BTARGET[targetIndex],
+				Direction2.Left, 0, Const.EmptyMethod
 			);
+			GenericPopupUI.BeginSubItem();
+
+			for (int typeIndex = 0; typeIndex < BINDING_TYPE_COUNT; typeIndex++) {
+				var type = (ModularAnimation.BindingType)typeIndex;
+				if (!ModularAnimation.IsValidPair(type, target)) continue;
+				GenericPopupUI.AddItem(
+					LABEL_BTYPE[typeIndex],
+					ICON_BTYPE[typeIndex], Direction2.Left, 0,
+					Click,
+					enabled: currentTarget != target || currentType != type,
+					@checked: false,
+					data: (layerIndex, target, type)
+				);
+			}
+
+			GenericPopupUI.EndSubItem();
 		}
+
 		// Func
 		static void Click () {
-			if (GenericPopupUI.Instance.InvokingItemData is not string path) return;
-			Instance.LoadCurrentAnimationFromFile(path);
+			if (GenericPopupUI.InvokingItemData is not (
+				int layerIndex,
+				ModularAnimation.BindingTarget target,
+				ModularAnimation.BindingType type
+			)) return;
+			var layer = Instance.Animation.KeyLayers[layerIndex];
+			layer.BindingTarget = target;
+			layer.BindingType = type;
+			Instance.SetDirty();
 		}
 	}
 
 
-	private void ShowBindingTypeMenu (IRect rect, int layerIndex) {
+	private void ShowAnimationFileMenu (IRect rect, int nameIndex) {
 		if (CurrentProject == null) return;
 		rect.x += Unify(4);
-		rect.y += ContentScrollY;
+		rect.y += SelectorScroll;
+
+		GenericPopupUI.BeginPopup(rect.position);
+
+		GenericPopupUI.AddItem(BuiltInText.UI_EXPLORE, Explore);
+		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteDialog, data: nameIndex);
 
 
-	}
-
-
-	private void ShowBindingTargetMenu (IRect rect, int layerIndex) {
-		if (CurrentProject == null) return;
-		rect.x += Unify(4);
-		rect.y += ContentScrollY;
-
-
+		// Func
+		static void Explore () {
+			Game.OpenUrl(Instance.CurrentProject.Universe.CharacterAnimationRoot);
+		}
+		static void DeleteDialog () {
+			if (GenericPopupUI.InvokingItemData is not int index) return;
+			GenericDialogUI.SpawnDialog_Button(
+				string.Format(MSG_DELETE_ANI, Instance.AllAnimationNames[index]),
+				BuiltInText.UI_DELETE, Delete,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+			GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+			GenericDialogUI.SetCustomData(index);
+		}
+		static void Delete () {
+			if (GenericDialogUI.InvokingData is not int index) return;
+			string name = Instance.AllAnimationNames[index];
+			bool requireReload = Instance.Animation.Name == name;
+			string root = Instance.CurrentProject.Universe.CharacterAnimationRoot;
+			string path = Util.CombinePaths(root, $"{name}.json");
+			Util.DeleteFile(path);
+			Instance.AllAnimationNames.RemoveAt(index);
+			Instance.SetDirty();
+			if (requireReload) {
+				int count = Instance.AllAnimationNames.Count;
+				if (count > 0) {
+					Instance.Animation.Name = "";
+					string newName = Instance.AllAnimationNames[index.Clamp(0, count - 1)];
+					Instance.LoadCurrentAnimationFromFile(Util.CombinePaths(root, $"{newName}.json"));
+				}
+			}
+		}
 	}
 
 

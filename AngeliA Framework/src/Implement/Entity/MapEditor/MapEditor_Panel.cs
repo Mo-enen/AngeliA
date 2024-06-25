@@ -889,7 +889,7 @@ public partial class MapEditor {
 		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
 			Renderer.Draw(
 				SEARCH_ICON,
-				searchPanel.EdgeInside(Direction4.Left, searchPanel.height).Shrink(PADDING)
+				searchPanel.Edge(Direction4.Left, searchPanel.height).Shrink(PADDING)
 			);
 		}
 
@@ -897,7 +897,7 @@ public partial class MapEditor {
 		if (
 			!string.IsNullOrEmpty(SearchingText) &&
 			GUI.Button(
-				searchPanel.EdgeInside(Direction4.Right, searchPanel.height).Shrink(PADDING),
+				searchPanel.Edge(Direction4.Right, searchPanel.height).Shrink(PADDING),
 				BuiltInSprite.ICON_CROSS, Skin.IconButton
 			)
 		) {
@@ -965,7 +965,7 @@ public partial class MapEditor {
 			static void AddToList () {
 				var pal = Instance.MenuingPalItem;
 				if (pal == null) return;
-				if (GenericPopupUI.Instance.InvokingItemData is not int listIndex) return;
+				if (GenericPopupUI.InvokingItemData is not int listIndex) return;
 				var list = Instance.EditorMeta.PinnedLists[listIndex];
 				bool hasItem = list.Items.Contains(pal.ID);
 				if (!hasItem) {

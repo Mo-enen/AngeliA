@@ -264,6 +264,9 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
+	public static bool IsValidPair (BindingType type, BindingTarget target) => VALID_MAP[(int)target, (int)type];
+
+
 	#endregion
 
 
@@ -370,7 +373,11 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 				}
 				break;
 			case BindingType.Width:
-				bodypart.Width += flippedValue;
+				if (bodypart == character.Head || bodypart == character.Body || bodypart == character.Hip) {
+					bodypart.Width += flippedValue;
+				} else {
+					bodypart.Width += bodypart.Width.Sign() * value;
+				}
 				break;
 			case BindingType.Height:
 				bodypart.Height += value;

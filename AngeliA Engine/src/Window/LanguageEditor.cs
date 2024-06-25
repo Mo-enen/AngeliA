@@ -116,8 +116,8 @@ public partial class LanguageEditor : WindowUI {
 			Save();
 		}
 
-		Update_Bar(windowRect.EdgeInside(Direction4.Up, Unify(84)));
-		Update_Content(windowRect.EdgeInside(Direction4.Down, windowRect.height - Unify(84)));
+		Update_Bar(windowRect.Edge(Direction4.Up, Unify(84)));
+		Update_Content(windowRect.Edge(Direction4.Down, windowRect.height - Unify(84)));
 	}
 
 
@@ -132,7 +132,7 @@ public partial class LanguageEditor : WindowUI {
 		panelRect.y += labelHeight;
 
 		// Line
-		Renderer.DrawPixel(panelRect.EdgeInside(Direction4.Down, Unify(1)), Color32.GREY_12, 1);
+		Renderer.DrawPixel(panelRect.Edge(Direction4.Down, Unify(1)), Color32.GREY_12, 1);
 
 		// + Key
 		var rect = panelRect;
@@ -182,7 +182,7 @@ public partial class LanguageEditor : WindowUI {
 		SearchingText = GUI.SmallInputField(SEARCH_ID, searchRect, SearchingText, out _, out bool confirm);
 		if (GUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
 			GUI.Icon(
-				searchRect.EdgeInside(Direction4.Left, searchRect.height * 8 / 10).Shift(searchRect.height / 6, 0),
+				searchRect.Edge(Direction4.Left, searchRect.height * 8 / 10).Shift(searchRect.height / 6, 0),
 				BuiltInSprite.ICON_SEARCH
 			);
 		}
@@ -209,7 +209,7 @@ public partial class LanguageEditor : WindowUI {
 		}
 
 		// Help Button
-		if (GUI.Button(panelRect.EdgeInside(Direction4.Right, Unify(36)), "?", Skin.SmallCenterLabelButton)) {
+		if (GUI.Button(panelRect.Edge(Direction4.Right, Unify(36)), "?", Skin.SmallCenterLabelButton)) {
 			GenericDialogUI.SpawnDialog_Button(MSG_HELP, BuiltInText.UI_OK, Const.EmptyMethod);
 		}
 
@@ -308,7 +308,7 @@ public partial class LanguageEditor : WindowUI {
 
 		// Scrollbar
 		ScrollY = GUI.ScrollBar(
-			56093, WindowRect.ShrinkUp(Unify(42)).EdgeInside(Direction4.Right, scrollBarWidth),
+			56093, WindowRect.ShrinkUp(Unify(42)).Edge(Direction4.Right, scrollBarWidth),
 			ScrollY, shiftedItemCount, pageCount
 		);
 		if (Input.MouseWheelDelta != 0 && pageCount <= shiftedItemCount) {

@@ -48,6 +48,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
 
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
+	private static readonly LanguageCode LABEL_BLINK_ERROR = ("Setting.BlinkWhenError", "Blink When Having Compile Error");
 
 	private static readonly LanguageCode LABEL_CHAR_ANI_REVERSE_SCROLL = ("Setting.CharAni.ReverseScroll", "Reverse Mouse Scroll for Timeline");
 	private static readonly LanguageCode LABEL_CHAR_ANI_VERTICAL_SCROLL = ("Setting.CharAni.VerticalScroll", "Mouse Scroll Vertically for Timeline");
@@ -135,7 +136,7 @@ public class SettingWindow : WindowUI {
 				panelRect.width = maxPanelWidth;
 			}
 
-			var rect = panelRect.EdgeInside(Direction4.Up, GUI.FieldHeight);
+			var rect = panelRect.Edge(Direction4.Up, GUI.FieldHeight);
 
 			using var _ = new GUILabelWidthScope(Util.Min(Unify(256), rect.width / 2));
 
@@ -151,7 +152,7 @@ public class SettingWindow : WindowUI {
 		}
 		MasterScroll = GUI.ScrollBar(
 			92645,
-			WindowRect.EdgeInside(Direction4.Right, GUI.ScrollbarSize),
+			WindowRect.Edge(Direction4.Right, GUI.ScrollbarSize),
 			MasterScroll,
 			extendedUISize,
 			WindowRect.height
@@ -339,6 +340,12 @@ public class SettingWindow : WindowUI {
 		);
 		rect.SlideDown(itemPadding);
 
+		// Blink when Error
+		EngineSetting.BlinkWhenError.Value = GUI.Toggle(
+			rect, EngineSetting.BlinkWhenError.Value, LABEL_BLINK_ERROR,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
 
 		return rect;
 
@@ -426,7 +433,7 @@ public class SettingWindow : WindowUI {
 		int boxRight = rect.xMax;
 
 		// Fold Icon
-		GUI.Icon(rect.EdgeInside(Direction4.Left, rect.height * 3 / 4).Shift(-boxPadding.left / 5, 0), icon);
+		GUI.Icon(rect.Edge(Direction4.Left, rect.height * 3 / 4).Shift(-boxPadding.left / 5, 0), icon);
 
 		// Fold Label
 		if (GUI.Button(rect.Expand(boxPadding.left, boxPadding.right, 0, 0), 0, Skin.WeakHighlightPixel)) folding = !folding;
@@ -487,7 +494,7 @@ public class SettingWindow : WindowUI {
 
 		// Func
 		static void MenuInvoked () {
-			if (GenericPopupUI.Instance.InvokingItemData is not int index) {
+			if (GenericPopupUI.InvokingItemData is not int index) {
 				// Built In
 				Instance.RequireChangeThemePath = "";
 			} else if (Instance.ThemePaths.Count > 0 && index >= 0) {
@@ -624,7 +631,7 @@ public class SettingWindow : WindowUI {
 		);
 		static void Invoke () {
 			if (Instance == null || Instance.ActivatedSetting == null) return;
-			if (GenericPopupUI.Instance.InvokingItemData is not KeyboardKey newKey) return;
+			if (GenericPopupUI.InvokingItemData is not KeyboardKey newKey) return;
 			var value = Instance.ActivatedSetting.Value;
 			Instance.ActivatedSetting.Value = new Hotkey(newKey, value.Ctrl, value.Shift, value.Alt);
 		}

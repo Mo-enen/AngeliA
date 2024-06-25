@@ -686,7 +686,11 @@ public static class Extension {
 	public static IRect EdgeRight (this IRect rect, int size) => rect.Shrink(rect.width - size, 0, 0, 0);
 	public static IRect EdgeDown (this IRect rect, int size) => rect.Shrink(0, 0, 0, rect.height - size);
 	public static IRect EdgeUp (this IRect rect, int size) => rect.Shrink(0, 0, rect.height - size, 0);
-	public static IRect EdgeInside (this IRect rect, Direction4 edge, int size = 1) => edge switch {
+	public static IRect EdgeSquareLeft (this IRect rect) => rect.Shrink(0, rect.width - rect.height, 0, 0);
+	public static IRect EdgeSquareRight (this IRect rect) => rect.Shrink(rect.width - rect.height, 0, 0, 0);
+	public static IRect EdgeSquareDown (this IRect rect) => rect.Shrink(0, 0, 0, rect.height - rect.width);
+	public static IRect EdgeSquareUp (this IRect rect) => rect.Shrink(0, 0, rect.height - rect.width, 0);
+	public static IRect Edge (this IRect rect, Direction4 edge, int size = 1) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.height - size, 0),
 		Direction4.Down => rect.Shrink(0, 0, 0, rect.height - size),
 		Direction4.Left => rect.Shrink(0, rect.width - size, 0, 0),
@@ -790,13 +794,13 @@ public static class Extension {
 		// Top
 		int topHeight = rect.yMax - dodge.yMax;
 		if (topHeight > 0) {
-			resultTop = rect.EdgeInside(Direction4.Up, topHeight);
+			resultTop = rect.Edge(Direction4.Up, topHeight);
 		}
 
 		// Bottom
 		int bottomHeight = dodge.y - rect.y;
 		if (bottomHeight > 0) {
-			resultBottom = rect.EdgeInside(Direction4.Down, bottomHeight);
+			resultBottom = rect.Edge(Direction4.Down, bottomHeight);
 		}
 
 		int midTop = Util.Min(rect.yMax, dodge.yMax);

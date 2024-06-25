@@ -48,9 +48,10 @@ public sealed class CameraAutoScroll : Entity {
 		StartDirection = startDir.Value;
 		StartVelocity = StartDirection.Normal();
 		UpdatedPlayerPos = Player.Selecting != null ? new(Player.Selecting.X, Player.Selecting.Y) : default;
+		var squad = WorldSquad.Front as IBlockSquad;
 		Speed =
-			WorldSquad.FrontBlockSquad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Right, out int speed) ? speed :
-			WorldSquad.FrontBlockSquad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() - 1, Stage.ViewZ, Direction4.Right, out speed) ? speed : 24;
+			squad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Right, out int speed) ? speed :
+			squad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() - 1, Stage.ViewZ, Direction4.Right, out speed) ? speed : 24;
 		Speed = Speed.Clamp(1, Const.CEL);
 	}
 

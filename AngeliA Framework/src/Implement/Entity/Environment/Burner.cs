@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 public class CommonBurnerLeft : Burner<CommonFire> {
 	protected override Direction4 Direction => Direction4.Left;
@@ -69,11 +69,12 @@ public abstract class Burner<F> : EnvironmentEntity where F : Fire {
 		// Fire Offset
 		FireFrameOffset = 0;
 		var normal = Direction.Normal();
-		if (WorldSquad.FrontBlockSquad.TryGetSingleSystemNumber(
+		var squad = WorldSquad.Front as IBlockSquad;
+		if (squad.TryGetSingleSystemNumber(
 			(X + 1).ToUnit() + normal.x, (Y + 1).ToUnit() + normal.y, Stage.ViewZ, out int fireOffset
 		)) {
 			FireFrameOffset = FireFrequency * fireOffset.Clamp(0, 9) / 10;
-		} else if (WorldSquad.FrontBlockSquad.TryGetSingleSystemNumber(
+		} else if (squad.TryGetSingleSystemNumber(
 			(X + 1).ToUnit() - normal.x, (Y + 1).ToUnit() - normal.y, Stage.ViewZ, out fireOffset
 		)) {
 			FireFrameOffset = FireFrequency * fireOffset.Clamp(0, 9) / 10;

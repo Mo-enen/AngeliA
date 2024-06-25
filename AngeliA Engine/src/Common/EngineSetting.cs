@@ -23,6 +23,7 @@ public class EngineSetting {
 
 	// Console
 	public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);
+	public static readonly SavingBool BlinkWhenError = new("Console.BlinkWhenError", true);
 
 	// Map Editor
 	public static readonly SavingInt LastMapEditorViewX = new("Map.LastMapEditorViewX", 0);

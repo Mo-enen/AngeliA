@@ -535,10 +535,10 @@ public partial class Engine {
 
 		// Window
 		int barWidth = GetEngineLeftBarWidth(out int contentPadding);
-		var barRect = Renderer.CameraRect.EdgeInside(Direction4.Left, barWidth);
+		var barRect = Renderer.CameraRect.Edge(Direction4.Left, barWidth);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
-		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
+		var rect = barRect.Edge(Direction4.Up, GUI.Unify(42));
 
 		// Interactable
 		bool interactable = Game.GlobalFrame > ProjectEditor.Instance.RequiringPublishFrame + 2;
@@ -573,7 +573,7 @@ public partial class Engine {
 			}
 
 			// Menu Icon
-			GUI.Icon(menuRect.EdgeInside(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
+			GUI.Icon(menuRect.Edge(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
 			rect.y -= rect.height;
 
 			// Window Tabs
@@ -599,9 +599,9 @@ public partial class Engine {
 					bodyTint = Color32.WHITE_128;
 				}
 				if (window is Console console && console.HasCompileError) {
-					bodyTint = Color32.WHITE.WithNewA(
+					bodyTint = EngineSetting.BlinkWhenError.Value ? Color32.WHITE.WithNewA(
 						(byte)(Ease.InOutQuad(Game.GlobalFrame.PingPong(60) / 60f) * 255)
-					);
+					) : Color32.WHITE;
 					bodyID = UI_ENGINE_BAR_BTN_WARNING;
 				}
 				if (bodyTint.a > 0) {
@@ -615,7 +615,7 @@ public partial class Engine {
 
 				// Icon
 				int iconSize = contentRect.height;
-				var iconRect = contentRect.EdgeInside(Direction4.Left, iconSize);
+				var iconRect = contentRect.Edge(Direction4.Left, iconSize);
 				Renderer.Draw(window.TypeID, iconRect);
 
 				// Dirty Mark
@@ -649,14 +649,14 @@ public partial class Engine {
 			// Back to Hub
 			if (FullsizeMenu.Value) {
 				if (GUI.Button(
-					barRect.EdgeInside(Direction4.Down, rect.height),
+					barRect.Edge(Direction4.Down, rect.height),
 					BuiltInText.UI_BACK, GUI.Skin.SmallCenterLabelButton
 				)) {
 					TryCloseProject();
 				}
 			} else {
 				if (GUI.Button(
-					barRect.EdgeInside(Direction4.Down, rect.height),
+					barRect.Edge(Direction4.Down, rect.height),
 					ICON_TAB_BACK, GUI.Skin.IconButton
 				)) {
 					TryCloseProject();

@@ -121,6 +121,9 @@ public static class GUI {
 		return border;
 	}
 
+	public static int ReverseUnify (int value) => ForceUnifyBasedOnMonitor ? ReverseUnifyMonitor(value) : (value * 1000f / Renderer.CameraRect.height).RoundToInt();
+	public static int ReverseUnifyMonitor (int value) => (value * 1000f / Renderer.CameraRect.height / Game.MonitorHeight * Game.ScreenHeight.GreaterOrEquel(1)).RoundToInt();
+
 
 	public static IRect GetContentRect (IRect rect, GUIStyle style, GUIState state) {
 		// Border
@@ -546,7 +549,7 @@ public static class GUI {
 		bodyStyle ??= Skin.Toggle;
 		labelStyle ??= Skin.Label;
 		markStyle ??= Skin.ToggleMark;
-		var boxRect = rect.EdgeInside(Direction4.Left, rect.height);
+		var boxRect = rect.Edge(Direction4.Left, rect.height);
 		isOn = BlankToggle(boxRect, isOn, out var state);
 		DrawStyleBody(boxRect, bodyStyle, state);
 		Label(rect.Shrink(rect.height * 13 / 10, 0, 0, 0), label, labelStyle);
@@ -580,7 +583,7 @@ public static class GUI {
 		markStyle ??= Skin.ToggleMark;
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
+			Label(rect.Edge(Direction4.Left, LabelWidth), label, labelStyle);
 			rect = rect.Shrink(LabelWidth, 0, 0, 0);
 		}
 		rect.width = rect.height;
@@ -617,7 +620,7 @@ public static class GUI {
 	}
 	public static void PopupTriangleIcon (IRect rect, int iconSprite = 0) {
 		iconSprite = iconSprite == 0 ? BuiltInSprite.ICON_TRIANGLE_DOWN : iconSprite;
-		Renderer.Draw(iconSprite, rect.EdgeInside(Direction4.Right, rect.height));
+		Renderer.Draw(iconSprite, rect.Edge(Direction4.Right, rect.height));
 	}
 
 
@@ -947,7 +950,7 @@ public static class GUI {
 		// Label
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
+			Label(rect.Edge(Direction4.Left, LabelWidth), label, labelStyle);
 			rect = rect.ShrinkLeft(LabelWidth);
 		}
 		int buttonSize = Unify(42);
@@ -958,7 +961,7 @@ public static class GUI {
 		Label(labelRect, IntDialToChars.GetChars(value), bodyStyle);
 
 		// Buttons
-		rect = rect.EdgeInside(Direction4.Right, buttonSize);
+		rect = rect.Edge(Direction4.Right, buttonSize);
 		if (Button(rect.TopHalf(), BuiltInSprite.ICON_TRIANGLE_UP, dialButtonStyle)) {
 			value = (value + delta).Clamp(min, max);
 		}
@@ -1079,12 +1082,12 @@ public static class GUI {
 		// Label
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
+			Label(rect.Edge(Direction4.Left, LabelWidth), label, labelStyle);
 			rect = rect.Shrink(LabelWidth, 0, 0, 0);
 		}
 
 		// Result
-		var resultRect = rect.EdgeInside(Direction4.Left, rect.height);
+		var resultRect = rect.Edge(Direction4.Left, rect.height);
 		var resultColorRect = resultRect.Shrink(Unify(2));
 		Renderer.DrawPixel(resultRect, Color32.BLACK);
 		if (color.a.NotAlmost(1f)) {
@@ -1098,15 +1101,15 @@ public static class GUI {
 			// Default Rect
 			IRect defaultRect = default;
 			if (defaultColor.HasValue) {
-				defaultRect = rect.EdgeInside(Direction4.Right, rect.height);
+				defaultRect = rect.Edge(Direction4.Right, rect.height);
 				rect.width -= rect.height;
 			}
 
 			// Editor
 			if (horizontal) {
-				rect = rect.EdgeInside(Direction4.Left, alpha ? rect.width / 4 : rect.width / 3);
+				rect = rect.Edge(Direction4.Left, alpha ? rect.width / 4 : rect.width / 3);
 			} else {
-				rect = rect.EdgeInside(Direction4.Up, alpha ? rect.height / 4 : rect.height / 3);
+				rect = rect.Edge(Direction4.Up, alpha ? rect.height / 4 : rect.height / 3);
 			}
 			int gapH = horizontal ? Unify(4) : 0;
 			int gapV = horizontal ? 0 : Unify(4);
@@ -1321,7 +1324,7 @@ public static class GUI {
 		labelStyle ??= Skin.AutoDarkLabel;
 
 		// X
-		var xRect = rect.EdgeInside(Direction4.Down, thickness);
+		var xRect = rect.Edge(Direction4.Down, thickness);
 		if (clampRect.width > 0) xRect = xRect.Clamp(clampRect);
 		Renderer.DrawPixel(xRect, color: colorX, z: z);
 		if (stepCount.x > 1) {
@@ -1350,7 +1353,7 @@ public static class GUI {
 		}
 
 		// Y
-		var yRect = rect.EdgeInside(Direction4.Left, thickness);
+		var yRect = rect.Edge(Direction4.Left, thickness);
 		if (clampRect.height > 0) yRect = yRect.Clamp(clampRect);
 		Renderer.DrawPixel(yRect, color: colorY, z: z);
 		if (stepCount.y > 1) {

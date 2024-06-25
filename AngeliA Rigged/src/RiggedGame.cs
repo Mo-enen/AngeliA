@@ -397,10 +397,10 @@ public partial class RiggedGame : Game {
 								var cell = cells[x, y, d];
 								if (cell.Frame != Physics.CurrentFrame) break;
 								if (!cell.Rect.Overlaps(cameraRect)) continue;
-								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Down, thick), tint);
-								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Up, thick), tint);
-								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Left, thick), tint);
-								DrawGizmosRect(cell.Rect.EdgeInside(Direction4.Right, thick), tint);
+								DrawGizmosRect(cell.Rect.Edge(Direction4.Down, thick), tint);
+								DrawGizmosRect(cell.Rect.Edge(Direction4.Up, thick), tint);
+								DrawGizmosRect(cell.Rect.Edge(Direction4.Left, thick), tint);
+								DrawGizmosRect(cell.Rect.Edge(Direction4.Right, thick), tint);
 							}
 						}
 					}
@@ -447,10 +447,10 @@ public partial class RiggedGame : Game {
 					DraggingEntityOffset = Input.MouseGlobalPosition - bounds.position;
 				}
 				// Gizmos
-				DrawGizmosRect(bounds.EdgeInside(Direction4.Down, thick), gizmosTint);
-				DrawGizmosRect(bounds.EdgeInside(Direction4.Up, thick), gizmosTint);
-				DrawGizmosRect(bounds.EdgeInside(Direction4.Left, thick), gizmosTint);
-				DrawGizmosRect(bounds.EdgeInside(Direction4.Right, thick), gizmosTint);
+				DrawGizmosRect(bounds.Edge(Direction4.Down, thick), gizmosTint);
+				DrawGizmosRect(bounds.Edge(Direction4.Up, thick), gizmosTint);
+				DrawGizmosRect(bounds.Edge(Direction4.Left, thick), gizmosTint);
+				DrawGizmosRect(bounds.Edge(Direction4.Right, thick), gizmosTint);
 			}
 		}
 
