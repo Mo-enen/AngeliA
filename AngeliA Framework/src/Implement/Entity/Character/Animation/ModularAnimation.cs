@@ -130,7 +130,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	[JsonIgnore] public int ID;
 	[JsonIgnore] public string Name = string.Empty;
 	[JsonIgnore] public CharacterOverrideType Override = CharacterOverrideType.None;
-	public KeyLayer[] KeyLayers = System.Array.Empty<KeyLayer>();
+	public List<KeyLayer> KeyLayers = new();
 
 	// Data
 	[JsonIgnore] RawLayer[] RawLayers = System.Array.Empty<RawLayer>();
@@ -166,9 +166,9 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 
 	private void AnimateFromKeyFrame (PoseCharacter character, int frame) {
-		if (KeyLayers == null || KeyLayers.Length == 0) return;
+		if (KeyLayers == null || KeyLayers.Count == 0) return;
 		ResetLimbCache(character);
-		for (int i = 0; i < KeyLayers.Length; i++) {
+		for (int i = 0; i < KeyLayers.Count; i++) {
 			var layer = KeyLayers[i];
 			var value = layer.Evaluate(frame.UMod(Duration));
 			PerformFrame(character, layer.BindingType, layer.BindingTarget, value);
@@ -229,7 +229,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 
 	public void OnAfterLoadedFromDisk () {
-		KeyLayers ??= new KeyLayer[0];
+		KeyLayers ??= new();
 		foreach (var layer in KeyLayers) {
 			layer.Sort();
 			layer.KeyFrames ??= new();
@@ -267,6 +267,14 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	public static bool IsValidPair (BindingType type, BindingTarget target) => VALID_MAP[(int)target, (int)type];
 
 
+	public bool HasPair (BindingType type, BindingTarget target) {
+		foreach (var layer in KeyLayers) {
+			if (layer.BindingType == type && layer.BindingTarget == target) return true;
+		}
+		return false;
+	}
+
+
 	#endregion
 
 
@@ -281,7 +289,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			return;
 		}
 		// Fill Raw Layers
-		RawLayers = new RawLayer[KeyLayers.Length].FillWithNewValue();
+		RawLayers = new RawLayer[KeyLayers.Count].FillWithNewValue();
 		for (int layerIndex = 0; layerIndex < RawLayers.Length; layerIndex++) {
 			var sourceLayer = KeyLayers[layerIndex];
 			var sourceKeyFrames = sourceLayer.KeyFrames;
