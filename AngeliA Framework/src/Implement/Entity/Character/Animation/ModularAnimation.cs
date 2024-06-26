@@ -101,25 +101,30 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 	// Const
 	public const int MAX_RAW_LENGTH = 600;
-	private static readonly bool[,] VALID_MAP = {// [ Target-17, Type-9 ]
-						// Rot,   Twist, GrabR, GrabS, GrabT, W,     H,     X,     Y,
-		/* Head */		{  true , true , false, false, false, true , true , true , true , },
-		/* Body */		{  false, true , false, false, false, true , true , true , true , },
-		/* Hip */		{  false, false, false, false, false, true , true , true , true , },
-		/* ShoulderL */	{  false, false, false, false, false, true , true , true , true , },
-		/* ShoulderR */	{  false, false, false, false, false, true , true , true , true , },
-		/* UpperArmL */	{  true , false, false, false, false, true , true , true , true , },
-		/* UpperArmR */	{  true , false, false, false, false, true , true , true , true , },
-		/* LowerArmL */	{  true , false, false, false, false, true , true , true , true , },
-		/* LowerArmR */	{  true , false, false, false, false, true , true , true , true , },
-		/* HandL */		{  false, false, true , true , true , true , true , true , true , },
-		/* HandR */		{  false, false, true , true , true , true , true , true , true , },
-		/* UpperLegL */	{  true , false, false, false, false, true , true , true , true , },
-		/* UpperLegR */	{  true , false, false, false, false, true , true , true , true , },
-		/* LowerLegL */	{  true , false, false, false, false, true , true , true , true , },
-		/* LowerLegR */	{  true , false, false, false, false, true , true , true , true , },
-		/* FootL */		{  false, false, false, false, false, true , true , true , true , },
-		/* FootR */		{  false, false, false, false, false, true , true , true , true , },
+	private const int MXSZ = Const.CEL;
+	private static readonly (int min, int max)[,] RANGE_MAP = {// [ Target-17, Type-9 ]
+						//  Rot,           Twist,         GrabR,         GrabS,         GrabT,         W,             H,             X,             Y,
+		/* Head */		{   (-90 ,   90),  (-1000,1000),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* Body */		{   (0   , 0   ),  (-1000,1000),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* Hip  */		{   (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* ShoulderL */	{   (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* ShoulderR */	{   (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* UpperArmL */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* UpperArmR */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* LowerArmL */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* LowerArmR */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* HandL */		{   (0   , 0   ),  (0   , 0   ),  (-360,  360),  (0000, 3000),  (-1000,1000),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* HandR */		{   (0   , 0   ),  (0   , 0   ),  (-360,  360),  (0000, 3000),  (-1000,1000),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* UpperLegL */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* UpperLegR */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* LowerLegL */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* LowerLegR */	{   (-360,  360),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* FootL */		{   (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+		/* FootR */		{   (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (0   , 0   ),  (-MXSZ,MXSZ),  (0000, MXSZ),  (-MXSZ,MXSZ),  (-MXSZ,MXSZ), },
+	};
+	private static readonly int[] STEP_MAP = {
+		// Rot, Twist, GrabR, GrabS, GrabT, W,  H,  X,  Y,
+		   5,   10,    5,     10,    10,    16, 16, 16, 16,
 	};
 
 	// Api
@@ -264,7 +269,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
-	public static bool IsValidPair (BindingType type, BindingTarget target) => VALID_MAP[(int)target, (int)type];
+	public static bool IsValidPair (BindingType type, BindingTarget target) => target >= 0 && type >= 0 && RANGE_MAP[(int)target, (int)type] != (0, 0);
 
 
 	public bool HasPair (BindingType type, BindingTarget target) {
@@ -273,6 +278,12 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 		}
 		return false;
 	}
+
+
+	public static (int min, int max) GetValidRange (BindingType type, BindingTarget target) => target >= 0 && type >= 0 ? RANGE_MAP[(int)target, (int)type] : default;
+
+
+	public static int GetAdjustStep (BindingType type) => type >= 0 ? STEP_MAP[(int)type] : default;
 
 
 	#endregion
@@ -319,9 +330,9 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 		int targetIndex = (int)bindingTarget;
 		int typeIndex = (int)bindingType;
 		if (
-			targetIndex < 0 || targetIndex >= VALID_MAP.GetLength(0) ||
-			typeIndex < 0 || typeIndex >= VALID_MAP.GetLength(1) ||
-			!VALID_MAP[(int)bindingTarget, (int)bindingType]
+			targetIndex < 0 || targetIndex >= RANGE_MAP.GetLength(0) ||
+			typeIndex < 0 || typeIndex >= RANGE_MAP.GetLength(1) ||
+			RANGE_MAP[(int)bindingTarget, (int)bindingType] == (0, 0)
 		) return;
 
 		(var bodypart, bool facingRight) = bindingTarget switch {

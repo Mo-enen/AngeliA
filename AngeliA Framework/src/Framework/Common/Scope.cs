@@ -92,6 +92,17 @@ public readonly struct GUIEnableScope : System.IDisposable {
 
 
 
+public readonly struct GUIInteractableScope : System.IDisposable {
+	private readonly bool OldInteractable;
+	public GUIInteractableScope (bool interactable) {
+		OldInteractable = GUI.Interactable;
+		GUI.Interactable = interactable;
+	}
+	public readonly void Dispose () => GUI.Interactable = OldInteractable;
+}
+
+
+
 public readonly struct GUIVerticalScrollScope : System.IDisposable {
 	public readonly int PositionY => Scope.Position.y;
 	public readonly GUIScrollScope Scope;
@@ -127,7 +138,7 @@ public readonly struct GUIScrollScope : System.IDisposable {
 		if (!mouseInside) Input.IgnoreMouseInput();
 
 		// Scroll by Mouse Wheel
-		if (mouseInside && Input.MouseWheelDelta != 0) {
+		if (GUI.Interactable && mouseInside && Input.MouseWheelDelta != 0) {
 			int delta = reverseMouseWheel ? Input.MouseWheelDelta * GUI.Unify(-96) : Input.MouseWheelDelta * GUI.Unify(96);
 			position[mouseWheelForVertical ? 1 : 0] -= delta;
 		}

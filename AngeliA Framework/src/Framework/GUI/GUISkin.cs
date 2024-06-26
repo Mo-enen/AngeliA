@@ -94,6 +94,39 @@ public partial class GUISkin {
 		BodyColorDisable = Color32.CLEAR,
 	};
 
+
+	// Slider
+	public readonly GUIStyle SliderHandle = new() {
+		BodySprite = BuiltInSprite.UI_SLIDER_HANDLE,
+		BodySpriteHover = BuiltInSprite.UI_SLIDER_HANDLE,
+		BodySpriteDown = BuiltInSprite.UI_SLIDER_HANDLE,
+		BodySpriteDisable = BuiltInSprite.UI_SLIDER_HANDLE,
+		BodyColor = Color32.GREY_42,
+		BodyColorHover = Color32.GREY_46,
+		BodyColorDown = Color32.GREY_38,
+		BodyColorDisable = Color32.CLEAR,
+	};
+	public readonly GUIStyle SliderBody = new() {
+		BodySprite = BuiltInSprite.UI_SLIDER_BODY,
+		BodySpriteHover = BuiltInSprite.UI_SLIDER_BODY,
+		BodySpriteDown = BuiltInSprite.UI_SLIDER_BODY,
+		BodySpriteDisable = BuiltInSprite.UI_SLIDER_BODY,
+		BodyColor = Color32.GREY_230,
+		BodyColorHover = Color32.GREY_216,
+		BodyColorDown = Color32.GREY_230,
+		BodyColorDisable = Color32.CLEAR,
+	};
+	public readonly GUIStyle SliderFill = new() {
+		BodySprite = BuiltInSprite.UI_SLIDER_FILL,
+		BodySpriteHover = BuiltInSprite.UI_SLIDER_FILL,
+		BodySpriteDown = BuiltInSprite.UI_SLIDER_FILL,
+		BodySpriteDisable = BuiltInSprite.UI_SLIDER_FILL,
+		BodyColor = Color32.WHITE,
+		BodyColorHover = Color32.WHITE,
+		BodyColorDown = Color32.WHITE,
+		BodyColorDisable = Color32.GREY_128,
+	};
+
 	// Toggle
 	public readonly GUIStyle Toggle = new() {
 		BodySprite = BuiltInSprite.UI_TOGGLE,

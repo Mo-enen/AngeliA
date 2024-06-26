@@ -135,6 +135,9 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode CHECKER_BOARD_8 = "Checkerboard 8";
 	public static readonly SpriteCode SHADOW_LINE_16 = "ShadowLine16";
 	public static readonly SpriteCode UI_SCROLL_BAR = "UI.Scrollbar";
+	public static readonly SpriteCode UI_SLIDER_BODY = "UI.SliderBody";
+	public static readonly SpriteCode UI_SLIDER_FILL = "UI.SliderFill";
+	public static readonly SpriteCode UI_SLIDER_HANDLE = "UI.SliderHandle";
 	public static readonly SpriteCode ICON_CLEAR = "Icon.Clear";
 	public static readonly SpriteCode UI_DIALOG_BG = "UI.DialogBackground";
 

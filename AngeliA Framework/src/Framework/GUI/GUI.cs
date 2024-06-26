@@ -42,9 +42,11 @@ public static class GUI {
 	private static int BeamLength = 0;
 	private static int BeamBlinkFrame = int.MinValue;
 	private static int DraggingScrollbarID = 0;
+	private static int DraggingSliderID = 0;
 	private static int InvokeTypingStartID = 0;
 	private static int TypingTextFieldUpdateFrame = -1;
-	private static Int2? ScrollBarMouseDownPos = null;
+	private static (int downValue, bool hasValue) ScrollDraggingCache = (0, false);
+	private static bool SliderDraggingCache = false;
 	private static int ContentVersion = int.MinValue;
 	private static int CheckingContentVersion = int.MinValue;
 	private static int InternalRequiringControlID = int.MinValue;
@@ -70,7 +72,10 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.LeftCtrl);
 			Input.UnuseKeyboardKey(KeyboardKey.Tab);
 		}
-		if (!Input.MouseLeftButtonHolding) ScrollBarMouseDownPos = null;
+		if (!Input.MouseLeftButtonHolding) {
+			ScrollDraggingCache.hasValue = false;
+			SliderDraggingCache = false;
+		}
 	}
 
 
@@ -1007,7 +1012,7 @@ public static class GUI {
 		}
 		bool focusingBar = DraggingScrollbarID == controlID;
 		bool hoveringBar = barRect.MouseInside();
-		bool dragging = focusingBar && ScrollBarMouseDownPos.HasValue;
+		bool dragging = focusingBar && ScrollDraggingCache.hasValue;
 
 		// BG
 		DrawStyleBody(contentRect, bgStyle, !Enable ? GUIState.Disable : GUIState.Normal);
@@ -1024,8 +1029,8 @@ public static class GUI {
 		// Dragging
 		if (dragging) {
 			int mousePos = Input.MouseGlobalPosition[axis];
-			int mouseDownPos = ScrollBarMouseDownPos.Value.x;
-			int scrollDownPos = ScrollBarMouseDownPos.Value.y;
+			int mouseDownPos = Input.MouseLeftDownGlobalPosition[axis];
+			int scrollDownPos = ScrollDraggingCache.downValue;
 			if (vertical) {
 				position = scrollDownPos + (mouseDownPos - mousePos) * totalSize / contentRect.height;
 			} else {
@@ -1037,9 +1042,7 @@ public static class GUI {
 		if (Interactable && Enable && Input.MouseLeftButtonDown) {
 			if (hoveringBar) {
 				// Start Drag
-				ScrollBarMouseDownPos = new Int2(
-					Input.MouseGlobalPosition[axis], position
-				);
+				ScrollDraggingCache = (position, true);
 				DraggingScrollbarID = controlID;
 			} else if (contentRect.MouseInside()) {
 				// Jump on Click
@@ -1050,12 +1053,82 @@ public static class GUI {
 					totalSize - pageSize / 2, -pageSize / 2,
 					mousePos
 				);
-				ScrollBarMouseDownPos = new Int2(mousePos, position);
+				ScrollDraggingCache = (position, true);
 				DraggingScrollbarID = controlID;
 			}
 		}
 
 		return position.Clamp(0, totalSize - pageSize);
+	}
+
+
+	// Slider
+	public static int FilledSlider (int controlID, IRect rect, int value, int min, int max, bool vertical = false, int step = 0) => Slider(controlID, rect, value, min, max, Skin.SliderBody, null, Skin.SliderFill, vertical, step);
+	public static int HandleSlider (int controlID, IRect rect, int value, int min, int max, bool vertical = false, int step = 0) => Slider(controlID, rect, value, min, max, Skin.SliderBody, Skin.SliderHandle, null, vertical, step);
+	public static int Slider (int controlID, IRect rect, int value, int min, int max, GUIStyle bodyStyle, GUIStyle handleStyle, GUIStyle fillStyle, bool vertical = false, int step = 0) {
+
+		value = BlankSlider(controlID, rect, value, min, max, out var state, vertical, step);
+		int axis = vertical ? 1 : 0;
+		int valuePos = Util.Remap(min, max, rect.position[axis], rect.TopRight()[axis], value);
+
+		// Body
+		if (bodyStyle != null) {
+			DrawStyleBody(rect, bodyStyle, GUIState.Normal);
+		}
+
+		// Fill
+		if (fillStyle != null) {
+			var fillRect = rect;
+			var size = fillRect.size;
+			size[axis] = valuePos - rect.position[axis];
+			fillRect.size = size;
+			DrawStyleBody(fillRect, fillStyle, GUIState.Normal);
+		}
+
+		// Handle
+		if (handleStyle != null) {
+			var handleRect = rect.EdgeLeft(rect.height);
+			handleRect.x = valuePos - handleRect.width / 2;
+			DrawStyleBody(handleRect, handleStyle, state);
+		}
+
+		return value;
+	}
+	public static int BlankSlider (int controlID, IRect rect, int value, int min, int max, out GUIState state, bool vertical = false, int step = 0) {
+
+		int oldValue = value;
+		state = Enable ? GUIState.Normal : GUIState.Disable;
+
+		if (!Enable) return value;
+		bool hovering = rect.MouseInside();
+		bool dragging = DraggingSliderID == controlID && SliderDraggingCache;
+		state = dragging ? GUIState.Press : hovering ? GUIState.Hover : GUIState.Normal;
+
+		// Drag Start
+		if (!dragging && Input.MouseLeftButtonDown && hovering) {
+			DraggingSliderID = controlID;
+			SliderDraggingCache = true;
+			dragging = true;
+		}
+
+		// Dragging
+		if (dragging) {
+			int axis = vertical ? 1 : 0;
+			// Set Value
+			value = Util.RemapUnclamped(
+				rect.position[axis], rect.TopRight()[axis], min, max, Input.MouseGlobalPosition[axis]
+			);
+			// Step Value
+			if (step > 0) value -= value.UMod(step);
+			value = value.Clamp(min, max);
+		}
+
+		// End
+		if (value != oldValue) ContentVersion++;
+		if (dragging) {
+
+		}
+		return value;
 	}
 
 

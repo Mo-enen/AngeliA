@@ -97,7 +97,6 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 		Cursor.RequireCursor();
 
-
 		int panelWidth = Unify(200);
 		int itemHeight = Unify(26);
 		int lineThickness = Unify(4);
@@ -252,7 +251,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 							Renderer.Draw(item.Icon, new IRect(
 								item.IconPosition == Direction2.Left ?
 									labelBounds.x - iconSize - iconPadding :
-									rect.xMax - iconPadding - iconSize - rect.height/2,
+									rect.xMax - iconPadding - iconSize - rect.height / 2,
 								rect.y,
 								iconSize, iconSize
 							));
@@ -268,6 +267,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 							} else {
 								// Click Sub Menu
 								ignoreClose = true;
+								Input.UseAllMouseKey();
 							}
 						}
 
