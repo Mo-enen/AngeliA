@@ -218,7 +218,7 @@ public partial class Engine {
 	}
 
 
-	[OnGameInitializeLater(4096)]
+	[OnGameInitializeLater(5000)]
 	internal static void OpenProjectOnStart () {
 		if (
 			EngineSetting.OpenLastProjectOnStart.Value &&

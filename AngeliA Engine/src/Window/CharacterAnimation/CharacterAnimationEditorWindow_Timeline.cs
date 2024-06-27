@@ -15,6 +15,7 @@ public partial class CharacterAnimationEditorWindow {
 	// Const
 	private static readonly SpriteCode[] ICON_BTYPE = new SpriteCode[typeof(ModularAnimation.BindingType).EnumLength()];
 	private static readonly SpriteCode[] ICON_BTARGET = new SpriteCode[typeof(ModularAnimation.BindingTarget).EnumLength()];
+	private static readonly SpriteCode[] ICON_EASE = new SpriteCode[typeof(EaseType).EnumLength()];
 	private static readonly SpriteCode TIMELINE_BG = "UI.Panel.CharAniTimeline";
 	private static readonly SpriteCode FRAME_BG = "UI.CharAni.TimelineFrameBG";
 	private static readonly SpriteCode FRAME_BODY = "UI.CharAni.TimelineFrameBody";
@@ -23,6 +24,8 @@ public partial class CharacterAnimationEditorWindow {
 	private static readonly SpriteCode UI_FRAME_EDITOR_BG = "Icon.CharEditor.FrameEditorBG";
 	private static readonly LanguageCode[] LABEL_BTYPE = new LanguageCode[typeof(ModularAnimation.BindingType).EnumLength()];
 	private static readonly LanguageCode[] LABEL_BTARGET = new LanguageCode[typeof(ModularAnimation.BindingTarget).EnumLength()];
+	private static readonly LanguageCode[] LABEL_EASE = new LanguageCode[typeof(EaseType).EnumLength()];
+	private static readonly LanguageCode[] LABEL_BASIC_EASE = new LanguageCode[(typeof(EaseType).EnumLength() - 1) / 3 + 1];
 	private static readonly int BINDING_TYPE_COUNT = typeof(ModularAnimation.BindingType).EnumLength();
 	private static readonly int BINDING_TARGET_COUNT = typeof(ModularAnimation.BindingTarget).EnumLength();
 	private const int CONTENT_LEFT_GAP = 24;
@@ -36,6 +39,7 @@ public partial class CharacterAnimationEditorWindow {
 	private int TimelineScrollY = 0;
 	private (int layer, int frameIndex, int downFrame) TimelineMouseDragging = new(-1, -1, -1);
 	private (int layer, int frameIndex) TimelineEditingTarget = new(-1, -1);
+	private (int layer, int frame, int downTimeFrame) TimelineLastClicked = new(-1, -1, int.MinValue);
 	private int? AdjustingTimelineStartHeight = null;
 	private IRect TimelineContentRect;
 	private Int2 TimelineFrameSize;
@@ -60,7 +64,7 @@ public partial class CharacterAnimationEditorWindow {
 		// Drag to Adjust Timeline
 		if (!AdjustingTimelineStartHeight.HasValue) {
 			// Normal
-			if (timelineRect.EdgeExact(Direction4.Up, Unify(12)).MouseInside()) {
+			if (!TimelineFrameEditing && timelineRect.EdgeExact(Direction4.Up, Unify(12)).MouseInside()) {
 				Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL);
 				if (Input.MouseLeftButtonDown) {
 					AdjustingTimelineStartHeight = timelineRect.height;
@@ -119,8 +123,6 @@ public partial class CharacterAnimationEditorWindow {
 			for (int layerIndex = 0; layerIndex < Animation.KeyLayers.Count; layerIndex++) {
 				var layer = Animation.KeyLayers[layerIndex];
 				var pLayerRect = layerRect.Shrink(0, GUI.ScrollbarSize, fieldPadding, fieldPadding);
-				int targetIndex = (int)layer.BindingTarget;
-				int typeIndex = (int)layer.BindingType;
 
 				// BG
 				Renderer.DrawPixel(
@@ -133,37 +135,12 @@ public partial class CharacterAnimationEditorWindow {
 					ShowBindingMenu(pLayerRect, layerIndex);
 				}
 
-				// Icons
-				var rect = folding ? pLayerRect.LeftHalf() : pLayerRect.EdgeLeft(pLayerRect.height);
-				GUI.Icon(rect, targetIndex >= 0 ? ICON_BTARGET[targetIndex] : BuiltInSprite.ICON_QUESTION_MARK);
-				rect.SlideRight(fieldPadding);
-
-				if (folding) rect = pLayerRect.RightHalf();
-				GUI.Icon(rect, typeIndex >= 0 ? ICON_BTYPE[typeIndex] : BuiltInSprite.ICON_QUESTION_MARK);
-				rect.SlideRight(fieldPadding);
+				// Label
+				BindingLabel(pLayerRect, layer, folding);
 
 				// Menu
 				if (mouseRightDown && layerRect.MouseInside()) {
-					ShowLayerItemMenu(pLayerRect, layerIndex);
-				}
-
-				// Label
-				if (!folding) {
-					if (targetIndex < 0 && typeIndex < 0) {
-						// Empty
-						GUI.Label(pLayerRect, BuiltInText.UI_EMPTY, Skin.AutoCenterGreyLabel);
-					} else {
-						// With Label
-						if (targetIndex >= 0) {
-							using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
-								GUI.Label(rect, LABEL_BTARGET[targetIndex], out var bounds, Skin.AutoLabel);
-								rect.x += bounds.width + fieldPadding * 2;
-							}
-						}
-						if (typeIndex >= 0) {
-							GUI.Label(rect, LABEL_BTYPE[typeIndex], Skin.AutoLabel);
-						}
-					}
+					ShowLayerItemMenu(layerIndex);
 				}
 
 				// Next
@@ -181,6 +158,7 @@ public partial class CharacterAnimationEditorWindow {
 					BindingTarget = (ModularAnimation.BindingTarget)(-1),
 					BindingType = (ModularAnimation.BindingType)(-1),
 				});
+				SetDirty();
 			}
 
 		}
@@ -262,6 +240,7 @@ public partial class CharacterAnimationEditorWindow {
 		layerRect.y -= layerStart * TimelineFrameSize.y;
 		int startFrame = TimelineScrollX / TimelineFrameSize.x;
 		int endFrame = Util.Min(startFrame + TimelinePageCount + 1, Animation.Duration);
+		bool hoveringKeyFrame = false;
 		for (int layerIndex = layerStart; layerIndex < layerEnd; layerIndex++) {
 			var layer = Animation.KeyLayers[layerIndex];
 
@@ -286,7 +265,8 @@ public partial class CharacterAnimationEditorWindow {
 
 				// Hover
 				if (rect.MouseInside()) {
-					if (!anyMouseHolding) Cursor.SetCursorAsHand();
+					hoveringKeyFrame = true;
+					if (!anyMouseHolding && GUI.Interactable) Cursor.SetCursorAsHand();
 					// Click
 					if (mouseLeftDown) {
 						TimelineMouseDragging = (layerIndex, i, frameData.Frame);
@@ -301,15 +281,30 @@ public partial class CharacterAnimationEditorWindow {
 
 		// Frame Hover Highlight
 		var mousePos = Input.MouseGlobalPosition;
-		if (GUI.Interactable && !anyMouseHolding && TimelinePos_to_LayerFrame(
-			mousePos.x, mousePos.y, out int hoverLayer, out int hoverFrame
-		)) {
-			Renderer.DrawPixel(LayerFrame_to_TimelineFrameRect(
-				hoverLayer, hoverFrame
-			), Color32.WHITE_20);
+		bool hasHoveringFrame = TimelinePos_to_LayerFrame(mousePos.x, mousePos.y, out int hoverLayer, out int hoverFrame);
+		if (GUI.Interactable && hasHoveringFrame) {
+			// Hover Highlight
+			if (!anyMouseHolding) {
+				Renderer.DrawPixel(LayerFrame_to_TimelineFrameRect(hoverLayer, hoverFrame), Color32.WHITE_20);
+			}
+			// Last Click Update
+			if (Input.MouseLeftButtonDown && !hoveringKeyFrame) {
+				bool doubleClick =
+					hoverLayer == TimelineLastClicked.layer &&
+					hoverFrame == TimelineLastClicked.frame &&
+					Game.GlobalFrame < TimelineLastClicked.downTimeFrame + 30;
+				if (doubleClick || Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+					// Create New Frame
+					CreateNewKeyFrame(hoverLayer, hoverFrame);
+					TimelineLastClicked = (hoverLayer, hoverFrame, int.MinValue);
+				} else {
+					// Update Cache
+					TimelineLastClicked = (hoverLayer, hoverFrame, Game.GlobalFrame);
+				}
+			}
 		}
 
-		// Drag Move Frame
+		// Drag Move Frame Data
 		if (TimelineMouseDragging.layer >= 0) {
 			var (dragLayerIndex, dragFrameIndex, downFrame) = TimelineMouseDragging;
 			var layer = Animation.KeyLayers[dragLayerIndex];
@@ -338,6 +333,7 @@ public partial class CharacterAnimationEditorWindow {
 					layer.KeyFrames.Add(frameData);
 					// Finish Drag
 					layer.Sort();
+					Animation.CalculateDuration();
 					SetDirty();
 				} else {
 					// Start Edit Frame
@@ -346,7 +342,7 @@ public partial class CharacterAnimationEditorWindow {
 						TimelineMouseDragging.frameIndex
 					);
 					TimelineFrameEditing = true;
-					AnimationFrame = ((Input.MouseGlobalPosition.x + TimelineScrollX - TimelineContentRect.x) / TimelineFrameSize.x).Clamp(0, Animation.Duration);
+					AnimationFrame = ((Input.MouseGlobalPosition.x - TimelineContentRect.x) / TimelineFrameSize.x).Clamp(0, Animation.Duration);
 					GUI.Interactable = false;
 					IsPlaying = false;
 				}
@@ -376,7 +372,7 @@ public partial class CharacterAnimationEditorWindow {
 			);
 		}
 
-		// Drag to Move Frame
+		// Drag to Move Time Frame
 		if (GUI.Interactable) {
 			bool mouseFrameDragging = Input.MouseRightButtonHolding && TimelineContentRect.Contains(Input.MouseRightDownGlobalPosition);
 			bool mouseLeftDown = TimelineMouseDragging.layer < 0 && TimelineContentRect.MouseInside() && Input.MouseLeftButtonDown;
@@ -501,6 +497,7 @@ public partial class CharacterAnimationEditorWindow {
 		var (layer, frameIndex) = TimelineEditingTarget;
 		if (layer < 0 || layer >= Animation.KeyLayers.Count) goto _CANCEL_;
 		var layerData = Animation.KeyLayers[layer];
+		if (layerData.BindingType < 0 || layerData.BindingTarget < 0) goto _CANCEL_;
 		if (frameIndex < 0 || frameIndex >= layerData.KeyFrames.Count) goto _CANCEL_;
 		var frameData = layerData.KeyFrames[frameIndex];
 		int oldValue = frameData.Value;
@@ -508,7 +505,7 @@ public partial class CharacterAnimationEditorWindow {
 		var frameUiRect = LayerFrame_to_TimelineFrameRect(layer, frameData.Frame);
 		frameUiRect = frameUiRect.Shift(-TimelineScrollX, TimelineScrollY);
 		int panelWidth = Unify(256);
-		int panelHeight = Unify(128);
+		int panelHeight = Unify(136);
 		var panelRect = new IRect(
 			frameUiRect.CenterX() - panelWidth / 2,
 			frameUiRect.yMax,
@@ -519,14 +516,20 @@ public partial class CharacterAnimationEditorWindow {
 		// BG
 		GUI.DrawSlice(UI_FRAME_EDITOR_BG, panelRect);
 		panelRect = panelRect.Shrink(Unify(12));
+		var rect = panelRect.EdgeUp(GUI.FieldHeight);
+		int padding = Unify(6);
+
+		// Label
+		BindingLabel(rect, layerData, false, labelStyle: Skin.AutoDarkLabel);
+		rect.SlideDown(padding);
 
 		// Value
-		var valueRect = panelRect.EdgeUp(panelRect.height / 3);
+		rect.yMin = rect.yMax - Unify(36);
 		var (rangeMin, rangeMax) = ModularAnimation.GetValidRange(layerData.BindingType, layerData.BindingTarget);
 		int step = ModularAnimation.GetAdjustStep(layerData.BindingType);
 		step = Input.KeyboardHolding(KeyboardKey.LeftAlt) ? 1 : Input.KeyboardHolding(KeyboardKey.LeftCtrl) ? step * 4 : step;
 		frameData.Value = GUI.HandleSlider(
-			861299233, valueRect, frameData.Value,
+			861299233, rect, frameData.Value,
 			rangeMin, rangeMax,
 			step: step
 		);
@@ -537,24 +540,48 @@ public partial class CharacterAnimationEditorWindow {
 			frameData.Value = (frameData.Value + wheelDelta * step).Clamp(rangeMin, rangeMax);
 		}
 
-		// Value Label
-		//ValueLabelToChar
-
-
-
-
-		// Ease
-
+		// Value Number Label
+		GUI.Label(rect, ValueLabelToChar.GetChars(frameData.Value), style: Skin.CenterLabel);
+		rect.SlideDown(padding);
 
 		// Tool Buttons
+		rect.yMin = rect.yMax - Unify(24);
+		var btnRect = rect.Part(0, 3);
+		int btnPadding = Unify(2);
 
+		using (new GUIContentColorScope(Color32.GREY_64)) {
+			// Ease Button
+			int easeIndex = (int)frameData.Ease;
 
+			if (GUI.Button(btnRect.Shrink(btnPadding), easeIndex >= 0 ? ICON_EASE[easeIndex] : 0, Skin.SmallButton)) {
+				ShowEaseMenu(btnRect, layer, frameIndex);
+			}
+			btnRect.SlideRight();
 
+			// Reset Button
+			if (GUI.Button(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_REFRESH, Skin.SmallButton) || Input.KeyboardDown(KeyboardKey.R)) {
+				frameData.Value = 0;
+			}
+			btnRect.SlideRight();
+		}
 
+		// Delete Button
+		using (new GUIContentColorScope(Color32.GREY_245))
+		using (new GUIBodyColorScope(Color32.RED_BETTER)) {
+			if (GUI.Button(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_DELETE, Skin.SmallButton) || Input.KeyboardDown(KeyboardKey.Delete)) {
+				layerData.KeyFrames.RemoveAt(frameIndex);
+				Animation.CalculateDuration();
+				SetDirty();
+				goto _CANCEL_;
+			}
+		}
+		btnRect.SlideRight();
+
+		// Dirty Check
 		if (frameData.Value != oldValue) SetDirty();
 
 		// Cancel on Click Outside
-		if (Input.AnyMouseButtonDown && !panelRect.MouseInside()) {
+		if (Input.MouseLeftButtonDown && !panelRect.MouseInside() && !GenericPopupUI.ShowingPopup) {
 			Input.UseAllMouseKey();
 			goto _CANCEL_;
 		}
@@ -577,6 +604,64 @@ public partial class CharacterAnimationEditorWindow {
 	#region --- LGC ---
 
 
+	private void BindingLabel (IRect pLayerRect, ModularAnimation.KeyLayer layer, bool folding, GUIStyle labelStyle = null, GUIStyle emptyLabelStyle = null) {
+
+		labelStyle ??= Skin.AutoLabel;
+		emptyLabelStyle ??= Skin.AutoCenterGreyLabel;
+
+		int fieldPadding = Unify(2);
+		int targetIndex = (int)layer.BindingTarget;
+		int typeIndex = (int)layer.BindingType;
+		var rect = folding ? pLayerRect.LeftHalf() : pLayerRect.EdgeLeft(pLayerRect.height);
+
+		GUI.Icon(rect, targetIndex >= 0 ? ICON_BTARGET[targetIndex] : BuiltInSprite.ICON_QUESTION_MARK);
+		rect.SlideRight(fieldPadding);
+
+		if (folding) rect = pLayerRect.RightHalf();
+		GUI.Icon(rect, typeIndex >= 0 ? ICON_BTYPE[typeIndex] : BuiltInSprite.ICON_QUESTION_MARK);
+		rect.SlideRight(fieldPadding);
+
+		// Label
+		if (!folding) {
+			if (targetIndex < 0 && typeIndex < 0) {
+				// Empty
+				GUI.Label(pLayerRect, BuiltInText.UI_EMPTY, emptyLabelStyle);
+			} else {
+				// With Label
+				if (targetIndex >= 0) {
+					using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
+						GUI.Label(rect, LABEL_BTARGET[targetIndex], out var bounds, labelStyle);
+						rect.x += bounds.width + fieldPadding * 2;
+					}
+				}
+				if (typeIndex >= 0) {
+					GUI.Label(rect, LABEL_BTYPE[typeIndex], labelStyle);
+				}
+			}
+		}
+	}
+
+
+	private void CreateNewKeyFrame (int layer, int frame) {
+		if (layer < 0 || layer >= Animation.KeyLayers.Count) return;
+		if (frame < 0 || frame >= ModularAnimation.MAX_RAW_LENGTH) return;
+		var layerData = Animation.KeyLayers[layer];
+		// Check Exists
+		for (int i = 0; i < layerData.KeyFrames.Count; i++) {
+			var data = layerData.KeyFrames[i];
+			if (data.Frame == frame) return;
+		}
+		// Add New Frame
+		int value = layerData.Evaluate(frame);
+		layerData.KeyFrames.Add(new ModularAnimation.KeyFrame(frame, value, EaseType.InLiner));
+		// Finish
+		layerData.Sort();
+		Animation.CalculateDuration();
+		Animation.CalculateDuration();
+		SetDirty();
+	}
+
+
 	// Util
 	private bool TimelinePos_to_LayerFrame (int x, int y, out int layer, out int frame) {
 		int layerCount = Animation.KeyLayers.Count;
@@ -586,11 +671,7 @@ public partial class CharacterAnimationEditorWindow {
 	}
 
 
-	private IRect LayerFrame_to_TimelineFrameRect (int layer, int frame) => new(
-		TimelineContentRect.x + frame * TimelineFrameSize.x,
-		TimelineContentRect.yMax - (layer + 1) * TimelineFrameSize.y,
-		TimelineFrameSize.x, TimelineFrameSize.y
-	);
+	private IRect LayerFrame_to_TimelineFrameRect (int layer, int frame) => new(TimelineContentRect.x + frame * TimelineFrameSize.x, TimelineContentRect.yMax - (layer + 1) * TimelineFrameSize.y, TimelineFrameSize.x, TimelineFrameSize.y);
 
 
 	// Menu
@@ -646,11 +727,9 @@ public partial class CharacterAnimationEditorWindow {
 	}
 
 
-	private void ShowLayerItemMenu (IRect rect, int layerIndex) {
+	private void ShowLayerItemMenu (int layerIndex) {
 
 		if (CurrentProject == null) return;
-		rect.x += Unify(4);
-		rect.y += TimelineScrollY;
 		GenericPopupUI.BeginPopup();
 		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, Delete, data: layerIndex);
 
@@ -658,6 +737,93 @@ public partial class CharacterAnimationEditorWindow {
 		static void Delete () {
 			if (GenericPopupUI.InvokingItemData is not int layerIndex) return;
 			Instance.Animation.KeyLayers.RemoveAt(layerIndex);
+			Instance.SetDirty();
+		}
+	}
+
+
+	private void ShowEaseMenu (IRect rect, int layerIndex, int frameIndex) {
+
+		if (CurrentProject == null) return;
+		rect.x += Unify(4);
+		rect.y += TimelineScrollY;
+		var layer = Animation.KeyLayers[layerIndex];
+		var frame = layer.KeyFrames[frameIndex];
+		var currentEase = frame.Ease;
+		var currentEaseIndex = (int)currentEase;
+		int currentBasicIndex = currentEaseIndex == 0 ? 0 : (currentEaseIndex - 1) / 3 + 1;
+
+		GenericPopupUI.BeginPopup(rect.position);
+		GenericPopupUI.SetTint(Color32.GREY_32, Color32.GREY_32);
+
+		for (int i = 0; i < LABEL_BASIC_EASE.Length; i++) {
+
+			if (i == 0) {
+				GenericPopupUI.AddItem(
+					LABEL_EASE[0],
+					ICON_EASE[0],
+					Direction2.Right,
+					BuiltInSprite.CHECK_MARK_32,
+					Click,
+					@checked: currentBasicIndex == i && currentEaseIndex == 0,
+					data: (layerIndex, frameIndex, EaseType.Const)
+				);
+				continue;
+			}
+
+			GenericPopupUI.AddItem(
+				LABEL_BASIC_EASE[i],
+				Click,
+				@checked: currentBasicIndex == i
+			);
+			GenericPopupUI.BeginSubItem();
+			int _easeIndex = (i - 1) * 3 + 1;
+
+			// In
+			GenericPopupUI.AddItem(
+				LABEL_EASE[_easeIndex],
+				ICON_EASE[_easeIndex],
+				Direction2.Right,
+				BuiltInSprite.CHECK_MARK_32,
+				Click,
+				@checked: currentBasicIndex == i && currentEaseIndex == _easeIndex,
+				data: (layerIndex, frameIndex, (EaseType)_easeIndex)
+			);
+			_easeIndex++;
+
+			// Out
+			GenericPopupUI.AddItem(
+				LABEL_EASE[_easeIndex],
+				ICON_EASE[_easeIndex],
+				Direction2.Right,
+				BuiltInSprite.CHECK_MARK_32,
+				Click,
+				@checked: currentBasicIndex == i && currentEaseIndex == _easeIndex,
+				data: (layerIndex, frameIndex, (EaseType)_easeIndex)
+			);
+			_easeIndex++;
+
+			// InOut
+			GenericPopupUI.AddItem(
+				LABEL_EASE[_easeIndex],
+				ICON_EASE[_easeIndex],
+				Direction2.Right,
+				BuiltInSprite.CHECK_MARK_32,
+				Click,
+				@checked: currentBasicIndex == i && currentEaseIndex == _easeIndex,
+				data: (layerIndex, frameIndex, (EaseType)_easeIndex)
+			);
+
+			GenericPopupUI.EndSubItem();
+		}
+
+		// Func
+		static void Click () {
+			if (GenericPopupUI.InvokingItemData is not (int layer, int frame, EaseType ease)) return;
+			var layerData = Instance.Animation.KeyLayers[layer];
+			var frameData = layerData.KeyFrames[frame];
+			frameData.Ease = ease;
+			layerData.KeyFrames[frame] = frameData;
 			Instance.SetDirty();
 		}
 	}

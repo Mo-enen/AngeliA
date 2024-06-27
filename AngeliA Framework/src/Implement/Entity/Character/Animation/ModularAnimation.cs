@@ -90,6 +90,15 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
+	private class KeyLayerComparer : IComparer<KeyLayer> {
+		public static readonly KeyLayerComparer Instance = new();
+		public int Compare (KeyLayer x, KeyLayer y) {
+			int result = ((int)x.BindingTarget).CompareTo((int)y.BindingTarget);
+			return result != 0 ? result : ((int)x.BindingType).CompareTo((int)y.BindingType);
+		}
+	}
+
+
 	#endregion
 
 
@@ -246,9 +255,12 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
-	public void SortAllLayers () {
+	public void SortKeyFramesForAllLayers () {
 		foreach (var layer in KeyLayers) layer.Sort();
 	}
+
+
+	public void SortAllLayers () => KeyLayers.Sort(KeyLayerComparer.Instance);
 
 
 	#endregion
@@ -269,15 +281,26 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
-	public static bool IsValidPair (BindingType type, BindingTarget target) => target >= 0 && type >= 0 && RANGE_MAP[(int)target, (int)type] != (0, 0);
-
-
 	public bool HasPair (BindingType type, BindingTarget target) {
 		foreach (var layer in KeyLayers) {
 			if (layer.BindingType == type && layer.BindingTarget == target) return true;
 		}
 		return false;
 	}
+
+
+	public void ClearAllEmptyLayers () {
+		for (int i = 0; i < KeyLayers.Count; i++) {
+			var layer = KeyLayers[i];
+			if (layer.BindingTarget < 0 && layer.BindingType < 0 && layer.KeyFrames.Count == 0) {
+				KeyLayers.RemoveAt(i);
+				i--;
+			}
+		}
+	}
+
+
+	public static bool IsValidPair (BindingType type, BindingTarget target) => target >= 0 && type >= 0 && RANGE_MAP[(int)target, (int)type] != (0, 0);
 
 
 	public static (int min, int max) GetValidRange (BindingType type, BindingTarget target) => target >= 0 && type >= 0 ? RANGE_MAP[(int)target, (int)type] : default;

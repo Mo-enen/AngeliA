@@ -84,8 +84,11 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode UI_DARK_BUTTON = "UI.DarkButton";
 	public static readonly SpriteCode UI_DARK_BUTTON_HOVER = "UI.DarkButtonHover";
 	public static readonly SpriteCode UI_DARK_BUTTON_DOWN = "UI.DarkButtonDown";
-	public static readonly SpriteCode UI_BUTTON = "UI.Button";
 	public static readonly SpriteCode UI_HOLO_BUTTON = "UI.HoloButton";
+	public static readonly SpriteCode UI_SMALL_BUTTON = "UI.SmallButton";
+	public static readonly SpriteCode UI_SMALL_BUTTON_HOVER = "UI.SmallButtonHover";
+	public static readonly SpriteCode UI_SMALL_BUTTON_DOWN = "UI.SmallButtonDown";
+	public static readonly SpriteCode UI_BUTTON = "UI.Button";
 	public static readonly SpriteCode UI_BUTTON_HOVER = "UI.ButtonHover";
 	public static readonly SpriteCode UI_BUTTON_DOWN = "UI.ButtonDown";
 	public static readonly SpriteCode UI_DROPDOWN = "UI.Dropdown";
@@ -118,6 +121,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_PALETTE = "Icon.Palette";
 	public static readonly SpriteCode ICON_FILE = "Icon.File";
 	public static readonly SpriteCode ICON_CROSS = "Icon.Cross";
+	public static readonly SpriteCode ICON_DELETE = "Icon.Delete";
 	public static readonly SpriteCode ICON_HOME = "Icon.Home";
 	public static readonly SpriteCode UI_TOGGLE = "UI.Toggle";
 	public static readonly SpriteCode UI_TOGGLE_DOWN = "UI.ToggleDown";

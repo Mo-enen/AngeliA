@@ -15,11 +15,33 @@ public partial class GUISkin {
 		ContentShiftDisable = new(0, 2),
 		ContentShiftHover = new(0, 2),
 		ContentBorder = Int4.Direction(2, 2, 2, 2),
-		
+
 		ContentColor = Color32.GREY_32,
 		ContentColorHover = Color32.GREY_32,
 		ContentColorDown = Color32.GREY_32,
 		ContentColorDisable = Color32.GREY_64,
+
+		CharSize = -1,
+		Alignment = Alignment.MidMid,
+	};
+
+	public readonly GUIStyle SmallButton = new() {
+
+		BodySprite = BuiltInSprite.UI_SMALL_BUTTON,
+		BodySpriteHover = BuiltInSprite.UI_SMALL_BUTTON_HOVER,
+		BodySpriteDown = BuiltInSprite.UI_SMALL_BUTTON_DOWN,
+		BodySpriteDisable = BuiltInSprite.UI_SMALL_BUTTON,
+
+		ContentShift = new(0, 1),
+		ContentShiftDisable = new(0, 1),
+		ContentShiftHover = new(0, 1),
+		ContentBorder = Int4.Direction(1, 1, 1, 1),
+
+		ContentColor = Color32.GREY_32,
+		ContentColorHover = Color32.GREY_32,
+		ContentColorDown = Color32.GREY_32,
+		ContentColorDisable = Color32.GREY_64,
+
 		CharSize = -1,
 		Alignment = Alignment.MidMid,
 	};

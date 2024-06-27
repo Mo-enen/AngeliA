@@ -168,7 +168,8 @@ public static class GUI {
 
 	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
 		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
-		var color = Color * ContentColor * style.GetContentColor(state);
+		var color = ContentColor == Color32.WHITE ? style.GetContentColor(state) : ContentColor;
+		color *= Color;
 		if (color.a == 0) return;
 		rect = GetContentRect(rect, style, state);
 		if (ignoreSlice || _sprite.GlobalBorder.IsZero) {

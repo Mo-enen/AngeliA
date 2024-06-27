@@ -47,12 +47,6 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 	#region --- MSG ---
 
 
-	[OnGameFocused]
-	internal static void OnGameFocused () {
-		Instance?.ReloadAllAnimationNamesFromFile();
-	}
-
-
 	public CharacterAnimationEditorWindow (List<string> allRigCharacterNames) {
 		Instance = this;
 		AllRigCharacterNames = allRigCharacterNames;
@@ -68,6 +62,23 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 		for (int i = 0; i < LABEL_BTARGET.Length; i++) {
 			LABEL_BTARGET[i] = ($"Label.BdTarget.{(ModularAnimation.BindingTarget)i}", ((ModularAnimation.BindingTarget)i).ToString());
 		}
+		for (int i = 0; i < ICON_EASE.Length; i++) {
+			ICON_EASE[i] = $"Icon.Ease.{(EaseType)i}";
+		}
+		for (int i = 0; i < LABEL_EASE.Length; i++) {
+			LABEL_EASE[i] = ($"Label.Ease.{(EaseType)i}", ((EaseType)i).ToString());
+		}
+		LABEL_BASIC_EASE[0] = LABEL_EASE[0];
+		for (int i = 1; i < LABEL_BASIC_EASE.Length; i++) {
+			string basicName = ((EaseType)(1 + (i - 1) * 3)).ToString()[2..];
+			LABEL_BASIC_EASE[i] = ($"Label.Ease.{basicName}", basicName);
+		}
+	}
+
+
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+		Instance?.ReloadAllAnimationNamesFromFile();
 	}
 
 
@@ -187,7 +198,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 					GUI.SmallLabel(rect.ShrinkLeft(rect.height), name);
 					// Menu
 					if (rightClick && rect.MouseInside()) {
-						ShowAnimationFileMenu(rect, i);
+						ShowAnimationFileMenu(i);
 					}
 				}
 
@@ -301,6 +312,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 		if (!forceSave && !IsDirty) return;
 		if (CurrentProject == null || Animation == null || string.IsNullOrEmpty(Animation.Name)) return;
 		CleanDirty();
+		Animation.ClearAllEmptyLayers();
 		string path = Util.CombinePaths(CurrentProject.Universe.CharacterAnimationRoot, $"{Animation.Name}.json");
 		JsonUtil.SaveJsonToPath(Animation, path, false);
 	}
@@ -315,6 +327,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 			break;
 		}
 		ReloadAllAnimationNamesFromFile();
+		CleanDirty();
 	}
 
 
@@ -333,6 +346,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 		Animation = JsonUtil.LoadOrCreateJsonFromPath<ModularAnimation>(path);
 		Animation.Name = Util.GetNameWithoutExtension(path);
 		Animation.ID = Animation.Name.AngeHash();
+		Animation.SortKeyFramesForAllLayers();
 		Animation.SortAllLayers();
 		TimelineMouseDragging = (-1, -1, -1);
 		TimelineEditingTarget = (-1, -1);
@@ -425,12 +439,10 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 
 	// Menu
-	private void ShowAnimationFileMenu (IRect rect, int nameIndex) {
+	private void ShowAnimationFileMenu (int nameIndex) {
 		if (CurrentProject == null) return;
-		rect.x += Unify(4);
-		rect.y += SelectorScroll;
 
-		GenericPopupUI.BeginPopup(rect.position);
+		GenericPopupUI.BeginPopup();
 
 		GenericPopupUI.AddItem(BuiltInText.UI_EXPLORE, Explore);
 		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteDialog, data: nameIndex);

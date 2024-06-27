@@ -50,6 +50,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 	// Data
 	private readonly Item[] Items = new Item[128];
+	private Color32 LabelTint = Color32.WHITE;
+	private Color32 IconTint = Color32.WHITE;
 	private int ItemCount = 0;
 	private int HoveringIndex = -1;
 	private int HoveringFrame = 0;
@@ -227,6 +229,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 					}
 
 					// Content
+					using (new GUIContentColorScope(LabelTint))
 					using (new GUIEnableScope(item.Enabled)) {
 
 						// Check Mark
@@ -239,7 +242,12 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 						}
 
 						// Label
-						GUI.Label(rect.Shrink(indent, 0, 0, 0), item.Label, out var labelBounds, GUI.Skin.SmallDarkLabel);
+						GUI.Label(
+							rect.Shrink(indent, 0, 0, 0),
+							item.Label,
+							out var labelBounds,
+							GUISkin.Default.SmallLabel
+						);
 						maxWidth = Util.Max(
 							maxWidth,
 							labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)
@@ -254,7 +262,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 									rect.xMax - iconPadding - iconSize - rect.height / 2,
 								rect.y,
 								iconSize, iconSize
-							));
+							), IconTint);
 						}
 
 						// Hover
@@ -356,6 +364,8 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		CurrentSubLevel = 0;
 		HoveringFrame = 0;
 		VisibleDepth = 0;
+		LabelTint = Color32.GREY_32;
+		IconTint = Color32.WHITE;
 	}
 
 
@@ -408,6 +418,12 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			item.Label = "";
 			item.Action = null;
 		}
+	}
+
+
+	public static void SetTint (Color32 labelTint, Color32 iconTint) {
+		Instance.LabelTint = labelTint;
+		Instance.IconTint = iconTint;
 	}
 
 

@@ -111,9 +111,9 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_SLIDER_BODY,
 		BodySpriteDown = BuiltInSprite.UI_SLIDER_BODY,
 		BodySpriteDisable = BuiltInSprite.UI_SLIDER_BODY,
-		BodyColor = Color32.GREY_230,
-		BodyColorHover = Color32.GREY_216,
-		BodyColorDown = Color32.GREY_230,
+		BodyColor = Color32.GREY_96,
+		BodyColorHover = Color32.GREY_96,
+		BodyColorDown = Color32.GREY_96,
 		BodyColorDisable = Color32.CLEAR,
 	};
 	public readonly GUIStyle SliderFill = new() {
