@@ -49,6 +49,7 @@ public partial class CharacterAnimationEditorWindow {
 	private int TimelinePageCount;
 	private bool FrameDragged = false;
 	private bool TimelineFrameEditing = false;
+	private bool TimelineEditingChanged = false;
 
 
 	#endregion
@@ -159,6 +160,7 @@ public partial class CharacterAnimationEditorWindow {
 					BindingType = (ModularAnimation.BindingType)(-1),
 				});
 				SetDirty();
+				RegisterUndo();
 			}
 
 		}
@@ -335,6 +337,7 @@ public partial class CharacterAnimationEditorWindow {
 					layer.Sort();
 					Animation.CalculateDuration();
 					SetDirty();
+					RegisterUndo();
 				} else {
 					// Start Edit Frame
 					TimelineEditingTarget = (
@@ -345,6 +348,7 @@ public partial class CharacterAnimationEditorWindow {
 					AnimationFrame = ((Input.MouseGlobalPosition.x - TimelineContentRect.x) / TimelineFrameSize.x).Clamp(0, Animation.Duration);
 					GUI.Interactable = false;
 					IsPlaying = false;
+					TimelineEditingChanged = false;
 				}
 				TimelineMouseDragging = new(-1, -1, -1);
 			}
@@ -572,13 +576,17 @@ public partial class CharacterAnimationEditorWindow {
 				layerData.KeyFrames.RemoveAt(frameIndex);
 				Animation.CalculateDuration();
 				SetDirty();
+				TimelineEditingChanged = true;
 				goto _CANCEL_;
 			}
 		}
 		btnRect.SlideRight();
 
 		// Dirty Check
-		if (frameData.Value != oldValue) SetDirty();
+		if (frameData.Value != oldValue) {
+			SetDirty();
+			TimelineEditingChanged = true;
+		}
 
 		// Cancel on Click Outside
 		if (Input.MouseLeftButtonDown && !panelRect.MouseInside() && !GenericPopupUI.ShowingPopup) {
@@ -593,6 +601,10 @@ public partial class CharacterAnimationEditorWindow {
 		_CANCEL_:;
 		TimelineFrameEditing = false;
 		TimelineEditingTarget = (-1, -1);
+		if (TimelineEditingChanged) {
+			RegisterUndo();
+			TimelineEditingChanged = false;
+		}
 	}
 
 
@@ -659,6 +671,7 @@ public partial class CharacterAnimationEditorWindow {
 		Animation.CalculateDuration();
 		Animation.CalculateDuration();
 		SetDirty();
+		RegisterUndo();
 	}
 
 
@@ -723,6 +736,7 @@ public partial class CharacterAnimationEditorWindow {
 			layer.BindingTarget = target;
 			layer.BindingType = type;
 			Instance.SetDirty();
+			Instance.RegisterUndo();
 		}
 	}
 
@@ -738,6 +752,7 @@ public partial class CharacterAnimationEditorWindow {
 			if (GenericPopupUI.InvokingItemData is not int layerIndex) return;
 			Instance.Animation.KeyLayers.RemoveAt(layerIndex);
 			Instance.SetDirty();
+			Instance.RegisterUndo();
 		}
 	}
 
@@ -825,6 +840,7 @@ public partial class CharacterAnimationEditorWindow {
 			frameData.Ease = ease;
 			layerData.KeyFrames[frame] = frameData;
 			Instance.SetDirty();
+			Instance.RegisterUndo();
 		}
 	}
 

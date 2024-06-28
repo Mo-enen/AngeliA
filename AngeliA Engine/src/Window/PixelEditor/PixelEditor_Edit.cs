@@ -922,7 +922,7 @@ public partial class PixelEditor {
 			int pixelWidth = spritePixelRect.width;
 			var localRect = pixelRange.Shift(-spritePixelRect.x, -spritePixelRect.y);
 			bool contentChanged = false;
-			Undo.MarkAsStabile();
+			Undo.MarkAsStable();
 			RegisterUndo(new PaintUndoItem() {
 				SpriteID = paintingSprite.ID,
 				LocalPixelRect = localRect,
@@ -965,7 +965,7 @@ public partial class PixelEditor {
 					SpriteID = paintingSprite.ID,
 					LocalPixelRect = localRect,
 				});
-				Undo.MarkAsStabile();
+				Undo.MarkAsStable();
 			} else {
 				Undo.AbortUnstable();
 			}

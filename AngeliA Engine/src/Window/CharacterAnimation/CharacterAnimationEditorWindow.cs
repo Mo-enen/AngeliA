@@ -9,6 +9,36 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 
 
+	#region --- SUB ---
+
+
+	private struct AnimationUndoItem : IUndoItem {
+		public int Step { get; set; }
+		public ModularAnimation.KeyLayer[] KeyLayers;
+		public AnimationUndoItem (ModularAnimation ani) {
+			KeyLayers = CreateCopy(ani.KeyLayers);
+		}
+		public static ModularAnimation.KeyLayer[] CreateCopy (IList<ModularAnimation.KeyLayer> sourceLayers) {
+			int layerCount = sourceLayers.Count;
+			var result = new ModularAnimation.KeyLayer[layerCount];
+			for (int layerIndex = 0; layerIndex < layerCount; layerIndex++) {
+				var sourceLayer = sourceLayers[layerIndex];
+				result[layerIndex] = new ModularAnimation.KeyLayer() {
+					BindingTarget = sourceLayer.BindingTarget,
+					BindingType = sourceLayer.BindingType,
+					KeyFrames = new List<ModularAnimation.KeyFrame>(sourceLayer.KeyFrames),
+				};
+			}
+			return result;
+		}
+	}
+
+
+	#endregion
+
+
+
+
 	#region --- VAR ---
 
 
@@ -24,6 +54,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 	// Data
 	private readonly List<string> AllAnimationNames = new();
+	private readonly FullObjectUndo UndoRedo;
 	private Project CurrentProject = null;
 	private ModularAnimation Animation = new();
 	private bool IsPlaying = false;
@@ -31,6 +62,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 	private int SelectorScroll = 0;
 	private int SelectorTotalHeight = 1;
 	private string RenamingAnimationName = null;
+	private bool RequireUndoRegister = false;
 
 	// Saving
 	private static readonly SavingString LastPreviewCharacter = new("CharAniEditor.LastPreview", nameof(DefaultPlayer));
@@ -49,6 +81,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 	public CharacterAnimationEditorWindow (List<string> allRigCharacterNames) {
 		Instance = this;
+		UndoRedo = new(4096, OnUndoRedoPerformed);
 		AllRigCharacterNames = allRigCharacterNames;
 		for (int i = 0; i < ICON_BTYPE.Length; i++) {
 			ICON_BTYPE[i] = $"Icon.BdType.{(ModularAnimation.BindingType)i}";
@@ -132,6 +165,13 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 		// Hotkey
 		Update_Hotkey();
+
+		// Undo
+		if (RequireUndoRegister) {
+			RequireUndoRegister = false;
+			UndoRedo.GrowStep();
+			UndoRedo.Register(new AnimationUndoItem(Animation));
+		}
 
 	}
 
@@ -267,6 +307,16 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 			Save(forceSave: true);
 		}
 
+		// Undo
+		if (Input.KeyboardDownWithCtrl(KeyboardKey.Z)) {
+			UndoRedo.Undo();
+		}
+
+		// Redo
+		if (Input.KeyboardDownWithCtrl(KeyboardKey.Y)) {
+			UndoRedo.Redo();
+		}
+
 		// Cancel
 		if (TimelineFrameEditing) {
 			if (Input.KeyboardDown(KeyboardKey.Escape)) {
@@ -339,9 +389,22 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 	#region --- LGC ---
 
 
+	// Undo
+	private void RegisterUndo () => RequireUndoRegister = true;
+
+
+	private void OnUndoRedoPerformed (IUndoItem item) {
+		if (item is not AnimationUndoItem undo) return;
+		Animation.KeyLayers.Clear();
+		Animation.KeyLayers.AddRange(AnimationUndoItem.CreateCopy(undo.KeyLayers));
+		SetDirty();
+	}
+
+
 	// Animation File
 	private void LoadCurrentAnimationFromFile (string path) {
 		Save();
+		UndoRedo.Reset();
 		if (!Util.FileExists(path)) return;
 		Animation = JsonUtil.LoadOrCreateJsonFromPath<ModularAnimation>(path);
 		Animation.Name = Util.GetNameWithoutExtension(path);
@@ -351,6 +414,8 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 		TimelineMouseDragging = (-1, -1, -1);
 		TimelineEditingTarget = (-1, -1);
 		TimelineFrameEditing = false;
+		RegisterUndo();
+		System.GC.Collect();
 	}
 
 
@@ -372,7 +437,6 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 		string path = Util.CombinePaths(root, $"{name}.json");
 		Util.DeleteFile(path);
 		AllAnimationNames.RemoveAt(index);
-		SetDirty();
 		if (requireReload) {
 			int count = AllAnimationNames.Count;
 			if (count > 0) {

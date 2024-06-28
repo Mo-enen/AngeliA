@@ -99,35 +99,6 @@ public partial class Engine {
 	// Init
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-
-		// TEST
-		//var test = new ModularAnimation() {
-		//	KeyLayers = new ModularAnimation.KeyLayer[]{
-		//		new () {
-		//			BindingType = ModularAnimation.BindingType.Rotation,
-		//			BindingTarget = ModularAnimation.BindingTarget.Head,
-		//			KeyFrames = new ModularAnimation.KeyFrame []{
-		//				new(0, new(0, true), EaseType.OutCubic),
-		//				new(30,new(45, true) , EaseType.OutCubic),
-		//				new(60, new(-45, true), EaseType.OutCubic),
-		//				new(90, new(0, true), EaseType.OutCubic),
-		//			},
-		//		},
-		//		new () {
-		//			BindingType = ModularAnimation.BindingType.Width,
-		//			BindingTarget = ModularAnimation.BindingTarget.Body,
-		//			KeyFrames = new ModularAnimation.KeyFrame []{
-		//				new(0, new(0, true), EaseType.OutBounce),
-		//				new(60, new(128, true), EaseType.OutBounce),
-		//				new(120, new(0, true), EaseType.OutBounce),
-		//			},
-		//		},
-		//	},
-		//};
-		//
-		//JsonUtil.SaveJsonToPath(test, "C:\\Data\\Test.json", false);
-
-
 		var engine = new Engine();
 		engine.AllWindows = new WindowUI[]{
 			new RiggedMapEditor(),

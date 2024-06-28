@@ -13,11 +13,11 @@ public class UndoRedo {
 
 
 	// Api
-	public int CurrentStep { get; private set; } = int.MinValue;
+	public int CurrentStep { get; private set; } = 0;
 
 	// Data
-	private readonly Pipe<IUndoItem> UndoList = null;
-	private readonly Pipe<IUndoItem> RedoList = null;
+	protected readonly Pipe<IUndoItem> UndoList = null;
+	protected readonly Pipe<IUndoItem> RedoList = null;
 	private readonly System.Action<IUndoItem> OnUndoPerformed = null;
 	private readonly System.Action<IUndoItem> OnRedoPerformed = null;
 	private int StableLength = 0;
@@ -38,7 +38,8 @@ public class UndoRedo {
 	}
 
 
-	public void Register (IUndoItem data) {
+	public virtual void Register (IUndoItem data) {
+		RedoList.Reset();
 		data.Step = CurrentStep;
 		if (!UndoList.LinkToTail(data)) {
 			// Free when Too Many
@@ -50,7 +51,6 @@ public class UndoRedo {
 			// Link Again
 			UndoList.LinkToTail(data);
 		}
-		RedoList.Reset();
 	}
 
 
@@ -58,7 +58,7 @@ public class UndoRedo {
 		for (int safe = 0; safe < UndoList.Capacity && UndoList.Length > 0; safe++) {
 			if (!UndoList.TryPopTail(out var data)) break;
 			RedoList.LinkToTail(data);
-			OnUndoPerformed?.Invoke(data);
+			InvokeUndoPerform(data);
 			if (!UndoList.TryPeekTail(out var tailData) || tailData.Step != data.Step) {
 				break;
 			}
@@ -70,7 +70,7 @@ public class UndoRedo {
 		for (int safe = 0; safe < RedoList.Capacity && RedoList.Length > 0; safe++) {
 			if (!RedoList.TryPopTail(out var data)) break;
 			UndoList.LinkToTail(data);
-			OnRedoPerformed?.Invoke(data);
+			InvokeRedoPerform(data);
 			if (!RedoList.TryPeekTail(out var tailData) || tailData.Step != data.Step) {
 				break;
 			}
@@ -78,20 +78,20 @@ public class UndoRedo {
 	}
 
 
-	public void Reset () {
+	public virtual void Reset () {
 		UndoList.Reset();
 		RedoList.Reset();
 		CurrentStep = int.MinValue;
 	}
 
 
-	public void GrowStep () {
+	public virtual void GrowStep () {
 		CurrentStep++;
 		StableLength = UndoList.Length;
 	}
 
 
-	public void MarkAsStabile () => StableLength = UndoList.Length;
+	public void MarkAsStable () => StableLength = UndoList.Length;
 
 
 	public void AbortUnstable () {
@@ -101,6 +101,11 @@ public class UndoRedo {
 			if (!UndoList.TryPopTail(out _)) break;
 		}
 	}
+
+
+	protected virtual void InvokeUndoPerform (IUndoItem data) => OnUndoPerformed?.Invoke(data);
+	protected virtual void InvokeRedoPerform (IUndoItem data) => OnRedoPerformed?.Invoke(data);
+
 
 
 }
