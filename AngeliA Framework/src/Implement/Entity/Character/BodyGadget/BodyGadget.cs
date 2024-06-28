@@ -13,6 +13,7 @@ public abstract class BodyGadget {
 
 	private static readonly Dictionary<int, BodyGadget> Pool = new();
 	private static Dictionary<int, int>[] DefaultPool = null;
+	public int SheetIndex { get; private set; } = -1;
 	protected abstract BodyGadgetType GadgetType { get; }
 	public virtual bool SpriteLoaded => true;
 
@@ -77,7 +78,10 @@ public abstract class BodyGadget {
 	public abstract void DrawGadget (PoseCharacter character);
 
 
-	public abstract bool FillFromSheet (string basicName);
+	public virtual bool FillFromSheet (string basicName) {
+		SheetIndex = Renderer.CurrentSheetIndex;
+		return true;
+	}
 
 
 	// API

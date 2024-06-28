@@ -21,6 +21,7 @@ public abstract class Ear : BodyGadget {
 
 	// MSG
 	public override bool FillFromSheet (string basicName) {
+		base.FillFromSheet(basicName);
 		SpriteIdL = $"{basicName}.EarL".AngeHash();
 		SpriteIdR = $"{basicName}.EarR".AngeHash();
 		SpriteIdLBack = $"{basicName}.EarLB".AngeHash();
@@ -42,6 +43,7 @@ public abstract class Ear : BodyGadget {
 
 	public override void DrawGadget (PoseCharacter character) {
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsEar(
 			character,
 			character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,

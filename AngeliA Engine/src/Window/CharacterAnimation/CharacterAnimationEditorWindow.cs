@@ -449,35 +449,6 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 
 	// Editor
-	private void SetPreviewCharacter (string characterName) {
-		using var _ = new SheetIndexScope(SheetIndex);
-		PreviewCharacterName = characterName;
-		LastPreviewCharacter.Value = characterName;
-		Preview.OnActivated();
-		int charID = characterName.AngeHash();
-		if (!ConfigPool.TryGetValue(charID, out var config)) {
-			config = PoseCharacter.CreateCharacterConfigFromSheet(characterName);
-			ConfigPool[charID] = config;
-		}
-		if (config != null) {
-			Preview.LoadCharacterFromConfig(config);
-			// Body Gadget
-			Preview_Face.FillFromSheet(characterName);
-			Preview_Horn.FillFromSheet(characterName);
-			Preview_Wing.FillFromSheet(characterName);
-			Preview_Tail.FillFromSheet(characterName);
-			Preview_Ear.FillFromSheet(characterName);
-			Preview_Hair.FillFromSheet(characterName);
-			// Cloth
-			PreviewCloth_Head.FillFromSheet(characterName);
-			PreviewCloth_Body.FillFromSheet(characterName);
-			PreviewCloth_Hip.FillFromSheet(characterName);
-			PreviewCloth_Hand.FillFromSheet(characterName);
-			PreviewCloth_Foot.FillFromSheet(characterName);
-		}
-	}
-
-
 	private void ReloadAllAnimationNamesFromFile () {
 		AllAnimationNames.Clear();
 		foreach (string path in Util.EnumerateFiles(CurrentProject.Universe.CharacterAnimationRoot, true, "*.json")) {

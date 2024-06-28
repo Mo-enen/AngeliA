@@ -1,7 +1,7 @@
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace AngeliA;
 
@@ -104,24 +104,24 @@ public class Sheet {
 	}
 
 	public void CalculateExtraData () {
+
 		// Sprites
 		SpritePool.Clear();
-		for (int i = 0; i < Sprites.Count; i++) {
-			var sprite = Sprites[i];
+		var spriteSpan = CollectionsMarshal.AsSpan(Sprites);
+		for (int i = 0; i < spriteSpan.Length; i++) {
+			var sprite = spriteSpan[i];
 			sprite.Atlas = Atlas[sprite.AtlasIndex];
 			sprite.SortingZ = sprite.Atlas.AtlasZ * 1024 + sprite.LocalZ;
 			sprite.Group = null;
-			if (!SpritePool.TryAdd(sprite.ID, Sprites[i])) {
-				Sprites.RemoveAt(i);
-				i--;
-			}
+			SpritePool.TryAdd(sprite.ID, sprite);
 		}
+
 		// Make Groups
 		GroupPool.Clear();
 		if (!IgnoreGroups) {
 			// Create Groups
-			for (int i = 0; i < Sprites.Count; i++) {
-				var sprite = Sprites[i];
+			for (int i = 0; i < spriteSpan.Length; i++) {
+				var sprite = spriteSpan[i];
 
 				if (!Util.GetGroupInfoFromSpriteRealName(
 					sprite.RealName, out string groupName, out int groupIndex
@@ -169,11 +169,17 @@ public class Sheet {
 				group.SpriteIDs.RemoveAll(id => id == 0);
 			}
 		}
+
 		// Texture Pool
-		foreach (var texture in TexturePool) Game.UnloadTexture(texture);
+		foreach (var texture in TexturePool) {
+			Game.UnloadTexture(texture);
+		}
 		TexturePool.Clear();
 		if (!IgnoreTextureAndPixels) {
-			foreach (var sprite in Sprites) SyncSpritePixelsIntoTexturePool(sprite);
+			for (int i = 0; i < spriteSpan.Length; i++) {
+				var sprite = spriteSpan[i];
+				SyncSpritePixelsIntoTexturePool(sprite);
+			}
 		}
 	}
 
@@ -482,12 +488,13 @@ public class Sheet {
 
 			// Sprites
 			{
-				writer.Write((int)Sprites.Count);
+				var span = CollectionsMarshal.AsSpan(Sprites);
+				writer.Write((int)span.Length);
 				long markPos = stream.Position;
 				writer.Write((int)0);
 				long startPos = stream.Position;
-				for (int i = 0; i < Sprites.Count; i++) {
-					Sprites[i].SaveToBinary_v0(writer);
+				for (int i = 0; i < span.Length; i++) {
+					span[i].SaveToBinary_v0(writer);
 				}
 				long endPos = stream.Position;
 				stream.Position = markPos;

@@ -7,6 +7,8 @@ namespace AngeliA;
 
 public class AngeSprite {
 
+	public static readonly AngeSprite EMPTY = new();
+
 	private static readonly StringBuilder CacheBuilder = new(256);
 
 	public int ID;
@@ -84,15 +86,6 @@ public class AngeSprite {
 
 			// Tag
 			Tag = (Tag)reader.ReadInt32();
-			//int oldTag = reader.ReadInt32();
-			//for (int i = 0; i < TagUtil.TAG_COUNT; i++) {
-			//	string name = TagUtil.ALL_TAG_NAMES[i];
-			//	int id = name.AngeHash();
-			//	if (oldTag == id) {
-			//		Tag = TagUtil.GetTagAt(i);
-			//		break;
-			//	}
-			//}
 
 			// Duration
 			Duration = reader.ReadUInt16();
@@ -169,7 +162,7 @@ public class AngeSprite {
 
 			// Pixels
 			Pixels ??= new Color32[PixelRect.width * PixelRect.height];
-			var bytes = Pixels.Pixels_to_Bytes(PixelRect.width, PixelRect.height);
+			var bytes = Pixels.Pixels_to_Bytes();
 			writer.Write(bytes);
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }

@@ -22,6 +22,7 @@ public abstract class Horn : BodyGadget {
 
 	// MSG
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteIdL = $"{name}.HornL".AngeHash();
 		SpriteIdR = $"{name}.HornR".AngeHash();
 		SpriteIdLBack = $"{name}.HornLB".AngeHash();
@@ -45,6 +46,7 @@ public abstract class Horn : BodyGadget {
 	public override void DrawGadget (PoseCharacter character) {
 
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 
 		int idL = character.FacingFront ? SpriteIdL : SpriteIdLBack;
 		int idR = character.FacingFront ? SpriteIdR : SpriteIdRBack;

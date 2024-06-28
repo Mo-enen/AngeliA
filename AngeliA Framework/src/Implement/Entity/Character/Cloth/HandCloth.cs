@@ -15,6 +15,7 @@ public abstract class HandCloth : Cloth {
 	private int SpriteID;
 
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteID = $"{name}.HandSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		return SpriteLoaded;
@@ -28,6 +29,7 @@ public abstract class HandCloth : Cloth {
 
 	public override void DrawCloth (PoseCharacter character) {
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 		DrawClothForHand(character, SpriteID);
 	}
 

@@ -61,36 +61,35 @@ public static class Extension {
 		builder.Append('"');
 	}
 
-	public static byte[] Pixels_to_Bytes (this Color32[] pixels, int width, int height) {
+	public static byte[] Pixels_to_Bytes (this Color32[] pixels) {
 		var bytes = new byte[pixels.Length * 4];
-		int index = 0;
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				int i = y * width + x;
-				var p = pixels[i];
-				bytes[index * 4 + 0] = p.r;
-				bytes[index * 4 + 1] = p.g;
-				bytes[index * 4 + 2] = p.b;
-				bytes[index * 4 + 3] = p.a;
-				index++;
-			}
+		var bSpan = new System.Span<byte>(bytes);
+		var pixSpan = new System.ReadOnlySpan<Color32>(pixels);
+		int len = pixels.Length;
+		for (int i = 0; i < len; i++) {
+			var p = pixSpan[i];
+			bSpan[i * 4 + 0] = p.r;
+			bSpan[i * 4 + 1] = p.g;
+			bSpan[i * 4 + 2] = p.b;
+			bSpan[i * 4 + 3] = p.a;
 		}
 		return bytes;
 	}
 
 	public static Color32[] Bytes_to_Pixels (this byte[] bytes, int width, int height) {
 		var pixels = new Color32[width * height];
+		var bSpan = new System.ReadOnlySpan<byte>(bytes);
+		var pSpan = new System.Span<Color32>(pixels);
 		int index = 0;
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				pixels[y * width + x] = new Color32(
-					bytes[index + 0],
-					bytes[index + 1],
-					bytes[index + 2],
-					bytes[index + 3]
-				);
-				index += 4;
-			}
+		int len = pSpan.Length;
+		for (int i = 0; i < len; i++) {
+			pSpan[i] = new Color32(
+				bSpan[index + 0],
+				bSpan[index + 1],
+				bSpan[index + 2],
+				bSpan[index + 3]
+			);
+			index += 4;
 		}
 		return pixels;
 	}

@@ -75,7 +75,6 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_PIVOT_Y = ("Tip.PivotY", "Pivot Y");
 	private static readonly LanguageCode TIP_Z = ("Tip.Z", "Sprite Z");
 	private static readonly LanguageCode TIP_DURATION = ("Tip.Dration", "Animation duration");
-	private static readonly LanguageCode TIP_SPRITE_NAME = ("Tip.SpriteName", "Name");
 	private static readonly LanguageCode TIP_TRIGGER = ("Tip.Trigger", "Is trigger sprite");
 	private static readonly LanguageCode TIP_TAG = ("Tip.Tag", "Tag");
 	private static readonly LanguageCode TIP_RULE = ("Tip.Rule", "Tiling rule for auto level sprite");
@@ -270,7 +269,7 @@ public partial class PixelEditor {
 			TryApplySpriteInputFields(forceApply: true);
 			RefreshSpriteInputContent();
 		}
-		RequireTooltip(inputRect, TIP_SPRITE_NAME);
+		//RequireTooltip(inputRect, TIP_SPRITE_NAME);
 		rect.SlideRight(padding);
 
 		rect.x += padding;

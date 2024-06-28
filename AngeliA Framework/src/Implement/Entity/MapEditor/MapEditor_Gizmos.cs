@@ -268,18 +268,23 @@ public partial class MapEditor {
 
 	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) => DrawSpriteGizmos(artworkID, rect, Color32.WHITE, shrink, sprite);
 	private void DrawSpriteGizmos (int artworkID, IRect rect, Color32 tint, bool shrink = false, AngeSprite sprite = null) {
+		sprite ??= GetRealGizmosSprite(artworkID);
+		if (sprite == null) return;
+		if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
+		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), tint);
+	}
+
+
+	private AngeSprite GetRealGizmosSprite (int artworkID) {
 		if (
-			sprite == null &&
-			!Renderer.TryGetSprite(artworkID, out sprite) &&
+			!Renderer.TryGetSprite(artworkID, out var sprite) &&
 			!Renderer.TryGetSpriteFromGroup(artworkID, 0, out sprite
 		)) {
 			if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
 				Renderer.TryGetSprite(newID, out sprite);
 			}
 		}
-		if (sprite == null) return;
-		if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), tint);
+		return sprite ?? AngeSprite.EMPTY;
 	}
 
 

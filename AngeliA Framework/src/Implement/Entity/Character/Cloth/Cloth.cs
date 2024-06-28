@@ -17,6 +17,7 @@ public abstract class Cloth {
 	public int TypeID { get; init; }
 	protected abstract ClothType ClothType { get; }
 	public virtual bool SpriteLoaded => true;
+	public int SheetIndex { get; private set; } = -1;
 
 	// Data
 	protected static readonly Dictionary<int, Cloth> Pool = new();
@@ -87,7 +88,10 @@ public abstract class Cloth {
 	public abstract void DrawCloth (PoseCharacter character);
 
 
-	public abstract bool FillFromSheet (string name);
+	public virtual bool FillFromSheet (string name) {
+		SheetIndex = Renderer.CurrentSheetIndex;
+		return true;
+	}
 
 
 	// Pool

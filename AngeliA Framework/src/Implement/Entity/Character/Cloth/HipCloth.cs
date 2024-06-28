@@ -21,6 +21,7 @@ public abstract class HipCloth : Cloth {
 	private int SpriteIdLowerLeg;
 
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteIdHip = $"{name}.HipSuit".AngeHash();
 		SpriteIdSkirt = $"{name}.SkirtSuit".AngeHash();
 		SpriteIdUpperLeg = $"{name}.UpperLegSuit".AngeHash();
@@ -40,6 +41,7 @@ public abstract class HipCloth : Cloth {
 
 	public override void DrawCloth (PoseCharacter character) {
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 		DrawClothForHip(character, SpriteIdHip, CoverLegs ? 4 : 1);
 		DrawClothForSkirt(character, SpriteIdSkirt, CoverLegs ? 6 : 1);
 		DrawClothForUpperLeg(character, SpriteIdUpperLeg);

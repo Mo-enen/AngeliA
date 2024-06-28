@@ -41,7 +41,7 @@ public abstract class Face : BodyGadget {
 
 	// API
 	public override bool FillFromSheet (string keyword) {
-
+		base.FillFromSheet(keyword);
 		Sprite_Eye = GetSpriteID(keyword, "Eye");
 		Sprite_Sclera = GetSpriteID(keyword, "Sclera");
 		Sprite_Eyelash = GetSpriteID(keyword, "Eyelash");
@@ -71,6 +71,8 @@ public abstract class Face : BodyGadget {
 
 		var head = character.Head;
 		if (head.IsFullCovered || !head.FrontSide) return;
+
+		using var _ = new SheetIndexScope(SheetIndex);
 
 		// Get Head Rect
 		int bounce = character.CurrentRenderingBounce;

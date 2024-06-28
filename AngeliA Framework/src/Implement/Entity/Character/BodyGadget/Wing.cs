@@ -23,6 +23,7 @@ public abstract class Wing : BodyGadget {
 
 	// API
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteGroupID = $"{name}.Wing".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		if (
@@ -45,6 +46,7 @@ public abstract class Wing : BodyGadget {
 	public override void DrawGadget (PoseCharacter character) {
 
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 
 		DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
 		if (IsPropeller && character.AnimationType == CharacterAnimationType.Fly) {

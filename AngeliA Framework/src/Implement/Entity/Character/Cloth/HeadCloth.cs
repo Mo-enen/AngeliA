@@ -10,7 +10,7 @@ namespace AngeliA;
 public enum HatFrontMode { FrontOfHead, BackOfHead, AlwaysFrontOfHead, AlwaysBackOfHead, }
 
 
-public sealed class ModularHeadSuit : HeadCloth, IModularCloth {}
+public sealed class ModularHeadSuit : HeadCloth, IModularCloth { }
 
 
 public abstract class HeadCloth : Cloth {
@@ -22,6 +22,7 @@ public abstract class HeadCloth : Cloth {
 	private int SpriteID;
 
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteID = $"{name}.HeadSuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
 		return SpriteLoaded;
@@ -35,6 +36,7 @@ public abstract class HeadCloth : Cloth {
 
 	public override void DrawCloth (PoseCharacter character) {
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 		DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
 	}
 

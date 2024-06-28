@@ -29,6 +29,7 @@ public abstract class BodyCloth : Cloth {
 	protected virtual int LocalZ => 7;
 
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteIdFrontL = SpriteIdFrontR = $"{name}.BodySuit".AngeHash();
 		if (!Renderer.HasSprite(SpriteIdFrontL) && !Renderer.HasSpriteGroup(SpriteIdFrontL)) SpriteIdFrontL = 0;
 		if (SpriteIdFrontL == 0) {
@@ -54,6 +55,7 @@ public abstract class BodyCloth : Cloth {
 
 	public override void DrawCloth (PoseCharacter character) {
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 		DrawClothForBody(character, SpriteIdFrontL, SpriteIdFrontR, LocalZ, TwistShiftTopAmount);
 		DrawCape(character, TypeID);
 		DrawClothForShoulder(character, SpriteIdShoulder);

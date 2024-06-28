@@ -969,7 +969,7 @@ public partial class MapEditor {
 				var list = Instance.EditorMeta.PinnedLists[listIndex];
 				bool hasItem = list.Items.Contains(pal.ID);
 				if (!hasItem) {
-					if (list.Items.Count == 0) list.Icon = pal.ArtworkID;
+					if (list.Items.Count == 0) list.Icon = Instance.GetRealGizmosSprite(pal.ArtworkID).ID;
 					list.Items.Add(pal.ID);
 				} else {
 					list.Items.Remove(pal.ID);
@@ -986,7 +986,7 @@ public partial class MapEditor {
 		GenericPopupUI.AddItem(
 			MENU_PALETTE_ADD_TO_NEW_LIST, () => {
 				EditorMeta.PinnedLists.Add(new PinnedList() {
-					Icon = pal.ArtworkID,
+					Icon = GetRealGizmosSprite(pal.ArtworkID).ID,
 					Items = new List<int>() { pal.ID },
 				});
 			}
@@ -996,11 +996,12 @@ public partial class MapEditor {
 			if (SelectingPaletteListIndex >= 0 && SelectingPaletteListIndex < EditorMeta.PinnedLists.Count) {
 				var selectingList = EditorMeta.PinnedLists[SelectingPaletteListIndex];
 				// Cover Icon
+				int realCoverID = GetRealGizmosSprite(pal.ArtworkID).ID;
 				GenericPopupUI.AddSeparator();
 				GenericPopupUI.AddItem(
 					MENU_PALETTE_SET_LIST_COVER, () => {
-						selectingList.Icon = pal.ArtworkID;
-					}, selectingList.Icon != pal.ArtworkID
+						selectingList.Icon = realCoverID;
+					}, selectingList.Icon != realCoverID
 				);
 			}
 		}

@@ -51,6 +51,7 @@ public partial class CharacterAnimationEditorWindow {
 	private static readonly SpriteCode ICON_ZOOM_M = "Icon.CharPreviewZoomMin";
 	private static readonly SpriteCode ICON_ZOOM_P = "Icon.CharPreviewZoomPlus";
 	private static readonly SpriteCode ICON_FLIP = "Icon.CharPreviewFlip";
+	private static readonly SpriteCode ICON_WP = "Icon.CharAni.Weapon";
 	private static readonly LanguageCode TIP_PREVIEW = ("Tip.PreviewChar", "Select a character for preview the animation");
 
 	// Data
@@ -95,6 +96,12 @@ public partial class CharacterAnimationEditorWindow {
 			ShowPreviewCharacterMenu(rect);
 		}
 		RequireTooltip(rect, TIP_PREVIEW);
+		rect.SlideRight(padding);
+
+		// Weapon
+		if (GUI.Button(rect, ICON_WP, Skin.SmallDarkButton)) {
+			ShowPreviewWeaponMenu(rect);
+		}
 		rect.SlideRight(padding);
 
 		// Flip
@@ -159,9 +166,57 @@ public partial class CharacterAnimationEditorWindow {
 	#region --- LGC ---
 
 
+	private void SetPreviewCharacter (string characterName) {
+		using var _ = new SheetIndexScope(SheetIndex);
+		PreviewCharacterName = characterName;
+		LastPreviewCharacter.Value = characterName;
+		Preview.OnActivated();
+		int charID = characterName.AngeHash();
+		if (!ConfigPool.TryGetValue(charID, out var config)) {
+			config = PoseCharacter.CreateCharacterConfigFromSheet(characterName);
+			ConfigPool[charID] = config;
+		}
+		if (config != null) {
+			Preview.LoadCharacterFromConfig(config);
+			// Body Gadget
+			Preview_Face.FillFromSheet(characterName);
+			Preview_Horn.FillFromSheet(characterName);
+			Preview_Wing.FillFromSheet(characterName);
+			Preview_Tail.FillFromSheet(characterName);
+			Preview_Ear.FillFromSheet(characterName);
+			Preview_Hair.FillFromSheet(characterName);
+			// Cloth
+			PreviewCloth_Head.FillFromSheet(characterName);
+			PreviewCloth_Body.FillFromSheet(characterName);
+			PreviewCloth_Hip.FillFromSheet(characterName);
+			PreviewCloth_Hand.FillFromSheet(characterName);
+			PreviewCloth_Foot.FillFromSheet(characterName);
+			// Failback
+			using (new SheetIndexScope(-1)) {
+				if (!Preview_Face.SpriteLoaded) {
+					Preview_Face.FillFromSheet(nameof(DefaultFace));
+				}
+				if (!Preview_Hair.SpriteLoaded) {
+					Preview_Hair.FillFromSheet(nameof(DefaultHair));
+				}
+				if (!PreviewCloth_Body.SpriteLoaded) {
+					PreviewCloth_Body.FillFromSheet(nameof(DefaultBodySuit));
+				}
+				if (!PreviewCloth_Hip.SpriteLoaded) {
+					PreviewCloth_Hip.FillFromSheet(nameof(DefaultHipSuit));
+				}
+				if (!PreviewCloth_Foot.SpriteLoaded) {
+					PreviewCloth_Foot.FillFromSheet(nameof(DefaultFootSuit));
+				}
+			}
+		}
+	}
+
+
 	private void ShowPreviewCharacterMenu (IRect rect) {
 		if (CurrentProject == null) return;
 		if (AllRigCharacterNames.Count == 0) return;
+		rect.x += Unify(4);
 		GenericPopupUI.BeginPopup(rect.BottomLeft());
 		for (int i = 0; i < AllRigCharacterNames.Count; i++) {
 			string name = AllRigCharacterNames[i];
@@ -177,6 +232,16 @@ public partial class CharacterAnimationEditorWindow {
 			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
 			Instance.SetPreviewCharacter(Instance.AllRigCharacterNames[index]);
 		}
+	}
+
+
+	private void ShowPreviewWeaponMenu (IRect rect) {
+		if (CurrentProject == null) return;
+		rect.x += Unify(4);
+		//GenericPopupUI.BeginPopup(rect.BottomLeft());
+
+
+
 	}
 
 

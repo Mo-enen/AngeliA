@@ -50,6 +50,7 @@ public static class GUI {
 	private static int ContentVersion = int.MinValue;
 	private static int CheckingContentVersion = int.MinValue;
 	private static int InternalRequiringControlID = int.MinValue;
+	private static int TextInputAnchoredIndex = -1;
 
 
 	#endregion
@@ -70,6 +71,7 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.Backspace);
 			Input.UnuseKeyboardKey(KeyboardKey.Escape);
 			Input.UnuseKeyboardKey(KeyboardKey.LeftCtrl);
+			Input.UnuseKeyboardKey(KeyboardKey.LeftShift);
 			Input.UnuseKeyboardKey(KeyboardKey.Tab);
 		}
 		if (!Input.MouseLeftButtonHolding) {
@@ -647,6 +649,8 @@ public static class GUI {
 		bool startTyping = false;
 		bool mouseDownPosInRect = rect.Contains(Input.MouseLeftDownGlobalPosition);
 		bool mouseDragging = Input.MouseLeftButtonHolding && mouseDownPosInRect;
+		bool holdingShift = Game.IsKeyboardKeyHolding(KeyboardKey.LeftShift);
+		bool downShift = Input.KeyboardDown(KeyboardKey.LeftShift);
 		bool inCamera = rect.Shift(
 			-Input.MousePositionShift.x, -Input.MousePositionShift.y
 		).Overlaps(Renderer.CameraRect);
@@ -692,6 +696,11 @@ public static class GUI {
 
 		TypingTextFieldUpdateFrame = typing ? Game.PauselessFrame : TypingTextFieldUpdateFrame;
 
+		// Shift Anchor
+		if (typing && downShift) {
+			TextInputAnchoredIndex = beamIndex;
+		}
+
 		// Rendering
 		var beamCell = Renderer.DrawPixel(default);
 		var selectionCell = Renderer.DrawPixel(default, selectionColor.Value);
@@ -726,27 +735,46 @@ public static class GUI {
 				Input.UseGameKey(Gamekey.Start);
 			}
 
-			// Move Beam
+			// Move Beam Left
 			if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
-				if (beamLength == 0) {
-					beamIndex = BeamIndex = beamIndex - 1;
+				if (holdingShift || beamLength == 0) {
+					if (Game.IsKeyboardKeyHolding(KeyboardKey.LeftCtrl)) {
+						beamIndex = BeamIndex = Util.FindNextStringStep(text, beamIndex, false);
+					} else {
+						beamIndex = BeamIndex = beamIndex - 1;
+					}
 				} else if (beamLength < 0) {
 					beamIndex = BeamIndex = beamIndex + beamLength;
 				}
-				beamLength = BeamLength = 0;
-				BeamBlinkFrame = Game.PauselessFrame;
-			}
-			if (Input.KeyboardDownGUI(KeyboardKey.RightArrow)) {
-				if (beamLength == 0) {
-					beamIndex = BeamIndex = beamIndex + 1;
-				} else if (beamLength > 0) {
-					beamIndex = BeamIndex = beamIndex + beamLength;
+				beamIndex = BeamIndex = beamIndex.Clamp(0, text.Length);
+				if (holdingShift) {
+					beamLength = BeamLength = TextInputAnchoredIndex - beamIndex;
+				} else {
+					beamLength = BeamLength = 0;
 				}
-				beamLength = BeamLength = 0;
 				BeamBlinkFrame = Game.PauselessFrame;
 			}
 
-			beamIndex = BeamIndex = beamIndex.Clamp(0, text.Length);
+			// Move Beam Right
+			if (Input.KeyboardDownGUI(KeyboardKey.RightArrow)) {
+				if (holdingShift || beamLength == 0) {
+					if (Game.IsKeyboardKeyHolding(KeyboardKey.LeftCtrl)) {
+						beamIndex = BeamIndex = Util.FindNextStringStep(text, beamIndex, true);
+					} else {
+						beamIndex = BeamIndex = beamIndex + 1;
+					}
+				} else if (beamLength > 0) {
+					beamIndex = BeamIndex = beamIndex + beamLength;
+				}
+				beamIndex = BeamIndex = beamIndex.Clamp(0, text.Length);
+				if (holdingShift) {
+					beamLength = BeamLength = TextInputAnchoredIndex - beamIndex;
+				} else {
+					beamLength = BeamLength = 0;
+				}
+				BeamBlinkFrame = Game.PauselessFrame;
+			}
+
 			beamLength = BeamLength = beamLength.Clamp(-beamIndex, text.Length - beamIndex);
 
 			for (int i = 0; i < TypingBuilderCount; i++) {
@@ -802,8 +830,15 @@ public static class GUI {
 				int removeIndex = beamIndex;
 				if (removeIndex >= 0 && removeIndex < text.Length) {
 					if (beamLength == 0) {
-						// Delete One Char
-						text = text.Remove(removeIndex, 1);
+						// Delete Char
+						if (Game.IsKeyboardKeyHolding(KeyboardKey.LeftCtrl)) {
+							int step = Util.FindNextStringStep(text, removeIndex, true);
+							if (step > removeIndex) {
+								text = text.Remove(removeIndex, step - removeIndex);
+							}
+						} else {
+							text = text.Remove(removeIndex, 1);
+						}
 						changed = true;
 						ContentVersion++;
 					} else {
@@ -818,10 +853,18 @@ public static class GUI {
 			// Backspace
 			if (Input.KeyboardDownGUI(KeyboardKey.Backspace)) {
 				if (beamLength == 0) {
-					int removeIndex = beamIndex - 1;
+					int removeLen = 1;
+					int removeIndex = beamIndex - removeLen;
+					if (Game.IsKeyboardKeyHolding(KeyboardKey.LeftCtrl)) {
+						int step = Util.FindNextStringStep(text, beamIndex, false);
+						if (step < beamIndex) {
+							removeIndex = step;
+							removeLen = beamIndex - step;
+						}
+					}
 					if (removeIndex >= 0 && removeIndex < text.Length) {
-						text = text.Remove(removeIndex, 1);
-						beamIndex = BeamIndex = beamIndex - 1;
+						text = text.Remove(removeIndex, removeLen);
+						beamIndex = BeamIndex = beamIndex - removeLen;
 						changed = true;
 						ContentVersion++;
 					}

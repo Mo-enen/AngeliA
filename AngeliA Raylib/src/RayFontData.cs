@@ -19,7 +19,7 @@ public class RayFontData : FontData {
 		result = new CharSprite {
 			Char = c,
 			Advance = advance / finalFontSize,
-			Offset = c == ' ' ? new FRect(0.5f, 0.5f, 0.001f, 0.001f) : FRect.MinMaxRect(
+			Offset = FRect.MinMaxRect(
 				xmin: offset.x / finalFontSize,
 				ymin: (finalFontSize - offset.y - imageSize.y) / finalFontSize,
 				xmax: (offset.x + imageSize.x) / finalFontSize,
@@ -27,6 +27,9 @@ public class RayFontData : FontData {
 			),
 			Texture = texture,
 		};
+		if (c == ' ') {
+			result.Offset.yMin = 0.5f;
+		}
 		return true;
 	}
 

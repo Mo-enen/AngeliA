@@ -39,6 +39,7 @@ public abstract class BraidHair : Hair {
 	}
 
 	public override void DrawGadget (PoseCharacter character) {
+		using var _ = new SheetIndexScope(SheetIndex);
 		var cells = DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 		if (Game.GlobalFrame > character.HideBraidFrame && (BraidL != 0 || BraidR != 0)) {
 			DrawBraid(character, cells, ForceBackOnFlow);
@@ -237,6 +238,7 @@ public abstract class Hair : BodyGadget {
 
 	// API
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteFFL = $"{name}.HairFFL".AngeHash();
 		SpriteFFR = $"{name}.HairFFR".AngeHash();
 		SpriteFB = $"{name}.HairFB".AngeHash();
@@ -258,6 +260,7 @@ public abstract class Hair : BodyGadget {
 
 	public override void DrawGadget (PoseCharacter character) {
 		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 	}
 

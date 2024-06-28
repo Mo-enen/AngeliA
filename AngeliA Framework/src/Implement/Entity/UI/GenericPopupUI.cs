@@ -256,13 +256,15 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 						// Icon
 						if (item.Icon != 0) {
 							int iconSize = rect.height;
-							Renderer.Draw(item.Icon, new IRect(
-								item.IconPosition == Direction2.Left ?
-									labelBounds.x - iconSize - iconPadding :
-									rect.xMax - iconPadding - iconSize - rect.height / 2,
-								rect.y,
-								iconSize, iconSize
-							), IconTint);
+							using (new GUIContentColorScope(IconTint)) {
+								GUI.Icon(new IRect(
+									item.IconPosition == Direction2.Left ?
+										labelBounds.x - iconSize - iconPadding :
+										rect.xMax - iconPadding - iconSize - rect.height / 2,
+									rect.y,
+									iconSize, iconSize
+								), item.Icon);
+							}
 						}
 
 						// Hover

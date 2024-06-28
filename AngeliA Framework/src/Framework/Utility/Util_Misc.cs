@@ -173,6 +173,25 @@ public static partial class Util {
 	}
 
 
+	public static int FindNextStringStep (string content, int start, bool toRight) {
+		int result = start;
+		int delta = toRight ? 1 : -1;
+		bool flag = false;
+		if (string.IsNullOrEmpty(content)) return -1;
+		start = start.Clamp(0, content.Length - 1);
+		for (int i = start; i < content.Length && i >= 0; i += delta) {
+			result = i;
+			char c = content[i];
+			if (char.IsWhiteSpace(c) || char.IsSymbol(c)) {
+				if (flag) return i;
+			} else {
+				flag = true;
+			}
+		}
+		return result + (toRight ? 1 : 0);
+	}
+
+
 	// Number
 	public static Float3 Vector3Lerp3 (Float3 a, Float3 b, float x, float y, float z = 0f) => new(
 			LerpUnclamped(a.x, b.x, x),

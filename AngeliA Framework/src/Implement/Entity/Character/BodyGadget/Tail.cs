@@ -27,6 +27,7 @@ public abstract class Tail : BodyGadget {
 
 
 	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
 		SpriteGroupID = $"{name}.Tail".AngeHash();
 		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
 		return SpriteLoaded;
@@ -47,6 +48,7 @@ public abstract class Tail : BodyGadget {
 			character.WingID != 0 &&
 			Wing.IsPropellerWing(character.WingID)
 		) return;
+		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsTail(
 			character, SpriteGroupID, Frequency, FrequencyAlt, FrameLen, FrameDelta,
 			AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY

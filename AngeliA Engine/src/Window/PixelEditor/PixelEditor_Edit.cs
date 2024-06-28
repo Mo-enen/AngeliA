@@ -327,6 +327,7 @@ public partial class PixelEditor {
 					}
 				}
 				RefreshSpriteInputContent();
+				SetSpriteSelection(ResizingStageIndex);
 				break;
 
 			case DragState.SelectOrCreateSprite:
