@@ -12,7 +12,7 @@ public partial class CharacterAnimationEditorWindow {
 	#region --- SUB ---
 
 
-	private class PreviewCharacter : PoseCharacter {
+	private sealed class PreviewCharacter : PoseCharacter {
 
 		protected override void RenderBodyGadgets () {
 			Instance.Preview_Wing.DrawGadget(this);
@@ -35,6 +35,36 @@ public partial class CharacterAnimationEditorWindow {
 			Instance.Animation?.Animate(Instance.Preview);
 		}
 
+		protected override void RenderEquipmentAndInventory () {
+			var weapon = Instance.PreviewWeapon;
+			if (weapon == null) {
+				OverridePoseHandheldAnimation(EquippingWeaponHeld, 0, 2);
+				return;
+			}
+			EquippingWeaponHeld = weapon.Handheld;
+			EquippingWeaponType = weapon.WeaponType;
+			OverridePoseHandheldAnimation(EquippingWeaponHeld, 0, 2);
+			int startIndex = Renderer.GetUsedCellCount();
+			weapon.PoseAnimationUpdate_FromEquipment(this);
+			if (Renderer.GetCells(out var cells, out int count)) {
+				for (int i = startIndex; i < count; i++) {
+					cells[i].Z = 512;
+				}
+			}
+		}
+
+	}
+
+
+	private sealed class PreviewAxe : Weapon {
+		public override WeaponType WeaponType => WeaponType.Axe;
+		public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+		public PreviewAxe () : base(false) { }
+	}
+	private sealed class PreviewSword : Weapon {
+		public override WeaponType WeaponType => WeaponType.Sword;
+		public override WeaponHandheld Handheld => WeaponHandheld.DoubleHanded;
+		public PreviewSword () : base(false) { }
 	}
 
 
@@ -52,6 +82,11 @@ public partial class CharacterAnimationEditorWindow {
 	private static readonly SpriteCode ICON_ZOOM_P = "Icon.CharPreviewZoomPlus";
 	private static readonly SpriteCode ICON_FLIP = "Icon.CharPreviewFlip";
 	private static readonly SpriteCode ICON_WP = "Icon.CharAni.Weapon";
+	private static readonly (Weapon weapon, string defaultName)[] PREVIEW_WEAPONS = {
+		(null, ""),
+		(new PreviewAxe(), nameof(PreviewAxe)),
+		(new PreviewSword(), nameof(PreviewSword)),
+	};
 	private static readonly LanguageCode TIP_PREVIEW = ("Tip.PreviewChar", "Select a character for preview the animation");
 
 	// Data
@@ -69,6 +104,7 @@ public partial class CharacterAnimationEditorWindow {
 	private readonly ModularHipSuit PreviewCloth_Hip = new();
 	private readonly ModularHandSuit PreviewCloth_Hand = new();
 	private readonly ModularFootSuit PreviewCloth_Foot = new();
+	private Weapon PreviewWeapon = null;
 	private string PreviewCharacterName = "";
 	private bool PreviewInitialized = false;
 	private int PreviewZoom = 1000;
@@ -133,6 +169,7 @@ public partial class CharacterAnimationEditorWindow {
 
 		// Init
 		if (!PreviewInitialized) {
+			// Init Character
 			PreviewInitialized = true;
 			SetPreviewCharacter(LastPreviewCharacter.Value);
 		}
@@ -144,8 +181,6 @@ public partial class CharacterAnimationEditorWindow {
 			Preview.AnimationType = CharacterAnimationType.Idle;
 			FrameworkUtil.DrawPoseCharacterAsUI(previewRect.ScaleFrom(PreviewZoom, previewRect.CenterX(), previewRect.y), Preview, AnimationFrame);
 		}
-
-
 
 		// Zoom with Wheel
 		if (previewRect.MouseInside() && Input.MouseWheelDelta != 0) {
@@ -238,10 +273,41 @@ public partial class CharacterAnimationEditorWindow {
 	private void ShowPreviewWeaponMenu (IRect rect) {
 		if (CurrentProject == null) return;
 		rect.x += Unify(4);
-		//GenericPopupUI.BeginPopup(rect.BottomLeft());
-
-
-
+		GenericPopupUI.BeginPopup(rect.BottomLeft());
+		for (int i = 0; i < PREVIEW_WEAPONS.Length; i++) {
+			var (weapon, defaultName) = PREVIEW_WEAPONS[i];
+			if (weapon == null) {
+				GenericPopupUI.AddItem(
+					BuiltInText.UI_NONE,
+					Click,
+					@checked: PreviewWeapon == null,
+					data: null
+				);
+			} else {
+				GenericPopupUI.AddItem(
+					Language.Get(weapon.TypeID, defaultName),
+					Click,
+					@checked: PreviewWeapon == weapon,
+					data: weapon
+				);
+			}
+		}
+		// Func
+		static void Click () {
+			if (GenericPopupUI.InvokingItemData == null) {
+				Instance.PreviewWeapon = null;
+				PreviewWeaponIndex.Value = 0;
+			} else if (GenericPopupUI.InvokingItemData is Weapon weapon) {
+				Instance.PreviewWeapon = weapon;
+				PreviewWeaponIndex.Value = 0;
+				for (int i = 0; i < PREVIEW_WEAPONS.Length; i++) {
+					if (PREVIEW_WEAPONS[i].weapon == weapon) {
+						PreviewWeaponIndex.Value = i;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 

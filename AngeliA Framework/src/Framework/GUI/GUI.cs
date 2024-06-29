@@ -157,7 +157,9 @@ public static class GUI {
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
 		int sprite = style.GetBodySprite(state);
 		if (sprite == 0 || !Renderer.TryGetSprite(sprite, out var _sprite)) return;
-		var color = tint * Color * BodyColor * style.GetBodyColor(state);
+		var color = BodyColor == Color32.WHITE ?
+			tint * Color * style.GetBodyColor(state) :
+			tint * BodyColor * Color;
 		if (color.a == 0) return;
 		var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
 		if (border.IsZero) {
@@ -170,8 +172,9 @@ public static class GUI {
 
 	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
 		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
-		var color = ContentColor == Color32.WHITE ? style.GetContentColor(state) : ContentColor;
-		color *= Color;
+		var color = ContentColor == Color32.WHITE ? 
+			style.GetContentColor(state) * Color : 
+			ContentColor * Color;
 		if (color.a == 0) return;
 		rect = GetContentRect(rect, style, state);
 		if (ignoreSlice || _sprite.GlobalBorder.IsZero) {

@@ -22,10 +22,14 @@ public partial class CharacterAnimationEditorWindow {
 	private static readonly SpriteCode ICON_PLAY = "Icon.CharEditor.Play";
 	private static readonly SpriteCode ICON_PAUSE = "Icon.CharEditor.Pause";
 	private static readonly SpriteCode UI_FRAME_EDITOR_BG = "Icon.CharEditor.FrameEditorBG";
+	private static readonly SpriteCode ICON_FLIP_LIMB = "Icon.CharEditor.FlipLimb";
+	private static readonly SpriteCode ICON_FLIP_ANGLE = "Icon.CharEditor.FlipAngle";
 	private static readonly LanguageCode[] LABEL_BTYPE = new LanguageCode[typeof(ModularAnimation.BindingType).EnumLength()];
 	private static readonly LanguageCode[] LABEL_BTARGET = new LanguageCode[typeof(ModularAnimation.BindingTarget).EnumLength()];
 	private static readonly LanguageCode[] LABEL_EASE = new LanguageCode[typeof(EaseType).EnumLength()];
 	private static readonly LanguageCode[] LABEL_BASIC_EASE = new LanguageCode[(typeof(EaseType).EnumLength() - 1) / 3 + 1];
+	private static readonly LanguageCode TIP_FLIP_LIMB = ("Tip.CharEditor.FlipLimb", "Swape left and right limbs when character facing left.");
+	private static readonly LanguageCode TIP_FLIP_ANGLE = ("Tip.CharEditor.FlipAngle", "Flip limb angle when character facing left.");
 	private static readonly int BINDING_TYPE_COUNT = typeof(ModularAnimation.BindingType).EnumLength();
 	private static readonly int BINDING_TARGET_COUNT = typeof(ModularAnimation.BindingTarget).EnumLength();
 	private const int CONTENT_LEFT_GAP = 24;
@@ -84,7 +88,7 @@ public partial class CharacterAnimationEditorWindow {
 		// UI
 		TimelineFrameSize.x = Unify(12);
 		TimelineFrameSize.y = GUI.FieldHeight;
-		TimelineLeftPanelWidth = FoldingLeftPanel.Value ? Unify(72) : Unify(196);
+		TimelineLeftPanelWidth = FoldingLeftPanel.Value ? Unify(96) : Unify(220);
 		TimelineExtendedTotalSize.x = Animation.Duration * TimelineFrameSize.x + Unify(96);
 		TimelineExtendedTotalSize.y = Animation.KeyLayers.Count * GUI.FieldHeight + Unify(96);
 		int contentTopGap = Unify(12);
@@ -132,12 +136,24 @@ public partial class CharacterAnimationEditorWindow {
 				);
 
 				// Button
-				if (GUI.Button(pLayerRect, 0, Skin.IconButton)) {
-					ShowBindingMenu(pLayerRect, layerIndex);
+				var buttonRect = pLayerRect.ShrinkRight(pLayerRect.height + fieldPadding);
+				if (GUI.Button(buttonRect, 0, Skin.IconButton)) {
+					ShowBindingMenu(buttonRect, layerIndex);
 				}
 
 				// Label
-				BindingLabel(pLayerRect, layer, folding);
+				BindingLabel(buttonRect, layer, folding);
+
+				// Flip Angle Toggle
+				using (new GUIBodyColorScope(layer.FlipAngleFromCharacterFacing ? Skin.HighlightColorAlt : Color32.WHITE)) {
+					var tgRect = pLayerRect.EdgeRight(pLayerRect.height);
+					bool newFlip = GUI.ToggleButton(tgRect, layer.FlipAngleFromCharacterFacing, ICON_FLIP_ANGLE, Skin.IconButton);
+					if (newFlip != layer.FlipAngleFromCharacterFacing) {
+						layer.FlipAngleFromCharacterFacing = newFlip;
+						SetDirty();
+					}
+					RequireTooltip(tgRect, TIP_FLIP_ANGLE);
+				}
 
 				// Menu
 				if (mouseRightDown && layerRect.MouseInside()) {
@@ -218,6 +234,10 @@ public partial class CharacterAnimationEditorWindow {
 
 	private void Update_TimelineContent () {
 
+		bool anyMouseHolding = GUI.Interactable && Input.AnyMouseButtonHolding;
+		bool mouseLeftDown = GUI.Interactable && TimelineContentRect.MouseInside() && Input.MouseLeftButtonDown;
+		bool mouseLeftHolding = TimelineContentRect.Contains(Input.MouseLeftDownGlobalPosition) && Input.MouseLeftButtonHolding;
+
 		using var scroll = new GUIScrollScope(
 			TimelineContentRect, new(TimelineScrollX, TimelineScrollY),
 			Int2.zero,
@@ -226,9 +246,6 @@ public partial class CharacterAnimationEditorWindow {
 			reverseMouseWheel: EngineSetting.ReverseMouseScrollForTimeline.Value
 		);
 
-		bool anyMouseHolding = GUI.Interactable && Input.AnyMouseButtonHolding;
-		bool mouseLeftDown = GUI.Interactable && TimelineContentRect.MouseInside() && Input.MouseLeftButtonDown;
-		bool mouseLeftHolding = TimelineContentRect.Contains(Input.MouseLeftDownGlobalPosition) && Input.MouseLeftButtonHolding;
 		TimelineScrollX = scroll.Position.x;
 		TimelineScrollY = scroll.Position.y;
 
@@ -394,23 +411,40 @@ public partial class CharacterAnimationEditorWindow {
 		int leftGap = Unify(CONTENT_LEFT_GAP);
 		int padding = Unify(6);
 
-		// Toolbar
+
+
+		// ==== Bottom-Left Toolbar ====
 		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
 		var leftBarRect = toolbarRect.EdgeLeft(TimelineLeftPanelWidth - GUI.ScrollbarSize);
 
-		// Play/Pause
-		var rect = FoldingLeftPanel.Value ? leftBarRect.RightHalf() : leftBarRect.EdgeRight(leftBarRect.height).Shrink(padding);
+		// Play / Pause
+		var rect = FoldingLeftPanel.Value ? leftBarRect.Part(2, 3) : leftBarRect.EdgeRight(leftBarRect.height).Shrink(padding);
 		if (GUI.Button(rect, IsPlaying ? ICON_PAUSE : ICON_PLAY, Skin.IconButton)) {
 			IsPlaying = !IsPlaying;
 		}
 
+		// Flip Limb
+		using (new GUIBodyColorScope(Animation.FlipLimbsFromCharacterFacing ? Skin.HighlightColorAlt : Color32.WHITE)) {
+			rect = FoldingLeftPanel.Value ? leftBarRect.Part(1, 3) : leftBarRect.EdgeLeft(leftBarRect.height).Shift(leftBarRect.height, 0).Shrink(padding);
+			bool newFlipLimb = GUI.ToggleButton(
+				rect, Animation.FlipLimbsFromCharacterFacing, ICON_FLIP_LIMB, Skin.IconButton
+			);
+			if (Animation.FlipLimbsFromCharacterFacing != newFlipLimb) {
+				Animation.FlipLimbsFromCharacterFacing = newFlipLimb;
+				SetDirty();
+			}
+			RequireTooltip(rect, TIP_FLIP_LIMB);
+		}
+
 		// Fold Left Panel
-		rect = FoldingLeftPanel.Value ? leftBarRect.LeftHalf() : leftBarRect.EdgeLeft(leftBarRect.height).Shrink(padding);
+		rect = FoldingLeftPanel.Value ? leftBarRect.Part(0, 3) : leftBarRect.EdgeLeft(leftBarRect.height).Shrink(padding);
 		if (GUI.Button(rect, BuiltInSprite.ICON_MENU, Skin.IconButton)) {
 			FoldingLeftPanel.Value = !FoldingLeftPanel.Value;
 		}
 
-		// Ruler
+
+
+		// ==== Ruler ====
 		var rulerRect = toolbarRect.Shrink(TimelineLeftPanelWidth + leftGap, 0, GUI.ScrollbarSize, 0);
 		int tinyShiftForLabel = Unify(3);
 		rect = rulerRect.EdgeLeft(TimelineFrameSize.x);
@@ -720,9 +754,17 @@ public partial class CharacterAnimationEditorWindow {
 					@checked: target == currentTarget && type == currentType,
 					data: (layerIndex, target, type)
 				);
+				if (type == ModularAnimation.BindingType.GrabTwist) {
+					GenericPopupUI.AddSeparator();
+				}
 			}
 
 			GenericPopupUI.EndSubItem();
+
+			if (target == ModularAnimation.BindingTarget.Hip || target == ModularAnimation.BindingTarget.HandR) {
+				GenericPopupUI.AddSeparator();
+			}
+
 		}
 
 		// Func

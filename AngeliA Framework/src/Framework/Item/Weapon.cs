@@ -20,12 +20,13 @@ public abstract class Weapon : Equipment {
 
 
 	// VAR
-	protected int BulletID { get; init; }
-	protected int SpriteID { get; init; }
+	public int BulletID { get; init; }
+	public int SpriteID { get; private set; }
 	public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 	public abstract WeaponType WeaponType { get; }
 	public abstract WeaponHandheld Handheld { get; }
 	public int BulletDelayFrame => AttackDuration * BulletDelay / 1000;
+	public int SheetIndex { get; private set; } = -1;
 	protected virtual int BulletDelay => 0;
 	public virtual int AttackDuration => 12;
 	public virtual int AttackCooldown => 2;
@@ -53,7 +54,16 @@ public abstract class Weapon : Equipment {
 
 
 	// MSG
-	public Weapon () {
+	public Weapon () : this(true) { }
+
+
+	public Weapon (bool loadArtwork) {
+		if (loadArtwork) LoadFromSheet();
+	}
+
+
+	public void LoadFromSheet () {
+		SheetIndex = Renderer.CurrentSheetIndex;
 		SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
 		if (!Renderer.HasSprite(SpriteID)) SpriteID = 0;
 	}
@@ -61,6 +71,7 @@ public abstract class Weapon : Equipment {
 
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
+		using var _ = new SheetIndexScope(SheetIndex);
 		base.PoseAnimationUpdate_FromEquipment(holder);
 
 		if (

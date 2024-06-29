@@ -15,8 +15,10 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 	private struct AnimationUndoItem : IUndoItem {
 		public int Step { get; set; }
 		public ModularAnimation.KeyLayer[] KeyLayers;
+		public bool FlipLimbs;
 		public AnimationUndoItem (ModularAnimation ani) {
 			KeyLayers = CreateCopy(ani.KeyLayers);
+			FlipLimbs = ani.FlipLimbsFromCharacterFacing;
 		}
 		public static ModularAnimation.KeyLayer[] CreateCopy (IList<ModularAnimation.KeyLayer> sourceLayers) {
 			int layerCount = sourceLayers.Count;
@@ -69,6 +71,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 	private static readonly SavingInt LastPreviewZoom = new("CharAniEditor.PreviewZoom", 1000);
 	private static readonly SavingInt TimelineHeight = new("CharAniEditor.TimelineHeight", 256);
 	private static readonly SavingBool FoldingLeftPanel = new("CharAniEditor.FoldLPanel", false);
+	private static readonly SavingInt PreviewWeaponIndex = new("CharAniEditor.PreviewWeaponIndex", 0);
 
 
 	#endregion
@@ -80,9 +83,12 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 
 	public CharacterAnimationEditorWindow (List<string> allRigCharacterNames) {
+
 		Instance = this;
 		UndoRedo = new(4096, OnUndoRedoPerformed);
 		AllRigCharacterNames = allRigCharacterNames;
+
+		// Init Icon and Label
 		for (int i = 0; i < ICON_BTYPE.Length; i++) {
 			ICON_BTYPE[i] = $"Icon.BdType.{(ModularAnimation.BindingType)i}";
 		}
@@ -106,6 +112,15 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 			string basicName = ((EaseType)(1 + (i - 1) * 3)).ToString()[2..];
 			LABEL_BASIC_EASE[i] = ($"Label.Ease.{basicName}", basicName);
 		}
+
+		// Init Weapon
+		for (int i = 0; i < PREVIEW_WEAPONS.Length; i++) {
+			var (weapon, _) = PREVIEW_WEAPONS[i];
+			if (weapon == null) continue;
+			weapon.LoadFromSheet();
+		}
+		PreviewWeapon = PREVIEW_WEAPONS[PreviewWeaponIndex.Value.Clamp(0, PREVIEW_WEAPONS.Length - 1)].weapon;
+
 	}
 
 
@@ -397,6 +412,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 		if (item is not AnimationUndoItem undo) return;
 		Animation.KeyLayers.Clear();
 		Animation.KeyLayers.AddRange(AnimationUndoItem.CreateCopy(undo.KeyLayers));
+		Animation.FlipLimbsFromCharacterFacing = undo.FlipLimbs;
 		SetDirty();
 	}
 

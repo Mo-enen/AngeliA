@@ -392,12 +392,13 @@ public partial class Engine {
 				leftSide && !downSide ? Alignment.TopLeft :
 				!leftSide && downSide ? Alignment.BottomRight :
 				Alignment.TopRight;
+			var tipRect = ToolLabelRect.EdgeOutside(Direction4.Down, GUI.Unify(24)).Shift(
+				leftSide ? GUI.Unify(20) : GUI.Unify(-20),
+				downSide ? GUI.Unify(10) : GUI.Unify(-10)
+			);
+			tipRect.ClampPositionInside(WindowUI.WindowRect);
 			GUI.BackgroundLabel(
-				ToolLabelRect.EdgeOutside(Direction4.Down, GUI.Unify(24)).Shift(
-					leftSide ? GUI.Unify(20) : GUI.Unify(-20),
-					downSide ? GUI.Unify(10) : GUI.Unify(-10)
-				),
-				ToolLabel, Color32.BLACK,
+				tipRect, ToolLabel, Color32.BLACK,
 				GUI.Unify(6), false, TooltipStyle
 			);
 		}

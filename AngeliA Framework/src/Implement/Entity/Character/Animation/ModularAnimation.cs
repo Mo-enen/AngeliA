@@ -54,6 +54,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 
 		public BindingType BindingType;
 		public BindingTarget BindingTarget;
+		public bool FlipAngleFromCharacterFacing = true;
 		public List<KeyFrame> KeyFrames = new();
 
 		public void Sort () => KeyFrames.Sort(KeyFrameComparer.Instance);
@@ -86,6 +87,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	private class RawLayer {
 		public BindingType BindingType;
 		public BindingTarget BindingTarget;
+		public bool FlipAngleFromCharacterFacing = true;
 		public int[] RawData;
 	}
 
@@ -145,10 +147,10 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	[JsonIgnore] public string Name = string.Empty;
 	[JsonIgnore] public CharacterOverrideType Override = CharacterOverrideType.None;
 	public List<KeyLayer> KeyLayers = new();
+	public bool FlipLimbsFromCharacterFacing = false;
 
 	// Data
 	[JsonIgnore] RawLayer[] RawLayers = System.Array.Empty<RawLayer>();
-	[JsonIgnore] readonly Int2[] BodyPartPos = new Int2[PoseCharacter.BODY_PART_COUNT];
 
 
 	#endregion
@@ -167,9 +169,28 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			_ => character.CurrentAnimationFrame,
 		};
 		if (UseRawData) {
-			AnimateFromRawData(character, frame);
+			AnimateFromRawData(character, frame, false);
 		} else {
-			AnimateFromKeyFrame(character, frame);
+			AnimateFromKeyFrame(character, frame, false);
+		}
+		// Apply Limb 
+		ApplyLimbRotate(character.UpperArmL);
+		ApplyLimbRotate(character.UpperArmR);
+		ApplyLimbRotate(character.LowerArmL);
+		ApplyLimbRotate(character.LowerArmR);
+		ApplyLimbRotate(character.HandL);
+		ApplyLimbRotate(character.HandR);
+		ApplyLimbRotate(character.UpperLegL);
+		ApplyLimbRotate(character.UpperLegR);
+		ApplyLimbRotate(character.LowerLegL);
+		ApplyLimbRotate(character.LowerLegR);
+		ApplyLimbRotate(character.FootL);
+		ApplyLimbRotate(character.FootR);
+		// Pos Only
+		if (UseRawData) {
+			AnimateFromRawData(character, frame, true);
+		} else {
+			AnimateFromKeyFrame(character, frame, true);
 		}
 		// Func
 		static int GetFrameForCharging (PoseCharacter character, int duration) {
@@ -179,57 +200,49 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
-	private void AnimateFromKeyFrame (PoseCharacter character, int frame) {
+	private void AnimateFromKeyFrame (PoseCharacter character, int frame, bool forPos) {
 		if (KeyLayers == null || KeyLayers.Count == 0) return;
-		ResetLimbCache(character);
-		for (int i = 0; i < KeyLayers.Count; i++) {
-			var layer = KeyLayers[i];
-			var value = layer.Evaluate(frame.UMod(Duration));
-			PerformFrame(character, layer.BindingType, layer.BindingTarget, value);
+		if (forPos) {
+			// Pos Only
+			for (int i = 0; i < KeyLayers.Count; i++) {
+				var layer = KeyLayers[i];
+				if (layer.BindingType != BindingType.X && layer.BindingType != BindingType.Y) continue;
+				var value = layer.Evaluate(frame.UMod(Duration));
+				PerformFrame(character, layer.BindingType, layer.BindingTarget, value, layer.FlipAngleFromCharacterFacing);
+			}
+		} else {
+			// No Pos
+			for (int i = 0; i < KeyLayers.Count; i++) {
+				var layer = KeyLayers[i];
+				if (layer.BindingType == BindingType.X || layer.BindingType == BindingType.Y) continue;
+				var value = layer.Evaluate(frame.UMod(Duration));
+				PerformFrame(character, layer.BindingType, layer.BindingTarget, value, layer.FlipAngleFromCharacterFacing);
+			}
 		}
-		ApplyForLimb(character);
 	}
 
 
-	private void AnimateFromRawData (PoseCharacter character, int frame) {
+	private void AnimateFromRawData (PoseCharacter character, int frame, bool forPos) {
 		if (RawLayers == null) Key_to_Raw();
 		if (RawLayers == null || RawLayers.Length == 0) return;
-		ResetLimbCache(character);
-		for (int i = 0; i < RawLayers.Length; i++) {
-			var layer = RawLayers[i];
-			if (layer.RawData.Length == 0) continue;
-			int _frame = frame.UMod(layer.RawData.Length);
-			PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.RawData[_frame]);
-		};
-		ApplyForLimb(character);
-	}
-
-
-	private void ResetLimbCache (PoseCharacter character) {
-		for (int i = 0; i < BodyPartPos.Length; i++) {
-			var part = character.BodyParts[i];
-			BodyPartPos[i] = new Int2(part.X, part.Y);
-		}
-	}
-
-
-	private void ApplyForLimb (PoseCharacter character) {
-		// Make into Offset
-		for (int i = 0; i < BodyPartPos.Length; i++) {
-			var part = character.BodyParts[i];
-			var old = BodyPartPos[i];
-			BodyPartPos[i] = new(part.X - old.x, part.Y - old.y);
-		}
-		// Limb Animate
-		character.ResetAllLimbsPosition();
-		// Apply Offset
-		for (int i = 0; i < BodyPartPos.Length; i++) {
-			var part = character.BodyParts[i];
-			var offset = BodyPartPos[i];
-			part.X += offset.x;
-			part.Y += offset.y;
-			part.GlobalX = character.X + character.PoseRootX + part.X;
-			part.GlobalY = character.Y + character.PoseRootY + part.Y;
+		if (forPos) {
+			// Pos Only
+			for (int i = 0; i < RawLayers.Length; i++) {
+				var layer = RawLayers[i];
+				if (layer.BindingType != BindingType.X && layer.BindingType != BindingType.Y) continue;
+				if (layer.RawData.Length == 0) continue;
+				int _frame = frame.UMod(layer.RawData.Length);
+				PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.RawData[_frame], layer.FlipAngleFromCharacterFacing);
+			};
+		} else {
+			// No Pos
+			for (int i = 0; i < RawLayers.Length; i++) {
+				var layer = RawLayers[i];
+				if (layer.BindingType == BindingType.X || layer.BindingType == BindingType.Y) continue;
+				if (layer.RawData.Length == 0) continue;
+				int _frame = frame.UMod(layer.RawData.Length);
+				PerformFrame(character, layer.BindingType, layer.BindingTarget, layer.RawData[_frame], layer.FlipAngleFromCharacterFacing);
+			};
 		}
 	}
 
@@ -330,6 +343,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			var rawLayer = RawLayers[layerIndex];
 			rawLayer.BindingType = sourceLayer.BindingType;
 			rawLayer.BindingTarget = sourceLayer.BindingTarget;
+			rawLayer.FlipAngleFromCharacterFacing = sourceLayer.FlipAngleFromCharacterFacing;
 			if (sourceKeyFrames == null || sourceKeyFrames.Count == 0) {
 				rawLayer.RawData = new int[0];
 				continue;
@@ -347,7 +361,7 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 	}
 
 
-	private void PerformFrame (PoseCharacter character, BindingType bindingType, BindingTarget bindingTarget, int value) {
+	private void PerformFrame (PoseCharacter character, BindingType bindingType, BindingTarget bindingTarget, int value, bool requireFlip) {
 
 		// Gate
 		int targetIndex = (int)bindingTarget;
@@ -358,28 +372,30 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 			RANGE_MAP[(int)bindingTarget, (int)bindingType] == (0, 0)
 		) return;
 
+		bool flipLimb = FlipLimbsFromCharacterFacing && !character.FacingRight;
+
 		(var bodypart, bool facingRight) = bindingTarget switch {
 			BindingTarget.Head => (character.Head, character.Head.FacingRight),
 			BindingTarget.Body => (character.Body, character.Body.FacingRight),
 			BindingTarget.Hip => (character.Hip, character.Hip.FacingRight),
-			BindingTarget.ShoulderL => (character.ShoulderL, character.FacingRight),
-			BindingTarget.ShoulderR => (character.ShoulderR, character.FacingRight),
-			BindingTarget.UpperArmL => (character.UpperArmL, character.FacingRight),
-			BindingTarget.UpperArmR => (character.UpperArmR, character.FacingRight),
-			BindingTarget.LowerArmL => (character.LowerArmL, character.FacingRight),
-			BindingTarget.LowerArmR => (character.LowerArmR, character.FacingRight),
-			BindingTarget.HandL => (character.HandL, character.FacingRight),
-			BindingTarget.HandR => (character.HandR, character.FacingRight),
-			BindingTarget.UpperLegL => (character.UpperLegL, character.FacingRight),
-			BindingTarget.UpperLegR => (character.UpperLegR, character.FacingRight),
-			BindingTarget.LowerLegL => (character.LowerLegL, character.FacingRight),
-			BindingTarget.LowerLegR => (character.LowerLegR, character.FacingRight),
-			BindingTarget.FootL => (character.FootL, character.FacingRight),
-			BindingTarget.FootR => (character.FootR, character.FacingRight),
+			BindingTarget.ShoulderL => (flipLimb ? character.ShoulderR : character.ShoulderL, character.FacingRight),
+			BindingTarget.ShoulderR => (flipLimb ? character.ShoulderL : character.ShoulderR, character.FacingRight),
+			BindingTarget.UpperArmL => (flipLimb ? character.UpperArmR : character.UpperArmL, character.FacingRight),
+			BindingTarget.UpperArmR => (flipLimb ? character.UpperArmL : character.UpperArmR, character.FacingRight),
+			BindingTarget.LowerArmL => (flipLimb ? character.LowerArmR : character.LowerArmL, character.FacingRight),
+			BindingTarget.LowerArmR => (flipLimb ? character.LowerArmL : character.LowerArmR, character.FacingRight),
+			BindingTarget.HandL => (flipLimb ? character.HandR : character.HandL, character.FacingRight),
+			BindingTarget.HandR => (flipLimb ? character.HandL : character.HandR, character.FacingRight),
+			BindingTarget.UpperLegL => (flipLimb ? character.UpperLegR : character.UpperLegL, character.FacingRight),
+			BindingTarget.UpperLegR => (flipLimb ? character.UpperLegL : character.UpperLegR, character.FacingRight),
+			BindingTarget.LowerLegL => (flipLimb ? character.LowerLegR : character.LowerLegL, character.FacingRight),
+			BindingTarget.LowerLegR => (flipLimb ? character.LowerLegL : character.LowerLegR, character.FacingRight),
+			BindingTarget.FootL => (flipLimb ? character.FootR : character.FootL, character.FacingRight),
+			BindingTarget.FootR => (flipLimb ? character.FootL : character.FootR, character.FacingRight),
 			_ => (character.Head, character.Head.FacingRight),
 		};
 
-		int flippedValue = facingRight ? value : -value;
+		int flippedValue = !requireFlip || facingRight ? value : -value;
 
 		switch (bindingType) {
 			default:
@@ -432,6 +448,25 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 				break;
 		}
 
+	}
+
+
+	private void ApplyLimbRotate (BodyPart bodypart) {
+		var parent = bodypart.LimbParent;
+		if (parent != null) {
+			Util.LimbRotate(
+				ref bodypart.X, ref bodypart.Y, ref bodypart.PivotX, ref bodypart.PivotY,
+				ref bodypart.Rotation, ref bodypart.Width, ref bodypart.Height,
+				parent.X, parent.Y, parent.Rotation, parent.Width, parent.Height,
+				bodypart.Rotation, bodypart.UseLimbFlip, 1000
+			);
+		} else {
+			Util.LimbRotate(
+				ref bodypart.X, ref bodypart.Y, ref bodypart.PivotX, ref bodypart.PivotY,
+				ref bodypart.Rotation, ref bodypart.Width, ref bodypart.Height,
+				bodypart.Rotation, bodypart.UseLimbFlip, 1000
+			);
+		}
 	}
 
 

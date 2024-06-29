@@ -114,7 +114,7 @@ public abstract class PoseCharacter : Character {
 	#region --- MSG ---
 
 
-	[OnGameInitialize(-128)] // > Renderer.Initialize()
+	[OnGameInitialize(-128)] // Later than Renderer.Initialize()
 	public static void InitializePose () {
 
 #if DEBUG
@@ -219,7 +219,7 @@ public abstract class PoseCharacter : Character {
 		ResetPoseToDefault(false);
 		AnimateForPose();
 		PoseUpdate_HeadTwist();
-		PoseUpdate_Items();
+		RenderEquipmentAndInventory();
 		RenderBodyGadgets();
 		RenderCloths();
 		PoseUpdate_HeadRotate();
@@ -248,6 +248,19 @@ public abstract class PoseCharacter : Character {
 
 	protected virtual void PerformPoseAnimation () {
 		PoseAnimation.AnimateFromPool(PoseAnimationIDs[(int)AnimationType], this);
+	}
+
+
+	protected virtual void RenderEquipmentAndInventory () {
+		// Equipment
+		for (int i = 0; i < EquipmentTypeCount; i++) {
+			GetEquippingItem((EquipmentType)i)?.PoseAnimationUpdate_FromEquipment(this);
+		}
+		// Inventory
+		int iCount = GetInventoryCapacity();
+		for (int i = 0; i < iCount; i++) {
+			GetItemFromInventory(i)?.PoseAnimationUpdate_FromInventory(this);
+		}
 	}
 
 
@@ -506,21 +519,6 @@ public abstract class PoseCharacter : Character {
 			CalculateBodypartGlobalPosition();
 		}
 
-	}
-
-
-	private void PoseUpdate_Items () {
-
-		// Equipment
-		for (int i = 0; i < EquipmentTypeCount; i++) {
-			GetEquippingItem((EquipmentType)i)?.PoseAnimationUpdate_FromEquipment(this);
-		}
-
-		// Inventory
-		int iCount = GetInventoryCapacity();
-		for (int i = 0; i < iCount; i++) {
-			GetItemFromInventory(i)?.PoseAnimationUpdate_FromInventory(this);
-		}
 	}
 
 
