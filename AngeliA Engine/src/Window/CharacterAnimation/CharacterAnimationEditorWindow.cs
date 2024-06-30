@@ -438,7 +438,6 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 	private void CreateNewAnimationFile () {
 		if (!TryGetValidAnimationFileName("New Animation", out string newName)) return;
 		AllAnimationNames.Add(newName);
-		AllAnimationNames.Sort();
 		string path = Util.CombinePaths(CurrentProject.Universe.CharacterAnimationRoot, $"{newName}.json");
 		JsonUtil.SaveJsonToPath(new ModularAnimation(), path);
 		LoadCurrentAnimationFromFile(path);

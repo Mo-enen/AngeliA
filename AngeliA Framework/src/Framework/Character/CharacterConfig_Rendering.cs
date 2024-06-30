@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 // SUB
-public class CharacterConfig {
+public class CharacterRenderingConfig {
 
 	public int CharacterHeight = 160;
-
+	
 	// Body Part
 	public int Head;
 	public int Body;

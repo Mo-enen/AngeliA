@@ -33,6 +33,7 @@ public partial class CharacterAnimationEditorWindow {
 	private static readonly int BINDING_TYPE_COUNT = typeof(ModularAnimation.BindingType).EnumLength();
 	private static readonly int BINDING_TARGET_COUNT = typeof(ModularAnimation.BindingTarget).EnumLength();
 	private const int CONTENT_LEFT_GAP = 24;
+	private const int EXTRA_DURATION = 120;
 
 	// Data
 	private readonly IntToChars FrameLabelToChar = new();
@@ -89,7 +90,7 @@ public partial class CharacterAnimationEditorWindow {
 		TimelineFrameSize.x = Unify(12);
 		TimelineFrameSize.y = GUI.FieldHeight;
 		TimelineLeftPanelWidth = FoldingLeftPanel.Value ? Unify(96) : Unify(220);
-		TimelineExtendedTotalSize.x = Animation.Duration * TimelineFrameSize.x + Unify(96);
+		TimelineExtendedTotalSize.x = Animation.Duration * TimelineFrameSize.x + Unify(384);
 		TimelineExtendedTotalSize.y = Animation.KeyLayers.Count * GUI.FieldHeight + Unify(96);
 		int contentTopGap = Unify(12);
 		int contentLeftGap = Unify(CONTENT_LEFT_GAP);
@@ -258,7 +259,7 @@ public partial class CharacterAnimationEditorWindow {
 		);
 		layerRect.y -= layerStart * TimelineFrameSize.y;
 		int startFrame = TimelineScrollX / TimelineFrameSize.x;
-		int endFrame = Util.Min(startFrame + TimelinePageCount + 1, Animation.Duration);
+		int endFrame = Util.Min(startFrame + TimelinePageCount + 1, Animation.Duration + EXTRA_DURATION);
 		bool hoveringKeyFrame = false;
 		for (int layerIndex = layerStart; layerIndex < layerEnd; layerIndex++) {
 			var layer = Animation.KeyLayers[layerIndex];
@@ -332,7 +333,7 @@ public partial class CharacterAnimationEditorWindow {
 				if (TimelinePos_to_LayerFrame(mousePos.x, mousePos.y, out _, out int newFrame)) {
 					var frame = layer.KeyFrames[dragFrameIndex];
 					if (newFrame != frame.Frame) FrameDragged = true;
-					frame.Frame = newFrame.Clamp(0, Animation.Duration);
+					frame.Frame = newFrame.Clamp(0, Animation.Duration + EXTRA_DURATION);
 					layer.KeyFrames[dragFrameIndex] = frame;
 				}
 				IsPlaying = false;
@@ -714,7 +715,7 @@ public partial class CharacterAnimationEditorWindow {
 		int layerCount = Animation.KeyLayers.Count;
 		layer = (TimelineContentRect.yMax - y).UDivide(TimelineFrameSize.y);
 		frame = (x - TimelineContentRect.x).UDivide(TimelineFrameSize.x);
-		return layer >= 0 && layer < layerCount && frame >= 0 && frame <= Animation.Duration;
+		return layer >= 0 && layer < layerCount && frame >= 0 && frame <= Animation.Duration + EXTRA_DURATION;
 	}
 
 

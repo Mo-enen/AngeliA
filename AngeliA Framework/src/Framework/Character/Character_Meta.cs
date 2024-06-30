@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public abstract partial class Character {
 
 
@@ -12,10 +12,9 @@ public abstract partial class Character {
 
 
 	public readonly BuffInt MovementWidth = new(150);
-	public readonly BuffInt KnockbackDeceleration = new(16);
+	public readonly BuffInt MovementHeight = new(384); // Height when Character is 160cm
 
 	// Height
-	public readonly BuffInt MovementHeight = new(384); // Height when Character is 160cm
 	public readonly BuffInt RollingHeightAmount = new(521);
 	public readonly BuffInt DashHeightAmount = new(521);
 	public readonly BuffInt RushHeightAmount = new(1000);
@@ -185,6 +184,7 @@ public abstract partial class Character {
 	public readonly BuffInt InvincibleDuration = new(120);
 	public readonly BuffInt DamageStunDuration = new(24);
 	public readonly BuffInt KnockBackSpeed = new(64);
+	public readonly BuffInt KnockbackDeceleration = new(16);
 	public readonly BuffBool InvincibleOnDash = new(false);
 	public readonly BuffBool InvincibleOnRush = new(false);
 

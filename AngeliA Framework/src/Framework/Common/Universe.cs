@@ -35,7 +35,8 @@ public class Universe {
 	public string MusicRoot { get; private set; }
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
-	public string CharacterConfigRoot { get; private set; }
+	public string CharacterRenderingConfigRoot { get; private set; }
+	public string CharacterMovementConfigRoot { get; private set; }
 	public string CharacterAnimationRoot { get; private set; }
 	public UniverseInfo Info { get; private set; }
 
@@ -69,13 +70,14 @@ public class Universe {
 			SoundRoot = AngePath.GetUniverseSoundRoot(universeFolder),
 			FontRoot = AngePath.GetUniverseFontRoot(universeFolder),
 			CharacterAnimationRoot = AngePath.GetCharacterAnimationRoot(universeFolder),
+			CharacterMovementConfigRoot = AngePath.GetCharacterMovementConfigRoot(universeFolder),
 		};
 		result.SavingRoot = useBuiltInSavingRoot ?
 			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Built In Saving") :
 			Util.CombinePaths(universeFolder, "Saving");
 		result.SavingMetaRoot = AngePath.GetSavingMetaRoot(result.SavingRoot);
 		result.ProcedureMapRoot = AngePath.GetProcedureMapRoot(result.SavingRoot);
-		result.CharacterConfigRoot = AngePath.GetSavingMetaCharacterConfigRoot(result.SavingRoot);
+		result.CharacterRenderingConfigRoot = AngePath.GetSavingMetaCharacterConfigRoot(result.SavingRoot);
 		result.CreateFolders();
 		return result;
 	}
@@ -92,7 +94,8 @@ public class Universe {
 		Util.CreateFolder(MusicRoot);
 		Util.CreateFolder(SoundRoot);
 		Util.CreateFolder(FontRoot);
-		Util.CreateFolder(CharacterConfigRoot);
+		Util.CreateFolder(CharacterRenderingConfigRoot);
+		Util.CreateFolder(CharacterMovementConfigRoot);
 		Util.CreateFolder(CharacterAnimationRoot);
 	}
 

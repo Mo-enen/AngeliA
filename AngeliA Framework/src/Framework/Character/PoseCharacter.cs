@@ -100,7 +100,8 @@ public abstract class PoseCharacter : Character {
 	public readonly BuffInt SuitFoot = new(0);
 
 	// Data
-	private static readonly Dictionary<int, CharacterConfig> ConfigPool = new();
+	private static readonly Dictionary<int, CharacterRenderingConfig> ConfigPool_Rendering = new();
+	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = new();
 	private readonly BuffInt[] PoseAnimationIDs;
 	private readonly BuffInt[] PoseHandheldIDs;
 	private readonly BuffInt[] PoseAttackIDs;
@@ -129,28 +130,41 @@ public abstract class PoseCharacter : Character {
 		}
 #endif
 
-		// Config Pool
-		ConfigPool.Clear();
-		string metaRoot = Universe.BuiltIn.CharacterConfigRoot;
+		// Config Pools
+		ConfigPool_Rendering.Clear();
+		ConfigPool_Movement.Clear();
+		string renderRoot = Universe.BuiltIn.CharacterRenderingConfigRoot;
+		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
 		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
 
 			int typeID = type.AngeHash();
 			string name = type.Name;
 
-			// Load From File
-			string configPath = Util.CombinePaths(metaRoot, $"{name}.json");
-			var config = JsonUtil.LoadJsonFromPath<CharacterConfig>(configPath);
-
-			// Create Default Config
-			if (config == null) {
-				config = CreateCharacterConfigFromSheet(name);
-				JsonUtil.SaveJsonToPath(config, configPath, prettyPrint: true);
-
+			// Rendering
+			{
+				// Load From File
+				string path = Util.CombinePaths(renderRoot, $"{name}.json");
+				var config = JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path);
+				// Create Default Config
+				if (config == null) {
+					config = CreateCharacterRenderingConfig(name);
+					JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
+				}
+				// Add to Pool
+				ConfigPool_Rendering.Add(typeID, config);
 			}
 
-			// Final
-			if (config != null) {
-				ConfigPool.Add(typeID, config);
+			// Movement
+			{
+				string path = Util.CombinePaths(movementRoot, $"{name}.json");
+				var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
+				// Create Default Config
+				if (config == null) {
+					config = new CharacterMovementConfig();
+					JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
+				}
+				// Add to Pool
+				ConfigPool_Movement.Add(typeID, config);
 			}
 
 		}
@@ -202,8 +216,17 @@ public abstract class PoseCharacter : Character {
 			PoseAnimation.TryGetAttackDefaultID(TypeID, (WeaponType)i, out int id);
 			PoseAttackIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_ATTACK_IDS[i];
 		}
-		// Load From Pool
-		LoadCharacterFromConfigPool();
+		// Load Config From Pool
+		if (ConfigPool_Rendering.TryGetValue(TypeID, out var rConfig)) {
+			LoadCharacterRenderingFromConfig(rConfig);
+		} else {
+			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
+				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
+			}
+		}
+		if (ConfigPool_Movement.TryGetValue(TypeID, out var mConfig)) {
+			LoadCharacterMovementFromConfig(mConfig);
+		}
 	}
 
 
@@ -598,11 +621,11 @@ public abstract class PoseCharacter : Character {
 
 
 	// Config
-	public static CharacterConfig CreateCharacterConfigFromSheet (string characterAngeName) {
+	public static CharacterRenderingConfig CreateCharacterRenderingConfig (string characterAngeName) {
 
 		int typeID = characterAngeName.AngeHash();
 		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
-		var config = new CharacterConfig();
+		var config = new CharacterRenderingConfig();
 
 		// Body Parts
 		for (int i = 0; i < bodyPartLen; i++) {
@@ -652,7 +675,7 @@ public abstract class PoseCharacter : Character {
 	}
 
 
-	public void LoadCharacterFromConfig (CharacterConfig config) {
+	public void LoadCharacterRenderingFromConfig (CharacterRenderingConfig config) {
 
 		CharacterHeight = config.CharacterHeight;
 
@@ -693,21 +716,18 @@ public abstract class PoseCharacter : Character {
 	}
 
 
-	public void LoadCharacterFromConfigPool () {
-		if (ConfigPool.TryGetValue(TypeID, out var config)) {
-			LoadCharacterFromConfig(config);
-		} else {
-			// Load Default Bodypart
-			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
-				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
-			}
-		}
+	public void LoadCharacterMovementFromConfig (CharacterMovementConfig config) {
+		
+
+
+		
+
 	}
 
 
 	public void SaveCharacterToConfig () {
 
-		if (!ConfigPool.TryGetValue(TypeID, out var config)) return;
+		if (!ConfigPool_Rendering.TryGetValue(TypeID, out var config)) return;
 
 		config.CharacterHeight = CharacterHeight;
 

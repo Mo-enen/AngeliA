@@ -35,7 +35,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
 	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
-	private static readonly LanguageCode LABEL_CLEAR_CHAR_CONFIG = ("Setting.ClearCharConfig", "Clear Character Config Before Game Start");
+	private static readonly LanguageCode LABEL_CLEAR_CHAR_CONFIG = ("Setting.ClearCharConfig", "Clear Character Rendering Config on Game Start");
 
 	private static readonly LanguageCode LABEL_MEDT_ENABLE = ("Setting.MEDT.Enable", "Use Map Editor in Engine");
 	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Drop Player when Release Space Key");
@@ -138,7 +138,7 @@ public class SettingWindow : WindowUI {
 
 			var rect = panelRect.Edge(Direction4.Up, GUI.FieldHeight);
 
-			using var _ = new GUILabelWidthScope(Util.Min(Unify(256), rect.width / 2));
+			using var _ = new GUILabelWidthScope(Util.Min(Unify(320), rect.width / 2));
 
 			DrawPanel(ref rect, LABEL_ENGINE, ICON_ENGINE, Update_Engine, ref PanelFolding_Engine);
 			DrawPanel(ref rect, LABEL_MAP_EDITOR, ICON_MAP_EDITOR, Update_MapEditor, ref PanelFolding_MapEditor);
@@ -193,8 +193,8 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		// Auto Recompile
-		EngineSetting.ClearCharacterConfigBeforeGameStart.Value = GUI.Toggle(
-			rect, EngineSetting.ClearCharacterConfigBeforeGameStart.Value, LABEL_CLEAR_CHAR_CONFIG,
+		EngineSetting.ClearCharacterRenderingConfigBeforeGameStart.Value = GUI.Toggle(
+			rect, EngineSetting.ClearCharacterRenderingConfigBeforeGameStart.Value, LABEL_CLEAR_CHAR_CONFIG,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

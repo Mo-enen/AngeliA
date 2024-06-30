@@ -90,7 +90,7 @@ public partial class CharacterAnimationEditorWindow {
 	private static readonly LanguageCode TIP_PREVIEW = ("Tip.PreviewChar", "Select a character for preview the animation");
 
 	// Data
-	private readonly Dictionary<int, CharacterConfig> ConfigPool = new();
+	private readonly Dictionary<int, CharacterRenderingConfig> ConfigPool = new();
 	private readonly List<string> AllRigCharacterNames;
 	private readonly PreviewCharacter Preview = new() { Active = true, };
 	private readonly ModularFace Preview_Face = new();
@@ -208,11 +208,11 @@ public partial class CharacterAnimationEditorWindow {
 		Preview.OnActivated();
 		int charID = characterName.AngeHash();
 		if (!ConfigPool.TryGetValue(charID, out var config)) {
-			config = PoseCharacter.CreateCharacterConfigFromSheet(characterName);
+			config = PoseCharacter.CreateCharacterRenderingConfig(characterName);
 			ConfigPool[charID] = config;
 		}
 		if (config != null) {
-			Preview.LoadCharacterFromConfig(config);
+			Preview.LoadCharacterRenderingFromConfig(config);
 			// Body Gadget
 			Preview_Face.FillFromSheet(characterName);
 			Preview_Horn.FillFromSheet(characterName);

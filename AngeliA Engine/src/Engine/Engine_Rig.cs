@@ -273,8 +273,8 @@ public partial class Engine {
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
-			if (EngineSetting.ClearCharacterConfigBeforeGameStart.Value) {
-				string configFolder = CurrentProject.Universe.CharacterConfigRoot;
+			if (EngineSetting.ClearCharacterRenderingConfigBeforeGameStart.Value) {
+				string configFolder = CurrentProject.Universe.CharacterRenderingConfigRoot;
 				Util.DeleteFolder(configFolder);
 				Util.CreateFolder(configFolder);
 			}
@@ -304,7 +304,7 @@ public partial class Engine {
 	private void ReloadCharacterNames () {
 		AllRigCharacterNames.Clear();
 		if (CurrentProject == null) return;
-		string path = CurrentProject.Universe.CharacterConfigRoot;
+		string path = CurrentProject.Universe.CharacterRenderingConfigRoot;
 		foreach (var filePath in Util.EnumerateFiles(path, true, "*.json")) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			AllRigCharacterNames.Add(name);
