@@ -77,7 +77,7 @@ public sealed partial class MapEditor : WindowUI {
 	// Const
 	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
-	private const int PANEL_WIDTH = 300;
+	private const int PANEL_WIDTH = 256;
 	private const int MIN_VIEW_HEIGHT = 16 * Const.CEL;
 	private const int MAX_VIEW_HEIGHT = 120 * Const.CEL;
 	private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
@@ -1298,7 +1298,7 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.y = mainRect.y;
 
 		// Toolbar Rect
-		int HEIGHT = Unify(TOOL_BAR_HEIGHT);
+		int HEIGHT = GUI.ToolbarSize;
 		ToolbarRect.width = PanelRect.width;
 		ToolbarRect.height = HEIGHT;
 		ToolbarRect.y = mainRect.yMax - HEIGHT;

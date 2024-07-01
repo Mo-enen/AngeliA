@@ -12,8 +12,8 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	private enum CraftActionType { None, Take, QuickDrop, }
 
 	// Const
-	private const int DOC_ITEM_HEIGHT = 32;
-	private const int DOC_ITEM_PADDING = 6;
+	private const int DOC_ITEM_HEIGHT = 26;
+	private const int DOC_ITEM_PADDING = 4;
 	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
 	private static readonly int QUESTION_MARK_CODE = BuiltInSprite.ICON_QUESTION_MARK;
 	private static readonly int PLUS_CODE = BuiltInSprite.PLUS_16;
@@ -193,7 +193,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		int itemSize = Unify(ItemSize);
 		var itemRect = new IRect(0, 0, itemSize, itemSize);
 		int padding = Unify(12);
-		int itemBorder = itemSize / 16;
+		int itemBorder = Unify(6);
 		bool cursorInInventory = !CursorInResult && !CursorInDoc;
 		for (int i = 0; i < 4; i++) {
 			int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
@@ -217,7 +217,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		var menu = PlayerMenuUI.Instance;
 
 		// BG
-		int bgPadding = Unify(12);
+		int bgPadding = Unify(6);
 		Renderer.Draw(
 			Const.PIXEL,
 			docRect.Expand(bgPadding, 0, bgPadding, bgPadding), Color32.BLACK, int.MinValue + 1
@@ -301,7 +301,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		var menu = PlayerMenuUI.Instance;
 
 		// BG
-		int bgPadding = Unify(12);
+		int bgPadding = Unify(6);
 		Renderer.Draw(
 			Const.PIXEL,
 			resultPanelRect.Expand(0, bgPadding, bgPadding, bgPadding), Color32.BLACK, int.MinValue + 1

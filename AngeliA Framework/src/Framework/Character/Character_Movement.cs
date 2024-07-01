@@ -97,6 +97,7 @@ public abstract partial class Character {
 	public bool IsGrabbingSide { get; private set; } = false;
 
 	// Data
+	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = new();
 	private IRect Hitbox = default;
 	private bool HoldingJump = false;
 	private bool HoldingJumpForFly = false;
@@ -123,6 +124,35 @@ public abstract partial class Character {
 
 
 	#region --- MSG ---
+
+
+	[OnGameInitialize(-128)]
+	internal static void OnGameInitialize_Movement () {
+		// Config Pools
+		ConfigPool_Movement.Clear();
+		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
+		foreach (var type in typeof(Character).AllChildClass()) {
+			int typeID = type.AngeHash();
+			string name = type.Name;
+			// Movement
+			string path = Util.CombinePaths(movementRoot, $"{name}.json");
+			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
+			// Create Default Config
+			if (config == null) {
+				config = new CharacterMovementConfig();
+				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
+			}
+			// Add to Pool
+			ConfigPool_Movement.Add(typeID, config);
+		}
+	}
+
+
+	private void InitMovement () {
+		if (ConfigPool_Movement.TryGetValue(TypeID, out var mConfig)) {
+			mConfig.LoadToCharacter(this);
+		}
+	}
 
 
 	private void OnActivated_Movement () {

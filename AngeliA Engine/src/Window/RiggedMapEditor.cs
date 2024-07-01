@@ -1,8 +1,8 @@
-﻿using AngeliA;
+﻿using System.Collections;
+using System.Collections.Generic;
+using AngeliA;
 
 namespace AngeliaEngine;
-
-
 
 public class RiggedMapEditor : WindowUI {
 
@@ -13,8 +13,6 @@ public class RiggedMapEditor : WindowUI {
 
 
 	private class BarData {
-		public IntToChars I2C;
-		public IntToChars I2C_Capa;
 		public string Name;
 		public int Value;
 		public int Capacity;
@@ -37,12 +35,14 @@ public class RiggedMapEditor : WindowUI {
 	private static readonly SpriteCode BTN_NEXT = "Engine.MapEditor.NextFrame";
 	private static readonly SpriteCode BTN_PLAY = "Engine.MapEditor.Play";
 	private static readonly SpriteCode BTN_PAUSE = "Engine.MapEditor.Pause";
+	private static readonly SpriteCode BTN_MOVEMENT = "Engine.MapEditor.Movement";
 
 	// Api
 	public static RiggedMapEditor Instance { get; private set; }
 	public override string DefaultName => "Map Editor";
 	public bool DrawCollider { get; private set; } = false;
 	public bool EntityClickerOn { get; private set; } = false;
+	public bool MovementEditorOn { get; private set; } = false;
 	public IRect PanelRect { get; private set; }
 	public bool FrameDebugging { get; private set; } = false;
 	public bool RequireNextFrame { get; set; } = false;
@@ -125,11 +125,15 @@ public class RiggedMapEditor : WindowUI {
 
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
-			rect.x -= rect.width + padding;
+			rect.SlideLeft(padding);
 
 			// Entity Clicker
 			EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
-			rect.x -= rect.width + padding;
+			rect.SlideLeft(padding);
+
+			// Movement
+			MovementEditorOn = GUI.IconToggle(rect, MovementEditorOn, BTN_MOVEMENT);
+			rect.SlideLeft(padding);
 
 			// Next Frame
 			if (GUI.Button(rect, BTN_NEXT, Skin.IconButton)) {
@@ -167,6 +171,7 @@ public class RiggedMapEditor : WindowUI {
 		}
 		if (ProfilerPanelOpening) DrawProfilerPanel(ref panelRect);
 		if (EffectPanelOpening) DrawEffectPanel(ref panelRect);
+		if (MovementEditorOn && Player.Selecting != null) DrawMovementPanel(ref panelRect);
 
 		// Panel
 		PanelRect = new IRect(panelRect.x, panelRect.y, panelRect.width, panelYMax - panelRect.y);
@@ -210,9 +215,9 @@ public class RiggedMapEditor : WindowUI {
 			int padding = Unify(6);
 			GUI.Label(rect.ShrinkLeft(padding), data.Name, GUI.Skin.SmallLabel);
 			using (new GUIColorScope(new Color32(96, 96, 96, 255))) {
-				GUI.Label(rect.ShrinkRight(padding), data.I2C_Capa.GetChars(data.Capacity), out var bounds, GUI.Skin.SmallRightLabel);
+				GUI.IntLabel(rect.ShrinkRight(padding), data.Capacity, out var bounds, GUI.Skin.SmallRightLabel);
 				GUI.Label(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), "/", out bounds, GUI.Skin.SmallRightLabel);
-				GUI.Label(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), data.I2C.GetChars(data.Value), GUI.Skin.SmallRightLabel);
+				GUI.IntLabel(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), data.Value, GUI.Skin.SmallRightLabel);
 			}
 		}
 	}
@@ -255,6 +260,23 @@ public class RiggedMapEditor : WindowUI {
 	}
 
 
+	private void DrawMovementPanel (ref IRect panelRect) {
+
+		int padding = Unify(6);
+		int top = panelRect.yMax;
+		var rect = panelRect.EdgeUp(GUI.FieldHeight);
+
+
+
+
+
+
+		// Final
+		panelRect.height = top - rect.y;
+		panelRect.y -= panelRect.height;
+	}
+
+
 	#endregion
 
 
@@ -268,8 +290,6 @@ public class RiggedMapEditor : WindowUI {
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
 				RenderingUsages[i] = new BarData() {
 					Name = RenderLayer.NAMES[i],
-					I2C = new IntToChars(),
-					I2C_Capa = new IntToChars(),
 				};
 			}
 		}
@@ -277,8 +297,6 @@ public class RiggedMapEditor : WindowUI {
 			for (int i = 0; i < EntityLayer.COUNT; i++) {
 				EntityUsages[i] = new BarData() {
 					Name = EntityLayer.LAYER_NAMES[i],
-					I2C = new IntToChars(),
-					I2C_Capa = new IntToChars(),
 				};
 			}
 		}

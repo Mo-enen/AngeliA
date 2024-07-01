@@ -86,7 +86,10 @@ public abstract partial class Character : Rigidbody {
 	#region --- MSG ---
 
 
-	public Character () => InitInventory();
+	public Character () {
+		InitInventory();
+		InitMovement();
+	}
 
 
 	private void InitInventory () {

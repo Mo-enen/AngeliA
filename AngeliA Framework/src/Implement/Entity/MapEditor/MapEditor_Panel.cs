@@ -64,7 +64,6 @@ public partial class MapEditor {
 	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST = ("Menu.MEDT.DeleteList", "Delete List");
 	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = ("Menu.MEDT.DeleteListMSG", "Delete List ");
 	private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = ("Menu.MEDT.SetAsListCover", "Set as List Cover");
-	private const int TOOL_BAR_HEIGHT = 54;
 	private const int SEARCH_BAR_ID = 3983472;
 
 	// Data
@@ -279,6 +278,7 @@ public partial class MapEditor {
 	}
 
 
+	// Update
 	private void Update_PaletteGroupUI () {
 
 		if (!string.IsNullOrEmpty(SearchingText)) return;
@@ -291,8 +291,8 @@ public partial class MapEditor {
 		int ITEM_GAP = Unify(2);
 		int PANEL_PADDING = Unify(12);
 		int BUTTON_BORDER = Unify(6);
-		int ITEM_SIZE = Unify(46);
-		int TAB_SIZE = Unify(40);
+		int ITEM_SIZE = Unify(36);
+		int TAB_SIZE = Unify(36);
 		IRect requiringTooltipRect = default;
 		string requiringTooltip = null;
 
@@ -345,7 +345,7 @@ public partial class MapEditor {
 				tabRect.Shrink(tabRect.height / 2, 0, 0, 0),
 				i == 0 ? UI_TAB_PINNED : UI_TAB_ALL,
 				out var labelBounds,
-				Skin.CenterLabel
+				Skin.SmallCenterLabel
 			);
 
 			// Icon
@@ -512,13 +512,13 @@ public partial class MapEditor {
 		var builtInItems = PaletteGroups[SelectingPaletteGroupIndex].Items;
 		var listItems = EditorMeta.PinnedLists[SelectingPaletteListIndex].Items;
 		int itemCount = showingBuiltIn ? builtInItems.Count : listItems.Count;
-		int ITEM_SIZE = Unify(46);
+		int ITEM_SIZE = Unify(36);
 		int ITEM_GAP = Unify(3);
 		int PADDING = Unify(6);
 		int BORDER = Unify(2);
 		int BORDER_ALT = Unify(2);
 		int scrollbarSize = GUI.ScrollbarSize;
-		int TOOLBAR_HEIGHT = Unify(TOOL_BAR_HEIGHT * 2);
+		int TOOLBAR_HEIGHT = GUI.ToolbarSize * 2;
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
 		int targetReorderReleaseIndex = -1;
 		IRect requiringTooltipRect = default;
@@ -532,6 +532,9 @@ public partial class MapEditor {
 			PanelRect.width,
 			PanelRect.yMax - PaletteGroupPanelRect.yMax - TOOLBAR_HEIGHT
 		);
+
+		using var _ = new ClampCellsScope(contentRect);
+
 		bool mouseInPanel = contentRect.MouseInside();
 		contentRect = contentRect.Shrink(PADDING);
 		int columnCount = contentRect.width / (ITEM_SIZE + ITEM_GAP);
@@ -683,9 +686,9 @@ public partial class MapEditor {
 		if (SearchResult.Count == 0) return;
 
 		int SCROLL_BAR_WIDTH = GUI.ScrollbarSize;
-		int itemSize = Unify(42);
+		int itemSize = Unify(36);
 		int itemGap = Unify(6);
-		var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, Unify(TOOL_BAR_HEIGHT * 2)).Shrink(Unify(6));
+		var searchRect = PanelRect.Shrink(0, SCROLL_BAR_WIDTH + itemGap, 0, GUI.ToolbarSize * 2).Shrink(Unify(6));
 		bool mouseInPanel = searchRect.MouseInside();
 		bool interactable = !TaskingRoute;
 		int clampStartIndex = Renderer.GetUsedCellCount();
@@ -726,7 +729,7 @@ public partial class MapEditor {
 			);
 
 			// Label
-			GUI.Label(rect.Shrink(itemSize + itemGap, 0, 0, 0), pal.Name);
+			GUI.SmallLabel(rect.Shrink(itemSize + itemGap, 0, 0, 0), pal.Name);
 
 			// Selecting Highlight
 			if (pal == SelectingPaletteItem) {
@@ -769,23 +772,23 @@ public partial class MapEditor {
 
 		if (IsPlaying) return;
 
-		int PADDING = Unify(6);
-		int BUTTON_PADDING = Unify(3);
+		int padding = Unify(2);
+		int btnPadding = Unify(2);
 		bool oldE = GUI.Enable;
 		GUI.Enable = !TaskingRoute;
 		var panel = ToolbarRect;
 		Renderer.DrawPixel(panel, Color32.GREY_32);
-		panel = panel.Shrink(PADDING);
+		panel = panel.Shrink(padding);
 		int ITEM_SIZE = panel.height;
 
 		// Reset Camera
-		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
 		if (GUI.DarkButton(btnRect, BuiltInSprite.ICON_REFRESH)) {
 			ResetCamera();
 		}
 
 		// Button Down
-		btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
 		if (
 			GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_DOWN)
 		) {
@@ -793,19 +796,19 @@ public partial class MapEditor {
 		}
 
 		// Button Up
-		btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
 		if (GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_UP)) {
 			SetViewZ(CurrentZ + 1);
 		}
 
 		// Nav
-		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
 		if (GUI.DarkButton(btnRect, IsNavigating ? BRUSH_ICON : MAP_ICON)) {
 			SetNavigating(!IsNavigating);
 		}
 
 		// Play
-		btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(BUTTON_PADDING);
+		btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
 		if (!IsNavigating && !DroppingPlayer && GUI.DarkButton(btnRect, GAMEPAD_ICON)) {
 			if (IsEditing) {
 				StartDropPlayer();
@@ -870,7 +873,7 @@ public partial class MapEditor {
 		if (IsPlaying || DroppingPlayer) return;
 
 		int PADDING = Unify(6);
-		int HEIGHT = Unify(TOOL_BAR_HEIGHT);
+		int HEIGHT = GUI.ToolbarSize;
 		var searchPanel = new IRect(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
 		Renderer.DrawPixel(searchPanel, Color32.GREY_32);
 		searchPanel = searchPanel.Shrink(PADDING);

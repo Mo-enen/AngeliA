@@ -37,6 +37,10 @@ public class IgnoreArtworkPixelsAttribute : Attribute { }
 public class PlayerCanNotRestartGameAttribute : Attribute { }
 
 
+[AttributeUsage(AttributeTargets.Assembly)]
+public class ScaleUiBasedOnScreenHeightAttribute : Attribute { }
+
+
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class EntityLayerCapacityAttribute : Attribute {
 	public int Layer;

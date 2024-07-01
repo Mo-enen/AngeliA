@@ -36,7 +36,7 @@ public abstract class Item : IMapItem {
 	public virtual void OnItemUpdate_FromInventory (Entity holder) { }
 	public virtual void PoseAnimationUpdate_FromInventory (Entity holder) { }
 	public virtual void OnTakeDamage_FromInventory (Entity holder, Entity sender, ref int damage) { }
-
+	
 	// Equipment
 	public virtual void BeforeItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void OnItemUpdate_FromEquipment (Entity holder) { }

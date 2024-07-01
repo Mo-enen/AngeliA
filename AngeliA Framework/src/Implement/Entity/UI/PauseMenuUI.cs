@@ -81,8 +81,8 @@ public class PauseMenuUI : MenuUI {
 
 	public PauseMenuUI () {
 		Instance = this;
-		DefaultLabelStyle = GUI.Skin.LargeLabel;
-		DefaultContentStyle = GUI.Skin.LargeCenterLabel;
+		DefaultLabelStyle = GUI.Skin.Label;
+		DefaultContentStyle = GUI.Skin.CenterLabel;
 	}
 
 
@@ -108,6 +108,7 @@ public class PauseMenuUI : MenuUI {
 		ScreenTint = new(0, 0, 0, 128);
 		BackgroundTint = new(0, 0, 0, 255);
 		MaxItemCount = 11;
+		ItemHeight = 28;
 		ContentPadding = Int4.Direction(32, 32, 32, 32);
 		BgmPlayingBefore = Game.IsMusicPlaying;
 		Game.PauseMusic();

@@ -43,9 +43,9 @@ public partial class RiggedGame {
 
 	protected override int _GetCurrentMonitor () => 0;
 
-	protected override int _GetMonitorHeight (int monitor) => CallingMessage.MonitorWidth;
+	protected override int _GetMonitorWidth (int monitor) => CallingMessage.MonitorWidth;
 
-	protected override int _GetMonitorWidth (int monitor) => CallingMessage.MonitorHeight;
+	protected override int _GetMonitorHeight (int monitor) => CallingMessage.MonitorHeight;
 
 	protected override bool _GetWindowDecorated () => true;
 	protected override void _SetWindowDecorated (bool decorated) { }

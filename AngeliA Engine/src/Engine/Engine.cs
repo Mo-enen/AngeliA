@@ -91,7 +91,7 @@ public partial class Engine {
 	#endregion
 
 
-
+	
 
 	#region --- MSG ---
 
@@ -350,7 +350,6 @@ public partial class Engine {
 	internal static void OnGUI () {
 
 		GUI.Enable = true;
-		GUI.ForceUnifyBasedOnMonitor = true;
 		if (!Instance.CurrentWindowRequireRigGame) {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
 		}

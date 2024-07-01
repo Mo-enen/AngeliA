@@ -107,7 +107,7 @@ public class BodyPart {
 		var v = new Float2(
 			x01 * Width - Width * PivotX / 1000f,
 			y01 * Height - Height * PivotY / 1000f
-		).Rotate(-Rotation);
+		).Rotate(Rotation);
 		result.x += (int)v.x;
 		result.y += (int)v.y;
 		return result;

@@ -25,7 +25,7 @@ public class ControlHintUI : EntityUI {
 	private static readonly Color32 DarkButtonTint = new(0, 0, 0, 255);
 	private static readonly Color32 ColorfulButtonTint = new(240, 86, 86, 255);
 	private static readonly Color32 KeyTint = new(44, 49, 54, 255);
-	private const int KEYSIZE = 24;
+	private const int KEYSIZE = 20;
 	private const int GAP = 4;
 
 	// Api
@@ -52,7 +52,7 @@ public class ControlHintUI : EntityUI {
 	};
 	private static int CurrentHintOffsetY = 0;
 	private readonly GUIStyle HintKeyLabelStyle = new(GUI.Skin.Label) {
-		CharSize = 18,
+		CharSize = 14,
 		ContentColor = Color32.GREY_20,
 		Clip = false,
 		Wrap = WrapMode.NoWrap,
@@ -349,11 +349,10 @@ public class ControlHintUI : EntityUI {
 		// Label
 		rect.width = 1;
 		if (background) {
-			GUI.BackgroundLabel(rect, label, Color32.BLACK, 32);
+			GUI.BackgroundLabel(rect, label, Color32.BLACK, 32, style: GUISkin.Default.SmallLabel);
 		} else {
-			GUI.Label(rect, label, out var bounds);
+			GUI.ShadowLabel(rect, label, shadowDistance: 2, style: GUISkin.Default.SmallLabel);
 		}
-		GUI.Label(rect, label);
 
 	}
 

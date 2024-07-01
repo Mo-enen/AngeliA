@@ -27,19 +27,18 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 		var head = character.Head;
 		int spriteID = head.FrontSide ? SpriteFront : SpriteBack;
 		if (spriteID == 0 || !Renderer.TryGetSprite(spriteID, out var sprite)) return;
-		Cell[] cells;
 
 		// Draw Helmet
 		switch (WearingMode) {
 			case HelmetWearingMode.Attach:
 				// Attach
-				cells = Cloth.AttachClothOn(
+				Cloth.AttachClothOn(
 					head, sprite, 500, 1000, 34 - head.Z, Scale, Scale, defaultHideLimb: false
 				);
 				break;
 			default: {
 				// Cover
-				cells = Cloth.CoverClothOn(head, spriteID, 34 - head.Z, Color32.WHITE, false);
+				var cells = Cloth.CoverClothOn(head, spriteID, 34 - head.Z, Color32.WHITE, false);
 				// Grow Padding
 				if (!sprite.GlobalBorder.IsZero && cells != null) {
 					var center = head.GetGlobalCenter();
@@ -54,15 +53,6 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 					}
 				}
 				break;
-			}
-		}
-
-		// Head Rotate
-		if (cells != null && character.Head.Rotation != 0) {
-			int offsetY = character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
-			foreach (var cell in cells) {
-				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-				cell.Y -= offsetY;
 			}
 		}
 

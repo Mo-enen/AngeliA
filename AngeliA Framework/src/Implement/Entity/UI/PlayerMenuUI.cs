@@ -68,13 +68,15 @@ public class PlayerMenuUI : EntityUI {
 	private static readonly LanguageCode UI_GLOVES = ("UI.Equipment.Gloves", "Gloves");
 	private static readonly LanguageCode UI_BODYSUIT = ("UI.Equipment.Bodysuit", "Cloth");
 	private static readonly LanguageCode UI_JEWELRY = ("UI.Equipment.Jewelry", "Jewelry");
-	private const int WINDOW_PADDING = 12;
 	private const int HOLD_KEY_DURATION = 26;
 	private const int ANIMATION_DURATION = 12;
 	private const int FLASH_PANEL_DURATION = 52;
-	public const int PREVIEW_SIZE = 220;
-	public const int INFO_WIDTH = 180;
-	public const int ITEM_SIZE = 52;
+	private const int WINDOW_PADDING = 6;
+	public const int PREVIEW_SIZE = 108;
+	public const int INFO_WIDTH = 128;
+	public const int ITEM_SIZE = 42;
+	public const int EQUIP_PANEL_WIDTH = 256;
+	public const int EQUIP_ITEM_HEIGHT = 48;
 
 	// Api
 	public static PlayerMenuUI Instance { get; private set; } = null;
@@ -683,8 +685,8 @@ public class PlayerMenuUI : EntityUI {
 		bool interactable = Game.GlobalFrame - SpawnFrame > ANIMATION_DURATION;
 		var player = Player.Selecting;
 		int previewWidth = Unify(PREVIEW_SIZE);
-		int itemHeight = Unify(64);
-		int hashContentHeight = Unify(128);
+		int itemHeight = Unify(EQUIP_ITEM_HEIGHT);
+		int hashContentHeight = Unify(12);// Unify(128);
 		var panelRect = TopPanelRect = GetInventoryRect(itemHeight).Expand(
 			previewWidth, 0, 0, hashContentHeight
 		);
@@ -764,6 +766,7 @@ public class PlayerMenuUI : EntityUI {
 				CursorInBottomPanel = false;
 				Renderer.DrawPixel(rect, Color32.GREY_32, int.MinValue + 1);
 				highlighting = true;
+				Cursor.SetCursorAsHand();
 			}
 		} else {
 			if (CursorIndex == index && !CursorInBottomPanel) {
@@ -775,8 +778,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Item Frame
 		if (equipAvailable) {
-			int border = Unify(4);
-			Renderer.DrawSlice(ITEM_FRAME_CODE, itemRect, border, border, border, border, enableTint, int.MinValue + 2);
+			Renderer.DrawSlice(ITEM_FRAME_CODE, itemRect, enableTint, int.MinValue + 2);
 		}
 
 		// Icon
@@ -785,7 +787,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Label
 		using (new GUIContentColorScope(enableTint)) {
-			GUI.Label(
+			GUI.SmallLabel(
 				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label
 			);
 		}
@@ -1159,7 +1161,7 @@ public class PlayerMenuUI : EntityUI {
 	private IRect GetInventoryRect (int itemHeight) {
 		var player = Player.Selecting;
 		int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
-		int invWidth = Unify(400);
+		int invWidth = Unify(EQUIP_PANEL_WIDTH);
 		int invHeight = itemHeight * 3;
 		int invY = player.Y + Const.CEL * 2 + Const.HALF + Unify(WINDOW_PADDING);
 		if (localAnimationFrame < ANIMATION_DURATION) {

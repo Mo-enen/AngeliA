@@ -20,7 +20,6 @@ public static class GUI {
 	public static bool IsTyping => TypingTextFieldID != 0;
 	public static bool Enable { get; set; } = true;
 	public static bool Interactable { get; set; } = true;
-	public static bool ForceUnifyBasedOnMonitor { get; set; } = false;
 	public static int TypingTextFieldID { get; private set; }
 	public static Color32 Color { get; set; } = Color32.WHITE;
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
@@ -36,6 +35,7 @@ public static class GUI {
 	private static readonly char[] TypingBuilder = new char[1024];
 	private static readonly IntToChars IntDialToChars = new();
 	private static readonly IntToChars AxisLabalToChars = new();
+	private static readonly IntToChars IntLabelChars = new();
 	private static readonly char[] TimingChars = new char[12]; // 99+°59'59"59
 	private static int TypingBuilderCount = 0;
 	private static int BeamIndex = 0;
@@ -109,7 +109,7 @@ public static class GUI {
 
 
 	// Unify
-	public static int Unify (int value) => ForceUnifyBasedOnMonitor ? UnifyMonitor(value) : (value * Renderer.CameraRect.height / 1000f).RoundToInt();
+	public static int Unify (int value) => Game.ForceUnifyBasedOnMonitor ? UnifyMonitor(value) : (value * Renderer.CameraRect.height / 1000f).RoundToInt();
 	public static int UnifyMonitor (int value) => (
 		value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight.GreaterOrEquel(1)
 	).RoundToInt();
@@ -128,7 +128,7 @@ public static class GUI {
 		return border;
 	}
 
-	public static int ReverseUnify (int value) => ForceUnifyBasedOnMonitor ? ReverseUnifyMonitor(value) : (value * 1000f / Renderer.CameraRect.height).RoundToInt();
+	public static int ReverseUnify (int value) => Game.ForceUnifyBasedOnMonitor ? ReverseUnifyMonitor(value) : (value * 1000f / Renderer.CameraRect.height).RoundToInt();
 	public static int ReverseUnifyMonitor (int value) => (value * 1000f / Renderer.CameraRect.height / Game.MonitorHeight * Game.ScreenHeight.GreaterOrEquel(1)).RoundToInt();
 
 
@@ -172,8 +172,8 @@ public static class GUI {
 
 	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
 		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
-		var color = ContentColor == Color32.WHITE ? 
-			style.GetContentColor(state) * Color : 
+		var color = ContentColor == Color32.WHITE ?
+			style.GetContentColor(state) * Color :
 			ContentColor * Color;
 		if (color.a == 0) return;
 		rect = GetContentRect(rect, style, state);
@@ -464,6 +464,9 @@ public static class GUI {
 		ContentColor = oldC;
 		LabelLogic(rect, null, chars, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
 	}
+
+	public static void IntLabel (IRect rect, int number, GUIStyle style = null) => IntLabel(rect, number, out _, style);
+	public static void IntLabel (IRect rect, int number, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, "", IntLabelChars.GetChars(number), style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
 
 
 	// Button

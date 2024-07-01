@@ -212,7 +212,7 @@ public partial class CharacterAnimationEditorWindow {
 			ConfigPool[charID] = config;
 		}
 		if (config != null) {
-			Preview.LoadCharacterRenderingFromConfig(config);
+			config.LoadToCharacter(Preview);
 			// Body Gadget
 			Preview_Face.FillFromSheet(characterName);
 			Preview_Horn.FillFromSheet(characterName);

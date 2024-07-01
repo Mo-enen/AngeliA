@@ -29,7 +29,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected int MoreItemMarkCode = BuiltInSprite.MENU_MORE_MARK;
 	protected int ArrowMarkCode = BuiltInSprite.MENU_ARROW_MARK;
 	protected int WindowWidth = 660;
-	protected int ItemHeight = 36;
+	protected int ItemHeight = 32;
 	protected int ItemGap = 16;
 	protected int MaxItemCount = 10;
 	protected Int4 ContentPadding = new(32, 32, 18, 46);

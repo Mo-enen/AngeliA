@@ -198,9 +198,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		float lerp01 = Ease.OutCirc((float)localAnimationFrame / ANIMATION_DURATION);
 		int offsetY = localAnimationFrame < ANIMATION_DURATION ?
 			Util.LerpUnclamped(Unify(86), 0, lerp01).RoundToInt() : 0;
-		int ITEM_SIZE = Unify(56);
-		int PADDING = Unify(8);
-		int BORDER = Unify(4);
+		int ITEM_SIZE = Unify(42);
+		int PADDING = Unify(6);
+		int BORDER = Unify(2);
 
 		// BG
 		var bgCell = Renderer.DrawPixel(default, Color32.BLACK);
@@ -236,7 +236,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 					backgroundColor: Color32.BLACK,
 					backgroundPadding: Unify(6),
 					false,
-					GUI.Skin.CenterLabel
+					GUI.Skin.SmallCenterLabel
 				);
 
 			}

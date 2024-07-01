@@ -101,7 +101,6 @@ public abstract class PoseCharacter : Character {
 
 	// Data
 	private static readonly Dictionary<int, CharacterRenderingConfig> ConfigPool_Rendering = new();
-	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = new();
 	private readonly BuffInt[] PoseAnimationIDs;
 	private readonly BuffInt[] PoseHandheldIDs;
 	private readonly BuffInt[] PoseAttackIDs;
@@ -132,41 +131,20 @@ public abstract class PoseCharacter : Character {
 
 		// Config Pools
 		ConfigPool_Rendering.Clear();
-		ConfigPool_Movement.Clear();
 		string renderRoot = Universe.BuiltIn.CharacterRenderingConfigRoot;
-		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
 		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
-
 			int typeID = type.AngeHash();
 			string name = type.Name;
-
-			// Rendering
-			{
-				// Load From File
-				string path = Util.CombinePaths(renderRoot, $"{name}.json");
-				var config = JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path);
-				// Create Default Config
-				if (config == null) {
-					config = CreateCharacterRenderingConfig(name);
-					JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
-				}
-				// Add to Pool
-				ConfigPool_Rendering.Add(typeID, config);
+			// Load From File
+			string path = Util.CombinePaths(renderRoot, $"{name}.json");
+			var config = JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path);
+			// Create Default Config
+			if (config == null) {
+				config = CreateCharacterRenderingConfig(name);
+				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
 			}
-
-			// Movement
-			{
-				string path = Util.CombinePaths(movementRoot, $"{name}.json");
-				var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
-				// Create Default Config
-				if (config == null) {
-					config = new CharacterMovementConfig();
-					JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
-				}
-				// Add to Pool
-				ConfigPool_Movement.Add(typeID, config);
-			}
-
+			// Add to Pool
+			ConfigPool_Rendering.Add(typeID, config);
 		}
 
 	}
@@ -218,14 +196,11 @@ public abstract class PoseCharacter : Character {
 		}
 		// Load Config From Pool
 		if (ConfigPool_Rendering.TryGetValue(TypeID, out var rConfig)) {
-			LoadCharacterRenderingFromConfig(rConfig);
+			rConfig.LoadToCharacter(this);
 		} else {
 			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
 				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
 			}
-		}
-		if (ConfigPool_Movement.TryGetValue(TypeID, out var mConfig)) {
-			LoadCharacterMovementFromConfig(mConfig);
 		}
 	}
 
@@ -242,10 +217,10 @@ public abstract class PoseCharacter : Character {
 		ResetPoseToDefault(false);
 		AnimateForPose();
 		PoseUpdate_HeadTwist();
+		PoseUpdate_HeadRotate();
 		RenderEquipmentAndInventory();
 		RenderBodyGadgets();
 		RenderCloths();
-		PoseUpdate_HeadRotate();
 		DrawBodyPart(cellIndexStart);
 	}
 
@@ -671,56 +646,6 @@ public abstract class PoseCharacter : Character {
 		config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out int suitId4) ? suitId4 : DefaultFootSuit.TYPE_ID;
 
 		return config;
-
-	}
-
-
-	public void LoadCharacterRenderingFromConfig (CharacterRenderingConfig config) {
-
-		CharacterHeight = config.CharacterHeight;
-
-		// Body Part
-		Head.SetData(config.Head);
-		Body.SetData(config.Body);
-		Hip.SetData(config.Hip);
-		ShoulderL.SetData(config.Shoulder);
-		ShoulderR.SetData(config.Shoulder);
-		UpperArmL.SetData(config.UpperArm);
-		UpperArmR.SetData(config.UpperArm);
-		LowerArmL.SetData(config.LowerArm);
-		LowerArmR.SetData(config.LowerArm);
-		HandL.SetData(config.Hand);
-		HandR.SetData(config.Hand);
-		UpperLegL.SetData(config.UpperLeg);
-		UpperLegR.SetData(config.UpperLeg);
-		LowerLegL.SetData(config.LowerLeg);
-		LowerLegR.SetData(config.LowerLeg);
-		FootL.SetData(config.Foot);
-		FootR.SetData(config.Foot);
-
-		// Gadget
-		FaceID.BaseValue = config.Face;
-		HairID.BaseValue = config.Hair;
-		EarID.BaseValue = config.Ear;
-		TailID.BaseValue = config.Tail;
-		WingID.BaseValue = config.Wing;
-		HornID.BaseValue = config.Horn;
-
-		// Suit
-		SuitHead.BaseValue = config.SuitHead;
-		SuitBody.BaseValue = config.SuitBody;
-		SuitHip.BaseValue = config.SuitHip;
-		SuitHand.BaseValue = config.SuitHand;
-		SuitFoot.BaseValue = config.SuitFoot;
-
-	}
-
-
-	public void LoadCharacterMovementFromConfig (CharacterMovementConfig config) {
-		
-
-
-		
 
 	}
 

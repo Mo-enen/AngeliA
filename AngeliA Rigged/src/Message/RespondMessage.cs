@@ -117,6 +117,8 @@ public class RigRespondMessage {
 
 	// Data
 	private readonly Dictionary<uint, object> GizmosTexturePool = new();
+	private int CachedScreenWidth = 1;
+	private int CachedScreenHeight = 1;
 
 
 	#endregion
@@ -160,13 +162,15 @@ public class RigRespondMessage {
 
 		Game.MusicVolume = MusicVolume;
 		Game.SoundVolume = SoundVolume;
+		CachedScreenWidth = callingMessage.ScreenWidth;
+		CachedScreenHeight = callingMessage.ScreenHeight;
 
 		// Cursor
 		if (!ignoreMouseInput) {
 			if (RequireSetCursorIndex <= -3) {
-				Game.SetCursorToNormal();
+				//Game.SetCursorToNormal();
 			} else {
-				Game.SetCursor(RequireSetCursorIndex);
+				Cursor.SetCursor(RequireSetCursorIndex, int.MinValue + 1);
 			}
 		}
 
@@ -333,6 +337,18 @@ public class RigRespondMessage {
 		Renderer.SetLayer(oldLayer);
 		Renderer.CurrentSheetIndex = oldSheetIndex;
 
+		// Black Side Border
+		if (CachedScreenWidth * 1000 / CachedScreenHeight > Const.VIEW_RATIO) {
+			var cameraRect = Renderer.CameraRect.ShrinkLeft(leftPadding);
+			int borderWidth = Util.RemapUnclamped(
+				0, CachedScreenWidth,
+				0, cameraRect.width,
+				CachedScreenWidth / 2 - CachedScreenHeight * Const.VIEW_RATIO / 2000
+			);
+			Renderer.DrawPixel(new IRect(cameraRect.x, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
+			Renderer.DrawPixel(new IRect(cameraRect.x + cameraRect.width - borderWidth, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
+		}
+
 		// Effect
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			Game.SetEffectEnable(i, EffectEnable.GetBit(i));
@@ -358,6 +374,7 @@ public class RigRespondMessage {
 		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_VIGNETTE) && HasEffectParams.GetBit(Const.SCREEN_EFFECT_VIGNETTE)) {
 			Game.PassEffect_Vignette(e_VigRadius, e_VigFeather, e_VigOffsetX, e_VigOffsetY, e_VigRound, 1);
 		}
+
 	}
 
 

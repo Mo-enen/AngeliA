@@ -37,6 +37,7 @@ public abstract partial class Game {
 	public static bool AllowPause { get; private set; } = true;
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
 	public static bool AllowPlayerRestart { get; private set; } = true;
+	public static bool ForceUnifyBasedOnMonitor { get; private set; } = true;
 
 	// Event
 	private static event System.Action OnGameRestart;
@@ -144,7 +145,10 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<PlayerCanNotRestartGameAttribute>()) {
 			AllowPlayerRestart = false;
 		}
-
+		if (Util.TryGetAttributeFromAllAssemblies<ScaleUiBasedOnScreenHeightAttribute>()) {
+			ForceUnifyBasedOnMonitor = false;
+		}
+		
 	}
 
 
@@ -196,8 +200,8 @@ public abstract partial class Game {
 
 			// Update Callbacks
 			UpdateGuiInput();
+			ScreenSizeCache();
 			if (IsPlaying) {
-				ScreenSizeCache();
 				OnGameUpdate?.Invoke();
 				OnGameUpdateLater?.Invoke();
 			}
