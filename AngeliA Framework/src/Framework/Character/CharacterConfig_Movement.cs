@@ -1,22 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace AngeliA;
+﻿namespace AngeliA;
 
 public class CharacterMovementConfig {
 
 	public int MovementWidth = 150;
-	public int MovementHeight = 384; // Height when Character is 160cm
-
-	// Height Amount
-	public int RollingHeightAmount = 521;
-	public int DashHeightAmount = 521;
-	public int RushHeightAmount = 1000;
-	public int SquatHeightAmount = 521;
-	public int SwimHeightAmount = 1000;
-	public int FlyHeightAmount = 521;
-	public int GrabTopHeightAmount = 947;
-	public int GrabSideHeightAmount = 947;
+	public int MovementHeight = 384; // Global Height when Character is 160cm
 
 	// Walk
 	public int WalkSpeed = 20;
@@ -41,13 +28,17 @@ public class CharacterMovementConfig {
 	public int JumpReleaseLoseRate = 700;
 	public int JumpRiseGravityRate = 600;
 	public bool GrowJumpCountWhenFallOffEdge = true;
+	public bool JumpDownThoughOneway = false;
+
+	// Rolling
+	public int RollingHeightAmount = 521;
 	public bool FirstJumpWithRoll = false;
 	public bool SubsequentJumpWithRoll = true;
-	public bool JumpDownThoughOneway = false;
+	public bool DashWithRoll = false;
 
 	// Dash
 	public bool DashAvailable = true;
-	public bool DashWithRoll = false;
+	public int DashHeightAmount = 521;
 	public int DashSpeed = 42;
 	public int DashDuration = 20;
 	public int DashCooldown = 4;
@@ -67,6 +58,7 @@ public class CharacterMovementConfig {
 	public int RushCooldown = 2;
 	public int RushAcceleration = 12;
 	public int RushDeceleration = 4;
+	public int RushHeightAmount = 1000;
 
 	// Slip & Crash
 	public bool CrashWhenSlippy = true;
@@ -81,6 +73,7 @@ public class CharacterMovementConfig {
 	public int SquatSpeed = 14;
 	public int SquatAcceleration = 48;
 	public int SquatDeceleration = 48;
+	public int SquatHeightAmount = 521;
 
 	// Pound
 	public bool PoundAvailable = true;
@@ -93,6 +86,7 @@ public class CharacterMovementConfig {
 	public int SwimJumpSpeed = 128;
 	public int SwimAcceleration = 4;
 	public int SwimDeceleration = 4;
+	public int SwimHeightAmount = 1000;
 
 	// Climb
 	public bool ClimbAvailable = true;
@@ -109,6 +103,7 @@ public class CharacterMovementConfig {
 	public int FlyMoveSpeed = 32;
 	public int FlyAcceleration = 2;
 	public int FlyDeceleration = 1;
+	public int FlyHeightAmount = 521;
 
 	// Slide
 	public bool SlideAvailable = false;
@@ -125,7 +120,8 @@ public class CharacterMovementConfig {
 	public int GrabFlipThroughDuration = 18;
 	public int GrabMoveSpeedX = 24;
 	public int GrabMoveSpeedY = 24;
-
+	public int GrabTopHeightAmount = 947;
+	public int GrabSideHeightAmount = 947;
 
 	// API
 	public void LoadToCharacter (Character character) {
@@ -252,6 +248,5 @@ public class CharacterMovementConfig {
 		character.GrabMoveSpeedY.BaseValue = GrabMoveSpeedY;
 
 	}
-
 
 }

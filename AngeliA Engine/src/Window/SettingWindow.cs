@@ -35,7 +35,6 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
 	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
 	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
-	private static readonly LanguageCode LABEL_CLEAR_CHAR_CONFIG = ("Setting.ClearCharConfig", "Clear Character Rendering Config on Game Start");
 
 	private static readonly LanguageCode LABEL_MEDT_ENABLE = ("Setting.MEDT.Enable", "Use Map Editor in Engine");
 	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Drop Player when Release Space Key");
@@ -188,13 +187,6 @@ public class SettingWindow : WindowUI {
 		// Auto Recompile
 		EngineSetting.AutoRecompile.Value = GUI.Toggle(
 			rect, EngineSetting.AutoRecompile.Value, LABEL_AUTO_RECOMPILE,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Auto Recompile
-		EngineSetting.ClearCharacterRenderingConfigBeforeGameStart.Value = GUI.Toggle(
-			rect, EngineSetting.ClearCharacterRenderingConfigBeforeGameStart.Value, LABEL_CLEAR_CHAR_CONFIG,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

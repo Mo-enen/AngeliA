@@ -9,8 +9,7 @@ public class EngineSetting {
 	public static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true);
 	public static readonly SavingBool UseNotification = new("Engine.UseNotification", true);
 	public static readonly SavingBool AutoRecompile = new("Engine.AutoRecompile", true);
-	public static readonly SavingBool ClearCharacterRenderingConfigBeforeGameStart = new("Engine.ClearCharacterConfigBeforeGameStart", true);
-
+	
 	// Pixel Editor
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public static readonly SavingBool GradientBackground = new("PixEdt.GradientBackground", true);

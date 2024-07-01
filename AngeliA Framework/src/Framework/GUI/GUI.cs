@@ -33,8 +33,6 @@ public static class GUI {
 
 	// Data
 	private static readonly char[] TypingBuilder = new char[1024];
-	private static readonly IntToChars IntDialToChars = new();
-	private static readonly IntToChars AxisLabalToChars = new();
 	private static readonly IntToChars IntLabelChars = new();
 	private static readonly char[] TimingChars = new char[12]; // 99+°59'59"59
 	private static int TypingBuilderCount = 0;
@@ -1013,7 +1011,7 @@ public static class GUI {
 		// Value
 		var labelRect = rect.ShrinkRight(buttonSize);
 		DrawStyleBody(labelRect, bodyStyle, Enable ? GUIState.Normal : GUIState.Disable);
-		Label(labelRect, IntDialToChars.GetChars(value), bodyStyle);
+		IntLabel(labelRect, value, bodyStyle);
 
 		// Buttons
 		rect = rect.Edge(Direction4.Right, buttonSize);
@@ -1469,7 +1467,7 @@ public static class GUI {
 					Renderer.DrawPixel(stepRect, color: colorX, z: z);
 					if (labelHeight > 0) {
 						stepLabelRect.x = i + labelPadding;
-						Label(stepLabelRect, AxisLabalToChars.GetChars(currentIndex * stepNumberGap), labelStyle);
+						IntLabel(stepLabelRect, currentIndex * stepNumberGap, labelStyle);
 					}
 				}
 			}
@@ -1499,7 +1497,7 @@ public static class GUI {
 				}
 				if (labelHeight > 0 && currentIndex > 0) {
 					stepLabelRect.y = j + labelPadding;
-					Label(stepLabelRect, AxisLabalToChars.GetChars(currentIndex * stepNumberGap), labelStyle);
+					IntLabel(stepLabelRect, currentIndex * stepNumberGap, labelStyle);
 				}
 			}
 		}

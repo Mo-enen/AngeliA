@@ -441,10 +441,18 @@ public sealed class ModularAnimation : PoseAnimation, IJsonSerializationCallback
 				bodypart.Height += value;
 				break;
 			case BindingType.X:
-				bodypart.X += flippedValue;
+				if (bodypart == character.Hip) {
+					character.PoseRootX += flippedValue;
+				} else {
+					bodypart.X += flippedValue;
+				}
 				break;
 			case BindingType.Y:
-				bodypart.Y += value;
+				if (bodypart == character.Hip) {
+					character.PoseRootY += value;
+				} else {
+					bodypart.Y += value;
+				}
 				break;
 		}
 

@@ -1,11 +1,12 @@
 ﻿namespace AngeliA;
+
 public class IntToChars {
 
 	private int IntValue = 0;
 	public readonly char[] CharsValue = null;
 	public readonly string Prefix = "";
 	public readonly string Suffix = "";
-
+	
 	public IntToChars (string prefix = "", string suffix = "") {
 		Prefix = prefix;
 		Suffix = suffix;

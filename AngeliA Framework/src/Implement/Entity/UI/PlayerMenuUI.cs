@@ -90,7 +90,6 @@ public class PlayerMenuUI : EntityUI {
 	public int TakingCount { get; private set; } = 0;
 
 	// Data
-	private readonly IntToChars ItemCountChars = new();
 	private int TakingFromIndex = 0;
 	private int ActionKeyDownFrame = int.MinValue;
 	private int CancelKeyDownFrame = int.MinValue;
@@ -1114,7 +1113,7 @@ public class PlayerMenuUI : EntityUI {
 	private void DrawItemCount (IRect rect, int number) {
 		if (number <= 1) return;
 		Renderer.DrawPixel(rect, Color32.BLACK, int.MaxValue);
-		GUI.Label(rect, ItemCountChars.GetChars(number), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect, number, GUI.Skin.SmallCenterLabel);
 	}
 
 

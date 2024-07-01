@@ -38,6 +38,7 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_MENU = ("UI.Menu", "Menu");
 	public static readonly LanguageCode UI_EXPLORE = ("UI.Explore", "Open in Explorer");
 	public static readonly LanguageCode UI_IGNORE = ("UI.Ignore", "Ignore");
+	public static readonly LanguageCode UI_APPLY = ("UI.Apply", "Apply");
 
 	// Label
 	public static readonly LanguageCode LABEL_L = ("Label.L", "L");

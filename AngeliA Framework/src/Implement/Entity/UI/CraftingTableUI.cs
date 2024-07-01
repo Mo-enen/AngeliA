@@ -29,7 +29,6 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	// Data
 	private readonly List<Int4> DocumentContent = new();
 	private readonly int[] IgnoreConsumes = { 0, 0, 0, 0, };
-	private readonly IntToChars CombineResultCountChars = new();
 	private Int4 CurrentCraftingItems = default;
 	private bool CursorInDoc = false;
 	private bool CursorInResult = false;
@@ -337,7 +336,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 					countSize, countSize
 				);
 				Renderer.DrawPixel(countRect, Color32.BLACK, int.MinValue + 8);
-				GUI.Label(countRect, CombineResultCountChars.GetChars(CombineResultCount));
+				GUI.IntLabel(countRect, CombineResultCount);
 			}
 		}
 

@@ -241,6 +241,11 @@ public partial class RiggedGame : Game {
 		// Require Entity Clicker
 		EntityClickerOn = CallingMessage.RequireGameMessageInvoke.GetBit(4);
 
+		// Reload Character Movement
+		if (CallingMessage.RequireGameMessageInvoke.GetBit(5) && Player.Selecting != null) {
+			Character.ReloadMovementConfigFromFile(Player.Selecting.GetType().AngeName());
+		}
+
 		// Gizmos Texture Requirement
 		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
 			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);

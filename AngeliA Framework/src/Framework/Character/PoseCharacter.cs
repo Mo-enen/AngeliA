@@ -101,6 +101,8 @@ public abstract class PoseCharacter : Character {
 
 	// Data
 	private static readonly Dictionary<int, CharacterRenderingConfig> ConfigPool_Rendering = new();
+	private static int RenderingConfigGlobalVersion = -1;
+	private int LocalRenderingConfigVersion = int.MinValue;
 	private readonly BuffInt[] PoseAnimationIDs;
 	private readonly BuffInt[] PoseHandheldIDs;
 	private readonly BuffInt[] PoseAttackIDs;
@@ -129,23 +131,7 @@ public abstract class PoseCharacter : Character {
 		}
 #endif
 
-		// Config Pools
-		ConfigPool_Rendering.Clear();
-		string renderRoot = Universe.BuiltIn.CharacterRenderingConfigRoot;
-		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
-			int typeID = type.AngeHash();
-			string name = type.Name;
-			// Load From File
-			string path = Util.CombinePaths(renderRoot, $"{name}.json");
-			var config = JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path);
-			// Create Default Config
-			if (config == null) {
-				config = CreateCharacterRenderingConfig(name);
-				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
-			}
-			// Add to Pool
-			ConfigPool_Rendering.Add(typeID, config);
-		}
+		ReloadRenderingConfigPoolFromFileAndSheet();
 
 	}
 
@@ -194,19 +180,13 @@ public abstract class PoseCharacter : Character {
 			PoseAnimation.TryGetAttackDefaultID(TypeID, (WeaponType)i, out int id);
 			PoseAttackIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_ATTACK_IDS[i];
 		}
-		// Load Config From Pool
-		if (ConfigPool_Rendering.TryGetValue(TypeID, out var rConfig)) {
-			rConfig.LoadToCharacter(this);
-		} else {
-			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
-				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
-			}
-		}
+		SyncRenderingConfigFromPool();
 	}
 
 
 	public override void BeforeUpdate () {
 		PoseRenderingZOffset = 0;
+		SyncRenderingConfigFromPool();
 		base.BeforeUpdate();
 	}
 
@@ -596,7 +576,7 @@ public abstract class PoseCharacter : Character {
 
 
 	// Config
-	public static CharacterRenderingConfig CreateCharacterRenderingConfig (string characterAngeName) {
+	public static CharacterRenderingConfig CreateCharacterRenderingConfigFromSheet (string characterAngeName) {
 
 		int typeID = characterAngeName.AngeHash();
 		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
@@ -650,6 +630,27 @@ public abstract class PoseCharacter : Character {
 	}
 
 
+	public static void ReloadRenderingConfigPoolFromFileAndSheet () {
+		RenderingConfigGlobalVersion++;
+		ConfigPool_Rendering.Clear();
+		string renderRoot = Universe.BuiltIn.CharacterRenderingConfigRoot;
+		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
+			int typeID = type.AngeHash();
+			string name = type.Name;
+			// Load From File
+			string path = Util.CombinePaths(renderRoot, $"{name}.json");
+			var config = JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path);
+			// Create Default Config
+			if (config == null) {
+				config = CreateCharacterRenderingConfigFromSheet(name);
+				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
+			}
+			// Add to Pool
+			ConfigPool_Rendering.Add(typeID, config);
+		}
+	}
+
+
 	public void SaveCharacterToConfig () {
 
 		if (!ConfigPool_Rendering.TryGetValue(TypeID, out var config)) return;
@@ -690,6 +691,19 @@ public abstract class PoseCharacter : Character {
 		config.SuitHand = SuitHand.BaseValue;
 		config.SuitFoot = SuitFoot.BaseValue;
 
+	}
+
+
+	public void SyncRenderingConfigFromPool () {
+		if (LocalRenderingConfigVersion == RenderingConfigGlobalVersion) return;
+		LocalRenderingConfigVersion = RenderingConfigGlobalVersion;
+		if (ConfigPool_Rendering.TryGetValue(TypeID, out var rConfig)) {
+			rConfig.LoadToCharacter(this);
+		} else {
+			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
+				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
+			}
+		}
 	}
 
 

@@ -55,7 +55,6 @@ public partial class LanguageEditor : WindowUI {
 	// Data
 	private readonly List<string> Languages = new();
 	private readonly List<LanguageLine> Lines = new();
-	private readonly IntToChars IndexToChars = new();
 	private readonly GUIStyle IndexLabelStyle = new(GUI.Skin.SmallGreyLabel) { Alignment = Alignment.MidRight };
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
@@ -282,9 +281,9 @@ public partial class LanguageEditor : WindowUI {
 			rect.y -= itemHeight;
 
 			// Index
-			GUI.Label(
+			GUI.IntLabel(
 				rect.EdgeOutside(Direction4.Left, indexWidth).Shift(-itemSpaceX, 0),
-				IndexToChars.GetChars(i), IndexLabelStyle
+				i, IndexLabelStyle
 			);
 
 			// Key

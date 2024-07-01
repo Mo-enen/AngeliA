@@ -36,8 +36,6 @@ public partial class CharacterAnimationEditorWindow {
 	private const int EXTRA_DURATION = 120;
 
 	// Data
-	private readonly IntToChars FrameLabelToChar = new();
-	private readonly IntToChars ValueLabelToChar = new();
 	private readonly GUIStyle RulerLabelStype = new(GUI.Skin.SmallGreyLabel) { Alignment = Alignment.BottomLeft, };
 	private bool RequireScrollXClamp = false;
 	private int TimelineScrollX = 0;
@@ -466,10 +464,9 @@ public partial class CharacterAnimationEditorWindow {
 				Renderer.DrawPixel(prevRect, Color32.WHITE_12);
 			}
 			using (new GUIContentColorScope(prevFrame % 60 == 0 ? Color32.GREEN : Color32.WHITE)) {
-				GUI.Label(
+				GUI.IntLabel(
 					prevRect.Shift(tinyShiftForLabel, tinyShiftForLabel),
-					FrameLabelToChar.GetChars(prevFrame),
-					RulerLabelStype
+					prevFrame, RulerLabelStype
 				);
 			}
 		}
@@ -496,7 +493,7 @@ public partial class CharacterAnimationEditorWindow {
 				Renderer.DrawPixel(rect, Color32.WHITE_12);
 				// Label
 				using (new GUIContentColorScope(frame % 60 == 0 ? Color32.GREEN : Color32.WHITE)) {
-					GUI.Label(rect.Shift(tinyShiftForLabel, tinyShiftForLabel), FrameLabelToChar.GetChars(frame), RulerLabelStype);
+					GUI.IntLabel(rect.Shift(tinyShiftForLabel, tinyShiftForLabel), frame, RulerLabelStype);
 				}
 			}
 			// Hover Highlight
@@ -580,7 +577,7 @@ public partial class CharacterAnimationEditorWindow {
 		}
 
 		// Value Number Label
-		GUI.Label(rect, ValueLabelToChar.GetChars(frameData.Value), style: Skin.CenterLabel);
+		GUI.IntLabel(rect, frameData.Value, style: Skin.CenterLabel);
 		rect.SlideDown(padding);
 
 		// Tool Buttons

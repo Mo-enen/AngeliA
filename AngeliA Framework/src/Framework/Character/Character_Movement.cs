@@ -98,6 +98,8 @@ public abstract partial class Character {
 
 	// Data
 	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = new();
+	private static int MovementConfigGlobalVersion = -1;
+	private int LocalMovementConfigVersion = int.MinValue;
 	private IRect Hitbox = default;
 	private bool HoldingJump = false;
 	private bool HoldingJumpForFly = false;
@@ -127,32 +129,7 @@ public abstract partial class Character {
 
 
 	[OnGameInitialize(-128)]
-	internal static void OnGameInitialize_Movement () {
-		// Config Pools
-		ConfigPool_Movement.Clear();
-		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
-		foreach (var type in typeof(Character).AllChildClass()) {
-			int typeID = type.AngeHash();
-			string name = type.Name;
-			// Movement
-			string path = Util.CombinePaths(movementRoot, $"{name}.json");
-			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
-			// Create Default Config
-			if (config == null) {
-				config = new CharacterMovementConfig();
-				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
-			}
-			// Add to Pool
-			ConfigPool_Movement.Add(typeID, config);
-		}
-	}
-
-
-	private void InitMovement () {
-		if (ConfigPool_Movement.TryGetValue(TypeID, out var mConfig)) {
-			mConfig.LoadToCharacter(this);
-		}
-	}
+	internal static void OnGameInitializeMovement () => ReloadAllCharacterMovementConfigFromFile();
 
 
 	private void OnActivated_Movement () {
@@ -809,6 +786,45 @@ public abstract partial class Character {
 
 
 	#region --- API ---
+
+
+	public static void ReloadMovementConfigFromFile (string characterName) {
+		int id = characterName.AngeHash();
+		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{characterName}.json");
+		var config = JsonUtil.LoadOrCreateJsonFromPath<CharacterMovementConfig>(path);
+		ConfigPool_Movement[id] = config;
+		MovementConfigGlobalVersion++;
+	}
+
+
+	public static void ReloadAllCharacterMovementConfigFromFile () {
+		MovementConfigGlobalVersion++;
+		ConfigPool_Movement.Clear();
+		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
+		foreach (var type in typeof(Character).AllChildClass()) {
+			int typeID = type.AngeHash();
+			string name = type.Name;
+			// Movement
+			string path = Util.CombinePaths(movementRoot, $"{name}.json");
+			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
+			// Create Default Config
+			if (config == null) {
+				config = new CharacterMovementConfig();
+				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
+			}
+			// Add to Pool
+			ConfigPool_Movement.Add(typeID, config);
+		}
+	}
+
+
+	public void SyncMovementFromPool () {
+		if (LocalMovementConfigVersion == MovementConfigGlobalVersion) return;
+		LocalMovementConfigVersion = MovementConfigGlobalVersion;
+		if (ConfigPool_Movement.TryGetValue(TypeID, out var mConfig)) {
+			mConfig.LoadToCharacter(this);
+		}
+	}
 
 
 	public void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);

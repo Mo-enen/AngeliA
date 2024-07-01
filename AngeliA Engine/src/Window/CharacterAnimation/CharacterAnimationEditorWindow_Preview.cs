@@ -208,7 +208,7 @@ public partial class CharacterAnimationEditorWindow {
 		Preview.OnActivated();
 		int charID = characterName.AngeHash();
 		if (!ConfigPool.TryGetValue(charID, out var config)) {
-			config = PoseCharacter.CreateCharacterRenderingConfig(characterName);
+			config = PoseCharacter.CreateCharacterRenderingConfigFromSheet(characterName);
 			ConfigPool[charID] = config;
 		}
 		if (config != null) {

@@ -86,10 +86,7 @@ public abstract partial class Character : Rigidbody {
 	#region --- MSG ---
 
 
-	public Character () {
-		InitInventory();
-		InitMovement();
-	}
+	public Character () => InitInventory();
 
 
 	private void InitInventory () {
@@ -132,6 +129,7 @@ public abstract partial class Character : Rigidbody {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
+		SyncMovementFromPool();
 		BeforeUpdate_BuffValue();
 	}
 

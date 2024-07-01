@@ -192,6 +192,10 @@ public partial class Engine {
 			if (rigEdt.EntityClickerOn) {
 				calling.RequireEntityClicker();
 			}
+			if (rigEdt.RequireReloadPlayerMovement) {
+				rigEdt.RequireReloadPlayerMovement = false;
+				calling.RequireReloadPlayerMovement();
+			}
 
 			if (SettingWindow.Instance.RigSettingChanged) {
 				SettingWindow.Instance.RigSettingChanged = false;
@@ -203,11 +207,11 @@ public partial class Engine {
 				calling.Setting_MEDT_ShowState = EngineSetting.MapEditor_ShowState.Value;
 			}
 
+			// Make the Call
 			if (runningGame) {
 				Transceiver.Call(
 					ignoreMouseInput:
-						IgnoreInputForRig ||
-						Game.PauselessFrame < LastNotInteractableFrame + 6,
+						IgnoreInputForRig || Game.PauselessFrame < LastNotInteractableFrame + 6,
 					ignoreKeyInput:
 						false,
 					leftPadding:
@@ -273,11 +277,6 @@ public partial class Engine {
 			Game.GlobalFrame > RigGameFailToStartFrame + 6000
 		) {
 			// No Rig Game Running
-			if (EngineSetting.ClearCharacterRenderingConfigBeforeGameStart.Value) {
-				string configFolder = CurrentProject.Universe.CharacterRenderingConfigRoot;
-				Util.DeleteFolder(configFolder);
-				Util.CreateFolder(configFolder);
-			}
 			int code = Transceiver.Start(
 				CurrentProject.BuildPath,
 				CurrentProject.UniversePath

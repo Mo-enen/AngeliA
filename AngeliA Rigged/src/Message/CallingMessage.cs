@@ -36,6 +36,9 @@ public class RigCallingMessage {
 	private static readonly int KeyboardKeyCount = typeof(KeyboardKey).EnumLength();
 	private static readonly int GamepadKeyCount = typeof(GamepadKey).EnumLength();
 
+	// Api
+	public int CalledCount { get; private set; } = 0;
+
 	// Pipe
 	public byte RequiringWindowIndex;
 	public bool CursorInScreen;
@@ -269,6 +272,8 @@ public class RigCallingMessage {
 
 	public unsafe void WriteDataToPipe (byte* pointer) {
 
+		CalledCount++;
+
 		try {
 
 			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
@@ -354,6 +359,7 @@ public class RigCallingMessage {
 	public void RequireClearCharPoolInvoke () => RequireGameMessageInvoke.SetBit(2, true);
 	public void RequireDrawColliderGizmos () => RequireGameMessageInvoke.SetBit(3, true);
 	public void RequireEntityClicker () => RequireGameMessageInvoke.SetBit(4, true);
+	public void RequireReloadPlayerMovement () => RequireGameMessageInvoke.SetBit(5, true);
 
 
 	#endregion

@@ -97,7 +97,6 @@ public partial class PixelEditor {
 
 	// Data
 	private static readonly byte[] RuleCache = new byte[8];
-	private readonly IntToChars RulePageToChars = new();
 	private readonly int ToolCount = typeof(Tool).EnumLength();
 	private readonly int[] TagCheckedCountCache = new int[TagUtil.TAG_COUNT];
 	private bool SelectingAnyTiggerSprite;
@@ -576,7 +575,7 @@ public partial class PixelEditor {
 		rect.SlideRight();
 
 		// Index
-		GUI.Label(rect, RulePageToChars.GetChars(RulePageIndex), Skin.SmallCenterGreyLabel);
+		GUI.IntLabel(rect, RulePageIndex, Skin.SmallCenterGreyLabel);
 		rect.SlideRight();
 
 		// Next

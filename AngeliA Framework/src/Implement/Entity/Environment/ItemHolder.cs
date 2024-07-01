@@ -29,9 +29,6 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	public int ItemCount { get; set; } = 1;
 	bool IActionTarget.AllowInvokeOnSquat => true;
 
-	// Data
-	private readonly IntToChars ItemCountChars = new();
-
 
 	#endregion
 
@@ -102,7 +99,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
 			using (new UILayerScope()) {
 				Renderer.DrawPixel(labelRect, Color32.BLACK, int.MaxValue);
-				GUI.Label(labelRect, ItemCountChars.GetChars(ItemCount));
+				GUI.IntLabel(labelRect, ItemCount);
 			}
 		}
 		// Highlight

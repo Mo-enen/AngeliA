@@ -143,11 +143,15 @@ public static class Renderer {
 
 	[OnGameFocused]
 	internal static void OnGameFocused () {
+#if DEBUG
 		// Reload Main Sheet on Changed
 		long date = Util.GetFileModifyDate(MainSheetFilePath);
 		if (date > MainSheetFileModifyDate) {
 			LoadMainSheet();
+			Util.DeleteFolder(Universe.BuiltIn.CharacterRenderingConfigRoot);
+			PoseCharacter.ReloadRenderingConfigPoolFromFileAndSheet();
 		}
+#endif
 	}
 
 
@@ -521,7 +525,7 @@ public static class Renderer {
 		borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z
 	);
 	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z) {
-		
+
 		SLICE_RESULT[0] = SLICE_RESULT[1] = SLICE_RESULT[2] = Cell.EMPTY;
 		SLICE_RESULT[3] = SLICE_RESULT[4] = SLICE_RESULT[5] = Cell.EMPTY;
 		SLICE_RESULT[6] = SLICE_RESULT[7] = SLICE_RESULT[8] = Cell.EMPTY;

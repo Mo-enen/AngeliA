@@ -82,6 +82,13 @@ public abstract class Weapon : Equipment {
 			!Renderer.TryGetSprite(SpriteID, out var sprite)
 		) return;
 
+		int oldGrabSclL = character.HandGrabScaleL;
+		int oldGrabSclR = character.HandGrabScaleR;
+		if (WeaponType == WeaponType.Claw) {
+			character.HandGrabScaleL = character.HandGrabScaleL * 8 / 10;
+			character.HandGrabScaleR = character.HandGrabScaleR * 8 / 10;
+		}
+
 		// Weapon Handheld
 		switch (character.EquippingWeaponHeld) {
 			default:
@@ -112,6 +119,8 @@ public abstract class Weapon : Equipment {
 
 		}
 
+		character.HandGrabScaleL = oldGrabSclL;
+		character.HandGrabScaleR = oldGrabSclR;
 
 	}
 

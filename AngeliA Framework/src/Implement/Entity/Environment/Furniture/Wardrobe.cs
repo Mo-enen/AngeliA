@@ -68,8 +68,6 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 	private static readonly List<KeyValuePair<int, string>> Pattern_Foots = new();
 	private static readonly List<KeyValuePair<int, string>> Pattern_Hands = new();
 	private static bool Initialized = false;
-	private readonly IntToChars IndexLabelLeft = new();
-	private readonly IntToChars IndexLabelRight = new();
 	private ClothType CurrentSuitType = ClothType.Head;
 	private int CurrentPatternIndex = 0;
 	private int ArrowLeftPopFrame = 0;
@@ -384,13 +382,13 @@ Color32.BLACK, 0
 
 		// Index Label
 		int midWidth = Unify(12);
-		GUI.Label(
+		GUI.IntLabel(
 			new IRect(windowRect.x, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize),
-			IndexLabelLeft.GetChars(CurrentPatternIndex + 1)
+			CurrentPatternIndex + 1
 		);
-		GUI.Label(
+		GUI.IntLabel(
 			new IRect(windowRect.CenterX() + midWidth / 2, windowRect.y - LabelSize - LabelSize, (windowRect.width - midWidth) / 2, LabelSize),
-			IndexLabelRight.GetChars(CurrentPatternList.Count)
+			CurrentPatternList.Count
 		);
 		GUI.Label(
 			new IRect(windowRect.CenterX() - midWidth / 2, windowRect.y - LabelSize - LabelSize, midWidth, LabelSize),
