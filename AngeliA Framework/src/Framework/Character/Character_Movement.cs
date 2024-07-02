@@ -78,13 +78,13 @@ public abstract partial class Character {
 	// Movement State
 	public CharacterMovementState MovementState { get; private set; } = CharacterMovementState.Idle;
 	public bool ReadyForRun => RunningAccumulateFrame >= WalkToRunAccumulation;
-	public bool IsRolling => !InWater && !IsPounding && !IsFlying && !IsRushing && ((FirstJumpWithRoll && CurrentJumpCount > 0) || (SubsequentJumpWithRoll && CurrentJumpCount > 1) || (DashWithRoll && IsDashing));
 	public bool IsGrabFlipping => IsGrabFlippingUp || IsGrabFlippingDown;
 	public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Util.Max(GrabFlipThroughDuration, 1);
 	public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Util.Max(GrabFlipThroughDuration, 1);
 	public bool IsMoving => IntendedX != 0;
 	public bool IsWalking => IntendedX != 0 && !ReadyForRun;
 	public bool IsRunning => IntendedX != 0 && ReadyForRun;
+	public bool IsRolling { get; private set; } = false;
 	public bool IsDashing { get; private set; } = false;
 	public bool IsRushing { get; private set; } = false;
 	public bool IsCrashing { get; private set; } = false;
@@ -324,6 +324,14 @@ public abstract partial class Character {
 		// Slide
 		IsSliding = SlideCheck();
 		if (IsSliding) LastSlidingFrame = frame;
+
+		// Roll
+		IsRolling =
+			!IsPounding && !IsFlying && !IsRushing && (
+				(FirstJumpWithRoll && CurrentJumpCount == 1) ||
+				(SubsequentJumpWithRoll && CurrentJumpCount > 1) ||
+				(DashWithRoll && IsDashing)
+			);
 
 		// Facing Right
 		bool oldFacingRight = FacingRight;
@@ -788,6 +796,7 @@ public abstract partial class Character {
 	#region --- API ---
 
 
+	// Config
 	public static void ReloadMovementConfigFromFile (string characterName) {
 		int id = characterName.AngeHash();
 		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{characterName}.json");
@@ -827,6 +836,7 @@ public abstract partial class Character {
 	}
 
 
+	// Movement Logic
 	public void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
 
 

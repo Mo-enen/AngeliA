@@ -535,7 +535,7 @@ public class PoseAnimation_SwimMove : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
-		int loop = Util.Max((1200 / Target.SwimSpeed.FinalValue).Clamp(1, 128) / 4 * 4, 1);
+		int loop = Util.Max((1200 / Target.SwimSpeed.FinalValue.GreaterOrEquel(1)).Clamp(1, 128) / 4 * 4, 4);
 		int frame = CurrentAnimationFrame.UMod(loop) / (loop / 4);
 
 		int frame0121 = frame == 3 ? 1 : frame;

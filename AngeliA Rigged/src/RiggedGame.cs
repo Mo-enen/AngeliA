@@ -341,6 +341,7 @@ public partial class RiggedGame : Game {
 		RespondMessage.MusicVolume = MusicVolume;
 		RespondMessage.SoundVolume = SoundVolume;
 		RespondMessage.IsTyping = GUI.IsTyping;
+		RespondMessage.SelectingPlayerID = Player.Selecting != null ? Player.Selecting.TypeID : 0;
 
 		// Respond to Memory
 		unsafe {

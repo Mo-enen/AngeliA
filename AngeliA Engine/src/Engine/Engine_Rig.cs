@@ -250,17 +250,14 @@ public partial class Engine {
 			// Rig Running
 			if (called) {
 				if (runningGame) {
+					// Get Respond
 					bool responded = Transceiver.Respond(
 						sheetIndex,
 						CurrentWindowIndex == RigMapEditorWindowIndex,
 						toolPanelRect
 					);
-					rigEdt.UpdateUsageData(
-						resp.RenderUsages,
-						resp.RenderCapacities,
-						resp.EntityUsages,
-						resp.EntityCapacities
-					);
+					rigEdt.RigGameSelectingPlayerID = resp.SelectingPlayerID;
+					rigEdt.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
 					rigEdt.HavingGamePlay = resp.GamePlaying;
 					if (CurrentWindowIndex == RigMapEditorWindowIndex) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);

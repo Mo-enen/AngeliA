@@ -91,7 +91,7 @@ public partial class Engine {
 	#endregion
 
 
-	
+
 
 	#region --- MSG ---
 
@@ -100,6 +100,7 @@ public partial class Engine {
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
 		var engine = new Engine();
+		Instance = engine;
 		engine.AllWindows = new WindowUI[]{
 			new RiggedMapEditor(),
 			new PixelEditor(engine.AllRigCharacterNames),
@@ -114,7 +115,6 @@ public partial class Engine {
 			new GenericDialogUI(),
 			new FileBrowserUI(),
 		};
-		Instance = engine;
 		engine.InitializeEngine();
 	}
 
@@ -915,6 +915,7 @@ public partial class Engine {
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		CharacterAnimationEditorWindow.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
+		RiggedMapEditor.Instance.SetCurrentProject(CurrentProject);
 
 		// Audio
 		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);

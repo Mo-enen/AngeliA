@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System.Reflection;
+using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
+using System.Linq;
 
 namespace AngeliaEngine;
 
@@ -55,12 +57,7 @@ public partial class RiggedMapEditor : WindowUI {
 	private readonly BarData[] RenderingUsages = new BarData[RenderLayer.COUNT];
 	private readonly BarData[] EntityUsages = new BarData[EntityLayer.COUNT];
 	private readonly bool[] EffectsEnabled = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
-	private readonly LanguageCode[] MovementTabNames;
-	private readonly IntToChars MovementTabLabelToChars;
-	private readonly int MovementTabCount;
 	private PanelType CurrentPanel = PanelType.None;
-	private MovementTabType MovementTab = MovementTabType.Move;
-	private bool IsMovementEditorDirty = false;
 
 
 	#endregion
@@ -73,15 +70,52 @@ public partial class RiggedMapEditor : WindowUI {
 
 	public RiggedMapEditor () {
 		Instance = this;
-		MovementTabCount = typeof(MovementTabType).EnumLength();
-		MovementTabLabelToChars = new("  (", $"/{MovementTabCount})");
-		MovementTabNames = new LanguageCode[MovementTabCount];
-		for (int i = 0; i < MovementTabCount; i++) {
-			MovementTabNames[i] = (
-				$"UI.RigEditor.{(MovementTabType)i}",
-				Util.GetDisplayName(((MovementTabType)i).ToString())
-			);
-		}
+		try {
+			MovementTabCount = typeof(MovementTabType).EnumLength();
+			MovementTabLabelToChars = new("  (", $"/{MovementTabCount})");
+			MovementTabNames = new LanguageCode[MovementTabCount];
+			for (int i = 0; i < MovementTabCount; i++) {
+				MovementTabNames[i] = (
+					$"UI.RigEditor.{(MovementTabType)i}",
+					Util.GetDisplayName(((MovementTabType)i).ToString())
+				);
+			}
+			// Movement Fields
+			{
+				var intType = typeof(int);
+				var boolType = typeof(bool);
+				MovementFields = new MovementFieldData[MovementTabCount][];
+				var fields = typeof(CharacterMovementConfig).GetFields(
+					BindingFlags.Public | BindingFlags.Instance
+				).OrderBy(field => field.MetadataToken).ToArray();
+				string currentGroup = "";
+				var list = new List<MovementFieldData>();
+				for (int i = 0; i < fields.Length; i++) {
+					var field = fields[i];
+					var group = field.GetCustomAttribute<GroupAttribute>();
+					if (group != null || i == fields.Length - 1) {
+						if (
+							list.Count > 0 &&
+							!string.IsNullOrEmpty(currentGroup) &&
+							System.Enum.TryParse<MovementTabType>(currentGroup, true, out var groupType)
+						) {
+							MovementFields[(int)groupType] = list.ToArray();
+							list.Clear();
+						}
+						if (group != null) currentGroup = group.Name;
+					}
+					list.Add(new MovementFieldData() {
+						Field = field,
+						Type = field.FieldType == intType ? MovementFieldType.Int : field.FieldType == boolType ? MovementFieldType.Bool : MovementFieldType.Unknown,
+						Name = ($"UI.MovementProp.{field.Name}", Util.GetDisplayName(field.Name)),
+					});
+				}
+				for (int i = 0; i < MovementFields.Length; i++) {
+					MovementFields[i] ??= System.Array.Empty<MovementFieldData>();
+				}
+			}
+		} catch (System.Exception ex) { Debug.LogException(ex); }
+
 	}
 
 

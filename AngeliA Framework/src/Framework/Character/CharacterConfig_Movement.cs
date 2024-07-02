@@ -1,7 +1,13 @@
-﻿namespace AngeliA;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
+namespace AngeliA;
+
+
+[StructLayout(LayoutKind.Sequential)]
 public class CharacterMovementConfig {
 
+	[Group("Move")]
 	public int MovementWidth = 150;
 	public int MovementHeight = 384; // Global Height when Character is 160cm
 
@@ -18,25 +24,25 @@ public class CharacterMovementConfig {
 	public int RunBrakeAcceleration = 30;
 	public int RunDeceleration = 4;
 
-	// Push
+	[Group("Push")]
 	public bool PushAvailable = true;
 	public int PushSpeed = 10;
 
-	// Jump
+	[Group("Jump")]
 	public int JumpSpeed = 73;
 	public int JumpCount = 2;
 	public int JumpReleaseLoseRate = 700;
 	public int JumpRiseGravityRate = 600;
-	public bool GrowJumpCountWhenFallOffEdge = true;
+	public bool EdgeFallGrowJumpCount = true;
 	public bool JumpDownThoughOneway = false;
 
-	// Rolling
+	[Group("Roll")]
 	public int RollingHeightAmount = 521;
 	public bool FirstJumpWithRoll = false;
 	public bool SubsequentJumpWithRoll = true;
 	public bool DashWithRoll = false;
 
-	// Dash
+	[Group("Dash")]
 	public bool DashAvailable = true;
 	public int DashHeightAmount = 521;
 	public int DashSpeed = 42;
@@ -45,7 +51,7 @@ public class CharacterMovementConfig {
 	public int DashAcceleration = 24;
 	public int DashCancelLoseRate = 300;
 
-	// Rush
+	[Group("Rush")]
 	public bool RushAvailable = true;
 	public bool RushInAir = false;
 	public bool RushInWater = true;
@@ -61,6 +67,7 @@ public class CharacterMovementConfig {
 	public int RushHeightAmount = 1000;
 
 	// Slip & Crash
+	[Group("SlipCrash")]
 	public bool CrashWhenSlippy = true;
 	public int CrashDuration = 30;
 	public int CrashRunDurationRequire = 42;
@@ -69,6 +76,7 @@ public class CharacterMovementConfig {
 	public int SlipDeceleration = 1;
 
 	// Squat
+	[Group("Squat")]
 	public bool SquatAvailable = true;
 	public int SquatSpeed = 14;
 	public int SquatAcceleration = 48;
@@ -76,10 +84,12 @@ public class CharacterMovementConfig {
 	public int SquatHeightAmount = 521;
 
 	// Pound
+	[Group("Pound")]
 	public bool PoundAvailable = true;
 	public int PoundSpeed = 96;
 
 	// Swim
+	[Group("Swim")]
 	public int SwimWidth = 200;
 	public int InWaterSpeedLoseRate = 500;
 	public int SwimSpeed = 42;
@@ -89,12 +99,14 @@ public class CharacterMovementConfig {
 	public int SwimHeightAmount = 1000;
 
 	// Climb
+	[Group("Climb")]
 	public bool ClimbAvailable = true;
 	public bool JumpWhenClimbAvailable = true;
 	public int ClimbSpeedX = 12;
 	public int ClimbSpeedY = 18;
 
 	// Fly
+	[Group("Fly")]
 	public int FlyCooldown = 24;
 	public int FlyRiseSpeed = 96;
 	public int FlyGravityRiseRate = 800;
@@ -106,18 +118,20 @@ public class CharacterMovementConfig {
 	public int FlyHeightAmount = 521;
 
 	// Slide
+	[Group("Slide")]
 	public bool SlideAvailable = false;
 	public bool SlideOnAnyBlock = false;
 	public bool ResetJumpCountWhenSlide = true;
 	public int SlideDropSpeed = 4;
 
 	// Grab
+	[Group("Grab")]
 	public bool GrabTopAvailable = true;
 	public bool GrabSideAvailable = true;
 	public bool ResetJumpCountWhenGrab = true;
-	public bool GrabFlipThroughDownAvailable = true;
-	public bool GrabFlipThroughUpAvailable = true;
-	public int GrabFlipThroughDuration = 18;
+	public bool GrabFlipDownAvailable = true;
+	public bool GrabFlipUpAvailable = true;
+	public int GrabFlipDuration = 18;
 	public int GrabMoveSpeedX = 24;
 	public int GrabMoveSpeedY = 24;
 	public int GrabTopHeightAmount = 947;
@@ -161,7 +175,7 @@ public class CharacterMovementConfig {
 		character.JumpCount.BaseValue = JumpCount;
 		character.JumpReleaseLoseRate.BaseValue = JumpReleaseLoseRate;
 		character.JumpRiseGravityRate.BaseValue = JumpRiseGravityRate;
-		character.GrowJumpCountWhenFallOffEdge.BaseValue = GrowJumpCountWhenFallOffEdge;
+		character.GrowJumpCountWhenFallOffEdge.BaseValue = EdgeFallGrowJumpCount;
 		character.FirstJumpWithRoll.BaseValue = FirstJumpWithRoll;
 		character.SubsequentJumpWithRoll.BaseValue = SubsequentJumpWithRoll;
 		character.JumpDownThoughOneway.BaseValue = JumpDownThoughOneway;
@@ -241,9 +255,9 @@ public class CharacterMovementConfig {
 		character.GrabTopAvailable.BaseValue = GrabTopAvailable;
 		character.GrabSideAvailable.BaseValue = GrabSideAvailable;
 		character.ResetJumpCountWhenGrab.BaseValue = ResetJumpCountWhenGrab;
-		character.GrabFlipThroughDownAvailable.BaseValue = GrabFlipThroughDownAvailable;
-		character.GrabFlipThroughUpAvailable.BaseValue = GrabFlipThroughUpAvailable;
-		character.GrabFlipThroughDuration.BaseValue = GrabFlipThroughDuration;
+		character.GrabFlipThroughDownAvailable.BaseValue = GrabFlipDownAvailable;
+		character.GrabFlipThroughUpAvailable.BaseValue = GrabFlipUpAvailable;
+		character.GrabFlipThroughDuration.BaseValue = GrabFlipDuration;
 		character.GrabMoveSpeedX.BaseValue = GrabMoveSpeedX;
 		character.GrabMoveSpeedY.BaseValue = GrabMoveSpeedY;
 

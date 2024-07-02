@@ -114,6 +114,7 @@ public class RigRespondMessage {
 	public int MusicVolume;
 	public int SoundVolume;
 	public bool IsTyping;
+	public int SelectingPlayerID;
 
 	// Data
 	private readonly Dictionary<uint, object> GizmosTexturePool = new();
@@ -519,6 +520,7 @@ public class RigRespondMessage {
 			MusicVolume = Util.ReadInt(ref pointer, end);
 			SoundVolume = Util.ReadInt(ref pointer, end);
 			IsTyping = Util.ReadBool(ref pointer, end);
+			SelectingPlayerID = Util.ReadInt(ref pointer, end);
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
@@ -660,7 +662,8 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, MusicVolume, end);
 			Util.Write(ref pointer, SoundVolume, end);
 			Util.Write(ref pointer, IsTyping, end);
-
+			Util.Write(ref pointer, SelectingPlayerID, end);
+			
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 
