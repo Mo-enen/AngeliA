@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public class RiggedMapEditor : WindowUI {
+public partial class RiggedMapEditor : WindowUI {
 
 
 
@@ -20,13 +20,6 @@ public class RiggedMapEditor : WindowUI {
 
 
 	private enum PanelType { None, Profiler, Effect, Movement, }
-
-
-	private enum MovementTabType {
-		Move, Push, Jump, Roll, Dash, Rush,
-		SlipCrash, Squat, Pound, Swim,
-		Climb, Fly, Slide, Grab
-	}
 
 
 	#endregion
@@ -297,83 +290,6 @@ public class RiggedMapEditor : WindowUI {
 		if (EffectsEnabled[Const.SCREEN_EFFECT_VIGNETTE]) {
 			Game.PassEffect_Vignette(0.95f, 0.6f, 0f, 0f, 0f);
 		}
-	}
-
-
-	private void DrawMovementPanel (ref IRect panelRect) {
-
-		int padding = Unify(6);
-		int toolbarSize = Unify(28);
-		int top = panelRect.y;
-		var rect = new IRect(panelRect.x, panelRect.y - toolbarSize, panelRect.width, toolbarSize);
-
-		// Tab Bar
-		using (new GUIContentColorScope(Color32.GREY_196)) {
-			if (GUI.Button(rect.EdgeLeft(rect.height), BuiltInSprite.ICON_TRIANGLE_LEFT, Skin.SmallIconButton)) {
-				MovementTab = (MovementTabType)(((int)MovementTab) - 1).Clamp(0, MovementTabCount - 1);
-			}
-			if (GUI.Button(rect.EdgeRight(rect.height), BuiltInSprite.ICON_TRIANGLE_RIGHT, Skin.SmallIconButton)) {
-				MovementTab = (MovementTabType)(((int)MovementTab) + 1).Clamp(0, MovementTabCount - 1);
-			}
-		}
-
-		// Name Label
-		GUI.Label(rect.ShrinkRight(rect.height), MovementTabNames[(int)MovementTab], out var bounds, Skin.SmallCenterLabel);
-
-		// Number Label
-		GUI.Label(
-			bounds.EdgeRight(1),
-			MovementTabLabelToChars.GetChars(((int)MovementTab) + 1),
-			Skin.SmallGreyLabel
-		);
-		rect.SlideDown(padding);
-
-		// Props
-		switch (MovementTab) {
-			case MovementTabType.Move:
-				break;
-			case MovementTabType.Push:
-				break;
-			case MovementTabType.Jump:
-				break;
-			case MovementTabType.Roll:
-				break;
-			case MovementTabType.Dash:
-				break;
-			case MovementTabType.Rush:
-				break;
-			case MovementTabType.SlipCrash:
-				break;
-			case MovementTabType.Squat:
-				break;
-			case MovementTabType.Pound:
-				break;
-			case MovementTabType.Swim:
-				break;
-			case MovementTabType.Climb:
-				break;
-			case MovementTabType.Fly:
-				break;
-			case MovementTabType.Slide:
-				break;
-			case MovementTabType.Grab:
-				break;
-		}
-
-		// Apply Button
-		rect.yMin = rect.yMax - GUI.FieldHeight;
-		using (new GUIEnableScope(IsMovementEditorDirty))
-		using (new GUIBodyColorScope(IsMovementEditorDirty ? Color32.GREEN_BETTER : Color32.WHITE)) {
-			if (GUI.Button(rect.Shrink(rect.width / 6, rect.width / 6, 0, 0), BuiltInText.UI_APPLY, Skin.SmallDarkButton)) {
-				RequireReloadPlayerMovement = true;
-				IsMovementEditorDirty = false;
-			}
-		}
-		rect.SlideDown(padding);
-
-		// Final
-		panelRect.height = top - rect.yMax;
-		panelRect.y -= panelRect.height;
 	}
 
 
