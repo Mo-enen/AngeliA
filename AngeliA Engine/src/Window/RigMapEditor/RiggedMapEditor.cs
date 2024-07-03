@@ -70,50 +70,64 @@ public partial class RiggedMapEditor : WindowUI {
 
 	public RiggedMapEditor () {
 		Instance = this;
+
+		// Movements
 		try {
-			MovementTabCount = typeof(MovementTabType).EnumLength();
+
+			var fields = typeof(CharacterMovementConfig).GetFields(
+				BindingFlags.Public | BindingFlags.Instance
+			).OrderBy(f => f.MetadataToken).ToArray();
+
+			// Get Group Name and Count
+			MovementTabCount = 0;
+			var mTabNames = new List<LanguageCode>();
+			for (int i = 0; i < fields.Length; i++) {
+				var field = fields[i];
+				var group = field.GetCustomAttribute<PropGroupAttribute>();
+				if (group == null) continue;
+				mTabNames.Add((
+					$"UI.RigEditor.{group.Name}",
+					Util.GetDisplayName(group.Name)
+				));
+			}
+			MovementTabNames = mTabNames.ToArray();
+			MovementTabCount = mTabNames.Count;
 			MovementTabLabelToChars = new("  (", $"/{MovementTabCount})");
-			MovementTabNames = new LanguageCode[MovementTabCount];
-			for (int i = 0; i < MovementTabCount; i++) {
-				MovementTabNames[i] = (
-					$"UI.RigEditor.{(MovementTabType)i}",
-					Util.GetDisplayName(((MovementTabType)i).ToString())
-				);
-			}
-			// Movement Fields
-			{
-				var intType = typeof(int);
-				var boolType = typeof(bool);
-				MovementFields = new MovementFieldData[MovementTabCount][];
-				var fields = typeof(CharacterMovementConfig).GetFields(
-					BindingFlags.Public | BindingFlags.Instance
-				).OrderBy(field => field.MetadataToken).ToArray();
-				string currentGroup = "";
-				var list = new List<MovementFieldData>();
-				for (int i = 0; i < fields.Length; i++) {
-					var field = fields[i];
-					var group = field.GetCustomAttribute<GroupAttribute>();
-					if (group != null || i == fields.Length - 1) {
-						if (
-							list.Count > 0 &&
-							!string.IsNullOrEmpty(currentGroup) &&
-							System.Enum.TryParse<MovementTabType>(currentGroup, true, out var groupType)
-						) {
-							MovementFields[(int)groupType] = list.ToArray();
-							list.Clear();
-						}
-						if (group != null) currentGroup = group.Name;
+
+			// Get all Field Data
+			var intType = typeof(int);
+			var boolType = typeof(bool);
+			MovementFields = new MovementFieldData[MovementTabCount][];
+			string currentGroup = "";
+			var list = new List<MovementFieldData>();
+			int currentFieldGroupIndex = 0;
+			for (int i = 0; i < fields.Length; i++) {
+				var field = fields[i];
+				var group = field.GetCustomAttribute<PropGroupAttribute>();
+				if (group != null || i == fields.Length - 1) {
+					if (
+						list.Count > 0 &&
+						currentFieldGroupIndex < MovementTabCount &&
+						!string.IsNullOrEmpty(currentGroup)
+					) {
+						MovementFields[currentFieldGroupIndex] = list.ToArray();
+						currentFieldGroupIndex++;
+						list.Clear();
 					}
-					list.Add(new MovementFieldData() {
-						Field = field,
-						Type = field.FieldType == intType ? MovementFieldType.Int : field.FieldType == boolType ? MovementFieldType.Bool : MovementFieldType.Unknown,
-						Name = ($"UI.MovementProp.{field.Name}", Util.GetDisplayName(field.Name)),
-					});
+					if (group != null) currentGroup = group.Name;
 				}
-				for (int i = 0; i < MovementFields.Length; i++) {
-					MovementFields[i] ??= System.Array.Empty<MovementFieldData>();
-				}
+				list.Add(new MovementFieldData() {
+					Field = field,
+					Type = field.FieldType == intType ? MovementFieldType.Int : field.FieldType == boolType ? MovementFieldType.Bool : MovementFieldType.Unknown,
+					Name = ($"UI.MovementProp.{field.Name}", Util.GetDisplayName(field.Name)),
+					Visible = field.GetCustomAttribute<PropVisibilityAttribute>(),
+					Separator = field.GetCustomAttribute<PropSeparatorAttribute>() != null,
+				});
 			}
+			for (int i = 0; i < MovementFields.Length; i++) {
+				MovementFields[i] ??= System.Array.Empty<MovementFieldData>();
+			}
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}

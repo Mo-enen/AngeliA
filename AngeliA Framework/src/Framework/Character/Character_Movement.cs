@@ -48,8 +48,6 @@ public abstract partial class Character {
 	public int FacingSign => FacingRight ? 1 : -1;
 	public virtual int GrowingHeight => MovementHeight;
 	public virtual bool SpinOnGroundPound => false;
-	public virtual bool FlyGlideAvailable => false;
-	public virtual bool FlyAvailable => false;
 
 	// Frame Cache
 	public int RunningAccumulateFrame { get; set; } = 0;
@@ -202,7 +200,7 @@ public abstract partial class Character {
 		}
 
 		// Crash
-		if (CrashDuration > 0) {
+		if (CrashAvailable) {
 			if (
 				CrashWhenSlippy &&
 				((LastSlippyMoveStartFrame >= 0 && frame > LastSlippyMoveStartFrame + CrashRunDurationRequire) ||
@@ -619,7 +617,7 @@ public abstract partial class Character {
 
 			// Fly
 			case CharacterMovementState.Fly: // Glide
-				if (FlyGlideAvailable) {
+				if (GlideOnFlying) {
 					speed = FacingRight ? FlyMoveSpeed : -FlyMoveSpeed;
 					acc = FlyAcceleration;
 					dcc = FlyDeceleration;
@@ -639,7 +637,7 @@ public abstract partial class Character {
 		}
 
 		// Slip
-		if (OnSlippy) {
+		if (OnSlippy && SlipAvailable) {
 			acc = SlipAcceleration;
 			dcc = SlipDeceleration;
 		}
@@ -892,7 +890,7 @@ public abstract partial class Character {
 	private int GetCurrentHeight () {
 		int growingHeight = GrowingHeight;
 		if (IsSquatting) return growingHeight * SquatHeightAmount / 1000;
-		if (IsRolling) return growingHeight * RollingHeightAmount / 1000;
+		if (IsRolling) return growingHeight * SquatHeightAmount / 1000;
 		if (IsDashing) return growingHeight * DashHeightAmount / 1000;
 		if (IsRushing) return growingHeight * RushHeightAmount / 1000;
 		if (InWater) return growingHeight * SwimHeightAmount / 1000;

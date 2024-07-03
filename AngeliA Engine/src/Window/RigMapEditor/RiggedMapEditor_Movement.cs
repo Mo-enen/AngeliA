@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AngeliA;
 
 namespace AngeliaEngine;
@@ -16,13 +12,6 @@ public partial class RiggedMapEditor {
 	#region --- SUB ---
 
 
-	private enum MovementTabType {
-		Move, Push, Jump, Roll, Dash, Rush,
-		SlipCrash, Squat, Pound, Swim,
-		Climb, Fly, Slide, Grab
-	}
-
-
 	private enum MovementFieldType {
 		Int, Bool, Unknown,
 	}
@@ -33,6 +22,8 @@ public partial class RiggedMapEditor {
 		public MovementFieldType Type;
 		public LanguageCode Name;
 		public string ValueString = "";
+		public PropVisibilityAttribute Visible = null;
+		public bool Separator = false;
 	}
 
 
@@ -53,7 +44,7 @@ public partial class RiggedMapEditor {
 	private readonly IntToChars MovementTabLabelToChars;
 	private readonly MovementFieldData[][] MovementFields;
 	private readonly int MovementTabCount;
-	private MovementTabType MovementTab = MovementTabType.Move;
+	private int MovementTab = 0;
 	private int PrevMovementTabIndex = -1;
 	private bool IsMovementEditorDirty = false;
 	private Project CurrentProject = null;
@@ -91,10 +82,10 @@ public partial class RiggedMapEditor {
 		// Tab Bar
 		using (new GUIContentColorScope(Color32.GREY_196)) {
 			if (GUI.Button(rect.EdgeLeft(rect.height), BuiltInSprite.ICON_TRIANGLE_LEFT, Skin.SmallIconButton)) {
-				MovementTab = (MovementTabType)(((int)MovementTab) - 1).Clamp(0, MovementTabCount - 1);
+				MovementTab = (MovementTab - 1).Clamp(0, MovementTabCount - 1);
 			}
 			if (GUI.Button(rect.EdgeRight(rect.height), BuiltInSprite.ICON_TRIANGLE_RIGHT, Skin.SmallIconButton)) {
-				MovementTab = (MovementTabType)(((int)MovementTab) + 1).Clamp(0, MovementTabCount - 1);
+				MovementTab = (MovementTab + 1).Clamp(0, MovementTabCount - 1);
 			}
 		}
 		var fields = MovementFields[(int)MovementTab];
@@ -109,12 +100,16 @@ public partial class RiggedMapEditor {
 		}
 
 		// Name Label
-		GUI.Label(rect.ShrinkRight(rect.height), MovementTabNames[(int)MovementTab], out var bounds, Skin.SmallCenterLabel);
+		GUI.Label(
+			rect.ShrinkRight(rect.height),
+			MovementTabNames[MovementTab],
+			out var bounds, Skin.SmallCenterLabel
+		);
 
 		// Number Label
 		GUI.Label(
 			bounds.EdgeRight(1),
-			MovementTabLabelToChars.GetChars(((int)MovementTab) + 1),
+			MovementTabLabelToChars.GetChars(MovementTab + 1),
 			Skin.SmallGreyLabel
 		);
 		rect.SlideDown(padding);
@@ -122,6 +117,9 @@ public partial class RiggedMapEditor {
 		// Props
 		for (int i = 0; i < fields.Length; i++) {
 			var fieldData = fields[i];
+			if (fieldData.Visible != null && !fieldData.Visible.PropMatch(configData.config)) {
+				continue;
+			}
 			var field = fieldData.Field;
 			GUI.SmallLabel(rect, fieldData.Name);
 			var valueRect = rect.ShrinkLeft(GUI.LabelWidth);
@@ -152,7 +150,13 @@ public partial class RiggedMapEditor {
 				}
 			}
 			rect.SlideDown(padding);
+			// Separator
+			if (fieldData.Separator) {
+				rect.y -= padding * 2;
+			}
 		}
+
+		rect.y -= padding * 4;
 
 		// Apply Button
 		rect.yMin = rect.yMax - GUI.FieldHeight;

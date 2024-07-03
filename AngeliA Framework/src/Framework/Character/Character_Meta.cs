@@ -15,7 +15,6 @@ public abstract partial class Character {
 	public readonly BuffInt MovementHeight = new(384); // Height when Character is 160cm
 
 	// Height
-	public readonly BuffInt RollingHeightAmount = new(521);
 	public readonly BuffInt DashHeightAmount = new(521);
 	public readonly BuffInt RushHeightAmount = new(1000);
 	public readonly BuffInt SquatHeightAmount = new(521);
@@ -74,11 +73,15 @@ public abstract partial class Character {
 	public readonly BuffInt RushAcceleration = new(12);
 	public readonly BuffInt RushDeceleration = new(4);
 
-	// Slip & Crash
+	// Crash
+	public readonly BuffBool CrashAvailable = new(true);
 	public readonly BuffBool CrashWhenSlippy = new(true);
 	public readonly BuffInt CrashDuration = new(30);
 	public readonly BuffInt CrashRunDurationRequire = new(42);
 	public readonly BuffInt CrashDeceleration = new(1);
+
+	// Slip
+	public readonly BuffBool SlipAvailable = new(true);
 	public readonly BuffInt SlipAcceleration = new(2);
 	public readonly BuffInt SlipDeceleration = new(1);
 
@@ -107,6 +110,8 @@ public abstract partial class Character {
 	public readonly BuffInt ClimbSpeedY = new(18);
 
 	// Fly
+	public readonly BuffBool FlyAvailable = new(true);
+	public readonly BuffBool GlideOnFlying = new(false);
 	public readonly BuffInt FlyCooldown = new(24);
 	public readonly BuffInt FlyRiseSpeed = new(96);
 	public readonly BuffInt FlyGravityRiseRate = new(800);

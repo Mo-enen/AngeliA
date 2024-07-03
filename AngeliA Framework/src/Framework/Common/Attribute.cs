@@ -5,15 +5,6 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-public class GroupAttribute : Attribute {
-	public string Name;
-	public GroupAttribute (string name) {
-		Name = name;
-	}
-}
-
-
 // Game
 [AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeAttribute : Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
 [AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }

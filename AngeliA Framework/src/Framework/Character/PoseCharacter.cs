@@ -60,8 +60,6 @@ public abstract class PoseCharacter : Character {
 	public int CharacterHeight { get; set; } = 160; // in CM
 	public bool BodyPartsReady => BodyParts != null;
 	public override bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
-	public override bool FlyGlideAvailable => WingID != 0 && !Wing.IsPropellerWing(WingID);
-	public override bool FlyAvailable => WingID != 0;
 	public override int GrowingHeight => base.GrowingHeight * CharacterHeight / 160;
 
 	// BodyPart
@@ -188,6 +186,9 @@ public abstract class PoseCharacter : Character {
 		PoseRenderingZOffset = 0;
 		SyncRenderingConfigFromPool();
 		base.BeforeUpdate();
+		// Buff Value
+		FlyAvailable.Override(WingID != 0);
+		GlideOnFlying.Override(WingID != 0 && !Wing.IsPropellerWing(WingID));
 	}
 
 

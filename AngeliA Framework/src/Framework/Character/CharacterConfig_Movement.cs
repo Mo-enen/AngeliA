@@ -7,89 +7,87 @@ namespace AngeliA;
 [StructLayout(LayoutKind.Sequential)]
 public class CharacterMovementConfig {
 
-	[Group("Move")]
+	[PropGroup("Move")]
 	public int MovementWidth = 150;
 	public int MovementHeight = 384; // Global Height when Character is 160cm
 
 	// Walk
+	[PropSeparator]
 	public int WalkSpeed = 20;
 	public int WalkAcceleration = 3;
 	public int WalkBrakeAcceleration = 30;
 	public int WalkDeceleration = 4;
+	public int WalkToRunAccumulation = 0;
 
 	// Run
-	public int WalkToRunAccumulation = 0;
 	public int RunSpeed = 32;
 	public int RunAcceleration = 3;
 	public int RunBrakeAcceleration = 30;
 	public int RunDeceleration = 4;
 
-	[Group("Push")]
-	public bool PushAvailable = true;
-	public int PushSpeed = 10;
+	[PropGroup("Squat")]
+	public bool SquatAvailable = true;
+	[PropVisibility(nameof(SquatAvailable))] public int SquatSpeed = 14;
+	[PropVisibility(nameof(SquatAvailable))] public int SquatAcceleration = 48;
+	[PropVisibility(nameof(SquatAvailable))] public int SquatDeceleration = 48;
+	[PropVisibility(nameof(SquatAvailable))] public int SquatHeightAmount = 521;
 
-	[Group("Jump")]
-	public int JumpSpeed = 73;
+	[PropGroup("Jump")]
 	public int JumpCount = 2;
-	public int JumpReleaseLoseRate = 700;
-	public int JumpRiseGravityRate = 600;
-	public bool EdgeFallGrowJumpCount = true;
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public int JumpSpeed = 73;
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public int JumpReleaseLoseRate = 700;
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public int JumpRiseGravityRate = 600;
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public bool EdgeFallGrowJumpCount = true;
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public bool FirstJumpWithRoll = false;
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public bool SubsequentJumpWithRoll = true;
 	public bool JumpDownThoughOneway = false;
 
-	[Group("Roll")]
-	public int RollingHeightAmount = 521;
-	public bool FirstJumpWithRoll = false;
-	public bool SubsequentJumpWithRoll = true;
-	public bool DashWithRoll = false;
-
-	[Group("Dash")]
+	[PropGroup("Dash")]
 	public bool DashAvailable = true;
-	public int DashHeightAmount = 521;
-	public int DashSpeed = 42;
-	public int DashDuration = 20;
-	public int DashCooldown = 4;
-	public int DashAcceleration = 24;
-	public int DashCancelLoseRate = 300;
+	[PropVisibility(nameof(DashAvailable))] public bool DashWithRoll = false;
+	[PropVisibility(nameof(DashAvailable))] public int DashSpeed = 42;
+	[PropVisibility(nameof(DashAvailable))] public int DashDuration = 20;
+	[PropVisibility(nameof(DashAvailable))] public int DashCooldown = 4;
+	[PropVisibility(nameof(DashAvailable))] public int DashAcceleration = 24;
+	[PropVisibility(nameof(DashAvailable))] public int DashCancelLoseRate = 300;
+	[PropVisibility(nameof(DashAvailable))] public int DashHeightAmount = 521;
 
-	[Group("Rush")]
+	[PropGroup("Rush")]
 	public bool RushAvailable = true;
-	public bool RushInAir = false;
-	public bool RushInWater = true;
-	public bool RushWhenClimb = false;
-	public bool RushWhenSquat = false;
-	public int RushSpeed = 72;
-	public int RushStopSpeed = 8;
-	public int RushDuration = 8;
-	public int RushStiff = 10;
-	public int RushCooldown = 2;
-	public int RushAcceleration = 12;
-	public int RushDeceleration = 4;
-	public int RushHeightAmount = 1000;
+	[PropVisibility(nameof(RushAvailable))] public bool RushInAir = false;
+	[PropVisibility(nameof(RushAvailable))] public bool RushInWater = true;
+	[PropVisibility(nameof(RushAvailable))] public bool RushWhenClimb = false;
+	[PropVisibility(nameof(RushAvailable))] public bool RushWhenSquat = false;
+	[PropVisibility(nameof(RushAvailable))] public int RushSpeed = 72;
+	[PropVisibility(nameof(RushAvailable))] public int RushStopSpeed = 8;
+	[PropVisibility(nameof(RushAvailable))] public int RushDuration = 8;
+	[PropVisibility(nameof(RushAvailable))] public int RushStiff = 10;
+	[PropVisibility(nameof(RushAvailable))] public int RushCooldown = 2;
+	[PropVisibility(nameof(RushAvailable))] public int RushAcceleration = 12;
+	[PropVisibility(nameof(RushAvailable))] public int RushDeceleration = 4;
+	[PropVisibility(nameof(RushAvailable))] public int RushHeightAmount = 1000;
 
-	// Slip & Crash
-	[Group("SlipCrash")]
-	public bool CrashWhenSlippy = true;
-	public int CrashDuration = 30;
-	public int CrashRunDurationRequire = 42;
-	public int CrashDeceleration = 1;
-	public int SlipAcceleration = 2;
-	public int SlipDeceleration = 1;
+	[PropGroup("Crash")]
+	public bool CrashAvailable = true;
+	[PropVisibility(nameof(CrashAvailable))] public bool CrashWhenSlippy = true;
+	[PropVisibility(nameof(CrashAvailable))] public int CrashDuration = 30;
+	[PropVisibility(nameof(CrashAvailable))] public int CrashRunDurationRequire = 42;
+	[PropVisibility(nameof(CrashAvailable))] public int CrashDeceleration = 1;
 
-	// Squat
-	[Group("Squat")]
-	public bool SquatAvailable = true;
-	public int SquatSpeed = 14;
-	public int SquatAcceleration = 48;
-	public int SquatDeceleration = 48;
-	public int SquatHeightAmount = 521;
+	[PropGroup("Slip")]
+	public bool SlipAvailable = true;
+	[PropVisibility(nameof(SlipAvailable))] public int SlipAcceleration = 2;
+	[PropVisibility(nameof(SlipAvailable))] public int SlipDeceleration = 1;
 
-	// Pound
-	[Group("Pound")]
+	[PropGroup("Push")]
+	public bool PushAvailable = true;
+	[PropVisibility(nameof(PushAvailable))] public int PushSpeed = 10;
+
+	[PropGroup("Pound")]
 	public bool PoundAvailable = true;
-	public int PoundSpeed = 96;
+	[PropVisibility(nameof(PoundAvailable))] public int PoundSpeed = 96;
 
-	// Swim
-	[Group("Swim")]
+	[PropGroup("Swim")]
 	public int SwimWidth = 200;
 	public int InWaterSpeedLoseRate = 500;
 	public int SwimSpeed = 42;
@@ -98,44 +96,43 @@ public class CharacterMovementConfig {
 	public int SwimDeceleration = 4;
 	public int SwimHeightAmount = 1000;
 
-	// Climb
-	[Group("Climb")]
+	[PropGroup("Climb")]
 	public bool ClimbAvailable = true;
-	public bool JumpWhenClimbAvailable = true;
-	public int ClimbSpeedX = 12;
-	public int ClimbSpeedY = 18;
+	[PropVisibility(nameof(ClimbAvailable))] public bool JumpWhenClimbAvailable = true;
+	[PropVisibility(nameof(ClimbAvailable))] public int ClimbSpeedX = 12;
+	[PropVisibility(nameof(ClimbAvailable))] public int ClimbSpeedY = 18;
 
-	// Fly
-	[Group("Fly")]
-	public int FlyCooldown = 24;
-	public int FlyRiseSpeed = 96;
-	public int FlyGravityRiseRate = 800;
-	public int FlyGravityFallRate = 200;
-	public int FlyFallSpeed = 12;
-	public int FlyMoveSpeed = 32;
-	public int FlyAcceleration = 2;
-	public int FlyDeceleration = 1;
-	public int FlyHeightAmount = 521;
+	[PropGroup("Fly")]
+	public bool FlyAvailable = true;
+	[PropVisibility(nameof(FlyAvailable))] public bool GlideOnFlying = false;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyCooldown = 24;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyRiseSpeed = 96;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyGravityRiseRate = 800;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyGravityFallRate = 200;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyFallSpeed = 12;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyMoveSpeed = 32;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyAcceleration = 2;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyDeceleration = 1;
+	[PropVisibility(nameof(FlyAvailable))] public int FlyHeightAmount = 521;
 
-	// Slide
-	[Group("Slide")]
+	[PropGroup("Slide")]
 	public bool SlideAvailable = false;
-	public bool SlideOnAnyBlock = false;
-	public bool ResetJumpCountWhenSlide = true;
-	public int SlideDropSpeed = 4;
+	[PropVisibility(nameof(SlideAvailable))] public bool SlideOnAnyBlock = false;
+	[PropVisibility(nameof(SlideAvailable))] public bool ResetJumpCountWhenSlide = true;
+	[PropVisibility(nameof(SlideAvailable))] public int SlideDropSpeed = 4;
 
-	// Grab
-	[Group("Grab")]
+	[PropGroup("Grab")]
 	public bool GrabTopAvailable = true;
 	public bool GrabSideAvailable = true;
-	public bool ResetJumpCountWhenGrab = true;
-	public bool GrabFlipDownAvailable = true;
-	public bool GrabFlipUpAvailable = true;
-	public int GrabFlipDuration = 18;
-	public int GrabMoveSpeedX = 24;
-	public int GrabMoveSpeedY = 24;
-	public int GrabTopHeightAmount = 947;
-	public int GrabSideHeightAmount = 947;
+	[PropVisibility(nameof(GrabTopAvailable), CompareMode.Or, nameof(GrabSideAvailable))] public bool ResetJumpCountWhenGrab = true;
+	[PropVisibility(nameof(GrabTopAvailable))] public bool GrabFlipDownAvailable = true;
+	[PropVisibility(nameof(GrabTopAvailable))] public bool GrabFlipUpAvailable = true;
+	[PropVisibility(nameof(GrabTopAvailable))] public int GrabFlipDuration = 18;
+	[PropVisibility(nameof(GrabTopAvailable))] public int GrabMoveSpeedX = 24;
+	[PropVisibility(nameof(GrabSideAvailable))] public int GrabMoveSpeedY = 24;
+	[PropVisibility(nameof(GrabTopAvailable))] public int GrabTopHeightAmount = 947;
+	[PropVisibility(nameof(GrabSideAvailable))] public int GrabSideHeightAmount = 947;
+
 
 	// API
 	public void LoadToCharacter (Character character) {
@@ -144,7 +141,6 @@ public class CharacterMovementConfig {
 		character.MovementHeight.BaseValue = MovementHeight;
 
 		// Height Amount
-		character.RollingHeightAmount.BaseValue = RollingHeightAmount;
 		character.DashHeightAmount.BaseValue = DashHeightAmount;
 		character.RushHeightAmount.BaseValue = RushHeightAmount;
 		character.SquatHeightAmount.BaseValue = SquatHeightAmount;
@@ -203,11 +199,15 @@ public class CharacterMovementConfig {
 		character.RushAcceleration.BaseValue = RushAcceleration;
 		character.RushDeceleration.BaseValue = RushDeceleration;
 
-		// Slip & Crash
+		// Crash
+		character.CrashAvailable.BaseValue = CrashAvailable;
 		character.CrashWhenSlippy.BaseValue = CrashWhenSlippy;
 		character.CrashDuration.BaseValue = CrashDuration;
 		character.CrashRunDurationRequire.BaseValue = CrashRunDurationRequire;
 		character.CrashDeceleration.BaseValue = CrashDeceleration;
+
+		// Slip
+		character.SlipAvailable.BaseValue = SlipAvailable;
 		character.SlipAcceleration.BaseValue = SlipAcceleration;
 		character.SlipDeceleration.BaseValue = SlipDeceleration;
 
@@ -236,6 +236,8 @@ public class CharacterMovementConfig {
 		character.ClimbSpeedY.BaseValue = ClimbSpeedY;
 
 		// Fly
+		character.FlyAvailable.BaseValue = FlyAvailable;
+		character.GlideOnFlying.BaseValue = GlideOnFlying;
 		character.FlyCooldown.BaseValue = FlyCooldown;
 		character.FlyRiseSpeed.BaseValue = FlyRiseSpeed;
 		character.FlyGravityRiseRate.BaseValue = FlyGravityRiseRate;
