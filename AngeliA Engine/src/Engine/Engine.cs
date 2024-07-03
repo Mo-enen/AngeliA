@@ -441,7 +441,7 @@ public partial class Engine {
 							windowRect, BUILDING_HINT, Color32.BLACK,
 							backgroundPadding: GUI.Unify(12), style: RigGameHintStyle
 						);
-					} else if (EngineUtil.LastBackgroundBuildReturnCode != 0) {
+					} else if (HasCompileError) {
 						GUI.BackgroundLabel(
 							windowRect, BUILD_ERROR_HINT, Color32.BLACK,
 							backgroundPadding: GUI.Unify(12), style: RigGameHintStyle
@@ -941,6 +941,7 @@ public partial class Engine {
 		Util.DeleteFolder(CurrentProject.BuildPath);
 		EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 		RequireBackgroundBuildDate = 0;
+		HasCompileError = false;
 
 	}
 

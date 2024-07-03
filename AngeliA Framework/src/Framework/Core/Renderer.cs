@@ -86,6 +86,7 @@ public static class Renderer {
 	public static int CurrentFontIndex { get; private set; } = 0;
 	public static int AltSheetCount => AltSheets.Count;
 	public static Sheet CurrentSheet { get; private set; }
+	public static bool Initialized { get; private set; } = false;
 
 	// Data
 	private static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
@@ -137,6 +138,9 @@ public static class Renderer {
 		// Load Sheet
 		LoadMainSheet();
 		CurrentSheet = MainSheet;
+
+		// End
+		Initialized = true;
 
 	}
 

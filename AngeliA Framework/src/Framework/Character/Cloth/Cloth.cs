@@ -26,7 +26,9 @@ public abstract class Cloth {
 
 	// MSG
 	[OnGameInitialize(-129)]
-	public static void BeforeGameInitialize () {
+	internal static TaskResult OnGameInitializeCloth () {
+
+		if (!Renderer.Initialized) return TaskResult.Continue;
 
 		// Init Pool
 		Pool.Clear();
@@ -78,6 +80,8 @@ public abstract class Cloth {
 				dPool.Add(charID, sID);
 			}
 		}
+
+		return TaskResult.End;
 
 	}
 

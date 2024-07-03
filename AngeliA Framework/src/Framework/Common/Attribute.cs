@@ -6,8 +6,8 @@ namespace AngeliA;
 
 
 // Game
-[AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeAttribute : Attribute { public int Order; public OnGameInitializeAttribute (int order = 0) => Order = order; }
-[AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : Attribute { public int Order; public OnGameInitializeLaterAttribute (int order = 0) => Order = order; }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeAttribute : OrderedAttribute { public OnGameInitializeAttribute (int order = 0) : base(order) { } }
+[AttributeUsage(AttributeTargets.Method)] public class OnGameInitializeLaterAttribute : OrderedAttribute { public OnGameInitializeLaterAttribute (int order = 0) : base(order) { } }
 [AttributeUsage(AttributeTargets.Method)] public class OnGameUpdateAttribute : OrderedAttribute { public OnGameUpdateAttribute (int order = 0) : base(order) { } }
 [AttributeUsage(AttributeTargets.Method)] public class OnGameUpdateLaterAttribute : OrderedAttribute { public OnGameUpdateLaterAttribute (int order = 0) : base(order) { } }
 [AttributeUsage(AttributeTargets.Method)] public class OnGameUpdatePauselessAttribute : OrderedAttribute { public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { } }

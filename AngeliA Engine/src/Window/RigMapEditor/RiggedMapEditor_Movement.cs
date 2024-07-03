@@ -46,6 +46,7 @@ public partial class RiggedMapEditor {
 	private readonly int MovementTabCount;
 	private int MovementTab = 0;
 	private int PrevMovementTabIndex = -1;
+	private int PrevSelectingPlayerID = -1;
 	private bool IsMovementEditorDirty = false;
 	private Project CurrentProject = null;
 
@@ -91,8 +92,9 @@ public partial class RiggedMapEditor {
 		var fields = MovementFields[(int)MovementTab];
 
 		// Tab Changed
-		if (PrevMovementTabIndex != (int)MovementTab) {
-			PrevMovementTabIndex = (int)MovementTab;
+		if (PrevMovementTabIndex != MovementTab || PrevSelectingPlayerID != RigGameSelectingPlayerID) {
+			PrevMovementTabIndex = MovementTab;
+			PrevSelectingPlayerID = RigGameSelectingPlayerID;
 			foreach (var field in fields) {
 				if (field.Type != MovementFieldType.Int) continue;
 				field.ValueString = ((int)field.Field.GetValue(configData.config)).ToString();

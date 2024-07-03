@@ -148,7 +148,7 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<ScaleUiBasedOnScreenHeightAttribute>()) {
 			ForceUnifyBasedOnMonitor = false;
 		}
-		
+
 	}
 
 
@@ -173,14 +173,14 @@ public abstract partial class Game {
 
 			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
 
-			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
+			Util.InvokeAsAutoOrderingTask<OnGameInitializeAttribute>();
 
 			_SetFullscreen(_IsFullscreen.Value);
 			_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
 			_SetMusicVolume(MusicVolume);
 			_SetSoundVolume(SoundVolume);
 
-			Util.InvokeAllStaticMethodWithAttribute<OnGameInitializeLaterAttribute>((a, b) => a.Value.Order.CompareTo(b.Value.Order));
+			Util.InvokeAsAutoOrderingTask<OnGameInitializeLaterAttribute>();
 
 			System.GC.Collect();
 

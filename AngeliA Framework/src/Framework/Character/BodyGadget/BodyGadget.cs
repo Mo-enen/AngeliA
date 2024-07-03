@@ -20,8 +20,9 @@ public abstract class BodyGadget {
 
 	// MSG
 	[OnGameInitialize(-129)]
-	public static void BeforeGameInitialize () {
+	public static TaskResult BeforeGameInitialize () {
 
+		if (!Renderer.Initialized) return TaskResult.Continue;
 
 		// Init Pool
 		Pool.Clear();
@@ -72,6 +73,9 @@ public abstract class BodyGadget {
 				dPool.Add(charID, ggID);
 			}
 		}
+
+		return TaskResult.End;
+
 	}
 
 

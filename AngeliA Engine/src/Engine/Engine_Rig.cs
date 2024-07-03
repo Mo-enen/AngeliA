@@ -42,6 +42,7 @@ public partial class Engine {
 	private long RequireBackgroundBuildDate = 0;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
+	private bool HasCompileError = false;
 	private int NoGameRunningFrameCount = 0;
 
 
@@ -60,6 +61,7 @@ public partial class Engine {
 		if (Instance == null) return;
 
 		RiggedMapEditor.Instance.CleanDirty();
+		Instance.HasCompileError = code != 0;
 
 		switch (code) {
 
@@ -160,6 +162,8 @@ public partial class Engine {
 
 
 	private void OnGUI_RiggedGame () {
+
+		if (HasCompileError) return;
 
 		var rigEdt = RiggedMapEditor.Instance;
 		var pixEdt = PixelEditor.Instance;
