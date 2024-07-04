@@ -12,7 +12,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	private enum CraftActionType { None, Take, QuickDrop, }
 
 	// Const
-	private const int DOC_ITEM_HEIGHT = 26;
+	private const int DOC_ITEM_HEIGHT = 22;
 	private const int DOC_ITEM_PADDING = 4;
 	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
 	private static readonly int QUESTION_MARK_CODE = BuiltInSprite.ICON_QUESTION_MARK;

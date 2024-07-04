@@ -66,7 +66,9 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 			if (sprite != null) {
 				ColliderBorder = sprite.GlobalBorder;
 				if (ColliderBorder != Int4.zero) {
-					var rect = Rect.Shrink(ColliderBorder);
+					int rWidth = sprite.GlobalWidth;
+					int rHeight = sprite.GlobalHeight;
+					var rect = new IRect(X - (rWidth - Const.CEL) / 2, Y, rWidth, rHeight).Shrink(ColliderBorder);
 					X = rect.x;
 					Y = rect.y;
 					Width = rect.width;

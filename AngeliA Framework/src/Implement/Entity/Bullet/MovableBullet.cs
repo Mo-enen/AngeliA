@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
 
 [EntityAttribute.Capacity(4, 0)]
 public abstract class MovableBullet : Bullet {
@@ -86,8 +86,10 @@ public abstract class MovableBullet : Bullet {
 			}
 			// Collide with Oneway
 			if (collide) {
-				if (DestroyOnHitEnvironment) Active = false;
-				BeforeDespawn(null);
+				if (DestroyOnHitEnvironment) {
+					Active = false;
+					BeforeDespawn(null);
+				}
 				break;
 			}
 		}
@@ -176,8 +178,8 @@ public abstract class MovableBullet : Bullet {
 	}
 
 	// API
-	public void StartMove (bool facingRight) {
-		Velocity = new Int2(facingRight ? SpeedX : -SpeedX, SpeedY);
+	public void StartMove (bool facingRight, int addSpeedX, int addSpeedY) {
+		Velocity = new Int2(facingRight ? SpeedX + addSpeedX : -SpeedX - addSpeedX, SpeedY + addSpeedY);
 		CurrentRotation = facingRight ? StartRotation : -StartRotation;
 	}
 

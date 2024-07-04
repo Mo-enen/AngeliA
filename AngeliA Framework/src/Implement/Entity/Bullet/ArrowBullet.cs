@@ -1,23 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
+
+
+public class ArrowBullet<I> : ArrowBullet {
+	public ArrowBullet () {
+		string name = typeof(I).AngeName();
+		ArrowItemID = name.AngeHash();
+		ArrowArtworkID = $"{name}.Bullet".AngeHash();
+		if (!Renderer.HasSprite(ArrowArtworkID) && !Renderer.HasSpriteGroup(ArrowArtworkID)) {
+			ArrowArtworkID = ArrowItemID;
+		}
+	}
+}
 
 public class ArrowBullet : MovableBullet {
 
-	public int ArrowItemID { get; set; } = 0;
-	public int ArrowArtworkID { get; set; } = 0;
+	public int ArrowItemID { get; init; } = 0;
+	public int ArrowArtworkID { get; init; } = 0;
 	public override int ArtworkID => ArrowArtworkID;
+	protected virtual bool SpawnItemWhenBulletDestroy => true;
+	private bool ItemSpawned = false;
+
+	public ArrowBullet () => ArrowArtworkID = TypeID;
 
 	public override void OnActivated () {
 		base.OnActivated();
-		ArrowItemID = 0;
-		ArrowArtworkID = 0;
+		ItemSpawned = false;
 	}
 
 	protected override void BeforeDespawn (IDamageReceiver receiver) {
-		if (ArrowItemID != 0) {
+		if (!ItemSpawned && SpawnItemWhenBulletDestroy && ArrowItemID != 0) {
 			ItemSystem.SpawnItem(ArrowItemID, X, Y, 1);
+			ItemSpawned = true;
 		}
 	}
 
