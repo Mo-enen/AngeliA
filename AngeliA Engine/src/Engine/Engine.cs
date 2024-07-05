@@ -96,7 +96,6 @@ public partial class Engine {
 	#region --- MSG ---
 
 
-	// Init
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
 		var engine = new Engine();

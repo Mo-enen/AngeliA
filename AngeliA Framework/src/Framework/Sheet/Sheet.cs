@@ -160,7 +160,9 @@ public class Sheet {
 				// Extra Info
 				if (sprite.Duration > 0) group.Animated = true;
 				if (sprite.Rule != 0) group.WithRule = true;
-				if (sprite.Tag.HasAll(Tag.LoopStart)) group.LoopStart = groupIndex;
+				if (sprite.Tag.HasAll(Tag.LoopStart)) {
+					group.LoopStart = groupIndex;
+				}
 				if (sprite.Tag.HasAll(Tag.Random)) group.Random = true;
 
 			}
@@ -200,9 +202,9 @@ public class Sheet {
 
 		// Fix Loopstart
 		loopStart = loopStart < 0 ? group.LoopStart : loopStart;
-		int loopStartTiming = GetTiming(SpritePool, group, loopStart.Clamp(0, len - 1));
+		int loopStartTiming = loopStart == 0 ? 0 : GetTiming(SpritePool, group, loopStart.Clamp(0, len - 1)) + 1;
 		int frameLen = GetTiming(SpritePool, group, len);
-		int totalFrame = localFrame < loopStartTiming ? frameLen : frameLen - loopStartTiming;
+		int totalFrame = localFrame < loopStartTiming ? frameLen : frameLen - loopStartTiming + 1;
 		int frameOffset = localFrame < loopStartTiming ? 0 : loopStartTiming;
 		localFrame = ((localFrame - frameOffset) % totalFrame) + frameOffset;
 
@@ -212,8 +214,9 @@ public class Sheet {
 		// Func
 		static int GetTiming (Dictionary<int, AngeSprite> pool, SpriteGroup group, int spriteIndex) {
 			int result = 0;
+			var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
 			for (int i = 0; i < spriteIndex; i++) {
-				int id = group.SpriteIDs[i];
+				int id = span[i];
 				if (!pool.TryGetValue(id, out var sprite)) continue;
 				result += sprite.Duration;
 			}
@@ -222,8 +225,9 @@ public class Sheet {
 		static int GetTimingID (Dictionary<int, AngeSprite> pool, SpriteGroup group, int targetTiming) {
 			int result = 0;
 			int totalDuration = 0;
+			var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
 			for (int i = 0; i < group.Count; i++) {
-				int id = result = group.SpriteIDs[i];
+				int id = result = span[i];
 				if (!pool.TryGetValue(id, out var sprite)) continue;
 				totalDuration += sprite.Duration;
 				if (totalDuration >= targetTiming) break;

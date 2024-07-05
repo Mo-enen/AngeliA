@@ -177,6 +177,7 @@ public partial class PixelEditor : WindowUI {
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false);
 	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true);
+	private static readonly SavingInt PrevOpenAtlasIndex = new("PixEdt.PrevAtlas", 0);
 
 
 	#endregion
@@ -850,6 +851,14 @@ public partial class PixelEditor : WindowUI {
 			SetCurrentTool(Tool.Sprite);
 		}
 
+		// Edit
+		if (EngineSetting.Hotkey_Pix_FlipX.Value.Down()) {
+			FlipPixelSelection(true);
+		}
+		if (EngineSetting.Hotkey_Pix_FlipY.Value.Down()) {
+			FlipPixelSelection(false);
+		}
+
 	}
 
 
@@ -913,6 +922,7 @@ public partial class PixelEditor : WindowUI {
 		PaintingColorF = default;
 		Sheet.LoadFromDisk(project.Universe.SheetPath);
 		AsepriteFolderExists = Util.FolderExists(project.Universe.AsepriteRoot);
+		SetCurrentAtlas(PrevOpenAtlasIndex.Value);
 	}
 
 

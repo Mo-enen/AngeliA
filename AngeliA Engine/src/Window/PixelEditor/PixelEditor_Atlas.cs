@@ -340,11 +340,10 @@ public partial class PixelEditor {
 		}
 		ResetCamera();
 		DraggingState = DragState.None;
-		//PaintingColor = Color32.CLEAR;
-		//PaintingColorF = default;
 		ResizingStageIndex = -1;
 		HoveringResizeDirection = null;
 		SelectingPaletteIndex = -1;
+		PrevOpenAtlasIndex.Value = atlasIndex;
 		if (resetUndo) Undo.Reset();
 	}
 

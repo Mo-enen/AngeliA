@@ -189,6 +189,21 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void DrawMagicEncircleAurora (int spriteID, int count, int centerX, int centerY, int localFrame, Color32 tint, int scale = 1000, int rotateSpeed = 16, int z = int.MinValue) {
+		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
+		for (int i = 0; i < count; i++) {
+			Renderer.Draw(
+				sprite,
+				centerX, centerY,
+				sprite.PivotX, sprite.PivotY,
+				localFrame * rotateSpeed + i * 360 / count,
+				sprite.GlobalWidth * scale / 1000, sprite.GlobalHeight * scale / 1000,
+				tint, z
+			);
+		}
+	}
+
+
 	// Misc
 	public static void DeleteAllEmptyMaps (string mapRoot) {
 		foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {

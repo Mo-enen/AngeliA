@@ -9,7 +9,7 @@ public class EngineSetting {
 	public static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true);
 	public static readonly SavingBool UseNotification = new("Engine.UseNotification", true);
 	public static readonly SavingBool AutoRecompile = new("Engine.AutoRecompile", true);
-	
+
 	// Pixel Editor
 	public static readonly SavingColor32 BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255));
 	public static readonly SavingBool GradientBackground = new("PixEdt.GradientBackground", true);
@@ -53,6 +53,8 @@ public class EngineSetting {
 	public static readonly SavingHotkey Hotkey_PixTool_Sprite = new("Hotkey.Pix.Sprite", new Hotkey(KeyboardKey.S));
 	public static readonly SavingHotkey Hotkey_Pix_PalettePrev = new("Hotkey.Pix.PalPrev", new Hotkey(KeyboardKey.Q));
 	public static readonly SavingHotkey Hotkey_Pix_PaletteNext = new("Hotkey.Pix.PalNext", new Hotkey(KeyboardKey.W));
+	public static readonly SavingHotkey Hotkey_Pix_FlipX = new("Hotkey.Pix.FlipX", new Hotkey(KeyboardKey.H, shift: true));
+	public static readonly SavingHotkey Hotkey_Pix_FlipY = new("Hotkey.Pix.FlipY", new Hotkey(KeyboardKey.V, shift: true));
 	public static readonly SavingHotkey Hotkey_FrameDebug_Next = new("Hotkey.FrameDebug.Next", new Hotkey(KeyboardKey.Period));
 
 

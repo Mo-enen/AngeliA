@@ -689,6 +689,17 @@ public static class Renderer {
 	}
 
 
+	// Animation
+	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame) {
+		if (!TryGetSpriteGroup(chainID, out var group) || !group.Animated) return Cell.EMPTY;
+		return DrawAnimation(group, x, y, pivotX, pivotY, rotation, width, height, frame);
+	}
+	public static Cell DrawAnimation (SpriteGroup group, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame) {
+		int id = CurrentSheet.GetSpriteIdFromAnimationFrame(group, frame);
+		return Draw(id, x, y, pivotX, pivotY, rotation, width, height);
+	}
+
+
 	// Sprite Data
 	public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
 		var sheet = CurrentSheet;
@@ -703,6 +714,9 @@ public static class Renderer {
 
 
 	public static bool HasSpriteGroup (int groupID) => CurrentSheet.GroupPool.ContainsKey(groupID);
+
+
+	public static bool TryGetAnimationGroup (int groupID, out SpriteGroup group) => CurrentSheet.GroupPool.TryGetValue(groupID, out group) && group.Animated;
 
 
 	public static bool HasSpriteGroup (int groupID, out int groupLength) {

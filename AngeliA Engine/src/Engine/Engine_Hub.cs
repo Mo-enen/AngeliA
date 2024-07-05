@@ -238,7 +238,6 @@ public partial class Engine {
 		var info = new UniverseInfo {
 			ProductName = Util.GetNameWithoutExtension(projectFolder),
 			DeveloperName = System.Environment.UserName,
-			ModifyDate = Util.GetLongTime(),
 			MajorVersion = 0,
 			MinorVersion = 0,
 			PatchVersion = 0,

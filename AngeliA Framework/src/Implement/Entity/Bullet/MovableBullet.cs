@@ -118,16 +118,27 @@ public abstract class MovableBullet : Bullet {
 			int facingSign = Velocity.x.Sign();
 			CurrentRotation += facingSign * RotateSpeed;
 			int signedPivotX = facingSign > 0 ? sprite.PivotX : 1000 - sprite.PivotX;
-			Renderer.Draw(
-				ArtworkID,
-				X + Width * signedPivotX / 1000,
-				Y + Height * sprite.PivotY / 1000,
-				sprite.PivotX,
-				sprite.PivotY,
-				CurrentRotation,
-				facingSign * sprite.GlobalWidth * Scale / 1000,
-				sprite.GlobalHeight * Scale / 1000
-			);
+			if (Renderer.TryGetAnimationGroup(ArtworkID, out var aniGroup)) {
+				Renderer.DrawAnimation(
+					aniGroup, X + Width * signedPivotX / 1000,
+					Y + Height * sprite.PivotY / 1000,
+					sprite.PivotX,
+					sprite.PivotY, CurrentRotation, facingSign * sprite.GlobalWidth * Scale / 1000,
+					sprite.GlobalHeight * Scale / 1000,
+					Game.GlobalFrame - SpawnFrame
+				);
+			} else {
+				Renderer.Draw(
+					ArtworkID,
+					X + Width * signedPivotX / 1000,
+					Y + Height * sprite.PivotY / 1000,
+					sprite.PivotX,
+					sprite.PivotY,
+					CurrentRotation,
+					facingSign * sprite.GlobalWidth * Scale / 1000,
+					sprite.GlobalHeight * Scale / 1000
+				);
+			}
 		}
 	}
 

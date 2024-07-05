@@ -1040,6 +1040,29 @@ public partial class PixelEditor {
 	}
 
 
+	private void FlipPixelSelection (bool horizontal) {
+		if (PixelSelectionPixelRect == default) return;
+		var oldSelection = PixelSelectionPixelRect;
+		if (PixelBufferSize == default) {
+			SetSelectingPixelAsBuffer(true);
+		}
+		PixelSelectionPixelRect = oldSelection;
+		int fullW = PixelBufferSize.x;
+		int fullH = PixelBufferSize.y;
+		int w = horizontal ? fullW / 2 : fullW;
+		int h = horizontal ? fullH : fullH / 2;
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				int a = y * MAX_SELECTION_SIZE + x;
+				int b = horizontal ? (y * MAX_SELECTION_SIZE + (fullW - x - 1)) : ((fullH - y - 1) * MAX_SELECTION_SIZE + x);
+				(PixelBuffer[a], PixelBuffer[b]) = (PixelBuffer[b], PixelBuffer[a]);
+			}
+		}
+		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
+		SetDirty();
+	}
+
+
 	// Util
 	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize = -1) {
 		var downPos = Stage_to_Pixel(forLeftButton ? Input.MouseLeftDownGlobalPosition : Input.MouseRightDownGlobalPosition);

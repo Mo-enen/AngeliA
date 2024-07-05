@@ -145,6 +145,7 @@ public partial class Engine {
 	}
 
 
+	// Quit
 	[OnGameQuitting(1)]
 	internal static void OnEngineQuittingRig () {
 		Instance.Transceiver.Quit();
@@ -161,6 +162,7 @@ public partial class Engine {
 	}
 
 
+	// GUI
 	private void OnGUI_RiggedGame () {
 
 		if (HasCompileError) return;
@@ -299,6 +301,14 @@ public partial class Engine {
 		}
 
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
 
 
 	private void ReloadCharacterNames () {

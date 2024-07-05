@@ -8,7 +8,6 @@ namespace AngeliA;
 public class UniverseInfo {
 	public string ProductName = "";
 	public string DeveloperName = "";
-	public long ModifyDate = 0;
 	public int MajorVersion = 0;
 	public int MinorVersion = 0;
 	public int PatchVersion = 0;
@@ -48,7 +47,6 @@ public class Universe {
 			useBuiltInSavingRoot: true
 		);
 		BuiltIn.CreateFolders();
-		BuiltIn.Info.ModifyDate = System.DateTime.Now.ToFileTime();
 		AngePath.SetCurrentUserPath(BuiltIn.Info.DeveloperName, BuiltIn.Info.ProductName);
 	}
 
