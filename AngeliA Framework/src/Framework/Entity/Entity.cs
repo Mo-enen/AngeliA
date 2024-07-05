@@ -5,9 +5,6 @@ using System.Collections.Generic;
 namespace AngeliA; 
 
 
-public interface IMapItem { }
-
-
 [EntityAttribute.Capacity(1024, 0)]
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL)]
 [EntityAttribute.MapEditorGroup("Entity")]

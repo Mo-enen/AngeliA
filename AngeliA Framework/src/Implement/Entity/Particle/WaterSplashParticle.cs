@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
 [EntityAttribute.Capacity(16)]
 public class WaterSplashParticle : Particle {
 
@@ -9,8 +9,9 @@ public class WaterSplashParticle : Particle {
 	public override int Duration => 20;
 	public override bool Loop => false;
 	public override int FramePerSprite => 3;
+
 	[OnGameInitializeLater(64)]
-	public static void Init () {
+	public static void OnGameInitializeLater () {
 		Rigidbody.OnFallIntoWater += SpawnParticleForRigidbody;
 		Rigidbody.OnJumpOutOfWater += SpawnParticleForRigidbody;
 		static void SpawnParticleForRigidbody (Rigidbody rig) => Stage.SpawnEntity(
@@ -19,4 +20,5 @@ public class WaterSplashParticle : Particle {
 			rig.Y + rig.OffsetY + rig.Height / 2 + (rig.InWater ? 0 : -rig.VelocityY)
 		);
 	}
+
 }

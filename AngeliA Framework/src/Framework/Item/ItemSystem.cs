@@ -56,6 +56,8 @@ public static class ItemSystem {
 	// Api
 	public static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
 	public static readonly Dictionary<int, ItemData> ItemPool = new();
+	public static bool ItemPoolReady { get; private set; } = false;
+	public static bool ItemUnlockReady { get; private set; } = false;
 
 	// Data
 	private static bool IsUnlockDirty = false;
@@ -71,8 +73,10 @@ public static class ItemSystem {
 
 	[OnGameInitialize(-128)]
 	internal static void OnGameInitialize () {
+
 		if (Game.IsToolApplication) return;
-		// Init Pool
+
+		// Init Pool from Code
 		ItemPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -85,10 +89,14 @@ public static class ItemSystem {
 				item.MaxStackCount.Clamp(1, 256)
 			));
 		}
+		ItemPoolReady = true;
+
 		// Load Combination from Code
 		ItemCombination.LoadCombinationPoolFromCode(CombinationPool);
+
 		// Unlock
 		LoadUnlockDataFromFile();
+		ItemUnlockReady = true;
 	}
 
 

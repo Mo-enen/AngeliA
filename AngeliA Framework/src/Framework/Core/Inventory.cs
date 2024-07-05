@@ -63,6 +63,9 @@ public static class Inventory {
 	private const string INV_EXT = "inv";
 	private const string CHAR_INV_EXT = "chr";
 
+	// Api
+	public static bool PoolReady { get; private set; } = false;
+
 	// Data
 	private static readonly Dictionary<int, InventoryData> Pool = new();
 	private static bool IsPoolDirty = false;
@@ -77,14 +80,19 @@ public static class Inventory {
 
 
 	[OnGameInitialize]
-	internal static void OnGameInitialize () => LoadAllFromDisk();
+	internal static void OnGameInitialize () {
+		LoadInventoryPoolFromDisk();
+		PoolReady = true;
+	}
 
 
 	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () {
+	internal static TaskResult OnGameInitializeLater () {
+		if (!ItemSystem.ItemUnlockReady) return TaskResult.Continue;
 		foreach (var (_, data) in Pool) {
 			UpdateItemUnlocked(data);
 		}
+		return TaskResult.End;
 	}
 
 
@@ -403,7 +411,7 @@ public static class Inventory {
 	#region --- LGC ---
 
 
-	private static void LoadAllFromDisk () {
+	private static void LoadInventoryPoolFromDisk () {
 		IsPoolDirty = false;
 		Pool.Clear();
 		string root = Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Inventory");

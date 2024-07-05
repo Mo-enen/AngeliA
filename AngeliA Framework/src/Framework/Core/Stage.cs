@@ -112,6 +112,7 @@ public static class Stage {
 	public static int? DelayingViewY => ViewDelayY.value;
 	public static int? DelayingViewHeight => ViewDelayHeight.value;
 	public static bool Enable { get; private set; } = true;
+	public static bool IsReady { get; private set; } = false;
 
 	// Data
 	private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
@@ -139,6 +140,7 @@ public static class Stage {
 	[OnGameInitialize(-64)]
 	public static void OnGameInitialize () {
 
+		IsReady = true;
 		Enable = !Game.IsToolApplication;
 		ViewRect = new IRect(
 			0, 0,

@@ -114,8 +114,10 @@ public abstract class PoseCharacter : Character {
 	#region --- MSG ---
 
 
-	[OnGameInitialize(-128)] // Later than Renderer.Initialize()
-	public static void InitializePose () {
+	[OnGameInitialize(-128)]
+	public static TaskResult InitializePose () {
+
+		if (!Renderer.IsReady) return TaskResult.Continue;
 
 #if DEBUG
 		if (FAILBACK_POSE_ANIMATION_IDS.Length != ANI_TYPE_COUNT) {
@@ -130,7 +132,7 @@ public abstract class PoseCharacter : Character {
 #endif
 
 		ReloadRenderingConfigPoolFromFileAndSheet();
-
+		return TaskResult.End;
 	}
 
 

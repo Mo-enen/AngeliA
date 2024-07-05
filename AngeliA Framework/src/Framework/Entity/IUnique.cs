@@ -34,6 +34,9 @@ public interface IUnique {
 	#region --- VAR ---
 
 
+	// Api
+	public static bool PoolReady { get; private set; } = false;
+
 	// Data
 	private static readonly EchoDictionary<int, Int3> IdPosEcho = new();
 	private static readonly HashSet<int> AllUniqueID = new();
@@ -56,11 +59,14 @@ public interface IUnique {
 		foreach (var type in typeof(IUnique).AllClassImplemented()) {
 			AllUniqueID.TryAdd(type.AngeHash());
 		}
+		PoolReady = true;
 	}
 
 
 	[OnGameInitializeLater]
-	public static void OnGameInitializeLater () => LoadFromDisk(Universe.BuiltIn.MapRoot);
+	public static void OnGameInitializeLater () {
+		LoadFromDisk(Universe.BuiltIn.MapRoot);
+	}
 
 
 	#endregion

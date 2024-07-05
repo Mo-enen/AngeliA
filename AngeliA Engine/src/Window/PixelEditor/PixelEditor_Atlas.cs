@@ -340,8 +340,8 @@ public partial class PixelEditor {
 		}
 		ResetCamera();
 		DraggingState = DragState.None;
-		PaintingColor = Color32.CLEAR;
-		PaintingColorF = default;
+		//PaintingColor = Color32.CLEAR;
+		//PaintingColorF = default;
 		ResizingStageIndex = -1;
 		HoveringResizeDirection = null;
 		SelectingPaletteIndex = -1;

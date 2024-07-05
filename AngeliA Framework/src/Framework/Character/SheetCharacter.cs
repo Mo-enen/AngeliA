@@ -148,12 +148,14 @@ public abstract class SheetCharacter : Character {
 
 
 	[OnGameInitialize(-64)]
-	public static void Initialize_Sheet () {
+	public static TaskResult Initialize_Sheet () {
+		if (!Renderer.IsReady) return TaskResult.Continue;
 		AnimationSheetPool.Clear();
 		foreach (var type in typeof(Character).AllChildClass()) {
 			if (!type.IsSubclassOf(typeof(SheetCharacter))) continue;
 			AnimationSheetPool.Add(type.AngeHash(), new AnimationSheet(type));
 		}
+		return TaskResult.End;
 	}
 
 

@@ -13,7 +13,7 @@ public static class SavingSystem {
 	public static bool FileLoaded { get; private set; } = false;
 	public static bool IsDirty { get; set; } = true;
 	public static int PoolVersion { get; private set; } = 0;
-	public static bool Initialized { get; private set; } = false;
+	public static bool PoolReady { get; private set; } = false;
 
 	// Data
 	private static readonly StringBuilder CacheBuilder = new();
@@ -26,7 +26,7 @@ public static class SavingSystem {
 		SavingPath = Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Saving.txt");
 		FileLoaded = false;
 		LoadFromFile();
-		Initialized = true;
+		PoolReady = true;
 	}
 
 

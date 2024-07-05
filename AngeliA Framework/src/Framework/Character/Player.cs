@@ -103,7 +103,11 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 
 
 	[OnGameInitializeLater]
-	public static void OnGameInitializeLaterPlayer () => SelectPlayer(LastPlayerID.Value);
+	public static TaskResult OnGameInitializeLaterPlayer () {
+		if (!Stage.IsReady) return TaskResult.Continue;
+		SelectPlayer(LastPlayerID.Value);
+		return TaskResult.End;
+	}
 
 
 	public override void OnActivated () {

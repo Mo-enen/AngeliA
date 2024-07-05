@@ -186,7 +186,7 @@ public static class Input {
 
 
 	[OnGameInitialize(-128)]
-	public static void BeforeGameInitialize () {
+	public static void OnGameInitialize () {
 
 		// Add Keys for Keyboard
 		var values = System.Enum.GetValues(typeof(KeyboardKey));
@@ -230,12 +230,17 @@ public static class Input {
 
 
 	[OnGameInitializeLater]
-	public static void OnGameInitializeLater () {
+	public static TaskResult OnGameInitializeLater () {
+
+		if (!SavingSystem.PoolReady) return TaskResult.Continue;
+
 		// Load Config
 		for (int i = 0; i < 8; i++) {
 			KeyMap[(Gamekey)i] = new Int2(KeyboardConfigSaving[i].Value, GamepadConfigSaving[i].Value);
 		}
 		KeyMap[Gamekey.Start] = new Int2((int)KeyboardKey.Escape, (int)GamepadKey.Start);
+
+		return TaskResult.End;
 	}
 
 

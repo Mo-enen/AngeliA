@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class CheckPointTouchParticle : Particle {
 	private static readonly int TYPE_ID = typeof(CheckPointTouchParticle).AngeHash();
 	public override int Duration => 32;
 	public override bool Loop => false;
 	[OnGameInitializeLater(64)]
-	public static void Init () {
+	public static void OnGameInitializeLater () {
 		CheckPoint.OnCheckPointTouched += SpawnParticleForCheckPoint;
 		static void SpawnParticleForCheckPoint (CheckPoint checkPoint, Character target) {
 			if (Stage.SpawnEntity(TYPE_ID, checkPoint.X + Const.HALF, checkPoint.Y + Const.HALF) is Particle particle) {

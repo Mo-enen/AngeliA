@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace AngeliA;
+
 
 public partial class MapEditor {
 
@@ -12,12 +14,29 @@ public partial class MapEditor {
 	#region  --- SUB ---
 
 
+	private class PaletteItemComparer : IComparer<PaletteItem> {
+		public static readonly PaletteItemComparer Instance = new();
+		public int Compare (PaletteItem a, PaletteItem b) {
+			// Block Type
+			int result = a.BlockType.CompareTo(b.BlockType);
+			if (result != 0) return result;
+			// Entity Type
+			if (a.BlockType == BlockType.Entity || a.BlockType == BlockType.Element) {
+				return a.CodePath.CompareTo(b.CodePath);
+			}
+			// Name
+			return a.Name.CompareTo(b.Name);
+		}
+	}
+
+
 	private class PaletteItem {
 		public int ID = 0;
 		public int ArtworkID = 0;
 		public int GroupIndex = -1;
 		public string Name = "";
 		public bool IsUnique = false;
+		public string CodePath = "";
 		public BlockType BlockType = BlockType.Entity;
 		public SpriteGroup Group = null;
 	}
@@ -102,7 +121,7 @@ public partial class MapEditor {
 		CurrentPaletteTab = PaletteTabType.BuiltIn;
 		PaletteGroups.Clear();
 		LoadLevelPaletteFromSheetToPool();
-		LoadItemPaletteFromSheetToPool();
+		LoadItemPaletteFromCodeToPool();
 		ApplyPalettePoolChanges();
 	}
 
@@ -191,9 +210,10 @@ public partial class MapEditor {
 	}
 
 
-	private void LoadItemPaletteFromSheetToPool () {
+	private void LoadItemPaletteFromCodeToPool () {
 
 		// Fill IMapEditorItem
+		var entityType = typeof(Entity);
 		var entityGroupPool = new Dictionary<string, PaletteGroup> {{
 			"Entity",
 			new PaletteGroup() {
@@ -233,16 +253,17 @@ public partial class MapEditor {
 
 			group.Items.Add(new PaletteItem() {
 				ID = typeId,
+				CodePath = type.GetTypePath(entityType),
 				ArtworkID = artworkTypeID,
 				BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
-				Name = Util.GetDisplayName((type.Name.StartsWith('e') || type.Name.StartsWith('i') ? type.Name[1..] : type.Name).TrimEnd_NumbersEmpty_()),
+				Name = Util.GetDisplayName((char.IsLower(type.Name[0]) ? type.Name[1..] : type.Name).TrimEnd_NumbersEmpty_()),
 				Group = null,
 				IsUnique = IUnique.IsUniqueEntity(typeId),
 			});
 		}
 
 		foreach (var (_, group) in entityGroupPool) {
-			group.Items.Sort((a, b) => a.Name.CompareTo(b.Name));
+			group.Items.Sort(PaletteItemComparer.Instance);
 			PaletteGroups.Add(group);
 		}
 

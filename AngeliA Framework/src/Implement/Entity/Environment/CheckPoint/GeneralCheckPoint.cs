@@ -5,16 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public class GeneralCheckPoint : CheckPoint {
-	[OnGameInitialize(1024)]
-	public static void OnGameInitialize_CP () {
+
+
+	[OnGameInitializeLater(1)]
+	public static TaskResult OnGameInitialize_CP () {
+		if (!UnlockedPoolReady) return TaskResult.Continue;
 		Unlock(typeof(GeneralCheckPoint).AngeHash());
+		return TaskResult.End;
 	}
+
+
 	protected override bool TryGetAltarPosition (out Int3 altarUnitPos) {
 		altarUnitPos = default;
 		return false;
 	}
+
+
 }

@@ -127,7 +127,9 @@ public abstract partial class Character {
 
 
 	[OnGameInitialize(-128)]
-	internal static void OnGameInitializeMovement () => ReloadAllCharacterMovementConfigFromFile();
+	internal static void OnGameInitializeMovement () {
+		ReloadAllCharacterMovementConfigFromFile();
+	}
 
 
 	private void OnActivated_Movement () {

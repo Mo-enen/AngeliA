@@ -69,6 +69,7 @@ public static class Physics {
 	public static int CellWidth { get; private set; } = 1;
 	public static int CellHeight { get; private set; } = 1;
 	public static uint CurrentFrame { get; private set; } = uint.MinValue;
+	public static bool IsReady { get; private set; } = false;
 
 	// Data
 	private static readonly PhysicsCell[] c_RoomOneway = new PhysicsCell[32];
@@ -101,6 +102,7 @@ public static class Physics {
 		for (int i = 0; i < layerCount; i++) {
 			Layers[i] = CurrentLayer = new Layer(CellWidth, CellHeight);
 		}
+		IsReady = true;
 	}
 
 

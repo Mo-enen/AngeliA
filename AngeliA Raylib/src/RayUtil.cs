@@ -16,7 +16,9 @@ public static unsafe class RayUtil {
 
 	// API
 	[OnGameInitialize(int.MinValue)]
-	internal static void OnGameInitialize () => EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
+	internal static void OnGameInitialize () {
+		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
+	}
 
 
 	[OnGameQuitting]

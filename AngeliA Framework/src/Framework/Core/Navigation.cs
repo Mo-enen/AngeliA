@@ -102,6 +102,7 @@ public static class Navigation {
 	// Api
 	internal static int CellWidth { get; private set; } = 1;
 	internal static int CellHeight { get; private set; } = 1;
+	public static bool IsReady { get; private set; } = false;
 
 	// Data
 	private static OperationCell[,] OperationCells = null;
@@ -146,6 +147,7 @@ public static class Navigation {
 				BlockCells[i, j] = new();
 			}
 		}
+		IsReady = true;
 	}
 
 

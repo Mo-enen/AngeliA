@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
+[EntityAttribute.DontDestroyOnZChanged]
+[EntityAttribute.DontDestroyOutOfRange]
 public class AppearSmokeParticle : Particle {
 
 	public static readonly int TYPE_ID = typeof(AppearSmokeParticle).AngeHash();
@@ -14,13 +16,18 @@ public class AppearSmokeParticle : Particle {
 	public int _RenderingZ { get; set; } = int.MaxValue - 1;
 	public int _Scale { get; set; } = 1000;
 
+
 	[OnGameInitializeLater(64)]
 	public static void OnGameInitialize () {
 		Character.OnTeleport += OnTeleport;
 		static void OnTeleport (Character character) {
-			Stage.TrySpawnEntity(TYPE_ID, character.X, character.Y + character.Height / 2, out var entity);
+			if (Stage.TrySpawnEntity(TYPE_ID, character.X, character.Y + character.Height / 2, out var entity) && entity is AppearSmokeParticle particle) {
+				particle._Scale = 2000;
+				particle.SpawnFrame += 3;
+			}
 		}
 	}
+
 
 	public override void OnActivated () {
 		base.OnActivated();

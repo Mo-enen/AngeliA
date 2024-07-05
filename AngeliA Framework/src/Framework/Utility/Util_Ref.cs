@@ -62,7 +62,6 @@ public static partial class Util {
 	}
 
 
-
 	// For All Types
 	public static IEnumerable<Type> AllClassImplemented (this Type type, bool includeAbstract = false) => AllTypes.Where(
 		t => !t.IsInterface && (includeAbstract || !t.IsAbstract) && type.IsAssignableFrom(t)

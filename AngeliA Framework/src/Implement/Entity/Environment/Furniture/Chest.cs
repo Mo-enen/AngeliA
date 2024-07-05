@@ -18,5 +18,9 @@ public class PlayerItemChest : InventoryChest, ICombustible {
 	protected override int InventoryRow => 8;
 	int ICombustible.BurnStartFrame { get; set; }
 	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () => Inventory.SetUnlockItemsInside(TYPE_ID, true);
+	internal static TaskResult OnGameInitializeLater () {
+		if (!Inventory.PoolReady) return TaskResult.Continue;
+		Inventory.SetUnlockItemsInside(TYPE_ID, true);
+		return TaskResult.End;
+	}
 }

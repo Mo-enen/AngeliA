@@ -169,6 +169,26 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void SpawnMagicSmoke (int x, int y, int scale = 1000) => SpawnMagicSmoke(x, y, new(246, 196, 255, 255), Color32.WHITE, scale);
+	public static void SpawnMagicSmoke (int x, int y, Color32 tintA, Color32 tintB, int scale = 1000) {
+		if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, x, y) is AppearSmokeParticle particle0) {
+			particle0.Tint = tintA;
+			particle0.X += Util.QuickRandom(Game.GlobalFrame * 181).UMod(Const.HALF) - Const.HALF / 2;
+			particle0.Y += Util.QuickRandom(Game.GlobalFrame * 832).UMod(Const.HALF) - Const.HALF / 2;
+			particle0.Rotation = Util.QuickRandom(Game.GlobalFrame * 163).UMod(360);
+			particle0._Scale = scale * (Util.QuickRandom(Game.GlobalFrame * 4116).UMod(800) + 300) / 1000;
+		}
+		if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, x, y) is AppearSmokeParticle particle1) {
+			particle1.Tint = tintB;
+			particle1.X += Util.QuickRandom(Game.GlobalFrame * 125).UMod(Const.HALF) - Const.HALF / 2;
+			particle1.Y += Util.QuickRandom(Game.GlobalFrame * 67).UMod(Const.HALF) - Const.HALF / 2;
+			particle1.Rotation = Util.QuickRandom(Game.GlobalFrame * 127).UMod(360);
+			particle1._Scale = scale * (Util.QuickRandom(Game.GlobalFrame * 9).UMod(800) + 300) / 1000;
+			particle1._RenderingZ = Util.QuickRandom(Game.GlobalFrame * 12) % 2 == 0 ? int.MaxValue : int.MaxValue - 2;
+		}
+	}
+
+
 	// Misc
 	public static void DeleteAllEmptyMaps (string mapRoot) {
 		foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {

@@ -5,9 +5,6 @@ namespace AngeliA;
 
 public enum MapChannel { General, Procedure, }
 
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnMapFolderChangedAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class BeforeLevelRenderedAttribute : System.Attribute { }
-[System.AttributeUsage(System.AttributeTargets.Method)] public class AfterLevelRenderedAttribute : System.Attribute { }
 
 public class WorldSquad : IBlockSquad {
 
@@ -19,6 +16,7 @@ public class WorldSquad : IBlockSquad {
 
 	// Api
 	public static bool Enable { get; set; } = true;
+	public static bool SquadReady { get; private set; } = false;
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
 	public static MapChannel Channel { get; private set; } = MapChannel.General;
@@ -49,6 +47,7 @@ public class WorldSquad : IBlockSquad {
 		Util.LinkEventWithAttribute<OnMapFolderChangedAttribute>(typeof(WorldSquad), nameof(OnMapFolderChanged));
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
+		SquadReady = true;
 	}
 
 

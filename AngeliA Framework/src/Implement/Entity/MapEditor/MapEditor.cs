@@ -5,6 +5,8 @@ using GeorgeMamaladze;
 
 namespace AngeliA;
 
+public interface IMapItem { }
+
 
 [EntityAttribute.StageOrder(-4096)]
 public sealed partial class MapEditor : WindowUI {

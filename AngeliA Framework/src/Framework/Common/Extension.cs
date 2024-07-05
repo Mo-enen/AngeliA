@@ -9,6 +9,9 @@ namespace AngeliA;
 public static class Extension {
 
 
+	private static readonly StringBuilder TypePathBuilder = new();
+
+
 	// AngeliA Hash Code
 	public static string AngeName (this System.Type type) {
 		string name = type.Name;
@@ -916,6 +919,20 @@ public static class Extension {
 		}
 		return @enum;
 	}
+
+
+	// Type
+	public static string GetTypePath (this System.Type type, System.Type startFrom = null) {
+		startFrom ??= typeof(object);
+		TypePathBuilder.Clear();
+		while (true) {
+			TypePathBuilder.Insert(0, $"{type.AngeName()}/");
+			type = type.BaseType;
+			if (type == startFrom || type == null) break;
+		}
+		return TypePathBuilder.ToString();
+	}
+
 
 	// String
 	public static string TrimWhiteForStartAndEnd (this string str) => str.TrimStart(' ', '\t').TrimEnd(' ', '\t');

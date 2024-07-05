@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
-
-[System.AttributeUsage(System.AttributeTargets.Method)]
-public class OnLanguageChangedAttribute : System.Attribute { }
+namespace AngeliA;
 
 
 public static class Language {
@@ -13,6 +10,7 @@ public static class Language {
 	// Api
 	public static int LanguageCount => AllLanguages.Length;
 	public static string CurrentLanguage => _LoadedLanguage.Value;
+	public static bool PoolReady { get; private set; } = false;
 
 	// Data
 	private static event System.Action OnLanguageChanged;
@@ -25,7 +23,9 @@ public static class Language {
 
 	// API
 	[OnGameInitialize(-128)]
-	public static void Initialize () {
+	public static TaskResult Initialize () {
+
+		if (!SavingSystem.PoolReady) return TaskResult.Continue;
 
 		Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
 
@@ -42,6 +42,9 @@ public static class Language {
 			SetLanguage("en");
 		}
 
+		// End
+		PoolReady = true;
+		return TaskResult.End;
 	}
 
 

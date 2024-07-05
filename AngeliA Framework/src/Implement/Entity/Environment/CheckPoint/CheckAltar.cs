@@ -14,6 +14,9 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : Che
 	#region --- VAR ---
 
 
+	// Api
+	public static bool LinkPoolReady { get; private set; } = false;
+
 	// Data
 	private static readonly Dictionary<int, int> LinkPool = new();
 	private readonly int LinkedCheckPointID = 0;
@@ -31,7 +34,7 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : Che
 
 
 	[OnGameInitialize(-64)]
-	public static void BeforeGameInitializeLater () {
+	internal static void InitializeLinkPool () {
 		LinkPool.Clear();
 		foreach (var type in typeof(CheckAltar<>).AllChildClass()) {
 			var args = type.BaseType.GenericTypeArguments;
@@ -42,6 +45,7 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : Che
 				LinkPool.TryAdd(argID, typeID);
 			}
 		}
+		LinkPoolReady = true;
 	}
 
 

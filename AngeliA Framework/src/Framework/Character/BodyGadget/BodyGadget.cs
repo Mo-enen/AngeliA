@@ -22,7 +22,7 @@ public abstract class BodyGadget {
 	[OnGameInitialize(-129)]
 	public static TaskResult BeforeGameInitialize () {
 
-		if (!Renderer.Initialized) return TaskResult.Continue;
+		if (!Renderer.IsReady) return TaskResult.Continue;
 
 		// Init Pool
 		Pool.Clear();

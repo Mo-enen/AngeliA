@@ -69,7 +69,11 @@ public class ControlHintUI : EntityUI {
 
 	// MSG
 	[OnGameInitializeLater(64)]
-	public static void Initialize () => Stage.SpawnEntity<ControlHintUI>(0, 0);
+	public static TaskResult OnGameInitializeLater () {
+		if (!Stage.IsReady) return TaskResult.Continue;
+		Stage.SpawnEntity<ControlHintUI>(0, 0);
+		return TaskResult.End;
+	}
 
 
 	[OnGameUpdatePauseless]

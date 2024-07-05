@@ -28,7 +28,7 @@ public abstract class Cloth {
 	[OnGameInitialize(-129)]
 	internal static TaskResult OnGameInitializeCloth () {
 
-		if (!Renderer.Initialized) return TaskResult.Continue;
+		if (!Renderer.IsReady) return TaskResult.Continue;
 
 		// Init Pool
 		Pool.Clear();

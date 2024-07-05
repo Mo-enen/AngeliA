@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 
 namespace AngeliA;
@@ -18,6 +19,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 	public static event TouchedHandler OnCheckPointTouched;
 	public static Int3? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
 	public static int LastTriggeredCheckPointID { get; private set; } = 0;
+	public static bool UnlockedPoolReady { get; private set; } = false;
 
 	// Short
 	private static string UnlockFolderPath => Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Unlocked CP");
@@ -44,6 +46,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 				UnlockedCheckPoint.TryAdd(id);
 			}
 		}
+		UnlockedPoolReady = true;
 	}
 
 
@@ -54,7 +57,9 @@ public abstract class CheckPoint : EnvironmentEntity {
 	}
 
 
-	public CheckPoint () => CheckAltar<CheckPoint>.TryGetLinkedID(TypeID, out LinkedAltarID);
+	public CheckPoint () {
+		CheckAltar<CheckPoint>.TryGetLinkedID(TypeID, out LinkedAltarID);
+	}
 
 
 	public override void FirstUpdate () {
@@ -145,9 +150,9 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 
 	public static void Unlock (int checkPointID) {
-		if (UnlockedCheckPoint.Contains(checkPointID)) return;
-		UnlockedCheckPoint.Add(checkPointID);
-		Util.BytesToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
+		if (UnlockedCheckPoint.Add(checkPointID)) {
+			Util.BytesToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
+		}
 	}
 
 

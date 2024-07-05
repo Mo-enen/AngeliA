@@ -188,8 +188,8 @@ public partial class PixelEditor : WindowUI {
 
 
 	[OnGameInitializeLater(32)]
-	internal static void OnGameInitializeLater () {
-		if (Instance == null) return;
+	internal static TaskResult OnGameInitializeLater () {
+		if (Instance == null || !Renderer.IsReady) return TaskResult.Continue;
 		Instance.SheetIndex = Renderer.AddAltSheet(Sheet);
 		// Atlas Type Names
 		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
@@ -197,6 +197,7 @@ public partial class PixelEditor : WindowUI {
 			string rawName = ((AtlasType)i).ToString();
 			ATLAS_TYPE_NAMES[i] = Language.Get($"AtlasType.{rawName}".AngeHash(), rawName);
 		}
+		return TaskResult.End;
 	}
 
 
@@ -1003,7 +1004,7 @@ public partial class PixelEditor : WindowUI {
 			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
 			CurrentAtlasIndex
 		);
-		sprite.Tag.HasAll(Tag.Palette);
+		sprite.Tag = Tag.Palette;
 		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
 		Sheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData(sprite));
