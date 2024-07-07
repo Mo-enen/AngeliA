@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.Capacity(4, 0)]
+[EntityAttribute.Capacity(8, 0)]
 public abstract class MovableBullet : Bullet {
 
 	// Api
@@ -117,21 +117,23 @@ public abstract class MovableBullet : Bullet {
 		if (Renderer.TryGetSprite(ArtworkID, out var sprite)) {
 			int facingSign = Velocity.x.Sign();
 			CurrentRotation += facingSign * RotateSpeed;
-			int signedPivotX = facingSign > 0 ? sprite.PivotX : 1000 - sprite.PivotX;
+			int x = X + Width / 2;
+			int y = Y + Height / 2;
 			if (Renderer.TryGetAnimationGroup(ArtworkID, out var aniGroup)) {
 				Renderer.DrawAnimation(
-					aniGroup, X + Width * signedPivotX / 1000,
-					Y + Height * sprite.PivotY / 1000,
+					aniGroup,
+					x, y,
 					sprite.PivotX,
-					sprite.PivotY, CurrentRotation, facingSign * sprite.GlobalWidth * Scale / 1000,
+					sprite.PivotY,
+					CurrentRotation,
+					facingSign * sprite.GlobalWidth * Scale / 1000,
 					sprite.GlobalHeight * Scale / 1000,
 					Game.GlobalFrame - SpawnFrame
 				);
 			} else {
 				Renderer.Draw(
 					ArtworkID,
-					X + Width * signedPivotX / 1000,
-					Y + Height * sprite.PivotY / 1000,
+					x, y,
 					sprite.PivotX,
 					sprite.PivotY,
 					CurrentRotation,

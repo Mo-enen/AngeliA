@@ -169,14 +169,16 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void SpawnMagicSmoke (int x, int y, int scale = 1000) => SpawnMagicSmoke(x, y, new(246, 196, 255, 255), Color32.WHITE, scale);
-	public static void SpawnMagicSmoke (int x, int y, Color32 tintA, Color32 tintB, int scale = 1000) {
+	public static void SpawnMagicSmoke (int x, int y, int scale = 1000, int layer = RenderLayer.DEFAULT, int z = int.MaxValue - 1) => SpawnMagicSmoke(x, y, new(246, 196, 255, 255), Color32.WHITE, scale, layer, z);
+	public static void SpawnMagicSmoke (int x, int y, Color32 tintA, Color32 tintB, int scale = 1000, int layer = RenderLayer.DEFAULT, int z = int.MaxValue - 1) {
 		if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, x, y) is AppearSmokeParticle particle0) {
 			particle0.Tint = tintA;
 			particle0.X += Util.QuickRandom(Game.GlobalFrame * 181).UMod(Const.HALF) - Const.HALF / 2;
 			particle0.Y += Util.QuickRandom(Game.GlobalFrame * 832).UMod(Const.HALF) - Const.HALF / 2;
 			particle0.Rotation = Util.QuickRandom(Game.GlobalFrame * 163).UMod(360);
 			particle0._Scale = scale * (Util.QuickRandom(Game.GlobalFrame * 4116).UMod(800) + 300) / 1000;
+			particle0._RenderingZ = z;
+			particle0.RenderingLayer = layer;
 		}
 		if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, x, y) is AppearSmokeParticle particle1) {
 			particle1.Tint = tintB;
@@ -184,23 +186,50 @@ public static class FrameworkUtil {
 			particle1.Y += Util.QuickRandom(Game.GlobalFrame * 67).UMod(Const.HALF) - Const.HALF / 2;
 			particle1.Rotation = Util.QuickRandom(Game.GlobalFrame * 127).UMod(360);
 			particle1._Scale = scale * (Util.QuickRandom(Game.GlobalFrame * 9).UMod(800) + 300) / 1000;
-			particle1._RenderingZ = Util.QuickRandom(Game.GlobalFrame * 12) % 2 == 0 ? int.MaxValue : int.MaxValue - 2;
+			particle1._RenderingZ = Util.QuickRandom(Game.GlobalFrame * 12) % 2 == 0 ? z + 1 : z - 1;
+			particle1.RenderingLayer = layer;
 		}
 	}
 
 
-	public static void DrawMagicEncircleAurora (int spriteID, int count, int centerX, int centerY, int localFrame, Color32 tint, int scale = 1000, int rotateSpeed = 16, int z = int.MinValue) {
+	public static void DrawMagicEncircleAurora (int spriteID, int count, int centerX, int centerY, int localFrame, Color32 tint, int scale = 1000, int rotateSpeed = 16, int swingDuration = 20, int swingAmout = 240, int growDuration = 10, int z = int.MinValue) {
 		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
+		// Swing
+		int pivotSwing = localFrame.PingPong(swingDuration) * swingAmout / swingDuration - swingAmout / 2;
+		// Grow
+		if (localFrame < growDuration) {
+			float lerp = 1f - (float)localFrame / growDuration;
+			scale = scale.LerpTo(0, lerp);
+			pivotSwing = pivotSwing.LerpTo(0, lerp);
+		}
+		// Draw
 		for (int i = 0; i < count; i++) {
 			Renderer.Draw(
 				sprite,
 				centerX, centerY,
-				sprite.PivotX, sprite.PivotY,
+				sprite.PivotX - pivotSwing,
+				sprite.PivotY - pivotSwing,
 				localFrame * rotateSpeed + i * 360 / count,
 				sprite.GlobalWidth * scale / 1000, sprite.GlobalHeight * scale / 1000,
 				tint, z
 			);
 		}
+	}
+
+
+	public static void DrawExplosionRing (int spriteID, int centerX, int centerY, int radius, int localFrame, int duration, Color32 tint, int z = int.MaxValue - 1) {
+
+		if (!Renderer.TryGetSprite(spriteID, out var ring, true)) return;
+		
+		float ease01Ex = Ease.OutCubic((float)localFrame / duration);
+		tint.a = (byte)Util.LerpUnclamped(255, 0, ease01Ex);
+		int ringRadius = radius * 9 / 10;
+		Renderer.DrawSlice(
+			ring, centerX, centerY, 500, 500,
+			(int)(ease01Ex * 720), ringRadius,
+			ringRadius, tint, z - 1
+		);
+
 	}
 
 

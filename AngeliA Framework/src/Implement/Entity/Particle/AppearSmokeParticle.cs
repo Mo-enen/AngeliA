@@ -12,8 +12,8 @@ public class AppearSmokeParticle : Particle {
 	public override bool Loop => false;
 	public override int RenderingZ => _RenderingZ;
 	public override int Scale => _Scale;
-	public override int FramePerSprite => 4;
 	public int _RenderingZ { get; set; } = int.MaxValue - 1;
+	public int RenderingLayer { get; set; } = RenderLayer.DEFAULT;
 	public int _Scale { get; set; } = 1000;
 
 
@@ -33,6 +33,14 @@ public class AppearSmokeParticle : Particle {
 		base.OnActivated();
 		_RenderingZ = int.MaxValue - 1;
 		_Scale = 1000;
+		RenderingLayer = RenderLayer.DEFAULT;
 	}
+
+
+	public override void LateUpdate () {
+		using var _ = new LayerScope(RenderingLayer);
+		base.LateUpdate();
+	}
+
 
 }

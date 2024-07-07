@@ -10,7 +10,6 @@ public class PassOutStarParticle : Particle {
 	private static readonly SpriteCode STAR_CODE = "PassOutStar";
 
 	public override int Duration => 66;
-	public override int FramePerSprite => 1;
 	public override bool Loop => true;
 	public Character Character => UserData as Character;
 
@@ -76,7 +75,6 @@ public class SleepParticle : Particle {
 
 	private static readonly int TYPE_ID = typeof(SleepParticle).AngeHash();
 	public override int Duration => 120;
-	public override int FramePerSprite => 1;
 	public override bool Loop => false;
 	public override int Scale => 800;
 	private static int GlobalShift = 0;
@@ -119,7 +117,6 @@ public class SlideDustParticle : Particle {
 	private static readonly int TYPE_ID = typeof(SlideDustParticle).AngeHash();
 	public override int Duration => 20;
 	public override bool Loop => false;
-	public override int FramePerSprite => 4;
 	[OnGameInitializeLater(64)]
 	public static void OnGameInitialize () {
 		Character.OnSlideStepped += OnSlideStepped;
@@ -140,7 +137,6 @@ public class FootstepParticle : Particle {
 	private static readonly int TYPE_ID = typeof(FootstepParticle).AngeHash();
 	public override int Duration => 20;
 	public override bool Loop => false;
-	public override int FramePerSprite => 5;
 	public override int RenderingZ => -1024;
 
 	[OnGameInitializeLater(64)]
@@ -168,7 +164,6 @@ public class JumpParticle : Particle {
 	private static readonly int TYPE_ID = typeof(JumpParticle).AngeHash();
 	public override int Duration => 10;
 	public override bool Loop => false;
-	public override int FramePerSprite => 2;
 	public override int RenderingZ => int.MaxValue - 1024;
 	public override int Scale => _Scale;
 	private int _Scale = 1000;

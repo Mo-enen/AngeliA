@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
-public class CommonFire : Fire { }
+public class CommonFire : Fire {
+	public static readonly int TYPE_ID = typeof(CommonFire).AngeHash();
+}
 
 
 public interface ICombustible {
@@ -216,16 +218,19 @@ public abstract class Fire : Entity {
 	}
 
 
-	public void Spread () {
+	public void Spread () => SpreadFire(TypeID, Rect, SpreadRange, host: this);
+
+
+	public static void SpreadFire (int fireID, IRect rect, int range = Const.CEL, Entity host = null) {
 		var hits = Physics.OverlapAll(
 			PhysicsMask.ENTITY,
-			Rect.Expand(SpreadRange), out int count,
-			this, OperationMode.ColliderAndTrigger
+			rect.Expand(range), out int count,
+			host, OperationMode.ColliderAndTrigger
 		);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not ICombustible com || !hit.Entity.Active || com.IsBurning) continue;
-			if (Stage.TrySpawnEntity(TypeID, hit.Rect.x, hit.Rect.y, out var fEntity) && fEntity is Fire fire) {
+			if (Stage.TrySpawnEntity(fireID, hit.Rect.x, hit.Rect.y, out var fEntity) && fEntity is Fire fire) {
 				fire.Setup(com);
 			}
 		}

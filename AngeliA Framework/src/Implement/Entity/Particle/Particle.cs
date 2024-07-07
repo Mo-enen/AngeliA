@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class DefaultParticle : Particle {
 	public override int Duration => 30;
 	public override bool Loop => false;
@@ -19,7 +19,6 @@ public abstract class Particle : Entity {
 	// Abs
 	public abstract int Duration { get; }
 	public abstract bool Loop { get; }
-	public virtual int FramePerSprite => 5;
 	public virtual int Scale => 1000;
 	public virtual int RenderingZ => int.MinValue;
 
@@ -48,11 +47,14 @@ public abstract class Particle : Entity {
 		}
 		if (IsAutoParticle) {
 			// Artwork ID
-			if (Renderer.TryGetSpriteFromGroup(TypeID, LocalFrame / FramePerSprite, out var sprite, Loop)) {
-				Renderer.Draw(
-					sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
-					sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
-				);
+			if (Renderer.TryGetSpriteGroup(TypeID, out var group) && group.Count > 0) {
+				float framePerSprite = (float)Duration / group.Count;
+				if (Renderer.TryGetSprite(group[(LocalFrame / framePerSprite).RoundToInt().Clamp(0, group.Count - 1)], out var sprite, true)) {
+					Renderer.Draw(
+						sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
+						sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
+					);
+				}
 			}
 		} else {
 			// Procedure

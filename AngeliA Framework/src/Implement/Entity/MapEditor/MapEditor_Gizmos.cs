@@ -407,7 +407,6 @@ public partial class MapEditor {
 public class MapEditorBlinkParticle : Particle {
 	public static readonly int TYPE_ID = typeof(MapEditorBlinkParticle).AngeHash();
 	public override int Duration => 8;
-	public override int FramePerSprite => 4;
 	public override bool Loop => false;
 	public int SpriteID { get; set; } = Const.PIXEL;
 	public override void DrawParticle () {

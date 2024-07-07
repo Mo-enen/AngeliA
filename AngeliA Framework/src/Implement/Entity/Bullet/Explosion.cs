@@ -162,10 +162,10 @@ public class Explosion : Entity {
 
 		// Ring
 		if (RingArtwork != 0) {
-			var ringColor = RingColor;
-			ringColor.a = (byte)Util.LerpUnclamped(255, 0, ease01Ex);
-			int ringRadius = Radius * 9 / 10;
-			Renderer.DrawSlice(RingArtwork, X, Y, 500, 500, (int)(ease01Ex * 720), ringRadius, ringRadius, ringColor, 1025);
+			FrameworkUtil.DrawExplosionRing(
+				RingArtwork, X, Y, Radius * 9 / 10, Game.GlobalFrame - ExplodedFrame, Duration,
+				RingColor, 1025
+			);
 		}
 
 
