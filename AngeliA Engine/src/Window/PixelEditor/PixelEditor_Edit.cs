@@ -26,7 +26,7 @@ public partial class PixelEditor {
 	private Int2 PixelBufferSize = Int2.zero;
 	private Int2 PixelCopyBufferSize = Int2.zero;
 	private Int2 MovePixelPixOffset;
-	private IRect DraggingPixelRectLeft = default;
+	private IRect DraggingPixelRect = default;
 	private IRect PixelSelectionPixelRect = default;
 	private IRect LastPixelSelectionPixelRect = default;
 	private Color32 PaintingColor = Color32.CLEAR;
@@ -142,8 +142,8 @@ public partial class PixelEditor {
 	private void Update_LeftDrag_Dragging () {
 
 		// Update Rect
-		DraggingPixelRectLeft = GetDraggingPixRect(true);
-		DragChanged = DragChanged || DraggingPixelRectLeft.width > 1 || DraggingPixelRectLeft.height > 1;
+		DraggingPixelRect = GetDraggingPixRect(true);
+		DragChanged = DragChanged || DraggingPixelRect.width > 1 || DraggingPixelRect.height > 1;
 
 		switch (DraggingState) {
 
@@ -153,12 +153,14 @@ public partial class PixelEditor {
 				break;
 
 			case DragState.Paint:
-				DrawPaintingSprites();
+				DrawPaintingGizmos();
 				break;
 
 			case DragState.SelectPixel:
-				if (!DragChanged && DraggingPixelRectLeft.width <= 1 && DraggingPixelRectLeft.height <= 1) break;
-				DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectLeft), GizmosThickness);
+				if (!DragChanged && DraggingPixelRect.width <= 1 && DraggingPixelRect.height <= 1) break;
+				var stageRect = Pixel_to_Stage(DraggingPixelRect);
+				DrawDottedFrame(stageRect, GizmosThickness);
+				DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
 				break;
 
 			case DragState.ResizeSprite:
@@ -175,8 +177,9 @@ public partial class PixelEditor {
 
 			case DragState.SelectOrCreateSprite:
 				// Select / Create
-				var draggingRect = Pixel_to_Stage(DraggingPixelRectLeft);
+				var draggingRect = Pixel_to_Stage(DraggingPixelRect);
 				DrawFrame(draggingRect, Skin.GizmosDragging, GizmosThickness);
+				DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
 				break;
 		}
 	}
@@ -184,7 +187,7 @@ public partial class PixelEditor {
 
 	private void Update_LeftDrag_End () {
 
-		DraggingPixelRectLeft = GetDraggingPixRect(true);
+		DraggingPixelRect = GetDraggingPixRect(true);
 
 		switch (DraggingState) {
 
@@ -202,7 +205,7 @@ public partial class PixelEditor {
 					}
 				} else if (CurrentTool == Tool.Rect) {
 					// Paint Rect
-					PaintPixel(DraggingPixelRectLeft, PaintingColor, out painted);
+					PaintPixel(DraggingPixelRect, PaintingColor, out painted);
 				}
 				if (!painted) {
 					PaintFailedCount++;
@@ -219,21 +222,21 @@ public partial class PixelEditor {
 
 				ClearSpriteSelection();
 				ClearPixelSelectionRect();
-				if (!DragChanged && DraggingPixelRectLeft.width <= 1 && DraggingPixelRectLeft.height <= 1) break;
+				if (!DragChanged && DraggingPixelRect.width <= 1 && DraggingPixelRect.height <= 1) break;
 
 				// Select Pixel
 				bool anyOverlaps = false;
 				foreach (var spData in StagedSprites) {
-					if (spData.Sprite.PixelRect.Overlaps(DraggingPixelRectLeft)) {
+					if (spData.Sprite.PixelRect.Overlaps(DraggingPixelRect)) {
 						anyOverlaps = true;
 						break;
 					}
 				}
 				if (anyOverlaps) {
-					PixelSelectionPixelRect = DraggingPixelRectLeft;
+					PixelSelectionPixelRect = DraggingPixelRect;
 					PixelBufferSize = Int2.zero;
 					if (DragChanged) {
-						DrawDottedFrame(Pixel_to_Stage(DraggingPixelRectLeft), GizmosThickness);
+						DrawDottedFrame(Pixel_to_Stage(DraggingPixelRect), GizmosThickness);
 					}
 					ClearSpriteSelection();
 				}
@@ -335,12 +338,12 @@ public partial class PixelEditor {
 				bool hasSelectionBefore = SelectingSpriteCount > 0;
 
 				// Select Sprite
-				SelectSpritesOverlap(DraggingPixelRectLeft);
+				SelectSpritesOverlap(DraggingPixelRect);
 
 				// Create Sprite
-				if (!hasSelectionBefore && SelectingSpriteCount == 0 && DraggingPixelRectLeft.width > 0 && DraggingPixelRectLeft.height > 0) {
+				if (!hasSelectionBefore && SelectingSpriteCount == 0 && DraggingPixelRect.width > 0 && DraggingPixelRect.height > 0) {
 					// Create Sprite
-					var pixelRect = DraggingPixelRectLeft;
+					var pixelRect = DraggingPixelRect;
 					if (pixelRect.width > 0 && pixelRect.height > 0 && (pixelRect.width > 1 || pixelRect.height > 1)) {
 						string name = Sheet.GetAvailableSpriteName("New Sprite");
 						var sprite = Sheet.CreateSprite(name, pixelRect, CurrentAtlasIndex);
@@ -426,7 +429,7 @@ public partial class PixelEditor {
 
 
 	// Draw for Dragging
-	private void DrawPaintingSprites () {
+	private void DrawPaintingGizmos () {
 		if (CurrentTool == Tool.Line) {
 			// Painting Line
 			var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
@@ -446,9 +449,11 @@ public partial class PixelEditor {
 					}
 				}
 			}
+			// Size Hint
+			DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
 		} else if (CurrentTool == Tool.Rect) {
 			// Painting Rect
-			var stageRect = Pixel_to_Stage(DraggingPixelRectLeft);
+			var stageRect = Pixel_to_Stage(DraggingPixelRect);
 			if (PaintingColor.a == 0) {
 				// Erase Rect
 				DrawFrame(stageRect, Skin.GizmosDragging, GizmosThickness);
@@ -475,6 +480,8 @@ public partial class PixelEditor {
 					}
 				}
 			}
+			// Size Hint
+			DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
 		}
 	}
 
@@ -1071,12 +1078,19 @@ public partial class PixelEditor {
 			pos.x = pos.x.Clamp(downPos.x - maxSize, downPos.x + maxSize);
 			pos.y = pos.y.Clamp(downPos.y - maxSize, downPos.y + maxSize);
 		}
-		return IRect.MinMaxRect(
+		var result = IRect.MinMaxRect(
 			Util.Min(downPos.x, pos.x),
 			Util.Min(downPos.y, pos.y),
 			Util.Max(downPos.x + 1, pos.x + 1),
 			Util.Max(downPos.y + 1, pos.y + 1)
 		);
+		// Force Square
+		if (result.width != result.height && Input.KeyboardHolding(KeyboardKey.LeftShift)) {
+			result.x += result.width > result.height && pos.x < downPos.x ? Util.Abs(result.width - result.height) : 0;
+			result.y += result.width < result.height && pos.y < downPos.y ? Util.Abs(result.width - result.height) : 0;
+			result.width = result.height = Util.Min(result.width, result.height);
+		}
+		return result;
 	}
 
 

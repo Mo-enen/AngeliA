@@ -204,51 +204,60 @@ public partial class PixelEditor {
 		rect.SlideRight(padding);
 
 		// Color Field
-		rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
-		if (rect.width >= rect.height) {
-			// Color Field
-			var newColorF = GUI.HorizontalColorField(
-				PaintingColorF, rect,
-				stepped: false, alpha: true, folded: FoldingColorField
-			);
-			if (newColorF != PaintingColorF) {
-				PaintingColorF = newColorF;
-				PaintingColor = newColorF.ToColor32();
-				if (!FoldingColorField) ColorFieldCode = Util.ColorToHtml(PaintingColor);
-			}
-			// Code Field
-			if (!FoldingColorField) {
-				var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
-				rect = rect.Expand(0, codeFieldRect.width, 0, 0);
-				ColorFieldCode = GUI.SmallInputField(
-					10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
+		if (CurrentTool == Tool.Rect || CurrentTool == Tool.Line || CurrentTool == Tool.Bucket) {
+			rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
+			if (rect.width >= rect.height) {
+				// Color Field
+				var newColorF = GUI.HorizontalColorField(
+					PaintingColorF, rect,
+					stepped: false, alpha: true, folded: FoldingColorField
 				);
-				if (confirm) {
-					if (Util.HtmlToColor(ColorFieldCode, out var newColor)) {
-						PaintingColor = newColor;
-						PaintingColorF = newColor.ToColorF();
-					}
-					ColorFieldCode = Util.ColorToHtml(PaintingColor);
+				if (newColorF != PaintingColorF) {
+					PaintingColorF = newColorF;
+					PaintingColor = newColorF.ToColor32();
+					if (!FoldingColorField) ColorFieldCode = Util.ColorToHtml(PaintingColor);
 				}
-			}
-			// Hovering / Click
-			if (rect.MouseInside()) {
-				if (FoldingColorField) {
-					Cursor.SetCursorAsHand();
-					if (Input.MouseLeftButtonDown) {
-						FoldingColorField = false;
+				// Code Field
+				if (!FoldingColorField) {
+					var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
+					rect = rect.Expand(0, codeFieldRect.width, 0, 0);
+					ColorFieldCode = GUI.SmallInputField(
+						10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
+					);
+					if (confirm) {
+						if (Util.HtmlToColor(ColorFieldCode, out var newColor)) {
+							PaintingColor = newColor;
+							PaintingColorF = newColor.ToColorF();
+						}
 						ColorFieldCode = Util.ColorToHtml(PaintingColor);
 					}
-				} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
-					if (Input.MouseLeftButtonDown) FoldingColorField = true;
-					Cursor.SetCursorAsHand();
 				}
-			} else if (!FoldingColorField && Input.MouseLeftButtonDown) {
-				FoldingColorField = true;
+				// Hovering / Click
+				if (rect.MouseInside()) {
+					if (FoldingColorField) {
+						Cursor.SetCursorAsHand();
+						if (Input.MouseLeftButtonDown) {
+							FoldingColorField = false;
+							ColorFieldCode = Util.ColorToHtml(PaintingColor);
+						}
+					} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
+						if (Input.MouseLeftButtonDown) FoldingColorField = true;
+						Cursor.SetCursorAsHand();
+					}
+				} else if (!FoldingColorField && Input.MouseLeftButtonDown) {
+					FoldingColorField = true;
+				}
+				// Final
+				RequireTooltip(rect, TIP_PAINTING_COLOR);
+				rect.SlideRight(padding);
 			}
-			// Final
-			RequireTooltip(rect, TIP_PAINTING_COLOR);
-			rect.SlideRight(padding);
+		}
+
+		// Color Adjust
+		if (CurrentTool == Tool.Select && PixelSelectionPixelRect != default) {
+
+			// TODO
+
 		}
 
 	}

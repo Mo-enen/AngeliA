@@ -499,20 +499,11 @@ public partial class PixelEditor : WindowUI {
 			case Tool.Rect:
 			case Tool.Line:
 				// Rect or Line
-				if (
-					DraggingState == DragState.None ||
-					DraggingState == DragState.Paint ||
-					DraggingState == DragState.SelectPixel
-				) {
+				if (DraggingState == DragState.None || DraggingState == DragState.Paint) {
 					// Painting Cursor
 					DrawPaintingCursor(true, false, out bool hasFrameCursor);
 					// Dot or Cross Cursor
-					if (
-						HoveringSpriteStageIndex >= 0 &&
-						DraggingState != DragState.MoveSprite &&
-						DraggingState != DragState.ResizeSprite &&
-						DraggingState != DragState.SelectOrCreateSprite
-					) {
+					if (HoveringSpriteStageIndex >= 0) {
 						DrawInverseCursor(hasFrameCursor ? CURSOR_DOT : CURSOR_CROSS);
 					}
 				}
@@ -1168,11 +1159,12 @@ public partial class PixelEditor : WindowUI {
 		outside = true;
 		return rect;
 	}
-	private Float2 Pixel_to_Stage (Int2 pixelPos) => new(
-		CanvasRect.x + pixelPos.x * CanvasRect.width / STAGE_SIZE,
-		CanvasRect.y + pixelPos.y * CanvasRect.height / STAGE_SIZE
-	);
-
+	private Float2 Pixel_to_Stage (Int2 pixelPos) {
+		return new(
+			CanvasRect.x + pixelPos.x * CanvasRect.width / STAGE_SIZE,
+			CanvasRect.y + pixelPos.y * CanvasRect.height / STAGE_SIZE
+		);
+	}
 
 	private Int2 Stage_to_Pixel (Int2 pos, bool round = false) => round ?
 		new Int2(
@@ -1443,6 +1435,44 @@ public partial class PixelEditor : WindowUI {
 				size, size
 			), texture, inverse: true
 		);
+	}
+
+
+	// Size Hint
+	private void DrawCursorSizeHint (Int2 size, IRect stageDraggingRect) {
+		int height = Unify(24);
+		int padding = Unify(6);
+		var pos = Input.MouseGlobalPosition;
+		bool left = Util.Abs(pos.x - stageDraggingRect.x) < Util.Abs(pos.x - stageDraggingRect.xMax);
+		bool down = Util.Abs(pos.y - stageDraggingRect.y) < Util.Abs(pos.y - stageDraggingRect.yMax);
+		pos.x = left ? stageDraggingRect.x - padding : stageDraggingRect.xMax + padding;
+		pos.y = down ? stageDraggingRect.y - height - padding : stageDraggingRect.yMax + padding;
+		DrawSizeHint(size, pos, left);
+	}
+
+
+	private void DrawSizeHint (Int2 size, Int2 pos, bool left = true) {
+
+		int height = Unify(24);
+		int padding = Unify(6);
+		int bgPadding = Unify(3);
+		int l = pos.x;
+		int r = pos.x;
+		var bgCell = Renderer.DrawPixel(default, Color32.BLACK);
+		var rect = new IRect(pos.x, pos.y, 1, height);
+		var style = left ? Skin.SmallRightLabel : Skin.SmallLabel;
+
+		GUI.IntLabel(rect, size[left ? 1 : 0], out var bounds, style);
+		rect.x += left ? -bounds.width - padding : bounds.width + padding;
+		GUI.Label(rect, "×", out bounds, style);
+		rect.x += left ? -bounds.width - padding : bounds.width + padding;
+		GUI.IntLabel(rect, size[left ? 0 : 1], out bounds, style);
+		l = left ? bounds.xMin - bgPadding : l - bgPadding;
+		r = left ? r + bgPadding : bounds.xMax + bgPadding;
+		bgCell.X = l;
+		bgCell.Y = rect.y - bgPadding;
+		bgCell.Width = r - l;
+		bgCell.Height = rect.height + bgPadding * 2;
 	}
 
 
