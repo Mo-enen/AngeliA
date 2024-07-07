@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
-using System.Text;
 using System.Threading;
 using AngeliA;
 using AngeliaRaylib;
@@ -244,6 +243,16 @@ public partial class RiggedGame : Game {
 		// Reload Character Movement
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(5) && Player.Selecting != null) {
 			Character.ReloadMovementConfigFromFile(Player.Selecting.GetType().AngeName());
+		}
+
+		// Toolset Command
+		switch (CallingMessage.RequireToolsetCommand) {
+			case RigCallingMessage.ToolCommand.RunCodeAnalysis:
+				FrameworkUtil.RunAngeliaCodeAnalysis();
+				break;
+			case RigCallingMessage.ToolCommand.RunCodeAnalysisSilently:
+				FrameworkUtil.RunAngeliaCodeAnalysis(true);
+				break;
 		}
 
 		// Gizmos Texture Requirement

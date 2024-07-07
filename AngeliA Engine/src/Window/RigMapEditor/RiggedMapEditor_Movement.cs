@@ -192,6 +192,7 @@ public partial class RiggedMapEditor {
 		// Reload Movement Pool
 		PrevMovementTabIndex = -1;
 		MovementConfigPool.Clear();
+		if (currentProject == null) return;
 		string root = currentProject.Universe.CharacterMovementConfigRoot;
 		foreach (string path in Util.EnumerateFiles(root, true, "*.json")) {
 			string name = Util.GetNameWithoutExtension(path);

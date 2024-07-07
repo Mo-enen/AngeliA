@@ -28,6 +28,7 @@ public class RigTransceiver {
 	public bool RigProcessRunning => RigPipeClientProcess != null && !RigPipeClientProcess.HasExited;
 	public Int3? LastRigViewPos { get; private set; } = null;
 	public int? LastRigViewHeight { get; private set; } = null;
+	public bool LogWithPrefix { get; set; } = true;
 
 	// Data
 	private Process RigPipeClientProcess = null;
@@ -52,6 +53,8 @@ public class RigTransceiver {
 	public RigTransceiver (string exePath) {
 		ExePath = exePath;
 		MapName = $"AngeliA_Map_{Util.RandomInt(0, 99999)}";
+		System.Threading.Tasks.Task.Run(UpdateForRigDebug);
+		System.Threading.Tasks.Task.Run(UpdateForRigDebugError);
 	}
 
 
@@ -104,25 +107,6 @@ public class RigTransceiver {
 
 			RigPipeClientProcess = process;
 
-#if DEBUG
-			System.Threading.Tasks.Task.Run(() => {
-				try {
-					string line;
-					while ((line = RigPipeClientProcess.StandardOutput.ReadLine()) != null) {
-						Debug.Log("|" + line);
-					}
-				} catch { }
-			});
-			System.Threading.Tasks.Task.Run(() => {
-				try {
-					string line;
-					while ((line = RigPipeClientProcess.StandardError.ReadLine()) != null) {
-						Debug.LogError("|" + line);
-					}
-				} catch { }
-			});
-#endif
-
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
 			return ERROR_UNKNOWN;
@@ -163,7 +147,7 @@ public class RigTransceiver {
 	}
 
 
-	public unsafe bool Respond (int sheetIndex, bool updateViewCache, IRect gizmosDodgeRect) {
+	public unsafe bool Respond (int sheetIndex, bool updateViewCache, IRect gizmosDodgeRect, bool ignoreRendering = false) {
 		// Rig >> Engine
 		bool ignoreMouseInput = Game.PauselessFrame == IgnoreMouseInputFrame || !WindowUI.WindowRect.MouseInside();
 		if (*BufferPointer == 0) {
@@ -171,14 +155,18 @@ public class RigTransceiver {
 				Thread.Sleep(1);
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
-			UpdateLastRespondedRender(sheetIndex, gizmosDodgeRect, coverWithBlackTint: false);
+			if (!ignoreRendering) {
+				UpdateLastRespondedRender(sheetIndex, gizmosDodgeRect, coverWithBlackTint: false);
+			}
 			return false;
 		}
 		_HANDLE_:;
 		// Handle Respon
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
 		RespondMessage.ApplyToEngine(CallingMessage, ignoreMouseInput: ignoreMouseInput);
-		RespondMessage.UpdateRendering(sheetIndex, LeftPadding, gizmosDodgeRect);
+		if (!ignoreRendering) {
+			RespondMessage.UpdateRendering(sheetIndex, LeftPadding, gizmosDodgeRect);
+		}
 		// Update Setting
 		if (updateViewCache) {
 			LastRigViewPos = new Int3(RespondMessage.ViewX, RespondMessage.ViewY, RespondMessage.ViewZ);
@@ -239,6 +227,52 @@ public class RigTransceiver {
 		}
 
 		return RigArgBuilder.ToString();
+	}
+
+
+	private void UpdateForRigDebug () {
+		while (true) {
+			try {
+				if (
+					RigPipeClientProcess == null ||
+					RigPipeClientProcess.StandardOutput == null
+				) continue;
+				var output = RigPipeClientProcess.StandardOutput;
+				if (!output.BaseStream.CanRead) continue;
+				string line;
+				while ((line = output.ReadLine()) != null) {
+					if (LogWithPrefix) {
+						Debug.Log($"| {line}");
+					} else {
+						Debug.Log(line);
+					}
+				}
+			} catch { }
+			//} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+	}
+
+
+	private void UpdateForRigDebugError () {
+		while (true) {
+			try {
+				if (
+					RigPipeClientProcess == null ||
+					RigPipeClientProcess.StandardError == null
+				) continue;
+				var output = RigPipeClientProcess.StandardError;
+				if (!output.BaseStream.CanRead) continue;
+				string line;
+				while ((line = output.ReadLine()) != null) {
+					if (LogWithPrefix) {
+						Debug.Log($"| {line}");
+					} else {
+						Debug.Log(line);
+					}
+				}
+			} catch { }
+			//} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
 	}
 
 

@@ -169,29 +169,6 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void SpawnMagicSmoke (int x, int y, int scale = 1000, int layer = RenderLayer.DEFAULT, int z = int.MaxValue - 1) => SpawnMagicSmoke(x, y, new(246, 196, 255, 255), Color32.WHITE, scale, layer, z);
-	public static void SpawnMagicSmoke (int x, int y, Color32 tintA, Color32 tintB, int scale = 1000, int layer = RenderLayer.DEFAULT, int z = int.MaxValue - 1) {
-		if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, x, y) is AppearSmokeParticle particle0) {
-			particle0.Tint = tintA;
-			particle0.X += Util.QuickRandom(Game.GlobalFrame * 181).UMod(Const.HALF) - Const.HALF / 2;
-			particle0.Y += Util.QuickRandom(Game.GlobalFrame * 832).UMod(Const.HALF) - Const.HALF / 2;
-			particle0.Rotation = Util.QuickRandom(Game.GlobalFrame * 163).UMod(360);
-			particle0._Scale = scale * (Util.QuickRandom(Game.GlobalFrame * 4116).UMod(800) + 300) / 1000;
-			particle0._RenderingZ = z;
-			particle0.RenderingLayer = layer;
-		}
-		if (Stage.SpawnEntity(AppearSmokeParticle.TYPE_ID, x, y) is AppearSmokeParticle particle1) {
-			particle1.Tint = tintB;
-			particle1.X += Util.QuickRandom(Game.GlobalFrame * 125).UMod(Const.HALF) - Const.HALF / 2;
-			particle1.Y += Util.QuickRandom(Game.GlobalFrame * 67).UMod(Const.HALF) - Const.HALF / 2;
-			particle1.Rotation = Util.QuickRandom(Game.GlobalFrame * 127).UMod(360);
-			particle1._Scale = scale * (Util.QuickRandom(Game.GlobalFrame * 9).UMod(800) + 300) / 1000;
-			particle1._RenderingZ = Util.QuickRandom(Game.GlobalFrame * 12) % 2 == 0 ? z + 1 : z - 1;
-			particle1.RenderingLayer = layer;
-		}
-	}
-
-
 	public static void DrawMagicEncircleAurora (int spriteID, int count, int centerX, int centerY, int localFrame, Color32 tint, int scale = 1000, int rotateSpeed = 16, int swingDuration = 20, int swingAmout = 240, int growDuration = 10, int z = int.MinValue) {
 		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
 		// Swing
@@ -220,7 +197,7 @@ public static class FrameworkUtil {
 	public static void DrawExplosionRing (int spriteID, int centerX, int centerY, int radius, int localFrame, int duration, Color32 tint, int z = int.MaxValue - 1) {
 
 		if (!Renderer.TryGetSprite(spriteID, out var ring, true)) return;
-		
+
 		float ease01Ex = Ease.OutCubic((float)localFrame / duration);
 		tint.a = (byte)Util.LerpUnclamped(255, 0, ease01Ex);
 		int ringRadius = radius * 9 / 10;
@@ -243,14 +220,71 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false) {
+
+		bool anyWarning = false;
+
+		// Check for Empty Script File
+		foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
+			bool empty = true;
+			foreach (string line in Util.ForAllLinesInFile(path)) {
+				if (!string.IsNullOrWhiteSpace(line)) {
+					empty = false;
+					break;
+				}
+			}
+			if (empty) {
+				anyWarning = true;
+				Debug.LogWarning($"Empty script: {path}");
+			}
+		}
+
+		// Sheet
+		if (!Util.FileExists(Universe.BuiltIn.SheetPath)) {
+			anyWarning = true;
+			Debug.LogWarning("Artwork sheet file not found.");
+		}
+
+		// Check for Hash Collision
+		var idPool = new Dictionary<int, string>();
+		var sheet = Renderer.MainSheet;
+		foreach (var type in typeof(object).AllChildClass(includeAbstract: true, includeInterface: true)) {
+			string typeName = type.AngeName();
+			int typeID = typeName.AngeHash();
+			// Class vs Class
+			if (!idPool.TryAdd(typeID, typeName)) {
+				string poolName = idPool[typeID];
+				if (typeName != poolName) {
+					anyWarning = true;
+					Debug.LogWarning($"Hash collision between two class names. \"{typeName}\" & \"{poolName}\" (AngeHash = {typeID})");
+				}
+			}
+			// Class vs Sprite
+			if (sheet.SpritePool.TryGetValue(typeID, out var sprite)) {
+				if (sprite.RealName != typeName && typeID == sprite.ID) {
+					anyWarning = true;
+					Debug.LogWarning($"Hash collision between Class name and Sprite name. \"{typeName}\" & \"{sprite.RealName}\" (AngeHash = {typeID})");
+				}
+			}
+		}
+
+
+
+		// End
+		if (!anyWarning && !onlyLogWhenWarningFounded) {
+			Debug.Log("Everything is fine.");
+		}
+	}
+
+
 	// Input
 	internal static readonly Dictionary<GamepadKey, int> GAMEPAD_CODE = new() {
 		{ GamepadKey.DpadLeft, BuiltInSprite.GAMEPAD_LEFT},
 		{ GamepadKey.DpadRight, BuiltInSprite.GAMEPAD_RIGHT},
 		{ GamepadKey.DpadUp, BuiltInSprite.GAMEPAD_UP},
-		{ GamepadKey.DpadDown,BuiltInSprite.GAMEPAD_DOWN },
-		{ GamepadKey.South,BuiltInSprite.GAMEPAD_SOUTH},
-		{ GamepadKey.North,BuiltInSprite.GAMEPAD_NORTH},
+		{ GamepadKey.DpadDown, BuiltInSprite.GAMEPAD_DOWN },
+		{ GamepadKey.South, BuiltInSprite.GAMEPAD_SOUTH},
+		{ GamepadKey.North, BuiltInSprite.GAMEPAD_NORTH},
 		{ GamepadKey.East, BuiltInSprite.GAMEPAD_EAST},
 		{ GamepadKey.West, BuiltInSprite.GAMEPAD_WEST},
 		{ GamepadKey.Select, BuiltInSprite.GAMEPAD_SELECT},

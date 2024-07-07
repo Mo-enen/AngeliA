@@ -10,22 +10,13 @@ public static class SheetUtil {
 
 	// SUB
 	private class FlexSprite {
-		public static readonly FlexSprite PIXEL = new() {
-			AngePivot = default,
-			AtlasName = "(Procedure)",
-			AtlasType = AtlasType.General,
-			AtlasZ = 0,
-			Border = default,
-			FullName = "Pixel",
-			Pixels = new Color32[1] { Color32.WHITE },
-			PixelRect = new(0, 0, 1, 1),
-		};
 		public string FullName;
 		public Int2 AngePivot;
 		public Int4 Border;
 		public IRect PixelRect;
 		public int AtlasZ;
 		public string AtlasName;
+		public int AtlasID;
 		public AtlasType AtlasType;
 		public Color32[] Pixels;
 	}
@@ -49,7 +40,7 @@ public static class SheetUtil {
 
 	// Sheet
 	public static bool RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
-		long sheetDate = Util.GetFileCreationDate(sheetPath);
+		long sheetDate = Util.GetFileModifyDate(sheetPath);
 		bool requireCreateSheet = false;
 		bool hasArtwork = false;
 		// Check Modify
@@ -83,7 +74,8 @@ public static class SheetUtil {
 		var flexSprites = CreateSpritesFromAsepriteFiles(asePaths);
 		var spriteList = new List<AngeSprite>();
 		var atlases = new List<Atlas>();
-		var atlasPool = new Dictionary<string, int>(); // Name, Index
+		var atlasPool = new Dictionary<int, int>(); // id, Index
+		var spriteHash = new HashSet<int>();
 
 		// Load Sprites
 		for (int i = 0; i < flexSprites.Count; i++) {
@@ -109,19 +101,25 @@ public static class SheetUtil {
 			}
 			int globalID = realName.AngeHash();
 
-			if (!atlasPool.TryGetValue(flex.AtlasName, out int atlasIndex)) {
+			if (!spriteHash.Add(globalID)) {
+				Debug.LogWarning($"Sprite \"{realName}\" already exists in the sheet.");
+				continue;
+			}
+
+			if (!atlasPool.TryGetValue(flex.AtlasID, out int atlasIndex)) {
 				atlasIndex = atlases.Count;
-				atlasPool.Add(flex.AtlasName, atlasIndex);
+				atlasPool.Add(flex.AtlasID, atlasIndex);
 				atlases.Add(new Atlas() {
 					Name = flex.AtlasName,
 					Type = flex.AtlasType,
 					AtlasZ = flex.AtlasZ,
-					ID = flex.AtlasName.AngeHash(),
+					ID = flex.AtlasID,
 				});
 			}
 
 			var newSprite = new AngeSprite() {
 				ID = globalID,
+				RealName = realName,
 				GlobalWidth = globalWidth,
 				GlobalHeight = globalHeight,
 				PixelRect = flex.PixelRect,
@@ -130,7 +128,6 @@ public static class SheetUtil {
 				SortingZ = flex.AtlasZ * 1024 + offsetZ,
 				PivotX = pivotX ?? flex.AngePivot.x,
 				PivotY = pivotY ?? flex.AngePivot.y,
-				RealName = Util.GetBlockRealName(flex.FullName),
 				AtlasIndex = atlasIndex,
 				Atlas = atlases[atlasIndex],
 				Tag = tag,
@@ -233,6 +230,7 @@ public static class SheetUtil {
 				Border = Int4.Direction(m.border.x.RoundToInt(), m.border.z.RoundToInt(), m.border.y.RoundToInt(), m.border.w.RoundToInt()),
 				FullName = m.name,
 				AtlasName = AseName,
+				AtlasID = AseName.AngeHash(),
 				AngePivot = new Int2((int)(m.pivot.x * 1000f), (int)(m.pivot.y * 1000f)),
 				PixelRect = new IRect(left, down, width, height),
 				AtlasType = atlasType,

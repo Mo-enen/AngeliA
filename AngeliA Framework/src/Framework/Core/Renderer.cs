@@ -85,11 +85,11 @@ public static class Renderer {
 	public static int CurrentLayerIndex { get; private set; } = 0;
 	public static int CurrentFontIndex { get; private set; } = 0;
 	public static int AltSheetCount => AltSheets.Count;
-	public static Sheet CurrentSheet { get; private set; }
 	public static bool IsReady { get; private set; } = false;
+	public static Sheet CurrentSheet { get; private set; }
+	public static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
 
 	// Data
-	private static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static readonly Dictionary<Int2, CharSprite> CharSpritePool = new();

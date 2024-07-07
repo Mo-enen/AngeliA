@@ -48,6 +48,7 @@ public class SettingWindow : WindowUI {
 
 	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
 	private static readonly LanguageCode LABEL_BLINK_ERROR = ("Setting.BlinkWhenError", "Blink When Having Compile Error");
+	private static readonly LanguageCode LABEL_PREFIX_MARK = ("Setting.PrefixMark", "Add Prefix Mark for Messages from Game");
 
 	private static readonly LanguageCode LABEL_CHAR_ANI_REVERSE_SCROLL = ("Setting.CharAni.ReverseScroll", "Reverse Mouse Scroll for Timeline");
 	private static readonly LanguageCode LABEL_CHAR_ANI_VERTICAL_SCROLL = ("Setting.CharAni.VerticalScroll", "Mouse Scroll Vertically for Timeline");
@@ -337,6 +338,13 @@ public class SettingWindow : WindowUI {
 		// Blink when Error
 		EngineSetting.BlinkWhenError.Value = GUI.Toggle(
 			rect, EngineSetting.BlinkWhenError.Value, LABEL_BLINK_ERROR,
+			labelStyle: Skin.SmallLabel
+		);
+		rect.SlideDown(itemPadding);
+
+		// Prefix Mark
+		EngineSetting.AddPrefixMarkForMessageFromGame.Value = GUI.Toggle(
+			rect, EngineSetting.AddPrefixMarkForMessageFromGame.Value, LABEL_PREFIX_MARK,
 			labelStyle: Skin.SmallLabel
 		);
 		rect.SlideDown(itemPadding);

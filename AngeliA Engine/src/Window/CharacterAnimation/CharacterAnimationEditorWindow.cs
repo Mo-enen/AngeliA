@@ -386,6 +386,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 	public void SetCurrentProject (Project project) {
 		CurrentProject = project;
 		ConfigPool.Clear();
+		if (project == null) return;
 		PreviewZoom = LastPreviewZoom.Value;
 		foreach (string path in Util.EnumerateFiles(CurrentProject.Universe.CharacterAnimationRoot, true, "*.json")) {
 			LoadCurrentAnimationFromFile(path);
@@ -465,6 +466,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 
 	// Editor
 	private void ReloadAllAnimationNamesFromFile () {
+		if (CurrentProject == null) return;
 		AllAnimationNames.Clear();
 		foreach (string path in Util.EnumerateFiles(CurrentProject.Universe.CharacterAnimationRoot, true, "*.json")) {
 			AllAnimationNames.Add(Util.GetNameWithoutExtension(path));

@@ -44,6 +44,7 @@ public partial class Engine {
 	private bool CurrentWindowRequireRigGame = false;
 	private bool HasCompileError = false;
 	private int NoGameRunningFrameCount = 0;
+	private int ForceRigGameRunInBackgroundFrame = -1;
 
 
 	#endregion
@@ -68,7 +69,7 @@ public partial class Engine {
 			case 0:
 				Instance.RigGameFailToStartCount = 0;
 				Instance.RigGameFailToStartFrame = int.MinValue;
-				Console.Instance.RemoveAllCompileErrors();
+				ConsoleWindow.Instance.RemoveAllCompileErrors();
 				break;
 
 			default:
@@ -76,13 +77,13 @@ public partial class Engine {
 				break;
 
 			case EngineUtil.ERROR_USER_CODE_COMPILE_ERROR:
-				Console.Instance.BeginCompileError();
+				ConsoleWindow.Instance.BeginCompileError();
 				try {
 					while (EngineUtil.BackgroundBuildMessages.Count > 0) {
 						Debug.LogError(EngineUtil.BackgroundBuildMessages.Dequeue());
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
-				Console.Instance.EndCompileError();
+				ConsoleWindow.Instance.EndCompileError();
 				break;
 
 			case EngineUtil.ERROR_PROJECT_OBJECT_IS_NULL:
@@ -167,10 +168,21 @@ public partial class Engine {
 
 		if (HasCompileError) return;
 
+		bool currentWindowRequireRigGame = CurrentWindowIndex == RigMapEditorWindowIndex || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
+		bool requireRigGameRender = CurrentWindowIndex == RigMapEditorWindowIndex;
+		bool requireRigInput = CurrentWindowIndex == RigMapEditorWindowIndex;
+
 		var rigEdt = RiggedMapEditor.Instance;
 		var pixEdt = PixelEditor.Instance;
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
+		var console = ConsoleWindow.Instance;
+
+		if (console.RequireCodeAnalysis != 0) {
+			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
+		}
+
+		Transceiver.LogWithPrefix = EngineSetting.AddPrefixMarkForMessageFromGame.Value;
 
 		// Call
 		bool called = false;
@@ -181,7 +193,7 @@ public partial class Engine {
 			CurrentProject != null &&
 			!EngineUtil.BuildingProjectInBackground &&
 			Transceiver.RigProcessRunning &&
-			CurrentWindowRequireRigGame
+			currentWindowRequireRigGame
 		) {
 			if (Input.AnyMouseButtonDown) {
 				IgnoreInputForRig = IgnoreInputForRig ||
@@ -202,6 +214,12 @@ public partial class Engine {
 				rigEdt.RequireReloadPlayerMovement = false;
 				calling.RequireReloadPlayerMovement();
 			}
+			if (console.RequireCodeAnalysis != 0) {
+				calling.RequireToolsetCommand = console.RequireCodeAnalysis > 0 ?
+					RigCallingMessage.ToolCommand.RunCodeAnalysis :
+					RigCallingMessage.ToolCommand.RunCodeAnalysisSilently;
+				console.RequireCodeAnalysis = 0;
+			}
 
 			if (SettingWindow.Instance.RigSettingChanged) {
 				SettingWindow.Instance.RigSettingChanged = false;
@@ -217,9 +235,9 @@ public partial class Engine {
 			if (runningGame) {
 				Transceiver.Call(
 					ignoreMouseInput:
-						IgnoreInputForRig || Game.PauselessFrame < LastNotInteractableFrame + 6,
+						!requireRigInput || IgnoreInputForRig || Game.PauselessFrame < LastNotInteractableFrame + 6,
 					ignoreKeyInput:
-						false,
+						!requireRigInput,
 					leftPadding:
 						GetEngineLeftBarWidth(out _),
 					requiringWindowIndex:
@@ -249,7 +267,7 @@ public partial class Engine {
 		int sheetIndex = pixEdt.SheetIndex;
 		if (buildingProjectInBackground) {
 			// Building in Background
-			if (CurrentWindowRequireRigGame) {
+			if (currentWindowRequireRigGame && requireRigGameRender) {
 				Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}
 		} else if (Transceiver.RigProcessRunning) {
@@ -260,7 +278,8 @@ public partial class Engine {
 					bool responded = Transceiver.Respond(
 						sheetIndex,
 						CurrentWindowIndex == RigMapEditorWindowIndex,
-						toolPanelRect
+						toolPanelRect,
+						!requireRigGameRender
 					);
 					rigEdt.RigGameSelectingPlayerID = resp.SelectingPlayerID;
 					rigEdt.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
@@ -271,7 +290,7 @@ public partial class Engine {
 					if (responded && resp.RespondCount == 1) {
 						ReloadCharacterNames();
 					}
-				} else {
+				} else if (requireRigGameRender) {
 					Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect);
 				}
 			}
@@ -294,7 +313,7 @@ public partial class Engine {
 				RigGameFailToStartFrame = Game.GlobalFrame;
 				RigGameFailToStartCount++;
 			}
-			if (CurrentWindowRequireRigGame) {
+			if (currentWindowRequireRigGame && requireRigGameRender) {
 				// Still Render Last Image
 				Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}

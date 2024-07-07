@@ -5,7 +5,7 @@ using AngeliA;
 namespace AngeliaEngine;
 
 
-public class Console : WindowUI {
+public class ConsoleWindow : WindowUI {
 
 
 
@@ -44,13 +44,16 @@ public class Console : WindowUI {
 	private static readonly SpriteCode ICON_INFO = "Console.Info";
 	private static readonly SpriteCode ICON_WARNING = "Console.Warning";
 	private static readonly SpriteCode ICON_ERROR = "Console.Error";
+	private static readonly SpriteCode ICON_CODE_ANA = "Console.Analysis";
 	private static readonly SpriteCode PANEL_BG = "UI.GeneralPanel";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
 	private static readonly LanguageCode TIP_CLEAR = ("Tip.ConsoleClear", "Clear messages (Ctrl + Shift + C)");
+	private static readonly LanguageCode TIP_HASH_COL = ("Tip.HashCol", "Check hash collision for all scripts and artwork");
 
 	// Api
-	public static Console Instance { get; private set; }
+	public static ConsoleWindow Instance { get; private set; }
 	public bool HasCompileError => CompileErrorLines.Length > 0;
+	public sbyte RequireCodeAnalysis { get; set; } = 0;
 	public override string DefaultName => "Console";
 
 	// Data
@@ -69,7 +72,7 @@ public class Console : WindowUI {
 	#region --- MSG ---
 
 
-	public Console () {
+	public ConsoleWindow () {
 		Instance = this;
 		Debug.OnLog += OnLog;
 		Debug.OnLogError += OnLogError;
@@ -128,6 +131,13 @@ public class Console : WindowUI {
 			Clear();
 		}
 		RequireTooltip(rect, TIP_CLEAR);
+		rect.SlideRight(padding);
+
+		// Code Analysis
+		if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
+			RequireCodeAnalysis = 1;
+		}
+		RequireTooltip(rect, TIP_HASH_COL);
 		rect.SlideRight(padding);
 
 	}

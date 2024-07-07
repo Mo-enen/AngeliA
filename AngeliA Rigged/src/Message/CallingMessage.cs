@@ -22,6 +22,13 @@ public class RigCallingMessage {
 	}
 
 
+	public enum ToolCommand : byte {
+		None = 0,
+		RunCodeAnalysis,
+		RunCodeAnalysisSilently,
+	}
+
+
 	#endregion
 
 
@@ -76,6 +83,7 @@ public class RigCallingMessage {
 	public bool Setting_MEDT_AutoZoom;
 	public bool Setting_MEDT_ShowState;
 	public bool Setting_MEDT_ShowBehind;
+	public ToolCommand RequireToolsetCommand = ToolCommand.None;
 
 
 	#endregion
@@ -265,6 +273,8 @@ public class RigCallingMessage {
 				Setting_MEDT_ShowBehind = Util.ReadBool(ref pointer, end);
 			}
 
+			RequireToolsetCommand = (ToolCommand)Util.ReadByte(ref pointer, end);
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 	}
@@ -348,6 +358,9 @@ public class RigCallingMessage {
 				Util.Write(ref pointer, Setting_MEDT_ShowState, end);
 				Util.Write(ref pointer, Setting_MEDT_ShowBehind, end);
 			}
+
+			Util.Write(ref pointer, (byte)RequireToolsetCommand, end);
+			RequireToolsetCommand = ToolCommand.None;
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 

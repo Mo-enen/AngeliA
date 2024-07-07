@@ -105,7 +105,7 @@ public partial class Engine {
 			new PixelEditor(engine.AllRigCharacterNames),
 			new CharacterAnimationEditorWindow(engine.AllRigCharacterNames),
 			new LanguageEditor(),
-			new Console(),
+			new ConsoleWindow(),
 			new ProjectEditor(),
 			new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
 		};
@@ -175,7 +175,7 @@ public partial class Engine {
 			var win = AllWindows[i];
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = i;
-			if (win is Console) ConsoleWindowIndex = i;
+			if (win is ConsoleWindow) ConsoleWindowIndex = i;
 			if (win is CharacterAnimationEditorWindow) CharAniEditorWindowIndex = i;
 		}
 
@@ -568,7 +568,7 @@ public partial class Engine {
 				} else if (hovering) {
 					bodyTint = Color32.WHITE_128;
 				}
-				if (window is Console console && console.HasCompileError) {
+				if (window is ConsoleWindow console && console.HasCompileError) {
 					bodyTint = EngineSetting.BlinkWhenError.Value ? Color32.WHITE.WithNewA(
 						(byte)(Ease.InOutQuad(Game.GlobalFrame.PingPong(60) / 60f) * 255)
 					) : Color32.WHITE;
@@ -746,7 +746,7 @@ public partial class Engine {
 
 		// Clear Console
 		if (EngineSetting.Hotkey_ClearConsole.Value.Down()) {
-			Console.Instance.Clear();
+			ConsoleWindow.Instance.Clear();
 		}
 
 		// Update Project Editor
@@ -779,7 +779,7 @@ public partial class Engine {
 			SetCurrentWindowIndex<LanguageEditor>();
 		}
 		if (EngineSetting.Hotkey_Window_Console.Value.Down()) {
-			SetCurrentWindowIndex<Console>();
+			SetCurrentWindowIndex<ConsoleWindow>();
 		}
 		if (EngineSetting.Hotkey_Window_Project.Value.Down()) {
 			SetCurrentWindowIndex<ProjectEditor>();
@@ -849,46 +849,6 @@ public partial class Engine {
 	#region --- LGC ---
 
 
-	private bool CheckAnyEditorDirty () {
-		foreach (var window in AllWindows) if (window.IsDirty) return true;
-		return false;
-	}
-
-
-	private void SetCurrentWindowIndex<W> (bool forceChange = false) where W : WindowUI {
-		for (int i = 0; i < AllWindows.Length; i++) {
-			if (AllWindows[i] is W) {
-				SetCurrentWindowIndex(i, forceChange);
-				return;
-			}
-		}
-	}
-	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
-		index = index.Clamp(0, AllWindows.Length - 1);
-		if (!forceChange && index == CurrentWindowIndex) return;
-		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex;
-		if (CurrentWindowRequireRigGame) {
-			// Rig Window
-			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();
-		} else {
-			// Normal Window
-			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireLostFocusInvoke();
-			ResetViewRect(remapAllRenderingCells: true);
-			Game.MusicVolume = 1000;
-			Game.SoundVolume = 1000;
-			// To Char Ani Editor
-			if (index == CharAniEditorWindowIndex) {
-				if (PixelEditor.Instance.IsGroupDataDirty) {
-					PixelEditor.Instance.IsGroupDataDirty = false;
-					PixelEditor.Sheet.CalculateExtraData();
-				}
-			}
-		}
-		CurrentWindowIndex = index;
-		LastOpenedWindowIndex.Value = index;
-	}
-
-
 	// Workflow
 	private void OpenProject (string projectPath) {
 
@@ -915,6 +875,7 @@ public partial class Engine {
 		CharacterAnimationEditorWindow.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
 		RiggedMapEditor.Instance.SetCurrentProject(CurrentProject);
+		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
 
 		// Audio
 		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
@@ -976,9 +937,52 @@ public partial class Engine {
 			LanguageEditor.Instance.SetLanguageRoot("");
 			PixelEditor.Instance.SetCurrentProject(null);
 			ProjectEditor.Instance.SetCurrentProject(null);
+			CharacterAnimationEditorWindow.Instance.SetCurrentProject(null);
+			RiggedMapEditor.Instance.CleanDirty();
+			RiggedMapEditor.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 		}
+	}
+
+
+	private bool CheckAnyEditorDirty () {
+		foreach (var window in AllWindows) if (window.IsDirty) return true;
+		return false;
+	}
+
+
+	private void SetCurrentWindowIndex<W> (bool forceChange = false) where W : WindowUI {
+		for (int i = 0; i < AllWindows.Length; i++) {
+			if (AllWindows[i] is W) {
+				SetCurrentWindowIndex(i, forceChange);
+				return;
+			}
+		}
+	}
+	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
+		index = index.Clamp(0, AllWindows.Length - 1);
+		if (!forceChange && index == CurrentWindowIndex) return;
+		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex;
+		if (CurrentWindowRequireRigGame) {
+			// Rig Window
+			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();
+		} else {
+			// Normal Window
+			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireLostFocusInvoke();
+			ResetViewRect(remapAllRenderingCells: true);
+			Game.MusicVolume = 1000;
+			Game.SoundVolume = 1000;
+			// To Char Ani Editor
+			if (index == CharAniEditorWindowIndex) {
+				if (PixelEditor.Instance.IsGroupDataDirty) {
+					PixelEditor.Instance.IsGroupDataDirty = false;
+					PixelEditor.Sheet.CalculateExtraData();
+				}
+			}
+		}
+		CurrentWindowIndex = index;
+		LastOpenedWindowIndex.Value = index;
 	}
 
 
