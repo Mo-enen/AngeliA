@@ -10,7 +10,6 @@ public partial class RiggedGame {
 
 	// VAR
 	private readonly Dictionary<Int2, CharSprite> CharPool = new();
-	private readonly HashSet<uint> RequiredGizmosTextures = new();
 	private readonly int[] KeyboardHoldingFrames;
 	private readonly int[] GamepadHoldingFrames;
 	private readonly int RiggedFontCount;
@@ -147,24 +146,22 @@ public partial class RiggedGame {
 			Inverse = inverse,
 			Rect = rect,
 			Uv = uv,
-			PngData = null,
-			PngDataLength = 0,
+			MapPos = null,
 		};
-		// Send with Png Data
-		if (!RequiredGizmosTextures.Contains(id)) {
-			data.PngData = TextureToPngBytes(texture);
-			data.PngDataLength = data.PngData != null ? data.PngData.Length : 0;
-			RequiredGizmosTextures.Add(id);
-		}
 		RespondMessage.RequireGizmosTextures[RespondMessage.RequireGizmosTextureCount] = data;
 		RespondMessage.RequireGizmosTextureCount++;
 	}
 
-	protected override void _ForceRequireGizmosTexture (object texture) {
+	protected override void _ForceRequireGizmosTextureFromMap (object texture, Int3 worldPos) {
 		var _id = _GetTextureID(texture);
-		if (_id.HasValue) {
-			RequiredGizmosTextures.Remove(_id.Value);
-		}
+		if (!_id.HasValue) return;
+		if (RespondMessage.RequireGizmosTextureCount >= RespondMessage.RequireGizmosTextures.Length) return;
+		var data = new RigRespondMessage.GizmosTextureData() {
+			TextureRigID = _id.Value,
+			MapPos = worldPos,
+		};
+		RespondMessage.RequireGizmosTextures[RespondMessage.RequireGizmosTextureCount] = data;
+		RespondMessage.RequireGizmosTextureCount++;
 	}
 
 	protected override void _IgnoreGizmos (int duration = 0) { }

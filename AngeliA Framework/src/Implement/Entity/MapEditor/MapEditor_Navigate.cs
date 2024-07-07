@@ -182,11 +182,14 @@ public partial class MapEditor {
 					int worldX = targetWorldX + i;
 					int worldY = targetWorldY + j;
 					if (NavLoadedSlotZ != z || slot.WorldX != worldX || slot.WorldY != worldY) {
+						var worldPos = new Int3(worldX, worldY, z);
 						slot.WorldX = worldX;
 						slot.WorldY = worldY;
-						slot.IsEmpty = !Stream.TryGetMapFilePath(new(slot.WorldX, slot.WorldY, z), out string path);
-						World.LoadMapIntoTexture(path, slot.Texture);
-						Game.ForceRequireGizmosTexture(slot.Texture);
+						slot.IsEmpty = !Stream.TryGetMapFilePath(worldPos, out _);
+						if (Stream.TryGetWorld(worldPos.x, worldPos.y, worldPos.z, out var world)) {
+							world.FillMapIntoTexture(slot.Texture);
+							Game.ForceRequireGizmosTextureFromMap(slot.Texture, worldPos);
+						}
 					}
 				}
 			}
@@ -272,7 +275,6 @@ public partial class MapEditor {
 			if (navigating) {
 				var cameraRect = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 				Save();
-				NavLoadedSlotZ = int.MinValue;
 				NavPosition.x = cameraRect.CenterX() + Const.MAP * Const.HALF;
 				NavPosition.y = cameraRect.CenterY() + Const.MAP * Const.HALF;
 			} else {
@@ -291,6 +293,7 @@ public partial class MapEditor {
 		NavDragState = 0;
 		SearchingText = "";
 		SearchResult.Clear();
+		NavLoadedSlotZ = int.MinValue;
 	}
 
 

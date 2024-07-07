@@ -855,7 +855,9 @@ public partial class MapEditor {
 		Renderer.DrawPixel(CheckPointLaneRect, Color32.BLACK);
 
 		// Scroll
-		if (Input.MouseWheelDelta != 0) QuickLaneScrollY -= Input.MouseWheelDelta;
+		if (!Input.KeyboardHolding(KeyboardKey.LeftCtrl) && Input.MouseWheelDelta != 0) {
+			QuickLaneScrollY -= Input.MouseWheelDelta;
+		}
 
 		// Content
 		bool oldE = GUI.Enable;

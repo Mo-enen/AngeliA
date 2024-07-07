@@ -430,7 +430,7 @@ public partial class RayGame {
 
 	protected override void _IgnoreGizmos (int duration = 0) => GizmosRender.IgnoreGizmos(duration);
 
-	protected override void _ForceRequireGizmosTexture (object texture) { }
+	protected override void _ForceRequireGizmosTextureFromMap (object texture, Int3 worldPos) { }
 
 
 	// Text

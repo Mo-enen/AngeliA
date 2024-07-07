@@ -35,6 +35,7 @@ public class RigTransceiver {
 	private readonly string ExePath;
 	private readonly string MapName;
 	private readonly StringBuilder RigArgBuilder = new();
+	private string UniversePath;
 	private unsafe byte* BufferPointer;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
@@ -69,8 +70,8 @@ public class RigTransceiver {
 	public int Start (string gameBuildFolder, string universePath) {
 		try {
 
+			UniversePath = "";
 			Abort();
-
 			RespondMessage.TransationStart();
 
 			// Gate
@@ -105,6 +106,7 @@ public class RigTransceiver {
 				return ERROR_PROCESS_FAIL_TO_START;
 			}
 
+			UniversePath = universePath;
 			RigPipeClientProcess = process;
 
 		} catch (System.Exception ex) {
@@ -147,7 +149,7 @@ public class RigTransceiver {
 	}
 
 
-	public unsafe bool Respond (int sheetIndex, bool updateViewCache, IRect gizmosDodgeRect, bool ignoreRendering = false) {
+	public unsafe bool Respond (Universe universe, int sheetIndex, bool updateViewCache, IRect gizmosDodgeRect, bool ignoreRendering = false) {
 		// Rig >> Engine
 		bool ignoreMouseInput = Game.PauselessFrame == IgnoreMouseInputFrame || !WindowUI.WindowRect.MouseInside();
 		if (*BufferPointer == 0) {
@@ -163,7 +165,7 @@ public class RigTransceiver {
 		_HANDLE_:;
 		// Handle Respon
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
-		RespondMessage.ApplyToEngine(CallingMessage, ignoreMouseInput: ignoreMouseInput);
+		RespondMessage.ApplyToEngine(CallingMessage, sheetIndex, ignoreMouseInput, universe);
 		if (!ignoreRendering) {
 			RespondMessage.UpdateRendering(sheetIndex, LeftPadding, gizmosDodgeRect);
 		}

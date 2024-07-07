@@ -276,6 +276,7 @@ public partial class Engine {
 				if (runningGame) {
 					// Get Respond
 					bool responded = Transceiver.Respond(
+						CurrentProject.Universe,
 						sheetIndex,
 						CurrentWindowIndex == RigMapEditorWindowIndex,
 						toolPanelRect,

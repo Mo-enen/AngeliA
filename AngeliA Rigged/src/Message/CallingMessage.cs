@@ -70,8 +70,6 @@ public class RigCallingMessage {
 	public float GamepadRightStickDirectionY;
 	public int CharRequiredCount;
 	public CharRequirementData[] RequiredChars = new CharRequirementData[REQUIRE_CHAR_MAX_COUNT];
-	public int RequiringGizmosTextureIDCount = 0;
-	public uint[] RequiringGizmosTextureIDs = new uint[REQUIRE_GIZMOS_TEXTURE_MAX_COUNT];
 	public byte RequireGameMessageInvoke;
 	public byte PressedCharCount;
 	public readonly char[] PressedChars = new char[256];
@@ -247,11 +245,6 @@ public class RigCallingMessage {
 				}
 			}
 
-			RequiringGizmosTextureIDCount = Util.ReadInt(ref pointer, end);
-			for (int i = 0; i < RequiringGizmosTextureIDCount && i < REQUIRE_GIZMOS_TEXTURE_MAX_COUNT; i++) {
-				RequiringGizmosTextureIDs[i] = Util.ReadUInt(ref pointer, end);
-			}
-
 			RequireGameMessageInvoke = Util.ReadByte(ref pointer, end);
 
 			PressedCharCount = Util.ReadByte(ref pointer, end);
@@ -330,11 +323,6 @@ public class RigCallingMessage {
 					Util.Write(ref pointer, data.Offset.width, end);
 					Util.Write(ref pointer, data.Offset.height, end);
 				}
-			}
-
-			Util.Write(ref pointer, RequiringGizmosTextureIDCount, end);
-			for (int i = 0; i < RequiringGizmosTextureIDCount; i++) {
-				Util.Write(ref pointer, RequiringGizmosTextureIDs[i], end);
 			}
 
 			Util.Write(ref pointer, RequireGameMessageInvoke, end);

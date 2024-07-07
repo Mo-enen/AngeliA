@@ -255,11 +255,6 @@ public partial class RiggedGame : Game {
 				break;
 		}
 
-		// Gizmos Texture Requirement
-		for (int i = 0; i < CallingMessage.RequiringGizmosTextureIDCount; i++) {
-			RequiredGizmosTextures.Remove(CallingMessage.RequiringGizmosTextureIDs[i]);
-		}
-
 	}
 
 

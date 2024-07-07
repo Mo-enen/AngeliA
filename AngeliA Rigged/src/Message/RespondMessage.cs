@@ -24,8 +24,7 @@ public class RigRespondMessage {
 		public FRect Uv;
 		public bool Inverse;
 		public uint TextureRigID;
-		public int PngDataLength;
-		public byte[] PngData;
+		public Int3? MapPos;
 	}
 
 
@@ -159,7 +158,7 @@ public class RigRespondMessage {
 	}
 
 
-	public void ApplyToEngine (RigCallingMessage callingMessage, bool ignoreMouseInput) {
+	public void ApplyToEngine (RigCallingMessage callingMessage, int sheetIndex, bool ignoreMouseInput, Universe universe) {
 
 		Game.MusicVolume = MusicVolume;
 		Game.SoundVolume = SoundVolume;
@@ -168,9 +167,7 @@ public class RigRespondMessage {
 
 		// Cursor
 		if (!ignoreMouseInput) {
-			if (RequireSetCursorIndex <= -3) {
-				//Game.SetCursorToNormal();
-			} else {
+			if (RequireSetCursorIndex > -3) {
 				Cursor.SetCursor(RequireSetCursorIndex, int.MinValue + 1);
 			}
 		}
@@ -198,24 +195,17 @@ public class RigRespondMessage {
 			}
 		}
 
-		// Gizmos Texture
-		callingMessage.RequiringGizmosTextureIDCount = 0;
-		for (int i = 0; i < RequireGizmosTextureCount; i++) {
-			var data = RequireGizmosTextures[i];
-			// Get Texture
-			if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) {
-				if (data.PngDataLength > 0) {
-					texture = Game.PngBytesToTexture(data.PngData);
-					GizmosTexturePool.Add(data.TextureRigID, texture);
-				} else if (callingMessage.RequiringGizmosTextureIDCount < RigCallingMessage.REQUIRE_GIZMOS_TEXTURE_MAX_COUNT) {
-					// Require Back for the Texture
-					callingMessage.RequiringGizmosTextureIDs[callingMessage.RequiringGizmosTextureIDCount] = data.TextureRigID;
-					callingMessage.RequiringGizmosTextureIDCount++;
+		// Gizmos Texture Requirement
+		using (new SheetIndexScope(sheetIndex)) {
+			for (int i = 0; i < RequireGizmosTextureCount; i++) {
+				var data = RequireGizmosTextures[i];
+				if (!data.MapPos.HasValue) continue;
+				// Fill/New Texture
+				if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) {
+					texture = Game.GetTextureFromPixels(null, Const.MAP, Const.MAP);
 				}
-			} else if (data.PngDataLength > 0) {
-				// Override Texture
-				Game.UnloadTexture(texture);
-				texture = Game.PngBytesToTexture(data.PngData);
+				string mapPath = Util.CombinePaths(universe.MapRoot, WorldPathPool.GetWorldNameFromPosition(data.MapPos.Value));
+				World.LoadMapIntoTexture(mapPath, texture);
 				GizmosTexturePool[data.TextureRigID] = texture;
 			}
 		}
@@ -291,52 +281,52 @@ public class RigRespondMessage {
 		// Gizmos Texture
 		for (int i = 0; i < RequireGizmosTextureCount; i++) {
 			var data = RequireGizmosTextures[i];
+			if (data.MapPos.HasValue) continue;
 			if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) continue;
 			Game.DrawGizmosTexture(data.Rect.Shift(leftPadding / 2, 0), data.Uv, texture, data.Inverse);
 		}
 
 		// Message Layer/Cells >> Renderer Layer/Cells
 		int oldLayer = Renderer.CurrentLayerIndex;
-		int oldSheetIndex = Renderer.CurrentSheetIndex;
-		Renderer.CurrentSheetIndex = sheetIndex;
-		int fontIndexOffset = Game.BuiltInFontCount;
-		for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
-			if (Layers[layer] == null) {
-				Layers[layer] = new RenderingLayerData(Renderer.GetLayerCapacity(layer));
-			}
-			var layerData = Layers[layer];
-			int count = layerData.CellCount;
-			Renderer.SetLayer(layer);
-			for (int i = 0; i < count; i++) {
-				var cell = layerData.Cells[i];
-				Cell rCell = null;
-				if (cell.SpriteID != 0) {
-					if (Renderer.TryGetSprite(cell.SpriteID, out var sprite, ignoreAnimation: true)) {
-						rCell = Renderer.Draw(sprite, default);
-					}
-				} else if (cell.TextSpriteChar != '\0') {
-					if (Renderer.RequireCharForPool(cell.TextSpriteChar, cell.FontIndex + fontIndexOffset, out var charSprite)) {
-						rCell = Renderer.DrawChar(charSprite, 0, 0, 1, 1, Color32.WHITE);
-						rCell.TextSprite = charSprite;
-						if (rCell.TextSprite == null) rCell = null;
-					}
+		using (new SheetIndexScope(sheetIndex)) {
+			int fontIndexOffset = Game.BuiltInFontCount;
+			for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+				if (Layers[layer] == null) {
+					Layers[layer] = new RenderingLayerData(Renderer.GetLayerCapacity(layer));
 				}
-				if (rCell == null) continue;
-				rCell.X = cell.X + leftPadding / 2;
-				rCell.Y = cell.Y;
-				rCell.Z = cell.Z;
-				rCell.Width = cell.Width;
-				rCell.Height = cell.Height;
-				rCell.Rotation1000 = cell.Rotation1000;
-				rCell.PivotX = cell.PivotX;
-				rCell.PivotY = cell.PivotY;
-				rCell.Color = cell.Color;
-				rCell.Shift = cell.Shift;
-				rCell.BorderSide = cell.BorderSide;
+				var layerData = Layers[layer];
+				int count = layerData.CellCount;
+				Renderer.SetLayer(layer);
+				for (int i = 0; i < count; i++) {
+					var cell = layerData.Cells[i];
+					Cell rCell = null;
+					if (cell.SpriteID != 0) {
+						if (Renderer.TryGetSprite(cell.SpriteID, out var sprite, ignoreAnimation: true)) {
+							rCell = Renderer.Draw(sprite, default);
+						}
+					} else if (cell.TextSpriteChar != '\0') {
+						if (Renderer.RequireCharForPool(cell.TextSpriteChar, cell.FontIndex + fontIndexOffset, out var charSprite)) {
+							rCell = Renderer.DrawChar(charSprite, 0, 0, 1, 1, Color32.WHITE);
+							rCell.TextSprite = charSprite;
+							if (rCell.TextSprite == null) rCell = null;
+						}
+					}
+					if (rCell == null) continue;
+					rCell.X = cell.X + leftPadding / 2;
+					rCell.Y = cell.Y;
+					rCell.Z = cell.Z;
+					rCell.Width = cell.Width;
+					rCell.Height = cell.Height;
+					rCell.Rotation1000 = cell.Rotation1000;
+					rCell.PivotX = cell.PivotX;
+					rCell.PivotY = cell.PivotY;
+					rCell.Color = cell.Color;
+					rCell.Shift = cell.Shift;
+					rCell.BorderSide = cell.BorderSide;
+				}
 			}
 		}
 		Renderer.SetLayer(oldLayer);
-		Renderer.CurrentSheetIndex = oldSheetIndex;
 
 		// Black Side Border
 		if (CachedScreenWidth * 1000 / CachedScreenHeight > Const.VIEW_RATIO) {
@@ -463,15 +453,20 @@ public class RigRespondMessage {
 				var rect = new IRect(Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end));
 				var uv = new FRect(Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end));
 				var inverse = Util.ReadBool(ref pointer, end);
-				int pngLength = Util.ReadInt(ref pointer, end);
-				var png = pngLength > 0 ? Util.ReadBytes(ref pointer, pngLength, end) : null;
+				bool hasMapPos = Util.ReadBool(ref pointer, end);
+				Int3? mapPos = null;
+				if (hasMapPos) {
+					int _x = Util.ReadInt(ref pointer, end);
+					int _y = Util.ReadInt(ref pointer, end);
+					int _z = Util.ReadInt(ref pointer, end);
+					mapPos = new Int3(_x, _y, _z);
+				}
 				RequireGizmosTextures[i] = new GizmosTextureData() {
 					TextureRigID = id,
 					Rect = rect,
 					Uv = uv,
 					Inverse = inverse,
-					PngDataLength = pngLength,
-					PngData = png,
+					MapPos = mapPos,
 				};
 			}
 
@@ -611,9 +606,11 @@ public class RigRespondMessage {
 				Util.Write(ref pointer, data.Uv.width, end);
 				Util.Write(ref pointer, data.Uv.height, end);
 				Util.Write(ref pointer, data.Inverse, end);
-				Util.Write(ref pointer, data.PngDataLength, end);
-				if (data.PngDataLength > 0) {
-					Util.Write(ref pointer, data.PngData, data.PngData.Length, end);
+				Util.Write(ref pointer, data.MapPos.HasValue, end);
+				if (data.MapPos.HasValue) {
+					Util.Write(ref pointer, data.MapPos.Value.x, end);
+					Util.Write(ref pointer, data.MapPos.Value.y, end);
+					Util.Write(ref pointer, data.MapPos.Value.z, end);
 				}
 			}
 
@@ -663,7 +660,7 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, SoundVolume, end);
 			Util.Write(ref pointer, IsTyping, end);
 			Util.Write(ref pointer, SelectingPlayerID, end);
-			
+
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
 

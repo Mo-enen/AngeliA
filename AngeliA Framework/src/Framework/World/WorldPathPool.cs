@@ -34,7 +34,8 @@ public class WorldPathPool : Dictionary<Int3, string> {
 		return path;
 	}
 
-	private static string GetWorldNameFromPosition (int x, int y, int z) {
+	public static string GetWorldNameFromPosition (Int3 pos) => GetWorldNameFromPosition(pos.x, pos.y, pos.z);
+	public static string GetWorldNameFromPosition (int x, int y, int z) {
 		var pos = new Int3(x, y, z);
 		if (WorldNamePool.TryGetValue(pos, out string name)) {
 			return name;
