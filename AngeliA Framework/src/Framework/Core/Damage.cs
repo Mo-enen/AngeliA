@@ -11,13 +11,13 @@ public struct Damage {
 	public readonly bool IsMagical => Type.HasAll(Tag.MagicalDamage);
 	public int Amount;
 	public Tag Type;
-	public IRect SenderRect;
 	public Entity Sender;
-	public Damage (int amount, Entity sender, IRect senderRect, Tag type = Tag.GeneralDamage) {
+	public Entity Bullet;
+	public Damage (int amount, Entity sender, Entity bullet = null, Tag type = Tag.GeneralDamage) {
 		Amount = amount;
 		Sender = sender;
 		Type = type;
-		SenderRect = senderRect;
+		Bullet = bullet;
 	}
 }
 
@@ -47,7 +47,7 @@ public interface IDamageReceiver {
 				var hits = Physics.OverlapAll(PhysicsMask.DAMAGE, entity.Rect, out int count, entity, OperationMode.ColliderAndTrigger);
 				for (int j = 0; j < count; j++) {
 					var hit = hits[j];
-					receiver.TakeDamage(new Damage(1, null, hit.Rect, hit.Tag));
+					receiver.TakeDamage(new Damage(1, null, null, hit.Tag));
 				}
 			}
 		}

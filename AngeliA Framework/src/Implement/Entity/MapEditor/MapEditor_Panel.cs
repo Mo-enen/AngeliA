@@ -81,7 +81,7 @@ public partial class MapEditor {
 	private static readonly LanguageCode MENU_PALETTE_REMOVE_FROM_LIST = ("Menu.MEDT.RemoveFromList", "Remove from List:");
 	private static readonly LanguageCode MENU_PALETTE_CREATE_LIST = ("Menu.MEDT.CreateList", "Create List");
 	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST = ("Menu.MEDT.DeleteList", "Delete List");
-	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = ("Menu.MEDT.DeleteListMSG", "Delete List ");
+	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = ("Menu.MEDT.DeleteListMsg", "Delete List \"{0}\"?");
 	private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = ("Menu.MEDT.SetAsListCover", "Set as List Cover");
 	private const int SEARCH_BAR_ID = 3983472;
 
@@ -334,7 +334,7 @@ public partial class MapEditor {
 		// Tabs
 		for (int i = 0; i < 2; i++) {
 
-			int tabBorder = Unify(10);
+			int tabBorder = Unify(8);
 			bool selecting = i == (int)CurrentPaletteTab;
 			var tabRect = new IRect(
 				groupRect.x + i * groupRect.width / 2, groupRect.y, groupRect.width / 2, TAB_SIZE
@@ -432,12 +432,6 @@ public partial class MapEditor {
 					var group = PaletteGroups[i];
 					requiringTooltip = Language.Get(group.DisplayNameID, group.GroupName);
 					requiringTooltipRect = rect;
-				} else {
-					var list = EditorMeta.PinnedLists[i];
-					if (list.Icon != 0) {
-						requiringTooltip = PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "";
-						requiringTooltipRect = rect;
-					}
 				}
 			}
 
@@ -952,7 +946,10 @@ public partial class MapEditor {
 			// Delete List
 			GenericPopupUI.AddItem(MENU_PALETTE_DELETE_LIST, () =>
 				GenericDialogUI.SpawnDialog(
-					$"{MENU_PALETTE_DELETE_LIST_MSG} \"{(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")}\"?",
+					$"{string.Format(
+						MENU_PALETTE_DELETE_LIST_MSG,
+						(PalettePool.TryGetValue(list.Icon, out var pal) ? pal.Name : "")
+					)}",
 					BuiltInText.UI_DELETE, () => EditorMeta.PinnedLists.Remove(list),
 					BuiltInText.UI_CANCEL, Const.EmptyMethod
 			), enabled: EditorMeta.PinnedLists.Count > 1);

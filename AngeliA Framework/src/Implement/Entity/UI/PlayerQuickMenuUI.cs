@@ -17,11 +17,14 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	private class WeaponSorter : IComparer<Weapon> {
 		public static readonly WeaponSorter Instance = new();
-		public int Compare (Weapon x, Weapon y) {
-			if (x is null) return y is null ? 0 : 1;
-			if (y is null) return x is null ? 0 : -1;
-			int result = ((int)x.WeaponType).CompareTo((int)y.WeaponType);
-			if (result == 0) result = x.TypeID.CompareTo(y.TypeID);
+		public int Compare (Weapon a, Weapon b) {
+			if (a is null) return b is null ? 0 : 1;
+			if (b is null) return -1;
+			int result = ((int)a.WeaponType).CompareTo((int)b.WeaponType);
+			if (result != 0) return result;
+			result = ((int)a.Handheld).CompareTo((int)b.Handheld);
+			if (result != 0) return result;
+			result = a.TypeName.CompareTo(b.TypeName);
 			return result;
 		}
 	}

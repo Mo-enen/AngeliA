@@ -85,7 +85,11 @@ public partial class PixelEditor {
 			case Tool.Bucket:
 				// Bucket
 				if (HoveringSpriteStageIndex < 0) break;
-				BucketPixel(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y);
+				if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+					ReplaceColorInSprite(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y, PaintingColor);
+				} else {
+					BucketPixel(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y);
+				}
 				break;
 
 			case Tool.Select:
@@ -335,13 +339,11 @@ public partial class PixelEditor {
 
 			case DragState.SelectOrCreateSprite:
 
-				bool hasSelectionBefore = SelectingSpriteCount > 0;
-
 				// Select Sprite
 				SelectSpritesOverlap(DraggingPixelRect);
 
 				// Create Sprite
-				if (!hasSelectionBefore && SelectingSpriteCount == 0 && DraggingPixelRect.width > 0 && DraggingPixelRect.height > 0) {
+				if (SelectingSpriteCount == 0 && DraggingPixelRect.width > 0 && DraggingPixelRect.height > 0) {
 					// Create Sprite
 					var pixelRect = DraggingPixelRect;
 					if (pixelRect.width > 0 && pixelRect.height > 0 && (pixelRect.width > 1 || pixelRect.height > 1)) {
@@ -450,7 +452,7 @@ public partial class PixelEditor {
 				}
 			}
 			// Size Hint
-			DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
+			//DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
 		} else if (CurrentTool == Tool.Rect) {
 			// Painting Rect
 			var stageRect = Pixel_to_Stage(DraggingPixelRect);
@@ -481,7 +483,7 @@ public partial class PixelEditor {
 				}
 			}
 			// Size Hint
-			DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
+			//DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
 		}
 	}
 
@@ -516,6 +518,7 @@ public partial class PixelEditor {
 					Skin.GizmosDragging.WithNewA(128),
 					GizmosThickness * 2
 				);
+				DrawSizeHint(resizingPixRect.Value.size, StageRect.BottomRight());
 			}
 		}
 	}
@@ -1047,6 +1050,39 @@ public partial class PixelEditor {
 	}
 
 
+	private void ReplaceColorInSprite (int spriteIndex, int pixelX, int pixelY, Color32 newColor) {
+		if (spriteIndex < 0 || spriteIndex >= StagedSprites.Count) return;
+		var spData = StagedSprites[spriteIndex];
+		var sprite = spData.Sprite;
+		var pixelRect = sprite.PixelRect;
+		if (!pixelRect.Contains(pixelX, pixelY)) return;
+		int localX = pixelX - pixelRect.xMin;
+		int localY = pixelY - pixelRect.yMin;
+		var targetColor = sprite.Pixels[localY * pixelRect.width + localX];
+		if (targetColor == PaintingColor) return;
+		RegisterUndo(new PaintUndoItem() {
+			SpriteID = sprite.ID,
+		});
+		// Start
+		for (int i = 0; i < sprite.Pixels.Length; i++) {
+			var px = sprite.Pixels[i];
+			if (px != targetColor) continue;
+			RegisterUndo(new IndexedPixelUndoItem() {
+				LocalPixelIndex = i,
+				From = px,
+				To = newColor,
+			});
+			sprite.Pixels[i] = newColor;
+		}
+		// End
+		RegisterUndo(new PaintUndoItem() {
+			SpriteID = sprite.ID,
+		});
+		spData.PixelDirty = true;
+		SetDirty();
+	}
+
+
 	private void FlipPixelSelection (bool horizontal) {
 		if (PixelSelectionPixelRect == default) return;
 		var oldSelection = PixelSelectionPixelRect;
@@ -1085,10 +1121,8 @@ public partial class PixelEditor {
 			Util.Max(downPos.y + 1, pos.y + 1)
 		);
 		// Force Square
-		if (result.width != result.height && Input.KeyboardHolding(KeyboardKey.LeftShift)) {
-			result.x += result.width > result.height && pos.x < downPos.x ? Util.Abs(result.width - result.height) : 0;
-			result.y += result.width < result.height && pos.y < downPos.y ? Util.Abs(result.width - result.height) : 0;
-			result.width = result.height = Util.Min(result.width, result.height);
+		if (Input.KeyboardHolding(KeyboardKey.LeftShift)) {
+			result = result.ForceSquare(pos.x < downPos.x, pos.y < downPos.y);
 		}
 		return result;
 	}
@@ -1102,47 +1136,66 @@ public partial class PixelEditor {
 		var oldSpritePxRect = resizingSp.Sprite.PixelRect;
 		var resizingPixRect = oldSpritePxRect;
 		var resizingNormal = ResizingDirection.GetNormal();
-		if (resizingNormal.x == -1) {
-			// Left
-			var mousePixPos = Stage_to_Pixel(
-				Pixel_to_Stage(oldSpritePxRect.position).RoundToInt() + Input.MouseGlobalPosition - Input.MouseLeftDownGlobalPosition,
-				round: true
-			);
-			resizingPixRect.xMin = mousePixPos.x.Clamp(
-				resizingPixRect.xMax - STAGE_SIZE,
-				resizingPixRect.xMax - 1
-			);
-		} else if (resizingNormal.x == 1) {
-			// Right
-			var mousePixPos = Stage_to_Pixel(
-				Pixel_to_Stage(oldSpritePxRect.TopRight()).RoundToInt() + Input.MouseGlobalPosition - Input.MouseLeftDownGlobalPosition,
-				round: true
-			);
-			resizingPixRect.xMax = mousePixPos.x.Clamp(
-				resizingPixRect.xMin + 1,
-				resizingPixRect.xMin + STAGE_SIZE
-			);
+		bool forceSquare = Input.KeyboardHolding(KeyboardKey.LeftShift);
+		var mousePos = Input.MouseGlobalPosition;
+		var mouseDownPos = Input.MouseLeftDownGlobalPosition;
+		bool ignoreX = forceSquare && resizingNormal.x * resizingNormal.y != 0 && Util.Abs(mousePos.x - mouseDownPos.x) < Util.Abs(mousePos.y - mouseDownPos.y);
+		bool ignoreY = forceSquare && resizingNormal.x * resizingNormal.y != 0 && Util.Abs(mousePos.x - mouseDownPos.x) >= Util.Abs(mousePos.y - mouseDownPos.y);
+
+		if (!ignoreX) {
+			if (resizingNormal.x == -1) {
+				// Left
+				var mousePixPos = Stage_to_Pixel(
+					Pixel_to_Stage(oldSpritePxRect.position).RoundToInt() + mousePos - mouseDownPos,
+					round: true
+				);
+				resizingPixRect.xMin = mousePixPos.x.Clamp(
+					resizingPixRect.xMax - STAGE_SIZE,
+					resizingPixRect.xMax - 1
+				);
+			} else if (resizingNormal.x == 1) {
+				// Right
+				var mousePixPos = Stage_to_Pixel(
+					Pixel_to_Stage(oldSpritePxRect.TopRight()).RoundToInt() + mousePos - mouseDownPos,
+					round: true
+				);
+				resizingPixRect.xMax = mousePixPos.x.Clamp(
+					resizingPixRect.xMin + 1,
+					resizingPixRect.xMin + STAGE_SIZE
+				);
+			}
 		}
 
-		if (resizingNormal.y == -1) {
-			// Down
-			var mousePixPos = Stage_to_Pixel(
-				Pixel_to_Stage(oldSpritePxRect.position).RoundToInt() + Input.MouseGlobalPosition - Input.MouseLeftDownGlobalPosition,
-				round: true
-			);
-			resizingPixRect.yMin = mousePixPos.y.Clamp(
-				resizingPixRect.yMax - STAGE_SIZE,
-				resizingPixRect.yMax - 1
-			);
-		} else if (resizingNormal.y == 1) {
-			// Up
-			var mousePixPos = Stage_to_Pixel(
-				Pixel_to_Stage(oldSpritePxRect.TopRight()).RoundToInt() + Input.MouseGlobalPosition - Input.MouseLeftDownGlobalPosition,
-				round: true
-			);
-			resizingPixRect.yMax = mousePixPos.y.Clamp(
-				resizingPixRect.yMin + 1,
-				resizingPixRect.yMin + STAGE_SIZE
+		if (!ignoreY) {
+			if (resizingNormal.y == -1) {
+				// Down
+				var mousePixPos = Stage_to_Pixel(
+					Pixel_to_Stage(oldSpritePxRect.position).RoundToInt() + mousePos - mouseDownPos,
+					round: true
+				);
+				resizingPixRect.yMin = mousePixPos.y.Clamp(
+					resizingPixRect.yMax - STAGE_SIZE,
+					resizingPixRect.yMax - 1
+				);
+			} else if (resizingNormal.y == 1) {
+				// Up
+				var mousePixPos = Stage_to_Pixel(
+					Pixel_to_Stage(oldSpritePxRect.TopRight()).RoundToInt() + mousePos - mouseDownPos,
+					round: true
+				);
+				resizingPixRect.yMax = mousePixPos.y.Clamp(
+					resizingPixRect.yMin + 1,
+					resizingPixRect.yMin + STAGE_SIZE
+				);
+			}
+		}
+
+		// Force Square
+		if (forceSquare) {
+			resizingPixRect = resizingPixRect.ForceSquare(
+				resizingNormal.x < 0,
+				resizingNormal.y < 0,
+				resizingPixRect.width > oldSpritePxRect.width || resizingPixRect.height > oldSpritePxRect.height
 			);
 		}
 

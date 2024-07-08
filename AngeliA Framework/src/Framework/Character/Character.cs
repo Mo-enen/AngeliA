@@ -173,7 +173,7 @@ public abstract partial class Character : Rigidbody {
 					AttackWhenDashing.Override(weapon.AttackWhenDashing);
 					AttackWhenSliding.Override(weapon.AttackWhenSliding);
 					AttackWhenGrabbing.Override(weapon.AttackWhenGrabbing);
-					AttackWhenRush.Override(weapon.AttackWhenRush);
+					AttackWhenRush.Override(weapon.AttackWhenRushing);
 					AttackWhenPounding.Override(weapon.AttackWhenPounding);
 				}
 			}

@@ -64,7 +64,7 @@ public abstract class Bullet : Entity {
 			if (hit.Entity is not IDamageReceiver receiver) continue;
 			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 			if (receiver is Entity e && !e.Active) continue;
-			receiver.TakeDamage(new Damage(Damage, Sender, Rect, DamageType));
+			receiver.TakeDamage(new Damage(Damage, Sender, this, DamageType));
 			if (DestroyOnHitReceiver) {
 				Active = false;
 				BeforeDespawn(receiver);

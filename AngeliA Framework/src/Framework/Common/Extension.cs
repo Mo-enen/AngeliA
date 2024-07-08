@@ -823,6 +823,20 @@ public static class Extension {
 		return true;
 	}
 
+	public static IRect ForceSquare (this IRect rect, bool toLeft, bool toBottom, bool grow = false) {
+		if (rect.width == rect.height) return rect;
+		if (grow) {
+			rect.x -= rect.width < rect.height && toLeft ? Util.Abs(rect.width - rect.height) : 0;
+			rect.y -= rect.width > rect.height && toBottom ? Util.Abs(rect.width - rect.height) : 0;
+			rect.width = rect.height = Util.Max(rect.width, rect.height);
+		} else {
+			rect.x += rect.width > rect.height && toLeft ? Util.Abs(rect.width - rect.height) : 0;
+			rect.y += rect.width < rect.height && toBottom ? Util.Abs(rect.width - rect.height) : 0;
+			rect.width = rect.height = Util.Min(rect.width, rect.height);
+		}
+		return rect;
+	}
+
 
 	// Misc
 	public static bool IsSame (this Color32 a, Color32 b, bool ignoreAlpha = false) => a.r == b.r && a.g == b.g && a.b == b.b && (ignoreAlpha || a.a == b.a);

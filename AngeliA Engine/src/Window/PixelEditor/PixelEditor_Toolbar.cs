@@ -47,13 +47,7 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_RULE_EMPTY = "Icon.Empty";
 	private static readonly SpriteCode ICON_RULE_MODE_A = "Icon.RuleModeA";
 	private static readonly SpriteCode ICON_RULE_MODE_B = "Icon.RuleModeB";
-	private static readonly SpriteCode[] UI_TOOL = {
-		"UI.Tool.Rect",
-		"UI.Tool.Line",
-		"UI.Tool.Bucket",
-		"UI.Tool.Select",
-		"UI.Tool.Sprite",
-	};
+	private static SpriteCode[] UI_TOOLS;
 
 	// Language
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.ImportPNG", "Import PNG file");
@@ -93,7 +87,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode MENU_NEW_SPRITE = ("Menu.CreateNewSprite", "New Sprite");
 	private static readonly LanguageCode MENU_NEW_PAL_SPRITE = ("Menu.CreateNewPalette", "New Palette");
 	private static readonly LanguageCode MENU_NEW_CHAR_SPRITE = ("Menu.CreateNewCharacterSprite", "New Character Sprites");
-
+	private static LanguageCode[] TIP_TOOLS;
 
 	// Data
 	private static readonly byte[] RuleCache = new byte[8];
@@ -154,10 +148,11 @@ public partial class PixelEditor {
 		rect = toolRect.Edge(Direction4.Up, Unify(30));
 		for (int i = 0; i < ToolCount; i++) {
 			bool selecting = CurrentTool == (Tool)i;
-			bool newSelecting = GUI.ToggleButton(rect, selecting, UI_TOOL[i], Skin.SmallDarkButton);
+			bool newSelecting = GUI.ToggleButton(rect, selecting, UI_TOOLS[i], Skin.SmallDarkButton);
 			if (newSelecting && !selecting) {
 				SetCurrentTool((Tool)i);
 			}
+			RequireTooltip(rect, TIP_TOOLS[i]);
 			rect.SlideDown(padding);
 		}
 
@@ -251,13 +246,6 @@ public partial class PixelEditor {
 				RequireTooltip(rect, TIP_PAINTING_COLOR);
 				rect.SlideRight(padding);
 			}
-		}
-
-		// Color Adjust
-		if (CurrentTool == Tool.Select && PixelSelectionPixelRect != default) {
-
-			// TODO
-
 		}
 
 	}

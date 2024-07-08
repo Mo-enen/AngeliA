@@ -199,7 +199,7 @@ public static class FrameworkUtil {
 		if (!Renderer.TryGetSprite(spriteID, out var ring, true)) return;
 
 		float ease01Ex = Ease.OutCubic((float)localFrame / duration);
-		tint.a = (byte)Util.LerpUnclamped(255, 0, ease01Ex);
+		tint.a = (byte)Util.LerpUnclamped(tint.a, 0, ease01Ex);
 		int ringRadius = radius * 9 / 10;
 		Renderer.DrawSlice(
 			ring, centerX, centerY, 500, 500,

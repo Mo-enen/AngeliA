@@ -18,12 +18,13 @@ public abstract class MovableBullet : Bullet {
 	public virtual int ResidueParticleID => 0;
 	public virtual int ArtworkID => TypeID;
 	public virtual int Scale => 1000;
-	public virtual int WaterSpeedRate => 60;
+	public virtual int WaterSpeedRate => 200;
 	protected override int Duration => 600;
 	protected override bool DestroyOnHitEnvironment => true;
 	protected override bool DestroyOnHitReceiver => true;
 	public int CurrentRotation { get; set; }
 	public Int2 Velocity { get; set; }
+	public bool InWater { get; private set; } = false;
 
 	// MSG
 	public override void BeforeUpdate () {
@@ -32,7 +33,8 @@ public abstract class MovableBullet : Bullet {
 		if (!Active) return;
 
 		var vel = Velocity;
-		if (Physics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, Tag.Water)) {
+		InWater = Physics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, Tag.Water);
+		if (InWater) {
 			vel.x = vel.x * WaterSpeedRate / 1000;
 			vel.y = vel.y * WaterSpeedRate / 1000;
 		}
@@ -191,7 +193,7 @@ public abstract class MovableBullet : Bullet {
 	}
 
 	// API
-	public void StartMove (bool facingRight, int addSpeedX, int addSpeedY) {
+	public virtual void StartMove (bool facingRight, int addSpeedX, int addSpeedY) {
 		Velocity = new Int2(facingRight ? SpeedX + addSpeedX : -SpeedX - addSpeedX, SpeedY + addSpeedY);
 		CurrentRotation = facingRight ? StartRotation : -StartRotation;
 	}

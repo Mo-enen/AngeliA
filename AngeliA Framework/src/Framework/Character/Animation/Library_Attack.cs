@@ -1472,7 +1472,7 @@ public class PoseAttack_Arrow : PoseAnimation {
 		float ease01 = isCharging ?
 			Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
 			Target.LastAttackCharged ? 1f : Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
-		
+
 		AttackHeadDown(ease01, 0, 200, -1000, 0);
 		ResetShoulderAndUpperArm();
 

@@ -106,7 +106,7 @@ public class Explosion : Entity {
 				if (receiver is Entity e && !e.Active) continue;
 				var hitRect = hits[i].Rect;
 				if (!Util.OverlapRectCircle(Radius, X, Y, hitRect.xMin, hitRect.yMin, hitRect.xMax, hitRect.yMax)) continue;
-				receiver.TakeDamage(new Damage(Damage, Sender, Rect, Tag.ExplosiveDamage));
+				receiver.TakeDamage(new Damage(Damage, Sender, this, Tag.ExplosiveDamage));
 			}
 			SpawnSmoke();
 			SpawnBreakingObject();

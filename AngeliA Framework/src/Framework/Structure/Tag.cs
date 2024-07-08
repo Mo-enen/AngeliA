@@ -34,6 +34,9 @@ public enum Tag : int {
 	ExplosiveDamage = 1 << 20,
 	MagicalDamage = 1 << 21,
 	PoisonDamage = 1 << 22,
+	FireDamage = 1 << 23,
+	IceDamage = 1 << 24,
+	LightenDamage = 1 << 25,
 
 }
 
@@ -48,7 +51,7 @@ public static class TagUtil {
 
 	public static bool HasAny (this Tag self, Tag musk) => (self & musk) != 0;
 
-	public const int TAG_COUNT = 23;
+	public const int TAG_COUNT = 26;
 
 	public static readonly string[] ALL_TAG_NAMES = new string[TAG_COUNT] {
 
@@ -80,6 +83,9 @@ public static class TagUtil {
 		Tag.ExplosiveDamage.ToString(),
 		Tag.MagicalDamage.ToString(),
 		Tag.PoisonDamage.ToString(),
+		Tag.FireDamage.ToString(),
+		Tag.IceDamage.ToString(),
+		Tag.LightenDamage.ToString(),
 
 	};
 

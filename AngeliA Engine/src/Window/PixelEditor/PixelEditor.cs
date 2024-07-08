@@ -198,6 +198,17 @@ public partial class PixelEditor : WindowUI {
 			string rawName = ((AtlasType)i).ToString();
 			ATLAS_TYPE_NAMES[i] = Language.Get($"AtlasType.{rawName}".AngeHash(), rawName);
 		}
+		// Tool Names
+		int toolCount = Instance.ToolCount;
+		UI_TOOLS = new SpriteCode[toolCount];
+		for (int i = 0; i < toolCount; i++) {
+			UI_TOOLS[i] = $"UI.Tool.{(Tool)i}";
+		}
+		// Tool Tips
+		TIP_TOOLS = new LanguageCode[toolCount];
+		for (int i = 0; i < toolCount; i++) {
+			TIP_TOOLS[i] = ($"Tip.PixelTool.{(Tool)i}", ((Tool)i).ToString());
+		}
 		return TaskResult.End;
 	}
 
@@ -1451,15 +1462,15 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void DrawSizeHint (Int2 size, Int2 pos, bool left = true) {
+	private void DrawSizeHint (Int2 size, Int2 stagePos, bool left = true) {
 
 		int height = Unify(24);
 		int padding = Unify(6);
 		int bgPadding = Unify(3);
-		int l = pos.x;
-		int r = pos.x;
+		int l = stagePos.x;
+		int r = stagePos.x;
 		var bgCell = Renderer.DrawPixel(default, Color32.BLACK);
-		var rect = new IRect(pos.x, pos.y, 1, height);
+		var rect = new IRect(stagePos.x, stagePos.y, 1, height);
 		var style = left ? Skin.SmallRightLabel : Skin.SmallLabel;
 
 		GUI.IntLabel(rect, size[left ? 1 : 0], out var bounds, style);

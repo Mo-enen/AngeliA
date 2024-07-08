@@ -129,6 +129,15 @@ public static partial class Util {
 	}
 
 
+	public static int QuickRandom (int seed, int min, int max) {
+		seed = (seed * 1103515245 + 12345) % 23456789;
+		seed = (seed * 16807) % 2147483647;
+		seed = (seed ^ (seed >> 16)) % 2147483647;
+		seed = (seed * 2127912213) % 2147483647;
+		return seed.UMod(max - min) + min;
+	}
+
+
 	public static int ExecuteCommand (string workingDirectory, string arguments, int logID = -1, bool wait = true) {
 		try {
 			var info = new ProcessStartInfo {

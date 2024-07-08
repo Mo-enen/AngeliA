@@ -27,6 +27,7 @@ public abstract class Weapon : Equipment {
 	public abstract WeaponHandheld Handheld { get; }
 	public int BulletDelayFrame => AttackDuration * BulletDelay / 1000;
 	public int SheetIndex { get; private set; } = -1;
+	public string TypeName { get; init; }
 	protected virtual int BulletDelay => 0;
 	public virtual int AttackDuration => 12;
 	public virtual int AttackCooldown => 2;
@@ -48,13 +49,13 @@ public abstract class Weapon : Equipment {
 	public virtual bool AttackWhenDashing => false;
 	public virtual bool AttackWhenSliding => false;
 	public virtual bool AttackWhenGrabbing => false;
-	public virtual bool AttackWhenRush => false;
+	public virtual bool AttackWhenRushing => false;
 	public virtual bool AttackWhenPounding => false;
 	protected virtual bool IgnoreGrabTwist => false;
 
 
 	// MSG
-	public Weapon () : this(true) { }
+	public Weapon () : this(true) => TypeName = GetType().AngeName();
 
 
 	public Weapon (bool loadArtwork) {
