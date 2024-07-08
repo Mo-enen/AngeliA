@@ -26,7 +26,7 @@ public class IceBurstParticle : Particle {
 		Tint = Tint.WithNewA(Util.Lerp(255, 0, lerp01).RoundToInt());
 	}
 
-	public static void SpawnBurst (int x, int y, Color32 tint, int scale = 1000, int count = 3) {
+	public static void SpawnBurst (int x, int y, Color32 tint, int scale = 1000, int count = 3, int fall = 42) {
 		for (int i = 0; i < count; i++) {
 			if (Stage.SpawnEntity(TYPE_ID, x, y) is not IceBurstParticle particle) continue;
 			particle.Tint = tint;
@@ -35,7 +35,7 @@ public class IceBurstParticle : Particle {
 			particle.Rotation = Util.QuickRandom(Game.GlobalFrame + i * 163).UMod(360);
 			particle._Scale = scale * (Util.QuickRandom(Game.GlobalFrame + i * 4116).UMod(800) + 300) / 1000;
 			particle.FallSpeedStart = Util.QuickRandom(Game.GlobalFrame + i * 8345).UMod(96) - 48;
-			particle.FallSpeed = Util.QuickRandom(Game.GlobalFrame + i * 23923454).UMod(42);
+			particle.FallSpeed = Util.QuickRandom(Game.GlobalFrame + i * 23923454).UMod(fall);
 			particle.ShiftSpeedStart = Util.QuickRandom(Game.GlobalFrame + i * 89412).UMod(48) - 24;
 			particle.ShiftSpeed = 0;
 		}

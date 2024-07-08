@@ -310,7 +310,7 @@ public class WorldSquad : IBlockSquad {
 		if (!ignoreCollider) {
 			// Collider
 			if (!Renderer.TryGetSprite(id, out var sp)) return;
-			if (sp.Tag.HasAny(TagUtil.DamageMusk)) {
+			if (sp.Tag.HasAny(TagUtil.AllDamages)) {
 				Physics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, sp.Tag);
 			}
 			rect = rect.Shrink(

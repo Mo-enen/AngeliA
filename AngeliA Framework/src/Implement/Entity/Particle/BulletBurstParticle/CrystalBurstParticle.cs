@@ -15,11 +15,12 @@ public class CrystalBurstParticle : Particle {
 	public int _Scale { get; set; } = 1000;
 	public int FallSpeed { get; set; } = Const.CEL / 12;
 	public int FallSpeedStart { get; set; } = 0;
+	public int ShiftSpeed { get; set; } = 0;
+	public int ShiftSpeedStart { get; set; } = 0;
 
 
 	public override void OnActivated () {
 		base.OnActivated();
-		_Scale = 1000;
 		FallSpeed = Const.CEL / 12;
 		FallSpeedStart = 0;
 	}
@@ -27,20 +28,23 @@ public class CrystalBurstParticle : Particle {
 
 	public override void Update () {
 		base.Update();
+		X += Util.Lerp(ShiftSpeedStart, ShiftSpeed, (LocalFrame * 2f) / Duration).RoundToInt();
 		Y -= Util.Lerp(FallSpeedStart, FallSpeed, (LocalFrame * 2f) / Duration).RoundToInt();
 		Tint = Tint.WithNewA(Util.Lerp(255, 0, (float)LocalFrame / Duration).RoundToInt());
 	}
 
 
 	// API
-	public static void SpawnBurst (int x, int y, int scale = 1000) => SpawnBurst(x, y, Color32.WHITE, scale);
-	public static void SpawnBurst (int x, int y, Color32 tint, int scale = 1000, int count = 1) {
+	public static void SpawnBurst (int x, int y, Color32 tint, int scale = 1000, int count = 1, int fall = 20, int shift = 0) {
 		for (int i = 0; i < count; i++) {
 			if (Stage.SpawnEntity(TYPE_ID, x, y) is not CrystalBurstParticle particle) continue;
 			particle.Tint = tint;
 			particle.Rotation = Util.QuickRandom(Game.GlobalFrame + i * 163).UMod(360);
 			particle.FallSpeedStart = 0;
-			particle.FallSpeed = Util.QuickRandom(Game.GlobalFrame + i * 23923454).UMod(20);
+			particle.FallSpeed = fall;
+			particle.ShiftSpeedStart = shift;
+			particle.ShiftSpeed = 0;
+			particle._Scale = scale;
 		}
 	}
 

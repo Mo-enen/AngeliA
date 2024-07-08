@@ -1,4 +1,5 @@
-namespace AngeliA; 
+namespace AngeliA;
+
 public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 
 	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
@@ -6,13 +7,11 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 	protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	protected override bool DestroyWhenInsideGround => false;
 	protected override bool PhysicsEnable => false;
-	protected virtual bool ReceivePhysicalDamage => true;
-	protected virtual bool ReceiveExplosionDamage => true;
+	protected virtual Tag IgnoreDamageType => Tag.None;
 
 	void IDamageReceiver.TakeDamage (Damage damage) {
 		if (!Active || damage.Amount <= 0) return;
-		if (!ReceivePhysicalDamage && damage.IsPhysical) return;
-		if (!ReceiveExplosionDamage && damage.IsExplosive) return;
+		if (IgnoreDamageType.HasAll(damage.Type)) return;
 		Active = false;
 		OnBreak();
 	}

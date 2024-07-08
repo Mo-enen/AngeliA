@@ -7,7 +7,8 @@ public class SkeletonPile : Breakable {
 
 	private int ArtworkCode = 0;
 	private IRect FullRect = default;
-	protected override bool ReceivePhysicalDamage => false;
+	protected override Tag IgnoreDamageType => TagUtil.NonExplosiveDamage;
+
 
 	public override void OnActivated () {
 		base.OnActivated();

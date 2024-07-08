@@ -134,7 +134,7 @@ public static partial class Util {
 		seed = (seed * 16807) % 2147483647;
 		seed = (seed ^ (seed >> 16)) % 2147483647;
 		seed = (seed * 2127912213) % 2147483647;
-		return seed.UMod(max - min) + min;
+		return seed.UMod((max - min).GreaterOrEquel(1)) + min;
 	}
 
 

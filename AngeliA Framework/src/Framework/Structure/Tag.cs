@@ -30,7 +30,7 @@ public enum Tag : int {
 	Random = 1 << 17,
 	Palette = 1 << 18,
 
-	GeneralDamage = 1 << 19,
+	PhysicalDamage = 1 << 19,
 	ExplosiveDamage = 1 << 20,
 	MagicalDamage = 1 << 21,
 	PoisonDamage = 1 << 22,
@@ -43,16 +43,10 @@ public enum Tag : int {
 
 public static class TagUtil {
 
-	public static Tag GetTagAt (int index) => (Tag)(1 << index);
-
-	public static readonly Tag DamageMusk = Tag.GeneralDamage | Tag.ExplosiveDamage | Tag.MagicalDamage | Tag.PoisonDamage;
-
-	public static bool HasAll (this Tag self, Tag flag) => (self & flag) == flag;
-
-	public static bool HasAny (this Tag self, Tag musk) => (self & musk) != 0;
-
+	// Const
+	public const Tag NonExplosiveDamage = Tag.PhysicalDamage | Tag.MagicalDamage | Tag.PoisonDamage | Tag.FireDamage | Tag.IceDamage | Tag.LightenDamage;
+	public const Tag AllDamages = Tag.ExplosiveDamage | Tag.PhysicalDamage | Tag.MagicalDamage | Tag.PoisonDamage | Tag.FireDamage | Tag.IceDamage | Tag.LightenDamage;
 	public const int TAG_COUNT = 26;
-
 	public static readonly string[] ALL_TAG_NAMES = new string[TAG_COUNT] {
 
 		Tag.OnewayUp.ToString(),
@@ -79,7 +73,7 @@ public static class TagUtil {
 		Tag.Random.ToString(),
 		Tag.Palette.ToString(),
 
-		Tag.GeneralDamage.ToString(),
+		Tag.PhysicalDamage.ToString(),
 		Tag.ExplosiveDamage.ToString(),
 		Tag.MagicalDamage.ToString(),
 		Tag.PoisonDamage.ToString(),
@@ -88,5 +82,13 @@ public static class TagUtil {
 		Tag.LightenDamage.ToString(),
 
 	};
+
+	// API
+	public static Tag GetTagAt (int index) => (Tag)(1 << index);
+
+	public static bool HasAll (this Tag self, Tag flag) => (self & flag) == flag;
+
+	public static bool HasAny (this Tag self, Tag musk) => (self & musk) != 0;
+
 
 }

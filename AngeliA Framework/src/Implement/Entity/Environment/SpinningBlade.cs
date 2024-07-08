@@ -6,7 +6,7 @@ namespace AngeliA;
 public class SpinningBlade : EnvironmentEntity {
 
 
-	public override void FirstUpdate () => Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect.Expand(1), true, Tag.GeneralDamage);
+	public override void FirstUpdate () => Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect.Expand(1), true, Tag.PhysicalDamage);
 
 
 	public override void LateUpdate () {

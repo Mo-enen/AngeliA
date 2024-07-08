@@ -8,7 +8,7 @@ public class Rock : Breakable {
 	private static readonly int CODE = "Rock".AngeHash();
 	private int ArtworkCode = 0;
 	private Int4 ArtworkOffset = default;
-	protected override bool ReceivePhysicalDamage => false;
+	protected override Tag IgnoreDamageType => TagUtil.NonExplosiveDamage;
 
 	public override void OnActivated () {
 		base.OnActivated();

@@ -15,7 +15,7 @@ public abstract class Bullet : Entity {
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
 	protected virtual int Duration => 60;
 	protected virtual int Damage => 1;
-	protected virtual Tag DamageType => Tag.GeneralDamage;
+	protected virtual Tag DamageType => Tag.PhysicalDamage;
 	protected virtual int SpawnWidth => Const.CEL;
 	protected virtual int SpawnHeight => Const.CEL;
 	protected virtual bool DestroyOnHitEnvironment => false;

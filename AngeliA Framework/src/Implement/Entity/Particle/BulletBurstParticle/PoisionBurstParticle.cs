@@ -30,13 +30,14 @@ public class PoisionBurstParticle : Particle {
 	}
 
 
-	public static PoisionBurstParticle Spawn (int x, int y, int radius, int ringSpriteID, Color32 burstTint, Color32 ringTint, int scale = 1000) {
+	public static PoisionBurstParticle SpawnBurst (int x, int y, int radius, int ringSpriteID, Color32 burstTint, Color32 ringTint, int scale = 1000) {
 		if (Stage.SpawnEntity(TYPE_ID, x, y) is not PoisionBurstParticle particle) return null;
 		particle._Scale = scale;
 		particle.Radius = radius;
 		particle.Tint = burstTint;
 		particle.RingTint = ringTint;
 		particle.RingID = ringSpriteID;
+		particle.Rotation = Util.QuickRandom(Game.GlobalFrame * 123783641, 0, 360);
 		return particle;
 	}
 
