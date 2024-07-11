@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
+namespace AngeliA;
 
-namespace AngeliA; 
 public class QuickSmokeSmallParticle : Particle {
 	public override int Duration => 10;
 	public override bool Loop => false;
-	public override void DrawParticle () {
-		base.DrawParticle();
+	public override void LateUpdate () {
+		if (!Active) return;
 		int smokeDuration = Duration - 4;
 		int smokeFrame = (Game.GlobalFrame - SpawnFrame - 4).GreaterOrEquelThanZero();
 		int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);
@@ -28,8 +28,8 @@ public class QuickSmokeSmallParticle : Particle {
 public class QuickSmokeBigParticle : Particle {
 	public override int Duration => 10;
 	public override bool Loop => false;
-	public override void DrawParticle () {
-		base.DrawParticle();
+	public override void LateUpdate () {
+		if (!Active) return;
 		int smokeDuration = Duration - 4;
 		int smokeFrame = (Game.GlobalFrame - SpawnFrame - 4).GreaterOrEquelThanZero();
 		int _smokeFrame = smokeDuration * smokeDuration - (smokeDuration - smokeFrame) * (smokeDuration - smokeFrame);

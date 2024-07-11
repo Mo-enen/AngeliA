@@ -690,6 +690,12 @@ public static class Renderer {
 
 
 	// Animation
+	public static int GetAnimationGroupDuration (int chainID) {
+		if (!TryGetSpriteGroup(chainID, out var group) || !group.Animated) return 0;
+		return CurrentSheet.GetSpriteAnimationDuration(group);
+	}
+	public static int GetAnimationGroupDuration (SpriteGroup group) => CurrentSheet.GetSpriteAnimationDuration(group);
+
 	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame) {
 		if (!TryGetSpriteGroup(chainID, out var group) || !group.Animated) return Cell.EMPTY;
 		return DrawAnimation(group, x, y, pivotX, pivotY, rotation, width, height, frame);

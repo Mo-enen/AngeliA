@@ -80,15 +80,17 @@ public abstract class Bullet : Entity {
 
 	/// <returns>True if the bullet need to self destroy</returns>
 	protected virtual bool EnvironmentHitCheck () {
-		bool requireSelfDestroy = false;
-		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
-			if (DestroyOnHitEnvironment) {
-				Active = false;
-				requireSelfDestroy = true;
-				BeforeDespawn(null);
+		if (DestroyOnHitEnvironment && Physics.Overlap(EnvironmentMask, Rect, Sender)) {
+			Active = false;
+			BeforeDespawn(null);
+			switch (DamageType) {
+				case Tag.FireDamage:
+					Fire.SpreadFire(CommonFire.TYPE_ID, Rect, Const.CEL);
+					break;
 			}
+			return true;
 		}
-		return requireSelfDestroy;
+		return false;
 	}
 
 	public bool GroundCheck (out Color32 groundTint) {

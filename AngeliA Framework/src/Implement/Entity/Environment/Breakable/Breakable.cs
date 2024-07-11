@@ -21,7 +21,7 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 	}
 	protected virtual void OnBreak () {
 		Stage.MarkAsGlobalAntiSpawn(this);
-		BreakingParticle.SpawnParticles(TypeID, Rect);
+		GlobalEvent.InvokeObjectBreak(TypeID, Rect);
 	}
 
 }

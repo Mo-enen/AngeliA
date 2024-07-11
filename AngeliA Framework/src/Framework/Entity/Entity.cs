@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 [EntityAttribute.Capacity(1024, 0)]
@@ -19,7 +19,7 @@ public abstract class Entity : IMapItem {
 	public int Width { get; set; } = Const.CEL;
 	public int Height { get; set; } = Const.CEL;
 	public int TypeID { get; init; }
-	public int SpawnFrame { get; internal set; } = int.MinValue;
+	public int SpawnFrame { get; internal protected set; } = int.MinValue;
 	public bool FromWorld => InstanceID.x != int.MinValue;
 	public virtual IRect Rect => new(X, Y, Width, Height);
 	public IRect GlobalBounds => LocalBounds.Shift(X, Y);

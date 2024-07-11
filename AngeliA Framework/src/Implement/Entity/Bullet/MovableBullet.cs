@@ -153,50 +153,31 @@ public abstract class MovableBullet : Bullet {
 
 	protected override void BeforeDespawn (IDamageReceiver receiver) {
 		base.BeforeDespawn(receiver);
-		SpawnFreeFallPartical(receiver);
-	}
-
-	private void SpawnFreeFallPartical (IDamageReceiver receiver) {
-
-		int particleID = ResidueParticleID != 0 ? ResidueParticleID : FreeFallParticle.TYPE_ID;
-		if (Stage.SpawnEntity(particleID, X + Width / 2, Y + Height / 2) is not FreeFallParticle particle) return;
-
-		particle.ArtworkID = ArtworkID;
-
-		if (Renderer.TryGetSprite(ArtworkID, out var sprite)) {
-			particle.Width = sprite.GlobalWidth;
-			particle.Height = sprite.GlobalHeight;
+		if (ResidueParticleID != 0) {
+			// Custom
+			Stage.SpawnEntity(ResidueParticleID, X + Width / 2, Y + Height / 2);
 		} else {
-			particle.Width = Const.HALF;
-			particle.Height = Const.HALF;
-		}
+			// Default
 
-		if (EndRotationRandomRange == -1) {
-			particle.Rotation = Util.QuickRandom(Game.GlobalFrame).UMod(360);
-		} else if (EndRotationRandomRange == 0) {
-			particle.Rotation = EndRotation;
-		} else {
-			int endDelta = ((CurrentRotation - EndRotation + 180).UMod(360) - 180).Clamp(-EndRotationRandomRange, EndRotationRandomRange);
-			particle.Rotation = EndRotation + endDelta;
-		}
-		if (Velocity.x < 0) {
-			particle.Rotation += 180;
-			particle.FlipX = true;
-		}
-		particle.CurrentSpeedX = -Velocity.x / 2;
-
-		particle.AirDragX = 2;
-		if (receiver == null) {
-			// Environmnet
-			particle.RotateSpeed = 0;
-			particle.CurrentSpeedX = 0;
-			particle.CurrentSpeedY = 0;
-			particle.Gravity = 0;
-		} else {
-			// Receiver
-			particle.RotateSpeed = 12;
-			particle.CurrentSpeedY = 42;
-			particle.Gravity = 5;
+			int rot =
+				EndRotationRandomRange == -1 ? Util.QuickRandom(Game.GlobalFrame).UMod(360) :
+				EndRotationRandomRange == 0 ? EndRotation :
+				EndRotation + ((CurrentRotation - EndRotation + 180).UMod(360) - 180).Clamp(-EndRotationRandomRange, EndRotationRandomRange);
+			rot += Velocity.x < 0 ? 180 : 0;
+			int rotSpeed = receiver == null ? 0 : 12;
+			int speedY = receiver == null ? 0 : 42;
+			int gravity = receiver == null ? 0 : 5;
+			GlobalEvent.InvokeObjectFreeFall(
+				ArtworkID,
+				x: X + Width / 2,
+				y: Y + Height / 2,
+				speedX: 0,
+				speedY: speedY,
+				rotation: rot,
+				rotationSpeed: rotSpeed,
+				gravity: gravity,
+				flipX: Velocity.x < 0
+			);
 		}
 	}
 

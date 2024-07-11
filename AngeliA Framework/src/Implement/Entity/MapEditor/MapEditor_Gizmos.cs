@@ -409,7 +409,8 @@ public class MapEditorBlinkParticle : Particle {
 	public override int Duration => 8;
 	public override bool Loop => false;
 	public int SpriteID { get; set; } = Const.PIXEL;
-	public override void DrawParticle () {
+	public override void LateUpdate () {
+		if (!Active) return;
 		Renderer.SetLayerToAdditive();
 		var tint = Tint;
 		tint.a = (byte)((Duration - LocalFrame) * Tint.a / 2 / Duration).Clamp(0, 255);

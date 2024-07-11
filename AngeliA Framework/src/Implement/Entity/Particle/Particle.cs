@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-public class DefaultParticle : Particle {
-	public override int Duration => 30;
-	public override bool Loop => false;
-}
 
 
 [EntityAttribute.ExcludeInMapEditor]
@@ -21,6 +17,7 @@ public abstract class Particle : Entity {
 	public abstract bool Loop { get; }
 	public virtual int Scale => 1000;
 	public virtual int RenderingZ => int.MinValue;
+	public virtual int AutoArtworkID => TypeID;
 
 	// Api
 	public Color32 Tint { get; set; } = Color32.WHITE;
@@ -39,31 +36,27 @@ public abstract class Particle : Entity {
 	}
 
 
-	public override void LateUpdate () {
-		base.LateUpdate();
+	public sealed override void BeforeUpdate () {
+		base.BeforeUpdate();
 		if (!Loop && Game.GlobalFrame >= SpawnFrame + Duration) {
 			Active = false;
-			return;
-		}
-		if (IsAutoParticle) {
-			// Artwork ID
-			if (Renderer.TryGetSpriteGroup(TypeID, out var group) && group.Count > 0) {
-				float framePerSprite = (float)Duration / group.Count;
-				if (Renderer.TryGetSprite(group[(LocalFrame / framePerSprite).RoundToInt().Clamp(0, group.Count - 1)], out var sprite, true)) {
-					Renderer.Draw(
-						sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
-						sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
-					);
-				}
-			}
-		} else {
-			// Procedure
-			DrawParticle();
 		}
 	}
 
 
-	public virtual void DrawParticle () { }
+	public override void LateUpdate () {
+		base.LateUpdate();
+		if (!Active || !IsAutoParticle) return;
+		// Artwork ID
+		if (!Renderer.TryGetSpriteGroup(AutoArtworkID, out var group) || group.Count == 0) return;
+		float framePerSprite = (float)Duration / group.Count;
+		if (Renderer.TryGetSprite(group[(LocalFrame / framePerSprite).RoundToInt().Clamp(0, group.Count - 1)], out var sprite, true)) {
+			Renderer.Draw(
+				sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
+				sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
+			);
+		}
+	}
 
 
 }

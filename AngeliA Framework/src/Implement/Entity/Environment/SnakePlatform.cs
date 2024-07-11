@@ -52,15 +52,7 @@ public abstract class SnakePlatform : Platform {
 		if (EndReachingFrame >= 0) {
 			if (Game.GlobalFrame > EndReachingFrame + EndBreakDuration) {
 				// Particle
-				if (Stage.SpawnEntity(FreeFallParticle.TYPE_ID, X, Y) is FreeFallParticle particle) {
-					particle.ArtworkID = TypeID;
-					particle.CurrentSpeedX = CurrentDirection.Normal().x * 6;
-					particle.CurrentSpeedY = Const.CEL / 4;
-					particle.RotateSpeed = 4;
-					particle.Gravity = 4;
-					particle.AirDragX = 0;
-					particle.Color = Color32.WHITE_196;
-				}
+				GlobalEvent.InvokeObjectFreeFall(TypeID, X + Width / 2, Y + Height / 2, rotation: 0);
 				// Reset
 				X = StartPosition.x;
 				Y = StartPosition.y;

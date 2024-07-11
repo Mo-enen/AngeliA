@@ -341,7 +341,7 @@ public abstract partial class Character : Rigidbody {
 			// Teleport Event
 			if (
 				TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1
-			) InvokeCharacterEvent(OnTeleport);
+			) OnTeleport?.Invoke(this);
 
 			// Step
 			if (IsGrounded) {
@@ -350,23 +350,23 @@ public abstract partial class Character : Rigidbody {
 					(IsDashing && (Game.GlobalFrame - LastDashFrame) % 8 == 0) || // Dash
 					(IsRushing && (Game.GlobalFrame - LastRushFrame) % 3 == 0) // Rush
 				) {
-					InvokeCharacterEvent(OnFootStepped);
+					OnFootStepped?.Invoke(this);
 				}
 			}
 
 			// Jump Fly Crash Slide Bounce
 			if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) Bounce();
-			if (IsSliding && Game.GlobalFrame % 24 == 0) InvokeCharacterEvent(OnSlideStepped);
-			if (Game.GlobalFrame == LastJumpFrame) InvokeCharacterEvent(OnJump);
-			if (Game.GlobalFrame == LastFlyFrame) InvokeCharacterEvent(OnFly);
-			if (Game.GlobalFrame == LastCrashFrame) InvokeCharacterEvent(OnCrash);
+			if (IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(this);
+			if (Game.GlobalFrame == LastJumpFrame) OnJump?.Invoke(this);
+			if (Game.GlobalFrame == LastFlyFrame) OnFly?.Invoke(this);
+			if (Game.GlobalFrame == LastCrashFrame) OnCrash?.Invoke(this);
 		}
 
 		// Sleep
 		if (CharacterState == CharacterState.Sleep) {
 			// ZZZ Particle
 			if (Game.GlobalFrame % 42 == 0) {
-				InvokeCharacterEvent(OnSleeping);
+				OnSleeping?.Invoke(this);
 			}
 		}
 	}
@@ -407,9 +407,6 @@ public abstract partial class Character : Rigidbody {
 	protected abstract void RenderCharacter ();
 
 
-	protected virtual void InvokeCharacterEvent (CharacterEventHandler handler) => handler?.Invoke(this);
-
-
 	#endregion
 
 
@@ -445,7 +442,7 @@ public abstract partial class Character : Rigidbody {
 
 			case CharacterState.PassOut:
 				PassOutFrame = Game.GlobalFrame;
-				InvokeCharacterEvent(OnPassOut);
+				OnPassOut?.Invoke(this);
 				break;
 
 		}

@@ -195,6 +195,8 @@ public class Sheet {
 		TexturePool.Clear();
 	}
 
+	public int GetSpriteAnimationDuration (SpriteGroup aniGroup) => aniGroup.Count == 0 ? 0 : GetTiming(SpritePool, aniGroup, aniGroup.Count);
+
 	public int GetSpriteIdFromAnimationFrame (SpriteGroup group, int localFrame, int loopStart = -1) {
 
 		int len = group.Count;
@@ -210,30 +212,6 @@ public class Sheet {
 
 		// Get Target Index
 		return GetTimingID(SpritePool, group, localFrame);
-
-		// Func
-		static int GetTiming (Dictionary<int, AngeSprite> pool, SpriteGroup group, int spriteIndex) {
-			int result = 0;
-			var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
-			for (int i = 0; i < spriteIndex; i++) {
-				int id = span[i];
-				if (!pool.TryGetValue(id, out var sprite)) continue;
-				result += sprite.Duration;
-			}
-			return result;
-		}
-		static int GetTimingID (Dictionary<int, AngeSprite> pool, SpriteGroup group, int targetTiming) {
-			int result = 0;
-			int totalDuration = 0;
-			var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
-			for (int i = 0; i < group.Count; i++) {
-				int id = result = span[i];
-				if (!pool.TryGetValue(id, out var sprite)) continue;
-				totalDuration += sprite.Duration;
-				if (totalDuration >= targetTiming) break;
-			}
-			return result;
-		}
 	}
 
 	public bool TryGetTextureFromPool (int spriteID, out object texture) {
@@ -539,6 +517,33 @@ public class Sheet {
 			if (groupIndex >= 0) Groups.RemoveAt(groupIndex);
 			GroupPool.Remove(group.ID);
 		}
+	}
+
+
+	// Timing Util
+	private static int GetTiming (Dictionary<int, AngeSprite> pool, SpriteGroup group, int spriteIndex) {
+		int result = 0;
+		var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
+		int len = Util.Min(spriteIndex, span.Length);
+		for (int i = 0; i < len; i++) {
+			int id = span[i];
+			if (!pool.TryGetValue(id, out var sprite)) continue;
+			result += sprite.Duration;
+		}
+		return result;
+	}
+
+	private static int GetTimingID (Dictionary<int, AngeSprite> pool, SpriteGroup group, int targetTiming) {
+		int result = 0;
+		int totalDuration = 0;
+		var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
+		for (int i = 0; i < group.Count; i++) {
+			int id = result = span[i];
+			if (!pool.TryGetValue(id, out var sprite)) continue;
+			totalDuration += sprite.Duration;
+			if (totalDuration >= targetTiming) break;
+		}
+		return result;
 	}
 
 

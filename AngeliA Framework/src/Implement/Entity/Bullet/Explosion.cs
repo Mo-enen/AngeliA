@@ -219,7 +219,7 @@ public class Explosion : Entity {
 
 	protected virtual void SpawnBreakingObject () {
 		if (BreakObjectArtwork == 0) return;
-		BreakingParticle.SpawnParticles(BreakObjectArtwork, new IRect(X, Y, Const.CEL, Const.CEL));
+		GlobalEvent.InvokeObjectBreak(BreakObjectArtwork, new IRect(X, Y, Const.CEL, Const.CEL));
 	}
 
 

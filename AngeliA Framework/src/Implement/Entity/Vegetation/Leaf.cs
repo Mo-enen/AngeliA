@@ -158,7 +158,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 				rect.width = sprite.GlobalWidth;
 			}
 		}
-		BreakingParticle.SpawnParticles(id, rect, true);
+		GlobalEvent.InvokeObjectBreak(id, rect, true);
 		Stage.MarkAsLocalAntiSpawn(this);
 		// Disable
 		Active = false;
