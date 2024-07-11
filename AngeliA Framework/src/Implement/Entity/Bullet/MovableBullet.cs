@@ -32,11 +32,18 @@ public abstract class MovableBullet : Bullet {
 
 	// Data
 	private int BeamLength = 0;
+	private int BeamEndX;
+	private int BeamEndY;
+	private bool BeamHitReceiver = false;
+
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		BeamLength = 0;
+		BeamEndX = X;
+		BeamEndY = Y;
+		BeamHitReceiver = false;
 	}
 
 	public override void BeforeUpdate () {
@@ -117,10 +124,9 @@ public abstract class MovableBullet : Bullet {
 		}
 	}
 
-	public override void Update () { }
-
 	public override void LateUpdate () {
 		base.LateUpdate();
+		if (!Active) return;
 		if (Renderer.TryGetSprite(ArtworkID, out var sprite)) {
 			int facingSign = Velocity.x.Sign();
 			CurrentRotation += facingSign * RotateSpeed;
@@ -182,15 +188,20 @@ public abstract class MovableBullet : Bullet {
 	}
 
 	private bool MovableHitCheck () {
+		bool selfDestroy = false;
 		int stepCount = Util.Max(
 			Velocity.x.Abs().CeilDivide(Width),
 			Velocity.y.Abs().CeilDivide(Height)
 		);
+		if (stepCount <= 1) {
+			selfDestroy = base.EnvironmentHitCheck();
+			selfDestroy = base.ReceiverHitCheck() || selfDestroy;
+			return selfDestroy;
+		}
 		int limitedStepCount = stepCount.LessOrEquel(Util.Max(
 			Stage.ViewRect.width.CeilDivide(Width),
 			Stage.ViewRect.height.CeilDivide(Height)
 		));
-		bool selfDestroy = false;
 		int oldX = X, oldY = Y;
 		int fromX = X - Velocity.x;
 		int fromY = Y - Velocity.y;
@@ -202,12 +213,16 @@ public abstract class MovableBullet : Bullet {
 			rangeSq = (X - fromX) * (X - fromX) + (Y - fromY) * (Y - fromY);
 			if (rangeSq >= maxRangeSq) break;
 			selfDestroy = base.EnvironmentHitCheck();
-			selfDestroy = base.ReceiverHitCheck() || selfDestroy;
+			bool hitRec = base.ReceiverHitCheck();
+			selfDestroy = hitRec || selfDestroy;
 			if (selfDestroy) {
 				BeamLength = Util.BabylonianSqrt(rangeSq);
+				BeamHitReceiver = hitRec;
 				break;
 			}
 		}
+		BeamEndX = X;
+		BeamEndY = Y;
 		if (!selfDestroy) {
 			BeamLength = Util.BabylonianSqrt(rangeSq);
 		}
@@ -222,11 +237,14 @@ public abstract class MovableBullet : Bullet {
 		CurrentRotation = facingRight ? StartRotation : -StartRotation;
 	}
 
-	protected (int x, int y, int length, int rotation1000) GetLastBeamTramsform () => (
-		X + Width / 2,
-		Y + Height / 2,
+	protected (int x, int y, int endX, int endY, int length, int rotation1000, bool beamHitReceiver) GetLastBeamTramsform () => (
+		X + Width / 2 - Velocity.x,
+		Y + Height / 2 - Velocity.y,
+		BeamEndX,
+		BeamEndY,
 		BeamLength,
-		(Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt()
+		(-Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt(),
+		BeamHitReceiver
 	);
 
 }

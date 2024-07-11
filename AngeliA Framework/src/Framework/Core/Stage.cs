@@ -326,7 +326,7 @@ public static class Stage {
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				try {
-					span[index].FirstUpdate();
+					span[index].UpdateToFirst();
 				} catch (Exception ex) { Debug.LogException(ex); }
 			}
 		}
@@ -337,9 +337,9 @@ public static class Stage {
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				var e = span[index];
-				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
+				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
-						e.BeforeUpdate();
+						e.UpdateToBefore();
 					} catch (Exception ex) { Debug.LogException(ex); }
 				}
 			}
@@ -351,9 +351,9 @@ public static class Stage {
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				var e = span[index];
-				if (e.UpdateOutOfRange || e.FrameUpdated || ViewRect.Overlaps(e.GlobalBounds)) {
+				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || ViewRect.Overlaps(e.GlobalBounds)) {
 					try {
-						e.Update();
+						e.UpdateToUpdate();
 					} catch (Exception ex) { Debug.LogException(ex); }
 				}
 			}
@@ -370,8 +370,7 @@ public static class Stage {
 				if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
 					try {
 						Renderer.SetLayerToDefault();
-						e.LateUpdate();
-						e.FrameUpdated = true;
+						e.UpdateToLate();
 					} catch (Exception ex) { Debug.LogException(ex); }
 				}
 			}
@@ -797,7 +796,7 @@ public static class Stage {
 				entity.Height = Const.CEL;
 				entity.Active = true;
 				entity.OnActivated();
-				entity.FrameUpdated = false;
+				entity.UpdateStep = 0;
 				entity.SpawnFrame = Game.GlobalFrame;
 				return entity;
 			}
@@ -811,7 +810,6 @@ public static class Stage {
 		try {
 			entity.OnInactivated();
 		} catch (Exception ex) { Debug.LogException(ex); }
-		entity.FrameUpdated = false;
 		StagedEntityHash.Remove(entity.InstanceID);
 		if (meta == null && EntityPool.TryGetValue(entity.TypeID, out meta)) {
 			meta.Push(entity);

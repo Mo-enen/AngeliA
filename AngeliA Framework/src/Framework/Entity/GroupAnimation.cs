@@ -15,11 +15,11 @@ public class GroupAnimation : Entity {
 	private int FramePerSprite = 3;
 	private int PivotX = 0;
 	private int PivotY = 0;
-	private int Rotation = 0;
+	private int Rotation1000 = 0;
 	private int RotationSpeed = 0;
+	private int RenderingLayer = RenderLayer.DEFAULT;
 	private bool Loop = true;
 	private Color32 Tint = Color32.WHITE;
-
 
 	// MSG
 	public sealed override void BeforeUpdate () {
@@ -29,42 +29,46 @@ public class GroupAnimation : Entity {
 		}
 	}
 
-
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
 		// Render
 		if (Renderer.TryGetSpriteGroup(ArtworkID, out var group) && group.Count > 0) {
-			Rotation += RotationSpeed;
+			using var _ = new LayerScope(RenderingLayer);
+			Rotation1000 += RotationSpeed * 1000;
+			Cell[] cells;
 			if (FramePerSprite < 0) {
 				// Auto Ani
-				Renderer.DrawAnimation(
-					group, X, Y, PivotX, PivotY, Rotation, Width, Height, Game.GlobalFrame - SpawnFrame
+				int id = Renderer.CurrentSheet.GetSpriteIdFromAnimationFrame(group, Game.GlobalFrame - SpawnFrame);
+				cells = Renderer.DrawSlice(
+					id, X, Y, PivotX, PivotY, 0, Width, Height
 				);
 			} else {
 				// Even Ani
 				int spIndex = (Game.GlobalFrame - SpawnFrame).UDivide(FramePerSprite);
 				spIndex = Loop ? spIndex.UMod(group.Count) : spIndex.Clamp(0, group.Count - 1);
 				var sp = group[spIndex];
-				Renderer.Draw(sp, X, Y, PivotX, PivotY, Rotation, Width, Height, Tint, RenderingZ);
+				cells = Renderer.DrawSlice(sp, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ);
+			}
+			for (int i = 0; i < cells.Length; i++) {
+				cells[i].Rotation1000 = Rotation1000;
 			}
 		}
 	}
-
-
+	
 	// API
-	public static void Spawn (int groupID, int x, int y, int framePerSprite = 3) {
+	public static void Spawn (int groupID, int x, int y, int framePerSprite = 3, int renderLayer = RenderLayer.DEFAULT) {
 		if (!Renderer.TryGetSpriteFromGroup(groupID, 0, out var sprite, true, true, true)) return;
 		Spawn(
 			groupID, x, y, sprite.GlobalWidth, sprite.GlobalHeight, sprite.PivotX, sprite.PivotY,
-			0, 0, -1, framePerSprite, false, Color32.WHITE, int.MaxValue - 1
+			0, 0, -1, framePerSprite, false, Color32.WHITE, int.MaxValue - 1, renderLayer
 		);
 	}
-	public static void Spawn (int groupID, int x, int y, int rotation, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1) {
+	public static void Spawn (int groupID, int x, int y, int rotation1000, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1, int renderLayer = RenderLayer.DEFAULT) {
 		if (!Renderer.TryGetSpriteFromGroup(groupID, 0, out var sprite, true, true, true)) return;
-		Spawn(groupID, x, y, sprite.GlobalWidth, sprite.GlobalHeight, sprite.PivotX, sprite.PivotY, rotation, rotationSpeed, duration, framePerSprite, loop, tint, z);
+		Spawn(groupID, x, y, sprite.GlobalWidth, sprite.GlobalHeight, sprite.PivotX, sprite.PivotY, rotation1000, rotationSpeed, duration, framePerSprite, loop, tint, z, renderLayer);
 	}
-	public static void Spawn (int groupID, int x, int y, int width, int height, int pivotX, int pivotY, int rotation, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1) {
+	public static void Spawn (int groupID, int x, int y, int width, int height, int pivotX, int pivotY, int rotation1000, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1, int renderLayer = RenderLayer.DEFAULT) {
 		if (!Renderer.TryGetSpriteGroup(groupID, out var group) || group.Count == 0) return;
 		// Auto Duration
 		if (duration <= 0) {
@@ -87,10 +91,10 @@ public class GroupAnimation : Entity {
 		ani.Height = height;
 		ani.PivotX = pivotX;
 		ani.PivotY = pivotY;
-		ani.Rotation = rotation;
+		ani.Rotation1000 = rotation1000;
 		ani.RotationSpeed = rotationSpeed;
 		ani.Tint = tint;
+		ani.RenderingLayer = renderLayer;
 	}
-
 
 }

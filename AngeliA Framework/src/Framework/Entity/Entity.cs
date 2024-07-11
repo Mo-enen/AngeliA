@@ -28,7 +28,7 @@ public abstract class Entity : IMapItem {
 	// Inter
 	internal Int3 InstanceID { get; set; } = default;
 	internal IRect LocalBounds { get; set; } = default;
-	internal bool FrameUpdated { get; set; } = false;
+	internal byte UpdateStep { get; set; } = 0;
 	internal int PhysicsOperationStamp { get; set; } = int.MaxValue;
 	internal bool DestroyOnZChanged { get; set; } = true;
 	internal bool DespawnOutOfRange { get; set; } = true;
@@ -39,10 +39,32 @@ public abstract class Entity : IMapItem {
 	public Entity () => TypeID = GetType().AngeHash();
 	public virtual void OnActivated () { }
 	public virtual void OnInactivated () { }
-	public virtual void FirstUpdate () { }
-	public virtual void BeforeUpdate () { }
-	public virtual void Update () { }
-	public virtual void LateUpdate () { }
+	public virtual void FirstUpdate () { }  // 0 >> 1
+	public virtual void BeforeUpdate () { } // 1 >> 2
+	public virtual void Update () { }       // 2 >> 3
+	public virtual void LateUpdate () { }   // 3 >> 4
 
+	public void UpdateToFirst () {
+		FirstUpdate();
+		UpdateStep = 1;
+	}
+	public void UpdateToBefore () {
+		if (UpdateStep == 0) FirstUpdate();
+		BeforeUpdate();
+		UpdateStep = 2;
+	}
+	public void UpdateToUpdate () {
+		if (UpdateStep == 0) FirstUpdate();
+		if (UpdateStep <= 1) BeforeUpdate();
+		Update();
+		UpdateStep = 3;
+	}
+	public void UpdateToLate () {
+		if (UpdateStep == 0) FirstUpdate();
+		if (UpdateStep <= 1) BeforeUpdate();
+		if (UpdateStep <= 2) Update();
+		LateUpdate();
+		UpdateStep = 4;
+	}
 
 }

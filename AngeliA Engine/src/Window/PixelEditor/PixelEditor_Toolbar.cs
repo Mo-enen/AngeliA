@@ -1010,7 +1010,7 @@ public partial class PixelEditor {
 			}
 
 			// Duration
-			if (duration > 0 && duration != sprite.Duration) {
+			if (duration >= 0 && duration != sprite.Duration) {
 				RegisterUndo(new SpriteDurationUndoItem() {
 					SpriteID = sprite.ID,
 					From = sprite.Duration,
