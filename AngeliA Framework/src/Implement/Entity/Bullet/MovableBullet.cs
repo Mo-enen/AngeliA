@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+public class EmptyMovableBullet : MovableBullet { }
+
+
 [EntityAttribute.Capacity(8, 0)]
 public abstract class MovableBullet : Bullet {
 
@@ -19,6 +22,7 @@ public abstract class MovableBullet : Bullet {
 	public virtual int ArtworkID => TypeID;
 	public virtual int Scale => 1000;
 	public virtual int WaterSpeedRate => 200;
+	public virtual int MaxRange => 46339;
 	protected override int Duration => 600;
 	protected override bool DestroyOnHitEnvironment => true;
 	protected override bool DestroyOnHitReceiver => true;
@@ -26,9 +30,22 @@ public abstract class MovableBullet : Bullet {
 	public Int2 Velocity { get; set; }
 	public bool InWater { get; private set; } = false;
 
+	// Data
+	private int BeamLength = 0;
+
 	// MSG
+	public override void OnActivated () {
+		base.OnActivated();
+		BeamLength = 0;
+	}
+
 	public override void BeforeUpdate () {
-		base.BeforeUpdate();
+
+		// Life Check
+		if (Game.GlobalFrame > SpawnFrame + Duration) {
+			Active = false;
+			return;
+		}
 
 		if (!Active) return;
 
@@ -47,6 +64,9 @@ public abstract class MovableBullet : Bullet {
 		if (Gravity > 0) {
 			Velocity = new Int2(Velocity.x, Velocity.y - Gravity);
 		}
+
+		// Hit Check
+		MovableHitCheck();
 
 		// Out of Range Check
 		if (!Stage.ViewRect.Overlaps(Rect)) {
@@ -97,22 +117,7 @@ public abstract class MovableBullet : Bullet {
 		}
 	}
 
-	public override void Update () {
-		int stepCount = Util.Max(Velocity.x.Abs().CeilDivide(Width), Velocity.y.Abs().CeilDivide(Height));
-		if (stepCount <= 1) {
-			ReceiverHitCheck(Rect);
-		} else {
-			var rect = Rect;
-			int fromX = X - Velocity.x;
-			int fromY = Y - Velocity.y;
-			for (int i = 0; i < stepCount; i++) {
-				rect.x = Util.RemapUnclamped(0, stepCount, fromX, X, i + 1);
-				rect.y = Util.RemapUnclamped(0, stepCount, fromY, Y, i + 1);
-				ReceiverHitCheck(rect);
-				if (!Active) break;
-			}
-		}
-	}
+	public override void Update () { }
 
 	public override void LateUpdate () {
 		base.LateUpdate();
@@ -147,8 +152,11 @@ public abstract class MovableBullet : Bullet {
 	}
 
 	protected override void BeforeDespawn (IDamageReceiver receiver) {
-
 		base.BeforeDespawn(receiver);
+		SpawnFreeFallPartical(receiver);
+	}
+
+	private void SpawnFreeFallPartical (IDamageReceiver receiver) {
 
 		int particleID = ResidueParticleID != 0 ? ResidueParticleID : FreeFallParticle.TYPE_ID;
 		if (Stage.SpawnEntity(particleID, X + Width / 2, Y + Height / 2) is not FreeFallParticle particle) return;
@@ -192,10 +200,52 @@ public abstract class MovableBullet : Bullet {
 		}
 	}
 
+	private bool MovableHitCheck () {
+		int stepCount = Util.Max(
+			Velocity.x.Abs().CeilDivide(Width),
+			Velocity.y.Abs().CeilDivide(Height)
+		);
+		int limitedStepCount = stepCount.LessOrEquel(Util.Max(
+			Stage.ViewRect.width.CeilDivide(Width),
+			Stage.ViewRect.height.CeilDivide(Height)
+		));
+		bool selfDestroy = false;
+		int oldX = X, oldY = Y;
+		int fromX = X - Velocity.x;
+		int fromY = Y - Velocity.y;
+		int maxRangeSq = MaxRange * MaxRange;
+		int rangeSq = 0;
+		for (int i = 0; i < limitedStepCount; i++) {
+			X = Util.RemapUnclamped(0, stepCount, fromX, oldX, i + 1);
+			Y = Util.RemapUnclamped(0, stepCount, fromY, oldY, i + 1);
+			rangeSq = (X - fromX) * (X - fromX) + (Y - fromY) * (Y - fromY);
+			if (rangeSq >= maxRangeSq) break;
+			selfDestroy = base.EnvironmentHitCheck();
+			selfDestroy = base.ReceiverHitCheck() || selfDestroy;
+			if (selfDestroy) {
+				BeamLength = Util.BabylonianSqrt(rangeSq);
+				break;
+			}
+		}
+		if (!selfDestroy) {
+			BeamLength = Util.BabylonianSqrt(rangeSq);
+		}
+		X = oldX;
+		Y = oldY;
+		return selfDestroy;
+	}
+
 	// API
 	public virtual void StartMove (bool facingRight, int addSpeedX, int addSpeedY) {
 		Velocity = new Int2(facingRight ? SpeedX + addSpeedX : -SpeedX - addSpeedX, SpeedY + addSpeedY);
 		CurrentRotation = facingRight ? StartRotation : -StartRotation;
 	}
+
+	protected (int x, int y, int length, int rotation1000) GetLastBeamTramsform () => (
+		X + Width / 2,
+		Y + Height / 2,
+		BeamLength,
+		(Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt()
+	);
 
 }

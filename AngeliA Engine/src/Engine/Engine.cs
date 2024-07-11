@@ -17,7 +17,7 @@ public partial class Engine {
 	#region --- VAR ---
 
 
-	// Const
+	// Const 
 	private const int NOTIFY_DURATION = 120;
 	private const int WINDOW_BAR_WIDTH_FULL = 160;
 	private const int WINDOW_BAR_WIDTH_NORMAL = 42;

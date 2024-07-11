@@ -41,21 +41,19 @@ public abstract class Bullet : Entity {
 			return;
 		}
 		// Environment Hit Check
-		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
-			if (DestroyOnHitEnvironment) {
-				Active = false;
-				BeforeDespawn(null);
-			}
-		}
+		EnvironmentHitCheck();
 	}
 
 	public override void Update () {
 		base.Update();
-		ReceiverHitCheck(Rect);
+		ReceiverHitCheck();
 	}
 
 	// Api
-	protected void ReceiverHitCheck (IRect rect) {
+	/// <returns>True if the bullet need to self destroy</returns>
+	protected virtual bool ReceiverHitCheck () {
+		var rect = Rect;
+		bool requireSelfDestroy = false;
 		var hits = Physics.OverlapAll(
 			ReceiverMask, rect, out int count, Sender, OperationMode.ColliderAndTrigger
 		);
@@ -65,11 +63,32 @@ public abstract class Bullet : Entity {
 			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 			if (receiver is Entity e && !e.Active) continue;
 			receiver.TakeDamage(new Damage(Damage, Sender, this, DamageType));
+			// Type Logic
+			switch (DamageType) {
+				case Tag.FireDamage:
+					Fire.SpreadFire(CommonFire.TYPE_ID, Rect, Const.CEL);
+					break;
+			}
 			if (DestroyOnHitReceiver) {
 				Active = false;
+				requireSelfDestroy = true;
 				BeforeDespawn(receiver);
 			}
 		}
+		return requireSelfDestroy;
+	}
+
+	/// <returns>True if the bullet need to self destroy</returns>
+	protected virtual bool EnvironmentHitCheck () {
+		bool requireSelfDestroy = false;
+		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
+			if (DestroyOnHitEnvironment) {
+				Active = false;
+				requireSelfDestroy = true;
+				BeforeDespawn(null);
+			}
+		}
+		return requireSelfDestroy;
 	}
 
 	public bool GroundCheck (out Color32 groundTint) {

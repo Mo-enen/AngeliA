@@ -20,8 +20,8 @@ public abstract class Weapon : Equipment {
 
 
 	// VAR
-	public int BulletID { get; init; }
-	public int SpriteID { get; private set; }
+	public int BulletID { get; protected set; }
+	public int SpriteID { get; protected set; }
 	public sealed override EquipmentType EquipmentType => EquipmentType.Weapon;
 	public abstract WeaponType WeaponType { get; }
 	public abstract WeaponHandheld Handheld { get; }

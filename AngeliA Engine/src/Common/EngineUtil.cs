@@ -46,6 +46,7 @@ public static class EngineUtil {
 	public static string EntryExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Entry.exe");
 	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
+	public static string EntryProjectCsproj => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release", "AngeliA Entry for Publish.csproj");
 	public static bool BuildingProjectInBackground => BuildProjectTask != null && BuildProjectTask.Status == TaskStatus.Running;
 	public static long LastBackgroundBuildModifyDate { get; private set; }
 	public static int LastBackgroundBuildReturnCode { get; private set; }
@@ -528,7 +529,7 @@ public static class EngineUtil {
 			int pubReturnCode = BuildDotnetProject(
 				EntryProjectFolder,
 				DotnetSdkPath,
-				csprojPath,
+				EntryProjectCsproj,
 				publish: true,
 				debug: false,
 				assemblyName: productName,
