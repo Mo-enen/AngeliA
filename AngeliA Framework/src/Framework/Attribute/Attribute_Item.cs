@@ -31,3 +31,24 @@ public class ItemCombinationAttribute : Attribute {
 		ConsumeD = consumeD;
 	}
 }
+
+
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ItemDropAttribute : Attribute {
+	public Type ItemType = null;
+	public readonly int ItemTypeID = 0;
+	public int DropCount = 1;
+	public int DropChance = 1000;
+	public ItemDropAttribute (Type itemType, int dropCount = 1, int dropChance = 1000) {
+		ItemType = itemType;
+		ItemTypeID = itemType.AngeHash();
+		DropCount = dropCount;
+		DropChance = dropChance;
+	}
+}
+
+
+
+
+

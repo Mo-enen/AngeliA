@@ -5,49 +5,6 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LeafMaple : Leaf { }
-
-
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LeafPine : Leaf { }
-
-
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LeafPoplar : Leaf { }
-
-
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LeafPalm : Leaf {
-
-	public override void FirstUpdate () {
-		base.FirstUpdate();
-		Physics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect, true, Tag.OnewayUp);
-	}
-
-	public override void LateUpdate () {
-		Renderer.Draw(LeafArtworkCode, base.Rect.Shift(0, GetLeafShiftY(-24)));
-	}
-
-}
-
-
-public class LeafWillow : Leaf {
-
-	public override void FirstUpdate () {
-		base.FirstUpdate();
-		Physics.FillBlock(
-			PhysicsLayer.ENVIRONMENT, TypeID,
-			Rect.Shrink(0, 0, 0, Height / 2),
-			true, Tag.Climb
-		);
-	}
-
-	public override void LateUpdate () => Renderer.Draw(LeafArtworkCode, base.Rect.Shift(GetLeafShiftY(Y, 120, 12), 0));
-
-}
-
-
 [EntityAttribute.MapEditorGroup("Vegetation")]
 [EntityAttribute.Capacity(1024)]
 public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
@@ -129,7 +86,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 	}
 
 
-	protected virtual void OnLeafBreak () { }
+	protected virtual void OnLeafBreak () => ItemSystem.DropItemFor(this);
 
 
 	#endregion

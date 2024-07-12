@@ -32,6 +32,13 @@ public static class ItemSystem {
 	}
 
 
+	private struct ItemDropData {
+		public int ItemID;
+		public int Count;
+		public int Chance;
+	}
+
+
 	#endregion
 
 
@@ -54,12 +61,13 @@ public static class ItemSystem {
 	};
 
 	// Api
-	public static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
-	public static readonly Dictionary<int, ItemData> ItemPool = new();
 	public static bool ItemPoolReady { get; private set; } = false;
 	public static bool ItemUnlockReady { get; private set; } = false;
 
 	// Data
+	private static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
+	private static readonly Dictionary<int, ItemDropData> ItemDropPool = new();
+	private static readonly Dictionary<int, ItemData> ItemPool = new();
 	private static bool IsUnlockDirty = false;
 
 
@@ -76,7 +84,7 @@ public static class ItemSystem {
 
 		if (Game.IsToolApplication) return;
 
-		// Init Pool from Code
+		// Init Item Pool from Code
 		ItemPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -90,6 +98,16 @@ public static class ItemSystem {
 			));
 		}
 		ItemPoolReady = true;
+
+		// Init Drop Pool from Code
+		ItemDropPool.Clear();
+		foreach (var (type, att) in Util.AllClassWithAttribute<ItemDropAttribute>()) {
+			ItemDropPool.TryAdd(type.AngeHash(), new() {
+				ItemID = att.ItemTypeID,
+				Chance = att.DropChance,
+				Count = att.DropCount,
+			});
+		}
 
 		// Load Combination from Code
 		ItemCombination.LoadCombinationPoolFromCode(CombinationPool);
@@ -263,6 +281,39 @@ public static class ItemSystem {
 		holder.ItemID = itemID;
 		holder.ItemCount = count;
 		holder.Jump();
+	}
+
+
+	public static void SpawnItemFromMap (int unitX, int unitY, int z, IBlockSquad squad = null) {
+		squad ??= WorldSquad.Front;
+		int seed = Game.GlobalFrame * 23763256;
+		for (int y = 1; y < 256; y++) {
+			int currentUnitY = unitY - y;
+			int right = -1;
+			for (int x = 0; x < 256; x++) {
+				int id = squad.GetBlockAt(unitX + x, currentUnitY, z, BlockType.Element);
+				if (id == 0 || !HasItem(id)) break;
+				right = x;
+			}
+			if (right == -1) break;
+			int itemLocalIndex = Util.QuickRandom(seed + y * 2356235, 0, right + 1);
+			int itemID = squad.GetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element);
+			// Spawn Item
+			if (HasItem(itemID) && Stage.SpawnEntity(ItemHolder.TYPE_ID, unitX.ToGlobal(), unitY.ToGlobal()) is ItemHolder holder) {
+				holder.ItemID = itemID;
+				holder.ItemCount = 1;
+				holder.Jump();
+			}
+		}
+	}
+
+
+	// Drop
+	public static void DropItemFor (Entity entity) => DropItemFor(entity.TypeID, entity.X, entity.Y);
+	public static void DropItemFor (int sourceID, int x, int y) {
+		if (!ItemDropPool.TryGetValue(sourceID, out var data)) return;
+		if (data.Chance < 1000 && Util.QuickRandom(Game.GlobalFrame * 67231563, 0, 1000) >= data.Chance) return;
+		SpawnItem(data.ItemID, x, y, data.Count);
 	}
 
 

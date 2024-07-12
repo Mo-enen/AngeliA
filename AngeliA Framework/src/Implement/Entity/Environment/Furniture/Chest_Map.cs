@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public abstract class MapChest : Furniture, IActionTarget {
 
 
@@ -34,28 +34,7 @@ public abstract class MapChest : Furniture, IActionTarget {
 	void IActionTarget.Invoke () {
 		if (IsChestOpened(this)) return;
 		if (FromWorld) OpenedChest.TryAdd(InstanceID);
-		// Spawn Items
-		var squad = WorldSquad.Front;
-		for (int y = 1; y < 256; y++) {
-			int unitY = Y.ToUnit() - y;
-			int right = -1;
-			for (int x = 0; x < 256; x++) {
-				int id = squad.GetBlockAt(X.ToUnit() + x, unitY, BlockType.Element);
-				if (id == 0 || !ItemSystem.HasItem(id)) break;
-				right = x;
-			}
-			if (right == -1) break;
-			int itemLocalIndex = Ran.Next(0, right + 1);
-			int itemID = squad.GetBlockAt(X.ToUnit() + itemLocalIndex, unitY, BlockType.Element);
-			if (ItemSystem.HasItem(itemID)) {
-				// Spawn Item
-				if (Stage.SpawnEntity(ItemHolder.TYPE_ID, X, Y) is ItemHolder holder) {
-					holder.ItemID = itemID;
-					holder.ItemCount = 1;
-					holder.Jump();
-				}
-			}
-		}
+		ItemSystem.SpawnItemFromMap(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 	}
 
 
