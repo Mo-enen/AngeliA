@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public abstract partial class Character {
 
 
@@ -20,6 +20,7 @@ public abstract partial class Character {
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
 	public virtual bool IsChargingAttack => false;
 	public virtual bool RandomAttackAnimationStyle => true;
+	public virtual Direction8 AimingDirection => Direction8.Right;
 	public int AttackStyleLoop { get; set; } = 1;
 	public bool AttackStartFacingRight { get; set; } = true;
 	public int AttackDuration { get; private set; } = 12;

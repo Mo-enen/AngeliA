@@ -357,6 +357,14 @@ public static class Extension {
 	public static int GetRotation (this Float2 vector) => ((float)(System.Math.Atan2(vector.x, vector.y) * Util.Rad2Deg)).RoundToInt();
 	public static int GetRotation (this Int2 vector) => ((float)(System.Math.Atan2(vector.x, vector.y) * Util.Rad2Deg)).RoundToInt();
 
+	public static bool TryGetDirection8 (this Int2 dir, out Direction8 result) {
+		result =
+			dir.x == 0 ? (dir.y < 0 ? Direction8.Bottom : Direction8.Top) :
+			dir.x < 0 ? (dir.y == 0 ? Direction8.Left : dir.y < 0 ? Direction8.BottomLeft : Direction8.TopLeft) :
+			(dir.y == 0 ? Direction8.Right : dir.y < 0 ? Direction8.BottomRight : Direction8.TopRight);
+		return dir != Int2.zero;
+	}
+
 	// Direction
 	public static bool IsHorizontal (this Direction4 dir) => dir == Direction4.Left || dir == Direction4.Right;
 	public static bool IsVertical (this Direction4 dir) => dir == Direction4.Down || dir == Direction4.Up;
@@ -433,7 +441,7 @@ public static class Extension {
 	public static bool IsHorizontal (this Direction8 dir) => dir == Direction8.Left || dir == Direction8.Right;
 	public static bool IsBottom (this Direction8 dir) => dir == Direction8.Bottom || dir == Direction8.BottomLeft || dir == Direction8.BottomRight;
 	public static bool IsTop (this Direction8 dir) => dir == Direction8.Top || dir == Direction8.TopLeft || dir == Direction8.TopRight;
-
+	
 	public static Int2 GetNormal (this Direction8 dir) => dir switch {
 		Direction8.Top => new(0, 1),
 		Direction8.TopRight => new(1, 1),

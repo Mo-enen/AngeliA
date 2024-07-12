@@ -85,10 +85,14 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 		if (IsDriving) return;
 		Rolling = true;
 		RollingRotation = 0;
-		if (damage.Bullet != null) {
-			RollingSpeed = (Rect.CenterX() - (damage.Bullet.X + damage.Bullet.Width / 2)).Sign3() * ROLL_SPEED;
-		} else {
-			RollingSpeed = Rect.CenterX().Sign3() * ROLL_SPEED;
+		if (damage.Bullet is Bullet bullet) {
+			int bulletX = bullet.X + bullet.Width / 2;
+			if (bullet is MovableBullet mBullet) {
+				bulletX -= mBullet.Velocity.x;
+			}
+			RollingSpeed = (Rect.CenterX() - bulletX).Sign3() * ROLL_SPEED;
+		} else if (damage.Sender != null) {
+			RollingSpeed = (Rect.CenterX() - damage.Sender.Rect.CenterX()).Sign3() * ROLL_SPEED;
 		}
 	}
 

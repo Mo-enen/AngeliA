@@ -28,6 +28,7 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 	// Const
 	private const int RUSH_TAPPING_GAP = 16;
 	private const int ACTION_SCAN_RANGE = Const.HALF;
+	private const int DIR_TRANSFER_COOLDOWN = 6;
 	private static readonly LanguageCode HINT_WAKE = ("CtrlHint.WakeUp", "Wake");
 	private static readonly LanguageCode HINT_SWITCH_PLAYER = ("CtrlHint.SwitchPlayer", "Select Player");
 
@@ -77,10 +78,12 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 	public virtual bool WeaponAvailable => true;
 	public virtual bool AllowPlayerMenuUI => InventoryCurrentAvailable;
 	public virtual bool AllowQuickPlayerMenuUI => InventoryCurrentAvailable;
-	protected override bool IsCharacterWithInventory => true;
 	int IDamageReceiver.Team => Const.TEAM_PLAYER;
+	protected override bool IsCharacterWithInventory => true;
+	public override Direction8 AimingDirection => _AimingDirection;
 
 	// Data
+	private Direction8 _AimingDirection = Direction8.Right;
 	private int AttackRequiringFrame = int.MinValue;
 	private int LastLeftKeyDown = int.MinValue;
 	private int LastRightKeyDown = int.MinValue;
@@ -169,6 +172,9 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 
 				if (allowGamePlay && !LockingInput) {
 
+					// Update Aiming
+					Update_Aiming();
+
 					// Move
 					Move(Input.DirectionX, Input.DirectionY);
 
@@ -204,6 +210,16 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 		// View
 		Update_View();
 
+	}
+
+
+	private void Update_Aiming () {
+		var inputDir = Input.Direction;
+		if (inputDir.TryGetDirection8(out var result)) {
+			_AimingDirection = result;
+		} else {
+			_AimingDirection = FacingRight ? Direction8.Right : Direction8.Left;
+		}
 	}
 
 

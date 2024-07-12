@@ -228,18 +228,10 @@ public struct Float2 : IEquatable<Float2>, IFormattable {
 		return lhs.x * rhs.x + lhs.y * rhs.y;
 	}
 
-	public static float Angle (Float2 from, Float2 to) {
-		float num = (float)Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude);
-		if (num < 1E-15f) return 0f;
-		//float num2 = Mathf.Clamp(Dot(from, to) / num, -1f, 1f);
-		float num2 = (Dot(from, to) / num).Clamp(-1f, 1f);
-		return (float)Math.Acos(num2) * 57.29578f;
-	}
-
 	public static float SignedAngle (Float2 from, Float2 to) {
-		float num = Angle(from, to);
-		float num2 = Math.Sign(from.x * to.y - from.y * to.x);
-		return num * num2;
+		double sin = from.x * to.y - to.x * from.y;
+		double cos = from.x * to.x + from.y * to.y;
+		return (float)Math.Atan2(sin, cos) * Util.Rad2Deg;
 	}
 
 	public static float Distance (Float2 a, Float2 b) {
