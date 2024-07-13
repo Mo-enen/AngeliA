@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public interface IProgressiveItem {
@@ -36,14 +36,14 @@ public abstract class Item : IMapItem {
 	public virtual void OnItemUpdate_FromInventory (Entity holder) { }
 	public virtual void PoseAnimationUpdate_FromInventory (Entity holder) { }
 	public virtual void OnTakeDamage_FromInventory (Entity holder, Entity sender, ref int damage) { }
-	
+
 	// Equipment
 	public virtual void BeforeItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void OnItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void PoseAnimationUpdate_FromEquipment (Entity holder) { }
 	public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) { }
-	public virtual void OnAttack (Entity holder) { }
-	public virtual void OnSquat (Entity holder) { }
+	public virtual void OnCharacterAttack (Entity holder) { }
+	public virtual bool TryRepair (Entity holder) => false;
 
 	// Callback
 	protected static void InvokeItemLost (Character holder, int itemID) => OnItemLost?.Invoke(holder, itemID);
@@ -51,7 +51,7 @@ public abstract class Item : IMapItem {
 	protected static void InvokeOnItemInsufficient (Character holder, int itemID) => OnItemInsufficient?.Invoke(holder, itemID);
 
 	// Ground
-	public virtual void OnItemUpdate_FromGround (Entity holder) { }
+	public virtual void OnItemUpdate_FromGround (Entity holder, int count) { }
 
 	// Misc
 	public virtual void OnCollect (Entity holder) { }

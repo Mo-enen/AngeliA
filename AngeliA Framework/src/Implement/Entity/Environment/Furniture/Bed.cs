@@ -91,10 +91,11 @@ public abstract class Bed : Furniture, IActionTarget {
 		target.Y = Y + offsetY + 2;
 	}
 
-	void IActionTarget.Invoke () {
-		if (Player.Selecting == null) return;
+	bool IActionTarget.Invoke () {
+		if (Player.Selecting == null) return false;
 		GetTargetOnBed(Player.Selecting);
 		RequireRestartGame = true;
+		return true;
 	}
 
 	bool IActionTarget.AllowInvoke () => Player.Selecting != null;

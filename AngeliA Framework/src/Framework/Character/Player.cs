@@ -329,9 +329,10 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 		// Try Perform Action
 		if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
 			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE, int.MinValue + 1);
-			if (Input.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
-				TargetActionEntity?.Invoke();
-				Input.UseGameKey(Gamekey.Action);
+			if (Input.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI && TargetActionEntity != null) {
+				if (TargetActionEntity.Invoke()) {
+					Input.UseGameKey(Gamekey.Action);
+				}
 			}
 		}
 
@@ -506,6 +507,7 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 		if (Selecting != this && !Stage.ViewRect.Overlaps(GlobalBounds)) return;
 		base.Update();
 		PhysicsUpdate_Collect();
+		Update_Repair();
 	}
 
 
@@ -522,6 +524,21 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 				hit.Entity.Active = false;
 				Stage.MarkAsGlobalAntiSpawn(hit.Entity);
 			}
+		}
+	}
+
+
+	private void Update_Repair () {
+		if (
+			CharacterState != CharacterState.GamePlay ||
+			Task.HasTask() ||
+			TakingDamage ||
+			Game.GlobalFrame != LastSquatFrame
+		) return;
+		for (int i = 0; i < EquipmentTypeCount; i++) {
+			var item = GetEquippingItem((EquipmentType)i);
+			if (item == null) continue;
+			if (item.TryRepair(this)) break;
 		}
 	}
 
@@ -610,10 +627,11 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 	}
 
 
-	void IActionTarget.Invoke () {
+	bool IActionTarget.Invoke () {
 		RespawnCpUnitPosition = null;
 		Task.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
 		Task.AddToLast(RestartGameTask.TYPE_ID);
+		return true;
 	}
 
 

@@ -87,8 +87,11 @@ public abstract class OpenableFurniture : Furniture, IActionTarget {
 	}
 
 
-	void IActionTarget.Invoke () {
-		if (!Open) SetOpen(true);
+	bool IActionTarget.Invoke () {
+		if (!Open) {
+			SetOpen(true);
+		}
+		return true;
 	}
 
 

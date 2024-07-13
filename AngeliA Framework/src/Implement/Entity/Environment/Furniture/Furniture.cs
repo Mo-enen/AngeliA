@@ -100,7 +100,7 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 	#region --- API ---
 
 
-	void IActionTarget.Invoke () { }
+	bool IActionTarget.Invoke () => false;
 
 
 	bool IActionTarget.AllowInvoke () => false;

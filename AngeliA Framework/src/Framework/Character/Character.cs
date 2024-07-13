@@ -129,7 +129,7 @@ public abstract partial class Character : Rigidbody {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		SyncMovementFromPool();
+		SyncMovementConfigFromPool();
 		BeforeUpdate_BuffValue();
 	}
 
@@ -379,7 +379,6 @@ public abstract partial class Character : Rigidbody {
 
 			bool eventAvailable = CharacterState == CharacterState.GamePlay && !Task.HasTask() && !TakingDamage;
 			int attackLocalFrame = eventAvailable && IsAttacking ? Game.GlobalFrame - LastAttackFrame : -1;
-			bool squatStart = eventAvailable && Game.GlobalFrame == LastSquatFrame;
 
 			// Inventory
 			for (int i = 0; i < invCapacity; i++) {
@@ -388,12 +387,10 @@ public abstract partial class Character : Rigidbody {
 
 			// Equipping
 			for (int i = 0; i < EquipmentTypeCount; i++) {
-				var type = (EquipmentType)i;
-				var item = GetEquippingItem(type);
+				var item = GetEquippingItem((EquipmentType)i);
 				if (item == null) continue;
 				item.OnItemUpdate_FromEquipment(this);
-				if (attackLocalFrame == 0) item.OnAttack(this);
-				if (squatStart) item.OnSquat(this);
+				if (attackLocalFrame == 0) item.OnCharacterAttack(this);
 				if (item is Weapon weapon) {
 					if (attackLocalFrame == weapon.BulletDelayFrame) weapon.SpawnBullet(this);
 				}

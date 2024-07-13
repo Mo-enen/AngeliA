@@ -77,12 +77,13 @@ public abstract class ActionMapGenerator : MapGenerator, IActionTarget {
 	protected virtual Cell DrawArtwork () => Renderer.Draw(TypeID, Rect);
 
 
-	void IActionTarget.Invoke () {
+	bool IActionTarget.Invoke () {
 		if (!HasMapInDisk) {
 			GenerateAsync();
 		} else {
 			Enter();
 		}
+		return true;
 	}
 
 

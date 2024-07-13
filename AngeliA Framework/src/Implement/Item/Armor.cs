@@ -270,18 +270,19 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	}
 
 
-	public override void OnSquat (Entity holder) {
-		base.OnSquat(holder);
-		if ((this as IProgressiveItem).NextItemID == 0) return;
-		foreach (var materialID in RepairMaterialsID) {
-			if (Repair(holder, materialID)) {
-				break;
+	public override bool TryRepair (Entity holder) {
+		base.TryRepair(holder);
+		if ((this as IProgressiveItem).NextItemID == 0) return false;
+		foreach (int materialID in RepairMaterialsID) {
+			if (RepairArmor(holder, materialID)) {
+				return true;
 			}
 		}
+		return false;
 	}
 
 
-	public virtual bool Repair (Entity holder, int materialID) {
+	public virtual bool RepairArmor (Entity holder, int materialID) {
 		if (materialID == 0) return false;
 		int tookCount = Inventory.FindAndTakeItem(holder.TypeID, materialID, 1);
 		if (tookCount <= 0) return false;

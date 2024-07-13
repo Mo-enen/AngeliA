@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
@@ -218,9 +218,10 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	}
 
 
-	void IActionTarget.Invoke () {
+	bool IActionTarget.Invoke () {
 		SetHealth(MaxHP);
 		SetCharacterState(CharacterState.GamePlay);
+		return true;
 	}
 
 

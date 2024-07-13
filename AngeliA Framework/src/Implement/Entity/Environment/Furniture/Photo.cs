@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class Photo : Furniture, ICombustible, IActionTarget {
 
 	private int PhotoIndex = 0;
@@ -26,7 +26,10 @@ public class Photo : Furniture, ICombustible, IActionTarget {
 		}
 	}
 
-	void IActionTarget.Invoke () => PhotoIndex++;
+	bool IActionTarget.Invoke () {
+		PhotoIndex++;
+		return true;
+	}
 
 	bool IActionTarget.AllowInvoke () => true;
 

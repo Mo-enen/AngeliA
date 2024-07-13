@@ -168,7 +168,6 @@ public abstract class MovableBullet : Bullet {
 			Stage.SpawnEntity(ResidueParticleID, X + Width / 2, Y + Height / 2);
 		} else {
 			// Default
-
 			int rot =
 				EndRotationRandomRange == -1 ? Util.QuickRandom(Game.GlobalFrame).UMod(360) :
 				EndRotationRandomRange == 0 ? EndRotation :
@@ -244,7 +243,7 @@ public abstract class MovableBullet : Bullet {
 
 			case Direction8.Top: // ↑
 				Velocity = new Int2(speedY, speedX);
-				CurrentRotation = StartRotation + 90;
+				CurrentRotation = StartRotation - 90;
 				break;
 			case Direction8.Right: // →
 				Velocity = new Int2(speedX, speedY);
@@ -252,7 +251,7 @@ public abstract class MovableBullet : Bullet {
 				break;
 			case Direction8.Bottom: // ↓
 				Velocity = new Int2(speedY, -speedX);
-				CurrentRotation = StartRotation - 90;
+				CurrentRotation = StartRotation + 90;
 				break;
 			case Direction8.Left: // ←
 				Velocity = new Int2(-speedX, speedY);

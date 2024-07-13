@@ -168,14 +168,15 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget {
 	#region --- API ---
 
 
-	void IActionTarget.Invoke () {
-		if (IsPlaying) return;
+	bool IActionTarget.Invoke () {
+		if (IsPlaying) return false;
 		Task.EndAllTask();
 		if (Task.AddToLast(typeof(MiniGameTask).AngeHash()) is MiniGameTask task) {
 			task.MiniGame = this;
 		}
 		Input.UseAllHoldingKeys();
 		StartMiniGame();
+		return true;
 	}
 
 

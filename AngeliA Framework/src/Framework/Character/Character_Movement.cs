@@ -827,7 +827,7 @@ public abstract partial class Character {
 	}
 
 
-	public void SyncMovementFromPool () {
+	public void SyncMovementConfigFromPool () {
 		if (LocalMovementConfigVersion == MovementConfigGlobalVersion) return;
 		LocalMovementConfigVersion = MovementConfigGlobalVersion;
 		if (ConfigPool_Movement.TryGetValue(TypeID, out var mConfig)) {

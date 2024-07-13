@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class CabinetIdolWood : CabinetIdol, ICombustible {
 	int ICombustible.BurnStartFrame { get; set; }
 }
@@ -26,11 +26,12 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 	}
 
 
-	void IActionTarget.Invoke () {
+	bool IActionTarget.Invoke () {
 		s_ArtworkIndex.Value++;
 		if (Renderer.HasSpriteGroup(TypeID, out int length)) {
 			s_ArtworkIndex.Value = s_ArtworkIndex.Value.UMod(length);
 		}
+		return true;
 	}
 
 

@@ -36,17 +36,18 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 	}
 
 
-	void IActionTarget.Invoke () {
+	bool IActionTarget.Invoke () {
 		if (!Open) SetOpen(true);
 		// Spawn UI Entity
 		var player = Player.Selecting;
-		if (player == null || !player.InventoryCurrentAvailable) return;
+		if (player == null || !player.InventoryCurrentAvailable) return false;
 		var playerMenu = PlayerMenuUI.OpenMenu();
 		if (playerMenu != null) {
 			playerMenu.Partner = InventoryPartnerUI.Instance;
 			InventoryPartnerUI.Instance.AvatarIcon = TypeID;
 			playerMenu.Partner.EnablePanel(TypeID, InventoryColumn, InventoryRow);
 		}
+		return true;
 	}
 
 	bool IActionTarget.AllowInvoke () {

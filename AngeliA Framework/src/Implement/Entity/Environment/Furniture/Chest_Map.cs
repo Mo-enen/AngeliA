@@ -8,7 +8,6 @@ public abstract class MapChest : Furniture, IActionTarget {
 
 	// VAR
 	protected static readonly HashSet<Int3> OpenedChest = new();
-	private static readonly System.Random Ran = new(483623528);
 
 
 	// MSG
@@ -31,10 +30,11 @@ public abstract class MapChest : Furniture, IActionTarget {
 	public static void ClearOpenedMarks () => OpenedChest.Clear();
 
 
-	void IActionTarget.Invoke () {
-		if (IsChestOpened(this)) return;
+	bool IActionTarget.Invoke () {
+		if (IsChestOpened(this)) return false;
 		if (FromWorld) OpenedChest.TryAdd(InstanceID);
 		ItemSystem.SpawnItemFromMap(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+		return true;
 	}
 
 

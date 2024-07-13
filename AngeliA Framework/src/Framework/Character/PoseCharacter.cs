@@ -227,9 +227,7 @@ public abstract class PoseCharacter : Character {
 	}
 
 
-	protected virtual void PerformPoseAnimation () {
-		PoseAnimation.AnimateFromPool(PoseAnimationIDs[(int)AnimationType], this);
-	}
+	protected virtual void PerformPoseAnimation () => PoseAnimation.AnimateFromPool(PoseAnimationIDs[(int)AnimationType], this);
 
 
 	protected virtual void RenderEquipmentAndInventory () {

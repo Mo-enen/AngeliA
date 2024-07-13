@@ -29,6 +29,9 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	public int ItemCount { get; set; } = 1;
 	bool IActionTarget.AllowInvokeOnSquat => true;
 
+	// Data
+	private int WarningFrame = int.MinValue;
+
 
 	#endregion
 
@@ -42,6 +45,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		base.OnActivated();
 		Width = ITEM_PHYSICS_SIZE;
 		Height = ITEM_PHYSICS_SIZE;
+		WarningFrame = int.MinValue;
 	}
 
 
@@ -54,6 +58,11 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		if (ItemID == 0 || ItemCount <= 0) {
 			Active = false;
 			return;
+		}
+
+		// Update
+		if (ItemSystem.GetItem(ItemID) is Item item) {
+			item?.OnItemUpdate_FromGround(this, ItemCount);
 		}
 
 		// Make Room
@@ -81,19 +90,35 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 
 
 	public override void LateUpdate () {
+
 		base.LateUpdate();
 		if (!Active) return;
+
+		int renderingOffsetX = 0;
+		int redneringSizeOffset = 0;
+
+		// Warning
+		bool warning = Game.GlobalFrame < WarningFrame + 42;
+		if (warning) {
+			float lerp10 = 1f - Ease.OutElastic((Game.GlobalFrame - WarningFrame) / 42f);
+			renderingOffsetX = (lerp10 * Const.HALF).RoundToInt();
+			redneringSizeOffset = Const.HALF / 4;
+		}
+
 		// Draw
 		var rect = new IRect(
 			X + Width / 2 - ITEM_RENDER_SIZE / 2,
 			Y, ITEM_RENDER_SIZE, ITEM_RENDER_SIZE
 		);
-		byte rgb = (byte)Util.RemapUnclamped(0, 120, 225, 255, Game.GlobalFrame.PingPong(120));
-		var cell = Renderer.Draw(
-			ItemID,
-			rect,
-			new Color32(rgb, rgb, rgb, 255)
-		);
+		var renderingRect = rect.Shift(renderingOffsetX, 0).Expand(redneringSizeOffset);
+		var cell = Renderer.Draw(ItemID, renderingRect);
+		Cell bgCell = null;
+
+		// Red BG
+		if (warning) {
+			bgCell = Renderer.DrawPixel(renderingRect.Expand(12), Color32.RED, z: cell.Z - 1);
+		}
+
 		// Count
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
@@ -102,14 +127,16 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 				GUI.IntLabel(labelRect, ItemCount);
 			}
 		}
+
 		// Highlight
 		if ((this as IActionTarget).IsHighlighted) {
 			IActionTarget.HighlightBlink(cell);
+			if (bgCell != null) IActionTarget.HighlightBlink(bgCell);
 		}
 	}
 
 
-	void IActionTarget.Invoke () => Collect(Player.Selecting, onlyAppendExisting: false, ignoreEquipment: false);
+	bool IActionTarget.Invoke () => Collect(Player.Selecting, onlyStackOnExisting: false, ignoreEquipment: false);
 
 
 	#endregion
@@ -126,20 +153,20 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	}
 
 
-	public void Collect (Character character, bool onlyAppendExisting = false, bool ignoreEquipment = true) {
+	public bool Collect (Character character, bool onlyStackOnExisting = false, bool ignoreEquipment = true) {
 
-		if (ItemID == 0 || character is null) return;
+		if (ItemID == 0 || character is null) return false;
 		int invID = character.TypeID;
-		if (!Inventory.HasInventory(invID)) return;
+		if (!Inventory.HasInventory(invID)) return false;
 
 		var item = ItemSystem.GetItem(ItemID);
-		if (item == null) return;
+		if (item == null) return false;
 		int oldItemID = ItemID;
 		int oldCount = ItemCount;
 
 		// Equipment Check
 		if (
-			!onlyAppendExisting &&
+			!onlyStackOnExisting &&
 			!ignoreEquipment &&
 			ItemCount > 0 &&
 			ItemSystem.IsEquipment(ItemID, out var equipmentType) &&
@@ -151,24 +178,32 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		}
 
 		// Collect / Append
-		int addCount = onlyAppendExisting ?
-			Inventory.FindAndAddItem(invID, ItemID, ItemCount) :
-			Inventory.CollectItem(invID, ItemID, ItemCount);
-		if (addCount > 0) {
-			int newCount = ItemCount - addCount;
-			if (newCount <= 0) {
-				ItemID = 0;
-				ItemCount = 0;
-				Active = false;
-			} else {
-				ItemCount = newCount;
+		if (ItemCount > 0) {
+			int addCount = onlyStackOnExisting ?
+				Inventory.FindAndAddItem(invID, ItemID, ItemCount) :
+				Inventory.CollectItem(invID, ItemID, ItemCount);
+			if (addCount > 0) {
+				int newCount = ItemCount - addCount;
+				if (newCount <= 0) {
+					ItemID = 0;
+					ItemCount = 0;
+					Active = false;
+				} else {
+					ItemCount = newCount;
+				}
+				item.OnCollect(character);
+			} else if (!onlyStackOnExisting) {
+				// Inventory Full Warning
+				WarningFrame = Game.GlobalFrame;
 			}
-			item.OnCollect(character);
 		}
 
 		// Particle Hint
-		OnItemCollected?.Invoke(character, oldItemID, oldCount - ItemCount);
+		if (oldCount > ItemCount) {
+			OnItemCollected?.Invoke(character, oldItemID, oldCount - ItemCount);
+		}
 
+		return oldCount > ItemCount;
 	}
 
 

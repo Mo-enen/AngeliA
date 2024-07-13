@@ -51,14 +51,15 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 		}
 	}
 
-	void IActionTarget.Invoke () {
+	bool IActionTarget.Invoke () {
 		var player = Player.Selecting;
-		if (player == null || !player.InventoryCurrentAvailable) return;
+		if (player == null || !player.InventoryCurrentAvailable) return false;
 		var playerMenu = PlayerMenuUI.OpenMenu();
 		if (!Open) SetOpen(true);
-		if (playerMenu == null) return;
+		if (playerMenu == null) return false;
 		playerMenu.Partner = CraftingTableUI.Instance;
 		playerMenu.Partner.EnablePanel(TypeID, 2, 2, 96);
+		return true;
 	}
 
 	bool IActionTarget.AllowInvoke () {
