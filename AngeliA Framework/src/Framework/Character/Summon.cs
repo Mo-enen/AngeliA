@@ -149,7 +149,9 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 
 		// Freedom Shift
 		const int SHIFT_AMOUNT = Const.CEL * 10;
-		int freeShiftX = Util.QuickRandom(TypeID + (InstanceOrder + (Game.GlobalFrame / 300)) * TypeID) % SHIFT_AMOUNT;
+		int freeShiftX = Util.QuickRandomWithSeed(
+			TypeID + (InstanceOrder + (Game.GlobalFrame / 300)) * TypeID
+		) % SHIFT_AMOUNT;
 
 		// Find Available Ground
 		int offsetX = freeShiftX + Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);

@@ -169,7 +169,7 @@ public abstract class MovableBullet : Bullet {
 		} else {
 			// Default
 			int rot =
-				EndRotationRandomRange == -1 ? Util.QuickRandom(Game.GlobalFrame).UMod(360) :
+				EndRotationRandomRange == -1 ? Util.QuickRandom(0, 360) :
 				EndRotationRandomRange == 0 ? EndRotation :
 				EndRotation + ((CurrentRotation - EndRotation + 180).UMod(360) - 180).Clamp(-EndRotationRandomRange, EndRotationRandomRange);
 			rot += Velocity.x < 0 ? 180 : 0;

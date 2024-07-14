@@ -16,6 +16,12 @@ public partial class PixelEditor {
 	private enum InputName { Name, Width, Height, BorderL, BorderR, BorderD, BorderU, PivotX, PivotY, Z, Duration, }
 
 
+	private class SpriteSorterByX : IComparer<SpriteData> {
+		public static readonly SpriteSorterByX Instance = new();
+		public int Compare (SpriteData a, SpriteData b) => a.Sprite.PixelRect.x.CompareTo(b.Sprite.PixelRect.x);
+	}
+
+
 	#endregion
 
 
@@ -47,6 +53,11 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_RULE_EMPTY = "Icon.Empty";
 	private static readonly SpriteCode ICON_RULE_MODE_A = "Icon.RuleModeA";
 	private static readonly SpriteCode ICON_RULE_MODE_B = "Icon.RuleModeB";
+	private static readonly SpriteCode ICON_OPER_FLIP_H = "Icon.PixOperation.FlipH";
+	private static readonly SpriteCode ICON_OPER_FLIP_V = "Icon.PixOperation.FlipV";
+	private static readonly SpriteCode ICON_OPER_ROT_C = "Icon.PixOperation.RotC";
+	private static readonly SpriteCode ICON_OPER_ROT_CC = "Icon.PixOperation.RotCC";
+	private static readonly SpriteCode ICON_RESET_CAMERA = "Icon.ResetCamera";
 	private static SpriteCode[] UI_TOOLS;
 
 	// Language
@@ -54,7 +65,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_PAINTING_COLOR = ("Tip.PaintingColor", "Current painting color");
 	private static readonly LanguageCode TIP_SHOW_CHECKER = ("Tip.ShowCheckerBoard", "Show Checker Board");
 	private static readonly LanguageCode TIP_SHOW_AXIS = ("Tip.ShowAxis", "Show Axis");
-	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset camera");
+	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset canvas position");
 	private static readonly LanguageCode TIP_NEW_SPRITE = ("Tip.NewSprite", "Create a New Sprite");
 	private static readonly LanguageCode TIP_DEL_SPRITE = ("Tip.DeleteSprite", "Delete sprite");
 	private static readonly LanguageCode TIP_ENABLE_BORDER = ("Tip.EnableBorder", "Enable borders");
@@ -79,6 +90,10 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_RULE_EMPTY = ("Tip.Rule.Empty", "Empty tile");
 	private static readonly LanguageCode TIP_RULE_MODE = ("Tip.Rule.Mode", "Rule setting mode. (Same/Not Same) or (Any/Empty)");
 	private static readonly LanguageCode TIP_CREATE_SPRITE = ("Tip.CreateSprite", "Create a new sprite");
+	private static readonly LanguageCode TIP_OPER_FLIP_H = ("Tip.PixOperation.FlipH", "Flip selected pixels horizontally");
+	private static readonly LanguageCode TIP_OPER_FLIP_V = ("Tip.PixOperation.FlipV", "Flip selected pixels Vertically");
+	private static readonly LanguageCode TIP_OPER_ROT_C = ("Tip.PixOperation.RotC", "Rotate selected pixels Clockwise");
+	private static readonly LanguageCode TIP_OPER_ROT_CC = ("Tip.PixOperation.RotCC", "Rotate selected pixels Counter-Clockwise");
 	private static readonly LanguageCode LABEL_BORDER = ("Label.Border", "Border");
 	private static readonly LanguageCode LABEL_PIVOT = ("Label.Pivot", "Pivot");
 	private static readonly LanguageCode LABEL_SIZE = ("Label.Size", "Size");
@@ -163,7 +178,7 @@ public partial class PixelEditor {
 
 		int padding = Unify(4);
 
-		// Create Sprite
+		// Create Sprite Big Button
 		if (StagedSprites.Count == 0) {
 			if (GUI.DarkButton(
 				CreateSpriteBigButtonRect, BuiltInSprite.ICON_PLUS
@@ -192,62 +207,104 @@ public partial class PixelEditor {
 		rect.SlideRight(padding);
 
 		// Reset Camera
-		if (GUI.Button(rect, BuiltInSprite.ICON_REFRESH, Skin.SmallDarkButton)) {
+		if (GUI.Button(rect, ICON_RESET_CAMERA, Skin.SmallDarkButton)) {
 			ResetCamera();
 		}
 		RequireTooltip(rect, TIP_RESET_CAMERA);
 		rect.SlideRight(padding);
 
-		// Color Field
-		if (CurrentTool == Tool.Rect || CurrentTool == Tool.Line || CurrentTool == Tool.Bucket) {
-			rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
-			if (rect.width >= rect.height) {
+		switch (CurrentTool) {
+			case Tool.Rect:
+			case Tool.Line:
+			case Tool.Bucket: {
+
 				// Color Field
-				var newColorF = GUI.HorizontalColorField(
-					PaintingColorF, rect,
-					stepped: false, alpha: true, folded: FoldingColorField
-				);
-				if (newColorF != PaintingColorF) {
-					PaintingColorF = newColorF;
-					PaintingColor = newColorF.ToColor32();
-					if (!FoldingColorField) ColorFieldCode = Util.ColorToHtml(PaintingColor);
-				}
-				// Code Field
-				if (!FoldingColorField) {
-					var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
-					rect = rect.Expand(0, codeFieldRect.width, 0, 0);
-					ColorFieldCode = GUI.SmallInputField(
-						10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
+				rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
+				if (rect.width >= rect.height) {
+					// Color Field
+					var newColorF = GUI.HorizontalColorField(
+						PaintingColorF, rect,
+						stepped: false, alpha: true, folded: FoldingColorField
 					);
-					if (confirm) {
-						if (Util.HtmlToColor(ColorFieldCode, out var newColor)) {
-							PaintingColor = newColor;
-							PaintingColorF = newColor.ToColorF();
-						}
-						ColorFieldCode = Util.ColorToHtml(PaintingColor);
+					if (newColorF != PaintingColorF) {
+						PaintingColorF = newColorF;
+						PaintingColor = newColorF.ToColor32();
+						if (!FoldingColorField) ColorFieldCode = Util.ColorToHtml(PaintingColor);
 					}
-				}
-				// Hovering / Click
-				if (rect.MouseInside()) {
-					if (FoldingColorField) {
-						Cursor.SetCursorAsHand();
-						if (Input.MouseLeftButtonDown) {
-							FoldingColorField = false;
+					// Code Field
+					if (!FoldingColorField) {
+						var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
+						rect = rect.Expand(0, codeFieldRect.width, 0, 0);
+						ColorFieldCode = GUI.SmallInputField(
+							10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
+						);
+						if (confirm) {
+							if (Util.HtmlToColor(ColorFieldCode, out var newColor)) {
+								PaintingColor = newColor;
+								PaintingColorF = newColor.ToColorF();
+							}
 							ColorFieldCode = Util.ColorToHtml(PaintingColor);
 						}
-					} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
-						if (Input.MouseLeftButtonDown) FoldingColorField = true;
-						Cursor.SetCursorAsHand();
 					}
-				} else if (!FoldingColorField && Input.MouseLeftButtonDown) {
-					FoldingColorField = true;
+					// Hovering / Click
+					if (rect.MouseInside()) {
+						if (FoldingColorField) {
+							Cursor.SetCursorAsHand();
+							if (Input.MouseLeftButtonDown) {
+								FoldingColorField = false;
+								ColorFieldCode = Util.ColorToHtml(PaintingColor);
+							}
+						} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
+							if (Input.MouseLeftButtonDown) FoldingColorField = true;
+							Cursor.SetCursorAsHand();
+						}
+					} else if (!FoldingColorField && Input.MouseLeftButtonDown) {
+						FoldingColorField = true;
+					}
+					// Final
+					RequireTooltip(rect, TIP_PAINTING_COLOR);
+					rect.SlideRight(padding);
 				}
-				// Final
-				RequireTooltip(rect, TIP_PAINTING_COLOR);
+				break;
+			}
+
+			case Tool.Select: {
+
+				rect.x += padding;
+
+				// Pixel Selection Operation
+				using var _ = new GUIEnableScope(PixelSelectionPixelRect != default);
+				// Flip H
+				if (GUI.Button(rect, ICON_OPER_FLIP_H, Skin.SmallDarkButton)) {
+					FlipPixelSelection(true);
+				}
+				RequireTooltip(rect, TIP_OPER_FLIP_H);
 				rect.SlideRight(padding);
+
+				// Flip V
+				if (GUI.Button(rect, ICON_OPER_FLIP_V, Skin.SmallDarkButton)) {
+					FlipPixelSelection(false);
+				}
+				RequireTooltip(rect, TIP_OPER_FLIP_V);
+				rect.SlideRight(padding);
+
+				// Rotate Clock
+				if (GUI.Button(rect, ICON_OPER_ROT_C, Skin.SmallDarkButton)) {
+					RotatePixelSelection(true);
+				}
+				RequireTooltip(rect, TIP_OPER_ROT_C);
+				rect.SlideRight(padding);
+
+				// Rotate C-Clock
+				if (GUI.Button(rect, ICON_OPER_ROT_CC, Skin.SmallDarkButton)) {
+					RotatePixelSelection(false);
+				}
+				RequireTooltip(rect, TIP_OPER_ROT_CC);
+				rect.SlideRight(padding);
+
+				break;
 			}
 		}
-
 	}
 
 
@@ -725,6 +782,7 @@ public partial class PixelEditor {
 		// Tags
 		for (int i = 0; i < TagUtil.TAG_COUNT; i++) {
 			int tagedCount = TagCheckedCountCache[i];
+			if (1 << i == (int)Tag.PhysicalDamage) GenericPopupUI.AddSeparator();
 			GenericPopupUI.AddItem(
 				TagUtil.ALL_TAG_NAMES[i],
 				icon: 0,
@@ -735,6 +793,7 @@ public partial class PixelEditor {
 				@checked: tagedCount > 0,
 				data: i
 			);
+			if (1 << i == (int)Tag.LightenDamage || 1 << i == (int)Tag.OnewayRight) GenericPopupUI.AddSeparator();
 		}
 
 		// Func
@@ -902,6 +961,11 @@ public partial class PixelEditor {
 			borderL < 0 && borderR < 0 && borderD < 0 && borderU < 0 &&
 			pivotX == int.MinValue && pivotY == int.MinValue && z == int.MinValue && duration < 0
 		) return;
+
+		// Sort for Name
+		if (!string.IsNullOrEmpty(name)) {
+			StagedSprites.Sort(SpriteSorterByX.Instance);
+		}
 
 		// Final
 		int checkedCount = 0;

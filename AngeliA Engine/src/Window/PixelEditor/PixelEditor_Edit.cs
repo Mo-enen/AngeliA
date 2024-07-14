@@ -1083,13 +1083,16 @@ public partial class PixelEditor {
 	}
 
 
+	// Pixel Selection Operation
 	private void FlipPixelSelection (bool horizontal) {
 		if (PixelSelectionPixelRect == default) return;
+		// Selection >> Buffer
 		var oldSelection = PixelSelectionPixelRect;
 		if (PixelBufferSize == default) {
 			SetSelectingPixelAsBuffer(true);
 		}
 		PixelSelectionPixelRect = oldSelection;
+		// Operation
 		int fullW = PixelBufferSize.x;
 		int fullH = PixelBufferSize.y;
 		int w = horizontal ? fullW / 2 : fullW;
@@ -1101,6 +1104,67 @@ public partial class PixelEditor {
 				(PixelBuffer[a], PixelBuffer[b]) = (PixelBuffer[b], PixelBuffer[a]);
 			}
 		}
+		// End
+		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
+		SetDirty();
+	}
+
+
+	private void RotatePixelSelection (bool clockwise) {
+		if (PixelSelectionPixelRect == default) return;
+
+		// Selection >> Buffer
+		var oldSelection = PixelSelectionPixelRect;
+		if (PixelBufferSize == default) {
+			SetSelectingPixelAsBuffer(true);
+		}
+		PixelSelectionPixelRect = oldSelection;
+
+		// Operation
+		int fullW = PixelBufferSize.x;
+		int fullH = PixelBufferSize.y;
+		int minFullSize = Util.Min(fullW, fullH);
+
+		// Flip X-Y
+		for (int y = 0; y < minFullSize; y++) {
+			for (int x = y; x < minFullSize; x++) {
+				int a = y * MAX_SELECTION_SIZE + x;
+				int b = x * MAX_SELECTION_SIZE + y;
+				(PixelBuffer[a], PixelBuffer[b]) = (PixelBuffer[b], PixelBuffer[a]);
+			}
+		}
+		for (int y = minFullSize; y < fullH; y++) {
+			for (int x = 0; x < fullW; x++) {
+				int a = y * MAX_SELECTION_SIZE + x;
+				int b = x * MAX_SELECTION_SIZE + y;
+				(PixelBuffer[a], PixelBuffer[b]) = (PixelBuffer[b], PixelBuffer[a]);
+			}
+		}
+		for (int y = 0; y < fullH; y++) {
+			for (int x = minFullSize; x < fullW; x++) {
+				int a = y * MAX_SELECTION_SIZE + x;
+				int b = x * MAX_SELECTION_SIZE + y;
+				(PixelBuffer[a], PixelBuffer[b]) = (PixelBuffer[b], PixelBuffer[a]);
+			}
+		}
+
+		// Flip H/V
+		(fullW, fullH) = (fullH, fullW);
+		int w = clockwise ? fullW : fullW / 2;
+		int h = clockwise ? fullH / 2 : fullH;
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				int a = y * MAX_SELECTION_SIZE + x;
+				int b = clockwise ?
+					((fullH - y - 1) * MAX_SELECTION_SIZE + x) :
+					(y * MAX_SELECTION_SIZE + (fullW - x - 1));
+				(PixelBuffer[a], PixelBuffer[b]) = (PixelBuffer[b], PixelBuffer[a]);
+			}
+		}
+
+		// End
+		(PixelBufferSize.x, PixelBufferSize.y) = (PixelBufferSize.y, PixelBufferSize.x);
+		(PixelSelectionPixelRect.width, PixelSelectionPixelRect.height) = (PixelSelectionPixelRect.height, PixelSelectionPixelRect.width);
 		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
 		SetDirty();
 	}

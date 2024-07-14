@@ -329,7 +329,7 @@ public partial class PixelEditor {
 
 
 	private void SetCurrentAtlas (int atlasIndex, bool forceChange = false, bool resetUndo = true) {
-		if (Sheet.Atlas.Count == 0) return;
+		if (Sheet.Atlas.Count == 0 || CurrentProject == null) return;
 		atlasIndex = atlasIndex.Clamp(0, Sheet.Atlas.Count - 1);
 		if (!forceChange && CurrentAtlasIndex == atlasIndex) return;
 		CurrentAtlasIndex = atlasIndex;

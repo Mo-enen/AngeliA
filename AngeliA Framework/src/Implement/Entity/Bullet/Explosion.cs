@@ -62,19 +62,18 @@ public class Explosion : Entity {
 		Sender = null;
 		BreakObjectArtwork = 0;
 		ExplodedFrame = -1;
-		int seed = Game.GlobalFrame;
 		for (int i = 0; i < FirePos.Length; i++) {
 			FirePos[i] = new Int3(
-				(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
-				(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
-				(seed = Util.QuickRandom(seed)).UMod(1000)
+				Util.QuickRandom().UMod(2000) - 1000,
+				Util.QuickRandom().UMod(2000) - 1000,
+				Util.QuickRandom().UMod(1000)
 			);
 		}
 		for (int i = 0; i < SmokePos.Length; i++) {
 			SmokePos[i] = new Int3(
-				(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
-				(seed = Util.QuickRandom(seed)).UMod(2000) - 1000,
-				(seed = Util.QuickRandom(seed)).UMod(1000)
+				Util.QuickRandom().UMod(2000) - 1000,
+				Util.QuickRandom().UMod(2000) - 1000,
+				Util.QuickRandom().UMod(1000)
 			);
 		}
 	}

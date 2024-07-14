@@ -608,6 +608,7 @@ public partial class Engine {
 
 				// Click
 				if (mousePress && hovering) {
+					Input.UseAllMouseKey();
 					SetCurrentWindowIndex(index);
 					barWidth = GetEngineLeftBarWidth(out contentPadding);
 				}

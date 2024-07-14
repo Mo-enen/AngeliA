@@ -71,8 +71,10 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_SPRITE = ("Setting.Hotkey.Pix.Sprite", "Artwork - Sprite Tool");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_PREV = ("Setting.Hotkey.Pix.PalPrev", "Artwork - Prev Palette Color");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_NEXT = ("Setting.Hotkey.Pix.PalNext", "Artwork - Next Palette Color");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_FLIP_X = ("Setting.Hotkey.Pix.FlipX", "Artwork - Flip Horizontal");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_FLIP_Y = ("Setting.Hotkey.Pix.FlipY", "Artwork - Flip Vertical");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_FLIP_X = ("Setting.Hotkey.Pix.FlipX", "Artwork - Flip Selection Horizontal");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_FLIP_Y = ("Setting.Hotkey.Pix.FlipY", "Artwork - Flip Selection Vertical");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_ROT_C = ("Setting.Hotkey.Pix.RotC", "Artwork - Rotate Selection Clockwise");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_ROT_CC = ("Setting.Hotkey.Pix.RotCC", "Artwork - Rotate Selection Counter-Clockwise");
 	private static readonly LanguageCode LABEL_HOTKEY_FD_NEXT = ("Setting.Hotkey.FrameDebug.Next", "Frame Debug - Next Frame");
 
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
@@ -415,6 +417,12 @@ public class SettingWindow : WindowUI {
 		rect.SlideDown(itemPadding);
 
 		HotkeyField(rect, EngineSetting.Hotkey_Pix_FlipY, LABEL_HOTKEY_PIX_FLIP_Y);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_Pix_RotC, LABEL_HOTKEY_PIX_ROT_C);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_Pix_RotCC, LABEL_HOTKEY_PIX_ROT_CC);
 		rect.SlideDown(itemPadding);
 
 		// F Debug

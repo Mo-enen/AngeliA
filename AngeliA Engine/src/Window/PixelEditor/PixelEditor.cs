@@ -853,12 +853,18 @@ public partial class PixelEditor : WindowUI {
 			SetCurrentTool(Tool.Sprite);
 		}
 
-		// Edit
+		// Pixel Selection Operation
 		if (EngineSetting.Hotkey_Pix_FlipX.Value.Down()) {
 			FlipPixelSelection(true);
 		}
 		if (EngineSetting.Hotkey_Pix_FlipY.Value.Down()) {
 			FlipPixelSelection(false);
+		}
+		if (EngineSetting.Hotkey_Pix_RotC.Value.Down()) {
+			RotatePixelSelection(true);
+		}
+		if (EngineSetting.Hotkey_Pix_RotCC.Value.Down()) {
+			RotatePixelSelection(false);
 		}
 
 	}
@@ -918,7 +924,6 @@ public partial class PixelEditor : WindowUI {
 			return;
 		}
 		CleanDirty();
-		CurrentAtlasIndex = -1;
 		DraggingState = DragState.None;
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;

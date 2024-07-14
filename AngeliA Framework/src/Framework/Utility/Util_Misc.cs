@@ -20,6 +20,7 @@ public static partial class Util {
 	public const float Deg2Rad = PI / 180f;
 	public const float PI = 3.14159274F;
 	public static readonly float Epsilon = MathfInternal.IsFlushToZeroEnabled ? MathfInternal.FloatMinNormal : MathfInternal.FloatMinDenormal;
+	private static int QuickRandomSeed = 73633632;
 
 
 	// Language
@@ -120,21 +121,15 @@ public static partial class Util {
 	}
 
 
-	public static int QuickRandom (int seed) {
+	public static int QuickRandom (int min, int max) => (QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed)).UMod((max - min).GreaterOrEquel(1)) + min;
+	public static int QuickRandom () => QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed);
+	public static int QuickRandomWithSeed (int seed, int min, int max) => QuickRandomWithSeed(seed).UMod((max - min).GreaterOrEquel(1)) + min;
+	public static int QuickRandomWithSeed (int seed) {
 		seed = (seed * 1103515245 + 12345) % 23456789;
 		seed = (seed * 16807) % 2147483647;
 		seed = (seed ^ (seed >> 16)) % 2147483647;
 		seed = (seed * 2127912213) % 2147483647;
 		return seed;
-	}
-
-
-	public static int QuickRandom (int seed, int min, int max) {
-		seed = (seed * 1103515245 + 12345) % 23456789;
-		seed = (seed * 16807) % 2147483647;
-		seed = (seed ^ (seed >> 16)) % 2147483647;
-		seed = (seed * 2127912213) % 2147483647;
-		return seed.UMod((max - min).GreaterOrEquel(1)) + min;
 	}
 
 

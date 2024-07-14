@@ -56,6 +56,8 @@ public class EngineSetting {
 	public static readonly SavingHotkey Hotkey_Pix_PaletteNext = new("Hotkey.Pix.PalNext", new Hotkey(KeyboardKey.W));
 	public static readonly SavingHotkey Hotkey_Pix_FlipX = new("Hotkey.Pix.FlipX", new Hotkey(KeyboardKey.H, shift: true));
 	public static readonly SavingHotkey Hotkey_Pix_FlipY = new("Hotkey.Pix.FlipY", new Hotkey(KeyboardKey.V, shift: true));
+	public static readonly SavingHotkey Hotkey_Pix_RotC = new("Hotkey.Pix.RotC", new Hotkey(KeyboardKey.W, shift: true));
+	public static readonly SavingHotkey Hotkey_Pix_RotCC = new("Hotkey.Pix.RotCC", new Hotkey(KeyboardKey.Q, shift: true));
 	public static readonly SavingHotkey Hotkey_FrameDebug_Next = new("Hotkey.FrameDebug.Next", new Hotkey(KeyboardKey.Period));
 
 

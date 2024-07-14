@@ -12,7 +12,9 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 	protected virtual int AdditionalBulletSpeedY => 0;
 	protected virtual ProjectileValidDirection ValidDirection => ProjectileValidDirection.Two;
 	public override Bullet SpawnBullet (Character sender) {
+
 		if (base.SpawnBullet(sender) is not MovableBullet bullet) return null;
+
 		bullet.X = sender.Rect.CenterX();
 		bullet.Y = sender.Rect.yMin;
 		int senderW = sender.Width;

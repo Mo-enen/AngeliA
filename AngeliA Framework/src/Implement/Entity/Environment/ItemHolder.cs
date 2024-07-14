@@ -112,13 +112,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		);
 		var renderingRect = rect.Shift(renderingOffsetX, 0).Expand(redneringSizeOffset);
 		var cell = Renderer.Draw(ItemID, renderingRect);
-		Cell bgCell = null;
-
-		// Red BG
-		if (warning) {
-			bgCell = Renderer.DrawPixel(renderingRect.Expand(12), Color32.RED, z: cell.Z - 1);
-		}
-
+		
 		// Count
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
@@ -131,7 +125,6 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		// Highlight
 		if ((this as IActionTarget).IsHighlighted) {
 			IActionTarget.HighlightBlink(cell);
-			if (bgCell != null) IActionTarget.HighlightBlink(bgCell);
 		}
 	}
 
