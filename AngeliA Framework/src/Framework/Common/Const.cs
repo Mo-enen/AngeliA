@@ -30,6 +30,7 @@ public static class Const {
 	// Rendering
 	public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };
 	public const int ORIGINAL_SIZE = int.MaxValue;
+	public const int ORIGINAL_PIVOT = int.MaxValue;
 	public const int ORIGINAL_SIZE_NEGATAVE = int.MinValue;
 	public const int PIXEL = 11254534;//"Pixel".AngeHash();
 

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
 
 public class MeleeBullet : Bullet {
 
@@ -11,6 +11,7 @@ public class MeleeBullet : Bullet {
 	// Api
 	protected override int Duration => 10;
 	protected override int Damage => 1;
+	protected virtual bool RenderBullet => false;
 	protected sealed override int SpawnWidth => _SpawnWidth;
 	protected sealed override int SpawnHeight => _SpawnHeight;
 	protected sealed override bool DestroyOnHitEnvironment => false;
@@ -20,6 +21,7 @@ public class MeleeBullet : Bullet {
 	// Data
 	private int _SpawnWidth = 0;
 	private int _SpawnHeight = 0;
+	private bool FacingRight = true;
 
 	// MSG
 	public override void OnActivated () {
@@ -35,11 +37,20 @@ public class MeleeBullet : Bullet {
 		base.Update();
 	}
 
+	public override void LateUpdate () {
+		base.LateUpdate();
+		if (RenderBullet) {
+			DrawBullet(this, TypeID, FacingRight, 0, 1000);
+		}
+	}
+
+	// API
 	public void FollowSender () {
 		if (Sender is not Character character) return;
 		var characterRect = character.Rect;
 		X = character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
 		Y = character.Y - 1;
+		FacingRight = character.FacingRight;
 	}
 
 	public void SetSpawnSize (int width, int height) {

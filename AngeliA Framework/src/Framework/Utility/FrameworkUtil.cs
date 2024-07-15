@@ -19,22 +19,24 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void DrawGlitchEffect (Cell cell, int frame) {
+	public static void DrawGlitchEffect (Cell cell, int frame, int speedAmount = 1000, int shiftAmount = 1000, int scaleAmount = 1000) {
 
-		if (frame.UMod(0096) == 0) DrawGlitch(cell, Util.RandomInt(-012, 012), Util.RandomInt(-007, 007), Util.RandomInt(0900, 1100), Util.RandomInt(0500, 1100), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0061) == 0) DrawGlitch(cell, Util.RandomInt(-002, 041), Util.RandomInt(-019, 072), Util.RandomInt(0500, 1200), Util.RandomInt(0500, 1200), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0121) == 0) DrawGlitch(cell, Util.RandomInt(-016, 016), Util.RandomInt(-007, 007), Util.RandomInt(0400, 1100), Util.RandomInt(0600, 1100), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0127) == 0) DrawGlitch(cell, Util.RandomInt(-016, 016), Util.RandomInt(-007, 007), Util.RandomInt(0900, 1100), Util.RandomInt(0500, 1300), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0185) == 0) DrawGlitch(cell, Util.RandomInt(-011, 021), Util.RandomInt(-018, 018), Util.RandomInt(0900, 1300), Util.RandomInt(0900, 1300), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0187) == 0) DrawGlitch(cell, Util.RandomInt(-034, 042), Util.RandomInt(-012, 008), Util.RandomInt(0800, 1100), Util.RandomInt(0900, 1400), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0193) == 0) DrawGlitch(cell, Util.RandomInt(-052, 002), Util.RandomInt(-091, 077), Util.RandomInt(0700, 1400), Util.RandomInt(0800, 1100), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0274) == 0) DrawGlitch(cell, Util.RandomInt(-033, 072), Util.RandomInt(-031, 079), Util.RandomInt(0800, 1100), Util.RandomInt(0900, 1800), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(1846) == 0) DrawGlitch(cell, Util.RandomInt(-094, 012), Util.RandomInt(-077, 112), Util.RandomInt(0900, 1500), Util.RandomInt(0900, 1300), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(3379) == 0) DrawGlitch(cell, Util.RandomInt(-194, 112), Util.RandomInt(-177, 212), Util.RandomInt(0900, 1600), Util.RandomInt(0700, 1900), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(9379) == 0) DrawGlitch(cell, Util.RandomInt(-293, 211), Util.RandomInt(-079, 011), Util.RandomInt(0900, 1700), Util.RandomInt(0900, 1100), Util.RandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (speedAmount <= 0 || shiftAmount <= 0 || scaleAmount <= 0) return;
+
+		if (frame.UMod(0096000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-012, 012), Util.QuickRandom(-007, 007), Util.QuickRandom(0900, 1100), Util.QuickRandom(0500, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(0061000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-002, 041), Util.QuickRandom(-019, 072), Util.QuickRandom(0500, 1200), Util.QuickRandom(0500, 1200), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(0121000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-016, 016), Util.QuickRandom(-007, 007), Util.QuickRandom(0400, 1100), Util.QuickRandom(0600, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(0127000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-016, 016), Util.QuickRandom(-007, 007), Util.QuickRandom(0900, 1100), Util.QuickRandom(0500, 1300), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(0185000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-011, 021), Util.QuickRandom(-018, 018), Util.QuickRandom(0900, 1300), Util.QuickRandom(0900, 1300), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(0187000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-034, 042), Util.QuickRandom(-012, 008), Util.QuickRandom(0800, 1100), Util.QuickRandom(0900, 1400), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(0193000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-052, 002), Util.QuickRandom(-091, 077), Util.QuickRandom(0700, 1400), Util.QuickRandom(0800, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(0274000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-033, 072), Util.QuickRandom(-031, 079), Util.QuickRandom(0800, 1100), Util.QuickRandom(0900, 1800), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(1846000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-094, 012), Util.QuickRandom(-077, 112), Util.QuickRandom(0900, 1500), Util.QuickRandom(0900, 1300), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(3379000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-194, 112), Util.QuickRandom(-177, 212), Util.QuickRandom(0900, 1600), Util.QuickRandom(0700, 1900), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
+		if (frame.UMod(9379000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-293, 211), Util.QuickRandom(-079, 011), Util.QuickRandom(0900, 1700), Util.QuickRandom(0900, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
 
 		// Func
-		static void DrawGlitch (Cell cell, int offsetX, int offsetY, int scaleX, int scaleY, Color32 color) {
+		static void DrawGlitch (Cell cell, int shiftAmount, int scaleAmount, int offsetX, int offsetY, int scaleX, int scaleY, Color32 color) {
 
 			var cursedCell = Renderer.DrawPixel(default, 0);
 			cursedCell.Sprite = cell.Sprite;
@@ -43,15 +45,15 @@ public static class FrameworkUtil {
 			cursedCell.Y = cell.Y;
 			cursedCell.Z = cell.Z + 1;
 			cursedCell.Rotation1000 = cell.Rotation1000;
-			cursedCell.Width = cell.Width * scaleX / 1000;
-			cursedCell.Height = cell.Height * scaleY / 1000;
+			cursedCell.Width = cell.Width * scaleX / 1000 * scaleAmount / 1000;
+			cursedCell.Height = cell.Height * scaleY / 1000 * scaleAmount / 1000;
 			cursedCell.PivotX = cell.PivotX;
 			cursedCell.PivotY = cell.PivotY;
 			cursedCell.Shift = cell.Shift;
 
 			cursedCell.Color = color;
-			cursedCell.X += offsetX;
-			cursedCell.Y += offsetY;
+			cursedCell.X += offsetX * shiftAmount / 1000;
+			cursedCell.Y += offsetY * shiftAmount / 1000;
 
 		}
 	}

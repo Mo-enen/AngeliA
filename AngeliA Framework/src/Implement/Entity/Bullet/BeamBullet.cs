@@ -5,7 +5,9 @@ namespace AngeliA;
 
 public abstract class BeamBullet : MovableBullet {
 
-	public sealed override int SpeedX => 99999;
+	protected override int Duration => 2;
+	public const int BEAM_SPEED = Const.CEL * 42;
+	public sealed override int SpeedForward => BEAM_SPEED;
 	public override int MaxRange => Const.CEL * 24;
 	protected override int SpawnHeight => Const.HALF * 2 / 3;
 	protected abstract int BeamSpriteID { get; }
@@ -49,7 +51,7 @@ public abstract class BeamBullet : MovableBullet {
 		if (BeamSpriteID != 0) {
 			GroupAnimation.Spawn(
 				BeamSpriteID, x, y, BeamSize, h,
-				int.MinValue, int.MinValue,
+				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				rot1000, 0, -1, 1, false, Color32.WHITE, renderLayer: RenderingLayer
 			);
 		}
@@ -59,7 +61,7 @@ public abstract class BeamBullet : MovableBullet {
 			GroupAnimation.Spawn(
 				SparkSpriteID, x, y,
 				SparkSize, h,
-				int.MinValue, int.MinValue,
+				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				rot1000, 0, -1, 1, false, Color32.WHITE_128, renderLayer: RenderingLayer
 			);
 		}
@@ -68,7 +70,7 @@ public abstract class BeamBullet : MovableBullet {
 		if (hitRec && BurstSpriteID != 0) {
 			GroupAnimation.Spawn(
 				BurstSpriteID, endX + Width / 2, endY + Height / 2, BurstSize, BurstSize,
-				int.MinValue, int.MinValue,
+				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				0, BurstRotateSpeed,
 				-1, 1, true, Color32.WHITE, renderLayer: RenderingLayer
 			);
@@ -78,7 +80,7 @@ public abstract class BeamBullet : MovableBullet {
 		if (HandBurstSpriteID != 0) {
 			GroupAnimation.Spawn(
 				HandBurstSpriteID, x, y, HandBurstSize, HandBurstSize,
-				int.MinValue, int.MinValue,
+				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				rot1000, HandBurstRotateSpeed,
 				-1, 1, true, Color32.WHITE, renderLayer: RenderingLayer
 			);

@@ -184,10 +184,10 @@ public abstract class PoseAnimation {
 
 
 	protected static void RollRandomFactor (int count = 4) {
-		if (count > 0) RandomFactor0 = Util.RandomInt(0, 1001);
-		if (count > 1) RandomFactor1 = Util.RandomInt(0, 1001);
-		if (count > 2) RandomFactor2 = Util.RandomInt(0, 1001);
-		if (count > 3) RandomFactor3 = Util.RandomInt(0, 1001);
+		if (count > 0) RandomFactor0 = Util.QuickRandom(0, 1001);
+		if (count > 1) RandomFactor1 = Util.QuickRandom(0, 1001);
+		if (count > 2) RandomFactor2 = Util.QuickRandom(0, 1001);
+		if (count > 3) RandomFactor3 = Util.QuickRandom(0, 1001);
 	}
 
 

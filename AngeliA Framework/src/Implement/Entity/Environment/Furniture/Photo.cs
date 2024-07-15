@@ -10,7 +10,7 @@ public class Photo : Furniture, ICombustible, IActionTarget {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		PhotoIndex = Util.RandomInt(0, int.MaxValue);
+		PhotoIndex = Util.QuickRandom(0, int.MaxValue - 1);
 	}
 
 	public override void FirstUpdate () {

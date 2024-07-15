@@ -12,7 +12,6 @@ public static partial class Util {
 	// Const
 	private static readonly byte[] SINGLE_RULE_CACHE = new byte[8];
 	public const string RULE_TILE_ERROR = "ERROR---";
-	private static readonly System.Random GlobalRandom = new(2334768);
 	private static readonly StringBuilder CacheRuleBuilder = new();
 
 
@@ -317,21 +316,6 @@ public static partial class Util {
 	}
 
 
-	// Random
-	public static int RandomInt (int min = int.MinValue, int max = int.MaxValue) => GlobalRandom.Next(min, max);
-	public static float RandomFloat01 () => (float)GlobalRandom.NextDouble();
-	public static double RandomDouble01 () => GlobalRandom.NextDouble();
-	public static Color32 RandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
-		var result = HsvToRgb(
-			RandomInt(minH, maxH) / 360f,
-			RandomInt(minS, maxS) / 100f,
-			RandomInt(minV, maxV) / 100f
-		);
-		result.a = (byte)RandomInt(minA, maxA);
-		return result;
-	}
-
-
 	// Pose Animation
 	public static void LimbRotate (
 		ref int targetX, ref int targetY, ref int targetPivotX, ref int targetPivotY, ref int targetRotation, ref int targetWidth, ref int targetHeight,
@@ -608,7 +592,7 @@ public static partial class Util {
 				if (jumpOut) break;
 				lastIndex = i;
 			}
-			if (resultIndex != lastIndex) resultIndex = RandomInt(resultIndex, lastIndex + 1);
+			if (resultIndex != lastIndex) resultIndex = QuickRandom(resultIndex, lastIndex + 1);
 			return resultIndex;
 		}
 	}

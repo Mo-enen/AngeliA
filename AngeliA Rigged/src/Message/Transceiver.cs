@@ -53,7 +53,7 @@ public class RigTransceiver {
 
 	public RigTransceiver (string exePath) {
 		ExePath = exePath;
-		MapName = $"AngeliA_Map_{Util.RandomInt(0, 99999)}";
+		MapName = $"AngeliA_Map_{Util.QuickRandom(0, 99999)}";
 		System.Threading.Tasks.Task.Run(UpdateForRigDebug);
 		System.Threading.Tasks.Task.Run(UpdateForRigDebugError);
 	}

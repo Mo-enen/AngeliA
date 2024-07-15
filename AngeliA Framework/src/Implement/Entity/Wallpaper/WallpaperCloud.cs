@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 public class WallpaperCloud : Wallpaper {
 
@@ -18,9 +18,9 @@ public class WallpaperCloud : Wallpaper {
 		base.OnActivated();
 		for (int i = 0; i < CLOUD_COUNT; i++) {
 			Positions[i] = new(
-				Util.RandomInt(0, 100000),
+				Util.QuickRandom(0, 100000),
 				GetRandomY(),
-				Util.RandomInt(0, 100000)
+				Util.QuickRandom(0, 100000)
 			);
 		}
 	}
@@ -61,14 +61,14 @@ public class WallpaperCloud : Wallpaper {
 			if (pos.x > 100000 || pos.x < 0) {
 				pos.x = 0;
 				pos.y = GetRandomY();
-				pos.z = Util.RandomInt(0, 100000);
+				pos.z = Util.QuickRandom(0, 100000);
 			}
 			Positions[i] = pos;
 		}
 	}
 
 
-	private int GetRandomY () => (int)(Ease.InCirc(Util.RandomFloat01()) * 100000);
+	private int GetRandomY () => (int)(Ease.InCirc(Util.QuickRandom(0, 10000) / 10000f) * 100000);
 
 
 }

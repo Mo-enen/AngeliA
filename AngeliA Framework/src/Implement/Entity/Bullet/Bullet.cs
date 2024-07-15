@@ -20,6 +20,7 @@ public abstract class Bullet : Entity {
 	protected virtual int SpawnHeight => Const.CEL;
 	protected virtual bool DestroyOnHitEnvironment => false;
 	protected virtual bool DestroyOnHitReceiver => false;
+	protected virtual bool RoundHitCheck => false;
 	public Entity Sender { get; set; } = null;
 	public int AttackIndex { get; set; } = 0;
 	public bool AttackCharged { get; set; } = false;
@@ -62,6 +63,12 @@ public abstract class Bullet : Entity {
 			if (hit.Entity is not IDamageReceiver receiver) continue;
 			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 			if (receiver is Entity e && !e.Active) continue;
+			if (RoundHitCheck) {
+				int dis = Util.DistanceInt(rect.CenterX(), rect.CenterY(), hit.Rect.CenterX(), hit.Rect.CenterY());
+				int rad = (Width.Abs() + Height.Abs()) / 4;
+				int hitRad = (hit.Rect.width.Abs() + hit.Rect.height.Abs()) / 4;
+				if (dis > rad + hitRad) continue;
+			}
 			receiver.TakeDamage(new Damage(Damage, Sender, this, DamageType));
 			// Type Logic
 			switch (DamageType) {
@@ -105,5 +112,34 @@ public abstract class Bullet : Entity {
 	}
 
 	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
+
+	protected static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale) {
+		if (!Renderer.TryGetSprite(artworkID, out var sprite)) return;
+		int facingSign = facingRight ? 1 : -1;
+		int x = bullet.X + bullet.Width / 2;
+		int y = bullet.Y + bullet.Height / 2;
+		if (Renderer.TryGetAnimationGroup(artworkID, out var aniGroup)) {
+			Renderer.DrawAnimation(
+				aniGroup,
+				x, y,
+				sprite.PivotX,
+				sprite.PivotY,
+				rotation,
+				facingSign * sprite.GlobalWidth * scale / 1000,
+				sprite.GlobalHeight * scale / 1000,
+				Game.GlobalFrame - bullet.SpawnFrame
+			);
+		} else {
+			Renderer.Draw(
+				artworkID,
+				x, y,
+				sprite.PivotX,
+				sprite.PivotY,
+				rotation,
+				facingSign * sprite.GlobalWidth * scale / 1000,
+				sprite.GlobalHeight * scale / 1000
+			);
+		}
+	}
 
 }

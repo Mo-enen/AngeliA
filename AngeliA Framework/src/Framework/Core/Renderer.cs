@@ -391,6 +391,10 @@ public static class Renderer {
 			height = -sprite.GlobalHeight;
 		}
 
+		// Original Pivot
+		pivotX = pivotX == Const.ORIGINAL_PIVOT ? sprite.PivotX : pivotX;
+		pivotY = pivotY == Const.ORIGINAL_PIVOT ? sprite.PivotY : pivotY;
+
 		// Cell
 		cell.Sprite = sprite;
 		cell.TextSprite = null;
@@ -547,6 +551,10 @@ public static class Renderer {
 				height = -sprite.GlobalHeight;
 			}
 		} else return SLICE_RESULT;
+
+		// Original Pivot
+		pivotX = pivotX == Const.ORIGINAL_PIVOT ? sprite.PivotX : pivotX;
+		pivotY = pivotY == Const.ORIGINAL_PIVOT ? sprite.PivotY : pivotY;
 
 		bool flipX = width < 0;
 		bool flipY = height < 0;

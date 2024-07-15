@@ -53,15 +53,13 @@ public class GroupAnimation : Entity {
 
 			// Draw Sprite
 			if (Renderer.TryGetSprite(id, out var sprite, true)) {
-				int pX = PivotX == int.MinValue ? sprite.PivotX : PivotX;
-				int pY = PivotY == int.MinValue ? sprite.PivotY : PivotY;
 				if (sprite.GlobalBorder == Int4.zero) {
 					cell = Renderer.Draw(
-						id, X, Y, pX, pY, 0, Width, Height, Tint, RenderingZ
+						id, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ
 					);
 				} else {
 					cells = Renderer.DrawSlice(
-						id, X, Y, pX, pY, 0, Width, Height, Tint, RenderingZ
+						id, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ
 					);
 				}
 			}

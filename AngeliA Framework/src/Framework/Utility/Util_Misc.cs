@@ -120,7 +120,15 @@ public static partial class Util {
 		if (lo < max) QuickSort(cells, lo, max, comparer);
 	}
 
-
+	public static Color32 QuickRandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
+		var result = HsvToRgb(
+			QuickRandom(minH, maxH) / 360f,
+			QuickRandom(minS, maxS) / 100f,
+			QuickRandom(minV, maxV) / 100f
+		);
+		result.a = (byte)QuickRandom(minA, maxA);
+		return result;
+	}
 	public static int QuickRandom (int min, int max) => (QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed)).UMod((max - min).GreaterOrEquel(1)) + min;
 	public static int QuickRandom () => QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed);
 	public static int QuickRandomWithSeed (int seed, int min, int max) => QuickRandomWithSeed(seed).UMod((max - min).GreaterOrEquel(1)) + min;

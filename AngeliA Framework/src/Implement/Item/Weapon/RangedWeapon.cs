@@ -9,8 +9,8 @@ namespace AngeliA;
 
 public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBullet {
 
-	public virtual int ArrowCountInOneShot => 1;
-	public virtual int AngleSpeedDelta => 0;
+
+
 	protected int ArrowItemID { get; init; }
 	private int SpriteIdAttack { get; init; }
 	private int SpriteFrameCount { get; init; }
@@ -54,10 +54,10 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	public override Bullet SpawnBullet (Character sender) {
 
 		// Take Arrow
-		int takenCount = ArrowCountInOneShot;
+		int takenCount = base.BulletCountInOneShot;
 		if (ArrowItemID != 0) {
 			// Item Arrow
-			takenCount = Inventory.FindAndTakeItem(sender.TypeID, ArrowItemID, ArrowCountInOneShot);
+			takenCount = Inventory.FindAndTakeItem(sender.TypeID, ArrowItemID, BulletCountInOneShot);
 			if (takenCount == 0) {
 				// Hint
 				InvokeOnItemInsufficient(sender, ArrowItemID);
@@ -65,23 +65,11 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			}
 		}
 
-		// Spawn Bullet
-		Bullet result = null;
-		for (int i = 0; i < takenCount; i++) {
+		// Shot Bullets
+		ForceBulletCountNextShot = takenCount;
+		var result = base.SpawnBullet(sender);
+		ForceBulletCountNextShot = -1;
 
-			result = base.SpawnBullet(sender);
-
-			// Movable Bullet
-			if (result is MovableBullet mBullet) {
-				if (AngleSpeedDelta != 0) {
-					int deltaAngle = (int)Util.Atan(mBullet.SpeedX, mBullet.SpeedY);
-					int offset = (i % 2 == 0 ? 1 : -1) * ((i + 1) / 2);
-					mBullet.CurrentRotation += offset * deltaAngle;
-					mBullet.Velocity = new Int2(mBullet.Velocity.x, mBullet.Velocity.y + offset * AngleSpeedDelta);
-					mBullet.Y += offset * mBullet.Height / ArrowCountInOneShot;
-				}
-			}
-		}
 		return result;
 	}
 

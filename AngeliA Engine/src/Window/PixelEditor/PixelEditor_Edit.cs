@@ -13,7 +13,7 @@ public partial class PixelEditor {
 
 
 	// Const
-	private const int MAX_SELECTION_SIZE = 128;
+	private const int MAX_SELECTION_SIZE = 256;
 	private static readonly LanguageCode NOTI_SPRITE_CREATED = ("Noti.SpriteCreated", "Sprite Created");
 	private static readonly LanguageCode NOTI_PAINT_IN_SPRITE = ("Noti.PaintInSprite", "Only paint in a sprite");
 
@@ -1171,7 +1171,8 @@ public partial class PixelEditor {
 
 
 	// Util
-	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize = -1) {
+	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize = MAX_SELECTION_SIZE) {
+		maxSize--;
 		var downPos = Stage_to_Pixel(forLeftButton ? Input.MouseLeftDownGlobalPosition : Input.MouseRightDownGlobalPosition);
 		var pos = Stage_to_Pixel(Input.MouseGlobalPosition);
 		if (maxSize >= 0) {

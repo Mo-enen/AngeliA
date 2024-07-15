@@ -10,8 +10,8 @@ public class EmptyMovableBullet : MovableBullet { }
 public abstract class MovableBullet : Bullet {
 
 	// Api
-	public virtual int SpeedX => 42;
-	public virtual int SpeedY => 0;
+	public virtual int SpeedForward => 42;
+	public virtual int SpeedSide => 0;
 	public virtual Int2 AriDrag => default;
 	public virtual int Gravity => 0;
 	public virtual int StartRotation => 0;
@@ -131,34 +131,8 @@ public abstract class MovableBullet : Bullet {
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
-		if (Renderer.TryGetSprite(ArtworkID, out var sprite)) {
-			int facingSign = Velocity.x.Sign();
-			CurrentRotation += facingSign * RotateSpeed;
-			int x = X + Width / 2;
-			int y = Y + Height / 2;
-			if (Renderer.TryGetAnimationGroup(ArtworkID, out var aniGroup)) {
-				Renderer.DrawAnimation(
-					aniGroup,
-					x, y,
-					sprite.PivotX,
-					sprite.PivotY,
-					CurrentRotation,
-					facingSign * sprite.GlobalWidth * Scale / 1000,
-					sprite.GlobalHeight * Scale / 1000,
-					Game.GlobalFrame - SpawnFrame
-				);
-			} else {
-				Renderer.Draw(
-					ArtworkID,
-					x, y,
-					sprite.PivotX,
-					sprite.PivotY,
-					CurrentRotation,
-					facingSign * sprite.GlobalWidth * Scale / 1000,
-					sprite.GlobalHeight * Scale / 1000
-				);
-			}
-		}
+		CurrentRotation += Velocity.x > 0 ? RotateSpeed : -RotateSpeed;
+		DrawBullet(this, ArtworkID, Velocity.x > 0, CurrentRotation, Scale);
 	}
 
 	protected override void BeforeDespawn (IDamageReceiver receiver) {

@@ -80,7 +80,7 @@ public abstract partial class Character {
 		if (!IsAttackAllowedByMovement() || !IsAttackAllowedByEquipment()) return false;
 		LastAttackCharged = charged;
 		LastAttackFrame = Game.GlobalFrame;
-		AttackStyleIndex += RandomAttackAnimationStyle ? Util.RandomInt(1, Util.Max(2, AttackStyleLoop)) : 1;
+		AttackStyleIndex += RandomAttackAnimationStyle ? Util.QuickRandom(1, Util.Max(2, AttackStyleLoop)) : 1;
 		AttackStartFacingRight = _FacingRight;
 		return true;
 	}

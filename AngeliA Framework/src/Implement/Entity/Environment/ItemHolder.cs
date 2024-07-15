@@ -29,9 +29,6 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	public int ItemCount { get; set; } = 1;
 	bool IActionTarget.AllowInvokeOnSquat => true;
 
-	// Data
-	private int WarningFrame = int.MinValue;
-
 
 	#endregion
 
@@ -45,7 +42,6 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		base.OnActivated();
 		Width = ITEM_PHYSICS_SIZE;
 		Height = ITEM_PHYSICS_SIZE;
-		WarningFrame = int.MinValue;
 	}
 
 
@@ -97,14 +93,6 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		int renderingOffsetX = 0;
 		int redneringSizeOffset = 0;
 
-		// Warning
-		bool warning = Game.GlobalFrame < WarningFrame + 42;
-		if (warning) {
-			float lerp10 = 1f - Ease.OutElastic((Game.GlobalFrame - WarningFrame) / 42f);
-			renderingOffsetX = (lerp10 * Const.HALF).RoundToInt();
-			redneringSizeOffset = Const.HALF / 4;
-		}
-
 		// Draw
 		var rect = new IRect(
 			X + Width / 2 - ITEM_RENDER_SIZE / 2,
@@ -112,7 +100,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		);
 		var renderingRect = rect.Shift(renderingOffsetX, 0).Expand(redneringSizeOffset);
 		var cell = Renderer.Draw(ItemID, renderingRect);
-		
+
 		// Count
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
@@ -185,9 +173,9 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 					ItemCount = newCount;
 				}
 				item.OnCollect(character);
-			} else if (!onlyStackOnExisting) {
-				// Inventory Full Warning
-				WarningFrame = Game.GlobalFrame;
+			} else if (!onlyStackOnExisting && IsGrounded) {
+				// Inventory is Full
+				Jump();
 			}
 		}
 
@@ -198,15 +186,6 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 
 		return oldCount > ItemCount;
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion
