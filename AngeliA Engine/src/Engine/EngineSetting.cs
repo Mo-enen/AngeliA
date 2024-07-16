@@ -48,6 +48,7 @@ public class EngineSetting {
 	public static readonly SavingHotkey Hotkey_Window_Project = new("Hotkey.Window.Project", new Hotkey(KeyboardKey.F6));
 	public static readonly SavingHotkey Hotkey_Window_Setting = new("Hotkey.Window.Setting", new Hotkey(KeyboardKey.F7));
 	public static readonly SavingHotkey Hotkey_PixTool_Rect = new("Hotkey.Pix.Rect", new Hotkey(KeyboardKey.U));
+	public static readonly SavingHotkey Hotkey_PixTool_Circle = new("Hotkey.Pix.Circle", new Hotkey(KeyboardKey.C));
 	public static readonly SavingHotkey Hotkey_PixTool_Line = new("Hotkey.Pix.Line", new Hotkey(KeyboardKey.L));
 	public static readonly SavingHotkey Hotkey_PixTool_Bucket = new("Hotkey.Pix.Bucket", new Hotkey(KeyboardKey.G));
 	public static readonly SavingHotkey Hotkey_PixTool_Select = new("Hotkey.Pix.Select", new Hotkey(KeyboardKey.M));

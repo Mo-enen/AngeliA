@@ -65,6 +65,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode LABEL_HOTKEY_PROJECT = ("Setting.Hotkey.Project", "Open Project Editor");
 	private static readonly LanguageCode LABEL_HOTKEY_SETTING = ("Setting.Hotkey.Setting", "Open Setting");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_RECT = ("Setting.Hotkey.Pix.Rect", "Artwork - Rect Tool");
+	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_CIRCLE = ("Setting.Hotkey.Pix.Circle", "Artwork - Circle Tool");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_LINE = ("Setting.Hotkey.Pix.Line", "Artwork - Line Tool");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_BUCKET = ("Setting.Hotkey.Pix.Bucket", "Artwork - Bucket Tool");
 	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_SELECT = ("Setting.Hotkey.Pix.Select", "Artwork - Select Tool");
@@ -393,6 +394,9 @@ public class SettingWindow : WindowUI {
 
 		// Pix Tool
 		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Rect, LABEL_HOTKEY_PIX_TOOL_RECT);
+		rect.SlideDown(itemPadding);
+
+		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Circle, LABEL_HOTKEY_PIX_TOOL_CIRCLE);
 		rect.SlideDown(itemPadding);
 
 		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Line, LABEL_HOTKEY_PIX_TOOL_LINE);

@@ -73,7 +73,7 @@ public partial class PixelEditor : WindowUI {
 
 
 	// Tool
-	private enum Tool { Rect, Line, Bucket, Select, Sprite, }
+	private enum Tool { Rect, Circle, Line, Bucket, Select, Sprite, }
 
 
 	#endregion
@@ -510,8 +510,9 @@ public partial class PixelEditor : WindowUI {
 
 		switch (CurrentTool) {
 			case Tool.Rect:
+			case Tool.Circle:
 			case Tool.Line:
-				// Rect or Line
+				// Rect or Line or Circle
 				if (DraggingState == DragState.None || DraggingState == DragState.Paint) {
 					// Painting Cursor
 					DrawPaintingCursor(true, false, out bool hasFrameCursor);
@@ -841,6 +842,9 @@ public partial class PixelEditor : WindowUI {
 		// Tools
 		if (EngineSetting.Hotkey_PixTool_Rect.Value.Down()) {
 			SetCurrentTool(Tool.Rect);
+		}
+		if (EngineSetting.Hotkey_PixTool_Circle.Value.Down()) {
+			SetCurrentTool(Tool.Circle);
 		}
 		if (EngineSetting.Hotkey_PixTool_Line.Value.Down()) {
 			SetCurrentTool(Tool.Line);

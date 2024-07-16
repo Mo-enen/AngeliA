@@ -516,7 +516,7 @@ public partial class PixelEditor {
 				}
 				// Mark
 				if (Contains9Pivots.GetBit(i)) {
-					Renderer.Draw(BuiltInSprite.CIRCLE_16, bRect, Skin.HighlightColor);
+					Renderer.Draw(BuiltInSprite.CIRCLE_16, bRect, Skin.HighlightColorAlt);
 				}
 			}
 			rect.SlideRight(padding);

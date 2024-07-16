@@ -215,6 +215,7 @@ public static partial class Util {
 	}
 
 
+	// Line
 	public static IEnumerable<Int2> DrawLine_DDA (int x0, int y0, int x1, int y1) {
 
 		// Calculate dx and dy 
@@ -276,6 +277,179 @@ public static partial class Util {
 			}
 		}
 
+	}
+
+
+	// Circle
+	public static IEnumerable<IRect> DrawFilledEllipse_Patrick (int left, int bottom, int width, int height) {
+
+		int radiusX = width / 2;
+		int radiusY = height / 2;
+		int centerX = left + radiusX;
+		int centerY = bottom + radiusY;
+		bool removeMidX = width % 2 == 0;
+		bool removeMidY = height % 2 == 0;
+
+		static IRect FixRect (IRect rect, bool removeMidX, bool removeMidY, int centerX, int centerY) {
+			// Fix X
+			if (removeMidX) {
+				rect.width--;
+			}
+			// Fix Y
+			if (removeMidY) {
+				if (rect.y < centerY && rect.yMax >= centerY) {
+					rect.height--;
+				} else if (rect.y >= centerY) {
+					rect.y--;
+				}
+			}
+			return rect;
+		}
+
+
+		int x = 0, y = radiusY;
+		int rx = x, ry = y;
+		int _width = 1;
+		int _height = 1;
+		long a2 = (long)radiusX * radiusX, b2 = (long)radiusY * radiusY;
+		long crit1 = -(a2 / 4 + radiusX % 2 + b2);
+		long crit2 = -(b2 / 4 + radiusY % 2 + a2);
+		long crit3 = -(b2 / 4 + radiusY % 2);
+		long t = -a2 * y;
+		long dxt = 2 * b2 * x, dyt = -2 * a2 * y;
+		long d2xt = 2 * b2, d2yt = 2 * a2;
+
+		if (radiusY == 0) {
+			yield return FixRect(new IRect(centerX - radiusX, centerY, 2 * radiusX + 1, 1), removeMidX, removeMidY, centerX, centerY);
+			yield break;
+		}
+
+		while (y >= 0 && x <= radiusX) {
+			if (t + b2 * x <= crit1 ||
+				t + a2 * y <= crit3) {
+				if (_height == 1) {
+
+				} else if (ry * 2 + 1 > (_height - 1) * 2) {
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height - 1), removeMidX, removeMidY, centerX, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, 1 - _height), removeMidX, removeMidY, centerX, centerY);
+					ry -= _height - 1;
+					_height = 1;
+				} else {
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerX, centerY);
+					ry -= ry;
+					_height = 1;
+				}
+				// incX
+				x++;
+				dxt += d2xt;
+				t += dxt;
+				// 
+				rx++;
+				_width += 2;
+			} else if (t - a2 * y > crit2) {
+				// incY
+				y--;
+				dyt += d2yt;
+				t += dyt;
+				// 
+				_height++;
+			} else {
+				if (ry * 2 + 1 > _height * 2) {
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height), removeMidX, removeMidY, centerX, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, -_height), removeMidX, removeMidY, centerX, centerY);
+				} else {
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerX, centerY);
+				}
+				// incX
+				x++;
+				dxt += d2xt;
+				t += dxt;
+				// incY
+				y--;
+				dyt += d2yt;
+				t += dyt;
+				// 
+				rx++;
+				_width += 2;
+				ry -= _height;
+				_height = 1;
+			}
+		}
+
+		if (ry > _height) {
+			yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height), removeMidX, removeMidY, centerX, centerY);
+			yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, -_height), removeMidX, removeMidY, centerX, centerY);
+		} else {
+			yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerX, centerY);
+		}
+
+	}
+
+
+	public static IEnumerable<Int2> DrawHoloEllipse_Patrick (int left, int bottom, int width, int height) {
+
+		int radiusX = width / 2;
+		int radiusY = height / 2;
+		int centerX = left + radiusX;
+		int centerY = bottom + radiusY;
+		bool removeMidX = width % 2 == 0;
+		bool removeMidY = height % 2 == 0;
+
+		static bool Valid (int x, int y, bool removeMidX, bool removeMidY, int centerX, int centerY) {
+			return (!removeMidX || x != centerX) && (!removeMidY || y != centerY);
+		}
+		static Int2 GetPoint (int x, int y, bool removeMidX, bool removeMidY, int centerX, int centerY) {
+			return new Int2(
+				removeMidX && x > centerX ? x - 1 : x,
+				removeMidY && y > centerY ? y - 1 : y
+			);
+		}
+
+		int x = 0, y = radiusY;
+		long a2 = (long)radiusX * radiusX, b2 = (long)radiusY * radiusY;
+		long crit1 = -(a2 / 4 + radiusX % 2 + b2);
+		long crit2 = -(b2 / 4 + radiusY % 2 + a2);
+		long crit3 = -(b2 / 4 + radiusY % 2);
+		long t = -a2 * y;
+		long dxt = 2 * b2 * x, dyt = -2 * a2 * y;
+		long d2xt = 2 * b2, d2yt = 2 * a2;
+
+		while (y >= 0 && x <= radiusX) {
+
+			if (Valid(centerX + x, centerY + y, removeMidX, removeMidY, centerX, centerY)) {
+				yield return GetPoint(centerX + x, centerY + y, removeMidX, removeMidY, centerX, centerY);
+			}
+
+			if (x != 0 || y != 0) {
+				if (Valid(centerX - x, centerY - y, removeMidX, removeMidY, centerX, centerY)) {
+					yield return GetPoint(centerX - x, centerY - y, removeMidX, removeMidY, centerX, centerY);
+				}
+			}
+			if (x != 0 && y != 0) {
+				if (Valid(centerX - x, centerY - y, removeMidX, removeMidY, centerX, centerY)) {
+					yield return GetPoint(centerX + x, centerY - y, removeMidX, removeMidY, centerX, centerY);
+				}
+				if (Valid(centerX - x, centerY - y, removeMidX, removeMidY, centerX, centerY)) {
+					yield return GetPoint(centerX - x, centerY + y, removeMidX, removeMidY, centerX, centerY);
+				}
+			}
+			if (t + b2 * x <= crit1 || t + a2 * y <= crit3) {
+				x++;
+				dxt += d2xt;
+				t += dxt;
+			} else if (t - a2 * y > crit2) {
+				y--;
+				dyt += d2yt;
+				t += dyt;
+			} else {
+				x++;
+				dxt += d2xt;
+				t += dxt;
+				y--;
+				dyt += d2yt;
+				t += dyt;
+			}
+		}
 	}
 
 

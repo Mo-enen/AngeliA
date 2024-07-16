@@ -77,6 +77,7 @@ public partial class PixelEditor {
 
 		switch (CurrentTool) {
 			case Tool.Rect:
+			case Tool.Circle:
 			case Tool.Line:
 				// Paint
 				DraggingState = DragState.Paint;
@@ -210,6 +211,16 @@ public partial class PixelEditor {
 				} else if (CurrentTool == Tool.Rect) {
 					// Paint Rect
 					PaintPixel(DraggingPixelRect, PaintingColor, out painted);
+				} else if (CurrentTool == Tool.Circle) {
+					// Paint Circle
+					foreach (var rect in Util.DrawFilledEllipse_Patrick(
+						DraggingPixelRect.x,
+						DraggingPixelRect.y,
+						DraggingPixelRect.width,
+						DraggingPixelRect.height
+					)) {
+						PaintPixel(rect, PaintingColor, out painted);
+					}
 				}
 				if (!painted) {
 					PaintFailedCount++;
@@ -432,58 +443,84 @@ public partial class PixelEditor {
 
 	// Draw for Dragging
 	private void DrawPaintingGizmos () {
-		if (CurrentTool == Tool.Line) {
-			// Painting Line
-			var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
-			var endPixPoint = MousePixelPos;
-			using (new DefaultLayerScope()) {
-				foreach (var pixelRect in Util.DrawLineWithRect_DDA(
-					startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
-				)) {
-					var stageRect = Pixel_to_Stage(pixelRect);
-					if (PaintingColor.a == 0) {
-						// Erase
-						DrawFrame(stageRect, Skin.GizmosDragging, GizmosThickness);
-						DrawFrame(stageRect.Expand(GizmosThickness), Skin.GizmosDraggingAlt, GizmosThickness);
-					} else {
-						// Paint
-						Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
-					}
-				}
-			}
-			// Size Hint
-			//DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
-		} else if (CurrentTool == Tool.Rect) {
-			// Painting Rect
-			var stageRect = Pixel_to_Stage(DraggingPixelRect);
-			if (PaintingColor.a == 0) {
-				// Erase Rect
-				DrawFrame(stageRect, Skin.GizmosDragging, GizmosThickness);
-				DrawFrame(stageRect.Expand(GizmosThickness), Skin.GizmosDraggingAlt, GizmosThickness);
-				// Cross
-				var center = stageRect.CenterInt();
-				int length = Util.BabylonianSqrt(stageRect.width * stageRect.width + stageRect.height * stageRect.height);
-				float angle = Util.Atan(stageRect.width, stageRect.height);
-				var cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Skin.GizmosDraggingAlt, z: int.MaxValue);
-				cell.Rotation1000 = (angle * 1000).RoundToInt();
-				cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Skin.GizmosDraggingAlt, z: int.MaxValue);
-				cell.Rotation1000 = (angle * -1000).RoundToInt();
-				cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Skin.GizmosDragging, z: int.MaxValue);
-				cell.Rotation1000 = (angle * 1000).RoundToInt();
-				cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Skin.GizmosDragging, z: int.MaxValue);
-				cell.Rotation1000 = (angle * -1000).RoundToInt();
-			} else {
-				// Painting Rect
+		switch (CurrentTool) {
+			case Tool.Line: {
+				// Painting Gizmos Line
+				var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
+				var endPixPoint = MousePixelPos;
 				using (new DefaultLayerScope()) {
-					if (EngineSetting.SolidPaintingPreview.Value) {
-						Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
-					} else {
-						DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
+					foreach (var pixelRect in Util.DrawLineWithRect_DDA(
+						startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
+					)) {
+						var stageRect = Pixel_to_Stage(pixelRect);
+						if (PaintingColor.a == 0) {
+							// Erase
+							DrawFrame(stageRect, Skin.GizmosDragging, GizmosThickness);
+							DrawFrame(stageRect.Expand(GizmosThickness), Skin.GizmosDraggingAlt, GizmosThickness);
+						} else {
+							// Paint
+							Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
+						}
 					}
 				}
+				break;
 			}
-			// Size Hint
-			//DrawSizeHint(DraggingPixelRect.size, StageRect.BottomRight());
+			case Tool.Rect: {
+				// Painting Gizmos Rect
+				var stageRect = Pixel_to_Stage(DraggingPixelRect);
+				if (PaintingColor.a == 0) {
+					// Erase Rect
+					DrawFrame(stageRect, Skin.GizmosDragging, GizmosThickness);
+					DrawFrame(stageRect.Expand(GizmosThickness), Skin.GizmosDraggingAlt, GizmosThickness);
+					// Cross
+					var center = stageRect.CenterInt();
+					int length = Util.BabylonianSqrt(stageRect.width * stageRect.width + stageRect.height * stageRect.height);
+					float angle = Util.Atan(stageRect.width, stageRect.height);
+					var cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Skin.GizmosDraggingAlt, z: int.MaxValue);
+					cell.Rotation1000 = (angle * 1000).RoundToInt();
+					cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness * 2, Skin.GizmosDraggingAlt, z: int.MaxValue);
+					cell.Rotation1000 = (angle * -1000).RoundToInt();
+					cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Skin.GizmosDragging, z: int.MaxValue);
+					cell.Rotation1000 = (angle * 1000).RoundToInt();
+					cell = Renderer.DrawPixel(center.x, center.y, 500, 500, 0, length, GizmosThickness, Skin.GizmosDragging, z: int.MaxValue);
+					cell.Rotation1000 = (angle * -1000).RoundToInt();
+				} else {
+					// Painting Rect
+					using (new DefaultLayerScope()) {
+						if (EngineSetting.SolidPaintingPreview.Value) {
+							Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
+						} else {
+							DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
+						}
+					}
+				}
+				break;
+			}
+			case Tool.Circle: {
+				// Painting Gizmos Circle
+				if (EngineSetting.SolidPaintingPreview.Value) {
+					foreach (var rect in Util.DrawFilledEllipse_Patrick(
+						DraggingPixelRect.x,
+						DraggingPixelRect.y,
+						DraggingPixelRect.width,
+						DraggingPixelRect.height
+					)) {
+						var stageRect = Pixel_to_Stage(rect);
+						Renderer.DrawPixel(stageRect, PaintingColor, int.MaxValue);
+					}
+				} else {
+					foreach (var point in Util.DrawHoloEllipse_Patrick(
+						DraggingPixelRect.x,
+						DraggingPixelRect.y,
+						DraggingPixelRect.width,
+						DraggingPixelRect.height
+					)) {
+						var stageRect = Pixel_to_Stage(new IRect(point.x, point.y, 1, 1));
+						Renderer.DrawPixel(stageRect, PaintingColor, int.MaxValue);
+					}
+				}
+				break;
+			}
 		}
 	}
 
