@@ -115,11 +115,13 @@ public partial class PixelEditor {
 	private bool OpeningTilingRuleEditor = false;
 	private bool? TilingRuleModeA = true;
 	private bool FoldingColorField = true;
+	private bool UsePivotLabel = false;
 	private int RulePageIndex = 0;
 	private string ColorFieldCode = "";
 	private IRect RuleEditorRect = default;
 	private IRect CreateSpriteBigButtonRect = default;
 	private ColorF PaintingColorF = new(0, 0, 0, 0);
+	private int Contains9Pivots = 0b_00000000;
 
 
 	#endregion
@@ -470,25 +472,61 @@ public partial class PixelEditor {
 		GUI.Label(rect.Shrink(0, 0, 0, padding), LABEL_PIVOT, out var labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 
-		// Input Fields
-		rect.width = fieldWidth;
-		var inputRect = rect.Shrink(0, 0, 0, padding);
+		if (UsePivotLabel) {
+			// Input Fields
+			rect.width = fieldWidth;
+			var inputRect = rect.Shrink(0, 0, 0, padding);
 
-		// Pivot X
-		if (InputField(InputName.PivotX, inputRect)) {
-			TryApplySpriteInputFields(forceApply: true);
-			RefreshSpriteInputContent();
-		}
-		RequireTooltip(inputRect, TIP_PIVOT_X);
-		rect.SlideRight(padding);
-		inputRect.SlideRight(padding);
+			// Pivot X
+			if (InputField(InputName.PivotX, inputRect)) {
+				TryApplySpriteInputFields(forceApply: true);
+				RefreshSpriteInputContent();
+			}
+			RequireTooltip(inputRect, TIP_PIVOT_X);
+			rect.SlideRight(padding);
+			inputRect.SlideRight(padding);
 
-		// Pivot Y
-		if (InputField(InputName.PivotY, inputRect)) {
-			TryApplySpriteInputFields(forceApply: true);
-			RefreshSpriteInputContent();
+			// Pivot Y
+			if (InputField(InputName.PivotY, inputRect)) {
+				TryApplySpriteInputFields(forceApply: true);
+				RefreshSpriteInputContent();
+			}
+			RequireTooltip(inputRect, TIP_PIVOT_Y);
+			rect.SlideRight(padding);
+		} else {
+			// Pivot 9-Button
+			rect.width = rect.height;
+			for (int i = 0; i < 9; i++) {
+				int w = rect.width / 3;
+				int h = rect.height / 3;
+				var bRect = new IRect(rect.x + (i % 3) * w, rect.y + (i / 3) * h, w, h);
+				// Btn
+				if (GUI.BlankButton(bRect, out var state)) {
+					SetAllSelectingSpritePivot((i % 3) * 500, (i / 3) * 500);
+				}
+				// Body
+				Renderer.DrawPixel(bRect, Color32.GREY_46);
+				// Frame
+				using (new GUIColorScope(Color32.GREY_38)) {
+					GUI.DrawSlice(BuiltInSprite.FRAME_16, bRect);
+				}
+				// Highlight
+				if (state == GUIState.Hover) {
+					Renderer.DrawPixel(bRect, Color32.WHITE_20);
+				}
+				// Mark
+				if (Contains9Pivots.GetBit(i)) {
+					Renderer.Draw(BuiltInSprite.CIRCLE_16, bRect, Skin.HighlightColor);
+				}
+			}
+			rect.SlideRight(padding);
 		}
-		RequireTooltip(inputRect, TIP_PIVOT_Y);
+
+		// Switcher
+		rect.width = rect.height / 2;
+		if (GUI.Button(rect, BuiltInSprite.MENU_THREE_DOTS, Skin.SmallIconButton)) {
+			UsePivotLabel = !UsePivotLabel;
+		}
 		rect.SlideRight(padding);
 
 		// Final
@@ -741,6 +779,7 @@ public partial class PixelEditor {
 	#region --- LGC ---
 
 
+	// Menu
 	private void OpenSpriteTagMenu () {
 
 		if (SelectingSpriteCount == 0) return;

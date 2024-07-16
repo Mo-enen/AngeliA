@@ -286,6 +286,7 @@ public partial class PixelEditor : WindowUI {
 		CurrentUndoSprite = null;
 		SelectingPaletteIndex = -1;
 		PixelStageSize = (CanvasRect.height / STAGE_SIZE).RoundToInt();
+		Contains9Pivots = 0;
 		int firstPalIndex = -1;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
@@ -302,6 +303,7 @@ public partial class PixelEditor : WindowUI {
 				SelectingAnySpriteWithBorder = SelectingAnySpriteWithBorder || !sprite.GlobalBorder.IsZero;
 				SelectingAnyTiggerSprite = SelectingAnyTiggerSprite || sprite.IsTrigger;
 				SelectingAnyNonTiggerSprite = SelectingAnyNonTiggerSprite || !sprite.IsTrigger;
+				Contains9Pivots.SetBit(Get9PivotDigit(sprite.PivotX, sprite.PivotY), true);
 			}
 
 			// Palette
@@ -1149,6 +1151,37 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	private void SetAllSelectingSpritePivot (int pivotX, int pivotY) {
+		int checkedCount = 0;
+		for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
+			var spData = StagedSprites[i];
+			if (!spData.Selecting) continue;
+			checkedCount++;
+			var sprite = spData.Sprite;
+			// X
+			if (sprite.PivotX != pivotX) {
+				RegisterUndo(new SpritePivotUndoItem() {
+					SpriteID = sprite.ID,
+					From = sprite.PivotX,
+					To = pivotX,
+					X = true,
+				});
+				sprite.PivotX = pivotX;
+			}
+			// Y
+			if (sprite.PivotY != pivotY) {
+				RegisterUndo(new SpritePivotUndoItem() {
+					SpriteID = sprite.ID,
+					From = sprite.PivotY,
+					To = pivotY,
+					X = false,
+				});
+				sprite.PivotY = pivotY;
+			}
+		}
+	}
+
+
 	// Util
 	private IRect Pixel_to_Stage (IRect pixRect, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out _, out _, ignoreClamp);
 	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, out bool outside, bool ignoreClamp = false) {
@@ -1208,6 +1241,13 @@ public partial class PixelEditor : WindowUI {
 			Create = true,
 		});
 	}
+
+
+	private int Get9PivotDigit (int pivotX, int pivotY) =>
+		pivotY == 0 ? (pivotX == 0 ? 0 : pivotX == 500 ? 1 : pivotX == 1000 ? 2 : -1) :
+		pivotY == 500 ? (pivotX == 0 ? 3 : pivotX == 500 ? 4 : pivotX == 1000 ? 5 : -1) :
+		pivotY == 1000 ? (pivotX == 0 ? 6 : pivotX == 500 ? 7 : pivotX == 1000 ? 8 : -1) :
+		-1;
 
 
 	// Drawing Util

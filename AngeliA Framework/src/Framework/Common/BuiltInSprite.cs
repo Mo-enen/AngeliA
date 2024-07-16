@@ -18,6 +18,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode FRAME_16 = "Frame16";
 	public static readonly SpriteCode BUTTON_FRAME = "ButtonFrame";
 	public static readonly SpriteCode MENU_SELECTION_MARK = "Menu Selection Mark";
+	public static readonly SpriteCode MENU_THREE_DOTS = "Menu Three Dots";
 	public static readonly SpriteCode SOFT_LINE_H = "Soft Line H";
 	public static readonly SpriteCode SOFT_LINE_V = "Soft Line V";
 	public static readonly SpriteCode GAMEPAD_START = "k_Gamepad Start";
