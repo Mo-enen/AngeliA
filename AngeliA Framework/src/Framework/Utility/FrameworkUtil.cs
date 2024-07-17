@@ -59,6 +59,25 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void DrawAfterimageEffect (Cell source, int speedX, int speedY, Color32 tintStart, Color32 tintEnd, int rotateSpeed = 0, int count = 3, int frameStep = 2, int scaleStart = 1000, int scaleEnd = 1000) {
+		for (int i = 1; i <= count; i++) {
+			int index = i * frameStep;
+			float lerp01 = (i - 1f) / (count - 1);
+			var cell = Renderer.Draw(Const.PIXEL, default);
+			cell.CopyFrom(source);
+			cell.X -= index * speedX;
+			cell.Y -= index * speedY;
+			cell.Z -= index;
+			cell.Rotation -= index * rotateSpeed;
+			cell.Color *= Color32.Lerp(tintStart, tintEnd, lerp01);
+			cell.ScaleFrom(
+				Util.LerpUnclamped(scaleStart, scaleEnd, lerp01).RoundToInt(),
+				cell.X, cell.Y
+			);
+		}
+	}
+
+
 	public static void DrawSegmentHealthBar (int x, int y, int heartLeftCode, int heartRightCode, int emptyHeartLeftCode, int emptyHeartRightCode, int dropParticleID, int hp, int maxHP, int prevHP = int.MinValue) {
 
 		const int SIZE = Const.HALF;

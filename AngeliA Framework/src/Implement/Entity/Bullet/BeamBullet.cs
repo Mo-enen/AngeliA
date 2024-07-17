@@ -5,8 +5,11 @@ namespace AngeliA;
 
 public abstract class BeamBullet : MovableBullet {
 
-	protected override int Duration => 2;
+	// Const
 	public const int BEAM_SPEED = Const.CEL * 42;
+
+	// Api
+	protected sealed override int Duration => 1;
 	public sealed override int SpeedForward => BEAM_SPEED;
 	public override int MaxRange => Const.CEL * 24;
 	protected override int SpawnHeight => Const.HALF * 2 / 3;

@@ -78,10 +78,12 @@ public class GroupAnimation : Entity {
 	}
 
 	// API
-	public static void Spawn (int groupID, int x, int y, int renderLayer = RenderLayer.DEFAULT, int rotation1000 = 0, int rotationSpeed = 0) {
+	public static void Spawn (int groupID, int x, int y, int renderLayer = RenderLayer.DEFAULT, int rotation1000 = 0, int rotationSpeed = 0, int scale = 1000) {
 		if (!Renderer.TryGetSpriteFromGroup(groupID, 0, out var sprite, true, true, true)) return;
 		Spawn(
-			groupID, x, y, sprite.GlobalWidth, sprite.GlobalHeight, sprite.PivotX, sprite.PivotY,
+			groupID, x, y, 
+			sprite.GlobalWidth * scale / 1000, sprite.GlobalHeight * scale / 1000, 
+			sprite.PivotX, sprite.PivotY,
 			rotation1000, rotationSpeed, -1, 1, false, Color32.WHITE, int.MaxValue - 1, renderLayer
 		);
 	}

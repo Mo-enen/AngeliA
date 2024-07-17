@@ -31,23 +31,23 @@ public abstract class MovableBullet : Bullet {
 	public bool InWater { get; private set; } = false;
 
 	// Data
-	private int BeamStartX;
-	private int BeamStartY;
+	private int HitStartX;
+	private int HitStartY;
 	private int BeamLength = 0;
-	private int BeamEndX;
-	private int BeamEndY;
-	private bool BeamHitReceiver = false;
+	private int HitEndX;
+	private int HitEndY;
+	private bool HitReceiver = false;
 
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		BeamLength = 0;
-		BeamEndX = X;
-		BeamEndY = Y;
-		BeamStartX = X;
-		BeamStartY = Y;
-		BeamHitReceiver = false;
+		HitEndX = X;
+		HitEndY = Y;
+		HitStartX = X;
+		HitStartY = Y;
+		HitReceiver = false;
 	}
 
 	public override void BeforeUpdate () {
@@ -59,6 +59,9 @@ public abstract class MovableBullet : Bullet {
 		}
 
 		if (!Active) return;
+
+		HitStartX = X;
+		HitStartY = Y;
 
 		var vel = Velocity;
 		InWater = Physics.Overlap(PhysicsMask.MAP, Rect, null, OperationMode.TriggerOnly, Tag.Water);
@@ -166,9 +169,11 @@ public abstract class MovableBullet : Bullet {
 
 	private bool MovableHitCheck () {
 		bool selfDestroy = false;
+		int fromX = HitStartX;
+		int fromY = HitStartY;
 		int stepCount = Util.Max(
-			(X - BeamStartX).Abs().CeilDivide(Width),
-			(Y - BeamStartY).Abs().CeilDivide(Height)
+			(X - fromX).Abs().CeilDivide(Width),
+			(Y - fromY).Abs().CeilDivide(Height)
 		);
 		if (stepCount <= 1) {
 			selfDestroy = base.EnvironmentHitCheck();
@@ -180,8 +185,6 @@ public abstract class MovableBullet : Bullet {
 			Stage.ViewRect.height.CeilDivide(Height)
 		));
 		int oldX = X, oldY = Y;
-		int fromX = BeamStartX;
-		int fromY = BeamStartY;
 		int maxRangeSq = MaxRange * MaxRange;
 		int rangeSq = 0;
 		for (int i = 0; i < limitedStepCount; i++) {
@@ -194,12 +197,12 @@ public abstract class MovableBullet : Bullet {
 			selfDestroy = hitRec || selfDestroy;
 			if (selfDestroy) {
 				BeamLength = Util.BabylonianSqrt(rangeSq);
-				BeamHitReceiver = hitRec;
+				HitReceiver = hitRec;
 				break;
 			}
 		}
-		BeamEndX = X;
-		BeamEndY = Y;
+		HitEndX = X;
+		HitEndY = Y;
 		if (!selfDestroy) {
 			BeamLength = Util.BabylonianSqrt(rangeSq);
 		}
@@ -211,8 +214,8 @@ public abstract class MovableBullet : Bullet {
 	// API
 	public virtual void StartMove (Direction8 dir, int speedX, int speedY) {
 		const int SQT2 = 14142;
-		BeamStartX = X;
-		BeamStartY = Y;
+		HitStartX = X;
+		HitStartY = Y;
 		switch (dir) {
 
 			case Direction8.Top: // ↑
@@ -265,13 +268,13 @@ public abstract class MovableBullet : Bullet {
 	}
 
 	protected (int x, int y, int endX, int endY, int length, int rotation1000, bool beamHitReceiver) GetLastBeamTramsform () => (
-		BeamStartX + Width / 2,
-		BeamStartY + Height / 2,
-		BeamEndX,
-		BeamEndY,
+		HitStartX + Width / 2,
+		HitStartY + Height / 2,
+		HitEndX,
+		HitEndY,
 		BeamLength,
 		(-Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt(),
-		BeamHitReceiver
+		HitReceiver
 	);
 
 }
