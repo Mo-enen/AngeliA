@@ -428,9 +428,9 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Cache
 		TaskingRoute = Task.HasTask();
-		CtrlHolding = Input.KeyboardHolding(KeyboardKey.LeftCtrl) || Input.KeyboardHolding(KeyboardKey.RightCtrl) || Input.KeyboardHolding(KeyboardKey.CapsLock);
-		ShiftHolding = Input.KeyboardHolding(KeyboardKey.LeftShift) || Input.KeyboardHolding(KeyboardKey.RightShift);
-		AltHolding = Input.KeyboardHolding(KeyboardKey.LeftAlt) || Input.KeyboardHolding(KeyboardKey.RightAlt);
+		CtrlHolding = Input.HoldingCtrl || Input.KeyboardHolding(KeyboardKey.RightCtrl) || Input.KeyboardHolding(KeyboardKey.CapsLock);
+		ShiftHolding = Input.HoldingShift || Input.KeyboardHolding(KeyboardKey.RightShift);
+		AltHolding = Input.HoldingAlt || Input.KeyboardHolding(KeyboardKey.RightAlt);
 
 		// List
 		if (EditorMeta.PinnedLists.Count == 0) {

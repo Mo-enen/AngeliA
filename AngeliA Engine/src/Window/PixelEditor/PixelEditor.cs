@@ -276,9 +276,9 @@ public partial class PixelEditor : WindowUI {
 		MousePixelPosRound = Stage_to_Pixel(Input.MouseGlobalPosition, round: true);
 		StageRect = WindowRect.Shrink(Unify(PANEL_WIDTH), GUI.ToolbarSize, 0, GUI.ToolbarSize);
 		HoveringResizeStageIndex = -1;
-		HoldingCtrl = Input.KeyboardHolding(KeyboardKey.LeftCtrl);
-		HoldingAlt = Input.KeyboardHolding(KeyboardKey.LeftAlt);
-		HoldingShift = Input.KeyboardHolding(KeyboardKey.LeftShift);
+		HoldingCtrl = Input.HoldingCtrl;
+		HoldingAlt = Input.HoldingAlt;
+		HoldingShift = Input.HoldingShift;
 		HoveringResizeForBorder = false;
 		RuleEditorRect = OpeningTilingRuleEditor ? StageRect.CornerInside(Alignment.TopRight, Unify(200), Unify(250)) : default;
 		CreateSpriteBigButtonRect = StageRect.CornerInside(Alignment.TopLeft, Unify(64)).Shift(Unify(12), -Unify(12));
@@ -750,7 +750,7 @@ public partial class PixelEditor : WindowUI {
 		if (GUI.IsTyping) return;
 
 		// Ctrl
-		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+		if (Input.HoldingCtrl) {
 
 			// Ctrl + Z
 			if (Input.KeyboardDown(KeyboardKey.Z)) {

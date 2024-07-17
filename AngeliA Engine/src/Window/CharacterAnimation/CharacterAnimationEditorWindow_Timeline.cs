@@ -241,7 +241,7 @@ public partial class CharacterAnimationEditorWindow {
 			TimelineContentRect, new(TimelineScrollX, TimelineScrollY),
 			Int2.zero,
 			TimelineMaxScroll,
-			mouseWheelForVertical: EngineSetting.MouseScrollVerticalForTimeline.Value != Input.KeyboardHolding(KeyboardKey.LeftCtrl),
+			mouseWheelForVertical: EngineSetting.MouseScrollVerticalForTimeline.Value != Input.HoldingCtrl,
 			reverseMouseWheel: EngineSetting.ReverseMouseScrollForTimeline.Value
 		);
 
@@ -311,7 +311,7 @@ public partial class CharacterAnimationEditorWindow {
 					hoverLayer == TimelineLastClicked.layer &&
 					hoverFrame == TimelineLastClicked.frame &&
 					Game.GlobalFrame < TimelineLastClicked.downTimeFrame + 30;
-				if (doubleClick || Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+				if (doubleClick || Input.HoldingCtrl) {
 					// Create New Frame
 					CreateNewKeyFrame(hoverLayer, hoverFrame);
 					TimelineLastClicked = (hoverLayer, hoverFrame, int.MinValue);
@@ -563,7 +563,7 @@ public partial class CharacterAnimationEditorWindow {
 		rect.yMin = rect.yMax - Unify(36);
 		var (rangeMin, rangeMax) = ModularAnimation.GetValidRange(layerData.BindingType, layerData.BindingTarget);
 		int step = ModularAnimation.GetAdjustStep(layerData.BindingType);
-		step = Input.KeyboardHolding(KeyboardKey.LeftAlt) ? 1 : Input.KeyboardHolding(KeyboardKey.LeftCtrl) ? step * 4 : step;
+		step = Input.HoldingAlt ? 1 : Input.HoldingCtrl ? step * 4 : step;
 		frameData.Value = GUI.HandleSlider(
 			861299233, rect, frameData.Value,
 			rangeMin, rangeMax,

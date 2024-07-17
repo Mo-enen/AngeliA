@@ -849,7 +849,7 @@ public partial class MapEditor {
 		Renderer.DrawPixel(CheckPointLaneRect, Color32.BLACK);
 
 		// Scroll
-		if (!Input.KeyboardHolding(KeyboardKey.LeftCtrl) && Input.MouseWheelDelta != 0) {
+		if (!Input.HoldingCtrl && Input.MouseWheelDelta != 0) {
 			QuickLaneScrollY -= Input.MouseWheelDelta;
 		}
 

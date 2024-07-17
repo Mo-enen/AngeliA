@@ -343,7 +343,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 		// Move Frame Line
 		if (!TimelineFrameEditing) {
 			if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow) || Input.KeyboardDownGUI(KeyboardKey.A)) {
-				if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+				if (Input.HoldingCtrl) {
 					AnimationFrame = 0;
 				} else {
 					AnimationFrame = (AnimationFrame - 1).UMod(Animation.Duration + 1);
@@ -352,7 +352,7 @@ public partial class CharacterAnimationEditorWindow : WindowUI {
 				RequireScrollXClamp = true;
 			}
 			if (Input.KeyboardDownGUI(KeyboardKey.RightArrow) || Input.KeyboardDownGUI(KeyboardKey.D)) {
-				if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+				if (Input.HoldingCtrl) {
 					AnimationFrame = Animation.Duration;
 				} else {
 					AnimationFrame = (AnimationFrame + 1).UMod(Animation.Duration + 1);

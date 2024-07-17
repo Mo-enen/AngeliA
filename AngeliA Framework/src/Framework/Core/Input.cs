@@ -54,6 +54,9 @@ public static class Input {
 		get => s_AllowGamepad.Value;
 		set => s_AllowGamepad.Value = value;
 	}
+	public static bool HoldingCtrl => KeyboardHolding(KeyboardKey.LeftCtrl) || KeyboardHolding(KeyboardKey.RightCtrl);
+	public static bool HoldingShift => KeyboardHolding(KeyboardKey.LeftShift) || KeyboardHolding(KeyboardKey.RightShift);
+	public static bool HoldingAlt => KeyboardHolding(KeyboardKey.LeftAlt) || KeyboardHolding(KeyboardKey.RightAlt);
 
 	// Api - Anykey
 	public static bool AnyKeyDown { get; private set; } = false;

@@ -86,10 +86,10 @@ public partial class PixelEditor {
 			case Tool.Bucket:
 				// Bucket
 				if (HoveringSpriteStageIndex < 0) break;
-				if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+				if (Input.HoldingCtrl) {
 					ReplaceColorInSprite(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y, PaintingColor);
 				} else {
-					BucketPixel(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y);
+					BucketPaintPixel(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y);
 				}
 				break;
 
@@ -206,21 +206,33 @@ public partial class PixelEditor {
 					foreach (var pixelRect in Util.DrawLineWithRect_DDA(
 						startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
 					)) {
-						PaintPixel(pixelRect, PaintingColor, out painted);
+						PaintPixelRect(pixelRect, PaintingColor, holo: false, out painted);
 					}
 				} else if (CurrentTool == Tool.Rect) {
 					// Paint Rect
-					PaintPixel(DraggingPixelRect, PaintingColor, out painted);
+					PaintPixelRect(DraggingPixelRect, PaintingColor, holo: HoldingAlt, out painted);
 				} else if (CurrentTool == Tool.Circle) {
 					// Paint Circle
-					foreach (var rect in Util.DrawFilledEllipse_Patrick(
-						DraggingPixelRect.x,
-						DraggingPixelRect.y,
-						DraggingPixelRect.width,
-						DraggingPixelRect.height
-					)) {
-						PaintPixel(rect, PaintingColor, out painted);
+					if ((DraggingPixelRect.width >= 3 || DraggingPixelRect.height >= 3) && HoldingAlt) {
+						foreach (var point in Util.DrawHoloEllipse_Patrick(
+							DraggingPixelRect.x,
+							DraggingPixelRect.y,
+							DraggingPixelRect.width,
+							DraggingPixelRect.height
+						)) {
+							PaintPixelRect(new IRect(point, Int2.one), PaintingColor, holo: false, out painted);
+						}
+					} else {
+						foreach (var rect in Util.DrawFilledEllipse_Patrick(
+							DraggingPixelRect.x,
+							DraggingPixelRect.y,
+							DraggingPixelRect.width,
+							DraggingPixelRect.height
+						)) {
+							PaintPixelRect(rect, PaintingColor, holo: false, out painted);
+						}
 					}
+
 				}
 				if (!painted) {
 					PaintFailedCount++;
@@ -487,7 +499,7 @@ public partial class PixelEditor {
 				} else {
 					// Painting Rect
 					using (new DefaultLayerScope()) {
-						if (EngineSetting.SolidPaintingPreview.Value) {
+						if (EngineSetting.SolidPaintingPreview.Value && !HoldingAlt) {
 							Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
 						} else {
 							DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
@@ -498,7 +510,7 @@ public partial class PixelEditor {
 			}
 			case Tool.Circle: {
 				// Painting Gizmos Circle
-				if (EngineSetting.SolidPaintingPreview.Value) {
+				if (DraggingPixelRect.width < 3 || DraggingPixelRect.height < 3 || (EngineSetting.SolidPaintingPreview.Value && !HoldingAlt)) {
 					foreach (var rect in Util.DrawFilledEllipse_Patrick(
 						DraggingPixelRect.x,
 						DraggingPixelRect.y,
@@ -955,7 +967,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void PaintPixel (IRect _pixelRange, Color32 targetColor, out bool painted) {
+	private void PaintPixelRect (IRect _pixelRange, Color32 targetColor, bool holo, out bool painted) {
 		painted = false;
 		for (int spriteIndex = 0; spriteIndex < StagedSprites.Count; spriteIndex++) {
 			var paintingSpData = StagedSprites[spriteIndex];
@@ -990,6 +1002,7 @@ public partial class PixelEditor {
 							To = newPixel,
 							LocalPixelIndex = pIndex,
 						});
+						if (holo && i == l && j != d && j != u - 1) i = r - 2;
 					}
 				}
 			} else {
@@ -1005,6 +1018,7 @@ public partial class PixelEditor {
 							To = Color32.CLEAR,
 							LocalPixelIndex = pIndex,
 						});
+						if (holo && i == l && j != d && j != u - 1) i = r - 2;
 					}
 				}
 			}
@@ -1023,7 +1037,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void BucketPixel (int spriteIndex, int pixelX, int pixelY) {
+	private void BucketPaintPixel (int spriteIndex, int pixelX, int pixelY) {
 		if (spriteIndex < 0 || spriteIndex >= StagedSprites.Count) return;
 		var spData = StagedSprites[spriteIndex];
 		var sprite = spData.Sprite;
@@ -1223,7 +1237,7 @@ public partial class PixelEditor {
 			Util.Max(downPos.y + 1, pos.y + 1)
 		);
 		// Force Square
-		if (Input.KeyboardHolding(KeyboardKey.LeftShift)) {
+		if (Input.HoldingShift) {
 			result = result.ForceSquare(pos.x < downPos.x, pos.y < downPos.y);
 		}
 		return result;
@@ -1238,7 +1252,7 @@ public partial class PixelEditor {
 		var oldSpritePxRect = resizingSp.Sprite.PixelRect;
 		var resizingPixRect = oldSpritePxRect;
 		var resizingNormal = ResizingDirection.GetNormal();
-		bool forceSquare = Input.KeyboardHolding(KeyboardKey.LeftShift);
+		bool forceSquare = Input.HoldingShift;
 		var mousePos = Input.MouseGlobalPosition;
 		var mouseDownPos = Input.MouseLeftDownGlobalPosition;
 		bool ignoreX = forceSquare && resizingNormal.x * resizingNormal.y != 0 && Util.Abs(mousePos.x - mouseDownPos.x) < Util.Abs(mousePos.y - mouseDownPos.y);

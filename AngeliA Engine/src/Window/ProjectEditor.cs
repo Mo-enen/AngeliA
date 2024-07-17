@@ -142,7 +142,7 @@ public class ProjectEditor : WindowUI {
 		}
 
 		// Hotkey
-		if (Input.KeyboardHolding(KeyboardKey.LeftCtrl)) {
+		if (Input.HoldingCtrl) {
 			// Ctrl + S
 			if (Input.KeyboardDown(KeyboardKey.S)) {
 				Save();
