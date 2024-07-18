@@ -24,7 +24,10 @@ public abstract class BeamBullet : MovableBullet {
 	protected virtual int BurstSize => Const.CEL;
 	protected virtual int HandBurstSize => 196;
 	protected virtual int RenderingLayer => RenderLayer.ADD;
-
+	protected virtual Color32 BeamTint => Color32.WHITE;
+	protected virtual Color32 SparkTint => Color32.WHITE_128;
+	protected virtual Color32 BurstTint => Color32.WHITE;
+	protected virtual Color32 HandBurstTint => Color32.WHITE;
 
 	// Data
 	private bool BeamRendered = false;
@@ -36,26 +39,27 @@ public abstract class BeamBullet : MovableBullet {
 		BeamRendered = false;
 	}
 
-
 	public override void LateUpdate () {
 		base.LateUpdate();
-		if (BeamRendered) return;
-		BeamRendered = true;
-		SpawnBeamArtwork();
+		RenderBeam();
 	}
 
+	protected override void BeforeDespawn (IDamageReceiver receiver) { }
 
-	private void SpawnBeamArtwork () {
+	private void RenderBeam () {
+
+		if (BeamRendered) return;
+		BeamRendered = true;
 
 		// Render Beam
-		var (x, y, endX, endY, h, rot1000, hitRec) = GetLastBeamTramsform();
+		var (x, y, endX, endY, h, rot1000, hitRec) = GetLastUpdatedTramsform();
 
 		// Beam
 		if (BeamSpriteID != 0) {
 			GroupAnimation.Spawn(
 				BeamSpriteID, x, y, BeamSize, h,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
-				rot1000, 0, -1, 1, false, Color32.WHITE, renderLayer: RenderingLayer
+				rot1000, 0, -1, 1, false, BeamTint, renderLayer: RenderingLayer
 			);
 		}
 
@@ -65,17 +69,17 @@ public abstract class BeamBullet : MovableBullet {
 				SparkSpriteID, x, y,
 				SparkSize, h,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
-				rot1000, 0, -1, 1, false, Color32.WHITE_128, renderLayer: RenderingLayer
+				rot1000, 0, -1, 1, false, SparkTint, renderLayer: RenderingLayer
 			);
 		}
 
 		// Burst 
 		if (hitRec && BurstSpriteID != 0) {
 			GroupAnimation.Spawn(
-				BurstSpriteID, endX + Width / 2, endY + Height / 2, BurstSize, BurstSize,
+				BurstSpriteID, endX, endY, BurstSize, BurstSize,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				0, BurstRotateSpeed,
-				-1, 1, true, Color32.WHITE, renderLayer: RenderingLayer
+				-1, 1, true, BurstTint, renderLayer: RenderingLayer
 			);
 		}
 
@@ -85,7 +89,7 @@ public abstract class BeamBullet : MovableBullet {
 				HandBurstSpriteID, x, y, HandBurstSize, HandBurstSize,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				rot1000, HandBurstRotateSpeed,
-				-1, 1, true, Color32.WHITE, renderLayer: RenderingLayer
+				-1, 1, true, HandBurstTint, renderLayer: RenderingLayer
 			);
 		}
 

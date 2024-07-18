@@ -249,7 +249,7 @@ public partial class PixelEditor : WindowUI {
 		Update_Gizmos();
 		Update_Hotkey();
 		Update_Rendering();
-		Update_StageToolbar();
+		Update_Toolbar();
 		Update_View();
 	}
 

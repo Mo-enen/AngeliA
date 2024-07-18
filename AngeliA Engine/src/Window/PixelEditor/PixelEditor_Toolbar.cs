@@ -132,7 +132,7 @@ public partial class PixelEditor {
 	#region --- MSG ---
 
 
-	private void Update_StageToolbar () {
+	private void Update_Toolbar () {
 
 		if (Sheet.Atlas.Count <= 0) return;
 
@@ -218,6 +218,7 @@ public partial class PixelEditor {
 		switch (CurrentTool) {
 			case Tool.Rect:
 			case Tool.Line:
+			case Tool.Circle:
 			case Tool.Bucket: {
 
 				// Color Field

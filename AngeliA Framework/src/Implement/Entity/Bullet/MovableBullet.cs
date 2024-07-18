@@ -29,6 +29,7 @@ public abstract class MovableBullet : Bullet {
 	public int CurrentRotation { get; set; }
 	public Int2 Velocity { get; set; }
 	public bool InWater { get; private set; } = false;
+	protected bool HitReceiver { get; private set; } = false;
 
 	// Data
 	private int HitStartX;
@@ -36,7 +37,6 @@ public abstract class MovableBullet : Bullet {
 	private int BeamLength = 0;
 	private int HitEndX;
 	private int HitEndY;
-	private bool HitReceiver = false;
 
 
 	// MSG
@@ -178,6 +178,8 @@ public abstract class MovableBullet : Bullet {
 		if (stepCount <= 1) {
 			selfDestroy = base.EnvironmentHitCheck();
 			selfDestroy = base.ReceiverHitCheck() || selfDestroy;
+			HitEndX = X;
+			HitEndY = Y;
 			return selfDestroy;
 		}
 		int limitedStepCount = stepCount.LessOrEquel(Util.Max(
@@ -212,54 +214,54 @@ public abstract class MovableBullet : Bullet {
 	}
 
 	// API
-	public virtual void StartMove (Direction8 dir, int speedX, int speedY) {
+	public virtual void StartMove (Direction8 dir, int speedForward, int speedSide) {
 		const int SQT2 = 14142;
 		HitStartX = X;
 		HitStartY = Y;
 		switch (dir) {
 
 			case Direction8.Top: // ↑
-				Velocity = new Int2(speedY, speedX);
+				Velocity = new Int2(speedSide, speedForward);
 				CurrentRotation = StartRotation - 90;
 				break;
 			case Direction8.Right: // →
-				Velocity = new Int2(speedX, speedY);
+				Velocity = new Int2(speedForward, speedSide);
 				CurrentRotation = StartRotation;
 				break;
 			case Direction8.Bottom: // ↓
-				Velocity = new Int2(speedY, -speedX);
+				Velocity = new Int2(speedSide, -speedForward);
 				CurrentRotation = StartRotation + 90;
 				break;
 			case Direction8.Left: // ←
-				Velocity = new Int2(-speedX, speedY);
+				Velocity = new Int2(-speedForward, speedSide);
 				CurrentRotation = -StartRotation;
 				break;
 
 			case Direction8.TopRight: // ↗
 				Velocity = new Int2(
-					speedX * 10000 / SQT2 - speedY * 5000 / SQT2,
-					speedX * 10000 / SQT2 + speedY * 5000 / SQT2
+					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2,
+					speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2
 				);
 				CurrentRotation = StartRotation - 45;
 				break;
 			case Direction8.BottomRight: // ↘
 				Velocity = new Int2(
-					speedX * 10000 / SQT2 - speedY * 5000 / SQT2,
-					-speedX * 10000 / SQT2 + speedY * 5000 / SQT2
+					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2,
+					-speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2
 				);
 				CurrentRotation = StartRotation + 45;
 				break;
 			case Direction8.BottomLeft: // ↙
 				Velocity = new Int2(
-					-speedX * 10000 / SQT2 + speedY * 5000 / SQT2,
-					-speedX * 10000 / SQT2 - speedY * 5000 / SQT2
+					-speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2,
+					-speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
 				CurrentRotation = -StartRotation - 45;
 				break;
 			case Direction8.TopLeft: // ↖
 				Velocity = new Int2(
-					-speedX * 10000 / SQT2 + speedY * 5000 / SQT2,
-					speedX * 10000 / SQT2 - speedY * 5000 / SQT2
+					-speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2,
+					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
 				CurrentRotation = -StartRotation + 45;
 				break;
@@ -267,11 +269,11 @@ public abstract class MovableBullet : Bullet {
 		}
 	}
 
-	protected (int x, int y, int endX, int endY, int length, int rotation1000, bool beamHitReceiver) GetLastBeamTramsform () => (
+	protected (int startX, int startY, int endX, int endY, int length, int rotation1000, bool beamHitReceiver) GetLastUpdatedTramsform () => (
 		HitStartX + Width / 2,
 		HitStartY + Height / 2,
-		HitEndX,
-		HitEndY,
+		HitEndX + Width / 2,
+		HitEndY + Height / 2,
 		BeamLength,
 		(-Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt(),
 		HitReceiver
