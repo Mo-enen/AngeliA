@@ -35,7 +35,11 @@ public class Sheet {
 	#region --- MSG ---
 
 
-	public Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = true, bool ignoreTextureAndPixels = false) {
+	public Sheet (
+		bool ignoreGroups = false, 
+		bool ignoreSpriteWithIgnoreTag = true, 
+		bool ignoreTextureAndPixels = false
+	) {
 		IgnoreGroups = ignoreGroups;
 		IgnoreSpriteWithIgnoreTag = ignoreSpriteWithIgnoreTag;
 		IgnoreTextureAndPixels = ignoreTextureAndPixels;

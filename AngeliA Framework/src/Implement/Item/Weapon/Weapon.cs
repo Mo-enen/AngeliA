@@ -204,8 +204,9 @@ public abstract class Weapon : Equipment {
 			sprite.GlobalWidth * twistR / 1000,
 			sprite.GlobalHeight,
 			character.HandGrabRotationL,
-			character.HandGrabScaleL, sprite,
-			character.HandR.Z - 1
+			character.HandGrabScaleL,
+			sprite,
+			character.FacingRight ? character.HandR.Z + 12 : character.HandL.Z + 12
 		);
 	}
 
@@ -292,7 +293,7 @@ public abstract class Weapon : Equipment {
 				character, center.x, center.y,
 				sprite.GlobalWidth, sprite.GlobalHeight,
 				character.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
-				character.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR, 
+				character.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
 				sprite,
 				character.HandR.Z - 1
 			);

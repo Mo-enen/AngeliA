@@ -1,0 +1,64 @@
+﻿namespace AngeliA;
+
+public class PoseAnimation_JumpDown : PoseAnimation {
+	public override void Animate (PoseCharacter character) {
+		base.Animate(character);
+
+		bool alt = CurrentAnimationFrame.UMod(8) >= 4;
+
+		Target.PoseRootY -= A2G;
+		Target.BodyTwist = FacingRight ? -400 : 400;
+
+		if (alt) {
+			Body.Height += A2G / 4;
+			Head.Y += A2G / 4;
+			UpperArmL.Y += A2G / 4;
+			UpperArmR.Y += A2G / 4;
+		}
+		Head.Height -= A2G;
+
+		// Arm
+		int motionDelta = Target.DeltaPositionX.Clamp(-8, 8);
+		UpperArmL.LimbRotate((alt ? 135 : 125) + motionDelta);
+		UpperArmR.LimbRotate((alt ? -125 : -135) + motionDelta);
+
+		LowerArmL.Z = LowerArmL.Z.Abs();
+		LowerArmL.LimbRotate(alt ? 35 : 45);
+
+		LowerArmR.Z = LowerArmR.Z.Abs();
+		LowerArmR.LimbRotate(alt ? -45 : -35);
+
+		HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
+		HandL.LimbRotate(0);
+
+		HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
+		HandR.LimbRotate(1);
+
+		// Leg
+		UpperLegL.X += FacingRight ? A2G / 2 : -A2G / 2;
+		UpperLegL.LimbRotate(FacingRight ? 0 : 25);
+
+		UpperLegR.X += FacingRight ? A2G / 2 : -A2G / 2;
+		UpperLegR.LimbRotate(FacingRight ? -25 : 0);
+
+		LowerLegL.LimbRotate(FacingRight ? 3 : -15);
+		LowerLegL.Height = LowerLegL.SizeY * 3 / 4;
+		LowerLegL.Z += 2;
+
+		LowerLegR.LimbRotate(FacingRight ? 15 : -3);
+		LowerLegR.Height = LowerLegR.SizeY * 3 / 4;
+		LowerLegR.Z += 2;
+
+		FootL.LimbRotate(FacingRight ? 0 : 1);
+		FootL.Z += 2;
+
+		FootR.LimbRotate(FacingRight ? 0 : 1);
+		FootR.Z += 2;
+
+		// Final
+		Target.HandGrabRotationL = LowerArmL.Rotation - FacingSign * 90;
+		Target.HandGrabRotationR = LowerArmR.Rotation - FacingSign * 90;
+		Target.HandGrabScaleL = FacingSign * -1000;
+		Target.HandGrabScaleR = FacingSign * -1000;
+	}
+}

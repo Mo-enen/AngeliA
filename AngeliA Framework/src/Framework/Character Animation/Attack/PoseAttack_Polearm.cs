@@ -28,7 +28,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-		AttackHeadDown(ease01, 300, 300, 1000, 100);
+		AttackHeadDown(ease01, 300, 300, 100);
 		ResetShoulderAndUpperArmPos();
 
 		// Upper Arm
@@ -71,7 +71,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 		if (isCharging) {
-			AttackHeadDown(ease01, 100, 800, 1000, 100);
+			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
 		}

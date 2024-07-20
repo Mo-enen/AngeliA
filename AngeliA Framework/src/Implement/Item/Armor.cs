@@ -120,8 +120,8 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 
 		// Shoulder
 		if (ShoulderID != 0 && Renderer.TryGetSprite(ShoulderID, out var shoulderSprite)) {
-			Cloth.AttachClothOn(character.ShoulderL, shoulderSprite, 1000, 1000, 16);
-			Cloth.AttachClothOn(character.ShoulderR, shoulderSprite, 1000, 1000, 16);
+			Cloth.AttachClothOn(character.ShoulderL, shoulderSprite, 1000, 1000, 3);
+			Cloth.AttachClothOn(character.ShoulderR, shoulderSprite, 1000, 1000, 3);
 		}
 
 		// Arm

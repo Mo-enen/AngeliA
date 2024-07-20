@@ -106,7 +106,7 @@ public class PoseAttack_Wave : PoseAnimation {
 			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 		if (isCharging) {
-			AttackHeadDown(ease01, 100, 800, 1000, 100);
+			AttackHeadDown(ease01, 100, 800, 100);
 			ResetShoulderAndUpperArmPos();
 		} else {
 			AttackHeadDown(ease01);
@@ -253,7 +253,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		float ease01 = Ease.OutBack(frame01);
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
-		AttackHeadDown(ease01, -500, 500, 500, -1000);
+		AttackHeadDown(ease01, -500, 500, -1000);
 		ResetShoulderAndUpperArmPos();
 
 		Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
@@ -306,7 +306,7 @@ public class PoseAttack_Wave : PoseAnimation {
 			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 		if (isCharging) {
-			AttackHeadDown(ease01, 100, 800, 1000, 100);
+			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
 		}
@@ -524,7 +524,7 @@ public class PoseAttack_Wave : PoseAnimation {
 			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 		if (isCharging) {
-			AttackHeadDown(ease01, 100, 800, 1000, 100);
+			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
 		}
@@ -722,7 +722,7 @@ public class PoseAttack_Wave : PoseAnimation {
 			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 		if (isCharging) {
-			AttackHeadDown(ease01, 100, 800, 1000, 100);
+			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
 		}

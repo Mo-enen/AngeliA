@@ -75,10 +75,12 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 
 	protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		if (IsBow) {
+			// Bow
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			DrawString(character, cell, default, default, default);
 			return cell;
 		} else {
+			// Shooting
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
 			if (character.IsAttacking || character.IsChargingAttack) {
@@ -86,14 +88,11 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 					(Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / AttackDuration :
 					SpriteFrameCount - 1;
 				if (Renderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
-					cell.Color = Color32.CLEAR;
-					Renderer.Draw(
-						attackSprite,
-						cell.X, cell.Y, attackSprite.PivotX, attackSprite.PivotY, cell.Rotation,
-						attackSprite.GlobalWidth,
-						character.FacingRight ? attackSprite.GlobalHeight : -attackSprite.GlobalHeight,
-						cell.Z
-					);
+					cell.Sprite = attackSprite;
+					cell.PivotX = attackSprite.PivotX / 1000f;
+					cell.PivotY = attackSprite.PivotY / 1000f;
+					cell.Width = attackSprite.GlobalWidth * cell.Width.Sign();
+					cell.Height = attackSprite.GlobalHeight * cell.Height.Sign();
 				}
 			}
 			return cell;

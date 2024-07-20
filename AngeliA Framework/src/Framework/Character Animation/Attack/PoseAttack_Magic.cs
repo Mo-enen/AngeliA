@@ -29,9 +29,9 @@ public class PoseAttack_Magic : PoseAnimation {
 			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 		if (isCharging) {
-			AttackHeadDown(ease01, 100, 800, 1000, 100);
+			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
-			AttackHeadDown(ease01, 200, 300, 0, 300);
+			AttackHeadDown(ease01, 200, 300, 300);
 		}
 		ResetShoulderAndUpperArmPos(!FacingRight, FacingRight);
 
@@ -58,7 +58,7 @@ public class PoseAttack_Magic : PoseAnimation {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
-		AttackHeadDown(ease01, 200, 300, 300, 200);
+		AttackHeadDown(ease01, 200, 300, 200);
 		ResetShoulderAndUpperArmPos();
 
 		// Arm L
@@ -92,9 +92,9 @@ public class PoseAttack_Magic : PoseAnimation {
 			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
 		if (isCharging) {
-			AttackHeadDown(ease01, 100, 800, 1000, 100);
+			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
-			AttackHeadDown(ease01, 200, 300, 0, 200);
+			AttackHeadDown(ease01, 200, 300, 200);
 		}
 		ResetShoulderAndUpperArmPos();
 

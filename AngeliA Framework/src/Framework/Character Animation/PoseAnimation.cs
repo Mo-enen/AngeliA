@@ -50,10 +50,6 @@ public abstract class PoseAnimation {
 	protected static int FacingSign = 0;
 	protected static int FrontSign = 0;
 	protected static int CurrentAnimationFrame = 0;
-	protected static int RandomFactor0 = 0;
-	protected static int RandomFactor1 = 0;
-	protected static int RandomFactor2 = 0;
-	protected static int RandomFactor3 = 0;
 	protected static CharacterAnimationType AnimationType;
 
 
@@ -157,16 +153,16 @@ public abstract class PoseAnimation {
 
 
 	protected static void ResetShoulderAndUpperArmPos (bool resetLeft = true, bool resetRight = true) {
-		
+
 		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
 		int targetUnitHeight = Target.CharacterHeight * A2G / PoseCharacter.CM_PER_PX - Head.SizeY;
 		int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
 		int defaultCharHeight = bodyHipSizeY + legRootSize;
 
-		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight;
+		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight * Body.Height.Abs() / Body.SizeY;
 		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
 		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
-		
+
 		if (resetLeft) {
 
 			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
@@ -203,15 +199,7 @@ public abstract class PoseAnimation {
 	}
 
 
-	protected static void RollRandomFactor (int count = 4) {
-		if (count > 0) RandomFactor0 = Util.QuickRandom(0, 1001);
-		if (count > 1) RandomFactor1 = Util.QuickRandom(0, 1001);
-		if (count > 2) RandomFactor2 = Util.QuickRandom(0, 1001);
-		if (count > 3) RandomFactor3 = Util.QuickRandom(0, 1001);
-	}
-
-
-	protected static void AttackHeadDown (float ease01, int headOffsetXAmount = 1000, int headOffsetYAmount = 1000, int bodyOffsetYAmount = 1000, int headRotateAmount = 1000) {
+	protected static void AttackHeadDown (float ease01, int headOffsetXAmount = 1000, int headOffsetYAmount = 1000, int headRotateAmount = 1000) {
 
 		// Head Rotate
 		int headRotate = FacingSign * (int)Util.LerpUnclamped(-18, 18, ease01) * headRotateAmount / 1000;
@@ -240,21 +228,8 @@ public abstract class PoseAnimation {
 		Head.X -= headOffsetX.Clamp(-A2G * 2, A2G * 2);
 		Head.Y = (Head.Y + headOffsetY).GreaterOrEquel(Body.Y + 1);
 		Head.Rotation = headRotate;
-
-		// Body
-		int bodyOffsetY = (int)(ease01 * A2G) + A2G * 2;
-		bodyOffsetY = bodyOffsetY * bodyOffsetYAmount / 1000;
-		Body.Y -= bodyOffsetY;
-		Hip.Y -= bodyOffsetY;
 		Body.Height = Head.Y - Body.Y;
 
-		// Leg Position Y
-		if (bodyOffsetY != 0) {
-			UpperLegL.Y -= bodyOffsetY;
-			UpperLegR.Y -= bodyOffsetY;
-			UpperLegL.Height -= bodyOffsetY;
-			UpperLegR.Height -= bodyOffsetY;
-		}
 	}
 
 
