@@ -281,7 +281,8 @@ public abstract class Weapon : Equipment {
 			}
 			DrawWeaponSprite(
 				character, center.x, center.y, width, height,
-				0, character.FacingSign * 1000,
+				character.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
+				character.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
 				sprite, character.FacingRight ? character.HandR.Z - 1 : character.HandL.Z - 1
 			);
 		} else {
@@ -290,8 +291,9 @@ public abstract class Weapon : Equipment {
 			DrawWeaponSprite(
 				character, center.x, center.y,
 				sprite.GlobalWidth, sprite.GlobalHeight,
-				character.HandGrabRotationL,
-				character.HandGrabScaleL, sprite,
+				character.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
+				character.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR, 
+				sprite,
 				character.HandR.Z - 1
 			);
 		}

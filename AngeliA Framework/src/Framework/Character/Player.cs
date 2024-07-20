@@ -58,11 +58,13 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 		}
 	}
 	public override bool IsChargingAttack =>
-		Selecting == this &&
 		MinimalChargeAttackDuration != int.MaxValue &&
+		Selecting == this &&
 		Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + MinimalChargeAttackDuration &&
 		!Task.HasTask() &&
 		!LockingInput &&
+		IsAttackAllowedByMovement() &&
+		IsAttackAllowedByEquipment() &&
 		Input.GameKeyHolding(Gamekey.Action);
 	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 	public bool LockingInput => Game.GlobalFrame <= LockInputFrame;

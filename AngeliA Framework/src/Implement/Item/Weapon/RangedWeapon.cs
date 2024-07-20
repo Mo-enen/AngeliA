@@ -10,13 +10,13 @@ namespace AngeliA;
 public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBullet {
 
 
-
 	protected int ArrowItemID { get; init; }
 	private int SpriteIdAttack { get; init; }
 	private int SpriteFrameCount { get; init; }
 	protected abstract bool IsBow { get; }
 	public sealed override WeaponType WeaponType => WeaponType.Ranged;
 	public sealed override WeaponHandheld Handheld => IsBow ? WeaponHandheld.Bow : WeaponHandheld.Shooting;
+	protected override ProjectileValidDirection ValidDirection => ProjectileValidDirection.Eight;
 	public override int AttackCooldown => base.AttackCooldown;
 	private int SpriteIdString { get; init; }
 	public override bool AttackWhenSquatting => true;

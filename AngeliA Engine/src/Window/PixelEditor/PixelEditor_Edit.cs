@@ -147,7 +147,7 @@ public partial class PixelEditor {
 	private void Update_LeftDrag_Dragging () {
 
 		// Update Rect
-		DraggingPixelRect = GetDraggingPixRect(true);
+		DraggingPixelRect = GetDraggingPixRect(true, CurrentTool == Tool.Select ? MAX_SELECTION_SIZE : int.MaxValue / 3);
 		DragChanged = DragChanged || DraggingPixelRect.width > 1 || DraggingPixelRect.height > 1;
 
 		switch (DraggingState) {
@@ -192,7 +192,7 @@ public partial class PixelEditor {
 
 	private void Update_LeftDrag_End () {
 
-		DraggingPixelRect = GetDraggingPixRect(true);
+		DraggingPixelRect = GetDraggingPixRect(true, CurrentTool == Tool.Select ? MAX_SELECTION_SIZE : int.MaxValue / 3);
 
 		switch (DraggingState) {
 
@@ -1222,7 +1222,7 @@ public partial class PixelEditor {
 
 
 	// Util
-	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize = MAX_SELECTION_SIZE) {
+	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize) {
 		maxSize--;
 		var downPos = Stage_to_Pixel(forLeftButton ? Input.MouseLeftDownGlobalPosition : Input.MouseRightDownGlobalPosition);
 		var pos = Stage_to_Pixel(Input.MouseGlobalPosition);

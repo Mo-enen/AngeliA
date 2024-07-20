@@ -23,13 +23,13 @@ public abstract class PoseCharacter : Character {
 
 	// Const
 	public const int BODY_PART_COUNT = 17;
-	private const int CM_PER_PX = 5;
+	public const int CM_PER_PX = 5;
 	private const int A2G = Const.CEL / Const.ART_CEL;
 	private static readonly int[] DEFAULT_BODY_PART_ID = new int[BODY_PART_COUNT] { "DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(), };
 	private static readonly string[] BODY_PART_NAME = new string[BODY_PART_COUNT] { "Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot", };
 	private static readonly int[] FAILBACK_POSE_ANIMATION_IDS = { typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(), };
 	private static readonly int[] FAILBACK_POSE_HANDHELD_IDS = { typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Shooting).AngeHash(), typeof(PoseHandheld_Float).AngeHash(), };
-	private static readonly int[] FAILBACK_POSE_ATTACK_IDS = { typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Arrow).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), };
+	private static readonly int[] FAILBACK_POSE_ATTACK_IDS = { typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Ranged).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), };
 	private static readonly int ANI_TYPE_COUNT = typeof(CharacterAnimationType).EnumLength();
 	private static readonly int HAND_HELD_COUNT = typeof(WeaponHandheld).EnumLength();
 	private static readonly int WEAPON_TYPE_COUNT = typeof(WeaponType).EnumLength();
@@ -456,41 +456,40 @@ public abstract class PoseCharacter : Character {
 		CalculateBodypartGlobalPosition();
 
 		// Handheld
-		if (!IsAttacking) {
-			// Normal
-			switch (AnimationType) {
-				case CharacterAnimationType.Idle:
-				case CharacterAnimationType.Walk:
-				case CharacterAnimationType.Run:
-				case CharacterAnimationType.JumpUp:
-				case CharacterAnimationType.JumpDown:
-				case CharacterAnimationType.SwimIdle:
-				case CharacterAnimationType.SwimMove:
-				case CharacterAnimationType.SquatIdle:
-				case CharacterAnimationType.SquatMove:
-				case CharacterAnimationType.Pound:
-				case CharacterAnimationType.Fly:
-				case CharacterAnimationType.Rush when EquippingWeaponHeld == WeaponHandheld.Pole:
-				case CharacterAnimationType.Dash when EquippingWeaponHeld == WeaponHandheld.Pole:
-				case CharacterAnimationType.Rolling when EquippingWeaponHeld == WeaponHandheld.Bow || EquippingWeaponHeld == WeaponHandheld.Shooting:
-					// Override Handheld
-					PoseAnimation.AnimateFromPool(PoseHandheldIDs[(int)EquippingWeaponHeld], this);
-					CalculateBodypartGlobalPosition();
-					break;
-				default:
-					// Redirect Handheld
-					if (
-						EquippingWeaponHeld == WeaponHandheld.DoubleHanded ||
-						EquippingWeaponHeld == WeaponHandheld.Bow ||
-						EquippingWeaponHeld == WeaponHandheld.Shooting ||
-						EquippingWeaponHeld == WeaponHandheld.Pole
-					) {
-						EquippingWeaponHeld = WeaponHandheld.SingleHanded;
-					}
-					break;
-			}
-		} else {
-			// Attacking
+		switch (AnimationType) {
+			case CharacterAnimationType.Idle:
+			case CharacterAnimationType.Walk:
+			case CharacterAnimationType.Run:
+			case CharacterAnimationType.JumpUp:
+			case CharacterAnimationType.JumpDown:
+			case CharacterAnimationType.SwimIdle:
+			case CharacterAnimationType.SwimMove:
+			case CharacterAnimationType.SquatIdle:
+			case CharacterAnimationType.SquatMove:
+			case CharacterAnimationType.Pound:
+			case CharacterAnimationType.Fly:
+			case CharacterAnimationType.Rush when EquippingWeaponHeld == WeaponHandheld.Pole:
+			case CharacterAnimationType.Dash when EquippingWeaponHeld == WeaponHandheld.Pole:
+			case CharacterAnimationType.Rolling when EquippingWeaponHeld == WeaponHandheld.Bow || EquippingWeaponHeld == WeaponHandheld.Shooting:
+				// Override Handheld
+				PoseAnimation.AnimateFromPool(PoseHandheldIDs[(int)EquippingWeaponHeld], this);
+				CalculateBodypartGlobalPosition();
+				break;
+			default:
+				// Redirect Handheld
+				if (
+					EquippingWeaponHeld == WeaponHandheld.DoubleHanded ||
+					EquippingWeaponHeld == WeaponHandheld.Bow ||
+					EquippingWeaponHeld == WeaponHandheld.Shooting ||
+					EquippingWeaponHeld == WeaponHandheld.Pole
+				) {
+					EquippingWeaponHeld = WeaponHandheld.SingleHanded;
+				}
+				break;
+		}
+
+		// Attacking
+		if (IsAttacking) {
 			if (CurrentSpeedLoseOnAttack == 0 && IsGrounded && !IsSquatting) ResetPoseToDefault(true);
 			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;

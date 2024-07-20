@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 public class PoseHandheld_Double : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		if (!Target.IsChargingAttack) {
 			// Holding
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			int twistShift = Target.BodyTwist / 50;
 			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
@@ -45,7 +45,7 @@ public class PoseHandheld_Double : PoseAnimation {
 				((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()
 			);
 			AttackHeadDown(ease01, 100, 800, 1000, 100);
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			int upperRotA = (int)Util.LerpUnclamped(180, 42, ease01);
 			int upperRotB = (int)Util.LerpUnclamped(180, 29, ease01);
@@ -101,7 +101,7 @@ public class PoseHandheld_Bow : PoseAnimation {
 		base.Animate(character);
 		if (!Target.IsChargingAttack) {
 			// Holding
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			int twistShift = Target.BodyTwist / 50;
 			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
@@ -133,36 +133,7 @@ public class PoseHandheld_Bow : PoseAnimation {
 			) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 		} else {
 			// Charging
-			float ease01 = Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
-
-			AttackHeadDown(ease01, 0, 200, -1000, 0);
-			ResetShoulderAndUpperArm();
-
-			// Upper Arm
-			int rotUA = FacingRight ? UpperArmL.Rotation : -UpperArmR.Rotation;
-			int rotUB = FacingRight ? UpperArmR.Rotation : -UpperArmL.Rotation;
-			rotUA = (int)Util.LerpUnclamped(rotUA, 90, ease01);
-			rotUB = (int)Util.LerpUnclamped(rotUB, -90, ease01);
-			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
-			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
-
-			LowerArmL.LimbRotate(FacingRight ? -90 - rotUA : -0);
-			LowerArmR.LimbRotate(FacingRight ? 0 : 90 + rotUA);
-
-			HandL.LimbRotate(FacingSign);
-			HandR.LimbRotate(FacingSign);
-
-			// Leg
-			AttackLegShake(ease01);
-
-			// Z
-			UpperArmL.Z = UpperArmR.Z = FrontSign * (POSE_Z_HAND - 2);
-			LowerArmL.Z = LowerArmR.Z = FrontSign * (POSE_Z_HAND - 1);
-			HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
-
-			// Grab
-			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingRight ? 0 : 180;
-			Target.HandGrabScaleL = Target.HandGrabScaleR = 1000;
+			PoseAttack_Ranged.Bow();
 		}
 	}
 }
@@ -172,7 +143,7 @@ public class PoseHandheld_Shooting : PoseAnimation {
 		base.Animate(character);
 		if (!Target.IsChargingAttack) {
 			// Holding
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			int twistShift = Target.BodyTwist / 50;
 			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
@@ -202,43 +173,7 @@ public class PoseHandheld_Shooting : PoseAnimation {
 			) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
 		} else {
 			// Charging
-			float ease01 = Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
-
-			AttackHeadDown(ease01, 0, 200, -1000, 0);
-			ResetShoulderAndUpperArm();
-
-			// Upper Arm
-			int rotUA = FacingRight ? UpperArmL.Rotation : -UpperArmR.Rotation;
-			int rotUB = FacingRight ? UpperArmR.Rotation : -UpperArmL.Rotation;
-			rotUA = (int)Util.LerpUnclamped(rotUA, -90, ease01);
-			rotUB = (int)Util.LerpUnclamped(rotUB, -90, ease01);
-			UpperArmL.LimbRotate(FacingRight ? rotUA : -rotUB);
-			UpperArmR.LimbRotate(FacingRight ? rotUB : -rotUA);
-			UpperArmL.Height += FacingRight ? 2 * A2G : 2 * -A2G;
-			UpperArmR.Height += FacingRight ? 2 * -A2G : 2 * A2G;
-
-			int rotLA = -90 - rotUA;
-			int rotLB = (int)Util.LerpUnclamped(0, 0, ease01);
-			LowerArmL.LimbRotate(FacingRight ? rotLA : -rotLB);
-			LowerArmR.LimbRotate(FacingRight ? rotLB : -rotLA);
-			LowerArmL.Height += FacingRight ? A2G : -A2G;
-			LowerArmR.Height += FacingRight ? -A2G : A2G;
-
-			HandL.LimbRotate(FacingSign);
-			HandR.LimbRotate(FacingSign);
-
-			// Leg
-			AttackLegShake(ease01);
-
-			// Z
-			UpperArmL.Z = UpperArmR.Z = FrontSign * (POSE_Z_HAND - 2);
-			LowerArmL.Z = LowerArmR.Z = FrontSign * (POSE_Z_HAND - 1);
-			HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
-
-			// Grab
-			Target.HandGrabRotationL = Target.HandGrabRotationR = FacingRight ? 0 : 180;
-			Target.HandGrabScaleL = Target.HandGrabScaleR = 1000;
-
+			PoseAttack_Ranged.Shooting();
 		}
 	}
 }
@@ -251,7 +186,7 @@ public class PoseHandheld_Pole : PoseAnimation {
 			// Holding
 			bool dashing = AnimationType == CharacterAnimationType.Dash;
 
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			// Upper Arm
 			int twistDelta = Target.BodyTwist / 26;
@@ -295,7 +230,7 @@ public class PoseHandheld_Pole : PoseAnimation {
 			float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 
 			AttackHeadDown(ease01, 100, 800, 1000, 100);
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			// Upper Arm
 			int uRotA = (int)Util.LerpUnclamped(-130, 63, ease01);
@@ -338,7 +273,7 @@ public class PoseHandheld_MagicPole : PoseAnimation {
 		if (!Target.IsChargingAttack) {
 			// Normal
 
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			int twistShift = Target.BodyTwist / 50;
 			UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
@@ -371,7 +306,7 @@ public class PoseHandheld_MagicPole : PoseAnimation {
 			// Charge
 			float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 			AttackHeadDown(ease01, 100, 800, 1000, 100);
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			// Upper Arm
 			float armGrowAmount = 1f - ease01;
@@ -418,7 +353,7 @@ public class PoseHandheld_EachHand : PoseAnimation {
 		if (Target.IsChargingAttack) {
 			float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 			AttackHeadDown(ease01, 100, 800, 1000, 100);
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			UpperArmL.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-175, 0, ease01));
 			UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-185, -9, ease01));
@@ -468,7 +403,7 @@ public class PoseHandheld_Single : PoseAnimation {
 			float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 
 			AttackHeadDown(ease01, 100, 800, 1000, 100);
-			ResetShoulderAndUpperArm();
+			ResetShoulderAndUpperArmPos();
 
 			// Upper Arm R
 			UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-185, -9, ease01));
@@ -509,7 +444,7 @@ public class PoseHandheld_Float : PoseAnimation {
 			// Charging
 			float ease01 = 1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01());
 			AttackHeadDown(ease01, 100, 800, 1000, 100);
-			ResetShoulderAndUpperArm(!FacingRight, FacingRight);
+			ResetShoulderAndUpperArmPos(!FacingRight, FacingRight);
 
 			var uArmB = FacingRight ? UpperArmR : UpperArmL;
 			var lArmB = FacingRight ? LowerArmR : LowerArmL;

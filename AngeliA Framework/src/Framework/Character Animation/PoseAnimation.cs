@@ -156,29 +156,49 @@ public abstract class PoseAnimation {
 	#region --- API ---
 
 
-	protected static void ResetShoulderAndUpperArm (bool resetLeft = true, bool resetRight = true) {
-		var character = Target;
+	protected static void ResetShoulderAndUpperArmPos (bool resetLeft = true, bool resetRight = true) {
+		
+		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
+		int targetUnitHeight = Target.CharacterHeight * A2G / PoseCharacter.CM_PER_PX - Head.SizeY;
+		int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
+		int defaultCharHeight = bodyHipSizeY + legRootSize;
+
+		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight;
+		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
+		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
+		
 		if (resetLeft) {
-			int bodyBorderL = character.FacingRight ? character.Body.Border.left : character.Body.Border.right;
-			character.ShoulderL.X = character.Body.X - character.Body.Width.Abs() / 2 + bodyBorderL;
-			character.ShoulderL.Y = character.Body.Y + character.Body.Height - character.Body.Border.up;
-			character.ShoulderL.Height = Util.Min(character.ShoulderL.Height, character.Body.Height);
-			character.ShoulderL.PivotX = 1000;
-			character.UpperArmL.X = character.ShoulderL.X;
-			character.UpperArmL.Y = character.ShoulderL.Y - character.ShoulderL.Height + character.ShoulderL.Border.down;
-			character.UpperArmL.PivotX = 1000;
-			character.UpperArmL.Height = character.UpperArmL.SizeY;
+
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
+			ShoulderL.Width = ShoulderL.SizeX;
+			ShoulderL.Height = ShoulderL.SizeY;
+			ShoulderL.PivotX = 1000;
+			ShoulderL.PivotY = 1000;
+
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmL.Width = UpperArmL.SizeX;
+			UpperArmL.Height = UpperArmL.FlexableSizeY;
+			UpperArmL.PivotX = 1000;
+			UpperArmL.PivotY = 1000;
+
 		}
+
 		if (resetRight) {
-			int bodyBorderR = character.FacingRight ? character.Body.Border.right : character.Body.Border.left;
-			character.ShoulderR.X = character.Body.X + character.Body.Width.Abs() / 2 - bodyBorderR;
-			character.ShoulderR.Y = character.Body.Y + character.Body.Height - character.Body.Border.up;
-			character.ShoulderR.Height = Util.Min(character.ShoulderR.Height, character.Body.Height);
-			character.ShoulderR.PivotX = 1000;
-			character.UpperArmR.X = character.ShoulderR.X;
-			character.UpperArmR.Y = character.ShoulderR.Y - character.ShoulderR.Height + character.ShoulderR.Border.down;
-			character.UpperArmR.PivotX = 0;
-			character.UpperArmR.Height = character.UpperArmR.SizeY;
+			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
+			ShoulderR.Width = -ShoulderR.SizeX;
+			ShoulderR.Height = ShoulderR.SizeY;
+			ShoulderR.PivotX = 1000;
+			ShoulderR.PivotY = 1000;
+
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.Width = UpperArmR.SizeX;
+			UpperArmR.Height = UpperArmR.FlexableSizeY;
+			UpperArmR.PivotX = 0;
+			UpperArmR.PivotY = 1000;
 		}
 	}
 

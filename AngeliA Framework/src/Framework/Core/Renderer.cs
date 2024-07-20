@@ -704,13 +704,13 @@ public static class Renderer {
 	}
 	public static int GetAnimationGroupDuration (SpriteGroup group) => CurrentSheet.GetSpriteAnimationDuration(group);
 
-	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame) {
+	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int z = int.MinValue) {
 		if (!TryGetSpriteGroup(chainID, out var group) || !group.Animated) return Cell.EMPTY;
-		return DrawAnimation(group, x, y, pivotX, pivotY, rotation, width, height, frame);
+		return DrawAnimation(group, x, y, pivotX, pivotY, rotation, width, height, frame, z);
 	}
-	public static Cell DrawAnimation (SpriteGroup group, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame) {
+	public static Cell DrawAnimation (SpriteGroup group, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int z = int.MinValue) {
 		int id = CurrentSheet.GetSpriteIdFromAnimationFrame(group, frame);
-		return Draw(id, x, y, pivotX, pivotY, rotation, width, height);
+		return Draw(id, x, y, pivotX, pivotY, rotation, width, height, z);
 	}
 
 

@@ -239,15 +239,15 @@ public abstract class MovableBullet : Bullet {
 
 			case Direction8.TopRight: // ↗
 				Velocity = new Int2(
-					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2,
-					speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2
+					speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2,
+					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
 				CurrentRotation = StartRotation - 45;
 				break;
 			case Direction8.BottomRight: // ↘
 				Velocity = new Int2(
 					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2,
-					-speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2
+					-speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
 				CurrentRotation = StartRotation + 45;
 				break;
@@ -260,7 +260,7 @@ public abstract class MovableBullet : Bullet {
 				break;
 			case Direction8.TopLeft: // ↖
 				Velocity = new Int2(
-					-speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2,
+					-speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2,
 					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
 				CurrentRotation = -StartRotation + 45;

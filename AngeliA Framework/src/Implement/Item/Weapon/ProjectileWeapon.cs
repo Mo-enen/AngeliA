@@ -34,8 +34,21 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 			if (base.SpawnBullet(sender) is not MovableBullet bullet) break;
 
 			result = bullet;
+			int sideSpeedOffset = AdditionalBulletSpeedSide;
+			int rotOffset = 0;
+			int sidePosOffset = 0;
+
+			// Get Bullet Angle Offset
+			if (bulletCount > 1 && AngleSpeedDelta != 0) {
+				int deltaAngle = (int)Util.Atan(bullet.SpeedForward, bullet.SpeedSide);
+				int offset = (i % 2 == 0 ? 1 : -1) * ((i + 1) / 2);
+				rotOffset = offset * deltaAngle;
+				sideSpeedOffset += offset * AngleSpeedDelta;
+				sidePosOffset = offset * bullet.Height / bulletCount;
+			}
 
 			// Move
+			Direction8 dir8;
 			bullet.X = sender.Rect.CenterX();
 			bullet.Y = sender.Rect.yMin;
 			int senderW = sender.Width;
@@ -54,11 +67,12 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 
 			switch (ValidDirection) {
 
+				default:
 				case ProjectileValidDirection.Two: {
 					bullet.StartMove(
-						sender.FacingRight ? Direction8.Right : Direction8.Left,
+						dir8 = sender.FacingRight ? Direction8.Right : Direction8.Left,
 						bullet.SpeedForward + AdditionalBulletSpeedForward,
-						bullet.SpeedSide + AdditionalBulletSpeedSide
+						bullet.SpeedSide + sideSpeedOffset
 					);
 					break;
 				}
@@ -67,23 +81,23 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 					if (aim.IsTop()) {
 						int bSpeedY = !sender.FacingRight ? -bullet.SpeedSide : bullet.SpeedSide;
 						bullet.StartMove(
-							Direction8.Top,
+							dir8 = Direction8.Top,
 							bullet.SpeedForward + AdditionalBulletSpeedForward,
-							bSpeedY + AdditionalBulletSpeedSide
+							bSpeedY + sideSpeedOffset
 						);
 					} else {
 						bullet.StartMove(
-							sender.FacingRight ? Direction8.Right : Direction8.Left,
+							dir8 = sender.FacingRight ? Direction8.Right : Direction8.Left,
 							bullet.SpeedForward + AdditionalBulletSpeedForward,
-							bullet.SpeedSide + AdditionalBulletSpeedSide
+							bullet.SpeedSide + sideSpeedOffset
 						);
 					}
 					break;
 				}
 
 				case ProjectileValidDirection.Four: {
-					int bSpeedY = !sender.FacingRight && (aim.IsTop() || aim.IsBottom()) ? (-bullet.SpeedSide - AdditionalBulletSpeedSide) : (bullet.SpeedSide + AdditionalBulletSpeedSide);
-					bullet.StartMove(aim switch {
+					int bSpeedY = !sender.FacingRight && (aim.IsTop() || aim.IsBottom()) ? (-bullet.SpeedSide - sideSpeedOffset) : (bullet.SpeedSide + sideSpeedOffset);
+					bullet.StartMove(dir8 = aim switch {
 						Direction8.TopRight or Direction8.TopLeft => Direction8.Top,
 						Direction8.BottomRight or Direction8.BottomLeft => Direction8.Bottom,
 						_ => aim,
@@ -96,16 +110,16 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 
 				case ProjectileValidDirection.Five: {
 					if (aim.IsBottom()) {
-						int bSpeedY = !sender.FacingRight ? (-bullet.SpeedSide - AdditionalBulletSpeedSide) : (bullet.SpeedSide + AdditionalBulletSpeedSide);
+						int bSpeedY = !sender.FacingRight ? (-bullet.SpeedSide - sideSpeedOffset) : (bullet.SpeedSide + sideSpeedOffset);
 						bullet.StartMove(
-							sender.FacingRight ? Direction8.Right : Direction8.Left,
+							dir8 = sender.FacingRight ? Direction8.Right : Direction8.Left,
 							bullet.SpeedForward + AdditionalBulletSpeedForward,
 							bSpeedY
 						);
 					} else {
-						int bSpeedY = !sender.FacingRight && aim.IsTop() ? (-bullet.SpeedSide - AdditionalBulletSpeedSide) : (bullet.SpeedSide + AdditionalBulletSpeedSide);
+						int bSpeedY = !sender.FacingRight && aim.IsTop() ? (-bullet.SpeedSide - sideSpeedOffset) : (bullet.SpeedSide + sideSpeedOffset);
 						bullet.StartMove(
-							aim,
+							dir8 = aim,
 							bullet.SpeedForward + AdditionalBulletSpeedForward,
 							bSpeedY
 						);
@@ -114,9 +128,9 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 				}
 
 				case ProjectileValidDirection.Eight: {
-					int bSpeedY = !sender.FacingRight && (aim.IsTop() || aim.IsBottom()) ? (-bullet.SpeedSide - AdditionalBulletSpeedSide) : (bullet.SpeedSide + AdditionalBulletSpeedSide);
+					int bSpeedY = !sender.FacingRight && (aim.IsTop() || aim.IsBottom()) ? (-bullet.SpeedSide - sideSpeedOffset) : (bullet.SpeedSide + sideSpeedOffset);
 					bullet.StartMove(
-						aim,
+						dir8 = aim,
 						bullet.SpeedForward + AdditionalBulletSpeedForward,
 						bSpeedY
 					);
@@ -124,17 +138,11 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 				}
 			}
 
-			// Set Bullet Angle
-			if (AngleSpeedDelta != 0) {
-				int deltaAngle = (int)Util.Atan(bullet.SpeedForward, bullet.SpeedSide);
-				int offset = (i % 2 == 0 ? 1 : -1) * ((i + 1) / 2);
-				bullet.CurrentRotation += offset * deltaAngle;
-				bullet.Velocity = new Int2(
-					bullet.Velocity.x,
-					bullet.Velocity.y + offset * AngleSpeedDelta
-				);
-				bullet.Y += offset * bullet.Height / bulletCount;
-			}
+			// Apply Offset
+			var sideNormal = dir8.Clockwise().Clockwise().Normal();
+			bullet.CurrentRotation += rotOffset;
+			bullet.X += sideNormal.x * sidePosOffset;
+			bullet.Y += sideNormal.y * sidePosOffset;
 
 		}
 

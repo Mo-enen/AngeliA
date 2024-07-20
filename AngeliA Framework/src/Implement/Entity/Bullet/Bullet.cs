@@ -113,7 +113,7 @@ public abstract class Bullet : Entity {
 
 	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
 
-	protected static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale) {
+	protected static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale, int z = int.MaxValue - 16) {
 		if (!Renderer.TryGetSprite(artworkID, out var sprite)) return;
 		int facingSign = facingRight ? 1 : -1;
 		int x = bullet.X + bullet.Width / 2;
@@ -127,7 +127,8 @@ public abstract class Bullet : Entity {
 				rotation,
 				facingSign * sprite.GlobalWidth * scale / 1000,
 				sprite.GlobalHeight * scale / 1000,
-				Game.GlobalFrame - bullet.SpawnFrame
+				Game.GlobalFrame - bullet.SpawnFrame,
+				z
 			);
 		} else {
 			Renderer.Draw(
@@ -137,7 +138,8 @@ public abstract class Bullet : Entity {
 				sprite.PivotY,
 				rotation,
 				facingSign * sprite.GlobalWidth * scale / 1000,
-				sprite.GlobalHeight * scale / 1000
+				sprite.GlobalHeight * scale / 1000,
+				z
 			);
 		}
 	}
