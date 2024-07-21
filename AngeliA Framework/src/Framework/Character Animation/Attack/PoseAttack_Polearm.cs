@@ -4,8 +4,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		character.AttackStyleLoop = 8;
-		int style = character.LastAttackCharged ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
-		if (character.LastAttackCharged) style = 4;
+		int style = character.LastAttackCharged ? 4 : character.AttackStyleIndex % character.AttackStyleLoop;
 		switch (style) {
 			default:
 				Poke();
@@ -63,7 +62,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 			FacingSign * (int)Util.LerpUnclamped(1000, 1200, ease01);
 
 	}
-	private static void SmashDown () {
+	public static void SmashDown () {
 
 		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 		float ease01 = isCharging ?
@@ -110,7 +109,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 	}
-	private static void SmashUp () {
+	public static void SmashUp () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
@@ -150,7 +149,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 	}
-	private static void SlashIn () {
+	public static void SlashIn () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);
@@ -203,7 +202,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void SlashOut () {
+	public static void SlashOut () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);

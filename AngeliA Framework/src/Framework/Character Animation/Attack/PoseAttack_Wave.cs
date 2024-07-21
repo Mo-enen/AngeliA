@@ -97,7 +97,7 @@ public class PoseAttack_Wave : PoseAnimation {
 				break;
 		}
 	}
-	private static void SingleHanded_SmashDown () {
+	public static void SingleHanded_SmashDown () {
 
 		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 		bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
@@ -151,7 +151,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		LowerArmR.Z = LowerArmR.Z.Abs();
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void SingleHanded_SmashUp () {
+	public static void SingleHanded_SmashUp () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
@@ -196,7 +196,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		LowerArmR.Z = LowerArmR.Z.Abs();
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void SingleHanded_SlashIn () {
+	public static void SingleHanded_SlashIn () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);
@@ -247,7 +247,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		LowerArmR.Z = (frame01 < 0.5f ? -1 : 1) * LowerArmR.Z.Abs();
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void SingleHanded_SlashOut () {
+	public static void SingleHanded_SlashOut () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);
@@ -298,7 +298,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		LowerArmR.Z = (frame01 < 0.5f ? -1 : 1) * LowerArmR.Z.Abs();
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void DoubleHanded_SmashDown () {
+	public static void DoubleHanded_SmashDown () {
 
 		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 		float ease01 = isCharging ?
@@ -358,7 +358,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void DoubleHanded_SmashUp () {
+	public static void DoubleHanded_SmashUp () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
@@ -411,7 +411,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void DoubleHanded_SlashIn () {
+	public static void DoubleHanded_SlashIn () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);
@@ -464,7 +464,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void DoubleHanded_SlashOut () {
+	public static void DoubleHanded_SlashOut () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);
@@ -516,7 +516,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
 	}
-	private static void EachHand_SmashDown () {
+	public static void EachHand_SmashDown () {
 
 		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 		float ease01 = isCharging ?
@@ -571,7 +571,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		Target.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 	}
-	private static void EachHand_SmashUp () {
+	public static void EachHand_SmashUp () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 		float easeL = FacingRight ? ease01 : ease01 - 0.1f;
@@ -615,7 +615,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
 
 	}
-	private static void EachHand_SlashIn () {
+	public static void EachHand_SlashIn () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);
@@ -664,7 +664,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 	}
-	private static void EachHand_SlashOut () {
+	public static void EachHand_SlashOut () {
 
 		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
 		float ease01 = Ease.OutBack(frame01);
@@ -714,7 +714,7 @@ public class PoseAttack_Wave : PoseAnimation {
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 	}
-	private static void Polearm_SmashDown () {
+	public static void Polearm_SmashDown () {
 
 		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 		float ease01 = isCharging ?
@@ -761,7 +761,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 	}
-	private static void Polearm_SmashUp () {
+	public static void Polearm_SmashUp () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 
@@ -801,7 +801,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 	}
-	private static void Polearm_SlashIn () => DoubleHanded_SlashIn();
-	private static void Polearm_SlashOut () => DoubleHanded_SlashOut();
+	public static void Polearm_SlashIn () => DoubleHanded_SlashIn();
+	public static void Polearm_SlashOut () => DoubleHanded_SlashOut();
 
 }

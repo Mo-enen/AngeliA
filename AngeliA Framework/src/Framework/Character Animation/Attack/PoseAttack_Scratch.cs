@@ -3,8 +3,12 @@
 public class PoseAttack_Scratch : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
+		if (character.LastAttackCharged) {
+			PoseAttack_Wave.EachHand_SmashDown();
+			return;
+		}
 		character.AttackStyleLoop = 3;
-		int style = character.LastAttackCharged ? 2 : character.AttackStyleIndex % character.AttackStyleLoop;
+		int style = character.AttackStyleIndex % character.AttackStyleLoop;
 		switch (style) {
 			default:
 				ScratchIn();
@@ -17,7 +21,7 @@ public class PoseAttack_Scratch : PoseAnimation {
 				break;
 		}
 	}
-	private static void ScratchIn () {
+	public static void ScratchIn () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 		AttackHeadDown(ease01, 1000, 500, 500);
@@ -61,7 +65,7 @@ public class PoseAttack_Scratch : PoseAnimation {
 		HandR.Z = FacingSign * POSE_Z_HAND;
 
 	}
-	private static void ScratchOut () {
+	public static void ScratchOut () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 		AttackHeadDown(ease01, 1000, 500, 500);
@@ -105,7 +109,7 @@ public class PoseAttack_Scratch : PoseAnimation {
 		HandR.Z = -FacingSign * POSE_Z_HAND;
 
 	}
-	private static void ScratchUp () {
+	public static void ScratchUp () {
 
 		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
 		AttackHeadDown(1f - ease01 + 0.5f, -500, 500, 500);
