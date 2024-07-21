@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using AngeliA;
 
 namespace AngeliaEngine;
@@ -11,78 +13,41 @@ public class SettingWindow : WindowUI {
 
 
 
+	#region --- SUB ---
+
+
+	private class SettingGroup {
+		public LanguageCode Name;
+		public SpriteCode Icon;
+		public List<SettingItem> Items;
+		public bool Folding = true;
+	}
+
+
+	private class SettingItem {
+		public LanguageCode Name;
+		public Saving Value;
+		public object CustomData;
+	}
+
+
+	#endregion
+
+
+
+
 	#region --- VAR ---
 
 
 	// Const
 	private static readonly SpriteCode UI_PANEL_SETTING = "UI.Panel.Setting";
-	private static readonly SpriteCode ICON_ENGINE = "Icon.SettingFold.Engine";
-	private static readonly SpriteCode ICON_MAP_EDITOR = "Icon.SettingFold.MapEditor";
-	private static readonly SpriteCode ICON_PIXEL_EDITOR = "Icon.SettingFold.PixelEditor";
-	private static readonly SpriteCode ICON_CHAR_ANI_EDITOR = "Icon.SettingFold.CharAnimation";
-	private static readonly SpriteCode ICON_CONSOLE = "Icon.SettingFold.Console";
-	private static readonly SpriteCode ICON_HOTKEY = "Icon.SettingFold.Hotkey";
-
-	private static readonly LanguageCode LABEL_ENGINE = ("Setting.Engine", "Engine");
-	private static readonly LanguageCode LABEL_MAP_EDITOR = ("Setting.MapEditorLabel", "Map Editor");
-	private static readonly LanguageCode LABEL_PIXEL_EDITOR = ("Setting.PixelEditorLabel", "Artwork");
-	private static readonly LanguageCode LABEL_CHAR_ANI_EDITOR = ("Setting.CharAniEditorLabel", "Animation");
-	private static readonly LanguageCode LABEL_CONSOLE = ("Setting.ConsoleLabel", "Console");
-	private static readonly LanguageCode LABEL_HOTKEY = ("Setting.HotkeyLabel", "Hotkey");
-
-	private static readonly LanguageCode LABEL_OPEN_LAST_PROJECT_ON_START = ("Setting.OpenLastProjectOnStart", "Open Last Project on Start");
-	private static readonly LanguageCode LABEL_USE_TOOLTIP = ("Setting.UseTooltip", "Show Tooltip");
-	private static readonly LanguageCode LABEL_USE_NOTI = ("Setting.UseNotification", "Show Notification");
-	private static readonly LanguageCode LABEL_THEME = ("Setting.Theme", "Theme");
-	private static readonly LanguageCode LABEL_AUTO_RECOMPILE = ("Setting.AutoRecompile", "Auto Recompile when Script Changed");
-
-	private static readonly LanguageCode LABEL_MEDT_ENABLE = ("Setting.MEDT.Enable", "Use Map Editor in Engine");
-	private static readonly LanguageCode LABEL_MEDT_QUICK_DROP = ("Setting.MEDT.QuickDrop", "Drop Player when Release Space Key");
-	private static readonly LanguageCode LABEL_MEDT_SHOW_STATE = ("Setting.MEDT.ShowState", "Show State Info on Bottom-Right");
-	private static readonly LanguageCode LABEL_MEDT_SHOW_BEHIND = ("Setting.MEDT.ShowBehind", "Show Map Behind");
-	private static readonly LanguageCode LABEL_MEDT_AUTO_ZOOM = ("Setting.MEDT.AutoZoom", "Auto Zoom when Editing");
-
-	private static readonly LanguageCode LABEL_PE_BG_COLOR = ("Setting.PE.BgColor", "Background Color");
-	private static readonly LanguageCode LABEL_PE_GRADIENT_BG = ("Setting.PE.GradientBG", "Gradient Background");
-	private static readonly LanguageCode LABEL_PE_SOLID_PAINTING = ("Setting.PE.SolidPaintingPreview", "Solid Painting Preview");
-
-	private static readonly LanguageCode LABEL_SHOW_LOG_TIME = ("Setting.ShowLogTime", "Show Log Time");
-	private static readonly LanguageCode LABEL_BLINK_ERROR = ("Setting.BlinkWhenError", "Blink When Having Compile Error");
-	private static readonly LanguageCode LABEL_PREFIX_MARK = ("Setting.PrefixMark", "Add Prefix Mark for Messages from Game");
-
-	private static readonly LanguageCode LABEL_CHAR_ANI_REVERSE_SCROLL = ("Setting.CharAni.ReverseScroll", "Reverse Mouse Scroll for Timeline");
-	private static readonly LanguageCode LABEL_CHAR_ANI_VERTICAL_SCROLL = ("Setting.CharAni.VerticalScroll", "Mouse Scroll Vertically for Timeline");
-	private static readonly LanguageCode LABEL_CHAR_ANI_DRAG_HORI_ONLY = ("Setting.CharAni.MidDragHoriOnly", "Mid Drag Only Move Timeline Horizontally");
-
-	private static readonly LanguageCode LABEL_HOTKEY_RECOMPILE = ("Setting.Hotkey.Recompile", "Recompile");
-	private static readonly LanguageCode LABEL_HOTKEY_RUN = ("Setting.Hotkey.Run", "Run");
-	private static readonly LanguageCode LABEL_HOTKEY_CLEAR_CONSOLE = ("Setting.Hotkey.ClearConsole", "Clear Console");
-	private static readonly LanguageCode LABEL_HOTKEY_MEDT = ("Setting.Hotkey.MEDT", "Open Map Editor");
-	private static readonly LanguageCode LABEL_HOTKEY_ART = ("Setting.Hotkey.Artwork", "Open Artwork");
-	private static readonly LanguageCode LABEL_HOTKEY_ANI = ("Setting.Hotkey.CharAni", "Open Character Animation");
-	private static readonly LanguageCode LABEL_HOTKEY_LANGUAGE = ("Setting.Hotkey.Language", "Open Language Editor");
-	private static readonly LanguageCode LABEL_HOTKEY_CONSOLE = ("Setting.Hotkey.Console", "Open Console");
-	private static readonly LanguageCode LABEL_HOTKEY_PROJECT = ("Setting.Hotkey.Project", "Open Project Editor");
-	private static readonly LanguageCode LABEL_HOTKEY_SETTING = ("Setting.Hotkey.Setting", "Open Setting");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_RECT = ("Setting.Hotkey.Pix.Rect", "Artwork - Rect Tool");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_CIRCLE = ("Setting.Hotkey.Pix.Circle", "Artwork - Circle Tool");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_LINE = ("Setting.Hotkey.Pix.Line", "Artwork - Line Tool");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_BUCKET = ("Setting.Hotkey.Pix.Bucket", "Artwork - Bucket Tool");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_SELECT = ("Setting.Hotkey.Pix.Select", "Artwork - Select Tool");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_TOOL_SPRITE = ("Setting.Hotkey.Pix.Sprite", "Artwork - Sprite Tool");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_PREV = ("Setting.Hotkey.Pix.PalPrev", "Artwork - Prev Palette Color");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_PAL_NEXT = ("Setting.Hotkey.Pix.PalNext", "Artwork - Next Palette Color");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_FLIP_X = ("Setting.Hotkey.Pix.FlipX", "Artwork - Flip Selection Horizontal");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_FLIP_Y = ("Setting.Hotkey.Pix.FlipY", "Artwork - Flip Selection Vertical");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_ROT_C = ("Setting.Hotkey.Pix.RotC", "Artwork - Rotate Selection Clockwise");
-	private static readonly LanguageCode LABEL_HOTKEY_PIX_ROT_CC = ("Setting.Hotkey.Pix.RotCC", "Artwork - Rotate Selection Counter-Clockwise");
-	private static readonly LanguageCode LABEL_HOTKEY_FD_NEXT = ("Setting.Hotkey.FrameDebug.Next", "Frame Debug - Next Frame");
 
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode MENU_CATA_LETTER = ("Menu.Group.Letter", "Letter");
 	private static readonly LanguageCode MENU_CATA_NUMBER = ("Menu.Group.Number", "Number");
 	private static readonly LanguageCode MENU_CATA_SIGN = ("Menu.Group.Sign", "Sign");
 	private static readonly LanguageCode MENU_CATA_OTHER = ("Menu.Group.Other", "Fn");
+	private static readonly LanguageCode LABEL_THEME = ("UI.EngineSetting.Theme", "Theme");
 
 	// Api
 	public static SettingWindow Instance { get; private set; }
@@ -91,18 +56,11 @@ public class SettingWindow : WindowUI {
 	public override string DefaultName => "Setting";
 
 	// Data
+	private static readonly List<SettingGroup> Groups = new();
 	private readonly List<(string path, string name)> ThemePaths = new();
 	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
-	private ColorF PixEditorBackgroundColor;
-	private Color32 BackgroundColorDefault;
-	private bool PanelFolding_Engine = false;
-	private bool PanelFolding_MapEditor = true;
-	private bool PanelFolding_PixelEditor = true;
-	private bool PanelFolding_CharAniEditor = true;
-	private bool PanelFolding_Console = true;
-	private bool PanelFolding_Hotkey = true;
 	private SavingHotkey ActivatedSetting = null;
 
 
@@ -114,11 +72,45 @@ public class SettingWindow : WindowUI {
 	#region --- MSG ---
 
 
-	public SettingWindow (ColorF pixEditorBackgroundColor, Color32 backgroundColorDefault) {
-		Instance = this;
-		PixEditorBackgroundColor = pixEditorBackgroundColor;
-		BackgroundColorDefault = backgroundColorDefault;
+	[OnGameInitializeLater]
+	internal static TaskResult OnGameInitializeLater () {
+		if (!SavingSystem.PoolReady) return TaskResult.Continue;
+		// Init from Code
+		Groups.Clear();
+		var pool = new Dictionary<string, SettingGroup>();
+		foreach (var (classType, _) in Util.AllClassWithAttribute<EngineSettingAttribute>()) {
+			var fields = classType.GetFields(BindingFlags.Static | BindingFlags.Public);
+			foreach (var field in fields) {
+				if (field.GetCustomAttribute<EngineSettingAttribute>() is not EngineSettingAttribute att) continue;
+				if (field.GetValue(null) is not Saving value) continue;
+				// Create or Get Group
+				if (!pool.TryGetValue(att.Group, out var group)) {
+					group = new SettingGroup() {
+						Items = new(),
+						Name = ($"UI.EngineSetting.{att.Group}", att.Group),
+						Icon = $"Icon.SettingFold.{att.Group}",
+						Folding = att.Group != "Engine",
+					};
+					pool.Add(att.Group, group);
+				}
+				// Add Item into Group
+				group.Items.Add(new SettingItem() {
+					Name = ($"UI.EngineSetting.{field.Name}", att.DisplayLabel),
+					Value = value,
+					CustomData =
+					value is SavingColor32 sValue ? sValue.Value.ToColorF() :
+					value is SavingColor32NoAlpha sValueNa ? sValueNa.Value.ToColorF() :
+					null,
+				});
+			}
+		}
+		Groups.AddRange(pool.Values);
+		Groups.Sort((a, b) => a.Folding.CompareTo(b.Folding));
+		return TaskResult.End;
 	}
+
+
+	public SettingWindow () => Instance = this;
 
 
 	[OnGameFocused]
@@ -145,12 +137,10 @@ public class SettingWindow : WindowUI {
 
 			using var _ = new GUILabelWidthScope(Util.Min(Unify(320), rect.width / 2));
 
-			DrawPanel(ref rect, LABEL_ENGINE, ICON_ENGINE, Update_Engine, ref PanelFolding_Engine);
-			DrawPanel(ref rect, LABEL_MAP_EDITOR, ICON_MAP_EDITOR, Update_MapEditor, ref PanelFolding_MapEditor);
-			DrawPanel(ref rect, LABEL_PIXEL_EDITOR, ICON_PIXEL_EDITOR, Update_PixelEditor, ref PanelFolding_PixelEditor);
-			DrawPanel(ref rect, LABEL_CHAR_ANI_EDITOR, ICON_CHAR_ANI_EDITOR, Update_CharAniEditor, ref PanelFolding_CharAniEditor);
-			DrawPanel(ref rect, LABEL_CONSOLE, ICON_CONSOLE, Update_Console, ref PanelFolding_Console);
-			DrawPanel(ref rect, LABEL_HOTKEY, ICON_HOTKEY, Update_Hotkey, ref PanelFolding_Hotkey);
+			// Group Content
+			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
+				DrawGroup(ref rect, Groups[groupIndex], groupIndex == 0 ? DrawExtraContent : null);
+			}
 
 			extendedUISize = WindowRect.yMax - rect.yMax + Unify(128);
 			UIHeight = (extendedUISize - WindowRect.height).GreaterOrEquelThanZero();
@@ -165,278 +155,6 @@ public class SettingWindow : WindowUI {
 	}
 
 
-	private IRect Update_Engine (IRect rect) {
-
-		int itemPadding = GUI.FieldPadding;
-
-		// Open Last Project on Start
-		EngineSetting.OpenLastProjectOnStart.Value = GUI.Toggle(
-			rect, EngineSetting.OpenLastProjectOnStart.Value, LABEL_OPEN_LAST_PROJECT_ON_START,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Use Tooltip
-		EngineSetting.UseTooltip.Value = GUI.Toggle(
-			rect, EngineSetting.UseTooltip.Value, LABEL_USE_TOOLTIP,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Use Notification
-		EngineSetting.UseNotification.Value = GUI.Toggle(
-			rect, EngineSetting.UseNotification.Value, LABEL_USE_NOTI,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Auto Recompile
-		EngineSetting.AutoRecompile.Value = GUI.Toggle(
-			rect, EngineSetting.AutoRecompile.Value, LABEL_AUTO_RECOMPILE,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Theme
-		GUI.SmallLabel(rect, LABEL_THEME);
-		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkButton)) {
-			ShowThemeMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
-		}
-		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
-		rect.SlideDown(itemPadding);
-
-		return rect;
-	}
-
-
-	private IRect Update_MapEditor (IRect rect) {
-
-		int itemPadding = GUI.FieldPadding;
-
-		GUI.BeginChangeCheck();
-
-		// Enable
-		EngineSetting.MapEditor_Enable.Value = GUI.Toggle(
-			rect, EngineSetting.MapEditor_Enable.Value, LABEL_MEDT_ENABLE,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		if (EngineSetting.MapEditor_Enable.Value) {
-
-			// Quick Drop
-			EngineSetting.MapEditor_QuickPlayerDrop.Value = GUI.Toggle(
-				rect, EngineSetting.MapEditor_QuickPlayerDrop.Value, LABEL_MEDT_QUICK_DROP,
-				labelStyle: Skin.SmallLabel
-			);
-			rect.SlideDown(itemPadding);
-
-			// Auto Zoom
-			EngineSetting.MapEditor_AutoZoom.Value = GUI.Toggle(
-				rect, EngineSetting.MapEditor_AutoZoom.Value, LABEL_MEDT_AUTO_ZOOM,
-				labelStyle: Skin.SmallLabel
-			);
-			rect.SlideDown(itemPadding);
-
-			// Show Behind
-			EngineSetting.MapEditor_ShowBehind.Value = GUI.Toggle(
-				rect, EngineSetting.MapEditor_ShowBehind.Value, LABEL_MEDT_SHOW_BEHIND,
-				labelStyle: Skin.SmallLabel
-			);
-			rect.SlideDown(itemPadding);
-
-			// Show State
-			EngineSetting.MapEditor_ShowState.Value = GUI.Toggle(
-				rect, EngineSetting.MapEditor_ShowState.Value, LABEL_MEDT_SHOW_STATE,
-				labelStyle: Skin.SmallLabel
-			);
-			rect.SlideDown(itemPadding);
-		}
-
-		// Final
-		RigSettingChanged = RigSettingChanged || GUI.EndChangeCheck();
-
-		return rect;
-
-	}
-
-
-	private IRect Update_PixelEditor (IRect rect) {
-
-		int itemPadding = GUI.FieldPadding;
-
-		// Background Color
-		PixEditorBackgroundColor = GUI.HorizontalColorField(
-			PixEditorBackgroundColor,
-			rect,
-			label: LABEL_PE_BG_COLOR,
-			labelStyle: Skin.SmallLabel,
-			defaultColor: BackgroundColorDefault.ToColorF()
-		);
-		EngineSetting.BackgroundColor.Value = PixEditorBackgroundColor.ToColor32();
-		rect.SlideDown(itemPadding);
-
-		// Gradient Background
-		EngineSetting.GradientBackground.Value = GUI.Toggle(
-			rect, EngineSetting.GradientBackground.Value, LABEL_PE_GRADIENT_BG,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Solid Painting Preview
-		EngineSetting.SolidPaintingPreview.Value = GUI.Toggle(
-			rect, EngineSetting.SolidPaintingPreview.Value, LABEL_PE_SOLID_PAINTING,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-
-		return rect;
-
-	}
-
-
-	private IRect Update_CharAniEditor (IRect rect) {
-
-		int itemPadding = GUI.FieldPadding;
-
-		// Reverse Mouse Scroll for Timeline
-		EngineSetting.ReverseMouseScrollForTimeline.Value = GUI.Toggle(
-			rect, EngineSetting.ReverseMouseScrollForTimeline.Value, LABEL_CHAR_ANI_REVERSE_SCROLL,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Mouse Scroll Vertical for Timeline
-		EngineSetting.MouseScrollVerticalForTimeline.Value = GUI.Toggle(
-			rect, EngineSetting.MouseScrollVerticalForTimeline.Value, LABEL_CHAR_ANI_VERTICAL_SCROLL,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Mid Drag Horizontal Only for Timeline
-		EngineSetting.MidDragHorizontalOnlyForTimeline.Value = GUI.Toggle(
-			rect, EngineSetting.MidDragHorizontalOnlyForTimeline.Value, LABEL_CHAR_ANI_DRAG_HORI_ONLY,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		return rect;
-
-	}
-
-
-	private IRect Update_Console (IRect rect) {
-
-		int itemPadding = GUI.FieldPadding;
-
-		// Show Log Time
-		EngineSetting.ShowLogTime.Value = GUI.Toggle(
-			rect, EngineSetting.ShowLogTime.Value, LABEL_SHOW_LOG_TIME,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Blink when Error
-		EngineSetting.BlinkWhenError.Value = GUI.Toggle(
-			rect, EngineSetting.BlinkWhenError.Value, LABEL_BLINK_ERROR,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		// Prefix Mark
-		EngineSetting.AddPrefixMarkForMessageFromGame.Value = GUI.Toggle(
-			rect, EngineSetting.AddPrefixMarkForMessageFromGame.Value, LABEL_PREFIX_MARK,
-			labelStyle: Skin.SmallLabel
-		);
-		rect.SlideDown(itemPadding);
-
-		return rect;
-
-	}
-
-
-	private IRect Update_Hotkey (IRect rect) {
-
-		int itemPadding = GUI.FieldPadding;
-
-		HotkeyField(rect, EngineSetting.Hotkey_Recompile, LABEL_HOTKEY_RECOMPILE);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Run, LABEL_HOTKEY_RUN);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_ClearConsole, LABEL_HOTKEY_CLEAR_CONSOLE);
-		rect.SlideDown(itemPadding);
-
-		// Window
-		HotkeyField(rect, EngineSetting.Hotkey_Window_MapEditor, LABEL_HOTKEY_MEDT);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Artwork, LABEL_HOTKEY_ART);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Window_CharAni, LABEL_HOTKEY_ANI);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Language, LABEL_HOTKEY_LANGUAGE);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Console, LABEL_HOTKEY_CONSOLE);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Project, LABEL_HOTKEY_PROJECT);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Window_Setting, LABEL_HOTKEY_SETTING);
-		rect.SlideDown(itemPadding);
-
-		// Pix Tool
-		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Rect, LABEL_HOTKEY_PIX_TOOL_RECT);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Circle, LABEL_HOTKEY_PIX_TOOL_CIRCLE);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Line, LABEL_HOTKEY_PIX_TOOL_LINE);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Bucket, LABEL_HOTKEY_PIX_TOOL_BUCKET);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Select, LABEL_HOTKEY_PIX_TOOL_SELECT);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_PixTool_Sprite, LABEL_HOTKEY_PIX_TOOL_SPRITE);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Pix_PalettePrev, LABEL_HOTKEY_PIX_PAL_PREV);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Pix_PaletteNext, LABEL_HOTKEY_PIX_PAL_NEXT);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Pix_FlipX, LABEL_HOTKEY_PIX_FLIP_X);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Pix_FlipY, LABEL_HOTKEY_PIX_FLIP_Y);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Pix_RotC, LABEL_HOTKEY_PIX_ROT_C);
-		rect.SlideDown(itemPadding);
-
-		HotkeyField(rect, EngineSetting.Hotkey_Pix_RotCC, LABEL_HOTKEY_PIX_ROT_CC);
-		rect.SlideDown(itemPadding);
-
-		// F Debug
-		HotkeyField(rect, EngineSetting.Hotkey_FrameDebug_Next, LABEL_HOTKEY_FD_NEXT);
-		rect.SlideDown(itemPadding);
-
-		return rect;
-	}
-
-
 	#endregion
 
 
@@ -445,7 +163,7 @@ public class SettingWindow : WindowUI {
 	#region --- LGC ---
 
 
-	private void DrawPanel (ref IRect rect, string label, int icon, System.Func<IRect, IRect> panelGUI, ref bool folding) {
+	private void DrawGroup (ref IRect rect, SettingGroup groupData, Func<IRect, IRect> extraContent) {
 
 		var boxPadding = Int4.Direction(Unify(24), Unify(4), Unify(3), Unify(3));
 		int boxTop = rect.yMax;
@@ -453,25 +171,84 @@ public class SettingWindow : WindowUI {
 		int boxRight = rect.xMax;
 
 		// Fold Icon
-		GUI.Icon(rect.Edge(Direction4.Left, rect.height * 3 / 4).Shift(-boxPadding.left / 5, 0), icon);
+		GUI.Icon(rect.Edge(Direction4.Left, rect.height * 3 / 4).Shift(-boxPadding.left / 5, 0), groupData.Icon);
 
 		// Fold Label
-		if (GUI.Button(rect.Expand(boxPadding.left, boxPadding.right, 0, 0), 0, Skin.WeakHighlightPixel)) folding = !folding;
-		GUI.Label(rect.ShrinkLeft(rect.height), label, Skin.SmallGreyLabel);
+		if (GUI.Button(rect.Expand(boxPadding.left, boxPadding.right, 0, 0), 0, Skin.WeakHighlightPixel)) {
+			groupData.Folding = !groupData.Folding;
+		}
+		GUI.Label(rect.ShrinkLeft(rect.height), groupData.Name, Skin.SmallGreyLabel);
 
 		// Fold Triangle
 		using (new GUIColorScope(Color32.GREY_128)) {
 			GUI.Icon(
 				rect.EdgeOutside(Direction4.Left, rect.height * 2 / 3).Shift(-boxPadding.left / 4, 0),
-				folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
+				groupData.Folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
 			);
 		}
-		rect.SlideDown(folding ? 0 : GUI.FieldPadding);
+		rect.SlideDown(groupData.Folding ? 0 : GUI.FieldPadding);
 
-		if (!folding) {
-			rect = panelGUI(rect);
+		if (!groupData.Folding) {
+			// Content
+			foreach (var item in groupData.Items) {
+				switch (item.Value) {
+
+					default:
+						using (new GUIContentColorScope(Color32.RED_BETTER)) {
+							GUI.SmallLabel(rect, item.Name);
+						}
+						break;
+
+					case SavingBool sBool:
+						sBool.Value = GUI.Toggle(
+							rect, sBool.Value, item.Name,
+							labelStyle: Skin.SmallLabel
+						);
+						break;
+
+					case SavingColor32 sColor32: {
+						var colorF = (ColorF)item.CustomData;
+						GUI.BeginChangeCheck();
+						colorF = GUI.HorizontalColorField(
+							colorF, rect, true, true, true, false, sColor32.DefaultValue.ToColorF()
+						);
+						if (GUI.EndChangeCheck()) {
+							sColor32.Value = colorF.ToColor32();
+							item.CustomData = colorF;
+						}
+						break;
+					}
+
+					case SavingColor32NoAlpha sColor32na: {
+						var colorF = (ColorF)item.CustomData;
+						GUI.BeginChangeCheck();
+						colorF = GUI.HorizontalColorField(
+							colorF, rect, true, false, true, false, sColor32na.DefaultValue.ToColorF()
+						);
+						if (GUI.EndChangeCheck()) {
+							sColor32na.Value = colorF.ToColor32();
+							item.CustomData = colorF;
+						}
+						break;
+					}
+
+					case SavingHotkey sHotkey:
+						HotkeyField(rect, sHotkey, item.Name);
+						break;
+
+				}
+				rect.SlideDown(GUI.FieldPadding);
+			}
+
+			// Extra Content
+			if (extraContent != null) {
+				rect = extraContent(rect);
+			}
+
 		}
 
+
+		// Box BG
 		if (
 			Renderer.TryGetSprite(UI_PANEL_SETTING, out var sprite) ||
 			Renderer.TryGetSprite(Const.PIXEL, out sprite)
@@ -490,6 +267,19 @@ public class SettingWindow : WindowUI {
 	}
 
 
+	private IRect DrawExtraContent (IRect rect) {
+		GUI.SmallLabel(rect, LABEL_THEME);
+		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
+		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkButton)) {
+			ShowThemeMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
+		}
+		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
+		rect.SlideDown(GUI.FieldPadding);
+		return rect;
+	}
+
+
+	// Util
 	private void ShowThemeMenu (Int2 pos) {
 
 		// Reload

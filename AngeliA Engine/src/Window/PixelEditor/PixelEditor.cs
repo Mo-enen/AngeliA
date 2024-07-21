@@ -173,6 +173,7 @@ public partial class PixelEditor : WindowUI {
 	private int PixelStageSize = 1;
 	private bool AsepriteFolderExists = false;
 	private Tool CurrentTool = Tool.Rect;
+	private Tag SelectionTagCache = Tag.None;
 
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false);
@@ -287,6 +288,7 @@ public partial class PixelEditor : WindowUI {
 		SelectingPaletteIndex = -1;
 		PixelStageSize = (CanvasRect.height / STAGE_SIZE).RoundToInt();
 		Contains9Pivots = 0;
+		SelectionTagCache = Tag.None;
 		int firstPalIndex = -1;
 
 		for (int i = StagedSprites.Count - 1; i >= 0; i--) {
@@ -304,6 +306,7 @@ public partial class PixelEditor : WindowUI {
 				SelectingAnyTiggerSprite = SelectingAnyTiggerSprite || sprite.IsTrigger;
 				SelectingAnyNonTiggerSprite = SelectingAnyNonTiggerSprite || !sprite.IsTrigger;
 				Contains9Pivots.SetBit(Get9PivotDigit(sprite.PivotX, sprite.PivotY), true);
+				SelectionTagCache |= sprite.Tag;
 			}
 
 			// Palette

@@ -129,6 +129,22 @@ public abstract class Saving<T> : Saving {
 }
 
 
+
+public class SavingColor32NoAlpha : Saving<Color32> {
+	public SavingColor32NoAlpha (string key, Color32 defaultValue = default) : base(key, defaultValue) { }
+	protected override string ValueToString (Color32 value) {
+		value.a = 255;
+		return Util.ColorToInt(value).ToString();
+	}
+	protected override Color32 StringToValue (string str) {
+		var result = int.TryParse(str, out int value) ? Util.IntToColor(value) : Color32.CLEAR;
+		result.a = 255;
+		return result;
+	}
+}
+
+
+
 public class SavingColor32 : Saving<Color32> {
 	public SavingColor32 (string key, Color32 defaultValue = default) : base(key, defaultValue) { }
 	protected override string ValueToString (Color32 value) => Util.ColorToInt(value).ToString();

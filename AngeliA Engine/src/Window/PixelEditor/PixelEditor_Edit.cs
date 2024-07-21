@@ -1251,7 +1251,7 @@ public partial class PixelEditor {
 		var resizingSp = StagedSprites[ResizingStageIndex];
 		var oldSpritePxRect = resizingSp.Sprite.PixelRect;
 		var resizingPixRect = oldSpritePxRect;
-		var resizingNormal = ResizingDirection.GetNormal();
+		var resizingNormal = ResizingDirection.Normal();
 		bool forceSquare = Input.HoldingShift;
 		var mousePos = Input.MouseGlobalPosition;
 		var mouseDownPos = Input.MouseLeftDownGlobalPosition;

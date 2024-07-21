@@ -44,6 +44,7 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_TRIGGER_OFF = "Icon.TriggerOff";
 	private static readonly SpriteCode ICON_TRIGGER_MIX = "Icon.TriggerMix";
 	private static readonly SpriteCode ICON_TAG = "Icon.Tag";
+	private static readonly SpriteCode ICON_TAG_MARKED = "Icon.TagMarked";
 	private static readonly SpriteCode ICON_RULE = "Icon.Rule";
 	private static readonly SpriteCode ICON_MIX = "Icon.Mix";
 	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
@@ -597,8 +598,27 @@ public partial class PixelEditor {
 		rect.SlideRight(padding);
 
 		// Tag
-		if (GUI.Button(rect, ICON_TAG, Skin.SmallDarkButton)) {
+		if (GUI.Button(rect, SelectionTagCache == Tag.None ? ICON_TAG : ICON_TAG_MARKED, Skin.SmallDarkButton)) {
 			OpenSpriteTagMenu();
+		}
+		if (SelectionTagCache != Tag.None && EngineSetting.ShowTagPreview.Value) {
+			var tagPreviewRect = rect.EdgeOutside(Direction4.Down, Unify(16)).Shift(0, -Unify(4));
+			int previewPadding = Unify(2);
+			int startIndex = Renderer.GetUsedCellCount();
+			for (int i = 0; i < TagUtil.TAG_COUNT; i++) {
+				if (!SelectionTagCache.HasAny((Tag)(1 << i))) continue;
+				GUI.BackgroundLabel(
+					tagPreviewRect, TagUtil.ALL_TAG_NAMES[i],
+					Skin.HighlightColorAlt, out var bounds, previewPadding, false, Skin.SmallLabel
+				);
+				tagPreviewRect.x = bounds.xMax + previewPadding * 4;
+			}
+			if (Renderer.GetCells(out var cells, out int count)) {
+				int shift = (tagPreviewRect.x - rect.x) / 2 - rect.width / 2;
+				for (int i = startIndex; i < count; i++) {
+					cells[i].X -= shift;
+				}
+			}
 		}
 		RequireTooltip(rect, TIP_TAG);
 		rect.SlideRight(padding);

@@ -107,7 +107,7 @@ public partial class Engine {
 			new LanguageEditor(),
 			new ConsoleWindow(),
 			new ProjectEditor(),
-			new SettingWindow(EngineSetting.BackgroundColor.Value.ToColorF(), EngineSetting.BackgroundColor.DefaultValue),
+			new SettingWindow(),
 		};
 		engine.AllGenericUIs = new EntityUI[] {
 			new GenericPopupUI(),
