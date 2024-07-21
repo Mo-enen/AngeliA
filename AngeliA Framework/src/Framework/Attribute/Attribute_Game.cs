@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+// Game
 [AttributeUsage(AttributeTargets.Method)]
 public class OnGameInitializeAttribute : OrderedAttribute {
 	public OnGameInitializeAttribute (int order = 0) : base(order) { }
@@ -71,28 +72,28 @@ public class OnSheetReloadAttribute : Attribute { }
 
 
 // Stage
-[AttributeUsage(AttributeTargets.Method)] 
+[AttributeUsage(AttributeTargets.Method)]
 public class OnViewZChangedAttribute : Attribute { }
 
 
-[AttributeUsage(AttributeTargets.Method)] 
+[AttributeUsage(AttributeTargets.Method)]
 public class BeforeLayerFrameUpdateAttribute : Attribute { }
 
 
-[AttributeUsage(AttributeTargets.Method)] 
+[AttributeUsage(AttributeTargets.Method)]
 public class AfterLayerFrameUpdateAttribute : Attribute { }
 
 
 // World
-[AttributeUsage(AttributeTargets.Method)] 
+[AttributeUsage(AttributeTargets.Method)]
 public class OnMapFolderChangedAttribute : Attribute { }
 
 
-[AttributeUsage(AttributeTargets.Method)] 
+[AttributeUsage(AttributeTargets.Method)]
 public class BeforeLevelRenderedAttribute : Attribute { }
 
 
-[AttributeUsage(AttributeTargets.Method)] 
+[AttributeUsage(AttributeTargets.Method)]
 public class AfterLevelRenderedAttribute : Attribute { }
 
 
@@ -100,4 +101,8 @@ public class AfterLevelRenderedAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Method)]
 public class OnLanguageChangedAttribute : Attribute { }
 
+
+// Cheat
+[AttributeUsage(AttributeTargets.Method)]
+public class OnCheatPerformAttribute : Attribute { }
 

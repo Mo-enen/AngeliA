@@ -23,7 +23,7 @@ public class PoseAttack_Scratch : PoseAnimation {
 	}
 	public static void ScratchIn () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 		AttackHeadDown(ease01, 1000, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
@@ -67,7 +67,7 @@ public class PoseAttack_Scratch : PoseAnimation {
 	}
 	public static void ScratchOut () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 		AttackHeadDown(ease01, 1000, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
@@ -111,7 +111,7 @@ public class PoseAttack_Scratch : PoseAnimation {
 	}
 	public static void ScratchUp () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 		AttackHeadDown(1f - ease01 + 0.5f, -500, 500, 500);
 		ResetShoulderAndUpperArmPos();
 

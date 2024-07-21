@@ -10,7 +10,7 @@ public class PoseAttack_Magic : PoseAnimation {
 		switch (character.EquippingWeaponHeld) {
 			default:
 			case WeaponHandheld.Float:
-				PoseAttack_Float.Float();
+				PoseAttack_Float.WaveDown();
 				break;
 			case WeaponHandheld.SingleHanded:
 				SingleHanded();
@@ -22,7 +22,7 @@ public class PoseAttack_Magic : PoseAnimation {
 	}
 	public static void SingleHanded () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
 		AttackHeadDown(ease01, 200, 300, 200);
 		ResetShoulderAndUpperArmPos();
@@ -52,12 +52,9 @@ public class PoseAttack_Magic : PoseAnimation {
 	}
 	public static void Pole () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
-		float ease01 = isCharging ?
-			1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
-		if (isCharging) {
+		if (IsChargingAttack) {
 			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01, 200, 300, 200);
@@ -65,7 +62,7 @@ public class PoseAttack_Magic : PoseAnimation {
 		ResetShoulderAndUpperArmPos();
 
 		// Upper Arm
-		float armGrowAmount = isCharging ? 1f - ease01 : ease01;
+		float armGrowAmount = IsChargingAttack ? 1f - ease01 : ease01;
 		int uRotA = (int)Util.LerpUnclamped(-90, 13, ease01);
 		int uRotB = (int)Util.LerpUnclamped(-69, 33, ease01);
 		UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);

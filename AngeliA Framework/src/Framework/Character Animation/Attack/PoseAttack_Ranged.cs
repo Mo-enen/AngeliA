@@ -14,12 +14,11 @@ public class PoseAttack_Ranged : PoseAnimation {
 
 	public static void Bow () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
-		float ease01 = isCharging ?
-			Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Target.LastAttackCharged ? 1f : Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
-
-		if (!isCharging) {
+		float ease01 =
+			IsChargingAttack ? 1f - AttackEase :
+			Target.LastAttackCharged ? 1f :
+			AttackEase;
+		if (!IsChargingAttack) {
 			AttackLegShake(ease01);
 			AttackHeadDown(ease01, 0, 200, 0);
 		}
@@ -142,12 +141,11 @@ public class PoseAttack_Ranged : PoseAnimation {
 
 	public static void Shooting () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
-		float ease01 = isCharging ?
-			Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Target.LastAttackCharged ? 1f : Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
-
-		if (!isCharging) {
+		float ease01 =
+			IsChargingAttack ? 1f - AttackEase :
+			Target.LastAttackCharged ? 1f :
+			AttackEase;
+		if (!IsChargingAttack) {
 			AttackHeadDown(ease01, 0, 200, 0);
 			AttackLegShake(ease01);
 		}
@@ -189,8 +187,8 @@ public class PoseAttack_Ranged : PoseAnimation {
 				rotUpperR = 20;
 				rotLowerL = FacingRight ? 0 : -140;
 				rotLowerR = FacingRight ? 140 : 0;
-				grabRot = -90;
-				grabScl = 1000;
+				grabRot = FacingRight ? 90 : -90;
+				grabScl = FacingRight ? -1000 : 1000;
 				break;
 			}
 			case Direction8.Bottom: {

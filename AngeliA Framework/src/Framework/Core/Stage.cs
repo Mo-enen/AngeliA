@@ -470,9 +470,7 @@ public static class Stage {
 
 	// Spawn
 	public static Entity SpawnEntity (int typeID, int x, int y) => SpawnEntityLogic(typeID, x, y, new Int3(int.MinValue, 0, 0));
-	public static T SpawnEntity<T> (int x, int y) where T : Entity => SpawnEntityLogic(
-		typeof(T).AngeHash(), x, y, new(int.MinValue, 0)
-	) as T;
+	public static T SpawnEntity<T> (int x, int y) where T : Entity => SpawnEntityLogic(typeof(T).AngeHash(), x, y, new(int.MinValue, 0)) as T;
 	public static bool TrySpawnEntity (int typeID, int x, int y, out Entity entity) {
 		entity = SpawnEntityLogic(typeID, x, y, new(int.MinValue, 0));
 		return entity != null;
@@ -693,6 +691,14 @@ public static class Stage {
 	public static Int4 GetCameraCullingPadding () {
 		int expand = Renderer.CameraRect.width * (Game.WorldBehindParallax - 1000) / 2000;
 		return Task.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
+	}
+
+
+	public static Type GetEntityType (int id) {
+		if (EntityPool.TryGetValue(id, out var stack)) {
+			return stack.EntityType;
+		}
+		return null;
 	}
 
 

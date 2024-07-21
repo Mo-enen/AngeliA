@@ -285,11 +285,15 @@ public abstract partial class Character {
 		IsSquatting = squatting;
 
 		// Pound
+		bool prevPounding = IsPounding;
 		IsPounding =
 			PoundAvailable && !IsGrounded && !IsGrabbingSide && !IsGrabbingTop && !IsCrashing &&
 			!IsClimbing && !InWater && !IsDashing && !IsRushing && !IsInsideGround &&
 			(IsPounding ? IntendedY < 0 : IntendedPound);
 		if (IsPounding) LastPoundingFrame = frame;
+		if (prevPounding && !IsPounding && IsGrounded) {
+			OnPoundStopAtGroup();
+		}
 
 		// Grab
 		bool prevGrabbingTop = IsGrabbingTop;
@@ -784,6 +788,14 @@ public abstract partial class Character {
 				hitRect = default;
 				return false;
 			}
+		}
+	}
+
+
+	protected virtual void OnPoundStopAtGroup () {
+		// Pound Putoff
+		if (PoundPutoutFire) {
+			Fire.PutoutFire(Rect.EdgeDown(Const.HALF).Expand(Const.HALF, Const.HALF, 0, 0));
 		}
 	}
 

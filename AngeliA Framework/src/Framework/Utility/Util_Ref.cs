@@ -94,16 +94,17 @@ public static partial class Util {
 	public static IEnumerable<KeyValuePair<MethodInfo, T>> AllStaticMethodWithAttribute<T> () where T : System.Attribute {
 		var flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public;
 		foreach (var method in AllTypes.SelectMany(t => t.GetMethods(flags))) {
-			if (method.GetCustomAttribute<T>(false) is not T att) continue;
-			if (method.DeclaringType.ContainsGenericParameters) {
-				var args = method.DeclaringType.GetGenericArguments();
-				var gTypes = new System.Type[args.Length];
-				for (int i = 0; i < args.Length; i++) gTypes[i] = args[i].BaseType;
-				var newType = method.DeclaringType.MakeGenericType(gTypes);
-				var newMethod = newType.GetMethod(method.Name, flags);
-				yield return new KeyValuePair<MethodInfo, T>(newMethod, att);
-			} else {
-				yield return new KeyValuePair<MethodInfo, T>(method, att);
+			foreach (var att in method.GetCustomAttributes<T>(false)) {
+				if (method.DeclaringType.ContainsGenericParameters) {
+					var args = method.DeclaringType.GetGenericArguments();
+					var gTypes = new System.Type[args.Length];
+					for (int i = 0; i < args.Length; i++) gTypes[i] = args[i].BaseType;
+					var newType = method.DeclaringType.MakeGenericType(gTypes);
+					var newMethod = newType.GetMethod(method.Name, flags);
+					yield return new KeyValuePair<MethodInfo, T>(newMethod, att);
+				} else {
+					yield return new KeyValuePair<MethodInfo, T>(method, att);
+				}
 			}
 		}
 	}

@@ -81,6 +81,7 @@ public class CharacterMovementConfig {
 
 	[PropGroup("Push")]
 	public bool PushAvailable = true;
+	public bool PoundPutoutFire = true;
 	[PropVisibility(nameof(PushAvailable))] public int PushSpeed = 10;
 
 	[PropGroup("Pound")]
@@ -219,6 +220,7 @@ public class CharacterMovementConfig {
 
 		// Pound
 		character.PoundAvailable.BaseValue = PoundAvailable;
+		character.PoundPutoutFire.BaseValue = PoundPutoutFire;
 		character.PoundSpeed.BaseValue = PoundSpeed;
 
 		// Swim

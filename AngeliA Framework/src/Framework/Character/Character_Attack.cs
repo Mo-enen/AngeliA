@@ -29,6 +29,9 @@ public abstract partial class Character {
 	public bool RepeatAttackWhenHolding { get; private set; } = false;
 	public bool LockFacingOnAttack { get; private set; } = false;
 
+	// Data
+	protected readonly int[] IgnoreAimingDirectionFrames = new int[8].FillWithValue(-1);
+
 
 	#endregion
 
@@ -106,6 +109,15 @@ public abstract partial class Character {
 	protected virtual bool IsAttackAllowedByEquipment () =>
 		this is not PoseCharacter poseCharacter ||
 		(GetEquippingItem(EquipmentType.Weapon) is Weapon weapon && weapon.AllowingAttack(poseCharacter));
+
+
+	// Ignore Aim
+	public void IgnoreAimingDirection (Direction8 dir, int duration = 1) {
+		IgnoreAimingDirectionFrames[(int)dir] = Game.GlobalFrame + duration;
+	}
+
+
+	public bool IsAimingDirectionIgnored (Direction8 dir) => Game.GlobalFrame <= IgnoreAimingDirectionFrames[(int)dir];
 
 
 	#endregion

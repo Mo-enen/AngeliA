@@ -99,13 +99,10 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void SingleHanded_SmashDown () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
 		bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
-		float ease01 = isCharging ?
-			1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
-		if (isCharging) {
+		if (IsChargingAttack) {
 			AttackHeadDown(ease01, 100, 800, 100);
 			ResetShoulderAndUpperArmPos();
 		} else {
@@ -153,7 +150,7 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void SingleHanded_SmashUp () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
 		AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
 		ResetShoulderAndUpperArmPos();
@@ -198,8 +195,8 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void SingleHanded_SlashIn () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, 1400, 500, 500);
@@ -249,8 +246,8 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void SingleHanded_SlashOut () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, -500, 500, -1000);
@@ -300,12 +297,9 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void DoubleHanded_SmashDown () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
-		float ease01 = isCharging ?
-			1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
-		if (isCharging) {
+		if (IsChargingAttack) {
 			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
@@ -360,7 +354,7 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void DoubleHanded_SmashUp () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
 		AttackHeadDown(1f - ease01 + 0.5f, -200, 500, 500);
 		ResetShoulderAndUpperArmPos();
@@ -413,8 +407,8 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void DoubleHanded_SlashIn () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, 1400, 500, 500);
@@ -466,8 +460,8 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void DoubleHanded_SlashOut () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, -500, 500, 500);
@@ -518,12 +512,8 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void EachHand_SmashDown () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
-		float ease01 = isCharging ?
-			1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
-
-		if (isCharging) {
+		float ease01 = AttackEase;
+		if (IsChargingAttack) {
 			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
@@ -556,7 +546,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		UpperArmR.Z = UpperArmR.Z.Abs();
 		LowerArmL.Z = LowerArmL.Z.Abs();
 		LowerArmR.Z = LowerArmR.Z.Abs();
-		if (isCharging) {
+		if (IsChargingAttack) {
 			HandL.Z = FacingSign * POSE_Z_HAND;
 			HandR.Z = -FacingSign * POSE_Z_HAND;
 		} else {
@@ -573,7 +563,7 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void EachHand_SmashUp () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 		float easeL = FacingRight ? ease01 : ease01 - 0.1f;
 		float easeR = FacingRight ? ease01 - 0.1f : ease01;
 
@@ -617,8 +607,8 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void EachHand_SlashIn () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, 1400, 500, 500);
@@ -666,8 +656,8 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void EachHand_SlashOut () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, -500, 500, 500);
@@ -716,12 +706,9 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void Polearm_SmashDown () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
-		float ease01 = isCharging ?
-			1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
-		if (isCharging) {
+		if (IsChargingAttack) {
 			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
@@ -763,7 +750,7 @@ public class PoseAttack_Wave : PoseAnimation {
 	}
 	public static void Polearm_SmashUp () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
 		AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
 		ResetShoulderAndUpperArmPos();

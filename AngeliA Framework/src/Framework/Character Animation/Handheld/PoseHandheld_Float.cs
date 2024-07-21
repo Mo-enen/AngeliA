@@ -8,7 +8,7 @@ public class PoseHandheld_Float : PoseAnimation {
 		base.Animate(character);
 		// Charging
 		if (Target.IsChargingAttack) {
-			PoseAttack_Float.Float();
+			PoseAttack_Float.WaveDown();
 		}
 	}
 }

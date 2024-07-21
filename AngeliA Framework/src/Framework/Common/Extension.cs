@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace AngeliA;
 
@@ -35,6 +36,10 @@ public static class Extension {
 	}
 
 	// Misc
+	public static System.Span<T> GetSpan<T> (this List<T> list) => CollectionsMarshal.AsSpan(list);
+	public static System.Span<T> GetSpan<T> (this T[] arr) => new(arr);
+	public static System.ReadOnlySpan<T> GetReadOnlySpan<T> (this T[] arr) => new(arr);
+
 	public static string ToStringWithDoubleQuotes (this string str) => $"\"{str}\"";
 	public static string ToStringWithDoubleQuotes (this StringBuilder builder) => $"\"{builder}\"";
 

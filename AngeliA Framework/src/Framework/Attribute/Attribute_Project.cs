@@ -46,3 +46,15 @@ public class RenderLayerCapacityAttribute : Attribute {
 	}
 }
 
+
+[AttributeUsage(AttributeTargets.Assembly)]
+public class AllowCheatCodesAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+public class CheatCodeAttribute : Attribute {
+	public string Code = "";
+	public CheatCodeAttribute (string code) {
+		Code = code;
+	}
+}

@@ -93,6 +93,7 @@ public abstract partial class Character {
 
 	// Pound
 	public readonly BuffBool PoundAvailable = new(true);
+	public readonly BuffBool PoundPutoutFire = new(true);
 	public readonly BuffInt PoundSpeed = new(96);
 
 	// Swim

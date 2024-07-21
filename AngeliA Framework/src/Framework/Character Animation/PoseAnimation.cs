@@ -47,10 +47,13 @@ public abstract class PoseAnimation {
 	protected static BodyPart FootR = null;
 	protected static bool FacingRight = true;
 	protected static bool FacingFront = true;
+	protected static bool IsChargingAttack = false;
 	protected static int FacingSign = 0;
 	protected static int FrontSign = 0;
 	protected static int CurrentAnimationFrame = 0;
 	protected static CharacterAnimationType AnimationType;
+	protected static float AttackLerp;
+	protected static float AttackEase;
 
 
 	#endregion
@@ -141,6 +144,16 @@ public abstract class PoseAnimation {
 		AnimationType = character.AnimationType;
 		FacingSign = FacingRight ? 1 : -1;
 		FrontSign = FacingFront ? 1 : -1;
+		IsChargingAttack = !Target.IsAttacking && Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+		AttackLerp = IsChargingAttack ?
+			((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration, 1)).Clamp01() :
+			(float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
+		AttackEase = IsChargingAttack ?
+			1f - Ease.OutBack(AttackLerp) :
+			Ease.OutBack(AttackLerp);
+		if (IsChargingAttack) {
+			AttackLerp = 1f - AttackLerp;
+		}
 	}
 
 

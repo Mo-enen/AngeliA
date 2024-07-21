@@ -4,7 +4,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		character.AttackStyleLoop = 8;
-		int style = character.LastAttackCharged ? 4 : character.AttackStyleIndex % character.AttackStyleLoop;
+		int style = character.AttackStyleIndex % character.AttackStyleLoop;
 		switch (style) {
 			default:
 				Poke();
@@ -25,7 +25,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 	}
 	public static void Poke () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
 		AttackHeadDown(ease01, 300, 300, 100);
 		ResetShoulderAndUpperArmPos();
@@ -64,12 +64,9 @@ public class PoseAttack_Polearm : PoseAnimation {
 	}
 	public static void SmashDown () {
 
-		bool isCharging = Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
-		float ease01 = isCharging ?
-			1f - Ease.OutBack(((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration * 2, 1)).Clamp01()) :
-			Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
-		if (isCharging) {
+		if (IsChargingAttack) {
 			AttackHeadDown(ease01, 100, 800, 100);
 		} else {
 			AttackHeadDown(ease01);
@@ -111,7 +108,7 @@ public class PoseAttack_Polearm : PoseAnimation {
 	}
 	public static void SmashUp () {
 
-		float ease01 = Ease.OutBack((float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration);
+		float ease01 = AttackEase;
 
 		AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
 		ResetShoulderAndUpperArmPos();
@@ -151,8 +148,8 @@ public class PoseAttack_Polearm : PoseAnimation {
 	}
 	public static void SlashIn () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, 1400, 500, 500);
@@ -204,8 +201,8 @@ public class PoseAttack_Polearm : PoseAnimation {
 	}
 	public static void SlashOut () {
 
-		float frame01 = (float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
-		float ease01 = Ease.OutBack(frame01);
+		float frame01 = AttackLerp;
+		float ease01 = AttackEase;
 		float ease010 = Util.PingPong(ease01 * 2f, 1f);
 
 		AttackHeadDown(ease01, -500, 500, 500);

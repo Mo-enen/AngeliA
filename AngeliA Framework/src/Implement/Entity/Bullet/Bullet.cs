@@ -73,7 +73,7 @@ public abstract class Bullet : Entity {
 			// Type Logic
 			switch (DamageType) {
 				case Tag.FireDamage:
-					Fire.SpreadFire(CommonFire.TYPE_ID, Rect, Const.CEL);
+					Fire.SpreadFire(CommonFire.TYPE_ID, Rect.Expand(Const.CEL));
 					break;
 			}
 			if (DestroyOnHitReceiver) {
@@ -92,7 +92,7 @@ public abstract class Bullet : Entity {
 			BeforeDespawn(null);
 			switch (DamageType) {
 				case Tag.FireDamage:
-					Fire.SpreadFire(CommonFire.TYPE_ID, Rect, Const.CEL);
+					Fire.SpreadFire(CommonFire.TYPE_ID, Rect.Expand(Const.CEL));
 					break;
 			}
 			return true;

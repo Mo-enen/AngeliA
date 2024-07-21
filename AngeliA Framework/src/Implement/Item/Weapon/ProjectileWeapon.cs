@@ -22,6 +22,40 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 	protected virtual ProjectileValidDirection ValidDirection => ProjectileValidDirection.Two;
 	protected int ForceBulletCountNextShot { get; set; } = -1;
 
+	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
+		base.PoseAnimationUpdate_FromEquipment(holder);
+		if (holder is Character character) {
+			switch (ValidDirection) {
+				case ProjectileValidDirection.Two:
+					character.IgnoreAimingDirection(Direction8.Bottom);
+					character.IgnoreAimingDirection(Direction8.Top);
+					character.IgnoreAimingDirection(Direction8.TopLeft);
+					character.IgnoreAimingDirection(Direction8.TopRight);
+					character.IgnoreAimingDirection(Direction8.BottomLeft);
+					character.IgnoreAimingDirection(Direction8.BottomRight);
+					break;
+				case ProjectileValidDirection.Three:
+					character.IgnoreAimingDirection(Direction8.Bottom);
+					character.IgnoreAimingDirection(Direction8.TopLeft);
+					character.IgnoreAimingDirection(Direction8.TopRight);
+					character.IgnoreAimingDirection(Direction8.BottomLeft);
+					character.IgnoreAimingDirection(Direction8.BottomRight);
+					break;
+				case ProjectileValidDirection.Four:
+					character.IgnoreAimingDirection(Direction8.TopLeft);
+					character.IgnoreAimingDirection(Direction8.TopRight);
+					character.IgnoreAimingDirection(Direction8.BottomLeft);
+					character.IgnoreAimingDirection(Direction8.BottomRight);
+					break;
+				case ProjectileValidDirection.Five:
+					character.IgnoreAimingDirection(Direction8.BottomLeft);
+					character.IgnoreAimingDirection(Direction8.BottomRight);
+					character.IgnoreAimingDirection(Direction8.Bottom);
+					break;
+			}
+		}
+	}
+
 	public override Bullet SpawnBullet (Character sender) {
 
 		Bullet result = null;

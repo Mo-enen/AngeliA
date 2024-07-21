@@ -28,7 +28,6 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 	// Const
 	private const int RUSH_TAPPING_GAP = 16;
 	private const int ACTION_SCAN_RANGE = Const.HALF;
-	private const int DIR_TRANSFER_COOLDOWN = 6;
 	private static readonly LanguageCode HINT_WAKE = ("CtrlHint.WakeUp", "Wake");
 	private static readonly LanguageCode HINT_SWITCH_PLAYER = ("CtrlHint.SwitchPlayer", "Select Player");
 
@@ -216,11 +215,25 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 
 
 	private void Update_Aiming () {
-		var inputDir = Input.Direction;
-		if (inputDir.TryGetDirection8(out var result)) {
-			_AimingDirection = result;
-		} else {
-			_AimingDirection = FacingRight ? Direction8.Right : Direction8.Left;
+		_AimingDirection =
+			Input.Direction.TryGetDirection8(out var result) ? result :
+			FacingRight ? Direction8.Right : Direction8.Left;
+		// Ignore Check
+		if (IsAimingDirectionIgnored(_AimingDirection)) {
+			var dir0 = _AimingDirection;
+			var dir1 = _AimingDirection;
+			for (int safe = 0; safe < 4; safe++) {
+				dir0 = FacingRight ? dir0.AntiClockwise() : dir0.Clockwise();
+				dir1 = FacingRight ? dir1.Clockwise() : dir1.AntiClockwise();
+				if (!IsAimingDirectionIgnored(dir0)) {
+					_AimingDirection = dir0;
+					break;
+				}
+				if (!IsAimingDirectionIgnored(dir1)) {
+					_AimingDirection = dir1;
+					break;
+				}
+			}
 		}
 	}
 

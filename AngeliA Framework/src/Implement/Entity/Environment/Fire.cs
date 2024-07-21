@@ -71,6 +71,20 @@ public abstract class Fire : Entity {
 	}
 
 
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		// Deal Damage to Characters in All Teams
+		var hits = Physics.OverlapAll(
+			PhysicsMask.CHARACTER, Rect, out int count, null, OperationMode.ColliderAndTrigger
+		);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Entity is not Character ch) continue;
+			ch.TakeDamage(new Damage(1, this, this, Tag.FireDamage));
+		}
+	}
+
+
 	public override void Update () {
 		base.Update();
 
@@ -79,14 +93,14 @@ public abstract class Fire : Entity {
 
 		// Put Out When Target Not Burning
 		if (eTarget != null && !Target.IsBurning) {
-			PutOut();
+			Putout();
 			Active = false;
 			return;
 		}
 
 		// Put Out when Hit Water
 		if (Physics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, Tag.Water)) {
-			PutOut();
+			Putout();
 			Active = false;
 			return;
 		}
@@ -122,7 +136,7 @@ public abstract class Fire : Entity {
 				Y = eTarget.Y;
 			} else {
 				if (BurnedFrame > Game.GlobalFrame) {
-					PutOut();
+					Putout();
 				}
 			}
 		}
@@ -196,6 +210,27 @@ public abstract class Fire : Entity {
 	#region --- API ---
 
 
+	public static void SpreadFire (int fireID, IRect rect, Entity host = null) {
+		var hits = Physics.OverlapAll(
+			PhysicsMask.ENTITY,
+			rect, out int count,
+			host, OperationMode.ColliderAndTrigger
+		);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Entity is not ICombustible com || !hit.Entity.Active || com.IsBurning) continue;
+			if (Stage.TrySpawnEntity(fireID, hit.Rect.x, hit.Rect.y, out var fEntity) && fEntity is Fire fire) {
+				fire.Setup(com);
+			}
+		}
+	}
+
+
+	public static void PutoutFire (IRect rect) {
+
+	}
+
+
 	public void Setup (int burnDuration, Direction4 direction, int width = Const.CEL, int height = Const.CEL) {
 		Width = width;
 		Height = height;
@@ -218,26 +253,10 @@ public abstract class Fire : Entity {
 	}
 
 
-	public void Spread () => SpreadFire(TypeID, Rect, SpreadRange, host: this);
+	public void Spread () => SpreadFire(TypeID, Rect.Expand(SpreadRange), host: this);
 
 
-	public static void SpreadFire (int fireID, IRect rect, int range = Const.CEL, Entity host = null) {
-		var hits = Physics.OverlapAll(
-			PhysicsMask.ENTITY,
-			rect.Expand(range), out int count,
-			host, OperationMode.ColliderAndTrigger
-		);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is not ICombustible com || !hit.Entity.Active || com.IsBurning) continue;
-			if (Stage.TrySpawnEntity(fireID, hit.Rect.x, hit.Rect.y, out var fEntity) && fEntity is Fire fire) {
-				fire.Setup(com);
-			}
-		}
-	}
-
-
-	public void PutOut () {
+	public void Putout () {
 		BurnedFrame = Game.GlobalFrame;
 		LifeEndFrame = Game.GlobalFrame + WeakenDuration;
 		SpreadFrame = int.MaxValue;

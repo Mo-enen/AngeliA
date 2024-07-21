@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public abstract partial class Character : IDamageReceiver {
 
 
@@ -46,7 +46,7 @@ public abstract partial class Character : IDamageReceiver {
 	#region --- API ---
 
 
-	void IDamageReceiver.TakeDamage (Damage damage) {
+	public void TakeDamage (Damage damage) {
 		if (!Active || damage.Amount <= 0 || HealthPoint <= 0) return;
 		if (CharacterState != CharacterState.GamePlay || IsInvincible) return;
 		if (InvincibleOnRush && IsRushing) return;
