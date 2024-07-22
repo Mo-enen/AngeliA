@@ -222,19 +222,22 @@ public abstract class MovableBullet : Bullet {
 
 			case Direction8.Top: // ↑
 				Velocity = new Int2(speedSide, speedForward);
-				CurrentRotation = StartRotation - 90;
+				CurrentRotation += 90;
 				break;
+
 			case Direction8.Right: // →
 				Velocity = new Int2(speedForward, speedSide);
-				CurrentRotation = StartRotation;
+				CurrentRotation += 0;
 				break;
+
 			case Direction8.Bottom: // ↓
 				Velocity = new Int2(speedSide, -speedForward);
-				CurrentRotation = StartRotation + 90;
+				CurrentRotation += -90;
 				break;
+
 			case Direction8.Left: // ←
 				Velocity = new Int2(-speedForward, speedSide);
-				CurrentRotation = -StartRotation;
+				CurrentRotation += 0;
 				break;
 
 			case Direction8.TopRight: // ↗
@@ -242,31 +245,35 @@ public abstract class MovableBullet : Bullet {
 					speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2,
 					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
-				CurrentRotation = StartRotation - 45;
+				CurrentRotation += -45;
 				break;
+
 			case Direction8.BottomRight: // ↘
 				Velocity = new Int2(
 					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2,
 					-speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
-				CurrentRotation = StartRotation + 45;
+				CurrentRotation += 45;
 				break;
+
 			case Direction8.BottomLeft: // ↙
 				Velocity = new Int2(
 					-speedForward * 10000 / SQT2 + speedSide * 5000 / SQT2,
 					-speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
-				CurrentRotation = -StartRotation - 45;
+				CurrentRotation += -45;
 				break;
+
 			case Direction8.TopLeft: // ↖
 				Velocity = new Int2(
 					-speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2,
 					speedForward * 10000 / SQT2 - speedSide * 5000 / SQT2
 				);
-				CurrentRotation = -StartRotation + 45;
+				CurrentRotation += 45;
 				break;
 
 		}
+
 	}
 
 	protected (int startX, int startY, int endX, int endY, int length, int rotation1000, bool beamHitReceiver) GetLastUpdatedTramsform () => (
