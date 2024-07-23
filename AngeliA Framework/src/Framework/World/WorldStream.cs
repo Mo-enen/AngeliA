@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AngeliA;
 
-public sealed class WorldStream : IBlockSquad {
+public sealed class WorldStream : IWritableBlockSquad {
 
 
 
@@ -33,13 +33,15 @@ public sealed class WorldStream : IBlockSquad {
 	private const int END_RELEASE_COUNT = 128;
 
 	// Api
-	public string MapRoot { get; private set; }
+	public string MapRoot { get; init; }
 
 	// Data
 	private static readonly Dictionary<string, WorldStream> StreamPool = new();
 	private readonly Dictionary<Int3, WorldData> WorldPool = new();
 	private readonly WorldPathPool PathPool = new();
+	private readonly WorldPathPool FallbackPathPool = new();
 	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
+	private readonly bool UseFallback;
 	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;
 
@@ -52,28 +54,23 @@ public sealed class WorldStream : IBlockSquad {
 	#region --- API ---
 
 
-	public static WorldStream GetOrCreateStream (string mapFolder) {
+	public static WorldStream GetOrCreateStreamFromPool (string mapFolder) {
 		if (StreamPool.TryGetValue(mapFolder, out var stream)) {
 			return stream;
 		} else {
-			stream = new WorldStream();
-			stream.Load(mapFolder);
+			stream = new WorldStream(mapFolder);
 			StreamPool.Add(mapFolder, stream);
 			return stream;
 		}
 	}
 
 
-	public void Load (string mapRoot) {
-		Clear();
-		PathPool.SetMapRoot(mapRoot);
-		MapRoot = mapRoot;
-	}
-
-
-	public void Clear () {
+	public WorldStream (string mapFolder) {
+		UseFallback = Util.IsSamePath(mapFolder, Universe.BuiltIn.UserMapRoot);
+		PathPool.SetMapRoot(mapFolder);
+		FallbackPathPool.SetMapRoot(UseFallback ? Universe.BuiltIn.MapRoot : "");
+		MapRoot = mapFolder;
 		WorldPool.Clear();
-		PathPool.Clear();
 		CurrentValidMapCount = 0;
 		InternalFrame = int.MinValue;
 	}
@@ -93,6 +90,9 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	public bool TryGetMapFilePath (Int3 worldPos, out string path) => PathPool.TryGetPath(worldPos, out path);
+
+
+	public bool ContainsWorldPos (Int3 worldPos) => PathPool.ContainsKey(worldPos) || (UseFallback && FallbackPathPool.ContainsKey(worldPos));
 
 
 	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) {
@@ -217,6 +217,11 @@ public sealed class WorldStream : IBlockSquad {
 		if (PathPool.TryGetPath(pos, out string path)) {
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
+		if (!loaded && UseFallback && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
+			path = PathPool.GetOrAddPath(pos);
+			Util.CopyFile(fallPath, path);
+			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
+		}
 		if (!loaded) worldData = null;
 		WorldPool.Add(pos, worldData);
 		return loaded;
@@ -239,7 +244,12 @@ public sealed class WorldStream : IBlockSquad {
 		}
 		if (!loaded) {
 			path = PathPool.GetOrAddPath(pos);
-			worldData.World.SaveToDisk(path);
+			if (UseFallback && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
+				Util.CopyFile(fallPath, path);
+				worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
+			} else {
+				worldData.World.SaveToDisk(path);
+			}
 		}
 		CurrentValidMapCount++;
 		TryReleaseOverload();

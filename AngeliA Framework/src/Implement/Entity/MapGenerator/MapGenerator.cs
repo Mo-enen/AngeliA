@@ -102,9 +102,8 @@ public abstract class MapGenerator : Entity {
 			string procedureMapRoot = ProcedureMapRoot;
 			string tempMapRoot = TempMapRoot;
 
-			SampleReader = WorldStream.GetOrCreateStream(Universe.BuiltIn.MapRoot);
-			ResultWriter = new WorldStream();
-			ResultWriter.Load(tempMapRoot);
+			SampleReader = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.MapRoot);
+			ResultWriter = new WorldStream(tempMapRoot);
 
 			BeforeMapGenerate();
 
@@ -126,7 +125,6 @@ public abstract class MapGenerator : Entity {
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
 		}
-		ResultWriter?.Clear();
 		SampleReader = null;
 		ResultWriter = null;
 	}

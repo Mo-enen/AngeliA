@@ -217,13 +217,6 @@ public abstract class RoomBasedMapGenerator : ActionMapGenerator {
 	}
 
 
-	protected override void AfterMapGenerate () {
-		base.AfterMapGenerate();
-		SampleReader.Clear();
-		System.GC.Collect();
-	}
-
-
 	#endregion
 
 

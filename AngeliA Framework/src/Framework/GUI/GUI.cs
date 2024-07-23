@@ -30,6 +30,7 @@ public static class GUI {
 	public static int FieldPadding { get; private set; } = 1;
 	public static int ToolbarSize { get; private set; } = 42;
 	public static int ScrollbarSize { get; private set; } = 12;
+	public static int ContentVersion { get; private set; } = int.MinValue;
 
 	// Data
 	private static readonly char[] TypingBuilder = new char[1024];
@@ -45,7 +46,6 @@ public static class GUI {
 	private static int TypingTextFieldUpdateFrame = -1;
 	private static (int downValue, bool hasValue) ScrollDraggingCache = (0, false);
 	private static bool SliderDraggingCache = false;
-	private static int ContentVersion = int.MinValue;
 	private static int CheckingContentVersion = int.MinValue;
 	private static int InternalRequiringControlID = int.MinValue;
 	private static int TextInputAnchoredIndex = -1;

@@ -8,13 +8,15 @@ namespace AngeliaEngine;
 public class EngineSettingAttribute : Attribute {
 	public string Group;
 	public string DisplayLabel;
+	public string RequireSettingName;
 	public EngineSettingAttribute () {
 		Group = null;
 		DisplayLabel = null;
 	}
-	public EngineSettingAttribute (string group, string displayLabel) {
+	public EngineSettingAttribute (string group, string displayLabel, string requireSettingPath = "") {
 		Group = group;
 		DisplayLabel = displayLabel;
+		RequireSettingName = requireSettingPath;
 	}
 }
 
@@ -46,10 +48,10 @@ public class EngineSetting {
 
 	// Map Editor
 	[EngineSetting("Map Editor", "Use Map Editor in Engine")] public static readonly SavingBool MapEditor_Enable = new("MapEditor.Enable", true);
-	[EngineSetting("Map Editor", "Drop Player when Release Space Key")] public static readonly SavingBool MapEditor_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
-	[EngineSetting("Map Editor", "Auto Zoom when Editing")] public static readonly SavingBool MapEditor_AutoZoom = new("MapEditor.AutoZoom", true);
-	[EngineSetting("Map Editor", "Show State Info on Bottom-Right")] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", false);
-	[EngineSetting("Map Editor", "Show Map Behind")] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true);
+	[EngineSetting("Map Editor", "Drop Player when Release Space Key", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false);
+	[EngineSetting("Map Editor", "Auto Zoom when Editing", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_AutoZoom = new("MapEditor.AutoZoom", true);
+	[EngineSetting("Map Editor", "Show State Info on Bottom-Right", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", false);
+	[EngineSetting("Map Editor", "Show Map Behind", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true);
 	public static readonly SavingInt LastMapEditorViewX = new("Map.LastMapEditorViewX", 0);
 	public static readonly SavingInt LastMapEditorViewY = new("Map.LastMapEditorViewY", 0);
 	public static readonly SavingInt LastMapEditorViewZ = new("Map.LastMapEditorViewZ", 0);

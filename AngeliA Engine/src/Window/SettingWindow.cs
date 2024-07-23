@@ -21,12 +21,14 @@ public class SettingWindow : WindowUI {
 		public SpriteCode Icon;
 		public List<SettingItem> Items;
 		public bool Folding = true;
+		public bool RigGroup = false;
 	}
 
 
 	private class SettingItem {
 		public LanguageCode Name;
 		public Saving Value;
+		public SavingBool Requirement;
 		public object CustomData;
 	}
 
@@ -90,17 +92,26 @@ public class SettingWindow : WindowUI {
 						Name = ($"UI.EngineSetting.{att.Group}", att.Group),
 						Icon = $"Icon.SettingFold.{att.Group}",
 						Folding = att.Group != "Engine",
+						RigGroup = att.Group == "Map Editor",
 					};
 					pool.Add(att.Group, group);
 				}
 				// Add Item into Group
+				SavingBool req = null;
+				if (!string.IsNullOrEmpty(att.RequireSettingName)) {
+					var rqField = classType.GetField(att.RequireSettingName, BindingFlags.Public | BindingFlags.Static);
+					if (rqField != null && rqField.FieldType == typeof(SavingBool)) {
+						req = rqField.GetValue(null) as SavingBool;
+					}
+				}
 				group.Items.Add(new SettingItem() {
 					Name = ($"UI.EngineSetting.{field.Name}", att.DisplayLabel),
 					Value = value,
+					Requirement = req,
 					CustomData =
-					value is SavingColor32 sValue ? sValue.Value.ToColorF() :
-					value is SavingColor32NoAlpha sValueNa ? sValueNa.Value.ToColorF() :
-					null,
+						value is SavingColor32 sValue ? sValue.Value.ToColorF() :
+						value is SavingColor32NoAlpha sValueNa ? sValueNa.Value.ToColorF() :
+						null,
 				});
 			}
 		}
@@ -139,7 +150,11 @@ public class SettingWindow : WindowUI {
 
 			// Group Content
 			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
-				DrawGroup(ref rect, Groups[groupIndex], groupIndex == 0 ? DrawExtraContent : null);
+				var group = Groups[groupIndex];
+				DrawGroup(ref rect, group, groupIndex == 0 ? DrawExtraContent : null, out bool changed);
+				if (group.RigGroup && changed) {
+					RigSettingChanged = true;
+				}
 			}
 
 			extendedUISize = WindowRect.yMax - rect.yMax + Unify(128);
@@ -163,12 +178,13 @@ public class SettingWindow : WindowUI {
 	#region --- LGC ---
 
 
-	private void DrawGroup (ref IRect rect, SettingGroup groupData, Func<IRect, IRect> extraContent) {
+	private void DrawGroup (ref IRect rect, SettingGroup groupData, Func<IRect, IRect> extraContent, out bool changed) {
 
 		var boxPadding = Int4.Direction(Unify(24), Unify(4), Unify(3), Unify(3));
 		int boxTop = rect.yMax;
 		int boxLeft = rect.xMin;
 		int boxRight = rect.xMax;
+		GUI.BeginChangeCheck();
 
 		// Fold Icon
 		GUI.Icon(rect.Edge(Direction4.Left, rect.height * 3 / 4).Shift(-boxPadding.left / 5, 0), groupData.Icon);
@@ -191,6 +207,7 @@ public class SettingWindow : WindowUI {
 		if (!groupData.Folding) {
 			// Content
 			foreach (var item in groupData.Items) {
+				if (item.Requirement != null && !item.Requirement.Value) continue;
 				switch (item.Value) {
 
 					default:
@@ -208,11 +225,11 @@ public class SettingWindow : WindowUI {
 
 					case SavingColor32 sColor32: {
 						var colorF = (ColorF)item.CustomData;
-						GUI.BeginChangeCheck();
+						int version = GUI.ContentVersion;
 						colorF = GUI.HorizontalColorField(
 							colorF, rect, true, true, true, false, sColor32.DefaultValue.ToColorF()
 						);
-						if (GUI.EndChangeCheck()) {
+						if (version != GUI.ContentVersion) {
 							sColor32.Value = colorF.ToColor32();
 							item.CustomData = colorF;
 						}
@@ -247,6 +264,7 @@ public class SettingWindow : WindowUI {
 
 		}
 
+		changed = GUI.EndChangeCheck();
 
 		// Box BG
 		if (

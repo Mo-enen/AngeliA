@@ -26,6 +26,7 @@ public class Universe {
 	public string EditableConversationRoot { get; private set; }
 	public string UniverseMetaRoot { get; private set; }
 	public string MapRoot { get; private set; }
+	public string UserMapRoot { get; private set; }
 	public string LanguageRoot { get; private set; }
 	public string AsepriteRoot { get; private set; }
 	public string SavingRoot { get; private set; }
@@ -46,7 +47,6 @@ public class Universe {
 			AngePath.BuiltInUniverseRoot,
 			useBuiltInSavingRoot: true
 		);
-		BuiltIn.CreateFolders();
 		AngePath.SetCurrentUserPath(BuiltIn.Info.DeveloperName, BuiltIn.Info.ProductName);
 	}
 
@@ -75,26 +75,27 @@ public class Universe {
 			Util.CombinePaths(universeFolder, "Saving");
 		result.SavingMetaRoot = AngePath.GetSavingMetaRoot(result.SavingRoot);
 		result.ProcedureMapRoot = AngePath.GetProcedureMapRoot(result.SavingRoot);
+		result.UserMapRoot = AngePath.GetUserMapRoot(result.SavingRoot);
 		result.CharacterRenderingConfigRoot = AngePath.GetSavingMetaCharacterConfigRoot(result.SavingRoot);
-		result.CreateFolders();
-		return result;
-	}
 
-	public void CreateFolders () {
-		Util.CreateFolder(ConversationRoot);
-		Util.CreateFolder(EditableConversationRoot);
-		Util.CreateFolder(UniverseMetaRoot);
-		Util.CreateFolder(MapRoot);
-		Util.CreateFolder(LanguageRoot);
-		Util.CreateFolder(SavingRoot);
-		Util.CreateFolder(SavingMetaRoot);
-		Util.CreateFolder(ProcedureMapRoot);
-		Util.CreateFolder(MusicRoot);
-		Util.CreateFolder(SoundRoot);
-		Util.CreateFolder(FontRoot);
-		Util.CreateFolder(CharacterRenderingConfigRoot);
-		Util.CreateFolder(CharacterMovementConfigRoot);
-		Util.CreateFolder(CharacterAnimationRoot);
+		// Create Folders
+		Util.CreateFolder(result.ConversationRoot);
+		Util.CreateFolder(result.EditableConversationRoot);
+		Util.CreateFolder(result.UniverseMetaRoot);
+		Util.CreateFolder(result.MapRoot);
+		Util.CreateFolder(result.LanguageRoot);
+		Util.CreateFolder(result.SavingRoot);
+		Util.CreateFolder(result.SavingMetaRoot);
+		Util.CreateFolder(result.ProcedureMapRoot);
+		Util.CreateFolder(result.UserMapRoot);
+		Util.CreateFolder(result.MusicRoot);
+		Util.CreateFolder(result.SoundRoot);
+		Util.CreateFolder(result.FontRoot);
+		Util.CreateFolder(result.CharacterRenderingConfigRoot);
+		Util.CreateFolder(result.CharacterMovementConfigRoot);
+		Util.CreateFolder(result.CharacterAnimationRoot);
+
+		return result;
 	}
 
 }

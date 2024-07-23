@@ -10,6 +10,10 @@ public class ToolApplicationAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Assembly)]
+public class AllowModifyMapDuringGameplayAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Assembly)]
 public class DisablePauseAttribute : Attribute { }
 
 
@@ -51,10 +55,3 @@ public class RenderLayerCapacityAttribute : Attribute {
 public class AllowCheatCodesAttribute : Attribute { }
 
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-public class CheatCodeAttribute : Attribute {
-	public string Code = "";
-	public CheatCodeAttribute (string code) {
-		Code = code;
-	}
-}

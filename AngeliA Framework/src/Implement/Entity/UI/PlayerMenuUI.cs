@@ -606,7 +606,7 @@ public class PlayerMenuUI : EntityUI {
 				cursorIndex = CursorIndex = uiIndex;
 				CursorInBottomPanel = RenderingBottomPanel;
 				// Draw Highlight
-				Renderer.DrawPixel(itemRect, Color32.GREY_42, int.MinValue + 2);
+				Renderer.DrawPixel(itemRect, Color32.WHITE_20, int.MinValue + 2);
 			}
 			if (itemID != 0) {
 				// System Mouse Cursor

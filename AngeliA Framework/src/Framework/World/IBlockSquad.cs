@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
+
+
+public interface IWritableBlockSquad : IBlockSquad {
+	void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID);
+}
+
 
 public interface IBlockSquad {
 
@@ -19,8 +25,6 @@ public interface IBlockSquad {
 	};
 
 	int GetBlockAt (int unitX, int unitY, int z, BlockType type);
-
-	void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID);
 
 	public sealed int GetBlockAt (int unitX, int unitY, int z) {
 		int result = GetBlockAt(unitX, unitY, z, BlockType.Entity);

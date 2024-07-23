@@ -52,10 +52,7 @@ public class WorldSquad : IBlockSquad {
 
 
 	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () {
-		SwitchToCraftedMode(forceOperate: true);
-		Reset();
-	}
+	internal static void OnGameInitializeLater () => SwitchToGeneralChannel(forceOperate: true);
 
 
 	[OnGameRestart]
@@ -227,22 +224,18 @@ public class WorldSquad : IBlockSquad {
 	#region --- API ---
 
 
-	public static void SwitchToCraftedMode (bool forceOperate = false) => SetMode(string.Empty, MapChannel.General, forceOperate);
-	public static void SwitchToProcedureMode (string folderName, bool forceOperate = false) => SetMode(folderName, MapChannel.Procedure, forceOperate);
-	private static void SetMode (string folderName, MapChannel newChannel, bool forceOperate = false) {
+	public static void SwitchToGeneralChannel (bool forceOperate = false) => SetChannelLogic(string.Empty, MapChannel.General, forceOperate);
+	public static void SwitchToProcedureChannel (string folderName, bool forceOperate = false) => SetChannelLogic(folderName, MapChannel.Procedure, forceOperate);
+	private static void SetChannelLogic (string procedureFolderName, MapChannel newChannel, bool forceOperate = false) {
 		if (!forceOperate && newChannel == Channel) return;
 		Channel = newChannel;
 		string mapRoot = newChannel switch {
-			MapChannel.General => Universe.BuiltIn.MapRoot,
-			MapChannel.Procedure => Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, folderName),
-			_ => Universe.BuiltIn.MapRoot,
+			MapChannel.Procedure => Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, procedureFolderName),
+			MapChannel.General or _ => Game.AllowModifyMapDuringGameplay ? Universe.BuiltIn.UserMapRoot : Universe.BuiltIn.MapRoot,
 		};
-		Stream = WorldStream.GetOrCreateStream(mapRoot);
+		Stream = WorldStream.GetOrCreateStreamFromPool(mapRoot);
 		OnMapFolderChanged?.Invoke();
 	}
-
-
-	public static void Reset () => Stream?.Clear();
 
 
 	// Get Set Block
@@ -288,9 +281,6 @@ public class WorldSquad : IBlockSquad {
 
 
 	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => GetBlockAt(unitX, unitY, type);
-
-
-	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) { }
 
 
 	// Draw

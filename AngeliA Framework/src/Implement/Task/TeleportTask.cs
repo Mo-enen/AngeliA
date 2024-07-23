@@ -37,9 +37,9 @@ public class TeleportTask : TaskItem {
 			// Channel
 			if (NewChannel.HasValue) {
 				if (NewChannel.Value == MapChannel.Procedure) {
-					WorldSquad.SwitchToProcedureMode(ChannelName);
+					WorldSquad.SwitchToProcedureChannel(ChannelName);
 				} else {
-					WorldSquad.SwitchToCraftedMode();
+					WorldSquad.SwitchToGeneralChannel();
 				}
 			}
 			// Position

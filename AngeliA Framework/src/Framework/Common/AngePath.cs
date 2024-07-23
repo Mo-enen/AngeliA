@@ -80,5 +80,6 @@ public static class AngePath {
 	public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
 	public static string GetSavingMetaCharacterConfigRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta", "Character Rendering");
 	public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
+	public static string GetUserMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "User Map");
 
 }

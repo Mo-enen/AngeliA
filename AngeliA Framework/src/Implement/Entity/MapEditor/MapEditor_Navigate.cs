@@ -185,7 +185,7 @@ public partial class MapEditor {
 						var worldPos = new Int3(worldX, worldY, z);
 						slot.WorldX = worldX;
 						slot.WorldY = worldY;
-						slot.IsEmpty = !Stream.TryGetMapFilePath(worldPos, out _);
+						slot.IsEmpty = !Stream.ContainsWorldPos(worldPos);
 						if (Stream.TryGetWorld(worldPos.x, worldPos.y, worldPos.z, out var world)) {
 							world.FillMapIntoTexture(slot.Texture);
 							Game.ForceRequireGizmosTextureFromMap(slot.Texture, worldPos);

@@ -9,7 +9,7 @@ public class WorldPathPool : Dictionary<Int3, string> {
 	public string MapRoot { get; private set; } = "";
 	private static readonly Dictionary<Int3, string> WorldNamePool = new();
 
-
+	
 	// API
 	public void SetMapRoot (string newRoot) {
 		MapRoot = newRoot;

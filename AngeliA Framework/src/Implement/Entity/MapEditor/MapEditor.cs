@@ -171,7 +171,30 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	[OnGameQuitting]
-	internal static void OnGameQuitting_Editor () => Instance?.OnEditorQuit();
+	internal static void OnGameQuitting_Editor () {
+		if (Instance == null) return;
+
+		if (!Instance.PlayingGame) {
+			Instance.ApplyPaste();
+			Instance.Save();
+		}
+
+		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.MapRoot);
+		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.MapRoot);
+		IUnique.SaveToDisk(Instance.Stream.MapRoot);
+
+		//WorldSquad.SwitchToCraftedMode();
+		//WorldSquad.Enable = true;
+
+		//Instance.IsNavigating = false;
+		//Instance.PastingBuffer.Clear();
+		//Instance.CopyBuffer.Clear();
+		//Instance.UndoRedo.Reset();
+		//Instance.CleanDirty();
+		//Instance.MouseDownOutsideBoundary = false;
+		//Instance.SearchResult.Clear();
+		//Instance.Stream?.Clear();
+	}
 
 
 	// Active
@@ -186,17 +209,19 @@ public sealed partial class MapEditor : WindowUI {
 			if (IsPlaying && !WorldSquad.Enable) {
 				DropPlayerLogic();
 				SetEditorMode(true);
+			} else if (!IsPlaying && WorldSquad.Enable) {
+				SetEditorMode(false);
 			}
 			return;
 		}
 		Initialized = true;
 
 		// Init Pool
-		var universe = Universe.BuiltIn;
+		var builtInUniverse = Universe.BuiltIn;
 		UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
-		Stream = WorldStream.GetOrCreateStream(universe.MapRoot);
-		EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.MapRoot);
-		FrameworkUtil.DeleteAllEmptyMaps(universe.MapRoot);
+		Stream = WorldStream.GetOrCreateStreamFromPool(builtInUniverse.MapRoot);
+		EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(builtInUniverse.MapRoot);
+		FrameworkUtil.DeleteAllEmptyMaps(builtInUniverse.MapRoot);
 		Initialize_Pool();
 		Initialize_Palette();
 		Initialize_Nav();
@@ -237,31 +262,6 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
-
-	}
-
-
-	private void OnEditorQuit () {
-
-		if (!PlayingGame) {
-			ApplyPaste();
-			Save();
-		}
-
-		JsonUtil.SaveJson(EditorMeta, Universe.BuiltIn.MapRoot);
-		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.MapRoot);
-		IUnique.SaveToDisk(Stream.MapRoot);
-		WorldSquad.SwitchToCraftedMode();
-		WorldSquad.Enable = true;
-
-		IsNavigating = false;
-		PastingBuffer.Clear();
-		CopyBuffer.Clear();
-		UndoRedo.Reset();
-		CleanDirty();
-		MouseDownOutsideBoundary = false;
-		SearchResult.Clear();
-		Stream?.Clear();
 
 	}
 
@@ -1139,7 +1139,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Squad  
 		if (WorldSquad.Channel != MapChannel.General) {
-			WorldSquad.SwitchToCraftedMode();
+			WorldSquad.SwitchToGeneralChannel();
 			MapGenerator.DeleteAllGeneratedMapFiles();
 		}
 		WorldSquad.Enable = toPlayMode;
