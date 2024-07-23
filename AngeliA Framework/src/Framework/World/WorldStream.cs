@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 
 namespace AngeliA;
 
-public sealed class WorldStream : IWritableBlockSquad {
+public sealed class WorldStream : IBlockSquad {
 
 
 
@@ -13,10 +15,11 @@ public sealed class WorldStream : IWritableBlockSquad {
 	#region --- SUB ---
 
 
-	private class WorldData {
+	private struct WorldData {
 		public World World;
 		public int LastReadWriteFrame;
 		public bool IsDirty;
+		public bool Valid;
 	}
 
 
@@ -36,6 +39,7 @@ public sealed class WorldStream : IWritableBlockSquad {
 	public string MapRoot { get; init; }
 
 	// Data
+	private static readonly Stack<World> WorldItemPool = new(1024);
 	private static readonly Dictionary<string, WorldStream> StreamPool = new();
 	private readonly Dictionary<Int3, WorldData> WorldPool = new();
 	private readonly WorldPathPool PathPool = new();
@@ -78,13 +82,13 @@ public sealed class WorldStream : IWritableBlockSquad {
 
 	public void SaveAllDirty () {
 		foreach (var pair in WorldPool) {
-			var data = pair.Value;
-			if (data != null && data.IsDirty) {
-				var pos = data.World.WorldPosition;
-				string path = PathPool.GetOrAddPath(pos);
-				data.World?.SaveToDisk(path);
-				data.IsDirty = false;
-			}
+			ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
+			bool notExists = Unsafe.IsNullRef(ref data);
+			if (notExists || !data.Valid || !data.IsDirty) continue;
+			var pos = data.World.WorldPosition;
+			string path = PathPool.GetOrAddPath(pos);
+			data.World?.SaveToDisk(path);
+			data.IsDirty = false;
 		}
 	}
 
@@ -156,7 +160,7 @@ public sealed class WorldStream : IWritableBlockSquad {
 	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int value) {
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);
-		var worldData = CreateOrGetWorldData(worldX, worldY, z);
+		ref var worldData = ref CreateOrGetWorldData(worldX, worldY, z);
 		worldData.LastReadWriteFrame = InternalFrame++;
 		var world = worldData.World;
 		int localX = unitX.UMod(Const.MAP);
@@ -182,7 +186,7 @@ public sealed class WorldStream : IWritableBlockSquad {
 	public void SetBlocksAt (int unitX, int unitY, int z, int entity, int level, int background, int element) {
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);
-		var worldData = CreateOrGetWorldData(worldX, worldY, z);
+		ref var worldData = ref CreateOrGetWorldData(worldX, worldY, z);
 		worldData.LastReadWriteFrame = InternalFrame++;
 		var world = worldData.World;
 		int localX = unitX.UMod(Const.MAP);
@@ -206,12 +210,16 @@ public sealed class WorldStream : IWritableBlockSquad {
 
 	private bool TryGetWorldData (int worldX, int worldY, int worldZ, out WorldData worldData) {
 		var pos = new Int3(worldX, worldY, worldZ);
-		if (WorldPool.TryGetValue(pos, out worldData)) return worldData != null;
+		if (WorldPool.TryGetValue(pos, out worldData)) return worldData.Valid;
+
 		// Load From Disk
+		var newWorld = WorldItemPool.Count > 0 ? WorldItemPool.Pop() : new World();
+		newWorld.Reset(pos);
 		worldData = new WorldData {
-			World = new World(pos),
+			World = newWorld,
 			LastReadWriteFrame = InternalFrame++,
 			IsDirty = false,
+			Valid = false,
 		};
 		bool loaded = false;
 		if (PathPool.TryGetPath(pos, out string path)) {
@@ -222,22 +230,37 @@ public sealed class WorldStream : IWritableBlockSquad {
 			Util.CopyFile(fallPath, path);
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
-		if (!loaded) worldData = null;
+		worldData.Valid = loaded;
 		WorldPool.Add(pos, worldData);
+		if (loaded) {
+			CurrentValidMapCount++;
+			TryReleaseOverload();
+		} else {
+			worldData.World = null;
+			WorldItemPool.Push(newWorld);
+		}
 		return loaded;
 	}
 
 
-	private WorldData CreateOrGetWorldData (int worldX, int worldY, int worldZ) {
+	private ref WorldData CreateOrGetWorldData (int worldX, int worldY, int worldZ) {
+
 		var pos = new Int3(worldX, worldY, worldZ);
-		if (WorldPool.TryGetValue(pos, out var worldData) && worldData != null) return worldData;
+		ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pos);
+		if (!Unsafe.IsNullRef(ref data)) return ref data;
+
 		// Create New
-		worldData = new WorldData {
-			World = new World(pos),
+		var newWorld = WorldItemPool.Count > 0 ? WorldItemPool.Pop() : new World();
+		newWorld.Reset(pos);
+		var worldData = new WorldData {
+			World = newWorld,
 			LastReadWriteFrame = InternalFrame++,
 			IsDirty = false,
+			Valid = true,
 		};
 		WorldPool[pos] = worldData;
+
+		// Load Data
 		bool loaded = false;
 		if (PathPool.TryGetPath(pos, out string path)) {
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
@@ -253,21 +276,24 @@ public sealed class WorldStream : IWritableBlockSquad {
 		}
 		CurrentValidMapCount++;
 		TryReleaseOverload();
-		return worldData;
+
+		return ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pos);
 	}
 
 
 	private void TryReleaseOverload () {
 		if (CurrentValidMapCount < START_RELEASE_COUNT) return;
 		CacheReleaseList.Clear();
-		CacheReleaseList.AddRange(WorldPool.TakeWhile(a => a.Value != null));
+		CacheReleaseList.AddRange(WorldPool.TakeWhile(a => a.Value.Valid));
 		CacheReleaseList.Sort((a, b) => b.Value.LastReadWriteFrame.CompareTo(a.Value.LastReadWriteFrame));
 		for (int i = CacheReleaseList.Count - 1; i >= END_RELEASE_COUNT; i--) {
 			if (WorldPool.Remove(CacheReleaseList[i].Key, out var worldData)) {
-				if (worldData.IsDirty && worldData.World != null) {
-					string path = PathPool.GetOrAddPath(worldData.World.WorldPosition);
-					worldData.World.SaveToDisk(path);
-					worldData.IsDirty = false;
+				if (worldData.World != null) {
+					WorldItemPool.Push(worldData.World);
+					if (worldData.IsDirty) {
+						string path = PathPool.GetOrAddPath(worldData.World.WorldPosition);
+						worldData.World.SaveToDisk(path);
+					}
 				}
 			}
 			CurrentValidMapCount--;

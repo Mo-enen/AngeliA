@@ -20,6 +20,7 @@ public class WorldSquad : IBlockSquad {
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
 	public static MapChannel Channel { get; private set; } = MapChannel.General;
+	public static bool Readonly => !Game.AllowModifyMapDuringGameplay;
 
 	// Data
 	private static WorldStream Stream = null;
@@ -53,6 +54,12 @@ public class WorldSquad : IBlockSquad {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () => SwitchToGeneralChannel(forceOperate: true);
+
+
+	[OnGameQuitting]
+	internal static void OnGameQuitting () {
+		if (!Readonly) Stream?.SaveAllDirty();
+	}
 
 
 	[OnGameRestart]
@@ -228,6 +235,9 @@ public class WorldSquad : IBlockSquad {
 	public static void SwitchToProcedureChannel (string folderName, bool forceOperate = false) => SetChannelLogic(folderName, MapChannel.Procedure, forceOperate);
 	private static void SetChannelLogic (string procedureFolderName, MapChannel newChannel, bool forceOperate = false) {
 		if (!forceOperate && newChannel == Channel) return;
+		if (!Readonly && Channel == MapChannel.General) {
+			Stream?.SaveAllDirty();
+		}
 		Channel = newChannel;
 		string mapRoot = newChannel switch {
 			MapChannel.Procedure => Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, procedureFolderName),
@@ -238,26 +248,7 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
-	// Get Set Block
-	public Int4 GetBlocksAt (int unitX, int unitY) {
-		Stream.GetBlocksAt(unitX, unitY, Stage.ViewZ, out int e, out int l, out int b, out int ele);
-		return new Int4(e, l, b, ele);
-	}
-
-
-	public int GetBlockAt (int unitX, int unitY) {
-		int id = GetBlockAt(unitX, unitY, BlockType.Element);
-		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Entity);
-		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Element);
-		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Level);
-		if (id == 0) id = GetBlockAt(unitX, unitY, BlockType.Background);
-		return id;
-	}
-
-
-	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
-
-
+	// Get Block
 	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
 		resultX = default;
 		resultY = default;
@@ -280,7 +271,30 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
-	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => GetBlockAt(unitX, unitY, type);
+	public Int4 GetBlocksAt (int unitX, int unitY) {
+		Stream.GetBlocksAt(unitX, unitY, Stage.ViewZ, out int e, out int l, out int b, out int ele);
+		return new Int4(e, l, b, ele);
+	}
+
+
+	public int GetBlockAt (int unitX, int unitY) {
+		int id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Entity);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Level);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Background);
+		return id;
+	}
+	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
+	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
+
+
+	// Set Block
+	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) => SetBlockAt(unitX, unitY, Stage.ViewZ, type, newID);
+	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
+		if (Readonly) return;
+		Stream.SetBlockAt(unitX, unitY, z, type, newID);
+	}
 
 
 	// Draw

@@ -443,6 +443,8 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 
 		// Wake up on Press Action
 		if (Input.GameKeyDown(Gamekey.Action) || Input.GameKeyDown(Gamekey.Jump)) {
+			Input.UseGameKey(Gamekey.Action);
+			Input.UseGameKey(Gamekey.Jump);
 			SetCharacterState(CharacterState.GamePlay);
 			Y -= 4;
 		}
