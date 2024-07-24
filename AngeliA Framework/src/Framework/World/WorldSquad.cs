@@ -248,6 +248,12 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
+	public static void IgnoreUserMap (int duration = 1) => Stream.IgnoreFallback(duration);
+
+
+	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
+
+
 	// Get Block
 	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
 		resultX = default;

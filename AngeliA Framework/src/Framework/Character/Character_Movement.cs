@@ -929,7 +929,7 @@ public abstract partial class Character {
 		IsSquatting ? (IsMoving ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
 		InWater && !IsGrounded ? (IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
 		!IsGrounded && !InWater && !InSand && !IsClimbing ? (VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
-		IsMoving ? ReadyForRun && !IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk :
+		IsMoving && (ReadyForRun ? RunSpeed : WalkSpeed) != 0 ? (ReadyForRun && !IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
 		CharacterMovementState.Idle;
 
 

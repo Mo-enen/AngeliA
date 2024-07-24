@@ -409,6 +409,8 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_Before () {
 
+		WorldSquad.IgnoreUserMap(1);
+
 		var mainRect = Renderer.CameraRect;
 		X = mainRect.x;
 		Y = mainRect.y;
@@ -1121,7 +1123,14 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void SetEditorMode (bool toPlayMode) {
 
-		if (toPlayMode && Game.GlobalFrame != 0) Save();
+		if (Game.GlobalFrame != 0) {
+			if (toPlayMode) {
+				Save();
+			} else if (Game.AllowModifyMapDuringGameplay) {
+				CleanDirty();
+				WorldSquad.DiscardAllChangesInMemory();
+			}
+		}
 
 		PlayingGame = toPlayMode;
 		SelectingPaletteItem = null;

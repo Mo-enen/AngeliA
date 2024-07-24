@@ -89,7 +89,7 @@ public abstract partial class Character {
 	}
 
 
-	protected virtual bool IsAttackAllowedByMovement () =>
+	public virtual bool IsAttackAllowedByMovement () =>
 		!IsCrashing &&
 		(AttackInAir || IsGrounded || InWater || InSand || IsClimbing) &&
 		(AttackInWater || !InWater) &&
@@ -106,7 +106,7 @@ public abstract partial class Character {
 		(AttackWhenRush || !IsRushing);
 
 
-	protected virtual bool IsAttackAllowedByEquipment () =>
+	public virtual bool IsAttackAllowedByEquipment () =>
 		this is not PoseCharacter poseCharacter ||
 		(GetEquippingItem(EquipmentType.Weapon) is Weapon weapon && weapon.AllowingAttack(poseCharacter));
 

@@ -38,6 +38,9 @@ public sealed class WorldStream : IBlockSquad {
 	// Api
 	public string MapRoot { get; init; }
 
+	// Short
+	private bool ForceFallback => FallbackAvailable && Game.GlobalFrame <= ForceFallbackFrame;
+
 	// Data
 	private static readonly Stack<World> WorldItemPool = new(1024);
 	private static readonly Dictionary<string, WorldStream> StreamPool = new();
@@ -45,9 +48,10 @@ public sealed class WorldStream : IBlockSquad {
 	private readonly WorldPathPool PathPool = new();
 	private readonly WorldPathPool FallbackPathPool = new();
 	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
-	private readonly bool UseFallback;
+	private readonly bool FallbackAvailable;
 	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;
+	private int ForceFallbackFrame = -1;
 
 
 	#endregion
@@ -70,17 +74,19 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	public WorldStream (string mapFolder) {
-		UseFallback = Util.IsSamePath(mapFolder, Universe.BuiltIn.UserMapRoot);
+		FallbackAvailable = Util.IsSamePath(mapFolder, Universe.BuiltIn.UserMapRoot);
 		PathPool.SetMapRoot(mapFolder);
-		FallbackPathPool.SetMapRoot(UseFallback ? Universe.BuiltIn.MapRoot : "");
+		FallbackPathPool.SetMapRoot(FallbackAvailable ? Universe.BuiltIn.MapRoot : "");
 		MapRoot = mapFolder;
 		WorldPool.Clear();
 		CurrentValidMapCount = 0;
 		InternalFrame = int.MinValue;
+		ForceFallbackFrame = -1;
 	}
 
 
 	public void SaveAllDirty () {
+		if (ForceFallback) return;
 		foreach (var pair in WorldPool) {
 			ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
 			bool notExists = Unsafe.IsNullRef(ref data);
@@ -93,10 +99,29 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
+	public void DiscardAllChanges (bool forFallbackMaps = false) {
+		var pool = forFallbackMaps ? FallbackPathPool : PathPool;
+		foreach (var pair in WorldPool) {
+			ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
+			bool notExists = Unsafe.IsNullRef(ref data);
+			if (notExists || !data.Valid || !data.IsDirty) continue;
+			var pos = data.World.WorldPosition;
+			string path = pool.GetOrAddPath(pos);
+			data.World?.LoadFromDisk(path, pos.x, pos.y, pos.z);
+			data.IsDirty = false;
+		}
+	}
+
+
+	public void IgnoreFallback (int duration = 1) => ForceFallbackFrame = Game.GlobalFrame + duration;
+
+
 	public bool TryGetMapFilePath (Int3 worldPos, out string path) => PathPool.TryGetPath(worldPos, out path);
 
 
-	public bool ContainsWorldPos (Int3 worldPos) => PathPool.ContainsKey(worldPos) || (UseFallback && FallbackPathPool.ContainsKey(worldPos));
+	public bool ContainsWorldPos (Int3 worldPos) =>
+		(!ForceFallback && PathPool.ContainsKey(worldPos)) ||
+		(FallbackAvailable && FallbackPathPool.ContainsKey(worldPos));
 
 
 	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) {
@@ -222,10 +247,10 @@ public sealed class WorldStream : IBlockSquad {
 			Valid = false,
 		};
 		bool loaded = false;
-		if (PathPool.TryGetPath(pos, out string path)) {
+		if (!ForceFallback && PathPool.TryGetPath(pos, out string path)) {
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
-		if (!loaded && UseFallback && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
+		if (!loaded && FallbackAvailable && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
 			path = PathPool.GetOrAddPath(pos);
 			Util.CopyFile(fallPath, path);
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
@@ -262,12 +287,12 @@ public sealed class WorldStream : IBlockSquad {
 
 		// Load Data
 		bool loaded = false;
-		if (PathPool.TryGetPath(pos, out string path)) {
+		if (!ForceFallback && PathPool.TryGetPath(pos, out string path)) {
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
 		if (!loaded) {
 			path = PathPool.GetOrAddPath(pos);
-			if (UseFallback && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
+			if (FallbackAvailable && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
 				Util.CopyFile(fallPath, path);
 				worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 			} else {

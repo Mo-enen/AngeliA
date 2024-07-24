@@ -151,10 +151,10 @@ public abstract partial class Game {
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<AllowModifyMapDuringGameplayAttribute>()) {
 			AllowModifyMapDuringGameplay = true;
-#if DEBUG
-			AllowModifyMapDuringGameplay = false;
-#endif
 		}
+#if DEBUG
+		AllowModifyMapDuringGameplay = true;
+#endif
 
 	}
 
