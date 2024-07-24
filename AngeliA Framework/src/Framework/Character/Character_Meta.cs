@@ -53,6 +53,7 @@ public abstract partial class Character {
 	// Dash
 	public readonly BuffBool DashAvailable = new(true);
 	public readonly BuffBool DashWithRoll = new(false);
+	public readonly BuffBool DashPutoutFire = new(true);
 	public readonly BuffInt DashSpeed = new(42);
 	public readonly BuffInt DashDuration = new(20);
 	public readonly BuffInt DashCooldown = new(4);
@@ -65,6 +66,7 @@ public abstract partial class Character {
 	public readonly BuffBool RushInWater = new(true);
 	public readonly BuffBool RushWhenClimb = new(false);
 	public readonly BuffBool RushWhenSquat = new(false);
+	public readonly BuffBool RushPutoutFire = new(true);
 	public readonly BuffInt RushSpeed = new(72);
 	public readonly BuffInt RushStopSpeed = new(8);
 	public readonly BuffInt RushDuration = new(8);

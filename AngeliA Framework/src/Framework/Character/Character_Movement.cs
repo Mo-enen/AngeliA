@@ -186,6 +186,7 @@ public abstract partial class Character {
 	private void MovementUpdate_Cache () {
 
 		int frame = Game.GlobalFrame;
+		bool requirePutoutFire = false;
 
 		// Ground
 		if (IsGrounded) LastGroundingFrame = frame;
@@ -264,6 +265,7 @@ public abstract partial class Character {
 			IsRushing = false;
 			VelocityX = FacingRight ? RushStopSpeed : -RushStopSpeed;
 		}
+		if (IsRushing && RushPutoutFire) requirePutoutFire = true;
 
 		// Dash
 		IsDashing =
@@ -275,6 +277,7 @@ public abstract partial class Character {
 			IsDashing = false;
 			VelocityX = VelocityX * DashCancelLoseRate / 1000;
 		}
+		if (IsDashing && DashPutoutFire) requirePutoutFire = true;
 
 		// Squat
 		bool squatting =
@@ -291,8 +294,8 @@ public abstract partial class Character {
 			!IsClimbing && !InWater && !IsDashing && !IsRushing && !IsInsideGround &&
 			(IsPounding ? IntendedY < 0 : IntendedPound);
 		if (IsPounding) LastPoundingFrame = frame;
-		if (prevPounding && !IsPounding && IsGrounded) {
-			OnPoundStopAtGroup();
+		if (prevPounding && !IsPounding && IsGrounded && PoundPutoutFire) {
+			requirePutoutFire = true;
 		}
 
 		// Grab
@@ -364,6 +367,11 @@ public abstract partial class Character {
 		Height = Hitbox.height;
 		OffsetX = -width / 2;
 		OffsetY = 0;
+
+		// Putout Fire
+		if (requirePutoutFire) {
+			Fire.PutoutFire(Rect);
+		}
 
 	}
 
@@ -788,14 +796,6 @@ public abstract partial class Character {
 				hitRect = default;
 				return false;
 			}
-		}
-	}
-
-
-	protected virtual void OnPoundStopAtGroup () {
-		// Pound Putoff
-		if (PoundPutoutFire) {
-			Fire.PutoutFire(Rect.EdgeDown(Const.HALF).Expand(Const.HALF, Const.HALF, 0, 0));
 		}
 	}
 

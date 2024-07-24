@@ -51,6 +51,7 @@ public class CharacterMovementConfig {
 	[PropVisibility(nameof(DashAvailable))] public int DashAcceleration = 24;
 	[PropVisibility(nameof(DashAvailable))] public int DashCancelLoseRate = 300;
 	[PropVisibility(nameof(DashAvailable))] public int DashHeightAmount = 521;
+	[PropVisibility(nameof(RushAvailable))] public bool DashPutoutFire = true;
 
 	[PropGroup("Rush")]
 	public bool RushAvailable = true;
@@ -58,6 +59,7 @@ public class CharacterMovementConfig {
 	[PropVisibility(nameof(RushAvailable))] public bool RushInWater = true;
 	[PropVisibility(nameof(RushAvailable))] public bool RushWhenClimb = false;
 	[PropVisibility(nameof(RushAvailable))] public bool RushWhenSquat = false;
+	[PropVisibility(nameof(RushAvailable))] public bool RushPutoutFire = true;
 	[PropVisibility(nameof(RushAvailable))] public int RushSpeed = 72;
 	[PropVisibility(nameof(RushAvailable))] public int RushStopSpeed = 8;
 	[PropVisibility(nameof(RushAvailable))] public int RushDuration = 8;
@@ -185,6 +187,7 @@ public class CharacterMovementConfig {
 		character.DashCooldown.BaseValue = DashCooldown;
 		character.DashAcceleration.BaseValue = DashAcceleration;
 		character.DashCancelLoseRate.BaseValue = DashCancelLoseRate;
+		character.DashPutoutFire.BaseValue = DashPutoutFire;
 
 		// Rush
 		character.RushAvailable.BaseValue = RushAvailable;
@@ -199,6 +202,7 @@ public class CharacterMovementConfig {
 		character.RushCooldown.BaseValue = RushCooldown;
 		character.RushAcceleration.BaseValue = RushAcceleration;
 		character.RushDeceleration.BaseValue = RushDeceleration;
+		character.RushPutoutFire.BaseValue = RushPutoutFire;
 
 		// Crash
 		character.CrashAvailable.BaseValue = CrashAvailable;

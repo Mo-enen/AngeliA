@@ -46,7 +46,7 @@ public abstract partial class Character : IDamageReceiver {
 	#region --- API ---
 
 
-	public void TakeDamage (Damage damage) {
+	public virtual void TakeDamage (Damage damage) {
 		if (!Active || damage.Amount <= 0 || HealthPoint <= 0) return;
 		if (CharacterState != CharacterState.GamePlay || IsInvincible) return;
 		if (InvincibleOnRush && IsRushing) return;

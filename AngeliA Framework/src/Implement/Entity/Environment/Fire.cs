@@ -30,10 +30,11 @@ public abstract class Fire : Entity {
 
 
 	// Api
-	protected virtual int WeakenDuration => 42;
+	protected virtual int WeakenDuration => 22;
 	protected virtual int SpreadDuration => 60;
 	protected virtual int SpreadRange => Const.CEL;
 	protected virtual bool UseAdditiveShader => false;
+	protected virtual int DamageCooldown => 30;
 	protected virtual Direction4 DefaultDirection => Direction4.Up;
 	public Direction4 Direction { get; set; } = Direction4.Up;
 
@@ -42,6 +43,8 @@ public abstract class Fire : Entity {
 	private int LifeEndFrame = 0;
 	private int BurnedFrame = 0;
 	private int SpreadFrame = int.MaxValue;
+	private int DamageCharacterStartFrame = -1;
+	private bool ManuallyPutout = false;
 
 
 	#endregion
@@ -71,16 +74,34 @@ public abstract class Fire : Entity {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	}
+
+
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Deal Damage to Characters in All Teams
-		var hits = Physics.OverlapAll(
-			PhysicsMask.CHARACTER, Rect, out int count, null, OperationMode.ColliderAndTrigger
-		);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is not Character ch) continue;
-			ch.TakeDamage(new Damage(1, this, this, Tag.FireDamage));
+		bool damaged = false;
+		if (Game.GlobalFrame < BurnedFrame) {
+			var hits = Physics.OverlapAll(
+				PhysicsMask.CHARACTER, Rect, out int count, null, OperationMode.ColliderAndTrigger
+			);
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is not Character ch) continue;
+				damaged = true;
+				if (DamageCharacterStartFrame < 0) {
+					DamageCharacterStartFrame = Game.GlobalFrame;
+				} else if (Game.GlobalFrame > DamageCharacterStartFrame + DamageCooldown) {
+					DamageCharacterStartFrame = Game.GlobalFrame;
+					ch.TakeDamage(new Damage(1, this, this, Tag.FireDamage));
+				}
+			}
+		}
+		if (!damaged) {
+			DamageCharacterStartFrame = -1;
 		}
 	}
 
@@ -93,14 +114,14 @@ public abstract class Fire : Entity {
 
 		// Put Out When Target Not Burning
 		if (eTarget != null && !Target.IsBurning) {
-			Putout();
+			Putout(false);
 			Active = false;
 			return;
 		}
 
 		// Put Out when Hit Water
 		if (Physics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, Tag.Water)) {
-			Putout();
+			Putout(true);
 			Active = false;
 			return;
 		}
@@ -136,7 +157,7 @@ public abstract class Fire : Entity {
 				Y = eTarget.Y;
 			} else {
 				if (BurnedFrame > Game.GlobalFrame) {
-					Putout();
+					Putout(false);
 				}
 			}
 		}
@@ -147,6 +168,13 @@ public abstract class Fire : Entity {
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
+
+		// Putout Smoke
+		if (ManuallyPutout) {
+			GlobalEvent.InvokeFirePutout(TypeID, Rect);
+			Active = false;
+			return;
+		}
 
 		if (UseAdditiveShader) Renderer.SetLayerToAdditive();
 		var cell = Renderer.Draw(
@@ -191,8 +219,9 @@ public abstract class Fire : Entity {
 			int weakenDuration = LifeEndFrame - BurnedFrame;
 			if (weakenFrame < weakenDuration - HOP_GAP) {
 				// Weaken
-				cell.Width = Util.RemapUnclamped(0, weakenDuration, cell.Width, 0, weakenFrame);
-				cell.Height = Util.RemapUnclamped(0, weakenDuration, cell.Height, 0, weakenFrame);
+				float lerp01 = Ease.InOutElastic(Util.InverseLerpUnclamped(0, weakenDuration, weakenFrame));
+				cell.Width = Util.LerpUnclamped(cell.Width, 0, lerp01).RoundToInt();
+				cell.Height = Util.LerpUnclamped(cell.Height, 0, lerp01).RoundToInt();
 			} else {
 				// Hop
 				cell.Width = weakenFrame % 3 == 0 ? 0 : cell.Width * 2 / 3;
@@ -227,7 +256,16 @@ public abstract class Fire : Entity {
 
 
 	public static void PutoutFire (IRect rect) {
-
+		var hits = Physics.OverlapAll(
+			PhysicsMask.ENVIRONMENT,
+			rect, out int count,
+			null, OperationMode.TriggerOnly
+		);
+		for (int i = 0; i < count; i++) {
+			var e = hits[i].Entity;
+			if (e is not Fire fire) continue;
+			fire.Putout(true);
+		}
 	}
 
 
@@ -238,7 +276,10 @@ public abstract class Fire : Entity {
 		LifeEndFrame = BurnedFrame + WeakenDuration;
 		Target = null;
 		Direction = direction;
+		ManuallyPutout = false;
 	}
+
+
 	public void Setup (ICombustible com) {
 		if (com == null) return;
 		if (com is Entity entity) {
@@ -250,16 +291,21 @@ public abstract class Fire : Entity {
 		Direction = Direction4.Up;
 		Target = com;
 		com.BurnStartFrame = Game.GlobalFrame;
+		ManuallyPutout = false;
 	}
 
 
 	public void Spread () => SpreadFire(TypeID, Rect.Expand(SpreadRange), host: this);
 
 
-	public void Putout () {
+	public void Putout (bool manually) {
 		BurnedFrame = Game.GlobalFrame;
 		LifeEndFrame = Game.GlobalFrame + WeakenDuration;
 		SpreadFrame = int.MaxValue;
+		ManuallyPutout = manually;
+		if (Target != null) {
+			Target.BurnStartFrame = -1;
+		}
 	}
 
 
