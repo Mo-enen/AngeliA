@@ -5,9 +5,6 @@ using GeorgeMamaladze;
 
 namespace AngeliA;
 
-public interface IMapItem { }
-
-
 [EntityAttribute.StageOrder(-4096)]
 public sealed partial class MapEditor : WindowUI {
 
@@ -113,7 +110,7 @@ public sealed partial class MapEditor : WindowUI {
 	private readonly Dictionary<int, AngeSprite> SpritePool = new();
 	private readonly Dictionary<int, int[]> IdChainPool = new();
 	private readonly Dictionary<int, int> ReversedChainPool = new();
-	private readonly Dictionary<int, string> ChainRulePool = new();
+	private readonly Dictionary<int, BlockRule[]> ChainRulePool = new();
 	private readonly Dictionary<int, int> EntityArtworkRedirectPool = new();
 	private readonly Dictionary<int, PaletteItem> PalettePool = new();
 
@@ -274,7 +271,7 @@ public sealed partial class MapEditor : WindowUI {
 		ChainRulePool.Clear();
 		ReversedChainPool.Clear();
 		CheckAltarIDs.Clear();
-		var builder = new StringBuilder();
+		var ruleList = new List<BlockRule>(64);
 
 		int spriteCount = Renderer.SpriteCount;
 		int chainCount = Renderer.GroupCount;
@@ -307,18 +304,17 @@ public sealed partial class MapEditor : WindowUI {
 
 			// RuleID to RuleGroup
 			if (chain.WithRule) {
-				builder.Clear();
+				ruleList.Clear();
 				if (Renderer.HasSpriteGroup(chain.ID, out int groupLength)) {
 					for (int j = 0; j < groupLength; j++) {
 						if (Renderer.TryGetSpriteFromGroup(chain.ID, j, out var sp, false, true)) {
-							int ruleDigit = sp.Rule;
-							builder.Append(Util.DigitToRuleString(ruleDigit));
+							ruleList.Add(Util.DigitToBlockRule(sp.Rule));
 						} else {
-							builder.Append(Util.RULE_TILE_ERROR);
+							ruleList.Add(BlockRule.EMPTY);
 						}
 					}
 				}
-				ChainRulePool.TryAdd(chain.ID, builder.ToString());
+				ChainRulePool.TryAdd(chain.ID, ruleList.ToArray());
 			}
 
 		}
@@ -408,8 +404,6 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void Update_Before () {
-
-		WorldSquad.IgnoreUserMap(1);
 
 		var mainRect = Renderer.CameraRect;
 		X = mainRect.x;
@@ -1147,8 +1141,8 @@ public sealed partial class MapEditor : WindowUI {
 		GUI.CancelTyping();
 
 		// Squad  
-		if (WorldSquad.Channel != MapChannel.General) {
-			WorldSquad.SwitchToGeneralChannel();
+		if (WorldSquad.Channel != MapChannel.General || WorldSquad.MapRoot != Universe.BuiltIn.MapRoot) {
+			WorldSquad.SwitchToGeneralChannel(forceOperate: true, forceBuiltIn: true);
 			MapGenerator.DeleteAllGeneratedMapFiles();
 		}
 		WorldSquad.Enable = toPlayMode;

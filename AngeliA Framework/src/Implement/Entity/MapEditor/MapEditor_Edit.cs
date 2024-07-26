@@ -489,7 +489,7 @@ public partial class MapEditor {
 		int oldID = id;
 		if (ReversedChainPool.TryGetValue(id, out int realRuleID)) id = realRuleID;
 		if (!IdChainPool.TryGetValue(id, out var idChain)) return;
-		if (!ChainRulePool.TryGetValue(id, out string fullRuleString)) return;
+		if (!ChainRulePool.TryGetValue(id, out var fullRuleSet)) return;
 		int tl0 = Stream.GetBlockAt(i - 1, j + 1, z, type);
 		int tm0 = Stream.GetBlockAt(i + 0, j + 1, z, type);
 		int tr0 = Stream.GetBlockAt(i + 1, j + 1, z, type);
@@ -507,7 +507,7 @@ public partial class MapEditor {
 		int bm1 = ReversedChainPool.TryGetValue(bm0, out int _bm) ? _bm : bm0;
 		int br1 = ReversedChainPool.TryGetValue(br0, out int _br) ? _br : br0;
 		int ruleIndex = Util.GetRuleIndex(
-			fullRuleString, id,
+			fullRuleSet, id,
 			tl0, tm0, tr0, ml0, mr0, bl0, bm0, br0,
 			tl1, tm1, tr1, ml1, mr1, bl1, bm1, br1
 		);

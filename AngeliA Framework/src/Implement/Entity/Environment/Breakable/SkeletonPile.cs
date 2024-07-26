@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
-public class SkeletonPile : Breakable {
+namespace AngeliA;
+public class SkeletonPile : Breakable, IBlockEntity {
+
+	protected override Tag IgnoreDamageType => TagUtil.NonExplosiveDamage;
 
 	private int ArtworkCode = 0;
 	private IRect FullRect = default;
-	protected override Tag IgnoreDamageType => TagUtil.NonExplosiveDamage;
 
 
 	public override void OnActivated () {

@@ -16,11 +16,11 @@ public enum FittingPose {
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class EnvironmentRigidbody : Rigidbody { }
+public abstract class EnvironmentRigidbody : Rigidbody, IBlockEntity { }
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class EnvironmentEntity : Entity {
+public abstract class EnvironmentEntity : Entity, IBlockEntity {
 
 
 

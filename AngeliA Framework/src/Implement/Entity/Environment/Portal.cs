@@ -6,14 +6,14 @@ namespace AngeliA;
 
 
 [EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-public class PortalFront : CircleFlamePortal {
+public class PortalFront : CircleFlamePortal, IBlockEntity {
 	protected override Int3 TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ - 1);
 	protected override bool DontSpawnAfterUsed => false;
 }
 
 
 [EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
-public class PortalBack : CircleFlamePortal {
+public class PortalBack : CircleFlamePortal, IBlockEntity {
 	protected override Int3 TargetGlobalPosition => new(X + Width / 2, Y, Stage.ViewZ + 1);
 	protected override bool DontSpawnAfterUsed => false;
 }

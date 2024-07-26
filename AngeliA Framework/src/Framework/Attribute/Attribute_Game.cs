@@ -67,7 +67,7 @@ public class OnFileDroppedAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnSheetReloadAttribute : Attribute { }
+public class OnMainSheetReload : Attribute { }
 
 
 

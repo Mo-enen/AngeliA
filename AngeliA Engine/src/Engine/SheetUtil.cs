@@ -83,10 +83,10 @@ public static class SheetUtil {
 			Util.GetSpriteInfoFromName(
 				flex.FullName, out string realName,
 				out bool isTrigger, out Tag tag,
-				out string ruleStr, out bool noCollider, out int offsetZ,
+				out var blockRule, out bool noCollider, out int offsetZ,
 				out int aniDuration, out int? pivotX, out int? pivotY
 			);
-			int rule = Util.RuleStringToDigit(ruleStr);
+			int rule = Util.BlockRuleToDigit(blockRule);
 			int globalWidth = flex.PixelRect.width * Const.ART_SCALE;
 			int globalHeight = flex.PixelRect.height * Const.ART_SCALE;
 			var globalBorder = Int4.Direction(

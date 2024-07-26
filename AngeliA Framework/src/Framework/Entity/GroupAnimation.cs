@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+
+[EntityAttribute.ExcludeInMapEditor]
 public class GroupAnimation : Entity {
 
 	// Const

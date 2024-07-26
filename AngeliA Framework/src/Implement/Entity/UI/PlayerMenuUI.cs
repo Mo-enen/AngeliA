@@ -480,11 +480,17 @@ public class PlayerMenuUI : EntityUI {
 			HoveringItemUiRect;
 
 		// Item Icon
-		Renderer.Draw(
-			TakingID,
-			itemRect.x + size / 2, itemRect.y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
-			size, size, Color32.WHITE, int.MaxValue
-		);
+		if (
+			Renderer.TryGetSprite(TakingID, out var iconSp, true) ||
+			Renderer.TryGetSpriteFromGroup(TakingID, 0, out iconSp)
+		) {
+			Renderer.Draw(
+				iconSp,
+				itemRect.x + size / 2, itemRect.y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
+				size, size, Color32.WHITE, int.MaxValue
+			);
+		}
+
 		// Item Count
 		var countRect = itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3);
 		DrawItemCount(countRect, TakingCount);
@@ -1100,13 +1106,14 @@ public class PlayerMenuUI : EntityUI {
 	// Util
 	private static void DrawItemIcon (IRect rect, int id, Color32 tint, int z) {
 		if (id == 0) return;
-		if (!Renderer.TryGetSprite(id, out var sprite)) {
-			id = Const.PIXEL;
+		if (!Renderer.TryGetSprite(id, out var sprite, true) &&
+			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
+		) {
 			Renderer.TryGetSprite(Const.PIXEL, out sprite);
 			rect = rect.Shrink(rect.width / 6);
 		}
 		int iconShrink = Unify(7);
-		Renderer.Draw(id, rect.Shrink(iconShrink).Fit(sprite), tint, z);
+		Renderer.Draw(sprite, rect.Shrink(iconShrink).Fit(sprite), tint, z);
 	}
 
 

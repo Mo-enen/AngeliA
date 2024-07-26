@@ -23,7 +23,7 @@ public class MiniGameTask : TaskItem {
 [EntityAttribute.MapEditorGroup("MiniGame")]
 
 
-public abstract class MiniGame : EnvironmentEntity, IActionTarget {
+public abstract class MiniGame : EnvironmentEntity, IActionTarget, IBlockEntity {
 
 
 

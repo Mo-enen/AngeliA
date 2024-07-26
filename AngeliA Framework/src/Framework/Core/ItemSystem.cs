@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
+using System.Linq;
 
 namespace AngeliA;
 
@@ -80,6 +80,7 @@ public static class ItemSystem {
 	private static readonly Dictionary<int, ItemDropData> ItemDropPool = new();
 	private static readonly Dictionary<int, ItemData> ItemPool = new();
 	private static bool IsUnlockDirty = false;
+	private static bool BlockItemLoadedBefore = false;
 
 
 	#endregion
@@ -96,8 +97,9 @@ public static class ItemSystem {
 		if (Game.IsToolApplication) return;
 
 		// Init Item Pool from Code
-		ItemPool.Clear();
+		var BLOCK_ITEM = typeof(BlockItem);
 		foreach (var type in typeof(Item).AllChildClass()) {
+			if (type == BLOCK_ITEM) continue;
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
 			string angeName = type.AngeName();
 			ItemPool.TryAdd(type.AngeHash(), new ItemData(
@@ -105,9 +107,24 @@ public static class ItemSystem {
 				$"iName.{angeName}".AngeHash(),
 				$"iDes.{angeName}".AngeHash(),
 				angeName,
-				item.MaxStackCount.Clamp(1, 256)
+				item.MaxStackCount.GreaterOrEquel(1)
 			));
 		}
+
+		// Add Block Entity
+		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
+			string angeName = type.AngeName();
+			int id = angeName.AngeHash();
+			var blockItem = new BlockItem(id, BlockType.Entity);
+			ItemPool.TryAdd(id, new ItemData(
+				blockItem,
+				$"iName.{angeName}".AngeHash(),
+				$"iDes.{angeName}".AngeHash(),
+				angeName,
+				blockItem.MaxStackCount.GreaterOrEquel(1)
+			));
+		}
+
 		ItemPoolReady = true;
 
 		// Init Drop Pool from Code
@@ -123,9 +140,49 @@ public static class ItemSystem {
 		// Load Combination from Code
 		LoadCombinationPoolFromCode(CombinationPool);
 
-		// Unlock
+		// Load Unlock from File
 		LoadUnlockDataFromFile();
+
+		// Final
 		ItemUnlockReady = true;
+	}
+
+
+	[OnMainSheetReload]
+	internal static void OnSheetReload () {
+
+		var sheet = Renderer.MainSheet;
+		if (sheet == null) return;
+
+		// Clear Prev Block Items
+		if (BlockItemLoadedBefore) {
+			foreach (var (id, itemData) in ItemPool) {
+				if (itemData.Item is BlockItem bItem && bItem.BlockType != BlockType.Entity) {
+					ItemPool.Remove(id);
+				}
+			}
+		}
+		BlockItemLoadedBefore = true;
+
+		// Add Block Items
+		var span = sheet.Sprites.GetSpan();
+		int len = span.Length;
+		for (int i = 0; i < len; i++) {
+			var sprite = span[i];
+			var bType = sprite.Atlas.Type;
+			if (bType == AtlasType.General) continue;
+			int itemID = sprite.Group != null ? sprite.Group.ID : sprite.ID;
+			string itemName = sprite.Group != null ? sprite.Group.Name : sprite.RealName;
+			var blockItem = new BlockItem(itemID, bType == AtlasType.Level ? BlockType.Level : BlockType.Background);
+			ItemPool.TryAdd(itemID, new ItemData(
+				blockItem,
+				$"iName.{itemName}".AngeHash(),
+				$"iDes.{itemName}".AngeHash(),
+				itemName,
+				blockItem.MaxStackCount.GreaterOrEquel(1)
+			));
+		}
+
 	}
 
 
@@ -309,11 +366,13 @@ public static class ItemSystem {
 	}
 
 
-	public static void SpawnItem (int itemID, int x, int y, int count = 1) {
+	public static void SpawnItem (int itemID, int x, int y, int count = 1, bool jump = true) {
 		if (Stage.SpawnEntity(ItemHolder.TYPE_ID, x, y) is not ItemHolder holder) return;
 		holder.ItemID = itemID;
 		holder.ItemCount = count;
-		holder.Jump();
+		if (jump) {
+			holder.Jump();
+		}
 	}
 
 

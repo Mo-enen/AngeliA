@@ -38,9 +38,6 @@ public sealed class WorldStream : IBlockSquad {
 	// Api
 	public string MapRoot { get; init; }
 
-	// Short
-	private bool ForceFallback => FallbackAvailable && Game.GlobalFrame <= ForceFallbackFrame;
-
 	// Data
 	private static readonly Stack<World> WorldItemPool = new(1024);
 	private static readonly Dictionary<string, WorldStream> StreamPool = new();
@@ -51,7 +48,6 @@ public sealed class WorldStream : IBlockSquad {
 	private readonly bool FallbackAvailable;
 	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;
-	private int ForceFallbackFrame = -1;
 
 
 	#endregion
@@ -81,12 +77,10 @@ public sealed class WorldStream : IBlockSquad {
 		WorldPool.Clear();
 		CurrentValidMapCount = 0;
 		InternalFrame = int.MinValue;
-		ForceFallbackFrame = -1;
 	}
 
 
 	public void SaveAllDirty () {
-		if (ForceFallback) return;
 		foreach (var pair in WorldPool) {
 			ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
 			bool notExists = Unsafe.IsNullRef(ref data);
@@ -113,14 +107,8 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
-	public void IgnoreFallback (int duration = 1) => ForceFallbackFrame = Game.GlobalFrame + duration;
-
-
-	public bool TryGetMapFilePath (Int3 worldPos, out string path) => PathPool.TryGetPath(worldPos, out path);
-
-
 	public bool ContainsWorldPos (Int3 worldPos) =>
-		(!ForceFallback && PathPool.ContainsKey(worldPos)) ||
+		PathPool.ContainsKey(worldPos) ||
 		(FallbackAvailable && FallbackPathPool.ContainsKey(worldPos));
 
 
@@ -247,7 +235,7 @@ public sealed class WorldStream : IBlockSquad {
 			Valid = false,
 		};
 		bool loaded = false;
-		if (!ForceFallback && PathPool.TryGetPath(pos, out string path)) {
+		if (PathPool.TryGetPath(pos, out string path)) {
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
 		if (!loaded && FallbackAvailable && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
@@ -255,6 +243,7 @@ public sealed class WorldStream : IBlockSquad {
 			Util.CopyFile(fallPath, path);
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
+
 		worldData.Valid = loaded;
 		WorldPool.Add(pos, worldData);
 		if (loaded) {
@@ -287,7 +276,7 @@ public sealed class WorldStream : IBlockSquad {
 
 		// Load Data
 		bool loaded = false;
-		if (!ForceFallback && PathPool.TryGetPath(pos, out string path)) {
+		if (PathPool.TryGetPath(pos, out string path)) {
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
 		if (!loaded) {

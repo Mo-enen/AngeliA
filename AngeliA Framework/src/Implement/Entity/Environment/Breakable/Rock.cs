@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-public class Rock : Breakable {
+public class Rock : Breakable, IBlockEntity {
 
 	private static readonly int CODE = "Rock".AngeHash();
 	private int ArtworkCode = 0;

@@ -21,6 +21,7 @@ public class WorldSquad : IBlockSquad {
 	public static WorldSquad Behind { get; set; } = null;
 	public static MapChannel Channel { get; private set; } = MapChannel.General;
 	public static bool Readonly => !Game.AllowModifyMapDuringGameplay;
+	public static string MapRoot => Stream?.MapRoot;
 
 	// Data
 	private static WorldStream Stream = null;
@@ -231,9 +232,9 @@ public class WorldSquad : IBlockSquad {
 	#region --- API ---
 
 
-	public static void SwitchToGeneralChannel (bool forceOperate = false) => SetChannelLogic(string.Empty, MapChannel.General, forceOperate);
-	public static void SwitchToProcedureChannel (string folderName, bool forceOperate = false) => SetChannelLogic(folderName, MapChannel.Procedure, forceOperate);
-	private static void SetChannelLogic (string procedureFolderName, MapChannel newChannel, bool forceOperate = false) {
+	public static void SwitchToGeneralChannel (bool forceOperate = false, bool forceBuiltIn = false) => SetChannelLogic(string.Empty, MapChannel.General, forceOperate, forceBuiltIn);
+	public static void SwitchToProcedureChannel (string folderName, bool forceOperate = false) => SetChannelLogic(folderName, MapChannel.Procedure, forceOperate, false);
+	private static void SetChannelLogic (string procedureFolderName, MapChannel newChannel, bool forceOperate = false, bool forceBuiltIn = false) {
 		if (!forceOperate && newChannel == Channel) return;
 		if (!Readonly && Channel == MapChannel.General) {
 			Stream?.SaveAllDirty();
@@ -241,14 +242,11 @@ public class WorldSquad : IBlockSquad {
 		Channel = newChannel;
 		string mapRoot = newChannel switch {
 			MapChannel.Procedure => Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, procedureFolderName),
-			MapChannel.General or _ => Game.AllowModifyMapDuringGameplay ? Universe.BuiltIn.UserMapRoot : Universe.BuiltIn.MapRoot,
+			MapChannel.General or _ => !forceBuiltIn && Game.AllowModifyMapDuringGameplay ? Universe.BuiltIn.UserMapRoot : Universe.BuiltIn.MapRoot,
 		};
 		Stream = WorldStream.GetOrCreateStreamFromPool(mapRoot);
 		OnMapFolderChanged?.Invoke();
 	}
-
-
-	public static void IgnoreUserMap (int duration = 1) => Stream.IgnoreFallback(duration);
 
 
 	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();

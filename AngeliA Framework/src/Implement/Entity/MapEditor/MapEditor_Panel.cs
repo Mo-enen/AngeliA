@@ -108,7 +108,7 @@ public partial class MapEditor {
 	#region --- MSG ---
 
 
-	[OnSheetReload]
+	[OnMainSheetReload]
 	internal static void OnSheetReload () {
 		Instance?.LoadLevelPaletteFromSheetToPool(clearExists: true);
 		Instance?.ApplyPalettePoolChanges();
@@ -548,142 +548,144 @@ public partial class MapEditor {
 			PanelRect.yMax - PaletteGroupPanelRect.yMax - TOOLBAR_HEIGHT
 		);
 
-		using var _ = new ClampCellsScope(contentRect);
+		using (new ClampCellsScope(contentRect)) {
 
-		bool mouseInPanel = contentRect.MouseInside();
-		contentRect = contentRect.Shrink(PADDING);
-		int columnCount = contentRect.width / (ITEM_SIZE + ITEM_GAP);
-		int rowCount = itemCount / columnCount + (itemCount % columnCount != 0 ? 1 : 0);
-		int pageRowCount = contentRect.height / (ITEM_SIZE + ITEM_GAP) + (itemCount % columnCount != 0 ? 1 : 0);
-		if (pageRowCount > rowCount + EXTRA_ROW) {
-			PaletteScrollY = 0;
-		} else {
-			PaletteScrollY = PaletteScrollY.Clamp(0, rowCount + EXTRA_ROW - pageRowCount);
-		}
-		int startIndex = (PaletteScrollY * columnCount);
-		int offsetX = contentRect.x + (contentRect.width - columnCount * ITEM_SIZE - (columnCount - 1) * ITEM_GAP) / 2;
-		if (pageRowCount < rowCount + EXTRA_ROW) offsetX -= scrollbarSize / 2;
-		var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
-		for (int index = startIndex; index < itemCount; index++) {
 
-			var pal =
-				showingBuiltIn ? builtInItems[index] :
-				PalettePool.TryGetValue(listItems[index], out var _listItem) ? _listItem : null;
-			if (pal == null) continue;
-
-			rect.x = offsetX + (index % columnCount) * (ITEM_SIZE + ITEM_GAP);
-			rect.y = contentRect.yMax - ITEM_SIZE - (index / columnCount - PaletteScrollY) * (ITEM_SIZE + ITEM_GAP);
-			if (rect.y + rect.height < contentRect.y) break;
-			if (rect.y > contentRect.yMax) continue;
-
-			bool draggingForReorder = !showingBuiltIn && DraggingForReorderPaletteGroup == index;
-
-			// Hover
-			bool mouseHovering = interactable && mouseInPanel && rect.MouseInside();
-			if (mouseHovering) {
-				Renderer.DrawPixel(rect, Color32.GREY_32);
-				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
-				requiringTooltipRect = rect;
-				requiringTooltip = pal.Name;
+			bool mouseInPanel = contentRect.MouseInside();
+			contentRect = contentRect.Shrink(PADDING);
+			int columnCount = contentRect.width / (ITEM_SIZE + ITEM_GAP);
+			int rowCount = itemCount / columnCount + (itemCount % columnCount != 0 ? 1 : 0);
+			int pageRowCount = contentRect.height / (ITEM_SIZE + ITEM_GAP) + (itemCount % columnCount != 0 ? 1 : 0);
+			if (pageRowCount > rowCount + EXTRA_ROW) {
+				PaletteScrollY = 0;
+			} else {
+				PaletteScrollY = PaletteScrollY.Clamp(0, rowCount + EXTRA_ROW - pageRowCount);
 			}
+			int startIndex = (PaletteScrollY * columnCount);
+			int offsetX = contentRect.x + (contentRect.width - columnCount * ITEM_SIZE - (columnCount - 1) * ITEM_GAP) / 2;
+			if (pageRowCount < rowCount + EXTRA_ROW) offsetX -= scrollbarSize / 2;
+			var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
+			for (int index = startIndex; index < itemCount; index++) {
 
-			// Frame
-			Renderer.DrawSlice(
-				ITEM_FRAME, rect,
-				BORDER, BORDER, BORDER, BORDER
-			);
+				var pal =
+					showingBuiltIn ? builtInItems[index] :
+					PalettePool.TryGetValue(listItems[index], out var _listItem) ? _listItem : null;
+				if (pal == null) continue;
 
-			// Icon
-			DrawSpriteGizmos(pal.ArtworkID, rect, true);
+				rect.x = offsetX + (index % columnCount) * (ITEM_SIZE + ITEM_GAP);
+				rect.y = contentRect.yMax - ITEM_SIZE - (index / columnCount - PaletteScrollY) * (ITEM_SIZE + ITEM_GAP);
+				if (rect.y + rect.height < contentRect.y) break;
+				if (rect.y > contentRect.yMax) continue;
 
-			// Selecting
-			if (SelectingPaletteItem == pal) {
+				bool draggingForReorder = !showingBuiltIn && DraggingForReorderPaletteGroup == index;
+
+				// Hover
+				bool mouseHovering = interactable && mouseInPanel && rect.MouseInside();
+				if (mouseHovering) {
+					Renderer.DrawPixel(rect, Color32.GREY_32);
+					if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
+					requiringTooltipRect = rect;
+					requiringTooltip = pal.Name;
+				}
+
+				// Frame
 				Renderer.DrawSlice(
-					BuiltInSprite.FRAME_16, rect,
-					BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT,
-					pal.IsUnique ? Color32.ORANGE : Color32.GREEN
+					ITEM_FRAME, rect,
+					BORDER, BORDER, BORDER, BORDER
 				);
+
+				// Icon
+				DrawSpriteGizmos(pal.ArtworkID, rect, true);
+
+				// Selecting
+				if (SelectingPaletteItem == pal) {
+					Renderer.DrawSlice(
+						BuiltInSprite.FRAME_16, rect,
+						BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT,
+						pal.IsUnique ? Color32.ORANGE : Color32.GREEN
+					);
+				}
+
+				// Start Reorder
+				if (!showingBuiltIn && !draggingForReorder && mouseHovering && Input.MouseLeftButtonDown) {
+					DraggingForReorderPaletteItem = index;
+				}
+
+				// Click
+				if (mouseHovering) {
+					if (Input.MouseLeftButtonDown) {
+						SelectingPaletteItem = pal;
+					} else if (Input.MouseRightButtonDown) {
+						Input.UseMouseKey(1);
+						SelectingPaletteItem = pal;
+						ShowPaletteItemMenu(pal);
+					}
+				}
+
+				// Reorder Target
+				if (DraggingForReorderPaletteItem >= 0) {
+					var reorderCheckingRect = new IRect(
+						rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
+						(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
+					);
+					if (reorderCheckingRect.MouseInside()) {
+						targetReorderReleaseIndex = index;
+						if (index != DraggingForReorderPaletteItem) {
+							Renderer.DrawPixel(new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						}
+					} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
+						targetReorderReleaseIndex = index + 1;
+						if (index != DraggingForReorderPaletteItem) {
+							Renderer.DrawPixel(new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						}
+					}
+				}
+
 			}
 
-			// Start Reorder
-			if (!showingBuiltIn && !draggingForReorder && mouseHovering && Input.MouseLeftButtonDown) {
-				DraggingForReorderPaletteItem = index;
+			// Reorder
+			if (
+				!showingBuiltIn &&
+				targetReorderReleaseIndex != DraggingForReorderPaletteItem &&
+				targetReorderReleaseIndex != DraggingForReorderPaletteItem + 1 &&
+				targetReorderReleaseIndex >= 0 &&
+				targetReorderReleaseIndex <= itemCount &&
+				DraggingForReorderPaletteItem >= 0 &&
+				DraggingForReorderPaletteItem < itemCount &&
+				!Input.MouseLeftButtonHolding
+			) {
+				var movingItem = listItems[DraggingForReorderPaletteItem];
+				listItems.RemoveAt(DraggingForReorderPaletteItem);
+				if (targetReorderReleaseIndex > DraggingForReorderPaletteItem) targetReorderReleaseIndex--;
+				listItems.Insert(targetReorderReleaseIndex, movingItem);
 			}
 
-			// Click
-			if (mouseHovering) {
-				if (Input.MouseLeftButtonDown) {
-					SelectingPaletteItem = pal;
-				} else if (Input.MouseRightButtonDown) {
-					Input.UseMouseKey(1);
-					SelectingPaletteItem = pal;
-					ShowPaletteItemMenu(pal);
+			// Menu
+			if (Input.MouseRightButtonDown && contentRect.MouseInside()) {
+				Input.UseMouseKey(1);
+				ShowPaletteItemMenu(null);
+			}
+
+			// Scroll Wheel
+			if (pageRowCount <= rowCount + EXTRA_ROW) {
+				int wheel = Input.MouseWheelDelta;
+				if (wheel != 0 && contentRect.MouseInside()) {
+					PaletteScrollY = (PaletteScrollY - wheel * 2).Clamp(
+						0, rowCount + EXTRA_ROW - pageRowCount
+					);
 				}
 			}
 
-			// Reorder Target
-			if (DraggingForReorderPaletteItem >= 0) {
-				var reorderCheckingRect = new IRect(
-					rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
-					(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
-				);
-				if (reorderCheckingRect.MouseInside()) {
-					targetReorderReleaseIndex = index;
-					if (index != DraggingForReorderPaletteItem) {
-						Renderer.DrawPixel(new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
-					}
-				} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
-					targetReorderReleaseIndex = index + 1;
-					if (index != DraggingForReorderPaletteItem) {
-						Renderer.DrawPixel(new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
-					}
-				}
-			}
-
+			// Scroll Bar
+			PaletteScrollY = GUI.ScrollBar(
+				1324235, new IRect(
+					contentRect.xMax - scrollbarSize,
+					contentRect.y,
+					scrollbarSize,
+					contentRect.height
+				), PaletteScrollY, rowCount + EXTRA_ROW, pageRowCount
+			);
 		}
-
-		// Reorder
-		if (
-			!showingBuiltIn &&
-			targetReorderReleaseIndex != DraggingForReorderPaletteItem &&
-			targetReorderReleaseIndex != DraggingForReorderPaletteItem + 1 &&
-			targetReorderReleaseIndex >= 0 &&
-			targetReorderReleaseIndex <= itemCount &&
-			DraggingForReorderPaletteItem >= 0 &&
-			DraggingForReorderPaletteItem < itemCount &&
-			!Input.MouseLeftButtonHolding
-		) {
-			var movingItem = listItems[DraggingForReorderPaletteItem];
-			listItems.RemoveAt(DraggingForReorderPaletteItem);
-			if (targetReorderReleaseIndex > DraggingForReorderPaletteItem) targetReorderReleaseIndex--;
-			listItems.Insert(targetReorderReleaseIndex, movingItem);
-		}
-
-		// Menu
-		if (Input.MouseRightButtonDown && contentRect.MouseInside()) {
-			Input.UseMouseKey(1);
-			ShowPaletteItemMenu(null);
-		}
-
-		// Scroll Wheel
-		if (pageRowCount <= rowCount + EXTRA_ROW) {
-			int wheel = Input.MouseWheelDelta;
-			if (wheel != 0 && contentRect.MouseInside()) {
-				PaletteScrollY = (PaletteScrollY - wheel * 2).Clamp(
-					0, rowCount + EXTRA_ROW - pageRowCount
-				);
-			}
-		}
-
-		// Scroll Bar
-		PaletteScrollY = GUI.ScrollBar(
-			1324235, new IRect(
-				contentRect.xMax - scrollbarSize,
-				contentRect.y,
-				scrollbarSize,
-				contentRect.height
-			), PaletteScrollY, rowCount + EXTRA_ROW, pageRowCount
-		);
 
 		// Tooltip
 		if (requiringTooltip != null) {

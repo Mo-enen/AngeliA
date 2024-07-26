@@ -11,8 +11,6 @@ public static partial class Util {
 
 	// Const
 	private static readonly byte[] SINGLE_RULE_CACHE = new byte[8];
-	public const string RULE_TILE_ERROR = "ERROR---";
-	private static readonly StringBuilder CacheRuleBuilder = new();
 
 
 	// API
@@ -139,10 +137,10 @@ public static partial class Util {
 		}
 	}
 
-	public static void GetSpriteInfoFromName (string name, out string realName, out bool isTrigger, out Tag tag, out string rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
+	public static void GetSpriteInfoFromName (string name, out string realName, out bool isTrigger, out Tag tag, out BlockRule rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
 		tag = Tag.None;
 		isTrigger = false;
-		rule = "";
+		rule = BlockRule.EMPTY;
 		noCollider = false;
 		offsetZ = 0;
 		pivotX = null;
@@ -214,7 +212,10 @@ public static partial class Util {
 				}
 
 				if (hashTag.StartsWith("rule=", OIC)) {
-					rule = hashTag[5..];
+					string ruleStr = hashTag[5..];
+					for (int i = 0; i < 8; i++) {
+						rule[i] = (Rule)(ruleStr[i] - '0');
+					}
 					continue;
 				}
 
@@ -475,24 +476,21 @@ public static partial class Util {
 
 
 	// Rule
-	public static string DigitToRuleString (int digit) {
+	public static BlockRule DigitToBlockRule (int digit) {
 		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
 		//              000        001        010           011       100
 		// eg: "02022020,11111111,01022020,02012020,..."
 		// digit: int32 10000000 000 000 000 000 000 000 000 000
-		//              01234567 890 123 456 789 012 345 678 901
-		//              000000000001 111 111 111 222 222 222 233
-		if (!digit.GetBit(0)) return RULE_TILE_ERROR;
-
-		CacheRuleBuilder.Clear();
+		if (!digit.GetBit(0)) return BlockRule.EMPTY;
+		var result = BlockRule.EMPTY;
 		for (int i = 0; i < 8; i++) {
 			int tileStrNumber = 0;
 			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
 			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
 			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
-			CacheRuleBuilder.Append(tileStrNumber);
+			result[i] = (Rule)tileStrNumber;
 		}
-		return CacheRuleBuilder.ToString();
+		return result;
 	}
 
 	public static void DigitToRuleByte (int digit, byte[] bytes) {
@@ -509,19 +507,20 @@ public static partial class Util {
 		}
 	}
 
-	public static int RuleStringToDigit (string ruleStr) {
+	public static int BlockRuleToDigit (BlockRule ruleStr) {
 		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
 		//              000        001        010           011       100
 		// eg: "02022020,11111111,01022020,02012020,..."
 		// digit: int32 10000000 000 000 000 000 000 000 000 000
-		//              01234567 890 123 456 789 012 345 678 901
-		//              000000000001 111 111 111 222 222 222 233
-		if (string.IsNullOrEmpty(ruleStr) || ruleStr.Length < 8) return 0;
+		int digit = 0;
+		digit.SetBit(0, true);
 		for (int i = 0; i < 8; i++) {
-			char c = ruleStr[i];
-			SINGLE_RULE_CACHE[i] = (byte)(c >= '0' && c <= '9' ? c - '0' : 255);
+			byte b = (byte)ruleStr[i];
+			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
 		}
-		return RuleByteToDigit(SINGLE_RULE_CACHE);
+		return digit;
 	}
 
 	public static int RuleByteToDigit (byte[] singleRule) {
@@ -529,8 +528,6 @@ public static partial class Util {
 		//              000        001        010           011       100
 		// eg: "02022020,11111111,01022020,02012020,..."
 		// digit: int32 10000000 000 000 000 000 000 000 000 000
-		//              01234567 890 123 456 789 012 345 678 901
-		//              000000000001 111 111 111 222 222 222 233
 		int digit = 0;
 		digit.SetBit(0, true);
 		for (int i = 0; i < 8; i++) {
@@ -543,48 +540,41 @@ public static partial class Util {
 	}
 
 	public static int GetRuleIndex (
-		string rule, int ruleID,
+		BlockRule[] rules, int ruleID,
 		int tl0, int tm0, int tr0, int ml0, int mr0, int bl0, int bm0, int br0,
 		int tl1, int tm1, int tr1, int ml1, int mr1, int bl1, int bm1, int br1
 	) {
 		// 0=Whatever 1=SameTile 2=NotSameTile 3=NotEmpty 4=Empty
-		int count = rule.Length / 8;
+		int count = rules.Length;
 		for (int i = 0; i < count; i++) {
-			char first = rule[i * 8 + 0];
-			if (first < '0' || first > '9') continue;
-			int _tl = rule[i * 8 + 0] - '0';
-			int _tm = rule[i * 8 + 1] - '0';
-			int _tr = rule[i * 8 + 2] - '0';
-			int _ml = rule[i * 8 + 3] - '0';
-			int _mr = rule[i * 8 + 4] - '0';
-			int _bl = rule[i * 8 + 5] - '0';
-			int _bm = rule[i * 8 + 6] - '0';
-			int _br = rule[i * 8 + 7] - '0';
-			if (!CheckForTile(tl0, tl1, _tl)) continue;
-			if (!CheckForTile(tm0, tm1, _tm)) continue;
-			if (!CheckForTile(tr0, tr1, _tr)) continue;
-			if (!CheckForTile(ml0, ml1, _ml)) continue;
-			if (!CheckForTile(mr0, mr1, _mr)) continue;
-			if (!CheckForTile(bl0, bl1, _bl)) continue;
-			if (!CheckForTile(bm0, bm1, _bm)) continue;
-			if (!CheckForTile(br0, br1, _br)) continue;
-			return TryRandom(i);
+			var rule = rules[i];
+			if (!CheckForTile(ruleID, tl0, tl1, rule.RuleTL)) continue;
+			if (!CheckForTile(ruleID, tm0, tm1, rule.RuleT)) continue;
+			if (!CheckForTile(ruleID, tr0, tr1, rule.RuleTR)) continue;
+			if (!CheckForTile(ruleID, ml0, ml1, rule.RuleL)) continue;
+			if (!CheckForTile(ruleID, mr0, mr1, rule.RuleR)) continue;
+			if (!CheckForTile(ruleID, bl0, bl1, rule.RuleBL)) continue;
+			if (!CheckForTile(ruleID, bm0, bm1, rule.RuleB)) continue;
+			if (!CheckForTile(ruleID, br0, br1, rule.RuleBR)) continue;
+			return TryRandom(rules, i, count);
 		}
 		return -1;
 		// Func
-		bool CheckForTile (int _targetID0, int _targetID1, int _targetRule) => _targetRule switch {
-			1 => _targetID0 == ruleID || _targetID1 == ruleID,
-			2 => _targetID0 != ruleID && _targetID1 != ruleID,
-			3 => _targetID0 != 0,
-			4 => _targetID0 == 0,
+		static bool CheckForTile (int ruleID, int _targetID0, int _targetID1, Rule _targetRule) => _targetRule switch {
+			Rule.SameTile => _targetID0 == ruleID || _targetID1 == ruleID,
+			Rule.NotSameTile => _targetID0 != ruleID && _targetID1 != ruleID,
+			Rule.AnyTile => _targetID0 != 0,
+			Rule.Empty => _targetID0 == 0,
 			_ => true,
 		};
-		int TryRandom (int resultIndex) {
+		static int TryRandom (BlockRule[] rules, int resultIndex, int count) {
 			int lastIndex = resultIndex;
 			bool jumpOut = false;
+			var resultRule = rules[resultIndex];
 			for (int i = resultIndex + 1; i < count; i++) {
+				var rule = rules[i];
 				for (int j = 0; j < 8; j++) {
-					if (rule[i * 8 + j] != rule[resultIndex * 8 + j]) {
+					if (rule[j] != resultRule[j]) {
 						jumpOut = true;
 						break;
 					}

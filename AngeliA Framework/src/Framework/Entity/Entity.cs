@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+public interface IMapItem { }
+
+public interface IBlockEntity { }
 
 [EntityAttribute.Capacity(1024, 0)]
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL)]
@@ -23,7 +26,8 @@ public abstract class Entity : IMapItem {
 	public bool FromWorld => InstanceID.x != int.MinValue;
 	public virtual IRect Rect => new(X, Y, Width, Height);
 	public IRect GlobalBounds => LocalBounds.Shift(X, Y);
-	public int InstanceOrder => FromWorld ? 0 : InstanceID.y;
+	public int InstanceOrder => InstanceID.x != int.MinValue ? 0 : InstanceID.y;
+	public Int3? MapUnitPos => InstanceID.x != int.MinValue ? InstanceID : null;
 
 	// Inter
 	internal Int3 InstanceID { get; set; } = default;
@@ -44,22 +48,22 @@ public abstract class Entity : IMapItem {
 	public virtual void Update () { }       // 2 >> 3
 	public virtual void LateUpdate () { }   // 3 >> 4
 
-	public void UpdateToFirst () {
+	internal void UpdateToFirst () {
 		FirstUpdate();
 		UpdateStep = 1;
 	}
-	public void UpdateToBefore () {
+	internal void UpdateToBefore () {
 		if (UpdateStep == 0) FirstUpdate();
 		BeforeUpdate();
 		UpdateStep = 2;
 	}
-	public void UpdateToUpdate () {
+	internal void UpdateToUpdate () {
 		if (UpdateStep == 0) FirstUpdate();
 		if (UpdateStep <= 1) BeforeUpdate();
 		Update();
 		UpdateStep = 3;
 	}
-	public void UpdateToLate () {
+	internal void UpdateToLate () {
 		if (UpdateStep == 0) FirstUpdate();
 		if (UpdateStep <= 1) BeforeUpdate();
 		if (UpdateStep <= 2) Update();

@@ -99,14 +99,21 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 			Y, ITEM_RENDER_SIZE, ITEM_RENDER_SIZE
 		);
 		var renderingRect = rect.Shift(renderingOffsetX, 0).Expand(redneringSizeOffset);
-		var cell = Renderer.Draw(ItemID, renderingRect);
+		Cell cell;
+		if (Renderer.TryGetSprite(ItemID, out var sprite, true) ||
+			Renderer.TryGetSpriteFromGroup(ItemID, 0, out sprite)
+		) {
+			cell = Renderer.Draw(sprite, renderingRect);
+		} else {
+			cell = Renderer.Draw(BuiltInSprite.ICON_ENTITY, renderingRect);
+		}
 
 		// Count
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
 			using (new UILayerScope()) {
-				Renderer.DrawPixel(labelRect, Color32.BLACK, int.MaxValue);
-				GUI.IntLabel(labelRect, ItemCount);
+				Renderer.DrawPixel(labelRect, Color32.BLACK);
+				GUI.IntLabel(labelRect, ItemCount, GUISkin.Default.SmallLabel);
 			}
 		}
 

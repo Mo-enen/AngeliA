@@ -63,7 +63,7 @@ public static class Renderer {
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 
 	// Event
-	public static event Action OnSheetLoaded;
+	public static event Action OnMainSheetLoaded;
 
 	// Api
 	public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);
@@ -111,7 +111,7 @@ public static class Renderer {
 	[OnGameInitialize(-4096)]
 	internal static void Initialize () {
 
-		Util.LinkEventWithAttribute<OnSheetReloadAttribute>(typeof(Renderer), nameof(OnSheetLoaded));
+		Util.LinkEventWithAttribute<OnMainSheetReload>(typeof(Renderer), nameof(OnMainSheetLoaded));
 
 		// Create Layers
 		var capacities = new int[RenderLayer.COUNT];
@@ -306,7 +306,7 @@ public static class Renderer {
 		}
 
 		// Event
-		OnSheetLoaded?.Invoke();
+		OnMainSheetLoaded?.Invoke();
 	}
 
 
