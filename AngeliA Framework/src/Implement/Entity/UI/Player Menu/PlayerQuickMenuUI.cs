@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
-
-
 public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 
@@ -15,9 +13,11 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	#region --- SUB ---
 
 
-	private class WeaponSorter : IComparer<Weapon> {
+	private class WeaponSorter : IComparer<WeaponData> {
 		public static readonly WeaponSorter Instance = new();
-		public int Compare (Weapon a, Weapon b) {
+		public int Compare (WeaponData pairA, WeaponData pairB) {
+			var a = pairA.Weapon;
+			var b = pairB.Weapon;
 			if (a is null) return b is null ? 0 : 1;
 			if (b is null) return -1;
 			int result = ((int)a.WeaponType).CompareTo((int)b.WeaponType);
@@ -26,6 +26,23 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			if (result != 0) return result;
 			result = a.TypeName.CompareTo(b.TypeName);
 			return result;
+		}
+	}
+
+
+	private class WeaponData {
+		public Weapon Weapon;
+		public int InventoryIndex;
+		public int Count;
+		public void Reset () {
+			Weapon = null;
+			Count = 0;
+			InventoryIndex = -1;
+		}
+		public void Set (Weapon weapon, int invIndex, int count) {
+			Weapon = weapon;
+			Count = count;
+			InventoryIndex = invIndex;
 		}
 	}
 
@@ -49,7 +66,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public IRect BackgroundRect { get; private set; } = default;
 
 	// Data
-	private static readonly Weapon[] WeaponList = new Weapon[Character.INVENTORY_ROW * Character.INVENTORY_COLUMN + 2];
+	private static readonly WeaponData[] WeaponList = new WeaponData[Character.INVENTORY_ROW * Character.INVENTORY_COLUMN + 2].FillWithNewValue();
 	private int CurrentSlotIndex = 0;
 	private int WeaponCount = 0;
 
@@ -77,19 +94,19 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		// Init Item List
 		int invID = Player.Selecting.TypeID;
 		int currentIndex = 0;
-		bool allowHand = Inventory.GetEquipment(invID, EquipmentType.Weapon) == 0 || Inventory.IndexOfItem(invID, 0) >= 0;
+		bool allowHand = Inventory.GetEquipment(invID, EquipmentType.Weapon, out _) == 0 || Inventory.IndexOfItem(invID, 0) >= 0;
 
 		// Hand
 		if (allowHand) {
-			WeaponList[currentIndex] = null;
+			WeaponList[currentIndex].Reset();
 			currentIndex++;
 			WeaponCount++;
 		}
 
 		// Equipping
-		int equippingID = Inventory.GetEquipment(invID, EquipmentType.Weapon);
+		int equippingID = Inventory.GetEquipment(invID, EquipmentType.Weapon, out int eqCount);
 		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon equippingItem) {
-			WeaponList[currentIndex] = equippingItem;
+			WeaponList[currentIndex].Set(equippingItem, -1, eqCount);
 			currentIndex++;
 			WeaponCount++;
 		}
@@ -97,25 +114,26 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		// Inside Inventory
 		int capacity = Inventory.GetInventoryCapacity(invID);
 		for (int i = 0; i < capacity && currentIndex < WeaponList.Length; i++) {
-			int itemID = Inventory.GetItemAt(invID, i);
+			int itemID = Inventory.GetItemAt(invID, i, out int iCount);
 			if (
 				itemID == 0 ||
 				ItemSystem.GetItem(itemID) is not Weapon weapon
 			) continue;
-			WeaponList[currentIndex] = weapon;
+			WeaponList[currentIndex].Set(weapon, i, iCount);
 			currentIndex++;
 			WeaponCount++;
 		}
 		for (int i = currentIndex; i < WeaponList.Length; i++) {
-			WeaponList[i] = null;
+			WeaponList[i].Reset();
 		}
 		Util.QuickSort(WeaponList, allowHand ? 1 : 0, WeaponList.Length - 1, WeaponSorter.Instance);
 
 		// Set Current Slot Index
 		if (equippingID != 0) {
 			for (int i = 0; i < WeaponCount; i++) {
-				var weapon = WeaponList[i];
-				if (weapon != null && weapon.TypeID == equippingID) {
+				var weapon = WeaponList[i].Weapon;
+				if (weapon == null) continue;
+				if ((weapon is BlockItem bItem ? bItem.BlockID : weapon.TypeID) == equippingID) {
 					CurrentSlotIndex = i;
 					break;
 				}
@@ -151,16 +169,16 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 				Input.UseGameKey(Gamekey.Select);
 			}
 			if (IsDirty) {
-				if (CurrentSlotIndex == 0 && WeaponList[0] == null) {
+				if (CurrentSlotIndex == 0 && WeaponList[0].Weapon == null) {
 					// Hand
-					SwitchEquipTo(0);
+					SwitchEquipTo(-1, 0, 0);
 				} else if (CurrentSlotIndex >= 0 && CurrentSlotIndex < WeaponCount) {
 					// Weapon
-					int itemIndex = Inventory.IndexOfItem(
-						Player.Selecting.TypeID, WeaponList[CurrentSlotIndex].TypeID
-					);
-					if (itemIndex >= 0) {
-						EquipFromInventory(itemIndex);
+					var currentSlot = WeaponList[CurrentSlotIndex];
+					if (currentSlot.Weapon != null) {
+						if (currentSlot.InventoryIndex >= 0) {
+							EquipFromInventory(currentSlot.InventoryIndex);
+						}
 					}
 				}
 			}
@@ -214,9 +232,11 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		var rect = new IRect(0, basicY, ITEM_SIZE, ITEM_SIZE);
 		for (int i = 0; i < WeaponCount; i++) {
 
-			var weapon = WeaponList[i];
+			var wData = WeaponList[i];
+			var weapon = wData.Weapon;
+			int wCount = wData.Count;
 			if (i != 0 && weapon is null) continue;
-			int weaponID = weapon is null ? 0 : weapon.TypeID;
+			int weaponID = weapon is null ? 0 : weapon is BlockItem bItem ? bItem.BlockID : weapon.TypeID;
 
 			rect.x = basicX + i * ITEM_SIZE;
 
@@ -248,7 +268,14 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			if (weaponID == 0) {
 				Renderer.Draw(HAND_ICON, rect.Shrink(Unify(7)), z: int.MinValue + 10);
 			} else {
+				// Icon
 				DrawItemIcon(rect, weaponID);
+				// Count
+				if (wCount > 1) {
+					var countRect = rect.Shrink(rect.width * 2 / 3, 0, 0, rect.height * 2 / 3); ;
+					Renderer.DrawPixel(countRect, Color32.BLACK);
+					GUI.IntLabel(countRect, wCount, GUISkin.Default.SmallCenterLabel);
+				}
 			}
 
 		}
@@ -294,50 +321,62 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	private static void EquipFromInventory (int itemIndex) {
 
+		if (!Player.Selecting.EquipmentAvailable(EquipmentType.Weapon)) return;
+
 		int invID = Player.Selecting.TypeID;
 		if (!Inventory.HasInventory(invID)) return;
 
 		int capacity = Inventory.GetInventoryCapacity(invID);
 		if (itemIndex < 0 || itemIndex >= capacity) return;
 
-		int itemID = Inventory.GetItemAt(invID, itemIndex);
-		if (itemID == 0) return;
+		int itemID = Inventory.GetItemAt(invID, itemIndex, out int itemCount);
+		if (itemID == 0 || itemCount <= 0) return;
 
 		if (!ItemSystem.IsEquipment(itemID, out var eqType) || eqType != EquipmentType.Weapon) return;
-		if (!Player.Selecting.EquipmentAvailable(EquipmentType.Weapon)) return;
 
-		int tookCount = Inventory.TakeItemAt(invID, itemIndex, 1);
+		int tookCount = Inventory.TakeItemAt(invID, itemIndex, itemCount);
 		if (tookCount <= 0) return;
 
-		SwitchEquipTo(itemID);
+		SwitchEquipTo(itemIndex, itemID, itemCount);
 
 	}
 
 
-	private static void SwitchEquipTo (int newItemID) {
+	private static void SwitchEquipTo (int itemIndex, int newItemID, int newItemCount) {
 		int invID = Player.Selecting.TypeID;
-		int oldEquipmentID = Inventory.GetEquipment(invID, EquipmentType.Weapon);
-		if (Inventory.SetEquipment(invID, EquipmentType.Weapon, newItemID)) {
-			if (oldEquipmentID != 0) {
+		int oldEquipmentID = Inventory.GetEquipment(invID, EquipmentType.Weapon, out int oldEqCount);
+
+		if (!Inventory.SetEquipment(invID, EquipmentType.Weapon, newItemID, newItemCount)) return;
+
+		if (oldEquipmentID != 0) {
+			if (itemIndex >= 0) {
+				// Swap
+				Inventory.SetItemAt(invID, itemIndex, oldEquipmentID, oldEqCount);
+			} else {
 				// Collect
-				int collectCount = Inventory.CollectItem(invID, oldEquipmentID, out _, 1);
-				if (collectCount == 0) {
-					ItemSystem.SpawnItemAtTarget(Player.Selecting, oldEquipmentID);
+				int collectCount = Inventory.CollectItem(invID, oldEquipmentID, out _, oldEqCount);
+				if (collectCount < oldEqCount) {
+					ItemSystem.SpawnItemAtTarget(
+						Player.Selecting, oldEquipmentID, oldEqCount - collectCount
+					);
 				}
 			}
 		}
+
 	}
 
 
 	private static void DrawItemIcon (IRect rect, int id) {
 		if (id == 0) return;
-		if (!Renderer.TryGetSprite(id, out var sprite)) {
-			id = Const.PIXEL;
+		if (
+			!Renderer.TryGetSprite(id, out var sprite, true) &&
+			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
+		) {
 			Renderer.TryGetSprite(Const.PIXEL, out sprite);
 			rect = rect.Shrink(rect.width / 6);
 		}
 		Renderer.Draw(
-			id,
+			sprite,
 			rect.Shrink(Unify(7)).Fit(sprite),
 			z: int.MinValue + 10
 		);

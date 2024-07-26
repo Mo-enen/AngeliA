@@ -5,6 +5,11 @@ public class PoseHandheld_Single : PoseAnimation {
 		base.Animate(character);
 		if (Target.IsChargingAttack) {
 			PoseAttack_Wave.SingleHanded_SmashDown();
+			return;
+		}
+		if (Target.EquippingWeaponType == WeaponType.Block) {
+			Target.HandGrabScaleL = Target.HandGrabScaleR = 618;
+			Target.HandGrabRotationL = Target.HandGrabRotationR = 0;
 		}
 	}
 }

@@ -136,8 +136,8 @@ public static class Renderer {
 		}
 
 		// Load Sheet
-		LoadMainSheet();
 		CurrentSheet = MainSheet;
+		LoadMainSheet();
 
 		// End
 		IsReady = true;

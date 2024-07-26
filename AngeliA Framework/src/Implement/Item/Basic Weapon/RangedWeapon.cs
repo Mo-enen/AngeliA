@@ -26,22 +26,6 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	protected override int BulletDelay => 500;
 
 
-	[CheatCode("giveammo")]
-	[CheatCode("givearrow")]
-	internal static bool Cheat_GiveAmmo () {
-		if (Player.Selecting == null) return false;
-		if (Player.Selecting.GetEquippingItem(EquipmentType.Weapon) is not Weapon weapon) return false;
-		if (Stage.GetEntityType(weapon.BulletID) is not Type bulletType) return false;
-		if (!bulletType.IsSubclassOf(typeof(ArrowBullet))) return false;
-		var bullet = Activator.CreateInstance(bulletType) as ArrowBullet;
-		int itemID = bullet.ArrowItemID;
-		if (!ItemSystem.HasItem(itemID)) return false;
-		int maxCount = ItemSystem.GetItemMaxStackCount(itemID);
-		ItemSystem.GiveItemTo(Player.Selecting.TypeID, itemID, maxCount);
-		return true;
-	}
-
-
 	public RangedWeapon () {
 		// Sprite
 		if (IsBow) {

@@ -115,7 +115,7 @@ public static class ItemSystem {
 		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
-			var blockItem = new BlockItem(id, BlockType.Entity);
+			var blockItem = new BlockItem(id, angeName, BlockType.Entity);
 			ItemPool.TryAdd(id, new ItemData(
 				blockItem,
 				$"iName.{angeName}".AngeHash(),
@@ -173,7 +173,10 @@ public static class ItemSystem {
 			if (bType == AtlasType.General) continue;
 			int itemID = sprite.Group != null ? sprite.Group.ID : sprite.ID;
 			string itemName = sprite.Group != null ? sprite.Group.Name : sprite.RealName;
-			var blockItem = new BlockItem(itemID, bType == AtlasType.Level ? BlockType.Level : BlockType.Background);
+			var blockItem = new BlockItem(
+				itemID, itemName,
+				bType == AtlasType.Level ? BlockType.Level : BlockType.Background
+			);
 			ItemPool.TryAdd(itemID, new ItemData(
 				blockItem,
 				$"iName.{itemName}".AngeHash(),

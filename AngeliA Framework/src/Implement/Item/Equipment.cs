@@ -11,6 +11,6 @@ public enum EquipmentType { Weapon, BodyArmor, Helmet, Shoes, Gloves, Jewelry, }
 public abstract class Equipment : Item {
 
 	public abstract EquipmentType EquipmentType { get; }
-	public sealed override int MaxStackCount => 1;
+	public override int MaxStackCount => 1;
 
 }

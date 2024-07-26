@@ -223,8 +223,8 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 			var dir0 = _AimingDirection;
 			var dir1 = _AimingDirection;
 			for (int safe = 0; safe < 4; safe++) {
-				dir0 = FacingRight ? dir0.AntiClockwise() : dir0.Clockwise();
-				dir1 = FacingRight ? dir1.Clockwise() : dir1.AntiClockwise();
+				dir0 = FacingRight ? dir0.Clockwise() : dir0.AntiClockwise();
+				dir1 = FacingRight ? dir1.AntiClockwise() : dir1.Clockwise();
 				if (!IsAimingDirectionIgnored(dir0)) {
 					_AimingDirection = dir0;
 					break;
@@ -567,7 +567,7 @@ public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionT
 		if (Selecting == this) PoseRenderingZOffset = 40;
 
 		// Equipping
-		int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon);
+		int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon, out _);
 		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon weapon) {
 			EquippingWeaponType = weapon.WeaponType;
 			EquippingWeaponHeld = weapon.Handheld;

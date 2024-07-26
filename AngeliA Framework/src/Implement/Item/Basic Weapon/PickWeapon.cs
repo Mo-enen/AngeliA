@@ -7,6 +7,7 @@ public abstract class PickWeapon : Weapon {
 
 
 	// VAR
+	private const int PICK_MASK = PhysicsMask.MAP;
 	public override WeaponType WeaponType => WeaponType.Axe;
 	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	public override bool AttackWhenSquatting => true;
@@ -25,6 +26,7 @@ public abstract class PickWeapon : Weapon {
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
 		if (holder is PoseCharacter pHolder && pHolder.IsAttackAllowedByMovement()) {
+
 			pHolder.OverridePoseAttackAnimation(WeaponType, PoseAttack_PickaxeKnock.TYPE_ID);
 			pHolder.SquatSpeed.Override(0, 1);
 			pHolder.WalkSpeed.Override(0, 1);
@@ -73,11 +75,26 @@ public abstract class PickWeapon : Weapon {
 	}
 
 
-	public bool HasPickableBlockAt (int unitX, int unitY) {
+	protected virtual void DrawPickTargetHighlight (int unitX, int unitY, bool hasTarget) {
+		int border = GUI.Unify(2);
+		Renderer.DrawSlice(
+			BuiltInSprite.FRAME_HOLLOW_16,
+			new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL),
+			border, border, border, border,
+			hasTarget ? Color32.GREY_230 : Color32.WHITE_96, z: int.MaxValue
+		);
+	}
+
+
+	public override Bullet SpawnBullet (Character sender) => null;
+
+
+	// LGC
+	protected bool HasPickableBlockAt (int unitX, int unitY) {
 		// Check for Block Entity
 		if (AllowPickIBlockEntity) {
 			var hits = Physics.OverlapAll(
-				PhysicsMask.ENVIRONMENT,
+				PICK_MASK,
 				new IRect(unitX.ToGlobal() + 1, unitY.ToGlobal() + 1, Const.CEL - 2, Const.CEL - 2),
 				out int count, null, OperationMode.ColliderAndTrigger
 			);
@@ -100,12 +117,12 @@ public abstract class PickWeapon : Weapon {
 	}
 
 
-	public void PickBlockAt (int unitX, int unitY) {
+	protected void PickBlockAt (int unitX, int unitY) {
 
 		// Try Pick Block Entity
 		if (AllowPickIBlockEntity) {
 			var hits = Physics.OverlapAll(
-				PhysicsMask.ENVIRONMENT,
+				PICK_MASK,
 				new IRect(unitX.ToGlobal() + 1, unitY.ToGlobal() + 1, Const.CEL - 2, Const.CEL - 2),
 				out int count, null, OperationMode.ColliderAndTrigger
 			);
@@ -166,20 +183,6 @@ public abstract class PickWeapon : Weapon {
 		}
 
 	}
-
-
-	protected virtual void DrawPickTargetHighlight (int unitX, int unitY, bool hasTarget) {
-		int border = GUI.Unify(2);
-		Renderer.DrawSlice(
-			BuiltInSprite.FRAME_HOLLOW_16,
-			new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL),
-			border, border, border, border,
-			hasTarget ? Color32.GREY_230 : Color32.WHITE_96, z: int.MaxValue
-		);
-	}
-
-
-	public override Bullet SpawnBullet (Character sender) => null;
 
 
 }

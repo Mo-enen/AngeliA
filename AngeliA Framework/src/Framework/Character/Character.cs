@@ -484,12 +484,15 @@ public abstract partial class Character : Rigidbody {
 	}
 
 
-	public Equipment GetEquippingItem (EquipmentType type) {
+	public Equipment GetEquippingItem (EquipmentType type) => GetEquippingItem(type, out _);
+	public Equipment GetEquippingItem (EquipmentType type, out int equipmentCount) {
+		equipmentCount = 0;
 		if (!InventoryCurrentAvailable) return null;
-		int id = Inventory.GetEquipment(TypeID, type);
-		if (id == 0) return null;
+		int id = Inventory.GetEquipment(TypeID, type, out equipmentCount);
+		if (id == 0 || equipmentCount <= 0) return null;
 		return ItemSystem.GetItem(id) as Equipment;
 	}
+
 
 	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
 

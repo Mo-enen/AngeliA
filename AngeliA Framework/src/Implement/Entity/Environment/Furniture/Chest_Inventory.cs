@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 
 

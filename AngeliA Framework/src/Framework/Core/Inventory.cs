@@ -41,12 +41,18 @@ public static class Inventory {
 
 	[System.Serializable]
 	private class CharacterInventoryData : InventoryData {
+		public int Weapon = 0;
 		public int Helmet = 0;
 		public int BodySuit = 0;
 		public int Shoes = 0;
-		public int Weapon = 0;
 		public int Gloves = 0;
 		public int Jewelry = 0;
+		public int WeaponCount = 0;
+		public int HelmetCount = 0;
+		public int BodySuitCount = 0;
+		public int ShoesCount = 0;
+		public int GlovesCount = 0;
+		public int JewelryCount = 0;
 	}
 
 
@@ -354,18 +360,27 @@ public static class Inventory {
 
 
 	// Equipment
-	public static int GetEquipment (int inventoryID, EquipmentType type) => Pool.TryGetValue(inventoryID, out var data) && data is CharacterInventoryData pData ? type switch {
-		EquipmentType.Weapon => pData.Weapon,
-		EquipmentType.BodyArmor => pData.BodySuit,
-		EquipmentType.Helmet => pData.Helmet,
-		EquipmentType.Shoes => pData.Shoes,
-		EquipmentType.Gloves => pData.Gloves,
-		EquipmentType.Jewelry => pData.Jewelry,
-		_ => 0,
-	} : 0;
+	public static int GetEquipment (int inventoryID, EquipmentType type, out int equipmentCount) {
+		if (Pool.TryGetValue(inventoryID, out var data) && data is CharacterInventoryData pData) {
+			(int resultID, equipmentCount) = type switch {
+				EquipmentType.Weapon => (pData.Weapon, pData.WeaponCount),
+				EquipmentType.BodyArmor => (pData.BodySuit, pData.BodySuitCount),
+				EquipmentType.Helmet => (pData.Helmet, pData.HelmetCount),
+				EquipmentType.Shoes => (pData.Shoes, pData.ShoesCount),
+				EquipmentType.Gloves => (pData.Gloves, pData.GlovesCount),
+				EquipmentType.Jewelry => (pData.Jewelry, pData.JewelryCount),
+				_ => (0, 0),
+			};
+			if (resultID == 0) equipmentCount = 0;
+			return resultID;
+		} else {
+			equipmentCount = 0;
+			return 0;
+		}
+	}
 
 
-	public static bool SetEquipment (int inventoryID, EquipmentType type, int equipmentID) {
+	public static bool SetEquipment (int inventoryID, EquipmentType type, int equipmentID, int equipmentCount) {
 
 		if (
 			!Pool.TryGetValue(inventoryID, out var data) ||
@@ -377,26 +392,35 @@ public static class Inventory {
 			(!ItemSystem.IsEquipment(equipmentID, out var newEquipmentType) || newEquipmentType != type)
 		) return false;
 
+		if (equipmentID == 0) equipmentCount = 0;
+
 		switch (type) {
 			case EquipmentType.Weapon:
 				pData.Weapon = equipmentID;
+				pData.WeaponCount = equipmentCount;
 				break;
 			case EquipmentType.BodyArmor:
 				pData.BodySuit = equipmentID;
+				pData.BodySuitCount = equipmentCount;
 				break;
 			case EquipmentType.Helmet:
 				pData.Helmet = equipmentID;
+				pData.HelmetCount = equipmentCount;
 				break;
 			case EquipmentType.Shoes:
 				pData.Shoes = equipmentID;
+				pData.ShoesCount = equipmentCount;
 				break;
 			case EquipmentType.Gloves:
 				pData.Gloves = equipmentID;
+				pData.GlovesCount = equipmentCount;
 				break;
 			case EquipmentType.Jewelry:
 				pData.Jewelry = equipmentID;
+				pData.JewelryCount = equipmentCount;
 				break;
 		}
+
 		data.IsDirty = true;
 		IsPoolDirty = true;
 		return true;

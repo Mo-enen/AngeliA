@@ -5,43 +5,8 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public sealed class InventoryPartnerUI : PlayerMenuPartnerUI {
-	public static readonly InventoryPartnerUI Instance = new();
-	public int AvatarIcon = 0;
-	public override void DrawPanel (IRect panelRect) {
-		base.DrawPanel(panelRect);
-		PlayerMenuUI.DrawTopInventory(InventoryID, Column, Row);
-	}
-}
-
-
-public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
-
-	public int InventoryID { get; private set; } = 0;
-	public int Column { get; private set; } = 1;
-	public int Row { get; private set; } = 1;
-	public int ItemSize { get; private set; } = PlayerMenuUI.ITEM_SIZE;
-	public bool MouseInPanel { get; set; } = false;
-	public IRect BackgroundRect { get; protected set; } = default;
-
-	public virtual void EnablePanel (int inventoryID, int column, int row, int itemSize = PlayerMenuUI.ITEM_SIZE) {
-		InventoryID = inventoryID;
-		Column = column;
-		Row = row;
-		ItemSize = itemSize;
-	}
-
-	public virtual void DrawPanel (IRect panelRect) => BackgroundRect = panelRect;
-
-	protected static int Unify (int value) => GUI.Unify(value);
-
-}
-
-
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
-
-
 public class PlayerMenuUI : EntityUI {
 
 
@@ -748,7 +713,7 @@ public class PlayerMenuUI : EntityUI {
 
 	private void DrawEquipmentItem (int index, bool interactable, IRect rect, EquipmentType type, string label) {
 
-		int itemID = Inventory.GetEquipment(Player.Selecting.TypeID, type);
+		int itemID = Inventory.GetEquipment(Player.Selecting.TypeID, type, out int equipmentCount);
 		int fieldPadding = Unify(4);
 		var fieldRect = rect.Shrink(fieldPadding);
 		bool actionDown = interactable && Input.GameKeyDown(Gamekey.Action);
@@ -789,6 +754,12 @@ public class PlayerMenuUI : EntityUI {
 		// Icon
 		if (!equipAvailable || !interactable) enableTint.a = 96;
 		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
+
+		// Count
+		DrawItemCount(
+			itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3),
+			equipmentCount
+		);
 
 		// Label
 		using (new GUIContentColorScope(enableTint)) {
@@ -884,11 +855,11 @@ public class PlayerMenuUI : EntityUI {
 	private void TakeEquipment (EquipmentType type) {
 		if (TakingID != 0) return;
 		if (!Player.Selecting.EquipmentAvailable(type)) return;
-		int currentEquipmentID = Inventory.GetEquipment(Player.Selecting.TypeID, type);
-		if (currentEquipmentID == 0) return;
-		if (Inventory.SetEquipment(Player.Selecting.TypeID, type, 0)) {
+		int currentEquipmentID = Inventory.GetEquipment(Player.Selecting.TypeID, type, out int eqCount);
+		if (currentEquipmentID == 0 || eqCount <= 0) return;
+		if (Inventory.SetEquipment(Player.Selecting.TypeID, type, 0, 0)) {
 			TakingID = currentEquipmentID;
-			TakingCount = 1;
+			TakingCount = eqCount;
 			TakingFromBottomPanel = false;
 			TakingFromIndex = (int)type;
 		}
@@ -897,14 +868,18 @@ public class PlayerMenuUI : EntityUI {
 
 	private void QuickDropFromEquipment (EquipmentType type) {
 		if (TakingID != 0) return;
-		if (!Player.Selecting.EquipmentAvailable(type)) return;
-		int currentEquipmentID = Inventory.GetEquipment(Player.Selecting.TypeID, type);
-		if (currentEquipmentID == 0) return;
-		int invID = Player.Selecting.TypeID;
+		var player = Player.Selecting;
+		if (!player.EquipmentAvailable(type)) return;
+		int currentEquipmentID = Inventory.GetEquipment(player.TypeID, type, out int eqCount);
+		if (currentEquipmentID == 0 || eqCount <= 0) return;
+		int invID = player.TypeID;
 		if (invID == 0) return;
-		int collectCount = Inventory.CollectItem(invID, currentEquipmentID, out int collectedIndex, 1);
+		int collectCount = Inventory.CollectItem(invID, currentEquipmentID, out int collectedIndex, eqCount);
 		if (collectCount > 0) {
-			Inventory.SetEquipment(invID, type, 0);
+			if (collectCount < eqCount) {
+				ItemSystem.SpawnItemAtTarget(player, currentEquipmentID, eqCount - collectCount);
+			}
+			Inventory.SetEquipment(invID, type, 0, 0);
 			FlashInventoryField(collectedIndex, true);
 		}
 	}
@@ -913,51 +888,68 @@ public class PlayerMenuUI : EntityUI {
 	private void EquipAtCursor () {
 
 		if (TakingID != 0 || !CursorInBottomPanel) return;
-		int playerInvID = Player.Selecting.TypeID;
-		int cursorItemCount = Inventory.GetInventoryCapacity(playerInvID);
-		if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
+		var player = Player.Selecting;
+		int playerInvID = player.TypeID;
+		int cursorInvCapacity = Inventory.GetInventoryCapacity(playerInvID);
+		if (CursorIndex < 0 || CursorIndex >= cursorInvCapacity) return;
 
-		int cursorID = Inventory.GetItemAt(playerInvID, CursorIndex);
-		if (cursorID == 0) return;
+		int cursorID = Inventory.GetItemAt(playerInvID, CursorIndex, out int cursorItemCount);
+		if (cursorID == 0 || cursorItemCount <= 0) return;
 		if (!ItemSystem.IsEquipment(cursorID, out var eqType)) return;
-		if (!Player.Selecting.EquipmentAvailable(eqType)) return;
+		if (!player.EquipmentAvailable(eqType)) return;
 
-		int tookCount = Inventory.TakeItemAt(playerInvID, CursorIndex, 1);
-		if (tookCount <= 0) return;
+		int oldEquipmentID = Inventory.GetEquipment(playerInvID, eqType, out int oldEqCount);
 
-		int oldEquipmentID = Inventory.GetEquipment(playerInvID, eqType);
-		if (Inventory.SetEquipment(playerInvID, eqType, cursorID)) {
-			if (oldEquipmentID != 0) {
-				if (Inventory.GetItemAt(playerInvID, CursorIndex) == 0) {
-					// Back to Cursor
-					Inventory.SetItemAt(playerInvID, CursorIndex, oldEquipmentID, 1);
-					FlashInventoryField(CursorIndex, true);
-				} else {
-					// Collect
-					int collectCount = Inventory.CollectItem(playerInvID, oldEquipmentID, out int collectIndex, 1);
-					if (collectCount == 0) {
-						ItemSystem.SpawnItemAtTarget(Player.Selecting, oldEquipmentID);
-					} else {
-						FlashInventoryField(collectIndex, true);
-					}
-				}
+		if (oldEquipmentID == cursorID) {
+			// Merge from Cursor
+			int newEqCount = cursorItemCount + oldEqCount;
+			int maxCursorCount = ItemSystem.GetItemMaxStackCount(cursorID);
+			bool overflow = newEqCount > maxCursorCount;
+			int newCursorCount = 0;
+			if (overflow) {
+				newCursorCount = newEqCount - maxCursorCount;
+				newEqCount = maxCursorCount;
 			}
-			EquipFlashType = eqType;
-			EquipFlashStartFrame = Game.GlobalFrame;
+			if (!Inventory.SetEquipment(playerInvID, eqType, cursorID, newEqCount)) return;
+
+			if (overflow) {
+				Inventory.SetItemAt(playerInvID, CursorIndex, cursorID, newCursorCount);
+				FlashInventoryField(CursorIndex, true);
+			} else {
+				Inventory.SetItemAt(playerInvID, CursorIndex, 0, 0);
+			}
+
+		} else {
+			// Swap Old Equipment with Cursor
+			if (!Inventory.SetEquipment(playerInvID, eqType, cursorID, cursorItemCount)) return;
+
+			// Back to Cursor
+			Inventory.SetItemAt(playerInvID, CursorIndex, oldEquipmentID, oldEqCount);
+			FlashInventoryField(CursorIndex, true);
 		}
+		EquipFlashType = eqType;
+		EquipFlashStartFrame = Game.GlobalFrame;
 	}
 
 
 	private void EquipTaking () {
 		if (TakingID == 0) return;
 		if (!ItemSystem.IsEquipment(TakingID, out var type)) return;
-		if (!Player.Selecting.EquipmentAvailable(type)) return;
-		int currentEquipmentID = Inventory.GetEquipment(Player.Selecting.TypeID, type);
-		if (Inventory.SetEquipment(Player.Selecting.TypeID, type, TakingID)) {
-			TakingCount--;
-			if (TakingCount > 0) AbandonTaking();
-			TakingID = currentEquipmentID;
-			TakingCount = 1;
+		var player = Player.Selecting;
+		if (!player.EquipmentAvailable(type)) return;
+		int oldEquipmentID = Inventory.GetEquipment(player.TypeID, type, out int oldEqCount);
+		int newEquipCount = oldEquipmentID == TakingID ? oldEqCount + TakingCount : TakingCount;
+		int newTakingCount = oldEquipmentID == TakingID ? 0 : oldEqCount;
+		int newTakingID = oldEquipmentID == TakingID ? 0 : oldEquipmentID;
+		int maxEqCount = ItemSystem.GetItemMaxStackCount(TakingID);
+		if (newEquipCount > maxEqCount) {
+			newTakingCount = newEquipCount - maxEqCount;
+			newEquipCount = maxEqCount;
+			newTakingID = TakingID;
+		}
+		if (Inventory.SetEquipment(player.TypeID, type, TakingID, newEquipCount)) {
+			TakingID = newTakingID;
+			TakingCount = newTakingCount;
 			EquipFlashStartFrame = Game.GlobalFrame;
 			EquipFlashType = type;
 		}

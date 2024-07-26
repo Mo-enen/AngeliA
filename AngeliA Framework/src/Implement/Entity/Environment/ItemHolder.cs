@@ -157,11 +157,13 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 			!onlyStackOnExisting &&
 			!ignoreEquipment &&
 			ItemCount > 0 &&
-			ItemSystem.IsEquipment(ItemID, out var equipmentType) &&
-			Inventory.GetEquipment(invID, equipmentType) == 0
+			ItemSystem.IsEquipment(ItemID, out var equipmentType)
 		) {
-			if (Inventory.SetEquipment(invID, equipmentType, ItemID)) {
-				ItemCount--;
+			int oldEqID = Inventory.GetEquipment(invID, equipmentType, out int oldEqCount);
+			if (oldEqID == 0 || oldEqID == ItemID) {
+				if (Inventory.SetEquipment(invID, equipmentType, ItemID, oldEqCount + ItemCount)) {
+					ItemCount = 0;
+				}
 			}
 		}
 

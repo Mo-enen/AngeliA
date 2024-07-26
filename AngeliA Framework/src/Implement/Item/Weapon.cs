@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, }
+public enum WeaponType { Hand, Sword, Axe, Hammer, Flail, Ranged, Polearm, Hook, Claw, Magic, Throwing, Block, }
 
 
 public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, MagicPole, Bow, Shooting, Float, }
@@ -14,6 +14,7 @@ public enum WeaponHandheld { SingleHanded, DoubleHanded, OneOnEachHand, Pole, Ma
 public abstract class Weapon<B> : Weapon where B : Bullet {
 	public Weapon () : base() => BulletID = typeof(B).AngeHash();
 }
+
 
 [EntityAttribute.MapEditorGroup("ItemWeapon")]
 public abstract class Weapon : Equipment {
@@ -79,8 +80,12 @@ public abstract class Weapon : Equipment {
 			holder is not PoseCharacter character ||
 			character.AnimationType == CharacterAnimationType.Sleep ||
 			character.AnimationType == CharacterAnimationType.PassOut ||
-			character.AnimationType == CharacterAnimationType.Crash ||
-			!Renderer.TryGetSprite(SpriteID, out var sprite)
+			character.AnimationType == CharacterAnimationType.Crash
+		) return;
+
+		if (
+			!Renderer.TryGetSprite(SpriteID, out var sprite, true) &&
+			!Renderer.TryGetSpriteFromGroup(SpriteID, 0, out sprite)
 		) return;
 
 		int oldGrabSclL = character.HandGrabScaleL;
@@ -160,7 +165,8 @@ public abstract class Weapon : Equipment {
 		int grabScale = character.HandGrabScaleR;
 		int grabRotation = character.HandGrabRotationR;
 		int z = character.HandR.Z - 1;
-		if (character.EquippingWeaponType == WeaponType.Throwing) {
+		var weaponType = character.EquippingWeaponType;
+		if (weaponType == WeaponType.Throwing) {
 			if (
 				attacking &&
 				Game.GlobalFrame - character.LastAttackFrame > AttackDuration / 6
@@ -182,14 +188,23 @@ public abstract class Weapon : Equipment {
 		}
 		// Draw
 		var center = character.HandR.GlobalLerp(0.5f, 0.5f);
-		DrawWeaponSprite(
-			character,
-			center.x, center.y,
-			sprite.GlobalWidth * twistR / 1000,
-			sprite.GlobalHeight,
-			grabRotation, grabScale,
-			sprite, z
-		);
+		if (weaponType == WeaponType.Block) {
+			Renderer.Draw(
+				sprite, center.x, center.y, 500, 500, grabRotation,
+				sprite.GlobalWidth * grabScale / 1000,
+				sprite.GlobalHeight * grabScale / 1000,
+				character.HandR.Z + 3
+			);
+		} else {
+			DrawWeaponSprite(
+				character,
+				center.x, center.y,
+				sprite.GlobalWidth * twistR / 1000,
+				sprite.GlobalHeight,
+				grabRotation, grabScale,
+				sprite, z
+			);
+		}
 	}
 
 

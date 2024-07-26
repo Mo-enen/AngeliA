@@ -167,30 +167,18 @@ public sealed partial class MapEditor : WindowUI {
 	#region --- MSG ---
 
 
-	[OnGameQuitting]
+	[OnGameQuitting(-1)]
 	internal static void OnGameQuitting_Editor () {
 		if (Instance == null) return;
-
 		if (!Instance.PlayingGame) {
 			Instance.ApplyPaste();
 			Instance.Save();
+		} else if (Game.AllowModifyMapDuringGameplay) {
+			WorldSquad.DiscardAllChangesInMemory();
 		}
-
 		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.MapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.MapRoot);
 		IUnique.SaveToDisk(Instance.Stream.MapRoot);
-
-		//WorldSquad.SwitchToCraftedMode();
-		//WorldSquad.Enable = true;
-
-		//Instance.IsNavigating = false;
-		//Instance.PastingBuffer.Clear();
-		//Instance.CopyBuffer.Clear();
-		//Instance.UndoRedo.Reset();
-		//Instance.CleanDirty();
-		//Instance.MouseDownOutsideBoundary = false;
-		//Instance.SearchResult.Clear();
-		//Instance.Stream?.Clear();
 	}
 
 
@@ -1165,10 +1153,10 @@ public sealed partial class MapEditor : WindowUI {
 				RepairEquipment(Player.Selecting, EquipmentType.Weapon);
 				// Func
 				static void RepairEquipment (Entity holder, EquipmentType type) {
-					int itemID = Inventory.GetEquipment(holder.TypeID, type);
-					if (itemID == 0 || ItemSystem.GetItem(itemID) is not IProgressiveItem progressive) return;
+					int itemID = Inventory.GetEquipment(holder.TypeID, type, out int oldEqCount);
+					if (itemID == 0 || oldEqCount <= 0 || ItemSystem.GetItem(itemID) is not IProgressiveItem progressive) return;
 					if (progressive.NextItemID == itemID || progressive.NextItemID == 0) return;
-					Inventory.SetEquipment(holder.TypeID, type, progressive.NextItemID);
+					Inventory.SetEquipment(holder.TypeID, type, progressive.NextItemID, oldEqCount);
 				}
 			}
 

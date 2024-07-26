@@ -263,7 +263,8 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 		base.OnTakeDamage_FromEquipment(holder, sender, ref damage);
 		var progItem = this as IProgressiveItem;
 		if (progItem.PrevItemID != 0 && damage > 0) {
-			Inventory.SetEquipment(holder.TypeID, EquipmentType, progItem.PrevItemID);
+			Inventory.GetEquipment(holder.TypeID, EquipmentType, out int oldEqCount);
+			Inventory.SetEquipment(holder.TypeID, EquipmentType, progItem.PrevItemID, oldEqCount);
 			InvokeOnItemDamage(holder as Character, TypeID, progItem.PrevItemID);
 			damage--;
 		}
@@ -286,7 +287,8 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 		if (materialID == 0) return false;
 		int tookCount = Inventory.FindAndTakeItem(holder.TypeID, materialID, 1);
 		if (tookCount <= 0) return false;
-		Inventory.SetEquipment(holder.TypeID, EquipmentType, (this as IProgressiveItem).NextItemID);
+		Inventory.GetEquipment(holder.TypeID, EquipmentType, out int oldEqCount);
+		Inventory.SetEquipment(holder.TypeID, EquipmentType, (this as IProgressiveItem).NextItemID, oldEqCount);
 		InvokeItemLost(holder as Character, materialID);
 		return true;
 	}

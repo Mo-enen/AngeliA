@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
@@ -21,6 +22,36 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 	public virtual int AngleSpeedDelta => 0;
 	protected virtual ProjectileValidDirection ValidDirection => ProjectileValidDirection.Two;
 	protected int ForceBulletCountNextShot { get; set; } = -1;
+
+
+	[CheatCode("giveammo")]
+	internal static bool Cheat_GiveAmmo () {
+		var player = Player.Selecting;
+		if (player == null) return false;
+		if (player.GetEquippingItem(EquipmentType.Weapon, out int eqCount) is not Weapon weapon) return false;
+		bool performed = false;
+		// Fill Bullet
+		if (
+			Stage.GetEntityType(weapon.BulletID) is Type bulletType &&
+			bulletType.IsSubclassOf(typeof(ArrowBullet))
+		) {
+			var bullet = Activator.CreateInstance(bulletType) as ArrowBullet;
+			int itemID = bullet.ArrowItemID;
+			if (ItemSystem.HasItem(itemID)) {
+				int maxCount = ItemSystem.GetItemMaxStackCount(itemID);
+				ItemSystem.GiveItemTo(player.TypeID, itemID, maxCount);
+				performed = true;
+			}
+		}
+		// Fill Weapon
+		int eqMaxCount = ItemSystem.GetItemMaxStackCount(weapon.TypeID);
+		if (eqMaxCount > eqCount) {
+			Inventory.SetEquipment(player.TypeID, EquipmentType.Weapon, weapon.TypeID, eqMaxCount);
+			performed = true;
+		}
+		return performed;
+	}
+
 
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 		base.PoseAnimationUpdate_FromEquipment(holder);
