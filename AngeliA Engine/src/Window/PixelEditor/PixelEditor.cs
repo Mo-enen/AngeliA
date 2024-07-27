@@ -147,7 +147,6 @@ public partial class PixelEditor : WindowUI {
 	public int SheetIndex { get; private set; } = -1;
 	protected override bool BlockEvent => true;
 	public override string DefaultName => "Artwork";
-	public bool IsGroupDataDirty { get; set; } = false;
 
 	// Data
 	private List<string> AllRigCharacterNames { get; init; }
@@ -952,18 +951,6 @@ public partial class PixelEditor : WindowUI {
 		if (string.IsNullOrEmpty(CurrentProject.Universe.SheetPath)) return;
 		TryApplyPixelBuffer(true);
 		Sheet.SaveToDisk(CurrentProject.Universe.SheetPath);
-	}
-
-
-	public override void SetDirty () {
-		base.SetDirty();
-		IsGroupDataDirty = true;
-	}
-
-
-	public override void CleanDirty () {
-		base.CleanDirty();
-		IsGroupDataDirty = false;
 	}
 
 

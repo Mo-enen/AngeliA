@@ -73,13 +73,11 @@ public static class AngePath {
 	public static string GetAsepriteRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Aseprite");
 	public static string GetLanguageRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Language");
 	public static string GetUniverseInfoPath (string universeFolder) => Util.CombinePaths(universeFolder, "Info.json");
-	public static string GetCharacterAnimationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Meta", "Character Animation");
 	public static string GetCharacterMovementConfigRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Meta", "Character Movement");
 
 	// Saving
 	public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
 	public static string GetSavingMetaCharacterConfigRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta", "Character Rendering");
-	public static string GetProcedureMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Procedure Map");
 	public static string GetUserMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "User Map");
 
 }

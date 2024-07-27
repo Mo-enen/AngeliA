@@ -57,9 +57,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 	}
 
 
-	public CheckPoint () {
-		CheckAltar<CheckPoint>.TryGetLinkedID(TypeID, out LinkedAltarID);
-	}
+	public CheckPoint () => CheckAltar<CheckPoint>.TryGetLinkedID(TypeID, out LinkedAltarID);
 
 
 	public override void FirstUpdate () {
@@ -106,13 +104,14 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 			// Particle
 			OnCheckPointTouched?.Invoke(this, Player.Selecting);
+
 		}
 
 		// Spawn Portal
 		if (
 			highlighting &&
-			TryGetAltarPosition(out var altarUnitPos) &&
 			Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) == 0 &&
+			CheckAltar<CheckPoint>.TryGetAltarPosition(TypeID, out var altarUnitPos) &&
 			Stage.GetOrAddEntity(CheckPointPortal.TYPE_ID, X, Y + Const.CEL * 4) is CheckPointPortal cpPortal
 		) {
 			cpPortal.SetCheckPoint(LinkedAltarID, altarUnitPos);
@@ -172,9 +171,6 @@ public abstract class CheckPoint : EnvironmentEntity {
 		}
 		Renderer.SetLayerToDefault();
 	}
-
-
-	protected virtual bool TryGetAltarPosition (out Int3 altarUnitPos) => IUnique.TryGetPositionFromID(LinkedAltarID, out altarUnitPos);
 
 
 	#endregion

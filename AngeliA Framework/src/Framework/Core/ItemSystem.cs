@@ -112,17 +112,19 @@ public static class ItemSystem {
 		}
 
 		// Add Block Entity
-		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
-			string angeName = type.AngeName();
-			int id = angeName.AngeHash();
-			var blockItem = new BlockItem(id, angeName, BlockType.Entity);
-			ItemPool.TryAdd(id, new ItemData(
-				blockItem,
-				$"iName.{angeName}".AngeHash(),
-				$"iDes.{angeName}".AngeHash(),
-				angeName,
-				blockItem.MaxStackCount.GreaterOrEquel(1)
-			));
+		if (Universe.BuiltIn.Info.UseProceduralMap) {
+			foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
+				string angeName = type.AngeName();
+				int id = angeName.AngeHash();
+				var blockItem = new BlockItem(id, angeName, BlockType.Entity);
+				ItemPool.TryAdd(id, new ItemData(
+					blockItem,
+					$"iName.{angeName}".AngeHash(),
+					$"iDes.{angeName}".AngeHash(),
+					angeName,
+					blockItem.MaxStackCount.GreaterOrEquel(1)
+				));
+			}
 		}
 
 		ItemPoolReady = true;
@@ -149,7 +151,9 @@ public static class ItemSystem {
 
 
 	[OnMainSheetReload]
-	internal static void OnSheetReload () {
+	internal static void AddBlockItemsFromSheet () {
+
+		if (!Universe.BuiltIn.Info.UseProceduralMap) return;
 
 		var sheet = Renderer.MainSheet;
 		if (sheet == null) return;

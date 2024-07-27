@@ -103,7 +103,6 @@ public partial class Engine {
 		engine.AllWindows = new WindowUI[]{
 			new RiggedMapEditor(),
 			new PixelEditor(engine.AllRigCharacterNames),
-			new CharacterAnimationEditorWindow(engine.AllRigCharacterNames),
 			new LanguageEditor(),
 			new ConsoleWindow(),
 			new ProjectEditor(),
@@ -176,7 +175,6 @@ public partial class Engine {
 			win.OnActivated();
 			if (win is RiggedMapEditor) RigMapEditorWindowIndex = i;
 			if (win is ConsoleWindow) ConsoleWindowIndex = i;
-			if (win is CharacterAnimationEditorWindow) CharAniEditorWindowIndex = i;
 		}
 
 		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
@@ -705,7 +703,6 @@ public partial class Engine {
 		if (GenericDialogUI.ShowingDialog) {
 			Game.IgnoreGizmos(1);
 		}
-		CharacterAnimationEditorWindow.Instance.SheetIndex = PixelEditor.Instance.SheetIndex;
 
 		// Update Tooltip
 		bool hoveringSameRect = false;
@@ -750,8 +747,13 @@ public partial class Engine {
 			ConsoleWindow.Instance.Clear();
 		}
 
-		// Update Project Editor
+		// Recompile
 		if (EngineSetting.Hotkey_Recompile.Value.Down() || ProjectEditor.Instance.RequiringRebuildFrame == Game.GlobalFrame) {
+			// Save First
+			foreach (var window in Instance.AllWindows) {
+				if (window.IsDirty) window.Save();
+			}
+			// Recompile
 			RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
 			if (RequireBackgroundBuildDate == 0) {
 				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
@@ -772,9 +774,6 @@ public partial class Engine {
 		}
 		if (EngineSetting.Hotkey_Window_Artwork.Value.Down()) {
 			SetCurrentWindowIndex<PixelEditor>();
-		}
-		if (EngineSetting.Hotkey_Window_CharAni.Value.Down()) {
-			SetCurrentWindowIndex<CharacterAnimationEditorWindow>();
 		}
 		if (EngineSetting.Hotkey_Window_Language.Value.Down()) {
 			SetCurrentWindowIndex<LanguageEditor>();
@@ -873,7 +872,6 @@ public partial class Engine {
 		LanguageEditor.Instance.SetLanguageRoot(CurrentProject.Universe.LanguageRoot);
 		PixelEditor.Instance.SetCurrentProject(CurrentProject);
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
-		CharacterAnimationEditorWindow.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
 		RiggedMapEditor.Instance.SetCurrentProject(CurrentProject);
 		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
@@ -938,7 +936,6 @@ public partial class Engine {
 			LanguageEditor.Instance.SetLanguageRoot("");
 			PixelEditor.Instance.SetCurrentProject(null);
 			ProjectEditor.Instance.SetCurrentProject(null);
-			CharacterAnimationEditorWindow.Instance.SetCurrentProject(null);
 			RiggedMapEditor.Instance.CleanDirty();
 			RiggedMapEditor.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
@@ -974,13 +971,6 @@ public partial class Engine {
 			ResetViewRect(remapAllRenderingCells: true);
 			Game.MusicVolume = 1000;
 			Game.SoundVolume = 1000;
-			// To Char Ani Editor
-			if (index == CharAniEditorWindowIndex) {
-				if (PixelEditor.Instance.IsGroupDataDirty) {
-					PixelEditor.Instance.IsGroupDataDirty = false;
-					PixelEditor.Sheet.CalculateExtraData();
-				}
-			}
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;

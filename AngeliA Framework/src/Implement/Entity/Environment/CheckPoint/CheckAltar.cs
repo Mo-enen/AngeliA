@@ -6,7 +6,7 @@ namespace AngeliA;
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Capacity(1, 1)]
-public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : CheckPoint {
+public abstract class CheckAltar<CP> : EnvironmentEntity where CP : CheckPoint {
 
 
 
@@ -19,6 +19,7 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : Che
 
 	// Data
 	private static readonly Dictionary<int, int> LinkPool = new();
+	private static readonly Dictionary<int, Int3> AltarPosition = new(0);
 	private readonly int LinkedCheckPointID = 0;
 
 
@@ -80,6 +81,7 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : Che
 			highlighting = true;
 			Player.RespawnCpUnitPosition = unitPos;
 			CheckPoint.Unlock(LinkedCheckPointID);
+
 			// Clear Portal
 			if (
 				CheckPoint.LastTriggeredCheckPointID == LinkedCheckPointID &&
@@ -88,6 +90,9 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : Che
 			) {
 				cpPortal.Active = false;
 			}
+
+			// Update Last Checked Pos
+			CheckAltar<CheckPoint>.AltarPosition[TypeID] = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 		}
 
 		// Spawn Portal
@@ -122,6 +127,13 @@ public abstract class CheckAltar<CP> : EnvironmentEntity, IUnique where CP : Che
 
 
 	public static bool TryGetLinkedID (int id, out int linkedID) => LinkPool.TryGetValue(id, out linkedID);
+
+
+	public static bool TryGetAltarPosition (int checkPointID, out Int3 pos) {
+		pos = default;
+		if (!LinkPool.TryGetValue(checkPointID, out int altarID)) return false;
+		return AltarPosition.TryGetValue(altarID, out pos);
+	}
 
 
 	#endregion

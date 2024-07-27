@@ -36,11 +36,6 @@ public class EngineSetting {
 	[EngineSetting("Artwork", "Solid Painting Preview")] public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true);
 	[EngineSetting("Artwork", "Show Preview on Tag Button")] public static readonly SavingBool ShowTagPreview = new("PixEdt.ShowTagPreview", true);
 
-	// Char Ani Editor
-	[EngineSetting("Animation", "Reverse Mouse Scroll for Timeline")] public static readonly SavingBool ReverseMouseScrollForTimeline = new("CharAni.TimelineReverseMouseScroll", false);
-	[EngineSetting("Animation", "Mouse Scroll Vertically for Timeline")] public static readonly SavingBool MouseScrollVerticalForTimeline = new("CharAni.TimelineMouseScrollVertical", true);
-	[EngineSetting("Animation", "Mid Drag Only Move Timeline Horizontally")] public static readonly SavingBool MidDragHorizontalOnlyForTimeline = new("CharAni.TimelineMidDragHorizontalOnly", true);
-
 	// Console
 	[EngineSetting("Console", "Show Log Time")] public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false);
 	[EngineSetting("Console", "Blink When Having Compile Error")] public static readonly SavingBool BlinkWhenError = new("Console.BlinkWhenError", true);
@@ -63,11 +58,10 @@ public class EngineSetting {
 	[EngineSetting("Hotkey", "Clear Console")] public static readonly SavingHotkey Hotkey_ClearConsole = new("Hotkey.ClearConsole", new Hotkey(KeyboardKey.C, ctrl: true, shift: true));
 	[EngineSetting("Hotkey", "Open Map Editor")] public static readonly SavingHotkey Hotkey_Window_MapEditor = new("Hotkey.Window.MapEditor", new Hotkey(KeyboardKey.F1));
 	[EngineSetting("Hotkey", "Open Artwork")] public static readonly SavingHotkey Hotkey_Window_Artwork = new("Hotkey.Window.Artwork", new Hotkey(KeyboardKey.F2));
-	[EngineSetting("Hotkey", "Open Character Animation")] public static readonly SavingHotkey Hotkey_Window_CharAni = new("Hotkey.Window.CharAni", new Hotkey(KeyboardKey.F3));
-	[EngineSetting("Hotkey", "Open Language Editor")] public static readonly SavingHotkey Hotkey_Window_Language = new("Hotkey.Window.Language", new Hotkey(KeyboardKey.F4));
-	[EngineSetting("Hotkey", "Open Console")] public static readonly SavingHotkey Hotkey_Window_Console = new("Hotkey.Window.Console", new Hotkey(KeyboardKey.F5));
-	[EngineSetting("Hotkey", "Open Project Editor")] public static readonly SavingHotkey Hotkey_Window_Project = new("Hotkey.Window.Project", new Hotkey(KeyboardKey.F6));
-	[EngineSetting("Hotkey", "Open Setting")] public static readonly SavingHotkey Hotkey_Window_Setting = new("Hotkey.Window.Setting", new Hotkey(KeyboardKey.F7));
+	[EngineSetting("Hotkey", "Open Language Editor")] public static readonly SavingHotkey Hotkey_Window_Language = new("Hotkey.Window.Language", new Hotkey(KeyboardKey.F3));
+	[EngineSetting("Hotkey", "Open Console")] public static readonly SavingHotkey Hotkey_Window_Console = new("Hotkey.Window.Console", new Hotkey(KeyboardKey.F4));
+	[EngineSetting("Hotkey", "Open Project Editor")] public static readonly SavingHotkey Hotkey_Window_Project = new("Hotkey.Window.Project", new Hotkey(KeyboardKey.F5));
+	[EngineSetting("Hotkey", "Open Setting")] public static readonly SavingHotkey Hotkey_Window_Setting = new("Hotkey.Window.Setting", new Hotkey(KeyboardKey.F6));
 	[EngineSetting("Hotkey", "Artwork - Rect Tool")] public static readonly SavingHotkey Hotkey_PixTool_Rect = new("Hotkey.Pix.Rect", new Hotkey(KeyboardKey.U));
 	[EngineSetting("Hotkey", "Artwork - Circle Tool")] public static readonly SavingHotkey Hotkey_PixTool_Circle = new("Hotkey.Pix.Circle", new Hotkey(KeyboardKey.C));
 	[EngineSetting("Hotkey", "Artwork - Line Tool")] public static readonly SavingHotkey Hotkey_PixTool_Line = new("Hotkey.Pix.Line", new Hotkey(KeyboardKey.L));

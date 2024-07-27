@@ -66,7 +66,7 @@ public partial class MapEditor {
 		int thickness = Unify(1);
 
 		// Rect Frame
-		if (MouseDownButton != 0 || SelectingPaletteItem == null || !SelectingPaletteItem.IsUnique) {
+		if (MouseDownButton != 0 || SelectingPaletteItem == null) {
 			Renderer.DrawSlice(
 				BuiltInSprite.FRAME_16, draggingRect.Shrink(thickness),
 				thickness, thickness, thickness, thickness, Color32.BLACK
@@ -84,7 +84,7 @@ public partial class MapEditor {
 				// Draw Erase Cross
 				DrawCrossLineGizmos(DraggingUnitRect.Value.ToGlobal(), Unify(1), Color32.WHITE, Color32.BLACK);
 				DrawModifyFilterLabel(DraggingUnitRect.Value.ToGlobal());
-			} else if (!SelectingPaletteItem.IsUnique) {
+			} else {
 				// Draw Painting Thumbnails
 				Renderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
 				var unitRect = DraggingUnitRect.Value;
@@ -107,14 +107,6 @@ public partial class MapEditor {
 					DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, rect, false, sprite);
 				}
 				PaintingThumbnailStartIndex = nextStartIndex;
-			} else {
-				// Unique Thumbnail
-				Renderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
-				DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, new IRect(
-					Input.MouseGlobalPosition.x.ToUnifyGlobal(),
-					Input.MouseGlobalPosition.y.ToUnifyGlobal(),
-					Const.CEL, Const.CEL
-				), false, sprite);
 			}
 		}
 
@@ -236,9 +228,6 @@ public partial class MapEditor {
 			DrawModifyFilterLabel(cursorRect);
 		} else {
 			// Pal Thumbnail
-			if (SelectingPaletteItem.IsUnique) {
-				Renderer.DrawPixel(cursorRect, Color32.ORANGE.WithNewA(64));
-			}
 			DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
 		}
 	}

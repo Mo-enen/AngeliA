@@ -681,11 +681,7 @@ public static class Stage {
 
 
 	// Misc
-	public static bool RequireDrawEntityBehind (int id, int unitX, int unitY, int unitZ) =>
-		EntityPool.TryGetValue(id, out var stack) &&
-		stack.DrawBehind &&
-		!ItemSystem.HasItem(id) &&
-		!GlobalAntiSpawnHash.Contains(new(unitX, unitY, unitZ));
+	public static bool RequireDrawEntityBehind (int id, int unitX, int unitY, int unitZ) => EntityPool.TryGetValue(id, out var stack) && stack.DrawBehind && !GlobalAntiSpawnHash.Contains(new(unitX, unitY, unitZ));
 
 
 	public static Int4 GetCameraCullingPadding () {

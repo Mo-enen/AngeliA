@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 public class TeleportTask : TaskItem {
 
 
@@ -16,7 +16,6 @@ public class TeleportTask : TaskItem {
 	public bool UseParallax { get; set; } = true;
 
 	// Data
-	private MapChannel? NewChannel = null;
 	private string ChannelName = "";
 	private bool ToBehind = true;
 
@@ -34,14 +33,6 @@ public class TeleportTask : TaskItem {
 
 		// Teleport
 		if (LocalFrame == WaitDuration) {
-			// Channel
-			if (NewChannel.HasValue) {
-				if (NewChannel.Value == MapChannel.Procedure) {
-					WorldSquad.SwitchToProcedureChannel(ChannelName);
-				} else {
-					WorldSquad.SwitchToGeneralChannel();
-				}
-			}
 			// Position
 			int offsetX = TeleportFrom.x - Stage.ViewRect.xMin;
 			int offsetY = TeleportFrom.y - Stage.ViewRect.yMin;
@@ -113,7 +104,7 @@ public class TeleportTask : TaskItem {
 	public static TeleportTask Teleport (
 		int fromX, int fromY, int toX, int toY, int toZ,
 		int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true, bool withPortal = false,
-		MapChannel? newChannel = null, string channelName = ""
+		string channelName = ""
 	) {
 		if (Task.HasTask()) return null;
 		if (Task.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
@@ -123,7 +114,6 @@ public class TeleportTask : TaskItem {
 			svTask.Duration = duration;
 			svTask.UseParallax = useParallax;
 			svTask.UseVignette = useVignette;
-			svTask.NewChannel = newChannel;
 			svTask.ChannelName = channelName;
 			var player = Player.Selecting;
 			if (player != null) {

@@ -86,10 +86,6 @@ public class AfterLayerFrameUpdateAttribute : Attribute { }
 
 // World
 [AttributeUsage(AttributeTargets.Method)]
-public class OnMapFolderChangedAttribute : Attribute { }
-
-
-[AttributeUsage(AttributeTargets.Method)]
 public class BeforeLevelRenderedAttribute : Attribute { }
 
 

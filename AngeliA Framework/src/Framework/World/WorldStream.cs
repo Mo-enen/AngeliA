@@ -43,9 +43,7 @@ public sealed class WorldStream : IBlockSquad {
 	private static readonly Dictionary<string, WorldStream> StreamPool = new();
 	private readonly Dictionary<Int3, WorldData> WorldPool = new();
 	private readonly WorldPathPool PathPool = new();
-	private readonly WorldPathPool FallbackPathPool = new();
 	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
-	private readonly bool FallbackAvailable;
 	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;
 
@@ -70,9 +68,7 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	public WorldStream (string mapFolder) {
-		FallbackAvailable = Util.IsSamePath(mapFolder, Universe.BuiltIn.UserMapRoot);
 		PathPool.SetMapRoot(mapFolder);
-		FallbackPathPool.SetMapRoot(FallbackAvailable ? Universe.BuiltIn.MapRoot : "");
 		MapRoot = mapFolder;
 		WorldPool.Clear();
 		CurrentValidMapCount = 0;
@@ -93,23 +89,20 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
-	public void DiscardAllChanges (bool forFallbackMaps = false) {
-		var pool = forFallbackMaps ? FallbackPathPool : PathPool;
+	public void DiscardAllChanges () {
 		foreach (var pair in WorldPool) {
 			ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
 			bool notExists = Unsafe.IsNullRef(ref data);
 			if (notExists || !data.Valid || !data.IsDirty) continue;
 			var pos = data.World.WorldPosition;
-			string path = pool.GetOrAddPath(pos);
+			string path = PathPool.GetOrAddPath(pos);
 			data.World?.LoadFromDisk(path, pos.x, pos.y, pos.z);
 			data.IsDirty = false;
 		}
 	}
 
 
-	public bool ContainsWorldPos (Int3 worldPos) =>
-		PathPool.ContainsKey(worldPos) ||
-		(FallbackAvailable && FallbackPathPool.ContainsKey(worldPos));
+	public bool ContainsWorldPos (Int3 worldPos) => PathPool.ContainsKey(worldPos);
 
 
 	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) {
@@ -196,23 +189,6 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
-	public void SetBlocksAt (int unitX, int unitY, int z, int entity, int level, int background, int element) {
-		int worldX = unitX.UDivide(Const.MAP);
-		int worldY = unitY.UDivide(Const.MAP);
-		ref var worldData = ref CreateOrGetWorldData(worldX, worldY, z);
-		worldData.LastReadWriteFrame = InternalFrame++;
-		var world = worldData.World;
-		int localX = unitX.UMod(Const.MAP);
-		int localY = unitY.UMod(Const.MAP);
-		int index = localY * Const.MAP + localX;
-		world.Entities[index] = entity;
-		world.Levels[index] = level;
-		world.Backgrounds[index] = background;
-		world.Elements[index] = element;
-		worldData.IsDirty = true;
-	}
-
-
 	#endregion
 
 
@@ -238,12 +214,6 @@ public sealed class WorldStream : IBlockSquad {
 		if (PathPool.TryGetPath(pos, out string path)) {
 			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
-		if (!loaded && FallbackAvailable && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
-			path = PathPool.GetOrAddPath(pos);
-			Util.CopyFile(fallPath, path);
-			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
-		}
-
 		worldData.Valid = loaded;
 		WorldPool.Add(pos, worldData);
 		if (loaded) {
@@ -275,18 +245,8 @@ public sealed class WorldStream : IBlockSquad {
 		WorldPool[pos] = worldData;
 
 		// Load Data
-		bool loaded = false;
 		if (PathPool.TryGetPath(pos, out string path)) {
-			loaded = worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
-		}
-		if (!loaded) {
-			path = PathPool.GetOrAddPath(pos);
-			if (FallbackAvailable && FallbackPathPool.TryGetPath(pos, out string fallPath)) {
-				Util.CopyFile(fallPath, path);
-				worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
-			} else {
-				worldData.World.SaveToDisk(path);
-			}
+			worldData.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
 		}
 		CurrentValidMapCount++;
 		TryReleaseOverload();

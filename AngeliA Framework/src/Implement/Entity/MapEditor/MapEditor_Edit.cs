@@ -145,7 +145,6 @@ public partial class MapEditor {
 					var type = (BlockType)blockTypeIndex;
 					UserEraseBlock(i, j, type);
 				}
-				UserEraseUnique(i, j, z);
 			}
 		}
 		RedirectForRule(unitRect, z);
@@ -190,36 +189,23 @@ public partial class MapEditor {
 		int id = paint ? SelectingPaletteItem.ID : 0;
 		var type = paint ? SelectingPaletteItem.BlockType : default;
 		int z = CurrentZ;
-
-		// Paint Unique
-		bool idUniqueEntity = IUnique.IsUniqueEntity(id);
-		if (paint && idUniqueEntity) {
-			UserSetUnique(mouseUnitPos.x, mouseUnitPos.y, z, id);
-		}
-
 		for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
 			for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
 				if (paint) {
 					// Paint Block
-					if (!idUniqueEntity) {
-						// Redirect for Random
-						if (
-							SelectingPaletteItem.Group != null &&
-							SelectingPaletteItem.Group.Random &&
-							IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
-							idChain.Length > 0
-						) {
-							id = idChain[PaintingRan.Next(0, idChain.Length)];
-						}
-						// Set Data
-						UserSetBlock(i, j, type, id);
+					// Redirect for Random
+					if (
+						SelectingPaletteItem.Group != null &&
+						SelectingPaletteItem.Group.Random &&
+						IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
+						idChain.Length > 0
+					) {
+						id = idChain[PaintingRan.Next(0, idChain.Length)];
 					}
-
+					// Set Data
+					UserSetBlock(i, j, type, id);
 				} else if (mouseDownUnitPos == mouseUnitPos) {
 					// Single Erase
-
-					// Unique
-					UserEraseUnique(i, j, z);
 
 					// Block
 					if (!Modify_BackgroundOnly && !Modify_EntityOnly && !Modify_LevelOnly) {
@@ -250,12 +236,11 @@ public partial class MapEditor {
 					if (!Modify_LevelOnly && !Modify_BackgroundOnly) {
 						UserEraseBlock(i, j, BlockType.Entity);
 						UserEraseBlock(i, j, BlockType.Element);
-						UserEraseUnique(i, j, z);
 					}
 				}
 			}
 		}
-		if (!idUniqueEntity) SpawnBlinkParticle(unitRect.ToGlobal(), id);
+		SpawnBlinkParticle(unitRect.ToGlobal(), id);
 		RedirectForRule(unitRect, z);
 		SetDirty();
 	}
@@ -277,13 +262,8 @@ public partial class MapEditor {
 			// Pick
 			ApplyPaste();
 			SelectionUnitRect = null;
-			int id;
-			if (IUnique.TryGetIdFromPosition(new Int3(mouseUnitPos.x, mouseUnitPos.y, CurrentZ), out int uniqueID)) {
-				id = uniqueID;
-			} else {
-				id = Stream.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y, CurrentZ);
-				id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
-			}
+			int id = Stream.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y, CurrentZ);
+			id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
 			if (!PalettePool.TryGetValue(id, out SelectingPaletteItem)) {
 				SelectingPaletteItem = null;
 			}
@@ -330,24 +310,7 @@ public partial class MapEditor {
 		}
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {
-			// Unique
-			var unitPos = new Int3(i, j, CurrentZ);
-			if (type == BlockType.Entity && IUnique.TryGetIdFromPosition(
-				unitPos, out int _gID
-			)) {
-				if (removeOriginal) {
-					UserEraseUnique(i, j, z);
-				}
-				CopyBuffer.Add(new BlockBuffer() {
-					ID = _gID,
-					LocalUnitX = i - unitRect.x,
-					LocalUnitY = j - unitRect.y,
-					Type = type,
-					IsUnique = true,
-				});
-			}
-			// Block
-			int id = Stream.GetBlockAt(i, j, CurrentZ, type);
+			int id = Stream.GetBlockAt(i, j, z, type);
 			if (id != 0) {
 				if (removeOriginal) {
 					UserEraseBlock(i, j, type);
@@ -357,7 +320,6 @@ public partial class MapEditor {
 					LocalUnitX = i - unitRect.x,
 					LocalUnitY = j - unitRect.y,
 					Type = type,
-					IsUnique = false,
 				});
 			}
 		}
@@ -396,13 +358,7 @@ public partial class MapEditor {
 		foreach (var buffer in PastingBuffer) {
 			int unitX = buffer.LocalUnitX + unitRect.x;
 			int unitY = buffer.LocalUnitY + unitRect.y;
-			if (buffer.IsUnique) {
-				// Unique
-				UserSetUnique(unitX, unitY, z, buffer.ID, ignoreStep: true);
-			} else {
-				// Block
-				UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true);
-			}
+			UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true);
 		}
 		RedirectForRule(unitRect, z);
 		SetDirty();
@@ -439,24 +395,7 @@ public partial class MapEditor {
 		}
 		// Func
 		void AddToList (int i, int j, int z, BlockType type) {
-			// Unique
-			var unitPos = new Int3(i, j, CurrentZ);
-			if (type == BlockType.Entity && IUnique.TryGetIdFromPosition(
-				unitPos, out int _gID
-			)) {
-				if (removeOriginal) {
-					UserEraseUnique(i, j, z);
-				}
-				PastingBuffer.Add(new BlockBuffer() {
-					ID = _gID,
-					LocalUnitX = i - unitRect.x,
-					LocalUnitY = j - unitRect.y,
-					Type = type,
-					IsUnique = true,
-				});
-			}
-			// Block
-			int id = Stream.GetBlockAt(i, j, CurrentZ, type);
+			int id = Stream.GetBlockAt(i, j, z, type);
 			if (id != 0) {
 				if (removeOriginal) {
 					UserEraseBlock(i, j, type);
@@ -466,7 +405,6 @@ public partial class MapEditor {
 					LocalUnitX = i - unitRect.x,
 					LocalUnitY = j - unitRect.y,
 					Type = type,
-					IsUnique = false,
 				});
 			}
 		}
@@ -551,66 +489,6 @@ public partial class MapEditor {
 				UnitY = unitY,
 				UnitZ = CurrentZ,
 			}, ignoreStep);
-		}
-	}
-
-
-	private bool UserEraseUnique (int unitX, int unitY, int z, bool ignoreStep = false) {
-		var pos = new Int3(unitX, unitY, z);
-		if (IUnique.TryGetIdFromPosition(pos, out int oldGlobalID)) {
-			IUnique.RemovePosition(pos);
-			RegisterUndo(new GlobalPosUndoItem() {
-				FromID = oldGlobalID,
-				ToID = 0,
-				FromUnitPos = pos,
-				ToUnitPos = pos,
-			}, ignoreStep);
-			return true;
-		}
-		return false;
-	}
-
-
-	private void UserSetUnique (int unitX, int unitY, int z, int id, bool ignoreStep = false) {
-		var pos = new Int3(unitX, unitY, z);
-		if (IUnique.TryGetIdFromPosition(pos, out int gID)) {
-			// Have Global Pos Entity at Pos 
-			if (gID != id) {
-				if (IUnique.TryGetPositionFromID(id, out var paintingIdPos)) {
-					IUnique.RemoveID(id);
-					RegisterUndo(new GlobalPosUndoItem() {
-						FromID = id,
-						ToID = 0,
-						FromUnitPos = paintingIdPos,
-						ToUnitPos = paintingIdPos,
-					}, ignoreStep);
-				}
-				IUnique.SetPosition(id, pos);
-				RegisterUndo(new GlobalPosUndoItem() {
-					FromID = gID,
-					ToID = id,
-					FromUnitPos = pos,
-					ToUnitPos = pos,
-				}, ignoreStep);
-			}
-		} else {
-			// Target Pos Is Empty
-			if (IUnique.TryGetPositionFromID(id, out var oldPos)) {
-				RegisterUndo(new GlobalPosUndoItem() {
-					FromID = id,
-					ToID = id,
-					FromUnitPos = oldPos,
-					ToUnitPos = pos,
-				}, ignoreStep);
-			} else {
-				RegisterUndo(new GlobalPosUndoItem() {
-					FromID = 0,
-					ToID = id,
-					FromUnitPos = pos,
-					ToUnitPos = pos,
-				}, ignoreStep);
-			}
-			IUnique.SetPosition(id, pos);
 		}
 	}
 

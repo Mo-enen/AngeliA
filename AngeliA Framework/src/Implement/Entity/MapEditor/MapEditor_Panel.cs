@@ -35,7 +35,6 @@ public partial class MapEditor {
 		public int ArtworkID = 0;
 		public int GroupIndex = -1;
 		public string Name = "";
-		public bool IsUnique = false;
 		public string CodePath = "";
 		public BlockType BlockType = BlockType.Entity;
 		public SpriteGroup Group = null;
@@ -93,7 +92,6 @@ public partial class MapEditor {
 	private int SelectingPaletteListIndex = 0;
 	private int PaletteScrollY = 0;
 	private int PaletteSearchScrollY = 0;
-	private int QuickLaneScrollY = 0;
 	private string SearchingText = "";
 	private int DraggingForReorderPaletteGroup = -1;
 	private int DraggingForReorderPaletteItem = -1;
@@ -258,7 +256,6 @@ public partial class MapEditor {
 				BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
 				Name = Util.GetDisplayName((char.IsLower(type.Name[0]) ? type.Name[1..] : type.Name).TrimEnd_NumbersEmpty_()),
 				Group = null,
-				IsUnique = IUnique.IsUniqueEntity(typeId),
 			});
 		}
 
@@ -602,7 +599,7 @@ public partial class MapEditor {
 					Renderer.DrawSlice(
 						BuiltInSprite.FRAME_16, rect,
 						BORDER_ALT, BORDER_ALT, BORDER_ALT, BORDER_ALT,
-						pal.IsUnique ? Color32.ORANGE : Color32.GREEN
+						Color32.GREEN
 					);
 				}
 
@@ -835,55 +832,6 @@ public partial class MapEditor {
 		}
 
 		GUI.Enable = oldE;
-	}
-
-
-	private void Update_NavQuickLane () {
-
-		int BUTTON_PADDING = Unify(6);
-		int ITEM_SIZE = Unify(64) + BUTTON_PADDING;
-		int COLUMN = CheckPointLaneRect.width / ITEM_SIZE;
-		int ROW = CheckAltarIDs.Count.CeilDivide(COLUMN);
-		int pageLineCount = CheckPointLaneRect.height / ITEM_SIZE;
-		int offsetX = (CheckPointLaneRect.width - COLUMN * ITEM_SIZE) / 2;
-
-		// BG
-		Renderer.DrawPixel(CheckPointLaneRect, Color32.BLACK);
-
-		// Scroll
-		if (!Input.HoldingCtrl && Input.MouseWheelDelta != 0) {
-			QuickLaneScrollY -= Input.MouseWheelDelta;
-		}
-
-		// Content
-		bool oldE = GUI.Enable;
-		QuickLaneScrollY = QuickLaneScrollY.Clamp(0, Util.Max(ROW - pageLineCount + 3, 0));
-		int index = 0;
-		for (int i = QuickLaneScrollY * COLUMN; i < CheckAltarIDs.Count; i++, index++) {
-
-			int id = CheckAltarIDs[i];
-			GUI.Enable = IUnique.TryGetPositionFromID(id, out var globalUnitPos) && !TaskingRoute;
-
-			// Button
-			var btnRect = new IRect(
-				CheckPointLaneRect.x + (index % COLUMN) * ITEM_SIZE + offsetX,
-				CheckPointLaneRect.yMax - ((index / COLUMN) + 1) * ITEM_SIZE,
-				ITEM_SIZE, ITEM_SIZE
-			).Shrink(BUTTON_PADDING);
-
-			if (btnRect.yMax < CheckPointLaneRect.y) break;
-
-			if (GUI.Button(btnRect, id, Skin.ItemFrame)) {
-				TargetViewRect.x = globalUnitPos.x.ToGlobal() - TargetViewRect.width / 2;
-				TargetViewRect.y = globalUnitPos.y.ToGlobal() - Player.GetCameraShiftOffset(TargetViewRect.height);
-				NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
-				NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
-				SetViewZ(globalUnitPos.z);
-				SetNavigating(false);
-			}
-		}
-		GUI.Enable = oldE;
-
 	}
 
 

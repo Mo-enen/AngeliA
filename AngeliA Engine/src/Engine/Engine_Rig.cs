@@ -38,7 +38,6 @@ public partial class Engine {
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
 	private int RigMapEditorWindowIndex = 0;
-	private int CharAniEditorWindowIndex = 0;
 	private long RequireBackgroundBuildDate = 0;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
@@ -224,7 +223,7 @@ public partial class Engine {
 			if (SettingWindow.Instance.RigSettingChanged) {
 				SettingWindow.Instance.RigSettingChanged = false;
 				calling.RequireSettingChange = true;
-				calling.Setting_MEDT_Enable = EngineSetting.MapEditor_Enable.Value;
+				calling.Setting_MEDT_Enable = !CurrentProject.Universe.Info.UseProceduralMap && EngineSetting.MapEditor_Enable.Value;
 				calling.Setting_MEDT_AutoZoom = EngineSetting.MapEditor_AutoZoom.Value;
 				calling.Setting_MEDT_QuickPlayerDrop = EngineSetting.MapEditor_QuickPlayerDrop.Value;
 				calling.Setting_MEDT_ShowBehind = EngineSetting.MapEditor_ShowBehind.Value;

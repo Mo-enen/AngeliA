@@ -17,7 +17,7 @@ public sealed class DefaultPlayer : Player {
 [EntityAttribute.ForceSpawn]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]
-public abstract class Player : PoseCharacter, IUnique, IDamageReceiver, IActionTarget {
+public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 

@@ -25,53 +25,61 @@ public abstract class PickWeapon : Weapon {
 	// MSG
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
-		if (holder is PoseCharacter pHolder && pHolder.IsAttackAllowedByMovement()) {
+		if (
+			holder is not PoseCharacter pHolder ||
+			!pHolder.IsAttackAllowedByMovement() ||
+			pHolder.CharacterState != CharacterState.GamePlay ||
+			PlayerMenuUI.ShowingUI ||
+			Task.HasTask() ||
+			WorldSquad.Readonly
+		) goto _BASE_;
 
-			pHolder.OverridePoseAttackAnimation(WeaponType, PoseAttack_PickaxeKnock.TYPE_ID);
-			pHolder.SquatSpeed.Override(0, 1);
-			pHolder.WalkSpeed.Override(0, 1);
+		pHolder.OverridePoseAttackAnimation(WeaponType, PoseAttack_PickaxeKnock.TYPE_ID);
+		pHolder.SquatSpeed.Override(0, 1);
+		pHolder.WalkSpeed.Override(0, 1);
 
-			var aim = pHolder.AimingDirection;
-			var aimNormal = aim.Normal();
-			int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
-			int pointY = pHolder.Rect.yMax - 16;
-			int targetUnitX = pointX.ToUnit() + aimNormal.x;
-			int targetUnitY = pointY.ToUnit() + aimNormal.y;
-			bool hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
+		var aim = pHolder.AimingDirection;
+		var aimNormal = aim.Normal();
+		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
+		int pointY = pHolder.Rect.yMax - 16;
+		int targetUnitX = pointX.ToUnit() + aimNormal.x;
+		int targetUnitY = pointY.ToUnit() + aimNormal.y;
+		bool hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
 
-			// Redirect
-			if (!hasTraget) {
-				int oldTargetX = targetUnitX;
-				int oldTargetY = targetUnitX;
-				if (aim.IsBottom()) {
-					if (aim == Direction8.Bottom) {
-						targetUnitX += pointX.UMod(Const.CEL) < Const.HALF ? -1 : 1;
-					}
-				} else if (aim.IsTop()) {
-					if (aim == Direction8.Top) {
-						targetUnitX += pHolder.FacingRight ? 1 : -1;
-					}
-				} else {
-					targetUnitY--;
+		// Redirect
+		if (!hasTraget) {
+			int oldTargetX = targetUnitX;
+			int oldTargetY = targetUnitX;
+			if (aim.IsBottom()) {
+				if (aim == Direction8.Bottom) {
+					targetUnitX += pointX.UMod(Const.CEL) < Const.HALF ? -1 : 1;
 				}
-				if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
-					hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
+			} else if (aim.IsTop()) {
+				if (aim == Direction8.Top) {
+					targetUnitX += pHolder.FacingRight ? 1 : -1;
 				}
+			} else {
+				targetUnitY--;
 			}
-
-			// Target Block Highlight
-			if (!PlayerMenuUI.ShowingUI) {
-				DrawPickTargetHighlight(targetUnitX, targetUnitY, hasTraget);
-			}
-
-			// Pick
-			if (Game.GlobalFrame == pHolder.LastAttackFrame) {
-				PickBlockAt(targetUnitX, targetUnitY);
+			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
+				hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
 			}
 		}
 
+		// Target Block Highlight
+		if (!PlayerMenuUI.ShowingUI) {
+			DrawPickTargetHighlight(targetUnitX, targetUnitY, hasTraget);
+		}
+
+		// Pick
+		if (Game.GlobalFrame == pHolder.LastAttackFrame) {
+			PickBlockAt(targetUnitX, targetUnitY);
+		}
+
 		// Base
+		_BASE_:;
 		base.PoseAnimationUpdate_FromEquipment(holder);
+
 	}
 
 

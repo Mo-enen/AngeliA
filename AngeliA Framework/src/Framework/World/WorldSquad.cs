@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public enum MapChannel { General, Procedure, }
-
-
 public class WorldSquad : IBlockSquad {
 
 
@@ -19,13 +16,11 @@ public class WorldSquad : IBlockSquad {
 	public static bool SquadReady { get; private set; } = false;
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
-	public static MapChannel Channel { get; private set; } = MapChannel.General;
-	public static bool Readonly => !Game.AllowModifyMapDuringGameplay;
 	public static string MapRoot => Stream?.MapRoot;
+	public static bool Readonly { get; private set; } = false;
 
 	// Data
 	private static WorldStream Stream = null;
-	private static event System.Action OnMapFolderChanged;
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
 	private int BackgroundBlockSize = Const.CEL;
@@ -44,22 +39,21 @@ public class WorldSquad : IBlockSquad {
 
 	[OnGameInitialize(-128)]
 	public static void OnGameInitialize () {
+		Readonly = !Universe.BuiltIn.Info.UseProceduralMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
-		Util.LinkEventWithAttribute<OnMapFolderChangedAttribute>(typeof(WorldSquad), nameof(OnMapFolderChanged));
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
+		Stream = WorldStream.GetOrCreateStreamFromPool(Readonly ? Universe.BuiltIn.MapRoot : Universe.BuiltIn.UserMapRoot);
 		SquadReady = true;
 	}
 
 
-	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () => SwitchToGeneralChannel(forceOperate: true);
-
-
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
-		if (!Readonly) Stream?.SaveAllDirty();
+		if (!Readonly) {
+			Stream?.SaveAllDirty();
+		}
 	}
 
 
@@ -188,10 +182,6 @@ public class WorldSquad : IBlockSquad {
 							if (entityID != 0) {
 								DrawEntity(entityID, i, j, z);
 							}
-							// Global Pos
-							if (IUnique.TryGetIdFromPosition(new Int3(i, j, z), out int gID)) {
-								DrawEntity(gID, i, j, z);
-							}
 						}
 					}
 				} else {
@@ -204,13 +194,6 @@ public class WorldSquad : IBlockSquad {
 							var entityID = eSpan[index];
 							if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
 								DrawBehind(entityID, i, j, true);
-							}
-							// Global Pos
-							if (
-								IUnique.TryGetIdFromPosition(new Int3(i, j, z), out int gID) &&
-								Stage.RequireDrawEntityBehind(gID, i, j, z)
-							) {
-								DrawBehind(gID, i, j, true);
 							}
 						}
 					}
@@ -230,23 +213,6 @@ public class WorldSquad : IBlockSquad {
 
 
 	#region --- API ---
-
-
-	public static void SwitchToGeneralChannel (bool forceOperate = false, bool forceBuiltIn = false) => SetChannelLogic(string.Empty, MapChannel.General, forceOperate, forceBuiltIn);
-	public static void SwitchToProcedureChannel (string folderName, bool forceOperate = false) => SetChannelLogic(folderName, MapChannel.Procedure, forceOperate, false);
-	private static void SetChannelLogic (string procedureFolderName, MapChannel newChannel, bool forceOperate = false, bool forceBuiltIn = false) {
-		if (!forceOperate && newChannel == Channel) return;
-		if (!Readonly && Channel == MapChannel.General) {
-			Stream?.SaveAllDirty();
-		}
-		Channel = newChannel;
-		string mapRoot = newChannel switch {
-			MapChannel.Procedure => Util.CombinePaths(Universe.BuiltIn.ProcedureMapRoot, procedureFolderName),
-			MapChannel.General or _ => !forceBuiltIn && Game.AllowModifyMapDuringGameplay ? Universe.BuiltIn.UserMapRoot : Universe.BuiltIn.MapRoot,
-		};
-		Stream = WorldStream.GetOrCreateStreamFromPool(mapRoot);
-		OnMapFolderChanged?.Invoke();
-	}
 
 
 	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
@@ -338,17 +304,18 @@ public class WorldSquad : IBlockSquad {
 
 
 	private void DrawBehind (int id, int unitX, int unitY, bool fixRatio) {
+
+		if (
+			!Renderer.TryGetSprite(id, out var sprite) &&
+			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
+		) return;
+
 		var cameraRect = CameraRect;
 		var rect = new IRect(
 			Util.RemapUnclamped(ParallaxRect.xMin, ParallaxRect.xMax, cameraRect.xMin, cameraRect.xMax, unitX * Const.CEL),
 			Util.RemapUnclamped(ParallaxRect.yMin, ParallaxRect.yMax, cameraRect.yMin, cameraRect.yMax, unitY * Const.CEL),
 			BackgroundBlockSize, BackgroundBlockSize
 		);
-
-		if (
-			!Renderer.TryGetSprite(id, out var sprite) &&
-			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
-		) return;
 
 		if (
 			fixRatio &&
@@ -367,6 +334,7 @@ public class WorldSquad : IBlockSquad {
 		);
 
 		tint.a = Game.WorldBehindAlpha;
+
 		Renderer.Draw(sprite, rect, tint, 0);
 	}
 

@@ -428,10 +428,17 @@ public partial class RayGame {
 		), rTexture, inverse);
 	}
 
+	protected override void _DrawGizmosMap (IRect rect, FRect uv, Int3 worldPos) {
+
+
+		
+
+
+
+
+	}
+
 	protected override void _IgnoreGizmos (int duration = 0) => GizmosRender.IgnoreGizmos(duration);
-
-	protected override void _ForceRequireGizmosTextureFromMap (object texture, Int3 worldPos) { }
-
 
 	// Text
 	protected override int _GetFontCount () => Fonts.Count;

@@ -154,9 +154,6 @@ public class OpeningTask : TaskItem {
 				Player.HomeUnitPosition.Value.y,
 				Player.HomeUnitPosition.Value.z
 			);
-		} else if (IUnique.TryGetPositionFromID(Player.Selecting.TypeID, out var mapUnitPosition)) {
-			// Global Map Pos
-			startUnitPosition = mapUnitPosition;
 		} else {
 			// Fail
 			startUnitPosition = default;

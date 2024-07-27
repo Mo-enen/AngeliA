@@ -19,14 +19,11 @@ public class RigRespondMessage {
 	}
 
 
-	public struct GizmosTextureData {
+	public struct GizmosMapData {
 		public IRect Rect;
 		public FRect Uv;
-		public bool Inverse;
-		public uint TextureRigID;
-		public Int3? MapPos;
+		public Int3 MapPos;
 	}
-
 
 
 	public class RenderingCellData {
@@ -102,8 +99,8 @@ public class RigRespondMessage {
 	public int[] RequireCharsFontIndex = new int[REQUIRE_CHAR_MAX_COUNT];
 	public int RequireGizmosRectCount;
 	public GizmosRectData[] RequireGizmosRects = new GizmosRectData[256 * 256];
-	public int RequireGizmosTextureCount;
-	public GizmosTextureData[] RequireGizmosTextures = new GizmosTextureData[1024];
+	public int RequireGizmosMapCount;
+	public GizmosMapData[] RequireGizmosMaps = new GizmosMapData[12 * 12];
 	public RenderingLayerData[] Layers = new RenderingLayerData[RenderLayer.COUNT];
 	public int[] RenderUsages = new int[RenderLayer.COUNT];
 	public int[] EntityUsages = new int[EntityLayer.COUNT];
@@ -148,7 +145,7 @@ public class RigRespondMessage {
 		RequireSetSoundVolume = -1;
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
-		RequireGizmosTextureCount = 0;
+		RequireGizmosMapCount = 0;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
@@ -158,7 +155,7 @@ public class RigRespondMessage {
 	}
 
 
-	public void ApplyToEngine (RigCallingMessage callingMessage, int sheetIndex, bool ignoreMouseInput, Universe universe) {
+	public void ApplyToEngine (RigCallingMessage callingMessage, bool ignoreMouseInput) {
 
 		Game.MusicVolume = MusicVolume;
 		Game.SoundVolume = SoundVolume;
@@ -192,21 +189,6 @@ public class RigRespondMessage {
 					FontIndex = fontIndex,
 					Valid = false,
 				};
-			}
-		}
-
-		// Gizmos Texture Requirement
-		using (new SheetIndexScope(sheetIndex)) {
-			for (int i = 0; i < RequireGizmosTextureCount; i++) {
-				var data = RequireGizmosTextures[i];
-				if (!data.MapPos.HasValue) continue;
-				// Fill/New Texture
-				if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) {
-					texture = Game.GetTextureFromPixels(null, Const.MAP, Const.MAP);
-				}
-				string mapPath = Util.CombinePaths(universe.MapRoot, WorldPathPool.GetWorldNameFromPosition(data.MapPos.Value));
-				World.LoadMapIntoTexture(mapPath, texture);
-				GizmosTexturePool[data.TextureRigID] = texture;
 			}
 		}
 
@@ -278,12 +260,11 @@ public class RigRespondMessage {
 			}
 		}
 
-		// Gizmos Texture
-		for (int i = 0; i < RequireGizmosTextureCount; i++) {
-			var data = RequireGizmosTextures[i];
-			if (data.MapPos.HasValue) continue;
-			if (!GizmosTexturePool.TryGetValue(data.TextureRigID, out var texture)) continue;
-			Game.DrawGizmosTexture(data.Rect.Shift(leftPadding / 2, 0), data.Uv, texture, data.Inverse);
+		// Gizmos Map
+		for (int i = 0; i < RequireGizmosMapCount; i++) {
+			var data = RequireGizmosMaps[i];
+			var rect = data.Rect.Shift(leftPadding / 2, 0);
+			Game.DrawGizmosMap(rect, data.Uv, data.MapPos);
 		}
 
 		// Message Layer/Cells >> Renderer Layer/Cells
@@ -447,25 +428,14 @@ public class RigRespondMessage {
 				};
 			}
 
-			RequireGizmosTextureCount = Util.ReadInt(ref pointer, end);
-			for (int i = 0; i < RequireGizmosTextureCount; i++) {
-				uint id = Util.ReadUInt(ref pointer, end);
+			RequireGizmosMapCount = Util.ReadInt(ref pointer, end);
+			for (int i = 0; i < RequireGizmosMapCount; i++) {
 				var rect = new IRect(Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end));
 				var uv = new FRect(Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end));
-				var inverse = Util.ReadBool(ref pointer, end);
-				bool hasMapPos = Util.ReadBool(ref pointer, end);
-				Int3? mapPos = null;
-				if (hasMapPos) {
-					int _x = Util.ReadInt(ref pointer, end);
-					int _y = Util.ReadInt(ref pointer, end);
-					int _z = Util.ReadInt(ref pointer, end);
-					mapPos = new Int3(_x, _y, _z);
-				}
-				RequireGizmosTextures[i] = new GizmosTextureData() {
-					TextureRigID = id,
+				var mapPos = new Int3(Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end));
+				RequireGizmosMaps[i] = new GizmosMapData() {
 					Rect = rect,
 					Uv = uv,
-					Inverse = inverse,
 					MapPos = mapPos,
 				};
 			}
@@ -593,10 +563,9 @@ public class RigRespondMessage {
 				Util.Write(ref pointer, data.Color.a, end);
 			}
 
-			Util.Write(ref pointer, RequireGizmosTextureCount, end);
-			for (int i = 0; i < RequireGizmosTextureCount; i++) {
-				var data = RequireGizmosTextures[i];
-				Util.Write(ref pointer, data.TextureRigID, end);
+			Util.Write(ref pointer, RequireGizmosMapCount, end);
+			for (int i = 0; i < RequireGizmosMapCount; i++) {
+				var data = RequireGizmosMaps[i];
 				Util.Write(ref pointer, data.Rect.x, end);
 				Util.Write(ref pointer, data.Rect.y, end);
 				Util.Write(ref pointer, data.Rect.width, end);
@@ -605,13 +574,9 @@ public class RigRespondMessage {
 				Util.Write(ref pointer, data.Uv.y, end);
 				Util.Write(ref pointer, data.Uv.width, end);
 				Util.Write(ref pointer, data.Uv.height, end);
-				Util.Write(ref pointer, data.Inverse, end);
-				Util.Write(ref pointer, data.MapPos.HasValue, end);
-				if (data.MapPos.HasValue) {
-					Util.Write(ref pointer, data.MapPos.Value.x, end);
-					Util.Write(ref pointer, data.MapPos.Value.y, end);
-					Util.Write(ref pointer, data.MapPos.Value.z, end);
-				}
+				Util.Write(ref pointer, data.MapPos.x, end);
+				Util.Write(ref pointer, data.MapPos.y, end);
+				Util.Write(ref pointer, data.MapPos.z, end);
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {

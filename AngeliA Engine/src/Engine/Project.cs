@@ -35,10 +35,7 @@ public class Project {
 			path => !path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase),
 			defaultValue: ""
 		),
-		Universe = Universe.LoadFromFile(
-			AngePath.GetUniverseRoot(projectPath),
-			useBuiltInSavingRoot: true
-		),
+		Universe = Universe.LoadFromFile(AngePath.GetUniverseRoot(projectPath)),
 	};
 
 

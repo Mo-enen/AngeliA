@@ -24,14 +24,6 @@ public sealed partial class MapEditor : WindowUI {
 		public int UnitY;
 		public int UnitZ;
 	}
-	private struct GlobalPosUndoItem : IUndoItem {
-		public int Step { get; set; }
-		public int FromID;
-		public int ToID;
-		public Int3 FromUnitPos;
-		public Int3 ToUnitPos;
-	}
-
 
 	// Misc
 	private struct BlockBuffer {
@@ -39,7 +31,6 @@ public sealed partial class MapEditor : WindowUI {
 		public BlockType Type;
 		public int LocalUnitX;
 		public int LocalUnitY;
-		public bool IsUnique;
 	}
 
 
@@ -156,6 +147,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoPerformedFrame = -1;
 	private int RequireWorldRenderBlinkIndex = -1;
 	private bool? RequireSetMode = null;
+	private bool UseProceduralMap = false;
 	private Long4? TargetUndoViewPos = null;
 
 
@@ -173,17 +165,19 @@ public sealed partial class MapEditor : WindowUI {
 		if (!Instance.PlayingGame) {
 			Instance.ApplyPaste();
 			Instance.Save();
-		} else if (Game.AllowModifyMapDuringGameplay) {
+		} else if (Instance.UseProceduralMap) {
 			WorldSquad.DiscardAllChangesInMemory();
 		}
 		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.MapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.MapRoot);
-		IUnique.SaveToDisk(Instance.Stream.MapRoot);
 	}
 
 
 	// Active
-	public MapEditor () => Instance = this;
+	public MapEditor () {
+		Instance = this;
+		Instance.UseProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
+	}
 
 
 	public override void OnActivated () {
@@ -243,7 +237,6 @@ public sealed partial class MapEditor : WindowUI {
 		LastUndoPerformedFrame = -1;
 		SetNavigating(false);
 		ToolbarOffsetX = 0;
-		IUnique.LoadFromDisk(Stream.MapRoot);
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
@@ -377,7 +370,6 @@ public sealed partial class MapEditor : WindowUI {
 				Update_PaletteGroupUI();
 				Update_PaletteContentUI();
 				Update_ToolbarUI();
-				Update_NavQuickLane();
 				if (!editingPause) {
 					Update_Move();
 					Update_NavMapTextureSlots();
@@ -866,14 +858,6 @@ public sealed partial class MapEditor : WindowUI {
 				}
 			}
 
-			// Unique
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					if (!IUnique.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
-					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, true);
-				}
-			}
-
 		}
 
 		// Current
@@ -917,17 +901,6 @@ public sealed partial class MapEditor : WindowUI {
 				for (int x = left; x <= right; x++) {
 					int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
 					if (id == 0) continue;
-					if (blinkCountDown-- > 0) continue;
-					DrawEntity(id, x, y);
-					index++;
-					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
-				}
-			}
-
-			// Unique
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					if (!IUnique.TryGetIdFromPosition(new Int3(x, y, z), out int id)) continue;
 					if (blinkCountDown-- > 0) continue;
 					DrawEntity(id, x, y);
 					index++;
@@ -1108,8 +1081,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (Game.GlobalFrame != 0) {
 			if (toPlayMode) {
 				Save();
-			} else if (Game.AllowModifyMapDuringGameplay) {
-				CleanDirty();
+			} else if (UseProceduralMap) {
 				WorldSquad.DiscardAllChangesInMemory();
 			}
 		}
@@ -1122,17 +1094,10 @@ public sealed partial class MapEditor : WindowUI {
 		MapChest.ClearOpenedMarks();
 		Stage.ClearGlobalAntiSpawn();
 		Player.RespawnCpUnitPosition = null;
-		if (toPlayMode) {
-			IUnique.SaveToDisk(Stream.MapRoot);
-		}
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 		GUI.CancelTyping();
 
 		// Squad  
-		if (WorldSquad.Channel != MapChannel.General || WorldSquad.MapRoot != Universe.BuiltIn.MapRoot) {
-			WorldSquad.SwitchToGeneralChannel(forceOperate: true, forceBuiltIn: true);
-			MapGenerator.DeleteAllGeneratedMapFiles();
-		}
 		WorldSquad.Enable = toPlayMode;
 
 		if (!toPlayMode) {
@@ -1352,6 +1317,8 @@ public sealed partial class MapEditor : WindowUI {
 	private void OnRedoPerformed (IUndoItem item) => OnUndoRedoPerformed(item, false);
 	private void OnUndoRedoPerformed (IUndoItem item, bool reversed) {
 
+		if (item is not BlockUndoItem blockItem) return;
+
 		// Start Undo Perform for Current Frame
 		if (LastUndoPerformedFrame != Game.PauselessFrame) {
 			LastUndoPerformedFrame = Game.PauselessFrame;
@@ -1361,53 +1328,29 @@ public sealed partial class MapEditor : WindowUI {
 			CurrentUndoRuleMax.y = int.MinValue;
 		}
 
-		Int3? targetUnitPos = null;
-
 		// Perform
-		switch (item) {
-			case BlockUndoItem blockItem:
-				// Block
-				targetUnitPos = new(blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ);
-				Stream.SetBlockAt(
-					blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ, blockItem.Type,
-					reversed ? blockItem.FromID : blockItem.ToID
-				);
-				if (blockItem.Type == BlockType.Level || blockItem.Type == BlockType.Background) {
-					CurrentUndoRuleMin.x = Util.Min(CurrentUndoRuleMin.x, blockItem.UnitX);
-					CurrentUndoRuleMin.y = Util.Min(CurrentUndoRuleMin.y, blockItem.UnitY);
-					CurrentUndoRuleMax.x = Util.Max(CurrentUndoRuleMax.x, blockItem.UnitX);
-					CurrentUndoRuleMax.y = Util.Max(CurrentUndoRuleMax.y, blockItem.UnitY);
-				}
-				break;
-			case GlobalPosUndoItem globalPosItem:
-				// Global Pos
-				int targetID = reversed ? globalPosItem.FromID : globalPosItem.ToID;
-				if (targetID == 0) {
-					int targetIdAlt = reversed ? globalPosItem.ToID : globalPosItem.FromID;
-					if (IUnique.TryGetPositionFromID(targetIdAlt, out var removingPos)) {
-						targetUnitPos = removingPos;
-					}
-					IUnique.RemoveID(targetIdAlt);
-				} else {
-					var targetPos = reversed ? globalPosItem.FromUnitPos : globalPosItem.ToUnitPos;
-					IUnique.SetPosition(targetID, targetPos);
-					targetUnitPos = targetPos;
-				}
-				break;
+		var targetUnitPos = new Int3(blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ);
+		Stream.SetBlockAt(
+			blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ, blockItem.Type,
+			reversed ? blockItem.FromID : blockItem.ToID
+		);
+		if (blockItem.Type == BlockType.Level || blockItem.Type == BlockType.Background) {
+			CurrentUndoRuleMin.x = Util.Min(CurrentUndoRuleMin.x, blockItem.UnitX);
+			CurrentUndoRuleMin.y = Util.Min(CurrentUndoRuleMin.y, blockItem.UnitY);
+			CurrentUndoRuleMax.x = Util.Max(CurrentUndoRuleMax.x, blockItem.UnitX);
+			CurrentUndoRuleMax.y = Util.Max(CurrentUndoRuleMax.y, blockItem.UnitY);
 		}
 
 		// Move View
-		if (targetUnitPos.HasValue) {
-			if (TargetUndoViewPos.HasValue) {
-				var pos = TargetUndoViewPos.Value;
-				pos.x += targetUnitPos.Value.x;
-				pos.y += targetUnitPos.Value.y;
-				pos.z += targetUnitPos.Value.z;
-				pos.w++;
-				TargetUndoViewPos = pos;
-			} else {
-				TargetUndoViewPos = new Long4(targetUnitPos.Value.x, targetUnitPos.Value.y, targetUnitPos.Value.z, 1);
-			}
+		if (TargetUndoViewPos.HasValue) {
+			var pos = TargetUndoViewPos.Value;
+			pos.x += targetUnitPos.x;
+			pos.y += targetUnitPos.y;
+			pos.z += targetUnitPos.z;
+			pos.w++;
+			TargetUndoViewPos = pos;
+		} else {
+			TargetUndoViewPos = new Long4(targetUnitPos.x, targetUnitPos.y, targetUnitPos.z, 1);
 		}
 
 	}
@@ -1451,16 +1394,16 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void DrawBlockBehind (IRect cameraRect, IRect paraCameraRect, int blockSize, int id, int unitX, int unitY, bool fixRatio) {
 
+		if (
+			!Renderer.TryGetSprite(id, out var sprite) &&
+			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
+		) return;
+
 		var rect = new IRect(
 			Util.RemapUnclamped(paraCameraRect.xMin, paraCameraRect.xMax, cameraRect.xMin, cameraRect.xMax, (float)unitX * Const.CEL).FloorToInt(),
 			Util.RemapUnclamped(paraCameraRect.yMin, paraCameraRect.yMax, cameraRect.yMin, cameraRect.yMax, (float)unitY * Const.CEL).FloorToInt(),
 			blockSize, blockSize
 		);
-
-		if (
-			!Renderer.TryGetSprite(id, out var sprite) &&
-			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
-		) return;
 
 		if (
 			fixRatio &&

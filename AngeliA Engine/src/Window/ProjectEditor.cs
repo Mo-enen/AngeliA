@@ -44,6 +44,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode MSG_DELETE_MUSIC = ("UI.Project.DeleteMusicMsg", "Delete music \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode MSG_DELETE_SOUND = ("UI.Project.DeleteSoundMsg", "Delete sound \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
+	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }
@@ -61,6 +62,7 @@ public class ProjectEditor : WindowUI {
 	private object IconTexture = null;
 	private long IconFileModifyDate = 0;
 	private object MenuItem = null;
+	private bool RequireRecompileOnSave = false;
 
 
 	#endregion
@@ -236,6 +238,7 @@ public class ProjectEditor : WindowUI {
 				Debug.LogWarning(LOG_PRODUCT_NAME_INVALID);
 			} else {
 				info.ProductName = newProductName;
+				CurrentProject.Universe.SetSavingRoot(info.DeveloperName, info.ProductName);
 				SetDirty();
 			}
 		}
@@ -251,6 +254,7 @@ public class ProjectEditor : WindowUI {
 				Debug.LogWarning(LOG_DEV_NAME_INVALID);
 			} else {
 				info.DeveloperName = newDevName;
+				CurrentProject.Universe.SetSavingRoot(info.DeveloperName, info.ProductName);
 				SetDirty();
 			}
 		}
@@ -273,6 +277,15 @@ public class ProjectEditor : WindowUI {
 		versionRect.SlideRight();
 		if (vChanged) SetDirty();
 
+		rect.SlideDown(padding);
+
+		// Use Procedural Map
+		bool newUseProceduralmap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
+		if (newUseProceduralmap != info.UseProceduralMap) {
+			info.UseProceduralMap = newUseProceduralmap;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
 		rect.SlideDown(padding);
 
 		// Icon
@@ -300,6 +313,7 @@ public class ProjectEditor : WindowUI {
 		}
 		_rect.xMin = bounds.xMax + Unify(12);
 		if (GUI.SmallLinkButton(_rect, LABEL_LINK_SAVING)) {
+			Util.CreateFolder(CurrentProject.Universe.SavingRoot);
 			Game.OpenUrl(CurrentProject.Universe.SavingRoot);
 		}
 		rect.SlideDown(padding);
@@ -459,6 +473,9 @@ public class ProjectEditor : WindowUI {
 		string infoPath = CurrentProject.Universe.InfoPath;
 		var info = CurrentProject.Universe.Info;
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
+		if (RequireRecompileOnSave) {
+			RequiringRebuildFrame = Game.GlobalFrame;
+		}
 	}
 
 

@@ -136,32 +136,16 @@ public partial class RiggedGame {
 		RespondMessage.RequireGizmosRectCount++;
 	}
 
-	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
-		var _id = _GetTextureID(texture);
-		if (!_id.HasValue) return;
-		if (RespondMessage.RequireGizmosTextureCount >= RespondMessage.RequireGizmosTextures.Length) return;
-		uint id = _id.Value;
-		var data = new RigRespondMessage.GizmosTextureData() {
-			TextureRigID = id,
-			Inverse = inverse,
+	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) { }
+
+	protected override void _DrawGizmosMap (IRect rect, FRect uv, Int3 worldPos) {
+		if (RespondMessage.RequireGizmosMapCount >= RespondMessage.RequireGizmosMaps.Length) return;
+		RespondMessage.RequireGizmosMaps[RespondMessage.RequireGizmosMapCount] = new() {
 			Rect = rect,
 			Uv = uv,
-			MapPos = null,
-		};
-		RespondMessage.RequireGizmosTextures[RespondMessage.RequireGizmosTextureCount] = data;
-		RespondMessage.RequireGizmosTextureCount++;
-	}
-
-	protected override void _ForceRequireGizmosTextureFromMap (object texture, Int3 worldPos) {
-		var _id = _GetTextureID(texture);
-		if (!_id.HasValue) return;
-		if (RespondMessage.RequireGizmosTextureCount >= RespondMessage.RequireGizmosTextures.Length) return;
-		var data = new RigRespondMessage.GizmosTextureData() {
-			TextureRigID = _id.Value,
 			MapPos = worldPos,
 		};
-		RespondMessage.RequireGizmosTextures[RespondMessage.RequireGizmosTextureCount] = data;
-		RespondMessage.RequireGizmosTextureCount++;
+		RespondMessage.RequireGizmosMapCount++;
 	}
 
 	protected override void _IgnoreGizmos (int duration = 0) { }

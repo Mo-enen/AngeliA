@@ -165,7 +165,7 @@ public class RigTransceiver {
 		_HANDLE_:;
 		// Handle Respon
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
-		RespondMessage.ApplyToEngine(CallingMessage, sheetIndex, ignoreMouseInput, universe);
+		RespondMessage.ApplyToEngine(CallingMessage, ignoreMouseInput);
 		if (!ignoreRendering) {
 			RespondMessage.UpdateRendering(sheetIndex, LeftPadding, gizmosDodgeRect);
 		}

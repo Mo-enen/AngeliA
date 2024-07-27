@@ -10,10 +10,6 @@ public class ToolApplicationAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Assembly)]
-public class AllowModifyMapDuringGameplayAttribute : Attribute { }
-
-
-[AttributeUsage(AttributeTargets.Assembly)]
 public class DisablePauseAttribute : Attribute { }
 
 

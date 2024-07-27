@@ -15,7 +15,6 @@ public partial class MapEditor {
 		public int WorldX;
 		public int WorldY;
 		public bool IsEmpty;
-		public object Texture;
 	}
 
 
@@ -47,22 +46,6 @@ public partial class MapEditor {
 	#region --- MSG ---
 
 
-	[OnGameQuitting]
-	internal static void OnGameQuitting_Nav () {
-		var mapEditor = Stage.PeekOrGetEntity<MapEditor>();
-		if (mapEditor != null) {
-			int slotSize = NAV_WORLD_SIZE + 1;
-			for (int i = 0; i < slotSize; i++) {
-				for (int j = 0; j < slotSize; j++) {
-					var slot = mapEditor.NavSlots[i, j];
-					if (slot == null || slot.Texture == null) continue;
-					Game.UnloadTexture(slot.Texture);
-				}
-			}
-		}
-	}
-
-
 	private void Initialize_Nav () {
 		// Create Slots
 		int slotSize = NAV_WORLD_SIZE + 1;
@@ -71,7 +54,6 @@ public partial class MapEditor {
 				NavSlots[i, j] = new NavWorldSlot() {
 					WorldX = int.MinValue + i,
 					WorldY = int.MinValue + j,
-					Texture = Game.GetTextureFromPixels(null, Const.MAP, Const.MAP),
 					IsEmpty = true,
 				};
 			}
@@ -186,10 +168,6 @@ public partial class MapEditor {
 						slot.WorldX = worldX;
 						slot.WorldY = worldY;
 						slot.IsEmpty = !Stream.ContainsWorldPos(worldPos);
-						if (Stream.TryGetWorld(worldPos.x, worldPos.y, worldPos.z, out var world)) {
-							world.FillMapIntoTexture(slot.Texture);
-							Game.ForceRequireGizmosTextureFromMap(slot.Texture, worldPos);
-						}
 					}
 				}
 			}
@@ -210,7 +188,8 @@ public partial class MapEditor {
 		for (int j = 0; j < slotSize; j++) {
 			for (int i = 0; i < slotSize; i++) {
 				var slot = NavSlots[i, j];
-				if (slot.IsEmpty || slot.Texture == null) continue;
+				if (slot.IsEmpty) continue;
+				var worldPos = new Int3(slot.WorldX, slot.WorldY, NavLoadedSlotZ);
 				var rect = new IRect(
 					globalOffsetX + totalRect.x + (slot.WorldX - targetWorldX) * slotRectWidth,
 					globalOffsetY + totalRect.y + (slot.WorldY - targetWorldY) * slotRectHeight,
@@ -220,10 +199,10 @@ public partial class MapEditor {
 					if (rect.xMax > navPanelRect.xMax) {
 						rect = rect.Shrink(navPanelRect.xMax - rect.xMin, 0, 0, 0);
 						var uv = new FRect(1f - (float)rect.width / slotRectWidth, 0f, (float)rect.width / slotRectWidth, 1f);
-						Game.DrawGizmosTexture(rect, uv, slot.Texture);
+						Game.DrawGizmosMap(rect, uv, worldPos);
 					}
 				} else {
-					Game.DrawGizmosTexture(rect, slot.Texture);
+					Game.DrawGizmosMap(rect, worldPos);
 				}
 			}
 		}
