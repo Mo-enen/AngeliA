@@ -57,6 +57,7 @@ public abstract partial class Character : Rigidbody {
 	public int SleepStartFrame { get; private set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
 	public bool InventoryCurrentAvailable => IsCharacterWithInventory && Game.GlobalFrame > IgnoreInventoryFrame;
+	public bool EquipingPickWeapon { get; private set; } = false;
 	protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
 	protected override int AirDragX => 0;
 	protected override int AirDragY => 0;
@@ -158,6 +159,7 @@ public abstract partial class Character : Rigidbody {
 					MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
 					RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
 					LockFacingOnAttack = weapon.LockFacingOnAttack;
+					EquipingPickWeapon = weapon is PickWeapon;
 					HoldAttackPunish.Override(weapon.HoldAttackPunish);
 					DefaultSpeedLoseOnAttack.Override(weapon.DefaultSpeedLoseOnAttack);
 					WalkingSpeedLoseOnAttack.Override(weapon.WalkingSpeedLoseOnAttack);

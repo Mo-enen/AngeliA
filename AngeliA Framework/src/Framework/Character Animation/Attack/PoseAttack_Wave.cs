@@ -1,6 +1,7 @@
 ﻿namespace AngeliA;
 
 public class PoseAttack_Wave : PoseAnimation {
+
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 		int style;
@@ -14,7 +15,8 @@ public class PoseAttack_Wave : PoseAnimation {
 				style =
 					character.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
-					weaponType == WeaponType.Flail ?
+					weaponType == WeaponType.Flail ||
+					character.EquipingPickWeapon ?
 					0 : character.AttackStyleIndex % character.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -38,7 +40,8 @@ public class PoseAttack_Wave : PoseAnimation {
 				style =
 					character.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
-					weaponType == WeaponType.Flail ?
+					weaponType == WeaponType.Flail ||
+					character.EquipingPickWeapon ?
 					0 : character.AttackStyleIndex % character.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -59,7 +62,10 @@ public class PoseAttack_Wave : PoseAnimation {
 			// Each Hand
 			case WeaponHandheld.OneOnEachHand:
 				character.AttackStyleLoop = 4;
-				style = character.LastAttackCharged ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
+				style =
+					character.LastAttackCharged ||
+					character.EquipingPickWeapon ? 0 :
+					character.AttackStyleIndex % character.AttackStyleLoop;
 				switch (style) {
 					default:
 						EachHand_SmashDown();
@@ -79,7 +85,11 @@ public class PoseAttack_Wave : PoseAnimation {
 			// Pole
 			case WeaponHandheld.Pole:
 				character.AttackStyleLoop = 4;
-				style = character.LastAttackCharged || character.EquippingWeaponType == WeaponType.Flail ? 0 : character.AttackStyleIndex % character.AttackStyleLoop;
+				style =
+					character.LastAttackCharged ||
+					character.EquippingWeaponType == WeaponType.Flail ||
+					character.EquipingPickWeapon ? 0 :
+					character.AttackStyleIndex % character.AttackStyleLoop;
 				switch (style) {
 					default:
 						Polearm_SmashDown();
@@ -97,6 +107,7 @@ public class PoseAttack_Wave : PoseAnimation {
 				break;
 		}
 	}
+
 	public static void SingleHanded_SmashDown () {
 
 		bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
@@ -120,7 +131,16 @@ public class PoseAttack_Wave : PoseAnimation {
 		}
 
 		// Upper Arm R
-		UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-185, -9, ease01));
+		const int STEP = 55;
+		(int from, int to) = Target.AimingDirection switch {
+			Direction8.Bottom => (-185 + STEP + STEP, -9 + STEP + STEP),
+			Direction8.BottomLeft or Direction8.BottomRight => (-185 + STEP, -9 + STEP),
+			Direction8.Left or Direction8.Right => (-185, -9),
+			Direction8.TopLeft or Direction8.TopRight => (-185 - STEP, -9 - STEP),
+			Direction8.Top => (-185 - STEP - STEP, -9 - STEP - STEP),
+			_ => (-185, -9),
+		};
+		UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(from, to, ease01));
 		if (!isThrowing) UpperArmR.Height += A2G;
 		LowerArmR.LimbRotate(0);
 		if (!isThrowing) LowerArmR.Height += A2G;
@@ -295,6 +315,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		LowerArmR.Z = (frame01 < 0.5f ? -1 : 1) * LowerArmR.Z.Abs();
 		HandR.Z = POSE_Z_HAND;
 	}
+
 	public static void DoubleHanded_SmashDown () {
 
 		float ease01 = AttackEase;
@@ -510,6 +531,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
 	}
+
 	public static void EachHand_SmashDown () {
 
 		float ease01 = AttackEase;
@@ -704,6 +726,7 @@ public class PoseAttack_Wave : PoseAnimation {
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 	}
+
 	public static void Polearm_SmashDown () {
 
 		float ease01 = AttackEase;

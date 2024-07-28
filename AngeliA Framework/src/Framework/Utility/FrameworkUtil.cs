@@ -334,7 +334,7 @@ public static class FrameworkUtil {
 		int id = stream.GetBlockAt(i, j, z, type);
 		if (id == 0) return;
 		int oldID = id;
-		if (!Renderer.TryGetSprite(id, out var sprite) || sprite.Group == null) return;
+		if (!Renderer.TryGetSprite(id, out var sprite) || sprite.Group == null || !sprite.Group.WithRule) return;
 		var group = sprite.Group;
 		int ruleIndex = GetRuleIndex(
 			group.Sprites, group.ID,

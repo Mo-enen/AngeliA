@@ -34,9 +34,11 @@ public abstract class PickWeapon : Weapon {
 			WorldSquad.Readonly
 		) goto _BASE_;
 
-		pHolder.OverridePoseAttackAnimation(WeaponType, PoseAttack_PickaxeKnock.TYPE_ID);
-		pHolder.SquatSpeed.Override(0, 1);
-		pHolder.WalkSpeed.Override(0, 1);
+		// Movement Override
+		if (!pHolder.IsInsideGround) {
+			pHolder.SquatSpeed.Override(0, 1);
+			pHolder.WalkSpeed.Override(0, 1);
+		}
 
 		var aim = pHolder.AimingDirection;
 		var aimNormal = aim.Normal();
