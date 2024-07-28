@@ -86,7 +86,6 @@ public static class SheetUtil {
 				out var blockRule, out bool noCollider, out int offsetZ,
 				out int aniDuration, out int? pivotX, out int? pivotY
 			);
-			int rule = Util.BlockRuleToDigit(blockRule);
 			int globalWidth = flex.PixelRect.width * Const.ART_SCALE;
 			int globalHeight = flex.PixelRect.height * Const.ART_SCALE;
 			var globalBorder = Int4.Direction(
@@ -131,7 +130,7 @@ public static class SheetUtil {
 				AtlasIndex = atlasIndex,
 				Atlas = atlases[atlasIndex],
 				Tag = tag,
-				Rule = rule,
+				Rule = blockRule,
 				IsTrigger = isTrigger,
 				Group = null,
 				SummaryTint = Util.GetSummaryTint(flex.Pixels),

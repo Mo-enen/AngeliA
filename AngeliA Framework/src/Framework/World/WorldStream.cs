@@ -67,6 +67,9 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
+	public static void ClearStreamPool () => StreamPool.Clear();
+
+
 	public WorldStream (string mapFolder) {
 		PathPool.SetMapRoot(mapFolder);
 		MapRoot = mapFolder;

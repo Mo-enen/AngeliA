@@ -58,7 +58,7 @@ public partial class MapEditor {
 		var cameraRect = Renderer.CameraRect.Shrink(1);
 		int panelWidth = Unify(PANEL_WIDTH);
 		var targetPanelRect = new IRect(
-			Renderer.CameraRect.x + (IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -panelWidth),
+			Renderer.CameraRect.x + (IsEditing && !DroppingPlayer ? 0 : -panelWidth),
 			Renderer.CameraRect.y,
 			panelWidth,
 			Renderer.CameraRect.height
@@ -147,7 +147,7 @@ public partial class MapEditor {
 				}
 			}
 		}
-		RedirectForRule(unitRect, z);
+		FrameworkUtil.RedirectForRule(Stream, unitRect, z);
 		SelectionUnitRect = null;
 		SetDirty();
 	}
@@ -193,14 +193,20 @@ public partial class MapEditor {
 			for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
 				if (paint) {
 					// Paint Block
-					// Redirect for Random
+					// Group
 					if (
 						SelectingPaletteItem.Group != null &&
-						SelectingPaletteItem.Group.Random &&
-						IdChainPool.TryGetValue(SelectingPaletteItem.Group.ID, out var idChain) &&
-						idChain.Length > 0
+						Renderer.TryGetSpriteGroup(SelectingPaletteItem.Group.ID, out var group) &&
+						group.Count > 0
 					) {
-						id = idChain[PaintingRan.Next(0, idChain.Length)];
+						if (SelectingPaletteItem.Group.Random) {
+							// Redirect for Random
+							var _targetSp = group.Sprites[PaintingRan.Next(0, group.Count)];
+							id = _targetSp != null ? _targetSp.ID : 0;
+						} else if (SelectingPaletteItem.Group.WithRule) {
+							// Redirect for Rule
+							id = SelectingPaletteItem.Group.Sprites[0].ID;
+						}
 					}
 					// Set Data
 					UserSetBlock(i, j, type, id);
@@ -241,7 +247,7 @@ public partial class MapEditor {
 			}
 		}
 		SpawnBlinkParticle(unitRect.ToGlobal(), id);
-		RedirectForRule(unitRect, z);
+		FrameworkUtil.RedirectForRule(Stream, unitRect, z);
 		SetDirty();
 	}
 
@@ -263,7 +269,9 @@ public partial class MapEditor {
 			ApplyPaste();
 			SelectionUnitRect = null;
 			int id = Stream.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y, CurrentZ);
-			id = ReversedChainPool.TryGetValue(id, out int rID) ? rID : id;
+			if (Renderer.TryGetSprite(id, out var pickingSp, true) && pickingSp.Group != null) {
+				id = pickingSp.Group.ID;
+			}
 			if (!PalettePool.TryGetValue(id, out SelectingPaletteItem)) {
 				SelectingPaletteItem = null;
 			}
@@ -279,7 +287,7 @@ public partial class MapEditor {
 
 	// Move
 	private void MoveSelection (Int2 delta) {
-		if (delta == Int2.zero || IsPlaying || DroppingPlayer || IsNavigating || !SelectionUnitRect.HasValue) return;
+		if (delta == Int2.zero || IsPlaying || DroppingPlayer || !SelectionUnitRect.HasValue) return;
 		if (!Pasting) StartPaste(true);
 		SelectionUnitRect = SelectionUnitRect.Value.Shift(delta.x, delta.y);
 	}
@@ -305,7 +313,7 @@ public partial class MapEditor {
 		}
 		if (removeOriginal) {
 			SelectionUnitRect = null;
-			RedirectForRule(unitRect, z);
+			FrameworkUtil.RedirectForRule(Stream, unitRect, z);
 			SetDirty();
 		}
 		// Func
@@ -360,7 +368,7 @@ public partial class MapEditor {
 			int unitY = buffer.LocalUnitY + unitRect.y;
 			UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true);
 		}
-		RedirectForRule(unitRect, z);
+		FrameworkUtil.RedirectForRule(Stream, unitRect, z);
 		SetDirty();
 		SelectionUnitRect = null;
 		PastingBuffer.Clear();
@@ -390,7 +398,7 @@ public partial class MapEditor {
 			}
 		}
 		if (removeOriginal) {
-			RedirectForRule(unitRect, z);
+			FrameworkUtil.RedirectForRule(Stream, unitRect, z);
 			SetDirty();
 		}
 		// Func
@@ -408,51 +416,6 @@ public partial class MapEditor {
 				});
 			}
 		}
-	}
-
-
-	// Rule
-	private void RedirectForRule (IRect unitRange, int z) {
-		unitRange = unitRange.Expand(1);
-		for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
-			for (int j = unitRange.yMin; j < unitRange.yMax; j++) {
-				RedirectForRule(i, j, z, BlockType.Level);
-				RedirectForRule(i, j, z, BlockType.Background);
-			}
-		}
-	}
-	private void RedirectForRule (int i, int j, int z, BlockType type) {
-		int id = Stream.GetBlockAt(i, j, z, type);
-		if (id == 0) return;
-		int oldID = id;
-		if (ReversedChainPool.TryGetValue(id, out int realRuleID)) id = realRuleID;
-		if (!IdChainPool.TryGetValue(id, out var idChain)) return;
-		if (!ChainRulePool.TryGetValue(id, out var fullRuleSet)) return;
-		int tl0 = Stream.GetBlockAt(i - 1, j + 1, z, type);
-		int tm0 = Stream.GetBlockAt(i + 0, j + 1, z, type);
-		int tr0 = Stream.GetBlockAt(i + 1, j + 1, z, type);
-		int ml0 = Stream.GetBlockAt(i - 1, j + 0, z, type);
-		int mr0 = Stream.GetBlockAt(i + 1, j + 0, z, type);
-		int bl0 = Stream.GetBlockAt(i - 1, j - 1, z, type);
-		int bm0 = Stream.GetBlockAt(i + 0, j - 1, z, type);
-		int br0 = Stream.GetBlockAt(i + 1, j - 1, z, type);
-		int tl1 = ReversedChainPool.TryGetValue(tl0, out int _tl) ? _tl : tl0;
-		int tm1 = ReversedChainPool.TryGetValue(tm0, out int _tm) ? _tm : tm0;
-		int tr1 = ReversedChainPool.TryGetValue(tr0, out int _tr) ? _tr : tr0;
-		int ml1 = ReversedChainPool.TryGetValue(ml0, out int _ml) ? _ml : ml0;
-		int mr1 = ReversedChainPool.TryGetValue(mr0, out int _mr) ? _mr : mr0;
-		int bl1 = ReversedChainPool.TryGetValue(bl0, out int _bl) ? _bl : bl0;
-		int bm1 = ReversedChainPool.TryGetValue(bm0, out int _bm) ? _bm : bm0;
-		int br1 = ReversedChainPool.TryGetValue(br0, out int _br) ? _br : br0;
-		int ruleIndex = Util.GetRuleIndex(
-			fullRuleSet, id,
-			tl0, tm0, tr0, ml0, mr0, bl0, bm0, br0,
-			tl1, tm1, tr1, ml1, mr1, bl1, bm1, br1
-		);
-		if (ruleIndex < 0 || ruleIndex >= idChain.Length) return;
-		int newID = idChain[ruleIndex];
-		if (newID == oldID) return;
-		Stream.SetBlockAt(i, j, z, type, newID);
 	}
 
 

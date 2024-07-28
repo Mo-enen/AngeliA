@@ -61,8 +61,8 @@ public partial class PixelEditor {
 	private struct SpriteRuleUndoItem : IUndoItem {
 		public int Step { get; set; }
 		public int SpriteID;
-		public int From;
-		public int To;
+		public BlockRule From;
+		public BlockRule To;
 	}
 
 

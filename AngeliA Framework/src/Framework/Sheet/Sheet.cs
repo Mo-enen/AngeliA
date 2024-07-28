@@ -36,8 +36,8 @@ public class Sheet {
 
 
 	public Sheet (
-		bool ignoreGroups = false, 
-		bool ignoreSpriteWithIgnoreTag = true, 
+		bool ignoreGroups = false,
+		bool ignoreSpriteWithIgnoreTag = true,
 		bool ignoreTextureAndPixels = false
 	) {
 		IgnoreGroups = ignoreGroups;
@@ -138,7 +138,6 @@ public class Sheet {
 					group = new SpriteGroup() {
 						ID = groupId,
 						Name = groupName,
-						SpriteIDs = new(),
 						LoopStart = 0,
 						Animated = false,
 						WithRule = false,
@@ -151,19 +150,19 @@ public class Sheet {
 
 				// Add Sprite ID into Group
 				if (groupIndex < group.Count) {
-					group[groupIndex] = sprite.ID;
+					group.Sprites[groupIndex] = sprite;
 				} else if (groupIndex == group.Count) {
-					group.Add(sprite.ID);
+					group.Sprites.Add(sprite);
 				} else {
 					for (int safe = 0; groupIndex > group.Count && safe < SpriteGroup.MAX_COUNT; safe++) {
-						group.Add(0);
+						group.Sprites.Add(AngeSprite.EMPTY);
 					}
-					group.Add(sprite.ID);
+					group.Sprites.Add(sprite);
 				}
 
 				// Extra Info
 				if (sprite.Duration > 0) group.Animated = true;
-				if (sprite.Rule != 0) group.WithRule = true;
+				if (!sprite.Rule.IsEmpty) group.WithRule = true;
 				if (sprite.Tag.HasAll(Tag.LoopStart)) {
 					group.LoopStart = groupIndex;
 				}
@@ -172,7 +171,7 @@ public class Sheet {
 			}
 			// Remove Null
 			foreach (var group in Groups) {
-				group.SpriteIDs.RemoveAll(id => id == 0);
+				group.Sprites.RemoveAll(_sp => _sp == null || _sp.ID == 0);
 			}
 		}
 
@@ -187,6 +186,7 @@ public class Sheet {
 				SyncSpritePixelsIntoTexturePool(sprite);
 			}
 		}
+
 	}
 
 	public void Clear () {
@@ -199,7 +199,7 @@ public class Sheet {
 		TexturePool.Clear();
 	}
 
-	public int GetSpriteAnimationDuration (SpriteGroup aniGroup) => aniGroup.Count == 0 ? 0 : GetTiming(SpritePool, aniGroup, aniGroup.Count);
+	public int GetSpriteAnimationDuration (SpriteGroup aniGroup) => aniGroup.Count == 0 ? 0 : GetTiming(aniGroup, aniGroup.Count);
 
 	public int GetSpriteIdFromAnimationFrame (SpriteGroup group, int localFrame, int loopStart = -1) {
 
@@ -208,14 +208,14 @@ public class Sheet {
 
 		// Fix Loopstart
 		loopStart = loopStart < 0 ? group.LoopStart : loopStart;
-		int loopStartTiming = loopStart == 0 ? 0 : GetTiming(SpritePool, group, loopStart.Clamp(0, len - 1)) + 1;
-		int frameLen = GetTiming(SpritePool, group, len);
+		int loopStartTiming = loopStart == 0 ? 0 : GetTiming(group, loopStart.Clamp(0, len - 1)) + 1;
+		int frameLen = GetTiming(group, len);
 		int totalFrame = localFrame < loopStartTiming ? frameLen : frameLen - loopStartTiming + 1;
 		int frameOffset = localFrame < loopStartTiming ? 0 : loopStartTiming;
 		localFrame = ((localFrame - frameOffset) % totalFrame) + frameOffset;
 
 		// Get Target Index
-		return GetTimingID(SpritePool, group, localFrame);
+		return GetTimingID(group, localFrame);
 	}
 
 	public bool TryGetTextureFromPool (int spriteID, out object texture) {
@@ -265,14 +265,6 @@ public class Sheet {
 		int id = newName.AngeHash();
 		if (SpritePool.ContainsKey(id)) return false;
 		int oldID = sprite.ID;
-		if (sprite.Group != null) {
-			for (int i = 0; i < sprite.Group.Count; i++) {
-				if (sprite.Group.SpriteIDs[i] == oldID) {
-					sprite.Group.SpriteIDs[i] = id;
-					break;
-				}
-			}
-		}
 		SpritePool.Remove(oldID);
 		SpritePool.Add(id, sprite);
 		TexturePool.Remove(oldID);
@@ -366,10 +358,10 @@ public class Sheet {
 		Groups.RemoveAt(groupIndex);
 		GroupPool.Remove(group.ID);
 		for (int i = 0; i < group.Count; i++) {
-			int spId = group.SpriteIDs[i];
-			int spIndex = Sprites.FindIndex(s => s.ID == spId);
-			SpritePool.Remove(spId);
-			Sprites.RemoveAt(spIndex);
+			var sp = group.Sprites[i];
+			if (sp == null || sp.ID == 0) continue;
+			SpritePool.Remove(sp.ID);
+			Sprites.Remove(sp);
 		}
 	}
 
@@ -511,10 +503,8 @@ public class Sheet {
 		var sprite = Sprites[spriteIndex];
 		var group = sprite.Group;
 		if (group == null) return;
-		int spIndexInGroup = group.SpriteIDs.IndexOf(sprite.ID);
-		if (spIndexInGroup < 0) return;
-		// ID
-		group.SpriteIDs.RemoveAt(spIndexInGroup);
+		// Sprite
+		group.Sprites.Remove(sprite);
 		// Empty Check
 		if (group.Count == 0) {
 			int groupIndex = Groups.FindIndex(s => s.ID == group.ID);
@@ -525,25 +515,26 @@ public class Sheet {
 
 
 	// Timing Util
-	private static int GetTiming (Dictionary<int, AngeSprite> pool, SpriteGroup group, int spriteIndex) {
+	private static int GetTiming (SpriteGroup group, int spriteIndex) {
 		int result = 0;
-		var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
+		var span = CollectionsMarshal.AsSpan(group.Sprites);
 		int len = Util.Min(spriteIndex, span.Length);
 		for (int i = 0; i < len; i++) {
-			int id = span[i];
-			if (!pool.TryGetValue(id, out var sprite)) continue;
+			var sprite = span[i];
+			if (sprite == null) continue;
 			result += sprite.Duration;
 		}
 		return result;
 	}
 
-	private static int GetTimingID (Dictionary<int, AngeSprite> pool, SpriteGroup group, int targetTiming) {
+	private static int GetTimingID (SpriteGroup group, int targetTiming) {
 		int result = 0;
 		int totalDuration = 0;
-		var span = CollectionsMarshal.AsSpan(group.SpriteIDs);
+		var span = CollectionsMarshal.AsSpan(group.Sprites);
 		for (int i = 0; i < group.Count; i++) {
-			int id = result = span[i];
-			if (!pool.TryGetValue(id, out var sprite)) continue;
+			var sprite = span[i];
+			if (sprite == null) continue;
+			result = sprite.ID;
 			totalDuration += sprite.Duration;
 			if (totalDuration >= targetTiming) break;
 		}

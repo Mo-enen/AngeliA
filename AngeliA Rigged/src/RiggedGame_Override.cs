@@ -138,16 +138,6 @@ public partial class RiggedGame {
 
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) { }
 
-	protected override void _DrawGizmosMap (IRect rect, FRect uv, Int3 worldPos) {
-		if (RespondMessage.RequireGizmosMapCount >= RespondMessage.RequireGizmosMaps.Length) return;
-		RespondMessage.RequireGizmosMaps[RespondMessage.RequireGizmosMapCount] = new() {
-			Rect = rect,
-			Uv = uv,
-			MapPos = worldPos,
-		};
-		RespondMessage.RequireGizmosMapCount++;
-	}
-
 	protected override void _IgnoreGizmos (int duration = 0) { }
 
 

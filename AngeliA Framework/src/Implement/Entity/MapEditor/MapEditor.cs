@@ -81,7 +81,6 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_MEDT_SWITCH_EDIT = ("CtrlHint.MEDT.SwitchMode.Edit", "Back to Edit");
 	private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = ("CtrlHint.MEDT.SwitchMode.Play", "Play");
 	private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = ("CtrlHint.MEDT.PlayFromBegin", "Play from Start");
-	private static readonly LanguageCode HINT_MEDT_NAV = ("CtrlHint.MEDT.Nav", "Overlook");
 	private static readonly LanguageCode HINT_TOO_MANY_SPRITE = ("MEDT.TooManySpriteHint", "too many sprites (っ°Д°)っ");
 
 	// Api
@@ -99,9 +98,6 @@ public sealed partial class MapEditor : WindowUI {
 
 	// Pools
 	private readonly Dictionary<int, AngeSprite> SpritePool = new();
-	private readonly Dictionary<int, int[]> IdChainPool = new();
-	private readonly Dictionary<int, int> ReversedChainPool = new();
-	private readonly Dictionary<int, BlockRule[]> ChainRulePool = new();
 	private readonly Dictionary<int, int> EntityArtworkRedirectPool = new();
 	private readonly Dictionary<int, PaletteItem> PalettePool = new();
 
@@ -133,7 +129,6 @@ public sealed partial class MapEditor : WindowUI {
 	private Int2 CurrentUndoRuleMax = default;
 	private bool Initialized = false;
 	private bool PlayingGame = false;
-	private bool IsNavigating = false;
 	private bool DroppingPlayer = false;
 	private bool TaskingRoute = false;
 	private bool CtrlHolding = false;
@@ -148,6 +143,7 @@ public sealed partial class MapEditor : WindowUI {
 	private int RequireWorldRenderBlinkIndex = -1;
 	private bool? RequireSetMode = null;
 	private bool UseProceduralMap = false;
+	private bool ForceManuallyDropPlayer = false;
 	private Long4? TargetUndoViewPos = null;
 
 
@@ -203,7 +199,6 @@ public sealed partial class MapEditor : WindowUI {
 		FrameworkUtil.DeleteAllEmptyMaps(builtInUniverse.MapRoot);
 		Initialize_Pool();
 		Initialize_Palette();
-		Initialize_Nav();
 		System.GC.Collect();
 
 		// Start
@@ -235,7 +230,6 @@ public sealed partial class MapEditor : WindowUI {
 		PaletteSearchScrollY = 0;
 		LastUndoRegisterFrame = -1;
 		LastUndoPerformedFrame = -1;
-		SetNavigating(false);
 		ToolbarOffsetX = 0;
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
@@ -247,15 +241,11 @@ public sealed partial class MapEditor : WindowUI {
 	private void Initialize_Pool () {
 
 		SpritePool.Clear();
-		IdChainPool.Clear();
 		EntityArtworkRedirectPool.Clear();
-		ChainRulePool.Clear();
-		ReversedChainPool.Clear();
 		CheckAltarIDs.Clear();
-		var ruleList = new List<BlockRule>(64);
 
 		int spriteCount = Renderer.SpriteCount;
-		int chainCount = Renderer.GroupCount;
+		int groupCount = Renderer.GroupCount;
 
 		// Sprites
 		for (int i = 0; i < spriteCount; i++) {
@@ -263,40 +253,19 @@ public sealed partial class MapEditor : WindowUI {
 			SpritePool.TryAdd(sprite.ID, sprite);
 		}
 
-		// Chains
-		for (int i = 0; i < chainCount; i++) {
+		// Groups
+		for (int i = 0; i < groupCount; i++) {
 
-			var chain = Renderer.GetGroupAt(i);
-			if (chain.Count == 0) continue;
-			if (!SpritePool.TryGetValue(chain.SpriteIDs[0], out var firstSprite)) continue;
+			var group = Renderer.GetGroupAt(i);
+			if (group.Count == 0) continue;
+
+			var firstSprite = group.Sprites[0];
+			if (firstSprite == null || firstSprite.ID == 0) continue;
 
 			var pivot = Int2.zero;
 			pivot.x = firstSprite.PivotX;
 			pivot.y = firstSprite.PivotY;
-			SpritePool.TryAdd(chain.ID, firstSprite);
-
-			// Chain
-			IdChainPool.TryAdd(chain.ID, chain.SpriteIDs.ToArray());
-
-			// Reversed Chain
-			foreach (var spriteID in chain.SpriteIDs) {
-				ReversedChainPool.TryAdd(spriteID, chain.ID);
-			}
-
-			// RuleID to RuleGroup
-			if (chain.WithRule) {
-				ruleList.Clear();
-				if (Renderer.HasSpriteGroup(chain.ID, out int groupLength)) {
-					for (int j = 0; j < groupLength; j++) {
-						if (Renderer.TryGetSpriteFromGroup(chain.ID, j, out var sp, false, true)) {
-							ruleList.Add(Util.DigitToBlockRule(sp.Rule));
-						} else {
-							ruleList.Add(BlockRule.EMPTY);
-						}
-					}
-				}
-				ChainRulePool.TryAdd(chain.ID, ruleList.ToArray());
-			}
+			SpritePool.TryAdd(group.ID, firstSprite);
 
 		}
 
@@ -340,45 +309,28 @@ public sealed partial class MapEditor : WindowUI {
 		Update_Before();
 		Update_ScreenUI();
 
-		if (!IsNavigating) {
-			// Map Editing
-
-			if (!editingPause) {
-				Update_Mouse();
-				Update_View();
-				Update_Hotkey();
-				Update_DropPlayer();
-				Update_RenderWorld();
-			}
-
-			Update_PaletteGroupUI();
-			Update_PaletteContentUI();
-			Update_PaletteSearchResultUI();
-			Update_PaletteSearchBarUI();
-			Update_ToolbarUI();
-
-			if (!editingPause) {
-				Update_Grid();
-				Update_DraggingGizmos();
-				Update_PastingGizmos();
-				Update_SelectionGizmos();
-				Update_DrawCursor();
-			}
-		} else {
-			// Navigating
-			if (!IsPlaying && !TaskingRoute && !DroppingPlayer) {
-				Update_PaletteGroupUI();
-				Update_PaletteContentUI();
-				Update_ToolbarUI();
-				if (!editingPause) {
-					Update_Move();
-					Update_NavMapTextureSlots();
-					Update_NavGizmos();
-				}
-			} else {
-				SetNavigating(false);
-			}
+		if (!editingPause) {
+			Update_Mouse();
+			Update_View();
+			Update_Hotkey();
+			Update_DropPlayer();
+			Update_RenderWorld();
 		}
+
+		Update_PaletteGroupUI();
+		Update_PaletteContentUI();
+		Update_PaletteSearchResultUI();
+		Update_PaletteSearchBarUI();
+		Update_ToolbarUI();
+
+		if (!editingPause) {
+			Update_Grid();
+			Update_DraggingGizmos();
+			Update_PastingGizmos();
+			Update_SelectionGizmos();
+			Update_DrawCursor();
+		}
+
 		Update_Final();
 	}
 
@@ -422,11 +374,6 @@ public sealed partial class MapEditor : WindowUI {
 		// Auto Save
 		if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing) {
 			Save();
-		}
-
-		// Nav
-		if (IsNavigating && (IsPlaying || TaskingRoute || DroppingPlayer)) {
-			SetNavigating(false);
 		}
 
 		// Detail Fix
@@ -613,13 +560,6 @@ public sealed partial class MapEditor : WindowUI {
 					}
 				}
 
-				// Nav
-				if (Input.KeyboardDown(KeyboardKey.Tab)) {
-					Input.UseKeyboardKey(KeyboardKey.Tab);
-					SetNavigating(!IsNavigating);
-				}
-				ControlHintUI.AddHint(KeyboardKey.Tab, HINT_MEDT_NAV);
-
 				// Move Selecting Blocks
 				if (SelectionUnitRect.HasValue) {
 					if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
@@ -783,7 +723,8 @@ public sealed partial class MapEditor : WindowUI {
 			}
 		}
 
-		if (!QuickPlayerDrop) {
+		bool quickDrop = QuickPlayerDrop && !ForceManuallyDropPlayer;
+		if (!quickDrop) {
 			GUI.BackgroundLabel(new IRect(
 				Input.MouseGlobalPosition.x - DropHintWidth / 2,
 				Input.MouseGlobalPosition.y + Const.HALF,
@@ -794,7 +735,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Drop
 		bool drop = Input.MouseLeftButtonDown;
-		if (!drop && QuickPlayerDrop && !Input.GameKeyHolding(Gamekey.Select)) {
+		if (!drop && quickDrop && !Input.GameKeyHolding(Gamekey.Select)) {
 			drop = true;
 		}
 		if (drop) {
@@ -966,29 +907,27 @@ public sealed partial class MapEditor : WindowUI {
 					out var boundsZ
 				);
 
-				if (!IsNavigating) {
-					int y = Input.MouseGlobalPosition.y.ToUnit();
-					GUI.Label(
-						 new IRect(
-							Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING),
-							cameraRect.y + PADDING,
-							LABEL_WIDTH, LABEL_HEIGHT
-						),
-						StateYLabelToString.GetChars(y),
-						out var boundsY
-					);
+				int y = Input.MouseGlobalPosition.y.ToUnit();
+				GUI.Label(
+					 new IRect(
+						Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING),
+						cameraRect.y + PADDING,
+						LABEL_WIDTH, LABEL_HEIGHT
+					),
+					StateYLabelToString.GetChars(y),
+					out var boundsY
+				);
 
-					int x = Input.MouseGlobalPosition.x.ToUnit();
-					GUI.Label(
-						 new IRect(
-							Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING),
-							cameraRect.y + PADDING,
-							LABEL_WIDTH, LABEL_HEIGHT
-						),
-						StateXLabelToString.GetChars(x)
-					);
+				int x = Input.MouseGlobalPosition.x.ToUnit();
+				GUI.Label(
+					 new IRect(
+						Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING),
+						cameraRect.y + PADDING,
+						LABEL_WIDTH, LABEL_HEIGHT
+					),
+					StateXLabelToString.GetChars(x)
+				);
 
-				}
 			}
 		}
 	}
@@ -1022,10 +961,13 @@ public sealed partial class MapEditor : WindowUI {
 		if (LastUndoPerformedFrame == Game.PauselessFrame) {
 			LastUndoPerformedFrame = -1;
 			if (CurrentUndoRuleMin.x <= CurrentUndoRuleMax.x) {
-				RedirectForRule(IRect.MinMaxRect(
-					CurrentUndoRuleMin.x - 1, CurrentUndoRuleMin.y - 1,
-					CurrentUndoRuleMax.x + 2, CurrentUndoRuleMax.y + 2
-				), CurrentZ);
+				FrameworkUtil.RedirectForRule(
+					Stream,
+					IRect.MinMaxRect(
+						CurrentUndoRuleMin.x - 1, CurrentUndoRuleMin.y - 1,
+						CurrentUndoRuleMax.x + 2, CurrentUndoRuleMax.y + 2
+					), CurrentZ
+				);
 			}
 			CurrentUndoRuleMin = default;
 			CurrentUndoRuleMax = default;
@@ -1142,9 +1084,10 @@ public sealed partial class MapEditor : WindowUI {
 	}
 
 
-	private void StartDropPlayer () {
+	private void StartDropPlayer (bool forceUseMouse = false) {
 		ApplyPaste();
 		DroppingPlayer = true;
+		ForceManuallyDropPlayer = forceUseMouse;
 		PlayerDropPos.x = Input.MouseGlobalPosition.x;
 		PlayerDropPos.y = Input.MouseGlobalPosition.y;
 		PlayerDropPos.z = 0;
@@ -1174,29 +1117,14 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void ResetCamera (bool immediately = false) {
-		if (!IsNavigating) {
-			// Editing
-			int viewHeight = Game.DefaultViewHeight * 3 / 2;
-			int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
-			TargetViewRect.x = -viewWidth / 2;
-			TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
-			TargetViewRect.height = viewHeight;
-			TargetViewRect.width = viewWidth;
-			if (CurrentZ != 0) SetViewZ(0);
-			if (immediately) ViewRect = TargetViewRect;
-		} else {
-			// Navigating
-			int viewHeight = Game.DefaultViewHeight * 3 / 2;
-			int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
-			TargetViewRect.x = -viewWidth / 2;
-			TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
-			TargetViewRect.height = viewHeight;
-			TargetViewRect.width = viewWidth;
-			NavPosition.x = TargetViewRect.x + TargetViewRect.width / 2 + Const.MAP * Const.HALF;
-			NavPosition.y = TargetViewRect.y + TargetViewRect.height / 2 + Const.MAP * Const.HALF;
-			if (CurrentZ != 0) SetViewZ(0);
-		}
-
+		int viewHeight = Game.DefaultViewHeight * 3 / 2;
+		int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
+		TargetViewRect.x = -viewWidth / 2;
+		TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
+		TargetViewRect.height = viewHeight;
+		TargetViewRect.width = viewWidth;
+		if (CurrentZ != 0) SetViewZ(0);
+		if (immediately) ViewRect = TargetViewRect;
 	}
 
 
@@ -1251,7 +1179,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Panel Rect
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelRect.height = mainRect.height;
-		PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer && !IsNavigating ? 0 : -PanelRect.width, 200);
+		PanelOffsetX = PanelOffsetX.LerpTo(IsEditing && !DroppingPlayer ? 0 : -PanelRect.width, 200);
 		PanelRect.x = mainRect.x + PanelOffsetX;
 		PanelRect.y = mainRect.y;
 

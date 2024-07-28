@@ -279,10 +279,6 @@ public abstract partial class Game {
 	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, inverse);
 	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse);
 
-	public static void DrawGizmosMap (IRect rect, Int3 worldPos) => Instance._DrawGizmosMap(rect, new FRect(0, 0, 1, 1), worldPos);
-	public static void DrawGizmosMap (IRect rect, FRect uv, Int3 worldPos) => Instance._DrawGizmosMap(rect, uv, worldPos);
-	protected abstract void _DrawGizmosMap (IRect rect, FRect uv, Int3 worldPos);
-
 	public static void IgnoreGizmos (int duration = 0) => Instance._IgnoreGizmos(duration);
 	protected abstract void _IgnoreGizmos (int duration = 0);
 

@@ -173,6 +173,7 @@ public static class ItemSystem {
 		int len = span.Length;
 		for (int i = 0; i < len; i++) {
 			var sprite = span[i];
+			if (sprite.Group != null && ItemPool.ContainsKey(sprite.Group.ID)) continue;
 			var bType = sprite.Atlas.Type;
 			if (bType == AtlasType.General) continue;
 			int itemID = sprite.Group != null ? sprite.Group.ID : sprite.ID;
@@ -189,7 +190,6 @@ public static class ItemSystem {
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
 		}
-
 	}
 
 

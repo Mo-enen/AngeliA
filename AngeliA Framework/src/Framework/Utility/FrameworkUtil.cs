@@ -320,4 +320,86 @@ public static class FrameworkUtil {
 	public static bool MouseInside (this IRect rect) => Game.CursorInScreen && rect.Contains(Input.MouseGlobalPosition);
 
 
+	// Map
+	public static void RedirectForRule (WorldStream stream, IRect unitRange, int z) {
+		unitRange = unitRange.Expand(1);
+		for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
+			for (int j = unitRange.yMin; j < unitRange.yMax; j++) {
+				RedirectForRule(stream, i, j, z, BlockType.Level);
+				RedirectForRule(stream, i, j, z, BlockType.Background);
+			}
+		}
+	}
+	public static void RedirectForRule (WorldStream stream, int i, int j, int z, BlockType type) {
+		int id = stream.GetBlockAt(i, j, z, type);
+		if (id == 0) return;
+		int oldID = id;
+		if (!Renderer.TryGetSprite(id, out var sprite) || sprite.Group == null) return;
+		var group = sprite.Group;
+		int ruleIndex = GetRuleIndex(
+			group.Sprites, group.ID,
+			GpID(stream.GetBlockAt(i - 1, j + 1, z, type)),
+			GpID(stream.GetBlockAt(i + 0, j + 1, z, type)),
+			GpID(stream.GetBlockAt(i + 1, j + 1, z, type)),
+			GpID(stream.GetBlockAt(i - 1, j + 0, z, type)),
+			GpID(stream.GetBlockAt(i + 1, j + 0, z, type)),
+			GpID(stream.GetBlockAt(i - 1, j - 1, z, type)),
+			GpID(stream.GetBlockAt(i + 0, j - 1, z, type)),
+			GpID(stream.GetBlockAt(i + 1, j - 1, z, type))
+		);
+		if (ruleIndex < 0 || ruleIndex >= group.Count) return;
+		int newID = group.Sprites[ruleIndex].ID;
+		if (newID == oldID) return;
+		stream.SetBlockAt(i, j, z, type, newID);
+		// Func
+		static int GpID (int spriteID) => Renderer.TryGetSprite(spriteID, out var sprite) && sprite.Group != null ? sprite.Group.ID : 0;
+	}
+
+
+	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleID, int tl0, int tm0, int tr0, int ml0, int mr0, int bl0, int bm0, int br0) {
+		// 0=Whatever 1=SameTile 2=NotSameTile 3=NotEmpty 4=Emptyint
+		int count = sprites.Count;
+		for (int i = 0; i < count; i++) {
+			var sprite = sprites[i];
+			var rule = sprite.Rule;
+			if (!CheckForTile(ruleID, tl0, rule.RuleTL)) continue;
+			if (!CheckForTile(ruleID, tm0, rule.RuleT)) continue;
+			if (!CheckForTile(ruleID, tr0, rule.RuleTR)) continue;
+			if (!CheckForTile(ruleID, ml0, rule.RuleL)) continue;
+			if (!CheckForTile(ruleID, mr0, rule.RuleR)) continue;
+			if (!CheckForTile(ruleID, bl0, rule.RuleBL)) continue;
+			if (!CheckForTile(ruleID, bm0, rule.RuleB)) continue;
+			if (!CheckForTile(ruleID, br0, rule.RuleBR)) continue;
+			return TryRandom(sprites, i, count);
+		}
+		return -1;
+		// Func
+		static bool CheckForTile (int ruleID, int _targetID0, Rule _targetRule) => _targetRule switch {
+			Rule.SameTile => _targetID0 == ruleID,
+			Rule.NotSameTile => _targetID0 != ruleID,
+			Rule.AnyTile => _targetID0 != 0,
+			Rule.Empty => _targetID0 == 0,
+			_ => true,
+		};
+		static int TryRandom (IList<AngeSprite> sprites, int resultIndex, int count) {
+			int lastIndex = resultIndex;
+			bool jumpOut = false;
+			var resultRule = sprites[resultIndex].Rule;
+			for (int i = resultIndex + 1; i < count; i++) {
+				var rule = sprites[i].Rule;
+				for (int j = 0; j < 8; j++) {
+					if (rule[j] != resultRule[j]) {
+						jumpOut = true;
+						break;
+					}
+				}
+				if (jumpOut) break;
+				lastIndex = i;
+			}
+			if (resultIndex != lastIndex) resultIndex = Util.QuickRandom(resultIndex, lastIndex + 1);
+			return resultIndex;
+		}
+	}
+
+
 }

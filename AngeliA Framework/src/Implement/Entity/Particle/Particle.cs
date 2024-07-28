@@ -50,12 +50,13 @@ public abstract class Particle : Entity {
 		// Artwork ID
 		if (!Renderer.TryGetSpriteGroup(AutoArtworkID, out var group) || group.Count == 0) return;
 		float framePerSprite = (float)Duration / group.Count;
-		if (Renderer.TryGetSprite(group[(LocalFrame / framePerSprite).RoundToInt().Clamp(0, group.Count - 1)], out var sprite, true)) {
-			Renderer.Draw(
-				sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
-				sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
-			);
-		}
+		int spriteIndex = (LocalFrame / framePerSprite).RoundToInt().Clamp(0, group.Count - 1);
+		var sprite = group.Sprites[spriteIndex];
+		Renderer.Draw(
+			sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
+			sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
+		);
+
 	}
 
 

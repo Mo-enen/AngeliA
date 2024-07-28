@@ -24,13 +24,8 @@ public static class CheatSystem {
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		Util.LinkEventWithAttribute<OnCheatPerformAttribute>(typeof(CheatSystem), nameof(OnCheatPerform));
-#if DEBUG
-		Enable = true;
-#else
-		Enable = false;
-#endif
-		Enable = Enable || Util.TryGetAttributeFromAllAssemblies<AllowCheatCodesAttribute>();
 		// Init Pool
+		Enable = Universe.BuiltIn.Info.AllowCheatCode;
 		if (Enable) {
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
 				AllCheatActions.Add(new CheatAction() {
@@ -54,7 +49,7 @@ public static class CheatSystem {
 			}
 			CheatInput.LinkToHead(char.ToLower(c));
 		}
-		
+
 		// Check for Cheats
 		if (CheatInput.Length > 0) {
 			var span = AllCheatActions.GetSpan();

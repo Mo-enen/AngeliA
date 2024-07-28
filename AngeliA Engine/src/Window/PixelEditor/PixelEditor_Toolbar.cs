@@ -106,7 +106,6 @@ public partial class PixelEditor {
 	private static LanguageCode[] TIP_TOOLS;
 
 	// Data
-	private static readonly byte[] RuleCache = new byte[8];
 	private readonly int ToolCount = typeof(Tool).EnumLength();
 	private readonly int[] TagCheckedCountCache = new int[TagUtil.TAG_COUNT];
 	private bool SelectingAnyTiggerSprite;
@@ -711,14 +710,14 @@ public partial class PixelEditor {
 
 			var spData = StagedSprites[i];
 			if (!spData.Selecting) continue;
+			var bRule = spData.Sprite.Rule;
 
 			// Auto Mode
 			if (!TilingRuleModeA.HasValue) {
-				Util.DigitToRuleByte(spData.Sprite.Rule, RuleCache);
-				for (int j = 0; j < RuleCache.Length; j++) {
-					byte value = RuleCache[j];
-					if (value == 0) continue;
-					TilingRuleModeA = value < 3;
+				for (int j = 0; j < 8; j++) {
+					var value = bRule[j];
+					if (value == Rule.Whatever) continue;
+					TilingRuleModeA = (int)value < 3;
 					break;
 				}
 			}
@@ -730,7 +729,6 @@ public partial class PixelEditor {
 			}
 
 			if (!TilingRuleModeA.HasValue) TilingRuleModeA = true;
-			Util.DigitToRuleByte(spData.Sprite.Rule, RuleCache);
 
 			// Name Label
 			if (labelRect.width > 0) {
@@ -745,48 +743,47 @@ public partial class PixelEditor {
 			// Buttons
 			for (int ruleIndex = 0; ruleIndex < 8; ruleIndex++) {
 				var buttonRect = panelRect.CornerInside((Alignment)(ruleIndex < 4 ? ruleIndex : ruleIndex + 1), buttonSize);
-				if (GUI.Button(buttonRect, RuleNumberToIcon(ruleIndex), Skin.IconButton)) {
+				if (GUI.Button(buttonRect, RuleNumberToIcon(bRule[ruleIndex]), Skin.IconButton)) {
+					var newRule = bRule;
 					bool modeA = TilingRuleModeA.Value;
-					RuleCache[ruleIndex] = (byte)(RuleCache[ruleIndex] switch {
-						0 => modeA ? 1 : 3,
-						1 or 3 => modeA ? 2 : 4,
-						2 or 4 => 0,
+					newRule[ruleIndex] = bRule[ruleIndex] switch {
+						Rule.Whatever => modeA ? Rule.SameTile : Rule.AnyTile,
+						Rule.SameTile or Rule.AnyTile => modeA ? Rule.NotSameTile : Rule.Empty,
+						Rule.NotSameTile or Rule.Empty => 0,
 						_ => 0,
-					});
-					int oldRule = spData.Sprite.Rule;
-					int newRule = Util.RuleByteToDigit(RuleCache);
-					if (oldRule != newRule) {
+					};
+					if (!bRule.IsSameWith(newRule)) {
 						spData.Sprite.Rule = newRule;
 						RegisterUndo(new SpriteRuleUndoItem() {
 							SpriteID = spData.Sprite.ID,
-							From = oldRule,
+							From = bRule,
 							To = newRule,
 						});
 						SetDirty();
 					}
 				}
 				Renderer.DrawSlice(BuiltInSprite.FRAME_16, buttonRect, Color32.GREY_128);
-				RequireTooltip(buttonRect, RuleNumberToTip(ruleIndex));
+				RequireTooltip(buttonRect, RuleNumberToTip(bRule[ruleIndex]));
 			}
 
 			break;
 		}
 
 		// Func
-		static int RuleNumberToIcon (int index) => RuleCache[index] switch {
-			0 => 0,
-			1 => ICON_RULE_SAME,
-			2 => ICON_RULE_NOT_SAME,
-			3 => ICON_RULE_ANY,
-			4 => ICON_RULE_EMPTY,
+		static int RuleNumberToIcon (Rule rule) => rule switch {
+			Rule.Whatever => 0,
+			Rule.SameTile => ICON_RULE_SAME,
+			Rule.NotSameTile => ICON_RULE_NOT_SAME,
+			Rule.AnyTile => ICON_RULE_ANY,
+			Rule.Empty => ICON_RULE_EMPTY,
 			_ => 0,
 		};
-		static string RuleNumberToTip (int index) => RuleCache[index] switch {
-			0 => TIP_RULE_WHATEVER,
-			1 => TIP_RULE_SAME,
-			2 => TIP_RULE_NOT_SAME,
-			3 => TIP_RULE_ANY,
-			4 => TIP_RULE_EMPTY,
+		static string RuleNumberToTip (Rule rule) => rule switch {
+			Rule.Whatever => TIP_RULE_WHATEVER,
+			Rule.SameTile => TIP_RULE_SAME,
+			Rule.NotSameTile => TIP_RULE_NOT_SAME,
+			Rule.AnyTile => TIP_RULE_ANY,
+			Rule.Empty => TIP_RULE_EMPTY,
 			_ => "",
 		};
 	}

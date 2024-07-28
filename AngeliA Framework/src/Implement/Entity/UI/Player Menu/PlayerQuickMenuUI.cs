@@ -230,6 +230,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		int basicX = player.X - CurrentSlotIndex * ITEM_SIZE - ITEM_SIZE / 2;
 		int basicY = player.Y - ITEM_SIZE - PADDING + offsetY - Const.HALF;
 		var rect = new IRect(0, basicY, ITEM_SIZE, ITEM_SIZE);
+		int countLabelPadding = Unify(2);
 		for (int i = 0; i < WeaponCount; i++) {
 
 			var wData = WeaponList[i];
@@ -273,8 +274,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 				// Count
 				if (wCount > 1) {
 					var countRect = rect.Shrink(rect.width * 2 / 3, 0, 0, rect.height * 2 / 3); ;
-					Renderer.DrawPixel(countRect, Color32.BLACK);
-					GUI.IntLabel(countRect, wCount, GUISkin.Default.SmallCenterLabel);
+					var bg = Renderer.DrawPixel(default, Color32.BLACK);
+					GUI.IntLabel(countRect, wCount, out var bounds, GUISkin.Default.SmallCenterLabel);
+					bg.SetRect(bounds.Expand(countLabelPadding));
 				}
 			}
 

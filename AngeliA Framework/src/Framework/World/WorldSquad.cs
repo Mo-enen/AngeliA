@@ -14,13 +14,13 @@ public class WorldSquad : IBlockSquad {
 	// Api
 	public static bool Enable { get; set; } = true;
 	public static bool SquadReady { get; private set; } = false;
+	public static WorldStream Stream { get; private set; } = null;
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
 	public static string MapRoot => Stream?.MapRoot;
 	public static bool Readonly { get; private set; } = false;
 
 	// Data
-	private static WorldStream Stream = null;
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
 	private int BackgroundBlockSize = Const.CEL;

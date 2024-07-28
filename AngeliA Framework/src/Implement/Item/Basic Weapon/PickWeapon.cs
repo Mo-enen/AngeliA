@@ -164,6 +164,12 @@ public abstract class PickWeapon : Weapon {
 				);
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
+					// Rule
+					if (sprite.Group.WithRule) {
+						FrameworkUtil.RedirectForRule(
+							WorldSquad.Stream, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
+						);
+					}
 				}
 				if (DropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
@@ -182,6 +188,12 @@ public abstract class PickWeapon : Weapon {
 				);
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
+					// Rule
+					if (sprite.Group.WithRule) {
+						FrameworkUtil.RedirectForRule(
+							WorldSquad.Stream, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
+						);
+					}
 				}
 				if (DropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);

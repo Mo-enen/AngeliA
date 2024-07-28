@@ -45,6 +45,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode MSG_DELETE_SOUND = ("UI.Project.DeleteSoundMsg", "Delete sound \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
+	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Use Cheat Code");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }
@@ -280,9 +281,18 @@ public class ProjectEditor : WindowUI {
 		rect.SlideDown(padding);
 
 		// Use Procedural Map
-		bool newUseProceduralmap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
-		if (newUseProceduralmap != info.UseProceduralMap) {
-			info.UseProceduralMap = newUseProceduralmap;
+		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
+		if (newUseProceduralMap != info.UseProceduralMap) {
+			info.UseProceduralMap = newUseProceduralMap;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Allow Cheat Code
+		bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
+		if (newAllowCheat != info.AllowCheatCode) {
+			info.AllowCheatCode = newAllowCheat;
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}

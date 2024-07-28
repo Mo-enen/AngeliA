@@ -71,8 +71,6 @@ public partial class MapEditor {
 	private static readonly int ITEM_FRAME = BuiltInSprite.UI_ITEM_FRAME;
 	private static readonly int SEARCH_ICON = BuiltInSprite.ICON_SEARCH;
 	private static readonly int GAMEPAD_ICON = BuiltInSprite.ICON_GAMEPAD;
-	private static readonly int MAP_ICON = BuiltInSprite.ICON_MAP;
-	private static readonly int BRUSH_ICON = BuiltInSprite.ICON_BRUSH;
 	private static readonly LanguageCode UI_TAB_PINNED = ("UI.PaletteTab.Pinned", "Favorite");
 	private static readonly LanguageCode UI_TAB_ALL = ("UI.PaletteTab.All", "All");
 	private static readonly LanguageCode MENU_PALETTE_ADD_TO_LIST = ("Menu.MEDT.AddToList", "Add to List:");
@@ -143,8 +141,9 @@ public partial class MapEditor {
 		for (int index = 0; index < groupCount; index++) {
 
 			var group = Renderer.GetGroupAt(index);
-			if (group.Count == 0 || !Renderer.TryGetSprite(group[0], out var firstSprite)) continue;
+			if (group.Count == 0) continue;
 
+			var firstSprite = group.Sprites[0];
 			var atlasType = firstSprite.Atlas.Type;
 			if (atlasType != AtlasType.Background && atlasType != AtlasType.Level) continue;
 
@@ -385,7 +384,7 @@ public partial class MapEditor {
 		}
 		bool mouseInPanel = groupRect.MouseInside();
 		groupRect = groupRect.Shrink(PANEL_PADDING);
-		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
+		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
 		var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
 		int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
 		int targetReorderReleaseIndex = -1;
@@ -531,7 +530,7 @@ public partial class MapEditor {
 		int BORDER_ALT = Unify(2);
 		int scrollbarSize = GUI.ScrollbarSize;
 		int TOOLBAR_HEIGHT = GUI.ToolbarSize * 2;
-		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute && !IsNavigating;
+		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
 		int targetReorderReleaseIndex = -1;
 		IRect requiringTooltipRect = default;
 		string requiringTooltip = null;
@@ -815,17 +814,11 @@ public partial class MapEditor {
 			SetViewZ(CurrentZ + 1);
 		}
 
-		// Nav
-		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
-		if (GUI.DarkButton(btnRect, IsNavigating ? BRUSH_ICON : MAP_ICON)) {
-			SetNavigating(!IsNavigating);
-		}
-
 		// Play
-		btnRect = new IRect(panel.x + ITEM_SIZE * 4, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
-		if (!IsNavigating && !DroppingPlayer && GUI.DarkButton(btnRect, GAMEPAD_ICON)) {
+		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
+		if (!DroppingPlayer && GUI.DarkButton(btnRect, GAMEPAD_ICON)) {
 			if (IsEditing) {
-				StartDropPlayer();
+				StartDropPlayer(forceUseMouse: true);
 			} else {
 				SetEditorMode(!PlayingGame);
 			}

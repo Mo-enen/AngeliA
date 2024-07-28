@@ -25,7 +25,7 @@ public class AngeSprite {
 	public Atlas Atlas;
 	public SpriteGroup Group;
 	public bool IsTrigger;
-	public int Rule;
+	public BlockRule Rule;
 	public Tag Tag;
 	public int Duration;
 	public Color32 SummaryTint;
@@ -82,7 +82,7 @@ public class AngeSprite {
 			IsTrigger = reader.ReadByte() == 1;
 
 			// Rule
-			Rule = reader.ReadInt32();
+			Rule = Util.DigitToBlockRule(reader.ReadInt32());
 
 			// Tag
 			Tag = (Tag)reader.ReadInt32();
@@ -152,7 +152,7 @@ public class AngeSprite {
 			writer.Write((byte)(IsTrigger ? 1 : 0));
 
 			// Rule
-			writer.Write((int)Rule);
+			writer.Write((int)Util.BlockRuleToDigit(Rule));
 
 			// Tag
 			writer.Write((int)Tag);

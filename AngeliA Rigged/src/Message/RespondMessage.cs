@@ -99,8 +99,6 @@ public class RigRespondMessage {
 	public int[] RequireCharsFontIndex = new int[REQUIRE_CHAR_MAX_COUNT];
 	public int RequireGizmosRectCount;
 	public GizmosRectData[] RequireGizmosRects = new GizmosRectData[256 * 256];
-	public int RequireGizmosMapCount;
-	public GizmosMapData[] RequireGizmosMaps = new GizmosMapData[12 * 12];
 	public RenderingLayerData[] Layers = new RenderingLayerData[RenderLayer.COUNT];
 	public int[] RenderUsages = new int[RenderLayer.COUNT];
 	public int[] EntityUsages = new int[EntityLayer.COUNT];
@@ -145,7 +143,6 @@ public class RigRespondMessage {
 		RequireSetSoundVolume = -1;
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
-		RequireGizmosMapCount = 0;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
@@ -260,16 +257,10 @@ public class RigRespondMessage {
 			}
 		}
 
-		// Gizmos Map
-		for (int i = 0; i < RequireGizmosMapCount; i++) {
-			var data = RequireGizmosMaps[i];
-			var rect = data.Rect.Shift(leftPadding / 2, 0);
-			Game.DrawGizmosMap(rect, data.Uv, data.MapPos);
-		}
-
-		// Message Layer/Cells >> Renderer Layer/Cells
 		int oldLayer = Renderer.CurrentLayerIndex;
 		using (new SheetIndexScope(sheetIndex)) {
+
+			// Message Layer/Cells >> Renderer Layer/Cells
 			int fontIndexOffset = Game.BuiltInFontCount;
 			for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
 				if (Layers[layer] == null) {
@@ -428,18 +419,6 @@ public class RigRespondMessage {
 				};
 			}
 
-			RequireGizmosMapCount = Util.ReadInt(ref pointer, end);
-			for (int i = 0; i < RequireGizmosMapCount; i++) {
-				var rect = new IRect(Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end));
-				var uv = new FRect(Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end), Util.ReadFloat(ref pointer, end));
-				var mapPos = new Int3(Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end), Util.ReadInt(ref pointer, end));
-				RequireGizmosMaps[i] = new GizmosMapData() {
-					Rect = rect,
-					Uv = uv,
-					MapPos = mapPos,
-				};
-			}
-
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
 				if (Layers[index] == null) {
 					Layers[index] = new RenderingLayerData(Renderer.GetLayerCapacity(index));
@@ -561,22 +540,6 @@ public class RigRespondMessage {
 				Util.Write(ref pointer, data.Color.g, end);
 				Util.Write(ref pointer, data.Color.b, end);
 				Util.Write(ref pointer, data.Color.a, end);
-			}
-
-			Util.Write(ref pointer, RequireGizmosMapCount, end);
-			for (int i = 0; i < RequireGizmosMapCount; i++) {
-				var data = RequireGizmosMaps[i];
-				Util.Write(ref pointer, data.Rect.x, end);
-				Util.Write(ref pointer, data.Rect.y, end);
-				Util.Write(ref pointer, data.Rect.width, end);
-				Util.Write(ref pointer, data.Rect.height, end);
-				Util.Write(ref pointer, data.Uv.x, end);
-				Util.Write(ref pointer, data.Uv.y, end);
-				Util.Write(ref pointer, data.Uv.width, end);
-				Util.Write(ref pointer, data.Uv.height, end);
-				Util.Write(ref pointer, data.MapPos.x, end);
-				Util.Write(ref pointer, data.MapPos.y, end);
-				Util.Write(ref pointer, data.MapPos.z, end);
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {

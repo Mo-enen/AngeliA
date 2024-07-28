@@ -48,27 +48,28 @@ public class GroupAnimation : Entity {
 		// Get Sprite ID
 		Cell[] cells = null;
 		Cell cell = null;
-		int id = 0;
+		AngeSprite sprite = null;
 		if (FramePerSprite < 0) {
 			// Auto Ani
-			id = Renderer.CurrentSheet.GetSpriteIdFromAnimationFrame(group, RenderedFrame);
+			int id = Renderer.CurrentSheet.GetSpriteIdFromAnimationFrame(group, RenderedFrame);
+			Renderer.TryGetSprite(id, out sprite, true);
 		} else {
 			// Even-Frame Ani
 			int spIndex = RenderedFrame.UDivide(FramePerSprite);
 			spIndex = Loop ? spIndex.UMod(group.Count) : spIndex.Clamp(0, group.Count - 1);
-			id = group[spIndex];
+			sprite = group.Sprites[spIndex];
 		}
 		RenderedFrame++;
 
 		// Draw Sprite
-		if (Renderer.TryGetSprite(id, out var sprite, true)) {
+		if (sprite != null) {
 			if (sprite.GlobalBorder == Int4.zero) {
 				cell = Renderer.Draw(
-					id, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ
+					sprite, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ
 				);
 			} else {
 				cells = Renderer.DrawSlice(
-					id, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ
+					sprite, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ
 				);
 			}
 		}

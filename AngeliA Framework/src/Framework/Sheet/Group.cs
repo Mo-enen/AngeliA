@@ -9,21 +9,13 @@ namespace AngeliA;
 public class SpriteGroup {
 
 	public const int MAX_COUNT = 256;
-	public int Count => SpriteIDs.Count;
-	public int this[int index] {
-		get => SpriteIDs[index];
-		set => SpriteIDs[index] = value;
-	}
-
+	public int Count => Sprites.Count;
 	public int ID;
 	public string Name;
 	public int LoopStart;
-	public List<int> SpriteIDs;
+	public List<AngeSprite> Sprites = new();
 	public bool Animated;
 	public bool WithRule;
 	public bool Random;
-	
-	public void Add (int spriteID) => SpriteIDs.Add(spriteID);
-	public void RemoveAt (int index) => SpriteIDs.RemoveAt(index);
 
 }

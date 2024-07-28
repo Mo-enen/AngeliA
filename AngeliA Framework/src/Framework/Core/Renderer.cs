@@ -752,7 +752,8 @@ public static class Renderer {
 			if (loopIndex) index = index.UMod(group.Count);
 			if (clampIndex) index = index.Clamp(0, group.Count - 1);
 			if (index >= 0 && index < group.Count) {
-				return TryGetSprite(group.SpriteIDs[index], out sprite, ignoreAnimatedWhenFailback);
+				sprite = group.Sprites[index];
+				return sprite != null;
 			} else {
 				sprite = null;
 				return false;

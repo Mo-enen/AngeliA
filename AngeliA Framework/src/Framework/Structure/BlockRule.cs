@@ -13,6 +13,7 @@ public enum Rule : byte {
 
 public struct BlockRule {
 	public static readonly BlockRule EMPTY = new();
+	public readonly bool IsEmpty => RuleTL == Rule.Whatever && RuleT == Rule.Whatever && RuleTR == Rule.Whatever && RuleL == Rule.Whatever && RuleR == Rule.Whatever && RuleBL == Rule.Whatever && RuleB == Rule.Whatever && RuleBR == Rule.Whatever;
 	public Rule this[int i] {
 		readonly get => i switch {
 			0 => RuleTL,
@@ -56,4 +57,5 @@ public struct BlockRule {
 		RuleB = ruleB;
 		RuleBR = ruleBR;
 	}
+	public readonly bool IsSameWith (BlockRule other) => RuleTL == other.RuleTL && RuleT == other.RuleT && RuleTR == other.RuleTR && RuleL == other.RuleL && RuleR == other.RuleR && RuleBL == other.RuleBL && RuleB == other.RuleB && RuleBR == other.RuleBR;
 }

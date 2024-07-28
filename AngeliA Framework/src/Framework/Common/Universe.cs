@@ -13,6 +13,7 @@ public class UniverseInfo {
 	public int PatchVersion = 0;
 	public uint EngineBuildVersion = 0;
 	public bool UseProceduralMap = false;
+	public bool AllowCheatCode = false;
 }
 
 
@@ -92,7 +93,7 @@ public class Universe {
 	}
 
 	public void SetSavingRoot (string developerName, string productName) => SetSavingRoot(Util.CombinePaths(AngePath.GetPersistentDataPath(developerName, productName), "Saving"));
-	
+
 	public void SetSavingRoot (string savingRoot) {
 		SavingRoot = savingRoot;
 		SavingMetaRoot = AngePath.GetSavingMetaRoot(SavingRoot);
