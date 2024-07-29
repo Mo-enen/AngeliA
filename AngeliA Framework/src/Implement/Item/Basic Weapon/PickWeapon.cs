@@ -40,33 +40,8 @@ public abstract class PickWeapon : Weapon {
 			pHolder.WalkSpeed.Override(0, 1);
 		}
 
-		var aim = pHolder.AimingDirection;
-		var aimNormal = aim.Normal();
-		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
-		int pointY = pHolder.Rect.yMax - 16;
-		int targetUnitX = pointX.ToUnit() + aimNormal.x;
-		int targetUnitY = pointY.ToUnit() + aimNormal.y;
-		bool hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
-
-		// Redirect
-		if (!hasTraget) {
-			int oldTargetX = targetUnitX;
-			int oldTargetY = targetUnitX;
-			if (aim.IsBottom()) {
-				if (aim == Direction8.Bottom) {
-					targetUnitX += pointX.UMod(Const.CEL) < Const.HALF ? -1 : 1;
-				}
-			} else if (aim.IsTop()) {
-				if (aim == Direction8.Top) {
-					targetUnitX += pHolder.FacingRight ? 1 : -1;
-				}
-			} else {
-				targetUnitY--;
-			}
-			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
-				hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
-			}
-		}
+		// Get Target Pos
+		GetTargetUnitPosition(pHolder, out int targetUnitX, out int targetUnitY, out bool hasTraget);
 
 		// Target Block Highlight
 		if (!PlayerMenuUI.ShowingUI) {
@@ -75,7 +50,7 @@ public abstract class PickWeapon : Weapon {
 
 		// Pick
 		if (Game.GlobalFrame == pHolder.LastAttackFrame) {
-			PickBlockAt(targetUnitX, targetUnitY);
+			PickBlockAt(holder, targetUnitX, targetUnitY);
 		}
 
 		// Base
@@ -127,7 +102,7 @@ public abstract class PickWeapon : Weapon {
 	}
 
 
-	protected void PickBlockAt (int unitX, int unitY) {
+	protected void PickBlockAt (Entity holder, int unitX, int unitY) {
 
 		// Try Pick Block Entity
 		if (AllowPickIBlockEntity) {
@@ -138,19 +113,23 @@ public abstract class PickWeapon : Weapon {
 			);
 			for (int i = 0; i < count; i++) {
 				var e = hits[i].Entity;
-				if (e is not IBlockEntity) continue;
+				if (e is not IBlockEntity eBlock) continue;
 				e.Active = false;
 				var mapPos = e.MapUnitPos;
+				// Remove from Map
 				if (mapPos.HasValue) {
 					WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
-					GlobalEvent.InvokeObjectBreak(
-						e.TypeID, new IRect(
-							e.X, e.Y, Const.CEL, Const.CEL
-						)
-					);
 				}
+				// Event
+				eBlock.OnEntityPicked(holder);
 				if (DropItemAfterPicked && ItemSystem.HasItem(e.TypeID)) {
+					// Drop Item
 					ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
+					// Dust
+					GlobalEvent.InvokePowderSpawn(e.TypeID, e.Rect);
+				} else {
+					// Break
+					GlobalEvent.InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
 				}
 				return;
 			}
@@ -160,10 +139,11 @@ public abstract class PickWeapon : Weapon {
 		if (AllowPickLevelBlock) {
 			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Level);
 			if (blockID != 0) {
+				int realBlockID = blockID;
+				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
+				// Remove from Map
 				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Level, 0);
-				GlobalEvent.InvokeObjectBreak(
-					blockID, new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL)
-				);
+				// Event
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
 					// Rule
@@ -174,7 +154,13 @@ public abstract class PickWeapon : Weapon {
 					}
 				}
 				if (DropItemAfterPicked && ItemSystem.HasItem(blockID)) {
+					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
+					// Dust
+					GlobalEvent.InvokePowderSpawn(blockID, blockRect);
+				} else {
+					// Break
+					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
 				}
 				return;
 			}
@@ -184,10 +170,12 @@ public abstract class PickWeapon : Weapon {
 		if (AllowPickBackgroundBlock) {
 			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Background);
 			if (blockID != 0) {
+				int realBlockID = blockID;
+				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
+
+				// Remove from Map
 				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Background, 0);
-				GlobalEvent.InvokeObjectBreak(
-					blockID, new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL)
-				);
+
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
 					// Rule
@@ -197,10 +185,50 @@ public abstract class PickWeapon : Weapon {
 						);
 					}
 				}
+
 				if (DropItemAfterPicked && ItemSystem.HasItem(blockID)) {
+					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
+					// Dust
+					GlobalEvent.InvokePowderSpawn(realBlockID, blockRect);
+				} else {
+					// Break
+					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
 				}
 				return;
+			}
+		}
+
+	}
+
+
+	protected virtual void GetTargetUnitPosition (Character pHolder, out int targetUnitX, out int targetUnitY, out bool hasTraget) {
+
+		var aim = pHolder.AimingDirection;
+		var aimNormal = aim.Normal();
+		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
+		int pointY = pHolder.Rect.yMax - 16;
+		targetUnitX = pointX.ToUnit() + aimNormal.x;
+		targetUnitY = pointY.ToUnit() + aimNormal.y;
+		hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
+
+		// Redirect
+		if (!hasTraget) {
+			int oldTargetX = targetUnitX;
+			int oldTargetY = targetUnitX;
+			if (aim.IsBottom()) {
+				if (aim == Direction8.Bottom) {
+					targetUnitX += pointX.UMod(Const.CEL) < Const.HALF ? -1 : 1;
+				}
+			} else if (aim.IsTop()) {
+				if (aim == Direction8.Top) {
+					targetUnitX += pHolder.FacingRight ? 1 : -1;
+				}
+			} else {
+				targetUnitY--;
+			}
+			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
+				hasTraget = HasPickableBlockAt(targetUnitX, targetUnitY);
 			}
 		}
 

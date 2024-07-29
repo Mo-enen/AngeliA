@@ -103,7 +103,7 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		if (Renderer.TryGetSprite(ItemID, out var sprite, true) ||
 			Renderer.TryGetSpriteFromGroup(ItemID, 0, out sprite)
 		) {
-			cell = Renderer.Draw(sprite, renderingRect);
+			cell = Renderer.Draw(sprite, renderingRect.Fit(sprite));
 		} else {
 			cell = Renderer.Draw(BuiltInSprite.ICON_ENTITY, renderingRect);
 		}

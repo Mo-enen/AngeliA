@@ -19,5 +19,9 @@ public static class GlobalEvent {
 	public static event Action<int, IRect> OnFirePutout;
 	public static void InvokeFirePutout (int fireID, IRect fireRect) => OnFirePutout?.Invoke(fireID, fireRect);
 
+	// Dust
+	public static event Action<int, IRect> OnPowderSpawn;
+	public static void InvokePowderSpawn (int spriteID, IRect rect) => OnPowderSpawn?.Invoke(spriteID, rect);
+
 
 }

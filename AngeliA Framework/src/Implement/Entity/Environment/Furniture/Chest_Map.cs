@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-public abstract class MapChest : Furniture, IActionTarget {
+public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
 	// VAR
@@ -39,6 +39,11 @@ public abstract class MapChest : Furniture, IActionTarget {
 
 
 	bool IActionTarget.AllowInvoke () => !IsChestOpened(this);
+
+
+	void IBlockEntity.OnEntityPicked (Entity picker) {
+		// TODO
+	}
 
 
 }
