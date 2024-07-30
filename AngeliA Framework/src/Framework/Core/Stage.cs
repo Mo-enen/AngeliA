@@ -42,12 +42,11 @@ public static class Stage {
 		// Api
 		public int SpawnedCount => InstanceCount - Entities.Count;
 		public Stack<Entity> Entities = null;
-		public System.Type EntityType = null;
+		public Type EntityType = null;
 		public IRect LocalBound = default;
 		public bool DrawBehind = false;
 		public bool DestroyOnZChanged = true;
 		public bool DontSpawnFromWorld = false;
-		public bool ForceSpawn = false;
 		public int Capacity = 0;
 		public bool DespawnOutOfRange = true;
 		public bool UpdateOutOfRange = false;
@@ -118,15 +117,17 @@ public static class Stage {
 	private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
 	private static (int? value, int priority) ViewDelayY = (null, int.MinValue);
 	private static (int? value, int priority) ViewDelayHeight = (null, int.MinValue);
-	private static event System.Action OnViewZChanged;
-	private static event System.Action<int> BeforeLayerFrameUpdate;
-	private static event System.Action<int> AfterLayerFrameUpdate;
+	private static event Action OnViewZChanged;
+	private static event Action<int> BeforeLayerFrameUpdate;
+	private static event Action<int> AfterLayerFrameUpdate;
 	private static readonly Dictionary<int, EntityStack> EntityPool = new();
 	private static readonly HashSet<Int3> StagedEntityHash = new();
 	private static readonly HashSet<Int3> GlobalAntiSpawnHash = new();
 	private static readonly HashSet<Int3> LocalAntiSpawnHash = new();
+	private static readonly HashSet<int> RepositionHash = new();
 	private static int ViewLerpRate = 1000;
 	private static int? RequireSetViewZ = null;
+	private static bool UsingProceduralMap;
 
 
 	#endregion
@@ -140,6 +141,7 @@ public static class Stage {
 	[OnGameInitialize(-64)]
 	public static void OnGameInitialize () {
 
+		RepositionHash.Clear();
 		IsReady = true;
 		Enable = !Game.IsToolApplication;
 		ViewRect = new IRect(
@@ -148,6 +150,7 @@ public static class Stage {
 			Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight)
 		);
 		SpawnRect = ViewRect.Expand(Const.SPAWN_PADDING);
+		UsingProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
 
 		if (!Enable) return;
 
@@ -176,8 +179,8 @@ public static class Stage {
 			var att_DontDrawBehind = eType.GetCustomAttribute<EntityAttribute.DontDrawBehindAttribute>(true);
 			var att_DontDestroyOnTran = eType.GetCustomAttribute<EntityAttribute.DontDestroyOnZChangedAttribute>(true);
 			var att_DontSpawnFromWorld = eType.GetCustomAttribute<EntityAttribute.DontSpawnFromWorld>(true);
-			var att_ForceSpawn = eType.GetCustomAttribute<EntityAttribute.ForceSpawnAttribute>(true);
 			var att_Order = eType.GetCustomAttribute<EntityAttribute.StageOrderAttribute>(true);
+			var att_Repos = eType.GetCustomAttribute<EntityAttribute.RepositionWhenOutOfRangeAttribute>(true);
 			int layer = att_Layer != null ? att_Layer.Layer.Clamp(0, EntityLayer.COUNT - 1) : 0;
 			if (att_Capacity != null) {
 				capacity = att_Capacity.Value.Clamp(1, Entities[layer].Length);
@@ -188,7 +191,6 @@ public static class Stage {
 				LocalBound = att_Bound != null ? att_Bound.Value : new(0, 0, Const.CEL, Const.CEL),
 				DrawBehind = att_DontDrawBehind == null,
 				DestroyOnZChanged = att_DontDestroyOnTran == null,
-				ForceSpawn = att_ForceSpawn != null,
 				Capacity = capacity,
 				EntityType = eType,
 				DespawnOutOfRange = att_DontDespawn == null,
@@ -205,6 +207,10 @@ public static class Stage {
 				} catch (Exception ex) { Debug.LogException(ex); }
 			}
 			EntityPool.TryAdd(id, stack);
+			// Reposition Map
+			if (att_Repos != null) {
+				RepositionHash.TryAdd(id);
+			}
 		}
 
 		// Event
@@ -718,6 +724,40 @@ public static class Stage {
 			var entity = entities[i];
 			if (entity.Active && entity.DespawnOutOfRange && !SpawnRect.Overlaps(entity.GlobalBounds)) {
 				entity.Active = false;
+				// Reposition
+				if (
+					UsingProceduralMap &&
+					entity.MapUnitPos.HasValue &&
+					RepositionHash.Contains(entity.TypeID)
+				) {
+					var mapPos = entity.MapUnitPos.Value;
+					int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
+					int currentUnitX = entity.X.ToUnit();
+					int currentUnitY = entity.Y.ToUnit();
+					byte requireReposition = 0;
+					if (mapPos_blockID != entity.TypeID) {
+						// Overlaped by Other Entity
+						requireReposition = 1;
+					} else if (currentUnitX != mapPos.x || currentUnitY != mapPos.y) {
+						// Position Moved
+						requireReposition = 2;
+					}
+					// Perform Reposition
+					if (
+						requireReposition > 0 &&
+						FrameworkUtil.TryGetEmptyPlaceNearby(
+							currentUnitX, currentUnitY, mapPos.z,
+							out int resultUnitX, out int resultUnitY
+						)
+					) {
+						// Set Block
+						WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, mapPos.z, BlockType.Entity, entity.TypeID);
+						// Clear Original
+						if (requireReposition == 2) {
+							WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
+						}
+					}
+				}
 			}
 		}
 
@@ -731,7 +771,20 @@ public static class Stage {
 		while (count > 0) {
 			var e = entities[count - 1];
 			if (e.Active) break;
-			PushEntityBack(e);
+
+			e.Active = false;
+			try {
+				e.OnInactivated();
+			} catch (Exception ex) { Debug.LogException(ex); }
+
+			StagedEntityHash.Remove(e.InstanceID);
+
+			// Push Back
+			if (EntityPool.TryGetValue(e.TypeID, out var stack)) {
+				stack.Push(e);
+			}
+
+			// Next
 			count--;
 		}
 
@@ -759,23 +812,7 @@ public static class Stage {
 			int count = EntityCounts[layer];
 			var entities = Entities[layer];
 			Entity entity = null;
-			if (count >= entities.Length) {
-				if (!eMeta.ForceSpawn) return null;
-				// Force Spawn
-				for (int i = 0; i < count; i++) {
-					var e = entities[i];
-					if (e.TypeID != typeID && (!EntityPool.TryGetValue(e.TypeID, out var _meta) || _meta.ForceSpawn)) continue;
-					// Pop
-					entity = eMeta.Pop();
-					if (entity == null) break;
-					entities[i] = entity;
-					// Inactive First NoneForceSpawn Entity
-					PushEntityBack(e);
-					goto KeepOn;
-				}
-				return null;
-				KeepOn:;
-			}
+			if (count >= entities.Length) return null;
 			// Normal Spawn
 			if (entity == null) {
 				entity = eMeta.Pop();
@@ -804,18 +841,6 @@ public static class Stage {
 			}
 		} catch (Exception ex) { Debug.LogException(ex); }
 		return null;
-	}
-
-
-	private static void PushEntityBack (Entity entity, EntityStack meta = null) {
-		entity.Active = false;
-		try {
-			entity.OnInactivated();
-		} catch (Exception ex) { Debug.LogException(ex); }
-		StagedEntityHash.Remove(entity.InstanceID);
-		if (meta == null && EntityPool.TryGetValue(entity.TypeID, out meta)) {
-			meta.Push(entity);
-		}
 	}
 
 

@@ -75,16 +75,16 @@ public static class EntityAttribute {
 
 
 	[System.AttributeUsage(System.AttributeTargets.Class)]
-	public class ForceSpawnAttribute : System.Attribute { }
-
-
-	[System.AttributeUsage(System.AttributeTargets.Class)]
 	public class StageOrderAttribute : System.Attribute {
 		public int Order = 0;
 		public StageOrderAttribute (int order) {
 			Order = order;
 		}
 	}
+
+
+	[System.AttributeUsage(System.AttributeTargets.Class)]
+	public class RepositionWhenOutOfRangeAttribute : System.Attribute { }
 
 
 }

@@ -16,18 +16,30 @@ public abstract class Explosion : Entity {
 	protected virtual Color32 WaveColor => new(255, 255, 255, 255);
 	protected virtual Color32 RingColor => new(255, 0, 0, 255);
 	protected virtual Color32 FireColor => new(255, 255, 0, 255);
+	protected virtual bool DestroyBlocks => true;
 	public Entity Sender { get; set; } = null;
 	public int BreakObjectArtwork { get; set; }
 	protected int ExplodedFrame { get; private set; } = -1;
 
+	// Data
+	private static bool UseProceduralMap;
+
 
 	// MSG
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		UseProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
+	}
+
+
 	public override void OnActivated () {
 		base.OnActivated();
 		if (FromWorld) {
-			X += Const.HALF;
-			Y += Const.HALF;
+			X++;
+			Y++;
 		}
+		X = X.ToUnifyGlobal() + Const.HALF;
+		Y = Y.ToUnifyGlobal() + Const.HALF;
 		Sender = null;
 		BreakObjectArtwork = 0;
 		ExplodedFrame = -1;
@@ -50,9 +62,10 @@ public abstract class Explosion : Entity {
 		// Explode
 		if (ExplodedFrame < 0 && (!FromWorld || Stage.ViewRect.Shrink(Const.CEL * 0).Overlaps(Rect))) {
 			ExplodedFrame = Game.GlobalFrame;
+			var range = new IRect(X - Radius, Y - Radius, Radius * 2, Radius * 2);
 			var hits = Physics.OverlapAll(
 				CollisionMask,
-				new IRect(X - Radius, Y - Radius, Radius * 2, Radius * 2),
+				range,
 				out int count,
 				null, OperationMode.ColliderAndTrigger
 			);
@@ -63,12 +76,30 @@ public abstract class Explosion : Entity {
 				if (!Util.OverlapRectCircle(Radius, X, Y, hitRect.xMin, hitRect.yMin, hitRect.xMax, hitRect.yMax)) continue;
 				receiver.TakeDamage(new Damage(Damage, Sender ?? this, this, Tag.ExplosiveDamage));
 			}
-			OnExplode();
+			// Destroy Block
+			if (UseProceduralMap && DestroyBlocks) {
+				for (int x = range.x; x < range.xMax; x += Const.CEL) {
+					for (int y = range.y; y < range.yMax; y += Const.CEL) {
+						if (!Util.OverlapRectCircle(
+							Radius, X, Y,
+							x + Const.HALF, y + Const.HALF, x + Const.HALF + 1, y + Const.HALF + 1
+						)) continue;
+						FrameworkUtil.PickBlockAt(
+							this,
+							(x + 1).ToUnit(),
+							(y + 1).ToUnit(),
+							allowMultiplePick: true
+						);
+					}
+				}
+			}
+			// Callback
+			OnExplode(range);
 		}
 	}
 
 
-	protected abstract void OnExplode ();
+	protected abstract void OnExplode (IRect range);
 
 
 }

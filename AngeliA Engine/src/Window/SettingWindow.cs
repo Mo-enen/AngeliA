@@ -63,6 +63,7 @@ public class SettingWindow : WindowUI {
 	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
+	private Project CurrentProject;
 	private SavingHotkey ActivatedSetting = null;
 
 
@@ -149,8 +150,10 @@ public class SettingWindow : WindowUI {
 			using var _ = new GUILabelWidthScope(Util.Min(Unify(320), rect.width / 2));
 
 			// Group Content
+			bool useProceduralMap = CurrentProject.Universe.Info.UseProceduralMap;
 			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
 				var group = Groups[groupIndex];
+				if (useProceduralMap && group.Name == "Map Editor") continue;
 				DrawGroup(ref rect, group, groupIndex == 0 ? DrawExtraContent : null, out bool changed);
 				if (group.RigGroup && changed) {
 					RigSettingChanged = true;
@@ -167,6 +170,19 @@ public class SettingWindow : WindowUI {
 			extendedUISize,
 			WindowRect.height
 		);
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public void SetCurrentProject (Project project) {
+		CurrentProject = project;
 	}
 
 

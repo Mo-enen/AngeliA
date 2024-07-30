@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.ForceSpawn]
 [EntityAttribute.Capacity(6, 0)]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]

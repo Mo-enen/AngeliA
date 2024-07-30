@@ -7,6 +7,9 @@ namespace AngeliA;
 public static class FrameworkUtil {
 
 
+	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
+
+
 	// Drawing
 	public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
 		var result = Renderer.DrawPixel(default);
@@ -398,6 +401,239 @@ public static class FrameworkUtil {
 			}
 			if (resultIndex != lastIndex) resultIndex = Util.QuickRandom(resultIndex, lastIndex + 1);
 			return resultIndex;
+		}
+	}
+
+
+	public static void PickBlockAt (Entity picker, int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true, bool dropItemAfterPicked = true, bool allowMultiplePick = false) {
+
+		// Try Pick Block Entity
+		if (allowPickBlockEntity) {
+			var hits = Physics.OverlapAll(
+				PhysicsMask.MAP,
+				new IRect(unitX.ToGlobal() + 1, unitY.ToGlobal() + 1, Const.CEL - 2, Const.CEL - 2),
+				out int count, null, OperationMode.ColliderAndTrigger
+			);
+			for (int i = 0; i < count; i++) {
+				var e = hits[i].Entity;
+				if (e is not IBlockEntity eBlock) continue;
+				e.Active = false;
+				var mapPos = e.MapUnitPos;
+				// Remove from Map
+				if (mapPos.HasValue) {
+					WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
+				}
+				// Event
+				eBlock.OnEntityPicked(picker);
+				if (dropItemAfterPicked && ItemSystem.HasItem(e.TypeID)) {
+					// Drop Item
+					ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
+					// Dust
+					GlobalEvent.InvokePowderSpawn(e.TypeID, e.Rect);
+				} else {
+					// Break
+					GlobalEvent.InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
+				}
+				if (!allowMultiplePick) {
+					return;
+				}
+			}
+		}
+
+		// Try Pick Level Block
+		if (allowPickLevelBlock) {
+			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Level);
+			if (blockID != 0) {
+				int realBlockID = blockID;
+				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
+				// Remove from Map
+				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Level, 0);
+				// Event
+				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
+					blockID = sprite.Group.ID;
+					// Rule
+					if (sprite.Group.WithRule) {
+						RedirectForRule(
+							WorldSquad.Stream, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
+						);
+					}
+				}
+				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
+					// Drop Item
+					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
+					// Dust
+					GlobalEvent.InvokePowderSpawn(blockID, blockRect);
+				} else {
+					// Break
+					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
+				}
+				if (!allowMultiplePick) {
+					return;
+				}
+			}
+		}
+
+		// Try Pick BG Block
+		if (allowPickBackgroundBlock) {
+			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Background);
+			if (blockID != 0) {
+				int realBlockID = blockID;
+				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
+
+				// Remove from Map
+				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Background, 0);
+
+				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
+					blockID = sprite.Group.ID;
+					// Rule
+					if (sprite.Group.WithRule) {
+						RedirectForRule(
+							WorldSquad.Stream, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
+						);
+					}
+				}
+
+				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
+					// Drop Item
+					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
+					// Dust
+					GlobalEvent.InvokePowderSpawn(realBlockID, blockRect);
+				} else {
+					// Break
+					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
+				}
+				if (!allowMultiplePick) {
+					return;
+				}
+			}
+		}
+
+	}
+
+
+	public static bool HasPickableBlockAt (int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true) {
+		// Check for Block Entity
+		if (allowPickBlockEntity) {
+			var hits = Physics.OverlapAll(
+				PhysicsMask.MAP,
+				new IRect(unitX.ToGlobal() + 1, unitY.ToGlobal() + 1, Const.CEL - 2, Const.CEL - 2),
+				out int count, null, OperationMode.ColliderAndTrigger
+			);
+			for (int i = 0; i < count; i++) {
+				if (hits[i].Entity is IBlockEntity) return true;
+			}
+		}
+
+		// Check for Level Block
+		if (allowPickLevelBlock && WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Level) != 0) {
+			return true;
+		}
+
+		// Check for BG Block
+		if (allowPickBackgroundBlock && WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Background) != 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+
+	public static void PutBlockTo (int blockID, BlockType blockType, Character pHolder, int targetUnitX, int targetUnitY) {
+
+		// Set Block to Map
+		if (
+			Renderer.TryGetSprite(blockID, out var sprite, true) ||
+			Renderer.TryGetSpriteFromGroup(blockID, 0, out sprite)
+		) {
+			WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, sprite.ID);
+			// Rule
+			if (sprite.Group != null && sprite.Group.WithRule) {
+				RedirectForRule(
+					WorldSquad.Stream, new IRect(targetUnitX - 1, targetUnitY - 1, 3, 3), Stage.ViewZ
+				);
+			}
+		} else {
+			WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, blockID);
+		}
+
+		// Spawn Block Entity
+		if (
+			blockType == BlockType.Entity &&
+			BLOCK_ENTITY_TYPE.IsAssignableFrom(Stage.GetEntityType(blockID)) &&
+			Stage.SpawnEntity(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal()) is IBlockEntity bEntity
+		) {
+			// Event
+			bEntity.OnEntityPut(pHolder);
+		}
+
+		// Reduce Block Count by 1
+		int eqID = Inventory.GetEquipment(pHolder.TypeID, EquipmentType.Weapon, out int eqCount);
+		if (eqID != 0) {
+			int newEqCount = (eqCount - 1).GreaterOrEquelThanZero();
+			if (newEqCount == 0) eqID = 0;
+			Inventory.SetEquipment(pHolder.TypeID, EquipmentType.Weapon, eqID, newEqCount);
+		}
+	}
+
+
+	public static bool TryGetEmptyPlaceNearby (
+		int unitX, int unitY, int z, out int resultUnitX, out int resultUnitY,
+		int maxRange = 6, bool preferNoSolidLevel = true
+	) {
+
+		var squad = WorldSquad.Front;
+		resultUnitX = int.MinValue;
+		resultUnitY = int.MinValue;
+
+		// Center Check
+		if (squad.GetBlockAt(unitX, unitY, z, BlockType.Entity) == 0) {
+			resultUnitX = unitX;
+			resultUnitY = unitY;
+			if (!preferNoSolidLevel || !IsSolidLevel(unitX, unitY)) {
+				return true;
+			}
+		}
+
+		// Range Check
+		for (int range = 1; range <= maxRange; range++) {
+			int len = range * 2;
+			int l = unitX - range;
+			int r = unitX + range;
+			int d = unitY - range;
+			int u = unitY + range;
+			for (int i = 0; i < len; i++) {
+				if (Check(l, d + i, ref resultUnitX, ref resultUnitY)) return true;
+				if (Check(r, u - i, ref resultUnitX, ref resultUnitY)) return true;
+				if (Check(l + i, d, ref resultUnitX, ref resultUnitY)) return true;
+				if (Check(r - i, u, ref resultUnitX, ref resultUnitY)) return true;
+			}
+		}
+
+		// Final
+		return resultUnitX != int.MinValue;
+
+		// Func
+		bool Check (int x, int y, ref int _resultUnitX, ref int _resultUnitY) {
+
+			if (squad.GetBlockAt(x, y, z, BlockType.Entity) != 0) return false;
+
+			if (!preferNoSolidLevel || !IsSolidLevel(x, y)) {
+				_resultUnitX = x;
+				_resultUnitY = y;
+				return true;
+			} else {
+				if (_resultUnitX == int.MinValue) {
+					_resultUnitX = x;
+					_resultUnitY = y;
+				}
+				return false;
+			}
+
+		}
+
+		bool IsSolidLevel (int x, int y) {
+			int id = squad.GetBlockAt(x, y, z, BlockType.Level);
+			return id != 0 && (!Renderer.TryGetSprite(id, out var sp) || !sp.IsTrigger);
 		}
 	}
 

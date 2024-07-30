@@ -16,7 +16,6 @@ public interface IWindowEntityUI {
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.Capacity(1, 1)]
-[EntityAttribute.ForceSpawn]
 [EntityAttribute.Layer(EntityLayer.UI)]
 public abstract class EntityUI : Entity {
 

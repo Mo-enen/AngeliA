@@ -206,7 +206,7 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		return ToString(format, null);
 	}
 
-	public readonly string ToString (string format, System.IFormatProvider formatProvider) {
+	public readonly string ToString (string format, IFormatProvider formatProvider) {
 		formatProvider ??= CultureInfo.InvariantCulture.NumberFormat;
 		return string.Format("(x:{0}, y:{1}, width:{2}, height:{3})", x.ToString(format, formatProvider), y.ToString(format, formatProvider), width.ToString(format, formatProvider), height.ToString(format, formatProvider));
 	}

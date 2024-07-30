@@ -14,7 +14,6 @@ public sealed class DefaultPlayer : Player {
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
-[EntityAttribute.ForceSpawn]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]
 public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {

@@ -237,7 +237,11 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			var weapon = wData.Weapon;
 			int wCount = wData.Count;
 			if (i != 0 && weapon is null) continue;
-			int weaponID = weapon is null ? 0 : weapon is BlockItem bItem ? bItem.BlockID : weapon.TypeID;
+			var bItem = weapon as BlockItem;
+			int weaponID =
+				bItem != null ? bItem.BlockID :
+				weapon is null ? 0 :
+				weapon.TypeID;
 
 			rect.x = basicX + i * ITEM_SIZE;
 
@@ -272,11 +276,18 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 				// Icon
 				DrawItemIcon(rect, weaponID);
 				// Count
-				if (wCount > 1) {
+				if (wCount > 1 || bItem != null) {
+					var labelTint =
+						bItem == null ? Color32.GREY_230 :
+						bItem.BlockType == BlockType.Background ? Color32.GREY_230 :
+						bItem.BlockType == BlockType.Level ? Color32.ORANGE_BETTER :
+						Color32.CYAN_BETTER;
 					var countRect = rect.Shrink(rect.width * 2 / 3, 0, 0, rect.height * 2 / 3); ;
 					var bg = Renderer.DrawPixel(default, Color32.BLACK);
-					GUI.IntLabel(countRect, wCount, out var bounds, GUISkin.Default.SmallCenterLabel);
-					bg.SetRect(bounds.Expand(countLabelPadding));
+					using (new GUIContentColorScope(labelTint)) {
+						GUI.IntLabel(countRect, wCount, out var bounds, GUISkin.Default.SmallCenterLabel);
+						bg.SetRect(bounds.Expand(countLabelPadding));
+					}
 				}
 			}
 

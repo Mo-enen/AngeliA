@@ -45,7 +45,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode MSG_DELETE_SOUND = ("UI.Project.DeleteSoundMsg", "Delete sound \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
-	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Use Cheat Code");
+	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }

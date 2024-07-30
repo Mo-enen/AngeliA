@@ -874,6 +874,7 @@ public partial class Engine {
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		RiggedMapEditor.Instance.CleanDirty();
 		RiggedMapEditor.Instance.SetCurrentProject(CurrentProject);
+		SettingWindow.Instance.SetCurrentProject(CurrentProject);
 		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
 
 		// Audio
@@ -938,6 +939,7 @@ public partial class Engine {
 			ProjectEditor.Instance.SetCurrentProject(null);
 			RiggedMapEditor.Instance.CleanDirty();
 			RiggedMapEditor.Instance.SetCurrentProject(null);
+			SettingWindow.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 		}

@@ -26,6 +26,9 @@ public static class CheatSystem {
 		Util.LinkEventWithAttribute<OnCheatPerformAttribute>(typeof(CheatSystem), nameof(OnCheatPerform));
 		// Init Pool
 		Enable = Universe.BuiltIn.Info.AllowCheatCode;
+#if DEBUG
+		Enable = true;
+#endif
 		if (Enable) {
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
 				AllCheatActions.Add(new CheatAction() {
