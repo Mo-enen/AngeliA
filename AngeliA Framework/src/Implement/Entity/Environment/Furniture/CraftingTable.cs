@@ -18,7 +18,7 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 			int iCount = Inventory.GetInventoryCapacity(invID);
 			if (iCount != TARGET_COUNT) {
 				// Resize
-				Inventory.ResizeItems(invID, TARGET_COUNT);
+				Inventory.ResizeInventory(invID, TARGET_COUNT);
 			}
 		} else {
 			// Create New Items

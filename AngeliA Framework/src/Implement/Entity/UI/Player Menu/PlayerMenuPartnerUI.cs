@@ -8,7 +8,7 @@ public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
 	public int ItemSize { get; private set; } = PlayerMenuUI.ITEM_SIZE;
 	public bool MouseInPanel { get; set; } = false;
 	public IRect BackgroundRect { get; protected set; } = default;
-
+	
 	public virtual void EnablePanel (int inventoryID, int column, int row, int itemSize = PlayerMenuUI.ITEM_SIZE) {
 		InventoryID = inventoryID;
 		Column = column;

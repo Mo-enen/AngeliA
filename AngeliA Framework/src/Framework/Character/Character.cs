@@ -97,7 +97,7 @@ public abstract partial class Character : Rigidbody {
 			if (Inventory.HasInventory(TypeID)) {
 				int invCount = Inventory.GetInventoryCapacity(TypeID);
 				if (invCount != COUNT) {
-					Inventory.ResizeItems(TypeID, COUNT);
+					Inventory.ResizeInventory(TypeID, COUNT);
 				}
 			} else {
 				// Create New

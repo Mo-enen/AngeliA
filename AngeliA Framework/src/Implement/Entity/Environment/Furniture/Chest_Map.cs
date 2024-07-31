@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
@@ -39,11 +39,6 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
 	bool IActionTarget.AllowInvoke () => !IsChestOpened(this);
-
-
-	void IBlockEntity.OnEntityPicked (Entity picker) {
-		// TODO
-	}
 
 
 }

@@ -148,7 +148,7 @@ public static class Inventory {
 	}
 
 
-	public static void ResizeItems (int inventoryID, int newSize) {
+	public static void ResizeInventory (int inventoryID, int newSize) {
 		if (!Pool.TryGetValue(inventoryID, out var data)) return;
 		var items = data.Items;
 		if (newSize <= 0 || items.Length == newSize) return;
