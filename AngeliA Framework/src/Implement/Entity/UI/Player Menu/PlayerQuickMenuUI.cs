@@ -275,18 +275,24 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			} else {
 				// Icon
 				DrawItemIcon(rect, weaponID);
-				// Count
-				if (wCount > 1 || bItem != null) {
-					var labelTint =
-						bItem == null ? Color32.GREY_230 :
-						bItem.BlockType == BlockType.Background ? Color32.GREY_230 :
-						bItem.BlockType == BlockType.Level ? Color32.ORANGE_BETTER :
-						Color32.CYAN_BETTER;
-					var countRect = rect.Shrink(rect.width * 2 / 3, 0, 0, rect.height * 2 / 3); ;
-					var bg = Renderer.DrawPixel(default, Color32.BLACK);
-					using (new GUIContentColorScope(labelTint)) {
-						GUI.IntLabel(countRect, wCount, out var bounds, GUISkin.Default.SmallCenterLabel);
-						bg.SetRect(bounds.Expand(countLabelPadding));
+
+				if (weapon.UseStackAsUsage) {
+					// Usage
+					FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), wCount, weapon.MaxStackCount);
+				} else {
+					// Count
+					if (wCount > 1 || bItem != null) {
+						var labelTint =
+							bItem == null ? Color32.GREY_230 :
+							bItem.BlockType == BlockType.Background ? Color32.GREY_230 :
+							bItem.BlockType == BlockType.Level ? Color32.ORANGE_BETTER :
+							Color32.CYAN_BETTER;
+						var countRect = rect.Shrink(rect.width * 2 / 3, 0, 0, rect.height * 2 / 3); ;
+						var bg = Renderer.DrawPixel(default, Color32.BLACK);
+						using (new GUIContentColorScope(labelTint)) {
+							GUI.IntLabel(countRect, wCount, out var bounds, GUISkin.Default.SmallCenterLabel);
+							bg.SetRect(bounds.Expand(countLabelPadding));
+						}
 					}
 				}
 			}

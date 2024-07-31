@@ -427,6 +427,15 @@ public static class Inventory {
 	}
 
 
+	public static void ReduceEquipmentCount (int inventoryID, int delta, EquipmentType type) {
+		int eqID = GetEquipment(inventoryID, type, out int eqCount);
+		if (eqID == 0) return;
+		int newEqCount = (eqCount - delta).GreaterOrEquelThanZero();
+		if (newEqCount == 0) eqID = 0;
+		SetEquipment(inventoryID, type, eqID, newEqCount);
+	}
+
+
 	#endregion
 
 

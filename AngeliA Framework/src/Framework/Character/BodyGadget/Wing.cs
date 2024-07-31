@@ -3,9 +3,16 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class AngelWing : Wing { protected override int Scale => 600; }
-public class DevilWing : Wing { protected override int Scale => 600; }
-public class PropellerWing : Wing { }
+
+public sealed class DefaultWing : Wing {
+	public static readonly int TYPE_ID = typeof(DefaultWing).AngeHash();
+	protected override int Scale => 600;
+}
+
+
+public sealed class DefaultPropellerWing : Wing {
+	public static readonly int TYPE_ID = typeof(DefaultPropellerWing).AngeHash();
+}
 
 
 public sealed class ModularWing : Wing, IModularBodyGadget { }

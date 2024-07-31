@@ -188,9 +188,10 @@ public abstract class PoseCharacter : Character {
 		PoseRenderingZOffset = 0;
 		SyncRenderingConfigFromPool();
 		base.BeforeUpdate();
-		// Buff Value
-		FlyAvailable.Override(WingID != 0);
-		GlideOnFlying.Override(WingID != 0 && !Wing.IsPropellerWing(WingID));
+		// Give Default Wing
+		if (WingID.BaseValue == 0 && FlyAvailable) {
+			WingID.Override(GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID, 1);
+		}
 	}
 
 
@@ -217,7 +218,7 @@ public abstract class PoseCharacter : Character {
 		Horn.DrawGadgetFromPool(this);
 	}
 
-
+	
 	protected virtual void RenderCloths () {
 		HeadCloth.DrawClothFromPool(this);
 		BodyCloth.DrawClothFromPool(this);

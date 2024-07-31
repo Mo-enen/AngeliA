@@ -7,7 +7,6 @@ public abstract class PickWeapon : Weapon {
 
 
 	// VAR
-	private const int PICK_MASK = PhysicsMask.MAP;
 	public override WeaponType WeaponType => WeaponType.Axe;
 	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	public override bool AttackWhenSquatting => true;
@@ -20,6 +19,8 @@ public abstract class PickWeapon : Weapon {
 	public virtual bool AllowPickBackgroundBlock => true;
 	public virtual bool AllowPickBlockEntity => true;
 	public virtual bool DropItemAfterPicked => true;
+	public override bool UseStackAsUsage => true;
+	public override int MaxStackCount => 4096;
 
 
 	// MSG
@@ -48,14 +49,19 @@ public abstract class PickWeapon : Weapon {
 			DrawPickTargetHighlight(targetUnitX, targetUnitY, hasTraget);
 		}
 
-		// Pick
+		// Pick Block
 		if (Game.GlobalFrame == pHolder.LastAttackFrame) {
-			FrameworkUtil.PickBlockAt(
+			// Erase Block from Map
+			bool picked = FrameworkUtil.PickBlockAt(
 				holder, targetUnitX, targetUnitY,
 				allowPickBlockEntity: AllowPickBlockEntity,
 				allowPickLevelBlock: AllowPickLevelBlock,
 				allowPickBackgroundBlock: AllowPickBackgroundBlock
 			);
+			// Reduce Weapon Usage
+			if (picked) {
+				Inventory.ReduceEquipmentCount(holder.TypeID, 1, EquipmentType.Weapon);
+			}
 		}
 
 		// Base

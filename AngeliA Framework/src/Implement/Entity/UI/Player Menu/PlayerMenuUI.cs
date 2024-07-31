@@ -548,9 +548,11 @@ public class PlayerMenuUI : EntityUI {
 	public void DrawItemField (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) {
 
 		if (itemCount <= 0) itemID = 0;
+		var item = itemID == 0 ? null : ItemSystem.GetItem(itemID);
 		bool actionHolding = Input.GameKeyHolding(Gamekey.Action);
 		bool cancelHolding = Input.GameKeyHolding(Gamekey.Jump);
 		bool mouseHovering = interactable && itemRect.MouseInside();
+		bool stackAsUsage = item is Weapon wItem && wItem.UseStackAsUsage;
 		int cursorIndex = RenderingBottomPanel == CursorInBottomPanel ? CursorIndex : -1;
 		HoveringItemField = HoveringItemField || mouseHovering;
 
@@ -587,11 +589,13 @@ public class PlayerMenuUI : EntityUI {
 
 		// Holding
 		if (itemID != 0 && cursorIndex == uiIndex) {
+			// Holding Split Bar
 			if (
 				itemCount > 1 &&
 				actionHolding && TakingID == 0 &&
 				ActionKeyDownFrame >= 0 &&
-				Game.GlobalFrame >= ActionKeyDownFrame + 6
+				Game.GlobalFrame >= ActionKeyDownFrame + 6 &&
+				!stackAsUsage
 			) {
 				var cell = Renderer.DrawPixel(itemRect, Color32.GREY_96, int.MinValue + 3);
 				cell.Shift = new Int4(
@@ -603,6 +607,7 @@ public class PlayerMenuUI : EntityUI {
 					)
 				);
 			}
+			// Holding Use Bar
 			if (
 				cancelHolding && TakingID == 0 &&
 				CancelKeyDownFrame >= 0 &&
@@ -625,8 +630,13 @@ public class PlayerMenuUI : EntityUI {
 		// Icon
 		DrawItemIcon(itemRect, itemID, Color32.WHITE, int.MinValue + 4);
 
-		// Count
-		DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
+		if (!stackAsUsage) {
+			// Count
+			DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
+		} else if (item != null) {
+			// Usage
+			FrameworkUtil.DrawItemUsageBar(itemRect.EdgeDown(itemRect.height / 4), itemCount, item.MaxStackCount);
+		}
 
 		// UI Cursor
 		if (!UsingMouseMode && cursorIndex == uiIndex) {
@@ -721,6 +731,8 @@ public class PlayerMenuUI : EntityUI {
 		var enableTint = Color32.WHITE;
 		var equipAvailable = Player.Selecting.EquipmentAvailable(type);
 		bool mouseHovering = interactable && rect.MouseInside();
+		var item = itemID == 0 ? null : ItemSystem.GetItem(itemID);
+		bool stackAsUsage = type == EquipmentType.Weapon && item is Weapon wItem && wItem.UseStackAsUsage;
 		HoveringItemField = HoveringItemField || mouseHovering;
 		if (TakingID != 0 && ItemSystem.IsEquipment(TakingID, out var takingType) && type != takingType) {
 			enableTint.a = 96;
@@ -755,11 +767,18 @@ public class PlayerMenuUI : EntityUI {
 		if (!equipAvailable || !interactable) enableTint.a = 96;
 		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
 
-		// Count
-		DrawItemCount(
-			itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3),
-			equipmentCount
-		);
+		if (stackAsUsage) {
+			// Usage 
+			if (item != null) {
+				FrameworkUtil.DrawItemUsageBar(itemRect.EdgeDown(itemRect.height / 4), equipmentCount, item.MaxStackCount);
+			}
+		} else {
+			// Count
+			DrawItemCount(
+				itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3),
+				equipmentCount
+			);
+		}
 
 		// Label
 		using (new GUIContentColorScope(enableTint)) {
@@ -1056,6 +1075,7 @@ public class PlayerMenuUI : EntityUI {
 		if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
 		int cursorID = Inventory.GetItemAt(invID, CursorIndex, out int cursorCount);
 		if (cursorID == 0) return;
+		if (ItemSystem.GetItem(cursorID) is Weapon weapon && weapon.UseStackAsUsage) return;
 		if (cursorCount > 1) {
 			int deltaCount = cursorCount / 2;
 			TakingID = cursorID;

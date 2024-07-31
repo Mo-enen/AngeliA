@@ -234,6 +234,21 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void DrawItemUsageBar (IRect rect, int usage, int maxUsage) {
+		rect = rect.Shrink(rect.height / 8);
+		int border = rect.height / 10;
+		// BG
+		Renderer.DrawPixel(rect, Color32.BLACK);
+		// Frame
+		Renderer.DrawSlice(BuiltInSprite.FRAME_16, rect, border, border, border, border, Color32.GREY_128);
+		// Bar
+		Renderer.DrawPixel(
+			new IRect(rect.x, rect.y, rect.width * usage / maxUsage, rect.height).Shrink(border),
+			Color32.GREEN
+		);
+	}
+
+
 	// Misc
 	public static void DeleteAllEmptyMaps (string mapRoot) {
 		foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
@@ -341,47 +356,44 @@ public static class FrameworkUtil {
 		var group = sprite.Group;
 		int ruleIndex = GetRuleIndex(
 			group.Sprites, group.ID,
-			GpID(stream.GetBlockAt(i - 1, j + 1, z, type)),
-			GpID(stream.GetBlockAt(i + 0, j + 1, z, type)),
-			GpID(stream.GetBlockAt(i + 1, j + 1, z, type)),
-			GpID(stream.GetBlockAt(i - 1, j + 0, z, type)),
-			GpID(stream.GetBlockAt(i + 1, j + 0, z, type)),
-			GpID(stream.GetBlockAt(i - 1, j - 1, z, type)),
-			GpID(stream.GetBlockAt(i + 0, j - 1, z, type)),
-			GpID(stream.GetBlockAt(i + 1, j - 1, z, type))
+			stream.GetBlockAt(i - 1, j + 1, z, type),
+			stream.GetBlockAt(i + 0, j + 1, z, type),
+			stream.GetBlockAt(i + 1, j + 1, z, type),
+			stream.GetBlockAt(i - 1, j + 0, z, type),
+			stream.GetBlockAt(i + 1, j + 0, z, type),
+			stream.GetBlockAt(i - 1, j - 1, z, type),
+			stream.GetBlockAt(i + 0, j - 1, z, type),
+			stream.GetBlockAt(i + 1, j - 1, z, type)
 		);
 		if (ruleIndex < 0 || ruleIndex >= group.Count) return;
 		int newID = group.Sprites[ruleIndex].ID;
 		if (newID == oldID) return;
 		stream.SetBlockAt(i, j, z, type, newID);
-		// Func
-		static int GpID (int spriteID) => Renderer.TryGetSprite(spriteID, out var sprite) && sprite.Group != null ? sprite.Group.ID : 0;
 	}
 
 
-	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleID, int tl0, int tm0, int tr0, int ml0, int mr0, int bl0, int bm0, int br0) {
-		// 0=Whatever 1=SameTile 2=NotSameTile 3=NotEmpty 4=Emptyint
+	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleID, int tl, int tm, int tr, int ml, int mr, int bl, int bm, int br) {
 		int count = sprites.Count;
 		for (int i = 0; i < count; i++) {
 			var sprite = sprites[i];
 			var rule = sprite.Rule;
-			if (!CheckForTile(ruleID, tl0, rule.RuleTL)) continue;
-			if (!CheckForTile(ruleID, tm0, rule.RuleT)) continue;
-			if (!CheckForTile(ruleID, tr0, rule.RuleTR)) continue;
-			if (!CheckForTile(ruleID, ml0, rule.RuleL)) continue;
-			if (!CheckForTile(ruleID, mr0, rule.RuleR)) continue;
-			if (!CheckForTile(ruleID, bl0, rule.RuleBL)) continue;
-			if (!CheckForTile(ruleID, bm0, rule.RuleB)) continue;
-			if (!CheckForTile(ruleID, br0, rule.RuleBR)) continue;
+			if (!CheckForTile(ruleID, tl, rule.RuleTL)) continue;
+			if (!CheckForTile(ruleID, tm, rule.RuleT)) continue;
+			if (!CheckForTile(ruleID, tr, rule.RuleTR)) continue;
+			if (!CheckForTile(ruleID, ml, rule.RuleL)) continue;
+			if (!CheckForTile(ruleID, mr, rule.RuleR)) continue;
+			if (!CheckForTile(ruleID, bl, rule.RuleBL)) continue;
+			if (!CheckForTile(ruleID, bm, rule.RuleB)) continue;
+			if (!CheckForTile(ruleID, br, rule.RuleBR)) continue;
 			return TryRandom(sprites, i, count);
 		}
 		return -1;
 		// Func
-		static bool CheckForTile (int ruleID, int _targetID0, Rule _targetRule) => _targetRule switch {
-			Rule.SameTile => _targetID0 == ruleID,
-			Rule.NotSameTile => _targetID0 != ruleID,
-			Rule.AnyTile => _targetID0 != 0,
-			Rule.Empty => _targetID0 == 0,
+		static bool CheckForTile (int ruleID, int targetID, Rule targetRule) => targetRule switch {
+			Rule.SameTile => GpID(targetID) == ruleID,
+			Rule.NotSameTile => GpID(targetID) != ruleID,
+			Rule.AnyTile => targetID != 0,
+			Rule.Empty => targetID == 0,
 			_ => true,
 		};
 		static int TryRandom (IList<AngeSprite> sprites, int resultIndex, int count) {
@@ -402,10 +414,13 @@ public static class FrameworkUtil {
 			if (resultIndex != lastIndex) resultIndex = Util.QuickRandom(resultIndex, lastIndex + 1);
 			return resultIndex;
 		}
+		static int GpID (int spriteID) => Renderer.TryGetSprite(spriteID, out var sprite) && sprite.Group != null ? sprite.Group.ID : 0;
 	}
 
 
-	public static void PickBlockAt (Entity picker, int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true, bool dropItemAfterPicked = true, bool allowMultiplePick = false) {
+	public static bool PickBlockAt (Entity picker, int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true, bool dropItemAfterPicked = true, bool allowMultiplePick = false) {
+
+		bool result = false;
 
 		// Try Pick Block Entity
 		if (allowPickBlockEntity) {
@@ -422,6 +437,7 @@ public static class FrameworkUtil {
 				// Remove from Map
 				if (mapPos.HasValue) {
 					WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
+					result = true;
 				}
 				// Event
 				eBlock.OnEntityPicked(picker);
@@ -435,7 +451,7 @@ public static class FrameworkUtil {
 					GlobalEvent.InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
 				}
 				if (!allowMultiplePick) {
-					return;
+					return true;
 				}
 			}
 		}
@@ -448,6 +464,7 @@ public static class FrameworkUtil {
 				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
 				// Remove from Map
 				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Level, 0);
+				result = true;
 				// Event
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
@@ -468,7 +485,7 @@ public static class FrameworkUtil {
 					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
 				}
 				if (!allowMultiplePick) {
-					return;
+					return true;
 				}
 			}
 		}
@@ -482,6 +499,7 @@ public static class FrameworkUtil {
 
 				// Remove from Map
 				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Background, 0);
+				result = true;
 
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
@@ -503,11 +521,12 @@ public static class FrameworkUtil {
 					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
 				}
 				if (!allowMultiplePick) {
-					return;
+					return true;
 				}
 			}
 		}
 
+		return result;
 	}
 
 

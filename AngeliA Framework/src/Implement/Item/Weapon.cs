@@ -37,6 +37,7 @@ public abstract class Weapon : Equipment {
 	public virtual int? DefaultSpeedLoseOnAttack => null;
 	public virtual int? WalkingSpeedLoseOnAttack => null;
 	public virtual int? RunningSpeedLoseOnAttack => null;
+	public virtual bool UseStackAsUsage => false;
 	public virtual bool RepeatAttackWhenHolding => false;
 	public virtual bool LockFacingOnAttack => false;
 	public virtual bool AttackInAir => true;

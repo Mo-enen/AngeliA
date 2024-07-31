@@ -108,12 +108,17 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 			cell = Renderer.Draw(BuiltInSprite.ICON_ENTITY, renderingRect);
 		}
 
-		// Count
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
-			var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
-			using (new UILayerScope()) {
-				Renderer.DrawPixel(labelRect, Color32.BLACK);
-				GUI.IntLabel(labelRect, ItemCount, GUISkin.Default.SmallLabel);
+			if (ItemSystem.GetItem(ItemID) is Weapon wItem && wItem.UseStackAsUsage) {
+				// Usage
+				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, wItem.MaxStackCount);
+			} else {
+				// Count
+				var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
+				using (new UILayerScope()) {
+					Renderer.DrawPixel(labelRect, Color32.BLACK);
+					GUI.IntLabel(labelRect, ItemCount, GUISkin.Default.SmallLabel);
+				}
 			}
 		}
 
