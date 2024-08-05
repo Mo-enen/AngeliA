@@ -63,7 +63,7 @@ public static partial class Util {
 			char b = name[i + 1];
 			if (
 				char.IsLetter(a) &&
-				char.IsLetter(b) &&
+				(char.IsLetter(b) || char.IsNumber(b)) &&
 				!char.IsUpper(a) &&
 				(char.IsUpper(b) || char.IsNumber(b))
 			) {

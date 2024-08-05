@@ -68,7 +68,7 @@ public static partial class Util {
 
 
 	public static IEnumerable<string> ForAllLinesInString (string content) {
-		var reader = new StringReader(content);
+		using var reader = new StringReader(content);
 		while (reader.Peek() >= 0) yield return reader.ReadLine();
 	}
 
