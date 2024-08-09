@@ -38,6 +38,7 @@ public abstract partial class Game {
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
 	public static bool AllowPlayerRestart { get; private set; } = true;
 	public static bool ForceUnifyBasedOnMonitor { get; private set; } = true;
+	public static bool NoQuitFromMenu { get; private set; } = false;
 
 	// Event
 	private static event System.Action OnGameRestart;
@@ -147,6 +148,9 @@ public abstract partial class Game {
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<ScaleUiBasedOnScreenHeightAttribute>()) {
 			ForceUnifyBasedOnMonitor = false;
+		}
+		if (Util.TryGetAttributeFromAllAssemblies<NoQuitFromMenuAttribute>()) {
+			NoQuitFromMenu = true;
 		}
 
 	}

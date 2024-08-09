@@ -8,7 +8,6 @@ namespace AngeliA;
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Wallpaper")]
-[EntityAttribute.RepositionWhenOutOfRange]
 public abstract class Wallpaper : Entity {
 
 

@@ -18,6 +18,7 @@ public sealed class WorldStream : IBlockSquad {
 	private struct WorldData {
 		public World World;
 		public int LastReadWriteFrame;
+		public int LastReadWriteSubFrame;
 		public bool IsDirty;
 		public bool Valid;
 	}
@@ -37,6 +38,7 @@ public sealed class WorldStream : IBlockSquad {
 
 	// Api
 	public string MapRoot { get; init; }
+	public bool IsDirty { get; private set; } = false;
 
 	// Data
 	private static readonly Stack<World> WorldItemPool = new(1024);
@@ -80,6 +82,8 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	public void SaveAllDirty () {
+		if (!IsDirty) return;
+		IsDirty = false;
 		foreach (var pair in WorldPool) {
 			ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
 			bool notExists = Unsafe.IsNullRef(ref data);
@@ -93,6 +97,8 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	public void DiscardAllChanges () {
+		if (!IsDirty) return;
+		IsDirty = false;
 		foreach (var pair in WorldPool) {
 			ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
 			bool notExists = Unsafe.IsNullRef(ref data);
@@ -175,6 +181,7 @@ public sealed class WorldStream : IBlockSquad {
 		int localX = unitX.UMod(Const.MAP);
 		int localY = unitY.UMod(Const.MAP);
 		worldData.IsDirty = true;
+		IsDirty = true;
 		switch (type) {
 			case BlockType.Entity:
 				world.Entities[localY * Const.MAP + localX] = value;
@@ -263,14 +270,11 @@ public sealed class WorldStream : IBlockSquad {
 		CacheReleaseList.Clear();
 		CacheReleaseList.AddRange(WorldPool.TakeWhile(a => a.Value.Valid));
 		CacheReleaseList.Sort((a, b) => b.Value.LastReadWriteFrame.CompareTo(a.Value.LastReadWriteFrame));
+		SaveAllDirty();
 		for (int i = CacheReleaseList.Count - 1; i >= END_RELEASE_COUNT; i--) {
 			if (WorldPool.Remove(CacheReleaseList[i].Key, out var worldData)) {
 				if (worldData.World != null) {
 					WorldItemPool.Push(worldData.World);
-					if (worldData.IsDirty) {
-						string path = PathPool.GetOrAddPath(worldData.World.WorldPosition);
-						worldData.World.SaveToDisk(path);
-					}
 				}
 			}
 			CurrentValidMapCount--;

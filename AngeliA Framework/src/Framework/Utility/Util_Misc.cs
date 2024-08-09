@@ -87,7 +87,7 @@ public static partial class Util {
 	}
 
 
-	public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) where T : class {
+	public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) {
 		int lo = min;
 		int hi = max;
 		T pvt = cells[(min + max) / 2];
@@ -104,7 +104,7 @@ public static partial class Util {
 	}
 
 
-	public static void QuickSort<T> (Span<T> cells, int min, int max, IComparer<T> comparer) where T : class {
+	public static void QuickSort<T> (Span<T> cells, int min, int max, IComparer<T> comparer) {
 		int lo = min;
 		int hi = max;
 		T pvt = cells[(min + max) / 2];
@@ -119,6 +119,7 @@ public static partial class Util {
 		if (min < hi) QuickSort(cells, min, hi, comparer);
 		if (lo < max) QuickSort(cells, lo, max, comparer);
 	}
+
 
 	public static Color32 QuickRandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
 		var result = HsvToRgb(

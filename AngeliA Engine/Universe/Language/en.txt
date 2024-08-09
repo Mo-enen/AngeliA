@@ -1627,7 +1627,7 @@ Menu.Setting.Framerate:Framerate
 Menu.Setting.Fullscreen.0:Windowed
 Menu.Setting.Fullscreen.1:Fullscreen
 Menu.Setting.Fullscreen.2:Fullscreen (Low)
-Menu.Setting.Fullscreen.Label:Display
+Menu.Setting.Fullscreen.Label:Fullscreen
 Menu.Setting.Language:Language
 Menu.Setting.MusicVolume:Music Volume
 Menu.Setting.ShowFPS:Show FPS

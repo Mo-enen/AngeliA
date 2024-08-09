@@ -1627,7 +1627,7 @@ Menu.Setting.Framerate:帧频率
 Menu.Setting.Fullscreen.0:窗口
 Menu.Setting.Fullscreen.1:全屏
 Menu.Setting.Fullscreen.2:全屏（低清）
-Menu.Setting.Fullscreen.Label:显示
+Menu.Setting.Fullscreen.Label:全屏
 Menu.Setting.Language:语言
 Menu.Setting.MusicVolume:音乐音量
 Menu.Setting.ShowFPS:显示帧数

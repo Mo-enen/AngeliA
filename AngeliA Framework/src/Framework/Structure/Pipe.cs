@@ -1,4 +1,6 @@
-﻿namespace AngeliA;
+﻿using System.Collections.Generic;
+
+namespace AngeliA;
 
 public class Pipe<T> {
 
@@ -12,7 +14,10 @@ public class Pipe<T> {
 	public int Capacity { get; init; } = 1024;
 	public int Length { get; private set; } = 0;
 	public bool IsFull => Length >= Capacity;
-	public T this[int index] => Data[(Start + index) % Capacity];
+	public T this[int index] {
+		get => Data[(Start + index) % Capacity];
+		set => Data[(Start + index) % Capacity] = value;
+	}
 
 	// Data
 	private T[] Data { get; init; }
@@ -43,6 +48,7 @@ public class Pipe<T> {
 	#region --- API ---
 
 
+	// Peek
 	public bool TryPeekHead (out T data) {
 		data = default;
 		if (Length <= 0) return false;
@@ -59,6 +65,7 @@ public class Pipe<T> {
 	}
 
 
+	// Link
 	public bool LinkToHead (T data) {
 		if (Length >= Capacity) return false;
 		Start = Start <= 0 ? Capacity - 1 : Start - 1;
@@ -77,6 +84,7 @@ public class Pipe<T> {
 	}
 
 
+	// Pop
 	public bool TryPopHead (out T data) {
 		data = default;
 		if (Length <= 0) return false;
@@ -99,9 +107,42 @@ public class Pipe<T> {
 	}
 
 
+	// Detch
+	public void DetchHead (int newLength) {
+		if (newLength >= Length) return;
+		Start += Length - newLength;
+		Length = newLength;
+	}
+
+
+	public void DetchTail (int newLength) {
+		if (newLength >= Length) return;
+		Length = newLength;
+	}
+
+
+	// Misc
 	public void Reset () {
 		Start = 0;
 		Length = 0;
+	}
+
+
+	public void Reorganize () {
+		if (Start == 0 || Length == 0) return;
+		if (Length < Capacity) {
+			int index = 1;
+			for (int i = Length; i < Capacity; i++, index++) {
+				(Data[i], Data[Start - index]) = (Data[Start - index], Data[i]);
+			}
+		}
+		Start = 0;
+	}
+
+
+	public void Sort (IComparer<T> comparer) {
+		Reorganize();
+		Util.QuickSort(Data, 0, Length - 1, comparer);
 	}
 
 

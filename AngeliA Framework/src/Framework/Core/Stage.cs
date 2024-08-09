@@ -724,40 +724,7 @@ public static class Stage {
 			var entity = entities[i];
 			if (entity.Active && entity.DespawnOutOfRange && !SpawnRect.Overlaps(entity.GlobalBounds)) {
 				entity.Active = false;
-				// Reposition
-				if (
-					UsingProceduralMap &&
-					entity.MapUnitPos.HasValue &&
-					RepositionHash.Contains(entity.TypeID)
-				) {
-					var mapPos = entity.MapUnitPos.Value;
-					int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
-					int currentUnitX = entity.X.ToUnit();
-					int currentUnitY = entity.Y.ToUnit();
-					byte requireReposition = 0;
-					if (mapPos_blockID != entity.TypeID) {
-						// Overlaped by Other Entity
-						requireReposition = 1;
-					} else if (currentUnitX != mapPos.x || currentUnitY != mapPos.y) {
-						// Position Moved
-						requireReposition = 2;
-					}
-					// Perform Reposition
-					if (
-						requireReposition > 0 &&
-						FrameworkUtil.TryGetEmptyPlaceNearby(
-							currentUnitX, currentUnitY, mapPos.z,
-							out int resultUnitX, out int resultUnitY
-						)
-					) {
-						// Set Block
-						WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, mapPos.z, BlockType.Entity, entity.TypeID);
-						// Clear Original
-						if (requireReposition == 2) {
-							WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
-						}
-					}
-				}
+				RepositionEntity(entity);
 			}
 		}
 
@@ -789,6 +756,40 @@ public static class Stage {
 		}
 
 		EntityCounts[layer] = count;
+	}
+
+
+	private static void RepositionEntity (Entity entity) {
+
+		if (!UsingProceduralMap || !entity.MapUnitPos.HasValue || !RepositionHash.Contains(entity.TypeID)) return;
+
+		var mapPos = entity.MapUnitPos.Value;
+		int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
+		int currentUnitX = entity.X.ToUnit();
+		int currentUnitY = entity.Y.ToUnit();
+		byte requireReposition = 0;
+		if (mapPos_blockID != entity.TypeID) {
+			// Overlaped by Other Entity
+			requireReposition = 1;
+		} else if (currentUnitX != mapPos.x || currentUnitY != mapPos.y) {
+			// Position Moved
+			requireReposition = 2;
+		}
+		// Perform Reposition
+		if (
+			requireReposition > 0 &&
+			FrameworkUtil.TryGetEmptyPlaceNearby(
+				currentUnitX, currentUnitY, mapPos.z,
+				out int resultUnitX, out int resultUnitY
+			)
+		) {
+			// Set Block
+			WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, mapPos.z, BlockType.Entity, entity.TypeID);
+			// Clear Original
+			if (requireReposition == 2) {
+				WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
+			}
+		}
 	}
 
 

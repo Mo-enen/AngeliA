@@ -369,13 +369,14 @@ public static class ItemSystem {
 	}
 
 
-	public static void SpawnItem (int itemID, int x, int y, int count = 1, bool jump = true) {
-		if (Stage.SpawnEntity(ItemHolder.TYPE_ID, x, y) is not ItemHolder holder) return;
+	public static ItemHolder SpawnItem (int itemID, int x, int y, int count = 1, bool jump = true) {
+		if (Stage.SpawnEntity(ItemHolder.TYPE_ID, x, y) is not ItemHolder holder) return null;
 		holder.ItemID = itemID;
 		holder.ItemCount = count;
 		if (jump) {
 			holder.Jump();
 		}
+		return holder;
 	}
 
 

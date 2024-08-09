@@ -137,7 +137,6 @@ public abstract class PoseCharacter : Character {
 
 
 	public PoseCharacter () {
-		// [order -64 from stage]
 		// Body Part
 		for (int i = 0; i < BODY_PART_COUNT; i++) {
 			var bodyPart = BodyParts[i] = new BodyPart(
@@ -218,7 +217,7 @@ public abstract class PoseCharacter : Character {
 		Horn.DrawGadgetFromPool(this);
 	}
 
-	
+
 	protected virtual void RenderCloths () {
 		HeadCloth.DrawClothFromPool(this);
 		BodyCloth.DrawClothFromPool(this);
@@ -578,26 +577,17 @@ public abstract class PoseCharacter : Character {
 
 
 	// Config
-	public static CharacterRenderingConfig CreateCharacterRenderingConfigFromSheet (string characterAngeName) {
+	public static CharacterRenderingConfig CreateCharacterRenderingConfigFromSheet (System.Type characterType) {
 
-		int typeID = characterAngeName.AngeHash();
+		int typeID = characterType.AngeHash();
 		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
 		var config = new CharacterRenderingConfig();
 
 		// Body Parts
 		for (int i = 0; i < bodyPartLen; i++) {
-			int id = DEFAULT_BODY_PART_ID[i];
-			int newID = $"{characterAngeName}.{BODY_PART_NAME[i]}".AngeHash();
-			if (i == 0) {
-				// For Head
-				if (Renderer.HasSpriteGroup(newID) || Renderer.HasSprite(newID)) {
-					id = newID;
-				}
-			} else {
-				// For Other
-				if (Renderer.HasSprite(newID)) id = newID;
+			if (!BodyPart.TryGetSpriteIdFromSheet(characterType, BODY_PART_NAME[i], i == 0, out int id)) {
+				id = DEFAULT_BODY_PART_ID[i];
 			}
-
 			switch (i) {
 				case 0: config.Head = id; break;
 				case 1: config.Body = id; break;
@@ -638,13 +628,12 @@ public abstract class PoseCharacter : Character {
 		string renderRoot = Universe.BuiltIn.CharacterRenderingConfigRoot;
 		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
 			int typeID = type.AngeHash();
-			string name = type.Name;
 			// Load From File
-			string path = Util.CombinePaths(renderRoot, $"{name}.json");
+			string path = Util.CombinePaths(renderRoot, $"{type.Name}.json");
 			var config = JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path);
 			// Create Default Config
 			if (config == null) {
-				config = CreateCharacterRenderingConfigFromSheet(name);
+				config = CreateCharacterRenderingConfigFromSheet(type);
 				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
 			}
 			// Add to Pool

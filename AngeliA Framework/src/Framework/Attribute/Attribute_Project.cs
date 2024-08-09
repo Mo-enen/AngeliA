@@ -14,6 +14,10 @@ public class DisablePauseAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Assembly)]
+public class NoQuitFromMenuAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Assembly)]
 public class IgnoreArtworkPixelsAttribute : Attribute { }
 
 

@@ -64,8 +64,13 @@ public class WorldSquad : IBlockSquad {
 	[OnGameUpdate(-64)]
 	public static void OnGameUpdate () {
 		if (!Enable) return;
+		// Render
 		Front.Render();
 		Behind.Render();
+		// Auto Save
+		if (!Readonly && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
+			Stream.SaveAllDirty();
+		}
 	}
 
 
@@ -218,6 +223,19 @@ public class WorldSquad : IBlockSquad {
 	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
 
 
+	public static IEnumerable<Int3> ForAllWorldInRect (IRect rect) {
+		int left = rect.xMin.ToUnit().UDivide(Const.MAP);
+		int right = (rect.xMax.ToUnit() + 1).UDivide(Const.MAP);
+		int down = rect.yMin.ToUnit().UDivide(Const.MAP);
+		int up = (rect.yMax.ToUnit() + 1).UDivide(Const.MAP);
+		for (int i = left; i <= right; i++) {
+			for (int j = down; j < up; j++) {
+				yield return new Int3(i, j, Stage.ViewZ);
+			}
+		}
+	}
+
+
 	// Get Block
 	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
 		resultX = default;
@@ -265,6 +283,14 @@ public class WorldSquad : IBlockSquad {
 		if (Readonly) return;
 		Stream.SetBlockAt(unitX, unitY, z, type, newID);
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
 
 
 	// Draw

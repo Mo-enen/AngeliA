@@ -1,13 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 [EntityAttribute.DontSpawnFromWorld]
 [EntityAttribute.ExcludeInMapEditor]
-[EntityAttribute.Capacity(1024, 0)]
+[EntityAttribute.Capacity(2048, 0)]
 [EntityAttribute.Layer(EntityLayer.ITEM)]
-public class ItemHolder : EnvironmentRigidbody, IActionTarget {
+public class ItemHolder : Rigidbody, IActionTarget {
+
+
+
+
+	#region --- SUB ---
+
+
+	private class PipeComparer : IComparer<Int4> {
+		public static readonly PipeComparer Instance = new();
+		public int Compare (Int4 a, Int4 b) {
+			bool validA = a.z != 0 && a.w > 0;
+			bool validB = b.z != 0 && b.w > 0;
+			return validA == validB ? 0 : validA ? -1 : 1;
+		}
+	}
+
+
+	#endregion
 
 
 
@@ -29,6 +47,9 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	public int ItemCount { get; set; } = 1;
 	bool IActionTarget.AllowInvokeOnSquat => true;
 
+	// Data
+	private static readonly Dictionary<Int3, Pipe<Int4>> HoldingPool = new();
+
 
 	#endregion
 
@@ -38,10 +59,60 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 	#region --- MSG ---
 
 
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+		// Check for Holding Pool
+		foreach (var worldPos in WorldSquad.ForAllWorldInRect(Stage.ViewRect)) {
+
+			if (!HoldingPool.TryGetValue(worldPos, out var pipe) || pipe.Length == 0) continue;
+
+			bool requireSort = false;
+			for (int i = 0; i < pipe.Length; i++) {
+				var data = pipe[i];
+				// Invalid Check
+				if (data.z == 0 || data.w <= 0) {
+					requireSort = true;
+					continue;
+				}
+				// Spawn if in Range
+				if (Stage.ViewRect.Contains(data.x, data.y)) {
+					// Spawn
+					if (ItemSystem.SpawnItem(data.z, data.x, data.y, data.w, jump: false) == null) {
+						break;
+					}
+					// Clear
+					data.z = 0;
+					data.w = 0;
+					pipe[i] = data;
+					requireSort = true;
+				}
+			}
+			if (requireSort) {
+				pipe.Sort(PipeComparer.Instance);
+			}
+		}
+	}
+
+
+	[OnGameRestart]
+	internal static void OnGameRestart () {
+		HoldingPool.Clear();
+	}
+
+
 	public override void OnActivated () {
 		base.OnActivated();
 		Width = ITEM_PHYSICS_SIZE;
 		Height = ITEM_PHYSICS_SIZE;
+	}
+
+
+	public override void OnInactivated () {
+		base.OnInactivated();
+		// Hold on Out of Range
+		if (ItemID != 0 && ItemCount > 0) {
+			HoldToPool(ItemID, ItemCount, new Int3(X, Y, Stage.ViewZ));
+		}
 	}
 
 
@@ -108,6 +179,10 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 			cell = Renderer.Draw(BuiltInSprite.ICON_ENTITY, renderingRect);
 		}
 
+		// Shadow
+		FrameworkUtil.DrawEnvironmentShadow(cell);
+
+		// UI
 		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			if (ItemSystem.GetItem(ItemID) is Weapon wItem && wItem.UseStackAsUsage) {
 				// Usage
@@ -199,6 +274,41 @@ public class ItemHolder : EnvironmentRigidbody, IActionTarget {
 		}
 
 		return oldCount > ItemCount;
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private static void HoldToPool (int id, int count, Int3 globalPos) {
+
+		int unitX = globalPos.x.ToUnit();
+		int unitY = globalPos.y.ToUnit();
+		var worldPos = new Int3(
+			unitX.UDivide(Const.MAP),
+			unitY.UDivide(Const.MAP),
+			globalPos.z
+		);
+
+		// Get or Create Data
+		if (!HoldingPool.TryGetValue(worldPos, out var pipe)) {
+			pipe = new Pipe<Int4>(256);
+			HoldingPool.Add(worldPos, pipe);
+		}
+
+		// Remove if Full
+		if (pipe.Length == pipe.Capacity) {
+			pipe.TryPopHead(out _);
+		}
+
+		// Add to Data
+		pipe.LinkToTail(new Int4(globalPos.x, globalPos.y, id, count));
+
 	}
 
 

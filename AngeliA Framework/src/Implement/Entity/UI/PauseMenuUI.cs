@@ -145,6 +145,9 @@ public class PauseMenuUI : MenuUI {
 
 	protected override void DrawMenu () {
 		Message = string.Empty;
+		if (Mode == MenuMode.Quit && Game.NoQuitFromMenu) {
+			Mode = MenuMode.Root;
+		}
 		switch (Mode) {
 			case MenuMode.Root:
 				MenuRoot();
@@ -203,10 +206,12 @@ public class PauseMenuUI : MenuUI {
 		}
 
 		// 3/4-Quit
-		using (new GUIContentColorScope(Color32.RED_BETTER)) {
-			if (DrawItem(BuiltInText.UI_QUIT)) {
-				RequireMode = MenuMode.Quit;
-				SetSelection(0);
+		if (!Game.NoQuitFromMenu) {
+			using (new GUIContentColorScope(Color32.RED_BETTER)) {
+				if (DrawItem(BuiltInText.UI_QUIT)) {
+					RequireMode = MenuMode.Quit;
+					SetSelection(0);
+				}
 			}
 		}
 

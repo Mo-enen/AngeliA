@@ -235,7 +235,7 @@ public static class FrameworkUtil {
 
 
 	public static void DrawItemUsageBar (IRect rect, int usage, int maxUsage) {
-		rect = rect.Shrink(rect.height / 8);
+		rect = rect.Shrink(rect.height / 6);
 		int border = rect.height / 10;
 		// BG
 		Renderer.DrawPixel(rect, Color32.BLACK);
@@ -244,7 +244,7 @@ public static class FrameworkUtil {
 		// Bar
 		Renderer.DrawPixel(
 			new IRect(rect.x, rect.y, rect.width * usage / maxUsage, rect.height).Shrink(border),
-			Color32.GREEN
+			Color32.Lerp(Color32.RED, Color32.GREEN, (float)usage / maxUsage)
 		);
 	}
 

@@ -7,6 +7,9 @@ namespace AngeliA;
 public class BodyPart {
 
 
+	// Const
+	private static System.Type BASIC_CHARACTER_TYPE = typeof(PoseCharacter);
+
 	// SUB
 	public enum CoverMode { None, Covered, FullCovered }
 
@@ -40,6 +43,27 @@ public class BodyPart {
 
 
 	// API
+	public static bool TryGetSpriteIdFromSheet (System.Type characterType, string bodyPartName, bool checkForGroup, out int id) {
+		id = 0;
+		var type = characterType;
+		while (true) {
+			int newID = $"{type.AngeName()}.{bodyPartName}".AngeHash();
+			if (checkForGroup) {
+				if (Renderer.HasSpriteGroup(newID) || Renderer.HasSprite(newID)) {
+					id = newID;
+					return true;
+				}
+			} else if (Renderer.HasSprite(newID)) {
+				id = newID;
+				return true;
+			}
+			type = type.BaseType;
+			if (type == null || type == BASIC_CHARACTER_TYPE) break;
+		}
+		return false;
+	}
+
+
 	public BodyPart (BodyPart parent, bool useLimbFlip) {
 		LimbParent = parent;
 		UseLimbFlip = useLimbFlip;
@@ -77,11 +101,13 @@ public class BodyPart {
 	}
 
 
-	public IRect GetGlobalRect () => new(
-		GlobalX - PivotX * Width / 1000 + (Width > 0 ? 0 : Width),
-		GlobalY - PivotY * Height / 1000 + (Height > 0 ? 0 : Height),
-		Width.Abs(), Height.Abs()
-	);
+	public IRect GetGlobalRect () {
+		return new IRect(
+			GlobalX - PivotX * Width / 1000 + (Width > 0 ? 0 : Width),
+			GlobalY - PivotY * Height / 1000 + (Height > 0 ? 0 : Height),
+			Width.Abs(), Height.Abs()
+		);
+	}
 
 
 	public Int2 GetLocalCenter () {

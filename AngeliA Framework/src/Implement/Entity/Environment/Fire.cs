@@ -13,7 +13,11 @@ public interface ICombustible {
 	public int BurnedDuration => 120;
 	public int BurnStartFrame { get; set; }
 	public void OnBurned () {
-		if (this is Entity e && e.FromWorld) {
+		if (this is not Entity e || !e.MapUnitPos.HasValue) return;
+		if (Universe.BuiltIn.Info.UseProceduralMap) {
+			var mapPos = e.MapUnitPos.Value;
+			WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, BlockType.Element, 0);
+		} else {
 			Stage.MarkAsGlobalAntiSpawn(e);
 		}
 	}
