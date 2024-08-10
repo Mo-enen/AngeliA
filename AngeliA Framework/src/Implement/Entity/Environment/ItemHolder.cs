@@ -61,6 +61,9 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 	[OnGameUpdate]
 	internal static void OnGameUpdate () {
+
+		if (!ItemSystem.ItemPoolReady) return;
+
 		// Check for Holding Pool
 		foreach (var worldPos in WorldSquad.ForAllWorldInRect(Stage.ViewRect)) {
 
@@ -95,9 +98,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 
 	[OnGameRestart]
-	internal static void OnGameRestart () {
-		HoldingPool.Clear();
-	}
+	internal static void OnGameRestart () => HoldingPool.Clear();
 
 
 	public override void OnActivated () {
@@ -122,7 +123,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	public override void Update () {
 		base.Update();
 
-		if (ItemID == 0 || ItemCount <= 0) {
+		if (!Active || ItemID == 0 || ItemCount <= 0) {
 			Active = false;
 			return;
 		}
@@ -138,7 +139,14 @@ public class ItemHolder : Rigidbody, IActionTarget {
 			var hits = Physics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, this, OperationMode.TriggerOnly);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
-				if (hit.Entity == null) continue;
+				if (hit.Entity is not ItemHolder holder) continue;
+				if (holder.ItemID == ItemID && holder.ItemCount > 0) {
+					// Merge
+					holder.Active = false;
+					ItemCount += holder.ItemCount;
+					holder.ItemCount = 0;
+					continue;
+				}
 				if (hit.Rect.x > X) {
 					dir--;
 				} else if (hit.Rect.x < X) {
@@ -183,7 +191,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		FrameworkUtil.DrawEnvironmentShadow(cell);
 
 		// UI
-		if (ItemCount > 1 && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
+		if (ItemCount > 1 && !Task.IsTasking<TeleportTask>() && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			if (ItemSystem.GetItem(ItemID) is Weapon wItem && wItem.UseStackAsUsage) {
 				// Usage
 				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, wItem.MaxStackCount);
@@ -274,6 +282,15 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		}
 
 		return oldCount > ItemCount;
+	}
+
+
+	public static void ClearHoldingPool () => HoldingPool.Clear();
+
+
+	public void SetIdAndCount (int id, int count) {
+		ItemID = id;
+		ItemCount = count;
 	}
 
 

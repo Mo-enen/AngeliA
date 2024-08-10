@@ -9,7 +9,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 
 	// SUB
-	private enum CraftActionType { None, Take, QuickDrop, }
+	private enum CraftActionType { None, TakeOne, QuickDropOne, TakeAll, QuickDropAll, }
 
 	// Const
 	private const int DOC_ITEM_HEIGHT = 22;
@@ -97,14 +97,17 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	private CraftActionType Update_Action (IRect docItemRect, IRect resultItemRect) {
 		var action = CraftActionType.None;
 		var menu = PlayerMenuUI.Instance;
+		bool craftAll = Input.HoldingShift;
 		if (Input.LastActionFromMouse) {
 			// Result
 			CursorInResult = resultItemRect.MouseInside();
 			if (CursorInResult && CombineResultID != 0) {
-				if (Input.MouseLeftButtonDown) {
-					action = CraftActionType.Take;
-				} else if (Input.MouseRightButtonDown) {
-					action = CraftActionType.QuickDrop;
+				if (Input.GameKeyDown(Gamekey.Action)) {
+					Input.UseGameKey(Gamekey.Action);
+					action = craftAll ? CraftActionType.TakeAll : CraftActionType.TakeOne;
+				} else if (Input.GameKeyDown(Gamekey.Jump)) {
+					Input.UseGameKey(Gamekey.Jump);
+					action = craftAll ? CraftActionType.QuickDropAll : CraftActionType.QuickDropOne;
 				}
 			}
 			// Doc
@@ -125,55 +128,47 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				if (Input.GameKeyDown(Gamekey.Action)) {
 					Input.UseGameKey(Gamekey.Action);
 					if (CombineResultID != 0) {
-						action = CraftActionType.Take;
+						action = craftAll ? CraftActionType.TakeAll : CraftActionType.TakeOne;
 					}
-				}
-				if (Input.GameKeyDown(Gamekey.Jump)) {
+				} else if (Input.GameKeyDown(Gamekey.Jump)) {
 					Input.UseGameKey(Gamekey.Jump);
 					if (CombineResultID != 0) {
-						action = CraftActionType.QuickDrop;
+						action = craftAll ? CraftActionType.QuickDropAll : CraftActionType.QuickDropOne;
 					}
 				}
 				if (Input.GameKeyDown(Gamekey.Down)) {
-					Input.UseGameKey(Gamekey.Down);
 					int x = (Character.INVENTORY_COLUMN - 1).Clamp(0, Character.INVENTORY_COLUMN - 1);
 					int y = Character.INVENTORY_ROW - 1;
 					menu.CursorIndex = x + Character.INVENTORY_COLUMN * y;
 					menu.CursorInBottomPanel = true;
 				}
 				if (Input.GameKeyDown(Gamekey.Left)) {
-					Input.UseGameKey(Gamekey.Left);
 					CursorInResult = false;
 					menu.CursorIndex = 1;
 				}
 			} else if (menu.CursorIndex % 2 == 1) {
 				if (Input.GameKeyDown(Gamekey.Right)) {
-					Input.UseGameKey(Gamekey.Right);
 					if (menu.TakingID == 0) CursorInResult = true;
 				}
 			}
 			// Doc
 			if (CursorInDoc) {
 				if (Input.GameKeyDown(Gamekey.Right)) {
-					Input.UseGameKey(Gamekey.Right);
 					CursorInDoc = false;
 					menu.CursorIndex = 0;
 				}
 				if (Input.GameKeyDown(Gamekey.Down)) {
-					Input.UseGameKey(Gamekey.Down);
 					DocumentScrollY = (DocumentScrollY + 4).Clamp(
 						0, DocumentContent.Count - DocumentPageSize
 					);
 				}
 				if (Input.GameKeyDown(Gamekey.Up)) {
-					Input.UseGameKey(Gamekey.Up);
 					DocumentScrollY = (DocumentScrollY - 4).Clamp(
 						0, DocumentContent.Count - DocumentPageSize
 					);
 				}
 			} else if (menu.CursorIndex % 2 == 0) {
 				if (Input.GameKeyDown(Gamekey.Left)) {
-					Input.UseGameKey(Gamekey.Left);
 					if (menu.TakingID == 0) CursorInDoc = true;
 				}
 			}
@@ -189,7 +184,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 
 	private void Update_Inventory (IRect panelRect) {
-		int itemSize = Unify(ItemSize);
+		int itemSize = Unify(ItemFieldSize);
 		var itemRect = new IRect(0, 0, itemSize, itemSize);
 		int padding = Unify(12);
 		int itemBorder = Unify(6);
@@ -350,17 +345,37 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		var menu = PlayerMenuUI.Instance;
 		if (CombineResultID == 0 || CombineResultCount == 0 || menu.TakingID != 0) return;
 
-		if (action == CraftActionType.Take) {
-			// Take Crafted
-			menu.SetTaking(CombineResultID, CombineResultCount);
-		} else {
-			// Quick Drop Crafted
-			int playerID = Player.Selecting != null ? Player.Selecting.TypeID : 0;
-			if (playerID == 0) return;
-			int collectedCount = Inventory.CollectItem(playerID, CombineResultID, CombineResultCount);
-			if (collectedCount < CombineResultCount) {
-				ItemSystem.SpawnItemAtTarget(Player.Selecting, CombineResultID, CombineResultCount - collectedCount);
+		bool consumeOne = action == CraftActionType.QuickDropOne || action == CraftActionType.TakeOne;
+		int minMatCount = int.MaxValue;
+		for (int i = 0; i < 4; i++) {
+			int _count = Inventory.GetItemCount(InventoryID, i);
+			if (_count > 0) {
+				minMatCount = Util.Min(minMatCount, _count);
 			}
+		}
+		if (minMatCount == int.MaxValue) return;
+
+		int consumeMatCount = consumeOne ? 1 : minMatCount;
+		int consumeResultCount = CombineResultCount * consumeMatCount;
+
+		Debug.Log(action);
+
+		switch (action) {
+			case CraftActionType.TakeOne:
+			case CraftActionType.TakeAll:
+				// Take Crafted
+				menu.SetTaking(CombineResultID, consumeResultCount);
+				break;
+			case CraftActionType.QuickDropOne:
+			case CraftActionType.QuickDropAll:
+				// Quick Drop Crafted
+				int playerID = Player.Selecting != null ? Player.Selecting.TypeID : 0;
+				if (playerID == 0) return;
+				int collectedCount = Inventory.CollectItem(playerID, CombineResultID, consumeResultCount);
+				if (collectedCount < consumeResultCount) {
+					ItemSystem.SpawnItemAtTarget(Player.Selecting, CombineResultID, consumeResultCount - collectedCount);
+				}
+				break;
 		}
 
 		// Reduce Source Material by One
@@ -368,7 +383,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 			int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
 			if (itemID == 0 || count == 0) continue;
 			if (IgnoreConsumes[0] == itemID || IgnoreConsumes[1] == itemID || IgnoreConsumes[2] == itemID || IgnoreConsumes[3] == itemID) continue;
-			count = (count - 1).GreaterOrEquelThanZero();
+			count = (count - consumeMatCount).GreaterOrEquelThanZero();
 			if (count == 0) itemID = 0;
 			Inventory.SetItemAt(InventoryID, i, itemID, count);
 		}

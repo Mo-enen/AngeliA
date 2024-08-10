@@ -1041,6 +1041,11 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Squad  
 		WorldSquad.Enable = toPlayMode;
+		ItemHolder.ClearHoldingPool();
+		foreach (var holder in Stage.ForAllActiveEntities<ItemHolder>(EntityLayer.ITEM)) {
+			holder.Active = false;
+			holder.SetIdAndCount(0, 0);
+		}
 
 		if (!toPlayMode) {
 			// Play >> Edit

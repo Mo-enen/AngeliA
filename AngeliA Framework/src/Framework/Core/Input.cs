@@ -54,9 +54,9 @@ public static class Input {
 		get => s_AllowGamepad.Value;
 		set => s_AllowGamepad.Value = value;
 	}
-	public static bool HoldingCtrl => KeyboardHolding(KeyboardKey.LeftCtrl) || KeyboardHolding(KeyboardKey.RightCtrl);
-	public static bool HoldingShift => KeyboardHolding(KeyboardKey.LeftShift) || KeyboardHolding(KeyboardKey.RightShift);
-	public static bool HoldingAlt => KeyboardHolding(KeyboardKey.LeftAlt) || KeyboardHolding(KeyboardKey.RightAlt);
+	public static bool HoldingCtrl => KeyboardHolding(KeyboardKey.LeftCtrl) || KeyboardHolding(KeyboardKey.RightCtrl) || Game.IsGamepadKeyHolding(GamepadKey.LeftTrigger);
+	public static bool HoldingShift => KeyboardHolding(KeyboardKey.LeftShift) || KeyboardHolding(KeyboardKey.RightShift) || Game.IsGamepadKeyHolding(GamepadKey.LeftShoulder);
+	public static bool HoldingAlt => KeyboardHolding(KeyboardKey.LeftAlt) || KeyboardHolding(KeyboardKey.RightAlt) || Game.IsGamepadKeyHolding(GamepadKey.RightTrigger);
 
 	// Api - Anykey
 	public static bool AnyKeyDown { get; private set; } = false;
@@ -88,6 +88,7 @@ public static class Input {
 	public static bool MouseMidButtonDown => !IgnoringMouseInput && !MouseMidState.Ignored && MouseMidState.Down;
 	public static int IgnoreMouseToActionFrame { get; private set; } = int.MinValue;
 	public static int IgnoreMouseToJumpFrame { get; private set; } = int.MinValue;
+	public static int IgnoreRightStickToMouseWheelFrame { get; private set; } = int.MinValue;
 	public static int MidMouseToActionFrame { get; private set; } = int.MinValue;
 	public static bool LastActionFromMouse { get; private set; } = false;
 	public static int MouseWheelDelta => IgnoringMouseInput ? 0 : _MouseWheelDelta;
@@ -376,7 +377,7 @@ public static class Input {
 			}
 		}
 		// Mouse Wheel from Right Stick
-		if (_MouseWheelDelta == 0) {
+		if (Game.PauselessFrame > IgnoreRightStickToMouseWheelFrame && _MouseWheelDelta == 0) {
 			int acc = 0;
 			if (available) {
 				if (Game.IsGamepadRightStickHolding(Direction4.Down)) acc = -1;
@@ -648,41 +649,6 @@ public static class Input {
 
 
 	// Keyboard Key
-	public static bool KeyboardDownWithCtrl (KeyboardKey key) =>
-		KeyboardDown(key) &&
-		KeyboardHolding(KeyboardKey.LeftCtrl) &&
-		!KeyboardHolding(KeyboardKey.LeftAlt) &&
-		!KeyboardHolding(KeyboardKey.LeftShift);
-	public static bool KeyboardDownWithAlt (KeyboardKey key) =>
-		KeyboardDown(key) &&
-		!KeyboardHolding(KeyboardKey.LeftCtrl) &&
-		KeyboardHolding(KeyboardKey.LeftAlt) &&
-		!KeyboardHolding(KeyboardKey.LeftShift);
-	public static bool KeyboardDownWithShift (KeyboardKey key) =>
-		KeyboardDown(key) &&
-		!KeyboardHolding(KeyboardKey.LeftCtrl) &&
-		!KeyboardHolding(KeyboardKey.LeftAlt) &&
-		KeyboardHolding(KeyboardKey.LeftShift);
-	public static bool KeyboardDownWithCtrlAndShift (KeyboardKey key) =>
-		KeyboardDown(key) &&
-		KeyboardHolding(KeyboardKey.LeftCtrl) &&
-		!KeyboardHolding(KeyboardKey.LeftAlt) &&
-		KeyboardHolding(KeyboardKey.LeftShift);
-	public static bool KeyboardDownWithCtrlAndAlt (KeyboardKey key) =>
-		KeyboardDown(key) &&
-		KeyboardHolding(KeyboardKey.LeftCtrl) &&
-		KeyboardHolding(KeyboardKey.LeftAlt) &&
-		!KeyboardHolding(KeyboardKey.LeftShift);
-	public static bool KeyboardDownWithAltAndShift (KeyboardKey key) =>
-		KeyboardDown(key) &&
-		!KeyboardHolding(KeyboardKey.LeftCtrl) &&
-		KeyboardHolding(KeyboardKey.LeftAlt) &&
-		KeyboardHolding(KeyboardKey.LeftShift);
-	public static bool KeyboardDownWithCtrlAndAltAndShift (KeyboardKey key) =>
-		KeyboardDown(key) &&
-		KeyboardHolding(KeyboardKey.LeftCtrl) &&
-		KeyboardHolding(KeyboardKey.LeftAlt) &&
-		KeyboardHolding(KeyboardKey.LeftShift);
 	public static bool KeyboardDown (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
 	public static bool KeyboardDownGUI (KeyboardKey key) {
 		if (IgnoringKeyInput) return false;
@@ -770,6 +736,9 @@ public static class Input {
 		if (ignoreJump) IgnoreMouseToJumpFrame = Game.PauselessFrame + duration;
 		if (useMidButtonAsAction) MidMouseToActionFrame = Game.PauselessFrame + duration;
 	}
+
+
+	public static void IgnoreRightStickToMouseWheel (int duration = 1) => IgnoreRightStickToMouseWheelFrame = Game.PauselessFrame + duration;
 
 
 	// Key Map

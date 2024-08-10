@@ -229,7 +229,7 @@ public class WorldSquad : IBlockSquad {
 		int down = rect.yMin.ToUnit().UDivide(Const.MAP);
 		int up = (rect.yMax.ToUnit() + 1).UDivide(Const.MAP);
 		for (int i = left; i <= right; i++) {
-			for (int j = down; j < up; j++) {
+			for (int j = down; j <= up; j++) {
 				yield return new Int3(i, j, Stage.ViewZ);
 			}
 		}

@@ -126,6 +126,8 @@ public class PlayerMenuUI : EntityUI {
 		}
 		Cursor.RequireCursor();
 
+		HoveringItemUiRect = default;
+
 		Update_PanelUI();
 		Update_InfoUI();
 		Update_MoveCursor();
@@ -159,7 +161,7 @@ public class PlayerMenuUI : EntityUI {
 		RenderingBottomPanel = false;
 		if (Partner != null) {
 			// Partner Panel
-			var panelRect = GetPanelRect(Partner.Column, Partner.Row, Partner.ItemSize, true);
+			var panelRect = GetPanelRect(Partner.Column, Partner.Row, Partner.ItemFieldSize, true);
 			Renderer.DrawPixel(panelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
 			Partner.MouseInPanel = panelRect.MouseInside();
 			Partner.DrawPanel(panelRect);
@@ -435,10 +437,16 @@ public class PlayerMenuUI : EntityUI {
 
 
 	private void DrawTakingItemMouseCursor () {
+
+		if (!UsingMouseMode && HoveringItemUiRect == default) return;
+
+		// Green Frame
 		if (!UsingMouseMode) {
 			GUI.HighlightCursor(FRAME_CODE, HoveringItemUiRect);
 		}
+
 		if (TakingID == 0) return;
+
 		int size = Unify(ITEM_SIZE);
 		var itemRect = UsingMouseMode ?
 			new IRect(Input.MouseGlobalPosition.x - size / 2, Input.MouseGlobalPosition.y - size / 2, size, size) :
@@ -575,6 +583,7 @@ public class PlayerMenuUI : EntityUI {
 			}
 			if (UsingMouseMode) {
 				HoveringItemID = itemID;
+				HoveringItemUiRect = itemRect;
 				// Move UI Cursor from Mouse
 				cursorIndex = CursorIndex = uiIndex;
 				CursorInBottomPanel = RenderingBottomPanel;
@@ -749,6 +758,7 @@ public class PlayerMenuUI : EntityUI {
 				Renderer.DrawPixel(rect, Color32.GREY_32, int.MinValue + 1);
 				highlighting = true;
 				Cursor.SetCursorAsHand();
+				HoveringItemUiRect = itemRect;
 			}
 		} else {
 			if (CursorIndex == index && !CursorInBottomPanel) {

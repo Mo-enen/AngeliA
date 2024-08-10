@@ -1,11 +1,11 @@
 ﻿namespace AngeliA;
 
 public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
-
+	
 	public int InventoryID { get; private set; } = 0;
 	public int Column { get; private set; } = 1;
 	public int Row { get; private set; } = 1;
-	public int ItemSize { get; private set; } = PlayerMenuUI.ITEM_SIZE;
+	public int ItemFieldSize { get; private set; } = PlayerMenuUI.ITEM_SIZE;
 	public bool MouseInPanel { get; set; } = false;
 	public IRect BackgroundRect { get; protected set; } = default;
 	
@@ -13,7 +13,7 @@ public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
 		InventoryID = inventoryID;
 		Column = column;
 		Row = row;
-		ItemSize = itemSize;
+		ItemFieldSize = itemSize;
 	}
 
 	public virtual void DrawPanel (IRect panelRect) => BackgroundRect = panelRect;
