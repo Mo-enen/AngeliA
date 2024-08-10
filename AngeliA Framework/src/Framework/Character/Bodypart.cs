@@ -8,7 +8,7 @@ public class BodyPart {
 
 
 	// Const
-	private static System.Type BASIC_CHARACTER_TYPE = typeof(PoseCharacter);
+	private static readonly System.Type BASIC_CHARACTER_TYPE = typeof(PoseCharacter);
 
 	// SUB
 	public enum CoverMode { None, Covered, FullCovered }
