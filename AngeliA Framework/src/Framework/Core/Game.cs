@@ -409,7 +409,7 @@ public abstract partial class Game {
 		foreach (string root in universeRoots) {
 			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseMusicRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
 				int id = Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash();
-				CacheForAudioSync.TryAdd(id);
+				CacheForAudioSync.Add(id);
 				if (!MusicPool.ContainsKey(id)) {
 					MusicPool.Add(id, new MusicData() {
 						ID = id,
@@ -434,7 +434,7 @@ public abstract partial class Game {
 		foreach (string root in universeRoots) {
 			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseSoundRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
 				int id = Util.GetNameWithoutExtension(path).AngeHash();
-				CacheForAudioSync.TryAdd(id);
+				CacheForAudioSync.Add(id);
 				if (SoundPool.ContainsKey(id)) continue;
 				var soundObj = LoadSound(path);
 				if (soundObj == null) continue;

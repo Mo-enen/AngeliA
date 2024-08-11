@@ -94,6 +94,7 @@ public static class Stage {
 		4096,	//GAME
 		512,	//CHARACTER
 		1024,	//ENVIRONMENT 
+		1024,	//WATER 
 		1024,	//BULLET 
 		1024,	//ITEM
 		128,	//DECORATE
@@ -209,7 +210,7 @@ public static class Stage {
 			EntityPool.TryAdd(id, stack);
 			// Reposition Map
 			if (att_Repos != null) {
-				RepositionHash.TryAdd(id);
+				RepositionHash.Add(id);
 			}
 		}
 
@@ -506,7 +507,7 @@ public static class Stage {
 	// Anti Spawn
 	public static void MarkAsGlobalAntiSpawn (Entity entity) {
 		if (!entity.FromWorld) return;
-		GlobalAntiSpawnHash.TryAdd(entity.InstanceID);
+		GlobalAntiSpawnHash.Add(entity.InstanceID);
 	}
 	public static void ClearGlobalAntiSpawn () {
 		if (GlobalAntiSpawnHash.Count > 0) {
@@ -515,7 +516,7 @@ public static class Stage {
 	}
 	public static void MarkAsLocalAntiSpawn (Entity entity) {
 		if (!entity.FromWorld) return;
-		LocalAntiSpawnHash.TryAdd(entity.InstanceID);
+		LocalAntiSpawnHash.Add(entity.InstanceID);
 	}
 	public static void ClearLocalAntiSpawn () {
 		if (LocalAntiSpawnHash.Count > 0) {

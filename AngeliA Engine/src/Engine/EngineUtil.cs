@@ -367,7 +367,7 @@ public static class EngineUtil {
 
 			string globalName = Util.GetNameWithoutExtension(path);
 			string conFolderPath = Util.CombinePaths(exportRoot, globalName);
-			ignoreDelete.TryAdd(globalName);
+			ignoreDelete.Add(globalName);
 
 			// Check Dirty
 			long modTime = Util.GetFileModifyDate(path);

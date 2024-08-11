@@ -32,7 +32,7 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 	bool IActionTarget.Invoke () {
 		if (IsChestOpened(this)) return false;
-		if (FromWorld) OpenedChest.TryAdd(InstanceID);
+		if (FromWorld) OpenedChest.Add(InstanceID);
 		ItemSystem.SpawnItemFromMap(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 		return true;
 	}

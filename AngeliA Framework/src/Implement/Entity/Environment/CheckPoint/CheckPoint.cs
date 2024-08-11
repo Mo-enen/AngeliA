@@ -43,7 +43,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 		UnlockedCheckPoint.Clear();
 		foreach (var path in Util.EnumerateFiles(UnlockFolderPath, true, "*")) {
 			if (int.TryParse(Util.GetNameWithoutExtension(path), out int id)) {
-				UnlockedCheckPoint.TryAdd(id);
+				UnlockedCheckPoint.Add(id);
 			}
 		}
 		UnlockedPoolReady = true;

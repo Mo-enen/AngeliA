@@ -850,10 +850,6 @@ public static class Extension {
 		return a;
 	}
 
-	public static void TryAdd<T> (this HashSet<T> hash, T value) {
-		if (!hash.Contains(value)) hash.Add(value);
-	}
-
 	public static bool NotEnd (this BinaryReader reader) => reader.BaseStream.Position < reader.BaseStream.Length;
 
 	public static Direction4? GetDirection (this Gamekey key) => key switch {

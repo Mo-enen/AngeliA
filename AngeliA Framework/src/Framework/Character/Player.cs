@@ -1,14 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
-
-
-public sealed class DefaultPlayer : Player {
-	public static readonly int TYPE_ID = typeof(DefaultPlayer).AngeHash();
-}
-
 
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]

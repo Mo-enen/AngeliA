@@ -23,6 +23,7 @@ public class WorldSquad : IBlockSquad {
 	// Data
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
+	private static readonly Dictionary<int, int> LevelToEntityRedirect = new();
 	private int BackgroundBlockSize = Const.CEL;
 	private IRect CullingCameraRect = default;
 	private IRect ParallaxRect = default;
@@ -38,7 +39,8 @@ public class WorldSquad : IBlockSquad {
 
 
 	[OnGameInitialize(-128)]
-	public static void OnGameInitialize () {
+	public static TaskResult OnGameInitialize () {
+		if (!Renderer.IsReady) return TaskResult.Continue;
 		Readonly = !Universe.BuiltIn.Info.UseProceduralMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
@@ -46,6 +48,20 @@ public class WorldSquad : IBlockSquad {
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
 		Stream = WorldStream.GetOrCreateStreamFromPool(Readonly ? Universe.BuiltIn.MapRoot : Universe.BuiltIn.UserMapRoot);
 		SquadReady = true;
+		// Level to Entity Redirect
+		foreach (var (type, att) in Util.AllClassWithAttribute<EntityAttribute.FromLevelBlockAttribute>()) {
+			int levelID = att.LevelID;
+			int entityID = type.AngeHash();
+			if (Renderer.TryGetSpriteGroup(levelID, out var group)) {
+				LevelToEntityRedirect.TryAdd(group.ID, entityID);
+			} else if (Renderer.TryGetSprite(levelID, out var sprite, true)) {
+				LevelToEntityRedirect.TryAdd(levelID, entityID);
+				if (sprite.Group != null) {
+					LevelToEntityRedirect.TryAdd(sprite.Group.ID, entityID);
+				}
+			}
+		}
+		return TaskResult.End;
 	}
 
 
@@ -134,6 +150,7 @@ public class WorldSquad : IBlockSquad {
 				for (int j = d; j < u; j++) {
 					int index = (j - worldUnitRect.y) * Const.MAP + (l - worldUnitRect.x);
 					for (int i = l; i < r; i++, index++) {
+						// BG
 						var bg = bgSpan[index];
 						if (bg != 0) {
 							if (isBehind) {
@@ -142,10 +159,15 @@ public class WorldSquad : IBlockSquad {
 								DrawBackgroundBlock(bg, i, j);
 							}
 						}
+						// Level
 						var lv = lvSpan[index];
 						if (lv != 0) {
 							if (isBehind) {
 								DrawBehind(lv, i, j, false);
+							} else if (LevelToEntityRedirect.TryGetValue(lv, out int redirectEntityID)) {
+								if (unitRect_Entity.Contains(i, j)) {
+									DrawEntity(redirectEntityID, i, j, z);
+								}
 							} else {
 								DrawLevelBlock(lv, i, j, isBehind);
 							}
@@ -156,7 +178,7 @@ public class WorldSquad : IBlockSquad {
 		}
 		if (!isBehind) AfterLevelRendered?.Invoke();
 
-		// Entity & Element & Global Pos
+		// Entity
 		worldL = unitRect_Entity.xMin.UDivide(Const.MAP);
 		worldR = unitRect_Entity.xMax.CeilDivide(Const.MAP);
 		worldD = unitRect_Entity.yMin.UDivide(Const.MAP);

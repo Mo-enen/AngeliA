@@ -288,7 +288,6 @@ public partial class Engine {
 		Instance?.CheckScriptChanged();
 		Instance?.RefreshProjectCache();
 		Instance?.CheckResourceChanged();
-		Instance?.CheckFrameworkDllChanged();
 		Instance?.CheckDialogChanged();
 		Instance?.CheckEngineAsepriteChanged();
 	}
