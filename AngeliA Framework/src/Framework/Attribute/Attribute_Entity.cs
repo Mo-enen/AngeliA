@@ -88,9 +88,9 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class FromLevelBlockAttribute : Attribute {
+	public class SpawnFromLevelBlock : Attribute {
 		public int LevelID;
-		public FromLevelBlockAttribute (string levelBlockName) {
+		public SpawnFromLevelBlock (string levelBlockName) {
 			LevelID = levelBlockName.AngeHash();
 		}
 	}

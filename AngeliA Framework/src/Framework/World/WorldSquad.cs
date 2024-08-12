@@ -49,7 +49,7 @@ public class WorldSquad : IBlockSquad {
 		Stream = WorldStream.GetOrCreateStreamFromPool(Readonly ? Universe.BuiltIn.MapRoot : Universe.BuiltIn.UserMapRoot);
 		SquadReady = true;
 		// Level to Entity Redirect
-		foreach (var (type, att) in Util.AllClassWithAttribute<EntityAttribute.FromLevelBlockAttribute>()) {
+		foreach (var (type, att) in Util.AllClassWithAttribute<EntityAttribute.SpawnFromLevelBlock>()) {
 			int levelID = att.LevelID;
 			int entityID = type.AngeHash();
 			if (Renderer.TryGetSpriteGroup(levelID, out var group)) {

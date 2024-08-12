@@ -201,21 +201,18 @@ public class Sheet {
 
 	public int GetSpriteAnimationDuration (SpriteGroup aniGroup) => aniGroup.Count == 0 ? 0 : GetTiming(aniGroup, aniGroup.Count);
 
-	public int GetSpriteIdFromAnimationFrame (SpriteGroup group, int localFrame, int loopStart = -1) {
-
+	public bool TryGetSpriteFromAnimationFrame (SpriteGroup group, int localFrame, out AngeSprite sprite, int loopStart = -1) {
 		int len = group.Count;
-		if (len == 0) return 0;
-
-		// Fix Loopstart
+		sprite = null;
+		if (len == 0) return false;
 		loopStart = loopStart < 0 ? group.LoopStart : loopStart;
 		int loopStartTiming = loopStart == 0 ? 0 : GetTiming(group, loopStart.Clamp(0, len - 1)) + 1;
 		int frameLen = GetTiming(group, len);
 		int totalFrame = localFrame < loopStartTiming ? frameLen : frameLen - loopStartTiming + 1;
 		int frameOffset = localFrame < loopStartTiming ? 0 : loopStartTiming;
 		localFrame = ((localFrame - frameOffset) % totalFrame) + frameOffset;
-
-		// Get Target Index
-		return GetTimingID(group, localFrame);
+		sprite = GetTimingSprite(group, localFrame);
+		return sprite != null;
 	}
 
 	public bool TryGetTextureFromPool (int spriteID, out object texture) {
@@ -527,14 +524,14 @@ public class Sheet {
 		return result;
 	}
 
-	private static int GetTimingID (SpriteGroup group, int targetTiming) {
-		int result = 0;
+	private static AngeSprite GetTimingSprite (SpriteGroup group, int targetTiming) {
+		AngeSprite result = null;
 		int totalDuration = 0;
 		var span = CollectionsMarshal.AsSpan(group.Sprites);
 		for (int i = 0; i < group.Count; i++) {
 			var sprite = span[i];
 			if (sprite == null) continue;
-			result = sprite.ID;
+			result = sprite;
 			totalDuration += sprite.Duration;
 			if (totalDuration >= targetTiming) break;
 		}

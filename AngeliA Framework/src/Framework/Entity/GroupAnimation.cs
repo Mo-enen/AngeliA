@@ -51,8 +51,7 @@ public class GroupAnimation : Entity {
 		AngeSprite sprite = null;
 		if (FramePerSprite < 0) {
 			// Auto Ani
-			int id = Renderer.CurrentSheet.GetSpriteIdFromAnimationFrame(group, RenderedFrame);
-			Renderer.TryGetSprite(id, out sprite, true);
+			Renderer.CurrentSheet.TryGetSpriteFromAnimationFrame(group, RenderedFrame, out sprite);
 		} else {
 			// Even-Frame Ani
 			int spIndex = RenderedFrame.UDivide(FramePerSprite);

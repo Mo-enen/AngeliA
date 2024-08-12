@@ -709,8 +709,10 @@ public static class Renderer {
 		return DrawAnimation(group, x, y, pivotX, pivotY, rotation, width, height, frame, z);
 	}
 	public static Cell DrawAnimation (SpriteGroup group, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int z = int.MinValue) {
-		int id = CurrentSheet.GetSpriteIdFromAnimationFrame(group, frame);
-		return Draw(id, x, y, pivotX, pivotY, rotation, width, height, z);
+		if (CurrentSheet.TryGetSpriteFromAnimationFrame(group, frame, out var sprite)) {
+			return Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, z);
+		}
+		return Cell.EMPTY;
 	}
 
 
@@ -719,8 +721,7 @@ public static class Renderer {
 		var sheet = CurrentSheet;
 		if (sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
 		if (!ignoreAnimation && sheet.GroupPool.TryGetValue(globalID, out var group) && group.Animated) {
-			int id = sheet.GetSpriteIdFromAnimationFrame(group, Game.GlobalFrame);
-			return sheet.SpritePool.TryGetValue(id, out sprite);
+			return sheet.TryGetSpriteFromAnimationFrame(group, Game.GlobalFrame, out sprite);
 		}
 		sprite = null;
 		return false;

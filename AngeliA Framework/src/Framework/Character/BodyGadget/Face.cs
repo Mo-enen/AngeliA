@@ -383,6 +383,11 @@ public abstract class Face : BodyGadget {
 			character.AnimationType != CharacterAnimationType.PassOut
 		) return CharacterExpression.Blink;
 
+		// In Ground
+		if (character.IsInsideGround) {
+			return CharacterExpression.Suffer;
+		}
+
 		// Other
 		return character.AnimationType switch {
 			CharacterAnimationType.Sleep => CharacterExpression.Sleep,
