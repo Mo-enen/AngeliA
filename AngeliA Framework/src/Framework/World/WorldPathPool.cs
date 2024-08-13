@@ -9,7 +9,6 @@ public class WorldPathPool : Dictionary<Int3, string> {
 	public string MapRoot { get; private set; } = "";
 	private static readonly Dictionary<Int3, string> WorldNamePool = new();
 
-	
 	// API
 	public void SetMapRoot (string newRoot) {
 		MapRoot = newRoot;
@@ -44,6 +43,34 @@ public class WorldPathPool : Dictionary<Int3, string> {
 			WorldNamePool[pos] = newName;
 			return newName;
 		}
+	}
+
+	public static unsafe bool TryGetWorldPositionFromName (string name, out Int3 pos) {
+
+		pos = default;
+
+		// Find Index of '_'
+		int index0 = name.IndexOf('_');
+		if (index0 <= 0 || index0 == name.Length - 1) return false;
+		int index1 = name.IndexOf('_', index0 + 1);
+		if (index1 <= index0 + 1 || index1 <= 0 || index1 == name.Length - 1) return false;
+
+		// Get Position
+		fixed (char* ptr = name) {
+			var span = new System.ReadOnlySpan<char>(ptr, name.Length);
+			if (
+				int.TryParse(span[..index0], out int x) &&
+				int.TryParse(span.Slice(index0 + 1, index1 - index0 - 1), out int y) &&
+				int.TryParse(span[(index1 + 1)..], out int z)
+			) {
+				pos.x = x;
+				pos.y = y;
+				pos.z = z;
+				return true;
+			}
+			return false;
+		}
+
 	}
 
 }

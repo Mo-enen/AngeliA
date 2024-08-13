@@ -39,8 +39,14 @@ public class World {
 	#region --- API ---
 
 
-	public World () : this(new(int.MinValue, int.MinValue)) { }
-	public World (Int3 pos) => Reset(pos);
+	public World () : this(new Int3(int.MinValue, int.MinValue, int.MinValue)) { }
+	public World (Int3 pos) {
+		WorldPosition = pos;
+		Levels = new int[Const.MAP * Const.MAP];
+		Backgrounds = new int[Const.MAP * Const.MAP];
+		Entities = new int[Const.MAP * Const.MAP];
+		Elements = new int[Const.MAP * Const.MAP];
+	}
 
 
 	public bool EmptyCheck () {
