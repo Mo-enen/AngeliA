@@ -45,14 +45,10 @@ public class Universe {
 	public string SlotUserMapRoot { get; private set; }
 	public string SlotCharacterRenderingConfigRoot { get; private set; }
 
-	// Data
-	private static event System.Action OnSavingSlotChanged;
-
 
 	// MSG
 	[OnGameInitialize(int.MinValue)]
 	internal static void OnGameInitializeMin () {
-		Util.LinkEventWithAttribute<OnSavingSlotChanged>(typeof(Universe), nameof(OnSavingSlotChanged));
 		BuiltIn = LoadFromFile(AngePath.BuiltInUniverseRoot);
 		AngePath.SetCurrentUserPath(BuiltIn.Info.DeveloperName, BuiltIn.Info.ProductName);
 	}
@@ -110,9 +106,10 @@ public class Universe {
 
 	public void ReloadSavingSlot (int newSlot, bool forceChange = false) {
 		if (!forceChange && newSlot == CurrentSavingSlot) return;
+		Util.InvokeAsAutoOrderingTask<BeforeSavingSlotChanged>();
 		CurrentSavingSlot = newSlot;
 		SetSavingRoot(SavingRoot, newSlot);
-		OnSavingSlotChanged?.Invoke();
+		Util.InvokeAsAutoOrderingTask<OnSavingSlotChanged>();
 	}
 
 

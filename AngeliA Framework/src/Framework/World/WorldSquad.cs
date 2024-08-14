@@ -39,7 +39,7 @@ public class WorldSquad : IBlockSquad {
 
 
 	[OnGameInitialize(-128)]
-	public static TaskResult OnGameInitialize () {
+	internal static TaskResult OnGameInitialize () {
 		if (!Renderer.IsReady) return TaskResult.Continue;
 		Readonly = !Universe.BuiltIn.Info.UseProceduralMap;
 		Front = new WorldSquad();
@@ -62,6 +62,18 @@ public class WorldSquad : IBlockSquad {
 			}
 		}
 		return TaskResult.End;
+	}
+
+
+	[BeforeSavingSlotChanged]
+	internal static void BeforeSavingSlotChanged () => SquadReady = false;
+
+
+	[OnSavingSlotChanged]
+	internal static void OnSavingSlotChanged () {
+		if (Readonly) return;
+		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
+		SquadReady = true;
 	}
 
 

@@ -69,6 +69,13 @@ public class OnFileDroppedAttribute : Attribute { }
 public class OnMainSheetReload : Attribute { }
 
 
+// Slot
+[AttributeUsage(AttributeTargets.Method)]
+public class BeforeSavingSlotChanged : OrderedAttribute {
+	public BeforeSavingSlotChanged (int order = 0) : base(order) { }
+}
+
+
 [AttributeUsage(AttributeTargets.Method)]
 public class OnSavingSlotChanged : OrderedAttribute {
 	public OnSavingSlotChanged (int order = 0) : base(order) { }

@@ -209,23 +209,6 @@ public static class Input {
 				case KeyboardKey.OEM4:
 				case KeyboardKey.OEM5:
 				case KeyboardKey.IMESelected:
-				case KeyboardKey.NumpadEnter:
-				case KeyboardKey.NumpadDivide:
-				case KeyboardKey.NumpadMultiply:
-				case KeyboardKey.NumpadPlus:
-				case KeyboardKey.NumpadMinus:
-				case KeyboardKey.NumpadPeriod:
-				case KeyboardKey.NumpadEquals:
-				case KeyboardKey.Numpad0:
-				case KeyboardKey.Numpad1:
-				case KeyboardKey.Numpad2:
-				case KeyboardKey.Numpad3:
-				case KeyboardKey.Numpad4:
-				case KeyboardKey.Numpad5:
-				case KeyboardKey.Numpad6:
-				case KeyboardKey.Numpad7:
-				case KeyboardKey.Numpad8:
-				case KeyboardKey.Numpad9:
 					break;
 			}
 		}

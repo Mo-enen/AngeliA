@@ -115,7 +115,7 @@ public abstract class PoseCharacter : Character {
 
 
 	[OnGameInitialize(-128)]
-	public static TaskResult InitializePose () {
+	internal static TaskResult InitializePose () {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
@@ -134,6 +134,10 @@ public abstract class PoseCharacter : Character {
 		ReloadRenderingConfigPoolFromFileAndSheet();
 		return TaskResult.End;
 	}
+
+
+	[OnSavingSlotChanged]
+	internal static void OnSavingSlotChanged () => ReloadRenderingConfigPoolFromFileAndSheet();
 
 
 	public PoseCharacter () {

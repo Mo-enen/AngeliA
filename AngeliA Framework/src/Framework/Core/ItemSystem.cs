@@ -148,6 +148,17 @@ public static class ItemSystem {
 	}
 
 
+	[BeforeSavingSlotChanged]
+	internal static void BeforeSavingSlotChanged () => ItemUnlockReady = false;
+
+
+	[OnSavingSlotChanged]
+	internal static void OnSavingSlotChanged () {
+		LoadUnlockDataFromFile();
+		ItemUnlockReady = true;
+	}
+
+
 	[OnMainSheetReload]
 	internal static void AddBlockItemsFromSheet () {
 

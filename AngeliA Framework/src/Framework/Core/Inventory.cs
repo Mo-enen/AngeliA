@@ -86,6 +86,7 @@ public static class Inventory {
 
 
 	[OnGameInitialize]
+	[OnSavingSlotChanged]
 	internal static void OnGameInitialize () {
 		LoadInventoryPoolFromDisk();
 		PoolReady = true;
@@ -93,6 +94,7 @@ public static class Inventory {
 
 
 	[OnGameInitializeLater]
+	[OnSavingSlotChanged(64)]
 	internal static TaskResult OnGameInitializeLater () {
 		if (!ItemSystem.ItemUnlockReady) return TaskResult.Continue;
 		foreach (var (_, data) in Pool) {
@@ -100,6 +102,10 @@ public static class Inventory {
 		}
 		return TaskResult.End;
 	}
+
+
+	[BeforeSavingSlotChanged]
+	internal static void BeforeSavingSlotChanged () => PoolReady = false;
 
 
 	[OnGameUpdate]

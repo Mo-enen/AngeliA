@@ -105,6 +105,21 @@ public static class SavingSystem {
 	}
 
 
+	[BeforeSavingSlotChanged]
+	internal static void BeforeSavingSlotChanged () {
+		FileLoaded = false;
+		PoolReady = false;
+	}
+
+
+	[OnSavingSlotChanged]
+	internal static void OnSavingSlotChanged () {
+		SlotSavingPath = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "Saving.txt");
+		LoadFromFile();
+		PoolReady = true;
+	}
+
+
 	[OnGameQuitting(4096)]
 	internal static void OnGameQuitting () => SaveToFile();
 

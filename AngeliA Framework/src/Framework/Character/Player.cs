@@ -99,6 +99,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	[OnGameInitializeLater]
+	[OnSavingSlotChanged]
 	public static TaskResult OnGameInitializeLaterPlayer () {
 		if (!Stage.IsReady) return TaskResult.Continue;
 		SelectPlayer(LastPlayerID.Value);

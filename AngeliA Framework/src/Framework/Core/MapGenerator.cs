@@ -85,10 +85,16 @@ public static class MapGenerator {
 
 
 	[OnGameInitialize]
+	[OnSavingSlotChanged]
 	internal static void OnGameInitialize () {
+
+		RequirementQueue.Clear();
+		EmergencyRequirementQueue.Clear();
+		StatePool.Clear();
 
 		Enable = Universe.BuiltIn.Info.UseProceduralMap;
 		if (!Enable) return;
+
 		var stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 
 		// Find all Exist Maps
