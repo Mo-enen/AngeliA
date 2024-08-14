@@ -18,7 +18,7 @@ public static class Language {
 	private static string[] AllLanguages = new string[0];
 
 	// Saving
-	private static readonly SavingString _LoadedLanguage = new("Game.Language", "");
+	private static readonly SavingString _LoadedLanguage = new("Game.Language", "", SavingLocation.Global);
 
 
 	// API
@@ -31,7 +31,7 @@ public static class Language {
 
 		// Get All Language from Disk
 		var allLanguages = new List<string>();
-		foreach (var path in Util.EnumerateFiles(AngePath.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
+		foreach (var path in Util.EnumerateFiles(Universe.BuiltIn.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
 			allLanguages.Add(Util.GetNameWithoutExtension(path));
 		}
 		AllLanguages = allLanguages.ToArray();
@@ -56,7 +56,7 @@ public static class Language {
 
 	public static bool SetLanguage (string language) {
 		Pool.Clear();
-		string path = LanguageUtil.GetLanguageFilePath(AngePath.LanguageRoot, language);
+		string path = LanguageUtil.GetLanguageFilePath(Universe.BuiltIn.LanguageRoot, language);
 		if (!Util.FileExists(path)) return false;
 		foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDiskAtPath(path)) {
 			Pool.TryAdd(key.AngeHash(), value);

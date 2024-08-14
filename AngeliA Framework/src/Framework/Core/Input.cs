@@ -158,26 +158,26 @@ public static class Input {
 	private static Int2 _MouseMidDownGlobalPosition = default;
 
 	// Saving
-	private static readonly SavingBool s_AllowGamepad = new("Input.AllowGamepad", true);
+	private static readonly SavingBool s_AllowGamepad = new("Input.AllowGamepad", true, SavingLocation.Global);
 	private static readonly SavingInt[] KeyboardConfigSaving = {
-		new("Input.Left", KEYBOARD_DEFAULT[(int)Gamekey.Left]),
-		new("Input.Right", KEYBOARD_DEFAULT[(int)Gamekey.Right]),
-		new("Input.Down", KEYBOARD_DEFAULT[(int)Gamekey.Down]),
-		new("Input.Up", KEYBOARD_DEFAULT[(int)Gamekey.Up]),
-		new("Input.Action", KEYBOARD_DEFAULT[(int)Gamekey.Action]),
-		new("Input.Jump", KEYBOARD_DEFAULT[(int)Gamekey.Jump]),
-		new("Input.Start", KEYBOARD_DEFAULT[(int)Gamekey.Start]),
-		new("Input.Select", KEYBOARD_DEFAULT[(int)Gamekey.Select]),
+		new("Input.Left", KEYBOARD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
+		new("Input.Right", KEYBOARD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
+		new("Input.Down", KEYBOARD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
+		new("Input.Up", KEYBOARD_DEFAULT[(int)Gamekey.Up], SavingLocation.Global),
+		new("Input.Action", KEYBOARD_DEFAULT[(int)Gamekey.Action], SavingLocation.Global),
+		new("Input.Jump", KEYBOARD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
+		new("Input.Start", KEYBOARD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
+		new("Input.Select", KEYBOARD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
 	};
 	private static readonly SavingInt[] GamepadConfigSaving = {
-		new("Input.Pad.Left", GAMEPAD_DEFAULT[(int)Gamekey.Left]),
-		new("Input.Pad.Right", GAMEPAD_DEFAULT[(int)Gamekey.Right]),
-		new("Input.Pad.Down", GAMEPAD_DEFAULT[(int)Gamekey.Down]),
-		new("Input.Pad.Up", GAMEPAD_DEFAULT[(int)Gamekey.Up]),
-		new("Input.Pad.Action", GAMEPAD_DEFAULT[(int)Gamekey.Action]),
-		new("Input.Pad.Jump", GAMEPAD_DEFAULT[(int)Gamekey.Jump]),
-		new("Input.Pad.Start", GAMEPAD_DEFAULT[(int)Gamekey.Start]),
-		new("Input.Pad.Select", GAMEPAD_DEFAULT[(int)Gamekey.Select]),
+		new("Input.Pad.Left", GAMEPAD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
+		new("Input.Pad.Right", GAMEPAD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
+		new("Input.Pad.Down", GAMEPAD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
+		new("Input.Pad.Up", GAMEPAD_DEFAULT[(int)Gamekey.Up], SavingLocation.Global),
+		new("Input.Pad.Action", GAMEPAD_DEFAULT[(int)Gamekey.Action], SavingLocation.Global),
+		new("Input.Pad.Jump", GAMEPAD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
+		new("Input.Pad.Start", GAMEPAD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
+		new("Input.Pad.Select", GAMEPAD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
 	};
 
 

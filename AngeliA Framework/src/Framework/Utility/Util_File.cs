@@ -16,7 +16,7 @@ public static partial class Util {
 
 	public static string FileToText (string path) {
 		if (!FileExists(path)) return "";
-		StreamReader sr = File.OpenText(path);
+		using var sr = File.OpenText(path);
 		string data = sr.ReadToEnd();
 		sr.Close();
 		return data;

@@ -77,15 +77,15 @@ public partial class Engine {
 	private string DroppingFilePath = "";
 
 	// Saving
-	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "");
-	private static readonly SavingString LastOpenProject = new("Engine.LastOpenProject", "");
-	private static readonly SavingBool Maximize = new("Engine.Maximize", true);
-	private static readonly SavingBool FullsizeMenu = new("Engine.FullsizeMenu", true);
-	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024);
-	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024);
-	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128);
-	private static readonly SavingInt WindowPositionY = new("Engine.WindowPosY", 128);
-	private static readonly SavingInt LastOpenedWindowIndex = new("Engine.LastOpenedWindowIndex", 0);
+	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "", SavingLocation.Global);
+	private static readonly SavingString LastOpenProject = new("Engine.LastOpenProject", "", SavingLocation.Global);
+	private static readonly SavingBool Maximize = new("Engine.Maximize", true, SavingLocation.Global);
+	private static readonly SavingBool FullsizeMenu = new("Engine.FullsizeMenu", true, SavingLocation.Global);
+	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024, SavingLocation.Global);
+	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024, SavingLocation.Global);
+	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128, SavingLocation.Global);
+	private static readonly SavingInt WindowPositionY = new("Engine.WindowPosY", 128, SavingLocation.Global);
+	private static readonly SavingInt LastOpenedWindowIndex = new("Engine.LastOpenedWindowIndex", 0, SavingLocation.Global);
 
 
 	#endregion

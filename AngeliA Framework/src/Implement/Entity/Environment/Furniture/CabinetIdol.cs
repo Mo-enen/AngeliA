@@ -11,7 +11,7 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 
 
 
-	private static readonly SavingInt s_ArtworkIndex = new("CabinetIdol.ArtworkIndex", 0);
+	private static readonly SavingInt s_ArtworkIndex = new("CabinetIdol.ArtworkIndex", 0, SavingLocation.Slot);
 
 
 	public override void LateUpdate () {

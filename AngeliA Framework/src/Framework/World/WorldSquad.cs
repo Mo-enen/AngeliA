@@ -46,7 +46,7 @@ public class WorldSquad : IBlockSquad {
 		Behind = new WorldSquad();
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
-		Stream = WorldStream.GetOrCreateStreamFromPool(Readonly ? Universe.BuiltIn.MapRoot : Universe.BuiltIn.UserMapRoot);
+		Stream = WorldStream.GetOrCreateStreamFromPool(Readonly ? Universe.BuiltIn.MapRoot : Universe.BuiltIn.SlotUserMapRoot);
 		SquadReady = true;
 		// Level to Entity Redirect
 		foreach (var (type, att) in Util.AllClassWithAttribute<EntityAttribute.SpawnFromLevelBlock>()) {

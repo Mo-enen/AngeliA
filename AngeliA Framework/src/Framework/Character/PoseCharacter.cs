@@ -625,7 +625,7 @@ public abstract class PoseCharacter : Character {
 	public static void ReloadRenderingConfigPoolFromFileAndSheet () {
 		RenderingConfigGlobalVersion++;
 		ConfigPool_Rendering.Clear();
-		string renderRoot = Universe.BuiltIn.CharacterRenderingConfigRoot;
+		string renderRoot = Universe.BuiltIn.SlotCharacterRenderingConfigRoot;
 		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
 			int typeID = type.AngeHash();
 			// Load From File

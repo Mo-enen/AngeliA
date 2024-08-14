@@ -19,13 +19,8 @@ public abstract class CheckPoint : EnvironmentEntity {
 	public static event TouchedHandler OnCheckPointTouched;
 	public static Int3? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
 	public static int LastTriggeredCheckPointID { get; private set; } = 0;
-	public static bool UnlockedPoolReady { get; private set; } = false;
-
-	// Short
-	private static string UnlockFolderPath => Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Unlocked CP");
 
 	// Data
-	private static readonly HashSet<int> UnlockedCheckPoint = new();
 	private readonly int LinkedAltarID = 0;
 
 
@@ -35,19 +30,6 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 
 	#region --- MSG ---
-
-
-	[OnGameInitializeLater]
-	public static void OnGameInitializeLater () {
-		// Load Unlock from File
-		UnlockedCheckPoint.Clear();
-		foreach (var path in Util.EnumerateFiles(UnlockFolderPath, true, "*")) {
-			if (int.TryParse(Util.GetNameWithoutExtension(path), out int id)) {
-				UnlockedCheckPoint.Add(id);
-			}
-		}
-		UnlockedPoolReady = true;
-	}
 
 
 	[OnGameRestart]
@@ -62,10 +44,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		if (IsUnlocked(TypeID)) {
-			// Unlocked
-			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
-		}
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		var border = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
 		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Tag.OnewayUp
@@ -77,7 +56,6 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 		base.Update();
 
-		if (!IsUnlocked(TypeID)) return;
 		var player = Player.Selecting;
 
 		if (player == null || !player.Active) return;
@@ -122,17 +100,10 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		if (!IsUnlocked(TypeID)) {
-			// Locked
-			var cell = Renderer.Draw(TypeID, Rect);
-			cell.Shift = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
-		} else {
-			// Unlocked
-			Renderer.Draw(TypeID, Rect);
-			var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-			if (Player.RespawnCpUnitPosition == unitPos) {
-				DrawActivatedHighlight(Rect);
-			}
+		Renderer.Draw(TypeID, Rect);
+		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+		if (Player.RespawnCpUnitPosition == unitPos) {
+			DrawActivatedHighlight(Rect);
 		}
 	}
 
@@ -143,16 +114,6 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 
 	#region --- API ---
-
-
-	public static bool IsUnlocked (int id) => UnlockedCheckPoint.Contains(id);
-
-
-	public static void Unlock (int checkPointID) {
-		if (UnlockedCheckPoint.Add(checkPointID)) {
-			Util.BytesToFile(new byte[0], Util.CombinePaths(UnlockFolderPath, checkPointID.ToString()));
-		}
-	}
 
 
 	public static void DrawActivatedHighlight (IRect targetRect) {

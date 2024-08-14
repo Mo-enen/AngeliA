@@ -27,7 +27,7 @@ public partial class RayGame : Game {
 	private int CurrentBgmID = 0;
 
 	// Saving
-	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false);
+	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false, SavingLocation.Global);
 
 
 	// MSG

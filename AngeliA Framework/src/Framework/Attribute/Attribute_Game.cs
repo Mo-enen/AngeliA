@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-// Game
 [AttributeUsage(AttributeTargets.Method)]
 public class OnGameInitializeAttribute : OrderedAttribute {
 	public OnGameInitializeAttribute (int order = 0) : base(order) { }
@@ -69,6 +68,11 @@ public class OnFileDroppedAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Method)]
 public class OnMainSheetReload : Attribute { }
 
+
+[AttributeUsage(AttributeTargets.Method)]
+public class OnSavingSlotChanged : OrderedAttribute {
+	public OnSavingSlotChanged (int order = 0) : base(order) { }
+}
 
 
 // Stage

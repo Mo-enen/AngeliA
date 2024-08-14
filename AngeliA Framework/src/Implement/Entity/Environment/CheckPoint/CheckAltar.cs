@@ -80,8 +80,7 @@ public abstract class CheckAltar<CP> : EnvironmentEntity where CP : CheckPoint {
 		if (!highlighting && player.Rect.Overlaps(Rect)) {
 			highlighting = true;
 			Player.RespawnCpUnitPosition = unitPos;
-			CheckPoint.Unlock(LinkedCheckPointID);
-
+			
 			// Clear Portal
 			if (
 				CheckPoint.LastTriggeredCheckPointID == LinkedCheckPointID &&

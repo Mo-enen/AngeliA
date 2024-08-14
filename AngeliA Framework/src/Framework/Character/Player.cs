@@ -84,10 +84,10 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private int PrevZ = int.MinValue;
 
 	// Saving
-	private static readonly SavingInt LastPlayerID = new("Player.LastPlayerID", 0);
-	private static readonly SavingInt HomeUnitPositionX = new("Player.HomeX", int.MinValue);
-	private static readonly SavingInt HomeUnitPositionY = new("Player.HomeY", int.MinValue);
-	private static readonly SavingInt HomeUnitPositionZ = new("Player.HomeZ", int.MinValue);
+	private static readonly SavingInt LastPlayerID = new("Player.LastPlayerID", 0, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionX = new("Player.HomeX", int.MinValue, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionY = new("Player.HomeY", int.MinValue, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionZ = new("Player.HomeZ", int.MinValue, SavingLocation.Slot);
 
 
 	#endregion

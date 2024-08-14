@@ -239,7 +239,8 @@ public class ProjectEditor : WindowUI {
 				Debug.LogWarning(LOG_PRODUCT_NAME_INVALID);
 			} else {
 				info.ProductName = newProductName;
-				CurrentProject.Universe.SetSavingRoot(info.DeveloperName, info.ProductName);
+				string newSavingRoot = AngePath.GetPersistentDataPath(info.DeveloperName, info.ProductName);
+				CurrentProject.Universe.SetSavingRoot(newSavingRoot, CurrentProject.Universe.CurrentSavingSlot);
 				SetDirty();
 			}
 		}
@@ -255,7 +256,8 @@ public class ProjectEditor : WindowUI {
 				Debug.LogWarning(LOG_DEV_NAME_INVALID);
 			} else {
 				info.DeveloperName = newDevName;
-				CurrentProject.Universe.SetSavingRoot(info.DeveloperName, info.ProductName);
+				string newSavingRoot = AngePath.GetPersistentDataPath(info.DeveloperName, info.ProductName);
+				CurrentProject.Universe.SetSavingRoot(newSavingRoot, CurrentProject.Universe.CurrentSavingSlot);
 				SetDirty();
 			}
 		}
@@ -323,8 +325,8 @@ public class ProjectEditor : WindowUI {
 		}
 		_rect.xMin = bounds.xMax + Unify(12);
 		if (GUI.SmallLinkButton(_rect, LABEL_LINK_SAVING)) {
-			Util.CreateFolder(CurrentProject.Universe.SavingRoot);
-			Game.OpenUrl(CurrentProject.Universe.SavingRoot);
+			Util.CreateFolder(CurrentProject.Universe.SlotRoot);
+			Game.OpenUrl(CurrentProject.Universe.SlotRoot);
 		}
 		rect.SlideDown(padding);
 

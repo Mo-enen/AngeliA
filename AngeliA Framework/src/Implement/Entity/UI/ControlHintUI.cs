@@ -63,8 +63,8 @@ public class ControlHintUI : EntityUI {
 	private int OffsetResetFrame = int.MinValue;
 
 	// Saving
-	private static readonly SavingBool ShowGamePadUI = new("Hint.ShowGamePadUI", false);
-	private static readonly SavingBool ShowControlHint = new("Hint.ShowControlHint", true);
+	private static readonly SavingBool ShowGamePadUI = new("Hint.ShowGamePadUI", false, SavingLocation.Global);
+	private static readonly SavingBool ShowControlHint = new("Hint.ShowControlHint", true, SavingLocation.Global);
 
 
 	// MSG

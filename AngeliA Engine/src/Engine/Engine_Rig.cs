@@ -333,7 +333,7 @@ public partial class Engine {
 	private void ReloadCharacterNames () {
 		AllRigCharacterNames.Clear();
 		if (CurrentProject == null) return;
-		string path = CurrentProject.Universe.CharacterRenderingConfigRoot;
+		string path = CurrentProject.Universe.SlotCharacterRenderingConfigRoot;
 		foreach (var filePath in Util.EnumerateFiles(path, true, "*.json")) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			AllRigCharacterNames.Add(name);

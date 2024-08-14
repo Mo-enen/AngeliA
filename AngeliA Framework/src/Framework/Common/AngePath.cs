@@ -17,23 +17,7 @@ public static class AngePath {
 	// System 
 	public static string PersistentDataPath { get; private set; }
 	public static string TempDataPath { get; private set; }
-
-	// Framework
 	public static string BuiltInUniverseRoot { get; internal set; }
-
-	public static string WorkspaceRoot => _WorkspaceRoot ??= Util.CombinePaths(PersistentDataPath, "Workspace");
-	private static string _WorkspaceRoot = null;
-
-	public static string DownloadRoot => _DownloadRoot ??= Util.CombinePaths(PersistentDataPath, "Download");
-	private static string _DownloadRoot = null;
-
-	public static string LanguageRoot => _LanguageRoot ??= Util.CombinePaths(BuiltInUniverseRoot, "Language");
-	private static string _LanguageRoot = null;
-
-
-	// Temp
-	public static string ProcedureMapTempRoot => _ProcedureMapTempRoot ??= Util.CombinePaths(TempDataPath, "Generating Map");
-	private static string _ProcedureMapTempRoot = null;
 
 
 	// Sys
@@ -76,8 +60,9 @@ public static class AngePath {
 	public static string GetCharacterMovementConfigRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Meta", "Character Movement");
 
 	// Saving
-	public static string GetSavingMetaRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta");
-	public static string GetSavingMetaCharacterConfigRoot (string savingFolder) => Util.CombinePaths(savingFolder, "Meta", "Character Rendering");
-	public static string GetUserMapRoot (string savingFolder) => Util.CombinePaths(savingFolder, "User Map");
+	public static string GetSlotRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}");
+	public static string GetSlotMetaRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}", "Meta");
+	public static string GetSlotMetaCharacterConfigRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}", "Meta", "Character Rendering");
+	public static string GetSlotUserMapRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}", "User Map");
 
 }

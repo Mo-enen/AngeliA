@@ -422,7 +422,7 @@ public static class ItemSystem {
 
 	// Unlock
 	private static void LoadUnlockDataFromFile () {
-		string unlockPath = Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, UNLOCK_NAME);
+		string unlockPath = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, UNLOCK_NAME);
 		if (!Util.FileExists(unlockPath)) return;
 		foreach (var (_, data) in ItemPool) data.Unlocked = false;
 		var bytes = Util.FileToBytes(unlockPath);
@@ -440,7 +440,7 @@ public static class ItemSystem {
 
 
 	private static void SaveUnlockDataToFile () {
-		string unlockPath = Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, UNLOCK_NAME);
+		string unlockPath = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, UNLOCK_NAME);
 		Util.CreateFolder(Util.GetParentPath(unlockPath));
 		var fs = new FileStream(unlockPath, FileMode.Create, FileAccess.Write);
 		foreach (var (id, data) in ItemPool) {

@@ -421,7 +421,7 @@ public partial class LanguageEditor : WindowUI {
 			string.Format(DELETE_MSG, lanName),
 			BuiltInText.UI_DELETE,
 			() => {
-				string targetRoot = AngePath.LanguageRoot;
+				string targetRoot = Universe.BuiltIn.LanguageRoot;
 				string path = LanguageUtil.GetLanguageFilePath(targetRoot, Languages[lanIndex]);
 				Util.DeleteFile(path);
 				Languages.RemoveAt(lanIndex);

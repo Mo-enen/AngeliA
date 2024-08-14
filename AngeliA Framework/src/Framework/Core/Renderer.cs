@@ -63,7 +63,7 @@ public static class Renderer {
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 
 	// Event
-	public static event Action OnMainSheetLoaded;
+	private static event Action OnMainSheetLoaded;
 
 	// Api
 	public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);
@@ -152,7 +152,7 @@ public static class Renderer {
 		long date = Util.GetFileModifyDate(MainSheetFilePath);
 		if (date > MainSheetFileModifyDate) {
 			LoadMainSheet();
-			Util.DeleteFolder(Universe.BuiltIn.CharacterRenderingConfigRoot);
+			Util.DeleteFolder(Universe.BuiltIn.SlotCharacterRenderingConfigRoot);
 			PoseCharacter.ReloadRenderingConfigPoolFromFileAndSheet();
 		}
 #endif

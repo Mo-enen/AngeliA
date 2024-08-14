@@ -21,6 +21,7 @@ public class Universe {
 
 	public static Universe BuiltIn { get; private set; }
 
+	// Universe Path
 	public string UniverseRoot { get; private set; }
 	public string SheetPath { get; private set; }
 	public string InfoPath { get; private set; }
@@ -28,24 +29,34 @@ public class Universe {
 	public string EditableConversationRoot { get; private set; }
 	public string UniverseMetaRoot { get; private set; }
 	public string MapRoot { get; private set; }
-	public string UserMapRoot { get; private set; }
 	public string LanguageRoot { get; private set; }
 	public string AsepriteRoot { get; private set; }
-	public string SavingRoot { get; private set; }
-	public string SavingMetaRoot { get; private set; }
 	public string MusicRoot { get; private set; }
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
-	public string CharacterRenderingConfigRoot { get; private set; }
 	public string CharacterMovementConfigRoot { get; private set; }
 	public UniverseInfo Info { get; private set; }
+
+	// User Saving Path
+	public int CurrentSavingSlot { get; private set; }
+	public string SavingRoot { get; private set; }
+	public string SlotRoot { get; private set; }
+	public string SlotMetaRoot { get; private set; }
+	public string SlotUserMapRoot { get; private set; }
+	public string SlotCharacterRenderingConfigRoot { get; private set; }
+
+	// Data
+	private static event System.Action OnSavingSlotChanged;
+
 
 	// MSG
 	[OnGameInitialize(int.MinValue)]
 	internal static void OnGameInitializeMin () {
+		Util.LinkEventWithAttribute<OnSavingSlotChanged>(typeof(Universe), nameof(OnSavingSlotChanged));
 		BuiltIn = LoadFromFile(AngePath.BuiltInUniverseRoot);
 		AngePath.SetCurrentUserPath(BuiltIn.Info.DeveloperName, BuiltIn.Info.ProductName);
 	}
+
 
 	// API
 	public static Universe LoadFromFile (string universeFolder, bool useBuiltInSavingRoot = true) {
@@ -67,12 +78,16 @@ public class Universe {
 			CharacterMovementConfigRoot = AngePath.GetCharacterMovementConfigRoot(universeFolder),
 		};
 
-		// Saving
-		if (useBuiltInSavingRoot) {
-			result.SetSavingRoot(result.Info.DeveloperName, result.Info.ProductName);
-		} else {
-			result.SetSavingRoot(Util.CombinePaths(universeFolder, "Saving"));
+		// Load Saving & Slot
+		int currentSlot = 0;
+		string savingRoot = useBuiltInSavingRoot ?
+			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Saving") :
+			Util.CombinePaths(universeFolder, "Saving");
+		string currentSlotStr = Util.FileToText(Util.CombinePaths(savingRoot, "CurrentSlot.txt"));
+		if (!string.IsNullOrWhiteSpace(currentSlotStr) && int.TryParse(currentSlotStr, out currentSlot)) {
+			currentSlot = currentSlot.GreaterOrEquelThanZero();
 		}
+		result.SetSavingRoot(savingRoot, currentSlot);
 
 		// Create Folders
 		Util.CreateFolder(result.ConversationRoot);
@@ -80,25 +95,34 @@ public class Universe {
 		Util.CreateFolder(result.UniverseMetaRoot);
 		Util.CreateFolder(result.MapRoot);
 		Util.CreateFolder(result.LanguageRoot);
-		Util.CreateFolder(result.SavingRoot);
-		Util.CreateFolder(result.SavingMetaRoot);
-		Util.CreateFolder(result.UserMapRoot);
+		Util.CreateFolder(result.SlotRoot);
+		Util.CreateFolder(result.SlotMetaRoot);
+		Util.CreateFolder(result.SlotUserMapRoot);
 		Util.CreateFolder(result.MusicRoot);
 		Util.CreateFolder(result.SoundRoot);
 		Util.CreateFolder(result.FontRoot);
-		Util.CreateFolder(result.CharacterRenderingConfigRoot);
+		Util.CreateFolder(result.SlotCharacterRenderingConfigRoot);
 		Util.CreateFolder(result.CharacterMovementConfigRoot);
 
 		return result;
 	}
 
-	public void SetSavingRoot (string developerName, string productName) => SetSavingRoot(Util.CombinePaths(AngePath.GetPersistentDataPath(developerName, productName), "Saving"));
 
-	public void SetSavingRoot (string savingRoot) {
-		SavingRoot = savingRoot;
-		SavingMetaRoot = AngePath.GetSavingMetaRoot(SavingRoot);
-		UserMapRoot = AngePath.GetUserMapRoot(SavingRoot);
-		CharacterRenderingConfigRoot = AngePath.GetSavingMetaCharacterConfigRoot(SavingRoot);
+	public void ReloadSavingSlot (int newSlot, bool forceChange = false) {
+		if (!forceChange && newSlot == CurrentSavingSlot) return;
+		CurrentSavingSlot = newSlot;
+		SetSavingRoot(SavingRoot, newSlot);
+		OnSavingSlotChanged?.Invoke();
 	}
+
+
+	public void SetSavingRoot (string newSavingRoot, int slot) {
+		SavingRoot = newSavingRoot;
+		SlotRoot = AngePath.GetSlotRoot(newSavingRoot, slot);
+		SlotMetaRoot = AngePath.GetSlotMetaRoot(newSavingRoot, slot);
+		SlotUserMapRoot = AngePath.GetSlotUserMapRoot(newSavingRoot, slot);
+		SlotCharacterRenderingConfigRoot = AngePath.GetSlotMetaCharacterConfigRoot(newSavingRoot, slot);
+	}
+
 
 }

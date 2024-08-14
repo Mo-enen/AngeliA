@@ -69,11 +69,11 @@ public abstract partial class Game {
 	private int ForceMaxViewHeightFrame = -1;
 
 	// Saving
-	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false);
-	private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500);
-	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 1000);
-	private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9);
-	private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024);
+	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false, SavingLocation.Global);
+	private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500, SavingLocation.Global);
+	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 1000, SavingLocation.Global);
+	private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9, SavingLocation.Global);
+	private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024, SavingLocation.Global);
 
 
 	#endregion

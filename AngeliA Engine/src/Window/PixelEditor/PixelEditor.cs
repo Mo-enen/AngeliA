@@ -175,9 +175,9 @@ public partial class PixelEditor : WindowUI {
 	private Tag SelectionTagCache = Tag.None;
 
 	// Saving
-	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false);
-	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true);
-	private static readonly SavingInt PrevOpenAtlasIndex = new("PixEdt.PrevAtlas", 0);
+	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false, SavingLocation.Global);
+	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true, SavingLocation.Global);
+	private static readonly SavingInt PrevOpenAtlasIndex = new("PixEdt.PrevAtlas", 0, SavingLocation.Global);
 
 
 	#endregion

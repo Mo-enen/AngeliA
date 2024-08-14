@@ -447,7 +447,7 @@ public static class Inventory {
 	private static void LoadInventoryPoolFromDisk () {
 		IsPoolDirty = false;
 		Pool.Clear();
-		string root = Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Inventory");
+		string root = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "Inventory");
 		if (!Util.FolderExists(root)) return;
 		foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{CHAR_INV_EXT}")) {
 			try {
@@ -479,7 +479,7 @@ public static class Inventory {
 
 	private static void SaveAllToDisk (bool forceSave) {
 		IsPoolDirty = false;
-		string root = Util.CombinePaths(Universe.BuiltIn.SavingMetaRoot, "Inventory");
+		string root = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "Inventory");
 		foreach (var (_, data) in Pool) {
 			if (!forceSave && !data.IsDirty) continue;
 			data.IsDirty = false;

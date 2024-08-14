@@ -89,7 +89,7 @@ public static class MapGenerator {
 
 		Enable = Universe.BuiltIn.Info.UseProceduralMap;
 		if (!Enable) return;
-		var stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.UserMapRoot);
+		var stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 
 		// Find all Exist Maps
 		foreach (string path in Util.EnumerateFiles(stream.MapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
