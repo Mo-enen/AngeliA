@@ -49,9 +49,13 @@
 
 	<!--Remove-->
 	<ItemGroup>
+		<None Remove=".editorconfig" />
 		<None Remove=".gitignore" />
 		<None Remove="build.bat" />
 		<None Remove="desktop.ini" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Data\AngeliA\AngeliA Framework\.editorconfig" />
 	</ItemGroup>
 
 </Project>

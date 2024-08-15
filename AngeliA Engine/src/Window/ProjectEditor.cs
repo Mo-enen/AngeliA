@@ -15,7 +15,7 @@ public class ProjectEditor : WindowUI {
 	// Const
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
-	private static readonly SpriteCode ICON_Font = "FileIcon.Font";
+	private static readonly SpriteCode ICON_FONT = "FileIcon.Font";
 
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
@@ -412,7 +412,7 @@ public class ProjectEditor : WindowUI {
 					ShowMenu(fontData);
 				}
 				// Icon
-				GUI.Icon(_rect.Edge(Direction4.Left, _rect.height), ICON_Font);
+				GUI.Icon(_rect.Edge(Direction4.Left, _rect.height), ICON_FONT);
 				// Name
 				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), fontData.Name);
 				rect.SlideDown(padding);

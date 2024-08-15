@@ -60,11 +60,15 @@
 
 	<!--Remove-->
 	<ItemGroup>
+		<None Remove=".editorconfig" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 		<None Remove="Icon.ico" />
 		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Data\AngeliA\AngeliA Rigged\.editorconfig" />
 	</ItemGroup>
 
 </Project>
