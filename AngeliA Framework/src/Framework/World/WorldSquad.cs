@@ -93,8 +93,17 @@ public class WorldSquad : IBlockSquad {
 	public static void OnGameUpdate () {
 		if (!Enable) return;
 		// Render
-		Front.Render();
-		Behind.Render();
+		Front.RenderCurrentFrame();
+		Behind.RenderCurrentFrame();
+		// Generate
+		if (!Readonly && Game.PauselessFrame % 30 == 1) {
+			var fixedView = Stage.ViewRect.Expand(Const.CEL * 2);
+			var largeView = Stage.ViewRect.Expand(Const.CEL * Const.MAP * 3);
+			MapGenerationSystem.GenerateMapInRange(fixedView, Stage.ViewZ, async: false);
+			MapGenerationSystem.GenerateMapInRange(fixedView, Stage.ViewZ - 1, async: true);
+			MapGenerationSystem.GenerateMapInRange(fixedView, Stage.ViewZ + 1, async: true);
+			MapGenerationSystem.GenerateMapInRange(largeView, Stage.ViewZ, async: true);
+		}
 		// Auto Save
 		if (!Readonly && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
 			Stream.SaveAllDirty();
@@ -102,7 +111,88 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
-	private void Render () {
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
+
+
+	public static IEnumerable<Int3> ForAllWorldInRect (IRect rect) {
+		int left = rect.xMin.ToUnit().UDivide(Const.MAP);
+		int right = (rect.xMax.ToUnit() + 1).UDivide(Const.MAP);
+		int down = rect.yMin.ToUnit().UDivide(Const.MAP);
+		int up = (rect.yMax.ToUnit() + 1).UDivide(Const.MAP);
+		for (int i = left; i <= right; i++) {
+			for (int j = down; j <= up; j++) {
+				yield return new Int3(i, j, Stage.ViewZ);
+			}
+		}
+	}
+
+
+	// Get Block
+	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
+		resultX = default;
+		resultY = default;
+		int l = unitX - maxDistance;
+		int r = unitX + maxDistance;
+		int d = unitY - maxDistance;
+		int u = unitY + maxDistance;
+		var delta = direction.Normal();
+		while (unitX >= l && unitX <= r && unitY >= d && unitY <= u) {
+			int _id = GetBlockAt(unitX, unitY, type);
+			if (_id == id) {
+				resultX = unitX;
+				resultY = unitY;
+				return true;
+			}
+			unitX += delta.x;
+			unitY += delta.y;
+		}
+		return false;
+	}
+
+
+	public Int4 GetBlocksAt (int unitX, int unitY) {
+		Stream.GetBlocksAt(unitX, unitY, Stage.ViewZ, out int e, out int l, out int b, out int ele);
+		return new Int4(e, l, b, ele);
+	}
+
+
+	public int GetBlockAt (int unitX, int unitY) {
+		int id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Entity);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Level);
+		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Background);
+		return id;
+	}
+	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
+	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
+
+
+	// Set Block
+	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) => SetBlockAt(unitX, unitY, Stage.ViewZ, type, newID);
+	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
+		if (Readonly) return;
+		Stream.SetBlockAt(unitX, unitY, z, type, newID);
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private void RenderCurrentFrame () {
 
 		bool isBehind = this == Behind;
 		int z = isBehind ? Stage.ViewZ + 1 : Stage.ViewZ;
@@ -244,87 +334,6 @@ public class WorldSquad : IBlockSquad {
 		// Final
 		if (isBehind) Renderer.SetLayerToDefault();
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- API ---
-
-
-	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
-
-
-	public static IEnumerable<Int3> ForAllWorldInRect (IRect rect) {
-		int left = rect.xMin.ToUnit().UDivide(Const.MAP);
-		int right = (rect.xMax.ToUnit() + 1).UDivide(Const.MAP);
-		int down = rect.yMin.ToUnit().UDivide(Const.MAP);
-		int up = (rect.yMax.ToUnit() + 1).UDivide(Const.MAP);
-		for (int i = left; i <= right; i++) {
-			for (int j = down; j <= up; j++) {
-				yield return new Int3(i, j, Stage.ViewZ);
-			}
-		}
-	}
-
-
-	// Get Block
-	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
-		resultX = default;
-		resultY = default;
-		int l = unitX - maxDistance;
-		int r = unitX + maxDistance;
-		int d = unitY - maxDistance;
-		int u = unitY + maxDistance;
-		var delta = direction.Normal();
-		while (unitX >= l && unitX <= r && unitY >= d && unitY <= u) {
-			int _id = GetBlockAt(unitX, unitY, type);
-			if (_id == id) {
-				resultX = unitX;
-				resultY = unitY;
-				return true;
-			}
-			unitX += delta.x;
-			unitY += delta.y;
-		}
-		return false;
-	}
-
-
-	public Int4 GetBlocksAt (int unitX, int unitY) {
-		Stream.GetBlocksAt(unitX, unitY, Stage.ViewZ, out int e, out int l, out int b, out int ele);
-		return new Int4(e, l, b, ele);
-	}
-
-
-	public int GetBlockAt (int unitX, int unitY) {
-		int id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Entity);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Level);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Background);
-		return id;
-	}
-	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
-	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
-
-
-	// Set Block
-	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) => SetBlockAt(unitX, unitY, Stage.ViewZ, type, newID);
-	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
-		if (Readonly) return;
-		Stream.SetBlockAt(unitX, unitY, z, type, newID);
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
 
 
 	// Draw

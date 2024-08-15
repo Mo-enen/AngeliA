@@ -12,45 +12,7 @@ public static class MapGenerationSystem {
 	#region --- SUB ---
 
 
-	private enum MapState : byte { InQueue, Generating, Success, Fail, Founded, }
-
-
-	private class Agent {
-
-		public bool IsReady => Task == null || Task.IsCompleted;
-		private System.Threading.Tasks.Task Task;
-		private IBlockSquad Squad { get; init; }
-		private Int3 WorldPos;
-
-		public Agent (IBlockSquad squad) => Squad = squad;
-
-		public void StartGenerate (Int3 worldPos) {
-			if (!IsReady) return;
-			if (Task != null) {
-				Task.Dispose();
-				Task = null;
-			}
-			WorldPos = worldPos;
-			Task = System.Threading.Tasks.Task.Run(GenerateLogic);
-		}
-
-		private void GenerateLogic () {
-			bool success = true;
-			// Trigger all Generators
-			foreach (var gen in AllMapGenerators) {
-				try {
-					var result = gen.GenerateMap(WorldPos, Squad, Seed);
-					if (result == MapGenerationResult.CriticalError) {
-						success = false;
-						break;
-					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-			}
-			// Done
-			OnAgentComplete(WorldPos, success);
-		}
-
-	}
+	private enum MapState : byte { Generating, Success, Fail, }
 
 
 	#endregion
@@ -62,12 +24,9 @@ public static class MapGenerationSystem {
 
 
 	// Data
-	private static readonly Agent[] CommonAgents = new Agent[16];
-	private static readonly Agent[] EmergencyAgents = new Agent[4];
-	private static readonly Queue<Int3> RequirementQueue = new(32);
-	private static readonly Queue<Int3> EmergencyRequirementQueue = new(32);
 	private static readonly Dictionary<Int3, MapState> StatePool = new();
 	private static readonly List<MapGenerator> AllMapGenerators = new(32);
+	private static WorldStream Stream;
 	private static bool Enable;
 	private static int Seed;
 
@@ -82,30 +41,20 @@ public static class MapGenerationSystem {
 
 	[OnGameInitialize]
 	[OnSavingSlotChanged]
-	internal static void OnGameInitialize () {
+	internal static void OnGameInitialize_OnSavingSlotChanged () {
 
 		Enable = Universe.BuiltIn.Info.UseProceduralMap;
 		if (!Enable) return;
 
-		RequirementQueue.Clear();
-		EmergencyRequirementQueue.Clear();
 		StatePool.Clear();
-		var stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
+		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 
 		// Find all Exist Maps
-		foreach (string path in Util.EnumerateFiles(stream.MapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
+		foreach (string path in Util.EnumerateFiles(Stream.MapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
 			if (!WorldPathPool.TryGetWorldPositionFromName(
 				Util.GetNameWithoutExtension(path), out var pos
 			)) continue;
-			StatePool.TryAdd(pos, MapState.Founded);
-		}
-
-		// Init Agents
-		for (int i = 0; i < CommonAgents.Length; i++) {
-			CommonAgents[i] = new Agent(stream);
-		}
-		for (int i = 0; i < EmergencyAgents.Length; i++) {
-			EmergencyAgents[i] = new Agent(stream);
+			StatePool.TryAdd(pos, MapState.Success);
 		}
 
 		// Load or Create Seed
@@ -129,7 +78,7 @@ public static class MapGenerationSystem {
 
 
 	[OnGameInitialize(32)]
-	internal static void OnGameInitializeOnly () {
+	internal static void OnGameInitialize () {
 
 		if (!Enable) return;
 
@@ -139,30 +88,8 @@ public static class MapGenerationSystem {
 			if (System.Activator.CreateInstance(type) is not MapGenerator gen) continue;
 			AllMapGenerators.Add(gen);
 		}
+		AllMapGenerators.Sort((a, b) => a.Order.CompareTo(b.Order));
 
-	}
-
-
-	[OnGameUpdate]
-	internal static void OnGameUpdate () {
-
-		if (!Enable) return;
-
-		// Check for Requirement
-		while (RequirementQueue.Count > 0) {
-			var worldPos = RequirementQueue.Dequeue();
-			if (!TryStartGenerationWithAgent(worldPos, false)) {
-				RequirementQueue.Enqueue(worldPos);
-				break;
-			}
-		}
-		while (EmergencyRequirementQueue.Count > 0) {
-			var worldPos = EmergencyRequirementQueue.Dequeue();
-			if (!TryStartGenerationWithAgent(worldPos, true)) {
-				EmergencyRequirementQueue.Enqueue(worldPos);
-				break;
-			}
-		}
 	}
 
 
@@ -174,27 +101,30 @@ public static class MapGenerationSystem {
 	#region --- API ---
 
 
-	public static void RequireGenerateMapAt (Int3 worldPos, bool emergency = false) {
+	public static void GenerateMapInRange (IRect range, int z, bool async) {
+		int left = range.xMin.ToUnit().UDivide(Const.MAP);
+		int right = (range.xMax.ToUnit() + 1).UDivide(Const.MAP);
+		int down = range.yMin.ToUnit().UDivide(Const.MAP);
+		int up = (range.yMax.ToUnit() + 1).UDivide(Const.MAP);
+		for (int i = left; i <= right; i++) {
+			for (int j = down; j <= up; j++) {
+				MapGenerationSystem.GenerateMap(new Int3(i, j, z), async);
+			}
+		}
+	}
 
+
+	public static void GenerateMap (Int3 worldPos, bool async) {
 		if (!Enable) return;
-
-		// Gate
 		if (StatePool.TryGetValue(worldPos, out var state)) {
 			if (state != MapState.Fail) return;
 		}
-
-		// Try Start Generation
-		if (TryStartGenerationWithAgent(worldPos, emergency)) return;
-
-		// No Agent Available
-		state = MapState.InQueue;
-		StatePool[worldPos] = state;
-		if (emergency) {
-			EmergencyRequirementQueue.Enqueue(worldPos);
+		StatePool[worldPos] = MapState.Generating;
+		if (async) {
+			System.Threading.Tasks.Task.Factory.StartNew(GenerateLogic, worldPos);
 		} else {
-			RequirementQueue.Enqueue(worldPos);
+			GenerateLogic(worldPos);
 		}
-
 	}
 
 
@@ -206,22 +136,31 @@ public static class MapGenerationSystem {
 	#region --- LGC ---
 
 
-	private static bool TryStartGenerationWithAgent (Int3 worldPos, bool emergency) {
-		var agents = emergency ? EmergencyAgents : CommonAgents;
-		int len = agents.Length;
-		for (int i = 0; i < len; i++) {
-			var agent = agents[i];
-			if (!agent.IsReady) continue;
-			// Available Agent Found
-			StatePool[worldPos] = MapState.Generating;
-			agent.StartGenerate(worldPos);
-			return true;
+	private static void GenerateLogic (object worldPosObj) {
+
+		var worldPos = (Int3)worldPosObj;
+		bool success = true;
+
+		// Trigger all Generators
+		foreach (var gen in AllMapGenerators) {
+			try {
+				var result = gen.GenerateMap(worldPos, Stream, Seed);
+				if (result == MapGenerationResult.CriticalError) {
+					success = false;
+					Debug.LogError($"{gen.GetType().Name} fail to generate map at {worldPos} with critical error: {gen.ErrorMessage}");
+					break;
+				} else if (result == MapGenerationResult.Fail) {
+					Debug.LogWarning($"{gen.GetType().Name} Fail to generate map at {worldPos} with error: {gen.ErrorMessage}");
+				}
+			} catch (System.Exception ex) {
+				Debug.LogException(ex);
+			}
 		}
-		return false;
+
+		// Done
+		StatePool[worldPos] = success ? MapState.Success : MapState.Fail;
+
 	}
-
-
-	private static void OnAgentComplete (Int3 worldPos, bool success) => StatePool[worldPos] = success ? MapState.Success : MapState.Fail;
 
 
 	#endregion
