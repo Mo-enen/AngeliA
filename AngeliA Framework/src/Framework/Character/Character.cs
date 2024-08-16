@@ -45,8 +45,6 @@ public abstract partial class Character : Rigidbody {
 	public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
 	public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
 	public WeaponHandheld EquippingWeaponHeld { get; set; } = WeaponHandheld.Float;
-	public bool IsPassOut => HealthPoint == 0;
-	public bool IsFullPassOut => HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
 	public bool Teleporting => Game.GlobalFrame < TeleportEndFrame;
 	public bool TeleportWithPortal => _TeleportDuration < 0;
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
@@ -56,18 +54,20 @@ public abstract partial class Character : Rigidbody {
 	public int CurrentRenderingBounce { get; private set; } = 1000;
 	public int SleepStartFrame { get; private set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
-	public bool InventoryCurrentAvailable => IsCharacterWithInventory && Game.GlobalFrame > IgnoreInventoryFrame;
+	public bool InventoryCurrentAvailable => AllowInventory && Game.GlobalFrame > IgnoreInventoryFrame;
 	public bool EquipingPickWeapon { get; private set; } = false;
-	protected override bool PhysicsEnable => CharacterState != CharacterState.Sleep;
-	protected override int AirDragX => 0;
-	protected override int AirDragY => 0;
-	protected override int Gravity => 5;
-	protected override bool CarryOtherRigidbodyOnTop => false;
-	protected override bool AllowBeingCarryByOtherRigidbody => true;
-	protected sealed override int CollisionMask => IsGrabFlipping ? 0 : PhysicsMask.MAP;
-	protected sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
-	protected virtual int Bouncy => 150;
-	protected virtual bool IsCharacterWithInventory => false;
+	public override int AirDragX => 0;
+	public override int AirDragY => 0;
+	public override int Gravity => 5;
+	public override bool CarryOtherRigidbodyOnTop => false;
+	public override bool AllowBeingCarryByOtherRigidbody => true;
+	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
+	public sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
+	public virtual int Bouncy => 150;
+	public virtual bool AllowInventory => false;
+
+	// Behaviour
+	public CharacterMovement Movement;
 
 	// Data
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
@@ -77,6 +77,9 @@ public abstract partial class Character : Rigidbody {
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
 	private int IgnoreInventoryFrame = int.MinValue;
+	private readonly CharacterMovement NativeMovement;
+	private CharacterMovement OverridingMovement;
+	private int OverridingMovementFrame = int.MinValue;
 
 
 	#endregion
@@ -87,12 +90,12 @@ public abstract partial class Character : Rigidbody {
 	#region --- MSG ---
 
 
-	public Character () => InitInventory();
+	public Character () {
+		// Behaviour
+		Movement = NativeMovement = CreateNewMovement();
 
-
-	private void InitInventory () {
 		// Init Inventory
-		if (IsCharacterWithInventory) {
+		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
 			if (Inventory.HasInventory(TypeID)) {
 				int invCount = Inventory.GetInventoryCapacity(TypeID);
@@ -109,7 +112,7 @@ public abstract partial class Character : Rigidbody {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		OnActivated_Movement();
+		Movement.OnCharacterActivated();
 		OnActivated_Health();
 		OnActivated_Attack();
 		OnActivated_Navigation();
@@ -117,11 +120,16 @@ public abstract partial class Character : Rigidbody {
 		PassOutFrame = int.MinValue;
 		VelocityX = 0;
 		VelocityY = 0;
+		OverridingMovement = null;
+		OverridingMovementFrame = int.MinValue;
 	}
 
 
 	// Physics Update
 	public override void FirstUpdate () {
+		// Update Movement
+		Movement = Game.GlobalFrame > IgnoreInventoryFrame || OverridingMovement == null ? NativeMovement : OverridingMovement;
+		// Fill Physics
 		if (CharacterState == CharacterState.GamePlay) {
 			Physics.FillEntity(PhysicalLayer, this, NavigationEnable);
 		}
@@ -130,7 +138,7 @@ public abstract partial class Character : Rigidbody {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		SyncMovementConfigFromPool();
+		Movement.SyncConfigFromPool();
 		BeforeUpdate_BuffValue();
 	}
 
@@ -201,7 +209,7 @@ public abstract partial class Character : Rigidbody {
 		}
 
 		// Behaviour
-		MovementState = CharacterMovementState.Idle;
+		Movement.MovementState = CharacterMovementState.Idle;
 		switch (CharacterState) {
 			default:
 			case CharacterState.GamePlay:
@@ -211,7 +219,7 @@ public abstract partial class Character : Rigidbody {
 				} else {
 					// General
 					PhysicsUpdate_Attack();
-					PhysicsUpdate_Movement_GamePlay();
+					Movement.PhysicsUpdateGamePlay();
 				}
 				break;
 
@@ -222,13 +230,14 @@ public abstract partial class Character : Rigidbody {
 				Height = Const.CEL;
 				OffsetX = -Const.HALF;
 				OffsetY = 0;
+				IgnorePhysics(1);
 				break;
 
 			case CharacterState.PassOut:
 				VelocityX = 0;
 				break;
 		}
-		PhysicsUpdate_Movement_After();
+		Movement.PhysicsUpdateLater();
 		PhysicsUpdate_Navigation();
 		PhysicsUpdate_AnimationType();
 		base.Update();
@@ -248,8 +257,8 @@ public abstract partial class Character : Rigidbody {
 			if (character.TakingDamage) return CharacterAnimationType.TakingDamage;
 			if (character.CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
 			if (character.CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
-			if (character.IsRolling) return CharacterAnimationType.Rolling;
-			return character.MovementState switch {
+			if (character.Movement.IsRolling) return CharacterAnimationType.Rolling;
+			return character.Movement.MovementState switch {
 				CharacterMovementState.Walk => CharacterAnimationType.Walk,
 				CharacterMovementState.Run => CharacterAnimationType.Run,
 				CharacterMovementState.JumpUp => CharacterAnimationType.JumpUp,
@@ -261,7 +270,7 @@ public abstract partial class Character : Rigidbody {
 				CharacterMovementState.Dash => CharacterAnimationType.Dash,
 				CharacterMovementState.Rush => CharacterAnimationType.Rush,
 				CharacterMovementState.Crash => CharacterAnimationType.Crash,
-				CharacterMovementState.Pound => character.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
+				CharacterMovementState.Pound => character.Movement.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
 				CharacterMovementState.Climb => CharacterAnimationType.Climb,
 				CharacterMovementState.Fly => CharacterAnimationType.Fly,
 				CharacterMovementState.Slide => CharacterAnimationType.Slide,
@@ -348,9 +357,9 @@ public abstract partial class Character : Rigidbody {
 			// Step
 			if (IsGrounded) {
 				if (
-					(LastStartRunFrame >= 0 && (Game.GlobalFrame - LastStartRunFrame) % 20 == 19) || // Run
-					(IsDashing && (Game.GlobalFrame - LastDashFrame) % 8 == 0) || // Dash
-					(IsRushing && (Game.GlobalFrame - LastRushFrame) % 3 == 0) // Rush
+					(Movement.LastStartRunFrame >= 0 && (Game.GlobalFrame - Movement.LastStartRunFrame) % 20 == 19) || // Run
+					(Movement.IsDashing && (Game.GlobalFrame - Movement.LastDashFrame) % 8 == 0) || // Dash
+					(Movement.IsRushing && (Game.GlobalFrame - Movement.LastRushFrame) % 3 == 0) // Rush
 				) {
 					OnFootStepped?.Invoke(this);
 				}
@@ -358,10 +367,10 @@ public abstract partial class Character : Rigidbody {
 
 			// Jump Fly Crash Slide Bounce
 			if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) Bounce();
-			if (IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(this);
-			if (Game.GlobalFrame == LastJumpFrame) OnJump?.Invoke(this);
-			if (Game.GlobalFrame == LastFlyFrame) OnFly?.Invoke(this);
-			if (Game.GlobalFrame == LastCrashFrame) OnCrash?.Invoke(this);
+			if (Movement.IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(this);
+			if (Game.GlobalFrame == Movement.LastJumpFrame) OnJump?.Invoke(this);
+			if (Game.GlobalFrame == Movement.LastFlyFrame) OnFly?.Invoke(this);
+			if (Game.GlobalFrame == Movement.LastCrashFrame) OnCrash?.Invoke(this);
 		}
 
 		// Sleep
@@ -499,6 +508,16 @@ public abstract partial class Character : Rigidbody {
 	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
 
 
+	// Behaviour
+	protected virtual CharacterMovement CreateNewMovement () => new CharacterMovement(this);
+
+
+	public void OverrideMovement (CharacterMovement newMovement, int duration = 1) {
+		OverridingMovementFrame = Game.GlobalFrame + duration;
+		OverridingMovement = newMovement;
+	}
+
+
 	#endregion
 
 
@@ -508,10 +527,10 @@ public abstract partial class Character : Rigidbody {
 
 
 	private int GrowAnimationFrame (int frame) {
-		switch (MovementState) {
+		switch (Movement.MovementState) {
 
 			case CharacterMovementState.Climb:
-				int climbVelocity = IntendedY != 0 ? IntendedY : IntendedX;
+				int climbVelocity = Movement.IntendedY != 0 ? Movement.IntendedY : Movement.IntendedX;
 				if (climbVelocity > 0) {
 					frame++;
 				} else if (climbVelocity < 0) {
@@ -520,17 +539,17 @@ public abstract partial class Character : Rigidbody {
 				break;
 
 			case CharacterMovementState.GrabTop:
-				if (IntendedX > 0) {
+				if (Movement.IntendedX > 0) {
 					frame++;
-				} else if (IntendedX < 0) {
+				} else if (Movement.IntendedX < 0) {
 					frame--;
 				}
 				break;
 
 			case CharacterMovementState.GrabSide:
-				if (IntendedY > 0) {
+				if (Movement.IntendedY > 0) {
 					frame++;
-				} else if (IntendedY < 0) {
+				} else if (Movement.IntendedY < 0) {
 					frame--;
 				}
 				break;
@@ -541,11 +560,11 @@ public abstract partial class Character : Rigidbody {
 
 			case CharacterMovementState.Run:
 			case CharacterMovementState.Walk:
-				frame += IntendedX > 0 == FacingRight ? 1 : -1;
+				frame += Movement.IntendedX > 0 == Movement.FacingRight ? 1 : -1;
 				break;
 
 			case CharacterMovementState.Rush:
-				if (VelocityX == 0 || VelocityX > 0 == FacingRight) {
+				if (VelocityX == 0 || VelocityX > 0 == Movement.FacingRight) {
 					frame++;
 				} else {
 					frame = 0;
@@ -566,8 +585,8 @@ public abstract partial class Character : Rigidbody {
 		int bounce = 1000;
 		int duration = BOUNCE_AMOUNTS.Length;
 		bool reverse = false;
-		bool isPounding = MovementState == CharacterMovementState.Pound;
-		bool isSquatting = MovementState == CharacterMovementState.SquatIdle || MovementState == CharacterMovementState.SquatMove;
+		bool isPounding = Movement.MovementState == CharacterMovementState.Pound;
+		bool isSquatting = Movement.MovementState == CharacterMovementState.SquatIdle || Movement.MovementState == CharacterMovementState.SquatMove;
 		if (frame < LastRequireBounceFrame + duration) {
 			bounce = InWater ? BOUNCE_AMOUNTS_BIG[frame - LastRequireBounceFrame] : BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
 			if (AttackChargeStartFrame.HasValue && Game.GlobalFrame > AttackChargeStartFrame.Value + MinimalChargeAttackDuration) {
@@ -575,22 +594,22 @@ public abstract partial class Character : Rigidbody {
 			}
 		} else if (isPounding) {
 			bounce = 1500;
-		} else if (IsGrounded && frame.InRangeExclude(LastPoundingFrame, LastPoundingFrame + duration)) {
+		} else if (IsGrounded && frame.InRangeExclude(Movement.LastPoundingFrame, Movement.LastPoundingFrame + duration)) {
 			// Gound Pound End
-			bounce = BOUNCE_AMOUNTS_BIG[frame - LastPoundingFrame];
-		} else if (isSquatting && frame.InRangeExclude(LastSquatFrame, LastSquatFrame + duration)) {
+			bounce = BOUNCE_AMOUNTS_BIG[frame - Movement.LastPoundingFrame];
+		} else if (isSquatting && frame.InRangeExclude(Movement.LastSquatFrame, Movement.LastSquatFrame + duration)) {
 			// Squat Start
-			bounce = BOUNCE_AMOUNTS[frame - LastSquatFrame];
-		} else if (IsGrounded && frame.InRangeExclude(LastGroundFrame, LastGroundFrame + duration)) {
+			bounce = BOUNCE_AMOUNTS[frame - Movement.LastSquatFrame];
+		} else if (IsGrounded && frame.InRangeExclude(Movement.LastGroundFrame, Movement.LastGroundFrame + duration)) {
 			// Gounded Start
-			bounce = BOUNCE_AMOUNTS[frame - LastGroundFrame];
-		} else if (!isSquatting && frame.InRangeExclude(LastSquattingFrame, LastSquattingFrame + duration)) {
+			bounce = BOUNCE_AMOUNTS[frame - Movement.LastGroundFrame];
+		} else if (!isSquatting && frame.InRangeExclude(Movement.LastSquattingFrame, Movement.LastSquattingFrame + duration)) {
 			// Squat End
-			bounce = BOUNCE_AMOUNTS[frame - LastSquattingFrame];
+			bounce = BOUNCE_AMOUNTS[frame - Movement.LastSquattingFrame];
 			reverse = true;
-		} else if (IsCrashing && frame.InRangeExclude(LastCrashFrame, LastCrashFrame + duration)) {
+		} else if (Movement.IsCrashing && frame.InRangeExclude(Movement.LastCrashFrame, Movement.LastCrashFrame + duration)) {
 			// Crash Start
-			bounce = BOUNCE_AMOUNTS_BIG[frame - LastCrashFrame];
+			bounce = BOUNCE_AMOUNTS_BIG[frame - Movement.LastCrashFrame];
 		}
 		if (bounce != 1000) {
 			bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);

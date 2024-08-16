@@ -48,13 +48,13 @@ public abstract class Horn : BodyGadget {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
 
-		int idL = character.FacingFront ? SpriteIdL : SpriteIdLBack;
-		int idR = character.FacingFront ? SpriteIdR : SpriteIdRBack;
+		int idL = character.Movement.FacingFront ? SpriteIdL : SpriteIdLBack;
+		int idR = character.Movement.FacingFront ? SpriteIdR : SpriteIdRBack;
 		DrawSpriteAsHorn(
 			character, idL, idR,
 			FrontOfHeadL(character), FrontOfHeadR(character),
 			AnchorOnFace,
-			character.FacingFront == character.FacingRight ? 0 : FacingLeftOffsetX
+			character.Movement.FacingFront == character.Movement.FacingRight ? 0 : FacingLeftOffsetX
 		);
 	}
 

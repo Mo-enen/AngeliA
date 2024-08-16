@@ -139,8 +139,8 @@ public abstract class PoseAnimation {
 		LowerLegR = character.LowerLegR;
 		FootL = character.FootL;
 		FootR = character.FootR;
-		FacingRight = character.FacingRight;
-		FacingFront = character.FacingFront;
+		FacingRight = character.Movement.FacingRight;
+		FacingFront = character.Movement.FacingFront;
 		AnimationType = character.AnimationType;
 		FacingSign = FacingRight ? 1 : -1;
 		FrontSign = FacingFront ? 1 : -1;

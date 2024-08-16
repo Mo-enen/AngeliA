@@ -40,7 +40,7 @@ public abstract class Spring : EnvironmentRigidbody {
 	private static readonly int[] BOUNCE_ANI = new int[] { 0, 1, 2, 3, 3, 3, 3, 2, 2, 1, 1, 0, };
 
 	// Api
-	protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	protected abstract bool Horizontal { get; }
 	protected abstract int Power { get; }
 

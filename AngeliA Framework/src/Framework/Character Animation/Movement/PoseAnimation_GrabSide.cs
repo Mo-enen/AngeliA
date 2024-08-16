@@ -4,7 +4,7 @@ public class PoseAnimation_GrabSide : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
-		int loop = Util.Max((700 / Target.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
+		int loop = Util.Max((700 / Target.Movement.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 		int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 		int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 		int bodyShift = FacingSign * (Body.Width.Abs() / 2 - A2G * 2);

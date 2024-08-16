@@ -69,7 +69,7 @@ public abstract class Tail : BodyGadget {
 		if (frameLen <= 0) frameLen = 1;
 
 		int z = character.Body.FrontSide ? -33 : 33;
-		int facingSign = character.FacingRight || character.AnimationType == CharacterAnimationType.Climb ? 1 : -1;
+		int facingSign = character.Movement.FacingRight || character.AnimationType == CharacterAnimationType.Climb ? 1 : -1;
 		int prevX = 0;
 		int prevY = 0;
 		int prevW = 0;

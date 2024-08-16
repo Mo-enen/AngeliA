@@ -25,7 +25,6 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public virtual bool IgnoreFireDamage => true;
 	protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
-	protected override bool PhysicsEnable => base.PhysicsEnable && CharacterState != CharacterState.GamePlay;
 	protected override bool ClampInSpawnRect => Owner == Player.Selecting;
 	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
 	public int OriginItemID { get; set; } = 0;
@@ -51,11 +50,15 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		NavigationState = CharacterNavigationState.Operation;
 		RequireAimRefresh = true;
 		OriginItemID = 0;
+		Movement.PushAvailable.BaseValue = false;
 	}
 
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
+		if (CharacterState == CharacterState.GamePlay) {
+			IgnorePhysics(1);
+		}
 		if (CharacterState == CharacterState.PassOut) {
 			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 		}

@@ -37,8 +37,8 @@ public abstract class PickWeapon : Weapon {
 
 		// Movement Override
 		if (!pHolder.IsInsideGround) {
-			pHolder.SquatSpeed.Override(0, 1);
-			pHolder.WalkSpeed.Override(0, 1);
+			pHolder.Movement.SquatSpeed.Override(0, 1);
+			pHolder.Movement.WalkSpeed.Override(0, 1);
 		}
 
 		// Get Target Pos
@@ -90,7 +90,7 @@ public abstract class PickWeapon : Weapon {
 
 		var aim = pHolder.AimingDirection;
 		var aimNormal = aim.Normal();
-		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
+		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.Movement.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
 		int pointY = pHolder.Rect.yMax - 16;
 		targetUnitX = pointX.ToUnit() + aimNormal.x;
 		targetUnitY = pointY.ToUnit() + aimNormal.y;
@@ -111,7 +111,7 @@ public abstract class PickWeapon : Weapon {
 				}
 			} else if (aim.IsTop()) {
 				if (aim == Direction8.Top) {
-					targetUnitX += pHolder.FacingRight ? 1 : -1;
+					targetUnitX += pHolder.Movement.FacingRight ? 1 : -1;
 				}
 			} else {
 				targetUnitY--;

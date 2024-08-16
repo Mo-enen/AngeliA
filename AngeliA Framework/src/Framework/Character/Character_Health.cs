@@ -49,8 +49,8 @@ public abstract partial class Character : IDamageReceiver {
 	public virtual void TakeDamage (Damage damage) {
 		if (!Active || damage.Amount <= 0 || HealthPoint <= 0) return;
 		if (CharacterState != CharacterState.GamePlay || IsInvincible) return;
-		if (InvincibleOnRush && IsRushing) return;
-		if (InvincibleOnDash && IsDashing) return;
+		if (InvincibleOnRush && Movement.IsRushing) return;
+		if (InvincibleOnDash && Movement.IsDashing) return;
 		OnTakeDamage(damage.Amount, damage.Sender);
 	}
 
@@ -85,7 +85,7 @@ public abstract partial class Character : IDamageReceiver {
 		damage = damage.GreaterOrEquelThanZero();
 		HealthPoint = (HealthPoint - damage).Clamp(0, MaxHP);
 
-		VelocityX = FacingRight ? -KnockBackSpeed : KnockBackSpeed;
+		VelocityX = Movement.FacingRight ? -KnockBackSpeed : KnockBackSpeed;
 
 		InvincibleEndFrame = Game.GlobalFrame + InvincibleDuration;
 		LastDamageFrame = Game.GlobalFrame;

@@ -11,7 +11,7 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 
 	// Api
 	public int Team => Const.TEAM_ENVIRONMENT;
-	protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	public override bool AllowBeingPush => false;
 
 	// Data
@@ -101,10 +101,10 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 
 		if (Driver is Player player && player == Player.Selecting) {
 			// Control by Selecting Player
-			if (player.IntendedX != 0) {
+			if (player.Movement.IntendedX != 0) {
 				RollingSpeed =
-					(player.FacingRight ? -1 : 1) *
-					(player.IsSquatting ? player.SquatSpeed * 3 / 2 : player.WalkSpeed / 2);
+					(player.Movement.FacingRight ? -1 : 1) *
+					(player.Movement.IsSquatting ? player.Movement.SquatSpeed * 3 / 2 : player.Movement.WalkSpeed / 2);
 			} else {
 				RollingSpeed = 0;
 			}
@@ -125,13 +125,13 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 			// Character
 			cDriver.X = X + Width / 2;
 			cDriver.Y = Y + Height;
-			cDriver.RunningAccumulateFrame = -1;
+			cDriver.Movement.ClearRunningAccumulate();
 			cDriver.CancelBounce();
 			if (!cDriver.TakingDamage && !cDriver.Teleporting) {
 				cDriver.LockAnimationType(
-					cDriver.IntendedX == 0 ?
-						cDriver.IntendedY < 0 ? CharacterAnimationType.SquatIdle : CharacterAnimationType.Idle :
-						cDriver.IntendedY < 0 ? CharacterAnimationType.SquatMove : CharacterAnimationType.Walk
+					cDriver.Movement.IntendedX == 0 ?
+						cDriver.Movement.IntendedY < 0 ? CharacterAnimationType.SquatIdle : CharacterAnimationType.Idle :
+						cDriver.Movement.IntendedY < 0 ? CharacterAnimationType.SquatMove : CharacterAnimationType.Walk
 				);
 			}
 		} else if (Driver != null) {
@@ -175,13 +175,13 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 			) {
 				characterDriver = null;
 			} else if (
-				characterDriver.MovementState != CharacterMovementState.Idle &&
-				characterDriver.MovementState != CharacterMovementState.Walk &&
-				characterDriver.MovementState != CharacterMovementState.Run &&
-				characterDriver.MovementState != CharacterMovementState.SquatIdle &&
-				characterDriver.MovementState != CharacterMovementState.SquatMove &&
-				characterDriver.MovementState != CharacterMovementState.JumpDown &&
-				characterDriver.MovementState != CharacterMovementState.JumpUp
+				characterDriver.Movement.MovementState != CharacterMovementState.Idle &&
+				characterDriver.Movement.MovementState != CharacterMovementState.Walk &&
+				characterDriver.Movement.MovementState != CharacterMovementState.Run &&
+				characterDriver.Movement.MovementState != CharacterMovementState.SquatIdle &&
+				characterDriver.Movement.MovementState != CharacterMovementState.SquatMove &&
+				characterDriver.Movement.MovementState != CharacterMovementState.JumpDown &&
+				characterDriver.Movement.MovementState != CharacterMovementState.JumpUp
 			) {
 				characterDriver = null;
 			}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public class WoodStoneDoorFront : Door {
 	public override bool IsFrontDoor => true;
 }
@@ -109,7 +109,7 @@ public abstract class Door : EnvironmentEntity {
 
 	public virtual bool AllowInvoke (Entity target) =>
 		!Task.HasTask() && target is Character ch &&
-		ch.IsGrounded && ch.Rect.y >= Y && !ch.IsSquatting && !ch.IsClimbing;
+		ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquatting && !ch.Movement.IsClimbing;
 
 
 }

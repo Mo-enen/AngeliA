@@ -108,7 +108,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			borderD = mainSprite.GlobalBorder.down;
 			borderU = mainSprite.GlobalBorder.up;
 		}
-		if (!character.FacingRight) {
+		if (!character.Movement.FacingRight) {
 			offsetDown.x = -offsetDown.x;
 			offsetUp.x = -offsetUp.x;
 			offsetCenter.x = -offsetCenter.x;
@@ -121,7 +121,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			Int2 centerPos;
 			var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
 			var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
-			var handPos = (character.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
+			var handPos = (character.Movement.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
 			if (localFrame < duration / 2) {
 				// Pulling
 				centerPos = handPos + offsetCenter;
@@ -134,7 +134,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			}
 
 			// Draw Strings
-			int stringWidth = character.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
+			int stringWidth = character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
 			Renderer.Draw(
 				SpriteIdString, centerPos.x, centerPos.y, 500, 0,
 				(cornerU - centerPos).GetRotation(),
@@ -152,7 +152,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			Renderer.Draw(
 				SpriteIdString,
 				point.x, point.y,
-				character.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
+				character.Movement.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
 				Const.ORIGINAL_SIZE,
 				mainCell.Height - borderD - borderU - offsetDown.y + offsetUp.y,
 				mainCell.Z - 1

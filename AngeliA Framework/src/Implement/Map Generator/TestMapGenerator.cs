@@ -9,7 +9,7 @@ internal class TestMapGenerator : MapGenerator {
 
 
 		System.Threading.Thread.Sleep(500);
-		Debug.Log(worldPosition);
+		//Debug.Log(worldPosition);
 		System.Threading.Thread.Sleep(500);
 
 

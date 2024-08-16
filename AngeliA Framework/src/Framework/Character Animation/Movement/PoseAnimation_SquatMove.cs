@@ -7,7 +7,7 @@ public class PoseAnimation_SquatMove : PoseAnimation {
 
 		const int FRAME_LENGTH = 16;
 
-		int loop = Util.Max(600 / Target.SquatSpeed.FinalValue.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
+		int loop = Util.Max(600 / Target.Movement.SquatSpeed.FinalValue.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
 		int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 		int arrFrame = (CurrentAnimationFrame.UMod(loop) / frameRate) % FRAME_LENGTH;
 		arrFrame = (arrFrame + 4).UMod(FRAME_LENGTH);

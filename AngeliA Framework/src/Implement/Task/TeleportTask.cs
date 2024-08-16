@@ -117,7 +117,7 @@ public class TeleportTask : TaskItem {
 			svTask.ChannelName = channelName;
 			var player = Player.Selecting;
 			if (player != null) {
-				player.Stop();
+				player.Movement.Stop();
 				player.EnterTeleportState(svTask.Duration, Stage.ViewZ > toZ, withPortal);
 				player.VelocityX = 0;
 				player.VelocityY = 0;

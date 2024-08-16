@@ -4,9 +4,8 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 
 	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
-	protected override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
-	protected override bool DestroyWhenInsideGround => false;
-	protected override bool PhysicsEnable => false;
+	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	public override bool DestroyWhenInsideGround => false;
 	protected virtual Tag IgnoreDamageType => Tag.None;
 
 	void IDamageReceiver.TakeDamage (Damage damage) {

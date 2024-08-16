@@ -59,8 +59,6 @@ public abstract class PoseCharacter : Character {
 	public int HideBraidFrame { get; set; } = -1;
 	public int CharacterHeight { get; set; } = 160; // in CM
 	public bool BodyPartsReady => BodyParts != null;
-	public override bool SpinOnGroundPound => Wing.IsPropellerWing(WingID);
-	public override int GrowingHeight => base.GrowingHeight * CharacterHeight / 160;
 
 	// BodyPart
 	public readonly BodyPart[] BodyParts = new BodyPart[BODY_PART_COUNT];
@@ -187,13 +185,16 @@ public abstract class PoseCharacter : Character {
 	}
 
 
+	protected override CharacterMovement CreateNewMovement () => new PoseCharacterMovement(this);
+
+
 	public override void BeforeUpdate () {
 		PoseRenderingZOffset = 0;
 		SyncRenderingConfigFromPool();
 		base.BeforeUpdate();
 		// Give Default Wing
-		if (WingID.BaseValue == 0 && FlyAvailable) {
-			WingID.Override(GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID, 1);
+		if (WingID.BaseValue == 0 && Movement.FlyAvailable) {
+			WingID.Override(Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID, 1);
 		}
 	}
 
@@ -251,7 +252,7 @@ public abstract class PoseCharacter : Character {
 	private void ResetPoseToDefault (bool motionOnly) {
 
 		int bounce = CurrentRenderingBounce;
-		int facingSign = FacingRight ? 1 : -1;
+		int facingSign = Movement.FacingRight ? 1 : -1;
 
 		PoseRootX = 0;
 		BodyTwist = 0;
@@ -259,7 +260,7 @@ public abstract class PoseCharacter : Character {
 
 		foreach (var bodypart in BodyParts) {
 			bodypart.Rotation = 0;
-			bodypart.FrontSide = FacingFront;
+			bodypart.FrontSide = Movement.FacingFront;
 			if (!motionOnly) {
 				bodypart.Tint = Color32.WHITE;
 				bodypart.Covered = BodyPart.CoverMode.None;
@@ -296,10 +297,10 @@ public abstract class PoseCharacter : Character {
 		UpperArmL.FlexableSizeY = UpperArmR.FlexableSizeY = UpperArmL.SizeY * targetUnitHeight / defaultCharHeight;
 		LowerArmL.FlexableSizeY = LowerArmR.FlexableSizeY = LowerArmL.SizeY * targetUnitHeight / defaultCharHeight;
 		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight * Body.Height.Abs() / Body.SizeY;
-		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
-		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
-		int hipBorderL = (FacingRight ? Hip.Border.left : Hip.Border.right) * Hip.Width.Abs() / Hip.SizeX;
-		int hipBorderR = (FacingRight ? Hip.Border.right : Hip.Border.left) * Hip.Width.Abs() / Hip.SizeX;
+		int bodyBorderL = (Movement.FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
+		int bodyBorderR = (Movement.FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
+		int hipBorderL = (Movement.FacingRight ? Hip.Border.left : Hip.Border.right) * Hip.Width.Abs() / Hip.SizeX;
+		int hipBorderR = (Movement.FacingRight ? Hip.Border.right : Hip.Border.left) * Hip.Width.Abs() / Hip.SizeX;
 
 		// Head
 		Head.X = 0;
@@ -346,7 +347,7 @@ public abstract class PoseCharacter : Character {
 		// Arm
 		UpperArmL.X = ShoulderL.X;
 		UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
-		UpperArmL.Z = (FacingFront ? facingSign * POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
+		UpperArmL.Z = (Movement.FacingFront ? facingSign * POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
 		UpperArmL.Width = UpperArmL.SizeX;
 		UpperArmL.Height = UpperArmL.FlexableSizeY;
 		UpperArmL.PivotX = 1000;
@@ -354,7 +355,7 @@ public abstract class PoseCharacter : Character {
 
 		UpperArmR.X = ShoulderR.X;
 		UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
-		UpperArmR.Z = (FacingFront ? facingSign * -POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
+		UpperArmR.Z = (Movement.FacingFront ? facingSign * -POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
 		UpperArmR.Width = UpperArmR.SizeX;
 		UpperArmR.Height = UpperArmR.FlexableSizeY;
 		UpperArmR.PivotX = 0;
@@ -365,7 +366,7 @@ public abstract class PoseCharacter : Character {
 
 		LowerArmL.X = UpperArmL.X;
 		LowerArmL.Y = UpperArmL.Y - UpperArmL.Height;
-		LowerArmL.Z = (FacingFront ? facingSign * POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
+		LowerArmL.Z = (Movement.FacingFront ? facingSign * POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
 		LowerArmL.Width = LowerArmL.SizeX;
 		LowerArmL.Height = LowerArmL.FlexableSizeY;
 		LowerArmL.PivotX = 1000;
@@ -373,7 +374,7 @@ public abstract class PoseCharacter : Character {
 
 		LowerArmR.X = UpperArmR.X;
 		LowerArmR.Y = UpperArmR.Y - UpperArmR.Height;
-		LowerArmR.Z = (FacingFront ? facingSign * -POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
+		LowerArmR.Z = (Movement.FacingFront ? facingSign * -POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
 		LowerArmR.Width = LowerArmR.SizeX;
 		LowerArmR.Height = LowerArmR.FlexableSizeY;
 		LowerArmR.PivotX = 0;
@@ -381,7 +382,7 @@ public abstract class PoseCharacter : Character {
 
 		HandL.X = LowerArmL.X;
 		HandL.Y = LowerArmL.Y - LowerArmL.Height;
-		HandL.Z = (FacingFront && FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
+		HandL.Z = (Movement.FacingFront && Movement.FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
 		HandL.Width = HandL.SizeX;
 		HandL.Height = HandL.SizeY;
 		HandL.PivotX = 1000;
@@ -389,7 +390,7 @@ public abstract class PoseCharacter : Character {
 
 		HandR.X = LowerArmR.X;
 		HandR.Y = LowerArmR.Y - LowerArmR.Height;
-		HandR.Z = (FacingFront && !FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
+		HandR.Z = (Movement.FacingFront && !Movement.FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
 		HandR.Width = -HandR.SizeX;
 		HandR.Height = HandR.SizeY;
 		HandR.PivotX = 1000;
@@ -419,7 +420,7 @@ public abstract class PoseCharacter : Character {
 		LowerLegL.Height = LowerLegL.FlexableSizeY;
 		LowerLegL.PivotX = 0;
 		LowerLegL.PivotY = 1000;
-		if (FacingRight) LowerLegL.X -= A2G;
+		if (Movement.FacingRight) LowerLegL.X -= A2G;
 
 		LowerLegR.X = UpperLegR.X;
 		LowerLegR.Y = UpperLegR.Y - UpperLegR.Height;
@@ -428,9 +429,9 @@ public abstract class PoseCharacter : Character {
 		LowerLegR.Height = LowerLegR.FlexableSizeY;
 		LowerLegR.PivotX = 1000;
 		LowerLegR.PivotY = 1000;
-		if (!FacingRight) LowerLegR.X += A2G;
+		if (!Movement.FacingRight) LowerLegR.X += A2G;
 
-		FootL.X = FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
+		FootL.X = Movement.FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
 		FootL.Y = LowerLegL.Y - LowerLegL.Height;
 		FootL.Z = POSE_Z_FOOT;
 		FootL.Width = facingSign * FootL.SizeX;
@@ -438,7 +439,7 @@ public abstract class PoseCharacter : Character {
 		FootL.PivotX = 0;
 		FootL.PivotY = 1000;
 
-		FootR.X = FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
+		FootR.X = Movement.FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
 		FootR.Y = LowerLegR.Y - LowerLegR.Height;
 		FootR.Z = POSE_Z_FOOT;
 		FootR.Width = facingSign * FootR.SizeX;
@@ -452,8 +453,8 @@ public abstract class PoseCharacter : Character {
 	private void AnimateForPose () {
 
 		// Movement
-		HandGrabScaleL = FacingRight ? 1000 : -1000;
-		HandGrabScaleR = FacingRight ? 1000 : -1000;
+		HandGrabScaleL = Movement.FacingRight ? 1000 : -1000;
+		HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 
 		PerformPoseAnimation();
 
@@ -495,8 +496,8 @@ public abstract class PoseCharacter : Character {
 
 		// Attacking
 		if (IsAttacking) {
-			if (CurrentSpeedLoseOnAttack == 0 && IsGrounded && !IsSquatting) ResetPoseToDefault(true);
-			HandGrabScaleL = HandGrabScaleR = FacingRight ? 1000 : -1000;
+			if (CurrentSpeedLoseOnAttack == 0 && IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
+			HandGrabScaleL = HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
 			PoseAnimation.AnimateFromPool(PoseAttackIDs[(int)EquippingWeaponType], this);
 			CalculateBodypartGlobalPosition();
@@ -708,10 +709,10 @@ public abstract class PoseCharacter : Character {
 		int targetUnitHeight = CharacterHeight * A2G / CM_PER_PX - Head.SizeY;
 		int defaultCharHeight = Body.SizeY + Hip.SizeY + UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
 		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight;
-		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
-		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
-		int hipBorderL = (FacingRight ? Hip.Border.left : Hip.Border.right) * Hip.Width.Abs() / Hip.SizeX;
-		int hipBorderR = (FacingRight ? Hip.Border.right : Hip.Border.left) * Hip.Width.Abs() / Hip.SizeX;
+		int bodyBorderL = (Movement.FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
+		int bodyBorderR = (Movement.FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
+		int hipBorderL = (Movement.FacingRight ? Hip.Border.left : Hip.Border.right) * Hip.Width.Abs() / Hip.SizeX;
+		int hipBorderR = (Movement.FacingRight ? Hip.Border.right : Hip.Border.left) * Hip.Width.Abs() / Hip.SizeX;
 
 		ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
 		ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
@@ -749,10 +750,10 @@ public abstract class PoseCharacter : Character {
 		LowerLegR.X = UpperLegR.X;
 		LowerLegR.Y = UpperLegR.Y - UpperLegR.Height;
 
-		FootL.X = FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
+		FootL.X = Movement.FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
 		FootL.Y = LowerLegL.Y - LowerLegL.Height;
 
-		FootR.X = FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
+		FootR.X = Movement.FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
 		FootR.Y = LowerLegR.Y - LowerLegR.Height;
 
 	}

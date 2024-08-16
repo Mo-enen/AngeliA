@@ -242,7 +242,7 @@ public partial class RiggedGame : Game {
 
 		// Reload Character Movement
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(5) && Player.Selecting != null) {
-			Character.ReloadMovementConfigFromFile(Player.Selecting.GetType().AngeName());
+			CharacterMovement.ReloadMovementConfigFromFile(Player.Selecting.GetType().AngeName());
 		}
 
 		// Toolset Command

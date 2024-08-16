@@ -59,7 +59,7 @@ public abstract class Flail : MeleeWeapon {
 			int duration = AttackDuration;
 			int swingX = Const.CEL.LerpTo(-Const.CEL, Ease.OutBack((float)localFrame / duration));
 			headPos = handleCell.LocalToGlobal(
-				handleCell.Width / 2 + (character.FacingRight ? -swingX : swingX) + headIndex * 96,
+				handleCell.Width / 2 + (character.Movement.FacingRight ? -swingX : swingX) + headIndex * 96,
 				handleCell.Height + chainLength - headIndex * 16
 			);
 		} else {
@@ -71,7 +71,7 @@ public abstract class Flail : MeleeWeapon {
 			// Shake
 			const int SHAKE_DURATION = 60;
 			int shakeFrame = Util.Min(
-				(Game.GlobalFrame - (character.LastEndMoveFrame >= 0 ? character.LastEndMoveFrame : 0)).Clamp(0, SHAKE_DURATION),
+				(Game.GlobalFrame - (character.Movement.LastEndMoveFrame >= 0 ? character.Movement.LastEndMoveFrame : 0)).Clamp(0, SHAKE_DURATION),
 				(Game.GlobalFrame - (character.LastAttackFrame >= 0 ? character.LastAttackFrame : 0)).Clamp(0, SHAKE_DURATION)
 			);
 			if (!climbing && shakeFrame >= 0 && shakeFrame < SHAKE_DURATION) {
@@ -97,7 +97,7 @@ public abstract class Flail : MeleeWeapon {
 				headSprite.PivotX, headSprite.PivotY, rot,
 				headSprite.GlobalWidth * scale / 1000,
 				headSprite.GlobalHeight * scale.Abs() / 1000,
-				(character.FacingFront ? 36 : -36) - headIndex
+				(character.Movement.FacingFront ? 36 : -36) - headIndex
 			);
 		}
 
@@ -112,7 +112,7 @@ public abstract class Flail : MeleeWeapon {
 						Util.RemapUnclamped(-1, chainCount, point.y, headPos.y, i),
 						500, 500, rot,
 						chainSprite.GlobalWidth / 2, chainSprite.GlobalHeight / 2,
-						character.FacingFront ? 35 : -35
+						character.Movement.FacingFront ? 35 : -35
 					);
 				}
 			}

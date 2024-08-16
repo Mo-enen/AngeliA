@@ -28,6 +28,7 @@ public class Rock : Breakable, IBlockEntity {
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+		IgnorePhysics(1);
 	}
 
 	public override void LateUpdate () {

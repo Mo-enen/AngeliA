@@ -3,7 +3,7 @@
 public class PoseAnimation_GrabTop : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		int loop = Util.Max((700 / Target.GrabMoveSpeedX.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
+		int loop = Util.Max((700 / Target.Movement.GrabMoveSpeedX.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 		int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 		int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 		int pingpongAlt = arrFrame == 2 ? 1 : arrFrame == 3 ? 0 : arrFrame + 1; // 1210

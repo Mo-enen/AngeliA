@@ -41,8 +41,8 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	// Api
 	public delegate void ItemCollectedHandler (Entity collector, int itemID, int count);
 	public static event ItemCollectedHandler OnItemCollected;
-	protected override int PhysicalLayer => PhysicsLayer.ITEM;
-	protected override int CollisionMask => PhysicsMask.MAP;
+	public override int PhysicalLayer => PhysicsLayer.ITEM;
+	public override int CollisionMask => PhysicsMask.MAP;
 	public int ItemID { get; set; } = 0;
 	public int ItemCount { get; set; } = 1;
 	bool IActionTarget.AllowInvokeOnSquat => true;

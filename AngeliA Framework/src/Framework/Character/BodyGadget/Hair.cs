@@ -124,8 +124,8 @@ public abstract class BraidHair : Hair {
 		int y = Util.RemapUnclamped(lerpLY, lerpRY, hairB, hairT, positionAmountY);
 		int rot = 0;
 		int deltaHeight = 0;
-		bool rolling = character.IsRolling;
-		if (!character.FacingRight && facingLeftOffsetX != 0) {
+		bool rolling = character.Movement.IsRolling;
+		if (!character.Movement.FacingRight && facingLeftOffsetX != 0) {
 			l += facingLeftOffsetX;
 			r += facingLeftOffsetX;
 		}
@@ -137,19 +137,19 @@ public abstract class BraidHair : Hair {
 
 			var bCells = DrawBraid(
 				braidL, l + offsetX, y + offsetY, zLeft, 0,
-				(character.FacingRight ? rot : rot * 2 / 3) - motionRotY,
+				(character.Movement.FacingRight ? rot : rot * 2 / 3) - motionRotY,
 				flipX, flipY, deltaHeight, rolling, useLimbRotate
 			);
 			TwistRotateHair(character, bCells, false);
-			Flow(bCells, character.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
+			Flow(bCells, character.Movement.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
 
 			bCells = DrawBraid(
 				braidR, r + offsetX, y + offsetY, zRight, 1000,
-				(character.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
+				(character.Movement.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
 				flipX, flipY, deltaHeight, rolling, useLimbRotate
 			);
 			TwistRotateHair(character, bCells, true);
-			Flow(bCells, character.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
+			Flow(bCells, character.Movement.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
 
 		} else {
 			var bCells = DrawBraid(braidL, l + offsetX, y + offsetY, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);

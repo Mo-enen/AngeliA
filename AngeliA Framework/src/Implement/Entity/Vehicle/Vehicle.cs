@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 public abstract class Vehicle : EnvironmentRigidbody {
 
 
 	// Api
 	public Entity[] Passengers { get; set; } = null;
 	public Entity Driver { get; set; } = null;
-	protected sealed override bool CarryOtherRigidbodyOnTop => false;
+	public sealed override bool CarryOtherRigidbodyOnTop => false;
 	public bool IsDriving { get; private set; } = false;
 
 

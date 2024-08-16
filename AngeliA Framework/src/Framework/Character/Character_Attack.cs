@@ -84,26 +84,29 @@ public abstract partial class Character {
 		LastAttackCharged = charged;
 		LastAttackFrame = Game.GlobalFrame;
 		AttackStyleIndex += RandomAttackAnimationStyle ? Util.QuickRandom(1, Util.Max(2, AttackStyleLoop)) : 1;
-		AttackStartFacingRight = _FacingRight;
+		AttackStartFacingRight = Movement.BasicFacingRight;
 		return true;
 	}
 
 
+	public void CancelAttack () => LastAttackFrame = int.MinValue;
+
+
 	public virtual bool IsAttackAllowedByMovement () =>
-		!IsCrashing &&
-		(AttackInAir || IsGrounded || InWater || InSand || IsClimbing) &&
+		!Movement.IsCrashing &&
+		(AttackInAir || IsGrounded || InWater || Movement.IsClimbing) &&
 		(AttackInWater || !InWater) &&
-		(AttackWhenWalking || !IsGrounded || !IsWalking) &&
-		(AttackWhenRunning || !IsGrounded || !IsRunning) &&
-		(AttackWhenClimbing || !IsClimbing) &&
-		(AttackWhenFlying || !IsFlying) &&
-		(AttackWhenRolling || !IsRolling) &&
-		(AttackWhenSquatting || !IsSquatting) &&
-		(AttackWhenDashing || !IsDashing) &&
-		(AttackWhenSliding || !IsSliding) &&
-		(AttackWhenGrabbing || (!IsGrabbingTop && !IsGrabbingSide)) &&
-		(AttackWhenPounding || !IsPounding) &&
-		(AttackWhenRush || !IsRushing);
+		(AttackWhenWalking || !IsGrounded || !Movement.IsWalking) &&
+		(AttackWhenRunning || !IsGrounded || !Movement.IsRunning) &&
+		(AttackWhenClimbing || !Movement.IsClimbing) &&
+		(AttackWhenFlying || !Movement.IsFlying) &&
+		(AttackWhenRolling || !Movement.IsRolling) &&
+		(AttackWhenSquatting || !Movement.IsSquatting) &&
+		(AttackWhenDashing || !Movement.IsDashing) &&
+		(AttackWhenSliding || !Movement.IsSliding) &&
+		(AttackWhenGrabbing || (!Movement.IsGrabbingTop && !Movement.IsGrabbingSide)) &&
+		(AttackWhenPounding || !Movement.IsPounding) &&
+		(AttackWhenRush || !Movement.IsRushing);
 
 
 	public virtual bool IsAttackAllowedByEquipment () =>

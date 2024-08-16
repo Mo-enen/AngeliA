@@ -91,7 +91,7 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 
 		Bullet result = null;
 
-		bool facingRight = sender.FacingRight;
+		bool facingRight = sender.Movement.FacingRight;
 		int bulletCount = ForceBulletCountNextShot < 0 ? BulletCountInOneShot : ForceBulletCountNextShot;
 		ForceBulletCountNextShot = -1;
 

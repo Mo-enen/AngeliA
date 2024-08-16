@@ -243,7 +243,7 @@ public abstract class Platform : EnvironmentEntity {
 				}
 			} else {
 				// For Nav Character
-				if (hit.Entity is not Character ch || ch.IsFlying) continue;
+				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
 				rig.X += X - PrevX;
 				rig.Y = rect.yMax;
 			}
@@ -297,7 +297,7 @@ public abstract class Platform : EnvironmentEntity {
 				if (hit.Entity is not Rigidbody rig) continue;
 				if (rig.X < left || rig.X >= right) continue;
 				if (rig.VelocityY > Y - PrevY) continue;
-				if (hit.Entity is not Character ch || ch.IsFlying) continue;
+				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
 				if (!rig.Rect.Overlaps(prevRect)) {
 					rig.Y.MoveTowards(rect.yMax - rig.OffsetY, 64);
 					rig.MakeGrounded(1, TypeID);
@@ -317,7 +317,7 @@ public abstract class Platform : EnvironmentEntity {
 				if (rig.X < left || rig.X >= right) continue;
 				if (rig.VelocityY > 0) continue;
 				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
-				if (hit.IsTrigger && (hit.Entity is not Character ch || ch.IsFlying)) continue;
+				if (hit.IsTrigger && (hit.Entity is not Character ch || ch.Movement.IsFlying)) continue;
 				rig.Y = rect.yMax - rig.OffsetY;
 				if (!hit.IsTrigger) rig.VelocityY = 0;
 				rig.MakeGrounded(1, TypeID);

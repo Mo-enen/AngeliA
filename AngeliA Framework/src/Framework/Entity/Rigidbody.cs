@@ -13,10 +13,6 @@ public abstract class Rigidbody : Entity {
 
 	// Const
 	private const int WATER_SPEED_LOSE = 400;
-	private const int QUICK_SAND_JUMPOUT_SPEED = 48;
-	private const int QUICK_SAND_MAX_RUN_SPEED = 4;
-	private const int QUICK_SAND_SINK_SPEED = 1;
-	private const int QUICK_SAND_JUMP_SPEED = 12;
 
 	// Api
 	public delegate void RigidbodyHandler (Rigidbody rig);
@@ -26,13 +22,12 @@ public abstract class Rigidbody : Entity {
 	public bool IsGrounded { get; private set; } = false;
 	public bool IsInsideGround { get; private set; } = false;
 	public bool InWater { get; private set; } = false;
-	public bool InSand { get; private set; } = false;
 	public bool OnSlippy { get; private set; } = false;
 	public int VelocityX { get; set; } = 0;
 	public int VelocityY { get; set; } = 0;
-	public int OffsetX { get; protected set; } = 0;
-	public int OffsetY { get; protected set; } = 0;
-	public int GravityScale { get; protected set; } = 1000;
+	public int OffsetX { get; set; } = 0;
+	public int OffsetY { get; set; } = 0;
+	public int GravityScale { get; set; } = 1000;
 	public int GroundedID { get; private set; } = 0;
 	public int PrevX { get; private set; } = 0;
 	public int PrevY { get; private set; } = 0;
@@ -41,16 +36,15 @@ public abstract class Rigidbody : Entity {
 
 	// Override
 	public virtual bool AllowBeingPush => true;
-	protected abstract int PhysicalLayer { get; }
-	protected virtual int CollisionMask => PhysicsMask.SOLID;
-	protected virtual int Gravity => VelocityY <= 0 ? 5 : 3;
-	protected virtual int AirDragX => 3;
-	protected virtual int AirDragY => 0;
-	protected virtual bool AllowBeingCarryByOtherRigidbody => true;
-	protected virtual bool CarryOtherRigidbodyOnTop => true;
-	protected virtual bool PhysicsEnable => true;
-	protected virtual bool DestroyWhenInsideGround => false;
-	protected virtual int MaxGravitySpeed => 96;
+	public abstract int PhysicalLayer { get; }
+	public virtual int CollisionMask => PhysicsMask.SOLID;
+	public virtual int Gravity => VelocityY <= 0 ? 5 : 3;
+	public virtual int AirDragX => 3;
+	public virtual int AirDragY => 0;
+	public virtual bool AllowBeingCarryByOtherRigidbody => true;
+	public virtual bool CarryOtherRigidbodyOnTop => true;
+	public virtual bool DestroyWhenInsideGround => false;
+	public virtual int MaxGravitySpeed => 96;
 
 	// Data
 	private int IgnoreGroundCheckFrame = int.MinValue;
@@ -69,7 +63,6 @@ public abstract class Rigidbody : Entity {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		InSand = false;
 		InWater = false;
 		OnSlippy = false;
 		VelocityX = 0;
@@ -99,14 +92,12 @@ public abstract class Rigidbody : Entity {
 		var rect = Rect;
 
 		bool prevInWater = InWater;
-		bool prevInSand = InSand;
 		int checkingMask = PhysicsMask.MAP & CollisionMask;
 		InWater = Physics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
-		InSand = !InWater && Physics.Overlap(checkingMask, rect, null, OperationMode.TriggerOnly, Tag.Quicksand);
-		OnSlippy = !InWater && !InSand && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Tag.Slip);
+		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Tag.Slip);
 		IsInsideGround = InsideGroundCheck();
 
-		if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) {
+		if (Game.GlobalFrame <= IgnorePhysicsFrame) {
 			IsGrounded = GroundedCheck();
 			if (DestroyWhenInsideGround) Active = false;
 			return;
@@ -187,15 +178,6 @@ public abstract class Rigidbody : Entity {
 			if (InWater) OnFallIntoWater?.Invoke(this);
 		}
 
-		// Sand
-		if (prevInSand && !InSand && VelocityY > 0) {
-			VelocityY = Util.Max(VelocityY, QUICK_SAND_JUMPOUT_SPEED);
-		}
-		if (InSand) {
-			VelocityX = VelocityX.Clamp(-QUICK_SAND_MAX_RUN_SPEED, QUICK_SAND_MAX_RUN_SPEED);
-			VelocityY = VelocityY.Clamp(-QUICK_SAND_SINK_SPEED, QUICK_SAND_JUMP_SPEED);
-		}
-
 	}
 
 
@@ -238,7 +220,7 @@ public abstract class Rigidbody : Entity {
 
 	public void PerformMove (int speedX, int speedY, bool ignoreOneway = false, bool ignoreLevel = false) {
 
-		if (!PhysicsEnable || Game.GlobalFrame <= IgnorePhysicsFrame) return;
+		if (Game.GlobalFrame <= IgnorePhysicsFrame) return;
 		RefreshPrevPosition();
 		var pos = new Int2(X + OffsetX, Y + OffsetY);
 
@@ -295,7 +277,7 @@ public abstract class Rigidbody : Entity {
 
 
 	private bool GroundedCheck () {
-		if (IsInsideGround || InSand) return true;
+		if (IsInsideGround) return true;
 		if (Game.GlobalFrame <= IgnoreGroundCheckFrame) return IsGrounded;
 		if (VelocityY > 0) return false;
 		var rect = Rect;

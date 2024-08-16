@@ -44,8 +44,8 @@ public sealed class BlockItem : Weapon {
 
 		// Movement Override
 		if (!pHolder.IsInsideGround) {
-			pHolder.SquatSpeed.Override(0, 1);
-			pHolder.WalkSpeed.Override(0, 1);
+			pHolder.Movement.SquatSpeed.Override(0, 1);
+			pHolder.Movement.WalkSpeed.Override(0, 1);
 		}
 
 		// Get Target Pos
@@ -138,11 +138,11 @@ public sealed class BlockItem : Weapon {
 			int oldTargetY = targetUnitX;
 			if (aim.IsBottom()) {
 				if (aim == Direction8.Bottom) {
-					targetUnitX += pHolder.FacingRight ? 1 : -1;
+					targetUnitX += pHolder.Movement.FacingRight ? 1 : -1;
 				}
 			} else if (aim.IsTop()) {
 				if (aim == Direction8.Top) {
-					targetUnitX += pHolder.FacingRight ? 1 : -1;
+					targetUnitX += pHolder.Movement.FacingRight ? 1 : -1;
 				}
 			} else {
 				targetUnitY++;

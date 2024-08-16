@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
 namespace AngeliA;
@@ -136,139 +138,53 @@ public class CharacterMovementConfig {
 	[PropVisibility(nameof(GrabTopAvailable))] public int GrabTopHeightAmount = 947;
 	[PropVisibility(nameof(GrabSideAvailable))] public int GrabSideHeightAmount = 947;
 
+	// Data
+	private static readonly List<(FieldInfo movement, FieldInfo config)> MetaMapper = new();
+	private static FieldInfo BuffIntBaseValueField;
+	private static FieldInfo BuffBoolBaseValueField;
+
+
+	// MSG
+	[OnGameInitialize]
+	private static void OnGameInitialize () {
+		MetaMapper.Clear();
+		var typeM = typeof(CharacterMovement);
+		var typeC = typeof(CharacterMovementConfig);
+		var intType = typeof(int);
+		var boolType = typeof(bool);
+		foreach (var field in typeM.ForAllFields<BuffInt>(BindingFlags.Public | BindingFlags.Instance)) {
+			if (
+				typeC.GetField(field.Name, BindingFlags.Public | BindingFlags.Instance) is not FieldInfo cField ||
+				cField.FieldType != intType
+			) continue;
+			MetaMapper.Add((field, cField));
+		}
+		foreach (var field in typeM.ForAllFields<BuffBool>(BindingFlags.Public | BindingFlags.Instance)) {
+			if (
+				typeC.GetField(field.Name, BindingFlags.Public | BindingFlags.Instance) is not FieldInfo cField ||
+				cField.FieldType != boolType
+			) continue;
+			MetaMapper.Add((field, cField));
+		}
+		BuffIntBaseValueField = typeof(BuffInt).GetField("BaseValue", BindingFlags.Public | BindingFlags.Instance);
+		BuffBoolBaseValueField = typeof(BuffBool).GetField("BaseValue", BindingFlags.Public | BindingFlags.Instance);
+	}
+
 
 	// API
 	public void LoadToCharacter (Character character) {
-
-		character.MovementWidth.BaseValue = MovementWidth;
-		character.MovementHeight.BaseValue = MovementHeight;
-
-		// Height Amount
-		character.DashHeightAmount.BaseValue = DashHeightAmount;
-		character.RushHeightAmount.BaseValue = RushHeightAmount;
-		character.SquatHeightAmount.BaseValue = SquatHeightAmount;
-		character.SwimHeightAmount.BaseValue = SwimHeightAmount;
-		character.FlyHeightAmount.BaseValue = FlyHeightAmount;
-		character.GrabTopHeightAmount.BaseValue = GrabTopHeightAmount;
-		character.GrabSideHeightAmount.BaseValue = GrabSideHeightAmount;
-
-		// Walk
-		character.WalkSpeed.BaseValue = WalkSpeed;
-		character.WalkAcceleration.BaseValue = WalkAcceleration;
-		character.WalkBrakeAcceleration.BaseValue = WalkBrakeAcceleration;
-		character.WalkDeceleration.BaseValue = WalkDeceleration;
-
-		// Run
-		character.WalkToRunAccumulation.BaseValue = WalkToRunAccumulation;
-		character.RunSpeed.BaseValue = RunSpeed;
-		character.RunAcceleration.BaseValue = RunAcceleration;
-		character.RunBrakeAcceleration.BaseValue = RunBrakeAcceleration;
-		character.RunDeceleration.BaseValue = RunDeceleration;
-
-		// Push
-		character.PushAvailable.BaseValue = PushAvailable;
-		character.PushSpeed.BaseValue = PushSpeed;
-
-		// Jump
-		character.JumpSpeed.BaseValue = JumpSpeed;
-		character.JumpCount.BaseValue = JumpCount;
-		character.JumpReleaseLoseRate.BaseValue = JumpReleaseLoseRate;
-		character.JumpRiseGravityRate.BaseValue = JumpRiseGravityRate;
-		character.GrowJumpCountWhenFallOffEdge.BaseValue = EdgeFallGrowJumpCount;
-		character.FirstJumpWithRoll.BaseValue = FirstJumpWithRoll;
-		character.SubsequentJumpWithRoll.BaseValue = SubsequentJumpWithRoll;
-		character.JumpDownThoughOneway.BaseValue = JumpDownThoughOneway;
-
-		// Dash
-		character.DashAvailable.BaseValue = DashAvailable;
-		character.DashWithRoll.BaseValue = DashWithRoll;
-		character.DashSpeed.BaseValue = DashSpeed;
-		character.DashDuration.BaseValue = DashDuration;
-		character.DashCooldown.BaseValue = DashCooldown;
-		character.DashAcceleration.BaseValue = DashAcceleration;
-		character.DashCancelLoseRate.BaseValue = DashCancelLoseRate;
-		character.DashPutoutFire.BaseValue = DashPutoutFire;
-
-		// Rush
-		character.RushAvailable.BaseValue = RushAvailable;
-		character.RushInAir.BaseValue = RushInAir;
-		character.RushInWater.BaseValue = RushInWater;
-		character.RushWhenClimb.BaseValue = RushWhenClimb;
-		character.RushWhenSquat.BaseValue = RushWhenSquat;
-		character.RushSpeed.BaseValue = RushSpeed;
-		character.RushStopSpeed.BaseValue = RushStopSpeed;
-		character.RushDuration.BaseValue = RushDuration;
-		character.RushStiff.BaseValue = RushStiff;
-		character.RushCooldown.BaseValue = RushCooldown;
-		character.RushAcceleration.BaseValue = RushAcceleration;
-		character.RushDeceleration.BaseValue = RushDeceleration;
-		character.RushPutoutFire.BaseValue = RushPutoutFire;
-
-		// Crash
-		character.CrashAvailable.BaseValue = CrashAvailable;
-		character.CrashWhenSlippy.BaseValue = CrashWhenSlippy;
-		character.CrashDuration.BaseValue = CrashDuration;
-		character.CrashRunDurationRequire.BaseValue = CrashRunDurationRequire;
-		character.CrashDeceleration.BaseValue = CrashDeceleration;
-
-		// Slip
-		character.SlipAvailable.BaseValue = SlipAvailable;
-		character.SlipAcceleration.BaseValue = SlipAcceleration;
-		character.SlipDeceleration.BaseValue = SlipDeceleration;
-
-		// Squat
-		character.SquatAvailable.BaseValue = SquatAvailable;
-		character.SquatSpeed.BaseValue = SquatSpeed;
-		character.SquatAcceleration.BaseValue = SquatAcceleration;
-		character.SquatDeceleration.BaseValue = SquatDeceleration;
-
-		// Pound
-		character.PoundAvailable.BaseValue = PoundAvailable;
-		character.PoundPutoutFire.BaseValue = PoundPutoutFire;
-		character.PoundSpeed.BaseValue = PoundSpeed;
-
-		// Swim
-		character.SwimWidth.BaseValue = SwimWidth;
-		character.InWaterSpeedLoseRate.BaseValue = InWaterSpeedLoseRate;
-		character.SwimSpeed.BaseValue = SwimSpeed;
-		character.SwimJumpSpeed.BaseValue = SwimJumpSpeed;
-		character.SwimAcceleration.BaseValue = SwimAcceleration;
-		character.SwimDeceleration.BaseValue = SwimDeceleration;
-
-		// Climb
-		character.ClimbAvailable.BaseValue = ClimbAvailable;
-		character.JumpWhenClimbAvailable.BaseValue = JumpWhenClimbAvailable;
-		character.ClimbSpeedX.BaseValue = ClimbSpeedX;
-		character.ClimbSpeedY.BaseValue = ClimbSpeedY;
-
-		// Fly
-		character.FlyAvailable.BaseValue = FlyAvailable;
-		character.GlideOnFlying.BaseValue = GlideOnFlying;
-		character.FlyCooldown.BaseValue = FlyCooldown;
-		character.FlyRiseSpeed.BaseValue = FlyRiseSpeed;
-		character.FlyGravityRiseRate.BaseValue = FlyGravityRiseRate;
-		character.FlyGravityFallRate.BaseValue = FlyGravityFallRate;
-		character.FlyFallSpeed.BaseValue = FlyFallSpeed;
-		character.FlyMoveSpeed.BaseValue = FlyMoveSpeed;
-		character.FlyAcceleration.BaseValue = FlyAcceleration;
-		character.FlyDeceleration.BaseValue = FlyDeceleration;
-
-		// Slide
-		character.SlideAvailable.BaseValue = SlideAvailable;
-		character.SlideOnAnyBlock.BaseValue = SlideOnAnyBlock;
-		character.ResetJumpCountWhenSlide.BaseValue = ResetJumpCountWhenSlide;
-		character.SlideDropSpeed.BaseValue = SlideDropSpeed;
-
-		// Grab
-		character.GrabTopAvailable.BaseValue = GrabTopAvailable;
-		character.GrabSideAvailable.BaseValue = GrabSideAvailable;
-		character.ResetJumpCountWhenGrab.BaseValue = ResetJumpCountWhenGrab;
-		character.GrabFlipThroughDownAvailable.BaseValue = GrabFlipDownAvailable;
-		character.GrabFlipThroughUpAvailable.BaseValue = GrabFlipUpAvailable;
-		character.GrabFlipThroughDuration.BaseValue = GrabFlipDuration;
-		character.GrabMoveSpeedX.BaseValue = GrabMoveSpeedX;
-		character.GrabMoveSpeedY.BaseValue = GrabMoveSpeedY;
-
+		foreach (var (mField, cField) in MetaMapper) {
+			object objValue = mField.GetValue(character.Movement);
+			if (objValue is BuffInt buffInt) {
+				if (cField.GetValue(this) is int intValue) {
+					buffInt.BaseValue = intValue;
+				}
+			} else if (objValue is BuffBool buffBool) {
+				if (cField.GetValue(this) is bool boolValue) {
+					buffBool.BaseValue = boolValue;
+				}
+			}
+		}
 	}
 
 }

@@ -49,7 +49,7 @@ public abstract class Ear : BodyGadget {
 			character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
 			character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
 			FrontOfHeadL(character), FrontOfHeadR(character),
-			character.Head.FrontSide == character.FacingRight ? 0 : FacingLeftOffsetX,
+			character.Head.FrontSide == character.Movement.FacingRight ? 0 : FacingLeftOffsetX,
 			MotionAmount, selfMotion: true
 		);
 	}
@@ -72,7 +72,7 @@ public abstract class Ear : BodyGadget {
 		var head = character.Head;
 		if (head.Tint.a == 0) return;
 
-		bool facingRight = character.FacingRight;
+		bool facingRight = character.Movement.FacingRight;
 		var headRect = head.GetGlobalRect();
 		bool flipY = head.Height < 0;
 		Int2 shiftL = default;
@@ -82,7 +82,7 @@ public abstract class Ear : BodyGadget {
 		int z = head.FrontSide ? 33 : -33;
 		const int A2G = Const.CEL / Const.ART_CEL;
 
-		if (character.IsPassOut) headRect.y -= A2G;
+		if (character.HealthPoint == 0) headRect.y -= A2G;
 		int basicRootY = character.BasicRootY;
 
 		// Motion X

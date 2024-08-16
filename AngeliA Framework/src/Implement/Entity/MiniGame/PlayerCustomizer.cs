@@ -240,7 +240,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		var leftPanelRect = windowRect.Shrink(0, windowRect.width - leftPanelWidth, 0, 0);
 		bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingID != 0;
 		player.AnimationType = flying ? CharacterAnimationType.Fly : CharacterAnimationType.Idle;
-		player.LockFacingRight(PlayerFacingRight);
+		player.Movement.LockFacingRight(PlayerFacingRight);
 		FrameworkUtil.DrawPoseCharacterAsUI(
 			leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, out var rectFrom, out var rectTo, null
 		);
@@ -277,7 +277,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 			return;
 		}
 		LoadPatternsFromFile();
-		PlayerFacingRight = player.FacingRight;
+		PlayerFacingRight = player.Movement.FacingRight;
 		HighlightingMainIndex = 0;
 		HighlightingPatternRow = 0;
 		PatternPickerScrollRow = 0;

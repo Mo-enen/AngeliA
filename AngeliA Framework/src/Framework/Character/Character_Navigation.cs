@@ -187,7 +187,7 @@ public abstract partial class Character {
 
 	private void NavUpdate_Movement_Idle () {
 		VelocityX = 0;
-		if (!InWater && !InSand && !IsInsideGround) {
+		if (!InWater && !IsInsideGround) {
 			if (Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.HALF / 2, out int groundY)) {
 				// Move to Ground
 				VelocityY = groundY - Y;
@@ -200,7 +200,7 @@ public abstract partial class Character {
 			VelocityY = 0;
 		}
 		Y += VelocityY;
-		MovementState = InWater ? CharacterMovementState.SwimIdle : CharacterMovementState.Idle;
+		Movement.MovementState = InWater ? CharacterMovementState.SwimIdle : CharacterMovementState.Idle;
 	}
 
 
@@ -218,7 +218,7 @@ public abstract partial class Character {
 			// Move
 			case NavigationOperateMotion.Move:
 
-				int speed = InWater ? SwimSpeed * InWaterSpeedLoseRate / 1000 : RunSpeed;
+				int speed = InWater ? Movement.SwimSpeed * Movement.InWaterSpeedLoseRate / 1000 : Movement.RunSpeed;
 
 				if (targetX == X) NavMoveDoneX = true;
 				if (targetY == Y) NavMoveDoneY = true;
@@ -315,16 +315,16 @@ public abstract partial class Character {
 
 		// Move State
 		if (VelocityX != 0) {
-			Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
+			Movement.Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
 		}
 		if (!InWater) {
 			// Move
-			MovementState =
+			Movement.MovementState =
 				motion == NavigationOperateMotion.Move ? CharacterMovementState.Run :
 				VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown;
 		} else {
 			// Swim
-			MovementState = VelocityX == 0 ? CharacterMovementState.SwimIdle : CharacterMovementState.SwimMove;
+			Movement.MovementState = VelocityX == 0 ? CharacterMovementState.SwimIdle : CharacterMovementState.SwimMove;
 		}
 
 		// Func
@@ -351,10 +351,10 @@ public abstract partial class Character {
 
 
 	private void NavUpdate_Movement_Flying () {
-		int speed = FlyMoveSpeed;
-		if (InWater) speed = speed * InWaterSpeedLoseRate / 1000;
+		int speed = Movement.FlyMoveSpeed;
+		if (InWater) speed = speed * Movement.InWaterSpeedLoseRate / 1000;
 		var flyAim = NavigationAim;
-		if (FlyAvailable) {
+		if (Movement.FlyAvailable) {
 			// Can Fly
 			flyAim.x = X.LerpTo(flyAim.x, 100);
 			flyAim.y = Y.LerpTo(flyAim.y, 100);
@@ -363,9 +363,9 @@ public abstract partial class Character {
 			X += VelocityX;
 			Y += VelocityY;
 			// Move State
-			MovementState = CharacterMovementState.Fly;
+			Movement.MovementState = CharacterMovementState.Fly;
 			if ((X - NavigationAim.x).Abs() > 96) {
-				Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
+				Movement.Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
 			}
 		} else {
 			// Can't Fly
@@ -373,7 +373,7 @@ public abstract partial class Character {
 			Y = flyAim.y;
 			OnTeleport?.Invoke(this);
 			NavigationState = CharacterNavigationState.Idle;
-			MovementState = CharacterMovementState.Idle;
+			Movement.MovementState = CharacterMovementState.Idle;
 		}
 	}
 

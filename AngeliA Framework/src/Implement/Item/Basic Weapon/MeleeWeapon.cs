@@ -12,7 +12,7 @@ public abstract class MeleeWeapon : Weapon<MeleeBullet> {
 
 		// Set Range
 		int rangeX = RangeXRight;
-		if (!sender.FacingRight) {
+		if (!sender.Movement.FacingRight) {
 			rangeX = RangeXLeft;
 		}
 		bullet.SetSpawnSize(rangeX, RangeY);
@@ -24,7 +24,7 @@ public abstract class MeleeWeapon : Weapon<MeleeBullet> {
 		if (bullet.SmokeParticleID != 0 && bullet.GroundCheck(out var tint)) {
 			if (Stage.SpawnEntity(bullet.SmokeParticleID, bullet.X + bullet.Width / 2, bullet.Y) is Particle particle) {
 				particle.Tint = tint;
-				particle.Width = !sender.FacingRight ? -1 : 1;
+				particle.Width = !sender.Movement.FacingRight ? -1 : 1;
 				particle.Height = 1;
 			}
 		}

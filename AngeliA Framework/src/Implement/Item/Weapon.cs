@@ -135,10 +135,10 @@ public abstract class Weapon : Equipment {
 	private void DrawWeapon_Float (PoseCharacter character, AngeSprite sprite) {
 		const int SHIFT_X = 148;
 		int grabScaleL = character.IsAttacking ? character.HandGrabScaleL : 700;
-		int facingSign = character.FacingRight ? 1 : -1;
+		int facingSign = character.Movement.FacingRight ? 1 : -1;
 		int moveDeltaX = -character.DeltaPositionX * 2;
 		int moveDeltaY = -character.DeltaPositionY;
-		int facingFrame = Game.GlobalFrame - character.LastFacingChangeFrame;
+		int facingFrame = Game.GlobalFrame - character.Movement.LastFacingChangeFrame;
 		if (facingFrame < 30) {
 			moveDeltaX += (int)Util.LerpUnclamped(
 				facingSign * SHIFT_X * 2, 0,
@@ -162,7 +162,7 @@ public abstract class Weapon : Equipment {
 	private void DrawWeapon_SingleHanded (PoseCharacter character, AngeSprite sprite) {
 		bool attacking = character.IsAttacking;
 		int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
-		int facingSign = character.FacingRight ? 1 : -1;
+		int facingSign = character.Movement.FacingRight ? 1 : -1;
 		int grabScale = character.HandGrabScaleR;
 		int grabRotation = character.HandGrabRotationR;
 		int z = character.HandR.Z - 1;
@@ -173,7 +173,7 @@ public abstract class Weapon : Equipment {
 				Game.GlobalFrame - character.LastAttackFrame > AttackDuration / 6
 			) return;
 			grabScale = 700;
-			z = character.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
+			z = character.Movement.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
 		}
 		// Fix Rotation
 		if (sprite.IsTrigger) {
@@ -222,7 +222,7 @@ public abstract class Weapon : Equipment {
 			character.HandGrabRotationL,
 			character.HandGrabScaleL,
 			sprite,
-			character.FacingRight ? character.HandR.Z + 12 : character.HandL.Z + 12
+			character.Movement.FacingRight ? character.HandR.Z + 12 : character.HandL.Z + 12
 		);
 	}
 
@@ -279,7 +279,7 @@ public abstract class Weapon : Equipment {
 	private void DrawWeapon_Bow (PoseCharacter character, AngeSprite sprite) {
 		if (character.IsAttacking) {
 			// Attacking
-			var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
+			var center = (character.Movement.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
 			int width = sprite.GlobalWidth;
 			int height = sprite.GlobalHeight;
 			if (!sprite.IsTrigger) {
@@ -298,18 +298,18 @@ public abstract class Weapon : Equipment {
 			}
 			DrawWeaponSprite(
 				character, center.x, center.y, width, height,
-				character.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
-				character.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
-				sprite, character.FacingRight ? character.HandR.Z - 1 : character.HandL.Z - 1
+				character.Movement.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
+				character.Movement.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
+				sprite, character.Movement.FacingRight ? character.HandR.Z - 1 : character.HandL.Z - 1
 			);
 		} else {
 			// Holding
-			var center = (character.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
+			var center = (character.Movement.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
 			DrawWeaponSprite(
 				character, center.x, center.y,
 				sprite.GlobalWidth, sprite.GlobalHeight,
-				character.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
-				character.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
+				character.Movement.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
+				character.Movement.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
 				sprite,
 				character.HandR.Z - 1
 			);

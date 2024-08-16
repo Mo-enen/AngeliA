@@ -81,8 +81,8 @@ public abstract class SheetCharacter : Character {
 		}
 
 
-		public int GetMovementCode (Character character) => character.IsRolling ? Roll :
-			character.MovementState switch {
+		public int GetMovementCode (Character character) => character.Movement.IsRolling ? Roll :
+			character.Movement.MovementState switch {
 				CharacterMovementState.Idle => Idle,
 				CharacterMovementState.Walk => Walk,
 				CharacterMovementState.Run => Run,
@@ -98,8 +98,8 @@ public abstract class SheetCharacter : Character {
 				CharacterMovementState.Climb => Climb,
 				CharacterMovementState.Fly => Fly,
 				CharacterMovementState.Slide => Slide,
-				CharacterMovementState.GrabTop => character.IntendedX != 0 ? GrabTopMove : GrabTop,
-				CharacterMovementState.GrabSide => character.IntendedY != 0 ? GrabSideMove : GrabSide,
+				CharacterMovementState.GrabTop => character.Movement.IntendedX != 0 ? GrabTopMove : GrabTop,
+				CharacterMovementState.GrabSide => character.Movement.IntendedY != 0 ? GrabSideMove : GrabSide,
 				CharacterMovementState.GrabFlip => GrabFlip,
 				_ => Idle,
 			};
@@ -168,7 +168,7 @@ public abstract class SheetCharacter : Character {
 			Renderer.DrawAnimation(
 				sheet.Damaging,
 				X, Y, 500, 0, 0,
-				FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+				Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame
 			);
@@ -181,7 +181,7 @@ public abstract class SheetCharacter : Character {
 			Renderer.DrawAnimation(
 				TeleportEndFrame > 0 ? sheet.DoorFront : sheet.DoorBack,
 				X, Y, 500, 0, 0,
-				FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+				Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame
 			);
@@ -212,7 +212,7 @@ public abstract class SheetCharacter : Character {
 					sheet.PassOut,
 					X, Y,
 					500, 0, 0,
-					FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
+					Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame
 				);
@@ -247,7 +247,7 @@ public abstract class SheetCharacter : Character {
 		if (Renderer.TryGetSprite(ani, out var sprite)) {
 			return Renderer.DrawAnimation(
 				ani, X, Y, sprite.PivotX, sprite.PivotY, 0,
-				FacingRight || IsClimbing || IsPounding ? sprite.GlobalWidth : -sprite.GlobalWidth,
+				Movement.FacingRight || Movement.IsClimbing || Movement.IsPounding ? sprite.GlobalWidth : -sprite.GlobalWidth,
 				sprite.GlobalHeight, CurrentAnimationFrame
 			);
 		}

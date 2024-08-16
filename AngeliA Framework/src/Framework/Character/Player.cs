@@ -72,7 +72,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	public virtual bool AllowPlayerMenuUI => InventoryCurrentAvailable;
 	public virtual bool AllowQuickPlayerMenuUI => InventoryCurrentAvailable;
 	int IDamageReceiver.Team => Const.TEAM_PLAYER;
-	protected override bool IsCharacterWithInventory => true;
+	public override bool AllowInventory => true;
 	public override Direction8 AimingDirection => _AimingDirection;
 
 	// Data
@@ -148,7 +148,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 		// Stop when Not Selecting/Playing
 		if (Selecting != this || Game.IsPausing) {
-			Stop();
+			Movement.Stop();
 			return;
 		}
 
@@ -170,11 +170,11 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 					Update_Aiming();
 
 					// Move
-					Move(Input.DirectionX, Input.DirectionY);
+					Movement.Move(Input.DirectionX, Input.DirectionY);
 
 					// Walk when Holding Up
 					if (Input.GameKeyHolding(Gamekey.Up)) {
-						RunningAccumulateFrame = -1;
+						Movement.ClearRunningAccumulate();
 					}
 
 					// Movement Actions
@@ -183,7 +183,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 					// Hint
 					ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE);
 				} else {
-					Stop();
+					Movement.Stop();
 				}
 
 				if (allowGamePlay) {
@@ -210,14 +210,14 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private void Update_Aiming () {
 		_AimingDirection =
 			Input.Direction.TryGetDirection8(out var result) ? result :
-			FacingRight ? Direction8.Right : Direction8.Left;
+			Movement.FacingRight ? Direction8.Right : Direction8.Left;
 		// Ignore Check
 		if (IsAimingDirectionIgnored(_AimingDirection)) {
 			var dir0 = _AimingDirection;
 			var dir1 = _AimingDirection;
 			for (int safe = 0; safe < 4; safe++) {
-				dir0 = FacingRight ? dir0.Clockwise() : dir0.AntiClockwise();
-				dir1 = FacingRight ? dir1.AntiClockwise() : dir1.Clockwise();
+				dir0 = Movement.FacingRight ? dir0.Clockwise() : dir0.AntiClockwise();
+				dir1 = Movement.FacingRight ? dir1.AntiClockwise() : dir1.Clockwise();
 				if (!IsAimingDirectionIgnored(dir0)) {
 					_AimingDirection = dir0;
 					break;
@@ -238,20 +238,20 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.HINT_JUMP);
 
 		// Jump/Dash
-		HoldJump(Input.GameKeyHolding(Gamekey.Jump));
+		Movement.HoldJump(Input.GameKeyHolding(Gamekey.Jump));
 		if (Input.GameKeyDown(Gamekey.Jump)) {
 			// Movement Jump
 			if (Input.GameKeyHolding(Gamekey.Down)) {
-				Dash();
+				Movement.Dash();
 			} else {
-				Jump();
+				Movement.Jump();
 				AttackRequiringFrame = int.MinValue;
 			}
 		}
 
 		// Pound
 		if (Input.GameKeyDown(Gamekey.Down)) {
-			Pound();
+			Movement.Pound();
 		}
 
 		// Rush
@@ -260,7 +260,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 				Game.GlobalFrame < LastLeftKeyDown + RUSH_TAPPING_GAP &&
 				!Input.GameKeyHolding(Gamekey.Up)
 			) {
-				Rush();
+				Movement.Rush();
 			}
 			LastLeftKeyDown = Game.GlobalFrame;
 			LastRightKeyDown = int.MinValue;
@@ -270,7 +270,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 				Game.GlobalFrame < LastRightKeyDown + RUSH_TAPPING_GAP &&
 				!Input.GameKeyHolding(Gamekey.Up)
 			) {
-				Rush();
+				Movement.Rush();
 			}
 			LastRightKeyDown = Game.GlobalFrame;
 			LastLeftKeyDown = int.MinValue;
@@ -297,7 +297,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 				OperationMode.ColliderAndTrigger
 			);
 			int dis = int.MaxValue;
-			bool squatting = IsSquatting;
+			bool squatting = Movement.IsSquatting;
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not IActionTarget act) continue;
@@ -457,10 +457,10 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		bool notInGameplay = Task.HasTask() || CharacterState != CharacterState.GamePlay;
 		bool notInAir =
 			notInGameplay ||
-			IsGrounded || InWater || InSand || IsSliding ||
-			IsClimbing || IsGrabbingSide || IsGrabbingTop;
+			IsGrounded || InWater || Movement.IsSliding ||
+			Movement.IsClimbing || Movement.IsGrabbingSide || Movement.IsGrabbingTop;
 
-		if (notInAir || IsFlying) LastGroundedY = Y;
+		if (notInAir || Movement.IsFlying) LastGroundedY = Y;
 
 		// Aim X
 		int linger = Stage.ViewRect.width * LINGER_RATE / 1000;
@@ -493,7 +493,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 		if (Task.HasTask()) return;
 
-		if (IsFullPassOut) {
+		bool fullPassOut = HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
+
+		if (fullPassOut) {
 			ControlHintUI.DrawGlobalHint(
 				X - Const.HALF, Y + Const.CEL * 3 / 2,
 				Gamekey.Action, BuiltInText.UI_CONTINUE, background: true
@@ -504,7 +506,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		if (PlayerMenuUI.ShowingUI) PlayerMenuUI.CloseMenu();
 
 		// Reload Game After Player PassOut
-		if (IsFullPassOut && Input.GameKeyDown(Gamekey.Action)) {
+		if (fullPassOut && Input.GameKeyDown(Gamekey.Action)) {
 			Task.AddToLast(RestartGameTask.TYPE_ID);
 			Input.UseGameKey(Gamekey.Action);
 		}
@@ -543,7 +545,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 			CharacterState != CharacterState.GamePlay ||
 			Task.HasTask() ||
 			TakingDamage ||
-			Game.GlobalFrame != LastSquatFrame
+			Game.GlobalFrame != Movement.LastSquatFrame
 		) return;
 		for (int i = 0; i < EquipmentTypeCount; i++) {
 			var item = GetEquippingItem((EquipmentType)i);

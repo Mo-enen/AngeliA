@@ -4,7 +4,7 @@ public class PoseAnimation_Climb : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
 
-		int frameRate = Util.Max(560 / Target.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
+		int frameRate = Util.Max(560 / Target.Movement.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
 		int aFrame = CurrentAnimationFrame.UMod(frameRate * 10 - 1) / frameRate;
 
 		int delayFrame = (aFrame + 1) % 10;

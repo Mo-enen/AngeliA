@@ -48,9 +48,9 @@ public class MeleeBullet : Bullet {
 	public void FollowSender () {
 		if (Sender is not Character character) return;
 		var characterRect = character.Rect;
-		X = character.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
+		X = character.Movement.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
 		Y = character.Y - 1;
-		FacingRight = character.FacingRight;
+		FacingRight = character.Movement.FacingRight;
 	}
 
 	public void SetSpawnSize (int width, int height) {

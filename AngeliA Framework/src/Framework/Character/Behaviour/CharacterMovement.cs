@@ -13,7 +13,7 @@ public enum CharacterMovementState {
 }
 
 
-public abstract partial class Character {
+public partial class CharacterMovement {
 
 
 
@@ -36,21 +36,23 @@ public abstract partial class Character {
 	private const int CLIP_CORRECT_TOLERANCE = Const.CEL / 4;
 
 	// Api
+	public Character TargetCharacter { get; init; }
 	public Int2 LastMoveDirection { get; private set; } = default;
 	public int IntendedX { get; private set; } = 0;
 	public int IntendedY { get; private set; } = 0;
 	public int CurrentJumpCount { get; private set; } = 0;
 	public bool FacingRight {
-		get => LockFacingOnAttack && IsAttacking ? AttackStartFacingRight : _FacingRight;
-		set => _FacingRight = value;
+		get => TargetCharacter.LockFacingOnAttack && TargetCharacter.IsAttacking ? TargetCharacter.AttackStartFacingRight : BasicFacingRight;
+		set => BasicFacingRight = value;
 	}
+	public bool BasicFacingRight { get; private set; } = true;
 	public bool FacingFront { get; private set; } = true;
 	public int FacingSign => FacingRight ? 1 : -1;
-	public virtual int GrowingHeight => MovementHeight;
+	public virtual int FinalCharacterHeight => MovementHeight;
 	public virtual bool SpinOnGroundPound => false;
 
 	// Frame Cache
-	public int RunningAccumulateFrame { get; set; } = 0;
+	public int RunningAccumulateFrame { get; private set; } = 0;
 	public int LastGroundFrame { get; private set; } = int.MinValue;
 	public int LastGroundingFrame { get; private set; } = int.MinValue;
 	public int LastStartMoveFrame { get; private set; } = int.MinValue;
@@ -74,7 +76,7 @@ public abstract partial class Character {
 	public int LastFacingChangeFrame { get; private set; } = 0;
 
 	// Movement State
-	public CharacterMovementState MovementState { get; private set; } = CharacterMovementState.Idle;
+	public CharacterMovementState MovementState { get; set; } = CharacterMovementState.Idle;
 	public bool ReadyForRun => RunningAccumulateFrame >= WalkToRunAccumulation;
 	public bool IsGrabFlipping => IsGrabFlippingUp || IsGrabFlippingDown;
 	public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Util.Max(GrabFlipThroughDuration, 1);
@@ -94,6 +96,23 @@ public abstract partial class Character {
 	public bool IsGrabbingTop { get; private set; } = false;
 	public bool IsGrabbingSide { get; private set; } = false;
 
+	// Short
+	private IRect Rect => TargetCharacter.Rect;
+	private int X { get => TargetCharacter.X; set => TargetCharacter.X = value; }
+	private int Y { get => TargetCharacter.Y; set => TargetCharacter.Y = value; }
+	private int Width { get => TargetCharacter.Width; set => TargetCharacter.Width = value; }
+	private int Height { get => TargetCharacter.Height; set => TargetCharacter.Height = value; }
+	private int OffsetX { get => TargetCharacter.OffsetX; set => TargetCharacter.OffsetX = value; }
+	private int OffsetY { get => TargetCharacter.OffsetY; set => TargetCharacter.OffsetY = value; }
+	private int VelocityX { get => TargetCharacter.VelocityX; set => TargetCharacter.VelocityX = value; }
+	private int VelocityY { get => TargetCharacter.VelocityY; set => TargetCharacter.VelocityY = value; }
+	private int GravityScale { get => TargetCharacter.GravityScale; set => TargetCharacter.GravityScale = value; }
+	private bool IsInsideGround => TargetCharacter.IsInsideGround;
+	private bool InWater => TargetCharacter.InWater;
+	private bool IsGrounded => TargetCharacter.IsGrounded;
+	private bool OnSlippy => TargetCharacter.OnSlippy;
+	private int CollisionMask => TargetCharacter.CollisionMask;
+
 	// Data
 	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = new();
 	private static int MovementConfigGlobalVersion = -1;
@@ -112,7 +131,6 @@ public abstract partial class Character {
 	private bool GrabFlipUpLock = true;
 	private bool AllowGrabSideMoveUp = false;
 	private bool LockedFacingRight = true;
-	private bool _FacingRight = true;
 	private int? ClimbPositionCorrect = null;
 	private int LockedFacingFrame = int.MinValue;
 	private int RequireJumpFrame = int.MinValue;
@@ -132,7 +150,10 @@ public abstract partial class Character {
 	}
 
 
-	private void OnActivated_Movement () {
+	public CharacterMovement (Character character) => TargetCharacter = character;
+
+
+	public virtual void OnCharacterActivated () {
 		Width = MovementWidth;
 		Height = MovementHeight;
 		OffsetX = -MovementWidth / 2;
@@ -143,33 +164,31 @@ public abstract partial class Character {
 	}
 
 
-	private void PhysicsUpdate_Movement_GamePlay () {
-		MovementUpdate_Cache();
-		MovementUpdate_GrabFlip();
-		MovementUpdate_ResetJumpCount();
-		MovementUpdate_Jump();
-		MovementUpdate_Dash();
+	public virtual void PhysicsUpdateGamePlay () {
+		Update_Cache();
+		Update_GrabFlip();
+		Update_ResetJumpCount();
+		Update_Jump();
+		Update_Dash();
 		MovementState = GetCurrentMovementState();
 		if (!IsInsideGround) {
 			// General
-			if (PhysicsEnable) {
-				MovementUpdate_VelocityX();
-				MovementUpdate_VelocityY();
-			}
+			Update_VelocityX();
+			Update_VelocityY();
 		} else {
 			// Inside Ground
 			VelocityX = IntendedX * WalkSpeed;
 			VelocityY = VelocityY.MoveTowards(0, 2);
 			if (IntendedJump) {
 				VelocityY = WalkSpeed;
-				Bounce();
+				TargetCharacter.Bounce();
 			}
 		}
-		MovementUpdate_ClipCorrect();
+		Update_ClipCorrect();
 	}
 
 
-	private void PhysicsUpdate_Movement_After () {
+	public virtual void PhysicsUpdateLater () {
 		IntendedJump = false;
 		IntendedDash = false;
 		IntendedPound = false;
@@ -183,7 +202,7 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_Cache () {
+	private void Update_Cache () {
 
 		int frame = Game.GlobalFrame;
 		bool requirePutoutFire = false;
@@ -281,7 +300,7 @@ public abstract partial class Character {
 
 		// Squat
 		bool squatting =
-			SquatAvailable && IsGrounded && !IsClimbing && !InSand && !IsInsideGround && !IsCrashing &&
+			SquatAvailable && IsGrounded && !IsClimbing && !IsInsideGround && !IsCrashing &&
 			((!IsDashing && !IsRushing && IntendedY < 0) || ForceSquatCheck());
 		if (!IsSquatting && squatting) LastSquatFrame = frame;
 		if (squatting) LastSquattingFrame = frame;
@@ -309,7 +328,7 @@ public abstract partial class Character {
 		}
 		if (IsGrabbingTop) {
 			Y = grabbingY;
-			Height = GrowingHeight * GrabTopHeightAmount / 1000;
+			Height = FinalCharacterHeight * GrabTopHeightAmount / 1000;
 		}
 		if (IsGrabbingTop || IsGrabbingSide) LastGrabbingFrame = frame;
 
@@ -352,7 +371,7 @@ public abstract partial class Character {
 		}
 
 		// Facing Front
-		FacingFront = !IsClimbing && (!Teleporting || TeleportEndFrame > 0);
+		FacingFront = !IsClimbing && (!TargetCharacter.Teleporting || TargetCharacter.TeleportEndFrame > 0);
 
 		// Physics
 		int width = InWater ? SwimWidth : MovementWidth;
@@ -376,7 +395,7 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_GrabFlip () {
+	private void Update_GrabFlip () {
 
 		if (IsGrabbingTop) {
 
@@ -408,7 +427,7 @@ public abstract partial class Character {
 
 		// Flip Down
 		if (
-			IntendedDash && IsGrounded && !InSand && GrabFlipThroughDownAvailable &&
+			IntendedDash && IsGrounded && GrabFlipThroughDownAvailable &&
 			GrabFlipCheck(false)
 		) {
 			LastGrabFlipDownFrame = Game.GlobalFrame;
@@ -420,7 +439,7 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_ResetJumpCount () {
+	private void Update_ResetJumpCount () {
 
 		if (CurrentJumpCount == 0) return;
 
@@ -463,7 +482,7 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_Jump () {
+	private void Update_Jump () {
 
 		int frame = Game.GlobalFrame;
 
@@ -478,7 +497,7 @@ public abstract partial class Character {
 					// Perform Jump
 					CurrentJumpCount++;
 					VelocityY = Util.Max(InWater ? SwimJumpSpeed : JumpSpeed, VelocityY);
-					if (InWater) Bounce();
+					if (InWater) TargetCharacter.Bounce();
 					if (IsGrabbingSide) {
 						X += FacingRight ? -6 : 6;
 					} else if (IsGrabbingTop) {
@@ -541,13 +560,13 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_Dash () {
+	private void Update_Dash () {
 
-		if (!IntendedDash || !IsGrounded || InSand || IsGrabFlipping) return;
+		if (!IntendedDash || !IsGrounded || IsGrabFlipping) return;
 
 		// Jump Though Oneway
 		if (JumpDownThoughOneway && JumpThoughOnewayCheck()) {
-			PerformMove(0, -Const.HALF, ignoreOneway: true);
+			TargetCharacter.PerformMove(0, -Const.HALF, ignoreOneway: true);
 			VelocityY = 0;
 			return;
 		}
@@ -560,7 +579,7 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_VelocityX () {
+	private void Update_VelocityX () {
 
 		int speed;
 		int acc = int.MaxValue;
@@ -657,19 +676,19 @@ public abstract partial class Character {
 		}
 
 		// Speed Lose on Attack
-		if (IsAttacking && speed != 0) {
-			int loseRate = CurrentSpeedLoseOnAttack;
+		if (TargetCharacter.IsAttacking && speed != 0) {
+			int loseRate = TargetCharacter.CurrentSpeedLoseOnAttack;
 			if (loseRate != 1000) {
 				speed = speed * loseRate / 1000;
 			}
 		}
 
 		// Push
-		if (PushAvailable && !IsCrashing && IntendedX != 0 && speed != 0 && !NavigationEnable) {
+		if (PushAvailable && !IsCrashing && IntendedX != 0 && speed != 0) {
 			var hits = Physics.OverlapAll(
 			PhysicsMask.ENVIRONMENT,
 			Rect.Shrink(0, 0, 4, 4).EdgeOutside(IntendedX < 0 ? Direction4.Left : Direction4.Right),
-			out int count, this
+			out int count, TargetCharacter
 		);
 			bool pushing = false;
 			int pushSpeed = IntendedX * PushSpeed;
@@ -691,7 +710,7 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_VelocityY () {
+	private void Update_VelocityY () {
 
 		GravityScale = IsGrounded || VelocityY <= 0 ? 1000 : (int)JumpRiseGravityRate;
 
@@ -759,7 +778,7 @@ public abstract partial class Character {
 	}
 
 
-	private void MovementUpdate_ClipCorrect () {
+	private void Update_ClipCorrect () {
 
 		if (IsGrounded || VelocityY <= 0) return;
 
@@ -772,7 +791,7 @@ public abstract partial class Character {
 			new IRect(rect.xMin + CLIP_CORRECT_TOLERANCE, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
 			out var hitRect
 		)) {
-			PerformMove(hitRect.xMax - rect.xMin, 0);
+			TargetCharacter.PerformMove(hitRect.xMax - rect.xMin, 0);
 		}
 
 		// Clip Right
@@ -781,14 +800,14 @@ public abstract partial class Character {
 			new IRect(rect.xMin, rect.yMax, rect.width - CLIP_CORRECT_TOLERANCE, size),
 			out hitRect
 		)) {
-			PerformMove(hitRect.xMin - rect.xMax, 0);
+			TargetCharacter.PerformMove(hitRect.xMin - rect.xMax, 0);
 		}
 
 		// Func
 		bool CheckCorrect (IRect trueRect, IRect falseRect, out IRect hitRect) {
 			if (
-				Physics.Overlap(CollisionMask, trueRect, out var hit, this) &&
-				!Physics.Overlap(CollisionMask, falseRect, this)
+				Physics.Overlap(CollisionMask, trueRect, out var hit, TargetCharacter) &&
+				!Physics.Overlap(CollisionMask, falseRect, TargetCharacter)
 			) {
 				hitRect = hit.Rect;
 				return true;
@@ -839,45 +858,54 @@ public abstract partial class Character {
 	}
 
 
-	public void SyncMovementConfigFromPool () {
+	public void SyncConfigFromPool () {
 		if (LocalMovementConfigVersion == MovementConfigGlobalVersion) return;
 		LocalMovementConfigVersion = MovementConfigGlobalVersion;
-		if (ConfigPool_Movement.TryGetValue(TypeID, out var mConfig)) {
-			mConfig.LoadToCharacter(this);
+		if (ConfigPool_Movement.TryGetValue(TargetCharacter.TypeID, out var mConfig)) {
+			mConfig.LoadToCharacter(TargetCharacter);
 		}
 	}
 
 
 	// Movement Logic
-	public void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
+	public virtual void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
 
 
-	public void Stop () {
+	public virtual void Stop () {
 		MoveLogic(0, 0);
 		VelocityX = 0;
 	}
 
 
-	public void HoldJump (bool holding) => HoldingJump = holding;
+	public virtual void HoldJump (bool holding) => HoldingJump = holding;
 
 
-	public void Jump () {
+	public virtual void Jump () {
 		IntendedJump = true;
 		RequireJumpFrame = Game.GlobalFrame;
-		if (CancelAttackOnJump) LastAttackFrame = int.MinValue;
+		if (TargetCharacter.CancelAttackOnJump) TargetCharacter.CancelAttack();
 	}
 
 
-	public void Dash () => IntendedDash = true;
-	public void Pound () => IntendedPound = true;
-	public void Rush () => IntendedRush = true;
-	public void Crash () => LastCrashFrame = Game.GlobalFrame;
+	public virtual void Dash () => IntendedDash = true;
+
+
+	public virtual void Pound () => IntendedPound = true;
+
+
+	public virtual void Rush () => IntendedRush = true;
+
+
+	public virtual void Crash () => LastCrashFrame = Game.GlobalFrame;
 
 
 	public void LockFacingRight (bool facingRight, int duration = 1) {
 		LockedFacingFrame = Game.GlobalFrame + duration;
 		LockedFacingRight = facingRight;
 	}
+
+
+	public void ClearRunningAccumulate () => RunningAccumulateFrame = -1;
 
 
 	#endregion
@@ -888,6 +916,7 @@ public abstract partial class Character {
 	#region --- LGC ---
 
 
+	// Move
 	private void MoveLogic (int x, int y) {
 		if (IntendedX != 0 && x == 0) LastEndMoveFrame = Game.GlobalFrame;
 		if (IntendedX == 0 && x != 0) LastStartMoveFrame = Game.GlobalFrame;
@@ -902,7 +931,7 @@ public abstract partial class Character {
 
 
 	private int GetCurrentHeight () {
-		int growingHeight = GrowingHeight;
+		int growingHeight = FinalCharacterHeight;
 		if (IsSquatting) return growingHeight * SquatHeightAmount / 1000;
 		if (IsRolling) return growingHeight * SquatHeightAmount / 1000;
 		if (IsDashing) return growingHeight * DashHeightAmount / 1000;
@@ -928,7 +957,7 @@ public abstract partial class Character {
 		IsDashing ? CharacterMovementState.Dash :
 		IsSquatting ? (IsMoving ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
 		InWater && !IsGrounded ? (IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
-		!IsGrounded && !InWater && !InSand && !IsClimbing ? (VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
+		!IsGrounded && !InWater && !IsClimbing ? (VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
 		IsMoving && (ReadyForRun ? RunSpeed : WalkSpeed) != 0 ? (ReadyForRun && !IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
 		CharacterMovementState.Idle;
 
@@ -948,7 +977,7 @@ public abstract partial class Character {
 
 		// Oneway Check
 		if ((IsSquatting || IsDashing) && !Physics.RoomCheckOneway(
-			PhysicsMask.LEVEL, rect, this, Direction4.Up, false
+			PhysicsMask.LEVEL, rect, TargetCharacter, Direction4.Up, false
 		)) return true;
 
 		// Overlap Check
@@ -961,7 +990,7 @@ public abstract partial class Character {
 		if (Physics.Overlap(
 			PhysicsMask.MAP,
 			up ? Rect.Shift(0, ClimbSpeedY) : Rect,
-			this,
+			TargetCharacter,
 			OperationMode.TriggerOnly,
 			Tag.Climb
 		)) {
@@ -971,7 +1000,7 @@ public abstract partial class Character {
 			PhysicsMask.MAP,
 			up ? Rect.Shift(0, ClimbSpeedY) : Rect,
 			out var info,
-			this,
+			TargetCharacter,
 			OperationMode.TriggerOnly,
 			Tag.ClimbStable
 		)) {
@@ -995,7 +1024,7 @@ public abstract partial class Character {
 			1, 1
 		);
 		if (SlideOnAnyBlock) {
-			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, this, OperationMode.ColliderOnly);
+			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, TargetCharacter, OperationMode.ColliderOnly);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Tag.HasAny(Tag.NoSlide | Tag.GrabTop | Tag.GrabSide)) continue;
@@ -1004,7 +1033,7 @@ public abstract partial class Character {
 			return false;
 		} else {
 			return Physics.Overlap(
-				PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, Tag.Slide
+				PhysicsMask.MAP, rect, TargetCharacter, OperationMode.ColliderOnly, Tag.Slide
 			);
 		}
 	}
@@ -1025,13 +1054,13 @@ public abstract partial class Character {
 			height / 2 + GRAB_TOP_CHECK_GAP
 		);
 		if (Physics.Overlap(
-			PhysicsMask.MAP, rect, out var hit, this,
+			PhysicsMask.MAP, rect, out var hit, TargetCharacter,
 			OperationMode.ColliderOnly, Tag.GrabTop
 		) || Physics.Overlap(
-			PhysicsMask.MAP, rect, out hit, this,
+			PhysicsMask.MAP, rect, out hit, TargetCharacter,
 			OperationMode.ColliderOnly, Tag.Grab
 		)) {
-			grabbingY = hit.Rect.yMin - (GrowingHeight * GrabTopHeightAmount / 1000);
+			grabbingY = hit.Rect.yMin - (FinalCharacterHeight * GrabTopHeightAmount / 1000);
 			return true;
 		}
 		return false;
@@ -1063,22 +1092,22 @@ public abstract partial class Character {
 			(AllowCheck(rectU, Tag.GrabSide) || AllowCheck(rectU, Tag.Grab));
 		if (allowGrab) {
 			allowMoveUp = Physics.Overlap(
-				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Tag.GrabSide
+				PhysicsMask.MAP, rectU.Shift(0, rectU.height), TargetCharacter, OperationMode.ColliderOnly, Tag.GrabSide
 			) || Physics.Overlap(
-				PhysicsMask.MAP, rectU.Shift(0, rectU.height), this, OperationMode.ColliderOnly, Tag.Grab
+				PhysicsMask.MAP, rectU.Shift(0, rectU.height), TargetCharacter, OperationMode.ColliderOnly, Tag.Grab
 			);
 		}
 		return allowGrab;
 		// Func
-		bool AllowCheck (IRect rect, Tag tag) => Physics.Overlap(PhysicsMask.MAP, rect, this, OperationMode.ColliderOnly, tag);
+		bool AllowCheck (IRect rect, Tag tag) => Physics.Overlap(PhysicsMask.MAP, rect, TargetCharacter, OperationMode.ColliderOnly, tag);
 	}
 
 
 	private bool JumpThoughOnewayCheck () {
 		var rect = new IRect(Hitbox.xMin, Hitbox.yMin + 4 - Const.CEL / 4, Hitbox.width, Const.CEL / 4);
-		if (Physics.Overlap(PhysicsMask.MAP, rect, this)) return false;
+		if (Physics.Overlap(PhysicsMask.MAP, rect, TargetCharacter)) return false;
 		var hits = Physics.OverlapAll(
-			PhysicsMask.MAP, rect, out int count, this,
+			PhysicsMask.MAP, rect, out int count, TargetCharacter,
 			OperationMode.TriggerOnly, Tag.OnewayUp
 		);
 		for (int i = 0; i < count; i++) {
@@ -1097,8 +1126,8 @@ public abstract partial class Character {
 			// No Block Above
 			if (Physics.Overlap(
 				PhysicsMask.MAP,
-				new IRect(x, Y + (GrowingHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
-				this
+				new IRect(x, Y + (FinalCharacterHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
+				TargetCharacter
 			)) return false;
 			return true;
 		} else {
@@ -1107,13 +1136,13 @@ public abstract partial class Character {
 			if (Physics.Overlap(
 				PhysicsMask.MAP,
 				new IRect(x, Y - Const.CEL - Const.HALF, width, 1),
-				this
+				TargetCharacter
 			)) return false;
 			// Standing on Grab-Top Block
 			var hits = Physics.OverlapAll(
 				PhysicsMask.MAP,
 				new IRect(x, Y + 4 - Const.CEL / 4, width, Const.CEL / 4), out int count,
-				this, OperationMode.ColliderOnly, Tag.GrabTop
+				TargetCharacter, OperationMode.ColliderOnly, Tag.GrabTop
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
