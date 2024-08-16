@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 [EntityAttribute.ExcludeInMapEditor]
-public sealed class BlockItem : Weapon {
+public sealed class BlockBuilder : Weapon {
 
 
 	// VAR
@@ -16,6 +16,7 @@ public sealed class BlockItem : Weapon {
 	public override bool AttackWhenSquatting => true;
 	public override bool AttackWhenWalking => true;
 	public override bool AttackWhenSliding => true;
+	public override bool AttackWhenClimbing => true;
 	public override int? DefaultSpeedLoseOnAttack => 618;
 	public override int? RunningSpeedLoseOnAttack => 618;
 	public override int? WalkingSpeedLoseOnAttack => 618;
@@ -23,7 +24,7 @@ public sealed class BlockItem : Weapon {
 
 
 	// MSG
-	public BlockItem (int blockID, string blockName, BlockType blockType) {
+	public BlockBuilder (int blockID, string blockName, BlockType blockType) {
 		BlockID = blockID;
 		BlockType = blockType;
 		SpriteID = blockID;
@@ -57,7 +58,7 @@ public sealed class BlockItem : Weapon {
 		}
 
 		// Put Block
-		if (isTargetEmpty && Game.GlobalFrame == pHolder.LastAttackFrame) {
+		if (isTargetEmpty && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
 			FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
 		}
 
@@ -124,12 +125,22 @@ public sealed class BlockItem : Weapon {
 
 	private void GetTargetUnitPos (Character pHolder, out int targetUnitX, out int targetUnitY, out bool isTargetEmpty) {
 
-		var aim = pHolder.AimingDirection;
+		var aim = pHolder.Attackness.AimingDirection;
 		var aimNormal = aim.Normal();
-		int pointX = pHolder.Rect.CenterX();
-		int pointY = aim.IsTop() ? pHolder.Rect.yMax - Const.HALF / 2 : pHolder.Rect.y + Const.HALF;
-		targetUnitX = pointX.ToUnit() + aimNormal.x;
-		targetUnitY = pointY.ToUnit() + aimNormal.y;
+		if (!pHolder.Movement.IsClimbing) {
+			// Normal
+			int pointX = pHolder.Rect.CenterX();
+			int pointY = aim.IsTop() ? pHolder.Rect.yMax - Const.HALF / 2 : pHolder.Rect.y + Const.HALF;
+			targetUnitX = pointX.ToUnit() + aimNormal.x;
+			targetUnitY = pointY.ToUnit() + aimNormal.y;
+		} else {
+			// Climbing
+			int pointX = pHolder.Rect.CenterX();
+			int pointY = pHolder.Rect.yMax - Const.HALF / 2;
+			targetUnitX = pHolder.Movement.FacingRight ? pointX.ToUnit() + 1 : pointX.ToUnit() - 1;
+			targetUnitY = pointY.ToUnit() + aimNormal.y;
+		}
+
 		isTargetEmpty = IsEmptyAt(targetUnitX, targetUnitY);
 
 		// Redirect

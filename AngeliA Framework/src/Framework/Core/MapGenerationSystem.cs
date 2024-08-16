@@ -43,7 +43,7 @@ public static class MapGenerationSystem {
 	[OnSavingSlotChanged]
 	internal static void OnGameInitialize_OnSavingSlotChanged () {
 
-		Enable = Universe.BuiltIn.Info.UseProceduralMap;
+		Enable = Game.UseProceduralMap;
 		if (!Enable) return;
 
 		StatePool.Clear();

@@ -134,7 +134,7 @@ public abstract class Weapon : Equipment {
 
 	private void DrawWeapon_Float (PoseCharacter character, AngeSprite sprite) {
 		const int SHIFT_X = 148;
-		int grabScaleL = character.IsAttacking ? character.HandGrabScaleL : 700;
+		int grabScaleL = character.Attackness.IsAttacking ? character.HandGrabScaleL : 700;
 		int facingSign = character.Movement.FacingRight ? 1 : -1;
 		int moveDeltaX = -character.DeltaPositionX * 2;
 		int moveDeltaY = -character.DeltaPositionY;
@@ -160,7 +160,7 @@ public abstract class Weapon : Equipment {
 
 
 	private void DrawWeapon_SingleHanded (PoseCharacter character, AngeSprite sprite) {
-		bool attacking = character.IsAttacking;
+		bool attacking = character.Attackness.IsAttacking;
 		int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
 		int facingSign = character.Movement.FacingRight ? 1 : -1;
 		int grabScale = character.HandGrabScaleR;
@@ -170,7 +170,7 @@ public abstract class Weapon : Equipment {
 		if (weaponType == WeaponType.Throwing) {
 			if (
 				attacking &&
-				Game.GlobalFrame - character.LastAttackFrame > AttackDuration / 6
+				Game.GlobalFrame - character.Attackness.LastAttackFrame > AttackDuration / 6
 			) return;
 			grabScale = 700;
 			z = character.Movement.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
@@ -183,7 +183,7 @@ public abstract class Weapon : Equipment {
 				grabRotation = Util.RemapUnclamped(
 					0, AttackDuration,
 					facingSign * 90, 0,
-					Game.GlobalFrame - character.LastAttackFrame
+					Game.GlobalFrame - character.Attackness.LastAttackFrame
 				);
 			}
 		}
@@ -210,7 +210,7 @@ public abstract class Weapon : Equipment {
 
 
 	private void DrawWeapon_Double_Shoot (PoseCharacter character, AngeSprite sprite) {
-		int twistR = character.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
+		int twistR = character.Attackness.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
 		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
 		DrawWeaponSprite(
@@ -228,7 +228,7 @@ public abstract class Weapon : Equipment {
 
 
 	private void DrawWeapon_Each (PoseCharacter character, AngeSprite sprite) {
-		bool attacking = character.IsAttacking;
+		bool attacking = character.Attackness.IsAttacking;
 		int grabScaleL = character.HandGrabScaleL;
 		int grabScaleR = character.HandGrabScaleR;
 		int twistL = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistL : 1000;
@@ -261,7 +261,7 @@ public abstract class Weapon : Equipment {
 	private void DrawWeapon_Pole (PoseCharacter character, AngeSprite sprite) {
 		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
 		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
-		int twistR = character.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
+		int twistR = character.Attackness.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
 		DrawWeaponSprite(
 			character,
 			(centerL.x + centerR.x) / 2,
@@ -277,13 +277,13 @@ public abstract class Weapon : Equipment {
 
 
 	private void DrawWeapon_Bow (PoseCharacter character, AngeSprite sprite) {
-		if (character.IsAttacking) {
+		if (character.Attackness.IsAttacking) {
 			// Attacking
 			var center = (character.Movement.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
 			int width = sprite.GlobalWidth;
 			int height = sprite.GlobalHeight;
 			if (!sprite.IsTrigger) {
-				int localFrame = Game.GlobalFrame - character.LastAttackFrame;
+				int localFrame = Game.GlobalFrame - character.Attackness.LastAttackFrame;
 				if (localFrame < AttackDuration / 2) {
 					// Pulling
 					float ease01 = Ease.OutQuad(localFrame / (AttackDuration / 2f));
@@ -328,7 +328,7 @@ public abstract class Weapon : Equipment {
 	);
 
 
-	public virtual bool AllowingAttack (PoseCharacter character) => true;
+	public virtual bool AllowingAttack (Character character) => true;
 
 
 	public virtual Bullet SpawnBullet (Character sender) => SpawnRawBullet(sender, BulletID);
@@ -342,9 +342,9 @@ public abstract class Weapon : Equipment {
 		var sourceRect = sender.Rect;
 		bullet.X = sourceRect.CenterX() - bullet.Width / 2;
 		bullet.Y = sourceRect.CenterY() - bullet.Height / 2;
-		bullet.AttackIndex = sender.AttackStyleIndex;
-		bullet.AttackCharged = sender.LastAttackCharged;
-		bullet.TargetTeam = sender.AttackTargetTeam;
+		bullet.AttackIndex = sender.Attackness.AttackStyleIndex;
+		bullet.AttackCharged = sender.Attackness.LastAttackCharged;
+		bullet.TargetTeam = sender.Attackness.AttackTargetTeam;
 		return bullet;
 	}
 

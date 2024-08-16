@@ -226,14 +226,14 @@ public abstract class SheetCharacter : Character {
 		int ani = sheet.Idle;
 
 		// Get Ani
-		if (!IsAttacking) {
+		if (!Attackness.IsAttacking) {
 			// Movement
 			ani = sheet.GetMovementCode(this);
 		} else {
 			// Attack
 			if (sheet.Attack != 0) {
 				ani = sheet.Attack;
-				if (Game.GlobalFrame <= LastAttackFrame) CurrentAnimationFrame = 0;
+				if (Game.GlobalFrame <= Attackness.LastAttackFrame) CurrentAnimationFrame = 0;
 			}
 		}
 

@@ -41,7 +41,7 @@ public class WorldSquad : IBlockSquad {
 	[OnGameInitialize(-128)]
 	internal static TaskResult OnGameInitialize () {
 		if (!Renderer.IsReady) return TaskResult.Continue;
-		Readonly = !Universe.BuiltIn.Info.UseProceduralMap;
+		Readonly = !Game.UseProceduralMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));

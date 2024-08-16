@@ -11,13 +11,13 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Single Handed
 			case WeaponHandheld.SingleHanded:
-				character.AttackStyleLoop = 4;
+				Attackness.AttackStyleLoop = 4;
 				style =
-					character.LastAttackCharged ||
+					Attackness.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
 					weaponType == WeaponType.Flail ||
 					character.EquipingPickWeapon ?
-					0 : character.AttackStyleIndex % character.AttackStyleLoop;
+					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
 						SingleHanded_SmashDown();
@@ -36,13 +36,13 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Double Handed
 			case WeaponHandheld.DoubleHanded:
-				character.AttackStyleLoop = 4;
+				Attackness.AttackStyleLoop = 4;
 				style =
-					character.LastAttackCharged ||
+					Attackness.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
 					weaponType == WeaponType.Flail ||
 					character.EquipingPickWeapon ?
-					0 : character.AttackStyleIndex % character.AttackStyleLoop;
+					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
 						DoubleHanded_SmashDown();
@@ -61,11 +61,11 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Each Hand
 			case WeaponHandheld.OneOnEachHand:
-				character.AttackStyleLoop = 4;
+				Attackness.AttackStyleLoop = 4;
 				style =
-					character.LastAttackCharged ||
+					Attackness.LastAttackCharged ||
 					character.EquipingPickWeapon ? 0 :
-					character.AttackStyleIndex % character.AttackStyleLoop;
+					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
 						EachHand_SmashDown();
@@ -84,12 +84,12 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Pole
 			case WeaponHandheld.Pole:
-				character.AttackStyleLoop = 4;
+				Attackness.AttackStyleLoop = 4;
 				style =
-					character.LastAttackCharged ||
+					Attackness.LastAttackCharged ||
 					character.EquippingWeaponType == WeaponType.Flail ||
 					character.EquipingPickWeapon ? 0 :
-					character.AttackStyleIndex % character.AttackStyleLoop;
+					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
 						Polearm_SmashDown();
@@ -132,7 +132,7 @@ public class PoseAttack_Wave : PoseAnimation {
 
 		// Upper Arm R
 		const int STEP = 55;
-		(int from, int to) = Target.AimingDirection switch {
+		(int from, int to) = Attackness.AimingDirection switch {
 			Direction8.Bottom => (-185 + STEP + STEP, -9 + STEP + STEP),
 			Direction8.BottomLeft or Direction8.BottomRight => (-185 + STEP, -9 + STEP),
 			Direction8.Left or Direction8.Right => (-185, -9),

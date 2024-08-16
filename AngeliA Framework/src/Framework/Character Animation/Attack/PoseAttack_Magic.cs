@@ -6,7 +6,7 @@ namespace AngeliA;
 public class PoseAttack_Magic : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		character.AttackStyleLoop = 1;
+		Attackness.AttackStyleLoop = 1;
 		switch (character.EquippingWeaponHeld) {
 			default:
 			case WeaponHandheld.Float:

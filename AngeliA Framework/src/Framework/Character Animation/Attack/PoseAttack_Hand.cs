@@ -3,8 +3,8 @@
 public class PoseAttack_Hand : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		character.AttackStyleLoop = 2;
-		switch (character.AttackStyleIndex % character.AttackStyleLoop) {
+		Attackness.AttackStyleLoop = 2;
+		switch (Attackness.AttackStyleIndex % Attackness.AttackStyleLoop) {
 			case 0:
 				Punch();
 				break;
@@ -15,7 +15,7 @@ public class PoseAttack_Hand : PoseAnimation {
 	}
 	private static void Punch () {
 
-		int aFrame = (Game.GlobalFrame - Target.LastAttackFrame).UDivide(5);
+		int aFrame = (Game.GlobalFrame - Attackness.LastAttackFrame).UDivide(5);
 		if (aFrame >= 4) return;
 
 		Head.X += FacingSign * (aFrame == 0 ? -2 : (3 - aFrame) * 2) * A2G;
@@ -116,7 +116,7 @@ public class PoseAttack_Hand : PoseAnimation {
 	}
 	private static void Smash () {
 
-		int aFrame = (Game.GlobalFrame - Target.LastAttackFrame).UDivide(5);
+		int aFrame = (Game.GlobalFrame - Attackness.LastAttackFrame).UDivide(5);
 		if (aFrame >= 4) return;
 
 		UpperArmL.Z = FrontSign * UpperArmL.Z.Abs();

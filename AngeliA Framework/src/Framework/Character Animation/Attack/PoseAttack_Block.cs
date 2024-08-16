@@ -4,11 +4,14 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public class PoseAttack_Block : PoseAnimation {
+
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		character.AttackStyleLoop = 1;
+		Attackness.AttackStyleLoop = 1;
+		if (Movement.IsClimbing) return;
 		Build();
 	}
+
 	public static void Build () {
 
 		float ease01 = AttackEase;

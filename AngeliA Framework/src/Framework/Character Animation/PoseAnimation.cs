@@ -28,6 +28,8 @@ public abstract class PoseAnimation {
 
 	// Cache
 	protected static PoseCharacter Target = null;
+	protected static CharacterMovement Movement;
+	protected static CharacterAttackness Attackness;
 	protected static BodyPart Head = null;
 	protected static BodyPart Body = null;
 	protected static BodyPart Hip = null;
@@ -121,6 +123,8 @@ public abstract class PoseAnimation {
 	public virtual void Animate (PoseCharacter character) {
 		if (character == Target && character.CurrentAnimationFrame == CurrentAnimationFrame) return;
 		Target = character;
+		Attackness = character.Attackness;
+		Movement = character.Movement;
 		CurrentAnimationFrame = character.CurrentAnimationFrame;
 		Head = character.Head;
 		Body = character.Body;
@@ -144,10 +148,10 @@ public abstract class PoseAnimation {
 		AnimationType = character.AnimationType;
 		FacingSign = FacingRight ? 1 : -1;
 		FrontSign = FacingFront ? 1 : -1;
-		IsChargingAttack = !Target.IsAttacking && Target.IsChargingAttack && Target.AttackChargeStartFrame.HasValue;
+		IsChargingAttack = !Target.Attackness.IsAttacking && Target.Attackness.IsChargingAttack && Target.Attackness.AttackChargeStartFrame.HasValue;
 		AttackLerp = IsChargingAttack ?
-			((float)(Game.GlobalFrame - Target.AttackChargeStartFrame.Value) / Util.Max(Target.MinimalChargeAttackDuration, 1)).Clamp01() :
-			(float)(Game.GlobalFrame - Target.LastAttackFrame) / Target.AttackDuration;
+			((float)(Game.GlobalFrame - Target.Attackness.AttackChargeStartFrame.Value) / Util.Max(Target.Attackness.MinimalChargeAttackDuration, 1)).Clamp01() :
+			(float)(Game.GlobalFrame - Target.Attackness.LastAttackFrame) / Target.Attackness.AttackDuration;
 		AttackEase = IsChargingAttack ?
 			1f - Ease.OutBack(AttackLerp) :
 			Ease.OutBack(AttackLerp);

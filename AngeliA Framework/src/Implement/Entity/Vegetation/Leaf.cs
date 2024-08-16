@@ -86,7 +86,12 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 	}
 
 
-	protected virtual void OnLeafBreak () => ItemSystem.DropItemFor(this);
+	protected virtual void OnLeafBreak () {
+		bool itemDropped = ItemSystem.DropItemFor(this);
+		if (Game.UseProceduralMap) {
+			FrameworkUtil.PickEntityBlock(this, !itemDropped);
+		}
+	}
 
 
 	#endregion

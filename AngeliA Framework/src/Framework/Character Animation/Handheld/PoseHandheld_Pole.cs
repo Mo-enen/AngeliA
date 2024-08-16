@@ -5,7 +5,7 @@ public class PoseHandheld_Pole : PoseAnimation {
 		base.Animate(character);
 
 		// Charging
-		if (Target.IsChargingAttack) {
+		if (Attackness.IsChargingAttack) {
 			PoseAttack_Polearm.SmashDown();
 			return;
 		}

@@ -3,7 +3,7 @@
 public class PoseHandheld_MagicPole : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		if (Target.IsChargingAttack) {
+		if (Attackness.IsChargingAttack) {
 			// Charge
 			PoseAttack_Magic.Pole();
 			return;

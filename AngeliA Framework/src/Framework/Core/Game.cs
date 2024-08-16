@@ -19,6 +19,7 @@ public abstract partial class Game {
 	public static int PauselessFrame { get; private set; } = 0;
 	public static bool IsPausing => !IsPlaying;
 	public static bool IsPlaying { get; private set; } = true;
+	public static bool UseProceduralMap { get; private set; }
 	public static int MusicVolume {
 		get => _MusicVolume.Value;
 		set => _MusicVolume.Value = value;
@@ -494,6 +495,13 @@ public abstract partial class Game {
 	protected void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
 
 	protected void InvokeFileDropped (string path) => OnFileDropped?.Invoke(path);
+
+
+	// Event
+	[OnGameInitialize(int.MinValue + 1)]
+	internal static void InitCache () {
+		UseProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
+	}
 
 
 	#endregion

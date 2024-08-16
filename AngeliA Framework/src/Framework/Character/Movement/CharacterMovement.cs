@@ -37,16 +37,13 @@ public partial class CharacterMovement {
 	private const int CLIP_CORRECT_TOLERANCE = Const.CEL / 4;
 
 	// Api
-	public Character TargetCharacter { get; init; }
+	public readonly Character TargetCharacter;
 	public Int2 LastMoveDirection { get; private set; } = default;
 	public int IntendedX { get; private set; } = 0;
 	public int IntendedY { get; private set; } = 0;
 	public int CurrentJumpCount { get; private set; } = 0;
-	public bool FacingRight {
-		get => TargetCharacter.LockFacingOnAttack && TargetCharacter.IsAttacking ? TargetCharacter.AttackStartFacingRight : BasicFacingRight;
-		set => BasicFacingRight = value;
-	}
-	public bool BasicFacingRight { get; private set; } = true;
+	public int SpeedRateX { get; private set; } = 1000;
+	public bool FacingRight { get; set; } = true;
 	public bool FacingFront { get; private set; } = true;
 	public virtual int FinalCharacterHeight => MovementHeight;
 	public virtual bool SpinOnGroundPound => false;
@@ -134,6 +131,7 @@ public partial class CharacterMovement {
 	private int? ClimbPositionCorrect = null;
 	private int LockedFacingFrame = int.MinValue;
 	private int RequireJumpFrame = int.MinValue;
+	private int SpeedRateFrame = int.MinValue;
 
 
 	#endregion
@@ -676,11 +674,8 @@ public partial class CharacterMovement {
 		}
 
 		// Speed Lose on Attack
-		if (TargetCharacter.IsAttacking && speed != 0) {
-			int loseRate = TargetCharacter.CurrentSpeedLoseOnAttack;
-			if (loseRate != 1000) {
-				speed = speed * loseRate / 1000;
-			}
+		if (Game.GlobalFrame <= SpeedRateFrame && SpeedRateX != 1000) {
+			speed = speed * SpeedRateX / 1000;
 		}
 
 		// Push
@@ -883,7 +878,6 @@ public partial class CharacterMovement {
 	public virtual void Jump () {
 		IntendedJump = true;
 		RequireJumpFrame = Game.GlobalFrame;
-		if (TargetCharacter.CancelAttackOnJump) TargetCharacter.CancelAttack();
 	}
 
 
@@ -906,6 +900,12 @@ public partial class CharacterMovement {
 
 
 	public void ClearRunningAccumulate () => RunningAccumulateFrame = -1;
+
+
+	public void SetSpeedRate (int newRate, int duration = 1) {
+		SpeedRateFrame = Game.GlobalFrame + duration;
+		SpeedRateX = newRate;
+	}
 
 
 	#endregion

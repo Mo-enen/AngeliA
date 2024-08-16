@@ -3,7 +3,7 @@
 public class PoseHandheld_Single : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		if (Target.IsChargingAttack) {
+		if (Attackness.IsChargingAttack) {
 			PoseAttack_Wave.SingleHanded_SmashDown();
 			return;
 		}

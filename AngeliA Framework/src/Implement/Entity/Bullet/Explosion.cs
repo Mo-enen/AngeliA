@@ -21,17 +21,8 @@ public abstract class Explosion : Entity {
 	public int BreakObjectArtwork { get; set; }
 	protected int ExplodedFrame { get; private set; } = -1;
 
-	// Data
-	private static bool UseProceduralMap;
-
 
 	// MSG
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		UseProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
-	}
-
-
 	public override void OnActivated () {
 		base.OnActivated();
 		if (FromWorld) {
@@ -77,7 +68,7 @@ public abstract class Explosion : Entity {
 				receiver.TakeDamage(new Damage(Damage, Sender ?? this, this, Tag.ExplosiveDamage));
 			}
 			// Destroy Block
-			if (UseProceduralMap && DestroyBlocks) {
+			if (Game.UseProceduralMap && DestroyBlocks) {
 				for (int x = range.x; x < range.xMax; x += Const.CEL) {
 					for (int y = range.y; y < range.yMax; y += Const.CEL) {
 						if (!Util.OverlapRectCircle(
@@ -85,7 +76,6 @@ public abstract class Explosion : Entity {
 							x + Const.HALF, y + Const.HALF, x + Const.HALF + 1, y + Const.HALF + 1
 						)) continue;
 						FrameworkUtil.PickBlockAt(
-							this,
 							(x + 1).ToUnit(),
 							(y + 1).ToUnit(),
 							allowMultiplePick: true

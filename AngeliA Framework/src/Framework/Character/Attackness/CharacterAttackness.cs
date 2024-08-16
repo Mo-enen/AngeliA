@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
-public abstract partial class Character {
+
+public partial class CharacterAttackness {
 
 
 
@@ -12,6 +12,7 @@ public abstract partial class Character {
 
 
 	// Api
+	public readonly Character TargetCharacter;
 	public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
 	public int LastAttackFrame { get; private set; } = int.MinValue;
 	public int? AttackChargeStartFrame { get; private set; } = null;
@@ -23,11 +24,11 @@ public abstract partial class Character {
 	public virtual Direction8 AimingDirection => Direction8.Right;
 	public int AttackStyleLoop { get; set; } = 1;
 	public bool AttackStartFacingRight { get; set; } = true;
-	public int AttackDuration { get; private set; } = 12;
-	public int AttackCooldown { get; private set; } = 2;
-	public int MinimalChargeAttackDuration { get; private set; } = int.MaxValue;
-	public bool RepeatAttackWhenHolding { get; private set; } = false;
-	public bool LockFacingOnAttack { get; private set; } = false;
+	public int AttackDuration { get; set; } = 12;
+	public int AttackCooldown { get; set; } = 2;
+	public int MinimalChargeAttackDuration { get; set; } = int.MaxValue;
+	public bool RepeatAttackWhenHolding { get; set; } = false;
+	public bool LockFacingOnAttack { get; set; } = false;
 
 	// Data
 	protected readonly int[] IgnoreAimingDirectionFrames = new int[8].FillWithValue(-1);
@@ -41,14 +42,17 @@ public abstract partial class Character {
 	#region --- MSG ---
 
 
-	private void OnActivated_Attack () {
+	public CharacterAttackness (Character character) => TargetCharacter = character;
+
+
+	public void OnActivated_Attack () {
 		LastAttackFrame = int.MinValue;
 		AttackChargeStartFrame = null;
 		LastAttackCharged = false;
 	}
 
 
-	private void PhysicsUpdate_Attack () {
+	public void PhysicsUpdate_Attack () {
 
 		// Combo Break
 		if (!RandomAttackAnimationStyle && AttackStyleIndex > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
@@ -63,7 +67,7 @@ public abstract partial class Character {
 		// Charge Release
 		if (!IsChargingAttack && AttackChargeStartFrame.HasValue) {
 			if (Game.GlobalFrame - AttackChargeStartFrame.Value >= MinimalChargeAttackDuration) {
-				Attack(charged: true);
+				Attack(AttackStartFacingRight, charged: true);
 			}
 			AttackChargeStartFrame = null;
 		}
@@ -79,39 +83,18 @@ public abstract partial class Character {
 	#region --- API ---
 
 
-	public virtual bool Attack (bool charged = false) {
-		if (!IsAttackAllowedByMovement() || !IsAttackAllowedByEquipment()) return false;
+	public virtual bool Attack (bool facingRight, bool charged = false) {
+		if (!TargetCharacter.IsAttackAllowedByMovement()) return false;
+		if (!TargetCharacter.IsAttackAllowedByEquipment()) return false;
 		LastAttackCharged = charged;
 		LastAttackFrame = Game.GlobalFrame;
 		AttackStyleIndex += RandomAttackAnimationStyle ? Util.QuickRandom(1, Util.Max(2, AttackStyleLoop)) : 1;
-		AttackStartFacingRight = Movement.BasicFacingRight;
+		AttackStartFacingRight = facingRight;
 		return true;
 	}
 
 
 	public void CancelAttack () => LastAttackFrame = int.MinValue;
-
-
-	public virtual bool IsAttackAllowedByMovement () =>
-		!Movement.IsCrashing &&
-		(AttackInAir || IsGrounded || InWater || Movement.IsClimbing) &&
-		(AttackInWater || !InWater) &&
-		(AttackWhenWalking || !IsGrounded || !Movement.IsWalking) &&
-		(AttackWhenRunning || !IsGrounded || !Movement.IsRunning) &&
-		(AttackWhenClimbing || !Movement.IsClimbing) &&
-		(AttackWhenFlying || !Movement.IsFlying) &&
-		(AttackWhenRolling || !Movement.IsRolling) &&
-		(AttackWhenSquatting || !Movement.IsSquatting) &&
-		(AttackWhenDashing || !Movement.IsDashing) &&
-		(AttackWhenSliding || !Movement.IsSliding) &&
-		(AttackWhenGrabbing || (!Movement.IsGrabbingTop && !Movement.IsGrabbingSide)) &&
-		(AttackWhenPounding || !Movement.IsPounding) &&
-		(AttackWhenRush || !Movement.IsRushing);
-
-
-	public virtual bool IsAttackAllowedByEquipment () =>
-		this is not PoseCharacter poseCharacter ||
-		(GetEquippingItem(EquipmentType.Weapon) is Weapon weapon && weapon.AllowingAttack(poseCharacter));
 
 
 	// Ignore Aim

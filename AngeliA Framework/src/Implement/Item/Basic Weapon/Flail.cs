@@ -45,7 +45,7 @@ public abstract class Flail : MeleeWeapon {
 
 	private void DrawFlailHead (PoseCharacter character, Cell handleCell, int headIndex) {
 
-		bool isAttacking = character.IsAttacking;
+		bool isAttacking = character.Attackness.IsAttacking;
 		bool climbing = character.AnimationType == CharacterAnimationType.Climb;
 		int deltaX = character.DeltaPositionX.Clamp(-20, 20);
 		int deltaY = character.DeltaPositionY.Clamp(-30, 30);
@@ -55,7 +55,7 @@ public abstract class Flail : MeleeWeapon {
 
 		if (isAttacking) {
 			// Attack
-			int localFrame = Game.GlobalFrame - character.LastAttackFrame;
+			int localFrame = Game.GlobalFrame - character.Attackness.LastAttackFrame;
 			int duration = AttackDuration;
 			int swingX = Const.CEL.LerpTo(-Const.CEL, Ease.OutBack((float)localFrame / duration));
 			headPos = handleCell.LocalToGlobal(
@@ -72,7 +72,7 @@ public abstract class Flail : MeleeWeapon {
 			const int SHAKE_DURATION = 60;
 			int shakeFrame = Util.Min(
 				(Game.GlobalFrame - (character.Movement.LastEndMoveFrame >= 0 ? character.Movement.LastEndMoveFrame : 0)).Clamp(0, SHAKE_DURATION),
-				(Game.GlobalFrame - (character.LastAttackFrame >= 0 ? character.LastAttackFrame : 0)).Clamp(0, SHAKE_DURATION)
+				(Game.GlobalFrame - (character.Attackness.LastAttackFrame >= 0 ? character.Attackness.LastAttackFrame : 0)).Clamp(0, SHAKE_DURATION)
 			);
 			if (!climbing && shakeFrame >= 0 && shakeFrame < SHAKE_DURATION) {
 				headPos.x += (

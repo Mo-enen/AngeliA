@@ -5,7 +5,7 @@ public class PoseHandheld_Bow : PoseAnimation {
 		base.Animate(character);
 
 		// Charging
-		if (Target.IsChargingAttack) {
+		if (Attackness.IsChargingAttack) {
 			PoseAttack_Ranged.Bow();
 			return;
 		}

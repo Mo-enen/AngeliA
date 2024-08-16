@@ -142,7 +142,6 @@ public sealed partial class MapEditor : WindowUI {
 	private int LastUndoPerformedFrame = -1;
 	private int RequireWorldRenderBlinkIndex = -1;
 	private bool? RequireSetMode = null;
-	private bool UseProceduralMap = false;
 	private bool ForceManuallyDropPlayer = false;
 	private Long4? TargetUndoViewPos = null;
 
@@ -161,7 +160,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (!Instance.PlayingGame) {
 			Instance.ApplyPaste();
 			Instance.Save();
-		} else if (Instance.UseProceduralMap) {
+		} else if (Game.UseProceduralMap) {
 			WorldSquad.DiscardAllChangesInMemory();
 		}
 		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.MapRoot);
@@ -170,10 +169,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Active
-	public MapEditor () {
-		Instance = this;
-		Instance.UseProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
-	}
+	public MapEditor () => Instance = this;
 
 
 	public override void OnActivated () {
@@ -1023,7 +1019,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (Game.GlobalFrame != 0) {
 			if (toPlayMode) {
 				Save();
-			} else if (UseProceduralMap) {
+			} else if (Game.UseProceduralMap) {
 				WorldSquad.DiscardAllChangesInMemory();
 			}
 		}

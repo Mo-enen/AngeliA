@@ -495,8 +495,8 @@ public abstract class PoseCharacter : Character {
 		}
 
 		// Attacking
-		if (IsAttacking) {
-			if (CurrentSpeedLoseOnAttack == 0 && IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
+		if (Attackness.IsAttacking) {
+			if (CurrentAttackSpeedRate == 0 && IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
 			HandGrabScaleL = HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
 			PoseAnimation.AnimateFromPool(PoseAttackIDs[(int)EquippingWeaponType], this);

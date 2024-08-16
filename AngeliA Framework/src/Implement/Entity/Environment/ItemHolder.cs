@@ -229,7 +229,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	}
 
 
-	public bool Collect (Character character, bool onlyStackOnExisting = false, bool ignoreEquipment = true) {
+	public bool Collect (Character character, bool onlyStackOnExisting = false, bool ignoreEquipment = false) {
 
 		if (ItemID == 0 || character is null) return false;
 		int invID = character.TypeID;
@@ -242,15 +242,16 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 		// Equipment Check
 		if (
-			!onlyStackOnExisting &&
 			!ignoreEquipment &&
 			ItemCount > 0 &&
 			ItemSystem.IsEquipment(ItemID, out var equipmentType)
 		) {
 			int oldEqID = Inventory.GetEquipment(invID, equipmentType, out int oldEqCount);
 			if (oldEqID == 0 || oldEqID == ItemID) {
-				if (Inventory.SetEquipment(invID, equipmentType, ItemID, oldEqCount + ItemCount)) {
-					ItemCount = 0;
+				int newEqCount = Util.Min(oldEqCount + ItemCount, ItemSystem.GetItemMaxStackCount(oldEqID));
+				int deltaCount = newEqCount - oldEqCount;
+				if (Inventory.SetEquipment(invID, equipmentType, ItemID, newEqCount)) {
+					ItemCount = (ItemCount - deltaCount).GreaterOrEquelThanZero();
 				}
 			}
 		}

@@ -3,8 +3,8 @@
 public class PoseAttack_Polearm : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		character.AttackStyleLoop = 8;
-		int style = character.AttackStyleIndex % character.AttackStyleLoop;
+		Attackness.AttackStyleLoop = 8;
+		int style = Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 		switch (style) {
 			default:
 				Poke();

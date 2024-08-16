@@ -1,6 +1,6 @@
 ﻿namespace AngeliA;
 
 public interface IBlockEntity {
-	public void OnEntityPicked (Entity picker) { }
-	public void OnEntityPut (Entity picker) { }
+	public void OnEntityPicked () { }
+	public void OnEntityPut () { }
 }

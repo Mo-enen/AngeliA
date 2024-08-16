@@ -8,20 +8,27 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 	public override bool DestroyWhenInsideGround => false;
 	protected virtual Tag IgnoreDamageType => Tag.None;
 
+
+	// MSG
 	void IDamageReceiver.TakeDamage (Damage damage) {
 		if (!Active || damage.Amount <= 0) return;
 		if (IgnoreDamageType.HasAll(damage.Type)) return;
 		Active = false;
 		OnBreak();
 	}
+
 	public override void LateUpdate () {
 		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 	}
+
 	protected virtual void OnBreak () {
 		Stage.MarkAsGlobalAntiSpawn(this);
 		GlobalEvent.InvokeObjectBreak(TypeID, Rect);
-		ItemSystem.DropItemFor(this);
+		bool itemDropped = ItemSystem.DropItemFor(this);
+		if (Game.UseProceduralMap) {
+			FrameworkUtil.PickEntityBlock(this, !itemDropped);
+		}
 	}
 
 }

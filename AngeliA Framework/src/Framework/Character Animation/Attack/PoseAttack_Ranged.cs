@@ -4,7 +4,7 @@ public class PoseAttack_Ranged : PoseAnimation {
 
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		character.AttackStyleLoop = 1;
+		Attackness.AttackStyleLoop = 1;
 		if (character.EquippingWeaponHeld == WeaponHandheld.Bow) {
 			Bow();
 		} else {
@@ -16,7 +16,7 @@ public class PoseAttack_Ranged : PoseAnimation {
 
 		float ease01 =
 			IsChargingAttack ? 1f - AttackEase :
-			Target.LastAttackCharged ? 1f :
+			Attackness.LastAttackCharged ? 1f :
 			AttackEase;
 		if (!IsChargingAttack) {
 			AttackLegShake(ease01);
@@ -32,7 +32,7 @@ public class PoseAttack_Ranged : PoseAnimation {
 		int grabRot = 0;
 		int grabScl = 1000;
 
-		switch (Target.AimingDirection) {
+		switch (Attackness.AimingDirection) {
 
 
 			case Direction8.Left: {
@@ -143,7 +143,7 @@ public class PoseAttack_Ranged : PoseAnimation {
 
 		float ease01 =
 			IsChargingAttack ? 1f - AttackEase :
-			Target.LastAttackCharged ? 1f :
+			Attackness.LastAttackCharged ? 1f :
 			AttackEase;
 		if (!IsChargingAttack) {
 			AttackHeadDown(ease01, 0, 200, 0);
@@ -158,7 +158,7 @@ public class PoseAttack_Ranged : PoseAnimation {
 		int rotLowerR = 0;
 		int grabRot = 0;
 		int grabScl = 1000;
-		switch (Target.AimingDirection) {
+		switch (Attackness.AimingDirection) {
 
 
 			case Direction8.Left: {

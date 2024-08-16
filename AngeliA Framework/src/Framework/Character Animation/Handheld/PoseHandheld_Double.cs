@@ -3,7 +3,7 @@
 public class PoseHandheld_Double : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		if (Target.IsChargingAttack) {
+		if (Attackness.IsChargingAttack) {
 			// Charging
 			PoseAttack_Wave.DoubleHanded_SmashDown();
 			return;

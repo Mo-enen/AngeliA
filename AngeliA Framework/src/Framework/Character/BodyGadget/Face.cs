@@ -371,7 +371,7 @@ public abstract class Face : BodyGadget {
 
 		// Attack
 		if (
-			character.IsAttacking &&
+			character.Attackness.IsAttacking &&
 			character.EquippingWeaponType != WeaponType.Magic &&
 			character.EquippingWeaponType != WeaponType.Ranged
 		) return CharacterExpression.Attack;

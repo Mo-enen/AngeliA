@@ -83,9 +83,9 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			// Shooting
 			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
-			if (character.IsAttacking || character.IsChargingAttack) {
-				int localFrame = character.IsAttacking ?
-					(Game.GlobalFrame - character.LastAttackFrame) * SpriteFrameCount / AttackDuration :
+			if (character.Attackness.IsAttacking || character.Attackness.IsChargingAttack) {
+				int localFrame = character.Attackness.IsAttacking ?
+					(Game.GlobalFrame - character.Attackness.LastAttackFrame) * SpriteFrameCount / AttackDuration :
 					SpriteFrameCount - 1;
 				if (Renderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
 					cell.Sprite = attackSprite;
@@ -113,11 +113,11 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			offsetUp.x = -offsetUp.x;
 			offsetCenter.x = -offsetCenter.x;
 		}
-		if (character.IsAttacking || character.IsChargingAttack) {
+		if (character.Attackness.IsAttacking || character.Attackness.IsChargingAttack) {
 
 			// Attacking
 			int duration = AttackDuration;
-			int localFrame = character.IsAttacking ? Game.GlobalFrame - character.LastAttackFrame : duration / 2 - 1;
+			int localFrame = character.Attackness.IsAttacking ? Game.GlobalFrame - character.Attackness.LastAttackFrame : duration / 2 - 1;
 			Int2 centerPos;
 			var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
 			var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;

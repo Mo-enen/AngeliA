@@ -418,7 +418,14 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool PickBlockAt (Entity picker, int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true, bool dropItemAfterPicked = true, bool allowMultiplePick = false) {
+	public static bool PickEntityBlock (Entity target, bool dropItemAfterPick = true) {
+		if (!target.MapUnitPos.HasValue) return false;
+		var pos = target.MapUnitPos.Value;
+		return PickBlockAt(pos.x, pos.y, true, false, false, dropItemAfterPick, false);
+	}
+
+
+	public static bool PickBlockAt (int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true, bool dropItemAfterPicked = true, bool allowMultiplePick = false) {
 
 		bool result = false;
 
@@ -440,7 +447,7 @@ public static class FrameworkUtil {
 					result = true;
 				}
 				// Event
-				eBlock.OnEntityPicked(picker);
+				eBlock.OnEntityPicked();
 				if (dropItemAfterPicked && ItemSystem.HasItem(e.TypeID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
@@ -582,7 +589,7 @@ public static class FrameworkUtil {
 			Stage.SpawnEntity(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal()) is IBlockEntity bEntity
 		) {
 			// Event
-			bEntity.OnEntityPut(pHolder);
+			bEntity.OnEntityPut();
 		}
 
 		// Reduce Block Count by 1

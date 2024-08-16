@@ -6,7 +6,7 @@ namespace AngeliA;
 public class PoseAttack_Float : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		character.AttackStyleLoop = 1;
+		character.Attackness.AttackStyleLoop = 1;
 		WaveDown();
 	}
 	public static void WaveDown () {

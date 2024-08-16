@@ -65,9 +65,17 @@ public abstract partial class Character : Rigidbody {
 	public sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	public virtual int Bouncy => 150;
 	public virtual bool AllowInventory => false;
+	protected int CurrentAttackSpeedRate => Movement.MovementState switch {
+		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
+		CharacterMovementState.Run => Attackness.RunningSpeedRateOnAttack,
+		CharacterMovementState.JumpDown => Attackness.AirSpeedRateOnAttack,
+		CharacterMovementState.JumpUp => Attackness.AirSpeedRateOnAttack,
+		_ => Attackness.DefaultSpeedRateOnAttack,
+	};
 
 	// Behaviour
 	public readonly CharacterMovement Movement;
+	public readonly CharacterAttackness Attackness;
 
 	// Data
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
@@ -92,6 +100,7 @@ public abstract partial class Character : Rigidbody {
 	public Character () {
 		// Behaviour
 		Movement = CreateNativeMovement();
+		Attackness = CreateNativeAttackness();
 		// Init Inventory
 		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
@@ -112,7 +121,7 @@ public abstract partial class Character : Rigidbody {
 		base.OnActivated();
 		Movement.OnCharacterActivated();
 		OnActivated_Health();
-		OnActivated_Attack();
+		Attackness.OnActivated_Attack();
 		OnActivated_Navigation();
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;
@@ -158,39 +167,39 @@ public abstract partial class Character : Rigidbody {
 				item.BeforeItemUpdate_FromEquipment(this);
 				if (item is Weapon weapon) {
 					weaponFilled = true;
-					AttackDuration = weapon.AttackDuration;
-					AttackCooldown = weapon.AttackCooldown;
-					MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
-					RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
-					LockFacingOnAttack = weapon.LockFacingOnAttack;
+					Attackness.AttackDuration = weapon.AttackDuration;
+					Attackness.AttackCooldown = weapon.AttackCooldown;
+					Attackness.MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
+					Attackness.RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
+					Attackness.LockFacingOnAttack = weapon.LockFacingOnAttack;
 					EquipingPickWeapon = weapon is PickWeapon;
-					HoldAttackPunish.Override(weapon.HoldAttackPunish);
-					DefaultSpeedLoseOnAttack.Override(weapon.DefaultSpeedLoseOnAttack);
-					WalkingSpeedLoseOnAttack.Override(weapon.WalkingSpeedLoseOnAttack);
-					RunningSpeedLoseOnAttack.Override(weapon.RunningSpeedLoseOnAttack);
-					AttackInAir.Override(weapon.AttackInAir);
-					AttackInWater.Override(weapon.AttackInWater);
-					AttackWhenWalking.Override(weapon.AttackWhenWalking);
-					AttackWhenRunning.Override(weapon.AttackWhenRunning);
-					AttackWhenClimbing.Override(weapon.AttackWhenClimbing);
-					AttackWhenFlying.Override(weapon.AttackWhenFlying);
-					AttackWhenRolling.Override(weapon.AttackWhenRolling);
-					AttackWhenSquatting.Override(weapon.AttackWhenSquatting);
-					AttackWhenDashing.Override(weapon.AttackWhenDashing);
-					AttackWhenSliding.Override(weapon.AttackWhenSliding);
-					AttackWhenGrabbing.Override(weapon.AttackWhenGrabbing);
-					AttackWhenRush.Override(weapon.AttackWhenRushing);
-					AttackWhenPounding.Override(weapon.AttackWhenPounding);
+					Attackness.HoldAttackPunish.Override(weapon.HoldAttackPunish);
+					Attackness.DefaultSpeedRateOnAttack.Override(weapon.DefaultSpeedLoseOnAttack);
+					Attackness.WalkingSpeedRateOnAttack.Override(weapon.WalkingSpeedLoseOnAttack);
+					Attackness.RunningSpeedRateOnAttack.Override(weapon.RunningSpeedLoseOnAttack);
+					Attackness.AttackInAir.Override(weapon.AttackInAir);
+					Attackness.AttackInWater.Override(weapon.AttackInWater);
+					Attackness.AttackWhenWalking.Override(weapon.AttackWhenWalking);
+					Attackness.AttackWhenRunning.Override(weapon.AttackWhenRunning);
+					Attackness.AttackWhenClimbing.Override(weapon.AttackWhenClimbing);
+					Attackness.AttackWhenFlying.Override(weapon.AttackWhenFlying);
+					Attackness.AttackWhenRolling.Override(weapon.AttackWhenRolling);
+					Attackness.AttackWhenSquatting.Override(weapon.AttackWhenSquatting);
+					Attackness.AttackWhenDashing.Override(weapon.AttackWhenDashing);
+					Attackness.AttackWhenSliding.Override(weapon.AttackWhenSliding);
+					Attackness.AttackWhenGrabbing.Override(weapon.AttackWhenGrabbing);
+					Attackness.AttackWhenRush.Override(weapon.AttackWhenRushing);
+					Attackness.AttackWhenPounding.Override(weapon.AttackWhenPounding);
 				}
 			}
 		}
 		if (!weaponFilled) {
 			// Default
-			AttackDuration = 12;
-			AttackCooldown = 2;
-			MinimalChargeAttackDuration = int.MaxValue;
-			RepeatAttackWhenHolding = false;
-			LockFacingOnAttack = false;
+			Attackness.AttackDuration = 12;
+			Attackness.AttackCooldown = 2;
+			Attackness.MinimalChargeAttackDuration = int.MaxValue;
+			Attackness.RepeatAttackWhenHolding = false;
+			Attackness.LockFacingOnAttack = false;
 		}
 	}
 
@@ -215,7 +224,19 @@ public abstract partial class Character : Rigidbody {
 					VelocityX = VelocityX.MoveTowards(0, KnockbackDeceleration);
 				} else {
 					// General
-					PhysicsUpdate_Attack();
+					if (Attackness.IsAttacking) {
+						// Lock Facing when Attack
+						if (Attackness.LockFacingOnAttack) {
+							Movement.LockFacingRight(Attackness.AttackStartFacingRight, 1);
+						}
+						// Change Speed Rate for Attack
+						int currentSpeedRate = CurrentAttackSpeedRate;
+						if (currentSpeedRate != 1000) {
+							Movement.SetSpeedRate(currentSpeedRate, 0);
+						}
+					}
+					// Update
+					Attackness.PhysicsUpdate_Attack();
 					if (usingOverridingMovement) {
 						MovementOverride.PhysicsUpdateGamePlay(Movement);
 					} else {
@@ -368,7 +389,7 @@ public abstract partial class Character : Rigidbody {
 			}
 
 			// Jump Fly Crash Slide Bounce
-			if (Game.GlobalFrame % 10 == 0 && IsChargingAttack) Bounce();
+			if (Game.GlobalFrame % 10 == 0 && Attackness.IsChargingAttack) Bounce();
 			if (Movement.IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(this);
 			if (Game.GlobalFrame == Movement.LastJumpFrame) OnJump?.Invoke(this);
 			if (Game.GlobalFrame == Movement.LastFlyFrame) OnFly?.Invoke(this);
@@ -391,7 +412,7 @@ public abstract partial class Character : Rigidbody {
 		if (invCapacity > 0) {
 
 			bool eventAvailable = CharacterState == CharacterState.GamePlay && !Task.HasTask() && !TakingDamage;
-			int attackLocalFrame = eventAvailable && IsAttacking ? Game.GlobalFrame - LastAttackFrame : -1;
+			int attackLocalFrame = eventAvailable && Attackness.IsAttacking ? Game.GlobalFrame - Attackness.LastAttackFrame : -1;
 
 			// Inventory
 			for (int i = 0; i < invCapacity; i++) {
@@ -512,12 +533,33 @@ public abstract partial class Character : Rigidbody {
 
 	// Behaviour
 	protected virtual CharacterMovement CreateNativeMovement () => new CharacterMovement(this);
+	protected virtual CharacterAttackness CreateNativeAttackness () => new CharacterAttackness(this);
 
 
 	public void OverrideMovement (CharacterMovementOverride movementOverride, int duration = 1) {
 		OverridingMovementFrame = Game.GlobalFrame + duration;
 		MovementOverride = movementOverride;
 	}
+
+
+	public virtual bool IsAttackAllowedByMovement () =>
+		!Movement.IsCrashing &&
+		(Attackness.AttackInAir || IsGrounded || InWater || Movement.IsClimbing) &&
+		(Attackness.AttackInWater || !InWater) &&
+		(Attackness.AttackWhenWalking || !IsGrounded || !Movement.IsWalking) &&
+		(Attackness.AttackWhenRunning || !IsGrounded || !Movement.IsRunning) &&
+		(Attackness.AttackWhenClimbing || !Movement.IsClimbing) &&
+		(Attackness.AttackWhenFlying || !Movement.IsFlying) &&
+		(Attackness.AttackWhenRolling || !Movement.IsRolling) &&
+		(Attackness.AttackWhenSquatting || !Movement.IsSquatting) &&
+		(Attackness.AttackWhenDashing || !Movement.IsDashing) &&
+		(Attackness.AttackWhenSliding || !Movement.IsSliding) &&
+		(Attackness.AttackWhenGrabbing || (!Movement.IsGrabbingTop && !Movement.IsGrabbingSide)) &&
+		(Attackness.AttackWhenPounding || !Movement.IsPounding) &&
+		(Attackness.AttackWhenRush || !Movement.IsRushing);
+
+
+	public virtual bool IsAttackAllowedByEquipment () => (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon && weapon.AllowingAttack(this));
 
 
 	#endregion
@@ -591,7 +633,7 @@ public abstract partial class Character : Rigidbody {
 		bool isSquatting = Movement.MovementState == CharacterMovementState.SquatIdle || Movement.MovementState == CharacterMovementState.SquatMove;
 		if (frame < LastRequireBounceFrame + duration) {
 			bounce = InWater ? BOUNCE_AMOUNTS_BIG[frame - LastRequireBounceFrame] : BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
-			if (AttackChargeStartFrame.HasValue && Game.GlobalFrame > AttackChargeStartFrame.Value + MinimalChargeAttackDuration) {
+			if (Attackness.AttackChargeStartFrame.HasValue && Game.GlobalFrame > Attackness.AttackChargeStartFrame.Value + Attackness.MinimalChargeAttackDuration) {
 				bounce += (1000 - bounce) / 2;
 			}
 		} else if (isPounding) {

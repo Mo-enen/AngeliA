@@ -48,16 +48,6 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 		}
 	}
-	public override bool IsChargingAttack =>
-		MinimalChargeAttackDuration != int.MaxValue &&
-		Selecting == this &&
-		Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + MinimalChargeAttackDuration &&
-		!Task.HasTask() &&
-		!LockingInput &&
-		IsAttackAllowedByMovement() &&
-		IsAttackAllowedByEquipment() &&
-		Input.GameKeyHolding(Gamekey.Action);
-	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 	public bool LockingInput => Game.GlobalFrame <= LockInputFrame;
 	public int LockInputFrame { get; private set; } = -1;
 	public int AimViewX { get; private set; } = 0;
@@ -73,15 +63,14 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	public virtual bool AllowQuickPlayerMenuUI => InventoryCurrentAvailable;
 	int IDamageReceiver.Team => Const.TEAM_PLAYER;
 	public override bool AllowInventory => true;
-	public override Direction8 AimingDirection => _AimingDirection;
 
 	// Data
-	private Direction8 _AimingDirection = Direction8.Right;
 	private int AttackRequiringFrame = int.MinValue;
 	private int LastLeftKeyDown = int.MinValue;
 	private int LastRightKeyDown = int.MinValue;
 	private int LastGroundedY = 0;
 	private int PrevZ = int.MinValue;
+	private PlayerAttackness PlayerAttackness;
 
 	// Saving
 	private static readonly SavingInt LastPlayerID = new("Player.LastPlayerID", 0, SavingLocation.Slot);
@@ -105,6 +94,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		SelectPlayer(LastPlayerID.Value);
 		return TaskResult.End;
 	}
+
+
+	protected override CharacterAttackness CreateNativeAttackness () => PlayerAttackness = new PlayerAttackness(this);
 
 
 	public override void OnActivated () {
@@ -208,22 +200,22 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	private void Update_Aiming () {
-		_AimingDirection =
+		PlayerAttackness._AimingDirection =
 			Input.Direction.TryGetDirection8(out var result) ? result :
 			Movement.FacingRight ? Direction8.Right : Direction8.Left;
 		// Ignore Check
-		if (IsAimingDirectionIgnored(_AimingDirection)) {
-			var dir0 = _AimingDirection;
-			var dir1 = _AimingDirection;
+		if (Attackness.IsAimingDirectionIgnored(PlayerAttackness._AimingDirection)) {
+			var dir0 = PlayerAttackness._AimingDirection;
+			var dir1 = PlayerAttackness._AimingDirection;
 			for (int safe = 0; safe < 4; safe++) {
 				dir0 = Movement.FacingRight ? dir0.Clockwise() : dir0.AntiClockwise();
 				dir1 = Movement.FacingRight ? dir1.AntiClockwise() : dir1.Clockwise();
-				if (!IsAimingDirectionIgnored(dir0)) {
-					_AimingDirection = dir0;
+				if (!Attackness.IsAimingDirectionIgnored(dir0)) {
+					PlayerAttackness._AimingDirection = dir0;
 					break;
 				}
-				if (!IsAimingDirectionIgnored(dir1)) {
-					_AimingDirection = dir1;
+				if (!Attackness.IsAimingDirectionIgnored(dir1)) {
+					PlayerAttackness._AimingDirection = dir1;
 					break;
 				}
 			}
@@ -245,6 +237,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 				Movement.Dash();
 			} else {
 				Movement.Jump();
+				if (Attackness.CancelAttackOnJump) Attackness.CancelAttack();
 				AttackRequiringFrame = int.MinValue;
 			}
 		}
@@ -358,10 +351,10 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		// Try Perform Attack
 		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
 		bool attDown = Input.GameKeyDown(Gamekey.Action);
-		bool attHolding = Input.GameKeyHolding(Gamekey.Action) && RepeatAttackWhenHolding;
+		bool attHolding = Input.GameKeyHolding(Gamekey.Action) && Attackness.RepeatAttackWhenHolding;
 		if (attDown || attHolding) {
-			if (Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + (attDown ? 0 : HoldAttackPunish)) {
-				Attack();
+			if (Game.GlobalFrame >= Attackness.LastAttackFrame + Attackness.AttackDuration + Attackness.AttackCooldown + (attDown ? 0 : Attackness.HoldAttackPunish)) {
+				Attackness.Attack(Movement.FacingRight);
 			} else if (attDown) {
 				AttackRequiringFrame = Game.GlobalFrame;
 			}
@@ -380,10 +373,10 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		const int ATTACK_REQUIRE_GAP = 12;
 		if (
 			Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP &&
-			Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown
+			Game.GlobalFrame >= Attackness.LastAttackFrame + Attackness.AttackDuration + Attackness.AttackCooldown
 		) {
 			AttackRequiringFrame = int.MinValue;
-			Attack();
+			Attackness.Attack(Movement.FacingRight);
 		}
 
 	}
@@ -580,7 +573,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
 				if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-				holder.Collect(this, true);
+				holder.Collect(this, onlyStackOnExisting: true, ignoreEquipment: false);
 			}
 		}
 

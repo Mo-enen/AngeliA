@@ -133,7 +133,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			for (int i = 0; i < WeaponCount; i++) {
 				var weapon = WeaponList[i].Weapon;
 				if (weapon == null) continue;
-				if ((weapon is BlockItem bItem ? bItem.BlockID : weapon.TypeID) == equippingID) {
+				if ((weapon is BlockBuilder bItem ? bItem.BlockID : weapon.TypeID) == equippingID) {
 					CurrentSlotIndex = i;
 					break;
 				}
@@ -237,7 +237,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			var weapon = wData.Weapon;
 			int wCount = wData.Count;
 			if (i != 0 && weapon is null) continue;
-			var bItem = weapon as BlockItem;
+			var bItem = weapon as BlockBuilder;
 			int weaponID =
 				bItem != null ? bItem.BlockID :
 				weapon is null ? 0 :

@@ -26,11 +26,11 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	public virtual bool IgnoreFireDamage => true;
 	protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 	protected override bool ClampInSpawnRect => Owner == Player.Selecting;
-	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
 	public int OriginItemID { get; set; } = 0;
 	public int InventoryUpdatedFrame { get; set; } = -1;
 
 	// Data
+	private SummonAttackness SummonAttackness;
 	private int SummonFrame = int.MinValue;
 	private int PrevZ = int.MinValue;
 	private bool RequireAimRefresh = true;
@@ -42,6 +42,10 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 
 
 	#region --- MSG ---
+
+
+
+	protected override CharacterAttackness CreateNativeAttackness () => SummonAttackness = new SummonAttackness(this);
 
 
 	public override void OnActivated () {
@@ -77,6 +81,8 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	public override void Update () {
 
 		if (!Active) return;
+
+		SummonAttackness.Owner = Owner;
 
 		// Inactive when Owner not Ready
 		if (Owner == null || !Owner.Active) {

@@ -128,7 +128,6 @@ public static class Stage {
 	private static readonly HashSet<int> RepositionHash = new();
 	private static int ViewLerpRate = 1000;
 	private static int? RequireSetViewZ = null;
-	private static bool UsingProceduralMap;
 
 
 	#endregion
@@ -151,7 +150,6 @@ public static class Stage {
 			Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight)
 		);
 		SpawnRect = ViewRect.Expand(Const.SPAWN_PADDING);
-		UsingProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
 
 		if (!Enable) return;
 
@@ -762,7 +760,7 @@ public static class Stage {
 
 	private static void RepositionEntity (Entity entity) {
 
-		if (!UsingProceduralMap || !entity.MapUnitPos.HasValue || !RepositionHash.Contains(entity.TypeID)) return;
+		if (!Game.UseProceduralMap || !entity.MapUnitPos.HasValue || !RepositionHash.Contains(entity.TypeID)) return;
 
 		var mapPos = entity.MapUnitPos.Value;
 		int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);

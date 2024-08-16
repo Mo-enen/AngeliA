@@ -50,10 +50,10 @@ public abstract class PickWeapon : Weapon {
 		}
 
 		// Pick Block
-		if (Game.GlobalFrame == pHolder.LastAttackFrame) {
+		if (Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
 			// Erase Block from Map
 			bool picked = FrameworkUtil.PickBlockAt(
-				holder, targetUnitX, targetUnitY,
+				targetUnitX, targetUnitY,
 				allowPickBlockEntity: AllowPickBlockEntity,
 				allowPickLevelBlock: AllowPickLevelBlock,
 				allowPickBackgroundBlock: AllowPickBackgroundBlock
@@ -88,7 +88,7 @@ public abstract class PickWeapon : Weapon {
 	// LGC
 	protected virtual void GetTargetUnitPosition (Character pHolder, out int targetUnitX, out int targetUnitY, out bool hasTraget) {
 
-		var aim = pHolder.AimingDirection;
+		var aim = pHolder.Attackness.AimingDirection;
 		var aimNormal = aim.Normal();
 		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.Movement.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
 		int pointY = pHolder.Rect.yMax - 16;

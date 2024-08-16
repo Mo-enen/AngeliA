@@ -3,12 +3,12 @@
 public class PoseAttack_Scratch : PoseAnimation {
 	public override void Animate (PoseCharacter character) {
 		base.Animate(character);
-		if (character.LastAttackCharged) {
+		if (Attackness.LastAttackCharged) {
 			PoseAttack_Wave.EachHand_SmashDown();
 			return;
 		}
-		character.AttackStyleLoop = 3;
-		int style = character.AttackStyleIndex % character.AttackStyleLoop;
+		Attackness.AttackStyleLoop = 3;
+		int style = Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 		switch (style) {
 			default:
 				ScratchIn();

@@ -97,7 +97,7 @@ public static class ItemSystem {
 		if (Game.IsToolApplication) return;
 
 		// Init Item Pool from Code
-		var BLOCK_ITEM = typeof(BlockItem);
+		var BLOCK_ITEM = typeof(BlockBuilder);
 		foreach (var type in typeof(Item).AllChildClass()) {
 			if (type == BLOCK_ITEM) continue;
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
@@ -115,7 +115,7 @@ public static class ItemSystem {
 		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
-			var blockItem = new BlockItem(id, angeName, BlockType.Entity);
+			var blockItem = new BlockBuilder(id, angeName, BlockType.Entity);
 			ItemPool.TryAdd(id, new ItemData(
 				blockItem,
 				$"iName.{angeName}".AngeHash(),
@@ -168,7 +168,7 @@ public static class ItemSystem {
 		// Clear Prev Block Items
 		if (BlockItemLoadedBefore) {
 			foreach (var (id, itemData) in ItemPool) {
-				if (itemData.Item is BlockItem bItem && bItem.BlockType != BlockType.Entity) {
+				if (itemData.Item is BlockBuilder bItem && bItem.BlockType != BlockType.Entity) {
 					ItemPool.Remove(id);
 				}
 			}
@@ -185,7 +185,7 @@ public static class ItemSystem {
 			if (bType == AtlasType.General) continue;
 			int itemID = sprite.Group != null ? sprite.Group.ID : sprite.ID;
 			string itemName = sprite.Group != null ? sprite.Group.Name : sprite.RealName;
-			var blockItem = new BlockItem(
+			var blockItem = new BlockBuilder(
 				itemID, itemName,
 				bType == AtlasType.Level ? BlockType.Level : BlockType.Background
 			);
@@ -415,11 +415,12 @@ public static class ItemSystem {
 
 
 	// Drop
-	public static void DropItemFor (Entity entity) => DropItemFor(entity.TypeID, entity.X, entity.Y);
-	public static void DropItemFor (int sourceID, int x, int y) {
-		if (!ItemDropPool.TryGetValue(sourceID, out var data)) return;
-		if (data.Chance < 1000 && Util.QuickRandom(0, 1000) >= data.Chance) return;
-		SpawnItem(data.ItemID, x, y, data.Count);
+	public static bool DropItemFor (Entity entity) => DropItemFor(entity.TypeID, entity.X, entity.Y);
+	public static bool DropItemFor (int sourceID, int x, int y) {
+		if (!ItemDropPool.TryGetValue(sourceID, out var data)) return false;
+		if (data.Chance < 1000 && Util.QuickRandom(0, 1000) >= data.Chance) return false;
+		var result = SpawnItem(data.ItemID, x, y, data.Count);
+		return result != null && result.ItemID != 0 && result.ItemCount > 0;
 	}
 
 
