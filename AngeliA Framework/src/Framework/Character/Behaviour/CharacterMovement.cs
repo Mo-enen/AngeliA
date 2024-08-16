@@ -13,6 +13,7 @@ public enum CharacterMovementState {
 }
 
 
+
 public partial class CharacterMovement {
 
 
@@ -47,7 +48,6 @@ public partial class CharacterMovement {
 	}
 	public bool BasicFacingRight { get; private set; } = true;
 	public bool FacingFront { get; private set; } = true;
-	public int FacingSign => FacingRight ? 1 : -1;
 	public virtual int FinalCharacterHeight => MovementHeight;
 	public virtual bool SpinOnGroundPound => false;
 
@@ -188,7 +188,7 @@ public partial class CharacterMovement {
 	}
 
 
-	public virtual void PhysicsUpdateLater () {
+	public void PhysicsUpdateLater () {
 		IntendedJump = false;
 		IntendedDash = false;
 		IntendedPound = false;

@@ -67,7 +67,7 @@ public abstract partial class Character : Rigidbody {
 	public virtual bool AllowInventory => false;
 
 	// Behaviour
-	public CharacterMovement Movement;
+	public readonly CharacterMovement Movement;
 
 	// Data
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
@@ -77,9 +77,8 @@ public abstract partial class Character : Rigidbody {
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
 	private int IgnoreInventoryFrame = int.MinValue;
-	private readonly CharacterMovement NativeMovement;
-	private CharacterMovement OverridingMovement;
 	private int OverridingMovementFrame = int.MinValue;
+	private CharacterMovementOverride MovementOverride;
 
 
 	#endregion
@@ -92,8 +91,7 @@ public abstract partial class Character : Rigidbody {
 
 	public Character () {
 		// Behaviour
-		Movement = NativeMovement = CreateNewMovement();
-
+		Movement = CreateNativeMovement();
 		// Init Inventory
 		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
@@ -120,15 +118,13 @@ public abstract partial class Character : Rigidbody {
 		PassOutFrame = int.MinValue;
 		VelocityX = 0;
 		VelocityY = 0;
-		OverridingMovement = null;
+		MovementOverride = null;
 		OverridingMovementFrame = int.MinValue;
 	}
 
 
 	// Physics Update
 	public override void FirstUpdate () {
-		// Update Movement
-		Movement = Game.GlobalFrame > IgnoreInventoryFrame || OverridingMovement == null ? NativeMovement : OverridingMovement;
 		// Fill Physics
 		if (CharacterState == CharacterState.GamePlay) {
 			Physics.FillEntity(PhysicalLayer, this, NavigationEnable);
@@ -209,6 +205,7 @@ public abstract partial class Character : Rigidbody {
 		}
 
 		// Behaviour
+		bool usingOverridingMovement = Game.GlobalFrame <= IgnoreInventoryFrame && MovementOverride != null;
 		Movement.MovementState = CharacterMovementState.Idle;
 		switch (CharacterState) {
 			default:
@@ -219,7 +216,12 @@ public abstract partial class Character : Rigidbody {
 				} else {
 					// General
 					PhysicsUpdate_Attack();
-					Movement.PhysicsUpdateGamePlay();
+					if (usingOverridingMovement) {
+						MovementOverride.PhysicsUpdateGamePlay(Movement);
+					} else {
+						Movement.PhysicsUpdateGamePlay();
+						MovementOverride = null;
+					}
 				}
 				break;
 
@@ -509,12 +511,12 @@ public abstract partial class Character : Rigidbody {
 
 
 	// Behaviour
-	protected virtual CharacterMovement CreateNewMovement () => new CharacterMovement(this);
+	protected virtual CharacterMovement CreateNativeMovement () => new CharacterMovement(this);
 
 
-	public void OverrideMovement (CharacterMovement newMovement, int duration = 1) {
+	public void OverrideMovement (CharacterMovementOverride movementOverride, int duration = 1) {
 		OverridingMovementFrame = Game.GlobalFrame + duration;
-		OverridingMovement = newMovement;
+		MovementOverride = movementOverride;
 	}
 
 

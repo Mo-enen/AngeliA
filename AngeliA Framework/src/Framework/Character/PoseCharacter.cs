@@ -185,7 +185,7 @@ public abstract class PoseCharacter : Character {
 	}
 
 
-	protected override CharacterMovement CreateNewMovement () => new PoseCharacterMovement(this);
+	protected override CharacterMovement CreateNativeMovement () => new PoseCharacterMovement(this);
 
 
 	public override void BeforeUpdate () {
