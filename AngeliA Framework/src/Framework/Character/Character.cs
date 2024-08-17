@@ -79,6 +79,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	public readonly CharacterMovement Movement;
 	public readonly CharacterAttackness Attackness;
 	public readonly CharacterHealth Health;
+	public readonly CharacterNavigation Navigation;
 
 	// Data
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
@@ -105,6 +106,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		Movement = CreateNativeMovement();
 		Attackness = CreateNativeAttackness();
 		Health = CreateNativeHealth();
+		Navigation = CreateNativeNavigation();
 		// Init Inventory
 		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
@@ -126,7 +128,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		Movement.OnActivated();
 		Health.OnActivated();
 		Attackness.OnActivated();
-		OnActivated_Navigation();
+		Navigation.OnActivated();
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;
 		VelocityX = 0;
@@ -140,7 +142,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	public override void FirstUpdate () {
 		// Fill Physics
 		if (CharacterState == CharacterState.GamePlay) {
-			Physics.FillEntity(PhysicalLayer, this, NavigationEnable);
+			Physics.FillEntity(PhysicalLayer, this, Navigation.NavigationEnable);
 		}
 	}
 
@@ -265,7 +267,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 				break;
 		}
 		Movement.PhysicsUpdateLater();
-		PhysicsUpdate_Navigation();
+		Navigation.PhysicsUpdate();
 		PhysicsUpdate_AnimationType();
 		base.Update();
 	}
@@ -457,7 +459,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		PassOutFrame = int.MinValue;
 		SleepStartFrame = int.MinValue;
 		CharacterState = state;
-		ResetNavigation();
+		Navigation.ResetNavigation();
 
 		switch (state) {
 
@@ -574,6 +576,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	protected virtual CharacterMovement CreateNativeMovement () => new CharacterMovement(this);
 	protected virtual CharacterAttackness CreateNativeAttackness () => new CharacterAttackness(this);
 	protected virtual CharacterHealth CreateNativeHealth () => new CharacterHealth();
+	protected virtual CharacterNavigation CreateNativeNavigation () => new CharacterNavigation(this);
 
 
 	public void OverrideMovement (CharacterMovementOverride movementOverride, int duration = 1) {

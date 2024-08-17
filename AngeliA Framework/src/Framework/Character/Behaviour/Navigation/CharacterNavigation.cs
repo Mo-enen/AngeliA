@@ -3,18 +3,11 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract partial class Character {
+
+public enum CharacterNavigationState { Idle, Operation, Fly, }
 
 
-
-
-	#region --- SUB ---
-
-
-	protected enum CharacterNavigationState { Idle, Operation, Fly, }
-
-
-	#endregion
+public partial class CharacterNavigation {
 
 
 
@@ -23,19 +16,32 @@ public abstract partial class Character {
 
 
 	// Api
-	protected CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
-	protected Int2 NavigationAim { get; private set; } = default;
-	protected bool NavigationAimGrounded { get; private set; } = default;
-	protected bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
+	public readonly Character TargetCharacter;
+	public CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
+	public Int2 NavigationAim { get; private set; } = default;
+	public bool NavigationAimGrounded { get; private set; } = default;
+	public bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
 
 	// Override
-	protected virtual bool NavigationEnable => false;
-	protected virtual bool ClampInSpawnRect => false;
-	protected virtual int NavigationStartMoveDistance => Const.CEL * 4;
-	protected virtual int NavigationEndMoveDistance => Const.CEL * 1;
-	protected virtual int NavigationStartFlyDistance => Const.CEL * 18;
-	protected virtual int NavigationEndFlyDistance => Const.CEL * 3;
-	protected virtual int NavigationMinimumFlyDuration => 60;
+	public virtual bool NavigationEnable => false;
+	public virtual bool ClampInSpawnRect => false;
+	public virtual int NavigationStartMoveDistance => Const.CEL * 4;
+	public virtual int NavigationEndMoveDistance => Const.CEL * 1;
+	public virtual int NavigationStartFlyDistance => Const.CEL * 18;
+	public virtual int NavigationEndFlyDistance => Const.CEL * 3;
+	public virtual int NavigationMinimumFlyDuration => 60;
+
+	// Short
+	private IRect Rect => TargetCharacter.Rect;
+	private int X { get => TargetCharacter.X; set => TargetCharacter.X = value; }
+	private int Y { get => TargetCharacter.Y; set => TargetCharacter.Y = value; }
+	private int VelocityX { get => TargetCharacter.VelocityX; set => TargetCharacter.VelocityX = value; }
+	private int VelocityY { get => TargetCharacter.VelocityY; set => TargetCharacter.VelocityY = value; }
+	private int Gravity => TargetCharacter.Gravity;
+	private bool InWater => TargetCharacter.InWater;
+	private bool IsGrounded => TargetCharacter.IsGrounded;
+	private bool IsInsideGround => TargetCharacter.IsInsideGround;
+	private CharacterMovement Movement => TargetCharacter.Movement;
 
 	// Data
 	private readonly Navigation.Operation[] NavOperations = new Navigation.Operation[64];
@@ -57,10 +63,13 @@ public abstract partial class Character {
 	#region --- MSG ---
 
 
-	private void OnActivated_Navigation () => ResetNavigation();
+	public CharacterNavigation (Character character) => TargetCharacter = character;
 
 
-	private void PhysicsUpdate_Navigation () {
+	public void OnActivated () => ResetNavigation();
+
+
+	public void PhysicsUpdate () {
 
 		if (!NavigationEnable) return;
 
@@ -191,10 +200,10 @@ public abstract partial class Character {
 			if (Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.HALF / 2, out int groundY)) {
 				// Move to Ground
 				VelocityY = groundY - Y;
-				MakeGrounded(1);
+				TargetCharacter.MakeGrounded(1);
 			} else {
 				// Fall Down
-				VelocityY = (VelocityY - Gravity).Clamp(-MaxGravitySpeed, int.MaxValue);
+				VelocityY = (VelocityY - Gravity).Clamp(-TargetCharacter.MaxGravitySpeed, int.MaxValue);
 			}
 		} else {
 			VelocityY = 0;
@@ -371,7 +380,6 @@ public abstract partial class Character {
 			// Can't Fly
 			X = flyAim.x;
 			Y = flyAim.y;
-			OnTeleport?.Invoke(this);
 			NavigationState = CharacterNavigationState.Idle;
 			Movement.MovementState = CharacterMovementState.Idle;
 		}

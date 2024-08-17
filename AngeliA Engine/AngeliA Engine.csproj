@@ -64,7 +64,7 @@
 	<Target Name="Copy AngeFramework Dll &gt;&gt; Project Template" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<Copy SourceFiles="$(OutputPath)AngeliA Framework.dll" DestinationFiles="$(SolutionDir)Universe\ProjectTemplate\lib\Debug\AngeliA Framework.dll" ContinueOnError="true" />
 	</Target>
-	
+
 	<Target Name="Copy Entry Exe" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<Copy SourceFiles="$(OutputPath)AngeliA Entry.exe" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.exe" ContinueOnError="true" />
 	</Target>

@@ -16,24 +16,19 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	#region --- VAR ---
 
 
-	// Const
-	private const int AIM_REFRESH_FREQUENCY = 60;
-
 	// Api
 	public Character Owner { get; set; } = null;
 	int IDamageReceiver.Team => Owner != null ? (Owner as IDamageReceiver).Team : Const.TEAM_NEUTRAL;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public virtual bool IgnoreFireDamage => true;
-	protected override bool NavigationEnable => CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
-	protected override bool ClampInSpawnRect => Owner == Player.Selecting;
 	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
 	public int OriginItemID { get; set; } = 0;
 	public int InventoryUpdatedFrame { get; set; } = -1;
 
 	// Data
+	private SummonNavigation SummonNavigation;
 	private int SummonFrame = int.MinValue;
 	private int PrevZ = int.MinValue;
-	private bool RequireAimRefresh = true;
 
 
 	#endregion
@@ -47,8 +42,8 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	public override void OnActivated () {
 		base.OnActivated();
 		Owner = null;
-		NavigationState = CharacterNavigationState.Operation;
-		RequireAimRefresh = true;
+		Navigation.NavigationState = CharacterNavigationState.Operation;
+		SummonNavigation.Refresh();
 		OriginItemID = 0;
 		Movement.PushAvailable.BaseValue = false;
 	}
@@ -56,6 +51,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
+		SummonNavigation.Owner = Owner;
 		if (CharacterState == CharacterState.GamePlay) {
 			IgnorePhysics(1);
 		}
@@ -67,10 +63,10 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 
 	public virtual void OnSummoned (bool create) {
 		Bounce();
-		ResetNavigation();
+		Navigation.ResetNavigation();
 		SummonFrame = Game.GlobalFrame;
-		NavigationState = CharacterNavigationState.Operation;
-		RequireAimRefresh = true;
+		Navigation.NavigationState = CharacterNavigationState.Operation;
+		SummonNavigation.Refresh();
 	}
 
 
@@ -90,9 +86,9 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 			if (CharacterState != CharacterState.Sleep) {
 				X = Owner.X;
 				Y = Owner.Y;
-				ResetNavigation();
-				NavigationState = CharacterNavigationState.Operation;
-				RequireAimRefresh = true;
+				Navigation.ResetNavigation();
+				Navigation.NavigationState = CharacterNavigationState.Operation;
+				SummonNavigation.Refresh();
 			}
 		}
 
@@ -140,54 +136,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	#region --- API ---
 
 
-	protected override Int2? GetNavigationAim (out bool grounded) {
-
-		if (Owner == null || !Owner.Active) return base.GetNavigationAim(out grounded);
-		grounded = false;
-
-		// Scan Frequency Gate
-		int insIndex = InstanceOrder;
-		if (
-			!RequireAimRefresh &&
-			(Game.GlobalFrame + insIndex) % AIM_REFRESH_FREQUENCY != 0 &&
-			HasPerformableOperation
-		) return null;
-		RequireAimRefresh = false;
-
-		// Get Aim at Ground
-		var result = new Int2(Owner.X, Owner.Y);
-
-		// Freedom Shift
-		const int SHIFT_AMOUNT = Const.CEL * 10;
-		int freeShiftX = Util.QuickRandomWithSeed(
-			TypeID + (InstanceOrder + (Game.GlobalFrame / 300)) * TypeID
-		) % SHIFT_AMOUNT;
-
-		// Find Available Ground
-		int offsetX = freeShiftX + Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);
-		int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : Const.HALF;
-		if (Navigation.ExpandTo(
-			Game.GlobalFrame, Stage.ViewRect,
-			Owner.X, Owner.Y,
-			Owner.X + offsetX, Owner.Y + offsetY,
-			maxIteration: 12, out int groundX, out int groundY
-		)) {
-			result.x = groundX;
-			result.y = groundY;
-			grounded = true;
-		} else {
-			result.x += offsetX;
-			grounded = false;
-		}
-
-		// Instance Shift
-		result = new Int2(
-			result.x + (InstanceOrder % 2 == 0 ? 8 : -8) * (InstanceOrder / 2),
-			result.y
-		);
-
-		return result;
-	}
+	protected override CharacterNavigation CreateNativeNavigation () => SummonNavigation = new SummonNavigation(this);
 
 
 	// Summon
