@@ -168,7 +168,7 @@ public sealed class CameraAutoScroll : Entity {
 				// Player Passout Outside Camera
 				Active = false;
 				Current = null;
-				player.SetHealth(0);
+				player.Health.HP = 0;
 				player.SetCharacterState(CharacterState.PassOut);
 			} else {
 				player.X = player.X.Clamp(viewRect.xMin, viewRect.xMax);

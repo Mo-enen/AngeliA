@@ -63,6 +63,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	public virtual bool AllowQuickPlayerMenuUI => InventoryCurrentAvailable;
 	int IDamageReceiver.Team => Const.TEAM_PLAYER;
 	public override bool AllowInventory => true;
+	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 
 	// Data
 	private int AttackRequiringFrame = int.MinValue;
@@ -274,7 +275,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 	private void Update_Action () {
 
-		if (TakingDamage || Task.HasTask()) {
+		if (Health.TakingDamage || Task.HasTask()) {
 			TargetActionEntity = null;
 			return;
 		}
@@ -486,7 +487,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 		if (Task.HasTask()) return;
 
-		bool fullPassOut = HealthPoint == 0 && Game.GlobalFrame > PassOutFrame + 48;
+		bool fullPassOut = Health.HP == 0 && Game.GlobalFrame > PassOutFrame + 48;
 
 		if (fullPassOut) {
 			ControlHintUI.DrawGlobalHint(
@@ -511,12 +512,12 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	public override void Update () {
 		if (Selecting != this && !Stage.ViewRect.Overlaps(GlobalBounds)) return;
 		base.Update();
-		PhysicsUpdate_Collect();
+		Update_Collect();
 		Update_Repair();
 	}
 
 
-	private void PhysicsUpdate_Collect () {
+	private void Update_Collect () {
 		if (Selecting != this) return;
 		var hits = Physics.OverlapAll(
 			PhysicsMask.DYNAMIC, Rect, out int count, this, OperationMode.TriggerOnly
@@ -537,7 +538,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		if (
 			CharacterState != CharacterState.GamePlay ||
 			Task.HasTask() ||
-			TakingDamage ||
+			Health.TakingDamage ||
 			Game.GlobalFrame != Movement.LastSquatFrame
 		) return;
 		for (int i = 0; i < EquipmentTypeCount; i++) {
@@ -567,13 +568,13 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		base.LateUpdate();
 		PoseRenderingZOffset = oldZ;
 
-		// Auto Pick Item
+		// Auto Pick Item on Ground
 		if (!Task.HasTask() && !PlayerMenuUI.ShowingUI) {
 			var cells = Physics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
 				if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-				holder.Collect(this, onlyStackOnExisting: true, ignoreEquipment: false);
+				holder.Collect(this, onlyStackOnExisting: true, ignoreEquipment: equippingID == 0);
 			}
 		}
 
@@ -640,7 +641,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	}
 
 
-	bool IActionTarget.AllowInvoke () => !IsInvincible;
+	bool IActionTarget.AllowInvoke () => !Health.IsInvincible;
 
 
 	public bool EquipmentAvailable (EquipmentType equipmentType) => equipmentType switch {

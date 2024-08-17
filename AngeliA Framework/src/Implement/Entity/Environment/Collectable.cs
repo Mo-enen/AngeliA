@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public abstract class ItemCollectable<TItem> : Collectable where TItem : Item {
 	private int ItemID { get; init; }
 	public ItemCollectable () => ItemID = typeof(TItem).AngeHash();
-	public override bool OnCollect (Entity source) => ItemSystem.GiveItemTo(source.TypeID, ItemID, 1);
+	public override bool OnCollect (Entity source) {
+		base.OnCollect(source);
+		return ItemSystem.GiveItemTo(source.TypeID, ItemID, 1);
+	}
 }
 
 
@@ -40,7 +43,12 @@ public abstract class Collectable : EnvironmentEntity {
 	}
 
 
-	public abstract bool OnCollect (Entity source);
+	public virtual bool OnCollect (Entity source) {
+		if (Game.UseProceduralMap) {
+			FrameworkUtil.PickEntityBlock(this, false);
+		}
+		return true;
+	}
 
 
 }

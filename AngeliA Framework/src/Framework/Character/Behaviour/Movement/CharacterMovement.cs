@@ -151,7 +151,7 @@ public partial class CharacterMovement {
 	public CharacterMovement (Character character) => TargetCharacter = character;
 
 
-	public virtual void OnCharacterActivated () {
+	public virtual void OnActivated () {
 		Width = MovementWidth;
 		Height = MovementHeight;
 		OffsetX = -MovementWidth / 2;

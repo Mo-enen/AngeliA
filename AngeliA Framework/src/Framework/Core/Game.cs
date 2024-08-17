@@ -37,7 +37,7 @@ public abstract partial class Game {
 	public static bool IsToolApplication { get; private set; } = false;
 	public static bool AllowPause { get; private set; } = true;
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
-	public static bool AllowPlayerRestart { get; private set; } = true;
+	public static bool AllowPlayerRestart => PauselessFrame <= IgnoreRestartGameOptionFrame ? false : _AllowPlayerRestart;
 	public static bool ForceUnifyBasedOnMonitor { get; private set; } = true;
 	public static bool NoQuitFromMenu { get; private set; } = false;
 
@@ -60,6 +60,8 @@ public abstract partial class Game {
 	private static readonly HashSet<int> CacheForAudioSync = new();
 	private static readonly List<int> CacheForAudioSyncRemove = new();
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
+	private static int IgnoreRestartGameOptionFrame = -1;
+	private static bool _AllowPlayerRestart = true;
 	private readonly char[] PressingCharsForCurrentFrame = new char[256];
 	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
 	private int PressingCharCount = 0;
@@ -145,7 +147,7 @@ public abstract partial class Game {
 			IgnoreArtworkPixels = true;
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<PlayerCanNotRestartGameAttribute>()) {
-			AllowPlayerRestart = false;
+			_AllowPlayerRestart = false;
 		}
 		if (Util.TryGetAttributeFromAllAssemblies<ScaleUiBasedOnScreenHeightAttribute>()) {
 			ForceUnifyBasedOnMonitor = false;
@@ -318,6 +320,7 @@ public abstract partial class Game {
 		IsPlaying = false;
 	}
 
+	public static void IgnoreRestartGameOption (int duration = 1) => IgnoreRestartGameOptionFrame = Game.PauselessFrame + duration;
 
 	// Fonts
 	public static void LoadFontsIntoPool (string rootPath, bool builtIn) {

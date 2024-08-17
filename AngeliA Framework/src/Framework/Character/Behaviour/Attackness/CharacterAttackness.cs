@@ -18,7 +18,6 @@ public partial class CharacterAttackness {
 	public int? AttackChargeStartFrame { get; private set; } = null;
 	public bool LastAttackCharged { get; private set; } = false;
 	public virtual int AttackStyleIndex { get; private set; } = -1;
-	public virtual int AttackTargetTeam => Const.TEAM_ALL;
 	public virtual bool IsChargingAttack => false;
 	public virtual bool RandomAttackAnimationStyle => true;
 	public virtual Direction8 AimingDirection => Direction8.Right;
@@ -45,7 +44,7 @@ public partial class CharacterAttackness {
 	public CharacterAttackness (Character character) => TargetCharacter = character;
 
 
-	public void OnActivated_Attack () {
+	public void OnActivated () {
 		LastAttackFrame = int.MinValue;
 		AttackChargeStartFrame = null;
 		LastAttackCharged = false;

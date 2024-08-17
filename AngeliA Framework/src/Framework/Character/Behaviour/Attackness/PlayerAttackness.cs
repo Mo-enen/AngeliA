@@ -13,7 +13,6 @@ public class PlayerAttackness : CharacterAttackness {
 		Input.GameKeyHolding(Gamekey.Action) &&
 		TargetCharacter.IsAttackAllowedByMovement() &&
 		TargetCharacter.IsAttackAllowedByEquipment();
-	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 	public override Direction8 AimingDirection => _AimingDirection;
 	public Direction8 _AimingDirection = Direction8.Right;
 	public PlayerAttackness (Character character) : base(character) { }

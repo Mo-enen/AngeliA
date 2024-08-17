@@ -87,7 +87,7 @@ public class OpeningTask : TaskItem {
 					player.Y = PlayerSpawnY;
 				}
 				player?.OnActivated();
-				player?.Heal(player.MaxHP);
+				player?.Health.Heal(player.Health.MaxHP);
 				if (player != null && GotoBed && Stage.TryGetEntityNearby<Bed>(new Int2(PlayerSpawnX, PlayerSpawnY), out var bed)) {
 					bed.GetTargetOnBed(Player.Selecting);
 					TargetViewX = player.Rect.CenterX();

@@ -3,7 +3,6 @@ using AngeliA;
 using AngeliaRigged;
 
 [assembly: IgnoreArtworkPixels]
-[assembly: PlayerCanNotRestartGame]
 [assembly: NoQuitFromMenu]
 
 var riggedGame = new RiggedGame(args);

@@ -344,7 +344,7 @@ public abstract class Weapon : Equipment {
 		bullet.Y = sourceRect.CenterY() - bullet.Height / 2;
 		bullet.AttackIndex = sender.Attackness.AttackStyleIndex;
 		bullet.AttackCharged = sender.Attackness.LastAttackCharged;
-		bullet.TargetTeam = sender.Attackness.AttackTargetTeam;
+		bullet.TargetTeam = sender.AttackTargetTeam;
 		return bullet;
 	}
 

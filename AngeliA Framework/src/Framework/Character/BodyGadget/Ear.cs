@@ -82,7 +82,7 @@ public abstract class Ear : BodyGadget {
 		int z = head.FrontSide ? 33 : -33;
 		const int A2G = Const.CEL / Const.ART_CEL;
 
-		if (character.HealthPoint == 0) headRect.y -= A2G;
+		if (character.Health.HP == 0) headRect.y -= A2G;
 		int basicRootY = character.BasicRootY;
 
 		// Motion X

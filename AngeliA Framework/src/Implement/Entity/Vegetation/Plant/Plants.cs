@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL * 2, Const.CEL * 2)]
@@ -79,7 +79,12 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 	}
 
 
-	protected virtual void OnBreak () { }
+	protected virtual void OnPlantBreak () {
+		bool itemDropped = ItemSystem.DropItemFor(this);
+		if (Game.UseProceduralMap) {
+			FrameworkUtil.PickEntityBlock(this, !itemDropped);
+		}
+	}
 
 
 	// API
@@ -100,7 +105,7 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 		Stage.MarkAsLocalAntiSpawn(this);
 		// Disable
 		Active = false;
-		OnBreak();
+		OnPlantBreak();
 	}
 
 

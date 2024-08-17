@@ -17,7 +17,7 @@ public enum CharacterState {
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract partial class Character : Rigidbody {
+public abstract partial class Character : Rigidbody, IDamageReceiver {
 
 
 
@@ -56,6 +56,14 @@ public abstract partial class Character : Rigidbody {
 	public int PassOutFrame { get; private set; } = int.MinValue;
 	public bool InventoryCurrentAvailable => AllowInventory && Game.GlobalFrame > IgnoreInventoryFrame;
 	public bool EquipingPickWeapon { get; private set; } = false;
+	protected int CurrentAttackSpeedRate => Movement.MovementState switch {
+		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
+		CharacterMovementState.Run => Attackness.RunningSpeedRateOnAttack,
+		CharacterMovementState.JumpDown => Attackness.AirSpeedRateOnAttack,
+		CharacterMovementState.JumpUp => Attackness.AirSpeedRateOnAttack,
+		_ => Attackness.DefaultSpeedRateOnAttack,
+	};
+	int IDamageReceiver.Team => Const.TEAM_NEUTRAL;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
 	public override int Gravity => 5;
@@ -65,17 +73,12 @@ public abstract partial class Character : Rigidbody {
 	public sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	public virtual int Bouncy => 150;
 	public virtual bool AllowInventory => false;
-	protected int CurrentAttackSpeedRate => Movement.MovementState switch {
-		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
-		CharacterMovementState.Run => Attackness.RunningSpeedRateOnAttack,
-		CharacterMovementState.JumpDown => Attackness.AirSpeedRateOnAttack,
-		CharacterMovementState.JumpUp => Attackness.AirSpeedRateOnAttack,
-		_ => Attackness.DefaultSpeedRateOnAttack,
-	};
+	public virtual int AttackTargetTeam => Const.TEAM_ALL;
 
 	// Behaviour
 	public readonly CharacterMovement Movement;
 	public readonly CharacterAttackness Attackness;
+	public readonly CharacterHealth Health;
 
 	// Data
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
@@ -101,6 +104,7 @@ public abstract partial class Character : Rigidbody {
 		// Behaviour
 		Movement = CreateNativeMovement();
 		Attackness = CreateNativeAttackness();
+		Health = CreateNativeHealth();
 		// Init Inventory
 		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
@@ -119,9 +123,9 @@ public abstract partial class Character : Rigidbody {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		Movement.OnCharacterActivated();
-		OnActivated_Health();
-		Attackness.OnActivated_Attack();
+		Movement.OnActivated();
+		Health.OnActivated();
+		Attackness.OnActivated();
 		OnActivated_Navigation();
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;
@@ -206,7 +210,7 @@ public abstract partial class Character : Rigidbody {
 
 	public override void Update () {
 
-		if (IsEmptyHealth) SetCharacterState(CharacterState.PassOut);
+		if (Health.IsEmptyHealth) SetCharacterState(CharacterState.PassOut);
 
 		if (Teleporting) {
 			PhysicsUpdate_AnimationType();
@@ -219,9 +223,9 @@ public abstract partial class Character : Rigidbody {
 		switch (CharacterState) {
 			default:
 			case CharacterState.GamePlay:
-				if (TakingDamage) {
+				if (Health.TakingDamage) {
 					// Tacking Damage
-					VelocityX = VelocityX.MoveTowards(0, KnockbackDeceleration);
+					VelocityX = VelocityX.MoveTowards(0, Health.KnockbackDeceleration);
 				} else {
 					// General
 					if (Attackness.IsAttacking) {
@@ -277,7 +281,7 @@ public abstract partial class Character : Rigidbody {
 		static CharacterAnimationType GetCurrentPoseAnimationType (Character character) {
 			if (Game.GlobalFrame <= character.LockedAnimationTypeFrame) return character.LockedAnimationType;
 			if (character.Teleporting) return character.TeleportWithPortal ? CharacterAnimationType.Rolling : CharacterAnimationType.Idle;
-			if (character.TakingDamage) return CharacterAnimationType.TakingDamage;
+			if (character.Health.TakingDamage) return CharacterAnimationType.TakingDamage;
 			if (character.CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
 			if (character.CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
 			if (character.Movement.IsRolling) return CharacterAnimationType.Rolling;
@@ -317,11 +321,11 @@ public abstract partial class Character : Rigidbody {
 
 	private void FrameUpdate_RenderCharacter () {
 
-		bool blinking = IsInvincible && !TakingDamage && (Game.GlobalFrame - InvincibleEndFrame).UMod(8) < 4;
+		bool blinking = Health.IsInvincible && !Health.TakingDamage && (Game.GlobalFrame - Health.InvincibleEndFrame).UMod(8) < 4;
 		if (blinking) return;
 
 		int oldLayerIndex = Renderer.CurrentLayerIndex;
-		bool colorFlash = TakingDamage && HealthPoint > 0 && (Game.GlobalFrame - LastDamageFrame).UMod(8) < 4;
+		bool colorFlash = Health.TakingDamage && Health.HP > 0 && (Game.GlobalFrame - Health.LastDamageFrame).UMod(8) < 4;
 		if (colorFlash) Renderer.SetLayerToColor();
 		int cellIndexStart = Renderer.GetUsedCellCount();
 
@@ -411,7 +415,7 @@ public abstract partial class Character : Rigidbody {
 		int invCapacity = GetInventoryCapacity();
 		if (invCapacity > 0) {
 
-			bool eventAvailable = CharacterState == CharacterState.GamePlay && !Task.HasTask() && !TakingDamage;
+			bool eventAvailable = CharacterState == CharacterState.GamePlay && !Task.HasTask() && !Health.TakingDamage;
 			int attackLocalFrame = eventAvailable && Attackness.IsAttacking ? Game.GlobalFrame - Attackness.LastAttackFrame : -1;
 
 			// Inventory
@@ -493,6 +497,41 @@ public abstract partial class Character : Rigidbody {
 	}
 
 
+	// Damage
+	public virtual void TakeDamage (Damage damage) {
+		if (!Active || damage.Amount <= 0 || Health.HP <= 0) return;
+		if (CharacterState != CharacterState.GamePlay || Health.IsInvincible) return;
+		if (Health.InvincibleOnRush && Movement.IsRushing) return;
+		if (Health.InvincibleOnDash && Movement.IsDashing) return;
+		OnTakeDamage(damage.Amount, damage.Sender);
+	}
+
+
+	protected virtual void OnTakeDamage (int damage, Entity sender) {
+
+		// Equipment
+		for (int i = 0; i < EquipmentTypeCount && damage > 0; i++) {
+			GetEquippingItem((EquipmentType)i)?.OnTakeDamage_FromEquipment(this, sender, ref damage);
+		}
+
+		// Inventory
+		int iCount = GetInventoryCapacity();
+		for (int i = 0; i < iCount && damage > 0; i++) {
+			GetItemFromInventory(i)?.OnTakeDamage_FromInventory(this, sender, ref damage);
+		}
+
+		// Deal Damage
+		damage = damage.GreaterOrEquelThanZero();
+		Health.HP = (Health.HP - damage).Clamp(0, Health.MaxHP);
+
+		VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
+
+		Health.InvincibleEndFrame = Game.GlobalFrame + Health.InvincibleDuration;
+		Health.LastDamageFrame = Game.GlobalFrame;
+
+	}
+
+
 	// Bounce
 	public void Bounce () => LastRequireBounceFrame = Game.GlobalFrame;
 	public void CancelBounce () => LastRequireBounceFrame = int.MinValue;
@@ -534,6 +573,7 @@ public abstract partial class Character : Rigidbody {
 	// Behaviour
 	protected virtual CharacterMovement CreateNativeMovement () => new CharacterMovement(this);
 	protected virtual CharacterAttackness CreateNativeAttackness () => new CharacterAttackness(this);
+	protected virtual CharacterHealth CreateNativeHealth () => new CharacterHealth();
 
 
 	public void OverrideMovement (CharacterMovementOverride movementOverride, int duration = 1) {

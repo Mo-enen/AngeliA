@@ -164,7 +164,7 @@ public abstract class SheetCharacter : Character {
 		if (!AnimationSheetPool.TryGetValue(TypeID, out var sheet)) return;
 
 		// Damage
-		if (TakingDamage) {
+		if (Health.TakingDamage) {
 			Renderer.DrawAnimation(
 				sheet.Damaging,
 				X, Y, 500, 0, 0,

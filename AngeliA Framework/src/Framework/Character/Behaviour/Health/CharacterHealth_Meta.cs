@@ -1,11 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
-public abstract partial class Character {
 
-
+public partial class CharacterHealth {
 
 	public readonly BuffInt MaxHP = new(1);
 	public readonly BuffInt InvincibleDuration = new(120);
@@ -14,8 +12,5 @@ public abstract partial class Character {
 	public readonly BuffInt KnockbackDeceleration = new(16);
 	public readonly BuffBool InvincibleOnDash = new(false);
 	public readonly BuffBool InvincibleOnRush = new(false);
-
-
-
 
 }

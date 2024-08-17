@@ -127,7 +127,7 @@ public class BarrelIron : EnvironmentRigidbody, IDamageReceiver {
 			cDriver.Y = Y + Height;
 			cDriver.Movement.ClearRunningAccumulate();
 			cDriver.CancelBounce();
-			if (!cDriver.TakingDamage && !cDriver.Teleporting) {
+			if (!cDriver.Health.TakingDamage && !cDriver.Teleporting) {
 				cDriver.LockAnimationType(
 					cDriver.Movement.IntendedX == 0 ?
 						cDriver.Movement.IntendedY < 0 ? CharacterAnimationType.SquatIdle : CharacterAnimationType.Idle :
