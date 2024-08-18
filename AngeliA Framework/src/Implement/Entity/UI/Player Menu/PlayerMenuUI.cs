@@ -457,10 +457,12 @@ public class PlayerMenuUI : EntityUI {
 			Renderer.TryGetSprite(TakingID, out var iconSp, true) ||
 			Renderer.TryGetSpriteFromGroup(TakingID, 0, out iconSp)
 		) {
+			var fittingRect = new IRect(itemRect.x + size / 2, itemRect.y, size, size).Fit(iconSp);
 			Renderer.Draw(
 				iconSp,
-				itemRect.x + size / 2, itemRect.y, 500, 500, Game.GlobalFrame.PingPong(30) - 15,
-				size, size, Color32.WHITE, int.MaxValue
+				fittingRect.x, fittingRect.y, 500, 500,
+				Game.GlobalFrame.PingPong(30) - 15,
+				fittingRect.width, fittingRect.height, Color32.WHITE, int.MaxValue
 			);
 		}
 

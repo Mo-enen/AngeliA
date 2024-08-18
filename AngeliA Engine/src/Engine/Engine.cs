@@ -113,11 +113,6 @@ public partial class Engine {
 			new GenericDialogUI(),
 			new FileBrowserUI(),
 		};
-		engine.InitializeEngine();
-	}
-
-
-	private void InitializeEngine () {
 
 #if DEBUG
 		// Grow Engine Version
@@ -130,15 +125,15 @@ public partial class Engine {
 		}
 #endif
 
-		CheckEngineAsepriteChanged();
+		engine.CheckEngineAsepriteChanged();
 
 		// Projects
-		Projects.Clear();
+		engine.Projects.Clear();
 		var projectPaths = ProjectPaths.Value.Split(';');
 		if (projectPaths != null) {
 			foreach (var path in projectPaths) {
 				if (string.IsNullOrWhiteSpace(path)) continue;
-				Projects.Add(new ProjectData() {
+				engine.Projects.Add(new ProjectData() {
 					Path = path,
 					Name = Util.GetNameWithoutExtension(path),
 					FolderExists = Util.FolderExists(path),
@@ -146,8 +141,8 @@ public partial class Engine {
 				});
 			}
 		}
-		RefreshProjectCache();
-		SortProjects();
+		engine.RefreshProjectCache();
+		engine.SortProjects();
 
 		// Engine Window
 		if (Maximize.Value) {
@@ -161,7 +156,7 @@ public partial class Engine {
 
 		// Rig Start Setting
 		if (EngineSetting.LastMapEditorViewHeight.Value > 0) {
-			Transceiver.SetStartViewPos(
+			engine.Transceiver.SetStartViewPos(
 				EngineSetting.LastMapEditorViewX.Value,
 				EngineSetting.LastMapEditorViewY.Value,
 				EngineSetting.LastMapEditorViewZ.Value,
@@ -170,18 +165,18 @@ public partial class Engine {
 		}
 
 		// UI Window
-		for (int i = 0; i < AllWindows.Length; i++) {
-			var win = AllWindows[i];
+		for (int i = 0; i < engine.AllWindows.Length; i++) {
+			var win = engine.AllWindows[i];
 			win.OnActivated();
-			if (win is RiggedMapEditor) RigMapEditorWindowIndex = i;
-			if (win is ConsoleWindow) ConsoleWindowIndex = i;
+			if (win is RiggedMapEditor) engine.RigMapEditorWindowIndex = i;
+			if (win is ConsoleWindow) engine.ConsoleWindowIndex = i;
 		}
 
-		SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
-		ResetViewRect();
+		engine.SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
+		engine.ResetViewRect();
 
 		// Theme
-		ThemeSheetIndex = Renderer.AddAltSheet(ThemeSheet);
+		engine.ThemeSheetIndex = Renderer.AddAltSheet(engine.ThemeSheet);
 
 	}
 

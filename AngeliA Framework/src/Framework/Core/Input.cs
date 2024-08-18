@@ -267,6 +267,14 @@ public static class Input {
 	}
 
 
+	[OnGameUpdateLater]
+	internal static void UpdateIgnore () {
+
+
+
+	}
+
+
 	[OnGameUpdatePauseless(-1024)]
 	internal static void UpdatePausing () {
 		if (Game.IsPlaying) return;
@@ -328,6 +336,8 @@ public static class Input {
 			state.Holding = holding;
 			if (state.PrevHolding != state.Holding) {
 				state.Frame = GlobalFrame;
+			}
+			if (!state.PrevHolding && state.Holding) {
 				state.Ignored = false;
 			}
 			if (!state.Ignored) {
@@ -351,6 +361,8 @@ public static class Input {
 			}
 			if (state.PrevHolding != state.Holding) {
 				state.Frame = GlobalFrame;
+			}
+			if (!state.PrevHolding && state.Holding) {
 				state.Ignored = false;
 			}
 			// Any
@@ -480,9 +492,11 @@ public static class Input {
 				}
 			}
 
-			// Refresh Ignore
+			// Refresh
 			if (state.PrevHolding != state.Holding) {
 				state.Frame = GlobalFrame;
+			}
+			if (!state.PrevHolding && state.Holding) {
 				state.Ignored = false;
 			}
 
@@ -508,6 +522,8 @@ public static class Input {
 			}
 			if (state.PrevHolding != state.Holding) {
 				state.Frame = GlobalFrame;
+			}
+			if (!state.PrevHolding && state.Holding) {
 				state.Ignored = false;
 			}
 			// Any

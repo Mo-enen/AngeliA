@@ -37,7 +37,7 @@ public partial class CharacterMovement {
 	private const int CLIP_CORRECT_TOLERANCE = Const.CEL / 4;
 
 	// Api
-	public readonly Character TargetCharacter;
+	public Character TargetCharacter { get; private set; }
 	public Int2 LastMoveDirection { get; private set; } = default;
 	public int IntendedX { get; private set; } = 0;
 	public int IntendedY { get; private set; } = 0;
@@ -163,6 +163,7 @@ public partial class CharacterMovement {
 
 
 	public virtual void PhysicsUpdateGamePlay () {
+		if (TargetCharacter == null) return;
 		Update_Cache();
 		Update_GrabFlip();
 		Update_ResetJumpCount();
@@ -822,6 +823,9 @@ public partial class CharacterMovement {
 	#region --- API ---
 
 
+	public void SetTargetCharacter (Character newTarget) => TargetCharacter = newTarget;
+
+
 	// Config
 	public static void ReloadMovementConfigFromFile (string characterName) {
 		int id = characterName.AngeHash();
@@ -854,7 +858,7 @@ public partial class CharacterMovement {
 
 
 	public void SyncConfigFromPool () {
-		if (LocalMovementConfigVersion == MovementConfigGlobalVersion) return;
+		if (LocalMovementConfigVersion == MovementConfigGlobalVersion || TargetCharacter == null) return;
 		LocalMovementConfigVersion = MovementConfigGlobalVersion;
 		if (ConfigPool_Movement.TryGetValue(TargetCharacter.TypeID, out var mConfig)) {
 			mConfig.LoadToCharacter(TargetCharacter);

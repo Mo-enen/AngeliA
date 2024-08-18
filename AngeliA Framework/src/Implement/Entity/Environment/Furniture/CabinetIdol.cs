@@ -19,9 +19,7 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 			TypeID, s_ArtworkIndex.Value, out var sprite, true, true
 		)) {
 			var cell = Renderer.Draw(sprite, RenderingRect);
-			if ((this as IActionTarget).IsHighlighted) {
-				IActionTarget.HighlightBlink(cell);
-			}
+			(this as IActionTarget).BlinkIfHighlight(cell);
 		}
 	}
 

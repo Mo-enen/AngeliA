@@ -76,10 +76,22 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
 
 	// Behaviour
-	public readonly CharacterMovement Movement;
-	public readonly CharacterAttackness Attackness;
-	public readonly CharacterHealth Health;
-	public readonly CharacterNavigation Navigation;
+	public CharacterMovement Movement;
+	public CharacterAttackness Attackness;
+	public CharacterHealth Health;
+	public CharacterNavigation Navigation;
+	private CharacterMovement MovementOverride;
+	private CharacterAttackness AttacknessOverride;
+	private CharacterHealth HealthOverride;
+	private CharacterNavigation NavigationOverride;
+	private readonly CharacterMovement NativeMovement;
+	private readonly CharacterAttackness NativeAttackness;
+	private readonly CharacterHealth NativeHealth;
+	private readonly CharacterNavigation NativeNavigation;
+	private int OverridingMovementFrame = int.MinValue;
+	private int OverridingAttacknessFrame = int.MinValue;
+	private int OverridingHealthFrame = int.MinValue;
+	private int OverridingNavigationFrame = int.MinValue;
 
 	// Data
 	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
@@ -89,8 +101,6 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
 	private int IgnoreInventoryFrame = int.MinValue;
-	private int OverridingMovementFrame = int.MinValue;
-	private CharacterMovementOverride MovementOverride;
 
 
 	#endregion
@@ -103,10 +113,10 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 
 	public Character () {
 		// Behaviour
-		Movement = CreateNativeMovement();
-		Attackness = CreateNativeAttackness();
-		Health = CreateNativeHealth();
-		Navigation = CreateNativeNavigation();
+		Movement = NativeMovement = CreateNativeMovement();
+		Attackness = NativeAttackness = CreateNativeAttackness();
+		Health = NativeHealth = CreateNativeHealth();
+		Navigation = NativeNavigation = CreateNativeNavigation();
 		// Init Inventory
 		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
@@ -125,10 +135,14 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		Movement.OnActivated();
-		Health.OnActivated();
-		Attackness.OnActivated();
-		Navigation.OnActivated();
+		Movement = NativeMovement;
+		Attackness = NativeAttackness;
+		Health = NativeHealth;
+		Navigation = NativeNavigation;
+		NativeMovement.OnActivated();
+		NativeHealth.OnActivated();
+		NativeAttackness.OnActivated();
+		NativeNavigation.OnActivated();
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;
 		VelocityX = 0;
@@ -138,12 +152,28 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	}
 
 
+	public override void OnInactivated () {
+		base.OnInactivated();
+		MovementOverride = null;
+		AttacknessOverride = null;
+		NavigationOverride = null;
+	}
+
+
 	// Physics Update
 	public override void FirstUpdate () {
+
+		// Update Behaviour
+		Movement = Game.GlobalFrame <= OverridingMovementFrame && MovementOverride != null ? MovementOverride : NativeMovement;
+		Attackness = Game.GlobalFrame <= OverridingAttacknessFrame && AttacknessOverride != null ? AttacknessOverride : NativeAttackness;
+		Health = Game.GlobalFrame <= OverridingHealthFrame && HealthOverride != null ? HealthOverride : NativeHealth;
+		Navigation = Game.GlobalFrame <= OverridingNavigationFrame && NavigationOverride != null ? NavigationOverride : NativeNavigation;
+
 		// Fill Physics
 		if (CharacterState == CharacterState.GamePlay) {
 			Physics.FillEntity(PhysicalLayer, this, Navigation.NavigationEnable);
 		}
+
 	}
 
 
@@ -220,7 +250,6 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		}
 
 		// Behaviour
-		bool usingOverridingMovement = Game.GlobalFrame <= IgnoreInventoryFrame && MovementOverride != null;
 		Movement.MovementState = CharacterMovementState.Idle;
 		switch (CharacterState) {
 			default:
@@ -243,12 +272,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 					}
 					// Update
 					Attackness.PhysicsUpdate_Attack();
-					if (usingOverridingMovement) {
-						MovementOverride.PhysicsUpdateGamePlay(Movement);
-					} else {
-						Movement.PhysicsUpdateGamePlay();
-						MovementOverride = null;
-					}
+					Movement.PhysicsUpdateGamePlay();
 				}
 				break;
 
@@ -579,9 +603,33 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	protected virtual CharacterNavigation CreateNativeNavigation () => new CharacterNavigation(this);
 
 
-	public void OverrideMovement (CharacterMovementOverride movementOverride, int duration = 1) {
+	public void OverrideMovement (CharacterMovement movementOverride, int duration = 1) {
+		if (movementOverride != MovementOverride) {
+			movementOverride.OnActivated();
+		}
 		OverridingMovementFrame = Game.GlobalFrame + duration;
 		MovementOverride = movementOverride;
+	}
+	public void OverrideAttackness (CharacterAttackness attacknessOverride, int duration = 1) {
+		if (attacknessOverride != AttacknessOverride) {
+			attacknessOverride.OnActivated();
+		}
+		OverridingAttacknessFrame = Game.GlobalFrame + duration;
+		AttacknessOverride = attacknessOverride;
+	}
+	public void OverrideHealth (CharacterHealth healthOverride, int duration = 1) {
+		if (healthOverride != HealthOverride) {
+			healthOverride.OnActivated();
+		}
+		OverridingHealthFrame = Game.GlobalFrame + duration;
+		HealthOverride = healthOverride;
+	}
+	public void OverrideNavigation (CharacterNavigation navigationOverride, int duration = 1) {
+		if (navigationOverride != NavigationOverride) {
+			navigationOverride.OnActivated();
+		}
+		OverridingNavigationFrame = Game.GlobalFrame + duration;
+		NavigationOverride = navigationOverride;
 	}
 
 

@@ -149,10 +149,13 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget, IBlockEntity 
 			allowInvoke ? Color32.WHITE : Color32.WHITE_96
 		);
 		var act = this as IActionTarget;
-		if (act.IsHighlighted && !IsPlaying) {
-			IActionTarget.HighlightBlink(cell);
+		if (!IsPlaying) {
+			// Blink
+			act.BlinkIfHighlight(cell);
 			// Display Name
-			ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, DisplayName, true);
+			if (act.IsHighlighted) {
+				ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, DisplayName, true);
+			}
 		}
 	}
 

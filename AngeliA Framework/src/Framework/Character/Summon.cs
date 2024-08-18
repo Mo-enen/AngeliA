@@ -115,9 +115,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		base.LateUpdate();
 
 		// Highlight
-		if ((this as IActionTarget).IsHighlighted) {
-			IActionTarget.HighlightBlink(RenderedCell);
-		}
+		(this as IActionTarget).BlinkIfHighlight(RenderedCell);
 
 	}
 

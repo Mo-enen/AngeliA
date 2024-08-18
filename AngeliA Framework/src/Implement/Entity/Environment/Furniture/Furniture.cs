@@ -183,7 +183,7 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 		}
 		bool useHorizontal = ModuleType != Direction3.Horizontal || Pose != FittingPose.Mid;
 		bool useVertical = ModuleType != Direction3.Vertical || Pose == FittingPose.Up;
-		IActionTarget.HighlightBlink(cell, pivotX, 0f, useHorizontal, useVertical);
+		(this as IActionTarget).BlinkIfHighlight(cell, pivotX, 0f, useHorizontal, useVertical);
 	}
 
 

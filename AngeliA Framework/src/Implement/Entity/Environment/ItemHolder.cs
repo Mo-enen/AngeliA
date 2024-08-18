@@ -206,9 +206,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		}
 
 		// Highlight
-		if ((this as IActionTarget).IsHighlighted) {
-			IActionTarget.HighlightBlink(cell);
-		}
+		(this as IActionTarget).BlinkIfHighlight(cell);
 	}
 
 
@@ -249,9 +247,11 @@ public class ItemHolder : Rigidbody, IActionTarget {
 			int oldEqID = Inventory.GetEquipment(invID, equipmentType, out int oldEqCount);
 			if (oldEqID == 0 || oldEqID == ItemID) {
 				int newEqCount = Util.Min(oldEqCount + ItemCount, ItemSystem.GetItemMaxStackCount(oldEqID));
-				int deltaCount = newEqCount - oldEqCount;
-				if (Inventory.SetEquipment(invID, equipmentType, ItemID, newEqCount)) {
-					ItemCount = (ItemCount - deltaCount).GreaterOrEquelThanZero();
+				if (newEqCount > 0) {
+					int deltaCount = newEqCount - oldEqCount;
+					if (Inventory.SetEquipment(invID, equipmentType, ItemID, newEqCount)) {
+						ItemCount = (ItemCount - deltaCount).GreaterOrEquelThanZero();
+					}
 				}
 			}
 		}

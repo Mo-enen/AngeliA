@@ -1,71 +1,198 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
-public abstract class Vehicle : EnvironmentRigidbody {
 
 
-	// Api
-	public Entity[] Passengers { get; set; } = null;
-	public Entity Driver { get; set; } = null;
-	public sealed override bool CarryOtherRigidbodyOnTop => false;
-	public bool IsDriving { get; private set; } = false;
+public class TestV : Vehicle {
 
-
-	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		IsDriving = false;
+		Width = 48 * Const.ART_SCALE;
+		Height = 32 * Const.ART_SCALE;
+	}
+
+	protected override CharacterMovement CreateMovement () {
+		return new CharacterMovement(null);
+	}
+
+	protected override void LateUpdateVehicle () {
+		base.LateUpdateVehicle();
+
+		Renderer.Draw(TypeID, Rect);
+
+	}
+
+}
+
+
+public abstract class Vehicle : Rigidbody, IActionTarget {
+
+
+
+
+	#region --- VAR ---
+
+
+	// Const
+	private static readonly LanguageCode HINT_STOP_DRIVE = ("CtrlHint.StopDrive", "Stop Driving");
+
+	// Api
+	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	public Character Driver { get; private set; } = null;
+	public readonly CharacterMovement Movement;
+
+
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	public Vehicle () => Movement = CreateMovement();
+
+
+	public override void OnActivated () {
+		base.OnActivated();
+		Driver = null;
+	}
+
+
+	public override void FirstUpdate () {
+		if (Driver == null) {
+			Physics.FillEntity(PhysicalLayer, this);
+		} else {
+			IgnorePhysics();
+		}
 	}
 
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		if (Driver is Rigidbody rig) {
-			rig.IgnorePhysics(0);
-		}
-		foreach (var passenger in Passengers) {
-			if (passenger is Rigidbody _pRig) {
-				_pRig.IgnorePhysics(0);
+		// Update for Driver
+		if (Driver == null) {
+			// Check for Start Drive
+			if (CheckForStartDrive(out var driver)) {
+				StartDrive(driver);
+			}
+		} else {
+			// Check for Stop Drive
+			if (CheckForStopDrive()) {
+				StopDrive();
 			}
 		}
 	}
 
 
 	public override void Update () {
-		IsDriving = DrivingCheck();
-		if (IsDriving) {
-			// Drive
-			OnDriving();
-			// Movement
-			base.Update();
-			int deltaX = DeltaPositionX;
-			int deltaY = DeltaPositionY;
-			if (Driver != null && Driver.Active) {
-				Driver.X += deltaX;
-				Driver.Y += deltaY;
-			}
-			if (Passengers != null) {
-				foreach (var passenger in Passengers) {
-					if (passenger != null && passenger.Active) {
-						passenger.X += deltaX;
-						passenger.Y += deltaY;
-					}
-				}
-			}
+		base.Update();
+		// Update Movement
+		if (Driver == null) {
+			// Idle
+
 
 		} else {
-			// Not Driving
-			base.Update();
+			// Driving
+			Driver.OverrideMovement(Movement, 1);
+
 		}
 	}
 
 
-	protected abstract bool DrivingCheck ();
+	public sealed override void LateUpdate () {
+		base.LateUpdate();
+		// Follow Driver
+		if (Driver != null) {
+			FollowDriver();
+		}
+		// Rendering
+		int cellStart = Renderer.GetUsedCellCount();
+		LateUpdateVehicle();
+		if (Renderer.GetCells(out var cells, out int count)) {
+			for (int i = cellStart; i < count; i++) {
+				var cell = cells[i];
+				if (Driver == null) {
+					(this as IActionTarget).BlinkIfHighlight(cell);
+				}
+				FrameworkUtil.DrawEnvironmentShadow(cell);
+			}
+		}
+	}
 
 
-	protected virtual void OnDriving () { }
+	protected virtual void LateUpdateVehicle () { }
+
+
+	protected virtual void FollowDriver () {
+		X = Driver.X;
+		Y = Driver.Y;
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public virtual void StartDrive (Character driver) {
+		Driver = driver;
+		Movement.SetTargetCharacter(driver);
+	}
+
+
+	public virtual void StopDrive () {
+		Driver = null;
+		Movement.SetTargetCharacter(null);
+	}
+
+
+	protected virtual bool CheckForStartDrive (out Character driver) {
+		driver = null;
+		return false;
+	}
+
+
+	protected virtual bool CheckForStopDrive () {
+		if (Driver == null || !Driver.Active) return true;
+		ControlHintUI.AddHint(Gamekey.Select, HINT_STOP_DRIVE, 1);
+		if (Input.GameKeyDown(Gamekey.Select)) {
+			Input.UseGameKey(Gamekey.Select);
+			return true;
+		}
+		return false;
+	}
+
+
+	protected abstract CharacterMovement CreateMovement ();
+
+
+	bool IActionTarget.Invoke () {
+		if (Player.Selecting == null || Driver != null) return false;
+		StartDrive(Player.Selecting);
+		return true;
+	}
+
+
+	bool IActionTarget.AllowInvoke () => Driver == null;
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
 
 
 }

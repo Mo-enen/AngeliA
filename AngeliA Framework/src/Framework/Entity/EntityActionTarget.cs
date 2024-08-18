@@ -6,7 +6,8 @@ public interface IActionTarget {
 	public bool AllowInvokeOnSquat => false;
 	public bool Invoke ();
 	public bool AllowInvoke () => true;
-	public static void HighlightBlink (Cell cell, float pivotX = 0.5f, float pivotY = 0f, bool horizontal = true, bool vertical = true) {
+	public void BlinkIfHighlight (Cell cell, float pivotX = 0.5f, float pivotY = 0f, bool horizontal = true, bool vertical = true) {
+		if (!IsHighlighted) return;
 		if (Game.GlobalFrame % 30 > 15) return;
 		const int OFFSET = Const.CEL / 20;
 		cell.ReturnPivots(pivotX, pivotY);
