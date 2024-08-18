@@ -3,30 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
-public class TestV : Vehicle {
-
-	public override void OnActivated () {
-		base.OnActivated();
-		Width = 48 * Const.ART_SCALE;
-		Height = 32 * Const.ART_SCALE;
-	}
-
-	protected override CharacterMovement CreateMovement () {
-		return new CharacterMovement(null);
-	}
-
-	protected override void LateUpdateVehicle () {
-		base.LateUpdateVehicle();
-
-		Renderer.Draw(TypeID, Rect);
-
-	}
-
-}
-
-
-public abstract class Vehicle : Rigidbody, IActionTarget {
+public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMovement {
 
 
 
@@ -35,12 +12,22 @@ public abstract class Vehicle : Rigidbody, IActionTarget {
 
 
 	// Const
+	private static readonly LanguageCode HINT_DRIVE = ("CtrlHint.Drive", "Drive");
 	private static readonly LanguageCode HINT_STOP_DRIVE = ("CtrlHint.StopDrive", "Stop Driving");
 
 	// Api
-	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
-	public Character Driver { get; private set; } = null;
 	public readonly CharacterMovement Movement;
+	public Character Driver { get; private set; } = null;
+	public virtual Int2 DriverLocalPosition => new Int2(Width / 2, 1);
+	public virtual Int2 DriverLeaveLocalPosition => new Int2(Width / 2, Height);
+	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	public override int AirDragX => 0;
+	public override int AirDragY => 0;
+	public override int Gravity => 5;
+	public override bool CarryOtherRigidbodyOnTop => false;
+	public override bool AllowBeingCarryByOtherRigidbody => true;
+	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
+	bool IActionTarget.AllowInvokeOnSquat => true;
 
 
 	#endregion
@@ -51,21 +38,16 @@ public abstract class Vehicle : Rigidbody, IActionTarget {
 	#region --- MSG ---
 
 
-	public Vehicle () => Movement = CreateMovement();
+	public Vehicle () => Movement = System.Activator.CreateInstance(typeof(M), this) as VehicleMovement;
 
 
 	public override void OnActivated () {
 		base.OnActivated();
 		Driver = null;
-	}
-
-
-	public override void FirstUpdate () {
-		if (Driver == null) {
-			Physics.FillEntity(PhysicalLayer, this);
-		} else {
-			IgnorePhysics();
-		}
+		Movement.MovementWidth.BaseValue = Width;
+		Movement.MovementHeight.BaseValue = Height;
+		OffsetX = -Width / 2;
+		OffsetY = 0;
 	}
 
 
@@ -93,19 +75,33 @@ public abstract class Vehicle : Rigidbody, IActionTarget {
 			// Idle
 
 
+
 		} else {
 			// Driving
-			Driver.OverrideMovement(Movement, 1);
-
+			TakeDriver();
+			Driver.IgnorePhysics();
+			Driver.Health.MakeInvincible();
+			Driver.OverrideMovement(Movement);
+			if (Driver is Player pDriver) {
+				pDriver.IgnoreAction();
+			}
 		}
 	}
 
 
 	public sealed override void LateUpdate () {
 		base.LateUpdate();
-		// Follow Driver
+		// Hint
 		if (Driver != null) {
-			FollowDriver();
+			// Driving
+			ControlHintUI.AddHint(Gamekey.Jump, "", 1);
+			ControlHintUI.AddHint(Gamekey.Action, "", 1);
+			ControlHintUI.AddHint(Gamekey.Select, HINT_STOP_DRIVE, 1);
+		} else {
+			// Not Driving
+			if ((this as IActionTarget).IsHighlighted) {
+				ControlHintUI.AddHint(Gamekey.Action, HINT_DRIVE, 1);
+			}
 		}
 		// Rendering
 		int cellStart = Renderer.GetUsedCellCount();
@@ -125,9 +121,10 @@ public abstract class Vehicle : Rigidbody, IActionTarget {
 	protected virtual void LateUpdateVehicle () { }
 
 
-	protected virtual void FollowDriver () {
-		X = Driver.X;
-		Y = Driver.Y;
+	protected virtual void TakeDriver () {
+		var offste = DriverLocalPosition;
+		Driver.X = X + OffsetX + offste.x;
+		Driver.Y = Y + OffsetY + offste.y;
 	}
 
 
@@ -141,13 +138,17 @@ public abstract class Vehicle : Rigidbody, IActionTarget {
 
 	public virtual void StartDrive (Character driver) {
 		Driver = driver;
-		Movement.SetTargetCharacter(driver);
+		Driver.IgnorePhysics();
+		TakeDriver();
 	}
 
 
 	public virtual void StopDrive () {
+		Movement.Stop();
+		var offste = DriverLeaveLocalPosition;
+		Driver.X = X + OffsetX + offste.x;
+		Driver.Y = Y + OffsetY + offste.y;
 		Driver = null;
-		Movement.SetTargetCharacter(null);
 	}
 
 
@@ -159,16 +160,12 @@ public abstract class Vehicle : Rigidbody, IActionTarget {
 
 	protected virtual bool CheckForStopDrive () {
 		if (Driver == null || !Driver.Active) return true;
-		ControlHintUI.AddHint(Gamekey.Select, HINT_STOP_DRIVE, 1);
 		if (Input.GameKeyDown(Gamekey.Select)) {
 			Input.UseGameKey(Gamekey.Select);
 			return true;
 		}
 		return false;
 	}
-
-
-	protected abstract CharacterMovement CreateMovement ();
 
 
 	bool IActionTarget.Invoke () {

@@ -71,6 +71,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private int LastRightKeyDown = int.MinValue;
 	private int LastGroundedY = 0;
 	private int PrevZ = int.MinValue;
+	private int IgnoreActionFrame = -1;
 	private PlayerAttackness PlayerAttackness;
 
 	// Saving
@@ -275,7 +276,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 	private void Update_Action () {
 
-		if (Health.TakingDamage || Task.HasTask()) {
+		if (Health.TakingDamage || Task.HasTask() || Game.GlobalFrame <= IgnoreActionFrame) {
 			TargetActionEntity = null;
 			return;
 		}
@@ -656,6 +657,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	public void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
+
+
+	public void IgnoreAction (int duration = 1) => IgnoreActionFrame = Game.GlobalFrame + duration;
 
 
 	#endregion

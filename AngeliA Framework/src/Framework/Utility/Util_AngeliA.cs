@@ -284,8 +284,7 @@ public static partial class Util {
 		// Always Trigger Check
 		isTrigger = isTrigger ||
 			IsOnewayTag(tag) ||
-			tag.HasAll(Tag.Water) ||
-			tag.HasAll(Tag.Quicksand);
+			tag.HasAll(Tag.Water);
 
 		// Name
 		realName = name.TrimEnd(' ');

@@ -84,10 +84,10 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	private CharacterAttackness AttacknessOverride;
 	private CharacterHealth HealthOverride;
 	private CharacterNavigation NavigationOverride;
-	private readonly CharacterMovement NativeMovement;
-	private readonly CharacterAttackness NativeAttackness;
-	private readonly CharacterHealth NativeHealth;
-	private readonly CharacterNavigation NativeNavigation;
+	public readonly CharacterMovement NativeMovement;
+	public readonly CharacterAttackness NativeAttackness;
+	public readonly CharacterHealth NativeHealth;
+	public readonly CharacterNavigation NativeNavigation;
 	private int OverridingMovementFrame = int.MinValue;
 	private int OverridingAttacknessFrame = int.MinValue;
 	private int OverridingHealthFrame = int.MinValue;
@@ -170,8 +170,13 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		Navigation = Game.GlobalFrame <= OverridingNavigationFrame && NavigationOverride != null ? NavigationOverride : NativeNavigation;
 
 		// Fill Physics
-		if (CharacterState == CharacterState.GamePlay) {
+		if (CharacterState == CharacterState.GamePlay && !IgnoringPhysics) {
 			Physics.FillEntity(PhysicalLayer, this, Navigation.NavigationEnable);
+		}
+
+		// Nav State
+		if (Navigation.NavigationEnable) {
+			Movement.PushAvailable.Override(false);
 		}
 
 	}

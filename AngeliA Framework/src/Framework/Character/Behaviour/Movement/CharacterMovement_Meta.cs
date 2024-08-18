@@ -18,6 +18,7 @@ public partial class CharacterMovement {
 	public readonly BuffInt GrabSideHeightAmount = new(947);
 
 	// Walk
+	public readonly BuffBool WalkAvailable = new(true);
 	public readonly BuffInt WalkSpeed = new(20);
 	public readonly BuffInt WalkAcceleration = new(3);
 	public readonly BuffInt WalkBrakeAcceleration = new(30);

@@ -504,6 +504,9 @@ public partial class PixelEditor {
 				// Btn
 				if (GUI.BlankButton(bRect, out var state)) {
 					SetAllSelectingSpritePivot((i % 3) * 500, (i / 3) * 500);
+					RefreshSpriteInputContent();
+					TryApplySpriteInputFields(forceApply: true);
+					RefreshSpriteInputContent();
 				}
 				// Body
 				Renderer.DrawPixel(bRect, Color32.GREY_46);

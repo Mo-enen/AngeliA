@@ -120,6 +120,11 @@ public struct Int2 : IEquatable<Int2>, IFormattable {
 		m_Y = y;
 	}
 
+	public void Deconstruct (out int x, out int y) {
+		x = this.x;
+		y = this.y;
+	}
+
 	public void Set (int x, int y) {
 		m_X = x;
 		m_Y = y;

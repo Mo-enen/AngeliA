@@ -14,7 +14,7 @@ public enum Tag : int {
 	Climb = 1 << 4,
 	ClimbStable = 1 << 5,
 
-	Quicksand = 1 << 6,
+	Test = 1 << 6,
 	Water = 1 << 7,
 	Slip = 1 << 8,
 	Slide = 1 << 9,
@@ -22,14 +22,11 @@ public enum Tag : int {
 	GrabTop = 1 << 11,
 	GrabSide = 1 << 12,
 	Grab = 1 << 13,
-
 	ShowLimb = 1 << 14,
 	HideLimb = 1 << 15,
-
 	LoopStart = 1 << 16,
 	Random = 1 << 17,
 	Palette = 1 << 18,
-
 	PhysicalDamage = 1 << 19,
 	ExplosiveDamage = 1 << 20,
 	MagicalDamage = 1 << 21,
@@ -57,7 +54,7 @@ public static class TagUtil {
 		Tag.Climb.ToString(),
 		Tag.ClimbStable.ToString(),
 
-		Tag.Quicksand.ToString(),
+		Tag.Test.ToString(),
 		Tag.Water.ToString(),
 		Tag.Slip.ToString(),
 		Tag.Slide.ToString(),

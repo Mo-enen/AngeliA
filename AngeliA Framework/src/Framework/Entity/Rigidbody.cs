@@ -33,6 +33,7 @@ public abstract class Rigidbody : Entity {
 	public int PrevY { get; private set; } = 0;
 	public int DeltaPositionX => X - PrevX;
 	public int DeltaPositionY => Y - PrevY;
+	public bool IgnoringPhysics => Game.GlobalFrame <= IgnorePhysicsFrame;
 
 	// Override
 	public virtual bool AllowBeingPush => true;
@@ -76,7 +77,9 @@ public abstract class Rigidbody : Entity {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Physics.FillEntity(PhysicalLayer, this);
+		if (!IgnoringPhysics) {
+			Physics.FillEntity(PhysicalLayer, this);
+		}
 	}
 
 
@@ -97,7 +100,7 @@ public abstract class Rigidbody : Entity {
 		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Tag.Slip);
 		IsInsideGround = InsideGroundCheck();
 
-		if (Game.GlobalFrame <= IgnorePhysicsFrame) {
+		if (IgnoringPhysics) {
 			IsGrounded = GroundedCheck();
 			if (DestroyWhenInsideGround) Active = false;
 			return;

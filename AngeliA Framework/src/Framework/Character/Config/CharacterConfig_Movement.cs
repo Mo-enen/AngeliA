@@ -15,11 +15,12 @@ public class CharacterMovementConfig {
 
 	// Walk
 	[PropSeparator]
-	public int WalkSpeed = 20;
-	public int WalkAcceleration = 3;
-	public int WalkBrakeAcceleration = 30;
-	public int WalkDeceleration = 4;
-	public int WalkToRunAccumulation = 0;
+	public bool WalkAvailable = true;
+	[PropVisibility(nameof(WalkAvailable))] public int WalkSpeed = 20;
+	[PropVisibility(nameof(WalkAvailable))] public int WalkAcceleration = 3;
+	[PropVisibility(nameof(WalkAvailable))] public int WalkBrakeAcceleration = 30;
+	[PropVisibility(nameof(WalkAvailable))] public int WalkDeceleration = 4;
+	[PropVisibility(nameof(WalkAvailable))] public int WalkToRunAccumulation = 0;
 
 	// Run
 	public int RunSpeed = 32;
@@ -174,7 +175,7 @@ public class CharacterMovementConfig {
 	// API
 	public void LoadToCharacter (Character character) {
 		foreach (var (mField, cField) in MetaMapper) {
-			object objValue = mField.GetValue(character.Movement);
+			object objValue = mField.GetValue(character.NativeMovement);
 			if (objValue is BuffInt buffInt) {
 				if (cField.GetValue(this) is int intValue) {
 					buffInt.BaseValue = intValue;
