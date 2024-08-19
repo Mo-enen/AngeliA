@@ -24,6 +24,9 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 		Rolling = false;
 		CurrentRollingSpeed = 0;
 		RollingRotation = 0;
+		if (FromWorld) {
+			X += Width / 2;
+		}
 	}
 
 	public override void Update () {

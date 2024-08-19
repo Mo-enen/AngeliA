@@ -359,8 +359,32 @@ public partial class Engine {
 		Instance.OnGUI_RiggedGame();
 		Instance.OnGUI_Requirement();
 
-	}
 
+
+
+		// TEST
+		//var noise = new JordanPeck.FastNoiseLite();
+
+
+		//const int SIZE = 16;
+		//var r = new IRect(0, 0, SIZE, SIZE);
+		//int l = Renderer.CameraRect.x + 900;
+		//int d = Renderer.CameraRect.y + 900;
+		//for (int j = 0; j < 256; j++) {
+		//	for (int i = 0; i < 256; i++) {
+		//		float value = noise.GetNoise(
+		//			Game.GlobalFrame + i * TestScale,
+		//			Game.GlobalFrame + j * TestScale
+		//		);
+		//		r.x = l + i * SIZE;
+		//		r.y = d + j * SIZE;
+		//		byte rgb = (byte)((value + 1f) * 128f);
+		//		Game.DrawGizmosRect(r, new Color32(rgb, rgb, rgb, 255));
+		//	}
+		//}
+
+
+	}
 
 	// GUI Window
 	private void OnGUI_Hint () {

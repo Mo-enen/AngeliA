@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace AngeliA;
 
 public static partial class Util {
 
+	private const int INLINE = 256;
 
 	[StructLayout(LayoutKind.Sequential, Size = 1)]
 	public struct MathfInternal {
@@ -257,43 +259,46 @@ public static partial class Util {
 		}
 	}
 
+	[MethodImpl(INLINE)]
 	public static float InverseLerp (float from, float to, float value) {
 		if (from != to) {
 			return ((value - from) / (to - from)).Clamp01();
 		}
 		return 0f;
 	}
+	[MethodImpl(INLINE)]
 	public static float InverseLerpUnclamped (float from, float to, float value) {
 		if (from != to) {
 			return (value - from) / (to - from);
 		}
 		return 0f;
 	}
+	[MethodImpl(INLINE)]
 	public static float PingPong (float t, float length) {
 		t = Repeat(t, length * 2f);
 		return length - (t - length).Abs();
 	}
-	public static float Repeat (float t, float length) => (t - (t / length).FloorToInt() * length).Clamp(0, length);
-	public static float Lerp (float a, float b, float t) => a + (b - a) * t.Clamp01();
-	public static float LerpUnclamped (float a, float b, float t) => a + (b - a) * t;
-	public static float Atan (float x, float y) => (float)System.Math.Atan2(y, x) * Rad2Deg;
-	public static int Min (int a, int b) => (a < b) ? a : b;
-	public static int Max (int a, int b) => (a > b) ? a : b;
-	public static float Min (float a, float b) => (a < b) ? a : b;
-	public static float Max (float a, float b) => (a > b) ? a : b;
-	public static float Sin (float radAngle) => (float)System.Math.Sin(radAngle);
-	public static float Cos (float radAngle) => (float)System.Math.Cos(radAngle);
-	public static int Abs (int value) => value > 0 ? value : -value;
-	public static float Abs (float value) => value > 0f ? value : -value;
-	public static bool Approximately (float a, float b) => Abs(b - a) < Max(1E-06f * Max(Abs(a), Abs(b)), Epsilon * 8f);
-	public static int Clamp (int a, int min, int max) => a < min ? min : a > max ? max : a;
-	public static float Clamp (float a, float min, float max) => a < min ? min : a > max ? max : a;
-	public static float Clamp01 (float value) => value < 0f ? 0f : value > 1f ? 1f : value;
-	public static float Pow (float f, float p) => (float)System.Math.Pow(f, p);
-	public static float Sqrt (float f) => (float)System.Math.Sqrt(f);
-	public static int RoundToInt (float value) => (int)System.Math.Round(value);
-	public static int CeilToInt (float value) => (int)System.Math.Ceiling(value);
-	public static int FloorToInt (float value) => (int)System.Math.Floor(value);
+	[MethodImpl(INLINE)] public static float Repeat (float t, float length) => (t - (t / length).FloorToInt() * length).Clamp(0, length);
+	[MethodImpl(INLINE)] public static float Lerp (float a, float b, float t) => a + (b - a) * t.Clamp01();
+	[MethodImpl(INLINE)] public static float LerpUnclamped (float a, float b, float t) => a + (b - a) * t;
+	[MethodImpl(INLINE)] public static float Atan (float x, float y) => (float)System.Math.Atan2(y, x) * Rad2Deg;
+	[MethodImpl(INLINE)] public static int Min (int a, int b) => (a < b) ? a : b;
+	[MethodImpl(INLINE)] public static int Max (int a, int b) => (a > b) ? a : b;
+	[MethodImpl(INLINE)] public static float Min (float a, float b) => (a < b) ? a : b;
+	[MethodImpl(INLINE)] public static float Max (float a, float b) => (a > b) ? a : b;
+	[MethodImpl(INLINE)] public static float Sin (float radAngle) => (float)System.Math.Sin(radAngle);
+	[MethodImpl(INLINE)] public static float Cos (float radAngle) => (float)System.Math.Cos(radAngle);
+	[MethodImpl(INLINE)] public static int Abs (int value) => value > 0 ? value : -value;
+	[MethodImpl(INLINE)] public static float Abs (float value) => value > 0f ? value : -value;
+	[MethodImpl(INLINE)] public static bool Approximately (float a, float b) => Abs(b - a) < Max(1E-06f * Max(Abs(a), Abs(b)), Epsilon * 8f);
+	[MethodImpl(INLINE)] public static int Clamp (int a, int min, int max) => a < min ? min : a > max ? max : a;
+	[MethodImpl(INLINE)] public static float Clamp (float a, float min, float max) => a < min ? min : a > max ? max : a;
+	[MethodImpl(INLINE)] public static float Clamp01 (float value) => value < 0f ? 0f : value > 1f ? 1f : value;
+	[MethodImpl(INLINE)] public static float Pow (float f, float p) => (float)System.Math.Pow(f, p);
+	[MethodImpl(INLINE)] public static float Sqrt (float f) => (float)System.Math.Sqrt(f);
+	[MethodImpl(INLINE)] public static int RoundToInt (float value) => (int)System.Math.Round(value);
+	[MethodImpl(INLINE)] public static int CeilToInt (float value) => (int)System.Math.Ceiling(value);
+	[MethodImpl(INLINE)] public static int FloorToInt (float value) => (int)System.Math.Floor(value);
 
 
 	public static Color32 HsvToRgb (float h, float s, float v) => HsvToRgbF(h, s, v).ToColor32();
