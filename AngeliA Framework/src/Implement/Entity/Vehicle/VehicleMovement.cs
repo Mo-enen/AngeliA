@@ -13,6 +13,7 @@ public abstract class VehicleMovement : CharacterMovement {
 
 	// Api
 	public sealed override bool SyncFromConfigFile => false;
+	public Character Driver { get; set; } = null;
 
 
 	#endregion
@@ -75,7 +76,7 @@ public abstract class VehicleMovement : CharacterMovement {
 	public override void Rush () { }
 
 	// Misc
-	protected override CharacterMovementState CalculateMovementState () => CharacterMovementState.Idle;
+	protected override CharacterMovementState GetMovementState () => CharacterMovementState.Idle;
 
 
 	#endregion

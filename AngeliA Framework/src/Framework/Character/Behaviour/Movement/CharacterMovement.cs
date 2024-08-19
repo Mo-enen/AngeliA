@@ -174,7 +174,7 @@ public partial class CharacterMovement {
 		Update_ResetJumpCount();
 		Update_Jump();
 		Update_Dash();
-		MovementState = CalculateMovementState();
+		MovementState = GetMovementState();
 		if (!IsInsideGround) {
 			// General
 			Update_VelocityX();
@@ -925,22 +925,27 @@ public partial class CharacterMovement {
 	}
 
 
-	protected virtual CharacterMovementState CalculateMovementState () =>
-		IsCrashing ? CharacterMovementState.Crash :
-		IsFlying ? CharacterMovementState.Fly :
-		IsClimbing ? CharacterMovementState.Climb :
-		IsPounding ? CharacterMovementState.Pound :
-		IsSliding ? CharacterMovementState.Slide :
-		IsGrabFlipping ? CharacterMovementState.GrabFlip :
-		IsGrabbingTop ? CharacterMovementState.GrabTop :
-		IsGrabbingSide ? CharacterMovementState.GrabSide :
-		IsRushing ? CharacterMovementState.Rush :
-		IsDashing ? CharacterMovementState.Dash :
-		IsSquatting ? (IsMoving ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
-		InWater && !IsGrounded ? (IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
-		!IsGrounded && !InWater && !IsClimbing ? (VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
-		IsMoving && (ReadyForRun ? RunSpeed : WalkSpeed) != 0 ? (ReadyForRun && !IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
+	// Movement State
+	public static CharacterMovementState CalculateMovementState (CharacterMovement movement) {
+		return movement.IsCrashing ? CharacterMovementState.Crash :
+		movement.IsFlying ? CharacterMovementState.Fly :
+		movement.IsClimbing ? CharacterMovementState.Climb :
+		movement.IsPounding ? CharacterMovementState.Pound :
+		movement.IsSliding ? CharacterMovementState.Slide :
+		movement.IsGrabFlipping ? CharacterMovementState.GrabFlip :
+		movement.IsGrabbingTop ? CharacterMovementState.GrabTop :
+		movement.IsGrabbingSide ? CharacterMovementState.GrabSide :
+		movement.IsRushing ? CharacterMovementState.Rush :
+		movement.IsDashing ? CharacterMovementState.Dash :
+		movement.IsSquatting ? (movement.IsMoving ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
+		movement.InWater && !movement.IsGrounded ? (movement.IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
+		!movement.IsGrounded && !movement.InWater && !movement.IsClimbing ? (movement.VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
+		movement.IsMoving && (movement.ReadyForRun ? movement.RunSpeed : movement.WalkSpeed) != 0 ? (movement.ReadyForRun && !movement.IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
 		CharacterMovementState.Idle;
+	}
+
+
+	protected virtual CharacterMovementState GetMovementState () => CalculateMovementState(this);
 
 
 	#endregion

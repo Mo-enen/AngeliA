@@ -210,7 +210,11 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	}
 
 
-	bool IActionTarget.Invoke () => Collect(Player.Selecting, onlyStackOnExisting: false, ignoreEquipment: false);
+	bool IActionTarget.Invoke () {
+		var player = Player.Selecting;
+		bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
+		return collected || player.EquippingWeaponType == WeaponType.Throwing;
+	}
 
 
 	#endregion

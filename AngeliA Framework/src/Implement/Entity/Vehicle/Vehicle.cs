@@ -16,18 +16,22 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 	private static readonly LanguageCode HINT_STOP_DRIVE = ("CtrlHint.StopDrive", "Stop Driving");
 
 	// Api
-	public readonly CharacterMovement Movement;
+	public readonly VehicleMovement Movement;
 	public Character Driver { get; private set; } = null;
-	public virtual Int2 DriverLocalPosition => new Int2(Width / 2, 1);
-	public virtual Int2 DriverLeaveLocalPosition => new Int2(Width / 2, Height);
+	public virtual Int2? DriverLocalPosition => new Int2(Width / 2, 1);
+	public virtual Int2? DriverLeaveLocalPosition => new Int2(Width / 2, Height);
+	public virtual int StartDriveCooldown => 6;
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
-	public override int AirDragX => 0;
+	public override int AirDragX => Driver != null ? 0 : 5;
 	public override int AirDragY => 0;
 	public override int Gravity => 5;
 	public override bool CarryOtherRigidbodyOnTop => false;
 	public override bool AllowBeingCarryByOtherRigidbody => true;
-	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
+	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.SOLID;
 	bool IActionTarget.AllowInvokeOnSquat => true;
+
+	// Data
+	private int LastStartDriveFrame = int.MinValue;
 
 
 	#endregion
@@ -48,6 +52,7 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 		Movement.MovementHeight.BaseValue = Height;
 		OffsetX = -Width / 2;
 		OffsetY = 0;
+		LastStartDriveFrame = int.MinValue;
 	}
 
 
@@ -65,6 +70,7 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 				StopDrive();
 			}
 		}
+		Movement.Driver = Driver;
 	}
 
 
@@ -122,7 +128,8 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 
 
 	protected virtual void TakeDriver () {
-		var offste = DriverLocalPosition;
+		if (!DriverLocalPosition.HasValue) return;
+		var offste = DriverLocalPosition.Value;
 		Driver.X = X + OffsetX + offste.x;
 		Driver.Y = Y + OffsetY + offste.y;
 	}
@@ -137,17 +144,21 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 
 
 	public virtual void StartDrive (Character driver) {
+		if (Game.GlobalFrame <= LastStartDriveFrame + StartDriveCooldown) return;
 		Driver = driver;
 		Driver.IgnorePhysics();
 		TakeDriver();
+		LastStartDriveFrame = Game.GlobalFrame;
 	}
 
 
 	public virtual void StopDrive () {
-		Movement.Stop();
-		var offste = DriverLeaveLocalPosition;
-		Driver.X = X + OffsetX + offste.x;
-		Driver.Y = Y + OffsetY + offste.y;
+		if (DriverLeaveLocalPosition.HasValue) {
+			Movement.Stop();
+			var offste = DriverLeaveLocalPosition.Value;
+			Driver.X = X + OffsetX + offste.x;
+			Driver.Y = Y + OffsetY + offste.y;
+		}
 		Driver = null;
 	}
 
