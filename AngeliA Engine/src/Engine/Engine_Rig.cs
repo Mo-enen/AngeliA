@@ -202,6 +202,9 @@ public partial class Engine {
 			if (!Input.AnyMouseButtonHolding) {
 				IgnoreInputForRig = false;
 			}
+			if (Input.IgnoringMouseInput) {
+				IgnoreInputForRig = true;
+			}
 
 			if (rigEdt.DrawCollider) {
 				calling.RequireDrawColliderGizmos();

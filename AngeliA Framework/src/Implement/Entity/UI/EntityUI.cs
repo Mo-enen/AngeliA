@@ -21,20 +21,28 @@ public abstract class EntityUI : Entity {
 
 	protected virtual bool BlockEvent => false;
 	private static int BlockingEventFrame = -1;
+	private bool IgnoringMouseInput;
+	private bool IgnoringKeyInput;
 
 	// MSG
 	public EntityUI () => Active = false;
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
+		IgnoringMouseInput = Input.IgnoringMouseInput;
+		IgnoringKeyInput = Input.IgnoringKeyInput;
 		if (BlockEvent) Input.IgnoreAllInput(0);
 	}
 
 	public override void Update () {
 		base.Update();
 		if (BlockEvent) {
-			Input.CancelIgnoreMouseInput();
-			Input.CancelIgnoreKeyInput();
+			if (!IgnoringMouseInput) {
+				Input.CancelIgnoreMouseInput();
+			}
+			if (!IgnoringKeyInput) {
+				Input.CancelIgnoreKeyInput();
+			}
 		}
 	}
 

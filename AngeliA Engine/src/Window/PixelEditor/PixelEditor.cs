@@ -243,9 +243,12 @@ public partial class PixelEditor : WindowUI {
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();
-		Update_Cursor();
-		Update_LeftDrag();
-		Update_RightDrag();
+		Debug.Log(Input.IgnoringMouseInput);
+		if (!Input.IgnoringMouseInput) {
+			Update_Cursor();
+			Update_LeftDrag();
+			Update_RightDrag();
+		}
 		Update_Gizmos();
 		Update_Hotkey();
 		Update_Rendering();

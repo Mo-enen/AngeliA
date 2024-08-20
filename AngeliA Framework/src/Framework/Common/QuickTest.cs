@@ -4,34 +4,25 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 #if DEBUG
-
-
 public static class QTest {
 
 	// SUB
-	private enum DataType { Bool, Int, Float, }
+	private enum DataType { Bool, Int, Float, Pixels, }
 
 	// VAR
 	private static readonly Dictionary<string, bool> BoolPool = new();
 	private static readonly Dictionary<string, (int value, int min, int max, int step)> IntPool = new();
 	private static readonly Dictionary<string, (float value, float min, float max, float step)> FloatPool = new();
+	private static readonly Dictionary<string, Color32[,]> PixelsPool = new();
 	private static readonly List<(string key, DataType type)> Keys = new();
 	private static Int2 PanelPositionOffset = new Int2(1024, 1024);
 	private static bool MouseDragMoving;
 	private static bool ShowingWindow = false;
 	private static bool IgnoringWindow = false;
+	private static Color32[,] CurrentPixels;
 
 	// MSG
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		Keys.Clear();
-		BoolPool.Clear();
-		IntPool.Clear();
-		FloatPool.Clear();
-	}
-
-
-	[OnGameUpdateLater(-4096)]
+	[OnGameUpdate(-256)]
 	internal static void OnGameUpdateLater () {
 
 		if (!ShowingWindow || IgnoringWindow) return;
@@ -125,9 +116,7 @@ public static class QTest {
 					float newValue = GUI.HandleSlider(
 						3126784 + index,
 						valueRect.ShrinkRight(valueLabelWidth),
-						(value * 100f).RoundToInt(),
-						(min * 100f).RoundToInt(),
-						(max * 100f).RoundToInt(),
+						(value * 100f).RoundToInt(), (min * 100f).RoundToInt(), (max * 100f).RoundToInt(),
 						step: (step * 100f).RoundToInt()
 					) / 100f;
 					if (!newValue.Almost(value)) {
@@ -148,10 +137,41 @@ public static class QTest {
 					);
 					break;
 				}
+				// Pixels
+				case DataType.Pixels: {
+					var pixels = PixelsPool[key];
+					int width = pixels.GetLength(0);
+					int height = pixels.GetLength(1);
+					IRect canvasRect;
+					if ((float)valueRect.width / valueRect.height < (float)width / height) {
+						// Wide
+						canvasRect = valueRect.Fit(width, height, 500, 1000);
+					} else {
+						// Tall
+						canvasRect = valueRect.Envelope(width, height);
+						canvasRect.y = valueRect.yMax - canvasRect.height;
+					}
+					rect = canvasRect;
+					float pxWidth = (float)canvasRect.width / width;
+					float pxHeight = (float)canvasRect.height / height;
+					var pRect = new IRect(0, 0, pxWidth.CeilToInt() + 1, pxHeight.CeilToInt() + 1);
+					for (int j = 0; j < height; j++) {
+						pRect.y = canvasRect.y + (j * pxHeight).RoundToInt();
+						for (int i = 0; i < width; i++) {
+							pRect.x = canvasRect.x + (i * pxWidth).RoundToInt();
+							Game.DrawGizmosRect(pRect, pixels[i, j]);
+						}
+					}
+					break;
+				}
 			}
 
 			// Next
 			rect.SlideDown(GUI.FieldPadding);
+			if (rect.height != GUI.FieldHeight) {
+				rect.yMin = rect.yMax - GUI.FieldHeight;
+			}
+
 			index++;
 		}
 
@@ -165,9 +185,10 @@ public static class QTest {
 			border, border, border, border, Const.SliceIgnoreCenter, Color32.GREY_128, z: 0
 		);
 
-		// Final
-		if (panelRect.MouseInside()) {
+		if (panelRect.MouseInside() || MouseDragMoving) {
 			Input.IgnoreMouseInput(1);
+			Cursor.SetCursorAsNormal(-1);
+			Cursor.SetCursor(Cursor.CurrentCursorIndex, int.MaxValue - 1);
 		}
 
 	}
@@ -215,7 +236,25 @@ public static class QTest {
 		return defaultValue.Clamp(min, max);
 	}
 
+	public static void BeginPixels (string key, int width, int height, bool separate = false, bool clearPrevPixels = true) {
+		ShowingWindow = true;
+		if (PixelsPool.TryGetValue(key, out var result)) {
+			if (clearPrevPixels) {
+				System.Array.Clear(result);
+			}
+			CurrentPixels = result;
+			return;
+		}
+		CurrentPixels = new Color32[width, height];
+		PixelsPool.Add(key, CurrentPixels);
+		if (separate) {
+			Keys.Add(("", DataType.Pixels));
+		}
+		Keys.Add((key, DataType.Pixels));
+		IgnoringWindow = false;
+	}
+
+	public static void DrawPixel (int x, int y, Color32 pixel) => CurrentPixels[x, y] = pixel;
+
 }
-
-
 #endif

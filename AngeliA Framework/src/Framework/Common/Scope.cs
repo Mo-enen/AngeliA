@@ -134,11 +134,13 @@ public readonly struct GUIScrollScope : System.IDisposable {
 	public readonly IRect Rect;
 	public readonly int CellCount;
 	public readonly Int2 MousePosShift;
+	public readonly bool PrevMouseInputIgnoring;
 	public GUIScrollScope (IRect rect, Int2 position, bool mouseWheelForVertical = true) : this(rect, position, new Int2(int.MinValue, int.MinValue), new Int2(int.MaxValue, int.MaxValue), mouseWheelForVertical) { }
 	public GUIScrollScope (IRect rect, Int2 position, Int2 min, Int2 max, bool mouseWheelForVertical = true, bool reverseMouseWheel = false) {
 
 		bool mouseInside = rect.MouseInside();
 		Rect = rect;
+		PrevMouseInputIgnoring = Input.IgnoringMouseInput;
 		CellCount = Renderer.GetUsedCellCount(RenderLayer.UI);
 		MousePosShift = Input.MousePositionShift;
 		if (!mouseInside) Input.IgnoreMouseInput();
@@ -157,7 +159,11 @@ public readonly struct GUIScrollScope : System.IDisposable {
 	}
 	public readonly void Dispose () {
 		Input.SetMousePositionShift(MousePosShift.x, MousePosShift.y);
-		Input.CancelIgnoreMouseInput();
+		if (PrevMouseInputIgnoring) {
+			Input.IgnoreMouseInput();
+		} else {
+			Input.CancelIgnoreMouseInput();
+		}
 		int startIndex = CellCount;
 		if (startIndex >= 0) {
 			if (Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) {
