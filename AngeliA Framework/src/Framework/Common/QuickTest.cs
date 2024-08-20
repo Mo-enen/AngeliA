@@ -13,11 +13,13 @@ public static class QTest {
 
 	// VAR
 	private static readonly Dictionary<string, bool> BoolPool = new();
-	private static readonly Dictionary<string, (int value, int min, int max)> IntPool = new();
-	private static readonly Dictionary<string, (float value, float min, float max)> FloatPool = new();
+	private static readonly Dictionary<string, (int value, int min, int max, int step)> IntPool = new();
+	private static readonly Dictionary<string, (float value, float min, float max, float step)> FloatPool = new();
 	private static readonly List<(string key, DataType type)> Keys = new();
+	private static Int2 PanelPositionOffset = new Int2(1024, 1024);
+	private static bool MouseDragMoving;
 	private static bool ShowingWindow = false;
-	private static IRect PanelUnitRect = new IRect(100, 100, 200, 200);
+	private static bool IgnoringWindow = false;
 
 	// MSG
 	[OnGameInitialize]
@@ -29,94 +31,187 @@ public static class QTest {
 	}
 
 
-	[OnGameUpdateLater(4096)]
+	[OnGameUpdateLater(-4096)]
 	internal static void OnGameUpdateLater () {
 
-		if (!ShowingWindow) return;
+		if (!ShowingWindow || IgnoringWindow) return;
 
 		using var _ = new UILayerScope();
 		var cameraRect = Renderer.CameraRect;
 		var panelRect = new IRect(
-			cameraRect.x + GUI.Unify(PanelUnitRect.x),
-			cameraRect.y + GUI.Unify(PanelUnitRect.y),
-			GUI.Unify(PanelUnitRect.width),
-			GUI.Unify(PanelUnitRect.height)
+			cameraRect.x + PanelPositionOffset.x,
+			cameraRect.y + PanelPositionOffset.y,
+			cameraRect.width / 3,
+			1
 		);
+
+		Input.CancelIgnoreMouseInput();
+		bool mouseHoldingL = Game.IsMouseLeftHolding;
+		var rect = panelRect.EdgeUp(GUI.FieldHeight).Shrink(GUI.FieldPadding, GUI.FieldPadding, 0, 0);
 
 		// BG
-		int border = GUI.Unify(2);
-		Renderer.DrawPixel(panelRect, Color32.BLACK);
-		Renderer.DrawSlice(
-			BuiltInSprite.FRAME_16,
-			panelRect.x, panelRect.y, 0, 0, 0, panelRect.width, panelRect.height,
-			border, border, border, border, Const.SliceIgnoreCenter, Color32.WHITE, z: 0
-		);
+		var bgCell = Renderer.DrawPixel(panelRect, Color32.BLACK);
+
+		// Drag to Move
+		GUI.Label(rect, "Quick Test", GUI.Skin.SmallGreyLabel);
+		if (!mouseHoldingL) MouseDragMoving = false;
+		if (rect.MouseInside() || MouseDragMoving) {
+			Cursor.SetCursorAsMove();
+			if (Input.MouseLeftButtonDown) {
+				MouseDragMoving = true;
+			}
+			if (mouseHoldingL) {
+				PanelPositionOffset += Input.MouseGlobalPositionDelta;
+			}
+		}
+
+		// Ignore
+		var ignoreRect = rect.EdgeRight(rect.height);
+		if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.SmallIconButton)) {
+			IgnoringWindow = true;
+		}
+		rect.SlideDown(GUI.FieldPadding);
 
 		// Content
+		int index = 0;
 		foreach (var (key, type) in Keys) {
+
+			// Separate
+			if (string.IsNullOrWhiteSpace(key)) {
+				Renderer.Draw(
+					BuiltInSprite.SOFT_LINE_H,
+					rect.CornerInside(Alignment.TopMid, rect.width, GUI.Unify(1)),
+					Color32.GREY_42
+				);
+				rect.y -= GUI.FieldPadding;
+				continue;
+			}
+
+			// Label
+			GUI.Label(rect, key);
+
+			// Value
+			var valueRect = rect.ShrinkLeft(rect.width / 3);
 			switch (type) {
 				// Bool
 				case DataType.Bool: {
-
-
-
-
+					bool value = BoolPool[key];
+					bool newValue = GUI.Toggle(valueRect, value);
+					if (newValue != value) {
+						BoolPool[key] = newValue;
+					}
 					break;
 				}
 				// Int
 				case DataType.Int: {
-
-
-
-
+					var (value, min, max, step) = IntPool[key];
+					int valueLabelWidth = valueRect.height * 2;
+					int newValue = GUI.HandleSlider(
+						3126784 + index,
+						valueRect.ShrinkRight(valueLabelWidth),
+						value, min, max,
+						step: step
+					);
+					if (newValue != value) {
+						IntPool[key] = (newValue, min, max, step);
+					}
+					GUI.IntLabel(valueRect.EdgeRight(valueLabelWidth), newValue, GUI.Skin.SmallCenterLabel);
 					break;
 				}
 				// Float
 				case DataType.Float: {
-
-
-
-
+					var (value, min, max, step) = FloatPool[key];
+					int valueLabelWidth = valueRect.height * 2;
+					float newValue = GUI.HandleSlider(
+						3126784 + index,
+						valueRect.ShrinkRight(valueLabelWidth),
+						(value * 100f).RoundToInt(),
+						(min * 100f).RoundToInt(),
+						(max * 100f).RoundToInt(),
+						step: (step * 100f).RoundToInt()
+					) / 100f;
+					if (!newValue.Almost(value)) {
+						FloatPool[key] = (newValue, min, max, step);
+					}
+					GUI.IntLabel(
+						valueRect.EdgeRight(valueLabelWidth),
+						newValue.RoundToInt(), out var bounds,
+						GUI.Skin.SmallCenterLabel
+					);
+					bounds.x += 12;
+					Renderer.DrawPixel(bounds.CornerOutside(Alignment.BottomRight, 12, 12));
+					bounds.x += 24;
+					GUI.IntLabel(
+						bounds.EdgeOutside(Direction4.Right, valueRect.height),
+						((newValue % 1f) * 100).RoundToInt().Abs(),
+						GUI.Skin.SmallLabel
+					);
 					break;
 				}
 			}
+
+			// Next
+			rect.SlideDown(GUI.FieldPadding);
+			index++;
 		}
 
-		// Block Event
-		if (panelRect.MouseInside() && Input.AnyMouseButtonDown) {
-			Input.UseAllMouseKey();
+		// Final
+		panelRect.yMin = rect.yMax - GUI.FieldPadding;
+		bgCell.SetRect(panelRect);
+		int border = GUI.Unify(1);
+		Renderer.DrawSlice(
+			BuiltInSprite.FRAME_16,
+			panelRect.x, panelRect.y, 0, 0, 0, panelRect.width, panelRect.height,
+			border, border, border, border, Const.SliceIgnoreCenter, Color32.GREY_128, z: 0
+		);
+
+		// Final
+		if (panelRect.MouseInside()) {
+			Input.IgnoreMouseInput(1);
 		}
 
 	}
 
 	// API
-	public static bool Bool (string key, bool defaultValue = false) {
+	public static bool Bool (string key, bool defaultValue = false, bool separate = false) {
 		ShowingWindow = true;
 		if (BoolPool.TryGetValue(key, out var result)) {
 			return result;
 		}
 		BoolPool.Add(key, defaultValue);
+		if (separate) {
+			Keys.Add(("", DataType.Bool));
+		}
 		Keys.Add((key, DataType.Bool));
+		IgnoringWindow = false;
 		return defaultValue;
 	}
 
-	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100) {
+	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, bool separate = false) {
 		ShowingWindow = true;
 		if (IntPool.TryGetValue(key, out var result)) {
 			return result.value.Clamp(result.min, result.max);
 		}
-		IntPool.Add(key, (defaultValue.Clamp(min, max), min, max));
+		IntPool.Add(key, (defaultValue.Clamp(min, max), min, max, step));
+		if (separate) {
+			Keys.Add(("", DataType.Int));
+		}
 		Keys.Add((key, DataType.Int));
+		IgnoringWindow = false;
 		return defaultValue.Clamp(min, max);
 	}
 
-	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f) {
+	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0f, bool separate = false) {
 		ShowingWindow = true;
 		if (FloatPool.TryGetValue(key, out var result)) {
 			return result.value.Clamp(result.min, result.max);
 		}
-		FloatPool.Add(key, (defaultValue.Clamp(min, max), min, max));
+		FloatPool.Add(key, (defaultValue.Clamp(min, max), min, max, step));
+		if (separate) {
+			Keys.Add(("", DataType.Float));
+		}
 		Keys.Add((key, DataType.Float));
+		IgnoringWindow = false;
 		return defaultValue.Clamp(min, max);
 	}
 
