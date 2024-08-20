@@ -72,7 +72,7 @@ public static class GUI {
 			Input.UnuseKeyboardKey(KeyboardKey.LeftShift);
 			Input.UnuseKeyboardKey(KeyboardKey.Tab);
 		}
-		if (!Input.MouseLeftButtonHolding) {
+		if (!Game.IsMouseLeftHolding) {
 			ScrollDraggingCache.hasValue = false;
 			SliderDraggingCache = false;
 		}
@@ -1136,7 +1136,7 @@ public static class GUI {
 		// Handle
 		if (handleStyle != null) {
 			var handleRect = rect.EdgeLeft(rect.height);
-			handleRect.x = valuePos - handleRect.width / 2;
+			handleRect.x = valuePos - handleRect.size[axis] / 2;
 			DrawStyleBody(handleRect, handleStyle, state);
 		}
 
@@ -1148,7 +1148,10 @@ public static class GUI {
 		state = Enable ? GUIState.Normal : GUIState.Disable;
 
 		if (!Enable) return value;
-		bool hovering = rect.MouseInside();
+		int exH = vertical ? 0 : rect.height / 2;
+		int exV = vertical ? rect.width / 2 : 0;
+		var expandedRect = rect.Expand(exH, exH, exV, exV);
+		bool hovering = expandedRect.MouseInside();
 		bool dragging = DraggingSliderID == controlID && SliderDraggingCache;
 		state = dragging ? GUIState.Press : hovering ? GUIState.Hover : GUIState.Normal;
 
@@ -1163,12 +1166,18 @@ public static class GUI {
 		if (dragging) {
 			int axis = vertical ? 1 : 0;
 			// Set Value
-			value = Util.RemapUnclamped(
-				rect.position[axis], rect.TopRight()[axis], min, max, Input.MouseGlobalPosition[axis]
+			float valueF = Util.RemapUnclamped(
+				rect.position[axis], rect.TopRight()[axis],
+				min, max,
+				(float)Input.MouseGlobalPosition[axis]
 			);
 			// Step Value
-			if (step > 0) value -= value.UMod(step);
-			value = value.Clamp(min, max);
+			if (step > 0) {
+				valueF = (valueF / step).RoundToInt() * step;
+				//value -= value.UMod(step);
+			}
+			valueF = valueF.Clamp(min, max);
+			value = valueF.RoundToInt();
 		}
 
 		// End

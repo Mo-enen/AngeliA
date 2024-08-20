@@ -26,9 +26,9 @@ public static class MapGenerationSystem {
 	// Data
 	private static readonly Dictionary<Int3, MapState> StatePool = new();
 	private static readonly List<MapGenerator> AllMapGenerators = new(32);
-	private static WorldStream Stream;
+	private static readonly Queue<World> ResultQueue = new();
 	private static bool Enable;
-	private static int Seed;
+	private static long Seed;
 
 
 	#endregion
@@ -47,10 +47,9 @@ public static class MapGenerationSystem {
 		if (!Enable) return;
 
 		StatePool.Clear();
-		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 
 		// Find all Exist Maps
-		foreach (string path in Util.EnumerateFiles(Stream.MapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
+		foreach (string path in Util.EnumerateFiles(Universe.BuiltIn.SlotUserMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
 			if (!WorldPathPool.TryGetWorldPositionFromName(
 				Util.GetNameWithoutExtension(path), out var pos
 			)) continue;
@@ -58,21 +57,26 @@ public static class MapGenerationSystem {
 		}
 
 		// Load or Create Seed
-		int seed = int.MaxValue;
+		long seed = long.MaxValue;
 		string seedPath = Util.CombinePaths(Universe.BuiltIn.SlotUserMapRoot, AngePath.MAP_SEED_NAME);
 		if (Util.FileExists(seedPath)) {
 			string seedStr = Util.FileToText(seedPath);
-			if (!int.TryParse(seedStr, out seed)) {
+			if (!long.TryParse(seedStr, out seed)) {
 				seed = int.MaxValue;
 			}
 		}
-		if (seed == int.MaxValue) {
+		if (seed == long.MaxValue) {
 			seed = new System.Random(
 				(int)(System.DateTime.Now.Ticks + System.Environment.UserName.AngeHash())
-			).Next(int.MinValue, int.MaxValue);
+			).NextInt64(long.MinValue, long.MaxValue);
 			Util.TextToFile(seed.ToString(), seedPath);
 		}
 		Seed = seed;
+
+		// Init Generators
+		foreach (var gen in AllMapGenerators) {
+			gen.Initialize(seed);
+		}
 
 	}
 
@@ -87,9 +91,21 @@ public static class MapGenerationSystem {
 		foreach (var type in typeof(MapGenerator).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not MapGenerator gen) continue;
 			AllMapGenerators.Add(gen);
+			gen.Initialize(Seed);
 		}
 		AllMapGenerators.Sort((a, b) => a.Order.CompareTo(b.Order));
 
+	}
+
+
+	[OnGameUpdateLater]
+	internal static void OnGameUpdateLater () {
+		while (ResultQueue.Count > 0) {
+			var world = ResultQueue.Dequeue();
+			if (world != null) {
+				WorldSquad.Stream.AddWorld(world, overrideExists: true);
+			}
+		}
 	}
 
 
@@ -142,22 +158,34 @@ public static class MapGenerationSystem {
 		bool success = true;
 
 		// Trigger all Generators
+		var world = new World(worldPos);
+		int successCount = 0;
 		foreach (var gen in AllMapGenerators) {
 			try {
-				var result = gen.GenerateMap(worldPos, Stream, Seed);
-				if (result == MapGenerationResult.CriticalError) {
-					success = false;
-					Debug.LogError($"{gen.GetType().Name} fail to generate map at {worldPos} with critical error: {gen.ErrorMessage}");
-					break;
-				} else if (result == MapGenerationResult.Fail) {
-					Debug.LogWarning($"{gen.GetType().Name} Fail to generate map at {worldPos} with error: {gen.ErrorMessage}");
+				var result = gen.GenerateMap(worldPos, Seed, world);
+				switch (result) {
+					case MapGenerationResult.Success:
+						successCount++;
+						break;
+					case MapGenerationResult.Fail:
+						Debug.LogWarning($"{gen.GetType().Name} Fail to generate map at {worldPos} with error: {gen.ErrorMessage}");
+						break;
+					case MapGenerationResult.CriticalError:
+						success = false;
+						Debug.LogError($"{gen.GetType().Name} fail to generate map at {worldPos} with critical error: {gen.ErrorMessage}");
+						break;
 				}
+				// Skip All for Critical Error
+				if (!success) break;
 			} catch (System.Exception ex) {
 				Debug.LogException(ex);
 			}
 		}
 
 		// Done
+		if (success && successCount > 0) {
+			ResultQueue.Enqueue(world);
+		}
 		StatePool[worldPos] = success ? MapState.Success : MapState.Fail;
 
 	}

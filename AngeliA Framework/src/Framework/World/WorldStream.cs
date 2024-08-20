@@ -116,9 +116,7 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
-	public bool ContainsWorldPos (Int3 worldPos) => PathPool.ContainsKey(worldPos);
-
-
+	// World
 	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) => TryGetWorld(new Int3(worldX, worldY, worldZ), out world);
 	public bool TryGetWorld (Int3 worldPos, out World world) {
 		world = null;
@@ -126,6 +124,28 @@ public sealed class WorldStream : IBlockSquad {
 			world = data.World;
 		}
 		return world != null;
+	}
+
+
+	public void AddWorld (World world, bool overrideExists = false) {
+		if (WorldPool.TryGetValue(world.WorldPosition, out var data)) {
+			if (data.World == null || overrideExists) {
+				if (data.World == null) {
+					CurrentValidMapCount++;
+				}
+				data.World = world;
+				data.IsDirty = true;
+				IsDirty = true;
+			}
+		} else {
+			data = new WorldData();
+			data.IsDirty = true;
+			data.World = world;
+			data.CreateFrame = InternalFrame++;
+			IsDirty = true;
+			WorldPool.Add(world.WorldPosition, data);
+			CurrentValidMapCount++;
+		}
 	}
 
 

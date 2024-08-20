@@ -72,6 +72,7 @@ public class WorldSquad : IBlockSquad {
 	[OnSavingSlotChanged]
 	internal static void OnSavingSlotChanged () {
 		if (Readonly) return;
+		Stream?.SaveAllDirty();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 		SquadReady = true;
 	}

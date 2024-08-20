@@ -10,9 +10,8 @@ public abstract class MapGenerator {
 	public string ErrorMessage { get; private set; }
 	public virtual int Order => 0;
 
-	public virtual MapGenerationResult GenerateMap (Int3 worldPosition, IBlockSquad squad, int seed) {
-		ErrorMessage = "";
-		return MapGenerationResult.Success;
-	}
+	public abstract void Initialize (long seed);
+
+	public abstract MapGenerationResult GenerateMap (Int3 worldPosition, long seed, in World world);
 
 }

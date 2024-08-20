@@ -114,6 +114,23 @@ public class FastNoiseLite {
 		DefaultOpenSimplex2
 	};
 
+
+	public int CurrentSeed => mSeed;
+	public float CurrentFrequency => mFrequency;
+	public NoiseType CurrentNoiseType => mNoiseType;
+	public RotationType3D CurrentRotationType3D => mRotationType3D;
+	public FractalType CurrentFractalType => mFractalType;
+	public int CurrentOctaves => mOctaves;
+	public float CurrentLacunarity => mLacunarity;
+	public float CurrentGain => mGain;
+	public float CurrentWeightedStrength => mWeightedStrength;
+	public float CurrentPingPongStrength => mPingPongStrength;
+	public CellularDistanceFunction CurrentCellularDistanceFunction => mCellularDistanceFunction;
+	public CellularReturnType CurrentCellularReturnType => mCellularReturnType;
+	public float CurrentCellularJitterModifier => mCellularJitterModifier;
+	public DomainWarpType CurrentDomainWarpType => mDomainWarpType;
+	public float CurrentDomainWarpAmp => mDomainWarpAmp;
+	
 	private int mSeed = 1337;
 	private float mFrequency = 0.01f;
 	private NoiseType mNoiseType = NoiseType.OpenSimplex2;
