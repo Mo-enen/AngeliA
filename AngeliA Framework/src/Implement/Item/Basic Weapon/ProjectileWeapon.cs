@@ -23,8 +23,7 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 	protected virtual ProjectileValidDirection ValidDirection => ProjectileValidDirection.Two;
 	protected int ForceBulletCountNextShot { get; set; } = -1;
 
-
-	[CheatCode("giveammo")]
+	[CheatCode("GiveAmmo")]
 	internal static bool Cheat_GiveAmmo () {
 		var player = Player.Selecting;
 		if (player == null) return false;
@@ -51,7 +50,6 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 		}
 		return performed;
 	}
-
 
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 		base.PoseAnimationUpdate_FromEquipment(holder);

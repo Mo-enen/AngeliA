@@ -66,8 +66,8 @@ public static class CheatSystem {
 					bool success = true;
 					// Check Cheat
 					for (int j = codeLen - 1; j >= 0; j--) {
-						char c = code[j];
-						if (c != CheatInput[codeLen - j - 1]) {
+						char c = char.ToLower(code[j]);
+						if (c != char.ToLower(CheatInput[codeLen - j - 1])) {
 							success = false;
 							break;
 						}

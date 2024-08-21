@@ -4,5 +4,6 @@
   "MajorVersion": 0,
   "MinorVersion": 0,
   "PatchVersion": 0,
-  "EngineBuildVersion": 8
+  "EngineBuildVersion": 8,
+  "AllowCheatCode": true
 }
