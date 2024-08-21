@@ -6,42 +6,47 @@ namespace AngeliA;
 #if DEBUG
 public static class QTest {
 
-	// SUB
+
+
+	#region --- SUB ---
+
+
 	private enum DataType { Bool, Int, Float, Pixels, }
 
-	private struct BoolData {
+	private class BoolData {
 		public bool value;
 		public string displayLabel;
-		public bool enable;
 		public int KeyIndex;
+		public int UpdateFrame;
 	}
 
-	private struct IntData {
+	private class IntData {
 		public int value;
 		public int min;
 		public int max;
 		public int step;
 		public string displayLabel;
-		public bool enable;
 		public int KeyIndex;
+		public int UpdateFrame;
 	}
 
-	private struct FloatData {
+	private class FloatData {
 		public float value;
 		public float min;
 		public float max;
 		public float step;
 		public string displayLabel;
-		public bool enable;
 		public int KeyIndex;
+		public int UpdateFrame;
 	}
 
-	private struct PixelData {
+	private class PixelData {
 		public Color32[,] pixels;
 		public int KeyIndex;
+		public int UpdateFrame;
 	}
 
-	private struct KeyData {
+	private class KeyData {
 		public string key;
 		public int Order;
 		public DataType type;
@@ -57,7 +62,20 @@ public static class QTest {
 		}
 	}
 
-	// VAR
+
+	#endregion
+
+
+
+
+	#region --- VAR ---
+
+
+	// Api
+	public static bool Testing => ShowingWindow && !IgnoringWindow;
+	public static bool ShowNotUpdatedData { get; set; } = true;
+
+	// Data
 	private static readonly Dictionary<string, BoolData> BoolPool = new();
 	private static readonly Dictionary<string, IntData> IntPool = new();
 	private static readonly Dictionary<string, FloatData> FloatPool = new();
@@ -74,12 +92,22 @@ public static class QTest {
 	private static int CurrentGroupOrder;
 	private static int CurrentOrder;
 	private static int PrevKeyCount = 0;
+	private static int PanelMaxExpand = 0;
 
-	// MSG
+
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
 	[OnGameUpdate(-256)]
 	internal static void OnGameUpdate () {
 
 		if (!ShowingWindow || IgnoringWindow || !Game.IsToolApplication) return;
+
 		CurrentGroup = "";
 		CurrentGroupOrder = 0;
 		CurrentOrder = 0;
@@ -90,11 +118,11 @@ public static class QTest {
 
 		using var _ = new UILayerScope();
 		var cameraRect = Renderer.CameraRect;
+		int basicPanelWidth = cameraRect.width / 3;
 		var panelRect = new IRect(
 			cameraRect.x + PanelPositionOffset.x,
 			cameraRect.y + PanelPositionOffset.y,
-			cameraRect.width / 3,
-			1
+			basicPanelWidth, 1
 		);
 		int padding = GUI.FieldPadding;
 
@@ -107,9 +135,10 @@ public static class QTest {
 		var bgCell = Renderer.DrawPixel(panelRect, Color32.BLACK);
 
 		// Drag to Move
-		GUI.Label(rect, "Quick Test", GUI.Skin.SmallGreyLabel);
+		var titleCell = Renderer.DrawPixel(rect, Color32.GREY_20);
+		GUI.Label(rect, "Quick Test", GUI.Skin.SmallCenterGreyLabel);
 		if (!mouseHoldingL) MouseDragMoving = false;
-		if (rect.MouseInside() || MouseDragMoving) {
+		if (rect.Expand(0, PanelMaxExpand, 0, 0).MouseInside() || MouseDragMoving) {
 			Cursor.SetCursorAsMove();
 			if (Input.MouseLeftButtonDown) {
 				MouseDragMoving = true;
@@ -119,8 +148,8 @@ public static class QTest {
 			}
 		}
 
-		// Ignore
-		var ignoreRect = rect.EdgeRight(rect.height);
+		// Ignore Btn
+		var ignoreRect = rect.EdgeRight(rect.height).Shift(PanelMaxExpand, 0);
 		if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.SmallIconButton)) {
 			IgnoringWindow = true;
 		}
@@ -144,6 +173,13 @@ public static class QTest {
 				CurrentGroup = group;
 				if (groupNotEmpty) {
 					using var __ = new GUIContentColorScope(Color32.GREY_128);
+					// Tri Mark
+					Renderer.Draw(
+						folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN,
+						rect.EdgeOutside(Direction4.Left, rect.height - padding).Shift(-indent - padding / 2, 0).Fit(1, 1),
+						Color32.GREY_96
+					);
+					// Fold Button
 					if (GUI.Button(rect.Expand(indent, 0, 0, 0), group, GUI.Skin.SmallLabelButton)) {
 						GroupFolding[group] = !folding;
 					}
@@ -162,93 +198,100 @@ public static class QTest {
 				// Bool
 				case DataType.Bool: {
 					var data = BoolPool[key];
+					// Update Check
+					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
-					using var _e = new GUIEnableScope(data.enable);
-					bool newValue = GUI.Toggle(valueRect, data.value);
-					if (newValue != data.value) {
-						data.value = newValue;
-						BoolPool[key] = data;
-					}
+					data.value = GUI.Toggle(valueRect, data.value);
 					// Display Label
 					if (data.displayLabel != null) {
 						GUI.BackgroundLabel(
 							valueRect.ShrinkLeft(valueRect.height + padding + padding),
 							data.displayLabel,
-							Color32.BLACK, padding,
+							Color32.BLACK,
+							out var bounds,
+							padding,
 							style: GUI.Skin.SmallLabel
 						);
+						int maxX = bounds.xMax + padding;
+						if (maxX > panelRect.xMax) {
+							panelRect.xMax = maxX;
+						}
 					}
 					break;
 				}
 				// Int
 				case DataType.Int: {
 					var data = IntPool[key];
+					// Update Check
+					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
-					using var _e = new GUIEnableScope(data.enable);
 					int valueLabelWidth = valueRect.height * 2;
-					int newValue = GUI.HandleSlider(
+					data.value = GUI.HandleSlider(
 						3126784 + index,
 						valueRect.ShrinkRight(valueLabelWidth),
 						data.value, data.min, data.max,
 						step: data.step
 					);
-					if (newValue != data.value) {
-						data.value = newValue;
-						IntPool[key] = data;
-					}
 					if (data.displayLabel == null) {
-						GUI.IntLabel(valueRect.EdgeRight(valueLabelWidth), newValue, GUI.Skin.SmallCenterLabel);
+						GUI.IntLabel(valueRect.EdgeRight(valueLabelWidth), data.value, GUI.Skin.SmallCenterLabel);
 					} else {
 						GUI.BackgroundLabel(
 							valueRect.EdgeRight(valueLabelWidth).Shift(padding, 0),
 							data.displayLabel,
-							Color32.BLACK, padding,
+							Color32.BLACK, out var bounds, padding,
 							style: GUI.Skin.SmallLabel
 						);
+						int maxX = bounds.xMax + padding;
+						if (maxX > panelRect.xMax) {
+							panelRect.xMax = maxX;
+						}
 					}
 					break;
 				}
 				// Float
 				case DataType.Float: {
 					var data = FloatPool[key];
+					// Update Check
+					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
-					using var _e = new GUIEnableScope(data.enable);
 					int valueLabelWidth = valueRect.height * 2;
 					if (data.displayLabel == null) {
-						float newValue = GUI.HandleSlider(
+						data.value = GUI.HandleSlider(
 							3126784 + index,
 							valueRect.ShrinkRight(valueLabelWidth),
 							(data.value * 100f).RoundToInt(), (data.min * 100f).RoundToInt(), (data.max * 100f).RoundToInt(),
 							step: (data.step * 100f).RoundToInt()
 						) / 100f;
-						if (!newValue.Almost(data.value)) {
-							data.value = newValue;
-							FloatPool[key] = data;
-						}
 						GUI.Label(
 							valueRect.EdgeRight(valueLabelWidth),
-							newValue.ToString("0.00"),
+							data.value.ToString("0.00"),
 							GUI.Skin.SmallCenterLabel
 						);
 					} else {
 						GUI.BackgroundLabel(
 							valueRect.EdgeRight(valueLabelWidth).Shift(padding, 0),
 							data.displayLabel,
-							Color32.BLACK, padding,
+							Color32.BLACK, out var bounds, padding,
 							style: GUI.Skin.SmallLabel
 						);
+						int maxX = bounds.xMax + padding;
+						if (maxX > panelRect.xMax) {
+							panelRect.xMax = maxX;
+						}
 					}
 					break;
 				}
 				// Pixels
 				case DataType.Pixels: {
 					var data = PixelsPool[key];
+					// Update Check
+					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
@@ -295,8 +338,11 @@ public static class QTest {
 		}
 
 		// Final
+		PanelMaxExpand = Util.Max(PanelMaxExpand, panelRect.width - basicPanelWidth);
 		panelRect.yMin = rect.yMax - padding;
+		panelRect.width = Util.Max(panelRect.width, basicPanelWidth + PanelMaxExpand);
 		bgCell.SetRect(panelRect);
+		titleCell.SetRect(panelRect.EdgeUp(titleCell.Height));
 		CurrentGroup = "";
 
 		// Clamp
@@ -316,26 +362,31 @@ public static class QTest {
 
 	}
 
-	// API
-	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null, bool enable = true) {
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	// Data
+	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (BoolPool.TryGetValue(key, out var result)) {
-			if (result.displayLabel != displayLabel || result.enable != enable) {
-				result.displayLabel = displayLabel;
-				result.enable = enable;
-				BoolPool[key] = result;
-			}
+			result.displayLabel = displayLabel;
 			var kData = Keys[result.KeyIndex];
 			kData.Order = CurrentOrder;
-			Keys[result.KeyIndex] = kData;
+			result.UpdateFrame = Game.PauselessFrame;
 			return result.value;
 		}
 		BoolPool.Add(key, new BoolData() {
 			value = defaultValue,
 			displayLabel = displayLabel,
-			enable = enable,
 			KeyIndex = Keys.Count,
+			UpdateFrame = Game.PauselessFrame,
 		});
 		Keys.Add(new KeyData() {
 			key = key,
@@ -348,28 +399,25 @@ public static class QTest {
 		return defaultValue;
 	}
 
-	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, bool enable = true) {
+
+	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (IntPool.TryGetValue(key, out var result)) {
-			if (result.displayLabel != displayLabel || result.enable != enable) {
-				result.displayLabel = displayLabel;
-				result.enable = enable;
-				IntPool[key] = result;
-			}
+			result.displayLabel = displayLabel;
 			var kData = Keys[result.KeyIndex];
 			kData.Order = CurrentOrder;
-			Keys[result.KeyIndex] = kData;
+			result.UpdateFrame = Game.PauselessFrame;
 			return result.value.Clamp(result.min, result.max);
 		}
 		IntPool.Add(key, new IntData() {
 			value = defaultValue.Clamp(min, max),
-			enable = enable,
 			displayLabel = displayLabel,
 			min = min,
 			max = max,
 			step = step,
 			KeyIndex = Keys.Count,
+			UpdateFrame = Game.PauselessFrame,
 		});
 		Keys.Add(new KeyData() {
 			key = key,
@@ -382,27 +430,24 @@ public static class QTest {
 		return defaultValue.Clamp(min, max);
 	}
 
-	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0f, string displayLabel = null, bool enable = true) {
+
+	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0f, string displayLabel = null) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (FloatPool.TryGetValue(key, out var result)) {
-			if (result.displayLabel != displayLabel || result.enable != enable) {
-				result.displayLabel = displayLabel;
-				result.enable = enable;
-				FloatPool[key] = result;
-			}
+			result.displayLabel = displayLabel;
 			var kData = Keys[result.KeyIndex];
 			kData.Order = CurrentOrder;
-			Keys[result.KeyIndex] = kData;
+			result.UpdateFrame = Game.PauselessFrame;
 			return result.value.Clamp(result.min, result.max);
 		}
 		FloatPool.Add(key, new FloatData() {
 			value = defaultValue.Clamp(min, max),
-			enable = enable,
 			displayLabel = displayLabel,
 			min = min,
 			max = max,
 			step = step,
+			UpdateFrame = Game.PauselessFrame,
 			KeyIndex = Keys.Count,
 		});
 		Keys.Add(new KeyData() {
@@ -416,7 +461,10 @@ public static class QTest {
 		return defaultValue.Clamp(min, max);
 	}
 
-	public static void BeginPixels (string key, int width, int height, bool clearPrevPixels = true) {
+
+	// Pixels
+	public static void StartDrawColumn (string key, int size, bool clearPrevPixels = true) => StartDrawPixels(key, size, (int)(size * 0.618f), clearPrevPixels);
+	public static void StartDrawPixels (string key, int width, int height, bool clearPrevPixels = true) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (PixelsPool.TryGetValue(key, out var result)) {
@@ -426,13 +474,14 @@ public static class QTest {
 			CurrentPixels = result.pixels;
 			var kData = Keys[result.KeyIndex];
 			kData.Order = CurrentOrder;
-			Keys[result.KeyIndex] = kData;
+			result.UpdateFrame = Game.PauselessFrame;
 			return;
 		}
 		CurrentPixels = new Color32[width, height];
 		PixelsPool.Add(key, new PixelData() {
 			pixels = CurrentPixels,
 			KeyIndex = Keys.Count,
+			UpdateFrame = Game.PauselessFrame,
 		});
 		Keys.Add(new KeyData() {
 			key = key,
@@ -444,9 +493,20 @@ public static class QTest {
 		IgnoringWindow = false;
 	}
 
+
+	public static void DrawColumn (int x, float value01) {
+		int height = CurrentPixels.GetLength(1);
+		int valueHeight = (height * value01).RoundToInt().Clamp(0, height);
+		for (int i = 0; i < height; i++) {
+			CurrentPixels[x, i] = i < valueHeight ? Color32.WHITE : Color32.BLACK;
+		}
+	}
 	public static void DrawPixel (int x, int y, Color32 pixel) => CurrentPixels[x, y] = pixel;
 
+
+	// Obj
 	public static T SetObject<T> (string key, T obj) => (T)(ObjectPool[key] = obj);
+
 
 	public static bool TryGetObject<T> (string key, out T result) {
 		if (ObjectPool.TryGetValue(key, out var obj) && obj is T tObj) {
@@ -458,15 +518,19 @@ public static class QTest {
 		}
 	}
 
+
+	// Misc
 	public static void HideTest () {
 		ShowingWindow = false;
 		IgnoringWindow = true;
 	}
 
+
 	public static void ShowTest () {
 		ShowingWindow = true;
 		IgnoringWindow = false;
 	}
+
 
 	public static void Group (string group, bool folding = false) {
 		CurrentGroup = group;
@@ -475,6 +539,21 @@ public static class QTest {
 			GroupFolding[group] = folding;
 		}
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
+
 
 }
 #endif

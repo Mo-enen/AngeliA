@@ -6,11 +6,14 @@ namespace AngeliA;
 
 internal class TestMapGenerator : MapGenerator {
 
+
 	private static bool TestingNoise = true;
+
 
 	public override void Initialize (long seed) {
 
 	}
+
 
 	public override MapGenerationResult GenerateMap (Int3 worldPosition, long seed, in World world) {
 
@@ -25,8 +28,12 @@ internal class TestMapGenerator : MapGenerator {
 		return MapGenerationResult.Skipped;
 	}
 
+
 	[CheatCode("NoiseTest")]
 	internal static void EnableNoiseTesting () {
+		if (TestingNoise != QTest.Testing) {
+			TestingNoise = QTest.Testing;
+		}
 		TestingNoise = !TestingNoise;
 		if (!TestingNoise) {
 			QTest.HideTest();
@@ -35,18 +42,22 @@ internal class TestMapGenerator : MapGenerator {
 		}
 	}
 
+
 	[OnGameUpdate]
 	internal static void NoiseTestUpdate () {
 
 		if (!TestingNoise) return;
 
 		// TEST
+		QTest.ShowNotUpdatedData = false;
 		if (!QTest.TryGetObject("noise", out FastNoiseLite noise)) {
 			noise = QTest.SetObject("noise", new FastNoiseLite());
 		}
 
 		// Misc
 		QTest.Group("General");
+
+		bool use3D = QTest.Bool("3D", true);
 
 		float speed = QTest.Float("Noise Speed", 0.6f, 0f, 5f, 0.1f);
 		noise.SetFrequency(QTest.Float(
@@ -73,65 +84,76 @@ internal class TestMapGenerator : MapGenerator {
 		noise.SetFractalOctaves(QTest.Int(
 			"Fractal Octaves", 3, 1, 6
 		));
-		noise.SetFractalPingPongStrength(QTest.Float(
-			"Fractal PingPongStrength", 2.0f, 0f, 5f, 0.1f,
-			enable: noise.CurrentFractalType == FastNoiseLite.FractalType.PingPong
-		));
-		noise.SetFractalWeightedStrength(QTest.Float(
-			"Fractal WeightedStrength", 0f, 0f, 2f, 0.1f,
-			enable: noise.CurrentFractalType != FastNoiseLite.FractalType.None
-		));
+		if (noise.CurrentFractalType == FastNoiseLite.FractalType.PingPong) {
+			noise.SetFractalPingPongStrength(QTest.Float(
+				"Fractal PingPongStrength", 2.0f, 0f, 5f, 0.1f
+			));
+		}
+		if (noise.CurrentFractalType != FastNoiseLite.FractalType.None) {
+			noise.SetFractalWeightedStrength(QTest.Float(
+				"Fractal WeightedStrength", 0f, 0f, 2f, 0.1f
+			));
+		}
 
 		// Cellular
 		QTest.Group("Cellular", folding: true);
 
-		noise.SetCellularDistanceFunction((FastNoiseLite.CellularDistanceFunction)QTest.Int(
-			"Cellular Dis-Func", 1, 0, 3,
-			displayLabel: noise.CurrentCellularDistanceFunction.ToString(),
-			enable: noise.CurrentNoiseType == FastNoiseLite.NoiseType.Cellular
-		));
+		if (noise.CurrentNoiseType == FastNoiseLite.NoiseType.Cellular) {
 
-		noise.SetCellularReturnType((FastNoiseLite.CellularReturnType)QTest.Int(
-			"Cellular Return Type", 1, 0, 6,
-			displayLabel: noise.CurrentCellularReturnType.ToString(),
-			enable: noise.CurrentNoiseType == FastNoiseLite.NoiseType.Cellular
-		));
+			noise.SetCellularDistanceFunction((FastNoiseLite.CellularDistanceFunction)QTest.Int(
+				"Cellular Dis-Func", 1, 0, 3,
+				displayLabel: noise.CurrentCellularDistanceFunction.ToString()
+			));
+			noise.SetCellularReturnType((FastNoiseLite.CellularReturnType)QTest.Int(
+				"Cellular Return Type", 1, 0, 6,
+				displayLabel: noise.CurrentCellularReturnType.ToString()
+			));
+			noise.SetCellularJitter(QTest.Float(
+				"Cellular Jitter", 1.0f, 0f, 5f, 0.1f
+			));
+		}
 
-		noise.SetCellularJitter(QTest.Float(
-			"Cellular Jitter", 1.0f, 0f, 5f, 0.1f,
-			enable: noise.CurrentNoiseType == FastNoiseLite.NoiseType.Cellular
-		));
+
 
 		// Domain Warp
 		QTest.Group("Domain Warp", folding: true);
-
-		bool domainWarpEnable =
+		if (
 			noise.CurrentFractalType == FastNoiseLite.FractalType.DomainWarpIndependent ||
-			noise.CurrentFractalType == FastNoiseLite.FractalType.DomainWarpProgressive;
-		noise.SetDomainWarpType((FastNoiseLite.DomainWarpType)QTest.Int(
-			"Domain Warp Type", 0, 0, 2,
-			displayLabel: noise.CurrentDomainWarpType.ToString(),
-			enable: domainWarpEnable
-		));
-		noise.SetDomainWarpAmp(QTest.Float(
-			"Domain Warp Amp", 1.0f, 0f, 5f, 0.1f
-		));
+			noise.CurrentFractalType == FastNoiseLite.FractalType.DomainWarpProgressive
+		) {
+			noise.SetDomainWarpType((FastNoiseLite.DomainWarpType)QTest.Int(
+				"Domain Warp Type", 0, 0, 2,
+				displayLabel: noise.CurrentDomainWarpType.ToString()
+			));
+			noise.SetDomainWarpAmp(QTest.Float(
+				"Domain Warp Amp", 1.0f, 0f, 5f, 0.1f
+			));
+		}
 
 		// View
 		QTest.Group("");
 		const int SIZE = 128;
-		QTest.BeginPixels("View", SIZE, SIZE, clearPrevPixels: false);
-		for (int j = 0; j < SIZE; j++) {
+		if (use3D) {
+			QTest.StartDrawPixels("View 3D", SIZE, SIZE, clearPrevPixels: false);
+			for (int j = 0; j < SIZE; j++) {
+				for (int i = 0; i < SIZE; i++) {
+					float value = noise.GetNoise(
+						Game.GlobalFrame * speed + i,
+						Game.GlobalFrame * speed + j
+					);
+					byte rgb = (byte)((value + 1f) * 128f).Clamp(0, 255);
+					QTest.DrawPixel(i, j, new Color32(rgb, rgb, rgb, 255));
+				}
+			}
+		} else {
+			QTest.StartDrawColumn("View 2D", SIZE, clearPrevPixels: false);
 			for (int i = 0; i < SIZE; i++) {
-				float value = noise.GetNoise(
-					Game.GlobalFrame * speed + i,
-					Game.GlobalFrame * speed + j
-				);
-				byte rgb = (byte)((value + 1f) * 128f).Clamp(0, 255);
-				QTest.DrawPixel(i, j, new Color32(rgb, rgb, rgb, 255));
+				float value = noise.GetNoise(Game.GlobalFrame * speed + i, 0.618f);
+				QTest.DrawColumn(i, value);
 			}
 		}
 
 	}
+
 
 }
