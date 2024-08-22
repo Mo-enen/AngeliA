@@ -265,9 +265,9 @@ public static class QTest {
 						data.value = GUI.HandleSlider(
 							3126784 + index,
 							valueRect.ShrinkRight(valueLabelWidth),
-							(data.value * 100f).RoundToInt(), (data.min * 100f).RoundToInt(), (data.max * 100f).RoundToInt(),
-							step: (data.step * 100f).RoundToInt()
-						) / 100f;
+							(data.value * 10000f).RoundToInt(), (data.min * 10000f).RoundToInt(), (data.max * 10000f).RoundToInt(),
+							step: (data.step * 10000f).RoundToInt()
+						) / 10000f;
 						GUI.Label(
 							valueRect.EdgeRight(valueLabelWidth),
 							data.value.ToString("0.00"),

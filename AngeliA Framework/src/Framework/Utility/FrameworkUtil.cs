@@ -586,7 +586,7 @@ public static class FrameworkUtil {
 		if (
 			blockType == BlockType.Entity &&
 			BLOCK_ENTITY_TYPE.IsAssignableFrom(Stage.GetEntityType(blockID)) &&
-			Stage.SpawnEntityFromWorld(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Stage.ViewZ) is IBlockEntity bEntity
+			Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true) is IBlockEntity bEntity
 		) {
 			// Event
 			bEntity.OnEntityPut();

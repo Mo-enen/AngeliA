@@ -104,8 +104,8 @@ public class Universe {
 	}
 
 
-	public void ReloadSavingSlot (int newSlot, bool forceChange = false) {
-		if (!forceChange && newSlot == CurrentSavingSlot) return;
+	public void ReloadSavingSlot (int newSlot, bool forceReload = false) {
+		if (!forceReload && newSlot == CurrentSavingSlot) return;
 		Util.InvokeAsAutoOrderingTask<BeforeSavingSlotChanged>();
 		CurrentSavingSlot = newSlot;
 		SetSavingRoot(SavingRoot, newSlot);

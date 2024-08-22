@@ -66,7 +66,11 @@ public class WorldSquad : IBlockSquad {
 
 
 	[BeforeSavingSlotChanged]
-	internal static void BeforeSavingSlotChanged () => SquadReady = false;
+	internal static void BeforeSavingSlotChanged () {
+		SquadReady = false;
+		Stage.SetViewZ(Stage.ViewZ);
+		Stage.DespawnAllNonUiEntities();
+	}
 
 
 	[OnSavingSlotChanged]
@@ -74,6 +78,7 @@ public class WorldSquad : IBlockSquad {
 		if (Readonly) return;
 		Stream?.SaveAllDirty();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
+		Stream.ClearWorldPool();
 		SquadReady = true;
 	}
 
@@ -123,14 +128,14 @@ public class WorldSquad : IBlockSquad {
 	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
 
 
-	public static IEnumerable<Int3> ForAllWorldInRect (IRect rect) {
-		int left = rect.xMin.ToUnit().UDivide(Const.MAP);
-		int right = (rect.xMax.ToUnit() + 1).UDivide(Const.MAP);
-		int down = rect.yMin.ToUnit().UDivide(Const.MAP);
-		int up = (rect.yMax.ToUnit() + 1).UDivide(Const.MAP);
+	public static IEnumerable<Int3> ForAllWorldInRange (IRect overlapRange, int z) {
+		int left = overlapRange.xMin.ToUnit().UDivide(Const.MAP);
+		int right = (overlapRange.xMax.ToUnit() + 1).UDivide(Const.MAP);
+		int down = overlapRange.yMin.ToUnit().UDivide(Const.MAP);
+		int up = (overlapRange.yMax.ToUnit() + 1).UDivide(Const.MAP);
 		for (int i = left; i <= right; i++) {
 			for (int j = down; j <= up; j++) {
-				yield return new Int3(i, j, Stage.ViewZ);
+				yield return new Int3(i, j, z);
 			}
 		}
 	}
@@ -159,20 +164,9 @@ public class WorldSquad : IBlockSquad {
 	}
 
 
-	public Int4 GetBlocksAt (int unitX, int unitY) {
-		Stream.GetBlocksAt(unitX, unitY, Stage.ViewZ, out int e, out int l, out int b, out int ele);
-		return new Int4(e, l, b, ele);
-	}
+	public void GetBlocksAt (int unitX, int unitY, int z, out int entity, out int level, out int background, out int element) => Stream.GetBlocksAt(unitX, unitY, z, out entity, out level, out background, out element);
 
 
-	public int GetBlockAt (int unitX, int unitY) {
-		int id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Entity);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Level);
-		if (id == 0) id = Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Background);
-		return id;
-	}
 	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
 	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
 

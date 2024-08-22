@@ -116,6 +116,9 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
+	public void ClearWorldPool () => WorldPool.Clear();
+
+
 	// World
 	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) => TryGetWorld(new Int3(worldX, worldY, worldZ), out world);
 	public bool TryGetWorld (Int3 worldPos, out World world) {

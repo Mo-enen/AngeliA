@@ -65,7 +65,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		if (!ItemSystem.ItemPoolReady) return;
 
 		// Check for Holding Pool
-		foreach (var worldPos in WorldSquad.ForAllWorldInRect(Stage.ViewRect)) {
+		foreach (var worldPos in WorldSquad.ForAllWorldInRange(Stage.ViewRect, Stage.ViewZ)) {
 
 			if (!HoldingPool.TryGetValue(worldPos, out var pipe) || pipe.Length == 0) continue;
 

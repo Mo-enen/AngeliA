@@ -23,12 +23,14 @@ public static class MapGenerationSystem {
 	#region --- VAR ---
 
 
+	// Api
+	public static long Seed { get; private set; }
+
 	// Data
 	private static readonly Dictionary<Int3, MapState> StatePool = new();
 	private static readonly List<MapGenerator> AllMapGenerators = new(32);
 	private static readonly Queue<World> ResultQueue = new();
 	private static bool Enable;
-	private static long Seed;
 
 
 	#endregion
@@ -74,6 +76,7 @@ public static class MapGenerationSystem {
 		Seed = seed;
 
 		// Init Generators
+		Util.InvokeAllStaticMethodWithAttribute<OnMapGeneratorInitializedAttribute>();
 		foreach (var gen in AllMapGenerators) {
 			gen.Initialize(seed);
 		}
@@ -117,20 +120,35 @@ public static class MapGenerationSystem {
 	#region --- API ---
 
 
-	public static void GenerateMapInRange (IRect range, int z, bool async) {
-		int left = range.xMin.ToUnit().UDivide(Const.MAP);
-		int right = (range.xMax.ToUnit() + 1).UDivide(Const.MAP);
-		int down = range.yMin.ToUnit().UDivide(Const.MAP);
-		int up = (range.yMax.ToUnit() + 1).UDivide(Const.MAP);
+	public static void RegenerateAll () {
+		ResultQueue.Clear();
+		WorldSquad.Stream.ClearWorldPool();
+		var uni = Universe.BuiltIn;
+		// Delete All User Map Files
+		foreach (string path in Util.EnumerateFiles(uni.SlotUserMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
+			Util.DeleteFile(path);
+		}
+		// Reload Saving Slot
+		uni.ReloadSavingSlot(uni.CurrentSavingSlot, forceReload: true);
+		// Start Game
+		Game.RestartGame();
+	}
+
+
+	public static void GenerateMapInRange (IRect overlapRange, int z, bool async) {
+		int left = overlapRange.xMin.ToUnit().UDivide(Const.MAP);
+		int right = (overlapRange.xMax.ToUnit() + 1).UDivide(Const.MAP);
+		int down = overlapRange.yMin.ToUnit().UDivide(Const.MAP);
+		int up = (overlapRange.yMax.ToUnit() + 1).UDivide(Const.MAP);
 		for (int i = left; i <= right; i++) {
 			for (int j = down; j <= up; j++) {
-				MapGenerationSystem.GenerateMap(new Int3(i, j, z), async);
+				MapGenerationSystem.GenerateMapAtPosition(new Int3(i, j, z), async);
 			}
 		}
 	}
 
 
-	public static void GenerateMap (Int3 worldPos, bool async) {
+	public static void GenerateMapAtPosition (Int3 worldPos, bool async) {
 		if (!Enable) return;
 		if (StatePool.TryGetValue(worldPos, out var state)) {
 			if (state != MapState.Fail) return;
@@ -141,6 +159,40 @@ public static class MapGenerationSystem {
 		} else {
 			GenerateLogic(worldPos);
 		}
+	}
+
+
+	public static bool GenerateIntoWorld (Int3 worldPos, World world) => GenerateIntoWorld(worldPos, world, out _);
+	public static bool GenerateIntoWorld (Int3 worldPos, World world, out int successCount) {
+
+		bool success = true;
+		world.WorldPosition = worldPos;
+
+		// Trigger all Generators
+		successCount = 0;
+		foreach (var gen in AllMapGenerators) {
+			try {
+				var result = gen.GenerateMap(worldPos, Seed, world);
+				switch (result) {
+					case MapGenerationResult.Success:
+						successCount++;
+						break;
+					case MapGenerationResult.Fail:
+						Debug.LogWarning($"{gen.GetType().Name} Fail to generate map at {worldPos}");
+						break;
+					case MapGenerationResult.CriticalError:
+						success = false;
+						Debug.LogError($"{gen.GetType().Name} Fail to generate map at {worldPos} with critical error");
+						break;
+				}
+				// Skip All for Critical Error
+				if (!success) break;
+			} catch (System.Exception ex) {
+				Debug.LogException(ex);
+			}
+		}
+
+		return success;
 	}
 
 
@@ -155,32 +207,10 @@ public static class MapGenerationSystem {
 	private static void GenerateLogic (object worldPosObj) {
 
 		var worldPos = (Int3)worldPosObj;
-		bool success = true;
 
 		// Trigger all Generators
 		var world = new World(worldPos);
-		int successCount = 0;
-		foreach (var gen in AllMapGenerators) {
-			try {
-				var result = gen.GenerateMap(worldPos, Seed, world);
-				switch (result) {
-					case MapGenerationResult.Success:
-						successCount++;
-						break;
-					case MapGenerationResult.Fail:
-						Debug.LogWarning($"{gen.GetType().Name} Fail to generate map at {worldPos} with error: {gen.ErrorMessage}");
-						break;
-					case MapGenerationResult.CriticalError:
-						success = false;
-						Debug.LogError($"{gen.GetType().Name} fail to generate map at {worldPos} with critical error: {gen.ErrorMessage}");
-						break;
-				}
-				// Skip All for Critical Error
-				if (!success) break;
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
-			}
-		}
+		bool success = GenerateIntoWorld(worldPos, world, out int successCount);
 
 		// Done
 		if (success && successCount > 0) {

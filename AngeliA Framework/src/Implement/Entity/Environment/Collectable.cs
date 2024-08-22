@@ -45,7 +45,10 @@ public abstract class Collectable : EnvironmentEntity {
 
 	public virtual bool OnCollect (Entity source) {
 		if (Game.UseProceduralMap) {
-			FrameworkUtil.PickEntityBlock(this, false);
+			var mapPos = source.MapUnitPos;
+			if (mapPos.HasValue) {
+				WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
+			}
 		}
 		return true;
 	}

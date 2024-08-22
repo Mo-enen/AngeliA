@@ -67,15 +67,6 @@ public class World {
 	}
 
 
-	public void Reset (Int3 pos) {
-		WorldPosition = pos;
-		Levels = new int[Const.MAP * Const.MAP];
-		Backgrounds = new int[Const.MAP * Const.MAP];
-		Entities = new int[Const.MAP * Const.MAP];
-		Elements = new int[Const.MAP * Const.MAP];
-	}
-
-
 	public void Clear (Int3? pos = null) {
 		WorldPosition = pos ?? WorldPosition;
 		System.Array.Clear(Levels, 0, Levels.Length);

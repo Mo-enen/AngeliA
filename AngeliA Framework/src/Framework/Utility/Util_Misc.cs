@@ -142,6 +142,14 @@ public static partial class Util {
 		seed = (seed * 2127912213) % 2147483647;
 		return seed;
 	}
+	public static int QuickRandomWithSeed (long seed, int min, int max) => QuickRandomWithSeed(seed).UMod((max - min).GreaterOrEquel(1)) + min;
+	public static int QuickRandomWithSeed (long seed) {
+		seed = (seed * 12234503515245 + 72456224) % 2223423456789;
+		seed = (seed * 168689307) % 21470543323483647;
+		seed = (seed ^ (seed >> 23)) % 4243214724483647;
+		seed = (seed * 212791213672213) % 214748223573647;
+		return (int)seed;
+	}
 
 
 	public static int ExecuteCommand (string workingDirectory, string arguments, int logID = -1, bool wait = true) {

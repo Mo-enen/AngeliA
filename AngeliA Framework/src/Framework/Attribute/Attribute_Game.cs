@@ -104,6 +104,10 @@ public class BeforeLevelRenderedAttribute : Attribute { }
 public class AfterLevelRenderedAttribute : Attribute { }
 
 
+[AttributeUsage(AttributeTargets.Method)]
+public class OnMapGeneratorInitializedAttribute : Attribute { }
+
+
 // Language
 [AttributeUsage(AttributeTargets.Method)]
 public class OnLanguageChangedAttribute : Attribute { }

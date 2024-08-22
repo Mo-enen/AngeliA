@@ -488,16 +488,18 @@ public static class Stage {
 	}
 
 
-	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ) {
+	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ, bool forceSpawn = false) {
 		var uPos = new Int3(unitX, unitY, unitZ);
-		if (StagedEntityHash.Contains(uPos)) return null;
-		if (GlobalAntiSpawnHash.Contains(uPos)) return null;
-		if (LocalAntiSpawnHash.Contains(uPos)) return null;
+		if (!forceSpawn) {
+			if (StagedEntityHash.Contains(uPos)) return null;
+			if (GlobalAntiSpawnHash.Contains(uPos)) return null;
+			if (LocalAntiSpawnHash.Contains(uPos)) return null;
+		}
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 		if (stack.DontSpawnFromWorld) return null;
 		int x = unitX * Const.CEL;
 		int y = unitY * Const.CEL;
-		if (AntiSpawnRect.Overlaps(stack.LocalBound.Shift(x, y))) return null;
+		if (!forceSpawn && AntiSpawnRect.Overlaps(stack.LocalBound.Shift(x, y))) return null;
 		return SpawnEntityLogic(typeID, x, y, uPos);
 	}
 

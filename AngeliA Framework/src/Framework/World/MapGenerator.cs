@@ -7,11 +7,10 @@ public enum MapGenerationResult { Success, Skipped, Fail, CriticalError, }
 
 public abstract class MapGenerator {
 
-	public string ErrorMessage { get; private set; }
 	public virtual int Order => 0;
 
 	public abstract void Initialize (long seed);
 
-	public abstract MapGenerationResult GenerateMap (Int3 worldPosition, long seed, in World world);
+	public abstract MapGenerationResult GenerateMap (Int3 worldPosition, long seed, World world);
 
 }
