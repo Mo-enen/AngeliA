@@ -27,10 +27,21 @@ public abstract class RegionMapGenerator : MapGenerator {
 
 	[OnMapGeneratorInitialized]
 	internal static void OnMapGeneratorInitialized () {
+
 		long seed = MapGenerationSystem.Seed;
+
+		// Region Noise
 		RegionNoise.SetSeed(seed);
-		RegionNoise.SetFrequency(0.03f);
+		RegionNoise.SetFrequency(0.02f);
 		RegionNoise.SetNoiseType(NoiseType.Value);
+		RegionNoise.SetFractalType(FractalType.PingPong);
+		RegionNoise.SetFractalGain(0.5f);
+		RegionNoise.SetFractalLacunarity(5f);
+		RegionNoise.SetFractalOctaves(2);
+		RegionNoise.SetFractalPingPongStrength(4.5f);
+		RegionNoise.SetFractalWeightedStrength(0.618f);
+
+
 
 
 	}
