@@ -221,7 +221,7 @@ public class RigRespondMessage {
 	public void UpdateRendering (int sheetIndex, int leftPadding, IRect dodgingRect) {
 
 		// View
-		ViewHeight = ViewHeight.GreaterOrEquel(Game.MinViewHeight);
+		ViewHeight = ViewHeight.GreaterOrEquel(Universe.BuiltInInfo.MinViewHeight);
 		int oldViewHeight = Stage.ViewRect.height;
 		Stage.SetViewRectImmediately(
 			new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight),

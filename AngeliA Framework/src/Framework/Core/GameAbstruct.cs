@@ -115,22 +115,6 @@ public abstract partial class Game {
 		return cRect;
 	}
 	public static int GetViewWidthFromViewHeight (int viewHeight) => Const.VIEW_RATIO * viewHeight / 1000;
-	public static int DefaultViewHeight => Instance._DefaultViewHeight;
-	protected virtual int _DefaultViewHeight => 26 * Const.CEL;
-
-	public static void ForceMinViewHeight (int height, int duration = 1) {
-		Instance.ForceMinViewHeightFrame = GlobalFrame + duration;
-		Instance.ForceMinViewHeightValue = height;
-	}
-	public static int MinViewHeight => Instance._MinViewHeight;
-	protected virtual int _MinViewHeight => GlobalFrame <= ForceMinViewHeightFrame ? ForceMinViewHeightValue : 16 * Const.CEL;
-
-	public static void ForceMaxViewHeight (int height, int duration = 1) {
-		Instance.ForceMaxViewHeightFrame = GlobalFrame + duration;
-		Instance.ForceMaxViewHeightValue = height;
-	}
-	public static int MaxViewHeight => Instance._MaxViewHeight;
-	protected virtual int _MaxViewHeight => GlobalFrame <= ForceMaxViewHeightFrame ? ForceMaxViewHeightValue : 60 * Const.CEL;
 
 	public static int WorldBehindParallax => Instance._WorldBehindParallax;
 	protected virtual int _WorldBehindParallax => 1300;

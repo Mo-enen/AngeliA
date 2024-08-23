@@ -6,12 +6,7 @@ using AngeliaRigged;
 
 var riggedGame = new RiggedGame(args);
 riggedGame.Initialize();
-
-Universe.BuiltInInfo.AllowQuitFromMenu = false;
-if (!Universe.BuiltInInfo.UseProceduralMap) {
-	Universe.BuiltInInfo.AllowRestartFromMenu = false;
-}
-
+riggedGame.InitializeLater();
 while (true) {
 	try {
 		bool success = riggedGame.UpdateWithPipe();
@@ -21,5 +16,4 @@ while (true) {
 	}
 }
 riggedGame.OnQuitting();
-
 return 0;

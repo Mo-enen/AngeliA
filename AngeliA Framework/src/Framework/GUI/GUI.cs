@@ -595,6 +595,27 @@ public static class GUI {
 		Icon(rect, icon, style, fakeState);
 		return isOn;
 	}
+	public static bool ToggleFold (IRect rect, ref bool folding, int icon, string label, int paddingLeft = 0, int paddingRight = 0) {
+
+		// Fold Icon
+		Icon(rect.Edge(Direction4.Left, rect.height * 3 / 4).Shift(-paddingLeft / 5, 0), icon);
+
+		// Fold Label
+		if (Button(rect.Expand(paddingLeft, paddingRight, 0, 0), 0, Skin.WeakHighlightPixel)) {
+			folding = !folding;
+		}
+		Label(rect.ShrinkLeft(rect.height), label, Skin.SmallGreyLabel);
+
+		// Fold Triangle
+		using (new GUIColorScope(Color32.GREY_128)) {
+			Icon(
+				rect.EdgeOutside(Direction4.Left, rect.height * 2 / 3).Shift(-paddingLeft / 4, 0),
+				folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
+			);
+		}
+
+		return folding;
+	}
 	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) =>
 		Toggle(rect, isOn, null, bodyStyle, markStyle, null);
 	public static bool Toggle (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle markStyle = null, GUIStyle labelStyle = null) {

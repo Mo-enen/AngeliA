@@ -68,8 +68,6 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 	private const int PANEL_WIDTH = 256;
-	private const int MIN_VIEW_HEIGHT = 16 * Const.CEL;
-	private const int MAX_VIEW_HEIGHT = 120 * Const.CEL;
 	private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 	private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 	private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
@@ -385,10 +383,6 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// View
-		if (IsEditing) {
-			Game.ForceMinViewHeight(MIN_VIEW_HEIGHT);
-			Game.ForceMaxViewHeight(MAX_VIEW_HEIGHT);
-		}
 		TargetUndoViewPos = null;
 
 	}
@@ -402,7 +396,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Playing
 		if (IsPlaying) {
 			CurrentZ = Stage.ViewZ;
-			int newHeight = Game.DefaultViewHeight;
+			int newHeight = Universe.BuiltInInfo.DefaultViewHeight;
 			var viewRect = Stage.ViewRect;
 			if (viewRect.height != newHeight) {
 				if (Stage.DelayingViewX.HasValue) viewRect.x = Stage.DelayingViewX.Value;
@@ -438,7 +432,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Zoom
 		if (AutoZoom) {
 			// Auto
-			int newHeight = Game.DefaultViewHeight * 3 / 2;
+			int newHeight = Universe.BuiltInInfo.DefaultViewHeight * 3 / 2;
 			if (TargetViewRect.height != newHeight) {
 				int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 				TargetViewRect.x -= (newWidth - TargetViewRect.width) / 2;
@@ -456,7 +450,10 @@ public sealed partial class MapEditor : WindowUI {
 
 				TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
 
-				int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(Game.MinViewHeight, Game.MaxViewHeight);
+				int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
+					Universe.BuiltInInfo.MinViewHeight,
+					Universe.BuiltInInfo.MaxViewHeight
+				);
 				int newWidth = newHeight * Const.VIEW_RATIO / 1000;
 
 				float cameraWidth = TargetViewRect.height * Renderer.CameraRect.width / Renderer.CameraRect.height;
@@ -1118,7 +1115,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void ResetCamera (bool immediately = false) {
-		int viewHeight = Game.DefaultViewHeight * 3 / 2;
+		int viewHeight = Universe.BuiltInInfo.DefaultViewHeight * 3 / 2;
 		int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
 		TargetViewRect.x = -viewWidth / 2;
 		TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);

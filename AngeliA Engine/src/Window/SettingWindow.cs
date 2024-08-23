@@ -202,25 +202,13 @@ public class SettingWindow : WindowUI {
 		int boxRight = rect.xMax;
 		GUI.BeginChangeCheck();
 
-		// Fold Icon
-		GUI.Icon(rect.Edge(Direction4.Left, rect.height * 3 / 4).Shift(-boxPadding.left / 5, 0), groupData.Icon);
+		// Fold
+		if (!GUI.ToggleFold(
+			rect, ref groupData.Folding, groupData.Icon, groupData.Name, boxPadding.left, boxPadding.right
+		)) {
 
-		// Fold Label
-		if (GUI.Button(rect.Expand(boxPadding.left, boxPadding.right, 0, 0), 0, Skin.WeakHighlightPixel)) {
-			groupData.Folding = !groupData.Folding;
-		}
-		GUI.Label(rect.ShrinkLeft(rect.height), groupData.Name, Skin.SmallGreyLabel);
+			rect.SlideDown(GUI.FieldPadding);
 
-		// Fold Triangle
-		using (new GUIColorScope(Color32.GREY_128)) {
-			GUI.Icon(
-				rect.EdgeOutside(Direction4.Left, rect.height * 2 / 3).Shift(-boxPadding.left / 4, 0),
-				groupData.Folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
-			);
-		}
-		rect.SlideDown(groupData.Folding ? 0 : GUI.FieldPadding);
-
-		if (!groupData.Folding) {
 			// Content
 			foreach (var item in groupData.Items) {
 				if (item.Requirement != null && !item.Requirement.Value) continue;
@@ -277,7 +265,8 @@ public class SettingWindow : WindowUI {
 			if (extraContent != null) {
 				rect = extraContent(rect);
 			}
-
+		} else {
+			rect.SlideDown();
 		}
 
 		changed = GUI.EndChangeCheck();

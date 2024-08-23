@@ -39,6 +39,8 @@ public partial class RiggedGame : Game {
 	private Entity HoveringEntity = null;
 	private Int2 DraggingEntityOffset;
 	private string HoveringEntityName = "";
+	private int OriginalMinViewHeight;
+	private int OriginalMaxViewHeight;
 
 
 	#endregion
@@ -137,6 +139,16 @@ public partial class RiggedGame : Game {
 			System.Console.WriteLine(ex.StackTrace);
 			System.Console.WriteLine();
 		}
+	}
+
+
+	public void InitializeLater () {
+		Universe.BuiltInInfo.AllowQuitFromMenu = false;
+		if (!Universe.BuiltInInfo.UseProceduralMap) {
+			Universe.BuiltInInfo.AllowRestartFromMenu = false;
+		}
+		OriginalMinViewHeight = Universe.BuiltInInfo.MinViewHeight;
+		OriginalMaxViewHeight = Universe.BuiltInInfo.MaxViewHeight;
 	}
 
 
@@ -286,6 +298,11 @@ public partial class RiggedGame : Game {
 				}
 			}
 		}
+
+		// Fix View Height
+		bool editing = MapEditor.IsEditing;
+		Universe.BuiltInInfo.MinViewHeight = editing ? Const.CEL * 16 : OriginalMinViewHeight;
+		Universe.BuiltInInfo.MaxViewHeight = editing ? Const.CEL * 120 : OriginalMaxViewHeight;
 
 	}
 

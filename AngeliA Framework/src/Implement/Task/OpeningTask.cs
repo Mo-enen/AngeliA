@@ -36,7 +36,7 @@ public class OpeningTask : TaskItem {
 		PlayerSpawnX = TargetViewX;
 		PlayerSpawnY = TargetViewY;
 		TargetViewY += Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
-		Stage.SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
+		Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 1000, int.MaxValue);
 		if (FadeOut) {
 			Game.PassEffect_RetroDarken(1f);
 		}
@@ -164,7 +164,7 @@ public class OpeningTask : TaskItem {
 			Task.TryAddToLast(TYPE_ID, out var task) &&
 			task is OpeningTask oTask
 		) {
-			Stage.SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
+			Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 1000, int.MaxValue);
 			oTask.TargetViewX = startUnitPosition.x.ToGlobal();
 			oTask.TargetViewY = startUnitPosition.y.ToGlobal();
 			oTask.TargetViewZ = startUnitPosition.z;

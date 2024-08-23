@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 [System.Serializable]
-public class UniverseInfo {
+public class UniverseInfo : IJsonSerializationCallback {
 	public string ProductName = "";
 	public string DeveloperName = "";
 	public int MajorVersion = 0;
@@ -19,6 +19,23 @@ public class UniverseInfo {
 	public bool AllowQuitFromMenu = true;
 	public bool AllowRestartFromMenu = true;
 	public bool ScaleUiBasedOnMonitor = true;
+	public int DefaultViewHeight = Const.CEL * 26;
+	public int MinViewHeight = Const.CEL * 16;
+	public int MaxViewHeight = Const.CEL * 60;
+
+	public void OnAfterLoadedFromDisk () => Valid(true);
+	public void OnBeforeSaveToDisk () => Valid(true);
+	public void Valid (bool minFirst) {
+		if (minFirst) {
+			MinViewHeight = MinViewHeight.Clamp(Const.CEL * 16, Const.CEL * 1024);
+			MaxViewHeight = MaxViewHeight.Clamp(MinViewHeight, Const.CEL * 1024);
+		} else {
+			MaxViewHeight = MaxViewHeight.Clamp(Const.CEL * 16, Const.CEL * 1024);
+			MinViewHeight = MinViewHeight.Clamp(Const.CEL * 16, MaxViewHeight);
+		}
+		DefaultViewHeight = DefaultViewHeight.Clamp(MinViewHeight, MaxViewHeight);
+	}
+
 }
 
 

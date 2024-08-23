@@ -16,11 +16,14 @@ public class ProjectEditor : WindowUI {
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
 	private static readonly SpriteCode ICON_FONT = "FileIcon.Font";
+	private static readonly SpriteCode ICON_CONFIG = "Icon.Project.Config";
+	private static readonly SpriteCode ICON_RESOURCE = "Icon.Project.Resource";
 
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
 	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
+
 	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open .sln or .csproj file in this project folder with default application");
 	private static readonly LanguageCode TIP_RECOMPILE = ("Tip.Recompile", "Manually rebuild the project in debug mode");
 	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Run the current built project in a new window in debug mode");
@@ -33,6 +36,8 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_DEV_NAME_EMPTY = ("Log.DevNameEmpty", "Developer name can not be empty");
+	private static readonly LanguageCode LABEL_CONFIG = ("Project.Label.Config", "Config");
+	private static readonly LanguageCode LABEL_RESOURCE = ("Project.Label.Resource", "Resource");
 	private static readonly LanguageCode LABEL_ICON = ("Setting.Icon", "Icon");
 	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
 	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
@@ -51,6 +56,9 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ALLOW_QUIT_MENU = ("Label.Project.AllowQuitFromMenu", "Allow Quit from Menu");
 	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
 	private static readonly LanguageCode LABEL_SCALE_UI_MONITOR = ("Label.Project.ScaleUiBasedOnMonitor", "Scale UI Based On Monitor Height");
+	private static readonly LanguageCode LABEL_DEF_VIEW_HEIGHT = ("Setting.DefViewHeight", "Default View Height (block)");
+	private static readonly LanguageCode LABEL_MIN_VIEW_HEIGHT = ("Setting.MinViewHeight", "Min View Height (block)");
+	private static readonly LanguageCode LABEL_MAX_VIEW_HEIGHT = ("Setting.MaxViewHeight", "Max View Height (block)");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }
@@ -69,6 +77,8 @@ public class ProjectEditor : WindowUI {
 	private long IconFileModifyDate = 0;
 	private object MenuItem = null;
 	private bool RequireRecompileOnSave = false;
+	private bool FoldingConfigPanel = false;
+	private bool FoldingResourcePanel = true;
 
 
 	#endregion
@@ -101,7 +111,7 @@ public class ProjectEditor : WindowUI {
 		if (CurrentProject == null) return;
 
 		Renderer.TryGetSprite(PANEL_BACKGROUND, out var panelBgSprite);
-		var panelBorder = Int4.Direction(Unify(12), Unify(12), Unify(42), Unify(96));
+		var panelBorder = Int4.Direction(Unify(12), Unify(12), Unify(42), Unify(48));
 		if (panelBgSprite != null) {
 			panelBorder += panelBgSprite.GlobalBorder;
 		}
@@ -124,8 +134,29 @@ public class ProjectEditor : WindowUI {
 
 			// Window
 			OnGUI_WorkflowButton(ref rect);
-			OnGUI_Config(ref rect);
-			OnGUI_Resource(ref rect);
+
+			// Config
+			int left = rect.x;
+			int indent = GUI.FieldHeight / 2;
+			rect.yMin = rect.yMax - GUI.FieldHeight;
+			rect.xMin += indent;
+			if (!GUI.ToggleFold(rect, ref FoldingConfigPanel, ICON_CONFIG, LABEL_CONFIG, indent)) {
+				rect.xMin += indent;
+				rect.SlideDown(GUI.FieldPadding);
+				OnGUI_Config(ref rect);
+			} else {
+				rect.SlideDown();
+			}
+
+			// Resource
+			rect.xMin = left + indent;
+			if (!GUI.ToggleFold(rect, ref FoldingResourcePanel, ICON_RESOURCE, LABEL_RESOURCE, indent)) {
+				rect.xMin += indent;
+				rect.SlideDown(GUI.FieldPadding);
+				OnGUI_Resource(ref rect);
+			} else {
+				rect.SlideDown();
+			}
 
 			extendedContentSize = panelRect.yMax - rect.yMax + Unify(64);
 			MasterScrollMax = (extendedContentSize - panelRect.height).GreaterOrEquelThanZero();
@@ -232,6 +263,7 @@ public class ProjectEditor : WindowUI {
 		int itemHeight = GUI.FieldHeight;
 		rect.yMin = rect.yMax - itemHeight;
 		int labelWidth = GUI.LabelWidth;
+		int digitLabelWidth = Unify(64);
 		var info = CurrentProject.Universe.Info;
 
 		// Product Name
@@ -348,6 +380,54 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
+		rect.SlideDown(padding);
+
+		// Default View Size
+		GUI.SmallLabel(rect, LABEL_DEF_VIEW_HEIGHT);
+		int newDefViewHeight = GUI.HandleSlider(
+			7365432, rect.Shrink(GUI.LabelWidth, digitLabelWidth, 0, 0),
+			info.DefaultViewHeight / Const.CEL,
+			16, 128
+		);
+		if (newDefViewHeight != info.DefaultViewHeight / Const.CEL) {
+			info.DefaultViewHeight = newDefViewHeight * Const.CEL;
+			info.Valid(true);
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newDefViewHeight, GUI.Skin.SmallCenterLabel);
+		rect.SlideDown(padding);
+
+		// Min View Size
+		GUI.SmallLabel(rect, LABEL_MIN_VIEW_HEIGHT);
+		int newMinViewHeight = GUI.HandleSlider(
+			7365433, rect.Shrink(GUI.LabelWidth, digitLabelWidth, 0, 0),
+			info.MinViewHeight / Const.CEL,
+			16, 128
+		);
+		if (newMinViewHeight != info.MinViewHeight / Const.CEL) {
+			info.MinViewHeight = newMinViewHeight * Const.CEL;
+			info.Valid(false);
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newMinViewHeight, GUI.Skin.SmallCenterLabel);
+		rect.SlideDown(padding);
+
+		// Max View Size
+		GUI.SmallLabel(rect, LABEL_MAX_VIEW_HEIGHT);
+		int newMaxViewHeight = GUI.HandleSlider(
+			7365434, rect.Shrink(GUI.LabelWidth, digitLabelWidth, 0, 0),
+			info.MaxViewHeight / Const.CEL,
+			16, 128
+		);
+		if (newMaxViewHeight != info.MaxViewHeight / Const.CEL) {
+			info.MaxViewHeight = newMaxViewHeight * Const.CEL;
+			info.Valid(true);
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newMaxViewHeight, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Icon

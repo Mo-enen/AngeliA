@@ -144,10 +144,13 @@ public static class Stage {
 		RepositionHash.Clear();
 		IsReady = true;
 		Enable = !Game.IsToolApplication;
+		int defaultViewHegiht = Universe.BuiltInInfo.DefaultViewHeight;
+		int minViewHeight = Universe.BuiltInInfo.MinViewHeight;
+		int maxViewHeight = Universe.BuiltInInfo.MaxViewHeight;
 		ViewRect = new IRect(
 			0, 0,
-			Const.VIEW_RATIO * Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight) / 1000,
-			Game.DefaultViewHeight.Clamp(Game.MinViewHeight, Game.MaxViewHeight)
+			Const.VIEW_RATIO * defaultViewHegiht.Clamp(minViewHeight, maxViewHeight) / 1000,
+			defaultViewHegiht.Clamp(minViewHeight, maxViewHeight)
 		);
 		SpawnRect = ViewRect.Expand(Const.SPAWN_PADDING);
 
@@ -223,7 +226,7 @@ public static class Stage {
 	[OnGameRestart]
 	public static void OnGameRestart () {
 		if (!Enable) return;
-		SetViewSizeDelay(Game.DefaultViewHeight, 1000, int.MaxValue);
+		SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 1000, int.MaxValue);
 	}
 
 
@@ -234,7 +237,10 @@ public static class Stage {
 
 		// Move View Rect
 		if (ViewDelayX.value.HasValue || ViewDelayY.value.HasValue || ViewDelayHeight.value.HasValue) {
-			int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(Game.MinViewHeight, Game.MaxViewHeight);
+			int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(
+				Universe.BuiltInInfo.MinViewHeight,
+				Universe.BuiltInInfo.MaxViewHeight
+			);
 			var viewRectDelay = new IRect(
 				ViewDelayX.value ?? ViewRect.x,
 				ViewDelayY.value ?? ViewRect.y,

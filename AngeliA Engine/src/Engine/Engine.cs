@@ -991,8 +991,9 @@ public partial class Engine {
 
 
 	private void ResetViewRect (bool remapAllRenderingCells = false) {
+		int defHeight = Universe.BuiltInInfo.DefaultViewHeight;
 		Stage.SetViewRectImmediately(
-			new IRect(0, 0, Const.VIEW_RATIO * Game.DefaultViewHeight / 1000, Game.DefaultViewHeight),
+			new IRect(0, 0, Const.VIEW_RATIO * defHeight / 1000, defHeight),
 			remapAllRenderingCells
 		);
 		WindowUI.ForceWindowRect(Renderer.CameraRect.Shrink(GetEngineLeftBarWidth(out _), 0, 0, 0));

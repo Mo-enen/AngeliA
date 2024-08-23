@@ -60,10 +60,6 @@ public abstract partial class Game {
 	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
 	private int PressingCharCount = 0;
 	private int PressingKeyCount = 0;
-	private int ForceMinViewHeightValue;
-	private int ForceMinViewHeightFrame = -1;
-	private int ForceMaxViewHeightValue;
-	private int ForceMaxViewHeightFrame = -1;
 
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false, SavingLocation.Global);
