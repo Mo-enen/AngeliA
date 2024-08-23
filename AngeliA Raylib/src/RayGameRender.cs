@@ -12,7 +12,7 @@ public partial class RayGame {
 
 
 	// Data
-	private readonly static System.Random CA_Ran = new(2353456);
+	private readonly static Random CA_Ran = new(2353456);
 	private readonly Shader[] ScreenEffectShaders = new Shader[Const.SCREEN_EFFECT_COUNT];
 	private readonly bool[] ScreenEffectEnables = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
 	private Shader LerpShader;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
 public interface IBlockSquad {
 
 	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) {
