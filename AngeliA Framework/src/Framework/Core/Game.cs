@@ -35,11 +35,7 @@ public abstract partial class Game {
 
 	// Attribute Info
 	public static bool IsToolApplication { get; private set; } = false;
-	public static bool AllowPause { get; private set; } = true;
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
-	public static bool AllowPlayerRestart => PauselessFrame <= IgnoreRestartGameOptionFrame ? false : _AllowPlayerRestart;
-	public static bool ForceUnifyBasedOnMonitor { get; private set; } = true;
-	public static bool NoQuitFromMenu { get; private set; } = false;
 
 	// Event
 	private static event System.Action OnGameRestart;
@@ -60,8 +56,6 @@ public abstract partial class Game {
 	private static readonly HashSet<int> CacheForAudioSync = new();
 	private static readonly List<int> CacheForAudioSyncRemove = new();
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
-	private static int IgnoreRestartGameOptionFrame = -1;
-	private static bool _AllowPlayerRestart = true;
 	private readonly char[] PressingCharsForCurrentFrame = new char[256];
 	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
 	private int PressingCharCount = 0;
@@ -140,20 +134,8 @@ public abstract partial class Game {
 		if (Util.TryGetAttributeFromAllAssemblies<ToolApplicationAttribute>()) {
 			IsToolApplication = true;
 		}
-		if (Util.TryGetAttributeFromAllAssemblies<DisablePauseAttribute>()) {
-			AllowPause = false;
-		}
 		if (Util.TryGetAttributeFromAllAssemblies<IgnoreArtworkPixelsAttribute>()) {
 			IgnoreArtworkPixels = true;
-		}
-		if (Util.TryGetAttributeFromAllAssemblies<PlayerCanNotRestartGameAttribute>()) {
-			_AllowPlayerRestart = false;
-		}
-		if (Util.TryGetAttributeFromAllAssemblies<ScaleUiBasedOnScreenHeightAttribute>()) {
-			ForceUnifyBasedOnMonitor = false;
-		}
-		if (Util.TryGetAttributeFromAllAssemblies<NoQuitFromMenuAttribute>()) {
-			NoQuitFromMenu = true;
 		}
 
 	}
@@ -215,7 +197,7 @@ public abstract partial class Game {
 			OnGameUpdatePauseless?.Invoke();
 
 			// Switch Between Play and Pause
-			if (AllowPause) {
+			if (Universe.BuiltInInfo.AllowPause) {
 				if (Input.GameKeyUp(Gamekey.Start)) {
 					if (IsPlaying) {
 						PauseGame();
@@ -315,12 +297,10 @@ public abstract partial class Game {
 	public static void UnpauseGame () => IsPlaying = true;
 
 	public static void PauseGame () {
-		if (!IsPlaying || !AllowPause) return;
+		if (!IsPlaying || !Universe.BuiltInInfo.AllowPause) return;
 		StopAllSounds();
 		IsPlaying = false;
 	}
-
-	public static void IgnoreRestartGameOption (int duration = 1) => IgnoreRestartGameOptionFrame = Game.PauselessFrame + duration;
 
 	// Fonts
 	public static void LoadFontsIntoPool (string rootPath, bool builtIn) {
@@ -503,7 +483,7 @@ public abstract partial class Game {
 	// Event
 	[OnGameInitialize(int.MinValue + 1)]
 	internal static void InitCache () {
-		UseProceduralMap = Universe.BuiltIn.Info.UseProceduralMap;
+		UseProceduralMap = Universe.BuiltInInfo.UseProceduralMap;
 	}
 
 

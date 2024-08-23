@@ -49,6 +49,7 @@ public static class GUI {
 	private static int CheckingContentVersion = int.MinValue;
 	private static int InternalRequiringControlID = int.MinValue;
 	private static int TextInputAnchoredIndex = -1;
+	private static bool ForceUnifyBasedOnMonitor;
 
 
 	#endregion
@@ -57,6 +58,12 @@ public static class GUI {
 
 
 	#region --- API ---
+
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		ForceUnifyBasedOnMonitor = Universe.BuiltInInfo.ScaleUiBasedOnMonitor;
+	}
 
 
 	[OnGameUpdate(1023)]
@@ -107,7 +114,7 @@ public static class GUI {
 
 
 	// Unify
-	public static int Unify (int value) => Game.ForceUnifyBasedOnMonitor ? UnifyMonitor(value) : (value * Renderer.CameraRect.height / 1000f).RoundToInt();
+	public static int Unify (int value) => ForceUnifyBasedOnMonitor ? UnifyMonitor(value) : (value * Renderer.CameraRect.height / 1000f).RoundToInt();
 	public static int UnifyMonitor (int value) => (
 		value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight.GreaterOrEquel(1)
 	).RoundToInt();
@@ -126,7 +133,7 @@ public static class GUI {
 		return border;
 	}
 
-	public static int ReverseUnify (int value) => Game.ForceUnifyBasedOnMonitor ? ReverseUnifyMonitor(value) : (value * 1000f / Renderer.CameraRect.height).RoundToInt();
+	public static int ReverseUnify (int value) => ForceUnifyBasedOnMonitor ? ReverseUnifyMonitor(value) : (value * 1000f / Renderer.CameraRect.height).RoundToInt();
 	public static int ReverseUnifyMonitor (int value) => (value * 1000f / Renderer.CameraRect.height / Game.MonitorHeight * Game.ScreenHeight.GreaterOrEquel(1)).RoundToInt();
 
 

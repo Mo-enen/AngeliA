@@ -10,23 +10,7 @@ public class ToolApplicationAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Assembly)]
-public class DisablePauseAttribute : Attribute { }
-
-
-[AttributeUsage(AttributeTargets.Assembly)]
-public class NoQuitFromMenuAttribute : Attribute { }
-
-
-[AttributeUsage(AttributeTargets.Assembly)]
 public class IgnoreArtworkPixelsAttribute : Attribute { }
-
-
-[AttributeUsage(AttributeTargets.Assembly)]
-public class PlayerCanNotRestartGameAttribute : Attribute { }
-
-
-[AttributeUsage(AttributeTargets.Assembly)]
-public class ScaleUiBasedOnScreenHeightAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]

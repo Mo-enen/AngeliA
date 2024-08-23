@@ -241,7 +241,7 @@ public partial class Engine {
 			MajorVersion = 0,
 			MinorVersion = 0,
 			PatchVersion = 0,
-			EngineBuildVersion = Universe.BuiltIn.Info.EngineBuildVersion,
+			EngineBuildVersion = Universe.BuiltInInfo.EngineBuildVersion,
 		};
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
 

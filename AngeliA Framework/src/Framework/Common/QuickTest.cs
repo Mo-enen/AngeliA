@@ -80,7 +80,7 @@ public static class QTest {
 	private static readonly Dictionary<string, object> ObjectPool = new();
 	private static readonly List<KeyData> Keys = new();
 	private static readonly Dictionary<string, bool> GroupFolding = new();
-	private static Int2 PanelPositionOffset = new Int2(1024, 1024);
+	private static Int2 PanelPositionOffset = new(1024, 1024);
 	private static bool MouseDragMoving;
 	private static bool ShowingWindow = false;
 	private static bool IgnoringWindow = false;
@@ -164,7 +164,7 @@ public static class QTest {
 			string key = kData.key;
 			string group = kData.group;
 			bool groupNotEmpty = !string.IsNullOrEmpty(group);
-			bool folding = GroupFolding.TryGetValue(group, out bool _folding) ? _folding : false;
+			bool folding = GroupFolding.TryGetValue(group, out bool _folding) && _folding;
 			rect.x = groupNotEmpty ? rectLeft + indent : rectLeft;
 
 			// Update Check
@@ -302,12 +302,12 @@ public static class QTest {
 					rect = canvasRect;
 					float pxWidth = (float)canvasRect.width / width;
 					float pxHeight = (float)canvasRect.height / height;
-					float pixelFixW = 512 / (float)width;
-					float pixelFixH = 512 / (float)height;
+					float pixelFixW = 512f / width;
+					float pixelFixH = 512f / height;
 					var pRect = new IRect(
 						0, 0,
-						(pxWidth + pixelFixW).CeilToInt(),
-						(pxHeight + pixelFixH).CeilToInt()
+						((pxWidth + pixelFixW) * 10f / 4f).CeilToInt(),
+						((pxHeight + pixelFixH) * 10f / 4f).CeilToInt()
 					);
 					for (int j = 0; j < height; j++) {
 						pRect.y = canvasRect.y + (j * pxHeight).RoundToInt();

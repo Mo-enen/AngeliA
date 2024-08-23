@@ -45,7 +45,12 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode MSG_DELETE_SOUND = ("UI.Project.DeleteSoundMsg", "Delete sound \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
+	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
+	private static readonly LanguageCode LABEL_ALLOW_PAUSE = ("Label.Project.AllowPause", "Allow Pause Game");
+	private static readonly LanguageCode LABEL_ALLOW_RESTART_MENU = ("Label.Project.AllowRestartFromMenu", "Allow Restart from Menu");
+	private static readonly LanguageCode LABEL_ALLOW_QUIT_MENU = ("Label.Project.AllowQuitFromMenu", "Allow Quit from Menu");
 	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
+	private static readonly LanguageCode LABEL_SCALE_UI_MONITOR = ("Label.Project.ScaleUiBasedOnMonitor", "Scale UI Based On Monitor Height");
 
 	// Api
 	public static ProjectEditor Instance { get; private set; }
@@ -291,10 +296,55 @@ public class ProjectEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
+		// Allow Pause
+		bool newAllowPause = GUI.Toggle(rect, info.AllowPause, LABEL_ALLOW_PAUSE, labelStyle: Skin.SmallLabel);
+		if (newAllowPause != info.AllowPause) {
+			info.AllowPause = newAllowPause;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Allow Restart from Menu
+		bool newAllowRestartFromMenu = GUI.Toggle(rect, info.AllowRestartFromMenu, LABEL_ALLOW_RESTART_MENU, labelStyle: Skin.SmallLabel);
+		if (newAllowRestartFromMenu != info.AllowRestartFromMenu) {
+			info.AllowRestartFromMenu = newAllowRestartFromMenu;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Allow Quit from Menu
+		bool newAllowQuitFromMenu = GUI.Toggle(rect, info.AllowQuitFromMenu, LABEL_ALLOW_QUIT_MENU, labelStyle: Skin.SmallLabel);
+		if (newAllowQuitFromMenu != info.AllowQuitFromMenu) {
+			info.AllowQuitFromMenu = newAllowQuitFromMenu;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Use Light Sys
+		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
+		if (newUseLightSys != info.UseLightingSystem) {
+			info.UseLightingSystem = newUseLightSys;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
 		// Allow Cheat Code
 		bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
 		if (newAllowCheat != info.AllowCheatCode) {
 			info.AllowCheatCode = newAllowCheat;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Scale UI Based On Monitor
+		bool newScaleUiBasedOnMonitor = GUI.Toggle(rect, info.ScaleUiBasedOnMonitor, LABEL_SCALE_UI_MONITOR, labelStyle: Skin.SmallLabel);
+		if (newScaleUiBasedOnMonitor != info.ScaleUiBasedOnMonitor) {
+			info.ScaleUiBasedOnMonitor = newScaleUiBasedOnMonitor;
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}

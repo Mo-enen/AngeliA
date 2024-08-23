@@ -3,10 +3,15 @@ using AngeliA;
 using AngeliaRigged;
 
 [assembly: IgnoreArtworkPixels]
-[assembly: NoQuitFromMenu]
 
 var riggedGame = new RiggedGame(args);
 riggedGame.Initialize();
+
+Universe.BuiltInInfo.AllowQuitFromMenu = false;
+if (!Universe.BuiltInInfo.UseProceduralMap) {
+	Universe.BuiltInInfo.AllowRestartFromMenu = false;
+}
+
 while (true) {
 	try {
 		bool success = riggedGame.UpdateWithPipe();
@@ -16,4 +21,5 @@ while (true) {
 	}
 }
 riggedGame.OnQuitting();
+
 return 0;

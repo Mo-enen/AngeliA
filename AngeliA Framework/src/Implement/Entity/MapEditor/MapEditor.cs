@@ -341,8 +341,6 @@ public sealed partial class MapEditor : WindowUI {
 
 		UpdatePanelRect(Renderer.CameraRect);
 
-		Game.IgnoreRestartGameOption(2);
-
 		// Cursor
 		if (!IsPlaying) Cursor.RequireCursor(int.MinValue);
 

@@ -133,7 +133,7 @@ internal class TestMapGenerator : MapGenerator {
 
 		// View
 		QTest.Group("");
-		const int SIZE = 128;
+		const int SIZE = 196;
 		if (use3D) {
 			QTest.StartDrawPixels("View 3D", SIZE, SIZE, clearPrevPixels: false);
 			for (int j = 0; j < SIZE; j++) {

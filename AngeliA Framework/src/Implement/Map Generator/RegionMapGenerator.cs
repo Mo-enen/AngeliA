@@ -13,7 +13,7 @@ public abstract class RegionMapGenerator : MapGenerator {
 
 	// Data
 	private static readonly FastNoiseLite RegionNoise = new();
-	private static int RegionHeight;
+	//private static int RegionHeight;
 
 
 

@@ -259,6 +259,7 @@ public partial class RiggedGame : Game {
 
 
 	private void Update_MapEditor () {
+
 		// Start View
 		if (StartWithView != default && MapEditor.Instance != null) {
 			MapEditor.Instance.SetView(StartWithView, StartWithZ);
@@ -285,6 +286,7 @@ public partial class RiggedGame : Game {
 				}
 			}
 		}
+
 	}
 
 

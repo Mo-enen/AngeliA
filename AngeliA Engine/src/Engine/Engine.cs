@@ -5,7 +5,6 @@ using System.Linq;
 using AngeliA;
 
 [assembly: ToolApplication]
-[assembly: DisablePause]
 
 namespace AngeliaEngine;
 
@@ -884,8 +883,8 @@ public partial class Engine {
 		ReloadCharacterNames();
 
 		// Sync Engine Version
-		if (Universe.BuiltIn.Info.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
-			CurrentProject.Universe.Info.EngineBuildVersion = Universe.BuiltIn.Info.EngineBuildVersion;
+		if (Universe.BuiltInInfo.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
+			CurrentProject.Universe.Info.EngineBuildVersion = Universe.BuiltInInfo.EngineBuildVersion;
 			JsonUtil.SaveJsonToPath(CurrentProject.Universe.Info, CurrentProject.Universe.InfoPath, true);
 		}
 

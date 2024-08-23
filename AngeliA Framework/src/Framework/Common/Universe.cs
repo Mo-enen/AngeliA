@@ -13,13 +13,19 @@ public class UniverseInfo {
 	public int PatchVersion = 0;
 	public uint EngineBuildVersion = 0;
 	public bool UseProceduralMap = false;
+	public bool UseLightingSystem = true;
 	public bool AllowCheatCode = false;
+	public bool AllowPause = true;
+	public bool AllowQuitFromMenu = true;
+	public bool AllowRestartFromMenu = true;
+	public bool ScaleUiBasedOnMonitor = true;
 }
 
 
 public class Universe {
 
 	public static Universe BuiltIn { get; private set; }
+	public static UniverseInfo BuiltInInfo { get; private set; }
 
 	// Universe Path
 	public string UniverseRoot { get; private set; }
@@ -50,6 +56,7 @@ public class Universe {
 	[OnGameInitialize(int.MinValue)]
 	internal static void OnGameInitializeMin () {
 		BuiltIn = LoadFromFile(AngePath.BuiltInUniverseRoot);
+		BuiltInInfo = BuiltIn.Info;
 		AngePath.SetCurrentUserPath(BuiltIn.Info.DeveloperName, BuiltIn.Info.ProductName);
 	}
 
