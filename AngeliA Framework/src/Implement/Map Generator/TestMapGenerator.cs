@@ -7,7 +7,7 @@ namespace AngeliA;
 internal class TestMapGenerator : MapGenerator {
 
 
-	private static SavingBool TestingNoise = new("Test.TestingNoise", false, SavingLocation.Global);
+	private static readonly SavingBool TestingNoise = new("Test.TestingNoise", false, SavingLocation.Global);
 
 
 	public override void Initialize (long seed) {
@@ -155,6 +155,11 @@ internal class TestMapGenerator : MapGenerator {
 				);
 				QTest.DrawColumn(i, value, Color32.WHITE, Color32.GREY_12);
 			}
+		}
+
+		// Update Testing
+		if (!QTest.Testing) {
+			TestingNoise.Value = false;
 		}
 
 	}

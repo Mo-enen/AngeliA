@@ -36,6 +36,7 @@
 
 	<!--Remove-->
 	<ItemGroup>
+		<None Remove=".editorconfig" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 		<None Remove="publish pause.bat" />
@@ -75,5 +76,9 @@
 	<Target Name="Copy Entry Config Json" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<Copy SourceFiles="$(OutputPath)AngeliA Entry.runtimeconfig.json" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.runtimeconfig.json" ContinueOnError="true" />
 	</Target>
+
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Data\AngeliA\AngeliA Engine\.editorconfig" />
+	</ItemGroup>
 
 </Project>

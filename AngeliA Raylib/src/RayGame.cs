@@ -23,7 +23,7 @@ public partial class RayGame : Game {
 	private readonly Stopwatch GameWatch = new();
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
-	private bool PrevHasInverseGizmos = false;
+	private int IgnoreGizmosFrame = -1;
 	private int CurrentBgmID = 0;
 
 	// Saving
@@ -185,14 +185,21 @@ public partial class RayGame : Game {
 		if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
 			Raylib.UnloadRenderTexture(RenderTexture);
 			RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
+			GizmosRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
+			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
+			//Debug.Log("Render Texture Reloaded.");
 		}
 		if (!Raylib.IsRenderTextureReady(RenderTexture)) {
 			RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
 			Debug.LogWarning("Render Texture Force Reloaded.");
 		}
-		Raylib.BeginTextureMode(RenderTexture);
+		if (!Raylib.IsRenderTextureReady(GizmosRenderTexture)) {
+			GizmosRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
+			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
+			Debug.LogWarning("Gizmos Render Texture Force Reloaded.");
+		}
 
 		// File Drop
 		if (Raylib.IsFileDropped()) {
@@ -201,41 +208,12 @@ public partial class RayGame : Game {
 			}
 		}
 
-		// Sky
-		var skyColorBottom = Sky.SkyTintBottomColor;
-		var skyColorTop = Sky.SkyTintTopColor;
-		if (skyColorBottom != skyColorTop) {
-			Raylib.DrawRectangleGradientV(
-				0, 0, ScreenWidth, ScreenHeight,
-				 skyColorTop.ToRaylib(), skyColorBottom.ToRaylib()
-			);
-		} else {
-			Raylib.ClearBackground(skyColorBottom.ToRaylib());
-		}
-
 		// Update AngeliA
-		Update();
-
-		// Update Gizmos
+		Raylib.BeginTextureMode(GizmosRenderTexture);
+		Raylib.ClearBackground(Color.Blank);
 		Raylib.BeginBlendMode(BlendMode.CustomSeparate);
-		GizmosRender.UpdateGizmos();
+		Update();
 		Raylib.EndBlendMode();
-
-		PrevHasInverseGizmos = GizmosRender.HasInverseGizmos;
-		if (PrevHasInverseGizmos) {
-			Raylib.BeginShaderMode(InverseShader);
-			Raylib.SetShaderValueTexture(
-				InverseShader, ShaderPropIndex_INV_TEXTURE, RenderTexture.Texture
-			);
-			Raylib.SetShaderValue(
-				InverseShader, ShaderPropIndex_INV_SCREEN_SIZE,
-				new Vector2(ScreenWidth, ScreenHeight), ShaderUniformDataType.Vec2
-			);
-			GizmosRender.UpdateInverse();
-			Raylib.EndShaderMode();
-		} else {
-			GizmosRender.UpdateInverse();
-		}
 
 		// Screen Effect >> Render Texture
 		if (hasScreenEffectEnabled) {
@@ -268,6 +246,11 @@ public partial class RayGame : Game {
 			RenderTexture.Texture,
 			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
 			default, Color.White
+		);
+		Raylib.DrawTextureRec(
+			GizmosRenderTexture.Texture,
+			new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
+			new Vector2(0, 0), Color.White
 		);
 		Raylib.EndBlendMode();
 		Raylib.EndDrawing();

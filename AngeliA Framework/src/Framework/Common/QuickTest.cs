@@ -149,6 +149,7 @@ public static class QTest {
 		var ignoreRect = rect.EdgeRight(rect.height).Shift(PanelMaxExpand, 0);
 		if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.SmallIconButton)) {
 			IgnoringWindow = true;
+			Input.UseAllMouseKey();
 		}
 		rect.SlideDown(padding);
 

@@ -59,7 +59,6 @@
 
 	<!--Remove-->
 	<ItemGroup>
-		<None Remove=".editorconfig" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 		<None Remove="src\.editorconfig" />
@@ -78,9 +77,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<TargetPath>raylib.dll</TargetPath>
 		</ContentWithTargetPath>
-	</ItemGroup>
-	<ItemGroup>
-	  <EditorConfigFiles Remove="C:\Data\AngeliA\AngeliA Raylib\.editorconfig" />
 	</ItemGroup>
 
 </Project>

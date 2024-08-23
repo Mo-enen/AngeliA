@@ -219,6 +219,7 @@ public static class Renderer {
 	[OnGameUpdatePauseless(32)]
 	internal static void FrameUpdate () {
 		IsDrawing = false;
+		Game.BeforeAllLayersUpdate();
 		for (int i = 0; i < Layers.Length; i++) {
 			try {
 				var layer = Layers[i];
@@ -227,8 +228,9 @@ public static class Renderer {
 				if (Game.PauselessFrame < 4) continue;
 				Game.OnLayerUpdate(i, layer.UiLayer, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (Exception ex) { Debug.LogException(ex); }
 		}
+		Game.AfterAllLayersUpdate();
 	}
 
 

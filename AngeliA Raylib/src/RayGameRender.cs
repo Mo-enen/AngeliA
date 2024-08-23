@@ -19,6 +19,7 @@ public partial class RayGame {
 	private Shader ColorShader;
 	private Shader InverseShader;
 	private RenderTexture2D RenderTexture;
+	private RenderTexture2D GizmosRenderTexture;
 	private int ShaderPropIndex_DarkenAmount;
 	private int ShaderPropIndex_LightenAmount;
 	private int ShaderPropIndex_TintAmount;
@@ -113,6 +114,28 @@ public partial class RayGame {
 
 
 	// Render
+	protected override void _BeforeAllLayersUpdate () {
+
+		Raylib.BeginTextureMode(RenderTexture);
+
+		// Sky
+		var skyColorBottom = Sky.SkyTintBottomColor;
+		var skyColorTop = Sky.SkyTintTopColor;
+		if (skyColorBottom != skyColorTop) {
+			Raylib.DrawRectangleGradientV(
+				0, 0, ScreenWidth, ScreenHeight,
+				 skyColorTop.ToRaylib(), skyColorBottom.ToRaylib()
+			);
+		} else {
+			Raylib.ClearBackground(skyColorBottom.ToRaylib());
+		}
+
+	}
+
+	protected override void _AfterAllLayersUpdate () {
+		//Raylib.BeginTextureMode(GizmosRenderTexture);
+	}
+
 	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
 
 		if (PauselessFrame < 4) return;
@@ -260,7 +283,7 @@ public partial class RayGame {
 						), rotation: 0, cell.Color.ToRaylib()
 					);
 				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (Exception ex) { Debug.LogException(ex); }
 		}
 
 		if (usingShader) Raylib.EndShaderMode();
@@ -401,34 +424,68 @@ public partial class RayGame {
 
 	// GL Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
+		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
-		GizmosRender.AddGizmosRect(new Rectangle(
+		var gizmosRect = new Rectangle(
 			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, rect.x),
 			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, rect.yMax),
 			rect.width * screenRenderRect.width / cameraRect.width,
 			rect.height * screenRenderRect.height / cameraRect.height
-		), color);
+		);
+		Raylib.DrawRectangle(
+			gizmosRect.X.RoundToInt(),
+			gizmosRect.Y.RoundToInt(),
+			gizmosRect.Width.RoundToInt(),
+			gizmosRect.Height.RoundToInt(),
+			color.ToRaylib()
+		);
 	}
 
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
+		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		if (texture is not Texture2D rTexture) return;
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
-		GizmosRender.AddGizmosTexture(new Rectangle(
+		var gizmosRect = new Rectangle(
 			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x),
 			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
 			(float)rect.width * screenRenderRect.width / cameraRect.width,
 			(float)rect.height * screenRenderRect.height / cameraRect.height
-		), new Rectangle(
+		);
+		var gizmosUV = new Rectangle(
 			uv.x * rTexture.Width,
 			uv.y * rTexture.Height,
 			uv.width * rTexture.Width,
 			uv.height * rTexture.Height
-		), rTexture, inverse);
+		);
+		// Draw
+		float yMin = rTexture.Height - (gizmosUV.Y + gizmosUV.Height);
+		float yMax = rTexture.Height - gizmosUV.Y;
+		gizmosUV.Y = yMin;
+		gizmosUV.Height = yMax - yMin;
+		if (inverse) {
+			Raylib.BeginShaderMode(InverseShader);
+			Raylib.SetShaderValueTexture(
+				InverseShader, ShaderPropIndex_INV_TEXTURE, RenderTexture.Texture
+			);
+			Raylib.SetShaderValue(
+				InverseShader, ShaderPropIndex_INV_SCREEN_SIZE,
+				new Vector2(ScreenWidth, ScreenHeight), ShaderUniformDataType.Vec2
+			);
+		}
+		Raylib.DrawTexturePro(
+			rTexture,
+			gizmosUV.ShrinkRectangle(0.001f),
+			gizmosRect.ExpandRectangle(0.001f),
+			new(0, 0), 0, Color.White
+		);
+		if (inverse) {
+			Raylib.EndShaderMode();
+		}
 	}
 
-	protected override void _IgnoreGizmos (int duration = 0) => GizmosRender.IgnoreGizmos(duration);
+	protected override void _IgnoreGizmos (int duration = 0) => IgnoreGizmosFrame = PauselessFrame + duration;
 
 
 	// Text
