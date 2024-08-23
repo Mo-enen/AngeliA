@@ -16,8 +16,7 @@ public static class QTest {
 	private class BoolData {
 		public bool value;
 		public string displayLabel;
-		public int KeyIndex;
-		public int UpdateFrame;
+		public KeyData Key;
 	}
 
 	private class IntData {
@@ -26,8 +25,7 @@ public static class QTest {
 		public int max;
 		public int step;
 		public string displayLabel;
-		public int KeyIndex;
-		public int UpdateFrame;
+		public KeyData Key;
 	}
 
 	private class FloatData {
@@ -36,14 +34,12 @@ public static class QTest {
 		public float max;
 		public float step;
 		public string displayLabel;
-		public int KeyIndex;
-		public int UpdateFrame;
+		public KeyData Key;
 	}
 
 	private class PixelData {
 		public Color32[,] pixels;
-		public int KeyIndex;
-		public int UpdateFrame;
+		public KeyData Key;
 	}
 
 	private class KeyData {
@@ -52,6 +48,7 @@ public static class QTest {
 		public DataType type;
 		public string group;
 		public int groupOrder;
+		public int UpdateFrame;
 	}
 
 	private class KeyComparer : IComparer<KeyData> {
@@ -167,6 +164,10 @@ public static class QTest {
 			string group = kData.group;
 			bool groupNotEmpty = !string.IsNullOrEmpty(group);
 			bool folding = GroupFolding.TryGetValue(group, out bool _folding) ? _folding : false;
+			rect.x = groupNotEmpty ? rectLeft + indent : rectLeft;
+
+			// Update Check
+			if (!ShowNotUpdatedData && kData.UpdateFrame < Game.PauselessFrame - 1) continue;
 
 			// Group Fold
 			if (group != CurrentGroup) {
@@ -190,16 +191,12 @@ public static class QTest {
 			// Fold Check
 			if (folding) continue;
 
-			rect.x = groupNotEmpty ? rectLeft + indent : rectLeft;
-
 			// Value
 			var valueRect = rect.ShrinkLeft(rect.width / 3);
 			switch (kData.type) {
 				// Bool
 				case DataType.Bool: {
 					var data = BoolPool[key];
-					// Update Check
-					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
@@ -224,8 +221,6 @@ public static class QTest {
 				// Int
 				case DataType.Int: {
 					var data = IntPool[key];
-					// Update Check
-					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
@@ -255,8 +250,6 @@ public static class QTest {
 				// Float
 				case DataType.Float: {
 					var data = FloatPool[key];
-					// Update Check
-					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
@@ -290,8 +283,6 @@ public static class QTest {
 				// Pixels
 				case DataType.Pixels: {
 					var data = PixelsPool[key];
-					// Update Check
-					if (!ShowNotUpdatedData && data.UpdateFrame < Game.PauselessFrame - 1) continue;
 					// Label
 					GUI.SmallLabel(rect, key);
 					// Value
@@ -377,24 +368,25 @@ public static class QTest {
 		CurrentOrder++;
 		if (BoolPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
-			var kData = Keys[result.KeyIndex];
+			var kData = result.Key;
 			kData.Order = CurrentOrder;
-			result.UpdateFrame = Game.PauselessFrame;
+			kData.UpdateFrame = Game.PauselessFrame;
 			return result.value;
 		}
-		BoolPool.Add(key, new BoolData() {
-			value = defaultValue,
-			displayLabel = displayLabel,
-			KeyIndex = Keys.Count,
-			UpdateFrame = Game.PauselessFrame,
-		});
-		Keys.Add(new KeyData() {
+		var keyData = new KeyData() {
 			key = key,
 			Order = CurrentOrder,
 			type = DataType.Bool,
 			group = CurrentGroup,
 			groupOrder = CurrentGroupOrder,
+			UpdateFrame = Game.PauselessFrame,
+		};
+		BoolPool.Add(key, new BoolData() {
+			value = defaultValue,
+			displayLabel = displayLabel,
+			Key = keyData,
 		});
+		Keys.Add(keyData);
 		IgnoringWindow = false;
 		return defaultValue;
 	}
@@ -405,27 +397,28 @@ public static class QTest {
 		CurrentOrder++;
 		if (IntPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
-			var kData = Keys[result.KeyIndex];
+			var kData = result.Key;
 			kData.Order = CurrentOrder;
-			result.UpdateFrame = Game.PauselessFrame;
+			kData.UpdateFrame = Game.PauselessFrame;
 			return result.value.Clamp(result.min, result.max);
 		}
+		var keyData = new KeyData() {
+			key = key,
+			Order = CurrentOrder,
+			type = DataType.Int,
+			group = CurrentGroup,
+			groupOrder = CurrentGroupOrder,
+			UpdateFrame = Game.PauselessFrame,
+		};
 		IntPool.Add(key, new IntData() {
 			value = defaultValue.Clamp(min, max),
 			displayLabel = displayLabel,
 			min = min,
 			max = max,
 			step = step,
-			KeyIndex = Keys.Count,
-			UpdateFrame = Game.PauselessFrame,
+			Key = keyData,
 		});
-		Keys.Add(new KeyData() {
-			key = key,
-			Order = CurrentOrder,
-			type = DataType.Int,
-			group = CurrentGroup,
-			groupOrder = CurrentGroupOrder,
-		});
+		Keys.Add(keyData);
 		IgnoringWindow = false;
 		return defaultValue.Clamp(min, max);
 	}
@@ -436,27 +429,28 @@ public static class QTest {
 		CurrentOrder++;
 		if (FloatPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
-			var kData = Keys[result.KeyIndex];
+			var kData = result.Key;
 			kData.Order = CurrentOrder;
-			result.UpdateFrame = Game.PauselessFrame;
+			kData.UpdateFrame = Game.PauselessFrame;
 			return result.value.Clamp(result.min, result.max);
 		}
+		var keyData = new KeyData() {
+			key = key,
+			Order = CurrentOrder,
+			type = DataType.Float,
+			group = CurrentGroup,
+			groupOrder = CurrentGroupOrder,
+			UpdateFrame = Game.PauselessFrame,
+		};
 		FloatPool.Add(key, new FloatData() {
 			value = defaultValue.Clamp(min, max),
 			displayLabel = displayLabel,
 			min = min,
 			max = max,
 			step = step,
-			UpdateFrame = Game.PauselessFrame,
-			KeyIndex = Keys.Count,
+			Key = keyData,
 		});
-		Keys.Add(new KeyData() {
-			key = key,
-			Order = CurrentOrder,
-			type = DataType.Float,
-			group = CurrentGroup,
-			groupOrder = CurrentGroupOrder,
-		});
+		Keys.Add(keyData);
 		IgnoringWindow = false;
 		return defaultValue.Clamp(min, max);
 	}
@@ -472,33 +466,34 @@ public static class QTest {
 				System.Array.Clear(result.pixels);
 			}
 			CurrentPixels = result.pixels;
-			var kData = Keys[result.KeyIndex];
+			var kData = result.Key;
 			kData.Order = CurrentOrder;
-			result.UpdateFrame = Game.PauselessFrame;
+			kData.UpdateFrame = Game.PauselessFrame;
 			return;
 		}
 		CurrentPixels = new Color32[width, height];
-		PixelsPool.Add(key, new PixelData() {
-			pixels = CurrentPixels,
-			KeyIndex = Keys.Count,
-			UpdateFrame = Game.PauselessFrame,
-		});
-		Keys.Add(new KeyData() {
+		var keyData = new KeyData() {
 			key = key,
 			Order = CurrentOrder,
 			type = DataType.Pixels,
 			group = CurrentGroup,
 			groupOrder = CurrentGroupOrder,
+			UpdateFrame = Game.PauselessFrame,
+		};
+		PixelsPool.Add(key, new PixelData() {
+			pixels = CurrentPixels,
+			Key = keyData,
 		});
+		Keys.Add(keyData);
 		IgnoringWindow = false;
 	}
 
 
-	public static void DrawColumn (int x, float value01) {
+	public static void DrawColumn (int x, float value01, Color32 color, Color32 bgColor) {
 		int height = CurrentPixels.GetLength(1);
 		int valueHeight = (height * value01).RoundToInt().Clamp(0, height);
 		for (int i = 0; i < height; i++) {
-			CurrentPixels[x, i] = i < valueHeight ? Color32.WHITE : Color32.BLACK;
+			CurrentPixels[x, i] = i < valueHeight ? color : bgColor;
 		}
 	}
 	public static void DrawPixel (int x, int y, Color32 pixel) => CurrentPixels[x, y] = pixel;

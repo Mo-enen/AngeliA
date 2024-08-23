@@ -55,14 +55,14 @@ internal class TestMapGenerator : MapGenerator {
 		}
 
 		// Misc
+		bool use3D = QTest.Bool("3D", true);
+
 		QTest.Group("General");
 
-		bool use3D = QTest.Bool("3D", true);
 		float speedX = QTest.Float("Speed X", 0.6f, 0f, 5f, 0.1f);
 		float speedY = QTest.Float("Speed Y", 0.3f, 0f, 5f, 0.1f);
-		float step = QTest.Float("Iterate Step", 1f, 0, 10f, 1f);
 		noise.SetFrequency(QTest.Float(
-			"Frequency", 0.02f, 0.01f, 0.1f, 0.01f
+			"Frequency", 0.02f, 0.01f, 0.10f, 0.01f
 		));
 		noise.SetNoiseType((NoiseType)QTest.Int(
 			"Noise Type", 0, 0, 5,
@@ -139,8 +139,8 @@ internal class TestMapGenerator : MapGenerator {
 			for (int j = 0; j < SIZE; j++) {
 				for (int i = 0; i < SIZE; i++) {
 					float value = noise.GetNoise(
-						Game.GlobalFrame * speedX + i * step,
-						Game.GlobalFrame * speedY + j * step
+						Game.GlobalFrame * speedX + i,
+						Game.GlobalFrame * speedY + j
 					);
 					byte rgb = (byte)((value + 1f) * 128f).Clamp(0, 255);
 					QTest.DrawPixel(i, j, new Color32(rgb, rgb, rgb, 255));
@@ -150,10 +150,10 @@ internal class TestMapGenerator : MapGenerator {
 			QTest.StartDrawColumn("View 2D", SIZE, clearPrevPixels: false);
 			for (int i = 0; i < SIZE; i++) {
 				float value = noise.GetNoise(
-					Game.GlobalFrame * speedX + i * step,
+					Game.GlobalFrame * speedX + i,
 					Game.GlobalFrame * speedY
 				);
-				QTest.DrawColumn(i, value);
+				QTest.DrawColumn(i, value, Color32.WHITE, Color32.GREY_12);
 			}
 		}
 

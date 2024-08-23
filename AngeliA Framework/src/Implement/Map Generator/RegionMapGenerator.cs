@@ -41,7 +41,7 @@ public abstract class RegionMapGenerator : MapGenerator {
 		RegionNoise.SetFractalPingPongStrength(4.5f);
 		RegionNoise.SetFractalWeightedStrength(0.618f);
 
-
+		
 
 
 	}
