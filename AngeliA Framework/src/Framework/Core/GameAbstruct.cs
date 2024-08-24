@@ -114,7 +114,7 @@ public abstract partial class Game {
 		cRect.x += cOffsetX;
 		return cRect;
 	}
-	public static int GetViewWidthFromViewHeight (int viewHeight) => Const.VIEW_RATIO * viewHeight / 1000;
+	public static int GetViewWidthFromViewHeight (int viewHeight) => Universe.BuiltInInfo.ViewRatio * viewHeight / 1000;
 
 	public static int WorldBehindParallax => Instance._WorldBehindParallax;
 	protected virtual int _WorldBehindParallax => 1300;

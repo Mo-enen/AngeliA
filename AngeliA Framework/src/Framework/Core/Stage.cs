@@ -149,7 +149,7 @@ public static class Stage {
 		int maxViewHeight = Universe.BuiltInInfo.MaxViewHeight;
 		ViewRect = new IRect(
 			0, 0,
-			Const.VIEW_RATIO * defaultViewHegiht.Clamp(minViewHeight, maxViewHeight) / 1000,
+			Universe.BuiltInInfo.ViewRatio * defaultViewHegiht.Clamp(minViewHeight, maxViewHeight) / 1000,
 			defaultViewHegiht.Clamp(minViewHeight, maxViewHeight)
 		);
 		SpawnRect = ViewRect.Expand(Const.SPAWN_PADDING);
@@ -244,7 +244,7 @@ public static class Stage {
 			var viewRectDelay = new IRect(
 				ViewDelayX.value ?? ViewRect.x,
 				ViewDelayY.value ?? ViewRect.y,
-				Const.VIEW_RATIO * targetHeight / 1000,
+				Universe.BuiltInInfo.ViewRatio * targetHeight / 1000,
 				targetHeight
 			);
 			if (ViewLerpRate >= 1000) {
@@ -699,7 +699,7 @@ public static class Stage {
 
 	public static Int4 GetCameraCullingPadding () {
 		int expand = Renderer.CameraRect.width * (Game.WorldBehindParallax - 1000) / 2000;
-		return Task.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
+		return TaskSystem.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
 	}
 
 

@@ -1,7 +1,7 @@
 ﻿namespace AngeliA;
 
 
-public class SpawnEntityTask : TaskItem {
+public class SpawnEntityTask : Task {
 	public static readonly int TYPE_ID = typeof(SpawnEntityTask).AngeHash();
 	public int EntityID = 0;
 	public int X = 0;
@@ -22,7 +22,7 @@ public class SpawnEntityTask : TaskItem {
 }
 
 
-public class DespawnEntityTask : TaskItem {
+public class DespawnEntityTask : Task {
 	public static readonly int TYPE_ID = typeof(DespawnEntityTask).AngeHash();
 	public override TaskResult FrameUpdate () {
 		if (UserData is Entity e) e.Active = false;
@@ -31,7 +31,7 @@ public class DespawnEntityTask : TaskItem {
 }
 
 
-public class EntityHookTask : TaskItem {
+public class EntityHookTask : Task {
 	public static readonly int TYPE_ID = typeof(EntityHookTask).AngeHash();
 	public override TaskResult FrameUpdate () => UserData is Entity e && e.Active ? TaskResult.Continue : TaskResult.End;
 }

@@ -60,22 +60,26 @@ public abstract class Bullet : Entity {
 		);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
+			// Gate
 			if (hit.Entity is not IDamageReceiver receiver) continue;
 			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
+			var fixedDamageType = DamageType & ~receiver.IgnoreDamageType;
+			if (fixedDamageType == Tag.None) continue;
 			if (receiver is Entity e && !e.Active) continue;
+			// Round Shape Gate
 			if (RoundHitCheck) {
 				int dis = Util.DistanceInt(rect.CenterX(), rect.CenterY(), hit.Rect.CenterX(), hit.Rect.CenterY());
 				int rad = (Width.Abs() + Height.Abs()) / 4;
 				int hitRad = (hit.Rect.width.Abs() + hit.Rect.height.Abs()) / 4;
 				if (dis > rad + hitRad) continue;
 			}
-			receiver.TakeDamage(new Damage(Damage, Sender, this, DamageType));
-			// Type Logic
-			switch (DamageType) {
-				case Tag.FireDamage:
-					Fire.SpreadFire(CommonFire.TYPE_ID, Rect.Expand(Const.CEL));
-					break;
+			// Perform Damage
+			receiver.TakeDamage(new Damage(Damage, Sender, this, fixedDamageType));
+			// Fire Logic
+			if (fixedDamageType.HasAll(Tag.FireDamage)) {
+				Fire.SpreadFire(CommonFire.TYPE_ID, Rect.Expand(Const.CEL));
 			}
+			// Destroy Check
 			if (DestroyOnHitReceiver) {
 				Active = false;
 				requireSelfDestroy = true;

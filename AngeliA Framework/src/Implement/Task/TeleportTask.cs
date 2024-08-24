@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class TeleportTask : TaskItem {
+public class TeleportTask : Task {
 
 
 	// Api
@@ -106,8 +106,8 @@ public class TeleportTask : TaskItem {
 		int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true, bool withPortal = false,
 		string channelName = ""
 	) {
-		if (Task.HasTask()) return null;
-		if (Task.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
+		if (TaskSystem.HasTask()) return null;
+		if (TaskSystem.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
 			svTask.TeleportFrom = new Int2(fromX, fromY);
 			svTask.TeleportTo = new Int3(toX, toY, toZ);
 			svTask.WaitDuration = waitDuration;

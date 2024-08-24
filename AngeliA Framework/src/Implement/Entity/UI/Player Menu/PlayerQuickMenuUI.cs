@@ -154,7 +154,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public override void UpdateUI () {
 		base.UpdateUI();
 
-		if (!Active || Player.Selecting == null || Task.HasTask() || WeaponCount <= 0) {
+		if (!Active || Player.Selecting == null || TaskSystem.HasTask() || WeaponCount <= 0) {
 			Active = false;
 			return;
 		}

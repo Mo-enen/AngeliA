@@ -9,7 +9,7 @@ namespace AngeliA;
 
 public static partial class Util {
 
-	private const int INLINE = 256;
+	private const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 
 	[StructLayout(LayoutKind.Sequential, Size = 1)]
 	public struct MathfInternal {

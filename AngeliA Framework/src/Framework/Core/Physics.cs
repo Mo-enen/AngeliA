@@ -95,12 +95,11 @@ public static class Physics {
 	[OnGameInitializeLater(64)]
 	public static void Initialize () {
 		int maxHeight = Universe.BuiltInInfo.MaxViewHeight;
-		int layerCount = PhysicsLayer.COUNT;
-		CellWidth = Const.VIEW_RATIO * maxHeight / 1000 / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
+		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeight / 1000 / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 		CellHeight = maxHeight / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
-		LayerCount = layerCount;
-		Layers = new Layer[layerCount];
-		for (int i = 0; i < layerCount; i++) {
+		LayerCount = PhysicsLayer.COUNT;
+		Layers = new Layer[PhysicsLayer.COUNT];
+		for (int i = 0; i < PhysicsLayer.COUNT; i++) {
 			Layers[i] = CurrentLayer = new Layer(CellWidth, CellHeight);
 		}
 		IsReady = true;
@@ -536,8 +535,8 @@ public static class Physics {
 
 
 	// Util
-	private static int GlobalX_to_CellX (int globalX) => (globalX - PositionX) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT + Const.SPAWN_PADDING_UNIT;
-	private static int GlobalY_to_CellY (int globalY) => (globalY - PositionY) / Const.CEL + Const.LEVEL_SPAWN_PADDING_UNIT + Const.SPAWN_PADDING_UNIT;
+	private static int GlobalX_to_CellX (int globalX) => (globalX - PositionX) / Const.CEL;
+	private static int GlobalY_to_CellY (int globalY) => (globalY - PositionY) / Const.CEL;
 
 
 	#endregion

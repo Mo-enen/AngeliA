@@ -191,7 +191,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		FrameworkUtil.DrawEnvironmentShadow(cell);
 
 		// UI
-		if (ItemCount > 1 && !Task.IsTasking<TeleportTask>() && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
+		if (ItemCount > 1 && !TaskSystem.IsTasking<TeleportTask>() && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
 			if (ItemSystem.GetItem(ItemID) is Weapon wItem && wItem.UseStackAsUsage) {
 				// Usage
 				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, wItem.MaxStackCount);

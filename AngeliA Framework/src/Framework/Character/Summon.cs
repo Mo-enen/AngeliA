@@ -20,7 +20,6 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	public Character Owner { get; set; } = null;
 	int IDamageReceiver.Team => Owner != null ? (Owner as IDamageReceiver).Team : Const.TEAM_NEUTRAL;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
-	public virtual bool IgnoreFireDamage => true;
 	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
 	public int OriginItemID { get; set; } = 0;
 	public int InventoryUpdatedFrame { get; set; } = -1;
@@ -55,9 +54,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		if (CharacterState == CharacterState.GamePlay) {
 			IgnorePhysics(1);
 		}
-		if (CharacterState == CharacterState.PassOut) {
-			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
-		}
+		Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 	}
 
 
@@ -117,12 +114,6 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		// Highlight
 		(this as IActionTarget).BlinkIfHighlight(RenderedCell);
 
-	}
-
-
-	public override void TakeDamage (Damage damage) {
-		if (IgnoreFireDamage && damage.Type.HasAll(Tag.FireDamage)) return;
-		base.TakeDamage(damage);
 	}
 
 

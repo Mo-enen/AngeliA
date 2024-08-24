@@ -39,7 +39,7 @@ public sealed class BlockBuilder : Weapon {
 			!pHolder.IsAttackAllowedByMovement() ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
-			Task.HasTask() ||
+			TaskSystem.HasTask() ||
 			WorldSquad.Readonly
 		) goto _BASE_;
 

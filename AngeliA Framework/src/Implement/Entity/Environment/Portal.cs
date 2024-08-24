@@ -169,7 +169,7 @@ public abstract class Portal : Entity {
 		}
 	}
 	public virtual bool Invoke (Player player) {
-		if (Task.HasTask()) return false;
+		if (TaskSystem.HasTask()) return false;
 		if (DontSpawnAfterUsed) Stage.MarkAsGlobalAntiSpawn(this);
 		TeleportTask.Teleport(
 			X + Width / 2, Y + Height / 2,

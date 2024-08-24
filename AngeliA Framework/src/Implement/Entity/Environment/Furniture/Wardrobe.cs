@@ -398,7 +398,7 @@ Color32.BLACK, 0
 	}
 
 
-	bool IActionTarget.AllowInvoke () => Player.Selecting != null && !Task.HasTask();
+	bool IActionTarget.AllowInvoke () => Player.Selecting != null && !TaskSystem.HasTask();
 
 
 	#endregion

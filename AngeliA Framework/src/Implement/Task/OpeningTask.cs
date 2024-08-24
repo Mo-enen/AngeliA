@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-public class OpeningTask : TaskItem {
+public class OpeningTask : Task {
 
 
 
@@ -161,7 +161,7 @@ public class OpeningTask : TaskItem {
 
 		// Start Opening
 		if (
-			Task.TryAddToLast(TYPE_ID, out var task) &&
+			TaskSystem.TryAddToLast(TYPE_ID, out var task) &&
 			task is OpeningTask oTask
 		) {
 			Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 1000, int.MaxValue);

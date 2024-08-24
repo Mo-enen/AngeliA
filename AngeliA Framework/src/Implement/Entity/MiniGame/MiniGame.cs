@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public class MiniGameTask : TaskItem {
+public class MiniGameTask : Task {
 	public MiniGame MiniGame = null;
 	public override TaskResult FrameUpdate () {
 		bool playingGame = MiniGame != null && MiniGame.Active;
@@ -77,7 +77,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget, IBlockEntity 
 		Renderer.CameraRect.CenterY() - GUI.Unify(WindowSize.y) / 2,
 		GUI.Unify(WindowSize.x), GUI.Unify(WindowSize.y)
 	);
-	protected bool IsPlaying => Task.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
+	protected bool IsPlaying => TaskSystem.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
 	protected virtual LanguageCode[] BadgeHints { get; } = null;
 	protected GUISkin Skin { get; private set; }
 
@@ -173,8 +173,8 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget, IBlockEntity 
 
 	bool IActionTarget.Invoke () {
 		if (IsPlaying) return false;
-		Task.EndAllTask();
-		if (Task.AddToLast(typeof(MiniGameTask).AngeHash()) is MiniGameTask task) {
+		TaskSystem.EndAllTask();
+		if (TaskSystem.AddToLast(typeof(MiniGameTask).AngeHash()) is MiniGameTask task) {
 			task.MiniGame = this;
 		}
 		Input.UseAllHoldingKeys();
@@ -188,7 +188,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget, IBlockEntity 
 	protected virtual void RestartGame () => StartMiniGame();
 
 	protected virtual void CloseMiniGame () {
-		if (Task.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
+		if (TaskSystem.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
 			task.MiniGame = null;
 		}
 	}

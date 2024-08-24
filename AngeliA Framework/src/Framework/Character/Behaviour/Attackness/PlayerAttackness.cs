@@ -8,7 +8,7 @@ public class PlayerAttackness : CharacterAttackness {
 		MinimalChargeAttackDuration != int.MaxValue &&
 		Player.Selecting == TargetCharacter &&
 		Game.GlobalFrame >= LastAttackFrame + AttackDuration + AttackCooldown + MinimalChargeAttackDuration &&
-		!Task.HasTask() &&
+		!TaskSystem.HasTask() &&
 		!Player.Selecting.LockingInput &&
 		Input.GameKeyHolding(Gamekey.Action) &&
 		TargetCharacter.IsAttackAllowedByMovement() &&

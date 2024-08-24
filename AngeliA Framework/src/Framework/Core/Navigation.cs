@@ -130,7 +130,7 @@ public static class Navigation {
 	[OnGameInitializeLater(64)]
 	public static void Initialize () {
 		int maxHeigh = Universe.BuiltInInfo.MaxViewHeight;
-		CellWidth = Const.VIEW_RATIO * maxHeigh / 1000 / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
+		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeigh / 1000 / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 		CellHeight = maxHeigh / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 		ExpandQueue = new(CellWidth * CellHeight + 1);
 		ExpandQueueJump = new(CellWidth * CellHeight + 1);

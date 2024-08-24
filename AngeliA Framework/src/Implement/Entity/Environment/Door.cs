@@ -86,7 +86,7 @@ public abstract class Door : EnvironmentEntity {
 		);
 
 		// Z Fix
-		if (IsFrontDoor != Task.IsTasking<TeleportTask>()) {
+		if (IsFrontDoor != TaskSystem.IsTasking<TeleportTask>()) {
 			cell.Z = -cell.Z;
 		}
 	}
@@ -94,7 +94,7 @@ public abstract class Door : EnvironmentEntity {
 
 	// API
 	public virtual bool Invoke (Player player) {
-		if (player == null || Task.HasTask()) return false;
+		if (player == null || TaskSystem.HasTask()) return false;
 		TeleportTask.Teleport(
 			X + Width / 2, Y + Height / 2, X + Width / 2, Y,
 			IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
@@ -108,7 +108,7 @@ public abstract class Door : EnvironmentEntity {
 
 
 	public virtual bool AllowInvoke (Entity target) =>
-		!Task.HasTask() && target is Character ch &&
+		!TaskSystem.HasTask() && target is Character ch &&
 		ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquatting && !ch.Movement.IsClimbing;
 
 

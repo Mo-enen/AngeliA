@@ -19,6 +19,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public bool AllowQuitFromMenu = true;
 	public bool AllowRestartFromMenu = true;
 	public bool ScaleUiBasedOnMonitor = true;
+	public int ViewRatio = 2000;
 	public int DefaultViewHeight = Const.CEL * 26;
 	public int MinViewHeight = Const.CEL * 16;
 	public int MaxViewHeight = Const.CEL * 60;
@@ -26,6 +27,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public void OnAfterLoadedFromDisk () => Valid(true);
 	public void OnBeforeSaveToDisk () => Valid(true);
 	public void Valid (bool minFirst) {
+		ViewRatio = ViewRatio.Clamp(250, 4000);
 		if (minFirst) {
 			MinViewHeight = MinViewHeight.Clamp(Const.CEL * 16, Const.CEL * 1024);
 			MaxViewHeight = MaxViewHeight.Clamp(MinViewHeight, Const.CEL * 1024);

@@ -349,7 +349,7 @@ public class PauseMenuUI : MenuUI {
 			Game.UnpauseGame();
 			Active = false;
 			Input.UseAllHoldingKeys();
-			Task.AddToLast(RestartGameTask.TYPE_ID);
+			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 		}
 
 	}

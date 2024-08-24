@@ -18,7 +18,6 @@ public static class Const {
 	public const int LEVEL_SPAWN_PADDING = LEVEL_SPAWN_PADDING_UNIT * CEL;
 	public const int SPAWN_PADDING = SPAWN_PADDING_UNIT * CEL;
 	public const int ANTI_SPAWN_PADDING = ANTI_SPAWN_PADDING_UNIT * CEL;
-	public const int VIEW_RATIO = 2000; // width / height * 1000
 
 	// Team
 	public const int TEAM_ENVIRONMENT = 0b1;

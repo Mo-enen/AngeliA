@@ -1,5 +1,5 @@
 ﻿namespace AngeliA;
-public class ChangeSavingSlotTask : TaskItem {
+public class ChangeSavingSlotTask : Task {
 	public static readonly int TYPE_ID = typeof(ChangeSavingSlotTask).AngeHash();
 	public override TaskResult FrameUpdate () {
 		if (UserData is not int slot || slot == Universe.BuiltIn.CurrentSavingSlot) return TaskResult.End;

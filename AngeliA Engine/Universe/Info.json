@@ -4,7 +4,15 @@
   "MajorVersion": 0,
   "MinorVersion": 0,
   "PatchVersion": 0,
-  "EngineBuildVersion": 8,
+  "EngineBuildVersion": 11,
+  "UseProceduralMap": false,
+  "UseLightingSystem": true,
   "AllowCheatCode": true,
-  "AllowPause":false
+  "AllowPause": false,
+  "AllowQuitFromMenu": true,
+  "AllowRestartFromMenu": true,
+  "ScaleUiBasedOnMonitor": true,
+  "DefaultViewHeight": 6656,
+  "MinViewHeight": 4096,
+  "MaxViewHeight": 15360
 }

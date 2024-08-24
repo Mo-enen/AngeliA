@@ -11,7 +11,7 @@ namespace AngeliA;
 public static class Extension {
 
 
-	const int INLINE = 256;
+	private const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 	private static readonly StringBuilder TypePathBuilder = new();
 
 
@@ -506,7 +506,7 @@ public static class Extension {
 	}
 	[MethodImpl(INLINE)] public static FRect Shrink (this FRect rect, float offset) => rect.Expand(-offset);
 	[MethodImpl(INLINE)] public static FRect Shrink (this FRect rect, float l, float r, float d, float u) => rect.Expand(-l, -r, -d, -u);
-	
+
 	public static FRect Fit (this FRect rect, float targetAspect, float pivotX = 0.5f, float pivotY = 0.5f) {
 		float sizeX = rect.width;
 		float sizeY = rect.height;
@@ -521,7 +521,7 @@ public static class Extension {
 			sizeX, sizeY
 		);
 	}
-	
+
 	public static FRect Envelope (this FRect rect, float targetAspect) {
 		float sizeX = rect.width;
 		float sizeY = rect.height;
@@ -587,7 +587,7 @@ public static class Extension {
 	// IRect
 	[MethodImpl(INLINE)] public static FRect ToFRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 	public static IRect Fit (this IRect rect, AngeSprite sprite, int pivotX = 500, int pivotY = 500) => rect.Fit(sprite.GlobalWidth, sprite.GlobalHeight, pivotX, pivotY);
-	
+
 	public static IRect Fit (this IRect rect, int outterWidth, int outterHeight, int pivotX = 500, int pivotY = 500) {
 		if (outterWidth * outterHeight == 0) return rect;
 		int sizeX = rect.width;
@@ -603,7 +603,7 @@ public static class Extension {
 			sizeX, sizeY
 		);
 	}
-	
+
 	public static IRect Envelope (this IRect innerRect, int aspWidth, int aspHeight) {
 		if (innerRect.width * innerRect.height == 0) return innerRect;
 		if (innerRect.width * aspHeight > aspWidth * innerRect.height) {

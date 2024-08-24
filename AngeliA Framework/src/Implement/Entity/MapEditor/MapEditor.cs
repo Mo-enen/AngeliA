@@ -349,7 +349,7 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// Cache
-		TaskingRoute = Task.HasTask();
+		TaskingRoute = TaskSystem.HasTask();
 		CtrlHolding = Input.HoldingCtrl || Input.KeyboardHolding(KeyboardKey.RightCtrl) || Input.KeyboardHolding(KeyboardKey.CapsLock);
 		ShiftHolding = Input.HoldingShift || Input.KeyboardHolding(KeyboardKey.RightShift);
 		AltHolding = Input.HoldingAlt || Input.KeyboardHolding(KeyboardKey.RightAlt);
@@ -377,8 +377,8 @@ public sealed partial class MapEditor : WindowUI {
 				Player.Selecting.Active = false;
 			}
 			// No Opening Task
-			if (Task.IsTasking<OpeningTask>()) {
-				Task.EndAllTask();
+			if (TaskSystem.IsTasking<OpeningTask>()) {
+				TaskSystem.EndAllTask();
 			}
 		}
 
@@ -401,7 +401,7 @@ public sealed partial class MapEditor : WindowUI {
 			if (viewRect.height != newHeight) {
 				if (Stage.DelayingViewX.HasValue) viewRect.x = Stage.DelayingViewX.Value;
 				if (Stage.DelayingViewY.HasValue) viewRect.y = Stage.DelayingViewY.Value;
-				int newWidth = newHeight * Const.VIEW_RATIO / 1000;
+				int newWidth = newHeight * Universe.BuiltInInfo.ViewRatio / 1000;
 				viewRect.x -= (newWidth - viewRect.width) / 2;
 				viewRect.y -= (newHeight - viewRect.height) / 2;
 				viewRect.height = newHeight;
@@ -434,7 +434,7 @@ public sealed partial class MapEditor : WindowUI {
 			// Auto
 			int newHeight = Universe.BuiltInInfo.DefaultViewHeight * 3 / 2;
 			if (TargetViewRect.height != newHeight) {
-				int newWidth = newHeight * Const.VIEW_RATIO / 1000;
+				int newWidth = newHeight * Universe.BuiltInInfo.ViewRatio / 1000;
 				TargetViewRect.x -= (newWidth - TargetViewRect.width) / 2;
 				TargetViewRect.y -= (newHeight - TargetViewRect.height) / 2;
 				TargetViewRect.height = newHeight;
@@ -448,13 +448,13 @@ public sealed partial class MapEditor : WindowUI {
 			}
 			if (zoomDelta != 0) {
 
-				TargetViewRect.width = TargetViewRect.height * Const.VIEW_RATIO / 1000;
+				TargetViewRect.width = TargetViewRect.height * Universe.BuiltInInfo.ViewRatio / 1000;
 
 				int newHeight = (TargetViewRect.height - zoomDelta * TargetViewRect.height / 6000).Clamp(
 					Universe.BuiltInInfo.MinViewHeight,
 					Universe.BuiltInInfo.MaxViewHeight
 				);
-				int newWidth = newHeight * Const.VIEW_RATIO / 1000;
+				int newWidth = newHeight * Universe.BuiltInInfo.ViewRatio / 1000;
 
 				float cameraWidth = TargetViewRect.height * Renderer.CameraRect.width / Renderer.CameraRect.height;
 				float cameraHeight = TargetViewRect.height;
@@ -599,7 +599,7 @@ public sealed partial class MapEditor : WindowUI {
 				// Play from Start
 				if (Input.KeyboardDown(KeyboardKey.Space)) {
 					SetEditorMode(true);
-					Task.AddToLast(RestartGameTask.TYPE_ID);
+					TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 					Input.UseAllHoldingKeys();
 					Input.UseGameKey(Gamekey.Start);
 				}
@@ -1067,7 +1067,7 @@ public sealed partial class MapEditor : WindowUI {
 
 			// Fix View Pos
 			if (!AutoZoom) {
-				TargetViewRect.x = ViewRect.x + ViewRect.width / 2 - (TargetViewRect.height * Const.VIEW_RATIO / 1000) / 2;
+				TargetViewRect.x = ViewRect.x + ViewRect.width / 2 - (TargetViewRect.height * Universe.BuiltInInfo.ViewRatio / 1000) / 2;
 				TargetViewRect.y = ViewRect.y + ViewRect.height / 2 - TargetViewRect.height / 2;
 			} else {
 				TargetViewRect = ViewRect;
@@ -1116,7 +1116,7 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void ResetCamera (bool immediately = false) {
 		int viewHeight = Universe.BuiltInInfo.DefaultViewHeight * 3 / 2;
-		int viewWidth = viewHeight * Const.VIEW_RATIO / 1000;
+		int viewWidth = viewHeight * Universe.BuiltInInfo.ViewRatio / 1000;
 		TargetViewRect.x = -viewWidth / 2;
 		TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
 		TargetViewRect.height = viewHeight;

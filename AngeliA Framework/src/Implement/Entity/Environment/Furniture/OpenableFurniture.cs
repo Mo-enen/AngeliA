@@ -8,7 +8,7 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 
 	public override void LateUpdate () {
 		// Close Check
-		if (Open && (Player.Selecting == null || PlayerMenuUI.ShowingUI || Task.HasTask())) {
+		if (Open && (Player.Selecting == null || PlayerMenuUI.ShowingUI || TaskSystem.HasTask())) {
 			SetOpen(false);
 		}
 		// UI

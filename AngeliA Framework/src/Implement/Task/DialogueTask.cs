@@ -4,7 +4,7 @@ using System.Text;
 
 
 namespace AngeliA;
-public class DialogueTask : TaskItem {
+public class DialogueTask : Task {
 
 
 
@@ -87,7 +87,7 @@ public class DialogueTask : TaskItem {
 			Universe.BuiltIn.ConversationRoot, globalName,
 			$"{Language.CurrentLanguage}.{AngePath.CONVERSATION_FILE_EXT}"
 		);
-		if (Main == null || Task.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;
+		if (Main == null || TaskSystem.HasTask<DialogueTask>() || !Util.FileExists(conversationPath)) return;
 
 		Main.CurrentSection = 0;
 		Main.LoadedSection = -1;
@@ -97,7 +97,7 @@ public class DialogueTask : TaskItem {
 		Main.DialogueUI.Active = true;
 
 		// Add Task
-		Task.AddToLast(TASK_ID);
+		TaskSystem.AddToLast(TASK_ID);
 
 		// Load Conversation
 		bool prevLineConfig = false;

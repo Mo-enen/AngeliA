@@ -218,24 +218,25 @@ public class RigRespondMessage {
 	}
 
 
-	public void UpdateRendering (int sheetIndex, int leftPadding, IRect dodgingRect) {
+	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding, IRect dodgingRect) {
 
 		// View
-		ViewHeight = ViewHeight.GreaterOrEquel(Universe.BuiltInInfo.MinViewHeight);
+		var info = universe.Info;
+		ViewHeight = ViewHeight.GreaterOrEquel(info.MinViewHeight);
 		int oldViewHeight = Stage.ViewRect.height;
-		Stage.SetViewRectImmediately(
-			new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight),
-			remapAllRenderingCells: true
-		);
+		var engineViewRect = new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight);
+		Stage.SetViewRectImmediately(engineViewRect, remapAllRenderingCells: true);
 		if (oldViewHeight != ViewHeight) {
 			leftPadding = leftPadding * ViewHeight / oldViewHeight;
 		}
 
 		// Gizmos Rect
-		var leftTabBarRect = Renderer.CameraRect.EdgeLeft(leftPadding);
+		int cameraExpand = (info.ViewRatio * ViewHeight / 1000 - engineViewRect.width) / 2;
+		var fixedCameraRect = Renderer.CameraRect.Expand(cameraExpand, cameraExpand, 0, 0);
+		var leftTabBarRect = fixedCameraRect.EdgeLeft(leftPadding);
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
-			var rect = data.Rect.Shift(leftPadding / 2, 0);
+			var rect = data.Rect.Shift(leftPadding / 2 - cameraExpand, 0);
 			// Dodge Left
 			if (rect.width > rect.height) {
 				// Line H
@@ -284,7 +285,7 @@ public class RigRespondMessage {
 						}
 					}
 					if (rCell == null) continue;
-					rCell.X = cell.X + leftPadding / 2;
+					rCell.X = cell.X + leftPadding / 2 - cameraExpand;
 					rCell.Y = cell.Y;
 					rCell.Z = cell.Z;
 					rCell.Width = cell.Width;
@@ -301,15 +302,17 @@ public class RigRespondMessage {
 		Renderer.SetLayer(oldLayer);
 
 		// Black Side Border
-		if (CachedScreenWidth * 1000 / CachedScreenHeight > Const.VIEW_RATIO) {
-			var cameraRect = Renderer.CameraRect.ShrinkLeft(leftPadding);
-			int borderWidth = Util.RemapUnclamped(
-				0, CachedScreenWidth,
-				0, cameraRect.width,
-				CachedScreenWidth / 2 - CachedScreenHeight * Const.VIEW_RATIO / 2000
-			);
-			Renderer.DrawPixel(new IRect(cameraRect.x, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
-			Renderer.DrawPixel(new IRect(cameraRect.x + cameraRect.width - borderWidth, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
+		using (new UILayerScope()) {
+			if (CachedScreenWidth * 1000 / CachedScreenHeight > info.ViewRatio) {
+				var cameraRect = Renderer.CameraRect.ShrinkLeft(leftPadding);
+				int borderWidth = Util.RemapUnclamped(
+					0, CachedScreenWidth,
+					0, cameraRect.width,
+					CachedScreenWidth / 2 - CachedScreenHeight * info.ViewRatio / 2000
+				);
+				Renderer.DrawPixel(new IRect(cameraRect.x, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
+				Renderer.DrawPixel(new IRect(cameraRect.x + cameraRect.width - borderWidth, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
+			}
 		}
 
 		// Effect

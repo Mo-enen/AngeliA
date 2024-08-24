@@ -13,6 +13,8 @@ public class ProjectEditor : WindowUI {
 
 
 	// Const
+	private static readonly (int ratio, string label)[] UI_RATIO = { (250, "1:4"), (333, "1:3"), (500, "1:2"), (563, "9:16"), (625, "10:16"), (750, "3:4"), (1000, "1:1"), (1333, "4:3"), (1600, "16:10"), (1778, "16:9"), (2000, "2:1"), (3000, "3:1"), (4000, "4:1"), };
+
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
 	private static readonly SpriteCode ICON_FONT = "FileIcon.Font";
@@ -56,6 +58,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ALLOW_QUIT_MENU = ("Label.Project.AllowQuitFromMenu", "Allow Quit from Menu");
 	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
 	private static readonly LanguageCode LABEL_SCALE_UI_MONITOR = ("Label.Project.ScaleUiBasedOnMonitor", "Scale UI Based On Monitor Height");
+	private static readonly LanguageCode LABEL_VIEW_RATIO = ("Setting.ViewRatio", "View Ratio");
 	private static readonly LanguageCode LABEL_DEF_VIEW_HEIGHT = ("Setting.DefViewHeight", "Default View Height (block)");
 	private static readonly LanguageCode LABEL_MIN_VIEW_HEIGHT = ("Setting.MinViewHeight", "Min View Height (block)");
 	private static readonly LanguageCode LABEL_MAX_VIEW_HEIGHT = ("Setting.MaxViewHeight", "Max View Height (block)");
@@ -382,6 +385,22 @@ public class ProjectEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
+		// View Ratio
+		GUI.SmallLabel(rect, LABEL_VIEW_RATIO);
+		int newViewRatio = UiRatio_to_Ratio(GUI.HandleSlider(
+			7365431, rect.Shrink(GUI.LabelWidth, digitLabelWidth, 0, 0),
+			Ratio_to_UiRatio(info.ViewRatio),
+			0, UI_RATIO.Length - 1
+		));
+		if (newViewRatio != info.ViewRatio) {
+			info.ViewRatio = newViewRatio;
+			info.Valid(true);
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		GUI.Label(rect.EdgeRight(digitLabelWidth), UI_RATIO[Ratio_to_UiRatio(info.ViewRatio)].label, GUI.Skin.SmallCenterLabel);
+		rect.SlideDown(padding);
+
 		// Default View Size
 		GUI.SmallLabel(rect, LABEL_DEF_VIEW_HEIGHT);
 		int newDefViewHeight = GUI.HandleSlider(
@@ -465,6 +484,13 @@ public class ProjectEditor : WindowUI {
 			if (!Util.FileExists(path) || Instance.CurrentProject == null) return;
 			bool success = EngineUtil.CreateIcoFromPng(path, Instance.CurrentProject.IconPath);
 			if (success) Instance.ReloadIconUI();
+		}
+		static int UiRatio_to_Ratio (int uiRatio) => UI_RATIO[uiRatio.Clamp(0, UI_RATIO.Length - 1)].ratio;
+		static int Ratio_to_UiRatio (int ratio) {
+			for (int i = 0; i < UI_RATIO.Length; i++) {
+				if (UI_RATIO[i].ratio >= ratio) return i;
+			}
+			return UI_RATIO.Length - 1;
 		}
 	}
 

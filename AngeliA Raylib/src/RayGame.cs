@@ -94,7 +94,11 @@ public partial class RayGame : Game {
 #endif
 
 		Raylib.SetTargetFPS(60);
-		var windowConfig = ConfigFlags.ResizableWindow | ConfigFlags.AlwaysRunWindow | ConfigFlags.InterlacedHint;
+
+		var windowConfig =
+			ConfigFlags.ResizableWindow |
+			ConfigFlags.AlwaysRunWindow |
+			ConfigFlags.VSyncHint;
 		Raylib.SetConfigFlags(windowConfig);
 		Raylib.ClearWindowState(ConfigFlags.HighDpiWindow);
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");

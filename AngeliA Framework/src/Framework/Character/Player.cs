@@ -119,7 +119,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	public override void FirstUpdate () {
-		if (Task.HasTask()) return;
+		if (TaskSystem.HasTask()) return;
 		base.FirstUpdate();
 	}
 
@@ -150,7 +150,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		switch (CharacterState) {
 			case CharacterState.GamePlay:
 
-				bool allowGamePlay = !Task.HasTask() && !GUI.IsTyping;
+				bool allowGamePlay = !TaskSystem.HasTask() && !GUI.IsTyping;
 
 				if (allowGamePlay) {
 					if (PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI) {
@@ -276,7 +276,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 	private void Update_Action () {
 
-		if (Health.TakingDamage || Task.HasTask() || Game.GlobalFrame <= IgnoreActionFrame) {
+		if (Health.TakingDamage || TaskSystem.HasTask() || Game.GlobalFrame <= IgnoreActionFrame) {
 			TargetActionEntity = null;
 			return;
 		}
@@ -427,7 +427,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 		TargetActionEntity = null;
 
-		if (Task.HasTask()) return;
+		if (TaskSystem.HasTask()) return;
 
 		// Wake up on Press Action
 		if (Input.GameKeyDown(Gamekey.Action) || Input.GameKeyDown(Gamekey.Jump)) {
@@ -449,7 +449,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private void Update_View () {
 
 		const int LINGER_RATE = 32;
-		bool notInGameplay = Task.HasTask() || CharacterState != CharacterState.GamePlay;
+		bool notInGameplay = TaskSystem.HasTask() || CharacterState != CharacterState.GamePlay;
 		bool notInAir =
 			notInGameplay ||
 			IsGrounded || InWater || Movement.IsSliding ||
@@ -486,7 +486,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 	private void Update_PassOut () {
 
-		if (Task.HasTask()) return;
+		if (TaskSystem.HasTask()) return;
 
 		bool fullPassOut = Health.HP == 0 && Game.GlobalFrame > PassOutFrame + 48;
 
@@ -502,7 +502,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 		// Reload Game After Player PassOut
 		if (fullPassOut && Input.GameKeyDown(Gamekey.Action)) {
-			Task.AddToLast(RestartGameTask.TYPE_ID);
+			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 			Input.UseGameKey(Gamekey.Action);
 		}
 
@@ -538,7 +538,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private void Update_Repair () {
 		if (
 			CharacterState != CharacterState.GamePlay ||
-			Task.HasTask() ||
+			TaskSystem.HasTask() ||
 			Health.TakingDamage ||
 			Game.GlobalFrame != Movement.LastSquatFrame
 		) return;
@@ -570,7 +570,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		PoseRenderingZOffset = oldZ;
 
 		// Auto Pick Item on Ground
-		if (!Task.HasTask() && !PlayerMenuUI.ShowingUI) {
+		if (!TaskSystem.HasTask() && !PlayerMenuUI.ShowingUI) {
 			var cells = Physics.OverlapAll(PhysicsMask.ITEM, Rect, out int count, null, OperationMode.ColliderAndTrigger);
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
@@ -636,8 +636,8 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 	bool IActionTarget.Invoke () {
 		RespawnCpUnitPosition = null;
-		Task.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
-		Task.AddToLast(RestartGameTask.TYPE_ID);
+		TaskSystem.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
+		TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 		return true;
 	}
 

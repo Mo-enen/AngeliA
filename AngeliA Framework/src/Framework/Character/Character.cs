@@ -64,6 +64,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		_ => Attackness.DefaultSpeedRateOnAttack,
 	};
 	int IDamageReceiver.Team => Const.TEAM_NEUTRAL;
+	Tag IDamageReceiver.IgnoreDamageType => Tag.None;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
 	public override int Gravity => 5;
@@ -446,7 +447,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		int invCapacity = GetInventoryCapacity();
 		if (invCapacity > 0) {
 
-			bool eventAvailable = CharacterState == CharacterState.GamePlay && !Task.HasTask() && !Health.TakingDamage;
+			bool eventAvailable = CharacterState == CharacterState.GamePlay && !TaskSystem.HasTask() && !Health.TakingDamage;
 			int attackLocalFrame = eventAvailable && Attackness.IsAttacking ? Game.GlobalFrame - Attackness.LastAttackFrame : -1;
 
 			// Inventory
@@ -602,10 +603,10 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 
 
 	// Behaviour
-	protected virtual CharacterMovement CreateNativeMovement () => new CharacterMovement(this);
-	protected virtual CharacterAttackness CreateNativeAttackness () => new CharacterAttackness(this);
-	protected virtual CharacterHealth CreateNativeHealth () => new CharacterHealth();
-	protected virtual CharacterNavigation CreateNativeNavigation () => new CharacterNavigation(this);
+	protected virtual CharacterMovement CreateNativeMovement () => new(this);
+	protected virtual CharacterAttackness CreateNativeAttackness () => new(this);
+	protected virtual CharacterHealth CreateNativeHealth () => new();
+	protected virtual CharacterNavigation CreateNativeNavigation () => new(this);
 
 
 	public void OverrideMovement (CharacterMovement movementOverride, int duration = 1) {

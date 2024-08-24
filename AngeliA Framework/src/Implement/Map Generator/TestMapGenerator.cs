@@ -4,6 +4,7 @@ using JordanPeck;
 
 namespace AngeliA;
 
+#if DEBUG
 internal class TestMapGenerator : MapGenerator {
 
 
@@ -166,3 +167,4 @@ internal class TestMapGenerator : MapGenerator {
 
 
 }
+#endif

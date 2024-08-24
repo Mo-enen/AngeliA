@@ -270,7 +270,7 @@ public partial class Engine {
 		if (buildingProjectInBackground) {
 			// Building in Background
 			if (currentWindowRequireRigGame && requireRigGameRender) {
-				Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(CurrentProject.Universe, sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}
 		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
@@ -294,7 +294,7 @@ public partial class Engine {
 						ReloadCharacterNames();
 					}
 				} else if (requireRigGameRender) {
-					Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect);
+					Transceiver.UpdateLastRespondedRender(CurrentProject.Universe, sheetIndex, toolPanelRect);
 				}
 			}
 		} else if (
@@ -318,7 +318,7 @@ public partial class Engine {
 			}
 			if (currentWindowRequireRigGame && requireRigGameRender) {
 				// Still Render Last Image
-				Transceiver.UpdateLastRespondedRender(sheetIndex, toolPanelRect, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(CurrentProject.Universe, sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}
 		}
 

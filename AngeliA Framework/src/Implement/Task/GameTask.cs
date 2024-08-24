@@ -1,7 +1,7 @@
 namespace AngeliA; 
 
 
-public class MethodTask : TaskItem {
+public class MethodTask : Task {
 	public static readonly int TYPE_ID = typeof(MethodTask).AngeHash();
 	public override TaskResult FrameUpdate () {
 		if (UserData is System.Action action) {
@@ -12,7 +12,7 @@ public class MethodTask : TaskItem {
 }
 
 
-public class DelayTask : TaskItem {
+public class DelayTask : Task {
 	public static readonly int TYPE_ID = typeof(DelayTask).AngeHash();
 	public override TaskResult FrameUpdate () {
 		if (UserData is not int) UserData = 1;
@@ -22,7 +22,7 @@ public class DelayTask : TaskItem {
 }
 
 
-public class RestartGameTask : TaskItem {
+public class RestartGameTask : Task {
 	public static readonly int TYPE_ID = typeof(RestartGameTask).AngeHash();
 	public override TaskResult FrameUpdate () {
 		Game.RestartGame();
@@ -31,7 +31,7 @@ public class RestartGameTask : TaskItem {
 }
 
 
-public class SelectPlayerTask : TaskItem {
+public class SelectPlayerTask : Task {
 	public static readonly int TYPE_ID = typeof(SelectPlayerTask).AngeHash();
 	public override TaskResult FrameUpdate () {
 		if (UserData is not int) return TaskResult.End;
