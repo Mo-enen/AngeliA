@@ -23,11 +23,12 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 	}
 
 	protected virtual void OnBreak () {
-		Stage.MarkAsGlobalAntiSpawn(this);
 		GlobalEvent.InvokeObjectBreak(TypeID, Rect);
 		bool itemDropped = ItemSystem.DropItemFor(this);
-		if (Game.UseProceduralMap) {
+		if (Universe.BuiltInInfo.UseProceduralMap) {
 			FrameworkUtil.PickEntityBlock(this, !itemDropped);
+		} else {
+			FrameworkUtil.RemoveFromWorldMemory(this);
 		}
 	}
 

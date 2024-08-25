@@ -13,13 +13,8 @@ public interface ICombustible {
 	public int BurnedDuration => 120;
 	public int BurnStartFrame { get; set; }
 	public void OnBurned () {
-		if (this is not Entity e || !e.MapUnitPos.HasValue) return;
-		if (Game.UseProceduralMap) {
-			var mapPos = e.MapUnitPos.Value;
-			WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, BlockType.Entity, 0);
-		} else {
-			Stage.MarkAsGlobalAntiSpawn(e);
-		}
+		if (this is not Entity e) return;
+		FrameworkUtil.RemoveFromWorldMemory(e);
 	}
 }
 

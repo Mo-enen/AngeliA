@@ -96,7 +96,9 @@ public abstract class TitleUI : Entity {
 			}
 			PrevCameraX = x;
 		}
-		if (TriggeredFrame >= 0) Stage.MarkAsGlobalAntiSpawn(this);
+		if (TriggeredFrame >= 0) {
+			FrameworkUtil.RemoveFromWorldMemory(this);
+		}
 	}
 
 

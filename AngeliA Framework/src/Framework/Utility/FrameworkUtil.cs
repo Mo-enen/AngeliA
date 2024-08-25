@@ -664,4 +664,12 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void RemoveFromWorldMemory (Entity entity) {
+		var mapPos = entity.MapUnitPos;
+		if (mapPos.HasValue) {
+			WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
+		}
+	}
+
+
 }

@@ -18,7 +18,7 @@ public class WorldSquad : IBlockSquad {
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
 	public static string MapRoot => Stream?.MapRoot;
-	public static bool Readonly { get; private set; } = false;
+	public static bool DontSaveChangesToFile { get; private set; } = false;
 
 	// Data
 	private static event System.Action BeforeLevelRendered;
@@ -41,12 +41,13 @@ public class WorldSquad : IBlockSquad {
 	[OnGameInitialize(-128)]
 	internal static TaskResult OnGameInitialize () {
 		if (!Renderer.IsReady) return TaskResult.Continue;
-		Readonly = !Game.UseProceduralMap;
+		bool useProceduralMap = Universe.BuiltInInfo.UseProceduralMap;
+		DontSaveChangesToFile = !useProceduralMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
-		Stream = WorldStream.GetOrCreateStreamFromPool(Readonly ? Universe.BuiltIn.MapRoot : Universe.BuiltIn.SlotUserMapRoot);
+		Stream = WorldStream.GetOrCreateStreamFromPool(useProceduralMap ? Universe.BuiltIn.SlotUserMapRoot : Universe.BuiltIn.MapRoot);
 		SquadReady = true;
 		// Level to Entity Redirect
 		foreach (var (type, att) in Util.AllClassWithAttribute<EntityAttribute.SpawnFromLevelBlock>()) {
@@ -75,7 +76,7 @@ public class WorldSquad : IBlockSquad {
 
 	[OnSavingSlotChanged]
 	internal static void OnSavingSlotChanged () {
-		if (Readonly) return;
+		if (DontSaveChangesToFile) return;
 		Stream?.SaveAllDirty();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 		Stream.ClearWorldPool();
@@ -85,7 +86,7 @@ public class WorldSquad : IBlockSquad {
 
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
-		if (!Readonly) {
+		if (!DontSaveChangesToFile) {
 			Stream?.SaveAllDirty();
 		}
 	}
@@ -102,7 +103,7 @@ public class WorldSquad : IBlockSquad {
 		Front.RenderCurrentFrame();
 		Behind.RenderCurrentFrame();
 		// Generate
-		if (!Readonly && Game.PauselessFrame % 30 == 1) {
+		if (!DontSaveChangesToFile && Game.PauselessFrame % 30 == 1) {
 			var fixedView = Stage.ViewRect.Expand(Const.CEL * 2);
 			var largeView = Stage.ViewRect.Expand(Const.CEL * Const.MAP * 3);
 			MapGenerationSystem.GenerateMapInRange(fixedView, Stage.ViewZ, async: false);
@@ -111,7 +112,7 @@ public class WorldSquad : IBlockSquad {
 			MapGenerationSystem.GenerateMapInRange(largeView, Stage.ViewZ, async: true);
 		}
 		// Auto Save
-		if (!Readonly && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
+		if (!DontSaveChangesToFile && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
 			Stream.SaveAllDirty();
 		}
 	}
@@ -173,10 +174,7 @@ public class WorldSquad : IBlockSquad {
 
 	// Set Block
 	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) => SetBlockAt(unitX, unitY, Stage.ViewZ, type, newID);
-	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
-		if (Readonly) return;
-		Stream.SetBlockAt(unitX, unitY, z, type, newID);
-	}
+	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) => Stream.SetBlockAt(unitX, unitY, z, type, newID);
 
 
 	#endregion
@@ -316,7 +314,7 @@ public class WorldSquad : IBlockSquad {
 						for (int i = l; i < r; i++, index++) {
 							// Entity
 							var entityID = eSpan[index];
-							if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID, i, j, z)) {
+							if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID)) {
 								DrawBehind(entityID, i, j, true);
 							}
 						}

@@ -40,7 +40,7 @@ public sealed class BlockBuilder : Weapon {
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
-			WorldSquad.Readonly
+			WorldSquad.DontSaveChangesToFile
 		) goto _BASE_;
 
 		// Movement Override

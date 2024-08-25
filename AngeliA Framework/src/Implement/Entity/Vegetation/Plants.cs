@@ -56,8 +56,10 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 
 	protected virtual void OnPlantBreak () {
 		bool itemDropped = ItemSystem.DropItemFor(this);
-		if (Game.UseProceduralMap) {
+		if (Universe.BuiltInInfo.UseProceduralMap) {
 			FrameworkUtil.PickEntityBlock(this, !itemDropped);
+		} else {
+			FrameworkUtil.RemoveFromWorldMemory(this);
 		}
 	}
 
@@ -77,7 +79,6 @@ public abstract class Plant : EnvironmentEntity, ICombustible, IDamageReceiver {
 			}
 		}
 		GlobalEvent.InvokeObjectBreak(id, rect, true);
-		Stage.MarkAsLocalAntiSpawn(this);
 		// Disable
 		Active = false;
 		OnPlantBreak();

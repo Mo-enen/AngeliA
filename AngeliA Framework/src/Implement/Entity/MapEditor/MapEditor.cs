@@ -158,7 +158,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (!Instance.PlayingGame) {
 			Instance.ApplyPaste();
 			Instance.Save();
-		} else if (Game.UseProceduralMap) {
+		} else {
 			WorldSquad.DiscardAllChangesInMemory();
 		}
 		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.MapRoot);
@@ -1016,7 +1016,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (Game.GlobalFrame != 0) {
 			if (toPlayMode) {
 				Save();
-			} else if (Game.UseProceduralMap) {
+			} else {
 				WorldSquad.DiscardAllChangesInMemory();
 			}
 		}
@@ -1027,7 +1027,6 @@ public sealed partial class MapEditor : WindowUI {
 		SelectionUnitRect = null;
 		DraggingUnitRect = null;
 		MapChest.ClearOpenedMarks();
-		Stage.ClearGlobalAntiSpawn();
 		Player.RespawnCpUnitPosition = null;
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 		GUI.CancelTyping();

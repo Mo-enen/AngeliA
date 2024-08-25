@@ -71,8 +71,6 @@ public class OpeningTask : Task {
 				player.SetCharacterState(CharacterState.GamePlay);
 			}
 			SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
-			Stage.ClearGlobalAntiSpawn();
-			Stage.ClearLocalAntiSpawn();
 			Stage.SetViewZ(TargetViewZ);
 		}
 

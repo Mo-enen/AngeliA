@@ -299,21 +299,22 @@ public class RigRespondMessage {
 				}
 			}
 		}
-		Renderer.SetLayer(oldLayer);
 
 		// Black Side Border
-		using (new UILayerScope()) {
-			if (CachedScreenWidth * 1000 / CachedScreenHeight > info.ViewRatio) {
-				var cameraRect = Renderer.CameraRect.ShrinkLeft(leftPadding);
-				int borderWidth = Util.RemapUnclamped(
-					0, CachedScreenWidth,
-					0, cameraRect.width,
-					CachedScreenWidth / 2 - CachedScreenHeight * info.ViewRatio / 2000
-				);
-				Renderer.DrawPixel(new IRect(cameraRect.x, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
-				Renderer.DrawPixel(new IRect(cameraRect.x + cameraRect.width - borderWidth, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
-			}
+		Renderer.SetLayer(RenderLayer.UI);
+		if (CachedScreenWidth * 1000 / CachedScreenHeight > info.ViewRatio) {
+			var cameraRect = Renderer.CameraRect.ShrinkLeft(leftPadding);
+			int borderWidth = Util.RemapUnclamped(
+				0, CachedScreenWidth,
+				0, cameraRect.width,
+				CachedScreenWidth / 2 - CachedScreenHeight * info.ViewRatio / 2000
+			);
+			Renderer.DrawPixel(new IRect(cameraRect.x, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
+			Renderer.DrawPixel(new IRect(cameraRect.x + cameraRect.width - borderWidth, cameraRect.y, borderWidth, cameraRect.height), Color32.BLACK, int.MaxValue);
 		}
+
+		// Set Layer Back
+		Renderer.SetLayer(oldLayer);
 
 		// Effect
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {

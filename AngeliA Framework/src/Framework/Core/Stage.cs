@@ -50,6 +50,7 @@ public static class Stage {
 		public int Capacity = 0;
 		public bool DespawnOutOfRange = true;
 		public bool UpdateOutOfRange = false;
+		public bool RequireReposition = false;
 		public int Order = 0;
 		public int Layer = 0;
 		private int InstanceCount = 0;
@@ -123,9 +124,6 @@ public static class Stage {
 	private static event Action<int> AfterLayerFrameUpdate;
 	private static readonly Dictionary<int, EntityStack> EntityPool = new();
 	private static readonly HashSet<Int3> StagedEntityHash = new();
-	private static readonly HashSet<Int3> GlobalAntiSpawnHash = new();
-	private static readonly HashSet<Int3> LocalAntiSpawnHash = new();
-	private static readonly HashSet<int> RepositionHash = new();
 	private static int ViewLerpRate = 1000;
 	private static int? RequireSetViewZ = null;
 
@@ -141,7 +139,6 @@ public static class Stage {
 	[OnGameInitialize(-64)]
 	public static void OnGameInitialize () {
 
-		RepositionHash.Clear();
 		IsReady = true;
 		Enable = !Game.IsToolApplication;
 		int defaultViewHegiht = Universe.BuiltInInfo.DefaultViewHeight;
@@ -182,7 +179,8 @@ public static class Stage {
 			var att_DontDestroyOnTran = eType.GetCustomAttribute<EntityAttribute.DontDestroyOnZChangedAttribute>(true);
 			var att_DontSpawnFromWorld = eType.GetCustomAttribute<EntityAttribute.DontSpawnFromWorld>(true);
 			var att_Order = eType.GetCustomAttribute<EntityAttribute.StageOrderAttribute>(true);
-			var att_Repos = eType.GetCustomAttribute<EntityAttribute.RepositionWhenOutOfRangeAttribute>(true);
+			var att_Repos = Universe.BuiltInInfo.UseProceduralMap ?
+				eType.GetCustomAttribute<EntityAttribute.RepositionWhenOutOfRangeAttribute>(true) : null;
 			int layer = att_Layer != null ? att_Layer.Layer.Clamp(0, EntityLayer.COUNT - 1) : 0;
 			if (att_Capacity != null) {
 				capacity = att_Capacity.Value.Clamp(1, Entities[layer].Length);
@@ -199,6 +197,7 @@ public static class Stage {
 				UpdateOutOfRange = att_ForceUpdate != null,
 				DontSpawnFromWorld = att_DontSpawnFromWorld != null,
 				Order = att_Order != null ? att_Order.Order : 0,
+				RequireReposition = att_Repos != null,
 				Layer = layer,
 			};
 			for (int i = 0; i < preSpawn; i++) {
@@ -209,10 +208,6 @@ public static class Stage {
 				} catch (Exception ex) { Debug.LogException(ex); }
 			}
 			EntityPool.TryAdd(id, stack);
-			// Reposition Map
-			if (att_Repos != null) {
-				RepositionHash.Add(id);
-			}
 		}
 
 		// Event
@@ -302,7 +297,6 @@ public static class Stage {
 				RefreshStagedEntities(layer);
 			}
 			AntiSpawnRect = default;
-			LocalAntiSpawnHash.Clear();
 			ViewZ = newZ;
 			OnViewZChanged?.Invoke();
 		}
@@ -496,38 +490,13 @@ public static class Stage {
 
 	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ, bool forceSpawn = false) {
 		var uPos = new Int3(unitX, unitY, unitZ);
-		if (!forceSpawn) {
-			if (StagedEntityHash.Contains(uPos)) return null;
-			if (GlobalAntiSpawnHash.Contains(uPos)) return null;
-			if (LocalAntiSpawnHash.Contains(uPos)) return null;
-		}
+		if (!forceSpawn && StagedEntityHash.Contains(uPos)) return null;
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 		if (stack.DontSpawnFromWorld) return null;
 		int x = unitX * Const.CEL;
 		int y = unitY * Const.CEL;
 		if (!forceSpawn && AntiSpawnRect.Overlaps(stack.LocalBound.Shift(x, y))) return null;
 		return SpawnEntityLogic(typeID, x, y, uPos);
-	}
-
-
-	// Anti Spawn
-	public static void MarkAsGlobalAntiSpawn (Entity entity) {
-		if (!entity.FromWorld) return;
-		GlobalAntiSpawnHash.Add(entity.InstanceID);
-	}
-	public static void ClearGlobalAntiSpawn () {
-		if (GlobalAntiSpawnHash.Count > 0) {
-			GlobalAntiSpawnHash.Clear();
-		}
-	}
-	public static void MarkAsLocalAntiSpawn (Entity entity) {
-		if (!entity.FromWorld) return;
-		LocalAntiSpawnHash.Add(entity.InstanceID);
-	}
-	public static void ClearLocalAntiSpawn () {
-		if (LocalAntiSpawnHash.Count > 0) {
-			LocalAntiSpawnHash.Clear();
-		}
 	}
 
 
@@ -694,7 +663,7 @@ public static class Stage {
 
 
 	// Misc
-	public static bool RequireDrawEntityBehind (int id, int unitX, int unitY, int unitZ) => EntityPool.TryGetValue(id, out var stack) && stack.DrawBehind && !GlobalAntiSpawnHash.Contains(new(unitX, unitY, unitZ));
+	public static bool RequireDrawEntityBehind (int id) => EntityPool.TryGetValue(id, out var stack) && stack.DrawBehind;
 
 
 	public static Int4 GetCameraCullingPadding () {
@@ -731,7 +700,6 @@ public static class Stage {
 			var entity = entities[i];
 			if (entity.Active && entity.DespawnOutOfRange && !SpawnRect.Overlaps(entity.GlobalBounds)) {
 				entity.Active = false;
-				RepositionEntity(entity);
 			}
 		}
 
@@ -746,7 +714,6 @@ public static class Stage {
 			var e = entities[count - 1];
 			if (e.Active) break;
 
-			e.Active = false;
 			try {
 				e.OnInactivated();
 			} catch (Exception ex) { Debug.LogException(ex); }
@@ -756,6 +723,9 @@ public static class Stage {
 			// Push Back
 			if (EntityPool.TryGetValue(e.TypeID, out var stack)) {
 				stack.Push(e);
+				if (stack.RequireReposition) {
+					TryRepositionEntity(e);
+				}
 			}
 
 			// Next
@@ -766,9 +736,9 @@ public static class Stage {
 	}
 
 
-	private static void RepositionEntity (Entity entity) {
+	private static void TryRepositionEntity (Entity entity) {
 
-		if (!Game.UseProceduralMap || !entity.MapUnitPos.HasValue || !RepositionHash.Contains(entity.TypeID)) return;
+		if (!entity.MapUnitPos.HasValue) return;
 
 		var mapPos = entity.MapUnitPos.Value;
 		int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);

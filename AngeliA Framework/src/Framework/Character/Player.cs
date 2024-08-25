@@ -529,7 +529,6 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 			bool success = col.OnCollect(this);
 			if (success) {
 				hit.Entity.Active = false;
-				Stage.MarkAsGlobalAntiSpawn(hit.Entity);
 			}
 		}
 	}

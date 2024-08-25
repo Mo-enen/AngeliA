@@ -68,7 +68,8 @@ public abstract class Explosion : Entity {
 				receiver.TakeDamage(new Damage(Damage, Sender ?? this, this, Tag.ExplosiveDamage));
 			}
 			// Destroy Block
-			if (Game.UseProceduralMap && DestroyBlocks) {
+			if (DestroyBlocks) {
+				bool procedural = Universe.BuiltInInfo.UseProceduralMap;
 				for (int x = range.x; x < range.xMax; x += Const.CEL) {
 					for (int y = range.y; y < range.yMax; y += Const.CEL) {
 						if (!Util.OverlapRectCircle(
@@ -78,7 +79,8 @@ public abstract class Explosion : Entity {
 						FrameworkUtil.PickBlockAt(
 							(x + 1).ToUnit(),
 							(y + 1).ToUnit(),
-							allowMultiplePick: true
+							allowMultiplePick: true,
+							dropItemAfterPicked: procedural
 						);
 					}
 				}
