@@ -1145,7 +1145,7 @@ public static class GUI {
 
 		value = BlankSlider(controlID, rect, value, min, max, out var state, vertical, step);
 		int axis = vertical ? 1 : 0;
-		int valuePos = Util.Remap(min, max, rect.position[axis], rect.TopRight()[axis], value);
+		int valuePos = Util.Remap(min, max, rect.position[axis], rect.TopRight()[axis], (float)value).RoundToInt();
 
 		// Body
 		if (bodyStyle != null) {
@@ -1202,7 +1202,6 @@ public static class GUI {
 			// Step Value
 			if (step > 0) {
 				valueF = (valueF / step).RoundToInt() * step;
-				//value -= value.UMod(step);
 			}
 			valueF = valueF.Clamp(min, max);
 			value = valueF.RoundToInt();
@@ -1210,9 +1209,6 @@ public static class GUI {
 
 		// End
 		if (value != oldValue) ContentVersion++;
-		if (dragging) {
-
-		}
 		return value;
 	}
 

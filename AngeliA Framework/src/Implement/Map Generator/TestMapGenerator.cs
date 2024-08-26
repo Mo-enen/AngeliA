@@ -47,7 +47,7 @@ internal class TestMapGenerator : MapGenerator {
 	[OnGameUpdate]
 	internal static void NoiseTestUpdate () {
 
-		if (!TestingNoise.Value) return;
+		if (!TestingNoise.Value || !Game.IsToolApplication) return;
 
 		// TEST
 		QTest.ShowNotUpdatedData = false;

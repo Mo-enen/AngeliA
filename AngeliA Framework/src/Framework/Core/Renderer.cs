@@ -59,7 +59,6 @@ public static class Renderer {
 
 	// Const
 	private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
-	private static readonly int[] DEFAULT_CAPACITY = new int[RenderLayer.COUNT] { 256, 8192, 4096, 16384, 256, 64, 128, 8192, };
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 
 	// Event
@@ -114,15 +113,8 @@ public static class Renderer {
 		Util.LinkEventWithAttribute<OnMainSheetReload>(typeof(Renderer), nameof(OnMainSheetLoaded));
 
 		// Create Layers
-		var capacities = new int[RenderLayer.COUNT];
-		DEFAULT_CAPACITY[RenderLayer.MULT] = !Game.IsToolApplication && Universe.BuiltInInfo.UseLightingSystem ? 2048 : 64;
-		DEFAULT_CAPACITY.CopyTo(capacities, 0);
-		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<RenderLayerCapacityAttribute>()) {
-			if (att.Layer < 0 || att.Layer >= RenderLayer.COUNT) continue;
-			capacities[att.Layer] = att.Capacity;
-		}
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
-			int capacity = capacities[i];
+			int capacity = RenderLayer.CAPACITY[i];
 			int order = i;
 			bool uiLayer = i == RenderLayer.UI;
 			Layers[i] = new Layer {

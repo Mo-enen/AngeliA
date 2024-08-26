@@ -22,15 +22,3 @@ public class EntityLayerCapacityAttribute : Attribute {
 		Capacity = capacity;
 	}
 }
-
-
-[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public class RenderLayerCapacityAttribute : Attribute {
-	public int Layer;
-	public int Capacity;
-	public RenderLayerCapacityAttribute (int layer, int capacity) {
-		Layer = layer;
-		Capacity = capacity;
-	}
-}
-

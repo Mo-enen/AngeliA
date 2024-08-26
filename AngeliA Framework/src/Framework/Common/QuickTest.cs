@@ -103,7 +103,7 @@ public static class QTest {
 	[OnGameUpdate(-256)]
 	internal static void OnGameUpdate () {
 
-		if (!ShowingWindow || IgnoringWindow || !Game.IsToolApplication) return;
+		if (!ShowingWindow || IgnoringWindow) return;
 
 		CurrentGroup = "";
 		CurrentGroupOrder = 0;

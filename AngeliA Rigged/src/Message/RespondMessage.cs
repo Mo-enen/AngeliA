@@ -15,7 +15,10 @@ public class RigRespondMessage {
 
 	public struct GizmosRectData {
 		public IRect Rect;
-		public Color32 Color;
+		public Color32 ColorTL;
+		public Color32 ColorTR;
+		public Color32 ColorBL;
+		public Color32 ColorBR;
 	}
 
 
@@ -232,29 +235,24 @@ public class RigRespondMessage {
 
 		// Gizmos Rect
 		int cameraExpand = (info.ViewRatio * ViewHeight / 1000 - engineViewRect.width) / 2;
-		var fixedCameraRect = Renderer.CameraRect.Expand(cameraExpand, cameraExpand, 0, 0);
-		var leftTabBarRect = fixedCameraRect.EdgeLeft(leftPadding);
+		int leftBarMaxX = Renderer.CameraRect.x + leftPadding;
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
-			var rect = data.Rect.Shift(leftPadding / 2 - cameraExpand, 0);
-			// Dodge Left
-			if (rect.width > rect.height) {
-				// Line H
-				if (rect.x < leftTabBarRect.xMax) {
-					rect.xMin = leftTabBarRect.xMax;
-				}
-			} else {
-				// Line V
-				if (rect.x < leftTabBarRect.xMax) continue;
+			var rect = data.Rect;
+			rect.x = data.Rect.x + leftPadding / 2 - cameraExpand;
+			// Dodge Left Bar
+			if (rect.xMax < leftBarMaxX) continue;
+			if (rect.x < leftBarMaxX) {
+				rect.xMin = leftBarMaxX;
 			}
 			// Dodge Panel
 			if (rect.Dodge(dodgingRect, out var result0, out var result1, out var result2, out var result3)) {
-				if (result0.HasValue) Game.DrawGizmosRect(result0.Value, data.Color);
-				if (result1.HasValue) Game.DrawGizmosRect(result1.Value, data.Color);
-				if (result2.HasValue) Game.DrawGizmosRect(result2.Value, data.Color);
-				if (result3.HasValue) Game.DrawGizmosRect(result3.Value, data.Color);
+				if (result0.HasValue) Game.DrawGizmosRect(result0.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
+				if (result1.HasValue) Game.DrawGizmosRect(result1.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
+				if (result2.HasValue) Game.DrawGizmosRect(result2.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
+				if (result3.HasValue) Game.DrawGizmosRect(result3.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
 			} else if (!rect.Overlaps(dodgingRect)) {
-				Game.DrawGizmosRect(rect, data.Color);
+				Game.DrawGizmosRect(rect, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
 			}
 		}
 
@@ -411,15 +409,37 @@ public class RigRespondMessage {
 				int y = Util.ReadInt(ref pointer, end);
 				int w = Util.ReadInt(ref pointer, end);
 				int h = Util.ReadInt(ref pointer, end);
-				byte r = Util.ReadByte(ref pointer, end);
-				byte g = Util.ReadByte(ref pointer, end);
-				byte b = Util.ReadByte(ref pointer, end);
-				byte a = Util.ReadByte(ref pointer, end);
 				var rect = new IRect(x, y, w, h);
-				var color = new Color32(r, g, b, a);
+				var colorTL = new Color32(
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end)
+				);
+				var colorTR = new Color32(
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end)
+				);
+				var colorBL = new Color32(
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end)
+				);
+				var colorBR = new Color32(
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end)
+				);
 				RequireGizmosRects[i] = new GizmosRectData() {
 					Rect = rect,
-					Color = color,
+					ColorTL = colorTL,
+					ColorTR = colorTR,
+					ColorBL = colorBL,
+					ColorBR = colorBR,
 				};
 			}
 
@@ -540,10 +560,22 @@ public class RigRespondMessage {
 				Util.Write(ref pointer, data.Rect.y, end);
 				Util.Write(ref pointer, data.Rect.width, end);
 				Util.Write(ref pointer, data.Rect.height, end);
-				Util.Write(ref pointer, data.Color.r, end);
-				Util.Write(ref pointer, data.Color.g, end);
-				Util.Write(ref pointer, data.Color.b, end);
-				Util.Write(ref pointer, data.Color.a, end);
+				Util.Write(ref pointer, data.ColorTL.r, end);
+				Util.Write(ref pointer, data.ColorTL.g, end);
+				Util.Write(ref pointer, data.ColorTL.b, end);
+				Util.Write(ref pointer, data.ColorTL.a, end);
+				Util.Write(ref pointer, data.ColorTR.r, end);
+				Util.Write(ref pointer, data.ColorTR.g, end);
+				Util.Write(ref pointer, data.ColorTR.b, end);
+				Util.Write(ref pointer, data.ColorTR.a, end);
+				Util.Write(ref pointer, data.ColorBL.r, end);
+				Util.Write(ref pointer, data.ColorBL.g, end);
+				Util.Write(ref pointer, data.ColorBL.b, end);
+				Util.Write(ref pointer, data.ColorBL.a, end);
+				Util.Write(ref pointer, data.ColorBR.r, end);
+				Util.Write(ref pointer, data.ColorBR.g, end);
+				Util.Write(ref pointer, data.ColorBR.b, end);
+				Util.Write(ref pointer, data.ColorBR.a, end);
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {

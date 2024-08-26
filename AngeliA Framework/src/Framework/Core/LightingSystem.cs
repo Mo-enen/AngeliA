@@ -21,9 +21,12 @@ public static class LightingSystem {
 
 
 	// Const
+	private const float SELF_LERP = 0.9f;
+	private const float SOLID_ILLU = 1.1f;
+	private const float AIR_ILLU = 0.8f;
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
 	private const int LIGHT_MAP_UNIT_PADDING_DOWN = 2;
-	private static readonly float[] WEIGHTS = { 0.04f, 0.10f, 0.50f, 0.10f, 0.04f, };
+	private static readonly float[] WEIGHTS = { 0.051f, 0.21f, 0.51f, 0.21f, 0.051f, };
 	private static int CellWidth;
 	private static int CellHeight;
 
@@ -60,7 +63,7 @@ public static class LightingSystem {
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
 
-		if (!Enable) return;
+		if (!Enable || !WorldSquad.Enable) return;
 
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
 		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_DOWN;
@@ -77,7 +80,7 @@ public static class LightingSystem {
 		int j = CellHeight - 1;
 		int originUnitTop = OriginUnitY + CellHeight - 1;
 		for (int i = 0; i < CellWidth; i++) {
-			Illuminances[i, j] = GetSelfIlluminanceAt(OriginUnitX + i, originUnitTop, out _);
+			Illuminances[i, j] = GetSelfIlluminanceAt(OriginUnitX + i, originUnitTop);
 		}
 
 		// Mix Iteration
@@ -85,14 +88,9 @@ public static class LightingSystem {
 		for (; j >= 0; j--) {
 			int unitY = OriginUnitY + j;
 			for (int i = 0; i < CellWidth; i++) {
-				float selfIllu = GetSelfIlluminanceAt(OriginUnitX + i, unitY, out bool solid);
-				//float topIllu = Illuminances[i, j + 1];
+				float selfIllu = GetSelfIlluminanceAt(OriginUnitX + i, unitY);
 				float topW = GetTopWeight(i, j);
-
-
-
-
-				//Illuminances[i, j] =;
+				Illuminances[i, j] = Util.Lerp(selfIllu, topW, SELF_LERP);
 			}
 		}
 
@@ -101,12 +99,52 @@ public static class LightingSystem {
 
 	private static void RenderAllIlluminance () {
 
+		using var _ = new LayerScope(RenderLayer.MULT);
+		var rect = new IRect(0, 0, Const.CEL, Const.CEL);
+		int offsetX = OriginUnitX.ToGlobal();
+		int offsetY = OriginUnitY.ToGlobal();
+		var cameraRect = Renderer.CameraRect;
+		int left = (cameraRect.x.ToUnit() - 1 - OriginUnitX).Clamp(0, CellWidth - 1);
+		int right = (cameraRect.xMax.ToUnit() + 1 - OriginUnitX).Clamp(0, CellWidth - 1);
+		int down = (cameraRect.y.ToUnit() - 1 - OriginUnitY).Clamp(0, CellHeight - 1);
+		int up = (cameraRect.yMax.ToUnit() + 1 - OriginUnitY).Clamp(0, CellHeight - 1);
 
+		// Illuminance >> Alpha
+		for (int j = down; j <= up; j++) {
+			rect.y = offsetY + j * Const.CEL;
+			for (int i = left; i <= right; i++) {
+				float illu = Illuminances[i, j];
+				Illuminances[i, j] = 255 - (illu * 255f).Clamp(0f, 255f);
+			}
+		}
 
-
-
-
-
+		// Draw Alpha
+		for (int j = down + 1; j <= up - 1; j++) {
+			rect.y = offsetY + j * Const.CEL;
+			for (int i = left + 1; i <= right - 1; i++) {
+				float alphaTL = Illuminances[i - 1, j + 1];
+				float alphaTM = Illuminances[i, j + 1];
+				float alphaTR = Illuminances[i + 1, j + 1];
+				float alphaML = Illuminances[i - 1, j];
+				float alphaMM = Illuminances[i, j];
+				float alphaMR = Illuminances[i + 1, j];
+				float alphaBL = Illuminances[i - 1, j - 1];
+				float alphaBM = Illuminances[i, j - 1];
+				float alphaBR = Illuminances[i + 1, j - 1];
+				byte aTL = (byte)((alphaTL + alphaTM + alphaML + alphaMM) / 4f);
+				byte aTR = (byte)((alphaTM + alphaTR + alphaMM + alphaMR) / 4f);
+				byte aBL = (byte)((alphaML + alphaMM + alphaBL + alphaBM) / 4f);
+				byte aBR = (byte)((alphaMM + alphaMR + alphaBM + alphaBR) / 4f);
+				rect.x = offsetX + i * Const.CEL;
+				Game.DrawGizmosRect(
+					rect,
+					new Color32(0, 0, 0, aTL),
+					new Color32(0, 0, 0, aTR),
+					new Color32(0, 0, 0, aBL),
+					new Color32(0, 0, 0, aBR)
+				);
+			}
+		}
 	}
 
 
@@ -129,18 +167,15 @@ public static class LightingSystem {
 	#region --- LGC ---
 
 
-	private static float GetSelfIlluminanceAt (int unitX, int unitY, out bool solid) {
+	private static float GetSelfIlluminanceAt (int unitX, int unitY) {
 		if (Physics.Overlap(
 			PhysicsMask.LEVEL,
 			new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL),
 			out var hit
 		)) {
-			solid = true;
-			const float CEL = Const.CEL;
-			return 1f - hit.Rect.width / CEL;
+			return 1f - (float)hit.Rect.width / Const.CEL / SOLID_ILLU;
 		} else {
-			solid = false;
-			return 1f;
+			return AIR_ILLU;
 		}
 	}
 
@@ -154,7 +189,7 @@ public static class LightingSystem {
 		for (int i = left; i <= right; i++) {
 			illu += Illuminances[i, j] * WEIGHTS[i - realLeft];
 		}
-		return illu / (right - left + 1);
+		return illu;
 	}
 
 

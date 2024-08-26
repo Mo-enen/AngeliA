@@ -173,7 +173,6 @@ public partial class RayGame {
 		Raylib.BeginBlendMode(layerIndex switch {
 			RenderLayer.MULT => BlendMode.Multiplied,
 			RenderLayer.ADD => BlendMode.Additive,
-			RenderLayer.DEFAULT => BlendMode.CustomSeparate,
 			_ => BlendMode.CustomSeparate,
 		});
 
@@ -423,22 +422,19 @@ public partial class RayGame {
 
 
 	// GL Gizmos
-	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
+	protected override void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
 		var gizmosRect = new Rectangle(
-			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, rect.x),
-			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, rect.yMax),
-			rect.width * screenRenderRect.width / cameraRect.width,
-			rect.height * screenRenderRect.height / cameraRect.height
-		);
-		Raylib.DrawRectangle(
-			gizmosRect.X.RoundToInt(),
-			gizmosRect.Y.RoundToInt(),
-			gizmosRect.Width.RoundToInt(),
-			gizmosRect.Height.RoundToInt(),
-			color.ToRaylib()
+			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x),
+			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
+			rect.width * screenRenderRect.width / (float)cameraRect.width,
+			rect.height * screenRenderRect.height / (float)cameraRect.height
+		).ExpandRectangle(0.001f);
+		Raylib.DrawRectangleGradientEx(
+			gizmosRect,
+			colorTL.ToRaylib(), colorBL.ToRaylib(), colorBR.ToRaylib(), colorTR.ToRaylib()
 		);
 	}
 

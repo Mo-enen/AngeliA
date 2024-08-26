@@ -221,49 +221,51 @@ public abstract partial class Game {
 		if (thickness.down > 0) {
 			var edge = rect.Edge(Direction4.Down, thickness.down);
 			if (gap.down == 0) {
-				Instance._DrawGizmosRect(edge, color);
+				DrawGizmosRect(edge, color);
 			} else {
 				int shrink = edge.width - (edge.width - gap.down) / 2;
-				Instance._DrawGizmosRect(edge.Shrink(shrink, 0, 0, 0), color);
-				Instance._DrawGizmosRect(edge.Shrink(0, shrink, 0, 0), color);
+				DrawGizmosRect(edge.Shrink(shrink, 0, 0, 0), color);
+				DrawGizmosRect(edge.Shrink(0, shrink, 0, 0), color);
 			}
 		}
 		// Up
 		if (thickness.up > 0) {
 			var edge = rect.Edge(Direction4.Up, thickness.up);
 			if (gap.up == 0) {
-				Instance._DrawGizmosRect(edge, color);
+				DrawGizmosRect(edge, color);
 			} else {
 				int shrink = edge.width - (edge.width - gap.up) / 2;
-				Instance._DrawGizmosRect(edge.Shrink(shrink, 0, 0, 0), color);
-				Instance._DrawGizmosRect(edge.Shrink(0, shrink, 0, 0), color);
+				DrawGizmosRect(edge.Shrink(shrink, 0, 0, 0), color);
+				DrawGizmosRect(edge.Shrink(0, shrink, 0, 0), color);
 			}
 		}
 		// Left
 		if (thickness.left > 0) {
 			var edge = rect.Edge(Direction4.Left, thickness.left);
 			if (gap.left == 0) {
-				Instance._DrawGizmosRect(edge, color);
+				DrawGizmosRect(edge, color);
 			} else {
 				int shrink = edge.height - (edge.height - gap.left) / 2;
-				Instance._DrawGizmosRect(edge.Shrink(0, 0, shrink, 0), color);
-				Instance._DrawGizmosRect(edge.Shrink(0, 0, 0, shrink), color);
+				DrawGizmosRect(edge.Shrink(0, 0, shrink, 0), color);
+				DrawGizmosRect(edge.Shrink(0, 0, 0, shrink), color);
 			}
 		}
 		// Right
 		if (thickness.right > 0) {
 			var edge = rect.Edge(Direction4.Right, thickness.right);
 			if (gap.right == 0) {
-				Instance._DrawGizmosRect(edge, color);
+				DrawGizmosRect(edge, color);
 			} else {
 				int shrink = edge.height - (edge.height - gap.right) / 2;
-				Instance._DrawGizmosRect(edge.Shrink(0, 0, shrink, 0), color);
-				Instance._DrawGizmosRect(edge.Shrink(0, 0, 0, shrink), color);
+				DrawGizmosRect(edge.Shrink(0, 0, shrink, 0), color);
+				DrawGizmosRect(edge.Shrink(0, 0, 0, shrink), color);
 			}
 		}
 	}
-	public static void DrawGizmosRect (IRect rect, Color32 color) => Instance._DrawGizmosRect(rect, color);
-	protected abstract void _DrawGizmosRect (IRect rect, Color32 color);
+	public static void DrawGizmosRect (IRect rect, Color32 color) => Instance._DrawGizmosRect(rect, color, color, color, color);
+	public static void DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB) => Instance._DrawGizmosRect(rect, colorT, colorT, colorB, colorB);
+	public static void DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) => Instance._DrawGizmosRect(rect, colorTL, colorTR, colorBL, colorBR);
+	protected abstract void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR);
 
 	public static void DrawGizmosTexture (IRect rect, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, inverse);
 	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, inverse);
