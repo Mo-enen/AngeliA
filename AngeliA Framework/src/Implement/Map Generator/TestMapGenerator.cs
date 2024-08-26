@@ -32,6 +32,7 @@ internal class TestMapGenerator : MapGenerator {
 
 	[CheatCode("NoiseTest")]
 	internal static void EnableNoiseTesting () {
+		QTest.ClearAll();
 		if (TestingNoise.Value != QTest.Testing) {
 			TestingNoise.Value = QTest.Testing;
 		}

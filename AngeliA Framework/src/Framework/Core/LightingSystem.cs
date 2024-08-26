@@ -22,10 +22,12 @@ public static class LightingSystem {
 
 	// Const
 	private const float SELF_LERP = 0.9f;
-	private const float SOLID_ILLU = 1.1f;
+	private const float SOLID_ILLU = 1.05f;
 	private const float AIR_ILLU = 0.8f;
+	private const float BG_SCALE = 0.8f;
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
 	private const int LIGHT_MAP_UNIT_PADDING_DOWN = 2;
+	private const int LIGHT_MAP_UNIT_PADDING_TOP = 1;
 	private static readonly float[] WEIGHTS = { 0.051f, 0.21f, 0.51f, 0.21f, 0.051f, };
 	private static int CellWidth;
 	private static int CellHeight;
@@ -54,53 +56,57 @@ public static class LightingSystem {
 		if (!Enable) return;
 		int maxHeight = Universe.BuiltInInfo.MaxViewHeight;
 		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeight / 1000 / Const.CEL + LIGHT_MAP_UNIT_PADDING * 2;
-		CellHeight = maxHeight / Const.CEL + LIGHT_MAP_UNIT_PADDING + LIGHT_MAP_UNIT_PADDING_DOWN;
+		CellHeight = maxHeight / Const.CEL + LIGHT_MAP_UNIT_PADDING_TOP + LIGHT_MAP_UNIT_PADDING_DOWN;
 		Illuminances = new float[CellWidth, CellHeight];
 		WeightLen = WEIGHTS.Length;
 	}
 
 
-	[OnGameUpdateLater]
-	internal static void OnGameUpdateLater () {
+	[OnGameUpdate(-63)]
+	internal static void CalculateAllIlluminance () {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
 		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_DOWN;
 
-		CalculateAllIlluminance();
-		RenderAllIlluminance();
-
-	}
-
-
-	private static void CalculateAllIlluminance () {
-
 		// First Row
-		int j = CellHeight - 1;
 		int originUnitTop = OriginUnitY + CellHeight - 1;
 		for (int i = 0; i < CellWidth; i++) {
-			Illuminances[i, j] = GetSelfIlluminanceAt(OriginUnitX + i, originUnitTop);
+			Illuminances[i, CellHeight - 1] = GetSelfIlluminanceAt(OriginUnitX + i, originUnitTop);
 		}
 
 		// Mix Iteration
-		j = CellHeight - 2;
-		for (; j >= 0; j--) {
+		for (int j = CellHeight - 2; j >= 0; j--) {
 			int unitY = OriginUnitY + j;
 			for (int i = 0; i < CellWidth; i++) {
-				float selfIllu = GetSelfIlluminanceAt(OriginUnitX + i, unitY);
-				float topW = GetTopWeight(i, j);
-				Illuminances[i, j] = Util.Lerp(selfIllu, topW, SELF_LERP);
+				Illuminances[i, j] = Util.Lerp(
+					GetSelfIlluminanceAt(OriginUnitX + i, unitY),
+					GetTopWeight(i, j),
+					SELF_LERP
+				);
+			}
+		}
+
+		// Tint for BG
+		for (int j = CellHeight - 2; j >= 0; j--) {
+			int unitY = OriginUnitY + j;
+			for (int i = 0; i < CellWidth; i++) {
+				if (WorldSquad.Front.GetBlockAt(OriginUnitX + i, unitY, BlockType.Background) != 0) {
+					Illuminances[i, j] *= BG_SCALE;
+				}
 			}
 		}
 
 	}
 
 
-	private static void RenderAllIlluminance () {
+	[OnGameUpdateLater(4096)]
+	internal static void RenderAllIlluminance () {
+
+		if (!Enable || !WorldSquad.Enable) return;
 
 		using var _ = new LayerScope(RenderLayer.MULT);
-		var rect = new IRect(0, 0, Const.CEL, Const.CEL);
 		int offsetX = OriginUnitX.ToGlobal();
 		int offsetY = OriginUnitY.ToGlobal();
 		var cameraRect = Renderer.CameraRect;
@@ -111,14 +117,13 @@ public static class LightingSystem {
 
 		// Illuminance >> Alpha
 		for (int j = down; j <= up; j++) {
-			rect.y = offsetY + j * Const.CEL;
 			for (int i = left; i <= right; i++) {
-				float illu = Illuminances[i, j];
-				Illuminances[i, j] = 255 - (illu * 255f).Clamp(0f, 255f);
+				Illuminances[i, j] = 255 - (Illuminances[i, j] * 255f).Clamp(0f, 255f);
 			}
 		}
 
 		// Draw Alpha
+		var rect = new IRect(0, 0, Const.CEL, Const.CEL);
 		for (int j = down + 1; j <= up - 1; j++) {
 			rect.y = offsetY + j * Const.CEL;
 			for (int i = left + 1; i <= right - 1; i++) {
@@ -135,6 +140,7 @@ public static class LightingSystem {
 				byte aTR = (byte)((alphaTM + alphaTR + alphaMM + alphaMR) / 4f);
 				byte aBL = (byte)((alphaML + alphaMM + alphaBL + alphaBM) / 4f);
 				byte aBR = (byte)((alphaMM + alphaMR + alphaBM + alphaBR) / 4f);
+				if (aTL == 0 && aTR == 0 && aBL == 0 && aBR == 0) continue;
 				rect.x = offsetX + i * Const.CEL;
 				Game.DrawGizmosRect(
 					rect,
@@ -173,8 +179,10 @@ public static class LightingSystem {
 			new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL),
 			out var hit
 		)) {
+			// Level
 			return 1f - (float)hit.Rect.width / Const.CEL / SOLID_ILLU;
 		} else {
+			// Empty
 			return AIR_ILLU;
 		}
 	}

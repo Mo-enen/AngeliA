@@ -230,6 +230,7 @@ public partial class Engine {
 				calling.Setting_MEDT_AutoZoom = EngineSetting.MapEditor_AutoZoom.Value;
 				calling.Setting_MEDT_QuickPlayerDrop = EngineSetting.MapEditor_QuickPlayerDrop.Value;
 				calling.Setting_MEDT_ShowBehind = EngineSetting.MapEditor_ShowBehind.Value;
+				calling.Setting_MEDT_ShowGridGizmos = EngineSetting.MapEditor_ShowGizmos.Value;
 				calling.Setting_MEDT_ShowState = EngineSetting.MapEditor_ShowState.Value;
 			}
 

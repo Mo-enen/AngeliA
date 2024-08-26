@@ -136,9 +136,20 @@ public partial class RayGame {
 		//Raylib.BeginTextureMode(GizmosRenderTexture);
 	}
 
-	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) {
+	protected override void _OnLayerUpdate (int layerIndex, Cell[] cells, int cellCount) {
 
 		if (PauselessFrame < 4) return;
+
+		// Apply Gizmos Before UI
+		if (!DrawGizmosAtFront && layerIndex == RenderLayer.UI) {
+			Raylib.BeginBlendMode(BlendMode.CustomSeparate);
+			Raylib.DrawTextureRec(
+				GizmosRenderTexture.Texture,
+				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
+				new Vector2(0, 0), Color.White
+			);
+			Raylib.EndBlendMode();
+		}
 
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
@@ -152,6 +163,7 @@ public partial class RayGame {
 		int screenU = screenRenderRect.yMax;
 
 		bool usingShader = false;
+		bool isUiLayer = layerIndex == RenderLayer.UI;
 
 		// Shader
 		switch (layerIndex) {
@@ -236,7 +248,8 @@ public partial class RayGame {
 					Raylib.DrawTexturePro(
 						texture,
 						source.ShrinkRectangle(0.001f),
-						dest.ExpandRectangle(0.001f),
+						//dest.ExpandRectangle(0.001f),
+						dest,
 						new Vector2(
 							pivotX * dest.Width,
 							pivotY * dest.Height
@@ -431,7 +444,7 @@ public partial class RayGame {
 			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
 			rect.width * screenRenderRect.width / (float)cameraRect.width,
 			rect.height * screenRenderRect.height / (float)cameraRect.height
-		).ExpandRectangle(0.001f);
+		);
 		Raylib.DrawRectangleGradientEx(
 			gizmosRect,
 			colorTL.ToRaylib(), colorBL.ToRaylib(), colorBR.ToRaylib(), colorTR.ToRaylib()

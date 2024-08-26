@@ -343,6 +343,7 @@ public partial class Engine {
 		if (!Instance.CurrentWindowRequireRigGame) {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
 		}
+		Game.DrawGizmosAtFront = !Instance.CurrentWindowRequireRigGame;
 
 		using var _ = new SheetIndexScope(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
 		using var __ = new GUISkinScope(Instance.ThemeSkin);

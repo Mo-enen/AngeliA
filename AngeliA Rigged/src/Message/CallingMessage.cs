@@ -81,6 +81,7 @@ public class RigCallingMessage {
 	public bool Setting_MEDT_AutoZoom;
 	public bool Setting_MEDT_ShowState;
 	public bool Setting_MEDT_ShowBehind;
+	public bool Setting_MEDT_ShowGridGizmos;
 	public ToolCommand RequireToolsetCommand = ToolCommand.None;
 
 
@@ -264,6 +265,7 @@ public class RigCallingMessage {
 				Setting_MEDT_AutoZoom = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_ShowState = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_ShowBehind = Util.ReadBool(ref pointer, end);
+				Setting_MEDT_ShowGridGizmos = Util.ReadBool(ref pointer, end);
 			}
 
 			RequireToolsetCommand = (ToolCommand)Util.ReadByte(ref pointer, end);
@@ -345,6 +347,7 @@ public class RigCallingMessage {
 				Util.Write(ref pointer, Setting_MEDT_AutoZoom, end);
 				Util.Write(ref pointer, Setting_MEDT_ShowState, end);
 				Util.Write(ref pointer, Setting_MEDT_ShowBehind, end);
+				Util.Write(ref pointer, Setting_MEDT_ShowGridGizmos, end);
 			}
 
 			Util.Write(ref pointer, (byte)RequireToolsetCommand, end);

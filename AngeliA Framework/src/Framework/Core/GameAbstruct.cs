@@ -130,8 +130,8 @@ public abstract partial class Game {
 	internal static void AfterAllLayersUpdate () => Instance._AfterAllLayersUpdate();
 	protected abstract void _AfterAllLayersUpdate ();
 
-	internal static void OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, isUiLayer, cells, cellCount);
-	protected abstract void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount);
+	internal static void OnLayerUpdate (int layerIndex, Cell[] cells, int cellCount) => Instance._OnLayerUpdate(layerIndex, cells, cellCount);
+	protected abstract void _OnLayerUpdate (int layerIndex, Cell[] cells, int cellCount);
 
 
 	// Effect

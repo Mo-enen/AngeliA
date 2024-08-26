@@ -286,6 +286,7 @@ public partial class RiggedGame : Game {
 				MapEditor.Instance.QuickPlayerDrop = CallingMessage.Setting_MEDT_QuickPlayerDrop;
 				MapEditor.Instance.ShowBehind = CallingMessage.Setting_MEDT_ShowBehind;
 				MapEditor.Instance.ShowState = CallingMessage.Setting_MEDT_ShowState;
+				MapEditor.Instance.ShowGridGizmos = CallingMessage.Setting_MEDT_ShowGridGizmos;
 				mapEditorActive = MapEditor.Instance.Active;
 			}
 			bool enableMapEditor = CallingMessage.Setting_MEDT_Enable;

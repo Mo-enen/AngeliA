@@ -92,6 +92,7 @@ public sealed partial class MapEditor : WindowUI {
 	public bool AutoZoom { get; set; } = true;
 	public bool ShowState { get; set; } = false;
 	public bool ShowBehind { get; set; } = true;
+	public bool ShowGridGizmos { get; set; } = true;
 	public override IRect BackgroundRect => default;
 
 	// Pools

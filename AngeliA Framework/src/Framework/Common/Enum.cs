@@ -73,3 +73,4 @@ public enum Alignment {
 	BottomRight = 8,
 	Full = 9,
 }
+

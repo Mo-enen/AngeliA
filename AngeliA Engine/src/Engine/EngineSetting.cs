@@ -47,6 +47,7 @@ public class EngineSetting {
 	[EngineSetting("Map Editor", "Auto Zoom when Editing", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_AutoZoom = new("MapEditor.AutoZoom", true, SavingLocation.Global);
 	[EngineSetting("Map Editor", "Show State Info on Bottom-Right", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", false, SavingLocation.Global);
 	[EngineSetting("Map Editor", "Show Map Behind", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true, SavingLocation.Global);
+	[EngineSetting("Map Editor", "Show Gizmos", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowGizmos = new("MapEditor.ShowGizmos", true, SavingLocation.Global);
 	public static readonly SavingInt LastMapEditorViewX = new("Map.LastMapEditorViewX", 0, SavingLocation.Global);
 	public static readonly SavingInt LastMapEditorViewY = new("Map.LastMapEditorViewY", 0, SavingLocation.Global);
 	public static readonly SavingInt LastMapEditorViewZ = new("Map.LastMapEditorViewZ", 0, SavingLocation.Global);

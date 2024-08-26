@@ -251,11 +251,13 @@ public partial class RayGame : Game {
 			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
 			default, Color.White
 		);
-		Raylib.DrawTextureRec(
-			GizmosRenderTexture.Texture,
-			new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
-			new Vector2(0, 0), Color.White
-		);
+		if (DrawGizmosAtFront) {
+			Raylib.DrawTextureRec(
+				GizmosRenderTexture.Texture,
+				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
+				new Vector2(0, 0), Color.White
+			);
+		}
 		Raylib.EndBlendMode();
 		Raylib.EndDrawing();
 	}

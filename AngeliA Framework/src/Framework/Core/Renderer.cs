@@ -31,7 +31,6 @@ public static class Renderer {
 		public int PrevCellCount;
 		public int SortedIndex;
 		public int SortingOrder;
-		public bool UiLayer;
 		public void ZSort () {
 			if (SortedIndex < Count - 1) {
 				var span = new Span<Cell>(Cells);
@@ -116,7 +115,6 @@ public static class Renderer {
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
 			int capacity = RenderLayer.CAPACITY[i];
 			int order = i;
-			bool uiLayer = i == RenderLayer.UI;
 			Layers[i] = new Layer {
 				Cells = new Cell[capacity].FillWithNewValue(),
 				CellCount = capacity,
@@ -124,7 +122,6 @@ public static class Renderer {
 				PrevCellCount = 0,
 				SortedIndex = 0,
 				SortingOrder = order,
-				UiLayer = uiLayer
 			};
 		}
 
@@ -216,10 +213,12 @@ public static class Renderer {
 		for (int i = 0; i < Layers.Length; i++) {
 			try {
 				var layer = Layers[i];
-				if (!layer.UiLayer) layer.ZSort();
+				if (i != RenderLayer.UI) {
+					layer.ZSort();
+				}
 				int prevCount = layer.Count;
 				if (Game.PauselessFrame < 4) continue;
-				Game.OnLayerUpdate(i, layer.UiLayer, layer.Cells, layer.Count);
+				Game.OnLayerUpdate(i, layer.Cells, layer.Count);
 				layer.PrevCellCount = prevCount;
 			} catch (Exception ex) { Debug.LogException(ex); }
 		}
@@ -243,7 +242,7 @@ public static class Renderer {
 		CurrentLayerIndex = RenderLayer.DEFAULT;
 		for (int i = 0; i < Layers.Length; i++) {
 			var layer = Layers[i];
-			if (Game.IsPlaying || layer.UiLayer) {
+			if (Game.IsPlaying || i == RenderLayer.UI) {
 				layer.FocusedCell = 0;
 				layer.SortedIndex = 0;
 			}
@@ -370,7 +369,7 @@ public static class Renderer {
 		if (!IsDrawing || sprite == null) return Cell.EMPTY;
 
 		var layer = Layers[CurrentLayerIndex.Clamp(0, Layers.Length - 1)];
-		if (Game.IsPausing && !layer.UiLayer) return Cell.EMPTY;
+		if (Game.IsPausing && CurrentLayerIndex != RenderLayer.UI) return Cell.EMPTY;
 		if (layer.FocusedCell < 0) return Cell.EMPTY;
 		var cell = layer.Cells[layer.FocusedCell];
 

@@ -457,6 +457,16 @@ public static class QTest {
 	}
 
 
+	public static void ClearAll () {
+		BoolPool.Clear();
+		IntPool.Clear();
+		FloatPool.Clear();
+		PixelsPool.Clear();
+		ObjectPool.Clear();
+		Keys.Clear();
+	}
+
+
 	// Pixels
 	public static void StartDrawColumn (string key, int size, bool clearPrevPixels = true) => StartDrawPixels(key, size, (int)(size * 0.618f), clearPrevPixels);
 	public static void StartDrawPixels (string key, int width, int height, bool clearPrevPixels = true) {

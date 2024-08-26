@@ -26,7 +26,7 @@ public partial class MapEditor {
 
 	private void Update_Grid () {
 
-		if (IsPlaying || DroppingPlayer || Game.IsPausing || TaskingRoute) return;
+		if (IsPlaying || !ShowGridGizmos || DroppingPlayer || Game.IsPausing || TaskingRoute) return;
 
 		var TINT = new Color32(128, 128, 128, 16);
 		var cRect = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);

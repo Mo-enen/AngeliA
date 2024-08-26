@@ -30,6 +30,7 @@ public abstract partial class Game {
 	public static float ScaledMusicVolume => Util.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
+	public static bool DrawGizmosAtFront { get; set; } = false;
 	protected object CurrentBGM { get; set; }
 
 	// Attribute Info
@@ -140,7 +141,7 @@ public abstract partial class Game {
 		try {
 
 			GlobalFrame = 0;
-			ScreenSizeCache();
+			UpdateCache();
 			LoadFontsIntoPool(Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Fonts"), builtIn: true);
 
 #if DEBUG
@@ -184,7 +185,7 @@ public abstract partial class Game {
 
 			// Update Callbacks
 			UpdateGuiInput();
-			ScreenSizeCache();
+			UpdateCache();
 			if (IsPlaying) {
 				OnGameUpdate?.Invoke();
 				OnGameUpdateLater?.Invoke();
@@ -265,7 +266,7 @@ public abstract partial class Game {
 	}
 
 
-	private void ScreenSizeCache () {
+	private void UpdateCache () {
 		int monitor = Instance._GetCurrentMonitor();
 		ScreenWidth = Instance._GetScreenWidth();
 		ScreenHeight = Instance._GetScreenHeight();

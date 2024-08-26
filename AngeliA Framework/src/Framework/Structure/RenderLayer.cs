@@ -17,7 +17,7 @@ public static class RenderLayer {
 		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
 	};
 	public static readonly int[] CAPACITY = new int[COUNT] {
-		256, 8192, 4096, 16384, 256, 2048, 128, 8192,
+		256, 8192, 4096, 16384, 256, 128, 128, 8192,
 	};
 
 

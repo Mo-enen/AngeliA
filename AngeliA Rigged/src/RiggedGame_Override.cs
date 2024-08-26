@@ -75,7 +75,7 @@ public partial class RiggedGame {
 
 	protected override void _AfterAllLayersUpdate () { }
 
-	protected override void _OnLayerUpdate (int layerIndex, bool isUiLayer, Cell[] cells, int cellCount) { }
+	protected override void _OnLayerUpdate (int layerIndex, Cell[] cells, int cellCount) { }
 
 	protected override bool _GetEffectEnable (int effectIndex) => CallingMessage.EffectEnable.GetBit(effectIndex);
 
