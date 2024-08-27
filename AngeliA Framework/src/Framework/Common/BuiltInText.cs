@@ -15,6 +15,7 @@ public static class BuiltInText {
 	public static readonly LanguageCode HINT_ADJUST = ("CtrlHint.Adjust", "Adjust");
 
 	// UI
+	public static readonly LanguageCode UI_RESET = ("UI.Reset", "Reset");
 	public static readonly LanguageCode UI_CANCEL = ("UI.Cancel", "Cancel");
 	public static readonly LanguageCode UI_CONTINUE = ("UI.Continue", "Continue");
 	public static readonly LanguageCode UI_NONE = ("UI.None", "None");

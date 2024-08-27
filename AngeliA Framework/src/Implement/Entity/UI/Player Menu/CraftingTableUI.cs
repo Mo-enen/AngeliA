@@ -358,8 +358,6 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		int consumeMatCount = consumeOne ? 1 : minMatCount;
 		int consumeResultCount = CombineResultCount * consumeMatCount;
 
-		Debug.Log(action);
-
 		switch (action) {
 			case CraftActionType.TakeOne:
 			case CraftActionType.TakeAll:

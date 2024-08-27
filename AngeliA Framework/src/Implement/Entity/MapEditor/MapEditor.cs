@@ -87,12 +87,12 @@ public sealed partial class MapEditor : WindowUI {
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
 	public static bool IsPlaying => IsActived && Instance.PlayingGame;
 	public static bool ResetCameraAtStart { get; set; } = true;
+	public static bool QuickPlayerDrop { get; set; } = false;
+	public static bool AutoZoom { get; set; } = true;
+	public static bool ShowState { get; set; } = false;
+	public static bool ShowBehind { get; set; } = true;
+	public static bool ShowGridGizmos { get; set; } = true;
 	public int CurrentZ { get; private set; } = 0;
-	public bool QuickPlayerDrop { get; set; } = false;
-	public bool AutoZoom { get; set; } = true;
-	public bool ShowState { get; set; } = false;
-	public bool ShowBehind { get; set; } = true;
-	public bool ShowGridGizmos { get; set; } = true;
 	public override IRect BackgroundRect => default;
 
 	// Pools

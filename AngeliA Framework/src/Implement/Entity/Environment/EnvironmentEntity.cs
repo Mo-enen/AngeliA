@@ -49,12 +49,10 @@ public abstract class EnvironmentEntity : Entity, IBlockEntity {
 		if (layerIndex != EntityLayer.ENVIRONMENT || CellUpdateFrame != Game.GlobalFrame) return;
 		if (!WorldSquad.Enable) return;
 		if (Renderer.GetCells(RenderLayer.DEFAULT, out var cells, out int count)) {
-			Renderer.SetLayerToShadow();
 			for (int i = CellStartIndex; i < count; i++) {
 				var cell = cells[i];
 				FrameworkUtil.DrawEnvironmentShadow(cell, z: cell.Z - 1);
 			}
-			Renderer.SetLayerToDefault();
 		}
 	}
 

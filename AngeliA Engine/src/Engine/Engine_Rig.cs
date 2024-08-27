@@ -223,15 +223,27 @@ public partial class Engine {
 				console.RequireCodeAnalysis = 0;
 			}
 
-			if (SettingWindow.Instance.RigSettingChanged) {
-				SettingWindow.Instance.RigSettingChanged = false;
-				calling.RequireSettingChange = true;
+			// Map Editor Setting Changed
+			if (SettingWindow.Instance.MapSettingChanged) {
+				SettingWindow.Instance.MapSettingChanged = false;
+				calling.RequireMapEditorSettingChange = true;
 				calling.Setting_MEDT_Enable = !CurrentProject.Universe.Info.UseProceduralMap && EngineSetting.MapEditor_Enable.Value;
 				calling.Setting_MEDT_AutoZoom = EngineSetting.MapEditor_AutoZoom.Value;
 				calling.Setting_MEDT_QuickPlayerDrop = EngineSetting.MapEditor_QuickPlayerDrop.Value;
 				calling.Setting_MEDT_ShowBehind = EngineSetting.MapEditor_ShowBehind.Value;
 				calling.Setting_MEDT_ShowGridGizmos = EngineSetting.MapEditor_ShowGizmos.Value;
 				calling.Setting_MEDT_ShowState = EngineSetting.MapEditor_ShowState.Value;
+			}
+
+			// Lighting Map Setting Changed
+			if (RiggedMapEditor.Instance.LightMapSettingChanged) {
+				RiggedMapEditor.Instance.LightMapSettingChanged = false;
+				calling.RequireLightMapSettingChange = true;
+				calling.Setting_LM_PixelStyle = LightingSystem.PixelStyle;
+				calling.Setting_LM_SelfLerp = (int)(LightingSystem.SelfLerp * 1000);
+				calling.Setting_LM_AirIlluminance = (int)(LightingSystem.AirIlluminance * 1000);
+				calling.Setting_LM_BackgroundTint = (int)(LightingSystem.BackgroundTint * 1000);
+				calling.Setting_LM_SolidIlluminance = (int)(LightingSystem.SolidIlluminance * 1000);
 			}
 
 			// Make the Call
@@ -311,7 +323,8 @@ public partial class Engine {
 				// Start
 				RigGameFailToStartCount = 0;
 				RigGameFailToStartFrame = int.MinValue;
-				SettingWindow.Instance.RigSettingChanged = true;
+				SettingWindow.Instance.MapSettingChanged = true;
+				RiggedMapEditor.Instance.LightMapSettingChanged = true;
 			} else {
 				// Fail to Start
 				RigGameFailToStartFrame = Game.GlobalFrame;

@@ -54,7 +54,7 @@ public class SettingWindow : WindowUI {
 	// Api
 	public static SettingWindow Instance { get; private set; }
 	public string RequireChangeThemePath { get; set; } = null;
-	public bool RigSettingChanged { get; set; } = false;
+	public bool MapSettingChanged { get; set; } = false;
 	public override string DefaultName => "Setting";
 
 	// Data
@@ -156,7 +156,7 @@ public class SettingWindow : WindowUI {
 				if (useProceduralMap && group.Name == "Map Editor") continue;
 				DrawGroup(ref rect, group, groupIndex == 0 ? DrawExtraContent : null, out bool changed);
 				if (group.RigGroup && changed) {
-					RigSettingChanged = true;
+					MapSettingChanged = true;
 				}
 			}
 

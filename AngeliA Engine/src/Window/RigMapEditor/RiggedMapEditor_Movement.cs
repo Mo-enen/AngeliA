@@ -6,16 +6,10 @@ namespace AngeliaEngine;
 
 public partial class RiggedMapEditor {
 
-
-
-
-	#region --- SUB ---
-
-
+	// SUB
 	private enum MovementFieldType {
 		Int, Bool, Unknown,
 	}
-
 
 	private class MovementFieldData {
 		public FieldInfo Field;
@@ -25,15 +19,6 @@ public partial class RiggedMapEditor {
 		public PropVisibilityAttribute Visible = null;
 		public bool Separator = false;
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- VAR ---
-
 
 	// Api
 	public int RigGameSelectingPlayerID { get; set; } = 0;
@@ -49,15 +34,6 @@ public partial class RiggedMapEditor {
 	private int PrevSelectingPlayerID = -1;
 	private bool IsMovementEditorDirty = false;
 	private Project CurrentProject = null;
-
-
-	#endregion
-
-
-
-
-	#region --- MSG ---
-
 
 	private void DrawMovementPanel (ref IRect panelRect) {
 
@@ -177,36 +153,5 @@ public partial class RiggedMapEditor {
 		panelRect.y -= panelRect.height;
 
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- API ---
-
-
-	public void SetCurrentProject (Project currentProject) {
-		CurrentProject = currentProject;
-		// Reload Movement Pool
-		PrevMovementTabIndex = -1;
-		MovementConfigPool.Clear();
-		if (currentProject == null) return;
-		string root = currentProject.Universe.CharacterMovementConfigRoot;
-		foreach (string path in Util.EnumerateFiles(root, true, "*.json")) {
-			string name = Util.GetNameWithoutExtension(path);
-			int id = name.AngeHash();
-			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
-			if (config == null) continue;
-			MovementConfigPool.TryAdd(id, (config, path));
-		}
-	}
-
-
-	#endregion
-
-
-
 
 }

@@ -254,6 +254,15 @@ public partial class RiggedGame : Game {
 			CharacterMovement.ReloadMovementConfigFromFile(Player.Selecting.GetType().AngeName());
 		}
 
+		// Lightmap Setting Change
+		if (CallingMessage.RequireLightMapSettingChange) {
+			LightingSystem.PixelStyle = CallingMessage.Setting_LM_PixelStyle;
+			LightingSystem.SelfLerp = CallingMessage.Setting_LM_SelfLerp / 1000f;
+			LightingSystem.SolidIlluminance = CallingMessage.Setting_LM_SolidIlluminance / 1000f;
+			LightingSystem.AirIlluminance = CallingMessage.Setting_LM_AirIlluminance / 1000f;
+			LightingSystem.BackgroundTint = CallingMessage.Setting_LM_BackgroundTint / 1000f;
+		}
+
 		// Toolset Command
 		switch (CallingMessage.RequireToolsetCommand) {
 			case RigCallingMessage.ToolCommand.RunCodeAnalysis:
@@ -279,18 +288,14 @@ public partial class RiggedGame : Game {
 		}
 
 		// Setting Changed
-		if (CallingMessage.RequireSettingChange) {
-			bool mapEditorActive = false;
-			if (MapEditor.Instance != null) {
-				MapEditor.Instance.AutoZoom = CallingMessage.Setting_MEDT_AutoZoom;
-				MapEditor.Instance.QuickPlayerDrop = CallingMessage.Setting_MEDT_QuickPlayerDrop;
-				MapEditor.Instance.ShowBehind = CallingMessage.Setting_MEDT_ShowBehind;
-				MapEditor.Instance.ShowState = CallingMessage.Setting_MEDT_ShowState;
-				MapEditor.Instance.ShowGridGizmos = CallingMessage.Setting_MEDT_ShowGridGizmos;
-				mapEditorActive = MapEditor.Instance.Active;
-			}
+		if (CallingMessage.RequireMapEditorSettingChange) {
+			MapEditor.AutoZoom = CallingMessage.Setting_MEDT_AutoZoom;
+			MapEditor.QuickPlayerDrop = CallingMessage.Setting_MEDT_QuickPlayerDrop;
+			MapEditor.ShowBehind = CallingMessage.Setting_MEDT_ShowBehind;
+			MapEditor.ShowState = CallingMessage.Setting_MEDT_ShowState;
+			MapEditor.ShowGridGizmos = CallingMessage.Setting_MEDT_ShowGridGizmos;
 			bool enableMapEditor = CallingMessage.Setting_MEDT_Enable;
-			if (mapEditorActive != enableMapEditor) {
+			if (MapEditor.IsActived != enableMapEditor) {
 				if (enableMapEditor) {
 					Stage.SpawnEntity(MapEditor.TYPE_ID, 0, 0);
 				} else {

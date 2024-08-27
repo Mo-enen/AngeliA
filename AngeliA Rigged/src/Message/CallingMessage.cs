@@ -75,13 +75,19 @@ public class RigCallingMessage {
 	public readonly char[] PressedChars = new char[256];
 	public byte PressedKeyCount;
 	public readonly int[] PressedGuiKeys = new int[256];
-	public bool RequireSettingChange = false;
+	public bool RequireMapEditorSettingChange = false;
 	public bool Setting_MEDT_Enable;
 	public bool Setting_MEDT_QuickPlayerDrop;
 	public bool Setting_MEDT_AutoZoom;
 	public bool Setting_MEDT_ShowState;
 	public bool Setting_MEDT_ShowBehind;
 	public bool Setting_MEDT_ShowGridGizmos;
+	public bool RequireLightMapSettingChange = false;
+	public bool Setting_LM_PixelStyle;
+	public int Setting_LM_SelfLerp;
+	public int Setting_LM_SolidIlluminance;
+	public int Setting_LM_AirIlluminance;
+	public int Setting_LM_BackgroundTint;
 	public ToolCommand RequireToolsetCommand = ToolCommand.None;
 
 
@@ -258,14 +264,23 @@ public class RigCallingMessage {
 				PressedGuiKeys[i] = Util.ReadInt(ref pointer, end);
 			}
 
-			RequireSettingChange = Util.ReadBool(ref pointer, end);
-			if (RequireSettingChange) {
+			RequireMapEditorSettingChange = Util.ReadBool(ref pointer, end);
+			if (RequireMapEditorSettingChange) {
 				Setting_MEDT_Enable = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_QuickPlayerDrop = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_AutoZoom = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_ShowState = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_ShowBehind = Util.ReadBool(ref pointer, end);
 				Setting_MEDT_ShowGridGizmos = Util.ReadBool(ref pointer, end);
+			}
+
+			RequireLightMapSettingChange = Util.ReadBool(ref pointer, end);
+			if (RequireLightMapSettingChange) {
+				Setting_LM_PixelStyle = Util.ReadBool(ref pointer, end);
+				Setting_LM_SelfLerp = Util.ReadInt(ref pointer, end);
+				Setting_LM_SolidIlluminance = Util.ReadInt(ref pointer, end);
+				Setting_LM_AirIlluminance = Util.ReadInt(ref pointer, end);
+				Setting_LM_BackgroundTint = Util.ReadInt(ref pointer, end);
 			}
 
 			RequireToolsetCommand = (ToolCommand)Util.ReadByte(ref pointer, end);
@@ -340,14 +355,25 @@ public class RigCallingMessage {
 				Util.Write(ref pointer, PressedGuiKeys[i], end);
 			}
 
-			Util.Write(ref pointer, RequireSettingChange, end);
-			if (RequireSettingChange) {
+			Util.Write(ref pointer, RequireMapEditorSettingChange, end);
+			if (RequireMapEditorSettingChange) {
+				RequireMapEditorSettingChange = false;
 				Util.Write(ref pointer, Setting_MEDT_Enable, end);
 				Util.Write(ref pointer, Setting_MEDT_QuickPlayerDrop, end);
 				Util.Write(ref pointer, Setting_MEDT_AutoZoom, end);
 				Util.Write(ref pointer, Setting_MEDT_ShowState, end);
 				Util.Write(ref pointer, Setting_MEDT_ShowBehind, end);
 				Util.Write(ref pointer, Setting_MEDT_ShowGridGizmos, end);
+			}
+
+			Util.Write(ref pointer, RequireLightMapSettingChange, end);
+			if (RequireLightMapSettingChange) {
+				RequireLightMapSettingChange = false;
+				Util.Write(ref pointer, Setting_LM_PixelStyle, end);
+				Util.Write(ref pointer, Setting_LM_SelfLerp, end);
+				Util.Write(ref pointer, Setting_LM_SolidIlluminance, end);
+				Util.Write(ref pointer, Setting_LM_AirIlluminance, end);
+				Util.Write(ref pointer, Setting_LM_BackgroundTint, end);
 			}
 
 			Util.Write(ref pointer, (byte)RequireToolsetCommand, end);

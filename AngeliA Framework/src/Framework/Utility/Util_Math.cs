@@ -10,6 +10,11 @@ public static partial class Util {
 
 	public static bool IsPowerOfTwo (int x) => (x != 0) && (x & (x - 1)) == 0;
 
+	public static float SquareDistanceF (float aX, float aY, float bX, float bY) {
+		float x = aX - bX;
+		float y = aY - bY;
+		return x * x + y * y;
+	}
 	public static int SquareDistance (Int2 a, Int2 b) {
 		int x = a.x - b.x;
 		int y = a.y - b.y;

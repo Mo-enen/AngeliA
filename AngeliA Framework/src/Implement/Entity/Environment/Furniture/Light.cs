@@ -4,55 +4,45 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public class LightA : Light { }
-public class LightB : Light { }
-public class LightC : Light { }
-public class LightD : Light { }
+[EntityAttribute.UpdateOutOfRange]
+public abstract class Light : Furniture {
 
-
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LampA : Light { }
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LampB : Light { }
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LampC : Light { }
-[EntityAttribute.Bounds(-Const.CEL, -Const.CEL, Const.CEL * 3, Const.CEL * 3)]
-public class LampD : Light { }
-
-
-
-
-public abstract class Light : Furniture, ICombustible {
 
 	private static readonly SpriteCode LIGHT = "Lamp Light";
-	int ICombustible.BurnStartFrame { get; set; }
+	protected virtual SpriteCode LightSprite => LIGHT;
+	protected virtual int LightRange => Const.CEL;
+	protected virtual int IlluminateRange => Const.CEL * 6;
 	private bool OpenLight = false;
+
 
 	public override void OnActivated () {
 		base.OnActivated();
 		int hour = System.DateTime.Now.Hour;
+		OpenLight = hour <= 6 || hour >= 18;
 #if DEBUG
 		OpenLight = true;
-#else
-		OpenLight = hour <= 6 || hour >= 18;
 #endif
 	}
 
-	public override void FirstUpdate () {
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	public override void Update () {
+		base.Update();
+		LightingSystem.Illuminate(
+			(X + Width / 2).ToUnit(),
+			(Y + Height / 2).ToUnit(),
+			IlluminateRange.ToUnit()
+		);
 	}
 
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (OpenLight) {
-			byte brightness = (byte)(64 + (Game.GlobalFrame + ((X * 17 + Y * 9) / Const.CEL)).PingPong(240) / 8);
-			Renderer.SetLayerToAdditive();
+			using var _ = new LayerScope(RenderLayer.ADD);
+			byte brightness = (byte)(32 + (Game.GlobalFrame + ((X * 17 + Y * 9) / Const.CEL)).PingPong(240) / 8);
 			Renderer.Draw(
-				LIGHT,
-				base.Rect.Expand(Const.CEL),
+				LightSprite,
+				Rect.Expand(LightRange),
 				new Color32(brightness, brightness, brightness, 255)
 			);
-			Renderer.SetLayerToDefault();
 		}
 	}
 

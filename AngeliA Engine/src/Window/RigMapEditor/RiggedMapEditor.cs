@@ -21,7 +21,7 @@ public partial class RiggedMapEditor : WindowUI {
 	}
 
 
-	private enum PanelType { None, Profiler, Effect, Movement, }
+	private enum PanelType { None, Profiler, Effect, Movement, Lighting, }
 
 
 	#endregion
@@ -41,6 +41,7 @@ public partial class RiggedMapEditor : WindowUI {
 	private static readonly SpriteCode BTN_PLAY = "Engine.MapEditor.Play";
 	private static readonly SpriteCode BTN_PAUSE = "Engine.MapEditor.Pause";
 	private static readonly SpriteCode BTN_MOVEMENT = "Engine.MapEditor.Movement";
+	private static readonly SpriteCode BTN_LIGHTING = "Engine.MapEditor.Lighting";
 
 	// Api
 	public static RiggedMapEditor Instance { get; private set; }
@@ -205,6 +206,14 @@ public partial class RiggedMapEditor : WindowUI {
 			}
 			rect.SlideLeft(padding);
 
+			// Lighting
+			isOn = CurrentPanel == PanelType.Lighting;
+			newIsOn = GUI.IconToggle(rect, isOn, BTN_LIGHTING);
+			if (isOn != newIsOn) {
+				CurrentPanel = isOn ? PanelType.None : PanelType.Lighting;
+			}
+			rect.SlideLeft(padding);
+
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
 			rect.SlideLeft(padding);
@@ -235,7 +244,7 @@ public partial class RiggedMapEditor : WindowUI {
 			EntityClickerOn = false;
 			FrameDebugging = false;
 			RequireNextFrame = false;
-			if (CurrentPanel == PanelType.Movement) CurrentPanel = PanelType.None;
+			if (CurrentPanel == PanelType.Movement || CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
 		}
 
 		// Draw Panels
@@ -252,6 +261,7 @@ public partial class RiggedMapEditor : WindowUI {
 			case PanelType.Profiler: DrawProfilerPanel(ref panelRect); break;
 			case PanelType.Effect: DrawEffectPanel(ref panelRect); break;
 			case PanelType.Movement: DrawMovementPanel(ref panelRect); break;
+			case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
 		}
 
 		// Panel
@@ -347,6 +357,23 @@ public partial class RiggedMapEditor : WindowUI {
 
 
 	#region --- API ---
+
+
+	public void SetCurrentProject (Project currentProject) {
+		CurrentProject = currentProject;
+		// Reload Movement Pool
+		PrevMovementTabIndex = -1;
+		MovementConfigPool.Clear();
+		if (currentProject == null) return;
+		string root = currentProject.Universe.CharacterMovementConfigRoot;
+		foreach (string path in Util.EnumerateFiles(root, true, "*.json")) {
+			string name = Util.GetNameWithoutExtension(path);
+			int id = name.AngeHash();
+			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
+			if (config == null) continue;
+			MovementConfigPool.TryAdd(id, (config, path));
+		}
+	}
 
 
 	public void UpdateUsageData (int[] renderUsages, int[] renderCapacities, int[] entityUsages, int[] entityCapacities) {

@@ -12,12 +12,15 @@ public static class FrameworkUtil {
 
 	// Drawing
 	public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
+		int oldLayer = Renderer.CurrentLayerIndex;
+		Renderer.SetLayer(RenderLayer.SHADOW);
 		var result = Renderer.DrawPixel(default);
 		result.CopyFrom(source);
 		result.X += offsetX;
 		result.Y += offsetY;
 		result.Z = z;
 		result.Color = new Color32(0, 0, 0, alpha);
+		Renderer.SetLayer(oldLayer);
 		return result;
 	}
 

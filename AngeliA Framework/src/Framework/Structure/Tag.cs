@@ -22,11 +22,14 @@ public enum Tag : int {
 	GrabTop = 1 << 11,
 	GrabSide = 1 << 12,
 	Grab = 1 << 13,
+
 	ShowLimb = 1 << 14,
 	HideLimb = 1 << 15,
+
 	LoopStart = 1 << 16,
 	Random = 1 << 17,
 	Palette = 1 << 18,
+
 	PhysicalDamage = 1 << 19,
 	ExplosiveDamage = 1 << 20,
 	MagicalDamage = 1 << 21,
