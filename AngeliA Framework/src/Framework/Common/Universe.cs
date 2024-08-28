@@ -4,43 +4,6 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-[System.Serializable]
-public class UniverseInfo : IJsonSerializationCallback {
-	public string ProductName = "";
-	public string DeveloperName = "";
-	public int MajorVersion = 0;
-	public int MinorVersion = 0;
-	public int PatchVersion = 0;
-	public uint EngineBuildVersion = 0;
-	public bool UseProceduralMap = false;
-	public bool UseLightingSystem = true;
-	public bool AllowCheatCode = false;
-	public bool AllowPause = true;
-	public bool AllowQuitFromMenu = true;
-	public bool AllowRestartFromMenu = true;
-	public bool ScaleUiBasedOnMonitor = true;
-	public int ViewRatio = 2000;
-	public int DefaultViewHeight = Const.CEL * 26;
-	public int MinViewHeight = Const.CEL * 16;
-	public int MaxViewHeight = Const.CEL * 60;
-
-	public void OnAfterLoadedFromDisk () => Valid(true);
-	public void OnBeforeSaveToDisk () => Valid(true);
-	public void Valid (bool minFirst) {
-		ViewRatio = ViewRatio.Clamp(250, 4000);
-		if (minFirst) {
-			MinViewHeight = MinViewHeight.Clamp(Const.CEL * 16, Const.CEL * 1024);
-			MaxViewHeight = MaxViewHeight.Clamp(MinViewHeight, Const.CEL * 1024);
-		} else {
-			MaxViewHeight = MaxViewHeight.Clamp(Const.CEL * 16, Const.CEL * 1024);
-			MinViewHeight = MinViewHeight.Clamp(Const.CEL * 16, MaxViewHeight);
-		}
-		DefaultViewHeight = DefaultViewHeight.Clamp(MinViewHeight, MaxViewHeight);
-	}
-
-}
-
-
 public class Universe {
 
 	public static Universe BuiltIn { get; private set; }

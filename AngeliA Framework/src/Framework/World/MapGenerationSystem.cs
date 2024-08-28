@@ -45,12 +45,10 @@ public static class MapGenerationSystem {
 	[OnSavingSlotChanged]
 	internal static void OnGameInitialize_OnSavingSlotChanged () {
 
-		Enable = Universe.BuiltInInfo.UseProceduralMap;
 		if (!Enable) return;
 
-		StatePool.Clear();
-
 		// Find all Exist Maps
+		StatePool.Clear();
 		foreach (string path in Util.EnumerateFiles(Universe.BuiltIn.SlotUserMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
 			if (!WorldPathPool.TryGetWorldPositionFromName(
 				Util.GetNameWithoutExtension(path), out var pos
@@ -76,17 +74,19 @@ public static class MapGenerationSystem {
 		Seed = seed;
 
 		// Init Generators
-		Util.InvokeAllStaticMethodWithAttribute<OnMapGeneratorInitializedAttribute>();
+		Util.InvokeAllStaticMethodWithAttribute<BeforeAnyMapGeneratorInitializedAttribute>();
 		foreach (var gen in AllMapGenerators) {
 			gen.Initialize(seed);
 		}
+		Util.InvokeAllStaticMethodWithAttribute<AfterAllMapGeneratorInitializedAttribute>();
 
 	}
 
 
-	[OnGameInitialize(32)]
+	[OnGameInitialize(-32)]
 	internal static void OnGameInitialize () {
 
+		Enable = Universe.BuiltInInfo.UseProceduralMap;
 		if (!Enable) return;
 
 		// Init Map Generators
@@ -94,7 +94,6 @@ public static class MapGenerationSystem {
 		foreach (var type in typeof(MapGenerator).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not MapGenerator gen) continue;
 			AllMapGenerators.Add(gen);
-			gen.Initialize(Seed);
 		}
 		AllMapGenerators.Sort((a, b) => a.Order.CompareTo(b.Order));
 

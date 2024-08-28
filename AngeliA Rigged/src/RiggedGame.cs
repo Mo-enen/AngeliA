@@ -146,6 +146,7 @@ public partial class RiggedGame : Game {
 		}
 		OriginalMinViewHeight = Universe.BuiltInInfo.MinViewHeight;
 		OriginalMaxViewHeight = Universe.BuiltInInfo.MaxViewHeight;
+		Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
 	}
 
 
@@ -256,11 +257,12 @@ public partial class RiggedGame : Game {
 
 		// Lightmap Setting Change
 		if (CallingMessage.RequireLightMapSettingChange) {
-			LightingSystem.PixelStyle = CallingMessage.Setting_LM_PixelStyle;
-			LightingSystem.SelfLerp = CallingMessage.Setting_LM_SelfLerp / 1000f;
-			LightingSystem.SolidIlluminance = CallingMessage.Setting_LM_SolidIlluminance / 1000f;
-			LightingSystem.AirIlluminance = CallingMessage.Setting_LM_AirIlluminance / 1000f;
-			LightingSystem.BackgroundTint = CallingMessage.Setting_LM_BackgroundTint / 1000f;
+			var info = Universe.BuiltInInfo;
+			info.LightMap_PixelStyle = CallingMessage.Setting_LM_PixelStyle;
+			info.LightMap_SelfLerp = CallingMessage.Setting_LM_SelfLerp / 1000f;
+			info.LightMap_SolidIlluminance = CallingMessage.Setting_LM_SolidIlluminance / 1000f;
+			info.LightMap_AirIlluminance = CallingMessage.Setting_LM_AirIlluminance / 1000f;
+			info.LightMap_BackgroundTint = CallingMessage.Setting_LM_BackgroundTint / 1000f;
 		}
 
 		// Toolset Command

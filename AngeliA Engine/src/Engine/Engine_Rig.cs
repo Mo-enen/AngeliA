@@ -176,6 +176,8 @@ public partial class Engine {
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
 		var console = ConsoleWindow.Instance;
+		var currentUniverse = CurrentProject.Universe;
+		var currentInfo = currentUniverse.Info;
 
 		if (console.RequireCodeAnalysis != 0) {
 			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
@@ -227,7 +229,7 @@ public partial class Engine {
 			if (SettingWindow.Instance.MapSettingChanged) {
 				SettingWindow.Instance.MapSettingChanged = false;
 				calling.RequireMapEditorSettingChange = true;
-				calling.Setting_MEDT_Enable = !CurrentProject.Universe.Info.UseProceduralMap && EngineSetting.MapEditor_Enable.Value;
+				calling.Setting_MEDT_Enable = !currentInfo.UseProceduralMap && EngineSetting.MapEditor_Enable.Value;
 				calling.Setting_MEDT_AutoZoom = EngineSetting.MapEditor_AutoZoom.Value;
 				calling.Setting_MEDT_QuickPlayerDrop = EngineSetting.MapEditor_QuickPlayerDrop.Value;
 				calling.Setting_MEDT_ShowBehind = EngineSetting.MapEditor_ShowBehind.Value;
@@ -239,11 +241,13 @@ public partial class Engine {
 			if (RiggedMapEditor.Instance.LightMapSettingChanged) {
 				RiggedMapEditor.Instance.LightMapSettingChanged = false;
 				calling.RequireLightMapSettingChange = true;
-				calling.Setting_LM_PixelStyle = LightingSystem.PixelStyle;
-				calling.Setting_LM_SelfLerp = (int)(LightingSystem.SelfLerp * 1000);
-				calling.Setting_LM_AirIlluminance = (int)(LightingSystem.AirIlluminance * 1000);
-				calling.Setting_LM_BackgroundTint = (int)(LightingSystem.BackgroundTint * 1000);
-				calling.Setting_LM_SolidIlluminance = (int)(LightingSystem.SolidIlluminance * 1000);
+				calling.Setting_LM_PixelStyle = currentInfo.LightMap_PixelStyle;
+				calling.Setting_LM_SelfLerp = (int)(currentInfo.LightMap_SelfLerp * 1000);
+				calling.Setting_LM_AirIlluminance = (int)(currentInfo.LightMap_AirIlluminance * 1000);
+				calling.Setting_LM_BackgroundTint = (int)(currentInfo.LightMap_BackgroundTint * 1000);
+				calling.Setting_LM_SolidIlluminance = (int)(currentInfo.LightMap_SolidIlluminance * 1000);
+				// Save Uni-Info to File
+				JsonUtil.SaveJsonToPath(currentInfo, currentUniverse.InfoPath, prettyPrint: true);
 			}
 
 			// Make the Call
@@ -283,7 +287,7 @@ public partial class Engine {
 		if (buildingProjectInBackground) {
 			// Building in Background
 			if (currentWindowRequireRigGame && requireRigGameRender) {
-				Transceiver.UpdateLastRespondedRender(CurrentProject.Universe, sheetIndex, toolPanelRect, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}
 		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
@@ -291,7 +295,7 @@ public partial class Engine {
 				if (runningGame) {
 					// Get Respond
 					bool responded = Transceiver.Respond(
-						CurrentProject.Universe,
+						currentUniverse,
 						sheetIndex,
 						CurrentWindowIndex == RigMapEditorWindowIndex,
 						toolPanelRect,
@@ -307,7 +311,7 @@ public partial class Engine {
 						ReloadCharacterNames();
 					}
 				} else if (requireRigGameRender) {
-					Transceiver.UpdateLastRespondedRender(CurrentProject.Universe, sheetIndex, toolPanelRect);
+					Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, toolPanelRect);
 				}
 			}
 		} else if (
@@ -332,7 +336,7 @@ public partial class Engine {
 			}
 			if (currentWindowRequireRigGame && requireRigGameRender) {
 				// Still Render Last Image
-				Transceiver.UpdateLastRespondedRender(CurrentProject.Universe, sheetIndex, toolPanelRect, coverWithBlackTint: true);
+				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, toolPanelRect, coverWithBlackTint: true);
 			}
 		}
 

@@ -33,59 +33,60 @@ public partial class RiggedMapEditor {
 		int digitWidth = GUI.Unify(64);
 		var rect = new IRect(panelRect.x, panelRect.y - toolbarSize, panelRect.width, toolbarSize);
 		rect = rect.Shrink(panelPadding, panelPadding, 0, 0);
+		var info = CurrentProject.Universe.Info;
 		GUI.BeginChangeCheck();
 
 		// Pixel Style
-		LightingSystem.PixelStyle = GUI.Toggle(
-			rect, LightingSystem.PixelStyle, LABEL_PIXEL_STYLE,
+		info.LightMap_PixelStyle = GUI.Toggle(
+			rect, info.LightMap_PixelStyle, LABEL_PIXEL_STYLE,
 			labelStyle: GUI.Skin.SmallLabel
 		);
 		rect.SlideDown(padding);
 
 		// Self Lerp
 		GUI.SmallLabel(rect, LABEL_SELF_LERP);
-		LightingSystem.SelfLerp = GUI.HandleSlider(
+		info.LightMap_SelfLerp = GUI.HandleSlider(
 			37423672, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
-			(int)(LightingSystem.SelfLerp * 1000), 0, 1000
+			(int)(info.LightMap_SelfLerp * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(LightingSystem.SelfLerp * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_SelfLerp * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Solid Illuminance
 		GUI.SmallLabel(rect, LABEL_SOLID_ILLU);
-		LightingSystem.SolidIlluminance = GUI.HandleSlider(
+		info.LightMap_SolidIlluminance = GUI.HandleSlider(
 			37423673, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
-			(int)(LightingSystem.SolidIlluminance * 1000), 1000, 2000
+			(int)(info.LightMap_SolidIlluminance * 1000), 1000, 2000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(LightingSystem.SolidIlluminance * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_SolidIlluminance * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Air Illuminance
 		GUI.SmallLabel(rect, LABEL_AIR_ILLU);
-		LightingSystem.AirIlluminance = GUI.HandleSlider(
+		info.LightMap_AirIlluminance = GUI.HandleSlider(
 			37423674, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
-			(int)(LightingSystem.AirIlluminance * 1000), 0, 1000
+			(int)(info.LightMap_AirIlluminance * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(LightingSystem.AirIlluminance * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_AirIlluminance * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Background Tint
 		GUI.SmallLabel(rect, LABEL_BG_TINT);
-		LightingSystem.BackgroundTint = GUI.HandleSlider(
+		info.LightMap_BackgroundTint = GUI.HandleSlider(
 			37423675, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
-			(int)(LightingSystem.BackgroundTint * 1000), 0, 1000
+			(int)(info.LightMap_BackgroundTint * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(LightingSystem.BackgroundTint * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_BackgroundTint * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Reset
 		rect.SlideDown();
 		if (GUI.DarkButton(rect, BuiltInText.UI_RESET)) {
-			LightingSystem.PixelStyle = false;
-			LightingSystem.SelfLerp = 0.9f;
-			LightingSystem.SolidIlluminance = 1.05f;
-			LightingSystem.AirIlluminance = 0.8f;
-			LightingSystem.BackgroundTint = 0.8f;
+			info.LightMap_PixelStyle = false;
+			info.LightMap_SelfLerp = 0.9f;
+			info.LightMap_SolidIlluminance = 1.05f;
+			info.LightMap_AirIlluminance = 0.8f;
+			info.LightMap_BackgroundTint = 0.8f;
 			LightMapSettingChanged = true;
 		}
 		rect.SlideDown(padding);

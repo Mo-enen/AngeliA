@@ -105,7 +105,11 @@ public class AfterLevelRenderedAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnMapGeneratorInitializedAttribute : Attribute { }
+public class BeforeAnyMapGeneratorInitializedAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Method)]
+public class AfterAllMapGeneratorInitializedAttribute : Attribute { }
 
 
 // Language

@@ -104,6 +104,7 @@ public partial class RayGame : Game {
 		Raylib.InitWindow(1024 * 16 / 9, 1024, "");
 		Raylib.SetExitKey(KeyboardKey.Null);
 		SetWindowMinSize(256);
+		Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
 
 		// Blend
 		Rlgl.SetBlendFactorsSeparate(

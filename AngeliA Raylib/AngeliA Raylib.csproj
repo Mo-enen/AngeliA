@@ -23,7 +23,7 @@
 
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
-		
+
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
@@ -39,19 +39,19 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugType>none</DebugType>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
-	  <Compile Remove="Build\**" />
-	  <Compile Remove="Properties\**" />
-	  <Compile Remove="Publish\**" />
-	  <EmbeddedResource Remove="Build\**" />
-	  <EmbeddedResource Remove="Properties\**" />
-	  <EmbeddedResource Remove="Publish\**" />
-	  <None Remove="Build\**" />
-	  <None Remove="Properties\**" />
-	  <None Remove="Publish\**" />
+		<Compile Remove="Build\**" />
+		<Compile Remove="Properties\**" />
+		<Compile Remove="Publish\**" />
+		<EmbeddedResource Remove="Build\**" />
+		<EmbeddedResource Remove="Properties\**" />
+		<EmbeddedResource Remove="Publish\**" />
+		<None Remove="Build\**" />
+		<None Remove="Properties\**" />
+		<None Remove="Publish\**" />
 	</ItemGroup>
-	
+
 	<!--Ref Project-->
 	<ItemGroup>
 		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />

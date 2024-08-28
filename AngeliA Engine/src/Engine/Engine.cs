@@ -97,6 +97,7 @@ public partial class Engine {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
+
 		var engine = new Engine();
 		Instance = engine;
 		engine.AllWindows = new WindowUI[]{

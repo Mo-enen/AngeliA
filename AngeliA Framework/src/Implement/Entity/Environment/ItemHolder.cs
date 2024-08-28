@@ -60,13 +60,15 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 
 	[OnGameUpdate]
-	internal static void OnGameUpdate () {
+	internal static void CheckForHoldingPool () {
 
-		if (!ItemSystem.ItemPoolReady) return;
+		if (!ItemSystem.ItemPoolReady || Game.GlobalFrame % 30 != 0) return;
 
 		// Check for Holding Pool
-		foreach (var worldPos in WorldSquad.ForAllWorldInRange(Stage.ViewRect, Stage.ViewZ)) {
+		var allPos = WorldSquad.ForAllWorldInRange(Stage.ViewRect, Stage.ViewZ, out int posCount);
+		for (int index = 0; index < posCount; index++) {
 
+			var worldPos = allPos[index];
 			if (!HoldingPool.TryGetValue(worldPos, out var pipe) || pipe.Length == 0) continue;
 
 			bool requireSort = false;

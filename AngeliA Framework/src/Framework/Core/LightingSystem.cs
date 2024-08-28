@@ -18,43 +18,14 @@ public static class LightingSystem {
 	private const int LIGHT_MAP_UNIT_PADDING_TOP = 1;
 	private static readonly float[] WEIGHTS = { 0.071f, 0.19f, 0.51f, 0.19f, 0.071f, };
 
-	// Api
-	public static bool Enable { get; private set; } = true;
-	public static bool PixelStyle {
-		get => s_PixelStyle.Value;
-		set => s_PixelStyle.Value = value;
-	}
-	public static float SelfLerp {
-		get => s_SelfLerp.Value / 1000f;
-		set => s_SelfLerp.Value = (int)(value * 1000);
-	}
-	public static float SolidIlluminance {
-		get => s_SolidIlluminance.Value / 1000f;
-		set => s_SolidIlluminance.Value = (int)(value * 1000);
-	}
-	public static float AirIlluminance {
-		get => s_AirIlluminance.Value / 1000f;
-		set => s_AirIlluminance.Value = (int)(value * 1000);
-	}
-	public static float BackgroundTint {
-		get => s_BackgroundTint.Value / 1000f;
-		set => s_BackgroundTint.Value = (int)(value * 1000);
-	}
-
 	// Data
+	private static bool Enable = true;
 	private static float[,] Illuminances;
 	private static int CellWidth;
 	private static int CellHeight;
 	private static int OriginUnitX;
 	private static int OriginUnitY;
 	private static int WeightLen;
-
-	// Saving
-	private static readonly SavingBool s_PixelStyle = new("LightSys.PixelStyle", false, SavingLocation.Global);
-	private static readonly SavingInt s_SelfLerp = new("LightSys.SelfLerp", 900, SavingLocation.Global);
-	private static readonly SavingInt s_SolidIlluminance = new("LightSys.SolidIllu", 1050, SavingLocation.Global);
-	private static readonly SavingInt s_AirIlluminance = new("LightSys.AirIllu", 800, SavingLocation.Global);
-	private static readonly SavingInt s_BackgroundTint = new("LightSys.BgTint", 800, SavingLocation.Global);
 
 
 	#endregion
@@ -82,10 +53,13 @@ public static class LightingSystem {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
+		var info = Universe.BuiltInInfo;
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
 		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_DOWN;
-		float solidIllu = SolidIlluminance;
-		float airIllu = AirIlluminance;
+		float solidIllu = info.LightMap_SolidIlluminance;
+		float airIllu = info.LightMap_AirIlluminance;
+		float sLerp = info.LightMap_SelfLerp;
+		float bgIllu = info.LightMap_BackgroundTint;
 
 		// First Row
 		int originUnitTop = OriginUnitY + CellHeight - 1;
@@ -94,7 +68,6 @@ public static class LightingSystem {
 		}
 
 		// Mix Iteration
-		float sLerp = SelfLerp;
 		for (int j = CellHeight - 2; j >= 0; j--) {
 			int unitY = OriginUnitY + j;
 			for (int i = 0; i < CellWidth; i++) {
@@ -107,7 +80,6 @@ public static class LightingSystem {
 		}
 
 		// Tint for BG
-		float bgIllu = BackgroundTint;
 		for (int j = CellHeight - 2; j >= 0; j--) {
 			int unitY = OriginUnitY + j;
 			for (int i = 0; i < CellWidth; i++) {
@@ -125,12 +97,13 @@ public static class LightingSystem {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
+		var info = Universe.BuiltInInfo;
 		var cameraRect = Renderer.CameraRect;
 		int left = (cameraRect.x.ToUnit() - 1 - OriginUnitX).Clamp(0, CellWidth - 1);
 		int right = (cameraRect.xMax.ToUnit() + 1 - OriginUnitX).Clamp(0, CellWidth - 1);
 		int down = (cameraRect.y.ToUnit() - 1 - OriginUnitY).Clamp(0, CellHeight - 1);
 		int up = (cameraRect.yMax.ToUnit() + 1 - OriginUnitY).Clamp(0, CellHeight - 1);
-		bool pixelStyle = PixelStyle;
+		bool pixelStyle = info.LightMap_PixelStyle;
 
 		// Illuminance >> Alpha
 		for (int j = down; j <= up; j++) {
