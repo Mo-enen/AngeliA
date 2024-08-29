@@ -317,17 +317,15 @@ public class FastNoiseLite {
 	public float GetNoise (FNLfloat x, FNLfloat y) {
 		TransformNoiseCoordinate(ref x, ref y);
 
-		switch (mFractalType) {
-			default:
-				return GenNoiseSingle(mSeed, x, y);
-			case FractalType.FBm:
-				return GenFractalFBm(x, y);
-			case FractalType.Ridged:
-				return GenFractalRidged(x, y);
-			case FractalType.PingPong:
-				return GenFractalPingPong(x, y);
-		}
+		return mFractalType switch {
+			FractalType.FBm => GenFractalFBm(x, y),
+			FractalType.Ridged => GenFractalRidged(x, y),
+			FractalType.PingPong => GenFractalPingPong(x, y),
+			_ => GenNoiseSingle(mSeed, x, y),
+		};
 	}
+	public float GetNoise01 (FNLfloat x, FNLfloat y) => (GetNoise(x, y) + 1f) / 2f;
+
 
 	/// <summary>
 	/// 3D noise at given position using current settings
@@ -339,17 +337,14 @@ public class FastNoiseLite {
 	public float GetNoise (FNLfloat x, FNLfloat y, FNLfloat z) {
 		TransformNoiseCoordinate(ref x, ref y, ref z);
 
-		switch (mFractalType) {
-			default:
-				return GenNoiseSingle(mSeed, x, y, z);
-			case FractalType.FBm:
-				return GenFractalFBm(x, y, z);
-			case FractalType.Ridged:
-				return GenFractalRidged(x, y, z);
-			case FractalType.PingPong:
-				return GenFractalPingPong(x, y, z);
-		}
+		return mFractalType switch {
+			FractalType.FBm => GenFractalFBm(x, y, z),
+			FractalType.Ridged => GenFractalRidged(x, y, z),
+			FractalType.PingPong => GenFractalPingPong(x, y, z),
+			_ => GenNoiseSingle(mSeed, x, y, z),
+		};
 	}
+	public float GetNoise01 (FNLfloat x, FNLfloat y, FNLfloat z) => (GetNoise(x, y, z) + 1f) / 2f;
 
 
 	/// <summary>

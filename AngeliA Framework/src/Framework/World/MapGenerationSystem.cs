@@ -41,6 +41,23 @@ public static class MapGenerationSystem {
 	#region --- MSG ---
 
 
+	[OnGameInitialize(-32)]
+	internal static void OnGameInitialize () {
+
+		Enable = Universe.BuiltInInfo.UseProceduralMap;
+		if (!Enable) return;
+
+		// Create Map Generators
+		AllMapGenerators.Clear();
+		foreach (var type in typeof(MapGenerator).AllChildClass()) {
+			if (System.Activator.CreateInstance(type) is not MapGenerator gen) continue;
+			AllMapGenerators.Add(gen);
+		}
+		AllMapGenerators.Sort((a, b) => a.Order.CompareTo(b.Order));
+
+	}
+
+
 	[OnGameInitialize]
 	[OnSavingSlotChanged]
 	internal static void OnGameInitialize_OnSavingSlotChanged () {
@@ -79,23 +96,6 @@ public static class MapGenerationSystem {
 			gen.Initialize(seed);
 		}
 		Util.InvokeAllStaticMethodWithAttribute<AfterAllMapGeneratorInitializedAttribute>();
-
-	}
-
-
-	[OnGameInitialize(-32)]
-	internal static void OnGameInitialize () {
-
-		Enable = Universe.BuiltInInfo.UseProceduralMap;
-		if (!Enable) return;
-
-		// Init Map Generators
-		AllMapGenerators.Clear();
-		foreach (var type in typeof(MapGenerator).AllChildClass()) {
-			if (System.Activator.CreateInstance(type) is not MapGenerator gen) continue;
-			AllMapGenerators.Add(gen);
-		}
-		AllMapGenerators.Sort((a, b) => a.Order.CompareTo(b.Order));
 
 	}
 
