@@ -5,16 +5,7 @@ using JordanPeck;
 namespace AngeliA;
 
 
-public sealed class FailbackRegionMapGenerator : RegionMapGenerator {
-	public static FailbackRegionMapGenerator Instance { get; private set; }
-	public FailbackRegionMapGenerator () => Instance = this;
-	public override MapGenerationResult GenerateMap (Int3 worldPosition, long seed, World world) {
-		return MapGenerationResult.Skipped;
-	}
-}
-
-
-public abstract class RegionMapGenerator : MapGenerator {
+public sealed class RegionMapGenerator : MapGenerator {
 
 
 
@@ -23,15 +14,12 @@ public abstract class RegionMapGenerator : MapGenerator {
 
 
 	// Const
-	private const int REGION_LIST_COUNT = 1024;
-
-	// Api
-	protected virtual float Priority => 1f;
+	private const int AGENT_COUNT = 1024;
 
 	// Data
+	private static readonly FastNoiseLite GeographyNoise = new();
 	private static readonly FastNoiseLite RegionNoise = new();
-	private static readonly RegionMapGenerator[] RegionGeneratorList = new RegionMapGenerator[REGION_LIST_COUNT];
-	private static int RegionGeneratorCount = 0;
+	private static readonly RegionMapAgent[] Agents = new RegionMapAgent[AGENT_COUNT];
 
 
 	#endregion
@@ -42,71 +30,48 @@ public abstract class RegionMapGenerator : MapGenerator {
 	#region --- MSG ---
 
 
-	[BeforeAnyMapGeneratorInitialized]
-	internal static void BeforeAnyMapGeneratorInitialized () {
+	[OnGameInitialize]
+	internal static void InitializeAgents () {
 
-		RegionGeneratorCount = 0;
-		long seed = MapGenerationSystem.Seed;
+		if (Game.IsToolApplication) return;
 
-		// Region Noise
-		InitNoiseForRegion(RegionNoise, seed);
-
+		// Create All Agents
+		float totalPriority = 0f;
+		var list = new List<RegionMapAgent>();
+		var failbackType = typeof(FailbackAgent);
+		foreach (var aType in typeof(RegionMapAgent).AllChildClass()) {
+			if (aType == failbackType) continue;
+			if (System.Activator.CreateInstance(aType) is not RegionMapAgent agent) continue;
+			list.Add(agent);
+			totalPriority += agent.Priority;
+		}
+		// Fill into Agent Array Based On Priority
+		if (list.Count == 0 || totalPriority.AlmostZero()) return;
+		int index = 0;
+		foreach (var agent in list) {
+			int currentCount = (int)(AGENT_COUNT * agent.Priority / totalPriority);
+			currentCount = currentCount.Clamp(1, AGENT_COUNT - index);
+			for (int i = 0; i < currentCount; i++) {
+				Agents[index] = agent;
+				index++;
+			}
+		}
+		var lastAgent = list[^1];
+		for (; index < AGENT_COUNT; index++) {
+			Agents[index] = lastAgent;
+		}
 
 	}
 
 
 	public override void Initialize (long seed) {
-		if (RegionGeneratorCount >= REGION_LIST_COUNT) return;
-		if (this is FailbackRegionMapGenerator) return;
-		RegionGeneratorList[RegionGeneratorCount] = this;
-		RegionGeneratorCount++;
-	}
-
-
-	[AfterAllMapGeneratorInitialized]
-	internal static void AfterAllMapGeneratorInitialized () {
-
-		long seed = MapGenerationSystem.Seed;
-
-		// Generator List
-		if (RegionGeneratorCount > 0) {
-			// Scale Region Generator List
-			var finalList = new RegionMapGenerator[REGION_LIST_COUNT];
-			float totalPriority = 0f;
-			for (int i = 0; i < RegionGeneratorCount; i++) {
-				totalPriority += RegionGeneratorList[i].Priority;
-			}
-			if (totalPriority.AlmostZero()) {
-				totalPriority = 1f;
-			}
-			int finalIndex = 0;
-			for (int i = 0; i < RegionGeneratorCount; i++) {
-				var gen = RegionGeneratorList[i];
-				int secCount = i < RegionGeneratorCount - 1 ?
-					Util.Max((int)(REGION_LIST_COUNT * (gen.Priority / totalPriority)), 1) :
-					REGION_LIST_COUNT - finalIndex;
-				int end = Util.Min(finalIndex + secCount, REGION_LIST_COUNT);
-				for (; finalIndex < end; finalIndex++) {
-					finalList[finalIndex] = gen;
-				}
-			}
-			finalList.CopyTo(RegionGeneratorList, 0);
-		} else {
-			// Failback
-			RegionGeneratorList.FillWithValue(FailbackRegionMapGenerator.Instance);
-		}
-
-		// Shuffle List
-		var ran = new System.Random((int)seed);
-		for (int i = 0; i < REGION_LIST_COUNT - 1; i++) {
-			int target = ran.Next(i, REGION_LIST_COUNT);
-			(RegionGeneratorList[i], RegionGeneratorList[target]) = (RegionGeneratorList[target], RegionGeneratorList[i]);
-		}
-
+		InitNoiseForRegion(RegionNoise, seed, false);
+		InitNoiseForRegion(GeographyNoise, seed, true);
 	}
 
 
 #if DEBUG
+	// Test
 	[CheatCode("TestRegion")]
 	internal static void StartTestRegion () {
 		QTest.ClearAll();
@@ -115,7 +80,7 @@ public abstract class RegionMapGenerator : MapGenerator {
 		long newSeed = new System.Random(
 			(int)(System.DateTime.Now.Ticks + System.Environment.UserName.AngeHash())
 		).NextInt64(long.MinValue, long.MaxValue);
-		InitNoiseForRegion(RegionNoise, newSeed);
+		InitNoiseForRegion(RegionNoise, newSeed, false);
 	}
 
 
@@ -153,6 +118,16 @@ public abstract class RegionMapGenerator : MapGenerator {
 #endif
 
 
+	public override MapGenerationResult GenerateMap (Int3 worldPosition, long seed, World world) {
+
+
+		// TODO
+
+
+		return MapGenerationResult.Skipped;
+	}
+
+
 	#endregion
 
 
@@ -161,9 +136,15 @@ public abstract class RegionMapGenerator : MapGenerator {
 	#region --- API ---
 
 
-	public static int GetRegionIndex (int unitX, int unitY, int unitZ) {
+	public static RegionMapAgent GetAgent (int unitX, int unitY, int unitZ) {
 		float noise01 = RegionNoise.GetNoise01(unitX, unitY, unitZ);
-		return (int)(noise01 * REGION_LIST_COUNT).Clamp(0, REGION_LIST_COUNT - 1);
+		int index = (int)(noise01 * AGENT_COUNT).Clamp(0, AGENT_COUNT - 1);
+		return Agents[index];
+	}
+
+
+	public static float GetGeography01 (int unitX, int unitY, int unitZ) {
+		return GeographyNoise.GetNoise01(unitX, unitY, unitZ);
 	}
 
 
@@ -175,9 +156,9 @@ public abstract class RegionMapGenerator : MapGenerator {
 	#region --- LGC ---
 
 
-	private static void InitNoiseForRegion (FastNoiseLite noise, long seed) {
-		noise.SetSeed(seed);
-		noise.SetFrequency(0.000618f);
+	private static void InitNoiseForRegion (FastNoiseLite noise, long seed, bool large) {
+		noise.SetSeed(large ? seed + 1 : seed);
+		noise.SetFrequency(large ? 0.0000618f : 0.000618f);
 		noise.SetNoiseType(NoiseType.Cellular);
 		noise.SetFractalType(FractalType.None);
 		noise.SetCellularDistanceFunction(CellularDistanceFunction.Manhattan);
