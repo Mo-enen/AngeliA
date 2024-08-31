@@ -93,7 +93,8 @@ public static class MapGenerationSystem {
 		// Init Generators
 		Util.InvokeAllStaticMethodWithAttribute<BeforeAnyMapGeneratorInitializedAttribute>();
 		foreach (var gen in AllMapGenerators) {
-			gen.Initialize(seed);
+			gen.Seed = seed;
+			gen.Initialize();
 		}
 		Util.InvokeAllStaticMethodWithAttribute<AfterAllMapGeneratorInitializedAttribute>();
 
@@ -171,7 +172,7 @@ public static class MapGenerationSystem {
 		successCount = 0;
 		foreach (var gen in AllMapGenerators) {
 			try {
-				var result = gen.GenerateMap(worldPos, Seed, world);
+				var result = gen.GenerateMap(worldPos, world);
 				switch (result) {
 					case MapGenerationResult.Success:
 						successCount++;

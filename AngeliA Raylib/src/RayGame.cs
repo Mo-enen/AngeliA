@@ -205,6 +205,7 @@ public partial class RayGame : Game {
 			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
 			Debug.LogWarning("Gizmos Render Texture Force Reloaded.");
 		}
+		DrawGizmosAtFront = IsToolApplication;
 
 		// File Drop
 		if (Raylib.IsFileDropped()) {

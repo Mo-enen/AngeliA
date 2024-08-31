@@ -306,8 +306,8 @@ public static class QTest {
 					float pixelFixH = 512f / height;
 					var pRect = new IRect(
 						0, 0,
-						((pxWidth + pixelFixW) * 10f / 4f).CeilToInt(),
-						((pxHeight + pixelFixH) * 10f / 4f).CeilToInt()
+						((pxWidth + pixelFixW) * 5f / 4f).CeilToInt(),
+						((pxHeight + pixelFixH) * 5f / 4f).CeilToInt()
 					);
 					for (int j = 0; j < height; j++) {
 						pRect.y = canvasRect.y + (j * pxHeight).RoundToInt();
@@ -352,6 +352,12 @@ public static class QTest {
 			Cursor.SetCursor(Cursor.CurrentCursorIndex, int.MaxValue - 1);
 		}
 
+	}
+
+
+	[OnGameUpdateLater]
+	internal static void OnGameUpdateLater () {
+		if (Testing) Game.DrawGizmosAtFront = true;
 	}
 
 
@@ -545,15 +551,6 @@ public static class QTest {
 			GroupFolding[group] = folding;
 		}
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion

@@ -8,12 +8,7 @@ namespace AngeliA;
 internal class TestMapGenerator : MapGenerator {
 
 
-	public override void Initialize (long seed) {
-
-	}
-
-
-	public override MapGenerationResult GenerateMap (Int3 worldPosition, long seed, World world) {
+	public override MapGenerationResult GenerateMap (Int3 worldPosition, World world) {
 
 
 		//System.Threading.Thread.Sleep(500);
@@ -29,6 +24,7 @@ internal class TestMapGenerator : MapGenerator {
 
 	[CheatCode("TestNoise")]
 	internal static void StartNoiseTesting () {
+		if (!Game.IsToolApplication) return;
 		QTest.ClearAll();
 		QTest.ShowTest();
 		QTest.SetObject("testing", "noise");
@@ -56,6 +52,12 @@ internal class TestMapGenerator : MapGenerator {
 		float speedX = QTest.Float("Speed X", 0.1f, 0f, 5f, 0.1f);
 		float speedY = QTest.Float("Speed Y", 0.1f, 0f, 5f, 0.1f);
 		float speedZ = dimension == 3 ? QTest.Float("Speed Z", 0.3f, 0f, 5f, 0.1f) : 0;
+		QTest.TryGetObject("currentX", out float currentX);
+		QTest.TryGetObject("currentY", out float currentY);
+		QTest.TryGetObject("currentZ", out float currentZ);
+		QTest.SetObject("currentX", currentX + speedX);
+		QTest.SetObject("currentY", currentY + speedY);
+		QTest.SetObject("currentZ", currentZ + speedZ);
 
 		int fqScale = QTest.Int("Frequency Scale", 3, 1, 5);
 
@@ -129,10 +131,7 @@ internal class TestMapGenerator : MapGenerator {
 			case 1:
 				QTest.StartDrawColumn("View 1D", SIZE, clearPrevPixels: false);
 				for (int i = 0; i < SIZE; i++) {
-					float value = noise.GetNoise01(
-						Game.GlobalFrame * speedX + i,
-						Game.GlobalFrame * speedY
-					);
+					float value = noise.GetNoise01(currentX + i, currentY);
 					QTest.DrawColumn(i, value, Color32.WHITE, Color32.GREY_12);
 				}
 				break;
@@ -140,10 +139,7 @@ internal class TestMapGenerator : MapGenerator {
 				QTest.StartDrawPixels("View 2D", SIZE, SIZE, clearPrevPixels: false);
 				for (int j = 0; j < SIZE; j++) {
 					for (int i = 0; i < SIZE; i++) {
-						float value = noise.GetNoise01(
-							Game.GlobalFrame * speedX + i,
-							Game.GlobalFrame * speedY + j
-						);
+						float value = noise.GetNoise01(currentX + i, currentY + j);
 						byte rgb = (byte)(value * 256f).Clamp(0, 255);
 						QTest.DrawPixel(i, j, new Color32(rgb, rgb, rgb, 255));
 					}
@@ -153,11 +149,7 @@ internal class TestMapGenerator : MapGenerator {
 				QTest.StartDrawPixels("View 3D", SIZE, SIZE, clearPrevPixels: false);
 				for (int j = 0; j < SIZE; j++) {
 					for (int i = 0; i < SIZE; i++) {
-						float value = noise.GetNoise01(
-							Game.GlobalFrame * speedX + i,
-							Game.GlobalFrame * speedY + j,
-							Game.GlobalFrame * speedZ
-						);
+						float value = noise.GetNoise01(currentX + i, currentY + j, currentZ);
 						byte rgb = (byte)(value * 256f).Clamp(0, 255);
 						QTest.DrawPixel(i, j, new Color32(rgb, rgb, rgb, 255));
 					}
