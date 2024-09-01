@@ -8,20 +8,19 @@ namespace AngeliA;
 internal class TestMapGenerator : MapGenerator {
 
 
-	public override MapGenerationResult GenerateMap (Int3 worldPosition, World world) {
+	public override MapGenerationResult GenerateMap (IBlockSquad squad, Int3 startPoint) {
 
-
-		//System.Threading.Thread.Sleep(500);
-		//Debug.Log(worldPosition);
-		//System.Threading.Thread.Sleep(500);
 
 
 
 
 		return MapGenerationResult.Skipped;
 	}
+	private static readonly FastNoiseLite RegionNoise = new();
+	private static readonly int[] AltitudeCache = new int[Const.MAP * Const.MAP];
 
 
+	// Noise
 	[CheatCode("TestNoise")]
 	internal static void StartNoiseTesting () {
 		if (!Game.IsToolApplication) return;
@@ -156,6 +155,71 @@ internal class TestMapGenerator : MapGenerator {
 				}
 				break;
 		}
+	}
+
+
+	// Region
+	[CheatCode("TestRegion")]
+	internal static void StartTestRegion () {
+		if (!Game.IsToolApplication) return;
+		QTest.ClearAll();
+		QTest.ShowTest();
+		QTest.SetObject("testing", "region");
+		long newSeed = new System.Random(
+			(int)(System.DateTime.Now.Ticks + System.Environment.UserName.AngeHash())
+		).NextInt64(long.MinValue, long.MaxValue);
+		InitNoiseForRegion(RegionNoise, newSeed);
+	}
+
+
+	[OnGameUpdate]
+	internal static void RegionTestUpdate () {
+
+		if (!Game.IsToolApplication || !QTest.Testing) return;
+		bool testingRegion = QTest.TryGetObject("testing", out string testingName) && testingName == "region";
+		if (!testingRegion) return;
+
+		// Config
+		int rCount = QTest.Int("Region Count", 16, 1, 64);
+		int speedX = QTest.Int("Speed X", 6, 0, 128);
+		int speedY = QTest.Int("Speed Y", 6, 0, 128);
+		int speedZ = QTest.Int("Speed Z", 0, 0, 128);
+		int zoom = QTest.Int("Zoom", 16, 1, 128);
+		bool drawChecker = QTest.Bool("Checker", false);
+		int maxAltitude = QTest.Int("Altitude", 1024, 0, 2048);
+		QTest.TryGetObject("currentX", out int currentX);
+		QTest.TryGetObject("currentY", out int currentY);
+		QTest.TryGetObject("currentZ", out int currentZ);
+		QTest.SetObject("currentX", currentX + speedX);
+		QTest.SetObject("currentY", currentY + speedY);
+		QTest.SetObject("currentZ", currentZ + speedZ);
+
+		// View
+		QTest.Group("");
+		QTest.StartDrawPixels("Region", 128, 128, false);
+		if (maxAltitude > 0) {
+			FillAltitude(AltitudeCache, RegionNoise, currentX, currentY, currentZ, rCount, zoom);
+		}
+		int index = 0;
+		for (int j = 0; j < 128; j++) {
+			for (int i = 0; i < 128; i++) {
+				int unitX = currentX + i * zoom;
+				int unitY = currentY + j * zoom;
+				int rIndex = GetRegionIndex(RegionNoise, unitX, unitY, currentZ, rCount);
+				float colorVolume = 1f;
+				if (maxAltitude > 0) {
+					int altitude = AltitudeCache[index];
+					colorVolume = (altitude / (float)maxAltitude).Clamp01();
+				}
+				var color = Util.HsvToRgb((float)rIndex / rCount, 1f, colorVolume);
+				if (drawChecker && (unitX.UDivide(Const.MAP) % 2 == 0) != (unitY.UDivide(Const.MAP) % 2 == 0)) {
+					color = Color32.BLACK;
+				}
+				QTest.DrawPixel(i, j, color);
+				index++;
+			}
+		}
+
 	}
 
 

@@ -141,13 +141,22 @@ public sealed class WorldStream : IBlockSquad {
 				IsDirty = true;
 			}
 		} else {
-			data = new WorldData();
-			data.IsDirty = true;
-			data.World = world;
-			data.CreateFrame = InternalFrame++;
+			data = new WorldData {
+				IsDirty = true,
+				World = world,
+				CreateFrame = InternalFrame++,
+			};
 			IsDirty = true;
 			WorldPool.Add(world.WorldPosition, data);
 			CurrentValidMapCount++;
+		}
+	}
+
+
+	public void SetWorldDirty (Int3 worldPos) {
+		if (TryGetWorldData(worldPos, out var data) && !data.IsDirty && data.World != null) {
+			data.IsDirty = true;
+			IsDirty = true;
 		}
 	}
 

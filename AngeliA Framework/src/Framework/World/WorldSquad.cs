@@ -103,15 +103,6 @@ public class WorldSquad : IBlockSquad {
 		// Render
 		Front.RenderCurrentFrame();
 		Behind.RenderCurrentFrame();
-		// Generate
-		if (!DontSaveChangesToFile && Game.PauselessFrame % 30 == 1) {
-			var fixedView = Stage.ViewRect.Expand(Const.CEL * 2);
-			var largeView = Stage.ViewRect.Expand(Const.CEL * Const.MAP * 3);
-			MapGenerationSystem.GenerateMapInRange(fixedView, Stage.ViewZ, async: false);
-			MapGenerationSystem.GenerateMapInRange(fixedView, Stage.ViewZ - 1, async: true);
-			MapGenerationSystem.GenerateMapInRange(fixedView, Stage.ViewZ + 1, async: true);
-			MapGenerationSystem.GenerateMapInRange(largeView, Stage.ViewZ, async: true);
-		}
 		// Auto Save
 		if (!DontSaveChangesToFile && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
 			Stream.SaveAllDirty();
@@ -256,7 +247,7 @@ public class WorldSquad : IBlockSquad {
 					int index = (j - worldUnitRect.y) * Const.MAP + (l - worldUnitRect.x);
 					for (int i = l; i < r; i++, index++) {
 						// BG
-						var bg = bgSpan[index];
+						int bg = bgSpan[index];
 						if (bg != 0) {
 							if (isBehind) {
 								DrawBehind(bg, i, j, false);
@@ -265,7 +256,7 @@ public class WorldSquad : IBlockSquad {
 							}
 						}
 						// Level
-						var lv = lvSpan[index];
+						int lv = lvSpan[index];
 						if (lv != 0) {
 							if (isBehind) {
 								DrawBehind(lv, i, j, false);
@@ -303,16 +294,32 @@ public class WorldSquad : IBlockSquad {
 				int d = System.Math.Max(unitRect_Entity.y, worldUnitRect.y);
 				int u = System.Math.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
 				var eSpan = new System.ReadOnlySpan<int>(world.Entities);
+				var eleSpan = new System.ReadOnlySpan<int>(world.Elements);
 				if (!isBehind) {
-					// Entity
+					// Front Block
 					for (int j = d; j < u; j++) {
 						int localY = j - worldUnitRect.y;
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
 							// Entity
-							var entityID = eSpan[index];
+							int entityID = eSpan[index];
 							if (entityID != 0) {
 								DrawEntity(entityID, i, j, z);
+							}
+							// Element
+							int eleID = eleSpan[index];
+							if (eleID != 0) {
+								int localID = MapGenerationSystem.STARTER_ID + 8 - eleID;
+								if (localID >= 0 && localID <= 8) {
+									var startPoint = new Int3(i, j, z);
+									if (!MapGenerationSystem.IsGenerating(startPoint)) {
+										if (localID == 0) {
+											MapGenerationSystem.GenerateMap(startPoint, true);
+										} else {
+											MapGenerationSystem.GenerateMap(startPoint, (Direction8)(localID - 1), true);
+										}
+									}
+								}
 							}
 						}
 					}
@@ -323,9 +330,24 @@ public class WorldSquad : IBlockSquad {
 						int index = localY * Const.MAP + (l - worldUnitRect.x);
 						for (int i = l; i < r; i++, index++) {
 							// Entity
-							var entityID = eSpan[index];
+							int entityID = eSpan[index];
 							if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID)) {
 								DrawBehind(entityID, i, j, true);
+							}
+							// Element
+							int eleID = eleSpan[index];
+							if (eleID != 0) {
+								int localID = MapGenerationSystem.STARTER_ID + 8 - eleID;
+								if (localID >= 0 && localID <= 8) {
+									var startPoint = new Int3(i, j, z);
+									if (!MapGenerationSystem.IsGenerating(startPoint)) {
+										if (localID == 0) {
+											MapGenerationSystem.GenerateMap(startPoint, true);
+										} else {
+											MapGenerationSystem.GenerateMap(startPoint, (Direction8)(localID - 1), true);
+										}
+									}
+								}
 							}
 						}
 					}

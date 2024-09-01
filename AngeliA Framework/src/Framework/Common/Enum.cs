@@ -1,14 +1,14 @@
 ﻿namespace AngeliA;
 
 
-public enum WrapMode {
+public enum WrapMode : byte {
 	NoWrap = 0,
 	Wrap = 1,
 	WordWrap = 2,
 }
 
 
-public enum GUIState {
+public enum GUIState : byte {
 	Normal = 0,
 	Hover = 1,
 	Press = 2,
@@ -16,7 +16,7 @@ public enum GUIState {
 }
 
 
-public enum Direction2 {
+public enum Direction2 : sbyte {
 	Negative = -1,
 	Left = -1,
 	Down = -1,
@@ -28,7 +28,7 @@ public enum Direction2 {
 }
 
 
-public enum Direction3 {
+public enum Direction3 : sbyte {
 	None = 0,
 	Negative = -1,
 	Left = -1,
@@ -41,7 +41,7 @@ public enum Direction3 {
 }
 
 
-public enum Direction4 {
+public enum Direction4 : byte {
 	Up = 0,
 	Down = 1,
 	Left = 2,
@@ -49,7 +49,7 @@ public enum Direction4 {
 }
 
 
-public enum Direction8 {
+public enum Direction8 : byte {
 	Top = 0,
 	TopRight = 1,
 	Right = 2,
@@ -61,7 +61,7 @@ public enum Direction8 {
 }
 
 
-public enum Alignment {
+public enum Alignment : byte {
 	TopLeft = 0,
 	TopMid = 1,
 	TopRight = 2,
