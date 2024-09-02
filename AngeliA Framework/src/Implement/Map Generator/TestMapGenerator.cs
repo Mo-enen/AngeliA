@@ -8,16 +8,17 @@ namespace AngeliA;
 internal class TestMapGenerator : MapGenerator {
 
 
-	public override MapGenerationResult GenerateMap (IBlockSquad squad, Int3 startPoint) {
+	private static readonly FastNoiseLite RegionNoise = new();
+	private static readonly int[] AltitudeCache = new int[Const.MAP * Const.MAP];
 
+
+	public override MapGenerationResult GenerateMap (Int3 startPoint, Direction8 startDirection) {
 
 
 
 
 		return MapGenerationResult.Skipped;
 	}
-	private static readonly FastNoiseLite RegionNoise = new();
-	private static readonly int[] AltitudeCache = new int[Const.MAP * Const.MAP];
 
 
 	// Noise

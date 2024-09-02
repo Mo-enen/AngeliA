@@ -4,6 +4,12 @@ using System.Threading.Tasks;
 
 namespace AngeliA;
 
+
+public class Starter : IMapItem {
+
+}
+
+
 public static class MapGenerationSystem {
 
 
@@ -24,7 +30,7 @@ public static class MapGenerationSystem {
 
 
 	// Const
-	public const int STARTER_ID = 126231562;
+	public static readonly int STARTER_ID = typeof(Starter).AngeHash();
 
 	// Api
 	public static long Seed { get; private set; }
@@ -159,6 +165,7 @@ public static class MapGenerationSystem {
 						Debug.LogError($"Map generation fail with critical error: {gen.ErrorMessage}");
 						break;
 				}
+				gen.ErrorMessage = "";
 				if (result == MapGenerationResult.CriticalError) {
 					successCount = -1;
 					break;

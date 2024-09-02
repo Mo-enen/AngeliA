@@ -16,7 +16,6 @@ public class TeleportTask : Task {
 	public bool UseParallax { get; set; } = true;
 
 	// Data
-	private string ChannelName = "";
 	private bool ToBehind = true;
 
 	// MSG
@@ -67,6 +66,8 @@ public class TeleportTask : Task {
 					MapEffectLogic(cells, center, count, scale, lerp, false, ToBehind);
 				}
 			}
+			// Lightmap
+			LightingSystem.ForceCameraScale(lerp);
 		}
 
 		// Update Vig Effect
@@ -103,8 +104,7 @@ public class TeleportTask : Task {
 	// API
 	public static TeleportTask Teleport (
 		int fromX, int fromY, int toX, int toY, int toZ,
-		int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true, bool withPortal = false,
-		string channelName = ""
+		int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true, bool withPortal = false
 	) {
 		if (TaskSystem.HasTask()) return null;
 		if (TaskSystem.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
@@ -114,7 +114,6 @@ public class TeleportTask : Task {
 			svTask.Duration = duration;
 			svTask.UseParallax = useParallax;
 			svTask.UseVignette = useVignette;
-			svTask.ChannelName = channelName;
 			var player = Player.Selecting;
 			if (player != null) {
 				player.Movement.Stop();

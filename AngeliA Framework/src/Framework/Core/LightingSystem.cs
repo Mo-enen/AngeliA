@@ -14,8 +14,8 @@ public static class LightingSystem {
 
 	// Const
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
-	private const int LIGHT_MAP_UNIT_PADDING_DOWN = 2;
-	private const int LIGHT_MAP_UNIT_PADDING_TOP = 1;
+	private const int LIGHT_MAP_UNIT_PADDING_BOTTOM = 6;
+	private const int LIGHT_MAP_UNIT_PADDING_TOP = 6;
 	private static readonly float[] WEIGHTS = { 0.071f, 0.19f, 0.51f, 0.19f, 0.071f, };
 
 	// Data
@@ -26,6 +26,8 @@ public static class LightingSystem {
 	private static int OriginUnitX;
 	private static int OriginUnitY;
 	private static int WeightLen;
+	private static float CameraScale = 1f;
+	private static int ForceCameraScaleFrame = -1;
 
 
 	#endregion
@@ -42,7 +44,7 @@ public static class LightingSystem {
 		if (!Enable) return;
 		int maxHeight = Universe.BuiltInInfo.MaxViewHeight;
 		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeight / 1000 / Const.CEL + LIGHT_MAP_UNIT_PADDING * 2;
-		CellHeight = maxHeight / Const.CEL + LIGHT_MAP_UNIT_PADDING_TOP + LIGHT_MAP_UNIT_PADDING_DOWN;
+		CellHeight = maxHeight / Const.CEL + LIGHT_MAP_UNIT_PADDING_TOP + LIGHT_MAP_UNIT_PADDING_BOTTOM;
 		Illuminances = new float[CellWidth, CellHeight];
 		WeightLen = WEIGHTS.Length;
 	}
@@ -55,7 +57,7 @@ public static class LightingSystem {
 
 		var info = Universe.BuiltInInfo;
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
-		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_DOWN;
+		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_BOTTOM;
 		float solidIllu = info.LightMap_SolidIlluminance;
 		float airIllu = info.LightMap_AirIlluminance;
 		float sLerp = info.LightMap_SelfLerp;
@@ -97,12 +99,24 @@ public static class LightingSystem {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
+		bool scaling = Game.PauselessFrame <= ForceCameraScaleFrame;
 		var info = Universe.BuiltInInfo;
+		var cameraCenter = Renderer.CameraRect.center.CeilToInt();
 		var cameraRect = Renderer.CameraRect;
-		int left = (cameraRect.x.ToUnit() - 1 - OriginUnitX).Clamp(0, CellWidth - 1);
-		int right = (cameraRect.xMax.ToUnit() + 1 - OriginUnitX).Clamp(0, CellWidth - 1);
-		int down = (cameraRect.y.ToUnit() - 1 - OriginUnitY).Clamp(0, CellHeight - 1);
-		int up = (cameraRect.yMax.ToUnit() + 1 - OriginUnitY).Clamp(0, CellHeight - 1);
+		int left = cameraRect.x.ToUnit() - 1 - OriginUnitX;
+		int right = cameraRect.xMax.ToUnit() + 1 - OriginUnitX;
+		int down = cameraRect.y.ToUnit() - 1 - OriginUnitY;
+		int up = cameraRect.yMax.ToUnit() + 1 - OriginUnitY;
+		if (scaling) {
+			left -= LIGHT_MAP_UNIT_PADDING;
+			right += LIGHT_MAP_UNIT_PADDING;
+			down -= LIGHT_MAP_UNIT_PADDING_BOTTOM;
+			up += LIGHT_MAP_UNIT_PADDING_TOP;
+		}
+		left = left.Clamp(0, CellWidth - 1);
+		right = right.Clamp(0, CellWidth - 1);
+		down = down.Clamp(0, CellHeight - 1);
+		up = up.Clamp(0, CellHeight - 1);
 		bool pixelStyle = info.LightMap_PixelStyle;
 
 		// Illuminance >> Alpha
@@ -123,7 +137,7 @@ public static class LightingSystem {
 				for (int i = left + 1; i <= right - 1; i++) {
 					rect.x = offsetX + i * Const.CEL;
 					Game.DrawGizmosRect(
-						rect,
+						scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
 						new Color32(0, 0, 0, (byte)Illuminances[i, j])
 					);
 				}
@@ -149,7 +163,7 @@ public static class LightingSystem {
 					if (aTL == 0 && aTR == 0 && aBL == 0 && aBR == 0) continue;
 					rect.x = offsetX + i * Const.CEL;
 					Game.DrawGizmosRect(
-						rect,
+						scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
 						new Color32(0, 0, 0, aTL),
 						new Color32(0, 0, 0, aTR),
 						new Color32(0, 0, 0, aBL),
@@ -196,6 +210,12 @@ public static class LightingSystem {
 			}
 		}
 
+	}
+
+
+	public static void ForceCameraScale (float scale, int duration = 1) {
+		ForceCameraScaleFrame = Game.PauselessFrame + duration;
+		CameraScale = scale;
 	}
 
 

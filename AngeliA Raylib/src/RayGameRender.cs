@@ -450,7 +450,7 @@ public partial class RayGame {
 			colorTL.ToRaylib(), colorBL.ToRaylib(), colorBR.ToRaylib(), colorTR.ToRaylib()
 		);
 	}
-
+	
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		if (texture is not Texture2D rTexture) return;

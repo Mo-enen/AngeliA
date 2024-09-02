@@ -142,7 +142,7 @@ public partial class RiggedGame {
 		};
 		RespondMessage.RequireGizmosRectCount++;
 	}
-
+	
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) { }
 
 	protected override void _IgnoreGizmos (int duration = 0) { }

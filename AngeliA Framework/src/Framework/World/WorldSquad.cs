@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class WorldSquad : IBlockSquad {
+public sealed class WorldSquad : IBlockSquad {
 
 
 
@@ -106,6 +106,12 @@ public class WorldSquad : IBlockSquad {
 		// Auto Save
 		if (!DontSaveChangesToFile && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
 			Stream.SaveAllDirty();
+		}
+		// Check for Generation
+		if (Universe.BuiltInInfo.UseProceduralMap && Game.GlobalFrame % 30 == 0) {
+
+			// TODO
+
 		}
 	}
 
@@ -222,7 +228,9 @@ public class WorldSquad : IBlockSquad {
 		}
 
 		// BG-Level
-		if (!isBehind) BeforeLevelRendered?.Invoke();
+		if (!isBehind) {
+			BeforeLevelRendered?.Invoke();
+		}
 		int worldL = unitRect_Level.xMin.UDivide(Const.MAP);
 		int worldR = unitRect_Level.xMax.CeilDivide(Const.MAP);
 		int worldD = unitRect_Level.yMin.UDivide(Const.MAP);
@@ -272,7 +280,9 @@ public class WorldSquad : IBlockSquad {
 				}
 			}
 		}
-		if (!isBehind) AfterLevelRendered?.Invoke();
+		if (!isBehind) {
+			AfterLevelRendered?.Invoke();
+		}
 
 		// Entity
 		worldL = unitRect_Entity.xMin.UDivide(Const.MAP);
@@ -309,7 +319,7 @@ public class WorldSquad : IBlockSquad {
 							// Element
 							int eleID = eleSpan[index];
 							if (eleID != 0) {
-								int localID = MapGenerationSystem.STARTER_ID + 8 - eleID;
+								int localID = MapGenerationSystem.STARTER_ID - eleID;
 								if (localID >= 0 && localID <= 8) {
 									var startPoint = new Int3(i, j, z);
 									if (!MapGenerationSystem.IsGenerating(startPoint)) {
@@ -337,7 +347,7 @@ public class WorldSquad : IBlockSquad {
 							// Element
 							int eleID = eleSpan[index];
 							if (eleID != 0) {
-								int localID = MapGenerationSystem.STARTER_ID + 8 - eleID;
+								int localID = MapGenerationSystem.STARTER_ID - eleID;
 								if (localID >= 0 && localID <= 8) {
 									var startPoint = new Int3(i, j, z);
 									if (!MapGenerationSystem.IsGenerating(startPoint)) {
@@ -357,7 +367,9 @@ public class WorldSquad : IBlockSquad {
 		}
 
 		// Final
-		if (isBehind) Renderer.SetLayerToDefault();
+		if (isBehind) {
+			Renderer.SetLayerToDefault();
+		}
 	}
 
 
