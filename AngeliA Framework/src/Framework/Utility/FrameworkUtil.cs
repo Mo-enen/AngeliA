@@ -8,6 +8,7 @@ public static class FrameworkUtil {
 
 
 	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
+	private const int SearchlightDensity = 32;
 
 
 	// Drawing
@@ -291,8 +292,10 @@ public static class FrameworkUtil {
 		var idPool = new Dictionary<int, string>();
 		var sheet = Renderer.MainSheet;
 		foreach (var type in typeof(object).AllChildClass(includeAbstract: true, includeInterface: true)) {
+
 			string typeName = type.AngeName();
 			int typeID = typeName.AngeHash();
+
 			// Class vs Class
 			if (!idPool.TryAdd(typeID, typeName)) {
 				string poolName = idPool[typeID];
@@ -301,6 +304,7 @@ public static class FrameworkUtil {
 					Debug.LogWarning($"Hash collision between two class names. \"{typeName}\" & \"{poolName}\" (AngeHash = {typeID})");
 				}
 			}
+
 			// Class vs Sprite
 			if (sheet.SpritePool.TryGetValue(typeID, out var sprite)) {
 				if (sprite.RealName != typeName && typeID == sprite.ID) {
@@ -308,8 +312,21 @@ public static class FrameworkUtil {
 					Debug.LogWarning($"Hash collision between Class name and Sprite name. \"{typeName}\" & \"{sprite.RealName}\" (AngeHash = {typeID})");
 				}
 			}
-		}
 
+			// Map Generation Starter vs Class
+			if (typeID >= MapGenerationSystem.STARTER_ID && typeID <= MapGenerationSystem.STARTER_ID + 8) {
+				Debug.LogWarning($"Hash collision between Class name and Map Generation Starter. \"{typeName}\" (AngeHash = {typeID}");
+			}
+
+		}
+		// Map Generation Starter vs Sprite
+		foreach (var sp in sheet.Sprites) {
+			int typeID = sp.ID;
+			// Map Generation Starter vs Class
+			if (typeID >= MapGenerationSystem.STARTER_ID && typeID <= MapGenerationSystem.STARTER_ID + 8) {
+				Debug.LogWarning($"Hash collision between Sprite name and Map Generation Starter. \"{sp.RealName}\" (AngeHash = {typeID}");
+			}
+		}
 
 
 		// End
@@ -675,17 +692,53 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool MapEmptyCheck_Searchlight (
-		Int3 startUnitPoint, Direction8 direction, int unitDistance = Const.MAP, int density = 32,
-		bool ignoreLevel = false, bool ignoreBG = false, bool ignoreEntity = false, bool ignoreElement = true
-	) {
-
-
-		// TODO
-
-
-
+	public static bool SearchlightBlockCheck (IBlockSquad squad, Int3 startUnitPoint, Direction8 direction, int unitDistance = Const.MAP) {
+		(int deltaX, int deltaY) = direction.Normal();
+		int desDeltaX = SearchlightDensity * deltaX;
+		int desDeltaY = SearchlightDensity * deltaY;
+		int z = startUnitPoint.z;
+		if (deltaX != 0 && deltaY != 0) {
+			// Tilt
+			int len = unitDistance * 14142 / 10000 / SearchlightDensity;
+			for (int i = 0; i < len; i++) {
+				int wide = i + 1;
+				int pointX = startUnitPoint.x + deltaX * i * SearchlightDensity;
+				int pointY = startUnitPoint.y;
+				for (int j = 0; j < wide; j++) {
+					if (ContentCheck(squad, pointX, pointY, z)) {
+						return true;
+					}
+					pointX -= desDeltaX;
+					pointY += desDeltaY;
+				}
+			}
+		} else {
+			// Straight
+			int len = unitDistance / SearchlightDensity;
+			int desDeltaAltX = SearchlightDensity * (1 - deltaX.Abs());
+			int desDeltaAltY = SearchlightDensity * (1 - deltaY.Abs());
+			var point = startUnitPoint;
+			for (int i = 0; i < len; i++) {
+				int wide = i + 1;
+				for (int j = 0; j < wide; j++) {
+					if (
+						ContentCheck(squad, point.x + desDeltaAltX * j, point.y + desDeltaAltY * j, z) ||
+						ContentCheck(squad, point.x - desDeltaAltX * j, point.y - desDeltaAltY * j, z)
+					) {
+						return true;
+					}
+				}
+				// Next
+				point.x += desDeltaX;
+				point.y += desDeltaY;
+			}
+		}
 		return false;
+		// Func
+		static bool ContentCheck (IBlockSquad squad, int unitX, int unitY, int z) {
+			var (level, bg, entity, _) = squad.GetAllBlocksAt(unitX, unitY, z);
+			return level != 0 || bg != 0 || entity != 0;
+		}
 	}
 
 

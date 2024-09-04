@@ -162,24 +162,6 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	// Block
-	public void GetBlocksAt (int unitX, int unitY, int z, out int entity, out int level, out int background, out int element) {
-		entity = 0;
-		level = 0;
-		background = 0;
-		element = 0;
-		int worldX = unitX.UDivide(Const.MAP);
-		int worldY = unitY.UDivide(Const.MAP);
-		if (TryGetWorldData(worldX, worldY, z, out var worldData)) {
-			var world = worldData.World;
-			int index = unitY.UMod(Const.MAP) * Const.MAP + unitX.UMod(Const.MAP);
-			entity = world.Entities[index];
-			level = world.Levels[index];
-			background = world.Backgrounds[index];
-			element = world.Elements[index];
-		}
-	}
-
-
 	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) {
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);
@@ -200,11 +182,26 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	public int GetBlockAt (int unitX, int unitY, int z) {
-		int id = GetBlockAt(unitX, unitY, z, BlockType.Element);
-		if (id == 0) id = GetBlockAt(unitX, unitY, z, BlockType.Entity);
-		if (id == 0) id = GetBlockAt(unitX, unitY, z, BlockType.Level);
-		if (id == 0) id = GetBlockAt(unitX, unitY, z, BlockType.Background);
+		var (level, bg, entity, element) = GetAllBlocksAt(unitX, unitY, z);
+		int id = entity;
+		if (id == 0) id = element;
+		if (id == 0) id = level;
+		if (id == 0) id = bg;
 		return id;
+	}
+
+
+	public (int level, int bg, int entity, int element) GetAllBlocksAt (int unitX, int unitY, int z) {
+		int worldX = unitX.UDivide(Const.MAP);
+		int worldY = unitY.UDivide(Const.MAP);
+		if (TryGetWorldData(worldX, worldY, z, out var worldData)) {
+			var world = worldData.World;
+			int localX = unitX.UMod(Const.MAP);
+			int localY = unitY.UMod(Const.MAP);
+			int index = localY * Const.MAP + localX;
+			return (world.Levels[index], world.Backgrounds[index], world.Entities[index], world.Elements[index]);
+		}
+		return default;
 	}
 
 

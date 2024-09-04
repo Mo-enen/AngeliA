@@ -5,11 +5,6 @@ using System.Threading.Tasks;
 namespace AngeliA;
 
 
-public class Starter : IMapItem {
-
-}
-
-
 public static class MapGenerationSystem {
 
 
@@ -30,7 +25,7 @@ public static class MapGenerationSystem {
 
 
 	// Const
-	public static readonly int STARTER_ID = typeof(Starter).AngeHash();
+	public const int STARTER_ID = 72352367;
 
 	// Api
 	public static long Seed { get; private set; }

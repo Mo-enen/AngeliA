@@ -1317,7 +1317,11 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void DrawBlock (int id, int unitX, int unitY) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
-		Renderer.Draw(id, rect);
+		if (Renderer.TryGetSprite(id, out var sprite)) {
+			Renderer.Draw(sprite, rect);
+		} else {
+			Renderer.DrawPixel(rect.Shrink(16));
+		}
 	}
 
 

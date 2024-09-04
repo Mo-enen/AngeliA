@@ -20,14 +20,9 @@ public interface IBlockSquad {
 
 	int GetBlockAt (int unitX, int unitY, int z, BlockType type);
 
-	void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID);
+	(int level, int bg, int entity, int element) GetAllBlocksAt (int unitX, int unitY, int z);
 
-	public sealed int GetBlockAt (int unitX, int unitY, int z) {
-		int result = GetBlockAt(unitX, unitY, z, BlockType.Entity);
-		if (result == 0) result = GetBlockAt(unitX, unitY, z, BlockType.Level);
-		if (result == 0) result = GetBlockAt(unitX, unitY, z, BlockType.Background);
-		return result;
-	}
+	void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID);
 
 	public sealed bool ReadSystemNumber (int unitX, int unitY, int z, out int number) {
 		number = 0;

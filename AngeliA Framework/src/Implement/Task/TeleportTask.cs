@@ -48,7 +48,7 @@ public class TeleportTask : Task {
 					if (ToBehind) {
 						for (int i = 0; i < count; i++) {
 							var cell = cells[i];
-							cell.Color.a = (byte)Util.LerpUnclamped(cell.Color.a, 255, lerp).Clamp(0, 255);
+							cell.Color.a = (byte)Util.LerpUnclamped(cell.Color.a, 255, localLerp).Clamp(0, 255);
 						}
 					} else {
 						Renderer.SetLayerAlpha(
@@ -102,7 +102,6 @@ public class TeleportTask : Task {
 				}
 
 				// Front
-				byte bAlpha = Universe.BuiltInInfo.WorldBehindAlpha;
 				for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
 					if (
 						layer == RenderLayer.WALLPAPER ||
@@ -112,12 +111,7 @@ public class TeleportTask : Task {
 					if (Renderer.GetCells(layer, out cells, out count)) {
 						ParaLogic(cells, center, count, ease);
 					}
-					if (ToBehind) {
-						Renderer.SetLayerAlpha(
-							layer,
-							(byte)Util.LerpUnclamped(bAlpha, 255, lerp).Clamp(0, 255)
-						);
-					} else {
+					if (!ToBehind) {
 						Renderer.SetLayerAlpha(
 							layer,
 							(byte)Util.LerpUnclamped(0, 255, localLerp).Clamp(0, 255)
@@ -180,8 +174,8 @@ public class TeleportTask : Task {
 
 
 	// API
-	public static TeleportTask TeleportParallax (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 6, 42, false, true);// 6 56
-	public static TeleportTask TeleportVegnette (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 30, -60, true, false);
+	public static TeleportTask TeleportParallax (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 6, 38, false, true);
+	public static TeleportTask TeleportVegnette (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 0, -60, true, false);
 	public static TeleportTask TeleportLogic (int fromX, int fromY, int toX, int toY, int toZ, int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true) {
 		if (TaskSystem.HasTask()) return null;
 		if (TaskSystem.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {

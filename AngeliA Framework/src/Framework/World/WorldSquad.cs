@@ -188,7 +188,7 @@ public sealed class WorldSquad : IBlockSquad {
 	}
 
 
-	public void GetBlocksAt (int unitX, int unitY, int z, out int entity, out int level, out int background, out int element) => Stream.GetBlocksAt(unitX, unitY, z, out entity, out level, out background, out element);
+	public (int level, int bg, int entity, int element) GetAllBlocksAt (int unitX, int unitY, int z) => Stream.GetAllBlocksAt(unitX, unitY, z);
 
 
 	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
@@ -294,7 +294,7 @@ public sealed class WorldSquad : IBlockSquad {
 									DrawEntity(redirectEntityID, i, j, z);
 								}
 							} else {
-								DrawLevelBlock(lv, i, j, isBehind);
+								DrawLevelBlock(lv, i, j);
 							}
 						}
 					}
@@ -403,22 +403,20 @@ public sealed class WorldSquad : IBlockSquad {
 	}
 
 
-	private void DrawLevelBlock (int id, int unitX, int unitY, bool ignoreCollider) {
+	private void DrawLevelBlock (int id, int unitX, int unitY) {
+		if (!Renderer.TryGetSprite(id, out var sp)) return;
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (CullingCameraRect.Overlaps(rect)) {
-			Renderer.Draw(id, rect);
+			Renderer.Draw(sp, rect);
 		}
-		if (!ignoreCollider) {
-			// Collider
-			if (!Renderer.TryGetSprite(id, out var sp)) return;
-			if (sp.Tag.HasAny(TagUtil.AllDamages)) {
-				Physics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, sp.Tag);
-			}
-			rect = rect.Shrink(
-				sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
-			);
-			Physics.FillBlock(PhysicsLayer.LEVEL, id, rect, sp.IsTrigger, sp.Tag);
+		// Collider
+		if (sp.Tag.HasAny(TagUtil.AllDamages)) {
+			Physics.FillBlock(PhysicsLayer.DAMAGE, id, rect.Expand(1), true, sp.Tag);
 		}
+		rect = rect.Shrink(
+			sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
+		);
+		Physics.FillBlock(PhysicsLayer.LEVEL, id, rect, sp.IsTrigger, sp.Tag);
 	}
 
 

@@ -1,21 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
-public class WoodStoneDoorFront : Door {
-	public override bool IsFrontDoor => true;
-}
-public class WoodStoneDoorBack : Door {
-	public override bool IsFrontDoor => false;
-}
-public class WoodDoorFront : Door {
-	public override bool IsFrontDoor => true;
-}
-public class WoodDoorBack : Door {
-	public override bool IsFrontDoor => false;
-}
-
 
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 
@@ -64,7 +50,11 @@ public abstract class Door : EnvironmentEntity {
 				if (Input.GameKeyHolding(Gamekey.Up)) {
 					Invoke(player);
 				}
-				ControlHintUI.AddHint(Gamekey.Up, HINT_ENTER);
+				ControlHintUI.DrawGlobalHint(
+					X, 
+					Y + Const.CEL * 2 + Const.HALF, 
+					Gamekey.Up, HINT_ENTER, background: true
+				);
 			}
 			if (InputLock && !Input.GameKeyHolding(Gamekey.Up)) {
 				InputLock = false;
