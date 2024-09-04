@@ -18,7 +18,8 @@ public class ProjectEditor : WindowUI {
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
 	private static readonly SpriteCode ICON_FONT = "FileIcon.Font";
-	private static readonly SpriteCode ICON_CONFIG = "Icon.Project.Config";
+	private static readonly SpriteCode ICON_GAME = "Icon.Project.Game";
+	private static readonly SpriteCode ICON_STAGE = "Icon.Project.Stage";
 	private static readonly SpriteCode ICON_RESOURCE = "Icon.Project.Resource";
 
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
@@ -38,7 +39,8 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_DEV_NAME_EMPTY = ("Log.DevNameEmpty", "Developer name can not be empty");
-	private static readonly LanguageCode LABEL_CONFIG = ("Project.Label.Config", "Config");
+	private static readonly LanguageCode LABEL_GAME = ("Project.Label.Game", "Game");
+	private static readonly LanguageCode LABEL_STAGE = ("Project.Label.Stage", "Stage");
 	private static readonly LanguageCode LABEL_RESOURCE = ("Project.Label.Resource", "Resource");
 	private static readonly LanguageCode LABEL_ICON = ("Setting.Icon", "Icon");
 	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
@@ -58,6 +60,8 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ALLOW_QUIT_MENU = ("Label.Project.AllowQuitFromMenu", "Allow Quit from Menu");
 	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
 	private static readonly LanguageCode LABEL_SCALE_UI_MONITOR = ("Label.Project.ScaleUiBasedOnMonitor", "Scale UI Based On Monitor Height");
+	private static readonly LanguageCode LABEL_BEHIND_PARA = ("Setting.BehindPara", "Behind Map Parallax");
+	private static readonly LanguageCode LABEL_BEHIND_TINT = ("Setting.BehindAlpha", "Behind Map Alpha");
 	private static readonly LanguageCode LABEL_VIEW_RATIO = ("Setting.ViewRatio", "View Ratio");
 	private static readonly LanguageCode LABEL_DEF_VIEW_HEIGHT = ("Setting.DefViewHeight", "Default View Height (block)");
 	private static readonly LanguageCode LABEL_MIN_VIEW_HEIGHT = ("Setting.MinViewHeight", "Min View Height (block)");
@@ -81,6 +85,7 @@ public class ProjectEditor : WindowUI {
 	private object MenuItem = null;
 	private bool RequireRecompileOnSave = false;
 	private bool FoldingConfigPanel = false;
+	private bool FoldingStagePanel = true;
 	private bool FoldingResourcePanel = true;
 
 
@@ -134,19 +139,31 @@ public class ProjectEditor : WindowUI {
 
 		using (var scroll = new GUIVerticalScrollScope(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
 			MasterScrollPos = scroll.PositionY;
+			int left = rect.x;
+			int indent = GUI.FieldHeight / 2;
 
 			// Window
 			OnGUI_WorkflowButton(ref rect);
 
 			// Config
-			int left = rect.x;
-			int indent = GUI.FieldHeight / 2;
 			rect.yMin = rect.yMax - GUI.FieldHeight;
 			rect.xMin += indent;
-			if (!GUI.ToggleFold(rect, ref FoldingConfigPanel, ICON_CONFIG, LABEL_CONFIG, indent)) {
+			if (!GUI.ToggleFold(rect, ref FoldingConfigPanel, ICON_GAME, LABEL_GAME, indent)) {
 				rect.xMin += indent;
 				rect.SlideDown(GUI.FieldPadding);
 				OnGUI_Config(ref rect);
+			} else {
+				rect.SlideDown();
+			}
+
+			// Stage
+			rect.x = left;
+			rect.yMin = rect.yMax - GUI.FieldHeight;
+			rect.xMin += indent;
+			if (!GUI.ToggleFold(rect, ref FoldingStagePanel, ICON_STAGE, LABEL_STAGE, indent)) {
+				rect.xMin += indent;
+				rect.SlideDown(GUI.FieldPadding);
+				OnGUI_Stage(ref rect);
 			} else {
 				rect.SlideDown();
 			}
@@ -322,15 +339,6 @@ public class ProjectEditor : WindowUI {
 
 		rect.SlideDown(padding);
 
-		// Use Procedural Map
-		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
-		if (newUseProceduralMap != info.UseProceduralMap) {
-			info.UseProceduralMap = newUseProceduralMap;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
 		// Allow Pause
 		bool newAllowPause = GUI.Toggle(rect, info.AllowPause, LABEL_ALLOW_PAUSE, labelStyle: Skin.SmallLabel);
 		if (newAllowPause != info.AllowPause) {
@@ -358,15 +366,6 @@ public class ProjectEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
-		// Use Light Sys
-		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
-		if (newUseLightSys != info.UseLightingSystem) {
-			info.UseLightingSystem = newUseLightSys;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
 		// Allow Cheat Code
 		bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
 		if (newAllowCheat != info.AllowCheatCode) {
@@ -383,6 +382,101 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
+		rect.SlideDown(padding);
+
+		// Icon
+		GUI.SmallLabel(rect, LABEL_ICON);
+		int iconButtonSize = Unify(56);
+		rect.y = rect.yMax - iconButtonSize;
+		rect.height = iconButtonSize;
+		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
+		if (GUI.Button(iconButtonRect, 0, out var state, Skin.DarkButton)) {
+			FileBrowserUI.OpenFile(TITLE_PICK_ICON, "png", SetIconFromPNG);
+		}
+		if (Game.IsTextureReady(IconTexture) && !FileBrowserUI.ShowingBrowser) {
+			var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
+			contentRect.y += MasterScrollPos;
+			Game.DrawGizmosTexture(contentRect.Shrink(iconButtonRect.height / 8), IconTexture);
+		}
+		rect.height = itemHeight;
+		rect.SlideDown(padding);
+
+		// Open Project Folders
+		GUI.SmallLabel(rect, LABEL_LINK);
+		var _rect = rect.ShrinkLeft(GUI.LabelWidth);
+		if (GUI.SmallLinkButton(_rect, LABEL_LINK_PROJECT, out var bounds)) {
+			Game.OpenUrl(CurrentProject.ProjectPath);
+		}
+		_rect.xMin = bounds.xMax + Unify(12);
+		if (GUI.SmallLinkButton(_rect, LABEL_LINK_SAVING)) {
+			Util.CreateFolder(CurrentProject.Universe.SlotRoot);
+			Game.OpenUrl(CurrentProject.Universe.SlotRoot);
+		}
+		rect.SlideDown(padding);
+
+		// Func
+		static void SetIconFromPNG (string path) {
+			if (!Util.FileExists(path) || Instance.CurrentProject == null) return;
+			bool success = EngineUtil.CreateIcoFromPng(path, Instance.CurrentProject.IconPath);
+			if (success) Instance.ReloadIconUI();
+		}
+	}
+
+
+	private void OnGUI_Stage (ref IRect rect) {
+
+		int padding = GUI.FieldPadding;
+		int itemHeight = GUI.FieldHeight;
+		rect.yMin = rect.yMax - itemHeight;
+		int digitLabelWidth = Unify(64);
+		var info = CurrentProject.Universe.Info;
+
+		// Use Procedural Map
+		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
+		if (newUseProceduralMap != info.UseProceduralMap) {
+			info.UseProceduralMap = newUseProceduralMap;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Use Light Sys
+		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
+		if (newUseLightSys != info.UseLightingSystem) {
+			info.UseLightingSystem = newUseLightSys;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Para
+		GUI.SmallLabel(rect, LABEL_BEHIND_PARA);
+		int newBehindPara = GUI.HandleSlider(
+			1236786, rect.Shrink(GUI.LabelWidth, digitLabelWidth, 0, 0),
+			info.WorldBehindParallax, 1000, 3000, step: 100
+		).Clamp(1000, 3000);
+		if (newBehindPara != info.WorldBehindParallax) {
+			info.WorldBehindParallax = newBehindPara;
+			info.Valid(false);
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newBehindPara, GUI.Skin.SmallCenterLabel);
+		rect.SlideDown(padding);
+
+		// Behind Tint
+		GUI.SmallLabel(rect, LABEL_BEHIND_TINT);
+		byte newBehindTint = (byte)GUI.HandleSlider(
+			1236787, rect.Shrink(GUI.LabelWidth, digitLabelWidth, 0, 0),
+			info.WorldBehindAlpha, 0, 255
+		).Clamp(0, 255);
+		if (newBehindTint != info.WorldBehindAlpha) {
+			info.WorldBehindAlpha = newBehindTint;
+			info.Valid(false);
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newBehindTint, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// View Ratio
@@ -449,42 +543,7 @@ public class ProjectEditor : WindowUI {
 		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newMaxViewHeight, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
-		// Icon
-		GUI.SmallLabel(rect, LABEL_ICON);
-		int iconButtonSize = Unify(56);
-		rect.y = rect.yMax - iconButtonSize;
-		rect.height = iconButtonSize;
-		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
-		if (GUI.Button(iconButtonRect, 0, out var state, Skin.DarkButton)) {
-			FileBrowserUI.OpenFile(TITLE_PICK_ICON, "png", SetIconFromPNG);
-		}
-		if (Game.IsTextureReady(IconTexture) && !FileBrowserUI.ShowingBrowser) {
-			var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
-			contentRect.y += MasterScrollPos;
-			Game.DrawGizmosTexture(contentRect.Shrink(iconButtonRect.height / 8), IconTexture);
-		}
-		rect.height = itemHeight;
-		rect.SlideDown(padding);
-
-		// Open Project Folders
-		GUI.SmallLabel(rect, LABEL_LINK);
-		var _rect = rect.ShrinkLeft(GUI.LabelWidth);
-		if (GUI.SmallLinkButton(_rect, LABEL_LINK_PROJECT, out var bounds)) {
-			Game.OpenUrl(CurrentProject.ProjectPath);
-		}
-		_rect.xMin = bounds.xMax + Unify(12);
-		if (GUI.SmallLinkButton(_rect, LABEL_LINK_SAVING)) {
-			Util.CreateFolder(CurrentProject.Universe.SlotRoot);
-			Game.OpenUrl(CurrentProject.Universe.SlotRoot);
-		}
-		rect.SlideDown(padding);
-
 		// Func
-		static void SetIconFromPNG (string path) {
-			if (!Util.FileExists(path) || Instance.CurrentProject == null) return;
-			bool success = EngineUtil.CreateIcoFromPng(path, Instance.CurrentProject.IconPath);
-			if (success) Instance.ReloadIconUI();
-		}
 		static int UiRatio_to_Ratio (int uiRatio) => UI_RATIO[uiRatio.Clamp(0, UI_RATIO.Length - 1)].ratio;
 		static int Ratio_to_UiRatio (int ratio) {
 			for (int i = 0; i < UI_RATIO.Length; i++) {

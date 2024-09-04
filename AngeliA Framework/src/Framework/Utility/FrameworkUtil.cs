@@ -675,4 +675,18 @@ public static class FrameworkUtil {
 	}
 
 
+	public static bool MapEmptyCheck_Searchlight (
+		Int3 startUnitPoint, Direction8 direction, int unitDistance = Const.MAP, int density = 32,
+		bool ignoreLevel = false, bool ignoreBG = false, bool ignoreEntity = false, bool ignoreElement = true
+	) {
+
+
+		// TODO
+
+
+
+		return false;
+	}
+
+
 }

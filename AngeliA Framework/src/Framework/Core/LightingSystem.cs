@@ -28,6 +28,9 @@ public static class LightingSystem {
 	private static int WeightLen;
 	private static float CameraScale = 1f;
 	private static int ForceCameraScaleFrame = -1;
+	private static float ForceAirLerpValue = 1f;
+	private static int ForceAirLerpFrame = -1;
+	private static float DayTimeLerp = -1f;
 
 
 	#endregion
@@ -55,11 +58,17 @@ public static class LightingSystem {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
+		if (DayTimeLerp < 0f || Game.PauselessFrame % 3600 == 0) {
+			var date = System.DateTime.Now;
+			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
+			DayTimeLerp = Util.PingPong(time01, 0.5f);
+		}
+
 		var info = Universe.BuiltInInfo;
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
 		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_BOTTOM;
 		float solidIllu = info.LightMap_SolidIlluminance;
-		float airIllu = info.LightMap_AirIlluminance;
+		float airIllu = Util.LerpUnclamped(info.LightMap_AirIlluminanceNight, info.LightMap_AirIlluminanceDay, DayTimeLerp);
 		float sLerp = info.LightMap_SelfLerp;
 		float bgIllu = info.LightMap_BackgroundTint;
 
@@ -99,8 +108,12 @@ public static class LightingSystem {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
-		bool scaling = Game.PauselessFrame <= ForceCameraScaleFrame;
 		var info = Universe.BuiltInInfo;
+		bool scaling = Game.PauselessFrame <= ForceCameraScaleFrame;
+		bool lerpingToAir = Game.PauselessFrame <= ForceAirLerpFrame;
+		float airIllu = 256 * Util.LerpUnclamped(info.LightMap_AirIlluminanceNight, info.LightMap_AirIlluminanceDay, DayTimeLerp);
+		bool pixelStyle = info.LightMap_PixelStyle;
+
 		var cameraCenter = Renderer.CameraRect.center.CeilToInt();
 		var cameraRect = Renderer.CameraRect;
 		int left = cameraRect.x.ToUnit() - 1 - OriginUnitX;
@@ -117,7 +130,6 @@ public static class LightingSystem {
 		right = right.Clamp(0, CellWidth - 1);
 		down = down.Clamp(0, CellHeight - 1);
 		up = up.Clamp(0, CellHeight - 1);
-		bool pixelStyle = info.LightMap_PixelStyle;
 
 		// Illuminance >> Alpha
 		for (int j = down; j <= up; j++) {
@@ -138,7 +150,10 @@ public static class LightingSystem {
 					rect.x = offsetX + i * Const.CEL;
 					Game.DrawGizmosRect(
 						scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
-						new Color32(0, 0, 0, (byte)Illuminances[i, j])
+						new Color32(
+							0, 0, 0,
+							(byte)(lerpingToAir ? Util.LerpUnclamped(Illuminances[i, j], airIllu, ForceAirLerpValue) : Illuminances[i, j])
+						)
 					);
 				}
 			}
@@ -156,10 +171,20 @@ public static class LightingSystem {
 					float alphaBL = Illuminances[i - 1, j - 1];
 					float alphaBM = Illuminances[i, j - 1];
 					float alphaBR = Illuminances[i + 1, j - 1];
-					byte aTL = (byte)((alphaTL + alphaTM + alphaML + alphaMM) / 4f);
-					byte aTR = (byte)((alphaTM + alphaTR + alphaMM + alphaMR) / 4f);
-					byte aBL = (byte)((alphaML + alphaMM + alphaBL + alphaBM) / 4f);
-					byte aBR = (byte)((alphaMM + alphaMR + alphaBM + alphaBR) / 4f);
+					float tl = (alphaTL + alphaTM + alphaML + alphaMM) / 4f;
+					float tr = (alphaTM + alphaTR + alphaMM + alphaMR) / 4f;
+					float bl = (alphaML + alphaMM + alphaBL + alphaBM) / 4f;
+					float br = (alphaMM + alphaMR + alphaBM + alphaBR) / 4f;
+					if (lerpingToAir) {
+						tl = Util.LerpUnclamped(tl, airIllu, ForceAirLerpValue);
+						tr = Util.LerpUnclamped(tr, airIllu, ForceAirLerpValue);
+						bl = Util.LerpUnclamped(bl, airIllu, ForceAirLerpValue);
+						br = Util.LerpUnclamped(br, airIllu, ForceAirLerpValue);
+					}
+					byte aTL = (byte)tl;
+					byte aTR = (byte)tr;
+					byte aBL = (byte)bl;
+					byte aBR = (byte)br;
 					if (aTL == 0 && aTR == 0 && aBL == 0 && aBR == 0) continue;
 					rect.x = offsetX + i * Const.CEL;
 					Game.DrawGizmosRect(
@@ -216,6 +241,12 @@ public static class LightingSystem {
 	public static void ForceCameraScale (float scale, int duration = 1) {
 		ForceCameraScaleFrame = Game.PauselessFrame + duration;
 		CameraScale = scale;
+	}
+
+
+	public static void ForceAirLerp (float lerp, int duration = 1) {
+		ForceAirLerpFrame = Game.PauselessFrame + duration;
+		ForceAirLerpValue = lerp;
 	}
 
 

@@ -21,15 +21,18 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public int MinViewHeight = Const.CEL * 16;
 	public int MaxViewHeight = Const.CEL * 60;
 	public bool LightMap_PixelStyle = false;
-	public float LightMap_SelfLerp = 0.9f;
+	public float LightMap_SelfLerp = 0.88f;
 	public float LightMap_SolidIlluminance = 1f;
-	public float LightMap_AirIlluminance = 0.8f;
+	public float LightMap_AirIlluminanceDay = 0.8f;
+	public float LightMap_AirIlluminanceNight = 0.3f;
 	public float LightMap_BackgroundTint = 0.5f;
+	public int WorldBehindParallax = 1300;
+	public byte WorldBehindAlpha = 64;
 	public void OnAfterLoadedFromDisk () => Valid(true);
 	public void OnBeforeSaveToDisk () => Valid(true);
-	public void Valid (bool minFirst) {
+	public void Valid (bool minViewSizeFirst) {
 		ViewRatio = ViewRatio.Clamp(250, 4000);
-		if (minFirst) {
+		if (minViewSizeFirst) {
 			MinViewHeight = MinViewHeight.Clamp(Const.CEL * 16, Const.CEL * 1024);
 			MaxViewHeight = MaxViewHeight.Clamp(MinViewHeight, Const.CEL * 1024);
 		} else {
@@ -37,6 +40,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 			MinViewHeight = MinViewHeight.Clamp(Const.CEL * 16, MaxViewHeight);
 		}
 		DefaultViewHeight = DefaultViewHeight.Clamp(MinViewHeight, MaxViewHeight);
+		WorldBehindParallax = WorldBehindParallax.Clamp(300, 3000);
 	}
 
 }

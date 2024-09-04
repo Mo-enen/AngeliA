@@ -517,9 +517,9 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	}
 
 
-	public void EnterTeleportState (int duration, bool front, bool withPortal) {
-		_TeleportEndFrame = (Game.GlobalFrame + duration) * (front ? 1 : -1);
-		_TeleportDuration = withPortal ? -duration : duration;
+	public void EnterTeleportState (int duration, bool front) {
+		_TeleportEndFrame = (Game.GlobalFrame + duration.Abs()) * (front ? 1 : -1);
+		_TeleportDuration = duration;
 	}
 
 

@@ -243,7 +243,8 @@ public partial class Engine {
 				calling.RequireLightMapSettingChange = true;
 				calling.Setting_LM_PixelStyle = currentInfo.LightMap_PixelStyle;
 				calling.Setting_LM_SelfLerp = (int)(currentInfo.LightMap_SelfLerp * 1000);
-				calling.Setting_LM_AirIlluminance = (int)(currentInfo.LightMap_AirIlluminance * 1000);
+				calling.Setting_LM_AirIlluminanceDay = (int)(currentInfo.LightMap_AirIlluminanceDay * 1000);
+				calling.Setting_LM_AirIlluminanceNight = (int)(currentInfo.LightMap_AirIlluminanceNight * 1000);
 				calling.Setting_LM_BackgroundTint = (int)(currentInfo.LightMap_BackgroundTint * 1000);
 				calling.Setting_LM_SolidIlluminance = (int)(currentInfo.LightMap_SolidIlluminance * 1000);
 				// Save Uni-Info to File

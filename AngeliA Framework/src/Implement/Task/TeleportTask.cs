@@ -18,6 +18,7 @@ public class TeleportTask : Task {
 	// Data
 	private bool ToBehind = true;
 
+
 	// MSG
 	public override void OnStart () {
 		base.OnStart();
@@ -25,13 +26,115 @@ public class TeleportTask : Task {
 		ToBehind = TeleportTo.z > Stage.ViewZ;
 	}
 
+
 	public override TaskResult FrameUpdate () {
 
-		bool useVig = UseVignette;
-		bool useParallax = UseParallax;
+		int teleFrame = Duration - (Duration - WaitDuration) / 2;
+
+		// Parallax
+		if (UseParallax && LocalFrame > WaitDuration) {
+			int PARA = Universe.BuiltInInfo.WorldBehindParallax;
+			float scale = ToBehind ? 1000f / PARA : PARA / 1000f;
+			var center = Renderer.CameraRect.CenterInt();
+			float lerp = Util.InverseLerp(WaitDuration + 1, Duration, LocalFrame);
+			if (LocalFrame <= teleFrame) {
+				// First Para
+				float localLerp = lerp * 2f;
+				float ease = Util.LerpUnclamped(1f, 1f / scale, Ease.InOutSine(lerp));
+
+				// Behind
+				if (Renderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
+					ParaLogic(cells, center, count, ease);
+					if (ToBehind) {
+						for (int i = 0; i < count; i++) {
+							var cell = cells[i];
+							cell.Color.a = (byte)Util.LerpUnclamped(cell.Color.a, 255, lerp).Clamp(0, 255);
+						}
+					} else {
+						Renderer.SetLayerAlpha(
+							RenderLayer.BEHIND,
+							(byte)Util.LerpUnclamped(255, 0, localLerp).Clamp(0, 255)
+						);
+					}
+				}
+
+				// Front
+				for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+					if (
+						layer == RenderLayer.WALLPAPER ||
+						layer == RenderLayer.UI ||
+						layer == RenderLayer.BEHIND
+					) continue;
+					if (Renderer.GetCells(layer, out cells, out count)) {
+						ParaLogic(cells, center, count, ease);
+					}
+					if (ToBehind) {
+						Renderer.SetLayerAlpha(
+							layer,
+							(byte)Util.LerpUnclamped(255, 0, localLerp).Clamp(0, 255)
+						);
+					}
+				}
+
+				// Lightmap
+				LightingSystem.ForceCameraScale(ease);
+				LightingSystem.ForceAirLerp(localLerp);
+
+			} else {
+				// Second Para
+				float localLerp = lerp * 2f - 1f;
+				float ease = Util.LerpUnclamped(scale, 1f, Ease.InOutSine(lerp));
+
+				// Behind
+				if (Renderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
+					ParaLogic(cells, center, count, ease);
+					if (ToBehind) {
+						Renderer.SetLayerAlpha(
+							RenderLayer.BEHIND,
+							(byte)Util.LerpUnclamped(0, 255, localLerp).Clamp(0, 255)
+						);
+					} else {
+						for (int i = 0; i < count; i++) {
+							var cell = cells[i];
+							cell.Color.a = (byte)Util.LerpUnclamped(255, cell.Color.a, localLerp).Clamp(0, 255);
+						}
+					}
+				}
+
+				// Front
+				byte bAlpha = Universe.BuiltInInfo.WorldBehindAlpha;
+				for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
+					if (
+						layer == RenderLayer.WALLPAPER ||
+						layer == RenderLayer.UI ||
+						layer == RenderLayer.BEHIND
+					) continue;
+					if (Renderer.GetCells(layer, out cells, out count)) {
+						ParaLogic(cells, center, count, ease);
+					}
+					if (ToBehind) {
+						Renderer.SetLayerAlpha(
+							layer,
+							(byte)Util.LerpUnclamped(bAlpha, 255, lerp).Clamp(0, 255)
+						);
+					} else {
+						Renderer.SetLayerAlpha(
+							layer,
+							(byte)Util.LerpUnclamped(0, 255, localLerp).Clamp(0, 255)
+						);
+					}
+				}
+
+				// Lightmap
+				LightingSystem.ForceCameraScale(ease);
+				LightingSystem.ForceAirLerp(1f - (localLerp * 2f).Clamp01());
+
+			}
+
+		}
 
 		// Teleport
-		if (LocalFrame == WaitDuration) {
+		if (LocalFrame == teleFrame - 1) {
 			// Position
 			int offsetX = TeleportFrom.x - Stage.ViewRect.xMin;
 			int offsetY = TeleportFrom.y - Stage.ViewRect.yMin;
@@ -44,43 +147,17 @@ public class TeleportTask : Task {
 			}
 		}
 
-		// Add Squad Effect
-		if (useParallax && LocalFrame > WaitDuration + 1) {
-			int PARA = Game.WorldBehindParallax;
-			float scale = ToBehind ? 1000f / PARA : PARA / 1000f;
-			float z01 = Util.InverseLerp(WaitDuration, Duration, LocalFrame);
-			float lerp = Util.LerpUnclamped(scale, 1f, Ease.InOutSine(z01));
-			var center = Renderer.CameraRect.center.CeilToInt();
-			// Behind
-			if (Renderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
-				MapEffectLogic(cells, center, count, scale, lerp, true, ToBehind);
-			}
-			// Front
-			for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
-				if (
-					layer == RenderLayer.WALLPAPER ||
-					layer == RenderLayer.UI ||
-					layer == RenderLayer.BEHIND
-				) continue;
-				if (Renderer.GetCells(layer, out cells, out count)) {
-					MapEffectLogic(cells, center, count, scale, lerp, false, ToBehind);
-				}
-			}
-			// Lightmap
-			LightingSystem.ForceCameraScale(lerp);
-		}
-
 		// Update Vig Effect
-		if (useVig) {
+		if (UseVignette) {
 			var cameraRect = Renderer.CameraRect;
-			if (LocalFrame < WaitDuration) {
-				float radius = Util.RemapUnclamped(0, WaitDuration - 1, 1f, 0f, LocalFrame);
+			if (LocalFrame < teleFrame) {
+				float radius = Util.RemapUnclamped(0, teleFrame - 1, 1f, 0f, LocalFrame);
 				float offsetX = Util.RemapUnclamped(cameraRect.xMin, cameraRect.xMax, -1f, 1f, TeleportFrom.x);
 				float offsetY = Util.RemapUnclamped(cameraRect.yMin, cameraRect.yMax, -1f, 1f, TeleportFrom.y);
 				Game.PassEffect_Vignette(radius * radius, 0f, offsetX, offsetY, 1f);
 				return TaskResult.Continue;
 			} else if (LocalFrame < Duration) {
-				float t01 = Util.RemapUnclamped(WaitDuration, Duration - 1, 0f, 1f, LocalFrame);
+				float t01 = Util.RemapUnclamped(teleFrame, Duration - 1, 0f, 1f, LocalFrame);
 				float radius = 1f - t01;
 				radius = 1f - radius * radius;
 				radius *= 2f;
@@ -101,23 +178,23 @@ public class TeleportTask : Task {
 		}
 	}
 
+
 	// API
-	public static TeleportTask Teleport (
-		int fromX, int fromY, int toX, int toY, int toZ,
-		int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true, bool withPortal = false
-	) {
+	public static TeleportTask TeleportParallax (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 6, 42, false, true);// 6 56
+	public static TeleportTask TeleportVegnette (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 30, -60, true, false);
+	public static TeleportTask TeleportLogic (int fromX, int fromY, int toX, int toY, int toZ, int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true) {
 		if (TaskSystem.HasTask()) return null;
 		if (TaskSystem.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
 			svTask.TeleportFrom = new Int2(fromX, fromY);
 			svTask.TeleportTo = new Int3(toX, toY, toZ);
 			svTask.WaitDuration = waitDuration;
-			svTask.Duration = duration;
+			svTask.Duration = duration.Abs();
 			svTask.UseParallax = useParallax;
 			svTask.UseVignette = useVignette;
 			var player = Player.Selecting;
 			if (player != null) {
 				player.Movement.Stop();
-				player.EnterTeleportState(svTask.Duration, Stage.ViewZ > toZ, withPortal);
+				player.EnterTeleportState(duration, Stage.ViewZ > toZ);
 				player.VelocityX = 0;
 				player.VelocityY = 0;
 			}
@@ -126,38 +203,26 @@ public class TeleportTask : Task {
 		return null;
 	}
 
+
 	// LGC
-	private static void MapEffectLogic (Cell[] cells, Int2 center, int count, float scale, float lerp, bool isBehind, bool toBehind) {
-		// Behind Tint
-		if (isBehind) {
-			for (int i = 0; i < count; i++) {
-				var cell = cells[i];
-				var c = cell.Color;
-				if (toBehind) {
-					c.a = (byte)Util.Remap(scale, 1f, 0, c.a, lerp).Clamp(0, 255);
-				} else {
-					c.a = (byte)Util.Remap(scale, 1f, 255, c.a, lerp).Clamp(0, 255);
-				}
-				cell.Color = c;
-			}
-		}
-		// Scale
+	private static void ParaLogic (Cell[] cells, Int2 center, int count, float ease) {
 		for (int i = 0; i < count; i++) {
 			var cell = cells[i];
 			if (cell.Rotation1000 == 0) {
-				cell.X = Util.LerpUnclamped(center.x, cell.X - cell.PivotX * cell.Width, lerp).FloorToInt();
-				cell.Y = Util.LerpUnclamped(center.y, cell.Y - cell.PivotY * cell.Height, lerp).FloorToInt();
-				cell.Width = cell.Width > 0 ? (cell.Width * lerp).CeilToInt() : (cell.Width * lerp).FloorToInt();
-				cell.Height = cell.Height > 0 ? (cell.Height * lerp).CeilToInt() : (cell.Height * lerp).FloorToInt();
+				cell.X = Util.LerpUnclamped(center.x, cell.X - cell.PivotX * cell.Width, ease).FloorToInt();
+				cell.Y = Util.LerpUnclamped(center.y, cell.Y - cell.PivotY * cell.Height, ease).FloorToInt();
+				cell.Width = cell.Width > 0 ? (cell.Width * ease).CeilToInt() : (cell.Width * ease).FloorToInt();
+				cell.Height = cell.Height > 0 ? (cell.Height * ease).CeilToInt() : (cell.Height * ease).FloorToInt();
 				cell.PivotX = 0;
 				cell.PivotY = 0;
 			} else {
-				cell.X = Util.LerpUnclamped(center.x, cell.X, lerp).FloorToInt();
-				cell.Y = Util.LerpUnclamped(center.y, cell.Y, lerp).FloorToInt();
-				cell.Width = (cell.Width * lerp).CeilToInt();
-				cell.Height = (cell.Height * lerp).CeilToInt();
+				cell.X = Util.LerpUnclamped(center.x, cell.X, ease).FloorToInt();
+				cell.Y = Util.LerpUnclamped(center.y, cell.Y, ease).FloorToInt();
+				cell.Width = (cell.Width * ease).CeilToInt();
+				cell.Height = (cell.Height * ease).CeilToInt();
 			}
 		}
 	}
+
 
 }

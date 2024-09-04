@@ -95,8 +95,8 @@ public abstract class Door : EnvironmentEntity {
 	// API
 	public virtual bool Invoke (Player player) {
 		if (player == null || TaskSystem.HasTask()) return false;
-		TeleportTask.Teleport(
-			X + Width / 2, Y + Height / 2, X + Width / 2, Y,
+		TeleportTask.TeleportParallax(
+			X + Width / 2, Y, X + Width / 2, Y,
 			IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
 		);
 		player.X = X + Width / 2;

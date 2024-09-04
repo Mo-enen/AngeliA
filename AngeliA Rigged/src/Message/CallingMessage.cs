@@ -86,7 +86,8 @@ public class RigCallingMessage {
 	public bool Setting_LM_PixelStyle;
 	public int Setting_LM_SelfLerp;
 	public int Setting_LM_SolidIlluminance;
-	public int Setting_LM_AirIlluminance;
+	public int Setting_LM_AirIlluminanceDay;
+	public int Setting_LM_AirIlluminanceNight;
 	public int Setting_LM_BackgroundTint;
 	public ToolCommand RequireToolsetCommand = ToolCommand.None;
 
@@ -279,7 +280,8 @@ public class RigCallingMessage {
 				Setting_LM_PixelStyle = Util.ReadBool(ref pointer, end);
 				Setting_LM_SelfLerp = Util.ReadInt(ref pointer, end);
 				Setting_LM_SolidIlluminance = Util.ReadInt(ref pointer, end);
-				Setting_LM_AirIlluminance = Util.ReadInt(ref pointer, end);
+				Setting_LM_AirIlluminanceDay = Util.ReadInt(ref pointer, end);
+				Setting_LM_AirIlluminanceNight = Util.ReadInt(ref pointer, end);
 				Setting_LM_BackgroundTint = Util.ReadInt(ref pointer, end);
 			}
 
@@ -372,7 +374,8 @@ public class RigCallingMessage {
 				Util.Write(ref pointer, Setting_LM_PixelStyle, end);
 				Util.Write(ref pointer, Setting_LM_SelfLerp, end);
 				Util.Write(ref pointer, Setting_LM_SolidIlluminance, end);
-				Util.Write(ref pointer, Setting_LM_AirIlluminance, end);
+				Util.Write(ref pointer, Setting_LM_AirIlluminanceDay, end);
+				Util.Write(ref pointer, Setting_LM_AirIlluminanceNight, end);
 				Util.Write(ref pointer, Setting_LM_BackgroundTint, end);
 			}
 

@@ -11,7 +11,8 @@ public partial class RiggedMapEditor {
 	private static readonly LanguageCode LABEL_PIXEL_STYLE = ("UI.RigEditor.PixelStyle", "Use Pixel Style");
 	private static readonly LanguageCode LABEL_SELF_LERP = ("UI.RigEditor.SelfLerp", "Self Lerp");
 	private static readonly LanguageCode LABEL_SOLID_ILLU = ("UI.RigEditor.SolidIllu", "Solid Illuminance");
-	private static readonly LanguageCode LABEL_AIR_ILLU = ("UI.RigEditor.AirIllu", "Air Illuminance");
+	private static readonly LanguageCode LABEL_AIR_ILLU_DAY = ("UI.RigEditor.AirIlluDay", "Air Illuminance (Day)");
+	private static readonly LanguageCode LABEL_AIR_ILLU_NIGHT = ("UI.RigEditor.AirIlluNight", "Air Illuminance (Night)");
 	private static readonly LanguageCode LABEL_BG_TINT = ("UI.RigEditor.BgTint", "Background Tint");
 	public bool LightMapSettingChanged { get; set; } = false;
 
@@ -61,13 +62,22 @@ public partial class RiggedMapEditor {
 		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_SolidIlluminance * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
-		// Air Illuminance
-		GUI.SmallLabel(rect, LABEL_AIR_ILLU);
-		info.LightMap_AirIlluminance = GUI.HandleSlider(
+		// Air Illuminance D
+		GUI.SmallLabel(rect, LABEL_AIR_ILLU_DAY);
+		info.LightMap_AirIlluminanceDay = GUI.HandleSlider(
 			37423674, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
-			(int)(info.LightMap_AirIlluminance * 1000), 0, 1000
+			(int)(info.LightMap_AirIlluminanceDay * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_AirIlluminance * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_AirIlluminanceDay * 1000), GUI.Skin.SmallCenterLabel);
+		rect.SlideDown(padding);
+
+		// Air Illuminance N
+		GUI.SmallLabel(rect, LABEL_AIR_ILLU_NIGHT);
+		info.LightMap_AirIlluminanceNight = GUI.HandleSlider(
+			37413674, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
+			(int)(info.LightMap_AirIlluminanceNight * 1000), 0, 1000
+		) / 1000f;
+		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_AirIlluminanceNight * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Background Tint
@@ -83,10 +93,11 @@ public partial class RiggedMapEditor {
 		rect.SlideDown();
 		if (GUI.DarkButton(rect, BuiltInText.UI_RESET)) {
 			info.LightMap_PixelStyle = false;
-			info.LightMap_SelfLerp = 0.9f;
-			info.LightMap_SolidIlluminance = 1.05f;
-			info.LightMap_AirIlluminance = 0.8f;
-			info.LightMap_BackgroundTint = 0.8f;
+			info.LightMap_SelfLerp = 0.88f;
+			info.LightMap_SolidIlluminance = 1f;
+			info.LightMap_AirIlluminanceDay = 0.8f;
+			info.LightMap_AirIlluminanceNight = 0.3f;
+			info.LightMap_BackgroundTint = 0.5f;
 			LightMapSettingChanged = true;
 		}
 		rect.SlideDown(padding);

@@ -50,9 +50,11 @@ public class RigRespondMessage {
 	public class RenderingLayerData {
 		public int CellCount;
 		public readonly RenderingCellData[] Cells;
+		public byte layerAlpha;
 		public RenderingLayerData (int capacity) {
 			CellCount = 0;
 			Cells = new RenderingCellData[capacity].FillWithNewValue();
+			layerAlpha = 255;
 		}
 	}
 
@@ -150,6 +152,7 @@ public class RigRespondMessage {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
 				layer.CellCount = 0;
+				layer.layerAlpha = 255;
 			}
 		}
 	}
@@ -268,6 +271,7 @@ public class RigRespondMessage {
 				var layerData = Layers[layer];
 				int count = layerData.CellCount;
 				Renderer.SetLayer(layer);
+				Renderer.SetLayerAlpha(layer, layerData.layerAlpha);
 				for (int i = 0; i < count; i++) {
 					var cell = layerData.Cells[i];
 					Cell rCell = null;
@@ -449,6 +453,7 @@ public class RigRespondMessage {
 				}
 				var layer = Layers[index];
 				layer.CellCount = Util.ReadInt(ref pointer, end);
+				layer.layerAlpha = Util.ReadByte(ref pointer, end);
 				for (int i = 0; i < layer.CellCount; i++) {
 					var cell = layer.Cells[i];
 					cell.SpriteID = Util.ReadInt(ref pointer, end);
@@ -584,6 +589,7 @@ public class RigRespondMessage {
 				}
 				var layer = Layers[index];
 				Util.Write(ref pointer, layer.CellCount, end);
+				Util.Write(ref pointer, layer.layerAlpha, end);
 				for (int i = 0; i < layer.CellCount; i++) {
 					var cell = layer.Cells[i];
 					Util.Write(ref pointer, cell.SpriteID, end);

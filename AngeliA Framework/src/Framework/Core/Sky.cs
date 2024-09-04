@@ -34,7 +34,7 @@ public static class Sky {
 	public static void OnGameUpdatePauseless () {
 		if (
 			Game.GlobalFrame == ForceBackgroundTintFrame + 1 ||
-			(Game.GlobalFrame % 36000 == 0 && Game.GlobalFrame >= ForceBackgroundTintFrame)
+			(Game.GlobalFrame % 3600 == 0 && Game.GlobalFrame >= ForceBackgroundTintFrame)
 		) {
 			RefreshSkyTintFromDateTime();
 		}

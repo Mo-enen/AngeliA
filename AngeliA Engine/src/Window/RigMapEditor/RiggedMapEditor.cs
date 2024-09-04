@@ -207,12 +207,14 @@ public partial class RiggedMapEditor : WindowUI {
 			rect.SlideLeft(padding);
 
 			// Lighting
-			isOn = CurrentPanel == PanelType.Lighting;
-			newIsOn = GUI.IconToggle(rect, isOn, BTN_LIGHTING);
-			if (isOn != newIsOn) {
-				CurrentPanel = isOn ? PanelType.None : PanelType.Lighting;
+			if (CurrentProject.Universe.Info.UseLightingSystem) {
+				isOn = CurrentPanel == PanelType.Lighting;
+				newIsOn = GUI.IconToggle(rect, isOn, BTN_LIGHTING);
+				if (isOn != newIsOn) {
+					CurrentPanel = isOn ? PanelType.None : PanelType.Lighting;
+				}
+				rect.SlideLeft(padding);
 			}
-			rect.SlideLeft(padding);
 
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
@@ -246,6 +248,8 @@ public partial class RiggedMapEditor : WindowUI {
 			RequireNextFrame = false;
 			if (CurrentPanel == PanelType.Movement || CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
 		}
+
+		if (!CurrentProject.Universe.Info.UseLightingSystem && CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
 
 		// Draw Panels
 		panelRect.width = panelRect.x - rect.xMax;

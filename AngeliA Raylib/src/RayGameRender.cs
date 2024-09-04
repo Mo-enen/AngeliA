@@ -132,9 +132,7 @@ public partial class RayGame {
 
 	}
 
-	protected override void _AfterAllLayersUpdate () {
-		//Raylib.BeginTextureMode(GizmosRenderTexture);
-	}
+	protected override void _AfterAllLayersUpdate () { }
 
 	protected override void _OnLayerUpdate (int layerIndex, Cell[] cells, int cellCount) {
 
@@ -149,6 +147,21 @@ public partial class RayGame {
 				new Vector2(0, 0), Color.White
 			);
 			Raylib.EndBlendMode();
+		}
+
+		// Apply Prev Pixels for Transparent Layer
+		byte layerAlpha = Renderer.GetLayerAlpha(layerIndex);
+		if (layerAlpha == 0) return;
+		if (layerAlpha < 255) {
+			Raylib.EndTextureMode();
+			Raylib.BeginDrawing();
+			Raylib.DrawTextureRec(
+				RenderTexture.Texture,
+				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+				default, Color.White
+			);
+			Raylib.BeginTextureMode(RenderTexture);
+			Raylib.ClearBackground(Color.Blank);
 		}
 
 		var cameraRect = Renderer.CameraRect;
@@ -301,6 +314,20 @@ public partial class RayGame {
 		if (usingShader) Raylib.EndShaderMode();
 		Raylib.EndBlendMode();
 
+		// Apply for Transparent Layer
+		if (layerAlpha < 255) {
+			Raylib.EndTextureMode();
+			Raylib.BeginDrawing();
+			Raylib.DrawTextureRec(
+				RenderTexture.Texture,
+				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+				default,
+				new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, layerAlpha)
+			);
+			Raylib.BeginTextureMode(RenderTexture);
+			Raylib.ClearBackground(Color.Blank);
+		}
+
 		// Func
 		static void ShiftCell (Cell cell, ref Rectangle source, ref Rectangle dest, ref float pivotX, ref float pivotY, out bool skipCell) {
 
@@ -450,7 +477,7 @@ public partial class RayGame {
 			colorTL.ToRaylib(), colorBL.ToRaylib(), colorBR.ToRaylib(), colorTR.ToRaylib()
 		);
 	}
-	
+
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		if (texture is not Texture2D rTexture) return;

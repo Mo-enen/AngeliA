@@ -44,7 +44,7 @@ public abstract class MapGenerator {
 
 
 	// Region Util
-	public static void InitNoiseForRegion (FastNoiseLite noise, long seed) {
+	protected static void InitNoiseForRegion (FastNoiseLite noise, long seed) {
 
 		// V1
 		//noise.SetSeed(seed);
@@ -74,13 +74,13 @@ public abstract class MapGenerator {
 	}
 
 
-	public static int GetRegionIndex (FastNoiseLite noise, int unitX, int unitY, int unitZ, int regionCount) {
+	protected static int GetRegionIndex (FastNoiseLite noise, int unitX, int unitY, int unitZ, int regionCount) {
 		float noise01 = noise.GetNoise01(unitX, unitY, unitZ);
 		return (int)(noise01 * regionCount).Clamp(0, regionCount - 1);
 	}
 
 
-	public static void FillAltitude (int[] altitudes, FastNoiseLite noise, int unitLeft, int unitDown, int z, int regionCount, int zoom = 1) {
+	protected static void FillAltitude (int[] altitudes, FastNoiseLite noise, int unitLeft, int unitDown, int z, int regionCount, int zoom = 1) {
 		for (int i = 0; i < Const.MAP; i++) {
 			int unitX = i * zoom + unitLeft;
 			int currentIndex = i;

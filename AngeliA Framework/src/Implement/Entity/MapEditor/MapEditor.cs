@@ -143,6 +143,8 @@ public sealed partial class MapEditor : WindowUI {
 	private bool? RequireSetMode = null;
 	private bool ForceManuallyDropPlayer = false;
 	private Long4? TargetUndoViewPos = null;
+	private byte WorldBehindAlpha;
+	private int WorldBehindParallax;
 
 
 	#endregion
@@ -229,7 +231,8 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
-
+		WorldBehindAlpha = Universe.BuiltInInfo.WorldBehindAlpha;
+		WorldBehindParallax = Universe.BuiltInInfo.WorldBehindParallax;
 	}
 
 
@@ -754,11 +757,11 @@ public sealed partial class MapEditor : WindowUI {
 			using var _ = new LayerScope(RenderLayer.BEHIND);
 			var cameraRectF = cameraRect.ToFRect();
 			var behindCameraRect = cameraRectF.ScaleFrom(
-				Game.WorldBehindParallax / 1000f,
+				WorldBehindParallax / 1000f,
 				cameraRectF.x + cameraRectF.width / 2,
 				cameraRectF.y + cameraRectF.height / 2
 			).ToIRect();
-			int blockSize = (Const.CEL * 1000).CeilDivide(Game.WorldBehindParallax);
+			int blockSize = (Const.CEL * 1000).CeilDivide(WorldBehindParallax);
 
 			int z = CurrentZ + 1;
 			int left = behindCameraRect.xMin.ToUnit() - 1;
@@ -1347,7 +1350,7 @@ public sealed partial class MapEditor : WindowUI {
 			Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 		);
 
-		tint.a = Game.WorldBehindAlpha;
+		tint.a = WorldBehindAlpha;
 		Renderer.Draw(sprite, rect, tint, 0);
 	}
 

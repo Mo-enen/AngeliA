@@ -261,7 +261,8 @@ public partial class RiggedGame : Game {
 			info.LightMap_PixelStyle = CallingMessage.Setting_LM_PixelStyle;
 			info.LightMap_SelfLerp = CallingMessage.Setting_LM_SelfLerp / 1000f;
 			info.LightMap_SolidIlluminance = CallingMessage.Setting_LM_SolidIlluminance / 1000f;
-			info.LightMap_AirIlluminance = CallingMessage.Setting_LM_AirIlluminance / 1000f;
+			info.LightMap_AirIlluminanceDay = CallingMessage.Setting_LM_AirIlluminanceDay / 1000f;
+			info.LightMap_AirIlluminanceNight = CallingMessage.Setting_LM_AirIlluminanceNight / 1000f;
 			info.LightMap_BackgroundTint = CallingMessage.Setting_LM_BackgroundTint / 1000f;
 		}
 
@@ -333,6 +334,7 @@ public partial class RiggedGame : Game {
 			if (!Renderer.GetCells(layer, out var cells, out int count)) continue;
 			count = Util.Min(count, layerData.Cells.Length);
 			layerData.CellCount = count;
+			layerData.layerAlpha = Renderer.GetLayerAlpha(layer);
 			for (int i = 0; i < count; i++) {
 				var source = cells[i];
 				var target = layerData.Cells[i];

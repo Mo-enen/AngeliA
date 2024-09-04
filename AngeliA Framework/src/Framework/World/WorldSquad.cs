@@ -25,10 +25,14 @@ public sealed class WorldSquad : IBlockSquad {
 	private static event System.Action AfterLevelRendered;
 	private static readonly Dictionary<int, int> LevelToEntityRedirect = new();
 	private static readonly Int3[] WorldPosInViewCache = new Int3[128];
-	private int BackgroundBlockSize = Const.CEL;
+	private static IRect MapGenerationSearchedRange = new(int.MinValue + Const.CEL * 8, int.MinValue + Const.CEL * 8, Const.CEL * 8, Const.CEL * 8);
+	private static int LastSearchedRangeUpdateFrame = int.MinValue;
+	private static byte WorldBehindAlpha;
+	private static int WorldBehindParallax;
 	private IRect CullingCameraRect = default;
-	private IRect ParallaxRect = default;
 	private IRect CameraRect = default;
+	private float ReversePara01 = 1f;
+	private Int2 ParaCenter = default;
 
 
 	#endregion
@@ -43,6 +47,8 @@ public sealed class WorldSquad : IBlockSquad {
 	internal static TaskResult OnGameInitialize () {
 		if (!Renderer.IsReady) return TaskResult.Continue;
 		bool useProceduralMap = Universe.BuiltInInfo.UseProceduralMap;
+		WorldBehindAlpha = Universe.BuiltInInfo.WorldBehindAlpha;
+		WorldBehindParallax = Universe.BuiltInInfo.WorldBehindParallax;
 		DontSaveChangesToFile = !useProceduralMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
@@ -108,9 +114,19 @@ public sealed class WorldSquad : IBlockSquad {
 			Stream.SaveAllDirty();
 		}
 		// Check for Generation
-		if (Universe.BuiltInInfo.UseProceduralMap && Game.GlobalFrame % 30 == 0) {
+		if (
+			Universe.BuiltInInfo.UseProceduralMap &&
+			!MapGenerationSearchedRange.Contains(Stage.ViewRect.CenterInt()) &&
+			Game.PauselessFrame > LastSearchedRangeUpdateFrame + 30
+		) {
+			MapGenerationSearchedRange.x = Stage.ViewRect.x + Stage.ViewRect.width / 2 - MapGenerationSearchedRange.width / 2;
+			MapGenerationSearchedRange.y = Stage.ViewRect.y + Stage.ViewRect.height / 2 - MapGenerationSearchedRange.height / 2;
+			LastSearchedRangeUpdateFrame = Game.PauselessFrame;
+			// Search for Map Generation
+
 
 			// TODO
+
 
 		}
 	}
@@ -207,7 +223,6 @@ public sealed class WorldSquad : IBlockSquad {
 		CameraRect = Renderer.CameraRect;
 		var cullingPadding = Stage.GetCameraCullingPadding();
 		CullingCameraRect = CameraRect.Expand(cullingPadding);
-		float para01 = Game.WorldBehindParallax / 1000f;
 
 		if (!isBehind) {
 			// Current
@@ -215,10 +230,16 @@ public sealed class WorldSquad : IBlockSquad {
 			unitRect_Level = unitRect_Entity.Expand(Const.LEVEL_SPAWN_PADDING_UNIT);
 		} else {
 			// Behind
-			BackgroundBlockSize = (Const.CEL / para01).CeilToInt();
+			float para01 = WorldBehindParallax / 1000f;
+			ReversePara01 = 1f / para01;
+			ParaCenter = CameraRect.CenterInt();
 			var parallax = ((Float2)CameraRect.size * ((para01 - 1f) / 2f)).CeilToInt();
-			ParallaxRect = CameraRect.Expand(parallax.x, parallax.x, parallax.y, parallax.y);
-			var parallaxUnitRect = ParallaxRect.Expand(cullingPadding).ToUnit();
+			var parallaxUnitRect = CameraRect.Expand(
+				cullingPadding.left + parallax.x,
+				cullingPadding.right + parallax.x,
+				cullingPadding.down + parallax.y,
+				cullingPadding.up + parallax.y
+			).ToUnit();
 			parallaxUnitRect.width += 2;
 			parallaxUnitRect.height += 2;
 			parallaxUnitRect.x--;
@@ -418,10 +439,8 @@ public sealed class WorldSquad : IBlockSquad {
 
 		var cameraRect = CameraRect;
 		var rect = new IRect(
-			Util.RemapUnclamped(ParallaxRect.xMin, ParallaxRect.xMax, cameraRect.xMin, cameraRect.xMax, unitX * Const.CEL),
-			Util.RemapUnclamped(ParallaxRect.yMin, ParallaxRect.yMax, cameraRect.yMin, cameraRect.yMax, unitY * Const.CEL),
-			BackgroundBlockSize, BackgroundBlockSize
-		);
+			unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL
+		).ScaleFrom(ReversePara01, ParaCenter.x, ParaCenter.y);
 
 		if (
 			fixRatio &&
@@ -439,7 +458,7 @@ public sealed class WorldSquad : IBlockSquad {
 			Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 		);
 
-		tint.a = Game.WorldBehindAlpha;
+		tint.a = WorldBehindAlpha;
 
 		Renderer.Draw(sprite, rect, tint, 0);
 	}

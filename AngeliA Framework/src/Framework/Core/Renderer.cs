@@ -31,6 +31,7 @@ public static class Renderer {
 		public int PrevCellCount;
 		public int SortedIndex;
 		public int SortingOrder;
+		public byte LayerAlpha;
 		public void ZSort () {
 			if (SortedIndex < Count - 1) {
 				var span = new Span<Cell>(Cells);
@@ -122,6 +123,7 @@ public static class Renderer {
 				PrevCellCount = 0,
 				SortedIndex = 0,
 				SortingOrder = order,
+				LayerAlpha = 255,
 			};
 		}
 
@@ -242,6 +244,7 @@ public static class Renderer {
 		CurrentLayerIndex = RenderLayer.DEFAULT;
 		for (int i = 0; i < Layers.Length; i++) {
 			var layer = Layers[i];
+			layer.LayerAlpha = 255;
 			if (Game.IsPlaying || i == RenderLayer.UI) {
 				layer.FocusedCell = 0;
 				layer.SortedIndex = 0;
@@ -800,6 +803,10 @@ public static class Renderer {
 			return false;
 		}
 	}
+
+
+	public static byte GetLayerAlpha (int layer) => Layers[layer].LayerAlpha;
+	public static void SetLayerAlpha (int layer, byte alpha) => Layers[layer].LayerAlpha = alpha;
 
 
 	// Internal
