@@ -23,9 +23,10 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public bool LightMap_PixelStyle = false;
 	public float LightMap_SelfLerp = 0.88f;
 	public float LightMap_SolidIlluminance = 1f;
-	public float LightMap_AirIlluminanceDay = 0.8f;
+	public float LightMap_AirIlluminanceDay = 0.95f;
 	public float LightMap_AirIlluminanceNight = 0.3f;
 	public float LightMap_BackgroundTint = 0.5f;
+	public float LightMap_LevelIlluminateRemain = 0.3f;
 	public int WorldBehindParallax = 1300;
 	public byte WorldBehindAlpha = 64;
 	public void OnAfterLoadedFromDisk () => Valid(true);

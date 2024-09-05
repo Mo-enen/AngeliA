@@ -624,6 +624,8 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
 			Selecting = player;
 			LastPlayerID.Value = player.TypeID;
+			HomeUnitPosition = null;
+			RespawnCpUnitPosition = null;
 		}
 	}
 
@@ -636,7 +638,6 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	bool IActionTarget.Invoke () {
-		RespawnCpUnitPosition = null;
 		TaskSystem.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
 		TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 		return true;

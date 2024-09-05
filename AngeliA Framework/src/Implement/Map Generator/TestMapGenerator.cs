@@ -12,7 +12,7 @@ internal class TestMapGenerator : MapGenerator {
 	private static readonly int[] AltitudeCache = new int[Const.MAP * Const.MAP];
 
 
-	public override MapGenerationResult GenerateMap (Int3 startPoint, Direction8 startDirection) {
+	public override MapGenerationResult GenerateMap (Int3 startPoint, Direction8? startDirection) {
 
 
 

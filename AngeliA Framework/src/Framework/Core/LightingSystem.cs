@@ -58,12 +58,6 @@ public static class LightingSystem {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
-		if (DayTimeLerp < 0f || Game.PauselessFrame % 3600 == 0) {
-			var date = System.DateTime.Now;
-			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
-			DayTimeLerp = Util.PingPong(time01, 0.5f);
-		}
-
 		var info = Universe.BuiltInInfo;
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
 		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_BOTTOM;
@@ -71,6 +65,13 @@ public static class LightingSystem {
 		float airIllu = Util.LerpUnclamped(info.LightMap_AirIlluminanceNight, info.LightMap_AirIlluminanceDay, DayTimeLerp);
 		float sLerp = info.LightMap_SelfLerp;
 		float bgIllu = info.LightMap_BackgroundTint;
+
+		// Daytime Update
+		if (DayTimeLerp < 0f || Game.PauselessFrame % 3600 == 0) {
+			var date = System.DateTime.Now;
+			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
+			DayTimeLerp = Ease.InOutQuint(Util.PingPong(time01, 0.5f) * 2f);
+		}
 
 		// First Row
 		int originUnitTop = OriginUnitY + CellHeight - 1;
@@ -111,7 +112,7 @@ public static class LightingSystem {
 		var info = Universe.BuiltInInfo;
 		bool scaling = Game.PauselessFrame <= ForceCameraScaleFrame;
 		bool lerpingToAir = Game.PauselessFrame <= ForceAirLerpFrame;
-		float airIllu = 256 * Util.LerpUnclamped(info.LightMap_AirIlluminanceNight, info.LightMap_AirIlluminanceDay, DayTimeLerp);
+		float airIllu = 256f - 256f * Util.LerpUnclamped(info.LightMap_AirIlluminanceNight, info.LightMap_AirIlluminanceDay, DayTimeLerp);
 		bool pixelStyle = info.LightMap_PixelStyle;
 
 		var cameraCenter = Renderer.CameraRect.center.CeilToInt();
@@ -223,15 +224,18 @@ public static class LightingSystem {
 
 		if (right < left || up < down) return;
 
+		float remain = Universe.BuiltInInfo.LightMap_LevelIlluminateRemain.Clamp01();
 		float radiusSq = (unitRadius + 0.5f) * (unitRadius + 0.5f);
-		float pointX = localX;
-		float pointY = localY;
 		float amountF = amount / 1000f;
 		for (int j = down; j <= up; j++) {
 			for (int i = left; i <= right; i++) {
-				float disSq = Util.SquareDistanceF(i, j, pointX, pointY);
+				float disSq = Util.SquareDistanceF(i, j, localX, localY);
 				if (disSq > radiusSq) continue;
-				Illuminances[i, j] += amountF * (radiusSq - disSq) / radiusSq;
+				float add = amountF * (radiusSq - disSq) / radiusSq;
+				if (HasSolidBlockAt(i + OriginUnitX, j + OriginUnitY, out _)) {
+					add *= remain;
+				}
+				Illuminances[i, j] += add;
 			}
 		}
 
@@ -259,13 +263,9 @@ public static class LightingSystem {
 
 
 	private static float GetSelfIlluminanceAt (int unitX, int unitY, float solidIllu, float airIllu) {
-		if (Physics.Overlap(
-			PhysicsMask.LEVEL,
-			new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL),
-			out var hit
-		)) {
+		if (HasSolidBlockAt(unitX, unitY, out var hitRect)) {
 			// Level
-			return 1f - (float)hit.Rect.width / Const.CEL / solidIllu;
+			return 1f - (float)hitRect.width / Const.CEL / solidIllu;
 		} else {
 			// Air
 			return airIllu;
@@ -283,6 +283,21 @@ public static class LightingSystem {
 			illu += Illuminances[i, j] * WEIGHTS[i - realLeft];
 		}
 		return illu;
+	}
+
+
+	private static bool HasSolidBlockAt (int unitX, int unitY, out IRect rect) {
+		if (Physics.Overlap(
+			PhysicsMask.LEVEL,
+			new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL),
+			out var hit
+		)) {
+			rect = hit.Rect;
+			return true;
+		} else {
+			rect = default;
+			return false;
+		}
 	}
 
 

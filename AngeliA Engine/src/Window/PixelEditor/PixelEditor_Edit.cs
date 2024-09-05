@@ -398,12 +398,14 @@ public partial class PixelEditor {
 					var from = sprite.PixelRect.position;
 					sprite.PixelRect.x = spData.DraggingStartRect.x + pixDelta.x;
 					sprite.PixelRect.y = spData.DraggingStartRect.y + pixDelta.y;
-					RegisterUndo(new MoveSpriteUndoItem() {
-						SpriteID = sprite.ID,
-						From = from,
-						To = sprite.PixelRect.position,
-					});
-					SetDirty();
+					if (from != sprite.PixelRect.position) {
+						RegisterUndo(new MoveSpriteUndoItem() {
+							SpriteID = sprite.ID,
+							From = from,
+							To = sprite.PixelRect.position,
+						});
+						SetDirty();
+					}
 				}
 				StagedSprites.Sort(SpriteDataComparer.Instance);
 				break;

@@ -89,6 +89,7 @@ public class RigCallingMessage {
 	public int Setting_LM_AirIlluminanceDay;
 	public int Setting_LM_AirIlluminanceNight;
 	public int Setting_LM_BackgroundTint;
+	public int Setting_LM_LevelIlluminateRemain;
 	public ToolCommand RequireToolsetCommand = ToolCommand.None;
 
 
@@ -283,6 +284,7 @@ public class RigCallingMessage {
 				Setting_LM_AirIlluminanceDay = Util.ReadInt(ref pointer, end);
 				Setting_LM_AirIlluminanceNight = Util.ReadInt(ref pointer, end);
 				Setting_LM_BackgroundTint = Util.ReadInt(ref pointer, end);
+				Setting_LM_LevelIlluminateRemain = Util.ReadInt(ref pointer, end);
 			}
 
 			RequireToolsetCommand = (ToolCommand)Util.ReadByte(ref pointer, end);
@@ -377,6 +379,7 @@ public class RigCallingMessage {
 				Util.Write(ref pointer, Setting_LM_AirIlluminanceDay, end);
 				Util.Write(ref pointer, Setting_LM_AirIlluminanceNight, end);
 				Util.Write(ref pointer, Setting_LM_BackgroundTint, end);
+				Util.Write(ref pointer, Setting_LM_LevelIlluminateRemain, end);
 			}
 
 			Util.Write(ref pointer, (byte)RequireToolsetCommand, end);

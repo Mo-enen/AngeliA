@@ -32,7 +32,7 @@ public abstract class MapGenerator {
 	public virtual void Initialize () { }
 
 
-	public abstract MapGenerationResult GenerateMap (Int3 startPoint, Direction8 startDirection);
+	public abstract MapGenerationResult GenerateMap (Int3 startPoint, Direction8? startDirection);
 
 
 	#endregion

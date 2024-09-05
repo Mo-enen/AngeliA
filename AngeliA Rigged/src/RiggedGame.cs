@@ -264,6 +264,7 @@ public partial class RiggedGame : Game {
 			info.LightMap_AirIlluminanceDay = CallingMessage.Setting_LM_AirIlluminanceDay / 1000f;
 			info.LightMap_AirIlluminanceNight = CallingMessage.Setting_LM_AirIlluminanceNight / 1000f;
 			info.LightMap_BackgroundTint = CallingMessage.Setting_LM_BackgroundTint / 1000f;
+			info.LightMap_LevelIlluminateRemain = CallingMessage.Setting_LM_LevelIlluminateRemain / 1000f;
 		}
 
 		// Toolset Command

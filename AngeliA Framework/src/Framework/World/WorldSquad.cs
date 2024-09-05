@@ -115,19 +115,11 @@ public sealed class WorldSquad : IBlockSquad {
 		}
 		// Check for Generation
 		if (
-			Universe.BuiltInInfo.UseProceduralMap &&
+			MapGenerationSystem.Enable &&
 			!MapGenerationSearchedRange.Contains(Stage.ViewRect.CenterInt()) &&
 			Game.PauselessFrame > LastSearchedRangeUpdateFrame + 30
 		) {
-			MapGenerationSearchedRange.x = Stage.ViewRect.x + Stage.ViewRect.width / 2 - MapGenerationSearchedRange.width / 2;
-			MapGenerationSearchedRange.y = Stage.ViewRect.y + Stage.ViewRect.height / 2 - MapGenerationSearchedRange.height / 2;
-			LastSearchedRangeUpdateFrame = Game.PauselessFrame;
-			// Search for Map Generation
-
-
-			// TODO
-
-
+			CheckForMapGeneration();
 		}
 	}
 
@@ -162,6 +154,25 @@ public sealed class WorldSquad : IBlockSquad {
 		_END_:;
 		count = index;
 		return WorldPosInViewCache;
+	}
+
+
+	public static void CheckForMapGeneration () {
+		if (!MapGenerationSystem.Enable) return;
+		int centerX = Stage.ViewRect.x + Stage.ViewRect.width / 2;
+		int centerY = Stage.ViewRect.y + Stage.ViewRect.height / 2;
+		MapGenerationSearchedRange.x = centerX - MapGenerationSearchedRange.width / 2;
+		MapGenerationSearchedRange.y = centerY - MapGenerationSearchedRange.height / 2;
+		LastSearchedRangeUpdateFrame = Game.PauselessFrame;
+		// Search View for Map Generation
+		var centerStartPoint = new Int3(centerX.ToUnit(), centerY.ToUnit(), Stage.ViewZ);
+		if (!FrameworkUtil.SearchlightBlockCheck(Stream, centerStartPoint, null, Const.MAP / 2)) {
+			MapGenerationSystem.GenerateMap(centerStartPoint, null, async: false);
+		}
+		// Search Edge for Map Generation
+
+
+
 	}
 
 
@@ -325,7 +336,6 @@ public sealed class WorldSquad : IBlockSquad {
 				int d = System.Math.Max(unitRect_Entity.y, worldUnitRect.y);
 				int u = System.Math.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
 				var eSpan = new System.ReadOnlySpan<int>(world.Entities);
-				var eleSpan = new System.ReadOnlySpan<int>(world.Elements);
 				if (!isBehind) {
 					// Front Block
 					for (int j = d; j < u; j++) {
@@ -336,21 +346,6 @@ public sealed class WorldSquad : IBlockSquad {
 							int entityID = eSpan[index];
 							if (entityID != 0) {
 								DrawEntity(entityID, i, j, z);
-							}
-							// Element
-							int eleID = eleSpan[index];
-							if (eleID != 0) {
-								int localID = MapGenerationSystem.STARTER_ID - eleID;
-								if (localID >= 0 && localID <= 8) {
-									var startPoint = new Int3(i, j, z);
-									if (!MapGenerationSystem.IsGenerating(startPoint)) {
-										if (localID == 0) {
-											MapGenerationSystem.GenerateMap(startPoint, true);
-										} else {
-											MapGenerationSystem.GenerateMap(startPoint, (Direction8)(localID - 1), true);
-										}
-									}
-								}
 							}
 						}
 					}
@@ -364,21 +359,6 @@ public sealed class WorldSquad : IBlockSquad {
 							int entityID = eSpan[index];
 							if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID)) {
 								DrawBehind(entityID, i, j, true);
-							}
-							// Element
-							int eleID = eleSpan[index];
-							if (eleID != 0) {
-								int localID = MapGenerationSystem.STARTER_ID - eleID;
-								if (localID >= 0 && localID <= 8) {
-									var startPoint = new Int3(i, j, z);
-									if (!MapGenerationSystem.IsGenerating(startPoint)) {
-										if (localID == 0) {
-											MapGenerationSystem.GenerateMap(startPoint, true);
-										} else {
-											MapGenerationSystem.GenerateMap(startPoint, (Direction8)(localID - 1), true);
-										}
-									}
-								}
 							}
 						}
 					}

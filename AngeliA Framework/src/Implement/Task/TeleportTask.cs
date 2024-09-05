@@ -139,6 +139,8 @@ public class TeleportTask : Task {
 				player.X = TeleportTo.x;
 				player.Y = TeleportTo.y;
 			}
+		} else if (LocalFrame == teleFrame) {
+			WorldSquad.CheckForMapGeneration();
 		}
 
 		// Update Vig Effect

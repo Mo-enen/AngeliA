@@ -152,6 +152,13 @@ public class OpeningTask : Task {
 				Player.HomeUnitPosition.Value.y,
 				Player.HomeUnitPosition.Value.z
 			);
+		} else if (Player.Selecting != null && Player.Selecting.Active) {
+			// Player
+			startUnitPosition = new Int3(
+				Player.Selecting.X.ToUnit(),
+				Player.Selecting.Y.ToUnit(),
+				Stage.ViewZ
+			);
 		} else {
 			// Fail
 			startUnitPosition = default;

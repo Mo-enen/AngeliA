@@ -8,7 +8,7 @@ public static class FrameworkUtil {
 
 
 	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
-	private const int SearchlightDensity = 32;
+	private const int SEARCHLIGHT_DENSITY = 32;
 
 
 	// Drawing
@@ -313,21 +313,7 @@ public static class FrameworkUtil {
 				}
 			}
 
-			// Map Generation Starter vs Class
-			if (typeID >= MapGenerationSystem.STARTER_ID && typeID <= MapGenerationSystem.STARTER_ID + 8) {
-				Debug.LogWarning($"Hash collision between Class name and Map Generation Starter. \"{typeName}\" (AngeHash = {typeID}");
-			}
-
 		}
-		// Map Generation Starter vs Sprite
-		foreach (var sp in sheet.Sprites) {
-			int typeID = sp.ID;
-			// Map Generation Starter vs Class
-			if (typeID >= MapGenerationSystem.STARTER_ID && typeID <= MapGenerationSystem.STARTER_ID + 8) {
-				Debug.LogWarning($"Hash collision between Sprite name and Map Generation Starter. \"{sp.RealName}\" (AngeHash = {typeID}");
-			}
-		}
-
 
 		// End
 		if (!anyWarning && !onlyLogWhenWarningFounded) {
@@ -692,17 +678,46 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool SearchlightBlockCheck (IBlockSquad squad, Int3 startUnitPoint, Direction8 direction, int unitDistance = Const.MAP) {
-		(int deltaX, int deltaY) = direction.Normal();
-		int desDeltaX = SearchlightDensity * deltaX;
-		int desDeltaY = SearchlightDensity * deltaY;
+	public static bool SearchlightBlockCheck (IBlockSquad squad, Int3 startUnitPoint, Direction8? direction, int unitDistance = Const.MAP, bool reverse = false) {
+		(int deltaX, int deltaY) = direction.HasValue ? direction.Value.Normal() : Int2.zero;
 		int z = startUnitPoint.z;
-		if (deltaX != 0 && deltaY != 0) {
+		if (deltaX == 0 && deltaY == 0) {
+			// No Direction
+			int len = unitDistance * 14142 / 10000 / SEARCHLIGHT_DENSITY;
+			if (!reverse && ContentCheck(squad, startUnitPoint.x, startUnitPoint.y, z)) {
+				return true;
+			}
+			for (int i = 1; i < len; i++) {
+				int index = reverse ? len - 1 - i : i;
+				int desIndex = index * SEARCHLIGHT_DENSITY;
+				int pL = startUnitPoint.x - desIndex;
+				int pR = startUnitPoint.x + desIndex;
+				int pD = startUnitPoint.y - desIndex;
+				int pU = startUnitPoint.y + desIndex;
+				for (int j = 0; j < index; j++) {
+					int desJ = j * SEARCHLIGHT_DENSITY;
+					if (
+						ContentCheck(squad, pL + desJ, startUnitPoint.y + desJ, z) ||
+						ContentCheck(squad, startUnitPoint.x + desJ, pU - desJ, z) ||
+						ContentCheck(squad, pR - desJ, startUnitPoint.y - desJ, z) ||
+						ContentCheck(squad, startUnitPoint.x - desJ, pD + desJ, z)
+					) {
+						return true;
+					}
+				}
+			}
+			if (reverse && ContentCheck(squad, startUnitPoint.x, startUnitPoint.y, z)) {
+				return true;
+			}
+		} else if (deltaX != 0 && deltaY != 0) {
 			// Tilt
-			int len = unitDistance * 14142 / 10000 / SearchlightDensity;
+			int len = unitDistance * 14142 / 10000 / SEARCHLIGHT_DENSITY;
+			int desDeltaX = SEARCHLIGHT_DENSITY * deltaX;
+			int desDeltaY = SEARCHLIGHT_DENSITY * deltaY;
 			for (int i = 0; i < len; i++) {
-				int wide = i + 1;
-				int pointX = startUnitPoint.x + deltaX * i * SearchlightDensity;
+				int index = reverse ? len - 1 - i : i;
+				int wide = index + 1;
+				int pointX = startUnitPoint.x + deltaX * index * SEARCHLIGHT_DENSITY;
 				int pointY = startUnitPoint.y;
 				for (int j = 0; j < wide; j++) {
 					if (ContentCheck(squad, pointX, pointY, z)) {
@@ -714,23 +729,24 @@ public static class FrameworkUtil {
 			}
 		} else {
 			// Straight
-			int len = unitDistance / SearchlightDensity;
-			int desDeltaAltX = SearchlightDensity * (1 - deltaX.Abs());
-			int desDeltaAltY = SearchlightDensity * (1 - deltaY.Abs());
-			var point = startUnitPoint;
+			int len = unitDistance / SEARCHLIGHT_DENSITY;
+			int desDeltaX = SEARCHLIGHT_DENSITY * deltaX;
+			int desDeltaY = SEARCHLIGHT_DENSITY * deltaY;
+			int desDeltaAltX = SEARCHLIGHT_DENSITY * (1 - deltaX.Abs());
+			int desDeltaAltY = SEARCHLIGHT_DENSITY * (1 - deltaY.Abs());
 			for (int i = 0; i < len; i++) {
-				int wide = i + 1;
+				int index = reverse ? len - 1 - i : i;
+				int wide = index + 1;
+				int pX = startUnitPoint.x + index * desDeltaX;
+				int pY = startUnitPoint.y + index * desDeltaY;
 				for (int j = 0; j < wide; j++) {
 					if (
-						ContentCheck(squad, point.x + desDeltaAltX * j, point.y + desDeltaAltY * j, z) ||
-						ContentCheck(squad, point.x - desDeltaAltX * j, point.y - desDeltaAltY * j, z)
+						ContentCheck(squad, pX + desDeltaAltX * j, pY + desDeltaAltY * j, z) ||
+						ContentCheck(squad, pX - desDeltaAltX * j, pY - desDeltaAltY * j, z)
 					) {
 						return true;
 					}
 				}
-				// Next
-				point.x += desDeltaX;
-				point.y += desDeltaY;
 			}
 		}
 		return false;

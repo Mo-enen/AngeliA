@@ -247,6 +247,7 @@ public partial class Engine {
 				calling.Setting_LM_AirIlluminanceNight = (int)(currentInfo.LightMap_AirIlluminanceNight * 1000);
 				calling.Setting_LM_BackgroundTint = (int)(currentInfo.LightMap_BackgroundTint * 1000);
 				calling.Setting_LM_SolidIlluminance = (int)(currentInfo.LightMap_SolidIlluminance * 1000);
+				calling.Setting_LM_LevelIlluminateRemain = (int)(currentInfo.LightMap_LevelIlluminateRemain * 1000);
 				// Save Uni-Info to File
 				JsonUtil.SaveJsonToPath(currentInfo, currentUniverse.InfoPath, prettyPrint: true);
 			}

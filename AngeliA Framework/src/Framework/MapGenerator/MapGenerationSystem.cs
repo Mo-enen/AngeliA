@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AngeliA;
@@ -24,16 +25,14 @@ public static class MapGenerationSystem {
 	#region --- VAR ---
 
 
-	// Const
-	public const int STARTER_ID = 72352367;
-
 	// Api
 	public static long Seed { get; private set; }
+	public static bool Enable { get; private set; }
 
 	// Data
 	private static readonly Dictionary<Int3, MapState> StatePool = new();
 	private static readonly List<MapGenerator> AllMapGenerators = new(32);
-	private static bool Enable;
+	private static readonly Pipe<Int4> AllTasks = new(64);
 
 
 	#endregion
@@ -57,6 +56,9 @@ public static class MapGenerationSystem {
 			AllMapGenerators.Add(gen);
 		}
 		AllMapGenerators.Sort((a, b) => a.Order.CompareTo(b.Order));
+
+		// Start Async Thread
+		System.Threading.Tasks.Task.Run(AsyncUpdate);
 
 	}
 
@@ -94,6 +96,21 @@ public static class MapGenerationSystem {
 	}
 
 
+	private static void AsyncUpdate () {
+		while (true) {
+			try {
+				if (AllTasks.Length == 0) {
+					Thread.Sleep(50);
+					continue;
+				}
+				while (AllTasks.TryPopHead(out var param)) {
+					GenerateLogic(param);
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+	}
+
+
 	#endregion
 
 
@@ -103,6 +120,7 @@ public static class MapGenerationSystem {
 
 
 	public static void RegenerateAll () {
+		AllTasks.Reset();
 		WorldSquad.Stream.ClearWorldPool();
 		var uni = Universe.BuiltIn;
 		// Delete All User Map Files
@@ -119,13 +137,17 @@ public static class MapGenerationSystem {
 	public static bool IsGenerating (Int3 startPoint) => StatePool.TryGetValue(startPoint, out var state) && state == MapState.Generating;
 
 
-	public static void GenerateMap (Int3 startPoint, bool async) => GenerateMap(startPoint, (Direction8)Util.QuickRandomWithSeed(Seed + startPoint.x * 2736731 + startPoint.y * 7315127 + startPoint.z * 41, 0, 8), async);
-	public static void GenerateMap (Int3 startPoint, Direction8 startDirection, bool async) {
+	public static void GenerateMap (Int3 startPoint, Direction8? startDirection, bool async) {
+		if (StatePool[startPoint] == MapState.Generating) return;
 		StatePool[startPoint] = MapState.Generating;
+		var param = new Int4(
+			startPoint.x, startPoint.y, startPoint.z,
+			startDirection.HasValue ? (int)startDirection.Value : -1
+		);
 		if (async) {
-			System.Threading.Tasks.Task.Factory.StartNew(GenerateLogic, (startPoint, startDirection));
+			AllTasks.LinkToTail(param);
 		} else {
-			GenerateLogic((startPoint, startDirection));
+			GenerateLogic(param);
 		}
 	}
 
@@ -138,8 +160,9 @@ public static class MapGenerationSystem {
 	#region --- LGC ---
 
 
-	private static void GenerateLogic (object param) {
-		(Int3 startPoint, Direction8 startDirection) = ((Int3, Direction8))param;
+	private static void GenerateLogic (Int4 param) {
+		var startPoint = new Int3(param.x, param.y, param.z);
+		var startDirection = param.w < 0 ? null : (Direction8?)param.w;
 		int len = AllMapGenerators.Count;
 		int successCount = 0;
 		for (int i = 0; i < len; i++) {
