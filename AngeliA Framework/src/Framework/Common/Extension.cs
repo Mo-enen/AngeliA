@@ -730,18 +730,25 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static Int2 BottomRight (this IRect rect) => new(rect.xMax, rect.yMin);
 	[MethodImpl(INLINE)] public static Int2 TopLeft (this IRect rect) => new(rect.xMin, rect.yMax);
 	[MethodImpl(INLINE)] public static Int2 TopRight (this IRect rect) => new(rect.xMax, rect.yMax);
+	[MethodImpl(INLINE)] public static Int2 MidRight (this IRect rect) => new(rect.xMax, rect.yMax + rect.height / 2);
+	[MethodImpl(INLINE)] public static Int2 MidLeft (this IRect rect) => new(rect.xMin, rect.yMax + rect.height / 2);
+	[MethodImpl(INLINE)] public static Int2 BottomMid (this IRect rect) => new(rect.xMin + rect.width / 2, rect.yMin);
+	[MethodImpl(INLINE)] public static Int2 TopMid (this IRect rect) => new(rect.xMin + rect.width / 2, rect.yMax);
 	[MethodImpl(INLINE)]
 	public static void ClampPositionInside (ref this IRect rect, IRect bounds) {
 		rect.x = rect.x.Clamp(bounds.x, bounds.xMax - rect.width);
 		rect.y = rect.y.Clamp(bounds.y, bounds.yMax - rect.height);
 	}
 	[MethodImpl(INLINE)]
-	public static IRect LerpTo (this IRect from, IRect to, int lerpRate) => new(
-		from.x.LerpTo(to.x, lerpRate),
-		from.y.LerpTo(to.y, lerpRate),
-		from.width.LerpTo(to.width, lerpRate),
-		from.height.LerpTo(to.height, lerpRate)
-	);
+	public static IRect LerpTo (this IRect from, IRect to, int lerpRate) {
+		return new IRect(
+			from.x.LerpTo(to.x, lerpRate),
+			from.y.LerpTo(to.y, lerpRate),
+			from.width.LerpTo(to.width, lerpRate),
+			from.height.LerpTo(to.height, lerpRate)
+		);
+	}
+
 	[MethodImpl(INLINE)]
 	public static IRect LerpTo (this IRect from, IRect to, float lerp) => new(
 		from.x.LerpTo(to.x, lerp),

@@ -313,6 +313,20 @@ public static class FrameworkUtil {
 				}
 			}
 
+			// Map Generation Starter vs Class
+			if (typeID >= MapGenerationSystem.STARTER_ID && typeID <= MapGenerationSystem.STARTER_ID + 8) {
+				Debug.LogWarning($"Hash collision between Class name and Map Generation Starter. \"{typeName}\" (AngeHash = {typeID}");
+
+			}
+		}
+
+		// Map Generation Starter vs Sprite
+		foreach (var sp in sheet.Sprites) {
+			int typeID = sp.ID;
+			// Map Generation Starter vs Class
+			if (typeID >= MapGenerationSystem.STARTER_ID && typeID <= MapGenerationSystem.STARTER_ID + 8) {
+				Debug.LogWarning($"Hash collision between Sprite name and Map Generation Starter. \"{sp.RealName}\" (AngeHash = {typeID}");
+			}
 		}
 
 		// End

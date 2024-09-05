@@ -25,6 +25,9 @@ public static class MapGenerationSystem {
 	#region --- VAR ---
 
 
+	// Const
+	public const int STARTER_ID = 72352367;
+
 	// Api
 	public static long Seed { get; private set; }
 	public static bool Enable { get; private set; }
@@ -32,7 +35,7 @@ public static class MapGenerationSystem {
 	// Data
 	private static readonly Dictionary<Int3, MapState> StatePool = new();
 	private static readonly List<MapGenerator> AllMapGenerators = new(32);
-	private static readonly Pipe<Int4> AllTasks = new(64);
+	private static readonly Pipe<(Int3 point, Direction8? dir)> AllTasks = new(64);
 
 
 	#endregion
@@ -103,8 +106,8 @@ public static class MapGenerationSystem {
 					Thread.Sleep(50);
 					continue;
 				}
-				while (AllTasks.TryPopHead(out var param)) {
-					GenerateLogic(param);
+				while (AllTasks.TryPopHead(out (Int3 point, Direction8? dir) param)) {
+					GenerateLogic(param.point, param.dir);
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
@@ -140,14 +143,10 @@ public static class MapGenerationSystem {
 	public static void GenerateMap (Int3 startPoint, Direction8? startDirection, bool async) {
 		if (StatePool[startPoint] == MapState.Generating) return;
 		StatePool[startPoint] = MapState.Generating;
-		var param = new Int4(
-			startPoint.x, startPoint.y, startPoint.z,
-			startDirection.HasValue ? (int)startDirection.Value : -1
-		);
 		if (async) {
-			AllTasks.LinkToTail(param);
+			AllTasks.LinkToTail((startPoint, startDirection));
 		} else {
-			GenerateLogic(param);
+			GenerateLogic(startPoint, startDirection);
 		}
 	}
 
@@ -160,9 +159,7 @@ public static class MapGenerationSystem {
 	#region --- LGC ---
 
 
-	private static void GenerateLogic (Int4 param) {
-		var startPoint = new Int3(param.x, param.y, param.z);
-		var startDirection = param.w < 0 ? null : (Direction8?)param.w;
+	private static void GenerateLogic (Int3 startPoint, Direction8? startDirection) {
 		int len = AllMapGenerators.Count;
 		int successCount = 0;
 		for (int i = 0; i < len; i++) {
