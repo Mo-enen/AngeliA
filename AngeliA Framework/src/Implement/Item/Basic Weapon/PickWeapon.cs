@@ -12,9 +12,9 @@ public abstract class PickWeapon : Weapon {
 	public override bool AttackWhenSquatting => true;
 	public override bool AttackWhenWalking => true;
 	public override bool AttackWhenSliding => true;
-	public override int? DefaultSpeedLoseOnAttack => 618;
-	public override int? RunningSpeedLoseOnAttack => 618;
-	public override int? WalkingSpeedLoseOnAttack => 618;
+	public override int? DefaultSpeedRateOnAttack => 0;
+	public override int? RunningSpeedRateOnAttack => 0;
+	public override int? WalkingSpeedRateOnAttack => 0;
 	public virtual bool AllowPickLevelBlock => true;
 	public virtual bool AllowPickBackgroundBlock => true;
 	public virtual bool AllowPickBlockEntity => true;
@@ -37,8 +37,8 @@ public abstract class PickWeapon : Weapon {
 
 		// Movement Override
 		if (!pHolder.IsInsideGround) {
-			pHolder.Movement.SquatSpeed.Override(0, 1);
-			pHolder.Movement.WalkSpeed.Override(0, 1);
+			pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
+			pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 		}
 
 		// Get Target Pos

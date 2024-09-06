@@ -153,22 +153,22 @@ public class CharacterMovementConfig {
 		var typeC = typeof(CharacterMovementConfig);
 		var intType = typeof(int);
 		var boolType = typeof(bool);
-		foreach (var field in typeM.ForAllFields<BuffInt>(BindingFlags.Public | BindingFlags.Instance)) {
+		foreach (var field in typeM.ForAllFields<FrameBasedInt>(BindingFlags.Public | BindingFlags.Instance)) {
 			if (
 				typeC.GetField(field.Name, BindingFlags.Public | BindingFlags.Instance) is not FieldInfo cField ||
 				cField.FieldType != intType
 			) continue;
 			MetaMapper.Add((field, cField));
 		}
-		foreach (var field in typeM.ForAllFields<BuffBool>(BindingFlags.Public | BindingFlags.Instance)) {
+		foreach (var field in typeM.ForAllFields<FrameBasedBool>(BindingFlags.Public | BindingFlags.Instance)) {
 			if (
 				typeC.GetField(field.Name, BindingFlags.Public | BindingFlags.Instance) is not FieldInfo cField ||
 				cField.FieldType != boolType
 			) continue;
 			MetaMapper.Add((field, cField));
 		}
-		BuffIntBaseValueField = typeof(BuffInt).GetField("BaseValue", BindingFlags.Public | BindingFlags.Instance);
-		BuffBoolBaseValueField = typeof(BuffBool).GetField("BaseValue", BindingFlags.Public | BindingFlags.Instance);
+		BuffIntBaseValueField = typeof(FrameBasedInt).GetField("BaseValue", BindingFlags.Public | BindingFlags.Instance);
+		BuffBoolBaseValueField = typeof(FrameBasedBool).GetField("BaseValue", BindingFlags.Public | BindingFlags.Instance);
 	}
 
 
@@ -176,11 +176,11 @@ public class CharacterMovementConfig {
 	public void LoadToCharacter (Character character) {
 		foreach (var (mField, cField) in MetaMapper) {
 			object objValue = mField.GetValue(character.NativeMovement);
-			if (objValue is BuffInt buffInt) {
+			if (objValue is FrameBasedInt buffInt) {
 				if (cField.GetValue(this) is int intValue) {
 					buffInt.BaseValue = intValue;
 				}
-			} else if (objValue is BuffBool buffBool) {
+			} else if (objValue is FrameBasedBool buffBool) {
 				if (cField.GetValue(this) is bool boolValue) {
 					buffBool.BaseValue = boolValue;
 				}

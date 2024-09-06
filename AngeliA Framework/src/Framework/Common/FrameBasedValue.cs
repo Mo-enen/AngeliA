@@ -1,0 +1,126 @@
+using System.Collections;
+using System.Collections.Generic;
+
+namespace AngeliA;
+
+public class FrameBasedInt {
+
+	public int FinalValue => Game.PauselessFrame <= OverrideFrame ? OverrideValue : BaseValue;
+	public bool Overrided => Game.PauselessFrame <= OverrideFrame;
+	public int BaseValue = 0;
+	public int OverrideFrame = -1;
+	public int OverridePriority = int.MinValue;
+	public int OverrideValue;
+
+	public FrameBasedInt () {
+		BaseValue = 0;
+		OverrideFrame = -1;
+	}
+	public FrameBasedInt (int value) {
+		BaseValue = value;
+		OverrideFrame = -1;
+	}
+
+	public void Override (int value, int duration = 0, int priority = 0) {
+		if (Game.PauselessFrame <= OverrideFrame && priority < OverridePriority) return;
+		OverrideFrame = Game.PauselessFrame + duration;
+		OverrideValue = value;
+		OverridePriority = priority;
+	}
+	public void Add (int delta, int duration = 0, int priority = 0) {
+		if (Overrided) {
+			if (priority < OverridePriority) return;
+			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
+			OverrideValue += delta;
+		} else {
+			OverrideFrame = Game.PauselessFrame + duration;
+			OverrideValue = BaseValue + delta;
+		}
+		OverridePriority = priority;
+	}
+	public void Multiply (int scale, int duration = 0, int priority = 0) {
+		if (Overrided) {
+			if (priority < OverridePriority) return;
+			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
+			OverrideValue = OverrideValue * scale / 1000;
+		} else {
+			OverrideFrame = Game.PauselessFrame + duration;
+			OverrideValue = BaseValue * scale / 1000;
+		}
+		OverridePriority = priority;
+	}
+	public void Min (int value, int duration = 0, int priority = 0) {
+		if (Overrided) {
+			if (priority < OverridePriority) return;
+			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
+			OverrideValue = Util.Min(OverrideValue, value);
+		} else {
+			OverrideFrame = Game.PauselessFrame + duration;
+			OverrideValue = Util.Min(BaseValue, value);
+		}
+		OverridePriority = priority;
+	}
+	public void Max (int value, int duration = 0, int priority = 0) {
+		if (Overrided) {
+			if (priority < OverridePriority) return;
+			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
+			OverrideValue = Util.Max(OverrideValue, value);
+		} else {
+			OverrideFrame = Game.PauselessFrame + duration;
+			OverrideValue = Util.Max(BaseValue, value);
+		}
+		OverridePriority = priority;
+	}
+	public void ClearOverride () => OverrideFrame = -1;
+
+	public static implicit operator int (FrameBasedInt bInt) => bInt.FinalValue;
+
+}
+
+public class FrameBasedBool {
+
+	public bool FinalValue => Game.PauselessFrame <= OverrideFrame ? OverrideValue : BaseValue;
+	public bool Overrided => Game.PauselessFrame <= OverrideFrame;
+	public bool BaseValue = true;
+	public int OverrideFrame = -1;
+	public int OverridePriority = int.MinValue;
+	public bool OverrideValue;
+
+	public FrameBasedBool (bool value = true) {
+		BaseValue = value;
+		OverrideFrame = -1;
+	}
+
+	public void Override (bool value, int duration = 0, int priority = 0) {
+		if (Game.PauselessFrame <= OverrideFrame && priority < OverridePriority) return;
+		OverrideFrame = Game.PauselessFrame + duration;
+		OverrideValue = value;
+		OverridePriority = priority;
+	}
+	public void Or (bool value, int duration = 0, int priority = 0) {
+		if (Overrided) {
+			if (priority < OverridePriority) return;
+			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
+			OverrideValue = value || OverrideValue;
+		} else {
+			OverrideFrame = Game.PauselessFrame + duration;
+			OverrideValue = value || BaseValue;
+		}
+		OverridePriority = priority;
+	}
+	public void And (bool value, int duration = 0, int priority = 0) {
+		if (Overrided) {
+			if (priority < OverridePriority) return;
+			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
+			OverrideValue = value && OverrideValue;
+		} else {
+			OverrideFrame = Game.PauselessFrame + duration;
+			OverrideValue = value && BaseValue;
+		}
+		OverridePriority = priority;
+	}
+	public void ClearOverride () => OverrideFrame = -1;
+
+	public static implicit operator bool (FrameBasedBool bBool) => bBool.FinalValue;
+
+}

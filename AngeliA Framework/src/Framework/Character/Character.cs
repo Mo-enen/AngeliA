@@ -177,7 +177,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 
 		// Nav State
 		if (Navigation.NavigationEnable) {
-			Movement.PushAvailable.Override(false);
+			Movement.PushAvailable.Override(false, priority: 4096);
 		}
 
 	}
@@ -215,23 +215,29 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 					Attackness.RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
 					Attackness.LockFacingOnAttack = weapon.LockFacingOnAttack;
 					EquipingPickWeapon = weapon is PickWeapon;
-					Attackness.HoldAttackPunish.Override(weapon.HoldAttackPunish);
-					Attackness.DefaultSpeedRateOnAttack.Override(weapon.DefaultSpeedLoseOnAttack);
-					Attackness.WalkingSpeedRateOnAttack.Override(weapon.WalkingSpeedLoseOnAttack);
-					Attackness.RunningSpeedRateOnAttack.Override(weapon.RunningSpeedLoseOnAttack);
-					Attackness.AttackInAir.Override(weapon.AttackInAir);
-					Attackness.AttackInWater.Override(weapon.AttackInWater);
-					Attackness.AttackWhenWalking.Override(weapon.AttackWhenWalking);
-					Attackness.AttackWhenRunning.Override(weapon.AttackWhenRunning);
-					Attackness.AttackWhenClimbing.Override(weapon.AttackWhenClimbing);
-					Attackness.AttackWhenFlying.Override(weapon.AttackWhenFlying);
-					Attackness.AttackWhenRolling.Override(weapon.AttackWhenRolling);
-					Attackness.AttackWhenSquatting.Override(weapon.AttackWhenSquatting);
-					Attackness.AttackWhenDashing.Override(weapon.AttackWhenDashing);
-					Attackness.AttackWhenSliding.Override(weapon.AttackWhenSliding);
-					Attackness.AttackWhenGrabbing.Override(weapon.AttackWhenGrabbing);
-					Attackness.AttackWhenRush.Override(weapon.AttackWhenRushing);
-					Attackness.AttackWhenPounding.Override(weapon.AttackWhenPounding);
+					Attackness.HoldAttackPunishFrame.Min(weapon.HoldAttackPunish);
+					if (weapon.DefaultSpeedRateOnAttack.HasValue) {
+						Attackness.DefaultSpeedRateOnAttack.Max(weapon.DefaultSpeedRateOnAttack.Value);
+					}
+					if (weapon.WalkingSpeedRateOnAttack.HasValue) {
+						Attackness.WalkingSpeedRateOnAttack.Max(weapon.WalkingSpeedRateOnAttack.Value);
+					}
+					if (weapon.RunningSpeedRateOnAttack.HasValue) {
+						Attackness.RunningSpeedRateOnAttack.Max(weapon.RunningSpeedRateOnAttack.Value);
+					}
+					Attackness.AttackInAir.Or(weapon.AttackInAir);
+					Attackness.AttackInWater.Or(weapon.AttackInWater);
+					Attackness.AttackWhenWalking.Or(weapon.AttackWhenWalking);
+					Attackness.AttackWhenRunning.Or(weapon.AttackWhenRunning);
+					Attackness.AttackWhenClimbing.Or(weapon.AttackWhenClimbing);
+					Attackness.AttackWhenFlying.Or(weapon.AttackWhenFlying);
+					Attackness.AttackWhenRolling.Or(weapon.AttackWhenRolling);
+					Attackness.AttackWhenSquatting.Or(weapon.AttackWhenSquatting);
+					Attackness.AttackWhenDashing.Or(weapon.AttackWhenDashing);
+					Attackness.AttackWhenSliding.Or(weapon.AttackWhenSliding);
+					Attackness.AttackWhenGrabbing.Or(weapon.AttackWhenGrabbing);
+					Attackness.AttackWhenRush.Or(weapon.AttackWhenRushing);
+					Attackness.AttackWhenPounding.Or(weapon.AttackWhenPounding);
 				}
 			}
 		}

@@ -271,6 +271,15 @@ public abstract class Rigidbody : Entity {
 	public virtual void Push (int speedX) => PerformMove(speedX, 0);
 
 
+	public bool PerformGroundCheck (IRect rect, out PhysicsCell hit) {
+		return !Physics.RoomCheck(
+			CollisionMask, rect, this, Direction4.Down, out hit
+		) || !Physics.RoomCheckOneway(
+			CollisionMask, rect, this, Direction4.Down, out hit, true
+		);
+	}
+
+
 	#endregion
 
 
@@ -283,12 +292,7 @@ public abstract class Rigidbody : Entity {
 		if (IsInsideGround) return true;
 		if (Game.GlobalFrame <= IgnoreGroundCheckFrame) return IsGrounded;
 		if (VelocityY > 0) return false;
-		var rect = Rect;
-		bool result = !Physics.RoomCheck(
-			CollisionMask, rect, this, Direction4.Down, out var hit
-		) || !Physics.RoomCheckOneway(
-			CollisionMask, rect, this, Direction4.Down, out hit, true
-		);
+		bool result = PerformGroundCheck(Rect, out var hit);
 		GroundedID = result ? hit.SourceID : 0;
 		return result;
 	}

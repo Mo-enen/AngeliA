@@ -460,9 +460,15 @@ public partial class CharacterMovement {
 		int frame = Game.GlobalFrame;
 
 		// Reset Count on Grounded
-		if (frame > LastJumpFrame + 1 && (IsGrounded || InWater) && !IntendedJump) {
-			CurrentJumpCount = 0;
-			return;
+		if (frame > LastJumpFrame + 1) {
+			if (IsGrounded || InWater) {
+				CurrentJumpCount = 0;
+				return;
+			} else if (VelocityY < 0 && Target.PerformGroundCheck(Rect.Shift(0, VelocityY * 2), out _)) {
+				CurrentJumpCount = 0;
+				LastGroundingFrame = frame;
+				return;
+			}
 		}
 
 		// Reset Count when Climb

@@ -81,27 +81,27 @@ public abstract class PoseCharacter : Character {
 	public BodyPart FootR { get; init; } = null;
 
 	// Gadget
-	public readonly BuffInt FaceID = new(0);
-	public readonly BuffInt HairID = new(0);
-	public readonly BuffInt EarID = new(0);
-	public readonly BuffInt TailID = new(0);
-	public readonly BuffInt WingID = new(0);
-	public readonly BuffInt HornID = new(0);
+	public readonly FrameBasedInt FaceID = new(0);
+	public readonly FrameBasedInt HairID = new(0);
+	public readonly FrameBasedInt EarID = new(0);
+	public readonly FrameBasedInt TailID = new(0);
+	public readonly FrameBasedInt WingID = new(0);
+	public readonly FrameBasedInt HornID = new(0);
 
 	// Suit
-	public readonly BuffInt SuitHead = new(0);
-	public readonly BuffInt SuitBody = new(0);
-	public readonly BuffInt SuitHip = new(0);
-	public readonly BuffInt SuitHand = new(0);
-	public readonly BuffInt SuitFoot = new(0);
+	public readonly FrameBasedInt SuitHead = new(0);
+	public readonly FrameBasedInt SuitBody = new(0);
+	public readonly FrameBasedInt SuitHip = new(0);
+	public readonly FrameBasedInt SuitHand = new(0);
+	public readonly FrameBasedInt SuitFoot = new(0);
 
 	// Data
 	private static readonly Dictionary<int, CharacterRenderingConfig> ConfigPool_Rendering = new();
 	private static int RenderingConfigGlobalVersion = -1;
 	private int LocalRenderingConfigVersion = int.MinValue;
-	private readonly BuffInt[] PoseAnimationIDs;
-	private readonly BuffInt[] PoseHandheldIDs;
-	private readonly BuffInt[] PoseAttackIDs;
+	private readonly FrameBasedInt[] PoseAnimationIDs;
+	private readonly FrameBasedInt[] PoseHandheldIDs;
+	private readonly FrameBasedInt[] PoseAttackIDs;
 
 
 	#endregion
@@ -165,9 +165,9 @@ public abstract class PoseCharacter : Character {
 		FootL = BodyParts[15];
 		FootR = BodyParts[16];
 		// Ani
-		PoseAnimationIDs = new BuffInt[ANI_TYPE_COUNT].FillWithNewValue();
-		PoseHandheldIDs = new BuffInt[HAND_HELD_COUNT].FillWithNewValue();
-		PoseAttackIDs = new BuffInt[WEAPON_TYPE_COUNT].FillWithNewValue();
+		PoseAnimationIDs = new FrameBasedInt[ANI_TYPE_COUNT].FillWithNewValue();
+		PoseHandheldIDs = new FrameBasedInt[HAND_HELD_COUNT].FillWithNewValue();
+		PoseAttackIDs = new FrameBasedInt[WEAPON_TYPE_COUNT].FillWithNewValue();
 		// Load Default Ani
 		for (int i = 0; i < ANI_TYPE_COUNT; i++) {
 			PoseAnimation.TryGetPoseAnimationDefaultID(TypeID, (CharacterAnimationType)i, out int id);
@@ -194,7 +194,10 @@ public abstract class PoseCharacter : Character {
 		base.BeforeUpdate();
 		// Give Default Wing
 		if (WingID.BaseValue == 0 && Movement.FlyAvailable) {
-			WingID.Override(Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID, 1);
+			WingID.Override(
+				Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID,
+				duration: 1
+			);
 		}
 	}
 

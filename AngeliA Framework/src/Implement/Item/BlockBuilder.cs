@@ -17,9 +17,9 @@ public sealed class BlockBuilder : Weapon {
 	public override bool AttackWhenWalking => true;
 	public override bool AttackWhenSliding => true;
 	public override bool AttackWhenClimbing => true;
-	public override int? DefaultSpeedLoseOnAttack => 618;
-	public override int? RunningSpeedLoseOnAttack => 618;
-	public override int? WalkingSpeedLoseOnAttack => 618;
+	public override int? DefaultSpeedRateOnAttack => 618;
+	public override int? RunningSpeedRateOnAttack => 618;
+	public override int? WalkingSpeedRateOnAttack => 618;
 	public override int MaxStackCount => 256;
 
 
@@ -45,8 +45,8 @@ public sealed class BlockBuilder : Weapon {
 
 		// Movement Override
 		if (!pHolder.IsInsideGround) {
-			pHolder.Movement.SquatSpeed.Override(0, 1);
-			pHolder.Movement.WalkSpeed.Override(0, 1);
+			pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
+			pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 		}
 
 		// Get Target Pos

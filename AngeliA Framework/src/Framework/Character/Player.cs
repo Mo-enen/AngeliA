@@ -355,7 +355,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		bool attDown = Input.GameKeyDown(Gamekey.Action);
 		bool attHolding = Input.GameKeyHolding(Gamekey.Action) && Attackness.RepeatAttackWhenHolding;
 		if (attDown || attHolding) {
-			if (Game.GlobalFrame >= Attackness.LastAttackFrame + Attackness.AttackDuration + Attackness.AttackCooldown + (attDown ? 0 : Attackness.HoldAttackPunish)) {
+			if (Game.GlobalFrame >= Attackness.LastAttackFrame + Attackness.AttackDuration + Attackness.AttackCooldown + (attDown ? 0 : Attackness.HoldAttackPunishFrame)) {
 				Attackness.Attack(Movement.FacingRight);
 			} else if (attDown) {
 				AttackRequiringFrame = Game.GlobalFrame;

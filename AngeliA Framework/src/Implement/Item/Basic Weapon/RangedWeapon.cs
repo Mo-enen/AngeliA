@@ -20,9 +20,9 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	public override int AttackCooldown => base.AttackCooldown;
 	private int SpriteIdString { get; init; }
 	public override bool AttackWhenSquatting => true;
-	public override int? DefaultSpeedLoseOnAttack => 1000;
-	public override int? WalkingSpeedLoseOnAttack => 1000;
-	public override int? RunningSpeedLoseOnAttack => 618;
+	public override int? DefaultSpeedRateOnAttack => 1000;
+	public override int? WalkingSpeedRateOnAttack => 1000;
+	public override int? RunningSpeedRateOnAttack => 618;
 	protected override int BulletDelay => 500;
 
 

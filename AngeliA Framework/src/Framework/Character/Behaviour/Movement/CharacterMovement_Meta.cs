@@ -5,134 +5,134 @@ namespace AngeliA;
 
 public partial class CharacterMovement {
 
-	public readonly BuffInt MovementWidth = new(150);
-	public readonly BuffInt MovementHeight = new(384); // Height when Character is 160cm
+	public readonly FrameBasedInt MovementWidth = new(150);
+	public readonly FrameBasedInt MovementHeight = new(384); // Height when Character is 160cm
 
 	// Height
-	public readonly BuffInt DashHeightAmount = new(521);
-	public readonly BuffInt RushHeightAmount = new(1000);
-	public readonly BuffInt SquatHeightAmount = new(521);
-	public readonly BuffInt SwimHeightAmount = new(1000);
-	public readonly BuffInt FlyHeightAmount = new(521);
-	public readonly BuffInt GrabTopHeightAmount = new(947);
-	public readonly BuffInt GrabSideHeightAmount = new(947);
+	public readonly FrameBasedInt DashHeightAmount = new(521);
+	public readonly FrameBasedInt RushHeightAmount = new(1000);
+	public readonly FrameBasedInt SquatHeightAmount = new(521);
+	public readonly FrameBasedInt SwimHeightAmount = new(1000);
+	public readonly FrameBasedInt FlyHeightAmount = new(521);
+	public readonly FrameBasedInt GrabTopHeightAmount = new(947);
+	public readonly FrameBasedInt GrabSideHeightAmount = new(947);
 
 	// Walk
-	public readonly BuffBool WalkAvailable = new(true);
-	public readonly BuffInt WalkSpeed = new(20);
-	public readonly BuffInt WalkAcceleration = new(3);
-	public readonly BuffInt WalkBrakeAcceleration = new(30);
-	public readonly BuffInt WalkDeceleration = new(4);
+	public readonly FrameBasedBool WalkAvailable = new(true);
+	public readonly FrameBasedInt WalkSpeed = new(20);
+	public readonly FrameBasedInt WalkAcceleration = new(3);
+	public readonly FrameBasedInt WalkBrakeAcceleration = new(30);
+	public readonly FrameBasedInt WalkDeceleration = new(4);
 
 	// Run
-	public readonly BuffInt WalkToRunAccumulation = new(0);
-	public readonly BuffInt RunSpeed = new(32);
-	public readonly BuffInt RunAcceleration = new(3);
-	public readonly BuffInt RunBrakeAcceleration = new(30);
-	public readonly BuffInt RunDeceleration = new(4);
+	public readonly FrameBasedInt WalkToRunAccumulation = new(0);
+	public readonly FrameBasedInt RunSpeed = new(32);
+	public readonly FrameBasedInt RunAcceleration = new(3);
+	public readonly FrameBasedInt RunBrakeAcceleration = new(30);
+	public readonly FrameBasedInt RunDeceleration = new(4);
 
 	// Push
-	public readonly BuffBool PushAvailable = new(true);
-	public readonly BuffInt PushSpeed = new(10);
+	public readonly FrameBasedBool PushAvailable = new(true);
+	public readonly FrameBasedInt PushSpeed = new(10);
 
 	// Jump
-	public readonly BuffInt JumpSpeed = new(73);
-	public readonly BuffInt JumpCount = new(2);
-	public readonly BuffInt JumpReleaseLoseRate = new(700);
-	public readonly BuffInt JumpRiseGravityRate = new(600);
-	public readonly BuffBool GrowJumpCountWhenFallOffEdge = new(true);
-	public readonly BuffBool FirstJumpWithRoll = new(false);
-	public readonly BuffBool SubsequentJumpWithRoll = new(true);
-	public readonly BuffBool JumpDownThoughOneway = new(false);
+	public readonly FrameBasedInt JumpSpeed = new(73);
+	public readonly FrameBasedInt JumpCount = new(2);
+	public readonly FrameBasedInt JumpReleaseLoseRate = new(700);
+	public readonly FrameBasedInt JumpRiseGravityRate = new(600);
+	public readonly FrameBasedBool GrowJumpCountWhenFallOffEdge = new(true);
+	public readonly FrameBasedBool FirstJumpWithRoll = new(false);
+	public readonly FrameBasedBool SubsequentJumpWithRoll = new(true);
+	public readonly FrameBasedBool JumpDownThoughOneway = new(false);
 
 	// Dash
-	public readonly BuffBool DashAvailable = new(true);
-	public readonly BuffBool DashWithRoll = new(false);
-	public readonly BuffBool DashPutoutFire = new(true);
-	public readonly BuffInt DashSpeed = new(42);
-	public readonly BuffInt DashDuration = new(20);
-	public readonly BuffInt DashCooldown = new(4);
-	public readonly BuffInt DashAcceleration = new(24);
-	public readonly BuffInt DashCancelLoseRate = new(300);
+	public readonly FrameBasedBool DashAvailable = new(true);
+	public readonly FrameBasedBool DashWithRoll = new(false);
+	public readonly FrameBasedBool DashPutoutFire = new(true);
+	public readonly FrameBasedInt DashSpeed = new(42);
+	public readonly FrameBasedInt DashDuration = new(20);
+	public readonly FrameBasedInt DashCooldown = new(4);
+	public readonly FrameBasedInt DashAcceleration = new(24);
+	public readonly FrameBasedInt DashCancelLoseRate = new(300);
 
 	// Rush
-	public readonly BuffBool RushAvailable = new(true);
-	public readonly BuffBool RushInAir = new(false);
-	public readonly BuffBool RushInWater = new(true);
-	public readonly BuffBool RushWhenClimb = new(false);
-	public readonly BuffBool RushWhenSquat = new(false);
-	public readonly BuffBool RushPutoutFire = new(true);
-	public readonly BuffInt RushSpeed = new(72);
-	public readonly BuffInt RushStopSpeed = new(8);
-	public readonly BuffInt RushDuration = new(8);
-	public readonly BuffInt RushStiff = new(10);
-	public readonly BuffInt RushCooldown = new(2);
-	public readonly BuffInt RushAcceleration = new(12);
-	public readonly BuffInt RushDeceleration = new(4);
+	public readonly FrameBasedBool RushAvailable = new(true);
+	public readonly FrameBasedBool RushInAir = new(false);
+	public readonly FrameBasedBool RushInWater = new(true);
+	public readonly FrameBasedBool RushWhenClimb = new(false);
+	public readonly FrameBasedBool RushWhenSquat = new(false);
+	public readonly FrameBasedBool RushPutoutFire = new(true);
+	public readonly FrameBasedInt RushSpeed = new(72);
+	public readonly FrameBasedInt RushStopSpeed = new(8);
+	public readonly FrameBasedInt RushDuration = new(8);
+	public readonly FrameBasedInt RushStiff = new(10);
+	public readonly FrameBasedInt RushCooldown = new(2);
+	public readonly FrameBasedInt RushAcceleration = new(12);
+	public readonly FrameBasedInt RushDeceleration = new(4);
 
 	// Crash
-	public readonly BuffBool CrashAvailable = new(true);
-	public readonly BuffBool CrashWhenSlippy = new(true);
-	public readonly BuffInt CrashDuration = new(30);
-	public readonly BuffInt CrashRunDurationRequire = new(42);
-	public readonly BuffInt CrashDeceleration = new(1);
+	public readonly FrameBasedBool CrashAvailable = new(true);
+	public readonly FrameBasedBool CrashWhenSlippy = new(true);
+	public readonly FrameBasedInt CrashDuration = new(30);
+	public readonly FrameBasedInt CrashRunDurationRequire = new(42);
+	public readonly FrameBasedInt CrashDeceleration = new(1);
 
 	// Slip
-	public readonly BuffBool SlipAvailable = new(true);
-	public readonly BuffInt SlipAcceleration = new(2);
-	public readonly BuffInt SlipDeceleration = new(1);
+	public readonly FrameBasedBool SlipAvailable = new(true);
+	public readonly FrameBasedInt SlipAcceleration = new(2);
+	public readonly FrameBasedInt SlipDeceleration = new(1);
 
 	// Squat
-	public readonly BuffBool SquatAvailable = new(true);
-	public readonly BuffInt SquatSpeed = new(14);
-	public readonly BuffInt SquatAcceleration = new(48);
-	public readonly BuffInt SquatDeceleration = new(48);
+	public readonly FrameBasedBool SquatAvailable = new(true);
+	public readonly FrameBasedInt SquatSpeed = new(14);
+	public readonly FrameBasedInt SquatAcceleration = new(48);
+	public readonly FrameBasedInt SquatDeceleration = new(48);
 
 	// Pound
-	public readonly BuffBool PoundAvailable = new(true);
-	public readonly BuffBool PoundPutoutFire = new(true);
-	public readonly BuffInt PoundSpeed = new(96);
+	public readonly FrameBasedBool PoundAvailable = new(true);
+	public readonly FrameBasedBool PoundPutoutFire = new(true);
+	public readonly FrameBasedInt PoundSpeed = new(96);
 
 	// Swim
-	public readonly BuffInt SwimWidth = new(200);
-	public readonly BuffInt InWaterSpeedLoseRate = new(500);
-	public readonly BuffInt SwimSpeed = new(42);
-	public readonly BuffInt SwimJumpSpeed = new(128);
-	public readonly BuffInt SwimAcceleration = new(4);
-	public readonly BuffInt SwimDeceleration = new(4);
+	public readonly FrameBasedInt SwimWidth = new(200);
+	public readonly FrameBasedInt InWaterSpeedLoseRate = new(500);
+	public readonly FrameBasedInt SwimSpeed = new(42);
+	public readonly FrameBasedInt SwimJumpSpeed = new(128);
+	public readonly FrameBasedInt SwimAcceleration = new(4);
+	public readonly FrameBasedInt SwimDeceleration = new(4);
 
 	// Climb
-	public readonly BuffBool ClimbAvailable = new(true);
-	public readonly BuffBool JumpWhenClimbAvailable = new(true);
-	public readonly BuffInt ClimbSpeedX = new(12);
-	public readonly BuffInt ClimbSpeedY = new(18);
+	public readonly FrameBasedBool ClimbAvailable = new(true);
+	public readonly FrameBasedBool JumpWhenClimbAvailable = new(true);
+	public readonly FrameBasedInt ClimbSpeedX = new(12);
+	public readonly FrameBasedInt ClimbSpeedY = new(18);
 
 	// Fly
-	public readonly BuffBool FlyAvailable = new(true);
-	public readonly BuffBool GlideOnFlying = new(false);
-	public readonly BuffInt FlyCooldown = new(24);
-	public readonly BuffInt FlyRiseSpeed = new(96);
-	public readonly BuffInt FlyGravityRiseRate = new(800);
-	public readonly BuffInt FlyGravityFallRate = new(200);
-	public readonly BuffInt FlyFallSpeed = new(12);
-	public readonly BuffInt FlyMoveSpeed = new(32);
-	public readonly BuffInt FlyAcceleration = new(2);
-	public readonly BuffInt FlyDeceleration = new(1);
+	public readonly FrameBasedBool FlyAvailable = new(true);
+	public readonly FrameBasedBool GlideOnFlying = new(false);
+	public readonly FrameBasedInt FlyCooldown = new(24);
+	public readonly FrameBasedInt FlyRiseSpeed = new(96);
+	public readonly FrameBasedInt FlyGravityRiseRate = new(800);
+	public readonly FrameBasedInt FlyGravityFallRate = new(200);
+	public readonly FrameBasedInt FlyFallSpeed = new(12);
+	public readonly FrameBasedInt FlyMoveSpeed = new(32);
+	public readonly FrameBasedInt FlyAcceleration = new(2);
+	public readonly FrameBasedInt FlyDeceleration = new(1);
 
 	// Slide
-	public readonly BuffBool SlideAvailable = new(false);
-	public readonly BuffBool SlideOnAnyBlock = new(false);
-	public readonly BuffBool ResetJumpCountWhenSlide = new(true);
-	public readonly BuffInt SlideDropSpeed = new(4);
+	public readonly FrameBasedBool SlideAvailable = new(false);
+	public readonly FrameBasedBool SlideOnAnyBlock = new(false);
+	public readonly FrameBasedBool ResetJumpCountWhenSlide = new(true);
+	public readonly FrameBasedInt SlideDropSpeed = new(4);
 
 	// Grab
-	public readonly BuffBool GrabTopAvailable = new(true);
-	public readonly BuffBool GrabSideAvailable = new(true);
-	public readonly BuffBool ResetJumpCountWhenGrab = new(true);
-	public readonly BuffBool GrabFlipThroughDownAvailable = new(true);
-	public readonly BuffBool GrabFlipThroughUpAvailable = new(true);
-	public readonly BuffInt GrabFlipThroughDuration = new(18);
-	public readonly BuffInt GrabMoveSpeedX = new(24);
-	public readonly BuffInt GrabMoveSpeedY = new(24);
+	public readonly FrameBasedBool GrabTopAvailable = new(true);
+	public readonly FrameBasedBool GrabSideAvailable = new(true);
+	public readonly FrameBasedBool ResetJumpCountWhenGrab = new(true);
+	public readonly FrameBasedBool GrabFlipThroughDownAvailable = new(true);
+	public readonly FrameBasedBool GrabFlipThroughUpAvailable = new(true);
+	public readonly FrameBasedInt GrabFlipThroughDuration = new(18);
+	public readonly FrameBasedInt GrabMoveSpeedX = new(24);
+	public readonly FrameBasedInt GrabMoveSpeedY = new(24);
 
 }

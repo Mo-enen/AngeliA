@@ -34,9 +34,9 @@ public abstract class Weapon : Equipment {
 	public virtual int AttackCooldown => 2;
 	public virtual int HoldAttackPunish => 4;
 	public virtual int ChargeAttackDuration => int.MaxValue;
-	public virtual int? DefaultSpeedLoseOnAttack => null;
-	public virtual int? WalkingSpeedLoseOnAttack => null;
-	public virtual int? RunningSpeedLoseOnAttack => null;
+	public virtual int? DefaultSpeedRateOnAttack => null;
+	public virtual int? WalkingSpeedRateOnAttack => null;
+	public virtual int? RunningSpeedRateOnAttack => null;
 	public virtual bool UseStackAsUsage => false;
 	public virtual bool RepeatAttackWhenHolding => false;
 	public virtual bool LockFacingOnAttack => false;

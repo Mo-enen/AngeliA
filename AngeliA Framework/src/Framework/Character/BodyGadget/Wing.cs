@@ -57,7 +57,7 @@ public abstract class Wing : BodyGadget {
 
 		DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
 		if (IsPropeller && character.AnimationType == CharacterAnimationType.Fly) {
-			character.TailID.Override(0, 1);
+			character.TailID.Override(0, 1, priority: 4096);
 		}
 	}
 
