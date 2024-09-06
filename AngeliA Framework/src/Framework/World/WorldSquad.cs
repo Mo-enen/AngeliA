@@ -133,11 +133,17 @@ public sealed class WorldSquad : IBlockSquad {
 
 				// Generate Map for Safty
 				var startPoint = new Int3(centerX.ToUnit(), centerY.ToUnit(), Stage.ViewZ);
-				if (!FrameworkUtil.SearchlightBlockCheck(Stream, startPoint, null, Const.MAP / 2)) {
+				if (
+					!MapGenerationSystem.IsGenerating(startPoint) &&
+					!FrameworkUtil.SearchlightBlockCheck(Stream, startPoint, null, Const.MAP / 2)
+				) {
 					MapGenerationSystem.GenerateMap(startPoint, null, async: false);
 				}
 				startPoint.z = Stage.ViewZ + 1;
-				if (!FrameworkUtil.SearchlightBlockCheck(Stream, startPoint, null, Const.MAP / 2)) {
+				if (
+					!MapGenerationSystem.IsGenerating(startPoint) &&
+					!FrameworkUtil.SearchlightBlockCheck(Stream, startPoint, null, Const.MAP / 2)
+				) {
 					MapGenerationSystem.GenerateMap(startPoint, null, async: true);
 				}
 			}

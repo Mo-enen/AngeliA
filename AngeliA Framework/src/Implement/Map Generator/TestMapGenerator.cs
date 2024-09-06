@@ -5,6 +5,11 @@ using JordanPeck;
 namespace AngeliA;
 
 #if DEBUG
+internal class TestMapGeneratorAlt0 : TestMapGenerator { }
+internal class TestMapGeneratorAlt1 : TestMapGenerator { public override float Priority => 5f; }
+internal class TestMapGeneratorAlt2 : TestMapGenerator { }
+internal class TestMapGeneratorAlt3 : TestMapGenerator { }
+
 internal class TestMapGenerator : MapGenerator {
 
 
@@ -12,7 +17,9 @@ internal class TestMapGenerator : MapGenerator {
 	private static readonly int[] AltitudeCache = new int[Const.MAP * Const.MAP];
 
 
-	public override MapGenerationResult GenerateMap (Int3 startPoint, Direction8? startDirection) {
+
+
+	public override MapGenerationResult GenerateMap (IBlockSquad squad, Int3 startPoint, Direction8? startDirection) {
 
 
 

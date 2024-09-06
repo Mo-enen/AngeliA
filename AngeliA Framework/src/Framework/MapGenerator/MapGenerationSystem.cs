@@ -29,13 +29,13 @@ public static class MapGenerationSystem {
 	public const int STARTER_ID = 72352367;
 
 	// Api
-	public static long Seed { get; private set; }
 	public static bool Enable { get; private set; }
 
 	// Data
+	private static readonly MapGenerator[] PrioritizedMapGenerators = new MapGenerator[1024];
 	private static readonly Dictionary<Int3, MapState> StatePool = new();
-	private static readonly List<MapGenerator> AllMapGenerators = new(32);
-	private static readonly Pipe<(Int3 point, Direction8? dir)> AllTasks = new(64);
+	private static readonly Pipe<(MapGenerator gen, Int3 point, Direction8? dir)> AllTasks = new(64);
+	private static readonly System.Random Random = new((int)(System.DateTime.Now.Ticks + System.Environment.UserName.AngeHash()));
 
 
 	#endregion
@@ -49,68 +49,60 @@ public static class MapGenerationSystem {
 	[OnGameInitialize(-32)]
 	internal static void OnGameInitialize () {
 
-		Enable = Universe.BuiltInInfo.UseProceduralMap;
+		Enable = Universe.BuiltInInfo.UseProceduralMap && !Game.IsToolApplication;
 		if (!Enable) return;
 
 		// Create Map Generators
-		AllMapGenerators.Clear();
+		float totalPriority = 0f;
+		var genList = new List<MapGenerator>();
 		foreach (var type in typeof(MapGenerator).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not MapGenerator gen) continue;
-			AllMapGenerators.Add(gen);
+			if (!gen.IncludeInOpenWorld) continue;
+			genList.Add(gen);
+			totalPriority += Util.Max(gen.Priority, 0.001f);
 		}
-		AllMapGenerators.Sort((a, b) => a.Order.CompareTo(b.Order));
+
+		// Prioritize
+		int pGenratorLength = PrioritizedMapGenerators.Length;
+		if (genList.Count > 0) {
+			MapGenerator currentGen = null;
+			int endIndex = 0;
+			for (int i = 0; i < genList.Count; i++) {
+				if (endIndex >= pGenratorLength) break;
+				currentGen = genList[i];
+				int currentCount = Util.Max((int)(pGenratorLength * currentGen.Priority / totalPriority), 1);
+				int startIndex = endIndex;
+				endIndex = (startIndex + currentCount).Clamp(startIndex, pGenratorLength);
+				for (int j = startIndex; j < endIndex; j++) {
+					PrioritizedMapGenerators[j] = currentGen;
+				}
+			}
+			for (int j = endIndex; j < pGenratorLength; j++) {
+				PrioritizedMapGenerators[j] = currentGen;
+			}
+		} else {
+			var failback = new FailbackMapGenerator();
+			for (int i = 0; i < pGenratorLength; i++) {
+				PrioritizedMapGenerators[i] = failback;
+			}
+		}
 
 		// Start Async Thread
 		System.Threading.Tasks.Task.Run(AsyncUpdate);
-
-	}
-
-
-	[OnGameInitialize]
-	[OnSavingSlotChanged(1)]
-	internal static void OnGameInitialize_OnSavingSlotChanged () {
-
-		if (!Enable) return;
-
-		// Load or Create Seed
-		long seed = long.MaxValue;
-		string seedPath = Util.CombinePaths(Universe.BuiltIn.SlotUserMapRoot, AngePath.MAP_SEED_NAME);
-		if (Util.FileExists(seedPath)) {
-			string seedStr = Util.FileToText(seedPath);
-			if (!long.TryParse(seedStr, out seed)) {
-				seed = int.MaxValue;
+		static void AsyncUpdate () {
+			while (true) {
+				try {
+					if (AllTasks.Length == 0) {
+						Thread.Sleep(50);
+						continue;
+					}
+					while (AllTasks.TryPopHead(out var param)) {
+						GenerateLogic(param.gen, param.point, param.dir);
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
 		}
-		if (seed == long.MaxValue) {
-			seed = new System.Random(
-				(int)(System.DateTime.Now.Ticks + System.Environment.UserName.AngeHash())
-			).NextInt64(long.MinValue, long.MaxValue);
-			Util.TextToFile(seed.ToString(), seedPath);
-		}
-		Seed = seed;
 
-		// Init Generators
-		foreach (var gen in AllMapGenerators) {
-			gen.Seed = seed;
-			gen.Squad = WorldSquad.Stream;
-			gen.Initialize();
-		}
-
-	}
-
-
-	private static void AsyncUpdate () {
-		while (true) {
-			try {
-				if (AllTasks.Length == 0) {
-					Thread.Sleep(50);
-					continue;
-				}
-				while (AllTasks.TryPopHead(out (Int3 point, Direction8? dir) param)) {
-					GenerateLogic(param.point, param.dir);
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
 	}
 
 
@@ -122,7 +114,9 @@ public static class MapGenerationSystem {
 	#region --- API ---
 
 
+	[CheatCode("RecreatedAllMaps")]
 	public static void RegenerateAll () {
+		if (!Enable) return;
 		AllTasks.Reset();
 		WorldSquad.Stream.ClearWorldPool();
 		var uni = Universe.BuiltIn;
@@ -141,12 +135,20 @@ public static class MapGenerationSystem {
 
 
 	public static void GenerateMap (Int3 startPoint, Direction8? startDirection, bool async) {
-		if (StatePool[startPoint] == MapState.Generating) return;
+		if (!Enable) return;
+		int randomIndex = Random.Next(0, PrioritizedMapGenerators.Length);
+		var gen = PrioritizedMapGenerators[randomIndex];
+		GenerateMapWithGenerator(gen, startPoint, startDirection, async);
+	}
+
+
+	public static void GenerateMapWithGenerator (MapGenerator generator, Int3 startPoint, Direction8? startDirection, bool async) {
+		if (!Enable) return;
 		StatePool[startPoint] = MapState.Generating;
 		if (async) {
-			AllTasks.LinkToTail((startPoint, startDirection));
+			AllTasks.LinkToTail((generator, startPoint, startDirection));
 		} else {
-			GenerateLogic(startPoint, startDirection);
+			GenerateLogic(generator, startPoint, startDirection);
 		}
 	}
 
@@ -159,36 +161,34 @@ public static class MapGenerationSystem {
 	#region --- LGC ---
 
 
-	private static void GenerateLogic (Int3 startPoint, Direction8? startDirection) {
-		int len = AllMapGenerators.Count;
-		int successCount = 0;
-		for (int i = 0; i < len; i++) {
-			try {
-				var gen = AllMapGenerators[i];
-				gen.ErrorMessage = "";
-				var result = gen.GenerateMap(startPoint, startDirection);
-				switch (result) {
-					case MapGenerationResult.Success:
-						successCount++;
-						break;
-					case MapGenerationResult.Skipped:
-						break;
-					case MapGenerationResult.Fail:
-						Debug.LogWarning($"Map generation fail: {gen.ErrorMessage}");
-						break;
-					case MapGenerationResult.CriticalError:
-						Debug.LogError($"Map generation fail with critical error: {gen.ErrorMessage}");
-						break;
-				}
-				gen.ErrorMessage = "";
-				if (result == MapGenerationResult.CriticalError) {
-					successCount = -1;
+	private static void GenerateLogic (MapGenerator generator, Int3 startPoint, Direction8? startDirection) {
+		bool success = true;
+		try {
+			generator.ErrorMessage = "";
+			generator.Seed = Random.NextInt64(long.MinValue, long.MaxValue);
+			var result = generator.GenerateMap(WorldSquad.Stream, startPoint, startDirection);
+			switch (result) {
+				case MapGenerationResult.Success:
+				case MapGenerationResult.Skipped:
+					success = true;
 					break;
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+				case MapGenerationResult.Fail:
+					success = false;
+					Debug.LogWarning($"Map generation fail: {generator.ErrorMessage}");
+					break;
+				case MapGenerationResult.CriticalError:
+					success = false;
+					Debug.LogError($"Map generation fail with critical error: {generator.ErrorMessage}");
+					break;
+			}
+		} catch (System.Exception ex) {
+			Debug.LogException(ex);
+			success = false;
 		}
+
+		// Finish
 		WorldSquad.Stream.SetBlockAt(startPoint.x, startPoint.y, startPoint.z, BlockType.Element, 0);
-		StatePool[startPoint] = successCount >= 0 ? MapState.Success : MapState.Fail;
+		StatePool[startPoint] = success ? MapState.Success : MapState.Fail;
 	}
 
 

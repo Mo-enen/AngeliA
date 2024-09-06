@@ -6,6 +6,7 @@ namespace AngeliA;
 
 public enum MapGenerationResult { Success, Skipped, Fail, CriticalError, }
 
+
 public abstract class MapGenerator {
 
 
@@ -15,10 +16,10 @@ public abstract class MapGenerator {
 	#region --- VAR ---
 
 
-	public virtual int Order => 0;
+	public virtual float Priority => 1f;
+	public virtual bool IncludeInOpenWorld => true;
 	public long Seed { get; internal set; }
 	public string ErrorMessage { get; internal set; }
-	public IBlockSquad Squad { get; internal set; }
 
 
 	#endregion
@@ -29,10 +30,7 @@ public abstract class MapGenerator {
 	#region --- MSG ---
 
 
-	public virtual void Initialize () { }
-
-
-	public abstract MapGenerationResult GenerateMap (Int3 startPoint, Direction8? startDirection);
+	public abstract MapGenerationResult GenerateMap (IBlockSquad squad, Int3 startPoint, Direction8? startDirection);
 
 
 	#endregion
