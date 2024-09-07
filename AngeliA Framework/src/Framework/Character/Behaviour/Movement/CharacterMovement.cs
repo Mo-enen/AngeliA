@@ -524,6 +524,11 @@ public partial class CharacterMovement {
 						VelocityY = 0;
 						Y -= 3;
 					}
+					if (IsSliding) {
+						VelocityX += FacingRight ? -SlideSideJumpSpeed : SlideSideJumpSpeed;
+					} else if (IsGrabbingSide) {
+						VelocityX += FacingRight ? -GrabSideJumpSpeed : GrabSideJumpSpeed;
+					}
 					LastDashFrame = int.MinValue;
 					IsDashing = false;
 					IsSliding = false;

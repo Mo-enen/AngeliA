@@ -83,7 +83,7 @@ public abstract class MovableBullet : Bullet {
 		MovableHitCheck();
 
 		// Out of Range Check
-		if (!Stage.ViewRect.Overlaps(Rect)) {
+		if (!Stage.SpawnRect.Overlaps(Rect)) {
 			Active = false;
 			return;
 		}

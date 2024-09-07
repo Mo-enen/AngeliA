@@ -209,9 +209,10 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		if (Attackness.IsAimingDirectionIgnored(PlayerAttackness._AimingDirection)) {
 			var dir0 = PlayerAttackness._AimingDirection;
 			var dir1 = PlayerAttackness._AimingDirection;
+			bool clockwiseFirst = Movement.FacingRight == dir0.IsTop();
 			for (int safe = 0; safe < 4; safe++) {
-				dir0 = Movement.FacingRight ? dir0.Clockwise() : dir0.AntiClockwise();
-				dir1 = Movement.FacingRight ? dir1.AntiClockwise() : dir1.Clockwise();
+				dir0 = clockwiseFirst ? dir0.Clockwise() : dir0.AntiClockwise();
+				dir1 = clockwiseFirst ? dir1.AntiClockwise() : dir1.Clockwise();
 				if (!Attackness.IsAimingDirectionIgnored(dir0)) {
 					PlayerAttackness._AimingDirection = dir0;
 					break;

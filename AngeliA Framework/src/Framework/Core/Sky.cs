@@ -24,17 +24,27 @@ public static class Sky {
 		new ColorGradient.Data(new Color32(27, 69, 101, 255), 0.75f),
 		new ColorGradient.Data(new Color32(10, 12, 31, 255), 1f)
 	);
+	public static float InGameDaytime01 { get; private set; }
 
 	// Data
 	private static int ForceBackgroundTintFrame = int.MinValue;
 
 
 	// MSG
+	[OnGameInitialize]
+	internal static void OnGameInitialize () => InGameDaytime01 = GetInGameDaytime01();
+
+
 	[OnGameUpdatePauseless]
-	public static void OnGameUpdatePauseless () {
+	internal static void OnGameUpdatePauseless () {
+		// Refresh In-Game Daytime
+		if (Game.PauselessFrame % 3600 == 0) { // every minute
+			InGameDaytime01 = GetInGameDaytime01();
+		}
+		// Refresh Sky Tint
 		if (
-			Game.GlobalFrame == ForceBackgroundTintFrame + 1 ||
-			(Game.GlobalFrame % 3600 == 0 && Game.GlobalFrame >= ForceBackgroundTintFrame)
+			Game.PauselessFrame == ForceBackgroundTintFrame + 1 ||
+			(Game.PauselessFrame % 3600 == 0 && Game.PauselessFrame > ForceBackgroundTintFrame)
 		) {
 			RefreshSkyTintFromDateTime();
 		}
@@ -43,18 +53,22 @@ public static class Sky {
 
 	[OnGameRestart]
 	public static void RefreshSkyTintFromDateTime () {
-		var date = System.DateTime.Now;
-		float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
-		SkyTintTopColor = GradientTop.Evaluate(time01);
-		SkyTintBottomColor = GradientBottom.Evaluate(time01);
+		SkyTintTopColor = GradientTop.Evaluate(InGameDaytime01);
+		SkyTintBottomColor = GradientBottom.Evaluate(InGameDaytime01);
 	}
 
 
 	public static void ForceSkyboxTint (Color32 color, int duration = 1) => ForceSkyboxTint(color, color, duration);
 	public static void ForceSkyboxTint (Color32 top, Color32 bottom, int duration = 1) {
-		ForceBackgroundTintFrame = Game.GlobalFrame + duration;
+		ForceBackgroundTintFrame = Game.PauselessFrame + duration;
 		SkyTintTopColor = top;
 		SkyTintBottomColor = bottom;
+	}
+
+
+	public static float GetInGameDaytime01 () {
+		var date = System.DateTime.Now;
+		return Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
 	}
 
 

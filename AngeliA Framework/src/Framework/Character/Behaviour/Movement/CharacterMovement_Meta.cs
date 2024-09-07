@@ -123,6 +123,7 @@ public partial class CharacterMovement {
 	public readonly FrameBasedBool SlideAvailable = new(false);
 	public readonly FrameBasedBool SlideOnAnyBlock = new(false);
 	public readonly FrameBasedBool ResetJumpCountWhenSlide = new(true);
+	public readonly FrameBasedInt SlideSideJumpSpeed = new(56);
 	public readonly FrameBasedInt SlideDropSpeed = new(4);
 
 	// Grab
@@ -134,5 +135,6 @@ public partial class CharacterMovement {
 	public readonly FrameBasedInt GrabFlipThroughDuration = new(18);
 	public readonly FrameBasedInt GrabMoveSpeedX = new(24);
 	public readonly FrameBasedInt GrabMoveSpeedY = new(24);
+	public readonly FrameBasedInt GrabSideJumpSpeed = new(56);
 
 }

@@ -28,6 +28,8 @@ public abstract class BeamBullet : MovableBullet {
 	protected virtual Color32 SparkTint => Color32.WHITE_128;
 	protected virtual Color32 BurstTint => Color32.WHITE;
 	protected virtual Color32 HandBurstTint => Color32.WHITE;
+	protected virtual int IllumanteUnitRadius => 3;
+	protected virtual int IllumanteAmount => 300;
 
 	// Data
 	private bool BeamRendered = false;
@@ -91,6 +93,19 @@ public abstract class BeamBullet : MovableBullet {
 				rot1000, HandBurstRotateSpeed,
 				-1, 1, true, HandBurstTint, renderLayer: RenderingLayer
 			);
+		}
+
+		// Illu
+		int illuAmount = IllumanteAmount;
+		if (illuAmount > 0) {
+			int len = h / Const.CEL;
+			for (int i = 0; i < len; i++) {
+				LightingSystem.Illuminate(
+					(x + i * (endX - x) / (len - 1)).ToUnit(),
+					(y + i * (endY - y) / (len - 1)).ToUnit(),
+					IllumanteUnitRadius, illuAmount
+				);
+			}
 		}
 
 	}

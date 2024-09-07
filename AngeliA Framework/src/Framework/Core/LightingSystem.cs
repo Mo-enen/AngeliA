@@ -30,7 +30,6 @@ public static class LightingSystem {
 	private static int ForceCameraScaleFrame = -1;
 	private static float ForceAirLerpValue = 1f;
 	private static int ForceAirLerpFrame = -1;
-	private static float DayTimeLerp = -1f;
 
 
 	#endregion
@@ -62,16 +61,13 @@ public static class LightingSystem {
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
 		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_BOTTOM;
 		float solidIllu = info.LightMap_SolidIlluminance;
-		float airIllu = Util.LerpUnclamped(info.LightMap_AirIlluminanceNight, info.LightMap_AirIlluminanceDay, DayTimeLerp);
+		float airIllu = Util.LerpUnclamped(
+			info.LightMap_AirIlluminanceNight,
+			info.LightMap_AirIlluminanceDay,
+			Sky.InGameDaytime01
+		);
 		float sLerp = info.LightMap_SelfLerp;
 		float bgIllu = info.LightMap_BackgroundTint;
-
-		// Daytime Update
-		if (DayTimeLerp < 0f || Game.PauselessFrame % 3600 == 0) {
-			var date = System.DateTime.Now;
-			float time01 = Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
-			DayTimeLerp = Ease.InOutQuint(Util.PingPong(time01, 0.5f) * 2f);
-		}
 
 		// First Row
 		int originUnitTop = OriginUnitY + CellHeight - 1;
@@ -112,7 +108,11 @@ public static class LightingSystem {
 		var info = Universe.BuiltInInfo;
 		bool scaling = Game.PauselessFrame <= ForceCameraScaleFrame;
 		bool lerpingToAir = Game.PauselessFrame <= ForceAirLerpFrame;
-		float airIllu = 256f - 256f * Util.LerpUnclamped(info.LightMap_AirIlluminanceNight, info.LightMap_AirIlluminanceDay, DayTimeLerp);
+		float airIllu = 256f - 256f * Util.LerpUnclamped(
+			info.LightMap_AirIlluminanceNight,
+			info.LightMap_AirIlluminanceDay,
+			Sky.InGameDaytime01
+		);
 		bool pixelStyle = info.LightMap_PixelStyle;
 
 		var cameraCenter = Renderer.CameraRect.center.CeilToInt();

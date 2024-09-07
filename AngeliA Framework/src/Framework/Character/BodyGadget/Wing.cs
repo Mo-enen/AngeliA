@@ -69,23 +69,36 @@ public abstract class Wing : BodyGadget {
 			!Renderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var firstSprite, false, true)
 		) return;
 		int z = character.Body.FrontSide ? -33 : 33;
-		int xLeft = character.UpperLegL.GlobalX;
-		int yLeft = character.UpperLegL.GlobalY;
-		int xRight = character.UpperLegR.GlobalX;
-		int yRight = character.UpperLegR.GlobalY;
-		int spriteHeight = firstSprite.GlobalHeight * character.Body.Height.Sign() * scale / 1000;
+		int spriteHeight = firstSprite.GlobalHeight * scale / 1000;
+		if (character.AnimationType == CharacterAnimationType.Rolling && !character.Body.FrontSide) {
+			spriteHeight = -spriteHeight;
+		}
 		var animatedPoseType = character.AnimationType;
+
+		// Get Wing Position
+		int xLeft;
+		int yLeft;
+		int xRight;
+		int yRight;
 		if (
 			animatedPoseType != CharacterAnimationType.Sleep &&
 			animatedPoseType != CharacterAnimationType.PassOut &&
 			animatedPoseType != CharacterAnimationType.Fly
 		) {
+			// Standing Up
 			var bodyRect = character.Body.GetGlobalRect();
 			xLeft = bodyRect.xMin;
 			yLeft = bodyRect.y;
 			xRight = bodyRect.xMax;
 			yRight = bodyRect.y;
+		} else {
+			// Lying Down
+			xLeft = character.UpperLegL.GlobalX;
+			yLeft = character.UpperLegL.GlobalY;
+			xRight = character.UpperLegR.GlobalX;
+			yRight = character.UpperLegR.GlobalY;
 		}
+
 		if (animatedPoseType == CharacterAnimationType.Fly) {
 			// Flying
 			if (isPropeller) {
@@ -127,17 +140,21 @@ public abstract class Wing : BodyGadget {
 			// Not Flying
 			int rot = Game.GlobalFrame.PingPong(120) - 60;
 			rot /= 12;
+			int facingScaleL = 1000 + character.Body.Width.Sign3() * 300;
+			int facingScaleR = 1000 - character.Body.Width.Sign3() * 300;
+			// L
 			Renderer.Draw(
 				firstSprite,
 				xLeft, yLeft, firstSprite.PivotX, firstSprite.PivotY, -rot,
-				firstSprite.GlobalWidth * scale / 1000,
+				firstSprite.GlobalWidth * scale / 1000 * facingScaleL / 1000,
 				spriteHeight,
 				z
 			);
+			// R
 			Renderer.Draw(
 				firstSprite,
 				xRight, yRight, firstSprite.PivotX, firstSprite.PivotY, rot,
-				-firstSprite.GlobalWidth * scale / 1000,
+				-firstSprite.GlobalWidth * scale / 1000 * facingScaleR / 1000,
 				spriteHeight,
 				z
 			);

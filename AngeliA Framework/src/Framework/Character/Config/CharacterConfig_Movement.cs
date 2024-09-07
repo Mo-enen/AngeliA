@@ -125,6 +125,7 @@ public class CharacterMovementConfig {
 	public bool SlideAvailable = false;
 	[PropVisibility(nameof(SlideAvailable))] public bool SlideOnAnyBlock = false;
 	[PropVisibility(nameof(SlideAvailable))] public bool ResetJumpCountWhenSlide = true;
+	[PropVisibility(nameof(SlideAvailable))] public int SlideSideJumpSpeed = 56;
 	[PropVisibility(nameof(SlideAvailable))] public int SlideDropSpeed = 4;
 
 	[PropGroup("Grab")]
@@ -138,6 +139,7 @@ public class CharacterMovementConfig {
 	[PropVisibility(nameof(GrabSideAvailable))] public int GrabMoveSpeedY = 24;
 	[PropVisibility(nameof(GrabTopAvailable))] public int GrabTopHeightAmount = 947;
 	[PropVisibility(nameof(GrabSideAvailable))] public int GrabSideHeightAmount = 947;
+	[PropVisibility(nameof(GrabSideAvailable))] public int GrabSideJumpSpeed = 56;
 
 	// Data
 	private static readonly List<(FieldInfo movement, FieldInfo config)> MetaMapper = new();

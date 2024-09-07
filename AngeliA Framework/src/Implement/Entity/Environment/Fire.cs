@@ -35,6 +35,8 @@ public abstract class Fire : Entity {
 	protected virtual bool UseAdditiveShader => false;
 	protected virtual int DamageCooldown => 30;
 	protected virtual Direction4 DefaultDirection => Direction4.Up;
+	protected virtual int IlluminateUnitRadius => 6;
+	protected virtual int IlluminateAmount => 1000;
 	public Direction4 Direction { get; set; } = Direction4.Up;
 
 	// Data
@@ -165,6 +167,7 @@ public abstract class Fire : Entity {
 
 
 	public override void LateUpdate () {
+
 		base.LateUpdate();
 		if (!Active) return;
 
@@ -182,7 +185,8 @@ public abstract class Fire : Entity {
 			Y + (Direction == Direction4.Down ? Height : Direction == Direction4.Up ? 0 : Height / 2),
 			500, 0,
 			Direction.GetRotation(),
-			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, int.MaxValue
+			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
+			z: int.MaxValue
 		);
 		Renderer.SetLayerToDefault();
 
@@ -191,6 +195,9 @@ public abstract class Fire : Entity {
 			cell.Height = cell.Height * eTarget.Width / cell.Width;
 			cell.Width = eTarget.Width;
 		}
+
+		// Illuminance
+		LightingSystem.Illuminate(X.ToUnit(), Y.ToUnit(), IlluminateUnitRadius, IlluminateAmount);
 
 		// Animation
 		const int HOP_GAP = 8;
