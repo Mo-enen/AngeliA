@@ -24,7 +24,7 @@ public sealed class CharacterBuff {
 	#region --- MSG ---
 
 
-	public CharacterBuff (Character target) {
+	internal CharacterBuff (Character target) {
 		Character = target;
 		BuffStates = new int[Buff.AllBuffCount];
 
@@ -39,7 +39,7 @@ public sealed class CharacterBuff {
 	#region --- API ---
 
 
-	public void Apply () {
+	internal void Apply () {
 		int frame = Game.PauselessFrame;
 		var span = BuffStates.GetReadOnlySpan();
 		for (int i = 0; i < span.Length; i++) {

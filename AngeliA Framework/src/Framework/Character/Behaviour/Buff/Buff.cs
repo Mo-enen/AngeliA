@@ -53,7 +53,7 @@ public abstract class Buff {
 	public abstract void ApplyToCharacter (Character target);
 
 
-	public static void SetBuffOverlap (IRect range, int buffIndex, int duration = 1) {
+	public static void SetBuffInRange (IRect range, int buffIndex, int duration = 1) {
 		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
@@ -63,7 +63,7 @@ public abstract class Buff {
 	}
 
 
-	public static void SetBuffInRadius (int x, int y, int radius, int buffIndex, int duration = 1) {
+	public static void SetBuffInRange (int x, int y, int radius, int buffIndex, int duration = 1) {
 		var range = new IRect(x - radius, y - radius, radius * 2, radius * 2);
 		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
 		for (int i = 0; i < count; i++) {
