@@ -22,37 +22,40 @@ public class ProjectEditor : WindowUI {
 	private static readonly SpriteCode ICON_STAGE = "Icon.Project.Stage";
 	private static readonly SpriteCode ICON_RESOURCE = "Icon.Project.Resource";
 
+	// Worlflow Buttons
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
 	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
-
 	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open .sln or .csproj file in this project folder with default application");
 	private static readonly LanguageCode TIP_RECOMPILE = ("Tip.Recompile", "Manually rebuild the project in debug mode");
 	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Run the current built project in a new window in debug mode");
 	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Build the project for final product in release mode");
-	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
-	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
-	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
+
 	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
+	private static readonly LanguageCode TITLE_PICK_ICON = ("Title.PickPngForIcon", "Pick a .png file for game icon");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_EMPTY = ("Log.ProductNameEmpty", "Product name can not be empty");
 	private static readonly LanguageCode LOG_DEV_NAME_INVALID = ("Log.DevNameInvalid", "Developer name contains invalid characters for file name");
 	private static readonly LanguageCode LOG_DEV_NAME_EMPTY = ("Log.DevNameEmpty", "Developer name can not be empty");
+	private static readonly LanguageCode MSG_DELETE_MUSIC = ("UI.Project.DeleteMusicMsg", "Delete music \"{0}\" ? This will delete the file.");
+	private static readonly LanguageCode MSG_DELETE_SOUND = ("UI.Project.DeleteSoundMsg", "Delete sound \"{0}\" ? This will delete the file.");
+	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
+
 	private static readonly LanguageCode LABEL_GAME = ("Project.Label.Game", "Game");
 	private static readonly LanguageCode LABEL_STAGE = ("Project.Label.Stage", "Stage");
 	private static readonly LanguageCode LABEL_RESOURCE = ("Project.Label.Resource", "Resource");
+
+	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
+	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
+	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
 	private static readonly LanguageCode LABEL_ICON = ("Setting.Icon", "Icon");
 	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
 	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
 	private static readonly LanguageCode LABEL_LINK_SAVING = ("Setting.Link.Saving", "Saving Folder");
-	private static readonly LanguageCode TITLE_PICK_ICON = ("Title.PickPngForIcon", "Pick a .png file for game icon");
 	private static readonly LanguageCode LABEL_MUSIC = ("Label.Project.Music", "Music");
 	private static readonly LanguageCode LABEL_SOUND = ("Label.Project.Sound", "Sound");
 	private static readonly LanguageCode LABEL_FONT = ("Label.Project.Font", "Font");
-	private static readonly LanguageCode MSG_DELETE_MUSIC = ("UI.Project.DeleteMusicMsg", "Delete music \"{0}\" ? This will delete the file.");
-	private static readonly LanguageCode MSG_DELETE_SOUND = ("UI.Project.DeleteSoundMsg", "Delete sound \"{0}\" ? This will delete the file.");
-	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
 	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
 	private static readonly LanguageCode LABEL_ALLOW_PAUSE = ("Label.Project.AllowPause", "Allow Pause Game");
@@ -60,6 +63,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ALLOW_QUIT_MENU = ("Label.Project.AllowQuitFromMenu", "Allow Quit from Menu");
 	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
 	private static readonly LanguageCode LABEL_SCALE_UI_MONITOR = ("Label.Project.ScaleUiBasedOnMonitor", "Scale UI Based On Monitor Height");
+	private static readonly LanguageCode LABEL_GEN_MAP_EMPTY = ("Label.Project.GenerateMapEmpty", "Generate Map When Surrounding Empty");
 	private static readonly LanguageCode LABEL_BEHIND_PARA = ("Setting.BehindPara", "Behind Map Parallax");
 	private static readonly LanguageCode LABEL_BEHIND_TINT = ("Setting.BehindAlpha", "Behind Map Alpha");
 	private static readonly LanguageCode LABEL_VIEW_RATIO = ("Setting.ViewRatio", "View Ratio");
@@ -145,13 +149,13 @@ public class ProjectEditor : WindowUI {
 			// Window
 			OnGUI_WorkflowButton(ref rect);
 
-			// Config
+			// Game
 			rect.yMin = rect.yMax - GUI.FieldHeight;
 			rect.xMin += indent;
 			if (!GUI.ToggleFold(rect, ref FoldingConfigPanel, ICON_GAME, LABEL_GAME, indent)) {
 				rect.xMin += indent;
 				rect.SlideDown(GUI.FieldPadding);
-				OnGUI_Config(ref rect);
+				OnGUI_Game(ref rect);
 			} else {
 				rect.SlideDown();
 			}
@@ -277,12 +281,12 @@ public class ProjectEditor : WindowUI {
 	}
 
 
-	private void OnGUI_Config (ref IRect rect) {
+	private void OnGUI_Game (ref IRect rect) {
 
 		int padding = GUI.FieldPadding;
 		int itemHeight = GUI.FieldHeight;
-		rect.yMin = rect.yMax - itemHeight;
 		int labelWidth = GUI.LabelWidth;
+		rect.yMin = rect.yMax - itemHeight;
 		int digitLabelWidth = Unify(64);
 		var info = CurrentProject.Universe.Info;
 
@@ -366,6 +370,35 @@ public class ProjectEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
+		// Use Procedural Map
+		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
+		if (newUseProceduralMap != info.UseProceduralMap) {
+			info.UseProceduralMap = newUseProceduralMap;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Generate Map When Surrounding Empty
+		if (info.UseProceduralMap) {
+			bool newGenMapEmpty = GUI.Toggle(rect, info.GenerateMapWhenSurroundingEmpty, LABEL_GEN_MAP_EMPTY, labelStyle: Skin.SmallLabel);
+			if (newGenMapEmpty != info.GenerateMapWhenSurroundingEmpty) {
+				info.GenerateMapWhenSurroundingEmpty = newGenMapEmpty;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
+		}
+
+		// Use Light Sys
+		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
+		if (newUseLightSys != info.UseLightingSystem) {
+			info.UseLightingSystem = newUseLightSys;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
 		// Allow Cheat Code
 		bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
 		if (newAllowCheat != info.AllowCheatCode) {
@@ -431,24 +464,6 @@ public class ProjectEditor : WindowUI {
 		int digitLabelWidth = Unify(64);
 		var info = CurrentProject.Universe.Info;
 
-		// Use Procedural Map
-		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
-		if (newUseProceduralMap != info.UseProceduralMap) {
-			info.UseProceduralMap = newUseProceduralMap;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
-		// Use Light Sys
-		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
-		if (newUseLightSys != info.UseLightingSystem) {
-			info.UseLightingSystem = newUseLightSys;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
 		// Para
 		GUI.SmallLabel(rect, LABEL_BEHIND_PARA);
 		int newBehindPara = GUI.HandleSlider(
@@ -464,7 +479,7 @@ public class ProjectEditor : WindowUI {
 		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newBehindPara, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
-		// Behind Tint
+		// Behind Alpha
 		GUI.SmallLabel(rect, LABEL_BEHIND_TINT);
 		byte newBehindTint = (byte)GUI.HandleSlider(
 			1236787, rect.Shrink(GUI.LabelWidth, digitLabelWidth, 0, 0),
@@ -472,7 +487,6 @@ public class ProjectEditor : WindowUI {
 		).Clamp(0, 255);
 		if (newBehindTint != info.WorldBehindAlpha) {
 			info.WorldBehindAlpha = newBehindTint;
-			info.Valid(false);
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}

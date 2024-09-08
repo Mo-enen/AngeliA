@@ -93,6 +93,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	[OnSavingSlotChanged]
 	public static TaskResult OnGameInitializeLaterPlayer () {
 		if (!Stage.IsReady) return TaskResult.Continue;
+		RespawnCpUnitPosition = null;
 		SelectPlayer(LastPlayerID.Value);
 		return TaskResult.End;
 	}

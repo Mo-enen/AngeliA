@@ -178,7 +178,7 @@ public static partial class Util {
 	}
 
 
-	public static bool CopyFolder (string from, string to, bool copySubDirs, bool ignoreHidden) {
+	public static bool CopyFolder (string from, string to, bool copySubDirs, bool ignoreHidden, bool overrideFile = false) {
 
 		// Get the subdirectories for the specified directory.
 		DirectoryInfo dir = new(from);
@@ -197,7 +197,7 @@ public static partial class Util {
 			try {
 				string tempPath = Path.Combine(to, file.Name);
 				if (!ignoreHidden || (file.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden) {
-					file.CopyTo(tempPath, false);
+					file.CopyTo(tempPath, overrideFile);
 				}
 			} catch { }
 		}
@@ -208,7 +208,7 @@ public static partial class Util {
 				try {
 					string temppath = Path.Combine(to, subdir.Name);
 					if (!ignoreHidden || (subdir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden) {
-						CopyFolder(subdir.FullName, temppath, copySubDirs, ignoreHidden);
+						CopyFolder(subdir.FullName, temppath, copySubDirs, ignoreHidden, overrideFile);
 					}
 				} catch { }
 			}

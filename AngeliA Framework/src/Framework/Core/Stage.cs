@@ -137,7 +137,7 @@ public static class Stage {
 
 
 	[OnGameInitialize(-64)]
-	public static void OnGameInitialize () {
+	internal static void OnGameInitialize () {
 
 		IsReady = true;
 		Enable = !Game.IsToolApplication;
@@ -219,7 +219,7 @@ public static class Stage {
 
 
 	[OnGameRestart]
-	public static void OnGameRestart () {
+	internal static void OnGameRestart () {
 		if (!Enable) return;
 		SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 1000, int.MaxValue);
 	}

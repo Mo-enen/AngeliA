@@ -25,9 +25,6 @@ public static class MapGenerationSystem {
 	#region --- VAR ---
 
 
-	// Const
-	public const int STARTER_ID = 72352367;
-
 	// Api
 	public static bool Enable { get; private set; }
 
@@ -101,6 +98,13 @@ public static class MapGenerationSystem {
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
+		}
+
+		// Copy All Built-in Maps into User Map Folder
+		string userMapRoot = Universe.BuiltIn.SlotUserMapRoot;
+		int fileCount = Util.GetFileCount(userMapRoot, $"*.{AngePath.MAP_FILE_EXT}");
+		if (fileCount == 0) {
+			Util.CopyFolder(Universe.BuiltIn.MapRoot, userMapRoot, false, true);
 		}
 
 	}
