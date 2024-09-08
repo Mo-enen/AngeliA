@@ -17,7 +17,7 @@ public enum CharacterState {
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract partial class Character : Rigidbody, IDamageReceiver {
+public abstract class Character : Rigidbody, IDamageReceiver {
 
 
 
@@ -89,6 +89,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	public readonly CharacterAttackness NativeAttackness;
 	public readonly CharacterHealth NativeHealth;
 	public readonly CharacterNavigation NativeNavigation;
+	public readonly CharacterBuff Buff;
 	private int OverridingMovementFrame = int.MinValue;
 	private int OverridingAttacknessFrame = int.MinValue;
 	private int OverridingHealthFrame = int.MinValue;
@@ -118,6 +119,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 		Attackness = NativeAttackness = CreateNativeAttackness();
 		Health = NativeHealth = CreateNativeHealth();
 		Navigation = NativeNavigation = CreateNativeNavigation();
+		Buff = new(this);
 		// Init Inventory
 		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
@@ -186,13 +188,13 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		Movement.SyncConfigFromPool();
-		BeforeUpdate_BuffValue();
+		BeforeUpdate_Inventory();
+		Buff.Apply();
 	}
 
 
-	private void BeforeUpdate_BuffValue () {
+	private void BeforeUpdate_Inventory () {
 
-		bool weaponFilled = false;
 		int invCapacity = GetInventoryCapacity();
 		if (invCapacity > 0) {
 
@@ -208,7 +210,6 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 				if (item == null) continue;
 				item.BeforeItemUpdate_FromEquipment(this);
 				if (item is Weapon weapon) {
-					weaponFilled = true;
 					Attackness.AttackDuration = weapon.AttackDuration;
 					Attackness.AttackCooldown = weapon.AttackCooldown;
 					Attackness.MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
@@ -241,14 +242,7 @@ public abstract partial class Character : Rigidbody, IDamageReceiver {
 				}
 			}
 		}
-		if (!weaponFilled) {
-			// Default
-			Attackness.AttackDuration = 12;
-			Attackness.AttackCooldown = 2;
-			Attackness.MinimalChargeAttackDuration = int.MaxValue;
-			Attackness.RepeatAttackWhenHolding = false;
-			Attackness.LockFacingOnAttack = false;
-		}
+
 	}
 
 
