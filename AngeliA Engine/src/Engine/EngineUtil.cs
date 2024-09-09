@@ -9,7 +9,10 @@ using System.Diagnostics;
 
 namespace AngeliaEngine;
 
-[System.AttributeUsage(System.AttributeTargets.Method)] public class OnProjectBuiltInBackgroundAttribute : OrderedAttribute { public OnProjectBuiltInBackgroundAttribute (int order = 0) : base(order) { } }
+
+[System.AttributeUsage(System.AttributeTargets.Method)]
+public class OnProjectBuiltInBackgroundAttribute : OrderedAttribute { public OnProjectBuiltInBackgroundAttribute (int order = 0) : base(order) { } }
+
 
 public static class EngineUtil {
 
@@ -480,7 +483,9 @@ public static class EngineUtil {
 		string iconPath, string universePath,
 		string publishDir, bool publish, int logID = BACK_GROUND_BUILD_LOG_ID
 	) {
-
+#if DEBUG
+		Debug.Log("Start to Build AngeliA Project");
+#endif
 		if (!Util.IsPathValid(projectPath)) return ERROR_PROJECT_FOLDER_INVALID;
 		if (publish && !Util.IsPathValid(publishDir)) return ERROR_PUBLISH_DIR_INVALID;
 		if (publish && !Util.FolderExists(EntryProjectFolder)) return ERROR_ENTRY_PROJECT_NOT_FOUND;
@@ -561,7 +566,9 @@ public static class EngineUtil {
 
 		// Delete Temp Folder
 		Util.DeleteFolder(tempRoot);
-
+#if DEBUG
+		Debug.Log("AngeliA Project Built Finish");
+#endif
 		return 0;
 	}
 
@@ -571,7 +578,9 @@ public static class EngineUtil {
 		string assemblyName = "", string version = "", string outputPath = "",
 		string publishDir = "", string iconPath = ""
 	) {
-
+#if DEBUG
+		Debug.Log("Start to Build Dotnet Project");
+#endif
 		if (!Util.FolderExists(projectFolder)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
 		if (!Util.FileExists(csprojPath)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
 
@@ -609,7 +618,11 @@ public static class EngineUtil {
 			CacheBuilder.Append($" -p:ApplicationIcon=\"{iconPath}\"");
 		}
 
-		return Util.ExecuteCommand(projectFolder, CacheBuilder.ToStringWithDoubleQuotes(), logID: logID);
+		int resultID = Util.ExecuteCommand(projectFolder, CacheBuilder.ToStringWithDoubleQuotes(), logID: logID);
+#if DEBUG
+		Debug.Log("Dotnet Project Built Finish");
+#endif
+		return resultID;
 	}
 
 

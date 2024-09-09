@@ -22,7 +22,6 @@ public class Project {
 	public Universe Universe { get; init; }
 
 	public static Project LoadProject (string projectPath) {
-
 		return new Project() {
 			ProjectPath = projectPath,
 			SourceCodePath = Util.CombinePaths(projectPath, "src"),

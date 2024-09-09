@@ -121,7 +121,6 @@ public abstract class PoseAnimation {
 
 
 	public virtual void Animate (PoseCharacter character) {
-		if (character == Target && character.CurrentAnimationFrame == CurrentAnimationFrame) return;
 		Target = character;
 		Attackness = character.Attackness;
 		Movement = character.Movement;
@@ -152,9 +151,7 @@ public abstract class PoseAnimation {
 		AttackLerp = IsChargingAttack ?
 			((float)(Game.GlobalFrame - Target.Attackness.AttackChargeStartFrame.Value) / Util.Max(Target.Attackness.MinimalChargeAttackDuration, 1)).Clamp01() :
 			(float)(Game.GlobalFrame - Target.Attackness.LastAttackFrame) / Target.Attackness.AttackDuration;
-		AttackEase = IsChargingAttack ?
-			1f - Ease.OutBack(AttackLerp) :
-			Ease.OutBack(AttackLerp);
+		AttackEase = IsChargingAttack ? 1f - Ease.OutBack(AttackLerp) : Ease.OutBack(AttackLerp);
 		if (IsChargingAttack) {
 			AttackLerp = 1f - AttackLerp;
 		}
