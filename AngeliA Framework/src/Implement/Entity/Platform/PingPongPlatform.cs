@@ -5,7 +5,7 @@ public abstract class PingPongPlatform : Platform {
 	// Abs
 	protected virtual uint SpeedX => 0;
 	protected virtual uint SpeedY => 0;
-	protected abstract Int2 Distance { get; }
+	protected abstract Int2 PingPongDistance { get; }
 
 	// Data
 	private Int2 From = default;
@@ -17,12 +17,12 @@ public abstract class PingPongPlatform : Platform {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		From.x = X - Distance.x / 2;
-		From.y = Y - Distance.y / 2;
-		To.x = X + Distance.x / 2;
-		To.y = Y + Distance.y / 2;
-		DurationX = SpeedX > 0 ? Distance.x / (int)SpeedX : 0;
-		DurationY = SpeedY > 0 ? Distance.y / (int)SpeedY : 0;
+		From.x = X - PingPongDistance.x / 2;
+		From.y = Y - PingPongDistance.y / 2;
+		To.x = X + PingPongDistance.x / 2;
+		To.y = Y + PingPongDistance.y / 2;
+		DurationX = SpeedX > 0 ? PingPongDistance.x / (int)SpeedX : 0;
+		DurationY = SpeedY > 0 ? PingPongDistance.y / (int)SpeedY : 0;
 	}
 
 

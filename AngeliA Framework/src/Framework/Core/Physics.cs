@@ -172,16 +172,6 @@ public static class Physics {
 		}
 		return null;
 	}
-	public static Entity GetEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
-		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
-		for (int i = 0; i < count; i++) {
-			var e = c_GetEntity[i].Entity;
-			if (e == null || !e.Active) continue;
-			var eType = e.GetType();
-			if (eType == type || eType.IsSubclassOf(type)) return e;
-		}
-		return null;
-	}
 	public static Entity GetEntity (int typeID, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 		for (int i = 0; i < count; i++) {
@@ -193,7 +183,6 @@ public static class Physics {
 
 
 	public static bool HasEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) where T : Entity => GetEntity<T>(globalRect, mask, ignore, mode, tag) != null;
-	public static bool HasEntity (System.Type type, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) => GetEntity(type, globalRect, mask, ignore, mode, tag) != null;
 
 
 	// Room Check

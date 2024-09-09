@@ -120,7 +120,7 @@ public struct Int2 : IEquatable<Int2>, IFormattable {
 		m_Y = y;
 	}
 
-	public void Deconstruct (out int x, out int y) {
+	public readonly void Deconstruct (out int x, out int y) {
 		x = this.x;
 		y = this.y;
 	}
@@ -159,6 +159,8 @@ public struct Int2 : IEquatable<Int2>, IFormattable {
 		y = Math.Max(min.y, y);
 		y = Math.Min(max.y, y);
 	}
+
+	public readonly Int2 Shift (int x, int y) => new(m_X + x, m_Y + y);
 
 	public static implicit operator Float2 (Int2 v) {
 		return new Float2(v.x, v.y);

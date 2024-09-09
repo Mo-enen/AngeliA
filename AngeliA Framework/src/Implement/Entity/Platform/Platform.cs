@@ -53,6 +53,11 @@ public abstract class Platform : EnvironmentEntity {
 		Update_CarryX();
 		Update_CarryY();
 		Update_PushX();
+	}
+
+
+	public override void Update () {
+		base.Update();
 		Update_Touch();
 	}
 
@@ -72,19 +77,21 @@ public abstract class Platform : EnvironmentEntity {
 
 
 	private void Update_Touch () {
-		if (!TouchedByRigidbody || !TouchedByCharacter || !TouchedByPlayer) {
-			var hits = Physics.OverlapAll(PhysicsMask.ENTITY, Rect.Expand(1), out int count, this);
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Rect.y < Y + Height) continue;
-				if (hit.Entity is not Rigidbody) continue;
-				TouchedByRigidbody = true;
-				if (hit.Entity is not Character) continue;
-				TouchedByCharacter = true;
-				if (hit.Entity is not Player) continue;
-				TouchedByPlayer = true;
-				break;
-			}
+		if (TouchedByRigidbody && TouchedByCharacter && TouchedByPlayer) return;
+		var hits = Physics.OverlapAll(PhysicsMask.ENTITY, Rect.Expand(1), out int count, this);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Rect.y < Y + Height) continue;
+			if (hit.Entity is not Rigidbody rig) continue;
+			if (!TouchedByRigidbody) OnRigidbodyTouched(rig);
+			TouchedByRigidbody = true;
+			if (hit.Entity is not Character ch) continue;
+			if (!TouchedByCharacter) OnCharacterTouched(ch);
+			TouchedByCharacter = true;
+			if (hit.Entity != Player.Selecting) continue;
+			if (!TouchedByPlayer) OnPlayerTouched(Player.Selecting);
+			TouchedByPlayer = true;
+			break;
 		}
 	}
 
@@ -239,7 +246,8 @@ public abstract class Platform : EnvironmentEntity {
 				if (rig.VelocityY > 0) continue;
 				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
 				if (hit.IsTrigger && (hit.Entity is not Character ch || ch.Movement.IsFlying)) continue;
-				rig.Y = rect.yMax - rig.OffsetY;
+				//rig.Y = rect.yMax - rig.OffsetY;
+				rig.PerformMove(0, rect.yMax - rig.OffsetY - rig.Y);
 				if (!hit.IsTrigger) rig.VelocityY = 0;
 				rig.MakeGrounded(1, TypeID);
 			}
@@ -251,11 +259,16 @@ public abstract class Platform : EnvironmentEntity {
 	protected abstract void Move ();
 
 
+	protected virtual void OnRigidbodyTouched (Rigidbody rig) { }
+	protected virtual void OnCharacterTouched (Character character) { }
+	protected virtual void OnPlayerTouched (Player player) { }
+
+
 	// API
-	public void SetPlayerTouch (bool touch) {
-		TouchedByRigidbody = touch;
-		TouchedByCharacter = touch;
-		TouchedByPlayer = touch;
+	public void SetTouch (bool rigidbody = true, bool character = true, bool player = true) {
+		TouchedByRigidbody = rigidbody;
+		TouchedByCharacter = character;
+		TouchedByPlayer = player;
 	}
 
 

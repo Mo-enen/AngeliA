@@ -554,7 +554,10 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	// Frame Update
 	public override void LateUpdate () {
 
-		if (!Active) return;
+		if (!Active) {
+			base.LateUpdate();
+			return;
+		}
 
 		int oldZ = PoseRenderingZOffset;
 		if (Selecting == this) PoseRenderingZOffset = 40;

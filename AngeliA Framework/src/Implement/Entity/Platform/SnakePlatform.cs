@@ -6,7 +6,7 @@ namespace AngeliA;
 
 
 public abstract class SnakePlatform : Platform {
-	
+
 
 	// Const
 	private static readonly int PATH_ID = typeof(CameraAutoDirection).AngeHash();
@@ -163,7 +163,7 @@ public abstract class SnakePlatform : Platform {
 			);
 			if (snake == null) break;
 			snake.PrevTouched = true;
-			snake.SetPlayerTouch(true);
+			snake.SetTouch();
 			left = snake;
 		}
 
@@ -174,7 +174,7 @@ public abstract class SnakePlatform : Platform {
 			);
 			if (snake == null) break;
 			snake.PrevTouched = true;
-			snake.SetPlayerTouch(true);
+			snake.SetTouch();
 			right = snake;
 		}
 
