@@ -5,44 +5,6 @@ using System.Collections.Generic;
 namespace AngeliA; 
 
 
-// Wood
-public class ConveyorWoodLeft : ConveyorWood { protected override int MoveSpeed => -12; }
-public class ConveyorWoodRight : ConveyorWood { protected override int MoveSpeed => 12; }
-
-public abstract class ConveyorWood : Conveyor {
-
-	private static readonly SpriteCode CODE_L = "ConveyorWood Left";
-	private static readonly SpriteCode CODE_M = "ConveyorWood Mid";
-	private static readonly SpriteCode CODE_R = "ConveyorWood Right";
-	private static readonly SpriteCode CODE_S = "ConveyorWood Single";
-
-	protected override int ArtCodeLeft => CODE_L;
-	protected override int ArtCodeMid => CODE_M;
-	protected override int ArtCodeRight => CODE_R;
-	protected override int ArtCodeSingle => CODE_S;
-
-}
-
-
-// Iron
-public class ConveyorIronLeft : ConveyorIron { protected override int MoveSpeed => -24; }
-public class ConveyorIronRight : ConveyorIron { protected override int MoveSpeed => 24; }
-
-public abstract class ConveyorIron : Conveyor {
-
-	private static readonly SpriteCode CODE_L = "ConveyorIron Left";
-	private static readonly SpriteCode CODE_M = "ConveyorIron Mid";
-	private static readonly SpriteCode CODE_R = "ConveyorIron Right";
-	private static readonly SpriteCode CODE_S = "ConveyorIron Single";
-
-	protected override int ArtCodeLeft => CODE_L;
-	protected override int ArtCodeMid => CODE_M;
-	protected override int ArtCodeRight => CODE_R;
-	protected override int ArtCodeSingle => CODE_S;
-
-}
-
-
 public abstract class Conveyor : EnvironmentEntity {
 
 

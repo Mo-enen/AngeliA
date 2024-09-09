@@ -4,15 +4,6 @@ using System.Collections.Generic;
 
 namespace AngeliA; 
 
-public class ClockGreen : Clock, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
-
-public class ClockPurple : Clock, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
-
-
 
 public abstract class Clock : Furniture {
 

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-public class CabinetIdolWood : CabinetIdol, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
+
 
 public abstract class CabinetIdol : Furniture, IActionTarget {
 

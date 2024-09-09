@@ -55,7 +55,6 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 		}
 	}
 
-
 	public override void LateUpdate () {
 		base.LateUpdate();
 		// UI Close Check
@@ -63,7 +62,6 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 			SetOpen(false);
 		}
 	}
-
 
 	bool IActionTarget.Invoke () {
 		if (!Open) SetOpen(true);
@@ -79,12 +77,10 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 		return true;
 	}
 
-
 	bool IActionTarget.AllowInvoke () {
 		var player = Player.Selecting;
 		return player != null && player.InventoryCurrentAvailable;
 	}
-
 
 	protected override void SetOpen (bool open) {
 		if (Open && !open) {
@@ -92,6 +88,5 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 		}
 		base.SetOpen(open);
 	}
-
 
 }

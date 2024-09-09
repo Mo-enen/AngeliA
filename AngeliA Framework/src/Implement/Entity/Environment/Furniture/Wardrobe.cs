@@ -3,33 +3,6 @@ using System.Collections.Generic;
 
 
 namespace AngeliA;
-public class WardrobeA : WardrobeWood { }
-public class WardrobeB : WardrobeWood { }
-public class WardrobeC : WardrobeWood { }
-public class WardrobeD : WardrobeWood { }
-
-
-public abstract class WardrobeWood : Wardrobe, ICombustible {
-
-
-	// Const
-	public static readonly string[] SUIT_HEADS = { "", "SailorKid", "Cowboy", };
-	public static readonly string[] SUIT_BODYSHOULDERARMARMS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
-	public static readonly string[] SUIT_HIPSKIRTLEGLEGS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
-	public static readonly string[] SUIT_FOOTS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
-	public static readonly string[] SUIT_HANDS = { "", "StudentD", "StudentE", "StudentF", "StudentG", "StudentH", "BlondMan", };
-
-	// Api
-	protected override string[] Suit_Heads => SUIT_HEADS;
-	protected override string[] Suit_BodyShoulderArmArms => SUIT_BODYSHOULDERARMARMS;
-	protected override string[] Suit_HipSkirtLegLegs => SUIT_HIPSKIRTLEGLEGS;
-	protected override string[] Suit_Foots => SUIT_FOOTS;
-	protected override string[] Suit_Hands => SUIT_HANDS;
-	int ICombustible.BurnStartFrame { get; set; }
-
-
-}
-
 
 
 public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {

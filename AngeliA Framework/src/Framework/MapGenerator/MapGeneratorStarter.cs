@@ -1,10 +1,6 @@
 ﻿namespace AngeliA;
 
 
-public abstract class MapGeneratorStarter : IMapItem {
-	public abstract Direction8? Direction { get; }
-}
-
 
 public sealed class MapGeneratorStarter_Free : MapGeneratorStarter {
 	public static readonly int TYPE_ID = typeof(MapGeneratorStarter_Free).AngeHash();
@@ -47,3 +43,8 @@ public sealed class MapGeneratorStarter_TopRight : MapGeneratorStarter {
 	public override Direction8? Direction => Direction8.TopRight;
 }
 
+
+
+public abstract class MapGeneratorStarter : SystemElement {
+	public abstract Direction8? Direction { get; }
+}

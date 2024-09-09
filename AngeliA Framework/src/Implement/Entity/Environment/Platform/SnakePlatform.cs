@@ -6,10 +6,10 @@ namespace AngeliA;
 
 
 public abstract class SnakePlatform : Platform {
-
+	
 
 	// Const
-	private static readonly int PATH_ID = typeof(AutoDirection).AngeHash();
+	private static readonly int PATH_ID = typeof(CameraAutoDirection).AngeHash();
 
 	// Api
 	public abstract int EndBreakDuration { get; }

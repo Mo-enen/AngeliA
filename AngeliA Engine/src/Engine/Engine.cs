@@ -1011,6 +1011,7 @@ public partial class Engine {
 
 	// Change Check
 	private void CheckScriptChanged () {
+		if (EngineUtil.BuildingProjectInBackground) return;
 		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
 		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
 		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {

@@ -6,16 +6,16 @@ namespace AngeliA;
 public interface IBlockSquad {
 
 	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) {
-		{ "Number0".AngeHash(), 0 },
-		{ "Number1".AngeHash(), 1 },
-		{ "Number2".AngeHash(), 2 },
-		{ "Number3".AngeHash(), 3 },
-		{ "Number4".AngeHash(), 4 },
-		{ "Number5".AngeHash(), 5 },
-		{ "Number6".AngeHash(), 6 },
-		{ "Number7".AngeHash(), 7 },
-		{ "Number8".AngeHash(), 8 },
-		{ "Number9".AngeHash(), 9 },
+		{ NumberZero.TYPE_ID, 0 },
+		{ NumberOne.TYPE_ID, 1 },
+		{ NumberTwo.TYPE_ID, 2 },
+		{ NumberThree.TYPE_ID, 3 },
+		{ NumberFour.TYPE_ID, 4 },
+		{ NumberFive.TYPE_ID, 5 },
+		{ NumberSix.TYPE_ID, 6 },
+		{ NumberSeven.TYPE_ID, 7 },
+		{ NumberEight.TYPE_ID, 8 },
+		{ NumberNine.TYPE_ID, 9 },
 	};
 
 	int GetBlockAt (int unitX, int unitY, int z, BlockType type);

@@ -575,16 +575,16 @@ public sealed partial class MapEditor : WindowUI {
 
 				// System Numbers
 				int targetNumberID = 0;
-				if (Input.KeyboardDown(KeyboardKey.Digit0)) targetNumberID = typeof(Number0).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit1)) targetNumberID = typeof(Number1).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit2)) targetNumberID = typeof(Number2).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit3)) targetNumberID = typeof(Number3).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit4)) targetNumberID = typeof(Number4).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit5)) targetNumberID = typeof(Number5).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit6)) targetNumberID = typeof(Number6).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit7)) targetNumberID = typeof(Number7).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit8)) targetNumberID = typeof(Number8).AngeHash();
-				if (Input.KeyboardDown(KeyboardKey.Digit9)) targetNumberID = typeof(Number9).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit0)) targetNumberID = typeof(NumberZero).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit1)) targetNumberID = typeof(NumberOne).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit2)) targetNumberID = typeof(NumberTwo).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit3)) targetNumberID = typeof(NumberThree).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit4)) targetNumberID = typeof(NumberFour).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit5)) targetNumberID = typeof(NumberFive).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit6)) targetNumberID = typeof(NumberSix).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit7)) targetNumberID = typeof(NumberSeven).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit8)) targetNumberID = typeof(NumberEight).AngeHash();
+				if (Input.KeyboardDown(KeyboardKey.Digit9)) targetNumberID = typeof(NumberNine).AngeHash();
 				if (targetNumberID != 0 && PalettePool.TryGetValue(targetNumberID, out var resultPal)) {
 					SelectingPaletteItem = resultPal;
 				}

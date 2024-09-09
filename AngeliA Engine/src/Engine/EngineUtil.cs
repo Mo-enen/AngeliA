@@ -484,6 +484,7 @@ public static class EngineUtil {
 		string publishDir, bool publish, int logID = BACK_GROUND_BUILD_LOG_ID
 	) {
 #if DEBUG
+		var watch = Stopwatch.StartNew();
 		Debug.Log("Start to Build AngeliA Project");
 #endif
 		if (!Util.IsPathValid(projectPath)) return ERROR_PROJECT_FOLDER_INVALID;
@@ -567,7 +568,8 @@ public static class EngineUtil {
 		// Delete Temp Folder
 		Util.DeleteFolder(tempRoot);
 #if DEBUG
-		Debug.Log("AngeliA Project Built Finish");
+		watch.Stop();
+		Debug.Log($"[{watch.ElapsedMilliseconds / 1000f:0.00}]s AngeliA Project Built Finish");
 #endif
 		return 0;
 	}
@@ -578,9 +580,7 @@ public static class EngineUtil {
 		string assemblyName = "", string version = "", string outputPath = "",
 		string publishDir = "", string iconPath = ""
 	) {
-#if DEBUG
-		Debug.Log("Start to Build Dotnet Project");
-#endif
+
 		if (!Util.FolderExists(projectFolder)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
 		if (!Util.FileExists(csprojPath)) return ERROR_PROJECT_FOLDER_NOT_EXISTS;
 
@@ -619,9 +619,7 @@ public static class EngineUtil {
 		}
 
 		int resultID = Util.ExecuteCommand(projectFolder, CacheBuilder.ToStringWithDoubleQuotes(), logID: logID);
-#if DEBUG
-		Debug.Log("Dotnet Project Built Finish");
-#endif
+
 		return resultID;
 	}
 

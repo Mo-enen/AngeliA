@@ -4,10 +4,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class CraftingTableWood : CraftingTable, ICombustible {
-	public int BurnStartFrame { get; set; }
-}
-
 
 public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 

@@ -4,13 +4,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class BedWoodA : Bed, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
-
-public class BedWoodB : Bed, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
 
 public abstract class Bed : Furniture, IActionTarget {
 

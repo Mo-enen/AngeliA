@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class CommonFire : Fire {
-	public static readonly int TYPE_ID = typeof(CommonFire).AngeHash();
-}
-
 
 public interface ICombustible {
 	public bool IsBurning => this is Entity e && e.SpawnFrame <= BurnStartFrame;
@@ -17,6 +13,13 @@ public interface ICombustible {
 		FrameworkUtil.RemoveFromWorldMemory(e);
 	}
 }
+
+
+
+public class CommonFire : Fire {
+	public static readonly int TYPE_ID = typeof(CommonFire).AngeHash();
+}
+
 
 
 [EntityAttribute.DontDrawBehind]

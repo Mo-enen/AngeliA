@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace AngeliA; 
-public class GrandfatherClockA : GrandfatherClock { }
-public class GrandfatherClockB : GrandfatherClock { }
-
 
 public abstract class GrandfatherClock : Furniture, ICombustible {
 
@@ -14,7 +11,6 @@ public abstract class GrandfatherClock : Furniture, ICombustible {
 
 	protected override Direction3 ModuleType => Direction3.Vertical;
 	int ICombustible.BurnStartFrame { get; set; }
-
 
 	public override void LateUpdate () {
 		base.LateUpdate();
@@ -51,6 +47,5 @@ public abstract class GrandfatherClock : Furniture, ICombustible {
 			);
 		}
 	}
-
 
 }

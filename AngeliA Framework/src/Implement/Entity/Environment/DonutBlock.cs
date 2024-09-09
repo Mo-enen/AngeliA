@@ -2,12 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
-
-
-public class DonutBlockDirt : DonutBlock {
-	protected override BreakMode BreakCondition => BreakMode.BreakOnCollideGround;
-}
+namespace AngeliA;
 
 
 [EntityAttribute.Capacity(256)]
@@ -16,13 +11,13 @@ public abstract class DonutBlock : EnvironmentEntity {
 
 	// SUB
 	protected enum BreakMode {
-		BreakOnCollideGround = 0,
+		BreakOnTouchGround = 0,
 		BreakOnFall = 1,
 		DoNotBreak = 2,
 	}
 
 	// Api
-	protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnCollideGround;
+	protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnTouchGround;
 	protected virtual int HoldDuration => 60;
 	protected virtual int FallingVelocity => 24;
 	protected bool IsFalling { get; private set; } = false;
@@ -72,7 +67,7 @@ public abstract class DonutBlock : EnvironmentEntity {
 		// Break Check
 		if (IsFalling) {
 			switch (BreakCondition) {
-				case BreakMode.BreakOnCollideGround: {
+				case BreakMode.BreakOnTouchGround: {
 					if (
 						!Physics.RoomCheck(PhysicsMask.SOLID, rect, this, Direction4.Down) ||
 						!Physics.RoomCheckOneway(PhysicsMask.MAP, rect, this, Direction4.Down, true)

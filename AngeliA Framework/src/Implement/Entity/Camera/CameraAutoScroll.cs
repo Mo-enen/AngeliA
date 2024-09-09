@@ -16,7 +16,7 @@ public sealed class CameraAutoScroll : Entity {
 
 	// Const
 	private const int PLAYER_OUT_RANGE_GAP = Const.CEL * 3;
-	private static readonly int PATH_ID = typeof(AutoDirection).AngeHash();
+	private static readonly int PATH_ID = typeof(CameraAutoDirection).AngeHash();
 
 	// Data
 	private static CameraAutoScroll Current = null;

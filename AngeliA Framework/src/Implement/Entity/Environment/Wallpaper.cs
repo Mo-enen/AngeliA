@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 namespace AngeliA;
+
 
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
@@ -103,21 +105,12 @@ public abstract class Wallpaper : Entity {
 	#region --- API ---
 
 
-	protected Color32 GetSkyTint (int y) => Color32.LerpUnclamped(
-		Sky.SkyTintBottomColor, Sky.SkyTintTopColor,
-		Util.InverseLerp(Renderer.CameraRect.yMin, Renderer.CameraRect.yMax, y)
-	);
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-
+	protected Color32 GetSkyTint (int y) {
+		return Color32.LerpUnclamped(
+			Sky.SkyTintBottomColor, Sky.SkyTintTopColor,
+			Util.InverseLerp(Renderer.CameraRect.yMin, Renderer.CameraRect.yMax, y)
+		);
+	}
 
 
 	#endregion

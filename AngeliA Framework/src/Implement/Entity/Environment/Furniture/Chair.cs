@@ -3,18 +3,7 @@ using System.Collections.Generic;
 
 
 namespace AngeliA; 
-public class ChairWoodA : Chair, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
-public class ChairWoodB : Chair, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
-public class ChairWoodC : Chair, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
-public class ChairWoodD : Chair, ICombustible {
-	int ICombustible.BurnStartFrame { get; set; }
-}
+
 
 public abstract class Chair : Furniture {
 
