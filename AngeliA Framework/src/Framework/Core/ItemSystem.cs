@@ -363,20 +363,13 @@ public static class ItemSystem {
 
 
 	// Spawn 
-	public static bool GiveItemTo (int inventoryID, int itemID, int count = 1) {
-		count -= Inventory.CollectItem(inventoryID, itemID, count);
-		if (count > 0) {
-			var cameraRect = Renderer.CameraRect;
-			SpawnItem(itemID, cameraRect.CenterX(), cameraRect.CenterY(), count);
+	public static bool GiveItemToTarget (Entity target, int itemID, int count = 1) {
+		if (target == null) {
+			return SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
+		} else {
+			count -= Inventory.CollectItem(target.TypeID, itemID, count);
+			return count <= 0 || SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null;
 		}
-		return true;
-	}
-
-
-	public static void SpawnItemAtTarget (Entity target, int itemID, int count = 1) {
-		int x = target != null ? target.Rect.x - Const.CEL : Renderer.CameraRect.CenterX();
-		int y = target != null ? target.Y : Renderer.CameraRect.CenterY();
-		SpawnItem(itemID, x, y, count);
 	}
 
 

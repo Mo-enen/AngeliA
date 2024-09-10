@@ -158,10 +158,10 @@ public abstract class SnakePlatform : Platform {
 
 		// L
 		for (int x = -Const.HALF; ; x -= Const.CEL) {
-			var snake = Physics.GetEntity<SnakePlatform>(
+			if (Physics.GetEntity(
+				TypeID,
 				new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
-			);
-			if (snake == null) break;
+			) is not SnakePlatform snake) break;
 			snake.PrevTouched = true;
 			snake.SetTouch();
 			left = snake;
@@ -169,10 +169,10 @@ public abstract class SnakePlatform : Platform {
 
 		// R
 		for (int x = Const.CEL + Const.HALF; ; x += Const.CEL) {
-			var snake = Physics.GetEntity<SnakePlatform>(
+			if (Physics.GetEntity(
+				TypeID,
 				new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
-			);
-			if (snake == null) break;
+			) is not SnakePlatform snake) break;
 			snake.PrevTouched = true;
 			snake.SetTouch();
 			right = snake;
@@ -196,11 +196,11 @@ public abstract class SnakePlatform : Platform {
 			int leftX = left.X + left.Width / 2;
 			int rightX = right.X + right.Width;
 			for (int x = leftX; x < rightX; x += Const.CEL) {
-				var snake = Physics.GetEntity<SnakePlatform>(
+				if (Physics.GetEntity(
+					TypeID,
 					new IRect(x, y, 1, 1), PhysicsMask.ENVIRONMENT,
 					null, OperationMode.ColliderAndTrigger
-				);
-				if (snake == null) continue;
+				) is not SnakePlatform snake) continue;
 				if (snake == head) {
 					snake.Head = null;
 					continue;

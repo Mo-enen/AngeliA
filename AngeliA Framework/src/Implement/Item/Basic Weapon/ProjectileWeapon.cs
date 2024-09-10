@@ -38,7 +38,7 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 			int itemID = bullet.ArrowItemID;
 			if (ItemSystem.HasItem(itemID)) {
 				int maxCount = ItemSystem.GetItemMaxStackCount(itemID);
-				ItemSystem.GiveItemTo(player.TypeID, itemID, maxCount);
+				ItemSystem.GiveItemToTarget(player, itemID, maxCount);
 				performed = true;
 			}
 		}

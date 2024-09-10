@@ -105,7 +105,6 @@ public sealed partial class MapEditor : WindowUI {
 	private readonly List<BlockBuffer> PastingBuffer = new();
 	private readonly List<BlockBuffer> CopyBuffer = new();
 	private readonly List<PaletteItem> SearchResult = new();
-	private readonly List<int> CheckAltarIDs = new();
 	private readonly Trie<PaletteItem> PaletteTrie = new();
 	private UndoRedo UndoRedo = null;
 	private MapEditorMeta EditorMeta = new();
@@ -240,7 +239,6 @@ public sealed partial class MapEditor : WindowUI {
 
 		SpritePool.Clear();
 		EntityArtworkRedirectPool.Clear();
-		CheckAltarIDs.Clear();
 
 		int spriteCount = Renderer.SpriteCount;
 		int groupCount = Renderer.GroupCount;
@@ -287,11 +285,6 @@ public sealed partial class MapEditor : WindowUI {
 					break;
 				}
 			}
-		}
-
-		// Check Altar
-		foreach (var type in typeof(CheckAltar<>).AllChildClass()) {
-			CheckAltarIDs.Add(type.AngeHash());
 		}
 
 	}

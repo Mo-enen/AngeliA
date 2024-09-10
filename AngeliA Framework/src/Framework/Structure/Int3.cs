@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [Serializable]
 public struct Int3 : IEquatable<Int3>, IFormattable {
 
@@ -173,6 +173,8 @@ public struct Int3 : IEquatable<Int3>, IFormattable {
 		z = Math.Max(min.z, z);
 		z = Math.Min(max.z, z);
 	}
+
+	public readonly Int3 Shift (int x, int y, int z = 0) => new(m_X + x, m_Y + y, m_Z + z);
 
 	public static implicit operator Float3 (Int3 v) {
 		return new Float3(v.x, v.y, v.z);

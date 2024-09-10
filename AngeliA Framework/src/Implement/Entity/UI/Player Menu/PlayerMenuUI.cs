@@ -908,7 +908,7 @@ public class PlayerMenuUI : EntityUI {
 		int collectCount = Inventory.CollectItem(invID, currentEquipmentID, out int collectedIndex, eqCount);
 		if (collectCount > 0) {
 			if (collectCount < eqCount) {
-				ItemSystem.SpawnItemAtTarget(player, currentEquipmentID, eqCount - collectCount);
+				ItemSystem.GiveItemToTarget(player, currentEquipmentID, eqCount - collectCount);
 			}
 			Inventory.SetEquipment(invID, type, 0, 0);
 			FlashInventoryField(collectedIndex, true);
@@ -1121,7 +1121,7 @@ public class PlayerMenuUI : EntityUI {
 
 	private void ThrowTakingToGround () {
 		if (TakingID == 0 || TakingCount == 0) return;
-		ItemSystem.SpawnItemAtTarget(Player.Selecting, TakingID, TakingCount);
+		ItemSystem.GiveItemToTarget(Player.Selecting, TakingID, TakingCount);
 		TakingID = 0;
 		TakingCount = 0;
 	}

@@ -62,18 +62,7 @@ public abstract class Platform : EnvironmentEntity {
 	}
 
 
-	public override void LateUpdate () {
-		int index = Pose switch {
-			FittingPose.Single => 0,
-			FittingPose.Left => 1,
-			FittingPose.Mid => 2,
-			FittingPose.Right => 3,
-			_ => 0,
-		};
-		if (Renderer.TryGetSpriteFromGroup(TypeID, index, out var sprite, false, true)) {
-			Renderer.Draw(sprite, Rect);
-		}
-	}
+	public override void LateUpdate () => RenderPlatformBlock(TypeID);
 
 
 	private void Update_Touch () {
@@ -269,6 +258,24 @@ public abstract class Platform : EnvironmentEntity {
 		TouchedByRigidbody = rigidbody;
 		TouchedByCharacter = character;
 		TouchedByPlayer = player;
+	}
+
+
+	protected virtual void RenderPlatformBlock (int artworkID) {
+		int index = Pose switch {
+			FittingPose.Single => 0,
+			FittingPose.Left => 1,
+			FittingPose.Mid => 2,
+			FittingPose.Right => 3,
+			_ => 0,
+		};
+		if (Renderer.TryGetSpriteFromGroup(
+			artworkID, index, out var sprite,
+			loopIndex: false,
+			clampIndex: true
+		) || Renderer.TryGetSprite(artworkID, out sprite, true)) {
+			Renderer.Draw(sprite, Rect);
+		}
 	}
 
 

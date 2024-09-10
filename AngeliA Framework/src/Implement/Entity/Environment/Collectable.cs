@@ -10,7 +10,7 @@ public abstract class ItemCollectable<TItem> : Collectable where TItem : Item {
 	public ItemCollectable () => ItemID = typeof(TItem).AngeHash();
 	public override bool OnCollect (Entity source) {
 		base.OnCollect(source);
-		return ItemSystem.GiveItemTo(source.TypeID, ItemID, 1);
+		return ItemSystem.GiveItemToTarget(source, ItemID, 1);
 	}
 }
 

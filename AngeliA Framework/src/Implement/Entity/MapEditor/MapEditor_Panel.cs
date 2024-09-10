@@ -106,8 +106,8 @@ public partial class MapEditor {
 
 	[OnMainSheetReload]
 	internal static void OnSheetReload () {
-		Instance?.LoadLevelPaletteFromSheetToPool(clearExists: true);
-		Instance?.ApplyPalettePoolChanges();
+		Instance?.Initialize_Pool();
+		Instance?.Initialize_Palette();
 	}
 
 
@@ -122,14 +122,7 @@ public partial class MapEditor {
 	}
 
 
-	private void LoadLevelPaletteFromSheetToPool (bool clearExists = false) {
-
-		// Clear Exists
-		if (clearExists) {
-			PaletteGroups.RemoveAll(
-				group => group.AtlasType == AtlasType.Level || group.AtlasType == AtlasType.Background
-			);
-		}
+	private void LoadLevelPaletteFromSheetToPool () {
 
 		// Load New
 		PaletteGroupCache.Clear();
