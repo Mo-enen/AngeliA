@@ -8,9 +8,6 @@ namespace AngeliA;
 public abstract class SnakePlatform : Platform {
 
 
-	// Const
-	private static readonly int PATH_ID = typeof(CameraAutoDirection).AngeHash();
-
 	// Api
 	public abstract int EndBreakDuration { get; }
 	public abstract int Speed { get; }
@@ -75,7 +72,7 @@ public abstract class SnakePlatform : Platform {
 			Y -= (Y + HALF).UMod(Const.CEL) - HALF;
 
 			// Get Direction
-			if (GetDirectionIgnoreOpposite(CurrentDirection, out var newDirection)) {
+			if (FrameworkUtil.GetPlatformRoute((X + Width / 2).ToUnit(), (Y + Height / 2).ToUnit(), CurrentDirection, out var newDirection)) {
 				CurrentDirection = newDirection;
 			}
 			var normal = CurrentDirection.Normal();
@@ -128,27 +125,6 @@ public abstract class SnakePlatform : Platform {
 	}
 
 
-	// API
-	public bool GetDirectionIgnoreOpposite (Direction4 currentDirection, out Direction4 result, bool ignoreTypeID = true) {
-		result = currentDirection;
-		if (HasSnakeBlockAtDirection(result, ignoreTypeID)) return true;
-		result = currentDirection.Clockwise();
-		if (HasSnakeBlockAtDirection(result, ignoreTypeID)) return true;
-		result = currentDirection.AntiClockwise();
-		if (HasSnakeBlockAtDirection(result, ignoreTypeID)) return true;
-		return false;
-	}
-
-
-	public bool HasSnakeBlockAtDirection (Direction4 direction, bool ignoreTypeID) {
-		var normal = direction.Normal();
-		int unitX = (X + Width / 2).UDivide(Const.CEL) + normal.x;
-		int unitY = (Y + Height / 2).UDivide(Const.CEL) + normal.y;
-		int id = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
-		return id == PATH_ID || (!ignoreTypeID && id == TypeID);
-	}
-
-
 	// LGC
 	private void TouchAllNeighbors () {
 
@@ -179,15 +155,24 @@ public abstract class SnakePlatform : Platform {
 		}
 
 		// Non-Head Snake Direction
+
 		if (left != right) {
 			// Get Head
 			Direction4 targetDir = Direction4.Right;
 			var head = right;
-			if (right.GetDirectionIgnoreOpposite(Direction4.Right, out var _resultR, false)) {
+			if (FrameworkUtil.GetPlatformRoute(
+				(right.X + right.Width / 2).ToUnit(),
+				(right.Y + right.Height / 2).ToUnit(),
+				Direction4.Right, out var _resultR, TypeID
+			)) {
 				targetDir = Direction4.Right;
 				head = right;
 				right.CurrentDirection = _resultR;
-			} else if (left.GetDirectionIgnoreOpposite(Direction4.Left, out var _resultL, false)) {
+			} else if (FrameworkUtil.GetPlatformRoute(
+				(left.X + left.Width / 2).ToUnit(),
+				(left.Y + left.Height / 2).ToUnit(),
+				Direction4.Left, out var _resultL, TypeID
+			)) {
 				targetDir = Direction4.Left;
 				head = left;
 				left.CurrentDirection = _resultL;
@@ -212,10 +197,12 @@ public abstract class SnakePlatform : Platform {
 			// Single Snake
 			Head = null;
 			CurrentDirection = Direction4.Right;
-			if (GetDirectionIgnoreOpposite(Direction4.Right, out var _resultR, false)) {
+			int unitX = (X + Width / 2).ToUnit();
+			int unitY = (Y + Height / 2).ToUnit();
+			if (FrameworkUtil.GetPlatformRoute(unitX, unitY, Direction4.Right, out var _resultR, TypeID)) {
 				CurrentDirection = _resultR;
 				Head = this;
-			} else if (GetDirectionIgnoreOpposite(Direction4.Left, out var _resultL, false)) {
+			} else if (FrameworkUtil.GetPlatformRoute(unitX, unitY, Direction4.Left, out var _resultL, TypeID)) {
 				CurrentDirection = _resultL;
 				Head = this;
 			}

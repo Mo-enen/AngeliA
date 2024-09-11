@@ -30,7 +30,7 @@ public abstract class Entity : IMapItem {
 	internal Int3 InstanceID { get; set; } = default;
 	internal IRect LocalBounds { get; set; } = default;
 	internal byte UpdateStep { get; set; } = 0;
-	internal int PhysicsOperationStamp { get; set; } = int.MaxValue;
+	internal int Stamp { get; set; } = int.MaxValue;
 	internal bool DestroyOnZChanged { get; set; } = true;
 	internal bool DespawnOutOfRange { get; set; } = true;
 	internal bool UpdateOutOfRange { get; set; } = false;

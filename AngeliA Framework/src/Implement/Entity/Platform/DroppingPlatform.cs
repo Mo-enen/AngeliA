@@ -3,16 +3,13 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class DroppingPlatform : TriggerablePlatform {
+public abstract class DroppingPlatform : StepTriggerPlatform {
 
 	// Api
-	protected virtual bool DropOnRigidbodyTouch => false;
-	protected virtual bool DropOnCharacterTouch => false;
-	protected virtual bool DropOnPlayerTouch => true;
 	protected virtual int InitialDropSpeed => 0;
 	protected virtual int MaxDropSpeed => 96;
 	protected virtual int DropAcceleration => -3;
-	public bool Dropping => TriggeredData is bool dropping && dropping;
+	public bool Dropping { get; private set; }
 
 	// Data
 	private int CurrentSpeedY = 0;
@@ -21,6 +18,7 @@ public abstract class DroppingPlatform : TriggerablePlatform {
 	public override void OnActivated () {
 		base.OnActivated();
 		CurrentSpeedY = 0;
+		Dropping = false;
 	}
 
 	protected override void Move () {
@@ -29,23 +27,10 @@ public abstract class DroppingPlatform : TriggerablePlatform {
 		CurrentSpeedY = (CurrentSpeedY + DropAcceleration).Clamp(-MaxDropSpeed, MaxDropSpeed);
 	}
 
-	protected override void OnRigidbodyTouched (Rigidbody rig) {
-		base.OnRigidbodyTouched(rig);
-		if (!DropOnRigidbodyTouch) return;
-		Trigger(true);
-	}
-	protected override void OnCharacterTouched (Character character) {
-		base.OnCharacterTouched(character);
-		if (!DropOnCharacterTouch) return;
-		Trigger(true);
-	}
-	protected override void OnPlayerTouched (Player player) {
-		base.OnPlayerTouched(player);
-		if (!DropOnPlayerTouch) return;
-		Trigger(true);
-	}
-
 	// API
-	protected override void OnTriggered (object data) => CurrentSpeedY = InitialDropSpeed;
+	protected override void OnTriggered (object data) {
+		CurrentSpeedY = InitialDropSpeed;
+		Dropping = true;
+	}
 
 }

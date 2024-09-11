@@ -7,36 +7,36 @@ namespace AngeliA;
 public abstract class SystemElement : IMapItem { }
 
 // Number
-public class NumberZero : SystemElement {
+public sealed class NumberZero : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberZero).AngeHash();
 }
-public class NumberOne : SystemElement {
+public sealed class NumberOne : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberOne).AngeHash();
 }
-public class NumberTwo : SystemElement {
+public sealed class NumberTwo : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberTwo).AngeHash();
 }
-public class NumberThree : SystemElement {
+public sealed class NumberThree : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberThree).AngeHash();
 }
-public class NumberFour : SystemElement {
+public sealed class NumberFour : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberFour).AngeHash();
 }
-public class NumberFive : SystemElement {
+public sealed class NumberFive : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberFive).AngeHash();
 }
-public class NumberSix : SystemElement {
+public sealed class NumberSix : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberSix).AngeHash();
 }
-public class NumberSeven : SystemElement {
+public sealed class NumberSeven : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberSeven).AngeHash();
 }
-public class NumberEight : SystemElement {
+public sealed class NumberEight : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberEight).AngeHash();
 }
-public class NumberNine : SystemElement {
+public sealed class NumberNine : SystemElement {
 	public static readonly int TYPE_ID = typeof(NumberNine).AngeHash();
 }
 
 // Direction
-public class CameraAutoDirection : SystemElement { }
+public sealed class CameraAutoDirection : SystemElement { }

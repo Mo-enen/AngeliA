@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-[EntityAttribute.MapEditorGroup("Platform")]
+[EntityAttribute.MapEditorGroup(nameof(Platform))]
 [EntityAttribute.Capacity(128)]
 public abstract class Platform : EnvironmentEntity {
 

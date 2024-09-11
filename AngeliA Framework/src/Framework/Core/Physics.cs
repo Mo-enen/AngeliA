@@ -298,9 +298,9 @@ public static class Physics {
 					if (ignore != null && cell.Entity == ignore) continue;
 					if (tag != Tag.None && !cell.Tag.HasAll(tag)) continue;
 					if ((!cell.IsTrigger || !useTrigger) && (cell.IsTrigger || !useCollider)) continue;
-					if (!ignoreStamp && cell.Entity != null && cell.Entity.PhysicsOperationStamp == entityStamp) continue;
+					if (!ignoreStamp && cell.Entity != null && cell.Entity.Stamp == entityStamp) continue;
 					if (globalRect.Overlaps(cell.Entity != null ? cell.Entity.Rect : cell.Rect)) {
-						if (cell.Entity != null) cell.Entity.PhysicsOperationStamp = entityStamp;
+						if (cell.Entity != null) cell.Entity.Stamp = entityStamp;
 						hits[count] = cell;
 						count++;
 						if (count >= maxLength) return count;
