@@ -6,17 +6,17 @@ public abstract class StepTriggerPlatform : TriggerablePlatform {
 	protected virtual bool TriggerOnPlayerTouch => true;
 	protected override void OnRigidbodyTouched (Rigidbody rig) {
 		base.OnRigidbodyTouched(rig);
-		if (!TriggerOnRigidbodyTouch) return;
+		if (!TriggerOnRigidbodyTouch || TriggeredData != null) return;
 		Trigger(rig);
 	}
 	protected override void OnCharacterTouched (Character character) {
 		base.OnCharacterTouched(character);
-		if (!TriggerOnCharacterTouch) return;
+		if (!TriggerOnCharacterTouch || TriggeredData != null) return;
 		Trigger(character);
 	}
 	protected override void OnPlayerTouched (Player player) {
 		base.OnPlayerTouched(player);
-		if (!TriggerOnPlayerTouch) return;
+		if (!TriggerOnPlayerTouch || TriggeredData != null) return;
 		Trigger(player);
 	}
 }

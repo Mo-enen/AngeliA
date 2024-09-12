@@ -5,19 +5,19 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public abstract class SnakePlatform : Platform {
+public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 
 
 	// Api
+	protected sealed override PartializedMode TriggerMode => PartializedMode.Horizontal;
 	public abstract int EndBreakDuration { get; }
 	public abstract int Speed { get; }
+	public Direction8 CurrentDirection { get; set; }
+	public Int2 TargetPosition { get; set; }
 
 	// Data
-	private Direction4 CurrentDirection = Direction4.Right;
-	private Int2 TargetPosition = default;
 	private Int2 StartPosition = default;
 	private SnakePlatform Head = null;
-	private bool PrevTouched = false;
 	private int EndReachingFrame = int.MinValue;
 	private int ArtworkScale = 0;
 
@@ -25,11 +25,9 @@ public abstract class SnakePlatform : Platform {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		PrevTouched = false;
 		EndReachingFrame = int.MinValue;
-		CurrentDirection = Direction4.Right;
-		TargetPosition.x = X;
-		TargetPosition.y = Y;
+		CurrentDirection = Direction8.Right;
+		TargetPosition = new(X, Y);
 		StartPosition.x = X;
 		StartPosition.y = Y;
 		Head = null;
@@ -40,7 +38,7 @@ public abstract class SnakePlatform : Platform {
 	protected override void Move () {
 
 		// Touched Check
-		if (!TouchedByPlayer) return;
+		if (TriggeredData == null) return;
 
 		// Check Head Reach End
 		if (Head != null && EndReachingFrame < 0) EndReachingFrame = Head.EndReachingFrame;
@@ -58,50 +56,21 @@ public abstract class SnakePlatform : Platform {
 			return;
 		}
 
-		// Over Moved
-		if (CurrentDirection switch {
-			Direction4.Left => X <= TargetPosition.x,
-			Direction4.Right => X >= TargetPosition.x,
-			Direction4.Down => Y <= TargetPosition.y,
-			Direction4.Up => Y >= TargetPosition.y,
-			_ => false,
-		}) {
-			// Fix Position Back
-			const int HALF = Const.HALF;
-			X -= (X + HALF).UMod(Const.CEL) - HALF;
-			Y -= (Y + HALF).UMod(Const.CEL) - HALF;
-
-			// Get Direction
-			if (FrameworkUtil.GetPlatformRoute((X + Width / 2).ToUnit(), (Y + Height / 2).ToUnit(), CurrentDirection, out var newDirection)) {
-				CurrentDirection = newDirection;
-			}
-			var normal = CurrentDirection.Normal();
-			TargetPosition.x += normal.x * Const.CEL;
-			TargetPosition.y += normal.y * Const.CEL;
-
-			// Stop Check
-			if (Head == null && Physics.Overlap(
-				PhysicsMask.LEVEL, new(TargetPosition.x + HALF, TargetPosition.y + HALF, 1, 1), null
-			)) {
-				EndReachingFrame = Game.GlobalFrame;
-			}
-
-		}
-
 		// Move
-		var currentNormal = CurrentDirection.Normal();
-		X += currentNormal.x * Speed;
-		Y += currentNormal.y * Speed;
+		IRouteWalker.MoveToRoute(this, PlatformPath.TYPE_ID, Speed);
+
+		// Stop Check
+		if (Head == null && Physics.Overlap(
+			PhysicsMask.LEVEL, new(TargetPosition.x + Const.HALF, TargetPosition.y + Const.HALF, 1, 1), null
+		)) {
+			EndReachingFrame = Game.GlobalFrame;
+		}
 
 	}
 
 
 	public override void LateUpdate () {
-		// Touch Check
-		if (TouchedByPlayer && !PrevTouched) {
-			PrevTouched = true;
-			TouchAllNeighbors();
-		}
+
 		// Artwork
 		Cell cell;
 		if (EndReachingFrame < 0) {
@@ -125,8 +94,8 @@ public abstract class SnakePlatform : Platform {
 	}
 
 
-	// LGC
-	private void TouchAllNeighbors () {
+	public override void Trigger (object data = null) {
+		base.Trigger(data);
 
 		var left = this;
 		var right = this;
@@ -138,8 +107,7 @@ public abstract class SnakePlatform : Platform {
 				TypeID,
 				new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			) is not SnakePlatform snake) break;
-			snake.PrevTouched = true;
-			snake.SetTouch();
+			snake.TriggeredData = data;
 			left = snake;
 		}
 
@@ -149,31 +117,29 @@ public abstract class SnakePlatform : Platform {
 				TypeID,
 				new IRect(X + x, y, 1, 1), PhysicsMask.ENVIRONMENT, this, OperationMode.ColliderAndTrigger
 			) is not SnakePlatform snake) break;
-			snake.PrevTouched = true;
-			snake.SetTouch();
+			snake.TriggeredData = data;
 			right = snake;
 		}
 
 		// Non-Head Snake Direction
-
 		if (left != right) {
 			// Get Head
-			Direction4 targetDir = Direction4.Right;
+			Direction8 targetDir = Direction8.Right;
 			var head = right;
-			if (FrameworkUtil.GetPlatformRoute(
+			if (IRouteWalker.GetRouteFromMap(
 				(right.X + right.Width / 2).ToUnit(),
 				(right.Y + right.Height / 2).ToUnit(),
-				Direction4.Right, out var _resultR, TypeID
+				Direction8.Right, out var _resultR, PlatformPath.TYPE_ID, TypeID
 			)) {
-				targetDir = Direction4.Right;
+				targetDir = Direction8.Right;
 				head = right;
 				right.CurrentDirection = _resultR;
-			} else if (FrameworkUtil.GetPlatformRoute(
+			} else if (IRouteWalker.GetRouteFromMap(
 				(left.X + left.Width / 2).ToUnit(),
 				(left.Y + left.Height / 2).ToUnit(),
-				Direction4.Left, out var _resultL, TypeID
+				Direction8.Left, out var _resultL, PlatformPath.TYPE_ID, TypeID
 			)) {
-				targetDir = Direction4.Left;
+				targetDir = Direction8.Left;
 				head = left;
 				left.CurrentDirection = _resultL;
 			}
@@ -196,13 +162,13 @@ public abstract class SnakePlatform : Platform {
 		} else {
 			// Single Snake
 			Head = null;
-			CurrentDirection = Direction4.Right;
+			CurrentDirection = Direction8.Right;
 			int unitX = (X + Width / 2).ToUnit();
 			int unitY = (Y + Height / 2).ToUnit();
-			if (FrameworkUtil.GetPlatformRoute(unitX, unitY, Direction4.Right, out var _resultR, TypeID)) {
+			if (IRouteWalker.GetRouteFromMap(unitX, unitY, Direction8.Right, out var _resultR, PlatformPath.TYPE_ID, TypeID)) {
 				CurrentDirection = _resultR;
 				Head = this;
-			} else if (FrameworkUtil.GetPlatformRoute(unitX, unitY, Direction4.Left, out var _resultL, TypeID)) {
+			} else if (IRouteWalker.GetRouteFromMap(unitX, unitY, Direction8.Left, out var _resultL, PlatformPath.TYPE_ID, TypeID)) {
 				CurrentDirection = _resultL;
 				Head = this;
 			}

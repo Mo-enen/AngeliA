@@ -5,16 +5,11 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public enum PartializedMode { Horizontal, Vertical, FourDirection, EightDirection, }
-
-
 public static class FrameworkUtil {
 
 
 	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
 	private const int SEARCHLIGHT_DENSITY = 32;
-	private static int GlobalPartializeStamp = int.MinValue;
-	private static readonly Pipe<Int2> PartializedPositions = new(1024);
 
 
 	// Drawing
@@ -759,80 +754,6 @@ public static class FrameworkUtil {
 		static bool ContentCheck (IBlockSquad squad, int unitX, int unitY, int z) {
 			var (level, bg, entity, _) = squad.GetAllBlocksAt(unitX, unitY, z);
 			return level != 0 || bg != 0 || entity != 0;
-		}
-	}
-
-
-	// Platform
-	public static void ForAllPartializedEntity<E> (int physicsMask, int entityID, IRect rect, OperationMode mode, PartializedMode partialMode, System.Action<E> results) where E : Entity {
-		int eWidth = rect.width;
-		int eHeight = rect.height;
-		int stamp = GlobalPartializeStamp++;
-		PartializedPositions.Reset();
-		PartializedPositions.LinkToTail(new Int2(rect.x + rect.width / 2, rect.y + rect.height / 2));
-		rect = new IRect(0, 0, 1, 1);
-		for (int safe = 0; PartializedPositions.TryPopHead(out var pos) && safe < 4096; safe++) {
-
-			rect.x = pos.x + eWidth / 2;
-			rect.y = pos.y + eHeight / 2;
-
-			if (Physics.GetEntity(entityID, rect, physicsMask, mode: mode) is not E entity) continue;
-			if (entity.Stamp == stamp) continue;
-			entity.Stamp = stamp;
-			results.Invoke(entity);
-
-			// Link Connected
-			switch (partialMode) {
-				case PartializedMode.Horizontal:
-					PartializedPositions.LinkToTail(pos.Shift(-eWidth, 0));
-					PartializedPositions.LinkToTail(pos.Shift(eWidth, 0));
-					break;
-				case PartializedMode.Vertical:
-					PartializedPositions.LinkToTail(pos.Shift(0, -eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(0, eHeight));
-					break;
-				case PartializedMode.FourDirection:
-					PartializedPositions.LinkToTail(pos.Shift(-eWidth, 0));
-					PartializedPositions.LinkToTail(pos.Shift(eWidth, 0));
-					PartializedPositions.LinkToTail(pos.Shift(0, -eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(0, eHeight));
-					break;
-				case PartializedMode.EightDirection:
-					PartializedPositions.LinkToTail(pos.Shift(-eWidth, -eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(-eWidth, eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(eWidth, -eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(eWidth, eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(0, -eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(0, eHeight));
-					PartializedPositions.LinkToTail(pos.Shift(-eWidth, 0));
-					PartializedPositions.LinkToTail(pos.Shift(eWidth, 0));
-					break;
-			}
-		}
-		PartializedPositions.Reset();
-	}
-
-
-	public static bool GetPlatformRoute (int unitX, int unitY, Direction4 currentDirection, out Direction4 result, int ignoreTypeID = 0) {
-
-		result = currentDirection;
-		var dir = currentDirection.Normal();
-		if (HasPathIndicatorAtDirection(unitX + dir.x, unitY + dir.y, ignoreTypeID)) return true;
-
-		result = currentDirection.Clockwise();
-		dir = result.Normal();
-		if (HasPathIndicatorAtDirection(unitX + dir.x, unitY + dir.y, ignoreTypeID)) return true;
-
-		result = currentDirection.AntiClockwise();
-		dir = result.Normal();
-		if (HasPathIndicatorAtDirection(unitX + dir.x, unitY + dir.y, ignoreTypeID)) return true;
-
-		return false;
-
-		// Func
-		static bool HasPathIndicatorAtDirection (int unitX, int unitY, int ignoreTypeID) {
-			int id = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
-			return id == PlatformPath.TYPE_ID || (ignoreTypeID != 0 && id == ignoreTypeID);
 		}
 	}
 

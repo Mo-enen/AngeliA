@@ -3,14 +3,12 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class TriggerablePlatform : Platform {
+public abstract class TriggerablePlatform : Platform, IPartializable {
 
 	// Api
 	protected virtual PartializedMode TriggerMode => PartializedMode.Horizontal;
-	protected object TriggeredData { get; private set; } = null;
-
-	// Data
-	private static object CurrentTriggeringData;
+	protected object TriggeredData { get; set; } = null;
+	int IPartializable.PartializeStamp { get; set; }
 
 	// MSG
 	public override void OnActivated () {
@@ -18,18 +16,17 @@ public abstract class TriggerablePlatform : Platform {
 		TriggeredData = null;
 	}
 
-	protected abstract void OnTriggered (object data);
+	protected virtual void OnTriggered (object data) { }
 
 	// API
-	public void Trigger (object data = null) {
-		CurrentTriggeringData = data;
-		FrameworkUtil.ForAllPartializedEntity<TriggerablePlatform>(
+	public virtual void Trigger (object data = null) {
+		IPartializable.ForAllPartializedEntity<TriggerablePlatform>(
 			PhysicsMask.ENVIRONMENT, TypeID, Rect, OperationMode.ColliderAndTrigger, TriggerMode,
-			OnTrigger
+			OnTrigger, data
 		);
 		static void OnTrigger (TriggerablePlatform platform) {
-			platform.TriggeredData = CurrentTriggeringData;
-			platform.OnTriggered(CurrentTriggeringData);
+			platform.TriggeredData = IPartializable.PartializeTempParam;
+			platform.OnTriggered(IPartializable.PartializeTempParam);
 		}
 	}
 

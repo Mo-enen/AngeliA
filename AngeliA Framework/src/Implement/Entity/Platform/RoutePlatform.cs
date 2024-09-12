@@ -3,30 +3,53 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class RoutinePlatform : StepTriggerPlatform {
+public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 
+
+	// Api
+	protected virtual int DefaultSpeed => 24;
+	public Direction8 CurrentDirection { get; set; }
+	public Int2 TargetPosition { get; set; }
 
 	// Data
-	private bool Moving = false;
 	private RoutinePlatform Leader = null;
 	private Int2 LeaderOffset;
+	private int MoveSpeed;
+	private Int2 LeadingPos;
+	private bool FreeFalling;
+	private Int2 FreeFallVelocity;
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		Moving = false;
 		Leader = null;
+		LeaderOffset = default;
+		MoveSpeed = DefaultSpeed;
+		CurrentDirection = default;
+		TargetPosition = default;
+		FreeFalling = false;
 	}
 
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		// Self Leader Check
-		if (Leader == null) {
+		UpdateForLeader();
+	}
 
-			//Leader
-			//LeaderOffset
 
+	private void UpdateForLeader () {
+		if (Leader != this) return;
+
+		LeadingPos.x = X;
+		LeadingPos.y = Y;
+
+		if (!FreeFalling) {
+			// Moving
+
+
+
+		} else {
+			// Freefall
 
 
 
@@ -35,20 +58,53 @@ public abstract class RoutinePlatform : StepTriggerPlatform {
 
 
 	protected override void Move () {
-		if (!Moving || Leader == null) return;
-		if (Leader == this) {
-			// Lead
-
-
+		if (Leader == null) return;
+		if (Leader != this) {
+			// Following Leader
+			X = Leader.LeadingPos.x + LeaderOffset.x;
+			Y = Leader.LeadingPos.y + LeaderOffset.y;
 		} else {
-			// Follow
-
-
+			// Move Leader
+			X = LeadingPos.x;
+			Y = LeadingPos.y;
 		}
 	}
 
 
-	protected override void OnTriggered (object data) => Moving = true;
+	// API
+	protected override void OnTriggered (object data) {
+		base.OnTriggered(data);
+		if (Leader != null) return;
+
+		var squad = WorldSquad.Front as IBlockSquad;
+		int unitX = (X + Width / 2).ToUnit();
+		int unitY = (Y + Height / 2).ToUnit();
+
+		// Self Leader Check
+		if (squad.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element) != PlatformPath.TYPE_ID) return;
+
+		// Get Speed from Map
+		MoveSpeed = DefaultSpeed;
+		if (
+			squad.ReadSystemNumber(unitX, unitY + 1, Stage.ViewZ, Direction4.Down, out int number) ||
+			squad.ReadSystemNumber(unitX, unitY - 1, Stage.ViewZ, Direction4.Down, out number)
+		) {
+			MoveSpeed = number;
+		}
+
+		// Set Leader for Other Platforms
+		IPartializable.ForAllPartializedEntity<RoutinePlatform>(
+			PhysicsMask.ENVIRONMENT, TypeID, Rect,
+			OperationMode.ColliderAndTrigger, TriggerMode,
+			SetLeader, this
+		);
+		static void SetLeader (RoutinePlatform other) {
+			if (IPartializable.PartializeTempParam is not RoutinePlatform leader) return;
+			other.Leader = leader;
+			other.LeaderOffset.x = other.X - leader.X;
+			other.LeaderOffset.y = other.Y - leader.Y;
+		}
+	}
 
 
 }

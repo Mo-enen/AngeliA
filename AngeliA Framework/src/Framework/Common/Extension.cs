@@ -472,13 +472,13 @@ public static class Extension {
 		_ => 0,
 	};
 	[MethodImpl(INLINE)]
-	public static Direction8 Clockwise (this Direction8 dir) => (Direction8)(((int)dir + 1) % 8);
+	public static Direction8 Clockwise (this Direction8 dir, int count = 1) => (Direction8)(((int)dir + count) % 8);
 	[MethodImpl(INLINE)]
-	public static Direction8 AntiClockwise (this Direction8 dir) => (Direction8)(((int)dir + 7) % 8);
+	public static Direction8 AntiClockwise (this Direction8 dir, int count = 1) => (Direction8)((int)dir - count).UMod(8);
 	[MethodImpl(INLINE)]
 	public static Direction8 Opposite (this Direction8 dir) => (Direction8)(((int)dir + 4) % 8);
 	[MethodImpl(INLINE)]
-	public static int Rotation (this Direction8 dir) => (int)dir * 45;
+	public static int GetRotation (this Direction8 dir) => (int)dir * 45;
 
 	[MethodImpl(INLINE)] public static bool IsLeft (this Direction8 dir) => dir == Direction8.Left || dir == Direction8.BottomLeft || dir == Direction8.TopLeft;
 	[MethodImpl(INLINE)] public static bool IsRight (this Direction8 dir) => dir == Direction8.Right || dir == Direction8.BottomRight || dir == Direction8.TopRight;

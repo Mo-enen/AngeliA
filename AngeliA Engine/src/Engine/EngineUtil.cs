@@ -169,15 +169,14 @@ public static class EngineUtil {
 
 	public static void RunAngeliaBuild (Project project) {
 		string entryPath = EntryExePath;
-		if (Util.FileExists(entryPath)) {
-			var process = new Process();
-			process.StartInfo.FileName = entryPath;
-			process.StartInfo.UseShellExecute = false;
-			process.StartInfo.CreateNoWindow = false;
-			process.StartInfo.Arguments = $"DontCloseCmd -uni:{Util.Path_to_ArgPath(project.UniversePath)} -lib:{Util.Path_to_ArgPath(project.BuildPath)}";
-			process.StartInfo.WorkingDirectory = Util.GetParentPath(entryPath);
-			process.Start();
-		}
+		if (!Util.FileExists(entryPath)) return;
+		var process = new Process();
+		process.StartInfo.FileName = entryPath;
+		process.StartInfo.UseShellExecute = false;
+		process.StartInfo.CreateNoWindow = false;
+		process.StartInfo.Arguments = $"DontCloseCmd -uni:{Util.Path_to_ArgPath(project.UniversePath)} -lib:{Util.Path_to_ArgPath(project.BuildPath)}";
+		process.StartInfo.WorkingDirectory = Util.GetParentPath(entryPath);
+		process.Start();
 	}
 
 
