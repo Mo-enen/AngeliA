@@ -3,19 +3,23 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+[EntityAttribute.UpdateOutOfRange]
 public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 
 
 	// Api
 	protected virtual int DefaultSpeed => 24;
+	protected virtual int AirDragX => 1;
+	protected virtual int Gravity => 2;
+	protected virtual int MaxFallingSpeed => 42;
 	public Direction8 CurrentDirection { get; set; }
 	public Int2 TargetPosition { get; set; }
 
 	// Data
 	private RoutinePlatform Leader = null;
 	private Int2 LeaderOffset;
+	private Int2 LeadPos;
 	private int MoveSpeed;
-	private Int2 LeadingPos;
 	private bool FreeFalling;
 	private Int2 FreeFallVelocity;
 
@@ -26,47 +30,85 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 		LeaderOffset = default;
 		MoveSpeed = DefaultSpeed;
 		CurrentDirection = default;
-		TargetPosition = default;
+		TargetPosition = new(X, Y);
 		FreeFalling = false;
 	}
 
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		UpdateForLeader();
+		if (Leader == this) {
+			UpdateForLeader();
+		}
 	}
 
 
 	private void UpdateForLeader () {
-		if (Leader != this) return;
 
-		LeadingPos.x = X;
-		LeadingPos.y = Y;
+		LeadPos.x = X;
+		LeadPos.y = Y;
 
 		if (!FreeFalling) {
 			// Moving
-
-
-
+			IRouteWalker.MoveToRoute(this, PlatformPath.TYPE_ID, MoveSpeed, out int newX, out int newY);
+			LeadPos.x = newX;
+			LeadPos.y = newY;
 		} else {
 			// Freefall
+			LeadPos += FreeFallVelocity;
+			FreeFallVelocity.x = FreeFallVelocity.x.MoveTowards(0, AirDragX);
+			FreeFallVelocity.y = (FreeFallVelocity.y - Gravity).Clamp(-MaxFallingSpeed, MaxFallingSpeed);
+		}
+
+		// Freefall Check
+		int unitX = (LeadPos.x + Width / 2).ToUnit();
+		int unitY = (LeadPos.y + Height / 2).ToUnit();
+		bool hasIndicator = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element) == PlatformPath.TYPE_ID;
+		if (hasIndicator == FreeFalling) {
+			FreeFalling = !hasIndicator;
+			if (FreeFalling) {
+				// Walking >> Freefalling
+				var normal = CurrentDirection.Normal();
+				int speed = MoveSpeed;
+				if (normal.x != 0 && normal.y != 0) {
+					speed = speed * 100000 / 141421;
+				}
+				FreeFallVelocity = normal * speed;
+			} else {
+				// Freefalling >> Walking
+				if (IRouteWalker.GetRouteFromMap(unitX, unitY, CurrentDirection, out var newDir, PlatformPath.TYPE_ID)) {
+					CurrentDirection = newDir;
+					TargetPosition = new Int2(X, Y);
+				}
+			}
+		}
+
+	}
 
 
-
+	public override void Update () {
+		base.Update();
+		// Active Check
+		if (Leader == this) {
+			if (FreeFalling && !Stage.SpawnRect.Overlaps(Rect)) {
+				Active = false;
+			}
+		} else if (Leader != null && !Leader.Active) {
+			Active = false;
 		}
 	}
 
 
 	protected override void Move () {
 		if (Leader == null) return;
-		if (Leader != this) {
-			// Following Leader
-			X = Leader.LeadingPos.x + LeaderOffset.x;
-			Y = Leader.LeadingPos.y + LeaderOffset.y;
-		} else {
+		if (Leader == this) {
 			// Move Leader
-			X = LeadingPos.x;
-			Y = LeadingPos.y;
+			X = LeadPos.x;
+			Y = LeadPos.y;
+		} else {
+			// Following Leader
+			X = Leader.LeadPos.x + LeaderOffset.x;
+			Y = Leader.LeadPos.y + LeaderOffset.y;
 		}
 	}
 
@@ -90,6 +132,12 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 			squad.ReadSystemNumber(unitX, unitY - 1, Stage.ViewZ, Direction4.Down, out number)
 		) {
 			MoveSpeed = number;
+		}
+
+		// Get Initial Direction/Pos
+		if (IRouteWalker.GetRouteFromMap(unitX, unitY, CurrentDirection, out var newDir, PlatformPath.TYPE_ID)) {
+			CurrentDirection = newDir;
+			TargetPosition = new Int2(X, Y);
 		}
 
 		// Set Leader for Other Platforms

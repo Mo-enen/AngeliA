@@ -62,7 +62,10 @@ public abstract class Platform : EnvironmentEntity {
 	}
 
 
-	public override void LateUpdate () => RenderPlatformBlock(TypeID);
+	public override void LateUpdate () {
+		base.LateUpdate();
+		RenderPlatformBlock(TypeID);
+	}
 
 
 	private void Update_Touch () {
@@ -151,13 +154,9 @@ public abstract class Platform : EnvironmentEntity {
 			if (hit.Entity is not Rigidbody rig) continue;
 			if (rig.X < left || rig.X >= right) continue;
 			if (rig.Rect.y < rect.yMax - 32) continue;
-			if (rig.VelocityY > Y - PrevY) continue;
 			if (!hit.IsTrigger) {
 				// For General Rig
-				rig.PerformMove(X - PrevX, 0);
-				if (rig.Y != rect.yMax) {
-					rig.Y = rect.yMax;
-				}
+				rig.PerformMove(X - PrevX, rect.yMax - rig.Y);
 			} else {
 				// For Nav Character
 				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
@@ -211,13 +210,12 @@ public abstract class Platform : EnvironmentEntity {
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
-				if (hit.Entity is not Rigidbody rig) continue;
-				if (rig.X < left || rig.X >= right) continue;
-				if (rig.VelocityY > Y - PrevY) continue;
 				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
-				if (!rig.Rect.Overlaps(prevRect)) {
-					rig.Y.MoveTowards(rect.yMax - rig.OffsetY, 64);
-					rig.MakeGrounded(1, TypeID);
+				if (ch.X < left || ch.X >= right) continue;
+				if (ch.VelocityY > Y - PrevY) continue;
+				if (!ch.Rect.Overlaps(prevRect)) {
+					ch.Y.MoveTowards(rect.yMax - ch.OffsetY, 64);
+					ch.MakeGrounded(1, TypeID);
 				}
 			}
 
@@ -235,7 +233,6 @@ public abstract class Platform : EnvironmentEntity {
 				if (rig.VelocityY > 0) continue;
 				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
 				if (hit.IsTrigger && (hit.Entity is not Character ch || ch.Movement.IsFlying)) continue;
-				//rig.Y = rect.yMax - rig.OffsetY;
 				rig.PerformMove(0, rect.yMax - rig.OffsetY - rig.Y);
 				if (!hit.IsTrigger) rig.VelocityY = 0;
 				rig.MakeGrounded(1, TypeID);

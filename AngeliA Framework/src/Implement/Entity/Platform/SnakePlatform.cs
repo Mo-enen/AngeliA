@@ -57,7 +57,9 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 		}
 
 		// Move
-		IRouteWalker.MoveToRoute(this, PlatformPath.TYPE_ID, Speed);
+		IRouteWalker.MoveToRoute(this, PlatformPath.TYPE_ID, Speed, out int newX, out int newY);
+		X = newX;
+		Y = newY;
 
 		// Stop Check
 		if (Head == null && Physics.Overlap(
@@ -70,6 +72,7 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 
 
 	public override void LateUpdate () {
+		base.LateUpdate();
 
 		// Artwork
 		Cell cell;
@@ -123,26 +126,28 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 
 		// Non-Head Snake Direction
 		if (left != right) {
-			// Get Head
 			Direction8 targetDir = Direction8.Right;
 			var head = right;
-			if (IRouteWalker.GetRouteFromMap(
-				(right.X + right.Width / 2).ToUnit(),
+
+			// Get Head
+			if (WorldSquad.Front.GetBlockAt(
+				(right.X + right.Width / 2).ToUnit() + 1,
 				(right.Y + right.Height / 2).ToUnit(),
-				Direction8.Right, out var _resultR, PlatformPath.TYPE_ID, TypeID
-			)) {
+				BlockType.Element
+			) == PlatformPath.TYPE_ID) {
 				targetDir = Direction8.Right;
+				right.CurrentDirection = Direction8.Right;
 				head = right;
-				right.CurrentDirection = _resultR;
-			} else if (IRouteWalker.GetRouteFromMap(
-				(left.X + left.Width / 2).ToUnit(),
+			} else if (WorldSquad.Front.GetBlockAt(
+				(left.X + left.Width / 2).ToUnit() - 1,
 				(left.Y + left.Height / 2).ToUnit(),
-				Direction8.Left, out var _resultL, PlatformPath.TYPE_ID, TypeID
-			)) {
+				BlockType.Element
+			) == PlatformPath.TYPE_ID) {
 				targetDir = Direction8.Left;
+				left.CurrentDirection = Direction8.Left;
 				head = left;
-				left.CurrentDirection = _resultL;
 			}
+
 			// Set Direction
 			int leftX = left.X + left.Width / 2;
 			int rightX = right.X + right.Width;
@@ -165,13 +170,14 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 			CurrentDirection = Direction8.Right;
 			int unitX = (X + Width / 2).ToUnit();
 			int unitY = (Y + Height / 2).ToUnit();
-			if (IRouteWalker.GetRouteFromMap(unitX, unitY, Direction8.Right, out var _resultR, PlatformPath.TYPE_ID, TypeID)) {
-				CurrentDirection = _resultR;
+			if (WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Element) == PlatformPath.TYPE_ID) {
+				CurrentDirection = Direction8.Right;
 				Head = this;
-			} else if (IRouteWalker.GetRouteFromMap(unitX, unitY, Direction8.Left, out var _resultL, PlatformPath.TYPE_ID, TypeID)) {
-				CurrentDirection = _resultL;
+			} else if (WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Element) == PlatformPath.TYPE_ID) {
+				CurrentDirection = Direction8.Left;
 				Head = this;
 			}
+
 		}
 	}
 

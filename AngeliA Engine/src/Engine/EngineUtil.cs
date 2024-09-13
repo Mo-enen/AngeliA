@@ -591,7 +591,7 @@ public static class EngineUtil {
 		// Build
 		CacheBuilder.Append(publish ? " publish " : " build ");
 
-		// Project Folder
+		// Project Path
 		CacheBuilder.AppendWithDoubleQuotes(csprojPath);
 
 		// Config
@@ -599,6 +599,7 @@ public static class EngineUtil {
 
 		// Dependencies
 		CacheBuilder.Append(" --no-dependencies");
+		CacheBuilder.Append(" --no-restore");
 
 		// Prop
 		if (!string.IsNullOrWhiteSpace(assemblyName)) {
