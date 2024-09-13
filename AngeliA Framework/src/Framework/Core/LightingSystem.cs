@@ -55,16 +55,18 @@ public static class LightingSystem {
 	[OnGameUpdate(-63)]
 	internal static void CalculateAllIlluminance () {
 
-		if (!Enable || !WorldSquad.Enable) return;
+		if (!Enable || !WorldSquad.Enable || Game.IsPausing) return;
 
 		var info = Universe.BuiltInInfo;
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
 		OriginUnitY = Stage.ViewRect.y.ToUnit() - LIGHT_MAP_UNIT_PADDING_BOTTOM;
+		float day01 = Util.PingPong(Sky.InGameDaytime01, 0.5f) * 2f;
+		day01 = Ease.InOutCubic(day01);
 		float solidIllu = info.LightMap_SolidIlluminance;
 		float airIllu = Util.LerpUnclamped(
 			info.LightMap_AirIlluminanceNight,
 			info.LightMap_AirIlluminanceDay,
-			Sky.InGameDaytime01
+			day01
 		);
 		float sLerp = info.LightMap_SelfLerp;
 		float bgIllu = info.LightMap_BackgroundTint;
@@ -100,19 +102,40 @@ public static class LightingSystem {
 	}
 
 
+	[OnGameUpdatePauseless]
+	internal static void OnGameUpdatePauseless () {
+		if (!Game.IsPausing) return;
+		var info = Universe.BuiltInInfo;
+		float day01 = Util.PingPong(Sky.InGameDaytime01, 0.5f) * 2f;
+		day01 = Ease.InOutQuart(day01);
+		float airIllu = 256f - 256f * Util.LerpUnclamped(
+			info.LightMap_AirIlluminanceNight,
+			info.LightMap_AirIlluminanceDay,
+			day01
+		);
+		Game.DrawGizmosRect(
+			Renderer.CameraRect.Expand(Const.HALF),
+			new Color32(0, 0, 0, (byte)airIllu)
+		);
+	}
+
+
 	[OnGameUpdateLater(4096)]
 	internal static void RenderAllIlluminance () {
 
 		if (!Enable || !WorldSquad.Enable) return;
 
 		var info = Universe.BuiltInInfo;
-		bool scaling = Game.PauselessFrame <= ForceCameraScaleFrame;
-		bool lerpingToAir = Game.PauselessFrame <= ForceAirLerpFrame;
+		float day01 = Util.PingPong(Sky.InGameDaytime01, 0.5f) * 2f;
+		day01 = Ease.InOutQuart(day01);
 		float airIllu = 256f - 256f * Util.LerpUnclamped(
 			info.LightMap_AirIlluminanceNight,
 			info.LightMap_AirIlluminanceDay,
-			Sky.InGameDaytime01
+			day01
 		);
+
+		bool lerpingToAir = Game.PauselessFrame <= ForceAirLerpFrame;
+		bool scaling = Game.PauselessFrame <= ForceCameraScaleFrame;
 		bool pixelStyle = info.LightMap_PixelStyle;
 
 		var cameraCenter = Renderer.CameraRect.center.CeilToInt();

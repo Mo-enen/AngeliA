@@ -23,8 +23,10 @@ public interface IRouteWalker {
 			_ => false,
 		}) {
 			// Fix Position Back
-			newX -= (newX + Const.HALF).UMod(Const.CEL) - Const.HALF;
-			newY -= (newY + Const.HALF).UMod(Const.CEL) - Const.HALF;
+			int lostX = (newX + Const.HALF).UMod(Const.CEL) - Const.HALF;
+			int lostY = (newY + Const.HALF).UMod(Const.CEL) - Const.HALF;
+			newX -= lostX;
+			newY -= lostY;
 
 			// Get Direction
 			if (GetRouteFromMap(
@@ -39,6 +41,10 @@ public interface IRouteWalker {
 			targetPos.x += normal.x * Const.CEL;
 			targetPos.y += normal.y * Const.CEL;
 			walker.TargetPosition = targetPos;
+
+			// Compensate Lost Length
+			speed += lostX.Abs() + lostY.Abs();
+
 		}
 
 		// Move
@@ -81,6 +87,3 @@ public interface IRouteWalker {
 	}
 
 }
-
-
-

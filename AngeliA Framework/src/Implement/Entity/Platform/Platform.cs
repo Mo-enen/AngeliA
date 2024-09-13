@@ -131,11 +131,9 @@ public abstract class Platform : EnvironmentEntity {
 
 	private void Update_CarryX () {
 
-		if (X == PrevX) return;
+		//if (X == PrevX) return;
 
 		var rect = Rect;
-		var prevRect = rect;
-		prevRect.x = PrevX;
 		int left = X;
 		int right = X + Width;
 		if (Pose == FittingPose.Single || Pose == FittingPose.Left) {
@@ -145,8 +143,11 @@ public abstract class Platform : EnvironmentEntity {
 			right = int.MaxValue;
 		}
 
+		var prevRectY = rect;
+		prevRectY.y = PrevY;
+		var overlapRect = Y > PrevY ? rect : prevRectY;
 		var hits = Physics.OverlapAll(
-			PhysicsMask.DYNAMIC, rect.EdgeOutside(Direction4.Up, 32).Shift(0, -16), out int count,
+			PhysicsMask.DYNAMIC, overlapRect.EdgeOutside(Direction4.Up, 32).Shift(0, -16), out int count,
 			this, OperationMode.ColliderAndTrigger
 		);
 		for (int i = 0; i < count; i++) {
@@ -156,7 +157,7 @@ public abstract class Platform : EnvironmentEntity {
 			if (rig.Rect.y < rect.yMax - 32) continue;
 			if (!hit.IsTrigger) {
 				// For General Rig
-				rig.PerformMove(X - PrevX, rect.yMax - rig.Y);
+				rig.PerformMove(X - PrevX, 0);
 			} else {
 				// For Nav Character
 				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
@@ -170,7 +171,7 @@ public abstract class Platform : EnvironmentEntity {
 
 	private void Update_CarryY () {
 
-		if (Y == PrevY) return;
+		//if (Y == PrevY) return;
 
 		var rect = Rect;
 		var prevRect = rect;
@@ -198,10 +199,9 @@ public abstract class Platform : EnvironmentEntity {
 				if (hit.Entity is not Rigidbody rig) continue;
 				if (rig.X < left || rig.X >= right) continue;
 				if (rig.VelocityY > Y - PrevY) continue;
-				if (!rig.Rect.Overlaps(prevRect)) {
-					rig.PerformMove(0, rect.yMax - rig.Rect.y);
-					rig.MakeGrounded(1, TypeID);
-				}
+				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
+				rig.PerformMove(0, rect.yMax - rig.Rect.y);
+				rig.MakeGrounded(1, TypeID);
 			}
 			// For Nav Character
 			hits = Physics.OverlapAll(
@@ -213,10 +213,9 @@ public abstract class Platform : EnvironmentEntity {
 				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
 				if (ch.X < left || ch.X >= right) continue;
 				if (ch.VelocityY > Y - PrevY) continue;
-				if (!ch.Rect.Overlaps(prevRect)) {
-					ch.Y.MoveTowards(rect.yMax - ch.OffsetY, 64);
-					ch.MakeGrounded(1, TypeID);
-				}
+				if (ch.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
+				ch.Y.MoveTowards(rect.yMax - ch.OffsetY, 64);
+				ch.MakeGrounded(1, TypeID);
 			}
 
 		} else {
@@ -233,7 +232,8 @@ public abstract class Platform : EnvironmentEntity {
 				if (rig.VelocityY > 0) continue;
 				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
 				if (hit.IsTrigger && (hit.Entity is not Character ch || ch.Movement.IsFlying)) continue;
-				rig.PerformMove(0, rect.yMax - rig.OffsetY - rig.Y);
+				int speedY = rect.yMax - rig.OffsetY - rig.Y;
+				rig.PerformMove(0, speedY);
 				if (!hit.IsTrigger) rig.VelocityY = 0;
 				rig.MakeGrounded(1, TypeID);
 			}

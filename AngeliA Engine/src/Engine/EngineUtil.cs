@@ -599,7 +599,6 @@ public static class EngineUtil {
 
 		// Dependencies
 		CacheBuilder.Append(" --no-dependencies");
-		CacheBuilder.Append(" --no-restore");
 
 		// Prop
 		if (!string.IsNullOrWhiteSpace(assemblyName)) {

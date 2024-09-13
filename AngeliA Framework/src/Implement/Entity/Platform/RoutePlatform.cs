@@ -9,8 +9,8 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 
 	// Api
 	protected virtual int DefaultSpeed => 24;
-	protected virtual int AirDragX => 1;
-	protected virtual int Gravity => 2;
+	protected virtual int AirDragX => 200;
+	protected virtual int Gravity => 1;
 	protected virtual int MaxFallingSpeed => 42;
 	public Direction8 CurrentDirection { get; set; }
 	public Int2 TargetPosition { get; set; }
@@ -22,6 +22,7 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 	private int MoveSpeed;
 	private bool FreeFalling;
 	private Int2 FreeFallVelocity;
+	private bool RequireSpreadLeadership;
 
 	// MSG
 	public override void OnActivated () {
@@ -32,11 +33,13 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 		CurrentDirection = default;
 		TargetPosition = new(X, Y);
 		FreeFalling = false;
+		RequireSpreadLeadership = false;
 	}
 
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
+		// Update Leader
 		if (Leader == this) {
 			UpdateForLeader();
 		}
@@ -50,35 +53,50 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 
 		if (!FreeFalling) {
 			// Moving
+			var oldTargetPos = TargetPosition;
 			IRouteWalker.MoveToRoute(this, PlatformPath.TYPE_ID, MoveSpeed, out int newX, out int newY);
 			LeadPos.x = newX;
 			LeadPos.y = newY;
-		} else {
-			// Freefall
-			LeadPos += FreeFallVelocity;
-			FreeFallVelocity.x = FreeFallVelocity.x.MoveTowards(0, AirDragX);
-			FreeFallVelocity.y = (FreeFallVelocity.y - Gravity).Clamp(-MaxFallingSpeed, MaxFallingSpeed);
-		}
-
-		// Freefall Check
-		int unitX = (LeadPos.x + Width / 2).ToUnit();
-		int unitY = (LeadPos.y + Height / 2).ToUnit();
-		bool hasIndicator = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element) == PlatformPath.TYPE_ID;
-		if (hasIndicator == FreeFalling) {
-			FreeFalling = !hasIndicator;
-			if (FreeFalling) {
+			// Freefall Check
+			if (
+				TargetPosition != oldTargetPos &&
+				WorldSquad.Front.GetBlockAt(
+					(oldTargetPos.x + Width / 2).ToUnit(),
+					(oldTargetPos.y + Height / 2).ToUnit(),
+					BlockType.Element
+				) != PlatformPath.TYPE_ID
+			) {
 				// Walking >> Freefalling
+				FreeFalling = true;
 				var normal = CurrentDirection.Normal();
 				int speed = MoveSpeed;
 				if (normal.x != 0 && normal.y != 0) {
 					speed = speed * 100000 / 141421;
 				}
 				FreeFallVelocity = normal * speed;
-			} else {
-				// Freefalling >> Walking
-				if (IRouteWalker.GetRouteFromMap(unitX, unitY, CurrentDirection, out var newDir, PlatformPath.TYPE_ID)) {
-					CurrentDirection = newDir;
-					TargetPosition = new Int2(X, Y);
+			}
+		} else {
+			// Freefall
+			LeadPos += FreeFallVelocity;
+			if (AirDragX >= 1000) {
+				FreeFallVelocity.x = FreeFallVelocity.x.MoveTowards(0, AirDragX / 1000);
+			} else if ((Game.GlobalFrame - LastTriggerFrame) % (1000 / AirDragX) == 0) {
+				FreeFallVelocity.x = FreeFallVelocity.x.MoveTowards(0, 1);
+			}
+			FreeFallVelocity.y = (FreeFallVelocity.y - Gravity).Clamp(-MaxFallingSpeed, MaxFallingSpeed);
+			// Walking Check
+			int entranceY = Y.ToUnifyGlobal();
+			if (Y > entranceY && LeadPos.y <= entranceY) {
+				// Crossing the Line
+				int unitX = (X + Width / 2).ToUnit();
+				int unitY = (Y + Height / 2).ToUnit();
+				if (WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element) == PlatformPath.TYPE_ID) {
+					if (IRouteWalker.GetRouteFromMap(unitX, unitY, CurrentDirection, out var newDir, PlatformPath.TYPE_ID)) {
+						CurrentDirection = newDir;
+					}
+					LeadPos.y = unitY.ToGlobal();
+					TargetPosition = new Int2(unitX.ToGlobal(), unitY.ToGlobal());
+					FreeFalling = false;
 				}
 			}
 		}
@@ -88,6 +106,21 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 
 	public override void Update () {
 		base.Update();
+		// Spread Leadership
+		if (RequireSpreadLeadership) {
+			RequireSpreadLeadership = false;
+			IPartializable.ForAllPartializedEntity<RoutinePlatform>(
+				PhysicsMask.ENVIRONMENT, TypeID, Rect,
+				OperationMode.ColliderAndTrigger, TriggerMode,
+				SetLeader, this
+			);
+			static void SetLeader (RoutinePlatform other) {
+				if (IPartializable.PartializeTempParam is not RoutinePlatform leader) return;
+				other.Leader = leader;
+				other.LeaderOffset.x = other.X - leader.X;
+				other.LeaderOffset.y = other.Y - leader.Y;
+			}
+		}
 		// Active Check
 		if (Leader == this) {
 			if (FreeFalling && !Stage.SpawnRect.Overlaps(Rect)) {
@@ -124,6 +157,7 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 
 		// Self Leader Check
 		if (squad.GetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element) != PlatformPath.TYPE_ID) return;
+		RequireSpreadLeadership = true;
 
 		// Get Speed from Map
 		MoveSpeed = DefaultSpeed;
@@ -140,18 +174,6 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 			TargetPosition = new Int2(X, Y);
 		}
 
-		// Set Leader for Other Platforms
-		IPartializable.ForAllPartializedEntity<RoutinePlatform>(
-			PhysicsMask.ENVIRONMENT, TypeID, Rect,
-			OperationMode.ColliderAndTrigger, TriggerMode,
-			SetLeader, this
-		);
-		static void SetLeader (RoutinePlatform other) {
-			if (IPartializable.PartializeTempParam is not RoutinePlatform leader) return;
-			other.Leader = leader;
-			other.LeaderOffset.x = other.X - leader.X;
-			other.LeaderOffset.y = other.Y - leader.Y;
-		}
 	}
 
 

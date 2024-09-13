@@ -283,7 +283,7 @@ public static class Stage {
 		if (RequireSetViewZ.HasValue) {
 			int newZ = RequireSetViewZ.Value;
 			RequireSetViewZ = null;
-			LastSettleFrame = Game.GlobalFrame;
+			Settle();
 			// Despawn Entities
 			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				var entities = Entities[layer];
@@ -444,6 +444,9 @@ public static class Stage {
 		ViewRect = newRect;
 		Renderer.UpdateCameraRect();
 	}
+
+
+	public static void Settle () => LastSettleFrame = Game.GlobalFrame;
 
 
 	// View Position
