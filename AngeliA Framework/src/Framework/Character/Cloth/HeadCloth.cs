@@ -40,10 +40,12 @@ public abstract class HeadCloth : Cloth {
 		DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
 	}
 
-	public static void DrawClothForHead (PoseCharacter character, int spriteGroupID, HatFrontMode frontMode, bool pixelShiftForLeft) {
+	public static void DrawClothForHead (PoseCharacter character, int spriteOrGroupID, HatFrontMode frontMode, bool pixelShiftForLeft) {
 
 		var head = character.Head;
-		if (spriteGroupID == 0 || head.IsFullCovered) return;
+		if (spriteOrGroupID == 0 || head.IsFullCovered) return;
+		bool hideHead = false;
+		bool showEar = false;
 
 		// Width Amount
 		int widthAmount = 1000;
@@ -52,21 +54,24 @@ public abstract class HeadCloth : Cloth {
 
 		// Draw
 		Cell[] cells = null;
-		if (Renderer.HasSpriteGroup(spriteGroupID)) {
+		if (Renderer.HasSpriteGroup(spriteOrGroupID)) {
+			// Group
 			if (head.FrontSide) {
 				// Front
 				bool front = frontMode != HatFrontMode.AlwaysBackOfHead && frontMode != HatFrontMode.BackOfHead;
-				if (Renderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var sprite, false, true)) {
+				if (Renderer.TryGetSpriteFromGroup(spriteOrGroupID, 0, out var sprite, false, true)) {
 					bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
 					cells = AttachClothOn(
 						head, sprite, 500, 1000,
 						(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
 						usePixelShift ? (front ? -16 : 16) : 0, 0
 					);
+					hideHead = sprite.Tag.HasAll(Tag.HideLimb);
+					showEar = sprite.Tag.HasAll(Tag.ShowLimb);
 				}
 			} else {
 				// Back
-				if (Renderer.TryGetSpriteFromGroup(spriteGroupID, 1, out var sprite, false, true)) {
+				if (Renderer.TryGetSpriteFromGroup(spriteOrGroupID, 1, out var sprite, false, true)) {
 					bool front = frontMode != HatFrontMode.AlwaysBackOfHead && frontMode != HatFrontMode.FrontOfHead;
 					bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
 					cells = AttachClothOn(
@@ -74,9 +79,11 @@ public abstract class HeadCloth : Cloth {
 						(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
 						usePixelShift ? (front ? -16 : 16) : 0, 0
 					);
+					hideHead = sprite.Tag.HasAll(Tag.HideLimb);
+					showEar = sprite.Tag.HasAll(Tag.ShowLimb);
 				}
 			}
-		} else if (Renderer.TryGetSprite(spriteGroupID, out var sprite)) {
+		} else if (Renderer.TryGetSprite(spriteOrGroupID, out var sprite)) {
 			// Single Sprite
 			bool front = frontMode != HatFrontMode.AlwaysBackOfHead && (
 				frontMode == HatFrontMode.AlwaysFrontOfHead ||
@@ -88,7 +95,10 @@ public abstract class HeadCloth : Cloth {
 				(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
 				usePixelShift ? (front ? -16 : 16) : 0, 0
 			);
+			hideHead = sprite.Tag.HasAll(Tag.HideLimb);
+			showEar = sprite.Tag.HasAll(Tag.ShowLimb);
 		}
+
 		// Head Rotate
 		if (cells != null && character.Head.Rotation != 0) {
 			int offsetY = character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
@@ -97,6 +107,16 @@ public abstract class HeadCloth : Cloth {
 				cell.Y -= offsetY;
 			}
 		}
+
+		// Show/Hide Limb
+		if (!showEar) {
+			character.EarID.Override(0, 1, 4096);
+		}
+		if (hideHead) {
+			character.HairID.Override(0, 1, 4096);
+			character.Head.Covered = BodyPart.CoverMode.FullCovered;
+		}
+
 	}
 
 }

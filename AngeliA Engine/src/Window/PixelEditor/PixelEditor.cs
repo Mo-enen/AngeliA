@@ -94,52 +94,6 @@ public partial class PixelEditor : WindowUI {
 	private static readonly LanguageCode HINT_ASE_EXISTS = ("UI.PixelEditor.AseExistsMsg", "Aseprite folder detected.\n{0}\nYou can only use artwork editor without the Aseprite folder.");
 	private static readonly LanguageCode LABEL_IGNORE_ASEPRITE = ("UI.PixelEditor.IgnoreAsepriteFolder", "Ignore Aseprite Folder");
 	private static readonly Color32[] PALETTE_PIXELS = { new(255, 34, 0, 255), new(255, 127, 0, 255), new(255, 242, 0, 255), new(0, 255, 34, 255), new(0, 255, 255, 255), new(0, 48, 255, 255), new(126, 0, 255, 255), new(255, 0, 255, 255), default, default, default, default, default, default, default, default, default, default, default, default, default, default, default, default, new(44, 43, 43, 255), new(54, 47, 47, 255), new(80, 59, 59, 255), new(139, 92, 92, 255), new(114, 76, 59, 255), new(139, 105, 82, 255), new(162, 134, 105, 255), new(186, 161, 126, 255), new(25, 22, 21, 255), new(37, 29, 28, 255), new(49, 38, 35, 255), new(61, 49, 43, 255), new(28, 25, 24, 255), new(46, 38, 36, 255), new(80, 63, 57, 255), new(159, 113, 81, 255), new(119, 95, 117, 255), new(164, 114, 155, 255), new(222, 142, 203, 255), new(244, 185, 223, 255), new(84, 70, 79, 255), new(110, 86, 97, 255), new(154, 126, 134, 255), new(187, 162, 161, 255), new(68, 19, 60, 255), new(90, 27, 67, 255), new(122, 39, 78, 255), new(160, 47, 83, 255), new(67, 18, 78, 255), new(100, 25, 99, 255), new(132, 36, 115, 255), new(170, 41, 128, 255), new(67, 6, 105, 255), new(98, 8, 138, 255), new(168, 39, 194, 255), new(236, 87, 225, 255), new(43, 20, 87, 255), new(64, 26, 115, 255), new(115, 56, 161, 255), new(176, 94, 196, 255), new(29, 29, 46, 255), new(39, 38, 60, 255), new(50, 47, 74, 255), new(87, 79, 105, 255), new(46, 40, 62, 255), new(55, 44, 74, 255), new(77, 58, 100, 255), new(111, 82, 131, 255), new(14, 51, 110, 255), new(29, 83, 150, 255), new(48, 136, 198, 255), new(70, 207, 255, 255), new(23, 77, 153, 255), new(43, 128, 207, 255), new(56, 187, 228, 255), new(76, 220, 246, 255), new(37, 44, 53, 255), new(42, 61, 74, 255), new(59, 106, 118, 255), new(77, 189, 189, 255), new(41, 46, 92, 255), new(44, 63, 130, 255), new(47, 86, 164, 255), new(52, 139, 216, 255), new(18, 97, 73, 255), new(39, 115, 88, 255), new(53, 166, 102, 255), new(83, 245, 113, 255), new(23, 101, 104, 255), new(10, 143, 134, 255), new(9, 181, 161, 255), new(0, 255, 204, 255), new(33, 69, 46, 255), new(59, 115, 61, 255), new(81, 166, 58, 255), new(151, 245, 83, 255), new(48, 77, 38, 255), new(94, 115, 59, 255), new(153, 166, 58, 255), new(245, 231, 83, 255), new(157, 139, 65, 255), new(191, 174, 60, 255), new(232, 216, 42, 255), new(255, 255, 0, 255), new(66, 67, 43, 255), new(117, 119, 48, 255), new(156, 148, 39, 255), new(217, 187, 36, 255), new(143, 98, 55, 255), new(209, 136, 60, 255), new(255, 165, 50, 255), new(252, 195, 81, 255), new(114, 89, 51, 255), new(172, 129, 59, 255), new(225, 171, 48, 255), new(252, 213, 74, 255), new(120, 50, 24, 255), new(153, 80, 24, 255), new(207, 123, 60, 255), new(245, 169, 83, 255), new(115, 64, 55, 255), new(140, 86, 70, 255), new(191, 133, 92, 255), new(232, 184, 111, 255), new(146, 85, 73, 255), new(177, 122, 102, 255), new(208, 158, 131, 255), new(239, 194, 160, 255), new(140, 84, 101, 255), new(170, 108, 114, 255), new(200, 132, 128, 255), new(231, 165, 146, 255), new(168, 35, 66, 255), new(199, 58, 74, 255), new(240, 86, 86, 255), new(255, 125, 102, 255), new(117, 59, 78, 255), new(150, 75, 84, 255), new(199, 104, 99, 255), new(255, 147, 120, 255), new(77, 77, 77, 255), new(142, 144, 144, 255), new(197, 203, 205, 255), new(237, 241, 245, 255), new(94, 88, 88, 255), new(138, 129, 127, 255), new(184, 172, 167, 255), new(240, 230, 218, 255), new(0, 0, 0, 255), new(85, 85, 85, 255), new(170, 170, 170, 255), new(255, 255, 255, 255), new(50, 50, 50, 255), new(93, 93, 93, 255), new(125, 125, 125, 255), new(190, 190, 190, 255), };
-	private static readonly CharacterTempateData[] CHARACTER_SPRITE_TEMPLATES = {
-
-		// Thumbnail
-		new ("DefaultCharacter", "{0}", 0, -32, 16, 32),
-
-		// Body Part
-		new ("DefaultCharacter.Head 0", "{0}.Head 0", 25, -4, 12, 11),
-		new ("DefaultCharacter.Head 1", "{0}.Head 1", 25, -16, 12, 11),
-
-		new ("DefaultCharacter.Body", "{0}.Body", 28, -25, 7, 7),
-		new ("DefaultCharacter.Hip", "{0}.Hip", 28, -27, 7, 2),
-
-		new ("DefaultCharacter.Shoulder", "{0}.Shoulder", 25, -22, 2, 4),
-		new ("DefaultCharacter.UpperArm", "{0}.UpperArm", 25, -26, 2, 3),
-		new ("DefaultCharacter.LowerArm", "{0}.LowerArm", 25, -28, 2, 2),
-		new ("DefaultCharacter.Hand", "{0}.Hand", 25, -30, 2, 2),
-
-		new ("DefaultCharacter.UpperLeg", "{0}.UpperLeg", 28, -31, 2, 3),
-		new ("DefaultCharacter.LowerLeg", "{0}.LowerLeg", 28, -34, 2, 3),
-		new ("DefaultCharacter.Foot", "{0}.Foot", 28, -35, 2, 1),
-
-		// Body Gadget
-		new ("DefaultHair.HairFFR", "{0}.HairFFR", 41, -3, 12, 10),
-		new ("DefaultHair.HairFFL", "{0}.HairFFL", 41, -14, 12, 10),
-		new ("DefaultHair.HairFB", "{0}.HairFB", 41, -26, 12, 11),
-
-		new ("DefaultFace.Face.Eye", "{0}.Face.Eye", 26, -41, 1, 2),
-		new ("DefaultFace.Face.Sclera", "{0}.Face.Sclera", 28, -41, 2, 2),
-		new ("DefaultFace.Face.Eyelash", "{0}.Face.Eyelash", 31, -40, 1, 2),
-		new ("DefaultFace.Face.Eyebrow", "{0}.Face.Eyebrow", 34, -40, 1, 3),
-		new ("DefaultFace.Face.Mouth", "{0}.Face.Mouth", 26, -44, 5, 2),
-		new ("DefaultFace.Face.Tooth", "{0}.Face.Tooth", 32, -43, 2, 1),
-		
-		// Cloth
-		new ("DefaultBodySuit.BodySuit 0", "{0}.BodySuit 0", 58, -3, 8, 11),
-		new ("DefaultBodySuit.BodySuit 1", "{0}.BodySuit 1", 58, -15, 8, 11),
-		new ("DefaultBodySuit.ShoulderSuit", "{0}.ShoulderSuit", 56, 3, 2, 4),
-		new ("DefaultBodySuit.UpperArmSuit", "{0}.UpperArmSuit", 55, -1, 2, 3),
-		new ("DefaultBodySuit.LowerArmSuit", "{0}.LowerArmSuit", 55, -4, 2, 3),
-		new ("DefaultBodySuit.HandSuit", "{0}.HandSuit", 55, -6, 2, 2),
-		new ("DefaultHipSuit.HipSuit", "{0}.HipSuit", 59, -19, 7, 3),
-		new ("DefaultBodySuit.UpperLegSuit", "{0}.UpperLegSuit", 59, -22, 3, 2),
-		new ("DefaultBodySuit.LowerLegSuit", "{0}.LowerLegSuit", 59, -25, 3, 2),
-		new ("DefaultFootSuit.FootSuit", "{0}.FootSuit", 59, -28, 3, 2),
-
-	};
 
 	// Api
 	public static readonly Sheet Sheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: false);
@@ -151,6 +105,7 @@ public partial class PixelEditor : WindowUI {
 	// Data
 	private List<string> AllRigCharacterNames { get; init; }
 	private readonly List<SpriteData> StagedSprites = new();
+	private readonly List<AngeSprite> CharacterTemplateChace = new();
 	private Project CurrentProject;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
@@ -1038,28 +993,33 @@ public partial class PixelEditor : WindowUI {
 		} else {
 			basicPos = new Int2(1, STAGE_SIZE - 1);
 		}
+		// Find Min Position
+		int minX = int.MaxValue;
+		int maxY = int.MinValue;
+		CharacterTemplateChace.Clear();
+		foreach (var source in Sheet.Sprites) {
+			if (!source.RealName.StartsWith("CharacterTemplate")) continue;
+			CharacterTemplateChace.Add(source);
+			minX = Util.Min(minX, source.PixelRect.x);
+			maxY = Util.Max(maxY, source.PixelRect.yMax);
+		}
+		if (CharacterTemplateChace.Count == 0) {
+			Debug.LogWarning("Character template sprite not found");
+			return;
+		}
+		// Copy Template Sprites to Stage
 		int oldStagedCount = StagedSprites.Count;
-		foreach (var template in CHARACTER_SPRITE_TEMPLATES) {
-			if (Sheet.SpritePool.TryGetValue(template.ID, out var source)) {
-				CopySpriteToStage(
-					source,
-					basicPos.x + template.OffsetX,
-					basicPos.y + template.OffsetY,
-					string.Format(template.TargetNameFormat, characterName)
-				);
-			} else {
-				CreateNewSprite(
-					string.Format(template.TargetNameFormat, characterName),
-					select: false,
-					new Int2(
-						basicPos.x + template.OffsetX,
-						basicPos.y + template.OffsetY
-					),
-					new Int2(template.FailbackW, template.FailbackH)
-				);
-			}
+		foreach (var source in CharacterTemplateChace) {
+			var sourceRect = source.PixelRect;
+			CopySpriteToStage(
+				source,
+				basicPos.x + sourceRect.x - minX,
+				basicPos.y + sourceRect.y - maxY,
+				string.Format(source.RealName.Replace("CharacterTemplate", "{0}"), characterName)
+			);
 		}
 		SetSpriteSelection(oldStagedCount, StagedSprites.Count - oldStagedCount);
+		CharacterTemplateChace.Clear();
 	}
 
 
