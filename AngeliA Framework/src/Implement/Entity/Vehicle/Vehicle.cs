@@ -16,7 +16,7 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 	private static readonly LanguageCode HINT_STOP_DRIVE = ("CtrlHint.StopDrive", "Stop Driving");
 
 	// Api
-	public readonly VehicleMovement Movement;
+	public readonly M Movement;
 	public Character Driver { get; private set; } = null;
 	public virtual Int2? DriverLocalPosition => new Int2(Width / 2, 1);
 	public virtual Int2? DriverLeaveLocalPosition => new Int2(Width / 2, Height);
@@ -42,14 +42,12 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 	#region --- MSG ---
 
 
-	public Vehicle () => Movement = System.Activator.CreateInstance(typeof(M), this) as VehicleMovement;
+	public Vehicle () => Movement = System.Activator.CreateInstance(typeof(M), this) as M;
 
 
 	public override void OnActivated () {
 		base.OnActivated();
 		Driver = null;
-		Movement.MovementWidth.BaseValue = Width;
-		Movement.MovementHeight.BaseValue = Height;
 		OffsetX = -Width / 2;
 		OffsetY = 0;
 		LastStartDriveFrame = int.MinValue;

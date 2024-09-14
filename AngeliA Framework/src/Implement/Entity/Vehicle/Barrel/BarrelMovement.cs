@@ -9,7 +9,6 @@ public class BarrelMovement : VehicleMovement {
 	protected override void InitializeMeta () {
 		base.InitializeMeta();
 		RunSpeed.BaseValue = -20;
-
 	}
 	protected override CharacterMovementState GetMovementState () {
 		var state = CharacterMovement.CalculateMovementState(this);

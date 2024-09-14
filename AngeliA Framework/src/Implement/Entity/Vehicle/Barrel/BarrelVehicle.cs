@@ -7,11 +7,12 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 
 	// Api
 	public int Team => Const.TEAM_ENVIRONMENT;
-	public override bool AllowBeingPush => false;
-	public override Int2? DriverLocalPosition => Rolling ? new Int2(Width / 2, Height) : null;
+	public override bool AllowBeingPush => true;
+	public override Int2? DriverLocalPosition => Rolling ? new Int2(Width / 2, BarrelSize) : null;
 	public override Int2? DriverLeaveLocalPosition => null;
 	public override int AirDragX => Rolling ? 0 : 5;
 	public virtual int RollSpeed => 18;
+	public virtual int BarrelSize => Const.CEL;
 
 	// Data
 	private bool Rolling = false;
@@ -20,12 +21,17 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 
 	// MSG
 	public override void OnActivated () {
+		Width = BarrelSize;
+		Height = BarrelSize;
+		Movement.SwimWidth.BaseValue = BarrelSize;
+		Movement.MovementWidth.BaseValue = BarrelSize;
+		Movement.MovementHeight.BaseValue = BarrelSize;
 		base.OnActivated();
 		Rolling = false;
 		CurrentRollingSpeed = 0;
 		RollingRotation = 0;
 		if (FromWorld) {
-			X += Width / 2;
+			X += Const.HALF;
 		}
 	}
 
@@ -38,6 +44,11 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 			}
 			CurrentRollingSpeed = 0;
 			VelocityX = 0;
+			Width = BarrelSize;
+			OffsetX = -BarrelSize / 2;
+			OffsetY = 0;
+			Width = BarrelSize;
+			Height = BarrelSize;
 		} else {
 			// Roll
 			if (Driver == null) {
@@ -51,9 +62,15 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 						CurrentRollingSpeed = 0;
 					}
 				}
+				OffsetX = -BarrelSize / 2;
+				OffsetY = 0;
+				Width = BarrelSize;
+				Height = BarrelSize;
 			} else {
 				// Driving
 				CurrentRollingSpeed = CurrentRollingSpeed.LerpTo(VelocityX, 500);
+				Movement.MovementWidth.Override(Driver.Width, 1);
+				Movement.MovementHeight.Override(BarrelSize + Driver.Height, 1);
 			}
 		}
 	}
@@ -70,16 +87,20 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 			if (Renderer.TryGetSpriteFromGroup(TypeID, 1, out var sprite, false, true)) {
 				RollingRotation += CurrentRollingSpeed;
 				Renderer.Draw(
-					sprite, X + OffsetX + Width / 2, Y + OffsetY + Height / 2, 500, 500, RollingRotation, Width, Height
+					sprite,
+					X,
+					Y + BarrelSize / 2,
+					500, 500, RollingRotation,
+					BarrelSize, BarrelSize
 				);
 			}
 		}
 	}
 
 	public override void Push (int speedX) {
-		base.Push(speedX);
-		if (CurrentRollingSpeed == 0 || Driver != null) return;
-		if (speedX.Sign() != CurrentRollingSpeed.Sign()) {
+		base.Push(Rolling ? speedX : speedX / 2);
+		if (Driver != null || !Rolling) return;
+		if (CurrentRollingSpeed != 0 && speedX.Sign() != CurrentRollingSpeed.Sign()) {
 			CurrentRollingSpeed = 0;
 			return;
 		}
@@ -92,9 +113,14 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 		Rolling = true;
 		RollingRotation = 0;
 		if (damage.Bullet is Bullet bullet) {
-			int bulletX = bullet.X + bullet.Width / 2;
-			if (bullet is MovableBullet mBullet) {
-				bulletX -= mBullet.Velocity.x;
+			int bulletX;
+			if (bullet is MeleeBullet) {
+				bulletX = bullet.Sender != null ? bullet.Sender.Rect.CenterX() : bullet.Rect.CenterX();
+			} else {
+				bulletX = bullet.Rect.CenterX();
+				if (bullet is MovableBullet mBullet) {
+					bulletX -= mBullet.Velocity.x;
+				}
 			}
 			CurrentRollingSpeed = (Rect.CenterX() - bulletX).Sign3() * RollSpeed;
 		} else if (damage.Sender != null) {
@@ -120,7 +146,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 		);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
-			if (hit.Entity is Character characterHit && characterHit.Y >= Rect.yMax) {
+			if (hit.Entity is Character characterHit && characterHit.Y >= Rect.yMax && !characterHit.InWater) {
 				driver = characterHit;
 				break;
 			}
@@ -133,9 +159,13 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 		// Driver Movement State Check
 		if (
 			Driver.CharacterState != CharacterState.GamePlay ||
-			Driver.VelocityY > Util.Max(DeltaPositionY, 0)
+			Driver.VelocityY > Util.Max(DeltaPositionY, 0) ||
+			Driver.InWater
 		) {
 			CurrentRollingSpeed = VelocityX.Sign3() * RollSpeed;
+			Width = BarrelSize;
+			Height = BarrelSize;
+			IgnorePhysics();
 			return true;
 		}
 		return false;

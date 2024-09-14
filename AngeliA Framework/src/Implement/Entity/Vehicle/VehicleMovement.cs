@@ -24,17 +24,8 @@ public abstract class VehicleMovement : CharacterMovement {
 	#region --- MSG ---
 
 
-	public VehicleMovement (Rigidbody rig) : base(rig) {
-		InitializeMeta();
-	}
+	public VehicleMovement (Rigidbody rig) : base(rig) => InitializeMeta();
 
-
-	#endregion
-
-
-
-
-	#region --- API ---
 
 	protected virtual void InitializeMeta () {
 		WalkAvailable.BaseValue = false;
@@ -48,7 +39,28 @@ public abstract class VehicleMovement : CharacterMovement {
 		GrabSideAvailable.BaseValue = false;
 		FlyAvailable.BaseValue = false;
 		ClimbAvailable.BaseValue = false;
+
+		SwimWidth.BaseValue = Const.CEL;
+		MovementWidth.BaseValue = Const.CEL;
+		MovementHeight.BaseValue = Const.CEL;
+		DashHeightAmount.BaseValue = 1000;
+		RushHeightAmount.BaseValue = 1000;
+		SquatHeightAmount.BaseValue = 1000;
+		SwimHeightAmount.BaseValue = 1000;
+		FlyHeightAmount.BaseValue = 1000;
+		GrabTopHeightAmount.BaseValue = 1000;
+		GrabSideHeightAmount.BaseValue = 1000;
+
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
 
 	// Movement Logic
 	public override void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
@@ -58,14 +70,9 @@ public abstract class VehicleMovement : CharacterMovement {
 		VelocityX = 0;
 	}
 
-	public override void Jump () {
+	public override void Jump () { }
 
-	}
-
-	public override void HoldJump (bool holding) {
-
-
-	}
+	public override void HoldJump (bool holding) { }
 
 	public override void Crash () { }
 
@@ -77,15 +84,6 @@ public abstract class VehicleMovement : CharacterMovement {
 
 	// Misc
 	protected override CharacterMovementState GetMovementState () => CharacterMovementState.Idle;
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion
