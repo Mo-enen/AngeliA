@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, IActionTarget {
+public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 
 	// Api
-	public int Team => Const.TEAM_ENVIRONMENT;
 	public override bool AllowBeingPush => true;
 	public override Int2? DriverLocalPosition => Rolling ? new Int2(Width / 2, BarrelSize) : null;
 	public override Int2? DriverLeaveLocalPosition => null;
@@ -30,9 +29,6 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 		Rolling = false;
 		CurrentRollingSpeed = 0;
 		RollingRotation = 0;
-		if (FromWorld) {
-			X += Const.HALF;
-		}
 	}
 
 	public override void Update () {
@@ -75,8 +71,8 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 		}
 	}
 
-	protected override void LateUpdateVehicle () {
-		base.LateUpdateVehicle();
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!Rolling) {
 			// Normal
 			if (Renderer.TryGetSpriteFromGroup(TypeID, 0, out var sprite, false, true)) {
@@ -127,10 +123,6 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver, 
 			CurrentRollingSpeed = (Rect.CenterX() - damage.Sender.Rect.CenterX()).Sign3() * RollSpeed;
 		}
 	}
-
-	bool IActionTarget.Invoke () => false;
-
-	bool IActionTarget.AllowInvoke () => false;
 
 	protected override bool CheckForStartDrive (out Character driver) {
 

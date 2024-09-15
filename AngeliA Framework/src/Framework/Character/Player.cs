@@ -59,8 +59,8 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	public virtual bool ShoesAvailable => true;
 	public virtual bool JewelryAvailable => true;
 	public virtual bool WeaponAvailable => true;
-	public virtual bool AllowPlayerMenuUI => InventoryCurrentAvailable;
-	public virtual bool AllowQuickPlayerMenuUI => InventoryCurrentAvailable;
+	public virtual bool AllowPlayerMenuUI => Game.GlobalFrame > IgnorePlayerMenuFrame && InventoryCurrentAvailable;
+	public virtual bool AllowQuickPlayerMenuUI => Game.GlobalFrame > IgnorePlayerMenuFrame && InventoryCurrentAvailable;
 	int IDamageReceiver.Team => Const.TEAM_PLAYER;
 	public override bool AllowInventory => true;
 	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
@@ -72,6 +72,8 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private int LastGroundedY = 0;
 	private int PrevZ = int.MinValue;
 	private int IgnoreActionFrame = -1;
+	private int IgnorePlayerMenuFrame = -1;
+
 	private PlayerAttackness PlayerAttackness;
 
 	// Saving
@@ -87,6 +89,19 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	#region --- MSG ---
+
+
+	[CheatCode("FillInventory")]
+	internal static void CheatCodeFillInventory () {
+		if (Selecting == null) return;
+		int len = Selecting.GetInventoryCapacity();
+		for (int i = 0; i < len; i++) {
+			int id = Selecting.GetItemIDFromInventory(i);
+			if (id == 0) continue;
+			int maxCount = ItemSystem.GetItemMaxStackCount(id);
+			Inventory.SetItemAt(Selecting.TypeID, i, id, maxCount);
+		}
+	}
 
 
 	[OnGameInitializeLater]
@@ -629,7 +644,6 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
 			Selecting = player;
 			LastPlayerID.Value = player.TypeID;
-			HomeUnitPosition = null;
 			RespawnCpUnitPosition = null;
 		}
 	}
@@ -643,6 +657,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	bool IActionTarget.Invoke () {
+		HomeUnitPosition = new Int3(Selecting.X.ToUnit(), Selecting.Y.ToUnit(), Stage.ViewZ);
 		TaskSystem.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
 		TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 		return true;
@@ -667,6 +682,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	public void IgnoreAction (int duration = 1) => IgnoreActionFrame = Game.GlobalFrame + duration;
+
+
+	public void IgnorePlayerMenu (int duration = 1) => IgnorePlayerMenuFrame = Game.GlobalFrame + duration;
 
 
 	#endregion

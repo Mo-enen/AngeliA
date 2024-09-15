@@ -40,6 +40,7 @@ public abstract class VehicleMovement : CharacterMovement {
 		FlyAvailable.BaseValue = false;
 		ClimbAvailable.BaseValue = false;
 
+		JumpCount.BaseValue = 0;
 		SwimWidth.BaseValue = Const.CEL;
 		MovementWidth.BaseValue = Const.CEL;
 		MovementHeight.BaseValue = Const.CEL;
@@ -70,20 +71,29 @@ public abstract class VehicleMovement : CharacterMovement {
 		VelocityX = 0;
 	}
 
-	public override void Jump () { }
+	public override void Jump () {
+		if (JumpCount > 0) base.Jump();
+	}
 
-	public override void HoldJump (bool holding) { }
+	public override void HoldJump (bool holding) {
+		if (JumpCount > 0) base.HoldJump(holding);
+	}
 
-	public override void Crash () { }
+	public override void Crash () {
+		if (CrashAvailable) base.Crash();
+	}
 
-	public override void Dash () { }
+	public override void Dash () {
+		if (DashAvailable) base.Dash();
+	}
 
-	public override void Pound () { }
+	public override void Pound () {
+		if (PoundAvailable) base.Pound();
+	}
 
-	public override void Rush () { }
-
-	// Misc
-	protected override CharacterMovementState GetMovementState () => CharacterMovementState.Idle;
+	public override void Rush () {
+		if (RushAvailable) base.Rush();
+	}
 
 
 	#endregion

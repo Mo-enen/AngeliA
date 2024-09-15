@@ -277,7 +277,10 @@ public partial class CharacterMovement {
 		if (
 			IntendedRush && RushAvailable && !IsCrashing &&
 			frame > LastRushFrame + RushDuration + RushStiff + RushCooldown &&
-			RushEnvironmentCheck()
+			(RushWhenSquat || !IsSquatting) &&
+			(RushInWater || !InWater) &&
+			(RushInAir || IsGrounded) &&
+			(RushWhenClimb || !IsClimbing)
 		) {
 			IsRushing = true;
 			IsClimbing = false;
@@ -464,7 +467,7 @@ public partial class CharacterMovement {
 			if (IsGrounded || InWater) {
 				CurrentJumpCount = 0;
 				return;
-			} else if (VelocityY < 0 && Target.PerformGroundCheck(Rect.Shift(0, VelocityY * 2), out _)) {
+			} else if (VelocityY < 0 && Target.PerformGroundCheck(Rect.Shift(0, VelocityY), out _)) {
 				CurrentJumpCount = 0;
 				LastGroundingFrame = frame;
 				return;
@@ -1170,13 +1173,6 @@ public partial class CharacterMovement {
 		}
 		return false;
 	}
-
-
-	private bool RushEnvironmentCheck () =>
-		(RushWhenSquat || !IsSquatting) &&
-		(RushInWater || !InWater) &&
-		(RushInAir || IsGrounded) &&
-		(RushWhenClimb || !IsClimbing);
 
 
 	#endregion

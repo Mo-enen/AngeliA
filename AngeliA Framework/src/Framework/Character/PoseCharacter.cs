@@ -102,6 +102,7 @@ public abstract class PoseCharacter : Character {
 	private readonly FrameBasedInt[] PoseAnimationIDs;
 	private readonly FrameBasedInt[] PoseHandheldIDs;
 	private readonly FrameBasedInt[] PoseAttackIDs;
+	private readonly FrameBasedInt ManualPoseAnimationID = new(0);
 
 
 	#endregion
@@ -235,7 +236,13 @@ public abstract class PoseCharacter : Character {
 	}
 
 
-	protected virtual void PerformPoseAnimation () => PoseAnimation.AnimateFromPool(PoseAnimationIDs[(int)AnimationType], this);
+	protected virtual void PerformPoseAnimation () {
+		if (ManualPoseAnimationID != 0) {
+			PoseAnimation.PerformAnimationFromPool(ManualPoseAnimationID, this);
+		} else {
+			PoseAnimation.PerformAnimationFromPool(PoseAnimationIDs[(int)AnimationType], this);
+		}
+	}
 
 
 	protected virtual void RenderEquipmentAndInventory () {
@@ -481,7 +488,7 @@ public abstract class PoseCharacter : Character {
 			case CharacterAnimationType.Dash when EquippingWeaponHeld == WeaponHandheld.Pole:
 			case CharacterAnimationType.Rolling when EquippingWeaponHeld == WeaponHandheld.Bow || EquippingWeaponHeld == WeaponHandheld.Shooting:
 				// Handheld
-				PoseAnimation.AnimateFromPool(PoseHandheldIDs[(int)EquippingWeaponHeld], this);
+				PoseAnimation.PerformAnimationFromPool(PoseHandheldIDs[(int)EquippingWeaponHeld], this);
 				CalculateBodypartGlobalPosition();
 				break;
 			default:
@@ -502,7 +509,7 @@ public abstract class PoseCharacter : Character {
 			if (CurrentAttackSpeedRate == 0 && IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
 			HandGrabScaleL = HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
-			PoseAnimation.AnimateFromPool(PoseAttackIDs[(int)EquippingWeaponType], this);
+			PoseAnimation.PerformAnimationFromPool(PoseAttackIDs[(int)EquippingWeaponType], this);
 			CalculateBodypartGlobalPosition();
 		}
 
@@ -770,6 +777,9 @@ public abstract class PoseCharacter : Character {
 
 
 	public void OverridePoseAttackAnimation (WeaponType type, int id, int duration = 1) => PoseAttackIDs[(int)type].Override(id, duration);
+
+
+	public void ManualPoseAnimate (int id, int duration = 1) => ManualPoseAnimationID.Override(id, duration);
 
 
 	#endregion

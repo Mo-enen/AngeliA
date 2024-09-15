@@ -107,13 +107,20 @@ public abstract class PoseAnimation {
 	public static bool TryGetAttackDefaultID (int characterID, WeaponType type, out int animationID) => AttackDefaultPool[(int)type].TryGetValue(characterID, out animationID);
 
 
-	public static void AnimateFromPool (int id, PoseCharacter character) {
-		bool validHeadPos = true;
+	public static void PerformAnimationFromPool (int id, PoseCharacter character) {
 		if (Pool.TryGetValue(id, out var result)) {
-			result.Animate(character);
-			validHeadPos = result.ValidHeadPosition;
+			PerformAnimation(result, character);
+		} else {
+			// Valid Head Position
+			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
+			Body.Height = Body.Height.GreaterOrEquel(1);
 		}
-		if (validHeadPos) {
+	}
+
+
+	public static void PerformAnimation (PoseAnimation animation, PoseCharacter character) {
+		animation.Animate(character);
+		if (animation.ValidHeadPosition) {
 			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
 			Body.Height = Body.Height.GreaterOrEquel(1);
 		}

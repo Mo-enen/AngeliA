@@ -13,6 +13,8 @@ public static class BuiltInText {
 	public static readonly LanguageCode HINT_ATTACK = ("CtrlHint.Attack", "Attack");
 	public static readonly LanguageCode HINT_USE = ("CtrlHint.Use", "Use");
 	public static readonly LanguageCode HINT_ADJUST = ("CtrlHint.Adjust", "Adjust");
+	public static readonly LanguageCode HINT_DRIVE = ("CtrlHint.Drive", "Drive");
+	public static readonly LanguageCode HINT_STOP_DRIVE = ("CtrlHint.StopDrive", "Stop Driving");
 
 	// UI
 	public static readonly LanguageCode UI_RESET = ("UI.Reset", "Reset");

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMovement {
+public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleMovement {
 
 
 
@@ -11,27 +11,25 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 	#region --- VAR ---
 
 
-	// Const
-	private static readonly LanguageCode HINT_DRIVE = ("CtrlHint.Drive", "Drive");
-	private static readonly LanguageCode HINT_STOP_DRIVE = ("CtrlHint.StopDrive", "Stop Driving");
-
 	// Api
 	public readonly M Movement;
 	public Character Driver { get; private set; } = null;
 	public virtual Int2? DriverLocalPosition => new Int2(Width / 2, 1);
 	public virtual Int2? DriverLeaveLocalPosition => new Int2(Width / 2, Height);
 	public virtual int StartDriveCooldown => 6;
-	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	public override int PhysicalLayer => CurrentPhysicsLayer;
 	public override int AirDragX => Driver != null ? 0 : 5;
 	public override int AirDragY => 0;
 	public override int Gravity => 5;
 	public override bool CarryOtherRigidbodyOnTop => false;
 	public override bool AllowBeingCarryByOtherRigidbody => true;
 	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.SOLID;
-	bool IActionTarget.AllowInvokeOnSquat => true;
+	int IDamageReceiver.Team => CurrentTeam;
 
 	// Data
-	private int LastStartDriveFrame = int.MinValue;
+	private int LastDriveChangedFrame = int.MinValue;
+	private int CurrentTeam = Const.TEAM_ENVIRONMENT;
+	private int CurrentPhysicsLayer = PhysicsLayer.ENVIRONMENT;
 
 
 	#endregion
@@ -50,7 +48,10 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 		Driver = null;
 		OffsetX = -Width / 2;
 		OffsetY = 0;
-		LastStartDriveFrame = int.MinValue;
+		LastDriveChangedFrame = int.MinValue;
+		if (FromWorld) {
+			X += Const.HALF;
+		}
 	}
 
 
@@ -69,60 +70,23 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 			}
 		}
 		Movement.Driver = Driver;
+		CurrentTeam = Driver != null ? 0 : Const.TEAM_ENVIRONMENT;
+		CurrentPhysicsLayer = Driver != null ? PhysicsLayer.CHARACTER : PhysicsLayer.ENVIRONMENT;
 	}
 
 
 	public override void Update () {
 		base.Update();
-		// Update Movement
-		if (Driver == null) {
-			// Idle
-
-
-
-		} else {
+		if (Driver != null) {
 			// Driving
 			TakeDriver();
 			Driver.IgnorePhysics();
-			Driver.Health.MakeInvincible();
 			Driver.OverrideMovement(Movement);
 			if (Driver is Player pDriver) {
 				pDriver.IgnoreAction();
 			}
 		}
 	}
-
-
-	public sealed override void LateUpdate () {
-		base.LateUpdate();
-		// Hint
-		if (Driver != null) {
-			// Driving
-			ControlHintUI.AddHint(Gamekey.Jump, "", 1);
-			ControlHintUI.AddHint(Gamekey.Action, "", 1);
-			ControlHintUI.AddHint(Gamekey.Select, HINT_STOP_DRIVE, 1);
-		} else {
-			// Not Driving
-			if ((this as IActionTarget).IsHighlighted) {
-				ControlHintUI.AddHint(Gamekey.Action, HINT_DRIVE, 1);
-			}
-		}
-		// Rendering
-		int cellStart = Renderer.GetUsedCellCount();
-		LateUpdateVehicle();
-		if (Renderer.GetCells(out var cells, out int count)) {
-			for (int i = cellStart; i < count; i++) {
-				var cell = cells[i];
-				if (Driver == null) {
-					(this as IActionTarget).BlinkIfHighlight(cell);
-				}
-				FrameworkUtil.DrawEnvironmentShadow(cell);
-			}
-		}
-	}
-
-
-	protected virtual void LateUpdateVehicle () { }
 
 
 	protected virtual void TakeDriver () {
@@ -142,15 +106,17 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 
 
 	public virtual void StartDrive (Character driver) {
-		if (Game.GlobalFrame <= LastStartDriveFrame + StartDriveCooldown) return;
+		if (Game.GlobalFrame <= LastDriveChangedFrame + StartDriveCooldown) return;
+		if (driver.Movement != driver.NativeMovement) return;
 		Driver = driver;
 		Driver.IgnorePhysics();
 		TakeDriver();
-		LastStartDriveFrame = Game.GlobalFrame;
+		LastDriveChangedFrame = Game.GlobalFrame;
 	}
 
 
 	public virtual void StopDrive () {
+		if (Driver == null) return;
 		if (DriverLeaveLocalPosition.HasValue) {
 			Movement.Stop();
 			var offste = DriverLeaveLocalPosition.Value;
@@ -158,6 +124,7 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 			Driver.Y = Y + OffsetY + offste.y;
 		}
 		Driver = null;
+		LastDriveChangedFrame = Game.GlobalFrame;
 	}
 
 
@@ -167,33 +134,10 @@ public abstract class Vehicle<M> : Rigidbody, IActionTarget where M : VehicleMov
 	}
 
 
-	protected virtual bool CheckForStopDrive () {
-		if (Driver == null || !Driver.Active) return true;
-		if (Input.GameKeyDown(Gamekey.Select)) {
-			Input.UseGameKey(Gamekey.Select);
-			return true;
-		}
-		return false;
-	}
+	protected virtual bool CheckForStopDrive () => Driver == null || !Driver.Active;
 
 
-	bool IActionTarget.Invoke () {
-		if (Player.Selecting == null || Driver != null) return false;
-		StartDrive(Player.Selecting);
-		return true;
-	}
-
-
-	bool IActionTarget.AllowInvoke () => Driver == null;
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
+	void IDamageReceiver.TakeDamage (Damage damage) { }
 
 
 	#endregion

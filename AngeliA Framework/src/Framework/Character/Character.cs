@@ -527,7 +527,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		LockedAnimationType = type;
 		LockedAnimationTypeFrame = Game.GlobalFrame + duration;
 	}
-
+	
 
 	// Damage
 	public virtual void TakeDamage (Damage damage) {

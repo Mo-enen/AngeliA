@@ -1,0 +1,76 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace AngeliA;
+
+public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovement {
+
+
+	public override int StartDriveCooldown => 42;
+
+
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		// Driving
+		if (Driver != null) {
+			// Override Animation
+			if (Driver is PoseCharacter poseDriver) {
+				OverrideDriverAnimation(poseDriver);
+			}
+			// For Player
+			var player = Player.Selecting;
+			if (Driver == player) {
+				player.IgnorePlayerMenu();
+			}
+		}
+	}
+
+
+	protected override bool CheckForStartDrive (out Character driver) {
+
+		driver = null;
+
+		// Check for New Driver Join
+		int shrinkX = DeltaPositionX.Abs() + 16;
+		var hits = Physics.OverlapAll(
+			PhysicsMask.CHARACTER,
+			Rect.Shrink(shrinkX, shrinkX, 0, 0).EdgeOutside(Direction4.Up, 1),
+			out int count, this
+		);
+		for (int i = 0; i < count; i++) {
+			if (
+				hits[i].Entity is Character characterHit &&
+				characterHit.Y >= Rect.yMax &&
+				characterHit.VelocityY <= VelocityY
+			) {
+				driver = characterHit;
+				break;
+			}
+		}
+
+		return driver != null;
+	}
+
+
+	protected override bool CheckForStopDrive () {
+		if (Driver == null || !Driver.Active) return true;
+		// For Player
+		if (Driver == Player.Selecting && Input.GameKeyDown(Gamekey.Select)) {
+			Input.UseGameKey(Gamekey.Select);
+			Driver.VelocityY = 56;
+			return true;
+		}
+		return false;
+	}
+
+
+	protected virtual void OverrideDriverAnimation (PoseCharacter driver) {
+
+		//driver.ManualPoseAnimate(IDLE_ID);
+
+
+
+	}
+
+
+}
