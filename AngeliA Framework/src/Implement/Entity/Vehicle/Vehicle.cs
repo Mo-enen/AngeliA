@@ -17,6 +17,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 	public virtual Int2? DriverLocalPosition => new Int2(Width / 2, 1);
 	public virtual Int2? DriverLeaveLocalPosition => new Int2(Width / 2, Height);
 	public virtual int StartDriveCooldown => 6;
+	public virtual bool FillPyhsicsForDriver => true;
 	public override int PhysicalLayer => CurrentPhysicsLayer;
 	public override int AirDragX => Driver != null ? 0 : 5;
 	public override int AirDragY => 0;
@@ -55,6 +56,14 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		if (Driver != null && FillPyhsicsForDriver) {
+			Physics.FillEntity(Driver.PhysicalLayer, Driver, true);
+		}
+	}
+
+
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Update for Driver
@@ -70,8 +79,8 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 			}
 		}
 		Movement.Driver = Driver;
-		CurrentTeam = Driver != null ? 0 : Const.TEAM_ENVIRONMENT;
-		CurrentPhysicsLayer = Driver != null ? PhysicsLayer.CHARACTER : PhysicsLayer.ENVIRONMENT;
+		CurrentTeam = Driver == null ? Const.TEAM_ENVIRONMENT : Driver is IDamageReceiver dDriver ? dDriver.Team : 0;
+		CurrentPhysicsLayer = Driver != null ? Driver.PhysicalLayer : PhysicsLayer.ENVIRONMENT;
 	}
 
 

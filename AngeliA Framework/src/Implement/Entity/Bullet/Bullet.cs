@@ -62,7 +62,7 @@ public abstract class Bullet : Entity {
 			var hit = hits[i];
 			// Gate
 			if (hit.Entity is not IDamageReceiver receiver) continue;
-			if (receiver.Team == 0 || (receiver.Team & TargetTeam) != receiver.Team) continue;
+			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 			var fixedDamageType = DamageType & ~receiver.IgnoreDamageType;
 			if (fixedDamageType == Tag.None) continue;
 			if (receiver is Entity e && !e.Active) continue;

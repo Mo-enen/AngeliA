@@ -770,6 +770,9 @@ public abstract class PoseCharacter : Character {
 
 
 	// Animation ID
+	public FrameBasedInt GetPoseAnimationID (CharacterAnimationType type) => PoseAnimationIDs[(int)type];
+
+
 	public void OverridePoseAnimation (CharacterAnimationType type, int id, int duration = 1) => PoseAnimationIDs[(int)type].Override(id, duration);
 
 

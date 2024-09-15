@@ -9,6 +9,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	public override int StartDriveCooldown => 42;
 
 
+	// MSG
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Driving
@@ -65,11 +66,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 
 
 	protected virtual void OverrideDriverAnimation (PoseCharacter driver) {
-
-		//driver.ManualPoseAnimate(IDLE_ID);
-
-
-
+		driver.ManualPoseAnimate(driver.GetPoseAnimationID(CharacterAnimationType.Idle));
 	}
 
 
