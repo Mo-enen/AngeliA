@@ -176,8 +176,8 @@ public partial class Engine {
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
 		var console = ConsoleWindow.Instance;
-		var currentUniverse = CurrentProject.Universe;
-		var currentInfo = currentUniverse.Info;
+		var currentUniverse = CurrentProject?.Universe;
+		var currentInfo = currentUniverse?.Info;
 
 		if (console.RequireCodeAnalysis != 0) {
 			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;

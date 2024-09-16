@@ -25,7 +25,7 @@ public partial class CharacterMovement {
 	public readonly FrameBasedInt WalkDeceleration = new(4);
 
 	// Run
-	public readonly FrameBasedInt WalkToRunAccumulation = new(0);
+	public readonly FrameBasedBool RunAvailable = new(true);
 	public readonly FrameBasedInt RunSpeed = new(32);
 	public readonly FrameBasedInt RunAcceleration = new(3);
 	public readonly FrameBasedInt RunBrakeAcceleration = new(30);
@@ -38,7 +38,7 @@ public partial class CharacterMovement {
 	// Jump
 	public readonly FrameBasedInt JumpSpeed = new(73);
 	public readonly FrameBasedInt JumpCount = new(2);
-	public readonly FrameBasedInt JumpReleaseLoseRate = new(700);
+	public readonly FrameBasedInt JumpReleaseSpeedRate = new(700);
 	public readonly FrameBasedInt JumpRiseGravityRate = new(600);
 	public readonly FrameBasedBool GrowJumpCountWhenFallOffEdge = new(true);
 	public readonly FrameBasedBool FirstJumpWithRoll = new(false);
@@ -95,7 +95,7 @@ public partial class CharacterMovement {
 
 	// Swim
 	public readonly FrameBasedInt SwimWidth = new(200);
-	public readonly FrameBasedInt InWaterSpeedLoseRate = new(500);
+	public readonly FrameBasedInt InWaterSpeedRate = new(500);
 	public readonly FrameBasedInt SwimSpeed = new(42);
 	public readonly FrameBasedInt SwimJumpSpeed = new(128);
 	public readonly FrameBasedInt SwimAcceleration = new(4);

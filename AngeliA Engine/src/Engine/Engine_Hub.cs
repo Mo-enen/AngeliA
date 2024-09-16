@@ -56,6 +56,7 @@ public partial class Engine {
 		foreach (var win in AllWindows) win.Active = false;
 		foreach (var ui in AllGenericUIs) {
 			if (!ui.Active) continue;
+			using var _ = new GUIInteractableScope(true);
 			ui.FirstUpdate();
 			ui.BeforeUpdate();
 			ui.Update();

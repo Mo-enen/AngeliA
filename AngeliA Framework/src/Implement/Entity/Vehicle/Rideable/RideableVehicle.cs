@@ -65,9 +65,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	}
 
 
-	protected virtual void OverrideDriverAnimation (PoseCharacter driver) {
-		driver.ManualPoseAnimate(driver.GetPoseAnimationID(CharacterAnimationType.Idle));
-	}
+	protected virtual void OverrideDriverAnimation (PoseCharacter driver) => driver.ManualPoseAnimate(PoseAnimation_Ride.TYPE_ID);
 
 
 }

@@ -73,7 +73,6 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private int PrevZ = int.MinValue;
 	private int IgnoreActionFrame = -1;
 	private int IgnorePlayerMenuFrame = -1;
-
 	private PlayerAttackness PlayerAttackness;
 
 	// Saving
@@ -180,12 +179,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 					Update_Aiming();
 
 					// Move
-					Movement.Move(Input.DirectionX, Input.DirectionY);
-
-					// Walk when Holding Up
-					if (Input.GameKeyHolding(Gamekey.Up)) {
-						Movement.ClearRunningAccumulate();
-					}
+					Movement.Move(Input.DirectionX, Input.DirectionY, Input.GameKeyHolding(Gamekey.Up));
 
 					// Movement Actions
 					Update_JumpDashPoundRush();

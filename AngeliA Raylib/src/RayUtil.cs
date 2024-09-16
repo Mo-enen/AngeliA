@@ -40,6 +40,17 @@ public static unsafe class RayUtil {
 	public static void SetClipboardText (string text) => Raylib.SetClipboardText(text);
 
 
+	public static void SetBlendFactorsForGeneral () {
+		Rlgl.SetBlendFactorsSeparate(
+			Rlgl.SRC_ALPHA,
+			Rlgl.ONE_MINUS_SRC_ALPHA,
+			Rlgl.ONE,
+			Rlgl.ONE_MINUS_SRC_ALPHA,
+			Rlgl.FUNC_ADD,
+			Rlgl.FUNC_ADD
+		);
+	}
+
 	// Texture
 	public static object GetTextureFromPixels (Color32[] pixels, int width, int height) {
 		var result = GetTextureFromPixelsLogic(pixels, width, height);

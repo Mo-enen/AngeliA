@@ -107,14 +107,7 @@ public partial class RayGame : Game {
 		Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
 
 		// Blend
-		Rlgl.SetBlendFactorsSeparate(
-			Rlgl.SRC_ALPHA,
-			Rlgl.ONE_MINUS_SRC_ALPHA,
-			Rlgl.ONE,
-			Rlgl.ONE_MINUS_SRC_ALPHA,
-			Rlgl.FUNC_ADD,
-			Rlgl.FUNC_ADD
-		);
+		RayUtil.SetBlendFactorsForGeneral();
 
 		// Pipeline
 		InitializeShader();

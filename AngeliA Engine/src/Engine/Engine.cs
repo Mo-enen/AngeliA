@@ -18,7 +18,7 @@ public partial class Engine {
 
 	// Const 
 	private const int NOTIFY_DURATION = 120;
-	private const int WINDOW_BAR_WIDTH_FULL = 160;
+	private const int WINDOW_BAR_WIDTH_FULL = 120;
 	private const int WINDOW_BAR_WIDTH_NORMAL = 42;
 
 	private static readonly SpriteCode UI_ENGINE_BAR = "UI.EngineSideBar";
@@ -291,7 +291,7 @@ public partial class Engine {
 	// Quit
 	[OnGameTryingToQuit]
 	internal static bool OnEngineTryingToQuit () {
-		if (Instance == null) return true;
+		if (Instance == null || Instance.CurrentProject == null) return true;
 		GenericPopupUI.Instance.Active = false;
 		if (Instance.CheckAnyEditorDirty()) {
 			GenericDialogUI.SpawnDialog_Button(
@@ -349,6 +349,7 @@ public partial class Engine {
 		using var _ = new SheetIndexScope(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
 		using var __ = new GUISkinScope(Instance.ThemeSkin);
 
+		Instance.OnGUI_Interactable();
 		Instance.OnGUI_Hint();
 		if (Instance.CurrentProject == null) {
 			Instance.OnGUI_Hub();
@@ -363,6 +364,22 @@ public partial class Engine {
 
 
 	// GUI Window
+	private void OnGUI_Interactable () {
+		bool interactable = Game.GlobalFrame > ProjectEditor.Instance.RequiringPublishFrame + 2;
+		if (interactable) {
+			foreach (var ui in AllGenericUIs) {
+				if (!ui.Active) continue;
+				interactable = false;
+				break;
+			}
+		}
+		if (!interactable) {
+			LastNotInteractableFrame = Game.PauselessFrame;
+		}
+		GUI.Interactable = interactable;
+	}
+
+
 	private void OnGUI_Hint () {
 
 		using var _ = new UILayerScope();
@@ -502,20 +519,6 @@ public partial class Engine {
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.Edge(Direction4.Up, GUI.Unify(42));
 
-		// Interactable
-		bool interactable = Game.GlobalFrame > ProjectEditor.Instance.RequiringPublishFrame + 2;
-		if (interactable) {
-			foreach (var ui in AllGenericUIs) {
-				if (!ui.Active) continue;
-				interactable = false;
-				break;
-			}
-		}
-		if (!interactable) {
-			LastNotInteractableFrame = Game.PauselessFrame;
-		}
-		GUI.Interactable = interactable;
-
 		// UI
 		using (new UILayerScope()) {
 
@@ -592,9 +595,10 @@ public partial class Engine {
 
 				// Label
 				if (FullsizeMenu.Value) {
-					GUI.SmallLabel(
+					GUI.Label(
 						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
-						Language.Get(window.TypeID, window.DefaultName)
+						Language.Get(window.TypeID, window.DefaultName),
+						GUI.Skin.SmallCenterLabel
 					);
 				}
 
@@ -908,6 +912,7 @@ public partial class Engine {
 				BuiltInText.UI_DONT_SAVE, Close,
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
+			GenericDialogUI.SetItemTint(Color32.GREEN_BETTER);
 		} else {
 			Close();
 		}

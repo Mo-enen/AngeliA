@@ -227,7 +227,7 @@ public partial class CharacterNavigation {
 			// Move
 			case NavigationOperateMotion.Move:
 
-				int speed = InWater ? Movement.SwimSpeed * Movement.InWaterSpeedLoseRate / 1000 : Movement.RunSpeed;
+				int speed = InWater ? Movement.SwimSpeed * Movement.InWaterSpeedRate / 1000 : Movement.RunSpeed;
 
 				if (targetX == X) NavMoveDoneX = true;
 				if (targetY == Y) NavMoveDoneY = true;
@@ -361,7 +361,7 @@ public partial class CharacterNavigation {
 
 	private void NavUpdate_Movement_Flying () {
 		int speed = Movement.FlyMoveSpeed;
-		if (InWater) speed = speed * Movement.InWaterSpeedLoseRate / 1000;
+		if (InWater) speed = speed * Movement.InWaterSpeedRate / 1000;
 		var flyAim = NavigationAim;
 		if (Movement.FlyAvailable) {
 			// Can Fly

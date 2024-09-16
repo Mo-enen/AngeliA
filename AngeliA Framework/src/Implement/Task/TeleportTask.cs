@@ -174,7 +174,7 @@ public class TeleportTask : Task {
 
 
 	// API
-	public static TeleportTask TeleportParallax (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 6, 38, false, true);
+	public static TeleportTask TeleportParallax (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 6, 30, false, true);
 	public static TeleportTask TeleportVegnette (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 0, -60, true, false);
 	public static TeleportTask TeleportLogic (int fromX, int fromY, int toX, int toY, int toZ, int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true) {
 		if (TaskSystem.HasTask()) return null;

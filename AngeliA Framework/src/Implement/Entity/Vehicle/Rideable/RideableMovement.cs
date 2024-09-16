@@ -13,6 +13,10 @@ public class RideableMovement : VehicleMovement {
 		DashAvailable.BaseValue = true;
 		RushAvailable.BaseValue = true;
 		JumpCount.BaseValue = 1;
+		DashWithRoll.BaseValue = false;
+		FirstJumpWithRoll.BaseValue = false;
+		SubsequentJumpWithRoll.BaseValue = false;
+		GrowJumpCountWhenFallOffEdge.BaseValue = false;
 	}
-	
+
 }

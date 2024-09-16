@@ -58,8 +58,13 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		if (Driver != null && FillPyhsicsForDriver) {
-			Physics.FillEntity(Driver.PhysicalLayer, Driver, true);
+		if (Driver != null) {
+			if (FillPyhsicsForDriver) {
+				Physics.FillEntity(Driver.PhysicalLayer, Driver, true);
+			}
+			if (IsGrounded) {
+				Driver.MakeGrounded(0, GroundedID);
+			}
 		}
 	}
 
@@ -91,6 +96,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 			TakeDriver();
 			Driver.IgnorePhysics();
 			Driver.OverrideMovement(Movement);
+
 			if (Driver is Player pDriver) {
 				pDriver.IgnoreAction();
 			}
@@ -119,6 +125,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 		if (driver.Movement != driver.NativeMovement) return;
 		Driver = driver;
 		Driver.IgnorePhysics();
+		Movement.FacingRight = Driver.Movement.FacingRight;
 		TakeDriver();
 		LastDriveChangedFrame = Game.GlobalFrame;
 	}

@@ -325,7 +325,6 @@ public partial class PixelEditor {
 			TryApplySpriteInputFields(forceApply: true);
 			RefreshSpriteInputContent();
 		}
-		//RequireTooltip(inputRect, TIP_SPRITE_NAME);
 		rect.SlideRight(padding);
 
 		rect.x += padding;
@@ -1024,7 +1023,11 @@ public partial class PixelEditor {
 
 		// Sort for Name
 		if (!string.IsNullOrEmpty(name)) {
+			var hoveringData = HoveringSpriteStageIndex >= 0 ? StagedSprites[HoveringSpriteStageIndex] : null;
 			StagedSprites.Sort(SpriteSorterByX.Instance);
+			if (hoveringData != null) {
+				HoveringSpriteStageIndex = StagedSprites.IndexOf(hoveringData);
+			}
 		}
 
 		// Final

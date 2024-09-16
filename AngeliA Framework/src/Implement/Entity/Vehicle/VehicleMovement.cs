@@ -64,7 +64,7 @@ public abstract class VehicleMovement : CharacterMovement {
 
 
 	// Movement Logic
-	public override void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
+	public override void Move (Direction3 x, Direction3 y, bool walk = false) => MoveLogic((int)x, (int)y, walk);
 
 	public override void Stop () {
 		MoveLogic(0, 0);

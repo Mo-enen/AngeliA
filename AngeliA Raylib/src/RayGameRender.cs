@@ -466,12 +466,17 @@ public partial class RayGame {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
-		var gizmosRect = new Rectangle(
-			Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x),
-			Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
-			rect.width * screenRenderRect.width / (float)cameraRect.width,
-			rect.height * screenRenderRect.height / (float)cameraRect.height
-		);
+		//var gizmosRect = new Rectangle(
+		//	Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x),
+		//	Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
+		//	rect.width * screenRenderRect.width / (float)cameraRect.width,
+		//	rect.height * screenRenderRect.height / (float)cameraRect.height
+		//);
+		float minX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x);
+		float maxX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.xMax);
+		float minY = Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax);
+		float maxY = Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.y);
+		var gizmosRect = new Rectangle(minX, minY, maxX - minX, maxY - minY);
 		Raylib.DrawRectangleGradientEx(
 			gizmosRect,
 			colorTL.ToRaylib(), colorBL.ToRaylib(), colorBR.ToRaylib(), colorTR.ToRaylib()

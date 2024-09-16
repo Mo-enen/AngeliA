@@ -1,9 +1,9 @@
 ﻿namespace AngeliA;
 
 public class Cell {
-	
+
 	public static readonly Cell EMPTY = new() { Sprite = null, TextSprite = null, SheetIndex = -1, };
-	
+
 	public AngeSprite Sprite;
 	public CharSprite TextSprite;
 	public int SheetIndex;
@@ -67,6 +67,16 @@ public class Cell {
 		var globalOffset = new Float2(globalX - X + globalPoint.x, globalY - Y + globalPoint.y);
 		var result = globalOffset.Rotate(Rotation1000 / -1000f);
 		return result.RoundToInt();
+	}
+	public Int2 GlobalLerp (float x01, float y01) {
+		var result = new Int2(X, Y);
+		var v = new Float2(
+			x01 * Width - Width * PivotX,
+			y01 * Height - Height * PivotY
+		).Rotate(Rotation);
+		result.x += (int)v.x;
+		result.y += (int)v.y;
+		return result;
 	}
 	public void ReturnPivots () {
 		if (Rotation1000 == 0) {

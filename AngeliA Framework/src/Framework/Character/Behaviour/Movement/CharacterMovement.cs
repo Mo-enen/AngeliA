@@ -26,7 +26,6 @@ public partial class CharacterMovement {
 	private const int JUMP_TOLERANCE = 4;
 	private const int JUMP_REQUIRE_TOLERANCE = 6;
 	private const int CLIMB_CORRECT_DELTA = 36;
-	private const int RUN_BREAK_FRAME = 6;
 	private const int SLIDE_JUMP_CANCEL = 2;
 	private const int SLIDE_GROUND_TOLERANCE = 12;
 	private const int GRAB_GROUND_TOLERANCE = 12;
@@ -46,12 +45,12 @@ public partial class CharacterMovement {
 	public int SpeedRateX { get; private set; } = 1000;
 	public bool FacingRight { get; set; } = true;
 	public bool FacingFront { get; private set; } = true;
+	public bool ReadyForRun { get; private set; } = true;
 	public virtual int FinalCharacterHeight => MovementHeight;
 	public virtual bool SpinOnGroundPound => false;
 	public virtual bool SyncFromConfigFile => true;
 
 	// Frame Cache
-	public int RunningAccumulateFrame { get; private set; } = 0;
 	public int LastGroundFrame { get; private set; } = int.MinValue;
 	public int LastGroundingFrame { get; private set; } = int.MinValue;
 	public int LastStartMoveFrame { get; private set; } = int.MinValue;
@@ -76,7 +75,6 @@ public partial class CharacterMovement {
 
 	// Movement State
 	public CharacterMovementState MovementState { get; set; } = CharacterMovementState.Idle;
-	public bool ReadyForRun => !WalkAvailable || RunningAccumulateFrame >= WalkToRunAccumulation;
 	public bool IsGrabFlipping => IsGrabFlippingUp || IsGrabFlippingDown;
 	public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Util.Max(GrabFlipThroughDuration, 1);
 	public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Util.Max(GrabFlipThroughDuration, 1);
@@ -247,7 +245,7 @@ public partial class CharacterMovement {
 			IsRushing = false;
 			if (InWater) {
 				// In Water
-				VelocityY = VelocityY * InWaterSpeedLoseRate / 1000;
+				VelocityY = VelocityY * InWaterSpeedRate / 1000;
 			} else {
 				// Out Water
 				if (VelocityY > 0) VelocityY = JumpSpeed;
@@ -582,7 +580,7 @@ public partial class CharacterMovement {
 		if (movementAllowJump && PrevHoldingJump && !HoldingJump) {
 			// Lose Speed if Raising
 			if (!IsGrounded && CurrentJumpCount <= JumpCount && VelocityY > 0) {
-				VelocityY = VelocityY * JumpReleaseLoseRate / 1000;
+				VelocityY = VelocityY * JumpReleaseSpeedRate / 1000;
 			}
 		}
 	}
@@ -894,7 +892,7 @@ public partial class CharacterMovement {
 
 
 	// Movement Logic
-	public virtual void Move (Direction3 x, Direction3 y) => MoveLogic((int)x, (int)y);
+	public virtual void Move (Direction3 x, Direction3 y, bool walk = false) => MoveLogic((int)x, (int)y, walk);
 
 
 	public virtual void Stop () {
@@ -928,9 +926,6 @@ public partial class CharacterMovement {
 		LockedFacingFrame = Game.GlobalFrame + duration;
 		LockedFacingRight = facingRight;
 	}
-
-
-	public void ClearRunningAccumulate () => RunningAccumulateFrame = -1;
 
 
 	public void SetSpeedRate (int newRate, int duration = 1) {
@@ -971,13 +966,12 @@ public partial class CharacterMovement {
 
 
 	// Move
-	protected void MoveLogic (int x, int y) {
+	protected void MoveLogic (int x, int y, bool walk = false) {
 		if (IntendedX != 0 && x == 0) LastEndMoveFrame = Game.GlobalFrame;
 		if (IntendedX == 0 && x != 0) LastStartMoveFrame = Game.GlobalFrame;
-		if (x != 0) RunningAccumulateFrame++;
-		if (x == 0 && Game.GlobalFrame > LastEndMoveFrame + RUN_BREAK_FRAME) RunningAccumulateFrame = 0;
 		IntendedX = x;
 		IntendedY = y;
+		ReadyForRun = !walk;
 		if (x != 0 || y != 0) {
 			LastMoveDirection = new(IntendedX, IntendedY);
 		}

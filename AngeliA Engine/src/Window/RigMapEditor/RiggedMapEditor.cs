@@ -45,7 +45,7 @@ public partial class RiggedMapEditor : WindowUI {
 
 	// Api
 	public static RiggedMapEditor Instance { get; private set; }
-	public override string DefaultName => "Map Editor";
+	public override string DefaultName => "Map";
 	public bool DrawCollider { get; private set; } = false;
 	public bool EntityClickerOn { get; private set; } = false;
 	public IRect PanelRect { get; private set; }

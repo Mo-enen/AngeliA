@@ -81,6 +81,8 @@ public abstract class Slope : EnvironmentEntity {
 
 	private void FixPosition (Rigidbody target, int distance) {
 		if (DirectionVertical == Direction2.Up) {
+			// ◿ ◺
+			if (target.VelocityY > 0) return;
 			// Fix Pos
 			target.MakeGrounded(4);
 			target.PerformMove(
@@ -107,6 +109,7 @@ public abstract class Slope : EnvironmentEntity {
 				}
 			}
 		} else {
+			// ◹ ◸
 			// Down
 			// Fix Pos
 			target.PerformMove(DirectionHorizontal == Direction2.Left ? -distance : distance, 0);
