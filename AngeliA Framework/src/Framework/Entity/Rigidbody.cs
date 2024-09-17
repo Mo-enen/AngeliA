@@ -268,6 +268,9 @@ public abstract class Rigidbody : Entity {
 	public void IgnorePhysics (int duration = 1) => IgnorePhysicsFrame = Game.GlobalFrame + duration;
 
 
+	public void CancelIgnorePhysics () => IgnorePhysicsFrame = -1;
+
+
 	public virtual void Push (int speedX) => PerformMove(speedX, 0);
 
 

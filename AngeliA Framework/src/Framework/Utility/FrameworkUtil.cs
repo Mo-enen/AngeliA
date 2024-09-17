@@ -139,7 +139,10 @@ public static class FrameworkUtil {
 			cellIndexStart = Renderer.GetUsedCellCount();
 			int oldAniFrame = character.CurrentAnimationFrame;
 			character.CurrentAnimationFrame = animationFrame;
+			bool oldActive = character.Active;
+			character.Active = true;
 			character.LateUpdate();
+			character.Active = oldActive;
 			character.CurrentAnimationFrame = oldAniFrame;
 			cellIndexEnd = Renderer.GetUsedCellCount();
 		}

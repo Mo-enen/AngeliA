@@ -26,6 +26,8 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 	public override bool AllowBeingCarryByOtherRigidbody => true;
 	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.SOLID;
 	int IDamageReceiver.Team => CurrentTeam;
+	public delegate void StepEventHandler (int x, int y, int groundedID);
+	public static event StepEventHandler OnStep;
 
 	// Data
 	private int LastDriveChangedFrame = int.MinValue;
@@ -136,8 +138,10 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 		if (DriverLeaveLocalPosition.HasValue) {
 			Movement.Stop();
 			var offste = DriverLeaveLocalPosition.Value;
-			Driver.X = X + OffsetX + offste.x;
-			Driver.Y = Y + OffsetY + offste.y;
+			Driver.PerformMove(
+				X + OffsetX + offste.x - Driver.X,
+				Y + OffsetY + offste.y - Driver.Y
+			);
 		}
 		Driver = null;
 		LastDriveChangedFrame = Game.GlobalFrame;
@@ -154,6 +158,9 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 
 
 	void IDamageReceiver.TakeDamage (Damage damage) { }
+
+
+	protected static void InvokeOnStep (int x, int y, int groundedID) => Vehicle<VehicleMovement>.OnStep?.Invoke(x, y, groundedID);
 
 
 	#endregion

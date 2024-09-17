@@ -59,8 +59,10 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		if (Driver == Player.Selecting && Input.GameKeyDown(Gamekey.Select)) {
 			Input.UseGameKey(Gamekey.Select);
 			Driver.VelocityY = 56;
+			Driver.CancelIgnorePhysics();
 			return true;
 		}
+		ControlHintUI.AddHint(Gamekey.Select, BuiltInText.HINT_STOP_DRIVE);
 		return false;
 	}
 

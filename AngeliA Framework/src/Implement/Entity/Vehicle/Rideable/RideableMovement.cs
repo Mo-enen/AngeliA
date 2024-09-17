@@ -8,10 +8,6 @@ public class RideableMovement : VehicleMovement {
 	protected override void InitializeMeta () {
 		base.InitializeMeta();
 		WalkAvailable.BaseValue = true;
-		SquatAvailable.BaseValue = true;
-		PoundAvailable.BaseValue = true;
-		DashAvailable.BaseValue = true;
-		RushAvailable.BaseValue = true;
 		JumpCount.BaseValue = 1;
 		DashWithRoll.BaseValue = false;
 		FirstJumpWithRoll.BaseValue = false;

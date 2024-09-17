@@ -225,6 +225,10 @@ public static class Stage {
 	}
 
 
+	[OnGameQuitting]
+	internal static void OnGameQuitting () => DespawnAllNonUiEntities(refreshImmediately: true);
+
+
 	[OnGameUpdate(-4096)]
 	internal static void UpdateView () {
 
@@ -629,7 +633,7 @@ public static class Stage {
 
 
 	// Stage Workflow
-	public static void DespawnAllNonUiEntities () {
+	public static void DespawnAllNonUiEntities (bool refreshImmediately = false) {
 		if (!Enable) return;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 			if (layer == EntityLayer.UI) continue;
@@ -637,6 +641,9 @@ public static class Stage {
 			int count = EntityCounts[layer];
 			for (int i = 0; i < count; i++) {
 				entities[i].Active = false;
+			}
+			if (refreshImmediately) {
+				RefreshStagedEntities(layer);
 			}
 		}
 	}

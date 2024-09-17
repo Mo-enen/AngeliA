@@ -9,6 +9,7 @@ public class SummonNavigation : CharacterNavigation {
 	private const int AIM_REFRESH_FREQUENCY = 60;
 	public override bool NavigationEnable => TargetCharacter.CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 	public override bool ClampInSpawnRect => Owner == Player.Selecting;
+	public bool FollowOwner { get; set; } = true;
 	public Entity Owner { get; set; }
 	public SummonNavigation (Character character) : base(character) { }
 	private bool RequireAimRefresh = true;
@@ -16,7 +17,7 @@ public class SummonNavigation : CharacterNavigation {
 
 	protected override Int2? GetNavigationAim (out bool grounded) {
 
-		if (Owner == null || !Owner.Active) return base.GetNavigationAim(out grounded);
+		if (Owner == null || !Owner.Active || !FollowOwner) return base.GetNavigationAim(out grounded);
 		grounded = false;
 
 		// Scan Frequency Gate

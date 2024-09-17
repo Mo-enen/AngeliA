@@ -43,6 +43,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		Owner = null;
 		Navigation.NavigationState = CharacterNavigationState.Operation;
 		SummonNavigation.Refresh();
+		SummonNavigation.FollowOwner = true;
 		OriginItemID = 0;
 		Movement.PushAvailable.BaseValue = false;
 	}
@@ -80,12 +81,16 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		// when Z Changed
 		if (PrevZ != Stage.ViewZ) {
 			PrevZ = Stage.ViewZ;
-			if (CharacterState != CharacterState.Sleep) {
-				X = Owner.X;
-				Y = Owner.Y;
-				Navigation.ResetNavigation();
-				Navigation.NavigationState = CharacterNavigationState.Operation;
-				SummonNavigation.Refresh();
+			if (SummonNavigation.FollowOwner) {
+				if (CharacterState != CharacterState.Sleep) {
+					X = Owner.X;
+					Y = Owner.Y;
+					Navigation.ResetNavigation();
+					Navigation.NavigationState = CharacterNavigationState.Operation;
+					SummonNavigation.Refresh();
+				}
+			} else {
+				Active = false;
 			}
 		}
 

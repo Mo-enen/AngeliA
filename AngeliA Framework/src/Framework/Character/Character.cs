@@ -33,8 +33,9 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	// Api
 	public delegate void CharacterEventHandler (Character character);
+	public delegate void StepEventHandler (int x, int y, int groundedID);
 	public static event CharacterEventHandler OnSleeping;
-	public static event CharacterEventHandler OnFootStepped;
+	public static event StepEventHandler OnFootStepped;
 	public static event CharacterEventHandler OnJump;
 	public static event CharacterEventHandler OnFly;
 	public static event CharacterEventHandler OnSlideStepped;
@@ -152,6 +153,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		VelocityY = 0;
 		MovementOverride = null;
 		OverridingMovementFrame = int.MinValue;
+		IgnoreInventoryFrame = int.MinValue;
 	}
 
 
@@ -353,6 +355,8 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	private void FrameUpdate_RenderCharacter () {
 
+		if (!Active) return;
+
 		bool blinking = Health.IsInvincible && !Health.TakingDamage && (Game.GlobalFrame - Health.InvincibleEndFrame).UMod(8) < 4;
 		if (blinking) return;
 
@@ -408,28 +412,30 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 		if (CharacterState == CharacterState.GamePlay) {
 
-			// Teleport Event
-			if (
-				TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1
-			) OnTeleport?.Invoke(this);
-
-			// Step
-			if (IsGrounded) {
-				if (
-					(Movement.LastStartRunFrame >= 0 && (Game.GlobalFrame - Movement.LastStartRunFrame) % 20 == 19) || // Run
-					(Movement.IsDashing && (Game.GlobalFrame - Movement.LastDashFrame) % 8 == 0) || // Dash
-					(Movement.IsRushing && (Game.GlobalFrame - Movement.LastRushFrame) % 3 == 0) // Rush
-				) {
-					OnFootStepped?.Invoke(this);
-				}
-			}
-
 			// Jump Fly Crash Slide Bounce
 			if (Game.GlobalFrame % 10 == 0 && Attackness.IsChargingAttack) Bounce();
-			if (Movement.IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(this);
-			if (Game.GlobalFrame == Movement.LastJumpFrame) OnJump?.Invoke(this);
-			if (Game.GlobalFrame == Movement.LastFlyFrame) OnFly?.Invoke(this);
-			if (Game.GlobalFrame == Movement.LastCrashFrame) OnCrash?.Invoke(this);
+
+			// Events
+			if (Movement.Target is Character targetCharacter) {
+				// Teleport
+				if (
+					TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1
+				) OnTeleport?.Invoke(targetCharacter);
+				// Step
+				if (IsGrounded) {
+					if (
+						(Movement.LastStartRunFrame >= 0 && (Game.GlobalFrame - Movement.LastStartRunFrame) % 20 == 19) || // Run
+						(Movement.IsDashing && (Game.GlobalFrame - Movement.LastDashFrame) % 8 == 0) || // Dash
+						(Movement.IsRushing && (Game.GlobalFrame - Movement.LastRushFrame) % 3 == 0) // Rush
+					) {
+						OnFootStepped?.Invoke(targetCharacter.X, targetCharacter.Y, targetCharacter.GroundedID);
+					}
+				}
+				if (Movement.IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(targetCharacter);
+				if (Game.GlobalFrame == Movement.LastJumpFrame) OnJump?.Invoke(targetCharacter);
+				if (Game.GlobalFrame == Movement.LastFlyFrame) OnFly?.Invoke(targetCharacter);
+				if (Game.GlobalFrame == Movement.LastCrashFrame) OnCrash?.Invoke(targetCharacter);
+			}
 		}
 
 		// Sleep
@@ -527,7 +533,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		LockedAnimationType = type;
 		LockedAnimationTypeFrame = Game.GlobalFrame + duration;
 	}
-	
+
 
 	// Damage
 	public virtual void TakeDamage (Damage damage) {

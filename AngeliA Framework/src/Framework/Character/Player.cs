@@ -74,6 +74,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private int IgnoreActionFrame = -1;
 	private int IgnorePlayerMenuFrame = -1;
 	private PlayerAttackness PlayerAttackness;
+	private int IgnoreAttackFrame = int.MinValue;
 
 	// Saving
 	private static readonly SavingInt LastPlayerID = new("Player.LastPlayerID", 0, SavingLocation.Slot);
@@ -359,7 +360,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 	private void Update_Attack () {
 
-		if (LockingInput) return;
+		if (LockingInput || Game.GlobalFrame <= IgnoreAttackFrame) return;
 
 		// Try Perform Attack
 		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
@@ -679,6 +680,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	public void IgnorePlayerMenu (int duration = 1) => IgnorePlayerMenuFrame = Game.GlobalFrame + duration;
+
+
+	public void IgnoreAttack (int duration = 1) => IgnoreAttackFrame = Game.GlobalFrame + duration;
 
 
 	#endregion
