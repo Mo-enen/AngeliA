@@ -52,7 +52,7 @@ public abstract class Rigidbody : Entity {
 	private int IgnoreGravityFrame = int.MinValue;
 	private int IgnorePhysicsFrame = -1;
 	private int PrevPositionUpdateFrame = -1;
-
+	
 
 	#endregion
 

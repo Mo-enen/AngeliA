@@ -6,7 +6,6 @@ namespace AngeliA;
 public class EmptyMovableBullet : MovableBullet { }
 
 
-[EntityAttribute.Capacity(8, 0)]
 public abstract class MovableBullet : Bullet {
 
 	// Api
@@ -24,8 +23,8 @@ public abstract class MovableBullet : Bullet {
 	public virtual int WaterSpeedRate => 200;
 	public virtual int MaxRange => 46339;
 	protected override int Duration => 600;
-	protected override bool DestroyOnHitEnvironment => true;
-	protected override bool DestroyOnHitReceiver => true;
+	protected override int EnvironmentHitCount => 1;
+	protected override int ReceiverHitCount => 1;
 	public int CurrentRotation { get; set; }
 	public Int2 Velocity { get; set; }
 	public bool InWater { get; private set; } = false;
@@ -121,11 +120,7 @@ public abstract class MovableBullet : Bullet {
 				}
 			}
 			// Collide with Oneway
-			if (collide) {
-				if (DestroyOnHitEnvironment) {
-					Active = false;
-					BeforeDespawn(null);
-				}
+			if (collide && PerformHitEnvironment()) {
 				break;
 			}
 		}

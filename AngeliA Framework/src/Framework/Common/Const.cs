@@ -25,6 +25,7 @@ public static class Const {
 	public const int TEAM_PLAYER = 0b100;
 	public const int TEAM_ENEMY = 0b1000;
 	public const int TEAM_ALL = 0b1111;
+	public const int TEAM_COUNT = 4;
 
 	// Rendering
 	public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };

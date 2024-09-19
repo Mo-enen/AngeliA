@@ -344,13 +344,14 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		// Try Perform Action
 		if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
 			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE, int.MinValue + 1);
-			if (Input.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI && TargetActionEntity != null) {
+			if (Input.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
 				if (TargetActionEntity.Invoke()) {
 					Input.UseGameKey(Gamekey.Action);
 				}
 			}
 		}
 
+		// Lock Input from Highlight Target
 		if (TargetActionEntity != null && TargetActionEntity.LockInput) {
 			LockInput(1);
 		}

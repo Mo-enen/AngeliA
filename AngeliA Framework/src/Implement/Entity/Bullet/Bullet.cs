@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.Capacity(128)]
+[EntityAttribute.Capacity(256)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDestroyOutOfRange]
@@ -18,13 +18,16 @@ public abstract class Bullet : Entity {
 	protected virtual Tag DamageType => Tag.PhysicalDamage;
 	protected virtual int SpawnWidth => Const.CEL;
 	protected virtual int SpawnHeight => Const.CEL;
-	protected virtual bool DestroyOnHitEnvironment => false;
-	protected virtual bool DestroyOnHitReceiver => false;
+	protected virtual int EnvironmentHitCount => int.MaxValue;
+	protected virtual int ReceiverHitCount => int.MaxValue;
 	protected virtual bool RoundHitCheck => false;
 	public Entity Sender { get; set; } = null;
 	public int AttackIndex { get; set; } = 0;
 	public bool AttackCharged { get; set; } = false;
-	public int TargetTeam { get; set; } = Const.TEAM_ALL;
+
+	// Data
+	private int CurrentEnvironmentHitCount;
+	private int CurrentReceiverHitCount;
 
 	// MSG
 	public override void OnActivated () {
@@ -32,6 +35,8 @@ public abstract class Bullet : Entity {
 		Width = SpawnWidth;
 		Height = SpawnHeight;
 		Sender = null;
+		CurrentEnvironmentHitCount = EnvironmentHitCount;
+		CurrentReceiverHitCount = ReceiverHitCount;
 	}
 
 	public override void BeforeUpdate () {
@@ -58,11 +63,12 @@ public abstract class Bullet : Entity {
 		var hits = Physics.OverlapAll(
 			ReceiverMask, rect, out int count, Sender, OperationMode.ColliderAndTrigger
 		);
+		int targetTeam = Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			// Gate
 			if (hit.Entity is not IDamageReceiver receiver) continue;
-			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
+			if ((receiver.Team & targetTeam) != receiver.Team) continue;
 			var fixedDamageType = DamageType & ~receiver.IgnoreDamageType;
 			if (fixedDamageType == Tag.None) continue;
 			if (receiver is Entity e && !e.Active) continue;
@@ -74,24 +80,35 @@ public abstract class Bullet : Entity {
 				if (dis > rad + hitRad) continue;
 			}
 			// Perform Damage
-			receiver.TakeDamage(new Damage(Damage, Sender, this, fixedDamageType));
-			// Fire Logic
-			if (fixedDamageType.HasAll(Tag.FireDamage)) {
-				Fire.SpreadFire(CommonFire.TYPE_ID, Rect.Expand(Const.CEL));
-			}
+			PerformDamage(receiver, fixedDamageType);
 			// Destroy Check
-			if (DestroyOnHitReceiver) {
-				Active = false;
-				requireSelfDestroy = true;
-				BeforeDespawn(receiver);
-			}
+			requireSelfDestroy = PerformHitReceiver(receiver) || requireSelfDestroy;
 		}
 		return requireSelfDestroy;
 	}
 
 	/// <returns>True if the bullet need to self destroy</returns>
 	protected virtual bool EnvironmentHitCheck () {
-		if (DestroyOnHitEnvironment && Physics.Overlap(EnvironmentMask, Rect, Sender)) {
+		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
+			return PerformHitEnvironment();
+		}
+		return false;
+	}
+
+	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
+
+	protected virtual void PerformDamage (IDamageReceiver receiver, Tag damageType) {
+		// Perform Damage
+		receiver.TakeDamage(new Damage(Damage, Sender, this, damageType));
+		// Fire Logic
+		if (damageType.HasAll(Tag.FireDamage)) {
+			Fire.SpreadFire(CommonFire.TYPE_ID, Rect.Expand(Const.CEL));
+		}
+	}
+
+	protected bool PerformHitEnvironment () {
+		CurrentEnvironmentHitCount--;
+		if (CurrentEnvironmentHitCount <= 0) {
 			Active = false;
 			BeforeDespawn(null);
 			switch (DamageType) {
@@ -104,18 +121,15 @@ public abstract class Bullet : Entity {
 		return false;
 	}
 
-	public bool GroundCheck (out Color32 groundTint) {
-		groundTint = Color32.WHITE;
-		bool grounded =
-			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
-			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, Tag.OnewayUp);
-		if (grounded && Renderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
-			groundTint = groundSprite.SummaryTint;
+	protected bool PerformHitReceiver (IDamageReceiver receiver) {
+		CurrentReceiverHitCount--;
+		if (CurrentReceiverHitCount <= 0) {
+			Active = false;
+			BeforeDespawn(receiver);
+			return true;
 		}
-		return grounded;
+		return false;
 	}
-
-	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
 
 	protected static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale, int z = int.MaxValue - 16) {
 		if (!Renderer.TryGetSprite(artworkID, out var sprite)) return;
@@ -146,6 +160,17 @@ public abstract class Bullet : Entity {
 				z
 			);
 		}
+	}
+
+	public bool GroundCheck (out Color32 groundTint) {
+		groundTint = Color32.WHITE;
+		bool grounded =
+			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
+			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, Tag.OnewayUp);
+		if (grounded && Renderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
+			groundTint = groundSprite.SummaryTint;
+		}
+		return grounded;
 	}
 
 }

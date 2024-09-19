@@ -1121,7 +1121,8 @@ public class PlayerMenuUI : EntityUI {
 
 	private void ThrowTakingToGround () {
 		if (TakingID == 0 || TakingCount == 0) return;
-		ItemSystem.GiveItemToTarget(Player.Selecting, TakingID, TakingCount);
+		var player = Player.Selecting;
+		ItemSystem.SpawnItem(TakingID, player.X - Const.CEL, player.Y, TakingCount, jump: false);
 		TakingID = 0;
 		TakingCount = 0;
 	}

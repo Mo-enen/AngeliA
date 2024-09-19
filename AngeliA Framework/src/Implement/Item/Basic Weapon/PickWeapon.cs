@@ -19,6 +19,8 @@ public abstract class PickWeapon : Weapon {
 	public virtual bool AllowPickBackgroundBlock => true;
 	public virtual bool AllowPickBlockEntity => true;
 	public virtual bool DropItemAfterPicked => true;
+	public virtual bool UseMouseToPick => false;
+	public virtual int MouseRange => 6;
 	public override bool UseStackAsUsage => true;
 	public override int MaxStackCount => 4096;
 
@@ -33,19 +35,32 @@ public abstract class PickWeapon : Weapon {
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
 			WorldSquad.DontSaveChangesToFile
-		) goto _BASE_;
+		) {
+			base.PoseAnimationUpdate_FromEquipment(holder);
+			return;
+		}
 
-		// Movement Override
+		// Override
 		if (!pHolder.IsInsideGround) {
 			pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
 			pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 		}
+		if (pHolder is Player plHolder) {
+			plHolder.IgnoreAction(1);
+		}
 
 		// Get Target Pos
-		GetTargetUnitPosition(pHolder, out int targetUnitX, out int targetUnitY, out bool hasTraget);
+		int targetUnitX, targetUnitY;
+		bool hasTraget, inRange = true;
+		if (UseMouseToPick && Game.IsMouseAvailable) {
+			Cursor.RequireCursor();
+			hasTraget = GetTargetUnitPositionFromMouse(pHolder, out targetUnitX, out targetUnitY, out inRange);
+		} else {
+			hasTraget = GetTargetUnitPositionFromKey(pHolder, out targetUnitX, out targetUnitY);
+		}
 
 		// Target Block Highlight
-		if (!PlayerMenuUI.ShowingUI) {
+		if (inRange && !PlayerMenuUI.ShowingUI) {
 			DrawPickTargetHighlight(targetUnitX, targetUnitY, hasTraget);
 		}
 
@@ -65,13 +80,13 @@ public abstract class PickWeapon : Weapon {
 		}
 
 		// Base
-		_BASE_:;
 		base.PoseAnimationUpdate_FromEquipment(holder);
 
 	}
 
 
 	protected virtual void DrawPickTargetHighlight (int unitX, int unitY, bool hasTarget) {
+		using var _ = new UILayerScope();
 		int border = GUI.Unify(2);
 		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_HOLLOW_16,
@@ -86,7 +101,35 @@ public abstract class PickWeapon : Weapon {
 
 
 	// LGC
-	protected virtual void GetTargetUnitPosition (Character pHolder, out int targetUnitX, out int targetUnitY, out bool hasTraget) {
+	protected virtual bool GetTargetUnitPositionFromMouse (Character holder, out int targetUnitX, out int targetUnitY, out bool inRange) {
+
+		var mouseUnitPos = Input.MouseGlobalPosition.ToUnit();
+		targetUnitX = mouseUnitPos.x;
+		targetUnitY = mouseUnitPos.y;
+
+		// Range Check
+		int holderUnitX = holder.Rect.CenterX().ToUnit();
+		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
+		if (
+			!targetUnitX.InRange(holderUnitX - MouseRange, holderUnitX + MouseRange) ||
+			!targetUnitY.InRange(holderUnitY - MouseRange, holderUnitY + MouseRange)
+		) {
+			inRange = false;
+			return false;
+		}
+
+		// Has Pickable Block
+		inRange = true;
+		return FrameworkUtil.HasPickableBlockAt(
+			targetUnitX, targetUnitY,
+			allowPickBlockEntity: AllowPickBlockEntity,
+			allowPickLevelBlock: AllowPickLevelBlock,
+			allowPickBackgroundBlock: AllowPickBackgroundBlock
+		);
+	}
+
+
+	protected virtual bool GetTargetUnitPositionFromKey (Character pHolder, out int targetUnitX, out int targetUnitY) {
 
 		var aim = pHolder.Attackness.AimingDirection;
 		var aimNormal = aim.Normal();
@@ -94,7 +137,7 @@ public abstract class PickWeapon : Weapon {
 		int pointY = pHolder.Rect.yMax - 16;
 		targetUnitX = pointX.ToUnit() + aimNormal.x;
 		targetUnitY = pointY.ToUnit() + aimNormal.y;
-		hasTraget = FrameworkUtil.HasPickableBlockAt(
+		bool hasTraget = FrameworkUtil.HasPickableBlockAt(
 			targetUnitX, targetUnitY,
 			allowPickBlockEntity: AllowPickBlockEntity,
 			allowPickLevelBlock: AllowPickLevelBlock,
@@ -125,6 +168,8 @@ public abstract class PickWeapon : Weapon {
 				);
 			}
 		}
+
+		return hasTraget;
 
 	}
 

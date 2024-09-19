@@ -14,8 +14,8 @@ public class MeleeBullet : Bullet {
 	protected virtual bool RenderBullet => false;
 	protected sealed override int SpawnWidth => _SpawnWidth;
 	protected sealed override int SpawnHeight => _SpawnHeight;
-	protected sealed override bool DestroyOnHitEnvironment => false;
-	protected sealed override bool DestroyOnHitReceiver => false;
+	protected sealed override int EnvironmentHitCount => int.MaxValue;
+	protected sealed override int ReceiverHitCount => int.MaxValue;
 	public virtual int SmokeParticleID => 0;
 
 	// Data

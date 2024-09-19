@@ -9,6 +9,7 @@ public sealed class BlockBuilder : Weapon {
 
 
 	// VAR
+	const int MOUSE_RANGE = 6;
 	public int BlockID { get; init; }
 	public BlockType BlockType { get; init; }
 	public override WeaponType WeaponType => WeaponType.Block;
@@ -41,30 +42,46 @@ public sealed class BlockBuilder : Weapon {
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
 			WorldSquad.DontSaveChangesToFile
-		) goto _BASE_;
-
-		// Movement Override
-		if (!pHolder.IsInsideGround) {
-			pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
-			pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
+		) {
+			base.PoseAnimationUpdate_FromEquipment(holder);
+			return;
 		}
 
-		// Get Target Pos
-		GetTargetUnitPos(pHolder, out int targetUnitX, out int targetUnitY, out bool isTargetEmpty);
-
-		// Target Block Highlight
-		if (!PlayerMenuUI.ShowingUI) {
-			DrawTargetHighlight(targetUnitX, targetUnitY, isTargetEmpty);
+		if (pHolder is Player plHolder) {
+			int targetUnitX, targetUnitY;
+			bool available, inRange = true;
+			// For Player
+			plHolder.IgnoreAction(1);
+			// Get Target Pos
+			if (Game.IsMouseAvailable) {
+				Cursor.RequireCursor();
+				available = GetTargetUnitPositionFromMouse(pHolder, out targetUnitX, out targetUnitY, out inRange);
+			} else {
+				if (!pHolder.IsInsideGround) {
+					pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
+					pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
+				}
+				available = GetTargetUnitPosFromKey(pHolder, out targetUnitX, out targetUnitY);
+			}
+			// Target Block Highlight
+			if (inRange && !PlayerMenuUI.ShowingUI) {
+				DrawTargetHighlight(targetUnitX, targetUnitY, available);
+			}
+			// Put Block
+			if (available && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
+				FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
+			}
+		} else {
+			// For NPC
+			if (
+				Game.GlobalFrame == pHolder.Attackness.LastAttackFrame &&
+				GetTargetUnitPosFromAI(pHolder, out int targetUnitX, out int targetUnitY)
+			) {
+				// Put Block
+				FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
+			}
 		}
 
-		// Put Block
-		if (isTargetEmpty && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
-			FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
-		}
-
-		// Base
-		_BASE_:;
-		base.PoseAnimationUpdate_FromEquipment(holder);
 	}
 
 
@@ -97,7 +114,7 @@ public sealed class BlockBuilder : Weapon {
 	}
 
 
-	private bool IsEmptyAt (int unitX, int unitY) {
+	private bool IsBlockEmptyAt (int unitX, int unitY) {
 		switch (BlockType) {
 			case BlockType.Entity:
 				// Check for Block Entity
@@ -124,46 +141,96 @@ public sealed class BlockBuilder : Weapon {
 	}
 
 
-	private void GetTargetUnitPos (Character pHolder, out int targetUnitX, out int targetUnitY, out bool isTargetEmpty) {
+	private bool GetTargetUnitPositionFromMouse (Character holder, out int targetUnitX, out int targetUnitY, out bool inRange) {
 
-		var aim = pHolder.Attackness.AimingDirection;
+		var mouseUnitPos = Input.MouseGlobalPosition.ToUnit();
+		targetUnitX = mouseUnitPos.x;
+		targetUnitY = mouseUnitPos.y;
+
+		// Range Check
+		int holderUnitX = holder.Rect.CenterX().ToUnit();
+		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
+		if (
+			!targetUnitX.InRange(holderUnitX - MOUSE_RANGE, holderUnitX + MOUSE_RANGE) ||
+			!targetUnitY.InRange(holderUnitY - MOUSE_RANGE, holderUnitY + MOUSE_RANGE)
+		) {
+			inRange = false;
+			return false;
+		}
+		inRange = true;
+
+		// Overlap with Holder Check
+		var mouseRect = new IRect(targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Const.CEL, Const.CEL);
+		if (holder.Rect.Overlaps(mouseRect)) {
+			return false;
+		}
+
+		// Overlap with Entity Check
+		if (
+			BlockType == BlockType.Entity &&
+			Physics.Overlap(PhysicsMask.ENTITY, mouseRect, null, OperationMode.ColliderAndTrigger
+		)) {
+			return false;
+		}
+
+		// Block Empty Check
+		return IsBlockEmptyAt(targetUnitX, targetUnitY);
+
+	}
+
+
+	private bool GetTargetUnitPosFromKey (Character holder, out int targetUnitX, out int targetUnitY) {
+
+		bool result;
+		var aim = holder.Attackness.AimingDirection;
 		var aimNormal = aim.Normal();
-		if (!pHolder.Movement.IsClimbing) {
+		if (!holder.Movement.IsClimbing) {
 			// Normal
-			int pointX = pHolder.Rect.CenterX();
-			int pointY = aim.IsTop() ? pHolder.Rect.yMax - Const.HALF / 2 : pHolder.Rect.y + Const.HALF;
+			int pointX = holder.Rect.CenterX();
+			int pointY = aim.IsTop() ? holder.Rect.yMax - Const.HALF / 2 : holder.Rect.y + Const.HALF;
 			targetUnitX = pointX.ToUnit() + aimNormal.x;
 			targetUnitY = pointY.ToUnit() + aimNormal.y;
 		} else {
 			// Climbing
-			int pointX = pHolder.Rect.CenterX();
-			int pointY = pHolder.Rect.yMax - Const.HALF / 2;
-			targetUnitX = pHolder.Movement.FacingRight ? pointX.ToUnit() + 1 : pointX.ToUnit() - 1;
+			int pointX = holder.Rect.CenterX();
+			int pointY = holder.Rect.yMax - Const.HALF / 2;
+			targetUnitX = holder.Movement.FacingRight ? pointX.ToUnit() + 1 : pointX.ToUnit() - 1;
 			targetUnitY = pointY.ToUnit() + aimNormal.y;
 		}
 
-		isTargetEmpty = IsEmptyAt(targetUnitX, targetUnitY);
+		result = IsBlockEmptyAt(targetUnitX, targetUnitY);
 
 		// Redirect
-		if (!isTargetEmpty) {
+		if (!result) {
 			int oldTargetX = targetUnitX;
 			int oldTargetY = targetUnitX;
 			if (aim.IsBottom()) {
 				if (aim == Direction8.Bottom) {
-					targetUnitX += pHolder.Movement.FacingRight ? 1 : -1;
+					targetUnitX += holder.Movement.FacingRight ? 1 : -1;
 				}
 			} else if (aim.IsTop()) {
 				if (aim == Direction8.Top) {
-					targetUnitX += pHolder.Movement.FacingRight ? 1 : -1;
+					targetUnitX += holder.Movement.FacingRight ? 1 : -1;
 				}
 			} else {
 				targetUnitY++;
 			}
 			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
-				isTargetEmpty = IsEmptyAt(targetUnitX, targetUnitY);
+				result = IsBlockEmptyAt(targetUnitX, targetUnitY);
 			}
 		}
 
+		return result;
+	}
+
+
+	private bool GetTargetUnitPosFromAI (Character holder, out int targetUnitX, out int targetUnitY) {
+
+		// TODO
+
+		targetUnitX = holder.X.ToUnit();
+		targetUnitY = holder.Y.ToUnit();
+		return IsBlockEmptyAt(targetUnitX, targetUnitY);
 	}
 
 
