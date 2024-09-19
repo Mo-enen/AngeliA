@@ -37,6 +37,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public static event CharacterEventHandler OnSleeping;
 	public static event StepEventHandler OnFootStepped;
 	public static event CharacterEventHandler OnJump;
+	public static event CharacterEventHandler OnPound;
 	public static event CharacterEventHandler OnFly;
 	public static event CharacterEventHandler OnSlideStepped;
 	public static event CharacterEventHandler OnPassOut;
@@ -346,14 +347,14 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	// Frame Update
 	public override void LateUpdate () {
-		FrameUpdate_RenderCharacter();
-		FrameUpdate_Event();
-		FrameUpdate_Inventory();
+		LateUpdate_RenderCharacter();
+		LateUpdate_Event();
+		LateUpdate_Inventory();
 		base.LateUpdate();
 	}
 
 
-	private void FrameUpdate_RenderCharacter () {
+	private void LateUpdate_RenderCharacter () {
 
 		if (!Active) return;
 
@@ -408,47 +409,50 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	}
 
 
-	private void FrameUpdate_Event () {
+	private void LateUpdate_Event () {
+
+		int frame = Game.GlobalFrame;
 
 		if (CharacterState == CharacterState.GamePlay) {
 
 			// Jump Fly Crash Slide Bounce
-			if (Game.GlobalFrame % 10 == 0 && Attackness.IsChargingAttack) Bounce();
+			if (frame % 10 == 0 && Attackness.IsChargingAttack) Bounce();
 
 			// Events
 			if (Movement.Target is Character targetCharacter) {
 				// Teleport
 				if (
-					TeleportWithPortal && Game.GlobalFrame == TeleportEndFrame - TeleportDuration / 2 + 1
+					TeleportWithPortal && frame == TeleportEndFrame - TeleportDuration / 2 + 1
 				) OnTeleport?.Invoke(targetCharacter);
 				// Step
 				if (IsGrounded) {
 					if (
-						(Movement.LastStartRunFrame >= 0 && (Game.GlobalFrame - Movement.LastStartRunFrame) % 20 == 19) || // Run
-						(Movement.IsDashing && (Game.GlobalFrame - Movement.LastDashFrame) % 8 == 0) || // Dash
-						(Movement.IsRushing && (Game.GlobalFrame - Movement.LastRushFrame) % 3 == 0) // Rush
+						(Movement.LastStartRunFrame >= 0 && (frame - Movement.LastStartRunFrame) % 20 == 19) || // Run
+						(Movement.IsDashing && (frame - Movement.LastDashFrame) % 8 == 0) || // Dash
+						(Movement.IsRushing && (frame - Movement.LastRushFrame) % 3 == 0) // Rush
 					) {
 						OnFootStepped?.Invoke(targetCharacter.X, targetCharacter.Y, targetCharacter.GroundedID);
 					}
 				}
-				if (Movement.IsSliding && Game.GlobalFrame % 24 == 0) OnSlideStepped?.Invoke(targetCharacter);
-				if (Game.GlobalFrame == Movement.LastJumpFrame) OnJump?.Invoke(targetCharacter);
-				if (Game.GlobalFrame == Movement.LastFlyFrame) OnFly?.Invoke(targetCharacter);
-				if (Game.GlobalFrame == Movement.LastCrashFrame) OnCrash?.Invoke(targetCharacter);
+				if (Movement.IsSliding && frame % 24 == 0) OnSlideStepped?.Invoke(targetCharacter);
+				if (frame == Movement.LastJumpFrame) OnJump?.Invoke(targetCharacter);
+				if (IsGrounded && !Movement.IsPounding && frame == Movement.LastPoundingFrame + 1) OnPound?.Invoke(targetCharacter);
+				if (frame == Movement.LastFlyFrame) OnFly?.Invoke(targetCharacter);
+				if (frame == Movement.LastCrashFrame) OnCrash?.Invoke(targetCharacter);
 			}
 		}
 
 		// Sleep
 		if (CharacterState == CharacterState.Sleep) {
 			// ZZZ Particle
-			if (Game.GlobalFrame % 42 == 0) {
+			if (frame % 42 == 0) {
 				OnSleeping?.Invoke(this);
 			}
 		}
 	}
 
 
-	private void FrameUpdate_Inventory () {
+	private void LateUpdate_Inventory () {
 
 		int invCapacity = GetInventoryCapacity();
 		if (invCapacity > 0) {

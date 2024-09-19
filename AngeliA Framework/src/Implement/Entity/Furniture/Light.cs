@@ -24,6 +24,8 @@ public abstract class Light : Furniture {
 #endif
 	}
 
+	public override void FirstUpdate () { }
+
 	public override void Update () {
 		base.Update();
 		LightingSystem.Illuminate(

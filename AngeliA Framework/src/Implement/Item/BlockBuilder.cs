@@ -73,6 +73,7 @@ public sealed class BlockBuilder : Weapon {
 
 	// LGC
 	private void DrawTargetHighlight (int unitX, int unitY, bool allowPut) {
+		using var _ = new UILayerScope();
 		// Frame
 		int border = GUI.Unify(2);
 		Renderer.DrawSlice(

@@ -24,8 +24,10 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 	public override int Gravity => 5;
 	public override bool CarryOtherRigidbodyOnTop => false;
 	public override bool AllowBeingCarryByOtherRigidbody => true;
-	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.SOLID;
+	public override int CollisionMask => Driver != null ? PhysicsMask.MAP : PhysicsMask.SOLID;
 	int IDamageReceiver.Team => CurrentTeam;
+
+	// Event
 	public delegate void StepEventHandler (int x, int y, int groundedID);
 	public static event StepEventHandler OnStep;
 
@@ -98,7 +100,8 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 			TakeDriver();
 			Driver.IgnorePhysics();
 			Driver.OverrideMovement(Movement);
-
+			Driver.VelocityX = 0;
+			Driver.VelocityY = 0;
 			if (Driver is Player pDriver) {
 				pDriver.IgnoreAction();
 			}

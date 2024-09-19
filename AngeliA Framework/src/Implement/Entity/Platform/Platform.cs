@@ -119,11 +119,11 @@ public abstract class Platform : EnvironmentEntity {
 			if (pushLeft) {
 				// Left
 				if (rig.VelocityX < X - PrevX || rRect.xMin > X) continue;
-				rig.PerformMove(X - rRect.xMax, 0);
+				rig.PerformMove(X - rRect.xMax, 0, carry: true);
 			} else {
 				// Right
 				if (rig.VelocityX > X - PrevX || rRect.xMax < X + Width) continue;
-				rig.PerformMove(X + Width - rRect.xMin, 0);
+				rig.PerformMove(X + Width - rRect.xMin, 0, carry: true);
 			}
 		}
 	}
@@ -157,14 +157,16 @@ public abstract class Platform : EnvironmentEntity {
 			if (rig.Rect.y < rect.yMax - 32) continue;
 			if (!hit.IsTrigger) {
 				// For General Rig
-				rig.PerformMove(X - PrevX, 0);
+				rig.PerformMove(X - PrevX, 0, carry: true);
 			} else {
 				// For Nav Character
 				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
 				rig.X += X - PrevX;
 				rig.Y = rect.yMax;
 			}
-			rig.MakeGrounded(1, TypeID);
+			if (rig.VelocityY <= Y - PrevY) {
+				rig.MakeGrounded(1, TypeID);
+			}
 		}
 	}
 
@@ -200,7 +202,7 @@ public abstract class Platform : EnvironmentEntity {
 				if (rig.X < left || rig.X >= right) continue;
 				if (rig.VelocityY > Y - PrevY) continue;
 				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
-				rig.PerformMove(0, rect.yMax - rig.Rect.y);
+				rig.PerformMove(0, rect.yMax - rig.Rect.y, carry: true);
 				rig.MakeGrounded(1, TypeID);
 			}
 			// For Nav Character
@@ -233,7 +235,7 @@ public abstract class Platform : EnvironmentEntity {
 				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
 				if (hit.IsTrigger && (hit.Entity is not Character ch || ch.Movement.IsFlying)) continue;
 				int speedY = rect.yMax - rig.OffsetY - rig.Y;
-				rig.PerformMove(0, speedY);
+				rig.PerformMove(0, speedY, carry: true);
 				if (!hit.IsTrigger) rig.VelocityY = 0;
 				rig.MakeGrounded(1, TypeID);
 			}

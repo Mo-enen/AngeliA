@@ -7,7 +7,7 @@ public sealed class DefaultHipSuit : HipCloth {
 }
 
 
-public sealed class ModularHipSuit : HipCloth, IModularCloth {}
+public sealed class ModularHipSuit : HipCloth, IModularCloth { }
 
 
 public abstract class HipCloth : Cloth {
@@ -130,7 +130,7 @@ public abstract class HipCloth : Cloth {
 		Renderer.Draw(
 			sprite,
 			centerX,
-			body.Height > 0 ? Util.Max(centerY + offsetY, character.Y + sprite.GlobalHeight) : centerY - offsetY,
+			body.Height > 0 ? centerY + offsetY : centerY - offsetY,
 			500, 1000, 0,
 			width,
 			body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,

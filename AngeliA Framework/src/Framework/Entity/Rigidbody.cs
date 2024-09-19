@@ -205,7 +205,7 @@ public abstract class Rigidbody : Entity {
 			}
 			int deltaVelX = speedRight + speedLeft;
 			if (deltaVelX != 0) {
-				PerformMove(deltaVelX, 0);
+				PerformMove(deltaVelX, 0, carry: true);
 			}
 		}
 		// Base
@@ -221,7 +221,7 @@ public abstract class Rigidbody : Entity {
 	#region --- API ---
 
 
-	public void PerformMove (int speedX, int speedY, bool ignoreOneway = false, bool ignoreLevel = false) {
+	public virtual void PerformMove (int speedX, int speedY, bool ignoreOneway = false, bool ignoreLevel = false, bool carry = false) {
 
 		if (Game.GlobalFrame <= IgnorePhysicsFrame) return;
 		RefreshPrevPosition();

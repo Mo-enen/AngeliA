@@ -58,6 +58,7 @@ public abstract class PoseCharacter : Character {
 	public int HandGrabAttackTwistR { get; set; } = 1000;
 	public int HideBraidFrame { get; set; } = -1;
 	public int CharacterHeight { get; set; } = 160; // in CM
+	public int RenderedCellZ { get; private set; } = 0;
 	public bool BodyPartsReady => BodyParts != null;
 
 	// BodyPart
@@ -467,7 +468,6 @@ public abstract class PoseCharacter : Character {
 		HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 
 		PerformPoseAnimation();
-
 		CalculateBodypartGlobalPosition();
 
 		// Handheld
@@ -573,12 +573,13 @@ public abstract class PoseCharacter : Character {
 		}
 
 		// Z Offset
-		PoseRenderingZOffset -= 40;
+		RenderedCellZ = PoseRenderingZOffset;
 		if (Renderer.GetCells(out var cells, out int count)) {
 			for (int i = cellIndexStart; i < count; i++) {
 				cells[i].Z += PoseRenderingZOffset;
 			}
 		}
+		PoseRenderingZOffset -= 40;
 
 	}
 

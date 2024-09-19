@@ -752,8 +752,8 @@ public static class Stage {
 
 		var mapPos = entity.MapUnitPos.Value;
 		int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
-		int currentUnitX = entity.X.ToUnit();
-		int currentUnitY = entity.Y.ToUnit();
+		int currentUnitX = entity.Rect.CenterX().ToUnit();
+		int currentUnitY = entity.Rect.CenterY().ToUnit();
 		byte requireReposition = 0;
 		if (mapPos_blockID != entity.TypeID) {
 			// Overlaped by Other Entity
