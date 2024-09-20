@@ -26,6 +26,12 @@ public static class Const {
 	public const int TEAM_ENEMY = 0b1000;
 	public const int TEAM_ALL = 0b1111;
 	public const int TEAM_COUNT = 4;
+	public static int GetTeamIndex (int team) => team switch {
+		TEAM_NEUTRAL => 1,
+		TEAM_PLAYER => 2,
+		TEAM_ENEMY => 3,
+		_ => 0,
+	};
 
 	// Rendering
 	public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };

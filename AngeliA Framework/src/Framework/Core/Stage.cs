@@ -690,6 +690,9 @@ public static class Stage {
 	}
 
 
+	public static int GetEntityCapacity (int typeID) => EntityPool.TryGetValue(typeID, out var stack) ? stack.Capacity : 0;
+
+
 	#endregion
 
 

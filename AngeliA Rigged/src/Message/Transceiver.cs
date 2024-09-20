@@ -243,14 +243,26 @@ public class RigTransceiver {
 				if (!output.BaseStream.CanRead) continue;
 				string line;
 				while ((line = output.ReadLine()) != null) {
+					if (string.IsNullOrEmpty(line)) continue;
+					char sign = line[0];
 					if (LogWithPrefix) {
-						Debug.Log($"| {line}");
+						line = $"| {line[1..]}";
 					} else {
-						Debug.Log(line);
+						line = line[1..];
+					}
+					switch (sign) {
+						case 'l':
+							Debug.Log(line);
+							break;
+						case 'w':
+							Debug.LogWarning(line);
+							break;
+						case 'e':
+							Debug.LogError(line);
+							break;
 					}
 				}
 			} catch { }
-			//} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 
@@ -273,7 +285,6 @@ public class RigTransceiver {
 					}
 				}
 			} catch { }
-			//} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 

@@ -266,62 +266,96 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false) {
-
-		bool anyWarning = false;
+	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool fixScriptFileNames = false) {
 
 		// Check for Empty Script File
-		foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
-			bool empty = true;
-			foreach (string line in Util.ForAllLinesInFile(path)) {
-				if (!string.IsNullOrWhiteSpace(line)) {
-					empty = false;
-					break;
+		{
+			bool anyWarning = false;
+			foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
+				bool empty = true;
+				foreach (string line in Util.ForAllLinesInFile(path)) {
+					if (!string.IsNullOrWhiteSpace(line)) {
+						empty = false;
+						break;
+					}
+				}
+				if (empty) {
+					anyWarning = true;
+					Debug.LogWarning($"Empty script: {path}");
 				}
 			}
-			if (empty) {
-				anyWarning = true;
-				Debug.LogWarning($"Empty script: {path}");
+			if (!anyWarning && !onlyLogWhenWarningFounded) {
+				Debug.Log("[✓] No empty script file founded.");
 			}
 		}
 
 		// Sheet
 		if (!Util.FileExists(Universe.BuiltIn.SheetPath)) {
-			anyWarning = true;
-			Debug.LogWarning("Artwork sheet file not found.");
+			Debug.LogWarning($"Artwork sheet file missing. ({Universe.BuiltIn.SheetPath})");
 		}
 
 		// Check for Hash Collision
-		var idPool = new Dictionary<int, string>();
-		var sheet = Renderer.MainSheet;
-		foreach (var type in typeof(object).AllChildClass(includeAbstract: true, includeInterface: true)) {
+		{
+			bool anyWarning = false;
+			var idPool = new Dictionary<int, string>();
+			var sheet = Renderer.MainSheet;
+			foreach (var type in typeof(object).AllChildClass(includeAbstract: true, includeInterface: true)) {
 
-			string typeName = type.AngeName();
-			int typeID = typeName.AngeHash();
+				string typeName = type.AngeName();
+				int typeID = typeName.AngeHash();
 
-			// Class vs Class
-			if (!idPool.TryAdd(typeID, typeName)) {
-				string poolName = idPool[typeID];
-				if (typeName != poolName) {
-					anyWarning = true;
-					Debug.LogWarning($"Hash collision between two class names. \"{typeName}\" & \"{poolName}\" (AngeHash = {typeID})");
+				// Class vs Class
+				if (!idPool.TryAdd(typeID, typeName)) {
+					string poolName = idPool[typeID];
+					if (typeName != poolName) {
+						anyWarning = true;
+						Debug.LogWarning($"Hash collision between two class names. \"{typeName}\" & \"{poolName}\" (AngeHash = {typeID})");
+					}
 				}
-			}
 
-			// Class vs Sprite
-			if (sheet.SpritePool.TryGetValue(typeID, out var sprite)) {
-				if (sprite.RealName != typeName && typeID == sprite.ID) {
-					anyWarning = true;
-					Debug.LogWarning($"Hash collision between Class name and Sprite name. \"{typeName}\" & \"{sprite.RealName}\" (AngeHash = {typeID})");
+				// Class vs Sprite
+				if (sheet.SpritePool.TryGetValue(typeID, out var sprite)) {
+					if (sprite.RealName != typeName && typeID == sprite.ID) {
+						anyWarning = true;
+						Debug.LogWarning($"Hash collision between Class name and Sprite name. \"{typeName}\" & \"{sprite.RealName}\" (AngeHash = {typeID})");
+					}
 				}
-			}
 
+			}
+			if (!anyWarning && !onlyLogWhenWarningFounded) {
+				Debug.Log("[✓] No hash collision founded.");
+			}
 		}
 
-		// End
-		if (!anyWarning && !onlyLogWhenWarningFounded) {
-			Debug.Log("Everything is fine.");
+		// Fix Script File Name
+		if (fixScriptFileNames) {
+			bool anyWarning = false;
+			foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
+				string name = Util.GetNameWithExtension(path);
+				if (!char.IsLower(name[0]) || name.Length <= 1) continue;
+				string oldName = name;
+				if (char.IsLower(name[1])) {
+					// Turn First Char into Upper Case
+					name = $"{char.ToUpper(name[0])}{name[1..]}";
+				} else {
+					// Remove First Char
+					name = name[1..];
+				}
+				string newPath = Util.CombinePaths(Util.GetParentPath(path), name);
+				if (Util.FileExists(newPath)) continue;
+				Util.MoveFile(path, newPath);
+				anyWarning = true;
+				Debug.LogWarning($"Fix first char for script file: {oldName} >> {name}");
+			}
+			if (!anyWarning && !onlyLogWhenWarningFounded) {
+				Debug.Log("[✓] No first char of file name need to fix.");
+			}
 		}
+
+		if (!onlyLogWhenWarningFounded) {
+			Debug.Log("-------- AngeliA Project Analysis --------");
+		}
+
 	}
 
 

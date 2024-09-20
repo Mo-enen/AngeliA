@@ -66,10 +66,10 @@ public partial class CharacterNavigation {
 	public CharacterNavigation (Character character) => TargetCharacter = character;
 
 
-	public void OnActivated () => ResetNavigation();
+	public virtual void OnActivated () => ResetNavigation();
 
 
-	public void PhysicsUpdate () {
+	public virtual void PhysicsUpdate () {
 
 		if (!NavigationEnable) return;
 

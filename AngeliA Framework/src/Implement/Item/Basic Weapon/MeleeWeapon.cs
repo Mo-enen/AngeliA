@@ -15,7 +15,8 @@ public abstract class MeleeWeapon : Weapon<MeleeBullet> {
 		if (!sender.Movement.FacingRight) {
 			rangeX = RangeXLeft;
 		}
-		bullet.SetSpawnSize(rangeX, RangeY);
+		bullet.Width = rangeX;
+		bullet.Height = RangeY;
 
 		// Follow
 		bullet.FollowSender();

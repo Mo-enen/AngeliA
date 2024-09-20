@@ -95,6 +95,10 @@ public static class ItemSystem {
 	internal static void OnGameInitialize () {
 
 		if (Game.IsToolApplication) return;
+		var giveItemCheatInfo = typeof(ItemSystem).GetMethod(
+			nameof(GiveItemCheat),
+			BindingFlags.NonPublic | BindingFlags.Static
+		);
 
 		// Init Item Pool from Code
 		var BLOCK_ITEM = typeof(BlockBuilder);
@@ -102,13 +106,15 @@ public static class ItemSystem {
 			if (type == BLOCK_ITEM) continue;
 			if (System.Activator.CreateInstance(type) is not Item item) continue;
 			string angeName = type.AngeName();
-			ItemPool.TryAdd(type.AngeHash(), new ItemData(
+			int id = angeName.AngeHash();
+			ItemPool.TryAdd(id, new ItemData(
 				item,
 				$"iName.{angeName}".AngeHash(),
 				$"iDes.{angeName}".AngeHash(),
 				angeName,
 				item.MaxStackCount.GreaterOrEquel(1)
 			));
+			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
 		}
 
 		// Add Block Entity
@@ -123,6 +129,7 @@ public static class ItemSystem {
 				angeName,
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
+			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
 		}
 
 		ItemPoolReady = true;
@@ -244,6 +251,20 @@ public static class ItemSystem {
 			typeIcon = ITEM_TYPE_ICONS[^2];
 		}
 		return typeIcon;
+	}
+
+
+	internal static void GiveItemCheat () {
+		var player = Player.Selecting;
+		if (player == null) return;
+		if (CheatSystem.CurrentParam is not int id) return;
+		if (!ItemPool.TryGetValue(id, out var data)) return;
+		// Unlock
+		if (!data.Unlocked) {
+			SetItemUnlocked(id, true);
+		}
+		// Give
+		GiveItemToTarget(player, id, 1);
 	}
 
 

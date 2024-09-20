@@ -149,7 +149,9 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 
 	protected override bool CheckForStopDrive () {
 		// Driver Movement State Check
+		bool playerStop = Driver == Player.Selecting && Input.GameKeyDown(Gamekey.Jump);
 		if (
+			playerStop ||
 			Driver.CharacterState != CharacterState.GamePlay ||
 			Driver.VelocityY > Util.Max(DeltaPositionY, 0) ||
 			Driver.InWater
@@ -157,6 +159,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 			CurrentRollingSpeed = VelocityX.Sign3() * RollSpeed;
 			Width = BarrelSize;
 			Height = BarrelSize;
+			Driver.VelocityY = Driver.NativeMovement.JumpSpeed + DeltaPositionY;
 			IgnorePhysics();
 			return true;
 		}

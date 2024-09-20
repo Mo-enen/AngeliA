@@ -3,12 +3,29 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.Capacity(256)]
+[EntityAttribute.Capacity(8 * Const.TEAM_COUNT, 0)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.Layer(EntityLayer.BULLET)]
 public abstract class Bullet : Entity {
+
+	// SUB
+	private class BulletTrack {
+		public int Frame = -2;
+		public int Count = 0;
+		public int Capacity;
+		public void AddCount () {
+			int frame = Game.GlobalFrame;
+			if (frame != Frame) {
+				Frame = frame;
+				Count = 1;
+			} else {
+				Count++;
+			}
+		}
+		public int GetCount () => Game.GlobalFrame == Frame ? Count : 0;
+	}
 
 	// Api
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
@@ -16,8 +33,6 @@ public abstract class Bullet : Entity {
 	protected virtual int Duration => 60;
 	protected virtual int Damage => 1;
 	protected virtual Tag DamageType => Tag.PhysicalDamage;
-	protected virtual int SpawnWidth => Const.CEL;
-	protected virtual int SpawnHeight => Const.CEL;
 	protected virtual int EnvironmentHitCount => int.MaxValue;
 	protected virtual int ReceiverHitCount => int.MaxValue;
 	protected virtual bool RoundHitCheck => false;
@@ -26,23 +41,68 @@ public abstract class Bullet : Entity {
 	public bool AttackCharged { get; set; } = false;
 
 	// Data
+	private static readonly Dictionary<int, BulletTrack[]> TrackPool = new();
+	private readonly BulletTrack[] Track;
 	private int CurrentEnvironmentHitCount;
 	private int CurrentReceiverHitCount;
+	private int TargetTeam;
 
 	// MSG
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		TrackPool.Clear();
+		foreach (var type in typeof(Bullet).AllChildClass()) {
+			int id = type.AngeHash();
+			if (TrackPool.ContainsKey(id)) continue;
+			int capacity = Stage.GetEntityCapacity(id) / Const.TEAM_COUNT;
+			var tracks = new BulletTrack[Const.TEAM_COUNT].FillWithNewValue();
+			for (int i = 0; i < tracks.Length; i++) {
+				tracks[i].Capacity = capacity;
+			}
+			TrackPool.Add(id, tracks);
+		}
+	}
+
+	public Bullet () {
+		if (!TrackPool.TryGetValue(TypeID, out Track)) {
+			int capacity = Stage.GetEntityCapacity(TypeID) / Const.TEAM_COUNT;
+			var tracks = new BulletTrack[Const.TEAM_COUNT].FillWithNewValue();
+			for (int i = 0; i < tracks.Length; i++) {
+				tracks[i].Capacity = capacity;
+			}
+			TrackPool.Add(TypeID, tracks);
+#if DEBUG
+			Debug.LogWarning($"Bullet {GetType().Name} do not init it's track from static init func. This should not happen.");
+#endif
+		}
+	}
+
 	public override void OnActivated () {
 		base.OnActivated();
-		Width = SpawnWidth;
-		Height = SpawnHeight;
+		Width = Const.CEL;
+		Height = Const.CEL;
 		Sender = null;
 		CurrentEnvironmentHitCount = EnvironmentHitCount;
 		CurrentReceiverHitCount = ReceiverHitCount;
+		TargetTeam = Const.TEAM_ALL;
+	}
+
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		TargetTeam = Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
+		// Team Track Check
+		var track = Track[Const.GetTeamIndex(TargetTeam)];
+		if (track.GetCount() >= track.Capacity) {
+			Active = false;
+			return;
+		}
+		track.AddCount();
 	}
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Life Check
-		if (Game.GlobalFrame > SpawnFrame + Duration) {
+		if (!Active || Game.GlobalFrame > SpawnFrame + Duration) {
 			Active = false;
 			return;
 		}
@@ -52,6 +112,7 @@ public abstract class Bullet : Entity {
 
 	public override void Update () {
 		base.Update();
+		if (!Active) return;
 		ReceiverHitCheck();
 	}
 
@@ -63,12 +124,11 @@ public abstract class Bullet : Entity {
 		var hits = Physics.OverlapAll(
 			ReceiverMask, rect, out int count, Sender, OperationMode.ColliderAndTrigger
 		);
-		int targetTeam = Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			// Gate
 			if (hit.Entity is not IDamageReceiver receiver) continue;
-			if ((receiver.Team & targetTeam) != receiver.Team) continue;
+			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
 			var fixedDamageType = DamageType & ~receiver.IgnoreDamageType;
 			if (fixedDamageType == Tag.None) continue;
 			if (receiver is Entity e && !e.Active) continue;

@@ -118,13 +118,13 @@ public partial class RiggedGame : Game {
 
 		static void Log (object msg) {
 			System.Console.ResetColor();
-			System.Console.WriteLine(msg);
+			System.Console.WriteLine($"l{msg}");
 		}
 		static void LogWarning (object msg) {
-			System.Console.WriteLine(msg);
+			System.Console.WriteLine($"w{msg}");
 		}
 		static void LogError (object msg) {
-			System.Console.WriteLine(msg);
+			System.Console.WriteLine($"e{msg}");
 		}
 		static void LogException (System.Exception ex) {
 			System.Console.WriteLine(ex.Source);
@@ -270,10 +270,16 @@ public partial class RiggedGame : Game {
 		// Toolset Command
 		switch (CallingMessage.RequireToolsetCommand) {
 			case RigCallingMessage.ToolCommand.RunCodeAnalysis:
-				FrameworkUtil.RunAngeliaCodeAnalysis();
+				FrameworkUtil.RunAngeliaCodeAnalysis(
+					onlyLogWhenWarningFounded: false,
+					fixScriptFileNames: Universe.BuiltInInfo.Internal_FixFileNameForAnalysis
+				);
 				break;
 			case RigCallingMessage.ToolCommand.RunCodeAnalysisSilently:
-				FrameworkUtil.RunAngeliaCodeAnalysis(true);
+				FrameworkUtil.RunAngeliaCodeAnalysis(
+					onlyLogWhenWarningFounded: true,
+					fixScriptFileNames: false
+				);
 				break;
 		}
 

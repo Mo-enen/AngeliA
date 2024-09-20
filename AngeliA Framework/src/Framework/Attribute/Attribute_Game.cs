@@ -117,8 +117,10 @@ public class OnCheatPerformAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class CheatCodeAttribute : Attribute {
 	public string Code = "";
-	public CheatCodeAttribute (string code) {
+	public object Param = null;
+	public CheatCodeAttribute (string code, object param = null) {
 		Code = code;
+		Param = param;
 	}
 }
 

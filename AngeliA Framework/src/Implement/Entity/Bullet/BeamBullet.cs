@@ -12,7 +12,6 @@ public abstract class BeamBullet : MovableBullet {
 	protected sealed override int Duration => 1;
 	public sealed override int SpeedForward => BEAM_SPEED;
 	public override int MaxRange => Const.CEL * 24;
-	protected override int SpawnHeight => Const.HALF * 2 / 3;
 	protected abstract int BeamSpriteID { get; }
 	protected abstract int SparkSpriteID { get; }
 	protected abstract int BurstSpriteID { get; }
@@ -39,17 +38,18 @@ public abstract class BeamBullet : MovableBullet {
 	public override void OnActivated () {
 		base.OnActivated();
 		BeamRendered = false;
+		Height = Const.HALF * 2 / 3;
 	}
 
 	public override void LateUpdate () {
 		base.LateUpdate();
+		if (!Active) return;
 		RenderBeam();
 	}
 
 	protected override void BeforeDespawn (IDamageReceiver receiver) { }
 
 	private void RenderBeam () {
-
 		if (BeamRendered) return;
 		BeamRendered = true;
 

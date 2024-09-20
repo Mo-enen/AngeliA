@@ -726,6 +726,7 @@ public sealed partial class MapEditor : WindowUI {
 		// Drop
 		bool drop = Input.MouseLeftButtonDown;
 		if (!drop && quickDrop && !Input.GameKeyHolding(Gamekey.Select)) {
+			Input.UseGameKey(Gamekey.Select);
 			drop = true;
 		}
 		if (drop) {

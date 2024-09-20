@@ -30,6 +30,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public float LightMap_LevelIlluminateRemain = 0.3f;
 	public int WorldBehindParallax = 1300;
 	public byte WorldBehindAlpha = 64;
+	public bool Internal_FixFileNameForAnalysis = false;
 	public void OnAfterLoadedFromDisk () => Valid(true);
 	public void OnBeforeSaveToDisk () => Valid(true);
 	public void Valid (bool minViewSizeFirst) {

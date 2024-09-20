@@ -11,7 +11,11 @@ public static class CheatSystem {
 	private class CheatAction {
 		public string Code;
 		public MethodInfo Action;
+		public object Param;
 	}
+
+	// Api
+	public static object CurrentParam { get; private set; } = null;
 
 	// Data
 	private static event System.Action OnCheatPerform;
@@ -21,20 +25,17 @@ public static class CheatSystem {
 
 
 	// MSG
-	[OnGameInitialize]
+	[OnGameInitialize(-256)]
 	internal static void OnGameInitialize () {
-		Util.LinkEventWithAttribute<OnCheatPerformAttribute>(typeof(CheatSystem), nameof(OnCheatPerform));
 		// Init Pool
 		Enable = Universe.BuiltInInfo.AllowCheatCode;
 #if DEBUG
 		Enable = true;
 #endif
 		if (Enable) {
+			Util.LinkEventWithAttribute<OnCheatPerformAttribute>(typeof(CheatSystem), nameof(OnCheatPerform));
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
-				AllCheatActions.Add(new CheatAction() {
-					Code = att.Code,
-					Action = method,
-				});
+				AddCheatAction(att.Code, method, att.Param);
 			}
 		}
 	}
@@ -43,6 +44,7 @@ public static class CheatSystem {
 	[OnGameUpdate]
 	internal static void OnGameUpdate () {
 		if (!Enable) return;
+		bool changed = false;
 
 		// Update Input
 		foreach (char c in Game.ForAllPressingCharsThisFrame()) {
@@ -51,10 +53,11 @@ public static class CheatSystem {
 				CheatInput.TryPopTail(out _);
 			}
 			CheatInput.LinkToHead(char.ToLower(c));
+			changed = true;
 		}
 
 		// Check for Cheats
-		if (CheatInput.Length > 0) {
+		if (changed && CheatInput.Length > 0) {
 			var span = AllCheatActions.GetSpan();
 			int len = span.Length;
 			for (int i = 0; i < len; i++) {
@@ -67,14 +70,16 @@ public static class CheatSystem {
 					// Check Cheat
 					for (int j = codeLen - 1; j >= 0; j--) {
 						char c = char.ToLower(code[j]);
-						if (c != char.ToLower(CheatInput[codeLen - j - 1])) {
+						if (c != CheatInput[codeLen - j - 1]) {
 							success = false;
 							break;
 						}
 					}
 					// Perform Cheat
 					if (success) {
+						CurrentParam = action.Param;
 						var resultObj = action.Action.Invoke(null, null);
+						CurrentParam = null;
 						if (resultObj is not bool performed || performed) {
 							OnCheatPerform?.Invoke();
 						}
@@ -89,6 +94,16 @@ public static class CheatSystem {
 
 
 
+	}
+
+
+	public static void AddCheatAction (string code, MethodInfo method, object param = null) {
+		if (!Enable) return;
+		AllCheatActions.Add(new CheatAction() {
+			Code = code,
+			Action = method,
+			Param = param,
+		});
 	}
 
 
