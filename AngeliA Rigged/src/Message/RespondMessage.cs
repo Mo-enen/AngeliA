@@ -22,6 +22,14 @@ public class RigRespondMessage {
 	}
 
 
+	public struct GizmosLineData {
+		public Int2 Start;
+		public Int2 End;
+		public int Thickness;
+		public Color32 Color;
+	}
+
+
 	public struct GizmosMapData {
 		public IRect Rect;
 		public FRect Uv;
@@ -104,6 +112,8 @@ public class RigRespondMessage {
 	public int[] RequireCharsFontIndex = new int[REQUIRE_CHAR_MAX_COUNT];
 	public int RequireGizmosRectCount;
 	public GizmosRectData[] RequireGizmosRects = new GizmosRectData[256 * 256];
+	public int RequireGizmosLineCount;
+	public GizmosLineData[] RequireGizmosLines = new GizmosLineData[256 * 256];
 	public RenderingLayerData[] Layers = new RenderingLayerData[RenderLayer.COUNT];
 	public int[] RenderUsages = new int[RenderLayer.COUNT];
 	public int[] EntityUsages = new int[EntityLayer.COUNT];
@@ -148,6 +158,7 @@ public class RigRespondMessage {
 		RequireSetSoundVolume = -1;
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
+		RequireGizmosLineCount = 0;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
@@ -224,7 +235,7 @@ public class RigRespondMessage {
 	}
 
 
-	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding, IRect dodgingRect) {
+	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding) {
 
 		// View
 		var info = universe.Info;
@@ -236,27 +247,24 @@ public class RigRespondMessage {
 			leftPadding = leftPadding * ViewHeight / oldViewHeight;
 		}
 
-		// Gizmos Rect
+		// Gizmos
 		int cameraExpand = (info.ViewRatio * ViewHeight / 1000 - engineViewRect.width) / 2;
-		int leftBarMaxX = Renderer.CameraRect.x + leftPadding;
+		int gizmosOffsetX = leftPadding / 2 - cameraExpand;
+
+		// Gizmos Rect
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
 			var rect = data.Rect;
-			rect.x = data.Rect.x + leftPadding / 2 - cameraExpand;
-			// Dodge Left Bar
-			if (rect.xMax < leftBarMaxX) continue;
-			if (rect.x < leftBarMaxX) {
-				rect.xMin = leftBarMaxX;
-			}
-			// Dodge Panel
-			if (rect.Dodge(dodgingRect, out var result0, out var result1, out var result2, out var result3)) {
-				if (result0.HasValue) Game.DrawGizmosRect(result0.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
-				if (result1.HasValue) Game.DrawGizmosRect(result1.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
-				if (result2.HasValue) Game.DrawGizmosRect(result2.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
-				if (result3.HasValue) Game.DrawGizmosRect(result3.Value, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
-			} else if (!rect.Overlaps(dodgingRect)) {
-				Game.DrawGizmosRect(rect, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
-			}
+			rect.x = data.Rect.x + gizmosOffsetX;
+			Game.DrawGizmosRect(rect, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
+		}
+
+		// Gizmos Line
+		for (int i = 0; i < RequireGizmosLineCount; i++) {
+			var data = RequireGizmosLines[i];
+			int startX = data.Start.x + gizmosOffsetX;
+			int endX = data.End.x + gizmosOffsetX;
+			Game.DrawGizmosLine(startX, data.Start.y, endX, data.End.y, data.Thickness, data.Color);
 		}
 
 		int oldLayer = Renderer.CurrentLayerIndex;
@@ -447,6 +455,27 @@ public class RigRespondMessage {
 				};
 			}
 
+			RequireGizmosLineCount = Util.ReadInt(ref pointer, end);
+			for (int i = 0; i < RequireGizmosLineCount; i++) {
+				int startX = Util.ReadInt(ref pointer, end);
+				int startY = Util.ReadInt(ref pointer, end);
+				int endX = Util.ReadInt(ref pointer, end);
+				int endY = Util.ReadInt(ref pointer, end);
+				int thickness = Util.ReadInt(ref pointer, end);
+				var color = new Color32(
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end)
+				);
+				RequireGizmosLines[i] = new GizmosLineData() {
+					Start = new Int2(startX, startY),
+					End = new Int2(endX, endY),
+					Thickness = thickness,
+					Color = color,
+				};
+			}
+
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
 				if (Layers[index] == null) {
 					Layers[index] = new RenderingLayerData(Renderer.GetLayerCapacity(index));
@@ -581,6 +610,20 @@ public class RigRespondMessage {
 				Util.Write(ref pointer, data.ColorBR.g, end);
 				Util.Write(ref pointer, data.ColorBR.b, end);
 				Util.Write(ref pointer, data.ColorBR.a, end);
+			}
+
+			Util.Write(ref pointer, RequireGizmosLineCount, end);
+			for (int i = 0; i < RequireGizmosLineCount; i++) {
+				var data = RequireGizmosLines[i];
+				Util.Write(ref pointer, data.Start.x, end);
+				Util.Write(ref pointer, data.Start.y, end);
+				Util.Write(ref pointer, data.End.x, end);
+				Util.Write(ref pointer, data.End.y, end);
+				Util.Write(ref pointer, data.Thickness, end);
+				Util.Write(ref pointer, data.Color.r, end);
+				Util.Write(ref pointer, data.Color.g, end);
+				Util.Write(ref pointer, data.Color.b, end);
+				Util.Write(ref pointer, data.Color.a, end);
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {

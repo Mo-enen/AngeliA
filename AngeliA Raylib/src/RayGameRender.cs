@@ -466,12 +466,6 @@ public partial class RayGame {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
-		//var gizmosRect = new Rectangle(
-		//	Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x),
-		//	Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax),
-		//	rect.width * screenRenderRect.width / (float)cameraRect.width,
-		//	rect.height * screenRenderRect.height / (float)cameraRect.height
-		//);
 		float minX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x);
 		float maxX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.xMax);
 		float minY = Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax);
@@ -480,6 +474,24 @@ public partial class RayGame {
 		Raylib.DrawRectangleGradientEx(
 			gizmosRect,
 			colorTL.ToRaylib(), colorBL.ToRaylib(), colorBR.ToRaylib(), colorTR.ToRaylib()
+		);
+	}
+
+	protected override void _DrawGizmosLine (int startX, int startY, int endX, int endY, int thickness, Color32 color) {
+		if (PauselessFrame <= IgnoreGizmosFrame) return;
+		var cameraRect = Renderer.CameraRect;
+		var screenRenderRect = Renderer.ScreenRenderRect;
+		Raylib.DrawLineEx(
+			new Vector2(
+				Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)startX),
+				Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)startY)
+			),
+			new Vector2(
+				Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)endX),
+				Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)endY)
+			),
+			Util.RemapUnclamped(0, cameraRect.height, 0, screenRenderRect.height, (float)thickness),
+			color.ToRaylib()
 		);
 	}
 

@@ -142,7 +142,18 @@ public partial class RiggedGame {
 		};
 		RespondMessage.RequireGizmosRectCount++;
 	}
-	
+
+	protected override void _DrawGizmosLine (int startX, int startY, int endX, int endY, int thickness, Color32 color) {
+		if (RespondMessage.RequireGizmosLineCount >= RespondMessage.RequireGizmosLines.Length) return;
+		RespondMessage.RequireGizmosLines[RespondMessage.RequireGizmosLineCount] = new RigRespondMessage.GizmosLineData() {
+			Start = new Int2(startX, startY),
+			End = new Int2(endX, endY),
+			Thickness = thickness,
+			Color = color,
+		};
+		RespondMessage.RequireGizmosLineCount++;
+	}
+
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) { }
 
 	protected override void _IgnoreGizmos (int duration = 0) { }

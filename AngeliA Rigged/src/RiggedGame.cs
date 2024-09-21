@@ -16,9 +16,6 @@ public partial class RiggedGame : Game {
 	#region --- VAR ---
 
 
-	// Const
-	private static readonly Color32[] COLLIDER_TINTS = { Color32.RED_BETTER, Color32.ORANGE_BETTER, Color32.YELLOW, Color32.GREEN, Color32.CYAN, Color32.BLUE, Color32.GREY_128, };
-
 	// Api
 	public readonly RigCallingMessage CallingMessage = new();
 	public readonly RigRespondMessage RespondMessage = new();
@@ -28,7 +25,6 @@ public partial class RiggedGame : Game {
 	private readonly Process HostProcess;
 	private readonly string MapName = "RiggedGameMapName";
 	private readonly int StartWithZ = 0;
-	private readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
 	private unsafe byte* BufferPointer = null;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
@@ -403,56 +399,13 @@ public partial class RiggedGame : Game {
 	}
 
 
-	[OnGameUpdateLater(4096)]
+	[OnGameUpdateLater(4097)]
 	internal static void OnGameUpdateLater () {
-		Instance?.UpdateColliderGizmos();
+		if (Instance == null) return;
+		if (Instance.DrawCollider) {
+			FrameworkUtil.DrawAllCollidersAsGizmos();
+		}
 		Instance?.UpdateEntityClicker();
-	}
-
-
-	private void UpdateColliderGizmos () {
-
-		if (PlayerMenuUI.ShowingUI || !DrawCollider) return;
-
-		// Init Cells
-		if (CellPhysicsCells.Count == 0) {
-			try {
-				var layers = Util.GetStaticFieldValue(typeof(Physics), "Layers") as System.Array;
-				for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
-					var layerObj = layers.GetValue(layerIndex);
-					CellPhysicsCells.Add(Util.GetFieldValue(layerObj, "Cells") as PhysicsCell[,,]);
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-			if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
-		}
-
-		// Draw Cells
-		if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
-			int thick = GUI.Unify(1);
-			var cameraRect = Renderer.CameraRect;
-			for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
-				try {
-					var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
-					var cells = CellPhysicsCells[layer];
-					int cellWidth = cells.GetLength(0);
-					int cellHeight = cells.GetLength(1);
-					int celDepth = cells.GetLength(2);
-					for (int y = 0; y < cellHeight; y++) {
-						for (int x = 0; x < cellWidth; x++) {
-							for (int d = 0; d < celDepth; d++) {
-								var cell = cells[x, y, d];
-								if (cell.Frame != Physics.CurrentFrame) break;
-								if (!cell.Rect.Overlaps(cameraRect)) continue;
-								DrawGizmosRect(cell.Rect.Edge(Direction4.Down, thick), tint);
-								DrawGizmosRect(cell.Rect.Edge(Direction4.Up, thick), tint);
-								DrawGizmosRect(cell.Rect.Edge(Direction4.Left, thick), tint);
-								DrawGizmosRect(cell.Rect.Edge(Direction4.Right, thick), tint);
-							}
-						}
-					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-			}
-		}
 	}
 
 

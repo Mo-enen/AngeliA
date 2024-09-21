@@ -7,9 +7,18 @@ namespace AngeliA;
 
 public static class FrameworkUtil {
 
-
-	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
 	private const int SEARCHLIGHT_DENSITY = 32;
+	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
+	private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
+	private static readonly Color32[] COLLIDER_TINTS = {
+		Color32.RED_BETTER,
+		Color32.ORANGE_BETTER,
+		Color32.YELLOW,
+		Color32.GREEN,
+		Color32.CYAN,
+		Color32.BLUE,
+		Color32.GREY_128,
+	};
 
 
 	// Drawing
@@ -253,6 +262,58 @@ public static class FrameworkUtil {
 			new IRect(rect.x, rect.y, rect.width * usage / maxUsage, rect.height).Shrink(border),
 			Color32.Lerp(Color32.RED, Color32.GREEN, (float)usage / maxUsage)
 		);
+	}
+
+
+	public static void DrawAllCollidersAsGizmos (float brightness = 1f, bool ignoreNonOnewayTrigger = false) {
+
+		// Init Cells
+		if (CellPhysicsCells.Count == 0) {
+			try {
+				var layers = Util.GetStaticFieldValue(typeof(Physics), Physics.LayersName) as System.Array;
+				for (int layerIndex = 0; layerIndex < PhysicsLayer.COUNT; layerIndex++) {
+					var layerObj = layers.GetValue(layerIndex);
+					CellPhysicsCells.Add(Util.GetFieldValue(layerObj, Physics.CellsName) as PhysicsCell[,,]);
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+			if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
+		}
+
+		// Draw Cells
+		if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
+			int thick = GUI.Unify(1);
+			var cameraRect = Renderer.CameraRect;
+			for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
+				try {
+					var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
+					tint = Color32.LerpUnclamped(Color32.BLACK, tint, brightness);
+					var cells = CellPhysicsCells[layer];
+					int cellWidth = cells.GetLength(0);
+					int cellHeight = cells.GetLength(1);
+					int celDepth = cells.GetLength(2);
+					for (int y = 0; y < cellHeight; y++) {
+						for (int x = 0; x < cellWidth; x++) {
+							for (int d = 0; d < celDepth; d++) {
+								var cell = cells[x, y, d];
+								if (cell.Frame != Physics.CurrentFrame) break;
+								if (ignoreNonOnewayTrigger && cell.IsTrigger && !Util.HasOnewayTag(cell.Tag) && !cell.Tag.HasAny(Tag.Climb | Tag.ClimbStable)) continue;
+								if (!cell.Rect.Overlaps(cameraRect)) continue;
+								// Frame
+								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Down, thick), tint);
+								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Up, thick), tint);
+								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Left, thick), tint);
+								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Right, thick), tint);
+								// Cross
+								if (!cell.IsTrigger) {
+									Game.DrawGizmosLine(cell.Rect.x, cell.Rect.y, cell.Rect.xMax, cell.Rect.yMax, thick, tint);
+									Game.DrawGizmosLine(cell.Rect.xMax, cell.Rect.y, cell.Rect.x, cell.Rect.yMax, thick, tint);
+								}
+							}
+						}
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
+		}
 	}
 
 

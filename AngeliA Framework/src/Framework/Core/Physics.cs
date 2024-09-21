@@ -36,6 +36,7 @@ public static class Physics {
 
 
 	private class Layer {
+		public const string CellsName = nameof(Cells);
 		public readonly PhysicsCell[,,] Cells = null;
 		public Layer (int width, int height) {
 			Cells = new PhysicsCell[width, height, DEPTH];
@@ -62,6 +63,8 @@ public static class Physics {
 
 	// Const
 	private const int DEPTH = 8;
+	public const string LayersName = nameof(Layers);
+	public const string CellsName = Layer.CellsName;
 
 	// Api
 	public static int PositionX { get; private set; } = 0;

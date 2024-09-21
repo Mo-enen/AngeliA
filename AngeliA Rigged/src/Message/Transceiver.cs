@@ -149,7 +149,7 @@ public class RigTransceiver {
 	}
 
 
-	public unsafe bool Respond (Universe universe, int sheetIndex, bool updateViewCache, IRect gizmosDodgeRect, bool ignoreRendering = false) {
+	public unsafe bool Respond (Universe universe, int sheetIndex, bool updateViewCache, bool ignoreRendering = false) {
 		// Rig >> Engine
 		bool ignoreMouseInput = Game.PauselessFrame == IgnoreMouseInputFrame || !WindowUI.WindowRect.MouseInside();
 		if (*BufferPointer == 0) {
@@ -158,7 +158,7 @@ public class RigTransceiver {
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
 			if (!ignoreRendering) {
-				UpdateLastRespondedRender(universe, sheetIndex, gizmosDodgeRect, coverWithBlackTint: false);
+				UpdateLastRespondedRender(universe, sheetIndex, coverWithBlackTint: false);
 			}
 			return false;
 		}
@@ -167,7 +167,7 @@ public class RigTransceiver {
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
 		RespondMessage.ApplyToEngine(CallingMessage, ignoreMouseInput);
 		if (!ignoreRendering) {
-			RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, LeftPadding, gizmosDodgeRect);
+			RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, LeftPadding);
 		}
 		// Update Setting
 		if (updateViewCache) {
@@ -178,14 +178,14 @@ public class RigTransceiver {
 	}
 
 
-	public void UpdateLastRespondedRender (Universe universe, int sheetIndex, IRect gizmosDodgeRect, bool coverWithBlackTint = false) {
+	public void UpdateLastRespondedRender (Universe universe, int sheetIndex, bool coverWithBlackTint = false) {
 		if (coverWithBlackTint) {
 			int oldLayer = Renderer.CurrentLayerIndex;
 			Renderer.SetLayer(RenderLayer.UI);
 			Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_128);
 			Renderer.SetLayer(oldLayer);
 		}
-		RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, LeftPadding, gizmosDodgeRect);
+		RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, LeftPadding);
 	}
 
 
