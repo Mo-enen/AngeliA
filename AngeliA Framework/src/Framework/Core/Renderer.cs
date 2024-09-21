@@ -714,6 +714,21 @@ public static class Renderer {
 
 
 	// Sprite Data
+	public static bool HasSprite (int globalID) => CurrentSheet.SpritePool.ContainsKey(globalID);
+
+
+	public static bool HasSpriteGroup (int groupID) => CurrentSheet.GroupPool.ContainsKey(groupID);
+	public static bool HasSpriteGroup (int groupID, out int groupLength) {
+		if (CurrentSheet.GroupPool.TryGetValue(groupID, out var values)) {
+			groupLength = values.Count;
+			return true;
+		} else {
+			groupLength = 0;
+			return false;
+		}
+	}
+
+
 	public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = false) {
 		var sheet = CurrentSheet;
 		if (sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
@@ -725,21 +740,7 @@ public static class Renderer {
 	}
 
 
-	public static bool HasSpriteGroup (int groupID) => CurrentSheet.GroupPool.ContainsKey(groupID);
-
-
 	public static bool TryGetAnimationGroup (int groupID, out SpriteGroup group) => CurrentSheet.GroupPool.TryGetValue(groupID, out group) && group.Animated;
-
-
-	public static bool HasSpriteGroup (int groupID, out int groupLength) {
-		if (CurrentSheet.GroupPool.TryGetValue(groupID, out var values)) {
-			groupLength = values.Count;
-			return true;
-		} else {
-			groupLength = 0;
-			return false;
-		}
-	}
 
 
 	public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => CurrentSheet.GroupPool.TryGetValue(groupID, out group);
@@ -762,7 +763,7 @@ public static class Renderer {
 	}
 
 
-	public static bool HasSprite (int globalID) => CurrentSheet.SpritePool.ContainsKey(globalID);
+	public static bool TryGetSpriteForGizmos (int artworkID, out AngeSprite sprite) => TryGetSprite(artworkID, out sprite) || TryGetSpriteFromGroup(artworkID, 0, out sprite);
 
 
 	public static AngeSprite GetSpriteAt (int index) {

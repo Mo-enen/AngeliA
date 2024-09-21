@@ -71,7 +71,7 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 		var playerMenu = PlayerMenuUI.OpenMenu();
 		if (playerMenu != null) {
 			playerMenu.Partner = InventoryPartnerUI.Instance;
-			InventoryPartnerUI.Instance.AvatarIcon = TypeID;
+			InventoryPartnerUI.Instance.AvatarID = TypeID;
 			playerMenu.Partner.EnablePanel(InventoryID, InventoryColumn, InventoryRow);
 		}
 		return true;

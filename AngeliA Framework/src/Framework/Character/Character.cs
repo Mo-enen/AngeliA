@@ -26,6 +26,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 
 	// Const
+	public const int FULL_SLEEP_DURATION = 90;
 	private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
 	private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
 	public const int INVENTORY_COLUMN = 6;
@@ -54,7 +55,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public int TeleportDuration => _TeleportDuration.Abs();
 	public int CurrentAnimationFrame { get; set; } = 0;
 	public int CurrentRenderingBounce { get; private set; } = 1000;
-	public int SleepStartFrame { get; private set; } = int.MinValue;
+	public int SleepStartFrame { get; protected set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
 	public bool InventoryCurrentAvailable => AllowInventory && Game.GlobalFrame > IgnoreInventoryFrame;
 	public bool EquipingPickWeapon { get; private set; } = false;
@@ -497,7 +498,6 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		if (CharacterState == state) return;
 
 		PassOutFrame = int.MinValue;
-		SleepStartFrame = int.MinValue;
 		CharacterState = state;
 		Navigation.ResetNavigation();
 
@@ -537,6 +537,9 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		LockedAnimationType = type;
 		LockedAnimationTypeFrame = Game.GlobalFrame + duration;
 	}
+
+
+	public void GetBonusFromFullSleep () => Health.Heal(Health.MaxHP);
 
 
 	// Damage

@@ -154,7 +154,7 @@ public class PlayerMenuUI : EntityUI {
 		// Bottom Panel
 		RenderingBottomPanel = true;
 		var playerPanelRect = GetPanelRect(Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, ITEM_SIZE, false);
-		Renderer.DrawPixel(playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
+		Renderer.DrawPixel(playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK);
 		DrawInventory(Player.Selecting.TypeID, Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, false);
 
 		// Top Panel
@@ -162,7 +162,7 @@ public class PlayerMenuUI : EntityUI {
 		if (Partner != null) {
 			// Partner Panel
 			var panelRect = GetPanelRect(Partner.Column, Partner.Row, Partner.ItemFieldSize, true);
-			Renderer.DrawPixel(panelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK, int.MinValue + 1);
+			Renderer.DrawPixel(panelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK);
 			Partner.MouseInPanel = panelRect.MouseInside();
 			Partner.DrawPanel(panelRect);
 			TopPanelRect = panelRect;
@@ -499,7 +499,7 @@ public class PlayerMenuUI : EntityUI {
 	}
 
 
-	public static void DrawTopInventory (int inventoryID, int column, int row) => Instance?.DrawInventory(inventoryID, column, row, true);
+	public static void DrawTopInventory (int inventoryID, int column, int row, int avatarID = 0) => Instance?.DrawInventory(inventoryID, column, row, true, avatarID);
 
 
 	public static void DrawItemFieldUI (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) => Instance?.DrawItemField(itemID, itemCount, frameCode, itemRect, interactable, uiIndex);
@@ -520,12 +520,16 @@ public class PlayerMenuUI : EntityUI {
 
 
 	// Inventory UI
-	private void DrawInventory (int inventoryID, int column, int row, bool panelOnTop) {
+	private void DrawInventory (int inventoryID, int column, int row, bool panelOnTop, int avatarID = 0) {
 
 		if (inventoryID == 0 || !Inventory.HasInventory(inventoryID)) return;
 
 		var itemCount = Inventory.GetInventoryCapacity(inventoryID);
 		bool interactable = Game.GlobalFrame - SpawnFrame > ANIMATION_DURATION;
+		bool hasAvatar = Renderer.TryGetSpriteForGizmos(
+			avatarID != 0 ? avatarID : inventoryID,
+			out var avatarSP
+		);
 		var panelRect = GetPanelRect(column, row, ITEM_SIZE, panelOnTop);
 		if (panelOnTop) {
 			TopPanelRect = panelRect;
@@ -550,6 +554,17 @@ public class PlayerMenuUI : EntityUI {
 				itemRect.y = panelRect.y + j * itemRect.height;
 				DrawItemField(id, iCount, ITEM_FRAME_CODE, itemRect, interactable, index);
 			}
+		}
+
+		// Draw Avatar
+		if (hasAvatar) {
+			int bgPadding = Unify(WINDOW_PADDING);
+			int padding = Unify(6);
+			var avatarRect = panelRect.CornerOutside(Alignment.BottomLeft, Unify(48));
+			avatarRect.x -= bgPadding * 3;
+			avatarRect.y = panelRect.y;
+			Renderer.DrawPixel(avatarRect.Expand(bgPadding), Color32.BLACK);
+			Renderer.Draw(avatarSP, avatarRect.Shrink(padding).Fit(avatarSP));
 		}
 
 	}
@@ -1131,9 +1146,7 @@ public class PlayerMenuUI : EntityUI {
 	// Util
 	private static void DrawItemIcon (IRect rect, int id, Color32 tint, int z) {
 		if (id == 0) return;
-		if (!Renderer.TryGetSprite(id, out var sprite, true) &&
-			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
-		) {
+		if (!Renderer.TryGetSpriteForGizmos(id, out var sprite)) {
 			Renderer.TryGetSprite(Const.PIXEL, out sprite);
 			rect = rect.Shrink(rect.width / 6);
 		}

@@ -8,7 +8,6 @@ namespace AngeliA;
 public abstract class Bed : Furniture, IActionTarget {
 
 
-	private const int FULL_SLEEP_DURATION = 90;
 	protected override Direction3 ModuleType => Direction3.Horizontal;
 	private Character Target = null;
 	private bool RequireRestartGame = false;
@@ -42,12 +41,13 @@ public abstract class Bed : Furniture, IActionTarget {
 		if (Target == player) {
 			// Curtain
 			if (RequireRestartGame) {
-				Game.PassEffect_RetroDarken((float)(Game.GlobalFrame - player.SleepStartFrame) / FULL_SLEEP_DURATION);
+				Game.PassEffect_RetroDarken((float)(Game.GlobalFrame - player.SleepStartFrame) / Character.FULL_SLEEP_DURATION);
 			}
 			// Restart Game
-			if (RequireRestartGame && Game.GlobalFrame - player.SleepStartFrame >= FULL_SLEEP_DURATION) {
+			if (RequireRestartGame && Game.GlobalFrame - player.SleepStartFrame >= Character.FULL_SLEEP_DURATION) {
 				RequireRestartGame = false;
 				player.MakeHome(new Int3(player.X.ToUnit(), player.Y.ToUnit(), Stage.ViewZ));
+				player.GetBonusFromFullSleep();
 				Player.RespawnCpUnitPosition = null;
 				Game.RestartGame();
 			}

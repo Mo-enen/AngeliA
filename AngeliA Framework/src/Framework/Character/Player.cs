@@ -447,6 +447,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 			Input.UseGameKey(Gamekey.Action);
 			Input.UseGameKey(Gamekey.Jump);
 			SetCharacterState(CharacterState.GamePlay);
+			SleepStartFrame = int.MinValue;
 			Y -= 4;
 		}
 
