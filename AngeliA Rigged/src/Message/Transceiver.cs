@@ -201,6 +201,7 @@ public class RigTransceiver {
 
 
 
+
 	#region --- LGC ---
 
 
@@ -236,9 +237,13 @@ public class RigTransceiver {
 		while (true) {
 			try {
 				if (
+					!RigProcessRunning ||
 					RigPipeClientProcess == null ||
 					RigPipeClientProcess.StandardOutput == null
-				) continue;
+				) {
+					Thread.Sleep(200);
+					continue;
+				}
 				var output = RigPipeClientProcess.StandardOutput;
 				if (!output.BaseStream.CanRead) continue;
 				string line;
@@ -263,6 +268,7 @@ public class RigTransceiver {
 					}
 				}
 			} catch { }
+			Thread.Sleep(200);
 		}
 	}
 
@@ -271,9 +277,13 @@ public class RigTransceiver {
 		while (true) {
 			try {
 				if (
+					!RigProcessRunning ||
 					RigPipeClientProcess == null ||
 					RigPipeClientProcess.StandardError == null
-				) continue;
+				) {
+					Thread.Sleep(200);
+					continue;
+				}
 				var output = RigPipeClientProcess.StandardError;
 				if (!output.BaseStream.CanRead) continue;
 				string line;
@@ -285,6 +295,7 @@ public class RigTransceiver {
 					}
 				}
 			} catch { }
+			Thread.Sleep(200);
 		}
 	}
 

@@ -486,6 +486,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		AimViewY = Y <= LastGroundedY ? Y - GetCameraShiftOffset(Stage.ViewRect.height) : AimViewY;
 		Stage.SetViewPositionDelay(AimViewX, AimViewY, 96, int.MinValue);
 
+		// Size
+		Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 96, int.MinValue);
+
 		// Clamp
 		if (!Stage.ViewRect.Contains(X, Y)) {
 			if (X >= Stage.ViewRect.xMax) AimViewX = X - Stage.ViewRect.width + 1;

@@ -41,9 +41,6 @@ public class ConsoleWindow : WindowUI {
 
 	// Const
 	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
-	private static readonly SpriteCode ICON_INFO = "Console.Info";
-	private static readonly SpriteCode ICON_WARNING = "Console.Warning";
-	private static readonly SpriteCode ICON_ERROR = "Console.Error";
 	private static readonly SpriteCode ICON_CODE_ANA = "Console.Analysis";
 	private static readonly SpriteCode PANEL_BG = "UI.GeneralPanel";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
@@ -52,6 +49,7 @@ public class ConsoleWindow : WindowUI {
 
 	// Api
 	public static ConsoleWindow Instance { get; private set; }
+	public bool HaveRunningRigGame { get; set; } = false;
 	public bool HasCompileError => CompileErrorLines.Length > 0;
 	public sbyte RequireCodeAnalysis { get; set; } = 0;
 	public override string DefaultName => "Console";
@@ -134,10 +132,12 @@ public class ConsoleWindow : WindowUI {
 		rect.SlideRight(padding);
 
 		// Code Analysis
-		if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
-			RequireCodeAnalysis = 1;
+		using (new GUIEnableScope(HaveRunningRigGame)) {
+			if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
+				RequireCodeAnalysis = 1;
+			}
+			RequireTooltip(rect, TIP_HASH_COL);
 		}
-		RequireTooltip(rect, TIP_HASH_COL);
 		rect.SlideRight(padding);
 
 	}
@@ -181,7 +181,7 @@ public class ConsoleWindow : WindowUI {
 			var line = lines[lines.Length - i - 1];
 			// Icon
 			Renderer.Draw(
-				line.Level == 0 ? ICON_INFO : line.Level == 1 ? ICON_WARNING : ICON_ERROR,
+				line.Level == 0 ? BuiltInSprite.ICON_INFO : line.Level == 1 ? BuiltInSprite.ICON_WARNING : BuiltInSprite.ICON_ERROR,
 				rect.Edge(Direction4.Left, iconSize).Shrink(iconShrink)
 			);
 			// Label

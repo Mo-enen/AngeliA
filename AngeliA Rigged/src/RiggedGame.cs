@@ -268,13 +268,13 @@ public partial class RiggedGame : Game {
 			case RigCallingMessage.ToolCommand.RunCodeAnalysis:
 				FrameworkUtil.RunAngeliaCodeAnalysis(
 					onlyLogWhenWarningFounded: false,
-					fixScriptFileNames: Universe.BuiltInInfo.Internal_FixFileNameForAnalysis
+					useEnenPersonalFavour: Universe.BuiltInInfo.Internal_EnenPersonalFavour
 				);
 				break;
 			case RigCallingMessage.ToolCommand.RunCodeAnalysisSilently:
 				FrameworkUtil.RunAngeliaCodeAnalysis(
 					onlyLogWhenWarningFounded: true,
-					fixScriptFileNames: false
+					useEnenPersonalFavour: false
 				);
 				break;
 		}

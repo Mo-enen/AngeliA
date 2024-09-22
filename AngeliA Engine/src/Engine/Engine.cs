@@ -426,20 +426,6 @@ public partial class Engine {
 				}
 			}
 
-			// Hint - Circle
-			if (!CurrentWindowRequireRigGame && buildingProjectInBackground) {
-				var windowRect = WindowUI.WindowRect;
-				int hintPadding = GUI.Unify(6);
-				int size = GUI.Unify(32);
-				int x = windowRect.xMax - size / 2 - hintPadding;
-				int y = windowRect.yMin + size / 2 + hintPadding;
-				Renderer.Draw(
-					BuiltInSprite.ICON_REFRESH,
-					x, y, 500, 500, Game.GlobalFrame * 10,
-					size, size, Color32.GREY_128
-				);
-			}
-
 			// Hint - Label
 			if (CurrentWindowRequireRigGame) {
 				var windowRect = WindowUI.WindowRect;
@@ -593,12 +579,27 @@ public partial class Engine {
 					);
 				}
 
+				// Compling Mark
+				if (window is RiggedMapEditor && EngineUtil.BuildingProjectInBackground) {
+					int size = GUI.Unify(24);
+					if (!FullsizeMenu.Value) {
+						Renderer.DrawPixel(rect, Color32.BLACK_128);
+					}
+					Renderer.Draw(
+						BuiltInSprite.ICON_REFRESH,
+						FullsizeMenu.Value ? rect.xMax - size : rect.CenterX(),
+						rect.CenterY(),
+						500, 500, Game.GlobalFrame * 10,
+						size, size, Color32.ORANGE_BETTER
+					);
+				}
+
 				// Label
 				if (FullsizeMenu.Value) {
 					GUI.Label(
 						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
 						Language.Get(window.TypeID, window.DefaultName),
-						GUI.Skin.SmallCenterLabel
+						GUI.Skin.SmallLabel
 					);
 				}
 

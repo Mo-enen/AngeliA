@@ -146,5 +146,8 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode UI_SLIDER_HANDLE = "UI.SliderHandle";
 	public static readonly SpriteCode ICON_CLEAR = "Icon.Clear";
 	public static readonly SpriteCode UI_DIALOG_BG = "UI.DialogBackground";
+	public static readonly SpriteCode ICON_INFO = "Icon.Info";
+	public static readonly SpriteCode ICON_WARNING = "Icon.Warning";
+	public static readonly SpriteCode ICON_ERROR = "Icon.Error";
 
 }

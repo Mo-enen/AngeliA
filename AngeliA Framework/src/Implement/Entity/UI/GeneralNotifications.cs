@@ -9,7 +9,7 @@ public static class GeneralNotifications {
 
 	[OnCheatPerform]
 	internal static void CheatPerformed () {
-		NotificationUI.SpawnNotification(CHEAT_PERFORMED, BuiltInSprite.CHECK_MARK_32);
+		NotificationUI.SpawnNotification(CHEAT_PERFORMED, BuiltInSprite.ICON_INFO);
 	}
 
 }

@@ -14,6 +14,9 @@ public static class CheatSystem {
 		public object Param;
 	}
 
+	// Const
+	private static readonly LanguageCode MatchingHint = ("Hint.Cheat.Match", "Press Enter to Perform Cheat Code");
+
 	// Api
 	public static object CurrentParam { get; private set; } = null;
 
@@ -22,6 +25,7 @@ public static class CheatSystem {
 	private static bool Enable = false;
 	private static readonly Pipe<char> CheatInput = new(96);
 	private static readonly List<CheatAction> AllCheatActions = new();
+	private static int MatchingCheatIndex = -1;
 
 
 	// MSG
@@ -60,6 +64,7 @@ public static class CheatSystem {
 		if (changed && CheatInput.Length > 0) {
 			var span = AllCheatActions.GetSpan();
 			int len = span.Length;
+			bool anySuccess = false;
 			for (int i = 0; i < len; i++) {
 				try {
 					var action = span[i];
@@ -75,25 +80,45 @@ public static class CheatSystem {
 							break;
 						}
 					}
-					// Perform Cheat
+					// Cheat Match
 					if (success) {
-						CurrentParam = action.Param;
-						var resultObj = action.Action.Invoke(null, null);
-						CurrentParam = null;
-						if (resultObj is not bool performed || performed) {
-							OnCheatPerform?.Invoke();
-						}
-						CheatInput.Reset();
+						anySuccess = true;
+						MatchingCheatIndex = i;
 						break;
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 			}
+			if (!anySuccess) {
+				MatchingCheatIndex = -1;
+			}
 		}
 
+		// Perform
+		if (MatchingCheatIndex >= 0 && Input.KeyboardDown(KeyboardKey.Enter)) {
+			var action = AllCheatActions[MatchingCheatIndex];
+			CurrentParam = action.Param;
+			var resultObj = action.Action.Invoke(null, null);
+			CurrentParam = null;
+			if (resultObj is not bool performed || performed) {
+				OnCheatPerform?.Invoke();
+			}
+			CheatInput.Reset();
+			MatchingCheatIndex = -1;
+		}
+
+	}
 
 
-
-
+	[OnGameUpdateLater]
+	internal static void DrawMatchingHint () {
+		if (MatchingCheatIndex < 0) return;
+		GUI.BackgroundLabel(
+			Renderer.CameraRect.CornerInside(Alignment.MidMid, GUI.Unify(400), GUI.Unify(200)),
+			MatchingHint,
+			Game.GlobalFrame % 60 < 30 ? Color32.BLACK : Color32.GREEN,
+			backgroundPadding: GUI.Unify(12),
+			style: GUI.Skin.CenterMessage
+		);
 	}
 
 

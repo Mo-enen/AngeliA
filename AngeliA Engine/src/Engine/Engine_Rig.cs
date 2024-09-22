@@ -165,6 +165,7 @@ public partial class Engine {
 	// GUI
 	private void OnGUI_RiggedGame () {
 
+		ConsoleWindow.Instance.HaveRunningRigGame = Transceiver.RigProcessRunning;
 		if (HasCompileError) return;
 
 		bool currentWindowRequireRigGame = CurrentWindowIndex == RigMapEditorWindowIndex || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;

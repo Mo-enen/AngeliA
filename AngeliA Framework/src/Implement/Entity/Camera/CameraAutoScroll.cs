@@ -171,7 +171,8 @@ public sealed class CameraAutoScroll : Entity {
 				player.Health.HP = 0;
 				player.SetCharacterState(CharacterState.PassOut);
 			} else {
-				player.X = player.X.Clamp(viewRect.xMin, viewRect.xMax);
+				var cameraRect = Renderer.CameraRect;
+				player.X = player.X.Clamp(cameraRect.xMin, cameraRect.xMax);
 			}
 		}
 
