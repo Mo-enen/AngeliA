@@ -23,8 +23,15 @@ public class GroupAnimation : Entity {
 	private bool Loop = true;
 	private Color32 Tint = Color32.WHITE;
 	private int RenderedFrame = 0;
+	private Entity FollowingTarget;
+	private Int2 FollowingOffset;
 
 	// MSG
+	public override void OnActivated () {
+		base.OnActivated();
+		FollowingTarget = null;
+	}
+
 	public sealed override void BeforeUpdate () {
 		base.BeforeUpdate();
 		if (RenderedFrame >= Duration) {
@@ -44,6 +51,12 @@ public class GroupAnimation : Entity {
 		// Render
 		using var _ = new LayerScope(RenderingLayer);
 		Rotation1000 += RotationSpeed * 1000;
+
+		// Following
+		if (FollowingTarget != null && FollowingTarget.Active) {
+			X = FollowingTarget.X + FollowingOffset.x;
+			Y = FollowingTarget.Y + FollowingOffset.y;
+		}
 
 		// Get Sprite ID
 		Cell[] cells = null;
@@ -129,6 +142,12 @@ public class GroupAnimation : Entity {
 		ani.RenderingLayer = renderLayer;
 		ani.RenderedFrame = 0;
 		return ani;
+	}
+
+	public void Follow (Entity target) {
+		FollowingTarget = target;
+		FollowingOffset.x = X - target.X;
+		FollowingOffset.y = Y - target.Y;
 	}
 
 }

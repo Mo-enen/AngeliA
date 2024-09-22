@@ -113,7 +113,7 @@ public static class CheatSystem {
 	internal static void DrawMatchingHint () {
 		if (MatchingCheatIndex < 0) return;
 		GUI.BackgroundLabel(
-			Renderer.CameraRect.CornerInside(Alignment.MidMid, GUI.Unify(400), GUI.Unify(200)),
+			Renderer.CameraRect.CornerInside(Alignment.TopMid, GUI.Unify(400), GUI.Unify(200)).Shift(0, -GUI.Unify(20)),
 			MatchingHint,
 			Game.GlobalFrame % 60 < 30 ? Color32.BLACK : Color32.GREEN,
 			backgroundPadding: GUI.Unify(12),

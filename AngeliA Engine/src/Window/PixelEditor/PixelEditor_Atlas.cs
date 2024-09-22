@@ -344,6 +344,8 @@ public partial class PixelEditor {
 		HoveringResizeDirection = null;
 		SelectingPaletteIndex = -1;
 		PrevOpenAtlasIndex.Value = atlasIndex;
+		PixelSelectionPixelRect = default;
+		PixelBufferSize = Int2.zero;
 		if (resetUndo) Undo.Reset();
 	}
 
