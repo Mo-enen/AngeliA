@@ -62,10 +62,10 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	public static bool ShowingBrowser => Instance != null && Instance.Active;
 	public IRect BackgroundRect { get; private set; }
 	protected override bool BlockEvent => true;
-	public string TargetExtension { get; private set; } = string.Empty; // txt >> text files  (empty) >> all file types
 	public string CurrentFolder { get; set; } = "";
 	public string CurrentName { get; set; } = "";
 	public string Title { get; set; } = "";
+	public string[] SearchPatterns { get; private set; }
 
 	// Data
 	private static readonly List<string> Disks = new();
@@ -75,6 +75,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	private BrowserTargetType TargetType;
 	private string ErrorMessage = "";
 	private string NavbarText = "";
+	private string FileTypeName = "";
 	private int ScrollY = 0;
 	private int LastSelectFrame = -1;
 	private int SelectingIndex = -1;
@@ -105,9 +106,10 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		TargetExtension = string.Empty;
+		SearchPatterns = null;
 		ErrorMessage = "";
 		NavbarText = "";
+		FileTypeName = "";
 		ScrollY = 0;
 		SelectingIndex = -1;
 		Items.Clear();
@@ -351,7 +353,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Type Field
 		if (TargetType == BrowserTargetType.File) {
-			GUI.Label(typeRect, TargetExtension, GUI.Skin.SmallCenterLabel);
+			GUI.Label(typeRect, FileTypeName, GUI.Skin.SmallCenterLabel);
 			Renderer.DrawSlice(
 				BuiltInSprite.FRAME_16, typeRect, frameBorder, frameBorder, frameBorder, frameBorder, Color32.GREY_32, z: 1
 			);
@@ -397,10 +399,10 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
-	public static void OpenFolder (string title, System.Action<string> onFolderOpen) => SpawnBrowserLogic(title, "", "", BrowserActionType.Open, BrowserTargetType.Folder, onFolderOpen);
-	public static void OpenFile (string title, string fileExtensionWithoutDot, System.Action<string> onFileOpen) => SpawnBrowserLogic(title, "", fileExtensionWithoutDot, BrowserActionType.Open, BrowserTargetType.File, onFileOpen);
-	public static void SaveFolder (string title, string defaultFolderName, System.Action<string> onFolderSaved) => SpawnBrowserLogic(title, defaultFolderName, "", BrowserActionType.Save, BrowserTargetType.Folder, onFolderSaved);
-	public static void SaveFile (string title, string defaultFileName, string fileExtension, System.Action<string> onFileSaved) => SpawnBrowserLogic(title, defaultFileName, fileExtension, BrowserActionType.Save, BrowserTargetType.File, onFileSaved);
+	public static void OpenFolder (string title, System.Action<string> onFolderOpen) => SpawnBrowserLogic(title, "", null, BrowserActionType.Open, BrowserTargetType.Folder, onFolderOpen);
+	public static void OpenFile (string title, System.Action<string> onFileOpen, params string[] searchPatterns) => SpawnBrowserLogic(title, "", searchPatterns, BrowserActionType.Open, BrowserTargetType.File, onFileOpen);
+	public static void SaveFolder (string title, string defaultFolderName, System.Action<string> onFolderSaved) => SpawnBrowserLogic(title, defaultFolderName, null, BrowserActionType.Save, BrowserTargetType.Folder, onFolderSaved);
+	public static void SaveFile (string title, string defaultFileName, System.Action<string> onFileSaved, params string[] searchPatterns) => SpawnBrowserLogic(title, defaultFileName, searchPatterns, BrowserActionType.Save, BrowserTargetType.File, onFileSaved);
 
 
 	#endregion
@@ -411,7 +413,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	#region --- LGC ---
 
 
-	private static void SpawnBrowserLogic (string title, string defaultName, string extension, BrowserActionType actionType, BrowserTargetType targetType, System.Action<string> callback) {
+	private static void SpawnBrowserLogic (string title, string defaultName, string[] searchPatterns, BrowserActionType actionType, BrowserTargetType targetType, System.Action<string> callback) {
 		FileBrowserUI browser;
 		if (Stage.Enable) {
 			if (Stage.GetEntity(TYPE_ID) != null) return;
@@ -429,7 +431,11 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		browser.Title = title;
 		browser.CurrentName = defaultName;
 		browser.ActionType = actionType;
-		browser.TargetExtension = extension;
+		browser.SearchPatterns = searchPatterns;
+		browser.FileTypeName =
+			targetType == BrowserTargetType.Folder ? "" :
+			searchPatterns == null || searchPatterns.Length == 0 ? "*" :
+			string.Join('|', searchPatterns);
 		browser.OnPathPicked = callback;
 		browser.TargetType = targetType;
 		browser.Explore(browser.CurrentFolder);
@@ -461,7 +467,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 				SelectingIndex = Items.Count - 1;
 			}
 		}
-		foreach (string filePath in Util.EnumerateFiles(path, true, $"*.{TargetExtension}")) {
+		foreach (string filePath in Util.EnumerateFiles(path, true, SearchPatterns)) {
 			if (Util.IsFileHidden(filePath)) continue;
 			string name = Util.GetNameWithExtension(filePath);
 			int fileSpriteID = FileIconPool.TryGetValue(
@@ -501,6 +507,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		// Get Target Path
 		string targetPath;
 		if (forFolder) {
+			// For Folder
 			if (isSaving) {
 				targetPath = Util.CombinePaths(CurrentFolder, CurrentName);
 			} else {
@@ -511,20 +518,17 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 				}
 			}
 		} else {
-			if (TargetExtension == "*") {
-				if (SelectingIndex >= 0 && SelectingIndex < Items.Count) {
-					var selectingItem = Items[SelectingIndex];
-					if (selectingItem.IsFolder) {
-						Explore(selectingItem.Path);
-						return;
-					}
-					string ext = Util.GetExtensionWithDot(selectingItem.Path);
-					targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}{ext}");
-				} else {
+			// For File
+			if (SelectingIndex >= 0 && SelectingIndex < Items.Count) {
+				var selectingItem = Items[SelectingIndex];
+				if (selectingItem.IsFolder) {
+					Explore(selectingItem.Path);
 					return;
 				}
+				string ext = Util.GetExtensionWithDot(selectingItem.Path);
+				targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}{ext}");
 			} else {
-				targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}.{TargetExtension}");
+				return;
 			}
 		}
 		targetPath = Util.FixPath(targetPath, forUnity: false);

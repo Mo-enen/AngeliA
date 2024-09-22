@@ -53,7 +53,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.GREY_12,
 		BodyColorDisable = Color32.CLEAR,
 
@@ -71,7 +71,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.GREY_12,
 		BodyColorDisable = Color32.CLEAR,
 
@@ -129,7 +129,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.CLEAR,
 		BodyColorDisable = Color32.CLEAR,
 
@@ -149,7 +149,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.CLEAR,
 		BodyColorDisable = Color32.CLEAR,
 
@@ -169,7 +169,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.CLEAR,
 		BodyColorDisable = Color32.CLEAR,
 
@@ -189,7 +189,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.CLEAR,
 		BodyColorDisable = Color32.CLEAR,
 
@@ -209,7 +209,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.CLEAR,
 		BodyColorDisable = Color32.CLEAR,
 
@@ -229,7 +229,7 @@ public partial class GUISkin {
 		BodySpriteDisable = 0,
 
 		BodyColor = Color32.CLEAR,
-		BodyColorHover = Color32.GREY_20,
+		BodyColorHover = Color32.WHITE_12,
 		BodyColorDown = Color32.CLEAR,
 		BodyColorDisable = Color32.CLEAR,
 

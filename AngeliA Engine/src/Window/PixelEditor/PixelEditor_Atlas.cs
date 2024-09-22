@@ -274,14 +274,14 @@ public partial class PixelEditor {
 
 		// Import from Ase
 		if (GUI.Button(rect, ICON_IMPORT_ASE, Skin.SmallDarkButton)) {
-			FileBrowserUI.OpenFile(TITLE_IMPORT_ASE, "ase", ImportAtlasFromFile);
+			FileBrowserUI.OpenFile(TITLE_IMPORT_ASE, ImportAtlasFromFile, "*.ase");
 		}
 		RequireTooltip(rect, TIP_IMPORT_ASE);
 		rect.SlideRight(padding);
 
-		// Import from PNG
+		// Import from Image file
 		if (GUI.Button(rect, ICON_IMPORT_PNG, Skin.SmallDarkButton)) {
-			FileBrowserUI.OpenFile(TITLE_IMPORT_PNG, "png", ImportAtlasFromFile);
+			FileBrowserUI.OpenFile(TITLE_IMPORT_PNG, ImportAtlasFromFile, "*.png");
 		}
 		RequireTooltip(rect, TIP_IMPORT_PNG);
 		rect.SlideRight(padding);

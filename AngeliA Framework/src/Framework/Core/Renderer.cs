@@ -92,6 +92,7 @@ public static class Renderer {
 	private static readonly List<Sheet> AltSheets = new();
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
 	private static readonly Dictionary<Int2, CharSprite> CharSpritePool = new();
+	private static readonly Dictionary<int, int> FontIdIndexMap = new();
 	private static int _CurrentSheetIndex = -1;
 	private static bool IsDrawing = false;
 	private static long MainSheetFileModifyDate = 0;
@@ -352,7 +353,17 @@ public static class Renderer {
 	public static int GetLayerCapacity (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Cells.Length : 0;
 
 
-	public static void SetFontIndex (int newIndex) => CurrentFontIndex = newIndex;
+	// Font
+	public static void SetFontID (int id) {
+		if (FontIdIndexMap.TryGetValue(id, out int index)) {
+			CurrentFontIndex = index;
+		} else {
+			CurrentFontIndex = 0;
+		}
+	}
+
+
+	internal static void ClearFontIndexIdMap () => FontIdIndexMap.Clear();
 
 
 	// Draw

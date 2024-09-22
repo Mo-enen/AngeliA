@@ -468,6 +468,41 @@ public static class EngineUtil {
 	}
 
 
+	// Resources
+	public static void ImportMusicFile (Project project, string filePath) {
+		if (project == null) return;
+		Util.CopyFile(filePath, Util.CombinePaths(
+			project.Universe.MusicRoot,
+			Util.GetNameWithExtension(filePath)
+		));
+		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, project.UniversePath);
+	}
+
+
+	public static void ImportSoundFile (Project project, string filePath) {
+		if (project == null) return;
+		Util.CopyFile(filePath, Util.CombinePaths(
+			project.Universe.SoundRoot,
+			Util.GetNameWithExtension(filePath)
+		));
+		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, project.UniversePath);
+	}
+
+
+	public static void ImportFontFile (Project project, string filePath) {
+		if (project == null) return;
+		string newName = Util.GetNameWithExtension(filePath);
+		Util.CopyFile(filePath, Util.CombinePaths(project.Universe.FontRoot, newName));
+		Game.SyncFontsWithPool(project.Universe.FontRoot);
+	}
+
+
+	public static bool ImportIconFile (Project project, string filePath) {
+		if (project == null) return false;
+		return CreateIcoFromPng(filePath, project.IconPath);
+	}
+
+
 	#endregion
 
 

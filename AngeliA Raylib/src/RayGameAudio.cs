@@ -10,13 +10,14 @@ public partial class RayGame {
 
 	// Music
 	protected override void _UnloadMusic (object music) {
-		if (music == null) return;
-		Raylib.UnloadMusicStream((Music)music);
+		if (music is not Music rMusic) return;
+		if (Raylib.IsAudioStreamReady(rMusic.Stream)) {
+			Raylib.UnloadMusicStream(rMusic);
+		}
 	}
 
 	protected override void _PlayMusic (int id) {
 
-		CurrentBgmID = 0;
 		if (!MusicPool.TryGetValue(id, out var data)) return;
 
 		// Stop Current
@@ -24,6 +25,8 @@ public partial class RayGame {
 			Raylib.StopMusicStream(bgm);
 			Raylib.UnloadMusicStream(bgm);
 		}
+		CurrentBGM = null;
+		CurrentBgmID = 0;
 
 		// Play New
 		if (Util.FileExists(data.Path)) {
@@ -39,6 +42,8 @@ public partial class RayGame {
 	protected override void _StopMusic () {
 		if (CurrentBGM == null) return;
 		Raylib.StopMusicStream((Music)CurrentBGM);
+		_UnloadMusic(CurrentBGM);
+		CurrentBGM = null;
 		CurrentBgmID = 0;
 	}
 

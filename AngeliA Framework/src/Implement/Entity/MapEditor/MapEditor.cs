@@ -393,18 +393,6 @@ public sealed partial class MapEditor : WindowUI {
 		// Playing
 		if (IsPlaying) {
 			CurrentZ = Stage.ViewZ;
-			int newHeight = Universe.BuiltInInfo.DefaultViewHeight;
-			var viewRect = Stage.ViewRect;
-			if (viewRect.height != newHeight) {
-				if (Stage.DelayingViewX.HasValue) viewRect.x = Stage.DelayingViewX.Value;
-				if (Stage.DelayingViewY.HasValue) viewRect.y = Stage.DelayingViewY.Value;
-				int newWidth = newHeight * Universe.BuiltInInfo.ViewRatio / 1000;
-				viewRect.x -= (newWidth - viewRect.width) / 2;
-				viewRect.y -= (newHeight - viewRect.height) / 2;
-				viewRect.height = newHeight;
-				Stage.SetViewPositionDelay(viewRect.x, viewRect.y, 100, int.MinValue + 1);
-				Stage.SetViewSizeDelay(viewRect.height, 100, int.MinValue + 1);
-			}
 			return;
 		}
 
@@ -480,9 +468,6 @@ public sealed partial class MapEditor : WindowUI {
 		if (ViewRect != TargetViewRect) {
 			ViewRect = ViewRect.LerpTo(TargetViewRect, 600);
 		}
-
-		//Stage.SetViewRectImmediately(ViewRect, true);
-		//UpdatePanelRect(Renderer.CameraRect);
 
 		Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue);
 		Stage.SetViewSizeDelay(ViewRect.height, 1000, int.MaxValue);

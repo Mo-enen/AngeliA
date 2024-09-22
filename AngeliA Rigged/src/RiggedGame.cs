@@ -362,7 +362,8 @@ public partial class RiggedGame : Game {
 		RespondMessage.GamePlaying = WorldSquad.Enable;
 		RespondMessage.ViewX = Stage.ViewRect.x;
 		RespondMessage.ViewY = Stage.ViewRect.y;
-		RespondMessage.ViewZ = MapEditor.Instance != null ? MapEditor.Instance.CurrentZ : 0;
+		RespondMessage.ViewZ = MapEditor.Instance != null ? MapEditor.Instance.CurrentZ : Stage.ViewZ;
+		RespondMessage.ViewWidth = Stage.ViewRect.width;
 		RespondMessage.ViewHeight = Stage.ViewRect.height;
 		RespondMessage.SkyBottom = Sky.SkyTintBottomColor;
 		RespondMessage.SkyTop = Sky.SkyTintTopColor;

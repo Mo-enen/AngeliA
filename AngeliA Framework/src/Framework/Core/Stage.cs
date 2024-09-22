@@ -118,7 +118,7 @@ public static class Stage {
 	// Data
 	private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
 	private static (int? value, int priority) ViewDelayY = (null, int.MinValue);
-	private static (int? value, int priority) ViewDelayHeight = (null, int.MinValue);
+	private static (int? value, int priority, int centralizedFrame) ViewDelayHeight = (null, int.MinValue, -1);
 	private static event Action OnViewZChanged;
 	private static event Action<int> BeforeLayerFrameUpdate;
 	private static event Action<int> AfterLayerFrameUpdate;
@@ -236,6 +236,7 @@ public static class Stage {
 
 		// Move View Rect
 		if (ViewDelayX.value.HasValue || ViewDelayY.value.HasValue || ViewDelayHeight.value.HasValue) {
+			// Get New View Rect
 			int targetHeight = (ViewDelayHeight.value ?? ViewRect.height).Clamp(
 				Universe.BuiltInInfo.MinViewHeight,
 				Universe.BuiltInInfo.MaxViewHeight
@@ -246,13 +247,18 @@ public static class Stage {
 				Universe.BuiltInInfo.ViewRatio * targetHeight / 1000,
 				targetHeight
 			);
+			// Centralize
+			if (viewRectDelay.width != ViewRect.width && Game.GlobalFrame <= ViewDelayHeight.centralizedFrame + 1) {
+				viewRectDelay.x -= (viewRectDelay.width - ViewRect.width) / 2;
+			}
+			// Set to View Rect
 			if (ViewLerpRate >= 1000) {
 				ViewRect = viewRectDelay;
 				ViewDelayX.value = null;
 				ViewDelayY.value = null;
 				ViewDelayHeight.value = null;
 			} else {
-				ViewRect = new(
+				ViewRect = new IRect(
 					ViewRect.x.LerpTo(viewRectDelay.x, ViewLerpRate),
 					ViewRect.y.LerpTo(viewRectDelay.y, ViewLerpRate),
 					ViewRect.width.LerpTo(viewRectDelay.width, ViewLerpRate),
@@ -453,7 +459,7 @@ public static class Stage {
 	public static void Settle () => LastSettleFrame = Game.GlobalFrame;
 
 
-	// View Position
+	// Set View
 	public static void SetViewPositionDelay (int x, int y, int lerp = 1000, int priority = int.MinValue) {
 		if (priority >= ViewDelayX.priority) ViewDelayX = (x, priority);
 		if (priority >= ViewDelayY.priority) ViewDelayY = (y, priority);
@@ -473,9 +479,10 @@ public static class Stage {
 	}
 
 
-	// View Size
-	public static void SetViewSizeDelay (int height, int lerp = 1000, int priority = int.MinValue) {
-		if (priority >= ViewDelayHeight.priority) ViewDelayHeight = (height, priority);
+	public static void SetViewSizeDelay (int height, int lerp = 1000, int priority = int.MinValue, bool centralized = false) {
+		if (priority >= ViewDelayHeight.priority) {
+			ViewDelayHeight = (height, priority, centralized ? Game.GlobalFrame : -1);
+		}
 		ViewLerpRate = lerp;
 	}
 

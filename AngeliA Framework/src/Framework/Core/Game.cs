@@ -31,7 +31,7 @@ public abstract partial class Game {
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
 	public static bool DrawGizmosAtFront { get; set; } = false;
-	protected object CurrentBGM { get; set; }
+	public static object CurrentBGM { get; protected set; }
 
 	// Attribute Info
 	public static bool IsToolApplication { get; private set; } = false;
@@ -318,7 +318,7 @@ public abstract partial class Game {
 		}
 		Fonts.Sort((a, b) => {
 			int result = b.BuiltIn.CompareTo(a.BuiltIn);
-			return result != 0 ? result : a.LocalLayerIndex.CompareTo(b.LocalLayerIndex);
+			return result != 0 ? result : a.Name.CompareTo(b.Name);
 		});
 		if (builtIn) {
 			BuiltInFontCount = Fonts.Count(font => font.BuiltIn);
@@ -360,9 +360,10 @@ public abstract partial class Game {
 		if (fontChanged) {
 			Fonts.Sort((a, b) => {
 				int result = b.BuiltIn.CompareTo(a.BuiltIn);
-				return result != 0 ? result : a.LocalLayerIndex.CompareTo(b.LocalLayerIndex);
+				return result != 0 ? result : a.Name.CompareTo(b.Name);
 			});
 			Renderer.ClearCharSpritePool();
+			Renderer.ClearFontIndexIdMap();
 		}
 		return fontChanged;
 	}
@@ -439,7 +440,7 @@ public abstract partial class Game {
 	}
 
 	public static void ClearAndUnloadAudioPool () {
-		UnloadMusic(Instance.CurrentBGM);
+		UnloadMusic(CurrentBGM);
 		foreach (var (_, sound) in SoundPool) {
 			UnloadSound(sound);
 		}

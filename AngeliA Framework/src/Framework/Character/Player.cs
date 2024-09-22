@@ -487,7 +487,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		Stage.SetViewPositionDelay(AimViewX, AimViewY, 96, int.MinValue);
 
 		// Size
-		Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 96, int.MinValue);
+		Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 96, int.MinValue, centralized: true);
 
 		// Clamp
 		if (!Stage.ViewRect.Contains(X, Y)) {

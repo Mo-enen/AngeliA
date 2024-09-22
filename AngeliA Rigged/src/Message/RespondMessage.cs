@@ -85,6 +85,7 @@ public class RigRespondMessage {
 	public int ViewX;
 	public int ViewY;
 	public int ViewZ;
+	public int ViewWidth;
 	public int ViewHeight;
 	public int RequireSetCursorIndex;
 	public Color32 SkyTop;
@@ -241,7 +242,7 @@ public class RigRespondMessage {
 		var info = universe.Info;
 		ViewHeight = ViewHeight.GreaterOrEquel(info.MinViewHeight);
 		int oldViewHeight = Stage.ViewRect.height;
-		var engineViewRect = new IRect(ViewX, ViewY, Game.GetViewWidthFromViewHeight(ViewHeight), ViewHeight);
+		var engineViewRect = new IRect(ViewX, ViewY, ViewWidth, ViewHeight);
 		Stage.SetViewRectImmediately(engineViewRect, remapAllRenderingCells: true);
 		if (oldViewHeight != ViewHeight) {
 			leftPadding = leftPadding * ViewHeight / oldViewHeight;
@@ -366,6 +367,7 @@ public class RigRespondMessage {
 			ViewX = Util.ReadInt(ref pointer, end);
 			ViewY = Util.ReadInt(ref pointer, end);
 			ViewZ = Util.ReadInt(ref pointer, end);
+			ViewWidth = Util.ReadInt(ref pointer, end);
 			ViewHeight = Util.ReadInt(ref pointer, end);
 			RequireSetCursorIndex = Util.ReadInt(ref pointer, end);
 
@@ -538,6 +540,7 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, ViewX, end);
 			Util.Write(ref pointer, ViewY, end);
 			Util.Write(ref pointer, ViewZ, end);
+			Util.Write(ref pointer, ViewWidth, end);
 			Util.Write(ref pointer, ViewHeight, end);
 			Util.Write(ref pointer, RequireSetCursorIndex, end);
 

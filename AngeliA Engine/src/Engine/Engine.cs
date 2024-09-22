@@ -242,39 +242,16 @@ public partial class Engine {
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 		}
-
+		
 		// Func
 		static void ImportForIcon () {
-			string path = Instance.DroppingFilePath;
-			var project = Instance.CurrentProject;
-			if (project == null) return;
-			bool success = EngineUtil.CreateIcoFromPng(path, project.IconPath);
-			if (success) ProjectEditor.Instance.ReloadIconUI();
+			if (EngineUtil.ImportIconFile(Instance.CurrentProject, Instance.DroppingFilePath)) {
+				ProjectEditor.Instance.ReloadIconUI();
+			}
 		}
-		static void ImportForArtwork () {
-			string path = Instance.DroppingFilePath;
-			PixelEditor.ImportAtlasFromFile(path);
-		}
-		static void ImportForMusic () {
-			string path = Instance.DroppingFilePath;
-			var project = Instance.CurrentProject;
-			if (project == null) return;
-			Util.CopyFile(path, Util.CombinePaths(
-				project.Universe.MusicRoot,
-				Util.GetNameWithExtension(path)
-			));
-			Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, project.UniversePath);
-		}
-		static void ImportForSound () {
-			string path = Instance.DroppingFilePath;
-			var project = Instance.CurrentProject;
-			if (project == null) return;
-			Util.CopyFile(path, Util.CombinePaths(
-				project.Universe.SoundRoot,
-				Util.GetNameWithExtension(path)
-			));
-			Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, project.UniversePath);
-		}
+		static void ImportForArtwork () => PixelEditor.ImportAtlasFromFile(Instance.DroppingFilePath);
+		static void ImportForMusic () => EngineUtil.ImportMusicFile(Instance.CurrentProject, Instance.DroppingFilePath);
+		static void ImportForSound () => EngineUtil.ImportSoundFile(Instance.CurrentProject, Instance.DroppingFilePath);
 	}
 
 
@@ -569,16 +546,6 @@ public partial class Engine {
 				var iconRect = contentRect.Edge(Direction4.Left, iconSize);
 				Renderer.Draw(window.TypeID, iconRect);
 
-				// Dirty Mark
-				if (window.IsDirty) {
-					int markSize = GUI.Unify(10);
-					Renderer.Draw(
-						BuiltInSprite.ICON_STAR,
-						new IRect(iconRect.xMax - markSize / 2, iconRect.yMax - markSize / 2, markSize, markSize),
-						Color32.ORANGE_BETTER
-					);
-				}
-
 				// Compling Mark
 				if (window is RiggedMapEditor && EngineUtil.BuildingProjectInBackground) {
 					int size = GUI.Unify(24);
@@ -591,6 +558,16 @@ public partial class Engine {
 						rect.CenterY(),
 						500, 500, Game.GlobalFrame * 10,
 						size, size, Color32.ORANGE_BETTER
+					);
+				}
+
+				// Dirty Mark
+				if (window.IsDirty) {
+					int markSize = GUI.Unify(10);
+					Renderer.Draw(
+						BuiltInSprite.ICON_STAR,
+						new IRect(iconRect.xMax - markSize / 2, iconRect.yMax - markSize / 2, markSize, markSize),
+						Color32.ORANGE_BETTER
 					);
 				}
 

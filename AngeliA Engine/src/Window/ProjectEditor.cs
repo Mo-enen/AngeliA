@@ -56,6 +56,9 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_MUSIC = ("Label.Project.Music", "Music");
 	private static readonly LanguageCode LABEL_SOUND = ("Label.Project.Sound", "Sound");
 	private static readonly LanguageCode LABEL_FONT = ("Label.Project.Font", "Font");
+	private static readonly LanguageCode LABEL_ADD_MUSIC = ("Label.Project.AddMusic", "+ music");
+	private static readonly LanguageCode LABEL_ADD_SOUND = ("Label.Project.AddSound", "+ Sound");
+	private static readonly LanguageCode LABEL_ADD_FONT = ("Label.Project.AddFont", "+ Font");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
 	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
 	private static readonly LanguageCode LABEL_ALLOW_PAUSE = ("Label.Project.AllowPause", "Allow Pause Game");
@@ -424,7 +427,7 @@ public class ProjectEditor : WindowUI {
 		rect.height = iconButtonSize;
 		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
 		if (GUI.Button(iconButtonRect, 0, out var state, Skin.DarkButton)) {
-			FileBrowserUI.OpenFile(TITLE_PICK_ICON, "png", SetIconFromPNG);
+			FileBrowserUI.OpenFile(TITLE_PICK_ICON, SetIconFromPNG, "*.png");
 		}
 		if (Game.IsTextureReady(IconTexture) && !FileBrowserUI.ShowingBrowser) {
 			var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
@@ -575,6 +578,7 @@ public class ProjectEditor : WindowUI {
 		rect.yMin = rect.yMax - itemHeight;
 		int labelWidth = GUI.LabelWidth;
 		bool rightButtonDown = Input.MouseRightButtonDown;
+		int addButtonWidth = Unify(96);
 
 		// Music
 		if (Game.MusicPool.Count > 0) {
@@ -604,6 +608,18 @@ public class ProjectEditor : WindowUI {
 			}
 		}
 
+		// Add Music Btn
+		if (GUI.SmallLinkButton(rect.ShrinkLeft(labelWidth), LABEL_ADD_MUSIC, false)) {
+			FileBrowserUI.OpenFile(LABEL_ADD_MUSIC, AddMusic, "*.mp3", "*.ogg");
+		}
+		rect.SlideDown(padding);
+		static void AddMusic (string path) {
+			if (string.IsNullOrWhiteSpace(path)) return;
+			string ext = Util.GetExtensionWithDot(path);
+			if (ext != ".mp3" && ext != ".ogg") return;
+			EngineUtil.ImportMusicFile(Instance.CurrentProject, path);
+		}
+
 		// Sound
 		if (Game.SoundPool.Count > 0) {
 			GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_SOUND);
@@ -626,6 +642,18 @@ public class ProjectEditor : WindowUI {
 			}
 		}
 
+		// Add Sound Btn
+		if (GUI.SmallLinkButton(rect.ShrinkLeft(labelWidth), LABEL_ADD_SOUND, false)) {
+			FileBrowserUI.OpenFile(LABEL_ADD_SOUND, AddSound, "*.wav", "*.ogg");
+		}
+		rect.SlideDown(padding);
+		static void AddSound (string path) {
+			if (string.IsNullOrWhiteSpace(path)) return;
+			string ext = Util.GetExtensionWithDot(path);
+			if (ext != ".wav" && ext != ".ogg") return;
+			EngineUtil.ImportSoundFile(Instance.CurrentProject, path);
+		}
+
 		// Font
 		if (Game.Fonts.Count > 0) {
 			GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_FONT);
@@ -646,6 +674,18 @@ public class ProjectEditor : WindowUI {
 				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), fontData.Name);
 				rect.SlideDown(padding);
 			}
+		}
+
+		// Add Font Btn
+		if (GUI.SmallLinkButton(rect.ShrinkLeft(labelWidth), LABEL_ADD_FONT, false)) {
+			FileBrowserUI.OpenFile(LABEL_ADD_FONT, AddFont, "*.ttf");
+		}
+		rect.SlideDown(padding);
+		static void AddFont (string path) {
+			if (string.IsNullOrWhiteSpace(path)) return;
+			string ext = Util.GetExtensionWithDot(path);
+			if (ext != ".ttf") return;
+			EngineUtil.ImportFontFile(Instance.CurrentProject, path);
 		}
 
 		// Func
