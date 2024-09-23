@@ -99,6 +99,10 @@ public static class ItemSystem {
 			nameof(GiveItemCheat),
 			BindingFlags.NonPublic | BindingFlags.Static
 		);
+		var fillItemCheatInfo = typeof(ItemSystem).GetMethod(
+			nameof(FillItemCheat),
+			BindingFlags.NonPublic | BindingFlags.Static
+		);
 
 		// Init Item Pool from Code
 		var BLOCK_ITEM = typeof(BlockBuilder);
@@ -115,6 +119,7 @@ public static class ItemSystem {
 				item.MaxStackCount.GreaterOrEquel(1)
 			));
 			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
+			CheatSystem.AddCheatAction($"FillInventoryWith{angeName}", fillItemCheatInfo, id);
 		}
 
 		// Add Block Entity
@@ -130,6 +135,7 @@ public static class ItemSystem {
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
 			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
+			CheatSystem.AddCheatAction($"FillInventoryWith{angeName}", fillItemCheatInfo, id);
 		}
 
 		ItemPoolReady = true;
@@ -265,6 +271,28 @@ public static class ItemSystem {
 		}
 		// Give
 		GiveItemToTarget(player, id, 1);
+	}
+
+
+	internal static void FillItemCheat () {
+		var player = Player.Selecting;
+		if (player == null) return;
+		if (CheatSystem.CurrentParam is not int id) return;
+		if (!ItemPool.TryGetValue(id, out var data)) return;
+		// Unlock
+		if (!data.Unlocked) {
+			SetItemUnlocked(id, true);
+		}
+		// Give
+		GiveItemToTarget(player, id, 1);
+		int invCount = Inventory.GetInventoryCapacity(player.TypeID);
+		for (int i = 0; i < invCount; i++) {
+			int _itemID = Inventory.GetItemAt(player.TypeID, i, out int _count);
+			if (_itemID != 0 && _itemID != id && _count > 0) continue;
+			int maxCount = GetItemMaxStackCount(id);
+			if (maxCount <= 0) continue;
+			Inventory.SetItemAt(player.TypeID, i, id, maxCount);
+		}
 	}
 
 

@@ -32,9 +32,9 @@ public static class CheatSystem {
 	[OnGameInitialize(-256)]
 	internal static void OnGameInitialize () {
 		// Init Pool
-		Enable = Universe.BuiltInInfo.AllowCheatCode;
+		Enable = !Game.IsToolApplication && Universe.BuiltInInfo.AllowCheatCode;
 #if DEBUG
-		Enable = true;
+		Enable = !Game.IsToolApplication;
 #endif
 		if (Enable) {
 			Util.LinkEventWithAttribute<OnCheatPerformAttribute>(typeof(CheatSystem), nameof(OnCheatPerform));

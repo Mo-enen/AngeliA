@@ -215,6 +215,9 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	bool IActionTarget.Invoke () {
 		var player = Player.Selecting;
 		bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
+		if (collected) {
+			ItemSystem.SetItemUnlocked(ItemID, true);
+		}
 		return collected || player.EquippingWeaponType == WeaponType.Throwing;
 	}
 

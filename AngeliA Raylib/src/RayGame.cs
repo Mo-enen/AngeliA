@@ -210,7 +210,7 @@ public partial class RayGame : Game {
 		// Update AngeliA
 		Raylib.BeginTextureMode(GizmosRenderTexture);
 		Raylib.ClearBackground(Color.Blank);
-		Raylib.BeginBlendMode(BlendMode.CustomSeparate);
+		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		Update();
 		Raylib.EndBlendMode();
 

@@ -114,7 +114,7 @@ public partial class CharacterMovement {
 	public readonly FrameBasedInt FlyRiseSpeed = new(96);
 	public readonly FrameBasedInt FlyGravityRiseRate = new(800);
 	public readonly FrameBasedInt FlyGravityFallRate = new(200);
-	public readonly FrameBasedInt FlyFallSpeed = new(12);
+	public readonly FrameBasedInt FlyFallSpeed = new(16);
 	public readonly FrameBasedInt FlyMoveSpeed = new(32);
 	public readonly FrameBasedInt FlyAcceleration = new(2);
 	public readonly FrameBasedInt FlyDeceleration = new(1);

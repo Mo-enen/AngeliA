@@ -265,7 +265,7 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 		if (progItem.PrevItemID != 0 && damage > 0) {
 			Inventory.GetEquipment(holder.TypeID, EquipmentType, out int oldEqCount);
 			Inventory.SetEquipment(holder.TypeID, EquipmentType, progItem.PrevItemID, oldEqCount);
-			InvokeOnItemDamage(holder as Character, TypeID, progItem.PrevItemID);
+			InvokeItemDamage(holder as Character, TypeID, progItem.PrevItemID);
 			damage--;
 		}
 	}

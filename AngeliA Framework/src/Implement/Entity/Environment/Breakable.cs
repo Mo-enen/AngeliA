@@ -24,9 +24,9 @@ public abstract class Breakable : EnvironmentRigidbody, IDamageReceiver {
 
 	protected virtual void OnBreak () {
 		GlobalEvent.InvokeObjectBreak(TypeID, Rect);
-		bool itemDropped = ItemSystem.DropItemFor(this);
+		ItemSystem.DropItemFor(this);
 		if (Universe.BuiltInInfo.UseProceduralMap) {
-			FrameworkUtil.PickEntityBlock(this, !itemDropped);
+			FrameworkUtil.PickEntityBlock(this, false);
 		} else {
 			FrameworkUtil.RemoveFromWorldMemory(this);
 		}

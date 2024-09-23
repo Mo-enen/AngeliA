@@ -178,7 +178,7 @@ public class ConsoleWindow : WindowUI {
 				rect.SlideDown();
 				continue;
 			}
-			var line = lines[lines.Length - i - 1];
+			var line = lines[i];
 			// Icon
 			Renderer.Draw(
 				line.Level == 0 ? BuiltInSprite.ICON_INFO : line.Level == 1 ? BuiltInSprite.ICON_WARNING : BuiltInSprite.ICON_ERROR,
@@ -262,6 +262,7 @@ public class ConsoleWindow : WindowUI {
 			content = content[..MAX_CHAR_COUNT];
 		}
 		lines.LinkToTail(new Line(level, content.Replace("\n", "; ").Replace("\r", ""), Game.GlobalFrame));
+		ScrollY = int.MaxValue;
 	}
 
 

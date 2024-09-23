@@ -46,9 +46,9 @@ public abstract class Item : IMapItem {
 	public virtual bool TryRepair (Entity holder) => false;
 
 	// Callback
-	protected static void InvokeItemLost (Character holder, int itemID) => OnItemLost?.Invoke(holder, itemID);
-	protected static void InvokeOnItemDamage (Character holder, int itemBeforeID, int itemAfterID) => OnItemDamage?.Invoke(holder, itemBeforeID, itemAfterID);
-	protected static void InvokeOnItemInsufficient (Character holder, int itemID) => OnItemInsufficient?.Invoke(holder, itemID);
+	public static void InvokeItemLost (Character holder, int itemID) => OnItemLost?.Invoke(holder, itemID);
+	public static void InvokeItemDamage (Character holder, int itemBeforeID, int itemAfterID) => OnItemDamage?.Invoke(holder, itemBeforeID, itemAfterID);
+	public static void InvokeItemInsufficient (Character holder, int itemID) => OnItemInsufficient?.Invoke(holder, itemID);
 
 	// Ground
 	public virtual void OnItemUpdate_FromGround (Entity holder, int count) { }
