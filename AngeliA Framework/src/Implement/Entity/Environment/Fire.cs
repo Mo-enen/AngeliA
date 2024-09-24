@@ -248,11 +248,11 @@ public abstract class Fire : Entity {
 	#region --- API ---
 
 
-	public static void SpreadFire (int fireID, IRect rect, Entity host = null) {
+	public static void SpreadFire (int fireID, IRect rect, Entity ignore = null) {
 		var hits = Physics.OverlapAll(
 			PhysicsMask.ENTITY,
 			rect, out int count,
-			host, OperationMode.ColliderAndTrigger
+			ignore, OperationMode.ColliderAndTrigger
 		);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
@@ -304,7 +304,7 @@ public abstract class Fire : Entity {
 	}
 
 
-	public void Spread () => SpreadFire(TypeID, Rect.Expand(SpreadRange), host: this);
+	public void Spread () => SpreadFire(TypeID, Rect.Expand(SpreadRange), ignore: this);
 
 
 	public void Putout (bool manually) {

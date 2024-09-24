@@ -34,7 +34,7 @@ public abstract class Item : IMapItem {
 	public virtual void OnItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void PoseAnimationUpdate_FromEquipment (Entity holder) { }
 	public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) { }
-	public virtual void OnCharacterAttack (Entity holder) { }
+	public virtual void OnCharacterAttack (Character character, Bullet bullet) { }
 	public virtual bool TryRepair (Entity holder) => false;
 
 	// Callback

@@ -471,9 +471,11 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 				var item = GetEquippingItem((EquipmentType)i);
 				if (item == null) continue;
 				item.OnItemUpdate_FromEquipment(this);
-				if (attackLocalFrame == 0) item.OnCharacterAttack(this);
 				if (item is Weapon weapon) {
-					if (attackLocalFrame == weapon.BulletDelayFrame) weapon.SpawnBullet(this);
+					if (attackLocalFrame == weapon.BulletDelayFrame) {
+						var bullet = weapon.SpawnBullet(this);
+						item.OnCharacterAttack(this, bullet);
+					}
 				}
 			}
 
