@@ -813,9 +813,7 @@ public class PlayerMenuUI : EntityUI {
 				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label
 			);
 		}
-
-		// Progressive Icon
-		ItemSystem.DrawItemShortInfo(
+		FrameworkUtil.DrawItemShortInfo(
 			itemID,
 			fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, 0, itemRect.height / 2),
 			int.MinValue + 3,

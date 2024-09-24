@@ -8,6 +8,7 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 	// VAR
 	protected static readonly HashSet<Int3> OpenedChest = new();
+	protected virtual int ItemPlaceHolder => 0;
 
 
 	// MSG
@@ -31,7 +32,10 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 	bool IActionTarget.Invoke () {
 		if (IsChestOpened(this)) return false;
 		if (FromWorld) OpenedChest.Add(InstanceID);
-		ItemSystem.SpawnItemFromMap(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+		FrameworkUtil.SpawnItemFromMap(
+			WorldSquad.Front, X.ToUnit(), Y.ToUnit(), Stage.ViewZ,
+			placeHolderID: ItemPlaceHolder
+		);
 		return true;
 	}
 

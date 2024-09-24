@@ -646,6 +646,21 @@ public partial class PixelEditor {
 		RequireTooltip(rect, TIP_DEL_SPRITE);
 		rect.SlideRight(padding);
 
+		// Log Sprite Names
+#if DEBUG
+		if (GUI.Button(rect, BuiltInSprite.ICON_INFO, Skin.SmallDarkButton)) {
+			string result = "";
+			foreach (var data in StagedSprites) {
+				if (!data.Selecting) continue;
+				result += data.Sprite.RealName + "\n";
+			}
+			Debug.Log(result);
+			Game.SetClipboardText(result);
+		}
+		RequireTooltip(rect, "Log and copy selecting sprite names.");
+		rect.SlideRight(padding);
+#endif
+
 		// Final
 		box.Width = rect.xMin - box.X + boxPadding * 2;
 		box.X -= boxPadding;

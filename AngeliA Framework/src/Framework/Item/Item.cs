@@ -5,14 +5,6 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public interface IProgressiveItem {
-	int Progress { get; set; }
-	int TotalProgress { get; set; }
-	int PrevItemID { get; set; }
-	int NextItemID { get; set; }
-}
-
-
 [EntityAttribute.MapEditorGroup("Item")]
 public abstract class Item : IMapItem {
 
@@ -23,7 +15,7 @@ public abstract class Item : IMapItem {
 	public static event ItemHandler OnItemLost;
 	public static event ItemDamageHandler OnItemDamage;
 	public static event ItemHandler OnItemInsufficient;
-	public virtual int MaxStackCount => 64;
+	public abstract int MaxStackCount { get; }
 	public int TypeID { get; init; }
 
 

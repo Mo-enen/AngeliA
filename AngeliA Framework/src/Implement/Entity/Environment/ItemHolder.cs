@@ -298,12 +298,6 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	public static void ClearHoldingPool () => HoldingPool.Clear();
 
 
-	public void SetIdAndCount (int id, int count) {
-		ItemID = id;
-		ItemCount = count;
-	}
-
-
 	#endregion
 
 

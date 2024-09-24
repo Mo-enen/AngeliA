@@ -94,6 +94,12 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 			}
 		}
 
+		// Out of Range
+		if (!SummonNavigation.FollowOwner && !Stage.SpawnRect.Overlaps(Rect)) {
+			Active = false;
+			return;
+		}
+
 		base.Update();
 
 	}

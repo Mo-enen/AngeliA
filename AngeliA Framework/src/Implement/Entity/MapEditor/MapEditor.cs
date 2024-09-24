@@ -1020,7 +1020,8 @@ public sealed partial class MapEditor : WindowUI {
 		ItemHolder.ClearHoldingPool();
 		foreach (var holder in Stage.ForAllActiveEntities<ItemHolder>(EntityLayer.ITEM)) {
 			holder.Active = false;
-			holder.SetIdAndCount(0, 0);
+			holder.ItemID = 0;
+			holder.ItemCount = 0;
 		}
 
 		if (!toPlayMode) {

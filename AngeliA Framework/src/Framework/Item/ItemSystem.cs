@@ -296,40 +296,6 @@ public static class ItemSystem {
 	}
 
 
-	// UI
-	public static void DrawItemShortInfo (int itemID, IRect panelRect, int z, int armorIcon, int armorEmptyIcon, Color32 tint) {
-
-		if (!ItemPool.TryGetValue(itemID, out var itemData)) return;
-		var item = itemData.Item;
-
-		// Equipment
-		if (item is Equipment equipment) {
-			switch (equipment.EquipmentType) {
-				case EquipmentType.Weapon:
-					break;
-				case EquipmentType.Jewelry:
-					break;
-				case EquipmentType.BodyArmor:
-				case EquipmentType.Helmet:
-				case EquipmentType.Shoes:
-				case EquipmentType.Gloves:
-					if (equipment is IProgressiveItem progItem) {
-						int progress = progItem.Progress;
-						int totalProgress = progItem.TotalProgress;
-						var rect = new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
-						for (int i = 0; i < totalProgress - 1; i++) {
-							Renderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, tint, z);
-							rect.x += rect.width;
-						}
-					}
-					break;
-			}
-		}
-
-
-	}
-
-
 	// Combination
 	public static bool TryGetCombination (
 		int item0, int item1, int item2, int item3,
@@ -423,6 +389,7 @@ public static class ItemSystem {
 
 
 	public static ItemHolder SpawnItem (int itemID, int x, int y, int count = 1, bool jump = true) {
+		if (!HasItem(itemID)) return null;
 		if (Stage.SpawnEntity(ItemHolder.TYPE_ID, x, y) is not ItemHolder holder) return null;
 		holder.ItemID = itemID;
 		holder.ItemCount = count;
@@ -430,29 +397,6 @@ public static class ItemSystem {
 			holder.Jump();
 		}
 		return holder;
-	}
-
-
-	public static void SpawnItemFromMap (int unitX, int unitY, int z, IBlockSquad squad = null) {
-		squad ??= WorldSquad.Front;
-		for (int y = 1; y < 256; y++) {
-			int currentUnitY = unitY - y;
-			int right = -1;
-			for (int x = 0; x < 256; x++) {
-				int id = squad.GetBlockAt(unitX + x, currentUnitY, z, BlockType.Element);
-				if (id == 0 || !HasItem(id)) break;
-				right = x;
-			}
-			if (right == -1) break;
-			int itemLocalIndex = Util.QuickRandom(0, right + 1);
-			int itemID = squad.GetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element);
-			// Spawn Item
-			if (HasItem(itemID) && Stage.SpawnEntity(ItemHolder.TYPE_ID, unitX.ToGlobal(), unitY.ToGlobal()) is ItemHolder holder) {
-				holder.ItemID = itemID;
-				holder.ItemCount = 1;
-				holder.Jump();
-			}
-		}
 	}
 
 

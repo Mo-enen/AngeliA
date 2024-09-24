@@ -873,4 +873,60 @@ public static class FrameworkUtil {
 	}
 
 
+	// Item
+	public static void DrawItemShortInfo (int itemID, IRect panelRect, int z, int armorIcon, int armorEmptyIcon, Color32 tint) {
+
+		var item = ItemSystem.GetItem(itemID);
+		if (item == null) return;
+
+		// Equipment
+		if (item is Equipment equipment) {
+			switch (equipment.EquipmentType) {
+				case EquipmentType.Weapon:
+					break;
+				case EquipmentType.Jewelry:
+					break;
+				case EquipmentType.BodyArmor:
+				case EquipmentType.Helmet:
+				case EquipmentType.Shoes:
+				case EquipmentType.Gloves:
+					if (equipment is IProgressiveItem progItem) {
+						int progress = progItem.Progress;
+						int totalProgress = progItem.TotalProgress;
+						var rect = new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
+						for (int i = 0; i < totalProgress - 1; i++) {
+							Renderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, tint, z);
+							rect.x += rect.width;
+						}
+					}
+					break;
+			}
+		}
+
+
+	}
+
+
+	public static void SpawnItemFromMap (IBlockSquad squad, int unitX, int unitY, int z, int maxDeltaX = 1024, int maxDeltaY = 1024, int placeHolderID = 0) {
+		for (int y = 1; y < maxDeltaY; y++) {
+			int currentUnitY = unitY - y;
+			int right = -1;
+			for (int x = 0; x < maxDeltaX; x++) {
+				int id = squad.GetBlockAt(unitX + x, currentUnitY, z, BlockType.Element);
+				if (id == 0 || !ItemSystem.HasItem(id)) break;
+				right = x;
+			}
+			if (right == -1) break;
+			int itemLocalIndex = Util.QuickRandom(0, right + 1);
+			int itemID = squad.GetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element);
+			if (ItemSystem.SpawnItem(itemID, unitX.ToGlobal(), unitY.ToGlobal(), 1, true) != null) {
+				// Replace with Placeholder
+				if (placeHolderID != 0) {
+					squad.SetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element, placeHolderID);
+				}
+			}
+		}
+	}
+
+
 }
