@@ -252,9 +252,12 @@ public abstract class PoseCharacter : Character {
 			GetEquippingItem((EquipmentType)i)?.PoseAnimationUpdate_FromEquipment(this);
 		}
 		// Inventory
-		int iCount = GetInventoryCapacity();
-		for (int i = 0; i < iCount; i++) {
-			GetItemFromInventory(i)?.PoseAnimationUpdate_FromInventory(this);
+		int invCapacity = GetInventoryCapacity();
+		ResetInventoryUpdate(invCapacity);
+		for (int i = 0; i < invCapacity; i++) {
+			var item = GetItemFromInventory(i);
+			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+			item.PoseAnimationUpdate_FromInventory(this);
 		}
 	}
 

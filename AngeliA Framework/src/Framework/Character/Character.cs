@@ -122,7 +122,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		Attackness = NativeAttackness = CreateNativeAttackness();
 		Health = NativeHealth = CreateNativeHealth();
 		Navigation = NativeNavigation = CreateNativeNavigation();
-		Buff = new(this);
+		Buff = new CharacterBuff(this);
 		// Init Inventory
 		if (AllowInventory) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
@@ -193,7 +193,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		base.BeforeUpdate();
 		Movement.SyncConfigFromPool();
 		BeforeUpdate_Inventory();
-		Buff.Apply();
+		Buff.ApplyOnUpdate();
 	}
 
 
@@ -203,8 +203,11 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		if (invCapacity > 0) {
 
 			// Inventory
+			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				GetItemFromInventory(i)?.BeforeItemUpdate_FromInventory(this);
+				var item = GetItemFromInventory(i);
+				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+				item.BeforeItemUpdate_FromInventory(this);
 			}
 
 			// Equipping
@@ -252,7 +255,9 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	public override void Update () {
 
-		if (Health.IsEmptyHealth) SetCharacterState(CharacterState.PassOut);
+		if (Health.IsEmptyHealth) {
+			SetCharacterState(CharacterState.PassOut);
+		}
 
 		if (Teleporting) {
 			PhysicsUpdate_AnimationType();
@@ -462,8 +467,11 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 			int attackLocalFrame = eventAvailable && Attackness.IsAttacking ? Game.GlobalFrame - Attackness.LastAttackFrame : -1;
 
 			// Inventory
+			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				GetItemFromInventory(i)?.OnItemUpdate_FromInventory(this);
+				var item = GetItemFromInventory(i);
+				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+				item.OnItemUpdate_FromInventory(this);
 			}
 
 			// Equipping
@@ -475,6 +483,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 					if (attackLocalFrame == weapon.BulletDelayFrame) {
 						var bullet = weapon.SpawnBullet(this);
 						item.OnCharacterAttack(this, bullet);
+						Buff.ApplyOnAttack(bullet);
 					}
 				}
 			}
@@ -562,9 +571,12 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		}
 
 		// Inventory
-		int iCount = GetInventoryCapacity();
-		for (int i = 0; i < iCount && damage > 0; i++) {
-			GetItemFromInventory(i)?.OnTakeDamage_FromInventory(this, sender, ref damage);
+		int invCapacity = GetInventoryCapacity();
+		ResetInventoryUpdate(invCapacity);
+		for (int i = 0; i < invCapacity && damage > 0; i++) {
+			var item = GetItemFromInventory(i);
+			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+			item.OnTakeDamage_FromInventory(this, sender, ref damage);
 		}
 
 		// Deal Damage
@@ -600,7 +612,8 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public Item GetItemFromInventory (int itemIndex, out int count) {
 		count = 0;
 		if (!InventoryCurrentAvailable) return null;
-		return ItemSystem.GetItem(Inventory.GetItemAt(TypeID, itemIndex, out count));
+		int id = Inventory.GetItemAt(TypeID, itemIndex, out count);
+		return id != 0 ? ItemSystem.GetItem(id) : null;
 	}
 
 
@@ -615,6 +628,15 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 
 	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
+
+
+	protected void ResetInventoryUpdate (int invCapacity) {
+		for (int i = 0; i < invCapacity; i++) {
+			var item = GetItemFromInventory(i);
+			if (item == null) continue;
+			item.LastUpdateFrame = -1;
+		}
+	}
 
 
 	// Behaviour

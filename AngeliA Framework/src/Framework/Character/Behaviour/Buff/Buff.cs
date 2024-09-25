@@ -27,7 +27,7 @@ public abstract class Buff {
 	#region --- MSG ---
 
 
-	[OnGameInitialize]
+	[OnGameInitialize(-128)]
 	internal static void OnGameInitialize () {
 		var buffList = new List<Buff> { new FailbackBuff() };
 		foreach (var type in typeof(Buff).AllChildClass()) {
@@ -47,42 +47,13 @@ public abstract class Buff {
 	#region --- API ---
 
 
-	public static Buff GetBuffAt (int index) => AllBuffs[index];
+	internal static Buff GetBuffAt (int index) => AllBuffs[index];
 
 
-	public abstract void ApplyToCharacter (Character target);
+	public virtual void ApplyToCharacter (Character target, ref object data) { }
 
 
-	public static void SetBuffInRange (IRect range, int buffIndex, int duration = 1) {
-		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is not Character character) continue;
-			character.Buff.SetBuff(buffIndex, duration);
-		}
-	}
-
-
-	public static void SetBuffInRange (int x, int y, int radius, int buffIndex, int duration = 1) {
-		var range = new IRect(x - radius, y - radius, radius * 2, radius * 2);
-		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is not Character character) continue;
-			var hitRect = hit.Rect;
-			if (!Util.OverlapRectCircle(radius, x, y, hitRect.x, hitRect.y, hitRect.xMax, hitRect.yMax)) continue;
-			character.Buff.SetBuff(buffIndex, duration);
-		}
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
+	public virtual void OnCharacterAttack (Character target, Bullet bullet, ref object data) { }
 
 
 	#endregion

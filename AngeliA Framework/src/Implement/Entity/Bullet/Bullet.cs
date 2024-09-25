@@ -28,17 +28,17 @@ public abstract class Bullet : Entity {
 	}
 
 	// Api
+	public readonly FrameBasedInt Damage = new(1);
+	public Entity Sender { get; set; } = null;
+	public int AttackIndex { get; set; } = 0;
+	public bool AttackCharged { get; set; } = false;
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
 	protected virtual int Duration => 60;
-	protected virtual int Damage => 1;
 	protected virtual Tag DamageType => Tag.PhysicalDamage;
 	protected virtual int EnvironmentHitCount => int.MaxValue;
 	protected virtual int ReceiverHitCount => int.MaxValue;
 	protected virtual bool RoundHitCheck => false;
-	public Entity Sender { get; set; } = null;
-	public int AttackIndex { get; set; } = 0;
-	public bool AttackCharged { get; set; } = false;
 
 	// Data
 	private static readonly Dictionary<int, BulletTrack[]> TrackPool = new();
@@ -85,6 +85,7 @@ public abstract class Bullet : Entity {
 		CurrentEnvironmentHitCount = EnvironmentHitCount;
 		CurrentReceiverHitCount = ReceiverHitCount;
 		TargetTeam = Const.TEAM_ALL;
+		Damage.ClearOverride();
 	}
 
 	public override void FirstUpdate () {

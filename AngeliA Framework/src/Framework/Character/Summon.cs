@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
+
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
@@ -21,7 +22,6 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	int IDamageReceiver.Team => Owner != null ? (Owner as IDamageReceiver).Team : Const.TEAM_NEUTRAL;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
-	public int OriginItemID { get; set; } = 0;
 	public int InventoryUpdatedFrame { get; set; } = -1;
 
 	// Data
@@ -44,7 +44,6 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		Navigation.NavigationState = CharacterNavigationState.Operation;
 		SummonNavigation.Refresh();
 		SummonNavigation.FollowOwner = true;
-		OriginItemID = 0;
 		Movement.PushAvailable.BaseValue = false;
 	}
 
@@ -107,17 +106,6 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 
 	public override void LateUpdate () {
 		if (!Active) return;
-
-		// Check Item Exists
-		if (
-			Owner != null &&
-			OriginItemID != 0 &&
-			Game.GlobalFrame > InventoryUpdatedFrame + 1 &&
-			Inventory.ItemTotalCount(Owner.TypeID, OriginItemID, true) == 0
-		) {
-			Active = false;
-			return;
-		}
 
 		// Base
 		base.LateUpdate();

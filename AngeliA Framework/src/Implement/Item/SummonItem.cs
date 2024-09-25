@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
 
-public abstract class SummonItem<T> : Item where T : Summon {
+public abstract class SummonItem<T> : Item where T : SummonFromItem {
 
 	private static Entity UpdatingHolder = null;
 	private static int UpdatingFrame = -1;

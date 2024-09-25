@@ -8,12 +8,26 @@ public sealed class CharacterBuff {
 
 
 
+	#region --- SUB ---
+
+
+	private class State {
+		public int Frame;
+		public object Data;
+	}
+
+
+	#endregion
+
+
+
+
 	#region --- VAR ---
 
 
 	// Data
 	private readonly Character Character;
-	private readonly int[] BuffStates;
+	private readonly State[] BuffStates;
 
 
 	#endregion
@@ -26,8 +40,7 @@ public sealed class CharacterBuff {
 
 	internal CharacterBuff (Character target) {
 		Character = target;
-		BuffStates = new int[Buff.AllBuffCount];
-
+		BuffStates = new State[Buff.AllBuffCount].FillWithNewValue();
 	}
 
 
@@ -39,35 +52,52 @@ public sealed class CharacterBuff {
 	#region --- API ---
 
 
-	internal void Apply () {
-		int frame = Game.PauselessFrame;
+	internal void ApplyOnUpdate () {
 		var span = BuffStates.GetReadOnlySpan();
 		for (int i = 0; i < span.Length; i++) {
-			if (span[i] < frame) continue;
-			Buff.GetBuffAt(i).ApplyToCharacter(Character);
+			var state = span[i];
+			if (state.Frame < Game.GlobalFrame) continue;
+			var buff = Buff.GetBuffAt(i);
+			buff.ApplyToCharacter(Character, ref state.Data);
 		}
 	}
 
 
-	public bool IsBuffEnabled (int index) => BuffStates[index] >= Game.PauselessFrame;
+	internal void ApplyOnAttack (Bullet bullet) {
+		var span = BuffStates.GetReadOnlySpan();
+		for (int i = 0; i < span.Length; i++) {
+			var state = span[i];
+			if (state.Frame < Game.GlobalFrame) continue;
+			var buff = Buff.GetBuffAt(i);
+			buff.OnCharacterAttack(Character, bullet, ref state.Data);
+		}
+	}
 
 
-	public void SetBuff (int index, int duration = 1) => BuffStates[index] = Util.Max(BuffStates[index], Game.PauselessFrame + duration);
+	public bool HasBuff (int index) => BuffStates[index].Frame >= Game.GlobalFrame;
 
 
-	public void ClearBuff (int index) => BuffStates[index] = -1;
+	public void GiveBuff (int index, int duration = 1) {
+		var state = BuffStates[index];
+		state.Frame = Util.Max(state.Frame, Game.GlobalFrame + duration);
+	}
 
 
-	public void ClearAllBuffs () => new System.Span<int>(BuffStates).Fill(-1);
+	public void ClearBuff (int index) {
+		var state = BuffStates[index];
+		state.Frame = -1;
+		state.Data = null;
+	}
 
 
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
+	public void ClearAllBuffs () {
+		var span = BuffStates.GetReadOnlySpan();
+		for (int i = 0; i < span.Length; i++) {
+			var state = span[i];
+			state.Frame = -1;
+			state.Data = null;
+		}
+	}
 
 
 	#endregion

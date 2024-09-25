@@ -16,12 +16,24 @@ public abstract class Item : IMapItem {
 	public static event ItemDamageHandler OnItemDamage;
 	public static event ItemHandler OnItemInsufficient;
 	public abstract int MaxStackCount { get; }
+	public virtual bool AllowDuplicateUpdate => true;
 	public int TypeID { get; init; }
+
+	// Cache
+	internal int LastUpdateInventory = 0;
+	internal int LastUpdateFrame = -1;
 
 
 	// MSG
 	public Item () => TypeID = GetType().AngeHash();
 
+	internal bool CheckUpdateAvailable (int inventoryID) {
+		if (AllowDuplicateUpdate) return true;
+		bool available = Game.GlobalFrame != LastUpdateFrame || inventoryID != LastUpdateInventory;
+		LastUpdateFrame = Game.GlobalFrame;
+		LastUpdateInventory = inventoryID;
+		return available;
+	}
 
 	// Inventory
 	public virtual void BeforeItemUpdate_FromInventory (Entity holder) { }
@@ -47,7 +59,6 @@ public abstract class Item : IMapItem {
 
 	// Misc
 	public virtual void OnCollect (Entity holder) { }
-
 	public virtual bool CanUse (Entity holder) => false;
 	public virtual bool Use (Entity holder) => false;
 
