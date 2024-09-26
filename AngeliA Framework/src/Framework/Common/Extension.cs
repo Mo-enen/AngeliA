@@ -220,7 +220,7 @@ public static class Extension {
 		target, Util.Abs(target) > Util.Abs(current) ? positiveDelta : negativeDelta
 	);
 
-	[MethodImpl(INLINE)] public static bool InRange (this int value, int min, int max) => value >= min && value <= max;
+	[MethodImpl(INLINE)] public static bool InRangeInclude (this int value, int min, int max) => value >= min && value <= max;
 	[MethodImpl(INLINE)] public static bool InRangeExclude (this int value, int min, int max) => value > min && value < max;
 	[MethodImpl(INLINE)] public static bool InLength (this int value, int length) => value >= 0 && value < length;
 

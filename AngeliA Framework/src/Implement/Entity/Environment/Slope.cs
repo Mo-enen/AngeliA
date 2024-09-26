@@ -64,7 +64,7 @@ public abstract class Slope : EnvironmentEntity {
 	private bool CheckOverlap (IRect rect, out int distance) {
 		distance = 0;
 		int cornerX = DirectionHorizontal == Direction2.Left ? rect.xMax : rect.xMin;
-		if (!cornerX.InRange(Rect.xMin, Rect.xMax)) return false;
+		if (!cornerX.InRangeInclude(Rect.xMin, Rect.xMax)) return false;
 		int cornerY = DirectionVertical == Direction2.Up ? rect.yMin : rect.yMax;
 		if ((DirectionHorizontal == Direction2.Left) == (DirectionVertical == Direction2.Up)) {
 			// LU, RD ◿ ◸

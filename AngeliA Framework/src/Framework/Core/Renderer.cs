@@ -355,12 +355,27 @@ public static class Renderer {
 
 	// Font
 	public static void SetFontID (int id) {
+		CurrentFontIndex = 0;
+		if (id == 0) return;
 		if (FontIdIndexMap.TryGetValue(id, out int index)) {
+			// Got Index Value
 			CurrentFontIndex = index;
 		} else {
-			CurrentFontIndex = 0;
+			// Find and Add Index into Pool
+			index = 0;
+			for (int i = 0; i < Game.Fonts.Count; i++) {
+				if (Game.Fonts[i].ID == id) {
+					index = i;
+					break;
+				}
+			}
+			CurrentFontIndex = index;
+			FontIdIndexMap.Add(id, index);
 		}
 	}
+
+
+	public static void SetFontIndex (int index) => CurrentFontIndex = index;
 
 
 	internal static void ClearFontIndexIdMap () => FontIdIndexMap.Clear();

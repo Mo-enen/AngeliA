@@ -276,8 +276,6 @@ public partial class RayGame {
 					// === Render as Char ===
 
 					var cSprite = cell.TextSprite;
-
-					var fontData = Fonts[cSprite.FontIndex];
 					var textureObj = cSprite.Texture;
 					if (textureObj is not Texture2D texture) continue;
 

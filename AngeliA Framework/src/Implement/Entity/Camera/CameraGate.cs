@@ -64,8 +64,8 @@ public abstract class CameraGate : Entity {
 		// Camera Range Check
 		var cameraRect = Renderer.CameraRect;
 		if (Direction switch {
-			Direction4.Down or Direction4.Up => !(X + Const.HALF).InRange(cameraRect.xMin, cameraRect.xMax),
-			Direction4.Left or Direction4.Right => !(Y + Const.HALF).InRange(cameraRect.yMin, cameraRect.yMax),
+			Direction4.Down or Direction4.Up => !(X + Const.HALF).InRangeInclude(cameraRect.xMin, cameraRect.xMax),
+			Direction4.Left or Direction4.Right => !(Y + Const.HALF).InRangeInclude(cameraRect.yMin, cameraRect.yMax),
 			_ => true,
 		}) return;
 

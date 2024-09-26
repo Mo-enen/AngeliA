@@ -14,7 +14,10 @@ public class RayFontData : FontData {
 	// API
 	public override bool TryGetCharSprite (char c, out CharSprite result) {
 		result = null;
-		if (!TryGetCharData(c, out Int2 offset, out int advance, out Int2 imageSize, out var texture)) return true;
+		bool gotData = TryGetCharData(
+			c, out Int2 offset, out int advance, out Int2 imageSize, out var texture
+		);
+		if (!gotData) return true;
 		float finalFontSize = Size / Scale;
 		result = new CharSprite {
 			Char = c,
@@ -66,7 +69,7 @@ public class RayFontData : FontData {
 		if (infoPtr == null) return false;
 
 		GlyphInfo info = infoPtr[0];
-		offset = new(info.OffsetX, info.OffsetY);
+		offset = new Int2(info.OffsetX, info.OffsetY);
 		advance = info.AdvanceX;
 		imageSize = new(info.Image.Width, info.Image.Height);
 		var img = info.Image;

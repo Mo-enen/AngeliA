@@ -111,8 +111,8 @@ public abstract class PickWeapon : Weapon {
 		int holderUnitX = holder.Rect.CenterX().ToUnit();
 		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
 		if (
-			!targetUnitX.InRange(holderUnitX - MouseRange, holderUnitX + MouseRange) ||
-			!targetUnitY.InRange(holderUnitY - MouseRange, holderUnitY + MouseRange)
+			!targetUnitX.InRangeInclude(holderUnitX - MouseRange, holderUnitX + MouseRange) ||
+			!targetUnitY.InRangeInclude(holderUnitY - MouseRange, holderUnitY + MouseRange)
 		) {
 			inRange = false;
 			return false;

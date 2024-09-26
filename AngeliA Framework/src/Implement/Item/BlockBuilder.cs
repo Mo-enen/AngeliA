@@ -151,8 +151,8 @@ public sealed class BlockBuilder : Weapon {
 		int holderUnitX = holder.Rect.CenterX().ToUnit();
 		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
 		if (
-			!targetUnitX.InRange(holderUnitX - MOUSE_RANGE, holderUnitX + MOUSE_RANGE) ||
-			!targetUnitY.InRange(holderUnitY - MOUSE_RANGE, holderUnitY + MOUSE_RANGE)
+			!targetUnitX.InRangeInclude(holderUnitX - MOUSE_RANGE, holderUnitX + MOUSE_RANGE) ||
+			!targetUnitY.InRangeInclude(holderUnitY - MOUSE_RANGE, holderUnitY + MOUSE_RANGE)
 		) {
 			inRange = false;
 			return false;

@@ -25,7 +25,7 @@ public abstract class FontData {
 
 		int hashIndex = name.IndexOf('#');
 
-		Name = (hashIndex >= 0 ? name[..hashIndex] : name).TrimStart_Numbers();
+		Name = (hashIndex >= 0 ? name[..hashIndex] : name).TrimStart_Numbers().TrimEnd_NumbersEmpty_();
 		Path = fontPath;
 		FileModifyDate = Util.GetFileModifyDate(fontPath);
 		ID = Name.AngeHash();

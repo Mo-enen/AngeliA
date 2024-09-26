@@ -6,7 +6,7 @@ namespace AngeliA;
 
 
 [EntityAttribute.ExcludeInMapEditor]
-[EntityAttribute.Capacity(512)]
+[EntityAttribute.Capacity(512, 0)]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.DECORATE)]
 public abstract class Particle : Entity {
@@ -56,7 +56,6 @@ public abstract class Particle : Entity {
 			sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
 			sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
 		);
-
 	}
 
 

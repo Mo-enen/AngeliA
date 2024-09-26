@@ -323,6 +323,8 @@ public abstract partial class Game {
 		if (builtIn) {
 			BuiltInFontCount = Fonts.Count(font => font.BuiltIn);
 		}
+
+		Renderer.ClearFontIndexIdMap();
 	}
 
 	public static bool SyncFontsWithPool (string rootPath) {
@@ -377,6 +379,7 @@ public abstract partial class Game {
 			i--;
 		}
 		Renderer.ClearCharSpritePool();
+		Renderer.ClearFontIndexIdMap();
 		if (!ignoreBuiltIn) BuiltInFontCount = 0;
 	}
 

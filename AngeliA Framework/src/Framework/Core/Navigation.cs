@@ -33,8 +33,8 @@ public static class Navigation {
 		public int CellRangeX;
 		public int CellRangeY;
 		public bool Verify (int cellX, int cellY) =>
-			cellX.InRange(CellFromX - CellRangeX, CellFromX + CellRangeX) &&
-			cellY.InRange(CellFromY - CellRangeY, CellFromY + CellRangeY);
+			cellX.InRangeInclude(CellFromX - CellRangeX, CellFromX + CellRangeX) &&
+			cellY.InRangeInclude(CellFromY - CellRangeY, CellFromY + CellRangeY);
 	}
 
 
@@ -229,8 +229,8 @@ public static class Navigation {
 		// Backward Trace
 		bool traceSuccess = false;
 		if (
-			FinalCellX.InRange(0, CellWidth - 1) &&
-			FinalCellY.InRange(0, CellHeight - 1)
+			FinalCellX.InRangeInclude(0, CellWidth - 1) &&
+			FinalCellY.InRangeInclude(0, CellHeight - 1)
 		) {
 			int safeCount = CellWidth * CellHeight;
 			int currentCellX = FinalCellX;
@@ -444,9 +444,9 @@ public static class Navigation {
 		RefreshFrameCache(viewRect);
 		groundY = globalY;
 		int cellX = globalX.UDivide(Const.CEL) - CellUnitOffsetX;
-		if (cellX.InRange(0, CellWidth - 1)) {
+		if (cellX.InRangeInclude(0, CellWidth - 1)) {
 			int cellY = globalY.UDivide(Const.CEL) - CellUnitOffsetY;
-			if (cellY.InRange(0, CellHeight - 1)) {
+			if (cellY.InRangeInclude(0, CellHeight - 1)) {
 				return IsGroundCell(cellX, cellY, out groundY, Const.HALF);
 			}
 		}
@@ -588,7 +588,7 @@ public static class Navigation {
 			void TryExpand (int _x, int _y) {
 
 				// Range Check
-				if (!_x.InRange(0, CellWidth - 1) || !_y.InRange(0, CellHeight - 1)) return;
+				if (!_x.InRangeInclude(0, CellWidth - 1) || !_y.InRangeInclude(0, CellHeight - 1)) return;
 				var _cell = OperationCells[_x, _y];
 
 				// Valid Check
@@ -637,7 +637,7 @@ public static class Navigation {
 			bool TryExpand (int _x, int _y) {
 
 				// Range Check
-				if (!_x.InRange(0, CellWidth - 1) || !_y.InRange(0, CellHeight - 1)) return true;
+				if (!_x.InRangeInclude(0, CellWidth - 1) || !_y.InRangeInclude(0, CellHeight - 1)) return true;
 				var _cell = OperationCells[_x, _y];
 
 				// Valid Check

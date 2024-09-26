@@ -74,16 +74,16 @@ public sealed class CharacterBuff {
 	}
 
 
-	public bool HasBuff (int index) => BuffStates[index].Frame >= Game.GlobalFrame;
+	public bool HasBuff<B> (BuffIndex<B> index) where B : Buff => BuffStates[index].Frame >= Game.GlobalFrame;
 
 
-	public void GiveBuff (int index, int duration = 1) {
+	public void GiveBuff<B> (BuffIndex<B> index, int duration = 1) where B : Buff {
 		var state = BuffStates[index];
 		state.Frame = Util.Max(state.Frame, Game.GlobalFrame + duration);
 	}
 
 
-	public void ClearBuff (int index) {
+	public void ClearBuff<B> (BuffIndex<B> index) where B : Buff {
 		var state = BuffStates[index];
 		state.Frame = -1;
 		state.Data = null;

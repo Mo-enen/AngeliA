@@ -11,8 +11,6 @@ namespace AngeliA;
 public static partial class Util {
 
 
-	private static readonly byte[] Byte4Cache = new byte[4];
-
 
 	public static string FileToText (string path) {
 		if (!FileExists(path)) return "";
