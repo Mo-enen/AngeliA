@@ -11,7 +11,7 @@ internal interface IModularBodyGadget { }
 public abstract class BodyGadget {
 
 
-	private static readonly Dictionary<int, BodyGadget> Pool = new();
+	private static readonly Dictionary<int, BodyGadget> Pool = [];
 	private static Dictionary<int, int>[] DefaultPool = null;
 	public int SheetIndex { get; private set; } = -1;
 	protected abstract BodyGadgetType GadgetType { get; }

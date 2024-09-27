@@ -18,8 +18,8 @@ public abstract class CheckAltar<CP> : EnvironmentEntity where CP : CheckPoint {
 	public static bool LinkPoolReady { get; private set; } = false;
 
 	// Data
-	private static readonly Dictionary<int, int> LinkPool = new();
-	private static readonly Dictionary<int, Int3> AltarPosition = new(0);
+	private static readonly Dictionary<int, int> LinkPool = [];
+	private static readonly Dictionary<int, Int3> AltarPosition = [];
 	private readonly int LinkedCheckPointID = 0;
 
 

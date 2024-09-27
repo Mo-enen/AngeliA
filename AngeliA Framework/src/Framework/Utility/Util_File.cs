@@ -86,7 +86,7 @@ public static partial class Util {
 		if (FileExists(path)) {
 			bytes = File.ReadAllBytes(path);
 		}
-		return bytes ?? new byte[0];
+		return bytes ?? [];
 	}
 
 
@@ -94,7 +94,7 @@ public static partial class Util {
 		string parentPath = GetParentPath(path);
 		CreateFolder(parentPath);
 		FileStream fs = new(path, FileMode.Create, FileAccess.Write);
-		bytes ??= new byte[0];
+		bytes ??= [];
 		fs.Write(bytes, 0, length < 0 ? bytes.Length : length);
 		fs.Close();
 		fs.Dispose();
@@ -321,7 +321,7 @@ public static partial class Util {
 
 	public static byte[] CompressedFileToByte (string path, out int byteLength) {
 		byteLength = 0;
-		if (!FileExists(path)) return System.Array.Empty<byte>();
+		if (!FileExists(path)) return [];
 		using var fileStream = File.OpenRead(path);
 		using var decompressor = new ZLibStream(fileStream, CompressionMode.Decompress);
 		using var output = new MemoryStream();
@@ -332,7 +332,7 @@ public static partial class Util {
 
 
 	public static byte[] DecompressBytes (byte[] compressedBytes) {
-		if (compressedBytes == null || compressedBytes.Length == 0) return System.Array.Empty<byte>();
+		if (compressedBytes == null || compressedBytes.Length == 0) return [];
 		using var memStream = new MemoryStream(compressedBytes);
 		using var decompressor = new ZLibStream(memStream, CompressionMode.Decompress);
 		using var output = new MemoryStream();

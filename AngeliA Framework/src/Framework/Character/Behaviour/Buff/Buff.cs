@@ -16,7 +16,7 @@ public abstract class Buff {
 	public static int AllBuffCount => AllBuffs.Length;
 
 	// Data
-	private static Buff[] AllBuffs = { new FailbackBuff() };
+	private static Buff[] AllBuffs = [new FailbackBuff()];
 
 
 	#endregion

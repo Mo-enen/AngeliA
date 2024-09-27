@@ -47,7 +47,7 @@ public static class TagUtil {
 	public const Tag NonExplosiveDamage = Tag.PhysicalDamage | Tag.MagicalDamage | Tag.PoisonDamage | Tag.FireDamage | Tag.IceDamage | Tag.LightenDamage;
 	public const Tag AllDamages = Tag.ExplosiveDamage | Tag.PhysicalDamage | Tag.MagicalDamage | Tag.PoisonDamage | Tag.FireDamage | Tag.IceDamage | Tag.LightenDamage;
 	public const int TAG_COUNT = 26;
-	public static readonly string[] ALL_TAG_NAMES = new string[TAG_COUNT] {
+	public static readonly string[] ALL_TAG_NAMES = [
 
 		Tag.OnewayUp.ToString(),
 		Tag.OnewayDown.ToString(),
@@ -81,7 +81,7 @@ public static class TagUtil {
 		Tag.IceDamage.ToString(),
 		Tag.LightenDamage.ToString(),
 
-	};
+	];
 
 	// API
 	public static Tag GetTagAt (int index) => (Tag)(1 << index);

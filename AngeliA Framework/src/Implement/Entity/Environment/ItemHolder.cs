@@ -48,7 +48,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	bool IActionTarget.AllowInvokeOnSquat => true;
 
 	// Data
-	private static readonly Dictionary<Int3, Pipe<Int4>> HoldingPool = new();
+	private static readonly Dictionary<Int3, Pipe<Int4>> HoldingPool = [];
 
 
 	#endregion

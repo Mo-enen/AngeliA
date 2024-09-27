@@ -9,8 +9,8 @@ public static class FrameworkUtil {
 
 	private const int SEARCHLIGHT_DENSITY = 32;
 	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
-	private static readonly List<PhysicsCell[,,]> CellPhysicsCells = new();
-	private static readonly Color32[] COLLIDER_TINTS = {
+	private static readonly List<PhysicsCell[,,]> CellPhysicsCells = [];
+	private static readonly Color32[] COLLIDER_TINTS = [
 		Color32.RED_BETTER,
 		Color32.ORANGE_BETTER,
 		Color32.YELLOW,
@@ -18,7 +18,7 @@ public static class FrameworkUtil {
 		Color32.CYAN,
 		Color32.BLUE,
 		Color32.GREY_128,
-	};
+	];
 
 
 	// Drawing

@@ -106,6 +106,14 @@ public partial class RayGame {
 
 	protected override void _SetWindowTitle (string title) => Raylib.SetWindowTitle(title);
 
+	protected override void _SetWindowIcon (int spriteID) {
+		if (Renderer.MainSheet == null) return;
+		if (!Renderer.MainSheet.TryGetTextureFromPool(spriteID, out var texture) || texture is not Texture2D rTexture) return;
+		var img = Raylib.LoadImageFromTexture(rTexture);
+		Raylib.SetWindowIcon(img);
+		Raylib.UnloadImage(img);
+	}
+
 	protected override void _SetWindowMinSize (int size) => Raylib.SetWindowMinSize(size, size);
 
 }

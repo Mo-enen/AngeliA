@@ -13,7 +13,7 @@ public class ProjectEditor : WindowUI {
 
 
 	// Const
-	private static readonly (int ratio, string label)[] UI_RATIO = { (250, "1:4"), (333, "1:3"), (500, "1:2"), (563, "9:16"), (625, "10:16"), (750, "3:4"), (1000, "1:1"), (1333, "4:3"), (1600, "16:10"), (1778, "16:9"), (2000, "2:1"), (3000, "3:1"), (4000, "4:1"), };
+	private static readonly (int ratio, string label)[] UI_RATIO = [(250, "1:4"), (333, "1:3"), (500, "1:2"), (563, "9:16"), (625, "10:16"), (750, "3:4"), (1000, "1:1"), (1333, "4:3"), (1600, "16:10"), (1778, "16:9"), (2000, "2:1"), (3000, "3:1"), (4000, "4:1"),];
 
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";

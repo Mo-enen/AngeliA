@@ -66,7 +66,7 @@ public class TrieNode<TValue> : TrieNodeBase<TValue> {
 	private readonly Queue<TValue> m_Values;
 
 	protected TrieNode () {
-		m_Children = new Dictionary<char, TrieNode<TValue>>();
+		m_Children = [];
 		m_Values = new Queue<TValue>();
 	}
 
@@ -147,7 +147,7 @@ public abstract class TrieNodeBase<TValue> {
 		TrieNodeBase<TValue> nextNode = GetChildOrNull(query, position);
 		return nextNode != null
 				   ? nextNode.Retrieve(query, position + nextNode.KeyLength)
-				   : Enumerable.Empty<TValue>();
+				   : [];
 	}
 
 	protected abstract TrieNodeBase<TValue> GetChildOrNull (string query, int position);

@@ -54,7 +54,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	private static readonly int ICON_DOWN_CODE = BuiltInSprite.ICON_TRIANGLE_DOWN;
 	private static readonly int FRAME_CODE = BuiltInSprite.FRAME_16;
 	private static readonly int SELECTION_MARK = BuiltInSprite.CHECK_MARK_16;
-	private static readonly LanguageCode[] MAIN_MENU_LABELS = {
+	private static readonly LanguageCode[] MAIN_MENU_LABELS = [
 		("UI.BodyPart.Head", "Head"),
 		("UI.BodyPart.Body", "Body"),
 		("UI.BodyPart.ArmHand", "Arm & Hand"),
@@ -71,8 +71,8 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		("UI.Suit.Glove", "Gloves"),
 		("UI.Suit.Shoes", "Shoes"),
 		("UI.BodyPart.Height", "Body Height"),
-	};
-	private static readonly int[] MAIN_MENU_ICONS = {
+	];
+	private static readonly int[] MAIN_MENU_ICONS = [
 		BuiltInSprite.ICON_BODY_PART_HEAD,
 		BuiltInSprite.ICON_BODY_PART_BODY,
 		BuiltInSprite.ICON_BODY_PART_ARM_HAND,
@@ -89,7 +89,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		BuiltInSprite.ICON_SUIT_GLOVE,
 		BuiltInSprite.ICON_SUIT_SHOES,
 		BuiltInSprite.ICON_BODYPART_HEIGHT,
-	};
+	];
 
 	// Api
 	protected override Int2 WindowSize => new(1000, 800);
@@ -116,21 +116,21 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	protected abstract string[] Suit_Hands { get; }
 
 	// Pattern List
-	private static readonly List<PatternUnit> Patterns_Head = new();
-	private static readonly List<PatternUnit> Patterns_BodyHip = new();
-	private static readonly List<PatternUnit> Patterns_ShoulderArmArmHand = new();
-	private static readonly List<PatternUnit> Patterns_LegLegFoot = new();
-	private static readonly List<PatternUnit> Patterns_Face = new();
-	private static readonly List<PatternUnit> Patterns_Hair = new();
-	private static readonly List<PatternUnit> Patterns_Ear = new();
-	private static readonly List<PatternUnit> Patterns_Tail = new();
-	private static readonly List<PatternUnit> Patterns_Wing = new();
-	private static readonly List<PatternUnit> Patterns_Horn = new();
-	private static readonly List<PatternUnit> Patterns_Suit_Head = new();
-	private static readonly List<PatternUnit> Patterns_Suit_BodyShoulderArmArm = new();
-	private static readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = new();
-	private static readonly List<PatternUnit> Patterns_Suit_Hand = new();
-	private static readonly List<PatternUnit> Patterns_Suit_Foot = new();
+	private static readonly List<PatternUnit> Patterns_Head = [];
+	private static readonly List<PatternUnit> Patterns_BodyHip = [];
+	private static readonly List<PatternUnit> Patterns_ShoulderArmArmHand = [];
+	private static readonly List<PatternUnit> Patterns_LegLegFoot = [];
+	private static readonly List<PatternUnit> Patterns_Face = [];
+	private static readonly List<PatternUnit> Patterns_Hair = [];
+	private static readonly List<PatternUnit> Patterns_Ear = [];
+	private static readonly List<PatternUnit> Patterns_Tail = [];
+	private static readonly List<PatternUnit> Patterns_Wing = [];
+	private static readonly List<PatternUnit> Patterns_Horn = [];
+	private static readonly List<PatternUnit> Patterns_Suit_Head = [];
+	private static readonly List<PatternUnit> Patterns_Suit_BodyShoulderArmArm = [];
+	private static readonly List<PatternUnit> Patterns_Suit_HipSkirtLegLeg = [];
+	private static readonly List<PatternUnit> Patterns_Suit_Hand = [];
+	private static readonly List<PatternUnit> Patterns_Suit_Foot = [];
 
 	// Data
 	private readonly SubMenuType[] MainMenu = null;

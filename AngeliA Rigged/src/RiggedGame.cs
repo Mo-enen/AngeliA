@@ -22,6 +22,7 @@ public partial class RiggedGame : Game {
 
 	// Data
 	private static RiggedGame Instance;
+	private static readonly List<string> FontNamesCache = [];
 	private readonly Process HostProcess;
 	private readonly string MapName = "RiggedGameMapName";
 	private readonly int StartWithZ = 0;
@@ -143,6 +144,7 @@ public partial class RiggedGame : Game {
 		OriginalMinViewHeight = Universe.BuiltInInfo.MinViewHeight;
 		OriginalMaxViewHeight = Universe.BuiltInInfo.MaxViewHeight;
 		Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
+		ReloadFontIdIndexMap();
 	}
 
 
@@ -238,6 +240,8 @@ public partial class RiggedGame : Game {
 			// Require Clear Char Cache
 			CharPool.Clear();
 			Renderer.ClearCharSpritePool();
+			Renderer.ClearFontIndexIdMap();
+			ReloadFontIdIndexMap();
 		}
 
 		// Require Draw Colliders
@@ -489,6 +493,27 @@ public partial class RiggedGame : Game {
 			}
 		}
 
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private void ReloadFontIdIndexMap () {
+		Renderer.ClearFontIndexIdMap();
+		FontNamesCache.Clear();
+		foreach (string fontPath in Util.EnumerateFiles(Universe.BuiltIn.FontRoot, true, "*.ttf")) {
+			FontNamesCache.Add(FontData.GetFontRealName(Util.GetNameWithoutExtension(fontPath)));
+		}
+		FontNamesCache.Sort((a, b) => a.CompareTo(b));
+		for (int i = 0; i < FontNamesCache.Count; i++) {
+			Renderer.OverrideFontIdAndIndex(FontNamesCache[i].AngeHash(), i);
+		}
 	}
 
 

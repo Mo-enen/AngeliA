@@ -16,7 +16,7 @@ public abstract class Leaf : EnvironmentEntity, ICombustible, IDamageReceiver {
 
 
 	// Const
-	private static readonly int[] LEAF_OFFSET_SEEDS = new int[] { 0, 6, 2, 8, 3, 7, 2, 3, 5, 2, 2, 6, 9, 3, 6, 1, 9, 0, 1, 7, 4, 2, 8, 4, 6, 5, 2, 4, 8, 7, };
+	private static readonly int[] LEAF_OFFSET_SEEDS = [0, 6, 2, 8, 3, 7, 2, 3, 5, 2, 2, 6, 9, 3, 6, 1, 9, 0, 1, 7, 4, 2, 8, 4, 6, 5, 2, 4, 8, 7,];
 	private const byte LEAF_HIDE_ALPHA = 42;
 
 

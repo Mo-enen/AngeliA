@@ -24,7 +24,7 @@ public partial class RiggedMapEditor {
 	public int RigGameSelectingPlayerID { get; set; } = 0;
 
 	// Data
-	private readonly Dictionary<int, (CharacterMovementConfig config, string path)> MovementConfigPool = new();
+	private readonly Dictionary<int, (CharacterMovementConfig config, string path)> MovementConfigPool = [];
 	private readonly LanguageCode[] MovementTabNames;
 	private readonly IntToChars MovementTabLabelToChars;
 	private readonly MovementFieldData[][] MovementFields;

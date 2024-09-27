@@ -46,10 +46,10 @@ public class ControlHintUI : EntityUI {
 	private bool HintVisible => ShowControlHint.Value || Game.PauselessFrame <= ForceHintFrame;
 
 	// Data
-	private static readonly (string label, int priority, int frame)[] Hints = new (string, int, int)[8] {
+	private static readonly (string label, int priority, int frame)[] Hints = [
 		("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 		("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
-	};
+	];
 	private static int CurrentHintOffsetY = 0;
 	private readonly GUIStyle HintKeyLabelStyle = new(GUI.Skin.Label) {
 		CharSize = 14,

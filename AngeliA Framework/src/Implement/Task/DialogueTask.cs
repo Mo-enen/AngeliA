@@ -33,7 +33,7 @@ public class DialogueTask : Task {
 
 	// Data
 	private static DialogueTask Main;
-	private readonly List<Section> Sections = new();
+	private readonly List<Section> Sections = [];
 	private int LoadedSection = -1;
 	private int CurrentSection = 0;
 	private DialogueUI DialogueUI = null;

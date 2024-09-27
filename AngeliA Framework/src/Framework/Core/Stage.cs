@@ -90,7 +90,7 @@ public static class Stage {
 
 
 	// Const
-	private static readonly int[] DEFAULT_ENTITY_CAPACITY = new int[EntityLayer.COUNT] {
+	private static readonly int[] DEFAULT_ENTITY_CAPACITY = [
 		64,		//UI
 		4096,	//GAME
 		512,	//CHARACTER
@@ -99,7 +99,7 @@ public static class Stage {
 		1024,	//BULLET 
 		1024,	//ITEM
 		128,	//DECORATE
-	};
+	];
 
 	// Api
 	public static int[] EntityCounts { get; private set; } = new int[EntityLayer.COUNT];
@@ -122,8 +122,8 @@ public static class Stage {
 	private static event Action OnViewZChanged;
 	private static event Action<int> BeforeLayerFrameUpdate;
 	private static event Action<int> AfterLayerFrameUpdate;
-	private static readonly Dictionary<int, EntityStack> EntityPool = new();
-	private static readonly HashSet<Int3> StagedEntityHash = new();
+	private static readonly Dictionary<int, EntityStack> EntityPool = [];
+	private static readonly HashSet<Int3> StagedEntityHash = [];
 	private static int ViewLerpRate = 1000;
 	private static int? RequireSetViewZ = null;
 

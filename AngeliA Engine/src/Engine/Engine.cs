@@ -51,7 +51,7 @@ public partial class Engine {
 	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
 	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
-	private readonly List<ProjectData> Projects = new();
+	private readonly List<ProjectData> Projects = [];
 	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
 	private EntityUI[] AllGenericUIs;
@@ -100,19 +100,19 @@ public partial class Engine {
 
 		var engine = new Engine();
 		Instance = engine;
-		engine.AllWindows = new WindowUI[]{
+		engine.AllWindows = [
 			new RiggedMapEditor(),
 			new PixelEditor(engine.AllRigCharacterNames),
 			new LanguageEditor(),
 			new ConsoleWindow(),
 			new ProjectEditor(),
 			new SettingWindow(),
-		};
-		engine.AllGenericUIs = new EntityUI[] {
+		];
+		engine.AllGenericUIs = [
 			new GenericPopupUI(),
 			new GenericDialogUI(),
 			new FileBrowserUI(),
-		};
+		];
 
 #if DEBUG
 		// Grow Engine Version

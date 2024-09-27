@@ -34,7 +34,7 @@ public partial class Engine {
 	// Data
 	private readonly GUIStyle RigGameHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
 	private readonly RigTransceiver Transceiver = new(EngineUtil.RiggedExePath);
-	private readonly List<string> AllRigCharacterNames = new();
+	private readonly List<string> AllRigCharacterNames = [];
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
 	private int RigMapEditorWindowIndex = 0;

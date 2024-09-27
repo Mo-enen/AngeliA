@@ -51,7 +51,7 @@ public class Aseprite {
 		using (MemoryStream ms = new(bytes)) {
 			using BinaryReader br = new(ms);
 			data.Header = new AseHeader(br);
-			data.FrameDatas = new List<FrameData>();
+			data.FrameDatas = [];
 			for (int frameIndex = 0; frameIndex < data.Header.Frames; frameIndex++) {
 				data.FrameDatas.Add(new FrameData(br, data.Header, loadPixels));
 			}
@@ -521,7 +521,7 @@ public class Aseprite {
 
 			// Chunks
 			uint chunkNum = Header.ChunkNumber > 0 ? Header.ChunkNumber : Header.OldChunkNumber;
-			Chunks = new List<Chunk>();
+			Chunks = [];
 			for (int i = 0; i < chunkNum; i++) {
 				uint size = br.ReadUInt32() - 6;
 				ushort type = br.ReadUInt16();
@@ -845,11 +845,11 @@ public class Aseprite {
 
 
 		public Color32[] GetColors32 (ushort colorDepth, Color32[] palette = null) {
-			if (Width <= 0 || Height <= 0) { return new Color32[0]; }
+			if (Width <= 0 || Height <= 0) { return []; }
 			var rawBytes = GetRawBytes(colorDepth);
 			var colors = new Color32[rawBytes.Length / (colorDepth / 8)];
-			if (colors.Length != Width * Height) { return new Color32[0]; }
-			palette ??= new Color32[0];
+			if (colors.Length != Width * Height) { return []; }
+			palette ??= [];
 			switch (colorDepth) {
 				default:
 				case 32:
@@ -888,7 +888,7 @@ public class Aseprite {
 
 		// LGC
 		public byte[] GetRawBytes (ushort colorDepth) {
-			byte[] bytes = new byte[0];
+			byte[] bytes = [];
 			if (Type == (ushort)CelType.CompressedImage) {
 				bytes = Util.DecompressBytes(RawData);
 			} else if (Type == (ushort)CelType.Raw) {

@@ -142,7 +142,7 @@ public class CharacterMovementConfig {
 	[PropVisibility(nameof(GrabSideAvailable))] public int GrabSideJumpSpeed = 56;
 
 	// Data
-	private static readonly List<(FieldInfo movement, FieldInfo config)> MetaMapper = new();
+	private static readonly List<(FieldInfo movement, FieldInfo config)> MetaMapper = [];
 	private static FieldInfo BuffIntBaseValueField;
 	private static FieldInfo BuffBoolBaseValueField;
 

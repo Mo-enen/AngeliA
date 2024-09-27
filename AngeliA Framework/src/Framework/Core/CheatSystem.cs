@@ -24,7 +24,7 @@ public static class CheatSystem {
 	private static event System.Action OnCheatPerform;
 	private static bool Enable = false;
 	private static readonly Pipe<char> CheatInput = new(96);
-	private static readonly List<CheatAction> AllCheatActions = new();
+	private static readonly List<CheatAction> AllCheatActions = [];
 	private static int MatchingCheatIndex = -1;
 
 

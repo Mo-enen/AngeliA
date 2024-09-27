@@ -45,7 +45,7 @@ public class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_CONTROL_HINT = ("Menu.Setting.UseControlHint", "Show Control Hint");
 	private static readonly LanguageCode MENU_GAMEPAD_HINT = ("Menu.Setting.UseGamepadHint", "Show Gamepad Hint");
 	private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
-	private static readonly LanguageCode[] GAMEKEY_UI_CODES = new LanguageCode[8] {
+	private static readonly LanguageCode[] GAMEKEY_UI_CODES = [
 		($"UI.GameKey.{Gamekey.Left}", "Left"),
 		($"UI.GameKey.{Gamekey.Right}", "Right"),
 		($"UI.GameKey.{Gamekey.Down}", "Down"),
@@ -54,7 +54,7 @@ public class PauseMenuUI : MenuUI {
 		($"UI.GameKey.{Gamekey.Jump}", "Jump"),
 		($"UI.GameKey.{Gamekey.Start}", "Start"),
 		($"UI.GameKey.{Gamekey.Select}", "Select"),
-	};
+	];
 
 	// Data
 	private static PauseMenuUI Instance = null;

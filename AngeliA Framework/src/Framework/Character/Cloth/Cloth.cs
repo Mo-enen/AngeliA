@@ -11,7 +11,7 @@ public abstract class Cloth {
 
 
 	// Const
-	private static readonly Cell[] SINGLE_CELL = { Cell.EMPTY };
+	private static readonly Cell[] SINGLE_CELL = [Cell.EMPTY];
 
 	// Api
 	public int TypeID { get; init; }
@@ -20,7 +20,7 @@ public abstract class Cloth {
 	public int SheetIndex { get; private set; } = -1;
 
 	// Data
-	protected static readonly Dictionary<int, Cloth> Pool = new();
+	protected static readonly Dictionary<int, Cloth> Pool = [];
 	protected static Dictionary<int, int>[] DefaultPool = null;
 
 

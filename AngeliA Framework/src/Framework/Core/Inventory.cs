@@ -23,7 +23,7 @@ public static class Inventory {
 		[JsonIgnore] public bool IsDirty;
 
 		public void Valid () {
-			Items ??= new int[0];
+			Items ??= [];
 			Counts ??= new int[Items.Length];
 			if (Counts.Length != Items.Length) {
 				var newCounts = new int[Items.Length];
@@ -73,7 +73,7 @@ public static class Inventory {
 	public static bool PoolReady { get; private set; } = false;
 
 	// Data
-	private static readonly Dictionary<int, InventoryData> Pool = new();
+	private static readonly Dictionary<int, InventoryData> Pool = [];
 	private static bool IsPoolDirty = false;
 
 

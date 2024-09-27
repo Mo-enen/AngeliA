@@ -19,7 +19,7 @@ public static class SavingSystem {
 	}
 
 	// Api
-	internal static readonly Dictionary<int, SavingLine> Pool = new();
+	internal static readonly Dictionary<int, SavingLine> Pool = [];
 	public static bool FileLoaded { get; private set; } = false;
 	public static bool IsDirty { get; set; } = true;
 	public static int PoolVersion { get; private set; } = 0;

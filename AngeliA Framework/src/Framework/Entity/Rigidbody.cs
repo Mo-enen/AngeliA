@@ -50,9 +50,10 @@ public abstract class Rigidbody : Entity {
 	// Data
 	private int IgnoreGroundCheckFrame = int.MinValue;
 	private int IgnoreGravityFrame = int.MinValue;
+	private int IgnoreInsideGroundFrame = -1;
 	private int IgnorePhysicsFrame = -1;
 	private int PrevPositionUpdateFrame = -1;
-	
+
 
 	#endregion
 
@@ -98,15 +99,18 @@ public abstract class Rigidbody : Entity {
 		int checkingMask = PhysicsMask.MAP & CollisionMask;
 		InWater = Physics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
 		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Tag.Slip);
-		IsInsideGround = InsideGroundCheck();
 
+		// Inside Ground Check
+		IsInsideGround = Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();
+		
+		// Ignoring Physics
 		if (IgnoringPhysics) {
 			IsGrounded = GroundedCheck();
 			if (DestroyWhenInsideGround) Active = false;
 			return;
 		}
 
-		// Grounded
+		// Is Inside Ground
 		if (IsInsideGround) {
 			if (DestroyWhenInsideGround) {
 				Active = false;
@@ -169,6 +173,7 @@ public abstract class Rigidbody : Entity {
 		// Move
 		PerformMove(VelocityX, VelocityY);
 
+		// Grounded Check
 		IsGrounded = GroundedCheck();
 
 		// Ari Drag
@@ -263,6 +268,9 @@ public abstract class Rigidbody : Entity {
 
 
 	public void IgnoreGravity (int duration = 0) => IgnoreGravityFrame = Game.GlobalFrame + duration;
+
+
+	public void IgnoreInsideGround (int duration = 0) => IgnoreInsideGroundFrame = Game.GlobalFrame + duration;
 
 
 	public void IgnorePhysics (int duration = 1) => IgnorePhysicsFrame = Game.GlobalFrame + duration;

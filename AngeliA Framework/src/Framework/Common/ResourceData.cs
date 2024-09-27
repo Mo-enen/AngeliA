@@ -22,10 +22,7 @@ public abstract class FontData {
 	public bool LoadFromFile (string fontPath, bool builtIn) {
 
 		string name = Util.GetNameWithoutExtension(fontPath);
-
-		int hashIndex = name.IndexOf('#');
-
-		Name = (hashIndex >= 0 ? name[..hashIndex] : name).TrimStart_Numbers().TrimEnd_NumbersEmpty_();
+		Name = GetFontRealName(name);
 		Path = fontPath;
 		FileModifyDate = Util.GetFileModifyDate(fontPath);
 		ID = Name.AngeHash();
@@ -49,6 +46,11 @@ public abstract class FontData {
 		LoadData(fontPath);
 
 		return true;
+	}
+
+	public static string GetFontRealName (string fontNameWithHashTag) {
+		int hashIndex = fontNameWithHashTag.IndexOf('#');
+		return (hashIndex >= 0 ? fontNameWithHashTag[..hashIndex] : fontNameWithHashTag).TrimStart_Numbers().TrimEnd_NumbersEmpty_();
 	}
 
 }

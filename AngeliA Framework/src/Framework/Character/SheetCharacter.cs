@@ -135,7 +135,7 @@ public abstract class SheetCharacter : Character {
 	protected Cell RenderedCell { get; private set; } = null;
 
 	// Data
-	private static readonly Dictionary<int, AnimationSheet> AnimationSheetPool = new();
+	private static readonly Dictionary<int, AnimationSheet> AnimationSheetPool = [];
 	private int CurrentSheetAni = 0;
 
 

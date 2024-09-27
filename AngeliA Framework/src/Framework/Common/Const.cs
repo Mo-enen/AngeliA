@@ -34,7 +34,7 @@ public static class Const {
 	};
 
 	// Rendering
-	public static readonly bool[] SliceIgnoreCenter = { false, false, false, false, true, false, false, false, false, };
+	public static readonly bool[] SliceIgnoreCenter = [false, false, false, false, true, false, false, false, false,];
 	public const int ORIGINAL_SIZE = int.MaxValue;
 	public const int ORIGINAL_PIVOT = int.MaxValue;
 	public const int ORIGINAL_SIZE_NEGATAVE = int.MinValue;
@@ -49,7 +49,7 @@ public static class Const {
 	public const int SCREEN_EFFECT_GREYSCALE = 5;
 	public const int SCREEN_EFFECT_INVERT = 6;
 	public const int SCREEN_EFFECT_COUNT = 7;
-	public static readonly string[] SCREEN_EFFECT_NAMES = new string[SCREEN_EFFECT_COUNT] {
+	public static readonly string[] SCREEN_EFFECT_NAMES = [
 		"Chromatic Aberration",
 		"Tint",
 		"Retro Darken",
@@ -57,7 +57,7 @@ public static class Const {
 		"Vignette",
 		"Greyscale",
 		"Invert",
-	};
+	];
 
 	// Cursor
 	public const int CURSOR_NONE = -2;

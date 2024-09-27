@@ -68,8 +68,8 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	public string[] SearchPatterns { get; private set; }
 
 	// Data
-	private static readonly List<string> Disks = new();
-	private readonly List<ItemData> Items = new();
+	private static readonly List<string> Disks = [];
+	private readonly List<ItemData> Items = [];
 	private System.Action<string> OnPathPicked = null;
 	private BrowserActionType ActionType;
 	private BrowserTargetType TargetType;

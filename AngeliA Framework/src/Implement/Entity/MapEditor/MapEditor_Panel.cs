@@ -83,7 +83,7 @@ public partial class MapEditor {
 	private const int SEARCH_BAR_ID = 3983472;
 
 	// Data
-	private readonly Dictionary<int, PaletteGroup> PaletteGroupCache = new();
+	private readonly Dictionary<int, PaletteGroup> PaletteGroupCache = [];
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
 	private int SelectingPaletteGroupIndex = 0;
@@ -144,7 +144,7 @@ public partial class MapEditor {
 			int atlasID = firstSprite.Atlas.ID;
 			if (!PaletteGroupCache.TryGetValue(atlasID, out var palGroup)) {
 				PaletteGroupCache.Add(atlasID, palGroup = new PaletteGroup() {
-					Items = new List<PaletteItem>(),
+					Items = [],
 					GroupName = atlasName,
 					AtlasType = atlasType,
 					CoverID = atlasID,
@@ -174,7 +174,7 @@ public partial class MapEditor {
 			int atlasID = sp.Atlas.ID;
 			if (!PaletteGroupCache.TryGetValue(atlasID, out var group)) {
 				PaletteGroupCache.Add(atlasID, group = new PaletteGroup() {
-					Items = new List<PaletteItem>(),
+					Items = [],
 					GroupName = atlasName,
 					AtlasType = atlasType,
 					CoverID = atlasID,
@@ -207,7 +207,7 @@ public partial class MapEditor {
 		var entityGroupPool = new Dictionary<string, PaletteGroup> {{
 			"Entity",
 			new PaletteGroup() {
-				Items = new List<PaletteItem>(),
+				Items = [],
 				AtlasType = AtlasType.General,
 				GroupName = "_Entity",
 				DisplayNameID = "Palette.Entity".AngeHash(),
@@ -230,7 +230,7 @@ public partial class MapEditor {
 			// Add
 			if (!entityGroupPool.ContainsKey(groupName)) {
 				entityGroupPool.Add(groupName, new PaletteGroup() {
-					Items = new List<PaletteItem>(),
+					Items = [],
 					GroupName = groupName,
 					AtlasType = AtlasType.General,
 					CoverID = $"Cover.{groupName}".AngeHash(),
@@ -895,7 +895,7 @@ public partial class MapEditor {
 			GenericPopupUI.AddItem(MENU_PALETTE_CREATE_LIST, () => {
 				EditorMeta.PinnedLists.Add(new PinnedList() {
 					Icon = UI_DEFAULT_LIST_COVER,
-					Items = new List<int>(),
+					Items = [],
 				});
 			});
 		}
@@ -946,7 +946,7 @@ public partial class MapEditor {
 			MENU_PALETTE_ADD_TO_NEW_LIST, () => {
 				EditorMeta.PinnedLists.Add(new PinnedList() {
 					Icon = GetRealGizmosSprite(pal.ArtworkID).ID,
-					Items = new List<int>() { pal.ID },
+					Items = [pal.ID],
 				});
 			}
 		);

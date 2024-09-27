@@ -21,7 +21,7 @@ public abstract class PoseAnimation {
 	protected virtual bool ValidHeadPosition => true;
 
 	// Data
-	private static readonly Dictionary<int, PoseAnimation> Pool = new();
+	private static readonly Dictionary<int, PoseAnimation> Pool = [];
 	private static readonly Dictionary<int, int>[] PoseDefaultPool = new Dictionary<int, int>[typeof(CharacterAnimationType).EnumLength()].FillWithNewValue();
 	private static readonly Dictionary<int, int>[] HandheldDefaultPool = new Dictionary<int, int>[typeof(WeaponHandheld).EnumLength()].FillWithNewValue();
 	private static readonly Dictionary<int, int>[] AttackDefaultPool = new Dictionary<int, int>[typeof(WeaponType).EnumLength()].FillWithNewValue();

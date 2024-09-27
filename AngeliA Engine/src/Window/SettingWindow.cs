@@ -58,8 +58,8 @@ public class SettingWindow : WindowUI {
 	public override string DefaultName => "Setting";
 
 	// Data
-	private static readonly List<SettingGroup> Groups = new();
-	private readonly List<(string path, string name)> ThemePaths = new();
+	private static readonly List<SettingGroup> Groups = [];
+	private readonly List<(string path, string name)> ThemePaths = [];
 	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
@@ -89,7 +89,7 @@ public class SettingWindow : WindowUI {
 				// Create or Get Group
 				if (!pool.TryGetValue(att.Group, out var group)) {
 					group = new SettingGroup() {
-						Items = new(),
+						Items = [],
 						Name = ($"UI.EngineSetting.{att.Group}", att.Group),
 						Icon = $"Icon.SettingFold.{att.Group}",
 						Folding = att.Group != "Engine",

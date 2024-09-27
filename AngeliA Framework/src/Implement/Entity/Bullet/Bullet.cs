@@ -34,14 +34,14 @@ public abstract class Bullet : Entity {
 	public bool AttackCharged { get; set; } = false;
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
-	protected virtual int Duration => 60;
-	protected virtual Tag DamageType => Tag.PhysicalDamage;
+	public virtual int Duration => 60;
+	public virtual Tag DamageType => Tag.PhysicalDamage;
 	protected virtual int EnvironmentHitCount => int.MaxValue;
 	protected virtual int ReceiverHitCount => int.MaxValue;
 	protected virtual bool RoundHitCheck => false;
 
 	// Data
-	private static readonly Dictionary<int, BulletTrack[]> TrackPool = new();
+	private static readonly Dictionary<int, BulletTrack[]> TrackPool = [];
 	private readonly BulletTrack[] Track;
 	private int CurrentEnvironmentHitCount;
 	private int CurrentReceiverHitCount;

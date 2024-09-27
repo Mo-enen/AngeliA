@@ -16,13 +16,13 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 	// Const
 	private static readonly int FRAME = BuiltInSprite.FRAME_16;
 	private static readonly int TRIANGLE_RIGHT = BuiltInSprite.TRIANGLE_RIGHT_13;
-	private static readonly int[] SUIT_TYPE_ICONS = {
+	private static readonly int[] SUIT_TYPE_ICONS = [
 		"Icon.Suit.Hat".AngeHash(),
 		"Icon.Suit.Bodysuit".AngeHash(),
 		"Icon.Suit.Glove".AngeHash(),
 		"Icon.Suit.Pants".AngeHash(),
 		"Icon.Suit.Shoes".AngeHash(),
-	};
+	];
 	public static readonly LanguageCode HINT_TYPE = ("CtrlHint.Wardrobe.Type", "Suit Type");
 
 	// API
@@ -35,11 +35,11 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 	protected abstract string[] Suit_Hands { get; }
 
 	// Data
-	private static readonly List<KeyValuePair<int, string>> Pattern_Heads = new();
-	private static readonly List<KeyValuePair<int, string>> Pattern_BodyShoulderArmArms = new();
-	private static readonly List<KeyValuePair<int, string>> Pattern_HipSkirtLegLegs = new();
-	private static readonly List<KeyValuePair<int, string>> Pattern_Foots = new();
-	private static readonly List<KeyValuePair<int, string>> Pattern_Hands = new();
+	private static readonly List<KeyValuePair<int, string>> Pattern_Heads = [];
+	private static readonly List<KeyValuePair<int, string>> Pattern_BodyShoulderArmArms = [];
+	private static readonly List<KeyValuePair<int, string>> Pattern_HipSkirtLegLegs = [];
+	private static readonly List<KeyValuePair<int, string>> Pattern_Foots = [];
+	private static readonly List<KeyValuePair<int, string>> Pattern_Hands = [];
 	private static bool Initialized = false;
 	private ClothType CurrentSuitType = ClothType.Head;
 	private int CurrentPatternIndex = 0;

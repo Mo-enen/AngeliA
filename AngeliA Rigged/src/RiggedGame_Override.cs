@@ -9,7 +9,7 @@ public partial class RiggedGame {
 
 
 	// VAR
-	private readonly Dictionary<Int2, CharSprite> CharPool = new();
+	private readonly Dictionary<Int2, CharSprite> CharPool = [];
 	private readonly int[] KeyboardHoldingFrames;
 	private readonly int[] GamepadHoldingFrames;
 	private readonly int RiggedFontCount;
@@ -64,6 +64,8 @@ public partial class RiggedGame {
 	protected override void _SetWindowMinimized (bool minimized) { }
 
 	protected override void _SetWindowTitle (string title) { }
+
+	protected override void _SetWindowIcon (int spriteID) { }
 
 	protected override void _SetWindowMinSize (int size) { }
 

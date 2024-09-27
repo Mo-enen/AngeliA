@@ -33,16 +33,16 @@ public static class Input {
 
 
 	// Const
-	private static readonly int[] KEYBOARD_DEFAULT = {
+	private static readonly int[] KEYBOARD_DEFAULT = [
 		(int)KeyboardKey.A, (int)KeyboardKey.D, (int)KeyboardKey.S, (int)KeyboardKey.W,
 		(int)KeyboardKey.L, (int)KeyboardKey.P, (int)KeyboardKey.Escape, (int)KeyboardKey.Space,
-	};
-	private static readonly int[] GAMEPAD_DEFAULT = {
+	];
+	private static readonly int[] GAMEPAD_DEFAULT = [
 		(int)GamepadKey.DpadLeft, (int)GamepadKey.DpadRight,
 		(int)GamepadKey.DpadDown, (int)GamepadKey.DpadUp,
 		(int)GamepadKey.East, (int)GamepadKey.South,
 		(int)GamepadKey.Start, (int)GamepadKey.Select,
-	};
+	];
 
 	// Api
 	public static bool UsingGamepad { get; private set; } = false;
@@ -125,7 +125,7 @@ public static class Input {
 		{GamepadKey.Start, new() },
 		{GamepadKey.Select, new() },
 	};
-	private static readonly Dictionary<KeyboardKey, State> KeyboardStateMap = new();
+	private static readonly Dictionary<KeyboardKey, State> KeyboardStateMap = [];
 	private static readonly Dictionary<Gamekey, Int2> KeyMap = new() {
 		{ Gamekey.Left, new((int)KeyboardKey.A, (int)GamepadKey.DpadLeft) },
 		{ Gamekey.Right, new((int)KeyboardKey.D, (int)GamepadKey.DpadRight)},
@@ -147,7 +147,7 @@ public static class Input {
 	private static int? GamepadRightStickAccumulate = null;
 	private static int IgnoreMouseInputFrame = -1;
 	private static int IgnoreKeyInputFrame = -1;
-	private static KeyboardKey[] AllKeyboardKeys = new KeyboardKey[0];
+	private static KeyboardKey[] AllKeyboardKeys = [];
 	private static int _MouseWheelDelta = 0;
 	private static Direction3 _DirectionX = Direction3.None;
 	private static Direction3 _DirectionY = Direction3.None;
@@ -159,7 +159,7 @@ public static class Input {
 
 	// Saving
 	private static readonly SavingBool s_AllowGamepad = new("Input.AllowGamepad", true, SavingLocation.Global);
-	private static readonly SavingInt[] KeyboardConfigSaving = {
+	private static readonly SavingInt[] KeyboardConfigSaving = [
 		new("Input.Left", KEYBOARD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
 		new("Input.Right", KEYBOARD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
 		new("Input.Down", KEYBOARD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
@@ -168,8 +168,8 @@ public static class Input {
 		new("Input.Jump", KEYBOARD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
 		new("Input.Start", KEYBOARD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
 		new("Input.Select", KEYBOARD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
-	};
-	private static readonly SavingInt[] GamepadConfigSaving = {
+	];
+	private static readonly SavingInt[] GamepadConfigSaving = [
 		new("Input.Pad.Left", GAMEPAD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
 		new("Input.Pad.Right", GAMEPAD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
 		new("Input.Pad.Down", GAMEPAD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
@@ -178,7 +178,7 @@ public static class Input {
 		new("Input.Pad.Jump", GAMEPAD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
 		new("Input.Pad.Start", GAMEPAD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
 		new("Input.Pad.Select", GAMEPAD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
-	};
+	];
 
 
 	#endregion

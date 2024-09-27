@@ -13,12 +13,12 @@ public static class RenderLayer {
 	public const int COUNT = 8;
 
 
-	public static readonly string[] NAMES = new string[COUNT] {
+	public static readonly string[] NAMES = [
 		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
-	};
-	public static readonly int[] CAPACITY = new int[COUNT] {
+	];
+	public static readonly int[] CAPACITY = [
 		256, 8192, 4096, 16384, 256, 128, 128, 8192,
-	};
+	];
 
 
 

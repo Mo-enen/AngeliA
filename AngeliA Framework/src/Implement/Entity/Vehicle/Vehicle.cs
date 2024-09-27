@@ -98,7 +98,8 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 		if (Driver != null) {
 			// Driving
 			TakeDriver();
-			Driver.IgnorePhysics();
+			Driver.IgnorePhysics(1);
+			Driver.IgnoreInsideGround(1);
 			Driver.OverrideMovement(Movement);
 			Driver.VelocityX = 0;
 			Driver.VelocityY = 0;

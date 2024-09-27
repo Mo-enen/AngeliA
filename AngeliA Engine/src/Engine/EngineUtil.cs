@@ -39,7 +39,7 @@ public static class EngineUtil {
 	public const int ERROR_USER_CODE_COMPILE_ERROR = -113;
 	public const int ERROR_CSPROJ_NOT_EXISTS = -114;
 	private const int BACK_GROUND_BUILD_LOG_ID = 102735648;
-	private static readonly int[] ICON_SIZES = { 64, 128, 256, 512, 1024, 2048 };
+	private static readonly int[] ICON_SIZES = [64, 128, 256, 512, 1024, 2048];
 
 	// Api
 	public static string DotnetSdkPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "dotnet", "dotnet.exe");
@@ -215,7 +215,7 @@ public static class EngineUtil {
 		}
 		ushort num_of_images = reader.ReadUInt16();
 
-		if (num_of_images == 0) return System.Array.Empty<object>();
+		if (num_of_images == 0) return [];
 
 		if (firstOneOnly) num_of_images = 1;
 		var results = new object[num_of_images];
@@ -455,7 +455,7 @@ public static class EngineUtil {
 			List<string> deleteList = null;
 			foreach (var path in Util.EnumerateFolders(exportRoot, true, "*")) {
 				if (ignoreDelete.Contains(Util.GetNameWithoutExtension(path))) continue;
-				deleteList ??= new List<string>();
+				deleteList ??= [];
 				deleteList.Add(path);
 			}
 			if (deleteList != null) {

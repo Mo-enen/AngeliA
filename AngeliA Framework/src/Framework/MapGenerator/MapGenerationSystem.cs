@@ -30,7 +30,7 @@ public static class MapGenerationSystem {
 
 	// Data
 	private static readonly MapGenerator[] PrioritizedMapGenerators = new MapGenerator[1024];
-	private static readonly Dictionary<Int3, MapState> StatePool = new();
+	private static readonly Dictionary<Int3, MapState> StatePool = [];
 	private static readonly Pipe<(MapGenerator gen, Int3 point, Direction8? dir)> AllTasks = new(64);
 	private static readonly System.Random Random = new((int)(System.DateTime.Now.Ticks + System.Environment.UserName.AngeHash()));
 

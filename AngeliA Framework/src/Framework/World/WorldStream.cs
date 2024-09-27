@@ -41,9 +41,9 @@ public sealed class WorldStream : IBlockSquad {
 	public bool IsDirty { get; private set; } = false;
 
 	// Data
-	private static readonly Dictionary<string, WorldStream> StreamPool = new();
-	private readonly Dictionary<Int3, WorldData> WorldPool = new();
-	private readonly WorldPathPool PathPool = new();
+	private static readonly Dictionary<string, WorldStream> StreamPool = [];
+	private readonly Dictionary<Int3, WorldData> WorldPool = [];
+	private readonly WorldPathPool PathPool = [];
 	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
 	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;

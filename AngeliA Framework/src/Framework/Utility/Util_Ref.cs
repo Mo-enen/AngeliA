@@ -18,8 +18,8 @@ public static partial class Util {
 
 
 	// All Class
-	public static readonly List<Assembly> AllAssemblies = new();
-	public static readonly List<Type> AllTypes = new();
+	public static readonly List<Assembly> AllAssemblies = [];
+	public static readonly List<Type> AllTypes = [];
 
 
 	public static void AddAssembly (Assembly assembly) {
@@ -205,7 +205,7 @@ public static partial class Util {
 			try {
 				var addMethod = info.GetAddMethod(true);
 				var del = System.Delegate.CreateDelegate(info.EventHandlerType, method);
-				addMethod?.Invoke(null, new object[] { del });
+				addMethod?.Invoke(null, [del]);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
@@ -225,7 +225,7 @@ public static partial class Util {
 	public static object InvokeMethod (object obj, string methodName, params object[] param) {
 		if (string.IsNullOrEmpty(methodName)) { return null; }
 		try {
-			param ??= System.Array.Empty<object>();
+			param ??= [];
 			var type = obj.GetType();
 			var method = type.GetMethod(
 				methodName,

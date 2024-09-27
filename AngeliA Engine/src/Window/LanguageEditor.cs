@@ -53,8 +53,8 @@ public partial class LanguageEditor : WindowUI {
 	public override string DefaultName => "Language";
 
 	// Data
-	private readonly List<string> Languages = new();
-	private readonly List<LanguageLine> Lines = new();
+	private readonly List<string> Languages = [];
+	private readonly List<LanguageLine> Lines = [];
 	private readonly GUIStyle IndexLabelStyle = new(GUI.Skin.SmallGreyLabel) { Alignment = Alignment.MidRight };
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;

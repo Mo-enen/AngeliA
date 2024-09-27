@@ -50,11 +50,11 @@ public abstract partial class Game {
 
 	// Data
 	private static Game Instance = null;
-	public static readonly Dictionary<int, SoundData> SoundPool = new();
-	public static readonly Dictionary<int, MusicData> MusicPool = new();
-	public static readonly List<FontData> Fonts = new();
-	private static readonly HashSet<int> CacheForAudioSync = new();
-	private static readonly List<int> CacheForAudioSyncRemove = new();
+	public static readonly Dictionary<int, SoundData> SoundPool = [];
+	public static readonly Dictionary<int, MusicData> MusicPool = [];
+	public static readonly List<FontData> Fonts = [];
+	private static readonly HashSet<int> CacheForAudioSync = [];
+	private static readonly List<int> CacheForAudioSyncRemove = [];
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
 	private readonly char[] PressingCharsForCurrentFrame = new char[256];
 	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
@@ -167,6 +167,8 @@ public abstract partial class Game {
 
 			Util.InvokeAsAutoOrderingTask<OnGameInitializeLaterAttribute>();
 
+			SetWindowTitle(Universe.BuiltInInfo.ProductName);
+			SetWindowIcon("ApplicationIcon".AngeHash());
 			System.GC.Collect();
 
 			// Start Game !!
@@ -297,6 +299,7 @@ public abstract partial class Game {
 		StopAllSounds();
 		IsPlaying = false;
 	}
+
 
 	// Fonts
 	public static void LoadFontsIntoPool (string rootPath, bool builtIn) {

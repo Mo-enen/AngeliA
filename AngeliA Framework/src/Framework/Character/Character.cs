@@ -27,8 +27,8 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	// Const
 	public const int FULL_SLEEP_DURATION = 90;
-	private static readonly int[] BOUNCE_AMOUNTS = new int[] { 500, 200, 100, 50, 25, 50, 100, 200, 500, };
-	private static readonly int[] BOUNCE_AMOUNTS_BIG = new int[] { 0, -600, -900, -1200, -1400, -1200, -900, -600, 0, };
+	private static readonly int[] BOUNCE_AMOUNTS = [500, 200, 100, 50, 25, 50, 100, 200, 500,];
+	private static readonly int[] BOUNCE_AMOUNTS_BIG = [0, -600, -900, -1200, -1400, -1200, -900, -600, 0,];
 	public const int INVENTORY_COLUMN = 6;
 	public const int INVENTORY_ROW = 3;
 

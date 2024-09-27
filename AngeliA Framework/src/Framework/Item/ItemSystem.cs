@@ -60,7 +60,7 @@ public static class ItemSystem {
 
 	// Const
 	private const string UNLOCK_NAME = "UnlockedItem";
-	private static readonly int[] ITEM_TYPE_ICONS = {
+	private static readonly int[] ITEM_TYPE_ICONS = [
 		BuiltInSprite.ITEM_ICON_WEAPON,
 		BuiltInSprite.ITEM_ICON_ARMOR,
 		BuiltInSprite.ITEM_ICON_HELMET,
@@ -69,16 +69,16 @@ public static class ItemSystem {
 		BuiltInSprite.ITEM_ICON_JEWELRY,
 		BuiltInSprite.ITEM_ICON_FOOD,
 		BuiltInSprite.ITEM_ICON_ITEM,
-	};
+	];
 
 	// Api
 	public static bool ItemPoolReady { get; private set; } = false;
 	public static bool ItemUnlockReady { get; private set; } = false;
 
 	// Data
-	private static readonly Dictionary<Int4, CombinationData> CombinationPool = new();
-	private static readonly Dictionary<int, ItemDropData> ItemDropPool = new();
-	private static readonly Dictionary<int, ItemData> ItemPool = new();
+	private static readonly Dictionary<Int4, CombinationData> CombinationPool = [];
+	private static readonly Dictionary<int, ItemDropData> ItemDropPool = [];
+	private static readonly Dictionary<int, ItemData> ItemPool = [];
 	private static bool IsUnlockDirty = false;
 	private static bool BlockItemLoadedBefore = false;
 

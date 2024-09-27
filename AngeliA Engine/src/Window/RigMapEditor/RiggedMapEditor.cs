@@ -126,7 +126,7 @@ public partial class RiggedMapEditor : WindowUI {
 				});
 			}
 			for (int i = 0; i < MovementFields.Length; i++) {
-				MovementFields[i] ??= System.Array.Empty<MovementFieldData>();
+				MovementFields[i] ??= [];
 			}
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }

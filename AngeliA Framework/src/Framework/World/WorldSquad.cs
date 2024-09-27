@@ -23,7 +23,7 @@ public sealed class WorldSquad : IBlockSquad {
 	// Data
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
-	private static readonly Dictionary<int, int> LevelToEntityRedirect = new();
+	private static readonly Dictionary<int, int> LevelToEntityRedirect = [];
 	private static readonly Int3[] WorldPosInViewCache = new Int3[128];
 	private static IRect MapGenerationSearchedRange = new(int.MinValue + Const.CEL * 8, int.MinValue + Const.CEL * 8, Const.CEL * 8, Const.CEL * 8);
 	private static int LastSearchedRangeUpdateFrame = int.MinValue;

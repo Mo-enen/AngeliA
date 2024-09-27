@@ -61,7 +61,7 @@ public abstract class MiniGame : EnvironmentEntity, IActionTarget, IBlockEntity 
 
 	// Const
 	private static readonly LanguageCode MENU_QUIT_MINI_GAME = ("Menu.MiniGame.QuitMsg", "Quit mini game?");
-	private static readonly SpriteCode[] DEFAULT_BADGE_CODES = { "MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold", };
+	private static readonly SpriteCode[] DEFAULT_BADGE_CODES = ["MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold",];
 
 	// Api
 	public delegate void SpawnBadgeHandler (int quality);

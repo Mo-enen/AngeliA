@@ -15,7 +15,7 @@ public abstract class Particle : Entity {
 	// Abs
 	public abstract int Duration { get; }
 	public abstract bool Loop { get; }
-	public virtual int Scale => 1000;
+	public int Scale { get; set; } = 1000;
 	public virtual int RenderingZ => int.MinValue;
 	public virtual int AutoArtworkID => TypeID;
 
@@ -33,6 +33,7 @@ public abstract class Particle : Entity {
 	public override void OnActivated () {
 		base.OnActivated();
 		IsAutoParticle = Renderer.HasSpriteGroup(TypeID);
+		Scale = 1000;
 	}
 
 

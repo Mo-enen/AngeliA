@@ -7,7 +7,7 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
 	// VAR
-	protected static readonly HashSet<Int3> OpenedChest = new();
+	protected static readonly HashSet<Int3> OpenedChest = [];
 	protected virtual int ItemPlaceHolder => 0;
 
 

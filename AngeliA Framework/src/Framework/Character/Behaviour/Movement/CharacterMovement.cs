@@ -111,7 +111,7 @@ public partial class CharacterMovement {
 	protected int CollisionMask => Target.CollisionMask;
 
 	// Data
-	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = new();
+	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = [];
 	private static int MovementConfigGlobalVersion = -1;
 	private int LocalMovementConfigVersion = int.MinValue;
 	private IRect Hitbox = default;

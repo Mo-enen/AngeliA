@@ -9,7 +9,7 @@ public abstract class BeamBullet : MovableBullet {
 	public const int BEAM_SPEED = Const.CEL * 42;
 
 	// Api
-	protected sealed override int Duration => 1;
+	public sealed override int Duration => 1;
 	public sealed override int SpeedForward => BEAM_SPEED;
 	public override int MaxRange => Const.CEL * 24;
 	protected abstract int BeamSpriteID { get; }

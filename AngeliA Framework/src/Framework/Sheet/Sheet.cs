@@ -14,12 +14,12 @@ public class Sheet {
 
 
 	// Api
-	public readonly List<AngeSprite> Sprites = new();
-	public readonly List<SpriteGroup> Groups = new();
-	public readonly List<Atlas> Atlas = new();
-	public readonly Dictionary<int, AngeSprite> SpritePool = new();
-	public readonly Dictionary<int, SpriteGroup> GroupPool = new();
-	public readonly Dictionary<int, object> TexturePool = new();
+	public readonly List<AngeSprite> Sprites = [];
+	public readonly List<SpriteGroup> Groups = [];
+	public readonly List<Atlas> Atlas = [];
+	public readonly Dictionary<int, AngeSprite> SpritePool = [];
+	public readonly Dictionary<int, SpriteGroup> GroupPool = [];
+	public readonly Dictionary<int, object> TexturePool = [];
 
 	// Data
 	private readonly bool IgnoreGroups = false;

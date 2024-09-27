@@ -181,6 +181,6 @@ void main() {
     finalColor.a = tColor.a;
 }";
 
-	public static readonly string[] EFFECTS = new string[Const.SCREEN_EFFECT_COUNT] { CHROMATIC_ABERRATION_FS, TINT_FS, RETRO_DARKEN_FS, RETRO_LIGHTEN_FS, VIGNETTE_FS, GREYSCALE_FS, INVERT_FS, };
+	public static readonly string[] EFFECTS = [CHROMATIC_ABERRATION_FS, TINT_FS, RETRO_DARKEN_FS, RETRO_LIGHTEN_FS, VIGNETTE_FS, GREYSCALE_FS, INVERT_FS,];
 
 }

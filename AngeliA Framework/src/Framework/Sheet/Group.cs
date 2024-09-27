@@ -13,7 +13,7 @@ public class SpriteGroup {
 	public int ID;
 	public string Name;
 	public int LoopStart;
-	public List<AngeSprite> Sprites = new();
+	public List<AngeSprite> Sprites = [];
 	public bool Animated;
 	public bool WithRule;
 	public bool Random;

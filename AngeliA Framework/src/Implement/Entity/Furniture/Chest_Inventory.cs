@@ -12,7 +12,7 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 	protected virtual bool UnlockItemInside => false;
 	public int InventoryID { get; private set; } = 0;
 
-	private static readonly Dictionary<Int3, (string name, int id)> InventoryIdPool = new();
+	private static readonly Dictionary<Int3, (string name, int id)> InventoryIdPool = [];
 	private string InventoryName = "";
 
 

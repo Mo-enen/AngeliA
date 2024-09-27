@@ -14,8 +14,8 @@ public static class Language {
 
 	// Data
 	private static event System.Action OnLanguageChanged;
-	private static readonly Dictionary<int, string> Pool = new();
-	private static string[] AllLanguages = new string[0];
+	private static readonly Dictionary<int, string> Pool = [];
+	private static string[] AllLanguages = [];
 
 	// Saving
 	private static readonly SavingString _LoadedLanguage = new("Game.Language", "", SavingLocation.Global);

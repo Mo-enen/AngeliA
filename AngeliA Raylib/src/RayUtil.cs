@@ -17,7 +17,7 @@ public static unsafe class RayUtil {
 	// API
 	[OnGameInitialize(int.MinValue)]
 	internal static void OnGameInitialize () {
-		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels(new Color32[1] { Color32.CLEAR }, 1, 1);
+		EMPTY_TEXTURE = (Texture2D)GetTextureFromPixels([Color32.CLEAR], 1, 1);
 	}
 
 
@@ -64,7 +64,7 @@ public static unsafe class RayUtil {
 	}
 
 	public static Color32[] GetPixelsFromTexture (object texture) {
-		if (texture is not Texture2D rTexture) return System.Array.Empty<Color32>();
+		if (texture is not Texture2D rTexture) return [];
 		var image = Raylib.LoadImageFromTexture(rTexture);
 		int width = image.Width;
 		int height = image.Height;
@@ -111,7 +111,7 @@ public static unsafe class RayUtil {
 	}
 
 	public static byte[] TextureToPngBytes (object texture) {
-		if (texture is not Texture2D rTexture) return System.Array.Empty<byte>();
+		if (texture is not Texture2D rTexture) return [];
 		var fileType = Marshal.StringToHGlobalAnsi(".png");
 		int fileSize = 0;
 		char* result = Raylib.ExportImageToMemory(
@@ -119,7 +119,7 @@ public static unsafe class RayUtil {
 			(sbyte*)fileType.ToPointer(),
 			&fileSize
 		);
-		if (fileSize == 0) return System.Array.Empty<byte>();
+		if (fileSize == 0) return [];
 		var resultBytes = new byte[fileSize];
 		Marshal.Copy((nint)result, resultBytes, 0, fileSize);
 		Marshal.FreeHGlobal((nint)result);

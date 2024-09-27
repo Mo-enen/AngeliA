@@ -58,7 +58,7 @@ public static class Renderer {
 
 
 	// Const
-	private static readonly bool[] DEFAULT_PART_IGNORE = new bool[9] { false, false, false, false, false, false, false, false, false, };
+	private static readonly bool[] DEFAULT_PART_IGNORE = [false, false, false, false, false, false, false, false, false,];
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 
 	// Event
@@ -89,10 +89,10 @@ public static class Renderer {
 	public static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
 
 	// Data
-	private static readonly List<Sheet> AltSheets = new();
+	private static readonly List<Sheet> AltSheets = [];
 	private static readonly Layer[] Layers = new Layer[RenderLayer.COUNT];
-	private static readonly Dictionary<Int2, CharSprite> CharSpritePool = new();
-	private static readonly Dictionary<int, int> FontIdIndexMap = new();
+	private static readonly Dictionary<Int2, CharSprite> CharSpritePool = [];
+	private static readonly Dictionary<int, int> FontIdIndexMap = [];
 	private static int _CurrentSheetIndex = -1;
 	private static bool IsDrawing = false;
 	private static long MainSheetFileModifyDate = 0;
@@ -378,7 +378,10 @@ public static class Renderer {
 	public static void SetFontIndex (int index) => CurrentFontIndex = index;
 
 
-	internal static void ClearFontIndexIdMap () => FontIdIndexMap.Clear();
+	public static void ClearFontIndexIdMap () => FontIdIndexMap.Clear();
+
+
+	public static void OverrideFontIdAndIndex (int fontId, int fontIndex) => FontIdIndexMap[fontId] = fontIndex;
 
 
 	// Draw
@@ -839,7 +842,7 @@ public static class Renderer {
 	// Internal
 	public static bool RequireCharForPool (char c, out CharSprite charSprite) => RequireCharForPool(c, CurrentFontIndex, out charSprite);
 	public static bool RequireCharForPool (char c, int fontIndex, out CharSprite charSprite) {
-		if (CharSpritePool.TryGetValue(new(c, fontIndex), out var textSprite)) {
+		if (CharSpritePool.TryGetValue(new Int2(c, fontIndex), out var textSprite)) {
 			// Get Exists
 			charSprite = textSprite;
 		} else if (Game.GetCharSprite(fontIndex, c, out charSprite)) {

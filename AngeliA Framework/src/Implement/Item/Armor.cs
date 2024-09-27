@@ -221,7 +221,7 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 		}
 		// Func
 		static int[] GetAngeHashs (System.Type[] types) {
-			if (types == null || types.Length == 0) return new int[0];
+			if (types == null || types.Length == 0) return [];
 			var results = new int[types.Length];
 			for (int i = 0; i < results.Length; i++) {
 				var _type = types[i];

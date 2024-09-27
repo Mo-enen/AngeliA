@@ -55,15 +55,10 @@ public class RigRespondMessage {
 	}
 
 
-	public class RenderingLayerData {
-		public int CellCount;
-		public readonly RenderingCellData[] Cells;
-		public byte layerAlpha;
-		public RenderingLayerData (int capacity) {
-			CellCount = 0;
-			Cells = new RenderingCellData[capacity].FillWithNewValue();
-			layerAlpha = 255;
-		}
+	public class RenderingLayerData (int capacity) {
+		public int CellCount = 0;
+		public readonly RenderingCellData[] Cells = new RenderingCellData[capacity].FillWithNewValue();
+		public byte layerAlpha = 255;
 	}
 
 
@@ -127,7 +122,7 @@ public class RigRespondMessage {
 	public int SelectingPlayerID;
 
 	// Data
-	private readonly Dictionary<uint, object> GizmosTexturePool = new();
+	private readonly Dictionary<uint, object> GizmosTexturePool = [];
 	private int CachedScreenWidth = 1;
 	private int CachedScreenHeight = 1;
 

@@ -76,14 +76,14 @@ public static class AngeliaRectPacking {
 		// Check
 		if (textures.Length == 0) {
 			result = new PackingTexture(1, 1, new Color32[1]);
-			uvResults = new FRect[0];
+			uvResults = [];
 			return false;
 		}
 
 		// Init
 		int maxItemWidth = 8;
 		int allArea = 0;
-		List<Item> items = new();
+		List<Item> items = [];
 		for (int i = 0; i < textures.Length; i++) {
 			var _texture = textures[i];
 			int w = _texture.Width;
@@ -110,7 +110,7 @@ public static class AngeliaRectPacking {
 		int width = 0;
 		int height = 0;
 
-		List<Shelf> shelfs = new();
+		List<Shelf> shelfs = [];
 		for (int i = 0; i < items.Count; i++) {
 
 			// Try Add

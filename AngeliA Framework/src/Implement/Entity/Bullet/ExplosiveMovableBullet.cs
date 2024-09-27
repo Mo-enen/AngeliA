@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public abstract class ExplosiveMovableBullet : MovableBullet {
-	protected override int Duration => 600;
+	public override int Duration => 600;
 	protected virtual int Radius => Const.CEL * 2;
 	protected virtual int ExplosionDuration => 10;
 	protected abstract int ExplosionID { get; }

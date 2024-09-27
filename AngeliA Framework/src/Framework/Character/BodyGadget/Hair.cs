@@ -16,7 +16,7 @@ public sealed class ModularHair : Hair, IModularBodyGadget { }
 
 public abstract class BraidHair : Hair {
 
-	private static readonly Cell[] SINGLE_CELL = new Cell[] { new() };
+	private static readonly Cell[] SINGLE_CELL = [new()];
 	private int BraidL { get; init; }
 	private int BraidR { get; init; }
 	protected virtual bool GetFrontL (PoseCharacter character) => character.Head.FrontSide;

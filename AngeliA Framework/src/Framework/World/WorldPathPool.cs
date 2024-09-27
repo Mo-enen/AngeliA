@@ -6,7 +6,7 @@ namespace AngeliA;
 public class WorldPathPool : Dictionary<Int3, string> {
 
 	// VAR
-	private static readonly Dictionary<Int3, string> WorldNamePool = new();
+	private static readonly Dictionary<Int3, string> WorldNamePool = [];
 	private string MapRoot = "";
 
 	// API

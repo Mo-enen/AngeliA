@@ -23,7 +23,7 @@ public class World {
 
 	// Api
 	public static readonly Color32[] CacheMapPixels = new Color32[Const.MAP * Const.MAP];
-	public static readonly Dictionary<uint, Int3> TextureMapLinkedPool = new();
+	public static readonly Dictionary<uint, Int3> TextureMapLinkedPool = [];
 	public Int3 WorldPosition { get; set; } = default;
 	public int[] Backgrounds { get; set; } = null;
 	public int[] Levels { get; set; } = null;

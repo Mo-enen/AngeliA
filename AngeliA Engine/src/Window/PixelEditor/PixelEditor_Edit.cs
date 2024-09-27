@@ -18,11 +18,11 @@ public partial class PixelEditor {
 	private static readonly LanguageCode NOTI_PAINT_IN_SPRITE = ("Noti.PaintInSprite", "Only paint in a sprite");
 
 	// Data
-	private readonly List<AngeSprite> SpriteCopyBuffer = new();
+	private readonly List<AngeSprite> SpriteCopyBuffer = [];
 	private readonly Color32[] PixelBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Queue<Int2> BucketCacheQueue = new();
-	private readonly HashSet<Int2> BucketCacheHash = new();
+	private readonly HashSet<Int2> BucketCacheHash = [];
 	private Int2 PixelBufferSize = Int2.zero;
 	private Int2 PixelCopyBufferSize = Int2.zero;
 	private Int2 MovePixelPixOffset;

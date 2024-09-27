@@ -38,19 +38,19 @@ public sealed partial class MapEditor : WindowUI {
 	[System.Serializable]
 	private class PinnedList {
 		public int Icon = 0;
-		public List<int> Items = new();
+		public List<int> Items = [];
 	}
 
 
 
 	[System.Serializable]
 	private class MapEditorMeta : IJsonSerializationCallback {
-		public List<PinnedList> PinnedLists = new();
+		public List<PinnedList> PinnedLists = [];
 		void IJsonSerializationCallback.OnBeforeSaveToDisk () {
-			PinnedLists ??= new();
+			PinnedLists ??= [];
 		}
 		void IJsonSerializationCallback.OnAfterLoadedFromDisk () {
-			PinnedLists ??= new();
+			PinnedLists ??= [];
 		}
 	}
 
@@ -96,15 +96,15 @@ public sealed partial class MapEditor : WindowUI {
 	public override IRect BackgroundRect => default;
 
 	// Pools
-	private readonly Dictionary<int, AngeSprite> SpritePool = new();
-	private readonly Dictionary<int, int> EntityArtworkRedirectPool = new();
-	private readonly Dictionary<int, PaletteItem> PalettePool = new();
+	private readonly Dictionary<int, AngeSprite> SpritePool = [];
+	private readonly Dictionary<int, int> EntityArtworkRedirectPool = [];
+	private readonly Dictionary<int, PaletteItem> PalettePool = [];
 
 	// Cache List
-	private readonly List<PaletteGroup> PaletteGroups = new();
-	private readonly List<BlockBuffer> PastingBuffer = new();
-	private readonly List<BlockBuffer> CopyBuffer = new();
-	private readonly List<PaletteItem> SearchResult = new();
+	private readonly List<PaletteGroup> PaletteGroups = [];
+	private readonly List<BlockBuffer> PastingBuffer = [];
+	private readonly List<BlockBuffer> CopyBuffer = [];
+	private readonly List<PaletteItem> SearchResult = [];
 	private readonly Trie<PaletteItem> PaletteTrie = new();
 	private UndoRedo UndoRedo = null;
 	private MapEditorMeta EditorMeta = new();
@@ -355,7 +355,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (EditorMeta.PinnedLists.Count == 0) {
 			EditorMeta.PinnedLists.Add(new PinnedList() {
 				Icon = UI_DEFAULT_LIST_COVER,
-				Items = new List<int>(),
+				Items = [],
 			});
 		}
 		if (DraggingForReorderPaletteGroup >= 0 && DraggingForReorderPaletteItem >= 0) {

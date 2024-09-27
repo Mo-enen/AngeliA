@@ -33,7 +33,7 @@ public partial class PixelEditor {
 
 	// Const
 	private const int BASIC_INPUT_ID = 123631253;
-	private static readonly string[] INPUT_TEXT = { "", "", "", "", "", "", "", "", "", "", "", };
+	private static readonly string[] INPUT_TEXT = ["", "", "", "", "", "", "", "", "", "", "",];
 
 	// Sprite
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";

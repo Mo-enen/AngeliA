@@ -27,8 +27,8 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	public static readonly CraftingTableUI Instance = new();
 
 	// Data
-	private readonly List<Int4> DocumentContent = new();
-	private readonly int[] IgnoreConsumes = { 0, 0, 0, 0, };
+	private readonly List<Int4> DocumentContent = [];
+	private readonly int[] IgnoreConsumes = [0, 0, 0, 0,];
 	private Int4 CurrentCraftingItems = default;
 	private bool CursorInDoc = false;
 	private bool CursorInResult = false;

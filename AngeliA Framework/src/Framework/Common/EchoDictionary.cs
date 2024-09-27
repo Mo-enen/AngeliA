@@ -23,8 +23,8 @@ public class EchoDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValu
 	public int Count => Pool.Count;
 
 	// Data
-	private readonly Dictionary<TKey, TValue> Pool = new();
-	private readonly Dictionary<TValue, TKey> ReversedPool = new();
+	private readonly Dictionary<TKey, TValue> Pool = [];
+	private readonly Dictionary<TValue, TKey> ReversedPool = [];
 
 
 	#endregion

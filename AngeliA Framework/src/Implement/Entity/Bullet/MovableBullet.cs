@@ -22,7 +22,7 @@ public abstract class MovableBullet : Bullet {
 	public virtual int Scale => 1000;
 	public virtual int WaterSpeedRate => 200;
 	public virtual int MaxRange => 46339;
-	protected override int Duration => 600;
+	public override int Duration => 600;
 	protected override int EnvironmentHitCount => 1;
 	protected override int ReceiverHitCount => 1;
 	public int CurrentRotation { get; set; }

@@ -73,13 +73,13 @@ public static class QTest {
 	public static bool ShowNotUpdatedData { get; set; } = true;
 
 	// Data
-	private static readonly Dictionary<string, BoolData> BoolPool = new();
-	private static readonly Dictionary<string, IntData> IntPool = new();
-	private static readonly Dictionary<string, FloatData> FloatPool = new();
-	private static readonly Dictionary<string, PixelData> PixelsPool = new();
-	private static readonly Dictionary<string, object> ObjectPool = new();
-	private static readonly List<KeyData> Keys = new();
-	private static readonly Dictionary<string, bool> GroupFolding = new();
+	private static readonly Dictionary<string, BoolData> BoolPool = [];
+	private static readonly Dictionary<string, IntData> IntPool = [];
+	private static readonly Dictionary<string, FloatData> FloatPool = [];
+	private static readonly Dictionary<string, PixelData> PixelsPool = [];
+	private static readonly Dictionary<string, object> ObjectPool = [];
+	private static readonly List<KeyData> Keys = [];
+	private static readonly Dictionary<string, bool> GroupFolding = [];
 	private static Int2 PanelPositionOffset = new(1024, 1024);
 	private static bool MouseDragMoving;
 	private static bool ShowingWindow = false;

@@ -14,7 +14,7 @@ public static class TaskSystem {
 
 
 	// Data
-	private static readonly Dictionary<int, Task> Pool = new();
+	private static readonly Dictionary<int, Task> Pool = [];
 	private static readonly List<(Task task, object data)> Tasks = new(8);
 	private static Task CurrentTask = null;
 
