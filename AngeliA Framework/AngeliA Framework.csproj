@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>AngeliA Framework</AssemblyName>
 		<RootNamespace>AngeliA</RootNamespace>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>

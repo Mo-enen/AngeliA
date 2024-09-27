@@ -13,21 +13,13 @@ public class ConsoleWindow : WindowUI {
 	#region --- SUB ---
 
 
-	private struct Line {
-		public int Level;
-		public string Content;
-		public int Hour;
-		public int Minute;
-		public int Second;
-		public int Frame;
-		public Line (int level, string content, int frame) {
-			Level = level;
-			Content = content;
-			Hour = frame / 3600 / 60;
-			Minute = (frame / 3600) % 60;
-			Second = (frame / 60) % 60;
-			Frame = frame % 60;
-		}
+	private struct Line (int level, string content, int frame) {
+		public int Level = level;
+		public string Content = content;
+		public int Hour = frame / 3600 / 60;
+		public int Minute = (frame / 3600) % 60;
+		public int Second = (frame / 60) % 60;
+		public int Frame = frame % 60;
 	}
 
 
