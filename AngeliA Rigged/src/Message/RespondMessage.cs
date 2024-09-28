@@ -73,9 +73,6 @@ public class RigRespondMessage {
 	// Const
 	public const int REQUIRE_CHAR_MAX_COUNT = 64;
 
-	// Api
-	public int RespondCount { get; private set; } = 0;
-
 	// Pipe
 	public int ViewX;
 	public int ViewY;
@@ -139,7 +136,6 @@ public class RigRespondMessage {
 		GizmosTexturePool.Clear();
 		SkyTop.a = 255;
 		SkyBottom.a = 255;
-		RespondCount = 0;
 	}
 
 
@@ -352,8 +348,6 @@ public class RigRespondMessage {
 
 
 	public unsafe void ReadDataFromPipe (byte* pointer) {
-
-		RespondCount++;
 
 		try {
 

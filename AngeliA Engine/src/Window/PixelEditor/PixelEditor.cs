@@ -12,7 +12,6 @@ public partial class PixelEditor : WindowUI {
 	#region --- SUB ---
 
 
-	// Sprite
 	private class SpriteDataComparer : IComparer<SpriteData> {
 		public static readonly SpriteDataComparer Instance = new();
 		public int Compare (SpriteData a, SpriteData b) {
@@ -48,31 +47,20 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private class CharacterTempateData {
-		public int ID;
-		public string SourceName;
-		public string TargetNameFormat;
-		public int OffsetX;
-		public int OffsetY;
-		public int FailbackW;
-		public int FailbackH;
-		public CharacterTempateData (string sourceName, string targetNameFormat, int offsetX, int offsetY, int failbackW, int failbackH) {
-			SourceName = sourceName;
-			TargetNameFormat = targetNameFormat;
-			OffsetX = offsetX;
-			OffsetY = offsetY;
-			FailbackW = failbackW;
-			FailbackH = failbackH;
-			ID = sourceName.AngeHash();
-		}
+	private class CharacterTempateData (string sourceName, string targetNameFormat, int offsetX, int offsetY, int failbackW, int failbackH) {
+		public int ID = sourceName.AngeHash();
+		public string SourceName = sourceName;
+		public string TargetNameFormat = targetNameFormat;
+		public int OffsetX = offsetX;
+		public int OffsetY = offsetY;
+		public int FailbackW = failbackW;
+		public int FailbackH = failbackH;
 	}
 
 
-	// Drag
 	private enum DragState { None, MoveSprite, SelectPixel, SelectOrCreateSprite, ResizeSprite, Paint, MovePixel, Canceled, }
 
 
-	// Tool
 	private enum Tool { Rect, Circle, Line, Bucket, Select, Sprite, }
 
 
@@ -103,9 +91,8 @@ public partial class PixelEditor : WindowUI {
 	public override string DefaultName => "Artwork";
 
 	// Data
-	private List<string> AllRigCharacterNames { get; init; }
 	private readonly List<SpriteData> StagedSprites = [];
-	private readonly List<AngeSprite> CharacterTemplateChace = [];
+	private readonly List<AngeSprite> SpriteTemplateChace = [];
 	private Project CurrentProject;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
@@ -177,10 +164,9 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	public PixelEditor (List<string> allRigCharacterNames) {
+	public PixelEditor () {
 		Instance = this;
 		Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
-		AllRigCharacterNames = allRigCharacterNames;
 	}
 
 
@@ -927,102 +913,6 @@ public partial class PixelEditor : WindowUI {
 	#region --- LGC ---
 
 
-	private void CreateNewSprite (string basicName = "New Sprite", bool select = true, Int2? pixelPos = null, Int2? pixelSize = null) {
-		int w = pixelSize.HasValue ? pixelSize.Value.x : 32;
-		int h = pixelSize.HasValue ? pixelSize.Value.y : 32;
-		string name = Sheet.GetAvailableSpriteName(basicName);
-		var sprite = Sheet.CreateSprite(
-			name,
-			pixelPos.HasValue ? new IRect(pixelPos.Value.x, pixelPos.Value.y, w, h) : new IRect(1, STAGE_SIZE - h - 1, w, h),
-			CurrentAtlasIndex
-		);
-		Sheet.AddSprite(sprite);
-		StagedSprites.Add(new SpriteData(sprite));
-		RegisterUndo(new SpriteObjectUndoItem() {
-			Sprite = sprite.CreateCopy(),
-			Create = true,
-		});
-		SetDirty();
-		if (select) SetSpriteSelection(StagedSprites.Count - 1);
-	}
-
-
-	private void CreateSpriteForPalette (bool useDefaultPos, Int2? pixelPos = null) {
-		if (CurrentAtlasIndex < 0 || CurrentAtlasIndex >= Sheet.Atlas.Count) return;
-		const int PAL_WIDTH = 8;
-		int PAL_HEIGHT = PALETTE_PIXELS.Length / 8;
-		// Get Sprite Pos
-		Int2 spritePixPos = default;
-		if (pixelPos.HasValue) {
-			spritePixPos = pixelPos.Value;
-			spritePixPos.y -= PAL_HEIGHT;
-		} else {
-			if (useDefaultPos) {
-				spritePixPos.x = -PAL_WIDTH - 1;
-				spritePixPos.y = STAGE_SIZE - PAL_HEIGHT;
-			} else {
-				spritePixPos = Stage_to_Pixel(new Int2(StageRect.x, StageRect.yMax));
-				spritePixPos.x += 1;
-				spritePixPos.y -= PAL_HEIGHT + 1;
-			}
-		}
-		// Create Sprite
-		var atlas = Sheet.Atlas[CurrentAtlasIndex];
-		string name = Sheet.GetAvailableSpriteName($"Palette.{atlas.Name}");
-		var sprite = Sheet.CreateSprite(
-			name,
-			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
-			CurrentAtlasIndex
-		);
-		sprite.Tag = Tag.Palette;
-		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
-		Sheet.AddSprite(sprite);
-		StagedSprites.Add(new SpriteData(sprite));
-		RegisterUndo(new SpriteObjectUndoItem() {
-			Sprite = sprite.CreateCopy(),
-			Create = true,
-		});
-		SetDirty();
-	}
-
-
-	private void CreateSpritesForCharacter (string characterName, Int2? pixelPos = null) {
-		Int2 basicPos;
-		if (pixelPos.HasValue) {
-			basicPos = pixelPos.Value;
-		} else {
-			basicPos = new Int2(1, STAGE_SIZE - 1);
-		}
-		// Find Min Position
-		int minX = int.MaxValue;
-		int maxY = int.MinValue;
-		CharacterTemplateChace.Clear();
-		foreach (var source in Sheet.Sprites) {
-			if (!source.RealName.StartsWith("CharacterTemplate")) continue;
-			CharacterTemplateChace.Add(source);
-			minX = Util.Min(minX, source.PixelRect.x);
-			maxY = Util.Max(maxY, source.PixelRect.yMax);
-		}
-		if (CharacterTemplateChace.Count == 0) {
-			Debug.LogWarning("Character template sprite not found");
-			return;
-		}
-		// Copy Template Sprites to Stage
-		int oldStagedCount = StagedSprites.Count;
-		foreach (var source in CharacterTemplateChace) {
-			var sourceRect = source.PixelRect;
-			CopySpriteToStage(
-				source,
-				basicPos.x + sourceRect.x - minX,
-				basicPos.y + sourceRect.y - maxY,
-				string.Format(source.RealName.Replace("CharacterTemplate", "{0}"), characterName)
-			);
-		}
-		SetSpriteSelection(oldStagedCount, StagedSprites.Count - oldStagedCount);
-		CharacterTemplateChace.Clear();
-	}
-
-
 	private void SetZoom (int newZoom, Int2 pivot) {
 		ZoomLevel = newZoom.Clamp(1, 32);
 		var fittedStage = StageRect.Fit(1, 1);
@@ -1138,6 +1028,72 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	// Sprite Template
+	private void CreateNewSprite (string basicName = "New Sprite", bool select = true, Int2? pixelPos = null, Int2? pixelSize = null) {
+		int w = pixelSize.HasValue ? pixelSize.Value.x : 32;
+		int h = pixelSize.HasValue ? pixelSize.Value.y : 32;
+		string name = Sheet.GetAvailableSpriteName(basicName);
+		var sprite = Sheet.CreateSprite(
+			name,
+			pixelPos.HasValue ? new IRect(pixelPos.Value.x, pixelPos.Value.y, w, h) : new IRect(1, STAGE_SIZE - h - 1, w, h),
+			CurrentAtlasIndex
+		);
+		Sheet.AddSprite(sprite);
+		StagedSprites.Add(new SpriteData(sprite));
+		RegisterUndo(new SpriteObjectUndoItem() {
+			Sprite = sprite.CreateCopy(),
+			Create = true,
+		});
+		SetDirty();
+		if (select) SetSpriteSelection(StagedSprites.Count - 1);
+	}
+
+
+	private void CreateSpriteForPalette (bool useDefaultPos, Int2? pixelPos = null) {
+		if (CurrentAtlasIndex < 0 || CurrentAtlasIndex >= Sheet.Atlas.Count) return;
+		const int PAL_WIDTH = 8;
+		int PAL_HEIGHT = PALETTE_PIXELS.Length / 8;
+		// Get Sprite Pos
+		Int2 spritePixPos = default;
+		if (pixelPos.HasValue) {
+			spritePixPos = pixelPos.Value;
+			spritePixPos.y -= PAL_HEIGHT;
+		} else {
+			if (useDefaultPos) {
+				spritePixPos.x = -PAL_WIDTH - 1;
+				spritePixPos.y = STAGE_SIZE - PAL_HEIGHT;
+			} else {
+				spritePixPos = Stage_to_Pixel(new Int2(StageRect.x, StageRect.yMax));
+				spritePixPos.x += 1;
+				spritePixPos.y -= PAL_HEIGHT + 1;
+			}
+		}
+		// Create Sprite
+		var atlas = Sheet.Atlas[CurrentAtlasIndex];
+		string name = Sheet.GetAvailableSpriteName($"Palette.{atlas.Name}");
+		var sprite = Sheet.CreateSprite(
+			name,
+			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
+			CurrentAtlasIndex
+		);
+		sprite.Tag = Tag.Palette;
+		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
+		Sheet.AddSprite(sprite);
+		StagedSprites.Add(new SpriteData(sprite));
+		RegisterUndo(new SpriteObjectUndoItem() {
+			Sprite = sprite.CreateCopy(),
+			Create = true,
+		});
+		SetDirty();
+	}
+
+
+	private void CreateSpritesForCharacter (string characterName, Int2? pixelPos = null) => CreateSpritesFromTemplates(characterName, "CharacterTemplate", pixelPos);
+
+
+	private void CreateSpritesForSheetCharacter (string characterName, Int2? pixelPos = null) => CreateSpritesFromTemplates(characterName, "SheetCharacterTemplate", pixelPos);
+
+
 	// Util
 	private IRect Pixel_to_Stage (IRect pixRect, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out _, out _, ignoreClamp);
 	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, out bool outside, bool ignoreClamp = false) {
@@ -1170,6 +1126,7 @@ public partial class PixelEditor : WindowUI {
 			CanvasRect.y + pixelPos.y * CanvasRect.height / STAGE_SIZE
 		);
 	}
+
 
 	private Int2 Stage_to_Pixel (Int2 pos, bool round = false) => round ?
 		new Int2(
@@ -1204,6 +1161,43 @@ public partial class PixelEditor : WindowUI {
 		pivotY == 500 ? (pivotX == 0 ? 3 : pivotX == 500 ? 4 : pivotX == 1000 ? 5 : -1) :
 		pivotY == 1000 ? (pivotX == 0 ? 6 : pivotX == 500 ? 7 : pivotX == 1000 ? 8 : -1) :
 		-1;
+
+
+	private void CreateSpritesFromTemplates (string resultName, string templateName, Int2? pixelPos = null) {
+		Int2 basicPos;
+		if (pixelPos.HasValue) {
+			basicPos = pixelPos.Value;
+		} else {
+			basicPos = new Int2(1, STAGE_SIZE - 1);
+		}
+		// Find Min Position
+		int minX = int.MaxValue;
+		int maxY = int.MinValue;
+		SpriteTemplateChace.Clear();
+		foreach (var source in Sheet.Sprites) {
+			if (!source.RealName.StartsWith(templateName)) continue;
+			SpriteTemplateChace.Add(source);
+			minX = Util.Min(minX, source.PixelRect.x);
+			maxY = Util.Max(maxY, source.PixelRect.yMax);
+		}
+		if (SpriteTemplateChace.Count == 0) {
+			Debug.LogWarning("Template sprite not found");
+			return;
+		}
+		// Copy Template Sprites to Stage
+		int oldStagedCount = StagedSprites.Count;
+		foreach (var source in SpriteTemplateChace) {
+			var sourceRect = source.PixelRect;
+			CopySpriteToStage(
+				source,
+				basicPos.x + sourceRect.x - minX,
+				basicPos.y + sourceRect.y - maxY,
+				string.Format(source.RealName.Replace(templateName, "{0}"), resultName)
+			);
+		}
+		SetSpriteSelection(oldStagedCount, StagedSprites.Count - oldStagedCount);
+		SpriteTemplateChace.Clear();
+	}
 
 
 	// Drawing Util

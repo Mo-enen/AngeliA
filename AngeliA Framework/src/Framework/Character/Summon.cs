@@ -125,6 +125,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 
 
 	protected override CharacterNavigation CreateNativeNavigation () => SummonNavigation = new SummonNavigation(this);
+	protected override CharacterAttackness CreateNativeAttackness () => new SummonAttackness(this);
 
 
 	// Summon

@@ -111,7 +111,7 @@ public static class Renderer {
 	[OnGameInitialize(-4096)]
 	internal static void Initialize () {
 
-		Util.LinkEventWithAttribute<OnMainSheetReload>(typeof(Renderer), nameof(OnMainSheetLoaded));
+		Util.LinkEventWithAttribute<OnMainSheetReloadAttribute>(typeof(Renderer), nameof(OnMainSheetLoaded));
 
 		// Create Layers
 		for (int i = 0; i < RenderLayer.COUNT; i++) {

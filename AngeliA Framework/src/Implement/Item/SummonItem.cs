@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class SummonItem<T> : Item where T : SummonFromItem {
+public abstract class SummonItem<T> : Item where T : ItemBasedSummon {
 
 	private static Entity UpdatingHolder = null;
 	private static int UpdatingFrame = -1;
+	public override int MaxStackCount => 1;
 
 	public override void OnItemUpdate_FromInventory (Entity holder) {
 		const int SYNC_FREQ = 30;

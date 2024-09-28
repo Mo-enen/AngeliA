@@ -18,7 +18,7 @@ public struct Long4 : IEquatable<Long4>, IFormattable {
 			1 => y,
 			2 => z,
 			3 => w,
-			_ => throw new System.ArgumentOutOfRangeException(),
+			_ => throw new ArgumentOutOfRangeException(),
 		};
 		set {
 			switch (index) {
@@ -26,7 +26,7 @@ public struct Long4 : IEquatable<Long4>, IFormattable {
 				case 1: y = value; break;
 				case 2: z = value; break;
 				case 3: w = value; break;
-				default: throw new System.ArgumentOutOfRangeException();
+				default: throw new ArgumentOutOfRangeException();
 			}
 		}
 	}

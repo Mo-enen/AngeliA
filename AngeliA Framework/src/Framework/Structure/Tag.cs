@@ -14,7 +14,7 @@ public enum Tag : int {
 	Climb = 1 << 4,
 	ClimbStable = 1 << 5,
 
-	Test = 1 << 6,
+	Mark = 1 << 6,
 	Water = 1 << 7,
 	Slip = 1 << 8,
 	Slide = 1 << 9,
@@ -57,7 +57,7 @@ public static class TagUtil {
 		Tag.Climb.ToString(),
 		Tag.ClimbStable.ToString(),
 
-		Tag.Test.ToString(),
+		Tag.Mark.ToString(),
 		Tag.Water.ToString(),
 		Tag.Slip.ToString(),
 		Tag.Slide.ToString(),
@@ -86,7 +86,7 @@ public static class TagUtil {
 	// API
 	public static Tag GetTagAt (int index) => (Tag)(1 << index);
 
-	public static bool HasAll (this Tag self, Tag flag) => (self & flag) == flag;
+	public static bool HasAll (this Tag self, Tag musk) => (self & musk) == musk;
 
 	public static bool HasAny (this Tag self, Tag musk) => (self & musk) != 0;
 

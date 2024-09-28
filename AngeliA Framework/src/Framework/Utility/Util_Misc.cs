@@ -189,7 +189,7 @@ public static partial class Util {
 			} else {
 				return 0;
 			}
-		} catch (System.Exception ex) {
+		} catch (Exception ex) {
 			Debug.LogException(ex);
 			return -1;
 		}
@@ -496,55 +496,55 @@ public static partial class Util {
 
 	// Pointer
 	public static unsafe byte ReadByte (ref byte* p, byte* end) {
-		if (p > end) throw new System.IndexOutOfRangeException();
+		if (p > end) throw new IndexOutOfRangeException();
 		return ReadByte(ref p);
 	}
 	public static unsafe sbyte ReadSByte (ref byte* p, byte* end) {
-		if (p > end) throw new System.IndexOutOfRangeException();
+		if (p > end) throw new IndexOutOfRangeException();
 		return ReadSByte(ref p);
 	}
 	public static unsafe bool ReadBool (ref byte* p, byte* end) {
-		if (p > end) throw new System.IndexOutOfRangeException();
+		if (p > end) throw new IndexOutOfRangeException();
 		return ReadBool(ref p);
 	}
 	public static unsafe char ReadChar (ref byte* p, byte* end) {
-		if (p > end - 1) throw new System.IndexOutOfRangeException();
+		if (p > end - 1) throw new IndexOutOfRangeException();
 		return ReadChar(ref p);
 	}
 	public static unsafe short ReadShort (ref byte* p, byte* end) {
-		if (p > end - 1) throw new System.IndexOutOfRangeException();
+		if (p > end - 1) throw new IndexOutOfRangeException();
 		return ReadShort(ref p);
 	}
 	public static unsafe ushort ReadUShort (ref byte* p, byte* end) {
-		if (p > end - 1) throw new System.IndexOutOfRangeException();
+		if (p > end - 1) throw new IndexOutOfRangeException();
 		return ReadUShort(ref p);
 	}
 	public static unsafe int ReadInt (ref byte* p, byte* end) {
-		if (p > end - 3) throw new System.IndexOutOfRangeException();
+		if (p > end - 3) throw new IndexOutOfRangeException();
 		return ReadInt(ref p);
 	}
 	public static unsafe uint ReadUInt (ref byte* p, byte* end) {
-		if (p > end - 3) throw new System.IndexOutOfRangeException();
+		if (p > end - 3) throw new IndexOutOfRangeException();
 		return ReadUInt(ref p);
 	}
 	public static unsafe float ReadFloat (ref byte* p, byte* end) {
-		if (p > end - 3) throw new System.IndexOutOfRangeException();
+		if (p > end - 3) throw new IndexOutOfRangeException();
 		return ReadFloat(ref p);
 	}
 	public static unsafe long ReadLong (ref byte* p, byte* end) {
-		if (p > end - 7) throw new System.IndexOutOfRangeException();
+		if (p > end - 7) throw new IndexOutOfRangeException();
 		return ReadLong(ref p);
 	}
 	public static unsafe ulong ReadULong (ref byte* p, byte* end) {
-		if (p > end - 7) throw new System.IndexOutOfRangeException();
+		if (p > end - 7) throw new IndexOutOfRangeException();
 		return ReadULong(ref p);
 	}
 	public static unsafe double ReadDouble (ref byte* p, byte* end) {
-		if (p > end - 7) throw new System.IndexOutOfRangeException();
+		if (p > end - 7) throw new IndexOutOfRangeException();
 		return ReadDouble(ref p);
 	}
 	public static unsafe byte[] ReadBytes (ref byte* p, int length, byte* end) {
-		if (p > end - length + 1) throw new System.IndexOutOfRangeException();
+		if (p > end - length + 1) throw new IndexOutOfRangeException();
 		return ReadBytes(ref p, length);
 	}
 
@@ -619,55 +619,55 @@ public static partial class Util {
 
 
 	public static unsafe void Write (ref byte* p, byte value, byte* end) {
-		if (p > end) throw new System.IndexOutOfRangeException();
+		if (p > end) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, sbyte value, byte* end) {
-		if (p > end) throw new System.IndexOutOfRangeException();
+		if (p > end) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, bool value, byte* end) {
-		if (p > end) throw new System.IndexOutOfRangeException();
+		if (p > end) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, char value, byte* end) {
-		if (p > end - 1) throw new System.IndexOutOfRangeException();
+		if (p > end - 1) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, short value, byte* end) {
-		if (p > end - 1) throw new System.IndexOutOfRangeException();
+		if (p > end - 1) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, ushort value, byte* end) {
-		if (p > end - 1) throw new System.IndexOutOfRangeException();
+		if (p > end - 1) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, int value, byte* end) {
-		if (p > end - 3) throw new System.IndexOutOfRangeException();
+		if (p > end - 3) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, uint value, byte* end) {
-		if (p > end - 3) throw new System.IndexOutOfRangeException();
+		if (p > end - 3) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, float value, byte* end) {
-		if (p > end - 3) throw new System.IndexOutOfRangeException();
+		if (p > end - 3) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, long value, byte* end) {
-		if (p > end - 7) throw new System.IndexOutOfRangeException();
+		if (p > end - 7) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, ulong value, byte* end) {
-		if (p > end - 7) throw new System.IndexOutOfRangeException();
+		if (p > end - 7) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, double value, byte* end) {
-		if (p > end - 7) throw new System.IndexOutOfRangeException();
+		if (p > end - 7) throw new IndexOutOfRangeException();
 		Write(ref p, value);
 	}
 	public static unsafe void Write (ref byte* p, byte[] bytes, int length, byte* end) {
-		if (p > end - length + 1) throw new System.IndexOutOfRangeException();
+		if (p > end - length + 1) throw new IndexOutOfRangeException();
 		Write(ref p, bytes, length);
 	}
 

@@ -368,6 +368,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		var buttonRect = new IRect(panelRect.xMax, panelRect.y, buttonWidth, buttonHeight);
 		buttonRect.x -= buttonRect.width + padding;
 		if (GUI.Button(buttonRect, BuiltInText.UI_CANCEL, GUI.Skin.SmallDarkButton)) {
+			Input.UseAllMouseKey();
 			ErrorMessage = string.Empty;
 			OnPathPicked = null;
 			Active = false;
@@ -539,6 +540,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		}
 		OnPathPicked = null;
 		Active = false;
+		Input.UseAllMouseKey();
 	}
 
 

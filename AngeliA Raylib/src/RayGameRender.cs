@@ -104,7 +104,7 @@ public partial class RayGame {
 		// Vig
 		if (ScreenEffectEnables[Const.SCREEN_EFFECT_VIGNETTE]) {
 			var vShader = ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE];
-			Raylib.SetShaderValue<float>(
+			Raylib.SetShaderValue(
 				vShader, ShaderPropIndex_VignetteAspect,
 				(float)ScreenWidth / ScreenHeight,
 				ShaderUniformDataType.Float
@@ -401,7 +401,7 @@ public partial class RayGame {
 
 	protected override void _Effect_SetDarkenParams (float amount, float step = 8f) {
 		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_DARKEN];
-		Raylib.SetShaderValue<float>(
+		Raylib.SetShaderValue(
 			shader, ShaderPropIndex_DarkenAmount,
 			(amount * step).RoundToInt() / step,
 			ShaderUniformDataType.Float
@@ -410,7 +410,7 @@ public partial class RayGame {
 
 	protected override void _Effect_SetLightenParams (float amount, float step = 8f) {
 		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_RETRO_LIGHTEN];
-		Raylib.SetShaderValue<float>(
+		Raylib.SetShaderValue(
 			shader, ShaderPropIndex_LightenAmount,
 			(amount * step).RoundToInt() / step,
 			ShaderUniformDataType.Float
@@ -419,7 +419,7 @@ public partial class RayGame {
 
 	protected override void _Effect_SetTintParams (Color32 color) {
 		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_TINT];
-		Raylib.SetShaderValue<Vector4>(
+		Raylib.SetShaderValue(
 			shader,
 			ShaderPropIndex_TintAmount,
 			new Vector4(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f),
@@ -429,11 +429,11 @@ public partial class RayGame {
 
 	protected override void _Effect_SetVignetteParams (float radius, float feather, float offsetX, float offsetY, float round) {
 		var shader = ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE];
-		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteRadius, radius, ShaderUniformDataType.Float);
-		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteFeather, feather, ShaderUniformDataType.Float);
-		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteOffsetX, offsetX, ShaderUniformDataType.Float);
-		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteOffsetY, offsetY, ShaderUniformDataType.Float);
-		Raylib.SetShaderValue<float>(shader, ShaderPropIndex_VignetteRound, round, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue(shader, ShaderPropIndex_VignetteRadius, radius, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue(shader, ShaderPropIndex_VignetteFeather, feather, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue(shader, ShaderPropIndex_VignetteOffsetX, offsetX, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue(shader, ShaderPropIndex_VignetteOffsetY, offsetY, ShaderUniformDataType.Float);
+		Raylib.SetShaderValue(shader, ShaderPropIndex_VignetteRound, round, ShaderUniformDataType.Float);
 	}
 
 

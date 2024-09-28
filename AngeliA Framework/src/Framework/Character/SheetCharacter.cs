@@ -42,9 +42,10 @@ public abstract class SheetCharacter : Character {
 		public int GrabSide = 0;
 		public int GrabSideMove = 0;
 		public int GrabFlip = 0;
-		public int Attack = 0;
+		public int[] Attack = [];
 
-		// API
+		private static readonly List<int> CacheList = [];
+
 		public AnimationSheet (System.Type characterType) {
 
 			string name = characterType.Name;
@@ -76,12 +77,12 @@ public abstract class SheetCharacter : Character {
 			PassOut = LoadAniCode($"{name}.PassOut");
 			DoorFront = LoadAniCode($"{name}.DoorFront", Idle);
 			DoorBack = LoadAniCode($"{name}.DoorBack", Idle);
-			Attack = LoadAniCode($"{name}.Attack");
+			Attack = LoadAniCodeGroup($"{name}.Attack");
 
 		}
 
-
-		public int GetMovementCode (Character character) => character.Movement.IsRolling ? Roll :
+		public int GetMovementCode (Character character) =>
+			character.Movement.IsRolling ? Roll :
 			character.Movement.MovementState switch {
 				CharacterMovementState.Idle => Idle,
 				CharacterMovementState.Walk => Walk,
@@ -104,13 +105,8 @@ public abstract class SheetCharacter : Character {
 				_ => Idle,
 			};
 
-
-		private static int LoadAniCode (string name, int failback = 0) => LoadAniCode(
-			name.AngeHash(), failback
-		);
-
-
-		private static int LoadAniCode (int code, int failback = 0) {
+		private static int LoadAniCode (string name, int failback = 0) {
+			int code = name.AngeHash();
 			if (Renderer.HasSpriteGroup(code) || Renderer.HasSprite(code)) {
 				return code;
 			} else {
@@ -118,9 +114,27 @@ public abstract class SheetCharacter : Character {
 			}
 		}
 
+		private static int[] LoadAniCodeGroup (string name) {
+			CacheList.Clear();
+			int code = name.AngeHash();
+			if (Renderer.HasSpriteGroup(code)) {
+				CacheList.Add(code);
+			}
+			for (char c = 'A'; c <= 'Z'; c++) {
+				code = $"{name}.{c}".AngeHash();
+				if (Renderer.HasSpriteGroup(code)) {
+					CacheList.Add(code);
+				} else {
+					break;
+				}
+			}
+			var result = CacheList.ToArray();
+			CacheList.Clear();
+			return result;
+		}
 
 	}
-
+	
 
 
 	#endregion
@@ -147,15 +161,13 @@ public abstract class SheetCharacter : Character {
 	#region --- MSG ---
 
 
-	[OnGameInitialize(-64)]
-	public static TaskResult Initialize_Sheet () {
-		if (!Renderer.IsReady) return TaskResult.Continue;
+	[OnMainSheetReload]
+	public static void OnMainSheetReload_Sheet () {
 		AnimationSheetPool.Clear();
 		foreach (var type in typeof(Character).AllChildClass()) {
 			if (!type.IsSubclassOf(typeof(SheetCharacter))) continue;
 			AnimationSheetPool.Add(type.AngeHash(), new AnimationSheet(type));
 		}
-		return TaskResult.End;
 	}
 
 
@@ -231,9 +243,11 @@ public abstract class SheetCharacter : Character {
 			ani = sheet.GetMovementCode(this);
 		} else {
 			// Attack
-			if (sheet.Attack != 0) {
-				ani = sheet.Attack;
-				if (Game.GlobalFrame <= Attackness.LastAttackFrame) CurrentAnimationFrame = 0;
+			if (sheet.Attack.Length != 0) {
+				ani = sheet.Attack[Attackness.AttackStyleIndex.Clamp(0, sheet.Attack.Length - 1)];
+				if (Game.GlobalFrame <= Attackness.LastAttackFrame) {
+					CurrentAnimationFrame = 0;
+				}
 			}
 		}
 

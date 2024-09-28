@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace AngeliA;
 
-[System.Serializable]
+[Serializable]
 public struct FRect : IEquatable<FRect>, IFormattable {
 
 	private float m_XMin;

@@ -165,6 +165,7 @@ public partial class RiggedGame : Game {
 		Update();
 
 		success = Update_Respond();
+
 		if (!success) return false;
 
 		return true;
@@ -252,7 +253,7 @@ public partial class RiggedGame : Game {
 
 		// Reload Character Movement
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(5) && Player.Selecting != null) {
-			CharacterMovement.ReloadMovementConfigFromFile(Player.Selecting.GetType().AngeName());
+			CharacterMovement.ReloadMovementConfigFromFile(Player.Selecting.GetType());
 		}
 
 		// Lightmap Setting Change

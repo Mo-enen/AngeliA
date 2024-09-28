@@ -103,6 +103,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode MENU_NEW_SPRITE = ("Menu.CreateNewSprite", "New Sprite");
 	private static readonly LanguageCode MENU_NEW_PAL_SPRITE = ("Menu.CreateNewPalette", "New Palette");
 	private static readonly LanguageCode MENU_NEW_CHAR_SPRITE = ("Menu.CreateNewCharacterSprite", "New Character Sprites");
+	private static readonly LanguageCode MENU_NEW_SHEET_CHAR_SPRITE = ("Menu.CreateNewSheetCharacterSprite", "New Sheet Character Sprites");
 	private static LanguageCode[] TIP_TOOLS;
 
 	// Data
@@ -927,14 +928,25 @@ public partial class PixelEditor {
 		);
 		GenericPopupUI.AddItem(MENU_NEW_SPRITE, CreateNew, data: pixPos);
 		GenericPopupUI.AddItem(MENU_NEW_PAL_SPRITE, NewPalette, data: pixPos);
-		if (AllRigCharacterNames.Count > 0) {
-			GenericPopupUI.AddItem(MENU_NEW_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
-			GenericPopupUI.BeginSubItem();
-			for (int i = 0; i < AllRigCharacterNames.Count; i++) {
-				GenericPopupUI.AddItem(AllRigCharacterNames[i], NewCharSprite, data: (i, pixPos));
-			}
-			GenericPopupUI.EndSubItem();
+
+		// For All Pose Characters
+		GenericPopupUI.AddItem(MENU_NEW_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
+		GenericPopupUI.BeginSubItem();
+		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, "*.json")) {
+			string name = Util.GetNameWithoutExtension(filePath);
+			GenericPopupUI.AddItem(name, NewPoseCharSprite, data: (name, pixPos));
 		}
+		GenericPopupUI.EndSubItem();
+
+		// For All Sheet Characters
+		GenericPopupUI.AddItem(MENU_NEW_SHEET_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
+		GenericPopupUI.BeginSubItem();
+		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, "*.sheetJson")) {
+			string name = Util.GetNameWithoutExtension(filePath);
+			GenericPopupUI.AddItem(name, NewSheetCharSprite, data: (name, pixPos));
+		}
+		GenericPopupUI.EndSubItem();
+
 		// Func
 		static void CreateNew () {
 			if (GenericPopupUI.InvokingItemData is not Int2 pixPos) return;
@@ -945,11 +957,13 @@ public partial class PixelEditor {
 			if (GenericPopupUI.InvokingItemData is not Int2 pixPos) return;
 			Instance.CreateSpriteForPalette(false, pixelPos: pixPos);
 		}
-		static void NewCharSprite () {
-			if (GenericPopupUI.InvokingItemData is not (int index, Int2 pixPos)) return;
-			if (index < 0 || index >= Instance.AllRigCharacterNames.Count) return;
-			string name = Instance.AllRigCharacterNames[index];
+		static void NewPoseCharSprite () {
+			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
 			Instance.CreateSpritesForCharacter(name, pixelPos: pixPos);
+		}
+		static void NewSheetCharSprite () {
+			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
+			Instance.CreateSpritesForSheetCharacter(name, pixelPos: pixPos);
 		}
 	}
 

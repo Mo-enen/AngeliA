@@ -1,6 +1,6 @@
 ﻿namespace AngeliA;
 
-public abstract class SummonFromItem : Summon {
+public abstract class ItemBasedSummon : Summon {
 	public int OriginItemID { get; set; } = 0;
 	public override void OnActivated () {
 		OriginItemID = 0;

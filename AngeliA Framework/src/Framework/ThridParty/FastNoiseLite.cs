@@ -53,7 +53,7 @@ using System.Runtime.CompilerServices;
 namespace JordanPeck;
 
 // Switch between using floats or doubles for input position
-using FNLfloat = System.Single;
+using FNLfloat = Single;
 //using FNLfloat = System.Double;
 
 public enum NoiseType {

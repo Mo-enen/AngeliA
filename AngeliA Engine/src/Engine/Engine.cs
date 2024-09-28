@@ -102,7 +102,7 @@ public partial class Engine {
 		Instance = engine;
 		engine.AllWindows = [
 			new RiggedMapEditor(),
-			new PixelEditor(engine.AllRigCharacterNames),
+			new PixelEditor(),
 			new LanguageEditor(),
 			new ConsoleWindow(),
 			new ProjectEditor(),
@@ -242,7 +242,7 @@ public partial class Engine {
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 		}
-		
+
 		// Func
 		static void ImportForIcon () {
 			if (EngineUtil.ImportIconFile(Instance.CurrentProject, Instance.DroppingFilePath)) {
@@ -865,7 +865,6 @@ public partial class Engine {
 		CheckFrameworkDllChanged();
 		CheckDialogChanged();
 		CheckResourceChanged();
-		ReloadCharacterNames();
 
 		// Sync Engine Version
 		if (Universe.BuiltInInfo.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {

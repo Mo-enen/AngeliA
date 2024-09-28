@@ -14,7 +14,7 @@ public enum CharacterMovementState {
 
 
 
-public partial class CharacterMovement {
+public partial class CharacterMovement (Rigidbody rig) {
 
 
 
@@ -36,8 +36,8 @@ public partial class CharacterMovement {
 	private const int CLIP_CORRECT_TOLERANCE = Const.CEL / 4;
 
 	// Api
-	public readonly Rigidbody Target;
-	public readonly Character TargetCharacter;
+	public readonly Rigidbody Target = rig;
+	public readonly Character TargetCharacter = rig as Character;
 	public Int2 LastMoveDirection { get; private set; } = default;
 	public int IntendedX { get; private set; } = 0;
 	public int IntendedY { get; private set; } = 0;
@@ -145,12 +145,6 @@ public partial class CharacterMovement {
 	[OnGameInitialize(-128)]
 	internal static void OnGameInitializeMovement () {
 		ReloadAllCharacterMovementConfigFromFile();
-	}
-
-
-	public CharacterMovement (Rigidbody rig) {
-		Target = rig;
-		TargetCharacter = rig as Character;
 	}
 
 
@@ -851,9 +845,11 @@ public partial class CharacterMovement {
 
 
 	// Config
-	public static void ReloadMovementConfigFromFile (string characterName) {
-		int id = characterName.AngeHash();
-		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{characterName}.json");
+	public static void ReloadMovementConfigFromFile (System.Type characterType) {
+		string cName = characterType.AngeName();
+		int id = cName.AngeHash();
+		bool isSheet = characterType.IsSubclassOf(typeof(SheetCharacter));
+		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{cName}.{(isSheet ? "sheetJson" : "json")}");
 		var config = JsonUtil.LoadOrCreateJsonFromPath<CharacterMovementConfig>(path);
 		ConfigPool_Movement[id] = config;
 		MovementConfigGlobalVersion++;
@@ -864,11 +860,13 @@ public partial class CharacterMovement {
 		MovementConfigGlobalVersion++;
 		ConfigPool_Movement.Clear();
 		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
+		var sheetType = typeof(SheetCharacter);
 		foreach (var type in typeof(Character).AllChildClass()) {
-			int typeID = type.AngeHash();
-			string name = type.Name;
+			string name = type.AngeName();
+			int typeID = name.AngeHash();
+			bool isSheet = type.IsSubclassOf(sheetType);
 			// Movement
-			string path = Util.CombinePaths(movementRoot, $"{name}.json");
+			string path = Util.CombinePaths(movementRoot, $"{name}.{(isSheet ? "sheetJson" : "json")}");
 			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
 			// Create Default Config
 			if (config == null) {

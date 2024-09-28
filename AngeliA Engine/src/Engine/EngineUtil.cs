@@ -634,7 +634,7 @@ public static class EngineUtil {
 
 		// Dependencies
 		CacheBuilder.Append(" --no-dependencies");
-
+		
 		// Prop
 		if (!string.IsNullOrWhiteSpace(assemblyName)) {
 			CacheBuilder.Append($" -p:AssemblyName=\"{assemblyName}\"");

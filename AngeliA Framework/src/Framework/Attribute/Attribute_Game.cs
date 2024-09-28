@@ -6,50 +6,42 @@ namespace AngeliA;
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameInitializeAttribute : OrderedAttribute {
-	public OnGameInitializeAttribute (int order = 0) : base(order) { }
+public class OnGameInitializeAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameInitializeLaterAttribute : OrderedAttribute {
-	public OnGameInitializeLaterAttribute (int order = 0) : base(order) { }
+public class OnGameInitializeLaterAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameUpdateAttribute : OrderedAttribute {
-	public OnGameUpdateAttribute (int order = 0) : base(order) { }
+public class OnGameUpdateAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameUpdateLaterAttribute : OrderedAttribute {
-	public OnGameUpdateLaterAttribute (int order = 0) : base(order) { }
+public class OnGameUpdateLaterAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameUpdatePauselessAttribute : OrderedAttribute {
-	public OnGameUpdatePauselessAttribute (int order = 0) : base(order) { }
+public class OnGameUpdatePauselessAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameRestartAttribute : OrderedAttribute {
-	public OnGameRestartAttribute (int order = 0) : base(order) { }
+public class OnGameRestartAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameTryingToQuitAttribute : OrderedAttribute {
-	public OnGameTryingToQuitAttribute (int order = 0) : base(order) { }
+public class OnGameTryingToQuitAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameQuittingAttribute : OrderedAttribute {
-	public OnGameQuittingAttribute (int order = 0) : base(order) { }
+public class OnGameQuittingAttribute (int order = 0) : OrderedAttribute(order) {
 }
 
 
@@ -66,19 +58,17 @@ public class OnFileDroppedAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnMainSheetReload : Attribute { }
+public class OnMainSheetReloadAttribute : Attribute { }
 
 
 // Slot
 [AttributeUsage(AttributeTargets.Method)]
-public class BeforeSavingSlotChanged : OrderedAttribute {
-	public BeforeSavingSlotChanged (int order = 0) : base(order) { }
+public class BeforeSavingSlotChanged (int order = 0) : OrderedAttribute(order) {
 }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnSavingSlotChanged : OrderedAttribute {
-	public OnSavingSlotChanged (int order = 0) : base(order) { }
+public class OnSavingSlotChanged (int order = 0) : OrderedAttribute(order) {
 }
 
 
@@ -115,12 +105,8 @@ public class OnCheatPerformAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-public class CheatCodeAttribute : Attribute {
-	public string Code = "";
-	public object Param = null;
-	public CheatCodeAttribute (string code, object param = null) {
-		Code = code;
-		Param = param;
-	}
+public class CheatCodeAttribute (string code, object param = null) : Attribute {
+	public string Code = code;
+	public object Param = param;
 }
 

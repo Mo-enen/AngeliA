@@ -34,7 +34,6 @@ public partial class Engine {
 	// Data
 	private readonly GUIStyle RigGameHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
 	private readonly RigTransceiver Transceiver = new(EngineUtil.RiggedExePath);
-	private readonly List<string> AllRigCharacterNames = [];
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
 	private int RigMapEditorWindowIndex = 0;
@@ -296,9 +295,8 @@ public partial class Engine {
 			if (called) {
 				if (runningGame) {
 					// Get Respond
-					bool responded = Transceiver.Respond(
-						currentUniverse,
-						sheetIndex,
+					Transceiver.Respond(
+						currentUniverse, sheetIndex,
 						CurrentWindowIndex == RigMapEditorWindowIndex,
 						!requireRigGameRender
 					);
@@ -307,9 +305,6 @@ public partial class Engine {
 					rigEdt.HavingGamePlay = resp.GamePlaying;
 					if (CurrentWindowIndex == RigMapEditorWindowIndex) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
-					}
-					if (responded && resp.RespondCount == 1) {
-						ReloadCharacterNames();
 					}
 				} else if (requireRigGameRender) {
 					Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex);
@@ -341,25 +336,6 @@ public partial class Engine {
 			}
 		}
 
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private void ReloadCharacterNames () {
-		AllRigCharacterNames.Clear();
-		if (CurrentProject == null) return;
-		string path = CurrentProject.Universe.SlotCharacterRenderingConfigRoot;
-		foreach (var filePath in Util.EnumerateFiles(path, true, "*.json")) {
-			string name = Util.GetNameWithoutExtension(filePath);
-			AllRigCharacterNames.Add(name);
-		}
 	}
 
 

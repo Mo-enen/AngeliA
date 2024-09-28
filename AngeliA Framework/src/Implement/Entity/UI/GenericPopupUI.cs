@@ -56,6 +56,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	private int HoveringIndex = -1;
 	private int HoveringFrame = 0;
 	private int VisibleDepth = 0;
+	private int PrevPanelWidth = -1;
 
 
 	#endregion
@@ -77,6 +78,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	public override void OnActivated () {
 		base.OnActivated();
 		ItemCount = 0;
+		PrevPanelWidth = -1;
 		Input.UseMouseKey(0);
 		Input.UseMouseKey(1);
 		Input.UseMouseKey(2);
@@ -99,7 +101,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 		Cursor.RequireCursor();
 
-		int panelWidth = Unify(200);
+		int panelWidth = PrevPanelWidth >= 0 ? PrevPanelWidth : Unify(200);
 		int itemHeight = Unify(26);
 		int lineThickness = Unify(4);
 		int panelPadding = Unify(4);
@@ -250,7 +252,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 						);
 						maxWidth = Util.Max(
 							maxWidth,
-							labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0)
+							labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0) + (item.IsSubMenu ? rect.height : 0)
 						);
 
 						// Icon
@@ -286,7 +288,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 			}
 
-			panelRect.width = Util.Max(panelRect.width, maxWidth);
+			panelRect.width = PrevPanelWidth = Util.Max(panelRect.width, maxWidth);
 			if (highlightCell != null) highlightCell.Width = panelRect.width;
 			if (menuHeadCell != null) menuHeadCell.Width = panelRect.width;
 

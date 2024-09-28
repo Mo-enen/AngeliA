@@ -3,7 +3,18 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public partial class CharacterAttackness {
+public partial class CharacterAttackness (Character character) {
+
+
+
+
+	#region --- SUB ---
+
+
+	public enum AttackStyleMode { Combo, Random, Manually, }
+
+
+	#endregion
 
 
 
@@ -12,15 +23,15 @@ public partial class CharacterAttackness {
 
 
 	// Api
-	public readonly Character TargetCharacter;
+	public readonly Character TargetCharacter = character;
+	public virtual bool IsChargingAttack => false;
+	public virtual AttackStyleMode AttackStyle => AttackStyleMode.Random;
+	public virtual Direction8 AimingDirection => Direction8.Right;
 	public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
 	public int LastAttackFrame { get; private set; } = int.MinValue;
 	public int? AttackChargeStartFrame { get; private set; } = null;
 	public bool LastAttackCharged { get; private set; } = false;
-	public virtual int AttackStyleIndex { get; private set; } = -1;
-	public virtual bool IsChargingAttack => false;
-	public virtual bool RandomAttackAnimationStyle => true;
-	public virtual Direction8 AimingDirection => Direction8.Right;
+	public int AttackStyleIndex { get; set; } = -1;
 	public int AttackStyleLoop { get; set; } = 1;
 	public bool AttackStartFacingRight { get; set; } = true;
 	public int AttackDuration { get; set; } = 12;
@@ -41,9 +52,6 @@ public partial class CharacterAttackness {
 	#region --- MSG ---
 
 
-	public CharacterAttackness (Character character) => TargetCharacter = character;
-
-
 	public void OnActivated () {
 		LastAttackFrame = int.MinValue;
 		AttackChargeStartFrame = null;
@@ -54,7 +62,7 @@ public partial class CharacterAttackness {
 	public void PhysicsUpdate_Attack () {
 
 		// Combo Break
-		if (!RandomAttackAnimationStyle && AttackStyleIndex > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
+		if (AttackStyle == AttackStyleMode.Combo && AttackStyleIndex > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
 			AttackStyleIndex = -1;
 		}
 
@@ -87,7 +95,14 @@ public partial class CharacterAttackness {
 		if (!TargetCharacter.IsAttackAllowedByEquipment()) return false;
 		LastAttackCharged = charged;
 		LastAttackFrame = Game.GlobalFrame;
-		AttackStyleIndex += RandomAttackAnimationStyle ? Util.QuickRandom(1, Util.Max(2, AttackStyleLoop)) : 1;
+		switch (AttackStyle) {
+			case AttackStyleMode.Combo:
+				AttackStyleIndex++;
+				break;
+			case AttackStyleMode.Random:
+				AttackStyleIndex += Util.QuickRandom(1, Util.Max(2, AttackStyleLoop));
+				break;
+		}
 		AttackStartFacingRight = facingRight;
 		return true;
 	}

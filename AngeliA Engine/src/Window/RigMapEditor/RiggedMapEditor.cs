@@ -91,7 +91,7 @@ public partial class RiggedMapEditor : WindowUI {
 					Util.GetDisplayName(group.Name)
 				));
 			}
-			MovementTabNames = mTabNames.ToArray();
+			MovementTabNames = [.. mTabNames];
 			MovementTabCount = mTabNames.Count;
 			MovementTabLabelToChars = new("  (", $"/{MovementTabCount})");
 
@@ -111,7 +111,7 @@ public partial class RiggedMapEditor : WindowUI {
 						currentFieldGroupIndex < MovementTabCount &&
 						!string.IsNullOrEmpty(currentGroup)
 					) {
-						MovementFields[currentFieldGroupIndex] = list.ToArray();
+						MovementFields[currentFieldGroupIndex] = [.. list];
 						currentFieldGroupIndex++;
 						list.Clear();
 					}
@@ -370,7 +370,7 @@ public partial class RiggedMapEditor : WindowUI {
 		MovementConfigPool.Clear();
 		if (currentProject == null) return;
 		string root = currentProject.Universe.CharacterMovementConfigRoot;
-		foreach (string path in Util.EnumerateFiles(root, true, "*.json")) {
+		foreach (string path in Util.EnumerateFiles(root, true, "*.json", "*.sheetJson")) {
 			string name = Util.GetNameWithoutExtension(path);
 			int id = name.AngeHash();
 			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
