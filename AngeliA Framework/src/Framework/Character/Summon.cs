@@ -23,6 +23,7 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
 	public int InventoryUpdatedFrame { get; set; } = -1;
+	public override int DespawnAfterPassoutDelay => -1;
 
 	// Data
 	private SummonNavigation SummonNavigation;

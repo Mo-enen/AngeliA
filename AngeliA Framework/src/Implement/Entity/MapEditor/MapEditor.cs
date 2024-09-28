@@ -661,6 +661,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (IsPlaying || !DroppingPlayer || TaskingRoute) return;
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
+		Player.RespawnCpUnitPosition = null;
 		var player = Player.Selecting;
 		if (player == null) {
 			int defaultID = Player.GetDefaultPlayerID();

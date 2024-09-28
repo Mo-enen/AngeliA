@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.DontDestroyOnZChanged]
@@ -157,8 +158,12 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		}
 
 		// Stop when Not Selecting/Playing
-		if (Selecting != this || Game.IsPausing) {
+		if (Selecting != this) {
 			Movement.Stop();
+			// Despawn when Out of Range for Non-Selecting
+			if (!Stage.SpawnRect.Overlaps(Rect)) {
+				Active = false;
+			}
 			return;
 		}
 
@@ -644,7 +649,6 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		if (playerID != 0 && Stage.PeekOrGetEntity(playerID) is Player player) {
 			Selecting = player;
 			LastPlayerID.Value = player.TypeID;
-			RespawnCpUnitPosition = null;
 		}
 	}
 
@@ -658,8 +662,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 	bool IActionTarget.Invoke () {
 		HomeUnitPosition = new Int3(Selecting.X.ToUnit(), Selecting.Y.ToUnit(), Stage.ViewZ);
+		TaskSystem.AddToLast(FadeOutTask.TYPE_ID);
 		TaskSystem.AddToLast(SelectPlayerTask.TYPE_ID, TypeID);
-		TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+		TaskSystem.AddToLast(FadeInTask.TYPE_ID);
 		return true;
 	}
 

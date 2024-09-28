@@ -78,6 +78,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public virtual int Bouncy => 150;
 	public virtual bool AllowInventory => false;
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
+	public virtual int DespawnAfterPassoutDelay => -1;
 
 	// Behaviour
 	public CharacterMovement Movement;
@@ -191,6 +192,16 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
+		// Despawn for Passout
+		if (
+			DespawnAfterPassoutDelay >= 0 &&
+			CharacterState == CharacterState.PassOut &&
+			(Game.GlobalFrame - PassOutFrame) >= DespawnAfterPassoutDelay
+		) {
+			Active = false;
+			return;
+		}
+		// Update
 		Movement.SyncConfigFromPool();
 		BeforeUpdate_Inventory();
 		Buff.ApplyOnUpdate();
@@ -353,6 +364,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	// Frame Update
 	public override void LateUpdate () {
+		if (!Active) return;
 		LateUpdate_RenderCharacter();
 		LateUpdate_Event();
 		LateUpdate_Inventory();
@@ -361,8 +373,6 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 
 	private void LateUpdate_RenderCharacter () {
-
-		if (!Active) return;
 
 		bool blinking = Health.IsInvincible && !Health.TakingDamage && (Game.GlobalFrame - Health.InvincibleEndFrame).UMod(8) < 4;
 		if (blinking) return;

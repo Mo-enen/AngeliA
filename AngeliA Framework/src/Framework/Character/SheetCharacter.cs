@@ -74,7 +74,7 @@ public abstract class SheetCharacter : Character {
 			GrabFlip = LoadAniCode($"{name}.GrabFlip", Roll);
 			Sleep = LoadAniCode($"{name}.Sleep", Idle);
 			Damaging = LoadAniCode($"{name}.Damage", Idle);
-			PassOut = LoadAniCode($"{name}.PassOut");
+			PassOut = LoadAniCode($"{name}.PassOut", Idle);
 			DoorFront = LoadAniCode($"{name}.DoorFront", Idle);
 			DoorBack = LoadAniCode($"{name}.DoorBack", Idle);
 			Attack = LoadAniCodeGroup($"{name}.Attack");
@@ -134,7 +134,7 @@ public abstract class SheetCharacter : Character {
 		}
 
 	}
-	
+
 
 
 	#endregion
@@ -147,6 +147,7 @@ public abstract class SheetCharacter : Character {
 
 	// Api
 	protected Cell RenderedCell { get; private set; } = null;
+	public override int DespawnAfterPassoutDelay => 60;
 
 	// Data
 	private static readonly Dictionary<int, AnimationSheet> AnimationSheetPool = [];
@@ -162,7 +163,7 @@ public abstract class SheetCharacter : Character {
 
 
 	[OnMainSheetReload]
-	public static void OnMainSheetReload_Sheet () {
+	internal static void OnMainSheetReload_Sheet () {
 		AnimationSheetPool.Clear();
 		foreach (var type in typeof(Character).AllChildClass()) {
 			if (!type.IsSubclassOf(typeof(SheetCharacter))) continue;
@@ -220,6 +221,11 @@ public abstract class SheetCharacter : Character {
 				}
 				break;
 			case CharacterState.PassOut:
+				// Blink for Passout
+				if (DespawnAfterPassoutDelay >= 0 && (Game.GlobalFrame - PassOutFrame) % 8 >= 4) {
+					break;
+				}
+				// Draw Passout
 				RenderedCell = Renderer.DrawAnimation(
 					sheet.PassOut,
 					X, Y,
