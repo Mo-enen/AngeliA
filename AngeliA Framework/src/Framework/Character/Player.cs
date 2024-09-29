@@ -10,7 +10,7 @@ namespace AngeliA;
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]
-public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
+public abstract class Player : Character, IDamageReceiver, IActionTarget {
 
 
 
@@ -65,6 +65,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	int IDamageReceiver.Team => Const.TEAM_PLAYER;
 	public override bool AllowInventory => true;
 	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
+	public override int DespawnAfterPassoutDelay => -1;
 
 	// Data
 	private int AttackRequiringFrame = int.MinValue;
@@ -74,7 +75,6 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	private int PrevZ = int.MinValue;
 	private int IgnoreActionFrame = -1;
 	private int IgnorePlayerMenuFrame = -1;
-	private PlayerAttackness PlayerAttackness;
 	private int IgnoreAttackFrame = int.MinValue;
 
 	// Saving
@@ -115,7 +115,9 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 	}
 
 
-	protected override CharacterAttackness CreateNativeAttackness () => PlayerAttackness = new PlayerAttackness(this);
+	protected override CharacterAttackness CreateNativeAttackness () => new PlayerAttackness(this);
+	protected override CharacterRenderer CreateNativeRenderer () => new PoseCharacterRenderer(this);
+	protected override CharacterMovement CreateNativeMovement () => new PoseCharacterMovement(this);
 
 
 	public override void OnActivated () {
@@ -218,23 +220,24 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 
 
 	private void Update_Aiming () {
-		PlayerAttackness._AimingDirection =
+		var attackness = Attackness as PlayerAttackness;
+		attackness._AimingDirection =
 			Input.Direction.TryGetDirection8(out var result) ? result :
 			Movement.FacingRight ? Direction8.Right : Direction8.Left;
 		// Ignore Check
-		if (Attackness.IsAimingDirectionIgnored(PlayerAttackness._AimingDirection)) {
-			var dir0 = PlayerAttackness._AimingDirection;
-			var dir1 = PlayerAttackness._AimingDirection;
+		if (Attackness.IsAimingDirectionIgnored(attackness._AimingDirection)) {
+			var dir0 = attackness._AimingDirection;
+			var dir1 = attackness._AimingDirection;
 			bool clockwiseFirst = Movement.FacingRight == dir0.IsTop();
 			for (int safe = 0; safe < 4; safe++) {
 				dir0 = clockwiseFirst ? dir0.Clockwise() : dir0.AntiClockwise();
 				dir1 = clockwiseFirst ? dir1.AntiClockwise() : dir1.Clockwise();
 				if (!Attackness.IsAimingDirectionIgnored(dir0)) {
-					PlayerAttackness._AimingDirection = dir0;
+					attackness._AimingDirection = dir0;
 					break;
 				}
 				if (!Attackness.IsAimingDirectionIgnored(dir1)) {
-					PlayerAttackness._AimingDirection = dir1;
+					attackness._AimingDirection = dir1;
 					break;
 				}
 			}
@@ -579,8 +582,8 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 			return;
 		}
 
-		int oldZ = PoseRenderingZOffset;
-		if (Selecting == this) PoseRenderingZOffset = 40;
+		int oldZ = PoseCharacterRenderer.PoseRenderingZOffset;
+		if (Selecting == this) PoseCharacterRenderer.PoseRenderingZOffset = 40;
 
 		// Equipping
 		int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon, out _);
@@ -593,7 +596,7 @@ public abstract class Player : PoseCharacter, IDamageReceiver, IActionTarget {
 		}
 
 		base.LateUpdate();
-		PoseRenderingZOffset = oldZ;
+		PoseCharacterRenderer.PoseRenderingZOffset = oldZ;
 
 		// Auto Pick Item on Ground
 		if (!TaskSystem.HasTask() && !PlayerMenuUI.ShowingUI) {

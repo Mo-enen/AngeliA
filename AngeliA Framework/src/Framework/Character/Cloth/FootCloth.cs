@@ -25,30 +25,30 @@ public abstract class FootCloth : Cloth {
 		return SpriteLoaded;
 	}
 
-	public static void DrawClothFromPool (PoseCharacter character) {
-		if (character.SuitFoot != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitFoot, out var cloth)) {
-			cloth.DrawCloth(character);
+	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.SuitFoot != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && Pool.TryGetValue(renderer.SuitFoot, out var cloth)) {
+			cloth.DrawCloth(renderer);
 		}
 	}
 
-	public override void DrawCloth (PoseCharacter character) {
+	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForFoot(character, SpriteID);
+		DrawClothForFoot(renderer, SpriteID);
 	}
 
-	public static void DrawClothForFoot (PoseCharacter character, int spriteID, int localZ = 1) {
+	public static void DrawClothForFoot (PoseCharacterRenderer renderer, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
-			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				DrawClothForFootLogic(character.FootL, spriteL.ID, localZ);
+			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+				DrawClothForFootLogic(renderer.FootL, spriteL.ID, localZ);
 			}
-			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				DrawClothForFootLogic(character.FootR, spriteR.ID, localZ);
+			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+				DrawClothForFootLogic(renderer.FootR, spriteR.ID, localZ);
 			}
 		} else {
-			DrawClothForFootLogic(character.FootL, spriteID, localZ);
-			DrawClothForFootLogic(character.FootR, spriteID, localZ);
+			DrawClothForFootLogic(renderer.FootL, spriteID, localZ);
+			DrawClothForFootLogic(renderer.FootR, spriteID, localZ);
 		}
 		// Func
 		static void DrawClothForFootLogic (BodyPart foot, int spriteID, int localZ) {

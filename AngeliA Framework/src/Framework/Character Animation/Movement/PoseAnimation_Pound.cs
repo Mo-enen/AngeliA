@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Pound : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		bool alt = CurrentAnimationFrame % 8 < 4;
 
@@ -15,7 +15,7 @@ public class PoseAnimation_Pound : PoseAnimation {
 		FootL.Z = FacingFront ? 5 : -5;
 		FootR.Z = FacingFront ? 5 : -5;
 
-		Target.PoseRootY = A2G;
+		Rendering.PoseRootY = A2G;
 
 		Head.X += FacingSign * A2G;
 		Head.Y -= A2G;
@@ -41,7 +41,7 @@ public class PoseAnimation_Pound : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation - 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation - 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
 	}
 }

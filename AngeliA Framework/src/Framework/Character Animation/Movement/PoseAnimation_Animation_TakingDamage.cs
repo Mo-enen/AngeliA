@@ -2,8 +2,8 @@
 
 
 public class PoseAnimation_Animation_TakingDamage : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		bool alt = CurrentAnimationFrame.UMod(8) >= 4;
 		int halfA2G = A2G / 2;

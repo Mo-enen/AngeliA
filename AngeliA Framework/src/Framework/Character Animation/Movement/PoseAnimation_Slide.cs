@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Slide : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		bool alt = (CurrentAnimationFrame / 4) % 2 == 0;
 
@@ -57,7 +57,7 @@ public class PoseAnimation_Slide : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 }

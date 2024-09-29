@@ -34,32 +34,32 @@ public abstract class Ear : BodyGadget {
 	}
 
 
-	public static void DrawGadgetFromPool (PoseCharacter character) {
-		if (character.EarID != 0 && TryGetGadget(character.EarID, out var ear)) {
-			ear.DrawGadget(character);
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.EarID != 0 && TryGetGadget(renderer.EarID, out var ear)) {
+			ear.DrawGadget(renderer);
 		}
 	}
 
 
-	public override void DrawGadget (PoseCharacter character) {
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsEar(
-			character,
-			character.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
-			character.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
-			FrontOfHeadL(character), FrontOfHeadR(character),
-			character.Head.FrontSide == character.Movement.FacingRight ? 0 : FacingLeftOffsetX,
+			renderer,
+			renderer.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
+			renderer.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
+			FrontOfHeadL(renderer), FrontOfHeadR(renderer),
+			renderer.Head.FrontSide == renderer.TargetCharacter.Movement.FacingRight ? 0 : FacingLeftOffsetX,
 			MotionAmount, selfMotion: true
 		);
 	}
 
-	protected virtual bool FrontOfHeadL (PoseCharacter character) => true;
-	protected virtual bool FrontOfHeadR (PoseCharacter character) => true;
+	protected virtual bool FrontOfHeadL (PoseCharacterRenderer renderer) => true;
+	protected virtual bool FrontOfHeadR (PoseCharacterRenderer renderer) => true;
 
 
 	public static void DrawSpriteAsEar (
-		PoseCharacter character, int spriteIdLeft, int spriteIdRight,
+		PoseCharacterRenderer renderer, int spriteIdLeft, int spriteIdRight,
 		bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0,
 		int motionAmount = 1000, bool selfMotion = true
 	) {
@@ -69,10 +69,10 @@ public abstract class Ear : BodyGadget {
 		int rightEarID = spriteIdRight;
 		if (leftEarID == 0 && rightEarID == 0) return;
 
-		var head = character.Head;
+		var head = renderer.Head;
 		if (head.Tint.a == 0) return;
 
-		bool facingRight = character.Movement.FacingRight;
+		bool facingRight = renderer.TargetCharacter.Movement.FacingRight;
 		var headRect = head.GetGlobalRect();
 		bool flipY = head.Height < 0;
 		Int2 shiftL = default;
@@ -82,20 +82,20 @@ public abstract class Ear : BodyGadget {
 		int z = head.FrontSide ? 33 : -33;
 		const int A2G = Const.CEL / Const.ART_CEL;
 
-		if (character.Health.HP == 0) headRect.y -= A2G;
-		int basicRootY = character.BasicRootY;
+		if (renderer.TargetCharacter.Health.HP == 0) headRect.y -= A2G;
+		int basicRootY = renderer.BasicRootY;
 
 		// Motion X
 		const int MAX_SHIFT = A2G * 2;
 		int motionAmountL = facingRight ? 2 * motionAmount / 1000 : motionAmount / 1000;
 		int motionAmountR = facingRight ? motionAmount / 1000 : 2 * motionAmount / 1000;
-		shiftL.x = (-character.DeltaPositionX * motionAmountL * A2G / 55).Clamp(-MAX_SHIFT, MAX_SHIFT);
-		shiftR.x = (-character.DeltaPositionX * motionAmountR * A2G / 55).Clamp(-MAX_SHIFT, MAX_SHIFT);
-		expandSizeL.x = (character.DeltaPositionX.Abs() * motionAmountL * A2G / 50).Clamp(-MAX_SHIFT, MAX_SHIFT);
-		expandSizeR.x = (character.DeltaPositionX.Abs() * motionAmountR * A2G / 50).Clamp(-MAX_SHIFT, MAX_SHIFT);
+		shiftL.x = (-renderer.TargetCharacter.DeltaPositionX * motionAmountL * A2G / 55).Clamp(-MAX_SHIFT, MAX_SHIFT);
+		shiftR.x = (-renderer.TargetCharacter.DeltaPositionX * motionAmountR * A2G / 55).Clamp(-MAX_SHIFT, MAX_SHIFT);
+		expandSizeL.x = (renderer.TargetCharacter.DeltaPositionX.Abs() * motionAmountL * A2G / 50).Clamp(-MAX_SHIFT, MAX_SHIFT);
+		expandSizeR.x = (renderer.TargetCharacter.DeltaPositionX.Abs() * motionAmountR * A2G / 50).Clamp(-MAX_SHIFT, MAX_SHIFT);
 
 		// Animation
-		switch (character.AnimationType) {
+		switch (renderer.TargetCharacter.AnimationType) {
 
 			case CharacterAnimationType.Pound:
 			case CharacterAnimationType.JumpDown:
@@ -112,10 +112,10 @@ public abstract class Ear : BodyGadget {
 				break;
 
 			case CharacterAnimationType.Run:
-				if (character.PoseRootY < basicRootY + A2G / 2) {
+				if (renderer.PoseRootY < basicRootY + A2G / 2) {
 					expandSizeL.y -= A2G / 4;
 					expandSizeR.y -= A2G / 4;
-				} else if (character.PoseRootY < basicRootY + A2G) {
+				} else if (renderer.PoseRootY < basicRootY + A2G) {
 					expandSizeL.y -= A2G / 2;
 					expandSizeR.y -= A2G / 2;
 				} else {
@@ -129,13 +129,13 @@ public abstract class Ear : BodyGadget {
 		int rotL = 0;
 		int rotR = 0;
 		if (motionAmount != 0) {
-			rotL = rotR = ((character.DeltaPositionY * motionAmount) / 2000).Clamp(-20, 20);
+			rotL = rotR = ((renderer.TargetCharacter.DeltaPositionY * motionAmount) / 2000).Clamp(-20, 20);
 		}
 
 		// Self Motion
 		if (selfMotion) {
 			// L
-			int animationFrame = (character.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
+			int animationFrame = (renderer.TargetCharacter.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
 			float ease01 =
 				animationFrame.PingPong(319).Clamp(0, 12) / 36f +
 				(animationFrame + 172).PingPong(771).Clamp(0, 16) / 48f +
@@ -143,7 +143,7 @@ public abstract class Ear : BodyGadget {
 			int selfRot = (int)(Ease.InBounce((1f - ease01).Clamp01()) * 200);
 			rotL = (rotL + selfRot).Clamp(-20, 20);
 			// R
-			animationFrame = (character.TypeID * 2 + Game.GlobalFrame).Abs(); // ※ Intended ※
+			animationFrame = (renderer.TargetCharacter.TypeID * 2 + Game.GlobalFrame).Abs(); // ※ Intended ※
 			ease01 =
 				animationFrame.PingPong(372).Clamp(0, 12) / 36f +
 				(animationFrame + 141).PingPong(763).Clamp(0, 16) / 48f +
@@ -153,7 +153,7 @@ public abstract class Ear : BodyGadget {
 		}
 
 		// Twist
-		int twist = character.HeadTwist;
+		int twist = renderer.HeadTwist;
 		if (twist != 0) {
 			int offset = A2G * twist.Abs() / 500;
 			expandSizeL.x -= offset;
@@ -171,9 +171,9 @@ public abstract class Ear : BodyGadget {
 				(earSpriteL.GlobalHeight + expandSizeL.y) * (flipY ? -1 : 1),
 				frontOfHeadL ? z : -z
 			);
-			if (character.Head.Rotation != 0) {
-				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-				cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+			if (renderer.Head.Rotation != 0) {
+				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
+				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
 			}
 		}
 		if (Renderer.TryGetSprite(rightEarID, out var earSpriteR)) {
@@ -186,9 +186,9 @@ public abstract class Ear : BodyGadget {
 				(earSpriteR.GlobalHeight + expandSizeR.y) * (flipY ? -1 : 1),
 				frontOfHeadR ? z : -z
 			);
-			if (character.Head.Rotation != 0) {
-				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-				cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+			if (renderer.Head.Rotation != 0) {
+				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
+				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
 			}
 		}
 

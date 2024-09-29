@@ -15,8 +15,8 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		// Driving
 		if (Driver != null) {
 			// Override Animation
-			if (Driver is PoseCharacter poseDriver) {
-				OverrideDriverAnimation(poseDriver);
+			if (Driver.Rendering is PoseCharacterRenderer poseRenderer) {
+				OverrideDriverAnimation(poseRenderer);
 			}
 			// For Player
 			var player = Player.Selecting;
@@ -67,7 +67,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	}
 
 
-	protected virtual void OverrideDriverAnimation (PoseCharacter driver) => driver.ManualPoseAnimate(PoseAnimation_Ride.TYPE_ID);
+	protected virtual void OverrideDriverAnimation (PoseCharacterRenderer renderer) => renderer.ManualPoseAnimate(PoseAnimation_Ride.TYPE_ID);
 
 
 }

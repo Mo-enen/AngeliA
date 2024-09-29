@@ -5,8 +5,8 @@ namespace AngeliA;
 
 public class PoseAttack_Block : PoseAnimation {
 
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
 		if (Movement.IsClimbing) return;
 		Build();
@@ -48,8 +48,8 @@ public class PoseAttack_Block : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR = 0;
-		Target.HandGrabScaleL = Target.HandGrabScaleR = 618;
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = 0;
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = 618;
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();

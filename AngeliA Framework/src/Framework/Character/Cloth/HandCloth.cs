@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 
-public sealed class ModularHandSuit : HandCloth, IModularCloth {}
+public sealed class ModularHandSuit : HandCloth, IModularCloth { }
 
 
 public abstract class HandCloth : Cloth {
@@ -21,30 +21,30 @@ public abstract class HandCloth : Cloth {
 		return SpriteLoaded;
 	}
 
-	public static void DrawClothFromPool (PoseCharacter character) {
-		if (character.SuitHand != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitHand, out var cloth)) {
-			cloth.DrawCloth(character);
+	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.SuitHand != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && Pool.TryGetValue(renderer.SuitHand, out var cloth)) {
+			cloth.DrawCloth(renderer);
 		}
 	}
 
-	public override void DrawCloth (PoseCharacter character) {
+	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForHand(character, SpriteID);
+		DrawClothForHand(renderer, SpriteID);
 	}
 
-	public static void DrawClothForHand (PoseCharacter character, int spriteID, int localZ = 1) {
+	public static void DrawClothForHand (PoseCharacterRenderer renderer, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
-			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(character.HandL, spriteL.ID, localZ);
+			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
+				CoverClothOn(renderer.HandL, spriteL.ID, localZ);
 			}
-			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(character.HandR, spriteR.ID, localZ);
+			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
+				CoverClothOn(renderer.HandR, spriteR.ID, localZ);
 			}
 		} else {
-			CoverClothOn(character.HandL, spriteID, localZ);
-			CoverClothOn(character.HandR, spriteID, localZ);
+			CoverClothOn(renderer.HandL, spriteID, localZ);
+			CoverClothOn(renderer.HandR, spriteID, localZ);
 		}
 	}
 

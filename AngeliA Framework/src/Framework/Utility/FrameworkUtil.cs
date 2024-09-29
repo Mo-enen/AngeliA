@@ -135,24 +135,27 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame) => DrawPoseCharacterAsUI(rect, character, animationFrame, out _, out _);
-	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacter character, int animationFrame, out IRect globalRect, out IRect uiRect) {
+	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacterRenderer renderer, int animationFrame) => DrawPoseCharacterAsUI(rect, renderer, animationFrame, out _, out _);
+	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacterRenderer renderer, int animationFrame, out IRect globalRect, out IRect uiRect) {
+
 
 		globalRect = default;
 		uiRect = default;
+		if (renderer == null) return false;
+		var target = renderer.TargetCharacter;
 
 		// Draw Player
 		int cellIndexStart;
 		int cellIndexEnd;
 		using (new UILayerScope(ignoreSorting: true)) {
 			cellIndexStart = Renderer.GetUsedCellCount();
-			int oldAniFrame = character.CurrentAnimationFrame;
-			character.CurrentAnimationFrame = animationFrame;
-			bool oldActive = character.Active;
-			character.Active = true;
-			character.LateUpdate();
-			character.Active = oldActive;
-			character.CurrentAnimationFrame = oldAniFrame;
+			int oldAniFrame = renderer.CurrentAnimationFrame;
+			renderer.CurrentAnimationFrame = animationFrame;
+			bool oldActive = target.Active;
+			target.Active = true;
+			renderer.LateUpdate();
+			target.Active = oldActive;
+			renderer.CurrentAnimationFrame = oldAniFrame;
 			cellIndexEnd = Renderer.GetUsedCellCount();
 		}
 		if (cellIndexStart == cellIndexEnd) return false;
@@ -160,11 +163,11 @@ public static class FrameworkUtil {
 		if (!Renderer.GetCells(RenderLayer.UI, out var cells, out int count)) return false;
 
 		// Get Min Max
-		bool flying = character.AnimationType == CharacterAnimationType.Fly;
-		int originalMinX = character.X - Const.HALF - 16;
-		int originalMinY = character.Y - 16 + (flying ? character.PoseRootY / 2 : 0);
-		int originalMaxX = character.X + Const.HALF + 16;
-		int originalMaxY = character.Y + Const.CEL * 2 + 16;
+		bool flying = target.AnimationType == CharacterAnimationType.Fly;
+		int originalMinX = target.X - Const.HALF - 16;
+		int originalMinY = target.Y - 16 + (flying ? renderer.PoseRootY / 2 : 0);
+		int originalMaxX = target.X + Const.HALF + 16;
+		int originalMaxY = target.Y + Const.CEL * 2 + 16;
 		if (flying) {
 			originalMinY -= Const.HALF;
 			originalMaxY -= Const.HALF;

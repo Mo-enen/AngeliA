@@ -79,7 +79,10 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 
 	protected override void OnUiClose () {
 		base.OnUiClose();
-		Player.Selecting?.SaveCharacterToConfig();
+		// Save
+		if (Player.Selecting.Rendering is PoseCharacterRenderer rendering) {
+			rendering.SaveCharacterToConfig();
+		}
 	}
 
 
@@ -414,14 +417,14 @@ Color32.BLACK, 0
 
 
 	private int GetPlayerSuitID (ClothType type) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return 0;
 		return type switch {
-			ClothType.Head => player.SuitHead,
-			ClothType.Body => player.SuitBody,
-			ClothType.Hand => player.SuitHand,
-			ClothType.Hip => player.SuitHip,
-			ClothType.Foot => player.SuitFoot,
-			_ => player.SuitHead,
+			ClothType.Head => rendering.SuitHead,
+			ClothType.Body => rendering.SuitBody,
+			ClothType.Hand => rendering.SuitHand,
+			ClothType.Hip => rendering.SuitHip,
+			ClothType.Foot => rendering.SuitFoot,
+			_ => rendering.SuitHead,
 		};
 	}
 
@@ -437,22 +440,22 @@ Color32.BLACK, 0
 
 
 	private void ChangeSuit (ClothType type, int suitID) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		switch (type) {
 			case ClothType.Head:
-				player.SuitHead.BaseValue = suitID;
+				rendering.SuitHead.BaseValue = suitID;
 				break;
 			case ClothType.Body:
-				player.SuitBody.BaseValue = suitID;
+				rendering.SuitBody.BaseValue = suitID;
 				break;
 			case ClothType.Hand:
-				player.SuitHand.BaseValue = suitID;
+				rendering.SuitHand.BaseValue = suitID;
 				break;
 			case ClothType.Hip:
-				player.SuitHip.BaseValue = suitID;
+				rendering.SuitHip.BaseValue = suitID;
 				break;
 			case ClothType.Foot:
-				player.SuitFoot.BaseValue = suitID;
+				rendering.SuitFoot.BaseValue = suitID;
 				break;
 		}
 	}

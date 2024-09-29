@@ -43,37 +43,37 @@ public abstract class Wing : BodyGadget {
 	}
 
 
-	public static void DrawGadgetFromPool (PoseCharacter character) {
-		if (character.WingID != 0 && TryGetGadget(character.WingID, out var wing)) {
-			wing.DrawGadget(character);
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.WingID != 0 && TryGetGadget(renderer.WingID, out var wing)) {
+			wing.DrawGadget(renderer);
 		}
 	}
 
 
-	public override void DrawGadget (PoseCharacter character) {
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
 
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
 
-		DrawSpriteAsWing(character, SpriteGroupID, IsPropeller, Scale);
-		if (IsPropeller && character.AnimationType == CharacterAnimationType.Fly) {
-			character.TailID.Override(0, 1, priority: 4096);
+		DrawSpriteAsWing(renderer, SpriteGroupID, IsPropeller, Scale);
+		if (IsPropeller && renderer.TargetCharacter.AnimationType == CharacterAnimationType.Fly) {
+			renderer.TailID.Override(0, 1, priority: 4096);
 		}
 	}
 
 
-	public static void DrawSpriteAsWing (PoseCharacter character, int spriteGroupID, bool isPropeller, int scale = 1000) {
+	public static void DrawSpriteAsWing (PoseCharacterRenderer renderer, int spriteGroupID, bool isPropeller, int scale = 1000) {
 		if (
 			spriteGroupID == 0 ||
 			!Renderer.HasSpriteGroup(spriteGroupID, out int groupCount) ||
 			!Renderer.TryGetSpriteFromGroup(spriteGroupID, 0, out var firstSprite, false, true)
 		) return;
-		int z = character.Body.FrontSide ? -33 : 33;
+		var aniType = renderer.TargetCharacter.AnimationType;
+		int z = renderer.Body.FrontSide ? -33 : 33;
 		int spriteHeight = firstSprite.GlobalHeight * scale / 1000;
-		if (character.AnimationType == CharacterAnimationType.Rolling && !character.Body.FrontSide) {
+		if (aniType == CharacterAnimationType.Rolling && !renderer.Body.FrontSide) {
 			spriteHeight = -spriteHeight;
 		}
-		var animatedPoseType = character.AnimationType;
 
 		// Get Wing Position
 		int xLeft;
@@ -81,30 +81,30 @@ public abstract class Wing : BodyGadget {
 		int xRight;
 		int yRight;
 		if (
-			animatedPoseType != CharacterAnimationType.Sleep &&
-			animatedPoseType != CharacterAnimationType.PassOut &&
-			animatedPoseType != CharacterAnimationType.Fly
+			aniType != CharacterAnimationType.Sleep &&
+			aniType != CharacterAnimationType.PassOut &&
+			aniType != CharacterAnimationType.Fly
 		) {
 			// Standing Up
-			var bodyRect = character.Body.GetGlobalRect();
+			var bodyRect = renderer.Body.GetGlobalRect();
 			xLeft = bodyRect.xMin;
 			yLeft = bodyRect.y;
 			xRight = bodyRect.xMax;
 			yRight = bodyRect.y;
 		} else {
 			// Lying Down
-			xLeft = character.UpperLegL.GlobalX;
-			yLeft = character.UpperLegL.GlobalY;
-			xRight = character.UpperLegR.GlobalX;
-			yRight = character.UpperLegR.GlobalY;
+			xLeft = renderer.UpperLegL.GlobalX;
+			yLeft = renderer.UpperLegL.GlobalY;
+			xRight = renderer.UpperLegR.GlobalX;
+			yRight = renderer.UpperLegR.GlobalY;
 		}
 
-		if (animatedPoseType == CharacterAnimationType.Fly) {
+		if (aniType == CharacterAnimationType.Fly) {
 			// Flying
 			if (isPropeller) {
 				// Propeller
 				if (Renderer.TryGetSpriteFromGroup(
-					spriteGroupID, character.CurrentAnimationFrame.UMod(groupCount),
+					spriteGroupID, renderer.CurrentAnimationFrame.UMod(groupCount),
 					out var sprite, true, true
 				)) {
 					Renderer.Draw(
@@ -119,7 +119,7 @@ public abstract class Wing : BodyGadget {
 				}
 			} else {
 				// Wings
-				if (Renderer.TryGetSpriteFromGroup(spriteGroupID, (character.CurrentAnimationFrame / 6).UMod(groupCount), out var sprite, true, true)) {
+				if (Renderer.TryGetSpriteFromGroup(spriteGroupID, (renderer.CurrentAnimationFrame / 6).UMod(groupCount), out var sprite, true, true)) {
 					Renderer.Draw(
 						sprite,
 						xLeft, yLeft, firstSprite.PivotX, firstSprite.PivotY, 0,
@@ -140,8 +140,8 @@ public abstract class Wing : BodyGadget {
 			// Not Flying
 			int rot = Game.GlobalFrame.PingPong(120) - 60;
 			rot /= 12;
-			int facingScaleL = 1000 + character.Body.Width.Sign3() * 300;
-			int facingScaleR = 1000 - character.Body.Width.Sign3() * 300;
+			int facingScaleL = 1000 + renderer.Body.Width.Sign3() * 300;
+			int facingScaleR = 1000 - renderer.Body.Width.Sign3() * 300;
 			// L
 			Renderer.Draw(
 				firstSprite,

@@ -848,8 +848,7 @@ public partial class CharacterMovement (Rigidbody rig) {
 	public static void ReloadMovementConfigFromFile (System.Type characterType) {
 		string cName = characterType.AngeName();
 		int id = cName.AngeHash();
-		bool isSheet = characterType.IsSubclassOf(typeof(SheetCharacter));
-		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{cName}.{(isSheet ? "sheetJson" : "json")}");
+		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{cName}.json");
 		var config = JsonUtil.LoadOrCreateJsonFromPath<CharacterMovementConfig>(path);
 		ConfigPool_Movement[id] = config;
 		MovementConfigGlobalVersion++;
@@ -860,13 +859,11 @@ public partial class CharacterMovement (Rigidbody rig) {
 		MovementConfigGlobalVersion++;
 		ConfigPool_Movement.Clear();
 		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
-		var sheetType = typeof(SheetCharacter);
 		foreach (var type in typeof(Character).AllChildClass()) {
 			string name = type.AngeName();
 			int typeID = name.AngeHash();
-			bool isSheet = type.IsSubclassOf(sheetType);
 			// Movement
-			string path = Util.CombinePaths(movementRoot, $"{name}.{(isSheet ? "sheetJson" : "json")}");
+			string path = Util.CombinePaths(movementRoot, $"{name}.json");
 			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
 			// Create Default Config
 			if (config == null) {

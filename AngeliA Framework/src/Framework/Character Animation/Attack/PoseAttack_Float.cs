@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public class PoseAttack_Float : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
-		character.Attackness.AttackStyleLoop = 1;
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
+		Attackness.AttackStyleLoop = 1;
 		WaveDown();
 	}
 	public static void WaveDown () {
@@ -33,8 +33,8 @@ public class PoseAttack_Float : PoseAnimation {
 		handB.Z = POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR = 0;
-		Target.HandGrabScaleL = Target.HandGrabScaleR = (int)Util.LerpUnclamped(700, 800, ease01);
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = 0;
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = (int)Util.LerpUnclamped(700, 800, ease01);
 
 		// Leg
 		AttackLegShake(ease01);

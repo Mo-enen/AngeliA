@@ -25,41 +25,43 @@ public abstract class Flail : MeleeWeapon {
 		if (!Renderer.HasSpriteGroup(SpriteIdChain)) SpriteIdChain = 0;
 	}
 
-	protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+	protected override Cell DrawWeaponSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		// Fix Grab Rotation
-		if (character.EquippingWeaponHeld != WeaponHandheld.Pole) {
-			character.HandGrabRotationL += (
-				character.HandGrabRotationL.Sign() * -Util.Sin(character.HandGrabRotationL.Abs() * Util.Deg2Rad) * 30
+		if (renderer.TargetCharacter.EquippingWeaponHeld != WeaponHandheld.Pole) {
+			renderer.HandGrabRotationL += (
+				renderer.HandGrabRotationL.Sign() * -Util.Sin(renderer.HandGrabRotationL.Abs() * Util.Deg2Rad) * 30
 			).RoundToInt();
-			character.HandGrabRotationR += (
-				character.HandGrabRotationR.Sign() * -Util.Sin(character.HandGrabRotationR.Abs() * Util.Deg2Rad) * 30
+			renderer.HandGrabRotationR += (
+				renderer.HandGrabRotationR.Sign() * -Util.Sin(renderer.HandGrabRotationR.Abs() * Util.Deg2Rad) * 30
 			).RoundToInt();
 		}
 		// Draw
-		var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
+		var cell = base.DrawWeaponSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 		for (int i = 0; i < HeadCount; i++) {
-			DrawFlailHead(character, cell, i);
+			DrawFlailHead(renderer, cell, i);
 		}
 		return cell;
 	}
 
-	private void DrawFlailHead (PoseCharacter character, Cell handleCell, int headIndex) {
+	private void DrawFlailHead (PoseCharacterRenderer renderer, Cell handleCell, int headIndex) {
 
-		bool isAttacking = character.Attackness.IsAttacking;
-		bool climbing = character.AnimationType == CharacterAnimationType.Climb;
-		int deltaX = character.DeltaPositionX.Clamp(-20, 20);
-		int deltaY = character.DeltaPositionY.Clamp(-30, 30);
+		var attack = renderer.TargetCharacter.Attackness;
+		var movement = renderer.TargetCharacter.Movement;
+		bool isAttacking = attack.IsAttacking;
+		bool climbing = renderer.TargetCharacter.AnimationType == CharacterAnimationType.Climb;
+		int deltaX = renderer.TargetCharacter.DeltaPositionX.Clamp(-20, 20);
+		int deltaY = renderer.TargetCharacter.DeltaPositionY.Clamp(-30, 30);
 		var point = handleCell.LocalToGlobal(handleCell.Width / 2, handleCell.Height);
 		int chainLength = isAttacking ? ChainLength * ChainLengthAttackGrow / 1000 : ChainLength;
 		Int2 headPos;
 
 		if (isAttacking) {
 			// Attack
-			int localFrame = Game.GlobalFrame - character.Attackness.LastAttackFrame;
+			int localFrame = Game.GlobalFrame - attack.LastAttackFrame;
 			int duration = AttackDuration;
 			int swingX = Const.CEL.LerpTo(-Const.CEL, Ease.OutBack((float)localFrame / duration));
 			headPos = handleCell.LocalToGlobal(
-				handleCell.Width / 2 + (character.Movement.FacingRight ? -swingX : swingX) + headIndex * 96,
+				handleCell.Width / 2 + (movement.FacingRight ? -swingX : swingX) + headIndex * 96,
 				handleCell.Height + chainLength - headIndex * 16
 			);
 		} else {
@@ -71,8 +73,8 @@ public abstract class Flail : MeleeWeapon {
 			// Shake
 			const int SHAKE_DURATION = 60;
 			int shakeFrame = Util.Min(
-				(Game.GlobalFrame - (character.Movement.LastEndMoveFrame >= 0 ? character.Movement.LastEndMoveFrame : 0)).Clamp(0, SHAKE_DURATION),
-				(Game.GlobalFrame - (character.Attackness.LastAttackFrame >= 0 ? character.Attackness.LastAttackFrame : 0)).Clamp(0, SHAKE_DURATION)
+				(Game.GlobalFrame - (movement.LastEndMoveFrame >= 0 ? movement.LastEndMoveFrame : 0)).Clamp(0, SHAKE_DURATION),
+				(Game.GlobalFrame - (attack.LastAttackFrame >= 0 ? attack.LastAttackFrame : 0)).Clamp(0, SHAKE_DURATION)
 			);
 			if (!climbing && shakeFrame >= 0 && shakeFrame < SHAKE_DURATION) {
 				headPos.x += (
@@ -88,7 +90,7 @@ public abstract class Flail : MeleeWeapon {
 
 		// Draw Head
 		if (SpriteIdHead != 0 && Renderer.TryGetSprite(SpriteIdHead, out var headSprite)) {
-			int scale = character.HandGrabScaleR;
+			int scale = renderer.HandGrabScaleR;
 			if (climbing && !isAttacking) scale = -scale.Abs();
 			int rot = headSprite.IsTrigger ?
 				new Float2(point.x - headPos.x, point.y - headPos.y).GetRotation() : 0;
@@ -97,7 +99,7 @@ public abstract class Flail : MeleeWeapon {
 				headSprite.PivotX, headSprite.PivotY, rot,
 				headSprite.GlobalWidth * scale / 1000,
 				headSprite.GlobalHeight * scale.Abs() / 1000,
-				(character.Movement.FacingFront ? 36 : -36) - headIndex
+				(movement.FacingFront ? 36 : -36) - headIndex
 			);
 		}
 
@@ -112,7 +114,7 @@ public abstract class Flail : MeleeWeapon {
 						Util.RemapUnclamped(-1, chainCount, point.y, headPos.y, i),
 						500, 500, rot,
 						chainSprite.GlobalWidth / 2, chainSprite.GlobalHeight / 2,
-						character.Movement.FacingFront ? 35 : -35
+						movement.FacingFront ? 35 : -35
 					);
 				}
 			}

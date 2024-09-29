@@ -27,8 +27,6 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	// Const
 	public const int FULL_SLEEP_DURATION = 90;
-	private static readonly int[] BOUNCE_AMOUNTS = [500, 200, 100, 50, 25, 50, 100, 200, 500,];
-	private static readonly int[] BOUNCE_AMOUNTS_BIG = [0, -600, -900, -1200, -1400, -1200, -900, -600, 0,];
 	public const int INVENTORY_COLUMN = 6;
 	public const int INVENTORY_ROW = 3;
 
@@ -53,13 +51,12 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
 	public int TeleportEndFrame => _TeleportEndFrame.Abs();
 	public int TeleportDuration => _TeleportDuration.Abs();
-	public int CurrentAnimationFrame { get; set; } = 0;
-	public int CurrentRenderingBounce { get; private set; } = 1000;
 	public int SleepStartFrame { get; protected set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
 	public bool InventoryCurrentAvailable => AllowInventory && Game.GlobalFrame > IgnoreInventoryFrame;
 	public bool EquipingPickWeapon { get; private set; } = false;
-	protected int CurrentAttackSpeedRate => Movement.MovementState switch {
+	public int LastRequireBounceFrame { get; set; } = int.MinValue;
+	public int CurrentAttackSpeedRate => Movement.MovementState switch {
 		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
 		CharacterMovementState.Run => Attackness.RunningSpeedRateOnAttack,
 		CharacterMovementState.JumpDown => Attackness.AirSpeedRateOnAttack,
@@ -78,30 +75,33 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public virtual int Bouncy => 150;
 	public virtual bool AllowInventory => false;
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
-	public virtual int DespawnAfterPassoutDelay => -1;
+	public virtual int DespawnAfterPassoutDelay => 60;
 
 	// Behaviour
 	public CharacterMovement Movement;
 	public CharacterAttackness Attackness;
 	public CharacterHealth Health;
 	public CharacterNavigation Navigation;
+	public CharacterRenderer Rendering;
 	private CharacterMovement MovementOverride;
 	private CharacterAttackness AttacknessOverride;
 	private CharacterHealth HealthOverride;
 	private CharacterNavigation NavigationOverride;
+	private CharacterRenderer RendererOverride;
 	public readonly CharacterMovement NativeMovement;
 	public readonly CharacterAttackness NativeAttackness;
 	public readonly CharacterHealth NativeHealth;
 	public readonly CharacterNavigation NativeNavigation;
+	public readonly CharacterRenderer NativeRenderer;
 	public readonly CharacterBuff Buff;
 	private int OverridingMovementFrame = int.MinValue;
 	private int OverridingAttacknessFrame = int.MinValue;
 	private int OverridingHealthFrame = int.MinValue;
 	private int OverridingNavigationFrame = int.MinValue;
+	private int OverridingRendererFrame = int.MinValue;
 
 	// Data
-	protected static int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
-	protected int LastRequireBounceFrame = int.MinValue;
+	protected static readonly int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 	private int _TeleportEndFrame = 0;
 	private int _TeleportDuration = 0;
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
@@ -123,6 +123,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		Attackness = NativeAttackness = CreateNativeAttackness();
 		Health = NativeHealth = CreateNativeHealth();
 		Navigation = NativeNavigation = CreateNativeNavigation();
+		Rendering = NativeRenderer = CreateNativeRenderer();
 		Buff = new CharacterBuff(this);
 		// Init Inventory
 		if (AllowInventory) {
@@ -146,10 +147,12 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		Attackness = NativeAttackness;
 		Health = NativeHealth;
 		Navigation = NativeNavigation;
+		Rendering = NativeRenderer;
 		NativeMovement.OnActivated();
 		NativeHealth.OnActivated();
 		NativeAttackness.OnActivated();
 		NativeNavigation.OnActivated();
+		NativeRenderer.OnActivated();
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;
 		VelocityX = 0;
@@ -176,6 +179,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		Attackness = Game.GlobalFrame <= OverridingAttacknessFrame && AttacknessOverride != null ? AttacknessOverride : NativeAttackness;
 		Health = Game.GlobalFrame <= OverridingHealthFrame && HealthOverride != null ? HealthOverride : NativeHealth;
 		Navigation = Game.GlobalFrame <= OverridingNavigationFrame && NavigationOverride != null ? NavigationOverride : NativeNavigation;
+		Rendering = Game.GlobalFrame <= OverridingRendererFrame && RendererOverride != null ? RendererOverride : NativeRenderer;
 
 		// Fill Physics
 		if (CharacterState == CharacterState.GamePlay && !IgnoringPhysics) {
@@ -205,6 +209,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		Movement.SyncConfigFromPool();
 		BeforeUpdate_Inventory();
 		Buff.ApplyOnUpdate();
+		Rendering.BeforeUpdate();
 	}
 
 
@@ -326,7 +331,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	private void PhysicsUpdate_AnimationType () {
 		var poseType = GetCurrentPoseAnimationType(this);
 		if (poseType != AnimationType) {
-			CurrentAnimationFrame = 0;
+			Rendering.CurrentAnimationFrame = 0;
 			AnimationType = poseType;
 		}
 		// Func
@@ -383,9 +388,9 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		int cellIndexStart = Renderer.GetUsedCellCount();
 
 		// Render
-		CurrentRenderingBounce = GetCurrentRenderingBounce();
-		RenderCharacter();
-		CurrentAnimationFrame = GrowAnimationFrame(CurrentAnimationFrame);
+		Rendering.UpdateForBounce();
+		Rendering.LateUpdate();
+		Rendering.GrowAnimationFrame();
 
 		// Cell Effect
 		if (
@@ -500,10 +505,6 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 		}
 	}
-
-
-	// Virtual
-	protected abstract void RenderCharacter ();
 
 
 	#endregion
@@ -640,7 +641,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
 
 
-	protected void ResetInventoryUpdate (int invCapacity) {
+	public void ResetInventoryUpdate (int invCapacity) {
 		for (int i = 0; i < invCapacity; i++) {
 			var item = GetItemFromInventory(i);
 			if (item == null) continue;
@@ -654,9 +655,11 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	protected virtual CharacterAttackness CreateNativeAttackness () => new(this);
 	protected virtual CharacterHealth CreateNativeHealth () => new();
 	protected virtual CharacterNavigation CreateNativeNavigation () => new(this);
+	protected virtual CharacterRenderer CreateNativeRenderer () => new SheetCharacterRenderer(this);
 
 
 	public void OverrideMovement (CharacterMovement movementOverride, int duration = 1) {
+		if (movementOverride == null) return;
 		if (movementOverride != MovementOverride) {
 			movementOverride.OnActivated();
 		}
@@ -664,6 +667,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		MovementOverride = movementOverride;
 	}
 	public void OverrideAttackness (CharacterAttackness attacknessOverride, int duration = 1) {
+		if (attacknessOverride == null) return;
 		if (attacknessOverride != AttacknessOverride) {
 			attacknessOverride.OnActivated();
 		}
@@ -671,6 +675,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		AttacknessOverride = attacknessOverride;
 	}
 	public void OverrideHealth (CharacterHealth healthOverride, int duration = 1) {
+		if (healthOverride == null) return;
 		if (healthOverride != HealthOverride) {
 			healthOverride.OnActivated();
 		}
@@ -678,11 +683,20 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		HealthOverride = healthOverride;
 	}
 	public void OverrideNavigation (CharacterNavigation navigationOverride, int duration = 1) {
+		if (navigationOverride == null) return;
 		if (navigationOverride != NavigationOverride) {
 			navigationOverride.OnActivated();
 		}
 		OverridingNavigationFrame = Game.GlobalFrame + duration;
 		NavigationOverride = navigationOverride;
+	}
+	public void OverrideRenderer (CharacterRenderer rendererOverride, int duration = 1) {
+		if (rendererOverride == null) return;
+		if (rendererOverride != RendererOverride) {
+			rendererOverride.OnActivated();
+		}
+		OverridingRendererFrame = Game.GlobalFrame + duration;
+		RendererOverride = rendererOverride;
 	}
 
 
@@ -704,106 +718,6 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 
 	public virtual bool IsAttackAllowedByEquipment () => (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon && weapon.AllowingAttack(this));
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private int GrowAnimationFrame (int frame) {
-		switch (Movement.MovementState) {
-
-			case CharacterMovementState.Climb:
-				int climbVelocity = Movement.IntendedY != 0 ? Movement.IntendedY : Movement.IntendedX;
-				if (climbVelocity > 0) {
-					frame++;
-				} else if (climbVelocity < 0) {
-					frame--;
-				}
-				break;
-
-			case CharacterMovementState.GrabTop:
-				if (Movement.IntendedX > 0) {
-					frame++;
-				} else if (Movement.IntendedX < 0) {
-					frame--;
-				}
-				break;
-
-			case CharacterMovementState.GrabSide:
-				if (Movement.IntendedY > 0) {
-					frame++;
-				} else if (Movement.IntendedY < 0) {
-					frame--;
-				}
-				break;
-
-			case CharacterMovementState.GrabFlip:
-				frame += VelocityY > 0 ? 1 : -1;
-				break;
-
-			case CharacterMovementState.Run:
-			case CharacterMovementState.Walk:
-				frame += Movement.IntendedX > 0 == Movement.FacingRight ? 1 : -1;
-				break;
-
-			case CharacterMovementState.Rush:
-				if (VelocityX == 0 || VelocityX > 0 == Movement.FacingRight) {
-					frame++;
-				} else {
-					frame = 0;
-				}
-				break;
-
-			default:
-				frame++;
-				break;
-
-		}
-		return frame;
-	}
-
-
-	private int GetCurrentRenderingBounce () {
-		int frame = Game.GlobalFrame;
-		int bounce = 1000;
-		int duration = BOUNCE_AMOUNTS.Length;
-		bool reverse = false;
-		bool isPounding = Movement.MovementState == CharacterMovementState.Pound;
-		bool isSquatting = Movement.MovementState == CharacterMovementState.SquatIdle || Movement.MovementState == CharacterMovementState.SquatMove;
-		if (frame < LastRequireBounceFrame + duration) {
-			bounce = InWater ? BOUNCE_AMOUNTS_BIG[frame - LastRequireBounceFrame] : BOUNCE_AMOUNTS[frame - LastRequireBounceFrame];
-			if (Attackness.AttackChargeStartFrame.HasValue && Game.GlobalFrame > Attackness.AttackChargeStartFrame.Value + Attackness.MinimalChargeAttackDuration) {
-				bounce += (1000 - bounce) / 2;
-			}
-		} else if (isPounding) {
-			bounce = 1500;
-		} else if (IsGrounded && frame.InRangeExclude(Movement.LastPoundingFrame, Movement.LastPoundingFrame + duration)) {
-			// Gound Pound End
-			bounce = BOUNCE_AMOUNTS_BIG[frame - Movement.LastPoundingFrame];
-		} else if (isSquatting && frame.InRangeExclude(Movement.LastSquatFrame, Movement.LastSquatFrame + duration)) {
-			// Squat Start
-			bounce = BOUNCE_AMOUNTS[frame - Movement.LastSquatFrame];
-		} else if (IsGrounded && frame.InRangeExclude(Movement.LastGroundFrame, Movement.LastGroundFrame + duration)) {
-			// Gounded Start
-			bounce = BOUNCE_AMOUNTS[frame - Movement.LastGroundFrame];
-		} else if (!isSquatting && frame.InRangeExclude(Movement.LastSquattingFrame, Movement.LastSquattingFrame + duration)) {
-			// Squat End
-			bounce = BOUNCE_AMOUNTS[frame - Movement.LastSquattingFrame];
-			reverse = true;
-		} else if (Movement.IsCrashing && frame.InRangeExclude(Movement.LastCrashFrame, Movement.LastCrashFrame + duration)) {
-			// Crash Start
-			bounce = BOUNCE_AMOUNTS_BIG[frame - Movement.LastCrashFrame];
-		}
-		if (bounce != 1000) {
-			bounce = Util.RemapUnclamped(0, 1000, (1000 - Bouncy).Clamp(0, 999), 1000, bounce);
-		}
-		return reverse ? -bounce : bounce;
-	}
 
 
 	#endregion

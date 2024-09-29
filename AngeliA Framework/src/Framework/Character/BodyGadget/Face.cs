@@ -59,23 +59,23 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	public static void DrawGadgetFromPool (PoseCharacter character) {
-		if (character.FaceID == 0 || !TryGetGadget(character.FaceID, out var face)) return;
-		face.DrawGadget(character);
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.FaceID == 0 || !TryGetGadget(renderer.FaceID, out var face)) return;
+		face.DrawGadget(renderer);
 	}
 
 
-	public override void DrawGadget (PoseCharacter character) {
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
 
 		if (!SpriteLoaded) return;
 
-		var head = character.Head;
+		var head = renderer.Head;
 		if (head.IsFullCovered || !head.FrontSide) return;
 
 		using var _ = new SheetIndexScope(SheetIndex);
 
 		// Get Head Rect
-		int bounce = character.CurrentRenderingBounce;
+		int bounce = renderer.CurrentRenderingBounce;
 		var headRect = head.GetGlobalRect();
 		if (bounce.Abs() != 1000) {
 			const int A2G = Const.CEL / Const.ART_CEL;
@@ -105,18 +105,18 @@ public abstract class Face : BodyGadget {
 		}
 
 		// Draw Face
-		var expression = GetCurrentExpression(character);
+		var expression = GetCurrentExpression(renderer);
 		int startCellIndex = Renderer.GetUsedCellCount();
 
-		DrawEye(character, expression, faceRect, true);
-		DrawEye(character, expression, faceRect, false);
-		DrawMouth(character, expression, faceRect);
+		DrawEye(renderer, expression, faceRect, true);
+		DrawEye(renderer, expression, faceRect, false);
+		DrawMouth(renderer, expression, faceRect);
 
 		// Move with Head
 		if (Renderer.GetCells(out var cells, out int count)) {
 
 			// Twist
-			int twist = character.HeadTwist;
+			int twist = renderer.HeadTwist;
 			if (twist != 0) {
 				int offsetX = faceRect.width * twist / 2000;
 				for (int i = startCellIndex; i < count; i++) {
@@ -128,10 +128,10 @@ public abstract class Face : BodyGadget {
 			}
 
 			// Rotate
-			int headRot = character.Head.Rotation;
+			int headRot = renderer.Head.Rotation;
 			if (headRot != 0) {
-				var body = character.Body;
-				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+				var body = renderer.Body;
+				int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
 				for (int i = startCellIndex; i < count; i++) {
 					var cell = cells[i];
 					cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
@@ -142,7 +142,7 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	protected virtual void DrawEye (PoseCharacter character, CharacterExpression expression, IRect faceRect, bool leftEye) {
+	protected virtual void DrawEye (PoseCharacterRenderer renderer, CharacterExpression expression, IRect faceRect, bool leftEye) {
 
 		if (
 			!Renderer.TryGetSprite(Sprite_Eye, out var eye) ||
@@ -150,7 +150,7 @@ public abstract class Face : BodyGadget {
 		) return;
 
 		Renderer.TryGetSprite(Sprite_Eyebrow, out var eyebrow);
-		bool facingRight = character.Head.Width > 0;
+		bool facingRight = renderer.Head.Width > 0;
 		var rect = faceRect.CornerInside(leftEye ? Alignment.TopLeft : Alignment.TopRight, sclera.GlobalWidth, sclera.GlobalHeight);
 		bool eyeOpening =
 			expression == CharacterExpression.Normal ||
@@ -277,13 +277,13 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	protected virtual void DrawMouth (PoseCharacter character, CharacterExpression expression, IRect faceRect) {
+	protected virtual void DrawMouth (PoseCharacterRenderer renderer, CharacterExpression expression, IRect faceRect) {
 
 		if (expression != CharacterExpression.PassOut && expression != CharacterExpression.Damage) return;
 		if (!Renderer.TryGetSprite(Sprite_Mouth, out var mouth)) return;
 		Renderer.TryGetSprite(Sprite_Tooth, out var tooth);
 
-		bool facingRight = character.Head.Width > 0;
+		bool facingRight = renderer.Head.Width > 0;
 		var rect = faceRect.CornerInside(Alignment.BottomMid, mouth.GlobalWidth, mouth.GlobalHeight);
 
 		// Animation for Damage
@@ -318,10 +318,10 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	public static void DrawSpriteAsHumanEar (PoseCharacter character, int spriteL, int spriteR, int offsetXL = -32, int offsetXR = 0) {
+	public static void DrawSpriteAsHumanEar (PoseCharacterRenderer renderer, int spriteL, int spriteR, int offsetXL = -32, int offsetXR = 0) {
 
 		// Get Face Rect
-		var head = character.Head;
+		var head = renderer.Head;
 		var headRect = head.GetGlobalRect();
 		bool facingRight = head.Width > 0;
 		var faceRect = headRect;
@@ -353,10 +353,10 @@ public abstract class Face : BodyGadget {
 		);
 
 		// Rotate
-		int headRot = character.Head.Rotation;
+		int headRot = renderer.Head.Rotation;
 		if (headRot != 0) {
-			var body = character.Body;
-			int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+			var body = renderer.Body;
+			int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
 
 			cellL.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
 			cellL.Y -= offsetY;
@@ -367,29 +367,29 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	public static CharacterExpression GetCurrentExpression (PoseCharacter character) {
+	public static CharacterExpression GetCurrentExpression (PoseCharacterRenderer renderer) {
 
 		// Attack
 		if (
-			character.Attackness.IsAttacking &&
-			character.EquippingWeaponType != WeaponType.Magic &&
-			character.EquippingWeaponType != WeaponType.Ranged
+			renderer.TargetCharacter.Attackness.IsAttacking &&
+			renderer.TargetCharacter.EquippingWeaponType != WeaponType.Magic &&
+			renderer.TargetCharacter.EquippingWeaponType != WeaponType.Ranged
 		) return CharacterExpression.Attack;
 
 		// Blink
 		if (
-			(Game.GlobalFrame + character.TypeID).UMod(360) <= 8 &&
-			character.AnimationType != CharacterAnimationType.Sleep &&
-			character.AnimationType != CharacterAnimationType.PassOut
+			(Game.GlobalFrame + renderer.TargetCharacter.TypeID).UMod(360) <= 8 &&
+			renderer.TargetCharacter.AnimationType != CharacterAnimationType.Sleep &&
+			renderer.TargetCharacter.AnimationType != CharacterAnimationType.PassOut
 		) return CharacterExpression.Blink;
 
 		// In Ground
-		if (character.IsInsideGround) {
+		if (renderer.TargetCharacter.IsInsideGround) {
 			return CharacterExpression.Suffer;
 		}
 
 		// Other
-		return character.AnimationType switch {
+		return renderer.TargetCharacter.AnimationType switch {
 			CharacterAnimationType.Sleep => CharacterExpression.Sleep,
 			CharacterAnimationType.PassOut => CharacterExpression.PassOut,
 			CharacterAnimationType.Crash => CharacterExpression.Suffer,

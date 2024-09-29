@@ -1,14 +1,14 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Fly : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		int frame = CurrentAnimationFrame.UMod(16) / 2;
 		int pingpong = frame < 4 ? frame : 8 - frame;
 		int motionDelta = (Target.DeltaPositionX * 2).Clamp(-30, 30);
 
-		Target.PoseRootY = (frame < 6 ? frame / 2 : 8 - frame) * -A2G + 2 * A2G;
+		Rendering.PoseRootY = (frame < 6 ? frame / 2 : 8 - frame) * -A2G + 2 * A2G;
 
 		Head.Y = 0;
 
@@ -57,7 +57,7 @@ public class PoseAnimation_Fly : PoseAnimation {
 		FootR.Z = -32;
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 60;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 60;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 60;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 60;
 	}
 }

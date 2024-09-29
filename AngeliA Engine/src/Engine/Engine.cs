@@ -11,7 +11,7 @@ namespace AngeliaEngine;
 public partial class Engine {
 
 
-
+	
 
 	#region --- VAR ---
 
@@ -106,6 +106,7 @@ public partial class Engine {
 			new LanguageEditor(),
 			new ConsoleWindow(),
 			new ProjectEditor(),
+			new PackageManager(),
 			new SettingWindow(),
 		];
 		engine.AllGenericUIs = [
@@ -575,7 +576,7 @@ public partial class Engine {
 				if (FullsizeMenu.Value) {
 					GUI.Label(
 						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
-						Language.Get(window.TypeID, window.DefaultName),
+						Language.Get(window.TypeID, window.DefaultWindowName),
 						GUI.Skin.SmallLabel
 					);
 				}
@@ -759,6 +760,9 @@ public partial class Engine {
 		}
 		if (EngineSetting.Hotkey_Window_Project.Value.Down()) {
 			SetCurrentWindowIndex<ProjectEditor>();
+		}
+		if (EngineSetting.Hotkey_Window_Package.Value.Down()) {
+			SetCurrentWindowIndex<PackageManager>();
 		}
 		if (EngineSetting.Hotkey_Window_Setting.Value.Down()) {
 			SetCurrentWindowIndex<SettingWindow>();

@@ -75,7 +75,8 @@ public abstract class Weapon : Equipment {
 		base.PoseAnimationUpdate_FromEquipment(holder);
 
 		if (
-			holder is not PoseCharacter character ||
+			holder is not Character character ||
+			character.Rendering is not PoseCharacterRenderer renderer ||
 			character.AnimationType == CharacterAnimationType.Sleep ||
 			character.AnimationType == CharacterAnimationType.PassOut ||
 			character.AnimationType == CharacterAnimationType.Crash
@@ -86,52 +87,53 @@ public abstract class Weapon : Equipment {
 			!Renderer.TryGetSpriteFromGroup(SpriteID, 0, out sprite)
 		) return;
 
-		int oldGrabSclL = character.HandGrabScaleL;
-		int oldGrabSclR = character.HandGrabScaleR;
+		int oldGrabSclL = renderer.HandGrabScaleL;
+		int oldGrabSclR = renderer.HandGrabScaleR;
 		if (WeaponType == WeaponType.Claw) {
-			character.HandGrabScaleL = character.HandGrabScaleL * 8 / 10;
-			character.HandGrabScaleR = character.HandGrabScaleR * 8 / 10;
+			renderer.HandGrabScaleL = renderer.HandGrabScaleL * 8 / 10;
+			renderer.HandGrabScaleR = renderer.HandGrabScaleR * 8 / 10;
 		}
 
 		// Weapon Handheld
 		switch (character.EquippingWeaponHeld) {
 			default:
 			case WeaponHandheld.Float:
-				DrawWeapon_Float(character, sprite);
+				DrawWeapon_Float(renderer, sprite);
 				break;
 
 			case WeaponHandheld.SingleHanded:
-				DrawWeapon_SingleHanded(character, sprite);
+				DrawWeapon_SingleHanded(renderer, sprite);
 				break;
 
 			case WeaponHandheld.DoubleHanded:
 			case WeaponHandheld.Shooting:
-				DrawWeapon_Double_Shoot(character, sprite);
+				DrawWeapon_Double_Shoot(renderer, sprite);
 				break;
 
 			case WeaponHandheld.OneOnEachHand:
-				DrawWeapon_Each(character, sprite);
+				DrawWeapon_Each(renderer, sprite);
 				break;
 
 			case WeaponHandheld.Pole:
-				DrawWeapon_Pole(character, sprite);
+				DrawWeapon_Pole(renderer, sprite);
 				break;
 
 			case WeaponHandheld.Bow:
-				DrawWeapon_Bow(character, sprite);
+				DrawWeapon_Bow(renderer, sprite);
 				break;
 
 		}
 
-		character.HandGrabScaleL = oldGrabSclL;
-		character.HandGrabScaleR = oldGrabSclR;
+		renderer.HandGrabScaleL = oldGrabSclL;
+		renderer.HandGrabScaleR = oldGrabSclR;
 
 	}
 
 
-	private void DrawWeapon_Float (PoseCharacter character, AngeSprite sprite) {
+	private void DrawWeapon_Float (PoseCharacterRenderer renderer, AngeSprite sprite) {
 		const int SHIFT_X = 148;
-		int grabScaleL = character.Attackness.IsAttacking ? character.HandGrabScaleL : 700;
+		var character = renderer.TargetCharacter;
+		int grabScaleL = character.Attackness.IsAttacking ? renderer.HandGrabScaleL : 700;
 		int facingSign = character.Movement.FacingRight ? 1 : -1;
 		int moveDeltaX = -character.DeltaPositionX * 2;
 		int moveDeltaY = -character.DeltaPositionY;
@@ -143,9 +145,9 @@ public abstract class Weapon : Equipment {
 			);
 		}
 		DrawWeaponSprite(
-			character,
+			renderer,
 			character.X + (facingSign * -SHIFT_X) + moveDeltaX,
-			character.Y + Const.CEL * character.CharacterHeight / 263 + Game.GlobalFrame.PingPong(240) / 4 + moveDeltaY,
+			character.Y + Const.CEL * renderer.CharacterHeight / 263 + Game.GlobalFrame.PingPong(240) / 4 + moveDeltaY,
 			sprite.GlobalWidth,
 			sprite.GlobalHeight,
 			0,
@@ -156,21 +158,21 @@ public abstract class Weapon : Equipment {
 	}
 
 
-	private void DrawWeapon_SingleHanded (PoseCharacter character, AngeSprite sprite) {
-		bool attacking = character.Attackness.IsAttacking;
-		int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
-		int facingSign = character.Movement.FacingRight ? 1 : -1;
-		int grabScale = character.HandGrabScaleR;
-		int grabRotation = character.HandGrabRotationR;
-		int z = character.HandR.Z - 1;
-		var weaponType = character.EquippingWeaponType;
+	private void DrawWeapon_SingleHanded (PoseCharacterRenderer renderer, AngeSprite sprite) {
+		bool attacking = renderer.TargetCharacter.Attackness.IsAttacking;
+		int twistR = attacking && !IgnoreGrabTwist ? renderer.HandGrabAttackTwistR : 1000;
+		int facingSign = renderer.TargetCharacter.Movement.FacingRight ? 1 : -1;
+		int grabScale = renderer.HandGrabScaleR;
+		int grabRotation = renderer.HandGrabRotationR;
+		int z = renderer.HandR.Z - 1;
+		var weaponType = renderer.TargetCharacter.EquippingWeaponType;
 		if (weaponType == WeaponType.Throwing) {
 			if (
 				attacking &&
-				Game.GlobalFrame - character.Attackness.LastAttackFrame > AttackDuration / 6
+				Game.GlobalFrame - renderer.TargetCharacter.Attackness.LastAttackFrame > AttackDuration / 6
 			) return;
 			grabScale = 700;
-			z = character.Movement.FacingFront ? character.HandR.Z.Abs() + 1 : -character.HandR.Z.Abs() - 1;
+			z = renderer.TargetCharacter.Movement.FacingFront ? renderer.HandR.Z.Abs() + 1 : -renderer.HandR.Z.Abs() - 1;
 		}
 		// Fix Rotation
 		if (sprite.IsTrigger) {
@@ -180,22 +182,22 @@ public abstract class Weapon : Equipment {
 				grabRotation = Util.RemapUnclamped(
 					0, AttackDuration,
 					facingSign * 90, 0,
-					Game.GlobalFrame - character.Attackness.LastAttackFrame
+					Game.GlobalFrame - renderer.TargetCharacter.Attackness.LastAttackFrame
 				);
 			}
 		}
 		// Draw
-		var center = character.HandR.GlobalLerp(0.5f, 0.5f);
+		var center = renderer.HandR.GlobalLerp(0.5f, 0.5f);
 		if (weaponType == WeaponType.Block) {
 			Renderer.Draw(
 				sprite, center.x, center.y, 500, 500, grabRotation,
 				sprite.GlobalWidth * grabScale / 1000,
 				sprite.GlobalHeight * grabScale / 1000,
-				character.HandR.Z + 3
+				renderer.HandR.Z + 3
 			);
 		} else {
 			DrawWeaponSprite(
-				character,
+				renderer,
 				center.x, center.y,
 				sprite.GlobalWidth * twistR / 1000,
 				sprite.GlobalHeight,
@@ -206,81 +208,83 @@ public abstract class Weapon : Equipment {
 	}
 
 
-	private void DrawWeapon_Double_Shoot (PoseCharacter character, AngeSprite sprite) {
-		int twistR = character.Attackness.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
-		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
-		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+	private void DrawWeapon_Double_Shoot (PoseCharacterRenderer renderer, AngeSprite sprite) {
+		int twistR = renderer.TargetCharacter.Attackness.IsAttacking && !IgnoreGrabTwist ? renderer.HandGrabAttackTwistR : 1000;
+		var centerL = renderer.HandL.GlobalLerp(0.5f, 0.5f);
+		var centerR = renderer.HandR.GlobalLerp(0.5f, 0.5f);
 		DrawWeaponSprite(
-			character,
+			renderer,
 			(centerL.x + centerR.x) / 2,
 			(centerL.y + centerR.y) / 2,
 			sprite.GlobalWidth * twistR / 1000,
 			sprite.GlobalHeight,
-			character.HandGrabRotationL,
-			character.HandGrabScaleL,
+			renderer.HandGrabRotationL,
+			renderer.HandGrabScaleL,
 			sprite,
-			character.Movement.FacingRight ? character.HandR.Z + 12 : character.HandL.Z + 12
+			renderer.TargetCharacter.Movement.FacingRight ? renderer.HandR.Z + 12 : renderer.HandL.Z + 12
 		);
 	}
 
 
-	private void DrawWeapon_Each (PoseCharacter character, AngeSprite sprite) {
-		bool attacking = character.Attackness.IsAttacking;
-		int grabScaleL = character.HandGrabScaleL;
-		int grabScaleR = character.HandGrabScaleR;
-		int twistL = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistL : 1000;
-		int twistR = attacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
-		int zLeft = character.HandL.Z - 1;
-		int zRight = character.HandR.Z - 1;
-		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
-		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
+	private void DrawWeapon_Each (PoseCharacterRenderer renderer, AngeSprite sprite) {
+		bool attacking = renderer.TargetCharacter.Attackness.IsAttacking;
+		int grabScaleL = renderer.HandGrabScaleL;
+		int grabScaleR = renderer.HandGrabScaleR;
+		int twistL = attacking && !IgnoreGrabTwist ? renderer.HandGrabAttackTwistL : 1000;
+		int twistR = attacking && !IgnoreGrabTwist ? renderer.HandGrabAttackTwistR : 1000;
+		int zLeft = renderer.HandL.Z - 1;
+		int zRight = renderer.HandR.Z - 1;
+		var centerL = renderer.HandL.GlobalLerp(0.5f, 0.5f);
+		var centerR = renderer.HandR.GlobalLerp(0.5f, 0.5f);
 		DrawWeaponSprite(
-			character,
+			renderer,
 			centerL.x, centerL.y,
 			sprite.GlobalWidth * twistL / 1000,
 			sprite.GlobalHeight,
-			character.HandGrabRotationL,
+			renderer.HandGrabRotationL,
 			grabScaleL, sprite,
 			zLeft
 		);
 		DrawWeaponSprite(
-			character,
+			renderer,
 			centerR.x, centerR.y,
 			sprite.GlobalWidth * twistR / 1000,
 			sprite.GlobalHeight,
-			character.HandGrabRotationR,
+			renderer.HandGrabRotationR,
 			grabScaleR, sprite,
 			zRight
 		);
 	}
 
 
-	private void DrawWeapon_Pole (PoseCharacter character, AngeSprite sprite) {
-		var centerL = character.HandL.GlobalLerp(0.5f, 0.5f);
-		var centerR = character.HandR.GlobalLerp(0.5f, 0.5f);
-		int twistR = character.Attackness.IsAttacking && !IgnoreGrabTwist ? character.HandGrabAttackTwistR : 1000;
+	private void DrawWeapon_Pole (PoseCharacterRenderer renderer, AngeSprite sprite) {
+		var centerL = renderer.HandL.GlobalLerp(0.5f, 0.5f);
+		var centerR = renderer.HandR.GlobalLerp(0.5f, 0.5f);
+		int twistR = renderer.TargetCharacter.Attackness.IsAttacking && !IgnoreGrabTwist ? renderer.HandGrabAttackTwistR : 1000;
 		DrawWeaponSprite(
-			character,
+			renderer,
 			(centerL.x + centerR.x) / 2,
 			(centerL.y + centerR.y) / 2,
 			sprite.GlobalWidth * twistR / 1000,
 			sprite.GlobalHeight,
-			character.HandGrabRotationR,
-			character.HandGrabScaleR,
+			renderer.HandGrabRotationR,
+			renderer.HandGrabScaleR,
 			sprite,
-			character.HandR.Z - 1
+			renderer.HandR.Z - 1
 		);
 	}
 
 
-	private void DrawWeapon_Bow (PoseCharacter character, AngeSprite sprite) {
-		if (character.Attackness.IsAttacking) {
+	private void DrawWeapon_Bow (PoseCharacterRenderer renderer, AngeSprite sprite) {
+		var attack = renderer.TargetCharacter.Attackness;
+		var movement = renderer.TargetCharacter.Movement;
+		if (attack.IsAttacking) {
 			// Attacking
-			var center = (character.Movement.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
+			var center = (movement.FacingRight ? renderer.HandR : renderer.HandL).GlobalLerp(0.5f, 0.5f);
 			int width = sprite.GlobalWidth;
 			int height = sprite.GlobalHeight;
 			if (!sprite.IsTrigger) {
-				int localFrame = Game.GlobalFrame - character.Attackness.LastAttackFrame;
+				int localFrame = Game.GlobalFrame - attack.LastAttackFrame;
 				if (localFrame < AttackDuration / 2) {
 					// Pulling
 					float ease01 = Ease.OutQuad(localFrame / (AttackDuration / 2f));
@@ -294,28 +298,28 @@ public abstract class Weapon : Equipment {
 				}
 			}
 			DrawWeaponSprite(
-				character, center.x, center.y, width, height,
-				character.Movement.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
-				character.Movement.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
-				sprite, character.Movement.FacingRight ? character.HandR.Z - 1 : character.HandL.Z - 1
+				renderer, center.x, center.y, width, height,
+				movement.FacingRight ? renderer.HandGrabRotationL : renderer.HandGrabRotationR,
+				movement.FacingRight ? renderer.HandGrabScaleL : renderer.HandGrabScaleR,
+				sprite, movement.FacingRight ? renderer.HandR.Z - 1 : renderer.HandL.Z - 1
 			);
 		} else {
 			// Holding
-			var center = (character.Movement.FacingRight ? character.HandR : character.HandL).GlobalLerp(0.5f, 0.5f);
+			var center = (movement.FacingRight ? renderer.HandR : renderer.HandL).GlobalLerp(0.5f, 0.5f);
 			DrawWeaponSprite(
-				character, center.x, center.y,
+				renderer, center.x, center.y,
 				sprite.GlobalWidth, sprite.GlobalHeight,
-				character.Movement.FacingRight ? character.HandGrabRotationL : character.HandGrabRotationR,
-				character.Movement.FacingRight ? character.HandGrabScaleL : character.HandGrabScaleR,
+				movement.FacingRight ? renderer.HandGrabRotationL : renderer.HandGrabRotationR,
+				movement.FacingRight ? renderer.HandGrabScaleL : renderer.HandGrabScaleR,
 				sprite,
-				character.HandR.Z - 1
+				renderer.HandR.Z - 1
 			);
 		}
 	}
 
 
 	// API
-	protected virtual Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => Renderer.Draw(
+	protected virtual Cell DrawWeaponSprite (PoseCharacterRenderer character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => Renderer.Draw(
 		sprite,
 		x, y,
 		sprite.PivotX, sprite.PivotY, grabRotation,

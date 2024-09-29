@@ -1,15 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-
 
 namespace AngeliA;
-public abstract class SheetCharacter : Character {
 
-
-
-
-	#region --- SUB ---
+public class SheetCharacterRenderer (Character target) : CharacterRenderer(target) {
 
 
 	private class AnimationSheet {
@@ -136,43 +130,38 @@ public abstract class SheetCharacter : Character {
 	}
 
 
-
-	#endregion
-
-
-
-
-	#region --- VAR ---
-
-
 	// Api
-	protected Cell RenderedCell { get; private set; } = null;
-	public override int DespawnAfterPassoutDelay => 60;
+	public Cell RenderedCell { get; private set; } = null;
 
 	// Data
 	private static readonly Dictionary<int, AnimationSheet> AnimationSheetPool = [];
 	private int CurrentSheetAni = 0;
 
 
-	#endregion
-
-
-
-
-	#region --- MSG ---
-
-
+	// MSG
 	[OnMainSheetReload]
 	internal static void OnMainSheetReload_Sheet () {
 		AnimationSheetPool.Clear();
 		foreach (var type in typeof(Character).AllChildClass()) {
-			if (!type.IsSubclassOf(typeof(SheetCharacter))) continue;
+			//if (!type.IsSubclassOf(typeof(SheetCharacter))) continue;
 			AnimationSheetPool.Add(type.AngeHash(), new AnimationSheet(type));
 		}
 	}
 
 
-	protected override void RenderCharacter () {
+	public override void LateUpdate () {
+		base.LateUpdate();
+
+		var TypeID = TargetCharacter.TypeID;
+		var Health = TargetCharacter.Health;
+		var Movement = TargetCharacter.Movement;
+		var X = TargetCharacter.X;
+		var Y = TargetCharacter.Y;
+		var Teleporting = TargetCharacter.Teleporting;
+		var TeleportEndFrame = TargetCharacter.TeleportEndFrame;
+		var CharacterState = TargetCharacter.CharacterState;
+		var DespawnAfterPassoutDelay = TargetCharacter.DespawnAfterPassoutDelay;
+		var PassOutFrame = TargetCharacter.PassOutFrame;
 
 		if (!AnimationSheetPool.TryGetValue(TypeID, out var sheet)) return;
 
@@ -190,7 +179,7 @@ public abstract class SheetCharacter : Character {
 
 		// Door
 		if (Teleporting) {
-			LastRequireBounceFrame = int.MinValue;
+			TargetCharacter.LastRequireBounceFrame = int.MinValue;
 			Renderer.DrawAnimation(
 				TeleportEndFrame > 0 ? sheet.DoorFront : sheet.DoorBack,
 				X, Y, 500, 0, 0,
@@ -241,12 +230,16 @@ public abstract class SheetCharacter : Character {
 
 	private Cell DrawSheetBody (AnimationSheet sheet) {
 
+		var Attackness = TargetCharacter.Attackness;
+		var Movement = TargetCharacter.Movement;
+		var X = TargetCharacter.X;
+		var Y = TargetCharacter.Y;
 		int ani = sheet.Idle;
 
 		// Get Ani
 		if (!Attackness.IsAttacking) {
 			// Movement
-			ani = sheet.GetMovementCode(this);
+			ani = sheet.GetMovementCode(TargetCharacter);
 		} else {
 			// Attack
 			if (sheet.Attack.Length != 0) {
@@ -287,11 +280,6 @@ public abstract class SheetCharacter : Character {
 			cell.Height = cell.Height * bounce / 1000;
 		}
 	}
-
-
-	#endregion
-
-
 
 
 }

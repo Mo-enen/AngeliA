@@ -19,8 +19,8 @@ public abstract class BraidHair : Hair {
 	private static readonly Cell[] SINGLE_CELL = [new()];
 	private int BraidL { get; init; }
 	private int BraidR { get; init; }
-	protected virtual bool GetFrontL (PoseCharacter character) => character.Head.FrontSide;
-	protected virtual bool GetFrontR (PoseCharacter character) => character.Head.FrontSide;
+	protected virtual bool GetFrontL (PoseCharacterRenderer renderer) => renderer.Head.FrontSide;
+	protected virtual bool GetFrontR (PoseCharacterRenderer renderer) => renderer.Head.FrontSide;
 	protected virtual int FacingLeftOffsetX => 0;
 	protected virtual bool UseLimbRotate => false;
 	protected virtual bool ForceBackOnFlow => true;
@@ -38,30 +38,30 @@ public abstract class BraidHair : Hair {
 		if (!Renderer.HasSprite(BraidR)) BraidR = 0;
 	}
 
-	public override void DrawGadget (PoseCharacter character) {
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
 		using var _ = new SheetIndexScope(SheetIndex);
-		var cells = DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
-		if (Game.GlobalFrame > character.HideBraidFrame && (BraidL != 0 || BraidR != 0)) {
-			DrawBraid(character, cells, ForceBackOnFlow);
+		var cells = DrawSpriteAsHair(renderer, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
+		if (Game.GlobalFrame > renderer.HideBraidFrame && (BraidL != 0 || BraidR != 0)) {
+			DrawBraid(renderer, cells, ForceBackOnFlow);
 		}
 	}
 
-	private void DrawBraid (PoseCharacter character, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
-		character, cells, forceBackOnFlow, BraidL, BraidR,
-		GetFrontL(character) ? 33 : -33, GetFrontR(character) ? 33 : -33,
+	private void DrawBraid (PoseCharacterRenderer renderer, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
+		renderer, cells, forceBackOnFlow, BraidL, BraidR,
+		GetFrontL(renderer) ? 33 : -33, GetFrontR(renderer) ? 33 : -33,
 		PositionAmountX, PositionAmountY, FacingLeftOffsetX, MotionAmount,
 		FlowMotionAmount, DropMotionAmount, UseLimbRotate, 0, 0
 	);
 
 	public static void DrawBraid (
-		PoseCharacter character, bool forceBackOnFlow, int braidL, int braidR,
+		PoseCharacterRenderer renderer, bool forceBackOnFlow, int braidL, int braidR,
 		int zLeft, int zRight, int positionAmountX = 0, int positionAmountY = 0,
 		int facingLeftOffsetX = 0, int motionAmount = 618, int flowMotionAmount = 618, int dropMotionAmount = 200, bool useLimbRotate = false,
 		int offsetX = 0, int offsetY = 0
-	) => DrawBraid(character, null, forceBackOnFlow, braidL, braidR, zLeft, zRight, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate, offsetX, offsetY);
+	) => DrawBraid(renderer, null, forceBackOnFlow, braidL, braidR, zLeft, zRight, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate, offsetX, offsetY);
 
 	private static void DrawBraid (
-		PoseCharacter character, Cell[] hairCells, bool forceBackOnFlow, int braidL, int braidR,
+		PoseCharacterRenderer renderer, Cell[] hairCells, bool forceBackOnFlow, int braidL, int braidR,
 		int zLeft, int zRight, int positionAmountX, int positionAmountY,
 		int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate,
 		int offsetX, int offsetY
@@ -69,7 +69,7 @@ public abstract class BraidHair : Hair {
 
 		const int A2G = Const.CEL / Const.ART_CEL;
 
-		var head = character.Head;
+		var head = renderer.Head;
 		bool flipX = !head.FrontSide;
 		bool flipY = head.Height < 0;
 		int hairBL;
@@ -111,6 +111,7 @@ public abstract class BraidHair : Hair {
 			hairT = headRect.yMax;
 		}
 
+		var movement = renderer.TargetCharacter.Movement;
 		int lerpL = flipX ? 1000 : 0;
 		int lerpR = flipX ? 0 : 1000;
 		int lerpLY = flipY ? 1000 : 0;
@@ -124,38 +125,38 @@ public abstract class BraidHair : Hair {
 		int y = Util.RemapUnclamped(lerpLY, lerpRY, hairB, hairT, positionAmountY);
 		int rot = 0;
 		int deltaHeight = 0;
-		bool rolling = character.Movement.IsRolling;
-		if (!character.Movement.FacingRight && facingLeftOffsetX != 0) {
+		bool rolling = movement.IsRolling;
+		if (!movement.FacingRight && facingLeftOffsetX != 0) {
 			l += facingLeftOffsetX;
 			r += facingLeftOffsetX;
 		}
 		if (motionAmount != 0) {
-			rot = !flipY ? (character.DeltaPositionX * motionAmount / 1500).Clamp(-90, 90) : 0;
-			deltaHeight = (character.DeltaPositionY * motionAmount / 500).Clamp(-4 * A2G, 4 * A2G);
-			int braidFlow = (character.DeltaPositionX * flowMotionAmount / 1200).Clamp(-30, 30);
-			int motionRotY = ((character.DeltaPositionY * dropMotionAmount) / 1000).Clamp(-70, 0);
+			rot = !flipY ? (renderer.TargetCharacter.DeltaPositionX * motionAmount / 1500).Clamp(-90, 90) : 0;
+			deltaHeight = (renderer.TargetCharacter.DeltaPositionY * motionAmount / 500).Clamp(-4 * A2G, 4 * A2G);
+			int braidFlow = (renderer.TargetCharacter.DeltaPositionX * flowMotionAmount / 1200).Clamp(-30, 30);
+			int motionRotY = ((renderer.TargetCharacter.DeltaPositionY * dropMotionAmount) / 1000).Clamp(-70, 0);
 
 			var bCells = DrawBraid(
 				braidL, l + offsetX, y + offsetY, zLeft, 0,
-				(character.Movement.FacingRight ? rot : rot * 2 / 3) - motionRotY,
+				(movement.FacingRight ? rot : rot * 2 / 3) - motionRotY,
 				flipX, flipY, deltaHeight, rolling, useLimbRotate
 			);
-			TwistRotateHair(character, bCells, false);
-			Flow(bCells, character.Movement.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
+			TwistRotateHair(renderer, bCells, false);
+			Flow(bCells, movement.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
 
 			bCells = DrawBraid(
 				braidR, r + offsetX, y + offsetY, zRight, 1000,
-				(character.Movement.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
+				(movement.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
 				flipX, flipY, deltaHeight, rolling, useLimbRotate
 			);
-			TwistRotateHair(character, bCells, true);
-			Flow(bCells, character.Movement.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
+			TwistRotateHair(renderer, bCells, true);
+			Flow(bCells, movement.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
 
 		} else {
 			var bCells = DrawBraid(braidL, l + offsetX, y + offsetY, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
-			TwistRotateHair(character, bCells, false);
+			TwistRotateHair(renderer, bCells, false);
 			bCells = DrawBraid(braidR, r + offsetX, y + offsetY, zRight, 1000, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
-			TwistRotateHair(character, bCells, true);
+			TwistRotateHair(renderer, bCells, true);
 		}
 
 		// Func
@@ -179,22 +180,22 @@ public abstract class BraidHair : Hair {
 				return Renderer.DrawSlice(sprite, x, y, px, py, rot, width, height, z);
 			}
 		}
-		static void TwistRotateHair (PoseCharacter character, Cell[] cells, bool isRight) {
+		static void TwistRotateHair (PoseCharacterRenderer renderer, Cell[] cells, bool isRight) {
 			if (cells == null) return;
 			// Twist
-			int twist = character.HeadTwist;
+			int twist = renderer.HeadTwist;
 			if (twist != 0) {
-				int headCenterX = character.Head.GlobalX;
+				int headCenterX = renderer.Head.GlobalX;
 				foreach (var cell in cells) {
 					cell.X = cell.X.LerpTo(headCenterX, twist.Abs());
 					cell.Z *= isRight == twist > 0 ? -1 : 1;
 				}
 			}
 			// Rotate
-			int headRot = character.Head.Rotation;
+			int headRot = renderer.Head.Rotation;
 			if (headRot != 0) {
-				var body = character.Body;
-				int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+				var body = renderer.Body;
+				int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
 				foreach (var cell in cells) {
 					cell.Rotation -= headRot / 2;
 					cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
@@ -251,48 +252,48 @@ public abstract class Hair : BodyGadget {
 	}
 
 
-	public static void DrawGadgetFromPool (PoseCharacter character) {
-		if (character.HairID != 0 && TryGetGadget(character.HairID, out var hair)) {
-			hair.DrawGadget(character);
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.HairID != 0 && TryGetGadget(renderer.HairID, out var hair)) {
+			hair.DrawGadget(renderer);
 		}
 	}
 
 
-	public override void DrawGadget (PoseCharacter character) {
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawSpriteAsHair(character, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
+		DrawSpriteAsHair(renderer, SpriteFFL, SpriteFFR, SpriteFB, SpriteBF, FlowAmountX, FlowAmountY);
 	}
 
 
-	public static Cell[] DrawSpriteAsHair (PoseCharacter character, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {
+	public static Cell[] DrawSpriteAsHair (PoseCharacterRenderer renderer, int spriteFrontFL, int spriteFrontFR, int spriteFrontB, int spriteBackF, int flowAmountX, int flowAmountY) {
 
 		// Back Hair
-		if (character.Head.FrontSide) {
-			var bCells = DrawSprite(spriteBackF, character, -32, out var backHairRect);
-			FlowHair(character, bCells, true, flowAmountX, flowAmountY);
-			TwistHair(character, bCells, backHairRect);
-			RotateHair(character, bCells);
+		if (renderer.Head.FrontSide) {
+			var bCells = DrawSprite(spriteBackF, renderer, -32, out var backHairRect);
+			FlowHair(renderer, bCells, true, flowAmountX, flowAmountY);
+			TwistHair(renderer, bCells, backHairRect);
+			RotateHair(renderer, bCells);
 		}
 
 		// Front Hair
 		var fCells = DrawSprite(
-			!character.Head.FrontSide ? spriteFrontB :
-			character.Head.Width > 0 ? spriteFrontFR : spriteFrontFL,
-			character, 32, out var hairRect
+			!renderer.Head.FrontSide ? spriteFrontB :
+			renderer.Head.Width > 0 ? spriteFrontFR : spriteFrontFL,
+			renderer, 32, out var hairRect
 		);
-		FlowHair(character, fCells, false, flowAmountX, flowAmountY);
-		TwistHair(character, fCells, hairRect);
-		RotateHair(character, fCells);
+		FlowHair(renderer, fCells, false, flowAmountX, flowAmountY);
+		TwistHair(renderer, fCells, hairRect);
+		RotateHair(renderer, fCells);
 		return fCells;
 
 		// Func
-		static Cell[] DrawSprite (int spriteID, PoseCharacter character, int z, out IRect hairRect) {
+		static Cell[] DrawSprite (int spriteID, PoseCharacterRenderer renderer, int z, out IRect hairRect) {
 
 			hairRect = default;
 			if (spriteID == 0) return null;
 
-			var head = character.Head;
+			var head = renderer.Head;
 
 			if (!Renderer.TryGetSprite(spriteID, out var hairSprite)) return null;
 
@@ -322,9 +323,9 @@ public abstract class Hair : BodyGadget {
 				hairRect.height *= -1;
 			} else {
 				// Normal
-				if (hairRect.y < character.Y) {
-					hairRect.height -= character.Y - hairRect.y;
-					hairRect.y += character.Y - hairRect.y;
+				if (hairRect.y < renderer.TargetCharacter.Y) {
+					hairRect.height -= renderer.TargetCharacter.Y - hairRect.y;
+					hairRect.y += renderer.TargetCharacter.Y - hairRect.y;
 				}
 			}
 
@@ -341,11 +342,11 @@ public abstract class Hair : BodyGadget {
 			);
 
 		}
-		static void FlowHair (PoseCharacter character, Cell[] cells, bool allCells, int amountX, int amountY) {
+		static void FlowHair (PoseCharacterRenderer renderer, Cell[] cells, bool allCells, int amountX, int amountY) {
 
 			if (
 				cells == null || cells.Length != 9 ||
-				!character.Head.FrontSide ||
+				!renderer.Head.FrontSide ||
 				(cells[3].Height == 0 && cells[6].Height == 0)
 			) return;
 
@@ -353,7 +354,7 @@ public abstract class Hair : BodyGadget {
 
 				// X
 				int maxX = 30 * amountX / 1000;
-				int offsetX = (-character.DeltaPositionX * amountX / 1000).Clamp(-maxX, maxX);
+				int offsetX = (-renderer.TargetCharacter.DeltaPositionX * amountX / 1000).Clamp(-maxX, maxX);
 				cells[3].X += offsetX / 2;
 				cells[5].X += offsetX / 2;
 				cells[6].X += offsetX;
@@ -364,7 +365,7 @@ public abstract class Hair : BodyGadget {
 				}
 				// Y
 				int maxY = 20 * amountY / 1000;
-				int offsetAmountY = 1000 + (character.DeltaPositionY * amountY / 10000).Clamp(-maxY, maxY) * 50;
+				int offsetAmountY = 1000 + (renderer.TargetCharacter.DeltaPositionY * amountY / 10000).Clamp(-maxY, maxY) * 50;
 				offsetAmountY = offsetAmountY.Clamp(800, 1200);
 				cells[0].Height = cells[0].Height * offsetAmountY / 1000;
 				cells[2].Height = cells[2].Height * offsetAmountY / 1000;
@@ -380,9 +381,9 @@ public abstract class Hair : BodyGadget {
 
 			}
 		}
-		static void TwistHair (PoseCharacter character, Cell[] cells, IRect hairRect) {
-			int twist = character.HeadTwist;
-			if (twist == 0 || cells == null || cells.Length != 9 || !character.Head.FrontSide) return;
+		static void TwistHair (PoseCharacterRenderer renderer, Cell[] cells, IRect hairRect) {
+			int twist = renderer.HeadTwist;
+			if (twist == 0 || cells == null || cells.Length != 9 || !renderer.Head.FrontSide) return;
 			foreach (var cell in cells) cell.ReturnPivots();
 			int offsetX = (hairRect.width * twist).Abs() / 4000;
 			int offsetX2 = offsetX + offsetX;
@@ -437,11 +438,11 @@ public abstract class Hair : BodyGadget {
 			static int SmartAdd (int width, int offset) =>
 				width > 0 == offset > 0 || offset.Abs() < width.Abs() ? width + offset : 0;
 		}
-		static void RotateHair (PoseCharacter character, Cell[] cells) {
-			int headRot = character.Head.Rotation;
+		static void RotateHair (PoseCharacterRenderer renderer, Cell[] cells) {
+			int headRot = renderer.Head.Rotation;
 			if (headRot == 0 || cells == null) return;
-			var body = character.Body;
-			int offsetY = character.Head.Height.Abs() * headRot.Abs() / 360;
+			var body = renderer.Body;
+			int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
 			if (cells.Length == 9) {
 				// 9 Slice
 				foreach (var cell in cells) cell.ReturnPivots(0.5f, 1f);

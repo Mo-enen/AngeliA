@@ -36,40 +36,41 @@ public abstract class Horn : BodyGadget {
 
 
 	// API
-	public static void DrawGadgetFromPool (PoseCharacter character) {
-		if (character.HornID != 0 && TryGetGadget(character.HornID, out var horn)) {
-			horn.DrawGadget(character);
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.HornID != 0 && TryGetGadget(renderer.HornID, out var horn)) {
+			horn.DrawGadget(renderer);
 		}
 	}
 
 
-	public override void DrawGadget (PoseCharacter character) {
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
 
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
 
-		int idL = character.Movement.FacingFront ? SpriteIdL : SpriteIdLBack;
-		int idR = character.Movement.FacingFront ? SpriteIdR : SpriteIdRBack;
+		var movement = renderer.TargetCharacter.Movement;
+		int idL = movement.FacingFront ? SpriteIdL : SpriteIdLBack;
+		int idR = movement.FacingFront ? SpriteIdR : SpriteIdRBack;
 		DrawSpriteAsHorn(
-			character, idL, idR,
-			FrontOfHeadL(character), FrontOfHeadR(character),
+			renderer, idL, idR,
+			FrontOfHeadL(renderer), FrontOfHeadR(renderer),
 			AnchorOnFace,
-			character.Movement.FacingFront == character.Movement.FacingRight ? 0 : FacingLeftOffsetX
+			movement.FacingFront == movement.FacingRight ? 0 : FacingLeftOffsetX
 		);
 	}
 
 
-	protected virtual bool FrontOfHeadL (PoseCharacter character) => true;
-	protected virtual bool FrontOfHeadR (PoseCharacter character) => true;
+	protected virtual bool FrontOfHeadL (PoseCharacterRenderer renderer) => true;
+	protected virtual bool FrontOfHeadR (PoseCharacterRenderer renderer) => true;
 
 
 	public static void DrawSpriteAsHorn (
-		PoseCharacter character, int spriteIdLeft, int spriteIdRight,
+		PoseCharacterRenderer renderer, int spriteIdLeft, int spriteIdRight,
 		bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false, int offsetX = 0
 	) {
 
 		if (spriteIdLeft == 0 && spriteIdRight == 0) return;
-		var head = character.Head;
+		var head = renderer.Head;
 		if (head.Tint.a == 0) return;
 
 		var headRect = head.GetGlobalRect();
@@ -82,7 +83,7 @@ public abstract class Horn : BodyGadget {
 		}
 
 		// Twist
-		int twist = character.HeadTwist;
+		int twist = renderer.HeadTwist;
 		int twistWidth = 0;
 		if (twist != 0) {
 			twistWidth -= 16 * twist.Abs() / 500;
@@ -98,9 +99,9 @@ public abstract class Horn : BodyGadget {
 				head.Height.Sign3() * sprite.GlobalHeight,
 				head.Z + (head.FrontSide == frontOfHeadL ? 34 : -34)
 			);
-			if (character.Head.Rotation != 0) {
-				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-				cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+			if (renderer.Head.Rotation != 0) {
+				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
+				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
 			}
 		}
 
@@ -114,9 +115,9 @@ public abstract class Horn : BodyGadget {
 				head.Height.Sign3() * sprite.GlobalHeight,
 				head.Z + (head.FrontSide == frontOfHeadR ? 34 : -34)
 			);
-			if (character.Head.Rotation != 0) {
-				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
-				cell.Y -= character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+			if (renderer.Head.Rotation != 0) {
+				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
+				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
 			}
 		}
 

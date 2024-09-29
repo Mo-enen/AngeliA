@@ -33,13 +33,13 @@ public abstract class HipCloth : Cloth {
 		return SpriteLoaded;
 	}
 
-	public static void DrawClothFromPool (PoseCharacter character) {
+	public static void DrawClothFromPool (PoseCharacterRenderer character) {
 		if (character.SuitHip != 0 && Pool.TryGetValue(character.SuitHip, out var cloth)) {
 			cloth.DrawCloth(character);
 		}
 	}
 
-	public override void DrawCloth (PoseCharacter character) {
+	public override void DrawCloth (PoseCharacterRenderer character) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawClothForHip(character, SpriteIdHip, CoverLegs ? 4 : 1);
@@ -48,7 +48,7 @@ public abstract class HipCloth : Cloth {
 		DrawClothForLowerLeg(character, SpriteIdLowerLeg);
 	}
 
-	public static void DrawClothForHip (PoseCharacter character, int spriteID, int localZ = 1) {
+	public static void DrawClothForHip (PoseCharacterRenderer character, int spriteID, int localZ = 1) {
 
 		var hip = character.Hip;
 		if (spriteID == 0 || hip.IsFullCovered) return;
@@ -85,7 +85,7 @@ public abstract class HipCloth : Cloth {
 
 	}
 
-	public static void DrawClothForSkirt (PoseCharacter character, int spriteID, int localZ = 6) {
+	public static void DrawClothForSkirt (PoseCharacterRenderer character, int spriteID, int localZ = 6) {
 
 		var hip = character.Hip;
 		if (spriteID == 0 || hip.IsFullCovered) return;
@@ -97,7 +97,7 @@ public abstract class HipCloth : Cloth {
 		var body = character.Body;
 		var upperLegL = character.UpperLegL;
 		var upperLegR = character.UpperLegR;
-		var animatedPoseType = character.AnimationType;
+		var animatedPoseType = character.TargetCharacter.AnimationType;
 		const int A2G = 16;
 
 		// Skirt
@@ -150,7 +150,7 @@ public abstract class HipCloth : Cloth {
 		}
 	}
 
-	public static void DrawClothForUpperLeg (PoseCharacter character, int spriteID, int localZ = 1) {
+	public static void DrawClothForUpperLeg (PoseCharacterRenderer character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -165,7 +165,7 @@ public abstract class HipCloth : Cloth {
 		}
 	}
 
-	public static void DrawClothForLowerLeg (PoseCharacter character, int spriteID, int localZ = 1) {
+	public static void DrawClothForLowerLeg (PoseCharacterRenderer character, int spriteID, int localZ = 1) {
 		if (spriteID == 0) return;
 		if (Renderer.HasSpriteGroup(spriteID)) {
 			if (Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
@@ -180,9 +180,9 @@ public abstract class HipCloth : Cloth {
 		}
 	}
 
-	public static void DrawDoubleClothTailsOnHip (PoseCharacter character, int spriteIdLeft, int spriteIdRight, bool drawOnAllPose = false) {
+	public static void DrawDoubleClothTailsOnHip (PoseCharacterRenderer character, int spriteIdLeft, int spriteIdRight, bool drawOnAllPose = false) {
 
-		var animatedPoseType = character.AnimationType;
+		var animatedPoseType = character.TargetCharacter.AnimationType;
 		var hip = character.Hip;
 		var body = character.Body;
 		if (
@@ -215,7 +215,7 @@ public abstract class HipCloth : Cloth {
 
 	}
 
-	public static void DrawClothTail (PoseCharacter character, int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
+	public static void DrawClothTail (PoseCharacterRenderer character, int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
 
 		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
 
@@ -224,10 +224,10 @@ public abstract class HipCloth : Cloth {
 		// Motion
 		if (motionAmount != 0) {
 			// Idle Rot
-			int animationFrame = (character.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
+			int animationFrame = (character.TargetCharacter.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
 			rot += rotation.Sign() * (animationFrame.PingPong(180) / 10 - 9);
 			// Delta Y >> Rot
-			int deltaY = character.DeltaPositionY;
+			int deltaY = character.TargetCharacter.DeltaPositionY;
 			rot -= rotation.Sign() * (deltaY * 2 / 3).Clamp(-20, 20);
 		}
 

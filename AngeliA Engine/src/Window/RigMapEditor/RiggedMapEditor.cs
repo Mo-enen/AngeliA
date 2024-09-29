@@ -45,7 +45,7 @@ public partial class RiggedMapEditor : WindowUI {
 
 	// Api
 	public static RiggedMapEditor Instance { get; private set; }
-	public override string DefaultName => "Map";
+	public override string DefaultWindowName => "Map";
 	public bool DrawCollider { get; private set; } = false;
 	public bool EntityClickerOn { get; private set; } = false;
 	public IRect PanelRect { get; private set; }
@@ -370,7 +370,7 @@ public partial class RiggedMapEditor : WindowUI {
 		MovementConfigPool.Clear();
 		if (currentProject == null) return;
 		string root = currentProject.Universe.CharacterMovementConfigRoot;
-		foreach (string path in Util.EnumerateFiles(root, true, "*.json", "*.sheetJson")) {
+		foreach (string path in Util.EnumerateFiles(root, true, "*.json")) {
 			string name = Util.GetNameWithoutExtension(path);
 			int id = name.AngeHash();
 			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);

@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseHandheld_Pole : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		// Charging
 		if (Attackness.IsChargingAttack) {
@@ -16,7 +16,7 @@ public class PoseHandheld_Pole : PoseAnimation {
 		ResetShoulderAndUpperArmPos();
 
 		// Upper Arm
-		int twistDelta = Target.BodyTwist / 26;
+		int twistDelta = Rendering.BodyTwist / 26;
 		UpperArmL.LimbRotate((FacingRight ? -2 : 14) - twistDelta);
 		UpperArmR.LimbRotate((FacingRight ? -14 : 2) - twistDelta);
 		if (dashing) {
@@ -49,8 +49,8 @@ public class PoseHandheld_Pole : PoseAnimation {
 
 		// Grab
 		int deltaRot = (Target.DeltaPositionY / 10).Clamp(-10, 10);
-		Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (80 + deltaRot);
-		Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = FacingSign * (80 + deltaRot);
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = FacingSign * 1000;
 
 	}
 }

@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_SquatIdle : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		int arrFrame = CurrentAnimationFrame.UMod(64) / 16;
 
@@ -13,7 +13,7 @@ public class PoseAnimation_SquatIdle : PoseAnimation {
 		int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
 		int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
 
-		int above = Target.PoseRootY /= 2;
+		int above = Rendering.PoseRootY /= 2;
 
 		Body.Width += FacingSign * halfEase;
 		Body.Height = Body.SizeY / 2 - oneEase;
@@ -83,10 +83,10 @@ public class PoseAnimation_SquatIdle : PoseAnimation {
 		HandR.X += halfEase;
 
 		// Final
-		Target.HandGrabRotationL =
+		Rendering.HandGrabRotationL =
 			Target.EquippingWeaponHeld == WeaponHandheld.OneOnEachHand ? FacingRight ? 80 : -100 :
 			FacingSign * 100;
-		Target.HandGrabRotationR =
+		Rendering.HandGrabRotationR =
 			Target.EquippingWeaponHeld == WeaponHandheld.OneOnEachHand ? FacingRight ? 100 : -80 :
 			FacingSign * 100;
 

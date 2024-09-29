@@ -73,19 +73,20 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 		return result;
 	}
 
-	protected override Cell DrawWeaponSprite (PoseCharacter character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+	protected override Cell DrawWeaponSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		if (IsBow) {
 			// Bow
-			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
-			DrawString(character, cell, default, default, default);
+			var cell = base.DrawWeaponSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
+			DrawString(renderer, cell, default, default, default);
 			return cell;
 		} else {
 			// Shooting
-			var cell = base.DrawWeaponSprite(character, x, y, width, height, grabRotation, grabScale, sprite, z);
+			var cell = base.DrawWeaponSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
-			if (character.Attackness.IsAttacking || character.Attackness.IsChargingAttack) {
-				int localFrame = character.Attackness.IsAttacking ?
-					(Game.GlobalFrame - character.Attackness.LastAttackFrame) * SpriteFrameCount / AttackDuration :
+			var attack = renderer.TargetCharacter.Attackness;
+			if (attack.IsAttacking || attack.IsChargingAttack) {
+				int localFrame = attack.IsAttacking ?
+					(Game.GlobalFrame - attack.LastAttackFrame) * SpriteFrameCount / AttackDuration :
 					SpriteFrameCount - 1;
 				if (Renderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
 					cell.Sprite = attackSprite;
@@ -99,7 +100,10 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 		}
 	}
 
-	protected void DrawString (PoseCharacter character, Cell mainCell, Int2 offsetDown, Int2 offsetUp, Int2 offsetCenter) {
+	protected void DrawString (PoseCharacterRenderer renderer, Cell mainCell, Int2 offsetDown, Int2 offsetUp, Int2 offsetCenter) {
+		var character = renderer.TargetCharacter;
+		var movement = character.Movement;
+		var attackness = character.Attackness;
 		int borderL = 0;
 		int borderD = 0;
 		int borderU = 0;
@@ -108,20 +112,20 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			borderD = mainSprite.GlobalBorder.down;
 			borderU = mainSprite.GlobalBorder.up;
 		}
-		if (!character.Movement.FacingRight) {
+		if (!movement.FacingRight) {
 			offsetDown.x = -offsetDown.x;
 			offsetUp.x = -offsetUp.x;
 			offsetCenter.x = -offsetCenter.x;
 		}
-		if (character.Attackness.IsAttacking || character.Attackness.IsChargingAttack) {
+		if (attackness.IsAttacking || attackness.IsChargingAttack) {
 
 			// Attacking
 			int duration = AttackDuration;
-			int localFrame = character.Attackness.IsAttacking ? Game.GlobalFrame - character.Attackness.LastAttackFrame : duration / 2 - 1;
+			int localFrame = attackness.IsAttacking ? Game.GlobalFrame - attackness.LastAttackFrame : duration / 2 - 1;
 			Int2 centerPos;
 			var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;
 			var cornerD = mainCell.LocalToGlobal(borderL, borderD) + offsetDown;
-			var handPos = (character.Movement.FacingRight ? character.HandL : character.HandR).GlobalLerp(0.5f, 0.5f);
+			var handPos = (movement.FacingRight ? renderer.HandL : renderer.HandR).GlobalLerp(0.5f, 0.5f);
 			if (localFrame < duration / 2) {
 				// Pulling
 				centerPos = handPos + offsetCenter;
@@ -134,7 +138,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			}
 
 			// Draw Strings
-			int stringWidth = character.Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
+			int stringWidth = movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE;
 			Renderer.Draw(
 				SpriteIdString, centerPos.x, centerPos.y, 500, 0,
 				(cornerU - centerPos).GetRotation(),
@@ -152,7 +156,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			Renderer.Draw(
 				SpriteIdString,
 				point.x, point.y,
-				character.Movement.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
+				movement.FacingRight ? 0 : 1000, 0, mainCell.Rotation,
 				Const.ORIGINAL_SIZE,
 				mainCell.Height - borderD - borderU - offsetDown.y + offsetUp.y,
 				mainCell.Z - 1

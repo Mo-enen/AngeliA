@@ -80,7 +80,7 @@ public class ProjectEditor : WindowUI {
 	public int RequiringRebuildFrame { get; private set; } = -2;
 	public int RequiringPublishFrame { get; private set; } = int.MinValue;
 	public string RequiringPublishPath { get; private set; } = "";
-	public override string DefaultName => "Project";
+	public override string DefaultWindowName => "Project";
 	protected override bool BlockEvent => true;
 
 	// Data

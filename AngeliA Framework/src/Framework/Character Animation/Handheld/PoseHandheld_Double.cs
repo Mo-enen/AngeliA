@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseHandheld_Double : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		if (Attackness.IsChargingAttack) {
 			// Charging
 			PoseAttack_Wave.DoubleHanded_SmashDown();
@@ -12,7 +12,7 @@ public class PoseHandheld_Double : PoseAnimation {
 		// Holding
 		ResetShoulderAndUpperArmPos();
 
-		int twistShift = Target.BodyTwist / 50;
+		int twistShift = Rendering.BodyTwist / 50;
 		UpperArmL.LimbRotate((FacingRight ? -42 : 29) - twistShift);
 		UpperArmR.LimbRotate((FacingRight ? -29 : 42) - twistShift);
 		UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
@@ -35,8 +35,8 @@ public class PoseHandheld_Double : PoseAnimation {
 		HandL.Z = HandR.Z = signZ * POSE_Z_HAND;
 
 		// Grab Rotation
-		Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * 1000;
-		Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * (
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = FacingSign * 1000;
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = FacingSign * (
 			30 - CurrentAnimationFrame.PingPong(120) / 30
 			+ Target.DeltaPositionY.Clamp(-24, 24) / 5
 		) - Target.DeltaPositionX.Clamp(-24, 24) / 4;

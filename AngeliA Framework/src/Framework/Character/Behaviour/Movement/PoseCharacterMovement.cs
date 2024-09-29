@@ -3,9 +3,21 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class PoseCharacterMovement : CharacterMovement {
-	public readonly PoseCharacter TargetPoseCharacter;
-	public PoseCharacterMovement (Character character) : base(character) { TargetPoseCharacter = character as PoseCharacter; }
-	public override bool SpinOnGroundPound => Wing.IsPropellerWing(TargetPoseCharacter.WingID);
-	public override int FinalCharacterHeight => base.FinalCharacterHeight * TargetPoseCharacter.CharacterHeight / 160;
+public class PoseCharacterMovement (Character character) : CharacterMovement(character) {
+	public override bool SpinOnGroundPound {
+		get {
+			if (TargetCharacter.Rendering is PoseCharacterRenderer rendering) {
+				return Wing.IsPropellerWing(rendering.WingID);
+			}
+			return false;
+		}
+	}
+	public override int FinalCharacterHeight {
+		get {
+			if (TargetCharacter.Rendering is PoseCharacterRenderer rendering) {
+				return base.FinalCharacterHeight * rendering.CharacterHeight / 160;
+			}
+			return base.FinalCharacterHeight;
+		}
+	}
 }

@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseAttack_Hand : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 2;
 		switch (Attackness.AttackStyleIndex % Attackness.AttackStyleLoop) {
 			case 0:
@@ -111,8 +111,8 @@ public class PoseAttack_Hand : PoseAnimation {
 		}
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 	private static void Smash () {
 
@@ -198,7 +198,7 @@ public class PoseAttack_Hand : PoseAnimation {
 		}
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 }

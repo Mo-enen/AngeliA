@@ -2,11 +2,11 @@
 
 public class PoseAttack_Wave : PoseAnimation {
 
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		int style;
-		var handheld = character.EquippingWeaponHeld;
-		var weaponType = character.EquippingWeaponType;
+		var handheld = Target.EquippingWeaponHeld;
+		var weaponType = Target.EquippingWeaponType;
 		switch (handheld) {
 
 			// Single Handed
@@ -16,7 +16,7 @@ public class PoseAttack_Wave : PoseAnimation {
 					Attackness.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
 					weaponType == WeaponType.Flail ||
-					character.EquipingPickWeapon ?
+					Target.EquipingPickWeapon ?
 					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -41,7 +41,7 @@ public class PoseAttack_Wave : PoseAnimation {
 					Attackness.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
 					weaponType == WeaponType.Flail ||
-					character.EquipingPickWeapon ?
+					Target.EquipingPickWeapon ?
 					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -64,7 +64,7 @@ public class PoseAttack_Wave : PoseAnimation {
 				Attackness.AttackStyleLoop = 4;
 				style =
 					Attackness.LastAttackCharged ||
-					character.EquipingPickWeapon ? 0 :
+					Target.EquipingPickWeapon ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -87,8 +87,8 @@ public class PoseAttack_Wave : PoseAnimation {
 				Attackness.AttackStyleLoop = 4;
 				style =
 					Attackness.LastAttackCharged ||
-					character.EquippingWeaponType == WeaponType.Flail ||
-					character.EquipingPickWeapon ? 0 :
+					Target.EquippingWeaponType == WeaponType.Flail ||
+					Target.EquipingPickWeapon ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -156,9 +156,9 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 		// Z
@@ -201,9 +201,9 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(197, 12, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(-1100, -1400, ease01);
 
 		// Z
@@ -222,8 +222,8 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackHeadDown(ease01, 1400, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 		// Left Side
 		if (
@@ -250,11 +250,11 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(67, 224, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 		// Z
@@ -273,8 +273,8 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackHeadDown(ease01, -500, 500, -1000);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 		// Left Side
 		if (
@@ -301,11 +301,11 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(197, 128, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(-1300, -100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 		// Z
@@ -360,9 +360,9 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab Rotation
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(-37, 100, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 		// Z
@@ -413,9 +413,9 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab Rotation
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(100, -20, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 		// Z
@@ -435,8 +435,8 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackHeadDown(ease01, 1400, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 		// Upper Arm
 		int upperRotA = (int)Util.LerpUnclamped(-100, 65, ease01);
@@ -464,11 +464,11 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab Rotation
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(71, 248, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 		// Z
@@ -488,8 +488,8 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackHeadDown(ease01, -500, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 		int upperRotA = (int)Util.LerpUnclamped(-171, 49, ease01);
 		int upperRotB = (int)Util.LerpUnclamped(-100, 39, ease01);
@@ -516,11 +516,11 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab Rotation
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(297, 128, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 		// Z
@@ -577,10 +577,10 @@ public class PoseAttack_Wave : PoseAnimation {
 		}
 
 		// Grab
-		Target.HandGrabRotationL = FacingSign * (int)Util.LerpUnclamped(-70, 110, ease01);
-		Target.HandGrabScaleL = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
-		Target.HandGrabRotationR = FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
-		Target.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
+		Rendering.HandGrabRotationL = FacingSign * (int)Util.LerpUnclamped(-70, 110, ease01);
+		Rendering.HandGrabScaleL = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
+		Rendering.HandGrabRotationR = FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
+		Rendering.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 	}
 	public static void EachHand_SmashUp () {
@@ -622,9 +622,9 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = FacingSign * (int)Util.LerpUnclamped(197, 12, easeL);
-		Target.HandGrabRotationR = FacingSign * (int)Util.LerpUnclamped(197, 12, easeR);
-		Target.HandGrabScaleL = Target.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
+		Rendering.HandGrabRotationL = FacingSign * (int)Util.LerpUnclamped(197, 12, easeL);
+		Rendering.HandGrabRotationR = FacingSign * (int)Util.LerpUnclamped(197, 12, easeR);
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
 
 	}
 	public static void EachHand_SlashIn () {
@@ -636,8 +636,8 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackHeadDown(ease01, 1400, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 		// Upper Arm
 		UpperArmL.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-110, 55, ease01));
@@ -669,11 +669,11 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(67, 224, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 	}
 	public static void EachHand_SlashOut () {
@@ -685,8 +685,8 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackHeadDown(ease01, -500, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 		// Upper Arm
 		UpperArmL.LimbRotate(FacingSign * (int)Util.LerpUnclamped(168, -40, ease01));
@@ -718,11 +718,11 @@ public class PoseAttack_Wave : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(197, 128, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(-1300, -100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 	}
@@ -758,9 +758,9 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(-58, 107, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 		// Z
@@ -798,9 +798,9 @@ public class PoseAttack_Wave : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(130, 10, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
 
 		// Z

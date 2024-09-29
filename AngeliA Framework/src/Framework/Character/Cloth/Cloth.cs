@@ -51,23 +51,9 @@ public abstract class Cloth {
 
 		// Init Default Pool
 		DefaultPool = new Dictionary<int, int>[clothTypeCount].FillWithNewValue();
-		foreach (var charType in typeof(PoseCharacter).AllChildClass()) {
+		foreach (var charType in typeof(Character).AllChildClass()) {
 			string cName = charType.AngeName();
 			int charID = cName.AngeHash();
-			// From Attribute
-			foreach (var att in charType.GetCustomAttributes(typeof(DefaultClothAttribute), inherit: false)) {
-				if (att is not DefaultClothAttribute bAtt) continue;
-				string gName = bAtt.TargetClothName;
-				var gType = bAtt.Type;
-				var dPool = DefaultPool[(int)gType];
-				if (dPool.ContainsKey(charID)) continue;
-				int gID = gName.AngeHash();
-				if (!Pool.ContainsKey(gID)) {
-					if (System.Activator.CreateInstance(modularTypes[(int)gType]) is not Cloth temp) continue;
-					Pool.TryAdd(gID, temp);
-				}
-				dPool.Add(charID, gID);
-			}
 			// From Sheet
 			for (int i = 0; i < clothTypeCount; i++) {
 				var clType = modularTypes[i];
@@ -89,7 +75,7 @@ public abstract class Cloth {
 	public Cloth () => TypeID = GetType().AngeHash();
 
 
-	public abstract void DrawCloth (PoseCharacter character);
+	public abstract void DrawCloth (PoseCharacterRenderer renderer);
 
 
 	public virtual bool FillFromSheet (string name) {

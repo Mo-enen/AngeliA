@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseAttack_Polearm : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 8;
 		int style = Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 		switch (style) {
@@ -57,8 +57,8 @@ public class PoseAttack_Polearm : PoseAnimation {
 		HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR = FacingSign * 90;
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = FacingSign * 90;
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1000, 1200, ease01);
 
 	}
@@ -93,9 +93,9 @@ public class PoseAttack_Polearm : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(-58, 107, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 		// Z
@@ -133,9 +133,9 @@ public class PoseAttack_Polearm : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(130, 10, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
 
 		// Z
@@ -155,8 +155,8 @@ public class PoseAttack_Polearm : PoseAnimation {
 		AttackHeadDown(ease01, 1400, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = -FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = -FacingSign * (int)(frame01 * 500 - 250);
 
 		// Upper Arm
 		int upperRotA = (int)Util.LerpUnclamped(-100, 65, ease01);
@@ -184,11 +184,11 @@ public class PoseAttack_Polearm : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab Rotation
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(71, 248, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 		// Z
@@ -208,8 +208,8 @@ public class PoseAttack_Polearm : PoseAnimation {
 		AttackHeadDown(ease01, -500, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
-		Target.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
-		Target.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
+		Rendering.BodyTwist = FacingSign * (int)(frame01 * 2000 - 1000);
+		Rendering.HeadTwist = FacingSign * (int)(frame01 * 500 - 250);
 
 		int upperRotA = (int)Util.LerpUnclamped(-171, 49, ease01);
 		int upperRotB = (int)Util.LerpUnclamped(-100, 39, ease01);
@@ -236,11 +236,11 @@ public class PoseAttack_Polearm : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab Rotation
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(297, 128, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR =
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
 			(int)Util.LerpUnclamped(600, 200, frame01);
 
 		// Z

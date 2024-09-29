@@ -1,13 +1,13 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_JumpDown : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		bool alt = CurrentAnimationFrame.UMod(8) >= 4;
 
-		Target.PoseRootY -= A2G;
-		Target.BodyTwist = FacingRight ? -400 : 400;
+		Rendering.PoseRootY -= A2G;
+		Rendering.BodyTwist = FacingRight ? -400 : 400;
 
 		if (alt) {
 			Body.Height += A2G / 4;
@@ -56,9 +56,9 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 		FootR.Z += 2;
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation - FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation - FacingSign * 90;
-		Target.HandGrabScaleL = FacingSign * -1000;
-		Target.HandGrabScaleR = FacingSign * -1000;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation - FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation - FacingSign * 90;
+		Rendering.HandGrabScaleL = FacingSign * -1000;
+		Rendering.HandGrabScaleR = FacingSign * -1000;
 	}
 }

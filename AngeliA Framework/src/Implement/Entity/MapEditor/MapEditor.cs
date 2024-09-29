@@ -688,7 +688,7 @@ public sealed partial class MapEditor : WindowUI {
 				PlayerDropPos.y - Const.CEL * 2,
 				Const.CEL, Const.CEL * 2
 			),
-			player, Game.GlobalFrame
+			player.Rendering as PoseCharacterRenderer, Game.GlobalFrame
 		);
 		int endIndex = Renderer.GetUsedCellCount();
 

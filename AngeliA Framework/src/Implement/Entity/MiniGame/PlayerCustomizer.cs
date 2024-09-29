@@ -237,28 +237,30 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 		// Preview
 		int leftPanelWidth = Unify(400);
-		var leftPanelRect = windowRect.Shrink(0, windowRect.width - leftPanelWidth, 0, 0);
-		bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && player.WingID != 0;
-		player.AnimationType = flying ? CharacterAnimationType.Fly : CharacterAnimationType.Idle;
-		player.Movement.LockFacingRight(PlayerFacingRight);
-		FrameworkUtil.DrawPoseCharacterAsUI(
-			leftPanelRect.Shrink(Unify(32)), player, Game.GlobalFrame, out var rectFrom, out var rectTo
-		);
-		if (Input.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
-			PlayerFacingRight = !PlayerFacingRight;
-		}
-
-		// Preview Hitbox
-		if (CurrentSubMenu == SubMenuType.Height) {
-			var characterRect = player.Rect;
-			var hitboxRect = new IRect();
-			hitboxRect.SetMinMax(
-				Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMin),
-				Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMax),
-				Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMin),
-				Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
+		if (player.Rendering is PoseCharacterRenderer rendering) {
+			var leftPanelRect = windowRect.Shrink(0, windowRect.width - leftPanelWidth, 0, 0);
+			bool flying = CurrentSubMenu.HasValue && CurrentSubMenu.Value == SubMenuType.Wing && rendering.WingID != 0;
+			player.AnimationType = flying ? CharacterAnimationType.Fly : CharacterAnimationType.Idle;
+			player.Movement.LockFacingRight(PlayerFacingRight);
+			FrameworkUtil.DrawPoseCharacterAsUI(
+				leftPanelRect.Shrink(Unify(32)), rendering, Game.GlobalFrame, out var rectFrom, out var rectTo
 			);
-			Renderer.DrawPixel(hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
+			if (Input.MouseLeftButtonDown && leftPanelRect.MouseInside()) {
+				PlayerFacingRight = !PlayerFacingRight;
+			}
+
+			// Preview Hitbox
+			if (CurrentSubMenu == SubMenuType.Height) {
+				var characterRect = player.Rect;
+				var hitboxRect = new IRect();
+				hitboxRect.SetMinMax(
+					Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMin),
+					Util.RemapUnclamped(rectFrom.xMin, rectFrom.xMax, rectTo.xMin, rectTo.xMax, characterRect.xMax),
+					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMin),
+					Util.RemapUnclamped(rectFrom.yMin, rectFrom.yMax, rectTo.yMin, rectTo.yMax, characterRect.yMax)
+				);
+				Renderer.DrawPixel(hitboxRect, new Color32(0, 255, 0, 128), int.MaxValue - 1);
+			}
 		}
 
 		// Editor
@@ -287,7 +289,9 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	protected override void CloseMiniGame () {
 		base.CloseMiniGame();
-		Player.Selecting?.SaveCharacterToConfig();
+		if (Player.Selecting != null && Player.Selecting.Rendering is PoseCharacterRenderer rendering) {
+			rendering.SaveCharacterToConfig();
+		}
 		// Clear Patterns
 		Patterns_Head.Clear();
 		Patterns_BodyHip.Clear();
@@ -478,230 +482,245 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	// Sub Editor
 	private void SubEditor_Head (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		if (PatternMenuUI(
 			panelRect, Patterns_Head,
 			Color32.WHITE,
-			new Int4(player.Head.ID, 0, 0, 0), out int invokingIndex
+			new Int4(rendering.Head.ID, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Head[invokingIndex];
-			player.Head.SetSpriteID(pat.A);
+			rendering.Head.SetSpriteID(pat.A);
 		}
 	}
 
 
 	private void SubEditor_Body (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		if (PatternMenuUI(
 			panelRect, Patterns_BodyHip,
 			Color32.WHITE,
-			new Int4(player.Body.ID, player.Hip.ID, 0, 0), out int invokingIndex
+			new Int4(rendering.Body.ID, rendering.Hip.ID, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_BodyHip[invokingIndex];
-			player.Body.SetSpriteID(pat.A);
-			player.Hip.SetSpriteID(pat.B);
+			rendering.Body.SetSpriteID(pat.A);
+			rendering.Hip.SetSpriteID(pat.B);
 		}
 	}
 
 
 	private void SubEditor_ArmLimb (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		if (PatternMenuUI(
 			panelRect, Patterns_ShoulderArmArmHand,
 			Color32.WHITE,
-			new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
+			new Int4(rendering.ShoulderL.ID, rendering.UpperArmL.ID, rendering.LowerArmL.ID, rendering.HandL.ID),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_ShoulderArmArmHand[invokingIndex];
-			player.ShoulderL.SetSpriteID(pat.A);
-			player.ShoulderR.SetSpriteID(pat.A);
-			player.UpperArmL.SetSpriteID(pat.B);
-			player.LowerArmL.SetSpriteID(pat.C);
-			player.HandL.SetSpriteID(pat.D);
-			player.UpperArmR.SetSpriteID(pat.B);
-			player.LowerArmR.SetSpriteID(pat.C);
-			player.HandR.SetSpriteID(pat.D);
+			rendering.ShoulderL.SetSpriteID(pat.A);
+			rendering.ShoulderR.SetSpriteID(pat.A);
+			rendering.UpperArmL.SetSpriteID(pat.B);
+			rendering.LowerArmL.SetSpriteID(pat.C);
+			rendering.HandL.SetSpriteID(pat.D);
+			rendering.UpperArmR.SetSpriteID(pat.B);
+			rendering.LowerArmR.SetSpriteID(pat.C);
+			rendering.HandR.SetSpriteID(pat.D);
 		}
 	}
 
 
 	private void SubEditor_LegLimb (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		if (PatternMenuUI(
 			panelRect, Patterns_LegLegFoot,
 			Color32.WHITE,
-			new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
+			new Int4(rendering.UpperLegL.ID, rendering.LowerLegL.ID, rendering.FootL.ID, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_LegLegFoot[invokingIndex];
-			player.UpperLegL.SetSpriteID(pat.A);
-			player.LowerLegL.SetSpriteID(pat.B);
-			player.FootL.SetSpriteID(pat.C);
-			player.UpperLegR.SetSpriteID(pat.A);
-			player.LowerLegR.SetSpriteID(pat.B);
-			player.FootR.SetSpriteID(pat.C);
+			rendering.UpperLegL.SetSpriteID(pat.A);
+			rendering.LowerLegL.SetSpriteID(pat.B);
+			rendering.FootL.SetSpriteID(pat.C);
+			rendering.UpperLegR.SetSpriteID(pat.A);
+			rendering.LowerLegR.SetSpriteID(pat.B);
+			rendering.FootR.SetSpriteID(pat.C);
 		}
 	}
 
 
 	private void SubEditor_Face (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Face, Color32.WHITE,
-			new Int4(player.FaceID, 0, 0, 0),
+			new Int4(rendering.FaceID, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Face[invokingIndex];
-			player.FaceID.BaseValue = pat.A;
+			rendering.FaceID.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_Ear (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Ear, Color32.WHITE,
-			new Int4(player.EarID, 0, 0, 0),
+			new Int4(rendering.EarID, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Ear[invokingIndex];
-			player.EarID.BaseValue = pat.A;
+			rendering.EarID.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_Tail (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Tail, Color32.WHITE,
-			new Int4(player.TailID, 0, 0, 0),
+			new Int4(rendering.TailID, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Tail[invokingIndex];
-			player.TailID.BaseValue = pat.A;
+			rendering.TailID.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_Wing (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Wing, Color32.WHITE,
-			new Int4(player.WingID, 0, 0, 0),
+			new Int4(rendering.WingID, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Wing[invokingIndex];
-			player.WingID.BaseValue = pat.A;
+			rendering.WingID.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_Horn (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Horn, Color32.WHITE,
-			new Int4(player.HornID, 0, 0, 0),
+			new Int4(rendering.HornID, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Horn[invokingIndex];
-			player.HornID.BaseValue = pat.A;
+			rendering.HornID.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_SuitHead (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_Head, Color32.WHITE,
-			new Int4(player.SuitHead, 0, 0, 0), out int invokingIndex
+			new Int4(rendering.SuitHead, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_Head[invokingIndex];
-			player.SuitHead.BaseValue = pat.A;
+			rendering.SuitHead.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_SuitBody (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_BodyShoulderArmArm, Color32.WHITE,
-			new Int4(player.SuitBody, 0, 0, 0),
+			new Int4(rendering.SuitBody, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_BodyShoulderArmArm[invokingIndex];
-			player.SuitBody.BaseValue = pat.A;
+			rendering.SuitBody.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_SuitHand (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_Hand, Color32.WHITE,
-			new Int4(player.SuitHand, 0, 0, 0), out int invokingIndex
+			new Int4(rendering.SuitHand, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_Hand[invokingIndex];
-			player.SuitHand.BaseValue = pat.A;
+			rendering.SuitHand.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_SuitLeg (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_HipSkirtLegLeg, Color32.WHITE,
-			new Int4(player.SuitHip, 0, 0, 0),
+			new Int4(rendering.SuitHip, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_HipSkirtLegLeg[invokingIndex];
-			player.SuitHip.BaseValue = pat.A;
+			rendering.SuitHip.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_SuitFoot (IRect panelRect) {
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Suit_Foot, Color32.WHITE,
-			new Int4(player.SuitFoot, 0, 0, 0), out int invokingIndex
+			new Int4(rendering.SuitFoot, 0, 0, 0), out int invokingIndex
 		)) {
 			var pat = Patterns_Suit_Foot[invokingIndex];
-			player.SuitFoot.BaseValue = pat.A;
+			rendering.SuitFoot.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_Hair (IRect panelRect) {
-		var player = Player.Selecting;
+
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Hair,
 			Color32.WHITE,
-			new Int4(player.HairID, 0, 0, 0),
+			new Int4(rendering.HairID, 0, 0, 0),
 			out int invokingIndex
 		)) {
 			var pat = Patterns_Hair[invokingIndex];
-			player.HairID.BaseValue = pat.A;
+			rendering.HairID.BaseValue = pat.A;
 		}
 	}
 
 
 	private void SubEditor_BodyHeight (IRect panelRect) {
-		var player = Player.Selecting;
+
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		panelRect.height -= Unify(16);
-		int newHeight = BodyHeightMenuUI(panelRect, player.CharacterHeight);
-		if (newHeight != player.CharacterHeight) {
-			player.CharacterHeight = newHeight;
+		int newHeight = BodyHeightMenuUI(panelRect, rendering.CharacterHeight);
+		if (newHeight != rendering.CharacterHeight) {
+			rendering.CharacterHeight = newHeight;
 		}
 	}
 
@@ -1080,24 +1099,25 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	private bool TryGetPlayerSelectingRow (SubMenuType type, out int row) {
 		row = 0;
-		var player = Player.Selecting;
+		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return false;
+
 		var patterns = GetPatterns(type);
 		var selectingPattern = type switch {
-			SubMenuType.Head => new Int4(player.Head.ID, 0, 0, 0),
-			SubMenuType.Body => new Int4(player.Body.ID, player.Hip.ID, 0, 0),
-			SubMenuType.ShoulderArmArmHand => new Int4(player.ShoulderL.ID, player.UpperArmL.ID, player.LowerArmL.ID, player.HandL.ID),
-			SubMenuType.LegLegFoot => new Int4(player.UpperLegL.ID, player.LowerLegL.ID, player.FootL.ID, 0),
-			SubMenuType.Face => new Int4(player.FaceID, 0, 0, 0),
-			SubMenuType.Ear => new Int4(player.EarID, 0, 0, 0),
-			SubMenuType.Tail => new Int4(player.TailID, 0, 0, 0),
-			SubMenuType.Wing => new Int4(player.WingID, 0, 0, 0),
-			SubMenuType.Horn => new Int4(player.HornID, 0, 0, 0),
-			SubMenuType.Suit_Head => new Int4(player.SuitHead, 0, 0, 0),
-			SubMenuType.Suit_BodyShoulderArmArm => new Int4(player.SuitBody, 0, 0, 0),
-			SubMenuType.Suit_Hand => new Int4(player.SuitHand, 0, 0, 0),
-			SubMenuType.Suit_HipSkirtLegLeg => new Int4(player.SuitHip, 0, 0, 0),
-			SubMenuType.Suit_Foot => new Int4(player.SuitFoot, 0, 0, 0),
-			SubMenuType.Hair => new Int4(player.HairID, 0, 0, 0),
+			SubMenuType.Head => new Int4(rendering.Head.ID, 0, 0, 0),
+			SubMenuType.Body => new Int4(rendering.Body.ID, rendering.Hip.ID, 0, 0),
+			SubMenuType.ShoulderArmArmHand => new Int4(rendering.ShoulderL.ID, rendering.UpperArmL.ID, rendering.LowerArmL.ID, rendering.HandL.ID),
+			SubMenuType.LegLegFoot => new Int4(rendering.UpperLegL.ID, rendering.LowerLegL.ID, rendering.FootL.ID, 0),
+			SubMenuType.Face => new Int4(rendering.FaceID, 0, 0, 0),
+			SubMenuType.Ear => new Int4(rendering.EarID, 0, 0, 0),
+			SubMenuType.Tail => new Int4(rendering.TailID, 0, 0, 0),
+			SubMenuType.Wing => new Int4(rendering.WingID, 0, 0, 0),
+			SubMenuType.Horn => new Int4(rendering.HornID, 0, 0, 0),
+			SubMenuType.Suit_Head => new Int4(rendering.SuitHead, 0, 0, 0),
+			SubMenuType.Suit_BodyShoulderArmArm => new Int4(rendering.SuitBody, 0, 0, 0),
+			SubMenuType.Suit_Hand => new Int4(rendering.SuitHand, 0, 0, 0),
+			SubMenuType.Suit_HipSkirtLegLeg => new Int4(rendering.SuitHip, 0, 0, 0),
+			SubMenuType.Suit_Foot => new Int4(rendering.SuitFoot, 0, 0, 0),
+			SubMenuType.Hair => new Int4(rendering.HairID, 0, 0, 0),
 			_ => default,
 		};
 		if (patterns == null) return false;

@@ -44,23 +44,9 @@ public abstract class BodyGadget {
 
 		// Fill Default
 		DefaultPool = new Dictionary<int, int>[gadgetTypeCount].FillWithNewValue();
-		foreach (var charType in typeof(PoseCharacter).AllChildClass()) {
+		foreach (var charType in typeof(Character).AllChildClass()) {
 			string charName = charType.AngeName();
 			int charID = charName.AngeHash();
-			// Get Default from Attribute
-			foreach (var att in charType.GetCustomAttributes(typeof(DefaultBodyGadgetAttribute), inherit: false)) {
-				if (att is not DefaultBodyGadgetAttribute bAtt) continue;
-				string gName = bAtt.TargetGadgetName;
-				var gType = bAtt.Type;
-				var dPool = DefaultPool[(int)gType];
-				if (dPool.ContainsKey(charID)) continue;
-				int gID = gName.AngeHash();
-				if (!Pool.ContainsKey(gID)) {
-					if (System.Activator.CreateInstance(modularTypes[(int)gType]) is not BodyGadget temp) continue;
-					Pool.TryAdd(gID, temp);
-				}
-				dPool.Add(charID, gID);
-			}
 			// Get Default from Sheet
 			for (int i = 0; i < gadgetTypeCount; i++) {
 				var gType = modularTypes[i];
@@ -79,7 +65,7 @@ public abstract class BodyGadget {
 	}
 
 
-	public abstract void DrawGadget (PoseCharacter character);
+	public abstract void DrawGadget (PoseCharacterRenderer character);
 
 
 	public virtual bool FillFromSheet (string basicName) {

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace AngeliA;
@@ -13,7 +13,7 @@ public enum CharacterAnimationType {
 }
 
 
-public abstract class PoseCharacter : Character {
+public class PoseCharacterRenderer : CharacterRenderer {
 
 
 
@@ -44,7 +44,7 @@ public abstract class PoseCharacter : Character {
 	private const int POSE_Z_FOOT = 2;
 
 	// Api
-	protected static int PoseRenderingZOffset { get; set; } = 0;
+	public static int PoseRenderingZOffset { get; set; } = 0;
 	public int BasicRootY { get; private set; } = 0;
 	public int PoseRootX { get; set; } = 0;
 	public int PoseRootY { get; set; } = 0;
@@ -98,6 +98,7 @@ public abstract class PoseCharacter : Character {
 
 	// Data
 	private static readonly Dictionary<int, CharacterRenderingConfig> ConfigPool_Rendering = [];
+	private static readonly int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 	private static int RenderingConfigGlobalVersion = -1;
 	private int LocalRenderingConfigVersion = int.MinValue;
 	private readonly FrameBasedInt[] PoseAnimationIDs;
@@ -140,7 +141,7 @@ public abstract class PoseCharacter : Character {
 	internal static void OnSavingSlotChanged () => ReloadRenderingConfigPoolFromFileAndSheet();
 
 
-	public PoseCharacter () {
+	public PoseCharacterRenderer (Character target) : base(target) {
 		// Body Part
 		for (int i = 0; i < BODY_PART_COUNT; i++) {
 			var bodyPart = BodyParts[i] = new BodyPart(
@@ -172,39 +173,37 @@ public abstract class PoseCharacter : Character {
 		PoseAttackIDs = new FrameBasedInt[WEAPON_TYPE_COUNT].FillWithNewValue();
 		// Load Default Ani
 		for (int i = 0; i < ANI_TYPE_COUNT; i++) {
-			PoseAnimation.TryGetPoseAnimationDefaultID(TypeID, (CharacterAnimationType)i, out int id);
+			PoseAnimation.TryGetPoseAnimationDefaultID(target.TypeID, (CharacterAnimationType)i, out int id);
 			PoseAnimationIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_ANIMATION_IDS[i];
 		}
 		for (int i = 0; i < HAND_HELD_COUNT; i++) {
-			PoseAnimation.TryGetHandheldDefaultID(TypeID, (WeaponHandheld)i, out int id);
+			PoseAnimation.TryGetHandheldDefaultID(target.TypeID, (WeaponHandheld)i, out int id);
 			PoseHandheldIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_HANDHELD_IDS[i];
 		}
 		for (int i = 0; i < WEAPON_TYPE_COUNT; i++) {
-			PoseAnimation.TryGetAttackDefaultID(TypeID, (WeaponType)i, out int id);
+			PoseAnimation.TryGetAttackDefaultID(target.TypeID, (WeaponType)i, out int id);
 			PoseAttackIDs[i].BaseValue = id != 0 ? id : FAILBACK_POSE_ATTACK_IDS[i];
 		}
 		SyncRenderingConfigFromPool();
 	}
 
 
-	protected override CharacterMovement CreateNativeMovement () => new PoseCharacterMovement(this);
-
-
 	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		PoseRenderingZOffset = 0;
 		SyncRenderingConfigFromPool();
-		base.BeforeUpdate();
 		// Give Default Wing
-		if (WingID.BaseValue == 0 && Movement.FlyAvailable) {
+		if (WingID.BaseValue == 0 && TargetCharacter.Movement.FlyAvailable) {
 			WingID.Override(
-				Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID,
+				TargetCharacter.Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID,
 				duration: 1
 			);
 		}
 	}
 
 
-	protected override void RenderCharacter () {
+	public override void LateUpdate () {
+		base.LateUpdate();
 		if (!BodyPartsReady) return;
 		int cellIndexStart = Renderer.GetUsedCellCount();
 		ResetPoseToDefault(false);
@@ -241,7 +240,7 @@ public abstract class PoseCharacter : Character {
 		if (ManualPoseAnimationID != 0) {
 			PoseAnimation.PerformAnimationFromPool(ManualPoseAnimationID, this);
 		} else {
-			PoseAnimation.PerformAnimationFromPool(PoseAnimationIDs[(int)AnimationType], this);
+			PoseAnimation.PerformAnimationFromPool(PoseAnimationIDs[(int)TargetCharacter.AnimationType], this);
 		}
 	}
 
@@ -249,15 +248,15 @@ public abstract class PoseCharacter : Character {
 	protected virtual void RenderEquipmentAndInventory () {
 		// Equipment
 		for (int i = 0; i < EquipmentTypeCount; i++) {
-			GetEquippingItem((EquipmentType)i)?.PoseAnimationUpdate_FromEquipment(this);
+			TargetCharacter.GetEquippingItem((EquipmentType)i)?.PoseAnimationUpdate_FromEquipment(TargetCharacter);
 		}
 		// Inventory
-		int invCapacity = GetInventoryCapacity();
-		ResetInventoryUpdate(invCapacity);
+		int invCapacity = TargetCharacter.GetInventoryCapacity();
+		TargetCharacter.ResetInventoryUpdate(invCapacity);
 		for (int i = 0; i < invCapacity; i++) {
-			var item = GetItemFromInventory(i);
-			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-			item.PoseAnimationUpdate_FromInventory(this);
+			var item = TargetCharacter.GetItemFromInventory(i);
+			if (item == null || !item.CheckUpdateAvailable(TargetCharacter.TypeID)) continue;
+			item.PoseAnimationUpdate_FromInventory(TargetCharacter);
 		}
 	}
 
@@ -265,6 +264,7 @@ public abstract class PoseCharacter : Character {
 	// Pipeline
 	private void ResetPoseToDefault (bool motionOnly) {
 
+		var Movement = TargetCharacter.Movement;
 		int bounce = CurrentRenderingBounce;
 		int facingSign = Movement.FacingRight ? 1 : -1;
 
@@ -467,6 +467,10 @@ public abstract class PoseCharacter : Character {
 	private void AnimateForPose () {
 
 		// Movement
+		var Movement = TargetCharacter.Movement;
+		var EquippingWeaponType = TargetCharacter.EquippingWeaponType;
+		var EquippingWeaponHeld = TargetCharacter.EquippingWeaponHeld;
+
 		HandGrabScaleL = Movement.FacingRight ? 1000 : -1000;
 		HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 
@@ -474,7 +478,7 @@ public abstract class PoseCharacter : Character {
 		CalculateBodypartGlobalPosition();
 
 		// Handheld
-		switch (AnimationType) {
+		switch (TargetCharacter.AnimationType) {
 			case var _ when EquippingWeaponType == WeaponType.Block:
 			case CharacterAnimationType.Idle:
 			case CharacterAnimationType.Walk:
@@ -502,14 +506,14 @@ public abstract class PoseCharacter : Character {
 					EquippingWeaponHeld == WeaponHandheld.Shooting ||
 					EquippingWeaponHeld == WeaponHandheld.Pole
 				) {
-					EquippingWeaponHeld = WeaponHandheld.SingleHanded;
+					TargetCharacter.EquippingWeaponHeld = WeaponHandheld.SingleHanded;
 				}
 				break;
 		}
 
 		// Attacking
-		if (Attackness.IsAttacking) {
-			if (CurrentAttackSpeedRate == 0 && IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
+		if (TargetCharacter.Attackness.IsAttacking) {
+			if (TargetCharacter.CurrentAttackSpeedRate == 0 && TargetCharacter.IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
 			HandGrabScaleL = HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
 			PoseAnimation.PerformAnimationFromPool(PoseAttackIDs[(int)EquippingWeaponType], this);
@@ -528,7 +532,7 @@ public abstract class PoseCharacter : Character {
 		HeadTwist = HeadTwist.Clamp(-1000, 1000);
 		Head.Width = Head.Width.Sign() * (Head.Width.Abs() - (Head.Width * HeadTwist).Abs() / 2000);
 		Head.X += Head.Width.Abs() * HeadTwist / 2000;
-		Head.GlobalX = X + PoseRootX + Head.X;
+		Head.GlobalX = TargetCharacter.X + PoseRootX + Head.X;
 	}
 
 
@@ -559,16 +563,16 @@ public abstract class PoseCharacter : Character {
 			if (bodyPart == Head && Renderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 				Renderer.Draw(
 					headSprite,
-					X + PoseRootX + bodyPart.X,
-					Y + PoseRootY + bodyPart.Y,
+					TargetCharacter.X + PoseRootX + bodyPart.X,
+					TargetCharacter.Y + PoseRootY + bodyPart.Y,
 					bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
 					bodyPart.Tint, bodyPart.Z
 				);
 			} else {
 				Renderer.Draw(
 					bodyPart.ID,
-					X + PoseRootX + bodyPart.X,
-					Y + PoseRootY + bodyPart.Y,
+					TargetCharacter.X + PoseRootX + bodyPart.X,
+					TargetCharacter.Y + PoseRootY + bodyPart.Y,
 					bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
 					bodyPart.Tint, bodyPart.Z
 				);
@@ -645,7 +649,7 @@ public abstract class PoseCharacter : Character {
 		RenderingConfigGlobalVersion++;
 		ConfigPool_Rendering.Clear();
 		string renderRoot = Universe.BuiltIn.SlotCharacterRenderingConfigRoot;
-		foreach (var type in typeof(PoseCharacter).AllChildClass()) {
+		foreach (var type in typeof(Character).AllChildClass()) {
 			int typeID = type.AngeHash();
 			// Load From File
 			string path = Util.CombinePaths(renderRoot, $"{type.Name}.json");
@@ -663,7 +667,7 @@ public abstract class PoseCharacter : Character {
 
 	public void SaveCharacterToConfig () {
 
-		if (!ConfigPool_Rendering.TryGetValue(TypeID, out var config)) return;
+		if (!ConfigPool_Rendering.TryGetValue(TargetCharacter.TypeID, out var config)) return;
 
 		config.CharacterHeight = CharacterHeight;
 
@@ -707,7 +711,7 @@ public abstract class PoseCharacter : Character {
 	public void SyncRenderingConfigFromPool () {
 		if (LocalRenderingConfigVersion == RenderingConfigGlobalVersion) return;
 		LocalRenderingConfigVersion = RenderingConfigGlobalVersion;
-		if (ConfigPool_Rendering.TryGetValue(TypeID, out var rConfig)) {
+		if (ConfigPool_Rendering.TryGetValue(TargetCharacter.TypeID, out var rConfig)) {
 			rConfig.LoadToCharacter(this);
 		} else {
 			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
@@ -719,6 +723,8 @@ public abstract class PoseCharacter : Character {
 
 	// Animation
 	public void ResetAllLimbsPosition () {
+
+		var Movement = TargetCharacter.Movement;
 
 		int targetUnitHeight = CharacterHeight * A2G / CM_PER_PX - Head.SizeY;
 		int defaultCharHeight = Body.SizeY + Hip.SizeY + UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
@@ -799,8 +805,8 @@ public abstract class PoseCharacter : Character {
 
 	private void CalculateBodypartGlobalPosition () {
 		foreach (var part in BodyParts) {
-			part.GlobalX = X + PoseRootX + part.X;
-			part.GlobalY = Y + PoseRootY + part.Y;
+			part.GlobalX = TargetCharacter.X + PoseRootX + part.X;
+			part.GlobalY = TargetCharacter.Y + PoseRootY + part.Y;
 		}
 	}
 

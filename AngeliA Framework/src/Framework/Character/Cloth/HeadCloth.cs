@@ -28,28 +28,28 @@ public abstract class HeadCloth : Cloth {
 		return SpriteLoaded;
 	}
 
-	public static void DrawClothFromPool (PoseCharacter character) {
-		if (character.SuitHead != 0 && character.CharacterState != CharacterState.Sleep && Pool.TryGetValue(character.SuitHead, out var cloth)) {
-			cloth.DrawCloth(character);
+	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.SuitHead != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && Pool.TryGetValue(renderer.SuitHead, out var cloth)) {
+			cloth.DrawCloth(renderer);
 		}
 	}
 
-	public override void DrawCloth (PoseCharacter character) {
+	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForHead(character, SpriteID, Front, PixelShiftForLeft);
+		DrawClothForHead(renderer, SpriteID, Front, PixelShiftForLeft);
 	}
 
-	public static void DrawClothForHead (PoseCharacter character, int spriteOrGroupID, HatFrontMode frontMode, bool pixelShiftForLeft) {
+	public static void DrawClothForHead (PoseCharacterRenderer renderer, int spriteOrGroupID, HatFrontMode frontMode, bool pixelShiftForLeft) {
 
-		var head = character.Head;
+		var head = renderer.Head;
 		if (spriteOrGroupID == 0 || head.IsFullCovered) return;
 		bool hideHead = false;
 		bool showEar = false;
 
 		// Width Amount
 		int widthAmount = 1000;
-		if (character.HeadTwist != 0) widthAmount -= character.HeadTwist.Abs() / 2;
+		if (renderer.HeadTwist != 0) widthAmount -= renderer.HeadTwist.Abs() / 2;
 		if (head.Height < 0) widthAmount = -widthAmount;
 
 		// Draw
@@ -100,21 +100,21 @@ public abstract class HeadCloth : Cloth {
 		}
 
 		// Head Rotate
-		if (cells != null && character.Head.Rotation != 0) {
-			int offsetY = character.Head.Height.Abs() * character.Head.Rotation.Abs() / 360;
+		if (cells != null && renderer.Head.Rotation != 0) {
+			int offsetY = renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
 			foreach (var cell in cells) {
-				cell.RotateAround(character.Head.Rotation, character.Body.GlobalX, character.Body.GlobalY + character.Body.Height);
+				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
 				cell.Y -= offsetY;
 			}
 		}
 
 		// Show/Hide Limb
 		if (!showEar) {
-			character.EarID.Override(0, 1, 4096);
+			renderer.EarID.Override(0, 1, 4096);
 		}
 		if (hideHead) {
-			character.HairID.Override(0, 1, 4096);
-			character.Head.Covered = BodyPart.CoverMode.FullCovered;
+			renderer.HairID.Override(0, 1, 4096);
+			renderer.Head.Covered = BodyPart.CoverMode.FullCovered;
 		}
 
 	}

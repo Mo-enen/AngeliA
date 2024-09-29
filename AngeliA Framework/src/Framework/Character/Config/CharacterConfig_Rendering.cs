@@ -37,43 +37,43 @@ public class CharacterRenderingConfig {
 
 
 	// API
-	public void LoadToCharacter (PoseCharacter character) {
+	public void LoadToCharacter (PoseCharacterRenderer renderer) {
 
-		character.CharacterHeight = CharacterHeight;
+		renderer.CharacterHeight = CharacterHeight;
 
 		// Body Part
-		character.Head.SetData(Head);
-		character.Body.SetData(Body);
-		character.Hip.SetData(Hip);
-		character.ShoulderL.SetData(Shoulder);
-		character.ShoulderR.SetData(Shoulder);
-		character.UpperArmL.SetData(UpperArm);
-		character.UpperArmR.SetData(UpperArm);
-		character.LowerArmL.SetData(LowerArm);
-		character.LowerArmR.SetData(LowerArm);
-		character.HandL.SetData(Hand);
-		character.HandR.SetData(Hand);
-		character.UpperLegL.SetData(UpperLeg);
-		character.UpperLegR.SetData(UpperLeg);
-		character.LowerLegL.SetData(LowerLeg);
-		character.LowerLegR.SetData(LowerLeg);
-		character.FootL.SetData(Foot);
-		character.FootR.SetData(Foot);
+		renderer.Head.SetData(Head);
+		renderer.Body.SetData(Body);
+		renderer.Hip.SetData(Hip);
+		renderer.ShoulderL.SetData(Shoulder);
+		renderer.ShoulderR.SetData(Shoulder);
+		renderer.UpperArmL.SetData(UpperArm);
+		renderer.UpperArmR.SetData(UpperArm);
+		renderer.LowerArmL.SetData(LowerArm);
+		renderer.LowerArmR.SetData(LowerArm);
+		renderer.HandL.SetData(Hand);
+		renderer.HandR.SetData(Hand);
+		renderer.UpperLegL.SetData(UpperLeg);
+		renderer.UpperLegR.SetData(UpperLeg);
+		renderer.LowerLegL.SetData(LowerLeg);
+		renderer.LowerLegR.SetData(LowerLeg);
+		renderer.FootL.SetData(Foot);
+		renderer.FootR.SetData(Foot);
 
 		// Gadget
-		character.FaceID.BaseValue = Face;
-		character.HairID.BaseValue = Hair;
-		character.EarID.BaseValue = Ear;
-		character.TailID.BaseValue = Tail;
-		character.WingID.BaseValue = Wing;
-		character.HornID.BaseValue = Horn;
+		renderer.FaceID.BaseValue = Face;
+		renderer.HairID.BaseValue = Hair;
+		renderer.EarID.BaseValue = Ear;
+		renderer.TailID.BaseValue = Tail;
+		renderer.WingID.BaseValue = Wing;
+		renderer.HornID.BaseValue = Horn;
 
 		// Suit
-		character.SuitHead.BaseValue = SuitHead;
-		character.SuitBody.BaseValue = SuitBody;
-		character.SuitHip.BaseValue = SuitHip;
-		character.SuitHand.BaseValue = SuitHand;
-		character.SuitFoot.BaseValue = SuitFoot;
+		renderer.SuitHead.BaseValue = SuitHead;
+		renderer.SuitBody.BaseValue = SuitBody;
+		renderer.SuitHip.BaseValue = SuitHip;
+		renderer.SuitHand.BaseValue = SuitHand;
+		renderer.SuitFoot.BaseValue = SuitFoot;
 
 	}
 

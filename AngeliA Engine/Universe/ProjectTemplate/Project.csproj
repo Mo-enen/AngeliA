@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		
+
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<OutputType>Library</OutputType>
 		<PlatformTarget>AnyCPU</PlatformTarget>
@@ -27,35 +27,45 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		
+
 		<OutputPath>Temp</OutputPath>
 		<PublishDir>Publish</PublishDir>
-		
+
 	</PropertyGroup>
 
-	
+
 	<!--Debug Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugType>portable</DebugType>
 	</PropertyGroup>
-	
+
 	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Reference Include="AngeliA Framework.dll">
-			<HintPath>lib\Debug\AngeliA Framework.dll</HintPath>
-		</Reference>
+		<Reference Include="lib\Debug\*.dll" />
 	</ItemGroup>
-	
-	
+
 	<!--Release Only-->
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Reference Include="AngeliA Framework.dll">
-			<HintPath>lib\Release\AngeliA Framework.dll</HintPath>
-		</Reference>
+		<Reference Include="lib\Release\*.dll" />
 	</ItemGroup>
 
-			
+	
+	<!--Remove-->
+	<ItemGroup>
+		<Compile Remove="Build\**" />
+		<EmbeddedResource Remove="Build\**" />
+		<None Remove="Build\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove=".gitattributes" />
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+		<None Remove="Icon.ico" />
+	</ItemGroup>
+
+
 </Project>

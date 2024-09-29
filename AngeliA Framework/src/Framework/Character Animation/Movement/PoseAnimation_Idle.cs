@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Idle : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		const int LOOP = 128;
 		int currentFrame = (CurrentAnimationFrame.UMod(128) / 16) * (LOOP / 8);
@@ -53,8 +53,8 @@ public class PoseAnimation_Idle : PoseAnimation {
 		LowerLegR.Height += 1;
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 
 	}
 }

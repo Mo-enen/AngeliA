@@ -1,16 +1,16 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_SwimMove : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
-		int loop = Util.Max((1200 / Target.Movement.SwimSpeed.FinalValue.GreaterOrEquel(1)).Clamp(1, 128) / 4 * 4, 4);
+		int loop = Util.Max((1200 / Movement.SwimSpeed.FinalValue.GreaterOrEquel(1)).Clamp(1, 128) / 4 * 4, 4);
 		int frame = CurrentAnimationFrame.UMod(loop) / (loop / 4);
 
 		int frame0121 = frame == 3 ? 1 : frame;
 		int easeArm = frame * A2G;
 
-		Target.BodyTwist = FacingRight ? 0 : 1000;
+		Rendering.BodyTwist = FacingRight ? 0 : 1000;
 
 		Head.X = FacingSign * A2G;
 
@@ -73,7 +73,7 @@ public class PoseAnimation_SwimMove : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 }

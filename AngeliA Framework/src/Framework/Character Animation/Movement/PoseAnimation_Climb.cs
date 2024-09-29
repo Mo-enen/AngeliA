@@ -1,17 +1,17 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Climb : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
-		int frameRate = Util.Max(560 / Target.Movement.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
+		int frameRate = Util.Max(560 / Movement.ClimbSpeedY.FinalValue.Clamp(1, 1024) / 8, 1);
 		int aFrame = CurrentAnimationFrame.UMod(frameRate * 10 - 1) / frameRate;
 
 		int delayFrame = (aFrame + 1) % 10;
 		if (aFrame >= 5) aFrame = 8 - aFrame;
 		if (delayFrame >= 5) delayFrame = 8 - delayFrame;
 
-		Target.PoseRootY -= (aFrame - 2).Abs() * A2G;
+		Rendering.PoseRootY -= (aFrame - 2).Abs() * A2G;
 
 		// Arm
 		UpperArmL.LimbRotate(((3 - delayFrame) * -35 + 135).Clamp(45, 135), 1000);
@@ -36,9 +36,9 @@ public class PoseAnimation_Climb : PoseAnimation {
 		FootR.LimbRotate(1);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + 90;
-		Target.HandGrabScaleL = 1000;
-		Target.HandGrabScaleR = 1000;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
+		Rendering.HandGrabScaleL = 1000;
+		Rendering.HandGrabScaleR = 1000;
 	}
 }

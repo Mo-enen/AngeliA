@@ -1,15 +1,15 @@
 ﻿namespace AngeliA;
 
 public class PoseHandheld_Single : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		if (Attackness.IsChargingAttack) {
 			PoseAttack_Wave.SingleHanded_SmashDown();
 			return;
 		}
 		if (Target.EquippingWeaponType == WeaponType.Block) {
-			Target.HandGrabScaleL = Target.HandGrabScaleR = 618;
-			Target.HandGrabRotationL = Target.HandGrabRotationR = 0;
+			Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = 618;
+			Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = 0;
 		}
 	}
 }

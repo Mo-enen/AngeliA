@@ -3,12 +3,12 @@
 public class PoseAnimation_Walk : PoseAnimation {
 	private static readonly float[] EASE = [0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f,];
 	private static readonly int[,] ROTS = { { -20, 20, 25, -25, 0, 0, }, { -17, 17, 21, -25, 0, 0, }, { -15, 15, 17, -27, 30, 20, }, { -7, 7, 17, -15, 45, 10, }, { 0, 0, -5, -5, 60, 0, }, { 7, -7, -5, 7, 75, 0, }, { 15, -15, -27, 17, 90, 0, }, { 17, -17, -26, 21, 45, 0, }, { 20, -20, -25, 25, 0, 0, }, { 17, -17, -26, 21, 10, 15, }, { 15, -15, -27, 17, 20, 30, }, { 7, -7, -15, 7, 10, 45, }, { 0, 0, -5, -5, 0, 60, }, { -7, 7, 5, -10, 0, 75, }, { -15, 15, 17, -27, 0, 90, }, { -17, 17, 21, -26, 0, 45, }, };
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		const int FRAME_LENGTH = 16;
 
-		int loop = Util.Max(FRAME_LENGTH * 50 / Target.Movement.WalkSpeed.FinalValue.Abs().Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
+		int loop = Util.Max(FRAME_LENGTH * 50 / Movement.WalkSpeed.FinalValue.Abs().Clamp(1, 100) / FRAME_LENGTH * FRAME_LENGTH, 1);
 		int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 		int fixedAnimationFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop);
 		int currentFrame = fixedAnimationFrame / frameRate * frameRate;
@@ -21,7 +21,7 @@ public class PoseAnimation_Walk : PoseAnimation {
 			FacingRight ? ease : 1f - ease
 		);
 
-		Target.PoseRootY += (int)(easeDouble * A2G);
+		Rendering.PoseRootY += (int)(easeDouble * A2G);
 
 		// Arm
 		UpperArmL.LimbRotate(ROTS[arrFrame, 0] * FacingSign);
@@ -47,7 +47,7 @@ public class PoseAnimation_Walk : PoseAnimation {
 		FootR.LimbRotate(FacingRight ? 0 : 1);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 }

@@ -9,7 +9,7 @@ namespace AngeliA;
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.ExcludeInMapEditor]
-public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
+public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 
@@ -112,7 +112,9 @@ public abstract class Summon : SheetCharacter, IDamageReceiver, IActionTarget {
 		base.LateUpdate();
 
 		// Highlight
-		(this as IActionTarget).BlinkIfHighlight(RenderedCell);
+		if (Rendering is SheetCharacterRenderer sRendering) {
+			(this as IActionTarget).BlinkIfHighlight(sRendering.RenderedCell);
+		}
 
 	}
 

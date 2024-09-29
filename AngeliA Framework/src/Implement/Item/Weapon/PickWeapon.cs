@@ -29,7 +29,7 @@ public abstract class PickWeapon : Weapon {
 	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
 
 		if (
-			holder is not PoseCharacter pHolder ||
+			holder is not Character pHolder ||
 			!pHolder.IsAttackAllowedByMovement() ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||

@@ -146,7 +146,7 @@ public static class Renderer {
 		if (date > MainSheetFileModifyDate) {
 			LoadMainSheet();
 			Util.DeleteFolder(Universe.BuiltIn.SlotCharacterRenderingConfigRoot);
-			PoseCharacter.ReloadRenderingConfigPoolFromFileAndSheet();
+			PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet();
 		}
 #endif
 	}

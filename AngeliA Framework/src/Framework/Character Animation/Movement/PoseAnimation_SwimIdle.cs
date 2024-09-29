@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_SwimIdle : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		int frame0121 = CurrentAnimationFrame.UMod(64) / 16;
 
@@ -41,7 +41,7 @@ public class PoseAnimation_SwimIdle : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 }

@@ -88,7 +88,7 @@ public partial class PixelEditor : WindowUI {
 	public static PixelEditor Instance { get; private set; }
 	public int SheetIndex { get; private set; } = -1;
 	protected override bool BlockEvent => true;
-	public override string DefaultName => "Artwork";
+	public override string DefaultWindowName => "Artwork";
 
 	// Data
 	private readonly List<SpriteData> StagedSprites = [];

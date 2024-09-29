@@ -1,10 +1,10 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Crash : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
-		Target.PoseRootY = 0;
+		Rendering.PoseRootY = 0;
 
 		Body.Height = Body.SizeY / 4;
 

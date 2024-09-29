@@ -1,15 +1,15 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_GrabSide : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
-		int loop = Util.Max((700 / Target.Movement.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
+		int loop = Util.Max((700 / Movement.GrabMoveSpeedY.FinalValue.Clamp(1, 1024)) / 4 * 4, 1);
 		int arrFrame = (CurrentAnimationFrame.UMod(loop) / (loop / 4)) % 4;// 0123
 		int pingpong = arrFrame == 3 ? 1 : arrFrame; // 0121
 		int bodyShift = FacingSign * (Body.Width.Abs() / 2 - A2G * 2);
 
-		Target.PoseRootY -= pingpong * A2G;
+		Rendering.PoseRootY -= pingpong * A2G;
 
 		Body.X += bodyShift;
 
@@ -49,7 +49,7 @@ public class PoseAnimation_GrabSide : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 }

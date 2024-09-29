@@ -2,10 +2,10 @@
 
 public class PoseAttack_Ranged : PoseAnimation {
 
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
-		if (character.EquippingWeaponHeld == WeaponHandheld.Bow) {
+		if (renderer.TargetCharacter.EquippingWeaponHeld == WeaponHandheld.Bow) {
 			Bow();
 		} else {
 			Shooting();
@@ -134,8 +134,8 @@ public class PoseAttack_Ranged : PoseAnimation {
 		HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR = grabRot;
-		Target.HandGrabScaleL = Target.HandGrabScaleR = grabScl;
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = grabRot;
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = grabScl;
 
 	}
 
@@ -260,9 +260,9 @@ public class PoseAttack_Ranged : PoseAnimation {
 		HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR = grabRot;
-		Target.HandGrabScaleL = Target.HandGrabScaleR = grabScl;
-		Target.HandGrabAttackTwistL = Target.HandGrabAttackTwistR = 1000;
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = grabRot;
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = grabScl;
+		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR = 1000;
 
 		// Leg
 		AttackLegShake(ease01);

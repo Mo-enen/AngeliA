@@ -62,7 +62,8 @@ public class EngineSetting {
 	[EngineSetting("Hotkey", "Open Language Editor")] public static readonly SavingHotkey Hotkey_Window_Language = new("Hotkey.Window.Language", new Hotkey(KeyboardKey.F3), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Open Console")] public static readonly SavingHotkey Hotkey_Window_Console = new("Hotkey.Window.Console", new Hotkey(KeyboardKey.F4), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Open Project Editor")] public static readonly SavingHotkey Hotkey_Window_Project = new("Hotkey.Window.Project", new Hotkey(KeyboardKey.F5), SavingLocation.Global);
-	[EngineSetting("Hotkey", "Open Setting")] public static readonly SavingHotkey Hotkey_Window_Setting = new("Hotkey.Window.Setting", new Hotkey(KeyboardKey.F6), SavingLocation.Global);
+	[EngineSetting("Hotkey", "Open Package Manager")] public static readonly SavingHotkey Hotkey_Window_Package = new("Hotkey.Window.Package", new Hotkey(KeyboardKey.F6), SavingLocation.Global);
+	[EngineSetting("Hotkey", "Open Setting")] public static readonly SavingHotkey Hotkey_Window_Setting = new("Hotkey.Window.Setting", new Hotkey(KeyboardKey.F7), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Rect Tool")] public static readonly SavingHotkey Hotkey_PixTool_Rect = new("Hotkey.Pix.Rect", new Hotkey(KeyboardKey.U), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Circle Tool")] public static readonly SavingHotkey Hotkey_PixTool_Circle = new("Hotkey.Pix.Circle", new Hotkey(KeyboardKey.C), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Line Tool")] public static readonly SavingHotkey Hotkey_PixTool_Line = new("Hotkey.Pix.Line", new Hotkey(KeyboardKey.L), SavingLocation.Global);

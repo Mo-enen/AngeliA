@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class BodyPart {
+public class BodyPart (BodyPart parent, bool useLimbFlip) {
 
 
 	// Const
-	private static readonly System.Type BASIC_CHARACTER_TYPE = typeof(PoseCharacter);
+	private static readonly System.Type BASIC_CHARACTER_TYPE = typeof(Character);
 
 	// SUB
 	public enum CoverMode { None, Covered, FullCovered }
@@ -21,8 +21,8 @@ public class BodyPart {
 	public int SizeX { get; private set; } = Const.HALF;
 	public int SizeY { get; private set; } = Const.HALF;
 	public int FlexableSizeY { get; set; } = Const.HALF;
-	public bool UseLimbFlip { get; init; } = false;
-	public BodyPart LimbParent { get; init; } = null;
+	public bool UseLimbFlip { get; init; } = useLimbFlip;
+	public BodyPart LimbParent { get; init; } = parent;
 	public bool IsFullCovered => Covered == CoverMode.FullCovered;
 	public int FacingSign => Width.Sign();
 	public bool FacingRight => Width > 0;
@@ -61,12 +61,6 @@ public class BodyPart {
 			if (type == null || type == BASIC_CHARACTER_TYPE) break;
 		}
 		return false;
-	}
-
-
-	public BodyPart (BodyPart parent, bool useLimbFlip) {
-		LimbParent = parent;
-		UseLimbFlip = useLimbFlip;
 	}
 
 

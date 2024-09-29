@@ -50,7 +50,7 @@ public partial class LanguageEditor : WindowUI {
 	// Api
 	public static LanguageEditor Instance { get; private set; }
 	public string LanguageRoot { get; private set; } = "";
-	public override string DefaultName => "Language";
+	public override string DefaultWindowName => "Language";
 
 	// Data
 	private readonly List<string> Languages = [];

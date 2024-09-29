@@ -1,11 +1,11 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Sleep : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		bool alt = CurrentAnimationFrame.UMod(120) >= 60;
 
-		Target.PoseRootY = 0;
+		Rendering.PoseRootY = 0;
 
 		Body.Height = Body.SizeY / 4;
 

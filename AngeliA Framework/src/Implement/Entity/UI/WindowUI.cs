@@ -11,7 +11,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	// Api
 	public virtual IRect BackgroundRect => Rect;
-	public virtual string DefaultName => "";
+	public virtual string DefaultWindowName => "";
 	public static IRect WindowRect { get; private set; }
 	public bool IsDirty { get; private set; } = false;
 	public IRect RequiringTooltipRect { get; private set; } = default;

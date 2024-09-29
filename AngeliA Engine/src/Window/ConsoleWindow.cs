@@ -44,7 +44,7 @@ public class ConsoleWindow : WindowUI {
 	public bool HaveRunningRigGame { get; set; } = false;
 	public bool HasCompileError => CompileErrorLines.Length > 0;
 	public sbyte RequireCodeAnalysis { get; set; } = 0;
-	public override string DefaultName => "Console";
+	public override string DefaultWindowName => "Console";
 
 	// Data
 	private readonly Pipe<Line> Lines = new(512);

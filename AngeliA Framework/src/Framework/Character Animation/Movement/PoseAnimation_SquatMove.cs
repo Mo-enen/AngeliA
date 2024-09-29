@@ -2,12 +2,12 @@
 
 public class PoseAnimation_SquatMove : PoseAnimation {
 	private static readonly float[] EASE = [0f, 0.03125f, 0.125f, 0.28125f, 0.5f, 0.71875f, 0.875f, 0.96875f, 1f, 0.96875f, 0.875f, 0.71875f, 0.5f, 0.28125f, 0.125f, 0.03125f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f, 0f, 0.04081633f, 0.1632653f, 0.3673469f, 0.6326531f, 0.8367347f, 0.9591837f, 1f,];
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		const int FRAME_LENGTH = 16;
 
-		int loop = Util.Max(600 / Target.Movement.SquatSpeed.FinalValue.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
+		int loop = Util.Max(600 / Movement.SquatSpeed.FinalValue.Clamp(1, 256) / FRAME_LENGTH * FRAME_LENGTH, 1);
 		int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 		int arrFrame = (CurrentAnimationFrame.UMod(loop) / frameRate) % FRAME_LENGTH;
 		arrFrame = (arrFrame + 4).UMod(FRAME_LENGTH);
@@ -15,7 +15,7 @@ public class PoseAnimation_SquatMove : PoseAnimation {
 		float ease = EASE[arrFrame];
 		int easeA2G = (int)(ease * A2G);
 		int easeA2G2 = (int)(ease * 2 * A2G);
-		int above = Target.PoseRootY = Target.PoseRootY / 2 + easeA2G;
+		int above = Rendering.PoseRootY = Rendering.PoseRootY / 2 + easeA2G;
 
 		Body.Height = Body.SizeY / 2 + easeA2G;
 		Head.Y = Body.Y + Body.Height;
@@ -68,10 +68,10 @@ public class PoseAnimation_SquatMove : PoseAnimation {
 		FootR.Y = FootR.Height - above;
 
 		// Final
-		Target.HandGrabRotationL =
+		Rendering.HandGrabRotationL =
 			Target.EquippingWeaponHeld == WeaponHandheld.OneOnEachHand ? FacingRight ? 80 : -100 :
 			FacingSign * 100;
-		Target.HandGrabRotationR =
+		Rendering.HandGrabRotationR =
 			Target.EquippingWeaponHeld == WeaponHandheld.OneOnEachHand ? FacingRight ? 100 : -80 :
 			FacingSign * 100;
 

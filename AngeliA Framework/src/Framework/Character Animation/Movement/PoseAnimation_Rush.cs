@@ -1,14 +1,14 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Rush : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		int aFrame = CurrentAnimationFrame.Abs() / 3;
 		bool alt = aFrame % 2 == 0;
 
-		Target.PoseRootY -= aFrame.Clamp(0, 2) * A2G - A2G * 2;
-		Target.BodyTwist = -FacingSign * 1000;
+		Rendering.PoseRootY -= aFrame.Clamp(0, 2) * A2G - A2G * 2;
+		Rendering.BodyTwist = -FacingSign * 1000;
 		Head.Height -= A2G;
 		Body.X -= FacingSign * A2G / 2;
 
@@ -76,7 +76,7 @@ public class PoseAnimation_Rush : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 	}
 }

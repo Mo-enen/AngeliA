@@ -55,7 +55,7 @@ public class SettingWindow : WindowUI {
 	public static SettingWindow Instance { get; private set; }
 	public string RequireChangeThemePath { get; set; } = null;
 	public bool MapSettingChanged { get; set; } = false;
-	public override string DefaultName => "Setting";
+	public override string DefaultWindowName => "Setting";
 
 	// Data
 	private static readonly List<SettingGroup> Groups = [];

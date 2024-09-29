@@ -7,16 +7,16 @@ public class PoseAnimation_Ride : PoseAnimation {
 
 	public static readonly int TYPE_ID = typeof(PoseAnimation_Ride).AngeHash();
 
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		Ride();
 	}
 
 	private static void Ride () {
 
 		int bodyDeltaY = 2 * A2G;
-		int velX = Target.Movement.Target.VelocityX;
-		Target.PoseRootY = -bodyDeltaY;
+		int velX = Movement.Target.VelocityX;
+		Rendering.PoseRootY = -bodyDeltaY;
 		Body.Y -= bodyDeltaY;
 		Hip.Y -= bodyDeltaY;
 		UpperLegL.Y -= bodyDeltaY / 2;
@@ -51,8 +51,8 @@ public class PoseAnimation_Ride : PoseAnimation {
 		FootR.LimbRotate(0);
 
 		// Grab Rot
-		Target.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 
 		// Z
 		Body.Z = 1;

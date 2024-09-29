@@ -1,16 +1,16 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Dash : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		int aFrame = CurrentAnimationFrame.UMod(8) / 4;
 		bool alt = aFrame == 1;
 
 		HandL.Z = HandR.Z = POSE_Z_HAND;
 
-		Target.PoseRootY = 0;
-		Target.BodyTwist = -1000;
+		Rendering.PoseRootY = 0;
+		Rendering.BodyTwist = -1000;
 
 		Head.X += FacingSign * A2G;
 		Body.X += FacingSign * 2 * A2G;
@@ -87,7 +87,7 @@ public class PoseAnimation_Dash : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = FacingRight ? 90 : 0;
-		Target.HandGrabRotationR = FacingRight ? 0 : -90;
+		Rendering.HandGrabRotationL = FacingRight ? 90 : 0;
+		Rendering.HandGrabRotationR = FacingRight ? 0 : -90;
 	}
 }

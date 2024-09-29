@@ -50,6 +50,7 @@ public static class EngineUtil {
 	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
 	public static string EntryProjectCsproj => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release", "AngeliA Entry for Publish.csproj");
+	public static string PackagesRoot => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Packages");
 	public static bool BuildingProjectInBackground => BuildProjectTask != null && BuildProjectTask.Status == TaskStatus.Running;
 	public static long LastBackgroundBuildModifyDate { get; private set; }
 	public static int LastBackgroundBuildReturnCode { get; private set; }
@@ -634,7 +635,7 @@ public static class EngineUtil {
 
 		// Dependencies
 		CacheBuilder.Append(" --no-dependencies");
-		
+
 		// Prop
 		if (!string.IsNullOrWhiteSpace(assemblyName)) {
 			CacheBuilder.Append($" -p:AssemblyName=\"{assemblyName}\"");

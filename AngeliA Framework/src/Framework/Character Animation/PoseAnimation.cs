@@ -27,7 +27,8 @@ public abstract class PoseAnimation {
 	private static readonly Dictionary<int, int>[] AttackDefaultPool = new Dictionary<int, int>[typeof(WeaponType).EnumLength()].FillWithNewValue();
 
 	// Cache
-	protected static PoseCharacter Target = null;
+	protected static Character Target = null;
+	protected static PoseCharacterRenderer Rendering = null;
 	protected static CharacterMovement Movement;
 	protected static CharacterAttackness Attackness;
 	protected static BodyPart Head = null;
@@ -107,9 +108,9 @@ public abstract class PoseAnimation {
 	public static bool TryGetAttackDefaultID (int characterID, WeaponType type, out int animationID) => AttackDefaultPool[(int)type].TryGetValue(characterID, out animationID);
 
 
-	public static void PerformAnimationFromPool (int id, PoseCharacter character) {
+	public static void PerformAnimationFromPool (int id, PoseCharacterRenderer renderer) {
 		if (Pool.TryGetValue(id, out var result)) {
-			PerformAnimation(result, character);
+			PerformAnimation(result, renderer);
 		} else {
 			// Valid Head Position
 			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
@@ -118,8 +119,8 @@ public abstract class PoseAnimation {
 	}
 
 
-	public static void PerformAnimation (PoseAnimation animation, PoseCharacter character) {
-		animation.Animate(character);
+	public static void PerformAnimation (PoseAnimation animation, PoseCharacterRenderer renderer) {
+		animation.Animate(renderer);
 		if (animation.ValidHeadPosition) {
 			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
 			Body.Height = Body.Height.GreaterOrEquel(1);
@@ -127,37 +128,38 @@ public abstract class PoseAnimation {
 	}
 
 
-	public virtual void Animate (PoseCharacter character) {
-		Target = character;
-		Attackness = character.Attackness;
-		Movement = character.Movement;
-		CurrentAnimationFrame = character.CurrentAnimationFrame;
-		Head = character.Head;
-		Body = character.Body;
-		Hip = character.Hip;
-		ShoulderL = character.ShoulderL;
-		ShoulderR = character.ShoulderR;
-		UpperArmL = character.UpperArmL;
-		UpperArmR = character.UpperArmR;
-		LowerArmL = character.LowerArmL;
-		LowerArmR = character.LowerArmR;
-		HandL = character.HandL;
-		HandR = character.HandR;
-		UpperLegL = character.UpperLegL;
-		UpperLegR = character.UpperLegR;
-		LowerLegL = character.LowerLegL;
-		LowerLegR = character.LowerLegR;
-		FootL = character.FootL;
-		FootR = character.FootR;
-		FacingRight = character.Movement.FacingRight;
-		FacingFront = character.Movement.FacingFront;
-		AnimationType = character.AnimationType;
+	public virtual void Animate (PoseCharacterRenderer renderer) {
+		Target = renderer.TargetCharacter;
+		Rendering = renderer;
+		Attackness = renderer.TargetCharacter.Attackness;
+		Movement = renderer.TargetCharacter.Movement;
+		CurrentAnimationFrame = renderer.CurrentAnimationFrame;
+		Head = renderer.Head;
+		Body = renderer.Body;
+		Hip = renderer.Hip;
+		ShoulderL = renderer.ShoulderL;
+		ShoulderR = renderer.ShoulderR;
+		UpperArmL = renderer.UpperArmL;
+		UpperArmR = renderer.UpperArmR;
+		LowerArmL = renderer.LowerArmL;
+		LowerArmR = renderer.LowerArmR;
+		HandL = renderer.HandL;
+		HandR = renderer.HandR;
+		UpperLegL = renderer.UpperLegL;
+		UpperLegR = renderer.UpperLegR;
+		LowerLegL = renderer.LowerLegL;
+		LowerLegR = renderer.LowerLegR;
+		FootL = renderer.FootL;
+		FootR = renderer.FootR;
+		FacingRight = Movement.FacingRight;
+		FacingFront = Movement.FacingFront;
+		AnimationType = renderer.TargetCharacter.AnimationType;
 		FacingSign = FacingRight ? 1 : -1;
 		FrontSign = FacingFront ? 1 : -1;
-		IsChargingAttack = !Target.Attackness.IsAttacking && Target.Attackness.IsChargingAttack && Target.Attackness.AttackChargeStartFrame.HasValue;
+		IsChargingAttack = !Attackness.IsAttacking && Attackness.IsChargingAttack && Attackness.AttackChargeStartFrame.HasValue;
 		AttackLerp = IsChargingAttack ?
-			((float)(Game.GlobalFrame - Target.Attackness.AttackChargeStartFrame.Value) / Util.Max(Target.Attackness.MinimalChargeAttackDuration, 1)).Clamp01() :
-			(float)(Game.GlobalFrame - Target.Attackness.LastAttackFrame) / Target.Attackness.AttackDuration;
+			((float)(Game.GlobalFrame - Attackness.AttackChargeStartFrame.Value) / Util.Max(Attackness.MinimalChargeAttackDuration, 1)).Clamp01() :
+			(float)(Game.GlobalFrame - Attackness.LastAttackFrame) / Attackness.AttackDuration;
 		AttackEase = IsChargingAttack ? 1f - Ease.OutBack(AttackLerp) : Ease.OutBack(AttackLerp);
 		if (IsChargingAttack) {
 			AttackLerp = 1f - AttackLerp;
@@ -176,7 +178,7 @@ public abstract class PoseAnimation {
 	protected static void ResetShoulderAndUpperArmPos (bool resetLeft = true, bool resetRight = true) {
 
 		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
-		int targetUnitHeight = Target.CharacterHeight * A2G / PoseCharacter.CM_PER_PX - Head.SizeY;
+		int targetUnitHeight = Rendering.CharacterHeight * A2G / PoseCharacterRenderer.CM_PER_PX - Head.SizeY;
 		int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
 		int defaultCharHeight = bodyHipSizeY + legRootSize;
 

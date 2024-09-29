@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public class PoseAttack_Magic : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
-		switch (character.EquippingWeaponHeld) {
+		switch (Target.EquippingWeaponHeld) {
 			default:
 			case WeaponHandheld.Float:
 				PoseAttack_Float.WaveDown();
@@ -42,9 +42,9 @@ public class PoseAttack_Magic : PoseAnimation {
 		HandR.Z = POSE_Z_HAND;
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(-60, 90, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1000, 1200, ease01);
 
 		// Leg
@@ -83,9 +83,9 @@ public class PoseAttack_Magic : PoseAnimation {
 		HandR.LimbRotate(FacingSign);
 
 		// Grab
-		Target.HandGrabRotationL = Target.HandGrabRotationR =
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
 			FacingSign * (int)Util.LerpUnclamped(-5, 60, ease01);
-		Target.HandGrabScaleL = Target.HandGrabScaleR =
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1000, 1100, ease01);
 
 		// Z

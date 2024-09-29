@@ -941,7 +941,7 @@ public partial class PixelEditor {
 		// For All Sheet Characters
 		GenericPopupUI.AddItem(MENU_NEW_SHEET_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
-		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, "*.sheetJson")) {
+		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, "*.json")) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			GenericPopupUI.AddItem(name, NewSheetCharSprite, data: (name, pixPos));
 		}

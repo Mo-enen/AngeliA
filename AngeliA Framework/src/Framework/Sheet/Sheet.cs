@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace AngeliA;
 
-public class Sheet {
+public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = true, bool ignoreTextureAndPixels = false) {
 
 
 
@@ -22,10 +22,9 @@ public class Sheet {
 	public readonly Dictionary<int, object> TexturePool = [];
 
 	// Data
-	private readonly bool IgnoreGroups = false;
-	private readonly bool IgnoreSpriteWithIgnoreTag = true;
-	private readonly bool IgnoreTextureAndPixels = false;
-
+	private readonly bool IgnoreGroups = ignoreGroups;
+	private readonly bool IgnoreSpriteWithIgnoreTag = ignoreSpriteWithIgnoreTag;
+	private readonly bool IgnoreTextureAndPixels = ignoreTextureAndPixels;
 
 	#endregion
 
@@ -33,17 +32,6 @@ public class Sheet {
 
 
 	#region --- MSG ---
-
-
-	public Sheet (
-		bool ignoreGroups = false,
-		bool ignoreSpriteWithIgnoreTag = true,
-		bool ignoreTextureAndPixels = false
-	) {
-		IgnoreGroups = ignoreGroups;
-		IgnoreSpriteWithIgnoreTag = ignoreSpriteWithIgnoreTag;
-		IgnoreTextureAndPixels = ignoreTextureAndPixels;
-	}
 
 
 	public Sheet (

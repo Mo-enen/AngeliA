@@ -5,8 +5,8 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public class PoseAnimation_Spin : PoseAnimation {
-	public override void Animate (PoseCharacter character) {
-		base.Animate(character);
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
 
 		int aFrame = CurrentAnimationFrame.UMod(8);
 		int pingpong = aFrame < 4 ? aFrame : 8 - aFrame; // 01234321
@@ -18,8 +18,8 @@ public class PoseAnimation_Spin : PoseAnimation {
 			FootR.Z -= 2;
 		}
 
-		Target.BodyTwist = (pingpong - 2) * 1000;
-		Target.HeadTwist = (pingpong - 2) * -300;
+		Rendering.BodyTwist = (pingpong - 2) * 1000;
+		Rendering.HeadTwist = (pingpong - 2) * -300;
 
 		Head.FrontSide = facingFront;
 		Body.FrontSide = facingFront;
@@ -66,7 +66,7 @@ public class PoseAnimation_Spin : PoseAnimation {
 		FootR.LimbRotate(facingFront ? -FacingSign : FacingSign);
 
 		// Final
-		Target.HandGrabRotationL = LowerArmL.Rotation - 90;
-		Target.HandGrabRotationR = LowerArmR.Rotation + 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation - 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
 	}
 }

@@ -737,11 +737,13 @@ public class PlayerMenuUI : EntityUI {
 
 
 		// Preview
-		var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
-		FrameworkUtil.DrawPoseCharacterAsUI(previewRect, player, player.CurrentAnimationFrame);
-		if (Input.MouseLeftButtonDown && previewRect.MouseInside()) {
-			player.Movement.FacingRight = !player.Movement.FacingRight;
-			player.Bounce();
+		if (player.Rendering is PoseCharacterRenderer rendering) {
+			var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
+			FrameworkUtil.DrawPoseCharacterAsUI(previewRect, rendering, rendering.CurrentAnimationFrame);
+			if (Input.MouseLeftButtonDown && previewRect.MouseInside()) {
+				player.Movement.FacingRight = !player.Movement.FacingRight;
+				player.Bounce();
+			}
 		}
 
 	}

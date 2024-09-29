@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>AngeliA Platformer</AssemblyName>
+		<RootNamespace>AngeliA.Platformer</RootNamespace>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<OutputType>Library</OutputType>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
+
+		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<PublishDir>$(SolutionDir)Publish</PublishDir>
+
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<DebugType>portable</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<DebugType>none</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<!--Ref-->
+	<ItemGroup>
+		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+	</ItemGroup>
+
+	<!--Remove-->
+	<ItemGroup>
+		<Compile Remove="Build\**" />
+		<Compile Remove="Publish\**" />
+		<EmbeddedResource Remove="Build\**" />
+		<EmbeddedResource Remove="Publish\**" />
+		<None Remove="Build\**" />
+		<None Remove="Publish\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="build.bat" />
+		<None Remove="desktop.ini" />
+	</ItemGroup>
+
+	<!--Copy Packages Dll to Runtime Folder-->
+	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build" Condition="'$(Configuration)'=='Debug'">
+		<Copy
+			SourceFiles="$(OutputPath)AngeliA Platformer.dll"
+			DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\AngeliA Platformer\Debug\AngeliA Platformer.dll"
+			ContinueOnError="true"
+		/>
+	</Target>
+
+	
+</Project>
