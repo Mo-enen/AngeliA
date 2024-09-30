@@ -139,6 +139,17 @@ public partial class GUISkin {
 		ContentBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
+	public readonly GUIStyle LargeToggle = new() {
+		BodySprite = BuiltInSprite.UI_LARGE_TOGGLE,
+		BodySpriteHover = BuiltInSprite.UI_LARGE_TOGGLE_HOVER,
+		BodySpriteDown = BuiltInSprite.UI_LARGE_TOGGLE_DOWN,
+		BodySpriteDisable = BuiltInSprite.UI_LARGE_TOGGLE,
+		ContentShift = new(0, 2),
+		ContentShiftHover = new(0, 2),
+		ContentShiftDisable = new(0, 2),
+		ContentBorder = Int4.Direction(2, 2, 2, 2),
+	};
+
 	public readonly GUIStyle ToggleMark = new() {
 		BodySprite = BuiltInSprite.UI_TOGGLE_MARK,
 		BodySpriteHover = BuiltInSprite.UI_TOGGLE_MARK,

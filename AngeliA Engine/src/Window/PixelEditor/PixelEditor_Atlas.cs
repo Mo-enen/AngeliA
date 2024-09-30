@@ -11,6 +11,7 @@ public partial class PixelEditor {
 
 	#region --- VAR ---
 
+
 	// Const
 	private static readonly int ATLAS_TYPE_COUNT = typeof(AtlasType).EnumLength();
 	private static string[] ATLAS_TYPE_NAMES = null;
@@ -19,8 +20,9 @@ public partial class PixelEditor {
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
 	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
-	private static readonly LanguageCode TITLE_IMPORT_ASE = ("Title.ImportAse", "Import Aseprite file");
-	private static readonly LanguageCode TITLE_IMPORT_PNG = ("Title.ImportPNG", "Import PNG file");
+	private static readonly LanguageCode TITLE_IMPORT_ASE = ("PixelEditor.Title.ImportAse", "Import Aseprite file");
+	private static readonly LanguageCode TITLE_IMPORT_PNG = ("PixelEditor.Title.ImportPNG", "Import PNG file");
+	private static readonly LanguageCode TITLE_EXPORT_PNG = ("PixelEditor.Title.ExportPNG", "Export PNG file");
 	private static readonly LanguageCode MENU_ATLAS_TYPE = ("Menu.AtlasType", "Type");
 
 	// Data
@@ -279,11 +281,27 @@ public partial class PixelEditor {
 		RequireTooltip(rect, TIP_IMPORT_ASE);
 		rect.SlideRight(padding);
 
-		// Import from Image file
+		// Import from Image File
 		if (GUI.Button(rect, ICON_IMPORT_PNG, Skin.SmallDarkButton)) {
 			FileBrowserUI.OpenFile(TITLE_IMPORT_PNG, ImportAtlasFromFile, "*.png");
 		}
 		RequireTooltip(rect, TIP_IMPORT_PNG);
+		rect.SlideRight(padding);
+
+		// Export to Image File
+		using (new GUIEnableScope(Instance.StagedSprites.Count > 0)) {
+			if (GUI.Button(rect, ICON_EXPORT_PNG, Skin.SmallDarkButton)) {
+				if (CurrentAtlasIndex >= 0 && CurrentAtlasIndex < Sheet.Atlas.Count) {
+					FileBrowserUI.SaveFile(
+						TITLE_EXPORT_PNG,
+						$"{Sheet.Atlas[CurrentAtlasIndex].Name}.png",
+						ExportAtlasToPngFile,
+						"*.png"
+					);
+				}
+			}
+		}
+		RequireTooltip(rect, TIP_EXPORT_PNG);
 		rect.SlideRight(padding);
 
 	}
@@ -313,10 +331,63 @@ public partial class PixelEditor {
 			Instance.StagedSprites.Add(new SpriteData(sprite) { Selecting = true, });
 		} else if (ext == ".ase") {
 			// ASE
-			var aseSheet = SheetUtil.CreateNewSheet(new string[1] { path });
+			var aseSheet = SheetUtil.CreateNewSheet([path]);
 			Sheet.CombineSheet(aseSheet);
 			Instance.SetCurrentAtlas(Sheet.Atlas.Count - 1);
 		}
+	}
+
+
+	public static void ExportAtlasToPngFile (string path) {
+
+		if (Instance.StagedSprites.Count == 0) return;
+
+		// Get Bounds
+		int minX = int.MaxValue;
+		int minY = int.MaxValue;
+		int maxX = int.MinValue;
+		int maxY = int.MinValue;
+		var limitRect = new IRect(0, 0, 512, 512).Expand(1024);
+		bool hasValidRect = false;
+		foreach (var data in Instance.StagedSprites) {
+			var rect = data.Sprite.PixelRect;
+			if (!rect.CompleteInside(limitRect)) continue;
+			minX = Util.Min(minX, rect.x);
+			minY = Util.Min(minY, rect.y);
+			maxX = Util.Max(maxX, rect.xMax);
+			maxY = Util.Max(maxY, rect.yMax);
+			hasValidRect = true;
+		}
+		if (!hasValidRect) {
+			Debug.LogWarning("Failed to export png. No sprite is near canvas center range.");
+			return;
+		}
+
+		// Fill Into Pixels
+		int width = maxX - minX + 1;
+		int height = maxY - minY + 1;
+		var pixels = new Color32[width * height];
+		foreach (var data in Instance.StagedSprites) {
+			var rect = data.Sprite.PixelRect;
+			if (!rect.CompleteInside(limitRect)) continue;
+			try {
+				for (int j = 0; j < rect.height; j++) {
+					for (int i = 0; i < rect.width; i++) {
+						pixels[(rect.y + j - minY) * width + (rect.x + i - minX)] =
+							data.Sprite.Pixels[j * rect.width + i];
+					}
+				}
+			} catch { }
+		}
+
+		// Save Pixels to File
+		var texture = Game.GetTextureFromPixels(pixels, width, height);
+		var pngBytes = Game.TextureToPngBytes(texture);
+		Util.BytesToFile(pngBytes, path);
+		if (Util.FileExists(path)) {
+			Game.OpenUrl(Util.GetParentPath(path));
+		}
+
 	}
 
 

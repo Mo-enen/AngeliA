@@ -349,4 +349,15 @@ public static partial class Util {
 	public static bool IsExistingFileEmpty (string path) => new FileInfo(path).Length == 0;
 
 
+	public static void UpdateFile (string source, string target, bool skipWhenTargetNotExists = false) {
+		if (!FileExists(source)) return;
+		if (skipWhenTargetNotExists && !FileExists(target)) return;
+		long sourceDate = GetFileModifyDate(source);
+		long targetDate = GetFileModifyDate(target);
+		if (sourceDate == targetDate) return;
+		CopyFile(source, target, true);
+		SetFileModifyDate(target, sourceDate);
+	}
+
+
 }

@@ -5,6 +5,21 @@ namespace AngeliA;
 
 public sealed class GUIStyle {
 
+	public static readonly GUIStyle None = new() {
+		BodySprite = 0,
+		BodySpriteHover = 0,
+		BodySpriteDown = 0,
+		BodySpriteDisable = 0,
+		BodyColor = Color32.CLEAR,
+		BodyColorHover = Color32.CLEAR,
+		BodyColorDown = Color32.CLEAR,
+		BodyColorDisable = Color32.CLEAR,
+		ContentColor = Color32.CLEAR,
+		ContentColorHover = Color32.CLEAR,
+		ContentColorDown = Color32.CLEAR,
+		ContentColorDisable = Color32.CLEAR,
+	};
+
 	// Body
 	public int BodySprite = Const.PIXEL;
 	public int BodySpriteHover = Const.PIXEL;

@@ -77,7 +77,7 @@ public class ProjectEditor : WindowUI {
 	// Api
 	public static ProjectEditor Instance { get; private set; }
 	public Project CurrentProject { get; private set; }
-	public int RequiringRebuildFrame { get; private set; } = -2;
+	public int RequiringRebuildFrame { get; set; } = -2;
 	public int RequiringPublishFrame { get; private set; } = int.MinValue;
 	public string RequiringPublishPath { get; private set; } = "";
 	public override string DefaultWindowName => "Project";
@@ -426,10 +426,11 @@ public class ProjectEditor : WindowUI {
 		rect.y = rect.yMax - iconButtonSize;
 		rect.height = iconButtonSize;
 		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
-		if (GUI.Button(iconButtonRect, 0, out var state, Skin.DarkButton)) {
+		bool hasIcon = Game.IsTextureReady(IconTexture);
+		if (GUI.Button(iconButtonRect, 0, out var state, style: hasIcon ? GUIStyle.None : GUI.Skin.DarkButton)) {
 			FileBrowserUI.OpenFile(TITLE_PICK_ICON, SetIconFromPNG, "*.png");
 		}
-		if (Game.IsTextureReady(IconTexture) && !FileBrowserUI.ShowingBrowser) {
+		if (hasIcon && !FileBrowserUI.ShowingBrowser) {
 			var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
 			contentRect.y += MasterScrollPos;
 			Game.DrawGizmosTexture(contentRect.Shrink(iconButtonRect.height / 8), IconTexture);
@@ -754,7 +755,9 @@ public class ProjectEditor : WindowUI {
 		string infoPath = CurrentProject.Universe.InfoPath;
 		var info = CurrentProject.Universe.Info;
 		JsonUtil.SaveJsonToPath(info, infoPath, prettyPrint: true);
+		// Require Recompile
 		if (RequireRecompileOnSave) {
+			RequireRecompileOnSave = false;
 			RequiringRebuildFrame = Game.GlobalFrame;
 		}
 	}

@@ -10,6 +10,7 @@ public static class EngineSprite {
 	public static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
 	public static readonly SpriteCode UI_ENGINE_PANEL = "UI.EnginePanel";
 	public static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
+	public static readonly SpriteCode UI_PANEL_GENERAL = "UI.Panel.General";
 
 }
 

@@ -11,7 +11,7 @@ namespace AngeliaEngine;
 public partial class Engine {
 
 
-	
+
 
 	#region --- VAR ---
 
@@ -678,7 +678,7 @@ public partial class Engine {
 
 		// Misc
 		if (GenericDialogUI.ShowingDialog) {
-			Game.IgnoreGizmos(1);
+			Game.DrawGizmosAtFront = false;
 		}
 
 		// Update Tooltip
@@ -724,25 +724,33 @@ public partial class Engine {
 			ConsoleWindow.Instance.Clear();
 		}
 
-		// Recompile
-		if (EngineSetting.Hotkey_Recompile.Value.Down() || ProjectEditor.Instance.RequiringRebuildFrame == Game.GlobalFrame) {
-			// Save First
-			foreach (var window in Instance.AllWindows) {
-				if (window.IsDirty) window.Save();
-			}
+		if (!EngineUtil.BuildingProjectInBackground) {
 			// Recompile
-			RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
-			if (RequireBackgroundBuildDate == 0) {
-				RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
+			if (
+				EngineSetting.Hotkey_Recompile.Value.Down() ||
+				ProjectEditor.Instance.RequiringRebuildFrame > 0 ||
+				PackageManager.Instance.RequiringRebuildFrame > 0
+			) {
+				// Save First
+				foreach (var window in Instance.AllWindows) {
+					if (window.IsDirty) window.Save();
+				}
+				// Recompile
+				ProjectEditor.Instance.RequiringRebuildFrame = -2;
+				PackageManager.Instance.RequiringRebuildFrame = -2;
+				RequireBackgroundBuildDate = EngineUtil.LastBackgroundBuildModifyDate;
+				if (RequireBackgroundBuildDate == 0) {
+					RequireBackgroundBuildDate = EngineUtil.GetScriptModifyDate(CurrentProject);
+				}
+				if (RequireBackgroundBuildDate == 0) {
+					RequireBackgroundBuildDate = 1;
+				}
 			}
-			if (RequireBackgroundBuildDate == 0) {
-				RequireBackgroundBuildDate = 1;
-			}
-		}
 
-		// Run Game
-		if (EngineSetting.Hotkey_Run.Value.Down()) {
-			EngineUtil.RunAngeliaBuild(CurrentProject);
+			// Run Game
+			if (EngineSetting.Hotkey_Run.Value.Down()) {
+				EngineUtil.RunAngeliaBuild(CurrentProject);
+			}
 		}
 
 		// Switch Window
@@ -855,6 +863,7 @@ public partial class Engine {
 		RiggedMapEditor.Instance.CleanDirty();
 		RiggedMapEditor.Instance.SetCurrentProject(CurrentProject);
 		SettingWindow.Instance.SetCurrentProject(CurrentProject);
+		PackageManager.Instance.SetCurrentProject(CurrentProject);
 		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
 
 		// Audio
@@ -866,7 +875,7 @@ public partial class Engine {
 
 		// Change Check
 		CheckScriptChanged();
-		CheckFrameworkDllChanged();
+		UpdateDllLibraryFiles();
 		CheckDialogChanged();
 		CheckResourceChanged();
 
@@ -920,6 +929,7 @@ public partial class Engine {
 			RiggedMapEditor.Instance.CleanDirty();
 			RiggedMapEditor.Instance.SetCurrentProject(null);
 			SettingWindow.Instance.SetCurrentProject(null);
+			PackageManager.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 		}
@@ -1027,29 +1037,37 @@ public partial class Engine {
 	}
 
 
-	private void CheckFrameworkDllChanged () {
+	private void UpdateDllLibraryFiles () {
 
 		if (CurrentProject == null) return;
 
 		// Framework Dll Files
-		string sourceDllDebug = EngineUtil.TemplateFrameworkDll_Debug;
-		if (Util.FileExists(sourceDllDebug)) {
-			string targetPath = CurrentProject.FrameworkDllPath_Debug;
-			long sourceDate = Util.GetFileModifyDate(sourceDllDebug);
-			long targetDate = Util.GetFileModifyDate(targetPath);
-			if (sourceDate != targetDate) {
-				Util.CopyFile(sourceDllDebug, targetPath, true);
-				Util.SetFileModifyDate(targetPath, sourceDate);
+		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Debug, Util.CombinePaths(CurrentProject.DllLibPath_Debug, "AngeliA Framework.dll"));
+		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Release, Util.CombinePaths(CurrentProject.DllLibPath_Release, "AngeliA Framework.dll"));
+
+		// Package Dll Files
+		foreach (var path in Util.EnumerateFolders(EngineUtil.PackagesRoot, true)) {
+			string packName = Util.GetNameWithoutExtension(path);
+			string dllName = $"{packName}.dll";
+			string sourcePathDebug = Util.CombinePaths(path, "Debug", dllName);
+			string sourcePathRelease = Util.CombinePaths(path, "Release", dllName);
+			string targetPathDebug = Util.CombinePaths(CurrentProject.DllLibPath_Debug, dllName);
+			string targetPathRelease = Util.CombinePaths(CurrentProject.DllLibPath_Release, dllName);
+			bool targetExistsDebug = Util.FileExists(targetPathDebug);
+			bool targetExistsRelease = Util.FileExists(targetPathRelease);
+			// Fill If Missing
+			if (targetExistsDebug != targetExistsRelease) {
+				if (!targetExistsDebug) {
+					Util.CopyFile(sourcePathDebug, targetPathDebug);
+				}
+				if (!targetExistsRelease) {
+					Util.CopyFile(sourcePathRelease, targetPathRelease);
+				}
 			}
-		}
-		string sourceDllRelease = EngineUtil.TemplateFrameworkDll_Release;
-		if (Util.FileExists(sourceDllRelease)) {
-			string targetPath = CurrentProject.FrameworkDllPath_Release;
-			long sourceDate = Util.GetFileModifyDate(sourceDllRelease);
-			long targetDate = Util.GetFileModifyDate(targetPath);
-			if (sourceDate != targetDate) {
-				Util.CopyFile(sourceDllRelease, targetPath, true);
-				Util.SetFileModifyDate(targetPath, sourceDate);
+			// Update
+			if (targetExistsDebug || targetExistsRelease) {
+				Util.UpdateFile(sourcePathDebug, targetPathDebug, skipWhenTargetNotExists: true);
+				Util.UpdateFile(sourcePathRelease, targetPathRelease, skipWhenTargetNotExists: true);
 			}
 		}
 

@@ -42,8 +42,6 @@ public class SettingWindow : WindowUI {
 
 
 	// Const
-	private static readonly SpriteCode UI_PANEL_SETTING = "UI.Panel.Setting";
-
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode MENU_CATA_LETTER = ("Menu.Group.Letter", "Letter");
 	private static readonly LanguageCode MENU_CATA_NUMBER = ("Menu.Group.Number", "Number");
@@ -272,18 +270,14 @@ public class SettingWindow : WindowUI {
 		changed = GUI.EndChangeCheck();
 
 		// Box BG
-		if (
-			Renderer.TryGetSprite(UI_PANEL_SETTING, out var sprite) ||
-			Renderer.TryGetSprite(Const.PIXEL, out sprite)
-		) {
+		if (Renderer.TryGetSprite(EngineSprite.UI_PANEL_GENERAL, out var sprite)) {
 			using (new DefaultLayerScope()) {
-				var tint = sprite.ID == Const.PIXEL ? new Color32(23, 23, 23, 255) : Color32.WHITE;
 				Renderer.DrawSlice(sprite, new IRect(
 					boxLeft - boxPadding.left,
 					rect.yMax - boxPadding.down + MasterScroll,
 					boxRight - boxLeft + boxPadding.horizontal,
 					boxTop - rect.yMax + boxPadding.vertical
-				), tint);
+				));
 			}
 		}
 		rect.y -= boxPadding.vertical + Unify(6);

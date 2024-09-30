@@ -11,7 +11,7 @@ namespace AngeliaEngine;
 
 
 [System.AttributeUsage(System.AttributeTargets.Method)]
-public class OnProjectBuiltInBackgroundAttribute : OrderedAttribute { public OnProjectBuiltInBackgroundAttribute (int order = 0) : base(order) { } }
+public class OnProjectBuiltInBackgroundAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 public static class EngineUtil {
@@ -501,6 +501,31 @@ public static class EngineUtil {
 	public static bool ImportIconFile (Project project, string filePath) {
 		if (project == null) return false;
 		return CreateIcoFromPng(filePath, project.IconPath);
+	}
+
+
+	// Package
+	public static void InstallPackage (Project project, string packageName) {
+		if (project == null) return;
+		string dllName = $"{packageName}.dll";
+		// Debug
+		string dllPathDebug = Util.CombinePaths(PackagesRoot, packageName, "Debug", dllName);
+		if (Util.FileExists(dllPathDebug)) {
+			Util.CopyFile(dllPathDebug, Util.CombinePaths(project.DllLibPath_Debug, dllName));
+		}
+		// Release
+		string dllPathRelease = Util.CombinePaths(PackagesRoot, packageName, "Release", dllName);
+		if (Util.FileExists(dllPathRelease)) {
+			Util.CopyFile(dllPathRelease, Util.CombinePaths(project.DllLibPath_Release, dllName));
+		}
+	}
+
+
+	public static void UninstallPackage (Project project, string packageName) {
+		if (project == null) return;
+		string dllName = $"{packageName}.dll";
+		Util.DeleteFile(Util.CombinePaths(project.DllLibPath_Debug, dllName));
+		Util.DeleteFile(Util.CombinePaths(project.DllLibPath_Release, dllName));
 	}
 
 

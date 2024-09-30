@@ -520,23 +520,31 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 			}
 		} else {
 			// For File
-			if (SelectingIndex >= 0 && SelectingIndex < Items.Count) {
-				var selectingItem = Items[SelectingIndex];
-				if (selectingItem.IsFolder) {
-					Explore(selectingItem.Path);
+			if (isSaving) {
+				// Save File
+				targetPath = Util.CombinePaths(CurrentFolder, CurrentName);
+			} else {
+				// Open File
+				if (SelectingIndex >= 0 && SelectingIndex < Items.Count) {
+					var selectingItem = Items[SelectingIndex];
+					if (selectingItem.IsFolder) {
+						Explore(selectingItem.Path);
+						return;
+					}
+					string ext = Util.GetExtensionWithDot(selectingItem.Path);
+					targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}{ext}");
+				} else {
 					return;
 				}
-				string ext = Util.GetExtensionWithDot(selectingItem.Path);
-				targetPath = Util.CombinePaths(CurrentFolder, $"{CurrentName}{ext}");
-			} else {
-				return;
 			}
 		}
 		targetPath = Util.FixPath(targetPath, forUnity: false);
 
 		// Perform
 		if (isSaving || (forFolder ? Util.FolderExists(targetPath) : Util.FileExists(targetPath))) {
-			OnPathPicked?.Invoke(targetPath);
+			try {
+				OnPathPicked?.Invoke(targetPath);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 		OnPathPicked = null;
 		Active = false;

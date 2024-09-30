@@ -11,8 +11,8 @@ public class Project {
 	public string ProjectPath { get; init; }
 	public string SourceCodePath { get; init; }
 	public string BuildPath { get; init; }
-	public string FrameworkDllPath_Debug { get; init; }
-	public string FrameworkDllPath_Release { get; init; }
+	public string DllLibPath_Debug { get; init; }
+	public string DllLibPath_Release { get; init; }
 	public string TempBuildPath { get; init; }
 	public string TempPublishPath { get; init; }
 	public string TempRoot { get; init; }
@@ -26,8 +26,8 @@ public class Project {
 			ProjectPath = projectPath,
 			SourceCodePath = Util.CombinePaths(projectPath, "src"),
 			BuildPath = Util.CombinePaths(projectPath, "Build"),
-			FrameworkDllPath_Debug = Util.CombinePaths(projectPath, "lib", "Debug", "AngeliA Framework.dll"),
-			FrameworkDllPath_Release = Util.CombinePaths(projectPath, "lib", "Release", "AngeliA Framework.dll"),
+			DllLibPath_Debug = Util.CombinePaths(projectPath, "lib", "Debug"),
+			DllLibPath_Release = Util.CombinePaths(projectPath, "lib", "Release"),
 			TempRoot = Util.CombinePaths(projectPath, "Temp"),
 			TempBuildPath = Util.CombinePaths(projectPath, "Temp", "Build"),
 			TempPublishPath = Util.CombinePaths(projectPath, "Temp", "Publish"),
