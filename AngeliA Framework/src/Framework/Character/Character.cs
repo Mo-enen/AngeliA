@@ -14,10 +14,13 @@ public enum CharacterState {
 
 
 
+[EntityAttribute.DontDestroyOnZChanged]
+[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract class Character : Rigidbody, IDamageReceiver {
+public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 
 
@@ -51,9 +54,9 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
 	public int TeleportEndFrame => _TeleportEndFrame.Abs();
 	public int TeleportDuration => _TeleportDuration.Abs();
-	public int SleepStartFrame { get; protected set; } = int.MinValue;
+	public int SleepStartFrame { get; set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
-	public bool InventoryCurrentAvailable => AllowInventory && Game.GlobalFrame > IgnoreInventoryFrame;
+	public bool InventoryCurrentAvailable => Game.GlobalFrame > IgnoreInventoryFrame;
 	public bool EquipingPickWeapon { get; private set; } = false;
 	public int LastRequireBounceFrame { get; set; } = int.MinValue;
 	public int CurrentAttackSpeedRate => Movement.MovementState switch {
@@ -63,8 +66,10 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		CharacterMovementState.JumpUp => Attackness.AirSpeedRateOnAttack,
 		_ => Attackness.DefaultSpeedRateOnAttack,
 	};
-	int IDamageReceiver.Team => Const.TEAM_NEUTRAL;
-	Tag IDamageReceiver.IgnoreDamageType => Tag.None;
+	public int Team { get; set; } = Const.TEAM_NEUTRAL;
+	public Tag IgnoreDamageType { get; set; } = Tag.None;
+	public int AttackTargetTeam { get; set; } = Const.TEAM_ALL;
+	public int DespawnAfterPassoutDelay { get; set; } = 60;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
 	public override int Gravity => 5;
@@ -73,9 +78,12 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
 	public sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	public virtual int Bouncy => 150;
-	public virtual bool AllowInventory => false;
-	public virtual int AttackTargetTeam => Const.TEAM_ALL;
-	public virtual int DespawnAfterPassoutDelay => 60;
+	public virtual bool HelmetAvailable => true;
+	public virtual bool BodySuitAvailable => true;
+	public virtual bool GlovesAvailable => true;
+	public virtual bool ShoesAvailable => true;
+	public virtual bool JewelryAvailable => true;
+	public virtual bool WeaponAvailable => true;
 
 	// Behaviour
 	public CharacterMovement Movement;
@@ -101,12 +109,13 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	private int OverridingRendererFrame = int.MinValue;
 
 	// Data
-	protected static readonly int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 	private int _TeleportEndFrame = 0;
 	private int _TeleportDuration = 0;
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
 	private int IgnoreInventoryFrame = int.MinValue;
+	private int ForceStayFrame = -1;
+	private int PrevZ;
 
 
 	#endregion
@@ -126,17 +135,15 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		Rendering = NativeRenderer = CreateNativeRenderer();
 		Buff = new CharacterBuff(this);
 		// Init Inventory
-		if (AllowInventory) {
-			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-			if (Inventory.HasInventory(TypeID)) {
-				int invCount = Inventory.GetInventoryCapacity(TypeID);
-				if (invCount != COUNT) {
-					Inventory.ResizeInventory(TypeID, COUNT);
-				}
-			} else {
-				// Create New
-				Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
+		const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
+		if (Inventory.HasInventory(TypeID)) {
+			int invCount = Inventory.GetInventoryCapacity(TypeID);
+			if (invCount != COUNT) {
+				Inventory.ResizeInventory(TypeID, COUNT);
 			}
+		} else {
+			// Create New
+			Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
 		}
 	}
 
@@ -158,8 +165,22 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		VelocityX = 0;
 		VelocityY = 0;
 		MovementOverride = null;
+		AttacknessOverride = null;
+		HealthOverride = null;
+		NavigationOverride = null;
+		RendererOverride = null;
 		OverridingMovementFrame = int.MinValue;
+		OverridingAttacknessFrame = int.MinValue;
+		OverridingHealthFrame = int.MinValue;
+		OverridingNavigationFrame = int.MinValue;
+		OverridingRendererFrame = int.MinValue;
 		IgnoreInventoryFrame = int.MinValue;
+		Team = Const.TEAM_NEUTRAL;
+		IgnoreDamageType = Tag.None;
+		AttackTargetTeam = Const.TEAM_ALL;
+		DespawnAfterPassoutDelay = 60;
+		ForceStayFrame = -1;
+		PrevZ = Stage.ViewZ;
 	}
 
 
@@ -173,6 +194,14 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	// Physics Update
 	public override void FirstUpdate () {
+
+		// Force Stay on Stage Check
+		if (Game.GlobalFrame > ForceStayFrame && (Stage.ViewZ != PrevZ || !Stage.SpawnRect.Overlaps(Rect))) {
+			// Leave Stage
+			Active = false;
+			return;
+		}
+		PrevZ = Stage.ViewZ;
 
 		// Update Behaviour
 		Movement = Game.GlobalFrame <= OverridingMovementFrame && MovementOverride != null ? MovementOverride : NativeMovement;
@@ -196,6 +225,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
+		if (!Active) return;
 		// Despawn for Passout
 		if (
 			DespawnAfterPassoutDelay >= 0 &&
@@ -227,7 +257,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 			}
 
 			// Equipping
-			for (int i = 0; i < EquipmentTypeCount; i++) {
+			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
 				var type = (EquipmentType)i;
 				var item = GetEquippingItem(type);
 				if (item == null) continue;
@@ -271,12 +301,14 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 	public override void Update () {
 
+		if (!Active) return;
+
 		if (Health.IsEmptyHealth) {
 			SetCharacterState(CharacterState.PassOut);
 		}
 
 		if (Teleporting) {
-			PhysicsUpdate_AnimationType();
+			Update_AnimationType();
 			return;
 		}
 
@@ -304,6 +336,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 					// Update
 					Attackness.PhysicsUpdate_Attack();
 					Movement.PhysicsUpdateGamePlay();
+					Update_RepairEquipment();
 				}
 				break;
 
@@ -323,12 +356,12 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 		}
 		Movement.PhysicsUpdateLater();
 		Navigation.PhysicsUpdate();
-		PhysicsUpdate_AnimationType();
+		Update_AnimationType();
 		base.Update();
 	}
 
 
-	private void PhysicsUpdate_AnimationType () {
+	private void Update_AnimationType () {
 		var poseType = GetCurrentPoseAnimationType(this);
 		if (poseType != AnimationType) {
 			Rendering.CurrentAnimationFrame = 0;
@@ -367,13 +400,27 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	}
 
 
+	private void Update_RepairEquipment () {
+		if (Health.TakingDamage || Game.GlobalFrame != Movement.LastSquatFrame + 1) return;
+		for (int i = 0; i < Const.EquipmentTypeCount; i++) {
+			var item = GetEquippingItem((EquipmentType)i);
+			if (item == null) continue;
+			if (item.TryRepair(this)) break;
+		}
+	}
+
+
 	// Frame Update
 	public override void LateUpdate () {
-		if (!Active) return;
+		if (!Active) {
+			base.LateUpdate();
+			return;
+		}
 		LateUpdate_RenderCharacter();
 		LateUpdate_Event();
 		LateUpdate_Inventory();
 		base.LateUpdate();
+		LateUpdate_BouceHighlight();
 	}
 
 
@@ -490,7 +537,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 			}
 
 			// Equipping
-			for (int i = 0; i < EquipmentTypeCount; i++) {
+			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
 				var item = GetEquippingItem((EquipmentType)i);
 				if (item == null) continue;
 				item.OnItemUpdate_FromEquipment(this);
@@ -503,6 +550,30 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 				}
 			}
 
+		}
+
+		// Equipping
+		int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon, out _);
+		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon eqWeapon) {
+			EquippingWeaponType = eqWeapon.WeaponType;
+			EquippingWeaponHeld = eqWeapon.Handheld;
+		} else {
+			EquippingWeaponType = WeaponType.Hand;
+			EquippingWeaponHeld = WeaponHandheld.Float;
+		}
+
+	}
+
+
+	private void LateUpdate_BouceHighlight () {
+		if ((this as IActionTarget).IsHighlighted) {
+			// Bounce
+			if (Game.GlobalFrame % 20 == 0) Bounce();
+			// Hint
+			ControlHintUI.DrawGlobalHint(
+				X - Const.HALF, Y + Const.CEL * 2,
+				Gamekey.Action, BuiltInText.HINT_SWITCH_PLAYER, true
+			);
 		}
 	}
 
@@ -577,7 +648,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	protected virtual void OnTakeDamage (int damage, Entity sender) {
 
 		// Equipment
-		for (int i = 0; i < EquipmentTypeCount && damage > 0; i++) {
+		for (int i = 0; i < Const.EquipmentTypeCount && damage > 0; i++) {
 			GetEquippingItem((EquipmentType)i)?.OnTakeDamage_FromEquipment(this, sender, ref damage);
 		}
 
@@ -650,6 +721,17 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	}
 
 
+	public bool EquipmentAvailable (EquipmentType equipmentType) => equipmentType switch {
+		EquipmentType.Weapon => WeaponAvailable,
+		EquipmentType.BodyArmor => BodySuitAvailable,
+		EquipmentType.Helmet => HelmetAvailable,
+		EquipmentType.Shoes => ShoesAvailable,
+		EquipmentType.Gloves => GlovesAvailable,
+		EquipmentType.Jewelry => JewelryAvailable,
+		_ => false,
+	};
+
+
 	// Behaviour
 	protected virtual CharacterMovement CreateNativeMovement () => new(this);
 	protected virtual CharacterAttackness CreateNativeAttackness () => new(this);
@@ -700,6 +782,7 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 	}
 
 
+	// Misc
 	public virtual bool IsAttackAllowedByMovement () =>
 		!Movement.IsCrashing &&
 		(Attackness.AttackInAir || IsGrounded || InWater || Movement.IsClimbing) &&
@@ -718,6 +801,18 @@ public abstract class Character : Rigidbody, IDamageReceiver {
 
 
 	public virtual bool IsAttackAllowedByEquipment () => (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon && weapon.AllowingAttack(this));
+
+
+	public virtual bool Invoke () {
+		PlayerSystem.SetCharacterAsPlayer(this);
+		return PlayerSystem.Selecting == this;
+	}
+
+
+	public virtual bool AllowInvoke () => false;
+
+
+	public void ForceStayOnStage (int duration = 1) => ForceStayFrame = Game.GlobalFrame + duration;
 
 
 	#endregion

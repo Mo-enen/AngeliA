@@ -149,7 +149,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 
 	protected override bool CheckForStopDrive () {
 		// Driver Movement State Check
-		bool playerStop = Driver == Player.Selecting && Input.GameKeyDown(Gamekey.Jump);
+		bool playerStop = Driver == PlayerSystem.Selecting && Input.GameKeyDown(Gamekey.Jump);
 		if (
 			playerStop ||
 			Driver.CharacterState != CharacterState.GamePlay ||

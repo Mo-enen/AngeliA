@@ -47,11 +47,11 @@ public sealed class BlockBuilder : Weapon {
 			return;
 		}
 
-		if (pHolder is Player plHolder) {
+		if (pHolder == PlayerSystem.Selecting) {
 			int targetUnitX, targetUnitY;
 			bool available, inRange = true;
 			// For Player
-			plHolder.IgnoreAction(1);
+			PlayerSystem.IgnoreAction(1);
 			// Get Target Pos
 			if (Game.IsMouseAvailable) {
 				Cursor.RequireCursor();

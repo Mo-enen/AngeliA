@@ -103,8 +103,8 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 			Driver.OverrideMovement(Movement);
 			Driver.VelocityX = 0;
 			Driver.VelocityY = 0;
-			if (Driver is Player pDriver) {
-				pDriver.IgnoreAction();
+			if (Driver == PlayerSystem.Selecting) {
+				PlayerSystem.IgnoreAction();
 			}
 		}
 	}

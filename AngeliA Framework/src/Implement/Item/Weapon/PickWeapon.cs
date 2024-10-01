@@ -45,8 +45,8 @@ public abstract class PickWeapon : Weapon {
 			pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
 			pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 		}
-		if (pHolder is Player plHolder) {
-			plHolder.IgnoreAction(1);
+		if (pHolder == PlayerSystem.Selecting) {
+			PlayerSystem.IgnoreAction(1);
 		}
 
 		// Get Target Pos

@@ -61,14 +61,14 @@ public abstract class Wallpaper : Entity {
 		if (Current != this) {
 			if (Current == null) {
 				Current = this;
-			} else if (Player.Selecting != null && PrevTargetX.HasValue) {
+			} else if (PlayerSystem.Selecting != null && PrevTargetX.HasValue) {
 				// Cross to Trigger
-				if ((Player.Selecting.X - X).Sign() != (PrevTargetX.Value - X).Sign()) {
+				if ((PlayerSystem.Selecting.X - X).Sign() != (PrevTargetX.Value - X).Sign()) {
 					Current = this;
 				}
 			}
 		}
-		PrevTargetX = Player.Selecting?.X;
+		PrevTargetX = PlayerSystem.Selecting?.X;
 		// Update Amount
 		const int DELTA = 6;
 		if (Current == this) {

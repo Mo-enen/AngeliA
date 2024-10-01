@@ -48,7 +48,7 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 	}
 
 	bool IActionTarget.Invoke () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null || !player.InventoryCurrentAvailable) return false;
 		var playerMenu = PlayerMenuUI.OpenMenu();
 		if (!Open) SetOpen(true);
@@ -59,7 +59,7 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 	}
 
 	bool IActionTarget.AllowInvoke () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		return player != null && player.InventoryCurrentAvailable;
 	}
 

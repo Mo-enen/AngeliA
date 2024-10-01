@@ -19,9 +19,8 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 				OverrideDriverAnimation(poseRenderer);
 			}
 			// For Player
-			var player = Player.Selecting;
-			if (Driver == player) {
-				player.IgnorePlayerMenu();
+			if (Driver == PlayerSystem.Selecting) {
+				PlayerSystem.IgnorePlayerMenu();
 			}
 		}
 	}
@@ -56,7 +55,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	protected override bool CheckForStopDrive () {
 		if (Driver == null || !Driver.Active) return true;
 		// For Player
-		if (Driver == Player.Selecting && Input.GameKeyDown(Gamekey.Select)) {
+		if (Driver == PlayerSystem.Selecting && Input.GameKeyDown(Gamekey.Select)) {
 			Input.UseGameKey(Gamekey.Select);
 			Driver.VelocityY = 56;
 			Driver.CancelIgnorePhysics();

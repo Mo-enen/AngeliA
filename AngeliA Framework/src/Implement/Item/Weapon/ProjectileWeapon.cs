@@ -25,7 +25,7 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 
 	[CheatCode("GiveAmmo")]
 	internal static bool Cheat_GiveAmmo () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) return false;
 		if (player.GetEquippingItem(EquipmentType.Weapon, out int eqCount) is not Weapon weapon) return false;
 		bool performed = false;

@@ -15,6 +15,7 @@ public static class BuiltInText {
 	public static readonly LanguageCode HINT_ADJUST = ("CtrlHint.Adjust", "Adjust");
 	public static readonly LanguageCode HINT_DRIVE = ("CtrlHint.Drive", "Drive");
 	public static readonly LanguageCode HINT_STOP_DRIVE = ("CtrlHint.StopDrive", "Stop Driving");
+	public static readonly LanguageCode HINT_SWITCH_PLAYER = ("CtrlHint.SwitchPlayer", "Select Player");
 
 	// UI
 	public static readonly LanguageCode UI_RESET = ("UI.Reset", "Reset");

@@ -80,8 +80,8 @@ public abstract class Platform : EnvironmentEntity {
 			if (hit.Entity is not Character ch) continue;
 			if (!TouchedByCharacter) OnCharacterTouched(ch);
 			TouchedByCharacter = true;
-			if (hit.Entity != Player.Selecting) continue;
-			if (!TouchedByPlayer) OnPlayerTouched(Player.Selecting);
+			if (hit.Entity != PlayerSystem.Selecting) continue;
+			if (!TouchedByPlayer) OnPlayerTouched(PlayerSystem.Selecting);
 			TouchedByPlayer = true;
 			break;
 		}
@@ -249,7 +249,7 @@ public abstract class Platform : EnvironmentEntity {
 
 	protected virtual void OnRigidbodyTouched (Rigidbody rig) { }
 	protected virtual void OnCharacterTouched (Character character) { }
-	protected virtual void OnPlayerTouched (Player player) { }
+	protected virtual void OnPlayerTouched (Character player) { }
 
 
 	// API

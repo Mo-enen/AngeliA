@@ -47,7 +47,7 @@ public sealed class CameraAutoScroll : Entity {
 		}
 		StartDirection = startDir.Value;
 		StartVelocity = StartDirection.Normal();
-		UpdatedPlayerPos = Player.Selecting != null ? new(Player.Selecting.X, Player.Selecting.Y) : default;
+		UpdatedPlayerPos = PlayerSystem.Selecting != null ? new(PlayerSystem.Selecting.X, PlayerSystem.Selecting.Y) : default;
 		var squad = WorldSquad.Front as IBlockSquad;
 		Speed =
 			squad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Right, out int speed) ? speed :
@@ -77,7 +77,7 @@ public sealed class CameraAutoScroll : Entity {
 		}
 
 		// Cache
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player != null) {
 			UpdatedPlayerPos.x = player.X;
 			UpdatedPlayerPos.y = player.Y;
@@ -88,7 +88,7 @@ public sealed class CameraAutoScroll : Entity {
 	private void Update_Idle () {
 
 		if (Game.GlobalFrame < SpawnFrame + 2) return;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 
 		if (StartVelocity.x != 0) {
@@ -161,7 +161,7 @@ public sealed class CameraAutoScroll : Entity {
 			0
 		);
 		// Player Interaction
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		var viewRect = Stage.ViewRect;
 		if (player != null) {
 			if (player.Y < viewRect.y - PLAYER_OUT_RANGE_GAP) {

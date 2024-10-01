@@ -80,14 +80,14 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 	protected override void OnUiClose () {
 		base.OnUiClose();
 		// Save
-		if (Player.Selecting.Rendering is PoseCharacterRenderer rendering) {
+		if (PlayerSystem.Selecting.Rendering is PoseCharacterRenderer rendering) {
 			rendering.SaveCharacterToConfig();
 		}
 	}
 
 
 	protected override void FrameUpdateUI (IRect windowRect) {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 		windowRect.x = player.Rect.CenterX() - windowRect.width / 2;
 		windowRect.y = player.Y + Const.CEL * 2 + Unify(64);
@@ -374,7 +374,7 @@ Color32.BLACK, 0
 	}
 
 
-	bool IActionTarget.AllowInvoke () => Player.Selecting != null && !TaskSystem.HasTask();
+	bool IActionTarget.AllowInvoke () => PlayerSystem.Selecting != null && !TaskSystem.HasTask();
 
 
 	#endregion
@@ -406,7 +406,7 @@ Color32.BLACK, 0
 
 
 	private int GetPlayerSuitIndex (ClothType type) {
-		if (Player.Selecting == null) return -1;
+		if (PlayerSystem.Selecting == null) return -1;
 		var suitPatterns = GetPattern(type);
 		int playerPattern = GetPlayerSuitID(type);
 		for (int i = 0; i < suitPatterns.Count; i++) {
@@ -417,7 +417,7 @@ Color32.BLACK, 0
 
 
 	private int GetPlayerSuitID (ClothType type) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return 0;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return 0;
 		return type switch {
 			ClothType.Head => rendering.SuitHead,
 			ClothType.Body => rendering.SuitBody,
@@ -440,7 +440,7 @@ Color32.BLACK, 0
 
 
 	private void ChangeSuit (ClothType type, int suitID) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		switch (type) {
 			case ClothType.Head:
 				rendering.SuitHead.BaseValue = suitID;

@@ -21,9 +21,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	public Character Owner { get; set; } = null;
 	int IDamageReceiver.Team => Owner != null ? (Owner as IDamageReceiver).Team : Const.TEAM_NEUTRAL;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
-	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
 	public int InventoryUpdatedFrame { get; set; } = -1;
-	public override int DespawnAfterPassoutDelay => -1;
 
 	// Data
 	private SummonNavigation SummonNavigation;
@@ -46,6 +44,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		SummonNavigation.Refresh();
 		SummonNavigation.FollowOwner = true;
 		Movement.PushAvailable.BaseValue = false;
+		DespawnAfterPassoutDelay = -1;
 	}
 
 
@@ -56,6 +55,8 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 			IgnorePhysics(1);
 		}
 		Physics.FillEntity(EntityLayer.CHARACTER, this, true);
+		// Att Team
+		AttackTargetTeam = Owner != null ? Owner.AttackTargetTeam : 0;
 	}
 
 

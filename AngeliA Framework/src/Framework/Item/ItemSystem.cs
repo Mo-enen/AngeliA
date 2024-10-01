@@ -261,7 +261,7 @@ public static class ItemSystem {
 
 
 	internal static void GiveItemCheat () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 		if (CheatSystem.CurrentParam is not int id) return;
 		if (!ItemPool.TryGetValue(id, out var data)) return;
@@ -275,7 +275,7 @@ public static class ItemSystem {
 
 
 	internal static void FillItemCheat () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 		if (CheatSystem.CurrentParam is not int id) return;
 		if (!ItemPool.TryGetValue(id, out var data)) return;

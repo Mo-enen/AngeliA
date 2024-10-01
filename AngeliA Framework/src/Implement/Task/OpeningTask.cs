@@ -35,7 +35,7 @@ public class OpeningTask : Task {
 		SkipFrame = int.MaxValue;
 		PlayerSpawnX = TargetViewX;
 		PlayerSpawnY = TargetViewY;
-		TargetViewY += Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
+		TargetViewY += Stage.ViewRect.height / 2 - PlayerSystem.GetCameraShiftOffset(Stage.ViewRect.height);
 		Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 1000, int.MaxValue);
 		if (FadeOut) {
 			Game.PassEffect_RetroDarken(1f);
@@ -65,7 +65,7 @@ public class OpeningTask : Task {
 
 		// Frame 1
 		if (localFrame == 1) {
-			var player = Player.Selecting;
+			var player = PlayerSystem.Selecting;
 			if (player != null) {
 				player.Active = false;
 				player.SetCharacterState(CharacterState.GamePlay);
@@ -76,19 +76,19 @@ public class OpeningTask : Task {
 
 		// Frame 2
 		if (localFrame == 3) {
-			var player = Player.Selecting;
+			var player = PlayerSystem.Selecting;
 			if (player != null) {
 				if (!player.Active) {
-					player = Stage.SpawnEntity(player.TypeID, PlayerSpawnX, PlayerSpawnY) as Player;
+					player = Stage.SpawnEntity(player.TypeID, PlayerSpawnX, PlayerSpawnY) as Character;
 				} else {
 					player.X = PlayerSpawnX;
 					player.Y = PlayerSpawnY;
 				}
 				player?.OnActivated();
 				if (player != null && GotoBed && Stage.TryGetEntityNearby<Bed>(new Int2(PlayerSpawnX, PlayerSpawnY), out var bed)) {
-					bed.GetTargetOnBed(Player.Selecting);
+					bed.GetTargetOnBed(PlayerSystem.Selecting);
 					TargetViewX = player.Rect.CenterX();
-					TargetViewY = player.Y + Stage.ViewRect.height / 2 - Player.GetCameraShiftOffset(Stage.ViewRect.height);
+					TargetViewY = player.Y + Stage.ViewRect.height / 2 - PlayerSystem.GetCameraShiftOffset(Stage.ViewRect.height);
 					SetViewPosition(TargetViewX, TargetViewY + DOLLY_HEIGHT);
 				}
 			}
@@ -134,28 +134,28 @@ public class OpeningTask : Task {
 	[OnGameRestart]
 	public static void OnGameRestart () {
 
-		if (Player.Selecting == null) return;
+		if (PlayerSystem.Selecting == null) return;
 
 		bool gotoBed = true;
 
 		// Get Start Position
 		Int3 startUnitPosition;
-		if (Player.RespawnCpUnitPosition.HasValue) {
+		if (PlayerSystem.RespawnCpUnitPosition.HasValue) {
 			// CP Respawn Pos
-			startUnitPosition = Player.RespawnCpUnitPosition.Value;
+			startUnitPosition = PlayerSystem.RespawnCpUnitPosition.Value;
 			gotoBed = false;
-		} else if (Player.HomeUnitPosition.HasValue) {
+		} else if (PlayerSystem.HomeUnitPosition.HasValue) {
 			// Home Pos
 			startUnitPosition = new Int3(
-				Player.HomeUnitPosition.Value.x,
-				Player.HomeUnitPosition.Value.y,
-				Player.HomeUnitPosition.Value.z
+				PlayerSystem.HomeUnitPosition.Value.x,
+				PlayerSystem.HomeUnitPosition.Value.y,
+				PlayerSystem.HomeUnitPosition.Value.z
 			);
-		} else if (Player.Selecting != null && Player.Selecting.Active) {
+		} else if (PlayerSystem.Selecting != null && PlayerSystem.Selecting.Active) {
 			// Player
 			startUnitPosition = new Int3(
-				Player.Selecting.X.ToUnit(),
-				Player.Selecting.Y.ToUnit(),
+				PlayerSystem.Selecting.X.ToUnit(),
+				PlayerSystem.Selecting.Y.ToUnit(),
 				Stage.ViewZ
 			);
 		} else {

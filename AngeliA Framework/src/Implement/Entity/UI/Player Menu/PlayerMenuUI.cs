@@ -120,7 +120,7 @@ public class PlayerMenuUI : EntityUI {
 	public override void UpdateUI () {
 		base.UpdateUI();
 
-		if (Player.Selecting == null) {
+		if (PlayerSystem.Selecting == null) {
 			Active = false;
 			return;
 		}
@@ -155,7 +155,7 @@ public class PlayerMenuUI : EntityUI {
 		RenderingBottomPanel = true;
 		var playerPanelRect = GetPanelRect(Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, ITEM_SIZE, false);
 		Renderer.DrawPixel(playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK);
-		DrawInventory(Player.Selecting.TypeID, Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, false);
+		DrawInventory(PlayerSystem.Selecting.TypeID, Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, false);
 
 		// Top Panel
 		RenderingBottomPanel = false;
@@ -375,7 +375,7 @@ public class PlayerMenuUI : EntityUI {
 		if (intendedHoldCancel) Input.UseGameKey(Gamekey.Jump);
 
 		// Inv Logic
-		int invID = CursorInBottomPanel ? Player.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
+		int invID = CursorInBottomPanel ? PlayerSystem.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
 		if (invID == 0) return;
 		int cursorLength = Inventory.GetInventoryCapacity(invID);
 		if (TakingID == 0) {
@@ -409,7 +409,7 @@ public class PlayerMenuUI : EntityUI {
 						ControlHintUI.AddHint(Gamekey.Jump, HINT_EQUIP, int.MinValue + 3);
 					} else {
 						// Use
-						if (ItemSystem.CanUseItem(cursorID, Player.Selecting)) {
+						if (ItemSystem.CanUseItem(cursorID, PlayerSystem.Selecting)) {
 							ControlHintUI.AddHint(Gamekey.Jump, HINT_HUSE, int.MinValue + 3);
 						}
 					}
@@ -639,7 +639,7 @@ public class PlayerMenuUI : EntityUI {
 				CancelKeyDownFrame >= 0 &&
 				Game.GlobalFrame >= CancelKeyDownFrame + 6
 			) {
-				if (ItemSystem.CanUseItem(itemID, Player.Selecting)) {
+				if (ItemSystem.CanUseItem(itemID, PlayerSystem.Selecting)) {
 					var cell = Renderer.DrawPixel(itemRect, Color32.GREEN, int.MinValue + 3);
 					cell.Shift = new Int4(
 						0, 0, 0,
@@ -689,7 +689,7 @@ public class PlayerMenuUI : EntityUI {
 	private void DrawEquipmentUI () {
 
 		bool interactable = Game.GlobalFrame - SpawnFrame > ANIMATION_DURATION;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		int previewWidth = Unify(PREVIEW_SIZE);
 		int itemHeight = Unify(EQUIP_ITEM_HEIGHT);
 		int hashContentHeight = Unify(12);// Unify(128);
@@ -751,13 +751,13 @@ public class PlayerMenuUI : EntityUI {
 
 	private void DrawEquipmentItem (int index, bool interactable, IRect rect, EquipmentType type, string label) {
 
-		int itemID = Inventory.GetEquipment(Player.Selecting.TypeID, type, out int equipmentCount);
+		int itemID = Inventory.GetEquipment(PlayerSystem.Selecting.TypeID, type, out int equipmentCount);
 		int fieldPadding = Unify(4);
 		var fieldRect = rect.Shrink(fieldPadding);
 		bool actionDown = interactable && Input.GameKeyDown(Gamekey.Action);
 		bool cancelDown = interactable && Input.GameKeyDown(Gamekey.Jump);
 		var enableTint = Color32.WHITE;
-		var equipAvailable = Player.Selecting.EquipmentAvailable(type);
+		var equipAvailable = PlayerSystem.Selecting.EquipmentAvailable(type);
 		bool mouseHovering = interactable && rect.MouseInside();
 		var item = itemID == 0 ? null : ItemSystem.GetItem(itemID);
 		bool stackAsUsage = type == EquipmentType.Weapon && item is Weapon wItem && wItem.UseStackAsUsage;
@@ -900,10 +900,10 @@ public class PlayerMenuUI : EntityUI {
 	// Equipment Operation
 	private void TakeEquipment (EquipmentType type) {
 		if (TakingID != 0) return;
-		if (!Player.Selecting.EquipmentAvailable(type)) return;
-		int currentEquipmentID = Inventory.GetEquipment(Player.Selecting.TypeID, type, out int eqCount);
+		if (!PlayerSystem.Selecting.EquipmentAvailable(type)) return;
+		int currentEquipmentID = Inventory.GetEquipment(PlayerSystem.Selecting.TypeID, type, out int eqCount);
 		if (currentEquipmentID == 0 || eqCount <= 0) return;
-		if (Inventory.SetEquipment(Player.Selecting.TypeID, type, 0, 0)) {
+		if (Inventory.SetEquipment(PlayerSystem.Selecting.TypeID, type, 0, 0)) {
 			TakingID = currentEquipmentID;
 			TakingCount = eqCount;
 			TakingFromBottomPanel = false;
@@ -914,7 +914,7 @@ public class PlayerMenuUI : EntityUI {
 
 	private void QuickDropFromEquipment (EquipmentType type) {
 		if (TakingID != 0) return;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (!player.EquipmentAvailable(type)) return;
 		int currentEquipmentID = Inventory.GetEquipment(player.TypeID, type, out int eqCount);
 		if (currentEquipmentID == 0 || eqCount <= 0) return;
@@ -934,7 +934,7 @@ public class PlayerMenuUI : EntityUI {
 	private void EquipAtCursor () {
 
 		if (TakingID != 0 || !CursorInBottomPanel) return;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		int playerInvID = player.TypeID;
 		int cursorInvCapacity = Inventory.GetInventoryCapacity(playerInvID);
 		if (CursorIndex < 0 || CursorIndex >= cursorInvCapacity) return;
@@ -981,7 +981,7 @@ public class PlayerMenuUI : EntityUI {
 	private void EquipTaking () {
 		if (TakingID == 0) return;
 		if (!ItemSystem.IsEquipment(TakingID, out var type)) return;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (!player.EquipmentAvailable(type)) return;
 		int oldEquipmentID = Inventory.GetEquipment(player.TypeID, type, out int oldEqCount);
 		int newEquipCount = oldEquipmentID == TakingID ? oldEqCount + TakingCount : TakingCount;
@@ -1005,7 +1005,7 @@ public class PlayerMenuUI : EntityUI {
 	// Inventory Operation
 	private void TakeItemAtCursor () {
 		if (TakingID != 0) return;
-		int invID = CursorInBottomPanel ? Player.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
+		int invID = CursorInBottomPanel ? PlayerSystem.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
 		if (invID == 0) return;
 		int itemCount = Inventory.GetInventoryCapacity(invID);
 		if (CursorIndex < 0 || CursorIndex >= itemCount) return;
@@ -1021,7 +1021,7 @@ public class PlayerMenuUI : EntityUI {
 
 	private void DropTakingToCursor () {
 		if (TakingID == 0) return;
-		int invID = CursorInBottomPanel ? Player.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
+		int invID = CursorInBottomPanel ? PlayerSystem.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
 		if (invID == 0) return;
 		int cursorItemCount = Inventory.GetInventoryCapacity(invID);
 		if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
@@ -1052,7 +1052,7 @@ public class PlayerMenuUI : EntityUI {
 	private void QuickDropAtCursor_FromInventory () {
 		if (TakingID != 0) return;
 		int partnerID = Partner != null ? Partner.InventoryID : 0;
-		int invID = CursorInBottomPanel ? Player.Selecting.TypeID : partnerID;
+		int invID = CursorInBottomPanel ? PlayerSystem.Selecting.TypeID : partnerID;
 		if (invID != 0) {
 			int cursorItemCount = Inventory.GetInventoryCapacity(invID);
 			if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
@@ -1060,7 +1060,7 @@ public class PlayerMenuUI : EntityUI {
 			if (cursorID == 0) return;
 			if (Partner != null) {
 				// Quick Transfer
-				int invIdAlt = CursorInBottomPanel ? partnerID : Player.Selecting.TypeID;
+				int invIdAlt = CursorInBottomPanel ? partnerID : PlayerSystem.Selecting.TypeID;
 				if (invIdAlt != 0) {
 					int collectCount = Inventory.CollectItem(invIdAlt, cursorID, out int collectedIndex, cursorCount);
 					int newCount = cursorCount - collectCount;
@@ -1080,7 +1080,7 @@ public class PlayerMenuUI : EntityUI {
 	private void UseAtCursor () {
 		if (TakingID != 0) return;
 		int partnerID = Partner != null ? Partner.InventoryID : 0;
-		int invID = CursorInBottomPanel ? Player.Selecting.TypeID : partnerID;
+		int invID = CursorInBottomPanel ? PlayerSystem.Selecting.TypeID : partnerID;
 		if (invID == 0) return;
 		int cursorItemCount = Inventory.GetInventoryCapacity(invID);
 		if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
@@ -1088,7 +1088,7 @@ public class PlayerMenuUI : EntityUI {
 		if (cursorID == 0 || cursorCount == 0) return;
 		if (ItemSystem.IsEquipment(cursorID)) return;
 		var item = ItemSystem.GetItem(cursorID);
-		if (item != null && item.Use(Player.Selecting)) {
+		if (item != null && item.Use(PlayerSystem.Selecting)) {
 			Inventory.TakeItemAt(invID, CursorIndex);
 		}
 	}
@@ -1096,7 +1096,7 @@ public class PlayerMenuUI : EntityUI {
 
 	private void SplitItemAtCursor () {
 		if (TakingID != 0) return;
-		int invID = CursorInBottomPanel ? Player.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
+		int invID = CursorInBottomPanel ? PlayerSystem.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
 		if (invID == 0) return;
 		int cursorItemCount = Inventory.GetInventoryCapacity(invID);
 		if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
@@ -1117,7 +1117,7 @@ public class PlayerMenuUI : EntityUI {
 		if (TakingID == 0) return;
 
 		// Collect
-		int invID = TakingFromBottomPanel ? Player.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
+		int invID = TakingFromBottomPanel ? PlayerSystem.Selecting.TypeID : Partner != null ? Partner.InventoryID : 0;
 		if (invID != 0) {
 			int itemCount = Inventory.GetInventoryCapacity(invID);
 			if (TakingFromIndex >= 0 && TakingFromIndex < itemCount) {
@@ -1136,7 +1136,7 @@ public class PlayerMenuUI : EntityUI {
 
 	private void ThrowTakingToGround () {
 		if (TakingID == 0 || TakingCount == 0) return;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		ItemSystem.SpawnItem(TakingID, player.X - Const.CEL, player.Y, TakingCount, jump: false);
 		TakingID = 0;
 		TakingCount = 0;
@@ -1180,12 +1180,12 @@ public class PlayerMenuUI : EntityUI {
 
 
 	private IRect GetPanelRect (int column, int row, int itemSize, bool panelOnTop) {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
 		int uItemSize = Unify(itemSize);
 		int invWidth = uItemSize * column;
 		int invHeight = uItemSize * row;
-		int invX = Player.Selecting.X;
+		int invX = PlayerSystem.Selecting.X;
 		int invY = panelOnTop ?
 			player.Y + Const.CEL * 2 + Const.HALF + Unify(WINDOW_PADDING) :
 			player.Y - invHeight - Const.HALF - Unify(WINDOW_PADDING);
@@ -1203,7 +1203,7 @@ public class PlayerMenuUI : EntityUI {
 
 
 	private IRect GetInventoryRect (int itemHeight) {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		int localAnimationFrame = Game.GlobalFrame - SpawnFrame;
 		int invWidth = Unify(EQUIP_PANEL_WIDTH);
 		int invHeight = itemHeight * 3;

@@ -213,7 +213,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 
 	bool IActionTarget.Invoke () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
 		if (collected) {
 			ItemSystem.SetItemUnlocked(ItemID, true);

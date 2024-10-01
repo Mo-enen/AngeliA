@@ -66,7 +66,7 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 	bool IActionTarget.Invoke () {
 		if (!Open) SetOpen(true);
 		// Spawn UI Entity
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null || !player.InventoryCurrentAvailable) return false;
 		var playerMenu = PlayerMenuUI.OpenMenu();
 		if (playerMenu != null) {
@@ -78,7 +78,7 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 	}
 
 	bool IActionTarget.AllowInvoke () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		return player != null && player.InventoryCurrentAvailable;
 	}
 

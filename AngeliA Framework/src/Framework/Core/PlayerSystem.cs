@@ -1,0 +1,634 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace AngeliA;
+
+public static class PlayerSystem {
+
+
+
+
+	#region --- VAR ---
+
+	// Const
+	private const int RUSH_TAPPING_GAP = 16;
+	private const int ACTION_SCAN_RANGE = Const.HALF;
+	private static readonly LanguageCode HINT_WAKE = ("CtrlHint.WakeUp", "Wake");
+
+	// Api
+	public static Character Selecting { get; private set; } = null;
+	public static Int3? RespawnCpUnitPosition { get; set; } = null;
+	public static Int3? HomeUnitPosition {
+		get {
+			if (
+				HomeUnitPositionX.Value == int.MinValue ||
+				HomeUnitPositionY.Value == int.MinValue ||
+				HomeUnitPositionZ.Value == int.MinValue
+			) return null;
+			return new Int3(HomeUnitPositionX.Value, HomeUnitPositionY.Value, HomeUnitPositionZ.Value);
+		}
+		set {
+			if (value.HasValue) {
+				HomeUnitPositionX.Value = value.Value.x;
+				HomeUnitPositionY.Value = value.Value.y;
+				HomeUnitPositionZ.Value = value.Value.z;
+			} else {
+				HomeUnitPositionX.Value = int.MinValue;
+				HomeUnitPositionY.Value = int.MinValue;
+				HomeUnitPositionZ.Value = int.MinValue;
+			}
+
+		}
+	}
+	public static bool AllowPlayerMenuUI => Selecting != null && Game.GlobalFrame > IgnorePlayerMenuFrame && Selecting.InventoryCurrentAvailable;
+	public static bool AllowQuickPlayerMenuUI => Selecting != null && Game.GlobalFrame > IgnorePlayerQuickMenuFrame && Selecting.InventoryCurrentAvailable;
+	public static bool LockingInput => Game.GlobalFrame <= LockInputFrame;
+	public static int LockInputFrame { get; private set; } = -1;
+	public static int AimViewX { get; private set; } = 0;
+	public static int AimViewY { get; private set; } = 0;
+	public static IActionTarget TargetActionEntity { get; private set; } = null;
+
+	// Data
+	private static int AttackRequiringFrame = int.MinValue;
+	private static int LastLeftKeyDown = int.MinValue;
+	private static int LastRightKeyDown = int.MinValue;
+	private static int LastGroundedY = 0;
+	private static int IgnoreActionFrame = -1;
+	private static int IgnorePlayerMenuFrame = -1;
+	private static int IgnorePlayerQuickMenuFrame = -1;
+	private static int IgnoreAttackFrame = int.MinValue;
+
+	// Saving
+	private static readonly SavingInt SelectingPlayerID = new("Player.SelectingPlayerID", 0, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionX = new("Player.HomeX", int.MinValue, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionY = new("Player.HomeY", int.MinValue, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionZ = new("Player.HomeZ", int.MinValue, SavingLocation.Slot);
+
+
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	[CheatCode("FillInventory")]
+	internal static void CheatCodeFillInventory () {
+		if (Selecting == null) return;
+		int len = Selecting.GetInventoryCapacity();
+		for (int i = 0; i < len; i++) {
+			int id = Selecting.GetItemIDFromInventory(i);
+			if (id == 0) continue;
+			int maxCount = ItemSystem.GetItemMaxStackCount(id);
+			Inventory.SetItemAt(Selecting.TypeID, i, id, maxCount);
+		}
+	}
+
+
+	[OnGameInitializeLater]
+	[OnSavingSlotChanged]
+	public static TaskResult OnGameInitializeLaterPlayer () {
+		if (!Stage.IsReady) return TaskResult.Continue;
+		RespawnCpUnitPosition = null;
+		SelectCharacterAsPlayer(SelectingPlayerID.Value);
+		return TaskResult.End;
+	}
+
+
+	// Before Update
+	[BeforeBeforeUpdate]
+	internal static void BeforeUpdate () {
+
+		if (Selecting == null || !Selecting.Active) return;
+
+		Selecting.ForceStayOnStage();
+
+		// Update Player
+		switch (Selecting.CharacterState) {
+			case CharacterState.GamePlay:
+
+				bool allowGamePlay = !TaskSystem.HasTask() && !GUI.IsTyping;
+
+				if (allowGamePlay) {
+					if (PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI) {
+						LockInput(0);
+					}
+				}
+
+				if (allowGamePlay && !LockingInput) {
+
+					// Update Aiming
+					UpdateAiming();
+
+					// Move
+					Selecting.Movement.Move(Input.DirectionX, Input.DirectionY, Input.GameKeyHolding(Gamekey.Up));
+
+					// Movement Actions
+					UpdateJumpDashPoundRush();
+
+					// Hint
+					ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE);
+				} else {
+					Selecting.Movement.Stop();
+				}
+
+				if (allowGamePlay) {
+					UpdateAction();
+					UpdateAttack();
+					UpdateInventoryUI();
+				}
+
+				break;
+			case CharacterState.Sleep:
+				UpdateSleep();
+				break;
+			case CharacterState.PassOut:
+				UpdatePassOut();
+				break;
+		}
+
+		// Final
+		UpdateView();
+		UpdateAutoPick();
+	}
+
+
+	private static void UpdateAiming () {
+		var att = Selecting.Attackness;
+		var mov = Selecting.Movement;
+		att.AimingDirection =
+			Input.Direction.TryGetDirection8(out var result) ? result :
+			mov.FacingRight ? Direction8.Right : Direction8.Left;
+		// Ignore Check
+		if (att.IsAimingDirectionIgnored(att.AimingDirection)) {
+			var dir0 = att.AimingDirection;
+			var dir1 = att.AimingDirection;
+			bool clockwiseFirst = mov.FacingRight == dir0.IsTop();
+			for (int safe = 0; safe < 4; safe++) {
+				dir0 = clockwiseFirst ? dir0.Clockwise() : dir0.AntiClockwise();
+				dir1 = clockwiseFirst ? dir1.AntiClockwise() : dir1.Clockwise();
+				if (!att.IsAimingDirectionIgnored(dir0)) {
+					att.AimingDirection = dir0;
+					break;
+				}
+				if (!att.IsAimingDirectionIgnored(dir1)) {
+					att.AimingDirection = dir1;
+					break;
+				}
+			}
+		}
+	}
+
+
+	private static void UpdateJumpDashPoundRush () {
+
+		if (LockingInput) return;
+
+		var att = Selecting.Attackness;
+		var mov = Selecting.Movement;
+
+		ControlHintUI.AddHint(Gamekey.Jump, BuiltInText.HINT_JUMP);
+
+		// Jump/Dash
+		mov.HoldJump(Input.GameKeyHolding(Gamekey.Jump));
+		if (Input.GameKeyDown(Gamekey.Jump)) {
+			// Movement Jump
+			if (Input.GameKeyHolding(Gamekey.Down)) {
+				mov.Dash();
+			} else {
+				mov.Jump();
+				if (att.CancelAttackOnJump) att.CancelAttack();
+				AttackRequiringFrame = int.MinValue;
+			}
+		}
+
+		// Pound
+		if (Input.GameKeyDown(Gamekey.Down)) {
+			mov.Pound();
+		}
+
+		// Rush
+		if (Input.GameKeyDown(Gamekey.Left)) {
+			if (
+				Game.GlobalFrame < LastLeftKeyDown + RUSH_TAPPING_GAP &&
+				!Input.GameKeyHolding(Gamekey.Up)
+			) {
+				mov.Rush();
+			}
+			LastLeftKeyDown = Game.GlobalFrame;
+			LastRightKeyDown = int.MinValue;
+		}
+		if (Input.GameKeyDown(Gamekey.Right)) {
+			if (
+				Game.GlobalFrame < LastRightKeyDown + RUSH_TAPPING_GAP &&
+				!Input.GameKeyHolding(Gamekey.Up)
+			) {
+				mov.Rush();
+			}
+			LastRightKeyDown = Game.GlobalFrame;
+			LastLeftKeyDown = int.MinValue;
+		}
+
+	}
+
+
+	private static void UpdateAction () {
+
+		var health = Selecting.Health;
+		var mov = Selecting.Movement;
+
+		if (health.TakingDamage || TaskSystem.HasTask() || Game.GlobalFrame <= IgnoreActionFrame) {
+			TargetActionEntity = null;
+			return;
+		}
+
+		// Search for Active Trigger
+		if (TargetActionEntity == null || !TargetActionEntity.LockInput) {
+			TargetActionEntity = null;
+			Entity eActTarget = null;
+			var hits = Physics.OverlapAll(
+				PhysicsMask.DYNAMIC,
+				Selecting.Rect.Expand(ACTION_SCAN_RANGE, ACTION_SCAN_RANGE, 0, ACTION_SCAN_RANGE),
+				out int count, Selecting,
+				OperationMode.ColliderAndTrigger
+			);
+			int dis = int.MaxValue;
+			bool squatting = mov.IsSquatting;
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is not IActionTarget act) continue;
+				if (!act.AllowInvoke()) continue;
+				if (squatting) {
+					if (!act.AllowInvokeOnSquat) continue;
+				} else {
+					if (!act.AllowInvokeOnStand) continue;
+				}
+				// Comparer X Distance
+				int _dis =
+					Selecting.X >= hit.Rect.xMin && Selecting.X <= hit.Rect.xMax ? 0 :
+					Selecting.X > hit.Rect.xMax ? Util.Abs(Selecting.X - hit.Rect.xMax) :
+					Util.Abs(Selecting.X - hit.Rect.xMin);
+				if (_dis < dis) {
+					dis = _dis;
+					TargetActionEntity = act;
+					eActTarget = hit.Entity;
+				} else if (_dis == dis && TargetActionEntity != null) {
+					// Comparer Y Distance
+					if (hit.Entity.Y < eActTarget.Y) {
+						dis = _dis;
+						TargetActionEntity = act;
+						eActTarget = hit.Entity;
+					} else if (hit.Entity.Rect.y == eActTarget.Y) {
+						// Comparer Size
+						if (hit.Entity.Width * hit.Entity.Height < eActTarget.Width * eActTarget.Height) {
+							dis = _dis;
+							TargetActionEntity = act;
+							eActTarget = hit.Entity;
+						}
+					}
+				}
+			}
+		}
+
+		// Try Perform Action
+		if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
+			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE, int.MinValue + 1);
+			if (Input.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
+				if (TargetActionEntity.Invoke()) {
+					Input.UseGameKey(Gamekey.Action);
+				}
+			}
+		}
+
+		// Lock Input from Highlight Target
+		if (TargetActionEntity != null && TargetActionEntity.LockInput) {
+			LockInput(1);
+		}
+
+	}
+
+
+	private static void UpdateAttack () {
+
+		var att = Selecting.Attackness;
+		var mov = Selecting.Movement;
+
+		att.IsChargingAttack =
+			att.MinimalChargeAttackDuration != int.MaxValue &&
+			Game.GlobalFrame >= att.LastAttackFrame + att.AttackDuration + att.AttackCooldown + att.MinimalChargeAttackDuration &&
+			!TaskSystem.HasTask() &&
+			!LockingInput &&
+			Input.GameKeyHolding(Gamekey.Action) &&
+			Selecting.IsAttackAllowedByMovement() &&
+			Selecting.IsAttackAllowedByEquipment();
+
+
+		if (LockingInput || Game.GlobalFrame <= IgnoreAttackFrame) return;
+
+		// Try Perform Attack
+		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
+		bool attDown = Input.GameKeyDown(Gamekey.Action);
+		bool attHolding = Input.GameKeyHolding(Gamekey.Action) && att.RepeatAttackWhenHolding;
+		if (attDown || attHolding) {
+			if (Game.GlobalFrame >= att.LastAttackFrame + att.AttackDuration + att.AttackCooldown + (attDown ? 0 : att.HoldAttackPunishFrame)) {
+				att.Attack(mov.FacingRight);
+			} else if (attDown) {
+				AttackRequiringFrame = Game.GlobalFrame;
+			}
+			return;
+		}
+
+		// Reset Require on Move
+		if (
+			Input.GameKeyDown(Gamekey.Left) || Input.GameKeyDown(Gamekey.Right) ||
+			Input.GameKeyDown(Gamekey.Down) || Input.GameKeyDown(Gamekey.Up)
+		) {
+			AttackRequiringFrame = int.MinValue;
+		}
+
+		// Perform Required Attack
+		const int ATTACK_REQUIRE_GAP = 12;
+		if (
+			Game.GlobalFrame < AttackRequiringFrame + ATTACK_REQUIRE_GAP &&
+			Game.GlobalFrame >= att.LastAttackFrame + att.AttackDuration + att.AttackCooldown
+		) {
+			AttackRequiringFrame = int.MinValue;
+			att.Attack(mov.FacingRight);
+		}
+
+
+	}
+
+
+	private static void UpdateInventoryUI () {
+
+		if (!AllowPlayerMenuUI && PlayerMenuUI.ShowingUI) {
+			PlayerMenuUI.CloseMenu();
+		}
+		bool requireHint = false;
+
+		// Quick Menu
+		if (AllowQuickPlayerMenuUI && !PlayerMenuUI.ShowingUI && !PlayerQuickMenuUI.ShowingUI && !LockingInput) {
+			if (Input.GameKeyDown(Gamekey.Select) || Input.GameKeyDown(Gamekey.Start)) {
+				PlayerQuickMenuUI.OpenMenu();
+			}
+			requireHint = true;
+		}
+
+		// Inventory Menu
+		if (
+			AllowPlayerMenuUI &&
+			!PlayerMenuUI.ShowingUI &&
+			(PlayerQuickMenuUI.ShowingUI || !LockingInput) &&
+			(!PlayerQuickMenuUI.ShowingUI || !PlayerQuickMenuUI.Instance.IsDirty)
+		) {
+			if (Input.GameKeyUp(Gamekey.Select)) {
+				Input.UseGameKey(Gamekey.Select);
+				PlayerMenuUI.OpenMenu();
+			}
+			requireHint = true;
+		}
+
+		// Hint
+		if (requireHint) {
+			ControlHintUI.AddHint(
+				Input.UsingGamepad ? Gamekey.Start : Gamekey.Select,
+				BuiltInText.HINT_SHOW_MENU
+			);
+		}
+	}
+
+
+	private static void UpdateSleep () {
+
+		TargetActionEntity = null;
+
+		if (TaskSystem.HasTask()) return;
+
+		// Wake up on Press Action
+		if (Input.GameKeyDown(Gamekey.Action) || Input.GameKeyDown(Gamekey.Jump)) {
+			Input.UseGameKey(Gamekey.Action);
+			Input.UseGameKey(Gamekey.Jump);
+			Selecting.SetCharacterState(CharacterState.GamePlay);
+			Selecting.SleepStartFrame = int.MinValue;
+			Selecting.Y -= 4;
+		}
+
+		// Hint
+		ControlHintUI.DrawGlobalHint(
+			Selecting.X - Const.HALF, Selecting.Y + Const.CEL * 3 / 2,
+			Gamekey.Action, HINT_WAKE, background: true
+		);
+		ControlHintUI.AddHint(Gamekey.Action, HINT_WAKE);
+	}
+
+
+	private static void UpdateView () {
+
+		var mov = Selecting.Movement;
+
+		const int LINGER_RATE = 32;
+		bool notInGameplay = TaskSystem.HasTask() || Selecting.CharacterState != CharacterState.GamePlay;
+		bool notInAir =
+			notInGameplay ||
+			Selecting.IsGrounded || Selecting.InWater || mov.IsSliding ||
+			mov.IsClimbing || mov.IsGrabbingSide || mov.IsGrabbingTop;
+
+		if (notInAir || mov.IsFlying) LastGroundedY = Selecting.Y;
+
+		// Aim X
+		int linger = Stage.ViewRect.width * LINGER_RATE / 1000;
+		int centerX = Stage.ViewRect.x + Stage.ViewRect.width / 2;
+		if (notInGameplay) {
+			AimViewX = Selecting.X - Stage.ViewRect.width / 2;
+		} else if (Selecting.X < centerX - linger) {
+			AimViewX = Selecting.X + linger - Stage.ViewRect.width / 2;
+		} else if (Selecting.X > centerX + linger) {
+			AimViewX = Selecting.X - linger - Stage.ViewRect.width / 2;
+		}
+
+		// Aim Y
+		AimViewY = Selecting.Y <= LastGroundedY ? Selecting.Y - GetCameraShiftOffset(Stage.ViewRect.height) : AimViewY;
+		Stage.SetViewPositionDelay(AimViewX, AimViewY, 96, int.MinValue);
+
+		// Size
+		Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 96, int.MinValue, centralized: true);
+
+		// Clamp
+		if (!Stage.ViewRect.Contains(Selecting.X, Selecting.Y)) {
+			if (Selecting.X >= Stage.ViewRect.xMax) AimViewX = Selecting.X - Stage.ViewRect.width + 1;
+			if (Selecting.X <= Stage.ViewRect.xMin) AimViewX = Selecting.X - 1;
+			if (Selecting.Y >= Stage.ViewRect.yMax) AimViewY = Selecting.Y - Stage.ViewRect.height + 1;
+			if (Selecting.Y <= Stage.ViewRect.yMin) AimViewY = Selecting.Y - 1;
+			Stage.SetViewPositionDelay(AimViewX, AimViewY, 1000, int.MinValue + 1);
+		}
+
+	}
+
+
+	private static void UpdatePassOut () {
+
+		if (TaskSystem.HasTask()) return;
+
+		bool fullPassOut = Selecting.Health.HP == 0 && Game.GlobalFrame > Selecting.PassOutFrame + 48;
+
+		if (fullPassOut) {
+			ControlHintUI.DrawGlobalHint(
+				Selecting.X - Const.HALF, Selecting.Y + Const.CEL * 3 / 2,
+				Gamekey.Action, BuiltInText.UI_CONTINUE, background: true
+			);
+		}
+
+		// Close Menu UI
+		if (PlayerMenuUI.ShowingUI) PlayerMenuUI.CloseMenu();
+
+		// Reload Game After Player PassOut
+		if (fullPassOut && Input.GameKeyDown(Gamekey.Action)) {
+			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+			Input.UseGameKey(Gamekey.Action);
+		}
+
+	}
+
+
+	private static void UpdateAutoPick () {
+		// Auto Pick Item on Ground
+		if (!TaskSystem.HasTask() && !PlayerMenuUI.ShowingUI) {
+			var cells = Physics.OverlapAll(PhysicsMask.ITEM, Selecting.Rect, out int count, null, OperationMode.ColliderAndTrigger);
+			for (int i = 0; i < count; i++) {
+				var cell = cells[i];
+				if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
+				int equippingID = Inventory.GetEquipment(Selecting.TypeID, EquipmentType.Weapon, out _);
+				holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: equippingID == 0);
+			}
+		}
+	}
+
+
+	// Update
+	[BeforeUpdateUpdate]
+	internal static void Update () {
+		if (Selecting == null || !Selecting.Active) return;
+		if (!Stage.ViewRect.Overlaps(Selecting.GlobalBounds)) return;
+		UpdateCollect();
+	}
+
+
+	private static void UpdateCollect () {
+		var hits = Physics.OverlapAll(
+			PhysicsMask.DYNAMIC, Selecting.Rect, out int count, Selecting, OperationMode.TriggerOnly
+		);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Entity is not Collectable col) continue;
+			bool success = col.OnCollect(Selecting);
+			if (success) {
+				hit.Entity.Active = false;
+			}
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	// Select Player
+	public static void UserChooseCharacterAsPlayer (Character target) {
+		HomeUnitPosition = new Int3(Selecting.X.ToUnit(), Selecting.Y.ToUnit(), Stage.ViewZ);
+		TaskSystem.AddToLast(FadeOutTask.TYPE_ID);
+		TaskSystem.AddToLast(SelectPlayerTask.TYPE_ID, target);
+		TaskSystem.AddToLast(FadeInTask.TYPE_ID);
+	}
+
+
+	public static void SelectCharacterAsPlayer (int characterTypeID) {
+		if (Selecting != null && Selecting.Active && characterTypeID == Selecting.TypeID) return;
+		if (characterTypeID == 0) characterTypeID = GetDefaultPlayerID();
+		if (characterTypeID != 0) {
+			if (
+				Stage.PeekOrGetEntity(characterTypeID) is Character target
+			) {
+				SetCharacterAsPlayer(target);
+			} else if (Stage.SpawnEntity(characterTypeID, 0, 0) is Character _target) {
+				SetCharacterAsPlayer(_target);
+			}
+		}
+	}
+
+
+	public static void SetCharacterAsPlayer (Character target) {
+		if (Selecting != null) {
+			Selecting.Movement.Stop();
+			Selecting.OnActivated();
+		}
+		Selecting = target;
+		if (target == null) {
+			SelectingPlayerID.Value = 0;
+			return;
+		}
+		target.Team = Const.TEAM_PLAYER;
+		target.AttackTargetTeam = Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
+		target.DespawnAfterPassoutDelay = -1;
+		SelectingPlayerID.Value = target.TypeID;
+		LockInputFrame = -1;
+		TargetActionEntity = null;
+		Inventory.SetUnlockItemsInside(target.TypeID, true);
+		PlayerMenuUI.CloseMenu();
+	}
+
+
+	// Misc
+	public static int GetDefaultPlayerID () {
+		System.Type result = null;
+		int currentPriority = int.MinValue;
+		foreach (var (type, attribute) in Util.AllClassWithAttribute<EntityAttribute.DefaultSelectPlayerAttribute>()) {
+			if ((type == typeof(Character) || type.IsSubclassOf(typeof(Character))) && attribute.Priority >= currentPriority) {
+				result = type;
+				currentPriority = attribute.Priority;
+			}
+		}
+		return result != null ? result.AngeHash() : DefaultPlayer.TYPE_ID;
+	}
+
+
+	// Ignore
+	public static void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
+
+
+	public static void IgnoreAction (int duration = 1) => IgnoreActionFrame = Game.GlobalFrame + duration;
+
+
+	public static void IgnorePlayerMenu (int duration = 1) => IgnorePlayerMenuFrame = Game.GlobalFrame + duration;
+
+
+	public static void IgnorePlayerQuickMenu (int duration = 1) => IgnorePlayerQuickMenuFrame = Game.GlobalFrame + duration;
+
+
+	public static void IgnoreAttack (int duration = 1) => IgnoreAttackFrame = Game.GlobalFrame + duration;
+
+
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
+
+
+	#endregion
+
+
+
+
+}

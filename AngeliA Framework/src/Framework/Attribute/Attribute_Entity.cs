@@ -8,9 +8,8 @@ public static class EntityAttribute {
 
 	// Character
 	[AttributeUsage(AttributeTargets.Class)]
-	public class DefaultSelectPlayerAttribute : Attribute {
-		public int Priority = 0;
-		public DefaultSelectPlayerAttribute (int priority = 0) => Priority = priority;
+	public class DefaultSelectPlayerAttribute (int priority = 0) : Attribute {
+		public int Priority = priority;
 	}
 
 
@@ -20,37 +19,28 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class, Inherited = true)]
-	public class MapEditorGroupAttribute : Attribute {
-		public string GroupName = "";
-		public MapEditorGroupAttribute (string groupName) => GroupName = groupName;
+	public class MapEditorGroupAttribute (string groupName) : Attribute {
+		public string GroupName = groupName;
 	}
 
 
 	// Misc
 	[AttributeUsage(AttributeTargets.Class)]
-	public class LayerAttribute : Attribute {
-		public int Layer;
-		public LayerAttribute (int layer) {
-			Layer = layer;
-		}
+	public class LayerAttribute (int layer) : Attribute {
+		public int Layer = layer;
 	}
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class CapacityAttribute : Attribute {
-		public int Value;
-		public int PreSpawn;
-		public CapacityAttribute (int capacity, int preSpawn = 0) {
-			Value = capacity;
-			PreSpawn = preSpawn.Clamp(0, capacity);
-		}
+	public class CapacityAttribute (int capacity, int preSpawn = 0) : Attribute {
+		public int Value = capacity;
+		public int PreSpawn = preSpawn.Clamp(0, capacity);
 	}
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class BoundsAttribute : Attribute {
-		public IRect Value;
-		public BoundsAttribute (int boundX, int boundY, int boundWidth, int boundHeight) => Value = new(boundX, boundY, boundWidth, boundHeight);
+	public class BoundsAttribute (int boundX, int boundY, int boundWidth, int boundHeight) : Attribute {
+		public IRect Value = new(boundX, boundY, boundWidth, boundHeight);
 	}
 
 
@@ -75,11 +65,8 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class StageOrderAttribute : Attribute {
-		public int Order = 0;
-		public StageOrderAttribute (int order) {
-			Order = order;
-		}
+	public class StageOrderAttribute (int order) : Attribute {
+		public int Order = order;
 	}
 
 
@@ -88,11 +75,8 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class SpawnFromLevelBlock : Attribute {
-		public int LevelID;
-		public SpawnFromLevelBlock (string levelBlockName) {
-			LevelID = levelBlockName.AngeHash();
-		}
+	public class SpawnFromLevelBlock (string levelBlockName) : Attribute {
+		public int LevelID = levelBlockName.AngeHash();
 	}
 
 

@@ -14,7 +14,7 @@ public abstract class StepTriggerPlatform : TriggerablePlatform {
 		if (!TriggerOnCharacterTouch || TriggeredData != null) return;
 		Trigger(character);
 	}
-	protected override void OnPlayerTouched (Player player) {
+	protected override void OnPlayerTouched (Character player) {
 		base.OnPlayerTouched(player);
 		if (!TriggerOnPlayerTouch || TriggeredData != null) return;
 		Trigger(player);

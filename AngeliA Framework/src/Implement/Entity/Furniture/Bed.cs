@@ -37,7 +37,7 @@ public abstract class Bed : Furniture, IActionTarget {
 		}
 
 		// Update for Selecting Player
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (Target == player) {
 			// Curtain
 			if (RequireRestartGame) {
@@ -46,9 +46,9 @@ public abstract class Bed : Furniture, IActionTarget {
 			// Restart Game
 			if (RequireRestartGame && Game.GlobalFrame - player.SleepStartFrame >= Character.FULL_SLEEP_DURATION) {
 				RequireRestartGame = false;
-				player.MakeHome(new Int3(player.X.ToUnit(), player.Y.ToUnit(), Stage.ViewZ));
+				PlayerSystem.HomeUnitPosition = new Int3(player.X.ToUnit(), player.Y.ToUnit(), Stage.ViewZ);
 				player.GetBonusFromFullSleep();
-				Player.RespawnCpUnitPosition = null;
+				PlayerSystem.RespawnCpUnitPosition = null;
 				Game.RestartGame();
 			}
 		}
@@ -85,12 +85,12 @@ public abstract class Bed : Furniture, IActionTarget {
 	}
 
 	bool IActionTarget.Invoke () {
-		if (Player.Selecting == null) return false;
-		GetTargetOnBed(Player.Selecting);
+		if (PlayerSystem.Selecting == null) return false;
+		GetTargetOnBed(PlayerSystem.Selecting);
 		RequireRestartGame = true;
 		return true;
 	}
 
-	bool IActionTarget.AllowInvoke () => Player.Selecting != null;
+	bool IActionTarget.AllowInvoke () => PlayerSystem.Selecting != null;
 
 }

@@ -119,6 +119,11 @@ public static class Stage {
 	private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
 	private static (int? value, int priority) ViewDelayY = (null, int.MinValue);
 	private static (int? value, int priority, int centralizedFrame) ViewDelayHeight = (null, int.MinValue, -1);
+	private static event Action BeforeFirstUpdate;
+	private static event Action BeforeBeforeUpdate;
+	private static event Action BeforeUpdateUpdate;
+	private static event Action BeforeLateUpdate;
+	private static event Action AfterLateUpdate;
 	private static event Action OnViewZChanged;
 	private static event Action<int> BeforeLayerFrameUpdate;
 	private static event Action<int> AfterLayerFrameUpdate;
@@ -214,6 +219,12 @@ public static class Stage {
 		Util.LinkEventWithAttribute<OnViewZChangedAttribute>(typeof(Stage), nameof(OnViewZChanged));
 		Util.LinkEventWithAttribute<BeforeLayerFrameUpdateAttribute>(typeof(Stage), nameof(BeforeLayerFrameUpdate));
 		Util.LinkEventWithAttribute<AfterLayerFrameUpdateAttribute>(typeof(Stage), nameof(AfterLayerFrameUpdate));
+
+		Util.LinkEventWithAttribute<BeforeFirstUpdateAttribute>(typeof(Stage), nameof(BeforeFirstUpdate));
+		Util.LinkEventWithAttribute<BeforeBeforeUpdateAttribute>(typeof(Stage), nameof(BeforeBeforeUpdate));
+		Util.LinkEventWithAttribute<BeforeUpdateUpdateAttribute>(typeof(Stage), nameof(BeforeUpdateUpdate));
+		Util.LinkEventWithAttribute<BeforeLateUpdateAttribute>(typeof(Stage), nameof(BeforeLateUpdate));
+		Util.LinkEventWithAttribute<AfterLateUpdateAttribute>(typeof(Stage), nameof(AfterLateUpdate));
 
 	}
 
@@ -336,6 +347,7 @@ public static class Stage {
 		}
 
 		// First (Fill Physics)
+		BeforeFirstUpdate?.Invoke();
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
 			int count = EntityCounts[layer].Clamp(0, span.Length);
@@ -347,6 +359,7 @@ public static class Stage {
 		}
 
 		// Before
+		BeforeBeforeUpdate?.Invoke();
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
 			int count = EntityCounts[layer].Clamp(0, span.Length);
@@ -361,6 +374,7 @@ public static class Stage {
 		}
 
 		// Update
+		BeforeUpdateUpdate?.Invoke();
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
 			int count = EntityCounts[layer].Clamp(0, span.Length);
@@ -375,6 +389,7 @@ public static class Stage {
 		}
 
 		// Late
+		BeforeLateUpdate?.Invoke();
 		var cullCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
@@ -391,6 +406,7 @@ public static class Stage {
 			}
 			AfterLayerFrameUpdate?.Invoke(layer);
 		}
+		AfterLateUpdate?.Invoke();
 
 		// Final
 		AntiSpawnRect = ViewRect.Expand(Const.ANTI_SPAWN_PADDING);

@@ -8,7 +8,7 @@ public class SummonNavigation : CharacterNavigation {
 
 	private const int AIM_REFRESH_FREQUENCY = 60;
 	public override bool NavigationEnable => TargetCharacter.CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
-	public override bool ClampInSpawnRect => Owner == Player.Selecting;
+	public override bool ClampInSpawnRect => Owner == PlayerSystem.Selecting;
 	public bool FollowOwner { get; set; } = true;
 	public Entity Owner { get; set; }
 	public SummonNavigation (Character character) : base(character) { }

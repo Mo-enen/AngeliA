@@ -134,7 +134,7 @@ public class TeleportTask : Task {
 			int offsetY = TeleportFrom.y - Stage.ViewRect.yMin;
 			Stage.SetViewPositionDelay(TeleportTo.x - offsetX, TeleportTo.y - offsetY, 1000, int.MaxValue);
 			Stage.SetViewZ(TeleportTo.z);
-			var player = Player.Selecting;
+			var player = PlayerSystem.Selecting;
 			if (player != null) {
 				player.X = TeleportTo.x;
 				player.Y = TeleportTo.y;
@@ -165,10 +165,14 @@ public class TeleportTask : Task {
 				);
 				return TaskResult.Continue;
 			} else {
+				PlayerSystem.Selecting?.Bounce();
 				return TaskResult.End;
 			}
+		} else if (LocalFrame < Duration) {
+			return TaskResult.Continue;
 		} else {
-			return LocalFrame < Duration ? TaskResult.Continue : TaskResult.End;
+			PlayerSystem.Selecting?.Bounce();
+			return TaskResult.End;
 		}
 	}
 
@@ -185,7 +189,7 @@ public class TeleportTask : Task {
 			svTask.Duration = duration.Abs();
 			svTask.UseParallax = useParallax;
 			svTask.UseVignette = useVignette;
-			var player = Player.Selecting;
+			var player = PlayerSystem.Selecting;
 			if (player != null) {
 				player.Movement.Stop();
 				player.EnterTeleportState(duration, Stage.ViewZ > toZ);

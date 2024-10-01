@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 
 
 public class CameraGateDown : CameraGate {
@@ -49,7 +49,7 @@ public abstract class CameraGate : Entity {
 	public override void Update () {
 		base.Update();
 
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null || !player.Active) return;
 
 		// Player Pos Check
@@ -95,12 +95,12 @@ public abstract class CameraGate : Entity {
 		if (Game.GlobalFrame <= LastClampFrame) return;
 
 		// Clamp Camera
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		var cameraRect = Renderer.CameraRect;
 		int viewOffsetX = Stage.ViewRect.x - Renderer.CameraRect.x;
 		if (player != null && player.Active) {
-			cameraRect.x = player.AimViewX - viewOffsetX;
-			cameraRect.y = player.AimViewY;
+			cameraRect.x = PlayerSystem.AimViewX - viewOffsetX;
+			cameraRect.y = PlayerSystem.AimViewY;
 		}
 		int oldX = cameraRect.x;
 		int oldY = cameraRect.y;

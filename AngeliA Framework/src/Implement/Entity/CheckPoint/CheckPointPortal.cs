@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AngeliA; 
+namespace AngeliA;
 [EntityAttribute.Capacity(1)]
 [EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 [EntityAttribute.ExcludeInMapEditor]
@@ -42,8 +42,9 @@ public class CheckPointPortal : CircleFlamePortal {
 		}
 	}
 
-	public override bool Invoke (Player player) {
-		bool result = base.Invoke(player);
+	public override bool Invoke (Character character) {
+		if (character != PlayerSystem.Selecting) return false;
+		bool result = base.Invoke(character);
 		if (result) {
 			InvokeFrame = Game.GlobalFrame;
 		}

@@ -410,8 +410,8 @@ public sealed partial class MapEditor : WindowUI {
 		// Detail Fix
 		if (IsEditing) {
 			// Disable Player
-			if (Player.Selecting != null && Player.Selecting.Active) {
-				Player.Selecting.Active = false;
+			if (PlayerSystem.Selecting != null && PlayerSystem.Selecting.Active) {
+				PlayerSystem.Selecting.Active = false;
 			}
 			// No Opening Task
 			if (TaskSystem.IsTasking<OpeningTask>()) {
@@ -701,13 +701,15 @@ public sealed partial class MapEditor : WindowUI {
 		if (IsPlaying || !DroppingPlayer || TaskingRoute) return;
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 
-		Player.RespawnCpUnitPosition = null;
-		var player = Player.Selecting;
+		PlayerSystem.IgnorePlayerMenu(2);
+		PlayerSystem.IgnorePlayerQuickMenu(2);
+		PlayerSystem.RespawnCpUnitPosition = null;
+		var player = PlayerSystem.Selecting;
 		if (player == null) {
-			int defaultID = Player.GetDefaultPlayerID();
+			int defaultID = PlayerSystem.GetDefaultPlayerID();
 			if (defaultID != 0) {
-				Player.SelectPlayer(defaultID);
-				player = Player.Selecting;
+				PlayerSystem.SelectCharacterAsPlayer(defaultID);
+				player = PlayerSystem.Selecting;
 			}
 		}
 		if (player == null) return;
@@ -1051,7 +1053,7 @@ public sealed partial class MapEditor : WindowUI {
 		SelectionUnitRect = null;
 		DraggingUnitRect = null;
 		MapChest.ClearOpenedMarks();
-		Player.RespawnCpUnitPosition = null;
+		PlayerSystem.RespawnCpUnitPosition = null;
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 		GUI.CancelTyping();
 		Stage.Settle();
@@ -1073,14 +1075,14 @@ public sealed partial class MapEditor : WindowUI {
 			Stage.DespawnAllNonUiEntities();
 
 			// Despawn Player
-			if (Player.Selecting != null) {
-				Player.Selecting.Active = false;
-				RepairEquipment(Player.Selecting, EquipmentType.Helmet);
-				RepairEquipment(Player.Selecting, EquipmentType.BodyArmor);
-				RepairEquipment(Player.Selecting, EquipmentType.Gloves);
-				RepairEquipment(Player.Selecting, EquipmentType.Shoes);
-				RepairEquipment(Player.Selecting, EquipmentType.Jewelry);
-				RepairEquipment(Player.Selecting, EquipmentType.Weapon);
+			if (PlayerSystem.Selecting != null) {
+				PlayerSystem.Selecting.Active = false;
+				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Helmet);
+				RepairEquipment(PlayerSystem.Selecting, EquipmentType.BodyArmor);
+				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Gloves);
+				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Shoes);
+				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Jewelry);
+				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Weapon);
 				// Func
 				static void RepairEquipment (Entity holder, EquipmentType type) {
 					int itemID = Inventory.GetEquipment(holder.TypeID, type, out int oldEqCount);
@@ -1143,7 +1145,7 @@ public sealed partial class MapEditor : WindowUI {
 		int viewHeight = Universe.BuiltInInfo.DefaultViewHeight * 3 / 2;
 		int viewWidth = viewHeight * Universe.BuiltInInfo.ViewRatio / 1000;
 		TargetViewRect.x = -viewWidth / 2;
-		TargetViewRect.y = -Player.GetCameraShiftOffset(viewHeight);
+		TargetViewRect.y = -PlayerSystem.GetCameraShiftOffset(viewHeight);
 		TargetViewRect.height = viewHeight;
 		TargetViewRect.width = viewWidth;
 		if (CurrentZ != 0) SetViewZ(0);
@@ -1231,7 +1233,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void DropPlayerLogic (int posX = int.MinValue, int posY = int.MinValue) {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 		if (posX == int.MinValue) {
 			posX = player.X;

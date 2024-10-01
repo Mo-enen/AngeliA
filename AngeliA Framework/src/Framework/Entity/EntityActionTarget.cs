@@ -1,7 +1,7 @@
 namespace AngeliA;
 public interface IActionTarget {
 	public virtual bool LockInput => false;
-	public bool IsHighlighted => Player.Selecting != null && Player.Selecting.TargetActionEntity == this;
+	public bool IsHighlighted => PlayerSystem.Selecting != null && PlayerSystem.TargetActionEntity == this;
 	public bool AllowInvokeOnStand => true;
 	public bool AllowInvokeOnSquat => false;
 	public bool Invoke ();

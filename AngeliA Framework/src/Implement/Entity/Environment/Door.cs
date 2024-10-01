@@ -37,7 +37,7 @@ public abstract class Door : EnvironmentEntity {
 	public override void Update () {
 		base.Update();
 		const int OVERLAP_SHRINK = Const.CEL / 8;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player != null) {
 			PlayerOverlaps =
 				player != null &&
@@ -46,13 +46,13 @@ public abstract class Door : EnvironmentEntity {
 				player.Rect.Overlaps(Rect.Shrink(OVERLAP_SHRINK, OVERLAP_SHRINK, 0, 0));
 
 			// Invoke
-			if (!InputLock && !player.LockingInput && PlayerOverlaps) {
+			if (!InputLock && !PlayerSystem.LockingInput && PlayerOverlaps) {
 				if (Input.GameKeyHolding(Gamekey.Up)) {
 					Invoke(player);
 				}
 				ControlHintUI.DrawGlobalHint(
-					X, 
-					Y + Const.CEL * 2 + Const.HALF, 
+					X,
+					Y + Const.CEL * 2 + Const.HALF,
 					Gamekey.Up, HINT_ENTER, background: true
 				);
 			}
@@ -83,17 +83,23 @@ public abstract class Door : EnvironmentEntity {
 
 
 	// API
-	public virtual bool Invoke (Player player) {
-		if (player == null || TaskSystem.HasTask()) return false;
-		TeleportTask.TeleportParallax(
-			X + Width / 2, Y, X + Width / 2, Y,
-			IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
-		);
-		player.X = X + Width / 2;
-		player.Y = Y;
-		Open = true;
-		InputLock = true;
-		return true;
+	public virtual bool Invoke (Character character) {
+		if (character == null) return false;
+		if (character == PlayerSystem.Selecting) {
+			if (TaskSystem.HasTask()) return false;
+			TeleportTask.TeleportParallax(
+				X + Width / 2, Y, X + Width / 2, Y,
+				IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
+			);
+			character.X = X + Width / 2;
+			character.Y = Y;
+			Open = true;
+			InputLock = true;
+			return true;
+		} else {
+			character.Active = false;
+			return true;
+		}
 	}
 
 

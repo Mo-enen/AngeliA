@@ -150,7 +150,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	#region --- MSG ---
 
 
-	bool IActionTarget.AllowInvoke () => Player.Selecting != null;
+	bool IActionTarget.AllowInvoke () => PlayerSystem.Selecting != null;
 
 
 	public PlayerCustomizer () {
@@ -176,7 +176,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	protected override void GameUpdate () {
 
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 
 		// Quit
@@ -273,7 +273,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	// Game
 	protected override void StartMiniGame () {
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player == null) {
 			CloseMiniGame();
 			return;
@@ -289,7 +289,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	protected override void CloseMiniGame () {
 		base.CloseMiniGame();
-		if (Player.Selecting != null && Player.Selecting.Rendering is PoseCharacterRenderer rendering) {
+		if (PlayerSystem.Selecting != null && PlayerSystem.Selecting.Rendering is PoseCharacterRenderer rendering) {
 			rendering.SaveCharacterToConfig();
 		}
 		// Clear Patterns
@@ -482,7 +482,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	// Sub Editor
 	private void SubEditor_Head (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		if (PatternMenuUI(
 			panelRect, Patterns_Head,
 			Color32.WHITE,
@@ -495,7 +495,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_Body (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		if (PatternMenuUI(
 			panelRect, Patterns_BodyHip,
@@ -510,7 +510,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_ArmLimb (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		if (PatternMenuUI(
 			panelRect, Patterns_ShoulderArmArmHand,
@@ -532,7 +532,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_LegLimb (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		if (PatternMenuUI(
 			panelRect, Patterns_LegLegFoot,
@@ -552,7 +552,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_Face (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -567,7 +567,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_Ear (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -582,7 +582,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_Tail (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -597,7 +597,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_Wing (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -612,7 +612,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_Horn (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -627,7 +627,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_SuitHead (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -641,7 +641,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_SuitBody (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -656,7 +656,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_SuitHand (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -670,7 +670,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_SuitLeg (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -685,7 +685,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 
 	private void SubEditor_SuitFoot (IRect panelRect) {
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
@@ -700,7 +700,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	private void SubEditor_Hair (IRect panelRect) {
 
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		panelRect.height -= Unify(16);
 		if (PatternMenuUI(
 			panelRect, Patterns_Hair,
@@ -716,7 +716,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	private void SubEditor_BodyHeight (IRect panelRect) {
 
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return;
 		panelRect.height -= Unify(16);
 		int newHeight = BodyHeightMenuUI(panelRect, rendering.CharacterHeight);
 		if (newHeight != rendering.CharacterHeight) {
@@ -1099,7 +1099,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 
 	private bool TryGetPlayerSelectingRow (SubMenuType type, out int row) {
 		row = 0;
-		if (Player.Selecting.Rendering is not PoseCharacterRenderer rendering) return false;
+		if (PlayerSystem.Selecting.Rendering is not PoseCharacterRenderer rendering) return false;
 
 		var patterns = GetPatterns(type);
 		var selectingPattern = type switch {

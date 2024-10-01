@@ -79,6 +79,14 @@ public class BeforeLayerFrameUpdateAttribute : Attribute { }
 public class AfterLayerFrameUpdateAttribute : Attribute { }
 
 
+[AttributeUsage(AttributeTargets.Method)]
+public class BeforeFirstUpdateAttribute : Attribute { }
+public class BeforeBeforeUpdateAttribute : Attribute { }
+public class BeforeUpdateUpdateAttribute : Attribute { }
+public class BeforeLateUpdateAttribute : Attribute { }
+public class AfterLateUpdateAttribute : Attribute { }
+
+
 // World
 [AttributeUsage(AttributeTargets.Method)]
 public class BeforeLevelRenderedAttribute : Attribute { }

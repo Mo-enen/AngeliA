@@ -159,8 +159,8 @@ public abstract class Furniture : EnvironmentEntity, IActionTarget {
 
 
 	protected bool GetIsHighlighted () {
-		if (Player.Selecting == null || Player.Selecting.TargetActionEntity == null) return false;
-		var target = Player.Selecting.TargetActionEntity;
+		if (PlayerSystem.Selecting == null || PlayerSystem.TargetActionEntity == null) return false;
+		var target = PlayerSystem.TargetActionEntity;
 		if (target == this) return true;
 		for (var f = FurnitureLeftOrDown; f != null; f = f.FurnitureLeftOrDown) {
 			if (f == target) return true;

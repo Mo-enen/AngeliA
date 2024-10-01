@@ -24,10 +24,10 @@ public partial class CharacterAttackness (Character character) {
 
 	// Api
 	public readonly Character TargetCharacter = character;
-	public virtual bool IsChargingAttack => false;
 	public virtual AttackStyleMode AttackStyle => AttackStyleMode.Random;
-	public virtual Direction8 AimingDirection => Direction8.Right;
+	public Direction8 AimingDirection { get; set; } = Direction8.Right;
 	public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
+	public bool IsChargingAttack { get; set; } = false;
 	public int LastAttackFrame { get; private set; } = int.MinValue;
 	public int? AttackChargeStartFrame { get; private set; } = null;
 	public bool LastAttackCharged { get; private set; } = false;
@@ -56,6 +56,7 @@ public partial class CharacterAttackness (Character character) {
 		LastAttackFrame = int.MinValue;
 		AttackChargeStartFrame = null;
 		LastAttackCharged = false;
+		IsChargingAttack = false;
 	}
 
 

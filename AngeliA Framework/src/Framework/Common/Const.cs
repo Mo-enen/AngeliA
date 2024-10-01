@@ -79,6 +79,7 @@ public static class Const {
 	public const int MIN_CHARACTER_HEIGHT = 65;
 	public const int MAX_CHARACTER_HEIGHT = 251;
 	public const int RIG_BUFFER_SIZE = 5_000_000; // 5MB
+	public static readonly int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 
 	// GUI
 	public const char CONTROL_SELECT_ALL = (char)6;

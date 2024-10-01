@@ -22,9 +22,9 @@ public abstract class Portal : Entity {
 	public override void Update () {
 		base.Update();
 		// Invoke
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		if (player != null && player.Rect.Overlaps(Rect)) {
-			if (!player.LockingInput && !player.Teleporting && CooldownFrame > 2) {
+			if (!PlayerSystem.LockingInput && !player.Teleporting && CooldownFrame > 2) {
 				Invoke(player);
 			}
 			CooldownFrame = 0;
@@ -32,18 +32,29 @@ public abstract class Portal : Entity {
 			CooldownFrame++;
 		}
 	}
-	public virtual bool Invoke (Player player) {
-		if (TaskSystem.HasTask()) return false;
-		if (DontSpawnAfterUsed) {
-			FrameworkUtil.RemoveFromWorldMemory(this);
+	public virtual bool Invoke (Character character) {
+		if (character == PlayerSystem.Selecting) {
+			if (TaskSystem.HasTask()) return false;
+			if (DontSpawnAfterUsed) {
+				FrameworkUtil.RemoveFromWorldMemory(this);
+			}
+			TeleportTask.TeleportVegnette(
+				X + Width / 2, Y + Height / 2,
+				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z
+			);
+			character.X = X + Width / 2;
+			character.Y = Y;
+			return true;
+		} else if (character != null) {
+			if (TargetGlobalPosition.z != Stage.ViewZ) {
+				character.Active = false;
+			} else {
+				character.X = X + Width / 2;
+				character.Y = Y;
+			}
+			return true;
 		}
-		TeleportTask.TeleportVegnette(
-			X + Width / 2, Y + Height / 2,
-			TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z
-		);
-		player.X = X + Width / 2;
-		player.Y = Y;
-		return true;
+		return false;
 	}
 
 }

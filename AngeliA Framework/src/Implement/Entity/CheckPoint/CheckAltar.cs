@@ -69,18 +69,18 @@ public abstract class CheckAltar<CP> : EnvironmentEntity where CP : CheckPoint {
 
 		base.Update();
 
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 
 		if (player == null || !player.Active) return;
 		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-		bool highlighting = Player.RespawnCpUnitPosition.HasValue && Player.RespawnCpUnitPosition.Value == unitPos;
+		bool highlighting = PlayerSystem.RespawnCpUnitPosition.HasValue && PlayerSystem.RespawnCpUnitPosition.Value == unitPos;
 		bool trySpawnPortal = highlighting && CheckPoint.LastTriggeredCheckPointID == LinkedCheckPointID;
 
 		// Player Touch Check
 		if (!highlighting && player.Rect.Overlaps(Rect)) {
 			highlighting = true;
-			Player.RespawnCpUnitPosition = unitPos;
-			
+			PlayerSystem.RespawnCpUnitPosition = unitPos;
+
 			// Clear Portal
 			if (
 				CheckPoint.LastTriggeredCheckPointID == LinkedCheckPointID &&
@@ -111,7 +111,7 @@ public abstract class CheckAltar<CP> : EnvironmentEntity where CP : CheckPoint {
 		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-		if (Player.RespawnCpUnitPosition == unitPos) {
+		if (PlayerSystem.RespawnCpUnitPosition == unitPos) {
 			CheckPoint.DrawActivatedHighlight(Rect);
 		}
 	}

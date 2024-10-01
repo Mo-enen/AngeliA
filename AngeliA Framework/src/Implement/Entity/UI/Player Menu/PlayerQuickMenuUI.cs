@@ -92,7 +92,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		WeaponCount = 0;
 
 		// Init Item List
-		int invID = Player.Selecting.TypeID;
+		int invID = PlayerSystem.Selecting.TypeID;
 		int currentIndex = 0;
 		bool allowHand = Inventory.GetEquipment(invID, EquipmentType.Weapon, out _) == 0 || Inventory.IndexOfItem(invID, 0) >= 0;
 
@@ -154,7 +154,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public override void UpdateUI () {
 		base.UpdateUI();
 
-		if (!Active || Player.Selecting == null || TaskSystem.HasTask() || WeaponCount <= 0) {
+		if (!Active || PlayerSystem.Selecting == null || TaskSystem.HasTask() || WeaponCount <= 0) {
 			Active = false;
 			return;
 		}
@@ -213,7 +213,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 		const int ANIMATION_DURATION = 12;
 		int animationDelay = IsDirty ? 0 : 8;
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 		int localAnimationFrame = Game.GlobalFrame - SpawnFrame - animationDelay;
 		if (localAnimationFrame < 0) return;
 		float lerp01 = Ease.OutCirc((float)localAnimationFrame / ANIMATION_DURATION);
@@ -340,9 +340,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	private static void EquipFromInventory (int itemIndex) {
 
-		if (!Player.Selecting.EquipmentAvailable(EquipmentType.Weapon)) return;
+		if (!PlayerSystem.Selecting.EquipmentAvailable(EquipmentType.Weapon)) return;
 
-		int invID = Player.Selecting.TypeID;
+		int invID = PlayerSystem.Selecting.TypeID;
 		if (!Inventory.HasInventory(invID)) return;
 
 		int capacity = Inventory.GetInventoryCapacity(invID);
@@ -362,7 +362,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 
 	private static void SwitchEquipTo (int itemIndex, int newItemID, int newItemCount) {
-		int invID = Player.Selecting.TypeID;
+		int invID = PlayerSystem.Selecting.TypeID;
 		int oldEquipmentID = Inventory.GetEquipment(invID, EquipmentType.Weapon, out int oldEqCount);
 
 		if (!Inventory.SetEquipment(invID, EquipmentType.Weapon, newItemID, newItemCount)) return;
@@ -376,7 +376,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 				int collectCount = Inventory.CollectItem(invID, oldEquipmentID, out _, oldEqCount);
 				if (collectCount < oldEqCount) {
 					ItemSystem.GiveItemToTarget(
-						Player.Selecting, oldEquipmentID, oldEqCount - collectCount
+						PlayerSystem.Selecting, oldEquipmentID, oldEqCount - collectCount
 					);
 				}
 			}

@@ -254,8 +254,8 @@ public partial class RiggedGame : Game {
 		EntityClickerOn = CallingMessage.RequireGameMessageInvoke.GetBit(4);
 
 		// Reload Character Movement
-		if (CallingMessage.RequireGameMessageInvoke.GetBit(5) && Player.Selecting != null) {
-			CharacterMovement.ReloadMovementConfigFromFile(Player.Selecting.GetType());
+		if (CallingMessage.RequireGameMessageInvoke.GetBit(5) && PlayerSystem.Selecting != null) {
+			CharacterMovement.ReloadMovementConfigFromFile(PlayerSystem.Selecting.GetType());
 		}
 
 		// Setting Change
@@ -263,7 +263,7 @@ public partial class RiggedGame : Game {
 			var id_data = CallingMessage.RequireChangedSettings[i];
 			OnRemoteSettingChanged?.Invoke(id_data.x, id_data.y);
 		}
-		
+
 		// Toolset Command
 		switch (CallingMessage.RequireToolsetCommand) {
 			case RigCallingMessage.ToolCommand.RunCodeAnalysis:
@@ -361,7 +361,7 @@ public partial class RiggedGame : Game {
 		RespondMessage.MusicVolume = MusicVolume;
 		RespondMessage.SoundVolume = SoundVolume;
 		RespondMessage.IsTyping = GUI.IsTyping;
-		RespondMessage.SelectingPlayerID = Player.Selecting != null ? Player.Selecting.TypeID : 0;
+		RespondMessage.SelectingPlayerID = PlayerSystem.Selecting != null ? PlayerSystem.Selecting.TypeID : 0;
 
 		// Respond to Memory
 		unsafe {

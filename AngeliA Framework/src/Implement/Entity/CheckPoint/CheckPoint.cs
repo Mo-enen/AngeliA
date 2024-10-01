@@ -56,11 +56,11 @@ public abstract class CheckPoint : EnvironmentEntity {
 
 		base.Update();
 
-		var player = Player.Selecting;
+		var player = PlayerSystem.Selecting;
 
 		if (player == null || !player.Active) return;
 		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-		bool highlighting = Player.RespawnCpUnitPosition.HasValue && Player.RespawnCpUnitPosition.Value == unitPos;
+		bool highlighting = PlayerSystem.RespawnCpUnitPosition.HasValue && PlayerSystem.RespawnCpUnitPosition.Value == unitPos;
 
 		// Player Touch Check
 		if (!highlighting && player.Rect.Overlaps(Rect)) {
@@ -78,10 +78,10 @@ public abstract class CheckPoint : EnvironmentEntity {
 			}
 
 			// Player Respawn
-			Player.RespawnCpUnitPosition = unitPos;
+			PlayerSystem.RespawnCpUnitPosition = unitPos;
 
 			// Particle
-			OnCheckPointTouched?.Invoke(this, Player.Selecting);
+			OnCheckPointTouched?.Invoke(this, PlayerSystem.Selecting);
 
 		}
 
@@ -102,7 +102,7 @@ public abstract class CheckPoint : EnvironmentEntity {
 		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-		if (Player.RespawnCpUnitPosition == unitPos) {
+		if (PlayerSystem.RespawnCpUnitPosition == unitPos) {
 			DrawActivatedHighlight(Rect);
 		}
 	}
