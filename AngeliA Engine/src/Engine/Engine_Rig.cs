@@ -59,7 +59,7 @@ public partial class Engine {
 
 		if (Instance == null) return;
 
-		RiggedMapEditor.Instance.CleanDirty();
+		GameEditor.Instance.CleanDirty();
 		Instance.HasCompileError = code != 0;
 
 		switch (code) {
@@ -171,7 +171,7 @@ public partial class Engine {
 		bool requireRigGameRender = CurrentWindowIndex == RigMapEditorWindowIndex;
 		bool requireRigInput = CurrentWindowIndex == RigMapEditorWindowIndex;
 
-		var rigEdt = RiggedMapEditor.Instance;
+		var rigEdt = GameEditor.Instance;
 		var pixEdt = PixelEditor.Instance;
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
@@ -238,8 +238,8 @@ public partial class Engine {
 			}
 
 			// Lighting Map Setting Changed
-			if (RiggedMapEditor.Instance.LightMapSettingChanged) {
-				RiggedMapEditor.Instance.LightMapSettingChanged = false;
+			if (GameEditor.Instance.LightMapSettingChanged) {
+				GameEditor.Instance.LightMapSettingChanged = false;
 				calling.RequireLightMapSettingChange = true;
 				calling.Setting_LM_PixelStyle = currentInfo.LightMap_PixelStyle;
 				calling.Setting_LM_SelfLerp = (int)(currentInfo.LightMap_SelfLerp * 1000);
@@ -324,7 +324,7 @@ public partial class Engine {
 				RigGameFailToStartCount = 0;
 				RigGameFailToStartFrame = int.MinValue;
 				SettingWindow.Instance.MapSettingChanged = true;
-				RiggedMapEditor.Instance.LightMapSettingChanged = true;
+				GameEditor.Instance.LightMapSettingChanged = true;
 			} else {
 				// Fail to Start
 				RigGameFailToStartFrame = Game.GlobalFrame;

@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public partial class RiggedMapEditor {
+public partial class GameEditor {
 
 
 	// VAR

@@ -101,7 +101,7 @@ public partial class Engine {
 		var engine = new Engine();
 		Instance = engine;
 		engine.AllWindows = [
-			new RiggedMapEditor(),
+			new GameEditor(),
 			new PixelEditor(),
 			new LanguageEditor(),
 			new ConsoleWindow(),
@@ -169,7 +169,7 @@ public partial class Engine {
 		for (int i = 0; i < engine.AllWindows.Length; i++) {
 			var win = engine.AllWindows[i];
 			win.OnActivated();
-			if (win is RiggedMapEditor) engine.RigMapEditorWindowIndex = i;
+			if (win is GameEditor) engine.RigMapEditorWindowIndex = i;
 			if (win is ConsoleWindow) engine.ConsoleWindowIndex = i;
 		}
 
@@ -548,7 +548,7 @@ public partial class Engine {
 				Renderer.Draw(window.TypeID, iconRect);
 
 				// Compling Mark
-				if (window is RiggedMapEditor && EngineUtil.BuildingProjectInBackground) {
+				if (window is GameEditor && EngineUtil.BuildingProjectInBackground) {
 					int size = GUI.Unify(24);
 					if (!FullsizeMenu.Value) {
 						Renderer.DrawPixel(rect, Color32.BLACK_128);
@@ -755,7 +755,7 @@ public partial class Engine {
 
 		// Switch Window
 		if (EngineSetting.Hotkey_Window_MapEditor.Value.Down()) {
-			SetCurrentWindowIndex<RiggedMapEditor>();
+			SetCurrentWindowIndex<GameEditor>();
 		}
 		if (EngineSetting.Hotkey_Window_Artwork.Value.Down()) {
 			SetCurrentWindowIndex<PixelEditor>();
@@ -860,8 +860,8 @@ public partial class Engine {
 		LanguageEditor.Instance.SetLanguageRoot(CurrentProject.Universe.LanguageRoot);
 		PixelEditor.Instance.SetCurrentProject(CurrentProject);
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
-		RiggedMapEditor.Instance.CleanDirty();
-		RiggedMapEditor.Instance.SetCurrentProject(CurrentProject);
+		GameEditor.Instance.CleanDirty();
+		GameEditor.Instance.SetCurrentProject(CurrentProject);
 		SettingWindow.Instance.SetCurrentProject(CurrentProject);
 		PackageManager.Instance.SetCurrentProject(CurrentProject);
 		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
@@ -926,8 +926,8 @@ public partial class Engine {
 			LanguageEditor.Instance.SetLanguageRoot("");
 			PixelEditor.Instance.SetCurrentProject(null);
 			ProjectEditor.Instance.SetCurrentProject(null);
-			RiggedMapEditor.Instance.CleanDirty();
-			RiggedMapEditor.Instance.SetCurrentProject(null);
+			GameEditor.Instance.CleanDirty();
+			GameEditor.Instance.SetCurrentProject(null);
 			SettingWindow.Instance.SetCurrentProject(null);
 			PackageManager.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
@@ -1011,7 +1011,7 @@ public partial class Engine {
 		long dllModifyDate = EngineUtil.GetBuildLibraryModifyDate(CurrentProject);
 		long srcModifyDate = EngineUtil.GetScriptModifyDate(CurrentProject);
 		if (srcModifyDate > dllModifyDate && srcModifyDate > EngineUtil.LastBackgroundBuildModifyDate) {
-			RiggedMapEditor.Instance.SetDirty();
+			GameEditor.Instance.SetDirty();
 			RequireBackgroundBuildDate = EngineSetting.AutoRecompile.Value ? srcModifyDate : 0;
 		} else {
 			RequireBackgroundBuildDate = 0;

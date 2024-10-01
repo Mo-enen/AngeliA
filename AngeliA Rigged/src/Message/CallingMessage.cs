@@ -75,6 +75,7 @@ public class RigCallingMessage {
 	public readonly char[] PressedChars = new char[256];
 	public byte PressedKeyCount;
 	public readonly int[] PressedGuiKeys = new int[256];
+
 	public bool RequireMapEditorSettingChange = false;
 	public bool Setting_MEDT_Enable;
 	public bool Setting_MEDT_QuickPlayerDrop;
@@ -82,6 +83,7 @@ public class RigCallingMessage {
 	public bool Setting_MEDT_ShowState;
 	public bool Setting_MEDT_ShowBehind;
 	public bool Setting_MEDT_ShowGridGizmos;
+
 	public bool RequireLightMapSettingChange = false;
 	public bool Setting_LM_PixelStyle;
 	public int Setting_LM_SelfLerp;
@@ -90,6 +92,7 @@ public class RigCallingMessage {
 	public int Setting_LM_AirIlluminanceNight;
 	public int Setting_LM_BackgroundTint;
 	public int Setting_LM_LevelIlluminateRemain;
+
 	public ToolCommand RequireToolsetCommand = ToolCommand.None;
 
 

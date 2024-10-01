@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AngeliaEngine;
 
-public partial class RiggedMapEditor : WindowUI {
+public partial class GameEditor : WindowUI {
 
 
 
@@ -44,8 +44,8 @@ public partial class RiggedMapEditor : WindowUI {
 	private static readonly SpriteCode BTN_LIGHTING = "Engine.MapEditor.Lighting";
 
 	// Api
-	public static RiggedMapEditor Instance { get; private set; }
-	public override string DefaultWindowName => "Map";
+	public static GameEditor Instance { get; private set; }
+	public override string DefaultWindowName => "Game";
 	public bool DrawCollider { get; private set; } = false;
 	public bool EntityClickerOn { get; private set; } = false;
 	public IRect PanelRect { get; private set; }
@@ -69,7 +69,7 @@ public partial class RiggedMapEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public RiggedMapEditor () {
+	public GameEditor () {
 		Instance = this;
 
 		// Movements
