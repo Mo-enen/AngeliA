@@ -6,43 +6,35 @@ namespace AngeliA;
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameInitializeAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameInitializeAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameInitializeLaterAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameInitializeLaterAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameUpdateAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameUpdateAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameUpdateLaterAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameUpdateLaterAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameUpdatePauselessAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameUpdatePauselessAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameRestartAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameRestartAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameTryingToQuitAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameTryingToQuitAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnGameQuittingAttribute (int order = 0) : OrderedAttribute(order) {
-}
+public class OnGameQuittingAttribute (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
@@ -61,15 +53,17 @@ public class OnFileDroppedAttribute : Attribute { }
 public class OnMainSheetReloadAttribute : Attribute { }
 
 
+[AttributeUsage(AttributeTargets.Method)]
+public class OnRemoteSettingChangedAttribute : Attribute { }
+
+
 // Slot
 [AttributeUsage(AttributeTargets.Method)]
-public class BeforeSavingSlotChanged (int order = 0) : OrderedAttribute(order) {
-}
+public class BeforeSavingSlotChanged (int order = 0) : OrderedAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
-public class OnSavingSlotChanged (int order = 0) : OrderedAttribute(order) {
-}
+public class OnSavingSlotChanged (int order = 0) : OrderedAttribute(order) { }
 
 
 // Stage

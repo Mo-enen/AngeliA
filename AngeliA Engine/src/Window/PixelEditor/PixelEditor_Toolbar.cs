@@ -47,8 +47,6 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_TAG_MARKED = "Icon.TagMarked";
 	private static readonly SpriteCode ICON_RULE = "Icon.Rule";
 	private static readonly SpriteCode ICON_MIX = "Icon.Mix";
-	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
-	private static readonly SpriteCode ICON_EXPORT_PNG = "Icon.ExportPNG";
 	private static readonly SpriteCode ICON_RULE_SAME = "Icon.Same";
 	private static readonly SpriteCode ICON_RULE_NOT_SAME = "Icon.NotSame";
 	private static readonly SpriteCode ICON_RULE_ANY = "Icon.Any";
@@ -63,8 +61,6 @@ public partial class PixelEditor {
 	private static SpriteCode[] UI_TOOLS;
 
 	// Language
-	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.PixelEditor.ImportPNG", "Import PNG file as a new atlas");
-	private static readonly LanguageCode TIP_EXPORT_PNG = ("Tip.PixelEditor.ExportPNG", "Export current canvas to a PNG file");
 	private static readonly LanguageCode TIP_PAINTING_COLOR = ("Tip.PaintingColor", "Current painting color");
 	private static readonly LanguageCode TIP_SHOW_CHECKER = ("Tip.ShowCheckerBoard", "Show Checker Board");
 	private static readonly LanguageCode TIP_SHOW_AXIS = ("Tip.ShowAxis", "Show Axis");

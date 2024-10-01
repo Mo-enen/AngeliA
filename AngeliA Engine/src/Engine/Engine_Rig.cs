@@ -228,26 +228,38 @@ public partial class Engine {
 			// Map Editor Setting Changed
 			if (SettingWindow.Instance.MapSettingChanged) {
 				SettingWindow.Instance.MapSettingChanged = false;
-				calling.RequireMapEditorSettingChange = true;
-				calling.Setting_MEDT_Enable = !currentInfo.UseProceduralMap && EngineSetting.MapEditor_Enable.Value;
-				calling.Setting_MEDT_AutoZoom = EngineSetting.MapEditor_AutoZoom.Value;
-				calling.Setting_MEDT_QuickPlayerDrop = EngineSetting.MapEditor_QuickPlayerDrop.Value;
-				calling.Setting_MEDT_ShowBehind = EngineSetting.MapEditor_ShowBehind.Value;
-				calling.Setting_MEDT_ShowGridGizmos = EngineSetting.MapEditor_ShowGizmos.Value;
-				calling.Setting_MEDT_ShowState = EngineSetting.MapEditor_ShowState.Value;
+				calling.RequireChangeSetting(MapEditor.SETTING_ENABLE, !currentInfo.UseProceduralMap && EngineSetting.MapEditor_Enable.Value);
+				calling.RequireChangeSetting(MapEditor.SETTING_AUTO_ZOOM, EngineSetting.MapEditor_AutoZoom.Value);
+				calling.RequireChangeSetting(MapEditor.SETTING_QUICK_PLAYER_DROP, EngineSetting.MapEditor_QuickPlayerDrop.Value);
+				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_BEHIND, EngineSetting.MapEditor_ShowBehind.Value);
+				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_GRID_GIZMOS, EngineSetting.MapEditor_ShowGizmos.Value);
+				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_STATE, EngineSetting.MapEditor_ShowState.Value);
 			}
 
 			// Lighting Map Setting Changed
 			if (GameEditor.Instance.LightMapSettingChanged) {
 				GameEditor.Instance.LightMapSettingChanged = false;
-				calling.RequireLightMapSettingChange = true;
-				calling.Setting_LM_PixelStyle = currentInfo.LightMap_PixelStyle;
-				calling.Setting_LM_SelfLerp = (int)(currentInfo.LightMap_SelfLerp * 1000);
-				calling.Setting_LM_AirIlluminanceDay = (int)(currentInfo.LightMap_AirIlluminanceDay * 1000);
-				calling.Setting_LM_AirIlluminanceNight = (int)(currentInfo.LightMap_AirIlluminanceNight * 1000);
-				calling.Setting_LM_BackgroundTint = (int)(currentInfo.LightMap_BackgroundTint * 1000);
-				calling.Setting_LM_SolidIlluminance = (int)(currentInfo.LightMap_SolidIlluminance * 1000);
-				calling.Setting_LM_LevelIlluminateRemain = (int)(currentInfo.LightMap_LevelIlluminateRemain * 1000);
+				calling.RequireChangeSetting(
+					LightingSystem.SETTING_PIXEL_STYLE, currentInfo.LightMap_PixelStyle
+				);
+				calling.RequireChangeSetting(
+					LightingSystem.SETTING_SELF_LERP, (int)(currentInfo.LightMap_SelfLerp * 1000)
+				);
+				calling.RequireChangeSetting(
+					LightingSystem.SETTING_AIR_ILLUMINANCE_DAY, (int)(currentInfo.LightMap_AirIlluminanceDay * 1000)
+				);
+				calling.RequireChangeSetting(
+					LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT, (int)(currentInfo.LightMap_AirIlluminanceNight * 1000)
+				);
+				calling.RequireChangeSetting(
+					LightingSystem.SETTING_BACKGROUND_TINT, (int)(currentInfo.LightMap_BackgroundTint * 1000)
+				);
+				calling.RequireChangeSetting(
+					LightingSystem.SETTING_SOLID_ILLUMINANCE, (int)(currentInfo.LightMap_SolidIlluminance * 1000)
+				);
+				calling.RequireChangeSetting(
+					LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN, (int)(currentInfo.LightMap_LevelIlluminateRemain * 1000)
+				);
 				// Save Uni-Info to File
 				JsonUtil.SaveJsonToPath(currentInfo, currentUniverse.InfoPath, prettyPrint: true);
 			}

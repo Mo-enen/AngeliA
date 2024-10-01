@@ -138,9 +138,9 @@ public static class Renderer {
 	}
 
 
+#if DEBUG
 	[OnGameFocused]
 	internal static void OnGameFocused () {
-#if DEBUG
 		// Reload Main Sheet on Changed
 		long date = Util.GetFileModifyDate(MainSheetFilePath);
 		if (date > MainSheetFileModifyDate) {
@@ -148,8 +148,8 @@ public static class Renderer {
 			Util.DeleteFolder(Universe.BuiltIn.SlotCharacterRenderingConfigRoot);
 			PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet();
 		}
-#endif
 	}
+#endif
 
 
 	// Update

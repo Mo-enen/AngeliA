@@ -18,6 +18,7 @@ public partial class Engine {
 		public string Path;
 		public bool FolderExists;
 		public long LastOpenTime;
+		public object IconTexture;
 	}
 
 
@@ -75,7 +76,7 @@ public partial class Engine {
 			// --- BG ---
 			GUI.DrawSlice(EngineSprite.UI_WINDOW_BG, cameraRect);
 
-			// --- Panel ---
+			// --- Left Panel ---
 			{
 				var panelRect = cameraRect.Edge(Direction4.Left, hubPanelWidth);
 				int itemPadding = GUI.Unify(8);
@@ -100,7 +101,7 @@ public partial class Engine {
 				}
 			}
 
-			// --- Content ---
+			// --- Right Content ---
 
 			int padding = GUI.Unify(8);
 			int scrollWidth = GUI.ScrollbarSize;
@@ -139,8 +140,9 @@ public partial class Engine {
 				bool stepTint = false;
 
 				for (int i = 0; i < projects.Count; i++) {
-					string projectPath = projects[i].Path;
-					bool folderExists = projects[i].FolderExists;
+					var project = projects[i];
+					string projectPath = project.Path;
+					bool folderExists = project.FolderExists;
 					var itemContentRect = rect.Shrink(padding);
 
 					// Step Tint
@@ -158,11 +160,17 @@ public partial class Engine {
 					}
 
 					// Icon
-					using (new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
-						GUI.Icon(
-							itemContentRect.Edge(Direction4.Left, itemContentRect.height),
-							PROJECT_ICON
-						);
+					var iconRect = itemContentRect.Edge(Direction4.Left, itemContentRect.height);
+					if (Game.IsTextureReady(project.IconTexture)) {
+						// Project Icon
+						if (!FileBrowserUI.ShowingBrowser) {
+							Game.DrawGizmosTexture(iconRect, project.IconTexture);
+						}
+					} else {
+						// Default Icon
+						using (new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+							GUI.Icon(iconRect, PROJECT_ICON);
+						}
 					}
 
 					// Name
@@ -224,6 +232,23 @@ public partial class Engine {
 
 
 	#region --- LGC ---
+
+
+	private static void ReloadAllProjectIconsForHub () {
+		foreach (var project in Instance.Projects) {
+			// Unload Old Icon
+			Game.UnloadTexture(project.IconTexture);
+			project.IconTexture = null;
+			// Load Icons
+			string iconPath = Util.CombinePaths(project.Path, "Icon.ico");
+			if (Util.FileExists(iconPath)) {
+				var icons = EngineUtil.LoadTexturesFromIco(iconPath, true);
+				if (icons != null && icons.Length > 0) {
+					project.IconTexture = icons[0];
+				}
+			}
+		}
+	}
 
 
 	// Workflow

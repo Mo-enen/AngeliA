@@ -65,8 +65,14 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Const
-	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
+	public const int SETTING_AUTO_ZOOM = 92176_0;
+	public const int SETTING_QUICK_PLAYER_DROP = 92176_1;
+	public const int SETTING_SHOW_BEHIND = 92176_2;
+	public const int SETTING_SHOW_STATE = 92176_3;
+	public const int SETTING_SHOW_GRID_GIZMOS = 92176_4;
+	public const int SETTING_ENABLE = 92176_5;
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
+	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 	private const int PANEL_WIDTH = 256;
 	private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 	private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
@@ -165,6 +171,40 @@ public sealed partial class MapEditor : WindowUI {
 		}
 		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.MapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.MapRoot);
+	}
+
+
+	[OnRemoteSettingChanged]
+	internal static void OnRemoteSettingChanged (int id, int data) {
+		switch (id) {
+			case SETTING_AUTO_ZOOM:
+				AutoZoom = data == 1;
+				break;
+			case SETTING_QUICK_PLAYER_DROP:
+				QuickPlayerDrop = data == 1;
+				break;
+			case SETTING_SHOW_BEHIND:
+				ShowBehind = data == 1;
+				break;
+			case SETTING_SHOW_STATE:
+				ShowState = data == 1;
+				break;
+			case SETTING_SHOW_GRID_GIZMOS:
+				ShowGridGizmos = data == 1;
+				break;
+			case SETTING_ENABLE:
+				bool enableMapEditor = data == 1;
+				if (IsActived != enableMapEditor) {
+					if (enableMapEditor) {
+						Stage.SpawnEntity(TYPE_ID, 0, 0);
+					} else {
+						Instance.Active = false;
+						Game.RestartGame();
+					}
+				}
+				break;
+		}
+
 	}
 
 

@@ -144,6 +144,7 @@ public partial class Engine {
 		}
 		engine.RefreshProjectCache();
 		engine.SortProjects();
+		ReloadAllProjectIconsForHub();
 
 		// Engine Window
 		if (Maximize.Value) {
@@ -932,6 +933,7 @@ public partial class Engine {
 			PackageManager.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
+			ReloadAllProjectIconsForHub();
 		}
 	}
 

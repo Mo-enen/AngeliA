@@ -91,7 +91,7 @@ public class SettingWindow : WindowUI {
 						Name = ($"UI.EngineSetting.{att.Group}", att.Group),
 						Icon = $"Icon.SettingFold.{att.Group}",
 						Folding = att.Group != "Engine",
-						RigGroup = att.Group == "Map Editor",
+						RigGroup = att.Group == "MapEditor",
 					};
 					pool.Add(att.Group, group);
 				}
@@ -132,6 +132,7 @@ public class SettingWindow : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+
 		int extendedUISize = 1;
 		using (var scroll = new GUIVerticalScrollScope(WindowRect, MasterScroll, 0, UIHeight)) {
 			MasterScroll = scroll.PositionY;
@@ -148,10 +149,10 @@ public class SettingWindow : WindowUI {
 			using var _ = new GUILabelWidthScope(Util.Min(Unify(320), rect.width / 2));
 
 			// Group Content
-			bool useProceduralMap = CurrentProject.Universe.Info.UseProceduralMap;
+			bool useProceduralMap = CurrentProject != null && CurrentProject.Universe.Info.UseProceduralMap;
 			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
 				var group = Groups[groupIndex];
-				if (useProceduralMap && group.Name == "Map Editor") continue;
+				if (useProceduralMap && group.Name == "MapEditor") continue;
 				DrawGroup(ref rect, group, groupIndex == 0 ? DrawExtraContent : null, out bool changed);
 				if (group.RigGroup && changed) {
 					MapSettingChanged = true;

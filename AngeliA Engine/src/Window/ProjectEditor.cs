@@ -788,6 +788,7 @@ public class ProjectEditor : WindowUI {
 	public void ReloadIconUI () {
 		IconFileModifyDate = 0;
 		Game.UnloadTexture(IconTexture);
+		IconTexture = null;
 		if (CurrentProject == null) return;
 		string path = CurrentProject.IconPath;
 		if (!Util.FileExists(path)) return;

@@ -580,12 +580,19 @@ public static class EngineUtil {
 		string resultDllPath = Util.CombinePaths(tempBuildPath, $"{libAssemblyName}.dll");
 		if (!Util.FileExists(resultDllPath)) return ERROR_RESULT_DLL_NOT_FOUND;
 
-		// Result Dll to Lib Folder
+		// Copy Result Dll to Lib Folder
 		string gameLibDllName = Util.GetNameWithExtension(resultDllPath);
 		string gameLibBuildPath = Util.CombinePaths(buildPath, gameLibDllName);
 		Util.CreateFolder(buildPath);
 		Util.CopyFile(resultDllPath, gameLibBuildPath);
 
+		// Copy Package Dlls to Lib Folder
+		string debugLibFolder = Project.GetLibraryFolderPath(projectPath, true);
+		foreach (var packagDllPath in Util.EnumerateFiles(debugLibFolder, true, "*.dll")) {
+			string dllName = Util.GetNameWithExtension(packagDllPath);
+			if (dllName == "AngeliA Framework.dll") continue;
+			Util.CopyFile(packagDllPath, Util.CombinePaths(buildPath, dllName));
+		}
 
 		// ===== Publish =====
 
@@ -615,7 +622,16 @@ public static class EngineUtil {
 
 			// Copy Game Libs to Publish Folder
 			if (!Util.FileExists(gameLibBuildPath)) return ERROR_RESULT_DLL_NOT_FOUND;
-			Util.CopyFile(gameLibBuildPath, Util.CombinePaths(publishDir, "Library", gameLibDllName));
+			string publishLibRoot = Util.CombinePaths(publishDir, "Library");
+			Util.CopyFile(gameLibBuildPath, Util.CombinePaths(publishLibRoot, gameLibDllName));
+
+			// Copy Package Dlls to Lib Folder
+			string releaseLibFolder = Project.GetLibraryFolderPath(projectPath, false);
+			foreach (var packagDllPath in Util.EnumerateFiles(releaseLibFolder, true, "*.dll")) {
+				string dllName = Util.GetNameWithExtension(packagDllPath);
+				if (dllName == "AngeliA Framework.dll") continue;
+				Util.CopyFile(packagDllPath, Util.CombinePaths(publishLibRoot, dllName));
+			}
 
 			// Copy Universe to Publish Folder
 			if (!Util.FolderExists(universePath)) return ERROR_UNIVERSE_FOLDER_NOT_FOUND;

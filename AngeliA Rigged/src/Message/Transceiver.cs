@@ -212,9 +212,11 @@ public class RigTransceiver {
 		RigArgBuilder.Append($"-map:{MapName}");
 		RigArgBuilder.Append(' ');
 
+		// Game Lib
 		RigArgBuilder.Append($"-lib:{Util.Path_to_ArgPath(gameBuildFolder)}");
 		RigArgBuilder.Append(' ');
 
+		// Misc
 		RigArgBuilder.Append($"-pID:{Process.GetCurrentProcess().Id}");
 		RigArgBuilder.Append(' ');
 

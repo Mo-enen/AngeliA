@@ -19,6 +19,7 @@ public class Project {
 	public string UniversePath { get; init; }
 	public string IconPath { get; init; }
 	public string CsprojPath { get; init; }
+	public bool IsEngineInternalProject { get; init; }
 	public Universe Universe { get; init; }
 
 	public static Project LoadProject (string projectPath) {
@@ -26,16 +27,19 @@ public class Project {
 			ProjectPath = projectPath,
 			SourceCodePath = Util.CombinePaths(projectPath, "src"),
 			BuildPath = Util.CombinePaths(projectPath, "Build"),
-			DllLibPath_Debug = Util.CombinePaths(projectPath, "lib", "Debug"),
-			DllLibPath_Release = Util.CombinePaths(projectPath, "lib", "Release"),
+			DllLibPath_Debug = GetLibraryFolderPath(projectPath, true),
+			DllLibPath_Release = GetLibraryFolderPath(projectPath, false),
 			TempRoot = Util.CombinePaths(projectPath, "Temp"),
 			TempBuildPath = Util.CombinePaths(projectPath, "Temp", "Build"),
 			TempPublishPath = Util.CombinePaths(projectPath, "Temp", "Publish"),
 			IconPath = Util.CombinePaths(projectPath, "Icon.ico"),
 			UniversePath = AngePath.GetUniverseRoot(projectPath),
 			CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(path => !path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase), defaultValue: ""),
+			IsEngineInternalProject = Util.IsSamePath(Util.GetParentPath(projectPath), Universe.BuiltIn.UniverseRoot),
 			Universe = Universe.LoadFromFile(AngePath.GetUniverseRoot(projectPath)),
 		};
 	}
+
+	public static string GetLibraryFolderPath (string projectPath, bool debug) => Util.CombinePaths(projectPath, "lib", debug ? "Debug" : "Release");
 
 }

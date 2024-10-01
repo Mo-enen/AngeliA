@@ -52,31 +52,6 @@ public static partial class Util {
 	public static bool PathIsFolder (string path) => File.GetAttributes(path).HasFlag(FileAttributes.Directory);
 
 
-	public static bool IsChildPath (string pathA, string pathB) {
-		pathA = GetFullPath(pathA);
-		pathB = GetFullPath(pathB);
-		if (pathA.Length == pathB.Length) {
-			return pathA == pathB;
-		} else if (pathA.Length > pathB.Length) {
-			return IsChildPathComparer(pathA, pathB);
-		} else {
-			return IsChildPathComparer(pathB, pathA);
-		}
-	}
-
-
-	private static bool IsChildPathComparer (string longPath, string path) {
-		if (longPath.Length <= path.Length || !PathIsFolder(path) || !longPath.StartsWith(path)) {
-			return false;
-		}
-		char c = longPath[path.Length];
-		if (c != Path.DirectorySeparatorChar && c != Path.AltDirectorySeparatorChar) {
-			return false;
-		}
-		return true;
-	}
-
-
 	public static string GetUrl (string path) => string.IsNullOrEmpty(path) ? "" : new System.Uri(path).AbsoluteUri;
 
 

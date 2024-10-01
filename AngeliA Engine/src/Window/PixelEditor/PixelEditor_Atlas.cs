@@ -17,14 +17,18 @@ public partial class PixelEditor {
 	private static string[] ATLAS_TYPE_NAMES = null;
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
+	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
+	private static readonly SpriteCode ICON_EXPORT_PNG = "Icon.ExportPNG";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
-	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
-	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_ASE = ("PixelEditor.Title.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_PNG = ("PixelEditor.Title.ImportPNG", "Import PNG file");
 	private static readonly LanguageCode TITLE_EXPORT_PNG = ("PixelEditor.Title.ExportPNG", "Export PNG file");
 	private static readonly LanguageCode MENU_ATLAS_TYPE = ("Menu.AtlasType", "Type");
-
+	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
+	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
+	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.PixelEditor.ImportPNG", "Import PNG file into current canvas");
+	private static readonly LanguageCode TIP_EXPORT_PNG = ("Tip.PixelEditor.ExportPNG", "Export current canvas to a PNG file");
+	
 	// Data
 	private static readonly GUIStyle LevelBlockAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
 		ContentColor = Color32.ORANGE_BETTER,
@@ -292,12 +296,8 @@ public partial class PixelEditor {
 		using (new GUIEnableScope(Instance.StagedSprites.Count > 0)) {
 			if (GUI.Button(rect, ICON_EXPORT_PNG, Skin.SmallDarkButton)) {
 				if (CurrentAtlasIndex >= 0 && CurrentAtlasIndex < Sheet.Atlas.Count) {
-					FileBrowserUI.SaveFile(
-						TITLE_EXPORT_PNG,
-						$"{Sheet.Atlas[CurrentAtlasIndex].Name}.png",
-						ExportAtlasToPngFile,
-						"*.png"
-					);
+					string name = Sheet.Atlas[CurrentAtlasIndex].Name;
+					FileBrowserUI.SaveFile(TITLE_EXPORT_PNG, $"{name}.png", ExportCanvasToPngFile, "*.png");
 				}
 			}
 		}
@@ -338,7 +338,7 @@ public partial class PixelEditor {
 	}
 
 
-	public static void ExportAtlasToPngFile (string path) {
+	public static void ExportCanvasToPngFile (string path) {
 
 		if (Instance.StagedSprites.Count == 0) return;
 

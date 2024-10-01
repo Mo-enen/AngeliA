@@ -305,7 +305,7 @@ public partial class GameEditor : WindowUI {
 		// Func
 		static void DrawBar (IRect rect, BarData data, Color32 barColor) {
 			int width = Util.RemapUnclamped(0, data.Capacity, 0, rect.width, data.Value);
-			Renderer.DrawPixel(new IRect(rect.x, rect.y, width, rect.height), barColor, int.MaxValue);
+			Renderer.DrawPixel(new IRect(rect.x, rect.y, width, rect.height), data.Value < data.Capacity ? barColor : Color32.RED, int.MaxValue);
 			// Label
 			int padding = Unify(6);
 			GUI.Label(rect.ShrinkLeft(padding), data.Name, GUI.Skin.SmallLabel);

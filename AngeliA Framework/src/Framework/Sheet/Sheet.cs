@@ -338,6 +338,25 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		}
 	}
 
+	public void RemoveAllAtlasAndAllSpritesInsideExcept (int ignoreAtlasIndex) {
+		if (ignoreAtlasIndex < 0 || ignoreAtlasIndex >= Atlas.Count) return;
+		// Remove Sprites
+		for (int i = 0; i < Sprites.Count; i++) {
+			if (Sprites[i].AtlasIndex != ignoreAtlasIndex) {
+				RemoveSprite(i);
+				i--;
+			}
+		}
+		// Fix Index
+		foreach (var sprite in Sprites) {
+			sprite.AtlasIndex = 0;
+		}
+		// Remove Atlas
+		var atlas = Atlas[ignoreAtlasIndex];
+		Atlas.Clear();
+		Atlas.Add(atlas);
+	}
+
 	public void RemoveGroupAndAllSpritesInside (int groupIndex) {
 		var group = Groups[groupIndex];
 		Groups.RemoveAt(groupIndex);

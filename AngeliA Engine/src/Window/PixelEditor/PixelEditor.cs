@@ -171,6 +171,7 @@ public partial class PixelEditor : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+
 		Cursor.RequireCursor();
 		Sky.ForceSkyboxTint(
 			EngineSetting.BackgroundColor.Value,
@@ -199,6 +200,19 @@ public partial class PixelEditor : WindowUI {
 
 	// Update
 	private void Update_Cache () {
+
+#if DEBUG
+		if (
+			CurrentProject != null &&
+			!CurrentProject.IsEngineInternalProject &&
+			(Game.GlobalFrame % 180 == 0 || Game.GlobalFrame % 180 == 2) &&
+			CurrentAtlasIndex >= 0 &&
+			CurrentAtlasIndex < Sheet.Atlas.Count &&
+			Sheet.Atlas[CurrentAtlasIndex].Name == "BuiltIn"
+		) {
+			RequireNotification("Built-In Lock", "Changes will not be saved");
+		}
+#endif
 
 		int resizePadding = Unify(12);
 		int resizeCorner = Unify(10);
@@ -879,8 +893,29 @@ public partial class PixelEditor : WindowUI {
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
 		Sheet.LoadFromDisk(project.Universe.SheetPath);
+#if DEBUG
+		// Sync Built In Artwork from Engine Sheet
+		if (!project.IsEngineInternalProject) {
+			var builtInSheet = new Sheet();
+			if (builtInSheet.LoadFromDisk(Util.CombinePaths(Universe.BuiltIn.SheetPath))) {
+				int engineBuiltInIndex = builtInSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
+				if (engineBuiltInIndex >= 0) {
+					builtInSheet.RemoveAllAtlasAndAllSpritesInsideExcept(engineBuiltInIndex);
+					int builtInIndex = Sheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
+					if (builtInIndex >= 0) {
+						Sheet.RemoveAtlasAndAllSpritesInside(builtInIndex);
+					}
+					Sheet.CombineSheet(builtInSheet);
+					builtInIndex = Sheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
+					if (builtInIndex > 0) {
+						Sheet.MoveAtlas(builtInIndex, 0);
+					}
+				}
+			}
+		}
+#endif
 		AsepriteFolderExists = Util.FolderExists(project.Universe.AsepriteRoot);
-		SetCurrentAtlas(PrevOpenAtlasIndex.Value);
+		SetCurrentAtlas(PrevOpenAtlasIndex.Value, forceChange: true, resetUndo: true);
 	}
 
 
@@ -894,6 +929,15 @@ public partial class PixelEditor : WindowUI {
 		if (string.IsNullOrEmpty(CurrentProject.Universe.SheetPath)) return;
 		TryApplyPixelBuffer(true);
 		Sheet.SaveToDisk(CurrentProject.Universe.SheetPath);
+#if DEBUG
+		// Sync Artwork for Project "Engine Artwork"
+		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
+			if (Util.FileExists(CurrentProject.Universe.SheetPath)) {
+				Util.CopyFile(CurrentProject.Universe.SheetPath, Universe.BuiltIn.SheetPath);
+				Renderer.LoadMainSheet();
+			}
+		}
+#endif
 	}
 
 

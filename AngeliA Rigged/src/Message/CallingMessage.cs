@@ -76,22 +76,8 @@ public class RigCallingMessage {
 	public byte PressedKeyCount;
 	public readonly int[] PressedGuiKeys = new int[256];
 
-	public bool RequireMapEditorSettingChange = false;
-	public bool Setting_MEDT_Enable;
-	public bool Setting_MEDT_QuickPlayerDrop;
-	public bool Setting_MEDT_AutoZoom;
-	public bool Setting_MEDT_ShowState;
-	public bool Setting_MEDT_ShowBehind;
-	public bool Setting_MEDT_ShowGridGizmos;
-
-	public bool RequireLightMapSettingChange = false;
-	public bool Setting_LM_PixelStyle;
-	public int Setting_LM_SelfLerp;
-	public int Setting_LM_SolidIlluminance;
-	public int Setting_LM_AirIlluminanceDay;
-	public int Setting_LM_AirIlluminanceNight;
-	public int Setting_LM_BackgroundTint;
-	public int Setting_LM_LevelIlluminateRemain;
+	public int RequireChangedSettingCount = 0;
+	public Int2[] RequireChangedSettings = new Int2[64];
 
 	public ToolCommand RequireToolsetCommand = ToolCommand.None;
 
@@ -269,25 +255,11 @@ public class RigCallingMessage {
 				PressedGuiKeys[i] = Util.ReadInt(ref pointer, end);
 			}
 
-			RequireMapEditorSettingChange = Util.ReadBool(ref pointer, end);
-			if (RequireMapEditorSettingChange) {
-				Setting_MEDT_Enable = Util.ReadBool(ref pointer, end);
-				Setting_MEDT_QuickPlayerDrop = Util.ReadBool(ref pointer, end);
-				Setting_MEDT_AutoZoom = Util.ReadBool(ref pointer, end);
-				Setting_MEDT_ShowState = Util.ReadBool(ref pointer, end);
-				Setting_MEDT_ShowBehind = Util.ReadBool(ref pointer, end);
-				Setting_MEDT_ShowGridGizmos = Util.ReadBool(ref pointer, end);
-			}
-
-			RequireLightMapSettingChange = Util.ReadBool(ref pointer, end);
-			if (RequireLightMapSettingChange) {
-				Setting_LM_PixelStyle = Util.ReadBool(ref pointer, end);
-				Setting_LM_SelfLerp = Util.ReadInt(ref pointer, end);
-				Setting_LM_SolidIlluminance = Util.ReadInt(ref pointer, end);
-				Setting_LM_AirIlluminanceDay = Util.ReadInt(ref pointer, end);
-				Setting_LM_AirIlluminanceNight = Util.ReadInt(ref pointer, end);
-				Setting_LM_BackgroundTint = Util.ReadInt(ref pointer, end);
-				Setting_LM_LevelIlluminateRemain = Util.ReadInt(ref pointer, end);
+			RequireChangedSettingCount = Util.ReadInt(ref pointer, end);
+			for (int i = 0; i < RequireChangedSettingCount && i < RequireChangedSettings.Length; i++) {
+				int id = Util.ReadInt(ref pointer, end);
+				int data = Util.ReadInt(ref pointer, end);
+				RequireChangedSettings[i] = new Int2(id, data);
 			}
 
 			RequireToolsetCommand = (ToolCommand)Util.ReadByte(ref pointer, end);
@@ -362,28 +334,13 @@ public class RigCallingMessage {
 				Util.Write(ref pointer, PressedGuiKeys[i], end);
 			}
 
-			Util.Write(ref pointer, RequireMapEditorSettingChange, end);
-			if (RequireMapEditorSettingChange) {
-				RequireMapEditorSettingChange = false;
-				Util.Write(ref pointer, Setting_MEDT_Enable, end);
-				Util.Write(ref pointer, Setting_MEDT_QuickPlayerDrop, end);
-				Util.Write(ref pointer, Setting_MEDT_AutoZoom, end);
-				Util.Write(ref pointer, Setting_MEDT_ShowState, end);
-				Util.Write(ref pointer, Setting_MEDT_ShowBehind, end);
-				Util.Write(ref pointer, Setting_MEDT_ShowGridGizmos, end);
+			Util.Write(ref pointer, RequireChangedSettingCount, end);
+			for (int i = 0; i < RequireChangedSettingCount && i < RequireChangedSettings.Length; i++) {
+				var id_data = RequireChangedSettings[i];
+				Util.Write(ref pointer, id_data.x, end);
+				Util.Write(ref pointer, id_data.y, end);
 			}
-
-			Util.Write(ref pointer, RequireLightMapSettingChange, end);
-			if (RequireLightMapSettingChange) {
-				RequireLightMapSettingChange = false;
-				Util.Write(ref pointer, Setting_LM_PixelStyle, end);
-				Util.Write(ref pointer, Setting_LM_SelfLerp, end);
-				Util.Write(ref pointer, Setting_LM_SolidIlluminance, end);
-				Util.Write(ref pointer, Setting_LM_AirIlluminanceDay, end);
-				Util.Write(ref pointer, Setting_LM_AirIlluminanceNight, end);
-				Util.Write(ref pointer, Setting_LM_BackgroundTint, end);
-				Util.Write(ref pointer, Setting_LM_LevelIlluminateRemain, end);
-			}
+			RequireChangedSettingCount = 0;
 
 			Util.Write(ref pointer, (byte)RequireToolsetCommand, end);
 			RequireToolsetCommand = ToolCommand.None;
@@ -399,6 +356,16 @@ public class RigCallingMessage {
 	public void RequireDrawColliderGizmos () => RequireGameMessageInvoke.SetBit(3, true);
 	public void RequireEntityClicker () => RequireGameMessageInvoke.SetBit(4, true);
 	public void RequireReloadPlayerMovement () => RequireGameMessageInvoke.SetBit(5, true);
+
+
+	public void RequireChangeSetting (Saving<bool> data) => RequireChangeSetting(data.ID, data.Value);
+	public void RequireChangeSetting (Saving<int> data) => RequireChangeSetting(data.ID, data.Value);
+	public void RequireChangeSetting (int id, bool data) => RequireChangeSetting(id, data ? 1 : 0);
+	public void RequireChangeSetting (int id, int data) {
+		if (RequireChangedSettingCount >= RequireChangedSettings.Length) return;
+		RequireChangedSettings[RequireChangedSettingCount] = new Int2(id, data);
+		RequireChangedSettingCount++;
+	}
 
 
 	#endregion

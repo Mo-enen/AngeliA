@@ -13,6 +13,13 @@ public static class LightingSystem {
 
 
 	// Const
+	public const int SETTING_PIXEL_STYLE = 94852_0;
+	public const int SETTING_SELF_LERP = 94852_1;
+	public const int SETTING_SOLID_ILLUMINANCE = 94852_2;
+	public const int SETTING_AIR_ILLUMINANCE_DAY = 94852_3;
+	public const int SETTING_AIR_ILLUMINANCE_NIGHT = 94852_4;
+	public const int SETTING_BACKGROUND_TINT = 94852_5;
+	public const int SETTING_LEVEL_ILLUMINATE_REMAIN = 94852_6;
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
 	private const int LIGHT_MAP_UNIT_PADDING_BOTTOM = 6;
 	private const int LIGHT_MAP_UNIT_PADDING_TOP = 6;
@@ -49,6 +56,34 @@ public static class LightingSystem {
 		CellHeight = maxHeight / Const.CEL + LIGHT_MAP_UNIT_PADDING_TOP + LIGHT_MAP_UNIT_PADDING_BOTTOM;
 		Illuminances = new float[CellWidth, CellHeight];
 		WeightLen = WEIGHTS.Length;
+	}
+
+
+	[OnRemoteSettingChanged]
+	internal static void OnRemoteSettingChanged (int id, int data) {
+		switch (id) {
+			case SETTING_PIXEL_STYLE:
+				Universe.BuiltInInfo.LightMap_PixelStyle = data == 1;
+				break;
+			case SETTING_SELF_LERP:
+				Universe.BuiltInInfo.LightMap_SelfLerp = data / 1000f;
+				break;
+			case SETTING_SOLID_ILLUMINANCE:
+				Universe.BuiltInInfo.LightMap_SolidIlluminance = data / 1000f;
+				break;
+			case SETTING_AIR_ILLUMINANCE_DAY:
+				Universe.BuiltInInfo.LightMap_AirIlluminanceDay = data / 1000f;
+				break;
+			case SETTING_AIR_ILLUMINANCE_NIGHT:
+				Universe.BuiltInInfo.LightMap_AirIlluminanceNight = data / 1000f;
+				break;
+			case SETTING_BACKGROUND_TINT:
+				Universe.BuiltInInfo.LightMap_BackgroundTint = data / 1000f;
+				break;
+			case SETTING_LEVEL_ILLUMINATE_REMAIN:
+				Universe.BuiltInInfo.LightMap_LevelIlluminateRemain = data / 1000f;
+				break;
+		}
 	}
 
 

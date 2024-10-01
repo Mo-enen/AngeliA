@@ -23,6 +23,7 @@ public partial class RiggedGame : Game {
 	// Data
 	private static RiggedGame Instance;
 	private static readonly List<string> FontNamesCache = [];
+	private static event System.Action<int, int> OnRemoteSettingChanged;
 	private readonly Process HostProcess;
 	private readonly string MapName = "RiggedGameMapName";
 	private readonly int StartWithZ = 0;
@@ -99,6 +100,7 @@ public partial class RiggedGame : Game {
 		}
 
 		MapEditor.ResetCameraAtStart = StartWithView == default;
+		Util.LinkEventWithAttribute<OnRemoteSettingChangedAttribute>(typeof(RiggedGame), nameof(OnRemoteSettingChanged));
 
 		// Init Stream
 		Debug.OnLogException += LogException;
@@ -256,18 +258,12 @@ public partial class RiggedGame : Game {
 			CharacterMovement.ReloadMovementConfigFromFile(Player.Selecting.GetType());
 		}
 
-		// Lightmap Setting Change
-		if (CallingMessage.RequireLightMapSettingChange) {
-			var info = Universe.BuiltInInfo;
-			info.LightMap_PixelStyle = CallingMessage.Setting_LM_PixelStyle;
-			info.LightMap_SelfLerp = CallingMessage.Setting_LM_SelfLerp / 1000f;
-			info.LightMap_SolidIlluminance = CallingMessage.Setting_LM_SolidIlluminance / 1000f;
-			info.LightMap_AirIlluminanceDay = CallingMessage.Setting_LM_AirIlluminanceDay / 1000f;
-			info.LightMap_AirIlluminanceNight = CallingMessage.Setting_LM_AirIlluminanceNight / 1000f;
-			info.LightMap_BackgroundTint = CallingMessage.Setting_LM_BackgroundTint / 1000f;
-			info.LightMap_LevelIlluminateRemain = CallingMessage.Setting_LM_LevelIlluminateRemain / 1000f;
+		// Setting Change
+		for (int i = 0; i < CallingMessage.RequireChangedSettingCount && i < CallingMessage.RequireChangedSettings.Length; i++) {
+			var id_data = CallingMessage.RequireChangedSettings[i];
+			OnRemoteSettingChanged?.Invoke(id_data.x, id_data.y);
 		}
-
+		
 		// Toolset Command
 		switch (CallingMessage.RequireToolsetCommand) {
 			case RigCallingMessage.ToolCommand.RunCodeAnalysis:
@@ -296,24 +292,6 @@ public partial class RiggedGame : Game {
 				StartWithZ
 			);
 			StartWithView = default;
-		}
-
-		// Setting Changed
-		if (CallingMessage.RequireMapEditorSettingChange) {
-			MapEditor.AutoZoom = CallingMessage.Setting_MEDT_AutoZoom;
-			MapEditor.QuickPlayerDrop = CallingMessage.Setting_MEDT_QuickPlayerDrop;
-			MapEditor.ShowBehind = CallingMessage.Setting_MEDT_ShowBehind;
-			MapEditor.ShowState = CallingMessage.Setting_MEDT_ShowState;
-			MapEditor.ShowGridGizmos = CallingMessage.Setting_MEDT_ShowGridGizmos;
-			bool enableMapEditor = CallingMessage.Setting_MEDT_Enable;
-			if (MapEditor.IsActived != enableMapEditor) {
-				if (enableMapEditor) {
-					Stage.SpawnEntity(MapEditor.TYPE_ID, 0, 0);
-				} else {
-					MapEditor.Instance.Active = false;
-					RestartGame();
-				}
-			}
 		}
 
 		// Fix View Height
