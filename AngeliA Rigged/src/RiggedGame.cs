@@ -255,7 +255,7 @@ public partial class RiggedGame : Game {
 
 		// Reload Character Movement
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(5) && PlayerSystem.Selecting != null) {
-			CharacterMovement.ReloadMovementConfigFromFile(PlayerSystem.Selecting.GetType());
+			PlayerSystem.Selecting.Movement.ReloadMovementConfigFromFile();
 		}
 
 		// Setting Change

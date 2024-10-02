@@ -274,7 +274,7 @@ public static partial class Util {
 
 
 	// Field
-	public static object GetFieldValue (object target, string name) => GetField(target.GetType(), name)?.GetValue(target);
+	public static object GetFieldValue (object target, string fieldName) => GetField(target.GetType(), fieldName)?.GetValue(target);
 
 
 	public static FieldInfo GetField (Type type, string name) {

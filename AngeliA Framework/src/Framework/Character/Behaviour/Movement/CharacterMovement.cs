@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 
 namespace AngeliA;
@@ -14,8 +15,149 @@ public enum CharacterMovementState {
 
 
 
-public partial class CharacterMovement (Rigidbody rig) {
+[StructLayout(LayoutKind.Sequential)]
+public class CharacterMovement (Rigidbody rig) {
 
+
+
+
+	#region --- MET ---
+
+
+	[PropGroup("Size")]
+	public readonly FrameBasedInt MovementWidth = new(150);
+	public readonly FrameBasedInt MovementHeight = new(384); // Height when Character is 160cm
+
+	[PropGroup("Walk")]
+	public readonly FrameBasedBool WalkAvailable = new(true);
+	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkSpeed = new(20);
+	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkAcceleration = new(3);
+	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkBrakeAcceleration = new(30);
+	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkDeceleration = new(4);
+
+	[PropGroup("Run")]
+	public readonly FrameBasedBool RunAvailable = new(true);
+	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunSpeed = new(32);
+	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunAcceleration = new(3);
+	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunBrakeAcceleration = new(30);
+	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunDeceleration = new(4);
+
+	[PropGroup("Jump")]
+	public readonly FrameBasedInt JumpCount = new(2);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpSpeed = new(73);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpReleaseSpeedRate = new(700);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpRiseGravityRate = new(600);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool GrowJumpCountWhenFallOffEdge = new(true);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool FirstJumpWithRoll = new(false);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 1)] public readonly FrameBasedBool SubsequentJumpWithRoll = new(true);
+	public readonly FrameBasedBool JumpDownThoughOneway = new(false);
+
+	[PropGroup("Squat")]
+	public readonly FrameBasedBool SquatAvailable = new(true);
+	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatHeightAmount = new(521);
+	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatMoveSpeed = new(14);
+	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatAcceleration = new(48);
+	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatDeceleration = new(48);
+
+	[PropGroup("Dash")]
+	public readonly FrameBasedBool DashAvailable = new(true);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashHeightAmount = new(521);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedBool DashWithRoll = new(false);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedBool DashPutoutFire = new(true);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashSpeed = new(42);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashDuration = new(20);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashCooldown = new(4);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashAcceleration = new(24);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashCancelLoseRate = new(300);
+
+	[PropGroup("Rush")]
+	public readonly FrameBasedBool RushAvailable = new(true);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushHeightAmount = new(1000);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInAir = new(false);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInWater = new(true);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushWhenClimb = new(false);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushWhenSquat = new(false);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushPutoutFire = new(true);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushSpeed = new(72);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushStopSpeed = new(8);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushDuration = new(8);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushStiff = new(10);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushCooldown = new(2);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushAcceleration = new(12);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushDeceleration = new(4);
+
+	[PropGroup("Slip")]
+	public readonly FrameBasedBool SlipAvailable = new(true);
+	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipAcceleration = new(2);
+	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipDeceleration = new(1);
+
+	[PropGroup("Pound")]
+	public readonly FrameBasedBool PoundAvailable = new(true);
+	[PropVisibility(nameof(PoundAvailable))] public readonly FrameBasedBool PoundPutoutFire = new(true);
+	[PropVisibility(nameof(PoundAvailable))] public readonly FrameBasedInt PoundSpeed = new(96);
+
+	[PropGroup("Swim")]
+	public readonly FrameBasedBool SwimAvailable = new(true);
+	public readonly FrameBasedInt InWaterSpeedRate = new(500);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimWidthAmount = new(1333);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimHeightAmount = new(1000);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimSpeed = new(42);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimJumpSpeed = new(128);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimAcceleration = new(4);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimDeceleration = new(4);
+
+	[PropGroup("Climb")]
+	public readonly FrameBasedBool ClimbAvailable = new(true);
+	[PropVisibility(nameof(ClimbAvailable))] public readonly FrameBasedBool AllowJumpWhenClimbing = new(true);
+	[PropVisibility(nameof(ClimbAvailable))] public readonly FrameBasedInt ClimbSpeedX = new(12);
+	[PropVisibility(nameof(ClimbAvailable))] public readonly FrameBasedInt ClimbSpeedY = new(18);
+
+	[PropGroup("Fly")]
+	public readonly FrameBasedBool FlyAvailable = new(true);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyHeightAmount = new(521);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedBool GlideOnFlying = new(false);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyCooldown = new(24);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyRiseSpeed = new(96);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyGravityRiseRate = new(800);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyGravityFallRate = new(200);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyFallSpeed = new(16);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyMoveSpeed = new(32);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyAcceleration = new(2);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyDeceleration = new(1);
+
+	[PropGroup("Slide")]
+	public readonly FrameBasedBool SlideAvailable = new(false);
+	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedBool SlideOnAnyBlock = new(false);
+	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedBool ResetJumpCountWhenSlide = new(true);
+	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedInt SlideJumpKickSpeed = new(56);
+	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedInt SlideDropSpeed = new(4);
+
+	[PropGroup("Grab")]
+	public readonly FrameBasedBool GrabTopAvailable = new(true);
+	public readonly FrameBasedBool GrabSideAvailable = new(true);
+	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedInt GrabTopHeightAmount = new(947);
+	[PropVisibility(nameof(GrabSideAvailable))] public readonly FrameBasedInt GrabSideHeightAmount = new(947);
+	[PropVisibility(nameof(GrabTopAvailable), CompareMode.Or, nameof(GrabSideAvailable))] public readonly FrameBasedBool ResetJumpCountWhenGrab = new(true);
+	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedBool GrabFlipThroughDownAvailable = new(true);
+	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedBool GrabFlipThroughUpAvailable = new(true);
+	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedInt GrabFlipThroughDuration = new(18);
+	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedInt GrabMoveSpeedX = new(24);
+	[PropVisibility(nameof(GrabSideAvailable))] public readonly FrameBasedInt GrabMoveSpeedY = new(24);
+	[PropVisibility(nameof(GrabSideAvailable))] public readonly FrameBasedInt GrabSideJumpKickSpeed = new(56);
+
+	[PropGroup("Crash")]
+	public readonly FrameBasedBool CrashAvailable = new(true);
+	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedBool CrashWhenSlippy = new(true);
+	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashDuration = new(30);
+	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashRunDurationRequire = new(42);
+	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashDeceleration = new(1);
+
+	[PropGroup("Push")]
+	public readonly FrameBasedBool PushAvailable = new(true);
+	[PropVisibility(nameof(PushAvailable))] public readonly FrameBasedInt PushSpeed = new(10);
+
+
+	#endregion
 
 
 
@@ -45,9 +187,8 @@ public partial class CharacterMovement (Rigidbody rig) {
 	public int SpeedRateX { get; private set; } = 1000;
 	public bool FacingRight { get; set; } = true;
 	public bool FacingFront { get; private set; } = true;
-	public bool ReadyForRun { get; private set; } = true;
-	public virtual int FinalCharacterHeight => MovementHeight;
-	public virtual bool SpinOnGroundPound => false;
+	public bool ShouldRun { get; private set; } = true;
+	public int FinalCharacterHeight { get; set; }
 	public virtual bool SyncFromConfigFile => true;
 
 	// Frame Cache
@@ -79,8 +220,8 @@ public partial class CharacterMovement (Rigidbody rig) {
 	public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Util.Max(GrabFlipThroughDuration, 1);
 	public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Util.Max(GrabFlipThroughDuration, 1);
 	public bool IsMoving => IntendedX != 0;
-	public bool IsWalking => IntendedX != 0 && !ReadyForRun;
-	public bool IsRunning => IntendedX != 0 && ReadyForRun;
+	public bool IsWalking => WalkAvailable && IntendedX != 0 && !ShouldRun;
+	public bool IsRunning => RunAvailable && IntendedX != 0 && ShouldRun;
 	public bool IsRolling { get; private set; } = false;
 	public bool IsDashing { get; private set; } = false;
 	public bool IsRushing { get; private set; } = false;
@@ -111,9 +252,8 @@ public partial class CharacterMovement (Rigidbody rig) {
 	protected int CollisionMask => Target.CollisionMask;
 
 	// Data
-	private static readonly Dictionary<int, CharacterMovementConfig> ConfigPool_Movement = [];
-	private static int MovementConfigGlobalVersion = -1;
-	private int LocalMovementConfigVersion = int.MinValue;
+	private static readonly Dictionary<int, List<(string name, int value)>> ConfigPool = [];
+	private int LocalMovementConfigVersion = -2;
 	private IRect Hitbox = default;
 	private bool HoldingJump = false;
 	private bool HoldingJumpForFly = false;
@@ -143,12 +283,26 @@ public partial class CharacterMovement (Rigidbody rig) {
 
 
 	[OnGameInitialize(-128)]
-	internal static void OnGameInitializeMovement () {
-		ReloadAllCharacterMovementConfigFromFile();
+	internal static void InitializeCharacterMovementConfigPoolFromFile () {
+		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
+		foreach (var type in typeof(Character).AllChildClass()) {
+			string name = type.AngeName();
+			// Movement
+			string path = Util.CombinePaths(movementRoot, $"{name}.txt");
+			// Load List from Config File
+			var list = new List<(string, int)>() { ("", 0) };
+			bool loaded = FrameworkUtil.NameAndIntFile_to_List(list, path);
+			if (!loaded) {
+				Util.TextToFile("", path);
+			}
+			ConfigPool.Add(name.AngeHash(), list);
+		}
 	}
 
 
 	public virtual void OnActivated () {
+
+		FinalCharacterHeight = MovementHeight;
 		Width = MovementWidth;
 		Height = MovementHeight;
 		OffsetX = -MovementWidth / 2;
@@ -156,6 +310,19 @@ public partial class CharacterMovement (Rigidbody rig) {
 		IsFlying = false;
 		Hitbox = new IRect(X, Y, MovementWidth, MovementHeight);
 		RequireJumpFrame = int.MinValue;
+
+		// Sync Movement Config from Pool
+		if (
+			SyncFromConfigFile &&
+			TargetCharacter != null &&
+			ConfigPool.TryGetValue(TargetCharacter.TypeID, out var configList)
+		) {
+			int poolVersion = configList[0].value;
+			if (LocalMovementConfigVersion != poolVersion) {
+				LocalMovementConfigVersion = poolVersion;
+				FrameworkUtil.List_to_FrameBasedFields(configList, this);
+			}
+		}
 	}
 
 
@@ -374,7 +541,7 @@ public partial class CharacterMovement (Rigidbody rig) {
 
 		// Physics
 		int growingHeight = FinalCharacterHeight;
-		int width = InWater ? SwimWidth : MovementWidth;
+		int width = InWater ? MovementWidth * SwimWidthAmount / 1000 : MovementWidth;
 		int height =
 			IsSquatting ? growingHeight * SquatHeightAmount / 1000 :
 			IsRolling ? growingHeight * SquatHeightAmount / 1000 :
@@ -504,7 +671,7 @@ public partial class CharacterMovement (Rigidbody rig) {
 		bool movementAllowJump = !IsSquatting && !IsGrabbingTop && !IsInsideGround && !IsRushing && !IsGrabFlipping && !IsCrashing;
 
 		// Perform Jump/Fly
-		if (movementAllowJump && (!IsClimbing || JumpWhenClimbAvailable)) {
+		if (movementAllowJump && (!IsClimbing || AllowJumpWhenClimbing)) {
 			// Jump
 			if (CurrentJumpCount < JumpCount) {
 				// Jump
@@ -520,9 +687,9 @@ public partial class CharacterMovement (Rigidbody rig) {
 						Y -= 3;
 					}
 					if (IsSliding) {
-						VelocityX += FacingRight ? -SlideSideJumpSpeed : SlideSideJumpSpeed;
+						VelocityX += FacingRight ? -SlideJumpKickSpeed : SlideJumpKickSpeed;
 					} else if (IsGrabbingSide) {
-						VelocityX += FacingRight ? -GrabSideJumpSpeed : GrabSideJumpSpeed;
+						VelocityX += FacingRight ? -GrabSideJumpKickSpeed : GrabSideJumpKickSpeed;
 					}
 					LastDashFrame = int.MinValue;
 					IsDashing = false;
@@ -609,7 +776,7 @@ public partial class CharacterMovement (Rigidbody rig) {
 
 			// Walk and Run
 			default:
-				bool running = ReadyForRun;
+				bool running = ShouldRun;
 				speed = IntendedX * (running ? RunSpeed : WalkSpeed);
 				bool braking = (speed > 0 && VelocityX < 0) || (speed < 0 && VelocityX > 0);
 				acc = running ?
@@ -621,7 +788,7 @@ public partial class CharacterMovement (Rigidbody rig) {
 			// Squat
 			case CharacterMovementState.SquatIdle:
 			case CharacterMovementState.SquatMove:
-				speed = IntendedX * SquatSpeed;
+				speed = IntendedX * SquatMoveSpeed;
 				acc = SquatAcceleration;
 				dcc = SquatDeceleration;
 				break;
@@ -845,44 +1012,18 @@ public partial class CharacterMovement (Rigidbody rig) {
 
 
 	// Config
-	public static void ReloadMovementConfigFromFile (System.Type characterType) {
-		string cName = characterType.AngeName();
+	public void ReloadMovementConfigFromFile () {
+		string cName = TargetCharacter.GetType().AngeName();
 		int id = cName.AngeHash();
-		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{cName}.json");
-		var config = JsonUtil.LoadOrCreateJsonFromPath<CharacterMovementConfig>(path);
-		ConfigPool_Movement[id] = config;
-		MovementConfigGlobalVersion++;
-	}
-
-
-	public static void ReloadAllCharacterMovementConfigFromFile () {
-		MovementConfigGlobalVersion++;
-		ConfigPool_Movement.Clear();
-		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
-		foreach (var type in typeof(Character).AllChildClass()) {
-			string name = type.AngeName();
-			int typeID = name.AngeHash();
-			// Movement
-			string path = Util.CombinePaths(movementRoot, $"{name}.json");
-			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
-			// Create Default Config
-			if (config == null) {
-				config = new CharacterMovementConfig();
-				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
-			}
-			// Add to Pool
-			ConfigPool_Movement.Add(typeID, config);
+		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{cName}.txt");
+		List<(string name, int value)> configList = [("", 0)];
+		ConfigPool[id] = configList;
+		bool loaded = FrameworkUtil.NameAndIntFile_to_List(configList, path);
+		if (!loaded) {
+			Util.TextToFile("", path);
 		}
-	}
-
-
-	public virtual void SyncConfigFromPool () {
-		if (!SyncFromConfigFile || TargetCharacter == null) return;
-		if (LocalMovementConfigVersion == MovementConfigGlobalVersion || Target == null) return;
-		LocalMovementConfigVersion = MovementConfigGlobalVersion;
-		if (ConfigPool_Movement.TryGetValue(Target.TypeID, out var mConfig)) {
-			mConfig.LoadToCharacter(TargetCharacter);
-		}
+		LocalMovementConfigVersion = configList[0].value;
+		FrameworkUtil.List_to_FrameBasedFields(configList, this);
 	}
 
 
@@ -944,7 +1085,7 @@ public partial class CharacterMovement (Rigidbody rig) {
 		movement.IsSquatting ? (movement.IsMoving ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
 		movement.InWater && !movement.IsGrounded ? (movement.IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
 		!movement.IsGrounded && !movement.InWater && !movement.IsClimbing ? (movement.VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
-		movement.IsMoving && (movement.ReadyForRun ? movement.RunSpeed : movement.WalkSpeed) != 0 ? (movement.ReadyForRun && !movement.IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
+		movement.IsMoving && (movement.ShouldRun ? movement.RunSpeed : movement.WalkSpeed) != 0 ? (movement.ShouldRun && !movement.IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
 		CharacterMovementState.Idle;
 	}
 
@@ -966,7 +1107,8 @@ public partial class CharacterMovement (Rigidbody rig) {
 		if (IntendedX == 0 && x != 0) LastStartMoveFrame = Game.GlobalFrame;
 		IntendedX = x;
 		IntendedY = y;
-		ReadyForRun = !walk;
+		walk &= WalkAvailable;
+		ShouldRun = RunAvailable && !walk;
 		if (x != 0 || y != 0) {
 			LastMoveDirection = new(IntendedX, IntendedY);
 		}

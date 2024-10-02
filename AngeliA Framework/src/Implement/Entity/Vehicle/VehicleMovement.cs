@@ -41,7 +41,7 @@ public abstract class VehicleMovement : CharacterMovement {
 		ClimbAvailable.BaseValue = false;
 
 		JumpCount.BaseValue = 0;
-		SwimWidth.BaseValue = Const.CEL;
+		SwimWidthAmount.BaseValue = 1000;
 		MovementWidth.BaseValue = Const.CEL;
 		MovementHeight.BaseValue = Const.CEL;
 		DashHeightAmount.BaseValue = 1000;

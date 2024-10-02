@@ -150,6 +150,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 	public override void OnActivated () {
 		base.OnActivated();
+
+		// Behavour
 		Movement = NativeMovement;
 		Attackness = NativeAttackness;
 		Health = NativeHealth;
@@ -160,6 +162,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		NativeAttackness.OnActivated();
 		NativeNavigation.OnActivated();
 		NativeRenderer.OnActivated();
+
+		// Misc
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;
 		VelocityX = 0;
@@ -236,7 +240,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 			return;
 		}
 		// Update
-		Movement.SyncConfigFromPool();
 		BeforeUpdate_Inventory();
 		Buff.ApplyOnUpdate();
 		Rendering.BeforeUpdate();
@@ -387,7 +390,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 				CharacterMovementState.Dash => CharacterAnimationType.Dash,
 				CharacterMovementState.Rush => CharacterAnimationType.Rush,
 				CharacterMovementState.Crash => CharacterAnimationType.Crash,
-				CharacterMovementState.Pound => character.Movement.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
+				CharacterMovementState.Pound => character.Rendering.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
 				CharacterMovementState.Climb => CharacterAnimationType.Climb,
 				CharacterMovementState.Fly => CharacterAnimationType.Fly,
 				CharacterMovementState.Slide => CharacterAnimationType.Slide,

@@ -7,24 +7,24 @@ namespace AngeliaEngine;
 public partial class GameEditor {
 
 	// SUB
-	private enum MovementFieldType {
-		Int, Bool, Unknown,
-	}
+	private enum MovementFieldType { Int, Bool, }
 
 	private class MovementFieldData {
-		public FieldInfo Field;
 		public MovementFieldType Type;
-		public LanguageCode Name;
+		public string Key;
+		public LanguageCode DisplayName;
 		public string ValueString = "";
 		public PropVisibilityAttribute Visible = null;
 		public bool Separator = false;
+		public int DefaultValue = 0;
 	}
 
 	// Api
 	public int RigGameSelectingPlayerID { get; set; } = 0;
 
 	// Data
-	private readonly Dictionary<int, (CharacterMovementConfig config, string path)> MovementConfigPool = [];
+	private readonly Dictionary<int, Dictionary<string, int>> ConfigPool = [];
+	private readonly Dictionary<int, string> ConfigPath = [];
 	private readonly LanguageCode[] MovementTabNames;
 	private readonly IntToChars MovementTabLabelToChars;
 	private readonly MovementFieldData[][] MovementFields;
@@ -34,12 +34,22 @@ public partial class GameEditor {
 	private int PrevSelectingPlayerID = -1;
 	private bool IsMovementEditorDirty = false;
 	private Project CurrentProject = null;
+	private bool ConfigPoolInitialized = false;
 
+
+	// MSG
 	private void DrawMovementPanel (ref IRect panelRect) {
+
+		if (CurrentProject == null) return;
+
+		if (!ConfigPoolInitialized) {
+			ConfigPoolInitialized = true;
+			InitializeMovementConfigPool();
+		}
 
 		if (
 			RigGameSelectingPlayerID == 0 ||
-			!MovementConfigPool.TryGetValue(RigGameSelectingPlayerID, out var configData)
+			!ConfigPool.TryGetValue(RigGameSelectingPlayerID, out var configMap)
 		) return;
 
 		// Min Width
@@ -65,7 +75,7 @@ public partial class GameEditor {
 				MovementTab = (MovementTab + 1).Clamp(0, MovementTabCount - 1);
 			}
 		}
-		var fields = MovementFields[(int)MovementTab];
+		var fields = MovementFields[MovementTab];
 
 		// Tab Changed
 		if (PrevMovementTabIndex != MovementTab || PrevSelectingPlayerID != RigGameSelectingPlayerID) {
@@ -73,7 +83,9 @@ public partial class GameEditor {
 			PrevSelectingPlayerID = RigGameSelectingPlayerID;
 			foreach (var field in fields) {
 				if (field.Type != MovementFieldType.Int) continue;
-				field.ValueString = ((int)field.Field.GetValue(configData.config)).ToString();
+				if (configMap.TryGetValue(field.Key, out int configValue)) {
+					field.ValueString = configValue.ToString();
+				}
 			}
 		}
 
@@ -95,21 +107,20 @@ public partial class GameEditor {
 		// Props
 		for (int i = 0; i < fields.Length; i++) {
 			var fieldData = fields[i];
-			if (fieldData.Visible != null && !fieldData.Visible.PropMatch(configData.config)) {
+			if (fieldData.Visible != null && !fieldData.Visible.PropMatch(configMap)) {
 				continue;
 			}
-			var field = fieldData.Field;
-			GUI.SmallLabel(rect, fieldData.Name);
+			GUI.SmallLabel(rect, fieldData.DisplayName);
 			var valueRect = rect.ShrinkLeft(GUI.LabelWidth);
 			switch (fieldData.Type) {
 				case MovementFieldType.Int: {
 					// Int
-					if (field.GetValue(configData.config) is not int value) break;
+					if (!configMap.TryGetValue(fieldData.Key, out int value)) break;
 					fieldData.ValueString = GUI.SmallInputField(91243895 + i, valueRect, fieldData.ValueString, out _, out bool confirm);
 					if (!confirm) break;
 					if (int.TryParse(fieldData.ValueString, out int newValue)) {
 						IsMovementEditorDirty = IsMovementEditorDirty || newValue != value;
-						field.SetValue(configData.config, newValue);
+						configMap[fieldData.Key] = newValue;
 					} else {
 						newValue = value;
 					}
@@ -118,11 +129,12 @@ public partial class GameEditor {
 				}
 				case MovementFieldType.Bool: {
 					// Bool
-					if (field.GetValue(configData.config) is not bool value) break;
+					if (!configMap.TryGetValue(fieldData.Key, out int iValue)) break;
+					bool value = iValue == 1;
 					bool newValue = GUI.Toggle(valueRect, value);
 					if (value != newValue) {
 						IsMovementEditorDirty = true;
-						field.SetValue(configData.config, newValue);
+						configMap[fieldData.Key] = newValue ? 1 : 0;
 					}
 					break;
 				}
@@ -141,7 +153,10 @@ public partial class GameEditor {
 		using (new GUIEnableScope(IsMovementEditorDirty))
 		using (new GUIBodyColorScope(IsMovementEditorDirty ? Color32.GREEN_BETTER : Color32.WHITE)) {
 			if (GUI.Button(rect.Shrink(rect.width / 6, rect.width / 6, 0, 0), BuiltInText.UI_APPLY, Skin.SmallDarkButton)) {
-				JsonUtil.SaveJsonToPath(configData.config, configData.path, true);
+				int id = RigGameSelectingPlayerID;
+				if (ConfigPath.TryGetValue(id, out string configPath)) {
+					FrameworkUtil.Pairs_to_NameAndIntFile(configMap, configPath);
+				}
 				RequireReloadPlayerMovement = true;
 				IsMovementEditorDirty = false;
 			}
@@ -153,5 +168,31 @@ public partial class GameEditor {
 		panelRect.y -= panelRect.height;
 
 	}
+
+
+	private void InitializeMovementConfigPool () {
+		string root = CurrentProject.Universe.CharacterMovementConfigRoot;
+		foreach (string path in Util.EnumerateFiles(root, true, "*.txt")) {
+			string name = Util.GetNameWithoutExtension(path);
+			int id = name.AngeHash();
+			// Load Field Data from File
+			var list = new List<(string, int)>();
+			FrameworkUtil.NameAndIntFile_to_List(list, path);
+			var map = new Dictionary<string, int>();
+			foreach (var (key, value) in list) {
+				map.TryAdd(key, value);
+			}
+			// Fill Missing Fields
+			foreach (var fields in MovementFields) {
+				foreach (var field in fields) {
+					if (map.ContainsKey(field.Key)) continue;
+					map.Add(field.Key, field.DefaultValue);
+				}
+			}
+			ConfigPool.TryAdd(id, map);
+			ConfigPath.TryAdd(id, path);
+		}
+	}
+
 
 }

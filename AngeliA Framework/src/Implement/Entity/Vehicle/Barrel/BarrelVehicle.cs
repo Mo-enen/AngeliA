@@ -22,7 +22,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 	public override void OnActivated () {
 		Width = BarrelSize;
 		Height = BarrelSize;
-		Movement.SwimWidth.BaseValue = BarrelSize;
+		Movement.SwimWidthAmount.BaseValue = 1000;
 		Movement.MovementWidth.BaseValue = BarrelSize;
 		Movement.MovementHeight.BaseValue = BarrelSize;
 		base.OnActivated();

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections;
 using System.Reflection;
 
 namespace AngeliA;
@@ -17,11 +19,8 @@ public enum CompareMode {
 
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-public class PropGroupAttribute : Attribute {
-	public string Name;
-	public PropGroupAttribute (string name) {
-		Name = name;
-	}
+public class PropGroupAttribute (string name) : Attribute {
+	public string Name = name;
 }
 
 
@@ -124,6 +123,45 @@ public class PropVisibilityAttribute : Attribute {
 		Valid = false;
 		Debug.LogWarning($"Invalid Property Visible with \"{TargetName}\"");
 		return false;
+	}
+
+	public bool PropMatch (Dictionary<string, int> map) {
+		try {
+
+			if (!Valid || map == null || !map.ContainsKey(TargetName)) return false;
+
+			// Match
+			if (BoolCompare) {
+				// Bool
+				bool valueA = map[TargetName] == 1;
+				if (Compare == CompareMode.Equal) return valueA;
+				if (Compare == CompareMode.NotEqual) return !valueA;
+				if (!string.IsNullOrEmpty(CompareTargetName) && map.TryGetValue(CompareTargetName, out int _tempInt)) {
+					bool valueB = _tempInt == 1;
+					if (Compare == CompareMode.Or) return valueA || valueB;
+					if (Compare == CompareMode.And) return valueA && valueB;
+				}
+			} else {
+				// Int
+				int valueA = map[TargetName];
+				if (!map.TryGetValue(CompareTargetName, out int valueB)) {
+					valueB = CompareTargetValue;
+				}
+				return Compare switch {
+					CompareMode.GreaterThan => valueA > valueB,
+					CompareMode.GreaterOrEqual => valueA >= valueB,
+					CompareMode.LessThan => valueA < valueB,
+					CompareMode.LessOrEqual => valueA <= valueB,
+					CompareMode.Equal => valueA == valueB,
+					CompareMode.NotEqual => valueA != valueB,
+					_ => false,
+				};
+			}
+			return false;
+		} catch (Exception ex) {
+			Debug.LogException(ex);
+			return false;
+		}
 	}
 
 	private void ValidCheck () {

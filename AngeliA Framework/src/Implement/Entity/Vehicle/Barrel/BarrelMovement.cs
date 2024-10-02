@@ -4,7 +4,7 @@ public class BarrelMovement : VehicleMovement {
 	public BarrelMovement (Rigidbody rig) : base(rig) { }
 	protected override void InitializeMeta () {
 		base.InitializeMeta();
-		SquatSpeed.BaseValue = -10;
+		SquatMoveSpeed.BaseValue = -10;
 		WalkSpeed.BaseValue = -20;
 		RunSpeed.BaseValue = -20;
 		PushAvailable.BaseValue = false;

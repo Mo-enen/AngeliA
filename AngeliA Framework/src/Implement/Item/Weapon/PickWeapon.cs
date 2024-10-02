@@ -42,7 +42,7 @@ public abstract class PickWeapon : Weapon {
 
 		// Override
 		if (!pHolder.IsInsideGround) {
-			pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
+			pHolder.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
 			pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 		}
 		if (pHolder == PlayerSystem.Selecting) {

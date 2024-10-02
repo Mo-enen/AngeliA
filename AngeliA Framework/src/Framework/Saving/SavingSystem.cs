@@ -7,15 +7,10 @@ public static class SavingSystem {
 
 
 	// SUB
-	internal struct SavingLine {
-		public string Key;
-		public string Value;
-		public bool Global;
-		public SavingLine (string key, string value, bool global) {
-			Key = key;
-			Value = value;
-			Global = global;
-		}
+	internal struct SavingLine (string key, string value, bool global) {
+		public string Key = key;
+		public string Value = value;
+		public bool Global = global;
 	}
 
 	// Api

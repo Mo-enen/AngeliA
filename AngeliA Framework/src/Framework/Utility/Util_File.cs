@@ -12,6 +12,7 @@ public static partial class Util {
 
 
 
+	// API
 	public static string FileToText (string path) {
 		if (!FileExists(path)) return "";
 		using var sr = File.OpenText(path);
@@ -53,14 +54,14 @@ public static partial class Util {
 
 	public static IEnumerable<string> ForAllLinesInFile (string path) {
 		if (!FileExists(path)) yield break;
-		using StreamReader sr = new(path, Encoding.ASCII);
+		using StreamReader sr = new(path);
 		while (sr.Peek() >= 0) yield return sr.ReadLine();
 	}
 
 
 	public static IEnumerable<string> ForAllLinesInFile (string path, Encoding encoding) {
 		if (!FileExists(path)) yield break;
-		using StreamReader sr = new(path, encoding);
+		using var sr = new StreamReader(path, encoding);
 		while (sr.Peek() >= 0) yield return sr.ReadLine();
 	}
 
@@ -68,6 +69,104 @@ public static partial class Util {
 	public static IEnumerable<string> ForAllLinesInString (string content) {
 		using var reader = new StringReader(content);
 		while (reader.Peek() >= 0) yield return reader.ReadLine();
+	}
+
+
+	public static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (string path) {
+		if (!FileExists(path)) yield break;
+		using var sr = new StreamReader(path);
+		foreach (var (name, value) in ForAllNameAndIntInFile(sr)) {
+			yield return (name, value);
+		}
+	}
+	public static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (string path, Encoding encoding) {
+		if (!FileExists(path)) yield break;
+		using var sr = new StreamReader(path, encoding);
+		foreach (var (name, value) in ForAllNameAndIntInFile(sr)) {
+			yield return (name, value);
+		}
+	}
+	public static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (StreamReader reader) {
+		while (reader.Peek() >= 0) {
+			string line = reader.ReadLine();
+			int midIndex = line.IndexOf(':');
+			if (midIndex <= 0 || midIndex > line.Length) continue;
+			string valueStr = line[(midIndex + 1)..];
+			if (!int.TryParse(valueStr, out int value)) continue;
+			yield return (line[..midIndex], value);
+		}
+	}
+
+
+	public static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (string path) {
+		if (!FileExists(path)) yield break;
+		using var sr = new StreamReader(path);
+		foreach (var (name, value) in ForAllNameAndStringInFile(sr)) {
+			yield return (name, value);
+		}
+	}
+	public static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (string path, Encoding encoding) {
+		if (!FileExists(path)) yield break;
+		using var sr = new StreamReader(path, encoding);
+		foreach (var (name, value) in ForAllNameAndStringInFile(sr)) {
+			yield return (name, value);
+		}
+	}
+	public static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (StreamReader reader) {
+		while (reader.Peek() >= 0) {
+			string line = reader.ReadLine();
+			int midIndex = line.IndexOf(':');
+			if (midIndex <= 0 || midIndex > line.Length) continue;
+			yield return (line[..midIndex], line[(midIndex + 1)..]);
+		}
+	}
+
+
+	public static void SaveNameAndIntToFile<T> (IEnumerable<T> list, string path) where T : IDeconstruct<string, int> {
+		CreateFolder(GetParentPath(path));
+		using var fs = new FileStream(path, FileMode.Create);
+		using var sw = new StreamWriter(fs);
+		foreach (var (key, value) in list) {
+			sw.Write(key);
+			sw.Write(':');
+			sw.Write(value);
+			sw.Write('\n');
+		}
+	}
+	public static void SaveNameAndIntToFile<T> (IEnumerable<T> list, string path, Encoding encoding) where T : IDeconstruct<string, int> {
+		CreateFolder(GetParentPath(path));
+		using var fs = new FileStream(path, FileMode.Create);
+		using var sw = new StreamWriter(fs, encoding);
+		foreach (var (key, value) in list) {
+			sw.Write(key);
+			sw.Write(':');
+			sw.Write(value);
+			sw.Write('\n');
+		}
+	}
+
+
+	public static void SaveNameAndStringToFile<T> (IEnumerable<T> list, string path) where T : IDeconstruct<string, string> {
+		CreateFolder(GetParentPath(path));
+		using var fs = new FileStream(path, FileMode.Create);
+		using var sw = new StreamWriter(fs);
+		foreach (var (key, value) in list) {
+			sw.Write(key);
+			sw.Write(':');
+			sw.Write(value);
+			sw.Write('\n');
+		}
+	}
+	public static void SaveNameAndStringToFile<T> (IEnumerable<T> list, string path, Encoding encoding) where T : IDeconstruct<string, string> {
+		CreateFolder(GetParentPath(path));
+		using var fs = new FileStream(path, FileMode.Create);
+		using var sw = new StreamWriter(fs, encoding);
+		foreach (var (key, value) in list) {
+			sw.Write(key);
+			sw.Write(':');
+			sw.Write(value);
+			sw.Write('\n');
+		}
 	}
 
 

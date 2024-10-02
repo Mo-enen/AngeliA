@@ -75,7 +75,8 @@ public partial class GameEditor : WindowUI {
 		// Movements
 		try {
 
-			var fields = typeof(CharacterMovementConfig).GetFields(
+			var hostMov = new DefaultPlayer().NativeMovement;
+			var fields = typeof(CharacterMovement).GetFields(
 				BindingFlags.Public | BindingFlags.Instance
 			).OrderBy(f => f.MetadataToken).ToArray();
 
@@ -96,8 +97,8 @@ public partial class GameEditor : WindowUI {
 			MovementTabLabelToChars = new("  (", $"/{MovementTabCount})");
 
 			// Get all Field Data
-			var intType = typeof(int);
-			var boolType = typeof(bool);
+			var intType = typeof(FrameBasedInt);
+			var boolType = typeof(FrameBasedBool);
 			MovementFields = new MovementFieldData[MovementTabCount][];
 			string currentGroup = "";
 			var list = new List<MovementFieldData>();
@@ -117,12 +118,19 @@ public partial class GameEditor : WindowUI {
 					}
 					if (group != null) currentGroup = group.Name;
 				}
+				if (field.FieldType != intType && field.FieldType != boolType) continue;
+				var defaultValue = field.GetValue(hostMov);
+				bool isInt = field.FieldType == intType;
 				list.Add(new MovementFieldData() {
-					Field = field,
-					Type = field.FieldType == intType ? MovementFieldType.Int : field.FieldType == boolType ? MovementFieldType.Bool : MovementFieldType.Unknown,
-					Name = ($"UI.MovementProp.{field.Name}", Util.GetDisplayName(field.Name)),
+					Key = field.Name,
+					Type = isInt ? MovementFieldType.Int : MovementFieldType.Bool,
+					DisplayName = ($"UI.MovementProp.{field.Name}", Util.GetDisplayName(field.Name)),
 					Visible = field.GetCustomAttribute<PropVisibilityAttribute>(),
 					Separator = field.GetCustomAttribute<PropSeparatorAttribute>() != null,
+					DefaultValue =
+						defaultValue is FrameBasedInt iValue ? iValue.BaseValue :
+						defaultValue is FrameBasedBool bValue ? (bValue.BaseValue ? 1 : 0) :
+						0
 				});
 			}
 			for (int i = 0; i < MovementFields.Length; i++) {
@@ -365,18 +373,10 @@ public partial class GameEditor : WindowUI {
 
 	public void SetCurrentProject (Project currentProject) {
 		CurrentProject = currentProject;
-		// Reload Movement Pool
 		PrevMovementTabIndex = -1;
-		MovementConfigPool.Clear();
-		if (currentProject == null) return;
-		string root = currentProject.Universe.CharacterMovementConfigRoot;
-		foreach (string path in Util.EnumerateFiles(root, true, "*.json")) {
-			string name = Util.GetNameWithoutExtension(path);
-			int id = name.AngeHash();
-			var config = JsonUtil.LoadJsonFromPath<CharacterMovementConfig>(path);
-			if (config == null) continue;
-			MovementConfigPool.TryAdd(id, (config, path));
-		}
+		ConfigPool.Clear();
+		ConfigPath.Clear();
+		ConfigPoolInitialized = false;
 	}
 
 

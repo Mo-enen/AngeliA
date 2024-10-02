@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using System.IO;
+using System.Reflection;
 
 namespace AngeliA;
 
@@ -437,6 +438,64 @@ public static class FrameworkUtil {
 			Debug.Log("-------- AngeliA Project Analysis --------");
 		}
 
+	}
+
+
+	// FrameBasedValue Load/Save
+	public static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
+		if (!Util.FileExists(path)) return false;
+		list.AddRange(Util.ForAllNameAndIntInFile(path));
+		return true;
+	}
+
+
+	public static bool List_to_FrameBasedFields (List<(string name, int value)> list, object target) {
+		if (target == null || list == null) return false;
+		var targetType = target.GetType();
+		foreach (var (name, value) in list) {
+			try {
+				if (string.IsNullOrWhiteSpace(name)) continue;
+				if (Util.GetField(targetType, name) is not FieldInfo field) continue;
+				var valueObj = field.GetValue(target);
+				if (valueObj is FrameBasedInt fbInt) {
+					fbInt.BaseValue = value;
+				} else if (valueObj is FrameBasedBool fbBool) {
+					fbBool.BaseValue = value == 1;
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+		return true;
+	}
+
+
+	public static void FrameBasedFields_to_List (object target, List<(string name, int value)> list) {
+		if (target == null || list == null || list.Count == 0) return;
+		foreach (var (field, value) in target.ForAllFields<FrameBasedValue>(BindingFlags.Public | BindingFlags.Instance)) {
+			if (value == null) continue;
+			try {
+				if (value is FrameBasedInt iValue) {
+					list.Add((field.Name, iValue.BaseValue));
+				} else if (value is FrameBasedBool bValue) {
+					list.Add((field.Name, bValue.BaseValue ? 1 : 0));
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+	}
+
+
+	public static void Pairs_to_NameAndIntFile (IEnumerable<KeyValuePair<string, int>> list, string path) {
+		if (list == null) return;
+		Util.CreateFolder(Util.GetParentPath(path));
+		using var fs = new FileStream(path, FileMode.Create);
+		using var sw = new StreamWriter(fs);
+		foreach (var (name, value) in list) {
+			try {
+				sw.Write(name);
+				sw.Write(':');
+				sw.Write(value);
+				sw.Write('\n');
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
 	}
 
 

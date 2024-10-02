@@ -59,7 +59,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public int HideBraidFrame { get; set; } = -1;
 	public int CharacterHeight { get; set; } = 160; // in CM
 	public int RenderedCellZ { get; private set; } = 0;
-	public bool BodyPartsReady => BodyParts != null;
 
 	// BodyPart
 	public readonly BodyPart[] BodyParts = new BodyPart[BODY_PART_COUNT];
@@ -204,7 +203,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		if (!BodyPartsReady) return;
+		if (BodyParts == null) return;
 		int cellIndexStart = Renderer.GetUsedCellCount();
 		ResetPoseToDefault(false);
 		AnimateForPose();

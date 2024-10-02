@@ -11,9 +11,12 @@ public abstract class CharacterRenderer (Character target) {
 	public readonly Character TargetCharacter = target;
 	public int CurrentAnimationFrame { get; set; } = 0;
 	public int CurrentRenderingBounce { get; private set; } = 1000;
+	public bool SpinOnGroundPound { get; set; } = false;
 
 	// MSG
-	public virtual void OnActivated () { }
+	public virtual void OnActivated () {
+		SpinOnGroundPound = false;
+	}
 	public virtual void BeforeUpdate () { }
 	public void UpdateForBounce () {
 

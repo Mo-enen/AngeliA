@@ -58,7 +58,7 @@ public sealed class BlockBuilder : Weapon {
 				available = GetTargetUnitPositionFromMouse(pHolder, out targetUnitX, out targetUnitY, out inRange);
 			} else {
 				if (!pHolder.IsInsideGround) {
-					pHolder.Movement.SquatSpeed.Override(0, 1, priority: 4096);
+					pHolder.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
 					pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 				}
 				available = GetTargetUnitPosFromKey(pHolder, out targetUnitX, out targetUnitY);
