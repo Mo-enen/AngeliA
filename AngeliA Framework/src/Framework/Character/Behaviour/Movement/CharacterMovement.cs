@@ -314,8 +314,7 @@ public class CharacterMovement (Rigidbody rig) {
 		// Sync Movement Config from Pool
 		if (
 			SyncFromConfigFile &&
-			TargetCharacter != null &&
-			ConfigPool.TryGetValue(TargetCharacter.TypeID, out var configList)
+			ConfigPool.TryGetValue(Target.TypeID, out var configList)
 		) {
 			int poolVersion = configList[0].value;
 			if (LocalMovementConfigVersion != poolVersion) {
@@ -537,7 +536,9 @@ public class CharacterMovement (Rigidbody rig) {
 		}
 
 		// Facing Front
-		FacingFront = !IsClimbing && (TargetCharacter == null || !TargetCharacter.Teleporting || TargetCharacter.TeleportEndFrame > 0);
+		FacingFront =
+			!IsClimbing &&
+			(TargetCharacter == null || !TargetCharacter.Teleporting || TargetCharacter.TeleportToFrontSide);
 
 		// Physics
 		int growingHeight = FinalCharacterHeight;
@@ -679,7 +680,9 @@ public class CharacterMovement (Rigidbody rig) {
 					// Perform Jump
 					CurrentJumpCount++;
 					VelocityY = Util.Max(InWater ? SwimJumpSpeed : JumpSpeed, VelocityY);
-					if (InWater) TargetCharacter?.Bounce();
+					if (InWater) {
+						TargetCharacter?.Bounce();
+					}
 					if (IsGrabbingSide) {
 						X += FacingRight ? -6 : 6;
 					} else if (IsGrabbingTop) {
@@ -1013,7 +1016,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 	// Config
 	public void ReloadMovementConfigFromFile () {
-		string cName = TargetCharacter.GetType().AngeName();
+		string cName = Target.GetType().AngeName();
 		int id = cName.AngeHash();
 		string path = Util.CombinePaths(Universe.BuiltIn.CharacterMovementConfigRoot, $"{cName}.txt");
 		List<(string name, int value)> configList = [("", 0)];

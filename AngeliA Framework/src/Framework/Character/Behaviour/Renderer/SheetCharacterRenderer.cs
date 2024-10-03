@@ -158,7 +158,6 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 		var X = TargetCharacter.X;
 		var Y = TargetCharacter.Y;
 		var Teleporting = TargetCharacter.Teleporting;
-		var TeleportEndFrame = TargetCharacter.TeleportEndFrame;
 		var CharacterState = TargetCharacter.CharacterState;
 		var DespawnAfterPassoutDelay = TargetCharacter.DespawnAfterPassoutDelay;
 		var PassOutFrame = TargetCharacter.PassOutFrame;
@@ -181,7 +180,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 		if (Teleporting) {
 			TargetCharacter.LastRequireBounceFrame = int.MinValue;
 			Renderer.DrawAnimation(
-				TeleportEndFrame > 0 ? sheet.DoorFront : sheet.DoorBack,
+				TargetCharacter.TeleportToFrontSide ? sheet.DoorFront : sheet.DoorBack,
 				X, Y, 500, 0, 0,
 				Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,

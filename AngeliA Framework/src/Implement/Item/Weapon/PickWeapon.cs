@@ -7,7 +7,7 @@ public abstract class PickWeapon : Weapon {
 
 
 	// VAR
-	public override WeaponType WeaponType => WeaponType.Axe;
+	public sealed override WeaponType WeaponType => WeaponType.Pick;
 	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
 	public override bool AttackWhenSquatting => true;
 	public override bool AttackWhenWalking => true;

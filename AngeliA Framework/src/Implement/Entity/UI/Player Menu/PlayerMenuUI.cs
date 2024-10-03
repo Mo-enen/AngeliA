@@ -707,27 +707,27 @@ public class PlayerMenuUI : EntityUI {
 		int left = panelRect.x + previewWidth;
 		int top = panelRect.yMax;
 		DrawEquipmentItem(
-			0, interactable && player.JewelryAvailable, new IRect(left, top - itemHeight * 3, width, itemHeight),
+			0, interactable && player.JewelryInteractable, new IRect(left, top - itemHeight * 3, width, itemHeight),
 			EquipmentType.Jewelry, UI_JEWELRY
 		);
 		DrawEquipmentItem(
-			1, interactable && player.ShoesAvailable, new IRect(left + width, top - itemHeight * 3, width, itemHeight),
+			1, interactable && player.ShoesInteractable, new IRect(left + width, top - itemHeight * 3, width, itemHeight),
 			EquipmentType.Shoes, UI_SHOES
 		);
 		DrawEquipmentItem(
-			2, interactable && player.GlovesAvailable, new IRect(left, top - itemHeight * 2, width, itemHeight),
+			2, interactable && player.GlovesInteractable, new IRect(left, top - itemHeight * 2, width, itemHeight),
 			EquipmentType.Gloves, UI_GLOVES
 		);
 		DrawEquipmentItem(
-			3, interactable && player.BodySuitAvailable, new IRect(left + width, top - itemHeight * 2, width, itemHeight),
+			3, interactable && player.BodySuitInteractable, new IRect(left + width, top - itemHeight * 2, width, itemHeight),
 			EquipmentType.BodyArmor, UI_BODYSUIT
 		);
 		DrawEquipmentItem(
-			4, interactable && player.WeaponAvailable, new IRect(left, top - itemHeight * 1, width, itemHeight),
+			4, interactable && player.WeaponInteractable, new IRect(left, top - itemHeight * 1, width, itemHeight),
 			EquipmentType.Weapon, UI_WEAPON
 		);
 		DrawEquipmentItem(
-			5, interactable && player.HelmetAvailable, new IRect(left + width, top - itemHeight * 1, width, itemHeight),
+			5, interactable && player.HelmetInteractable, new IRect(left + width, top - itemHeight * 1, width, itemHeight),
 			EquipmentType.Helmet, UI_HELMET
 		);
 

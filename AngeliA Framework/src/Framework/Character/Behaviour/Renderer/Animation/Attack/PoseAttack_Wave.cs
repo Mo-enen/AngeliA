@@ -4,6 +4,11 @@ public class PoseAttack_Wave : PoseAnimation {
 
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
+		Attackness.AttackStyleLoop = 4;
+		Wave();
+	}
+
+	public static void Wave () {
 		int style;
 		var handheld = Target.EquippingWeaponHeld;
 		var weaponType = Target.EquippingWeaponType;
@@ -11,13 +16,11 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Single Handed
 			case WeaponHandheld.SingleHanded:
-				Attackness.AttackStyleLoop = 4;
 				style =
 					Attackness.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
-					weaponType == WeaponType.Flail ||
-					Target.EquipingPickWeapon ?
-					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
+					weaponType == WeaponType.Flail ? 0 :
+					 Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
 						SingleHanded_SmashDown();
@@ -36,13 +39,11 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Double Handed
 			case WeaponHandheld.DoubleHanded:
-				Attackness.AttackStyleLoop = 4;
 				style =
 					Attackness.LastAttackCharged ||
 					weaponType == WeaponType.Throwing ||
-					weaponType == WeaponType.Flail ||
-					Target.EquipingPickWeapon ?
-					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
+					weaponType == WeaponType.Flail ? 0 :
+					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
 						DoubleHanded_SmashDown();
@@ -61,10 +62,8 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Each Hand
 			case WeaponHandheld.OneOnEachHand:
-				Attackness.AttackStyleLoop = 4;
 				style =
-					Attackness.LastAttackCharged ||
-					Target.EquipingPickWeapon ? 0 :
+					Attackness.LastAttackCharged ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -84,11 +83,9 @@ public class PoseAttack_Wave : PoseAnimation {
 
 			// Pole
 			case WeaponHandheld.Pole:
-				Attackness.AttackStyleLoop = 4;
 				style =
 					Attackness.LastAttackCharged ||
-					Target.EquippingWeaponType == WeaponType.Flail ||
-					Target.EquipingPickWeapon ? 0 :
+					Target.EquippingWeaponType == WeaponType.Flail ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:

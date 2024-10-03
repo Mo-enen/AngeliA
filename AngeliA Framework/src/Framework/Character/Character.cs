@@ -45,20 +45,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	public static event CharacterEventHandler OnPassOut;
 	public static event CharacterEventHandler OnTeleport;
 	public static event CharacterEventHandler OnCrash;
-	public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
-	public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
-	public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
-	public WeaponHandheld EquippingWeaponHeld { get; set; } = WeaponHandheld.Float;
-	public bool Teleporting => Game.GlobalFrame < TeleportEndFrame;
-	public bool TeleportWithPortal => _TeleportDuration < 0;
+	public bool Teleporting => Game.GlobalFrame < _TeleportEndFrame.Abs();
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
-	public int TeleportEndFrame => _TeleportEndFrame.Abs();
-	public int TeleportDuration => _TeleportDuration.Abs();
-	public int SleepStartFrame { get; set; } = int.MinValue;
-	public int PassOutFrame { get; private set; } = int.MinValue;
 	public bool InventoryCurrentAvailable => Game.GlobalFrame > IgnoreInventoryFrame;
-	public bool EquipingPickWeapon { get; private set; } = false;
-	public int LastRequireBounceFrame { get; set; } = int.MinValue;
 	public int CurrentAttackSpeedRate => Movement.MovementState switch {
 		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
 		CharacterMovementState.Run => Attackness.RunningSpeedRateOnAttack,
@@ -66,24 +55,32 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		CharacterMovementState.JumpUp => Attackness.AirSpeedRateOnAttack,
 		_ => Attackness.DefaultSpeedRateOnAttack,
 	};
-	public int Team { get; set; } = Const.TEAM_NEUTRAL;
-	public Tag IgnoreDamageType { get; set; } = Tag.None;
-	public int AttackTargetTeam { get; set; } = Const.TEAM_ALL;
-	public int DespawnAfterPassoutDelay { get; set; } = 60;
+	public sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
+	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
 	public override int Gravity => 5;
 	public override bool CarryOtherRigidbodyOnTop => false;
 	public override bool AllowBeingCarryByOtherRigidbody => true;
-	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
-	public sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
-	public virtual int Bouncy => 150;
-	public virtual bool HelmetAvailable => true;
-	public virtual bool BodySuitAvailable => true;
-	public virtual bool GlovesAvailable => true;
-	public virtual bool ShoesAvailable => true;
-	public virtual bool JewelryAvailable => true;
-	public virtual bool WeaponAvailable => true;
+
+	public int Bouncy { get; set; } = 150;
+	public bool HelmetInteractable { get; set; } = true;
+	public bool BodySuitInteractable { get; set; } = true;
+	public bool GlovesInteractable { get; set; } = true;
+	public bool ShoesInteractable { get; set; } = true;
+	public bool JewelryInteractable { get; set; } = true;
+	public bool WeaponInteractable { get; set; } = true;
+	public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
+	public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
+	public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
+	public WeaponHandheld EquippingWeaponHeld { get; set; } = WeaponHandheld.Float;
+	public int SleepStartFrame { get; set; } = int.MinValue;
+	public int PassOutFrame { get; private set; } = int.MinValue;
+	public int LastRequireBounceFrame { get; set; } = int.MinValue;
+	public int Team { get; set; } = Const.TEAM_NEUTRAL;
+	public Tag IgnoreDamageType { get; set; } = Tag.None;
+	public int AttackTargetTeam { get; set; } = Const.TEAM_ALL;
+	public int DespawnAfterPassoutDelay { get; set; } = 60;
 
 	// Behaviour
 	public CharacterMovement Movement;
@@ -185,6 +182,13 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		DespawnAfterPassoutDelay = 60;
 		ForceStayFrame = -1;
 		PrevZ = Stage.ViewZ;
+		Bouncy = 150;
+		HelmetInteractable = true;
+		BodySuitInteractable = true;
+		GlovesInteractable = true;
+		ShoesInteractable = true;
+		JewelryInteractable = true;
+		WeaponInteractable = true;
 	}
 
 
@@ -271,7 +275,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 					Attackness.MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
 					Attackness.RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
 					Attackness.LockFacingOnAttack = weapon.LockFacingOnAttack;
-					EquipingPickWeapon = weapon is PickWeapon;
 					Attackness.HoldAttackPunishFrame.Min(weapon.HoldAttackPunish);
 					if (weapon.DefaultSpeedRateOnAttack.HasValue) {
 						Attackness.DefaultSpeedRateOnAttack.Max(weapon.DefaultSpeedRateOnAttack.Value);
@@ -373,7 +376,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		// Func
 		static CharacterAnimationType GetCurrentPoseAnimationType (Character character) {
 			if (Game.GlobalFrame <= character.LockedAnimationTypeFrame) return character.LockedAnimationType;
-			if (character.Teleporting) return character.TeleportWithPortal ? CharacterAnimationType.Rolling : CharacterAnimationType.Idle;
+			if (character.Teleporting) return character._TeleportDuration < 0 ? CharacterAnimationType.Rolling : CharacterAnimationType.Idle;
 			if (character.Health.TakingDamage) return CharacterAnimationType.TakingDamage;
 			if (character.CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
 			if (character.CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
@@ -443,8 +446,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		Rendering.GrowAnimationFrame();
 
 		// Cell Effect
+		bool teleportingWithPortal = Teleporting && _TeleportDuration < 0;
 		if (
-			(colorFlash || (Teleporting && TeleportWithPortal)) &&
+			(colorFlash || teleportingWithPortal) &&
 			Renderer.GetCells(out var cells, out int count)
 		) {
 			// Color Flash
@@ -455,20 +459,21 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 				}
 			}
 			// Portal
-			if (Teleporting && TeleportWithPortal) {
+			if (teleportingWithPortal) {
 				int pointX = X;
 				int pointY = Y + Const.CEL;
-				int localFrame = Game.GlobalFrame - TeleportEndFrame + TeleportDuration;
+				int duration = _TeleportDuration.Abs();
+				int localFrame = Game.GlobalFrame - _TeleportEndFrame.Abs() + duration;
 				for (int i = cellIndexStart; i < count; i++) {
-					float lerp01 = localFrame.PingPong(TeleportDuration / 2) / (TeleportDuration / 2f);
+					float lerp01 = localFrame.PingPong(duration / 2) / (duration / 2f);
 					int offsetX = (int)((1f - lerp01) * Const.CEL * Util.Sin(lerp01 * 720f * Util.Deg2Rad));
 					int offsetY = (int)((1f - lerp01) * Const.CEL * Util.Cos(lerp01 * 720f * Util.Deg2Rad));
 					var cell = cells[i];
 					cell.X += offsetX;
 					cell.Y += offsetY;
-					cell.RotateAround(localFrame * 720 / TeleportDuration, pointX + offsetX, pointY + offsetY);
+					cell.RotateAround(localFrame * 720 / duration, pointX + offsetX, pointY + offsetY);
 					cell.ScaleFrom(
-						Util.RemapUnclamped(0, TeleportDuration / 2, 1000, 0, localFrame.PingPong(TeleportDuration / 2)),
+						Util.RemapUnclamped(0, duration / 2, 1000, 0, localFrame.PingPong(duration / 2)),
 						pointX + offsetX, pointY + offsetY
 					);
 				}
@@ -493,8 +498,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 			if (Movement.Target is Character targetCharacter) {
 				// Teleport
 				if (
-					TeleportWithPortal && frame == TeleportEndFrame - TeleportDuration / 2 + 1
-				) OnTeleport?.Invoke(targetCharacter);
+					_TeleportDuration < 0 && frame == _TeleportEndFrame.Abs() - _TeleportDuration.Abs() / 2 + 1
+				) {
+					OnTeleport?.Invoke(targetCharacter);
+				}
 				// Step
 				if (IsGrounded) {
 					if (
@@ -725,12 +732,12 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 
 	public bool EquipmentAvailable (EquipmentType equipmentType) => equipmentType switch {
-		EquipmentType.Weapon => WeaponAvailable,
-		EquipmentType.BodyArmor => BodySuitAvailable,
-		EquipmentType.Helmet => HelmetAvailable,
-		EquipmentType.Shoes => ShoesAvailable,
-		EquipmentType.Gloves => GlovesAvailable,
-		EquipmentType.Jewelry => JewelryAvailable,
+		EquipmentType.Weapon => WeaponInteractable,
+		EquipmentType.BodyArmor => BodySuitInteractable,
+		EquipmentType.Helmet => HelmetInteractable,
+		EquipmentType.Shoes => ShoesInteractable,
+		EquipmentType.Gloves => GlovesInteractable,
+		EquipmentType.Jewelry => JewelryInteractable,
 		_ => false,
 	};
 

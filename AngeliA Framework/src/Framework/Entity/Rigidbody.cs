@@ -36,9 +36,9 @@ public abstract class Rigidbody : Entity {
 	public bool IgnoringPhysics => Game.GlobalFrame <= IgnorePhysicsFrame;
 
 	// Override
-	public virtual bool AllowBeingPush => true;
 	public abstract int PhysicalLayer { get; }
 	public virtual int CollisionMask => PhysicsMask.SOLID;
+	public virtual bool AllowBeingPush => true;
 	public virtual int Gravity => VelocityY <= 0 ? 5 : 3;
 	public virtual int AirDragX => 3;
 	public virtual int AirDragY => 0;
@@ -102,7 +102,7 @@ public abstract class Rigidbody : Entity {
 
 		// Inside Ground Check
 		IsInsideGround = Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();
-		
+
 		// Ignoring Physics
 		if (IgnoringPhysics) {
 			IsGrounded = GroundedCheck();

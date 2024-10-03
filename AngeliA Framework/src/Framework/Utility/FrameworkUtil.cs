@@ -269,7 +269,7 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void DrawAllCollidersAsGizmos (float brightness = 1f, bool ignoreNonOnewayTrigger = false) {
+	public static void DrawAllCollidersAsGizmos (float brightness = 1f, bool ignoreNonOnewayTrigger = false, bool useTechEffect = false) {
 
 		// Init Cells
 		if (CellPhysicsCells.Count == 0) {
@@ -287,6 +287,8 @@ public static class FrameworkUtil {
 		if (CellPhysicsCells.Count > 0 && CellPhysicsCells[0] != null) {
 			int thick = GUI.Unify(1);
 			var cameraRect = Renderer.CameraRect;
+			float framePingPong01 = Ease.InOutQuad(Game.GlobalFrame.PingPong(120) / 120f);
+			framePingPong01 = framePingPong01 / 4f;
 			for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
 				try {
 					var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
@@ -302,15 +304,24 @@ public static class FrameworkUtil {
 								if (cell.Frame != Physics.CurrentFrame) break;
 								if (ignoreNonOnewayTrigger && cell.IsTrigger && !Util.HasOnewayTag(cell.Tag) && !cell.Tag.HasAny(Tag.Climb | Tag.ClimbStable)) continue;
 								if (!cell.Rect.Overlaps(cameraRect)) continue;
+								// Effect
+								var rect = cell.Rect;
+								var _tint = tint;
+								if (useTechEffect) {
+									const int RANDOM_SHAKE = 5;
+									_tint.a = (byte)(_tint.a - framePingPong01 * 255).Clamp(0, 255);
+									rect.x += Util.QuickRandom(-RANDOM_SHAKE, RANDOM_SHAKE + 1);
+									rect.y += Util.QuickRandom(-RANDOM_SHAKE, RANDOM_SHAKE + 1);
+								}
 								// Frame
-								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Down, thick), tint);
-								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Up, thick), tint);
-								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Left, thick), tint);
-								Game.DrawGizmosRect(cell.Rect.Edge(Direction4.Right, thick), tint);
+								Game.DrawGizmosRect(rect.Edge(Direction4.Down, thick), _tint);
+								Game.DrawGizmosRect(rect.Edge(Direction4.Up, thick), _tint);
+								Game.DrawGizmosRect(rect.Edge(Direction4.Left, thick), _tint);
+								Game.DrawGizmosRect(rect.Edge(Direction4.Right, thick), _tint);
 								// Cross
 								if (!cell.IsTrigger) {
-									Game.DrawGizmosLine(cell.Rect.x, cell.Rect.y, cell.Rect.xMax, cell.Rect.yMax, thick, tint);
-									Game.DrawGizmosLine(cell.Rect.xMax, cell.Rect.y, cell.Rect.x, cell.Rect.yMax, thick, tint);
+									Game.DrawGizmosLine(rect.x, rect.y, rect.xMax, rect.yMax, thick, _tint);
+									Game.DrawGizmosLine(rect.xMax, rect.y, rect.x, rect.yMax, thick, _tint);
 								}
 							}
 						}
