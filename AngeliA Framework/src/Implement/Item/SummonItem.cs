@@ -14,29 +14,30 @@ public abstract class SummonItem<T> : Item where T : ItemBasedSummon {
 		base.OnItemUpdate_FromInventory(holder);
 		// Sync Summon Count
 		if (
-			Game.GlobalFrame % SYNC_FREQ == 0 &&
-			holder is Character owner &&
-			(Game.GlobalFrame != UpdatingFrame || UpdatingHolder != holder)
+			Game.GlobalFrame % SYNC_FREQ != 0 ||
+			holder is not Character owner ||
+			Game.GlobalFrame == UpdatingFrame && UpdatingHolder == holder
 		) {
-			UpdatingFrame = Game.GlobalFrame;
-			UpdatingHolder = holder;
-			int itemCount = Inventory.ItemTotalCount(holder is Character cHolder ? cHolder.InventoryID : holder.TypeID, TypeID, true);
-			if (itemCount > 0 && Stage.TryGetEntities(EntityLayer.CHARACTER, out var entities, out int count)) {
-				int currentSummonCount = 0;
-				for (int i = 0; i < count; i++) {
-					if (entities[i] is not Summon summon || summon.Owner != owner || !summon.Active) continue;
-					summon.InventoryUpdatedFrame = Game.GlobalFrame;
-					currentSummonCount++;
-					if (currentSummonCount > itemCount) {
-						// Remove Extra Summon
-						summon.Active = false;
-					}
+			return;
+		}
+		UpdatingFrame = Game.GlobalFrame;
+		UpdatingHolder = holder;
+		int itemCount = Inventory.ItemTotalCount(holder is Character cHolder ? cHolder.InventoryID : holder.TypeID, TypeID, true);
+		if (itemCount > 0 && Stage.TryGetEntities(EntityLayer.CHARACTER, out var entities, out int count)) {
+			int currentSummonCount = 0;
+			for (int i = 0; i < count; i++) {
+				if (entities[i] is not T targetSummon || targetSummon.Owner != owner || !targetSummon.Active) continue;
+				targetSummon.InventoryUpdatedFrame = Game.GlobalFrame;
+				currentSummonCount++;
+				if (currentSummonCount > itemCount) {
+					// Remove Extra Summon
+					targetSummon.Active = false;
 				}
-				// Not Inaff Summon
-				if (currentSummonCount < itemCount) {
-					for (int i = currentSummonCount; i < itemCount; i++) {
-						SpawnSummonFromItem(owner);
-					}
+			}
+			// Not Inaff Summon
+			if (currentSummonCount < itemCount) {
+				for (int i = currentSummonCount; i < itemCount; i++) {
+					SpawnSummonFromItem(owner);
 				}
 			}
 		}

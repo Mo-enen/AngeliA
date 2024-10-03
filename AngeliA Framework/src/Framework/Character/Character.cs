@@ -122,6 +122,22 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	#region --- MSG ---
 
 
+	[AfterEntityReposition]
+	internal static void AfterEntityReposition (Entity entity, Int3 from, Int3 to) {
+
+		if (
+			entity is not Character character ||
+			character.InventoryType != CharacterInventoryType.Map
+		) return;
+
+		// Repos Inventory
+		string fromInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, from);
+		string toInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, to);
+		Inventory.RenameEquipInventory(fromInvName, toInvName);
+
+	}
+
+
 	public Character () {
 
 		TypeName = GetType().AngeName();
@@ -135,7 +151,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		Buff = new CharacterBuff(this);
 
 		// Init Inventory
-		if (InventoryType != CharacterInventoryType.None) {
+		if (InventoryType == CharacterInventoryType.Unique) {
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
 			if (Inventory.HasInventory(InventoryID)) {
 				int invCount = Inventory.GetInventoryCapacity(InventoryID);
@@ -144,7 +160,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 				}
 			} else {
 				// Create New
-				Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
+				Inventory.AddNewEquipmentInventoryData(TypeName, COUNT);
 			}
 		}
 	}
@@ -160,7 +176,18 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 				break;
 			case CharacterInventoryType.Map:
 				if (MapUnitPos.HasValue) {
-					InventoryID = $"{TypeName}.{MapUnitPos.Value.x}.{MapUnitPos.Value.y}.{MapUnitPos.Value.z}".AngeHash();
+					const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
+					string name = Inventory.GetPositionBasedInventoryName(TypeName, MapUnitPos.Value);
+					InventoryID = name.AngeHash();
+					if (Inventory.HasInventory(InventoryID)) {
+						int invCount = Inventory.GetInventoryCapacity(InventoryID);
+						if (invCount != COUNT) {
+							Inventory.ResizeInventory(InventoryID, COUNT);
+						}
+					} else {
+						// Create New
+						Inventory.AddNewEquipmentInventoryData(name, COUNT);
+					}
 				} else {
 					InventoryID = TypeID;
 				}

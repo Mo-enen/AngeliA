@@ -94,6 +94,8 @@ public class PackageManager : WindowUI {
 
 		if (CurrentProject == null) return;
 
+		using var _ = new GUIEnableScope(!EngineUtil.BuildingProjectInBackground);
+
 		var windowRect = WindowRect;
 		var panelRect = windowRect.Shrink(Unify(42));
 		int maxPanelWidth = Unify(612);

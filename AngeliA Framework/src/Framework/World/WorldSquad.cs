@@ -46,9 +46,9 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[OnGameInitialize(-128)]
 	internal static TaskResult OnGameInitialize () {
-		
+
 		if (!Renderer.IsReady) return TaskResult.Continue;
-		
+
 		bool useProceduralMap = Universe.BuiltInInfo.UseProceduralMap;
 		WorldBehindAlpha = Universe.BuiltInInfo.WorldBehindAlpha;
 		WorldBehindParallax = Universe.BuiltInInfo.WorldBehindParallax;
@@ -236,7 +236,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
-	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
+	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => Stream.GetBlockAt(unitX, unitY, z, type);
 
 
 	// Set Block
@@ -433,12 +433,7 @@ public sealed class WorldSquad : IBlockSquad {
 	}
 
 
-	private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
-		var entity = Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
-		if (entity is Character ch) {
-			ch.X += ch.Width / 2;
-		}
-	}
+	private void DrawEntity (int id, int unitX, int unitY, int unitZ) => Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
 
 
 	private void DrawBehind (int id, int unitX, int unitY, bool fixRatio) {

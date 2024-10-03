@@ -32,6 +32,7 @@ public class Universe {
 	public string SlotMetaRoot { get; private set; }
 	public string SlotUserMapRoot { get; private set; }
 	public string SlotCharacterRenderingConfigRoot { get; private set; }
+	public string SlotInventoryRoot { get; private set; }
 
 
 	// MSG
@@ -88,6 +89,7 @@ public class Universe {
 		Util.CreateFolder(result.FontRoot);
 		Util.CreateFolder(result.SlotCharacterRenderingConfigRoot);
 		Util.CreateFolder(result.CharacterMovementConfigRoot);
+		Util.CreateFolder(result.SlotInventoryRoot);
 
 		return result;
 	}
@@ -106,6 +108,7 @@ public class Universe {
 		SavingRoot = newSavingRoot;
 		SlotRoot = AngePath.GetSlotRoot(newSavingRoot, slot);
 		SlotMetaRoot = AngePath.GetSlotMetaRoot(newSavingRoot, slot);
+		SlotInventoryRoot = AngePath.GetSlotInventoryRoot(newSavingRoot, slot);
 		SlotUserMapRoot = AngePath.GetSlotUserMapRoot(newSavingRoot, slot);
 		SlotCharacterRenderingConfigRoot = AngePath.GetSlotMetaCharacterConfigRoot(newSavingRoot, slot);
 	}

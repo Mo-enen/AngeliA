@@ -79,12 +79,13 @@ public class BeforeLayerFrameUpdateAttribute : Attribute { }
 public class AfterLayerFrameUpdateAttribute : Attribute { }
 
 
-[AttributeUsage(AttributeTargets.Method)]
-public class BeforeFirstUpdateAttribute : Attribute { }
-public class BeforeBeforeUpdateAttribute : Attribute { }
-public class BeforeUpdateUpdateAttribute : Attribute { }
-public class BeforeLateUpdateAttribute : Attribute { }
-public class AfterLateUpdateAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class BeforeFirstUpdateAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class BeforeBeforeUpdateAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class BeforeUpdateUpdateAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class BeforeLateUpdateAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Method)] public class AfterLateUpdateAttribute : Attribute { }
+
+[AttributeUsage(AttributeTargets.Method)] public class AfterEntityRepositionAttribute : Attribute { }
 
 
 // World

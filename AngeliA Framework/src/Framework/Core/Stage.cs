@@ -127,6 +127,7 @@ public static class Stage {
 	private static event Action OnViewZChanged;
 	private static event Action<int> BeforeLayerFrameUpdate;
 	private static event Action<int> AfterLayerFrameUpdate;
+	private static event Action<Entity, Int3, Int3> AfterEntityReposition;
 	private static readonly Dictionary<int, EntityStack> EntityPool = [];
 	private static readonly HashSet<Int3> StagedEntityHash = [];
 	private static int ViewLerpRate = 1000;
@@ -226,6 +227,8 @@ public static class Stage {
 		Util.LinkEventWithAttribute<BeforeLateUpdateAttribute>(typeof(Stage), nameof(BeforeLateUpdate));
 		Util.LinkEventWithAttribute<AfterLateUpdateAttribute>(typeof(Stage), nameof(AfterLateUpdate));
 
+		Util.LinkEventWithAttribute<AfterEntityRepositionAttribute>(typeof(Stage), nameof(AfterEntityReposition));
+
 	}
 
 
@@ -317,7 +320,7 @@ public static class Stage {
 				}
 				RefreshStagedEntities(layer);
 			}
-			AntiSpawnRect = default;
+			AntiSpawnRect = new IRect(int.MinValue + 1, 0, 0, 0);
 			ViewZ = newZ;
 			OnViewZChanged?.Invoke();
 		}
@@ -778,8 +781,15 @@ public static class Stage {
 
 		var mapPos = entity.MapUnitPos.Value;
 		int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
-		int currentUnitX = entity.Rect.CenterX().ToUnit();
-		int currentUnitY = entity.Rect.CenterY().ToUnit();
+		int currentUnitX;
+		int currentUnitY;
+		if (entity is Rigidbody rig) {
+			currentUnitX = (rig.X + rig.OffsetX + Const.HALF).ToUnit();
+			currentUnitY = (rig.Y + rig.OffsetY + Const.HALF).ToUnit();
+		} else {
+			currentUnitX = (entity.X + Const.HALF).ToUnit();
+			currentUnitY = (entity.Y + Const.HALF).ToUnit();
+		}
 		byte requireReposition = 0;
 		if (mapPos_blockID != entity.TypeID) {
 			// Overlaped by Other Entity
@@ -802,6 +812,11 @@ public static class Stage {
 			if (requireReposition == 2) {
 				WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
 			}
+			// Fix Inventory
+			if (entity != null) {
+				AfterEntityReposition?.Invoke(entity, mapPos, new(resultUnitX, resultUnitY, mapPos.z));
+			}
+
 		}
 	}
 

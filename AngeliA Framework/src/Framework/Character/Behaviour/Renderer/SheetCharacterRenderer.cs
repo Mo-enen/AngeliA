@@ -143,7 +143,6 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 	internal static void OnMainSheetReload_Sheet () {
 		AnimationSheetPool.Clear();
 		foreach (var type in typeof(Character).AllChildClass()) {
-			//if (!type.IsSubclassOf(typeof(SheetCharacter))) continue;
 			AnimationSheetPool.Add(type.AngeHash(), new AnimationSheet(type));
 		}
 	}

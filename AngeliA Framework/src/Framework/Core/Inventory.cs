@@ -111,11 +111,14 @@ public static class Inventory {
 
 	[OnGameUpdate]
 	internal static void OnGameUpdate () {
-		if (IsPoolDirty) {
-			SaveAllToDisk(false);
+		if (IsPoolDirty && Game.GlobalFrame % 300 == 0) {
+			SaveAllToDisk(forceSave: false);
 		}
 	}
 
+
+	[OnGameQuitting]
+	internal static void OnGameQuitting () => SaveAllToDisk(forceSave: true);
 
 	#endregion
 
@@ -125,6 +128,7 @@ public static class Inventory {
 	#region --- API ---
 
 
+	// Inventory Data
 	public static void AddNewInventoryData (string inventoryName, int itemCount, bool unlockItemInside = false) {
 		if (itemCount <= 0) return;
 		int inventoryID = inventoryName.AngeHash();
@@ -140,7 +144,7 @@ public static class Inventory {
 	}
 
 
-	public static void AddNewCharacterInventoryData (string inventoryName, int itemCount, bool unlockItemInside = false) {
+	public static void AddNewEquipmentInventoryData (string inventoryName, int itemCount, bool unlockItemInside = false) {
 		if (itemCount <= 0) return;
 		int inventoryID = inventoryName.AngeHash();
 		if (Pool.ContainsKey(inventoryID)) return;
@@ -153,6 +157,9 @@ public static class Inventory {
 		});
 		IsPoolDirty = true;
 	}
+
+
+	public static string GetPositionBasedInventoryName (string baseName, Int3 unitPosition) => $"{baseName}.{unitPosition.x}.{unitPosition.y}.{unitPosition.z}";
 
 
 	public static void ResizeInventory (int inventoryID, int newSize) {
@@ -179,6 +186,25 @@ public static class Inventory {
 		if (Pool.TryGetValue(inventoryID, out var data)) {
 			data.UnlockItemInside = newUnlokInside;
 		}
+	}
+
+
+	public static void RenameEquipInventory (string currentName, string newName) {
+
+		// Change Data in Pool
+		int id = currentName.AngeHash();
+		int newID = newName.AngeHash();
+		if (Pool.Remove(id, out var invData)) {
+			invData.Name = newName;
+			Pool[newID] = invData;
+		}
+
+		// Move File
+		string root = Universe.BuiltIn.SlotInventoryRoot;
+		string from = Util.CombinePaths(root, $"{currentName}.{EQ_INV_EXT}");
+		string to = Util.CombinePaths(root, $"{newName}.{EQ_INV_EXT}");
+		Util.MoveFile(from, to);
+
 	}
 
 
@@ -454,7 +480,7 @@ public static class Inventory {
 	private static void LoadInventoryPoolFromDisk () {
 		IsPoolDirty = false;
 		Pool.Clear();
-		string root = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "Inventory");
+		string root = Universe.BuiltIn.SlotInventoryRoot;
 		if (!Util.FolderExists(root)) return;
 		foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{EQ_INV_EXT}")) {
 			try {
@@ -486,7 +512,7 @@ public static class Inventory {
 
 	private static void SaveAllToDisk (bool forceSave) {
 		IsPoolDirty = false;
-		string root = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "Inventory");
+		string root = Universe.BuiltIn.SlotInventoryRoot;
 		foreach (var (_, data) in Pool) {
 			if (!forceSave && !data.IsDirty) continue;
 			data.IsDirty = false;

@@ -63,6 +63,7 @@ public static class AngePath {
 	// Saving
 	public static string GetSlotRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}");
 	public static string GetSlotMetaRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}", "Meta");
+	public static string GetSlotInventoryRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}", "Meta", "Inventory");
 	public static string GetSlotMetaCharacterConfigRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}", "Meta", "Character Rendering");
 	public static string GetSlotUserMapRoot (string savingFolder, int slot) => Util.CombinePaths(savingFolder, $"Slot {slot}", "User Map");
 

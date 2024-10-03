@@ -143,6 +143,7 @@ public partial class GameEditor : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+		if (CurrentProject == null) return;
 		OnGUI_Hotkey();
 		OnGUI_Toolbar();
 	}

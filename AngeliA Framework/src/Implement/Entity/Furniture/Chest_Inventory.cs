@@ -25,7 +25,7 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 			if (InventoryIdPool.TryGetValue(MapUnitPos.Value, out var pair)) {
 				(InventoryName, InventoryID) = pair;
 			} else {
-				InventoryName = $"{nameof(InventoryChest)}.{MapUnitPos.Value.x}.{MapUnitPos.Value.y}.{MapUnitPos.Value.z}";
+				InventoryName = Inventory.GetPositionBasedInventoryName(nameof(InventoryChest), MapUnitPos.Value);
 				InventoryID = InventoryName.AngeHash();
 				pair = (InventoryName, InventoryID);
 				InventoryIdPool.Add(MapUnitPos.Value, pair);
