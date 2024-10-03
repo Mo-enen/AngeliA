@@ -127,6 +127,10 @@ public class ConsoleWindow : WindowUI {
 		using (new GUIEnableScope(HaveRunningRigGame)) {
 			if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
 				RequireCodeAnalysis = 1;
+#if DEBUG
+				string projectFolder = Util.GetParentPath(Universe.BuiltIn.UniverseRoot);
+				FrameworkUtil.EmptyScriptFileAnalysis(Util.GetParentPath(projectFolder));
+#endif
 			}
 			RequireTooltip(rect, TIP_HASH_COL);
 		}

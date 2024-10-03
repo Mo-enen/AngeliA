@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 public abstract class Rigidbody : Entity {
 
 
@@ -11,13 +11,7 @@ public abstract class Rigidbody : Entity {
 	#region --- VAR ---
 
 
-	// Const
-	private const int WATER_SPEED_LOSE = 400;
-
 	// Api
-	public delegate void RigidbodyHandler (Rigidbody rig);
-	public static event RigidbodyHandler OnFallIntoWater;
-	public static event RigidbodyHandler OnJumpOutOfWater;
 	public override IRect Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 	public bool IsGrounded { get; private set; } = false;
 	public bool IsInsideGround { get; private set; } = false;
@@ -38,14 +32,16 @@ public abstract class Rigidbody : Entity {
 	// Override
 	public abstract int PhysicalLayer { get; }
 	public virtual int CollisionMask => PhysicsMask.SOLID;
-	public virtual bool AllowBeingPush => true;
-	public virtual int Gravity => VelocityY <= 0 ? 5 : 3;
+	public virtual int FallingGravity => 5;
+	public virtual int RisingGravity => 3;
+	public virtual int MaxGravitySpeed => 96;
 	public virtual int AirDragX => 3;
 	public virtual int AirDragY => 0;
+	public virtual int WaterSpeedRate => 400;
+	public virtual bool AllowBeingPush => true;
 	public virtual bool AllowBeingCarryByOtherRigidbody => true;
 	public virtual bool CarryOtherRigidbodyOnTop => true;
 	public virtual bool DestroyWhenInsideGround => false;
-	public virtual int MaxGravitySpeed => 96;
 
 	// Data
 	private int IgnoreGroundCheckFrame = int.MinValue;
@@ -123,9 +119,9 @@ public abstract class Rigidbody : Entity {
 
 		// Gravity
 		if (GravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
-			int speedScale = InWater ? WATER_SPEED_LOSE : 1000;
+			int speedScale = InWater ? WaterSpeedRate : 1000;
 			VelocityY = Util.Clamp(
-				VelocityY - Gravity * GravityScale / 1000,
+				VelocityY - (VelocityY <= 0 ? FallingGravity : RisingGravity) * GravityScale / 1000,
 				-MaxGravitySpeed * speedScale / 1000,
 				int.MaxValue
 			);
@@ -182,8 +178,8 @@ public abstract class Rigidbody : Entity {
 
 		// Water Splash
 		if (prevInWater != InWater && InWater == VelocityY < 0) {
-			if (prevInWater) OnJumpOutOfWater?.Invoke(this);
-			if (InWater) OnFallIntoWater?.Invoke(this);
+			if (prevInWater) GlobalEvent.InvokeOnCameOutOfWater(this);
+			if (InWater) GlobalEvent.InvokeOnFallIntoWater(this);
 		}
 
 	}
@@ -232,7 +228,7 @@ public abstract class Rigidbody : Entity {
 		RefreshPrevPosition();
 		var pos = new Int2(X + OffsetX, Y + OffsetY);
 
-		int speedScale = InWater ? WATER_SPEED_LOSE : 1000;
+		int speedScale = InWater ? WaterSpeedRate : 1000;
 		speedX = speedX * speedScale / 1000;
 		speedY = speedY * speedScale / 1000;
 
@@ -310,16 +306,16 @@ public abstract class Rigidbody : Entity {
 
 
 	private bool InsideGroundCheck () {
+		int mask = PhysicsMask.LEVEL & CollisionMask;
+		if (mask == 0) return false;
 		int sizeX = Width / 8;
 		int sizeY = Height / 8;
-		return Physics.Overlap(
-			PhysicsMask.LEVEL & CollisionMask,
-			new IRect(
-				X + OffsetX + Width / 2 - sizeX / 2,
-				Y + OffsetY + Height / 2 - sizeY / 2,
-				sizeX, sizeY
-			), this
+		var rect = new IRect(
+			X + OffsetX + Width / 2 - sizeX / 2,
+			Y + OffsetY + Height / 2 - sizeY / 2,
+			sizeX, sizeY
 		);
+		return Physics.Overlap(mask, rect, this);
 	}
 
 

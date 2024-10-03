@@ -23,5 +23,13 @@ public static class GlobalEvent {
 	public static event Action<int, IRect> OnPowderSpawn;
 	public static void InvokePowderSpawn (int spriteID, IRect rect) => OnPowderSpawn?.Invoke(spriteID, rect);
 
+	// Water
+	public static event Action<Rigidbody> OnFallIntoWater;
+	public static event Action<Rigidbody> OnCameOutOfWater;
+	public static void InvokeOnFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
+	public static void InvokeOnCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
+
+
+
 
 }

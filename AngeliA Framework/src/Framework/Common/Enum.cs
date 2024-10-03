@@ -74,3 +74,14 @@ public enum Alignment : byte {
 	Full = 9,
 }
 
+
+
+public enum FittingPose {
+	Unknown = 0,
+	Left = 1,
+	Down = 1,
+	Mid = 2,
+	Right = 3,
+	Up = 3,
+	Single = 4,
+}

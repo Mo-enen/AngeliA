@@ -8,6 +8,7 @@ namespace AngeliA;
 
 public static class FrameworkUtil {
 
+
 	private const int SEARCHLIGHT_DENSITY = 32;
 	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
 	private static readonly List<PhysicsCell[,,]> CellPhysicsCells = [];
@@ -288,7 +289,7 @@ public static class FrameworkUtil {
 			int thick = GUI.Unify(1);
 			var cameraRect = Renderer.CameraRect;
 			float framePingPong01 = Ease.InOutQuad(Game.GlobalFrame.PingPong(120) / 120f);
-			framePingPong01 = framePingPong01 / 4f;
+			framePingPong01 /= 4f;
 			for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
 				try {
 					var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
@@ -342,28 +343,35 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool useEnenPersonalFavour = false) {
-
-		// Check for Empty Script File
-		{
-			bool anyWarning = false;
-			foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
-				bool empty = true;
-				foreach (string line in Util.ForAllLinesInFile(path)) {
-					if (!string.IsNullOrWhiteSpace(line)) {
-						empty = false;
-						break;
-					}
-				}
-				if (empty) {
-					anyWarning = true;
-					Debug.LogWarning($"Empty script: {path}");
+	public static void EmptyScriptFileAnalysis (string rootPath, bool onlyLogWhenWarningFounded = false) {
+		bool anyWarning = false;
+		foreach (string path in Util.EnumerateFiles(rootPath, false, "*.cs")) {
+			bool empty = true;
+			foreach (string line in Util.ForAllLinesInFile(path)) {
+				if (!string.IsNullOrWhiteSpace(line)) {
+					empty = false;
+					break;
 				}
 			}
-			if (!anyWarning && !onlyLogWhenWarningFounded) {
-				Debug.Log("[✓] No empty script file founded.");
+			if (empty) {
+				anyWarning = true;
+				Debug.LogWarning($"Empty script: {path}");
 			}
 		}
+		if (!anyWarning && !onlyLogWhenWarningFounded) {
+			Debug.Log("[✓] No empty script file founded.");
+		}
+	}
+
+
+	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool useEnenPersonalFavour = false) {
+
+		if (!onlyLogWhenWarningFounded) {
+			Debug.Log("-------- AngeliA Project Analysis --------");
+		}
+
+		// Check for Empty Script File
+		EmptyScriptFileAnalysis(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), onlyLogWhenWarningFounded);
 
 		// Sheet
 		if (!Util.FileExists(Universe.BuiltIn.SheetPath)) {
@@ -442,11 +450,6 @@ public static class FrameworkUtil {
 			if (!anyWarning && !onlyLogWhenWarningFounded) {
 				Debug.Log("[✓] No item class name need to fix.");
 			}
-		}
-
-		// Done
-		if (!onlyLogWhenWarningFounded) {
-			Debug.Log("-------- AngeliA Project Analysis --------");
 		}
 
 	}
@@ -943,6 +946,39 @@ public static class FrameworkUtil {
 			var (level, bg, entity, _) = squad.GetAllBlocksAt(unitX, unitY, z);
 			return level != 0 || bg != 0 || entity != 0;
 		}
+	}
+
+
+	public static FittingPose GetEntityPose (int typeID, int unitX, int unitY, bool horizontal) {
+		bool n = WorldSquad.Front.GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
+		bool p = WorldSquad.Front.GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
+		return
+			n && p ? FittingPose.Mid :
+			!n && p ? FittingPose.Left :
+			n && !p ? FittingPose.Right :
+			FittingPose.Single;
+	}
+
+
+	public static FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
+		left_down = null;
+		right_up = null;
+		int unitX = entity.X.ToUnit();
+		int unitY = entity.Y.ToUnit();
+		int typeID = entity.TypeID;
+		bool n = WorldSquad.Front.GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
+		bool p = WorldSquad.Front.GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
+		if (n) {
+			left_down = Physics.GetEntity(typeID, entity.Rect.EdgeOutside(horizontal ? Direction4.Left : Direction4.Down), mask, entity, mode, tag);
+		}
+		if (p) {
+			right_up = Physics.GetEntity(typeID, entity.Rect.EdgeOutside(horizontal ? Direction4.Right : Direction4.Up), mask, entity, mode, tag);
+		}
+		return
+			n && p ? FittingPose.Mid :
+			!n && p ? FittingPose.Left :
+			n && !p ? FittingPose.Right :
+			FittingPose.Single;
 	}
 
 

@@ -25,9 +25,9 @@ public abstract class Entity : IMapItem {
 	public IRect GlobalBounds => LocalBounds.Shift(X, Y);
 	public int InstanceOrder => InstanceID.x != int.MinValue ? 0 : InstanceID.y;
 	public Int3? MapUnitPos => InstanceID.x != int.MinValue ? InstanceID : null;
+	public Int3 InstanceID { get; internal set; } = default;
 
 	// Inter
-	internal Int3 InstanceID { get; set; } = default;
 	internal IRect LocalBounds { get; set; } = default;
 	internal byte UpdateStep { get; set; } = 0;
 	internal int Stamp { get; set; } = int.MaxValue;

@@ -35,7 +35,7 @@ public abstract class Buff {
 			if (buff is FailbackBuff) continue;
 			buffList.Add(buff);
 		}
-		AllBuffs = buffList.ToArray();
+		AllBuffs = [.. buffList];
 	}
 
 

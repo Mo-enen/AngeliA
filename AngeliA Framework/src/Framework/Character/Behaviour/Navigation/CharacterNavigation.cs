@@ -7,7 +7,7 @@ namespace AngeliA;
 public enum CharacterNavigationState { Idle, Operation, Fly, }
 
 
-public partial class CharacterNavigation {
+public partial class CharacterNavigation (Character character) {
 
 
 
@@ -16,7 +16,7 @@ public partial class CharacterNavigation {
 
 
 	// Api
-	public readonly Character TargetCharacter;
+	public readonly Character TargetCharacter = character;
 	public CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
 	public Int2 NavigationAim { get; private set; } = default;
 	public bool NavigationAimGrounded { get; private set; } = default;
@@ -37,7 +37,6 @@ public partial class CharacterNavigation {
 	private int Y { get => TargetCharacter.Y; set => TargetCharacter.Y = value; }
 	private int VelocityX { get => TargetCharacter.VelocityX; set => TargetCharacter.VelocityX = value; }
 	private int VelocityY { get => TargetCharacter.VelocityY; set => TargetCharacter.VelocityY = value; }
-	private int Gravity => TargetCharacter.Gravity;
 	private bool InWater => TargetCharacter.InWater;
 	private bool IsGrounded => TargetCharacter.IsGrounded;
 	private bool IsInsideGround => TargetCharacter.IsInsideGround;
@@ -61,9 +60,6 @@ public partial class CharacterNavigation {
 
 
 	#region --- MSG ---
-
-
-	public CharacterNavigation (Character character) => TargetCharacter = character;
 
 
 	public virtual void OnActivated () => ResetNavigation();
@@ -203,7 +199,7 @@ public partial class CharacterNavigation {
 				TargetCharacter.MakeGrounded(1);
 			} else {
 				// Fall Down
-				VelocityY = (VelocityY - Gravity).Clamp(-TargetCharacter.MaxGravitySpeed, int.MaxValue);
+				VelocityY = (VelocityY - (VelocityY <= 0 ? TargetCharacter.FallingGravity : TargetCharacter.RisingGravity)).Clamp(-TargetCharacter.MaxGravitySpeed, int.MaxValue);
 			}
 		} else {
 			VelocityY = 0;

@@ -14,21 +14,13 @@ public static class ItemSystem {
 	#region --- SUB ---
 
 
-	public class ItemData {
-		public Item Item;
-		public int NameID;
-		public int DescriptionID;
-		public string TypeName;
-		public int MaxStackCount;
-		public bool Unlocked;
-		public ItemData (Item item, int nameID, int descriptionID, string typeName, int maxStackCount) {
-			Item = item;
-			NameID = nameID;
-			DescriptionID = descriptionID;
-			TypeName = typeName;
-			MaxStackCount = maxStackCount;
-			Unlocked = false;
-		}
+	public class ItemData (Item item, int nameID, int descriptionID, string typeName, int maxStackCount) {
+		public Item Item = item;
+		public int NameID = nameID;
+		public int DescriptionID = descriptionID;
+		public string TypeName = typeName;
+		public int MaxStackCount = maxStackCount;
+		public bool Unlocked = false;
 	}
 
 

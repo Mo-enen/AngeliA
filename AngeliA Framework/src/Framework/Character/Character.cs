@@ -56,7 +56,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
-	public override int Gravity => 5;
+	public override int FallingGravity => 5;
+	public override int RisingGravity => 5;
 	public override bool CarryOtherRigidbodyOnTop => false;
 	public override bool AllowBeingCarryByOtherRigidbody => true;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;

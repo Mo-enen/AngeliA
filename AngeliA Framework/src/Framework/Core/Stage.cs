@@ -704,7 +704,7 @@ public static class Stage {
 
 	public static Int4 GetCameraCullingPadding () {
 		int expand = Renderer.CameraRect.width * (Universe.BuiltInInfo.WorldBehindParallax - 1000) / 2000;
-		return TaskSystem.IsTasking<TeleportTask>() ? new Int4(expand, expand, expand, expand) : Int4.zero;
+		return TaskSystem.HasTask() ? new Int4(expand, expand, expand, expand) : Int4.zero;
 	}
 
 

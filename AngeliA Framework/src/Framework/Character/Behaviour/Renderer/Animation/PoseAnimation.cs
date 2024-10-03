@@ -22,10 +22,7 @@ public abstract class PoseAnimation {
 
 	// Data
 	private static readonly Dictionary<int, PoseAnimation> Pool = [];
-	private static readonly Dictionary<int, int>[] PoseDefaultPool = new Dictionary<int, int>[typeof(CharacterAnimationType).EnumLength()].FillWithNewValue();
-	private static readonly Dictionary<int, int>[] HandheldDefaultPool = new Dictionary<int, int>[typeof(WeaponHandheld).EnumLength()].FillWithNewValue();
-	private static readonly Dictionary<int, int>[] AttackDefaultPool = new Dictionary<int, int>[typeof(WeaponType).EnumLength()].FillWithNewValue();
-
+	
 	// Cache
 	protected static Character Target = null;
 	protected static PoseCharacterRenderer Rendering = null;
@@ -77,35 +74,9 @@ public abstract class PoseAnimation {
 			if (System.Activator.CreateInstance(type) is not PoseAnimation ani) continue;
 			int aniID = type.AngeHash();
 			Pool.TryAdd(aniID, ani);
-			// Attribute >> Default
-			int tIndex;
-			foreach (var att in type.GetCustomAttributes(false)) {
-				switch (att) {
-					case DefaultCharacterAnimationAttribute aniAtt:
-						tIndex = (int)aniAtt.Type;
-						if (tIndex < 0 || tIndex >= PoseDefaultPool.Length) break;
-						PoseDefaultPool[tIndex].TryAdd(aniAtt.CharacterID, aniID);
-						break;
-					case DefaultCharacterHandheldAnimationAttribute heldAtt:
-						tIndex = (int)heldAtt.Held;
-						if (tIndex < 0 || tIndex >= HandheldDefaultPool.Length) break;
-						HandheldDefaultPool[tIndex].TryAdd(heldAtt.CharacterID, aniID);
-						break;
-					case DefaultCharacterAttackAnimationAttribute attAtt:
-						tIndex = (int)attAtt.Type;
-						if (tIndex < 0 || tIndex >= AttackDefaultPool.Length) break;
-						AttackDefaultPool[tIndex].TryAdd(attAtt.CharacterID, aniID);
-						break;
-				}
-			}
 		}
 
 	}
-
-
-	public static bool TryGetPoseAnimationDefaultID (int characterID, CharacterAnimationType type, out int animationID) => PoseDefaultPool[(int)type].TryGetValue(characterID, out animationID);
-	public static bool TryGetHandheldDefaultID (int characterID, WeaponHandheld handheld, out int animationID) => HandheldDefaultPool[(int)handheld].TryGetValue(characterID, out animationID);
-	public static bool TryGetAttackDefaultID (int characterID, WeaponType type, out int animationID) => AttackDefaultPool[(int)type].TryGetValue(characterID, out animationID);
 
 
 	public static void PerformAnimationFromPool (int id, PoseCharacterRenderer renderer) {
