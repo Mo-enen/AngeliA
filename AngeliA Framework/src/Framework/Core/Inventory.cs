@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace AngeliA;
 
+
 public static class Inventory {
 
 
@@ -40,7 +41,7 @@ public static class Inventory {
 
 
 	[System.Serializable]
-	private class CharacterInventoryData : InventoryData {
+	private class EquipmentInventoryData : InventoryData {
 		public int Weapon = 0;
 		public int Helmet = 0;
 		public int BodySuit = 0;
@@ -67,7 +68,7 @@ public static class Inventory {
 
 	// Const
 	private const string INV_EXT = "inv";
-	private const string CHAR_INV_EXT = "chr";
+	private const string EQ_INV_EXT = "invq";
 
 	// Api
 	public static bool PoolReady { get; private set; } = false;
@@ -143,7 +144,7 @@ public static class Inventory {
 		if (itemCount <= 0) return;
 		int inventoryID = inventoryName.AngeHash();
 		if (Pool.ContainsKey(inventoryID)) return;
-		Pool.Add(inventoryID, new CharacterInventoryData() {
+		Pool.Add(inventoryID, new EquipmentInventoryData() {
 			Items = new int[itemCount],
 			Counts = new int[itemCount],
 			IsDirty = true,
@@ -367,7 +368,7 @@ public static class Inventory {
 
 	// Equipment
 	public static int GetEquipment (int inventoryID, EquipmentType type, out int equipmentCount) {
-		if (Pool.TryGetValue(inventoryID, out var data) && data is CharacterInventoryData pData) {
+		if (Pool.TryGetValue(inventoryID, out var data) && data is EquipmentInventoryData pData) {
 			(int resultID, equipmentCount) = type switch {
 				EquipmentType.Weapon => (pData.Weapon, pData.WeaponCount),
 				EquipmentType.BodyArmor => (pData.BodySuit, pData.BodySuitCount),
@@ -390,7 +391,7 @@ public static class Inventory {
 
 		if (
 			!Pool.TryGetValue(inventoryID, out var data) ||
-			data is not CharacterInventoryData pData
+			data is not EquipmentInventoryData pData
 		) return false;
 
 		if (
@@ -455,7 +456,7 @@ public static class Inventory {
 		Pool.Clear();
 		string root = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "Inventory");
 		if (!Util.FolderExists(root)) return;
-		foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{CHAR_INV_EXT}")) {
+		foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{EQ_INV_EXT}")) {
 			try {
 				string name = Util.GetNameWithoutExtension(path);
 				int id = name.AngeHash();
@@ -464,7 +465,7 @@ public static class Inventory {
 				if (path.EndsWith(INV_EXT)) {
 					data = JsonUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
 				} else {
-					data = JsonUtil.LoadOrCreateJsonFromPath<CharacterInventoryData>(path);
+					data = JsonUtil.LoadOrCreateJsonFromPath<EquipmentInventoryData>(path);
 				}
 				if (data == null) continue;
 				data.IsDirty = false;
@@ -490,7 +491,7 @@ public static class Inventory {
 			if (!forceSave && !data.IsDirty) continue;
 			data.IsDirty = false;
 			// Save Inventory
-			string path = Util.CombinePaths(root, $"{data.Name}.{(data is CharacterInventoryData ? CHAR_INV_EXT : INV_EXT)}");
+			string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? EQ_INV_EXT : INV_EXT)}");
 			JsonUtil.SaveJsonToPath(data, path, false);
 			// Update Item Unlocked
 			UpdateItemUnlocked(data);

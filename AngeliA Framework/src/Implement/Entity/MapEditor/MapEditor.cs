@@ -723,7 +723,6 @@ public sealed partial class MapEditor : WindowUI {
 		// Draw Pose Player
 		player.AnimationType = CharacterAnimationType.Idle;
 		int startIndex = Renderer.GetUsedCellCount();
-		player.IgnoreInventory();
 		FrameworkUtil.DrawPoseCharacterAsUI(
 			new IRect(
 				PlayerDropPos.x - Const.HALF,
@@ -1085,10 +1084,11 @@ public sealed partial class MapEditor : WindowUI {
 				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Weapon);
 				// Func
 				static void RepairEquipment (Entity holder, EquipmentType type) {
-					int itemID = Inventory.GetEquipment(holder.TypeID, type, out int oldEqCount);
+					int invID = holder is Character cHolder ? cHolder.InventoryID : holder.TypeID;
+					int itemID = Inventory.GetEquipment(invID, type, out int oldEqCount);
 					if (itemID == 0 || oldEqCount <= 0 || ItemSystem.GetItem(itemID) is not IProgressiveItem progressive) return;
 					if (progressive.NextItemID == itemID || progressive.NextItemID == 0) return;
-					Inventory.SetEquipment(holder.TypeID, type, progressive.NextItemID, oldEqCount);
+					Inventory.SetEquipment(invID, type, progressive.NextItemID, oldEqCount);
 				}
 			}
 

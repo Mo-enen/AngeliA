@@ -75,7 +75,7 @@ public abstract class PickWeapon : Weapon {
 			);
 			// Reduce Weapon Usage
 			if (picked) {
-				Inventory.ReduceEquipmentCount(holder.TypeID, 1, EquipmentType.Weapon);
+				Inventory.ReduceEquipmentCount(holder is Character cHolder ? cHolder.InventoryID : holder.TypeID, 1, EquipmentType.Weapon);
 			}
 		}
 

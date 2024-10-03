@@ -20,7 +20,7 @@ public abstract class SummonItem<T> : Item where T : ItemBasedSummon {
 		) {
 			UpdatingFrame = Game.GlobalFrame;
 			UpdatingHolder = holder;
-			int itemCount = Inventory.ItemTotalCount(holder.TypeID, TypeID, true);
+			int itemCount = Inventory.ItemTotalCount(holder is Character cHolder ? cHolder.InventoryID : holder.TypeID, TypeID, true);
 			if (itemCount > 0 && Stage.TryGetEntities(EntityLayer.CHARACTER, out var entities, out int count)) {
 				int currentSummonCount = 0;
 				for (int i = 0; i < count; i++) {

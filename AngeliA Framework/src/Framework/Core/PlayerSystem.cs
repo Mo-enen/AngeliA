@@ -40,8 +40,8 @@ public static class PlayerSystem {
 
 		}
 	}
-	public static bool AllowPlayerMenuUI => Selecting != null && Game.GlobalFrame > IgnorePlayerMenuFrame && Selecting.InventoryCurrentAvailable;
-	public static bool AllowQuickPlayerMenuUI => Selecting != null && Game.GlobalFrame > IgnorePlayerQuickMenuFrame && Selecting.InventoryCurrentAvailable;
+	public static bool AllowPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerMenuFrame;
+	public static bool AllowQuickPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerQuickMenuFrame;
 	public static bool LockingInput => Game.GlobalFrame <= LockInputFrame;
 	public static int LockInputFrame { get; private set; } = -1;
 	public static int AimViewX { get; private set; } = 0;
@@ -76,12 +76,12 @@ public static class PlayerSystem {
 	[CheatCode("FillInventory")]
 	internal static void CheatCodeFillInventory () {
 		if (Selecting == null) return;
-		int len = Selecting.GetInventoryCapacity();
+		int len = Inventory.GetInventoryCapacity(Selecting.InventoryID);
 		for (int i = 0; i < len; i++) {
-			int id = Selecting.GetItemIDFromInventory(i);
+			int id = Inventory.GetItemAt(Selecting.InventoryID, i);
 			if (id == 0) continue;
 			int maxCount = ItemSystem.GetItemMaxStackCount(id);
-			Inventory.SetItemAt(Selecting.TypeID, i, id, maxCount);
+			Inventory.SetItemAt(Selecting.InventoryID, i, id, maxCount);
 		}
 	}
 
@@ -363,25 +363,31 @@ public static class PlayerSystem {
 
 	private static void UpdateInventoryUI () {
 
-		if (!AllowPlayerMenuUI && PlayerMenuUI.ShowingUI) {
+		if (!AllowPlayerMenuUI) {
 			PlayerMenuUI.CloseMenu();
 		}
+		if (!AllowQuickPlayerMenuUI) {
+			PlayerQuickMenuUI.CloseMenu();
+		}
 		bool requireHint = false;
+		bool showingMenu = PlayerMenuUI.ShowingUI;
+		bool showingQuickMenu = PlayerQuickMenuUI.ShowingUI;
 
 		// Quick Menu
-		if (AllowQuickPlayerMenuUI && !PlayerMenuUI.ShowingUI && !PlayerQuickMenuUI.ShowingUI && !LockingInput) {
+		if (AllowQuickPlayerMenuUI && !showingMenu && !showingQuickMenu && !LockingInput) {
 			if (Input.GameKeyDown(Gamekey.Select) || Input.GameKeyDown(Gamekey.Start)) {
 				PlayerQuickMenuUI.OpenMenu();
 			}
+			showingQuickMenu = PlayerQuickMenuUI.ShowingUI;
 			requireHint = true;
 		}
 
 		// Inventory Menu
 		if (
 			AllowPlayerMenuUI &&
-			!PlayerMenuUI.ShowingUI &&
-			(PlayerQuickMenuUI.ShowingUI || !LockingInput) &&
-			(!PlayerQuickMenuUI.ShowingUI || !PlayerQuickMenuUI.Instance.IsDirty)
+			!showingMenu &&
+			(showingQuickMenu || !LockingInput) &&
+			(!showingQuickMenu || !PlayerQuickMenuUI.Instance.IsDirty)
 		) {
 			if (Input.GameKeyUp(Gamekey.Select)) {
 				Input.UseGameKey(Gamekey.Select);
@@ -499,7 +505,7 @@ public static class PlayerSystem {
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
 				if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-				int equippingID = Inventory.GetEquipment(Selecting.TypeID, EquipmentType.Weapon, out _);
+				int equippingID = Inventory.GetEquipment(Selecting.InventoryID, EquipmentType.Weapon, out _);
 				holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: equippingID == 0);
 			}
 		}
@@ -578,7 +584,7 @@ public static class PlayerSystem {
 		SelectingPlayerID.Value = target.TypeID;
 		LockInputFrame = -1;
 		TargetActionEntity = null;
-		Inventory.SetUnlockItemsInside(target.TypeID, true);
+		Inventory.SetUnlockItemsInside(target.InventoryID, true);
 		PlayerMenuUI.CloseMenu();
 	}
 

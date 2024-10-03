@@ -367,9 +367,9 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 			case CraftActionType.QuickDropOne:
 			case CraftActionType.QuickDropAll:
 				// Quick Drop Crafted
-				int playerID = PlayerSystem.Selecting != null ? PlayerSystem.Selecting.TypeID : 0;
-				if (playerID == 0) return;
-				int collectedCount = Inventory.CollectItem(playerID, CombineResultID, consumeResultCount);
+				int invID = PlayerSystem.Selecting != null ? PlayerSystem.Selecting.InventoryID : 0;
+				if (invID == 0) return;
+				int collectedCount = Inventory.CollectItem(invID, CombineResultID, consumeResultCount);
 				if (collectedCount < consumeResultCount) {
 					ItemSystem.GiveItemToTarget(PlayerSystem.Selecting, CombineResultID, consumeResultCount - collectedCount);
 				}

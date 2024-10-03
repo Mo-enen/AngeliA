@@ -285,13 +285,13 @@ public static class ItemSystem {
 		}
 		// Give
 		GiveItemToTarget(player, id, 1);
-		int invCount = Inventory.GetInventoryCapacity(player.TypeID);
+		int invCount = Inventory.GetInventoryCapacity(player.InventoryID);
 		for (int i = 0; i < invCount; i++) {
-			int _itemID = Inventory.GetItemAt(player.TypeID, i, out int _count);
+			int _itemID = Inventory.GetItemAt(player.InventoryID, i, out int _count);
 			if (_itemID != 0 && _itemID != id && _count > 0) continue;
 			int maxCount = GetItemMaxStackCount(id);
 			if (maxCount <= 0) continue;
-			Inventory.SetItemAt(player.TypeID, i, id, maxCount);
+			Inventory.SetItemAt(player.InventoryID, i, id, maxCount);
 		}
 	}
 
@@ -382,7 +382,7 @@ public static class ItemSystem {
 		if (target == null) {
 			return SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
 		} else {
-			count -= Inventory.CollectItem(target.TypeID, itemID, count);
+			count -= Inventory.CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count);
 			return count <= 0 || SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null;
 		}
 	}

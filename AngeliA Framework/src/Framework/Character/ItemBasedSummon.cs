@@ -12,7 +12,7 @@ public abstract class ItemBasedSummon : Summon {
 			Owner != null &&
 			OriginItemID != 0 &&
 			Game.GlobalFrame > InventoryUpdatedFrame + 1 &&
-			Inventory.ItemTotalCount(Owner.TypeID, OriginItemID, true) == 0
+			Inventory.ItemTotalCount(Owner.InventoryID, OriginItemID, true) == 0
 		) {
 			Active = false;
 			return;

@@ -92,7 +92,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		WeaponCount = 0;
 
 		// Init Item List
-		int invID = PlayerSystem.Selecting.TypeID;
+		int invID = PlayerSystem.Selecting.InventoryID;
 		int currentIndex = 0;
 		bool allowHand = Inventory.GetEquipment(invID, EquipmentType.Weapon, out _) == 0 || Inventory.IndexOfItem(invID, 0) >= 0;
 
@@ -330,6 +330,12 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	public static void CloseMenu () {
+		if (Instance == null) return;
+		Instance.Active = false;
+	}
+
+
 	#endregion
 
 
@@ -342,7 +348,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 		if (!PlayerSystem.Selecting.EquipmentAvailable(EquipmentType.Weapon)) return;
 
-		int invID = PlayerSystem.Selecting.TypeID;
+		int invID = PlayerSystem.Selecting.InventoryID;
 		if (!Inventory.HasInventory(invID)) return;
 
 		int capacity = Inventory.GetInventoryCapacity(invID);
@@ -362,7 +368,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 
 	private static void SwitchEquipTo (int itemIndex, int newItemID, int newItemCount) {
-		int invID = PlayerSystem.Selecting.TypeID;
+		int invID = PlayerSystem.Selecting.InventoryID;
 		int oldEquipmentID = Inventory.GetEquipment(invID, EquipmentType.Weapon, out int oldEqCount);
 
 		if (!Inventory.SetEquipment(invID, EquipmentType.Weapon, newItemID, newItemCount)) return;

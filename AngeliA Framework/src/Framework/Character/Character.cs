@@ -6,12 +6,10 @@ using System.Text;
 namespace AngeliA;
 
 
-public enum CharacterState {
-	GamePlay = 0,
-	Sleep,
-	PassOut,
-}
+public enum CharacterState { GamePlay = 0, Sleep, PassOut, }
 
+
+public enum CharacterInventoryType { None = 0, Unique, Map, }
 
 
 [EntityAttribute.DontDestroyOnZChanged]
@@ -47,7 +45,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	public static event CharacterEventHandler OnCrash;
 	public bool Teleporting => Game.GlobalFrame < _TeleportEndFrame.Abs();
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
-	public bool InventoryCurrentAvailable => Game.GlobalFrame > IgnoreInventoryFrame;
 	public int CurrentAttackSpeedRate => Movement.MovementState switch {
 		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
 		CharacterMovementState.Run => Attackness.RunningSpeedRateOnAttack,
@@ -62,6 +59,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	public override int Gravity => 5;
 	public override bool CarryOtherRigidbodyOnTop => false;
 	public override bool AllowBeingCarryByOtherRigidbody => true;
+	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
 
 	public int Bouncy { get; set; } = 150;
 	public bool HelmetInteractable { get; set; } = true;
@@ -81,6 +79,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	public Tag IgnoreDamageType { get; set; } = Tag.None;
 	public int AttackTargetTeam { get; set; } = Const.TEAM_ALL;
 	public int DespawnAfterPassoutDelay { get; set; } = 60;
+	public int InventoryID { get; private set; }
 
 	// Behaviour
 	public CharacterMovement Movement;
@@ -106,11 +105,11 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	private int OverridingRendererFrame = int.MinValue;
 
 	// Data
+	private readonly string TypeName;
 	private int _TeleportEndFrame = 0;
 	private int _TeleportDuration = 0;
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
-	private int IgnoreInventoryFrame = int.MinValue;
 	private int ForceStayFrame = -1;
 	private int PrevZ;
 
@@ -124,6 +123,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 
 	public Character () {
+
+		TypeName = GetType().AngeName();
+
 		// Behaviour
 		Movement = NativeMovement = CreateNativeMovement();
 		Attackness = NativeAttackness = CreateNativeAttackness();
@@ -131,22 +133,39 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		Navigation = NativeNavigation = CreateNativeNavigation();
 		Rendering = NativeRenderer = CreateNativeRenderer();
 		Buff = new CharacterBuff(this);
+
 		// Init Inventory
-		const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-		if (Inventory.HasInventory(TypeID)) {
-			int invCount = Inventory.GetInventoryCapacity(TypeID);
-			if (invCount != COUNT) {
-				Inventory.ResizeInventory(TypeID, COUNT);
+		if (InventoryType != CharacterInventoryType.None) {
+			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
+			if (Inventory.HasInventory(InventoryID)) {
+				int invCount = Inventory.GetInventoryCapacity(InventoryID);
+				if (invCount != COUNT) {
+					Inventory.ResizeInventory(InventoryID, COUNT);
+				}
+			} else {
+				// Create New
+				Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
 			}
-		} else {
-			// Create New
-			Inventory.AddNewCharacterInventoryData(GetType().AngeName(), COUNT);
 		}
 	}
 
 
 	public override void OnActivated () {
 		base.OnActivated();
+
+		// Inv
+		switch (InventoryType) {
+			case CharacterInventoryType.Unique:
+				InventoryID = TypeID;
+				break;
+			case CharacterInventoryType.Map:
+				if (MapUnitPos.HasValue) {
+					InventoryID = $"{TypeName}.{MapUnitPos.Value.x}.{MapUnitPos.Value.y}.{MapUnitPos.Value.z}".AngeHash();
+				} else {
+					InventoryID = TypeID;
+				}
+				break;
+		}
 
 		// Behavour
 		Movement = NativeMovement;
@@ -175,7 +194,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		OverridingHealthFrame = int.MinValue;
 		OverridingNavigationFrame = int.MinValue;
 		OverridingRendererFrame = int.MinValue;
-		IgnoreInventoryFrame = int.MinValue;
 		Team = Const.TEAM_NEUTRAL;
 		IgnoreDamageType = Tag.None;
 		AttackTargetTeam = Const.TEAM_ALL;
@@ -183,12 +201,13 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		ForceStayFrame = -1;
 		PrevZ = Stage.ViewZ;
 		Bouncy = 150;
-		HelmetInteractable = true;
-		BodySuitInteractable = true;
-		GlovesInteractable = true;
-		ShoesInteractable = true;
-		JewelryInteractable = true;
-		WeaponInteractable = true;
+		bool allowInv = InventoryType != CharacterInventoryType.None;
+		HelmetInteractable = allowInv;
+		BodySuitInteractable = allowInv;
+		GlovesInteractable = allowInv;
+		ShoesInteractable = allowInv;
+		JewelryInteractable = allowInv;
+		WeaponInteractable = allowInv;
 	}
 
 
@@ -252,13 +271,14 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 	private void BeforeUpdate_Inventory () {
 
-		int invCapacity = GetInventoryCapacity();
+		int invCapacity = Inventory.GetInventoryCapacity(InventoryID);
 		if (invCapacity > 0) {
 
 			// Inventory
 			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				var item = GetItemFromInventory(i);
+				int id = Inventory.GetItemAt(InventoryID, i);
+				var item = id != 0 ? ItemSystem.GetItem(id) : null;
 				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
 				item.BeforeItemUpdate_FromInventory(this);
 			}
@@ -266,7 +286,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 			// Equipping
 			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
 				var type = (EquipmentType)i;
-				var item = GetEquippingItem(type);
+				int id = Inventory.GetEquipment(InventoryID, type, out int equipmentCount);
+				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 				if (item == null) continue;
 				item.BeforeItemUpdate_FromEquipment(this);
 				if (item is Weapon weapon) {
@@ -409,7 +430,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	private void Update_RepairEquipment () {
 		if (Health.TakingDamage || Game.GlobalFrame != Movement.LastSquatFrame + 1) return;
 		for (int i = 0; i < Const.EquipmentTypeCount; i++) {
-			var item = GetEquippingItem((EquipmentType)i);
+			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
+			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			if (item == null) continue;
 			if (item.TryRepair(this)) break;
 		}
@@ -532,7 +554,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 	private void LateUpdate_Inventory () {
 
-		int invCapacity = GetInventoryCapacity();
+		int invCapacity = Inventory.GetInventoryCapacity(InventoryID);
 		if (invCapacity > 0) {
 
 			bool eventAvailable = CharacterState == CharacterState.GamePlay && !TaskSystem.HasTask() && !Health.TakingDamage;
@@ -541,14 +563,16 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 			// Inventory
 			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				var item = GetItemFromInventory(i);
+				int id = Inventory.GetItemAt(InventoryID, i);
+				var item = id != 0 ? ItemSystem.GetItem(id) : null;
 				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
 				item.OnItemUpdate_FromInventory(this);
 			}
 
 			// Equipping
 			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
-				var item = GetEquippingItem((EquipmentType)i);
+				int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
+				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 				if (item == null) continue;
 				item.OnItemUpdate_FromEquipment(this);
 				if (item is Weapon weapon) {
@@ -563,7 +587,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		}
 
 		// Equipping
-		int equippingID = Inventory.GetEquipment(TypeID, EquipmentType.Weapon, out _);
+		int equippingID = Inventory.GetEquipment(InventoryID, EquipmentType.Weapon, out _);
 		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon eqWeapon) {
 			EquippingWeaponType = eqWeapon.WeaponType;
 			EquippingWeaponHeld = eqWeapon.Handheld;
@@ -659,14 +683,17 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 		// Equipment
 		for (int i = 0; i < Const.EquipmentTypeCount && damage > 0; i++) {
-			GetEquippingItem((EquipmentType)i)?.OnTakeDamage_FromEquipment(this, sender, ref damage);
+			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
+			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
+			item?.OnTakeDamage_FromEquipment(this, sender, ref damage);
 		}
 
 		// Inventory
-		int invCapacity = GetInventoryCapacity();
+		int invCapacity = Inventory.GetInventoryCapacity(InventoryID);
 		ResetInventoryUpdate(invCapacity);
 		for (int i = 0; i < invCapacity && damage > 0; i++) {
-			var item = GetItemFromInventory(i);
+			int id = Inventory.GetItemAt(InventoryID, i);
+			var item = id != 0 ? ItemSystem.GetItem(id) : null;
 			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
 			item.OnTakeDamage_FromInventory(this, sender, ref damage);
 		}
@@ -689,42 +716,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 
 	// Inventory
-	public int GetInventoryCapacity () => InventoryCurrentAvailable ? Inventory.GetInventoryCapacity(TypeID) : 0;
-
-
-	public int GetItemIDFromInventory (int itemIndex) => GetItemIDFromInventory(itemIndex, out _);
-	public int GetItemIDFromInventory (int itemIndex, out int count) {
-		count = 0;
-		if (!InventoryCurrentAvailable) return 0;
-		return Inventory.GetItemAt(TypeID, itemIndex, out count);
-	}
-
-
-	public Item GetItemFromInventory (int itemIndex) => GetItemFromInventory(itemIndex, out _);
-	public Item GetItemFromInventory (int itemIndex, out int count) {
-		count = 0;
-		if (!InventoryCurrentAvailable) return null;
-		int id = Inventory.GetItemAt(TypeID, itemIndex, out count);
-		return id != 0 ? ItemSystem.GetItem(id) : null;
-	}
-
-
-	public Equipment GetEquippingItem (EquipmentType type) => GetEquippingItem(type, out _);
-	public Equipment GetEquippingItem (EquipmentType type, out int equipmentCount) {
-		equipmentCount = 0;
-		if (!InventoryCurrentAvailable) return null;
-		int id = Inventory.GetEquipment(TypeID, type, out equipmentCount);
-		if (id == 0 || equipmentCount <= 0) return null;
-		return ItemSystem.GetItem(id) as Equipment;
-	}
-
-
-	public void IgnoreInventory (int duration = 1) => IgnoreInventoryFrame = Game.GlobalFrame + duration;
-
-
 	public void ResetInventoryUpdate (int invCapacity) {
 		for (int i = 0; i < invCapacity; i++) {
-			var item = GetItemFromInventory(i);
+			int id = Inventory.GetItemAt(InventoryID, i);
+			var item = id != 0 ? ItemSystem.GetItem(id) : null;
 			if (item == null) continue;
 			item.LastUpdateFrame = -1;
 		}
@@ -810,7 +805,11 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 		(Attackness.AttackWhenRush || !Movement.IsRushing);
 
 
-	public virtual bool IsAttackAllowedByEquipment () => (GetEquippingItem(EquipmentType.Weapon) is Weapon weapon && weapon.AllowingAttack(this));
+	public virtual bool IsAttackAllowedByEquipment () {
+		int id = Inventory.GetEquipment(InventoryID, EquipmentType.Weapon, out int equipmentCount);
+		var weapon = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Weapon : null;
+		return weapon != null && weapon.AllowingAttack(this);
+	}
 
 
 	public virtual bool Invoke () {

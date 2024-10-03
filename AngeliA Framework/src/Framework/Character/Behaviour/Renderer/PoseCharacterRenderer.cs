@@ -247,13 +247,16 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	protected virtual void RenderEquipmentAndInventory () {
 		// Equipment
 		for (int i = 0; i < EquipmentTypeCount; i++) {
-			TargetCharacter.GetEquippingItem((EquipmentType)i)?.PoseAnimationUpdate_FromEquipment(TargetCharacter);
+			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, (EquipmentType)i, out int equipmentCount);
+			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
+			eq?.PoseAnimationUpdate_FromEquipment(TargetCharacter);
 		}
 		// Inventory
-		int invCapacity = TargetCharacter.GetInventoryCapacity();
+		int invCapacity = Inventory.GetInventoryCapacity(TargetCharacter.InventoryID);
 		TargetCharacter.ResetInventoryUpdate(invCapacity);
 		for (int i = 0; i < invCapacity; i++) {
-			var item = TargetCharacter.GetItemFromInventory(i);
+			int id = Inventory.GetItemAt(TargetCharacter.InventoryID, i);
+			var item = id != 0 ? ItemSystem.GetItem(id) : null;
 			if (item == null || !item.CheckUpdateAvailable(TargetCharacter.TypeID)) continue;
 			item.PoseAnimationUpdate_FromInventory(TargetCharacter);
 		}

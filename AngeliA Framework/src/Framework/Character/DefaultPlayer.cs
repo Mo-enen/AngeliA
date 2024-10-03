@@ -1,6 +1,5 @@
 ﻿namespace AngeliA;
 
-public sealed class DefaultPlayer : PoseCharacter {
+public sealed class DefaultPlayer : PlayableCharacter {
 	public static readonly int TYPE_ID = typeof(DefaultPlayer).AngeHash();
-	public override bool AllowInvoke () => !Health.IsInvincible;
 }

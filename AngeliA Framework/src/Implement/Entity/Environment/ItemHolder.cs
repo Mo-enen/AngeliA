@@ -239,7 +239,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	public bool Collect (Character character, bool onlyStackOnExisting = false, bool ignoreEquipment = false) {
 
 		if (ItemID == 0 || character is null) return false;
-		int invID = character.TypeID;
+		int invID = character.InventoryID;
 		if (!Inventory.HasInventory(invID)) return false;
 
 		var item = ItemSystem.GetItem(ItemID);

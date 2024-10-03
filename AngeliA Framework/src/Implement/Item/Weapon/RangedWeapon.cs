@@ -57,7 +57,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 		int takenCount = base.BulletCountInOneShot;
 		if (ArrowItemID != 0) {
 			// Item Arrow
-			takenCount = Inventory.FindAndTakeItem(sender.TypeID, ArrowItemID, BulletCountInOneShot);
+			takenCount = Inventory.FindAndTakeItem(sender.InventoryID, ArrowItemID, BulletCountInOneShot);
 			if (takenCount == 0) {
 				// Hint
 				InvokeItemInsufficient(sender, ArrowItemID);

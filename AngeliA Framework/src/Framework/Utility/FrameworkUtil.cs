@@ -787,11 +787,11 @@ public static class FrameworkUtil {
 		}
 
 		// Reduce Block Count by 1
-		int eqID = Inventory.GetEquipment(pHolder.TypeID, EquipmentType.Weapon, out int eqCount);
+		int eqID = Inventory.GetEquipment(pHolder.InventoryID, EquipmentType.Weapon, out int eqCount);
 		if (eqID != 0) {
 			int newEqCount = (eqCount - 1).GreaterOrEquelThanZero();
 			if (newEqCount == 0) eqID = 0;
-			Inventory.SetEquipment(pHolder.TypeID, EquipmentType.Weapon, eqID, newEqCount);
+			Inventory.SetEquipment(pHolder.InventoryID, EquipmentType.Weapon, eqID, newEqCount);
 		}
 	}
 

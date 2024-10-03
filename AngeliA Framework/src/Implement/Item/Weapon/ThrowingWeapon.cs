@@ -10,7 +10,7 @@ public abstract class ThrowingWeapon<B> : ProjectileWeapon<B> where B : MovableB
 	public override Bullet SpawnBullet (Character sender) {
 		var bullet = base.SpawnBullet(sender);
 		if (bullet != null) {
-			Inventory.ReduceEquipmentCount(sender.TypeID, 1, EquipmentType.Weapon);
+			Inventory.ReduceEquipmentCount(sender.InventoryID, 1, EquipmentType.Weapon);
 		}
 		return bullet;
 	}
