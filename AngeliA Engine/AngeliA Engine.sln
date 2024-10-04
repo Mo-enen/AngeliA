@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Raylib", "..\Angeli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Rigged", "..\AngeliA Rigged\AngeliA Rigged.csproj", "{767A2864-EF37-4389-B4D7-A3EB944FFBA3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Platformer", "..\AngeliA Platformer\AngeliA Platformer.csproj", "{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{767A2864-EF37-4389-B4D7-A3EB944FFBA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{767A2864-EF37-4389-B4D7-A3EB944FFBA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{767A2864-EF37-4389-B4D7-A3EB944FFBA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

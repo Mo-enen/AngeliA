@@ -16,6 +16,7 @@ public abstract class Fire : Entity {
 	// Api
 	public static event System.Action<int, IRect> OnFirePutout;
 	public static int DefaultFireID { get; set; } = 0;
+	protected virtual int PowerAmount => 1000;
 	protected virtual int WeakenDuration => 22;
 	protected virtual int SpreadDuration => 60;
 	protected virtual int SpreadRange => Const.CEL;
@@ -84,7 +85,7 @@ public abstract class Fire : Entity {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, isTrigger: true, tag: Tag.FireDamage);
 	}
 
 
@@ -194,7 +195,8 @@ public abstract class Fire : Entity {
 			return;
 		}
 
-		if (UseAdditiveShader) Renderer.SetLayerToAdditive();
+		using var _ = new LayerScope(UseAdditiveShader ? RenderLayer.ADD : RenderLayer.DEFAULT);
+
 		var cell = Renderer.Draw(
 			TypeID,
 			X + (Direction == Direction4.Left ? Width : Direction == Direction4.Right ? 0 : Width / 2),
@@ -204,7 +206,6 @@ public abstract class Fire : Entity {
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
 			z: int.MaxValue
 		);
-		Renderer.SetLayerToDefault();
 
 		// Fit Size to Target
 		if (Target is Entity eTarget && cell.Width != eTarget.Width) {
@@ -310,7 +311,8 @@ public abstract class Fire : Entity {
 			Width = entity.Width;
 			Height = entity.Height;
 		}
-		BurnedFrame = Game.GlobalFrame + com.BurnedDuration;
+		int fixedDuration = Util.Max(com.BurnedDuration * 1000 / PowerAmount.GreaterOrEquel(1), 1);
+		BurnedFrame = Game.GlobalFrame + fixedDuration;
 		LifeEndFrame = BurnedFrame + WeakenDuration;
 		Direction = Direction4.Up;
 		Target = com;
