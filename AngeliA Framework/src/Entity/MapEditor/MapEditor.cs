@@ -1041,8 +1041,6 @@ public sealed partial class MapEditor : WindowUI {
 		if (Game.GlobalFrame != 0) {
 			if (toPlayMode) {
 				Save();
-			} else {
-				WorldSquad.DiscardAllChangesInMemory();
 			}
 		}
 
@@ -1070,7 +1068,14 @@ public sealed partial class MapEditor : WindowUI {
 
 			ViewRect = Stage.ViewRect;
 			SetViewZ(Stage.ViewZ);
-			Stage.DespawnAllNonUiEntities();
+
+			// Inactive Entities
+			Stage.DespawnAllNonUiEntities(refreshImmediately: true);
+
+			// Discard Changes from Game Play
+			if (Game.GlobalFrame != 0) {
+				WorldSquad.DiscardAllChangesInMemory();
+			}
 
 			// Despawn Player
 			if (PlayerSystem.Selecting != null) {

@@ -12,6 +12,9 @@ namespace AngeliA;
 public abstract class Entity : IMapItem {
 
 
+	// Const
+	private const int DONT_REPOS_ONCE = 92163634;
+
 	// Api
 	public bool Active { get; set; } = true;
 	public int X { get; set; } = 0;
@@ -26,6 +29,7 @@ public abstract class Entity : IMapItem {
 	public int InstanceOrder => InstanceID.x != int.MinValue ? 0 : InstanceID.y;
 	public Int3? MapUnitPos => InstanceID.x != int.MinValue ? InstanceID : null;
 	public Int3 InstanceID { get; internal set; } = default;
+	public bool DontRepositionOnce => Stamp == DONT_REPOS_ONCE;
 
 	// Inter
 	internal IRect LocalBounds { get; set; } = default;
@@ -67,5 +71,8 @@ public abstract class Entity : IMapItem {
 		LateUpdate();
 		UpdateStep = 4;
 	}
+
+	// API
+	public void IgnoreRepositionForOnce () => Stamp = DONT_REPOS_ONCE;
 
 }

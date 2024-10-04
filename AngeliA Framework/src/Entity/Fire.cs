@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using AngeliA;
 
-namespace AngeliA.Platformer;
+namespace AngeliA;
 
 
-[EntityAttribute.DontDrawBehind]
+[EntityAttribute.RepositionWhenInactive]
 public abstract class Fire : Entity {
 
 
@@ -34,6 +33,7 @@ public abstract class Fire : Entity {
 	private int SpreadFrame = int.MaxValue;
 	private int DamageCharacterStartFrame = -1;
 	private bool ManuallyPutout = false;
+	private bool KeepInMap = true;
 
 
 	#endregion
@@ -48,7 +48,6 @@ public abstract class Fire : Entity {
 	internal static void OnGameInitialize () {
 		Bullet.OnBulletDealDamage += OnBulletDealDamage;
 		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
-		GlobalEvent.RequirePutoutFire += PutoutFire;
 		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
 			SpreadFire(DefaultFireID, bullet.Rect.Expand(Const.CEL));
@@ -67,6 +66,7 @@ public abstract class Fire : Entity {
 		BurnedFrame = 0;
 		SpreadFrame = Game.GlobalFrame + SpreadDuration;
 		Direction = DefaultDirection;
+		KeepInMap = true;
 	}
 
 
@@ -76,6 +76,9 @@ public abstract class Fire : Entity {
 		LifeEndFrame = 0;
 		BurnedFrame = 0;
 		SpreadFrame = 0;
+		if (!KeepInMap) {
+			IgnoreRepositionForOnce();
+		}
 	}
 
 
@@ -87,6 +90,74 @@ public abstract class Fire : Entity {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
+
+		if (Target != null && Direction != Direction4.Up) Direction = Direction4.Up;
+		var eTarget = Target as Entity;
+
+		// Put Out When Target Not Burning
+		if (eTarget != null && !Target.IsBurning) {
+			Putout(false);
+			Active = false;
+			return;
+		}
+
+		// Put Out when Hit Water
+		if (Physics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, Tag.Water)) {
+			Putout(true);
+			Active = false;
+			return;
+		}
+
+		// Wild Fire from Map Editor
+		if (eTarget == null && FromWorld) {
+			// Spread into Other Fires
+			Spread();
+			// Remove from Map
+			Active = false;
+			KeepInMap = false;
+			FrameworkUtil.RemoveFromWorldMemory(this);
+			return;
+		}
+
+		// Life Time Check
+		if (Game.GlobalFrame >= LifeEndFrame) {
+			Active = false;
+			KeepInMap = false;
+			return;
+		}
+
+		// Spread
+		if (Game.GlobalFrame >= SpreadFrame) {
+			Spread();
+			SpreadFrame += SpreadDuration;
+		}
+
+		if (eTarget != null) {
+			if (eTarget.Active) {
+				// Burned Check
+				if (Game.GlobalFrame == BurnedFrame) {
+					Target.OnBurned();
+					eTarget.Active = false;
+					KeepInMap = false;
+				}
+				// Follow Target
+				X = eTarget.X;
+				Y = eTarget.Y;
+			} else {
+				if (BurnedFrame > Game.GlobalFrame) {
+					Putout(false);
+				}
+			}
+		}
+
+	}
+
+
+	public override void Update () {
+
+		base.Update();
+		if (!Active) return;
+
 		// Deal Damage to Characters in All Teams
 		bool damaged = false;
 		if (Game.GlobalFrame < BurnedFrame) {
@@ -108,65 +179,6 @@ public abstract class Fire : Entity {
 		if (!damaged) {
 			DamageCharacterStartFrame = -1;
 		}
-	}
-
-
-	public override void Update () {
-		base.Update();
-
-		if (Target != null && Direction != Direction4.Up) Direction = Direction4.Up;
-		var eTarget = Target as Entity;
-
-		// Put Out When Target Not Burning
-		if (eTarget != null && !Target.IsBurning) {
-			Putout(false);
-			Active = false;
-			return;
-		}
-
-		// Put Out when Hit Water
-		if (Physics.Overlap(PhysicsMask.MAP, Rect, this, OperationMode.TriggerOnly, Tag.Water)) {
-			Putout(true);
-			Active = false;
-			return;
-		}
-
-		// Wild Fire from Map Editor
-		if (eTarget == null && FromWorld) {
-			Spread();
-			Active = false;
-			return;
-		}
-
-		// Life Time Check
-		if (Game.GlobalFrame >= LifeEndFrame) {
-			Active = false;
-			return;
-		}
-
-		// Spread
-		if (Game.GlobalFrame >= SpreadFrame) {
-			Spread();
-			SpreadFrame += SpreadDuration;
-		}
-
-		if (eTarget != null) {
-			if (eTarget.Active) {
-				// Burned Check
-				if (Game.GlobalFrame == BurnedFrame) {
-					Target.OnBurned();
-					eTarget.Active = false;
-				}
-				// Follow Target
-				X = eTarget.X;
-				Y = eTarget.Y;
-			} else {
-				if (BurnedFrame > Game.GlobalFrame) {
-					Putout(false);
-				}
-			}
-		}
-
 	}
 
 
@@ -266,6 +278,7 @@ public abstract class Fire : Entity {
 
 
 	public static void PutoutFire (IRect rect) {
+		// Remove Fire Entities
 		var hits = Physics.OverlapAll(
 			PhysicsMask.ENVIRONMENT,
 			rect, out int count,
@@ -287,6 +300,7 @@ public abstract class Fire : Entity {
 		Target = null;
 		Direction = direction;
 		ManuallyPutout = false;
+		KeepInMap = true;
 	}
 
 
@@ -302,6 +316,7 @@ public abstract class Fire : Entity {
 		Target = com;
 		com.BurnStartFrame = Game.GlobalFrame;
 		ManuallyPutout = false;
+		KeepInMap = true;
 	}
 
 
@@ -313,6 +328,7 @@ public abstract class Fire : Entity {
 		LifeEndFrame = Game.GlobalFrame + WeakenDuration;
 		SpreadFrame = int.MaxValue;
 		ManuallyPutout = manually;
+		KeepInMap = false;
 		if (Target != null) {
 			Target.BurnStartFrame = -1;
 		}

@@ -124,15 +124,16 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 
 
 	[AfterEntityReposition]
-	internal static void AfterEntityReposition (Entity entity, Int3 from, Int3 to) {
+	internal static void AfterEntityReposition (Entity entity, Int3? from, Int3 to) {
 
 		if (
+			!from.HasValue ||
 			entity is not Character character ||
 			character.InventoryType != CharacterInventoryType.Map
 		) return;
 
 		// Repos Inventory
-		string fromInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, from);
+		string fromInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, from.Value);
 		string toInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, to);
 		Inventory.RenameEquipInventory(fromInvName, toInvName);
 

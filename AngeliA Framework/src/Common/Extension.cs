@@ -312,8 +312,7 @@ public static class Extension {
 		unit.width * Const.CEL,
 		unit.height * Const.CEL
 	);
-	[MethodImpl(INLINE)] public static IRect ToUnifyGlobal (this IRect global) => global.ToUnit().ToGlobal();
-
+	
 	// Vector
 	[MethodImpl(INLINE)]
 	public static void Clamp (this ref Int2 v, int minX, int minY, int maxX, int maxY) {

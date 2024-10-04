@@ -566,7 +566,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Putout Fire
 		if (requirePutoutFire) {
-			GlobalEvent.InvokeRequirePutoutFire(Rect);
+			Fire.PutoutFire(Rect.Expand(Const.HALF));
 		}
 
 	}

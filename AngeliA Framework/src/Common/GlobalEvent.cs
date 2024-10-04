@@ -25,9 +25,5 @@ public static class GlobalEvent {
 	public static void InvokeOnFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
 	public static void InvokeOnCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
 
-	// Fire
-	public static event Action<IRect> RequirePutoutFire;
-	public static void InvokeRequirePutoutFire (IRect rect) => RequirePutoutFire?.Invoke(rect);
-
 
 }

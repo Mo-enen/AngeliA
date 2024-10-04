@@ -71,7 +71,7 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class RepositionWhenOutOfRangeAttribute : Attribute { }
+	public class RepositionWhenInactiveAttribute : Attribute { }
 
 
 	[AttributeUsage(AttributeTargets.Class)]

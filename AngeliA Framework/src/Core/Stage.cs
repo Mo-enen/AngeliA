@@ -127,7 +127,7 @@ public static class Stage {
 	private static event Action OnViewZChanged;
 	private static event Action<int> BeforeLayerFrameUpdate;
 	private static event Action<int> AfterLayerFrameUpdate;
-	private static event Action<Entity, Int3, Int3> AfterEntityReposition;
+	private static event Action<Entity, Int3?, Int3> AfterEntityReposition;
 	private static readonly Dictionary<int, EntityStack> EntityPool = [];
 	private static readonly HashSet<Int3> StagedEntityHash = [];
 	private static int ViewLerpRate = 1000;
@@ -185,8 +185,7 @@ public static class Stage {
 			var att_DontDestroyOnTran = eType.GetCustomAttribute<EntityAttribute.DontDestroyOnZChangedAttribute>(true);
 			var att_DontSpawnFromWorld = eType.GetCustomAttribute<EntityAttribute.DontSpawnFromWorld>(true);
 			var att_Order = eType.GetCustomAttribute<EntityAttribute.StageOrderAttribute>(true);
-			var att_Repos = Universe.BuiltInInfo.UseProceduralMap ?
-				eType.GetCustomAttribute<EntityAttribute.RepositionWhenOutOfRangeAttribute>(true) : null;
+			var att_Repos = eType.GetCustomAttribute<EntityAttribute.RepositionWhenInactiveAttribute>(true);
 			int layer = att_Layer != null ? att_Layer.Layer.Clamp(0, EntityLayer.COUNT - 1) : 0;
 			if (att_Capacity != null) {
 				capacity = att_Capacity.Value.Clamp(1, Entities[layer].Length);
@@ -754,6 +753,7 @@ public static class Stage {
 			if (e.Active) break;
 
 			try {
+				e.Stamp = int.MaxValue;
 				e.OnInactivated();
 			} catch (Exception ex) { Debug.LogException(ex); }
 
@@ -762,7 +762,7 @@ public static class Stage {
 			// Push Back
 			if (EntityPool.TryGetValue(e.TypeID, out var stack)) {
 				stack.Push(e);
-				if (stack.RequireReposition) {
+				if (stack.RequireReposition && !e.DontRepositionOnce) {
 					TryRepositionEntity(e);
 				}
 			}
@@ -777,10 +777,10 @@ public static class Stage {
 
 	private static void TryRepositionEntity (Entity entity) {
 
-		if (!entity.MapUnitPos.HasValue) return;
+		bool requireRepos = false;
+		bool requireClearOriginal = false;
 
-		var mapPos = entity.MapUnitPos.Value;
-		int mapPos_blockID = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
+		// Get Position
 		int currentUnitX;
 		int currentUnitY;
 		if (entity is Rigidbody rig) {
@@ -790,31 +790,43 @@ public static class Stage {
 			currentUnitX = (entity.X + Const.HALF).ToUnit();
 			currentUnitY = (entity.Y + Const.HALF).ToUnit();
 		}
-		byte requireReposition = 0;
-		if (mapPos_blockID != entity.TypeID) {
-			// Overlaped by Other Entity
-			requireReposition = 1;
-		} else if (currentUnitX != mapPos.x || currentUnitY != mapPos.y) {
-			// Position Moved
-			requireReposition = 2;
+
+		// Get Info for Original Block
+		if (entity.MapUnitPos.HasValue) {
+			var mapPos = entity.MapUnitPos.Value;
+			int blockIdAtMapPos = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
+			// Get Require Mode
+			if (blockIdAtMapPos != entity.TypeID) {
+				// Overlaped by Other Entity
+				requireRepos = true;
+			} else if (currentUnitX != mapPos.x || currentUnitY != mapPos.y) {
+				// Position Moved
+				requireRepos = true;
+				requireClearOriginal = true;
+			}
+		} else {
+			// Entity Not from Map
+			requireRepos = true;
 		}
+
 		// Perform Reposition
 		if (
-			requireReposition > 0 &&
+			requireRepos &&
 			FrameworkUtil.TryGetEmptyPlaceNearby(
-				currentUnitX, currentUnitY, mapPos.z,
+				currentUnitX, currentUnitY, ViewZ,
 				out int resultUnitX, out int resultUnitY
 			)
 		) {
 			// Set Block
-			WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, mapPos.z, BlockType.Entity, entity.TypeID);
+			WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
 			// Clear Original
-			if (requireReposition == 2) {
-				WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
+			if (requireClearOriginal) {
+				var oPos = entity.MapUnitPos.Value;
+				WorldSquad.Front.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
 			}
 			// Fix Inventory
 			if (entity != null) {
-				AfterEntityReposition?.Invoke(entity, mapPos, new(resultUnitX, resultUnitY, mapPos.z));
+				AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
 			}
 
 		}
