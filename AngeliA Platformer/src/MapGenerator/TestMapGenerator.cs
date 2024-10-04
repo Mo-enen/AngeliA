@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using JordanPeck;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 #if DEBUG
 internal class TestMapGeneratorAlt0 : TestMapGenerator { }

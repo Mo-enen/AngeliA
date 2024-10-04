@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.DontDrawBehind]
@@ -14,6 +15,7 @@ public abstract class Fire : Entity {
 
 
 	// Api
+	public static event System.Action<int, IRect> OnFirePutout;
 	public static int DefaultFireID { get; set; } = 0;
 	protected virtual int WeakenDuration => 22;
 	protected virtual int SpreadDuration => 60;
@@ -40,6 +42,22 @@ public abstract class Fire : Entity {
 
 
 	#region --- MSG ---
+
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		Bullet.OnBulletDealDamage += OnBulletDealDamage;
+		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
+		GlobalEvent.RequirePutoutFire += PutoutFire;
+		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
+			if (!damageType.HasAll(Tag.FireDamage)) return;
+			SpreadFire(DefaultFireID, bullet.Rect.Expand(Const.CEL));
+		}
+		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
+			if (!damageType.HasAll(Tag.FireDamage)) return;
+			SpreadFire(DefaultFireID, bullet.Rect.Expand(Const.CEL));
+		}
+	}
 
 
 	public override void OnActivated () {
@@ -159,7 +177,7 @@ public abstract class Fire : Entity {
 
 		// Putout Smoke
 		if (ManuallyPutout) {
-			GlobalEvent.InvokeFirePutout(TypeID, Rect);
+			OnFirePutout?.Invoke(TypeID, Rect);
 			Active = false;
 			return;
 		}

@@ -3,79 +3,46 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.Capacity(8 * Const.TEAM_COUNT, 0)]
+[EntityAttribute.Capacity(128, 0)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.Layer(EntityLayer.BULLET)]
 public abstract class Bullet : Entity {
 
-	// SUB
-	private class BulletTrack {
-		public int Frame = -2;
-		public int Count = 0;
-		public int Capacity;
-		public void AddCount () {
-			int frame = Game.GlobalFrame;
-			if (frame != Frame) {
-				Frame = frame;
-				Count = 1;
-			} else {
-				Count++;
-			}
-		}
-		public int GetCount () => Game.GlobalFrame == Frame ? Count : 0;
-	}
+
+
+
+	#region --- VAR ---
+
 
 	// Api
+	public static event System.Action<Bullet, IDamageReceiver, Tag> OnBulletDealDamage;
+	public static event System.Action<Bullet, Tag> OnBulletHitEnvironment;
 	public readonly FrameBasedInt Damage = new(1);
 	public Entity Sender { get; set; } = null;
 	public int AttackIndex { get; set; } = 0;
 	public bool AttackCharged { get; set; } = false;
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
-	public virtual int Duration => 60;
-	public virtual Tag DamageType => Tag.PhysicalDamage;
 	protected virtual int EnvironmentHitCount => int.MaxValue;
 	protected virtual int ReceiverHitCount => int.MaxValue;
 	protected virtual bool RoundHitCheck => false;
+	public virtual int Duration => 60;
+	public virtual Tag DamageType => Tag.PhysicalDamage;
 
 	// Data
-	private static readonly Dictionary<int, BulletTrack[]> TrackPool = [];
-	private readonly BulletTrack[] Track;
 	private int CurrentEnvironmentHitCount;
 	private int CurrentReceiverHitCount;
-	private int TargetTeam;
 
-	// MSG
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		TrackPool.Clear();
-		foreach (var type in typeof(Bullet).AllChildClass()) {
-			int id = type.AngeHash();
-			if (TrackPool.ContainsKey(id)) continue;
-			int capacity = Stage.GetEntityCapacity(id) / Const.TEAM_COUNT;
-			var tracks = new BulletTrack[Const.TEAM_COUNT].FillWithNewValue();
-			for (int i = 0; i < tracks.Length; i++) {
-				tracks[i].Capacity = capacity;
-			}
-			TrackPool.Add(id, tracks);
-		}
-	}
 
-	public Bullet () {
-		if (!TrackPool.TryGetValue(TypeID, out Track)) {
-			int capacity = Stage.GetEntityCapacity(TypeID) / Const.TEAM_COUNT;
-			var tracks = new BulletTrack[Const.TEAM_COUNT].FillWithNewValue();
-			for (int i = 0; i < tracks.Length; i++) {
-				tracks[i].Capacity = capacity;
-			}
-			TrackPool.Add(TypeID, tracks);
-#if DEBUG
-			Debug.LogWarning($"Bullet {GetType().Name} do not init it's track from static init func. This should not happen.");
-#endif
-		}
-	}
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
 
 	public override void OnActivated () {
 		base.OnActivated();
@@ -84,21 +51,9 @@ public abstract class Bullet : Entity {
 		Sender = null;
 		CurrentEnvironmentHitCount = EnvironmentHitCount;
 		CurrentReceiverHitCount = ReceiverHitCount;
-		TargetTeam = Const.TEAM_ALL;
 		Damage.ClearOverride();
 	}
 
-	public override void FirstUpdate () {
-		base.FirstUpdate();
-		TargetTeam = Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
-		// Team Track Check
-		var track = Track[Const.GetTeamIndex(TargetTeam)];
-		if (track.GetCount() >= track.Capacity) {
-			Active = false;
-			return;
-		}
-		track.AddCount();
-	}
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
@@ -108,28 +63,37 @@ public abstract class Bullet : Entity {
 			return;
 		}
 		// Environment Hit Check
-		EnvironmentHitCheck();
+		EnvironmentHitCheck(out _);
 	}
+
 
 	public override void Update () {
 		base.Update();
 		if (!Active) return;
-		ReceiverHitCheck();
+		ReceiverHitCheck(out _);
 	}
 
-	// Api
-	/// <returns>True if the bullet need to self destroy</returns>
-	protected virtual bool ReceiverHitCheck () {
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	protected virtual void ReceiverHitCheck (out bool requireSelfDestroy) {
 		var rect = Rect;
-		bool requireSelfDestroy = false;
+		requireSelfDestroy = false;
 		var hits = Physics.OverlapAll(
 			ReceiverMask, rect, out int count, Sender, OperationMode.ColliderAndTrigger
 		);
+		int targetTeam = Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			// Gate
 			if (hit.Entity is not IDamageReceiver receiver) continue;
-			if ((receiver.Team & TargetTeam) != receiver.Team) continue;
+			if ((receiver.Team & targetTeam) != receiver.Team) continue;
 			var fixedDamageType = DamageType & ~receiver.IgnoreDamageType;
 			if (fixedDamageType == Tag.None) continue;
 			if (receiver is Entity e && !e.Active) continue;
@@ -143,85 +107,54 @@ public abstract class Bullet : Entity {
 			// Perform Damage
 			PerformDamage(receiver, fixedDamageType);
 			// Destroy Check
-			requireSelfDestroy = PerformHitReceiver(receiver) || requireSelfDestroy;
+			PerformHitReceiver(receiver, out bool _requireSelfDestroy);
+			requireSelfDestroy = _requireSelfDestroy || requireSelfDestroy;
 		}
-		return requireSelfDestroy;
 	}
 
-	/// <returns>True if the bullet need to self destroy</returns>
-	protected virtual bool EnvironmentHitCheck () {
+
+	protected virtual void EnvironmentHitCheck (out bool requireSelfDestroy) {
 		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
-			return PerformHitEnvironment();
+			PerformHitEnvironment(out requireSelfDestroy);
+		} else {
+			requireSelfDestroy = false;
 		}
-		return false;
 	}
+
 
 	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
 
+
 	protected virtual void PerformDamage (IDamageReceiver receiver, Tag damageType) {
-		// Perform Damage
 		receiver.TakeDamage(new Damage(Damage, Sender, this, damageType));
-		// Fire Logic
-		if (damageType.HasAll(Tag.FireDamage)) {
-			Fire.SpreadFire(Fire.DefaultFireID, Rect.Expand(Const.CEL));
-		}
+		OnBulletDealDamage?.Invoke(this, receiver, damageType);
 	}
 
-	protected bool PerformHitEnvironment () {
+
+	protected void PerformHitEnvironment (out bool requireSelfDestroy) {
 		CurrentEnvironmentHitCount--;
 		if (CurrentEnvironmentHitCount <= 0) {
 			Active = false;
 			BeforeDespawn(null);
-			switch (DamageType) {
-				case Tag.FireDamage:
-					Fire.SpreadFire(Fire.DefaultFireID, Rect.Expand(Const.CEL));
-					break;
-			}
-			return true;
+			OnBulletHitEnvironment?.Invoke(this, DamageType);
+			requireSelfDestroy = true;
+		} else {
+			requireSelfDestroy = false;
 		}
-		return false;
 	}
 
-	protected bool PerformHitReceiver (IDamageReceiver receiver) {
+
+	protected void PerformHitReceiver (IDamageReceiver receiver, out bool requireSelfDestroy) {
 		CurrentReceiverHitCount--;
 		if (CurrentReceiverHitCount <= 0) {
 			Active = false;
 			BeforeDespawn(receiver);
-			return true;
+			requireSelfDestroy = true;
+		} else {
+			requireSelfDestroy = false;
 		}
-		return false;
 	}
 
-	protected static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale, int z = int.MaxValue - 16) {
-		if (!Renderer.TryGetSprite(artworkID, out var sprite)) return;
-		int facingSign = facingRight ? 1 : -1;
-		int x = bullet.X + bullet.Width / 2;
-		int y = bullet.Y + bullet.Height / 2;
-		if (Renderer.TryGetAnimationGroup(artworkID, out var aniGroup)) {
-			Renderer.DrawAnimation(
-				aniGroup,
-				x, y,
-				sprite.PivotX,
-				sprite.PivotY,
-				rotation,
-				facingSign * sprite.GlobalWidth * scale / 1000,
-				sprite.GlobalHeight * scale / 1000,
-				Game.GlobalFrame - bullet.SpawnFrame,
-				z
-			);
-		} else {
-			Renderer.Draw(
-				artworkID,
-				x, y,
-				sprite.PivotX,
-				sprite.PivotY,
-				rotation,
-				facingSign * sprite.GlobalWidth * scale / 1000,
-				sprite.GlobalHeight * scale / 1000,
-				z
-			);
-		}
-	}
 
 	public bool GroundCheck (out Color32 groundTint) {
 		groundTint = Color32.WHITE;
@@ -233,5 +166,20 @@ public abstract class Bullet : Entity {
 		}
 		return grounded;
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
+
 
 }

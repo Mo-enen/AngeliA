@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 
 public static class MapGenerationSystem {
@@ -138,10 +139,9 @@ public static class MapGenerationSystem {
 	public static bool IsGenerating (Int3 startPoint) => StatePool.TryGetValue(startPoint, out var state) && state == MapState.Generating;
 
 
-	public static void GenerateMap (Int3 startPoint, Direction8? startDirection, bool async) {
+	public static void GenerateMap (float generatorAmount, Int3 startPoint, Direction8? startDirection, bool async) {
 		if (!Enable) return;
-		int randomIndex = Random.Next(0, PrioritizedMapGenerators.Length);
-		var gen = PrioritizedMapGenerators[randomIndex];
+		var gen = PrioritizedMapGenerators[(int)(generatorAmount * PrioritizedMapGenerators.Length).Clamp(0, PrioritizedMapGenerators.Length - 1)];
 		GenerateMapWithGenerator(gen, startPoint, startDirection, async);
 	}
 

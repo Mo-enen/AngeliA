@@ -694,42 +694,26 @@ public class FastNoiseLite {
 
 	// Generic noise gen
 
-	private float GenNoiseSingle (int seed, FNLfloat x, FNLfloat y) {
-		switch (mNoiseType) {
-			case NoiseType.OpenSimplex2:
-				return SingleSimplex(seed, x, y);
-			case NoiseType.OpenSimplex2S:
-				return SingleOpenSimplex2S(seed, x, y);
-			case NoiseType.Cellular:
-				return SingleCellular(seed, x, y);
-			case NoiseType.Perlin:
-				return SinglePerlin(seed, x, y);
-			case NoiseType.ValueCubic:
-				return SingleValueCubic(seed, x, y);
-			case NoiseType.Value:
-				return SingleValue(seed, x, y);
-			default:
-				return 0;
-		}
-	}
+	private float GenNoiseSingle (int seed, FNLfloat x, FNLfloat y) => mNoiseType switch {
+		NoiseType.OpenSimplex2 => SingleSimplex(seed, x, y),
+		NoiseType.OpenSimplex2S => SingleOpenSimplex2S(seed, x, y),
+		NoiseType.Cellular => SingleCellular(seed, x, y),
+		NoiseType.Perlin => SinglePerlin(seed, x, y),
+		NoiseType.ValueCubic => SingleValueCubic(seed, x, y),
+		NoiseType.Value => SingleValue(seed, x, y),
+		_ => 0,
+	};
 
 	private float GenNoiseSingle (int seed, FNLfloat x, FNLfloat y, FNLfloat z) {
-		switch (mNoiseType) {
-			case NoiseType.OpenSimplex2:
-				return SingleOpenSimplex2(seed, x, y, z);
-			case NoiseType.OpenSimplex2S:
-				return SingleOpenSimplex2S(seed, x, y, z);
-			case NoiseType.Cellular:
-				return SingleCellular(seed, x, y, z);
-			case NoiseType.Perlin:
-				return SinglePerlin(seed, x, y, z);
-			case NoiseType.ValueCubic:
-				return SingleValueCubic(seed, x, y, z);
-			case NoiseType.Value:
-				return SingleValue(seed, x, y, z);
-			default:
-				return 0;
-		}
+		return mNoiseType switch {
+			NoiseType.OpenSimplex2 => SingleOpenSimplex2(seed, x, y, z),
+			NoiseType.OpenSimplex2S => SingleOpenSimplex2S(seed, x, y, z),
+			NoiseType.Cellular => SingleCellular(seed, x, y, z),
+			NoiseType.Perlin => SinglePerlin(seed, x, y, z),
+			NoiseType.ValueCubic => SingleValueCubic(seed, x, y, z),
+			NoiseType.Value => SingleValue(seed, x, y, z),
+			_ => 0,
+		};
 	}
 
 
@@ -794,25 +778,14 @@ public class FastNoiseLite {
 	}
 
 	private void UpdateTransformType3D () {
-		switch (mRotationType3D) {
-			case RotationType3D.ImproveXYPlanes:
-				mTransformType3D = TransformType3D.ImproveXYPlanes;
-				break;
-			case RotationType3D.ImproveXZPlanes:
-				mTransformType3D = TransformType3D.ImproveXZPlanes;
-				break;
-			default:
-				switch (mNoiseType) {
-					case NoiseType.OpenSimplex2:
-					case NoiseType.OpenSimplex2S:
-						mTransformType3D = TransformType3D.DefaultOpenSimplex2;
-						break;
-					default:
-						mTransformType3D = TransformType3D.None;
-						break;
-				}
-				break;
-		}
+		mTransformType3D = mRotationType3D switch {
+			RotationType3D.ImproveXYPlanes => TransformType3D.ImproveXYPlanes,
+			RotationType3D.ImproveXZPlanes => TransformType3D.ImproveXZPlanes,
+			_ => mNoiseType switch {
+				NoiseType.OpenSimplex2 or NoiseType.OpenSimplex2S => TransformType3D.DefaultOpenSimplex2,
+				_ => TransformType3D.None,
+			},
+		};
 	}
 
 
@@ -868,25 +841,14 @@ public class FastNoiseLite {
 	}
 
 	private void UpdateWarpTransformType3D () {
-		switch (mRotationType3D) {
-			case RotationType3D.ImproveXYPlanes:
-				mWarpTransformType3D = TransformType3D.ImproveXYPlanes;
-				break;
-			case RotationType3D.ImproveXZPlanes:
-				mWarpTransformType3D = TransformType3D.ImproveXZPlanes;
-				break;
-			default:
-				switch (mDomainWarpType) {
-					case DomainWarpType.OpenSimplex2:
-					case DomainWarpType.OpenSimplex2Reduced:
-						mWarpTransformType3D = TransformType3D.DefaultOpenSimplex2;
-						break;
-					default:
-						mWarpTransformType3D = TransformType3D.None;
-						break;
-				}
-				break;
-		}
+		mWarpTransformType3D = mRotationType3D switch {
+			RotationType3D.ImproveXYPlanes => TransformType3D.ImproveXYPlanes,
+			RotationType3D.ImproveXZPlanes => TransformType3D.ImproveXZPlanes,
+			_ => mDomainWarpType switch {
+				DomainWarpType.OpenSimplex2 or DomainWarpType.OpenSimplex2Reduced => TransformType3D.DefaultOpenSimplex2,
+				_ => TransformType3D.None,
+			},
+		};
 	}
 
 
@@ -1534,24 +1496,16 @@ public class FastNoiseLite {
 			}
 		}
 
-		switch (mCellularReturnType) {
-			case CellularReturnType.CellValue:
-				return closestHash * (1 / 2147483648.0f);
-			case CellularReturnType.Distance:
-				return distance0 - 1;
-			case CellularReturnType.Distance2:
-				return distance1 - 1;
-			case CellularReturnType.Distance2Add:
-				return (distance1 + distance0) * 0.5f - 1;
-			case CellularReturnType.Distance2Sub:
-				return distance1 - distance0 - 1;
-			case CellularReturnType.Distance2Mul:
-				return distance1 * distance0 * 0.5f - 1;
-			case CellularReturnType.Distance2Div:
-				return distance0 / distance1 - 1;
-			default:
-				return 0;
-		}
+		return mCellularReturnType switch {
+			CellularReturnType.CellValue => closestHash * (1 / 2147483648.0f),
+			CellularReturnType.Distance => distance0 - 1,
+			CellularReturnType.Distance2 => distance1 - 1,
+			CellularReturnType.Distance2Add => (distance1 + distance0) * 0.5f - 1,
+			CellularReturnType.Distance2Sub => distance1 - distance0 - 1,
+			CellularReturnType.Distance2Mul => distance1 * distance0 * 0.5f - 1,
+			CellularReturnType.Distance2Div => distance0 / distance1 - 1,
+			_ => 0,
+		};
 	}
 
 	private float SingleCellular (int seed, FNLfloat x, FNLfloat y, FNLfloat z) {
@@ -1670,24 +1624,16 @@ public class FastNoiseLite {
 			}
 		}
 
-		switch (mCellularReturnType) {
-			case CellularReturnType.CellValue:
-				return closestHash * (1 / 2147483648.0f);
-			case CellularReturnType.Distance:
-				return distance0 - 1;
-			case CellularReturnType.Distance2:
-				return distance1 - 1;
-			case CellularReturnType.Distance2Add:
-				return (distance1 + distance0) * 0.5f - 1;
-			case CellularReturnType.Distance2Sub:
-				return distance1 - distance0 - 1;
-			case CellularReturnType.Distance2Mul:
-				return distance1 * distance0 * 0.5f - 1;
-			case CellularReturnType.Distance2Div:
-				return distance0 / distance1 - 1;
-			default:
-				return 0;
-		}
+		return mCellularReturnType switch {
+			CellularReturnType.CellValue => closestHash * (1 / 2147483648.0f),
+			CellularReturnType.Distance => distance0 - 1,
+			CellularReturnType.Distance2 => distance1 - 1,
+			CellularReturnType.Distance2Add => (distance1 + distance0) * 0.5f - 1,
+			CellularReturnType.Distance2Sub => distance1 - distance0 - 1,
+			CellularReturnType.Distance2Mul => distance1 * distance0 * 0.5f - 1,
+			CellularReturnType.Distance2Div => distance0 / distance1 - 1,
+			_ => 0,
+		};
 	}
 
 

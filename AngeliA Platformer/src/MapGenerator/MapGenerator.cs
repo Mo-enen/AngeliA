@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using JordanPeck;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 public enum MapGenerationResult { Success, Skipped, Fail, CriticalError, }
 

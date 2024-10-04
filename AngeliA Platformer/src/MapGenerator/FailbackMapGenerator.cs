@@ -1,4 +1,6 @@
-﻿namespace AngeliA;
+﻿using AngeliA;
+
+namespace AngeliA.Platformer;
 
 public sealed class FailbackMapGenerator : MapGenerator {
 	public override bool IncludeInOpenWorld => false;

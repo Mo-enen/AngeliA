@@ -49,6 +49,7 @@ public abstract class MovableBullet : Bullet {
 		HitReceiver = false;
 	}
 
+
 	public override void BeforeUpdate () {
 
 		// Life Check
@@ -120,18 +121,69 @@ public abstract class MovableBullet : Bullet {
 				}
 			}
 			// Collide with Oneway
-			if (collide && PerformHitEnvironment()) {
-				break;
+			if (collide) {
+				PerformHitEnvironment(out bool requireSelfDestroy);
+				if (requireSelfDestroy) {
+					break;
+				}
 			}
 		}
 	}
+
 
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
 		CurrentRotation += Velocity.x > 0 ? RotateSpeed : -RotateSpeed;
-		DrawBullet(this, ArtworkID, Velocity.x > 0, CurrentRotation, Scale);
+		FrameworkUtil.DrawBullet(this, ArtworkID, Velocity.x > 0, CurrentRotation, Scale);
 	}
+
+
+	private void MovableHitCheck () {
+		int fromX = HitStartX;
+		int fromY = HitStartY;
+		int stepCount = Util.Max(
+			(X - fromX).Abs().CeilDivide(Width),
+			(Y - fromY).Abs().CeilDivide(Height)
+		);
+		if (stepCount <= 1) {
+			base.EnvironmentHitCheck(out _);
+			base.ReceiverHitCheck(out _);
+			HitEndX = X;
+			HitEndY = Y;
+			return;
+		}
+		int limitedStepCount = stepCount.LessOrEquel(Util.Max(
+			Stage.ViewRect.width.CeilDivide(Width),
+			Stage.ViewRect.height.CeilDivide(Height)
+		));
+		int oldX = X, oldY = Y;
+		int maxRangeSq = MaxRange * MaxRange;
+		int rangeSq = 0;
+		bool selfDestroy = false;
+		for (int i = 0; i < limitedStepCount; i++) {
+			X = Util.RemapUnclamped(0, stepCount, fromX, oldX, i + 1);
+			Y = Util.RemapUnclamped(0, stepCount, fromY, oldY, i + 1);
+			rangeSq = (X - fromX) * (X - fromX) + (Y - fromY) * (Y - fromY);
+			if (rangeSq >= maxRangeSq) break;
+			base.EnvironmentHitCheck(out bool hitE);
+			base.ReceiverHitCheck(out bool hitRec);
+			selfDestroy = hitRec || hitE;
+			if (selfDestroy) {
+				BeamLength = Util.BabylonianSqrt(rangeSq);
+				HitReceiver = hitRec;
+				break;
+			}
+		}
+		HitEndX = X;
+		HitEndY = Y;
+		if (!selfDestroy) {
+			BeamLength = Util.BabylonianSqrt(rangeSq);
+		}
+		X = oldX;
+		Y = oldY;
+	}
+
 
 	protected override void BeforeDespawn (IDamageReceiver receiver) {
 		base.BeforeDespawn(receiver);
@@ -162,51 +214,6 @@ public abstract class MovableBullet : Bullet {
 		}
 	}
 
-	private bool MovableHitCheck () {
-		bool selfDestroy = false;
-		int fromX = HitStartX;
-		int fromY = HitStartY;
-		int stepCount = Util.Max(
-			(X - fromX).Abs().CeilDivide(Width),
-			(Y - fromY).Abs().CeilDivide(Height)
-		);
-		if (stepCount <= 1) {
-			selfDestroy = base.EnvironmentHitCheck();
-			selfDestroy = base.ReceiverHitCheck() || selfDestroy;
-			HitEndX = X;
-			HitEndY = Y;
-			return selfDestroy;
-		}
-		int limitedStepCount = stepCount.LessOrEquel(Util.Max(
-			Stage.ViewRect.width.CeilDivide(Width),
-			Stage.ViewRect.height.CeilDivide(Height)
-		));
-		int oldX = X, oldY = Y;
-		int maxRangeSq = MaxRange * MaxRange;
-		int rangeSq = 0;
-		for (int i = 0; i < limitedStepCount; i++) {
-			X = Util.RemapUnclamped(0, stepCount, fromX, oldX, i + 1);
-			Y = Util.RemapUnclamped(0, stepCount, fromY, oldY, i + 1);
-			rangeSq = (X - fromX) * (X - fromX) + (Y - fromY) * (Y - fromY);
-			if (rangeSq >= maxRangeSq) break;
-			selfDestroy = base.EnvironmentHitCheck();
-			bool hitRec = base.ReceiverHitCheck();
-			selfDestroy = hitRec || selfDestroy;
-			if (selfDestroy) {
-				BeamLength = Util.BabylonianSqrt(rangeSq);
-				HitReceiver = hitRec;
-				break;
-			}
-		}
-		HitEndX = X;
-		HitEndY = Y;
-		if (!selfDestroy) {
-			BeamLength = Util.BabylonianSqrt(rangeSq);
-		}
-		X = oldX;
-		Y = oldY;
-		return selfDestroy;
-	}
 
 	// API
 	public virtual void StartMove (Direction8 dir, int speedForward, int speedSide) {
@@ -270,6 +277,7 @@ public abstract class MovableBullet : Bullet {
 		}
 
 	}
+
 
 	protected (int startX, int startY, int endX, int endY, int length, int rotation1000, bool beamHitReceiver) GetLastUpdatedTramsform () => (
 		HitStartX + Width / 2,

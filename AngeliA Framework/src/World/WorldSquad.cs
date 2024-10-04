@@ -25,9 +25,6 @@ public sealed class WorldSquad : IBlockSquad {
 	private static event System.Action AfterLevelRendered;
 	private static readonly Dictionary<int, int> LevelToEntityRedirect = [];
 	private static readonly Int3[] WorldPosInViewCache = new Int3[128];
-	private static IRect MapGenerationSearchedRange = new(int.MinValue + Const.CEL * 8, int.MinValue + Const.CEL * 8, Const.CEL * 8, Const.CEL * 8);
-	private static int LastSearchedRangeUpdateFrame = int.MinValue;
-	private static int LastSearchedRangeUpdateZ = int.MinValue;
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
 	private IRect CullingCameraRect = default;
@@ -117,61 +114,6 @@ public sealed class WorldSquad : IBlockSquad {
 		// Auto Save
 		if (!DontSaveChangesToFile && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
 			Stream.SaveAllDirty();
-		}
-		// Check for Empty Generation
-		if (MapGenerationSystem.Enable) {
-			if (Stage.ViewZ != LastSearchedRangeUpdateZ) {
-				LastSearchedRangeUpdateZ = Stage.ViewZ;
-				LastSearchedRangeUpdateFrame = int.MinValue;
-				MapGenerationSearchedRange.x = int.MinValue + MapGenerationSearchedRange.width;
-			}
-			if (
-				!MapGenerationSearchedRange.Contains(Stage.ViewRect.CenterInt()) &&
-				Game.PauselessFrame > LastSearchedRangeUpdateFrame + 30
-			) {
-				int centerX = Stage.ViewRect.x + Stage.ViewRect.width / 2;
-				int centerY = Stage.ViewRect.y + Stage.ViewRect.height / 2;
-				MapGenerationSearchedRange.x = centerX - MapGenerationSearchedRange.width / 2;
-				MapGenerationSearchedRange.y = centerY - MapGenerationSearchedRange.height / 2;
-				LastSearchedRangeUpdateFrame = Game.PauselessFrame;
-
-				// Check for Generator Starter
-				/*
-				// Element
-				int eleID = eleSpan[index];
-				if (eleID != 0) {
-					int localID = MapGenerationSystem.STARTER_ID - eleID;
-					if (localID >= 0 && localID <= 8) {
-						var startPoint = new Int3(i, j, z);
-						if (!MapGenerationSystem.IsGenerating(startPoint)) {
-							if (localID == 0) {
-								MapGenerationSystem.GenerateMap(startPoint, null, true);
-							} else {
-								MapGenerationSystem.GenerateMap(startPoint, (Direction8)(localID - 1), true);
-							}
-						}
-					}
-				}
-				*/
-
-				// Generate Map When Surrounding Empty 
-				if (Universe.BuiltInInfo.GenerateMapWhenSurroundingEmpty) {
-					var startPoint = new Int3(centerX.ToUnit(), centerY.ToUnit(), Stage.ViewZ);
-					if (
-						!MapGenerationSystem.IsGenerating(startPoint) &&
-						!FrameworkUtil.SearchlightBlockCheck(Stream, startPoint, null, Const.MAP / 2)
-					) {
-						MapGenerationSystem.GenerateMap(startPoint, null, async: false);
-					}
-					startPoint.z = Stage.ViewZ + 1;
-					if (
-						!MapGenerationSystem.IsGenerating(startPoint) &&
-						!FrameworkUtil.SearchlightBlockCheck(Stream, startPoint, null, Const.MAP / 2)
-					) {
-						MapGenerationSystem.GenerateMap(startPoint, null, async: true);
-					}
-				}
-			}
 		}
 	}
 

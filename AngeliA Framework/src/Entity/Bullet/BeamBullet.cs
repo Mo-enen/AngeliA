@@ -41,16 +41,10 @@ public abstract class BeamBullet : MovableBullet {
 		Height = Const.HALF * 2 / 3;
 	}
 
+
 	public override void LateUpdate () {
-		base.LateUpdate();
-		if (!Active) return;
-		RenderBeam();
-	}
 
-	protected override void BeforeDespawn (IDamageReceiver receiver) { }
-
-	private void RenderBeam () {
-		if (BeamRendered) return;
+		if (!Active || BeamRendered) return;
 		BeamRendered = true;
 
 		// Render Beam
@@ -107,8 +101,9 @@ public abstract class BeamBullet : MovableBullet {
 				);
 			}
 		}
-
 	}
+
+	protected override void BeforeDespawn (IDamageReceiver receiver) { }
 
 }
 

@@ -1,5 +1,6 @@
-﻿namespace AngeliA;
+﻿using AngeliA;
 
+namespace AngeliA.Platformer;
 
 
 public sealed class MapGeneratorStarter_Free : MapGeneratorStarter {

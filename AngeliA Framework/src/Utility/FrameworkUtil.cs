@@ -333,6 +333,38 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale, int z = int.MaxValue - 16) {
+		if (!Renderer.TryGetSprite(artworkID, out var sprite)) return;
+		int facingSign = facingRight ? 1 : -1;
+		int x = bullet.X + bullet.Width / 2;
+		int y = bullet.Y + bullet.Height / 2;
+		if (Renderer.TryGetAnimationGroup(artworkID, out var aniGroup)) {
+			Renderer.DrawAnimation(
+				aniGroup,
+				x, y,
+				sprite.PivotX,
+				sprite.PivotY,
+				rotation,
+				facingSign * sprite.GlobalWidth * scale / 1000,
+				sprite.GlobalHeight * scale / 1000,
+				Game.GlobalFrame - bullet.SpawnFrame,
+				z
+			);
+		} else {
+			Renderer.Draw(
+				artworkID,
+				x, y,
+				sprite.PivotX,
+				sprite.PivotY,
+				rotation,
+				facingSign * sprite.GlobalWidth * scale / 1000,
+				sprite.GlobalHeight * scale / 1000,
+				z
+			);
+		}
+	}
+
+
 	// Misc
 	public static void DeleteAllEmptyMaps (string mapRoot) {
 		foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
@@ -649,7 +681,7 @@ public static class FrameworkUtil {
 					// Drop Item
 					ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
 					// Dust
-					GlobalEvent.InvokePowderSpawn(e.TypeID, e.Rect);
+					GlobalEvent.InvokeBlockPicked(e.TypeID, e.Rect);
 				} else {
 					// Break
 					GlobalEvent.InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
@@ -683,7 +715,7 @@ public static class FrameworkUtil {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
 					// Dust
-					GlobalEvent.InvokePowderSpawn(blockID, blockRect);
+					GlobalEvent.InvokeBlockPicked(blockID, blockRect);
 				} else {
 					// Break
 					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
@@ -719,7 +751,7 @@ public static class FrameworkUtil {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
 					// Dust
-					GlobalEvent.InvokePowderSpawn(realBlockID, blockRect);
+					GlobalEvent.InvokeBlockPicked(realBlockID, blockRect);
 				} else {
 					// Break
 					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
