@@ -18,7 +18,7 @@ public enum CharacterInventoryType { None = 0, Unique, Map, }
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
+public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICarrier {
 
 
 
@@ -56,10 +56,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget {
 	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
-	public override bool CarryOtherRigidbodyOnTop => false;
-	public override bool AllowBeingCarryByOtherRigidbody => true;
+	public override bool CarryOtherOnTop => false;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
-
+	bool ICarrier.AllowBeingCarry => true;
 	public int Bouncy { get; set; } = 150;
 	public bool HelmetInteractable { get; set; } = true;
 	public bool BodySuitInteractable { get; set; } = true;

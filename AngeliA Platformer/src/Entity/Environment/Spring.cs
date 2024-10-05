@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.UpdateOutOfRange]
@@ -76,8 +77,7 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 				sprite,
 				X + Const.HALF, Y,
 				500, 0, 0,
-				Const.CEL, Const.CEL, Color32
-.WHITE
+				Const.CEL, Const.CEL, Color32.WHITE
 			);
 		}
 	}
@@ -88,7 +88,6 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 		LastBounceFrame = Game.GlobalFrame;
 		BounceSide = side;
 		const int GAP = 16;
-		const int THRESHOLD = 96;
 		var globalRect = FullRect.Expand(
 			Horizontal ? GAP : 0, Horizontal ? GAP : 0,
 			Horizontal ? 0 : GAP, Horizontal ? 0 : GAP
@@ -100,7 +99,18 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not Rigidbody rig) continue;
-				globalRect = hit.Entity.Rect.EdgeOutside(BounceSide, THRESHOLD);
+				var hitRect = hit.Entity.Rect;
+				if (Horizontal) {
+					globalRect.y = hitRect.y;
+					if (side == Direction4.Left) {
+						globalRect.x = Util.Min(globalRect.x, hitRect.x - globalRect.width);
+					} else {
+						globalRect.x = Util.Max(globalRect.x, hitRect.xMax);
+					}
+				} else {
+					globalRect.x = hitRect.x;
+					globalRect.y = Util.Max(globalRect.y, hitRect.yMax);
+				}
 				ignore = hit.Entity;
 				PerformBounce(rig);
 				break;

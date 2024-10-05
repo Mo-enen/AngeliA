@@ -316,6 +316,8 @@ public class CharacterMovement (Rigidbody rig) {
 		IsFlying = false;
 		Hitbox = new IRect(X, Y, MovementWidth, MovementHeight);
 		RequireJumpFrame = int.MinValue;
+		FacingRight = true;
+		FacingFront = true;
 
 		// Sync Movement Config from Pool
 		if (
@@ -762,7 +764,9 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Jump Though Oneway
 		if (JumpDownThoughOneway && JumpThoughOnewayCheck()) {
-			Target.PerformMove(0, -Const.HALF, ignoreOneway: true);
+			Target.IgnoreOneway(2);
+			Target.PerformMove(0, -Const.HALF);
+			//Target.CancelIgnoreOneway();
 			VelocityY = 0;
 			return;
 		}

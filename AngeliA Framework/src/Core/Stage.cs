@@ -367,7 +367,7 @@ public static class Stage {
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				var e = span[index];
-				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || ViewRect.Overlaps(e.GlobalBounds)) {
+				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || SpawnRect.Overlaps(e.GlobalBounds)) {
 					try {
 						e.UpdateToBefore();
 					} catch (Exception ex) { Debug.LogException(ex); }
@@ -382,7 +382,7 @@ public static class Stage {
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				var e = span[index];
-				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || ViewRect.Overlaps(e.GlobalBounds)) {
+				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || SpawnRect.Overlaps(e.GlobalBounds)) {
 					try {
 						e.UpdateToUpdate();
 					} catch (Exception ex) { Debug.LogException(ex); }

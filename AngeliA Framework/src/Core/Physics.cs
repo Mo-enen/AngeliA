@@ -217,10 +217,10 @@ public static class Physics {
 
 
 	// Move
-	public static Int2 MoveIgnoreOneway (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, true, out _, out _);
+	public static Int2 MoveIgnoreOneway (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, true);
 
 
-	public static Int2 Move (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity, out bool stopX, out bool stopY) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, false, out stopX, out stopY);
+	public static Int2 Move (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, false);
 
 
 	public static Int2 MoveImmediately (
@@ -235,7 +235,7 @@ public static class Physics {
 		);
 		if (!ignoreOneway) {
 			result = OnewayCheck(
-				mask, from, result, size, entity, out _, out _
+				mask, from, result, size, entity
 			);
 		}
 		return result;
@@ -353,13 +353,10 @@ public static class Physics {
 
 
 	// Move
-	private static Int2 MoveSafeLogic (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity, bool ignoreOneway, out bool stopForOnewayX, out bool stopForOnewayY) {
+	private static Int2 MoveSafeLogic (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity, bool ignoreOneway) {
 		const int RIGIDBODY_FAST_SPEED = 32;
 		var _from = from;
 		var result = from;
-		stopForOnewayX = false;
-		stopForOnewayY = false;
-
 		if (Util.Abs(speedX) > RIGIDBODY_FAST_SPEED || Util.Abs(speedY) > RIGIDBODY_FAST_SPEED) {
 			// Too Fast
 			int _speedX = speedX;
@@ -388,8 +385,7 @@ public static class Physics {
 		}
 		if (!ignoreOneway) {
 			result = OnewayCheck(
-				mask, from, result, size, entity,
-				out stopForOnewayX, out stopForOnewayY
+				mask, from, result, size, entity
 			);
 		}
 		return result;
@@ -450,18 +446,14 @@ public static class Physics {
 	}
 
 
-	private static Int2 OnewayCheck (int mask, Int2 from, Int2 to, Int2 size, Entity entity, out bool stopForOnewayX, out bool stopForOnewayY) {
-		stopForOnewayX = false;
-		stopForOnewayY = false;
+	private static Int2 OnewayCheck (int mask, Int2 from, Int2 to, Int2 size, Entity entity) {
 		int velX = to.x - from.x;
 		int velY = to.y - from.y;
 		if (velX != 0 && OnewayCheckLogic(mask, velX > 0 ? Direction4.Right : Direction4.Left, from, to, size, entity, out var newPos0)) {
 			to.x = newPos0.x;
-			stopForOnewayX = true;
 		}
 		if (velY != 0 && OnewayCheckLogic(mask, velY > 0 ? Direction4.Up : Direction4.Down, from, to, size, entity, out var newPos1)) {
 			to.y = newPos1.y;
-			stopForOnewayY = true;
 		}
 		return to;
 	}

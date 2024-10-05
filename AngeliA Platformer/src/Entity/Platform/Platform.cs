@@ -22,6 +22,7 @@ public abstract class Platform : Entity, IBlockEntity {
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 
 	// Data
+	private int LastMoveFrame = -2;
 	private int PrevX = 0;
 	private int PrevY = 0;
 
@@ -34,6 +35,7 @@ public abstract class Platform : Entity, IBlockEntity {
 		TouchedByRigidbody = false;
 		PrevX = X;
 		PrevY = Y;
+		LastMoveFrame = -1;
 		Pose = FrameworkUtil.GetEntityPose(TypeID, X.ToUnit(), Y.ToUnit(), true);
 	}
 
@@ -52,8 +54,13 @@ public abstract class Platform : Entity, IBlockEntity {
 		PrevX = X;
 		PrevY = Y;
 		Move();
-		Update_CarryX();
-		Update_CarryY();
+		if (Game.GlobalFrame != LastMoveFrame + 1) {
+			PrevX = X;
+			PrevY = Y;
+		}
+		ICarrier.CarryTargetsOnTopHorizontally(this, X - PrevX);
+		ICarrier.CarryTargetsOnTopVertically(this, Y - PrevY, OneWay);
+		LastMoveFrame = Game.GlobalFrame;
 		Update_PushX();
 	}
 
@@ -121,125 +128,11 @@ public abstract class Platform : Entity, IBlockEntity {
 			if (pushLeft) {
 				// Left
 				if (rig.VelocityX < X - PrevX || rRect.xMin > X) continue;
-				rig.PerformMove(X - rRect.xMax, 0, carry: true);
+				rig.PerformMove(X - rRect.xMax, 0);
 			} else {
 				// Right
 				if (rig.VelocityX > X - PrevX || rRect.xMax < X + Width) continue;
-				rig.PerformMove(X + Width - rRect.xMin, 0, carry: true);
-			}
-		}
-	}
-
-
-	private void Update_CarryX () {
-
-		//if (X == PrevX) return;
-
-		var rect = Rect;
-		int left = X;
-		int right = X + Width;
-		if (Pose == FittingPose.Single || Pose == FittingPose.Left) {
-			left = int.MinValue;
-		}
-		if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
-			right = int.MaxValue;
-		}
-
-		var prevRectY = rect;
-		prevRectY.y = PrevY;
-		var overlapRect = Y > PrevY ? rect : prevRectY;
-		var hits = Physics.OverlapAll(
-			PhysicsMask.DYNAMIC, overlapRect.EdgeOutside(Direction4.Up, 32).Shift(0, -16), out int count,
-			this, OperationMode.ColliderAndTrigger
-		);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is not Rigidbody rig) continue;
-			if (rig.X < left || rig.X >= right) continue;
-			if (rig.Rect.y < rect.yMax - 32) continue;
-			if (!hit.IsTrigger) {
-				// For General Rig
-				rig.PerformMove(X - PrevX, 0, carry: true);
-			} else {
-				// For Nav Character
-				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
-				rig.X += X - PrevX;
-				rig.Y = rect.yMax;
-			}
-			if (rig.VelocityY <= Y - PrevY) {
-				rig.MakeGrounded(1, TypeID);
-			}
-		}
-	}
-
-
-	private void Update_CarryY () {
-
-		//if (Y == PrevY) return;
-
-		var rect = Rect;
-		var prevRect = rect;
-		prevRect.y = PrevY;
-		int left = X;
-		int right = X + Width;
-		if (Pose == FittingPose.Single || Pose == FittingPose.Left) {
-			left = int.MinValue;
-		}
-		if (Pose == FittingPose.Single || Pose == FittingPose.Right) {
-			right = int.MaxValue;
-		}
-
-		if (Y > PrevY) {
-			// Moving Up
-			prevRect.height -= Height / 3;
-			rect.y = PrevY + prevRect.height;
-			rect.height = Y + Height - rect.y;
-			var hits = Physics.OverlapAll(
-				PhysicsMask.DYNAMIC, rect, out int count,
-				this, OperationMode.ColliderOnly
-			);
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Entity is not Rigidbody rig) continue;
-				if (rig.X < left || rig.X >= right) continue;
-				if (rig.VelocityY > Y - PrevY) continue;
-				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
-				rig.PerformMove(0, rect.yMax - rig.Rect.y, carry: true);
-				rig.MakeGrounded(1, TypeID);
-			}
-			// For Nav Character
-			hits = Physics.OverlapAll(
-				PhysicsMask.DYNAMIC, rect, out count,
-				this, OperationMode.TriggerOnly
-			);
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Entity is not Character ch || ch.Movement.IsFlying) continue;
-				if (ch.X < left || ch.X >= right) continue;
-				if (ch.VelocityY > Y - PrevY) continue;
-				if (ch.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
-				ch.Y.MoveTowards(rect.yMax - ch.OffsetY, 64);
-				ch.MakeGrounded(1, TypeID);
-			}
-
-		} else {
-			// Moving Down
-			prevRect.height += PrevY - Y + 1;
-			var hits = Physics.OverlapAll(
-				PhysicsMask.DYNAMIC, prevRect, out int count,
-				this, OperationMode.ColliderAndTrigger
-			);
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Entity is not Rigidbody rig) continue;
-				if (rig.X < left || rig.X >= right) continue;
-				if (rig.VelocityY > 0) continue;
-				if (rig.Rect.yMin < rect.yMax - Const.CEL / 3) continue;
-				if (hit.IsTrigger && (hit.Entity is not Character ch || ch.Movement.IsFlying)) continue;
-				int speedY = rect.yMax - rig.OffsetY - rig.Y;
-				rig.PerformMove(0, speedY, carry: true);
-				if (!hit.IsTrigger) rig.VelocityY = 0;
-				rig.MakeGrounded(1, TypeID);
+				rig.PerformMove(X + Width - rRect.xMin, 0);
 			}
 		}
 	}
