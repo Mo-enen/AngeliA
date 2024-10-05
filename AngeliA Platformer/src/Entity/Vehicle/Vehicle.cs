@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleMovement {
 
@@ -21,8 +22,6 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 	public override int PhysicalLayer => CurrentPhysicsLayer;
 	public override int AirDragX => Driver != null ? 0 : 5;
 	public override int AirDragY => 0;
-	public override int FallingGravity => 5;
-	public override int RisingGravity => 5;
 	public override bool CarryOtherRigidbodyOnTop => false;
 	public override bool AllowBeingCarryByOtherRigidbody => true;
 	public override int CollisionMask => Driver != null ? PhysicsMask.MAP : PhysicsMask.SOLID;
@@ -58,6 +57,8 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver where M : VehicleM
 		if (FromWorld) {
 			X += Const.HALF;
 		}
+		FallingGravityScale = 1000;
+		RisingGravityScale = 1000;
 	}
 
 

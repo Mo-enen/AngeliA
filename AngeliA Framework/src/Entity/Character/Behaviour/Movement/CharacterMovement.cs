@@ -244,7 +244,13 @@ public class CharacterMovement (Rigidbody rig) {
 	protected int OffsetY { get => Target.OffsetY; set => Target.OffsetY = value; }
 	protected int VelocityX { get => Target.VelocityX; set => Target.VelocityX = value; }
 	protected int VelocityY { get => Target.VelocityY; set => Target.VelocityY = value; }
-	protected int GravityScale { get => Target.GravityScale; set => Target.GravityScale = value; }
+	protected int GravityScale {
+		get => Target.FallingGravityScale;
+		set {
+			Target.FallingGravityScale = value;
+			Target.RisingGravityScale = value;
+		}
+	}
 	protected bool IsInsideGround => Target.IsInsideGround;
 	protected bool InWater => Target.InWater;
 	protected bool IsGrounded => Target.IsGrounded;

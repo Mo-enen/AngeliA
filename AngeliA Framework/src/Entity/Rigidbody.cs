@@ -12,6 +12,7 @@ public abstract class Rigidbody : Entity {
 
 
 	// Api
+	public static int GlobalGravity { get; set; } = 5;
 	public override IRect Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 	public bool IsGrounded { get; private set; } = false;
 	public bool IsInsideGround { get; private set; } = false;
@@ -21,7 +22,8 @@ public abstract class Rigidbody : Entity {
 	public int VelocityY { get; set; } = 0;
 	public int OffsetX { get; set; } = 0;
 	public int OffsetY { get; set; } = 0;
-	public int GravityScale { get; set; } = 1000;
+	public int FallingGravityScale { get; set; } = 1000;
+	public int RisingGravityScale { get; set; } = 1000;
 	public int GroundedID { get; private set; } = 0;
 	public int PrevX { get; private set; } = 0;
 	public int PrevY { get; private set; } = 0;
@@ -32,8 +34,6 @@ public abstract class Rigidbody : Entity {
 	// Override
 	public abstract int PhysicalLayer { get; }
 	public virtual int CollisionMask => PhysicsMask.SOLID;
-	public virtual int FallingGravity => 5;
-	public virtual int RisingGravity => 3;
 	public virtual int MaxGravitySpeed => 96;
 	public virtual int AirDragX => 3;
 	public virtual int AirDragY => 0;
@@ -118,10 +118,11 @@ public abstract class Rigidbody : Entity {
 		}
 
 		// Gravity
-		if (GravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
+		int gravityScale = VelocityY <= 0 ? FallingGravityScale : RisingGravityScale;
+		if (gravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
 			int speedScale = InWater ? WaterSpeedRate : 1000;
 			VelocityY = Util.Clamp(
-				VelocityY - (VelocityY <= 0 ? FallingGravity : RisingGravity) * GravityScale / 1000,
+				VelocityY - GlobalGravity * gravityScale / 1000,
 				-MaxGravitySpeed * speedScale / 1000,
 				int.MaxValue
 			);

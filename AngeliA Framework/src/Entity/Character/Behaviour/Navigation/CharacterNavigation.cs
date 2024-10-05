@@ -199,7 +199,8 @@ public partial class CharacterNavigation (Character character) {
 				TargetCharacter.MakeGrounded(1);
 			} else {
 				// Fall Down
-				VelocityY = (VelocityY - (VelocityY <= 0 ? TargetCharacter.FallingGravity : TargetCharacter.RisingGravity)).Clamp(-TargetCharacter.MaxGravitySpeed, int.MaxValue);
+				int gravity = Rigidbody.GlobalGravity * (VelocityY <= 0 ? TargetCharacter.FallingGravityScale / 1000 : TargetCharacter.RisingGravityScale / 1000);
+				VelocityY = (VelocityY - gravity).Clamp(-TargetCharacter.MaxGravitySpeed, int.MaxValue);
 			}
 		} else {
 			VelocityY = 0;
