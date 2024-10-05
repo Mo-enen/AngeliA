@@ -5,10 +5,10 @@ namespace AngeliA;
 
 
 [EntityAttribute.ExcludeInMapEditor]
-public class GroupAnimation : Entity {
+public class GroupAnimationHolder : Entity {
 
 	// Const
-	private static readonly int TYPE_ID = typeof(GroupAnimation).AngeHash();
+	private static readonly int TYPE_ID = typeof(GroupAnimationHolder).AngeHash();
 
 	// Data
 	private int ArtworkID = 0;
@@ -100,7 +100,7 @@ public class GroupAnimation : Entity {
 
 
 	// API
-	public static GroupAnimation Spawn (int groupID, int x, int y, int renderLayer = RenderLayer.DEFAULT, int rotation1000 = 0, int rotationSpeed = 0, int scale = 1000) {
+	public static GroupAnimationHolder Spawn (int groupID, int x, int y, int renderLayer = RenderLayer.DEFAULT, int rotation1000 = 0, int rotationSpeed = 0, int scale = 1000) {
 		if (!Renderer.TryGetSpriteFromGroup(groupID, 0, out var sprite, true, true, true)) return null;
 		return Spawn(
 			groupID, x, y,
@@ -109,11 +109,11 @@ public class GroupAnimation : Entity {
 			rotation1000, rotationSpeed, -1, 1, false, Color32.WHITE, int.MaxValue - 1, renderLayer
 		);
 	}
-	public static GroupAnimation Spawn (int groupID, int x, int y, int rotation1000, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1, int renderLayer = RenderLayer.DEFAULT) {
+	public static GroupAnimationHolder Spawn (int groupID, int x, int y, int rotation1000, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1, int renderLayer = RenderLayer.DEFAULT) {
 		if (!Renderer.TryGetSpriteFromGroup(groupID, 0, out var sprite, true, true, true)) return null;
 		return Spawn(groupID, x, y, sprite.GlobalWidth, sprite.GlobalHeight, sprite.PivotX, sprite.PivotY, rotation1000, rotationSpeed, duration, framePerSprite, loop, tint, z, renderLayer);
 	}
-	public static GroupAnimation Spawn (int groupID, int x, int y, int width, int height, int pivotX, int pivotY, int rotation1000, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1, int renderLayer = RenderLayer.DEFAULT) {
+	public static GroupAnimationHolder Spawn (int groupID, int x, int y, int width, int height, int pivotX, int pivotY, int rotation1000, int rotationSpeed, int duration, int framePerSprite, bool loop, Color32 tint, int z = int.MaxValue - 1, int renderLayer = RenderLayer.DEFAULT) {
 		if (!Renderer.TryGetSpriteGroup(groupID, out var group) || group.Count == 0) return null;
 		// Auto Duration
 		if (duration <= 0) {
@@ -126,7 +126,7 @@ public class GroupAnimation : Entity {
 			}
 		}
 		// Spawn
-		if (duration <= 0 || Stage.SpawnEntity(TYPE_ID, x, y) is not GroupAnimation ani) return null;
+		if (duration <= 0 || Stage.SpawnEntity(TYPE_ID, x, y) is not GroupAnimationHolder ani) return null;
 		ani.ArtworkID = groupID;
 		ani.Duration = duration;
 		ani.RenderingZ = z;

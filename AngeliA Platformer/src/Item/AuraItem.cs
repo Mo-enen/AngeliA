@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class AuraItem<B> : BuffItem<B> where B : Buff {
 	protected virtual int Radius => 8 * Const.CEL;

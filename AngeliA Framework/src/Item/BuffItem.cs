@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+namespace AngeliA;
 
 public abstract class BuffItem<B> : Item where B : Buff {
 	public override bool AllowDuplicateUpdate => false;

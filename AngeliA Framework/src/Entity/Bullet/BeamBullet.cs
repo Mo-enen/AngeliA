@@ -52,7 +52,7 @@ public abstract class BeamBullet : MovableBullet {
 
 		// Beam
 		if (BeamSpriteID != 0) {
-			GroupAnimation.Spawn(
+			GroupAnimationHolder.Spawn(
 				BeamSpriteID, x, y, BeamSize, h,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				rot1000, 0, -1, 1, false, BeamTint, renderLayer: RenderingLayer
@@ -61,7 +61,7 @@ public abstract class BeamBullet : MovableBullet {
 
 		// Spark 
 		if (SparkSpriteID != 0) {
-			GroupAnimation.Spawn(
+			GroupAnimationHolder.Spawn(
 				SparkSpriteID, x, y,
 				SparkSize, h,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
@@ -71,7 +71,7 @@ public abstract class BeamBullet : MovableBullet {
 
 		// Burst 
 		if (hitRec && BurstSpriteID != 0) {
-			GroupAnimation.Spawn(
+			GroupAnimationHolder.Spawn(
 				BurstSpriteID, endX, endY, BurstSize, BurstSize,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				0, BurstRotateSpeed,
@@ -81,7 +81,7 @@ public abstract class BeamBullet : MovableBullet {
 
 		// Hand Burst
 		if (HandBurstSpriteID != 0) {
-			GroupAnimation.Spawn(
+			GroupAnimationHolder.Spawn(
 				HandBurstSpriteID, x, y, HandBurstSize, HandBurstSize,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
 				rot1000, HandBurstRotateSpeed,
