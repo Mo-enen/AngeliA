@@ -36,24 +36,13 @@ public abstract class Conveyor : Entity, IBlockEntity {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Physics.FillBlock(PhysicsLayer.LEVEL, TypeID, Rect);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
 
 
-	public override void Update () {
-		base.Update();
-		var rect = Rect;
-		rect.y += rect.height;
-		rect.height = 1;
-		var hits = Physics.OverlapAll(PhysicsMask.ENTITY, rect, out int count, this);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is Rigidbody rig) {
-				rig.PerformMove(MoveSpeed, 0);
-				rig.Y = rect.yMax;
-				rig.VelocityY = 0;
-			}
-		}
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		ICarrier.CarryTargetsOnTopHorizontally(this, MoveSpeed);
 	}
 
 

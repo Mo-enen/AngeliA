@@ -36,7 +36,7 @@ public partial class RiggedGame : Game {
 	private Entity DraggingEntity = null;
 	private Entity HoveringEntity = null;
 	private Int2 DraggingEntityOffset;
-	private string HoveringEntityName = "";
+	private string HoveringEntityLabel = "";
 	private int OriginalMinViewHeight;
 	private int OriginalMaxViewHeight;
 
@@ -417,14 +417,16 @@ public partial class RiggedGame : Game {
 				// Click
 				bool mouseInside = bounds.MouseInside();
 				if (!dragging && !hoverFlag && mouseInside) {
+					// Hovering
 					hoverFlag = true;
 					if (e != HoveringEntity) {
-						HoveringEntityName = e.GetType().AngeName();
+						HoveringEntityLabel = $"{e.GetType().AngeName()}";
 					}
 					HoveringEntity = e;
 					gizmosTint = Color32.WHITE;
 				}
 				if (mouseDown && mouseInside) {
+					// Mouse Down
 					DraggingEntity = e;
 					dragging = mouseHolding;
 					DraggingEntityOffset = Input.MouseGlobalPosition - bounds.position;
@@ -460,13 +462,13 @@ public partial class RiggedGame : Game {
 			} else {
 				DraggingEntity = null;
 			}
-		} else if (hoverFlag && HoveringEntity != null && !string.IsNullOrEmpty(HoveringEntityName)) {
+		} else if (hoverFlag && HoveringEntity != null && !string.IsNullOrEmpty(HoveringEntityLabel)) {
 			// Entity Name
 			var mousePos = Input.MouseGlobalPosition;
 			using (new UILayerScope()) {
 				GUI.ShadowLabel(
 					new IRect(mousePos.x, mousePos.y + GUI.Unify(24), 1, GUI.Unify(24)),
-					HoveringEntityName,
+					HoveringEntityLabel,
 					style: GUISkin.Default.SmallCenterLabel
 				);
 			}

@@ -226,12 +226,30 @@ public class ControlHintUI : EntityUI {
 	}
 
 
-	public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, string label, bool background = false) => Instance?.DrawGamekey(globalX, globalY, key, key, label, background);
-	public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, string label, bool background = false) => Instance?.DrawGamekey(globalX, globalY, keyA, keyB, label, background);
-	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey key, string label, bool background = false) => Instance?.DrawKey(globalX, globalY, key, key, label, background);
-	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) => Instance?.DrawKey(globalX, globalY, keyA, keyB, label, background);
-	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey key, string label, bool background = false) => Instance?.DrawGamepadButton(globalX, globalY, key, key, label, background);
-	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey keyA, GamepadKey keyB, string label, bool background = false) => Instance?.DrawGamepadButton(globalX, globalY, keyA, keyB, label, background);
+	public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, string label, bool background = false) {
+		if (Game.IsPausing) return;
+		Instance?.DrawGamekey(globalX, globalY, key, key, label, background);
+	}
+	public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, string label, bool background = false) {
+		if (Game.IsPausing) return;
+		Instance?.DrawGamekey(globalX, globalY, keyA, keyB, label, background);
+	}
+	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey key, string label, bool background = false) {
+		if (Game.IsPausing) return;
+		Instance?.DrawKey(globalX, globalY, key, key, label, background);
+	}
+	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) {
+		if (Game.IsPausing) return;
+		Instance?.DrawKey(globalX, globalY, keyA, keyB, label, background);
+	}
+	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey key, string label, bool background = false) {
+		if (Game.IsPausing) return;
+		Instance?.DrawGamepadButton(globalX, globalY, key, key, label, background);
+	}
+	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey keyA, GamepadKey keyB, string label, bool background = false) {
+		if (Game.IsPausing) return;
+		Instance?.DrawGamepadButton(globalX, globalY, keyA, keyB, label, background);
+	}
 
 
 	public static void ForceShowHint (int duration = 1) {

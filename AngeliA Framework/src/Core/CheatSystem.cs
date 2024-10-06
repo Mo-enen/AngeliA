@@ -9,6 +9,7 @@ public static class CheatSystem {
 
 	// SUB
 	private class CheatAction {
+		public bool Enable;
 		public string Code;
 		public MethodInfo Action;
 		public object Param;
@@ -68,6 +69,7 @@ public static class CheatSystem {
 			for (int i = 0; i < len; i++) {
 				try {
 					var action = span[i];
+					if (!action.Enable) continue;
 					string code = action.Code;
 					int codeLen = code.Length;
 					if (codeLen > CheatInput.Length) continue;
@@ -129,6 +131,26 @@ public static class CheatSystem {
 			Action = method,
 			Param = param,
 		});
+	}
+
+
+	public static void SetCheatCodeEnable (string code, bool enable) {
+		var span = AllCheatActions.GetSpan();
+		int len = span.Length;
+		for (int i = 0; i < len; i++) {
+			var cheat = span[i];
+			if (cheat.Code.Equals(code, System.StringComparison.OrdinalIgnoreCase)) {
+				cheat.Enable = enable;
+				break;
+			}
+		}
+	}
+
+
+	public static IEnumerable<string> ForAllCheatCodes () {
+		foreach (var cheat in AllCheatActions) {
+			yield return cheat.Code;
+		}
 	}
 
 

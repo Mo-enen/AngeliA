@@ -1,6 +1,6 @@
 ﻿{
   "ProductName": "Engine Artwork",
-  "DeveloperName": "Mo_enen",
+  "DeveloperName": "Moenen",
   "MajorVersion": 0,
   "MinorVersion": 0,
   "PatchVersion": 0,
@@ -12,7 +12,6 @@
   "AllowQuitFromMenu": true,
   "AllowRestartFromMenu": true,
   "ScaleUiBasedOnMonitor": true,
-  "GenerateMapWhenSurroundingEmpty": false,
   "ViewRatio": 2000,
   "DefaultViewHeight": 6656,
   "MinViewHeight": 4096,

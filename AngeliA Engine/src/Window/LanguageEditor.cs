@@ -49,7 +49,7 @@ public partial class LanguageEditor : WindowUI {
 
 	// Api
 	public static LanguageEditor Instance { get; private set; }
-	public string LanguageRoot { get; private set; } = "";
+	public Project CurrentProject { get; private set; } = null;
 	public override string DefaultWindowName => "Language";
 
 	// Data
@@ -71,10 +71,21 @@ public partial class LanguageEditor : WindowUI {
 	public LanguageEditor () => Instance = this;
 
 
-	public void SetLanguageRoot (string newRoot) {
-		if (newRoot == LanguageRoot) return;
-		Load(newRoot);
-		LanguageRoot = newRoot;
+	public void SetCurrentProject (Project project) {
+		CurrentProject = project;
+		if (project == null) return;
+#if DEBUG
+		// Sync Engine >> Project
+		if (CurrentProject.IsEngineInternalProject) {
+			string from = Universe.BuiltIn.LanguageRoot;
+			if (Util.FolderExists(from)) {
+				string to = project.Universe.LanguageRoot;
+				Util.DeleteFolder(to);
+				Util.CopyFolder(from, to, false, true, true);
+			}
+		}
+#endif
+		Load(project.Universe.LanguageRoot);
 		ScrollY = 0;
 		SearchingText = string.Empty;
 	}
@@ -89,7 +100,7 @@ public partial class LanguageEditor : WindowUI {
 
 	public override void UpdateWindowUI () {
 
-		if (string.IsNullOrEmpty(LanguageRoot)) return;
+		if (CurrentProject == null) return;
 
 		Cursor.RequireCursor();
 
@@ -327,8 +338,10 @@ public partial class LanguageEditor : WindowUI {
 
 
 	public override void Save (bool forceSave = false) {
+		if (CurrentProject == null) return;
 		if (forceSave || IsDirty) CleanDirty();
-		if (Lines.Count == 0 || string.IsNullOrEmpty(LanguageRoot)) return;
+		string currentRoot = CurrentProject.Universe.LanguageRoot;
+		if (Lines.Count == 0 || string.IsNullOrEmpty(currentRoot)) return;
 		var list = new List<KeyValuePair<string, string>>();
 		for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
 			string lan = Languages[languageIndex];
@@ -337,8 +350,20 @@ public partial class LanguageEditor : WindowUI {
 				if (string.IsNullOrWhiteSpace(data.Key)) continue;
 				list.Add(new(data.Key, data.Value[languageIndex]));
 			}
-			LanguageUtil.SaveAllPairsToDisk(LanguageRoot, lan, list);
+			LanguageUtil.SaveAllPairsToDisk(currentRoot, lan, list);
 		}
+#if DEBUG
+		// Sync Project >> Engine
+		if (CurrentProject.IsEngineInternalProject) {
+			string from = currentRoot;
+			if (Util.FolderExists(from)) {
+				string to = Universe.BuiltIn.LanguageRoot;
+				Util.DeleteFolder(to);
+				Util.CopyFolder(from, to, false, true, true);
+				Language.SetLanguage(Language.CurrentLanguage);
+			}
+		}
+#endif
 	}
 
 

@@ -170,7 +170,7 @@ public partial class Engine {
 		for (int i = 0; i < engine.AllWindows.Length; i++) {
 			var win = engine.AllWindows[i];
 			win.OnActivated();
-			if (win is GameEditor) engine.RigMapEditorWindowIndex = i;
+			if (win is GameEditor) engine.RigGameEditorWindowIndex = i;
 			if (win is ConsoleWindow) engine.ConsoleWindowIndex = i;
 		}
 
@@ -475,8 +475,6 @@ public partial class Engine {
 
 	private void OnGUI_Engine () {
 
-		if (CurrentProject == null) return;
-
 		// Window
 		int barWidth = GetEngineLeftBarWidth(out int contentPadding);
 		var barRect = Renderer.CameraRect.Edge(Direction4.Left, barWidth);
@@ -513,6 +511,16 @@ public partial class Engine {
 
 				bool selecting = index == CurrentWindowIndex;
 				bool hovering = GUI.Enable && rect.Contains(mousePos);
+
+#if DEBUG
+				if (
+					CurrentProject.IsEngineInternalProject &&
+					window is not PixelEditor &&
+					window is not LanguageEditor
+				) {
+					continue;
+				}
+#endif
 
 				// Cursor
 				if (!selecting && hovering) Cursor.SetCursorAsHand();
@@ -858,7 +866,7 @@ public partial class Engine {
 		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
 
 		// Windows
-		LanguageEditor.Instance.SetLanguageRoot(CurrentProject.Universe.LanguageRoot);
+		LanguageEditor.Instance.SetCurrentProject(CurrentProject);
 		PixelEditor.Instance.SetCurrentProject(CurrentProject);
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		GameEditor.Instance.CleanDirty();
@@ -892,6 +900,12 @@ public partial class Engine {
 		RequireBackgroundBuildDate = 0;
 		HasCompileError = false;
 
+#if DEBUG
+		if (CurrentProject.IsEngineInternalProject) {
+			SetCurrentWindowIndex<PixelEditor>();
+		}
+#endif
+
 	}
 
 
@@ -924,7 +938,7 @@ public partial class Engine {
 				ui.Active = false;
 				ui.OnInactivated();
 			}
-			LanguageEditor.Instance.SetLanguageRoot("");
+			LanguageEditor.Instance.SetCurrentProject(null);
 			PixelEditor.Instance.SetCurrentProject(null);
 			ProjectEditor.Instance.SetCurrentProject(null);
 			GameEditor.Instance.CleanDirty();
@@ -955,7 +969,7 @@ public partial class Engine {
 	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
 		index = index.Clamp(0, AllWindows.Length - 1);
 		if (!forceChange && index == CurrentWindowIndex) return;
-		CurrentWindowRequireRigGame = index == RigMapEditorWindowIndex;
+		CurrentWindowRequireRigGame = index == RigGameEditorWindowIndex;
 		if (CurrentWindowRequireRigGame) {
 			// Rig Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();

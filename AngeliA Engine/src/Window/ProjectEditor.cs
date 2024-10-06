@@ -66,7 +66,6 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ALLOW_QUIT_MENU = ("Label.Project.AllowQuitFromMenu", "Allow Quit from Menu");
 	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
 	private static readonly LanguageCode LABEL_SCALE_UI_MONITOR = ("Label.Project.ScaleUiBasedOnMonitor", "Scale UI Based On Monitor Height");
-	private static readonly LanguageCode LABEL_GEN_MAP_EMPTY = ("Label.Project.GenerateMapEmpty", "Generate Map When Surrounding Empty");
 	private static readonly LanguageCode LABEL_BEHIND_PARA = ("Setting.BehindPara", "Behind Map Parallax");
 	private static readonly LanguageCode LABEL_BEHIND_TINT = ("Setting.BehindAlpha", "Behind Map Alpha");
 	private static readonly LanguageCode LABEL_VIEW_RATIO = ("Setting.ViewRatio", "View Ratio");
@@ -381,17 +380,6 @@ public class ProjectEditor : WindowUI {
 			SetDirty();
 		}
 		rect.SlideDown(padding);
-
-		// Generate Map When Surrounding Empty
-		if (info.UseProceduralMap) {
-			bool newGenMapEmpty = GUI.Toggle(rect, info.GenerateMapWhenSurroundingEmpty, LABEL_GEN_MAP_EMPTY, labelStyle: Skin.SmallLabel);
-			if (newGenMapEmpty != info.GenerateMapWhenSurroundingEmpty) {
-				info.GenerateMapWhenSurroundingEmpty = newGenMapEmpty;
-				RequireRecompileOnSave = true;
-				SetDirty();
-			}
-			rect.SlideDown(padding);
-		}
 
 		// Use Light Sys
 		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);

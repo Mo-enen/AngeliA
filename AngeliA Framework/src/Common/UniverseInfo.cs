@@ -16,7 +16,6 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public bool AllowQuitFromMenu = true;
 	public bool AllowRestartFromMenu = true;
 	public bool ScaleUiBasedOnMonitor = true;
-	public bool GenerateMapWhenSurroundingEmpty = false;
 	public int ViewRatio = 2000;
 	public int DefaultViewHeight = Const.CEL * 26;
 	public int MinViewHeight = Const.CEL * 16;

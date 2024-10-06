@@ -36,7 +36,7 @@ public partial class Engine {
 	private readonly RigTransceiver Transceiver = new(EngineUtil.RiggedExePath);
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
-	private int RigMapEditorWindowIndex = 0;
+	private int RigGameEditorWindowIndex = 0;
 	private long RequireBackgroundBuildDate = 0;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
@@ -164,12 +164,22 @@ public partial class Engine {
 	// GUI
 	private void OnGUI_RiggedGame () {
 
+#if DEBUG
+		// For Engine Internal Project
+		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
+			if (Transceiver.RigProcessRunning) {
+				Transceiver.Abort();
+			}
+			return;
+		}
+#endif
+
 		ConsoleWindow.Instance.HaveRunningRigGame = Transceiver.RigProcessRunning;
 		if (HasCompileError) return;
 
-		bool currentWindowRequireRigGame = CurrentWindowIndex == RigMapEditorWindowIndex || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
-		bool requireRigGameRender = CurrentWindowIndex == RigMapEditorWindowIndex;
-		bool requireRigInput = CurrentWindowIndex == RigMapEditorWindowIndex;
+		bool currentWindowRequireRigGame = CurrentWindowIndex == RigGameEditorWindowIndex || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
+		bool requireRigGameRender = CurrentWindowIndex == RigGameEditorWindowIndex;
+		bool requireRigInput = CurrentWindowIndex == RigGameEditorWindowIndex;
 
 		var rigEdt = GameEditor.Instance;
 		var pixEdt = PixelEditor.Instance;
@@ -309,13 +319,13 @@ public partial class Engine {
 					// Get Respond
 					Transceiver.Respond(
 						currentUniverse, sheetIndex,
-						CurrentWindowIndex == RigMapEditorWindowIndex,
+						CurrentWindowIndex == RigGameEditorWindowIndex,
 						!requireRigGameRender
 					);
 					rigEdt.RigGameSelectingPlayerID = resp.SelectingPlayerID;
 					rigEdt.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
 					rigEdt.HavingGamePlay = resp.GamePlaying;
-					if (CurrentWindowIndex == RigMapEditorWindowIndex) {
+					if (CurrentWindowIndex == RigGameEditorWindowIndex) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}
 				} else if (requireRigGameRender) {

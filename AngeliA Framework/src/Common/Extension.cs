@@ -278,6 +278,12 @@ public static class Extension {
 
 	// Coord
 	[MethodImpl(INLINE)] public static int ToUnit (this int globalPos) => globalPos.UDivide(Const.CEL);
+	[MethodImpl(INLINE)]
+	public static int ToUnit (this int globalPos, out int remainder) {
+		int result = globalPos.UDivide(Const.CEL);
+		remainder = globalPos.UMod(Const.CEL);
+		return result;
+	}
 	[MethodImpl(INLINE)] public static int ToGlobal (this int unitPos) => unitPos * Const.CEL;
 	[MethodImpl(INLINE)] public static int ToUnifyGlobal (this int globalPos) => globalPos.UDivide(Const.CEL) * Const.CEL;
 
@@ -285,34 +291,13 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static Int2 ToGlobal (this Int2 unitPos) => unitPos * Const.CEL;
 	[MethodImpl(INLINE)] public static Int2 ToUnifyGlobal (this Int2 globalPos) => globalPos.ToUnit().ToGlobal();
 
-	[MethodImpl(INLINE)]
-	public static Int3 ToUnit (this Int3 globalPos) => new(
-		globalPos.x.UDivide(Const.CEL),
-		globalPos.y.UDivide(Const.CEL),
-		globalPos.z
-	);
-	[MethodImpl(INLINE)]
-	public static Int3 ToGlobal (this Int3 unitPos) => new(
-		unitPos.x * Const.CEL,
-		unitPos.y * Const.CEL,
-		unitPos.z
-	);
-	[MethodImpl(INLINE)]
-	public static Int3 ToUnifyGlobal (this Int3 globalPos) => new(
-		globalPos.x.ToUnit().ToGlobal(),
-		globalPos.y.ToUnit().ToGlobal(),
-		globalPos.z
-	);
+	[MethodImpl(INLINE)] public static Int3 ToUnit (this Int3 globalPos) => new(globalPos.x.UDivide(Const.CEL), globalPos.y.UDivide(Const.CEL), globalPos.z);
+	[MethodImpl(INLINE)] public static Int3 ToGlobal (this Int3 unitPos) => new(unitPos.x * Const.CEL, unitPos.y * Const.CEL, unitPos.z);
+	[MethodImpl(INLINE)] public static Int3 ToUnifyGlobal (this Int3 globalPos) => new(globalPos.x.ToUnit().ToGlobal(), globalPos.y.ToUnit().ToGlobal(), globalPos.z);
 
 	[MethodImpl(INLINE)] public static IRect ToUnit (this IRect global) => global.UDivide(Const.CEL);
-	[MethodImpl(INLINE)]
-	public static IRect ToGlobal (this IRect unit) => new(
-		unit.x * Const.CEL,
-		unit.y * Const.CEL,
-		unit.width * Const.CEL,
-		unit.height * Const.CEL
-	);
-	
+	[MethodImpl(INLINE)] public static IRect ToGlobal (this IRect unit) => new(unit.x * Const.CEL, unit.y * Const.CEL, unit.width * Const.CEL, unit.height * Const.CEL);
+
 	// Vector
 	[MethodImpl(INLINE)]
 	public static void Clamp (this ref Int2 v, int minX, int minY, int maxX, int maxY) {
@@ -336,14 +321,8 @@ public static class Extension {
 		return v;
 	}
 	[MethodImpl(INLINE)] public static Int3 ToVector3Int (this Int2 v, int z) => new(v.x, v.y, z);
-	[MethodImpl(INLINE)]
-	public static Int2 MoveTowards (this Int2 v, Int2 target, int delta) => new(
-		v.x.MoveTowards(target.x, delta), v.y.MoveTowards(target.y, delta)
-	);
-	[MethodImpl(INLINE)]
-	public static Int2 MoveTowards (this Int2 v, Int2 target, Int2 delta) => new(
-		v.x.MoveTowards(target.x, delta.x), v.y.MoveTowards(target.y, delta.y)
-	);
+	[MethodImpl(INLINE)] public static Int2 MoveTowards (this Int2 v, Int2 target, int delta) => new(v.x.MoveTowards(target.x, delta), v.y.MoveTowards(target.y, delta));
+	[MethodImpl(INLINE)] public static Int2 MoveTowards (this Int2 v, Int2 target, Int2 delta) => new(v.x.MoveTowards(target.x, delta.x), v.y.MoveTowards(target.y, delta.y));
 	[MethodImpl(INLINE)] public static Int2 Shift (this Int2 v, int x, int y) => new(v.x + x, v.y + y);
 	[MethodImpl(INLINE)] public static Int2 ShiftX (this Int2 v, int x) => new(v.x + x, v.y);
 	[MethodImpl(INLINE)] public static Int2 ShiftY (this Int2 v, int y) => new(v.x, v.y + y);
@@ -357,21 +336,9 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static bool Inside01 (this Float2 v) => Inside(v, 0f, 1f, 0f, 1f);
 	[MethodImpl(INLINE)] public static bool Inside (this Float2 v, Float2 min, Float2 max) => Inside(v, min.x, max.x, min.y, max.y);
 	[MethodImpl(INLINE)] public static bool Inside (this Float2 v, float left, float right, float down, float up) => v.x >= left && v.x <= right && v.y >= down && v.y <= up;
-	[MethodImpl(INLINE)]
-	public static Int2 RoundToInt (this Float2 v) => new(
-		Util.RoundToInt(v.x),
-		Util.RoundToInt(v.y)
-	);
-	[MethodImpl(INLINE)]
-	public static Int2 CeilToInt (this Float2 v) => new(
-		Util.CeilToInt(v.x),
-		Util.CeilToInt(v.y)
-	);
-	[MethodImpl(INLINE)]
-	public static Int2 FloorToInt (this Float2 v) => new(
-		Util.FloorToInt(v.x),
-		Util.FloorToInt(v.y)
-	);
+	[MethodImpl(INLINE)] public static Int2 RoundToInt (this Float2 v) => new(Util.RoundToInt(v.x), Util.RoundToInt(v.y));
+	[MethodImpl(INLINE)] public static Int2 CeilToInt (this Float2 v) => new(Util.CeilToInt(v.x), Util.CeilToInt(v.y));
+	[MethodImpl(INLINE)] public static Int2 FloorToInt (this Float2 v) => new(Util.FloorToInt(v.x), Util.FloorToInt(v.y));
 	[MethodImpl(INLINE)] public static bool AlmostZero (this Float4 value) => value.x.AlmostZero() && value.y.AlmostZero() && value.z.AlmostZero() && value.w.AlmostZero();
 
 	public static Float3 Rotate (this Float3 vector, float angle) {
