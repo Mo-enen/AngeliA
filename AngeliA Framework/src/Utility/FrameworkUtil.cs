@@ -21,6 +21,16 @@ public static class FrameworkUtil {
 		Color32.BLUE,
 		Color32.GREY_128,
 	];
+	private static readonly int[] ITEM_TYPE_ICONS = [
+		BuiltInSprite.ITEM_ICON_WEAPON,
+		BuiltInSprite.ITEM_ICON_ARMOR,
+		BuiltInSprite.ITEM_ICON_HELMET,
+		BuiltInSprite.ITEM_ICON_SHOES,
+		BuiltInSprite.ITEM_ICON_GLOVES,
+		BuiltInSprite.ITEM_ICON_JEWELRY,
+		BuiltInSprite.ITEM_ICON_FOOD,
+		BuiltInSprite.ITEM_ICON_ITEM,
+	];
 
 
 	// Drawing
@@ -362,6 +372,19 @@ public static class FrameworkUtil {
 				z
 			);
 		}
+	}
+
+
+	public static int GetItemTypeIcon (int itemID) {
+		int typeIcon = ITEM_TYPE_ICONS[^1];
+		if (ItemSystem.IsEquipment(itemID, out var equipmentType)) {
+			// Equipment
+			typeIcon = ITEM_TYPE_ICONS[(int)equipmentType];
+		} else if (ItemSystem.IsFood(itemID)) {
+			// Food
+			typeIcon = ITEM_TYPE_ICONS[^2];
+		}
+		return typeIcon;
 	}
 
 

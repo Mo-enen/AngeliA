@@ -255,10 +255,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		int invCapacity = Inventory.GetInventoryCapacity(TargetCharacter.InventoryID);
 		TargetCharacter.ResetInventoryUpdate(invCapacity);
 		for (int i = 0; i < invCapacity; i++) {
-			int id = Inventory.GetItemAt(TargetCharacter.InventoryID, i);
+			int id = Inventory.GetItemAt(TargetCharacter.InventoryID, i, out int stackCount);
 			var item = id != 0 ? ItemSystem.GetItem(id) : null;
 			if (item == null || !item.CheckUpdateAvailable(TargetCharacter.TypeID)) continue;
-			item.PoseAnimationUpdate_FromInventory(TargetCharacter);
+			item.PoseAnimationUpdate_FromInventory(TargetCharacter, stackCount);
 		}
 	}
 

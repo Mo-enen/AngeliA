@@ -52,16 +52,6 @@ public static class ItemSystem {
 
 	// Const
 	private const string UNLOCK_NAME = "UnlockedItem";
-	private static readonly int[] ITEM_TYPE_ICONS = [
-		BuiltInSprite.ITEM_ICON_WEAPON,
-		BuiltInSprite.ITEM_ICON_ARMOR,
-		BuiltInSprite.ITEM_ICON_HELMET,
-		BuiltInSprite.ITEM_ICON_SHOES,
-		BuiltInSprite.ITEM_ICON_GLOVES,
-		BuiltInSprite.ITEM_ICON_JEWELRY,
-		BuiltInSprite.ITEM_ICON_FOOD,
-		BuiltInSprite.ITEM_ICON_ITEM,
-	];
 
 	// Api
 	public static bool ItemPoolReady { get; private set; } = false;
@@ -236,19 +226,6 @@ public static class ItemSystem {
 	public static bool CanUseItem (int id, Entity target) {
 		var item = GetItem(id);
 		return item != null && item.CanUse(target);
-	}
-
-
-	public static int GetItemTypeIcon (int itemID) {
-		int typeIcon = ITEM_TYPE_ICONS[^1];
-		if (IsEquipment(itemID, out var equipmentType)) {
-			// Equipment
-			typeIcon = ITEM_TYPE_ICONS[(int)equipmentType];
-		} else if (IsFood(itemID)) {
-			// Food
-			typeIcon = ITEM_TYPE_ICONS[^2];
-		}
-		return typeIcon;
 	}
 
 

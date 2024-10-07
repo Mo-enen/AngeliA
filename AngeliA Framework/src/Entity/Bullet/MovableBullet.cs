@@ -60,6 +60,12 @@ public abstract class MovableBullet : Bullet {
 
 		if (!Active) return;
 
+		// Out of Range Check
+		if (!Stage.SpawnRect.Overlaps(Rect)) {
+			Active = false;
+			return;
+		}
+
 		HitStartX = X;
 		HitStartY = Y;
 
@@ -81,12 +87,6 @@ public abstract class MovableBullet : Bullet {
 
 		// Hit Check
 		MovableHitCheck();
-
-		// Out of Range Check
-		if (!Stage.SpawnRect.Overlaps(Rect)) {
-			Active = false;
-			return;
-		}
 
 		// Oneway Check
 		var hits = Physics.OverlapAll(EnvironmentMask, Rect, out int count, Sender, OperationMode.TriggerOnly);

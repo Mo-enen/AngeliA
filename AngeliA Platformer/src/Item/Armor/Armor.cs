@@ -122,8 +122,8 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	}
 
 
-	public override bool TryRepair (Entity holder) {
-		base.TryRepair(holder);
+	public override bool TryRepairEquipment (Entity holder) {
+		base.TryRepairEquipment(holder);
 		if ((this as IProgressiveItem).NextItemID == 0) return false;
 		foreach (int materialID in RepairMaterialsID) {
 			if (RepairArmor(holder, materialID)) {

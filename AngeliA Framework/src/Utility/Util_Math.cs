@@ -76,102 +76,71 @@ public static partial class Util {
 	}
 
 
-	public static bool Intersect_SegmentSegment (Int2 a0, Int2 a1, Int2 b0, Int2 b1, out Int2 intersection) {
-		intersection = default;
+	public static Float2? SegmentIntersect (Float2 a1, Float2 a2, Float2 b1, Float2 b2) {
+		Float2 b = a2 - a1;
+		Float2 d = b2 - b1;
+		float bDotDPerp = b.x * d.y - b.y * d.x;
 
-		var qp = b0 - a0;
-		var r = a1 - a0;
-		var s = b1 - b0;
-		var rs = Cross(r, s);
-		var qpr = Cross(qp, r);
-		var qps = Cross(qp, s);
+		// if b dot d == 0, it means the lines are parallel so have infinite intersection points
+		if (bDotDPerp == 0)
+			return null;
 
-		if (rs == 0 && qpr == 0) return false;
-		if (rs == 0 && qpr != 0) return false;
-		if (
-			rs != 0 &&
-			0f <= qps * rs && (rs > 0 ? qps <= rs : qps >= rs) &&
-			0f <= qpr * rs && (rs > 0 ? qpr <= rs : qpr >= rs)
-		) {
-			intersection = a0 + qps * r / rs;
-			return true;
+		Float2 c = b1 - a1;
+		var t = (c.x * d.y - c.y * d.x) / bDotDPerp;
+		if (t < 0f || t > 1f) {
+			return null;
 		}
 
-		return false;
+		var u = (c.x * b.y - c.y * b.x) / bDotDPerp;
+		if (u < 0f || u > 1f) {
+			return null;
+		}
 
-		static int Cross (Int2 a, Int2 b) => a.x * b.y - a.y * b.x;
+		return a1 + t * b;
 	}
 
 
-	public static int Intersect_SegmentRect (Int2 a0, Int2 a1, IRect rect, out Int2 intersection0, out Int2 intersection1) => Intersect_SegmentRect(a0, a1, rect, out intersection0, out intersection1, out _, out _);
+	public static (Float2? intersect0, Float2? intersect1) SegmentRectIntersect (Float2 a0, Float2 a1, FRect rect) {
+		Float2? inter0;
+		Float2? inter1 = null;
+		var tl = rect.TopLeft();
+		var tr = rect.TopRight();
+		var bl = rect.BottomLeft();
+		var br = rect.BottomRight();
 
+		inter0 = SegmentIntersect(a0, a1, tl, tr);
 
-	public static int Intersect_SegmentRect (Int2 a0, Int2 a1, IRect rect, out Int2 intersection0, out Int2 intersection1, out Int2 normalDirection0, out Int2 normalDirection1) {
-		intersection0 = default;
-		intersection1 = default;
-		int interCount = 0;
-		normalDirection0 = default;
-		normalDirection1 = default;
-
-		// U
-		if (Intersect_SegmentSegment(
-			a0, a1, new Int2(rect.xMin, rect.yMax), new Int2(rect.xMax, rect.yMax),
-			out var inter
-		)) {
-			intersection0 = inter;
-			normalDirection0 = Int2.up;
-			interCount++;
-		}
-
-		// D
-		if (Intersect_SegmentSegment(
-			a0, a1, new Int2(rect.xMin, rect.yMin), new Int2(rect.xMax, rect.yMin),
-			out inter
-		)) {
-			if (interCount == 0) {
-				intersection0 = inter;
-				normalDirection0 = Int2.down;
-				interCount++;
+		var inter = SegmentIntersect(a0, a1, bl, br);
+		if (inter.HasValue) {
+			if (inter0.HasValue) {
+				inter1 = inter;
+				return (inter0, inter1);
 			} else {
-				intersection1 = inter;
-				normalDirection1 = Int2.down;
-				return 2;
+				inter0 = inter;
 			}
 		}
 
-		// L 
-		if (Intersect_SegmentSegment(
-			a0, a1, new Int2(rect.xMin, rect.yMin), new Int2(rect.xMin, rect.yMax),
-			out inter
-		)) {
-			if (interCount == 0) {
-				intersection0 = inter;
-				normalDirection0 = Int2.left;
-				interCount++;
+		inter = SegmentIntersect(a0, a1, bl, tl);
+		if (inter.HasValue) {
+			if (inter0.HasValue) {
+				inter1 = inter;
+				return (inter0, inter1);
 			} else {
-				intersection1 = inter;
-				normalDirection1 = Int2.left;
-				return 2;
+				inter0 = inter;
 			}
 		}
 
-		// R
-		if (Intersect_SegmentSegment(
-			a0, a1, new Int2(rect.xMax, rect.yMin), new Int2(rect.xMax, rect.yMax),
-			out inter
-		)) {
-			if (interCount == 0) {
-				intersection0 = inter;
-				normalDirection0 = Int2.right;
-				interCount++;
+		inter = SegmentIntersect(a0, a1, br, tr);
+		if (inter.HasValue) {
+			if (inter0.HasValue) {
+				inter1 = inter;
+				return (inter0, inter1);
 			} else {
-				intersection1 = inter;
-				normalDirection1 = Int2.right;
-				return 2;
+				inter0 = inter;
 			}
 		}
 
-		return interCount;
+		return (inter0, inter1);
 	}
 
 
@@ -295,7 +264,7 @@ public static partial class Util {
 		bool removeMidX = width % 2 == 0;
 		bool removeMidY = height % 2 == 0;
 
-		static IRect FixRect (IRect rect, bool removeMidX, bool removeMidY, int centerX, int centerY) {
+		static IRect FixRect (IRect rect, bool removeMidX, bool removeMidY, int centerY) {
 			// Fix X
 			if (removeMidX) {
 				rect.width--;
@@ -325,7 +294,7 @@ public static partial class Util {
 		long d2xt = 2 * b2, d2yt = 2 * a2;
 
 		if (radiusY == 0) {
-			yield return FixRect(new IRect(centerX - radiusX, centerY, 2 * radiusX + 1, 1), removeMidX, removeMidY, centerX, centerY);
+			yield return FixRect(new IRect(centerX - radiusX, centerY, 2 * radiusX + 1, 1), removeMidX, removeMidY, centerY);
 			yield break;
 		}
 
@@ -335,12 +304,12 @@ public static partial class Util {
 				if (_height == 1) {
 
 				} else if (ry * 2 + 1 > (_height - 1) * 2) {
-					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height - 1), removeMidX, removeMidY, centerX, centerY);
-					yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, 1 - _height), removeMidX, removeMidY, centerX, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height - 1), removeMidX, removeMidY, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, 1 - _height), removeMidX, removeMidY, centerY);
 					ry -= _height - 1;
 					_height = 1;
 				} else {
-					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerX, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerY);
 					ry -= ry;
 					_height = 1;
 				}
@@ -360,10 +329,10 @@ public static partial class Util {
 				_height++;
 			} else {
 				if (ry * 2 + 1 > _height * 2) {
-					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height), removeMidX, removeMidY, centerX, centerY);
-					yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, -_height), removeMidX, removeMidY, centerX, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height), removeMidX, removeMidY, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, -_height), removeMidX, removeMidY, centerY);
 				} else {
-					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerX, centerY);
+					yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerY);
 				}
 				// incX
 				x++;
@@ -382,10 +351,10 @@ public static partial class Util {
 		}
 
 		if (ry > _height) {
-			yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height), removeMidX, removeMidY, centerX, centerY);
-			yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, -_height), removeMidX, removeMidY, centerX, centerY);
+			yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, _height), removeMidX, removeMidY, centerY);
+			yield return FixRect(new IRect(centerX - rx, centerY + ry + 1, _width, -_height), removeMidX, removeMidY, centerY);
 		} else {
-			yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerX, centerY);
+			yield return FixRect(new IRect(centerX - rx, centerY - ry, _width, ry * 2 + 1), removeMidX, removeMidY, centerY);
 		}
 
 	}

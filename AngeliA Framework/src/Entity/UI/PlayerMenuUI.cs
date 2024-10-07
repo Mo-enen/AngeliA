@@ -214,7 +214,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Type Icon
 		Renderer.Draw(
-			ItemSystem.GetItemTypeIcon(itemID),
+			FrameworkUtil.GetItemTypeIcon(itemID),
 			new IRect(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight), Color32.ORANGE_BETTER, int.MinValue + 3
 		);
 

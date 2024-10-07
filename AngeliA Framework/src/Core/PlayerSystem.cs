@@ -581,6 +581,7 @@ public static class PlayerSystem {
 		target.Team = Const.TEAM_PLAYER;
 		target.AttackTargetTeam = Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 		target.DespawnAfterPassoutDelay = -1;
+		target.ForceStayOnStage();
 		SelectingPlayerID.Value = target.TypeID;
 		LockInputFrame = -1;
 		TargetActionEntity = null;

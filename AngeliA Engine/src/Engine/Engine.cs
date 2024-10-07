@@ -811,6 +811,11 @@ public partial class Engine {
 		}
 
 		// Rebuild
+#if DEBUG
+		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
+			RequireBackgroundBuildDate = 0;
+		}
+#endif
 		if (RequireBackgroundBuildDate > 0) {
 			Transceiver.Abort();
 			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
@@ -896,15 +901,17 @@ public partial class Engine {
 
 		// Rebuild
 		Util.DeleteFolder(CurrentProject.BuildPath);
-		EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 		RequireBackgroundBuildDate = 0;
 		HasCompileError = false;
 
 #if DEBUG
 		if (CurrentProject.IsEngineInternalProject) {
 			SetCurrentWindowIndex<PixelEditor>();
+			return;
 		}
 #endif
+
+		EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 
 	}
 
@@ -947,13 +954,16 @@ public partial class Engine {
 			PackageManager.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
+			Instance.Transceiver.Abort();
 			ReloadAllProjectIconsForHub();
 		}
 	}
 
 
 	private bool CheckAnyEditorDirty () {
-		foreach (var window in AllWindows) if (window.IsDirty) return true;
+		foreach (var window in AllWindows) {
+			if (window is not GameEditor && window.IsDirty) return true;
+		}
 		return false;
 	}
 

@@ -36,18 +36,18 @@ public abstract class Item : IMapItem {
 	}
 
 	// Inventory
-	public virtual void BeforeItemUpdate_FromInventory (Entity holder) { }
-	public virtual void OnItemUpdate_FromInventory (Entity holder) { }
-	public virtual void PoseAnimationUpdate_FromInventory (Entity holder) { }
-	public virtual void OnTakeDamage_FromInventory (Entity holder, Entity sender, ref int damage) { }
+	public virtual void BeforeItemUpdate_FromInventory (Entity holder, int stackCount) { }
+	public virtual void OnItemUpdate_FromInventory (Entity holder, int stackCount) { }
+	public virtual void PoseAnimationUpdate_FromInventory (Entity holder, int stackCount) { }
+	public virtual void OnTakeDamage_FromInventory (Entity holder, int stackCount, Entity sender, ref int damage) { }
 
 	// Equipment
 	public virtual void BeforeItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void OnItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void PoseAnimationUpdate_FromEquipment (Entity holder) { }
 	public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) { }
-	public virtual void OnCharacterAttack (Character character, Bullet bullet) { }
-	public virtual bool TryRepair (Entity holder) => false;
+	public virtual void OnCharacterAttack_FromEquipment (Character character, Bullet bullet) { }
+	public virtual bool TryRepairEquipment (Entity holder) => false;
 
 	// Callback
 	public static void InvokeItemLost (Character holder, int itemID) => OnItemLost?.Invoke(holder, itemID);

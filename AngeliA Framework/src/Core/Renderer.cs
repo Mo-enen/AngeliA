@@ -147,6 +147,7 @@ public static class Renderer {
 			LoadMainSheet();
 			Util.DeleteFolder(Universe.BuiltIn.SlotCharacterRenderingConfigRoot);
 			PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet();
+			Debug.Log("Artwork sheet reloaded from file.");
 		}
 	}
 #endif

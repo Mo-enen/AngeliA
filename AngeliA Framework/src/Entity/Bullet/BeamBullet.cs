@@ -41,10 +41,9 @@ public abstract class BeamBullet : MovableBullet {
 		Height = Const.HALF * 2 / 3;
 	}
 
-
 	public override void LateUpdate () {
 
-		if (!Active || BeamRendered) return;
+		if (BeamRendered) return;
 		BeamRendered = true;
 
 		// Render Beam
@@ -95,8 +94,8 @@ public abstract class BeamBullet : MovableBullet {
 			int len = h / Const.CEL;
 			for (int i = 0; i < len; i++) {
 				LightingSystem.Illuminate(
-					(x + i * (endX - x) / (len - 1)).ToUnit(),
-					(y + i * (endY - y) / (len - 1)).ToUnit(),
+					(x + i * (endX - x) / (len)).ToUnit(),
+					(y + i * (endY - y) / (len)).ToUnit(),
 					IllumanteUnitRadius, illuAmount
 				);
 			}

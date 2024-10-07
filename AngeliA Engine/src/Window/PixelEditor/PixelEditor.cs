@@ -900,6 +900,7 @@ public partial class PixelEditor : WindowUI {
 			if (builtInSheet.LoadFromDisk(Util.CombinePaths(Universe.BuiltIn.SheetPath))) {
 				int engineBuiltInIndex = builtInSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
 				if (engineBuiltInIndex >= 0) {
+					// Sync Pixel Editor Sheet
 					builtInSheet.RemoveAllAtlasAndAllSpritesInsideExcept(engineBuiltInIndex);
 					int builtInIndex = Sheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
 					if (builtInIndex >= 0) {
@@ -910,6 +911,9 @@ public partial class PixelEditor : WindowUI {
 					if (builtInIndex > 0) {
 						Sheet.MoveAtlas(builtInIndex, 0);
 					}
+					// Sync Game Sheet
+					Sheet.SaveToDisk(project.Universe.SheetPath);
+					Util.SetFileModifyDate(project.Universe.SheetPath, System.DateTime.Now.ToFileTime());
 				}
 			}
 		}

@@ -78,6 +78,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	public int AttackTargetTeam { get; set; } = Const.TEAM_ALL;
 	public int DespawnAfterPassoutDelay { get; set; } = 60;
 	public int InventoryID { get; private set; }
+	public int RenderingCellIndex { get; private set; }
 
 	// Behaviour
 	public CharacterMovement Movement;
@@ -251,7 +252,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	public override void FirstUpdate () {
 
 		// Force Stay on Stage Check
-		if (Game.GlobalFrame > ForceStayFrame && (Stage.ViewZ != PrevZ || !Stage.SpawnRect.Overlaps(Rect))) {
+		if (
+			Game.GlobalFrame > ForceStayFrame &&
+			(Stage.ViewZ != PrevZ || !Stage.SpawnRect.Expand(Const.CEL).Overlaps(GlobalBounds))
+		) {
 			// Leave Stage
 			Active = false;
 			return;
@@ -305,10 +309,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 			// Inventory
 			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				int id = Inventory.GetItemAt(InventoryID, i);
+				int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
 				var item = id != 0 ? ItemSystem.GetItem(id) : null;
 				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-				item.BeforeItemUpdate_FromInventory(this);
+				item.BeforeItemUpdate_FromInventory(this, stackCount);
 			}
 
 			// Equipping
@@ -461,7 +465,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			if (item == null) continue;
-			if (item.TryRepair(this)) break;
+			if (item.TryRepairEquipment(this)) break;
 		}
 	}
 
@@ -485,9 +489,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		bool blinking = Health.IsInvincible && !Health.TakingDamage && (Game.GlobalFrame - Health.InvincibleEndFrame).UMod(8) < 4;
 		if (blinking) return;
 
-		int oldLayerIndex = Renderer.CurrentLayerIndex;
 		bool colorFlash = Health.TakingDamage && Health.HP > 0 && (Game.GlobalFrame - Health.LastDamageFrame).UMod(8) < 4;
-		if (colorFlash) Renderer.SetLayerToColor();
+		RenderingCellIndex = colorFlash ? -1 : Renderer.GetUsedCellCount(RenderLayer.DEFAULT); ;
+		using var _ = new LayerScope(colorFlash ? RenderLayer.COLOR : RenderLayer.DEFAULT);
 		int cellIndexStart = Renderer.GetUsedCellCount();
 
 		// Render
@@ -530,8 +534,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 			}
 		}
 
-		// Final
-		Renderer.SetLayer(oldLayerIndex);
 	}
 
 
@@ -591,10 +593,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 			// Inventory
 			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				int id = Inventory.GetItemAt(InventoryID, i);
+				int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
 				var item = id != 0 ? ItemSystem.GetItem(id) : null;
 				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-				item.OnItemUpdate_FromInventory(this);
+				item.OnItemUpdate_FromInventory(this, stackCount);
 			}
 
 			// Equipping
@@ -606,7 +608,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 				if (item is Weapon weapon) {
 					if (attackLocalFrame == weapon.BulletDelayFrame) {
 						var bullet = weapon.SpawnBullet(this);
-						item.OnCharacterAttack(this, bullet);
+						item.OnCharacterAttack_FromEquipment(this, bullet);
 						Buff.ApplyOnAttack(bullet);
 					}
 				}
@@ -720,10 +722,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		int invCapacity = Inventory.GetInventoryCapacity(InventoryID);
 		ResetInventoryUpdate(invCapacity);
 		for (int i = 0; i < invCapacity && damage > 0; i++) {
-			int id = Inventory.GetItemAt(InventoryID, i);
+			int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
 			var item = id != 0 ? ItemSystem.GetItem(id) : null;
 			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-			item.OnTakeDamage_FromInventory(this, sender, ref damage);
+			item.OnTakeDamage_FromInventory(this, stackCount, sender, ref damage);
 		}
 
 		// Deal Damage
