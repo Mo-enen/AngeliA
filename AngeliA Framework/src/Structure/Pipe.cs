@@ -2,7 +2,7 @@
 
 namespace AngeliA;
 
-public class Pipe<T> {
+public class Pipe<T> (int capacity = 1024) {
 
 
 
@@ -11,33 +11,15 @@ public class Pipe<T> {
 
 
 	// Api
-	public int Capacity { get; init; } = 1024;
-	public int Length { get; private set; } = 0;
-	public bool IsFull => Length >= Capacity;
 	public T this[int index] {
 		get => Data[(Start + index) % Capacity];
 		set => Data[(Start + index) % Capacity] = value;
 	}
-
-	// Data
-	private T[] Data { get; init; }
-	private int Start = 0;
-
-
-	#endregion
-
-
-
-
-	#region --- MSG ---
-
-
-	public Pipe (int capacity = 1024) {
-		Capacity = capacity;
-		Data = new T[capacity];
-		Start = 0;
-		Length = 0;
-	}
+	public T[] Data { get; init; } = new T[capacity];
+	public int Capacity { get; init; } = capacity;
+	public int Start { get; private set; } = 0;
+	public int Length { get; private set; } = 0;
+	public bool IsFull => Length >= Capacity;
 
 
 	#endregion

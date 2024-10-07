@@ -7,13 +7,24 @@ namespace AngeliA;
 public static class CheatSystem {
 
 
-	// SUB
+
+	#region --- SUB ---
+
+
 	private class CheatAction {
 		public bool Enable;
 		public string Code;
 		public MethodInfo Action;
 		public object Param;
 	}
+
+
+	#endregion
+
+
+
+	#region --- VAR ---
+
 
 	// Const
 	private static readonly LanguageCode MatchingHint = ("Hint.Cheat.Match", "Press Enter to Perform Cheat Code");
@@ -25,11 +36,18 @@ public static class CheatSystem {
 	private static event System.Action OnCheatPerform;
 	private static bool Enable = false;
 	private static readonly Pipe<char> CheatInput = new(96);
-	private static readonly List<CheatAction> AllCheatActions = [];
-	private static int MatchingCheatIndex = -1;
+	private static readonly Dictionary<int, CheatAction> Pool = [];
+	private static int MatchingCheatID = 0;
 
 
-	// MSG
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
 	[OnGameInitialize(-256)]
 	internal static void OnGameInitialize () {
 		// Init Pool
@@ -42,16 +60,19 @@ public static class CheatSystem {
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
 				AddCheatAction(att.Code, method, att.Param);
 			}
+		} else {
+			Pool.Clear();
 		}
 	}
 
 
 	[OnGameUpdate]
 	internal static void OnGameUpdate () {
-		if (!Enable) return;
-		bool changed = false;
+
+		if (!Enable || Pool.Count == 0) return;
 
 		// Update Input
+		bool changed = false;
 		foreach (char c in Game.ForAllPressingCharsThisFrame()) {
 			if (!char.IsLetter(c) && !char.IsDigit(c)) continue;
 			if (CheatInput.Length == CheatInput.Capacity) {
@@ -63,49 +84,31 @@ public static class CheatSystem {
 
 		// Check for Cheats
 		if (changed && CheatInput.Length > 0) {
-			var span = AllCheatActions.GetSpan();
-			int len = span.Length;
-			bool anySuccess = false;
-			for (int i = 0; i < len; i++) {
-				try {
-					var action = span[i];
-					if (!action.Enable) continue;
-					string code = action.Code;
-					int codeLen = code.Length;
-					if (codeLen > CheatInput.Length) continue;
-					bool success = true;
-					// Check Cheat
-					for (int j = codeLen - 1; j >= 0; j--) {
-						char c = char.ToLower(code[j]);
-						if (c != CheatInput[codeLen - j - 1]) {
-							success = false;
-							break;
-						}
-					}
-					// Cheat Match
-					if (success) {
-						anySuccess = true;
-						MatchingCheatIndex = i;
-						break;
-					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
-			}
-			if (!anySuccess) {
-				MatchingCheatIndex = -1;
+			MatchingCheatID = 0;
+			int inputLen = CheatInput.Length;
+			for (int i = 1; i < inputLen; i++) {
+				int inputHash = CheatInput.Data.AngeReverseHash(CheatInput.Start, i);
+				if (Pool.ContainsKey(inputHash)) {
+					MatchingCheatID = inputHash;
+					break;
+				}
 			}
 		}
 
 		// Perform
-		if (MatchingCheatIndex >= 0 && Input.KeyboardDown(KeyboardKey.Enter)) {
-			var action = AllCheatActions[MatchingCheatIndex];
-			CurrentParam = action.Param;
-			var resultObj = action.Action.Invoke(null, null);
+		if (
+			MatchingCheatID != 0 &&
+			Input.KeyboardDown(KeyboardKey.Enter) &&
+			Pool.TryGetValue(MatchingCheatID, out var performingAction)
+		) {
+			CurrentParam = performingAction.Param;
+			var resultObj = performingAction.Action.Invoke(null, null);
 			CurrentParam = null;
 			if (resultObj is not bool performed || performed) {
 				OnCheatPerform?.Invoke();
 			}
 			CheatInput.Reset();
-			MatchingCheatIndex = -1;
+			MatchingCheatID = 0;
 		}
 
 	}
@@ -113,7 +116,8 @@ public static class CheatSystem {
 
 	[OnGameUpdateLater]
 	internal static void DrawMatchingHint () {
-		if (MatchingCheatIndex < 0) return;
+		if (MatchingCheatID == 0) return;
+		using var _ = new UILayerScope();
 		GUI.BackgroundLabel(
 			Renderer.CameraRect.CornerInside(Alignment.TopMid, GUI.Unify(400), GUI.Unify(200)).Shift(0, -GUI.Unify(20)),
 			MatchingHint,
@@ -124,34 +128,43 @@ public static class CheatSystem {
 	}
 
 
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
 	public static void AddCheatAction (string code, MethodInfo method, object param = null) {
-		if (!Enable) return;
-		AllCheatActions.Add(new CheatAction() {
-			Code = code,
+		code = code.ToLower();
+		Pool[code.AngeHash()] = new CheatAction() {
 			Action = method,
 			Param = param,
-		});
+			Enable = true,
+			Code = code,
+		};
 	}
 
 
 	public static void SetCheatCodeEnable (string code, bool enable) {
-		var span = AllCheatActions.GetSpan();
-		int len = span.Length;
-		for (int i = 0; i < len; i++) {
-			var cheat = span[i];
-			if (cheat.Code.Equals(code, System.StringComparison.OrdinalIgnoreCase)) {
-				cheat.Enable = enable;
-				break;
-			}
+		if (Pool.TryGetValue(code.ToLower().AngeHash(), out var data)) {
+			data.Enable = enable;
 		}
 	}
 
 
 	public static IEnumerable<string> ForAllCheatCodes () {
-		foreach (var cheat in AllCheatActions) {
-			yield return cheat.Code;
+		foreach (var (_, data) in Pool) {
+			yield return data.Code;
+			;
 		}
 	}
+
+
+	#endregion
+
+
 
 
 }

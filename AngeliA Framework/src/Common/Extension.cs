@@ -24,7 +24,7 @@ public static class Extension {
 
 	public static int AngeHash (this System.Type type) => type.AngeName().AngeHash();
 
-	public static int AngeHash (this string str, int avoid = 0) {
+	public static int AngeHash (this string str) {
 		const int p = 31;
 		const int m = 1837465129;
 		int hash_value = 0;
@@ -34,8 +34,39 @@ public static class Extension {
 			hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
 			p_pow = (p_pow * p) % m;
 		}
-		return hash_value == avoid ? avoid + 1 : hash_value;
+		return hash_value == 0 ? 1 : hash_value;
 	}
+
+	public static int AngeHash (this char[] arr, int start, int length) {
+		const int p = 31;
+		const int m = 1837465129;
+		int hash_value = 0;
+		int p_pow = 1;
+		int end = start + length;
+		int arrLen = arr.Length;
+		for (int i = start; i < end; i++) {
+			char c = arr[i % arrLen];
+			hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
+			p_pow = (p_pow * p) % m;
+		}
+		return hash_value == 0 ? 1 : hash_value;
+	}
+
+	public static int AngeReverseHash (this char[] arr, int start, int length) {
+		const int p = 31;
+		const int m = 1837465129;
+		int hash_value = 0;
+		int p_pow = 1;
+		int end = start + length;
+		int arrLen = arr.Length;
+		for (int i = end - 1; i >= start; i--) {
+			char c = arr[i % arrLen];
+			hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
+			p_pow = (p_pow * p) % m;
+		}
+		return hash_value == 0 ? 1 : hash_value;
+	}
+
 
 	// Misc
 	public static System.Span<T> GetSpan<T> (this List<T> list) => CollectionsMarshal.AsSpan(list);

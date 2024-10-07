@@ -87,12 +87,9 @@ public static class ItemSystem {
 	internal static void OnGameInitialize () {
 
 		if (Game.IsToolApplication) return;
+
 		var giveItemCheatInfo = typeof(ItemSystem).GetMethod(
 			nameof(GiveItemCheat),
-			BindingFlags.NonPublic | BindingFlags.Static
-		);
-		var fillItemCheatInfo = typeof(ItemSystem).GetMethod(
-			nameof(FillItemCheat),
 			BindingFlags.NonPublic | BindingFlags.Static
 		);
 
@@ -111,7 +108,6 @@ public static class ItemSystem {
 				item.MaxStackCount.GreaterOrEquel(1)
 			));
 			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
-			CheatSystem.AddCheatAction($"FillInventoryWith{angeName}", fillItemCheatInfo, id);
 		}
 
 		// Add Block Entity
@@ -127,7 +123,6 @@ public static class ItemSystem {
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
 			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
-			CheatSystem.AddCheatAction($"FillInventoryWith{angeName}", fillItemCheatInfo, id);
 		}
 
 		ItemPoolReady = true;
@@ -181,6 +176,10 @@ public static class ItemSystem {
 		BlockItemLoadedBefore = true;
 
 		// Add Block Items
+		var giveItemCheatInfo = typeof(ItemSystem).GetMethod(
+			nameof(GiveItemCheat),
+			BindingFlags.NonPublic | BindingFlags.Static
+		);
 		var span = sheet.Sprites.GetSpan();
 		int len = span.Length;
 		for (int i = 0; i < len; i++) {
@@ -201,6 +200,7 @@ public static class ItemSystem {
 				itemName,
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
+			CheatSystem.AddCheatAction($"Give{itemName.Replace(" ", "")}", giveItemCheatInfo, itemID);
 		}
 	}
 
@@ -263,28 +263,6 @@ public static class ItemSystem {
 		}
 		// Give
 		GiveItemToTarget(player, id, 1);
-	}
-
-
-	internal static void FillItemCheat () {
-		var player = PlayerSystem.Selecting;
-		if (player == null) return;
-		if (CheatSystem.CurrentParam is not int id) return;
-		if (!ItemPool.TryGetValue(id, out var data)) return;
-		// Unlock
-		if (!data.Unlocked) {
-			SetItemUnlocked(id, true);
-		}
-		// Give
-		GiveItemToTarget(player, id, 1);
-		int invCount = Inventory.GetInventoryCapacity(player.InventoryID);
-		for (int i = 0; i < invCount; i++) {
-			int _itemID = Inventory.GetItemAt(player.InventoryID, i, out int _count);
-			if (_itemID != 0 && _itemID != id && _count > 0) continue;
-			int maxCount = GetItemMaxStackCount(id);
-			if (maxCount <= 0) continue;
-			Inventory.SetItemAt(player.InventoryID, i, id, maxCount);
-		}
 	}
 
 
@@ -462,7 +440,12 @@ public static class ItemSystem {
 				int idC = com.ItemC != null ? com.ItemC.AngeHash() : 0;
 				int idD = com.ItemD != null ? com.ItemD.AngeHash() : 0;
 				var key = GetSortedCombination(idA, idB, idC, idD);
-				if (pool.ContainsKey(key)) continue;
+				if (pool.ContainsKey(key)) {
+#if DEBUG
+					Debug.Log($"Item Combination Collistion: \"{type.Name}\" & \"{pool[key].Result}\"");
+#endif
+					continue;
+				}
 				pool.Add(key, new CombinationData() {
 					Result = type.AngeHash(),
 					ResultCount = com.Count,
