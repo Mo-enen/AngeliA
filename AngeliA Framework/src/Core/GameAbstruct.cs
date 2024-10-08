@@ -264,9 +264,11 @@ public abstract partial class Game {
 	public static void DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) => Instance._DrawGizmosRect(rect, colorTL, colorTR, colorBL, colorBR);
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR);
 
-	public static void DrawGizmosTexture (IRect rect, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, inverse);
-	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, inverse);
-	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse);
+	public static void DrawGizmosTexture (IRect rect, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, Color32.WHITE, inverse);
+	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, Color32.WHITE, inverse);
+	public static void DrawGizmosTexture (IRect rect, object texture, Color32 tint, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, tint, inverse);
+	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, tint, inverse);
+	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse);
 
 	public static void DrawGizmosLine (int startX, int startY, int endX, int endY, int thickness, Color32 color) => Instance._DrawGizmosLine(startX, startY, endX, endY, thickness, color);
 	protected abstract void _DrawGizmosLine (int startX, int startY, int endX, int endY, int thickness, Color32 color);

@@ -79,18 +79,9 @@ public partial class PixelEditor {
 			case Tool.Rect:
 			case Tool.Circle:
 			case Tool.Line:
+			case Tool.Bucket:
 				// Paint
 				DraggingState = DragState.Paint;
-				break;
-
-			case Tool.Bucket:
-				// Bucket
-				if (HoveringSpriteStageIndex < 0) break;
-				if (Input.HoldingCtrl) {
-					ReplaceColorInSprite(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y, PaintingColor);
-				} else {
-					BucketPaintPixel(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y);
-				}
 				break;
 
 			case Tool.Select:
@@ -102,16 +93,16 @@ public partial class PixelEditor {
 					ClearSpriteSelection();
 					var oldSelectionRect = PixelSelectionPixelRect;
 					if (PixelBufferSize != Int2.zero && HoldingCtrl) {
-						TryApplyPixelBuffer();
+						TryApplyPixelBuffer(ignoreUndoStep: true);
 					}
 					if (PixelBufferSize == Int2.zero) {
-						SetSelectingPixelAsBuffer(removePixels: !HoldingCtrl);
+						SetSelectingPixelAsBuffer(removePixels: !HoldingCtrl, ignoreUndoStep: true);
 					}
 					PixelSelectionPixelRect = oldSelectionRect;
 				} else {
 					// Outside Pixel Selection
 					DraggingState = DragState.SelectPixel;
-					ClearPixelSelectionRect();
+					ClearPixelSelectionRect(ignoreUndoStep: true);
 				}
 				break;
 
@@ -199,41 +190,62 @@ public partial class PixelEditor {
 			case DragState.Paint:
 				// Paint
 				bool painted = false;
-				if (CurrentTool == Tool.Line) {
-					// Paint Line
-					var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
-					var endPixPoint = MousePixelPos;
-					foreach (var pixelRect in Util.DrawLineWithRect_DDA(
-						startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
-					)) {
-						PaintPixelRect(pixelRect, PaintingColor, holo: false, out painted);
-					}
-				} else if (CurrentTool == Tool.Rect) {
-					// Paint Rect
-					PaintPixelRect(DraggingPixelRect, PaintingColor, holo: HoldingAlt, out painted);
-				} else if (CurrentTool == Tool.Circle) {
-					// Paint Circle
-					if ((DraggingPixelRect.width >= 3 || DraggingPixelRect.height >= 3) && HoldingAlt) {
-						foreach (var point in Util.DrawHoloEllipse_Patrick(
-							DraggingPixelRect.x,
-							DraggingPixelRect.y,
-							DraggingPixelRect.width,
-							DraggingPixelRect.height
-						)) {
-							PaintPixelRect(new IRect(point, Int2.one), PaintingColor, holo: false, out painted);
-						}
-					} else {
-						foreach (var rect in Util.DrawFilledEllipse_Patrick(
-							DraggingPixelRect.x,
-							DraggingPixelRect.y,
-							DraggingPixelRect.width,
-							DraggingPixelRect.height
-						)) {
-							PaintPixelRect(rect, PaintingColor, holo: false, out painted);
-						}
-					}
 
+				switch (CurrentTool) {
+					case Tool.Rect:
+						// Paint Rect
+						PaintPixelRect(DraggingPixelRect, PaintingColor, holo: HoldingAlt, out painted);
+						break;
+					case Tool.Circle:
+						// Paint Circle
+						if ((DraggingPixelRect.width >= 3 || DraggingPixelRect.height >= 3) && HoldingAlt) {
+							foreach (var point in Util.DrawHoloEllipse_Patrick(
+								DraggingPixelRect.x,
+								DraggingPixelRect.y,
+								DraggingPixelRect.width,
+								DraggingPixelRect.height
+							)) {
+								PaintPixelRect(new IRect(point, Int2.one), PaintingColor, holo: false, out painted);
+							}
+						} else {
+							foreach (var rect in Util.DrawFilledEllipse_Patrick(
+								DraggingPixelRect.x,
+								DraggingPixelRect.y,
+								DraggingPixelRect.width,
+								DraggingPixelRect.height
+							)) {
+								PaintPixelRect(rect, PaintingColor, holo: false, out painted);
+							}
+						}
+						break;
+					case Tool.Line:
+						// Paint Line
+						var startPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
+						var endPixPoint = MousePixelPos;
+						foreach (var pixelRect in Util.DrawLineWithRect_DDA(
+							startPixPoint.x, startPixPoint.y, endPixPoint.x, endPixPoint.y
+						)) {
+							PaintPixelRect(pixelRect, PaintingColor, holo: false, out painted);
+						}
+						break;
+					case Tool.Bucket:
+						// Bucket
+						if (HoveringSpriteStageIndex >= 0) {
+							if (Input.HoldingCtrl) {
+								ReplaceColorInSprite(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y, PaintingColor);
+								painted = true;
+							} else {
+								var bucketStartPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
+								BucketPaintPixel(
+									HoveringSpriteStageIndex,
+									bucketStartPixPoint.x, bucketStartPixPoint.y,
+									MousePixelPos.x, MousePixelPos.y, out painted
+								);
+							}
+						}
+						break;
 				}
+				// Paint Finish
 				if (!painted) {
 					PaintFailedCount++;
 					if (PaintFailedCount >= 3) {
@@ -247,8 +259,9 @@ public partial class PixelEditor {
 
 			case DragState.SelectPixel:
 
-				ClearSpriteSelection();
-				ClearPixelSelectionRect();
+				Undo.GrowStep();
+				ClearSpriteSelection(ignoreUndoStep: true);
+				ClearPixelSelectionRect(ignoreUndoStep: true);
 				if (!DragChanged && DraggingPixelRect.width <= 1 && DraggingPixelRect.height <= 1) break;
 
 				// Select Pixel
@@ -265,7 +278,7 @@ public partial class PixelEditor {
 					if (DragChanged) {
 						DrawDottedFrame(Pixel_to_Stage(DraggingPixelRect), GizmosThickness);
 					}
-					ClearSpriteSelection();
+					ClearSpriteSelection(ignoreUndoStep: true);
 				}
 
 				break;
@@ -535,6 +548,22 @@ public partial class PixelEditor {
 				}
 				break;
 			}
+			case Tool.Bucket: {
+				// Bucket Gradient
+				var startPos = Pixel_to_Stage(MousePixelPos).RoundToInt().Shift(PixelStageSize / 2, PixelStageSize / 2);
+				var endPos = Pixel_to_Stage(Stage_to_Pixel(Input.MouseLeftDownGlobalPosition)).RoundToInt().Shift(PixelStageSize / 2, PixelStageSize / 2);
+				Game.DrawGizmosLine(
+					startPos.x, startPos.y,
+					endPos.x, endPos.y,
+					GizmosThickness * 3, Color32.BLACK
+				);
+				Game.DrawGizmosLine(
+					startPos.x, startPos.y,
+					endPos.x, endPos.y,
+					GizmosThickness, Color32.WHITE
+				);
+				break;
+			}
 		}
 	}
 
@@ -637,9 +666,9 @@ public partial class PixelEditor {
 	}
 
 
-	private void ClearSpriteSelection () {
+	private void ClearSpriteSelection (bool ignoreUndoStep = false) {
 		if (SelectingSpriteCount == 0) return;
-		TryApplySpriteInputFields();
+		TryApplySpriteInputFields(ignoreUndoStep: ignoreUndoStep);
 		int checkedCount = 0;
 		for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
 			var spData = StagedSprites[i];
@@ -814,18 +843,20 @@ public partial class PixelEditor {
 
 
 	// Pixel
-	private void ClearPixelSelectionRect () {
-		TryApplyPixelBuffer();
+	private void ClearPixelSelectionRect (bool ignoreUndoStep = false) {
+		TryApplyPixelBuffer(ignoreUndoStep);
 		PixelSelectionPixelRect = default;
 		PixelBufferSize = Int2.zero;
+		AdjustingColorF = new(1, 1, 1, 1);
 	}
 
 
-	private void SetSelectingPixelAsBuffer (bool removePixels) {
+	private void SetSelectingPixelAsBuffer (bool removePixels, bool ignoreUndoStep = false) {
+		AdjustingColorF = new(1, 1, 1, 1);
 		PixelBufferSize.x = PixelSelectionPixelRect.width.Clamp(0, MAX_SELECTION_SIZE);
 		PixelBufferSize.y = PixelSelectionPixelRect.height.Clamp(0, MAX_SELECTION_SIZE);
 		if (PixelSelectionPixelRect == default) return;
-		PixelToBuffer(PixelBuffer, PixelBufferSize, PixelSelectionPixelRect, removePixels);
+		PixelToBuffer(PixelBuffer, PixelBufferSize, PixelSelectionPixelRect, removePixels, ignoreUndoStep);
 		PixelSelectionPixelRect = default;
 		Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
 	}
@@ -928,6 +959,7 @@ public partial class PixelEditor {
 
 	private void TryApplyPixelBuffer (bool ignoreUndoStep = false) {
 		if (PixelBufferSize.Area <= 0 || PixelSelectionPixelRect == default) return;
+		var tint = AdjustingColorF.ToColor32();
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spData = StagedSprites[i];
 			var sprite = spData.Sprite;
@@ -947,7 +979,7 @@ public partial class PixelEditor {
 			}, ignoreUndoStep);
 			for (int y = d; y < u; y++) {
 				for (int x = l; x < r; x++) {
-					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)];
+					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)] * tint;
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					var oldPixel = sprite.Pixels[index];
 					var newPixel = Util.MergeColor_Editor(buffer, oldPixel);
@@ -1039,7 +1071,8 @@ public partial class PixelEditor {
 	}
 
 
-	private void BucketPaintPixel (int spriteIndex, int pixelX, int pixelY) {
+	private void BucketPaintPixel (int spriteIndex, int startPixelX, int startPixelY, int pixelX, int pixelY, out bool painted) {
+		painted = false;
 		if (spriteIndex < 0 || spriteIndex >= StagedSprites.Count) return;
 		var spData = StagedSprites[spriteIndex];
 		var sprite = spData.Sprite;
@@ -1047,6 +1080,8 @@ public partial class PixelEditor {
 		if (!pixelRect.Contains(pixelX, pixelY)) return;
 		int localX = pixelX - pixelRect.xMin;
 		int localY = pixelY - pixelRect.yMin;
+		int startLocalX = startPixelX - pixelRect.xMin;
+		int startLocalY = startPixelY - pixelRect.yMin;
 		var targetColor = sprite.Pixels[localY * pixelRect.width + localX];
 		if (targetColor.a == 255 && targetColor == PaintingColor) return;
 		if (PaintingColor.a == 0 && targetColor.a == 0) return;
@@ -1056,6 +1091,7 @@ public partial class PixelEditor {
 		BucketCacheHash.Add(new Int2(localX, localY));
 		int safeCount = pixelRect.width * pixelRect.height + 1;
 		bool erase = PaintingColor.a == 0;
+		bool gradient = startPixelX != pixelX || startPixelY != pixelY;
 		RegisterUndo(new PaintUndoItem() {
 			SpriteID = sprite.ID,
 		});
@@ -1063,8 +1099,37 @@ public partial class PixelEditor {
 			var pos = BucketCacheQueue.Dequeue();
 			int pixIndex = pos.y * pixelRect.width + pos.x;
 			var oldPixel = sprite.Pixels[pixIndex];
-			var newPixel = erase ? Color32.CLEAR : Util.MergeColor_Editor(PaintingColor, oldPixel);
+			// Perform Paint
+			Color32 newPixel;
+			if (gradient) {
+				// Gradient
+				Util.PointLine_Distance(
+					pos,
+					new(startLocalX + 0.5f, startLocalY + 0.5f),
+					new(localX + 0.5f, localY + 0.5f),
+					out var pointFoot
+				);
+				float lerp01 = (startPixelX - pixelX).Abs() > (startPixelY - pixelY).Abs() ?
+					Util.InverseLerpUnclamped(startLocalX + 0.5f, localX + 0.5f, pointFoot.x) :
+					Util.InverseLerpUnclamped(startLocalY + 0.5f, localY + 0.5f, pointFoot.y);
+				lerp01 = lerp01.Clamp01();
+				if (erase) {
+					newPixel = Color32.LerpUnclamped(Color32.CLEAR, oldPixel, lerp01);
+				} else {
+					var painting = Color32.LerpUnclamped(PaintingColor, Color32.CLEAR, lerp01);
+					newPixel = Util.MergeColor_Editor(painting, oldPixel);
+				}
+			} else {
+				// Not Gradient
+				if (erase) {
+					newPixel = Color32.CLEAR;
+				} else {
+					newPixel = Util.MergeColor_Editor(PaintingColor, oldPixel);
+				}
+			}
 			sprite.Pixels[pixIndex] = newPixel;
+			painted = true;
+			// Undo
 			RegisterUndo(new IndexedPixelUndoItem() {
 				LocalPixelIndex = pixIndex,
 				From = oldPixel,
@@ -1340,7 +1405,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void PixelToBuffer (Color32[] buffer, Int2 bufferSize, IRect pixelRange, bool removePixels) {
+	private void PixelToBuffer (Color32[] buffer, Int2 bufferSize, IRect pixelRange, bool removePixels, bool ignoreUndoStep = false) {
 
 		// Clear Buffer
 		for (int j = 0; j < bufferSize.y; j++) {
@@ -1366,7 +1431,7 @@ public partial class PixelEditor {
 			RegisterUndo(new PaintUndoItem() {
 				SpriteID = sprite.ID,
 				LocalPixelRect = localRect,
-			});
+			}, ignoreUndoStep);
 			for (int y = d; y < u; y++) {
 				for (int x = l; x < r; x++) {
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
@@ -1380,14 +1445,14 @@ public partial class PixelEditor {
 							From = oldPixel,
 							To = Color32.CLEAR,
 							LocalPixelIndex = index,
-						});
+						}, ignoreUndoStep);
 					}
 				}
 			}
 			RegisterUndo(new PaintUndoItem() {
 				SpriteID = sprite.ID,
 				LocalPixelRect = localRect,
-			});
+			}, ignoreUndoStep);
 			spData.PixelDirty = true;
 		}
 

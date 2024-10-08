@@ -120,6 +120,7 @@ public partial class PixelEditor {
 	private IRect RuleEditorRect = default;
 	private IRect CreateSpriteBigButtonRect = default;
 	private ColorF PaintingColorF = new(0, 0, 0, 0);
+	private ColorF AdjustingColorF = new(1, 1, 1, 1);
 	private int Contains9Pivots = 0b_00000000;
 
 
@@ -219,54 +220,7 @@ public partial class PixelEditor {
 			case Tool.Line:
 			case Tool.Circle:
 			case Tool.Bucket: {
-
-				// Color Field
-				rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
-				if (rect.width >= rect.height) {
-					// Color Field
-					var newColorF = GUI.HorizontalColorField(
-						PaintingColorF, rect,
-						stepped: false, alpha: true, folded: FoldingColorField
-					);
-					if (newColorF != PaintingColorF) {
-						PaintingColorF = newColorF;
-						PaintingColor = newColorF.ToColor32();
-						if (!FoldingColorField) ColorFieldCode = Util.ColorToHtml(PaintingColor);
-					}
-					// Code Field
-					if (!FoldingColorField) {
-						var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
-						rect = rect.Expand(0, codeFieldRect.width, 0, 0);
-						ColorFieldCode = GUI.SmallInputField(
-							10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
-						);
-						if (confirm) {
-							if (Util.HtmlToColor(ColorFieldCode, out var newColor)) {
-								PaintingColor = newColor;
-								PaintingColorF = newColor.ToColorF();
-							}
-							ColorFieldCode = Util.ColorToHtml(PaintingColor);
-						}
-					}
-					// Hovering / Click
-					if (rect.MouseInside()) {
-						if (FoldingColorField) {
-							Cursor.SetCursorAsHand();
-							if (Input.MouseLeftButtonDown) {
-								FoldingColorField = false;
-								ColorFieldCode = Util.ColorToHtml(PaintingColor);
-							}
-						} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
-							if (Input.MouseLeftButtonDown) FoldingColorField = true;
-							Cursor.SetCursorAsHand();
-						}
-					} else if (!FoldingColorField && Input.MouseLeftButtonDown) {
-						FoldingColorField = true;
-					}
-					// Final
-					RequireTooltip(rect, TIP_PAINTING_COLOR);
-					rect.SlideRight(padding);
-				}
+				Update_GeneralToolbar_PickingColor(toolbarRect, ref rect);
 				break;
 			}
 
@@ -304,12 +258,97 @@ public partial class PixelEditor {
 				RequireTooltip(rect, TIP_OPER_ROT_CC);
 				rect.SlideRight(padding);
 
+				// Color Adjustment
+				Update_GeneralToolbar_ColorAdjustment(toolbarRect, ref rect);
+
 				break;
 			}
 		}
 	}
 
 
+	private void Update_GeneralToolbar_PickingColor (IRect toolbarRect, ref IRect rect) {
+
+		rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
+		if (rect.width < rect.height) return;
+
+		// Color Field
+		int padding = Unify(4);
+		var newColorF = GUI.HorizontalColorField(
+			PaintingColorF, rect,
+			stepped: false, alpha: true, folded: FoldingColorField
+		);
+		if (newColorF != PaintingColorF) {
+			PaintingColorF = newColorF;
+			PaintingColor = newColorF.ToColor32();
+			if (!FoldingColorField) ColorFieldCode = Util.ColorToHtml(PaintingColor);
+		}
+
+		// Code Field
+		if (!FoldingColorField) {
+			var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
+			rect = rect.Expand(0, codeFieldRect.width, 0, 0);
+			ColorFieldCode = GUI.SmallInputField(
+				10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
+			);
+			if (confirm) {
+				if (Util.HtmlToColor(ColorFieldCode, out var newColor)) {
+					PaintingColor = newColor;
+					PaintingColorF = newColor.ToColorF();
+				}
+				ColorFieldCode = Util.ColorToHtml(PaintingColor);
+			}
+		}
+
+		// Hovering / Click
+		if (rect.MouseInside()) {
+			if (FoldingColorField) {
+				Cursor.SetCursorAsHand();
+				if (Input.MouseLeftButtonDown) {
+					FoldingColorField = false;
+					ColorFieldCode = Util.ColorToHtml(PaintingColor);
+				}
+			} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
+				if (Input.MouseLeftButtonDown) FoldingColorField = true;
+				Cursor.SetCursorAsHand();
+			}
+		} else if (!FoldingColorField && Input.MouseLeftButtonDown) {
+			FoldingColorField = true;
+		}
+
+		// Final
+		RequireTooltip(rect, TIP_PAINTING_COLOR);
+		rect.SlideRight(padding);
+	}
+
+
+	private void Update_GeneralToolbar_ColorAdjustment (IRect toolbarRect, ref IRect rect) {
+
+		if (PixelSelectionPixelRect == default) return;
+
+		rect.width = Util.Min(Unify(512), toolbarRect.xMax - rect.x);
+		if (rect.width < rect.height) return;
+
+		// Color Field
+		int padding = Unify(4);
+		var newColorF = GUI.HorizontalColorField(
+			AdjustingColorF, rect, stepped: false, alpha: true
+		);
+		rect.SlideRight(padding);
+		if (newColorF != AdjustingColorF) {
+			AdjustingColorF = newColorF;
+			if (PixelBufferSize == Int2.zero) {
+				var oldSelectionRect = PixelSelectionPixelRect;
+				SetSelectingPixelAsBuffer(removePixels: true, ignoreUndoStep: true);
+				PixelSelectionPixelRect = oldSelectionRect;
+			}
+		}
+		rect.SlideRight(padding);
+
+	}
+
+
+	// Sprite Toolbar
 	private void Update_SpriteToolbar_Name (ref IRect rect) {
 
 		if (SelectingSpriteCount == 0) return;
@@ -977,7 +1016,7 @@ public partial class PixelEditor {
 	}
 
 
-	private void TryApplySpriteInputFields (bool forceApply = false) {
+	private void TryApplySpriteInputFields (bool forceApply = false, bool ignoreUndoStep = false) {
 
 		if (SelectingSpriteCount == 0) return;
 
@@ -1086,7 +1125,7 @@ public partial class PixelEditor {
 					SpriteID = sprite.ID,
 					From = oldBorder,
 					To = border,
-				});
+				}, ignoreUndoStep);
 			}
 
 			// Size Changed
@@ -1099,7 +1138,7 @@ public partial class PixelEditor {
 					From = oldRect,
 					To = newRect,
 					Start = true,
-				});
+				}, ignoreUndoStep);
 				sprite.ResizePixelRect(
 					newRect,
 					resizeBorder: !border.IsZero,
@@ -1114,7 +1153,7 @@ public partial class PixelEditor {
 					From = oldRect,
 					To = newRect,
 					Start = false,
-				});
+				}, ignoreUndoStep);
 			}
 
 			// Name
@@ -1131,7 +1170,7 @@ public partial class PixelEditor {
 						SpriteID = sprite.ID,
 						From = oldName,
 						To = sprite.RealName,
-					});
+					}, ignoreUndoStep);
 				}
 			}
 
@@ -1142,7 +1181,7 @@ public partial class PixelEditor {
 					From = sprite.PivotX,
 					To = pivotX,
 					X = true,
-				});
+				}, ignoreUndoStep);
 				sprite.PivotX = pivotX;
 			}
 
@@ -1153,7 +1192,7 @@ public partial class PixelEditor {
 					From = sprite.PivotY,
 					To = pivotY,
 					X = false,
-				});
+				}, ignoreUndoStep);
 				sprite.PivotY = pivotY;
 			}
 
@@ -1163,7 +1202,7 @@ public partial class PixelEditor {
 					SpriteID = sprite.ID,
 					From = sprite.LocalZ,
 					To = z,
-				});
+				}, ignoreUndoStep);
 				sprite.LocalZ = z;
 			}
 
@@ -1173,7 +1212,7 @@ public partial class PixelEditor {
 					SpriteID = sprite.ID,
 					From = sprite.Duration,
 					To = duration,
-				});
+				}, ignoreUndoStep);
 				sprite.Duration = duration;
 			}
 

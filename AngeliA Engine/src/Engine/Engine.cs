@@ -134,17 +134,17 @@ public partial class Engine {
 		if (projectPaths != null) {
 			foreach (var path in projectPaths) {
 				if (string.IsNullOrWhiteSpace(path)) continue;
-				engine.Projects.Add(new ProjectData() {
-					Path = path,
-					Name = Util.GetNameWithoutExtension(path),
-					FolderExists = Util.FolderExists(path),
-					LastOpenTime = Util.GetFolderModifyDate(path),
-				});
+				engine.Projects.Add(new ProjectData(
+					name: Util.GetNameWithoutExtension(path),
+					path: path,
+					folderExists: Util.FolderExists(path),
+					lastOpenTime: Util.GetFolderModifyDate(path)
+				));
 			}
 		}
 		engine.RefreshProjectCache();
 		engine.SortProjects();
-		ReloadAllProjectIconsForHub();
+		SyncIconSpriteToMainSheet();
 
 		// Engine Window
 		if (Maximize.Value) {
@@ -955,7 +955,6 @@ public partial class Engine {
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 			Instance.Transceiver.Abort();
-			ReloadAllProjectIconsForHub();
 		}
 	}
 
@@ -1057,7 +1056,7 @@ public partial class Engine {
 		// Audio
 		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
 		// Icon
-		if (ProjectEditor.Instance.IconFileModified()) {
+		if (ProjectEditor.Instance.IsIconFileModified()) {
 			ProjectEditor.Instance.ReloadIconUI();
 		}
 	}

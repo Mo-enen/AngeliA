@@ -493,7 +493,7 @@ public partial class RayGame {
 		);
 	}
 
-	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse) {
+	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		if (texture is not Texture2D rTexture) return;
 		var cameraRect = Renderer.CameraRect;
@@ -529,7 +529,7 @@ public partial class RayGame {
 			rTexture,
 			gizmosUV.ShrinkRectangle(0.001f),
 			gizmosRect.ExpandRectangle(0.001f),
-			new(0, 0), 0, Color.White
+			new(0, 0), 0, tint.ToRaylib()
 		);
 		if (inverse) {
 			Raylib.EndShaderMode();

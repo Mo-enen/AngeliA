@@ -27,6 +27,18 @@ public static partial class Util {
 	}
 
 
+	public static float DistanceFloat (Float2 a, Float2 b) {
+		float x = a.x - b.x;
+		float y = a.y - b.y;
+		return Sqrt(x * x + y * y);
+	}
+	public static float DistanceFloat (float aX, float aY, float bX, float bY) {
+		float x = aX - bX;
+		float y = aY - bY;
+		return Sqrt(x * x + y * y);
+	}
+
+
 	public static int DistanceInt (Int2 a, Int2 b) {
 		int x = a.x - b.x;
 		int y = a.y - b.y;
@@ -60,19 +72,38 @@ public static partial class Util {
 	}
 
 
-	public static float PointLine_Distance (Float2 point, Float2 a, Float2 b) {
-		if (a == b) { return Float2.Distance(point, a); }
-		float x0 = point.x;
-		float x1 = a.x;
-		float x2 = b.x;
-		float y0 = point.y;
-		float y1 = a.y;
-		float y2 = b.y;
-		return Abs(
-			(x2 - x1) * (y1 - y0) - (x1 - x0) * (y2 - y1)
-		) / Sqrt(
-			(x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
-		);
+	public static float PointLine_Distance (Float2 pt, Float2 p1, Float2 p2, out Float2 closest) {
+		float dx = p2.x - p1.x;
+		float dy = p2.y - p1.y;
+		if ((dx == 0) && (dy == 0)) {
+			// It's a point not a line segment.
+			closest = p1;
+			dx = pt.x - p1.x;
+			dy = pt.y - p1.y;
+			return (float)Math.Sqrt(dx * dx + dy * dy);
+		}
+
+		// Calculate the t that minimizes the distance.
+		float t = ((pt.x - p1.x) * dx + (pt.y - p1.y) * dy) /
+			(dx * dx + dy * dy);
+
+		// See if this represents one of the segment's
+		// end points or a point in the middle.
+		if (t < 0) {
+			closest = new Float2(p1.x, p1.y);
+			dx = pt.x - p1.x;
+			dy = pt.y - p1.y;
+		} else if (t > 1) {
+			closest = new Float2(p2.x, p2.y);
+			dx = pt.x - p2.x;
+			dy = pt.y - p2.y;
+		} else {
+			closest = new Float2(p1.x + t * dx, p1.y + t * dy);
+			dx = pt.x - closest.x;
+			dy = pt.y - closest.y;
+		}
+
+		return (float)Math.Sqrt(dx * dx + dy * dy);
 	}
 
 

@@ -13,12 +13,12 @@ public partial class Engine {
 	#region --- SUB ---
 
 
-	private class ProjectData {
-		public string Name;
-		public string Path;
-		public bool FolderExists;
-		public long LastOpenTime;
-		public object IconTexture;
+	private class ProjectData (string name, string path, bool folderExists, long lastOpenTime) {
+		public string Name = name;
+		public string Path = path;
+		public bool FolderExists = folderExists;
+		public long LastOpenTime = lastOpenTime;
+		public int IconID = $"EngineIcon.{path}".AngeHash();
 	}
 
 
@@ -46,6 +46,33 @@ public partial class Engine {
 
 
 	#region --- MSG ---
+
+
+	[OnMainSheetReload]
+	internal static void SyncIconSpriteToMainSheet () {
+
+		if (Instance == null || Instance.Projects == null) return;
+
+		// Reload all Icon Sprite/Texture from File
+		foreach (var project in Instance.Projects) {
+			string projectPath = project.Path;
+			var sprite = new AngeSprite() {
+				ID = project.IconID,
+				GlobalWidth = Const.CEL,
+				GlobalHeight = Const.CEL,
+				RealName = "Icon",
+			};
+			string iconPath = Util.CombinePaths(projectPath, "Icon.ico");
+			if (Util.FileExists(iconPath)) {
+				// Load Texture from File
+				var textures = EngineUtil.LoadTexturesFromIco(iconPath, true);
+				if (textures.Length > 0 && textures[0] != null) {
+					// Load Texture into Engine Sheet
+					sprite.MakeDedicatedForTexture(textures[0], Renderer.MainSheet);
+				}
+			}
+		}
+	}
 
 
 	private void OnGUI_Hub () {
@@ -110,7 +137,6 @@ public partial class Engine {
 			var contentRect = cameraRect.Edge(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
 				padding, padding + scrollWidth, padding, padding
 			);
-			var projects = Projects;
 
 			// BG
 			GUI.DrawSlice(PANEL_BG, contentRect);
@@ -129,7 +155,7 @@ public partial class Engine {
 			// Project List
 			using (var scroll = new GUIVerticalScrollScope(
 				contentRect, HubPanelScroll,
-				0, Util.Max(0, projects.Count * itemHeight + extendHeight - contentRect.height))
+				0, Util.Max(0, Projects.Count * itemHeight + extendHeight - contentRect.height))
 			) {
 				HubPanelScroll = scroll.PositionY;
 
@@ -139,8 +165,8 @@ public partial class Engine {
 
 				bool stepTint = false;
 
-				for (int i = 0; i < projects.Count; i++) {
-					var project = projects[i];
+				for (int i = 0; i < Projects.Count; i++) {
+					var project = Projects[i];
 					string projectPath = project.Path;
 					bool folderExists = project.FolderExists;
 					var itemContentRect = rect.Shrink(padding);
@@ -161,14 +187,10 @@ public partial class Engine {
 
 					// Icon
 					var iconRect = itemContentRect.Edge(Direction4.Left, itemContentRect.height);
-					if (Game.IsTextureReady(project.IconTexture)) {
-						// Project Icon
-						if (!FileBrowserUI.ShowingBrowser) {
-							Game.DrawGizmosTexture(iconRect, project.IconTexture);
-						}
-					} else {
-						// Default Icon
-						using (new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+					using (new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+						if (Renderer.TryGetSprite(project.IconID, out var iconSP)) {
+							Renderer.Draw(iconSP, iconRect);
+						} else {
 							GUI.Icon(iconRect, PROJECT_ICON);
 						}
 					}
@@ -218,7 +240,7 @@ public partial class Engine {
 			// Scrollbar
 			HubPanelScroll = GUI.ScrollBar(
 				701635, cameraRect.Edge(Direction4.Right, scrollWidth),
-				HubPanelScroll, projects.Count * itemHeight + extendHeight, contentRect.height
+				HubPanelScroll, Projects.Count * itemHeight + extendHeight, contentRect.height
 			);
 
 		}
@@ -232,23 +254,6 @@ public partial class Engine {
 
 
 	#region --- LGC ---
-
-
-	private static void ReloadAllProjectIconsForHub () {
-		foreach (var project in Instance.Projects) {
-			// Unload Old Icon
-			Game.UnloadTexture(project.IconTexture);
-			project.IconTexture = null;
-			// Load Icons
-			string iconPath = Util.CombinePaths(project.Path, "Icon.ico");
-			if (Util.FileExists(iconPath)) {
-				var icons = EngineUtil.LoadTexturesFromIco(iconPath, true);
-				if (icons != null && icons.Length > 0) {
-					project.IconTexture = icons[0];
-				}
-			}
-		}
-	}
 
 
 	// Workflow
@@ -281,12 +286,12 @@ public partial class Engine {
 		if (Projects.Any(data => data.Path == path)) return;
 		// Add to Path List
 		long time = Util.GetLongTime();
-		var item = new ProjectData() {
-			Name = Util.GetNameWithoutExtension(path),
-			Path = path,
-			FolderExists = true,
-			LastOpenTime = time,
-		};
+		var item = new ProjectData(
+			name: Util.GetNameWithoutExtension(path),
+			path: path,
+			folderExists: true,
+			lastOpenTime: time
+		);
 		Util.SetFolderModifyDate(path, time);
 		Projects.Add(item);
 		SortProjects();

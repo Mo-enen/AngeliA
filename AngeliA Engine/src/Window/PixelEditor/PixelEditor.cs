@@ -1041,7 +1041,7 @@ public partial class PixelEditor : WindowUI {
 		if (newTool != Tool.Sprite) {
 			ClearSpriteSelection();
 		}
-
+		AdjustingColorF = new(1, 1, 1, 1);
 	}
 
 
@@ -1405,7 +1405,7 @@ public partial class PixelEditor : WindowUI {
 				Util.LerpUnclamped(uv.yMin, uv.yMax, rectUV.Value.yMax)
 			);
 		}
-		Game.DrawGizmosTexture(stageRect, uv, PixelBufferGizmosTexture);
+		Game.DrawGizmosTexture(stageRect, uv, PixelBufferGizmosTexture, AdjustingColorF.ToColor32());
 	}
 
 

@@ -290,4 +290,22 @@ public class AngeSprite {
 			(PivotY < 333 ? Alignment.BottomMid : PivotY < 666 ? Alignment.MidMid : Alignment.TopMid) :
 			(PivotY < 333 ? Alignment.BottomRight : PivotY < 666 ? Alignment.MidRight : Alignment.TopRight);
 
+	public void MakeDedicatedForTexture (object texture, Sheet sheet) {
+		RemoveFromDedicatedTexture(sheet);
+		sheet.TexturePool[ID] = texture;
+		sheet.SpritePool[ID] = this;
+		var tSize = Game.GetTextureSize(texture);
+		PixelRect = new IRect(0, 0, tSize.x, tSize.y);
+		GlobalWidth = tSize.x * Const.ART_SCALE;
+		GlobalHeight = tSize.y * Const.ART_SCALE;
+	}
+
+	public void RemoveFromDedicatedTexture (Sheet sheet) {
+		if (sheet.TexturePool.ContainsKey(ID)) {
+			Game.UnloadTexture(sheet.TexturePool[ID]);
+		}
+		sheet.TexturePool.Remove(ID);
+		sheet.SpritePool.Remove(ID);
+	}
+
 }

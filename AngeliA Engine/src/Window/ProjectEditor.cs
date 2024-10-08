@@ -84,9 +84,9 @@ public class ProjectEditor : WindowUI {
 
 	// Data
 	private static readonly GUIStyle WorkflowButtonStyle = new(GUI.Skin.DarkButton) { CharSize = 16, };
+	private int IconSpriteID;
 	private int MasterScrollPos = 0;
 	private int MasterScrollMax = 1;
-	private object IconTexture = null;
 	private long IconFileModifyDate = 0;
 	private object MenuItem = null;
 	private bool RequireRecompileOnSave = false;
@@ -414,14 +414,13 @@ public class ProjectEditor : WindowUI {
 		rect.y = rect.yMax - iconButtonSize;
 		rect.height = iconButtonSize;
 		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
-		bool hasIcon = Game.IsTextureReady(IconTexture);
+		bool hasIcon = Renderer.TryGetSprite(IconSpriteID, out var iconSP);
 		if (GUI.Button(iconButtonRect, 0, out var state, style: hasIcon ? GUIStyle.None : GUI.Skin.DarkButton)) {
 			FileBrowserUI.OpenFile(TITLE_PICK_ICON, SetIconFromPNG, "*.png");
 		}
-		if (hasIcon && !FileBrowserUI.ShowingBrowser) {
+		if (hasIcon) {
 			var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
-			contentRect.y += MasterScrollPos;
-			Game.DrawGizmosTexture(contentRect.Shrink(iconButtonRect.height / 8), IconTexture);
+			Renderer.Draw(iconSP, contentRect.Shrink(iconButtonRect.height / 8));
 		}
 		rect.height = itemHeight;
 		rect.SlideDown(padding);
@@ -761,11 +760,12 @@ public class ProjectEditor : WindowUI {
 
 	public void SetCurrentProject (Project project) {
 		CurrentProject = project;
+		IconSpriteID = project != null ? $"EngineIcon.{project.ProjectPath}".AngeHash() : 0;
 		ReloadIconUI();
 	}
 
 
-	public bool IconFileModified () {
+	public bool IsIconFileModified () {
 		if (CurrentProject == null) return false;
 		string path = CurrentProject.IconPath;
 		if (!Util.FileExists(path)) return false;
@@ -774,18 +774,17 @@ public class ProjectEditor : WindowUI {
 
 
 	public void ReloadIconUI () {
+		if (!Renderer.TryGetSprite(IconSpriteID, out var iconSP)) return;
+		iconSP.RemoveFromDedicatedTexture(Renderer.MainSheet);
 		IconFileModifyDate = 0;
-		Game.UnloadTexture(IconTexture);
-		IconTexture = null;
 		if (CurrentProject == null) return;
 		string path = CurrentProject.IconPath;
 		if (!Util.FileExists(path)) return;
 		IconFileModifyDate = Util.GetFileModifyDate(path);
 		var results = EngineUtil.LoadTexturesFromIco(path, true);
-		if (results != null && results.Length > 0) {
-			IconTexture = results[0];
+		if (results != null && results.Length > 0 && results[0] != null) {
+			iconSP.MakeDedicatedForTexture(results[0], Renderer.MainSheet);
 		}
-		if (!Game.IsTextureReady(IconTexture)) IconTexture = null;
 	}
 
 
