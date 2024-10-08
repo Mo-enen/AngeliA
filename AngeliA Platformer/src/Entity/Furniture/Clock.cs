@@ -17,7 +17,7 @@ public abstract class Clock : Furniture {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		DrawClockHands(Rect.Shrink(8), HAND_CODE, 20, 10);
+		FrameworkUtil.DrawClockHands(Rect.Shrink(8), HAND_CODE, 20, 10, Color32.WHITE);
 	}
 
 }

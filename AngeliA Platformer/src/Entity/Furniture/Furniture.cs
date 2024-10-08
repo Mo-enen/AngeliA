@@ -108,44 +108,6 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 	bool IActionTarget.AllowInvoke () => false;
 
 
-	protected void DrawClockHands (IRect rect, int handCode, int thickness, int thicknessSecond) {
-		var now = System.DateTime.Now;
-		// Sec
-		Renderer.Draw(
-			handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
-			500, 0, now.Second * 360 / 60,
-			thicknessSecond, rect.height * 900 / 2000
-		);
-		// Min
-		Renderer.Draw(
-			handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
-			500, 0, now.Minute * 360 / 60,
-			thickness, rect.height * 800 / 2000
-		);
-		// Hour
-		Renderer.Draw(
-			handCode, rect.x + rect.width / 2, rect.y + rect.height / 2,
-			500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
-			thickness, rect.height * 400 / 2000
-		);
-	}
-
-
-	protected void DrawClockPendulum (int artCodeLeg, int artCodeHead, int x, int y, int length, int thickness, int headSize, int maxRot, int deltaX = 0) {
-		float t11 = Util.Sin(Game.GlobalFrame * 6 * Util.Deg2Rad);
-		int rot = (t11 * maxRot).RoundToInt();
-		int dX = -(t11 * deltaX).RoundToInt();
-		// Leg
-		Renderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
-		// Head
-		Renderer.Draw(
-			artCodeHead, x + dX, y, 500,
-			500 * (headSize / 2 + length) / (headSize / 2),
-			rot, headSize, headSize
-		);
-	}
-
-
 	protected AngeSprite GetSpriteFromPose () {
 		if (Renderer.TryGetSpriteFromGroup(TypeID, Pose switch {
 			FittingPose.Left => 1,

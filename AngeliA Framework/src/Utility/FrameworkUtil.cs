@@ -388,6 +388,45 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void DrawClockHands (IRect rect, int handCode, int thickness, int thicknessSecond, Color32 tint) => DrawClockHands(rect.CenterX(), rect.CenterY(), rect.height, handCode, thickness, thicknessSecond, tint);
+	public static void DrawClockHands (int centerX, int centerY, int radius, int handCode, int thickness, int thicknessSecond, Color32 tint, int z = int.MinValue) {
+		var now = System.DateTime.Now;
+		// Sec
+		Renderer.Draw(
+			handCode, centerX, centerY,
+			500, 0, now.Second * 360 / 60,
+			thicknessSecond, radius * 900 / 2000, tint, z
+		);
+		// Min
+		Renderer.Draw(
+			handCode, centerX, centerY,
+			500, 0, now.Minute * 360 / 60,
+			thickness, radius * 800 / 2000, tint, z
+		);
+		// Hour
+		Renderer.Draw(
+			handCode, centerX, centerY,
+			500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
+			thickness, radius * 400 / 2000, tint, z
+		);
+	}
+
+
+	public static void DrawClockPendulum (int artCodeLeg, int artCodeHead, int x, int y, int length, int thickness, int headSize, int maxRot, int deltaX = 0) {
+		float t11 = Util.Sin(Game.GlobalFrame * 6 * Util.Deg2Rad);
+		int rot = (t11 * maxRot).RoundToInt();
+		int dX = -(t11 * deltaX).RoundToInt();
+		// Leg
+		Renderer.Draw(artCodeLeg, x + dX, y, 500, 1000, rot, thickness, length);
+		// Head
+		Renderer.Draw(
+			artCodeHead, x + dX, y, 500,
+			500 * (headSize / 2 + length) / (headSize / 2),
+			rot, headSize, headSize
+		);
+	}
+
+
 	// Misc
 	public static void DeleteAllEmptyMaps (string mapRoot) {
 		foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {

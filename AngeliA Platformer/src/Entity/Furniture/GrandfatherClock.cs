@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer; 
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class GrandfatherClock : Furniture, ICombustible {
 
@@ -16,13 +17,13 @@ public abstract class GrandfatherClock : Furniture, ICombustible {
 		base.LateUpdate();
 		// Hands
 		if (Pose == FittingPose.Up) {
-			DrawClockHands(Rect.Shrink(36), HAND_CODE, 16, 8);
+			FrameworkUtil.DrawClockHands(Rect.Shrink(36), HAND_CODE, 16, 8, Color32.WHITE);
 		} else if (Pose == FittingPose.Single) {
-			DrawClockHands(Rect.Shrink(36).Shift(0, 24), HAND_CODE, 16, 8);
+			FrameworkUtil.DrawClockHands(Rect.Shrink(36).Shift(0, 24), HAND_CODE, 16, 8, Color32.WHITE);
 		}
 		// Pendulum
 		if (Pose == FittingPose.Mid) {
-			DrawClockPendulum(
+			FrameworkUtil.DrawClockPendulum(
 				artCodeLeg: PENDULUM_LEG_CODE,
 				artCodeHead: PENDULUM_HEAD_CODE,
 				x: X + Width / 2,
@@ -34,7 +35,7 @@ public abstract class GrandfatherClock : Furniture, ICombustible {
 				deltaX: 16
 			);
 		} else if (Pose == FittingPose.Down) {
-			DrawClockPendulum(
+			FrameworkUtil.DrawClockPendulum(
 				artCodeLeg: PENDULUM_LEG_CODE,
 				artCodeHead: PENDULUM_HEAD_CODE,
 				x: X + Width / 2,
