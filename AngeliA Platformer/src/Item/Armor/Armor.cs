@@ -116,7 +116,7 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 			int invID = holder is Character cHolder ? cHolder.InventoryID : holder.TypeID;
 			Inventory.GetEquipment(invID, EquipmentType, out int oldEqCount);
 			Inventory.SetEquipment(invID, EquipmentType, progItem.PrevItemID, oldEqCount);
-			InvokeItemDamage(holder as Character, TypeID, progItem.PrevItemID);
+			GlobalEvent.InvokeItemDamage(holder as Character, TypeID, progItem.PrevItemID);
 			damage--;
 		}
 	}
@@ -141,7 +141,7 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 		if (tookCount <= 0) return false;
 		Inventory.GetEquipment(invID, EquipmentType, out int oldEqCount);
 		Inventory.SetEquipment(invID, EquipmentType, (this as IProgressiveItem).NextItemID, oldEqCount);
-		InvokeItemLost(holder as Character, materialID);
+		GlobalEvent.InvokeItemLost(holder as Character, materialID);
 		return true;
 	}
 

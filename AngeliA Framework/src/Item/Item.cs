@@ -10,11 +10,6 @@ public abstract class Item : IMapItem {
 
 
 	// Api
-	public delegate void ItemHandler (Character character, int item);
-	public delegate void ItemDamageHandler (Character character, int itemFrom, int itemTo);
-	public static event ItemHandler OnItemLost;
-	public static event ItemDamageHandler OnItemDamage;
-	public static event ItemHandler OnItemInsufficient;
 	public abstract int MaxStackCount { get; }
 	public virtual bool AllowDuplicateUpdate => true;
 	public int TypeID { get; init; }
@@ -48,11 +43,6 @@ public abstract class Item : IMapItem {
 	public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) { }
 	public virtual void OnCharacterAttack_FromEquipment (Character character, Bullet bullet) { }
 	public virtual bool TryRepairEquipment (Entity holder) => false;
-
-	// Callback
-	public static void InvokeItemLost (Character holder, int itemID) => OnItemLost?.Invoke(holder, itemID);
-	public static void InvokeItemDamage (Character holder, int itemBeforeID, int itemAfterID) => OnItemDamage?.Invoke(holder, itemBeforeID, itemAfterID);
-	public static void InvokeItemInsufficient (Character holder, int itemID) => OnItemInsufficient?.Invoke(holder, itemID);
 
 	// Ground
 	public virtual void OnItemUpdate_FromGround (Entity holder, int count) { }

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBullet {
@@ -60,7 +61,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			takenCount = Inventory.FindAndTakeItem(sender.InventoryID, ArrowItemID, BulletCountInOneShot);
 			if (takenCount == 0) {
 				// Hint
-				InvokeItemInsufficient(sender, ArrowItemID);
+				GlobalEvent.InvokeItemInsufficient(sender, ArrowItemID);
 				return null;
 			}
 		}

@@ -22,8 +22,22 @@ public static class GlobalEvent {
 	// Water
 	public static event Action<Rigidbody> OnFallIntoWater;
 	public static event Action<Rigidbody> OnCameOutOfWater;
-	public static void InvokeOnFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
-	public static void InvokeOnCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
+	public static void InvokeFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
+	public static void InvokeCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
+
+	// Item
+	public static event Action<Entity, int, int> OnItemCollected;
+	public static void InvokeItemCollected (Entity collector, int id, int count) => OnItemCollected?.Invoke(collector, id, count);
+
+	public static event Action<Character, int> OnItemLost;
+	public static void InvokeItemLost (Character holder, int id) => OnItemLost?.Invoke(holder, id);
+
+	public static event Action<Character, int> OnItemInsufficient;
+	public static void InvokeItemInsufficient (Character holder, int id) => OnItemInsufficient?.Invoke(holder, id);
+
+	public static event Action<Character, int, int> OnItemDamage;
+	public static void InvokeItemDamage (Character holder, int fromID, int toID) => OnItemDamage?.Invoke(holder, fromID, toID);
+
 
 
 }

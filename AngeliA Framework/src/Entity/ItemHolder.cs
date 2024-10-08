@@ -39,8 +39,6 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	private const int ITEM_RENDER_SIZE = Const.CEL * 2 / 3;
 
 	// Api
-	public delegate void ItemCollectedHandler (Entity collector, int itemID, int count);
-	public static event ItemCollectedHandler OnItemCollected;
 	public override int PhysicalLayer => PhysicsLayer.ITEM;
 	public override int CollisionMask => PhysicsMask.MAP;
 	public int ItemID { get; set; } = 0;
@@ -288,7 +286,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 		// Particle Hint
 		if (oldCount > ItemCount) {
-			OnItemCollected?.Invoke(character, oldItemID, oldCount - ItemCount);
+			GlobalEvent.InvokeItemCollected(character, oldItemID, oldCount - ItemCount);
 		}
 
 		return oldCount > ItemCount;
