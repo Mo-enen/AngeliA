@@ -194,6 +194,7 @@ public partial class RayGame : Game {
 			DoodleRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
 			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
+			Raylib.SetTextureWrap(DoodleRenderTexture.Texture, TextureWrap.Repeat);
 			//Debug.Log("Render Texture Reloaded.");
 		}
 		if (!Raylib.IsRenderTextureReady(RenderTexture)) {
@@ -208,7 +209,7 @@ public partial class RayGame : Game {
 		}
 		if (!Raylib.IsRenderTextureReady(DoodleRenderTexture)) {
 			DoodleRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
-			Raylib.SetTextureWrap(DoodleRenderTexture.Texture, TextureWrap.Clamp);
+			Raylib.SetTextureWrap(DoodleRenderTexture.Texture, TextureWrap.Repeat);
 			Debug.LogWarning("Doodle Render Texture Force Reloaded. This should not happen.");
 		}
 		DrawGizmosAtFront = IsToolApplication;
@@ -270,7 +271,7 @@ public partial class RayGame : Game {
 		if (GlobalFrame <= DoodleFrame + 1) {
 			Raylib.DrawTextureRec(
 				DoodleRenderTexture.Texture,
-				new Rectangle(0, 0, DoodleRenderTexture.Texture.Width, DoodleRenderTexture.Texture.Height),
+				new Rectangle(DoodleRenderingOffset.x, DoodleRenderingOffset.y, DoodleRenderTexture.Texture.Width, DoodleRenderTexture.Texture.Height),
 				new Vector2(0, 0), Color.White
 			);
 		}

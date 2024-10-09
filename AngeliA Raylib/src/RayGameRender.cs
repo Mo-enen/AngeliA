@@ -38,6 +38,7 @@ public partial class RayGame {
 	private int ShaderPropIndex_CA_BLUE_Y;
 	private int ShaderPropIndex_INV_TEXTURE;
 	private int ShaderPropIndex_INV_SCREEN_SIZE;
+	private Float2 DoodleRenderingOffset;
 
 
 	// MSG
@@ -556,6 +557,8 @@ public partial class RayGame {
 		}
 		Raylib.ClearBackground(Color.Blank);
 	}
+
+	protected override void _SetDoodleOffset (Float2 screenOffset) => DoodleRenderingOffset = screenOffset;
 
 	protected override void _DoodleRect (FRect screenRect, Color32 color) {
 		if (CurrentAltTextureMode != AltTextureMode.Doodle) {

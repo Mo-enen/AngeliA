@@ -112,6 +112,7 @@ public class RigRespondMessage {
 	public GizmosLineData[] RequireGizmosLines = new GizmosLineData[256 * 256];
 	public bool RequireShowDoodle;
 	public bool RequireResetDoodle;
+	public Float2 RequireDoodleRenderingOffset;
 	public int RequireDoodleRectCount;
 	public DoodleRectData[] RequireDoodleRects = new DoodleRectData[64];
 	public bool RequireDoodleWorld;
@@ -171,6 +172,7 @@ public class RigRespondMessage {
 		RequireDoodleRectCount = 0;
 		RequireShowDoodle = false;
 		RequireResetDoodle = false;
+		RequireDoodleRenderingOffset = default;
 		RequireDoodleWorld = false;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
@@ -283,6 +285,7 @@ public class RigRespondMessage {
 		// Doodle
 		if (RequireShowDoodle) Game.ShowDoodle();
 		if (RequireResetDoodle) Game.ResetDoodle();
+		Game.SetDoodleOffset(RequireDoodleRenderingOffset);
 
 		// Doodle Rect
 		for (int i = 0; i < RequireDoodleRectCount; i++) {
@@ -521,6 +524,8 @@ public class RigRespondMessage {
 
 			RequireShowDoodle = Util.ReadBool(ref pointer, end);
 			RequireResetDoodle = Util.ReadBool(ref pointer, end);
+			RequireDoodleRenderingOffset.x = Util.ReadFloat(ref pointer, end);
+			RequireDoodleRenderingOffset.y = Util.ReadFloat(ref pointer, end);
 			RequireDoodleRectCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < RequireDoodleRectCount; i++) {
 				float x = Util.ReadFloat(ref pointer, end);
@@ -709,6 +714,8 @@ public class RigRespondMessage {
 
 			Util.Write(ref pointer, RequireShowDoodle, end);
 			Util.Write(ref pointer, RequireResetDoodle, end);
+			Util.Write(ref pointer, RequireDoodleRenderingOffset.x, end);
+			Util.Write(ref pointer, RequireDoodleRenderingOffset.y, end);
 			Util.Write(ref pointer, RequireDoodleRectCount, end);
 			for (int i = 0; i < RequireDoodleRectCount; i++) {
 				var data = RequireDoodleRects[i];

@@ -45,6 +45,7 @@ public abstract partial class Game {
 	private static event System.Action OnGameUpdatePauseless;
 	private static event System.Action OnGameFocused;
 	private static event System.Action OnGameLostFocus;
+	private static event System.Action OnWindowSizeChanged;
 	private static event System.Action<string> OnFileDropped;
 	private static MethodInfo[] OnGameTryingToQuitMethods;
 
@@ -154,7 +155,9 @@ public abstract partial class Game {
 			Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
 			Util.LinkEventWithAttribute<OnGameFocusedAttribute>(typeof(Game), nameof(OnGameFocused));
 			Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
+			Util.LinkEventWithAttribute<OnWindowSizeChangedAttribute>(typeof(Game), nameof(OnWindowSizeChanged));
 			Util.LinkEventWithAttribute<OnFileDroppedAttribute>(typeof(Game), nameof(OnFileDropped));
+
 
 			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
 
@@ -270,8 +273,13 @@ public abstract partial class Game {
 
 	private void UpdateCache () {
 		int monitor = Instance._GetCurrentMonitor();
-		ScreenWidth = Instance._GetScreenWidth();
-		ScreenHeight = Instance._GetScreenHeight();
+		int newScreenW = Instance._GetScreenWidth();
+		int newScreenH = Instance._GetScreenHeight();
+		if (ScreenWidth != newScreenW || ScreenHeight != newScreenH) {
+			ScreenWidth = newScreenW;
+			ScreenHeight = newScreenH;
+			OnWindowSizeChanged?.Invoke();
+		}
 		MonitorWidth = Instance._GetMonitorWidth(monitor);
 		MonitorHeight = Instance._GetMonitorHeight(monitor);
 	}

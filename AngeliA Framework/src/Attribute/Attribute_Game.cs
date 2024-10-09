@@ -46,6 +46,10 @@ public class OnGameLostFocusAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Method)]
+public class OnWindowSizeChangedAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Method)]
 public class OnFileDroppedAttribute : Attribute { }
 
 

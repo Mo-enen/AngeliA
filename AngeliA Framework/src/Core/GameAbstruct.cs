@@ -287,6 +287,9 @@ public abstract partial class Game {
 	public static void ResetDoodle () => Instance._ResetDoodle();
 	protected abstract void _ResetDoodle ();
 
+	public static void SetDoodleOffset (Float2 screenOffset) => Instance._SetDoodleOffset(screenOffset);
+	protected abstract void _SetDoodleOffset (Float2 screenOffset);
+
 	public static void DoodleRect (FRect screenRect, Color32 color) => Instance._DoodleRect(screenRect, color);
 	protected abstract void _DoodleRect (FRect screenRect, Color32 color);
 

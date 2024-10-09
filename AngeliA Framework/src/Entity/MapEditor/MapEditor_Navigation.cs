@@ -6,9 +6,19 @@ namespace AngeliA;
 public partial class MapEditor {
 
 
-	// MSG
-	private void Active_Navigation () {
+	// VAR
+	private IRect NavWorldDoodledUnitRange = default;
 
+	// MSG
+	[OnWindowSizeChanged]
+	internal static void OnWindowSizeChanged () {
+		if (Instance == null) return;
+		Instance.NavWorldDoodledUnitRange = default;
+	}
+
+
+	private void Active_Navigation () {
+		NavWorldDoodledUnitRange = default;
 	}
 
 
@@ -28,7 +38,7 @@ public partial class MapEditor {
 
 		// Back Btn
 		if (GUI.Button(
-			Renderer.CameraRect.CornerInside(Alignment.TopLeft, Unify(46)).Shrink(Unify(6)), 
+			Renderer.CameraRect.CornerInside(Alignment.TopLeft, Unify(46)).Shrink(Unify(6)),
 			BuiltInSprite.ICON_BACK
 		)) {
 			Input.UseAllMouseKey();
@@ -51,6 +61,9 @@ public partial class MapEditor {
 
 	private void Update_NavigationRendering () {
 
+
+		// TODO:  Doodle for DeltaX, Doodle for DeltaY, Over-Paint the Overlaped part
+		
 
 
 
