@@ -14,6 +14,10 @@ namespace AngeliaRaylib;
 public partial class RayGame : Game {
 
 
+	// SUB
+	private enum AltTextureMode { Gizmos, Doodle, }
+
+
 	// Api
 #if DEBUG
 	private readonly bool CloseWindowsTerminalOnQuit = true;
@@ -21,6 +25,7 @@ public partial class RayGame : Game {
 
 	// Data
 	private readonly Stopwatch GameWatch = new();
+	private AltTextureMode CurrentAltTextureMode;
 	private bool RequireQuitGame = false;
 	private bool WindowFocused = true;
 	private int IgnoreGizmosFrame = -1;
@@ -137,7 +142,7 @@ public partial class RayGame : Game {
 		// Fix Window Pos in Screen
 		var windowPos = new Rectangle(
 			Raylib.GetWindowPosition(), new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight())
-		).ToAngelia();
+		).ToAngeliaI();
 		int monitor = Raylib.GetCurrentMonitor();
 		var monitorRect = new IRect(0, 0, Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
 		monitorRect = monitorRect.Shrink(monitorRect.height / 20);
@@ -182,8 +187,11 @@ public partial class RayGame : Game {
 		}
 		if (RenderTexture.Texture.Width != ScreenWidth || RenderTexture.Texture.Height != ScreenHeight) {
 			Raylib.UnloadRenderTexture(RenderTexture);
+			Raylib.UnloadRenderTexture(GizmosRenderTexture);
+			Raylib.UnloadRenderTexture(DoodleRenderTexture);
 			RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			GizmosRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
+			DoodleRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
 			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
 			//Debug.Log("Render Texture Reloaded.");
@@ -191,12 +199,17 @@ public partial class RayGame : Game {
 		if (!Raylib.IsRenderTextureReady(RenderTexture)) {
 			RenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			Raylib.SetTextureWrap(RenderTexture.Texture, TextureWrap.Clamp);
-			Debug.LogWarning("Render Texture Force Reloaded.");
+			Debug.LogWarning("Render Texture Force Reloaded. This should not happen.");
 		}
 		if (!Raylib.IsRenderTextureReady(GizmosRenderTexture)) {
 			GizmosRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
 			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
-			Debug.LogWarning("Gizmos Render Texture Force Reloaded.");
+			Debug.LogWarning("Gizmos Render Texture Force Reloaded. This should not happen.");
+		}
+		if (!Raylib.IsRenderTextureReady(DoodleRenderTexture)) {
+			DoodleRenderTexture = Raylib.LoadRenderTexture(ScreenWidth, ScreenHeight);
+			Raylib.SetTextureWrap(DoodleRenderTexture.Texture, TextureWrap.Clamp);
+			Debug.LogWarning("Doodle Render Texture Force Reloaded. This should not happen.");
 		}
 		DrawGizmosAtFront = IsToolApplication;
 
@@ -208,9 +221,8 @@ public partial class RayGame : Game {
 		}
 
 		// Update AngeliA
-		Raylib.BeginTextureMode(GizmosRenderTexture);
+		SwitchToGizmosTextureMode();
 		Raylib.ClearBackground(Color.Blank);
-		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		Update();
 		Raylib.EndBlendMode();
 
@@ -246,6 +258,7 @@ public partial class RayGame : Game {
 			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
 			default, Color.White
 		);
+		// Front Gizmos
 		if (DrawGizmosAtFront) {
 			Raylib.DrawTextureRec(
 				GizmosRenderTexture.Texture,
@@ -253,6 +266,15 @@ public partial class RayGame : Game {
 				new Vector2(0, 0), Color.White
 			);
 		}
+		// Doodle
+		if (GlobalFrame <= DoodleFrame + 1) {
+			Raylib.DrawTextureRec(
+				DoodleRenderTexture.Texture,
+				new Rectangle(0, 0, DoodleRenderTexture.Texture.Width, DoodleRenderTexture.Texture.Height),
+				new Vector2(0, 0), Color.White
+			);
+		}
+		// End
 		Raylib.EndBlendMode();
 		Raylib.EndDrawing();
 	}
@@ -281,6 +303,20 @@ public partial class RayGame : Game {
 		}
 #endif
 
+	}
+
+
+	private void SwitchToGizmosTextureMode () {
+		Raylib.BeginTextureMode(GizmosRenderTexture);
+		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
+		CurrentAltTextureMode = AltTextureMode.Gizmos;
+	}
+
+
+	private void SwitchToDoodleTextureMode () {
+		Raylib.BeginTextureMode(DoodleRenderTexture);
+		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
+		CurrentAltTextureMode = AltTextureMode.Doodle;
 	}
 
 

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
-public class RideableMovement : VehicleMovement {
-	public RideableMovement (Rigidbody rig) : base(rig) { }
+public class RideableMovement (Rigidbody rig) : VehicleMovement(rig) {
 	protected override void InitializeMeta () {
 		base.InitializeMeta();
 		WalkAvailable.BaseValue = true;

@@ -132,7 +132,7 @@ public partial class RiggedGame {
 	protected override object _GetResizedTexture (object texture, int newWidth, int newHeight) => RayUtil.GetResizedTexture(texture, newWidth, newHeight);
 
 
-	// GL Gizmos
+	// Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) {
 		if (RespondMessage.RequireGizmosRectCount >= RespondMessage.RequireGizmosRects.Length) return;
 		RespondMessage.RequireGizmosRects[RespondMessage.RequireGizmosRectCount] = new RigRespondMessage.GizmosRectData() {
@@ -159,6 +159,32 @@ public partial class RiggedGame {
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse) { }
 
 	protected override void _IgnoreGizmos (int duration = 0) { }
+
+
+	// Doodle
+	protected override void _ResetDoodle () => RespondMessage.RequireResetDoodle = true;
+
+	protected override void _DoodleRect (FRect screenRect, Color32 color) {
+		if (RespondMessage.RequireDoodleRectCount >= RespondMessage.RequireDoodleRects.Length) return;
+		RespondMessage.RequireDoodleRects[RespondMessage.RequireDoodleRectCount] = new RigRespondMessage.DoodleRectData() {
+			Rect = screenRect,
+			Color = color,
+		};
+		RespondMessage.RequireDoodleRectCount++;
+	}
+
+	protected override void _DoodleWorld (IBlockSquad squad, FRect screenRect, IRect worldUnitRange, int z, bool ignoreLevel = false, bool ignoreBG = false, bool ignoreEntity = false, bool ignoreElement = true) {
+		RespondMessage.RequireDoodleWorld = true;
+		RespondMessage.RequireDoodleWorld_ScreenRect = screenRect;
+		RespondMessage.RequireDoodleWorld_WorldUnitRange = worldUnitRange;
+		RespondMessage.RequireDoodleWorld_Z = z;
+		byte mask = 0;
+		mask.SetBit(0, ignoreLevel);
+		mask.SetBit(1, ignoreBG);
+		mask.SetBit(2, ignoreEntity);
+		mask.SetBit(3, ignoreElement);
+		RespondMessage.RequireDoodleWorld_IgnoreMask = mask;
+	}
 
 
 	// Text

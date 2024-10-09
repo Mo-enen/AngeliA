@@ -62,6 +62,9 @@ public interface ICarrier {
 					entity.X += nextDeltaX;
 				}
 
+				// Callback
+				carrier.OnBeingCarry(nextDeltaX, 0);
+
 				// Keep Carry
 				CarryBuffer.LinkToTail((entity.Rect, nextDeltaX));
 			}
@@ -94,6 +97,7 @@ public interface ICarrier {
 				CarryBuffer.LinkToTail((entity.Rect, deltaY));
 			}
 		}
+
 		// Perform
 		for (
 			int safe = 0;
@@ -103,16 +107,20 @@ public interface ICarrier {
 			// Perform Move
 			var entity = data.entity;
 			var deltaY = data.delta;
-			if (entity is Character character) {
+			if (entity is IWithCharacterMovement withMovement) {
+				var movement = withMovement.CurrentMovement;
 				if (
-					character.Movement.IsFlying ||
-					character.VelocityY > deltaY ||
-					Game.GlobalFrame < character.Movement.LastJumpFrame + 2
+					movement != null &&
+					movement.IsFlying ||
+					movement.Target.VelocityY > deltaY ||
+					Game.GlobalFrame < movement.LastJumpFrame + 2
 				) {
-					character.CancelMakeGrounded();
+					movement.Target.CancelMakeGrounded();
 					continue;
 				}
 			}
+
+			// Move
 			if (entity is Rigidbody rig) {
 
 				if (fromOneway && rig.IgnoringOneway) continue;
@@ -123,6 +131,11 @@ public interface ICarrier {
 
 			} else {
 				entity.Y += deltaY;
+			}
+
+			// Callback
+			if (entity is ICarrier carrier) {
+				carrier.OnBeingCarry(0, deltaY);
 			}
 		}
 	}

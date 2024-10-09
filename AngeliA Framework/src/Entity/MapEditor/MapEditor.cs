@@ -71,9 +71,9 @@ public sealed partial class MapEditor : WindowUI {
 	public const int SETTING_SHOW_STATE = 92176_3;
 	public const int SETTING_SHOW_GRID_GIZMOS = 92176_4;
 	public const int SETTING_ENABLE = 92176_5;
+	private const int PANEL_WIDTH = 256;
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
-	private const int PANEL_WIDTH = 256;
 	private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 	private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
 	private static readonly Color32 PARTICLE_CLEAR_TINT = new(255, 255, 255, 32);
@@ -86,6 +86,7 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = ("CtrlHint.MEDT.SwitchMode.Play", "Play");
 	private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = ("CtrlHint.MEDT.PlayFromBegin", "Play from Start");
 	private static readonly LanguageCode HINT_TOO_MANY_SPRITE = ("MEDT.TooManySpriteHint", "too many sprites (っ°Д°)っ");
+	private static readonly LanguageCode HINT_SWITCH_TO_NAV = ("CtrlHint.MEDT.Nav", "Navigation Mode");
 
 	// Api
 	public static MapEditor Instance { get; private set; }
@@ -135,6 +136,8 @@ public sealed partial class MapEditor : WindowUI {
 	private bool PlayingGame = false;
 	private bool DroppingPlayer = false;
 	private bool TaskingRoute = false;
+	private bool IsNavigating = false;
+	private bool? RequireIsNavigating = null;
 	private bool CtrlHolding = false;
 	private bool ShiftHolding = false;
 	private bool AltHolding = false;
@@ -235,6 +238,7 @@ public sealed partial class MapEditor : WindowUI {
 		FrameworkUtil.DeleteAllEmptyMaps(builtInUniverse.MapRoot);
 		Initialize_Pool();
 		Initialize_Palette();
+		Active_Navigation();
 		System.GC.Collect();
 
 		// Start
@@ -259,6 +263,8 @@ public sealed partial class MapEditor : WindowUI {
 		Pasting = false;
 		MouseDownOutsideBoundary = false;
 		MouseOutsideBoundary = false;
+		IsNavigating = false;
+		RequireIsNavigating = null;
 		PaletteScrollY = 0;
 		SearchResult.Clear();
 		PanelOffsetX = 0;
@@ -338,31 +344,35 @@ public sealed partial class MapEditor : WindowUI {
 		bool editingPause = IsEditing && Game.IsPausing;
 
 		Update_Before();
-		Update_ScreenUI();
 
-		if (!editingPause) {
-			Update_Mouse();
-			Update_View();
-			Update_Hotkey();
-			Update_DropPlayer();
-			Update_RenderWorld();
+		if (!IsNavigating) {
+			// --- General Mode ---
+			Update_ScreenUI();
+			if (!editingPause) {
+				Update_Mouse();
+				Update_View();
+				Update_Hotkey();
+				Update_DropPlayer();
+				Update_RenderWorld();
+			}
+			Update_PaletteGroupUI();
+			Update_PaletteContentUI();
+			Update_PaletteSearchResultUI();
+			Update_PaletteSearchBarUI();
+			Update_ToolbarUI();
+			if (!editingPause) {
+				Update_Grid();
+				Update_DraggingGizmos();
+				Update_PastingGizmos();
+				Update_SelectionGizmos();
+				Update_DrawCursor();
+			}
+			Update_Final();
+		} else {
+			// --- Nav Mode ---
+			Update_Navigation();
 		}
 
-		Update_PaletteGroupUI();
-		Update_PaletteContentUI();
-		Update_PaletteSearchResultUI();
-		Update_PaletteSearchBarUI();
-		Update_ToolbarUI();
-
-		if (!editingPause) {
-			Update_Grid();
-			Update_DraggingGizmos();
-			Update_PastingGizmos();
-			Update_SelectionGizmos();
-			Update_DrawCursor();
-		}
-
-		Update_Final();
 	}
 
 
@@ -421,6 +431,16 @@ public sealed partial class MapEditor : WindowUI {
 
 		// View
 		TargetUndoViewPos = null;
+
+		// Auto Cancel Nav
+		if (RequireIsNavigating.HasValue) {
+			IsNavigating = RequireIsNavigating.Value;
+			RequireIsNavigating = null;
+		}
+		if (IsNavigating && (!IsEditing || DroppingPlayer)) {
+			IsNavigating = false;
+			RequireIsNavigating = null;
+		}
 
 	}
 
@@ -535,12 +555,17 @@ public sealed partial class MapEditor : WindowUI {
 			if (!ShiftHolding && !CtrlHolding) {
 
 				// Switch Mode
-				if (!CtrlHolding) {
-					if (Input.KeyboardDown(KeyboardKey.Space)) {
-						StartDropPlayer();
-					}
-					ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
+				if (Input.KeyboardDown(KeyboardKey.Space)) {
+					StartDropPlayer();
 				}
+				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
+
+				// Switch Nav
+				if (Input.KeyboardDown(KeyboardKey.Tab)) {
+					Input.UseKeyboardKey(KeyboardKey.Tab);
+					SetNavigationMode(true);
+				}
+				ControlHintUI.AddHint(KeyboardKey.Tab, HINT_SWITCH_TO_NAV);
 
 				// Start Search
 				if (Input.KeyboardDown(KeyboardKey.Enter)) {
@@ -759,9 +784,9 @@ public sealed partial class MapEditor : WindowUI {
 		if (drop) {
 			DropPlayerLogic(PlayerDropPos.x, PlayerDropPos.y - Const.CEL * 2);
 		} else {
-			if (player.Active) player.Active = false;
-			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue - 1);
+			player.Active = false;
 		}
+		Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue - 1);
 	}
 
 
@@ -1150,8 +1175,8 @@ public sealed partial class MapEditor : WindowUI {
 		int viewWidth = viewHeight * Universe.BuiltInInfo.ViewRatio / 1000;
 		TargetViewRect.x = -viewWidth / 2;
 		TargetViewRect.y = -PlayerSystem.GetCameraShiftOffset(viewHeight);
-		TargetViewRect.height = viewHeight;
 		TargetViewRect.width = viewWidth;
+		TargetViewRect.height = viewHeight;
 		if (CurrentZ != 0) SetViewZ(0);
 		if (immediately) ViewRect = TargetViewRect;
 	}
@@ -1230,7 +1255,9 @@ public sealed partial class MapEditor : WindowUI {
 		if (IsEditing) {
 			ControlHintUI.ForceShowHint();
 			ControlHintUI.ForceHideGamepad();
-			ControlHintUI.ForceOffset(Util.Max(PanelRect.xMax, CheckPointLaneRect.xMax) - mainRect.x, 0);
+			if (!IsNavigating) {
+				ControlHintUI.ForceOffset(Util.Max(PanelRect.xMax, CheckPointLaneRect.xMax) - mainRect.x, 0);
+			}
 		}
 
 	}

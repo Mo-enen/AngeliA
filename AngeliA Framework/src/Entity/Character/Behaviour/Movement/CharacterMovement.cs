@@ -14,7 +14,6 @@ public enum CharacterMovementState {
 }
 
 
-
 [StructLayout(LayoutKind.Sequential)]
 public class CharacterMovement (Rigidbody rig) {
 

@@ -20,6 +20,7 @@ public partial class RayGame {
 	private Shader InverseShader;
 	private RenderTexture2D RenderTexture;
 	private RenderTexture2D GizmosRenderTexture;
+	private RenderTexture2D DoodleRenderTexture;
 	private int ShaderPropIndex_DarkenAmount;
 	private int ShaderPropIndex_LightenAmount;
 	private int ShaderPropIndex_TintAmount;
@@ -459,9 +460,12 @@ public partial class RayGame {
 	protected override object _GetResizedTexture (object texture, int newWidth, int newHeight) => RayUtil.GetResizedTexture(texture, newWidth, newHeight);
 
 
-	// GL Gizmos
+	// Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
+		if (CurrentAltTextureMode != AltTextureMode.Gizmos) {
+			SwitchToGizmosTextureMode();
+		}
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
 		float minX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x);
@@ -477,6 +481,9 @@ public partial class RayGame {
 
 	protected override void _DrawGizmosLine (int startX, int startY, int endX, int endY, int thickness, Color32 color) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
+		if (CurrentAltTextureMode != AltTextureMode.Gizmos) {
+			SwitchToGizmosTextureMode();
+		}
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
 		Raylib.DrawLineEx(
@@ -496,6 +503,9 @@ public partial class RayGame {
 	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		if (texture is not Texture2D rTexture) return;
+		if (CurrentAltTextureMode != AltTextureMode.Gizmos) {
+			SwitchToGizmosTextureMode();
+		}
 		var cameraRect = Renderer.CameraRect;
 		var screenRenderRect = Renderer.ScreenRenderRect;
 		var gizmosRect = new Rectangle(
@@ -537,6 +547,57 @@ public partial class RayGame {
 	}
 
 	protected override void _IgnoreGizmos (int duration = 0) => IgnoreGizmosFrame = PauselessFrame + duration;
+
+
+	// Doodle
+	protected override void _ResetDoodle () {
+		if (CurrentAltTextureMode != AltTextureMode.Doodle) {
+			SwitchToDoodleTextureMode();
+		}
+		Raylib.ClearBackground(Color.Blank);
+	}
+
+	protected override void _DoodleRect (FRect screenRect, Color32 color) {
+		if (CurrentAltTextureMode != AltTextureMode.Doodle) {
+			SwitchToDoodleTextureMode();
+		}
+		Raylib.DrawRectangleRec(screenRect.ToRaylib(), color.ToRaylib());
+	}
+
+	protected override void _DoodleWorld (IBlockSquad squad, FRect screenRect, IRect worldUnitRange, int z, bool ignoreLevel = false, bool ignoreBG = false, bool ignoreEntity = false, bool ignoreElement = true) {
+		if (CurrentAltTextureMode != AltTextureMode.Doodle) {
+			SwitchToDoodleTextureMode();
+		}
+		if (ignoreLevel && ignoreBG && ignoreEntity && ignoreElement) return;
+		int unitL = worldUnitRange.xMin;
+		int unitR = worldUnitRange.xMax;
+		int unitD = worldUnitRange.yMin;
+		int unitU = worldUnitRange.yMax;
+		float pixW = screenRect.width / worldUnitRange.width;
+		float pixH = screenRect.height / worldUnitRange.height;
+		float screenL = screenRect.xMin;
+		float screenR = screenRect.xMax;
+		float screenD = screenRect.yMin;
+		float screenU = screenRect.yMax;
+		var rect = new Rectangle(0, 0, pixW, pixH);
+		for (int j = unitD; j < unitU; j++) {
+			rect.Y = Util.RemapUnclamped(unitD, unitU, screenD, screenU, j);
+			for (int i = unitL; i < unitR; i++) {
+				var (lv, bg, en, el) = squad.GetAllBlocksAt(i, j, z);
+				int id =
+					!ignoreEntity && en != 0 ? en :
+					!ignoreElement && el != 0 ? el :
+					!ignoreLevel && lv != 0 ? lv :
+					!ignoreBG && bg != 0 ? bg : 0;
+				if (id == 0) continue;
+				if (!Renderer.TryGetSprite(id, out var sp, true) &&
+					!Renderer.TryGetSpriteFromGroup(id, 0, out sp)
+				) continue;
+				rect.X = Util.RemapUnclamped(unitL, unitR, screenL, screenR, i);
+				Raylib.DrawRectangleRec(rect, sp.SummaryTint.ToRaylib());
+			}
+		}
+	}
 
 
 	// Text

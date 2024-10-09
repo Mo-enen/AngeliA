@@ -780,6 +780,7 @@ public partial class MapEditor {
 
 		int padding = Unify(2);
 		int btnPadding = Unify(2);
+		int btnSpace = Unify(2);
 		bool oldE = GUI.Enable;
 		GUI.Enable = !TaskingRoute;
 		var panel = ToolbarRect;
@@ -788,33 +789,42 @@ public partial class MapEditor {
 		int ITEM_SIZE = panel.height;
 
 		// Reset Camera
-		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
-		if (GUI.DarkButton(btnRect, BuiltInSprite.ICON_REFRESH)) {
+		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE);
+		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_REFRESH)) {
 			ResetCamera();
 		}
+		btnRect.SlideRight(btnSpace);
 
 		// Button Down
-		btnRect = new IRect(panel.x + ITEM_SIZE, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
 		if (
-			GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_DOWN)
+			GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_DOWN)
 		) {
 			SetViewZ(CurrentZ - 1);
 		}
+		btnRect.SlideRight(btnSpace);
 
 		// Button Up
-		btnRect = new IRect(panel.x + ITEM_SIZE * 2, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
-		if (GUI.DarkButton(btnRect, BuiltInSprite.ICON_TRIANGLE_UP)) {
+		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_UP)) {
 			SetViewZ(CurrentZ + 1);
 		}
+		btnRect.SlideRight(btnSpace);
+
+		// Nav/Game
+		if (GUI.DarkButton(btnRect.Shrink(btnPadding), IsNavigating ? BuiltInSprite.ICON_BRUSH : BuiltInSprite.ICON_MAP)) {
+			SetNavigationMode(!IsNavigating);
+		}
+		btnRect.SlideRight(btnSpace);
 
 		// Play
-		btnRect = new IRect(panel.x + ITEM_SIZE * 3, panel.y, ITEM_SIZE, ITEM_SIZE).Shrink(btnPadding);
-		if (!DroppingPlayer && GUI.DarkButton(btnRect, GAMEPAD_ICON)) {
-			if (IsEditing) {
-				StartDropPlayer(forceUseMouse: true);
-			} else {
-				SetEditorMode(!PlayingGame);
+		if (!DroppingPlayer) {
+			if (GUI.DarkButton(btnRect.Shrink(btnPadding), GAMEPAD_ICON)) {
+				if (IsEditing) {
+					StartDropPlayer(forceUseMouse: true);
+				} else {
+					SetEditorMode(!PlayingGame);
+				}
 			}
+			btnRect.SlideRight(btnSpace);
 		}
 
 		GUI.Enable = oldE;

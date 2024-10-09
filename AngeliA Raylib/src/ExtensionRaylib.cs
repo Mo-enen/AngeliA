@@ -130,7 +130,11 @@ public static class ExtensionRaylib {
 	public static Color32 ToAngelia (this Color color) => new(color.R, color.G, color.B, color.A);
 
 	public static Rectangle ToRaylib (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
-	public static IRect ToAngelia (this Rectangle rect) => new(rect.X.RoundToInt(), rect.Y.RoundToInt(), rect.Width.RoundToInt(), rect.Height.RoundToInt());
+	public static IRect ToAngeliaI (this Rectangle rect) => new(rect.X.RoundToInt(), rect.Y.RoundToInt(), rect.Width.RoundToInt(), rect.Height.RoundToInt());
+
+	public static Rectangle ToRaylib (this FRect rect) => new(rect.x, rect.y, rect.width, rect.height);
+	public static FRect ToAngeliaF (this Rectangle rect) => new(rect.X, rect.Y, rect.Width, rect.Height);
+	
 
 	public static void FlipHorizontal (this ref Rectangle rect) {
 		rect.X += rect.Width;

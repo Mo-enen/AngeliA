@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using AngeliA;
 namespace AngeliA.Platformer;
 
-public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier where M : VehicleMovement {
+public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement where M : VehicleMovement {
 
 
 
@@ -26,6 +26,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier where M 
 	bool ICarrier.AllowBeingCarry => true;
 	public override int CollisionMask => Driver != null ? PhysicsMask.MAP : PhysicsMask.SOLID;
 	int IDamageReceiver.Team => CurrentTeam;
+	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 
 	// Event
 	public delegate void StepEventHandler (int x, int y, int groundedID);

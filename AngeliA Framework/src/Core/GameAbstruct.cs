@@ -277,6 +277,23 @@ public abstract partial class Game {
 	protected abstract void _IgnoreGizmos (int duration = 0);
 
 
+	// Doodle
+	protected int DoodleFrame { get; private set; } = -1;
+	public static bool ShowingDoodle => GlobalFrame <= Instance.DoodleFrame;
+
+	public static void ShowDoodle (int duration = 0) => Instance.DoodleFrame = GlobalFrame + duration;
+	public static void HideDoodle () => Instance.DoodleFrame = -1;
+
+	public static void ResetDoodle () => Instance._ResetDoodle();
+	protected abstract void _ResetDoodle ();
+
+	public static void DoodleRect (FRect screenRect, Color32 color) => Instance._DoodleRect(screenRect, color);
+	protected abstract void _DoodleRect (FRect screenRect, Color32 color);
+
+	public static void DoodleWorld (IBlockSquad squad, FRect screenRect, IRect worldUnitRange, int z, bool ignoreLevel = false, bool ignoreBG = false, bool ignoreEntity = false, bool ignoreElement = true) => Instance._DoodleWorld(squad, screenRect, worldUnitRange, z, ignoreLevel, ignoreBG, ignoreEntity, ignoreElement);
+	protected abstract void _DoodleWorld (IBlockSquad squad, FRect screenRect, IRect worldUnitRange, int z, bool ignoreLevel = false, bool ignoreBG = false, bool ignoreEntity = false, bool ignoreElement = true);
+
+
 	// Text
 	public static int BuiltInFontCount { get; private set; } = 0;
 	public static int FontCount => Instance._GetFontCount();

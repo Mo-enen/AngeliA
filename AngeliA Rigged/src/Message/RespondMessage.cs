@@ -30,10 +30,9 @@ public class RigRespondMessage {
 	}
 
 
-	public struct GizmosMapData {
-		public IRect Rect;
-		public FRect Uv;
-		public Int3 MapPos;
+	public struct DoodleRectData {
+		public FRect Rect;
+		public Color32 Color;
 	}
 
 
@@ -84,6 +83,7 @@ public class RigRespondMessage {
 	public Color32 SkyBottom;
 	public byte EffectEnable;
 	public byte HasEffectParams;
+
 	public float e_DarkenAmount;
 	public float e_DarkenStep;
 	public float e_LightenAmount;
@@ -94,24 +94,38 @@ public class RigRespondMessage {
 	public float e_VigOffsetX;
 	public float e_VigOffsetY;
 	public float e_VigRound;
+
 	public int RequirePlayMusicID;
 	public byte AudioActionRequirement;
 	public int RequireSetMusicVolume;
 	public int RequirePlaySoundID;
 	public float RequirePlaySoundVolume;
 	public int RequireSetSoundVolume;
+
 	public int CharRequiringCount;
 	public char[] RequireChars = new char[REQUIRE_CHAR_MAX_COUNT];
 	public int[] RequireCharsFontIndex = new int[REQUIRE_CHAR_MAX_COUNT];
+
 	public int RequireGizmosRectCount;
 	public GizmosRectData[] RequireGizmosRects = new GizmosRectData[256 * 256];
 	public int RequireGizmosLineCount;
 	public GizmosLineData[] RequireGizmosLines = new GizmosLineData[256 * 256];
+	public bool RequireShowDoodle;
+	public bool RequireResetDoodle;
+	public int RequireDoodleRectCount;
+	public DoodleRectData[] RequireDoodleRects = new DoodleRectData[64];
+	public bool RequireDoodleWorld;
+	public FRect RequireDoodleWorld_ScreenRect;
+	public IRect RequireDoodleWorld_WorldUnitRange;
+	public int RequireDoodleWorld_Z;
+	public byte RequireDoodleWorld_IgnoreMask;
+
 	public RenderingLayerData[] Layers = new RenderingLayerData[RenderLayer.COUNT];
 	public int[] RenderUsages = new int[RenderLayer.COUNT];
 	public int[] EntityUsages = new int[EntityLayer.COUNT];
 	public int[] RenderCapacities = new int[RenderLayer.COUNT];
 	public int[] EntityCapacities = new int[EntityLayer.COUNT];
+
 	public bool GamePlaying;
 	public int MusicVolume;
 	public int SoundVolume;
@@ -122,6 +136,7 @@ public class RigRespondMessage {
 	private readonly Dictionary<uint, object> GizmosTexturePool = [];
 	private int CachedScreenWidth = 1;
 	private int CachedScreenHeight = 1;
+	private IBlockSquad DoodlingSquad = null;
 
 
 	#endregion
@@ -136,6 +151,8 @@ public class RigRespondMessage {
 		GizmosTexturePool.Clear();
 		SkyTop.a = 255;
 		SkyBottom.a = 255;
+		DoodlingSquad = null;
+		Game.ResetDoodle();
 	}
 
 
@@ -151,6 +168,10 @@ public class RigRespondMessage {
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
 		RequireGizmosLineCount = 0;
+		RequireDoodleRectCount = 0;
+		RequireShowDoodle = false;
+		RequireResetDoodle = false;
+		RequireDoodleWorld = false;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
@@ -259,6 +280,37 @@ public class RigRespondMessage {
 			Game.DrawGizmosLine(startX, data.Start.y, endX, data.End.y, data.Thickness, data.Color);
 		}
 
+		// Doodle
+		if (RequireShowDoodle) Game.ShowDoodle();
+		if (RequireResetDoodle) Game.ResetDoodle();
+
+		// Doodle Rect
+		for (int i = 0; i < RequireDoodleRectCount; i++) {
+			var data = RequireDoodleRects[i];
+			var rect = data.Rect.Shift(gizmosOffsetX, 0);
+			Game.DoodleRect(rect, data.Color);
+		}
+		RequireShowDoodle = false;
+		RequireResetDoodle = false;
+
+		// Doodle World
+		if (RequireDoodleWorld) {
+			DoodlingSquad ??= WorldStream.GetOrCreateStreamFromPool(universe.MapRoot);
+			using var _ = new SheetIndexScope(sheetIndex);
+			Game.DoodleWorld(
+				DoodlingSquad,
+				RequireDoodleWorld_ScreenRect,
+				RequireDoodleWorld_WorldUnitRange,
+				RequireDoodleWorld_Z,
+				RequireDoodleWorld_IgnoreMask.GetBit(0),
+				RequireDoodleWorld_IgnoreMask.GetBit(1),
+				RequireDoodleWorld_IgnoreMask.GetBit(2),
+				RequireDoodleWorld_IgnoreMask.GetBit(3)
+			);
+			RequireDoodleWorld = false;
+		}
+
+		// Cells
 		int oldLayer = Renderer.CurrentLayerIndex;
 		using (new SheetIndexScope(sheetIndex)) {
 
@@ -467,6 +519,43 @@ public class RigRespondMessage {
 				};
 			}
 
+			RequireShowDoodle = Util.ReadBool(ref pointer, end);
+			RequireResetDoodle = Util.ReadBool(ref pointer, end);
+			RequireDoodleRectCount = Util.ReadInt(ref pointer, end);
+			for (int i = 0; i < RequireDoodleRectCount; i++) {
+				float x = Util.ReadFloat(ref pointer, end);
+				float y = Util.ReadFloat(ref pointer, end);
+				float w = Util.ReadFloat(ref pointer, end);
+				float h = Util.ReadFloat(ref pointer, end);
+				var rect = new FRect(x, y, w, h);
+				var color = new Color32(
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end)
+				);
+				RequireDoodleRects[i] = new DoodleRectData() {
+					Rect = rect,
+					Color = color,
+				};
+			}
+
+			RequireDoodleWorld = Util.ReadBool(ref pointer, end);
+			if (RequireDoodleWorld) {
+				float x = Util.ReadFloat(ref pointer, end);
+				float y = Util.ReadFloat(ref pointer, end);
+				float w = Util.ReadFloat(ref pointer, end);
+				float h = Util.ReadFloat(ref pointer, end);
+				RequireDoodleWorld_ScreenRect = new FRect(x, y, w, h);
+				RequireDoodleWorld_Z = Util.ReadInt(ref pointer, end);
+				int _x = Util.ReadInt(ref pointer, end);
+				int _y = Util.ReadInt(ref pointer, end);
+				int _w = Util.ReadInt(ref pointer, end);
+				int _h = Util.ReadInt(ref pointer, end);
+				RequireDoodleWorld_WorldUnitRange = new IRect(_x, _y, _w, _h);
+				RequireDoodleWorld_IgnoreMask = Util.ReadByte(ref pointer, end);
+			}
+
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
 				if (Layers[index] == null) {
 					Layers[index] = new RenderingLayerData(Renderer.GetLayerCapacity(index));
@@ -616,6 +705,35 @@ public class RigRespondMessage {
 				Util.Write(ref pointer, data.Color.g, end);
 				Util.Write(ref pointer, data.Color.b, end);
 				Util.Write(ref pointer, data.Color.a, end);
+			}
+
+			Util.Write(ref pointer, RequireShowDoodle, end);
+			Util.Write(ref pointer, RequireResetDoodle, end);
+			Util.Write(ref pointer, RequireDoodleRectCount, end);
+			for (int i = 0; i < RequireDoodleRectCount; i++) {
+				var data = RequireDoodleRects[i];
+				Util.Write(ref pointer, data.Rect.x, end);
+				Util.Write(ref pointer, data.Rect.y, end);
+				Util.Write(ref pointer, data.Rect.width, end);
+				Util.Write(ref pointer, data.Rect.height, end);
+				Util.Write(ref pointer, data.Color.r, end);
+				Util.Write(ref pointer, data.Color.g, end);
+				Util.Write(ref pointer, data.Color.b, end);
+				Util.Write(ref pointer, data.Color.a, end);
+			}
+
+			Util.Write(ref pointer, RequireDoodleWorld, end);
+			if (RequireDoodleWorld) {
+				Util.Write(ref pointer, RequireDoodleWorld_ScreenRect.x, end);
+				Util.Write(ref pointer, RequireDoodleWorld_ScreenRect.y, end);
+				Util.Write(ref pointer, RequireDoodleWorld_ScreenRect.width, end);
+				Util.Write(ref pointer, RequireDoodleWorld_ScreenRect.height, end);
+				Util.Write(ref pointer, RequireDoodleWorld_Z, end);
+				Util.Write(ref pointer, RequireDoodleWorld_WorldUnitRange.x, end);
+				Util.Write(ref pointer, RequireDoodleWorld_WorldUnitRange.y, end);
+				Util.Write(ref pointer, RequireDoodleWorld_WorldUnitRange.width, end);
+				Util.Write(ref pointer, RequireDoodleWorld_WorldUnitRange.height, end);
+				Util.Write(ref pointer, RequireDoodleWorld_IgnoreMask, end);
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {

@@ -18,7 +18,7 @@ public enum CharacterInventoryType { None = 0, Unique, Map, }
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICarrier {
+public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICarrier, IWithCharacterMovement {
 
 
 
@@ -59,6 +59,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	public override bool CarryOtherOnTop => false;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
 	bool ICarrier.AllowBeingCarry => true;
+	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 	public int Bouncy { get; set; } = 150;
 	public bool HelmetInteractable { get; set; } = true;
 	public bool BodySuitInteractable { get; set; } = true;
@@ -79,6 +80,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	public int DespawnAfterPassoutDelay { get; set; } = 60;
 	public int InventoryID { get; private set; }
 	public int RenderingCellIndex { get; private set; }
+
 
 	// Behaviour
 	public CharacterMovement Movement;

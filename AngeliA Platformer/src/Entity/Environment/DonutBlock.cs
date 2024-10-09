@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.Capacity(256)]
@@ -101,7 +102,9 @@ public abstract class DonutBlock : Entity, IBlockEntity {
 	}
 
 
-	protected virtual void Break () => Active = false;
-
+	protected virtual void Break () {
+		Active = false;
+		GlobalEvent.InvokeObjectBreak(TypeID, Rect);
+	}
 
 }

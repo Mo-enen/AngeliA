@@ -29,8 +29,8 @@ public sealed class WorldSquad : IBlockSquad {
 	private static int WorldBehindParallax;
 	private IRect CullingCameraRect = default;
 	private IRect CameraRect = default;
-	private float ReversePara01 = 1f;
 	private Int2 ParaCenter = default;
+	private float ReversePara01 = 1f;
 
 
 	#endregion

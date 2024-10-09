@@ -30,7 +30,7 @@ internal class TestMapGenerator : MapGenerator {
 
 
 	// Noise
-	[CheatCode("TestNoise")]
+	//[OnGameInitialize]
 	internal static void StartNoiseTesting () {
 		if (!Game.IsToolApplication) return;
 		QTest.ClearAll();
@@ -39,7 +39,7 @@ internal class TestMapGenerator : MapGenerator {
 	}
 
 
-	[OnGameUpdate]
+	//[OnGameUpdate]
 	internal static void NoiseTestUpdate () {
 
 		if (!Game.IsToolApplication || !QTest.Testing) return;
@@ -168,7 +168,7 @@ internal class TestMapGenerator : MapGenerator {
 
 
 	// Region
-	[CheatCode("TestRegion")]
+	//[OnGameInitialize]
 	internal static void StartTestRegion () {
 		if (!Game.IsToolApplication) return;
 		QTest.ClearAll();
@@ -181,7 +181,7 @@ internal class TestMapGenerator : MapGenerator {
 	}
 
 
-	[OnGameUpdate]
+	//[OnGameUpdate]
 	internal static void RegionTestUpdate () {
 
 		if (!Game.IsToolApplication || !QTest.Testing) return;

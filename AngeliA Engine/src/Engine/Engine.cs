@@ -991,6 +991,9 @@ public partial class Engine {
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;
+		if (!CurrentWindowRequireRigGame) {
+			Game.HideDoodle();
+		}
 	}
 
 
