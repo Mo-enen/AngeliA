@@ -211,7 +211,7 @@ public abstract partial class Game {
 	protected abstract object _GetResizedTexture (object texture, int newWidth, int newHeight);
 
 
-	// GL Gizmos
+	// Gizmos
 	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness, int gap = 0) => DrawGizmosFrame(rect, color, new Int4(thickness, thickness, thickness, thickness), new Int4(gap, gap, gap, gap));
 	public static void DrawGizmosFrame (IRect rect, Color32 color, Int4 thickness, Int4 gap = default) {
 		// Down
@@ -276,10 +276,18 @@ public abstract partial class Game {
 	public static void IgnoreGizmos (int duration = 0) => Instance._IgnoreGizmos(duration);
 	protected abstract void _IgnoreGizmos (int duration = 0);
 
+	public static bool GizmosOnTopOfUI => GlobalFrame <= Instance.GizmosOnTopOfUiFrame;
+	protected int GizmosOnTopOfUiFrame { get; private set; } = -1;
+	public static void ForceGizmosOnTopOfUI (int duration = 0) => Instance.GizmosOnTopOfUiFrame = GlobalFrame + duration;
+	public static void CancelGizmosOnTopOfUI () => Instance.GizmosOnTopOfUiFrame = -1;
 
 	// Doodle
+	public static Int4 DoodleScreenPadding { get; set; } = new(0, 0, 0, 0);
 	protected int DoodleFrame { get; private set; } = -1;
-	public static bool ShowingDoodle => GlobalFrame <= Instance.DoodleFrame;
+
+	protected int DoodleOnTopOfUiFrame { get; private set; } = -1;
+	public static void ForceDoodleOnTopOfUI (int duration = 0) => Instance.DoodleOnTopOfUiFrame = GlobalFrame + duration;
+	public static void CancelDoodleOnTopOfUI () => Instance.DoodleOnTopOfUiFrame = -1;
 
 	public static void ShowDoodle (int duration = 0) => Instance.DoodleFrame = GlobalFrame + duration;
 	public static void HideDoodle () => Instance.DoodleFrame = -1;

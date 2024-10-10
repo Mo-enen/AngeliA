@@ -357,7 +357,9 @@ public static class QTest {
 
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
-		if (Testing) Game.DrawGizmosAtFront = true;
+		if (Testing) {
+			Game.ForceGizmosOnTopOfUI();
+		}
 	}
 
 

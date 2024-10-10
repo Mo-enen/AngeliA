@@ -63,7 +63,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		if (!ItemSystem.ItemPoolReady || Game.GlobalFrame % 30 != 0) return;
 
 		// Check for Holding Pool
-		var allPos = WorldSquad.ForAllWorldInRange(Stage.ViewRect, Stage.ViewZ, out int posCount);
+		var allPos = FrameworkUtil.ForAllWorldInRange(Stage.ViewRect.ToUnit(), Stage.ViewZ, out int posCount);
 		for (int index = 0; index < posCount; index++) {
 
 			var worldPos = allPos[index];

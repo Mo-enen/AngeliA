@@ -445,6 +445,66 @@ public sealed partial class MapEditor : WindowUI {
 	}
 
 
+	private void Update_ScreenUI () {
+
+		if (IsPlaying || TaskingRoute) return;
+
+		// Too Many Sprite
+		if (RequireWorldRenderBlinkIndex > 0) {
+			var cameraRect = Renderer.CameraRect;
+			int hintWidth = Unify(120);
+			using (new GUIBodyColorScope(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
+				GUI.BackgroundLabel(
+					new IRect(cameraRect.CenterX() - hintWidth / 2, cameraRect.yMax - Unify(32), hintWidth, Unify(22)),
+					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), false, Skin.SmallCenterLabel
+				);
+			}
+		}
+
+		// State
+		if (ShowState) {
+
+			using (new GUIContentColorScope(Color32.GREY_196)) {
+
+				var cameraRect = Renderer.CameraRect;
+				int LABEL_HEIGHT = Unify(22);
+				int LABEL_WIDTH = Unify(52);
+				int PADDING = Unify(6);
+
+				int x = Input.MouseGlobalPosition.x.ToUnit();
+				int y = Input.MouseGlobalPosition.y.ToUnit();
+				int z = CurrentZ;
+
+				GUI.Label(
+					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+					StateZLabelToString.GetChars(z),
+					out var boundsZ
+				);
+
+				GUI.Label(
+					 new IRect(
+						Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING),
+						cameraRect.y + PADDING,
+						LABEL_WIDTH, LABEL_HEIGHT
+					),
+					StateYLabelToString.GetChars(y),
+					out var boundsY
+				);
+
+				GUI.Label(
+					 new IRect(
+						Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING),
+						cameraRect.y + PADDING,
+						LABEL_WIDTH, LABEL_HEIGHT
+					),
+					StateXLabelToString.GetChars(x)
+				);
+
+			}
+		}
+	}
+
+
 	private void Update_View () {
 
 		if (TaskingRoute || DroppingPlayer || GUI.IsTyping) return;
@@ -914,65 +974,6 @@ public sealed partial class MapEditor : WindowUI {
 			RequireWorldRenderBlinkIndex += unusedCellCount;
 		}
 
-	}
-
-
-	private void Update_ScreenUI () {
-
-		if (IsPlaying || TaskingRoute) return;
-
-		// Too Many Sprite
-		if (RequireWorldRenderBlinkIndex > 0) {
-			var cameraRect = Renderer.CameraRect;
-			int hintWidth = Unify(120);
-			using (new GUIBodyColorScope(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
-				GUI.BackgroundLabel(
-					new IRect(cameraRect.CenterX() - hintWidth / 2, cameraRect.yMax - Unify(32), hintWidth, Unify(22)),
-					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), false, Skin.SmallCenterLabel
-				);
-			}
-		}
-
-		// State
-		if (ShowState) {
-
-			using (new GUIContentColorScope(Color32.GREY_196)) {
-
-				var cameraRect = Renderer.CameraRect;
-				int LABEL_HEIGHT = Unify(22);
-				int LABEL_WIDTH = Unify(52);
-				int PADDING = Unify(6);
-				int z = CurrentZ;
-
-				GUI.Label(
-					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
-					StateZLabelToString.GetChars(z),
-					out var boundsZ
-				);
-
-				int y = Input.MouseGlobalPosition.y.ToUnit();
-				GUI.Label(
-					 new IRect(
-						Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING),
-						cameraRect.y + PADDING,
-						LABEL_WIDTH, LABEL_HEIGHT
-					),
-					StateYLabelToString.GetChars(y),
-					out var boundsY
-				);
-
-				int x = Input.MouseGlobalPosition.x.ToUnit();
-				GUI.Label(
-					 new IRect(
-						Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING),
-						cameraRect.y + PADDING,
-						LABEL_WIDTH, LABEL_HEIGHT
-					),
-					StateXLabelToString.GetChars(x)
-				);
-
-			}
-		}
 	}
 
 

@@ -141,12 +141,28 @@ public partial class RayGame {
 		if (PauselessFrame < 4) return;
 
 		// Apply Gizmos Before UI
-		if (!DrawGizmosAtFront && layerIndex == RenderLayer.UI) {
+		if (GlobalFrame > GizmosOnTopOfUiFrame && layerIndex == RenderLayer.UI) {
 			Raylib.BeginBlendMode(BlendMode.CustomSeparate);
 			Raylib.DrawTextureRec(
 				GizmosRenderTexture.Texture,
 				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
 				new Vector2(0, 0), Color.White
+			);
+			Raylib.EndBlendMode();
+		}
+
+		// Apply Doodle Before UI
+		if (GlobalFrame <= DoodleFrame && GlobalFrame > DoodleOnTopOfUiFrame && layerIndex == RenderLayer.UI) {
+			Raylib.BeginBlendMode(BlendMode.CustomSeparate);
+			Raylib.DrawTextureRec(
+				DoodleRenderTexture.Texture,
+				new Rectangle(
+					DoodleRenderingOffset.x,
+					-DoodleRenderingOffset.y,
+					DoodleRenderTexture.Texture.Width,
+					DoodleRenderTexture.Texture.Height
+				),
+				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
 			);
 			Raylib.EndBlendMode();
 		}
@@ -572,34 +588,45 @@ public partial class RayGame {
 			SwitchToDoodleTextureMode();
 		}
 		if (ignoreLevel && ignoreBG && ignoreEntity && ignoreElement) return;
-		int unitL = worldUnitRange.xMin;
-		int unitR = worldUnitRange.xMax;
-		int unitD = worldUnitRange.yMin;
-		int unitU = worldUnitRange.yMax;
+
 		float pixW = screenRect.width / worldUnitRange.width;
 		float pixH = screenRect.height / worldUnitRange.height;
+		int unitRangeL = worldUnitRange.xMin;
+		int unitRangeR = worldUnitRange.xMax;
+		int unitRangeD = worldUnitRange.yMin;
+		int unitRangeU = worldUnitRange.yMax;
 		float screenL = screenRect.xMin;
 		float screenR = screenRect.xMax;
 		float screenD = screenRect.yMin;
 		float screenU = screenRect.yMax;
 		var rect = new Rectangle(0, 0, pixW, pixH);
-		for (int j = unitD; j < unitU; j++) {
-			rect.Y = Util.RemapUnclamped(unitD, unitU, screenD, screenU, j);
-			for (int i = unitL; i < unitR; i++) {
-				var (lv, bg, en, el) = squad.GetAllBlocksAt(i, j, z);
-				int id =
-					!ignoreEntity && en != 0 ? en :
-					!ignoreElement && el != 0 ? el :
-					!ignoreLevel && lv != 0 ? lv :
-					!ignoreBG && bg != 0 ? bg : 0;
-				if (id == 0) continue;
-				if (!Renderer.TryGetSprite(id, out var sp, true) &&
-					!Renderer.TryGetSpriteFromGroup(id, 0, out sp)
-				) continue;
-				rect.X = Util.RemapUnclamped(unitL, unitR, screenL, screenR, i);
-				Raylib.DrawRectangleRec(rect, sp.SummaryTint.ToRaylib());
+		int doodleScreenWidth = ScreenWidth - DoodleScreenPadding.horizontal;
+		int doodleScreenHeight = ScreenHeight - DoodleScreenPadding.vertical;
+
+		var worldPoses = FrameworkUtil.ForAllExistsWorldInRange(squad, worldUnitRange, z, out int count);
+		for (int worldIndex = 0; worldIndex < count; worldIndex++) {
+			var worldPos = worldPoses[worldIndex];
+			int unitL = Util.Max(worldPos.x * Const.MAP, unitRangeL);
+			int unitR = Util.Min((worldPos.x + 1) * Const.MAP, unitRangeR);
+			int unitD = Util.Max(worldPos.y * Const.MAP, unitRangeD);
+			int unitU = Util.Min((worldPos.y + 1) * Const.MAP, unitRangeU);
+			for (int j = unitD; j < unitU; j++) {
+				rect.Y = Util.RemapUnclamped(unitRangeD, unitRangeU, screenD, screenU, j).UMod(doodleScreenHeight);
+				for (int i = unitL; i < unitR; i++) {
+					var (lv, bg, en, el) = squad.GetAllBlocksAt(i, j, z);
+					int id =
+						!ignoreEntity && en != 0 ? en :
+						!ignoreElement && el != 0 ? el :
+						!ignoreLevel && lv != 0 ? lv :
+						!ignoreBG && bg != 0 ? bg : 0;
+					if (id == 0) continue;
+					if (!Renderer.TryGetSpriteForGizmos(id, out var sp)) continue;
+					rect.X = Util.RemapUnclamped(unitRangeL, unitRangeR, screenL, screenR, i).UMod(doodleScreenWidth);
+					Raylib.DrawRectangleRec(rect, sp.SummaryTint.ToRaylib());
+				}
 			}
 		}
+
 	}
 
 

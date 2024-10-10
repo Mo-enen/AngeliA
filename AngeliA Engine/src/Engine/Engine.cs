@@ -323,7 +323,10 @@ public partial class Engine {
 		if (!Instance.CurrentWindowRequireRigGame) {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
 		}
-		Game.DrawGizmosAtFront = Instance.CurrentProject == null || !Instance.CurrentWindowRequireRigGame;
+		if (Instance.CurrentProject == null || !Instance.CurrentWindowRequireRigGame) {
+			Game.ForceGizmosOnTopOfUI(1);
+			Game.ForceDoodleOnTopOfUI(1);
+		}
 
 		using var _ = new SheetIndexScope(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
 		using var __ = new GUISkinScope(Instance.ThemeSkin);
@@ -687,7 +690,8 @@ public partial class Engine {
 
 		// Misc
 		if (GenericDialogUI.ShowingDialog) {
-			Game.DrawGizmosAtFront = false;
+			Game.CancelGizmosOnTopOfUI();
+			Game.CancelDoodleOnTopOfUI();
 		}
 
 		// Update Tooltip

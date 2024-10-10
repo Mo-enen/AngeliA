@@ -31,6 +31,7 @@ public static class FrameworkUtil {
 		BuiltInSprite.ITEM_ICON_FOOD,
 		BuiltInSprite.ITEM_ICON_ITEM,
 	];
+	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
 
 
 	// Drawing
@@ -1073,6 +1074,51 @@ public static class FrameworkUtil {
 			!n && p ? FittingPose.Left :
 			n && !p ? FittingPose.Right :
 			FittingPose.Single;
+	}
+
+
+	public static Int3[] ForAllWorldInRange (IRect overlapUnitRange, int z, out int count) {
+		int left = overlapUnitRange.xMin.UDivide(Const.MAP);
+		int right = (overlapUnitRange.xMax + 1).UDivide(Const.MAP);
+		int down = overlapUnitRange.yMin.UDivide(Const.MAP);
+		int up = (overlapUnitRange.yMax + 1).UDivide(Const.MAP);
+		int index = 0;
+		int maxCount = WorldPosInViewCache.Length;
+		for (int i = left; i <= right; i++) {
+			for (int j = down; j <= up; j++) {
+				WorldPosInViewCache[index] = new Int3(i, j, z);
+				index++;
+				if (index >= maxCount) {
+					goto _END_;
+				}
+			}
+		}
+		_END_:;
+		count = index;
+		return WorldPosInViewCache;
+	}
+	
+
+	public static Int3[] ForAllExistsWorldInRange (IBlockSquad squad, IRect overlapUnitRange, int z, out int count) {
+		int left = overlapUnitRange.xMin.UDivide(Const.MAP);
+		int right = (overlapUnitRange.xMax + 1).UDivide(Const.MAP);
+		int down = overlapUnitRange.yMin.UDivide(Const.MAP);
+		int up = (overlapUnitRange.yMax + 1).UDivide(Const.MAP);
+		int index = 0;
+		int maxCount = WorldPosInViewCache.Length;
+		for (int i = left; i <= right; i++) {
+			for (int j = down; j <= up; j++) {
+				if (!squad.WorldExists(i, j, z)) continue;
+				WorldPosInViewCache[index] = new Int3(i, j, z);
+				index++;
+				if (index >= maxCount) {
+					goto _END_;
+				}
+			}
+		}
+		_END_:;
+		count = index;
+		return WorldPosInViewCache;
 	}
 
 

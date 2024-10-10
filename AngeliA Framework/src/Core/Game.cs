@@ -30,7 +30,6 @@ public abstract partial class Game {
 	public static float ScaledMusicVolume => Util.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
 	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
-	public static bool DrawGizmosAtFront { get; set; } = false;
 	public static object CurrentBGM { get; protected set; }
 
 	// Attribute Info

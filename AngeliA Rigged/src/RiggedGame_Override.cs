@@ -176,16 +176,19 @@ public partial class RiggedGame {
 	}
 
 	protected override void _DoodleWorld (IBlockSquad squad, FRect screenRect, IRect worldUnitRange, int z, bool ignoreLevel = false, bool ignoreBG = false, bool ignoreEntity = false, bool ignoreElement = true) {
-		RespondMessage.RequireDoodleWorld = true;
-		RespondMessage.RequireDoodleWorld_ScreenRect = screenRect;
-		RespondMessage.RequireDoodleWorld_WorldUnitRange = worldUnitRange;
-		RespondMessage.RequireDoodleWorld_Z = z;
+		if (RespondMessage.RequireDoodleWorldCount >= RespondMessage.RequireDoodleWorlds.Length) return;
 		byte mask = 0;
 		mask.SetBit(0, ignoreLevel);
 		mask.SetBit(1, ignoreBG);
 		mask.SetBit(2, ignoreEntity);
 		mask.SetBit(3, ignoreElement);
-		RespondMessage.RequireDoodleWorld_IgnoreMask = mask;
+		RespondMessage.RequireDoodleWorlds[RespondMessage.RequireDoodleWorldCount] = new RigRespondMessage.DoodleWorldData() {
+			ScreenRect = screenRect,
+			WorldUnitRange = worldUnitRange,
+			Z = z,
+			IgnoreMask = mask,
+		};
+		RespondMessage.RequireDoodleWorldCount++;
 	}
 
 

@@ -796,9 +796,7 @@ public partial class MapEditor {
 		btnRect.SlideRight(btnSpace);
 
 		// Button Down
-		if (
-			GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_DOWN)
-		) {
+		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_DOWN)) {
 			SetViewZ(CurrentZ - 1);
 		}
 		btnRect.SlideRight(btnSpace);

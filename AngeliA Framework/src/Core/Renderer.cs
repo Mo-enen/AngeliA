@@ -793,7 +793,7 @@ public static class Renderer {
 	}
 
 
-	public static bool TryGetSpriteForGizmos (int artworkID, out AngeSprite sprite) => TryGetSprite(artworkID, out sprite) || TryGetSpriteFromGroup(artworkID, 0, out sprite);
+	public static bool TryGetSpriteForGizmos (int artworkID, out AngeSprite sprite) => TryGetSprite(artworkID, out sprite, true) || TryGetSpriteFromGroup(artworkID, 0, out sprite);
 
 
 	public static AngeSprite GetSpriteAt (int index) {

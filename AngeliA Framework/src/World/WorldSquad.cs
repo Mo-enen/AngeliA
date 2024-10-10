@@ -24,7 +24,6 @@ public sealed class WorldSquad : IBlockSquad {
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
 	private static readonly Dictionary<int, int> LevelToEntityRedirect = [];
-	private static readonly Int3[] WorldPosInViewCache = new Int3[128];
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
 	private IRect CullingCameraRect = default;
@@ -129,26 +128,7 @@ public sealed class WorldSquad : IBlockSquad {
 	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
 
 
-	public static Int3[] ForAllWorldInRange (IRect overlapRange, int z, out int count) {
-		int left = overlapRange.xMin.ToUnit().UDivide(Const.MAP);
-		int right = (overlapRange.xMax.ToUnit() + 1).UDivide(Const.MAP);
-		int down = overlapRange.yMin.ToUnit().UDivide(Const.MAP);
-		int up = (overlapRange.yMax.ToUnit() + 1).UDivide(Const.MAP);
-		int index = 0;
-		int maxCount = WorldPosInViewCache.Length;
-		for (int i = left; i <= right; i++) {
-			for (int j = down; j <= up; j++) {
-				WorldPosInViewCache[index] = new Int3(i, j, z);
-				index++;
-				if (index >= maxCount) {
-					goto _END_;
-				}
-			}
-		}
-		_END_:;
-		count = index;
-		return WorldPosInViewCache;
-	}
+	public bool WorldExists (int worldX, int worldY, int worldZ) => Stream.WorldExists(worldX, worldY, worldZ);
 
 
 	// Get Block

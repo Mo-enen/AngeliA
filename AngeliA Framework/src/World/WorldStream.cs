@@ -120,6 +120,9 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	// World
+	public bool WorldExists (int worldX, int worldY, int worldZ) => TryGetWorldData(new(worldX, worldY, worldZ), out _);
+
+
 	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) => TryGetWorld(new Int3(worldX, worldY, worldZ), out world);
 	public bool TryGetWorld (Int3 worldPos, out World world) {
 		world = null;
@@ -246,19 +249,17 @@ public sealed class WorldStream : IBlockSquad {
 		lock (POOL_LOCK) {
 
 			if (WorldPool.TryGetValue(worldPos, out worldData)) return worldData.World != null;
-
-			// Get New World
-			var newWorld = new World(worldPos);
-			worldData.World = newWorld;
+			WorldPool.Add(worldPos, worldData);
 			worldData.CreateFrame = InternalFrame++;
 			worldData.IsDirty = false;
 
-			// Load From Disk
-			bool loaded = false;
-			if (PathPool.TryGetPath(worldPos, out string path)) {
-				loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
-			}
-			WorldPool.Add(worldPos, worldData);
+			if (!PathPool.TryGetPath(worldPos, out string path)) return false;
+			if (!Util.FileExists(path)) return false;
+
+			// Load New World from Disk
+			var newWorld = new World(worldPos);
+			worldData.World = newWorld;
+			bool loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
 
 			// Check if Loaded
 			if (loaded) {
@@ -268,6 +269,7 @@ public sealed class WorldStream : IBlockSquad {
 				worldData.World = null;
 			}
 
+			WorldPool[worldPos] = worldData;
 			return worldData.World != null;
 		}
 	}
