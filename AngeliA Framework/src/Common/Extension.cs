@@ -534,18 +534,18 @@ public static class Extension {
 		);
 	}
 	[MethodImpl(INLINE)]
-	public static void Clamp (this ref FRect rect, FRect target) => rect = FRect.MinMaxRect(
-		Util.Min(target.xMax, Util.Max(rect.xMin, target.xMin)),
-		Util.Min(target.yMax, Util.Max(rect.yMin, target.yMin)),
-		Util.Max(target.xMin, Util.Min(rect.xMax, target.xMax)),
-		Util.Max(target.yMin, Util.Min(rect.yMax, target.yMax))
+	public static void Clamp (this ref FRect rect, FRect range) => rect = FRect.MinMaxRect(
+		Util.Min(range.xMax, Util.Max(rect.xMin, range.xMin)),
+		Util.Min(range.yMax, Util.Max(rect.yMin, range.yMin)),
+		Util.Max(range.xMin, Util.Min(rect.xMax, range.xMax)),
+		Util.Max(range.yMin, Util.Min(rect.yMax, range.yMax))
 	);
 	[MethodImpl(INLINE)]
-	public static FRect GetClamp (this FRect rect, FRect target) => FRect.MinMaxRect(
-		Util.Min(target.xMax, Util.Max(rect.xMin, target.xMin)),
-		Util.Min(target.yMax, Util.Max(rect.yMin, target.yMin)),
-		Util.Max(target.xMin, Util.Min(rect.xMax, target.xMax)),
-		Util.Max(target.yMin, Util.Min(rect.yMax, target.yMax))
+	public static FRect GetClamp (this FRect rect, FRect range) => FRect.MinMaxRect(
+		Util.Min(range.xMax, Util.Max(rect.xMin, range.xMin)),
+		Util.Min(range.yMax, Util.Max(rect.yMin, range.yMin)),
+		Util.Max(range.xMin, Util.Min(rect.xMax, range.xMax)),
+		Util.Max(range.yMin, Util.Min(rect.yMax, range.yMax))
 	);
 
 	[MethodImpl(INLINE)] public static Float2 BottomLeft (this FRect rect) => new(rect.xMin, rect.yMin);
@@ -810,6 +810,7 @@ public static class Extension {
 		return rect;
 	}
 	[MethodImpl(INLINE)] public static bool CompleteInside (this IRect rect, IRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
+	[MethodImpl(INLINE)] public static bool CompleteInside (this FRect rect, FRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
 	[MethodImpl(INLINE)]
 	public static IRect Clamp (this IRect rect, IRect range) => IRect.MinMaxRect(
 		Util.Max(rect.xMin, range.xMin),

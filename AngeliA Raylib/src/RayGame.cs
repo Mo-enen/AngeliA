@@ -272,14 +272,6 @@ public partial class RayGame : Game {
 			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
 			default, Color.White
 		);
-		// Front Gizmos
-		if (GlobalFrame <= GizmosOnTopOfUiFrame + 1) {
-			Raylib.DrawTextureRec(
-				GizmosRenderTexture.Texture,
-				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
-				new Vector2(0, 0), Color.White
-			);
-		}
 		// Front Doodle
 		if (GlobalFrame <= DoodleFrame + 1 && GlobalFrame <= DoodleOnTopOfUiFrame + 1) {
 			Raylib.DrawTextureRec(
@@ -291,6 +283,14 @@ public partial class RayGame : Game {
 					DoodleRenderTexture.Texture.Height
 				),
 				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
+			);
+		}
+		// Front Gizmos
+		if (GlobalFrame <= GizmosOnTopOfUiFrame + 1) {
+			Raylib.DrawTextureRec(
+				GizmosRenderTexture.Texture,
+				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
+				new Vector2(0, 0), Color.White
 			);
 		}
 		// End

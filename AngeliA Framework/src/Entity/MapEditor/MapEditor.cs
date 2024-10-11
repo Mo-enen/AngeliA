@@ -846,7 +846,7 @@ public sealed partial class MapEditor : WindowUI {
 		} else {
 			player.Active = false;
 		}
-		Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 1000, int.MaxValue - 1);
+		Stage.SetViewRectImmediately(ViewRect);
 	}
 
 
@@ -1135,6 +1135,7 @@ public sealed partial class MapEditor : WindowUI {
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
 			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);
+			LightingSystem.ForceCameraScale(0, 1);
 		}
 	}
 
@@ -1280,6 +1281,7 @@ public sealed partial class MapEditor : WindowUI {
 			player.Y = posY;
 		}
 		player.SetCharacterState(CharacterState.GamePlay);
+		player.ForceStayOnStage(1);
 		RequireSetMode = true;
 	}
 

@@ -298,6 +298,39 @@ public abstract partial class Game {
 	public static void SetDoodleOffset (Float2 screenOffset) => Instance._SetDoodleOffset(screenOffset);
 	protected abstract void _SetDoodleOffset (Float2 screenOffset);
 
+	public static void DoodleRectWrap (FRect screenRect, Color32 color) {
+		int cWidth = ScreenWidth - DoodleScreenPadding.horizontal;
+		int cHeight = ScreenHeight - DoodleScreenPadding.vertical;
+		var canvasRect = new FRect(0, 0, cWidth, cHeight);
+		screenRect.x = screenRect.x.UMod(cWidth);
+		screenRect.y = screenRect.y.UMod(cHeight);
+		if (screenRect.CompleteInside(canvasRect)) {
+			DoodleRect(screenRect, color);
+		} else {
+			var _clamped = screenRect.GetClamp(canvasRect);
+			if (_clamped.width.NotAlmostZero() && _clamped.height.NotAlmostZero()) {
+				DoodleRect(_clamped, color);
+			}
+
+			screenRect.x -= cWidth;
+			_clamped = screenRect.GetClamp(canvasRect);
+			if (_clamped.width.NotAlmostZero() && _clamped.height.NotAlmostZero()) {
+				DoodleRect(_clamped, color);
+			}
+
+			screenRect.y -= cHeight;
+			_clamped = screenRect.GetClamp(canvasRect);
+			if (_clamped.width.NotAlmostZero() && _clamped.height.NotAlmostZero()) {
+				DoodleRect(_clamped, color);
+			}
+
+			screenRect.x += cWidth;
+			_clamped = screenRect.GetClamp(canvasRect);
+			if (_clamped.width.NotAlmostZero() && _clamped.height.NotAlmostZero()) {
+				DoodleRect(_clamped, color);
+			}
+		}
+	}
 	public static void DoodleRect (FRect screenRect, Color32 color) => Instance._DoodleRect(screenRect, color);
 	protected abstract void _DoodleRect (FRect screenRect, Color32 color);
 

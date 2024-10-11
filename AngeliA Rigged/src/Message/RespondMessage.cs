@@ -142,7 +142,7 @@ public class RigRespondMessage {
 	private readonly Dictionary<uint, object> GizmosTexturePool = [];
 	private int CachedScreenWidth = 1;
 	private int CachedScreenHeight = 1;
-	private IBlockSquad DoodlingSquad = null;
+	private WorldStream DoodlingStream = null;
 
 
 	#endregion
@@ -157,7 +157,7 @@ public class RigRespondMessage {
 		GizmosTexturePool.Clear();
 		SkyTop.a = 255;
 		SkyBottom.a = 255;
-		DoodlingSquad = null;
+		DoodlingStream = null;
 		Game.ResetDoodle();
 	}
 
@@ -288,8 +288,16 @@ public class RigRespondMessage {
 		}
 
 		// Doodle
-		if (RequireShowDoodle) Game.ShowDoodle();
-		if (RequireResetDoodle) Game.ResetDoodle();
+		DoodlingStream ??= WorldStream.GetOrCreateStreamFromPool(universe.MapRoot);
+		if (RequireShowDoodle) {
+			Game.ShowDoodle();
+		} else {
+			Game.HideDoodle();
+		}
+		if (RequireResetDoodle) {
+			Game.ResetDoodle();
+			DoodlingStream.DiscardAllChanges(forceDiscard: true);
+		}
 		RequireShowDoodle = false;
 		RequireResetDoodle = false;
 		float doodleShiftX = (float)leftPadding * Game.ScreenWidth / Renderer.CameraRect.width;
@@ -306,10 +314,9 @@ public class RigRespondMessage {
 		// Doodle World
 		using (new SheetIndexScope(sheetIndex)) {
 			for (int i = 0; i < RequireDoodleWorldCount; i++) {
-				DoodlingSquad ??= WorldStream.GetOrCreateStreamFromPool(universe.MapRoot);
 				var data = RequireDoodleWorlds[i];
 				Game.DoodleWorld(
-					DoodlingSquad,
+					DoodlingStream,
 					data.ScreenRect,
 					data.WorldUnitRange, data.Z,
 					data.IgnoreMask.GetBit(0),

@@ -140,17 +140,6 @@ public partial class RayGame {
 
 		if (PauselessFrame < 4) return;
 
-		// Apply Gizmos Before UI
-		if (GlobalFrame > GizmosOnTopOfUiFrame && layerIndex == RenderLayer.UI) {
-			Raylib.BeginBlendMode(BlendMode.CustomSeparate);
-			Raylib.DrawTextureRec(
-				GizmosRenderTexture.Texture,
-				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
-				new Vector2(0, 0), Color.White
-			);
-			Raylib.EndBlendMode();
-		}
-
 		// Apply Doodle Before UI
 		if (GlobalFrame <= DoodleFrame && GlobalFrame > DoodleOnTopOfUiFrame && layerIndex == RenderLayer.UI) {
 			Raylib.BeginBlendMode(BlendMode.CustomSeparate);
@@ -163,6 +152,17 @@ public partial class RayGame {
 					DoodleRenderTexture.Texture.Height
 				),
 				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
+			);
+			Raylib.EndBlendMode();
+		}
+
+		// Apply Gizmos Before UI
+		if (GlobalFrame > GizmosOnTopOfUiFrame && layerIndex == RenderLayer.UI) {
+			Raylib.BeginBlendMode(BlendMode.CustomSeparate);
+			Raylib.DrawTextureRec(
+				GizmosRenderTexture.Texture,
+				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
+				new Vector2(0, 0), Color.White
 			);
 			Raylib.EndBlendMode();
 		}

@@ -99,14 +99,14 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
-	public void DiscardAllChanges () {
-		if (!IsDirty) return;
+	public void DiscardAllChanges (bool forceDiscard = false) {
+		if (!IsDirty && !forceDiscard) return;
 		IsDirty = false;
 		lock (POOL_LOCK) {
 			foreach (var pair in WorldPool) {
 				ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
 				bool notExists = Unsafe.IsNullRef(ref data);
-				if (notExists || data.World == null || !data.IsDirty) continue;
+				if (notExists || data.World == null || (!forceDiscard && !data.IsDirty)) continue;
 				var pos = data.World.WorldPosition;
 				string path = PathPool.GetOrAddPath(pos);
 				data.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
