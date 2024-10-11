@@ -619,14 +619,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		}
 
 		// Equipping
-		int equippingID = Inventory.GetEquipment(InventoryID, EquipmentType.Weapon, out _);
-		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon eqWeapon) {
-			EquippingWeaponType = eqWeapon.WeaponType;
-			EquippingWeaponHeld = eqWeapon.Handheld;
-		} else {
-			EquippingWeaponType = WeaponType.Hand;
-			EquippingWeaponHeld = WeaponHandheld.Float;
-		}
+		UpdateWeaponCache();
 
 	}
 
@@ -767,6 +760,18 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		EquipmentType.Jewelry => JewelryInteractable,
 		_ => false,
 	};
+
+
+	public void UpdateWeaponCache () {
+		int equippingID = Inventory.GetEquipment(InventoryID, EquipmentType.Weapon, out _);
+		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon eqWeapon) {
+			EquippingWeaponType = eqWeapon.WeaponType;
+			EquippingWeaponHeld = eqWeapon.Handheld;
+		} else {
+			EquippingWeaponType = WeaponType.Hand;
+			EquippingWeaponHeld = WeaponHandheld.Float;
+		}
+	}
 
 
 	// Behaviour

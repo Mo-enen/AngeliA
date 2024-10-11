@@ -1,24 +1,6 @@
-﻿using System;
-using AngeliA;
+﻿using AngeliA;
 
 namespace AngeliaEngine;
-
-
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Field, AllowMultiple = false)]
-public class EngineSettingAttribute : Attribute {
-	public string Group;
-	public string DisplayLabel;
-	public string RequireSettingName;
-	public EngineSettingAttribute () {
-		Group = null;
-		DisplayLabel = null;
-	}
-	public EngineSettingAttribute (string group, string displayLabel, string requireSettingPath = "") {
-		Group = group;
-		DisplayLabel = displayLabel;
-		RequireSettingName = requireSettingPath;
-	}
-}
 
 
 [EngineSetting]

@@ -10,10 +10,6 @@ using System.Diagnostics;
 namespace AngeliaEngine;
 
 
-[System.AttributeUsage(System.AttributeTargets.Method)]
-public class OnProjectBuiltInBackgroundAttribute (int order = 0) : OrderedAttribute(order) { }
-
-
 public static class EngineUtil {
 
 

@@ -151,7 +151,6 @@ public static class FrameworkUtil {
 	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacterRenderer renderer, int animationFrame) => DrawPoseCharacterAsUI(rect, renderer, animationFrame, out _, out _);
 	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacterRenderer renderer, int animationFrame, out IRect globalRect, out IRect uiRect) {
 
-
 		globalRect = default;
 		uiRect = default;
 		if (renderer == null) return false;
@@ -166,6 +165,7 @@ public static class FrameworkUtil {
 			renderer.CurrentAnimationFrame = animationFrame;
 			bool oldActive = target.Active;
 			target.Active = true;
+			target.UpdateWeaponCache();
 			renderer.LateUpdate();
 			target.Active = oldActive;
 			renderer.CurrentAnimationFrame = oldAniFrame;
@@ -1097,7 +1097,7 @@ public static class FrameworkUtil {
 		count = index;
 		return WorldPosInViewCache;
 	}
-	
+
 
 	public static Int3[] ForAllExistsWorldInRange (IBlockSquad squad, IRect overlapUnitRange, int z, out int count) {
 		int left = overlapUnitRange.xMin.UDivide(Const.MAP);
