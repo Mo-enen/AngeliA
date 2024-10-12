@@ -161,7 +161,11 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 	}
 
 
-	protected virtual bool CheckForStopDrive () => Driver == null || !Driver.Active;
+	protected virtual bool CheckForStopDrive () {
+		if (Driver == null || !Driver.Active) return true;
+		if (Driver.Teleporting) return true;
+		return false;
+	}
 
 
 	void IDamageReceiver.TakeDamage (Damage damage) { }

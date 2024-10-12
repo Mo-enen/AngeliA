@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovement {
 
@@ -53,7 +54,9 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 
 
 	protected override bool CheckForStopDrive () {
-		if (Driver == null || !Driver.Active) return true;
+
+		if (base.CheckForStopDrive()) return true;
+
 		// For Player
 		if (Driver == PlayerSystem.Selecting && Input.GameKeyDown(Gamekey.Select)) {
 			Input.UseGameKey(Gamekey.Select);

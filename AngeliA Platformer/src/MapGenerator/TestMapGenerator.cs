@@ -6,12 +6,12 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 #if DEBUG
-internal class TestMapGeneratorAlt0 : TestMapGenerator { }
-internal class TestMapGeneratorAlt1 : TestMapGenerator { public override float Priority => 5f; }
-internal class TestMapGeneratorAlt2 : TestMapGenerator { }
-internal class TestMapGeneratorAlt3 : TestMapGenerator { }
+internal class TestMapGeneratorAlt0 (int typeID) : TestMapGenerator(typeID) { }
+internal class TestMapGeneratorAlt1 (int typeID) : TestMapGenerator(typeID) { }
+internal class TestMapGeneratorAlt2 (int typeID) : TestMapGenerator(typeID) { }
+internal class TestMapGeneratorAlt3 (int typeID) : TestMapGenerator(typeID) { }
 
-internal class TestMapGenerator : MapGenerator {
+internal class TestMapGenerator (int typeID) : MapGenerator(typeID) {
 
 
 	private static readonly FastNoiseLite RegionNoise = new();
@@ -20,7 +20,7 @@ internal class TestMapGenerator : MapGenerator {
 
 
 
-	public override MapGenerationResult GenerateMap (IBlockSquad squad, Int3 startPoint, Direction8? startDirection) {
+	public override MapGenerationResult GenerateMap (Int3 worldPos) {
 
 
 
@@ -230,6 +230,78 @@ internal class TestMapGenerator : MapGenerator {
 		}
 
 	}
+
+
+
+	// Region Util
+	protected static void InitNoiseForRegion (FastNoiseLite noise, long seed) {
+
+		// V1
+		//noise.SetSeed(seed);
+		//noise.SetFrequency(0.0012f);
+		//noise.SetNoiseType(NoiseType.Cellular);
+		//noise.SetFractalType(FractalType.None);
+		//noise.SetCellularDistanceFunction(CellularDistanceFunction.Manhattan);
+		//noise.SetCellularReturnType(CellularReturnType.CellValue);
+		//noise.SetCellularJitter(0.7f);
+
+		// V2
+		noise.SetSeed(seed);
+		noise.SetFrequency(0.00028f);
+		noise.SetNoiseType(NoiseType.Cellular);
+		noise.SetFractalType(FractalType.FBm);
+		noise.SetFractalOctaves(2);
+		noise.SetFractalGain(0.2f);
+		noise.SetFractalLacunarity(10f);
+		noise.SetFractalWeightedStrength(0);
+		noise.SetCellularDistanceFunction(CellularDistanceFunction.Euclidean);
+		noise.SetCellularReturnType(CellularReturnType.CellValue);
+		noise.SetCellularJitter(0.2f);
+
+
+
+
+	}
+
+
+	protected static int GetRegionIndex (FastNoiseLite noise, int unitX, int unitY, int unitZ, int regionCount) {
+		float noise01 = noise.GetNoise01(unitX, unitY, unitZ);
+		return (int)(noise01 * regionCount).Clamp(0, regionCount - 1);
+	}
+
+
+	protected static void FillAltitude (int[] altitudes, FastNoiseLite noise, int unitLeft, int unitDown, int z, int regionCount, int zoom = 1) {
+		for (int i = 0; i < Const.MAP; i++) {
+			int unitX = i * zoom + unitLeft;
+			int currentIndex = i;
+			int currentAltitude = 0;
+			int currentAgent = -1;
+			for (int j = 0; j < Const.MAP; j++) {
+				int unitY = j * zoom + unitDown;
+				int agent = GetRegionIndex(noise, unitX, unitY, z, regionCount);
+				if (agent != currentAgent) {
+					if (currentAgent == -1) {
+						// First Block
+						currentAltitude = 0;
+						for (int safe = 1; safe < 2048; safe++) {
+							if (agent != GetRegionIndex(noise, unitX, unitY - safe, z, regionCount)) break;
+							currentAltitude += 1;
+						}
+					} else {
+						// Agent Changed
+						currentAltitude = 0;
+					}
+					currentAgent = agent;
+				} else {
+					// Same Agent
+					currentAltitude += zoom;
+				}
+				altitudes[currentIndex] = currentAltitude;
+				currentIndex += Const.MAP;
+			}
+		}
+	}
+
 
 
 }

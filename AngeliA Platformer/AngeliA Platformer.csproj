@@ -59,6 +59,10 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="src\ThridParty\" />
+	</ItemGroup>
+
 	<!--Copy Packages Dll to Runtime Folder-->
 	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build" Condition="'$(Configuration)'=='Debug'">
 		<Copy SourceFiles="$(OutputPath)AngeliA Platformer.dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\AngeliA Platformer\Debug\AngeliA Platformer.dll" ContinueOnError="true" />

@@ -31,12 +31,14 @@ public static class CheatSystem {
 
 	// Api
 	public static object CurrentParam { get; private set; } = null;
+	public static int CheatCodeCount => Pool.Count;
 
 	// Data
 	private static event System.Action OnCheatPerform;
 	private static bool Enable = false;
 	private static readonly Pipe<char> CheatInput = new(96);
 	private static readonly Dictionary<int, CheatAction> Pool = [];
+	private static readonly List<int> AllCheatIDs = [];
 	private static int MatchingCheatID = 0;
 
 
@@ -62,6 +64,7 @@ public static class CheatSystem {
 			}
 		} else {
 			Pool.Clear();
+			AllCheatIDs.Clear();
 		}
 	}
 
@@ -86,7 +89,7 @@ public static class CheatSystem {
 		if (changed && CheatInput.Length > 0) {
 			MatchingCheatID = 0;
 			int inputLen = CheatInput.Length;
-			for (int i = 1; i < inputLen; i++) {
+			for (int i = 1; i <= inputLen; i++) {
 				int inputHash = CheatInput.Data.AngeReverseHash(CheatInput.Start, i);
 				if (Pool.ContainsKey(inputHash)) {
 					MatchingCheatID = inputHash;
@@ -138,7 +141,11 @@ public static class CheatSystem {
 
 	public static void AddCheatAction (string code, MethodInfo method, object param = null) {
 		code = code.ToLower();
-		Pool[code.AngeHash()] = new CheatAction() {
+		int id = code.AngeHash();
+		if (!Pool.ContainsKey(id)) {
+			AllCheatIDs.Add(id);
+		}
+		Pool[id] = new CheatAction() {
 			Action = method,
 			Param = param,
 			Enable = true,
@@ -157,8 +164,14 @@ public static class CheatSystem {
 	public static IEnumerable<string> ForAllCheatCodes () {
 		foreach (var (_, data) in Pool) {
 			yield return data.Code;
-			;
 		}
+	}
+
+
+	public static string GetCodeAt (int index) {
+		if (index < 0 || index >= AllCheatIDs.Count) return "";
+		int id = AllCheatIDs[index];
+		return Pool.TryGetValue(id, out var cheat) ? cheat.Code : "";
 	}
 
 

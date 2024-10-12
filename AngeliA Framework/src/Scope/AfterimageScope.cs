@@ -1,33 +1,19 @@
 ﻿namespace AngeliA;
 
-public readonly struct AfterimageScope : System.IDisposable {
-	private readonly int LayerIndex;
-	private readonly int UsedCount;
-	private readonly int SpeedX;
-	private readonly int SpeedY;
-	private readonly Color32 TintStart;
-	private readonly Color32 TintEnd;
-	private readonly int RotateSpeed;
-	private readonly int Count;
-	private readonly int FrameStep;
-	private readonly int ScaleStart;
-	private readonly int ScaleEnd;
-	private readonly int Layer;
+public readonly struct AfterimageScope (int speedX, int speedY, Color32 tintStart, Color32 tintEnd, int rotateSpeed = 0, int count = 3, int frameStep = 2, int scaleStart = 1000, int scaleEnd = 1000, int renderLayer = RenderLayer.DEFAULT) : System.IDisposable {
+	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
+	private readonly int UsedCount = Renderer.GetUsedCellCount();
+	private readonly int SpeedX = speedX;
+	private readonly int SpeedY = speedY;
+	private readonly Color32 TintStart = tintStart;
+	private readonly Color32 TintEnd = tintEnd;
+	private readonly int RotateSpeed = rotateSpeed;
+	private readonly int Count = count;
+	private readonly int FrameStep = frameStep;
+	private readonly int ScaleStart = scaleStart;
+	private readonly int ScaleEnd = scaleEnd;
+	private readonly int Layer = renderLayer;
 	public AfterimageScope (int speedX, int speedY, int rotateSpeed = 0, int count = 3, int frameStep = 2, int scaleStart = 1000, int scaleEnd = 1000, int renderLayer = RenderLayer.DEFAULT) : this(speedX, speedY, Color32.WHITE, Color32.WHITE, rotateSpeed, count, frameStep, scaleStart, scaleEnd, renderLayer) { }
-	public AfterimageScope (int speedX, int speedY, Color32 tintStart, Color32 tintEnd, int rotateSpeed = 0, int count = 3, int frameStep = 2, int scaleStart = 1000, int scaleEnd = 1000, int renderLayer = RenderLayer.DEFAULT) {
-		LayerIndex = Renderer.CurrentLayerIndex;
-		UsedCount = Renderer.GetUsedCellCount();
-		SpeedX = speedX;
-		SpeedY = speedY;
-		TintStart = tintStart;
-		TintEnd = tintEnd;
-		RotateSpeed = rotateSpeed;
-		Count = count;
-		FrameStep = frameStep;
-		ScaleStart = scaleStart;
-		ScaleEnd = scaleEnd;
-		Layer = renderLayer;
-	}
 	public readonly void Dispose () {
 		if (Renderer.GetCells(LayerIndex, out var cells, out int count)) {
 			int oldLayer = Renderer.CurrentLayerIndex;

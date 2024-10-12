@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class Burner<F> : Entity, IBlockEntity where F : Fire {
+public abstract class Burner : Entity, IBlockEntity {
 
 
 
@@ -39,9 +41,23 @@ public abstract class Burner<F> : Entity, IBlockEntity where F : Fire {
 
 		base.OnActivated();
 
-		FireTypeID = typeof(F).AngeHash();
+		var dirNormal = Direction.Normal();
+		FireTypeID = Fire.DefaultFireID;
 		NextFireSpawnedFrame = int.MinValue;
 		Burning = false;
+
+		// Get Fire Type from Map
+		int mapFireID = WorldSquad.Front.GetBlockAt(
+			(X + 1).ToUnit() + dirNormal.x,
+			(Y + 1).ToUnit() + dirNormal.y,
+			BlockType.Entity
+		);
+		if (mapFireID != 0) {
+			var fireType = Stage.GetEntityType(mapFireID);
+			if (fireType != null && fireType.IsSubclassOf(typeof(Fire))) {
+				FireTypeID = mapFireID;
+			}
+		}
 
 		if (Renderer.TryGetSprite(FireTypeID, out var fSprite)) {
 			FireTint = fSprite.SummaryTint;
@@ -52,14 +68,9 @@ public abstract class Burner<F> : Entity, IBlockEntity where F : Fire {
 
 		// Fire Offset
 		FireFrameOffset = 0;
-		var normal = Direction.Normal();
 		var squad = WorldSquad.Front as IBlockSquad;
 		if (squad.TryGetSingleSystemNumber(
-			(X + 1).ToUnit() + normal.x, (Y + 1).ToUnit() + normal.y, Stage.ViewZ, out int fireOffset
-		)) {
-			FireFrameOffset = FireFrequency * fireOffset.Clamp(0, 9) / 10;
-		} else if (squad.TryGetSingleSystemNumber(
-			(X + 1).ToUnit() - normal.x, (Y + 1).ToUnit() - normal.y, Stage.ViewZ, out fireOffset
+			(X + 1).ToUnit() - dirNormal.x, (Y + 1).ToUnit() - dirNormal.y, Stage.ViewZ, out int fireOffset
 		)) {
 			FireFrameOffset = FireFrequency * fireOffset.Clamp(0, 9) / 10;
 		}
