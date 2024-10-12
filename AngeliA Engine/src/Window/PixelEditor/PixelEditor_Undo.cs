@@ -313,10 +313,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteNameUndoItem name: {
-				if (!Sheet.SpritePool.TryGetValue(
-					name.SpriteID, out var sprite
-				)) break;
-				sprite.RealName = redo ? name.To : name.From;
+				Sheet.RenameSprite(name.SpriteID, redo ? name.To : name.From);
 				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
