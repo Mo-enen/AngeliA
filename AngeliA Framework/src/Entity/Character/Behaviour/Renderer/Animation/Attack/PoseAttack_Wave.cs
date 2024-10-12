@@ -10,16 +10,16 @@ public class PoseAttack_Wave : PoseAnimation {
 
 	public static void Wave () {
 		int style;
-		var handheld = Target.EquippingWeaponHeld;
-		var weaponType = Target.EquippingWeaponType;
+		var handheld = Target.EquippingToolHeld;
+		var weaponType = Target.EquippingToolType;
 		switch (handheld) {
 
 			// Single Handed
-			case WeaponHandheld.SingleHanded:
+			case ToolHandheld.SingleHanded:
 				style =
 					Attackness.LastAttackCharged ||
-					weaponType == WeaponType.Throwing ||
-					weaponType == WeaponType.Flail ? 0 :
+					weaponType == ToolType.Throwing ||
+					weaponType == ToolType.Flail ? 0 :
 					 Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -38,11 +38,11 @@ public class PoseAttack_Wave : PoseAnimation {
 				break;
 
 			// Double Handed
-			case WeaponHandheld.DoubleHanded:
+			case ToolHandheld.DoubleHanded:
 				style =
 					Attackness.LastAttackCharged ||
-					weaponType == WeaponType.Throwing ||
-					weaponType == WeaponType.Flail ? 0 :
+					weaponType == ToolType.Throwing ||
+					weaponType == ToolType.Flail ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -61,7 +61,7 @@ public class PoseAttack_Wave : PoseAnimation {
 				break;
 
 			// Each Hand
-			case WeaponHandheld.OneOnEachHand:
+			case ToolHandheld.OneOnEachHand:
 				style =
 					Attackness.LastAttackCharged ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
@@ -82,10 +82,10 @@ public class PoseAttack_Wave : PoseAnimation {
 				break;
 
 			// Pole
-			case WeaponHandheld.Pole:
+			case ToolHandheld.Pole:
 				style =
 					Attackness.LastAttackCharged ||
-					Target.EquippingWeaponType == WeaponType.Flail ? 0 :
+					Target.EquippingToolType == ToolType.Flail ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
@@ -107,7 +107,7 @@ public class PoseAttack_Wave : PoseAnimation {
 
 	public static void SingleHanded_SmashDown () {
 
-		bool isThrowing = Target.EquippingWeaponType == WeaponType.Throwing;
+		bool isThrowing = Target.EquippingToolType == ToolType.Throwing;
 		float ease01 = AttackEase;
 
 		if (IsChargingAttack) {

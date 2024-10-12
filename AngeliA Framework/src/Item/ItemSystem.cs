@@ -78,6 +78,7 @@ public static class ItemSystem {
 
 		if (Game.IsToolApplication) return;
 
+		bool useProcedureMap = Universe.BuiltInInfo.UseProceduralMap;
 		var giveItemCheatInfo = typeof(ItemSystem).GetMethod(
 			nameof(GiveItemCheat),
 			BindingFlags.NonPublic | BindingFlags.Static
@@ -112,7 +113,9 @@ public static class ItemSystem {
 				angeName,
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
-			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
+			if (useProcedureMap) {
+				CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
+			}
 		}
 
 		ItemPoolReady = true;
@@ -154,6 +157,7 @@ public static class ItemSystem {
 
 		var sheet = Renderer.MainSheet;
 		if (sheet == null) return;
+		bool useProcedureMap = Universe.BuiltInInfo.UseProceduralMap;
 
 		// Clear Prev Block Items
 		if (BlockItemLoadedBefore) {
@@ -190,7 +194,9 @@ public static class ItemSystem {
 				itemName,
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
-			CheatSystem.AddCheatAction($"Give{itemName.Replace(" ", "")}", giveItemCheatInfo, itemID);
+			if (useProcedureMap) {
+				CheatSystem.AddCheatAction($"Give{itemName.Replace(" ", "")}", giveItemCheatInfo, itemID);
+			}
 		}
 	}
 
@@ -307,10 +313,6 @@ public static class ItemSystem {
 		type = default;
 		return false;
 	}
-
-
-	// Food
-	public static bool IsFood (int itemID) => ItemPool.TryGetValue(itemID, out var data) && data.Item is Food;
 
 
 	// Unlock

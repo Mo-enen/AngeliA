@@ -6,8 +6,8 @@ using AngeliA;namespace AngeliA.Platformer;
 
 
 public abstract class Axe : MeleeWeapon {
-	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
-	public sealed override WeaponType WeaponType => WeaponType.Axe;
+	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
+	public sealed override ToolType ToolType => ToolType.Axe;
 	public override int AttackDuration => 12;
 	public override int AttackCooldown => 2;
 	public override int RangeXLeft => 275;

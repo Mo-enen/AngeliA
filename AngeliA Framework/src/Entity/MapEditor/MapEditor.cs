@@ -1111,7 +1111,7 @@ public sealed partial class MapEditor : WindowUI {
 				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Gloves);
 				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Shoes);
 				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Jewelry);
-				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Weapon);
+				RepairEquipment(PlayerSystem.Selecting, EquipmentType.HandTool);
 				// Func
 				static void RepairEquipment (Entity holder, EquipmentType type) {
 					int invID = holder is Character cHolder ? cHolder.InventoryID : holder.TypeID;

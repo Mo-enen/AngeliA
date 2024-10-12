@@ -27,8 +27,8 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 	internal static bool Cheat_GiveAmmo () {
 		var player = PlayerSystem.Selecting;
 		if (player == null) return false;
-		int id = Inventory.GetEquipment(player.InventoryID, EquipmentType.Weapon, out int eqCount);
-		if (id == 0 || eqCount <= 0 || ItemSystem.GetItem(id) is not Weapon weapon) return false;
+		int id = Inventory.GetEquipment(player.InventoryID, EquipmentType.HandTool, out int eqCount);
+		if (id == 0 || eqCount <= 0 || ItemSystem.GetItem(id) is not HandTool weapon) return false;
 		bool performed = false;
 		// Fill Bullet
 		if (
@@ -46,7 +46,7 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 		// Fill Weapon
 		int eqMaxCount = ItemSystem.GetItemMaxStackCount(weapon.TypeID);
 		if (eqMaxCount > eqCount) {
-			Inventory.SetEquipment(player.InventoryID, EquipmentType.Weapon, weapon.TypeID, eqMaxCount);
+			Inventory.SetEquipment(player.InventoryID, EquipmentType.HandTool, weapon.TypeID, eqMaxCount);
 			performed = true;
 		}
 		return performed;

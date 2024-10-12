@@ -14,7 +14,6 @@ public static class Inventory {
 	#region --- SUB ---
 
 
-	[System.Serializable]
 	private class InventoryData : IJsonSerializationCallback {
 
 		public int[] Items;
@@ -40,15 +39,14 @@ public static class Inventory {
 	}
 
 
-	[System.Serializable]
 	private class EquipmentInventoryData : InventoryData {
-		public int Weapon = 0;
+		public int HandTool = 0;
 		public int Helmet = 0;
 		public int BodySuit = 0;
 		public int Shoes = 0;
 		public int Gloves = 0;
 		public int Jewelry = 0;
-		public int WeaponCount = 0;
+		public int HandToolCount = 0;
 		public int HelmetCount = 0;
 		public int BodySuitCount = 0;
 		public int ShoesCount = 0;
@@ -396,7 +394,7 @@ public static class Inventory {
 	public static int GetEquipment (int inventoryID, EquipmentType type, out int equipmentCount) {
 		if (Pool.TryGetValue(inventoryID, out var data) && data is EquipmentInventoryData pData) {
 			(int resultID, equipmentCount) = type switch {
-				EquipmentType.Weapon => (pData.Weapon, pData.WeaponCount),
+				EquipmentType.HandTool => (pData.HandTool, pData.HandToolCount),
 				EquipmentType.BodyArmor => (pData.BodySuit, pData.BodySuitCount),
 				EquipmentType.Helmet => (pData.Helmet, pData.HelmetCount),
 				EquipmentType.Shoes => (pData.Shoes, pData.ShoesCount),
@@ -428,9 +426,9 @@ public static class Inventory {
 		if (equipmentID == 0) equipmentCount = 0;
 
 		switch (type) {
-			case EquipmentType.Weapon:
-				pData.Weapon = equipmentID;
-				pData.WeaponCount = equipmentCount;
+			case EquipmentType.HandTool:
+				pData.HandTool = equipmentID;
+				pData.HandToolCount = equipmentCount;
 				break;
 			case EquipmentType.BodyArmor:
 				pData.BodySuit = equipmentID;

@@ -13,14 +13,14 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	#region --- SUB ---
 
 
-	private class WeaponSorter : IComparer<WeaponData> {
-		public static readonly WeaponSorter Instance = new();
-		public int Compare (WeaponData pairA, WeaponData pairB) {
-			var a = pairA.Weapon;
-			var b = pairB.Weapon;
+	private class HandToolSorter : IComparer<HandToolData> {
+		public static readonly HandToolSorter Instance = new();
+		public int Compare (HandToolData pairA, HandToolData pairB) {
+			var a = pairA.Tool;
+			var b = pairB.Tool;
 			if (a is null) return b is null ? 0 : 1;
 			if (b is null) return -1;
-			int result = ((int)a.WeaponType).CompareTo((int)b.WeaponType);
+			int result = ((int)a.ToolType).CompareTo((int)b.ToolType);
 			if (result != 0) return result;
 			result = ((int)a.Handheld).CompareTo((int)b.Handheld);
 			if (result != 0) return result;
@@ -30,17 +30,17 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	}
 
 
-	private class WeaponData {
-		public Weapon Weapon;
+	private class HandToolData {
+		public HandTool Tool;
 		public int InventoryIndex;
 		public int Count;
 		public void Reset () {
-			Weapon = null;
+			Tool = null;
 			Count = 0;
 			InventoryIndex = -1;
 		}
-		public void Set (Weapon weapon, int invIndex, int count) {
-			Weapon = weapon;
+		public void Set (HandTool tool, int invIndex, int count) {
+			Tool = tool;
 			Count = count;
 			InventoryIndex = invIndex;
 		}
@@ -66,9 +66,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public IRect BackgroundRect { get; private set; } = default;
 
 	// Data
-	private static readonly WeaponData[] WeaponList = new WeaponData[Character.INVENTORY_ROW * Character.INVENTORY_COLUMN + 2].FillWithNewValue();
+	private static readonly HandToolData[] HandToolList = new HandToolData[Character.INVENTORY_ROW * Character.INVENTORY_COLUMN + 2].FillWithNewValue();
 	private int CurrentSlotIndex = 0;
-	private int WeaponCount = 0;
+	private int HandToolCount = 0;
 
 
 	#endregion
@@ -89,51 +89,51 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		Y = Renderer.CameraRect.CenterY();
 		IsDirty = false;
 		CurrentSlotIndex = 0;
-		WeaponCount = 0;
+		HandToolCount = 0;
 
 		// Init Item List
 		int invID = PlayerSystem.Selecting.InventoryID;
 		int currentIndex = 0;
-		bool allowHand = Inventory.GetEquipment(invID, EquipmentType.Weapon, out _) == 0 || Inventory.IndexOfItem(invID, 0) >= 0;
+		bool allowHand = Inventory.GetEquipment(invID, EquipmentType.HandTool, out _) == 0 || Inventory.IndexOfItem(invID, 0) >= 0;
 
 		// Hand
 		if (allowHand) {
-			WeaponList[currentIndex].Reset();
+			HandToolList[currentIndex].Reset();
 			currentIndex++;
-			WeaponCount++;
+			HandToolCount++;
 		}
 
 		// Equipping
-		int equippingID = Inventory.GetEquipment(invID, EquipmentType.Weapon, out int eqCount);
-		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon equippingItem) {
-			WeaponList[currentIndex].Set(equippingItem, -1, eqCount);
+		int equippingID = Inventory.GetEquipment(invID, EquipmentType.HandTool, out int eqCount);
+		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is HandTool equippingItem) {
+			HandToolList[currentIndex].Set(equippingItem, -1, eqCount);
 			currentIndex++;
-			WeaponCount++;
+			HandToolCount++;
 		}
 
 		// Inside Inventory
 		int capacity = Inventory.GetInventoryCapacity(invID);
-		for (int i = 0; i < capacity && currentIndex < WeaponList.Length; i++) {
+		for (int i = 0; i < capacity && currentIndex < HandToolList.Length; i++) {
 			int itemID = Inventory.GetItemAt(invID, i, out int iCount);
 			if (
 				itemID == 0 ||
-				ItemSystem.GetItem(itemID) is not Weapon weapon
+				ItemSystem.GetItem(itemID) is not HandTool tool
 			) continue;
-			WeaponList[currentIndex].Set(weapon, i, iCount);
+			HandToolList[currentIndex].Set(tool, i, iCount);
 			currentIndex++;
-			WeaponCount++;
+			HandToolCount++;
 		}
-		for (int i = currentIndex; i < WeaponList.Length; i++) {
-			WeaponList[i].Reset();
+		for (int i = currentIndex; i < HandToolList.Length; i++) {
+			HandToolList[i].Reset();
 		}
-		Util.QuickSort(WeaponList, allowHand ? 1 : 0, WeaponList.Length - 1, WeaponSorter.Instance);
+		Util.QuickSort(HandToolList, allowHand ? 1 : 0, HandToolList.Length - 1, HandToolSorter.Instance);
 
 		// Set Current Slot Index
 		if (equippingID != 0) {
-			for (int i = 0; i < WeaponCount; i++) {
-				var weapon = WeaponList[i].Weapon;
-				if (weapon == null) continue;
-				if ((weapon is BlockBuilder bItem ? bItem.BlockID : weapon.TypeID) == equippingID) {
+			for (int i = 0; i < HandToolCount; i++) {
+				var tool = HandToolList[i].Tool;
+				if (tool == null) continue;
+				if ((tool is BlockBuilder bItem ? bItem.BlockID : tool.TypeID) == equippingID) {
 					CurrentSlotIndex = i;
 					break;
 				}
@@ -147,14 +147,14 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public override void OnInactivated () {
 		base.OnInactivated();
 		IsDirty = false;
-		WeaponCount = 0;
+		HandToolCount = 0;
 	}
 
 
 	public override void UpdateUI () {
 		base.UpdateUI();
 
-		if (!Active || PlayerSystem.Selecting == null || TaskSystem.HasTask() || WeaponCount <= 0) {
+		if (!Active || PlayerSystem.Selecting == null || TaskSystem.HasTask() || HandToolCount <= 0) {
 			Active = false;
 			return;
 		}
@@ -169,13 +169,13 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 				Input.UseGameKey(Gamekey.Select);
 			}
 			if (IsDirty) {
-				if (CurrentSlotIndex == 0 && WeaponList[0].Weapon == null) {
+				if (CurrentSlotIndex == 0 && HandToolList[0].Tool == null) {
 					// Hand
 					SwitchEquipTo(-1, 0, 0);
-				} else if (CurrentSlotIndex >= 0 && CurrentSlotIndex < WeaponCount) {
-					// Weapon
-					var currentSlot = WeaponList[CurrentSlotIndex];
-					if (currentSlot.Weapon != null) {
+				} else if (CurrentSlotIndex >= 0 && CurrentSlotIndex < HandToolCount) {
+					// Tool
+					var currentSlot = HandToolList[CurrentSlotIndex];
+					if (currentSlot.Tool != null) {
 						if (currentSlot.InventoryIndex >= 0) {
 							EquipFromInventory(currentSlot.InventoryIndex);
 						}
@@ -191,11 +191,11 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 		// Logic
 		if (Input.GameKeyDownGUI(Gamekey.Left)) {
-			CurrentSlotIndex = (CurrentSlotIndex - 1).UMod(WeaponCount);
+			CurrentSlotIndex = (CurrentSlotIndex - 1).UMod(HandToolCount);
 			IsDirty = true;
 		}
 		if (Input.GameKeyDownGUI(Gamekey.Right)) {
-			CurrentSlotIndex = (CurrentSlotIndex + 1).UMod(WeaponCount);
+			CurrentSlotIndex = (CurrentSlotIndex + 1).UMod(HandToolCount);
 			IsDirty = true;
 		}
 
@@ -231,17 +231,17 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		int basicY = player.Y - ITEM_SIZE - PADDING + offsetY - Const.HALF;
 		var rect = new IRect(0, basicY, ITEM_SIZE, ITEM_SIZE);
 		int countLabelPadding = Unify(2);
-		for (int i = 0; i < WeaponCount; i++) {
+		for (int i = 0; i < HandToolCount; i++) {
 
-			var wData = WeaponList[i];
-			var weapon = wData.Weapon;
+			var wData = HandToolList[i];
+			var tool = wData.Tool;
 			int wCount = wData.Count;
-			if (i != 0 && weapon is null) continue;
-			var bItem = weapon as BlockBuilder;
-			int weaponID =
+			if (i != 0 && tool is null) continue;
+			var bItem = tool as BlockBuilder;
+			int toolID =
 				bItem != null ? bItem.BlockID :
-				weapon is null ? 0 :
-				weapon.TypeID;
+				tool is null ? 0 :
+				tool.TypeID;
 
 			rect.x = basicX + i * ITEM_SIZE;
 
@@ -260,7 +260,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 						rect.y - labelHeight,
 						labelWidth, labelHeight
 					),
-					weaponID == 0 ? HAND_LABEL : ItemSystem.GetItemDisplayName(weaponID),
+					toolID == 0 ? HAND_LABEL : ItemSystem.GetItemDisplayName(toolID),
 					backgroundColor: Color32.BLACK,
 					backgroundPadding: Unify(6),
 					false,
@@ -270,15 +270,15 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			}
 
 			// From Inventory
-			if (weaponID == 0) {
+			if (toolID == 0) {
 				Renderer.Draw(HAND_ICON, rect.Shrink(Unify(7)), z: int.MinValue + 10);
 			} else {
 				// Icon
-				DrawItemIcon(rect, weaponID);
+				DrawItemIcon(rect, toolID);
 
-				if (weapon.UseStackAsUsage) {
+				if (tool.UseStackAsUsage) {
 					// Usage
-					FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), wCount, weapon.MaxStackCount);
+					FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), wCount, tool.MaxStackCount);
 				} else {
 					// Count
 					if (wCount > 1 || bItem != null) {
@@ -346,7 +346,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	private static void EquipFromInventory (int itemIndex) {
 
-		if (!PlayerSystem.Selecting.EquipmentAvailable(EquipmentType.Weapon)) return;
+		if (!PlayerSystem.Selecting.EquipmentAvailable(EquipmentType.HandTool)) return;
 
 		int invID = PlayerSystem.Selecting.InventoryID;
 		if (!Inventory.HasInventory(invID)) return;
@@ -357,7 +357,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		int itemID = Inventory.GetItemAt(invID, itemIndex, out int itemCount);
 		if (itemID == 0 || itemCount <= 0) return;
 
-		if (!ItemSystem.IsEquipment(itemID, out var eqType) || eqType != EquipmentType.Weapon) return;
+		if (!ItemSystem.IsEquipment(itemID, out var eqType) || eqType != EquipmentType.HandTool) return;
 
 		int tookCount = Inventory.TakeItemAt(invID, itemIndex, itemCount);
 		if (tookCount <= 0) return;
@@ -369,9 +369,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 	private static void SwitchEquipTo (int itemIndex, int newItemID, int newItemCount) {
 		int invID = PlayerSystem.Selecting.InventoryID;
-		int oldEquipmentID = Inventory.GetEquipment(invID, EquipmentType.Weapon, out int oldEqCount);
+		int oldEquipmentID = Inventory.GetEquipment(invID, EquipmentType.HandTool, out int oldEqCount);
 
-		if (!Inventory.SetEquipment(invID, EquipmentType.Weapon, newItemID, newItemCount)) return;
+		if (!Inventory.SetEquipment(invID, EquipmentType.HandTool, newItemID, newItemCount)) return;
 
 		if (oldEquipmentID != 0) {
 			if (itemIndex >= 0) {

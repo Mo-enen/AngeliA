@@ -22,12 +22,13 @@ public static class FrameworkUtil {
 		Color32.GREY_128,
 	];
 	private static readonly int[] ITEM_TYPE_ICONS = [
-		BuiltInSprite.ITEM_ICON_WEAPON,
+		BuiltInSprite.ITEM_ICON_HAND_TOOL,
 		BuiltInSprite.ITEM_ICON_ARMOR,
 		BuiltInSprite.ITEM_ICON_HELMET,
 		BuiltInSprite.ITEM_ICON_SHOES,
 		BuiltInSprite.ITEM_ICON_GLOVES,
 		BuiltInSprite.ITEM_ICON_JEWELRY,
+		BuiltInSprite.ITEM_ICON_WEAPON,
 		BuiltInSprite.ITEM_ICON_FOOD,
 		BuiltInSprite.ITEM_ICON_ITEM,
 	];
@@ -165,7 +166,7 @@ public static class FrameworkUtil {
 			renderer.CurrentAnimationFrame = animationFrame;
 			bool oldActive = target.Active;
 			target.Active = true;
-			target.UpdateWeaponCache();
+			target.UpdateHandToolCache();
 			renderer.LateUpdate();
 			target.Active = oldActive;
 			renderer.CurrentAnimationFrame = oldAniFrame;
@@ -377,13 +378,21 @@ public static class FrameworkUtil {
 
 
 	public static int GetItemTypeIcon (int itemID) {
-		int typeIcon = ITEM_TYPE_ICONS[^1];
-		if (ItemSystem.IsEquipment(itemID, out var equipmentType)) {
+		int typeIcon;
+		var item = ItemSystem.GetItem(itemID);
+		if (item is Equipment eq) {
 			// Equipment
-			typeIcon = ITEM_TYPE_ICONS[(int)equipmentType];
-		} else if (ItemSystem.IsFood(itemID)) {
+			if (item is Weapon) {
+				typeIcon = ITEM_TYPE_ICONS[^3];
+			} else {
+				typeIcon = ITEM_TYPE_ICONS[(int)eq.EquipmentType];
+			}
+		} else if (item is Food) {
 			// Food
 			typeIcon = ITEM_TYPE_ICONS[^2];
+		} else {
+			// General
+			typeIcon = ITEM_TYPE_ICONS[^1];
 		}
 		return typeIcon;
 	}
@@ -885,11 +894,11 @@ public static class FrameworkUtil {
 		}
 
 		// Reduce Block Count by 1
-		int eqID = Inventory.GetEquipment(pHolder.InventoryID, EquipmentType.Weapon, out int eqCount);
+		int eqID = Inventory.GetEquipment(pHolder.InventoryID, EquipmentType.HandTool, out int eqCount);
 		if (eqID != 0) {
 			int newEqCount = (eqCount - 1).GreaterOrEquelThanZero();
 			if (newEqCount == 0) eqID = 0;
-			Inventory.SetEquipment(pHolder.InventoryID, EquipmentType.Weapon, eqID, newEqCount);
+			Inventory.SetEquipment(pHolder.InventoryID, EquipmentType.HandTool, eqID, newEqCount);
 		}
 	}
 
@@ -1131,7 +1140,7 @@ public static class FrameworkUtil {
 		// Equipment
 		if (item is Equipment equipment) {
 			switch (equipment.EquipmentType) {
-				case EquipmentType.Weapon:
+				case EquipmentType.HandTool:
 					break;
 				case EquipmentType.Jewelry:
 					break;

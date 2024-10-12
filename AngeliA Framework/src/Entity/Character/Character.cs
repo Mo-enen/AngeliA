@@ -66,11 +66,11 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	public bool GlovesInteractable { get; set; } = true;
 	public bool ShoesInteractable { get; set; } = true;
 	public bool JewelryInteractable { get; set; } = true;
-	public bool WeaponInteractable { get; set; } = true;
+	public bool HandToolInteractable { get; set; } = true;
 	public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 	public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
-	public WeaponType EquippingWeaponType { get; set; } = WeaponType.Hand;
-	public WeaponHandheld EquippingWeaponHeld { get; set; } = WeaponHandheld.Float;
+	public ToolType EquippingToolType { get; set; } = ToolType.Hand;
+	public ToolHandheld EquippingToolHeld { get; set; } = ToolHandheld.Float;
 	public int SleepStartFrame { get; set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
 	public int LastRequireBounceFrame { get; set; } = int.MinValue;
@@ -238,7 +238,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		GlovesInteractable = allowInv;
 		ShoesInteractable = allowInv;
 		JewelryInteractable = allowInv;
-		WeaponInteractable = allowInv;
+		HandToolInteractable = allowInv;
 	}
 
 
@@ -324,35 +324,35 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 				if (item == null) continue;
 				item.BeforeItemUpdate_FromEquipment(this);
-				if (item is Weapon weapon) {
-					Attackness.AttackDuration = weapon.AttackDuration;
-					Attackness.AttackCooldown = weapon.AttackCooldown;
-					Attackness.MinimalChargeAttackDuration = weapon.ChargeAttackDuration;
-					Attackness.RepeatAttackWhenHolding = weapon.RepeatAttackWhenHolding;
-					Attackness.LockFacingOnAttack = weapon.LockFacingOnAttack;
-					Attackness.HoldAttackPunishFrame.Min(weapon.HoldAttackPunish);
-					if (weapon.DefaultSpeedRateOnAttack.HasValue) {
-						Attackness.DefaultSpeedRateOnAttack.Max(weapon.DefaultSpeedRateOnAttack.Value);
+				if (item is HandTool tool) {
+					Attackness.AttackDuration = tool.AttackDuration;
+					Attackness.AttackCooldown = tool.AttackCooldown;
+					Attackness.MinimalChargeAttackDuration = tool.ChargeAttackDuration;
+					Attackness.RepeatAttackWhenHolding = tool.RepeatAttackWhenHolding;
+					Attackness.LockFacingOnAttack = tool.LockFacingOnAttack;
+					Attackness.HoldAttackPunishFrame.Min(tool.HoldAttackPunish);
+					if (tool.DefaultSpeedRateOnAttack.HasValue) {
+						Attackness.DefaultSpeedRateOnAttack.Max(tool.DefaultSpeedRateOnAttack.Value);
 					}
-					if (weapon.WalkingSpeedRateOnAttack.HasValue) {
-						Attackness.WalkingSpeedRateOnAttack.Max(weapon.WalkingSpeedRateOnAttack.Value);
+					if (tool.WalkingSpeedRateOnAttack.HasValue) {
+						Attackness.WalkingSpeedRateOnAttack.Max(tool.WalkingSpeedRateOnAttack.Value);
 					}
-					if (weapon.RunningSpeedRateOnAttack.HasValue) {
-						Attackness.RunningSpeedRateOnAttack.Max(weapon.RunningSpeedRateOnAttack.Value);
+					if (tool.RunningSpeedRateOnAttack.HasValue) {
+						Attackness.RunningSpeedRateOnAttack.Max(tool.RunningSpeedRateOnAttack.Value);
 					}
-					Attackness.AttackInAir.Or(weapon.AttackInAir);
-					Attackness.AttackInWater.Or(weapon.AttackInWater);
-					Attackness.AttackWhenWalking.Or(weapon.AttackWhenWalking);
-					Attackness.AttackWhenRunning.Or(weapon.AttackWhenRunning);
-					Attackness.AttackWhenClimbing.Or(weapon.AttackWhenClimbing);
-					Attackness.AttackWhenFlying.Or(weapon.AttackWhenFlying);
-					Attackness.AttackWhenRolling.Or(weapon.AttackWhenRolling);
-					Attackness.AttackWhenSquatting.Or(weapon.AttackWhenSquatting);
-					Attackness.AttackWhenDashing.Or(weapon.AttackWhenDashing);
-					Attackness.AttackWhenSliding.Or(weapon.AttackWhenSliding);
-					Attackness.AttackWhenGrabbing.Or(weapon.AttackWhenGrabbing);
-					Attackness.AttackWhenRush.Or(weapon.AttackWhenRushing);
-					Attackness.AttackWhenPounding.Or(weapon.AttackWhenPounding);
+					Attackness.AttackInAir.Or(tool.AttackInAir);
+					Attackness.AttackInWater.Or(tool.AttackInWater);
+					Attackness.AttackWhenWalking.Or(tool.AttackWhenWalking);
+					Attackness.AttackWhenRunning.Or(tool.AttackWhenRunning);
+					Attackness.AttackWhenClimbing.Or(tool.AttackWhenClimbing);
+					Attackness.AttackWhenFlying.Or(tool.AttackWhenFlying);
+					Attackness.AttackWhenRolling.Or(tool.AttackWhenRolling);
+					Attackness.AttackWhenSquatting.Or(tool.AttackWhenSquatting);
+					Attackness.AttackWhenDashing.Or(tool.AttackWhenDashing);
+					Attackness.AttackWhenSliding.Or(tool.AttackWhenSliding);
+					Attackness.AttackWhenGrabbing.Or(tool.AttackWhenGrabbing);
+					Attackness.AttackWhenRush.Or(tool.AttackWhenRushing);
+					Attackness.AttackWhenPounding.Or(tool.AttackWhenPounding);
 				}
 			}
 		}
@@ -607,9 +607,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 				if (item == null) continue;
 				item.OnItemUpdate_FromEquipment(this);
-				if (item is Weapon weapon) {
-					if (attackLocalFrame == weapon.BulletDelayFrame) {
-						var bullet = weapon.SpawnBullet(this);
+				if (item is HandTool tool) {
+					if (attackLocalFrame == tool.BulletDelayFrame) {
+						var bullet = tool.SpawnBullet(this);
 						item.OnCharacterAttack_FromEquipment(this, bullet);
 						Buff.ApplyOnAttack(bullet);
 					}
@@ -619,7 +619,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		}
 
 		// Equipping
-		UpdateWeaponCache();
+		UpdateHandToolCache();
 
 	}
 
@@ -752,7 +752,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 
 
 	public bool EquipmentAvailable (EquipmentType equipmentType) => equipmentType switch {
-		EquipmentType.Weapon => WeaponInteractable,
+		EquipmentType.HandTool => HandToolInteractable,
 		EquipmentType.BodyArmor => BodySuitInteractable,
 		EquipmentType.Helmet => HelmetInteractable,
 		EquipmentType.Shoes => ShoesInteractable,
@@ -762,14 +762,14 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	};
 
 
-	public void UpdateWeaponCache () {
-		int equippingID = Inventory.GetEquipment(InventoryID, EquipmentType.Weapon, out _);
-		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is Weapon eqWeapon) {
-			EquippingWeaponType = eqWeapon.WeaponType;
-			EquippingWeaponHeld = eqWeapon.Handheld;
+	public void UpdateHandToolCache () {
+		int equippingID = Inventory.GetEquipment(InventoryID, EquipmentType.HandTool, out _);
+		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is HandTool eqTool) {
+			EquippingToolType = eqTool.ToolType;
+			EquippingToolHeld = eqTool.Handheld;
 		} else {
-			EquippingWeaponType = WeaponType.Hand;
-			EquippingWeaponHeld = WeaponHandheld.Float;
+			EquippingToolType = ToolType.Hand;
+			EquippingToolHeld = ToolHandheld.Float;
 		}
 	}
 
@@ -843,9 +843,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 
 
 	public virtual bool IsAttackAllowedByEquipment () {
-		int id = Inventory.GetEquipment(InventoryID, EquipmentType.Weapon, out int equipmentCount);
-		var weapon = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Weapon : null;
-		return weapon != null && weapon.AllowingAttack(this);
+		int id = Inventory.GetEquipment(InventoryID, EquipmentType.HandTool, out int equipmentCount);
+		var tool = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as HandTool : null;
+		return tool != null && tool.AllowingAttack(this);
 	}
 
 

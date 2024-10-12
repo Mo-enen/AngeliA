@@ -5,15 +5,15 @@ namespace AngeliA;
 
 
 [EntityAttribute.ExcludeInMapEditor]
-public sealed class BlockBuilder : Weapon {
+public sealed class BlockBuilder : HandTool {
 
 
 	// VAR
 	const int MOUSE_RANGE = 6;
 	public int BlockID { get; init; }
 	public BlockType BlockType { get; init; }
-	public override WeaponType WeaponType => WeaponType.Block;
-	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+	public override ToolType ToolType => ToolType.Block;
+	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
 	public override bool AttackWhenSquatting => true;
 	public override bool AttackWhenWalking => true;
 	public override bool AttackWhenSliding => true;

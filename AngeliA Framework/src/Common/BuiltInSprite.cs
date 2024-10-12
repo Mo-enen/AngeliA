@@ -51,6 +51,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode GAMEPAD_RIGHT = "k_Gamepad Right";
 	public static readonly SpriteCode RIGHT_ARROW = "k_RightArrow";
 	public static readonly SpriteCode TRIANGLE_RIGHT_13 = "TriangleRight13";
+	public static readonly SpriteCode ITEM_ICON_HAND_TOOL = "ItemIcon.HandTool";
 	public static readonly SpriteCode ITEM_ICON_WEAPON = "ItemIcon.Weapon";
 	public static readonly SpriteCode ITEM_ICON_GLOVES = "ItemIcon.Gloves";
 	public static readonly SpriteCode ICON_BODY_PART_HEAD = "Icon.BodyPart.Head";

@@ -84,10 +84,10 @@ public class PoseAnimation_SquatIdle : PoseAnimation {
 
 		// Final
 		Rendering.HandGrabRotationL =
-			Target.EquippingWeaponHeld == WeaponHandheld.OneOnEachHand ? FacingRight ? 80 : -100 :
+			Target.EquippingToolHeld == ToolHandheld.OneOnEachHand ? FacingRight ? 80 : -100 :
 			FacingSign * 100;
 		Rendering.HandGrabRotationR =
-			Target.EquippingWeaponHeld == WeaponHandheld.OneOnEachHand ? FacingRight ? 100 : -80 :
+			Target.EquippingToolHeld == ToolHandheld.OneOnEachHand ? FacingRight ? 100 : -80 :
 			FacingSign * 100;
 
 	}

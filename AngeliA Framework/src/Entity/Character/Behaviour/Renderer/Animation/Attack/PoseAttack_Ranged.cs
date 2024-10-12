@@ -5,7 +5,7 @@ public class PoseAttack_Ranged : PoseAnimation {
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
-		if (renderer.TargetCharacter.EquippingWeaponHeld == WeaponHandheld.Bow) {
+		if (renderer.TargetCharacter.EquippingToolHeld == ToolHandheld.Bow) {
 			Bow();
 		} else {
 			Shooting();

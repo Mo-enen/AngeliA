@@ -15,8 +15,8 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	private int SpriteIdAttack { get; init; }
 	private int SpriteFrameCount { get; init; }
 	protected abstract bool IsBow { get; }
-	public sealed override WeaponType WeaponType => WeaponType.Ranged;
-	public sealed override WeaponHandheld Handheld => IsBow ? WeaponHandheld.Bow : WeaponHandheld.Shooting;
+	public sealed override ToolType ToolType => ToolType.Ranged;
+	public sealed override ToolHandheld Handheld => IsBow ? ToolHandheld.Bow : ToolHandheld.Shooting;
 	protected override ProjectileValidDirection ValidDirection => ProjectileValidDirection.Eight;
 	public override int AttackCooldown => base.AttackCooldown;
 	private int SpriteIdString { get; init; }
@@ -74,15 +74,15 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 		return result;
 	}
 
-	protected override Cell DrawWeaponSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+	protected override Cell DrawToolSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		if (IsBow) {
 			// Bow
-			var cell = base.DrawWeaponSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
+			var cell = base.DrawToolSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 			DrawString(renderer, cell, default, default, default);
 			return cell;
 		} else {
 			// Shooting
-			var cell = base.DrawWeaponSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
+			var cell = base.DrawToolSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
 			var attack = renderer.TargetCharacter.Attackness;
 			if (attack.IsAttacking || attack.IsChargingAttack) {

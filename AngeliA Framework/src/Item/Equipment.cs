@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA; 
 
 
-public enum EquipmentType { Weapon, BodyArmor, Helmet, Shoes, Gloves, Jewelry, }
+public enum EquipmentType { HandTool, BodyArmor, Helmet, Shoes, Gloves, Jewelry, }
 
 
 [EntityAttribute.MapEditorGroup("ItemEquipment")]

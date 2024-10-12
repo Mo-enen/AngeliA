@@ -372,8 +372,8 @@ public abstract class Face : BodyGadget {
 		// Attack
 		if (
 			renderer.TargetCharacter.Attackness.IsAttacking &&
-			renderer.TargetCharacter.EquippingWeaponType != WeaponType.Magic &&
-			renderer.TargetCharacter.EquippingWeaponType != WeaponType.Ranged
+			renderer.TargetCharacter.EquippingToolType != ToolType.Magic &&
+			renderer.TargetCharacter.EquippingToolType != ToolType.Ranged
 		) return CharacterExpression.Attack;
 
 		// Blink

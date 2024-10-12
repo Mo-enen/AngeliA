@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 using AngeliA;namespace AngeliA.Platformer;
 
-public abstract class PickWeapon : Weapon {
+public abstract class PickWeapon : HandTool {
 
 
 	// VAR
-	public sealed override WeaponType WeaponType => WeaponType.Pick;
-	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+	public sealed override ToolType ToolType => ToolType.Pick;
+	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
 	public override bool AttackWhenSquatting => true;
 	public override bool AttackWhenWalking => true;
 	public override bool AttackWhenSliding => true;
@@ -75,7 +75,7 @@ public abstract class PickWeapon : Weapon {
 			);
 			// Reduce Weapon Usage
 			if (picked) {
-				Inventory.ReduceEquipmentCount(holder is Character cHolder ? cHolder.InventoryID : holder.TypeID, 1, EquipmentType.Weapon);
+				Inventory.ReduceEquipmentCount(holder is Character cHolder ? cHolder.InventoryID : holder.TypeID, 1, EquipmentType.HandTool);
 			}
 		}
 

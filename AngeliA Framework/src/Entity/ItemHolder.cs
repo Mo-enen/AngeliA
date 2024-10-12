@@ -192,7 +192,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 		// UI
 		if (ItemCount > 1 && !TaskSystem.HasTask() && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
-			if (ItemSystem.GetItem(ItemID) is Weapon wItem && wItem.UseStackAsUsage) {
+			if (ItemSystem.GetItem(ItemID) is HandTool wItem && wItem.UseStackAsUsage) {
 				// Usage
 				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, wItem.MaxStackCount);
 			} else {
@@ -216,7 +216,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		if (collected) {
 			ItemSystem.SetItemUnlocked(ItemID, true);
 		}
-		return collected || player.EquippingWeaponType == WeaponType.Throwing;
+		return collected || player.EquippingToolType == ToolType.Throwing;
 	}
 
 

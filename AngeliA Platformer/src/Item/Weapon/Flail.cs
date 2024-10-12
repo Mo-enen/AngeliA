@@ -7,8 +7,8 @@ using AngeliA;namespace AngeliA.Platformer;
 
 public abstract class Flail : MeleeWeapon {
 
-	public sealed override WeaponType WeaponType => WeaponType.Flail;
-	public override WeaponHandheld Handheld => WeaponHandheld.SingleHanded;
+	public sealed override ToolType ToolType => ToolType.Flail;
+	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
 	private int SpriteIdHead { get; init; }
 	private int SpriteIdChain { get; init; }
 	protected virtual int ChainLength => Const.CEL * 7 / 9;
@@ -25,9 +25,9 @@ public abstract class Flail : MeleeWeapon {
 		if (!Renderer.HasSpriteGroup(SpriteIdChain)) SpriteIdChain = 0;
 	}
 
-	protected override Cell DrawWeaponSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+	protected override Cell DrawToolSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		// Fix Grab Rotation
-		if (renderer.TargetCharacter.EquippingWeaponHeld != WeaponHandheld.Pole) {
+		if (renderer.TargetCharacter.EquippingToolHeld != ToolHandheld.Pole) {
 			renderer.HandGrabRotationL += (
 				renderer.HandGrabRotationL.Sign() * -Util.Sin(renderer.HandGrabRotationL.Abs() * Util.Deg2Rad) * 30
 			).RoundToInt();
@@ -36,7 +36,7 @@ public abstract class Flail : MeleeWeapon {
 			).RoundToInt();
 		}
 		// Draw
-		var cell = base.DrawWeaponSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
+		var cell = base.DrawToolSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 		for (int i = 0; i < HeadCount; i++) {
 			DrawFlailHead(renderer, cell, i);
 		}

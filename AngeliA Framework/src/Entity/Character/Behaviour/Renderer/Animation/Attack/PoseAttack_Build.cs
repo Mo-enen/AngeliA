@@ -9,8 +9,8 @@ public class PoseAttack_Build : PoseAnimation {
 		base.Animate(renderer);
 		if (Movement.IsClimbing) return;
 		Attackness.AttackStyleLoop = 1;
-		if (Target.EquippingWeaponType == WeaponType.Pick) {
-			if (Target.EquippingWeaponHeld == WeaponHandheld.Float) {
+		if (Target.EquippingToolType == ToolType.Pick) {
+			if (Target.EquippingToolHeld == ToolHandheld.Float) {
 				PoseAttack_Float.WaveDown();
 			} else {
 				PoseAttack_Wave.Wave();

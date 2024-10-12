@@ -505,7 +505,7 @@ public static class PlayerSystem {
 			for (int i = 0; i < count; i++) {
 				var cell = cells[i];
 				if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-				int equippingID = Inventory.GetEquipment(Selecting.InventoryID, EquipmentType.Weapon, out _);
+				int equippingID = Inventory.GetEquipment(Selecting.InventoryID, EquipmentType.HandTool, out _);
 				holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: equippingID == 0);
 			}
 		}

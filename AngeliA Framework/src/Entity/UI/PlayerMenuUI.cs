@@ -28,7 +28,7 @@ public class PlayerMenuUI : EntityUI {
 	private static readonly LanguageCode HINT_TRANSFER = ("CtrlHint.Transfer", "Transfer");
 	private static readonly LanguageCode HINT_EQUIP = ("CtrlHint.Equip", "Equip");
 	private static readonly LanguageCode UI_HELMET = ("UI.Equipment.Helmet", "Helmet");
-	private static readonly LanguageCode UI_WEAPON = ("UI.Equipment.Weapon", "Weapon");
+	private static readonly LanguageCode UI_HAND_TOOL = ("UI.Equipment.HandTool", "Tool");
 	private static readonly LanguageCode UI_SHOES = ("UI.Equipment.Shoes", "Shoes");
 	private static readonly LanguageCode UI_GLOVES = ("UI.Equipment.Gloves", "Gloves");
 	private static readonly LanguageCode UI_BODYSUIT = ("UI.Equipment.Bodysuit", "Cloth");
@@ -577,7 +577,7 @@ public class PlayerMenuUI : EntityUI {
 		bool actionHolding = Input.GameKeyHolding(Gamekey.Action);
 		bool cancelHolding = Input.GameKeyHolding(Gamekey.Jump);
 		bool mouseHovering = interactable && itemRect.MouseInside();
-		bool stackAsUsage = item is Weapon wItem && wItem.UseStackAsUsage;
+		bool stackAsUsage = item is HandTool wItem && wItem.UseStackAsUsage;
 		int cursorIndex = RenderingBottomPanel == CursorInBottomPanel ? CursorIndex : -1;
 		HoveringItemField = HoveringItemField || mouseHovering;
 
@@ -723,8 +723,8 @@ public class PlayerMenuUI : EntityUI {
 			EquipmentType.BodyArmor, UI_BODYSUIT
 		);
 		DrawEquipmentItem(
-			4, interactable && player.WeaponInteractable, new IRect(left, top - itemHeight * 1, width, itemHeight),
-			EquipmentType.Weapon, UI_WEAPON
+			4, interactable && player.HandToolInteractable, new IRect(left, top - itemHeight * 1, width, itemHeight),
+			EquipmentType.HandTool, UI_HAND_TOOL
 		);
 		DrawEquipmentItem(
 			5, interactable && player.HelmetInteractable, new IRect(left + width, top - itemHeight * 1, width, itemHeight),
@@ -760,7 +760,7 @@ public class PlayerMenuUI : EntityUI {
 		var equipAvailable = PlayerSystem.Selecting.EquipmentAvailable(type);
 		bool mouseHovering = interactable && rect.MouseInside();
 		var item = itemID == 0 ? null : ItemSystem.GetItem(itemID);
-		bool stackAsUsage = type == EquipmentType.Weapon && item is Weapon wItem && wItem.UseStackAsUsage;
+		bool stackAsUsage = type == EquipmentType.HandTool && item is HandTool wItem && wItem.UseStackAsUsage;
 		HoveringItemField = HoveringItemField || mouseHovering;
 		if (TakingID != 0 && ItemSystem.IsEquipment(TakingID, out var takingType) && type != takingType) {
 			enableTint.a = 96;
@@ -1102,7 +1102,7 @@ public class PlayerMenuUI : EntityUI {
 		if (CursorIndex < 0 || CursorIndex >= cursorItemCount) return;
 		int cursorID = Inventory.GetItemAt(invID, CursorIndex, out int cursorCount);
 		if (cursorID == 0) return;
-		if (ItemSystem.GetItem(cursorID) is Weapon weapon && weapon.UseStackAsUsage) return;
+		if (ItemSystem.GetItem(cursorID) is HandTool tool && tool.UseStackAsUsage) return;
 		if (cursorCount > 1) {
 			int deltaCount = cursorCount / 2;
 			TakingID = cursorID;

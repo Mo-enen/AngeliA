@@ -5,8 +5,8 @@ using AngeliA;namespace AngeliA.Platformer;
 
 
 public abstract class Claw : MeleeWeapon {
-	public sealed override WeaponType WeaponType => WeaponType.Claw;
-	public sealed override WeaponHandheld Handheld => WeaponHandheld.OneOnEachHand;
+	public sealed override ToolType ToolType => ToolType.Claw;
+	public sealed override ToolHandheld Handheld => ToolHandheld.OneOnEachHand;
 	public override int AttackDuration => 10;
 	public override int AttackCooldown => 0;
 	public override int? DefaultSpeedRateOnAttack => 1000;

@@ -7,7 +7,7 @@ public class PoseHandheld_Single : PoseAnimation {
 			PoseAttack_Wave.SingleHanded_SmashDown();
 			return;
 		}
-		if (Target.EquippingWeaponType == WeaponType.Block) {
+		if (Target.EquippingToolType == ToolType.Block) {
 			Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = 618;
 			Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = 0;
 		}

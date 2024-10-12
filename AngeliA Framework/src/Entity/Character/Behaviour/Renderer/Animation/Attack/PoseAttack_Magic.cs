@@ -7,15 +7,15 @@ public class PoseAttack_Magic : PoseAnimation {
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
-		switch (Target.EquippingWeaponHeld) {
+		switch (Target.EquippingToolHeld) {
 			default:
-			case WeaponHandheld.Float:
+			case ToolHandheld.Float:
 				PoseAttack_Float.WaveDown();
 				break;
-			case WeaponHandheld.SingleHanded:
+			case ToolHandheld.SingleHanded:
 				SingleHanded();
 				break;
-			case WeaponHandheld.Pole:
+			case ToolHandheld.Pole:
 				Pole();
 				break;
 		}

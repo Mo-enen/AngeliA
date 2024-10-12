@@ -3,8 +3,8 @@ using AngeliA;namespace AngeliA.Platformer;
 
 
 public abstract class Polearm : MeleeWeapon {
-	public sealed override WeaponType WeaponType => WeaponType.Polearm;
-	public sealed override WeaponHandheld Handheld => WeaponHandheld.Pole;
+	public sealed override ToolType ToolType => ToolType.Polearm;
+	public sealed override ToolHandheld Handheld => ToolHandheld.Pole;
 	protected override bool IgnoreGrabTwist => true;
 	public override int AttackDuration => 18;
 	public override int AttackCooldown => 2;
