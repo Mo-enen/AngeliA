@@ -142,7 +142,7 @@ public sealed class WorldSquad : IBlockSquad {
 	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
 
 
-	public bool WorldExists (int worldX, int worldY, int worldZ) => Stream.WorldExists(worldX, worldY, worldZ);
+	public bool WorldExists (Int3 worldPos) => Stream.WorldExists(worldPos);
 
 
 	// Get Block

@@ -964,22 +964,16 @@ public static class Extension {
 
 	[MethodImpl(INLINE)]
 	public static A[] FillWithValue<A> (this A[] arr, A value) {
-		for (int i = 0; i < arr.Length; i++) {
-			arr[i] = value;
-		}
+		new System.Span<A>(arr).Fill(value);
 		return arr;
 	}
 	[MethodImpl(INLINE)]
 	public static A[] FillWithNewValue<A> (this A[] arr) where A : new() {
-		for (int i = 0; i < arr.Length; i++) {
-			arr[i] = new A();
+		var span = arr.GetSpan();
+		for (int i = 0; i < span.Length; i++) {
+			span[i] = new A();
 		}
 		return arr;
-	}
-
-	[MethodImpl(INLINE)]
-	public static void AddRange<T, V> (this Dictionary<T, V> map, IEnumerable<KeyValuePair<T, V>> values) {
-		foreach (var (k, v) in values) map.TryAdd(k, v);
 	}
 
 

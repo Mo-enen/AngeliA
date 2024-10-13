@@ -18,7 +18,7 @@ public interface IBlockSquad {
 		{ NumberNine.TYPE_ID, 9 },
 	};
 
-	bool WorldExists (int worldX, int worldY, int worldZ);
+	bool WorldExists (Int3 worldPos);
 
 	int GetBlockAt (int unitX, int unitY, int z, BlockType type);
 

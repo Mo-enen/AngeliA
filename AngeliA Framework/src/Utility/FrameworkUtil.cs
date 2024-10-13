@@ -1117,8 +1117,9 @@ public static class FrameworkUtil {
 		int maxCount = WorldPosInViewCache.Length;
 		for (int i = left; i <= right; i++) {
 			for (int j = down; j <= up; j++) {
-				if (!squad.WorldExists(i, j, z)) continue;
-				WorldPosInViewCache[index] = new Int3(i, j, z);
+				var worldPos = new Int3(i, j, z);
+				if (!squad.WorldExists(worldPos)) continue;
+				WorldPosInViewCache[index] = worldPos;
 				index++;
 				if (index >= maxCount) {
 					goto _END_;

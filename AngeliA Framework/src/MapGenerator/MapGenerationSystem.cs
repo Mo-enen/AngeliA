@@ -30,7 +30,6 @@ public static class MapGenerationSystem {
 	private static readonly Dictionary<int, MapGenerator> Pool = [];
 	private static readonly Dictionary<Int3, MapState> StatePool = [];
 	private static readonly Pipe<(MapGenerator gen, Int3 worldPos)> AllTasks = new(64);
-	private static readonly System.Random Random = new((int)(System.DateTime.Now.Ticks + System.Environment.UserName.AngeHash()));
 
 
 	#endregion
@@ -83,16 +82,10 @@ public static class MapGenerationSystem {
 	}
 
 
-	[OnWorldCreated]
-	internal static void OnWorldCreated (World world) {
-
-	}
-
-
-	[OnWorldLoaded]
-	internal static void OnWorldLoaded (World world) {
-
-
+	[BeforeSavingSlotChanged]
+	internal static void BeforeSavingSlotChanged () {
+		AllTasks.Reset();
+		StatePool.Clear();
 	}
 
 
@@ -121,13 +114,15 @@ public static class MapGenerationSystem {
 	}
 
 
-	public static bool IsGenerating (Int3 startPoint) => StatePool.TryGetValue(startPoint, out var state) && state == MapState.Generating;
+	public static bool IsGenerating (Int3 worldPosition) => StatePool.TryGetValue(worldPosition, out var state) && state == MapState.Generating;
 
 
 	public static void GenerateMap (int generatorID, Int3 worldPos, bool async) {
 		if (!Enable || !Pool.TryGetValue(generatorID, out var gen)) return;
 		GenerateMap(gen, worldPos, async);
 	}
+
+
 	public static void GenerateMap (MapGenerator generator, Int3 worldPos, bool async) {
 		if (!Enable) return;
 		StatePool[worldPos] = MapState.Generating;
@@ -154,7 +149,6 @@ public static class MapGenerationSystem {
 		bool success = true;
 		try {
 			generator.ErrorMessage = "";
-			generator.Seed = Random.NextInt64(long.MinValue, long.MaxValue);
 			var result = generator.GenerateMap(worldPos);
 			switch (result) {
 				case MapGenerationResult.Success:

@@ -122,7 +122,7 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	// World
-	public bool WorldExists (int worldX, int worldY, int worldZ) => TryGetWorldData(new(worldX, worldY, worldZ), out _);
+	public bool WorldExists (Int3 worldPos) => TryGetWorldData(worldPos, out _);
 
 
 	public bool TryGetWorld (int worldX, int worldY, int worldZ, out World world) => TryGetWorld(new Int3(worldX, worldY, worldZ), out world);
