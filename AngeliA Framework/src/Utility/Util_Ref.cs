@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System;
+using System.Text;
 
 
 namespace AngeliA;
@@ -204,9 +205,70 @@ public static partial class Util {
 		foreach (var (method, _) in list) {
 			try {
 				var addMethod = info.GetAddMethod(true);
+				// Check Param Type
+				if (!IsAction(info.EventHandlerType)) continue;
+				var infoParams = info.EventHandlerType.GetGenericArguments();
+				var methodParams = method.GetParameters();
+				if (infoParams.Length != methodParams.Length) goto _PARAM_ERROR_;
+				for (int i = 0; i < infoParams.Length; i++) {
+					if (infoParams[i] != methodParams[i].ParameterType) {
+						goto _PARAM_ERROR_;
+					}
+				}
+				// Add to List
 				var del = System.Delegate.CreateDelegate(info.EventHandlerType, method);
 				addMethod?.Invoke(null, [del]);
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+				continue;
+
+				_PARAM_ERROR_:;
+#if DEBUG
+				var infoMsg = new StringBuilder();
+				var methodMsg = new StringBuilder();
+				for (int i = 0; i < infoParams.Length; i++) {
+					var param = infoParams[i];
+					infoMsg.Append(param.Name);
+					if (i < infoParams.Length - 1) {
+						infoMsg.Append(',');
+						infoMsg.Append(' ');
+					}
+				}
+				for (int i = 0; i < methodParams.Length; i++) {
+					var param = methodParams[i];
+					methodMsg.Append(param.ParameterType.Name);
+					if (i < methodParams.Length - 1) {
+						methodMsg.Append(',');
+						methodMsg.Append(' ');
+					}
+				}
+				Debug.LogError($"\"{method.DeclaringType.Name}.{method.Name}\" is having wrong param. Expect ({infoMsg}) Get ({methodMsg})");
+#endif
+			} catch (System.Exception ex) {
+				Debug.LogException(ex);
+			}
+		}
+		static bool IsAction (System.Type type) {
+			if (type == typeof(System.Action)) return true;
+			Type generic = null;
+			if (type.IsGenericTypeDefinition) generic = type;
+			else if (type.IsGenericType) generic = type.GetGenericTypeDefinition();
+			if (generic == null) return false;
+			if (generic == typeof(System.Action<>)) return true;
+			if (generic == typeof(System.Action<,>)) return true;
+			if (generic == typeof(System.Action<,,>)) return true;
+			if (generic == typeof(System.Action<,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,,,,,,,>)) return true;
+			if (generic == typeof(System.Action<,,,,,,,,,,,,,,,>)) return true;
+			return false;
 		}
 	}
 

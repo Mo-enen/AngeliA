@@ -96,10 +96,8 @@ public class RigTransceiver {
 			process.StartInfo.CreateNoWindow = true;
 			process.StartInfo.Arguments = GetArgumentsForRigGame(gameBuildFolder, universePath);
 			process.StartInfo.WorkingDirectory = gameBuildFolder;
-#if DEBUG
 			process.StartInfo.RedirectStandardOutput = true;
 			process.StartInfo.RedirectStandardError = true;
-#endif
 
 			bool processStarted = process.Start();
 			if (!processStarted) {

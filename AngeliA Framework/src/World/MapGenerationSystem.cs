@@ -4,7 +4,6 @@ using System.Threading;
 
 namespace AngeliA;
 
-
 public static class MapGenerationSystem {
 
 
@@ -80,6 +79,19 @@ public static class MapGenerationSystem {
 		if (fileCount == 0) {
 			Util.CopyFolder(Universe.BuiltIn.MapRoot, userMapRoot, false, true);
 		}
+
+	}
+
+
+	[OnWorldCreated]
+	internal static void OnWorldCreated (World world) {
+
+	}
+
+
+	[OnWorldLoaded]
+	internal static void OnWorldLoaded (World world) {
+
 
 	}
 

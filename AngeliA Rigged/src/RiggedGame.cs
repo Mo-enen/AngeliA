@@ -126,13 +126,13 @@ public partial class RiggedGame : Game {
 			System.Console.WriteLine($"e{msg}");
 		}
 		static void LogException (System.Exception ex) {
-			System.Console.WriteLine(ex.Source);
-			System.Console.WriteLine(ex.GetType().Name);
-			System.Console.WriteLine(ex.Message);
+			LogError(ex.Source);
+			LogError(ex.GetType().Name);
+			LogError(ex.Message);
 			if (ex.TargetSite != null) {
-				System.Console.WriteLine(ex.TargetSite.Name);
+				LogError(ex.TargetSite.Name);
 			}
-			System.Console.WriteLine(ex.StackTrace);
+			LogError(ex.StackTrace);
 			System.Console.WriteLine();
 		}
 	}

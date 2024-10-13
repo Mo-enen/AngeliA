@@ -332,12 +332,66 @@ public static class Inventory {
 
 
 	/// <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
-	public static int CollectItem (int inventoryID, int item, int count = 1) => CollectItem(inventoryID, item, out _, count);
-	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1) {
+	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true) => CollectItem(inventoryID, item, out _, count, ignoreEquipment);
+	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true) {
+
 		collectIndex = -1;
 		if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
 		int oldCount = count;
 		int maxStackCount = ItemSystem.GetItemMaxStackCount(item);
+
+		// Try Append to Equipment
+		if (!ignoreEquipment && maxStackCount > 1 && data is EquipmentInventoryData eData) {
+
+			// Hand
+			if (eData.HandTool == item && eData.HandToolCount < maxStackCount) {
+				int delta = Util.Min(count, maxStackCount - eData.HandToolCount);
+				count -= delta;
+				eData.HandToolCount += delta;
+			}
+			if (count <= 0) return oldCount - count;
+
+			// Body
+			if (eData.BodySuit == item && eData.BodySuitCount < maxStackCount) {
+				int delta = Util.Min(count, maxStackCount - eData.BodySuitCount);
+				count -= delta;
+				eData.BodySuitCount += delta;
+			}
+			if (count <= 0) return oldCount - count;
+
+			// Gloves
+			if (eData.Gloves == item && eData.GlovesCount < maxStackCount) {
+				int delta = Util.Min(count, maxStackCount - eData.GlovesCount);
+				count -= delta;
+				eData.GlovesCount += delta;
+			}
+			if (count <= 0) return oldCount - count;
+
+			// Shoes
+			if (eData.Shoes == item && eData.ShoesCount < maxStackCount) {
+				int delta = Util.Min(count, maxStackCount - eData.ShoesCount);
+				count -= delta;
+				eData.ShoesCount += delta;
+			}
+			if (count <= 0) return oldCount - count;
+
+			// Jewelry
+			if (eData.Jewelry == item && eData.JewelryCount < maxStackCount) {
+				int delta = Util.Min(count, maxStackCount - eData.JewelryCount);
+				count -= delta;
+				eData.JewelryCount += delta;
+			}
+			if (count <= 0) return oldCount - count;
+
+			// Helmet
+			if (eData.Helmet == item && eData.HelmetCount < maxStackCount) {
+				int delta = Util.Min(count, maxStackCount - eData.HelmetCount);
+				count -= delta;
+				eData.HelmetCount += delta;
+			}
+			if (count <= 0) return oldCount - count;
+
+		}
 
 		// Try Append to Exists
 		for (int i = 0; i < data.Items.Length; i++) {

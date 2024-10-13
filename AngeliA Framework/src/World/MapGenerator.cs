@@ -4,6 +4,7 @@ using JordanPeck;
 
 namespace AngeliA;
 
+
 public enum MapGenerationResult { Success, Skipped, Fail, CriticalError, }
 
 

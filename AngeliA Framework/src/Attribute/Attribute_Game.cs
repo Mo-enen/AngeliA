@@ -88,7 +88,6 @@ public class AfterLayerFrameUpdateAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Method)] public class BeforeUpdateUpdateAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Method)] public class BeforeLateUpdateAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Method)] public class AfterLateUpdateAttribute : Attribute { }
-
 [AttributeUsage(AttributeTargets.Method)] public class AfterEntityRepositionAttribute : Attribute { }
 
 
@@ -99,6 +98,14 @@ public class BeforeLevelRenderedAttribute : Attribute { }
 
 [AttributeUsage(AttributeTargets.Method)]
 public class AfterLevelRenderedAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Method)]
+public class OnWorldCreatedAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Method)]
+public class OnWorldLoadedAttribute : Attribute { }
 
 
 // Language

@@ -37,6 +37,8 @@ public sealed class WorldStream : IBlockSquad {
 	private static readonly object POOL_LOCK = new();
 
 	// Api
+	public static event System.Action<WorldStream, World> OnWorldCreated;
+	public static event System.Action<WorldStream, World> OnWorldLoaded;
 	public string MapRoot { get; init; }
 	public bool IsDirty { get; private set; } = false;
 
@@ -265,6 +267,7 @@ public sealed class WorldStream : IBlockSquad {
 			if (loaded) {
 				CurrentValidMapCount++;
 				TryReleaseOverload();
+				OnWorldLoaded?.Invoke(this, worldData.World);
 			} else {
 				worldData.World = null;
 			}
@@ -293,6 +296,8 @@ public sealed class WorldStream : IBlockSquad {
 			}
 			CurrentValidMapCount++;
 			TryReleaseOverload();
+			OnWorldCreated?.Invoke(this, newWorld);
+			OnWorldLoaded?.Invoke(this, newWorld);
 
 			return data;
 		}

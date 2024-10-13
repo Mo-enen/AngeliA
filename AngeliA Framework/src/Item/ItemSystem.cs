@@ -331,7 +331,7 @@ public static class ItemSystem {
 		if (target == null) {
 			return SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
 		} else {
-			count -= Inventory.CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count);
+			count -= Inventory.CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count, ignoreEquipment: false);
 			return count <= 0 || SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null;
 		}
 	}

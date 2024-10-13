@@ -23,6 +23,8 @@ public sealed class WorldSquad : IBlockSquad {
 	// Data
 	private static event System.Action BeforeLevelRendered;
 	private static event System.Action AfterLevelRendered;
+	private static event System.Action<World> OnWorldCreated;
+	private static event System.Action<World> OnWorldLoaded;
 	private static readonly Dictionary<int, int> LevelToEntityRedirect = [];
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
@@ -53,6 +55,18 @@ public sealed class WorldSquad : IBlockSquad {
 		Behind = new WorldSquad();
 		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
 		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
+		Util.LinkEventWithAttribute<OnWorldCreatedAttribute>(typeof(WorldSquad), nameof(OnWorldCreated));
+		Util.LinkEventWithAttribute<OnWorldLoadedAttribute>(typeof(WorldSquad), nameof(OnWorldLoaded));
+		WorldStream.OnWorldCreated += _OnWorldCreated;
+		WorldStream.OnWorldLoaded += _OnWorldLoaded;
+		static void _OnWorldCreated (WorldStream stream, World world) {
+			if (stream != Stream) return;
+			OnWorldCreated?.Invoke(world);
+		}
+		static void _OnWorldLoaded (WorldStream stream, World world) {
+			if (stream != Stream) return;
+			OnWorldLoaded?.Invoke(world);
+		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(useProceduralMap ? Universe.BuiltIn.SlotUserMapRoot : Universe.BuiltIn.MapRoot);
 		SquadReady = true;
 

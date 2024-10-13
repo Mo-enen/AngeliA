@@ -17,7 +17,7 @@ public abstract class MovableBullet : Bullet {
 	public virtual int RotateSpeed => 0;
 	public virtual int EndRotation => 0;
 	public virtual int EndRotationRandomRange => 180;
-	public virtual int ResidueParticleID => 0;
+	public virtual int ResidueID => 0;
 	public virtual int ArtworkID => TypeID;
 	public virtual int Scale => 1000;
 	public virtual int WaterSpeedRate => 200;
@@ -77,6 +77,7 @@ public abstract class MovableBullet : Bullet {
 		}
 		X += vel.x;
 		Y += vel.y;
+		CurrentRotation += Velocity.x > 0 ? RotateSpeed : -RotateSpeed;
 
 		if (AriDrag != default) {
 			Velocity = Velocity.MoveTowards(Int2.zero, AriDrag);
@@ -134,7 +135,6 @@ public abstract class MovableBullet : Bullet {
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
-		CurrentRotation += Velocity.x > 0 ? RotateSpeed : -RotateSpeed;
 		FrameworkUtil.DrawBullet(this, ArtworkID, Velocity.x > 0, CurrentRotation, Scale);
 	}
 
@@ -187,9 +187,10 @@ public abstract class MovableBullet : Bullet {
 
 	protected override void BeforeDespawn (IDamageReceiver receiver) {
 		base.BeforeDespawn(receiver);
-		if (ResidueParticleID != 0) {
+		if (ResidueID == int.MinValue) return;
+		if (ResidueID != 0) {
 			// Custom
-			Stage.SpawnEntity(ResidueParticleID, X + Width / 2, Y + Height / 2);
+			Stage.SpawnEntity(ResidueID, X + Width / 2, Y + Height / 2);
 		} else {
 			// Default
 			int rot =

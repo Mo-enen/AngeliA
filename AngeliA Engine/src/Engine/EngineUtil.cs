@@ -641,7 +641,7 @@ public static class EngineUtil {
 		Util.DeleteFolder(tempRoot);
 #if DEBUG
 		watch.Stop();
-		Debug.Log($"[{watch.ElapsedMilliseconds / 1000f:0.00}]s AngeliA Project Built Finish");
+		Debug.Log($"{watch.ElapsedMilliseconds / 1000f:0.00}s AngeliA Project Built Finish");
 #endif
 		return 0;
 	}
