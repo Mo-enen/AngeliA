@@ -62,12 +62,10 @@ public partial class MapEditor {
 
 
 	// Const
-	private static readonly SpriteCode UI_DEFAULT_LIST_COVER = "Cover.Default";
+	private static readonly SpriteCode UI_DEFAULT_LIST_COVER = "Entity";
 	private static readonly int UI_TAB = BuiltInSprite.UI_TAB;
 	private static readonly int UI_TAB_ICON_PINNED = BuiltInSprite.ICON_STAR;
 	private static readonly int UI_TAB_ICON_ALL = BuiltInSprite.ICON_MENU;
-	private static readonly int BUTTON_DARK = BuiltInSprite.UI_DARK_BUTTON;
-	private static readonly int BUTTON_DARK_DOWN = BuiltInSprite.UI_DARK_BUTTON_DOWN;
 	private static readonly int ITEM_FRAME = BuiltInSprite.UI_ITEM_FRAME;
 	private static readonly int SEARCH_ICON = BuiltInSprite.ICON_SEARCH;
 	private static readonly int GAMEPAD_ICON = BuiltInSprite.ICON_GAMEPAD;
@@ -89,6 +87,7 @@ public partial class MapEditor {
 	private int SelectingPaletteGroupIndex = 0;
 	private int SelectingPaletteListIndex = 0;
 	private int PaletteScrollY = 0;
+	private int PaletteGroupScrollY = 0;
 	private int PaletteSearchScrollY = 0;
 	private string SearchingText = "";
 	private int DraggingForReorderPaletteGroup = -1;
@@ -211,7 +210,7 @@ public partial class MapEditor {
 				AtlasType = AtlasType.General,
 				GroupName = "_Entity",
 				DisplayNameID = "Palette.Entity".AngeHash(),
-				CoverID = "Cover.Entity".AngeHash(),
+				CoverID = "Entity".AngeHash(),
 			}
 		}};
 		foreach (var type in typeof(IMapItem).AllClassImplemented()) {
@@ -233,7 +232,7 @@ public partial class MapEditor {
 					Items = [],
 					GroupName = groupName,
 					AtlasType = AtlasType.General,
-					CoverID = $"Cover.{groupName}".AngeHash(),
+					CoverID = groupName.AngeHash(),
 					DisplayNameID = $"Palette.{groupName}".AngeHash(),
 				});
 			}
@@ -307,11 +306,12 @@ public partial class MapEditor {
 		string requiringTooltip = null;
 
 		// Calculate Group Rect
+		const int UI_ROW_MAX = 4;
 		bool showingBuiltIn = CurrentPaletteTab == PaletteTabType.BuiltIn;
 		int groupCount = showingBuiltIn ? PaletteGroups.Count : EditorMeta.PinnedLists.Count;
 		int groupColumnCount = (PanelRect.width - ITEM_GAP * 2) / (ITEM_SIZE + ITEM_GAP);
 		int groupRowCount = groupCount / groupColumnCount + (groupCount % groupColumnCount != 0 ? 1 : 0);
-		int groupPanelHeight = groupRowCount * (ITEM_SIZE + ITEM_GAP);
+		int groupPanelHeight = groupRowCount.Clamp(0, UI_ROW_MAX) * (ITEM_SIZE + ITEM_GAP);
 		var groupRect = PaletteGroupPanelRect = new IRect(
 			PanelRect.x, PanelRect.y, PanelRect.width, groupPanelHeight + PANEL_PADDING * 2 + TAB_SIZE
 		);
@@ -341,9 +341,9 @@ public partial class MapEditor {
 			// Highlight
 			if (selecting) {
 				var cells = Renderer.DrawSlice(
-					UI_TAB, tabRect.EdgeOutside(Direction4.Up, tabBorder).Shift(0, -tabBorder),
+					UI_TAB, tabRect.EdgeUp(tabBorder),
 					tabBorder, tabBorder, 0, tabBorder,
-					new Color32(225, 171, 48, 255)
+					Color32.GREY_230
 				);
 				cells[0].Shift.down = tabBorder / 2;
 				cells[1].Shift.down = tabBorder / 2;
@@ -358,6 +358,7 @@ public partial class MapEditor {
 				Skin.SmallCenterLabel
 			);
 
+
 			// Icon
 			Renderer.Draw(
 				i == (int)PaletteTabType.Listed ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
@@ -371,10 +372,6 @@ public partial class MapEditor {
 		}
 
 		// Content
-		int buttonDownShiftY = 0;
-		if (Renderer.TryGetSprite(BUTTON_DARK, out var sprite) && Renderer.TryGetSprite(BUTTON_DARK_DOWN, out var spriteDown)) {
-			buttonDownShiftY = ITEM_SIZE - ITEM_SIZE * sprite.GlobalHeight / spriteDown.GlobalHeight;
-		}
 		bool mouseInPanel = groupRect.MouseInside();
 		groupRect = groupRect.Shrink(PANEL_PADDING);
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
@@ -382,90 +379,107 @@ public partial class MapEditor {
 		int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
 		int targetReorderReleaseIndex = -1;
 
-		for (int i = 0; i < groupCount; i++) {
+		if (Input.MouseWheelDelta != 0) {
+			PaletteGroupScrollY -= Input.MouseWheelDelta;
+		}
+		PaletteGroupScrollY =
+			groupRowCount <= UI_ROW_MAX ? 0 :
+			PaletteGroupScrollY.LessOrEquel(groupRowCount - UI_ROW_MAX + 1).GreaterOrEquelThanZero();
+		int startIndex = PaletteGroupScrollY * groupColumnCount;
+		int endIndex = Util.Min(startIndex + UI_ROW_MAX * (ITEM_SIZE + ITEM_GAP), groupCount - 1);
 
-			bool draggingForReorder = !showingBuiltIn && DraggingForReorderPaletteGroup == i;
-			int selectingIndex = showingBuiltIn ? SelectingPaletteGroupIndex : SelectingPaletteListIndex;
-			bool selecting = i == selectingIndex;
-			int coverID = showingBuiltIn ? PaletteGroups[i].CoverID : EditorMeta.PinnedLists[i].Icon;
-			if (coverID == 0) coverID = UI_DEFAULT_LIST_COVER;
-			rect.x = offsetX + (i % groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
-			rect.y = groupRect.yMax - ITEM_SIZE - (i / groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
+		using (new ClampCellsScope(groupRect.Expand(0, GUI.ScrollbarSize, -TAB_SIZE, 0))) {
 
-			bool mouseHovering = mouseInPanel && rect.MouseInside();
+			for (int i = startIndex; i <= endIndex; i++) {
 
-			// Button
-			if (selecting) {
-				Renderer.DrawSlice(
-					BUTTON_DARK_DOWN,
-					rect.x, rect.y, 0, 0, 0, rect.width, rect.height + buttonDownShiftY,
-					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
-				);
-			} else {
-				Renderer.DrawSlice(
-					BUTTON_DARK, rect,
-					BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER, BUTTON_BORDER
-				);
-			}
+				bool draggingForReorder = !showingBuiltIn && DraggingForReorderPaletteGroup == i;
+				int selectingIndex = showingBuiltIn ? SelectingPaletteGroupIndex : SelectingPaletteListIndex;
+				bool selecting = i == selectingIndex;
+				int coverID = showingBuiltIn ? PaletteGroups[i].CoverID : EditorMeta.PinnedLists[i].Icon;
+				if (coverID == 0) coverID = UI_DEFAULT_LIST_COVER;
+				rect.x = offsetX + (i % groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
+				rect.y = groupRect.yMax - ITEM_SIZE - (i / groupColumnCount - PaletteGroupScrollY) * (ITEM_SIZE + ITEM_GAP);
 
-			// Cover
-			DrawSpriteGizmos(
-				coverID, rect.Shrink(BUTTON_BORDER).Shift(0, selecting ? buttonDownShiftY : 0),
-				selecting ? Color32.GREY_128 : Color32.WHITE
-			);
+				bool mouseHovering = mouseInPanel && rect.MouseInside();
 
-			// Tooltip
-			if (interactable && mouseHovering) {
-				if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
-				if (showingBuiltIn) {
-					var group = PaletteGroups[i];
-					requiringTooltip = Language.Get(group.DisplayNameID, group.GroupName);
-					requiringTooltipRect = rect;
+				// Button
+				if (Renderer.TryGetSprite(selecting ? BuiltInSprite.UI_MINI_BUTTON_DARK_DOWN : BuiltInSprite.UI_MINI_BUTTON_DARK, out var btnSP)) {
+
+					GUI.DrawSlice(btnSP, rect);
+
+					// Highlight
+					if (selecting) {
+						Renderer.DrawSlice(BuiltInSprite.FRAME_16, rect, Color32.GREEN);
+					}
 				}
-			}
 
-			// Start Reorder
-			if (!showingBuiltIn && !draggingForReorder && mouseHovering && Input.MouseLeftButtonDown) {
-				DraggingForReorderPaletteGroup = i;
-			}
+				// Cover
+				DrawSpriteGizmos(coverID, rect.Shrink(BUTTON_BORDER));
 
-			// Click
-			if (mouseHovering && interactable) {
-				if (Input.MouseLeftButtonDown) {
-					// Left
+				// Tooltip
+				if (interactable && mouseHovering) {
+					if (!GenericPopupUI.ShowingPopup && !GenericDialogUI.ShowingDialog) Cursor.SetCursorAsHand();
 					if (showingBuiltIn) {
-						// Select from BuiltIn
-						SelectingPaletteGroupIndex = i;
-					} else {
-						// Select from List
-						SelectingPaletteListIndex = i;
-					}
-					PaletteScrollY = 0;
-				} else if (Input.MouseRightButtonDown) {
-					// Right
-					if (!showingBuiltIn) {
-						ShowPaletteListMenu(EditorMeta.PinnedLists[i]);
+						var group = PaletteGroups[i];
+						requiringTooltip = Language.Get(group.DisplayNameID, group.GroupName);
+						requiringTooltipRect = rect;
 					}
 				}
-			}
 
-			// Reorder Target
-			if (DraggingForReorderPaletteGroup >= 0) {
-				var reorderCheckingRect = new IRect(
-					rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
-					(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
-				);
-				if (reorderCheckingRect.MouseInside()) {
-					targetReorderReleaseIndex = i;
-					if (i != DraggingForReorderPaletteGroup) {
-						Renderer.DrawPixel(new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
-					}
-				} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
-					targetReorderReleaseIndex = i + 1;
-					if (i != DraggingForReorderPaletteGroup) {
-						Renderer.DrawPixel(new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+				// Start Reorder
+				if (!showingBuiltIn && !draggingForReorder && mouseHovering && Input.MouseLeftButtonDown) {
+					DraggingForReorderPaletteGroup = i;
+				}
+
+				// Click
+				if (mouseHovering && interactable) {
+					if (Input.MouseLeftButtonDown) {
+						// Left
+						if (showingBuiltIn) {
+							// Select from BuiltIn
+							SelectingPaletteGroupIndex = i;
+						} else {
+							// Select from List
+							SelectingPaletteListIndex = i;
+						}
+						PaletteScrollY = 0;
+					} else if (Input.MouseRightButtonDown) {
+						// Right
+						if (!showingBuiltIn) {
+							ShowPaletteListMenu(EditorMeta.PinnedLists[i]);
+						}
 					}
 				}
+
+				// Reorder Target
+				if (DraggingForReorderPaletteGroup >= 0) {
+					var reorderCheckingRect = new IRect(
+						rect.x - ITEM_GAP / 2, rect.y - ITEM_GAP / 2,
+						(rect.width + ITEM_GAP) / 2, rect.height + ITEM_GAP
+					);
+					if (reorderCheckingRect.MouseInside()) {
+						targetReorderReleaseIndex = i;
+						if (i != DraggingForReorderPaletteGroup) {
+							Renderer.DrawPixel(new(rect.x - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						}
+					} else if (reorderCheckingRect.Shift(reorderCheckingRect.width, 0).MouseInside()) {
+						targetReorderReleaseIndex = i + 1;
+						if (i != DraggingForReorderPaletteGroup) {
+							Renderer.DrawPixel(new(rect.xMax - Unify(2), rect.y, Unify(4), rect.height), Color32.GREEN, int.MaxValue);
+						}
+					}
+				}
+
+			}
+			// Scroll Bar
+			if (groupRowCount > UI_ROW_MAX) {
+				PaletteGroupScrollY = GUI.ScrollBar(
+					7823563,
+					groupRect.ShrinkDown(TAB_SIZE).EdgeOutside(Direction4.Right, GUI.ScrollbarSize),
+					PaletteGroupScrollY,
+					groupRowCount + 1,
+					UI_ROW_MAX
+				);
 			}
 
 		}
@@ -885,9 +899,16 @@ public partial class MapEditor {
 
 		GenericPopupUI.BeginPopup();
 
+		// Create List
+		GenericPopupUI.AddItem(MENU_PALETTE_CREATE_LIST, () => {
+			EditorMeta.PinnedLists.Add(new PinnedList() {
+				Icon = UI_DEFAULT_LIST_COVER,
+				Items = [],
+			});
+		});
+
+		// Delete List
 		if (list != null) {
-			// Click on List
-			// Delete List
 			GenericPopupUI.AddItem(MENU_PALETTE_DELETE_LIST, () =>
 				GenericDialogUI.SpawnDialog(
 					$"{string.Format(
@@ -897,16 +918,8 @@ public partial class MapEditor {
 					BuiltInText.UI_DELETE, () => EditorMeta.PinnedLists.Remove(list),
 					BuiltInText.UI_CANCEL, Const.EmptyMethod
 			), enabled: EditorMeta.PinnedLists.Count > 1);
-		} else {
-			// Click on Empty
-			// Create List
-			GenericPopupUI.AddItem(MENU_PALETTE_CREATE_LIST, () => {
-				EditorMeta.PinnedLists.Add(new PinnedList() {
-					Icon = UI_DEFAULT_LIST_COVER,
-					Items = [],
-				});
-			});
 		}
+
 	}
 
 
