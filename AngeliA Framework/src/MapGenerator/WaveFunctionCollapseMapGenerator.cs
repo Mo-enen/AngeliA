@@ -53,7 +53,7 @@ public class WaveFunctionCollapseMapGenerator (int typeID) : MapGenerator(typeID
 
 
 
-		// TODO
+		
 
 
 		return MapGenerationResult.Success;

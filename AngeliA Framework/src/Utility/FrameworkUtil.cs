@@ -559,6 +559,72 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void ResetShoulderAndUpperArmPos (PoseCharacterRenderer rendering, bool resetLeft = true, bool resetRight = true) {
+
+		const int A2G = Const.CEL / Const.ART_CEL;
+
+		var Body = rendering.Body;
+		var Hip = rendering.Hip;
+		var Head = rendering.Head;
+		var UpperLegL = rendering.UpperLegL;
+		var LowerLegL = rendering.LowerLegL;
+		var FootL = rendering.FootL;
+
+		var FacingRight = Body.Width > 0;
+
+
+		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
+		int targetUnitHeight = rendering.CharacterHeight * A2G / PoseCharacterRenderer.CM_PER_PX - Head.SizeY;
+		int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
+		int defaultCharHeight = bodyHipSizeY + legRootSize;
+
+		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight * Body.Height.Abs() / Body.SizeY;
+		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
+		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
+
+		if (resetLeft) {
+
+			var ShoulderL = rendering.ShoulderL;
+			var UpperArmL = rendering.UpperArmL;
+
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
+			ShoulderL.Width = ShoulderL.SizeX;
+			ShoulderL.Height = ShoulderL.SizeY;
+			ShoulderL.PivotX = 1000;
+			ShoulderL.PivotY = 1000;
+
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmL.Width = UpperArmL.SizeX;
+			UpperArmL.Height = UpperArmL.FlexableSizeY;
+			UpperArmL.PivotX = 1000;
+			UpperArmL.PivotY = 1000;
+
+		}
+
+		if (resetRight) {
+
+			var ShoulderR = rendering.ShoulderR;
+			var UpperArmR = rendering.UpperArmR;
+
+			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
+			ShoulderR.Width = -ShoulderR.SizeX;
+			ShoulderR.Height = ShoulderR.SizeY;
+			ShoulderR.PivotX = 1000;
+			ShoulderR.PivotY = 1000;
+
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.Width = UpperArmR.SizeX;
+			UpperArmR.Height = UpperArmR.FlexableSizeY;
+			UpperArmR.PivotX = 0;
+			UpperArmR.PivotY = 1000;
+		}
+	}
+
+
 	// FrameBasedValue Load/Save
 	public static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
 		if (!Util.FileExists(path)) return false;
@@ -867,39 +933,53 @@ public static class FrameworkUtil {
 
 	public static void PutBlockTo (int blockID, BlockType blockType, Character pHolder, int targetUnitX, int targetUnitY) {
 
-		// Set Block to Map
-		if (
-			Renderer.TryGetSprite(blockID, out var sprite, true) ||
-			Renderer.TryGetSpriteFromGroup(blockID, 0, out sprite)
-		) {
-			WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, sprite.ID);
-			// Rule
-			if (sprite.Group != null && sprite.Group.WithRule) {
-				RedirectForRule(
-					WorldSquad.Stream, new IRect(targetUnitX - 1, targetUnitY - 1, 3, 3), Stage.ViewZ
-				);
-			}
-		} else {
-			WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, blockID);
-		}
+		bool success = false;
 
-		// Spawn Block Entity
-		if (
-			blockType == BlockType.Entity &&
-			BLOCK_ENTITY_TYPE.IsAssignableFrom(Stage.GetEntityType(blockID)) &&
-			Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true) is IBlockEntity bEntity
-		) {
-			// Event
-			bEntity.OnEntityPut();
+		switch (blockType) {
+			case BlockType.Level:
+			case BlockType.Background:
+				// Set Block to Map
+				if (
+					Renderer.TryGetSprite(blockID, out var sprite, true) ||
+					Renderer.TryGetSpriteFromGroup(blockID, 0, out sprite)
+				) {
+					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, sprite.ID);
+					// Rule
+					if (sprite.Group != null && sprite.Group.WithRule) {
+						RedirectForRule(
+							WorldSquad.Stream, new IRect(targetUnitX - 1, targetUnitY - 1, 3, 3), Stage.ViewZ
+						);
+					}
+				} else {
+					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, blockID);
+				}
+				success = true;
+				break;
+			case BlockType.Entity:
+
+				if (!BLOCK_ENTITY_TYPE.IsAssignableFrom(Stage.GetEntityType(blockID))) break;
+
+				// Set to Map
+				WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, BlockType.Entity, blockID);
+
+				// Spawn Entity
+				if (Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true) is IBlockEntity bEntity) {
+					bEntity.OnEntityPut();
+					success = true;
+				}
+				break;
 		}
 
 		// Reduce Block Count by 1
-		int eqID = Inventory.GetEquipment(pHolder.InventoryID, EquipmentType.HandTool, out int eqCount);
-		if (eqID != 0) {
-			int newEqCount = (eqCount - 1).GreaterOrEquelThanZero();
-			if (newEqCount == 0) eqID = 0;
-			Inventory.SetEquipment(pHolder.InventoryID, EquipmentType.HandTool, eqID, newEqCount);
+		if (success) {
+			int eqID = Inventory.GetEquipment(pHolder.InventoryID, EquipmentType.HandTool, out int eqCount);
+			if (eqID != 0) {
+				int newEqCount = (eqCount - 1).GreaterOrEquelThanZero();
+				if (newEqCount == 0) eqID = 0;
+				Inventory.SetEquipment(pHolder.InventoryID, EquipmentType.HandTool, eqID, newEqCount);
+			}
 		}
+
 	}
 
 

@@ -22,7 +22,7 @@ public abstract class PoseAnimation {
 
 	// Data
 	private static readonly Dictionary<int, PoseAnimation> Pool = [];
-	
+
 	// Cache
 	protected static Character Target = null;
 	protected static PoseCharacterRenderer Rendering = null;
@@ -146,51 +146,7 @@ public abstract class PoseAnimation {
 	#region --- API ---
 
 
-	protected static void ResetShoulderAndUpperArmPos (bool resetLeft = true, bool resetRight = true) {
-
-		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
-		int targetUnitHeight = Rendering.CharacterHeight * A2G / PoseCharacterRenderer.CM_PER_PX - Head.SizeY;
-		int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
-		int defaultCharHeight = bodyHipSizeY + legRootSize;
-
-		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight * Body.Height.Abs() / Body.SizeY;
-		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
-		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
-
-		if (resetLeft) {
-
-			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-			ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
-			ShoulderL.Width = ShoulderL.SizeX;
-			ShoulderL.Height = ShoulderL.SizeY;
-			ShoulderL.PivotX = 1000;
-			ShoulderL.PivotY = 1000;
-
-			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
-			UpperArmL.Width = UpperArmL.SizeX;
-			UpperArmL.Height = UpperArmL.FlexableSizeY;
-			UpperArmL.PivotX = 1000;
-			UpperArmL.PivotY = 1000;
-
-		}
-
-		if (resetRight) {
-			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-			ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
-			ShoulderR.Width = -ShoulderR.SizeX;
-			ShoulderR.Height = ShoulderR.SizeY;
-			ShoulderR.PivotX = 1000;
-			ShoulderR.PivotY = 1000;
-
-			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
-			UpperArmR.Width = UpperArmR.SizeX;
-			UpperArmR.Height = UpperArmR.FlexableSizeY;
-			UpperArmR.PivotX = 0;
-			UpperArmR.PivotY = 1000;
-		}
-	}
+	protected static void ResetShoulderAndUpperArmPos (bool resetLeft = true, bool resetRight = true) => FrameworkUtil.ResetShoulderAndUpperArmPos(Rendering, resetLeft, resetRight);
 
 
 	protected static void AttackHeadDown (float ease01, int headOffsetXAmount = 1000, int headOffsetYAmount = 1000, int headRotateAmount = 1000) {

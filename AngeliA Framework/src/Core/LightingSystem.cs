@@ -25,8 +25,10 @@ public static class LightingSystem {
 	private const int LIGHT_MAP_UNIT_PADDING_TOP = 6;
 	private static readonly float[] WEIGHTS = [0.071f, 0.19f, 0.51f, 0.19f, 0.071f,];
 
+	// Api
+	public static bool Enable { get; private set; } = true;
+
 	// Data
-	private static bool Enable = true;
 	private static float[,] Illuminances;
 	private static int CellWidth;
 	private static int CellHeight;
@@ -37,6 +39,7 @@ public static class LightingSystem {
 	private static int ForceCameraScaleFrame = -1;
 	private static float ForceAirLerpValue = 1f;
 	private static int ForceAirLerpFrame = -1;
+	private static int IgnoreFrame = -1;
 
 
 	#endregion
@@ -91,6 +94,7 @@ public static class LightingSystem {
 	internal static void CalculateAllIlluminance () {
 
 		if (!Enable || !WorldSquad.Enable || Game.IsPausing) return;
+		if (Game.GlobalFrame <= IgnoreFrame) return;
 
 		var info = Universe.BuiltInInfo;
 		OriginUnitX = Stage.ViewRect.x.ToUnit() - LIGHT_MAP_UNIT_PADDING;
@@ -139,7 +143,9 @@ public static class LightingSystem {
 
 	[OnGameUpdatePauseless]
 	internal static void OnGameUpdatePauseless () {
-		if (!Game.IsPausing) return;
+
+		if (!Game.IsPausing || Game.GlobalFrame <= IgnoreFrame) return;
+
 		var info = Universe.BuiltInInfo;
 		float day01 = Util.PingPong(Sky.InGameDaytime01, 0.5f) * 2f;
 		day01 = Ease.InOutQuart(day01);
@@ -158,7 +164,7 @@ public static class LightingSystem {
 	[OnGameUpdateLater(4096)]
 	internal static void RenderAllIlluminance () {
 
-		if (!Enable || !WorldSquad.Enable) return;
+		if (!Enable || !WorldSquad.Enable || Game.GlobalFrame <= IgnoreFrame) return;
 
 		var info = Universe.BuiltInInfo;
 		float day01 = Util.PingPong(Sky.InGameDaytime01, 0.5f) * 2f;
@@ -310,6 +316,12 @@ public static class LightingSystem {
 		ForceAirLerpFrame = Game.PauselessFrame + duration;
 		ForceAirLerpValue = lerp;
 	}
+
+
+	public static void IgnoreLighting (int duration = 1) => IgnoreFrame = Game.GlobalFrame + duration;
+
+
+	public static void CancelIgnoreLighting () => IgnoreFrame = -1;
 
 
 	#endregion

@@ -330,29 +330,29 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 					Attackness.MinimalChargeAttackDuration = tool.ChargeAttackDuration;
 					Attackness.RepeatAttackWhenHolding = tool.RepeatAttackWhenHolding;
 					Attackness.LockFacingOnAttack = tool.LockFacingOnAttack;
-					Attackness.HoldAttackPunishFrame.Min(tool.HoldAttackPunish);
+					Attackness.HoldAttackPunishFrame.Min(tool.HoldAttackPunish, 1);
 					if (tool.DefaultSpeedRateOnAttack.HasValue) {
-						Attackness.DefaultSpeedRateOnAttack.Max(tool.DefaultSpeedRateOnAttack.Value);
+						Attackness.DefaultSpeedRateOnAttack.Max(tool.DefaultSpeedRateOnAttack.Value, 1);
 					}
 					if (tool.WalkingSpeedRateOnAttack.HasValue) {
-						Attackness.WalkingSpeedRateOnAttack.Max(tool.WalkingSpeedRateOnAttack.Value);
+						Attackness.WalkingSpeedRateOnAttack.Max(tool.WalkingSpeedRateOnAttack.Value, 1);
 					}
 					if (tool.RunningSpeedRateOnAttack.HasValue) {
-						Attackness.RunningSpeedRateOnAttack.Max(tool.RunningSpeedRateOnAttack.Value);
+						Attackness.RunningSpeedRateOnAttack.Max(tool.RunningSpeedRateOnAttack.Value, 1);
 					}
-					Attackness.AttackInAir.Or(tool.AttackInAir);
-					Attackness.AttackInWater.Or(tool.AttackInWater);
-					Attackness.AttackWhenWalking.Or(tool.AttackWhenWalking);
-					Attackness.AttackWhenRunning.Or(tool.AttackWhenRunning);
-					Attackness.AttackWhenClimbing.Or(tool.AttackWhenClimbing);
-					Attackness.AttackWhenFlying.Or(tool.AttackWhenFlying);
-					Attackness.AttackWhenRolling.Or(tool.AttackWhenRolling);
-					Attackness.AttackWhenSquatting.Or(tool.AttackWhenSquatting);
-					Attackness.AttackWhenDashing.Or(tool.AttackWhenDashing);
-					Attackness.AttackWhenSliding.Or(tool.AttackWhenSliding);
-					Attackness.AttackWhenGrabbing.Or(tool.AttackWhenGrabbing);
-					Attackness.AttackWhenRush.Or(tool.AttackWhenRushing);
-					Attackness.AttackWhenPounding.Or(tool.AttackWhenPounding);
+					Attackness.AttackInAir.Override(tool.AttackInAir, 1);
+					Attackness.AttackInWater.Override(tool.AttackInWater, 1);
+					Attackness.AttackWhenWalking.Override(tool.AttackWhenWalking, 1);
+					Attackness.AttackWhenRunning.Override(tool.AttackWhenRunning, 1);
+					Attackness.AttackWhenClimbing.Override(tool.AttackWhenClimbing, 1);
+					Attackness.AttackWhenFlying.Override(tool.AttackWhenFlying, 1);
+					Attackness.AttackWhenRolling.Override(tool.AttackWhenRolling, 1);
+					Attackness.AttackWhenSquatting.Override(tool.AttackWhenSquatting, 1);
+					Attackness.AttackWhenDashing.Override(tool.AttackWhenDashing, 1);
+					Attackness.AttackWhenSliding.Override(tool.AttackWhenSliding, 1);
+					Attackness.AttackWhenGrabbing.Override(tool.AttackWhenGrabbing, 1);
+					Attackness.AttackWhenRush.Override(tool.AttackWhenRushing, 1);
+					Attackness.AttackWhenPounding.Override(tool.AttackWhenPounding, 1);
 				}
 			}
 		}

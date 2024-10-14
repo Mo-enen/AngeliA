@@ -42,6 +42,7 @@ public partial class CharacterAttackness (Character character) {
 
 	// Data
 	protected readonly int[] IgnoreAimingDirectionFrames = new int[8].FillWithValue(-1);
+	private int IgnoreAttackFrame = -1;
 
 
 	#endregion
@@ -92,6 +93,7 @@ public partial class CharacterAttackness (Character character) {
 
 
 	public virtual bool Attack (bool facingRight, bool charged = false) {
+		if (Game.GlobalFrame <= IgnoreAttackFrame) return false;
 		if (!TargetCharacter.IsAttackAllowedByMovement()) return false;
 		if (!TargetCharacter.IsAttackAllowedByEquipment()) return false;
 		LastAttackCharged = charged;
@@ -112,13 +114,19 @@ public partial class CharacterAttackness (Character character) {
 	public void CancelAttack () => LastAttackFrame = int.MinValue;
 
 
-	// Ignore Aim
+	// Ignore
 	public void IgnoreAimingDirection (Direction8 dir, int duration = 1) {
 		IgnoreAimingDirectionFrames[(int)dir] = Game.GlobalFrame + duration;
 	}
 
 
 	public bool IsAimingDirectionIgnored (Direction8 dir) => Game.GlobalFrame <= IgnoreAimingDirectionFrames[(int)dir];
+
+
+	public void IgnoreAttack (int duration = 1) => IgnoreAttackFrame = Game.GlobalFrame + duration;
+
+
+	public void CancelIgnoreAttack () => IgnoreAttackFrame = -1;
 
 
 	#endregion

@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[assembly: AngeliA.EntityLayerCapacity(AngeliA.EntityLayer.UI, 128)]
-[assembly: AngeliA.RendererLayerCapacity(AngeliA.RenderLayer.WALLPAPER, 100)]
-
 namespace AngeliA;
 
 
