@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.UpdateOutOfRange]
@@ -29,9 +30,9 @@ public abstract class Light : Furniture {
 	public override void Update () {
 		base.Update();
 		LightingSystem.Illuminate(
-			(X + Width / 2).ToUnit(),
-			(Y + Height / 2).ToUnit(),
-			IlluminateRange.ToUnit()
+			X + Width / 2,
+			Y + Height / 2,
+			IlluminateRange
 		);
 	}
 

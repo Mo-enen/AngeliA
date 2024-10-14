@@ -276,7 +276,15 @@ public class RigRespondMessage {
 			var data = RequireGizmosRects[i];
 			var rect = data.Rect;
 			rect.x = data.Rect.x + gizmosOffsetX;
-			Game.DrawGizmosRect(rect, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
+			if (data.ColorTL == data.ColorTR && data.ColorBL == data.ColorBR) {
+				if (data.ColorTL == data.ColorBL) {
+					Game.DrawGizmosRect(rect, data.ColorTL);
+				} else {
+					Game.DrawGizmosRect(rect, data.ColorTL, data.ColorBL);
+				}
+			} else {
+				Game.DrawGizmosRect(rect, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
+			}
 		}
 
 		// Gizmos Line

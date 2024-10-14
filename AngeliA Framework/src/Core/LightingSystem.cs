@@ -274,26 +274,32 @@ public static class LightingSystem {
 	#region --- API ---
 
 
-	public static void Illuminate (int unitX, int unitY, int unitRadius, int amount = 1000) {
+	public static void Illuminate (int x, int y, int radius, int amount = 1000) {
 
-		if (!Enable || unitRadius <= 0) return;
+		if (!Enable || radius <= 0) return;
 
-		int localX = unitX - OriginUnitX;
-		int localY = unitY - OriginUnitY;
+		int unitX = x.ToUnit();
+		int unitY = y.ToUnit();
+		int unitRadius = radius.ToUnit();
+		int localX = x - OriginUnitX.ToGlobal();
+		int localY = y - OriginUnitY.ToGlobal();
+		int localUnitX = unitX - OriginUnitX;
+		int localUnitY = unitY - OriginUnitY;
 
-		int left = (localX - unitRadius).Clamp(0, CellWidth - 1);
-		int right = (localX + unitRadius).Clamp(0, CellWidth - 1);
-		int down = (localY - unitRadius).Clamp(0, CellHeight - 1);
-		int up = (localY + unitRadius).Clamp(0, CellHeight - 1);
+		int left = (localUnitX - unitRadius).Clamp(0, CellWidth - 1);
+		int right = (localUnitX + unitRadius).Clamp(0, CellWidth - 1);
+		int down = (localUnitY - unitRadius).Clamp(0, CellHeight - 1);
+		int up = (localUnitY + unitRadius).Clamp(0, CellHeight - 1);
 
 		if (right < left || up < down) return;
 
 		float remain = Universe.BuiltInInfo.LightMap_LevelIlluminateRemain.Clamp01();
-		float radiusSq = (unitRadius + 0.5f) * (unitRadius + 0.5f);
+		float radiusSq = (radius + Const.HALF) * (radius + Const.HALF);
 		float amountF = amount / 1000f;
 		for (int j = down; j <= up; j++) {
+			int globalJ = j * Const.CEL + Const.HALF;
 			for (int i = left; i <= right; i++) {
-				float disSq = Util.SquareDistanceF(i, j, localX, localY);
+				float disSq = Util.SquareDistanceF(i * Const.CEL + Const.HALF, globalJ, localX, localY);
 				if (disSq > radiusSq) continue;
 				float add = amountF * (radiusSq - disSq) / radiusSq;
 				if (HasSolidBlockAt(i + OriginUnitX, j + OriginUnitY, out _)) {

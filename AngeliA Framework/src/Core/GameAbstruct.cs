@@ -259,8 +259,10 @@ public abstract partial class Game {
 			}
 		}
 	}
-	public static void DrawGizmosRect (IRect rect, Color32 color) => Instance._DrawGizmosRect(rect, color, color, color, color);
-	public static void DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB) => Instance._DrawGizmosRect(rect, colorT, colorT, colorB, colorB);
+	public static void DrawGizmosRect (IRect rect, Color32 color) => Instance._DrawGizmosRect(rect, color);
+	protected abstract void _DrawGizmosRect (IRect rect, Color32 color);
+	public static void DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB) => Instance._DrawGizmosRect(rect, colorT, colorB);
+	protected abstract void _DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB);
 	public static void DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) => Instance._DrawGizmosRect(rect, colorTL, colorTR, colorBL, colorBR);
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR);
 
@@ -276,7 +278,6 @@ public abstract partial class Game {
 	public static void IgnoreGizmos (int duration = 0) => Instance._IgnoreGizmos(duration);
 	protected abstract void _IgnoreGizmos (int duration = 0);
 
-	public static bool GizmosOnTopOfUI => GlobalFrame <= Instance.GizmosOnTopOfUiFrame;
 	protected int GizmosOnTopOfUiFrame { get; private set; } = -1;
 	public static void ForceGizmosOnTopOfUI (int duration = 0) => Instance.GizmosOnTopOfUiFrame = GlobalFrame + duration;
 	public static void CancelGizmosOnTopOfUI () => Instance.GizmosOnTopOfUiFrame = -1;

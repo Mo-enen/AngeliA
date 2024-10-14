@@ -41,6 +41,7 @@
 		<None Remove="desktop.ini" />
 		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
+		<None Remove="update raylib.dll.bat" />
 		<Compile Remove="Properties\**" />
 		<Compile Remove="Universe\**" />
 		<EmbeddedResource Remove="Properties\**" />

@@ -214,7 +214,7 @@ public abstract class Fire : Entity {
 		}
 
 		// Illuminance
-		LightingSystem.Illuminate(X.ToUnit(), Y.ToUnit(), IlluminateUnitRadius, IlluminateAmount);
+		LightingSystem.Illuminate(X, Y, IlluminateUnitRadius * Const.CEL, IlluminateAmount);
 
 		// Animation
 		const int HOP_GAP = 8;

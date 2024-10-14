@@ -94,9 +94,9 @@ public abstract class BeamBullet : MovableBullet {
 			int len = h / Const.CEL;
 			for (int i = 0; i < len; i++) {
 				LightingSystem.Illuminate(
-					(x + i * (endX - x) / (len)).ToUnit(),
-					(y + i * (endY - y) / (len)).ToUnit(),
-					IllumanteUnitRadius, illuAmount
+					x + i * (endX - x) / len,
+					y + i * (endY - y) / len,
+					IllumanteUnitRadius * Const.CEL, illuAmount
 				);
 			}
 		}

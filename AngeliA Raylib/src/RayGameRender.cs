@@ -478,7 +478,22 @@ public partial class RayGame {
 
 
 	// Gizmos
-	protected override void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) {
+	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
+		if (PauselessFrame <= IgnoreGizmosFrame) return;
+		if (CurrentAltTextureMode != AltTextureMode.Gizmos) {
+			SwitchToGizmosTextureMode();
+		}
+		var cameraRect = Renderer.CameraRect;
+		var screenRenderRect = Renderer.ScreenRenderRect;
+		float minX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x);
+		float maxX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.xMax);
+		float minY = Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax);
+		float maxY = Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.y);
+		var gizmosRect = new Rectangle(minX, minY, maxX - minX, maxY - minY);
+		Raylib.DrawRectangleRec(gizmosRect, color.ToRaylib());
+	}
+
+	protected override void _DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		if (CurrentAltTextureMode != AltTextureMode.Gizmos) {
 			SwitchToGizmosTextureMode();
@@ -492,8 +507,40 @@ public partial class RayGame {
 		var gizmosRect = new Rectangle(minX, minY, maxX - minX, maxY - minY);
 		Raylib.DrawRectangleGradientEx(
 			gizmosRect,
-			colorTL.ToRaylib(), colorBL.ToRaylib(), colorBR.ToRaylib(), colorTR.ToRaylib()
+			colorT.ToRaylib(), colorB.ToRaylib(), colorB.ToRaylib(), colorT.ToRaylib()
 		);
+	}
+
+	protected override void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) {
+		if (PauselessFrame <= IgnoreGizmosFrame) return;
+		if (CurrentAltTextureMode != AltTextureMode.Gizmos) {
+			SwitchToGizmosTextureMode();
+		}
+		var cameraRect = Renderer.CameraRect;
+		var screenRenderRect = Renderer.ScreenRenderRect;
+		float minX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.x);
+		float maxX = Util.RemapUnclamped(cameraRect.x, cameraRect.xMax, screenRenderRect.x, screenRenderRect.xMax, (float)rect.xMax);
+		float minY = Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.yMax);
+		float maxY = Util.RemapUnclamped(cameraRect.y, cameraRect.yMax, screenRenderRect.yMax, screenRenderRect.y, (float)rect.y);
+		var bl = new Vector2(minX, minY);
+		var br = new Vector2(maxX, minY);
+		var tl = new Vector2(minX, maxY);
+		var tr = new Vector2(maxX, maxY);
+		var mm = new Vector2((minX + maxX) / 2f, (minY + maxY) / 2f);
+		var cTL = colorBL.ToRaylib();
+		var cTR = colorBR.ToRaylib();
+		var cBL = colorTL.ToRaylib();
+		var cBR = colorTR.ToRaylib();
+		var cMM = new Color(
+			(byte)((colorTL.r + colorTR.r + colorBL.r + colorBR.r) / 4),
+			(byte)((colorTL.g + colorTR.g + colorBL.g + colorBR.g) / 4),
+			(byte)((colorTL.b + colorTR.b + colorBL.b + colorBR.b) / 4),
+			(byte)((colorTL.a + colorTR.a + colorBL.a + colorBR.a) / 4)
+		);
+		Raylib.DrawTriangle3Colors(bl, tl, mm, cBL, cTL, cMM);
+		Raylib.DrawTriangle3Colors(tr, br, mm, cTR, cBR, cMM);
+		Raylib.DrawTriangle3Colors(br, bl, mm, cBR, cBL, cMM);
+		Raylib.DrawTriangle3Colors(tl, tr, mm, cTL, cTR, cMM);
 	}
 
 	protected override void _DrawGizmosLine (int startX, int startY, int endX, int endY, int thickness, Color32 color) {

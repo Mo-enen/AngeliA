@@ -133,6 +133,10 @@ public partial class RiggedGame {
 
 
 	// Gizmos
+	protected override void _DrawGizmosRect (IRect rect, Color32 color) => _DrawGizmosRect(rect, color, color, color, color);
+
+	protected override void _DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB) => _DrawGizmosRect(rect, colorT, colorT, colorB, colorB);
+
 	protected override void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) {
 		if (RespondMessage.RequireGizmosRectCount >= RespondMessage.RequireGizmosRects.Length) return;
 		RespondMessage.RequireGizmosRects[RespondMessage.RequireGizmosRectCount] = new RigRespondMessage.GizmosRectData() {

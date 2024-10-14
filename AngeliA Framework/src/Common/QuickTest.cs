@@ -358,7 +358,7 @@ public static class QTest {
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
 		if (Testing) {
-			Game.ForceGizmosOnTopOfUI();
+			Game.CancelGizmosOnTopOfUI();
 		}
 	}
 
