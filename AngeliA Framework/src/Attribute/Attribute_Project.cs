@@ -14,11 +14,14 @@ public class IgnoreArtworkPixelsAttribute : Attribute { }
 
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public class EntityLayerCapacityAttribute : Attribute {
-	public int Layer;
-	public int Capacity;
-	public EntityLayerCapacityAttribute (int layer, int capacity) {
-		Layer = layer;
-		Capacity = capacity;
-	}
+public class EntityLayerCapacityAttribute (int layer, int capacity) : Attribute {
+	public int Layer = layer;
+	public int Capacity = capacity;
+}
+
+
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class RendererLayerCapacityAttribute (int layer, int capacity) : Attribute {
+	public int Layer = layer;
+	public int Capacity = capacity;
 }

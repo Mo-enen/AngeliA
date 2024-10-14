@@ -16,7 +16,7 @@ public static class RenderLayer {
 	public static readonly string[] NAMES = [
 		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
 	];
-	public static readonly int[] CAPACITY = [
+	public static readonly int[] DEFAULT_CAPACITY = [
 		256, 8192, 4096, 16384, 256, 128, 128, 8192,
 	];
 

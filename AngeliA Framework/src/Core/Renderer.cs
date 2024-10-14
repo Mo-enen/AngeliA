@@ -2,7 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
+[assembly: AngeliA.EntityLayerCapacity(AngeliA.EntityLayer.UI, 128)]
+[assembly: AngeliA.RendererLayerCapacity(AngeliA.RenderLayer.WALLPAPER, 100)]
+
 namespace AngeliA;
+
 
 public static class Renderer {
 
@@ -113,9 +118,17 @@ public static class Renderer {
 
 		Util.LinkEventWithAttribute<OnMainSheetReloadAttribute>(typeof(Renderer), nameof(OnMainSheetLoaded));
 
+		// Load Capacity from Attribute
+		var capacities = new int[RenderLayer.COUNT];
+		RenderLayer.DEFAULT_CAPACITY.CopyTo(capacities, 0);
+		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<RendererLayerCapacityAttribute>()) {
+			if (att.Layer < 0 || att.Layer >= RenderLayer.COUNT) continue;
+			capacities[att.Layer] = att.Capacity;
+		}
+
 		// Create Layers
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
-			int capacity = RenderLayer.CAPACITY[i];
+			int capacity = capacities[i];
 			int order = i;
 			Layers[i] = new Layer {
 				Cells = new Cell[capacity].FillWithNewValue(),

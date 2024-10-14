@@ -334,10 +334,8 @@ public class RigRespondMessage {
 			// Message Layer/Cells >> Renderer Layer/Cells
 			int fontIndexOffset = Game.BuiltInFontCount;
 			for (int layer = 0; layer < RenderLayer.COUNT; layer++) {
-				if (Layers[layer] == null) {
-					Layers[layer] = new RenderingLayerData(Renderer.GetLayerCapacity(layer));
-				}
 				var layerData = Layers[layer];
+				if (layerData == null) continue;
 				int count = layerData.CellCount;
 				Renderer.SetLayer(layer);
 				Renderer.SetLayerAlpha(layer, layerData.layerAlpha);
@@ -583,14 +581,15 @@ public class RigRespondMessage {
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
-				if (Layers[index] == null) {
-					Layers[index] = new RenderingLayerData(Renderer.GetLayerCapacity(index));
+				var layerData = Layers[index];
+				int targetCapacity = Util.ReadInt(ref pointer, end);
+				if (layerData == null || layerData.Cells.Length != targetCapacity) {
+					Layers[index] = layerData = new RenderingLayerData(targetCapacity);
 				}
-				var layer = Layers[index];
-				layer.CellCount = Util.ReadInt(ref pointer, end);
-				layer.layerAlpha = Util.ReadByte(ref pointer, end);
-				for (int i = 0; i < layer.CellCount; i++) {
-					var cell = layer.Cells[i];
+				layerData.CellCount = Util.ReadInt(ref pointer, end);
+				layerData.layerAlpha = Util.ReadByte(ref pointer, end);
+				for (int i = 0; i < layerData.CellCount; i++) {
+					var cell = layerData.Cells[i];
 					cell.SpriteID = Util.ReadInt(ref pointer, end);
 					cell.TextSpriteChar = Util.ReadChar(ref pointer, end);
 					cell.FontIndex = Util.ReadInt(ref pointer, end);
@@ -767,14 +766,16 @@ public class RigRespondMessage {
 			}
 
 			for (int index = 0; index < RenderLayer.COUNT; index++) {
-				if (Layers[index] == null) {
-					Layers[index] = new RenderingLayerData(Renderer.GetLayerCapacity(index));
+				var layerData = Layers[index];
+				int targetCapacity = Renderer.GetLayerCapacity(index);
+				if (layerData == null || layerData.Cells.Length != targetCapacity) {
+					Layers[index] = layerData = new RenderingLayerData(targetCapacity);
 				}
-				var layer = Layers[index];
-				Util.Write(ref pointer, layer.CellCount, end);
-				Util.Write(ref pointer, layer.layerAlpha, end);
-				for (int i = 0; i < layer.CellCount; i++) {
-					var cell = layer.Cells[i];
+				Util.Write(ref pointer, layerData.Cells.Length, end);
+				Util.Write(ref pointer, layerData.CellCount, end);
+				Util.Write(ref pointer, layerData.layerAlpha, end);
+				for (int i = 0; i < layerData.CellCount; i++) {
+					var cell = layerData.Cells[i];
 					Util.Write(ref pointer, cell.SpriteID, end);
 					Util.Write(ref pointer, cell.TextSpriteChar, end);
 					Util.Write(ref pointer, cell.FontIndex, end);
