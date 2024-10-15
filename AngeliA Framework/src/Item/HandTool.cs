@@ -314,7 +314,7 @@ public abstract class HandTool : Equipment {
 
 
 	// API
-	protected virtual Cell DrawToolSprite (PoseCharacterRenderer character, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => Renderer.Draw(
+	protected virtual Cell DrawToolSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) => Renderer.Draw(
 		sprite,
 		x, y,
 		sprite.PivotX, sprite.PivotY, grabRotation,

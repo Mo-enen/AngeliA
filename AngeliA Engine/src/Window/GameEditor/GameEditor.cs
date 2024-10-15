@@ -169,6 +169,17 @@ public partial class GameEditor : WindowUI {
 
 	private void OnGUI_Toolbar () {
 
+		if (!HavingGamePlay) {
+			DrawCollider = false;
+			EntityClickerOn = false;
+			FrameDebugging = false;
+			RequireNextFrame = false;
+			if (CurrentPanel == PanelType.Movement || CurrentPanel == PanelType.Lighting) {
+				CurrentPanel = PanelType.None;
+			}
+			return;
+		}
+
 		using var _ = new UILayerScope();
 
 		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
@@ -205,58 +216,50 @@ public partial class GameEditor : WindowUI {
 		}
 		rect.x -= rect.width + padding;
 
-		if (HavingGamePlay) {
-
-			// Movement
-			isOn = CurrentPanel == PanelType.Movement;
-			newIsOn = GUI.IconToggle(rect, isOn, BTN_MOVEMENT);
-			if (isOn != newIsOn) {
-				CurrentPanel = isOn ? PanelType.None : PanelType.Movement;
-			}
-			rect.SlideLeft(padding);
-
-			// Lighting
-			if (CurrentProject.Universe.Info.UseLightingSystem) {
-				isOn = CurrentPanel == PanelType.Lighting;
-				newIsOn = GUI.IconToggle(rect, isOn, BTN_LIGHTING);
-				if (isOn != newIsOn) {
-					CurrentPanel = isOn ? PanelType.None : PanelType.Lighting;
-				}
-				rect.SlideLeft(padding);
-			}
-
-			// Collider
-			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
-			rect.SlideLeft(padding);
-
-			// Entity Clicker
-			EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
-			rect.SlideLeft(padding);
-
-			// Next Frame
-			if (GUI.Button(rect, BTN_NEXT, Skin.IconButton)) {
-				if (!FrameDebugging) {
-					FrameDebugging = true;
-				} else {
-					RequireNextFrame = true;
-				}
-			}
-			rect.x -= rect.width + padding;
-
-			// Play/Pause
-			if (GUI.Button(rect, FrameDebugging ? BTN_PLAY : BTN_PAUSE, Skin.IconButton)) {
-				FrameDebugging = !FrameDebugging;
-				RequireNextFrame = false;
-			}
-			rect.x -= rect.width + padding;
-
-		} else {
-			DrawCollider = false;
-			EntityClickerOn = false;
-			FrameDebugging = false;
-			RequireNextFrame = false;
-			if (CurrentPanel == PanelType.Movement || CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
+		// Movement
+		isOn = CurrentPanel == PanelType.Movement;
+		newIsOn = GUI.IconToggle(rect, isOn, BTN_MOVEMENT);
+		if (isOn != newIsOn) {
+			CurrentPanel = isOn ? PanelType.None : PanelType.Movement;
 		}
+		rect.SlideLeft(padding);
+
+		// Lighting
+		if (CurrentProject.Universe.Info.UseLightingSystem) {
+			isOn = CurrentPanel == PanelType.Lighting;
+			newIsOn = GUI.IconToggle(rect, isOn, BTN_LIGHTING);
+			if (isOn != newIsOn) {
+				CurrentPanel = isOn ? PanelType.None : PanelType.Lighting;
+			}
+			rect.SlideLeft(padding);
+		}
+
+		// Collider
+		DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
+		rect.SlideLeft(padding);
+
+		// Entity Clicker
+		EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
+		rect.SlideLeft(padding);
+
+		// Next Frame
+		if (GUI.Button(rect, BTN_NEXT, Skin.IconButton)) {
+			if (!FrameDebugging) {
+				FrameDebugging = true;
+			} else {
+				RequireNextFrame = true;
+			}
+		}
+		rect.x -= rect.width + padding;
+
+		// Play/Pause
+		if (GUI.Button(rect, FrameDebugging ? BTN_PLAY : BTN_PAUSE, Skin.IconButton)) {
+			FrameDebugging = !FrameDebugging;
+			RequireNextFrame = false;
+		}
+		rect.x -= rect.width + padding;
+
+
 
 		if (!CurrentProject.Universe.Info.UseLightingSystem && CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
 
