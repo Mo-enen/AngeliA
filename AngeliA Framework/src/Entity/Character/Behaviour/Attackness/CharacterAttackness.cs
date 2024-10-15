@@ -27,6 +27,7 @@ public partial class CharacterAttackness (Character character) {
 	public virtual AttackStyleMode AttackStyle => AttackStyleMode.Random;
 	public Direction8 AimingDirection { get; set; } = Direction8.Right;
 	public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
+	public bool IsAttackIgnored => Game.GlobalFrame <= IgnoreAttackFrame;
 	public bool IsChargingAttack { get; set; } = false;
 	public int LastAttackFrame { get; private set; } = int.MinValue;
 	public int? AttackChargeStartFrame { get; private set; } = null;

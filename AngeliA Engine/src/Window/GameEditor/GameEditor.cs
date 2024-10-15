@@ -14,7 +14,7 @@ public partial class GameEditor : WindowUI {
 	#region --- SUB ---
 
 
-	private class BarData {
+	private class ProfilerUiBarData {
 		public string Name;
 		public int Value;
 		public int Capacity;
@@ -55,8 +55,8 @@ public partial class GameEditor : WindowUI {
 	public bool RequireReloadPlayerMovement { get; set; } = false;
 
 	// Data
-	private readonly BarData[] RenderingUsages = new BarData[RenderLayer.COUNT];
-	private readonly BarData[] EntityUsages = new BarData[EntityLayer.COUNT];
+	private readonly ProfilerUiBarData[] RenderingUsages = new ProfilerUiBarData[RenderLayer.COUNT];
+	private readonly ProfilerUiBarData[] EntityUsages = new ProfilerUiBarData[EntityLayer.COUNT];
 	private readonly bool[] EffectsEnabled = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
 	private PanelType CurrentPanel = PanelType.None;
 
@@ -295,24 +295,29 @@ public partial class GameEditor : WindowUI {
 
 		// Draw
 		int barHeight = GUI.Unify(24);
-		panelRect.height = barHeight * (EntityUsages.Length + RenderingUsages.Length);
+		panelRect.height = barHeight * (EntityUsages.Length + RenderingUsages.Length + 2);
 		panelRect.y -= panelRect.height;
 		int barPadding = GUI.Unify(4);
 		var rect = new IRect(panelRect.x, panelRect.yMax - barHeight, panelRect.width, barHeight);
 
 		// Entity
+		GUI.Label(rect, "Entity", GUI.Skin.SmallGreyLabel);
+		rect.SlideDown();
 		for (int i = 0; i < EntityUsages.Length; i++) {
 			DrawBar(rect.Shrink(barPadding), EntityUsages[i], Color32.CYAN);
-			rect.y -= rect.height;
+			rect.SlideDown();
 		}
+
 		// Rendering
+		GUI.Label(rect, "Rendering", GUI.Skin.SmallGreyLabel);
+		rect.SlideDown();
 		for (int i = 0; i < RenderingUsages.Length; i++) {
 			DrawBar(rect.Shrink(barPadding), RenderingUsages[i], Color32.GREEN);
-			rect.y -= rect.height;
+			rect.SlideDown();
 		}
 
 		// Func
-		static void DrawBar (IRect rect, BarData data, Color32 barColor) {
+		static void DrawBar (IRect rect, ProfilerUiBarData data, Color32 barColor) {
 			int width = Util.RemapUnclamped(0, data.Capacity, 0, rect.width, data.Value);
 			Renderer.DrawPixel(new IRect(rect.x, rect.y, width, rect.height), data.Value < data.Capacity ? barColor : Color32.RED, int.MaxValue);
 			// Label
@@ -384,14 +389,14 @@ public partial class GameEditor : WindowUI {
 	public void UpdateUsageData (int[] renderUsages, int[] renderCapacities, int[] entityUsages, int[] entityCapacities) {
 		if (RenderingUsages[0] == null) {
 			for (int i = 0; i < RenderLayer.COUNT; i++) {
-				RenderingUsages[i] = new BarData() {
+				RenderingUsages[i] = new ProfilerUiBarData() {
 					Name = RenderLayer.NAMES[i],
 				};
 			}
 		}
 		if (EntityUsages[0] == null) {
 			for (int i = 0; i < EntityLayer.COUNT; i++) {
-				EntityUsages[i] = new BarData() {
+				EntityUsages[i] = new ProfilerUiBarData() {
 					Name = EntityLayer.LAYER_NAMES[i],
 				};
 			}

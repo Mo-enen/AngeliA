@@ -50,6 +50,8 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		{ ".mp3".AngeHash(), "FileIcon.Audio"},
 		{ ".wav".AngeHash(), "FileIcon.Audio"},
 		{ ".ogg".AngeHash(), "FileIcon.Audio"},
+		{ ".xm".AngeHash(), "FileIcon.Audio"},
+		{ ".mod".AngeHash(), "FileIcon.Audio"},
 		{ ".txt".AngeHash(), "FileIcon.Text"},
 		{ ".json".AngeHash(), "FileIcon.Text"},
 		{ ".png".AngeHash(), "FileIcon.Image"},

@@ -285,7 +285,7 @@ public partial class RiggedGame : Game {
 
 	private void Update_MapEditor () {
 
-		// Start View
+		// Set View at Start
 		if (StartWithView != default && MapEditor.Instance != null) {
 			MapEditor.Instance.SetView(
 				new IRect(StartWithView.x, StartWithView.y, GetViewWidthFromViewHeight(StartWithView.height), StartWithView.height),
@@ -298,6 +298,17 @@ public partial class RiggedGame : Game {
 		bool editing = MapEditor.IsEditing;
 		Universe.BuiltInInfo.MinViewHeight = editing ? Const.CEL * 16 : OriginalMinViewHeight;
 		Universe.BuiltInInfo.MaxViewHeight = editing ? Const.CEL * 120 : OriginalMaxViewHeight;
+
+		// Enable Check
+		bool useMapEditor = Universe.BuiltInInfo.UseMapEditor;
+		if (MapEditor.IsActived != useMapEditor) {
+			if (useMapEditor) {
+				Stage.SpawnEntity(MapEditor.TYPE_ID, 0, 0);
+			} else if (MapEditor.Instance != null) {
+				MapEditor.Instance.Active = false;
+				RestartGame();
+			}
+		}
 
 	}
 

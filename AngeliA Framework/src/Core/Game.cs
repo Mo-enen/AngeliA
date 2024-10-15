@@ -401,7 +401,7 @@ public abstract partial class Game {
 		CacheForAudioSync.Clear();
 		CacheForAudioSyncRemove.Clear();
 		foreach (string root in universeRoots) {
-			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseMusicRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
+			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseMusicRoot(root), false, "*.wav", "*.mp3", "*.ogg", "*.xm", "*.mod")) {
 				int id = Util.GetNameWithoutExtension(path).TrimEnd(' ').AngeHash();
 				CacheForAudioSync.Add(id);
 				if (!MusicPool.ContainsKey(id)) {
@@ -426,7 +426,7 @@ public abstract partial class Game {
 		CacheForAudioSync.Clear();
 		CacheForAudioSyncRemove.Clear();
 		foreach (string root in universeRoots) {
-			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseSoundRoot(root), false, "*.wav", "*.mp3", "*.ogg")) {
+			foreach (var path in Util.EnumerateFiles(AngePath.GetUniverseSoundRoot(root), false, "*.wav", "*.mp3", "*.ogg", "*.xm", "*.mod")) {
 				int id = Util.GetNameWithoutExtension(path).AngeHash();
 				CacheForAudioSync.Add(id);
 				if (SoundPool.ContainsKey(id)) continue;

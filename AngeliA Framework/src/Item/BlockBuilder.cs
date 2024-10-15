@@ -38,6 +38,7 @@ public sealed class BlockBuilder : HandTool {
 		if (
 			holder is not Character pHolder ||
 			!pHolder.IsAttackAllowedByMovement() ||
+			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||

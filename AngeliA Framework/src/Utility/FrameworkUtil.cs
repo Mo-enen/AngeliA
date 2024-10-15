@@ -33,6 +33,7 @@ public static class FrameworkUtil {
 		BuiltInSprite.ITEM_ICON_ITEM,
 	];
 	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
+	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 
 
 	// Drawing
@@ -824,9 +825,22 @@ public static class FrameworkUtil {
 					// Break
 					GlobalEvent.InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
 				}
-				if (!allowMultiplePick) {
-					return true;
+
+				// Refresh Nearby
+				int nearByCount = Physics.OverlapAll(
+					BlockOperationCache, PhysicsMask.MAP,
+					new IRect((e.X + 1).ToUnifyGlobal(), (e.Y + 1).ToUnifyGlobal(), Const.CEL, Const.CEL).Expand(Const.CEL - 1),
+					e, OperationMode.ColliderAndTrigger
+				);
+				for (int j = 0; j < nearByCount; j++) {
+					var nearByHit = BlockOperationCache[j];
+					if (nearByHit.Entity is not IBlockEntity) continue;
+					nearByHit.Entity.OnActivated();
 				}
+
+				// Mul Gate
+				if (!allowMultiplePick) return true;
+
 			}
 		}
 
@@ -963,9 +977,23 @@ public static class FrameworkUtil {
 				WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, BlockType.Entity, blockID);
 
 				// Spawn Entity
-				if (Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true) is IBlockEntity bEntity) {
+				var e = Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true);
+				if (e is IBlockEntity bEntity) {
 					bEntity.OnEntityPut();
 					success = true;
+
+					// Refresh Nearby
+					int nearByCount = Physics.OverlapAll(
+						BlockOperationCache, PhysicsMask.MAP,
+						new IRect((e.X + 1).ToUnifyGlobal(), (e.Y + 1).ToUnifyGlobal(), Const.CEL, Const.CEL).Expand(Const.CEL - 1),
+						e, OperationMode.ColliderAndTrigger
+					);
+					for (int j = 0; j < nearByCount; j++) {
+						var nearByHit = BlockOperationCache[j];
+						if (nearByHit.Entity is not IBlockEntity) continue;
+						nearByHit.Entity.OnActivated();
+					}
+
 				}
 				break;
 		}

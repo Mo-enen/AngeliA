@@ -59,7 +59,8 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ADD_MUSIC = ("Label.Project.AddMusic", "+ music");
 	private static readonly LanguageCode LABEL_ADD_SOUND = ("Label.Project.AddSound", "+ Sound");
 	private static readonly LanguageCode LABEL_ADD_FONT = ("Label.Project.AddFont", "+ Font");
-	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map in Final Product");
+	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
+	private static readonly LanguageCode LABEL_USE_MAP_EDT = ("Label.Project.UseMapEditor", "Use Map Editor");
 	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
 	private static readonly LanguageCode LABEL_ALLOW_PAUSE = ("Label.Project.AllowPause", "Allow Pause Game");
 	private static readonly LanguageCode LABEL_ALLOW_RESTART_MENU = ("Label.Project.AllowRestartFromMenu", "Allow Restart from Menu");
@@ -345,6 +346,42 @@ public class ProjectEditor : WindowUI {
 
 		rect.SlideDown(padding);
 
+		// Use Procedural Map
+		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
+		if (newUseProceduralMap != info.UseProceduralMap) {
+			info.UseProceduralMap = newUseProceduralMap;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Use Map Editor
+		bool newUseMapEDT = GUI.Toggle(rect, info.UseMapEditor, LABEL_USE_MAP_EDT, labelStyle: Skin.SmallLabel);
+		if (newUseMapEDT != info.UseMapEditor) {
+			info.UseMapEditor = newUseMapEDT;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Use Light Sys
+		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
+		if (newUseLightSys != info.UseLightingSystem) {
+			info.UseLightingSystem = newUseLightSys;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Allow Cheat Code
+		bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
+		if (newAllowCheat != info.AllowCheatCode) {
+			info.AllowCheatCode = newAllowCheat;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
 		// Allow Pause
 		bool newAllowPause = GUI.Toggle(rect, info.AllowPause, LABEL_ALLOW_PAUSE, labelStyle: Skin.SmallLabel);
 		if (newAllowPause != info.AllowPause) {
@@ -367,33 +404,6 @@ public class ProjectEditor : WindowUI {
 		bool newAllowQuitFromMenu = GUI.Toggle(rect, info.AllowQuitFromMenu, LABEL_ALLOW_QUIT_MENU, labelStyle: Skin.SmallLabel);
 		if (newAllowQuitFromMenu != info.AllowQuitFromMenu) {
 			info.AllowQuitFromMenu = newAllowQuitFromMenu;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
-		// Use Procedural Map
-		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
-		if (newUseProceduralMap != info.UseProceduralMap) {
-			info.UseProceduralMap = newUseProceduralMap;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
-		// Use Light Sys
-		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
-		if (newUseLightSys != info.UseLightingSystem) {
-			info.UseLightingSystem = newUseLightSys;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
-		// Allow Cheat Code
-		bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
-		if (newAllowCheat != info.AllowCheatCode) {
-			info.AllowCheatCode = newAllowCheat;
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
@@ -598,13 +608,12 @@ public class ProjectEditor : WindowUI {
 
 		// Add Music Btn
 		if (GUI.SmallLinkButton(rect.ShrinkLeft(labelWidth), LABEL_ADD_MUSIC, false)) {
-			FileBrowserUI.OpenFile(LABEL_ADD_MUSIC, AddMusic, "*.mp3", "*.ogg");
+			FileBrowserUI.OpenFile(LABEL_ADD_MUSIC, AddMusic, "*.mp3", "*.ogg", "*.xm", "*.mod");
 		}
 		rect.SlideDown(padding);
 		static void AddMusic (string path) {
 			if (string.IsNullOrWhiteSpace(path)) return;
 			string ext = Util.GetExtensionWithDot(path);
-			if (ext != ".mp3" && ext != ".ogg") return;
 			EngineUtil.ImportMusicFile(Instance.CurrentProject, path);
 		}
 
@@ -632,13 +641,12 @@ public class ProjectEditor : WindowUI {
 
 		// Add Sound Btn
 		if (GUI.SmallLinkButton(rect.ShrinkLeft(labelWidth), LABEL_ADD_SOUND, false)) {
-			FileBrowserUI.OpenFile(LABEL_ADD_SOUND, AddSound, "*.wav", "*.ogg");
+			FileBrowserUI.OpenFile(LABEL_ADD_SOUND, AddSound, "*.wav", "*.ogg", "*.xm", "*.mod");
 		}
 		rect.SlideDown(padding);
 		static void AddSound (string path) {
 			if (string.IsNullOrWhiteSpace(path)) return;
 			string ext = Util.GetExtensionWithDot(path);
-			if (ext != ".wav" && ext != ".ogg") return;
 			EngineUtil.ImportSoundFile(Instance.CurrentProject, path);
 		}
 

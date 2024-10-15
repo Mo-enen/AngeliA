@@ -79,7 +79,7 @@ public static class Physics {
 	private static readonly PhysicsCell[] c_Movement = new PhysicsCell[32];
 	private static readonly PhysicsCell[] c_Oneway = new PhysicsCell[32];
 	private static readonly PhysicsCell[] c_GetEntity = new PhysicsCell[32];
-	private static readonly PhysicsCell[] c_GeneralHits = new PhysicsCell[1024];
+	private static readonly PhysicsCell[] c_OverlapAll = new PhysicsCell[1024];
 	private static Layer[] Layers = null;
 	private static Layer CurrentLayer = null;
 	private static int CurrentLayerEnum = -1;
@@ -148,12 +148,12 @@ public static class Physics {
 		int mask, IRect globalRect, out int count, Entity ignore = null,
 		OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0
 	) {
-		count = OverlapAll(c_GeneralHits, mask, globalRect, ignore, mode, tag);
-		return c_GeneralHits;
+		count = OverlapAll(c_OverlapAll, mask, globalRect, ignore, mode, tag);
+		return c_OverlapAll;
 	}
 
 
-	private static int OverlapAll (
+	public static int OverlapAll (
 		PhysicsCell[] hits, int mask, IRect globalRect, Entity ignore = null,
 		OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0
 	) {

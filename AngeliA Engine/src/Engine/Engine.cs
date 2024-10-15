@@ -28,7 +28,7 @@ public partial class Engine {
 	private static readonly SpriteCode ICON_TAB_BACK = "Icon.MainTabBack";
 
 	private static readonly LanguageCode BUILDING_HINT = ("UI.Rig.BuildingHint", "Recompiling");
-	private static readonly LanguageCode BUILD_ERROR_HINT = ("UI.Rig.BuildError", "Error in game script :(\nAll errors must be fixed before the game can run");
+	private static readonly LanguageCode BUILD_ERROR_HINT = ("UI.Rig.BuildError", "Compile Error in Game Script :(\nAll errors must be fixed otherwise the game cannot run");
 	private static readonly LanguageCode RIG_FAIL_HINT = ("UI.Rig.NotRunning", "Rigged Game Not Running :(\nThis should not happen. Please contact the developer and report this problem.");
 	private static readonly LanguageCode BTN_CREATE = ("Hub.Create", "Create New Project");
 	private static readonly LanguageCode BTN_ADD = ("Hub.Add", "Add Existing Project");
@@ -39,9 +39,7 @@ public partial class Engine {
 	private static readonly LanguageCode MENU_SORT_BY_NAME = ("Menu.SortProjectByName", "Sort by Name");
 	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
 	private static readonly LanguageCode NOTI_THEME_LOADED = ("Noti.ThemeLoaded", "Theme Loaded");
-	private static readonly LanguageCode FILE_DROP_MSG_PNG = ("UI.FileDropMsg.Png", "Import image {0} as:");
 	private static readonly LanguageCode FILE_DROP_MSG_AUDIO = ("UI.FileDropMsg.Audio", "Import audio file {0} as:");
-	private static readonly LanguageCode FILE_DROP_LABEL_ICON = ("UI.FileDropLabel.Icon", "Icon");
 	private static readonly LanguageCode FILE_DROP_LABEL_ART = ("UI.FileDropLabel.Art", "Artwork");
 	private static readonly LanguageCode FILE_DROP_LABEL_MUSIC = ("UI.FileDropLabel.Music", "Music");
 	private static readonly LanguageCode FILE_DROP_LABEL_SOUND = ("UI.FileDropLabel.Sound", "Sound");
@@ -170,8 +168,9 @@ public partial class Engine {
 		for (int i = 0; i < engine.AllWindows.Length; i++) {
 			var win = engine.AllWindows[i];
 			win.OnActivated();
-			if (win is GameEditor) engine.RigGameEditorWindowIndex = i;
+			if (win is GameEditor) engine.GameEditorWindowIndex = i;
 			if (win is ConsoleWindow) engine.ConsoleWindowIndex = i;
+			if (win is PixelEditor) engine.ArtworkWindowIndex = i;
 		}
 
 		engine.SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
@@ -205,36 +204,26 @@ public partial class Engine {
 
 		string ex = Util.GetExtensionWithDot(path);
 		switch (ex) {
-			case "":
-				if (project != null) break;
-				Instance.AddExistsProjectAt(path);
-				break;
 			case ".ase":
 			case ".aseprite":
 				if (project == null) break;
+				if (Instance.CurrentWindowIndex != Instance.ArtworkWindowIndex) break;
 				PixelEditor.ImportAtlasFromFile(path);
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".png":
 				if (project == null) break;
-				GenericDialogUI.SpawnDialog_Button(
-					string.Format(FILE_DROP_MSG_PNG, Util.GetNameWithExtension(path)),
-					FILE_DROP_LABEL_ICON, ImportForIcon,
-					FILE_DROP_LABEL_ART, ImportForArtwork,
-					BuiltInText.UI_CANCEL, Const.EmptyMethod
-				);
-				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
-				break;
-			case ".ico":
-				if (project == null) break;
-				Util.CopyFile(path, project.IconPath);
-				ProjectEditor.Instance.ReloadIconUI();
+				if (Instance.CurrentWindowIndex != Instance.ArtworkWindowIndex) break;
+				PixelEditor.ImportAtlasFromFile(Instance.DroppingFilePath);
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".wav":
 			case ".mp3":
 			case ".ogg":
+			case ".xm":
+			case ".mod":
 				if (project == null) break;
+				if (Instance.CurrentWindowIndex == Instance.GameEditorWindowIndex) break;
 				GenericDialogUI.SpawnDialog_Button(
 					string.Format(FILE_DROP_MSG_AUDIO, Util.GetNameWithExtension(path)),
 					FILE_DROP_LABEL_MUSIC, ImportForMusic,
@@ -246,12 +235,6 @@ public partial class Engine {
 		}
 
 		// Func
-		static void ImportForIcon () {
-			if (EngineUtil.ImportIconFile(Instance.CurrentProject, Instance.DroppingFilePath)) {
-				ProjectEditor.Instance.ReloadIconUI();
-			}
-		}
-		static void ImportForArtwork () => PixelEditor.ImportAtlasFromFile(Instance.DroppingFilePath);
 		static void ImportForMusic () => EngineUtil.ImportMusicFile(Instance.CurrentProject, Instance.DroppingFilePath);
 		static void ImportForSound () => EngineUtil.ImportSoundFile(Instance.CurrentProject, Instance.DroppingFilePath);
 	}
@@ -409,7 +392,7 @@ public partial class Engine {
 			}
 
 			// Hint - Label
-			if (CurrentWindowRequireRigGame) {
+			if (CurrentWindowRequireRigGame && !GenericDialogUI.ShowingDialog) {
 				var windowRect = WindowUI.WindowRect;
 				if (!Transceiver.RigProcessRunning) {
 					if (buildingProjectInBackground) {
@@ -982,7 +965,7 @@ public partial class Engine {
 	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
 		index = index.Clamp(0, AllWindows.Length - 1);
 		if (!forceChange && index == CurrentWindowIndex) return;
-		CurrentWindowRequireRigGame = index == RigGameEditorWindowIndex;
+		CurrentWindowRequireRigGame = index == GameEditorWindowIndex;
 		if (CurrentWindowRequireRigGame) {
 			// Rig Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();

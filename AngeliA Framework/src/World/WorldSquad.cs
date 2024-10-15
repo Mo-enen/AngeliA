@@ -25,7 +25,6 @@ public sealed class WorldSquad : IBlockSquad {
 	private static event System.Action AfterLevelRendered;
 	private static event System.Action<World> OnWorldCreated;
 	private static event System.Action<World> OnWorldLoaded;
-	private static readonly Dictionary<int, int> LevelToEntityRedirect = [];
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
 	private IRect CullingCameraRect = default;
@@ -69,20 +68,6 @@ public sealed class WorldSquad : IBlockSquad {
 		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(useProceduralMap ? Universe.BuiltIn.SlotUserMapRoot : Universe.BuiltIn.MapRoot);
 		SquadReady = true;
-
-		// Level to Entity Redirect
-		foreach (var (type, att) in Util.AllClassWithAttribute<EntityAttribute.SpawnFromLevelBlock>()) {
-			int levelID = att.LevelID;
-			int entityID = type.AngeHash();
-			if (Renderer.TryGetSpriteGroup(levelID, out var group)) {
-				LevelToEntityRedirect.TryAdd(group.ID, entityID);
-			} else if (Renderer.TryGetSprite(levelID, out var sprite, true)) {
-				LevelToEntityRedirect.TryAdd(levelID, entityID);
-				if (sprite.Group != null) {
-					LevelToEntityRedirect.TryAdd(sprite.Group.ID, entityID);
-				}
-			}
-		}
 
 		return TaskResult.End;
 	}
@@ -269,10 +254,6 @@ public sealed class WorldSquad : IBlockSquad {
 						if (lv != 0) {
 							if (isBehind) {
 								DrawBehind(lv, i, j, false);
-							} else if (LevelToEntityRedirect.TryGetValue(lv, out int redirectEntityID)) {
-								if (unitRect_Entity.Contains(i, j)) {
-									DrawEntity(redirectEntityID, i, j, z);
-								}
 							} else {
 								DrawLevelBlock(lv, i, j);
 							}

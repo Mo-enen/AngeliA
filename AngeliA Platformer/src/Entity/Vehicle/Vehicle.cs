@@ -103,6 +103,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 			TakeDriver();
 			Driver.IgnorePhysics(1);
 			Driver.IgnoreInsideGround(1);
+			Driver.Attackness.IgnoreAttack(1);
 			Driver.OverrideMovement(Movement);
 			Driver.VelocityX = 0;
 			Driver.VelocityY = 0;

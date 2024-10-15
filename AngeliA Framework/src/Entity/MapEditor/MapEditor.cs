@@ -70,7 +70,6 @@ public sealed partial class MapEditor : WindowUI {
 	public const int SETTING_SHOW_BEHIND = 92176_2;
 	public const int SETTING_SHOW_STATE = 92176_3;
 	public const int SETTING_SHOW_GRID_GIZMOS = 92176_4;
-	public const int SETTING_ENABLE = 92176_5;
 	private const int PANEL_WIDTH = 256;
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
@@ -195,19 +194,7 @@ public sealed partial class MapEditor : WindowUI {
 			case SETTING_SHOW_GRID_GIZMOS:
 				ShowGridGizmos = data == 1;
 				break;
-			case SETTING_ENABLE:
-				bool enableMapEditor = data == 1;
-				if (IsActived != enableMapEditor) {
-					if (enableMapEditor) {
-						Stage.SpawnEntity(TYPE_ID, 0, 0);
-					} else {
-						Instance.Active = false;
-						Game.RestartGame();
-					}
-				}
-				break;
 		}
-
 	}
 
 
@@ -507,14 +494,8 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_View () {
 
-		if (TaskingRoute || DroppingPlayer || GUI.IsTyping) return;
+		if (IsPlaying || TaskingRoute || DroppingPlayer || GUI.IsTyping) return;
 		if (MouseDownOutsideBoundary) goto END;
-
-		// Playing
-		if (IsPlaying) {
-			CurrentZ = Stage.ViewZ;
-			return;
-		}
 
 		// Move
 		var delta = Int2.zero;
@@ -616,7 +597,16 @@ public sealed partial class MapEditor : WindowUI {
 
 				// Switch Mode
 				if (Input.KeyboardDown(KeyboardKey.Space)) {
-					StartDropPlayer();
+					if (!Universe.BuiltInInfo.UseProceduralMap) {
+						// Start Drop Player
+						StartDropPlayer();
+					} else {
+						// Play from Start
+						SetEditorMode(true);
+						TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+						Input.UseAllHoldingKeys();
+						Input.UseGameKey(Gamekey.Start);
+					}
 				}
 				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
 
@@ -784,7 +774,10 @@ public sealed partial class MapEditor : WindowUI {
 	private void Update_DropPlayer () {
 
 		if (IsPlaying || !DroppingPlayer || TaskingRoute) return;
-		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
+
+		if (GenericPopupUI.ShowingPopup) {
+			GenericPopupUI.ClosePopup();
+		}
 
 		PlayerSystem.IgnorePlayerMenu(2);
 		PlayerSystem.IgnorePlayerQuickMenu(2);
@@ -1064,10 +1057,8 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void SetEditorMode (bool toPlayMode) {
 
-		if (Game.GlobalFrame != 0) {
-			if (toPlayMode) {
-				Save();
-			}
+		if (Game.GlobalFrame != 0 && toPlayMode) {
+			Save();
 		}
 
 		PlayingGame = toPlayMode;
@@ -1081,6 +1072,9 @@ public sealed partial class MapEditor : WindowUI {
 		Stage.Settle();
 
 		// Squad  
+		if (!toPlayMode && WorldSquad.Enable && Universe.BuiltInInfo.UseProceduralMap) {
+			WorldSquad.Stream.SaveAllDirty();
+		}
 		WorldSquad.Enable = toPlayMode;
 		ItemHolder.ClearHoldingPool();
 		foreach (var holder in Stage.ForAllActiveEntities<ItemHolder>(EntityLayer.ITEM)) {
@@ -1092,8 +1086,10 @@ public sealed partial class MapEditor : WindowUI {
 		if (!toPlayMode) {
 			// Play >> Edit
 
-			ViewRect = Stage.ViewRect;
-			SetViewZ(Stage.ViewZ);
+			if (!Universe.BuiltInInfo.UseProceduralMap) {
+				ViewRect = Stage.ViewRect;
+				SetViewZ(Stage.ViewZ);
+			}
 
 			// Inactive Entities
 			Stage.DespawnAllNonUiEntities(refreshImmediately: true);

@@ -24,12 +24,11 @@ public class EngineSetting {
 	[EngineSetting("Console", "Add Prefix Mark for Messages from Game")] public static readonly SavingBool AddPrefixMarkForMessageFromGame = new("Console.PrefixMark", true, SavingLocation.Global);
 
 	// Map Editor
-	[EngineSetting("MapEditor", "Use Map Editor in Engine")] public static readonly SavingBool MapEditor_Enable = new("MapEditor.Enable", true, SavingLocation.Global);
-	[EngineSetting("MapEditor", "Start Play when Release Space Key", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false, SavingLocation.Global);
-	[EngineSetting("MapEditor", "Auto Zoom when Editing", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_AutoZoom = new("MapEditor.AutoZoom", true, SavingLocation.Global);
-	[EngineSetting("MapEditor", "Show State Info on Bottom-Right", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", false, SavingLocation.Global);
-	[EngineSetting("MapEditor", "Show Map Behind", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true, SavingLocation.Global);
-	[EngineSetting("MapEditor", "Show Gizmos", nameof(MapEditor_Enable))] public static readonly SavingBool MapEditor_ShowGizmos = new("MapEditor.ShowGizmos", true, SavingLocation.Global);
+	[EngineSetting("MapEditor", "Start Play when Release Space Key")] public static readonly SavingBool MapEditor_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false, SavingLocation.Global);
+	[EngineSetting("MapEditor", "Auto Zoom when Editing")] public static readonly SavingBool MapEditor_AutoZoom = new("MapEditor.AutoZoom", true, SavingLocation.Global);
+	[EngineSetting("MapEditor", "Show State Info on Bottom-Right")] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", false, SavingLocation.Global);
+	[EngineSetting("MapEditor", "Show Map Behind")] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true, SavingLocation.Global);
+	[EngineSetting("MapEditor", "Show Gizmos")] public static readonly SavingBool MapEditor_ShowGizmos = new("MapEditor.ShowGizmos", true, SavingLocation.Global);
 	public static readonly SavingInt LastMapEditorViewX = new("Map.LastMapEditorViewX", 0, SavingLocation.Global);
 	public static readonly SavingInt LastMapEditorViewY = new("Map.LastMapEditorViewY", 0, SavingLocation.Global);
 	public static readonly SavingInt LastMapEditorViewZ = new("Map.LastMapEditorViewZ", 0, SavingLocation.Global);

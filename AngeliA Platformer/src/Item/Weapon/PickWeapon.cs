@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
-public abstract class PickWeapon : HandTool {
+public abstract class PickTool : HandTool {
 
 
 	// VAR
@@ -31,6 +32,7 @@ public abstract class PickWeapon : HandTool {
 		if (
 			holder is not Character pHolder ||
 			!pHolder.IsAttackAllowedByMovement() ||
+			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
@@ -65,7 +67,7 @@ public abstract class PickWeapon : HandTool {
 		}
 
 		// Pick Block
-		if (Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
+		if (InRange(holder, targetUnitX, targetUnitY) && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
 			// Erase Block from Map
 			bool picked = FrameworkUtil.PickBlockAt(
 				targetUnitX, targetUnitY,
@@ -108,15 +110,8 @@ public abstract class PickWeapon : HandTool {
 		targetUnitY = mouseUnitPos.y;
 
 		// Range Check
-		int holderUnitX = holder.Rect.CenterX().ToUnit();
-		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
-		if (
-			!targetUnitX.InRangeInclude(holderUnitX - MouseRange, holderUnitX + MouseRange) ||
-			!targetUnitY.InRangeInclude(holderUnitY - MouseRange, holderUnitY + MouseRange)
-		) {
-			inRange = false;
-			return false;
-		}
+		inRange = InRange(holder, targetUnitX, targetUnitY);
+		if (!inRange) return false;
 
 		// Has Pickable Block
 		inRange = true;
@@ -171,6 +166,15 @@ public abstract class PickWeapon : HandTool {
 
 		return hasTraget;
 
+	}
+
+
+	protected virtual bool InRange (Entity holder, int targetUnitX, int targetUnitY) {
+		int holderUnitX = holder.Rect.CenterX().ToUnit();
+		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
+		return
+			targetUnitX.InRangeInclude(holderUnitX - MouseRange, holderUnitX + MouseRange) &&
+			targetUnitY.InRangeInclude(holderUnitY - MouseRange, holderUnitY + MouseRange);
 	}
 
 
