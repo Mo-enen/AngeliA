@@ -1095,6 +1095,7 @@ public partial class PixelEditor {
 		RegisterUndo(new PaintUndoItem() {
 			SpriteID = sprite.ID,
 		});
+		var paintingClear = PaintingColor.WithNewA(0);
 		for (int safe = 0; safe < safeCount && BucketCacheQueue.Count > 0; safe++) {
 			var pos = BucketCacheQueue.Dequeue();
 			int pixIndex = pos.y * pixelRect.width + pos.x;
@@ -1116,7 +1117,7 @@ public partial class PixelEditor {
 				if (erase) {
 					newPixel = Color32.LerpUnclamped(Color32.CLEAR, oldPixel, lerp01);
 				} else {
-					var painting = Color32.LerpUnclamped(PaintingColor, Color32.CLEAR, lerp01);
+					var painting = Color32.LerpUnclamped(PaintingColor, paintingClear, lerp01);
 					newPixel = Util.MergeColor_Editor(painting, oldPixel);
 				}
 			} else {

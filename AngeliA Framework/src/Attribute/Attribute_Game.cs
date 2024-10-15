@@ -124,3 +124,7 @@ public class CheatCodeAttribute (string code, object param = null) : Attribute {
 	public object Param = param;
 }
 
+
+// Map Editor
+[AttributeUsage(AttributeTargets.Method)]
+public class OnMapEditorEditModeChangedAttribute : Attribute { }

@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
@@ -26,6 +27,7 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
 	[OnGameRestart]
+	[OnMapEditorEditModeChanged]
 	public static void ClearOpenedMarks () => OpenedChest.Clear();
 
 

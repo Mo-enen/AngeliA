@@ -88,6 +88,7 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_SWITCH_TO_NAV = ("CtrlHint.MEDT.Nav", "Navigation Mode");
 
 	// Api
+	public static event System.Action OnEditModeChanged;
 	public static MapEditor Instance { get; private set; }
 	public static bool IsActived => Instance != null && Instance.Active;
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
@@ -160,6 +161,12 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	#region --- MSG ---
+
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		Util.LinkEventWithAttribute<OnMapEditorEditModeChangedAttribute>(typeof(MapEditor), nameof(OnEditModeChanged));
+	}
 
 
 	[OnGameQuitting(-1)]
@@ -1086,6 +1093,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (!toPlayMode) {
 			// Play >> Edit
 
+			// View Rect
 			if (!Universe.BuiltInInfo.UseProceduralMap) {
 				ViewRect = Stage.ViewRect;
 				SetViewZ(Stage.ViewZ);
@@ -1133,6 +1141,10 @@ public sealed partial class MapEditor : WindowUI {
 			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);
 			LightingSystem.ForceCameraScale(0, 1);
 		}
+
+		// Event
+		OnEditModeChanged?.Invoke();
+
 	}
 
 
