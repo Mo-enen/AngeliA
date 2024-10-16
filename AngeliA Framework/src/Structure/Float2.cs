@@ -231,7 +231,7 @@ public struct Float2 : IEquatable<Float2>, IFormattable {
 	public static float SignedAngle (Float2 from, Float2 to) {
 		double sin = from.x * to.y - to.x * from.y;
 		double cos = from.x * to.x + from.y * to.y;
-		return (float)Math.Atan2(sin, cos) * Util.Rad2Deg;
+		return -(float)Math.Atan2(sin, cos) * Util.Rad2Deg;
 	}
 
 	public static float Distance (Float2 a, Float2 b) {

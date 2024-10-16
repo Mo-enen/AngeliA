@@ -286,7 +286,7 @@ public abstract class MovableBullet : Bullet {
 		HitEndX + Width / 2,
 		HitEndY + Height / 2,
 		BeamLength,
-		(-Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt(),
+		(Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt(),
 		HitReceiver
 	);
 

@@ -380,17 +380,19 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	}
 
 	// Create
-	public AngeSprite CreateSprite (string name, IRect pixelRect, int atlasIndex) => new() {
-		ID = name.AngeHash(),
-		RealName = name,
-		Atlas = Atlas[atlasIndex],
-		AtlasIndex = atlasIndex,
-		GlobalWidth = pixelRect.width * Const.ART_SCALE,
-		GlobalHeight = pixelRect.height * Const.ART_SCALE,
-		PixelRect = pixelRect,
-		Pixels = new Color32[pixelRect.width * pixelRect.height],
-		SortingZ = Atlas[atlasIndex].AtlasZ * 1024,
-	};
+	public AngeSprite CreateSprite (string name, IRect pixelRect, int atlasIndex) {
+		return new() {
+			ID = name.AngeHash(),
+			RealName = name,
+			Atlas = Atlas[atlasIndex],
+			AtlasIndex = atlasIndex,
+			GlobalWidth = pixelRect.width * Const.ART_SCALE,
+			GlobalHeight = pixelRect.height * Const.ART_SCALE,
+			PixelRect = pixelRect,
+			Pixels = new Color32[pixelRect.width * pixelRect.height],
+			SortingZ = Atlas[atlasIndex].AtlasZ * 1024,
+		};
+	}
 
 	public string GetAvailableSpriteName (string basicName) {
 

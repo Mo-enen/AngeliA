@@ -14,7 +14,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode GAMEPAD_BODY = "GamePad Body";
 	public static readonly SpriteCode GAMEPAD_EAST = "k_Gamepad East";
 	public static readonly SpriteCode GAMEPAD_UP = "k_Gamepad Up";
-	public static readonly SpriteCode UPARROW = "k_UpArrow";
+	public static readonly SpriteCode UP_ARROW = "k_UpArrow";
 	public static readonly SpriteCode FRAME_16 = "Frame16";
 	public static readonly SpriteCode BUTTON_FRAME = "ButtonFrame";
 	public static readonly SpriteCode MENU_SELECTION_MARK = "Menu Selection Mark";
