@@ -34,6 +34,8 @@ public abstract class Particle : Entity {
 		base.OnActivated();
 		IsAutoParticle = Renderer.HasSpriteGroup(TypeID);
 		Scale = 1000;
+		Tint = Color32.WHITE;
+		Rotation = 0;
 	}
 
 

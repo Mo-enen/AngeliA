@@ -1,8 +1,10 @@
 ﻿namespace AngeliA;
 
 public class PoseHandheld_Double : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseHandheld_Double).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
+
 		if (Attackness.IsChargingAttack) {
 			// Charging
 			PoseAttack_Wave.DoubleHanded_SmashDown();

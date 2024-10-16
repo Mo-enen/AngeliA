@@ -341,55 +341,75 @@ public static class Inventory {
 		int maxStackCount = ItemSystem.GetItemMaxStackCount(item);
 
 		// Try Append to Equipment
-		if (!ignoreEquipment && maxStackCount > 1 && data is EquipmentInventoryData eData) {
+		if (
+			!ignoreEquipment &&
+			data is EquipmentInventoryData eData &&
+			ItemSystem.IsEquipment(item, out var eqType)
+		) {
+			switch (eqType) {
 
-			// Hand
-			if (eData.HandTool == item && eData.HandToolCount < maxStackCount) {
-				int delta = Util.Min(count, maxStackCount - eData.HandToolCount);
-				count -= delta;
-				eData.HandToolCount += delta;
-			}
-			if (count <= 0) return oldCount - count;
+				case EquipmentType.HandTool:
+					// Hand
+					if (eData.HandTool == 0 || (eData.HandTool == item && eData.HandToolCount < maxStackCount)) {
+						int delta = Util.Min(count, maxStackCount - eData.HandToolCount);
+						count -= delta;
+						eData.HandTool = item;
+						eData.HandToolCount += delta;
+					}
+					if (count <= 0) return oldCount - count;
+					break;
 
-			// Body
-			if (eData.BodySuit == item && eData.BodySuitCount < maxStackCount) {
-				int delta = Util.Min(count, maxStackCount - eData.BodySuitCount);
-				count -= delta;
-				eData.BodySuitCount += delta;
-			}
-			if (count <= 0) return oldCount - count;
+				case EquipmentType.BodyArmor:
+					// Body
+					if (eData.BodySuit == 0 || (eData.BodySuit == item && eData.BodySuitCount < maxStackCount)) {
+						int delta = Util.Min(count, maxStackCount - eData.BodySuitCount);
+						count -= delta;
+						eData.BodySuitCount += delta;
+					}
+					if (count <= 0) return oldCount - count;
+					break;
 
-			// Gloves
-			if (eData.Gloves == item && eData.GlovesCount < maxStackCount) {
-				int delta = Util.Min(count, maxStackCount - eData.GlovesCount);
-				count -= delta;
-				eData.GlovesCount += delta;
-			}
-			if (count <= 0) return oldCount - count;
+				case EquipmentType.Helmet:
+					// Helmet
+					if (eData.Helmet == 0 || (eData.Helmet == item && eData.HelmetCount < maxStackCount)) {
+						int delta = Util.Min(count, maxStackCount - eData.HelmetCount);
+						count -= delta;
+						eData.HelmetCount += delta;
+					}
+					if (count <= 0) return oldCount - count;
+					break;
 
-			// Shoes
-			if (eData.Shoes == item && eData.ShoesCount < maxStackCount) {
-				int delta = Util.Min(count, maxStackCount - eData.ShoesCount);
-				count -= delta;
-				eData.ShoesCount += delta;
-			}
-			if (count <= 0) return oldCount - count;
+				case EquipmentType.Shoes:
+					// Shoes
+					if (eData.Shoes == 0 || (eData.Shoes == item && eData.ShoesCount < maxStackCount)) {
+						int delta = Util.Min(count, maxStackCount - eData.ShoesCount);
+						count -= delta;
+						eData.ShoesCount += delta;
+					}
+					if (count <= 0) return oldCount - count;
+					break;
 
-			// Jewelry
-			if (eData.Jewelry == item && eData.JewelryCount < maxStackCount) {
-				int delta = Util.Min(count, maxStackCount - eData.JewelryCount);
-				count -= delta;
-				eData.JewelryCount += delta;
-			}
-			if (count <= 0) return oldCount - count;
+				case EquipmentType.Gloves:
+					// Gloves
+					if (eData.Gloves == 0 || (eData.Gloves == item && eData.GlovesCount < maxStackCount)) {
+						int delta = Util.Min(count, maxStackCount - eData.GlovesCount);
+						count -= delta;
+						eData.GlovesCount += delta;
+					}
+					if (count <= 0) return oldCount - count;
+					break;
 
-			// Helmet
-			if (eData.Helmet == item && eData.HelmetCount < maxStackCount) {
-				int delta = Util.Min(count, maxStackCount - eData.HelmetCount);
-				count -= delta;
-				eData.HelmetCount += delta;
+				case EquipmentType.Jewelry:
+					// Jewelry
+					if (eData.Jewelry == 0 || (eData.Jewelry == item && eData.JewelryCount < maxStackCount)) {
+						int delta = Util.Min(count, maxStackCount - eData.JewelryCount);
+						count -= delta;
+						eData.JewelryCount += delta;
+					}
+					if (count <= 0) return oldCount - count;
+					break;
+
 			}
-			if (count <= 0) return oldCount - count;
 
 		}
 

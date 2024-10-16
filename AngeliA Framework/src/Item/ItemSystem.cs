@@ -327,12 +327,14 @@ public static class ItemSystem {
 
 
 	// Spawn 
-	public static bool GiveItemToTarget (Entity target, int itemID, int count = 1) {
+	public static bool GiveItemToTarget (Entity target, int itemID, int count = 1, bool spawnWhenInventoryFull = true) {
 		if (target == null) {
-			return SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
+			return
+				spawnWhenInventoryFull &&
+				SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
 		} else {
 			count -= Inventory.CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count, ignoreEquipment: false);
-			return count <= 0 || SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null;
+			return count <= 0 || (spawnWhenInventoryFull && SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null);
 		}
 	}
 

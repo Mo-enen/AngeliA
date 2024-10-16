@@ -829,6 +829,8 @@ public static class Stage {
 				AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
 			}
 
+			Debug.Log("rep: " + entity.GetType().Name);
+
 		}
 	}
 

@@ -23,7 +23,7 @@ public abstract class HandTool : Equipment {
 	public abstract ToolHandheld Handheld { get; }
 	public int BulletDelayFrame => AttackDuration * BulletDelay / 1000;
 	public string TypeName { get; init; }
-	protected virtual int BulletDelay => 0;
+	public virtual int BulletDelay => 0;
 	public virtual int AttackDuration => 12;
 	public virtual int AttackCooldown => 2;
 	public virtual int HoldAttackPunish => 4;
@@ -47,7 +47,7 @@ public abstract class HandTool : Equipment {
 	public virtual bool AttackWhenGrabbing => false;
 	public virtual bool AttackWhenRushing => false;
 	public virtual bool AttackWhenPounding => false;
-	protected virtual bool IgnoreGrabTwist => false;
+	public virtual bool IgnoreGrabTwist => false;
 
 
 	// MSG

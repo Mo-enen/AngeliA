@@ -2,6 +2,10 @@
 
 public class PoseAttack_Wave : PoseAnimation {
 
+
+	public static readonly int TYPE_ID = typeof(PoseAttack_Wave).AngeHash();
+
+
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 4;
@@ -41,6 +45,7 @@ public class PoseAttack_Wave : PoseAnimation {
 			case ToolHandheld.DoubleHanded:
 				style =
 					Attackness.LastAttackCharged ||
+					weaponType == ToolType.Tool ||
 					weaponType == ToolType.Throwing ||
 					weaponType == ToolType.Flail ? 0 :
 					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;

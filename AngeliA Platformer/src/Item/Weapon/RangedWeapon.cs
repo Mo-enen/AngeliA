@@ -24,7 +24,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	public override int? DefaultSpeedRateOnAttack => 1000;
 	public override int? WalkingSpeedRateOnAttack => 1000;
 	public override int? RunningSpeedRateOnAttack => 618;
-	protected override int BulletDelay => 500;
+	public override int BulletDelay => 500;
 
 
 	public RangedWeapon () {
