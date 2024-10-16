@@ -463,12 +463,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 
 	private void Update_RepairEquipment () {
 		if (Health.TakingDamage || Game.GlobalFrame != Movement.LastSquatFrame + 1) return;
-		for (int i = 0; i < Const.EquipmentTypeCount; i++) {
-			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
-			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			if (item == null) continue;
-			if (item.TryRepairEquipment(this)) break;
-		}
+		TryRepairAllEquipments();
 	}
 
 
@@ -771,6 +766,21 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 			EquippingToolType = ToolType.Hand;
 			EquippingToolHeld = ToolHandheld.Float;
 		}
+	}
+
+
+	public int TryRepairAllEquipments (bool requireMultiple = false) {
+		int repairedCount = 0;
+		for (int i = 0; i < Const.EquipmentTypeCount; i++) {
+			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
+			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
+			if (item == null) continue;
+			if (item.TryRepairEquipment(this)) {
+				repairedCount++;
+				if (!requireMultiple) break;
+			}
+		}
+		return repairedCount;
 	}
 
 
