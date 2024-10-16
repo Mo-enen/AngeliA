@@ -30,8 +30,8 @@ public static class AngePath {
 
 	public static string GetPersistentDataPath (string devName, string productName) => Util.CombinePaths(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-		devName ?? "(No Developer)",
-		productName ?? "(No Title)"
+		string.IsNullOrEmpty(devName) ? "(No Developer)" : devName,
+		string.IsNullOrEmpty(productName) ? "(No Title)" : productName
 	);
 
 
@@ -45,7 +45,9 @@ public static class AngePath {
 
 	// Universe
 	public static string GetUniverseRoot (string projectFolder) => Util.CombinePaths(projectFolder, "Universe");
-	public static string GetSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet.sheet");
+	public static string GetSheetRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet");
+	public static string GetBuiltInSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet", "Built-In Sheet.sheet");
+	public static string GetGameSheetPath (string universeFolder) => Util.CombinePaths(universeFolder, "Sheet", "Game Sheet.sheet");
 	public static string GetAtlasRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Atlas");
 	public static string GetConversationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Conversation");
 	public static string GetEditableConversationRoot (string universeFolder) => Util.CombinePaths(universeFolder, "Editable Conversation");

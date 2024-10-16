@@ -44,6 +44,7 @@ public partial class Engine {
 	private bool HasCompileError = false;
 	private int NoGameRunningFrameCount = 0;
 	private int ForceRigGameRunInBackgroundFrame = -1;
+	private int RenderingSheetIndex;
 
 
 	#endregion
@@ -54,7 +55,6 @@ public partial class Engine {
 	#region --- MSG ---
 
 
-	// Rebuild
 	[OnProjectBuiltInBackground]
 	internal static void RiggedGameRebuild (int code) {
 
@@ -145,7 +145,6 @@ public partial class Engine {
 	}
 
 
-	// Quit
 	[OnGameQuitting(1)]
 	internal static void OnEngineQuittingRig () {
 		Instance.Transceiver.Quit();
@@ -162,7 +161,6 @@ public partial class Engine {
 	}
 
 
-	// GUI
 	private void OnGUI_RiggedGame () {
 
 #if DEBUG
@@ -183,7 +181,6 @@ public partial class Engine {
 		bool requireRigInput = CurrentWindowIndex == GameEditorWindowIndex;
 
 		var rigEdt = GameEditor.Instance;
-		var pixEdt = PixelEditor.Instance;
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
 		var console = ConsoleWindow.Instance;
@@ -306,7 +303,7 @@ public partial class Engine {
 			Transceiver.Abort();
 		}
 
-		int sheetIndex = pixEdt.SheetIndex;
+		int sheetIndex = RenderingSheetIndex;
 		if (buildingProjectInBackground) {
 			// Building in Background
 			if (currentWindowRequireRigGame && requireRigGameRender) {

@@ -134,7 +134,7 @@ public partial class PixelEditor {
 
 	private void Update_Toolbar () {
 
-		if (Sheet.Atlas.Count <= 0) return;
+		if (EditingSheet.Atlas.Count <= 0) return;
 
 		int toolbarSize = GUI.ToolbarSize;
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, toolbarSize).Expand(0, toolbarSize, 0, 0);
@@ -663,7 +663,7 @@ public partial class PixelEditor {
 		rect.SlideRight(padding);
 
 		// Rule
-		var atlas = Sheet.Atlas[CurrentAtlasIndex];
+		var atlas = EditingSheet.Atlas[CurrentAtlasIndex];
 		if (atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background) {
 			if (GUI.Button(rect, ICON_RULE, Skin.SmallDarkButton)) {
 				OpeningTilingRuleEditor = !OpeningTilingRuleEditor;
@@ -791,7 +791,7 @@ public partial class PixelEditor {
 			}
 
 			// Icon
-			using (new SheetIndexScope(SheetIndex)) {
+			using (new SheetIndexScope(EditingSheetIndex)) {
 				Renderer.Draw(spData.Sprite, panelRect.CornerInside(Alignment.MidMid, buttonSize).Fit(spData.Sprite));
 			}
 
@@ -1161,9 +1161,9 @@ public partial class PixelEditor {
 				bool renamed;
 				string oldName = sprite.RealName;
 				if (SelectingSpriteCount == 1) {
-					renamed = Sheet.RenameSprite(sprite, name);
+					renamed = EditingSheet.RenameSprite(sprite, name);
 				} else {
-					renamed = Sheet.RenameSprite(sprite, $"{name} {checkedCount - 1}");
+					renamed = EditingSheet.RenameSprite(sprite, $"{name} {checkedCount - 1}");
 				}
 				if (renamed) {
 					RegisterUndo(new SpriteNameUndoItem() {

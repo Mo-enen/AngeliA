@@ -303,17 +303,20 @@ public static class Renderer {
 
 	public static void LoadMainSheet () {
 
-		string path = Universe.BuiltIn.SheetPath;
+		string gameSheetPath = Universe.BuiltIn.GameSheetPath;
+		string gameSheetName = Util.GetNameWithExtension(gameSheetPath);
 
 		// Load Sheet
 		MainSheetFileModifyDate = 0;
 		MainSheetFilePath = "";
-		bool loaded = MainSheet.LoadFromDisk(path);
-		if (loaded) {
-			MainSheetFilePath = path;
-			MainSheetFileModifyDate = Util.GetFileModifyDate(path);
-		}
+		if (!MainSheet.LoadFromDisk(gameSheetPath)) return;
 
+		MainSheetFilePath = gameSheetPath;
+		MainSheetFileModifyDate = Util.GetFileModifyDate(gameSheetPath);
+
+		// Load all Sub Sheets
+		MainSheet.CombineAllSheetInFolder(Universe.BuiltIn.SheetRoot, false, gameSheetName);
+		
 		// Event
 		OnMainSheetLoaded?.Invoke();
 	}

@@ -11,7 +11,9 @@ public class Universe {
 
 	// Universe Path
 	public string UniverseRoot { get; private set; }
-	public string SheetPath { get; private set; }
+	public string SheetRoot { get; private set; }
+	public string BuiltInSheetPath { get; private set; }
+	public string GameSheetPath { get; private set; }
 	public string InfoPath { get; private set; }
 	public string ConversationRoot { get; private set; }
 	public string EditableConversationRoot { get; private set; }
@@ -49,7 +51,9 @@ public class Universe {
 		string infoPath = AngePath.GetUniverseInfoPath(universeFolder);
 		var result = new Universe {
 			UniverseRoot = universeFolder,
-			SheetPath = AngePath.GetSheetPath(universeFolder),
+			SheetRoot = AngePath.GetSheetRoot(universeFolder),
+			BuiltInSheetPath = AngePath.GetBuiltInSheetPath(universeFolder),
+			GameSheetPath = AngePath.GetGameSheetPath(universeFolder),
 			ConversationRoot = AngePath.GetConversationRoot(universeFolder),
 			EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder),
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder),

@@ -52,7 +52,7 @@ public partial class PixelEditor {
 
 	// Left Drag
 	private void Update_LeftDrag () {
-		if (Sheet.Atlas.Count <= 0) return;
+		if (EditingSheet.Atlas.Count <= 0) return;
 		if (!MouseLeftDownInStage) return;
 		if (GUI.Interactable && Input.MouseLeftButtonHolding) {
 			if (DraggingState == DragState.None) {
@@ -383,9 +383,9 @@ public partial class PixelEditor {
 					// Create Sprite
 					var pixelRect = DraggingPixelRect;
 					if (pixelRect.width > 0 && pixelRect.height > 0 && (pixelRect.width > 1 || pixelRect.height > 1)) {
-						string name = Sheet.GetAvailableSpriteName("New Sprite");
-						var sprite = Sheet.CreateSprite(name, pixelRect, CurrentAtlasIndex);
-						Sheet.AddSprite(sprite);
+						string name = EditingSheet.GetAvailableSpriteName("New Sprite");
+						var sprite = EditingSheet.CreateSprite(name, pixelRect, CurrentAtlasIndex);
+						EditingSheet.AddSprite(sprite);
 						StagedSprites.Add(new SpriteData(sprite));
 						RegisterUndo(new SpriteObjectUndoItem() {
 							Sprite = sprite.CreateCopy(),
@@ -433,7 +433,7 @@ public partial class PixelEditor {
 
 	// Right Drag
 	private void Update_RightDrag () {
-		if (Sheet.Atlas.Count <= 0) return;
+		if (EditingSheet.Atlas.Count <= 0) return;
 		if (!MouseRightDownInStage) return;
 		if (GUI.Interactable && Input.MouseRightButtonDown) {
 			// Pick Color
@@ -697,9 +697,9 @@ public partial class PixelEditor {
 			StagedSprites.RemoveAt(i);
 			i--;
 			// Remove from Sheet
-			int index = Sheet.IndexOfSprite(sprite.ID);
+			int index = EditingSheet.IndexOfSprite(sprite.ID);
 			if (index >= 0) {
-				Sheet.RemoveSprite(index);
+				EditingSheet.RemoveSprite(index);
 			}
 			// Undo
 			RegisterUndo(new SpriteObjectUndoItem() {

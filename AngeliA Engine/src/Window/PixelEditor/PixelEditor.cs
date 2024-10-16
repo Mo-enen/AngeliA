@@ -42,7 +42,7 @@ public partial class PixelEditor : WindowUI {
 			_PixelDirty = false;
 			Selecting = false;
 			SelectingPalette = false;
-			Sheet?.SyncSpritePixelsIntoTexturePool(sprite);
+			EditingSheet?.SyncSpritePixelsIntoTexturePool(sprite);
 		}
 	}
 
@@ -84,9 +84,9 @@ public partial class PixelEditor : WindowUI {
 	private static readonly Color32[] PALETTE_PIXELS = [new(255, 34, 0, 255), new(255, 127, 0, 255), new(255, 242, 0, 255), new(0, 255, 34, 255), new(0, 255, 255, 255), new(0, 48, 255, 255), new(126, 0, 255, 255), new(255, 0, 255, 255), default, default, default, default, default, default, default, default, default, default, default, default, default, default, default, default, new(44, 43, 43, 255), new(54, 47, 47, 255), new(80, 59, 59, 255), new(139, 92, 92, 255), new(114, 76, 59, 255), new(139, 105, 82, 255), new(162, 134, 105, 255), new(186, 161, 126, 255), new(25, 22, 21, 255), new(37, 29, 28, 255), new(49, 38, 35, 255), new(61, 49, 43, 255), new(28, 25, 24, 255), new(46, 38, 36, 255), new(80, 63, 57, 255), new(159, 113, 81, 255), new(119, 95, 117, 255), new(164, 114, 155, 255), new(222, 142, 203, 255), new(244, 185, 223, 255), new(84, 70, 79, 255), new(110, 86, 97, 255), new(154, 126, 134, 255), new(187, 162, 161, 255), new(68, 19, 60, 255), new(90, 27, 67, 255), new(122, 39, 78, 255), new(160, 47, 83, 255), new(67, 18, 78, 255), new(100, 25, 99, 255), new(132, 36, 115, 255), new(170, 41, 128, 255), new(67, 6, 105, 255), new(98, 8, 138, 255), new(168, 39, 194, 255), new(236, 87, 225, 255), new(43, 20, 87, 255), new(64, 26, 115, 255), new(115, 56, 161, 255), new(176, 94, 196, 255), new(29, 29, 46, 255), new(39, 38, 60, 255), new(50, 47, 74, 255), new(87, 79, 105, 255), new(46, 40, 62, 255), new(55, 44, 74, 255), new(77, 58, 100, 255), new(111, 82, 131, 255), new(14, 51, 110, 255), new(29, 83, 150, 255), new(48, 136, 198, 255), new(70, 207, 255, 255), new(23, 77, 153, 255), new(43, 128, 207, 255), new(56, 187, 228, 255), new(76, 220, 246, 255), new(37, 44, 53, 255), new(42, 61, 74, 255), new(59, 106, 118, 255), new(77, 189, 189, 255), new(41, 46, 92, 255), new(44, 63, 130, 255), new(47, 86, 164, 255), new(52, 139, 216, 255), new(18, 97, 73, 255), new(39, 115, 88, 255), new(53, 166, 102, 255), new(83, 245, 113, 255), new(23, 101, 104, 255), new(10, 143, 134, 255), new(9, 181, 161, 255), new(0, 255, 204, 255), new(33, 69, 46, 255), new(59, 115, 61, 255), new(81, 166, 58, 255), new(151, 245, 83, 255), new(48, 77, 38, 255), new(94, 115, 59, 255), new(153, 166, 58, 255), new(245, 231, 83, 255), new(157, 139, 65, 255), new(191, 174, 60, 255), new(232, 216, 42, 255), new(255, 255, 0, 255), new(66, 67, 43, 255), new(117, 119, 48, 255), new(156, 148, 39, 255), new(217, 187, 36, 255), new(143, 98, 55, 255), new(209, 136, 60, 255), new(255, 165, 50, 255), new(252, 195, 81, 255), new(114, 89, 51, 255), new(172, 129, 59, 255), new(225, 171, 48, 255), new(252, 213, 74, 255), new(120, 50, 24, 255), new(153, 80, 24, 255), new(207, 123, 60, 255), new(245, 169, 83, 255), new(115, 64, 55, 255), new(140, 86, 70, 255), new(191, 133, 92, 255), new(232, 184, 111, 255), new(146, 85, 73, 255), new(177, 122, 102, 255), new(208, 158, 131, 255), new(239, 194, 160, 255), new(140, 84, 101, 255), new(170, 108, 114, 255), new(200, 132, 128, 255), new(231, 165, 146, 255), new(168, 35, 66, 255), new(199, 58, 74, 255), new(240, 86, 86, 255), new(255, 125, 102, 255), new(117, 59, 78, 255), new(150, 75, 84, 255), new(199, 104, 99, 255), new(255, 147, 120, 255), new(77, 77, 77, 255), new(142, 144, 144, 255), new(197, 203, 205, 255), new(237, 241, 245, 255), new(94, 88, 88, 255), new(138, 129, 127, 255), new(184, 172, 167, 255), new(240, 230, 218, 255), new(0, 0, 0, 255), new(85, 85, 85, 255), new(170, 170, 170, 255), new(255, 255, 255, 255), new(50, 50, 50, 255), new(93, 93, 93, 255), new(125, 125, 125, 255), new(190, 190, 190, 255),];
 
 	// Api
-	public static readonly Sheet Sheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: false);
+	public static readonly Sheet EditingSheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: false);
 	public static PixelEditor Instance { get; private set; }
-	public int SheetIndex { get; private set; } = -1;
+	public bool RequireReloadRenderingSheet { get; set; }
 	protected override bool BlockEvent => true;
 	public override string DefaultWindowName => "Artwork";
 
@@ -101,6 +101,7 @@ public partial class PixelEditor : WindowUI {
 	private bool MouseLeftDownInStage = false;
 	private bool MouseRightDownInStage = false;
 	private bool HasPaletteSprite = false;
+	private int EditingSheetIndex = -1;
 	private int SelectingSpriteCount = 0;
 	private int ZoomLevel = 1;
 	private int GizmosThickness = 1;
@@ -133,7 +134,7 @@ public partial class PixelEditor : WindowUI {
 	[OnGameInitializeLater(32)]
 	internal static TaskResult OnGameInitializeLater () {
 		if (Instance == null || !Renderer.IsReady) return TaskResult.Continue;
-		Instance.SheetIndex = Renderer.AddAltSheet(Sheet);
+		Instance.EditingSheetIndex = Renderer.AddAltSheet(EditingSheet);
 		// Atlas Type Names
 		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
@@ -200,19 +201,6 @@ public partial class PixelEditor : WindowUI {
 
 	// Update
 	private void Update_Cache () {
-
-#if DEBUG
-		if (
-			CurrentProject != null &&
-			!CurrentProject.IsEngineInternalProject &&
-			(Game.GlobalFrame % 180 == 0 || Game.GlobalFrame % 180 == 2) &&
-			CurrentAtlasIndex >= 0 &&
-			CurrentAtlasIndex < Sheet.Atlas.Count &&
-			Sheet.Atlas[CurrentAtlasIndex].Name == "BuiltIn"
-		) {
-			RequireNotification("Built-In Lock", "Changes will not be saved");
-		}
-#endif
 
 		int resizePadding = Unify(12);
 		int resizeCorner = Unify(10);
@@ -402,7 +390,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Rendering () {
 
-		if (Sheet.Atlas.Count <= 0) return;
+		if (EditingSheet.Atlas.Count <= 0) return;
 		using var _layer = new DefaultLayerScope();
 
 		// BG Gizmos
@@ -437,7 +425,7 @@ public partial class PixelEditor : WindowUI {
 			// Sync Texture
 			if (spriteData.PixelDirty) {
 				spriteData.PixelDirty = false;
-				Sheet.SyncSpritePixelsIntoTexturePool(sprite);
+				EditingSheet.SyncSpritePixelsIntoTexturePool(sprite);
 			}
 
 			if (DraggingState == DragState.MoveSprite && spriteData.Selecting) continue;
@@ -465,7 +453,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Cursor () {
 
-		if (Sheet.Atlas.Count <= 0 || !GUI.Interactable || !MouseInStage || !StageRect.MouseInside()) return;
+		if (EditingSheet.Atlas.Count <= 0 || !GUI.Interactable || !MouseInStage || !StageRect.MouseInside()) return;
 
 		switch (CurrentTool) {
 			case Tool.Rect:
@@ -517,7 +505,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Gizmos () {
 
-		if (Sheet.Atlas.Count <= 0) return;
+		if (EditingSheet.Atlas.Count <= 0) return;
 
 		bool allowHighlight = DraggingState == DragState.None;
 		using var _layer = new DefaultLayerScope();
@@ -704,7 +692,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_Hotkey () {
 
-		if (Sheet.Atlas.Count <= 0) return;
+		if (EditingSheet.Atlas.Count <= 0) return;
 		if (!GUI.Interactable) return;
 		if (GUI.IsTyping) return;
 
@@ -837,7 +825,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void Update_View () {
 
-		if (Sheet.Atlas.Count <= 0) return;
+		if (EditingSheet.Atlas.Count <= 0) return;
 		if (!GUI.Interactable) return;
 
 		// Move
@@ -885,39 +873,14 @@ public partial class PixelEditor : WindowUI {
 		CurrentProject = project;
 		AsepriteFolderExists = false;
 		if (project == null) {
-			Sheet.Clear();
+			EditingSheet.Clear();
 			return;
 		}
 		CleanDirty();
 		DraggingState = DragState.None;
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
-		Sheet.LoadFromDisk(project.Universe.SheetPath);
-#if DEBUG
-		// Sync Built In Artwork from Engine Sheet
-		if (!project.IsEngineInternalProject) {
-			var builtInSheet = new Sheet();
-			if (builtInSheet.LoadFromDisk(Util.CombinePaths(Universe.BuiltIn.SheetPath))) {
-				int engineBuiltInIndex = builtInSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
-				if (engineBuiltInIndex >= 0) {
-					// Sync Pixel Editor Sheet
-					builtInSheet.RemoveAllAtlasAndAllSpritesInsideExcept(engineBuiltInIndex);
-					int builtInIndex = Sheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
-					if (builtInIndex >= 0) {
-						Sheet.RemoveAtlasAndAllSpritesInside(builtInIndex);
-					}
-					Sheet.CombineSheet(builtInSheet);
-					builtInIndex = Sheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
-					if (builtInIndex > 0) {
-						Sheet.MoveAtlas(builtInIndex, 0);
-					}
-					// Sync Game Sheet
-					Sheet.SaveToDisk(project.Universe.SheetPath);
-					Util.SetFileModifyDate(project.Universe.SheetPath, System.DateTime.Now.ToFileTime());
-				}
-			}
-		}
-#endif
+		EditingSheet.LoadFromDisk(project.Universe.GameSheetPath);
 		AsepriteFolderExists = Util.FolderExists(project.Universe.AsepriteRoot);
 		SetCurrentAtlas(PrevOpenAtlasIndex.Value, forceChange: true, resetUndo: true);
 	}
@@ -930,14 +893,15 @@ public partial class PixelEditor : WindowUI {
 		}
 		if (!forceSave && !IsDirty) return;
 		CleanDirty();
-		if (string.IsNullOrEmpty(CurrentProject.Universe.SheetPath)) return;
+		if (string.IsNullOrEmpty(CurrentProject.Universe.GameSheetPath)) return;
 		TryApplyPixelBuffer(true);
-		Sheet.SaveToDisk(CurrentProject.Universe.SheetPath);
+		EditingSheet.SaveToDisk(CurrentProject.Universe.GameSheetPath);
+		RequireReloadRenderingSheet = true;
 #if DEBUG
 		// Sync Artwork for Project "Engine Artwork"
 		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
-			if (Util.FileExists(CurrentProject.Universe.SheetPath)) {
-				Util.CopyFile(CurrentProject.Universe.SheetPath, Universe.BuiltIn.SheetPath);
+			if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
+				Util.CopyFile(CurrentProject.Universe.GameSheetPath, Universe.BuiltIn.GameSheetPath);
 				Renderer.LoadMainSheet();
 			}
 		}
@@ -1080,13 +1044,13 @@ public partial class PixelEditor : WindowUI {
 	private void CreateNewSprite (string basicName = "New Sprite", bool select = true, Int2? pixelPos = null, Int2? pixelSize = null) {
 		int w = pixelSize.HasValue ? pixelSize.Value.x : 32;
 		int h = pixelSize.HasValue ? pixelSize.Value.y : 32;
-		string name = Sheet.GetAvailableSpriteName(basicName);
-		var sprite = Sheet.CreateSprite(
+		string name = EditingSheet.GetAvailableSpriteName(basicName);
+		var sprite = EditingSheet.CreateSprite(
 			name,
 			pixelPos.HasValue ? new IRect(pixelPos.Value.x, pixelPos.Value.y, w, h) : new IRect(1, STAGE_SIZE - h - 1, w, h),
 			CurrentAtlasIndex
 		);
-		Sheet.AddSprite(sprite);
+		EditingSheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData(sprite));
 		RegisterUndo(new SpriteObjectUndoItem() {
 			Sprite = sprite.CreateCopy(),
@@ -1098,7 +1062,7 @@ public partial class PixelEditor : WindowUI {
 
 
 	private void CreateSpriteForPalette (bool useDefaultPos, Int2? pixelPos = null) {
-		if (CurrentAtlasIndex < 0 || CurrentAtlasIndex >= Sheet.Atlas.Count) return;
+		if (CurrentAtlasIndex < 0 || CurrentAtlasIndex >= EditingSheet.Atlas.Count) return;
 		const int PAL_WIDTH = 8;
 		int PAL_HEIGHT = PALETTE_PIXELS.Length / 8;
 		// Get Sprite Pos
@@ -1117,16 +1081,16 @@ public partial class PixelEditor : WindowUI {
 			}
 		}
 		// Create Sprite
-		var atlas = Sheet.Atlas[CurrentAtlasIndex];
-		string name = Sheet.GetAvailableSpriteName($"Palette.{atlas.Name}");
-		var sprite = Sheet.CreateSprite(
+		var atlas = EditingSheet.Atlas[CurrentAtlasIndex];
+		string name = EditingSheet.GetAvailableSpriteName($"Palette.{atlas.Name}");
+		var sprite = EditingSheet.CreateSprite(
 			name,
 			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
 			CurrentAtlasIndex
 		);
 		sprite.Tag = Tag.Palette;
 		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
-		Sheet.AddSprite(sprite);
+		EditingSheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData(sprite));
 		RegisterUndo(new SpriteObjectUndoItem() {
 			Sprite = sprite.CreateCopy(),
@@ -1190,12 +1154,12 @@ public partial class PixelEditor : WindowUI {
 	private void CopySpriteToStage (AngeSprite source, int x, int y, string basicName) {
 		var sprite = source.CreateCopy();
 		sprite.AtlasIndex = CurrentAtlasIndex;
-		sprite.Atlas = Sheet.Atlas[CurrentAtlasIndex];
-		sprite.RealName = Sheet.GetAvailableSpriteName(basicName);
+		sprite.Atlas = EditingSheet.Atlas[CurrentAtlasIndex];
+		sprite.RealName = EditingSheet.GetAvailableSpriteName(basicName);
 		sprite.ID = sprite.RealName.AngeHash();
 		sprite.PixelRect.x = x;
 		sprite.PixelRect.y = y;
-		Sheet.AddSprite(sprite);
+		EditingSheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData(sprite));
 		RegisterUndo(new SpriteObjectUndoItem() {
 			Sprite = sprite.CreateCopy(),
@@ -1222,7 +1186,7 @@ public partial class PixelEditor : WindowUI {
 		int minX = int.MaxValue;
 		int maxY = int.MinValue;
 		SpriteTemplateChace.Clear();
-		foreach (var source in Sheet.Sprites) {
+		foreach (var source in EditingSheet.Sprites) {
 			if (!source.RealName.StartsWith(templateName)) continue;
 			SpriteTemplateChace.Add(source);
 			minX = Util.Min(minX, source.PixelRect.x);
@@ -1250,7 +1214,7 @@ public partial class PixelEditor : WindowUI {
 
 	// Drawing Util
 	private void DrawSheetSprite (AngeSprite sprite, IRect rect, int z = 0) {
-		Renderer.CurrentSheetIndex = SheetIndex;
+		Renderer.CurrentSheetIndex = EditingSheetIndex;
 		Renderer.Draw(sprite, rect, z);
 		Renderer.CurrentSheetIndex = -1;
 	}

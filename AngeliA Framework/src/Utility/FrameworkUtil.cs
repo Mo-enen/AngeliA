@@ -479,8 +479,8 @@ public static class FrameworkUtil {
 		EmptyScriptFileAnalysis(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), onlyLogWhenWarningFounded);
 
 		// Sheet
-		if (!Util.FileExists(Universe.BuiltIn.SheetPath)) {
-			Debug.LogWarning($"Artwork sheet file missing. ({Universe.BuiltIn.SheetPath})");
+		if (!Util.FileExists(Universe.BuiltIn.GameSheetPath)) {
+			Debug.LogWarning($"Artwork sheet file missing. ({Universe.BuiltIn.GameSheetPath})");
 		}
 
 		// Check for Hash Collision

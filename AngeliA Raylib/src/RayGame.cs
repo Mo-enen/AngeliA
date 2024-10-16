@@ -53,6 +53,8 @@ public partial class RayGame : Game {
 				UpdateWindow();
 				if (!Raylib.IsWindowMinimized()) {
 					UpdateGame();
+				} else {
+					Raylib.EndDrawing();
 				}
 			} catch (Exception ex) {
 				Debug.LogException(ex);
@@ -133,23 +135,10 @@ public partial class RayGame : Game {
 				);
 			}
 		}
-
 	}
 
 
 	private void UpdateWindow () {
-
-		// Fix Window Pos in Screen
-		var windowPos = new Rectangle(
-			Raylib.GetWindowPosition(), new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight())
-		).ToAngeliaI();
-		int monitor = Raylib.GetCurrentMonitor();
-		var monitorRect = new IRect(0, 0, Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
-		monitorRect = monitorRect.Shrink(monitorRect.height / 20);
-		if (!windowPos.Overlaps(monitorRect)) {
-			windowPos.ClampPositionInside(monitorRect);
-			Raylib.SetWindowPosition(windowPos.x, windowPos.y);
-		}
 
 		// Trying to Quit Check
 		if (!RequireQuitGame && Raylib.WindowShouldClose()) {
@@ -162,11 +151,6 @@ public partial class RayGame : Game {
 		if (windowFocus != WindowFocused) {
 			WindowFocused = windowFocus;
 			InvokeWindowFocusChanged(windowFocus);
-		}
-
-		// Minimize Check
-		if (Raylib.IsWindowMinimized()) {
-			Raylib.EndDrawing();
 		}
 
 	}

@@ -216,7 +216,7 @@ public partial class PixelEditor {
 
 			case PaintUndoItem paint: {
 				// Get Sprite
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					paint.SpriteID, out var sprite
 				)) break;
 				// Pixel Dirty
@@ -240,7 +240,7 @@ public partial class PixelEditor {
 			}
 
 			case MoveSpriteUndoItem move: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					move.SpriteID, out var sprite
 				)) break;
 				sprite.PixelRect.x = redo ? move.To.x : move.From.x;
@@ -253,13 +253,13 @@ public partial class PixelEditor {
 				bool create = spriteObj.Create == redo;
 				if (create) {
 					var newSprite = spriteObj.Sprite.CreateCopy();
-					Sheet.AddSprite(newSprite);
+					EditingSheet.AddSprite(newSprite);
 					StagedSprites.Add(new SpriteData(newSprite));
 				} else {
 					int id = spriteObj.Sprite.ID;
-					int index = Sheet.IndexOfSprite(id);
+					int index = EditingSheet.IndexOfSprite(id);
 					if (index < 0) break;
-					Sheet.RemoveSprite(index);
+					EditingSheet.RemoveSprite(index);
 					var staged = StagedSprites;
 					for (int i = 0; i < staged.Count; i++) {
 						if (staged[i].Sprite.ID == id) {
@@ -276,7 +276,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteTriggerUndoItem trigger: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					trigger.SpriteID, out var sprite
 				)) break;
 				sprite.IsTrigger = redo ? trigger.To : !trigger.To;
@@ -286,7 +286,7 @@ public partial class PixelEditor {
 
 
 			case SpriteBorderUndoItem border: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					border.SpriteID, out var sprite
 				)) break;
 				sprite.GlobalBorder = redo ? border.To : border.From;
@@ -295,7 +295,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteRuleUndoItem rule: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					rule.SpriteID, out var sprite
 				)) break;
 				sprite.Rule = redo ? rule.To : rule.From;
@@ -304,7 +304,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteTagUndoItem tag: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					tag.SpriteID, out var sprite
 				)) break;
 				sprite.Tag = redo ? tag.To : tag.From;
@@ -313,13 +313,13 @@ public partial class PixelEditor {
 			}
 
 			case SpriteNameUndoItem name: {
-				Sheet.RenameSprite(name.SpriteID, redo ? name.To : name.From);
+				EditingSheet.RenameSprite(name.SpriteID, redo ? name.To : name.From);
 				RequireNotification(redo ? NOTI_REDO_SPRITE_META : NOTI_UNDO_SPRITE_META);
 				break;
 			}
 
 			case SpritePivotUndoItem pivot: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					pivot.SpriteID, out var sprite
 				)) break;
 				if (pivot.X) {
@@ -332,7 +332,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteZUndoItem z: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					z.SpriteID, out var sprite
 				)) break;
 				sprite.LocalZ = redo ? z.To : z.From;
@@ -341,7 +341,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteDurationUndoItem duration: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					duration.SpriteID, out var sprite
 				)) break;
 				sprite.Duration = redo ? duration.To : duration.From;
@@ -350,7 +350,7 @@ public partial class PixelEditor {
 			}
 
 			case SpriteRectUndoItem spRect: {
-				if (!Sheet.SpritePool.TryGetValue(
+				if (!EditingSheet.SpritePool.TryGetValue(
 					spRect.SpriteID, out var sprite
 				)) break;
 				sprite.ResizePixelRect(redo ? spRect.To : spRect.From, false, out _);

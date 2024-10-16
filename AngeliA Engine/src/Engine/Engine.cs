@@ -50,6 +50,7 @@ public partial class Engine {
 	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
 	private readonly List<ProjectData> Projects = [];
+	private readonly Sheet RenderingSheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: true);
 	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
 	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
 	private EntityUI[] AllGenericUIs;
@@ -176,7 +177,8 @@ public partial class Engine {
 		engine.SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
 		engine.ResetViewRect();
 
-		// Theme
+		// Sheet
+		engine.RenderingSheetIndex = Renderer.AddAltSheet(engine.RenderingSheet);
 		engine.ThemeSheetIndex = Renderer.AddAltSheet(engine.ThemeSheet);
 
 	}
@@ -827,6 +829,11 @@ public partial class Engine {
 			}
 		}
 
+		// Rendering Sheet
+		if (PixelEditor.Instance.RequireReloadRenderingSheet) {
+			PixelEditor.Instance.RequireReloadRenderingSheet = false;
+			ReloadRenderingSheet();
+		}
 	}
 
 
@@ -874,11 +881,28 @@ public partial class Engine {
 		Game.UnloadFontsFromPool(ignoreBuiltIn: true);
 		Game.LoadFontsIntoPool(CurrentProject.Universe.FontRoot, builtIn: false);
 
+		// Built-in Sheet
+		long builtInSheetModDate = Util.GetFileModifyDate(Universe.BuiltIn.GameSheetPath);
+		if (
+			builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)
+		) {
+			var engineSheet = new Sheet();
+			if (engineSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
+				int engineBuiltInIndex = engineSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
+				if (engineBuiltInIndex >= 0) {
+					engineSheet.RemoveAllAtlasAndAllSpritesInsideExcept(engineBuiltInIndex);
+					engineSheet.SaveToDisk(CurrentProject.Universe.BuiltInSheetPath);
+					Util.SetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath, builtInSheetModDate);
+				}
+			}
+		}
+
 		// Change Check
 		CheckScriptChanged();
 		UpdateDllLibraryFiles();
 		CheckDialogChanged();
 		CheckResourceChanged();
+		ReloadRenderingSheet();
 
 		// Sync Engine Version
 		if (Universe.BuiltInInfo.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
@@ -1037,7 +1061,7 @@ public partial class Engine {
 	private void CheckResourceChanged () {
 		if (CurrentProject == null) return;
 		// Ase
-		SheetUtil.RecreateSheetIfArtworkModified(CurrentProject.Universe.SheetPath, CurrentProject.Universe.AsepriteRoot);
+		SheetUtil.RecreateSheetIfArtworkModified(CurrentProject.Universe.GameSheetPath, CurrentProject.Universe.AsepriteRoot);
 		// Fonts
 		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
 		if (changed) {
@@ -1094,12 +1118,23 @@ public partial class Engine {
 
 	private void CheckEngineAsepriteChanged () {
 		bool recreated = SheetUtil.RecreateSheetIfArtworkModified(
-			Universe.BuiltIn.SheetPath,
+			Universe.BuiltIn.GameSheetPath,
 			Universe.BuiltIn.AsepriteRoot
 		);
 		if (recreated) {
 			Renderer.LoadMainSheet();
 		}
+	}
+
+
+	private void ReloadRenderingSheet () {
+		if (CurrentProject == null) return;
+		if (!RenderingSheet.LoadFromDisk(CurrentProject.Universe.GameSheetPath)) return;
+		RenderingSheet.CombineAllSheetInFolder(
+			CurrentProject.Universe.SheetRoot,
+			topOnly: false,
+			Util.GetNameWithExtension(CurrentProject.Universe.GameSheetPath)
+		);
 	}
 
 

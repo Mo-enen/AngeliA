@@ -318,6 +318,16 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		}
 	}
 
+	public void CombineAllSheetInFolder (string folderPath, bool topOnly = false, string ignoreNameWithExtension = "") {
+		foreach (var subPath in Util.EnumerateFiles(folderPath, topOnly, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			string name = Util.GetNameWithExtension(subPath);
+			if (name == ignoreNameWithExtension) continue;
+			var sheet = new Sheet();
+			if (!sheet.LoadFromDisk(subPath)) continue;
+			CombineSheet(sheet);
+		}
+	}
+
 	// Remove
 	public void RemoveAtlasAndAllSpritesInside (int atlasIndex) {
 		if (atlasIndex < 0 || atlasIndex >= Atlas.Count) return;
