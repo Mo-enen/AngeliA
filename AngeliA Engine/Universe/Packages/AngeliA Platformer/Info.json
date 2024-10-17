@@ -1,5 +1,6 @@
 {
 	"DisplayName":"AngeliA Platformer",
 	"CreatorName":"楠瓜Moenen",
+	"Type":"Library",
 	"Description":"The offical package for platformer games."
 }

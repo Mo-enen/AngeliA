@@ -13,14 +13,30 @@ public class PackageManager : WindowUI {
 	#region --- SUB ---
 
 
+	public class PackageInfoComparer : IComparer<PackageInfo> {
+		public static readonly PackageInfoComparer Instance = new();
+		public int Compare (PackageInfo a, PackageInfo b) {
+			int result = b.Priority.CompareTo(a.Priority);
+			if (result != 0) return result;
+			result = a.Type.CompareTo(b.Type);
+			if (result != 0) return result;
+			return a.PackageName.CompareTo(b.PackageName);
+		}
+	}
+
+
 	public class PackageInfo {
 		public string DisplayName;
 		public string CreatorName;
 		public string Description;
+		public string Type;
+		public int Priority;
 		[JsonIgnore] public string PackageName;
 		[JsonIgnore] public string DebugDllPath;
 		[JsonIgnore] public string ReleaseDllPath;
+		[JsonIgnore] public string SheetPath;
 		[JsonIgnore] public bool DllFounded;
+		[JsonIgnore] public bool SheetFounded;
 		[JsonIgnore] public bool Installed;
 		[JsonIgnore] public object IconTexture;
 	}
@@ -77,10 +93,13 @@ public class PackageManager : WindowUI {
 			info.PackageName = packageName;
 			info.IconTexture = Game.PngBytesToTexture(Util.FileToBytes(iconPath));
 			info.DebugDllPath = Util.CombinePaths(packageFolder, "Debug", $"{packageName}.dll");
+			info.SheetPath = Util.CombinePaths(packageFolder, $"Sheet.{AngePath.SHEET_FILE_EXT}");
 			info.ReleaseDllPath = Util.CombinePaths(packageFolder, "Release", $"{packageName}.dll");
 			info.DllFounded = Util.FileExists(info.DebugDllPath) && Util.FileExists(info.ReleaseDllPath);
+			info.SheetFounded = Util.FileExists(info.SheetPath);
 			PackageInfoList.Add(info);
 		}
+		PackageInfoList.Sort(PackageInfoComparer.Instance);
 	}
 
 
@@ -126,20 +145,32 @@ public class PackageManager : WindowUI {
 				);
 				rect = rect.ShrinkLeft(iconSize + itemPadding);
 
-				// Package Name
-				GUI.Label(rect.TopHalf().ShrinkRight(toggleSize), info.DisplayName, out var nameBound, GUI.Skin.Label);
+				using (new GUIContentColorScope(info.DllFounded || info.SheetFounded ? Color32.WHITE : Color32.WHITE_128)) {
 
-				// Creator Name
-				if (!string.IsNullOrWhiteSpace(info.CreatorName)) {
-					GUI.BackgroundLabel(
-						nameBound.Expand(0, itemPadding, 0, 0).EdgeOutside(Direction4.Right),
-						info.CreatorName, Color32.WHITE_20, itemPadding / 3,
-						style: GUI.Skin.SmallLabel
-					);
+					// Package Name
+					GUI.Label(rect.TopHalf().ShrinkRight(toggleSize), info.DisplayName, out var nameBound, GUI.Skin.Label);
+
+					// Creator Name
+					if (!string.IsNullOrWhiteSpace(info.CreatorName)) {
+						GUI.BackgroundLabel(
+							nameBound.Expand(0, itemPadding, 0, 0).EdgeOutside(Direction4.Right),
+							info.CreatorName, Color32.WHITE_20, itemPadding / 3,
+							style: GUI.Skin.SmallLabel
+						);
+					}
+
+					// Package Description
+					if (!string.IsNullOrWhiteSpace(info.Description)) {
+						GUI.Label(
+							rect.ShrinkUp(rect.height / 2),
+							info.Description, out var desBound, DescriptionStyle
+						);
+						rect.yMin = Util.Min(rect.yMin, desBound.yMin);
+					}
 				}
 
 				// Toggle
-				if (info.DllFounded) {
+				if (info.DllFounded || info.SheetFounded) {
 					bool newInstalled = GUI.Toggle(
 						rect.Shrink(itemPadding).CornerInside(Alignment.TopRight, toggleSize),
 						info.Installed,
@@ -147,7 +178,7 @@ public class PackageManager : WindowUI {
 					);
 					// Install
 					if (newInstalled && !info.Installed) {
-						EngineUtil.InstallPackage(CurrentProject, info.PackageName);
+						EngineUtil.InstallPackage(CurrentProject, info);
 						RefreshInstalledForAllPackages();
 						RequiringRebuildFrame = Game.GlobalFrame;
 					}
@@ -157,15 +188,6 @@ public class PackageManager : WindowUI {
 						RefreshInstalledForAllPackages();
 						RequiringRebuildFrame = Game.GlobalFrame;
 					}
-				}
-
-				// Package Description
-				if (!string.IsNullOrWhiteSpace(info.Description)) {
-					GUI.Label(
-						rect.ShrinkUp(rect.height / 2),
-						info.Description, out var desBound, DescriptionStyle
-					);
-					rect.yMin = Util.Min(rect.yMin, desBound.yMin);
 				}
 
 				// Box BG

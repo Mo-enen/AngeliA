@@ -923,7 +923,7 @@ public class PlayerMenuUI : EntityUI {
 		int collectCount = Inventory.CollectItem(invID, currentEquipmentID, out int collectedIndex, eqCount);
 		if (collectCount > 0) {
 			if (collectCount < eqCount) {
-				ItemSystem.GiveItemToTarget(player, currentEquipmentID, eqCount - collectCount);
+				Inventory.GiveItemToTarget(player, currentEquipmentID, eqCount - collectCount);
 			}
 			Inventory.SetEquipment(invID, type, 0, 0);
 			FlashInventoryField(collectedIndex, true);

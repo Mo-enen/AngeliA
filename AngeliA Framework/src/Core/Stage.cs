@@ -677,7 +677,7 @@ public static class Stage {
 	// Composite
 	public static Entity PeekOrGetEntity (int typeID) => PeekEntity(typeID) ?? GetEntity(typeID);
 	public static T PeekOrGetEntity<T> () where T : Entity => PeekEntity<T>() ?? GetEntity<T>();
-	public static Entity GetOrAddEntity (int typeID, int x, int y) {
+	public static Entity GetOrSpawnEntity (int typeID, int x, int y) {
 		if (TryGetEntity(typeID, out var entity)) {
 			entity.X = x;
 			entity.Y = y;
@@ -686,7 +686,7 @@ public static class Stage {
 			return SpawnEntity(typeID, x, y);
 		}
 	}
-	public static T GetOrAddEntity<T> (int x, int y) where T : Entity {
+	public static T GetOrSpawnEntity<T> (int x, int y) where T : Entity {
 		if (TryGetEntity<T>(out var entity)) {
 			entity.X = x;
 			entity.Y = y;
@@ -812,7 +812,7 @@ public static class Stage {
 		// Perform Reposition
 		if (
 			requireRepos &&
-			FrameworkUtil.TryGetEmptyPlaceNearby(
+			FrameworkUtil.TryGetEmptyPlaceNearbyForEntity(
 				currentUnitX, currentUnitY, ViewZ,
 				out int resultUnitX, out int resultUnitY
 			)

@@ -103,6 +103,7 @@ public static class PlayerSystem {
 		if (Selecting == null || !Selecting.Active) return;
 
 		Selecting.ForceStayOnStage();
+		Selecting.DespawnAfterPassoutDelay = -1;
 
 		// Update Player
 		switch (Selecting.CharacterState) {
@@ -580,7 +581,6 @@ public static class PlayerSystem {
 		}
 		target.Team = Const.TEAM_PLAYER;
 		target.AttackTargetTeam = Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
-		target.DespawnAfterPassoutDelay = -1;
 		target.ForceStayOnStage();
 		SelectingPlayerID.Value = target.TypeID;
 		LockInputFrame = -1;

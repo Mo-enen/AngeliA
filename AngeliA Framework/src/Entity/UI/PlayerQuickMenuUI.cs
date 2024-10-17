@@ -381,7 +381,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 				// Collect
 				int collectCount = Inventory.CollectItem(invID, oldEquipmentID, out _, oldEqCount);
 				if (collectCount < oldEqCount) {
-					ItemSystem.GiveItemToTarget(
+					Inventory.GiveItemToTarget(
 						PlayerSystem.Selecting, oldEquipmentID, oldEqCount - collectCount
 					);
 				}

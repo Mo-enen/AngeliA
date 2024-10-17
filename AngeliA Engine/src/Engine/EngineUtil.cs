@@ -501,27 +501,47 @@ public static class EngineUtil {
 
 
 	// Package
-	public static void InstallPackage (Project project, string packageName) {
+	public static void InstallPackage (Project project, PackageManager.PackageInfo packageInfo) {
+
 		if (project == null) return;
-		string dllName = $"{packageName}.dll";
-		// Debug
-		string dllPathDebug = Util.CombinePaths(PackagesRoot, packageName, "Debug", dllName);
-		if (Util.FileExists(dllPathDebug)) {
-			Util.CopyFile(dllPathDebug, Util.CombinePaths(project.DllLibPath_Debug, dllName));
+		string packageName = packageInfo.PackageName;
+
+		// DLL
+		if (packageInfo.DllFounded) {
+			string dllName = $"{packageName}.dll";
+			// Debug
+			string dllPathDebug = Util.CombinePaths(PackagesRoot, packageName, "Debug", dllName);
+			if (Util.FileExists(dllPathDebug)) {
+				Util.CopyFile(dllPathDebug, Util.CombinePaths(project.DllLibPath_Debug, dllName));
+			}
+			// Release
+			string dllPathRelease = Util.CombinePaths(PackagesRoot, packageName, "Release", dllName);
+			if (Util.FileExists(dllPathRelease)) {
+				Util.CopyFile(dllPathRelease, Util.CombinePaths(project.DllLibPath_Release, dllName));
+			}
 		}
-		// Release
-		string dllPathRelease = Util.CombinePaths(PackagesRoot, packageName, "Release", dllName);
-		if (Util.FileExists(dllPathRelease)) {
-			Util.CopyFile(dllPathRelease, Util.CombinePaths(project.DllLibPath_Release, dllName));
+
+		// Sheet
+		if (packageInfo.SheetFounded) {
+			string targetSheetName = $"{packageName}.{AngePath.SHEET_FILE_EXT}";
+			if (Util.FileExists(packageInfo.SheetPath)) {
+				Util.CopyFile(
+					packageInfo.SheetPath,
+					Util.CombinePaths(project.Universe.SheetRoot, targetSheetName)
+				);
+			}
 		}
+
 	}
 
 
 	public static void UninstallPackage (Project project, string packageName) {
 		if (project == null) return;
 		string dllName = $"{packageName}.dll";
+		string sheetName = $"{packageName}.{AngePath.SHEET_FILE_EXT}";
 		Util.DeleteFile(Util.CombinePaths(project.DllLibPath_Debug, dllName));
 		Util.DeleteFile(Util.CombinePaths(project.DllLibPath_Release, dllName));
+		Util.DeleteFile(Util.CombinePaths(project.Universe.SheetRoot, sheetName));
 	}
 
 

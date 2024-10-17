@@ -60,7 +60,7 @@ public static class CheatSystem {
 		if (Enable) {
 			Util.LinkEventWithAttribute<OnCheatPerformAttribute>(typeof(CheatSystem), nameof(OnCheatPerform));
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
-				AddCheatAction(att.Code, method, att.Param);
+				TryAddCheatAction(att.Code, method, att.Param);
 			}
 		} else {
 			Pool.Clear();
@@ -139,18 +139,22 @@ public static class CheatSystem {
 	#region --- API ---
 
 
-	public static void AddCheatAction (string code, MethodInfo method, object param = null) {
+	public static bool TryAddCheatAction (string code, MethodInfo method, object param = null) {
+
 		code = code.ToLower();
 		int id = code.AngeHash();
-		if (!Pool.ContainsKey(id)) {
-			AllCheatIDs.Add(id);
-		}
-		Pool[id] = new CheatAction() {
+
+		if (Pool.ContainsKey(id)) return false;
+
+		AllCheatIDs.Add(id);
+		Pool.Add(id, new CheatAction() {
 			Action = method,
 			Param = param,
 			Enable = true,
 			Code = code,
-		};
+		});
+
+		return true;
 	}
 
 

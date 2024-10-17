@@ -94,6 +94,7 @@ public class Universe {
 		Util.CreateFolder(result.SlotCharacterRenderingConfigRoot);
 		Util.CreateFolder(result.CharacterMovementConfigRoot);
 		Util.CreateFolder(result.SlotInventoryRoot);
+		Util.CreateFolder(result.SheetRoot);
 
 		return result;
 	}

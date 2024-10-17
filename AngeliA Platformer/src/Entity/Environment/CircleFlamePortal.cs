@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+
+namespace AngeliA.Platformer;
 
 public abstract class CircleFlamePortal : Portal {
 	private static readonly SpriteCode CIRCLE_CODE = "PortalCircle";

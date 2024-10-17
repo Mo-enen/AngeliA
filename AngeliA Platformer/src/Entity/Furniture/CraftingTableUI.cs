@@ -371,7 +371,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				if (invID == 0) return;
 				int collectedCount = Inventory.CollectItem(invID, CombineResultID, consumeResultCount);
 				if (collectedCount < consumeResultCount) {
-					ItemSystem.GiveItemToTarget(PlayerSystem.Selecting, CombineResultID, consumeResultCount - collectedCount);
+					Inventory.GiveItemToTarget(PlayerSystem.Selecting, CombineResultID, consumeResultCount - collectedCount);
 				}
 				break;
 		}

@@ -5,6 +5,6 @@ public abstract class ItemBasedCollectable<I> : Collectable where I : Item {
 	public ItemBasedCollectable () => ItemID = typeof(I).AngeHash();
 	public override bool OnCollect (Entity source) {
 		base.OnCollect(source);
-		return ItemSystem.GiveItemToTarget(source, ItemID, 1);
+		return Inventory.GiveItemToTarget(source, ItemID, 1);
 	}
 }

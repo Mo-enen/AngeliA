@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 
@@ -92,9 +93,8 @@ public static class Inventory {
 	}
 
 
-	[OnGameInitializeLater]
 	[OnSavingSlotChanged(64)]
-	internal static TaskResult OnGameInitializeLater () {
+	internal static TaskResult OnSavingSlotChanged () {
 		if (!ItemSystem.ItemUnlockReady) return TaskResult.Continue;
 		foreach (var (_, data) in Pool) {
 			UpdateItemUnlocked(data);
@@ -103,8 +103,71 @@ public static class Inventory {
 	}
 
 
+	[OnGameInitializeLater]
+	internal static TaskResult OnGameInitializeLater () {
+
+		if (!ItemSystem.ItemUnlockReady || !ItemSystem.ItemPoolReady) return TaskResult.Continue;
+
+		// Update Item Unlock
+		foreach (var (_, data) in Pool) {
+			UpdateItemUnlocked(data);
+		}
+
+		// Init Cheat Code
+		var giveItemCheatInfo = typeof(Inventory).GetMethod(
+			nameof(GiveItemCheat),
+			BindingFlags.NonPublic | BindingFlags.Static
+		);
+
+		// Cheat from Code
+		var BLOCK_ITEM = typeof(BlockBuilder);
+		foreach (var type in typeof(Item).AllChildClass()) {
+			if (type == BLOCK_ITEM) continue;
+			if (System.Activator.CreateInstance(type) is not Item item) continue;
+			string angeName = type.AngeName();
+			int id = angeName.AngeHash();
+			CheatSystem.TryAddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
+		}
+
+		// Cheat from Block Entity
+		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
+			string angeName = type.AngeName();
+			int id = angeName.AngeHash();
+			var blockItem = new BlockBuilder(id, angeName, BlockType.Entity);
+			CheatSystem.TryAddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
+		}
+
+		return TaskResult.End;
+	}
+
+
 	[BeforeSavingSlotChanged]
 	internal static void BeforeSavingSlotChanged () => PoolReady = false;
+
+
+	[OnMainSheetReload]
+	internal static void OnMainSheetReload () {
+
+		if (Game.IsToolApplication) return;
+		var sheet = Renderer.MainSheet;
+		if (sheet == null) return;
+
+		// Add Block Items
+		var giveItemCheatInfo = typeof(Inventory).GetMethod(
+			nameof(GiveItemCheat),
+			BindingFlags.NonPublic | BindingFlags.Static
+		);
+		var span = sheet.Sprites.GetSpan();
+		int len = span.Length;
+		for (int i = 0; i < len; i++) {
+			var sprite = span[i];
+			var bType = sprite.Atlas.Type;
+			if (bType == AtlasType.General) continue;
+			int itemID = sprite.Group != null ? sprite.Group.ID : sprite.ID;
+			string itemName = sprite.Group != null ? sprite.Group.Name : sprite.RealName;
+			CheatSystem.TryAddCheatAction($"Give{itemName.Replace(" ", "")}", giveItemCheatInfo, itemID);
+		}
+	}
 
 
 	[OnGameUpdate]
@@ -117,6 +180,7 @@ public static class Inventory {
 
 	[OnGameQuitting]
 	internal static void OnGameQuitting () => SaveAllToDisk(forceSave: true);
+
 
 	#endregion
 
@@ -461,6 +525,28 @@ public static class Inventory {
 			}
 		}
 		return result;
+	}
+
+
+	// Give
+	public static bool GiveItemToTarget (Entity target, int itemID, int count = 1, bool spawnWhenInventoryFull = true) {
+		if (target == null) {
+			return
+				spawnWhenInventoryFull &&
+				ItemSystem.SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
+		} else {
+			count -= CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count, ignoreEquipment: false);
+			return count <= 0 || (spawnWhenInventoryFull && ItemSystem.SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null);
+		}
+	}
+
+
+	internal static void GiveItemCheat () {
+		var player = PlayerSystem.Selecting;
+		if (player == null) return;
+		if (CheatSystem.CurrentParam is not int id) return;
+		ItemSystem.SetItemUnlocked(id, true);
+		GiveItemToTarget(player, id, 1);
 	}
 
 

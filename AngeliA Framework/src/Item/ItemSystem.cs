@@ -78,12 +78,6 @@ public static class ItemSystem {
 
 		if (Game.IsToolApplication) return;
 
-		bool useProcedureMap = Universe.BuiltInInfo.UseProceduralMap;
-		var giveItemCheatInfo = typeof(ItemSystem).GetMethod(
-			nameof(GiveItemCheat),
-			BindingFlags.NonPublic | BindingFlags.Static
-		);
-
 		// Init Item Pool from Code
 		var BLOCK_ITEM = typeof(BlockBuilder);
 		foreach (var type in typeof(Item).AllChildClass()) {
@@ -98,7 +92,6 @@ public static class ItemSystem {
 				angeName,
 				item.MaxStackCount.GreaterOrEquel(1)
 			));
-			CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
 		}
 
 		// Add Block Entity
@@ -113,9 +106,6 @@ public static class ItemSystem {
 				angeName,
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
-			if (useProcedureMap) {
-				CheatSystem.AddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
-			}
 		}
 
 		ItemPoolReady = true;
@@ -157,7 +147,6 @@ public static class ItemSystem {
 
 		var sheet = Renderer.MainSheet;
 		if (sheet == null) return;
-		bool useProcedureMap = Universe.BuiltInInfo.UseProceduralMap;
 
 		// Clear Prev Block Items
 		if (BlockItemLoadedBefore) {
@@ -170,10 +159,6 @@ public static class ItemSystem {
 		BlockItemLoadedBefore = true;
 
 		// Add Block Items
-		var giveItemCheatInfo = typeof(ItemSystem).GetMethod(
-			nameof(GiveItemCheat),
-			BindingFlags.NonPublic | BindingFlags.Static
-		);
 		var span = sheet.Sprites.GetSpan();
 		int len = span.Length;
 		for (int i = 0; i < len; i++) {
@@ -194,9 +179,6 @@ public static class ItemSystem {
 				itemName,
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
-			if (useProcedureMap) {
-				CheatSystem.AddCheatAction($"Give{itemName.Replace(" ", "")}", giveItemCheatInfo, itemID);
-			}
 		}
 	}
 
@@ -232,20 +214,6 @@ public static class ItemSystem {
 	public static bool CanUseItem (int id, Entity target) {
 		var item = GetItem(id);
 		return item != null && item.CanUse(target);
-	}
-
-
-	internal static void GiveItemCheat () {
-		var player = PlayerSystem.Selecting;
-		if (player == null) return;
-		if (CheatSystem.CurrentParam is not int id) return;
-		if (!ItemPool.TryGetValue(id, out var data)) return;
-		// Unlock
-		if (!data.Unlocked) {
-			SetItemUnlocked(id, true);
-		}
-		// Give
-		GiveItemToTarget(player, id, 1);
 	}
 
 
@@ -327,18 +295,6 @@ public static class ItemSystem {
 
 
 	// Spawn 
-	public static bool GiveItemToTarget (Entity target, int itemID, int count = 1, bool spawnWhenInventoryFull = true) {
-		if (target == null) {
-			return
-				spawnWhenInventoryFull &&
-				SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
-		} else {
-			count -= Inventory.CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count, ignoreEquipment: false);
-			return count <= 0 || (spawnWhenInventoryFull && SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null);
-		}
-	}
-
-
 	public static ItemHolder SpawnItem (int itemID, int x, int y, int count = 1, bool jump = true) {
 		if (!HasItem(itemID)) return null;
 		if (Stage.SpawnEntity(ItemHolder.TYPE_ID, x, y) is not ItemHolder holder) return null;

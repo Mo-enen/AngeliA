@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Capacity(1, 1)]
@@ -17,10 +18,11 @@ public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoin
 
 	// Api
 	public static bool LinkPoolReady { get; private set; } = false;
+	public static int CurrentAltarID { get; private set; } = 0;
+	public static Int3 CurrentAltarUnitPos { get; private set; }
 
 	// Data
 	private static readonly Dictionary<int, int> LinkPool = [];
-	private static readonly Dictionary<int, Int3> AltarPosition = [];
 	private readonly int LinkedCheckPointID = 0;
 
 
@@ -48,6 +50,13 @@ public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoin
 			}
 		}
 		LinkPoolReady = true;
+	}
+
+
+	[OnMapEditorEditModeChanged]
+	internal static void OnMapEditorEditModeChanged () {
+		CheckAltar<CheckPoint>.CurrentAltarID = 0;
+		CheckAltar<CheckPoint>.CurrentAltarUnitPos = default;
 	}
 
 
@@ -92,7 +101,8 @@ public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoin
 			}
 
 			// Update Last Checked Pos
-			CheckAltar<CheckPoint>.AltarPosition[TypeID] = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
+			CheckAltar<CheckPoint>.CurrentAltarID = TypeID;
+			CheckAltar<CheckPoint>.CurrentAltarUnitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 		}
 
 		// Spawn Portal
@@ -100,7 +110,7 @@ public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoin
 			highlighting && trySpawnPortal &&
 			CheckPoint.LastTriggeredCheckPointUnitPosition.HasValue &&
 			Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) == 0 &&
-			Stage.GetOrAddEntity(CheckPointPortal.TYPE_ID, X, Y + Const.CEL * 4) is CheckPointPortal portal
+			Stage.GetOrSpawnEntity(CheckPointPortal.TYPE_ID, X, Y + Const.CEL * 4) is CheckPointPortal portal
 		) {
 			portal.SetCheckPoint(CheckPoint.LastTriggeredCheckPointID, CheckPoint.LastTriggeredCheckPointUnitPosition.Value);
 		}
@@ -127,13 +137,6 @@ public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoin
 
 
 	public static bool TryGetLinkedID (int id, out int linkedID) => LinkPool.TryGetValue(id, out linkedID);
-
-
-	public static bool TryGetAltarPosition (int checkPointID, out Int3 pos) {
-		pos = default;
-		if (!LinkPool.TryGetValue(checkPointID, out int altarID)) return false;
-		return AltarPosition.TryGetValue(altarID, out pos);
-	}
 
 
 	#endregion

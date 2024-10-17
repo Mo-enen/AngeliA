@@ -1011,7 +1011,7 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool TryGetEmptyPlaceNearby (
+	public static bool TryGetEmptyPlaceNearbyForEntity (
 		int unitX, int unitY, int z, out int resultUnitX, out int resultUnitY,
 		int maxRange = 6, bool preferNoSolidLevel = true
 	) {
