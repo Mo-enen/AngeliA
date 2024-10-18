@@ -77,6 +77,7 @@ public partial class Engine {
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "", SavingLocation.Global);
 	private static readonly SavingString LastOpenProject = new("Engine.LastOpenProject", "", SavingLocation.Global);
+	private static readonly SavingString CurrentThemeName = new("Engine.CurrentThemeName", "", SavingLocation.Global);
 	private static readonly SavingBool Maximize = new("Engine.Maximize", true, SavingLocation.Global);
 	private static readonly SavingBool FullsizeMenu = new("Engine.FullsizeMenu", true, SavingLocation.Global);
 	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024, SavingLocation.Global);
@@ -177,9 +178,14 @@ public partial class Engine {
 		engine.SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
 		engine.ResetViewRect();
 
-		// Sheet
+		// Sheet/Theme
 		engine.RenderingSheetIndex = Renderer.AddAltSheet(engine.RenderingSheet);
 		engine.ThemeSheetIndex = Renderer.AddAltSheet(engine.ThemeSheet);
+		if (!string.IsNullOrEmpty(CurrentThemeName.Value)) {
+			engine.ThemeSheet.LoadFromDisk(Util.CombinePaths(EngineUtil.ThemeRoot, $"{CurrentThemeName.Value}.{AngePath.SHEET_FILE_EXT}"));
+			engine.ThemeSkin.Name = Util.GetDisplayName(CurrentThemeName.Value);
+			engine.ThemeSkin.LoadColorFromSheet(engine.ThemeSheet);
+		}
 
 	}
 
@@ -785,12 +791,16 @@ public partial class Engine {
 			string path = SettingWindow.Instance.RequireChangeThemePath;
 			SettingWindow.Instance.RequireChangeThemePath = null;
 			if (path != "" && Util.FileExists(path) && ThemeSheet.LoadFromDisk(path)) {
+				// Load Custom Theme
 				ThemeSkin.Name = Util.GetDisplayName(Util.GetNameWithoutExtension(path));
 				ThemeSkin.LoadColorFromSheet(ThemeSheet);
+				CurrentThemeName.Value = Util.GetNameWithoutExtension(path);
 			} else {
+				// Load Built-in Theme
 				ThemeSheet.Clear();
 				ThemeSkin.Name = "Built-in";
 				ThemeSkin.LoadColorFromSkin(GUISkin.Default);
+				CurrentThemeName.Value = "";
 			}
 			// Notify
 			NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
@@ -870,7 +880,6 @@ public partial class Engine {
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		GameEditor.Instance.CleanDirty();
 		GameEditor.Instance.SetCurrentProject(CurrentProject);
-		SettingWindow.Instance.SetCurrentProject(CurrentProject);
 		PackageManager.Instance.SetCurrentProject(CurrentProject);
 		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
 
@@ -961,7 +970,6 @@ public partial class Engine {
 			ProjectEditor.Instance.SetCurrentProject(null);
 			GameEditor.Instance.CleanDirty();
 			GameEditor.Instance.SetCurrentProject(null);
-			SettingWindow.Instance.SetCurrentProject(null);
 			PackageManager.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
@@ -1084,31 +1092,8 @@ public partial class Engine {
 		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Debug, Util.CombinePaths(CurrentProject.DllLibPath_Debug, "AngeliA Framework.dll"));
 		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Release, Util.CombinePaths(CurrentProject.DllLibPath_Release, "AngeliA Framework.dll"));
 
-		// Package Dll Files
-		foreach (var path in Util.EnumerateFolders(EngineUtil.PackagesRoot, true)) {
-			string packName = Util.GetNameWithoutExtension(path);
-			string dllName = $"{packName}.dll";
-			string sourcePathDebug = Util.CombinePaths(path, "Debug", dllName);
-			string sourcePathRelease = Util.CombinePaths(path, "Release", dllName);
-			string targetPathDebug = Util.CombinePaths(CurrentProject.DllLibPath_Debug, dllName);
-			string targetPathRelease = Util.CombinePaths(CurrentProject.DllLibPath_Release, dllName);
-			bool targetExistsDebug = Util.FileExists(targetPathDebug);
-			bool targetExistsRelease = Util.FileExists(targetPathRelease);
-			// Fill If Missing
-			if (targetExistsDebug != targetExistsRelease) {
-				if (!targetExistsDebug) {
-					Util.CopyFile(sourcePathDebug, targetPathDebug);
-				}
-				if (!targetExistsRelease) {
-					Util.CopyFile(sourcePathRelease, targetPathRelease);
-				}
-			}
-			// Update
-			if (targetExistsDebug || targetExistsRelease) {
-				Util.UpdateFile(sourcePathDebug, targetPathDebug, skipWhenTargetNotExists: true);
-				Util.UpdateFile(sourcePathRelease, targetPathRelease, skipWhenTargetNotExists: true);
-			}
-		}
+		// Sync Package Dll Files
+		PackageManager.Instance.SyncPackageDllWithProject(CurrentProject);
 
 	}
 

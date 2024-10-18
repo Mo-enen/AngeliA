@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using AngeliA;
 
 namespace AngeliaEngine;
+
 
 public class PackageManager : WindowUI {
 
@@ -20,32 +20,8 @@ public class PackageManager : WindowUI {
 			if (result != 0) return result;
 			result = b.Priority.CompareTo(a.Priority);
 			if (result != 0) return result;
-			result = a.Type.CompareTo(b.Type);
-			if (result != 0) return result;
 			return a.PackageName.CompareTo(b.PackageName);
 		}
-	}
-
-
-	public class PackageInfo {
-		public bool AnyResourceFounded => DllFounded || SheetFounded || ThemeFounded;
-
-		public string DisplayName;
-		public string CreatorName;
-		public string Description;
-		public string Type;
-		public int Priority;
-		[JsonIgnore] public string PackageName;
-		[JsonIgnore] public string DebugDllPath;
-		[JsonIgnore] public string ReleaseDllPath;
-		[JsonIgnore] public string SheetPath;
-		[JsonIgnore] public string ThemeRoot;
-		[JsonIgnore] public bool DllFounded;
-		[JsonIgnore] public bool SheetFounded;
-		[JsonIgnore] public bool ThemeFounded;
-		[JsonIgnore] public bool Installed;
-		[JsonIgnore] public object IconTexture;
-		[JsonIgnore] public bool IsBuiltIn;
 	}
 
 
@@ -100,7 +76,7 @@ public class PackageManager : WindowUI {
 		// Built-in Packs
 		PackageInfoList.Clear();
 		foreach (string packageFolder in Util.EnumerateFolders(packRoot, true)) {
-			var info = GetInfoFromPackageFolder(packageFolder);
+			var info = EngineUtil.GetInfoFromPackageFolder(packageFolder);
 			if (info == null) return;
 			info.IsBuiltIn = true;
 			PackageInfoList.Add(info);
@@ -108,7 +84,7 @@ public class PackageManager : WindowUI {
 
 		// Custom Packs
 		foreach (string packageFolder in Util.EnumerateFolders(customPackRoot, true)) {
-			var info = GetInfoFromPackageFolder(packageFolder);
+			var info = EngineUtil.GetInfoFromPackageFolder(packageFolder);
 			if (info == null) return;
 			info.IsBuiltIn = false;
 			PackageInfoList.Add(info);
@@ -239,10 +215,19 @@ public class PackageManager : WindowUI {
 	public void SetCurrentProject (Project project) => CurrentProject = project;
 
 
-	public void ImportPackageFile (string packagePath) {
-
-
-
+	public void SyncPackageDllWithProject (Project project) {
+		foreach (var info in PackageInfoList) {
+			string packName = info.PackageName;
+			if (!info.DllFounded) continue;
+			if (!EngineUtil.IsPackagedInstalled(project, info)) continue;
+			string dllName = $"{packName}.dll";
+			string sourcePath = info.DllPath;
+			string targetPathDebug = Util.CombinePaths(CurrentProject.DllLibPath_Debug, dllName);
+			string targetPathRelease = Util.CombinePaths(CurrentProject.DllLibPath_Release, dllName);
+			// Update
+			Util.UpdateFile(sourcePath, targetPathDebug, skipWhenTargetNotExists: false);
+			Util.UpdateFile(sourcePath, targetPathRelease, skipWhenTargetNotExists: false);
+		}
 	}
 
 
@@ -259,26 +244,6 @@ public class PackageManager : WindowUI {
 		foreach (var info in PackageInfoList) {
 			info.Installed = EngineUtil.IsPackagedInstalled(CurrentProject, info);
 		}
-	}
-
-
-
-	private PackageInfo GetInfoFromPackageFolder (string packageFolder) {
-		string infoPath = Util.CombinePaths(packageFolder, "Info.json");
-		if (!Util.FileExists(infoPath)) return null;
-		if (JsonUtil.LoadJsonFromPath<PackageInfo>(infoPath) is not PackageInfo info) return null;
-		string iconPath = Util.CombinePaths(packageFolder, "Icon.png");
-		string packageName = Util.GetNameWithoutExtension(packageFolder);
-		info.PackageName = packageName;
-		info.IconTexture = Game.PngBytesToTexture(Util.FileToBytes(iconPath));
-		info.DebugDllPath = Util.CombinePaths(packageFolder, "Debug", $"{packageName}.dll");
-		info.SheetPath = Util.CombinePaths(packageFolder, $"Sheet.{AngePath.SHEET_FILE_EXT}");
-		info.ThemeRoot = Util.CombinePaths(packageFolder, "Theme");
-		info.ReleaseDllPath = Util.CombinePaths(packageFolder, "Release", $"{packageName}.dll");
-		info.DllFounded = Util.FileExists(info.DebugDllPath) && Util.FileExists(info.ReleaseDllPath);
-		info.SheetFounded = Util.FileExists(info.SheetPath);
-		info.ThemeFounded = Util.GetFileCount(info.ThemeRoot, $"*.{AngePath.SHEET_FILE_EXT}", System.IO.SearchOption.TopDirectoryOnly) > 0;
-		return info;
 	}
 
 

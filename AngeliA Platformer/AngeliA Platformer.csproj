@@ -60,18 +60,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="src\ThridParty\" />
+		<Folder Include="src\ThridParty\" />
 	</ItemGroup>
 
 	<!--Copy Packages Dll to Runtime Folder-->
 	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build" Condition="'$(Configuration)'=='Debug'">
-		<Copy SourceFiles="$(OutputPath)AngeliA Platformer.dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\AngeliA Platformer\Debug\AngeliA Platformer.dll" ContinueOnError="true" />
+		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\Debug\com.angelia.platformer.dll" ContinueOnError="true" />
 	</Target>
-
 
 	<!--Move Game Lib into Library Folder-->
 	<Target Name="CopyDll" AfterTargets="Build">
-		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
+		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\com.angelia.platformer.dll" ContinueOnError="true" />
 	</Target>
 
 </Project>

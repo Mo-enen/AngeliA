@@ -60,7 +60,6 @@ public class SettingWindow : WindowUI {
 	private readonly List<(string path, string name)> ThemePaths = [];
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
-	private Project CurrentProject;
 	private SavingHotkey ActivatedSetting = null;
 
 
@@ -140,10 +139,8 @@ public class SettingWindow : WindowUI {
 			using var _ = new GUILabelWidthScope(Util.Min(Unify(320), rect.width / 2));
 
 			// Group Content
-			bool useProceduralMap = CurrentProject != null && CurrentProject.Universe.Info.UseProceduralMap;
 			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
 				var group = Groups[groupIndex];
-				if (useProceduralMap && group.Name == "MapEditor") continue;
 				DrawGroup(ref rect, group, groupIndex == 0 ? DrawExtraContent : null, out bool changed);
 				if (group.RigGroup && changed) {
 					MapSettingChanged = true;
@@ -160,19 +157,6 @@ public class SettingWindow : WindowUI {
 			extendedUISize,
 			WindowRect.height
 		);
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- API ---
-
-
-	public void SetCurrentProject (Project project) {
-		CurrentProject = project;
 	}
 
 
@@ -221,7 +205,7 @@ public class SettingWindow : WindowUI {
 						var colorF = (ColorF)item.CustomData;
 						int version = GUI.ContentVersion;
 						colorF = GUI.HorizontalColorField(
-							colorF, rect, true, true, true, false, sColor32.DefaultValue.ToColorF()
+							colorF, rect, item.Name, Skin.SmallLabel, true, true, true, false, sColor32.DefaultValue.ToColorF()
 						);
 						if (version != GUI.ContentVersion) {
 							sColor32.Value = colorF.ToColor32();
@@ -234,7 +218,7 @@ public class SettingWindow : WindowUI {
 						var colorF = (ColorF)item.CustomData;
 						GUI.BeginChangeCheck();
 						colorF = GUI.HorizontalColorField(
-							colorF, rect, true, false, true, false, sColor32na.DefaultValue.ToColorF()
+							colorF, rect, item.Name, Skin.SmallLabel, true, false, true, false, sColor32na.DefaultValue.ToColorF()
 						);
 						if (GUI.EndChangeCheck()) {
 							sColor32na.Value = colorF.ToColor32();

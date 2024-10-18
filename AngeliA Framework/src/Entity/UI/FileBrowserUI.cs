@@ -329,7 +329,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		int padding = Unify(6);
 		int buttonHeight = Unify(32);
 		int buttonWidth = Unify(108);
-		int typeFieldWidth = Unify(108);
+		int typeFieldWidth = Unify(256);
 		int labelWidth = Unify(128);
 		int frameBorder = Unify(1);
 		int fieldHeight = Unify(32);

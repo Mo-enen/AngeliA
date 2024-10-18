@@ -2,15 +2,26 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using System.IO;
+using System.IO.Compression;
+using System.Diagnostics;
 using AngeliA;
 using Task = System.Threading.Tasks.Task;
-using System.IO;
-using System.Diagnostics;
 
 namespace AngeliaEngine;
 
 
 public static class EngineUtil {
+
+
+
+	#region --- SUB ---
+
+
+	public enum PackageExportMode { Library, LibraryAndArtwork, Artwork, EngineTheme, }
+
+
+	#endregion
 
 
 
@@ -56,14 +67,6 @@ public static class EngineUtil {
 
 	// Cache
 	private static event System.Action<int> OnProjectBuiltInBackgroundHandler;
-	private static string c_ProjectPath;
-	private static string c_CsprojPath;
-	private static string c_ProductName;
-	private static string c_VersionString;
-	private static string c_TempBuildPath;
-	private static string c_TempRoot;
-	private static string c_UniversePath;
-	private static string c_BuildPath;
 
 	// Data
 	private static readonly StringBuilder CacheBuilder = new();
@@ -98,27 +101,15 @@ public static class EngineUtil {
 	public static int BuildAngeliaProject (Project project) {
 		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
 		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
-		var info = project.Universe.Info;
-		string verStr = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
-		return BuildAngeliaProjectLogic(
-			project.ProjectPath, project.CsprojPath, info.ProductName, project.BuildPath, verStr,
-			project.TempBuildPath, project.TempPublishPath, project.TempRoot,
-			project.IconPath, project.UniversePath,
-			"", publish: false, logID: 0
-		);
+		return BuildAngeliaProjectLogic(project, "", publish: false, logID: 0);
 	}
 
 
 	public static int PublishAngeliaProject (Project project, string publishDir) {
 		if (project == null) return ERROR_PROJECT_OBJECT_IS_NULL;
 		if (!Util.IsValidForFileName(project.Universe.Info.DeveloperName)) return ERROR_DEV_NAME_INVALID;
-		var info = project.Universe.Info;
-		string verStr = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
 		return BuildAngeliaProjectLogic(
-			project.ProjectPath, project.CsprojPath, info.ProductName, project.BuildPath, verStr,
-			project.TempBuildPath, project.TempPublishPath, project.TempRoot,
-			project.IconPath, project.UniversePath,
-			publishDir, publish: true, logID: 0
+			project, publishDir, publish: true, logID: 0
 		);
 	}
 
@@ -131,33 +122,20 @@ public static class EngineUtil {
 		if (BuildingProjectInBackground) return false;
 
 		// Project >> Cache
-		var info = project.Universe.Info;
-		c_ProjectPath = project.ProjectPath;
-		c_CsprojPath = project.CsprojPath;
-		c_ProductName = info.ProductName;
-		c_VersionString = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
-		c_TempBuildPath = project.TempBuildPath;
-		c_TempRoot = project.TempRoot;
-		c_BuildPath = project.BuildPath;
-		c_UniversePath = project.UniversePath;
 		LastBackgroundBuildReturnCode = int.MinValue;
 		LastBackgroundBuildModifyDate = srcModifyDate;
 
 		// Task
-		BuildProjectTask = Task.Run(BuildFromCache);
+		BuildProjectTask = Task.Factory.StartNew(BuildFromCache, project);
 
 		return true;
 
 		// Func
-		static void BuildFromCache () {
+		static void BuildFromCache (object projectObj) {
 			try {
+				if (projectObj is not Project project) return;
 				BackgroundBuildMessages.Clear();
-				LastBackgroundBuildReturnCode = BuildAngeliaProjectLogic(
-					c_ProjectPath, c_CsprojPath, c_ProductName, c_BuildPath, c_VersionString,
-					c_TempBuildPath, "", c_TempRoot,
-					"", c_UniversePath,
-					"", publish: false
-				);
+				LastBackgroundBuildReturnCode = BuildAngeliaProjectLogic(project, "", publish: false);
 				OnProjectBuiltInBackgroundHandler?.Invoke(LastBackgroundBuildReturnCode);
 			} catch (System.Exception ex) {
 				System.Console.WriteLine(ex.Message + "\n" + ex.Source);
@@ -503,7 +481,23 @@ public static class EngineUtil {
 
 
 	// Package
-	public static void InstallPackage (Project project, PackageManager.PackageInfo packageInfo) {
+	public static PackageInfo GetInfoFromPackageFolder (string packageFolder) {
+		string infoPath = Util.CombinePaths(packageFolder, "Info.json");
+		if (!Util.FileExists(infoPath)) return null;
+		if (JsonUtil.LoadJsonFromPath<PackageInfo>(infoPath) is not PackageInfo info) return null;
+		string iconPath = Util.CombinePaths(packageFolder, "Icon.png");
+		info.IconTexture = Game.PngBytesToTexture(Util.FileToBytes(iconPath));
+		info.DllPath = Util.CombinePaths(packageFolder, $"{info.PackageName}.dll");
+		info.SheetPath = Util.CombinePaths(packageFolder, $"{info.PackageName}.{AngePath.SHEET_FILE_EXT}");
+		info.ThemeRoot = Util.CombinePaths(packageFolder, "Theme");
+		info.DllFounded = Util.FileExists(info.DllPath);
+		info.SheetFounded = Util.FileExists(info.SheetPath);
+		info.ThemeFounded = Util.GetFileCount(info.ThemeRoot, $"*.{AngePath.SHEET_FILE_EXT}", System.IO.SearchOption.TopDirectoryOnly) > 0;
+		return info;
+	}
+
+
+	public static void InstallPackage (Project project, PackageInfo packageInfo) {
 
 		if (project == null) return;
 		string packageName = packageInfo.PackageName;
@@ -511,15 +505,9 @@ public static class EngineUtil {
 		// DLL
 		if (packageInfo.DllFounded) {
 			string dllName = $"{packageName}.dll";
-			// Debug
-			string dllPathDebug = Util.CombinePaths(PackagesRoot, packageName, "Debug", dllName);
-			if (Util.FileExists(dllPathDebug)) {
-				Util.CopyFile(dllPathDebug, Util.CombinePaths(project.DllLibPath_Debug, dllName));
-			}
-			// Release
-			string dllPathRelease = Util.CombinePaths(PackagesRoot, packageName, "Release", dllName);
-			if (Util.FileExists(dllPathRelease)) {
-				Util.CopyFile(dllPathRelease, Util.CombinePaths(project.DllLibPath_Release, dllName));
+			if (Util.FileExists(packageInfo.DllPath)) {
+				Util.CopyFile(packageInfo.DllPath, Util.CombinePaths(project.DllLibPath_Debug, dllName));
+				Util.CopyFile(packageInfo.DllPath, Util.CombinePaths(project.DllLibPath_Release, dllName));
 			}
 		}
 
@@ -545,7 +533,7 @@ public static class EngineUtil {
 	}
 
 
-	public static void UninstallPackage (Project project, PackageManager.PackageInfo packageInfo) {
+	public static void UninstallPackage (Project project, PackageInfo packageInfo) {
 		if (project == null) return;
 		string dllName = $"{packageInfo.PackageName}.dll";
 		string sheetName = $"{packageInfo.PackageName}.{AngePath.SHEET_FILE_EXT}";
@@ -561,7 +549,7 @@ public static class EngineUtil {
 	}
 
 
-	public static bool IsPackagedInstalled (Project project, PackageManager.PackageInfo packageInfo) {
+	public static bool IsPackagedInstalled (Project project, PackageInfo packageInfo) {
 		if (project == null) return false;
 		string dllName = $"{packageInfo.PackageName}.dll";
 		string dllPathDebug = Util.CombinePaths(project.DllLibPath_Debug, dllName);
@@ -594,6 +582,107 @@ public static class EngineUtil {
 	}
 
 
+	public static bool ImportFileAsCustomPackage (string packagePath, out PackageInfo packInfo) {
+		packInfo = null;
+		if (!Util.FileExists(packagePath)) return false;
+		try {
+			string tempPath = Util.CombinePaths(AngePath.TempDataPath, System.Guid.NewGuid().ToString());
+			ZipFile.ExtractToDirectory(packagePath, tempPath);
+			var info = GetInfoFromPackageFolder(tempPath);
+			if (info == null || string.IsNullOrWhiteSpace(info.PackageName)) return false;
+			string finalPath = Util.CombinePaths(CustomPackagesRoot, info.PackageName);
+			Util.DeleteFolder(finalPath);
+			return Util.MoveFolder(tempPath, finalPath);
+		} catch (System.Exception ex) {
+			Debug.LogException(ex);
+			return false;
+		}
+	}
+
+
+	public static bool ExportProjectAsCustomPackageFile (Project project, string packageName, string displayName, string description, string exportPath, PackageExportMode mode, out string errorMsg) {
+		try {
+			errorMsg = "";
+			if (project == null) return false;
+
+			string tempFolder = Util.CombinePaths(AngePath.TempDataPath, System.Guid.NewGuid().ToString());
+
+			// Info
+			var info = new PackageInfo() {
+				PackageName = packageName,
+				DisplayName = displayName,
+				Description = description,
+				CreatorName = project.Universe.Info.DeveloperName,
+				Priority = 0,
+			};
+			JsonUtil.SaveJsonToPath(info, Util.CombinePaths(tempFolder, "Info.json"), true);
+
+			// Dll
+			if (mode == PackageExportMode.Library || mode == PackageExportMode.LibraryAndArtwork) {
+				string dllName = GetGameLibraryDllNameWithoutExtension(project.Universe.Info.ProductName);
+				dllName = $"{dllName}.dll";
+				string dllPath = Util.CombinePaths(project.BuildPath, dllName);
+				if (!Util.FileExists(dllPath)) {
+					errorMsg = "Game library dll file not found. Try recompile the project.";
+					return false;
+				}
+				Util.CopyFile(dllPath, Util.CombinePaths(tempFolder, $"{packageName}.dll"));
+			}
+
+			// Artwork Sheet
+			if (mode == PackageExportMode.Artwork || mode == PackageExportMode.LibraryAndArtwork) {
+				string sourceSheetPath = Util.CombinePaths(project.Universe.GameSheetPath);
+				if (!Util.FileExists(sourceSheetPath)) {
+					errorMsg = "Game artwork sheet file not found.";
+					return false;
+				}
+				Util.CopyFile(sourceSheetPath, Util.CombinePaths(tempFolder, $"{packageName}.{AngePath.SHEET_FILE_EXT}"));
+			}
+
+			// Theme
+			if (mode == PackageExportMode.EngineTheme) {
+				string sourceSheetPath = Util.CombinePaths(project.Universe.GameSheetPath);
+				if (!Util.FileExists(sourceSheetPath)) {
+					errorMsg = "Game artwork sheet file not found.";
+					return false;
+				}
+				Util.CopyFile(sourceSheetPath, Util.CombinePaths(tempFolder, "Theme", $"{packageName}.{AngePath.SHEET_FILE_EXT}"));
+			}
+
+			// Icon
+			if (Util.FileExists(project.IconPath)) {
+				var iconTextures = LoadTexturesFromIco(project.IconPath, firstOneOnly: false);
+				if (iconTextures != null && iconTextures.Length > 0) {
+					int maxSizeIndex = -1;
+					int maxSize = -1;
+					for (int i = 0; i < iconTextures.Length; i++) {
+						var size = Game.GetTextureSize(iconTextures[i]);
+						if (size.x > maxSize) {
+							maxSize = size.x;
+							maxSizeIndex = i;
+						}
+					}
+					if (maxSizeIndex >= 0) {
+						var png = Game.TextureToPngBytes(iconTextures[maxSizeIndex]);
+						Util.BytesToFile(png, Util.CombinePaths(tempFolder, "Icon.png"));
+					}
+					for (int i = 0; i < iconTextures.Length; i++) {
+						Game.UnloadTexture(iconTextures[i]);
+					}
+				}
+			}
+
+			// Zip
+			ZipFile.CreateFromDirectory(tempFolder, exportPath);
+
+			return true;
+		} catch (System.Exception ex) {
+			errorMsg = $"{ex.Source}\n{ex.Message}";
+			return false;
+		}
+	}
+
+
 	#endregion
 
 
@@ -602,12 +691,21 @@ public static class EngineUtil {
 	#region --- LGC ---
 
 
-	private static int BuildAngeliaProjectLogic (
-		string projectPath, string csprojPath, string productName, string buildPath, string versionStr,
-		string tempBuildPath, string tempPublishPath, string tempRoot,
-		string iconPath, string universePath,
-		string publishDir, bool publish, int logID = BACK_GROUND_BUILD_LOG_ID
-	) {
+	private static int BuildAngeliaProjectLogic (Project project, string publishDir, bool publish, int logID = BACK_GROUND_BUILD_LOG_ID) {
+
+		var info = project.Universe.Info;
+		string projectPath = project.ProjectPath;
+		string csprojPath = project.CsprojPath;
+		string productName = info.ProductName;
+		string buildPath = project.BuildPath;
+		string tempBuildPath = project.TempBuildPath;
+		string tempPublishPath = project.TempPublishPath;
+		string tempRoot = project.TempRoot;
+		string iconPath = project.IconPath;
+		string universePath = project.UniversePath;
+		string versionStr = $"{info.MajorVersion}.{info.MinorVersion}.{info.PatchVersion}";
+		string libAssemblyName = GetGameLibraryDllNameWithoutExtension(productName);
+
 #if DEBUG
 		var watch = Stopwatch.StartNew();
 		Debug.Log("Start to Build AngeliA Project");
@@ -620,9 +718,9 @@ public static class EngineUtil {
 		if (!Util.FileExists(DotnetSdkPath)) return ERROR_DOTNET_SDK_NOT_FOUND;
 		if (!Util.IsValidForFileName(productName)) return ERROR_PRODUCT_NAME_INVALID;
 
-		string libAssemblyName = $"lib.{productName}";
 
 		// ===== Build =====
+
 
 		// Delete Build Library Folder
 		Util.DeleteFolder(buildPath);
@@ -659,7 +757,9 @@ public static class EngineUtil {
 			Util.CopyFile(packagDllPath, Util.CombinePaths(buildPath, dllName));
 		}
 
+
 		// ===== Publish =====
+
 
 		if (publish) {
 
@@ -769,6 +869,9 @@ public static class EngineUtil {
 		if (id != BACK_GROUND_BUILD_LOG_ID) return;
 		BackgroundBuildMessages.Enqueue(message);
 	}
+
+
+	private static string GetGameLibraryDllNameWithoutExtension (string productName) => $"lib.{productName}";
 
 
 	#endregion
