@@ -12,7 +12,7 @@ public static class AngePath {
 	public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
 	public const string LANGUAGE_FILE_EXT = "txt";
 	public const string SHEET_FILE_EXT = "sheet";
-	public const string MAP_SEED_NAME = "Seed.txt";
+	public const string PACKAGE_FILE_EXT = "angepack";
 
 
 	// System 

@@ -46,7 +46,9 @@ public static class EngineUtil {
 	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
 	public static string EntryProjectCsproj => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release", "AngeliA Entry for Publish.csproj");
+	public static string ThemeRoot => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Theme");
 	public static string PackagesRoot => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Packages");
+	public static string CustomPackagesRoot => Util.CombinePaths(AngePath.PersistentDataPath, "Packages");
 	public static bool BuildingProjectInBackground => BuildProjectTask != null && BuildProjectTask.Status == TaskStatus.Running;
 	public static long LastBackgroundBuildModifyDate { get; private set; }
 	public static int LastBackgroundBuildReturnCode { get; private set; }
@@ -532,16 +534,63 @@ public static class EngineUtil {
 			}
 		}
 
+		// Theme
+		if (packageInfo.ThemeFounded) {
+			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+				string themeName = Util.GetNameWithExtension(themePath);
+				Util.CopyFile(themePath, Util.CombinePaths(ThemeRoot, themeName));
+			}
+		}
+
 	}
 
 
-	public static void UninstallPackage (Project project, string packageName) {
+	public static void UninstallPackage (Project project, PackageManager.PackageInfo packageInfo) {
 		if (project == null) return;
-		string dllName = $"{packageName}.dll";
-		string sheetName = $"{packageName}.{AngePath.SHEET_FILE_EXT}";
+		string dllName = $"{packageInfo.PackageName}.dll";
+		string sheetName = $"{packageInfo.PackageName}.{AngePath.SHEET_FILE_EXT}";
 		Util.DeleteFile(Util.CombinePaths(project.DllLibPath_Debug, dllName));
 		Util.DeleteFile(Util.CombinePaths(project.DllLibPath_Release, dllName));
 		Util.DeleteFile(Util.CombinePaths(project.Universe.SheetRoot, sheetName));
+		if (packageInfo.ThemeFounded) {
+			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+				string themeName = Util.GetNameWithExtension(themePath);
+				Util.DeleteFile(Util.CombinePaths(ThemeRoot, themeName));
+			}
+		}
+	}
+
+
+	public static bool IsPackagedInstalled (Project project, PackageManager.PackageInfo packageInfo) {
+		if (project == null) return false;
+		string dllName = $"{packageInfo.PackageName}.dll";
+		string dllPathDebug = Util.CombinePaths(project.DllLibPath_Debug, dllName);
+		string dllPathRelease = Util.CombinePaths(project.DllLibPath_Release, dllName);
+		// Get Installed
+		bool installed = false;
+		if (packageInfo.DllFounded) {
+			installed = Util.FileExists(dllPathDebug) || Util.FileExists(dllPathRelease);
+		}
+		if (!installed && packageInfo.SheetFounded) {
+			string targetSheetName = $"{packageInfo.PackageName}.{AngePath.SHEET_FILE_EXT}";
+			installed = Util.FileExists(Util.CombinePaths(project.Universe.SheetRoot, targetSheetName));
+		}
+		if (!installed && packageInfo.ThemeFounded) {
+			// Get Engine Theme Hash
+			var engineThemeHash = new HashSet<int>();
+			foreach (string themePath in Util.EnumerateFiles(ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+				string themeName = Util.GetNameWithExtension(themePath);
+				engineThemeHash.Add(themeName.AngeHash());
+			}
+			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+				string themeName = Util.GetNameWithExtension(themePath);
+				if (engineThemeHash.Contains(themeName.AngeHash())) {
+					installed = true;
+					break;
+				}
+			}
+		}
+		return installed;
 	}
 
 

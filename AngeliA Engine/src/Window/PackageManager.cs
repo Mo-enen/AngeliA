@@ -16,7 +16,9 @@ public class PackageManager : WindowUI {
 	public class PackageInfoComparer : IComparer<PackageInfo> {
 		public static readonly PackageInfoComparer Instance = new();
 		public int Compare (PackageInfo a, PackageInfo b) {
-			int result = b.Priority.CompareTo(a.Priority);
+			int result = a.IsBuiltIn.CompareTo(b.IsBuiltIn);
+			if (result != 0) return result;
+			result = b.Priority.CompareTo(a.Priority);
 			if (result != 0) return result;
 			result = a.Type.CompareTo(b.Type);
 			if (result != 0) return result;
@@ -26,6 +28,8 @@ public class PackageManager : WindowUI {
 
 
 	public class PackageInfo {
+		public bool AnyResourceFounded => DllFounded || SheetFounded || ThemeFounded;
+
 		public string DisplayName;
 		public string CreatorName;
 		public string Description;
@@ -35,10 +39,13 @@ public class PackageManager : WindowUI {
 		[JsonIgnore] public string DebugDllPath;
 		[JsonIgnore] public string ReleaseDllPath;
 		[JsonIgnore] public string SheetPath;
+		[JsonIgnore] public string ThemeRoot;
 		[JsonIgnore] public bool DllFounded;
 		[JsonIgnore] public bool SheetFounded;
+		[JsonIgnore] public bool ThemeFounded;
 		[JsonIgnore] public bool Installed;
 		[JsonIgnore] public object IconTexture;
+		[JsonIgnore] public bool IsBuiltIn;
 	}
 
 
@@ -82,23 +89,32 @@ public class PackageManager : WindowUI {
 
 
 	public PackageManager () {
+
 		Instance = this;
+
+		string packRoot = EngineUtil.PackagesRoot;
+		string customPackRoot = EngineUtil.CustomPackagesRoot;
+		Util.CreateFolder(packRoot);
+		Util.CreateFolder(customPackRoot);
+
+		// Built-in Packs
 		PackageInfoList.Clear();
-		foreach (string packageFolder in Util.EnumerateFolders(EngineUtil.PackagesRoot, true)) {
-			string infoPath = Util.CombinePaths(packageFolder, "Info.json");
-			if (!Util.FileExists(infoPath)) continue;
-			if (JsonUtil.LoadJsonFromPath<PackageInfo>(infoPath) is not PackageInfo info) continue;
-			string iconPath = Util.CombinePaths(packageFolder, "Icon.png");
-			string packageName = Util.GetNameWithoutExtension(packageFolder);
-			info.PackageName = packageName;
-			info.IconTexture = Game.PngBytesToTexture(Util.FileToBytes(iconPath));
-			info.DebugDllPath = Util.CombinePaths(packageFolder, "Debug", $"{packageName}.dll");
-			info.SheetPath = Util.CombinePaths(packageFolder, $"Sheet.{AngePath.SHEET_FILE_EXT}");
-			info.ReleaseDllPath = Util.CombinePaths(packageFolder, "Release", $"{packageName}.dll");
-			info.DllFounded = Util.FileExists(info.DebugDllPath) && Util.FileExists(info.ReleaseDllPath);
-			info.SheetFounded = Util.FileExists(info.SheetPath);
+		foreach (string packageFolder in Util.EnumerateFolders(packRoot, true)) {
+			var info = GetInfoFromPackageFolder(packageFolder);
+			if (info == null) return;
+			info.IsBuiltIn = true;
 			PackageInfoList.Add(info);
 		}
+
+		// Custom Packs
+		foreach (string packageFolder in Util.EnumerateFolders(customPackRoot, true)) {
+			var info = GetInfoFromPackageFolder(packageFolder);
+			if (info == null) return;
+			info.IsBuiltIn = false;
+			PackageInfoList.Add(info);
+		}
+
+		// Sort
 		PackageInfoList.Sort(PackageInfoComparer.Instance);
 	}
 
@@ -145,7 +161,7 @@ public class PackageManager : WindowUI {
 				);
 				rect = rect.ShrinkLeft(iconSize + itemPadding);
 
-				using (new GUIContentColorScope(info.DllFounded || info.SheetFounded ? Color32.WHITE : Color32.WHITE_128)) {
+				using (new GUIContentColorScope(info.AnyResourceFounded ? Color32.WHITE : Color32.WHITE_128)) {
 
 					// Package Name
 					GUI.Label(rect.TopHalf().ShrinkRight(toggleSize), info.DisplayName, out var nameBound, GUI.Skin.Label);
@@ -170,7 +186,7 @@ public class PackageManager : WindowUI {
 				}
 
 				// Toggle
-				if (info.DllFounded || info.SheetFounded) {
+				if (info.AnyResourceFounded) {
 					bool newInstalled = GUI.Toggle(
 						rect.Shrink(itemPadding).CornerInside(Alignment.TopRight, toggleSize),
 						info.Installed,
@@ -179,13 +195,13 @@ public class PackageManager : WindowUI {
 					// Install
 					if (newInstalled && !info.Installed) {
 						EngineUtil.InstallPackage(CurrentProject, info);
-						RefreshInstalledForAllPackages();
+						info.Installed = EngineUtil.IsPackagedInstalled(CurrentProject, info);
 						RequiringRebuildFrame = Game.GlobalFrame;
 					}
 					// Uninstall
 					if (!newInstalled && info.Installed) {
-						EngineUtil.UninstallPackage(CurrentProject, info.PackageName);
-						RefreshInstalledForAllPackages();
+						EngineUtil.UninstallPackage(CurrentProject, info);
+						info.Installed = EngineUtil.IsPackagedInstalled(CurrentProject, info);
 						RequiringRebuildFrame = Game.GlobalFrame;
 					}
 				}
@@ -220,8 +236,13 @@ public class PackageManager : WindowUI {
 	#region --- API ---
 
 
-	public void SetCurrentProject (Project project) {
-		CurrentProject = project;
+	public void SetCurrentProject (Project project) => CurrentProject = project;
+
+
+	public void ImportPackageFile (string packagePath) {
+
+
+
 	}
 
 
@@ -236,11 +257,28 @@ public class PackageManager : WindowUI {
 	private void RefreshInstalledForAllPackages () {
 		if (CurrentProject == null) return;
 		foreach (var info in PackageInfoList) {
-			string dllName = $"{info.PackageName}.dll";
-			string dllPathDebug = Util.CombinePaths(CurrentProject.DllLibPath_Debug, dllName);
-			string dllPathRelease = Util.CombinePaths(CurrentProject.DllLibPath_Release, dllName);
-			info.Installed = Util.FileExists(dllPathDebug) || Util.FileExists(dllPathRelease);
+			info.Installed = EngineUtil.IsPackagedInstalled(CurrentProject, info);
 		}
+	}
+
+
+
+	private PackageInfo GetInfoFromPackageFolder (string packageFolder) {
+		string infoPath = Util.CombinePaths(packageFolder, "Info.json");
+		if (!Util.FileExists(infoPath)) return null;
+		if (JsonUtil.LoadJsonFromPath<PackageInfo>(infoPath) is not PackageInfo info) return null;
+		string iconPath = Util.CombinePaths(packageFolder, "Icon.png");
+		string packageName = Util.GetNameWithoutExtension(packageFolder);
+		info.PackageName = packageName;
+		info.IconTexture = Game.PngBytesToTexture(Util.FileToBytes(iconPath));
+		info.DebugDllPath = Util.CombinePaths(packageFolder, "Debug", $"{packageName}.dll");
+		info.SheetPath = Util.CombinePaths(packageFolder, $"Sheet.{AngePath.SHEET_FILE_EXT}");
+		info.ThemeRoot = Util.CombinePaths(packageFolder, "Theme");
+		info.ReleaseDllPath = Util.CombinePaths(packageFolder, "Release", $"{packageName}.dll");
+		info.DllFounded = Util.FileExists(info.DebugDllPath) && Util.FileExists(info.ReleaseDllPath);
+		info.SheetFounded = Util.FileExists(info.SheetPath);
+		info.ThemeFounded = Util.GetFileCount(info.ThemeRoot, $"*.{AngePath.SHEET_FILE_EXT}", System.IO.SearchOption.TopDirectoryOnly) > 0;
+		return info;
 	}
 
 

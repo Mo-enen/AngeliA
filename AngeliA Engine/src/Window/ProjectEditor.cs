@@ -305,6 +305,7 @@ public class ProjectEditor : WindowUI {
 				info.ProductName = newProductName;
 				string newSavingRoot = AngePath.GetPersistentDataPath(info.DeveloperName, info.ProductName);
 				CurrentProject.Universe.SetSavingRoot(newSavingRoot, CurrentProject.Universe.CurrentSavingSlot);
+				RequireRecompileOnSave = true;
 				SetDirty();
 			}
 		}
@@ -322,6 +323,7 @@ public class ProjectEditor : WindowUI {
 				info.DeveloperName = newDevName;
 				string newSavingRoot = AngePath.GetPersistentDataPath(info.DeveloperName, info.ProductName);
 				CurrentProject.Universe.SetSavingRoot(newSavingRoot, CurrentProject.Universe.CurrentSavingSlot);
+				RequireRecompileOnSave = true;
 				SetDirty();
 			}
 		}

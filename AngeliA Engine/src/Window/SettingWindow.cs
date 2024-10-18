@@ -58,7 +58,6 @@ public class SettingWindow : WindowUI {
 	// Data
 	private static readonly List<SettingGroup> Groups = [];
 	private readonly List<(string path, string name)> ThemePaths = [];
-	private bool RequiringReloadThemePath = true;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
 	private Project CurrentProject;
@@ -121,14 +120,6 @@ public class SettingWindow : WindowUI {
 
 
 	public SettingWindow () => Instance = this;
-
-
-	[OnGameFocused]
-	internal static void OnGameFocused () {
-		if (Instance != null) {
-			Instance.RequiringReloadThemePath = true;
-		}
-	}
 
 
 	public override void UpdateWindowUI () {
@@ -300,15 +291,12 @@ public class SettingWindow : WindowUI {
 	// Util
 	private void ShowThemeMenu (Int2 pos) {
 
-		// Reload
-		if (RequiringReloadThemePath) {
-			RequiringReloadThemePath = false;
-			ThemePaths.Clear();
-			string themeFolder = Util.CombinePaths(Universe.BuiltIn.UniverseRoot, "Theme");
-			if (!Util.FolderExists(themeFolder)) return;
-			foreach (var path in Util.EnumerateFiles(themeFolder, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
-				ThemePaths.Add((path, Util.GetDisplayName(Util.GetNameWithoutExtension(path))));
-			}
+		// Reload Theme Paths
+		ThemePaths.Clear();
+		string themeFolder = EngineUtil.ThemeRoot;
+		if (!Util.FolderExists(themeFolder)) return;
+		foreach (var path in Util.EnumerateFiles(themeFolder, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			ThemePaths.Add((path, Util.GetDisplayName(Util.GetNameWithoutExtension(path))));
 		}
 
 		// Show Menu
