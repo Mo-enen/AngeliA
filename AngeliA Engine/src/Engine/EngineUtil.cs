@@ -15,17 +15,6 @@ public static class EngineUtil {
 
 
 
-	#region --- SUB ---
-
-
-	public enum PackageExportMode { Library, LibraryAndArtwork, Artwork, EngineTheme, }
-
-
-	#endregion
-
-
-
-
 	#region --- VAR ---
 
 
@@ -600,7 +589,7 @@ public static class EngineUtil {
 	}
 
 
-	public static bool ExportProjectAsCustomPackageFile (Project project, string packageName, string displayName, string description, string exportPath, PackageExportMode mode, out string errorMsg) {
+	public static bool ExportProjectAsCustomPackageFile (Project project, string packageName, string displayName, string description, string exportPath, ProjectType type, bool includeArtwork, out string errorMsg) {
 		try {
 			errorMsg = "";
 			if (project == null) return false;
@@ -618,7 +607,7 @@ public static class EngineUtil {
 			JsonUtil.SaveJsonToPath(info, Util.CombinePaths(tempFolder, "Info.json"), true);
 
 			// Dll
-			if (mode == PackageExportMode.Library || mode == PackageExportMode.LibraryAndArtwork) {
+			if (type == ProjectType.Game) {
 				string dllName = GetGameLibraryDllNameWithoutExtension(project.Universe.Info.ProductName);
 				dllName = $"{dllName}.dll";
 				string dllPath = Util.CombinePaths(project.BuildPath, dllName);
@@ -630,7 +619,7 @@ public static class EngineUtil {
 			}
 
 			// Artwork Sheet
-			if (mode == PackageExportMode.Artwork || mode == PackageExportMode.LibraryAndArtwork) {
+			if (type == ProjectType.Artwork || (type == ProjectType.Game && includeArtwork)) {
 				string sourceSheetPath = Util.CombinePaths(project.Universe.GameSheetPath);
 				if (!Util.FileExists(sourceSheetPath)) {
 					errorMsg = "Game artwork sheet file not found.";
@@ -640,7 +629,7 @@ public static class EngineUtil {
 			}
 
 			// Theme
-			if (mode == PackageExportMode.EngineTheme) {
+			if (type == ProjectType.EngineTheme) {
 				string sourceSheetPath = Util.CombinePaths(project.Universe.GameSheetPath);
 				if (!Util.FileExists(sourceSheetPath)) {
 					errorMsg = "Game artwork sheet file not found.";

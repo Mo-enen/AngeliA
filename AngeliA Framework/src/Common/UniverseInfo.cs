@@ -1,10 +1,18 @@
 ﻿namespace AngeliA;
 
 
+public enum ProjectType {
+	Game,
+	Artwork,
+	EngineTheme,
+}
+
+
 [System.Serializable]
 public class UniverseInfo : IJsonSerializationCallback {
 	public string ProductName = "";
 	public string DeveloperName = "";
+	public ProjectType ProjectType = ProjectType.Game;
 	public int MajorVersion = 0;
 	public int MinorVersion = 0;
 	public int PatchVersion = 0;
@@ -30,7 +38,8 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public float LightMap_LevelIlluminateRemain = 0.3f;
 	public int WorldBehindParallax = 1300;
 	public byte WorldBehindAlpha = 64;
-	public bool Internal_EnenPersonalFavour = false;
+	public bool RequireFixScriptNamesWhenAnalyse = false;
+
 	public void OnAfterLoadedFromDisk () => Valid(true);
 	public void OnBeforeSaveToDisk () => Valid(true);
 	public void Valid (bool minViewSizeFirst) {

@@ -469,7 +469,7 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool useEnenPersonalFavour = false) {
+	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool fixScriptFileName = false) {
 
 		if (!onlyLogWhenWarningFounded) {
 			Debug.Log("-------- AngeliA Project Analysis --------");
@@ -517,7 +517,7 @@ public static class FrameworkUtil {
 		}
 
 		// Fix Script File Name
-		if (useEnenPersonalFavour) {
+		if (fixScriptFileName) {
 			bool anyWarning = false;
 			foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
 				string name = Util.GetNameWithExtension(path);
@@ -542,7 +542,7 @@ public static class FrameworkUtil {
 		}
 
 		// Check for Item Class Name
-		if (useEnenPersonalFavour) {
+		if (fixScriptFileName) {
 			bool anyWarning = false;
 			var eqType = typeof(Equipment);
 			foreach (var type in typeof(Item).AllChildClass()) {

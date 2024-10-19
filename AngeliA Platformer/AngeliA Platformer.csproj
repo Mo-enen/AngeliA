@@ -64,8 +64,8 @@
 	</ItemGroup>
 
 	<!--Copy Packages Dll to Runtime Folder-->
-	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build" Condition="'$(Configuration)'=='Debug'">
-		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\Debug\com.angelia.platformer.dll" ContinueOnError="true" />
+	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build">
+		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\com.angelia.platformer.dll" ContinueOnError="true" />
 	</Target>
 
 	<!--Move Game Lib into Library Folder-->

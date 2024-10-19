@@ -30,6 +30,7 @@ public class SettingWindow : WindowUI {
 		public Saving Value;
 		public SavingBool Requirement;
 		public object CustomData;
+		public bool GameOnly;
 	}
 
 
@@ -58,6 +59,7 @@ public class SettingWindow : WindowUI {
 	// Data
 	private static readonly List<SettingGroup> Groups = [];
 	private readonly List<(string path, string name)> ThemePaths = [];
+	private Project CurrentProject;
 	private int MasterScroll = 0;
 	private int UIHeight = 0;
 	private SavingHotkey ActivatedSetting = null;
@@ -105,6 +107,7 @@ public class SettingWindow : WindowUI {
 					Name = ($"UI.EngineSetting.{field.Name}", att.DisplayLabel),
 					Value = value,
 					Requirement = req,
+					GameOnly = att.GameOnly,
 					CustomData =
 						value is SavingColor32 sValue ? sValue.Value.ToColorF() :
 						value is SavingColor32NoAlpha sValueNa ? sValueNa.Value.ToColorF() :
@@ -123,6 +126,8 @@ public class SettingWindow : WindowUI {
 
 	public override void UpdateWindowUI () {
 
+		if (CurrentProject == null) return;
+
 		int extendedUISize = 1;
 		using (var scroll = new GUIVerticalScrollScope(WindowRect, MasterScroll, 0, UIHeight)) {
 			MasterScroll = scroll.PositionY;
@@ -139,8 +144,10 @@ public class SettingWindow : WindowUI {
 			using var _ = new GUILabelWidthScope(Util.Min(Unify(320), rect.width / 2));
 
 			// Group Content
+			bool isGameProject = CurrentProject.Universe.Info.ProjectType == ProjectType.Game;
 			for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++) {
 				var group = Groups[groupIndex];
+				if (!isGameProject && IsGroupIgnored(group)) continue;
 				DrawGroup(ref rect, group, groupIndex == 0 ? DrawExtraContent : null, out bool changed);
 				if (group.RigGroup && changed) {
 					MapSettingChanged = true;
@@ -165,6 +172,17 @@ public class SettingWindow : WindowUI {
 
 
 
+	#region --- API ---
+
+
+	public void SetCurrentProject (Project project) => CurrentProject = project;
+
+
+	#endregion
+
+
+
+
 	#region --- LGC ---
 
 
@@ -174,6 +192,7 @@ public class SettingWindow : WindowUI {
 		int boxTop = rect.yMax;
 		int boxLeft = rect.xMin;
 		int boxRight = rect.xMax;
+		var isGameProject = CurrentProject != null && CurrentProject.Universe.Info.ProjectType == ProjectType.Game;
 		GUI.BeginChangeCheck();
 
 		// Fold
@@ -185,7 +204,10 @@ public class SettingWindow : WindowUI {
 
 			// Content
 			foreach (var item in groupData.Items) {
+
 				if (item.Requirement != null && !item.Requirement.Value) continue;
+				if (!isGameProject && item.GameOnly) continue;
+
 				switch (item.Value) {
 
 					default:
@@ -435,6 +457,14 @@ public class SettingWindow : WindowUI {
 			var value = Instance.ActivatedSetting.Value;
 			Instance.ActivatedSetting.Value = new Hotkey(newKey, value.Ctrl, value.Shift, value.Alt);
 		}
+	}
+
+
+	private bool IsGroupIgnored (SettingGroup group) {
+		foreach (var item in group.Items) {
+			if (!item.GameOnly) return false;
+		}
+		return true;
 	}
 
 

@@ -14,7 +14,9 @@ public class ProjectEditor : WindowUI {
 
 	// Const
 	private static readonly (int ratio, string label)[] UI_RATIO = [(250, "1:4"), (333, "1:3"), (500, "1:2"), (563, "9:16"), (625, "10:16"), (750, "3:4"), (1000, "1:1"), (1333, "4:3"), (1600, "16:10"), (1778, "16:9"), (2000, "2:1"), (3000, "3:1"), (4000, "4:1"),];
+	private static readonly int PROJECT_TYPE_COUNT = typeof(ProjectType).EnumLength();
 
+	// Sprite Codes
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
 	private static readonly SpriteCode ICON_FONT = "FileIcon.Font";
@@ -22,7 +24,13 @@ public class ProjectEditor : WindowUI {
 	private static readonly SpriteCode ICON_STAGE = "Icon.Project.Stage";
 	private static readonly SpriteCode ICON_RESOURCE = "Icon.Project.Resource";
 
-	// Worlflow Buttons
+	// Language Codes
+	private static readonly LanguageCode[] PROJECT_TYPE_LABELS = [
+		("Label.ProjectType.Game", "Game"),
+		("Label.ProjectType.Artwork", "Artwork"),
+		("Label.ProjectType.Theme", "Engine Theme"),
+	];
+
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
 	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
@@ -49,6 +57,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_PRODUCT_NAME = ("Label.ProductName", "Product Name");
 	private static readonly LanguageCode LABEL_VERSION = ("Label.Version", "Version");
 	private static readonly LanguageCode LABEL_DEV_NAME = ("Label.DevName", "Developer Name");
+	private static readonly LanguageCode LABEL_PROJECT_TYPE = ("Label.ProjectType", "Project Type");
 	private static readonly LanguageCode LABEL_ICON = ("Setting.Icon", "Icon");
 	private static readonly LanguageCode LABEL_LINK = ("Setting.Link", "Folders");
 	private static readonly LanguageCode LABEL_LINK_PROJECT = ("Setting.Link.Project", "Project Folder");
@@ -112,6 +121,11 @@ public class ProjectEditor : WindowUI {
 		MenuItem = null;
 		Game.StopMusic();
 		Game.StopAllSounds();
+#if DEBUG
+		if (PROJECT_TYPE_COUNT != PROJECT_TYPE_LABELS.Length) {
+			Debug.LogError("PROJECT_TYPE_LABELS length is not the enum's length");
+		}
+#endif
 	}
 
 
@@ -125,6 +139,8 @@ public class ProjectEditor : WindowUI {
 
 		if (CurrentProject == null) return;
 
+		var info = CurrentProject.Universe.Info;
+		var projectType = info.ProjectType;
 		Renderer.TryGetSprite(PANEL_BACKGROUND, out var panelBgSprite);
 		var panelBorder = Int4.Direction(Unify(12), Unify(12), Unify(42), Unify(48));
 		if (panelBgSprite != null) {
@@ -149,8 +165,10 @@ public class ProjectEditor : WindowUI {
 			int left = rect.x;
 			int indent = GUI.FieldHeight / 2;
 
-			// Window
-			OnGUI_WorkflowButton(ref rect);
+			// Workflow Button
+			if (projectType == ProjectType.Game) {
+				OnGUI_WorkflowButton(ref rect);
+			}
 
 			// Game
 			rect.yMin = rect.yMax - GUI.FieldHeight;
@@ -163,26 +181,28 @@ public class ProjectEditor : WindowUI {
 				rect.SlideDown();
 			}
 
-			// Stage
-			rect.x = left;
-			rect.yMin = rect.yMax - GUI.FieldHeight;
-			rect.xMin += indent;
-			if (!GUI.ToggleFold(rect, ref FoldingStagePanel, ICON_STAGE, LABEL_STAGE, indent)) {
+			if (projectType == ProjectType.Game) {
+				// Stage
+				rect.x = left;
+				rect.yMin = rect.yMax - GUI.FieldHeight;
 				rect.xMin += indent;
-				rect.SlideDown(GUI.FieldPadding);
-				OnGUI_Stage(ref rect);
-			} else {
-				rect.SlideDown();
-			}
+				if (!GUI.ToggleFold(rect, ref FoldingStagePanel, ICON_STAGE, LABEL_STAGE, indent)) {
+					rect.xMin += indent;
+					rect.SlideDown(GUI.FieldPadding);
+					OnGUI_Stage(ref rect);
+				} else {
+					rect.SlideDown();
+				}
 
-			// Resource
-			rect.xMin = left + indent;
-			if (!GUI.ToggleFold(rect, ref FoldingResourcePanel, ICON_RESOURCE, LABEL_RESOURCE, indent)) {
-				rect.xMin += indent;
-				rect.SlideDown(GUI.FieldPadding);
-				OnGUI_Resource(ref rect);
-			} else {
-				rect.SlideDown();
+				// Resource
+				rect.xMin = left + indent;
+				if (!GUI.ToggleFold(rect, ref FoldingResourcePanel, ICON_RESOURCE, LABEL_RESOURCE, indent)) {
+					rect.xMin += indent;
+					rect.SlideDown(GUI.FieldPadding);
+					OnGUI_Resource(ref rect);
+				} else {
+					rect.SlideDown();
+				}
 			}
 
 			extendedContentSize = panelRect.yMax - rect.yMax + Unify(64);
@@ -292,6 +312,7 @@ public class ProjectEditor : WindowUI {
 		rect.yMin = rect.yMax - itemHeight;
 		int digitLabelWidth = Unify(64);
 		var info = CurrentProject.Universe.Info;
+		var projectType = info.ProjectType;
 
 		// Product Name
 		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);
@@ -329,6 +350,19 @@ public class ProjectEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
+		// Project Type
+		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_PROJECT_TYPE);
+		var popRect = rect.ShrinkLeft(labelWidth).LeftHalf();
+		if (GUI.Button(
+			popRect,
+			PROJECT_TYPE_LABELS[((int)info.ProjectType).Clamp(0, PROJECT_TYPE_COUNT - 1)],
+			Skin.SmallDarkButton
+		)) {
+			ShowProjectTypeMenu(popRect.Shift(Unify(4), MasterScrollPos).BottomLeft());
+		}
+		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
+		rect.SlideDown(padding);
+
 		// Version
 		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_VERSION);
 		var versionRect = rect.ShrinkLeft(labelWidth);
@@ -348,77 +382,81 @@ public class ProjectEditor : WindowUI {
 
 		rect.SlideDown(padding);
 
-		// Use Procedural Map
-		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
-		if (newUseProceduralMap != info.UseProceduralMap) {
-			info.UseProceduralMap = newUseProceduralMap;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
+		if (projectType == ProjectType.Game) {
 
-		// Use Map Editor
-		bool newUseMapEDT = GUI.Toggle(rect, info.UseMapEditor, LABEL_USE_MAP_EDT, labelStyle: Skin.SmallLabel);
-		if (newUseMapEDT != info.UseMapEditor) {
-			info.UseMapEditor = newUseMapEDT;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
 
-		// Use Light Sys
-		bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
-		if (newUseLightSys != info.UseLightingSystem) {
-			info.UseLightingSystem = newUseLightSys;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
+			// Use Procedural Map
+			bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
+			if (newUseProceduralMap != info.UseProceduralMap) {
+				info.UseProceduralMap = newUseProceduralMap;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
 
-		// Allow Cheat Code
-		bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
-		if (newAllowCheat != info.AllowCheatCode) {
-			info.AllowCheatCode = newAllowCheat;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
+			// Use Map Editor
+			bool newUseMapEDT = GUI.Toggle(rect, info.UseMapEditor, LABEL_USE_MAP_EDT, labelStyle: Skin.SmallLabel);
+			if (newUseMapEDT != info.UseMapEditor) {
+				info.UseMapEditor = newUseMapEDT;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
 
-		// Allow Pause
-		bool newAllowPause = GUI.Toggle(rect, info.AllowPause, LABEL_ALLOW_PAUSE, labelStyle: Skin.SmallLabel);
-		if (newAllowPause != info.AllowPause) {
-			info.AllowPause = newAllowPause;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
+			// Use Light Sys
+			bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
+			if (newUseLightSys != info.UseLightingSystem) {
+				info.UseLightingSystem = newUseLightSys;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
 
-		// Allow Restart from Menu
-		bool newAllowRestartFromMenu = GUI.Toggle(rect, info.AllowRestartFromMenu, LABEL_ALLOW_RESTART_MENU, labelStyle: Skin.SmallLabel);
-		if (newAllowRestartFromMenu != info.AllowRestartFromMenu) {
-			info.AllowRestartFromMenu = newAllowRestartFromMenu;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
+			// Allow Cheat Code
+			bool newAllowCheat = GUI.Toggle(rect, info.AllowCheatCode, LABEL_ALLOW_CHEAT, labelStyle: Skin.SmallLabel);
+			if (newAllowCheat != info.AllowCheatCode) {
+				info.AllowCheatCode = newAllowCheat;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
 
-		// Allow Quit from Menu
-		bool newAllowQuitFromMenu = GUI.Toggle(rect, info.AllowQuitFromMenu, LABEL_ALLOW_QUIT_MENU, labelStyle: Skin.SmallLabel);
-		if (newAllowQuitFromMenu != info.AllowQuitFromMenu) {
-			info.AllowQuitFromMenu = newAllowQuitFromMenu;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
+			// Allow Pause
+			bool newAllowPause = GUI.Toggle(rect, info.AllowPause, LABEL_ALLOW_PAUSE, labelStyle: Skin.SmallLabel);
+			if (newAllowPause != info.AllowPause) {
+				info.AllowPause = newAllowPause;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
 
-		// Scale UI Based On Monitor
-		bool newScaleUiBasedOnMonitor = GUI.Toggle(rect, info.ScaleUiBasedOnMonitor, LABEL_SCALE_UI_MONITOR, labelStyle: Skin.SmallLabel);
-		if (newScaleUiBasedOnMonitor != info.ScaleUiBasedOnMonitor) {
-			info.ScaleUiBasedOnMonitor = newScaleUiBasedOnMonitor;
-			RequireRecompileOnSave = true;
-			SetDirty();
+			// Allow Restart from Menu
+			bool newAllowRestartFromMenu = GUI.Toggle(rect, info.AllowRestartFromMenu, LABEL_ALLOW_RESTART_MENU, labelStyle: Skin.SmallLabel);
+			if (newAllowRestartFromMenu != info.AllowRestartFromMenu) {
+				info.AllowRestartFromMenu = newAllowRestartFromMenu;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
+
+			// Allow Quit from Menu
+			bool newAllowQuitFromMenu = GUI.Toggle(rect, info.AllowQuitFromMenu, LABEL_ALLOW_QUIT_MENU, labelStyle: Skin.SmallLabel);
+			if (newAllowQuitFromMenu != info.AllowQuitFromMenu) {
+				info.AllowQuitFromMenu = newAllowQuitFromMenu;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
+
+			// Scale UI Based On Monitor
+			bool newScaleUiBasedOnMonitor = GUI.Toggle(rect, info.ScaleUiBasedOnMonitor, LABEL_SCALE_UI_MONITOR, labelStyle: Skin.SmallLabel);
+			if (newScaleUiBasedOnMonitor != info.ScaleUiBasedOnMonitor) {
+				info.ScaleUiBasedOnMonitor = newScaleUiBasedOnMonitor;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
 		}
-		rect.SlideDown(padding);
 
 		// Icon
 		GUI.SmallLabel(rect, LABEL_ICON);
@@ -799,6 +837,45 @@ public class ProjectEditor : WindowUI {
 
 
 	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private void ShowProjectTypeMenu (Int2 pos) {
+		if (CurrentProject == null) return;
+		var info = CurrentProject.Universe.Info;
+		GenericPopupUI.BeginPopup(pos);
+		for (int i = 0; i < PROJECT_TYPE_COUNT; i++) {
+			GenericPopupUI.AddItem(
+				PROJECT_TYPE_LABELS[i],
+				ChangeProjectType,
+				true,
+				(int)info.ProjectType == i,
+				data: i
+			);
+		}
+		// Func
+		static void ChangeProjectType () {
+			if (Instance == null || Instance.CurrentProject == null) return;
+			if (GenericPopupUI.InvokingItemData is not int index) return;
+			var info = Instance.CurrentProject.Universe.Info;
+			var newType = (ProjectType)index;
+			if (info.ProjectType != newType) {
+				info.ProjectType = newType;
+				Instance.SetDirty();
+				if (newType == ProjectType.Game) {
+					Instance.RequireRecompileOnSave = true;
+				}
+			}
+		}
+	}
+
+
+	#endregion
+
 
 
 

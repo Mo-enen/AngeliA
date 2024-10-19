@@ -15,13 +15,16 @@ public class EngineSettingAttribute : Attribute {
 	public string Group;
 	public string DisplayLabel;
 	public string RequireSettingName;
+	public bool GameOnly;
 	public EngineSettingAttribute () {
 		Group = null;
 		DisplayLabel = null;
+		GameOnly = false;
 	}
-	public EngineSettingAttribute (string group, string displayLabel, string requireSettingPath = "") {
+	public EngineSettingAttribute (string group, string displayLabel, string requireSettingPath = "", bool gameOnly = false) {
 		Group = group;
 		DisplayLabel = displayLabel;
 		RequireSettingName = requireSettingPath;
+		GameOnly = gameOnly;
 	}
 }

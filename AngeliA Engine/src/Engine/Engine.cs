@@ -475,6 +475,7 @@ public partial class Engine {
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.Edge(Direction4.Up, GUI.Unify(42));
+		var projectType = CurrentProject.Universe.Info.ProjectType;
 
 		// UI
 		using (new UILayerScope()) {
@@ -506,15 +507,16 @@ public partial class Engine {
 				bool selecting = index == CurrentWindowIndex;
 				bool hovering = GUI.Enable && rect.Contains(mousePos);
 
-#if DEBUG
+				// Skip Windows for Non-Game Project
 				if (
-					CurrentProject.IsEngineInternalProject &&
+					projectType != ProjectType.Game &&
 					window is not PixelEditor &&
-					window is not LanguageEditor
+					window is not ProjectEditor &&
+					window is not PackageManager &&
+					window is not SettingWindow
 				) {
 					continue;
 				}
-#endif
 
 				// Cursor
 				if (!selecting && hovering) Cursor.SetCursorAsHand();
@@ -809,12 +811,12 @@ public partial class Engine {
 			NotificationSubContent = ThemeSkin.Name;
 		}
 
-		// Rebuild
-#if DEBUG
-		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
+		// Ignore Rebuild for Non-Game Project
+		if (CurrentProject != null && CurrentProject.Universe.Info.ProjectType != ProjectType.Game) {
 			RequireBackgroundBuildDate = 0;
 		}
-#endif
+
+		// Rebuild
 		if (RequireBackgroundBuildDate > 0) {
 			Transceiver.Abort();
 			EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
@@ -878,6 +880,7 @@ public partial class Engine {
 		LanguageEditor.Instance.SetCurrentProject(CurrentProject);
 		PixelEditor.Instance.SetCurrentProject(CurrentProject);
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
+		SettingWindow.Instance.SetCurrentProject(CurrentProject);
 		GameEditor.Instance.CleanDirty();
 		GameEditor.Instance.SetCurrentProject(CurrentProject);
 		PackageManager.Instance.SetCurrentProject(CurrentProject);
@@ -924,14 +927,23 @@ public partial class Engine {
 		RequireBackgroundBuildDate = 0;
 		HasCompileError = false;
 
-#if DEBUG
-		if (CurrentProject.IsEngineInternalProject) {
-			SetCurrentWindowIndex<PixelEditor>();
-			return;
-		}
-#endif
+		// Project Type
+		switch (CurrentProject.Universe.Info.ProjectType) {
 
-		EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
+			case ProjectType.Game:
+				// Build
+				EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
+				break;
+
+			case ProjectType.Artwork:
+			case ProjectType.EngineTheme:
+				// Fix First Window
+				SetCurrentWindowIndex<PixelEditor>();
+				break;
+
+			default:
+				throw new System.NotImplementedException();
+		}
 
 	}
 
@@ -968,6 +980,7 @@ public partial class Engine {
 			LanguageEditor.Instance.SetCurrentProject(null);
 			PixelEditor.Instance.SetCurrentProject(null);
 			ProjectEditor.Instance.SetCurrentProject(null);
+			SettingWindow.Instance.SetCurrentProject(null);
 			GameEditor.Instance.CleanDirty();
 			GameEditor.Instance.SetCurrentProject(null);
 			PackageManager.Instance.SetCurrentProject(null);
