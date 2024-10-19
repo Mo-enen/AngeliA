@@ -500,7 +500,7 @@ public partial class RiggedGame : Game {
 	private void ReloadFontIdIndexMap () {
 		Renderer.ClearFontIndexIdMap();
 		FontNamesCache.Clear();
-		foreach (string fontPath in Util.EnumerateFiles(Universe.BuiltIn.FontRoot, true, "*.ttf")) {
+		foreach (string fontPath in Util.EnumerateFiles(Universe.BuiltIn.FontRoot, false, "*.ttf")) {
 			FontNamesCache.Add(FontData.GetFontRealName(Util.GetNameWithoutExtension(fontPath)));
 		}
 		FontNamesCache.Sort((a, b) => a.CompareTo(b));

@@ -163,15 +163,13 @@ public partial class Engine {
 
 	private void OnGUI_RiggedGame () {
 
-#if DEBUG
-		// For Engine Internal Project
-		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
+		// Quit if Not Game Project
+		if (CurrentProject != null && CurrentProject.Universe.Info.ProjectType != ProjectType.Game) {
 			if (Transceiver.RigProcessRunning) {
 				Transceiver.Abort();
 			}
 			return;
 		}
-#endif
 
 		ConsoleWindow.Instance.HaveRunningRigGame = Transceiver.RigProcessRunning;
 		if (HasCompileError) return;
@@ -236,7 +234,6 @@ public partial class Engine {
 			// Map Editor Setting Changed
 			if (SettingWindow.Instance.MapSettingChanged) {
 				SettingWindow.Instance.MapSettingChanged = false;
-				calling.RequireChangeSetting(MapEditor.SETTING_AUTO_ZOOM, EngineSetting.MapEditor_AutoZoom.Value);
 				calling.RequireChangeSetting(MapEditor.SETTING_QUICK_PLAYER_DROP, EngineSetting.MapEditor_QuickPlayerDrop.Value);
 				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_BEHIND, EngineSetting.MapEditor_ShowBehind.Value);
 				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_GRID_GIZMOS, EngineSetting.MapEditor_ShowGizmos.Value);

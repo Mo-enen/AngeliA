@@ -440,7 +440,7 @@ public static class FrameworkUtil {
 
 	// Misc
 	public static void DeleteAllEmptyMaps (string mapRoot) {
-		foreach (var path in Util.EnumerateFiles(mapRoot, false, $"*.{AngePath.MAP_FILE_EXT}")) {
+		foreach (var path in Util.EnumerateFiles(mapRoot, false, AngePath.MAP_SEARCH_PATTERN)) {
 			try {
 				if (Util.IsExistingFileEmpty(path)) Util.DeleteFile(path);
 			} catch (System.Exception ex) { Debug.LogException(ex); }

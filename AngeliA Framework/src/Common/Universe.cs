@@ -20,7 +20,6 @@ public class Universe {
 	public string UniverseMetaRoot { get; private set; }
 	public string MapRoot { get; private set; }
 	public string LanguageRoot { get; private set; }
-	public string AsepriteRoot { get; private set; }
 	public string MusicRoot { get; private set; }
 	public string SoundRoot { get; private set; }
 	public string FontRoot { get; private set; }
@@ -59,7 +58,6 @@ public class Universe {
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder),
 			LanguageRoot = AngePath.GetLanguageRoot(universeFolder),
 			MapRoot = AngePath.GetMapRoot(universeFolder),
-			AsepriteRoot = AngePath.GetAsepriteRoot(universeFolder),
 			InfoPath = infoPath,
 			Info = JsonUtil.LoadOrCreateJsonFromPath<UniverseInfo>(infoPath),
 			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),

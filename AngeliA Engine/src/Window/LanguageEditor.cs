@@ -350,18 +350,25 @@ public partial class LanguageEditor : WindowUI {
 				if (string.IsNullOrWhiteSpace(data.Key)) continue;
 				list.Add(new(data.Key, data.Value[languageIndex]));
 			}
-			LanguageUtil.SaveAllPairsToDisk(currentRoot, lan, list);
+			string lanFolderPath = LanguageUtil.GetLanguageFolderPath(currentRoot, lan);
+			string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
+			LanguageUtil.SaveAllPairsToDisk(lanFilePath, list);
 		}
 #if DEBUG
 		// Sync Project >> Engine
 		if (CurrentProject.IsEngineInternalProject) {
-			string from = currentRoot;
-			if (Util.FolderExists(from)) {
-				string to = Universe.BuiltIn.LanguageRoot;
-				Util.DeleteFolder(to);
-				Util.CopyFolder(from, to, false, true, true);
-				Language.SetLanguage(Language.CurrentLanguage);
+			for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
+				string lan = Languages[languageIndex];
+				string lanName = $"{lan}.{AngePath.LANGUAGE_FILE_EXT}";
+				string fromFolder = LanguageUtil.GetLanguageFolderPath(currentRoot, lan);
+				string toFolder = LanguageUtil.GetLanguageFolderPath(Universe.BuiltIn.LanguageRoot, lan);
+				Util.CopyFile(
+					Util.CombinePaths(fromFolder, lanName),
+					Util.CombinePaths(toFolder, lanName),
+					overwrite: true
+				);
 			}
+			Language.SetLanguage(Language.CurrentLanguage);
 		}
 #endif
 	}
@@ -383,8 +390,12 @@ public partial class LanguageEditor : WindowUI {
 
 		// Load Language
 		Languages.Clear();
-		foreach (var path in Util.EnumerateFiles(languageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
-			Languages.Add(Util.GetNameWithoutExtension(path));
+		foreach (var path in Util.EnumerateFolders(languageRoot, true)) {
+			string lan = Util.GetNameWithoutExtension(path);
+			string filePath = Util.CombinePaths(path, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
+			if (Util.FileExists(filePath)) {
+				Languages.Add(lan);
+			}
 		}
 		if (Languages.Count == 0) Languages.Add("en");
 		Languages.Sort();
@@ -393,7 +404,10 @@ public partial class LanguageEditor : WindowUI {
 		int count = Languages.Count;
 		var pool = new Dictionary<string, int>();
 		for (int languageIndex = 0; languageIndex < count; languageIndex++) {
-			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDisk(languageRoot, Languages[languageIndex])) {
+			string lanName = Languages[languageIndex];
+			string lanFolderPath = LanguageUtil.GetLanguageFolderPath(languageRoot, lanName);
+			string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lanName}.{AngePath.LANGUAGE_FILE_EXT}");
+			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDiskAtPath(lanFilePath)) {
 				LanguageLine data;
 				if (pool.TryGetValue(key, out int index)) {
 					data = Lines[index];
@@ -446,9 +460,11 @@ public partial class LanguageEditor : WindowUI {
 			string.Format(DELETE_MSG, lanName),
 			BuiltInText.UI_DELETE,
 			() => {
-				string targetRoot = Universe.BuiltIn.LanguageRoot;
-				string path = LanguageUtil.GetLanguageFilePath(targetRoot, Languages[lanIndex]);
-				Util.DeleteFile(path);
+				string targetRoot = CurrentProject.Universe.LanguageRoot;
+				string lan = Languages[lanIndex];
+				string lanFolderPath = LanguageUtil.GetLanguageFolderPath(targetRoot, lan);
+				string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
+				Util.DeleteFile(lanFilePath);
 				Languages.RemoveAt(lanIndex);
 				foreach (var data in Lines) {
 					data.Value.RemoveAt(lanIndex);

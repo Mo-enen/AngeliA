@@ -172,7 +172,7 @@ public partial class GameEditor {
 
 	private void InitializeMovementConfigPool () {
 		string root = CurrentProject.Universe.CharacterMovementConfigRoot;
-		foreach (string path in Util.EnumerateFiles(root, true, "*.txt")) {
+		foreach (string path in Util.EnumerateFiles(root, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithoutExtension(path);
 			int id = name.AngeHash();
 			// Load Field Data from File

@@ -331,7 +331,7 @@ public static class EngineUtil {
 		var ignoreDelete = new HashSet<string>();
 
 		// For all Editable Conversation Files
-		foreach (var path in Util.EnumerateFiles(workspace, false, $"*.{AngePath.EDITABLE_CONVERSATION_FILE_EXT}")) {
+		foreach (var path in Util.EnumerateFiles(workspace, false, AngePath.EDITABLE_CONVERSATION_SEARCH_PATTERN)) {
 
 			string globalName = Util.GetNameWithoutExtension(path);
 			string conFolderPath = Util.CombinePaths(exportRoot, globalName);
@@ -476,12 +476,17 @@ public static class EngineUtil {
 		if (JsonUtil.LoadJsonFromPath<PackageInfo>(infoPath) is not PackageInfo info) return null;
 		string iconPath = Util.CombinePaths(packageFolder, "Icon.png");
 		info.IconTexture = Game.PngBytesToTexture(Util.FileToBytes(iconPath));
+
 		info.DllPath = Util.CombinePaths(packageFolder, $"{info.PackageName}.dll");
 		info.SheetPath = Util.CombinePaths(packageFolder, $"{info.PackageName}.{AngePath.SHEET_FILE_EXT}");
-		info.ThemeRoot = Util.CombinePaths(packageFolder, "Theme");
+		info.ThemeFolder = Util.CombinePaths(packageFolder, "Theme");
+		info.LanguagePath = Util.CombinePaths(packageFolder, $"{info.PackageName}.{AngePath.LANGUAGE_FILE_EXT}");
+
 		info.DllFounded = Util.FileExists(info.DllPath);
 		info.SheetFounded = Util.FileExists(info.SheetPath);
-		info.ThemeFounded = Util.GetFileCount(info.ThemeRoot, $"*.{AngePath.SHEET_FILE_EXT}", System.IO.SearchOption.TopDirectoryOnly) > 0;
+		info.ThemeFounded = Util.GetFileCount(info.ThemeFolder, AngePath.SHEET_SEARCH_PATTERN, SearchOption.TopDirectoryOnly) > 0;
+		info.LanguageFounded = Util.FileExists(info.LanguagePath);
+
 		return info;
 	}
 
@@ -513,7 +518,7 @@ public static class EngineUtil {
 
 		// Theme
 		if (packageInfo.ThemeFounded) {
-			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeFolder, true, AngePath.SHEET_SEARCH_PATTERN)) {
 				string themeName = Util.GetNameWithExtension(themePath);
 				Util.CopyFile(themePath, Util.CombinePaths(ThemeRoot, themeName));
 			}
@@ -530,7 +535,7 @@ public static class EngineUtil {
 		Util.DeleteFile(Util.CombinePaths(project.DllLibPath_Release, dllName));
 		Util.DeleteFile(Util.CombinePaths(project.Universe.SheetRoot, sheetName));
 		if (packageInfo.ThemeFounded) {
-			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeFolder, true, AngePath.SHEET_SEARCH_PATTERN)) {
 				string themeName = Util.GetNameWithExtension(themePath);
 				Util.DeleteFile(Util.CombinePaths(ThemeRoot, themeName));
 			}
@@ -555,11 +560,11 @@ public static class EngineUtil {
 		if (!installed && packageInfo.ThemeFounded) {
 			// Get Engine Theme Hash
 			var engineThemeHash = new HashSet<int>();
-			foreach (string themePath in Util.EnumerateFiles(ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			foreach (string themePath in Util.EnumerateFiles(ThemeRoot, true, AngePath.SHEET_SEARCH_PATTERN)) {
 				string themeName = Util.GetNameWithExtension(themePath);
 				engineThemeHash.Add(themeName.AngeHash());
 			}
-			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeRoot, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeFolder, true, AngePath.SHEET_SEARCH_PATTERN)) {
 				string themeName = Util.GetNameWithExtension(themePath);
 				if (engineThemeHash.Contains(themeName.AngeHash())) {
 					installed = true;
@@ -696,8 +701,8 @@ public static class EngineUtil {
 		string libAssemblyName = GetGameLibraryDllNameWithoutExtension(productName);
 
 #if DEBUG
-		var watch = Stopwatch.StartNew();
-		Debug.Log("Start to Build AngeliA Project");
+		//var watch = Stopwatch.StartNew();
+		//Debug.Log("Start to Build AngeliA Project");
 #endif
 		if (!Util.IsPathValid(projectPath)) return ERROR_PROJECT_FOLDER_INVALID;
 		if (publish && !Util.IsPathValid(publishDir)) return ERROR_PUBLISH_DIR_INVALID;
@@ -798,8 +803,8 @@ public static class EngineUtil {
 		// Delete Temp Folder
 		Util.DeleteFolder(tempRoot);
 #if DEBUG
-		watch.Stop();
-		Debug.Log($"{watch.ElapsedMilliseconds / 1000f:0.00}s AngeliA Project Built Finish");
+		//watch.Stop();
+		//Debug.Log($"{watch.ElapsedMilliseconds / 1000f:0.00}s AngeliA Project Built Finish");
 #endif
 		return 0;
 	}

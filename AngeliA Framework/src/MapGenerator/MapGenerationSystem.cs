@@ -97,7 +97,7 @@ public static class MapGenerationSystem {
 		WorldSquad.Stream.ClearWorldPool();
 		var uni = Universe.BuiltIn;
 		// Delete All User Map Files
-		foreach (string path in Util.EnumerateFiles(uni.SlotUserMapRoot, true, $"*.{AngePath.MAP_FILE_EXT}")) {
+		foreach (string path in Util.EnumerateFiles(uni.SlotUserMapRoot, true, AngePath.MAP_SEARCH_PATTERN)) {
 			Util.DeleteFile(path);
 		}
 		// Reload Saving Slot

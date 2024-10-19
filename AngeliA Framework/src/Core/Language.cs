@@ -31,10 +31,11 @@ public static class Language {
 
 		// Get All Language from Disk
 		var allLanguages = new List<string>();
-		foreach (var path in Util.EnumerateFiles(Universe.BuiltIn.LanguageRoot, true, $"*.{AngePath.LANGUAGE_FILE_EXT}")) {
+		foreach (var path in Util.EnumerateFolders(Universe.BuiltIn.LanguageRoot, true)) {
+			if (!Util.HasFileIn(path, true)) continue;
 			allLanguages.Add(Util.GetNameWithoutExtension(path));
 		}
-		AllLanguages = allLanguages.ToArray();
+		AllLanguages = [.. allLanguages];
 
 		// Load Current Language
 		var targetLanguage = string.IsNullOrEmpty(_LoadedLanguage.Value) ? LanguageUtil.GetSystemLanguageISO() : _LoadedLanguage.Value;
@@ -56,9 +57,7 @@ public static class Language {
 
 	public static bool SetLanguage (string language) {
 		Pool.Clear();
-		string path = LanguageUtil.GetLanguageFilePath(Universe.BuiltIn.LanguageRoot, language);
-		if (!Util.FileExists(path)) return false;
-		foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDiskAtPath(path)) {
+		foreach (var (key, value) in LanguageUtil.LoadAllPairsFromFolder(Universe.BuiltIn.LanguageRoot, language)) {
 			Pool.TryAdd(key.AngeHash(), value);
 		}
 		_LoadedLanguage.Value = language;

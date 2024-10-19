@@ -126,8 +126,6 @@ public partial class Engine {
 		}
 #endif
 
-		engine.CheckEngineAsepriteChanged();
-
 		// Projects
 		engine.Projects.Clear();
 		var projectPaths = ProjectPaths.Value.Split(';');
@@ -254,7 +252,6 @@ public partial class Engine {
 		Instance?.RefreshProjectCache();
 		Instance?.CheckResourceChanged();
 		Instance?.CheckDialogChanged();
-		Instance?.CheckEngineAsepriteChanged();
 	}
 
 
@@ -1081,8 +1078,6 @@ public partial class Engine {
 
 	private void CheckResourceChanged () {
 		if (CurrentProject == null) return;
-		// Ase
-		SheetUtil.RecreateSheetIfArtworkModified(CurrentProject.Universe.GameSheetPath, CurrentProject.Universe.AsepriteRoot);
 		// Fonts
 		bool changed = Game.SyncFontsWithPool(CurrentProject.Universe.FontRoot);
 		if (changed) {
@@ -1112,17 +1107,6 @@ public partial class Engine {
 
 
 	private void CheckDialogChanged () => EngineUtil.TryCompileDialogueFiles(Universe.BuiltIn.EditableConversationRoot, Universe.BuiltIn.ConversationRoot, forceCompile: false);
-
-
-	private void CheckEngineAsepriteChanged () {
-		bool recreated = SheetUtil.RecreateSheetIfArtworkModified(
-			Universe.BuiltIn.GameSheetPath,
-			Universe.BuiltIn.AsepriteRoot
-		);
-		if (recreated) {
-			Renderer.LoadMainSheet();
-		}
-	}
 
 
 	private void ReloadRenderingSheet () {

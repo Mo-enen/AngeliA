@@ -57,6 +57,7 @@ public static class PlayerSystem {
 	private static int IgnorePlayerMenuFrame = -1;
 	private static int IgnorePlayerQuickMenuFrame = -1;
 	private static int IgnoreAttackFrame = int.MinValue;
+	private static int ForceUpdateViewGroundingFrame = int.MinValue;
 
 	// Saving
 	private static readonly SavingInt SelectingPlayerID = new("Player.SelectingPlayerID", 0, SavingLocation.Slot);
@@ -437,12 +438,16 @@ public static class PlayerSystem {
 
 		const int LINGER_RATE = 32;
 		bool notInGameplay = TaskSystem.HasTask() || Selecting.CharacterState != CharacterState.GamePlay;
-		bool notInAir =
+
+		// Update Grounded Y
+		if (
+			Game.GlobalFrame <= ForceUpdateViewGroundingFrame ||
 			notInGameplay ||
 			Selecting.IsGrounded || Selecting.InWater || mov.IsSliding ||
-			mov.IsClimbing || mov.IsGrabbingSide || mov.IsGrabbingTop;
-
-		if (notInAir || mov.IsFlying) LastGroundedY = Selecting.Y;
+			mov.IsClimbing || mov.IsGrabbingSide || mov.IsGrabbingTop || mov.IsFlying
+		) {
+			LastGroundedY = Selecting.Y;
+		}
 
 		// Aim X
 		int linger = Stage.ViewRect.width * LINGER_RATE / 1000;
@@ -602,6 +607,9 @@ public static class PlayerSystem {
 		}
 		return result != null ? result.AngeHash() : DefaultPlayer.TYPE_ID;
 	}
+
+
+	public static void ForceUpdateGroundedForView (int duration = 1) => ForceUpdateViewGroundingFrame = Game.GlobalFrame + duration;
 
 
 	// Ignore

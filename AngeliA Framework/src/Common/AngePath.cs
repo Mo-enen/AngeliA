@@ -8,12 +8,21 @@ public static class AngePath {
 
 	// Ext  
 	public const string MAP_FILE_EXT = "ibb";
+	public const string MAP_SEARCH_PATTERN = $"*.{MAP_FILE_EXT}";
 	public const string CONVERSATION_FILE_EXT = "txt";
 	public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation";
+	public const string EDITABLE_CONVERSATION_SEARCH_PATTERN = $"*.{EDITABLE_CONVERSATION_FILE_EXT}";
 	public const string LANGUAGE_FILE_EXT = "txt";
+	public const string LANGUAGE_SEARCH_PATTERN = $"*.{LANGUAGE_FILE_EXT}";
 	public const string SHEET_FILE_EXT = "sheet";
+	public const string SHEET_SEARCH_PATTERN = $"*.{SHEET_FILE_EXT}";
 	public const string PACKAGE_FILE_EXT = "angepack";
-
+	public const string MOVEMENT_CONFIG_FILE_EXT = "txt";
+	public const string MOVEMENT_CONFIG_SEARCH_PATTERN = $"*.{MOVEMENT_CONFIG_FILE_EXT}";
+	public const string INVENTORY_FILE_EXT = "inv";
+	public const string EQ_INVENTORY_FILE_EXT = "invq";
+	public const string INVENTORY_SEARCH_PATTERN = $"*.{INVENTORY_FILE_EXT}";
+	public const string EQ_INVENTORY_SEARCH_PATTERN = $"*.{EQ_INVENTORY_FILE_EXT}";
 
 	// System 
 	public static string PersistentDataPath { get; private set; }

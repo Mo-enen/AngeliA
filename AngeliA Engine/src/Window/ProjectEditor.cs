@@ -314,6 +314,19 @@ public class ProjectEditor : WindowUI {
 		var info = CurrentProject.Universe.Info;
 		var projectType = info.ProjectType;
 
+		// Project Type
+		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_PROJECT_TYPE);
+		var popRect = rect.ShrinkLeft(labelWidth).LeftHalf();
+		if (GUI.Button(
+			popRect,
+			PROJECT_TYPE_LABELS[((int)info.ProjectType).Clamp(0, PROJECT_TYPE_COUNT - 1)],
+			Skin.SmallDarkButton
+		)) {
+			ShowProjectTypeMenu(popRect.Shift(Unify(4), MasterScrollPos).BottomLeft());
+		}
+		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
+		rect.SlideDown(padding);
+
 		// Product Name
 		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);
 		string newProductName = GUI.SmallInputField(834267, rect.Shrink(labelWidth, 0, 0, 0), info.ProductName);
@@ -348,19 +361,6 @@ public class ProjectEditor : WindowUI {
 				SetDirty();
 			}
 		}
-		rect.SlideDown(padding);
-
-		// Project Type
-		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_PROJECT_TYPE);
-		var popRect = rect.ShrinkLeft(labelWidth).LeftHalf();
-		if (GUI.Button(
-			popRect,
-			PROJECT_TYPE_LABELS[((int)info.ProjectType).Clamp(0, PROJECT_TYPE_COUNT - 1)],
-			Skin.SmallDarkButton
-		)) {
-			ShowProjectTypeMenu(popRect.Shift(Unify(4), MasterScrollPos).BottomLeft());
-		}
-		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
 		rect.SlideDown(padding);
 
 		// Version

@@ -65,10 +65,6 @@ public static class Inventory {
 	#region --- VAR ---
 
 
-	// Const
-	private const string INV_EXT = "inv";
-	private const string EQ_INV_EXT = "invq";
-
 	// Api
 	public static bool PoolReady { get; private set; } = false;
 
@@ -263,8 +259,8 @@ public static class Inventory {
 
 		// Move File
 		string root = Universe.BuiltIn.SlotInventoryRoot;
-		string from = Util.CombinePaths(root, $"{currentName}.{EQ_INV_EXT}");
-		string to = Util.CombinePaths(root, $"{newName}.{EQ_INV_EXT}");
+		string from = Util.CombinePaths(root, $"{currentName}.{AngePath.EQ_INVENTORY_FILE_EXT}");
+		string to = Util.CombinePaths(root, $"{newName}.{AngePath.EQ_INVENTORY_FILE_EXT}");
 		Util.MoveFile(from, to);
 
 	}
@@ -640,13 +636,13 @@ public static class Inventory {
 		Pool.Clear();
 		string root = Universe.BuiltIn.SlotInventoryRoot;
 		if (!Util.FolderExists(root)) return;
-		foreach (var path in Util.EnumerateFiles(root, true, $"*.{INV_EXT}", $"*.{EQ_INV_EXT}")) {
+		foreach (var path in Util.EnumerateFiles(root, true, AngePath.INVENTORY_SEARCH_PATTERN, AngePath.EQ_INVENTORY_SEARCH_PATTERN)) {
 			try {
 				string name = Util.GetNameWithoutExtension(path);
 				int id = name.AngeHash();
 				if (Pool.ContainsKey(id)) continue;
 				InventoryData data;
-				if (path.EndsWith(INV_EXT)) {
+				if (path.EndsWith(AngePath.INVENTORY_FILE_EXT)) {
 					data = JsonUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
 				} else {
 					data = JsonUtil.LoadOrCreateJsonFromPath<EquipmentInventoryData>(path);
@@ -675,7 +671,7 @@ public static class Inventory {
 			if (!forceSave && !data.IsDirty) continue;
 			data.IsDirty = false;
 			// Save Inventory
-			string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? EQ_INV_EXT : INV_EXT)}");
+			string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT)}");
 			JsonUtil.SaveJsonToPath(data, path, false);
 			// Update Item Unlocked
 			UpdateItemUnlocked(data);

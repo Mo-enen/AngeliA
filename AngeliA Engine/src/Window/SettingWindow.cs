@@ -301,7 +301,7 @@ public class SettingWindow : WindowUI {
 		ThemePaths.Clear();
 		string themeFolder = EngineUtil.ThemeRoot;
 		if (!Util.FolderExists(themeFolder)) return;
-		foreach (var path in Util.EnumerateFiles(themeFolder, true, $"*.{AngePath.SHEET_FILE_EXT}")) {
+		foreach (var path in Util.EnumerateFiles(themeFolder, true, AngePath.SHEET_SEARCH_PATTERN)) {
 			ThemePaths.Add((path, Util.GetDisplayName(Util.GetNameWithoutExtension(path))));
 		}
 

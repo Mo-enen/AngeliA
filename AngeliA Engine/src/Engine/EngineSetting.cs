@@ -25,8 +25,7 @@ public class EngineSetting {
 
 	// Map Editor
 	[EngineSetting("MapEditor", "Start Play when Release Space Key", gameOnly: true)] public static readonly SavingBool MapEditor_QuickPlayerDrop = new("MapEditor.QuickPlayerDrop", false, SavingLocation.Global);
-	[EngineSetting("MapEditor", "Auto Zoom when Editing", gameOnly: true)] public static readonly SavingBool MapEditor_AutoZoom = new("MapEditor.AutoZoom", true, SavingLocation.Global);
-	[EngineSetting("MapEditor", "Show State Info on Bottom-Right", gameOnly: true)] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", false, SavingLocation.Global);
+	[EngineSetting("MapEditor", "Show State Info on Bottom-Right", gameOnly: true)] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", true, SavingLocation.Global);
 	[EngineSetting("MapEditor", "Show Map Behind", gameOnly: true)] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true, SavingLocation.Global);
 	[EngineSetting("MapEditor", "Show Gizmos", gameOnly: true)] public static readonly SavingBool MapEditor_ShowGizmos = new("MapEditor.ShowGizmos", true, SavingLocation.Global);
 	public static readonly SavingInt LastMapEditorViewX = new("Map.LastMapEditorViewX", 0, SavingLocation.Global);

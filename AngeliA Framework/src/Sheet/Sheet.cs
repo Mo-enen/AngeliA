@@ -319,7 +319,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	}
 
 	public void CombineAllSheetInFolder (string folderPath, bool topOnly = false, string ignoreNameWithExtension = "") {
-		foreach (var subPath in Util.EnumerateFiles(folderPath, topOnly, $"*.{AngePath.SHEET_FILE_EXT}")) {
+		foreach (var subPath in Util.EnumerateFiles(folderPath, topOnly, AngePath.SHEET_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithExtension(subPath);
 			if (name == ignoreNameWithExtension) continue;
 			var sheet = new Sheet();

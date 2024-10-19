@@ -65,7 +65,6 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Const
-	public const int SETTING_AUTO_ZOOM = 92176_0;
 	public const int SETTING_QUICK_PLAYER_DROP = 92176_1;
 	public const int SETTING_SHOW_BEHIND = 92176_2;
 	public const int SETTING_SHOW_STATE = 92176_3;
@@ -95,7 +94,6 @@ public sealed partial class MapEditor : WindowUI {
 	public static bool IsPlaying => IsActived && Instance.PlayingGame;
 	public static bool ResetCameraAtStart { get; set; } = true;
 	public static bool QuickPlayerDrop { get; set; } = false;
-	public static bool AutoZoom { get; set; } = true;
 	public static bool ShowState { get; set; } = false;
 	public static bool ShowBehind { get; set; } = true;
 	public static bool ShowGridGizmos { get; set; } = true;
@@ -186,9 +184,6 @@ public sealed partial class MapEditor : WindowUI {
 	[OnRemoteSettingChanged]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		switch (id) {
-			case SETTING_AUTO_ZOOM:
-				AutoZoom = data == 1;
-				break;
 			case SETTING_QUICK_PLAYER_DROP:
 				QuickPlayerDrop = data == 1;
 				break;
@@ -523,16 +518,7 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// Zoom
-		if (AutoZoom) {
-			// Auto
-			int newHeight = Universe.BuiltInInfo.DefaultViewHeight * 3 / 2;
-			if (TargetViewRect.height != newHeight) {
-				int newWidth = newHeight * Universe.BuiltInInfo.ViewRatio / 1000;
-				TargetViewRect.x -= (newWidth - TargetViewRect.width) / 2;
-				TargetViewRect.y -= (newHeight - TargetViewRect.height) / 2;
-				TargetViewRect.height = newHeight;
-			}
-		} else if (!MouseOutsideBoundary) {
+		if (!MouseOutsideBoundary) {
 			// Manual Zoom
 			int wheelDelta = CtrlHolding ? 0 : Input.MouseWheelDelta;
 			int zoomDelta = wheelDelta * Const.CEL * 2;
@@ -1127,12 +1113,8 @@ public sealed partial class MapEditor : WindowUI {
 			}
 
 			// Fix View Pos
-			if (!AutoZoom) {
-				TargetViewRect.x = ViewRect.x + ViewRect.width / 2 - (TargetViewRect.height * Universe.BuiltInInfo.ViewRatio / 1000) / 2;
-				TargetViewRect.y = ViewRect.y + ViewRect.height / 2 - TargetViewRect.height / 2;
-			} else {
-				TargetViewRect = ViewRect;
-			}
+			TargetViewRect.x = ViewRect.x + ViewRect.width / 2 - (TargetViewRect.height * Universe.BuiltInInfo.ViewRatio / 1000) / 2;
+			TargetViewRect.y = ViewRect.y + ViewRect.height / 2 - TargetViewRect.height / 2;
 
 		} else {
 			// Edit >> Play
@@ -1291,6 +1273,7 @@ public sealed partial class MapEditor : WindowUI {
 		player.SetCharacterState(CharacterState.GamePlay);
 		player.ForceStayOnStage(1);
 		RequireSetMode = true;
+		PlayerSystem.ForceUpdateGroundedForView(1);
 	}
 
 

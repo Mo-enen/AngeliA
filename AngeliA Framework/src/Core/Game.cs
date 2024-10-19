@@ -81,7 +81,7 @@ public abstract partial class Game {
 		// Framework
 		Util.AddAssembly(typeof(Game).Assembly);
 		// Game Libs
-		foreach (var dllpath in Util.EnumerateFiles("Library", false, "*.dll")) {
+		foreach (var dllpath in Util.EnumerateFiles("Library", true, "*.dll")) {
 			if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
 				Util.AddAssembly(assembly);
 			}
@@ -103,7 +103,7 @@ public abstract partial class Game {
 					string path = Util.ArgPath_to_Path(arg[5..]);
 					if (Util.PathIsFolder(path)) {
 						if (!Util.FolderExists(path)) continue;
-						foreach (var dllpath in Util.EnumerateFiles(path, false, "*.dll")) {
+						foreach (var dllpath in Util.EnumerateFiles(path, true, "*.dll")) {
 							if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
 								Util.AddAssembly(assembly);
 							}
@@ -339,7 +339,7 @@ public abstract partial class Game {
 				}
 			}
 		}
-		foreach (var fontPath in Util.EnumerateFiles(rootPath, true, "*.ttf")) {
+		foreach (var fontPath in Util.EnumerateFiles(rootPath, false, "*.ttf")) {
 			if (Fonts.Any(font => font.Path == fontPath)) continue;
 			var data = Instance.CreateNewFontData();
 			if (data == null || !data.LoadFromFile(fontPath, builtIn)) continue;
@@ -380,7 +380,7 @@ public abstract partial class Game {
 				fontChanged = true;
 			}
 		}
-		foreach (var fontPath in Util.EnumerateFiles(rootPath, true, "*.ttf")) {
+		foreach (var fontPath in Util.EnumerateFiles(rootPath, false, "*.ttf")) {
 			if (Fonts.Any(font => font.Path == fontPath)) continue;
 			// Load New Font
 			var data = Instance.CreateNewFontData();
