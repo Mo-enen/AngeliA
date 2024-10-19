@@ -19,7 +19,7 @@ public class PackageInfo {
 	[JsonIgnore] public string DllPath;
 	[JsonIgnore] public string SheetPath;
 	[JsonIgnore] public string ThemeFolder;
-	[JsonIgnore] public string LanguagePath;
+	[JsonIgnore] public string LanguageFolder;
 
 	[JsonIgnore] public bool DllFounded;
 	[JsonIgnore] public bool SheetFounded;

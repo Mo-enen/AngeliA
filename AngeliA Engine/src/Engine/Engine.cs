@@ -510,6 +510,9 @@ public partial class Engine {
 					window is not PixelEditor &&
 					window is not ProjectEditor &&
 					window is not PackageManager &&
+#if DEBUG
+					(!CurrentProject.IsEngineInternalProject || window is not LanguageEditor) &&
+#endif
 					window is not SettingWindow
 				) {
 					continue;

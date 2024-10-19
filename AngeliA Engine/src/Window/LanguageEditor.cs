@@ -81,7 +81,7 @@ public partial class LanguageEditor : WindowUI {
 			if (Util.FolderExists(from)) {
 				string to = project.Universe.LanguageRoot;
 				Util.DeleteFolder(to);
-				Util.CopyFolder(from, to, false, true, true);
+				Util.CopyFolder(from, to, true, true, true);
 			}
 		}
 #endif
@@ -155,6 +155,7 @@ public partial class LanguageEditor : WindowUI {
 				Value = new List<string>(new string[Languages.Count].FillWithValue(string.Empty)),
 			});
 			SetDirty();
+			SearchingText = "";
 		}
 		Cursor.SetCursorAsHand(rect);
 		rect.SlideRight();
@@ -166,6 +167,7 @@ public partial class LanguageEditor : WindowUI {
 		rect.width = Unify(108);
 		if (GUI.Button(rect, ADD_LANGUAGE, Skin.SmallCenterLabelButton)) {
 			OpenAddLanguagePopup();
+			SearchingText = "";
 		}
 		Cursor.SetCursorAsHand(rect);
 		rect.SlideRight();
@@ -179,6 +181,8 @@ public partial class LanguageEditor : WindowUI {
 			GenericDialogUI.SpawnDialog_Button(
 				MSG_REMOVE_EMPTY, BuiltInText.UI_DELETE, RemoveAllEmptyLines, BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
+			GenericDialogUI.SetItemTint(Skin.DeleteTint);
+			SearchingText = "";
 		}
 		Cursor.SetCursorAsHand(rect);
 		rect.SlideRight();
@@ -221,6 +225,7 @@ public partial class LanguageEditor : WindowUI {
 		// Help Button
 		if (GUI.Button(panelRect.Edge(Direction4.Right, Unify(36)), "?", Skin.SmallCenterLabelButton)) {
 			GenericDialogUI.SpawnDialog_Button(MSG_HELP, BuiltInText.UI_OK, Const.EmptyMethod);
+			SearchingText = "";
 		}
 
 		// Labels
@@ -236,7 +241,25 @@ public partial class LanguageEditor : WindowUI {
 		}
 
 		// Func
-		static void RemoveAllEmptyLines () => Instance?.RemoveAllEmptyLines();
+		static void RemoveAllEmptyLines () {
+			if (Instance == null) return;
+			Instance.ScrollY = 0;
+			for (int i = 0; i < Instance.Lines.Count; i++) {
+				var line = Instance.Lines[i];
+				bool empty = true;
+				foreach (var value in line.Value) {
+					if (!string.IsNullOrWhiteSpace(value)) {
+						empty = false;
+						break;
+					}
+				}
+				if (empty) {
+					Instance.Lines.RemoveAt(i);
+					i--;
+				}
+			}
+			Instance.SetDirty();
+		}
 	}
 
 
@@ -357,16 +380,11 @@ public partial class LanguageEditor : WindowUI {
 #if DEBUG
 		// Sync Project >> Engine
 		if (CurrentProject.IsEngineInternalProject) {
-			for (int languageIndex = 0; languageIndex < Languages.Count; languageIndex++) {
-				string lan = Languages[languageIndex];
-				string lanName = $"{lan}.{AngePath.LANGUAGE_FILE_EXT}";
-				string fromFolder = LanguageUtil.GetLanguageFolderPath(currentRoot, lan);
-				string toFolder = LanguageUtil.GetLanguageFolderPath(Universe.BuiltIn.LanguageRoot, lan);
-				Util.CopyFile(
-					Util.CombinePaths(fromFolder, lanName),
-					Util.CombinePaths(toFolder, lanName),
-					overwrite: true
-				);
+			string from = CurrentProject.Universe.LanguageRoot;
+			if (Util.FolderExists(from)) {
+				string to = Universe.BuiltIn.LanguageRoot;
+				Util.DeleteFolder(to);
+				Util.CopyFolder(from, to, true, true, true);
 			}
 			Language.SetLanguage(Language.CurrentLanguage);
 		}
@@ -454,26 +472,30 @@ public partial class LanguageEditor : WindowUI {
 
 
 	private void ShowDeleteLanguageDialog (int index) {
-		int lanIndex = index;
-		string lanName = Util.GetLanguageDisplayName(Languages[lanIndex]);
+		string lanName = Util.GetLanguageDisplayName(Languages[index]);
 		GenericDialogUI.SpawnDialog_Button(
 			string.Format(DELETE_MSG, lanName),
 			BuiltInText.UI_DELETE,
-			() => {
-				string targetRoot = CurrentProject.Universe.LanguageRoot;
-				string lan = Languages[lanIndex];
-				string lanFolderPath = LanguageUtil.GetLanguageFolderPath(targetRoot, lan);
-				string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
-				Util.DeleteFile(lanFilePath);
-				Languages.RemoveAt(lanIndex);
-				foreach (var data in Lines) {
-					data.Value.RemoveAt(lanIndex);
-				}
-			},
+			DeleteLanguage,
 			BuiltInText.UI_CANCEL,
 			Const.EmptyMethod
 		);
+		GenericDialogUI.SetCustomData(index);
 		GenericDialogUI.SetItemTint(Skin.DeleteTint, Color32.GREY_245);
+		// Func
+		static void DeleteLanguage () {
+			if (Instance == null || Instance.CurrentProject == null) return;
+			if (GenericDialogUI.InvokingData is not int lanIndex) return;
+			string targetRoot = Instance.CurrentProject.Universe.LanguageRoot;
+			string lan = Instance.Languages[lanIndex];
+			string lanFolderPath = LanguageUtil.GetLanguageFolderPath(targetRoot, lan);
+			string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
+			Util.DeleteFile(lanFilePath);
+			Instance.Languages.RemoveAt(lanIndex);
+			foreach (var data in Instance.Lines) {
+				data.Value.RemoveAt(lanIndex);
+			}
+		}
 	}
 
 
@@ -482,26 +504,6 @@ public partial class LanguageEditor : WindowUI {
 		int dot = key.IndexOf('.');
 		if (dot < 0) return char.IsLetter(key[0]) || char.IsNumber(key[0]) ? key : key[0].ToString();
 		return key[..dot];
-	}
-
-
-	private void RemoveAllEmptyLines () {
-		ScrollY = 0;
-		for (int i = 0; i < Lines.Count; i++) {
-			var line = Lines[i];
-			bool empty = true;
-			foreach (var value in line.Value) {
-				if (!string.IsNullOrWhiteSpace(value)) {
-					empty = false;
-					break;
-				}
-			}
-			if (empty) {
-				Lines.RemoveAt(i);
-				i--;
-			}
-		}
-		SetDirty();
 	}
 
 
