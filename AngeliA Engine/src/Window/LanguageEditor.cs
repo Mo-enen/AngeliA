@@ -41,16 +41,19 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode DELETE_MSG = ("UI.LanguageEditor.DeleteMsg", "Delete Language {0}?");
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
+	private static readonly LanguageCode ADD_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCode", "+ All Language Code");
 	private static readonly LanguageCode REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmpty", "Remove Empty");
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
+	private static readonly LanguageCode MSG_REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmptyMsg", "Remove all lines without any content?\nLines with only a key will also be removed.");
+	private static readonly LanguageCode MSG_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCodeMsg", "Add keys for all language code in game script?");
 	private static readonly LanguageCode MSG_HELP = ("UI.LanguageEditor.HelpMsg", "Empty keys will be deleted when open the project next time");
-	private static readonly LanguageCode MSG_REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmptyMsg", "Remove all lines without any content? Lines with only a key will also be removed.");
 	private const int SEARCH_ID = -19223;
 
 	// Api
 	public static LanguageEditor Instance { get; private set; }
 	public Project CurrentProject { get; private set; } = null;
 	public override string DefaultWindowName => "Language";
+	public bool RequireAddKeysForAllLanguageCode { get; set; } = false;
 
 	// Data
 	private readonly List<string> Languages = [];
@@ -58,6 +61,8 @@ public partial class LanguageEditor : WindowUI {
 	private readonly GUIStyle IndexLabelStyle = new(GUI.Skin.SmallGreyLabel) { Alignment = Alignment.MidRight };
 	private int ScrollY = 0;
 	private string SearchingText = string.Empty;
+	private int RequireReloadWhenFileChangedFrame = -1;
+	private long ReloadCheckingDate = 0;
 
 
 	#endregion
@@ -88,6 +93,8 @@ public partial class LanguageEditor : WindowUI {
 		Load(project.Universe.LanguageRoot);
 		ScrollY = 0;
 		SearchingText = string.Empty;
+		RequireAddKeysForAllLanguageCode = false;
+		RequireReloadWhenFileChangedFrame = -1;
 	}
 
 
@@ -126,8 +133,15 @@ public partial class LanguageEditor : WindowUI {
 			Save();
 		}
 
+		using var _ = new GUIInteractableScope(Game.GlobalFrame > RequireReloadWhenFileChangedFrame);
+
 		Update_Bar(windowRect.Edge(Direction4.Up, Unify(84)));
 		Update_Content(windowRect.Edge(Direction4.Down, windowRect.height - Unify(84)));
+
+		if (Game.GlobalFrame <= RequireReloadWhenFileChangedFrame) {
+			Update_ReloadWhenFileChanged();
+		}
+
 	}
 
 
@@ -167,6 +181,21 @@ public partial class LanguageEditor : WindowUI {
 		rect.width = Unify(108);
 		if (GUI.Button(rect, ADD_LANGUAGE, Skin.SmallCenterLabelButton)) {
 			OpenAddLanguagePopup();
+			SearchingText = "";
+		}
+		Cursor.SetCursorAsHand(rect);
+		rect.SlideRight();
+
+		// Line
+		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
+
+		// + All Language Code
+		rect.width = Unify(128);
+		if (GUI.Button(rect, ADD_ALL_LAN_CODE, Skin.SmallCenterLabelButton)) {
+			GenericDialogUI.SpawnDialog_Button(
+				MSG_ALL_LAN_CODE, BuiltInText.UI_ADD, AddForAllLanguageCode, BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+			GenericDialogUI.SetItemTint(Color32.GREEN_BETTER);
 			SearchingText = "";
 		}
 		Cursor.SetCursorAsHand(rect);
@@ -260,6 +289,29 @@ public partial class LanguageEditor : WindowUI {
 			}
 			Instance.SetDirty();
 		}
+		static void AddForAllLanguageCode () {
+			if (Instance == null || Instance.Languages.Count == 0) return;
+			var project = Instance.CurrentProject;
+			if (project == null) return;
+			Instance.Save();
+#if DEBUG
+			if (project.IsEngineInternalProject) {
+				// Engine Artworl Project
+				LanguageUtil.AddKeysForAllLanguageCode(project.Universe.LanguageRoot);
+				Instance.Load(project.Universe.LanguageRoot);
+				Instance.SetDirty();
+			}
+#endif
+			if (!project.IsEngineInternalProject) {
+				// Common Project
+				Instance.RequireAddKeysForAllLanguageCode = true;
+				Instance.RequireReloadWhenFileChangedFrame = Game.GlobalFrame + 60;
+				string lan = Instance.Languages[0];
+				Instance.ReloadCheckingDate = Util.GetFileModifyDate(
+					Util.CombinePaths(project.Universe.LanguageRoot, lan, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}")
+				);
+			}
+		}
 	}
 
 
@@ -275,6 +327,7 @@ public partial class LanguageEditor : WindowUI {
 		int itemSpaceY = Unify(1);
 		int panelPadding = Unify(64);
 		int indexWidth = Unify(32);
+		int highlightBorder = GUI.Unify(1) / 2;
 		panelRect = panelRect.Shrink(panelPadding, panelPadding + scrollBarWidth, 0, 0);
 		int pageCount = panelRect.height.CeilDivide(itemHeight);
 		int shiftedItemCount = Lines.Count + 6;
@@ -332,7 +385,11 @@ public partial class LanguageEditor : WindowUI {
 			// Contents
 			for (int j = 0; j < line.Value.Count; j++) {
 				var shrinkedContentRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
-				line.Value[j] = GUI.SmallInputField(ctrlID++, shrinkedContentRect, line.Value[j], out changed, out _);
+				string content = line.Value[j];
+				line.Value[j] = GUI.SmallInputField(ctrlID++, shrinkedContentRect, content, out changed, out _);
+				if (string.IsNullOrEmpty(content)) {
+					Renderer.DrawSlice(BuiltInSprite.FRAME_16, shrinkedContentRect, highlightBorder, highlightBorder, highlightBorder, highlightBorder, Color32.YELLOW);
+				}
 				if (changed) SetDirty();
 				rect.x += rect.width;
 			}
@@ -349,6 +406,21 @@ public partial class LanguageEditor : WindowUI {
 			ScrollY = ScrollY.Clamp(0, shiftedItemCount - pageCount);
 		}
 
+	}
+
+
+	private void Update_ReloadWhenFileChanged () {
+		if (CurrentProject == null) return;
+		string lan = Languages[0];
+		long currentDate = Util.GetFileModifyDate(
+			Util.CombinePaths(CurrentProject.Universe.LanguageRoot, lan, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}")
+		);
+		if (currentDate != ReloadCheckingDate) {
+			// Reload
+			RequireReloadWhenFileChangedFrame = -1;
+			Load(CurrentProject.Universe.LanguageRoot);
+			Instance.SetDirty();
+		}
 	}
 
 
@@ -377,6 +449,7 @@ public partial class LanguageEditor : WindowUI {
 			string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
 			LanguageUtil.SaveAllPairsToDisk(lanFilePath, list);
 		}
+		RequireReloadWhenFileChangedFrame = -1;
 #if DEBUG
 		// Sync Project >> Engine
 		if (CurrentProject.IsEngineInternalProject) {
@@ -402,6 +475,7 @@ public partial class LanguageEditor : WindowUI {
 
 	private void Load (string languageRoot) {
 
+		RequireReloadWhenFileChangedFrame = -1;
 		CleanDirty();
 		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;
 		Lines.Clear();
@@ -425,7 +499,7 @@ public partial class LanguageEditor : WindowUI {
 			string lanName = Languages[languageIndex];
 			string lanFolderPath = LanguageUtil.GetLanguageFolderPath(languageRoot, lanName);
 			string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lanName}.{AngePath.LANGUAGE_FILE_EXT}");
-			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDiskAtPath(lanFilePath)) {
+			foreach (var (key, value) in LanguageUtil.LoadAllPairsFromDiskAtPath(lanFilePath, keepEscapeCharacters: true)) {
 				LanguageLine data;
 				if (pool.TryGetValue(key, out int index)) {
 					data = Lines[index];
@@ -438,7 +512,9 @@ public partial class LanguageEditor : WindowUI {
 					pool.Add(key, Lines.Count);
 					Lines.Add(data);
 				}
-				data.Value[languageIndex] = value;
+				if (value.Length > data.Value[languageIndex].Length) {
+					data.Value[languageIndex] = value;
+				}
 			}
 		}
 
@@ -489,8 +565,7 @@ public partial class LanguageEditor : WindowUI {
 			string targetRoot = Instance.CurrentProject.Universe.LanguageRoot;
 			string lan = Instance.Languages[lanIndex];
 			string lanFolderPath = LanguageUtil.GetLanguageFolderPath(targetRoot, lan);
-			string lanFilePath = Util.CombinePaths(lanFolderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
-			Util.DeleteFile(lanFilePath);
+			Util.DeleteFolder(lanFolderPath);
 			Instance.Languages.RemoveAt(lanIndex);
 			foreach (var data in Instance.Lines) {
 				data.Value.RemoveAt(lanIndex);

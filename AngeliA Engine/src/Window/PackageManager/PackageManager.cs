@@ -123,12 +123,15 @@ public class PackageManager : WindowUI {
 		var rect = panelRect.EdgeUp(cardHeight);
 		panelRect.height = PackageInfoList.Count * rect.height;
 		int extendedContentSize = panelRect.height + Unify(64);
+		bool isGame = CurrentProject.Universe.Info.ProjectType == ProjectType.Game;
+
 		using (var scroll = new GUIVerticalScrollScope(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
 			MasterScrollPos = scroll.PositionY;
 			for (int i = 0; i < PackageInfoList.Count; i++) {
 				rect.xMin = panelRect.x;
 				rect.yMin = rect.yMax - cardHeight;
 				var info = PackageInfoList[i];
+				if (!isGame && !info.ThemeFounded) continue;
 
 				// Package Icon
 				Game.DrawGizmosTexture(

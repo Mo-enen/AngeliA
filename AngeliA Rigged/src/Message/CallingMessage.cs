@@ -26,6 +26,7 @@ public class RigCallingMessage {
 		None = 0,
 		RunCodeAnalysis,
 		RunCodeAnalysisSilently,
+		AddKeysForAllLanguageCode,
 	}
 
 

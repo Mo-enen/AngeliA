@@ -182,10 +182,11 @@ public partial class Engine {
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
 		var console = ConsoleWindow.Instance;
+		var lanEditor = LanguageEditor.Instance;
 		var currentUniverse = CurrentProject?.Universe;
 		var currentInfo = currentUniverse?.Info;
 
-		if (console.RequireCodeAnalysis != 0) {
+		if (console.RequireCodeAnalysis != 0 || lanEditor.RequireAddKeysForAllLanguageCode) {
 			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
 		}
 
@@ -224,11 +225,18 @@ public partial class Engine {
 				rigEdt.RequireReloadPlayerMovement = false;
 				calling.RequireReloadPlayerMovement();
 			}
+
+			// Tool Command
 			if (console.RequireCodeAnalysis != 0) {
+				ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
 				calling.RequireToolsetCommand = console.RequireCodeAnalysis > 0 ?
 					RigCallingMessage.ToolCommand.RunCodeAnalysis :
 					RigCallingMessage.ToolCommand.RunCodeAnalysisSilently;
 				console.RequireCodeAnalysis = 0;
+			} else if (lanEditor.RequireAddKeysForAllLanguageCode) {
+				ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
+				calling.RequireToolsetCommand = RigCallingMessage.ToolCommand.AddKeysForAllLanguageCode;
+				lanEditor.RequireAddKeysForAllLanguageCode = false;
 			}
 
 			// Map Editor Setting Changed

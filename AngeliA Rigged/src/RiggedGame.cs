@@ -278,6 +278,9 @@ public partial class RiggedGame : Game {
 					fixScriptFileName: false
 				);
 				break;
+			case RigCallingMessage.ToolCommand.AddKeysForAllLanguageCode:
+				LanguageUtil.AddKeysForAllLanguageCode(Universe.BuiltIn.LanguageRoot);
+				break;
 		}
 
 	}

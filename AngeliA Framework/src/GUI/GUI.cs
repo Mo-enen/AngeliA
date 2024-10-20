@@ -918,9 +918,11 @@ public static class GUI {
 			// Func
 			void RemoveSelection () {
 				int newBeamIndex = Util.Min(beamIndex, beamIndex + beamLength);
-				text = text.Remove(newBeamIndex, beamLength.Abs());
-				beamIndex = BeamIndex = newBeamIndex;
-				beamLength = BeamLength = 0;
+				if (beamLength.Abs() > 0) {
+					text = text.Remove(newBeamIndex, beamLength.Abs());
+					beamIndex = BeamIndex = newBeamIndex;
+					beamLength = BeamLength = 0;
+				}
 			}
 		}
 

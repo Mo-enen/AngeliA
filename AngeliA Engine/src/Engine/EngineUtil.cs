@@ -480,13 +480,11 @@ public static class EngineUtil {
 		info.DllPath = Util.CombinePaths(packageFolder, $"{info.PackageName}.dll");
 		info.SheetPath = Util.CombinePaths(packageFolder, $"{info.PackageName}.{AngePath.SHEET_FILE_EXT}");
 		info.ThemeFolder = Util.CombinePaths(packageFolder, "Theme");
-		info.LanguageFolder = Util.CombinePaths(packageFolder, "Language");
 
 		info.DllFounded = Util.FileExists(info.DllPath);
 		info.SheetFounded = Util.FileExists(info.SheetPath);
 		info.ThemeFounded = Util.GetFileCount(info.ThemeFolder, AngePath.SHEET_SEARCH_PATTERN, SearchOption.TopDirectoryOnly) > 0;
-		info.LanguageFounded = Util.GetFileCount(info.LanguageFolder, AngePath.LANGUAGE_SEARCH_PATTERN, SearchOption.TopDirectoryOnly) > 0;
-
+		
 		return info;
 	}
 
@@ -524,18 +522,6 @@ public static class EngineUtil {
 			}
 		}
 
-		// Language
-		if (packageInfo.LanguageFounded) {
-			string fromFolder = packageInfo.LanguageFolder;
-			string toRoot = project.Universe.LanguageRoot;
-			foreach (string fromFile in Util.EnumerateFiles(fromFolder, true, AngePath.LANGUAGE_SEARCH_PATTERN)) {
-				string lan = Util.GetNameWithoutExtension(fromFile);
-				string toLanFolder = LanguageUtil.GetLanguageFolderPath(toRoot, lan);
-				string toPath = Util.CombinePaths(toLanFolder, $"{packageInfo.PackageName}.{AngePath.LANGUAGE_FILE_EXT}");
-				Util.CopyFile(fromFile, toPath, true);
-			}
-		}
-
 	}
 
 
@@ -557,11 +543,6 @@ public static class EngineUtil {
 		foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeFolder, true, AngePath.SHEET_SEARCH_PATTERN)) {
 			string themeName = Util.GetNameWithExtension(themePath);
 			Util.DeleteFile(Util.CombinePaths(ThemeRoot, themeName));
-		}
-
-		// Language
-		foreach (string lanFolder in Util.EnumerateFolders(project.Universe.LanguageRoot, true)) {
-			Util.DeleteFile(Util.CombinePaths(lanFolder, $"{packageInfo.PackageName}.{AngePath.LANGUAGE_FILE_EXT}"));
 		}
 
 	}
@@ -593,16 +574,6 @@ public static class EngineUtil {
 			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeFolder, true, AngePath.SHEET_SEARCH_PATTERN)) {
 				string themeName = Util.GetNameWithExtension(themePath);
 				if (engineThemeHash.Contains(themeName.AngeHash())) {
-					installed = true;
-					break;
-				}
-			}
-		}
-		// Check Language
-		if (!installed && packageInfo.LanguageFounded) {
-			foreach (string lanFolder in Util.EnumerateFolders(project.Universe.LanguageRoot, true)) {
-				string targetFile = Util.CombinePaths(lanFolder, $"{packageInfo.PackageName}.{AngePath.LANGUAGE_FILE_EXT}");
-				if (Util.FileExists(targetFile)) {
 					installed = true;
 					break;
 				}
@@ -678,13 +649,6 @@ public static class EngineUtil {
 					return false;
 				}
 				Util.CopyFile(sourceSheetPath, Util.CombinePaths(tempFolder, "Theme", $"{packageName}.{AngePath.SHEET_FILE_EXT}"));
-			}
-
-			// Language
-			if (type == ProjectType.Game) {
-
-
-
 			}
 
 			// Icon

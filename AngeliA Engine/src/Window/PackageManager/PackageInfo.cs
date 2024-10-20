@@ -4,7 +4,7 @@ namespace AngeliaEngine;
 
 public class PackageInfo {
 
-	public bool AnyResourceFounded => DllFounded || SheetFounded || ThemeFounded || LanguageFounded;
+	public bool AnyResourceFounded => DllFounded || SheetFounded || ThemeFounded;
 
 	public string PackageName;
 	public string DisplayName;
@@ -19,11 +19,9 @@ public class PackageInfo {
 	[JsonIgnore] public string DllPath;
 	[JsonIgnore] public string SheetPath;
 	[JsonIgnore] public string ThemeFolder;
-	[JsonIgnore] public string LanguageFolder;
 
 	[JsonIgnore] public bool DllFounded;
 	[JsonIgnore] public bool SheetFounded;
 	[JsonIgnore] public bool ThemeFounded;
-	[JsonIgnore] public bool LanguageFounded;
 
 }
