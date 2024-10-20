@@ -49,6 +49,7 @@ public class SettingWindow : WindowUI {
 	private static readonly LanguageCode MENU_CATA_SIGN = ("Menu.Group.Sign", "Sign");
 	private static readonly LanguageCode MENU_CATA_OTHER = ("Menu.Group.Other", "Fn");
 	private static readonly LanguageCode LABEL_THEME = ("UI.EngineSetting.Theme", "Theme");
+	private static readonly LanguageCode LABEL_LANGUAGE = ("UI.EngineSetting.Language", "Language");
 
 	// Api
 	public static SettingWindow Instance { get; private set; }
@@ -283,13 +284,25 @@ public class SettingWindow : WindowUI {
 
 
 	private IRect DrawExtraContent (IRect rect) {
+
+		// Theme
 		GUI.SmallLabel(rect, LABEL_THEME);
 		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, Skin.Name, Skin.SmallDarkButton)) {
+		if (GUI.Button(popRect, Skin.Name == "Built-in" ? LABEL_THEME_BUILT_IN : Skin.Name, Skin.SmallDarkButton)) {
 			ShowThemeMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
 		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
 		rect.SlideDown(GUI.FieldPadding);
+
+		// Language
+		GUI.SmallLabel(rect, LABEL_LANGUAGE);
+		popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
+		if (GUI.Button(popRect, Util.GetLanguageDisplayName(Language.CurrentLanguage), Skin.SmallDarkButton)) {
+			ShowLanguageMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
+		}
+		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
+		rect.SlideDown(GUI.FieldPadding);
+
 		return rect;
 	}
 
@@ -324,6 +337,29 @@ public class SettingWindow : WindowUI {
 				Instance.RequireChangeThemePath = Instance.ThemePaths[index.Clamp(0, Instance.ThemePaths.Count - 1)].path;
 			}
 		}
+	}
+
+
+	private void ShowLanguageMenu (Int2 pos) {
+
+		GenericPopupUI.BeginPopup(pos);
+
+		int len = Language.LanguageCount;
+		for (int i = 0; i < len; i++) {
+			string lan = Language.GetLanguageAt(i);
+			GenericPopupUI.AddItem(
+				Util.GetLanguageDisplayName(lan),
+				MenuInvoke,
+				true,
+				lan == Language.CurrentLanguage,
+				data: lan
+			);
+		}
+		static void MenuInvoke () {
+			if (GenericPopupUI.InvokingItemData is not string lan) return;
+			Language.SetLanguage(lan);
+		}
+
 	}
 
 

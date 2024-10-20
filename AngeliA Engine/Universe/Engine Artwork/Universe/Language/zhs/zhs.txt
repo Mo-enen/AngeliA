@@ -1,4 +1,6 @@
-﻿CtrlHint.Adjust:调整
+﻿UI.EngineSetting.Language:语言
+ConsoleWindow:终端
+CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:制作
 CtrlHint.Drive:驾驶
@@ -28,6 +30,7 @@ FileBrowser.Fav.Desktop:桌面
 FileBrowser.Fav.Pic:图片
 FileBrowser.FileName:文件名
 FileBrowser.FolderName:文件夹名
+GameEditor:游戏
 Hint.Cheat.Match:按下回车键作弊
 Hint.EmptyMsg:无内容
 Hint.Publishing:正在发布
@@ -60,6 +63,9 @@ Label.Project.UseLightingSystem:使用地图光照系统
 Label.Project.UseMapEditor:使用地图编辑器
 Label.Project.UseProceduralMap:自动生成地图
 Label.ProjectType:工程类型
+Label.ProjectType.Artwork:美工
+Label.ProjectType.Game:游戏
+Label.ProjectType.Theme:引擎主题
 Label.Publish:发布
 Label.R:R
 Label.Recompile:编译
@@ -71,6 +77,7 @@ Label.Top:上面
 Label.U:U
 Label.Up:上
 Label.Version:版本
+LanguageEditor:语言
 Log.BuildError.CsprojNotExists:未找到Csproj文件
 Log.BuildError.DevNameInvalid:生成错误：开发者名为空或包含不支持的字符
 Log.BuildError.DotnetSdkNotFound:生成错误：未找到引擎世界文件夹中的Dotnet SDK
@@ -149,6 +156,8 @@ Noti.UndoPaint:撤销：绘图
 Noti.UndoSpriteMeta:撤销：图块信息
 Noti.UndoSpriteSize:撤销：图块尺寸
 Notify.CheatPerform:已执行作弊码
+PackageManager:拓展
+PixelEditor:美工
 PixelEditor.Title.ExportPNG:导出为PNG文件
 PixelEditor.Title.ImportAse:导入Aseprite文件
 PixelEditor.Title.ImportPNG:导入PNG文件
@@ -156,6 +165,7 @@ PlayerQMenu.Hand:手
 Project.Label.Game:游戏
 Project.Label.Resource:资源
 Project.Label.Stage:场景
+ProjectEditor:工程
 Setting.BehindAlpha:后置场景透明度
 Setting.BehindPara:后置场景缩放
 Setting.DefViewHeight:默认场景高度（块）
@@ -166,6 +176,7 @@ Setting.Link.Saving:存档文件夹
 Setting.MaxViewHeight:最大场景高度（块）
 Setting.MinViewHeight:最小场景高度（块）
 Setting.ViewRatio:场景长宽比
+SettingWindow:设置
 Tip.AddAtlas:创建图集
 Tip.BorderD:下边框
 Tip.BorderL:左边框
@@ -186,8 +197,14 @@ Tip.PivotX:枢轴X
 Tip.PivotY:枢轴Y
 Tip.PixelEditor.ExportPNG:将当前画布导出为PNG文件
 Tip.PixelEditor.ImportPNG:导入PNG文件到当前画布
-Tip.PixOperation.FlipH:水平反转选中的像素
-Tip.PixOperation.FlipV:垂直反转选中的像素
+Tip.PixelTool.Bucket:桶
+Tip.PixelTool.Circle:圆
+Tip.PixelTool.Line:线
+Tip.PixelTool.Rect:矩
+Tip.PixelTool.Select:选
+Tip.PixelTool.Sprite:图
+Tip.PixOperation.FlipH:水平翻转选中的像素
+Tip.PixOperation.FlipV:垂直翻转选中的像素
 Tip.PixOperation.RotC:顺时针旋转选中的像素
 Tip.PixOperation.RotCC:逆时针旋转选中的像素
 Tip.Publish:生成并发布成品
@@ -214,6 +231,17 @@ UI.Add:添加
 UI.AddProjectTitle:添加现有工程
 UI.Apply:应用
 UI.Back:返回
+UI.BodyPart.ArmHand:臂
+UI.BodyPart.Body:身
+UI.BodyPart.Ear:耳
+UI.BodyPart.Face:脸
+UI.BodyPart.Hair:发
+UI.BodyPart.Head:头
+UI.BodyPart.Height:高
+UI.BodyPart.Horn:角
+UI.BodyPart.LegFoot:腿
+UI.BodyPart.Tail:尾
+UI.BodyPart.Wing:翼
 UI.Cancel:取消
 UI.Continue:继续
 UI.CreateProjectTitle:新工程
@@ -222,7 +250,50 @@ UI.DeleteAtlasMsg:是否删除图集“{0}”？所有包含的图块都将被�
 UI.DeleteProjectMsg:是否移除工程“{0}”？\n这不会删除文件
 UI.DontSave:不保存
 UI.Empty:空
+UI.EngineSetting.AddPrefixMarkForMessageFromGame:游戏消息加前缀“|”
+UI.EngineSetting.Artwork:美工
+UI.EngineSetting.AutoRecompile:代码修改时自动编译
+UI.EngineSetting.BackgroundColor:背景颜色
+UI.EngineSetting.BlinkWhenError:编译错误时闪烁
+UI.EngineSetting.Console:终端
+UI.EngineSetting.Engine:引擎
+UI.EngineSetting.GradientBackground:渐变背景颜色
+UI.EngineSetting.Hotkey:快捷键
+UI.EngineSetting.Hotkey_ClearConsole:清空终端
+UI.EngineSetting.Hotkey_FrameDebug_Next:下一帧
+UI.EngineSetting.Hotkey_Pix_FlipX:水平翻转
+UI.EngineSetting.Hotkey_Pix_FlipY:垂直翻转
+UI.EngineSetting.Hotkey_Pix_PaletteNext:美工-调色板下一个
+UI.EngineSetting.Hotkey_Pix_PalettePrev:美工-调色板上一个
+UI.EngineSetting.Hotkey_Pix_RotC:顺时针旋转
+UI.EngineSetting.Hotkey_Pix_RotCC:逆时针旋转
+UI.EngineSetting.Hotkey_PixTool_Bucket:美工-桶工具
+UI.EngineSetting.Hotkey_PixTool_Circle:美工-圆工具
+UI.EngineSetting.Hotkey_PixTool_Line:美工-线工具
+UI.EngineSetting.Hotkey_PixTool_Rect:美工-矩工具
+UI.EngineSetting.Hotkey_PixTool_Select:美工-选工具
+UI.EngineSetting.Hotkey_PixTool_Sprite:美工-图工具
+UI.EngineSetting.Hotkey_Recompile:编译
+UI.EngineSetting.Hotkey_Run:运行游戏
+UI.EngineSetting.Hotkey_Window_Artwork:打开美工窗口
+UI.EngineSetting.Hotkey_Window_Console:打开终端窗口
+UI.EngineSetting.Hotkey_Window_Language:打开语言窗口
+UI.EngineSetting.Hotkey_Window_MapEditor:打开游戏窗口
+UI.EngineSetting.Hotkey_Window_Package:打开拓展窗口
+UI.EngineSetting.Hotkey_Window_Project:打开工程窗口
+UI.EngineSetting.Hotkey_Window_Setting:打开设置窗口
+UI.EngineSetting.MapEditor:关卡编辑器
+UI.EngineSetting.MapEditor_QuickPlayerDrop:松开空格键时放下玩家
+UI.EngineSetting.MapEditor_ShowBehind:显示后置场景
+UI.EngineSetting.MapEditor_ShowGizmos:显示网格
+UI.EngineSetting.MapEditor_ShowState:显示状态数字
+UI.EngineSetting.OpenLastProjectOnStart:打开上次的工程
+UI.EngineSetting.ShowLogTime:显示输出时间
+UI.EngineSetting.ShowTagPreview:显示标签预览
+UI.EngineSetting.SolidPaintingPreview:实心的绘制预览
 UI.EngineSetting.Theme:主题
+UI.EngineSetting.UseNotification:使用通知
+UI.EngineSetting.UseTooltip:使用工具提示
 UI.Equipment.Bodysuit:衣服
 UI.Equipment.Gloves:手套
 UI.Equipment.HandTool:工具
@@ -233,6 +304,14 @@ UI.Explore:在资源管理器中打开
 UI.FileDropLabel.Music:音乐
 UI.FileDropLabel.Sound:音效
 UI.FileDropMsg.Audio:将音频文件 {0} 导入为：
+UI.GameKey.Action:行动
+UI.GameKey.Down:下
+UI.GameKey.Jump:跳跃
+UI.GameKey.Left:左
+UI.GameKey.Right:右
+UI.GameKey.Select:选择
+UI.GameKey.Start:开始
+UI.GameKey.Up:上
 UI.GameOver:游戏结束
 UI.Ignore:忽略
 UI.LanguageEditor.AddAllLanCode:+ 所有语言码
@@ -245,12 +324,129 @@ UI.LanguageEditor.Key:键
 UI.LanguageEditor.RemoveEmpty:删除所有空内容
 UI.LanguageEditor.RemoveEmptyMsg:是否删除所有内容为空的行？（键不算内容）
 UI.Menu:菜单
+UI.MovementProp.AllowJumpWhenClimbing:攀爬时允许跳跃
+UI.MovementProp.ClimbAvailable:允许攀爬
+UI.MovementProp.ClimbSpeedX:攀爬速度X
+UI.MovementProp.ClimbSpeedY:攀爬速度Y
+UI.MovementProp.CrashAvailable:允许摔倒
+UI.MovementProp.CrashDeceleration:摔倒减速度
+UI.MovementProp.CrashDuration:摔倒时长
+UI.MovementProp.CrashRunDurationRequire:跑多久摔倒
+UI.MovementProp.CrashWhenSlippy:脚滑时摔倒
+UI.MovementProp.DashAcceleration:冲刺加速度
+UI.MovementProp.DashAvailable:允许冲刺
+UI.MovementProp.DashCancelLoseRate:取消冲刺失速度
+UI.MovementProp.DashCooldown:冲刺冷却
+UI.MovementProp.DashDuration:冲刺时长
+UI.MovementProp.DashHeightAmount:冲刺身高率
+UI.MovementProp.DashPutoutFire:冲刺可灭火
+UI.MovementProp.DashSpeed:冲刺速度
+UI.MovementProp.DashWithRoll:冲刺时翻滚
+UI.MovementProp.FirstJumpWithRoll:首跳翻滚
+UI.MovementProp.FlyAcceleration:飞行加速度
+UI.MovementProp.FlyAvailable:允许飞行
+UI.MovementProp.FlyCooldown:飞行冷却
+UI.MovementProp.FlyDeceleration:飞行减速度
+UI.MovementProp.FlyFallSpeed:飞行落速
+UI.MovementProp.FlyGravityFallRate:飞行下落重力率
+UI.MovementProp.FlyGravityRiseRate:飞行上升重力率
+UI.MovementProp.FlyHeightAmount:飞行身高率
+UI.MovementProp.FlyMoveSpeed:飞行移动速度
+UI.MovementProp.FlyRiseSpeed:飞行上升速度
+UI.MovementProp.GlideOnFlying:飞行时滑翔
+UI.MovementProp.GrabFlipThroughDownAvailable:允许抓爬时下翻
+UI.MovementProp.GrabFlipThroughDuration:抓爬翻越时长
+UI.MovementProp.GrabFlipThroughUpAvailable:允许抓爬时上翻
+UI.MovementProp.GrabMoveSpeedX:抓爬移动速度X
+UI.MovementProp.GrabMoveSpeedY:抓爬移动速度Y
+UI.MovementProp.GrabSideAvailable:允许侧抓爬
+UI.MovementProp.GrabSideHeightAmount:侧抓爬身高率
+UI.MovementProp.GrabSideJumpKickSpeed:侧抓爬跳踢速度
+UI.MovementProp.GrabTopAvailable:允许上抓爬
+UI.MovementProp.GrabTopHeightAmount:上抓爬身高率
+UI.MovementProp.GrowJumpCountWhenFallOffEdge:走落边缘消耗跳跃数
+UI.MovementProp.InWaterSpeedRate:水中速率
+UI.MovementProp.JumpCount:跳跃数
+UI.MovementProp.JumpDownThoughOneway:允许下跳翻越单向板
+UI.MovementProp.JumpReleaseSpeedRate:松开跳跃键乘速率
+UI.MovementProp.JumpRiseGravityRate:跳跃上升重力
+UI.MovementProp.JumpSpeed:跳跃速度
+UI.MovementProp.MovementHeight:身高
+UI.MovementProp.MovementWidth:身宽
+UI.MovementProp.PoundAvailable:允许冲坐
+UI.MovementProp.PoundPutoutFire:冲坐可灭火
+UI.MovementProp.PoundSpeed:冲坐速度
+UI.MovementProp.PushAvailable:允许推
+UI.MovementProp.PushSpeed:推速度
+UI.MovementProp.ResetJumpCountWhenGrab:上抓爬时重置跳跃数
+UI.MovementProp.ResetJumpCountWhenSlide:侧抓爬时重置跳跃数
+UI.MovementProp.RunAcceleration:跑步加速度
+UI.MovementProp.RunAvailable:允许跑步
+UI.MovementProp.RunBrakeAcceleration:跑步刹车加速度
+UI.MovementProp.RunDeceleration:跑步减速度
+UI.MovementProp.RunSpeed:跑步速度
+UI.MovementProp.RushAcceleration:突进加速度
+UI.MovementProp.RushAvailable:允许突进
+UI.MovementProp.RushCooldown:突进冷却
+UI.MovementProp.RushDeceleration:突进减速度
+UI.MovementProp.RushDuration:突进时长
+UI.MovementProp.RushHeightAmount:突进身高率
+UI.MovementProp.RushInAir:允许空中突进
+UI.MovementProp.RushInWater:允许水中突进
+UI.MovementProp.RushPutoutFire:突进可灭火
+UI.MovementProp.RushSpeed:突进速度
+UI.MovementProp.RushStiff:突进硬直
+UI.MovementProp.RushStopSpeed:突进停速
+UI.MovementProp.RushWhenClimb:允许攀爬时突进
+UI.MovementProp.RushWhenSquat:允许下蹲时突进
+UI.MovementProp.SlideAvailable:允许滑墙
+UI.MovementProp.SlideDropSpeed:滑墙下落速度
+UI.MovementProp.SlideJumpKickSpeed:滑墙跳踢速度
+UI.MovementProp.SlideOnAnyBlock:在任意块上滑墙
+UI.MovementProp.SlipAcceleration:脚滑加速度
+UI.MovementProp.SlipAvailable:允许脚滑
+UI.MovementProp.SlipDeceleration:脚滑减速度
+UI.MovementProp.SquatAcceleration:下蹲加速度
+UI.MovementProp.SquatAvailable:允许下蹲
+UI.MovementProp.SquatDeceleration:下蹲减速度
+UI.MovementProp.SquatHeightAmount:下蹲身高率
+UI.MovementProp.SquatMoveSpeed:下蹲移动速度
+UI.MovementProp.SubsequentJumpWithRoll:后跳翻滚
+UI.MovementProp.SwimAcceleration:游泳加速度
+UI.MovementProp.SwimAvailable:允许游泳
+UI.MovementProp.SwimDeceleration:游泳减速度
+UI.MovementProp.SwimHeightAmount:游泳身高率
+UI.MovementProp.SwimJumpSpeed:游泳上蹿速度
+UI.MovementProp.SwimSpeed:游泳移动速度
+UI.MovementProp.SwimWidthAmount:游泳身宽率
+UI.MovementProp.WalkAcceleration:走步加速度
+UI.MovementProp.WalkAvailable:允许走步
+UI.MovementProp.WalkBrakeAcceleration:走步刹车加速度
+UI.MovementProp.WalkDeceleration:走步减速度
+UI.MovementProp.WalkSpeed:走步速度
+UI.MovementTab.Climb:攀爬
+UI.MovementTab.Crash:摔倒
+UI.MovementTab.Dash:冲刺
+UI.MovementTab.Fly:飞行
+UI.MovementTab.Grab:抓爬
+UI.MovementTab.Jump:跳跃
+UI.MovementTab.Pound:冲坐
+UI.MovementTab.Push:推
+UI.MovementTab.Run:跑步
+UI.MovementTab.Rush:突进
+UI.MovementTab.Size:尺寸
+UI.MovementTab.Slide:滑墙
+UI.MovementTab.Slip:脚滑
+UI.MovementTab.Squat:下蹲
+UI.MovementTab.Swim:游泳
+UI.MovementTab.Walk:走步
 UI.No:否
 UI.None:无
 UI.OFF:关
 UI.OK:是
 UI.ON:开
 UI.Open:打开
+UI.PackManager.DeletePackageMsg:是否删除拓展包 {0} ? 这将删除相应的文件。
 UI.PaletteTab.All:所有
 UI.PaletteTab.Pinned:收藏
 UI.Project.DeleteFontMsg:是否删除字体 {0} ？这会删除文件。
@@ -274,4 +470,9 @@ UI.RigEditor.SolidIllu:固体自发光
 UI.RuleHelpMsg:自动平铺规则适用于地图编辑器中的自动平铺块。\n\n必须将图块设为图块组才能使其工作。\n\n将多个图块命名为：图块 0、图块 1、图块 2……它们就会被视为图块组
 UI.Save:保存
 UI.Setting:设置
+UI.Suit.Bodysuit:上装
+UI.Suit.Glove:手套
+UI.Suit.Hat:帽子
+UI.Suit.Pants:裤子
+UI.Suit.Shoes:鞋
 UI.Yes:是

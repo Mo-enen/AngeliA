@@ -35,6 +35,7 @@ public class PackageManager : WindowUI {
 
 	// Const
 	public override string DefaultWindowName => "Packages";
+	private static readonly LanguageCode DELETE_PACK_MSG = ("UI.PackManager.DeletePackageMsg", "Delete package {0}? This will delete the files.");
 
 	// Api
 	public static PackageManager Instance { get; private set; } = null;
@@ -76,7 +77,7 @@ public class PackageManager : WindowUI {
 		// Built-in Packs
 		PackageInfoList.Clear();
 		foreach (string packageFolder in Util.EnumerateFolders(packRoot, true)) {
-			var info = EngineUtil.GetInfoFromPackageFolder(packageFolder);
+			var info = PackageUtil.GetInfoFromPackageFolder(packageFolder);
 			if (info == null) return;
 			info.IsBuiltIn = true;
 			PackageInfoList.Add(info);
@@ -84,7 +85,7 @@ public class PackageManager : WindowUI {
 
 		// Custom Packs
 		foreach (string packageFolder in Util.EnumerateFolders(customPackRoot, true)) {
-			var info = EngineUtil.GetInfoFromPackageFolder(packageFolder);
+			var info = PackageUtil.GetInfoFromPackageFolder(packageFolder);
 			if (info == null) return;
 			info.IsBuiltIn = false;
 			PackageInfoList.Add(info);
@@ -114,7 +115,7 @@ public class PackageManager : WindowUI {
 		int iconSize = Unify(96);
 		int cardPadding = Unify(18);
 		int itemPadding = Unify(12);
-		int toggleSize = Unify(42);
+		int toggleBtnSize = Unify(42);
 		var boxPadding = Int4.Direction(Unify(14), Unify(4), Unify(3), Unify(3));
 		if (panelRect.width > maxPanelWidth) {
 			panelRect.x += (panelRect.width - maxPanelWidth) / 2;
@@ -125,6 +126,11 @@ public class PackageManager : WindowUI {
 		int extendedContentSize = panelRect.height + Unify(64);
 		bool isGame = CurrentProject.Universe.Info.ProjectType == ProjectType.Game;
 
+		// Bar
+
+
+
+		// Content
 		using (var scroll = new GUIVerticalScrollScope(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
 			MasterScrollPos = scroll.PositionY;
 			for (int i = 0; i < PackageInfoList.Count; i++) {
@@ -143,7 +149,7 @@ public class PackageManager : WindowUI {
 				using (new GUIContentColorScope(info.AnyResourceFounded ? Color32.WHITE : Color32.WHITE_128)) {
 
 					// Package Name
-					GUI.Label(rect.TopHalf().ShrinkRight(toggleSize), info.DisplayName, out var nameBound, GUI.Skin.Label);
+					GUI.Label(rect.TopHalf().ShrinkRight(toggleBtnSize), info.DisplayName, out var nameBound, GUI.Skin.Label);
 
 					// Creator Name
 					if (!string.IsNullOrWhiteSpace(info.CreatorName)) {
@@ -167,21 +173,50 @@ public class PackageManager : WindowUI {
 				// Toggle
 				if (info.AnyResourceFounded) {
 					bool newInstalled = GUI.Toggle(
-						rect.Shrink(itemPadding).CornerInside(Alignment.TopRight, toggleSize),
+						rect.Shrink(itemPadding).CornerInside(Alignment.TopRight, toggleBtnSize),
 						info.Installed,
 						bodyStyle: GUI.Skin.LargeToggle
 					);
 					// Install
 					if (newInstalled && !info.Installed) {
-						EngineUtil.InstallPackage(CurrentProject, info);
-						info.Installed = EngineUtil.IsPackagedInstalled(CurrentProject, info);
+						PackageUtil.InstallPackage(CurrentProject, info);
+						info.Installed = PackageUtil.IsPackagedInstalled(CurrentProject, info);
 						RequiringRebuildFrame = Game.GlobalFrame;
 					}
 					// Uninstall
 					if (!newInstalled && info.Installed) {
-						EngineUtil.UninstallPackage(CurrentProject, info);
-						info.Installed = EngineUtil.IsPackagedInstalled(CurrentProject, info);
+						PackageUtil.UninstallPackage(CurrentProject, info);
+						info.Installed = PackageUtil.IsPackagedInstalled(CurrentProject, info);
 						RequiringRebuildFrame = Game.GlobalFrame;
+					}
+				}
+
+				// Del Button
+				if (!info.IsBuiltIn) {
+					var boxRect = rect;
+					boxRect.xMin = panelRect.x;
+					if (
+						boxRect.MouseInside() &&
+						GUI.Button(
+							rect.Shrink(itemPadding).CornerInside(Alignment.BottomRight, toggleBtnSize / 2),
+							BuiltInSprite.ICON_DELETE, Skin.IconButton
+						)
+					) {
+						GenericDialogUI.SpawnDialog_Button(
+							DELETE_PACK_MSG,
+							BuiltInText.UI_DELETE, DeleteLogic,
+							BuiltInText.UI_CANCEL, Const.EmptyMethod
+						);
+						GenericDialogUI.SetItemTint(Skin.DeleteTint);
+						GenericDialogUI.SetCustomData(info);
+						static void DeleteLogic () {
+							if (Instance == null || Instance.CurrentProject == null) return;
+							if (GenericDialogUI.InvokingData is not PackageInfo info) return;
+							PackageUtil.UninstallPackage(Instance.CurrentProject, info);
+							Util.DeleteFolder(info.PackageFolderPath);
+							Instance.PackageInfoList.Remove(info);
+							Instance.RequiringRebuildFrame = Game.GlobalFrame;
+						}
 					}
 				}
 
@@ -222,7 +257,7 @@ public class PackageManager : WindowUI {
 		foreach (var info in PackageInfoList) {
 			string packName = info.PackageName;
 			if (!info.DllFounded) continue;
-			if (!EngineUtil.IsPackagedInstalled(project, info)) continue;
+			if (!PackageUtil.IsPackagedInstalled(project, info)) continue;
 			string dllName = $"{packName}.dll";
 			string sourcePath = info.DllPath;
 			string targetPathDebug = Util.CombinePaths(CurrentProject.DllLibPath_Debug, dllName);
@@ -245,7 +280,7 @@ public class PackageManager : WindowUI {
 	private void RefreshInstalledForAllPackages () {
 		if (CurrentProject == null) return;
 		foreach (var info in PackageInfoList) {
-			info.Installed = EngineUtil.IsPackagedInstalled(CurrentProject, info);
+			info.Installed = PackageUtil.IsPackagedInstalled(CurrentProject, info);
 		}
 	}
 

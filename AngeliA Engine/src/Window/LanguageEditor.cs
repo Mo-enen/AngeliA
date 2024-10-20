@@ -42,9 +42,9 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
 	private static readonly LanguageCode ADD_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCode", "+ All Language Code");
-	private static readonly LanguageCode REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmpty", "Remove Empty");
+	//private static readonly LanguageCode REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmpty", "Remove Empty");
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
-	private static readonly LanguageCode MSG_REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmptyMsg", "Remove all lines without any content?\nLines with only a key will also be removed.");
+	//private static readonly LanguageCode MSG_REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmptyMsg", "Remove all lines without any content?\nLines with only a key will also be removed.");
 	private static readonly LanguageCode MSG_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCodeMsg", "Add keys for all language code in game script?");
 	private static readonly LanguageCode MSG_HELP = ("UI.LanguageEditor.HelpMsg", "Empty keys will be deleted when open the project next time");
 	private const int SEARCH_ID = -19223;
@@ -205,16 +205,16 @@ public partial class LanguageEditor : WindowUI {
 		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
 
 		// Remove Empty
-		rect.width = Unify(128);
-		if (GUI.Button(rect, REMOVE_EMPTY, Skin.SmallCenterLabelButton)) {
-			GenericDialogUI.SpawnDialog_Button(
-				MSG_REMOVE_EMPTY, BuiltInText.UI_DELETE, RemoveAllEmptyLines, BuiltInText.UI_CANCEL, Const.EmptyMethod
-			);
-			GenericDialogUI.SetItemTint(Skin.DeleteTint);
-			SearchingText = "";
-		}
-		Cursor.SetCursorAsHand(rect);
-		rect.SlideRight();
+		//rect.width = Unify(128);
+		//if (GUI.Button(rect, REMOVE_EMPTY, Skin.SmallCenterLabelButton)) {
+		//	GenericDialogUI.SpawnDialog_Button(
+		//		MSG_REMOVE_EMPTY, BuiltInText.UI_DELETE, RemoveAllEmptyLines, BuiltInText.UI_CANCEL, Const.EmptyMethod
+		//	);
+		//	GenericDialogUI.SetItemTint(Skin.DeleteTint);
+		//	SearchingText = "";
+		//}
+		//Cursor.SetCursorAsHand(rect);
+		//rect.SlideRight();
 
 		// Line
 		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
@@ -230,6 +230,7 @@ public partial class LanguageEditor : WindowUI {
 			);
 		}
 		if (confirm) {
+			ScrollY = 0;
 			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
 			if (string.IsNullOrWhiteSpace(SearchingText)) {
 				foreach (var line in Lines) line.Visible = true;
@@ -270,25 +271,25 @@ public partial class LanguageEditor : WindowUI {
 		}
 
 		// Func
-		static void RemoveAllEmptyLines () {
-			if (Instance == null) return;
-			Instance.ScrollY = 0;
-			for (int i = 0; i < Instance.Lines.Count; i++) {
-				var line = Instance.Lines[i];
-				bool empty = true;
-				foreach (var value in line.Value) {
-					if (!string.IsNullOrWhiteSpace(value)) {
-						empty = false;
-						break;
-					}
-				}
-				if (empty) {
-					Instance.Lines.RemoveAt(i);
-					i--;
-				}
-			}
-			Instance.SetDirty();
-		}
+		//static void RemoveAllEmptyLines () {
+		//	if (Instance == null) return;
+		//	Instance.ScrollY = 0;
+		//	for (int i = 0; i < Instance.Lines.Count; i++) {
+		//		var line = Instance.Lines[i];
+		//		bool empty = true;
+		//		foreach (var value in line.Value) {
+		//			if (!string.IsNullOrWhiteSpace(value)) {
+		//				empty = false;
+		//				break;
+		//			}
+		//		}
+		//		if (empty) {
+		//			Instance.Lines.RemoveAt(i);
+		//			i--;
+		//		}
+		//	}
+		//	Instance.SetDirty();
+		//}
 		static void AddForAllLanguageCode () {
 			if (Instance == null || Instance.Languages.Count == 0) return;
 			var project = Instance.CurrentProject;
@@ -474,7 +475,7 @@ public partial class LanguageEditor : WindowUI {
 
 
 	private void Load (string languageRoot) {
-
+		
 		RequireReloadWhenFileChangedFrame = -1;
 		CleanDirty();
 		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;

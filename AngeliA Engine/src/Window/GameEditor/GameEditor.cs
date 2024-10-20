@@ -88,7 +88,7 @@ public partial class GameEditor : WindowUI {
 				var group = field.GetCustomAttribute<PropGroupAttribute>();
 				if (group == null) continue;
 				mTabNames.Add((
-					$"UI.RigEditor.{group.Name}",
+					$"UI.MovementTab.{group.Name}",
 					Util.GetDisplayName(group.Name)
 				));
 			}

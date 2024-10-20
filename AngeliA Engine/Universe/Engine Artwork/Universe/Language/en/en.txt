@@ -1,4 +1,6 @@
-﻿CtrlHint.Adjust:Adjust
+﻿UI.EngineSetting.Language:Language
+ConsoleWindow:Console
+CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
 CtrlHint.Drive:Drive
@@ -28,6 +30,7 @@ FileBrowser.Fav.Desktop:Desktop
 FileBrowser.Fav.Pic:My Picture
 FileBrowser.FileName:File Name
 FileBrowser.FolderName:Folder Name
+GameEditor:Game
 Hint.Cheat.Match:Press Enter to Perform Cheat Code
 Hint.EmptyMsg:No message here...
 Hint.Publishing:Publishing
@@ -60,6 +63,9 @@ Label.Project.UseLightingSystem:Use Map Lighting System
 Label.Project.UseMapEditor:Use Map Editor
 Label.Project.UseProceduralMap:Use Procedural Map
 Label.ProjectType:Project Type
+Label.ProjectType.Artwork:Artwork
+Label.ProjectType.Game:Game
+Label.ProjectType.Theme:Engine Theme
 Label.Publish:Publish
 Label.R:R
 Label.Recompile:Recompile
@@ -71,6 +77,7 @@ Label.Top:Top
 Label.U:U
 Label.Up:Up
 Label.Version:Version
+LanguageEditor:Language
 Log.BuildError.CsprojNotExists:Csproj file not found
 Log.BuildError.DevNameInvalid:Build Error: Developer name invalid
 Log.BuildError.DotnetSdkNotFound:Build Error: Dotnet Sdk not found in the engine universe folder
@@ -149,6 +156,8 @@ Noti.UndoPaint:Undo: Paint
 Noti.UndoSpriteMeta:Undo: Sprite meta
 Noti.UndoSpriteSize:Undo: Sprite size
 Notify.CheatPerform:Cheat Performed
+PackageManager:Packages
+PixelEditor:Artwork
 PixelEditor.Title.ExportPNG:Export PNG file
 PixelEditor.Title.ImportAse:Import Aseprite file
 PixelEditor.Title.ImportPNG:Import PNG file
@@ -156,6 +165,7 @@ PlayerQMenu.Hand:Hand
 Project.Label.Game:Game
 Project.Label.Resource:Resource
 Project.Label.Stage:Stage
+ProjectEditor:Project
 Setting.BehindAlpha:Behind Map Alpha
 Setting.BehindPara:Behind Map Parallax
 Setting.DefViewHeight:Default View Height (block)
@@ -166,12 +176,13 @@ Setting.Link.Saving:Saving Folder
 Setting.MaxViewHeight:Max View Height (block)
 Setting.MinViewHeight:Min View Height (block)
 Setting.ViewRatio:View Ratio
+SettingWindow:Setting
 Tip.AddAtlas:Create new atlas
 Tip.BorderD:Border bottom
 Tip.BorderL:Border left
 Tip.BorderR:Border right
 Tip.BorderU:Border top
-Tip.ConsoleClear:Clear messages
+Tip.ConsoleClear:Clear messages (Ctrl + Shift + C)
 Tip.CreateSprite:Create a new sprite
 Tip.DeleteSprite:Delete sprite
 Tip.DisableBorder:Disable borders
@@ -186,6 +197,12 @@ Tip.PivotX:Pivot X
 Tip.PivotY:Pivot Y
 Tip.PixelEditor.ExportPNG:Export current canvas to a PNG file
 Tip.PixelEditor.ImportPNG:Import PNG file into current canvas
+Tip.PixelTool.Bucket:Bucket
+Tip.PixelTool.Circle:Circle
+Tip.PixelTool.Line:Line
+Tip.PixelTool.Rect:Rect
+Tip.PixelTool.Select:Select
+Tip.PixelTool.Sprite:Sprite
 Tip.PixOperation.FlipH:Flip selected pixels horizontally
 Tip.PixOperation.FlipV:Flip selected pixels Vertically
 Tip.PixOperation.RotC:Rotate selected pixels Clockwise
@@ -214,6 +231,17 @@ UI.Add:Add
 UI.AddProjectTitle:Add Existing Project
 UI.Apply:Apply
 UI.Back:Back
+UI.BodyPart.ArmHand:Arm & Hand
+UI.BodyPart.Body:Body
+UI.BodyPart.Ear:Ear
+UI.BodyPart.Face:Face
+UI.BodyPart.Hair:Hair
+UI.BodyPart.Head:Head
+UI.BodyPart.Height:Body Height
+UI.BodyPart.Horn:Horn
+UI.BodyPart.LegFoot:Leg & Foot
+UI.BodyPart.Tail:Tail
+UI.BodyPart.Wing:Wing
 UI.Cancel:Cancel
 UI.Continue:Continue
 UI.CreateProjectTitle:New Project
@@ -222,7 +250,50 @@ UI.DeleteAtlasMsg:Delete atlas "{0}"? All sprites inside will be delete too.
 UI.DeleteProjectMsg:Remove project {0}?\nThis will NOT delete files in the disk.
 UI.DontSave:Don't Save
 UI.Empty:Empty
+UI.EngineSetting.AddPrefixMarkForMessageFromGame:Prefix Mark for Message from Game
+UI.EngineSetting.Artwork:Artwork
+UI.EngineSetting.AutoRecompile:Auto Recompile when Script Changed
+UI.EngineSetting.BackgroundColor:Background Color
+UI.EngineSetting.BlinkWhenError:Blink when Compile Error
+UI.EngineSetting.Console:Console
+UI.EngineSetting.Engine:Engine
+UI.EngineSetting.GradientBackground:Gradient Background
+UI.EngineSetting.Hotkey:Hotkey
+UI.EngineSetting.Hotkey_ClearConsole:Clear Console
+UI.EngineSetting.Hotkey_FrameDebug_Next:Next Frame
+UI.EngineSetting.Hotkey_Pix_FlipX:Flip Horizontal
+UI.EngineSetting.Hotkey_Pix_FlipY:Flip Vertical
+UI.EngineSetting.Hotkey_Pix_PaletteNext:Artwork - Palette Next
+UI.EngineSetting.Hotkey_Pix_PalettePrev:Artwork - Palette Prev
+UI.EngineSetting.Hotkey_Pix_RotC:Rotate Clockwise
+UI.EngineSetting.Hotkey_Pix_RotCC:Rotate Counter-Clockwise
+UI.EngineSetting.Hotkey_PixTool_Bucket:Artwork - Bucket Tool
+UI.EngineSetting.Hotkey_PixTool_Circle:Artwork - Circle Tool
+UI.EngineSetting.Hotkey_PixTool_Line:Artwork - Line Tool
+UI.EngineSetting.Hotkey_PixTool_Rect:Artwork - Rectangle Tool
+UI.EngineSetting.Hotkey_PixTool_Select:Artwork - Select Tool
+UI.EngineSetting.Hotkey_PixTool_Sprite:Artwork - Sprite Tool
+UI.EngineSetting.Hotkey_Recompile:Recompile
+UI.EngineSetting.Hotkey_Run:Run Game
+UI.EngineSetting.Hotkey_Window_Artwork:Open Artwork Window
+UI.EngineSetting.Hotkey_Window_Console:Open Console Window
+UI.EngineSetting.Hotkey_Window_Language:Open Language Window
+UI.EngineSetting.Hotkey_Window_MapEditor:Open Game Editor
+UI.EngineSetting.Hotkey_Window_Package:Open Package Window
+UI.EngineSetting.Hotkey_Window_Project:Open Project Window
+UI.EngineSetting.Hotkey_Window_Setting:Open Setting Window
+UI.EngineSetting.MapEditor:MapEditor
+UI.EngineSetting.MapEditor_QuickPlayerDrop:Drop Player when Release Space Key
+UI.EngineSetting.MapEditor_ShowBehind:Show Map  Behind
+UI.EngineSetting.MapEditor_ShowGizmos:Show Gizmos
+UI.EngineSetting.MapEditor_ShowState:Show State
+UI.EngineSetting.OpenLastProjectOnStart:Open Last Project on Start
+UI.EngineSetting.ShowLogTime:Show Log Time
+UI.EngineSetting.ShowTagPreview:Show Tag Preview
+UI.EngineSetting.SolidPaintingPreview:Solid Paiting Preview
 UI.EngineSetting.Theme:Theme
+UI.EngineSetting.UseNotification:Use Notification
+UI.EngineSetting.UseTooltip:Use Tooltip
 UI.Equipment.Bodysuit:Cloth
 UI.Equipment.Gloves:Gloves
 UI.Equipment.HandTool:Tool
@@ -233,6 +304,14 @@ UI.Explore:Open in Explorer
 UI.FileDropLabel.Music:Music
 UI.FileDropLabel.Sound:Sound
 UI.FileDropMsg.Audio:Import audio file {0} as:
+UI.GameKey.Action:Action
+UI.GameKey.Down:Down
+UI.GameKey.Jump:Jump
+UI.GameKey.Left:Left
+UI.GameKey.Right:Right
+UI.GameKey.Select:Select
+UI.GameKey.Start:Start
+UI.GameKey.Up:Up
 UI.GameOver:Game Over
 UI.Ignore:Ignore
 UI.LanguageEditor.AddAllLanCode:+ All Language Code
@@ -245,12 +324,129 @@ UI.LanguageEditor.Key:Key
 UI.LanguageEditor.RemoveEmpty:Remove Empty
 UI.LanguageEditor.RemoveEmptyMsg:Remove all lines without any content?\nLines with only a key will also be removed.
 UI.Menu:Menu
+UI.MovementProp.AllowJumpWhenClimbing:Allow Jump When Climbing
+UI.MovementProp.ClimbAvailable:Climb Available
+UI.MovementProp.ClimbSpeedX:Climb Speed X
+UI.MovementProp.ClimbSpeedY:Climb Speed Y
+UI.MovementProp.CrashAvailable:Crash Available
+UI.MovementProp.CrashDeceleration:Crash Deceleration
+UI.MovementProp.CrashDuration:Crash Duration
+UI.MovementProp.CrashRunDurationRequire:Crash Run Duration Require
+UI.MovementProp.CrashWhenSlippy:Crash When Slippy
+UI.MovementProp.DashAcceleration:Dash Acceleration
+UI.MovementProp.DashAvailable:Dash Available
+UI.MovementProp.DashCancelLoseRate:Dash Cancel Lose Rate
+UI.MovementProp.DashCooldown:Dash Cooldown
+UI.MovementProp.DashDuration:Dash Duration
+UI.MovementProp.DashHeightAmount:Dash Height Amount
+UI.MovementProp.DashPutoutFire:Dash Putout Fire
+UI.MovementProp.DashSpeed:Dash Speed
+UI.MovementProp.DashWithRoll:Dash With Roll
+UI.MovementProp.FirstJumpWithRoll:First Jump With Roll
+UI.MovementProp.FlyAcceleration:Fly Acceleration
+UI.MovementProp.FlyAvailable:Fly Available
+UI.MovementProp.FlyCooldown:Fly Cooldown
+UI.MovementProp.FlyDeceleration:Fly Deceleration
+UI.MovementProp.FlyFallSpeed:Fly Fall Speed
+UI.MovementProp.FlyGravityFallRate:Fly Gravity Fall Rate
+UI.MovementProp.FlyGravityRiseRate:Fly Gravity Rise Rate
+UI.MovementProp.FlyHeightAmount:Fly Height Amount
+UI.MovementProp.FlyMoveSpeed:Fly Move Speed
+UI.MovementProp.FlyRiseSpeed:Fly Rise Speed
+UI.MovementProp.GlideOnFlying:Glide On Flying
+UI.MovementProp.GrabFlipThroughDownAvailable:Grab Flip Through Down Available
+UI.MovementProp.GrabFlipThroughDuration:Grab Flip Through Duration
+UI.MovementProp.GrabFlipThroughUpAvailable:Grab Flip Through Up Available
+UI.MovementProp.GrabMoveSpeedX:Grab Move Speed X
+UI.MovementProp.GrabMoveSpeedY:Grab Move Speed Y
+UI.MovementProp.GrabSideAvailable:Grab Side Available
+UI.MovementProp.GrabSideHeightAmount:Grab Side Height Amount
+UI.MovementProp.GrabSideJumpKickSpeed:Grab Side Jump Kick Speed
+UI.MovementProp.GrabTopAvailable:Grab Top Available
+UI.MovementProp.GrabTopHeightAmount:Grab Top Height Amount
+UI.MovementProp.GrowJumpCountWhenFallOffEdge:Grow Jump Count When Fall Off Edge
+UI.MovementProp.InWaterSpeedRate:In Water Speed Rate
+UI.MovementProp.JumpCount:Jump Count
+UI.MovementProp.JumpDownThoughOneway:Jump Down Though Oneway
+UI.MovementProp.JumpReleaseSpeedRate:Jump Release Speed Rate
+UI.MovementProp.JumpRiseGravityRate:Jump Rise Gravity Rate
+UI.MovementProp.JumpSpeed:Jump Speed
+UI.MovementProp.MovementHeight:Movement Height
+UI.MovementProp.MovementWidth:Movement Width
+UI.MovementProp.PoundAvailable:Pound Available
+UI.MovementProp.PoundPutoutFire:Pound Putout Fire
+UI.MovementProp.PoundSpeed:Pound Speed
+UI.MovementProp.PushAvailable:Push Available
+UI.MovementProp.PushSpeed:Push Speed
+UI.MovementProp.ResetJumpCountWhenGrab:Reset Jump Count When Grab
+UI.MovementProp.ResetJumpCountWhenSlide:Reset Jump Count When Slide
+UI.MovementProp.RunAcceleration:Run Acceleration
+UI.MovementProp.RunAvailable:Run Available
+UI.MovementProp.RunBrakeAcceleration:Run Brake Acceleration
+UI.MovementProp.RunDeceleration:Run Deceleration
+UI.MovementProp.RunSpeed:Run Speed
+UI.MovementProp.RushAcceleration:Rush Acceleration
+UI.MovementProp.RushAvailable:Rush Available
+UI.MovementProp.RushCooldown:Rush Cooldown
+UI.MovementProp.RushDeceleration:Rush Deceleration
+UI.MovementProp.RushDuration:Rush Duration
+UI.MovementProp.RushHeightAmount:Rush Height Amount
+UI.MovementProp.RushInAir:Rush In Air
+UI.MovementProp.RushInWater:Rush In Water
+UI.MovementProp.RushPutoutFire:Rush Putout Fire
+UI.MovementProp.RushSpeed:Rush Speed
+UI.MovementProp.RushStiff:Rush Stiff
+UI.MovementProp.RushStopSpeed:Rush Stop Speed
+UI.MovementProp.RushWhenClimb:Rush When Climb
+UI.MovementProp.RushWhenSquat:Rush When Squat
+UI.MovementProp.SlideAvailable:Slide Available
+UI.MovementProp.SlideDropSpeed:Slide Drop Speed
+UI.MovementProp.SlideJumpKickSpeed:Slide Jump Kick Speed
+UI.MovementProp.SlideOnAnyBlock:Slide On Any Block
+UI.MovementProp.SlipAcceleration:Slip Acceleration
+UI.MovementProp.SlipAvailable:Slip Available
+UI.MovementProp.SlipDeceleration:Slip Deceleration
+UI.MovementProp.SquatAcceleration:Squat Acceleration
+UI.MovementProp.SquatAvailable:Squat Available
+UI.MovementProp.SquatDeceleration:Squat Deceleration
+UI.MovementProp.SquatHeightAmount:Squat Height Amount
+UI.MovementProp.SquatMoveSpeed:Squat Move Speed
+UI.MovementProp.SubsequentJumpWithRoll:Subsequent Jump With Roll
+UI.MovementProp.SwimAcceleration:Swim Acceleration
+UI.MovementProp.SwimAvailable:Swim Available
+UI.MovementProp.SwimDeceleration:Swim Deceleration
+UI.MovementProp.SwimHeightAmount:Swim Height Amount
+UI.MovementProp.SwimJumpSpeed:Swim Jump Speed
+UI.MovementProp.SwimSpeed:Swim Speed
+UI.MovementProp.SwimWidthAmount:Swim Width Amount
+UI.MovementProp.WalkAcceleration:Walk Acceleration
+UI.MovementProp.WalkAvailable:Walk Available
+UI.MovementProp.WalkBrakeAcceleration:Walk Brake Acceleration
+UI.MovementProp.WalkDeceleration:Walk Deceleration
+UI.MovementProp.WalkSpeed:Walk Speed
+UI.MovementTab.Climb:Climb
+UI.MovementTab.Crash:Crash
+UI.MovementTab.Dash:Dash
+UI.MovementTab.Fly:Fly
+UI.MovementTab.Grab:Grab
+UI.MovementTab.Jump:Jump
+UI.MovementTab.Pound:Pound
+UI.MovementTab.Push:Push
+UI.MovementTab.Run:Run
+UI.MovementTab.Rush:Rush
+UI.MovementTab.Size:Size
+UI.MovementTab.Slide:Slide
+UI.MovementTab.Slip:Slip
+UI.MovementTab.Squat:Squat
+UI.MovementTab.Swim:Swim
+UI.MovementTab.Walk:Walk
 UI.No:No
 UI.None:None
 UI.OFF:OFF
 UI.OK:OK
 UI.ON:ON
 UI.Open:Open
+UI.PackManager.DeletePackageMsg:Delete package {0}? This will delete the files.
 UI.PaletteTab.All:All
 UI.PaletteTab.Pinned:Favorite
 UI.Project.DeleteFontMsg:Delete font "{0}" ? This will delete the file.
@@ -263,7 +459,7 @@ UI.Reset:Reset
 UI.Restart:Restart
 UI.Rig.BuildError:Compile Error in Game Script :(\nAll errors must be fixed otherwise the game cannot run
 UI.Rig.BuildingHint:Recompiling
-UI.Rig.NotRunning:Game Not Running :(\nThis should not happen. Please contact the developer and report this problem.
+UI.Rig.NotRunning:Rigged Game Not Running :(\nThis should not happen. Please contact the developer and report this problem.
 UI.RigEditor.AirIlluDay:Air Illuminance (Day)
 UI.RigEditor.AirIlluNight:Air Illuminance (Night)
 UI.RigEditor.BgTint:Background Tint
@@ -274,4 +470,9 @@ UI.RigEditor.SolidIllu:Solid Illuminance
 UI.RuleHelpMsg:Rule applies to auto-update blocks in map editor.\n\nThe sprite must be placed inside a group for this to work. \n\nName several sprites like: sprite 0, sprite 1, sprite 2... to make them a group.
 UI.Save:Save
 UI.Setting:Setting
+UI.Suit.Bodysuit:Body Suit
+UI.Suit.Glove:Gloves
+UI.Suit.Hat:Hat
+UI.Suit.Pants:Pants
+UI.Suit.Shoes:Shoes
 UI.Yes:Yes

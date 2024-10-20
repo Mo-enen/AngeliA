@@ -808,6 +808,7 @@ public static class GUI {
 			}
 
 			beamLength = BeamLength = beamLength.Clamp(-beamIndex, text.Length - beamIndex);
+			beamIndex = BeamIndex = beamIndex.Clamp(0, text.Length);
 
 			for (int i = 0; i < TypingBuilderCount; i++) {
 				char c = TypingBuilder[i];
@@ -917,6 +918,7 @@ public static class GUI {
 
 			// Func
 			void RemoveSelection () {
+				if (text.Length == 0) return;
 				int newBeamIndex = Util.Min(beamIndex, beamIndex + beamLength);
 				if (beamLength.Abs() > 0) {
 					text = text.Remove(newBeamIndex, beamLength.Abs());

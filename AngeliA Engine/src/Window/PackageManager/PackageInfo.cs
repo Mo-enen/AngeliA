@@ -16,6 +16,7 @@ public class PackageInfo {
 	[JsonIgnore] public object IconTexture;
 	[JsonIgnore] public bool IsBuiltIn;
 
+	[JsonIgnore] public string PackageFolderPath;
 	[JsonIgnore] public string DllPath;
 	[JsonIgnore] public string SheetPath;
 	[JsonIgnore] public string ThemeFolder;

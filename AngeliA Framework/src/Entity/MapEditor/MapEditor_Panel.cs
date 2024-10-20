@@ -824,6 +824,7 @@ public partial class MapEditor {
 		// Nav/Game
 		if (GUI.DarkButton(btnRect.Shrink(btnPadding), IsNavigating ? BuiltInSprite.ICON_BRUSH : BuiltInSprite.ICON_MAP)) {
 			SetNavigationMode(!IsNavigating);
+			Input.UseAllMouseKey();
 		}
 		btnRect.SlideRight(btnSpace);
 

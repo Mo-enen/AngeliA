@@ -71,6 +71,12 @@ public static partial class LanguageUtil {
 					if (lanCode == null) continue;
 					pairs.Add(new(lanCode.Name, loadDef ? lanCode.DefaultValue : ""));
 				}
+				foreach (var lanCodes in type.ForAllStaticFieldValue<LanguageCode[]>(fieldBinding, inherited: false)) {
+					if (lanCodes == null || lanCodes.Length == 0) continue;
+					foreach(var lanCode in lanCodes) {
+						pairs.Add(new(lanCode.Name, loadDef ? lanCode.DefaultValue : ""));
+					}
+				}
 			}
 			SaveAllPairsToDisk(filePath, pairs);
 		}
