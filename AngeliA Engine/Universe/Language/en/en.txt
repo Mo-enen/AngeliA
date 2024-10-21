@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.Language:Language
-ConsoleWindow:Console
+﻿ConsoleWindow:Console
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
 CtrlHint.Craft:Craft
@@ -46,6 +45,10 @@ Label.Duration:Duration
 Label.EditCs:Edit
 Label.L:L
 Label.Left:Left
+Label.PackManager.Description:Description
+Label.PackManager.DisplayName:Display Name
+Label.PackManager.Export:Export
+Label.PackManager.PackName:Package Name
 Label.Pivot:Pivot
 Label.ProductName:Product Name
 Label.Project.AddFont:+ Font
@@ -140,6 +143,11 @@ Menu.Setting.UseControlHint:Show Control Hint
 Menu.Setting.UseGamepadHint:Show Gamepad Hint
 Menu.SortProjectByName:Sort by Name
 Menu.SortProjectByTime:Sort by Last Open Time
+Msg.PackManager.ExportFail:Package failed to export. {0}
+Msg.PackManager.ExportSuccess:Package exported
+Msg.PackManager.GameOnly:Only available for game project. Current project type is {0}
+Msg.PackManager.ImportFail:Failed to import package
+Msg.PackManager.ImportSuccess:Package imported
 Noti.PaintInSprite:Only paint in a sprite
 Noti.RedoCreateSprite:Redo: Create sprite
 Noti.RedoDeleteSprite:Redo: Delete sprite
@@ -192,6 +200,8 @@ Tip.EnableBorder:Enable borders
 Tip.HashCol:Check hash collision for all scripts and artwork
 Tip.ImportAse:Import Aseprite file
 Tip.NewSprite:Create a New Sprite
+Tip.PackManager.ExportTitle:Export current project as custom package file
+Tip.PackManager.ImportTitle:Import Custom package from file
 Tip.PaintingColor:Current painting color
 Tip.PivotX:Pivot X
 Tip.PivotY:Pivot Y
@@ -282,6 +292,7 @@ UI.EngineSetting.Hotkey_Window_MapEditor:Open Game Editor
 UI.EngineSetting.Hotkey_Window_Package:Open Package Window
 UI.EngineSetting.Hotkey_Window_Project:Open Project Window
 UI.EngineSetting.Hotkey_Window_Setting:Open Setting Window
+UI.EngineSetting.Language:Language
 UI.EngineSetting.MapEditor:MapEditor
 UI.EngineSetting.MapEditor_QuickPlayerDrop:Drop Player when Release Space Key
 UI.EngineSetting.MapEditor_ShowBehind:Show Map  Behind
@@ -321,6 +332,7 @@ UI.LanguageEditor.AddLanguage:+ Language
 UI.LanguageEditor.DeleteMsg:Delete Language {0}?
 UI.LanguageEditor.HelpMsg:Empty keys will be deleted when open the project next time
 UI.LanguageEditor.Key:Key
+UI.LanguageEditor.LanCodeAddedMsg:Language code added
 UI.LanguageEditor.RemoveEmpty:Remove Empty
 UI.LanguageEditor.RemoveEmptyMsg:Remove all lines without any content?\nLines with only a key will also be removed.
 UI.Menu:Menu
@@ -447,6 +459,8 @@ UI.OK:OK
 UI.ON:ON
 UI.Open:Open
 UI.PackManager.DeletePackageMsg:Delete package {0}? This will delete the files.
+UI.PackManager.ExportTitle:Export Package
+UI.PackManager.ImportTitle:Import Package
 UI.PaletteTab.All:All
 UI.PaletteTab.Pinned:Favorite
 UI.Project.DeleteFontMsg:Delete font "{0}" ? This will delete the file.

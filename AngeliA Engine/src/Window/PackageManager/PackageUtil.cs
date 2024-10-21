@@ -128,9 +128,9 @@ internal static class PackageUtil {
 		try {
 			string tempPath = Util.CombinePaths(AngePath.TempDataPath, System.Guid.NewGuid().ToString());
 			ZipFile.ExtractToDirectory(packagePath, tempPath);
-			var info = GetInfoFromPackageFolder(tempPath);
-			if (info == null || string.IsNullOrWhiteSpace(info.PackageName)) return false;
-			string finalPath = Util.CombinePaths(EngineUtil.CustomPackagesRoot, info.PackageName);
+			packInfo = GetInfoFromPackageFolder(tempPath);
+			if (packInfo == null || string.IsNullOrWhiteSpace(packInfo.PackageName)) return false;
+			string finalPath = Util.CombinePaths(EngineUtil.CustomPackagesRoot, packInfo.PackageName);
 			Util.DeleteFolder(finalPath);
 			return Util.MoveFolder(tempPath, finalPath);
 		} catch (System.Exception ex) {
@@ -140,12 +140,16 @@ internal static class PackageUtil {
 	}
 
 
-	public static bool ExportProjectAsCustomPackageFile (Project project, string packageName, string displayName, string description, string exportPath, ProjectType type, out string errorMsg) {
+	public static bool ExportProjectAsCustomPackageFile (Project project, string packageName, string displayName, string description, string exportPath, out string errorMsg) {
 		try {
 			errorMsg = "";
-			if (project == null) return false;
+			if (project == null) {
+				errorMsg = "Project object not found.";
+				return false;
+			}
 
 			string tempFolder = Util.CombinePaths(AngePath.TempDataPath, System.Guid.NewGuid().ToString());
+			var type = project.Universe.Info.ProjectType;
 
 			// Info
 			var info = new PackageInfo() {

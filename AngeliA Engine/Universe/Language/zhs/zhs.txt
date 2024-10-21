@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.Language:语言
-ConsoleWindow:终端
+﻿ConsoleWindow:终端
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:制作
@@ -46,6 +45,10 @@ Label.Duration:时长
 Label.EditCs:编辑
 Label.L:L
 Label.Left:左
+Label.PackManager.Description:描述
+Label.PackManager.DisplayName:显示名称
+Label.PackManager.Export:导出
+Label.PackManager.PackName:拓展名
 Label.Pivot:枢轴
 Label.ProductName:产品名
 Label.Project.AddFont:+ 字体
@@ -140,6 +143,11 @@ Menu.Setting.UseControlHint:显示操作提示
 Menu.Setting.UseGamepadHint:显示手柄提示
 Menu.SortProjectByName:按名称排序
 Menu.SortProjectByTime:按打开日期排序
+Msg.PackManager.ExportFail:拓展导出失败，{0}
+Msg.PackManager.ExportSuccess:拓展已导出
+Msg.PackManager.GameOnly:只适用于游戏类工程，当前工程为{0}
+Msg.PackManager.ImportFail:拓展导入失败
+Msg.PackManager.ImportSuccess:拓展已导入
 Noti.PaintInSprite:只能在图块里绘图
 Noti.RedoCreateSprite:重做：创建图块
 Noti.RedoDeleteSprite:重做：删除图块
@@ -192,6 +200,8 @@ Tip.EnableBorder:使用边框
 Tip.HashCol:分析哈希碰撞、代码和美工等内容
 Tip.ImportAse:导入Aseprite文件
 Tip.NewSprite:创建图块
+Tip.PackManager.ExportTitle:将当前工程作为拓展导出
+Tip.PackManager.ImportTitle:导入自定义拓展
 Tip.PaintingColor:当前绘制的颜色
 Tip.PivotX:枢轴X
 Tip.PivotY:枢轴Y
@@ -282,6 +292,7 @@ UI.EngineSetting.Hotkey_Window_MapEditor:打开游戏窗口
 UI.EngineSetting.Hotkey_Window_Package:打开拓展窗口
 UI.EngineSetting.Hotkey_Window_Project:打开工程窗口
 UI.EngineSetting.Hotkey_Window_Setting:打开设置窗口
+UI.EngineSetting.Language:语言
 UI.EngineSetting.MapEditor:关卡编辑器
 UI.EngineSetting.MapEditor_QuickPlayerDrop:松开空格键时放下玩家
 UI.EngineSetting.MapEditor_ShowBehind:显示后置场景
@@ -321,6 +332,7 @@ UI.LanguageEditor.AddLanguage:+ 语言
 UI.LanguageEditor.DeleteMsg:是否删除语言 {0} ？
 UI.LanguageEditor.HelpMsg:空的键会在工程加载时被删除
 UI.LanguageEditor.Key:键
+UI.LanguageEditor.LanCodeAddedMsg:已添加语言码
 UI.LanguageEditor.RemoveEmpty:删除所有空内容
 UI.LanguageEditor.RemoveEmptyMsg:是否删除所有内容为空的行？（键不算内容）
 UI.Menu:菜单
@@ -447,6 +459,8 @@ UI.OK:是
 UI.ON:开
 UI.Open:打开
 UI.PackManager.DeletePackageMsg:是否删除拓展包 {0} ? 这将删除相应的文件。
+UI.PackManager.ExportTitle:导出拓展
+UI.PackManager.ImportTitle:导入拓展
 UI.PaletteTab.All:所有
 UI.PaletteTab.Pinned:收藏
 UI.Project.DeleteFontMsg:是否删除字体 {0} ？这会删除文件。

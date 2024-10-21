@@ -68,6 +68,7 @@ public partial class Engine {
 	private int LastNotInteractableFrame = int.MinValue;
 	private int IgnoreFileDropFrame = int.MinValue;
 	private bool NotificationFlash = false;
+	private bool AnyGenericWindowActived = false;
 	private string ToolLabel = null;
 	private string NotificationContent = null;
 	private string NotificationSubContent = null;
@@ -311,8 +312,10 @@ public partial class Engine {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
 		}
 		if (Instance.CurrentProject == null || !Instance.CurrentWindowRequireRigGame) {
-			Game.ForceGizmosOnTopOfUI(1);
-			Game.ForceDoodleOnTopOfUI(1);
+			if (!Instance.AnyGenericWindowActived) {
+				Game.ForceGizmosOnTopOfUI(1);
+				Game.ForceDoodleOnTopOfUI(1);
+			}
 		}
 
 		using var _ = new SheetIndexScope(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
@@ -334,10 +337,12 @@ public partial class Engine {
 
 	// GUI Window
 	private void OnGUI_Interactable () {
+		AnyGenericWindowActived = false;
 		bool interactable = Game.GlobalFrame > ProjectEditor.Instance.RequiringPublishFrame + 2;
 		if (interactable) {
 			foreach (var ui in AllGenericUIs) {
 				if (!ui.Active) continue;
+				AnyGenericWindowActived = true;
 				interactable = false;
 				break;
 			}
@@ -501,19 +506,10 @@ public partial class Engine {
 				var window = AllWindows[index];
 
 				bool selecting = index == CurrentWindowIndex;
-				bool hovering = GUI.Enable && rect.Contains(mousePos);
+				bool hovering = GUI.Enable && GUI.Interactable && rect.Contains(mousePos);
 
 				// Skip Windows for Non-Game Project
-				if (
-					projectType != ProjectType.Game &&
-					window is not PixelEditor &&
-					window is not ProjectEditor &&
-					window is not PackageManager &&
-#if DEBUG
-					(!CurrentProject.IsEngineInternalProject || window is not LanguageEditor) &&
-#endif
-					window is not SettingWindow
-				) {
+				if (IsWindowIgnoredForProject(window, projectType)) {
 					continue;
 				}
 
@@ -549,7 +545,7 @@ public partial class Engine {
 				// Icon
 				int iconSize = contentRect.height;
 				var iconRect = contentRect.Edge(Direction4.Left, iconSize);
-				Renderer.Draw(window.TypeID, iconRect);
+				Renderer.Draw(window.TypeID, iconRect, GUI.Enable && GUI.Interactable ? Color32.WHITE : Color32.GREY_128);
 
 				// Compling Mark
 				if (window is GameEditor && EngineUtil.BuildingProjectInBackground) {
@@ -586,7 +582,7 @@ public partial class Engine {
 				}
 
 				// Click
-				if (mousePress && hovering) {
+				if (mousePress && hovering && GUI.Interactable) {
 					Input.UseAllMouseKey();
 					SetCurrentWindowIndex(index);
 					barWidth = GetEngineLeftBarWidth(out contentPadding);
@@ -894,9 +890,7 @@ public partial class Engine {
 
 		// Built-in Sheet
 		long builtInSheetModDate = Util.GetFileModifyDate(Universe.BuiltIn.GameSheetPath);
-		if (
-			builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)
-		) {
+		if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {
 			var engineSheet = new Sheet();
 			if (engineSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
 				int engineBuiltInIndex = engineSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
@@ -927,7 +921,8 @@ public partial class Engine {
 		HasCompileError = false;
 
 		// Project Type
-		switch (CurrentProject.Universe.Info.ProjectType) {
+		var pType = CurrentProject.Universe.Info.ProjectType;
+		switch (pType) {
 
 			case ProjectType.Game:
 				// Build
@@ -937,7 +932,9 @@ public partial class Engine {
 			case ProjectType.Artwork:
 			case ProjectType.EngineTheme:
 				// Fix First Window
-				SetCurrentWindowIndex<PixelEditor>();
+				if (IsWindowIgnoredForProject(AllWindows[CurrentWindowIndex.Clamp(0, AllWindows.Length - 1)], pType)) {
+					SetCurrentWindowIndex<PixelEditor>();
+				}
 				break;
 
 			default:
@@ -1119,6 +1116,19 @@ public partial class Engine {
 			topOnly: false,
 			Util.GetNameWithExtension(CurrentProject.Universe.GameSheetPath)
 		);
+	}
+
+
+	private bool IsWindowIgnoredForProject (WindowUI window, ProjectType type) {
+		return
+			type != ProjectType.Game &&
+			window is not PixelEditor &&
+			window is not ProjectEditor &&
+			window is not PackageManager &&
+#if DEBUG
+			(!CurrentProject.IsEngineInternalProject || window is not LanguageEditor) &&
+#endif
+			window is not SettingWindow;
 	}
 
 

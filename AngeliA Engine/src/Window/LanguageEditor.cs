@@ -42,9 +42,8 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
 	private static readonly LanguageCode ADD_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCode", "+ All Language Code");
-	//private static readonly LanguageCode REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmpty", "Remove Empty");
+	private static readonly LanguageCode MSG_LAN_CODE_ADDED = ("UI.LanguageEditor.LanCodeAddedMsg", "Language code added");
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
-	//private static readonly LanguageCode MSG_REMOVE_EMPTY = ("UI.LanguageEditor.RemoveEmptyMsg", "Remove all lines without any content?\nLines with only a key will also be removed.");
 	private static readonly LanguageCode MSG_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCodeMsg", "Add keys for all language code in game script?");
 	private static readonly LanguageCode MSG_HELP = ("UI.LanguageEditor.HelpMsg", "Empty keys will be deleted when open the project next time");
 	private const int SEARCH_ID = -19223;
@@ -190,7 +189,7 @@ public partial class LanguageEditor : WindowUI {
 		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
 
 		// + All Language Code
-		rect.width = Unify(128);
+		rect.width = Unify(158);
 		if (GUI.Button(rect, ADD_ALL_LAN_CODE, Skin.SmallCenterLabelButton)) {
 			GenericDialogUI.SpawnDialog_Button(
 				MSG_ALL_LAN_CODE, BuiltInText.UI_ADD, AddForAllLanguageCode, BuiltInText.UI_CANCEL, Const.EmptyMethod
@@ -203,18 +202,6 @@ public partial class LanguageEditor : WindowUI {
 
 		// Line
 		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
-
-		// Remove Empty
-		//rect.width = Unify(128);
-		//if (GUI.Button(rect, REMOVE_EMPTY, Skin.SmallCenterLabelButton)) {
-		//	GenericDialogUI.SpawnDialog_Button(
-		//		MSG_REMOVE_EMPTY, BuiltInText.UI_DELETE, RemoveAllEmptyLines, BuiltInText.UI_CANCEL, Const.EmptyMethod
-		//	);
-		//	GenericDialogUI.SetItemTint(Skin.DeleteTint);
-		//	SearchingText = "";
-		//}
-		//Cursor.SetCursorAsHand(rect);
-		//rect.SlideRight();
 
 		// Line
 		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
@@ -270,40 +257,21 @@ public partial class LanguageEditor : WindowUI {
 			labelRect.x += labelRect.width;
 		}
 
-		// Func
-		//static void RemoveAllEmptyLines () {
-		//	if (Instance == null) return;
-		//	Instance.ScrollY = 0;
-		//	for (int i = 0; i < Instance.Lines.Count; i++) {
-		//		var line = Instance.Lines[i];
-		//		bool empty = true;
-		//		foreach (var value in line.Value) {
-		//			if (!string.IsNullOrWhiteSpace(value)) {
-		//				empty = false;
-		//				break;
-		//			}
-		//		}
-		//		if (empty) {
-		//			Instance.Lines.RemoveAt(i);
-		//			i--;
-		//		}
-		//	}
-		//	Instance.SetDirty();
-		//}
 		static void AddForAllLanguageCode () {
 			if (Instance == null || Instance.Languages.Count == 0) return;
 			var project = Instance.CurrentProject;
 			if (project == null) return;
 			Instance.Save();
-#if DEBUG
 			if (project.IsEngineInternalProject) {
 				// Engine Artworl Project
 				LanguageUtil.AddKeysForAllLanguageCode(project.Universe.LanguageRoot);
 				Instance.Load(project.Universe.LanguageRoot);
 				Instance.SetDirty();
-			}
-#endif
-			if (!project.IsEngineInternalProject) {
+				GenericDialogUI.SpawnDialog_Button(
+					MSG_LAN_CODE_ADDED,
+					BuiltInText.UI_OK, Const.EmptyMethod
+				);
+			} else {
 				// Common Project
 				Instance.RequireAddKeysForAllLanguageCode = true;
 				Instance.RequireReloadWhenFileChangedFrame = Game.GlobalFrame + 60;
@@ -311,6 +279,7 @@ public partial class LanguageEditor : WindowUI {
 				Instance.ReloadCheckingDate = Util.GetFileModifyDate(
 					Util.CombinePaths(project.Universe.LanguageRoot, lan, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}")
 				);
+
 			}
 		}
 	}
@@ -328,7 +297,7 @@ public partial class LanguageEditor : WindowUI {
 		int itemSpaceY = Unify(1);
 		int panelPadding = Unify(64);
 		int indexWidth = Unify(32);
-		int highlightBorder = GUI.Unify(1) / 2;
+		int highlightBorder = GUI.Unify(1);
 		panelRect = panelRect.Shrink(panelPadding, panelPadding + scrollBarWidth, 0, 0);
 		int pageCount = panelRect.height.CeilDivide(itemHeight);
 		int shiftedItemCount = Lines.Count + 6;
@@ -382,13 +351,23 @@ public partial class LanguageEditor : WindowUI {
 				SetDirty();
 			}
 			rect.x += rect.width;
+			bool emptyKey = string.IsNullOrEmpty(line.Key);
+
+			// Empty Key Highlight
+			if (emptyKey) {
+				Renderer.DrawSlice(
+					BuiltInSprite.FRAME_16,
+					shrinkedRect, highlightBorder, highlightBorder, highlightBorder, highlightBorder,
+					Color32.RED
+				);
+			}
 
 			// Contents
 			for (int j = 0; j < line.Value.Count; j++) {
 				var shrinkedContentRect = rect.Shrink(itemSpaceX, itemSpaceX, itemSpaceY, itemSpaceY);
 				string content = line.Value[j];
 				line.Value[j] = GUI.SmallInputField(ctrlID++, shrinkedContentRect, content, out changed, out _);
-				if (string.IsNullOrEmpty(content)) {
+				if (!emptyKey && string.IsNullOrEmpty(content)) {
 					Renderer.DrawSlice(BuiltInSprite.FRAME_16, shrinkedContentRect, highlightBorder, highlightBorder, highlightBorder, highlightBorder, Color32.YELLOW);
 				}
 				if (changed) SetDirty();
@@ -421,6 +400,10 @@ public partial class LanguageEditor : WindowUI {
 			RequireReloadWhenFileChangedFrame = -1;
 			Load(CurrentProject.Universe.LanguageRoot);
 			Instance.SetDirty();
+			GenericDialogUI.SpawnDialog_Button(
+				MSG_LAN_CODE_ADDED,
+				BuiltInText.UI_OK, Const.EmptyMethod
+			);
 		}
 	}
 
@@ -475,7 +458,7 @@ public partial class LanguageEditor : WindowUI {
 
 
 	private void Load (string languageRoot) {
-		
+
 		RequireReloadWhenFileChangedFrame = -1;
 		CleanDirty();
 		if (!string.IsNullOrEmpty(languageRoot) && !Util.FolderExists(languageRoot)) return;

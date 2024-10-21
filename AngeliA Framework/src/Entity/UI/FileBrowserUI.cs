@@ -405,7 +405,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	public static void OpenFolder (string title, System.Action<string> onFolderOpen) => SpawnBrowserLogic(title, "", null, BrowserActionType.Open, BrowserTargetType.Folder, onFolderOpen);
 	public static void OpenFile (string title, System.Action<string> onFileOpen, params string[] searchPatterns) => SpawnBrowserLogic(title, "", searchPatterns, BrowserActionType.Open, BrowserTargetType.File, onFileOpen);
 	public static void SaveFolder (string title, string defaultFolderName, System.Action<string> onFolderSaved) => SpawnBrowserLogic(title, defaultFolderName, null, BrowserActionType.Save, BrowserTargetType.Folder, onFolderSaved);
-	public static void SaveFile (string title, string defaultFileName, System.Action<string> onFileSaved, params string[] searchPatterns) => SpawnBrowserLogic(title, defaultFileName, searchPatterns, BrowserActionType.Save, BrowserTargetType.File, onFileSaved);
+	public static void SaveFile (string title, string defaultFileNameWithExt, System.Action<string> onFileSaved, params string[] searchPatterns) => SpawnBrowserLogic(title, defaultFileNameWithExt, searchPatterns, BrowserActionType.Save, BrowserTargetType.File, onFileSaved);
 
 
 	#endregion

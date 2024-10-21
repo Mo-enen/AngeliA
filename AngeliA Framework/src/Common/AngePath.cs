@@ -17,6 +17,7 @@ public static class AngePath {
 	public const string SHEET_FILE_EXT = "sheet";
 	public const string SHEET_SEARCH_PATTERN = $"*.{SHEET_FILE_EXT}";
 	public const string PACKAGE_FILE_EXT = "angepack";
+	public const string PACKAGE_SEARCH_PATTERN = $"*.{PACKAGE_FILE_EXT}";
 	public const string MOVEMENT_CONFIG_FILE_EXT = "txt";
 	public const string MOVEMENT_CONFIG_SEARCH_PATTERN = $"*.{MOVEMENT_CONFIG_FILE_EXT}";
 	public const string INVENTORY_FILE_EXT = "inv";

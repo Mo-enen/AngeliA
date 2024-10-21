@@ -64,20 +64,26 @@ public class GenericDialogUI : MenuUI {
 					contentStyle: GUI.Skin.DarkButton,
 					drawStyleBody: true
 				)) {
+					int oldSpawnFrame = SpawnFrame;
 					InvokingData = data;
 					option.Action();
-					InvokingData = null;
-					Active = false;
-					Input.UseAllHoldingKeys();
+					if (SpawnFrame == oldSpawnFrame) {
+						InvokingData = null;
+						Active = false;
+						Input.UseAllHoldingKeys();
+					}
 				}
 			} else {
 				using var _ = new GUIContentColorScope(tint);
 				if (DrawItem(option.Label)) {
+					int oldSpawnFrame = SpawnFrame;
 					InvokingData = data;
 					option.Action();
-					InvokingData = null;
-					Active = false;
-					Input.UseAllHoldingKeys();
+					if (SpawnFrame == oldSpawnFrame) {
+						InvokingData = null;
+						Active = false;
+						Input.UseAllHoldingKeys();
+					}
 				}
 			}
 		}
