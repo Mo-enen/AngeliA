@@ -1,4 +1,5 @@
-﻿ConsoleWindow:终端
+﻿UI.EngineSetting.AlwaysExpandPaintingColor:绘制颜色框保持展开
+ConsoleWindow:终端
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:制作

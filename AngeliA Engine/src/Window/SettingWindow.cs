@@ -44,12 +44,12 @@ public class SettingWindow : WindowUI {
 
 	// Const
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
+	private static readonly LanguageCode LABEL_THEME = ("UI.EngineSetting.Theme", "Theme");
+	private static readonly LanguageCode LABEL_LANGUAGE = ("UI.EngineSetting.Language", "Language");
 	private static readonly LanguageCode MENU_CATA_LETTER = ("Menu.Group.Letter", "Letter");
 	private static readonly LanguageCode MENU_CATA_NUMBER = ("Menu.Group.Number", "Number");
 	private static readonly LanguageCode MENU_CATA_SIGN = ("Menu.Group.Sign", "Sign");
 	private static readonly LanguageCode MENU_CATA_OTHER = ("Menu.Group.Other", "Fn");
-	private static readonly LanguageCode LABEL_THEME = ("UI.EngineSetting.Theme", "Theme");
-	private static readonly LanguageCode LABEL_LANGUAGE = ("UI.EngineSetting.Language", "Language");
 
 	// Api
 	public static SettingWindow Instance { get; private set; }
@@ -58,7 +58,7 @@ public class SettingWindow : WindowUI {
 	public override string DefaultWindowName => "Setting";
 
 	// Data
-	private static readonly List<SettingGroup> Groups = [];
+	private readonly List<SettingGroup> Groups = [];
 	private readonly List<(string path, string name)> ThemePaths = [];
 	private Project CurrentProject;
 	private int MasterScroll = 0;
@@ -74,10 +74,9 @@ public class SettingWindow : WindowUI {
 	#region --- MSG ---
 
 
-	[OnGameInitializeLater]
-	internal static TaskResult OnGameInitializeLater () {
-		if (!SavingSystem.PoolReady) return TaskResult.Continue;
-		// Init from Code
+	public SettingWindow () {
+		Instance = this;
+		// Init Group from Code
 		Groups.Clear();
 		var pool = new Dictionary<string, SettingGroup>();
 		foreach (var (classType, _) in Util.AllClassWithAttribute<EngineSettingAttribute>()) {
@@ -118,11 +117,7 @@ public class SettingWindow : WindowUI {
 		}
 		Groups.AddRange(pool.Values);
 		Groups.Sort((a, b) => a.Folding.CompareTo(b.Folding));
-		return TaskResult.End;
 	}
-
-
-	public SettingWindow () => Instance = this;
 
 
 	public override void UpdateWindowUI () {

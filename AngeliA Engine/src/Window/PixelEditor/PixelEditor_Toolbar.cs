@@ -269,6 +269,9 @@ public partial class PixelEditor {
 
 	private void Update_GeneralToolbar_PickingColor (IRect toolbarRect, ref IRect rect) {
 
+		if (FoldingColorField && EngineSetting.AlwaysExpandPaintingColor.Value) {
+			FoldingColorField = false;
+		}
 		rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
 		if (rect.width < rect.height) return;
 

@@ -17,6 +17,7 @@ public class EngineSetting {
 	[EngineSetting("Artwork", "Gradient Background")] public static readonly SavingBool GradientBackground = new("PixEdt.GradientBackground", true, SavingLocation.Global);
 	[EngineSetting("Artwork", "Solid Painting Preview")] public static readonly SavingBool SolidPaintingPreview = new("PixEdt.SolidPaintingPreview", true, SavingLocation.Global);
 	[EngineSetting("Artwork", "Show Preview on Tag Button")] public static readonly SavingBool ShowTagPreview = new("PixEdt.ShowTagPreview", true, SavingLocation.Global);
+	[EngineSetting("Artwork", "Always Expand Painting Color Field")] public static readonly SavingBool AlwaysExpandPaintingColor = new("PixEdt.AlwaysExpandPaintingColor", false, SavingLocation.Global);
 
 	// Console
 	[EngineSetting("Console", "Show Log Time", gameOnly: true)] public static readonly SavingBool ShowLogTime = new("Console.ShowLogTime", false, SavingLocation.Global);

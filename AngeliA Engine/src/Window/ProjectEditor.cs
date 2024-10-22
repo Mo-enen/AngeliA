@@ -868,6 +868,7 @@ public class ProjectEditor : WindowUI {
 				Instance.SetDirty();
 				if (newType == ProjectType.Game) {
 					Instance.RequireRecompileOnSave = true;
+					Instance.Save();
 				}
 			}
 		}
