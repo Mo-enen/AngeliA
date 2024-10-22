@@ -43,6 +43,9 @@ public class SettingWindow : WindowUI {
 
 
 	// Const
+	private static readonly SpriteCode UI_BG = "UI.Setting.BG";
+	private static readonly SpriteCode UI_PANEL = "UI.Setting.Panel";
+
 	private static readonly LanguageCode LABEL_THEME_BUILT_IN = ("Menu.BuiltInTheme", "Built-in");
 	private static readonly LanguageCode LABEL_THEME = ("UI.EngineSetting.Theme", "Theme");
 	private static readonly LanguageCode LABEL_LANGUAGE = ("UI.EngineSetting.Language", "Language");
@@ -124,11 +127,14 @@ public class SettingWindow : WindowUI {
 
 		if (CurrentProject == null) return;
 
+		var windowRect = WindowRect;
+		GUI.DrawSlice(UI_BG, windowRect);
+
 		int extendedUISize = 1;
-		using (var scroll = new GUIVerticalScrollScope(WindowRect, MasterScroll, 0, UIHeight)) {
+		using (var scroll = new GUIVerticalScrollScope(windowRect, MasterScroll, 0, UIHeight)) {
 			MasterScroll = scroll.PositionY;
 
-			var panelRect = WindowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(42));
+			var panelRect = windowRect.Shrink(Unify(12), Unify(12), Unify(42), Unify(42));
 			int maxPanelWidth = Unify(612);
 			if (panelRect.width > maxPanelWidth) {
 				panelRect.x += (panelRect.width - maxPanelWidth) / 2;
@@ -150,15 +156,15 @@ public class SettingWindow : WindowUI {
 				}
 			}
 
-			extendedUISize = WindowRect.yMax - rect.yMax + Unify(128);
-			UIHeight = (extendedUISize - WindowRect.height).GreaterOrEquelThanZero();
+			extendedUISize = windowRect.yMax - rect.yMax + Unify(128);
+			UIHeight = (extendedUISize - windowRect.height).GreaterOrEquelThanZero();
 		}
 		MasterScroll = GUI.ScrollBar(
 			92645,
-			WindowRect.Edge(Direction4.Right, GUI.ScrollbarSize),
+			windowRect.Edge(Direction4.Right, GUI.ScrollbarSize),
 			MasterScroll,
 			extendedUISize,
-			WindowRect.height
+			windowRect.height
 		);
 	}
 
@@ -264,7 +270,7 @@ public class SettingWindow : WindowUI {
 		changed = GUI.EndChangeCheck();
 
 		// Box BG
-		if (Renderer.TryGetSprite(EngineSprite.UI_PANEL_GENERAL, out var sprite)) {
+		if (Renderer.TryGetSprite(UI_PANEL, out var sprite)) {
 			using (new DefaultLayerScope()) {
 				Renderer.DrawSlice(sprite, new IRect(
 					boxLeft - boxPadding.left,

@@ -38,6 +38,7 @@ public partial class Engine {
 	private static readonly SpriteCode PANEL_BG = "UI.HubPanel";
 	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
 	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
+	public static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
 
 
 	#endregion
@@ -101,7 +102,7 @@ public partial class Engine {
 		using (new UILayerScope()) {
 
 			// --- BG ---
-			GUI.DrawSlice(EngineSprite.UI_WINDOW_BG, cameraRect);
+			GUI.DrawSlice(UI_WINDOW_BG, cameraRect);
 
 			// --- Left Panel ---
 			{

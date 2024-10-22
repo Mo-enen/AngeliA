@@ -1,4 +1,6 @@
-﻿UI.EngineSetting.AlwaysExpandPaintingColor:Always Expand Painting Color Field
+﻿AtlasType.Background:Background
+AtlasType.General:General
+AtlasType.Level:Level
 ConsoleWindow:Console
 CtrlHint.Adjust:Adjust
 CtrlHint.Attack:Attack
@@ -262,6 +264,7 @@ UI.DeleteProjectMsg:Remove project {0}?\nThis will NOT delete files in the disk.
 UI.DontSave:Don't Save
 UI.Empty:Empty
 UI.EngineSetting.AddPrefixMarkForMessageFromGame:Prefix Mark for Message from Game
+UI.EngineSetting.AlwaysExpandPaintingColor:Always Expand Painting Color Field
 UI.EngineSetting.Artwork:Artwork
 UI.EngineSetting.AutoRecompile:Auto Recompile when Script Changed
 UI.EngineSetting.BackgroundColor:Background Color
@@ -333,7 +336,7 @@ UI.LanguageEditor.AddLanguage:+ Language
 UI.LanguageEditor.DeleteMsg:Delete Language {0}?
 UI.LanguageEditor.HelpMsg:Empty keys will be deleted when open the project next time
 UI.LanguageEditor.Key:Key
-UI.LanguageEditor.LanCodeAddedMsg:Language code added
+UI.LanguageEditor.LanCodeAddedMsg:{0} lines of language code added
 UI.LanguageEditor.RemoveEmpty:Remove Empty
 UI.LanguageEditor.RemoveEmptyMsg:Remove all lines without any content?\nLines with only a key will also be removed.
 UI.Menu:Menu

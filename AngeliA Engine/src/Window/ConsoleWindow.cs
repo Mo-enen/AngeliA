@@ -32,7 +32,8 @@ public class ConsoleWindow : WindowUI {
 
 
 	// Const
-	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
+	private static readonly SpriteCode UI_BG = "UI.Console.BG";
+	private static readonly SpriteCode UI_TOOLBAR = "UI.Console.Toolbar";
 	private static readonly SpriteCode ICON_CODE_ANA = "Console.Analysis";
 	private static readonly SpriteCode PANEL_BG = "UI.GeneralPanel";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
@@ -74,6 +75,9 @@ public class ConsoleWindow : WindowUI {
 	public override void UpdateWindowUI () {
 
 		bool hasError = CompileErrorLines.Length > 0;
+
+		// BG
+		GUI.DrawSlice(UI_BG, WindowRect.ShrinkUp(GUI.ToolbarSize));
 
 		// Toolbar
 		int barHeight = GUI.ToolbarSize;

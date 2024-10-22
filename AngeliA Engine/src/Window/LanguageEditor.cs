@@ -37,7 +37,10 @@ public partial class LanguageEditor : WindowUI {
 
 	// Const
 	public static readonly int TYPE_ID = typeof(LanguageEditor).AngeHash();
-	private static readonly SpriteCode UI_TOOLBAR = "UI.ToolbarBackground";
+
+	private static readonly SpriteCode UI_BG = "UI.Language.BG";
+	private static readonly SpriteCode UI_TOOLBAR = "UI.Language.Toolbar";
+
 	private static readonly LanguageCode DELETE_MSG = ("UI.LanguageEditor.DeleteMsg", "Delete Language {0}?");
 	private static readonly LanguageCode ADD_KEY = ("UI.LanguageEditor.AddKey", "+ Key");
 	private static readonly LanguageCode ADD_LANGUAGE = ("UI.LanguageEditor.AddLanguage", "+ Language");
@@ -110,32 +113,23 @@ public partial class LanguageEditor : WindowUI {
 
 		Cursor.RequireCursor();
 
-		var windowRect = WindowRect;
+		var panelRect = WindowRect;
 		int column = Languages.Count + 1;
-		int fieldWidth = windowRect.width / column;
+		int fieldWidth = panelRect.width / column;
 
-		windowRect.x += (windowRect.width - fieldWidth * column) / 2;
-		windowRect.width = fieldWidth * column;
-		X = windowRect.x;
-		Y = windowRect.y;
-		Width = windowRect.width;
-		Height = windowRect.height;
-
-		int frameThickness = Unify(2);
-		Renderer.DrawSlice(
-			BuiltInSprite.FRAME_16, windowRect.Expand(frameThickness),
-			frameThickness, frameThickness, frameThickness, frameThickness,
-			Color32.GREY_12, int.MinValue
-		);
+		panelRect.x += (panelRect.width - fieldWidth * column) / 2;
+		panelRect.width = fieldWidth * column;
 
 		if (Game.IsKeyboardKeyHolding(KeyboardKey.LeftCtrl) && Game.IsKeyboardKeyHolding(KeyboardKey.S)) {
 			Save();
 		}
 
+		GUI.DrawSlice(UI_BG, WindowRect.ShrinkUp(GUI.ToolbarSize));
+
 		using var _ = new GUIInteractableScope(Game.GlobalFrame > RequireReloadWhenFileChangedFrame);
 
-		Update_Bar(windowRect.Edge(Direction4.Up, Unify(84)));
-		Update_Content(windowRect.Edge(Direction4.Down, windowRect.height - Unify(84)));
+		Update_Bar(panelRect.Edge(Direction4.Up, Unify(84)));
+		Update_Content(panelRect.Edge(Direction4.Down, panelRect.height - Unify(84)));
 
 		if (Game.GlobalFrame <= RequireReloadWhenFileChangedFrame) {
 			Update_ReloadWhenFileChanged();
@@ -192,7 +186,8 @@ public partial class LanguageEditor : WindowUI {
 		rect.width = Unify(158);
 		if (GUI.Button(rect, ADD_ALL_LAN_CODE, Skin.SmallCenterLabelButton)) {
 			GenericDialogUI.SpawnDialog_Button(
-				MSG_ALL_LAN_CODE, BuiltInText.UI_ADD, AddForAllLanguageCode, BuiltInText.UI_CANCEL, Const.EmptyMethod
+				MSG_ALL_LAN_CODE,
+				BuiltInText.UI_ADD, AddForAllLanguageCode, BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
 			GenericDialogUI.SetItemTint(Color32.GREEN_BETTER);
 			SearchingText = "";
@@ -264,11 +259,13 @@ public partial class LanguageEditor : WindowUI {
 			Instance.Save();
 			if (project.IsEngineInternalProject) {
 				// Engine Artworl Project
+				Instance.Lines.RemoveAll(line => string.IsNullOrEmpty(line.Key));
+				int oldLineCount = Instance.Lines.Count;
 				LanguageUtil.AddKeysForAllLanguageCode(project.Universe.LanguageRoot);
 				Instance.Load(project.Universe.LanguageRoot);
 				Instance.SetDirty();
 				GenericDialogUI.SpawnDialog_Button(
-					MSG_LAN_CODE_ADDED,
+					string.Format(MSG_LAN_CODE_ADDED, (Instance.Lines.Count - oldLineCount).GreaterOrEquelThanZero()),
 					BuiltInText.UI_OK, Const.EmptyMethod
 				);
 			} else {
@@ -397,11 +394,13 @@ public partial class LanguageEditor : WindowUI {
 		);
 		if (currentDate != ReloadCheckingDate) {
 			// Reload
+			Instance.Lines.RemoveAll(line => string.IsNullOrEmpty(line.Key));
+			int oldLineCount = Lines.Count;
 			RequireReloadWhenFileChangedFrame = -1;
 			Load(CurrentProject.Universe.LanguageRoot);
 			Instance.SetDirty();
 			GenericDialogUI.SpawnDialog_Button(
-				MSG_LAN_CODE_ADDED,
+				string.Format(MSG_LAN_CODE_ADDED, (Lines.Count - oldLineCount).GreaterOrEquelThanZero()),
 				BuiltInText.UI_OK, Const.EmptyMethod
 			);
 		}

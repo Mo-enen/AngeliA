@@ -1,5 +1,7 @@
-﻿UI.EngineSetting.AlwaysExpandPaintingColor:绘制颜色框保持展开
-ConsoleWindow:终端
+﻿AtlasType.Background:背景
+AtlasType.General:通用
+AtlasType.Level:关卡
+ConsoleWindow:终 端
 CtrlHint.Adjust:调整
 CtrlHint.Attack:攻击
 CtrlHint.Craft:制作
@@ -30,7 +32,7 @@ FileBrowser.Fav.Desktop:桌面
 FileBrowser.Fav.Pic:图片
 FileBrowser.FileName:文件名
 FileBrowser.FolderName:文件夹名
-GameEditor:游戏
+GameEditor:游 戏
 Hint.Cheat.Match:按下回车键作弊
 Hint.EmptyMsg:无内容
 Hint.Publishing:正在发布
@@ -81,7 +83,7 @@ Label.Top:上面
 Label.U:U
 Label.Up:上
 Label.Version:版本
-LanguageEditor:语言
+LanguageEditor:语 言
 Log.BuildError.CsprojNotExists:未找到Csproj文件
 Log.BuildError.DevNameInvalid:生成错误：开发者名为空或包含不支持的字符
 Log.BuildError.DotnetSdkNotFound:生成错误：未找到引擎世界文件夹中的Dotnet SDK
@@ -165,8 +167,8 @@ Noti.UndoPaint:撤销：绘图
 Noti.UndoSpriteMeta:撤销：图块信息
 Noti.UndoSpriteSize:撤销：图块尺寸
 Notify.CheatPerform:已执行作弊码
-PackageManager:拓展
-PixelEditor:美工
+PackageManager:拓 展
+PixelEditor:美 工
 PixelEditor.Title.ExportPNG:导出为PNG文件
 PixelEditor.Title.ImportAse:导入Aseprite文件
 PixelEditor.Title.ImportPNG:导入PNG文件
@@ -174,7 +176,7 @@ PlayerQMenu.Hand:手
 Project.Label.Game:游戏
 Project.Label.Resource:资源
 Project.Label.Stage:场景
-ProjectEditor:工程
+ProjectEditor:工 程
 Setting.BehindAlpha:后置场景透明度
 Setting.BehindPara:后置场景缩放
 Setting.DefViewHeight:默认场景高度（块）
@@ -185,7 +187,7 @@ Setting.Link.Saving:存档文件夹
 Setting.MaxViewHeight:最大场景高度（块）
 Setting.MinViewHeight:最小场景高度（块）
 Setting.ViewRatio:场景长宽比
-SettingWindow:设置
+SettingWindow:设 置
 Tip.AddAtlas:创建图集
 Tip.BorderD:下边框
 Tip.BorderL:左边框
@@ -262,6 +264,7 @@ UI.DeleteProjectMsg:是否移除工程“{0}”？\n这不会删除文件
 UI.DontSave:不保存
 UI.Empty:空
 UI.EngineSetting.AddPrefixMarkForMessageFromGame:游戏消息加前缀“|”
+UI.EngineSetting.AlwaysExpandPaintingColor:绘制颜色框保持展开
 UI.EngineSetting.Artwork:美工
 UI.EngineSetting.AutoRecompile:代码修改时自动编译
 UI.EngineSetting.BackgroundColor:背景颜色
@@ -333,7 +336,7 @@ UI.LanguageEditor.AddLanguage:+ 语言
 UI.LanguageEditor.DeleteMsg:是否删除语言 {0} ？
 UI.LanguageEditor.HelpMsg:空的键会在工程加载时被删除
 UI.LanguageEditor.Key:键
-UI.LanguageEditor.LanCodeAddedMsg:已添加语言码
+UI.LanguageEditor.LanCodeAddedMsg:已添加语言码{0}行
 UI.LanguageEditor.RemoveEmpty:删除所有空内容
 UI.LanguageEditor.RemoveEmptyMsg:是否删除所有内容为空的行？（键不算内容）
 UI.Menu:菜单

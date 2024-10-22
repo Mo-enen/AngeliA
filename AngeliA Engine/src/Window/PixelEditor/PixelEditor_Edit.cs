@@ -440,6 +440,7 @@ public partial class PixelEditor {
 			var pixelPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 			PaintingColor = Color32.CLEAR;
 			PaintingColorF = default;
+			bool changed = false;
 			for (int i = StagedSprites.Count - 1; i >= 0; i--) {
 				var spData = StagedSprites[i];
 				var sprite = spData.Sprite;
@@ -453,8 +454,12 @@ public partial class PixelEditor {
 					PaintingColor = sprite.Pixels[pxIndex.Clamp(0, sprite.Pixels.Length - 1)];
 					PaintingColorF = PaintingColor.ToColorF();
 					ColorFieldCode = Util.ColorToHtml(PaintingColor);
+					changed = true;
 					break;
 				}
+			}
+			if (!changed) {
+				ColorFieldCode = Util.ColorToHtml(PaintingColor);
 			}
 		}
 	}

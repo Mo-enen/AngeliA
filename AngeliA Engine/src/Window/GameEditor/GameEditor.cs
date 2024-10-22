@@ -33,15 +33,16 @@ public partial class GameEditor : WindowUI {
 
 
 	// Const
-	private static readonly SpriteCode BTN_COLLIDER = "Engine.MapEditor.Collider";
-	private static readonly SpriteCode BTN_ENTITY_CLICKER = "Engine.MapEditor.Entity";
-	private static readonly SpriteCode BTN_PROFILER = "Engine.MapEditor.Profiler";
-	private static readonly SpriteCode BTN_EFFECT = "Engine.MapEditor.Effect";
-	private static readonly SpriteCode BTN_NEXT = "Engine.MapEditor.NextFrame";
-	private static readonly SpriteCode BTN_PLAY = "Engine.MapEditor.Play";
-	private static readonly SpriteCode BTN_PAUSE = "Engine.MapEditor.Pause";
-	private static readonly SpriteCode BTN_MOVEMENT = "Engine.MapEditor.Movement";
-	private static readonly SpriteCode BTN_LIGHTING = "Engine.MapEditor.Lighting";
+	private static readonly SpriteCode BTN_COLLIDER = "Engine.Game.Collider";
+	private static readonly SpriteCode BTN_ENTITY_CLICKER = "Engine.Game.Entity";
+	private static readonly SpriteCode BTN_PROFILER = "Engine.Game.Profiler";
+	private static readonly SpriteCode BTN_EFFECT = "Engine.Game.Effect";
+	private static readonly SpriteCode BTN_NEXT = "Engine.Game.NextFrame";
+	private static readonly SpriteCode BTN_PLAY = "Engine.Game.Play";
+	private static readonly SpriteCode BTN_PAUSE = "Engine.Game.Pause";
+	private static readonly SpriteCode BTN_MOVEMENT = "Engine.Game.Movement";
+	private static readonly SpriteCode BTN_LIGHTING = "Engine.Game.Lighting";
+	private static readonly SpriteCode TOOLBAR_BG = "Engine.Game.Toolbar";
 
 	// Api
 	public static GameEditor Instance { get; private set; }
@@ -186,7 +187,7 @@ public partial class GameEditor : WindowUI {
 		int panelYMax = panelRect.y;
 
 		// BG
-		var bgCell = Renderer.DrawPixel(default, Color32.BLACK);
+		var bgCell = Renderer.Draw(TOOLBAR_BG, default);
 
 		// Tool Buttons
 		int buttonSize = GUI.Unify(28);

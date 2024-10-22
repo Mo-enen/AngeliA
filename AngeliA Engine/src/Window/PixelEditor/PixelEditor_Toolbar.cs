@@ -36,6 +36,9 @@ public partial class PixelEditor {
 	private static readonly string[] INPUT_TEXT = ["", "", "", "", "", "", "", "", "", "", "",];
 
 	// Sprite
+	private static readonly SpriteCode UI_RULE_PANEL = "UI.Artwork.RulePanel";
+	private static readonly SpriteCode UI_TOOLBAR = "UI.Artwork.Toolbar";
+	private static readonly SpriteCode UI_TOOL_BG = "UI.Artwork.ToolBG";
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
 	private static readonly SpriteCode ICON_SHOW_CHECKER = "Icon.ShowCheckerBoard";
 	private static readonly SpriteCode ICON_SHOW_AXIS = "Icon.Axis";
@@ -140,7 +143,7 @@ public partial class PixelEditor {
 		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, toolbarSize).Expand(0, toolbarSize, 0, 0);
 
 		// BG
-		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolbarRect);
+		GUI.DrawSlice(UI_TOOLBAR, toolbarRect);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var rect = toolbarRect.Edge(Direction4.Left, Unify(30));
 
@@ -160,7 +163,7 @@ public partial class PixelEditor {
 		// Tools
 		int padding = Unify(4);
 		var toolRect = WindowRect.EdgeRight(toolbarSize).ShrinkUp(toolbarSize);
-		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, toolRect);
+		GUI.DrawSlice(UI_TOOL_BG, toolRect);
 		toolRect = toolRect.Shrink(Unify(6));
 		rect = toolRect.Edge(Direction4.Up, Unify(30));
 		for (int i = 0; i < ToolCount; i++) {
@@ -717,7 +720,7 @@ public partial class PixelEditor {
 		if (!OpeningTilingRuleEditor || SelectingSpriteCount == 0) return;
 
 		// BG
-		GUI.DrawSlice(EngineSprite.UI_ENGINE_PANEL, RuleEditorRect);
+		GUI.DrawSlice(UI_RULE_PANEL, RuleEditorRect);
 
 		var panelRect = RuleEditorRect.Shrink(Unify(8));
 		int pageBarHeight = (panelRect.height - panelRect.width) / 2;
@@ -972,7 +975,7 @@ public partial class PixelEditor {
 		// For All Pose Characters
 		GenericPopupUI.AddItem(MENU_NEW_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
-		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, "*.json")) {
+		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			GenericPopupUI.AddItem(name, NewPoseCharSprite, data: (name, pixPos));
 		}
@@ -981,7 +984,7 @@ public partial class PixelEditor {
 		// For All Sheet Characters
 		GenericPopupUI.AddItem(MENU_NEW_SHEET_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
-		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, "*.json")) {
+		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			GenericPopupUI.AddItem(name, NewSheetCharSprite, data: (name, pixPos));
 		}

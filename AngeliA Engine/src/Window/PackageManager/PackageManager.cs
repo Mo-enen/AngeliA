@@ -52,6 +52,9 @@ public class PackageManager : WindowUI {
 	private static readonly LanguageCode MSG_IMPORT_FAIL = ("Msg.PackManager.ImportFail", "Failed to import package");
 	private static readonly LanguageCode MSG_GAME_ONLY = ("Msg.PackManager.GameOnly", "Only available for game project. Current project type is {0}");
 
+	private static readonly SpriteCode UI_BG = "UI.PackManager.BG";
+	private static readonly SpriteCode UI_PANEL = "UI.PackManager.Panel";
+	private static readonly SpriteCode UI_TOOLBAR = "UI.PackManager.Toolbar";
 	private static readonly SpriteCode ICON_IMPORT_PACK = "Icon.ImportPack";
 	private static readonly SpriteCode ICON_EXPORT_PACK = "Icon.ExportPack";
 
@@ -126,6 +129,7 @@ public class PackageManager : WindowUI {
 
 	public override void UpdateWindowUI () {
 		if (CurrentProject == null) return;
+		GUI.DrawSlice(UI_BG, WindowRect.ShrinkUp(GUI.ToolbarSize));
 		using var _ = new GUIEnableScope(
 			!EngineUtil.BuildingProjectInBackground &&
 			!FileBrowserUI.ShowingBrowser
@@ -146,7 +150,7 @@ public class PackageManager : WindowUI {
 		var rect = barRect.Shrink(Unify(6)).EdgeLeft(Unify(30));
 
 		// BG
-		GUI.DrawSlice(EngineSprite.UI_TOOLBAR, barRect);
+		GUI.DrawSlice(UI_TOOLBAR, barRect);
 
 		// Import Pack
 		if (GUI.DarkButton(rect, ICON_IMPORT_PACK)) {
@@ -316,7 +320,7 @@ public class PackageManager : WindowUI {
 				}
 
 				// Box BG
-				if (Renderer.TryGetSprite(EngineSprite.UI_PANEL_GENERAL, out var sprite)) {
+				if (Renderer.TryGetSprite(UI_PANEL, out var sprite)) {
 					using (new DefaultLayerScope()) {
 						Renderer.DrawSlice(sprite, rect.Shift(0, MasterScrollPos).Expand(boxPadding));
 					}

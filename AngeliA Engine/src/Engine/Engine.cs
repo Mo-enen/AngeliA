@@ -1120,15 +1120,12 @@ public partial class Engine {
 
 
 	private bool IsWindowIgnoredForProject (WindowUI window, ProjectType type) {
-		return
-			type != ProjectType.Game &&
-			window is not PixelEditor &&
-			window is not ProjectEditor &&
-			window is not PackageManager &&
+		if (type == ProjectType.Game) return false;
 #if DEBUG
-			(!CurrentProject.IsEngineInternalProject || window is not LanguageEditor) &&
+		if (window is LanguageEditor) return !CurrentProject.IsEngineInternalProject;
 #endif
-			window is not SettingWindow;
+		if (window is GameEditor) return true;
+		return false;
 	}
 
 

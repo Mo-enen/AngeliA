@@ -93,6 +93,7 @@ internal static class PackageUtil {
 			foreach (string themePath in Util.EnumerateFiles(packageInfo.ThemeFolder, true, AngePath.SHEET_SEARCH_PATTERN)) {
 				string themeName = Util.GetNameWithExtension(themePath);
 				Util.CopyFile(themePath, Util.CombinePaths(EngineUtil.ThemeRoot, themeName));
+				Debug.Log(themePath + " >> " + Util.CombinePaths(EngineUtil.ThemeRoot, themeName));
 			}
 		}
 
@@ -128,11 +129,15 @@ internal static class PackageUtil {
 		try {
 			string tempPath = Util.CombinePaths(AngePath.TempDataPath, System.Guid.NewGuid().ToString());
 			ZipFile.ExtractToDirectory(packagePath, tempPath);
-			packInfo = GetInfoFromPackageFolder(tempPath);
-			if (packInfo == null || string.IsNullOrWhiteSpace(packInfo.PackageName)) return false;
-			string finalPath = Util.CombinePaths(EngineUtil.CustomPackagesRoot, packInfo.PackageName);
+			var tempInfo = GetInfoFromPackageFolder(tempPath);
+			if (tempInfo == null || string.IsNullOrWhiteSpace(tempInfo.PackageName)) return false;
+			string finalPath = Util.CombinePaths(EngineUtil.CustomPackagesRoot, tempInfo.PackageName);
 			Util.DeleteFolder(finalPath);
-			return Util.MoveFolder(tempPath, finalPath);
+			bool moved = Util.MoveFolder(tempPath, finalPath);
+			if (moved) {
+				packInfo = GetInfoFromPackageFolder(finalPath);
+			}
+			return moved;
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
 			return false;

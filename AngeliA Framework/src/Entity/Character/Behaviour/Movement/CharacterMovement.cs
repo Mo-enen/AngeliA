@@ -289,8 +289,11 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	[OnGameInitialize(-128)]
-	internal static void InitializeCharacterMovementConfigPoolFromFile () {
+	internal static void InitializeConfigPool () {
+
 		string movementRoot = Universe.BuiltIn.CharacterMovementConfigRoot;
+
+		// Load Config from File
 		foreach (var type in typeof(Character).AllChildClass()) {
 			string name = type.AngeName();
 			// Movement
@@ -303,6 +306,16 @@ public class CharacterMovement (Rigidbody rig) {
 			}
 			ConfigPool.Add(name.AngeHash(), list);
 		}
+
+		// Remove Files Not in Pool
+		foreach (string path in Util.EnumerateFiles(movementRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
+			string name = Util.GetNameWithoutExtension(path);
+			int id = name.AngeHash();
+			if (!ConfigPool.ContainsKey(id)) {
+				Util.DeleteFile(path);
+			}
+		}
+
 	}
 
 

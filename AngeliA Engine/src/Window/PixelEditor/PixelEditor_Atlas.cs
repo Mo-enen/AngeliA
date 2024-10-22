@@ -15,6 +15,8 @@ public partial class PixelEditor {
 	// Const
 	private static readonly int ATLAS_TYPE_COUNT = typeof(AtlasType).EnumLength();
 	private static string[] ATLAS_TYPE_NAMES = null;
+	private static readonly SpriteCode UI_ATLAS_PANEL = "UI.Artwork.AtlasPanel";
+	private static readonly SpriteCode UI_ATLAS_TOOLBAR = "UI.Artwork.AtlasToolbar";
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
 	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
@@ -57,7 +59,7 @@ public partial class PixelEditor {
 		var panelRect = WindowRect.Edge(Direction4.Left, Unify(PANEL_WIDTH));
 
 		// BG
-		GUI.DrawSlice(EngineSprite.UI_ENGINE_PANEL, panelRect);
+		GUI.DrawSlice(UI_ATLAS_PANEL, panelRect);
 		panelRect = panelRect.Shrink(0, 0, 0, GUI.ToolbarSize);
 
 		int itemCount = EditingSheet.Atlas.Count;
@@ -265,7 +267,7 @@ public partial class PixelEditor {
 		var toolbarRect = panelRect.Edge(Direction4.Up, GUI.ToolbarSize);
 
 		// BG
-		Renderer.Draw(EngineSprite.UI_TOOLBAR, toolbarRect);
+		GUI.DrawSlice(UI_ATLAS_TOOLBAR, toolbarRect);
 
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		int padding = Unify(4);

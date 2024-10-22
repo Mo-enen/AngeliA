@@ -17,6 +17,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly int PROJECT_TYPE_COUNT = typeof(ProjectType).EnumLength();
 
 	// Sprite Codes
+	private static readonly SpriteCode UI_BG = "UI.ProjectEditor.BG";
 	private static readonly SpriteCode PANEL_BACKGROUND = "UI.Panel.ProjectEditor";
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
 	private static readonly SpriteCode ICON_FONT = "FileIcon.Font";
@@ -154,6 +155,8 @@ public class ProjectEditor : WindowUI {
 			panelRect.x += (panelRect.width - maxPanelWidth) / 2;
 			panelRect.width = maxPanelWidth;
 		}
+
+		GUI.DrawSlice(UI_BG, windowRect);
 
 		using var _ = new GUILabelWidthScope(Util.Min(Unify(256), panelRect.width / 2));
 

@@ -75,6 +75,8 @@ public partial class PixelEditor : WindowUI {
 	// Const
 	private const int STAGE_SIZE = 512;
 	private const int PANEL_WIDTH = 240;
+	private static readonly SpriteCode UI_BG = "UI.Artwork.BG";
+	private static readonly SpriteCode UI_CHECKER_BOARD = "UI.CheckerBoard32";
 	private static readonly SpriteCode CURSOR_DOT = "Cursor.Dot";
 	private static readonly SpriteCode CURSOR_CROSS = "Cursor.Cross";
 	private static readonly SpriteCode CURSOR_BUCKET = "Cursor.Bucket";
@@ -377,9 +379,12 @@ public partial class PixelEditor : WindowUI {
 		if (EditingSheet.Atlas.Count <= 0) return;
 		using var _layer = new DefaultLayerScope();
 
+		// BG
+		GUI.DrawSlice(UI_BG, StageRect);
+
 		// BG Gizmos
 		var canvasRectInt = CanvasRect.ToIRect();
-		if (ShowCheckerBoard.Value && Renderer.TryGetSprite(EngineSprite.UI_CHECKER_BOARD, out var checkerSprite)) {
+		if (ShowCheckerBoard.Value && Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) {
 			// Checker Board
 			var rect = StageRect;
 			int sizeX = canvasRectInt.width / 16;
@@ -1149,7 +1154,8 @@ public partial class PixelEditor : WindowUI {
 		int minX = int.MaxValue;
 		int maxY = int.MinValue;
 		SpriteTemplateChace.Clear();
-		foreach (var source in EditingSheet.Sprites) {
+		var templateSheet = Renderer.MainSheet;
+		foreach (var source in templateSheet.Sprites) {
 			if (!source.RealName.StartsWith(templateName)) continue;
 			SpriteTemplateChace.Add(source);
 			minX = Util.Min(minX, source.PixelRect.x);
