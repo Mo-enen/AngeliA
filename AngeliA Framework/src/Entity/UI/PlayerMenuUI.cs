@@ -46,7 +46,7 @@ public class PlayerMenuUI : EntityUI {
 	// Api
 	public static PlayerMenuUI Instance { get; private set; } = null;
 	public static bool ShowingUI => Instance != null && Instance.Active;
-	public PlayerMenuPartnerUI Partner { get; set; } = null;
+	public PlayerMenuPartnerUI Partner { get; private set; } = null;
 	public int TopPanelColumn => Partner != null ? Partner.Column : 2;
 	public int TopPanelRow => Partner != null ? Partner.Row : 3;
 	public int CursorIndex { get; set; } = 0;
@@ -480,6 +480,18 @@ public class PlayerMenuUI : EntityUI {
 	#region --- API ---
 
 
+	public static bool OpenMenuWithPartner (PlayerMenuPartnerUI partner, int partnerInventoryID) {
+		var ins = OpenMenu();
+		if (ins != null && partner != null) {
+			ins.Partner = partner;
+			partner.InventoryID = partnerInventoryID;
+			partner.EnablePanel();
+			return true;
+		}
+		return false;
+	}
+
+
 	public static PlayerMenuUI OpenMenu () {
 		var ins = Instance;
 		if (ins == null) return null;
@@ -488,6 +500,9 @@ public class PlayerMenuUI : EntityUI {
 		} else {
 			ins.OnInactivated();
 			ins.OnActivated();
+		}
+		if (PlayerSystem.Selecting != null) {
+			Inventory.UnlockAllItemsInside(PlayerSystem.Selecting.InventoryID);
 		}
 		return ins;
 	}

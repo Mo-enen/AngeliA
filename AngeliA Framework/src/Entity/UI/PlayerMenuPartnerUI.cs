@@ -1,20 +1,15 @@
 ﻿namespace AngeliA;
 
 public abstract class PlayerMenuPartnerUI : IWindowEntityUI {
-	
-	public int InventoryID { get; private set; } = 0;
-	public int Column { get; private set; } = 1;
-	public int Row { get; private set; } = 1;
-	public int ItemFieldSize { get; private set; } = PlayerMenuUI.ITEM_SIZE;
+
+	public int InventoryID { get; set; } = 0;
+	public virtual int Column => 1;
+	public virtual int Row => 1;
+	public virtual int ItemFieldSize => PlayerMenuUI.ITEM_SIZE;
 	public bool MouseInPanel { get; set; } = false;
 	public IRect BackgroundRect { get; protected set; } = default;
-	
-	public virtual void EnablePanel (int inventoryID, int column, int row, int itemSize = PlayerMenuUI.ITEM_SIZE) {
-		InventoryID = inventoryID;
-		Column = column;
-		Row = row;
-		ItemFieldSize = itemSize;
-	}
+
+	public virtual void EnablePanel () { }
 
 	public virtual void DrawPanel (IRect panelRect) => BackgroundRect = panelRect;
 

@@ -38,6 +38,12 @@ public static class GlobalEvent {
 	public static event Action<Character, int, int> OnItemDamage;
 	public static void InvokeItemDamage (Character holder, int fromID, int toID) => OnItemDamage?.Invoke(holder, fromID, toID);
 
+	public static event Action<int> OnItemUnlocked;
+	public static void InvokeItemUnlocked (int itemID) => OnItemUnlocked?.Invoke(itemID);
+
+	// Cheat
+	public static event Action<string> OnCheatPerformed;
+	public static void InvokeCheatPerformed (string cheatCode) => OnCheatPerformed?.Invoke(cheatCode);
 
 
 }

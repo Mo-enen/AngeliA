@@ -154,6 +154,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 
 		// Init Inventory
 		if (InventoryType == CharacterInventoryType.Unique) {
+			InventoryID = TypeID;
 			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
 			if (Inventory.HasInventory(InventoryID)) {
 				int invCount = Inventory.GetInventoryCapacity(InventoryID);
@@ -165,35 +166,31 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 				Inventory.AddNewEquipmentInventoryData(TypeName, COUNT);
 			}
 		}
+
 	}
 
 
 	public override void OnActivated () {
 		base.OnActivated();
 
-		// Inv
-		switch (InventoryType) {
-			case CharacterInventoryType.Unique:
-				InventoryID = TypeID;
-				break;
-			case CharacterInventoryType.Map:
-				if (MapUnitPos.HasValue) {
-					const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-					string name = Inventory.GetPositionBasedInventoryName(TypeName, MapUnitPos.Value);
-					InventoryID = name.AngeHash();
-					if (Inventory.HasInventory(InventoryID)) {
-						int invCount = Inventory.GetInventoryCapacity(InventoryID);
-						if (invCount != COUNT) {
-							Inventory.ResizeInventory(InventoryID, COUNT);
-						}
-					} else {
-						// Create New
-						Inventory.AddNewEquipmentInventoryData(name, COUNT);
+		// Inv ID
+		if (InventoryType == CharacterInventoryType.Map) {
+			if (MapUnitPos.HasValue) {
+				const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
+				string name = Inventory.GetPositionBasedInventoryName(TypeName, MapUnitPos.Value);
+				InventoryID = name.AngeHash();
+				if (Inventory.HasInventory(InventoryID)) {
+					int invCount = Inventory.GetInventoryCapacity(InventoryID);
+					if (invCount != COUNT) {
+						Inventory.ResizeInventory(InventoryID, COUNT);
 					}
 				} else {
-					InventoryID = TypeID;
+					// Create New
+					Inventory.AddNewEquipmentInventoryData(name, COUNT);
 				}
-				break;
+			} else {
+				InventoryID = TypeID;
+			}
 		}
 
 		// Behavour

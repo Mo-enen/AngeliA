@@ -20,7 +20,6 @@ public static class Inventory {
 		public int[] Items;
 		public int[] Counts;
 		[JsonIgnore] public string Name;
-		[JsonIgnore] public bool UnlockItemInside;
 		[JsonIgnore] public bool IsDirty;
 
 		public void Valid () {
@@ -89,25 +88,10 @@ public static class Inventory {
 	}
 
 
-	[OnSavingSlotChanged(64)]
-	internal static TaskResult OnSavingSlotChanged () {
-		if (!ItemSystem.ItemUnlockReady) return TaskResult.Continue;
-		foreach (var (_, data) in Pool) {
-			UpdateItemUnlocked(data);
-		}
-		return TaskResult.End;
-	}
-
-
 	[OnGameInitializeLater]
 	internal static TaskResult OnGameInitializeLater () {
 
-		if (!ItemSystem.ItemUnlockReady || !ItemSystem.ItemPoolReady) return TaskResult.Continue;
-
-		// Update Item Unlock
-		foreach (var (_, data) in Pool) {
-			UpdateItemUnlocked(data);
-		}
+		if (!ItemSystem.ItemPoolReady) return TaskResult.Continue;
 
 		// Init Cheat Code
 		var giveItemCheatInfo = typeof(Inventory).GetMethod(
@@ -187,7 +171,7 @@ public static class Inventory {
 
 
 	// Inventory Data
-	public static void AddNewInventoryData (string inventoryName, int itemCount, bool unlockItemInside = false) {
+	public static void AddNewInventoryData (string inventoryName, int itemCount) {
 		if (itemCount <= 0) return;
 		int inventoryID = inventoryName.AngeHash();
 		if (Pool.ContainsKey(inventoryID)) return;
@@ -196,13 +180,12 @@ public static class Inventory {
 			Counts = new int[itemCount],
 			IsDirty = true,
 			Name = inventoryName,
-			UnlockItemInside = unlockItemInside,
 		});
 		IsPoolDirty = true;
 	}
 
 
-	public static void AddNewEquipmentInventoryData (string inventoryName, int itemCount, bool unlockItemInside = false) {
+	public static void AddNewEquipmentInventoryData (string inventoryName, int itemCount) {
 		if (itemCount <= 0) return;
 		int inventoryID = inventoryName.AngeHash();
 		if (Pool.ContainsKey(inventoryID)) return;
@@ -211,7 +194,6 @@ public static class Inventory {
 			Counts = new int[itemCount],
 			IsDirty = true,
 			Name = inventoryName,
-			UnlockItemInside = unlockItemInside,
 		});
 		IsPoolDirty = true;
 	}
@@ -240,13 +222,6 @@ public static class Inventory {
 	public static int GetInventoryCapacity (int inventoryID) => Pool.TryGetValue(inventoryID, out var data) ? data.Items.Length : 0;
 
 
-	public static void SetUnlockItemsInside (int inventoryID, bool newUnlokInside) {
-		if (Pool.TryGetValue(inventoryID, out var data)) {
-			data.UnlockItemInside = newUnlokInside;
-		}
-	}
-
-
 	public static void RenameEquipInventory (string currentName, string newName) {
 
 		// Change Data in Pool
@@ -263,6 +238,36 @@ public static class Inventory {
 		string to = Util.CombinePaths(root, $"{newName}.{AngePath.EQ_INVENTORY_FILE_EXT}");
 		Util.MoveFile(from, to);
 
+	}
+
+
+	public static void UnlockAllItemsInside (int inventoryID) {
+		if (!Pool.TryGetValue(inventoryID, out var data)) return;
+		for (int i = 0; i < data.Items.Length; i++) {
+			int id = data.Items[i];
+			if (data.Counts[i] <= 0 || id == 0) continue;
+			ItemSystem.SetItemUnlocked(id, true);
+		}
+		if (data is EquipmentInventoryData eqData) {
+			if (eqData.HelmetCount > 0 && eqData.Helmet != 0) {
+				ItemSystem.SetItemUnlocked(eqData.Helmet, true);
+			}
+			if (eqData.BodySuitCount > 0 && eqData.BodySuit != 0) {
+				ItemSystem.SetItemUnlocked(eqData.BodySuit, true);
+			}
+			if (eqData.GlovesCount > 0 && eqData.Gloves != 0) {
+				ItemSystem.SetItemUnlocked(eqData.Gloves, true);
+			}
+			if (eqData.HandToolCount > 0 && eqData.HandTool != 0) {
+				ItemSystem.SetItemUnlocked(eqData.HandTool, true);
+			}
+			if (eqData.ShoesCount > 0 && eqData.Shoes != 0) {
+				ItemSystem.SetItemUnlocked(eqData.Shoes, true);
+			}
+			if (eqData.JewelryCount > 0 && eqData.Jewelry != 0) {
+				ItemSystem.SetItemUnlocked(eqData.Jewelry, true);
+			}
+		}
 	}
 
 
@@ -673,19 +678,6 @@ public static class Inventory {
 			// Save Inventory
 			string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT)}");
 			JsonUtil.SaveJsonToPath(data, path, false);
-			// Update Item Unlocked
-			UpdateItemUnlocked(data);
-		}
-	}
-
-
-	private static void UpdateItemUnlocked (InventoryData data) {
-		if (data == null || !data.UnlockItemInside) return;
-		for (int i = 0; i < data.Items.Length; i++) {
-			int itemID = data.Items[i];
-			int itemCount = data.Counts[i];
-			if (itemID == 0 || itemCount <= 0) continue;
-			ItemSystem.SetItemUnlocked(itemID, true);
 		}
 	}
 

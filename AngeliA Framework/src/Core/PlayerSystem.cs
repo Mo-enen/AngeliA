@@ -590,7 +590,6 @@ public static class PlayerSystem {
 		SelectingPlayerID.Value = target.TypeID;
 		LockInputFrame = -1;
 		TargetActionEntity = null;
-		Inventory.SetUnlockItemsInside(target.InventoryID, true);
 		PlayerMenuUI.CloseMenu();
 	}
 

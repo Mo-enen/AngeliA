@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 
@@ -48,10 +49,6 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 				// Create New Items
 				Inventory.AddNewInventoryData(InventoryName, targetCount);
 			}
-			// Unlock
-			if (UnlockItemInside) {
-				Inventory.SetUnlockItemsInside(InventoryID, true);
-			}
 		}
 	}
 
@@ -66,13 +63,16 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 	bool IActionTarget.Invoke () {
 		if (!Open) SetOpen(true);
 		// Spawn UI Entity
-		var player = PlayerSystem.Selecting;
-		if (player == null) return false;
-		var playerMenu = PlayerMenuUI.OpenMenu();
-		if (playerMenu != null) {
-			playerMenu.Partner = InventoryPartnerUI.Instance;
-			InventoryPartnerUI.Instance.AvatarID = TypeID;
-			playerMenu.Partner.EnablePanel(InventoryID, InventoryColumn, InventoryRow);
+		if (PlayerSystem.Selecting == null) return false;
+		if (!PlayerMenuUI.OpenMenuWithPartner(InventoryPartnerUI.Instance, InventoryID)) {
+			return false;
+		}
+		var ins = InventoryPartnerUI.Instance;
+		ins.AvatarID = TypeID;
+		ins._Column = InventoryColumn;
+		ins._Row = InventoryRow;
+		if (UnlockItemInside) {
+			Inventory.UnlockAllItemsInside(InventoryID);
 		}
 		return true;
 	}

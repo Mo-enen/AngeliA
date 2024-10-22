@@ -46,7 +46,7 @@ public class NotificationUI : EntityUI {
 			return;
 		}
 		int panelWidth = Unify(500);
-		int panelHeight = Unify(48);
+		int panelHeight = Unify(42);
 		CurrentOffsetY = CurrentOffsetY.LerpTo((panelHeight + Unify(30)) * NotificationIndex, 60);
 		var fromRect = new IRect(
 			Renderer.CameraRect.CenterX() - panelWidth / 2,

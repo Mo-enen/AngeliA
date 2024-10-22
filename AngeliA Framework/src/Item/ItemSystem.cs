@@ -73,6 +73,16 @@ public static class ItemSystem {
 	#region --- MSG ---
 
 
+	[CheatCode("ResetItemUnlock")]
+	internal static void Cheat_ResetItemUnlock () {
+		foreach (var (_, data) in ItemPool) {
+			data.Unlocked = false;
+		}
+		IsUnlockDirty = false;
+		SaveUnlockDataToFile();
+	}
+
+
 	[OnGameInitialize(-128)]
 	internal static void OnGameInitialize () {
 
@@ -291,6 +301,9 @@ public static class ItemSystem {
 		if (!ItemPool.TryGetValue(itemID, out var data) || data.Unlocked == unlocked) return;
 		data.Unlocked = unlocked;
 		IsUnlockDirty = true;
+		if (unlocked) {
+			GlobalEvent.InvokeItemUnlocked(itemID);
+		}
 	}
 
 

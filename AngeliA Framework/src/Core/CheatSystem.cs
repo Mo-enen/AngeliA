@@ -34,7 +34,6 @@ public static class CheatSystem {
 	public static int CheatCodeCount => Pool.Count;
 
 	// Data
-	private static event System.Action OnCheatPerform;
 	private static bool Enable = false;
 	private static readonly Pipe<char> CheatInput = new(96);
 	private static readonly Dictionary<int, CheatAction> Pool = [];
@@ -58,7 +57,6 @@ public static class CheatSystem {
 		Enable = !Game.IsToolApplication;
 #endif
 		if (Enable) {
-			Util.LinkEventWithAttribute<OnCheatPerformAttribute>(typeof(CheatSystem), nameof(OnCheatPerform));
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
 				TryAddCheatAction(att.Code, method, att.Param);
 			}
@@ -108,7 +106,7 @@ public static class CheatSystem {
 			var resultObj = performingAction.Action.Invoke(null, null);
 			CurrentParam = null;
 			if (resultObj is not bool performed || performed) {
-				OnCheatPerform?.Invoke();
+				GlobalEvent.InvokeCheatPerformed(performingAction.Code);
 			}
 			CheatInput.Reset();
 			MatchingCheatID = 0;

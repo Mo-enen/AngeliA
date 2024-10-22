@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AssemblyName>AngeliA Platformer</AssemblyName>
+		<AssemblyName>com.angelia.platformer</AssemblyName>
 		<RootNamespace>AngeliA.Platformer</RootNamespace>
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<PlatformTarget>AnyCPU</PlatformTarget>

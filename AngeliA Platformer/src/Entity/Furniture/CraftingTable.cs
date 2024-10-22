@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 public abstract class CraftingTable : OpenableFurniture, IActionTarget {
@@ -48,13 +49,12 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 	}
 
 	bool IActionTarget.Invoke () {
-		var player = PlayerSystem.Selecting;
-		if (player == null) return false;
-		var playerMenu = PlayerMenuUI.OpenMenu();
-		if (!Open) SetOpen(true);
-		if (playerMenu == null) return false;
-		playerMenu.Partner = CraftingTableUI.Instance;
-		playerMenu.Partner.EnablePanel(TypeID, 2, 2, 96);
+		if (PlayerSystem.Selecting == null) return false;
+		if (!PlayerMenuUI.OpenMenuWithPartner(CraftingTableUI.Instance, TypeID)) return false;
+		if (!Open) {
+			SetOpen(true);
+		}
+		Inventory.UnlockAllItemsInside(TypeID);
 		return true;
 	}
 

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-
-using AngeliA;namespace AngeliA.Platformer;
+namespace AngeliA.Platformer;
 
 
 public sealed class CraftingTableUI : PlayerMenuPartnerUI {
@@ -25,6 +25,9 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 	// Api
 	public static readonly CraftingTableUI Instance = new();
+	public override int ItemFieldSize => 96;
+	public override int Column => 2;
+	public override int Row => 2;
 
 	// Data
 	private readonly List<Int4> DocumentContent = [];
@@ -39,8 +42,8 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 
 	// MSG
-	public override void EnablePanel (int inventoryID, int column, int row, int itemSize = 52) {
-		base.EnablePanel(inventoryID, column, row, itemSize);
+	public override void EnablePanel () {
+		base.EnablePanel();
 		DocumentContent.Clear();
 		CurrentCraftingItems.x = int.MinValue;
 	}
@@ -363,6 +366,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 			case CraftActionType.TakeAll:
 				// Take Crafted
 				menu.SetTaking(CombineResultID, consumeResultCount);
+				ItemSystem.SetItemUnlocked(CombineResultID, true);
 				break;
 			case CraftActionType.QuickDropOne:
 			case CraftActionType.QuickDropAll:
@@ -372,6 +376,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				int collectedCount = Inventory.CollectItem(invID, CombineResultID, consumeResultCount);
 				if (collectedCount < consumeResultCount) {
 					Inventory.GiveItemToTarget(PlayerSystem.Selecting, CombineResultID, consumeResultCount - collectedCount);
+					ItemSystem.SetItemUnlocked(CombineResultID, true);
 				}
 				break;
 		}

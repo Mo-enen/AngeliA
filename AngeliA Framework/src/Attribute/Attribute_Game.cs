@@ -114,10 +114,6 @@ public class OnLanguageChangedAttribute : Attribute { }
 
 
 // Cheat
-[AttributeUsage(AttributeTargets.Method)]
-public class OnCheatPerformAttribute : Attribute { }
-
-
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class CheatCodeAttribute (string code, object param = null) : Attribute {
 	public string Code = code;
