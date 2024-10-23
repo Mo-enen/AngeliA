@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 public abstract class PickTool : HandTool {
@@ -36,7 +37,7 @@ public abstract class PickTool : HandTool {
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
-			WorldSquad.DontSaveChangesToFile
+			!Universe.BuiltInInfo.AllowPlayerModifyMap
 		) {
 			base.PoseAnimationUpdate_FromEquipment(holder);
 			return;

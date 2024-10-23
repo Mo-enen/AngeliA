@@ -18,11 +18,11 @@ public class WorldPathPool : Dictionary<Int3, string> {
 	public bool TryGetPath (Int3 worldPos, out string path) {
 		path = null;
 		if (string.IsNullOrEmpty(MapRoot)) return false;
-		if (TryGetValue(worldPos, out path)) return path != null;
+		if (TryGetValue(worldPos, out path)) return true;
 		path = Util.CombinePaths(MapRoot, GetWorldNameFromPosition(worldPos.x, worldPos.y, worldPos.z));
-		if (!Util.FileExists(path)) path = null;
+		//if (!Util.FileExists(path)) path = null;
 		Add(worldPos, path);
-		return path != null;
+		return true;
 	}
 
 	public string GetOrAddPath (Int3 worldPos) {

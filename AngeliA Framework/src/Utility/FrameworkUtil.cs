@@ -645,7 +645,7 @@ public static class FrameworkUtil {
 				if (dropItemAfterPicked && ItemSystem.HasItem(e.TypeID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
-					FrameworkUtil.InvokeBlockPicked(e.TypeID, e.Rect);
+					InvokeBlockPicked(e.TypeID, e.Rect);
 				} else {
 					// Break
 					InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
@@ -691,7 +691,7 @@ public static class FrameworkUtil {
 				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
-					FrameworkUtil.InvokeBlockPicked(blockID, blockRect);
+					InvokeBlockPicked(blockID, blockRect);
 				} else {
 					// Break
 					InvokeObjectBreak(realBlockID, blockRect);
@@ -726,7 +726,7 @@ public static class FrameworkUtil {
 				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
-					FrameworkUtil.InvokeBlockPicked(realBlockID, blockRect);
+					InvokeBlockPicked(realBlockID, blockRect);
 				} else {
 					// Break
 					InvokeObjectBreak(realBlockID, blockRect);

@@ -296,7 +296,7 @@ public class RigRespondMessage {
 		}
 
 		// Doodle
-		DoodlingStream ??= WorldStream.GetOrCreateStreamFromPool(universe.MapRoot);
+		DoodlingStream ??= WorldStream.GetOrCreateStreamFromPool(universe.BuiltInMapRoot);
 		if (RequireShowDoodle) {
 			Game.ShowDoodle();
 		} else {

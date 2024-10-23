@@ -42,7 +42,7 @@ public sealed class BlockBuilder : HandTool {
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
-			WorldSquad.DontSaveChangesToFile
+			!Universe.BuiltInInfo.AllowPlayerModifyMap
 		) {
 			base.PoseAnimationUpdate_FromEquipment(holder);
 			return;

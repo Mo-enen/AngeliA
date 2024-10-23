@@ -17,8 +17,6 @@ public sealed class WorldSquad : IBlockSquad {
 	public static WorldStream Stream { get; private set; } = null;
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
-	public static string MapRoot => Stream?.MapRoot;
-	public static bool DontSaveChangesToFile { get; private set; } = false;
 
 	// Data
 	[BeforeLevelRendered] internal static System.Action BeforeLevelRendered;
@@ -27,6 +25,7 @@ public sealed class WorldSquad : IBlockSquad {
 	[OnWorldLoaded] internal static System.Action<World> OnWorldLoaded;
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
+	private static bool SaveChangesToFile = false;
 	private IRect CullingCameraRect = default;
 	private IRect CameraRect = default;
 	private Int2 ParaCenter = default;
@@ -46,10 +45,12 @@ public sealed class WorldSquad : IBlockSquad {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
-		bool useProceduralMap = Universe.BuiltInInfo.UseProceduralMap;
-		WorldBehindAlpha = Universe.BuiltInInfo.WorldBehindAlpha;
-		WorldBehindParallax = Universe.BuiltInInfo.WorldBehindParallax;
-		DontSaveChangesToFile = !useProceduralMap;
+		CopyAllMapsFromBuiltInToUserIfEmpty();
+
+		var info = Universe.BuiltInInfo;
+		WorldBehindAlpha = info.WorldBehindAlpha;
+		WorldBehindParallax = info.WorldBehindParallax;
+		SaveChangesToFile = info.SaveChangesFromPlayerToMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
 		WorldStream.OnWorldCreated += _OnWorldCreated;
@@ -62,7 +63,8 @@ public sealed class WorldSquad : IBlockSquad {
 			if (stream != Stream) return;
 			OnWorldLoaded?.Invoke(world);
 		}
-		Stream = WorldStream.GetOrCreateStreamFromPool(useProceduralMap ? Universe.BuiltIn.SlotUserMapRoot : Universe.BuiltIn.MapRoot);
+		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
+		Stream.UseBuiltInAsFailback = true;
 		SquadReady = true;
 
 		return TaskResult.End;
@@ -79,9 +81,12 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[OnSavingSlotChanged]
 	internal static void OnSavingSlotChanged () {
-		if (!Universe.BuiltInInfo.UseProceduralMap) return;
+		// Copy Maps from Built-in Folder
+		CopyAllMapsFromBuiltInToUserIfEmpty();
+		// Reset Stream
 		Stream?.SaveAllDirty();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
+		Stream.UseBuiltInAsFailback = true;
 		Stream.ClearWorldPool();
 		SquadReady = true;
 	}
@@ -89,7 +94,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[OnGameQuitting]
 	internal static void OnGameQuitting () {
-		if (!DontSaveChangesToFile) {
+		if (SaveChangesToFile) {
 			Stream?.SaveAllDirty();
 		}
 	}
@@ -106,7 +111,7 @@ public sealed class WorldSquad : IBlockSquad {
 		Front.RenderCurrentFrame();
 		Behind.RenderCurrentFrame();
 		// Auto Save
-		if (!DontSaveChangesToFile && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
+		if (SaveChangesToFile && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
 			Stream.SaveAllDirty();
 		}
 	}
@@ -118,9 +123,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	#region --- API ---
-
-
-	public static void DiscardAllChangesInMemory () => Stream.DiscardAllChanges();
 
 
 	public bool WorldExists (Int3 worldPos) => Stream.WorldExists(worldPos);
@@ -167,6 +169,16 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	#region --- LGC ---
+
+
+	private static void CopyAllMapsFromBuiltInToUserIfEmpty () {
+		if (Util.GetFileCount(
+			Universe.BuiltIn.SlotUserMapRoot,
+			AngePath.MAP_SEARCH_PATTERN,
+			System.IO.SearchOption.TopDirectoryOnly
+		) > 0) return;
+		Util.CopyFolder(Universe.BuiltIn.BuiltInMapRoot, Universe.BuiltIn.SlotUserMapRoot, true, false, true);
+	}
 
 
 	private void RenderCurrentFrame () {

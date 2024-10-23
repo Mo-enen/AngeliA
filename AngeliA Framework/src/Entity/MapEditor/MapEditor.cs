@@ -167,11 +167,9 @@ public sealed partial class MapEditor : WindowUI {
 		if (!Instance.PlayingGame) {
 			Instance.ApplyPaste();
 			Instance.Save();
-		} else {
-			WorldSquad.DiscardAllChangesInMemory();
 		}
-		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.MapRoot);
-		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.MapRoot);
+		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.BuiltInMapRoot);
+		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.BuiltInMapRoot);
 	}
 
 
@@ -201,7 +199,7 @@ public sealed partial class MapEditor : WindowUI {
 	public override void OnActivated () {
 		base.OnActivated();
 
-		// Init
+		// Init Check
 		if (Initialized) {
 			if (IsPlaying && !WorldSquad.Enable) {
 				DropPlayerLogic();
@@ -211,17 +209,22 @@ public sealed partial class MapEditor : WindowUI {
 			}
 			return;
 		}
+
+		// Init
 		Initialized = true;
 
-		// Init Pool
-		var builtInUniverse = Universe.BuiltIn;
+		var universe = Universe.BuiltIn;
+		var info = Universe.BuiltInInfo;
+
 		UndoRedo = new(64 * 64 * 64, OnUndoPerformed, OnRedoPerformed);
-		Stream = WorldStream.GetOrCreateStreamFromPool(builtInUniverse.MapRoot);
-		EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(builtInUniverse.MapRoot);
-		FrameworkUtil.DeleteAllEmptyMaps(builtInUniverse.MapRoot);
+		Stream = WorldStream.GetOrCreateStreamFromPool(universe.BuiltInMapRoot);
+		EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.BuiltInMapRoot);
+		FrameworkUtil.DeleteAllEmptyMaps(universe.BuiltInMapRoot);
+
 		Initialize_Pool();
 		Initialize_Palette();
-		Active_Navigation();
+		Initialize_Navigation();
+
 		System.GC.Collect();
 
 		// Start
@@ -259,8 +262,8 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.width = Unify(PANEL_WIDTH);
 		PanelOffsetX = -PanelRect.width;
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
-		WorldBehindAlpha = Universe.BuiltInInfo.WorldBehindAlpha;
-		WorldBehindParallax = Universe.BuiltInInfo.WorldBehindParallax;
+		WorldBehindAlpha = info.WorldBehindAlpha;
+		WorldBehindParallax = info.WorldBehindParallax;
 	}
 
 
@@ -584,16 +587,7 @@ public sealed partial class MapEditor : WindowUI {
 
 				// Switch Mode
 				if (Input.KeyboardDown(KeyboardKey.Space)) {
-					if (!Universe.BuiltInInfo.UseProceduralMap) {
-						// Start Drop Player
-						StartDropPlayer();
-					} else {
-						// Play from Start
-						SetEditorMode(true);
-						TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
-						Input.UseAllHoldingKeys();
-						Input.UseGameKey(Gamekey.Start);
-					}
+					StartDropPlayer();
 				}
 				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
 
@@ -1058,10 +1052,7 @@ public sealed partial class MapEditor : WindowUI {
 		GUI.CancelTyping();
 		Stage.Settle();
 
-		// Squad  
-		if (!toPlayMode && WorldSquad.Enable && Universe.BuiltInInfo.UseProceduralMap) {
-			WorldSquad.Stream.SaveAllDirty();
-		}
+		// Squad 
 		WorldSquad.Enable = toPlayMode;
 		ItemHolder.ClearHoldingPool();
 		foreach (var holder in Stage.ForAllActiveEntities<ItemHolder>(EntityLayer.ITEM)) {
@@ -1074,18 +1065,11 @@ public sealed partial class MapEditor : WindowUI {
 			// Play >> Edit
 
 			// View Rect
-			if (!Universe.BuiltInInfo.UseProceduralMap) {
-				ViewRect = Stage.ViewRect;
-				SetViewZ(Stage.ViewZ);
-			}
+			ViewRect = Stage.ViewRect;
+			SetViewZ(Stage.ViewZ);
 
 			// Inactive Entities
 			Stage.DespawnAllNonUiEntities(refreshImmediately: true);
-
-			// Discard Changes from Game Play
-			if (Game.GlobalFrame != 0) {
-				WorldSquad.DiscardAllChangesInMemory();
-			}
 
 			// Despawn Player
 			if (PlayerSystem.Selecting != null) {
@@ -1112,6 +1096,11 @@ public sealed partial class MapEditor : WindowUI {
 
 		} else {
 			// Edit >> Play
+			// Reset User Map
+			Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
+			Util.CreateFolder(Universe.BuiltIn.SlotUserMapRoot);
+			WorldSquad.Stream.ClearWorldPool();
+			// Reset Stage
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
 			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);

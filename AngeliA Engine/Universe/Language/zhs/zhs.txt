@@ -59,10 +59,12 @@ Label.Project.AddMusic:+ 音乐
 Label.Project.AddSound:+ 音效
 Label.Project.AllowCheat:允许发布后使用作弊码
 Label.Project.AllowPause:允许暂停游戏
+Label.Project.AllowPlayerModiMap:允许玩家修改地图
 Label.Project.AllowQuitFromMenu:允许从菜单中退出游戏
 Label.Project.AllowRestartFromMenu:允许从菜单中重新开始游戏
 Label.Project.Font:字体
 Label.Project.Music:音乐
+Label.Project.SavePlayerChangesToMap:保存玩家对地图的修改（发布后）
 Label.Project.ScaleUiBasedOnMonitor:根据屏幕高度缩放UI
 Label.Project.Sound:音效
 Label.Project.UseLightingSystem:使用地图光照系统
@@ -106,7 +108,7 @@ Log.ProductNameInvalid:产品名包含不支持的字符
 MEDT.BackgroundOnly:仅背景
 MEDT.CancelDrop:取消放下
 MEDT.Drop:按鼠标左键放下
-MEDT.EntityOnly:仅物体
+MEDT.EntityOnly:仅实体
 MEDT.LevelOnly:仅关卡
 MEDT.TooManySpriteHint:图块太多了(っ°Д°)っ
 Menu.AtlasType:类型
@@ -174,6 +176,7 @@ PixelEditor.Title.ImportAse:导入Aseprite文件
 PixelEditor.Title.ImportPNG:导入PNG文件
 PlayerQMenu.Hand:手
 Project.Label.Game:游戏
+Project.Label.Map:地图
 Project.Label.Resource:资源
 Project.Label.Stage:场景
 ProjectEditor:工 程

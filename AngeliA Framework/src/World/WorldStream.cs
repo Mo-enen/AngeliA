@@ -41,9 +41,11 @@ public sealed class WorldStream : IBlockSquad {
 	public static event System.Action<WorldStream, World> OnWorldLoaded;
 	public string MapRoot { get; init; }
 	public bool IsDirty { get; private set; } = false;
+	public bool UseBuiltInAsFailback { get; set; } = false;
 
 	// Data
 	private static readonly Dictionary<string, WorldStream> StreamPool = [];
+	private static readonly WorldPathPool PathPoolBuiltIn = [];
 	private readonly Dictionary<Int3, WorldData> WorldPool = [];
 	private readonly WorldPathPool PathPool = [];
 	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
@@ -57,6 +59,10 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	#region --- API ---
+
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () => PathPoolBuiltIn.SetMapRoot(Universe.BuiltIn.BuiltInMapRoot);
 
 
 	public static WorldStream GetOrCreateStreamFromPool (string mapFolder) {
@@ -256,12 +262,22 @@ public sealed class WorldStream : IBlockSquad {
 			worldData.IsDirty = false;
 
 			if (!PathPool.TryGetPath(worldPos, out string path)) return false;
-			if (!Util.FileExists(path)) return false;
+			if (!UseBuiltInAsFailback && !Util.FileExists(path)) return false;
 
 			// Load New World from Disk
 			var newWorld = new World(worldPos);
 			worldData.World = newWorld;
 			bool loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+
+			// Failback Check
+			if (
+				!loaded &&
+				UseBuiltInAsFailback &&
+				PathPoolBuiltIn.TryGetPath(worldPos, out string builtInPath) &&
+				Util.CopyFile(builtInPath, path)
+			) {
+				loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+			}
 
 			// Check if Loaded
 			if (loaded) {
@@ -280,20 +296,32 @@ public sealed class WorldStream : IBlockSquad {
 
 	private WorldData CreateOrGetWorldData (int worldX, int worldY, int worldZ) {
 		lock (POOL_LOCK) {
-			var pos = new Int3(worldX, worldY, worldZ);
-			if (WorldPool.TryGetValue(pos, out var data) && data.World != null) return data;
+
+			var worldPos = new Int3(worldX, worldY, worldZ);
+			if (WorldPool.TryGetValue(worldPos, out var data) && data.World != null) return data;
 
 			// Create New
-			var newWorld = new World(pos);
+			var newWorld = new World(worldPos);
 			data.World = newWorld;
 			data.CreateFrame = InternalFrame++;
 			data.IsDirty = false;
-			WorldPool[pos] = data;
+			WorldPool[worldPos] = data;
 
-			// Load Data
-			if (PathPool.TryGetPath(pos, out string path)) {
-				newWorld.LoadFromDisk(path, pos.x, pos.y, pos.z);
+			if (PathPool.TryGetPath(worldPos, out string path)) {
+				// Load Data
+				bool loaded = newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+				if (
+					!loaded &&
+					UseBuiltInAsFailback &&
+					PathPoolBuiltIn.TryGetPath(worldPos, out string builtInPath) &&
+					Util.CopyFile(builtInPath, path)
+				) {
+					// Load from Failback
+					newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+				}
 			}
+
+			// Final
 			CurrentValidMapCount++;
 			TryReleaseOverload();
 			OnWorldCreated?.Invoke(this, newWorld);

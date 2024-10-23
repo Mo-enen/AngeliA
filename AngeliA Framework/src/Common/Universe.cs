@@ -18,7 +18,7 @@ public class Universe {
 	public string ConversationRoot { get; private set; }
 	public string EditableConversationRoot { get; private set; }
 	public string UniverseMetaRoot { get; private set; }
-	public string MapRoot { get; private set; }
+	public string BuiltInMapRoot { get; private set; }
 	public string LanguageRoot { get; private set; }
 	public string MusicRoot { get; private set; }
 	public string SoundRoot { get; private set; }
@@ -57,7 +57,7 @@ public class Universe {
 			EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder),
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder),
 			LanguageRoot = AngePath.GetLanguageRoot(universeFolder),
-			MapRoot = AngePath.GetMapRoot(universeFolder),
+			BuiltInMapRoot = AngePath.GetMapRoot(universeFolder),
 			InfoPath = infoPath,
 			Info = JsonUtil.LoadOrCreateJsonFromPath<UniverseInfo>(infoPath),
 			MusicRoot = AngePath.GetUniverseMusicRoot(universeFolder),
@@ -81,7 +81,7 @@ public class Universe {
 		Util.CreateFolder(result.ConversationRoot);
 		Util.CreateFolder(result.EditableConversationRoot);
 		Util.CreateFolder(result.UniverseMetaRoot);
-		Util.CreateFolder(result.MapRoot);
+		Util.CreateFolder(result.BuiltInMapRoot);
 		Util.CreateFolder(result.LanguageRoot);
 		Util.CreateFolder(result.SlotRoot);
 		Util.CreateFolder(result.SlotMetaRoot);

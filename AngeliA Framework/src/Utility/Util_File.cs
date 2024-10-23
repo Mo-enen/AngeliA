@@ -266,10 +266,15 @@ public static partial class Util {
 	}
 
 
-	public static void CopyFile (string from, string to, bool overwrite = true) {
-		if (FileExists(from)) {
+	public static bool CopyFile (string from, string to, bool overwrite = true) {
+		if (!FileExists(from)) return false;
+		try {
 			CreateFolder(GetParentPath(to));
 			File.Copy(from, to, overwrite);
+			return true;
+		} catch (System.Exception ex) {
+			Debug.LogException(ex);
+			return false;
 		}
 	}
 

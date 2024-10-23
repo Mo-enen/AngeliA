@@ -22,6 +22,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly SpriteCode ICON_AUDIO = "FileIcon.Audio";
 	private static readonly SpriteCode ICON_FONT = "FileIcon.Font";
 	private static readonly SpriteCode ICON_GAME = "Icon.Project.Game";
+	private static readonly SpriteCode ICON_MAP = "Icon.Project.Map";
 	private static readonly SpriteCode ICON_STAGE = "Icon.Project.Stage";
 	private static readonly SpriteCode ICON_RESOURCE = "Icon.Project.Resource";
 
@@ -52,6 +53,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode MSG_DELETE_FONT = ("UI.Project.DeleteFontMsg", "Delete font \"{0}\" ? This will delete the file.");
 
 	private static readonly LanguageCode LABEL_GAME = ("Project.Label.Game", "Game");
+	private static readonly LanguageCode LABEL_MAP = ("Project.Label.Map", "Map");
 	private static readonly LanguageCode LABEL_STAGE = ("Project.Label.Stage", "Stage");
 	private static readonly LanguageCode LABEL_RESOURCE = ("Project.Label.Resource", "Resource");
 
@@ -71,6 +73,8 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ADD_FONT = ("Label.Project.AddFont", "+ Font");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
 	private static readonly LanguageCode LABEL_USE_MAP_EDT = ("Label.Project.UseMapEditor", "Use Map Editor");
+	private static readonly LanguageCode LABEL_ALLOW_MOD_MAP = ("Label.Project.AllowPlayerModiMap", "Allow Player Modify Map");
+	private static readonly LanguageCode LABEL_SAVE_PLAYER_MAP_CHANGE = ("Label.Project.SavePlayerChangesToMap", "Save Map Changes from Player (After Release)");
 	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
 	private static readonly LanguageCode LABEL_ALLOW_PAUSE = ("Label.Project.AllowPause", "Allow Pause Game");
 	private static readonly LanguageCode LABEL_ALLOW_RESTART_MENU = ("Label.Project.AllowRestartFromMenu", "Allow Restart from Menu");
@@ -101,7 +105,8 @@ public class ProjectEditor : WindowUI {
 	private long IconFileModifyDate = 0;
 	private object MenuItem = null;
 	private bool RequireRecompileOnSave = false;
-	private bool FoldingConfigPanel = false;
+	private bool FoldingGamePanel = false;
+	private bool FoldingMapPanel = true;
 	private bool FoldingStagePanel = true;
 	private bool FoldingResourcePanel = true;
 
@@ -176,7 +181,7 @@ public class ProjectEditor : WindowUI {
 			// Game
 			rect.yMin = rect.yMax - GUI.FieldHeight;
 			rect.xMin += indent;
-			if (!GUI.ToggleFold(rect, ref FoldingConfigPanel, ICON_GAME, LABEL_GAME, indent)) {
+			if (!GUI.ToggleFold(rect, ref FoldingGamePanel, ICON_GAME, LABEL_GAME, indent)) {
 				rect.xMin += indent;
 				rect.SlideDown(GUI.FieldPadding);
 				OnGUI_Game(ref rect);
@@ -185,6 +190,19 @@ public class ProjectEditor : WindowUI {
 			}
 
 			if (projectType == ProjectType.Game) {
+
+				// Map
+				rect.x = left;
+				rect.yMin = rect.yMax - GUI.FieldHeight;
+				rect.xMin += indent;
+				if (!GUI.ToggleFold(rect, ref FoldingMapPanel, ICON_MAP, LABEL_MAP, indent)) {
+					rect.xMin += indent;
+					rect.SlideDown(GUI.FieldPadding);
+					OnGUI_Map(ref rect);
+				} else {
+					rect.SlideDown();
+				}
+
 				// Stage
 				rect.x = left;
 				rect.yMin = rect.yMax - GUI.FieldHeight;
@@ -387,25 +405,6 @@ public class ProjectEditor : WindowUI {
 
 		if (projectType == ProjectType.Game) {
 
-
-			// Use Procedural Map
-			bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
-			if (newUseProceduralMap != info.UseProceduralMap) {
-				info.UseProceduralMap = newUseProceduralMap;
-				RequireRecompileOnSave = true;
-				SetDirty();
-			}
-			rect.SlideDown(padding);
-
-			// Use Map Editor
-			bool newUseMapEDT = GUI.Toggle(rect, info.UseMapEditor, LABEL_USE_MAP_EDT, labelStyle: Skin.SmallLabel);
-			if (newUseMapEDT != info.UseMapEditor) {
-				info.UseMapEditor = newUseMapEDT;
-				RequireRecompileOnSave = true;
-				SetDirty();
-			}
-			rect.SlideDown(padding);
-
 			// Use Light Sys
 			bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);
 			if (newUseLightSys != info.UseLightingSystem) {
@@ -497,6 +496,57 @@ public class ProjectEditor : WindowUI {
 			bool success = EngineUtil.CreateIcoFromPng(path, Instance.CurrentProject.IconPath);
 			if (success) Instance.ReloadIconUI();
 		}
+	}
+
+
+	private void OnGUI_Map (ref IRect rect) {
+
+		var info = CurrentProject.Universe.Info;
+		var projectType = info.ProjectType;
+		if (projectType != ProjectType.Game) return;
+
+		int padding = GUI.FieldPadding;
+		int itemHeight = GUI.FieldHeight;
+		rect.yMin = rect.yMax - itemHeight;
+
+		// Use Procedural Map
+		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
+		if (newUseProceduralMap != info.UseProceduralMap) {
+			info.UseProceduralMap = newUseProceduralMap;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Use Map Editor
+		bool newUseMapEDT = GUI.Toggle(rect, info.UseMapEditor, LABEL_USE_MAP_EDT, labelStyle: Skin.SmallLabel);
+		if (newUseMapEDT != info.UseMapEditor) {
+			info.UseMapEditor = newUseMapEDT;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Allow Player Modify Map
+		bool newAllowMod = GUI.Toggle(rect, info.AllowPlayerModifyMap, LABEL_ALLOW_MOD_MAP, labelStyle: Skin.SmallLabel);
+		if (newAllowMod != info.AllowPlayerModifyMap) {
+			info.AllowPlayerModifyMap = newAllowMod;
+			RequireRecompileOnSave = true;
+			SetDirty();
+		}
+		rect.SlideDown(padding);
+
+		// Save Changes from Player to Map
+		if (info.AllowPlayerModifyMap) {
+			bool newSaveChanges = GUI.Toggle(rect, info.SaveChangesFromPlayerToMap, LABEL_SAVE_PLAYER_MAP_CHANGE, labelStyle: Skin.SmallLabel);
+			if (newSaveChanges != info.SaveChangesFromPlayerToMap) {
+				info.SaveChangesFromPlayerToMap = newSaveChanges;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
+		}
+
 	}
 
 

@@ -14,7 +14,7 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 
 
 	// MSG
-	[OnGameInitialize]
+	[OnGameInitialize(int.MinValue)]
 	internal static void OnGameInitialize () {
 		foreach (var type in Util.AllTypes) {
 			foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) {

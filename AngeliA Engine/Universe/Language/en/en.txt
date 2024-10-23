@@ -59,10 +59,12 @@ Label.Project.AddMusic:+ music
 Label.Project.AddSound:+ Sound
 Label.Project.AllowCheat:Allow Cheat Code on Release Mode
 Label.Project.AllowPause:Allow Pause Game
+Label.Project.AllowPlayerModiMap:Allow Player Modify Map
 Label.Project.AllowQuitFromMenu:Allow Quit from Menu
 Label.Project.AllowRestartFromMenu:Allow Restart from Menu
 Label.Project.Font:Font
 Label.Project.Music:Music
+Label.Project.SavePlayerChangesToMap:Save Map Changes from Player (Release)
 Label.Project.ScaleUiBasedOnMonitor:Scale UI Based On Monitor Height
 Label.Project.Sound:Sound
 Label.Project.UseLightingSystem:Use Map Lighting System
@@ -174,6 +176,7 @@ PixelEditor.Title.ImportAse:Import Aseprite file
 PixelEditor.Title.ImportPNG:Import PNG file
 PlayerQMenu.Hand:Hand
 Project.Label.Game:Game
+Project.Label.Map:Map
 Project.Label.Resource:Resource
 Project.Label.Stage:Stage
 ProjectEditor:Project

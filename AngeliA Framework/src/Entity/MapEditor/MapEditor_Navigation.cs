@@ -25,7 +25,7 @@ public partial class MapEditor {
 	}
 
 
-	private void Active_Navigation () {
+	private void Initialize_Navigation () {
 		NavWorldDoodledUnitRange.x = int.MinValue;
 		NavWorldDoodledZ = int.MinValue;
 		NavPrevHolderMouseLeft = false;
