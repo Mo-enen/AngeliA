@@ -104,7 +104,7 @@ public abstract class DonutBlock : Entity, IBlockEntity {
 
 	protected virtual void Break () {
 		Active = false;
-		GlobalEvent.InvokeObjectBreak(TypeID, Rect);
+		FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
 	}
 
 }

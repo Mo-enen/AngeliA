@@ -106,7 +106,7 @@ public static class CheatSystem {
 			var resultObj = performingAction.Action.Invoke(null, null);
 			CurrentParam = null;
 			if (resultObj is not bool performed || performed) {
-				GlobalEvent.InvokeCheatPerformed(performingAction.Code);
+				FrameworkUtil.InvokeCheatPerformed(performingAction.Code);
 			}
 			CheatInput.Reset();
 			MatchingCheatID = 0;

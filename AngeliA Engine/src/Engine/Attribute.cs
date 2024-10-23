@@ -6,8 +6,7 @@ using AngeliA;
 namespace AngeliaEngine;
 
 
-[AttributeUsage(AttributeTargets.Method)]
-public class OnProjectBuiltInBackgroundAttribute (int order = 0) : OrderedAttribute(order) { }
+public class OnProjectBuiltInBackgroundAttribute (int order = 0) : EventAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field, AllowMultiple = false)]

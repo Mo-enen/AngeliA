@@ -87,7 +87,7 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_SWITCH_TO_NAV = ("CtrlHint.MEDT.Nav", "Navigation Mode");
 
 	// Api
-	public static event System.Action OnEditModeChanged;
+	[OnMapEditorEditModeChanged] internal static System.Action OnEditModeChanged;
 	public static MapEditor Instance { get; private set; }
 	public static bool IsActived => Instance != null && Instance.Active;
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
@@ -159,12 +159,6 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	#region --- MSG ---
-
-
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		Util.LinkEventWithAttribute<OnMapEditorEditModeChangedAttribute>(typeof(MapEditor), nameof(OnEditModeChanged));
-	}
 
 
 	[OnGameQuitting(-1)]

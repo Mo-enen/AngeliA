@@ -302,7 +302,7 @@ public static class ItemSystem {
 		data.Unlocked = unlocked;
 		IsUnlockDirty = true;
 		if (unlocked) {
-			GlobalEvent.InvokeItemUnlocked(itemID);
+			FrameworkUtil.InvokeItemUnlocked(itemID);
 		}
 	}
 

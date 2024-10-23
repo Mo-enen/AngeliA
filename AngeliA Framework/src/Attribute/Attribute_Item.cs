@@ -35,17 +35,11 @@ public class ItemCombinationAttribute : Attribute {
 
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ItemDropAttribute : Attribute {
-	public Type ItemType = null;
-	public readonly int ItemTypeID = 0;
-	public int DropCount = 1;
-	public int DropChance = 1000;
-	public ItemDropAttribute (Type itemType, int dropCount = 1, int dropChance = 1000) {
-		ItemType = itemType;
-		ItemTypeID = itemType.AngeHash();
-		DropCount = dropCount;
-		DropChance = dropChance;
-	}
+public class ItemDropAttribute (Type itemType, int dropCount = 1, int dropChance = 1000) : Attribute {
+	public Type ItemType = itemType;
+	public readonly int ItemTypeID = itemType.AngeHash();
+	public int DropCount = dropCount;
+	public int DropChance = dropChance;
 }
 
 

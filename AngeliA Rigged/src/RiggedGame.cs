@@ -23,7 +23,7 @@ public partial class RiggedGame : Game {
 	// Data
 	private static RiggedGame Instance;
 	private static readonly List<string> FontNamesCache = [];
-	private static event System.Action<int, int> OnRemoteSettingChanged;
+	[OnRemoteSettingChanged] internal static System.Action<int, int> OnRemoteSettingChanged;
 	private readonly Process HostProcess;
 	private readonly string MapName = "RiggedGameMapName";
 	private readonly int StartWithZ = 0;
@@ -100,8 +100,7 @@ public partial class RiggedGame : Game {
 		}
 
 		MapEditor.ResetCameraAtStart = StartWithView == default;
-		Util.LinkEventWithAttribute<OnRemoteSettingChangedAttribute>(typeof(RiggedGame), nameof(OnRemoteSettingChanged));
-
+		
 		// Init Stream
 		Debug.OnLogException += LogException;
 		Debug.OnLogError += LogError;

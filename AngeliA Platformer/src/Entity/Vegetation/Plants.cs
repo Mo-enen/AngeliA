@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.MapEditorGroup("Vegetation")]
@@ -48,7 +49,7 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 		if (damage.Amount <= 0) return;
 		// Particle
 		if (Renderer.TryGetSprite(TypeID, out var sprite)) {
-			GlobalEvent.InvokeObjectBreak(TypeID, Rect.Fit(sprite), true);
+			FrameworkUtil.InvokeObjectBreak(TypeID, Rect.Fit(sprite), true);
 		}
 		// Disable
 		Active = false;

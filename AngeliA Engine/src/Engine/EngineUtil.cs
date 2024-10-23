@@ -55,7 +55,7 @@ public static class EngineUtil {
 	public static Queue<string> BackgroundBuildMessages { get; } = new(capacity: 32);
 
 	// Cache
-	private static event System.Action<int> OnProjectBuiltInBackgroundHandler;
+	[OnProjectBuiltInBackground] internal static System.Action<int> OnProjectBuiltInBackgroundHandler;
 
 	// Data
 	private static readonly StringBuilder CacheBuilder = new();
@@ -72,7 +72,6 @@ public static class EngineUtil {
 
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
-		Util.LinkEventWithAttribute<OnProjectBuiltInBackgroundAttribute>(typeof(EngineUtil), nameof(OnProjectBuiltInBackgroundHandler));
 		Debug.OnLogInternal += OnLogMessage;
 		Debug.OnLogErrorInternal += OnLogMessage;
 	}

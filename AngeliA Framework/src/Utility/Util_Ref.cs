@@ -5,15 +5,7 @@ using System.Linq;
 using System;
 using System.Text;
 
-
 namespace AngeliA;
-
-
-public abstract class OrderedAttribute : System.Attribute {
-	public int Order { get; init; }
-	public OrderedAttribute (int order) => Order = order;
-}
-
 
 public static partial class Util {
 
@@ -92,7 +84,7 @@ public static partial class Util {
 	}
 
 
-	public static IEnumerable<KeyValuePair<MethodInfo, T>> AllStaticMethodWithAttribute<T> () where T : System.Attribute {
+	public static IEnumerable<KeyValuePair<MethodInfo, T>> AllStaticMethodWithAttribute<T> () where T : Attribute {
 		var flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public;
 		foreach (var method in AllTypes.SelectMany(t => t.GetMethods(flags))) {
 			foreach (var att in method.GetCustomAttributes<T>(false)) {
@@ -136,139 +128,6 @@ public static partial class Util {
 			try {
 				method.Invoke(null, null);
 			} catch (Exception ex) { Debug.LogException(ex); }
-		}
-	}
-
-
-	public static void InvokeAsAutoOrderingTask<A> () where A : Attribute {
-		var methods = new List<KeyValuePair<MethodInfo, A>>(AllStaticMethodWithAttribute<A>());
-		var taskType = typeof(TaskResult);
-		// Sort
-		methods.Sort(Compare);
-		// Invoke
-		int count = methods.Count;
-		for (int safe = 0; safe < 1024; safe++) {
-			bool changed = false;
-			bool skip = false;
-			// Start Iteration
-			for (int i = 0; i < count; i++) {
-				try {
-					var (method, att) = methods[i];
-					if (att == null) continue;
-					if (method.ReturnType == taskType) {
-						// Task
-						var result = (TaskResult)method.Invoke(null, null);
-						if (result == TaskResult.End) {
-							methods[i] = new(null, null);
-							changed = true;
-						} else {
-							skip = true;
-						}
-					} else {
-						// Non-Task
-						method.Invoke(null, null);
-						methods[i] = new(null, null);
-						changed = true;
-					}
-				} catch (Exception ex) { Debug.LogException(ex); }
-			}
-			// End Iteration
-			if (!changed || !skip) break;
-		}
-
-		// Func
-		static int Compare (KeyValuePair<MethodInfo, A> a, KeyValuePair<MethodInfo, A> b) =>
-			(a.Value is OrderedAttribute oa ? oa.Order : 0).CompareTo(
-				b.Value is OrderedAttribute ob ? ob.Order : 0
-			);
-	}
-
-
-	// Event/Delegate
-	public static void LinkEventWithAttribute<T> (System.Type sender, string eventName) where T : System.Attribute {
-		var info = sender.GetEvent(
-			eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
-		);
-		if (info == null || info.EventHandlerType == null) return;
-		// Get List
-		var list = new List<(MethodInfo method, int order)>();
-		foreach (var (method, att) in Util.AllStaticMethodWithAttribute<T>()) {
-			try {
-				int order = 0;
-				if (att is OrderedAttribute orderAtt) order = orderAtt.Order;
-				list.Add((method, order));
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-		// Sort 
-		list.Sort((a, b) => a.order.CompareTo(b.order));
-		// Fill List
-		foreach (var (method, _) in list) {
-			try {
-				var addMethod = info.GetAddMethod(true);
-				// Check Param Type
-				if (!IsAction(info.EventHandlerType)) continue;
-				var infoParams = info.EventHandlerType.GetGenericArguments();
-				var methodParams = method.GetParameters();
-				if (infoParams.Length != methodParams.Length) goto _PARAM_ERROR_;
-				for (int i = 0; i < infoParams.Length; i++) {
-					if (infoParams[i] != methodParams[i].ParameterType) {
-						goto _PARAM_ERROR_;
-					}
-				}
-				// Add to List
-				var del = System.Delegate.CreateDelegate(info.EventHandlerType, method);
-				addMethod?.Invoke(null, [del]);
-				continue;
-
-				_PARAM_ERROR_:;
-#if DEBUG
-				var infoMsg = new StringBuilder();
-				var methodMsg = new StringBuilder();
-				for (int i = 0; i < infoParams.Length; i++) {
-					var param = infoParams[i];
-					infoMsg.Append(param.Name);
-					if (i < infoParams.Length - 1) {
-						infoMsg.Append(',');
-						infoMsg.Append(' ');
-					}
-				}
-				for (int i = 0; i < methodParams.Length; i++) {
-					var param = methodParams[i];
-					methodMsg.Append(param.ParameterType.Name);
-					if (i < methodParams.Length - 1) {
-						methodMsg.Append(',');
-						methodMsg.Append(' ');
-					}
-				}
-				Debug.LogError($"\"{method.DeclaringType.Name}.{method.Name}\" is having wrong param. Expect ({infoMsg}) Get ({methodMsg})");
-#endif
-			} catch (System.Exception ex) {
-				Debug.LogException(ex);
-			}
-		}
-		static bool IsAction (System.Type type) {
-			if (type == typeof(System.Action)) return true;
-			Type generic = null;
-			if (type.IsGenericTypeDefinition) generic = type;
-			else if (type.IsGenericType) generic = type.GetGenericTypeDefinition();
-			if (generic == null) return false;
-			if (generic == typeof(System.Action<>)) return true;
-			if (generic == typeof(System.Action<,>)) return true;
-			if (generic == typeof(System.Action<,,>)) return true;
-			if (generic == typeof(System.Action<,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,,,,>)) return true;
-			return false;
 		}
 	}
 

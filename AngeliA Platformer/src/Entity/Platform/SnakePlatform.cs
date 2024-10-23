@@ -46,8 +46,7 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 		// Reached End
 		if (EndReachingFrame >= 0) {
 			if (Game.GlobalFrame > EndReachingFrame + EndBreakDuration) {
-				// Particle
-				GlobalEvent.InvokeObjectFreeFall(TypeID, X + Width / 2, Y + Height / 2, rotation: 0);
+				FrameworkUtil.InvokeObjectFreeFall(TypeID, X + Width / 2, Y + Height / 2, rotation: 0);
 				// Reset
 				X = StartPosition.x;
 				Y = StartPosition.y;

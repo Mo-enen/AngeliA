@@ -188,8 +188,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		// Water Splash
 		if (prevInWater != InWater && InWater == VelocityY < 0) {
-			if (prevInWater) GlobalEvent.InvokeCameOutOfWater(this);
-			if (InWater) GlobalEvent.InvokeFallIntoWater(this);
+			if (prevInWater) FrameworkUtil.InvokeCameOutOfWater(this);
+			if (InWater) FrameworkUtil.InvokeFallIntoWater(this);
 		}
 
 	}

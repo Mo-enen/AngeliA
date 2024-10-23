@@ -201,7 +201,7 @@ public abstract class MovableBullet : Bullet {
 			int rotSpeed = receiver == null ? 0 : 12;
 			int speedY = receiver == null ? 0 : 42;
 			int gravity = receiver == null ? 0 : 5;
-			GlobalEvent.InvokeObjectFreeFall(
+			FrameworkUtil.InvokeObjectFreeFall(
 				ArtworkID,
 				x: X + Width / 2,
 				y: Y + Height / 2,

@@ -37,15 +37,15 @@ public abstract partial class Game {
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
 
 	// Event
-	private static event System.Action OnGameRestart;
-	private static event System.Action OnGameQuitting;
-	private static event System.Action OnGameUpdate;
-	private static event System.Action OnGameUpdateLater;
-	private static event System.Action OnGameUpdatePauseless;
-	private static event System.Action OnGameFocused;
-	private static event System.Action OnGameLostFocus;
-	private static event System.Action OnWindowSizeChanged;
-	private static event System.Action<string> OnFileDropped;
+	[OnGameRestart] internal static System.Action OnGameRestart;
+	[OnGameQuitting] internal static System.Action OnGameQuitting;
+	[OnGameUpdate] internal static System.Action OnGameUpdate;
+	[OnGameUpdateLater] internal static System.Action OnGameUpdateLater;
+	[OnGameUpdatePauseless] internal static System.Action OnGameUpdatePauseless;
+	[OnGameFocused] internal static System.Action OnGameFocused;
+	[OnGameLostFocus] internal static System.Action OnGameLostFocus;
+	[OnWindowSizeChanged] internal static System.Action OnWindowSizeChanged;
+	[OnFileDropped] internal static System.Action<string> OnFileDropped;
 	private static MethodInfo[] OnGameTryingToQuitMethods;
 
 	// Data
@@ -147,27 +147,16 @@ public abstract partial class Game {
 #if DEBUG
 			_IsFullscreen.Value = false;
 #endif
-			Util.LinkEventWithAttribute<OnGameUpdateAttribute>(typeof(Game), nameof(OnGameUpdate));
-			Util.LinkEventWithAttribute<OnGameUpdateLaterAttribute>(typeof(Game), nameof(OnGameUpdateLater));
-			Util.LinkEventWithAttribute<OnGameUpdatePauselessAttribute>(typeof(Game), nameof(OnGameUpdatePauseless));
-			Util.LinkEventWithAttribute<OnGameQuittingAttribute>(typeof(Game), nameof(OnGameQuitting));
-			Util.LinkEventWithAttribute<OnGameRestartAttribute>(typeof(Game), nameof(OnGameRestart));
-			Util.LinkEventWithAttribute<OnGameFocusedAttribute>(typeof(Game), nameof(OnGameFocused));
-			Util.LinkEventWithAttribute<OnGameLostFocusAttribute>(typeof(Game), nameof(OnGameLostFocus));
-			Util.LinkEventWithAttribute<OnWindowSizeChangedAttribute>(typeof(Game), nameof(OnWindowSizeChanged));
-			Util.LinkEventWithAttribute<OnFileDroppedAttribute>(typeof(Game), nameof(OnFileDropped));
-
-
 			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
 
-			Util.InvokeAsAutoOrderingTask<OnGameInitializeAttribute>();
+			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeAttribute>();
 
 			_SetFullscreen(_IsFullscreen.Value);
 			_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
 			_SetMusicVolume(MusicVolume);
 			_SetSoundVolume(SoundVolume);
 
-			Util.InvokeAsAutoOrderingTask<OnGameInitializeLaterAttribute>();
+			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeLaterAttribute>();
 
 			SetWindowTitle(Universe.BuiltInInfo.ProductName);
 			SetWindowIcon("ApplicationIcon".AngeHash());

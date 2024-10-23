@@ -13,7 +13,7 @@ public static class Language {
 	public static bool PoolReady { get; private set; } = false;
 
 	// Data
-	private static event System.Action OnLanguageChanged;
+	[OnLanguageChanged] internal static System.Action OnLanguageChanged;
 	private static readonly Dictionary<int, string> Pool = [];
 	private static string[] AllLanguages = [];
 
@@ -26,8 +26,6 @@ public static class Language {
 	public static TaskResult Initialize () {
 
 		if (!SavingSystem.PoolReady) return TaskResult.Continue;
-
-		Util.LinkEventWithAttribute<OnLanguageChangedAttribute>(typeof(Language), nameof(OnLanguageChanged));
 
 		// Get All Language from Disk
 		var allLanguages = new List<string>();

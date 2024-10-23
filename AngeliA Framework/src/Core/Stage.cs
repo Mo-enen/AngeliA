@@ -119,15 +119,15 @@ public static class Stage {
 	private static (int? value, int priority) ViewDelayX = (null, int.MinValue);
 	private static (int? value, int priority) ViewDelayY = (null, int.MinValue);
 	private static (int? value, int priority, int centralizedFrame) ViewDelayHeight = (null, int.MinValue, -1);
-	private static event Action BeforeFirstUpdate;
-	private static event Action BeforeBeforeUpdate;
-	private static event Action BeforeUpdateUpdate;
-	private static event Action BeforeLateUpdate;
-	private static event Action AfterLateUpdate;
-	private static event Action OnViewZChanged;
-	private static event Action<int> BeforeLayerFrameUpdate;
-	private static event Action<int> AfterLayerFrameUpdate;
-	private static event Action<Entity, Int3?, Int3> AfterEntityReposition;
+	[BeforeFirstUpdate] internal static Action BeforeFirstUpdate;
+	[BeforeBeforeUpdate] internal static Action BeforeBeforeUpdate;
+	[BeforeUpdateUpdate] internal static Action BeforeUpdateUpdate;
+	[BeforeLateUpdate] internal static Action BeforeLateUpdate;
+	[AfterLateUpdate] internal static Action AfterLateUpdate;
+	[OnViewZChanged] internal static Action OnViewZChanged;
+	[BeforeLayerFrameUpdate] internal static Action<int> BeforeLayerFrameUpdate;
+	[AfterLayerFrameUpdate] internal static Action<int> AfterLayerFrameUpdate;
+	[AfterEntityReposition] internal static Action<Entity, Int3?, Int3> AfterEntityReposition;
 	private static readonly Dictionary<int, EntityStack> EntityPool = [];
 	private static readonly HashSet<Int3> StagedEntityHash = [];
 	private static int ViewLerpRate = 1000;
@@ -214,19 +214,6 @@ public static class Stage {
 			}
 			EntityPool.TryAdd(id, stack);
 		}
-
-		// Event
-		Util.LinkEventWithAttribute<OnViewZChangedAttribute>(typeof(Stage), nameof(OnViewZChanged));
-		Util.LinkEventWithAttribute<BeforeLayerFrameUpdateAttribute>(typeof(Stage), nameof(BeforeLayerFrameUpdate));
-		Util.LinkEventWithAttribute<AfterLayerFrameUpdateAttribute>(typeof(Stage), nameof(AfterLayerFrameUpdate));
-
-		Util.LinkEventWithAttribute<BeforeFirstUpdateAttribute>(typeof(Stage), nameof(BeforeFirstUpdate));
-		Util.LinkEventWithAttribute<BeforeBeforeUpdateAttribute>(typeof(Stage), nameof(BeforeBeforeUpdate));
-		Util.LinkEventWithAttribute<BeforeUpdateUpdateAttribute>(typeof(Stage), nameof(BeforeUpdateUpdate));
-		Util.LinkEventWithAttribute<BeforeLateUpdateAttribute>(typeof(Stage), nameof(BeforeLateUpdate));
-		Util.LinkEventWithAttribute<AfterLateUpdateAttribute>(typeof(Stage), nameof(AfterLateUpdate));
-
-		Util.LinkEventWithAttribute<AfterEntityRepositionAttribute>(typeof(Stage), nameof(AfterEntityReposition));
 
 	}
 

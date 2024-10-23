@@ -64,7 +64,7 @@ public static class Renderer {
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 
 	// Event
-	private static event Action OnMainSheetLoaded;
+	[OnMainSheetReload] internal static Action OnMainSheetLoaded;
 
 	// Api
 	public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);
@@ -112,8 +112,6 @@ public static class Renderer {
 	// Init
 	[OnGameInitialize(-4096)]
 	internal static void Initialize () {
-
-		Util.LinkEventWithAttribute<OnMainSheetReloadAttribute>(typeof(Renderer), nameof(OnMainSheetLoaded));
 
 		// Load Capacity from Attribute
 		var capacities = new int[RenderLayer.COUNT];
@@ -316,7 +314,7 @@ public static class Renderer {
 
 		// Load all Sub Sheets
 		MainSheet.CombineAllSheetInFolder(Universe.BuiltIn.SheetRoot, false, gameSheetName);
-		
+
 		// Event
 		OnMainSheetLoaded?.Invoke();
 	}

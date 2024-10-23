@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.MapEditorGroup("Vegetation")]
@@ -123,7 +124,7 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 				rect.width = sprite.GlobalWidth;
 			}
 		}
-		GlobalEvent.InvokeObjectBreak(id, rect, true);
+		FrameworkUtil.InvokeObjectBreak(id, rect, true);
 		// Disable
 		Active = false;
 		OnLeafBreak();

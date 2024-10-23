@@ -286,7 +286,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 		// Particle Hint
 		if (oldCount > ItemCount) {
-			GlobalEvent.InvokeItemCollected(character, oldItemID, oldCount - ItemCount);
+			FrameworkUtil.InvokeItemCollected(character, oldItemID, oldCount - ItemCount);
 		}
 
 		return oldCount > ItemCount;

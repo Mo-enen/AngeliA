@@ -21,10 +21,10 @@ public sealed class WorldSquad : IBlockSquad {
 	public static bool DontSaveChangesToFile { get; private set; } = false;
 
 	// Data
-	private static event System.Action BeforeLevelRendered;
-	private static event System.Action AfterLevelRendered;
-	private static event System.Action<World> OnWorldCreated;
-	private static event System.Action<World> OnWorldLoaded;
+	[BeforeLevelRendered] internal static System.Action BeforeLevelRendered;
+	[AfterLevelRendered] internal static System.Action AfterLevelRendered;
+	[OnWorldCreated] internal static System.Action<World> OnWorldCreated;
+	[OnWorldLoaded] internal static System.Action<World> OnWorldLoaded;
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
 	private IRect CullingCameraRect = default;
@@ -52,10 +52,6 @@ public sealed class WorldSquad : IBlockSquad {
 		DontSaveChangesToFile = !useProceduralMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
-		Util.LinkEventWithAttribute<BeforeLevelRenderedAttribute>(typeof(WorldSquad), nameof(BeforeLevelRendered));
-		Util.LinkEventWithAttribute<AfterLevelRenderedAttribute>(typeof(WorldSquad), nameof(AfterLevelRendered));
-		Util.LinkEventWithAttribute<OnWorldCreatedAttribute>(typeof(WorldSquad), nameof(OnWorldCreated));
-		Util.LinkEventWithAttribute<OnWorldLoadedAttribute>(typeof(WorldSquad), nameof(OnWorldLoaded));
 		WorldStream.OnWorldCreated += _OnWorldCreated;
 		WorldStream.OnWorldLoaded += _OnWorldLoaded;
 		static void _OnWorldCreated (WorldStream stream, World world) {

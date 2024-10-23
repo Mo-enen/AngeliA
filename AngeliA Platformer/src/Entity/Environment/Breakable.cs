@@ -1,4 +1,5 @@
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
@@ -24,7 +25,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	}
 
 	protected virtual void OnBreak () {
-		GlobalEvent.InvokeObjectBreak(TypeID, Rect);
+		FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
 		ItemSystem.DropItemFor(this);
 		if (Universe.BuiltInInfo.UseProceduralMap) {
 			FrameworkUtil.PickEntityBlock(this, false);

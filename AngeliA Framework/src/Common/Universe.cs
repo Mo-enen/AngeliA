@@ -100,10 +100,10 @@ public class Universe {
 
 	public void ReloadSavingSlot (int newSlot, bool forceReload = false) {
 		if (!forceReload && newSlot == CurrentSavingSlot) return;
-		Util.InvokeAsAutoOrderingTask<BeforeSavingSlotChanged>();
+		OrderedAttribute.InvokeAsAutoOrderingTask<BeforeSavingSlotChanged>();
 		CurrentSavingSlot = newSlot;
 		SetSavingRoot(SavingRoot, newSlot);
-		Util.InvokeAsAutoOrderingTask<OnSavingSlotChanged>();
+		OrderedAttribute.InvokeAsAutoOrderingTask<OnSavingSlotChanged>();
 	}
 
 

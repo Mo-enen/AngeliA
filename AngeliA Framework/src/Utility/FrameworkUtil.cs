@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,19 @@ public static class FrameworkUtil {
 	];
 	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
 	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
+
+	// Event
+	[OnObjectBreak] internal static Action<int, IRect, bool> OnObjectBreak;
+	[OnObjectFreeFall] internal static Action<int, Int4, Int4> OnObjectFreeFall;
+	[OnBlockPicked] internal static Action<int, IRect> OnBlockPicked;
+	[OnFallIntoWater] internal static Action<Rigidbody> OnFallIntoWater;
+	[OnCameOutOfWater] internal static Action<Rigidbody> OnCameOutOfWater;
+	[OnItemCollected] internal static Action<Entity, int, int> OnItemCollected;
+	[OnItemLost] internal static Action<Character, int> OnItemLost;
+	[OnItemInsufficient] internal static Action<Character, int> OnItemInsufficient;
+	[OnItemDamage] internal static Action<Character, int, int> OnItemDamage;
+	[OnItemUnlocked] internal static Action<int> OnItemUnlocked;
+	[OnCheatPerformed] internal static Action<string> OnCheatPerformed;
 
 
 	// Drawing
@@ -438,194 +452,6 @@ public static class FrameworkUtil {
 	}
 
 
-	// Misc
-	public static void DeleteAllEmptyMaps (string mapRoot) {
-		foreach (var path in Util.EnumerateFiles(mapRoot, false, AngePath.MAP_SEARCH_PATTERN)) {
-			try {
-				if (Util.IsExistingFileEmpty(path)) Util.DeleteFile(path);
-			} catch (System.Exception ex) { Debug.LogException(ex); }
-		}
-	}
-
-
-	public static void EmptyScriptFileAnalysis (string rootPath, bool onlyLogWhenWarningFounded = false) {
-		bool anyWarning = false;
-		foreach (string path in Util.EnumerateFiles(rootPath, false, "*.cs")) {
-			bool empty = true;
-			foreach (string line in Util.ForAllLinesInFile(path)) {
-				if (!string.IsNullOrWhiteSpace(line)) {
-					empty = false;
-					break;
-				}
-			}
-			if (empty) {
-				anyWarning = true;
-				Debug.LogWarning($"Empty script: {path}");
-			}
-		}
-		if (!anyWarning && !onlyLogWhenWarningFounded) {
-			Debug.Log("[✓] No empty script file founded.");
-		}
-	}
-
-
-	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool fixScriptFileName = false) {
-
-		if (!onlyLogWhenWarningFounded) {
-			Debug.Log("-------- AngeliA Project Analysis --------");
-		}
-
-		// Check for Empty Script File
-		EmptyScriptFileAnalysis(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), onlyLogWhenWarningFounded);
-
-		// Sheet
-		if (!Util.FileExists(Universe.BuiltIn.GameSheetPath)) {
-			Debug.LogWarning($"Artwork sheet file missing. ({Universe.BuiltIn.GameSheetPath})");
-		}
-
-		// Check for Hash Collision
-		{
-			bool anyWarning = false;
-			var idPool = new Dictionary<int, string>();
-			var sheet = Renderer.MainSheet;
-			foreach (var type in typeof(object).AllChildClass(includeAbstract: true, includeInterface: true)) {
-
-				string typeName = type.AngeName();
-				int typeID = typeName.AngeHash();
-
-				// Class vs Class
-				if (!idPool.TryAdd(typeID, typeName)) {
-					string poolName = idPool[typeID];
-					if (typeName != poolName) {
-						anyWarning = true;
-						Debug.LogWarning($"Hash collision between two class names. \"{typeName}\" & \"{poolName}\" (AngeHash = {typeID})");
-					}
-				}
-
-				// Class vs Sprite
-				if (sheet.SpritePool.TryGetValue(typeID, out var sprite)) {
-					if (sprite.RealName != typeName && typeID == sprite.ID) {
-						anyWarning = true;
-						Debug.LogWarning($"Hash collision between Class name and Sprite name. \"{typeName}\" & \"{sprite.RealName}\" (AngeHash = {typeID})");
-					}
-				}
-
-			}
-			if (!anyWarning && !onlyLogWhenWarningFounded) {
-				Debug.Log("[✓] No hash collision founded.");
-			}
-		}
-
-		// Fix Script File Name
-		if (fixScriptFileName) {
-			bool anyWarning = false;
-			foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
-				string name = Util.GetNameWithExtension(path);
-				if (!char.IsLower(name[0]) || name.Length <= 1) continue;
-				string oldName = name;
-				if (char.IsLower(name[1])) {
-					// Turn First Char into Upper Case
-					name = $"{char.ToUpper(name[0])}{name[1..]}";
-				} else {
-					// Remove First Char
-					name = name[1..];
-				}
-				string newPath = Util.CombinePaths(Util.GetParentPath(path), name);
-				if (Util.FileExists(newPath)) continue;
-				Util.MoveFile(path, newPath);
-				anyWarning = true;
-				Debug.LogWarning($"Fix first char for script file: {oldName} >> {name}");
-			}
-			if (!anyWarning && !onlyLogWhenWarningFounded) {
-				Debug.Log("[✓] No first char of file name need to fix.");
-			}
-		}
-
-		// Check for Item Class Name
-		if (fixScriptFileName) {
-			bool anyWarning = false;
-			var eqType = typeof(Equipment);
-			foreach (var type in typeof(Item).AllChildClass()) {
-				if (type.IsSubclassOf(eqType)) continue;
-				string name = type.Name;
-				if (name[0] == 'i') continue;
-				anyWarning = true;
-				Debug.LogWarning($"Item class \"{name}\" is not start with \"i\"");
-			}
-			if (!anyWarning && !onlyLogWhenWarningFounded) {
-				Debug.Log("[✓] No item class name need to fix.");
-			}
-		}
-
-	}
-
-
-	public static void ResetShoulderAndUpperArmPos (PoseCharacterRenderer rendering, bool resetLeft = true, bool resetRight = true) {
-
-		const int A2G = Const.CEL / Const.ART_CEL;
-
-		var Body = rendering.Body;
-		var Hip = rendering.Hip;
-		var Head = rendering.Head;
-		var UpperLegL = rendering.UpperLegL;
-		var LowerLegL = rendering.LowerLegL;
-		var FootL = rendering.FootL;
-
-		var FacingRight = Body.Width > 0;
-
-
-		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
-		int targetUnitHeight = rendering.CharacterHeight * A2G / PoseCharacterRenderer.CM_PER_PX - Head.SizeY;
-		int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
-		int defaultCharHeight = bodyHipSizeY + legRootSize;
-
-		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight * Body.Height.Abs() / Body.SizeY;
-		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
-		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
-
-		if (resetLeft) {
-
-			var ShoulderL = rendering.ShoulderL;
-			var UpperArmL = rendering.UpperArmL;
-
-			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-			ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
-			ShoulderL.Width = ShoulderL.SizeX;
-			ShoulderL.Height = ShoulderL.SizeY;
-			ShoulderL.PivotX = 1000;
-			ShoulderL.PivotY = 1000;
-
-			UpperArmL.X = ShoulderL.X;
-			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
-			UpperArmL.Width = UpperArmL.SizeX;
-			UpperArmL.Height = UpperArmL.FlexableSizeY;
-			UpperArmL.PivotX = 1000;
-			UpperArmL.PivotY = 1000;
-
-		}
-
-		if (resetRight) {
-
-			var ShoulderR = rendering.ShoulderR;
-			var UpperArmR = rendering.UpperArmR;
-
-			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-			ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
-			ShoulderR.Width = -ShoulderR.SizeX;
-			ShoulderR.Height = ShoulderR.SizeY;
-			ShoulderR.PivotX = 1000;
-			ShoulderR.PivotY = 1000;
-
-			UpperArmR.X = ShoulderR.X;
-			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
-			UpperArmR.Width = UpperArmR.SizeX;
-			UpperArmR.Height = UpperArmR.FlexableSizeY;
-			UpperArmR.PivotX = 0;
-			UpperArmR.PivotY = 1000;
-		}
-	}
-
-
 	// FrameBasedValue Load/Save
 	public static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
 		if (!Util.FileExists(path)) return false;
@@ -819,11 +645,10 @@ public static class FrameworkUtil {
 				if (dropItemAfterPicked && ItemSystem.HasItem(e.TypeID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
-					// Dust
-					GlobalEvent.InvokeBlockPicked(e.TypeID, e.Rect);
+					FrameworkUtil.InvokeBlockPicked(e.TypeID, e.Rect);
 				} else {
 					// Break
-					GlobalEvent.InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
+					InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
 				}
 
 				// Refresh Nearby
@@ -866,11 +691,10 @@ public static class FrameworkUtil {
 				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
-					// Dust
-					GlobalEvent.InvokeBlockPicked(blockID, blockRect);
+					FrameworkUtil.InvokeBlockPicked(blockID, blockRect);
 				} else {
 					// Break
-					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
+					InvokeObjectBreak(realBlockID, blockRect);
 				}
 				if (!allowMultiplePick) {
 					return true;
@@ -902,11 +726,10 @@ public static class FrameworkUtil {
 				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
-					// Dust
-					GlobalEvent.InvokeBlockPicked(realBlockID, blockRect);
+					FrameworkUtil.InvokeBlockPicked(realBlockID, blockRect);
 				} else {
 					// Break
-					GlobalEvent.InvokeObjectBreak(realBlockID, blockRect);
+					InvokeObjectBreak(realBlockID, blockRect);
 				}
 				if (!allowMultiplePick) {
 					return true;
@@ -1316,6 +1139,208 @@ public static class FrameworkUtil {
 			var hitRect = hit.Rect;
 			if (!Util.OverlapRectCircle(radius, x, y, hitRect.x, hitRect.y, hitRect.xMax, hitRect.yMax)) continue;
 			character.Buff.GiveBuff(buffIndex, duration);
+		}
+	}
+
+
+	// Event
+	public static void InvokeObjectBreak (int spriteID, IRect rect, bool lightWeight = false) => OnObjectBreak?.Invoke(spriteID, rect, lightWeight);
+	public static void InvokeObjectFreeFall (int spriteID, int x, int y, int speedX = 0, int speedY = 0, int rotation = int.MinValue, int rotationSpeed = 0, int gravity = 5, bool flipX = false) => OnObjectFreeFall?.Invoke(spriteID, new(x, y, rotation, flipX ? 1 : 0), new(speedX, speedY, rotationSpeed, gravity));
+	public static void InvokeBlockPicked (int spriteID, IRect rect) => OnBlockPicked?.Invoke(spriteID, rect);
+	public static void InvokeFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
+	public static void InvokeCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
+	public static void InvokeItemCollected (Entity collector, int id, int count) => OnItemCollected?.Invoke(collector, id, count);
+	public static void InvokeItemLost (Character holder, int id) => OnItemLost?.Invoke(holder, id);
+	public static void InvokeItemInsufficient (Character holder, int id) => OnItemInsufficient?.Invoke(holder, id);
+	public static void InvokeItemDamage (Character holder, int fromID, int toID) => OnItemDamage?.Invoke(holder, fromID, toID);
+	public static void InvokeItemUnlocked (int itemID) => OnItemUnlocked?.Invoke(itemID);
+	public static void InvokeCheatPerformed (string cheatCode) => OnCheatPerformed?.Invoke(cheatCode);
+
+
+	// Misc
+	public static void DeleteAllEmptyMaps (string mapRoot) {
+		foreach (var path in Util.EnumerateFiles(mapRoot, false, AngePath.MAP_SEARCH_PATTERN)) {
+			try {
+				if (Util.IsExistingFileEmpty(path)) Util.DeleteFile(path);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+	}
+
+
+	public static void EmptyScriptFileAnalysis (string rootPath, bool onlyLogWhenWarningFounded = false) {
+		bool anyWarning = false;
+		foreach (string path in Util.EnumerateFiles(rootPath, false, "*.cs")) {
+			bool empty = true;
+			foreach (string line in Util.ForAllLinesInFile(path)) {
+				if (!string.IsNullOrWhiteSpace(line)) {
+					empty = false;
+					break;
+				}
+			}
+			if (empty) {
+				anyWarning = true;
+				Debug.LogWarning($"Empty script: {path}");
+			}
+		}
+		if (!anyWarning && !onlyLogWhenWarningFounded) {
+			Debug.Log("[✓] No empty script file founded.");
+		}
+	}
+
+
+	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool fixScriptFileName = false) {
+
+		if (!onlyLogWhenWarningFounded) {
+			Debug.Log("-------- AngeliA Project Analysis --------");
+		}
+
+		// Check for Empty Script File
+		EmptyScriptFileAnalysis(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), onlyLogWhenWarningFounded);
+
+		// Sheet
+		if (!Util.FileExists(Universe.BuiltIn.GameSheetPath)) {
+			Debug.LogWarning($"Artwork sheet file missing. ({Universe.BuiltIn.GameSheetPath})");
+		}
+
+		// Check for Hash Collision
+		{
+			bool anyWarning = false;
+			var idPool = new Dictionary<int, string>();
+			var sheet = Renderer.MainSheet;
+			foreach (var type in typeof(object).AllChildClass(includeAbstract: true, includeInterface: true)) {
+
+				string typeName = type.AngeName();
+				int typeID = typeName.AngeHash();
+
+				// Class vs Class
+				if (!idPool.TryAdd(typeID, typeName)) {
+					string poolName = idPool[typeID];
+					if (typeName != poolName) {
+						anyWarning = true;
+						Debug.LogWarning($"Hash collision between two class names. \"{typeName}\" & \"{poolName}\" (AngeHash = {typeID})");
+					}
+				}
+
+				// Class vs Sprite
+				if (sheet.SpritePool.TryGetValue(typeID, out var sprite)) {
+					if (sprite.RealName != typeName && typeID == sprite.ID) {
+						anyWarning = true;
+						Debug.LogWarning($"Hash collision between Class name and Sprite name. \"{typeName}\" & \"{sprite.RealName}\" (AngeHash = {typeID})");
+					}
+				}
+
+			}
+			if (!anyWarning && !onlyLogWhenWarningFounded) {
+				Debug.Log("[✓] No hash collision founded.");
+			}
+		}
+
+		// Fix Script File Name
+		if (fixScriptFileName) {
+			bool anyWarning = false;
+			foreach (string path in Util.EnumerateFiles(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), false, "*.cs")) {
+				string name = Util.GetNameWithExtension(path);
+				if (!char.IsLower(name[0]) || name.Length <= 1) continue;
+				string oldName = name;
+				if (char.IsLower(name[1])) {
+					// Turn First Char into Upper Case
+					name = $"{char.ToUpper(name[0])}{name[1..]}";
+				} else {
+					// Remove First Char
+					name = name[1..];
+				}
+				string newPath = Util.CombinePaths(Util.GetParentPath(path), name);
+				if (Util.FileExists(newPath)) continue;
+				Util.MoveFile(path, newPath);
+				anyWarning = true;
+				Debug.LogWarning($"Fix first char for script file: {oldName} >> {name}");
+			}
+			if (!anyWarning && !onlyLogWhenWarningFounded) {
+				Debug.Log("[✓] No first char of file name need to fix.");
+			}
+		}
+
+		// Check for Item Class Name
+		if (fixScriptFileName) {
+			bool anyWarning = false;
+			var eqType = typeof(Equipment);
+			foreach (var type in typeof(Item).AllChildClass()) {
+				if (type.IsSubclassOf(eqType)) continue;
+				string name = type.Name;
+				if (name[0] == 'i') continue;
+				anyWarning = true;
+				Debug.LogWarning($"Item class \"{name}\" is not start with \"i\"");
+			}
+			if (!anyWarning && !onlyLogWhenWarningFounded) {
+				Debug.Log("[✓] No item class name need to fix.");
+			}
+		}
+
+	}
+
+
+	public static void ResetShoulderAndUpperArmPos (PoseCharacterRenderer rendering, bool resetLeft = true, bool resetRight = true) {
+
+		const int A2G = Const.CEL / Const.ART_CEL;
+
+		var Body = rendering.Body;
+		var Hip = rendering.Hip;
+		var Head = rendering.Head;
+		var UpperLegL = rendering.UpperLegL;
+		var LowerLegL = rendering.LowerLegL;
+		var FootL = rendering.FootL;
+
+		var FacingRight = Body.Width > 0;
+
+
+		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
+		int targetUnitHeight = rendering.CharacterHeight * A2G / PoseCharacterRenderer.CM_PER_PX - Head.SizeY;
+		int legRootSize = UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
+		int defaultCharHeight = bodyHipSizeY + legRootSize;
+
+		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight * Body.Height.Abs() / Body.SizeY;
+		int bodyBorderL = (FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
+		int bodyBorderR = (FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
+
+		if (resetLeft) {
+
+			var ShoulderL = rendering.ShoulderL;
+			var UpperArmL = rendering.UpperArmL;
+
+			ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
+			ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
+			ShoulderL.Width = ShoulderL.SizeX;
+			ShoulderL.Height = ShoulderL.SizeY;
+			ShoulderL.PivotX = 1000;
+			ShoulderL.PivotY = 1000;
+
+			UpperArmL.X = ShoulderL.X;
+			UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
+			UpperArmL.Width = UpperArmL.SizeX;
+			UpperArmL.Height = UpperArmL.FlexableSizeY;
+			UpperArmL.PivotX = 1000;
+			UpperArmL.PivotY = 1000;
+
+		}
+
+		if (resetRight) {
+
+			var ShoulderR = rendering.ShoulderR;
+			var UpperArmR = rendering.UpperArmR;
+
+			ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
+			ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
+			ShoulderR.Width = -ShoulderR.SizeX;
+			ShoulderR.Height = ShoulderR.SizeY;
+			ShoulderR.PivotX = 1000;
+			ShoulderR.PivotY = 1000;
+
+			UpperArmR.X = ShoulderR.X;
+			UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
+			UpperArmR.Width = UpperArmR.SizeX;
+			UpperArmR.Height = UpperArmR.FlexableSizeY;
+			UpperArmR.PivotX = 0;
+			UpperArmR.PivotY = 1000;
 		}
 	}
 
