@@ -92,7 +92,7 @@ public sealed class WorldSquad : IBlockSquad {
 	}
 
 
-	[OnGameQuitting]
+	[OnGameQuitting(4096)]
 	internal static void OnGameQuitting () {
 		if (SaveChangesToFile) {
 			Stream?.SaveAllDirty();

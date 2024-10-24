@@ -225,7 +225,7 @@ public static class Stage {
 	}
 
 
-	[OnGameQuitting]
+	[OnGameQuitting(-1024)]
 	internal static void OnGameQuitting () => DespawnAllNonUiEntities(refreshImmediately: true);
 
 
@@ -815,7 +815,6 @@ public static class Stage {
 			if (entity != null) {
 				AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
 			}
-
 		}
 	}
 
