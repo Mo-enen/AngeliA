@@ -192,16 +192,6 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
-	public int GetBlockAt (int unitX, int unitY, int z) {
-		var (level, bg, entity, element) = GetAllBlocksAt(unitX, unitY, z);
-		int id = entity;
-		if (id == 0) id = element;
-		if (id == 0) id = level;
-		if (id == 0) id = bg;
-		return id;
-	}
-
-
 	public (int level, int bg, int entity, int element) GetAllBlocksAt (int unitX, int unitY, int z) {
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);

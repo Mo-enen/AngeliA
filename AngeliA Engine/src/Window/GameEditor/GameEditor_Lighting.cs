@@ -8,6 +8,7 @@ public partial class GameEditor {
 
 
 	// VAR
+	private static readonly LanguageCode LABEL_DAYTIME = ("UI.RigEditor.Daytime", "In-Game Daytime");
 	private static readonly LanguageCode LABEL_PIXEL_STYLE = ("UI.RigEditor.PixelStyle", "Use Pixel Style");
 	private static readonly LanguageCode LABEL_SELF_LERP = ("UI.RigEditor.SelfLerp", "Self Lerp");
 	private static readonly LanguageCode LABEL_SOLID_ILLU = ("UI.RigEditor.SolidIllu", "Solid Illuminance");
@@ -16,6 +17,7 @@ public partial class GameEditor {
 	private static readonly LanguageCode LABEL_BG_TINT = ("UI.RigEditor.BgTint", "Background Tint");
 	private static readonly LanguageCode LABEL_LV_REMAIN = ("UI.RigEditor.LvRemain", "Solid Illuminate Remain");
 	public bool LightMapSettingChanged { get; set; } = false;
+	public float ForcingInGameDaytime { get; private set; } = -1f;
 
 
 	// MSG
@@ -37,6 +39,19 @@ public partial class GameEditor {
 		rect = rect.Shrink(panelPadding, panelPadding, 0, 0);
 		var info = CurrentProject.Universe.Info;
 		GUI.BeginChangeCheck();
+
+		// Daytime
+		GUI.SmallLabel(rect, LABEL_DAYTIME);
+		int newDaytime = GUI.HandleSlider(
+			8126534, rect.ShrinkLeft(GUI.LabelWidth),
+			(int)(ForcingInGameDaytime * 1200), 0, 1200, step: 100
+		);
+		if (newDaytime != 0 || ForcingInGameDaytime >= 0f) {
+			if (newDaytime != (int)(ForcingInGameDaytime * 1200f)) {
+				ForcingInGameDaytime = newDaytime / 1200f;
+			}
+		}
+		rect.SlideDown(padding);
 
 		// Pixel Style
 		info.LightMap_PixelStyle = GUI.Toggle(
@@ -110,6 +125,7 @@ public partial class GameEditor {
 			info.LightMap_BackgroundTint = 0.5f;
 			info.LightMap_LevelIlluminateRemain = 0.3f;
 			LightMapSettingChanged = true;
+			ForcingInGameDaytime = -1f;
 		}
 		rect.SlideDown(padding);
 

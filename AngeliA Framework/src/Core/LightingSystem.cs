@@ -20,6 +20,7 @@ public static class LightingSystem {
 	public const int SETTING_AIR_ILLUMINANCE_NIGHT = 94852_4;
 	public const int SETTING_BACKGROUND_TINT = 94852_5;
 	public const int SETTING_LEVEL_ILLUMINATE_REMAIN = 94852_6;
+	public const int SETTING_IN_GAME_DAYTIME = 94852_7;
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
 	private const int LIGHT_MAP_UNIT_PADDING_BOTTOM = 6;
 	private const int LIGHT_MAP_UNIT_PADDING_TOP = 6;
@@ -65,6 +66,9 @@ public static class LightingSystem {
 	[OnRemoteSettingChanged]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		switch (id) {
+			case SETTING_IN_GAME_DAYTIME:
+				Sky.SetInGameDaytime(data / 1000f);
+				break;
 			case SETTING_PIXEL_STYLE:
 				Universe.BuiltInInfo.LightMap_PixelStyle = data == 1;
 				break;

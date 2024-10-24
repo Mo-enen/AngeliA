@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.DontSpawnFromWorld]
-[EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.Capacity(2048, 0)]
 [EntityAttribute.Layer(EntityLayer.ITEM)]
 public class ItemHolder : Rigidbody, IActionTarget {
@@ -105,13 +103,21 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		base.OnActivated();
 		Width = ITEM_PHYSICS_SIZE;
 		Height = ITEM_PHYSICS_SIZE;
+		// Detect Item Element from World
+		if (FromWorld) {
+			int ele = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit(), BlockType.Element);
+			if (ele != 0) {
+				ItemID = ele;
+				ItemCount = 1;
+			}
+		}
 	}
 
 
 	public override void OnInactivated () {
 		base.OnInactivated();
 		// Hold on Out of Range
-		if (ItemID != 0 && ItemCount > 0) {
+		if (!FromWorld && ItemID != 0 && ItemCount > 0) {
 			HoldToPool(ItemID, ItemCount, new Int3(X, Y, Stage.ViewZ));
 		}
 	}
@@ -140,7 +146,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not ItemHolder holder) continue;
-				if (holder.ItemID == ItemID && holder.ItemCount > 0) {
+				if (!FromWorld && !holder.FromWorld && holder.ItemID == ItemID && holder.ItemCount > 0) {
 					// Merge
 					holder.Active = false;
 					ItemCount += holder.ItemCount;
@@ -153,8 +159,10 @@ public class ItemHolder : Rigidbody, IActionTarget {
 					dir++;
 				} else if (hit.Entity.InstanceOrder > InstanceOrder) {
 					dir--;
-				} else {
+				} else if (hit.Entity.InstanceOrder < InstanceOrder) {
 					dir++;
+				} else {
+					dir += Util.QuickRandom(0, 2) == 0 ? 1 : -1;
 				}
 			}
 			if (dir != 0) {
@@ -284,12 +292,17 @@ public class ItemHolder : Rigidbody, IActionTarget {
 			}
 		}
 
-		// Particle Hint
-		if (oldCount > ItemCount) {
+		bool collected = oldCount > ItemCount;
+		if (collected) {
+			// Particle Hint
 			FrameworkUtil.InvokeItemCollected(character, oldItemID, oldCount - ItemCount);
+			// Remove from Map
+			if (FromWorld) {
+				FrameworkUtil.RemoveFromWorldMemory(this);
+			}
 		}
 
-		return oldCount > ItemCount;
+		return collected;
 	}
 
 

@@ -41,16 +41,14 @@ public static class Const {
 	public const int PIXEL = 11254534;//"Pixel".AngeHash();
 
 	// Screen Effect
-	public const int SCREEN_EFFECT_CHROMATIC_ABERRATION = 0;
-	public const int SCREEN_EFFECT_TINT = 1;
-	public const int SCREEN_EFFECT_RETRO_DARKEN = 2;
-	public const int SCREEN_EFFECT_RETRO_LIGHTEN = 3;
-	public const int SCREEN_EFFECT_VIGNETTE = 4;
-	public const int SCREEN_EFFECT_GREYSCALE = 5;
-	public const int SCREEN_EFFECT_INVERT = 6;
-	public const int SCREEN_EFFECT_COUNT = 7;
+	public const int SCREEN_EFFECT_TINT = 0;
+	public const int SCREEN_EFFECT_RETRO_DARKEN = 1;
+	public const int SCREEN_EFFECT_RETRO_LIGHTEN = 2;
+	public const int SCREEN_EFFECT_VIGNETTE = 3;
+	public const int SCREEN_EFFECT_GREYSCALE = 4;
+	public const int SCREEN_EFFECT_INVERT = 5;
+	public const int SCREEN_EFFECT_COUNT = 6;
 	public static readonly string[] SCREEN_EFFECT_NAMES = [
-		"Chromatic Aberration",
 		"Tint",
 		"Retro Darken",
 		"Retro Lighten",

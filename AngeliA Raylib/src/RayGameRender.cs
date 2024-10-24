@@ -18,6 +18,7 @@ public partial class RayGame {
 	private Shader LerpShader;
 	private Shader ColorShader;
 	private Shader InverseShader;
+	private RenderTexture2D AlphaLayerTexture;
 	private RenderTexture2D RenderTexture;
 	private RenderTexture2D GizmosRenderTexture;
 	private RenderTexture2D DoodleRenderTexture;
@@ -66,43 +67,11 @@ public partial class RayGame {
 		ShaderPropIndex_VignetteOffsetY = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "OffsetY");
 		ShaderPropIndex_VignetteRound = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "Round");
 		ShaderPropIndex_VignetteAspect = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE], "Aspect");
-		ShaderPropIndex_CA_RED_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "RedX");
-		ShaderPropIndex_CA_RED_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "RedY");
-		ShaderPropIndex_CA_GREEN_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "GreenX");
-		ShaderPropIndex_CA_GREEN_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "GreenY");
-		ShaderPropIndex_CA_BLUE_X = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueX");
-		ShaderPropIndex_CA_BLUE_Y = Raylib.GetShaderLocation(ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION], "BlueY");
 		ShaderPropIndex_INV_TEXTURE = Raylib.GetShaderLocation(InverseShader, "screenTexture");
 		ShaderPropIndex_INV_SCREEN_SIZE = Raylib.GetShaderLocation(InverseShader, "screenSize");
 	}
 
 	private void UpdateScreenEffect () {
-		// Chromatic Aberration
-		if (ScreenEffectEnables[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION]) {
-			var caShader = ScreenEffectShaders[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION];
-			const float CA_PingPongTime = 0.618f;
-			const float CA_PingPongMin = 0f;
-			const float CA_PingPongMax = 0.015f;
-			if (Raylib.GetTime() % CA_PingPongTime > CA_PingPongTime / 2f) {
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_RED_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_RED_Y, GetRandomAmount(0.2f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.7f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
-			} else {
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_GREEN_X, GetRandomAmount(0f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_GREEN_Y, GetRandomAmount(0.8f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_X, GetRandomAmount(0.4f), ShaderUniformDataType.Float);
-				Raylib.SetShaderValue(caShader, ShaderPropIndex_CA_BLUE_Y, GetRandomAmount(0.72f), ShaderUniformDataType.Float);
-			}
-			static float GetRandomAmount (float timeOffset) {
-				int range = (int)(Util.RemapUnclamped(
-					0f, CA_PingPongTime,
-					CA_PingPongMin, CA_PingPongMax,
-					Util.PingPong((float)Raylib.GetTime() + timeOffset * CA_PingPongTime, CA_PingPongTime)
-				) * 100000f);
-				return CA_Ran.Next(-range, range) / 100000f;
-			}
-		}
 		// Vig
 		if (ScreenEffectEnables[Const.SCREEN_EFFECT_VIGNETTE]) {
 			var vShader = ScreenEffectShaders[Const.SCREEN_EFFECT_VIGNETTE];
@@ -172,13 +141,7 @@ public partial class RayGame {
 		if (layerAlpha == 0) return;
 		if (layerAlpha < 255) {
 			Raylib.EndTextureMode();
-			Raylib.BeginDrawing();
-			Raylib.DrawTextureRec(
-				RenderTexture.Texture,
-				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
-				default, Color.White
-			);
-			Raylib.BeginTextureMode(RenderTexture);
+			Raylib.BeginTextureMode(AlphaLayerTexture);
 			Raylib.ClearBackground(Color.Blank);
 		}
 
@@ -333,15 +296,13 @@ public partial class RayGame {
 		// Apply for Transparent Layer
 		if (layerAlpha < 255) {
 			Raylib.EndTextureMode();
-			Raylib.BeginDrawing();
+			Raylib.BeginTextureMode(RenderTexture);
 			Raylib.DrawTextureRec(
-				RenderTexture.Texture,
-				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+				AlphaLayerTexture.Texture,
+				new Rectangle(0, 0, AlphaLayerTexture.Texture.Width, -AlphaLayerTexture.Texture.Height),
 				default,
 				new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, layerAlpha)
 			);
-			Raylib.BeginTextureMode(RenderTexture);
-			Raylib.ClearBackground(Color.Blank);
 		}
 
 		// Func

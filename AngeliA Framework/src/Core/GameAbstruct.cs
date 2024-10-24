@@ -144,9 +144,6 @@ public abstract partial class Game {
 		}
 	}
 	public static void PassEffect (int effectIndex, int duration = 0) => ScreenEffectEnableFrames[effectIndex] = PauselessFrame + duration;
-	public static void PassEffect_ChromaticAberration (int duration = 0) {
-		ScreenEffectEnableFrames[Const.SCREEN_EFFECT_CHROMATIC_ABERRATION] = PauselessFrame + duration;
-	}
 	public static void PassEffect_Tint (Color32 color, int duration = 0) {
 		ScreenEffectEnableFrames[Const.SCREEN_EFFECT_TINT] = PauselessFrame + duration;
 		Instance._Effect_SetTintParams(color);

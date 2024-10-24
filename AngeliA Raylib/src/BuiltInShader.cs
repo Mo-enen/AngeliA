@@ -52,23 +52,6 @@ void main() {
     finalColor.a = txColor.r * fragColor.a;
 }";
 
-	public const string CHROMATIC_ABERRATION_FS = @"
-#version 330
-in vec2 fragTexCoord;
-uniform float RedX;
-uniform float RedY;
-uniform float GreenX;
-uniform float GreenY;
-uniform float BlueX;
-uniform float BlueY;
-uniform sampler2D texture0;
-out vec4 finalColor;
-void main() {
-   finalColor.r = texture(texture0, fragTexCoord + vec2(RedX, RedY)).r; 
-   finalColor.g = texture(texture0, fragTexCoord + vec2(GreenX, GreenY)).g; 
-   finalColor.b = texture(texture0, fragTexCoord + vec2(BlueX, BlueY)).b;
-   finalColor.a = 1;
-}";
 	public const string TINT_FS = @"
 #version 330
 in vec2 fragTexCoord;
@@ -181,6 +164,6 @@ void main() {
     finalColor.a = tColor.a;
 }";
 
-	public static readonly string[] EFFECTS = [CHROMATIC_ABERRATION_FS, TINT_FS, RETRO_DARKEN_FS, RETRO_LIGHTEN_FS, VIGNETTE_FS, GREYSCALE_FS, INVERT_FS,];
+	public static readonly string[] EFFECTS = [TINT_FS, RETRO_DARKEN_FS, RETRO_LIGHTEN_FS, VIGNETTE_FS, GREYSCALE_FS, INVERT_FS,];
 
 }

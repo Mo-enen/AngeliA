@@ -21,7 +21,7 @@ public partial class GameEditor : WindowUI {
 	}
 
 
-	private enum PanelType { None, Profiler, Effect, Movement, Lighting, }
+	private enum PanelType { None, Profiler, Movement, Lighting, }
 
 
 	#endregion
@@ -209,14 +209,6 @@ public partial class GameEditor : WindowUI {
 		}
 		rect.x -= rect.width + padding;
 
-		// Effect Btn
-		isOn = CurrentPanel == PanelType.Effect;
-		newIsOn = GUI.IconToggle(rect, isOn, BTN_EFFECT);
-		if (isOn != newIsOn) {
-			CurrentPanel = isOn ? PanelType.None : PanelType.Effect;
-		}
-		rect.x -= rect.width + padding;
-
 		// Movement
 		isOn = CurrentPanel == PanelType.Movement;
 		newIsOn = GUI.IconToggle(rect, isOn, BTN_MOVEMENT);
@@ -260,8 +252,6 @@ public partial class GameEditor : WindowUI {
 		}
 		rect.x -= rect.width + padding;
 
-
-
 		if (!CurrentProject.Universe.Info.UseLightingSystem && CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
 
 		// Draw Panels
@@ -276,7 +266,6 @@ public partial class GameEditor : WindowUI {
 		}
 		switch (CurrentPanel) {
 			case PanelType.Profiler: DrawProfilerPanel(ref panelRect); break;
-			case PanelType.Effect: DrawEffectPanel(ref panelRect); break;
 			case PanelType.Movement: DrawMovementPanel(ref panelRect); break;
 			case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
 		}
@@ -332,43 +321,6 @@ public partial class GameEditor : WindowUI {
 				GUI.Label(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), "/", out bounds, GUI.Skin.SmallRightLabel);
 				GUI.IntLabel(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), data.Value, GUI.Skin.SmallRightLabel);
 			}
-		}
-	}
-
-
-	private void DrawEffectPanel (ref IRect panelRect) {
-		int itemHeight = GUI.Unify(28);
-		int itemPadding = GUI.Unify(8);
-		panelRect.height = Const.SCREEN_EFFECT_COUNT * (itemHeight + itemPadding) + itemPadding;
-		panelRect.y -= panelRect.height;
-		var rect = new IRect(panelRect.x + itemPadding, panelRect.yMax, panelRect.width - itemPadding * 2, itemHeight);
-		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
-
-			rect.y -= itemHeight + itemPadding;
-
-			// Label
-			GUI.SmallLabel(rect, Const.SCREEN_EFFECT_NAMES[i]);
-
-			// Toggle
-			var enableRect = rect.Edge(Direction4.Right, rect.height);
-			EffectsEnabled[i] = GUI.Toggle(enableRect, EffectsEnabled[i]);
-		}
-
-		// Update Values
-		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
-			if (EffectsEnabled[i]) Game.PassEffect(i);
-		}
-		if (EffectsEnabled[Const.SCREEN_EFFECT_RETRO_DARKEN]) {
-			Game.PassEffect_RetroDarken(Game.GlobalFrame.PingPong(60) / 60f);
-		}
-		if (EffectsEnabled[Const.SCREEN_EFFECT_RETRO_LIGHTEN]) {
-			Game.PassEffect_RetroLighten(Game.GlobalFrame.PingPong(60) / 60f);
-		}
-		if (EffectsEnabled[Const.SCREEN_EFFECT_TINT]) {
-			Game.PassEffect_Tint(Color32.LerpUnclamped(new Color32(255, 128, 196, 255), new Color32(128, 255, 64, 255), Game.GlobalFrame.PingPong(120) / 120f));
-		}
-		if (EffectsEnabled[Const.SCREEN_EFFECT_VIGNETTE]) {
-			Game.PassEffect_Vignette(0.95f, 0.6f, 0f, 0f, 0f);
 		}
 	}
 

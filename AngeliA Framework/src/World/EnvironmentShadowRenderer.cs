@@ -13,11 +13,15 @@ internal static class EnvironmentShadowRenderer {
 
 
 	[BeforeLevelRendered]
-	public static void BeforeLevelRendered () => BeforeLayerFrameUpdate(EntityLayer.ENVIRONMENT);
+	public static void BeforeLevelRendered () {
+		BeforeLayerFrameUpdate(EntityLayer.ENVIRONMENT);
+	}
 
 
 	[AfterLevelRendered]
-	public static void AfterLevelRendered () => AfterLayerFrameUpdate(EntityLayer.ENVIRONMENT);
+	public static void AfterLevelRendered () {
+		AfterLayerFrameUpdate(EntityLayer.ENVIRONMENT);
+	}
 
 
 	[BeforeLayerFrameUpdate]
@@ -30,13 +34,15 @@ internal static class EnvironmentShadowRenderer {
 
 	[AfterLayerFrameUpdate]
 	public static void AfterLayerFrameUpdate (int layerIndex) {
-		if (layerIndex != EntityLayer.ENVIRONMENT || CellUpdateFrame != Game.GlobalFrame) return;
+		if (layerIndex != EntityLayer.ENVIRONMENT) return;
+		if (CellUpdateFrame != Game.GlobalFrame) return;
 		if (!WorldSquad.Enable) return;
 		if (Renderer.GetCells(RenderLayer.DEFAULT, out var cells, out int count)) {
+			byte alpha = (byte)(Util.PingPong(Sky.InGameDaytime01, 0.5f) * 200f).Clamp(0, 255);
 			for (int i = CellStartIndex; i < count; i++) {
 				var cell = cells[i];
 				if (cell.TextSprite != null) continue;
-				FrameworkUtil.DrawEnvironmentShadow(cell, z: cell.Z - 1);
+				FrameworkUtil.DrawEnvironmentShadow(cell, z: cell.Z - 1, alpha: alpha);
 			}
 		}
 	}

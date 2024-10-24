@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public class TeleportTask : Task {
 
@@ -30,7 +31,7 @@ public class TeleportTask : Task {
 	public override TaskResult FrameUpdate () {
 
 		int teleFrame = Duration - (Duration - WaitDuration) / 2;
-
+		
 		// Parallax
 		if (UseParallax && LocalFrame > WaitDuration) {
 			int PARA = Universe.BuiltInInfo.WorldBehindParallax;

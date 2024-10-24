@@ -397,9 +397,6 @@ public class RigRespondMessage {
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			Game.SetEffectEnable(i, EffectEnable.GetBit(i));
 		}
-		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_CHROMATIC_ABERRATION)) {
-			Game.PassEffect_ChromaticAberration(1);
-		}
 		if (Game.GetEffectEnable(Const.SCREEN_EFFECT_GREYSCALE)) {
 			Game.PassEffect_Greyscale(1);
 		}

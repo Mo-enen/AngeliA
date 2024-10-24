@@ -268,7 +268,8 @@ public partial class MapEditor {
 			// Pick
 			ApplyPaste();
 			SelectionUnitRect = null;
-			int id = Stream.GetBlockAt(mouseUnitPos.x, mouseUnitPos.y, CurrentZ);
+			var (lv, bg, en, el) = Stream.GetAllBlocksAt(mouseUnitPos.x, mouseUnitPos.y, CurrentZ);
+			int id = el != 0 ? el : en != 0 ? en : lv != 0 ? lv : bg;
 			if (Renderer.TryGetSprite(id, out var pickingSp, true) && pickingSp.Group != null) {
 				id = pickingSp.Group.ID;
 			}

@@ -30,6 +30,7 @@ public partial class RayGame : Game {
 	private bool WindowFocused = true;
 	private int IgnoreGizmosFrame = -1;
 	private int CurrentBgmID = 0;
+	private bool HasScreenEffectEnabled;
 
 	// Saving
 	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false, SavingLocation.Global);
@@ -165,10 +166,10 @@ public partial class RayGame : Game {
 		if (CurrentBGM != null) Raylib.UpdateMusicStream((Music)CurrentBGM);
 
 		// Begin Draw
-		bool hasScreenEffectEnabled = false;
+		HasScreenEffectEnabled = false;
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
 			if (ScreenEffectEnables[i]) {
-				hasScreenEffectEnabled = true;
+				HasScreenEffectEnabled = true;
 				break;
 			}
 		}
@@ -184,6 +185,12 @@ public partial class RayGame : Game {
 			GizmosRenderTexture = Raylib.LoadRenderTexture(currentScreenW, currentScreenH);
 			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
 			//Debug.Log("Gizmos Texture Reloaded.");
+		}
+		if (AlphaLayerTexture.Texture.Width != currentScreenW || AlphaLayerTexture.Texture.Height != currentScreenH) {
+			Raylib.UnloadRenderTexture(AlphaLayerTexture);
+			AlphaLayerTexture = Raylib.LoadRenderTexture(currentScreenW, currentScreenH);
+			Raylib.SetTextureWrap(AlphaLayerTexture.Texture, TextureWrap.Clamp);
+			//Debug.Log("Alpha Texture Reloaded.");
 		}
 		int doodleTextureWidth = (currentScreenW - DoodleScreenPadding.horizontal).GreaterOrEquel(1);
 		int doodleTextureHeight = (currentScreenH - DoodleScreenPadding.vertical).GreaterOrEquel(1);
@@ -205,6 +212,11 @@ public partial class RayGame : Game {
 			Raylib.SetTextureWrap(GizmosRenderTexture.Texture, TextureWrap.Clamp);
 			Debug.LogWarning("Gizmos Render Texture Force Reloaded. This should not happen.");
 		}
+		if (!Raylib.IsRenderTextureReady(AlphaLayerTexture)) {
+			AlphaLayerTexture = Raylib.LoadRenderTexture(currentScreenW, currentScreenH);
+			Raylib.SetTextureWrap(AlphaLayerTexture.Texture, TextureWrap.Clamp);
+			Debug.LogWarning("Alpha Layer Texture Force Reloaded. This should not happen.");
+		}
 		if (!Raylib.IsRenderTextureReady(DoodleRenderTexture)) {
 			DoodleRenderTexture = Raylib.LoadRenderTexture(doodleTextureWidth, doodleTextureHeight);
 			Raylib.SetTextureWrap(DoodleRenderTexture.Texture, TextureWrap.Repeat);
@@ -224,23 +236,6 @@ public partial class RayGame : Game {
 		Update();
 		Raylib.EndBlendMode();
 
-		// Screen Effect >> Render Texture
-		if (hasScreenEffectEnabled) {
-			UpdateScreenEffect();
-			for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
-				if (!ScreenEffectEnables[i]) continue;
-				// Draw Texture with Shader
-				Raylib.BeginShaderMode(ScreenEffectShaders[i]);
-				Raylib.DrawTextureRec(
-					RenderTexture.Texture,
-					new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
-					new(0, 0),
-					Color.White
-				);
-				Raylib.EndShaderMode();
-			}
-		}
-
 		// Black Side Border
 		if (Renderer.CameraRange.x.NotAlmostZero()) {
 			int borderWidth = (int)(currentScreenW * Renderer.CameraRange.x);
@@ -256,6 +251,8 @@ public partial class RayGame : Game {
 			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
 			default, Color.White
 		);
+		DrawAllScreenEffects();
+
 		// Front Doodle
 		if (GlobalFrame <= DoodleFrame + 1 && GlobalFrame <= DoodleOnTopOfUiFrame + 1) {
 			Raylib.DrawTextureRec(
@@ -269,6 +266,7 @@ public partial class RayGame : Game {
 				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
 			);
 		}
+
 		// Front Gizmos
 		if (GlobalFrame <= GizmosOnTopOfUiFrame + 1) {
 			Raylib.DrawTextureRec(
@@ -277,6 +275,7 @@ public partial class RayGame : Game {
 				new Vector2(0, 0), Color.White
 			);
 		}
+
 		// End
 		Raylib.EndBlendMode();
 		Raylib.EndDrawing();
@@ -320,6 +319,24 @@ public partial class RayGame : Game {
 		Raylib.BeginTextureMode(DoodleRenderTexture);
 		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		CurrentAltTextureMode = AltTextureMode.Doodle;
+	}
+
+
+	private void DrawAllScreenEffects (byte alpha = 255) {
+		if (!HasScreenEffectEnabled) return;
+		UpdateScreenEffect();
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			if (!ScreenEffectEnables[i]) continue;
+			// Draw Texture with Shader
+			Raylib.BeginShaderMode(ScreenEffectShaders[i]);
+			Raylib.DrawTextureRec(
+				RenderTexture.Texture,
+				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+				new(0, 0),
+				new Color((byte)255, (byte)255, (byte)255, alpha)
+			);
+			Raylib.EndShaderMode();
+		}
 	}
 
 
