@@ -244,6 +244,7 @@ public partial class RayGame : Game {
 		}
 
 		// End Rendering
+		DrawAllScreenEffects();
 		Raylib.EndTextureMode();
 		Raylib.BeginDrawing();
 		Raylib.DrawTextureRec(
@@ -251,7 +252,6 @@ public partial class RayGame : Game {
 			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
 			default, Color.White
 		);
-		DrawAllScreenEffects();
 
 		// Front Doodle
 		if (GlobalFrame <= DoodleFrame + 1 && GlobalFrame <= DoodleOnTopOfUiFrame + 1) {

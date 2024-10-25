@@ -19,12 +19,15 @@ public class PoseAttack_Wave : PoseAnimation {
 		switch (handheld) {
 
 			// Single Handed
-			case ToolHandheld.SingleHanded:
+			default:
 				style =
 					Attackness.LastAttackCharged ||
+					weaponType == ToolType.Hand ||
+					weaponType == ToolType.Tool ||
 					weaponType == ToolType.Throwing ||
-					weaponType == ToolType.Flail ? 0 :
-					 Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
+					weaponType == ToolType.Flail ?
+						0 :
+						Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
 				switch (style) {
 					default:
 						SingleHanded_SmashDown();

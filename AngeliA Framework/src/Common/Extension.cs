@@ -226,6 +226,13 @@ public static class Extension {
 		return a.Clamp(rangeA, rangeB);
 	}
 	[MethodImpl(INLINE)] public static int Clamp (this int a, int min, int max) => a < min ? min : a > max ? max : a;
+	[MethodImpl(INLINE)]
+	public static int ReverseClamp (this int a, int min, int max) {
+		if (a <= min || a >= max) return a;
+		int center = (min + max) / 2;
+		return a < center ? min : max;
+	}
+
 	[MethodImpl(INLINE)] public static float Clamp (this float a, float min, float max) => a < min ? min : a > max ? max : a;
 	[MethodImpl(INLINE)] public static float Clamp01 (this float value) => value < 0f ? 0f : value > 1f ? 1f : value;
 
