@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+
+namespace AngeliA.Platformer;
 [EntityAttribute.Capacity(1, 0)]
 
 public abstract class PlayerCustomizer : MiniGame, IActionTarget {
@@ -92,7 +94,10 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	];
 
 	// Api
-	protected override Int2 WindowSize => new(1000, 800);
+	protected override Int2 WindowSize => new(
+		Renderer.CameraRect.height * 1000 / 1000,
+		Renderer.CameraRect.height * 600 / 1000
+	);
 	protected override bool RequireMouseCursor => true;
 	protected override bool RequireQuitConfirm => false;
 	protected override string DisplayName => Language.Get(TypeID, "Player Maker");
@@ -315,11 +320,11 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 	// Rendering
 	private void MainMenuUI (IRect panelRect) {
 
-		int fieldHeight = Unify(60);
-		int fieldPadding = Unify(16);
-		int iconPadding = Unify(8);
-		int panelPadding = Unify(32);
-		int lineSize = Unify(2);
+		int fieldHeight = Unify(40);
+		int fieldPadding = Unify(8);
+		int iconPadding = Unify(6);
+		int panelPadding = Unify(16);
+		int lineSize = Unify(1);
 		var fieldRect = new IRect(
 			0, 0,
 			panelRect.width / 2 - panelPadding,

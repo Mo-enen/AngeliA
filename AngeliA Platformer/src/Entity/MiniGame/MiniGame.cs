@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.Capacity(1, 0)]
@@ -52,16 +53,19 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 	// Api
 	public delegate void SpawnBadgeHandler (int quality);
 	public static event SpawnBadgeHandler OnBadgeSpawn;
-	protected virtual Int2 WindowSize => new(1000, 800);
+	protected virtual Int2 WindowSize => new(
+		Renderer.CameraRect.height * 800 / 1000,
+		Renderer.CameraRect.height * 800 / 1000
+	);
 	protected abstract bool RequireMouseCursor { get; }
 	protected abstract string DisplayName { get; }
 	protected abstract int BadgeCount { get; }
 	protected virtual bool RequireQuitConfirm => true;
 	protected virtual bool ShowRestartOption => true;
 	protected IRect WindowRect => new(
-		Renderer.CameraRect.CenterX() - GUI.Unify(WindowSize.x) / 2,
-		Renderer.CameraRect.CenterY() - GUI.Unify(WindowSize.y) / 2,
-		GUI.Unify(WindowSize.x), GUI.Unify(WindowSize.y)
+		Renderer.CameraRect.CenterX() - WindowSize.x / 2,
+		Renderer.CameraRect.CenterY() - WindowSize.y / 2,
+		WindowSize.x, WindowSize.y
 	);
 	protected bool IsPlaying => TaskSystem.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
 	protected virtual LanguageCode[] BadgeHints { get; } = null;
