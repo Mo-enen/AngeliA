@@ -199,8 +199,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		NativeRenderer.OnActivated();
 
 		// Misc
-		FallingGravityScale = 1000;
-		RisingGravityScale = 1000;
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;
 		VelocityX = 0;

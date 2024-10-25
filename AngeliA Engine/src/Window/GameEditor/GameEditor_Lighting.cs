@@ -46,7 +46,7 @@ public partial class GameEditor {
 			8126534, rect.ShrinkLeft(GUI.LabelWidth),
 			(int)(ForcingInGameDaytime * 1200), 0, 1200, step: 100
 		);
-		if (newDaytime != 0 || ForcingInGameDaytime >= 0f) {
+		if (newDaytime != 0) {
 			if (newDaytime != (int)(ForcingInGameDaytime * 1200f)) {
 				ForcingInGameDaytime = newDaytime / 1200f;
 			}

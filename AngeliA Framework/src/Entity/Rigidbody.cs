@@ -22,8 +22,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int VelocityY { get; set; } = 0;
 	public int OffsetX { get; set; } = 0;
 	public int OffsetY { get; set; } = 0;
-	public int FallingGravityScale { get; set; } = 1000;
-	public int RisingGravityScale { get; set; } = 1000;
 	public int GroundedID { get; private set; } = 0;
 	public int PrevX { get; private set; } = 0;
 	public int PrevY { get; private set; } = 0;
@@ -31,6 +29,10 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int DeltaPositionY => Y - PrevY;
 	public bool IgnoringPhysics => Game.GlobalFrame <= IgnorePhysicsFrame;
 	public bool IgnoringOneway => Game.GlobalFrame <= IgnoreOnewayFrame;
+
+	// Based Value
+	public readonly FrameBasedInt FallingGravityScale = new(1000);
+	public readonly FrameBasedInt RisingGravityScale = new(1000);
 
 	// Override
 	public abstract int PhysicalLayer { get; }

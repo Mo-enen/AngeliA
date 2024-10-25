@@ -58,7 +58,7 @@ public static class CheatSystem {
 #endif
 		if (Enable) {
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
-				TryAddCheatAction(att.Code, method, att.Param);
+				TryAddCheatAction(att.Code, method);
 			}
 		} else {
 			Pool.Clear();

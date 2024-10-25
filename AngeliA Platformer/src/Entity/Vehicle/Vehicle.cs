@@ -59,8 +59,6 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 		if (FromWorld) {
 			X += Const.HALF;
 		}
-		FallingGravityScale = 1000;
-		RisingGravityScale = 1000;
 	}
 
 

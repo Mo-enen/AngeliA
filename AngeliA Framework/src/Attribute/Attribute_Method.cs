@@ -63,10 +63,7 @@ public class OnLanguageChangedAttribute : EventAttribute { }
 
 
 // Cheat
-public class CheatCodeAttribute (string code, object param = null) : EventAttribute {
-	public string Code = code;
-	public object Param = param;
-}
+public class CheatCodeAttribute (string code) : EventAttribute { public string Code = code; }
 public class OnCheatPerformedAttribute : EventAttribute { }
 
 

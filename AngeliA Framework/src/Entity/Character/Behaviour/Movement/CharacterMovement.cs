@@ -244,13 +244,6 @@ public class CharacterMovement (Rigidbody rig) {
 	protected int OffsetY { get => Target.OffsetY; set => Target.OffsetY = value; }
 	protected int VelocityX { get => Target.VelocityX; set => Target.VelocityX = value; }
 	protected int VelocityY { get => Target.VelocityY; set => Target.VelocityY = value; }
-	protected int GravityScale {
-		get => Target.FallingGravityScale;
-		set {
-			Target.FallingGravityScale = value;
-			Target.RisingGravityScale = value;
-		}
-	}
 	protected bool IsInsideGround => Target.IsInsideGround;
 	protected bool InWater => Target.InWater;
 	protected bool IsGrounded => Target.IsGrounded;
@@ -922,7 +915,8 @@ public class CharacterMovement (Rigidbody rig) {
 
 	private void Update_VelocityY () {
 
-		GravityScale = IsGrounded || VelocityY <= 0 ? 1000 : (int)JumpRiseGravityRate;
+		bool ignoreGravity = false;
+		Target.RisingGravityScale.Override(JumpRiseGravityRate);
 
 		switch (MovementState) {
 
@@ -933,27 +927,26 @@ public class CharacterMovement (Rigidbody rig) {
 					VelocityY = VelocityY.MoveTowards(
 						IntendedY * SwimSpeed, SwimAcceleration, SwimDeceleration
 					);
-					GravityScale = 0;
-				} else {
-					GravityScale = 1000;
+					ignoreGravity = true;
 				}
 				break;
 
 			// Climb
 			case CharacterMovementState.Climb:
 				VelocityY = (IntendedY <= 0 || ClimbCheck(true) ? IntendedY : 0) * ClimbSpeedY;
-				GravityScale = 0;
+				ignoreGravity = true;
 				break;
 
 			// Pound
 			case CharacterMovementState.Pound:
-				GravityScale = 0;
+				ignoreGravity = true;
 				VelocityY = -PoundSpeed;
 				break;
 
 			// Fly
 			case CharacterMovementState.Fly:
-				GravityScale = VelocityY > 0 ? FlyGravityRiseRate : FlyGravityFallRate;
+				Target.RisingGravityScale.Override(FlyGravityRiseRate);
+				Target.FallingGravityScale.Override(FlyGravityFallRate);
 				VelocityY = Util.Max(VelocityY, -FlyFallSpeed);
 				break;
 
@@ -961,30 +954,35 @@ public class CharacterMovement (Rigidbody rig) {
 			case CharacterMovementState.Slide:
 				if (VelocityY < -SlideDropSpeed) {
 					VelocityY = -SlideDropSpeed;
-					GravityScale = 0;
+					ignoreGravity = true;
 				}
 				break;
 
 			// Grab Top
 			case CharacterMovementState.GrabTop:
-				GravityScale = 0;
+				ignoreGravity = true;
 				VelocityY = 0;
 				break;
 
 			// Grab Side
 			case CharacterMovementState.GrabSide:
-				GravityScale = 0;
+				ignoreGravity = true;
 				VelocityY = IntendedY <= 0 || AllowGrabSideMoveUp ? IntendedY * GrabMoveSpeedY : 0;
 				break;
 
 			// Grab Flip
 			case CharacterMovementState.GrabFlip:
-				GravityScale = 0;
+				ignoreGravity = true;
 				VelocityY = (MovementHeight + Const.CEL + 12) / Util.Max(GrabFlipThroughDuration, 1) + 1;
 				if (!IsGrabFlippingUp) VelocityY *= -1;
 				break;
 
 		}
+		if (ignoreGravity) {
+			Target.RisingGravityScale.Override(0);
+			Target.FallingGravityScale.Override(0);
+		}
+
 	}
 
 

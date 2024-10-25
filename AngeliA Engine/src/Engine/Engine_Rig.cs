@@ -252,9 +252,11 @@ public partial class Engine {
 			var gameEDT = GameEditor.Instance;
 			if (gameEDT.LightMapSettingChanged) {
 				gameEDT.LightMapSettingChanged = false;
-				calling.RequireChangeSetting(
-					LightingSystem.SETTING_IN_GAME_DAYTIME, (int)(gameEDT.ForcingInGameDaytime * 1000)
-				);
+				if (gameEDT.ForcingInGameDaytime >= 0f) {
+					calling.RequireChangeSetting(
+						LightingSystem.SETTING_IN_GAME_DAYTIME, (int)(gameEDT.ForcingInGameDaytime * 1000)
+					);
+				}
 				calling.RequireChangeSetting(
 					LightingSystem.SETTING_PIXEL_STYLE, currentInfo.LightMap_PixelStyle
 				);

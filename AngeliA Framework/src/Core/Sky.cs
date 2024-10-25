@@ -33,7 +33,7 @@ public static class Sky {
 
 	// Data
 	private static int ForceBackgroundTintFrame = int.MinValue;
-	private static float ForceInGameDaytimeValue = 0f;
+	private static float ForceInGameDaytimeValue = -1f;
 
 
 	// MSG

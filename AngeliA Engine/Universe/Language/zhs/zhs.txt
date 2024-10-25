@@ -484,6 +484,7 @@ UI.Rig.NotRunning:游戏未运行\n这是意料之外的情况，请向开发者
 UI.RigEditor.AirIlluDay:空气亮度（白天）
 UI.RigEditor.AirIlluNight:空气亮度（夜间）
 UI.RigEditor.BgTint:背景亮度
+UI.RigEditor.Daytime:游戏内时间
 UI.RigEditor.LvRemain:光穿固体后残留
 UI.RigEditor.PixelStyle:像素风格
 UI.RigEditor.SelfLerp:自插值

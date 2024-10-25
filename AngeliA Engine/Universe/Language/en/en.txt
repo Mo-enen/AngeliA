@@ -64,7 +64,7 @@ Label.Project.AllowQuitFromMenu:Allow Quit from Menu
 Label.Project.AllowRestartFromMenu:Allow Restart from Menu
 Label.Project.Font:Font
 Label.Project.Music:Music
-Label.Project.SavePlayerChangesToMap:Save Map Changes from Player (Release)
+Label.Project.SavePlayerChangesToMap:Save Map Changes from Player (After Release)
 Label.Project.ScaleUiBasedOnMonitor:Scale UI Based On Monitor Height
 Label.Project.Sound:Sound
 Label.Project.UseLightingSystem:Use Map Lighting System
@@ -484,6 +484,7 @@ UI.Rig.NotRunning:Rigged Game Not Running :(\nThis should not happen. Please con
 UI.RigEditor.AirIlluDay:Air Illuminance (Day)
 UI.RigEditor.AirIlluNight:Air Illuminance (Night)
 UI.RigEditor.BgTint:Background Tint
+UI.RigEditor.Daytime:In-Game Daytime
 UI.RigEditor.LvRemain:Solid Illuminate Remain
 UI.RigEditor.PixelStyle:Use Pixel Style
 UI.RigEditor.SelfLerp:Self Lerp
