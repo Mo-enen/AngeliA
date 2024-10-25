@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 
 public enum CharacterNavigationState { Idle, Operation, Fly, }
 
 
-public partial class CharacterNavigation (Character character) {
+public class CharacterNavigation (Character character) {
 
 
 

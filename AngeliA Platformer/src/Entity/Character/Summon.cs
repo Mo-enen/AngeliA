@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.UpdateOutOfRange]
@@ -22,9 +23,9 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	int IDamageReceiver.Team => Owner != null ? (Owner as IDamageReceiver).Team : Const.TEAM_NEUTRAL;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public int InventoryUpdatedFrame { get; set; } = -1;
+	public SummonNavigation Navigation { get; init; }
 
 	// Data
-	private SummonNavigation SummonNavigation;
 	private int SummonFrame = int.MinValue;
 	private int PrevZ = int.MinValue;
 
@@ -37,12 +38,16 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	#region --- MSG ---
 
 
+	public Summon () => Navigation = new(this);
+
+
 	public override void OnActivated () {
 		base.OnActivated();
 		Owner = null;
+		Navigation.OnActivated();
 		Navigation.NavigationState = CharacterNavigationState.Operation;
-		SummonNavigation.Refresh();
-		SummonNavigation.FollowOwner = true;
+		Navigation.Refresh();
+		Navigation.FollowOwner = true;
 		Movement.PushAvailable.BaseValue = false;
 		DespawnAfterPassoutDelay = -1;
 	}
@@ -50,7 +55,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		SummonNavigation.Owner = Owner;
+		Navigation.Owner = Owner;
 		if (CharacterState == CharacterState.GamePlay) {
 			IgnorePhysics(1);
 		}
@@ -65,7 +70,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		Navigation.ResetNavigation();
 		SummonFrame = Game.GlobalFrame;
 		Navigation.NavigationState = CharacterNavigationState.Operation;
-		SummonNavigation.Refresh();
+		Navigation.Refresh();
 	}
 
 
@@ -82,13 +87,13 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		// when Z Changed
 		if (PrevZ != Stage.ViewZ) {
 			PrevZ = Stage.ViewZ;
-			if (SummonNavigation.FollowOwner) {
+			if (Navigation.FollowOwner) {
 				if (CharacterState != CharacterState.Sleep) {
 					X = Owner.X;
 					Y = Owner.Y;
 					Navigation.ResetNavigation();
 					Navigation.NavigationState = CharacterNavigationState.Operation;
-					SummonNavigation.Refresh();
+					Navigation.Refresh();
 				}
 			} else {
 				Active = false;
@@ -96,12 +101,16 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		}
 
 		// Out of Range
-		if (!SummonNavigation.FollowOwner && !Stage.SpawnRect.Overlaps(Rect)) {
+		if (!Navigation.FollowOwner && !Stage.SpawnRect.Overlaps(Rect)) {
 			Active = false;
 			return;
 		}
 
+		// Base
 		base.Update();
+
+		// Nav
+		Navigation.PhysicsUpdate();
 
 	}
 
@@ -128,8 +137,13 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	#region --- API ---
 
 
-	protected override CharacterNavigation CreateNativeNavigation () => SummonNavigation = new SummonNavigation(this);
 	protected override CharacterAttackness CreateNativeAttackness () => new SummonAttackness(this);
+
+
+	public override void SetCharacterState (CharacterState state) {
+		Navigation.ResetNavigation();
+		base.SetCharacterState(state);
+	}
 
 
 	// Summon

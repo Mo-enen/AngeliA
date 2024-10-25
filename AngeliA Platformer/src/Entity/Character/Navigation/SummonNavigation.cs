@@ -1,21 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
-public class SummonNavigation : CharacterNavigation {
-
+public class SummonNavigation (Character character) : CharacterNavigation(character) {
 
 	private const int AIM_REFRESH_FREQUENCY = 60;
 	public override bool NavigationEnable => TargetCharacter.CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 	public override bool ClampInSpawnRect => Owner == PlayerSystem.Selecting;
 	public bool FollowOwner { get; set; } = true;
 	public Entity Owner { get; set; }
-	public SummonNavigation (Character character) : base(character) { }
+
 	private bool RequireAimRefresh = true;
 	private int StartX;
 	private int StartY;
-
 
 	public override void OnActivated () {
 		base.OnActivated();
@@ -73,8 +72,6 @@ public class SummonNavigation : CharacterNavigation {
 		return result;
 	}
 
-
 	public void Refresh () => RequireAimRefresh = true;
-
 
 }

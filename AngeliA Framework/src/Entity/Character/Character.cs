@@ -81,28 +81,23 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	public int InventoryID { get; private set; }
 	public int RenderingCellIndex { get; private set; }
 
-
 	// Behaviour
 	public CharacterMovement Movement;
 	public CharacterAttackness Attackness;
 	public CharacterHealth Health;
-	public CharacterNavigation Navigation;
 	public CharacterRenderer Rendering;
 	private CharacterMovement MovementOverride;
 	private CharacterAttackness AttacknessOverride;
 	private CharacterHealth HealthOverride;
-	private CharacterNavigation NavigationOverride;
 	private CharacterRenderer RendererOverride;
 	public readonly CharacterMovement NativeMovement;
 	public readonly CharacterAttackness NativeAttackness;
 	public readonly CharacterHealth NativeHealth;
-	public readonly CharacterNavigation NativeNavigation;
 	public readonly CharacterRenderer NativeRenderer;
 	public readonly CharacterBuff Buff;
 	private int OverridingMovementFrame = int.MinValue;
 	private int OverridingAttacknessFrame = int.MinValue;
 	private int OverridingHealthFrame = int.MinValue;
-	private int OverridingNavigationFrame = int.MinValue;
 	private int OverridingRendererFrame = int.MinValue;
 
 	// Data
@@ -112,6 +107,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
 	private int ForceStayFrame = -1;
+	private int ForceTriggerFrame = -1;
 	private int PrevZ;
 
 
@@ -148,7 +144,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		Movement = NativeMovement = CreateNativeMovement();
 		Attackness = NativeAttackness = CreateNativeAttackness();
 		Health = NativeHealth = CreateNativeHealth();
-		Navigation = NativeNavigation = CreateNativeNavigation();
 		Rendering = NativeRenderer = CreateNativeRenderer();
 		Buff = new CharacterBuff(this);
 
@@ -197,12 +192,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		Movement = NativeMovement;
 		Attackness = NativeAttackness;
 		Health = NativeHealth;
-		Navigation = NativeNavigation;
 		Rendering = NativeRenderer;
 		NativeMovement.OnActivated();
 		NativeHealth.OnActivated();
 		NativeAttackness.OnActivated();
-		NativeNavigation.OnActivated();
 		NativeRenderer.OnActivated();
 
 		// Misc
@@ -215,12 +208,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		MovementOverride = null;
 		AttacknessOverride = null;
 		HealthOverride = null;
-		NavigationOverride = null;
 		RendererOverride = null;
 		OverridingMovementFrame = int.MinValue;
 		OverridingAttacknessFrame = int.MinValue;
 		OverridingHealthFrame = int.MinValue;
-		OverridingNavigationFrame = int.MinValue;
 		OverridingRendererFrame = int.MinValue;
 		Team = Const.TEAM_NEUTRAL;
 		IgnoreDamageType = Tag.None;
@@ -243,7 +234,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		base.OnInactivated();
 		MovementOverride = null;
 		AttacknessOverride = null;
-		NavigationOverride = null;
 	}
 
 
@@ -265,16 +255,14 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		Movement = Game.GlobalFrame <= OverridingMovementFrame && MovementOverride != null ? MovementOverride : NativeMovement;
 		Attackness = Game.GlobalFrame <= OverridingAttacknessFrame && AttacknessOverride != null ? AttacknessOverride : NativeAttackness;
 		Health = Game.GlobalFrame <= OverridingHealthFrame && HealthOverride != null ? HealthOverride : NativeHealth;
-		Navigation = Game.GlobalFrame <= OverridingNavigationFrame && NavigationOverride != null ? NavigationOverride : NativeNavigation;
 		Rendering = Game.GlobalFrame <= OverridingRendererFrame && RendererOverride != null ? RendererOverride : NativeRenderer;
 
 		// Fill Physics
+		bool trigger = Game.GlobalFrame <= ForceTriggerFrame;
 		if (CharacterState == CharacterState.GamePlay && !IgnoringPhysics) {
-			Physics.FillEntity(PhysicalLayer, this, Navigation.NavigationEnable);
+			Physics.FillEntity(PhysicalLayer, this, trigger);
 		}
-
-		// Nav State
-		if (Navigation.NavigationEnable) {
+		if (trigger) {
 			Movement.PushAvailable.Override(false, priority: 4096);
 		}
 
@@ -413,7 +401,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 				break;
 		}
 		Movement.PhysicsUpdateLater();
-		Navigation.PhysicsUpdate();
 		Update_AnimationType();
 		base.Update();
 	}
@@ -643,7 +630,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 
 		PassOutFrame = int.MinValue;
 		CharacterState = state;
-		Navigation.ResetNavigation();
 
 		switch (state) {
 
@@ -785,7 +771,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	protected virtual CharacterMovement CreateNativeMovement () => new(this);
 	protected virtual CharacterAttackness CreateNativeAttackness () => new(this);
 	protected virtual CharacterHealth CreateNativeHealth () => new();
-	protected virtual CharacterNavigation CreateNativeNavigation () => new(this);
 	protected virtual CharacterRenderer CreateNativeRenderer () => new SheetCharacterRenderer(this);
 
 
@@ -812,14 +797,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		}
 		OverridingHealthFrame = Game.GlobalFrame + duration;
 		HealthOverride = healthOverride;
-	}
-	public void OverrideNavigation (CharacterNavigation navigationOverride, int duration = 1) {
-		if (navigationOverride == null) return;
-		if (navigationOverride != NavigationOverride) {
-			navigationOverride.OnActivated();
-		}
-		OverridingNavigationFrame = Game.GlobalFrame + duration;
-		NavigationOverride = navigationOverride;
 	}
 	public void OverrideRenderer (CharacterRenderer rendererOverride, int duration = 1) {
 		if (rendererOverride == null) return;
@@ -866,6 +843,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 
 
 	public void ForceStayOnStage (int duration = 1) => ForceStayFrame = Game.GlobalFrame + duration;
+
+
+	public void ForceFillTrigger (int duration = 1) => ForceTriggerFrame = Game.GlobalFrame + duration;
 
 
 	#endregion
