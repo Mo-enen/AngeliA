@@ -155,6 +155,8 @@ public static class ItemSystem {
 	[OnMainSheetReload]
 	internal static void AddBlockItemsFromSheet () {
 
+		if (Game.IsToolApplication) return;
+
 		var sheet = Renderer.MainSheet;
 		if (sheet == null) return;
 
@@ -190,6 +192,12 @@ public static class ItemSystem {
 				blockItem.MaxStackCount.GreaterOrEquel(1)
 			));
 		}
+
+		// Reload Unlock
+		if (Game.GlobalFrame > 0) {
+			LoadUnlockDataFromFile();
+		}
+
 	}
 
 
