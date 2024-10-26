@@ -611,6 +611,33 @@ public static class PlayerSystem {
 	public static void ForceUpdateGroundedForView (int duration = 1) => ForceUpdateViewGroundingFrame = Game.GlobalFrame + duration;
 
 
+	public static Int3 GetPlayerFinalRespawnUnitPosition () {
+		Int3 result;
+		if (RespawnCpUnitPosition.HasValue) {
+			// CP Respawn Pos
+			result = RespawnCpUnitPosition.Value;
+		} else if (HomeUnitPosition.HasValue) {
+			// Home Pos
+			result = new Int3(
+				HomeUnitPosition.Value.x,
+				HomeUnitPosition.Value.y,
+				HomeUnitPosition.Value.z
+			);
+		} else if (Selecting != null && Selecting.Active) {
+			// Player
+			result = new Int3(
+				Selecting.X.ToUnit(),
+				Selecting.Y.ToUnit(),
+				Stage.ViewZ
+			);
+		} else {
+			// Fail
+			result = default;
+		}
+		return result;
+	}
+
+
 	// Ignore
 	public static void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
 

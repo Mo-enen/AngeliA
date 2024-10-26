@@ -12,7 +12,11 @@ namespace AngeliA.Platformer;
 [EntityAttribute.DontSpawnFromWorld]
 public class CheckPointPortal : CircleFlamePortal {
 
-	protected override Int3 TargetGlobalPosition => TargetUnitPosition.ToGlobal();
+	protected override Int3 TargetGlobalPosition => new Int3(
+		TargetUnitPosition.x.ToGlobal() + Const.HALF,
+		TargetUnitPosition.y.ToGlobal() + Const.HALF,
+		TargetUnitPosition.z
+	);
 	public static readonly int TYPE_ID = typeof(CheckPointPortal).AngeHash();
 	private Int3 TargetUnitPosition;
 	private int TargetCheckPointID;

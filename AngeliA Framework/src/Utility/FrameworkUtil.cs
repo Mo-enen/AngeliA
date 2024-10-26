@@ -37,7 +37,7 @@ public static class FrameworkUtil {
 	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 
 	// Event
-	[OnObjectBreak] internal static Action<int, IRect, bool> OnObjectBreak;
+	[OnObjectBreak] internal static Action<int, IRect> OnObjectBreak;
 	[OnObjectFreeFall] internal static Action<int, Int4, Int4> OnObjectFreeFall;
 	[OnBlockPicked] internal static Action<int, IRect> OnBlockPicked;
 	[OnFallIntoWater] internal static Action<Rigidbody> OnFallIntoWater;
@@ -613,9 +613,29 @@ public static class FrameworkUtil {
 
 
 	public static bool PickEntityBlock (Entity target, bool dropItemAfterPick = true) {
+
 		if (!target.MapUnitPos.HasValue) return false;
-		var pos = target.MapUnitPos.Value;
-		return PickBlockAt(pos.x, pos.y, true, false, false, dropItemAfterPick, false);
+
+		var e = target;
+		if (e is not IBlockEntity eBlock) return false;
+		e.Active = false;
+		var mapPos = e.MapUnitPos.Value;
+
+		// Remove from Map
+		WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, BlockType.Entity, 0);
+
+		// Event
+		eBlock.OnEntityPicked();
+		if (dropItemAfterPick && ItemSystem.HasItem(e.TypeID)) {
+			// Drop Item
+			ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
+			InvokeBlockPicked(e.TypeID, e.Rect);
+		} else {
+			// Break
+			InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
+		}
+
+		return true;
 	}
 
 
@@ -1144,7 +1164,7 @@ public static class FrameworkUtil {
 
 
 	// Event
-	public static void InvokeObjectBreak (int spriteID, IRect rect, bool lightWeight = false) => OnObjectBreak?.Invoke(spriteID, rect, lightWeight);
+	public static void InvokeObjectBreak (int spriteID, IRect rect) => OnObjectBreak?.Invoke(spriteID, rect);
 	public static void InvokeObjectFreeFall (int spriteID, int x, int y, int speedX = 0, int speedY = 0, int rotation = int.MinValue, int rotationSpeed = 0, int gravity = 5, bool flipX = false) => OnObjectFreeFall?.Invoke(spriteID, new(x, y, rotation, flipX ? 1 : 0), new(speedX, speedY, rotationSpeed, gravity));
 	public static void InvokeBlockPicked (int spriteID, IRect rect) => OnBlockPicked?.Invoke(spriteID, rect);
 	public static void InvokeFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);

@@ -16,7 +16,6 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 	int ICombustible.BurnStartFrame { get; set; }
 	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
 
-
 	// MSG
 	public override void FirstUpdate () {
 		base.FirstUpdate();
@@ -28,15 +27,19 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 		base.LateUpdate();
 		Renderer.Draw(
 			TypeID, X + Width / 2, Y,
-			500, 0, 0,
+			Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE
 		);
 	}
 
 
 	protected virtual void OnPlantBreak () {
+
+		// Drop Item
 		ItemSystem.DropItemFor(this);
-		if (Universe.BuiltInInfo.UseProceduralMap) {
+
+		// Block Break
+		if (Universe.BuiltInInfo.AllowPlayerModifyMap) {
 			FrameworkUtil.PickEntityBlock(this, false);
 		} else {
 			FrameworkUtil.RemoveFromWorldMemory(this);
@@ -47,11 +50,6 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 	// API
 	void IDamageReceiver.TakeDamage (Damage damage) {
 		if (damage.Amount <= 0) return;
-		// Particle
-		if (Renderer.TryGetSprite(TypeID, out var sprite)) {
-			FrameworkUtil.InvokeObjectBreak(TypeID, Rect.Fit(sprite), true);
-		}
-		// Disable
 		Active = false;
 		OnPlantBreak();
 	}

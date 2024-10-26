@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace AngeliA;
 [Serializable]
-public struct Color32 : IFormattable, IComparable {
+public struct Color32 (byte r, byte g, byte b, byte a = 255) : IFormattable, IComparable {
 
 	public static readonly Color32 WHITE = new(255, 255, 255, 255);
 	public static readonly Color32 WHITE_196 = new(255, 255, 255, 196);
@@ -62,17 +62,10 @@ public struct Color32 : IFormattable, IComparable {
 	public static readonly Color32 GREY_12 = new(12, 12, 12, 255);
 	public static readonly Color32 SKIN_YELLOW = new(245, 217, 196, 255);
 
-	public byte r;
-	public byte g;
-	public byte b;
-	public byte a;
-
-	public Color32 (byte r, byte g, byte b, byte a = 255) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-	}
+	public byte r = r;
+	public byte g = g;
+	public byte b = b;
+	public byte a = a;
 
 	public static Color32 Lerp (Color32 a, Color32 b, float t) {
 		t = t.Clamp01();

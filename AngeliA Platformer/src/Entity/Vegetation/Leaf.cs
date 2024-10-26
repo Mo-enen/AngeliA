@@ -89,8 +89,12 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 
 
 	protected virtual void OnLeafBreak () {
+
+		// Item
 		ItemSystem.DropItemFor(this);
-		if (Universe.BuiltInInfo.UseProceduralMap) {
+
+		// Block
+		if (Universe.BuiltInInfo.AllowPlayerModifyMap) {
 			FrameworkUtil.PickEntityBlock(this, false);
 		} else {
 			FrameworkUtil.RemoveFromWorldMemory(this);
@@ -113,19 +117,6 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 
 	void IDamageReceiver.TakeDamage (Damage damage) {
 		if (damage.Amount <= 0) return;
-		// Particle
-		int id = TypeID;
-		var rect = Rect;
-		if (Renderer.TryGetSprite(LeafArtworkCode, out var sprite)) {
-			id = sprite.ID;
-			rect.height = sprite.GlobalHeight;
-			if (rect.width != sprite.GlobalWidth) {
-				rect.x -= (sprite.GlobalWidth - rect.width) / 2;
-				rect.width = sprite.GlobalWidth;
-			}
-		}
-		FrameworkUtil.InvokeObjectBreak(id, rect, true);
-		// Disable
 		Active = false;
 		OnLeafBreak();
 	}

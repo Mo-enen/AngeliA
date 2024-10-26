@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public class OpeningTask : Task {
 
@@ -20,7 +21,7 @@ public class OpeningTask : Task {
 	public int TargetViewY { get; set; } = 0;
 	public int TargetViewZ { get; set; } = 0;
 	public bool FadeOut { get; set; } = true;
-	public bool GotoBed { get; set; } = false;
+	public bool TryGotoBed { get; set; } = false;
 
 	// Data
 	private int SkipFrame = int.MaxValue;
@@ -85,7 +86,7 @@ public class OpeningTask : Task {
 					player.Y = PlayerSpawnY;
 				}
 				player?.OnActivated();
-				if (player != null && GotoBed && Stage.TryGetEntityNearby<Bed>(new Int2(PlayerSpawnX, PlayerSpawnY), out var bed)) {
+				if (player != null && TryGotoBed && Stage.TryGetEntityNearby<Bed>(new Int2(PlayerSpawnX, PlayerSpawnY), out var bed)) {
 					bed.GetTargetOnBed(PlayerSystem.Selecting);
 					TargetViewX = player.Rect.CenterX();
 					TargetViewY = player.Y + Stage.ViewRect.height / 2 - PlayerSystem.GetCameraShiftOffset(Stage.ViewRect.height);
@@ -136,32 +137,8 @@ public class OpeningTask : Task {
 
 		if (PlayerSystem.Selecting == null) return;
 
-		bool gotoBed = true;
-
 		// Get Start Position
-		Int3 startUnitPosition;
-		if (PlayerSystem.RespawnCpUnitPosition.HasValue) {
-			// CP Respawn Pos
-			startUnitPosition = PlayerSystem.RespawnCpUnitPosition.Value;
-			gotoBed = false;
-		} else if (PlayerSystem.HomeUnitPosition.HasValue) {
-			// Home Pos
-			startUnitPosition = new Int3(
-				PlayerSystem.HomeUnitPosition.Value.x,
-				PlayerSystem.HomeUnitPosition.Value.y,
-				PlayerSystem.HomeUnitPosition.Value.z
-			);
-		} else if (PlayerSystem.Selecting != null && PlayerSystem.Selecting.Active) {
-			// Player
-			startUnitPosition = new Int3(
-				PlayerSystem.Selecting.X.ToUnit(),
-				PlayerSystem.Selecting.Y.ToUnit(),
-				Stage.ViewZ
-			);
-		} else {
-			// Fail
-			startUnitPosition = default;
-		}
+		Int3 startUnitPosition = PlayerSystem.GetPlayerFinalRespawnUnitPosition();
 
 		// Start Opening
 		if (
@@ -173,7 +150,7 @@ public class OpeningTask : Task {
 			oTask.TargetViewY = startUnitPosition.y.ToGlobal();
 			oTask.TargetViewZ = startUnitPosition.z;
 			oTask.FadeOut = false;
-			oTask.GotoBed = gotoBed;
+			oTask.TryGotoBed = !PlayerSystem.RespawnCpUnitPosition.HasValue;
 		}
 	}
 
