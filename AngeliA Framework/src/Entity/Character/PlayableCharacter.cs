@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class PlayableCharacter : Character {
+public abstract class PlayableCharacter : Character, IActionTarget {
 
 	protected override CharacterRenderer CreateNativeRenderer () => new PoseCharacterRenderer(this);
 	public override CharacterInventoryType InventoryType => CharacterInventoryType.Unique;
@@ -16,6 +16,11 @@ public abstract class PlayableCharacter : Character {
 		}
 	}
 
-	public override bool AllowInvoke () => !Health.IsInvincible;
+	public virtual bool Invoke () {
+		PlayerSystem.SetCharacterAsPlayer(this);
+		return PlayerSystem.Selecting == this;
+	}
+
+	public virtual bool AllowInvoke () => PlayerSystem.Selecting != this && !Health.IsInvincible;
 
 }

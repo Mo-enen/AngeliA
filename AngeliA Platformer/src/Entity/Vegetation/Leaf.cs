@@ -98,6 +98,7 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 			FrameworkUtil.PickEntityBlock(this, false);
 		} else {
 			FrameworkUtil.RemoveFromWorldMemory(this);
+			FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
 		}
 	}
 

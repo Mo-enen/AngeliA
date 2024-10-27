@@ -43,6 +43,7 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 			FrameworkUtil.PickEntityBlock(this, false);
 		} else {
 			FrameworkUtil.RemoveFromWorldMemory(this);
+			FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
 		}
 	}
 

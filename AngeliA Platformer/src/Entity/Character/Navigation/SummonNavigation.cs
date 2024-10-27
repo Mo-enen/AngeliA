@@ -6,28 +6,44 @@ namespace AngeliA.Platformer;
 
 public class SummonNavigation (Character character) : CharacterNavigation(character) {
 
+	private enum AimMode { FollowOwner, Wandering, }
+
+	// VAR
 	private const int AIM_REFRESH_FREQUENCY = 60;
 	public override bool NavigationEnable => TargetCharacter.CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
 	public override bool ClampInSpawnRect => Owner == PlayerSystem.Selecting;
-	public bool FollowOwner { get; set; } = true;
 	public Entity Owner { get; set; }
+	public bool IsFollowingOwner => CurrentAmiMode == AimMode.FollowOwner;
+	public bool IsWandering => CurrentAmiMode == AimMode.Wandering;
 
+	private AimMode CurrentAmiMode { get; set; } = AimMode.FollowOwner;
+	private Int2 CurrentWanderingPos;
 	private bool RequireAimRefresh = true;
 	private int StartX;
 	private int StartY;
 
+	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		StartX = TargetCharacter.X;
 		StartY = TargetCharacter.Y;
+		CurrentWanderingPos.x = StartX;
+		CurrentWanderingPos.y = StartY;
 	}
 
 	protected override Int2? GetNavigationAim (out bool grounded) {
 
 		// Get Aim at Ground
-		var result = Owner != null && Owner.Active && FollowOwner ?
-			new Int2(Owner.X, Owner.Y) :
-			new Int2(StartX, StartY);
+		var aimPosition = new Int2(StartX, StartY);
+		switch (CurrentAmiMode) {
+			case AimMode.FollowOwner:
+				if (Owner == null || !Owner.Active) break;
+				aimPosition = new Int2(Owner.X, Owner.Y);
+				break;
+			case AimMode.Wandering:
+				aimPosition = CurrentWanderingPos;
+				break;
+		}
 		grounded = false;
 
 		// Scan Frequency Gate
@@ -50,28 +66,44 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 		int offsetY = NavigationState == CharacterNavigationState.Fly ? Const.CEL : Const.HALF;
 		if (Navigation.ExpandTo(
 			Game.GlobalFrame, Stage.ViewRect,
-			result.x, result.y,
-			result.x + offsetX, result.y + offsetY,
+			aimPosition.x, aimPosition.y,
+			aimPosition.x + offsetX, aimPosition.y + offsetY,
 			maxIteration: 12,
 			out int groundX, out int groundY
 		)) {
-			result.x = groundX;
-			result.y = groundY;
+			aimPosition.x = groundX;
+			aimPosition.y = groundY;
 			grounded = true;
 		} else {
-			result.x += offsetX;
+			aimPosition.x += offsetX;
 			grounded = false;
 		}
 
 		// Instance Shift
-		result = new Int2(
-			result.x + (insIndex % 2 == 0 ? 8 : -8) * (insIndex / 2),
-			result.y
+		aimPosition = new Int2(
+			aimPosition.x + (insIndex % 2 == 0 ? 8 : -8) * (insIndex / 2),
+			aimPosition.y
 		);
 
-		return result;
+		return aimPosition;
 	}
 
+	// API
 	public void Refresh () => RequireAimRefresh = true;
+
+	public void MakeFollowOwner () => CurrentAmiMode = AimMode.FollowOwner;
+
+	public bool MakeWander<E> () where E : Entity {
+		if (Stage.TryGetEntityNearby(new Int2(TargetCharacter.X, TargetCharacter.Y), out E result)) {
+			MakeWander(result.X, result.Y);
+			return true;
+		}
+		return false;
+	}
+	public void MakeWander (int x, int y) {
+		CurrentAmiMode = AimMode.Wandering;
+		CurrentWanderingPos.x = x;
+		CurrentWanderingPos.y = y;
+	}
 
 }

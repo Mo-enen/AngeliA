@@ -10,6 +10,7 @@ namespace AngeliA.Platformer;
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.ExcludeInMapEditor]
+[EntityAttribute.DontSpawnFromWorld]
 public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
@@ -47,7 +48,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		Navigation.OnActivated();
 		Navigation.NavigationState = CharacterNavigationState.Operation;
 		Navigation.Refresh();
-		Navigation.FollowOwner = true;
+		Navigation.MakeFollowOwner();
 		Movement.PushAvailable.BaseValue = false;
 		DespawnAfterPassoutDelay = -1;
 	}
@@ -87,7 +88,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		// when Z Changed
 		if (PrevZ != Stage.ViewZ) {
 			PrevZ = Stage.ViewZ;
-			if (Navigation.FollowOwner) {
+			if (Navigation.IsFollowingOwner) {
 				if (CharacterState != CharacterState.Sleep) {
 					X = Owner.X;
 					Y = Owner.Y;
@@ -101,7 +102,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		}
 
 		// Out of Range
-		if (!Navigation.FollowOwner && !Stage.SpawnRect.Overlaps(Rect)) {
+		if (!Navigation.IsFollowingOwner && !Stage.SpawnRect.Overlaps(Rect)) {
 			Active = false;
 			return;
 		}

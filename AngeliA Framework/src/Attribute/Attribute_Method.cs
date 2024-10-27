@@ -79,7 +79,19 @@ public class OnItemDamageAttribute : EventAttribute { }
 public class OnItemUnlockedAttribute : EventAttribute { }
 
 
+// Character
+public class OnCharacterSleeping : EventAttribute { }
+public class OnCharacterJump : EventAttribute { }
+public class OnCharacterPound : EventAttribute { }
+public class OnCharacterFly : EventAttribute { }
+public class OnCharacterSlideStepped : EventAttribute { }
+public class OnCharacterPassOut : EventAttribute { }
+public class OnCharacterTeleport : EventAttribute { }
+public class OnCharacterCrash : EventAttribute { }
+
+
 // Misc
+public class OnFootStepped : EventAttribute { }
 public class OnObjectBreakAttribute : EventAttribute { }
 public class OnObjectFreeFallAttribute : EventAttribute { }
 public class OnBlockPickedAttribute : EventAttribute { }

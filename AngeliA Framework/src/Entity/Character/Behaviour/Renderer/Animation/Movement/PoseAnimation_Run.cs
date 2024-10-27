@@ -8,7 +8,8 @@ public class PoseAnimation_Run : PoseAnimation {
 
 		const int FRAME_LENGTH = 16;
 
-		int loop = Util.Max(FRAME_LENGTH * 75 / Movement.RunSpeed.FinalValue.Abs().Clamp(1, 1024) / FRAME_LENGTH * FRAME_LENGTH, 1);
+		int runSpeed = (Movement.RunSpeed.FinalValue.Abs() / 2).Clamp(1, 72);
+		int loop = Util.Max(FRAME_LENGTH * 37 / runSpeed / FRAME_LENGTH * FRAME_LENGTH, 1);
 		int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
 		int fixedAnimationFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop);
 		int currentFrame = fixedAnimationFrame / frameRate * frameRate;

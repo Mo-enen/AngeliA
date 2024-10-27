@@ -12,13 +12,22 @@ public enum CharacterState { GamePlay = 0, Sleep, PassOut, }
 public enum CharacterInventoryType { None = 0, Unique, Map, }
 
 
+public enum CharacterAnimationType {
+	Idle = 0, Walk, Run,
+	JumpUp, JumpDown, SwimIdle, SwimMove,
+	SquatIdle, SquatMove, Dash, Rush, Crash, Pound, Brake,
+	Climb, Fly, Slide, GrabTop, GrabSide, Spin,
+	TakingDamage, Sleep, PassOut, Rolling,
+}
+
+
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICarrier, IWithCharacterMovement {
+public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement {
 
 
 
@@ -31,18 +40,17 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 	public const int INVENTORY_COLUMN = 6;
 	public const int INVENTORY_ROW = 3;
 
+	// Event
+	[OnCharacterSleeping] internal static System.Action<Character> OnSleeping;
+	[OnCharacterJump] internal static System.Action<Character> OnJump;
+	[OnCharacterPound] internal static System.Action<Character> OnPound;
+	[OnCharacterFly] internal static System.Action<Character> OnFly;
+	[OnCharacterSlideStepped] internal static System.Action<Character> OnSlideStepped;
+	[OnCharacterPassOut] internal static System.Action<Character> OnPassOut;
+	[OnCharacterTeleport] internal static System.Action<Character> OnTeleport;
+	[OnCharacterCrash] internal static System.Action<Character> OnCrash;
+
 	// Api
-	public delegate void CharacterEventHandler (Character character);
-	public delegate void StepEventHandler (int x, int y, int groundedID);
-	public static event CharacterEventHandler OnSleeping;
-	public static event StepEventHandler OnFootStepped;
-	public static event CharacterEventHandler OnJump;
-	public static event CharacterEventHandler OnPound;
-	public static event CharacterEventHandler OnFly;
-	public static event CharacterEventHandler OnSlideStepped;
-	public static event CharacterEventHandler OnPassOut;
-	public static event CharacterEventHandler OnTeleport;
-	public static event CharacterEventHandler OnCrash;
 	public bool Teleporting => Game.GlobalFrame < _TeleportEndFrame.Abs();
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
 	public int CurrentAttackSpeedRate => Movement.MovementState switch {
@@ -352,7 +360,11 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		}
 
 		if (Teleporting) {
-			Update_AnimationType();
+			var _poseType = GetCurrentPoseAnimationType();
+			if (_poseType != AnimationType) {
+				Rendering.CurrentAnimationFrame = 0;
+				AnimationType = _poseType;
+			}
 			return;
 		}
 
@@ -399,47 +411,13 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 				break;
 		}
 		Movement.PhysicsUpdateLater();
-		Update_AnimationType();
-		base.Update();
-	}
-
-
-	private void Update_AnimationType () {
-		var poseType = GetCurrentPoseAnimationType(this);
+		// Ani Frame
+		var poseType = GetCurrentPoseAnimationType();
 		if (poseType != AnimationType) {
 			Rendering.CurrentAnimationFrame = 0;
 			AnimationType = poseType;
 		}
-		// Func
-		static CharacterAnimationType GetCurrentPoseAnimationType (Character character) {
-			if (Game.GlobalFrame <= character.LockedAnimationTypeFrame) return character.LockedAnimationType;
-			if (character.Teleporting) return character._TeleportDuration < 0 ? CharacterAnimationType.Rolling : CharacterAnimationType.Idle;
-			if (character.Health.TakingDamage) return CharacterAnimationType.TakingDamage;
-			if (character.CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
-			if (character.CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
-			if (character.Movement.IsRolling) return CharacterAnimationType.Rolling;
-			return character.Movement.MovementState switch {
-				CharacterMovementState.Walk => CharacterAnimationType.Walk,
-				CharacterMovementState.Run => CharacterAnimationType.Run,
-				CharacterMovementState.JumpUp => CharacterAnimationType.JumpUp,
-				CharacterMovementState.JumpDown => CharacterAnimationType.JumpDown,
-				CharacterMovementState.SwimIdle => CharacterAnimationType.SwimIdle,
-				CharacterMovementState.SwimMove => CharacterAnimationType.SwimMove,
-				CharacterMovementState.SquatIdle => CharacterAnimationType.SquatIdle,
-				CharacterMovementState.SquatMove => CharacterAnimationType.SquatMove,
-				CharacterMovementState.Dash => CharacterAnimationType.Dash,
-				CharacterMovementState.Rush => CharacterAnimationType.Rush,
-				CharacterMovementState.Crash => CharacterAnimationType.Crash,
-				CharacterMovementState.Pound => character.Rendering.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
-				CharacterMovementState.Climb => CharacterAnimationType.Climb,
-				CharacterMovementState.Fly => CharacterAnimationType.Fly,
-				CharacterMovementState.Slide => CharacterAnimationType.Slide,
-				CharacterMovementState.GrabTop => CharacterAnimationType.GrabTop,
-				CharacterMovementState.GrabSide => CharacterAnimationType.GrabSide,
-				CharacterMovementState.GrabFlip => CharacterAnimationType.Rolling,
-				_ => CharacterAnimationType.Idle,
-			};
-		}
+		base.Update();
 	}
 
 
@@ -536,11 +514,12 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 				// Step
 				if (IsGrounded) {
 					if (
+						(AnimationType == CharacterAnimationType.Brake && frame % 4 == 0) ||
 						(Movement.LastStartRunFrame >= 0 && (frame - Movement.LastStartRunFrame) % 20 == 19) || // Run
 						(Movement.IsDashing && (frame - Movement.LastDashFrame) % 8 == 0) || // Dash
 						(Movement.IsRushing && (frame - Movement.LastRushFrame) % 3 == 0) // Rush
 					) {
-						OnFootStepped?.Invoke(targetCharacter.X, targetCharacter.Y, targetCharacter.GroundedID);
+						FrameworkUtil.InvokeOnFootStepped(targetCharacter.X, targetCharacter.Y, targetCharacter.GroundedID);
 					}
 				}
 				if (Movement.IsSliding && frame % 24 == 0) OnSlideStepped?.Invoke(targetCharacter);
@@ -652,6 +631,39 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 
 		}
 
+	}
+
+
+	public virtual CharacterAnimationType GetCurrentPoseAnimationType () {
+		if (Game.GlobalFrame <= LockedAnimationTypeFrame) return LockedAnimationType;
+		if (Teleporting) return _TeleportDuration < 0 ? CharacterAnimationType.Rolling : CharacterAnimationType.Idle;
+		if (Health.TakingDamage) return CharacterAnimationType.TakingDamage;
+		if (CharacterState == CharacterState.Sleep) return CharacterAnimationType.Sleep;
+		if (CharacterState == CharacterState.PassOut) return CharacterAnimationType.PassOut;
+		if (Movement.IsRolling) return CharacterAnimationType.Rolling;
+		return Movement.MovementState switch {
+			CharacterMovementState.Walk => CharacterAnimationType.Walk,
+			CharacterMovementState.Run =>
+				VelocityX != 0 && Movement.IntendedX.Sign() == VelocityX.Sign() ?
+				CharacterAnimationType.Run : CharacterAnimationType.Brake,
+			CharacterMovementState.JumpUp => CharacterAnimationType.JumpUp,
+			CharacterMovementState.JumpDown => CharacterAnimationType.JumpDown,
+			CharacterMovementState.SwimIdle => CharacterAnimationType.SwimIdle,
+			CharacterMovementState.SwimMove => CharacterAnimationType.SwimMove,
+			CharacterMovementState.SquatIdle => CharacterAnimationType.SquatIdle,
+			CharacterMovementState.SquatMove => CharacterAnimationType.SquatMove,
+			CharacterMovementState.Dash => CharacterAnimationType.Dash,
+			CharacterMovementState.Rush => CharacterAnimationType.Rush,
+			CharacterMovementState.Crash => CharacterAnimationType.Crash,
+			CharacterMovementState.Pound => Rendering.SpinOnGroundPound ? CharacterAnimationType.Spin : CharacterAnimationType.Pound,
+			CharacterMovementState.Climb => CharacterAnimationType.Climb,
+			CharacterMovementState.Fly => CharacterAnimationType.Fly,
+			CharacterMovementState.Slide => CharacterAnimationType.Slide,
+			CharacterMovementState.GrabTop => CharacterAnimationType.GrabTop,
+			CharacterMovementState.GrabSide => CharacterAnimationType.GrabSide,
+			CharacterMovementState.GrabFlip => CharacterAnimationType.Rolling,
+			_ => CharacterAnimationType.Idle,
+		};
 	}
 
 
@@ -829,15 +841,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, IActionTarget, ICa
 		var tool = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as HandTool : null;
 		return tool != null && tool.AllowingAttack(this);
 	}
-
-
-	public virtual bool Invoke () {
-		PlayerSystem.SetCharacterAsPlayer(this);
-		return PlayerSystem.Selecting == this;
-	}
-
-
-	public virtual bool AllowInvoke () => false;
 
 
 	public void ForceStayOnStage (int duration = 1) => ForceStayFrame = Game.GlobalFrame + duration;

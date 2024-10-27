@@ -29,10 +29,6 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 	int IDamageReceiver.Team => CurrentTeam;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 
-	// Event
-	public delegate void StepEventHandler (int x, int y, int groundedID);
-	public static event StepEventHandler OnStep;
-
 	// Data
 	private int LastDriveChangedFrame = int.MinValue;
 	private int CurrentTeam = Const.TEAM_ENVIRONMENT;
@@ -169,9 +165,6 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 
 
 	void IDamageReceiver.TakeDamage (Damage damage) { }
-
-
-	protected static void InvokeOnStep (int x, int y, int groundedID) => Vehicle<VehicleMovement>.OnStep?.Invoke(x, y, groundedID);
 
 
 	#endregion

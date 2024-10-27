@@ -48,6 +48,7 @@ public static class FrameworkUtil {
 	[OnItemDamage] internal static Action<Character, int, int> OnItemDamage;
 	[OnItemUnlocked] internal static Action<int> OnItemUnlocked;
 	[OnCheatPerformed] internal static Action<string> OnCheatPerformed;
+	[OnFootStepped] internal static Action<int, int, int> OnFootStepped;
 
 
 	// Drawing
@@ -632,7 +633,7 @@ public static class FrameworkUtil {
 			InvokeBlockPicked(e.TypeID, e.Rect);
 		} else {
 			// Break
-			InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
+			InvokeObjectBreak(e.TypeID, e.Rect);
 		}
 
 		return true;
@@ -1175,7 +1176,7 @@ public static class FrameworkUtil {
 	public static void InvokeItemDamage (Character holder, int fromID, int toID) => OnItemDamage?.Invoke(holder, fromID, toID);
 	public static void InvokeItemUnlocked (int itemID) => OnItemUnlocked?.Invoke(itemID);
 	public static void InvokeCheatPerformed (string cheatCode) => OnCheatPerformed?.Invoke(cheatCode);
-
+	public static void InvokeOnFootStepped (int x, int y, int groundedID) => OnFootStepped?.Invoke(x, y, groundedID);
 
 	// Misc
 	public static void DeleteAllEmptyMaps (string mapRoot) {

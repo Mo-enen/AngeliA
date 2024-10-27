@@ -5,10 +5,8 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public static class SheetUtil {
+public static class AsepriteUtil {
 
-
-	// SUB
 	private class FlexSprite {
 		public string FullName;
 		public Int2 AngePivot;
@@ -20,7 +18,6 @@ public static class SheetUtil {
 		public AtlasType AtlasType;
 		public Color32[] Pixels;
 	}
-
 
 	private struct SpriteMetaData {
 		public string name;
@@ -37,8 +34,7 @@ public static class SheetUtil {
 		public SpriteMetaData[] Sprites;
 	}
 
-
-	// Sheet
+	// API
 	public static bool RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
 		long sheetDate = Util.GetFileModifyDate(sheetPath);
 		bool requireCreateSheet = false;
@@ -67,7 +63,6 @@ public static class SheetUtil {
 		}
 		return requireCreateSheet;
 	}
-
 
 	public static Sheet CreateNewSheet (ICollection<string> asePaths) {
 
@@ -147,8 +142,7 @@ public static class SheetUtil {
 
 	}
 
-
-	// Aseprite
+	// LGC
 	private static List<FlexSprite> CreateSpritesFromAsepriteFiles (ICollection<string> asePaths) {
 
 		bool hasError = false;
@@ -401,6 +395,5 @@ public static class SheetUtil {
 		pivotX = _pivotX;
 		pivotY = _pivotY;
 	}
-
 
 }

@@ -5,7 +5,6 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-
 public class Project {
 
 	public string ProjectPath { get; init; }
