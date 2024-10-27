@@ -1178,17 +1178,27 @@ public static class FrameworkUtil {
 	public static void InvokeCheatPerformed (string cheatCode) => OnCheatPerformed?.Invoke(cheatCode);
 	public static void InvokeOnFootStepped (int x, int y, int groundedID) => OnFootStepped?.Invoke(x, y, groundedID);
 
-	// Misc
-	public static void DeleteAllEmptyMaps (string mapRoot) {
-		foreach (var path in Util.EnumerateFiles(mapRoot, false, AngePath.MAP_SEARCH_PATTERN)) {
-			try {
-				if (Util.IsExistingFileEmpty(path)) Util.DeleteFile(path);
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+
+	// Analysys
+	public static void RunBuiltInSpriteAnalysys (bool onlyLogWhenWarningFounded = false) {
+		bool anyWarning = false;
+		var sheet = new Sheet();
+		bool loaded = sheet.LoadFromDisk(Universe.BuiltIn.BuiltInSheetPath);
+		if (!loaded) return;
+		foreach (var field in typeof(BuiltInSprite).ForAllFields<SpriteCode>(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)) {
+			if (field.GetValue(null) is not SpriteCode sp) continue;
+			if (!sheet.SpritePool.ContainsKey(sp.ID)) {
+				Debug.LogWarning($"Built-in sprite: {sp.Name} not found in engine artwork sheet.");
+				anyWarning = true;
+			}
+		}
+		if (!anyWarning && !onlyLogWhenWarningFounded) {
+			Debug.Log("[✓] Built-in Sprites are matched with artwork.");
 		}
 	}
 
 
-	public static void EmptyScriptFileAnalysis (string rootPath, bool onlyLogWhenWarningFounded = false) {
+	public static void RunEmptyScriptFileAnalysis (string rootPath, bool onlyLogWhenWarningFounded = false) {
 		bool anyWarning = false;
 		foreach (string path in Util.EnumerateFiles(rootPath, false, "*.cs")) {
 			bool empty = true;
@@ -1216,7 +1226,7 @@ public static class FrameworkUtil {
 		}
 
 		// Check for Empty Script File
-		EmptyScriptFileAnalysis(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), onlyLogWhenWarningFounded);
+		RunEmptyScriptFileAnalysis(Util.GetParentPath(Universe.BuiltIn.UniverseRoot), onlyLogWhenWarningFounded);
 
 		// Sheet
 		if (!Util.FileExists(Universe.BuiltIn.GameSheetPath)) {
@@ -1299,6 +1309,15 @@ public static class FrameworkUtil {
 
 	}
 
+
+	// Misc
+	public static void DeleteAllEmptyMaps (string mapRoot) {
+		foreach (var path in Util.EnumerateFiles(mapRoot, false, AngePath.MAP_SEARCH_PATTERN)) {
+			try {
+				if (Util.IsExistingFileEmpty(path)) Util.DeleteFile(path);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+	}
 
 	public static void ResetShoulderAndUpperArmPos (PoseCharacterRenderer rendering, bool resetLeft = true, bool resetRight = true) {
 

@@ -42,7 +42,7 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 						itemRect.width / 2,
 						itemRect.height / 2
 					).Shrink(itemRect.width / 16),
-					sprite.SortingZ + 1
+					sprite.LocalZ + 1
 				);
 			}
 		}

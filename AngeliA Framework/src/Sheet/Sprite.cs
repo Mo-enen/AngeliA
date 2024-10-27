@@ -10,7 +10,7 @@ public class AngeSprite {
 	public static readonly AngeSprite EMPTY = new();
 
 	private static readonly StringBuilder CacheBuilder = new(256);
-
+	
 	public int ID;
 	public string RealName;
 	public int GlobalWidth;
@@ -18,7 +18,6 @@ public class AngeSprite {
 	public IRect PixelRect;
 	public int PivotX;
 	public int PivotY;
-	public int SortingZ;
 	public int LocalZ;
 	public Int4 GlobalBorder;
 	public int AtlasIndex;
@@ -244,7 +243,6 @@ public class AngeSprite {
 			PixelRect = PixelRect,
 			PivotX = PivotX,
 			PivotY = PivotY,
-			SortingZ = SortingZ,
 			LocalZ = LocalZ,
 			GlobalBorder = GlobalBorder,
 			AtlasIndex = AtlasIndex,

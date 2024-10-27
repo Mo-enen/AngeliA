@@ -77,7 +77,7 @@ public abstract class CircleFlamePortal : Portal {
 					rgb, rgb, rgb,
 					(byte)(i > 0 ? 255 : Util.RemapUnclamped(0, CIRCLE_DURATION, 0, 400, circleFrame).Clamp(0, 255))
 				);
-				int z = circle.SortingZ + i;
+				int z = circle.LocalZ + i;
 				Renderer.Draw(
 					circle, centerX, centerY,
 					500, 500, 0,
@@ -111,7 +111,7 @@ public abstract class CircleFlamePortal : Portal {
 					255, 128,
 					flameFrame.PingPong(FLAME_DURATION / 2)
 				).Clamp(0, 255);
-				int z = flame.SortingZ + FLAME_COUNT + 1;
+				int z = flame.LocalZ + FLAME_COUNT + 1;
 				Renderer.Draw(
 					flame, centerX, centerY,
 					flame.PivotX, flame.PivotY, rot,

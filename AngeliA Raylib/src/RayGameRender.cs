@@ -31,12 +31,6 @@ public partial class RayGame {
 	private int ShaderPropIndex_VignetteOffsetY;
 	private int ShaderPropIndex_VignetteRound;
 	private int ShaderPropIndex_VignetteAspect;
-	private int ShaderPropIndex_CA_RED_X;
-	private int ShaderPropIndex_CA_RED_Y;
-	private int ShaderPropIndex_CA_GREEN_X;
-	private int ShaderPropIndex_CA_GREEN_Y;
-	private int ShaderPropIndex_CA_BLUE_X;
-	private int ShaderPropIndex_CA_BLUE_Y;
 	private int ShaderPropIndex_INV_TEXTURE;
 	private int ShaderPropIndex_INV_SCREEN_SIZE;
 	private Float2 DoodleRenderingOffset;

@@ -16,7 +16,6 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode GAMEPAD_UP = "k_Gamepad Up";
 	public static readonly SpriteCode UP_ARROW = "k_UpArrow";
 	public static readonly SpriteCode FRAME_16 = "Frame16";
-	public static readonly SpriteCode BUTTON_FRAME = "ButtonFrame";
 	public static readonly SpriteCode MENU_SELECTION_MARK = "Menu Selection Mark";
 	public static readonly SpriteCode MENU_THREE_DOTS = "Menu Three Dots";
 	public static readonly SpriteCode SOFT_LINE_H = "Soft Line H";
@@ -95,18 +94,6 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode UI_BUTTON = "UI.Button";
 	public static readonly SpriteCode UI_BUTTON_HOVER = "UI.ButtonHover";
 	public static readonly SpriteCode UI_BUTTON_DOWN = "UI.ButtonDown";
-	public static readonly SpriteCode UI_DROPDOWN = "UI.Dropdown";
-	public static readonly SpriteCode UI_DROPDOWN_HOVER = "UI.DropdownHover";
-	public static readonly SpriteCode UI_DROPDOWN_DOWN = "UI.DropdownDown";
-	public static readonly SpriteCode UI_DARK_DROPDOWN = "UI.DarkDropdown";
-	public static readonly SpriteCode UI_DARK_DROPDOWN_HOVER = "UI.DarkDropdownHover";
-	public static readonly SpriteCode UI_DARK_DROPDOWN_DOWN = "UI.DarkDropdownDown";
-	public static readonly SpriteCode UI_SMALL_DROPDOWN = "UI.SmallDropdown";
-	public static readonly SpriteCode UI_SMALL_DROPDOWN_HOVER = "UI.SmallDropdownHover";
-	public static readonly SpriteCode UI_SMALL_DROPDOWN_DOWN = "UI.SmallDropdownDown";
-	public static readonly SpriteCode UI_SMALL_DARK_DROPDOWN = "UI.SmallDarkDropdown";
-	public static readonly SpriteCode UI_SMALL_DARK_DROPDOWN_HOVER = "UI.SmallDarkDropdownHover";
-	public static readonly SpriteCode UI_SMALL_DARK_DROPDOWN_DOWN = "UI.SmallDarkDropdownDown";
 	public static readonly SpriteCode ICON_SEARCH = "Icon.Search";
 	public static readonly SpriteCode MENU_ARROW_MARK = "Menu Arrow Mark";
 	public static readonly SpriteCode MENU_MORE_MARK = "Menu More Mark";

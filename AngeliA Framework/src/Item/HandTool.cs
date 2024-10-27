@@ -61,7 +61,7 @@ public abstract class HandTool : Equipment {
 
 	public void LoadFromSheet () {
 		SpriteID = $"{GetType().AngeName()}.Main".AngeHash();
-		if (!Renderer.HasSprite(SpriteID)) SpriteID = 0;
+		if (!Renderer.HasSprite(SpriteID)) SpriteID = TypeID;
 	}
 
 

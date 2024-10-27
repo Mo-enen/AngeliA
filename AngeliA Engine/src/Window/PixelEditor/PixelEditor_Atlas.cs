@@ -486,7 +486,6 @@ public partial class PixelEditor {
 
 	private void CreateAtlas () {
 		EditingSheet.Atlas.Add(new Atlas() {
-			AtlasZ = 0,
 			Name = "New Atlas",
 			Type = AtlasType.General,
 			ID = "New Atlas".AngeHash(),

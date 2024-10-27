@@ -440,7 +440,7 @@ public static class Renderer {
 		cell.Order = layer.FocusedCell;
 		cell.X = x;
 		cell.Y = y;
-		cell.Z = z != int.MinValue ? z : sprite.SortingZ;
+		cell.Z = z != int.MinValue ? z : sprite.LocalZ;
 		cell.Width = width;
 		cell.Height = height;
 		cell.Rotation = rotation;

@@ -218,6 +218,7 @@ public partial class PixelEditor {
 		RequireTooltip(rect, TIP_RESET_CAMERA);
 		rect.SlideRight(padding);
 
+		// Extra
 		switch (CurrentTool) {
 			case Tool.Rect:
 			case Tool.Line:

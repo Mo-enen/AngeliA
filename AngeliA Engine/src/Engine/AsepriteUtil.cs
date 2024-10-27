@@ -106,7 +106,6 @@ public static class AsepriteUtil {
 				atlases.Add(new Atlas() {
 					Name = flex.AtlasName,
 					Type = flex.AtlasType,
-					AtlasZ = flex.AtlasZ,
 					ID = flex.AtlasID,
 				});
 			}
@@ -119,7 +118,6 @@ public static class AsepriteUtil {
 				PixelRect = flex.PixelRect,
 				GlobalBorder = globalBorder,
 				LocalZ = offsetZ,
-				SortingZ = flex.AtlasZ * 1024 + offsetZ,
 				PivotX = pivotX ?? flex.AngePivot.x,
 				PivotY = pivotY ?? flex.AngePivot.y,
 				AtlasIndex = atlasIndex,
@@ -308,7 +306,7 @@ public static class AsepriteUtil {
 			}
 			return new TaskResult() {
 				Pixels = pixels,
-				Sprites = sprites.ToArray(),
+				Sprites = [.. sprites],
 				Width = width,
 				Height = height,
 			};

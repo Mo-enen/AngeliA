@@ -128,16 +128,18 @@ public class ConsoleWindow : WindowUI {
 		rect.SlideRight(padding);
 
 		// Code Analysis
-		using (new GUIEnableScope(HaveRunningRigGame)) {
-			if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
+		if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
+			if (HaveRunningRigGame) {
 				RequireCodeAnalysis = 1;
-#if DEBUG
-				string projectFolder = Util.GetParentPath(Universe.BuiltIn.UniverseRoot);
-				FrameworkUtil.EmptyScriptFileAnalysis(Util.GetParentPath(projectFolder));
-#endif
 			}
-			RequireTooltip(rect, TIP_HASH_COL);
+#if DEBUG
+			string projectFolder = Util.GetParentPath(Universe.BuiltIn.UniverseRoot);
+			FrameworkUtil.RunEmptyScriptFileAnalysis(Util.GetParentPath(projectFolder));
+			FrameworkUtil.RunBuiltInSpriteAnalysys();
+#endif
 		}
+		RequireTooltip(rect, TIP_HASH_COL);
+
 		rect.SlideRight(padding);
 
 	}

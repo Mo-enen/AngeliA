@@ -103,7 +103,6 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		for (int i = 0; i < spriteSpan.Length; i++) {
 			var sprite = spriteSpan[i];
 			sprite.Atlas = Atlas[sprite.AtlasIndex];
-			sprite.SortingZ = sprite.Atlas.AtlasZ * 1024 + sprite.LocalZ;
 			sprite.Group = null;
 			SpritePool.TryAdd(sprite.ID, sprite);
 		}
@@ -400,7 +399,6 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 			GlobalHeight = pixelRect.height * Const.ART_SCALE,
 			PixelRect = pixelRect,
 			Pixels = new Color32[pixelRect.width * pixelRect.height],
-			SortingZ = Atlas[atlasIndex].AtlasZ * 1024,
 		};
 	}
 

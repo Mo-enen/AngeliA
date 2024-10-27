@@ -18,7 +18,6 @@ public class Atlas {
 	public int ID;
 	public string Name;
 	public AtlasType Type;
-	public int AtlasZ;
 
 	public void LoadFromBinary_v0 (BinaryReader reader) {
 		uint byteLen = reader.ReadUInt32();
@@ -38,8 +37,6 @@ public class Atlas {
 			// Type
 			Type = (AtlasType)reader.ReadByte();
 
-			// Z
-			AtlasZ = reader.ReadInt32();
 
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
@@ -61,9 +58,6 @@ public class Atlas {
 
 			// Type
 			writer.Write((byte)Type);
-
-			// Z
-			writer.Write((int)AtlasZ);
 
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
