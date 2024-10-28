@@ -17,14 +17,18 @@ public interface ICarrier {
 	public void OnBeingCarry (int deltaX, int deltaY) { }
 
 	// API
-	public static void CarryTargetsOnTopHorizontally (Entity self, int _deltaX) {
+	public static void CarryTargetsOnTopHorizontally (Entity self, int _deltaX, OperationMode colMode = OperationMode.ColliderOnly) {
 		if (_deltaX == 0) return;
 		CarryBuffer.Reset();
 		CarryBuffer.LinkToTail((self.Rect, _deltaX));
 		for (int safe = 0; CarryBuffer.TryPopHead(out var data) && safe < 1024; safe++) {
 			var selfRect = data.rect;
 			var deltaX = data.delta;
-			var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, selfRect.EdgeOutside(Direction4.Up), out int count);
+			var hits = Physics.OverlapAll(
+				PhysicsMask.DYNAMIC,
+				selfRect.EdgeOutside(Direction4.Up),
+				out int count, null, colMode
+			);
 			for (int i = 0; i < count; i++) {
 
 				var hit = hits[i];
@@ -73,7 +77,7 @@ public interface ICarrier {
 
 	}
 
-	public static void CarryTargetsOnTopVertically (Entity self, int _deltaY, bool fromOneway = false) {
+	public static void CarryTargetsOnTopVertically (Entity self, int _deltaY, bool fromOneway = false, OperationMode colMode = OperationMode.ColliderOnly) {
 		if (_deltaY == 0) return;
 		CarryBuffer.Reset();
 		CarryPerformBuffer.Reset();
@@ -84,7 +88,7 @@ public interface ICarrier {
 			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC,
 				selfRect.EdgeOutside(Direction4.Up, 32),
-				out int count
+				out int count, null, colMode
 			);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];

@@ -42,7 +42,7 @@ public abstract class Conveyor : Entity, IBlockEntity {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		ICarrier.CarryTargetsOnTopHorizontally(this, MoveSpeed);
+		ICarrier.CarryTargetsOnTopHorizontally(this, MoveSpeed, OperationMode.ColliderAndTrigger);
 	}
 
 

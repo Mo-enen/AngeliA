@@ -58,8 +58,8 @@ public abstract class Platform : Entity, IBlockEntity {
 			PrevX = X;
 			PrevY = Y;
 		}
-		ICarrier.CarryTargetsOnTopHorizontally(this, X - PrevX);
-		ICarrier.CarryTargetsOnTopVertically(this, Y - PrevY, OneWay);
+		ICarrier.CarryTargetsOnTopHorizontally(this, X - PrevX, OperationMode.ColliderAndTrigger);
+		ICarrier.CarryTargetsOnTopVertically(this, Y - PrevY, OneWay, OperationMode.ColliderAndTrigger);
 		LastMoveFrame = Game.GlobalFrame;
 		Update_PushX();
 	}

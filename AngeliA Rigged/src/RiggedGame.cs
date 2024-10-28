@@ -100,7 +100,7 @@ public partial class RiggedGame : Game {
 		}
 
 		MapEditor.ResetCameraAtStart = StartWithView == default;
-		
+
 		// Init Stream
 		Debug.OnLogException += LogException;
 		Debug.OnLogError += LogError;
@@ -426,7 +426,7 @@ public partial class RiggedGame : Game {
 			for (int i = 0; i < count; i++) {
 				var e = entities[i];
 				if (!e.Active) continue;
-				var bounds = e.GlobalBounds;
+				var bounds = e.Rect;
 				var gizmosTint = Color32.CYAN_BETTER;
 				// Click
 				bool mouseInside = bounds.MouseInside();
@@ -457,7 +457,7 @@ public partial class RiggedGame : Game {
 		if (dragging) {
 			if (DraggingEntity.Active) {
 				var mousePos = Input.MouseGlobalPosition;
-				var bounds = DraggingEntity.GlobalBounds;
+				var bounds = DraggingEntity.Rect;
 				int deltaX = mousePos.x - bounds.x - DraggingEntityOffset.x;
 				int deltaY = mousePos.y - bounds.y - DraggingEntityOffset.y;
 				DraggingEntity.X += deltaX;

@@ -1,5 +1,7 @@
-﻿using AngeliA;namespace AngeliA.Platformer;
+﻿using AngeliA;
+namespace AngeliA.Platformer;
 
+[EntityAttribute.UpdateOutOfRange]
 public abstract class PingPongPlatform : Platform {
 
 	// Abs

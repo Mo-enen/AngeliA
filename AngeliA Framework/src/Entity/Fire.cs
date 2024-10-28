@@ -34,7 +34,6 @@ public abstract class Fire : Entity {
 	private int SpreadFrame = int.MaxValue;
 	private int DamageCharacterStartFrame = -1;
 	private bool ManuallyPutout = false;
-	private bool KeepInMap = true;
 
 
 	#endregion
@@ -67,7 +66,6 @@ public abstract class Fire : Entity {
 		BurnedFrame = 0;
 		SpreadFrame = Game.GlobalFrame + SpreadDuration;
 		Direction = DefaultDirection;
-		KeepInMap = true;
 	}
 
 
@@ -77,9 +75,6 @@ public abstract class Fire : Entity {
 		LifeEndFrame = 0;
 		BurnedFrame = 0;
 		SpreadFrame = 0;
-		if (!KeepInMap) {
-			IgnoreRepositionForOnce();
-		}
 	}
 
 
@@ -115,7 +110,7 @@ public abstract class Fire : Entity {
 			Spread();
 			// Remove from Map
 			Active = false;
-			KeepInMap = false;
+			IgnoreReposition = true;
 			FrameworkUtil.RemoveFromWorldMemory(this);
 			return;
 		}
@@ -123,7 +118,7 @@ public abstract class Fire : Entity {
 		// Life Time Check
 		if (Game.GlobalFrame >= LifeEndFrame) {
 			Active = false;
-			KeepInMap = false;
+			IgnoreReposition = true;
 			return;
 		}
 
@@ -139,7 +134,7 @@ public abstract class Fire : Entity {
 				if (Game.GlobalFrame == BurnedFrame) {
 					Target.OnBurned();
 					eTarget.Active = false;
-					KeepInMap = false;
+					IgnoreReposition = true;
 				}
 				// Follow Target
 				X = eTarget.X;
@@ -301,7 +296,7 @@ public abstract class Fire : Entity {
 		Target = null;
 		Direction = direction;
 		ManuallyPutout = false;
-		KeepInMap = true;
+		IgnoreReposition = false;
 	}
 
 
@@ -318,7 +313,7 @@ public abstract class Fire : Entity {
 		Target = com;
 		com.BurnStartFrame = Game.GlobalFrame;
 		ManuallyPutout = false;
-		KeepInMap = true;
+		IgnoreReposition = false;
 	}
 
 
@@ -330,7 +325,7 @@ public abstract class Fire : Entity {
 		LifeEndFrame = Game.GlobalFrame + WeakenDuration;
 		SpreadFrame = int.MaxValue;
 		ManuallyPutout = manually;
-		KeepInMap = false;
+		IgnoreReposition = true;
 		if (Target != null) {
 			Target.BurnStartFrame = -1;
 		}

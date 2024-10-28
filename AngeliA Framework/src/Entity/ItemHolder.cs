@@ -254,29 +254,11 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		int oldItemID = ItemID;
 		int oldCount = ItemCount;
 
-		// Equipment Check
-		if (
-			!ignoreEquipment &&
-			ItemCount > 0 &&
-			ItemSystem.IsEquipment(ItemID, out var equipmentType)
-		) {
-			int oldEqID = Inventory.GetEquipment(invID, equipmentType, out int oldEqCount);
-			if (oldEqID == 0 || oldEqID == ItemID) {
-				int newEqCount = Util.Min(oldEqCount + ItemCount, ItemSystem.GetItemMaxStackCount(oldEqID));
-				if (newEqCount > 0) {
-					int deltaCount = newEqCount - oldEqCount;
-					if (Inventory.SetEquipment(invID, equipmentType, ItemID, newEqCount)) {
-						ItemCount = (ItemCount - deltaCount).GreaterOrEquelThanZero();
-					}
-				}
-			}
-		}
-
 		// Collect / Append
 		if (ItemCount > 0) {
 			int addCount = onlyStackOnExisting ?
 				Inventory.FindAndAddItem(invID, ItemID, ItemCount) :
-				Inventory.CollectItem(invID, ItemID, ItemCount);
+				Inventory.CollectItem(invID, ItemID, ItemCount, ignoreEquipment);
 			if (addCount > 0) {
 				int newCount = ItemCount - addCount;
 				if (newCount <= 0) {

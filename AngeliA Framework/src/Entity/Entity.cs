@@ -6,14 +6,10 @@ namespace AngeliA;
 
 
 [EntityAttribute.Capacity(1024, 0)]
-[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL)]
 [EntityAttribute.MapEditorGroup("Entity")]
 [EntityAttribute.Layer(EntityLayer.GAME)]
 public abstract class Entity : IMapItem {
 
-
-	// Const
-	private const int DONT_REPOS_ONCE = 92163634;
 
 	// Api
 	public bool Active { get; set; } = true;
@@ -25,14 +21,12 @@ public abstract class Entity : IMapItem {
 	public int SpawnFrame { get; internal protected set; } = int.MinValue;
 	public bool FromWorld => InstanceID.x != int.MinValue;
 	public virtual IRect Rect => new(X, Y, Width, Height);
-	public IRect GlobalBounds => LocalBounds.Shift(X, Y);
 	public int InstanceOrder => InstanceID.x != int.MinValue ? 0 : InstanceID.y;
 	public Int3? MapUnitPos => InstanceID.x != int.MinValue ? InstanceID : null;
 	public Int3 InstanceID { get; internal set; } = default;
-	public bool DontRepositionOnce => Stamp == DONT_REPOS_ONCE;
+	public bool IgnoreReposition { get; set; } = false;
 
 	// Inter
-	internal IRect LocalBounds { get; set; } = default;
 	internal byte UpdateStep { get; set; } = 0;
 	internal int Stamp { get; set; } = int.MaxValue;
 	internal bool DestroyOnZChanged { get; set; } = true;
@@ -71,8 +65,5 @@ public abstract class Entity : IMapItem {
 		LateUpdate();
 		UpdateStep = 4;
 	}
-
-	// API
-	public void IgnoreRepositionForOnce () => Stamp = DONT_REPOS_ONCE;
 
 }

@@ -226,7 +226,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		// Carry H
 		if (!ignoreCarry && CarryOtherOnTop && !IsInsideGround && newPos.y >= oldPos.y) {
-			ICarrier.CarryTargetsOnTopHorizontally(this, newPos.x - oldPos.x);
+			ICarrier.CarryTargetsOnTopHorizontally(this, newPos.x - oldPos.x, OperationMode.ColliderAndTrigger);
 		}
 
 		// Offset Position

@@ -39,12 +39,6 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class BoundsAttribute (int boundX, int boundY, int boundWidth, int boundHeight) : Attribute {
-		public IRect Value = new(boundX, boundY, boundWidth, boundHeight);
-	}
-
-
-	[AttributeUsage(AttributeTargets.Class)]
 	public class DontDestroyOutOfRangeAttribute : Attribute { }
 
 

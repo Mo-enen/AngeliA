@@ -415,61 +415,85 @@ public static class Inventory {
 
 				case EquipmentType.HandTool:
 					// Hand
-					if (eData.HandTool == 0 || (eData.HandTool == item && eData.HandToolCount < maxStackCount)) {
+					bool emptyH = eData.HandTool == 0;
+					if (emptyH || (eData.HandTool == item && eData.HandToolCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.HandToolCount);
 						count -= delta;
 						eData.HandTool = item;
 						eData.HandToolCount += delta;
+						if (emptyH) {
+							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.HandToolCount, maxStackCount);
+						}
 					}
 					if (count <= 0) return oldCount - count;
 					break;
 
 				case EquipmentType.BodyArmor:
 					// Body
-					if (eData.BodySuit == 0 || (eData.BodySuit == item && eData.BodySuitCount < maxStackCount)) {
+					bool emptyB = eData.BodySuit == 0;
+					if (emptyB || (eData.BodySuit == item && eData.BodySuitCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.BodySuitCount);
 						count -= delta;
 						eData.BodySuitCount += delta;
+						if (emptyB) {
+							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.BodySuitCount, maxStackCount);
+						}
 					}
 					if (count <= 0) return oldCount - count;
 					break;
 
 				case EquipmentType.Helmet:
 					// Helmet
-					if (eData.Helmet == 0 || (eData.Helmet == item && eData.HelmetCount < maxStackCount)) {
+					bool emptyHl = eData.Helmet == 0;
+					if (emptyHl || (eData.Helmet == item && eData.HelmetCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.HelmetCount);
 						count -= delta;
 						eData.HelmetCount += delta;
+						if (emptyHl) {
+							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.HelmetCount, maxStackCount);
+						}
 					}
 					if (count <= 0) return oldCount - count;
 					break;
 
 				case EquipmentType.Shoes:
 					// Shoes
-					if (eData.Shoes == 0 || (eData.Shoes == item && eData.ShoesCount < maxStackCount)) {
+					bool emptyS = eData.Shoes == 0;
+					if (emptyS || (eData.Shoes == item && eData.ShoesCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.ShoesCount);
 						count -= delta;
 						eData.ShoesCount += delta;
+						if (emptyS) {
+							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.ShoesCount, maxStackCount);
+						}
 					}
 					if (count <= 0) return oldCount - count;
 					break;
 
 				case EquipmentType.Gloves:
 					// Gloves
-					if (eData.Gloves == 0 || (eData.Gloves == item && eData.GlovesCount < maxStackCount)) {
+					bool emptyG = eData.Gloves == 0;
+					if (emptyG || (eData.Gloves == item && eData.GlovesCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.GlovesCount);
 						count -= delta;
 						eData.GlovesCount += delta;
+						if (emptyG) {
+							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.GlovesCount, maxStackCount);
+						}
 					}
 					if (count <= 0) return oldCount - count;
 					break;
 
 				case EquipmentType.Jewelry:
 					// Jewelry
-					if (eData.Jewelry == 0 || (eData.Jewelry == item && eData.JewelryCount < maxStackCount)) {
+					bool emptyJ = eData.Jewelry == 0;
+					if (emptyJ || (eData.Jewelry == item && eData.JewelryCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.JewelryCount);
 						count -= delta;
 						eData.JewelryCount += delta;
+						if (emptyJ) {
+							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.JewelryCount, maxStackCount);
+						}
 					}
 					if (count <= 0) return oldCount - count;
 					break;
@@ -512,6 +536,7 @@ public static class Inventory {
 			IsPoolDirty = true;
 		}
 		return result;
+
 	}
 
 
@@ -628,6 +653,15 @@ public static class Inventory {
 	}
 
 
+	public static void FillEquipmentFromInventory (int inventoryID, EquipmentType type) {
+		if (!Pool.TryGetValue(inventoryID, out var data) || data is not EquipmentInventoryData pData) return;
+		int itemID = GetEquipment(inventoryID, type, out int count);
+		if (itemID == 0) return;
+		int maxStack = ItemSystem.GetItemMaxStackCount(itemID);
+		FillEquipmentFromInventoryLogic(pData, type, itemID, count, maxStack);
+	}
+
+
 	#endregion
 
 
@@ -678,6 +712,52 @@ public static class Inventory {
 			// Save Inventory
 			string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT)}");
 			JsonUtil.SaveJsonToPath(data, path, false);
+		}
+	}
+
+
+	private static void FillEquipmentFromInventoryLogic (EquipmentInventoryData data, EquipmentType type, int itemID, int currentCount, int maxStack) {
+		if (currentCount >= maxStack) return;
+		int len = data.Items.Length;
+		bool changed = false;
+		for (int i = 0; i < len; i++) {
+			int item = data.Items[i];
+			if (item != itemID) continue;
+			int count = data.Counts[i];
+			if (count <= 0) continue;
+			int deltaCount = Util.Min(count, maxStack - currentCount);
+			count -= deltaCount;
+			if (count <= 0) {
+				data.Items[i] = 0;
+			}
+			data.Counts[i] = count;
+			changed = true;
+			currentCount += deltaCount;
+			if (currentCount >= maxStack) break;
+		}
+		if (changed) {
+			data.IsDirty = true;
+			IsPoolDirty = true;
+			switch (type) {
+				case EquipmentType.HandTool:
+					data.HandToolCount = currentCount;
+					break;
+				case EquipmentType.BodyArmor:
+					data.BodySuitCount = currentCount;
+					break;
+				case EquipmentType.Helmet:
+					data.HelmetCount = currentCount;
+					break;
+				case EquipmentType.Shoes:
+					data.ShoesCount = currentCount;
+					break;
+				case EquipmentType.Gloves:
+					data.GlovesCount = currentCount;
+					break;
+				case EquipmentType.Jewelry:
+					data.JewelryCount = currentCount;
+					break;
+			}
 		}
 	}
 

@@ -43,7 +43,6 @@ public static class Stage {
 		public int SpawnedCount => InstanceCount - Entities.Count;
 		public Stack<Entity> Entities = null;
 		public Type EntityType = null;
-		public IRect LocalBound = default;
 		public bool DrawBehind = false;
 		public bool DestroyOnZChanged = true;
 		public bool DontSpawnFromWorld = false;
@@ -67,11 +66,10 @@ public static class Stage {
 		public void Push (Entity e) => Entities.Push(e);
 
 		public Entity CreateInstance () {
-			if (System.Activator.CreateInstance(EntityType) is not Entity e) return null;
+			if (Activator.CreateInstance(EntityType) is not Entity e) return null;
 			e.Active = false;
 			e.DestroyOnZChanged = DestroyOnZChanged;
 			e.DespawnOutOfRange = DespawnOutOfRange;
-			e.LocalBounds = LocalBound;
 			e.UpdateOutOfRange = UpdateOutOfRange;
 			e.Order = Order;
 			InstanceCount++;
@@ -178,7 +176,6 @@ public static class Stage {
 			int capacity = 64;
 			var att_Layer = eType.GetCustomAttribute<EntityAttribute.LayerAttribute>(true);
 			var att_Capacity = eType.GetCustomAttribute<EntityAttribute.CapacityAttribute>(true);
-			var att_Bound = eType.GetCustomAttribute<EntityAttribute.BoundsAttribute>(true);
 			var att_DontDespawn = eType.GetCustomAttribute<EntityAttribute.DontDestroyOutOfRangeAttribute>(true);
 			var att_ForceUpdate = eType.GetCustomAttribute<EntityAttribute.UpdateOutOfRangeAttribute>(true);
 			var att_DontDrawBehind = eType.GetCustomAttribute<EntityAttribute.DontDrawBehindAttribute>(true);
@@ -193,7 +190,6 @@ public static class Stage {
 			}
 			var stack = new EntityStack() {
 				Entities = new Stack<Entity>(preSpawn),
-				LocalBound = att_Bound != null ? att_Bound.Value : new(0, 0, Const.CEL, Const.CEL),
 				DrawBehind = att_DontDrawBehind == null,
 				DestroyOnZChanged = att_DontDestroyOnTran == null,
 				Capacity = capacity,
@@ -354,7 +350,7 @@ public static class Stage {
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				var e = span[index];
-				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || SpawnRect.Overlaps(e.GlobalBounds)) {
+				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || SpawnRect.Overlaps(e.Rect)) {
 					try {
 						e.UpdateToBefore();
 					} catch (Exception ex) { Debug.LogException(ex); }
@@ -369,7 +365,7 @@ public static class Stage {
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			for (int index = 0; index < count; index++) {
 				var e = span[index];
-				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || SpawnRect.Overlaps(e.GlobalBounds)) {
+				if (e.UpdateOutOfRange || e.UpdateStep >= 4 || SpawnRect.Overlaps(e.Rect)) {
 					try {
 						e.UpdateToUpdate();
 					} catch (Exception ex) { Debug.LogException(ex); }
@@ -379,14 +375,14 @@ public static class Stage {
 
 		// Late
 		BeforeLateUpdate?.Invoke();
-		var cullCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
+		var expandedCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
 			int count = EntityCounts[layer].Clamp(0, span.Length);
 			BeforeLayerFrameUpdate?.Invoke(layer);
 			for (int index = 0; index < count; index++) {
 				var e = span[index];
-				if (e.UpdateOutOfRange || cullCameraRect.Overlaps(e.GlobalBounds)) {
+				if (e.UpdateOutOfRange || expandedCameraRect.Overlaps(e.Rect)) {
 					try {
 						Renderer.SetLayerToDefault();
 						e.UpdateToLate();
@@ -514,7 +510,7 @@ public static class Stage {
 		if (stack.DontSpawnFromWorld) return null;
 		int x = unitX * Const.CEL;
 		int y = unitY * Const.CEL;
-		if (!forceSpawn && AntiSpawnRect.Overlaps(stack.LocalBound.Shift(x, y))) return null;
+		if (!forceSpawn && AntiSpawnRect.Overlaps(new IRect(x, y, Const.CEL, Const.CEL))) return null;
 		return SpawnEntityLogic(typeID, x, y, uPos);
 	}
 
@@ -689,8 +685,10 @@ public static class Stage {
 
 
 	public static Int4 GetCameraCullingPadding () {
-		int expand = Renderer.CameraRect.width * (Universe.BuiltInInfo.WorldBehindParallax - 1000) / 2000;
-		return TaskSystem.HasTask() ? new Int4(expand, expand, expand, expand) : Int4.zero;
+		int expand = Const.CEL + Renderer.CameraRect.width * (Universe.BuiltInInfo.WorldBehindParallax - 1000) / 2000;
+		return TaskSystem.HasTask() ?
+			new Int4(expand, expand, expand, expand) :
+			new Int4(Const.CEL, Const.CEL, Const.CEL, Const.CEL);
 	}
 
 
@@ -723,7 +721,7 @@ public static class Stage {
 		// Inactive Out of Range Entities
 		for (int i = 0; i < count; i++) {
 			var entity = entities[i];
-			if (entity.Active && entity.DespawnOutOfRange && !SpawnRect.Overlaps(entity.GlobalBounds)) {
+			if (entity.Active && entity.DespawnOutOfRange && !SpawnRect.Overlaps(entity.Rect)) {
 				entity.Active = false;
 			}
 		}
@@ -740,7 +738,6 @@ public static class Stage {
 			if (e.Active) break;
 
 			try {
-				e.Stamp = int.MaxValue;
 				e.OnInactivated();
 			} catch (Exception ex) { Debug.LogException(ex); }
 
@@ -749,8 +746,12 @@ public static class Stage {
 			// Push Back
 			if (EntityPool.TryGetValue(e.TypeID, out var stack)) {
 				stack.Push(e);
-				if (stack.RequireReposition && !e.DontRepositionOnce) {
-					TryRepositionEntity(e);
+				if (stack.RequireReposition) {
+					if (e.IgnoreReposition) {
+						e.IgnoreReposition = false;
+					} else {
+						TryRepositionEntity(e);
+					}
 				}
 			}
 

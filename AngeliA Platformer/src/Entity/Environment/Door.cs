@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
-[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Door : Entity, IBlockEntity {
 

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using AngeliA;
 namespace AngeliA.Platformer;
 [EntityAttribute.MapEditorGroup("CheckPoint")]
-[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoint {

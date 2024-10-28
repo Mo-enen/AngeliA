@@ -522,7 +522,7 @@ public static class PlayerSystem {
 	[BeforeUpdateUpdate]
 	internal static void Update () {
 		if (Selecting == null || !Selecting.Active) return;
-		if (!Stage.ViewRect.Overlaps(Selecting.GlobalBounds)) return;
+		if (!Stage.ViewRect.Overlaps(Selecting.Rect)) return;
 		UpdateCollect();
 	}
 

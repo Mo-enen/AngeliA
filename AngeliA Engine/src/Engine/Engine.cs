@@ -64,7 +64,6 @@ public partial class Engine {
 	private int CurrentProjectMenuIndex = -1;
 	private int NotificationStartFrame = int.MinValue;
 	private int ThemeSheetIndex = -1;
-	private int ConsoleWindowIndex = 0;
 	private int LastNotInteractableFrame = int.MinValue;
 	private int IgnoreFileDropFrame = int.MinValue;
 	private bool NotificationFlash = false;
@@ -168,12 +167,9 @@ public partial class Engine {
 		for (int i = 0; i < engine.AllWindows.Length; i++) {
 			var win = engine.AllWindows[i];
 			win.OnActivated();
-			if (win is GameEditor) engine.GameEditorWindowIndex = i;
-			if (win is ConsoleWindow) engine.ConsoleWindowIndex = i;
-			if (win is PixelEditor) engine.ArtworkWindowIndex = i;
 		}
 
-		engine.SetCurrentWindowIndex(LastOpenedWindowIndex.Value, forceChange: true);
+		engine.SetCurrentWindow(LastOpenedWindowIndex.Value, forceChange: true);
 		engine.ResetViewRect();
 
 		// Sheet/Theme
@@ -213,13 +209,13 @@ public partial class Engine {
 			case ".ase":
 			case ".aseprite":
 				if (project == null) break;
-				if (Instance.CurrentWindowIndex != Instance.ArtworkWindowIndex) break;
+				if (Instance.CurrentWindow is not PixelEditor) break;
 				PixelEditor.ImportAtlasFromFile(path);
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
 			case ".png":
 				if (project == null) break;
-				if (Instance.CurrentWindowIndex != Instance.ArtworkWindowIndex) break;
+				if (Instance.CurrentWindow is not PixelEditor) break;
 				PixelEditor.ImportAtlasFromFile(Instance.DroppingFilePath);
 				Instance.IgnoreFileDropFrame = Game.PauselessFrame;
 				break;
@@ -229,7 +225,7 @@ public partial class Engine {
 			case ".xm":
 			case ".mod":
 				if (project == null) break;
-				if (Instance.CurrentWindowIndex == Instance.GameEditorWindowIndex) break;
+				if (Instance.CurrentWindow is not ProjectEditor) break;
 				GenericDialogUI.SpawnDialog_Button(
 					string.Format(FILE_DROP_MSG_AUDIO, Util.GetNameWithExtension(path)),
 					FILE_DROP_LABEL_MUSIC, ImportForMusic,
@@ -584,7 +580,7 @@ public partial class Engine {
 				// Click
 				if (mousePress && hovering && GUI.Interactable) {
 					Input.UseAllMouseKey();
-					SetCurrentWindowIndex(index);
+					SetCurrentWindow(index);
 					barWidth = GetEngineLeftBarWidth(out contentPadding);
 				}
 
@@ -756,25 +752,25 @@ public partial class Engine {
 
 		// Switch Window
 		if (EngineSetting.Hotkey_Window_MapEditor.Value.Down()) {
-			SetCurrentWindowIndex<GameEditor>();
+			SetCurrentWindow<GameEditor>();
 		}
 		if (EngineSetting.Hotkey_Window_Artwork.Value.Down()) {
-			SetCurrentWindowIndex<PixelEditor>();
+			SetCurrentWindow<PixelEditor>();
 		}
 		if (EngineSetting.Hotkey_Window_Language.Value.Down()) {
-			SetCurrentWindowIndex<LanguageEditor>();
+			SetCurrentWindow<LanguageEditor>();
 		}
 		if (EngineSetting.Hotkey_Window_Console.Value.Down()) {
-			SetCurrentWindowIndex<ConsoleWindow>();
+			SetCurrentWindow<ConsoleWindow>();
 		}
 		if (EngineSetting.Hotkey_Window_Project.Value.Down()) {
-			SetCurrentWindowIndex<ProjectEditor>();
+			SetCurrentWindow<ProjectEditor>();
 		}
 		if (EngineSetting.Hotkey_Window_Package.Value.Down()) {
-			SetCurrentWindowIndex<PackageManager>();
+			SetCurrentWindow<PackageManager>();
 		}
 		if (EngineSetting.Hotkey_Window_Setting.Value.Down()) {
-			SetCurrentWindowIndex<SettingWindow>();
+			SetCurrentWindow<SettingWindow>();
 		}
 	}
 
@@ -820,7 +816,7 @@ public partial class Engine {
 
 		// Publish
 		if (Game.GlobalFrame == ProjectEditor.Instance.RequiringPublishFrame) {
-			SetCurrentWindowIndex(ConsoleWindowIndex);
+			SetCurrentWindow<ConsoleWindow>();
 		} else if (Game.GlobalFrame == ProjectEditor.Instance.RequiringPublishFrame + 2) {
 			Transceiver.Abort();
 			if (Instance.Transceiver.RigProcessRunning) {
@@ -933,7 +929,7 @@ public partial class Engine {
 			case ProjectType.EngineTheme:
 				// Fix First Window
 				if (IsWindowIgnoredForProject(AllWindows[CurrentWindowIndex.Clamp(0, AllWindows.Length - 1)], pType)) {
-					SetCurrentWindowIndex<PixelEditor>();
+					SetCurrentWindow<PixelEditor>();
 				}
 				break;
 
@@ -995,18 +991,19 @@ public partial class Engine {
 	}
 
 
-	private void SetCurrentWindowIndex<W> (bool forceChange = false) where W : WindowUI {
+	private void SetCurrentWindow<W> (bool forceChange = false) where W : WindowUI {
 		for (int i = 0; i < AllWindows.Length; i++) {
 			if (AllWindows[i] is W) {
-				SetCurrentWindowIndex(i, forceChange);
+				SetCurrentWindow(i, forceChange);
 				return;
 			}
 		}
 	}
-	private void SetCurrentWindowIndex (int index, bool forceChange = false) {
+	private void SetCurrentWindow (int index, bool forceChange = false) {
 		index = index.Clamp(0, AllWindows.Length - 1);
+		CurrentWindow = AllWindows[index];
 		if (!forceChange && index == CurrentWindowIndex) return;
-		CurrentWindowRequireRigGame = index == GameEditorWindowIndex;
+		CurrentWindowRequireRigGame = AllWindows[index] is GameEditor;
 		if (CurrentWindowRequireRigGame) {
 			// Rig Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();

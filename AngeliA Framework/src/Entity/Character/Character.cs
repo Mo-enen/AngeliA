@@ -25,7 +25,6 @@ public enum CharacterAnimationType {
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
-[EntityAttribute.Bounds(-Const.HALF, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
 public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement {
 
@@ -249,7 +248,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		// Force Stay on Stage Check
 		if (
 			Game.GlobalFrame > ForceStayFrame &&
-			(Stage.ViewZ != PrevZ || !Stage.SpawnRect.Expand(Const.CEL).Overlaps(GlobalBounds))
+			(Stage.ViewZ != PrevZ || !Stage.SpawnRect.Expand(Const.CEL).Overlaps(Rect))
 		) {
 			// Leave Stage
 			Active = false;

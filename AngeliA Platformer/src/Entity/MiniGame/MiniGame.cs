@@ -7,7 +7,6 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.Capacity(1, 0)]
-[EntityAttribute.Bounds(0, 0, Const.CEL, Const.CEL * 2)]
 [EntityAttribute.MapEditorGroup("MiniGame")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {

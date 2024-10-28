@@ -7,7 +7,6 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Capacity(1)]
-[EntityAttribute.Bounds(0, 0, Const.CEL * 2, Const.CEL * 2)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.DontSpawnFromWorld]
 public class CheckPointPortal : CircleFlamePortal {

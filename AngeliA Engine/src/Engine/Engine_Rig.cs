@@ -34,10 +34,9 @@ public partial class Engine {
 	// Data
 	private readonly GUIStyle RigGameHintStyle = new(GUI.Skin.SmallCenterMessage) { LineSpace = 14 };
 	private readonly RigTransceiver Transceiver = new(EngineUtil.RiggedExePath);
+	private WindowUI CurrentWindow;
 	private int RigGameFailToStartCount = 0;
 	private int RigGameFailToStartFrame = int.MinValue;
-	private int GameEditorWindowIndex = 0;
-	private int ArtworkWindowIndex = 0;
 	private long RequireBackgroundBuildDate = 0;
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
@@ -174,9 +173,10 @@ public partial class Engine {
 		ConsoleWindow.Instance.HaveRunningRigGame = Transceiver.RigProcessRunning;
 		if (HasCompileError) return;
 
-		bool currentWindowRequireRigGame = CurrentWindowIndex == GameEditorWindowIndex || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
-		bool requireRigGameRender = CurrentWindowIndex == GameEditorWindowIndex;
-		bool requireRigInput = CurrentWindowIndex == GameEditorWindowIndex;
+		bool openingGameEditor = CurrentWindow is GameEditor;
+		bool currentWindowRequireRigGame = openingGameEditor || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
+		bool requireRigGameRender = openingGameEditor;
+		bool requireRigInput = openingGameEditor;
 
 		var rigEdt = GameEditor.Instance;
 		var calling = Transceiver.CallingMessage;
@@ -327,13 +327,13 @@ public partial class Engine {
 					// Get Respond
 					Transceiver.Respond(
 						currentUniverse, sheetIndex,
-						CurrentWindowIndex == GameEditorWindowIndex,
+						openingGameEditor,
 						!requireRigGameRender
 					);
 					rigEdt.RigGameSelectingPlayerID = resp.SelectingPlayerID;
 					rigEdt.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
 					rigEdt.HavingGamePlay = resp.GamePlaying;
-					if (CurrentWindowIndex == GameEditorWindowIndex) {
+					if (openingGameEditor) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}
 				} else if (requireRigGameRender) {
