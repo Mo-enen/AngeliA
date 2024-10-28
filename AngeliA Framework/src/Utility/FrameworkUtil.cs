@@ -44,7 +44,7 @@ public static class FrameworkUtil {
 	[OnCameOutOfWater] internal static Action<Rigidbody> OnCameOutOfWater;
 	[OnItemCollected] internal static Action<Entity, int, int> OnItemCollected;
 	[OnItemLost] internal static Action<Character, int> OnItemLost;
-	[OnItemInsufficient] internal static Action<Character, int> OnItemInsufficient;
+	[OnItemInsufficient] internal static Action<Character, int> OnItemErrorHint;
 	[OnItemDamage] internal static Action<Character, int, int> OnItemDamage;
 	[OnItemUnlocked] internal static Action<int> OnItemUnlocked;
 	[OnCheatPerformed] internal static Action<string> OnCheatPerformed;
@@ -1172,7 +1172,7 @@ public static class FrameworkUtil {
 	public static void InvokeCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
 	public static void InvokeItemCollected (Entity collector, int id, int count) => OnItemCollected?.Invoke(collector, id, count);
 	public static void InvokeItemLost (Character holder, int id) => OnItemLost?.Invoke(holder, id);
-	public static void InvokeItemInsufficient (Character holder, int id) => OnItemInsufficient?.Invoke(holder, id);
+	public static void InvokeItemErrorHint (Character holder, int id) => OnItemErrorHint?.Invoke(holder, id);
 	public static void InvokeItemDamage (Character holder, int fromID, int toID) => OnItemDamage?.Invoke(holder, fromID, toID);
 	public static void InvokeItemUnlocked (int itemID) => OnItemUnlocked?.Invoke(itemID);
 	public static void InvokeCheatPerformed (string cheatCode) => OnCheatPerformed?.Invoke(cheatCode);
