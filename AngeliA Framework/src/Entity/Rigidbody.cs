@@ -20,6 +20,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public bool OnSlippy { get; private set; } = false;
 	public int VelocityX { get; set; } = 0;
 	public int VelocityY { get; set; } = 0;
+	public int BounceSpeedRate { get; set; } = 0;
 	public int OffsetX { get; set; } = 0;
 	public int OffsetY { get; set; } = 0;
 	public int GroundedID { get; private set; } = 0;
@@ -72,6 +73,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		OnSlippy = false;
 		VelocityX = 0;
 		VelocityY = 0;
+		BounceSpeedRate = 0;
 		IgnoreGroundCheckFrame = int.MinValue;
 		IgnoreGravityFrame = int.MinValue;
 		IgnoreInsideGroundFrame = -1;
@@ -142,37 +144,57 @@ public abstract class Rigidbody : Entity, ICarrier {
 		// Hori Stopping
 		if (VelocityX != 0) {
 			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true)) {
-				VelocityX = 0;
+				VelocityX = -VelocityX * BounceSpeedRate / 1000;
 			} else {
 				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is not Rigidbody hitRig) {
-						VelocityX = 0;
+						VelocityX = -VelocityX * BounceSpeedRate / 1000;
 						break;
 					}
-					VelocityX = VelocityX < 0 ?
-						Util.Max(VelocityX, hitRig.VelocityX.LessOrEquelThanZero()) :
-						Util.Min(VelocityX, hitRig.VelocityX.GreaterOrEquelThanZero());
+					// Hit
+					if (
+						VelocityX.Sign() != hitRig.VelocityX.Sign() ||
+						VelocityX.Abs() > hitRig.VelocityX.Abs()
+					) {
+						VelocityX = -VelocityX * BounceSpeedRate / 1000;
+						break;
+					}
 					if (VelocityX == 0) break;
 				}
 			}
 		}
+
 		// Vertical Stopping
 		if (VelocityY != 0) {
 			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true)) {
-				VelocityY = 0;
+				VelocityY = -VelocityY * BounceSpeedRate / 1000;
+				if (VelocityY > 0) {
+					VelocityY = (VelocityY - GlobalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+				}
 			} else {
 				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is not Rigidbody hitRig) {
-						VelocityY = 0;
+						VelocityY = -VelocityY * BounceSpeedRate / 1000;
+						if (VelocityY > 0) {
+							VelocityY = (VelocityY - GlobalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+						}
 						break;
 					}
-					VelocityY = VelocityY < 0 ?
-						Util.Max(VelocityY, hitRig.VelocityY.LessOrEquelThanZero()) :
-						Util.Min(VelocityY, hitRig.VelocityY.GreaterOrEquelThanZero());
+					// Hit
+					if (
+						VelocityY.Sign() != hitRig.VelocityY.Sign() ||
+						VelocityY.Abs() > hitRig.VelocityY.Abs()
+					) {
+						VelocityY = -VelocityY * BounceSpeedRate / 1000;
+						if (VelocityY > 0) {
+							VelocityY = (VelocityY - GlobalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+						}
+						break;
+					}
 					if (VelocityY == 0) break;
 				}
 			}

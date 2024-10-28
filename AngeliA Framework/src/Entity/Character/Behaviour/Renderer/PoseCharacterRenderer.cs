@@ -787,13 +787,13 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public FrameBasedInt GetPoseAnimationID (CharacterAnimationType type) => PoseAnimationIDs[(int)type];
 
 
-	public void OverridePoseAnimation (CharacterAnimationType type, int id, int duration = 1) => PoseAnimationIDs[(int)type].Override(id, duration);
+	public void OverridePoseAnimation (CharacterAnimationType type, int id, int duration = 1) => PoseAnimationIDs[(int)type].Override(id, duration, 4096);
 
 
-	public void OverridePoseHandheldAnimation (ToolHandheld handheld, int id, int duration = 1) => PoseHandheldIDs[(int)handheld].Override(id, duration);
+	public void OverridePoseHandheldAnimation (ToolHandheld handheld, int id, int duration = 1) => PoseHandheldIDs[(int)handheld].Override(id, duration, 4096);
 
 
-	public void OverridePoseAttackAnimation (ToolType type, int id, int duration = 1) => PoseAttackIDs[(int)type].Override(id, duration);
+	public void OverridePoseAttackAnimation (ToolType type, int id, int duration = 1) => PoseAttackIDs[(int)type].Override(id, duration, 4096);
 
 
 	public void ManualPoseAnimate (int id, int duration = 1) => ManualPoseAnimationID.Override(id, duration);

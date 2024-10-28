@@ -400,7 +400,10 @@ public static class ItemSystem {
 				var key = GetSortedCombination(idA, idB, idC, idD);
 				if (pool.ContainsKey(key)) {
 #if DEBUG
-					Debug.Log($"Item Combination Collistion: \"{type.Name}\" & \"{pool[key].Result}\"");
+					var resultItem = GetItem(pool[key].Result);
+					if (resultItem != null) {
+						Debug.Log($"Item Combination Collistion: \"{type.Name}\" & \"{resultItem.GetType().Name}\"");
+					}
 #endif
 					continue;
 				}
