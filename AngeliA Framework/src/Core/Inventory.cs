@@ -327,9 +327,18 @@ public static class Inventory {
 
 
 	/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
-	public static int FindAndAddItem (int inventoryID, int targetItemID, int count = 1) {
+	public static int FindAndAddItem (int inventoryID, int targetItemID, int count = 1, bool ignoreEquipment = true) {
 		if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
 		int oldCount = count;
+		// Equipment
+		if (!ignoreEquipment) {
+			int collectedCount = CollectItem(inventoryID, targetItemID, count, false, true);
+			count -= collectedCount;
+			if (count <= 0) {
+				return oldCount - count;
+			}
+		}
+		// Inventory
 		int maxCount = ItemSystem.GetItemMaxStackCount(targetItemID);
 		for (int i = 0; i < data.Items.Length; i++) {
 			if (data.Items[i] != targetItemID) continue;
@@ -397,8 +406,8 @@ public static class Inventory {
 
 
 	/// <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
-	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true) => CollectItem(inventoryID, item, out _, count, ignoreEquipment);
-	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true) {
+	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false) => CollectItem(inventoryID, item, out _, count, ignoreEquipment, ignoreInventory);
+	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false) {
 
 		collectIndex = -1;
 		if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
@@ -502,41 +511,46 @@ public static class Inventory {
 
 		}
 
-		// Try Append to Exists
-		for (int i = 0; i < data.Items.Length; i++) {
-			int _item = data.Items[i];
-			if (_item != item) continue;
-			int _count = data.Counts[i];
-			if (_count < maxStackCount) {
-				// Append Item
-				int delta = Util.Min(count, maxStackCount - _count);
-				count -= delta;
-				_count += delta;
-				data.Counts[i] = _count;
-				collectIndex = i;
+		if (!ignoreInventory) {
+
+			// Try Append to Exists
+			for (int i = 0; i < data.Items.Length; i++) {
+				int _item = data.Items[i];
+				if (_item != item) continue;
+				int _count = data.Counts[i];
+				if (_count < maxStackCount) {
+					// Append Item
+					int delta = Util.Min(count, maxStackCount - _count);
+					count -= delta;
+					_count += delta;
+					data.Counts[i] = _count;
+					collectIndex = i;
+				}
+				if (count <= 0) break;
 			}
-			if (count <= 0) break;
-		}
-		if (count <= 0) return oldCount - count;
+			if (count <= 0) return oldCount - count;
 
-		// Try Add to New Slot
-		for (int i = 0; i < data.Items.Length; i++) {
-			int _item = data.Items[i];
-			if (_item != 0) continue;
-			int delta = Util.Min(count, maxStackCount);
-			count -= delta;
-			data.Items[i] = item;
-			data.Counts[i] = delta;
-			collectIndex = i;
-			if (count <= 0) break;
-		}
-		int result = oldCount - count;
-		if (result != 0) {
-			data.IsDirty = true;
-			IsPoolDirty = true;
-		}
-		return result;
+			// Try Add to New Slot
+			for (int i = 0; i < data.Items.Length; i++) {
+				int _item = data.Items[i];
+				if (_item != 0) continue;
+				int delta = Util.Min(count, maxStackCount);
+				count -= delta;
+				data.Items[i] = item;
+				data.Counts[i] = delta;
+				collectIndex = i;
+				if (count <= 0) break;
+			}
+			int result = oldCount - count;
+			if (result != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
 
+			return result;
+		}
+
+		return oldCount - count;
 	}
 
 

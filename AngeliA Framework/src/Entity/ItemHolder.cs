@@ -257,7 +257,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		// Collect / Append
 		if (ItemCount > 0) {
 			int addCount = onlyStackOnExisting ?
-				Inventory.FindAndAddItem(invID, ItemID, ItemCount) :
+				Inventory.FindAndAddItem(invID, ItemID, ItemCount, ignoreEquipment: false) :
 				Inventory.CollectItem(invID, ItemID, ItemCount, ignoreEquipment);
 			if (addCount > 0) {
 				int newCount = ItemCount - addCount;
