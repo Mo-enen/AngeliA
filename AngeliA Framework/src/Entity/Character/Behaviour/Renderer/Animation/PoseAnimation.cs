@@ -10,6 +10,120 @@ public abstract class PoseAnimation {
 
 
 
+	#region --- SUB ---
+
+
+	private class BlendRecord {
+		private readonly BodyPart[] BodyParts = new BodyPart[PoseCharacterRenderer.BODY_PART_COUNT];
+		public int PoseRootX;
+		public int PoseRootY;
+		public int BodyTwist;
+		public int HeadTwist;
+		public int HandGrabRotationL;
+		public int HandGrabRotationR;
+		public int HandGrabScaleL;
+		public int HandGrabScaleR;
+		public int HandGrabAttackTwistL;
+		public int HandGrabAttackTwistR;
+		public BlendRecord () {
+			for (int i = 0; i < BodyParts.Length; i++) {
+				BodyParts[i] = new BodyPart(null, false);
+			}
+		}
+		public void ApplyToPose () {
+			for (int i = 0; i < BodyParts.Length; i++) {
+				var record = BodyParts[i];
+				var pose = Rendering.BodyParts[i];
+				pose.X = record.X;
+				pose.Y = record.Y;
+				pose.Z = record.Z;
+				pose.Rotation = record.Rotation;
+				pose.Width = record.Width;
+				pose.Height = record.Height;
+				pose.PivotX = record.PivotX;
+				pose.PivotY = record.PivotY;
+				pose.FrontSide = record.FrontSide;
+				pose.Covered = record.Covered;
+				pose.Tint = record.Tint;
+			}
+			Rendering.PoseRootX = PoseRootX;
+			Rendering.PoseRootY = PoseRootY;
+			Rendering.BodyTwist = BodyTwist;
+			Rendering.HeadTwist = HeadTwist;
+			Rendering.HandGrabRotationL = HandGrabRotationL;
+			Rendering.HandGrabRotationR = HandGrabRotationR;
+			Rendering.HandGrabScaleL = HandGrabScaleL;
+			Rendering.HandGrabScaleR = HandGrabScaleR;
+			Rendering.HandGrabAttackTwistL = HandGrabAttackTwistL;
+			Rendering.HandGrabAttackTwistR = HandGrabAttackTwistR;
+		}
+		public void RecordFromPose () {
+			for (int i = 0; i < BodyParts.Length; i++) {
+				var record = BodyParts[i];
+				var pose = Rendering.BodyParts[i];
+				record.X = pose.X;
+				record.Y = pose.Y;
+				record.Z = pose.Z;
+				record.Rotation = pose.Rotation;
+				record.Width = pose.Width;
+				record.Height = pose.Height;
+				record.PivotX = pose.PivotX;
+				record.PivotY = pose.PivotY;
+				record.FrontSide = pose.FrontSide;
+				record.Covered = pose.Covered;
+				record.Tint = pose.Tint;
+			}
+			PoseRootX = Rendering.PoseRootX;
+			PoseRootY = Rendering.PoseRootY;
+			BodyTwist = Rendering.BodyTwist;
+			HeadTwist = Rendering.HeadTwist;
+			HandGrabRotationL = Rendering.HandGrabRotationL;
+			HandGrabRotationR = Rendering.HandGrabRotationR;
+			HandGrabScaleL = Rendering.HandGrabScaleL;
+			HandGrabScaleR = Rendering.HandGrabScaleR;
+			HandGrabAttackTwistL = Rendering.HandGrabAttackTwistL;
+			HandGrabAttackTwistR = Rendering.HandGrabAttackTwistR;
+		}
+		public void BlendToPose (float blend01) {
+			blend01 = 1f - blend01;
+			for (int i = 0; i < BodyParts.Length; i++) {
+				var record = BodyParts[i];
+				var pose = Rendering.BodyParts[i];
+				if (pose.Width.Sign() != record.Width.Sign()) {
+					pose.Width = -pose.Width;
+				}
+				if (pose.Height.Sign() != record.Height.Sign()) {
+					pose.Height = -pose.Height;
+				}
+				pose.X = (int)Util.LerpUnclamped(pose.X, record.X, blend01);
+				pose.Y = (int)Util.LerpUnclamped(pose.Y, record.Y, blend01);
+				pose.Z = (int)Util.LerpUnclamped(pose.Z, record.Z, blend01);
+				pose.Rotation = (int)Util.LerpUnclamped(pose.Rotation, record.Rotation, blend01);
+				pose.Width = (int)Util.LerpUnclamped(pose.Width, record.Width, blend01);
+				pose.Height = (int)Util.LerpUnclamped(pose.Height, record.Height, blend01);
+				pose.PivotX = (int)Util.LerpUnclamped(pose.PivotX, record.PivotX, blend01);
+				pose.PivotY = (int)Util.LerpUnclamped(pose.PivotY, record.PivotY, blend01);
+				pose.Tint = Color32.Lerp(pose.Tint, record.Tint, blend01);
+			}
+			Rendering.PoseRootX = (int)Util.LerpUnclamped(Rendering.PoseRootX, PoseRootX, blend01);
+			Rendering.PoseRootY = (int)Util.LerpUnclamped(Rendering.PoseRootY, PoseRootY, blend01);
+			Rendering.BodyTwist = (int)Util.LerpUnclamped(Rendering.BodyTwist, BodyTwist, blend01);
+			Rendering.HeadTwist = (int)Util.LerpUnclamped(Rendering.HeadTwist, HeadTwist, blend01);
+			Rendering.HandGrabRotationL = (int)Util.LerpUnclamped(Rendering.HandGrabRotationL, HandGrabRotationL, blend01);
+			Rendering.HandGrabRotationR = (int)Util.LerpUnclamped(Rendering.HandGrabRotationR, HandGrabRotationR, blend01);
+			Rendering.HandGrabScaleL = (int)Util.LerpUnclamped(Rendering.HandGrabScaleL, HandGrabScaleL, blend01);
+			Rendering.HandGrabScaleR = (int)Util.LerpUnclamped(Rendering.HandGrabScaleR, HandGrabScaleR, blend01);
+			Rendering.HandGrabAttackTwistL = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01);
+			Rendering.HandGrabAttackTwistR = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01);
+		}
+	}
+
+
+	#endregion
+
+
+
+
 	#region --- VAR ---
 
 
@@ -22,6 +136,8 @@ public abstract class PoseAnimation {
 
 	// Data
 	private static readonly Dictionary<int, PoseAnimation> Pool = [];
+	private static readonly BlendRecord BlendRecordDef = new();
+	private static readonly BlendRecord BlendRecordAni = new();
 
 	// Cache
 	protected static Character Target = null;
@@ -99,7 +215,66 @@ public abstract class PoseAnimation {
 	}
 
 
-	public virtual void Animate (PoseCharacterRenderer renderer) {
+	public static void PerformAnimationBlendFromPool (int idA, int idB, float blend01, PoseCharacterRenderer renderer) {
+		Pool.TryGetValue(idA, out var resultA);
+		Pool.TryGetValue(idB, out var resultB);
+		if (resultA != null && resultB != null) {
+			PerformAnimationBlend(resultA, resultB, blend01, renderer);
+		} else if (resultA != null || resultB != null) {
+			PerformAnimation(resultA ?? resultB, renderer);
+		} else {
+			// Valid Head Position
+			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
+			Body.Height = Body.Height.GreaterOrEquel(1);
+		}
+	}
+
+
+	public static void PerformAnimationBlend (PoseAnimation animationA, PoseAnimation animationB, float blend01, PoseCharacterRenderer renderer) {
+
+		SetAsAnimating(renderer);
+
+		// Record Def
+		BlendRecordDef.RecordFromPose();
+
+		// Perform A
+		animationA.Animate(renderer);
+		if (animationA.ValidHeadPosition) {
+			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
+			Body.Height = Body.Height.GreaterOrEquel(1);
+		}
+
+		// Record A
+		BlendRecordAni.RecordFromPose();
+
+		// Back to Def
+		BlendRecordDef.ApplyToPose();
+
+		// Perform B
+		animationB.Animate(renderer);
+		if (animationB.ValidHeadPosition) {
+			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
+			Body.Height = Body.Height.GreaterOrEquel(1);
+		}
+
+		// Blend with Recorded A
+		BlendRecordAni.BlendToPose(blend01);
+
+	}
+
+
+	public virtual void Animate (PoseCharacterRenderer renderer) => SetAsAnimating(renderer);
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	protected static void SetAsAnimating (PoseCharacterRenderer renderer) {
 		Target = renderer.TargetCharacter;
 		Rendering = renderer;
 		Attackness = renderer.TargetCharacter.Attackness;
@@ -136,14 +311,6 @@ public abstract class PoseAnimation {
 			AttackLerp = 1f - AttackLerp;
 		}
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- API ---
 
 
 	protected static void ResetShoulderAndUpperArmPos (bool resetLeft = true, bool resetRight = true) => FrameworkUtil.ResetShoulderAndUpperArmPos(Rendering, resetLeft, resetRight);

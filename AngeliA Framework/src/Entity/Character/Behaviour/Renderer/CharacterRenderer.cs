@@ -43,7 +43,7 @@ public abstract class CharacterRenderer (Character target) {
 		} else if (isSquatting && frame.InRangeExclude(Movement.LastSquatFrame, Movement.LastSquatFrame + duration)) {
 			// Squat Start
 			bounce = BOUNCE_AMOUNTS[frame - Movement.LastSquatFrame];
-		} else if (TargetCharacter.IsGrounded && frame.InRangeExclude(Movement.LastGroundFrame, Movement.LastGroundFrame + duration)) {
+		} else if (!TargetCharacter.InWater && TargetCharacter.IsGrounded && frame.InRangeExclude(Movement.LastGroundFrame, Movement.LastGroundFrame + duration)) {
 			// Gounded Start
 			bounce = BOUNCE_AMOUNTS[frame - Movement.LastGroundFrame];
 		} else if (!isSquatting && frame.InRangeExclude(Movement.LastSquattingFrame, Movement.LastSquattingFrame + duration)) {

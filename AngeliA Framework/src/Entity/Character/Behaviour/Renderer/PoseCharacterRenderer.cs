@@ -49,6 +49,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public int HideBraidFrame { get; set; } = -1;
 	public int CharacterHeight { get; set; } = 160; // in CM
 	public int RenderedCellZ { get; private set; } = 0;
+	public int BlendDuration { get; set; } = 6;
 
 	// BodyPart
 	public readonly BodyPart[] BodyParts = new BodyPart[BODY_PART_COUNT];
@@ -91,6 +92,9 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	private static int GlobalPoseRenderingZOffset;
 	private static int RenderingConfigGlobalVersion = -1;
 	private int LocalRenderingConfigVersion = int.MinValue;
+	private int PrevAniID = 0;
+	private int BlendAniID = 0;
+	private int AnimationBlendFrame = 0;
 	private readonly FrameBasedInt[] PoseAnimationIDs;
 	private readonly FrameBasedInt[] PoseHandheldIDs;
 	private readonly FrameBasedInt[] PoseAttackIDs;
@@ -179,6 +183,14 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
+	public override void OnActivated () {
+		base.OnActivated();
+		PrevAniID = 0;
+		BlendAniID = 0;
+		AnimationBlendFrame = 0;
+	}
+
+
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		SyncRenderingConfigFromPool();
@@ -228,10 +240,30 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	protected virtual void PerformPoseAnimation () {
-		if (ManualPoseAnimationID != 0) {
-			PoseAnimation.PerformAnimationFromPool(ManualPoseAnimationID, this);
+		int currentAniID = ManualPoseAnimationID != 0 ? ManualPoseAnimationID : PoseAnimationIDs[(int)TargetCharacter.AnimationType];
+		if (BlendDuration > 0) {
+			// ID Changed
+			if (currentAniID != PrevAniID) {
+				if (currentAniID == BlendAniID && BlendAniID != 0 && AnimationBlendFrame < BlendDuration) {
+					AnimationBlendFrame = BlendDuration - AnimationBlendFrame;
+				} else {
+					AnimationBlendFrame = 0;
+				}
+				BlendAniID = PrevAniID;
+				PrevAniID = currentAniID;
+			}
+			if (BlendAniID != 0 && AnimationBlendFrame < BlendDuration) {
+				// Blend
+				float blend01 = ((float)AnimationBlendFrame / BlendDuration).Clamp01();
+				PoseAnimation.PerformAnimationBlendFromPool(BlendAniID, currentAniID, blend01, this);
+				AnimationBlendFrame++;
+			} else {
+				// Just Perform
+				PoseAnimation.PerformAnimationFromPool(currentAniID, this);
+			}
 		} else {
-			PoseAnimation.PerformAnimationFromPool(PoseAnimationIDs[(int)TargetCharacter.AnimationType], this);
+			// Just Perform
+			PoseAnimation.PerformAnimationFromPool(currentAniID, this);
 		}
 	}
 

@@ -33,8 +33,8 @@ public class PoseAnimation_Run : PoseAnimation {
 		LowerArmL.LimbRotate(ROTS[arrFrame, 2] * FacingSign, 500);
 		LowerArmR.LimbRotate(ROTS[arrFrame, 3] * FacingSign, 500);
 
-		HandL.LimbRotate(FacingRight ? 0 : 1);
-		HandR.LimbRotate(FacingRight ? 0 : 1);
+		HandL.LimbRotate(0);
+		HandR.LimbRotate(1);
 
 		// Leg
 		UpperLegL.X += legOffsetX;

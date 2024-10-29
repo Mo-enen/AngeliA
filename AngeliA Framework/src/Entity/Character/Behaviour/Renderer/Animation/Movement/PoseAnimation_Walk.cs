@@ -30,8 +30,8 @@ public class PoseAnimation_Walk : PoseAnimation {
 		LowerArmL.LimbRotate(0);
 		LowerArmR.LimbRotate(0);
 
-		HandL.LimbRotate(-FacingSign);
-		HandR.LimbRotate(-FacingSign);
+		HandL.LimbRotate(0);
+		HandR.LimbRotate(1);
 
 		// Leg
 		UpperLegL.X += legOffsetX;
