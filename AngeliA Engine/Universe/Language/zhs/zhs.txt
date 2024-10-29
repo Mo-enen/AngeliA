@@ -26,6 +26,13 @@ CtrlHint.Transfer:转移
 CtrlHint.Use:使用
 CtrlHint.WakeUp:醒来
 CtrlHint.Wardrobe.Type:服装类型
+Engine.Game.Tip.Collider:碰撞体
+Engine.Game.Tip.EntityClicker:实体调试
+Engine.Game.Tip.FrameDebug:逐帧调试
+Engine.Game.Tip.Lighting:光照系统
+Engine.Game.Tip.Movement:运动系统
+Engine.Game.Tip.NextFrame:下一帧
+Engine.Game.Tip.Profiler:探查器
 FileBrowser.Error.NameEmpty:文件名不能是空的
 FileBrowser.Error.NameInValid:文件名中包含不可用字符
 FileBrowser.Fav.Desktop:桌面

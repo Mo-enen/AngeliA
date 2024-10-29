@@ -43,6 +43,15 @@ public partial class GameEditor : WindowUI {
 	private static readonly SpriteCode BTN_MOVEMENT = "Engine.Game.Movement";
 	private static readonly SpriteCode BTN_LIGHTING = "Engine.Game.Lighting";
 	private static readonly SpriteCode TOOLBAR_BG = "Engine.Game.Toolbar";
+	private static readonly SpriteCode PANEL_BG = "Engine.Game.PanelBG";
+
+	private static readonly LanguageCode TIP_PROFILER = ("Engine.Game.Tip.Profiler", "Profiler");
+	private static readonly LanguageCode TIP_FRAME_DEBUG = ("Engine.Game.Tip.FrameDebug", "Frame Debugger");
+	private static readonly LanguageCode TIP_NEXT_FRAME = ("Engine.Game.Tip.NextFrame", "Next Frame");
+	private static readonly LanguageCode TIP_ENTITY_CLICER = ("Engine.Game.Tip.EntityClicker", "Entity Debugger");
+	private static readonly LanguageCode TIP_COLLIDER = ("Engine.Game.Tip.Collider", "Collider");
+	private static readonly LanguageCode TIP_LIGHTING = ("Engine.Game.Tip.Lighting", "Lighting System");
+	private static readonly LanguageCode TIP_MOVEMENT = ("Engine.Game.Tip.Movement", "Movement System");
 
 	// Api
 	public static GameEditor Instance { get; private set; }
@@ -50,12 +59,15 @@ public partial class GameEditor : WindowUI {
 	public bool DrawCollider { get; private set; } = false;
 	public bool EntityClickerOn { get; private set; } = false;
 	public IRect PanelRect { get; private set; }
+	public IRect ToolbarRect { get; private set; }
 	public bool FrameDebugging { get; private set; } = false;
 	public bool RequireNextFrame { get; set; } = false;
 	public bool HavingGamePlay { get; set; } = false;
 	public bool RequireReloadPlayerMovement { get; set; } = false;
+	public int ToolbarLeftWidth => Unify(40);
 
 	// Data
+	private static readonly Cell[] CacheForPanelSlice = new Cell[9];
 	private readonly ProfilerUiBarData[] RenderingUsages = new ProfilerUiBarData[RenderLayer.COUNT];
 	private readonly ProfilerUiBarData[] EntityUsages = new ProfilerUiBarData[EntityLayer.COUNT];
 	private readonly bool[] EffectsEnabled = new bool[Const.SCREEN_EFFECT_COUNT].FillWithValue(false);
@@ -175,29 +187,65 @@ public partial class GameEditor : WindowUI {
 			EntityClickerOn = false;
 			FrameDebugging = false;
 			RequireNextFrame = false;
-			if (CurrentPanel == PanelType.Movement || CurrentPanel == PanelType.Lighting) {
-				CurrentPanel = PanelType.None;
-			}
-			return;
+			CurrentPanel = CurrentPanel != PanelType.Profiler ? PanelType.None : CurrentPanel;
 		}
 
 		using var _ = new UILayerScope();
 
-		var panelRect = new IRect(Renderer.CameraRect.xMax, Renderer.CameraRect.yMax, 0, 0);
-		int panelYMax = panelRect.y;
+		int padding = Unify(6);
+		int buttonSize = ToolbarLeftWidth - padding * 2;
+		var barRect = ToolbarRect = WindowRect.EdgeLeft(buttonSize + padding * 2);
 
-		// BG
-		var bgCell = Renderer.Draw(TOOLBAR_BG, default);
+		// Draw Panels
+		if (CurrentPanel != PanelType.None) {
 
-		// Tool Buttons
-		int buttonSize = GUI.Unify(28);
-		int padding = GUI.Unify(6);
-		panelRect.height = buttonSize + padding * 2;
-		panelRect.y -= panelRect.height;
+			var panelRect = barRect.CornerOutside(Alignment.TopRight, Unify(220), Unify(384));
 
+			// Draw Panel BG
+			var cells = GUI.DrawSlice(PANEL_BG, panelRect);
+			bool bgPainted = cells != null;
+			cells?.CopyTo(CacheForPanelSlice, 0);
+
+			// Draw Panel
+			switch (CurrentPanel) {
+				case PanelType.Profiler: DrawProfilerPanel(ref panelRect); break;
+				case PanelType.Movement: DrawMovementPanel(ref panelRect); break;
+				case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
+			}
+
+			if (bgPainted) {
+				using var __ = new GUIColorScope(Color32.CLEAR);
+				var placeHolders = GUI.DrawSlice(PANEL_BG, panelRect);
+				if (placeHolders != null) {
+					for (int i = 0; i < 9; i++) {
+						var cacheCell = CacheForPanelSlice[i];
+						cacheCell.CopyFrom(placeHolders[i]);
+						cacheCell.Color = Color32.WHITE;
+					}
+				} else {
+					for (int i = 0; i < 9; i++) {
+						CacheForPanelSlice[i].Color = Color32.CLEAR;
+					}
+				}
+			}
+
+			PanelRect = panelRect;
+
+			if (panelRect.MouseInside()) {
+				Cursor.SetCursorAsNormal(4096);
+			}
+
+		} else {
+			PanelRect = default;
+		}
+
+		// Toolbar BG
+		GUI.DrawSlice(TOOLBAR_BG, barRect);
+
+		// Toolbar Buttons
 		var rect = new IRect(
-			panelRect.xMax - buttonSize - padding,
-			panelRect.y + padding,
+			barRect.x + padding,
+			barRect.yMax - padding - buttonSize,
 			buttonSize, buttonSize
 		);
 
@@ -207,75 +255,77 @@ public partial class GameEditor : WindowUI {
 		if (isOn != newIsOn) {
 			CurrentPanel = isOn ? PanelType.None : PanelType.Profiler;
 		}
-		rect.x -= rect.width + padding;
-
-		// Movement
-		isOn = CurrentPanel == PanelType.Movement;
-		newIsOn = GUI.IconToggle(rect, isOn, BTN_MOVEMENT);
-		if (isOn != newIsOn) {
-			CurrentPanel = isOn ? PanelType.None : PanelType.Movement;
+		if (rect.MouseInside()) {
+			GUI.BackgroundLabel(rect.EdgeRight(1), TIP_PROFILER, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
 		}
-		rect.SlideLeft(padding);
+		rect.SlideDown(padding);
 
-		// Lighting
-		if (CurrentProject.Universe.Info.UseLightingSystem) {
-			isOn = CurrentPanel == PanelType.Lighting;
-			newIsOn = GUI.IconToggle(rect, isOn, BTN_LIGHTING);
+		if (HavingGamePlay) {
+			// Movement
+			isOn = CurrentPanel == PanelType.Movement;
+			newIsOn = GUI.IconToggle(rect, isOn, BTN_MOVEMENT);
 			if (isOn != newIsOn) {
-				CurrentPanel = isOn ? PanelType.None : PanelType.Lighting;
+				CurrentPanel = isOn ? PanelType.None : PanelType.Movement;
 			}
-			rect.SlideLeft(padding);
-		}
-
-		// Collider
-		DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
-		rect.SlideLeft(padding);
-
-		// Entity Clicker
-		EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
-		rect.SlideLeft(padding);
-
-		// Next Frame
-		if (GUI.Button(rect, BTN_NEXT, Skin.IconButton)) {
-			if (!FrameDebugging) {
-				FrameDebugging = true;
-			} else {
-				RequireNextFrame = true;
+			if (rect.MouseInside()) {
+				GUI.BackgroundLabel(rect.EdgeRight(1), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
 			}
-		}
-		rect.x -= rect.width + padding;
+			rect.SlideDown(padding);
 
-		// Play/Pause
-		if (GUI.Button(rect, FrameDebugging ? BTN_PLAY : BTN_PAUSE, Skin.IconButton)) {
-			FrameDebugging = !FrameDebugging;
-			RequireNextFrame = false;
-		}
-		rect.x -= rect.width + padding;
-
-		if (!CurrentProject.Universe.Info.UseLightingSystem && CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
-
-		// Draw Panels
-		panelRect.width = panelRect.x - rect.xMax;
-		panelRect.x = rect.xMax;
-		if (CurrentPanel != PanelType.None) {
-			int minPanelWidth = Unify(196);
-			if (panelRect.width < minPanelWidth) {
-				panelRect.x = panelRect.xMax - minPanelWidth;
-				panelRect.width = minPanelWidth;
+			// Lighting
+			if (CurrentProject.Universe.Info.UseLightingSystem) {
+				isOn = CurrentPanel == PanelType.Lighting;
+				newIsOn = GUI.IconToggle(rect, isOn, BTN_LIGHTING);
+				if (isOn != newIsOn) {
+					CurrentPanel = isOn ? PanelType.None : PanelType.Lighting;
+				}
+				if (rect.MouseInside()) {
+					GUI.BackgroundLabel(rect.EdgeRight(1), TIP_LIGHTING, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+				}
+				rect.SlideDown(padding);
 			}
-		}
-		switch (CurrentPanel) {
-			case PanelType.Profiler: DrawProfilerPanel(ref panelRect); break;
-			case PanelType.Movement: DrawMovementPanel(ref panelRect); break;
-			case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
-		}
 
-		// Panel
-		PanelRect = new IRect(panelRect.x, panelRect.y, panelRect.width, panelYMax - panelRect.y);
-		bgCell.X = PanelRect.x;
-		bgCell.Y = PanelRect.y;
-		bgCell.Width = PanelRect.width;
-		bgCell.Height = PanelRect.height;
+			// Collider
+			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
+			if (rect.MouseInside()) {
+				GUI.BackgroundLabel(rect.EdgeRight(1), TIP_COLLIDER, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+			}
+			rect.SlideDown(padding);
+
+			// Entity Clicker
+			EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
+			if (rect.MouseInside()) {
+				GUI.BackgroundLabel(rect.EdgeRight(1), TIP_ENTITY_CLICER, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+			}
+			rect.SlideDown(padding);
+
+			// Next Frame
+			if (FrameDebugging) {
+				if (GUI.Button(rect, BTN_NEXT, Skin.IconButton)) {
+					if (!FrameDebugging) {
+						FrameDebugging = true;
+					} else {
+						RequireNextFrame = true;
+					}
+				}
+				if (rect.MouseInside()) {
+					GUI.BackgroundLabel(rect.EdgeRight(1), TIP_NEXT_FRAME, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+				}
+				rect.SlideDown(padding);
+			}
+
+			// Play/Pause
+			if (GUI.Button(rect, FrameDebugging ? BTN_PLAY : BTN_PAUSE, Skin.IconButton)) {
+				FrameDebugging = !FrameDebugging;
+				RequireNextFrame = false;
+			}
+			if (rect.MouseInside()) {
+				GUI.BackgroundLabel(rect.EdgeRight(1), FrameDebugging ? BuiltInText.UI_CONTINUE : TIP_FRAME_DEBUG, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+			}
+			rect.SlideDown(padding);
+
+			if (!CurrentProject.Universe.Info.UseLightingSystem && CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
+		}
 
 	}
 

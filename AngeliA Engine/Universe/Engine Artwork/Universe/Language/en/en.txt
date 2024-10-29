@@ -26,6 +26,13 @@ CtrlHint.Transfer:Transfer
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake
 CtrlHint.Wardrobe.Type:Suit Type
+Engine.Game.Tip.Collider:Collider
+Engine.Game.Tip.EntityClicker:Entity Debugger
+Engine.Game.Tip.FrameDebug:Frame Debugger
+Engine.Game.Tip.Lighting:Lighting System
+Engine.Game.Tip.Movement:Movement System
+Engine.Game.Tip.NextFrame:Next Frame
+Engine.Game.Tip.Profiler:Profiler
 FileBrowser.Error.NameEmpty:Name can't be empty
 FileBrowser.Error.NameInValid:Name contains invalid char
 FileBrowser.Fav.Desktop:Desktop

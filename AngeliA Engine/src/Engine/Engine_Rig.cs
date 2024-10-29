@@ -178,7 +178,7 @@ public partial class Engine {
 		bool requireRigGameRender = openingGameEditor;
 		bool requireRigInput = openingGameEditor;
 
-		var rigEdt = GameEditor.Instance;
+		var gameEDT = GameEditor.Instance;
 		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
 		var console = ConsoleWindow.Instance;
@@ -194,8 +194,8 @@ public partial class Engine {
 
 		// Call
 		bool called = false;
-		bool runningGame = !rigEdt.FrameDebugging || rigEdt.RequireNextFrame;
-		rigEdt.RequireNextFrame = false;
+		bool runningGame = !gameEDT.FrameDebugging || gameEDT.RequireNextFrame;
+		gameEDT.RequireNextFrame = false;
 
 		if (
 			CurrentProject != null &&
@@ -206,7 +206,8 @@ public partial class Engine {
 			if (Input.AnyMouseButtonDown) {
 				IgnoreInputForRig = IgnoreInputForRig ||
 					!WindowUI.WindowRect.Contains(Input.MouseGlobalPosition) ||
-					rigEdt.PanelRect.MouseInside();
+					gameEDT.PanelRect.MouseInside() ||
+					gameEDT.ToolbarRect.MouseInside();
 			}
 			if (!Input.AnyMouseButtonHolding) {
 				IgnoreInputForRig = false;
@@ -215,14 +216,14 @@ public partial class Engine {
 				IgnoreInputForRig = true;
 			}
 
-			if (rigEdt.DrawCollider) {
+			if (gameEDT.DrawCollider) {
 				calling.RequireDrawColliderGizmos();
 			}
-			if (rigEdt.EntityClickerOn) {
+			if (gameEDT.EntityClickerOn) {
 				calling.RequireEntityClicker();
 			}
-			if (rigEdt.RequireReloadPlayerMovement) {
-				rigEdt.RequireReloadPlayerMovement = false;
+			if (gameEDT.RequireReloadPlayerMovement) {
+				gameEDT.RequireReloadPlayerMovement = false;
 				calling.RequireReloadPlayerMovement();
 			}
 
@@ -249,7 +250,6 @@ public partial class Engine {
 			}
 
 			// Lighting Map Setting Changed
-			var gameEDT = GameEditor.Instance;
 			if (gameEDT.LightMapSettingChanged) {
 				gameEDT.LightMapSettingChanged = false;
 				if (gameEDT.ForcingInGameDaytime >= 0f) {
@@ -284,15 +284,12 @@ public partial class Engine {
 
 			// Make the Call
 			if (runningGame) {
+				int leftBarWidth = GetEngineLeftBarWidth(out _) + gameEDT.ToolbarLeftWidth;
 				Transceiver.Call(
-					ignoreMouseInput:
-						!requireRigInput || IgnoreInputForRig || Game.PauselessFrame < LastNotInteractableFrame + 6,
-					ignoreKeyInput:
-						!requireRigInput,
-					leftPadding:
-						GetEngineLeftBarWidth(out _),
-					requiringWindowIndex:
-						0
+					ignoreMouseInput: !requireRigInput || IgnoreInputForRig || Game.PauselessFrame < LastNotInteractableFrame + 6,
+					ignoreKeyInput: !requireRigInput,
+					leftPadding: leftBarWidth,
+					requiringWindowIndex: 0
 				);
 			}
 			called = true;
@@ -330,9 +327,9 @@ public partial class Engine {
 						openingGameEditor,
 						!requireRigGameRender
 					);
-					rigEdt.RigGameSelectingPlayerID = resp.SelectingPlayerID;
-					rigEdt.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
-					rigEdt.HavingGamePlay = resp.GamePlaying;
+					gameEDT.RigGameSelectingPlayerID = resp.SelectingPlayerID;
+					gameEDT.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
+					gameEDT.HavingGamePlay = resp.GamePlaying;
 					if (openingGameEditor) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}

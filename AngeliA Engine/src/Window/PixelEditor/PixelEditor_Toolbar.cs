@@ -599,7 +599,7 @@ public partial class PixelEditor {
 
 		// Z Label
 		rect.x += padding;
-		rect.width = Unify(24);
+		rect.width = Unify(69);
 		GUI.Label(rect.Shrink(0, 0, 0, padding), "z", out var labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 

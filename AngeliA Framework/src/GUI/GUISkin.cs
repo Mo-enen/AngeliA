@@ -185,7 +185,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.one * 12,
+		ContentBorder = Int4.one * 8,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -204,7 +204,7 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD_SMALL,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD_SMALL,
 
-		ContentBorder = Int4.one * 12,
+		ContentBorder = Int4.one * 4,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,

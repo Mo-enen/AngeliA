@@ -26,7 +26,7 @@ public partial class GameEditor {
 		// Min Width
 		int minWidth = Unify(396);
 		if (panelRect.width < minWidth) {
-			panelRect.xMin = panelRect.xMax - minWidth;
+			panelRect.width = minWidth;
 		}
 
 		// Content
