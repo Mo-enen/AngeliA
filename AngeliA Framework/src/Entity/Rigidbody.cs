@@ -12,7 +12,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 
 	// Api
-	public static int GlobalGravity { get; set; } = 5;
 	public override IRect Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 	public bool IsGrounded { get; private set; } = false;
 	public bool IsInsideGround { get; private set; } = false;
@@ -26,12 +25,14 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int GroundedID { get; private set; } = 0;
 	public int PrevX { get; private set; } = 0;
 	public int PrevY { get; private set; } = 0;
+	public int InWaterDuration { get; private set; } = 0;
 	public int DeltaPositionX => X - PrevX;
 	public int DeltaPositionY => Y - PrevY;
 	public bool IgnoringPhysics => Game.GlobalFrame <= IgnorePhysicsFrame;
 	public bool IgnoringOneway => Game.GlobalFrame <= IgnoreOnewayFrame;
 
 	// Based Value
+	public static readonly FrameBasedInt GlobalGravity = new(5);
 	public readonly FrameBasedInt FallingGravityScale = new(1000);
 	public readonly FrameBasedInt RisingGravityScale = new(1000);
 
@@ -41,6 +42,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public virtual int MaxGravitySpeed => 96;
 	public virtual int AirDragX => 3;
 	public virtual int AirDragY => 0;
+	public virtual int WaterFloatSpeed => 0;
 	public virtual int WaterSpeedRate => 400;
 	public virtual bool AllowBeingPush => true;
 	public virtual bool DestroyWhenInsideGround => false;
@@ -82,6 +84,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		PrevPositionUpdateFrame = -1;
 		PrevX = X;
 		PrevY = Y;
+		InWaterDuration = 0;
 	}
 
 
@@ -131,11 +134,12 @@ public abstract class Rigidbody : Entity, ICarrier {
 		}
 
 		// Gravity
+		int globalGravity = GlobalGravity;
 		int gravityScale = VelocityY <= 0 ? FallingGravityScale : RisingGravityScale;
 		if (gravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
 			int speedScale = InWater ? WaterSpeedRate : 1000;
 			VelocityY = Util.Clamp(
-				VelocityY - GlobalGravity * gravityScale / 1000,
+				VelocityY - globalGravity * gravityScale / 1000,
 				-MaxGravitySpeed * speedScale / 1000,
 				int.MaxValue
 			);
@@ -171,7 +175,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true)) {
 				VelocityY = -VelocityY * BounceSpeedRate / 1000;
 				if (VelocityY > 0) {
-					VelocityY = (VelocityY - GlobalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+					VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
 				}
 			} else {
 				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
@@ -180,7 +184,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 					if (hit.Entity is not Rigidbody hitRig) {
 						VelocityY = -VelocityY * BounceSpeedRate / 1000;
 						if (VelocityY > 0) {
-							VelocityY = (VelocityY - GlobalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+							VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
 						}
 						break;
 					}
@@ -191,7 +195,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 					) {
 						VelocityY = -VelocityY * BounceSpeedRate / 1000;
 						if (VelocityY > 0) {
-							VelocityY = (VelocityY - GlobalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+							VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
 						}
 						break;
 					}
@@ -214,6 +218,19 @@ public abstract class Rigidbody : Entity, ICarrier {
 		if (prevInWater != InWater && InWater == VelocityY < 0) {
 			if (prevInWater) FrameworkUtil.InvokeCameOutOfWater(this);
 			if (InWater) FrameworkUtil.InvokeFallIntoWater(this);
+		}
+
+		// Water Float
+		if (InWater) {
+			const int DUR_CAP = 42;
+			if (WaterFloatSpeed != 0 && InWaterDuration > DUR_CAP) {
+				RisingGravityScale.Override(0, 1, priority: 64);
+				FallingGravityScale.Override(0, 1, priority: 64);
+				PerformMove(0, WaterFloatSpeed * InWaterDuration.LessOrEquel(DUR_CAP) / DUR_CAP);
+			}
+			InWaterDuration += DeltaPositionY.Clamp(2, 8).Abs();
+		} else {
+			InWaterDuration = 0;
 		}
 
 	}
