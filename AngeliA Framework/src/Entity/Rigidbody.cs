@@ -25,7 +25,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int GroundedID { get; private set; } = 0;
 	public int PrevX { get; private set; } = 0;
 	public int PrevY { get; private set; } = 0;
-	public int InWaterDuration { get; private set; } = 0;
 	public int DeltaPositionX => X - PrevX;
 	public int DeltaPositionY => Y - PrevY;
 	public bool IgnoringPhysics => Game.GlobalFrame <= IgnorePhysicsFrame;
@@ -59,6 +58,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	private int IgnoreOnewayFrame = -1;
 	private int IgnorePhysicsFrame = -1;
 	private int PrevPositionUpdateFrame = -1;
+	private int InWaterFloatDuration = 0;
 
 
 	#endregion
@@ -84,7 +84,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		PrevPositionUpdateFrame = -1;
 		PrevX = X;
 		PrevY = Y;
-		InWaterDuration = 0;
+		InWaterFloatDuration = 0;
 	}
 
 
@@ -221,16 +221,17 @@ public abstract class Rigidbody : Entity, ICarrier {
 		}
 
 		// Water Float
-		if (InWater) {
-			const int DUR_CAP = 42;
-			if (WaterFloatSpeed != 0 && InWaterDuration > DUR_CAP) {
+		if (WaterFloatSpeed != 0) {
+			if (InWater) {
 				RisingGravityScale.Override(0, 1, priority: 64);
 				FallingGravityScale.Override(0, 1, priority: 64);
-				PerformMove(0, WaterFloatSpeed * InWaterDuration.LessOrEquel(DUR_CAP) / DUR_CAP);
+				int floatY = WaterFloatSpeed - (WaterFloatSpeed - InWaterFloatDuration / 16).GreaterOrEquelThanZero();
+				//PerformMove(0, floatY);
+				VelocityY = VelocityY.LerpTo(floatY, 500);
+				InWaterFloatDuration += DeltaPositionY.Abs().Clamp(2, 8);
+			} else {
+				InWaterFloatDuration = 0;
 			}
-			InWaterDuration += DeltaPositionY.Clamp(2, 8).Abs();
-		} else {
-			InWaterDuration = 0;
 		}
 
 	}

@@ -421,6 +421,7 @@ public partial class RiggedGame : Game {
 		bool hoverFlag = false;
 		bool dragging = mouseHolding && DraggingEntity != null;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+			if (layer == EntityLayer.UI) continue;
 			var entities = Stage.Entities[layer];
 			int count = Stage.EntityCounts[layer];
 			for (int i = 0; i < count; i++) {
