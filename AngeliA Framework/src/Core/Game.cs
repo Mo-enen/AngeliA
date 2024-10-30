@@ -158,8 +158,10 @@ public abstract partial class Game {
 
 			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeLaterAttribute>();
 
-			SetWindowTitle(Universe.BuiltInInfo.ProductName);
-			SetWindowIcon("ApplicationIcon".AngeHash());
+			if (!IsToolApplication) {
+				SetWindowTitle(Universe.BuiltInInfo.ProductName);
+				SetWindowIcon("ApplicationIcon".AngeHash());
+			}
 			System.GC.Collect();
 
 			// Start Game !!

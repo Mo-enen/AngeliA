@@ -55,6 +55,7 @@ public partial class Engine {
 	private EntityUI[] AllGenericUIs;
 	private WindowUI[] AllWindows;
 	private Project CurrentProject = null;
+	private ProjectData CurrentProjectData = null;
 	private ProjectSortMode ProjectSort = ProjectSortMode.OpenTime;
 	private IRect ToolLabelRect;
 	private IRect LastHoveringToolLabelRect;
@@ -190,7 +191,12 @@ public partial class Engine {
 			EngineSetting.OpenLastProjectOnStart.Value &&
 			Instance.Projects.Any(data => data.Path == LastOpenProject.Value)
 		) {
-			Instance.OpenProject(LastOpenProject.Value);
+			foreach (var proData in Instance.Projects) {
+				if (proData.Path == LastOpenProject.Value) {
+					Instance.OpenProject(proData);
+					break;
+				}
+			}
 		}
 	}
 
@@ -466,6 +472,8 @@ public partial class Engine {
 
 	private void OnGUI_Engine () {
 
+		using var _ = new UILayerScope();
+
 		// Window
 		int barWidth = GetEngineLeftBarWidth(out int contentPadding);
 		var barRect = Renderer.CameraRect.Edge(Direction4.Left, barWidth);
@@ -473,143 +481,142 @@ public partial class Engine {
 		bool mousePress = Input.MouseLeftButtonDown;
 		var rect = barRect.Edge(Direction4.Up, GUI.Unify(42));
 		var projectType = CurrentProject.Universe.Info.ProjectType;
+		bool menuButtonClicked = false;
 
-		// UI
-		using (new UILayerScope()) {
+		// Tab BG
+		GUI.DrawSlice(UI_ENGINE_BAR, barRect);
 
-			bool menuButtonClicked = false;
+		// Menu Button
+		var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+		GUI.DrawSlice(UI_ENGINE_BAR_BTN, rect);
+		if (GUI.BlankButton(rect, out var menuState)) {
+			menuButtonClicked = true;
+		}
+		if (menuState == GUIState.Hover) {
+			GUI.DrawSlice(UI_ENGINE_BAR_BTN_HIGHLIGHT, rect);
+		}
 
-			// Tab BG
-			GUI.DrawSlice(UI_ENGINE_BAR, barRect);
+		// Menu Icon
+		GUI.Icon(menuRect.Edge(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
+		rect.y -= rect.height;
 
-			// Menu Button
-			var menuRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+		// Window Tabs
+		for (int index = 0; index < AllWindows.Length; index++) {
+
+			var window = AllWindows[index];
+
+			bool selecting = index == CurrentWindowIndex;
+			bool hovering = GUI.Enable && GUI.Interactable && rect.Contains(mousePos);
+
+			// Skip Windows for Non-Game Project
+			if (IsWindowIgnoredForProject(window, projectType)) {
+				continue;
+			}
+
+			// Cursor
+			if (!selecting && hovering) Cursor.SetCursorAsHand();
+
+			// Body
 			GUI.DrawSlice(UI_ENGINE_BAR_BTN, rect);
-			if (GUI.BlankButton(rect, out var menuState)) {
-				menuButtonClicked = true;
+
+			// Highlight
+			var bodyTint = Color32.CLEAR;
+			int bodyID = UI_ENGINE_BAR_BTN_HIGHLIGHT;
+			if (selecting) {
+				bodyTint = Color32.WHITE;
+			} else if (hovering) {
+				bodyTint = Color32.WHITE_128;
 			}
-			if (menuState == GUIState.Hover) {
-				GUI.DrawSlice(UI_ENGINE_BAR_BTN_HIGHLIGHT, rect);
+			if (window is ConsoleWindow console && console.HasCompileError) {
+				bodyTint = EngineSetting.BlinkWhenError.Value ? Color32.WHITE.WithNewA(
+					(byte)(Ease.InOutQuad(Game.GlobalFrame.PingPong(60) / 60f) * 255)
+				) : Color32.WHITE;
+				bodyID = UI_ENGINE_BAR_BTN_WARNING;
 			}
-
-			// Menu Icon
-			GUI.Icon(menuRect.Edge(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
-			rect.y -= rect.height;
-
-			// Window Tabs
-			for (int index = 0; index < AllWindows.Length; index++) {
-
-				var window = AllWindows[index];
-
-				bool selecting = index == CurrentWindowIndex;
-				bool hovering = GUI.Enable && GUI.Interactable && rect.Contains(mousePos);
-
-				// Skip Windows for Non-Game Project
-				if (IsWindowIgnoredForProject(window, projectType)) {
-					continue;
+			if (bodyTint.a > 0) {
+				using (new GUIColorScope(bodyTint)) {
+					GUI.DrawSlice(bodyID, rect);
 				}
-
-				// Cursor
-				if (!selecting && hovering) Cursor.SetCursorAsHand();
-
-				// Body
-				GUI.DrawSlice(UI_ENGINE_BAR_BTN, rect);
-
-				// Highlight
-				var bodyTint = Color32.CLEAR;
-				int bodyID = UI_ENGINE_BAR_BTN_HIGHLIGHT;
-				if (selecting) {
-					bodyTint = Color32.WHITE;
-				} else if (hovering) {
-					bodyTint = Color32.WHITE_128;
-				}
-				if (window is ConsoleWindow console && console.HasCompileError) {
-					bodyTint = EngineSetting.BlinkWhenError.Value ? Color32.WHITE.WithNewA(
-						(byte)(Ease.InOutQuad(Game.GlobalFrame.PingPong(60) / 60f) * 255)
-					) : Color32.WHITE;
-					bodyID = UI_ENGINE_BAR_BTN_WARNING;
-				}
-				if (bodyTint.a > 0) {
-					using (new GUIColorScope(bodyTint)) {
-						GUI.DrawSlice(bodyID, rect);
-					}
-				}
-
-				// Content
-				var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
-
-				// Icon
-				int iconSize = contentRect.height;
-				var iconRect = contentRect.Edge(Direction4.Left, iconSize);
-				Renderer.Draw(window.TypeID, iconRect, GUI.Enable && GUI.Interactable ? Color32.WHITE : Color32.GREY_128);
-
-				// Compling Mark
-				if (window is GameEditor && EngineUtil.BuildingProjectInBackground) {
-					int size = GUI.Unify(24);
-					if (!FullsizeMenu.Value) {
-						Renderer.DrawPixel(rect, Color32.BLACK_128);
-					}
-					Renderer.Draw(
-						BuiltInSprite.ICON_REFRESH,
-						FullsizeMenu.Value ? rect.xMax - size : rect.CenterX(),
-						rect.CenterY(),
-						500, 500, Game.GlobalFrame * 10,
-						size, size, Color32.ORANGE_BETTER
-					);
-				}
-
-				// Dirty Mark
-				if (window.IsDirty) {
-					int markSize = GUI.Unify(10);
-					Renderer.Draw(
-						BuiltInSprite.ICON_STAR,
-						new IRect(iconRect.xMax - markSize / 2, iconRect.yMax - markSize / 2, markSize, markSize),
-						Color32.ORANGE_BETTER
-					);
-				}
-
-				// Label
-				if (FullsizeMenu.Value) {
-					GUI.Label(
-						contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
-						Language.Get(window.TypeID, window.DefaultWindowName),
-						GUI.Skin.SmallLabel
-					);
-				}
-
-				// Click
-				if (mousePress && hovering && GUI.Interactable) {
-					Input.UseAllMouseKey();
-					SetCurrentWindow(index);
-					barWidth = GetEngineLeftBarWidth(out contentPadding);
-				}
-
-				// Next
-				rect.SlideDown();
 			}
 
-			// Back to Hub
-			if (FullsizeMenu.Value) {
-				if (GUI.Button(
-					barRect.Edge(Direction4.Down, rect.height),
-					BuiltInText.UI_BACK, GUI.Skin.SmallCenterLabelButton
-				)) {
-					TryCloseProject();
-				}
+			// Content
+			var contentRect = rect.Shrink(contentPadding, contentPadding, contentPadding / 2, contentPadding / 2);
+
+			// Icon
+			int iconSize = contentRect.height;
+			var iconRect = contentRect.Edge(Direction4.Left, iconSize);
+			int iconID = window is GameEditor && CurrentProjectData != null ? CurrentProjectData.IconID : window.TypeID;
+			if (Renderer.TryGetSprite(iconID, out var iconSP)) {
+				Renderer.Draw(iconSP, iconRect);
 			} else {
-				if (GUI.Button(
-					barRect.Edge(Direction4.Down, rect.height),
-					ICON_TAB_BACK, GUI.Skin.IconButton
-				)) {
-					TryCloseProject();
+				Renderer.Draw(window.TypeID, iconRect);
+			}
+
+			// Compling Mark
+			if (window is GameEditor && EngineUtil.BuildingProjectInBackground) {
+				int size = GUI.Unify(24);
+				if (!FullsizeMenu.Value) {
+					Renderer.DrawPixel(rect, Color32.BLACK_128);
 				}
+				Renderer.Draw(
+					BuiltInSprite.ICON_REFRESH,
+					FullsizeMenu.Value ? rect.xMax - size : rect.CenterX(),
+					rect.CenterY(),
+					500, 500, Game.GlobalFrame * 10,
+					size, size, Color32.ORANGE_BETTER
+				);
 			}
 
-			// Menu Cache
-			if (menuButtonClicked) {
-				FullsizeMenu.Value = !FullsizeMenu.Value;
+			// Dirty Mark
+			if (window.IsDirty) {
+				int markSize = GUI.Unify(10);
+				Renderer.Draw(
+					BuiltInSprite.ICON_STAR,
+					new IRect(iconRect.xMax - markSize / 2, iconRect.yMax - markSize / 2, markSize, markSize),
+					Color32.ORANGE_BETTER
+				);
 			}
 
+			// Label
+			if (FullsizeMenu.Value) {
+				GUI.Label(
+					contentRect.Shrink(iconSize + contentPadding, 0, 0, 0),
+					Language.Get(window.TypeID, window.DefaultWindowName),
+					GUI.Skin.SmallLabel
+				);
+			}
+
+			// Click
+			if (mousePress && hovering && GUI.Interactable) {
+				Input.UseAllMouseKey();
+				SetCurrentWindow(index);
+				barWidth = GetEngineLeftBarWidth(out contentPadding);
+			}
+
+			// Next
+			rect.SlideDown();
+		}
+
+		// Back to Hub
+		if (FullsizeMenu.Value) {
+			if (GUI.Button(
+				barRect.Edge(Direction4.Down, rect.height),
+				BuiltInText.UI_BACK, GUI.Skin.SmallCenterLabelButton
+			)) {
+				TryCloseProject();
+			}
+		} else {
+			if (GUI.Button(
+				barRect.Edge(Direction4.Down, rect.height),
+				ICON_TAB_BACK, GUI.Skin.IconButton
+			)) {
+				TryCloseProject();
+			}
+		}
+
+		// Menu Cache
+		if (menuButtonClicked) {
+			FullsizeMenu.Value = !FullsizeMenu.Value;
 		}
 
 	}
@@ -849,12 +856,15 @@ public partial class Engine {
 
 
 	// Workflow
-	private void OpenProject (string projectPath) {
+	private void OpenProject (ProjectData projectData) {
 
+		if (projectData == null) return;
+		string projectPath = projectData.Path;
 		if (CurrentProject != null && projectPath == CurrentProject.ProjectPath) return;
 		if (!Util.FolderExists(projectPath)) return;
 
 		CurrentProject = Project.LoadProject(projectPath);
+		CurrentProjectData = projectData;
 		LastOpenProject.Value = projectPath;
 		foreach (var project in Projects) {
 			if (project.Path == projectPath) {
@@ -866,6 +876,7 @@ public partial class Engine {
 		}
 		SortProjects();
 		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
+		Game.SetWindowIcon(projectData.IconID);
 
 		// Windows
 		LanguageEditor.Instance.SetCurrentProject(CurrentProject);
@@ -961,6 +972,7 @@ public partial class Engine {
 		}
 		static void Close () {
 			Instance.CurrentProject = null;
+			Instance.CurrentProjectData = null;
 			foreach (var ui in Instance.AllWindows) {
 				ui.Active = false;
 				ui.OnInactivated();
@@ -977,6 +989,7 @@ public partial class Engine {
 			GameEditor.Instance.SetCurrentProject(null);
 			PackageManager.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
+			Game.SetWindowIcon(0);
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 			Instance.Transceiver.Abort();
 		}

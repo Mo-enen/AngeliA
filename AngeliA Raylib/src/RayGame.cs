@@ -113,6 +113,7 @@ public partial class RayGame : Game {
 		Raylib.SetExitKey(KeyboardKey.Null);
 		SetWindowMinSize(256);
 		Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
+		EMPTY_IMG = Raylib.LoadImageFromTexture(RayUtil.EMPTY_TEXTURE);
 
 		// Blend
 		RayUtil.SetBlendFactorsForGeneral();

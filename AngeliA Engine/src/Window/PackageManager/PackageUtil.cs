@@ -24,6 +24,10 @@ internal static class PackageUtil {
 		info.SheetFounded = Util.FileExists(info.SheetPath);
 		info.ThemeFounded = Util.GetFileCount(info.ThemeFolder, AngePath.SHEET_SEARCH_PATTERN, SearchOption.TopDirectoryOnly) > 0;
 
+		if (info.DisplayName.Length > 36) {
+			info.DisplayName = $"{info.DisplayName[..33]}...";
+		}
+
 		return info;
 	}
 

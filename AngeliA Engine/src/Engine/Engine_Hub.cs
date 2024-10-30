@@ -183,7 +183,7 @@ public partial class Engine {
 
 					// Button
 					if (GUI.Button(rect, 0, GUI.Skin.HighlightPixel) && folderExists) {
-						OpenProject(projectPath);
+						OpenProject(project);
 					}
 
 					// Icon

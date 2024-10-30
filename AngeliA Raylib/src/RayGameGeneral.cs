@@ -8,6 +8,10 @@ namespace AngeliaRaylib;
 public partial class RayGame {
 
 
+	// VAR
+	private static Image EMPTY_IMG;
+
+
 	// System
 	protected override void _SetFullscreen (bool fullScreen) {
 		if (Raylib.IsWindowFullscreen() == fullScreen) return;
@@ -107,11 +111,14 @@ public partial class RayGame {
 	protected override void _SetWindowTitle (string title) => Raylib.SetWindowTitle(title);
 
 	protected override void _SetWindowIcon (int spriteID) {
-		if (Renderer.MainSheet == null) return;
-		if (!Renderer.MainSheet.TryGetTextureFromPool(spriteID, out var texture) || texture is not Texture2D rTexture) return;
+		if (Renderer.MainSheet == null || spriteID == 0) goto _DEF_;
+		if (!Renderer.MainSheet.TryGetTextureFromPool(spriteID, out var texture) || texture is not Texture2D rTexture) goto _DEF_;
 		var img = Raylib.LoadImageFromTexture(rTexture);
 		Raylib.SetWindowIcon(img);
 		Raylib.UnloadImage(img);
+		return;
+		_DEF_:;
+		Raylib.SetWindowIcon(EMPTY_IMG);
 	}
 
 	protected override void _SetWindowMinSize (int size) => Raylib.SetWindowMinSize(size, size);

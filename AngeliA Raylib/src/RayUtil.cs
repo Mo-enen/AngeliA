@@ -11,7 +11,7 @@ public static unsafe class RayUtil {
 
 	// VAR
 	private static readonly Color[] FillPixelCache = new Color[512 * 512];
-	private static Texture2D EMPTY_TEXTURE;
+	public static Texture2D EMPTY_TEXTURE { get; private set; }
 
 
 	// API
