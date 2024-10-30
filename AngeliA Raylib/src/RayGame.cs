@@ -160,9 +160,6 @@ public partial class RayGame : Game {
 
 	private void UpdateGame () {
 
-		int currentScreenW = _GetScreenWidth();
-		int currentScreenH = _GetScreenHeight();
-
 		// Music
 		if (CurrentBGM != null) Raylib.UpdateMusicStream((Music)CurrentBGM);
 
@@ -174,6 +171,76 @@ public partial class RayGame : Game {
 				break;
 			}
 		}
+
+		// Render Textures
+		UpdateRenderTextures();
+
+		// File Drop
+		if (Raylib.IsFileDropped()) {
+			foreach (string path in Raylib.GetDroppedFiles()) {
+				InvokeFileDropped(path);
+			}
+		}
+
+		// Update AngeliA
+		SwitchToGizmosTextureMode();
+		Raylib.ClearBackground(Color.Blank);
+		Update();
+		Raylib.EndBlendMode();
+
+		// Black Side Border
+		if (Renderer.CameraRange.x.NotAlmostZero()) {
+			int currentScreenW = _GetScreenWidth();
+			int currentScreenH = _GetScreenHeight();
+			int borderWidth = (int)(currentScreenW * Renderer.CameraRange.x);
+			Raylib.DrawRectangle(0, 0, borderWidth, currentScreenH, Color.Black);
+			Raylib.DrawRectangle(currentScreenW - borderWidth, 0, borderWidth, currentScreenH, Color.Black);
+		}
+
+		// End Rendering
+		DrawAllScreenEffects();
+		Raylib.EndTextureMode();
+		Raylib.BeginDrawing();
+		Raylib.DrawTextureRec(
+			RenderTexture.Texture,
+			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
+			default, Color.White
+		);
+
+		// Front Doodle
+		if (GlobalFrame <= DoodleFrame + 1 && GlobalFrame <= DoodleOnTopOfUiFrame + 1) {
+			Raylib.DrawTextureRec(
+				DoodleRenderTexture.Texture,
+				new Rectangle(
+					DoodleRenderingOffset.x,
+					-DoodleRenderingOffset.y,
+					DoodleRenderTexture.Texture.Width,
+					DoodleRenderTexture.Texture.Height
+				),
+				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
+			);
+		}
+
+		// Front Gizmos
+		if (GlobalFrame <= GizmosOnTopOfUiFrame + 1) {
+			Raylib.DrawTextureRec(
+				GizmosRenderTexture.Texture,
+				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
+				new Vector2(0, 0), Color.White
+			);
+		}
+
+		// End
+		Raylib.EndBlendMode();
+		Raylib.EndDrawing();
+	}
+
+
+	private void UpdateRenderTextures () {
+
+		int currentScreenW = _GetScreenWidth();
+		int currentScreenH = _GetScreenHeight();
+
 		// Texture Size Changed
 		if (RenderTexture.Texture.Width != currentScreenW || RenderTexture.Texture.Height != currentScreenH) {
 			Raylib.UnloadRenderTexture(RenderTexture);
@@ -223,63 +290,27 @@ public partial class RayGame : Game {
 			Raylib.SetTextureWrap(DoodleRenderTexture.Texture, TextureWrap.Repeat);
 			Debug.LogWarning("Doodle Render Texture Force Reloaded. This should not happen.");
 		}
+	}
 
-		// File Drop
-		if (Raylib.IsFileDropped()) {
-			foreach (string path in Raylib.GetDroppedFiles()) {
-				InvokeFileDropped(path);
-			}
+
+	private void DrawAllScreenEffects () {
+		if (!HasScreenEffectEnabled) return;
+		UpdateScreenEffect();
+		var rect = new Rectangle(0, 0, RenderTexture.Texture.Width, RenderTexture.Texture.Height);
+		rect.X += ScreenEffectPadding.left;
+		rect.Width -= ScreenEffectPadding.left;
+		rect.Y += ScreenEffectPadding.down;
+		rect.Height -= ScreenEffectPadding.down;
+		rect.Width -= ScreenEffectPadding.right;
+		rect.Height -= ScreenEffectPadding.up;
+		rect.Height = -rect.Height;
+		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
+			if (!ScreenEffectEnables[i]) continue;
+			// Draw Texture with Shader
+			Raylib.BeginShaderMode(ScreenEffectShaders[i]);
+			Raylib.DrawTextureRec(RenderTexture.Texture, rect, new Vector2(ScreenEffectPadding.left, ScreenEffectPadding.down), Color.White);
+			Raylib.EndShaderMode();
 		}
-
-		// Update AngeliA
-		SwitchToGizmosTextureMode();
-		Raylib.ClearBackground(Color.Blank);
-		Update();
-		Raylib.EndBlendMode();
-
-		// Black Side Border
-		if (Renderer.CameraRange.x.NotAlmostZero()) {
-			int borderWidth = (int)(currentScreenW * Renderer.CameraRange.x);
-			Raylib.DrawRectangle(0, 0, borderWidth, currentScreenH, Color.Black);
-			Raylib.DrawRectangle(currentScreenW - borderWidth, 0, borderWidth, currentScreenH, Color.Black);
-		}
-
-		// End Rendering
-		DrawAllScreenEffects();
-		Raylib.EndTextureMode();
-		Raylib.BeginDrawing();
-		Raylib.DrawTextureRec(
-			RenderTexture.Texture,
-			new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
-			default, Color.White
-		);
-
-		// Front Doodle
-		if (GlobalFrame <= DoodleFrame + 1 && GlobalFrame <= DoodleOnTopOfUiFrame + 1) {
-			Raylib.DrawTextureRec(
-				DoodleRenderTexture.Texture,
-				new Rectangle(
-					DoodleRenderingOffset.x,
-					-DoodleRenderingOffset.y,
-					DoodleRenderTexture.Texture.Width,
-					DoodleRenderTexture.Texture.Height
-				),
-				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
-			);
-		}
-
-		// Front Gizmos
-		if (GlobalFrame <= GizmosOnTopOfUiFrame + 1) {
-			Raylib.DrawTextureRec(
-				GizmosRenderTexture.Texture,
-				new Rectangle(0, 0, GizmosRenderTexture.Texture.Width, -GizmosRenderTexture.Texture.Height),
-				new Vector2(0, 0), Color.White
-			);
-		}
-
-		// End
-		Raylib.EndBlendMode();
-		Raylib.EndDrawing();
 	}
 
 
@@ -320,24 +351,6 @@ public partial class RayGame : Game {
 		Raylib.BeginTextureMode(DoodleRenderTexture);
 		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		CurrentAltTextureMode = AltTextureMode.Doodle;
-	}
-
-
-	private void DrawAllScreenEffects (byte alpha = 255) {
-		if (!HasScreenEffectEnabled) return;
-		UpdateScreenEffect();
-		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {
-			if (!ScreenEffectEnables[i]) continue;
-			// Draw Texture with Shader
-			Raylib.BeginShaderMode(ScreenEffectShaders[i]);
-			Raylib.DrawTextureRec(
-				RenderTexture.Texture,
-				new Rectangle(0, 0, RenderTexture.Texture.Width, -RenderTexture.Texture.Height),
-				new(0, 0),
-				new Color((byte)255, (byte)255, (byte)255, alpha)
-			);
-			Raylib.EndShaderMode();
-		}
 	}
 
 

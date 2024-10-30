@@ -1,107 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract partial class Game {
-
-
-	// System
-	internal static bool IsFullscreen {
-		get => _IsFullscreen.Value;
-		set {
-			_IsFullscreen.Value = value;
-			Instance._SetFullscreen(value);
-		}
-	}
-	protected abstract void _SetFullscreen (bool fullScreen);
-
-	public static int ScreenWidth { get; private set; }
-	public static int MonitorWidth { get; private set; }
-	protected abstract int _GetScreenWidth ();
-
-	public static int ScreenHeight { get; private set; }
-	public static int MonitorHeight { get; private set; }
-	protected abstract int _GetScreenHeight ();
-
-	public static void QuitApplication () => Instance._QuitApplication();
-	protected abstract void _QuitApplication ();
-
-	public static void OpenUrl (string url) => Instance._OpenUrl(url);
-	protected abstract void _OpenUrl (string url);
-
-
-	// Window
-	public static bool IsWindowFocused => Instance._IsWindowFocused();
-	protected abstract bool _IsWindowFocused ();
-
-	public static void MakeWindowFocused () => Instance._MakeWindowFocused();
-	protected abstract void _MakeWindowFocused ();
-
-	public static void SetWindowPosition (int x, int y) => Instance._SetWindowPosition(x, y);
-	protected abstract void _SetWindowPosition (int x, int y);
-
-	public static Int2 GetWindowPosition () => Instance._GetWindowPosition();
-	protected abstract Int2 _GetWindowPosition ();
-
-	public static void SetWindowSize (int x, int y) => Instance._SetWindowSize(x, y);
-	protected abstract void _SetWindowSize (int x, int y);
-
-	public static int CurrentMonitor => Instance._GetCurrentMonitor();
-	protected abstract int _GetCurrentMonitor ();
-
-	public static int GetMonitorWidth (int monitor) => Instance._GetMonitorWidth(monitor);
-	protected abstract int _GetMonitorWidth (int monitor);
-
-	public static int GetMonitorHeight (int monitor) => Instance._GetMonitorHeight(monitor);
-	protected abstract int _GetMonitorHeight (int monitor);
-
-	public static bool IsWindowDecorated {
-		get => Instance._GetWindowDecorated();
-		set => Instance._SetWindowDecorated(value);
-	}
-	protected abstract bool _GetWindowDecorated ();
-	protected abstract void _SetWindowDecorated (bool decorated);
-
-	public static bool IsWindowTopmost {
-		get => Instance._GetWindowTopmost();
-		set => Instance._SetWindowTopmost(value);
-	}
-	protected abstract bool _GetWindowTopmost ();
-	protected abstract void _SetWindowTopmost (bool topmost);
-
-	public static bool IsWindowResizable {
-		get => Instance._GetWindowResizable();
-		set => Instance._SetWindowResizable(value);
-	}
-	protected abstract bool _GetWindowResizable ();
-	protected abstract void _SetWindowResizable (bool resizable);
-
-	public static bool IsWindowMaximized {
-		get => Instance._GetWindowMaximized();
-		set => Instance._SetWindowMaximized(value);
-	}
-	protected abstract bool _GetWindowMaximized ();
-	protected abstract void _SetWindowMaximized (bool maximized);
-
-	public static bool IsWindowMinimized {
-		get => Instance._GetWindowMinimized();
-		set => Instance._SetWindowMinimized(value);
-	}
-	protected abstract bool _GetWindowMinimized ();
-	protected abstract void _SetWindowMinimized (bool minimized);
-
-	public static void SetWindowTitle (string title) => Instance._SetWindowTitle(title);
-	protected abstract void _SetWindowTitle (string title);
-
-	public static void SetWindowIcon (int spriteID) => Instance._SetWindowIcon(spriteID);
-	protected abstract void _SetWindowIcon (int spriteID);
-
-	public static void SetWindowMinSize (int size) => Instance._SetWindowMinSize(size);
-	protected abstract void _SetWindowMinSize (int size);
-
-	public static void SetEventWaiting (bool enable) => Instance._SetEventWaiting(enable);
-	protected abstract void _SetEventWaiting (bool enable);
+public partial class Game {
 
 
 	// View
@@ -132,6 +34,8 @@ public abstract partial class Game {
 
 
 	// Effect
+	public static Int4 ScreenEffectPadding { get; set; } = default;
+
 	[OnGameUpdatePauseless(4096)]
 	internal static void ScreenEffectUpdate () {
 		var ins = Instance;
@@ -144,6 +48,7 @@ public abstract partial class Game {
 		}
 	}
 	public static void PassEffect (int effectIndex, int duration = 0) => ScreenEffectEnableFrames[effectIndex] = PauselessFrame + duration;
+
 	public static void PassEffect_Tint (Color32 color, int duration = 0) {
 		ScreenEffectEnableFrames[Const.SCREEN_EFFECT_TINT] = PauselessFrame + duration;
 		Instance._Effect_SetTintParams(color);
@@ -166,8 +71,10 @@ public abstract partial class Game {
 	public static void PassEffect_Invert (int duration = 0) {
 		ScreenEffectEnableFrames[Const.SCREEN_EFFECT_INVERT] = PauselessFrame + duration;
 	}
+
 	public static bool GetEffectEnable (int effectIndex) => Instance._GetEffectEnable(effectIndex);
 	public static void SetEffectEnable (int effectIndex, bool enable) => Instance._SetEffectEnable(effectIndex, enable);
+
 	protected abstract bool _GetEffectEnable (int effectIndex);
 	protected abstract void _SetEffectEnable (int effectIndex, bool enable);
 	protected abstract void _Effect_SetDarkenParams (float amount, float step);
@@ -351,140 +258,6 @@ public abstract partial class Game {
 	protected abstract bool _GetCharSprite (int fontIndex, char c, out CharSprite result);
 
 	protected abstract FontData CreateNewFontData ();
-
-
-	// Music
-	public static void UnloadMusic (object music) => Instance._UnloadMusic(music);
-	protected abstract void _UnloadMusic (object music);
-
-	public static void PlayMusic (int id) => Instance._PlayMusic(id);
-	protected abstract void _PlayMusic (int id);
-
-	public static void StopMusic () => Instance._StopMusic();
-	protected abstract void _StopMusic ();
-
-	public static void PauseMusic () => Instance._PauseMusic();
-	protected abstract void _PauseMusic ();
-
-	public static void UnpauseMusic () => Instance._UnPauseMusic();
-	protected abstract void _UnPauseMusic ();
-
-	public static void SetMusicVolume (int volume) {
-		_MusicVolume.Value = volume;
-		Instance._SetMusicVolume(volume);
-	}
-	protected abstract void _SetMusicVolume (int volume);
-
-	public static bool IsMusicPlaying => Instance._IsMusicPlaying();
-	protected abstract bool _IsMusicPlaying ();
-
-	public static int CurrentMusicID => Instance._GetCurrentMusicID();
-	protected abstract int _GetCurrentMusicID ();
-
-
-	// Sound
-	public static object LoadSound (string filePath) => Instance._LoadSound(filePath);
-	protected abstract object _LoadSound (string filePath);
-
-	public static void UnloadSound (SoundData sound) => Instance._UnloadSound(sound);
-	protected abstract void _UnloadSound (SoundData sound);
-
-	public static void PlaySound (int id, float volume = 1f) => Instance._PlaySound(id, volume);
-	protected abstract void _PlaySound (int id, float volume);
-
-	public static void StopAllSounds () => Instance._StopAllSounds();
-	protected abstract void _StopAllSounds ();
-
-	public static void SetSoundVolume (int volume) {
-		_SoundVolume.Value = volume;
-		Instance._SetSoundVolume(volume);
-	}
-	protected abstract void _SetSoundVolume (int volume);
-
-
-	// Cursor
-	public static void ShowCursor () => Instance._ShowCursor();
-	protected abstract void _ShowCursor ();
-
-	public static void HideCursor () => Instance._HideCursor();
-	protected abstract void _HideCursor ();
-
-	public static void CenterCursor () => Instance._CenterCursor();
-	protected abstract void _CenterCursor ();
-
-	public static bool CursorVisible => Instance._CursorVisible();
-	protected abstract bool _CursorVisible ();
-
-	public static void SetCursor (int index) => Instance._SetCursor(index);
-	protected abstract void _SetCursor (int index);
-
-	public static void SetCursorToNormal () => Instance._SetCursorToNormal();
-	protected abstract void _SetCursorToNormal ();
-
-	public static bool CursorInScreen => Instance._CursorInScreen();
-	protected abstract bool _CursorInScreen ();
-
-
-	// Mouse
-	public static bool IsMouseAvailable => Instance._IsMouseAvailable();
-	protected abstract bool _IsMouseAvailable ();
-
-	public static bool IsMouseLeftHolding => Instance._IsMouseLeftHolding();
-	protected abstract bool _IsMouseLeftHolding ();
-
-	public static bool IsMouseMidHolding => Instance._IsMouseMidHolding();
-	protected abstract bool _IsMouseMidHolding ();
-
-	public static bool IsMouseRightHolding => Instance._IsMouseRightHolding();
-	protected abstract bool _IsMouseRightHolding ();
-
-	public static int MouseScrollDelta => Instance._GetMouseScrollDelta();
-	protected abstract int _GetMouseScrollDelta ();
-
-	public static Int2 MouseScreenPosition => Instance._GetMouseScreenPosition();
-	protected abstract Int2 _GetMouseScreenPosition ();
-
-
-	// Keyboard
-	public static bool IsKeyboardAvailable => Instance._IsKeyboardAvailable();
-	protected abstract bool _IsKeyboardAvailable ();
-
-	public static bool IsKeyboardKeyHolding (KeyboardKey key) => Instance._IsKeyboardKeyHolding(key);
-	protected abstract bool _IsKeyboardKeyHolding (KeyboardKey key);
-
-	public static IEnumerable<char> ForAllPressingCharsThisFrame () {
-		for (int i = 0; i < Instance.PressingCharCount; i++) {
-			yield return Instance.PressingCharsForCurrentFrame[i];
-		}
-	}
-	protected abstract char GetCharPressed ();
-
-	public static IEnumerable<KeyboardKey> ForAllPressingKeysThisFrame () {
-		for (int i = 0; i < Instance.PressingKeyCount; i++) {
-			yield return Instance.PressingKeysForCurrentFrame[i];
-		}
-	}
-	protected abstract KeyboardKey? GetKeyPressed ();
-
-
-	// Gamepad
-	public static bool IsGamepadAvailable => Instance._IsGamepadAvailable();
-	protected abstract bool _IsGamepadAvailable ();
-
-	public static bool IsGamepadKeyHolding (GamepadKey key) => Instance._IsGamepadKeyHolding(key);
-	protected abstract bool _IsGamepadKeyHolding (GamepadKey key);
-
-	public static bool IsGamepadLeftStickHolding (Direction4 direction) => Instance._IsGamepadLeftStickHolding(direction);
-	protected abstract bool _IsGamepadLeftStickHolding (Direction4 direction);
-
-	public static bool IsGamepadRightStickHolding (Direction4 direction) => Instance._IsGamepadRightStickHolding(direction);
-	protected abstract bool _IsGamepadRightStickHolding (Direction4 direction);
-
-	public static Float2 GamepadLeftStickDirection => Instance._GetGamepadLeftStickDirection();
-	protected abstract Float2 _GetGamepadLeftStickDirection ();
-
-	public static Float2 GamepadRightStickDirection => Instance._GetGamepadRightStickDirection();
-	protected abstract Float2 _GetGamepadRightStickDirection ();
 
 
 }

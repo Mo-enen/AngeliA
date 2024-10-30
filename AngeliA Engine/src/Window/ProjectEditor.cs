@@ -885,6 +885,7 @@ public class ProjectEditor : WindowUI {
 		var results = EngineUtil.LoadTexturesFromIco(path, true);
 		if (results != null && results.Length > 0 && results[0] != null) {
 			iconSP.MakeDedicatedForTexture(results[0], Renderer.MainSheet);
+			Game.SetWindowIcon(iconSP.ID);
 		}
 	}
 

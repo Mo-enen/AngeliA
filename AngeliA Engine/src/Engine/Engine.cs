@@ -319,6 +319,13 @@ public partial class Engine {
 				Game.ForceDoodleOnTopOfUI(1);
 			}
 		}
+		if (Instance.CurrentWindow is GameEditor gameEDT) {
+			var padding = Int4.Direction(Instance.GetEngineLeftBarWidth(out int _) + gameEDT.ToolbarLeftWidth, 0, 0, 0);
+			padding.left = padding.left * Game.ScreenWidth / Renderer.CameraRect.width;
+			Game.ScreenEffectPadding = padding;
+		} else {
+			Game.ScreenEffectPadding = default;
+		}
 
 		using var _ = new SheetIndexScope(Instance.ThemeSheet.Sprites.Count > 0 ? Instance.ThemeSheetIndex : -1);
 		using var __ = new GUISkinScope(Instance.ThemeSkin);
