@@ -33,15 +33,15 @@ public static class Input {
 
 
 	// Const
-	private static readonly int[] KEYBOARD_DEFAULT = [
-		(int)KeyboardKey.A, (int)KeyboardKey.D, (int)KeyboardKey.S, (int)KeyboardKey.W,
-		(int)KeyboardKey.L, (int)KeyboardKey.P, (int)KeyboardKey.Escape, (int)KeyboardKey.Space,
+	private static readonly KeyboardKey[] KEYBOARD_DEFAULT = [
+		KeyboardKey.A, KeyboardKey.D, KeyboardKey.S, KeyboardKey.W,
+		KeyboardKey.L, KeyboardKey.P, KeyboardKey.Escape, KeyboardKey.Space,
 	];
-	private static readonly int[] GAMEPAD_DEFAULT = [
-		(int)GamepadKey.DpadLeft, (int)GamepadKey.DpadRight,
-		(int)GamepadKey.DpadDown, (int)GamepadKey.DpadUp,
-		(int)GamepadKey.East, (int)GamepadKey.South,
-		(int)GamepadKey.Start, (int)GamepadKey.Select,
+	private static readonly GamepadKey[] GAMEPAD_DEFAULT = [
+		GamepadKey.DpadLeft, GamepadKey.DpadRight,
+		GamepadKey.DpadDown, GamepadKey.DpadUp,
+		GamepadKey.East, GamepadKey.South,
+		GamepadKey.Start, GamepadKey.Select,
 	];
 
 	// Api
@@ -160,24 +160,24 @@ public static class Input {
 	// Saving
 	private static readonly SavingBool s_AllowGamepad = new("Input.AllowGamepad", true, SavingLocation.Global);
 	private static readonly SavingInt[] KeyboardConfigSaving = [
-		new("Input.Left", KEYBOARD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
-		new("Input.Right", KEYBOARD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
-		new("Input.Down", KEYBOARD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
-		new("Input.Up", KEYBOARD_DEFAULT[(int)Gamekey.Up], SavingLocation.Global),
-		new("Input.Action", KEYBOARD_DEFAULT[(int)Gamekey.Action], SavingLocation.Global),
-		new("Input.Jump", KEYBOARD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
-		new("Input.Start", KEYBOARD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
-		new("Input.Select", KEYBOARD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
+		new("Input.Left", (int)KEYBOARD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
+		new("Input.Right", (int)KEYBOARD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
+		new("Input.Down", (int)KEYBOARD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
+		new("Input.Up", (int)KEYBOARD_DEFAULT[(int)Gamekey.Up], SavingLocation.Global),
+		new("Input.Action",(int) KEYBOARD_DEFAULT[(int)Gamekey.Action], SavingLocation.Global),
+		new("Input.Jump", (int)KEYBOARD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
+		new("Input.Start", (int)KEYBOARD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
+		new("Input.Select", (int)KEYBOARD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
 	];
 	private static readonly SavingInt[] GamepadConfigSaving = [
-		new("Input.Pad.Left", GAMEPAD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
-		new("Input.Pad.Right", GAMEPAD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
-		new("Input.Pad.Down", GAMEPAD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
-		new("Input.Pad.Up", GAMEPAD_DEFAULT[(int)Gamekey.Up], SavingLocation.Global),
-		new("Input.Pad.Action", GAMEPAD_DEFAULT[(int)Gamekey.Action], SavingLocation.Global),
-		new("Input.Pad.Jump", GAMEPAD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
-		new("Input.Pad.Start", GAMEPAD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
-		new("Input.Pad.Select", GAMEPAD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
+		new("Input.Pad.Left", (int)GAMEPAD_DEFAULT[(int)Gamekey.Left], SavingLocation.Global),
+		new("Input.Pad.Right", (int)GAMEPAD_DEFAULT[(int)Gamekey.Right], SavingLocation.Global),
+		new("Input.Pad.Down", (int)GAMEPAD_DEFAULT[(int)Gamekey.Down], SavingLocation.Global),
+		new("Input.Pad.Up", (int)GAMEPAD_DEFAULT[(int)Gamekey.Up], SavingLocation.Global),
+		new("Input.Pad.Action", (int)GAMEPAD_DEFAULT[(int)Gamekey.Action], SavingLocation.Global),
+		new("Input.Pad.Jump", (int)GAMEPAD_DEFAULT[(int)Gamekey.Jump], SavingLocation.Global),
+		new("Input.Pad.Start", (int)GAMEPAD_DEFAULT[(int)Gamekey.Start], SavingLocation.Global),
+		new("Input.Pad.Select", (int)GAMEPAD_DEFAULT[(int)Gamekey.Select], SavingLocation.Global),
 	];
 
 
@@ -213,6 +213,32 @@ public static class Input {
 			}
 		}
 
+		// Custom Default Input
+		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<DefaultKeyboardGamekeyAttribute>()) {
+			KEYBOARD_DEFAULT[(int)att.Gamekey] = att.InputKey;
+		}
+		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<DefaultGamepadGamekeyAttribute>()) {
+			GAMEPAD_DEFAULT[(int)att.Gamekey] = att.InputKey;
+		}
+
+		// Save all Default Key Config
+		for (int i = 0; i < KeyboardConfigSaving.Length; i++) {
+			var saving = KeyboardConfigSaving[i];
+			int value = saving.Value;
+			if (!SavingSystem.HasKey(saving)) {
+				value = (int)KEYBOARD_DEFAULT[i];
+			}
+			saving.SetValue(value, true);
+		}
+		for (int i = 0; i < GamepadConfigSaving.Length; i++) {
+			var saving = GamepadConfigSaving[i];
+			int value = saving.Value;
+			if (!SavingSystem.HasKey(saving)) {
+				value = (int)GAMEPAD_DEFAULT[i];
+			}
+			saving.SetValue(value, true);
+		}
+
 	}
 
 
@@ -225,7 +251,6 @@ public static class Input {
 		for (int i = 0; i < 8; i++) {
 			KeyMap[(Gamekey)i] = new Int2(KeyboardConfigSaving[i].Value, GamepadConfigSaving[i].Value);
 		}
-		KeyMap[Gamekey.Start] = new Int2((int)KeyboardKey.Escape, (int)GamepadKey.Start);
 
 		return TaskResult.End;
 	}

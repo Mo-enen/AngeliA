@@ -186,7 +186,7 @@ public class CharacterMovement (Rigidbody rig) {
 	public int CurrentJumpCount { get; private set; } = 0;
 	public int SpeedRateX { get; private set; } = 1000;
 	public bool FacingRight { get; set; } = true;
-	public bool FacingFront { get; private set; } = true;
+	public bool FacingFront { get; set; } = true;
 	public bool ShouldRun { get; private set; } = true;
 	public int FinalCharacterHeight { get; set; }
 	public virtual bool SyncFromConfigFile => true;
@@ -550,9 +550,7 @@ public class CharacterMovement (Rigidbody rig) {
 		}
 
 		// Facing Front
-		FacingFront =
-			!IsClimbing &&
-			(TargetCharacter == null || !TargetCharacter.Teleporting || TargetCharacter.TeleportToFrontSide);
+		FacingFront = !IsClimbing;
 
 		// Physics
 		int growingHeight = FinalCharacterHeight;

@@ -69,6 +69,8 @@ public static class Extension {
 
 
 	// Misc
+	public static bool IsLyingDown (this CharacterAnimationType aniType) => aniType == CharacterAnimationType.Crash || aniType == CharacterAnimationType.PassOut || aniType == CharacterAnimationType.Sleep;
+
 	public static System.Span<T> GetSpan<T> (this List<T> list) => CollectionsMarshal.AsSpan(list);
 	public static System.Span<T> GetSpan<T> (this T[] arr) => new(arr);
 	public static System.ReadOnlySpan<T> GetReadOnlySpan<T> (this T[] arr) => new(arr);

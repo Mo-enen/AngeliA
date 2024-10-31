@@ -33,27 +33,27 @@ public abstract class HipCloth : Cloth {
 		return SpriteLoaded;
 	}
 
-	public static void DrawClothFromPool (PoseCharacterRenderer character) {
-		if (character.SuitHip != 0 && Pool.TryGetValue(character.SuitHip, out var cloth)) {
-			cloth.DrawCloth(character);
+	public static void DrawClothFromPool (PoseCharacterRenderer rendering) {
+		if (rendering.SuitHip != 0 && Pool.TryGetValue(rendering.SuitHip, out var cloth)) {
+			cloth.DrawCloth(rendering);
 		}
 	}
 
-	public override void DrawCloth (PoseCharacterRenderer character) {
+	public override void DrawCloth (PoseCharacterRenderer rendering) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForHip(character, SpriteIdHip, CoverLegs ? 4 : 1);
-		DrawClothForSkirt(character, SpriteIdSkirt, CoverLegs ? 6 : 1);
-		DrawClothForUpperLeg(character, SpriteIdUpperLeg);
-		DrawClothForLowerLeg(character, SpriteIdLowerLeg);
+		DrawClothForHip(rendering, SpriteIdHip, CoverLegs ? 4 : 1);
+		DrawClothForSkirt(rendering, SpriteIdSkirt, CoverLegs ? 6 : 1);
+		DrawClothForUpperLeg(rendering, SpriteIdUpperLeg);
+		DrawClothForLowerLeg(rendering, SpriteIdLowerLeg);
 	}
 
-	public static void DrawClothForHip (PoseCharacterRenderer character, int spriteID, int localZ = 1) {
+	public static void DrawClothForHip (PoseCharacterRenderer rendering, int spriteID, int localZ = 1) {
 
-		var hip = character.Hip;
+		var hip = rendering.Hip;
 		if (spriteID == 0 || hip.IsFullCovered) return;
 		if (
-			!Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
+			!Renderer.TryGetSpriteFromGroup(spriteID, rendering.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
 			!Renderer.TryGetSprite(spriteID, out sprite)
 		) return;
 
@@ -85,19 +85,19 @@ public abstract class HipCloth : Cloth {
 
 	}
 
-	public static void DrawClothForSkirt (PoseCharacterRenderer character, int spriteID, int localZ = 6) {
+	public static void DrawClothForSkirt (PoseCharacterRenderer rendering, int spriteID, int localZ = 6) {
 
-		var hip = character.Hip;
+		var hip = rendering.Hip;
 		if (spriteID == 0 || hip.IsFullCovered) return;
 		if (
-			!Renderer.TryGetSpriteFromGroup(spriteID, character.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
+			!Renderer.TryGetSpriteFromGroup(spriteID, rendering.Body.FrontSide ? 0 : 1, out var sprite, false, true) &&
 			!Renderer.TryGetSprite(spriteID, out sprite)
 		) return;
 
-		var body = character.Body;
-		var upperLegL = character.UpperLegL;
-		var upperLegR = character.UpperLegR;
-		var animatedPoseType = character.TargetCharacter.AnimationType;
+		var body = rendering.Body;
+		var upperLegL = rendering.UpperLegL;
+		var upperLegR = rendering.UpperLegR;
+		var animatedPoseType = rendering.TargetCharacter.AnimationType;
 		const int A2G = 16;
 
 		// Skirt
@@ -127,13 +127,16 @@ public abstract class HipCloth : Cloth {
 			_ => 0,
 		};
 		int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000 + shiftY;
+		int height = body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight;
+		if (animatedPoseType.IsLyingDown() && body.Height > 0) {
+			height = height.LessOrEquel(centerY + offsetY - rendering.TargetCharacter.Y);
+		}
 		Renderer.Draw(
 			sprite,
 			centerX,
 			body.Height > 0 ? centerY + offsetY : centerY - offsetY,
 			500, 1000, 0,
-			width,
-			body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight,
+			width, height,
 			hip.Z + localZ
 		);
 

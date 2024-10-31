@@ -15,33 +15,8 @@ public abstract class Saving {
 public abstract class Saving<T> : Saving {
 
 	public T Value {
-		get {
-			if (!SavingSystem.FileLoaded) {
-				SavingSystem.LoadFromFile();
-			}
-			if (PoolVersion != SavingSystem.PoolVersion) {
-				PoolVersion = SavingSystem.PoolVersion;
-				if (SavingSystem.Pool.TryGetValue(ID, out var line)) {
-					_Value = StringToValue(line.Value);
-				} else {
-					_Value = DefaultValue;
-				}
-			}
-			return _Value;
-		}
-		set {
-			if (
-				PoolVersion != SavingSystem.PoolVersion ||
-				(_Value != null && !_Value.Equals(value)) ||
-				(_Value == null && value != null)
-			) {
-				_Value = value;
-				PoolVersion = SavingSystem.PoolVersion;
-				SavingSystem.IsDirty = true;
-				string newString = ValueToString(value);
-				SavingSystem.Pool[ID] = new SavingSystem.SavingLine(Key, newString, Location == SavingLocation.Global);
-			}
-		}
+		get => GetValue();
+		set => SetValue(value);
 	}
 	public T DefaultValue { get; init; }
 	private SavingLocation Location { get; init; }
@@ -55,6 +30,35 @@ public abstract class Saving<T> : Saving {
 		_Value = defaultValue;
 		PoolVersion = -1;
 		Location = location;
+	}
+
+	public T GetValue (bool forceLoad = false) {
+		if (!SavingSystem.FileLoaded) {
+			SavingSystem.LoadFromFile();
+		}
+		if (PoolVersion != SavingSystem.PoolVersion || forceLoad) {
+			PoolVersion = SavingSystem.PoolVersion;
+			if (SavingSystem.Pool.TryGetValue(ID, out var line)) {
+				_Value = StringToValue(line.Value);
+			} else {
+				_Value = DefaultValue;
+			}
+		}
+		return _Value;
+	}
+	public void SetValue (T value, bool forceSave = false) {
+		if (
+			PoolVersion != SavingSystem.PoolVersion ||
+			(_Value != null && !_Value.Equals(value)) ||
+			(_Value == null && value != null) ||
+			forceSave
+		) {
+			_Value = value;
+			PoolVersion = SavingSystem.PoolVersion;
+			SavingSystem.IsDirty = true;
+			string newString = ValueToString(value);
+			SavingSystem.Pool[ID] = new SavingSystem.SavingLine(Key, newString, Location == SavingLocation.Global);
+		}
 	}
 
 	protected abstract T StringToValue (string str);

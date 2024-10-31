@@ -9,7 +9,7 @@ public class PoseAnimation_Sleep : PoseAnimation {
 
 		Body.Height = Body.SizeY / 4;
 
-		Head.X = FacingRight ? A2G * 4 : A2G * -4;
+		Head.X = FacingRight ? A2G * 2 : A2G * -2;
 		Head.Y = 0;
 		Head.Height -= alt ? A2G : 0;
 
@@ -58,5 +58,13 @@ public class PoseAnimation_Sleep : PoseAnimation {
 
 		FootL.LimbRotate(FacingRight ? 0 : 1);
 		FootR.LimbRotate(FacingRight ? 0 : 1);
+
+		// Z
+		UpperArmL.Z = UpperArmL.Z.Abs();
+		UpperArmR.Z = UpperArmR.Z.Abs();
+		LowerArmL.Z = LowerArmL.Z.Abs();
+		LowerArmR.Z = LowerArmR.Z.Abs();
+		HandL.Z = HandL.Z.Abs();
+		HandR.Z = HandR.Z.Abs();
 	}
 }

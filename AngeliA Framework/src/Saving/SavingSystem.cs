@@ -65,6 +65,10 @@ public static class SavingSystem {
 
 
 	// API
+	public static bool HasKey (Saving saving) => Pool.ContainsKey(saving.ID);
+	public static bool HasKey (int id) => Pool.ContainsKey(id);
+
+
 	public static void LoadFromFile () {
 		FileLoaded = true;
 		Pool.Clear();

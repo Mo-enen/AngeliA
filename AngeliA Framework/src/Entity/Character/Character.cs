@@ -364,6 +364,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				Rendering.CurrentAnimationFrame = 0;
 				AnimationType = _poseType;
 			}
+			Movement.FacingFront = TeleportToFrontSide;
 			return;
 		}
 
