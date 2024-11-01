@@ -1,31 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
 
-
-public struct Damage {
-	public int Amount;
-	public Tag Type;
-	public Entity Sender;
-	public Entity Bullet;
-	public Damage (int amount, Entity sender, Entity bullet = null, Tag type = Tag.PhysicalDamage) {
-		Amount = amount;
-		Sender = sender;
-		Type = type;
-		Bullet = bullet;
-	}
-}
-
-
-public interface IDamageReceiver {
-
-	public int Team { get; }
-	public bool TakeDamageFromLevel => true;
-	public Tag IgnoreDamageType => Tag.None;
-
-	void TakeDamage (Damage damage);
+public struct Damage (int amount, Entity sender, Entity bullet = null, Tag type = Tag.PhysicalDamage) {
+	public int Amount = amount;
+	public Tag Type = type;
+	public Entity Sender = sender;
+	public Entity Bullet = bullet;
 
 	[OnGameUpdateLater]
 	public static void DamageUpdateFromLevel () {

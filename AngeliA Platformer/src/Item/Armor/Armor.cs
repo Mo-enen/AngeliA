@@ -81,27 +81,25 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	}
 
 
-	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
-		base.PoseAnimationUpdate_FromEquipment(holder);
+	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
+		base.OnPoseAnimationUpdate_FromEquipment(rendering);
 
 		// Gate
 		if (
-			holder is not Character character ||
-			character.Rendering is not PoseCharacterRenderer renderer ||
-			renderer.TargetCharacter.AnimationType == CharacterAnimationType.Sleep ||
-			renderer.TargetCharacter.AnimationType == CharacterAnimationType.PassOut
+			rendering.TargetCharacter.AnimationType == CharacterAnimationType.Sleep ||
+			rendering.TargetCharacter.AnimationType == CharacterAnimationType.PassOut
 		) return;
 
 		// Draw
-		DrawArmor(renderer);
+		DrawArmor(rendering);
 
 		// Hide Gadget
-		if (HideEar) renderer.EarID.Override(0, 1, priority: 4096);
-		if (HideHorn) renderer.HornID.Override(0, 1, priority: 4096);
-		if (HideHair) renderer.HairID.Override(0, 1, priority: 4096);
-		if (HideTail) renderer.TailID.Override(0, 1, priority: 4096);
-		if (HideFace) renderer.FaceID.Override(0, 1, priority: 4096);
-		if (HideWing) renderer.WingID.Override(0, 1, priority: 4096);
+		if (HideEar) rendering.EarID.Override(0, 1, priority: 4096);
+		if (HideHorn) rendering.HornID.Override(0, 1, priority: 4096);
+		if (HideHair) rendering.HairID.Override(0, 1, priority: 4096);
+		if (HideTail) rendering.TailID.Override(0, 1, priority: 4096);
+		if (HideFace) rendering.FaceID.Override(0, 1, priority: 4096);
+		if (HideWing) rendering.WingID.Override(0, 1, priority: 4096);
 
 	}
 

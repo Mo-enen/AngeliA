@@ -52,38 +52,37 @@ public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 		return performed;
 	}
 
-	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
-		base.PoseAnimationUpdate_FromEquipment(holder);
-		if (holder is Character character) {
-			var attackness = character.Attackness;
-			switch (ValidDirection) {
-				case ProjectileValidDirection.Two:
-					attackness.IgnoreAimingDirection(Direction8.Bottom);
-					attackness.IgnoreAimingDirection(Direction8.Top);
-					attackness.IgnoreAimingDirection(Direction8.TopLeft);
-					attackness.IgnoreAimingDirection(Direction8.TopRight);
-					attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-					attackness.IgnoreAimingDirection(Direction8.BottomRight);
-					break;
-				case ProjectileValidDirection.Three:
-					attackness.IgnoreAimingDirection(Direction8.Bottom);
-					attackness.IgnoreAimingDirection(Direction8.TopLeft);
-					attackness.IgnoreAimingDirection(Direction8.TopRight);
-					attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-					attackness.IgnoreAimingDirection(Direction8.BottomRight);
-					break;
-				case ProjectileValidDirection.Four:
-					attackness.IgnoreAimingDirection(Direction8.TopLeft);
-					attackness.IgnoreAimingDirection(Direction8.TopRight);
-					attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-					attackness.IgnoreAimingDirection(Direction8.BottomRight);
-					break;
-				case ProjectileValidDirection.Five:
-					attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-					attackness.IgnoreAimingDirection(Direction8.BottomRight);
-					attackness.IgnoreAimingDirection(Direction8.Bottom);
-					break;
-			}
+	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
+		base.OnPoseAnimationUpdate_FromEquipment(rendering);
+		var character = rendering.TargetCharacter;
+		var attackness = character.Attackness;
+		switch (ValidDirection) {
+			case ProjectileValidDirection.Two:
+				attackness.IgnoreAimingDirection(Direction8.Bottom);
+				attackness.IgnoreAimingDirection(Direction8.Top);
+				attackness.IgnoreAimingDirection(Direction8.TopLeft);
+				attackness.IgnoreAimingDirection(Direction8.TopRight);
+				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
+				attackness.IgnoreAimingDirection(Direction8.BottomRight);
+				break;
+			case ProjectileValidDirection.Three:
+				attackness.IgnoreAimingDirection(Direction8.Bottom);
+				attackness.IgnoreAimingDirection(Direction8.TopLeft);
+				attackness.IgnoreAimingDirection(Direction8.TopRight);
+				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
+				attackness.IgnoreAimingDirection(Direction8.BottomRight);
+				break;
+			case ProjectileValidDirection.Four:
+				attackness.IgnoreAimingDirection(Direction8.TopLeft);
+				attackness.IgnoreAimingDirection(Direction8.TopRight);
+				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
+				attackness.IgnoreAimingDirection(Direction8.BottomRight);
+				break;
+			case ProjectileValidDirection.Five:
+				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
+				attackness.IgnoreAimingDirection(Direction8.BottomRight);
+				attackness.IgnoreAimingDirection(Direction8.Bottom);
+				break;
 		}
 	}
 

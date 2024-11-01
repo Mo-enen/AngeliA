@@ -338,6 +338,8 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static IRect ToUnit (this IRect global) => global.UDivide(Const.CEL);
 	[MethodImpl(INLINE)] public static IRect ToGlobal (this IRect unit) => new(unit.x * Const.CEL, unit.y * Const.CEL, unit.width * Const.CEL, unit.height * Const.CEL);
 
+	[MethodImpl(INLINE)] public static int Sign (this bool value) => value ? 1 : -1;
+
 	// Vector
 	[MethodImpl(INLINE)]
 	public static void Clamp (this ref Int2 v, int minX, int minY, int maxX, int maxY) {

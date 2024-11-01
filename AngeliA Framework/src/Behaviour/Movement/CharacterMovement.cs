@@ -49,7 +49,10 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool GrowJumpCountWhenFallOffEdge = new(true);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool FirstJumpWithRoll = new(false);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 1)] public readonly FrameBasedBool SubsequentJumpWithRoll = new(true);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakRush = new(false);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakDash = new(true);
 	public readonly FrameBasedBool JumpDownThoughOneway = new(false);
+
 
 	[PropGroup("Squat")]
 	public readonly FrameBasedBool SquatAvailable = new(true);
@@ -324,6 +327,8 @@ public class CharacterMovement (Rigidbody rig) {
 		RequireJumpFrame = int.MinValue;
 		FacingRight = true;
 		FacingFront = true;
+		LastRushFrame = int.MinValue;
+		LastDashFrame = int.MinValue;
 
 		// Sync Movement Config from Pool
 		if (
@@ -681,7 +686,11 @@ public class CharacterMovement (Rigidbody rig) {
 
 		int frame = Game.GlobalFrame;
 
-		bool movementAllowJump = !IsSquatting && !IsGrabbingTop && !IsInsideGround && !IsRushing && !IsGrabFlipping && !IsCrashing;
+		bool movementAllowJump =
+			!IsSquatting && !IsGrabbingTop && !IsInsideGround &&
+			(JumpBreakRush || !IsRushing) &&
+			(JumpBreakDash || !IsDashing) &&
+			!IsGrabFlipping && !IsCrashing;
 
 		// Perform Jump/Fly
 		if (movementAllowJump && (!IsClimbing || AllowJumpWhenClimbing)) {
@@ -706,7 +715,8 @@ public class CharacterMovement (Rigidbody rig) {
 					} else if (IsGrabbingSide) {
 						VelocityX += FacingRight ? -GrabSideJumpKickSpeed : GrabSideJumpKickSpeed;
 					}
-					LastDashFrame = int.MinValue;
+					if (JumpBreakRush) LastRushFrame = int.MinValue;
+					if (JumpBreakDash) LastDashFrame = int.MinValue;
 					IsDashing = false;
 					IsSliding = false;
 					IsGrabbingSide = false;
@@ -1069,12 +1079,14 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	public virtual void Dash () => IntendedDash = true;
+	public void StopDash () => LastDashFrame = int.MinValue;
 
 
 	public virtual void Pound () => IntendedPound = true;
 
 
 	public virtual void Rush () => IntendedRush = true;
+	public void StopRush () => LastRushFrame = int.MinValue;
 
 
 	public virtual void Crash () => LastCrashFrame = Game.GlobalFrame;

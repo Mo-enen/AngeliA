@@ -78,6 +78,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public readonly FrameBasedInt TailID = new(0);
 	public readonly FrameBasedInt WingID = new(0);
 	public readonly FrameBasedInt HornID = new(0);
+	public readonly FrameBasedInt ForceExpressionIndex = new(-1);
 
 	// Suit
 	public readonly FrameBasedInt SuitHead = new(0);
@@ -272,13 +273,13 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		for (int i = 0; i < EquipmentTypeCount; i++) {
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, (EquipmentType)i, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			eq?.BeforePoseAnimationUpdate_FromEquipment(TargetCharacter);
+			eq?.BeforePoseAnimationUpdate_FromEquipment(this);
 		}
 		CalculateBodypartGlobalPosition();
 		for (int i = 0; i < EquipmentTypeCount; i++) {
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, (EquipmentType)i, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			eq?.PoseAnimationUpdate_FromEquipment(TargetCharacter);
+			eq?.OnPoseAnimationUpdate_FromEquipment(this);
 		}
 		CalculateBodypartGlobalPosition();
 	}
@@ -291,7 +292,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			int id = Inventory.GetItemAt(TargetCharacter.InventoryID, i, out int stackCount);
 			var item = id != 0 ? ItemSystem.GetItem(id) : null;
 			if (item == null || !item.CheckUpdateAvailable(TargetCharacter.TypeID)) continue;
-			item.PoseAnimationUpdate_FromInventory(TargetCharacter, stackCount);
+			item.OnPoseAnimationUpdate_FromInventory(this, stackCount);
 		}
 		CalculateBodypartGlobalPosition();
 	}

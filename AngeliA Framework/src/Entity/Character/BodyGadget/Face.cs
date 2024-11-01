@@ -13,6 +13,7 @@ public enum CharacterExpression {
 	PassOut = 4,
 	Attack = 5,
 	Suffer = 6,
+	Happy = 7,
 }
 
 
@@ -245,6 +246,30 @@ public abstract class Face : BodyGadget {
 				);
 				break;
 			}
+			case CharacterExpression.Happy: {
+				if (eyelash == null) break;
+				eyebrow = null;
+				Renderer.Draw(
+					eyelash,
+					rect.CenterX(), rect.yMax,
+					eyelash.PivotX, eyelash.PivotY,
+					-135,
+					eyelash.GlobalWidth - eyelash.GlobalHeight,
+					eyelash.GlobalHeight,
+					z: 36
+				);
+				Renderer.Draw(
+					eyelash,
+					rect.CenterX(), rect.yMax,
+					eyelash.PivotX, eyelash.PivotY,
+					-45,
+					eyelash.GlobalWidth,
+					eyelash.GlobalHeight,
+					z: 36
+				);
+				eyelash = null;
+				break;
+			}
 		}
 
 		// Eyebrow
@@ -368,6 +393,10 @@ public abstract class Face : BodyGadget {
 
 
 	public static CharacterExpression GetCurrentExpression (PoseCharacterRenderer renderer) {
+
+		if (renderer.ForceExpressionIndex >= 0) {
+			return (CharacterExpression)renderer.ForceExpressionIndex.FinalValue;
+		}
 
 		// Attack
 		if (

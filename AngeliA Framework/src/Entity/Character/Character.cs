@@ -87,6 +87,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public int DespawnAfterPassoutDelay { get; set; } = 60;
 	public int InventoryID { get; private set; }
 	public int RenderingCellIndex { get; private set; }
+	public bool TakeDamageFromLevel => Game.GlobalFrame > IgnoreDamageFromLevelFrame;
 
 	// Behaviour
 	public CharacterMovement Movement;
@@ -115,6 +116,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	private int LockedAnimationTypeFrame = int.MinValue;
 	private int ForceStayFrame = -1;
 	private int ForceTriggerFrame = -1;
+	private int IgnoreDamageFromLevelFrame = -1;
 	private int PrevZ;
 
 
@@ -847,6 +849,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	public void ForceFillTrigger (int duration = 1) => ForceTriggerFrame = Game.GlobalFrame + duration;
+
+
+	public void IgnoreDamageFromLevel (int duration = 1) => IgnoreDamageFromLevelFrame = Game.GlobalFrame + duration;
 
 
 	#endregion

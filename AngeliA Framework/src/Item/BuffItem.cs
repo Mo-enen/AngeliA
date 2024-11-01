@@ -3,14 +3,17 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class BuffItem<B> : Item where B : Buff {
+public abstract class BuffItem<B> : BuffItem where B : Buff {
+	public BuffItem () => BuffID = typeof(B).AngeHash();
+}
+public abstract class BuffItem : Item {
 	public override bool AllowDuplicateUpdate => false;
 	public override int MaxStackCount => 1;
-	public readonly BuffIndex<B> BuffIndex = new();
+	public int BuffID { get; init; }
 	public override void OnItemUpdate_FromInventory (Entity holder, int stackCount) {
 		base.OnItemUpdate_FromInventory(holder, stackCount);
 		if (holder is Character character) {
-			character.Buff.GiveBuff(BuffIndex);
+			character.Buff.GiveBuff(BuffID);
 		}
 	}
 }

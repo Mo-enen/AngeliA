@@ -130,6 +130,9 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 		if (driver.Movement != driver.NativeMovement) return;
 		Driver = driver;
 		Driver.IgnorePhysics();
+		driver.Movement.Stop();
+		driver.Movement.StopDash();
+		driver.Movement.StopRush();
 		Movement.FacingRight = Driver.Movement.FacingRight;
 		TakeDriver();
 		LastDriveChangedFrame = Game.GlobalFrame;

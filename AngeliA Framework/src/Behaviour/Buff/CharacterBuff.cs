@@ -57,7 +57,7 @@ public sealed class CharacterBuff {
 		for (int i = 0; i < span.Length; i++) {
 			var state = span[i];
 			if (state.Frame < Game.GlobalFrame) continue;
-			var buff = Buff.GetBuffAt(i);
+			var buff = Buff.GetBuffAtIndex(i);
 			buff.ApplyToCharacter(Character, ref state.Data);
 		}
 	}
@@ -68,22 +68,30 @@ public sealed class CharacterBuff {
 		for (int i = 0; i < span.Length; i++) {
 			var state = span[i];
 			if (state.Frame < Game.GlobalFrame) continue;
-			var buff = Buff.GetBuffAt(i);
+			var buff = Buff.GetBuffAtIndex(i);
 			buff.OnCharacterAttack(Character, bullet, ref state.Data);
 		}
 	}
 
 
-	public bool HasBuff<B> (BuffIndex<B> index) where B : Buff => BuffStates[index].Frame >= Game.GlobalFrame;
+	public bool HasBuff (int id) {
+		if (Buff.TryGetBuffIndex(id, out int index)) {
+			return BuffStates[index].Frame >= Game.GlobalFrame;
+		} else {
+			return false;
+		}
+	}
 
 
-	public void GiveBuff<B> (BuffIndex<B> index, int duration = 1) where B : Buff {
+	public void GiveBuff (int id, int duration = 1) {
+		if (!Buff.TryGetBuffIndex(id, out int index)) return;
 		var state = BuffStates[index];
 		state.Frame = Util.Max(state.Frame, Game.GlobalFrame + duration);
 	}
 
 
-	public void ClearBuff<B> (BuffIndex<B> index) where B : Buff {
+	public void ClearBuff (int id) {
+		if (!Buff.TryGetBuffIndex(id, out int index)) return;
 		var state = BuffStates[index];
 		state.Frame = -1;
 		state.Data = null;

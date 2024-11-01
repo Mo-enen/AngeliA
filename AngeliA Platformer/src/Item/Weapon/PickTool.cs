@@ -28,10 +28,9 @@ public abstract class PickTool : HandTool {
 
 
 	// MSG
-	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
-
+	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
+		var pHolder = rendering.TargetCharacter;
 		if (
-			holder is not Character pHolder ||
 			!pHolder.IsAttackAllowedByMovement() ||
 			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
@@ -39,7 +38,7 @@ public abstract class PickTool : HandTool {
 			TaskSystem.HasTask() ||
 			!Universe.BuiltInInfo.AllowPlayerModifyMap
 		) {
-			base.PoseAnimationUpdate_FromEquipment(holder);
+			base.OnPoseAnimationUpdate_FromEquipment(rendering);
 			return;
 		}
 
@@ -68,7 +67,7 @@ public abstract class PickTool : HandTool {
 		}
 
 		// Pick Block
-		if (InRange(holder, targetUnitX, targetUnitY) && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
+		if (InRange(pHolder, targetUnitX, targetUnitY) && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
 			// Erase Block from Map
 			bool picked = FrameworkUtil.PickBlockAt(
 				targetUnitX, targetUnitY,
@@ -78,12 +77,12 @@ public abstract class PickTool : HandTool {
 			);
 			// Reduce Weapon Usage
 			if (picked) {
-				Inventory.ReduceEquipmentCount(holder is Character cHolder ? cHolder.InventoryID : holder.TypeID, 1, EquipmentType.HandTool);
+				Inventory.ReduceEquipmentCount(pHolder.InventoryID, 1, EquipmentType.HandTool);
 			}
 		}
 
 		// Base
-		base.PoseAnimationUpdate_FromEquipment(holder);
+		base.OnPoseAnimationUpdate_FromEquipment(rendering);
 
 	}
 

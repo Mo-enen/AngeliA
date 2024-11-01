@@ -13,9 +13,11 @@ public abstract class Buff {
 
 
 	// Api
+	public int TypeID { get; init; }
 	public static int AllBuffCount => AllBuffs.Length;
 
 	// Data
+	private static readonly Dictionary<int, int> BuffIndexPool = [];
 	private static Buff[] AllBuffs = [new FailbackBuff()];
 
 
@@ -29,14 +31,21 @@ public abstract class Buff {
 
 	[OnGameInitialize(-128)]
 	internal static void OnGameInitialize () {
-		var buffList = new List<Buff> { new FailbackBuff() };
+		var failback = new FailbackBuff();
+		var buffList = new List<Buff> { failback };
+		BuffIndexPool.Add(failback.TypeID, 0);
 		foreach (var type in typeof(Buff).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not Buff buff) continue;
 			if (buff is FailbackBuff) continue;
+			if (BuffIndexPool.ContainsKey(buff.TypeID)) continue;
+			BuffIndexPool.Add(buff.TypeID, buffList.Count);
 			buffList.Add(buff);
 		}
 		AllBuffs = [.. buffList];
 	}
+
+
+	public Buff () => TypeID = GetType().AngeHash();
 
 
 	#endregion
@@ -47,7 +56,10 @@ public abstract class Buff {
 	#region --- API ---
 
 
-	internal static Buff GetBuffAt (int index) => AllBuffs[index];
+	public static bool TryGetBuffIndex (int id, out int index) => BuffIndexPool.TryGetValue(id, out index);
+
+
+	public static Buff GetBuffAtIndex (int index) => AllBuffs[index];
 
 
 	public virtual void ApplyToCharacter (Character target, ref object data) { }

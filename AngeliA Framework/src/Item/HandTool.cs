@@ -65,13 +65,11 @@ public abstract class HandTool : Equipment {
 	}
 
 
-	public override void PoseAnimationUpdate_FromEquipment (Entity holder) {
+	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
 
-		base.PoseAnimationUpdate_FromEquipment(holder);
-
+		base.OnPoseAnimationUpdate_FromEquipment(rendering);
+		var character = rendering.TargetCharacter;
 		if (
-			holder is not Character character ||
-			character.Rendering is not PoseCharacterRenderer renderer ||
 			character.AnimationType == CharacterAnimationType.Sleep ||
 			character.AnimationType == CharacterAnimationType.PassOut ||
 			character.AnimationType == CharacterAnimationType.Crash
@@ -82,45 +80,45 @@ public abstract class HandTool : Equipment {
 			!Renderer.TryGetSpriteFromGroup(SpriteID, 0, out sprite)
 		) return;
 
-		int oldGrabSclL = renderer.HandGrabScaleL;
-		int oldGrabSclR = renderer.HandGrabScaleR;
+		int oldGrabSclL = rendering.HandGrabScaleL;
+		int oldGrabSclR = rendering.HandGrabScaleR;
 		if (ToolType == ToolType.Claw) {
-			renderer.HandGrabScaleL = renderer.HandGrabScaleL * 8 / 10;
-			renderer.HandGrabScaleR = renderer.HandGrabScaleR * 8 / 10;
+			rendering.HandGrabScaleL = rendering.HandGrabScaleL * 8 / 10;
+			rendering.HandGrabScaleR = rendering.HandGrabScaleR * 8 / 10;
 		}
 
 		// Tool Handheld
 		switch (character.EquippingToolHeld) {
 			default:
 			case ToolHandheld.Float:
-				DrawTool_Float(renderer, sprite);
+				DrawTool_Float(rendering, sprite);
 				break;
 
 			case ToolHandheld.SingleHanded:
-				DrawTool_SingleHanded(renderer, sprite);
+				DrawTool_SingleHanded(rendering, sprite);
 				break;
 
 			case ToolHandheld.DoubleHanded:
 			case ToolHandheld.Shooting:
-				DrawTool_Double_Shoot(renderer, sprite);
+				DrawTool_Double_Shoot(rendering, sprite);
 				break;
 
 			case ToolHandheld.OneOnEachHand:
-				DrawTool_Each(renderer, sprite);
+				DrawTool_Each(rendering, sprite);
 				break;
 
 			case ToolHandheld.Pole:
-				DrawTool_Pole(renderer, sprite);
+				DrawTool_Pole(rendering, sprite);
 				break;
 
 			case ToolHandheld.Bow:
-				DrawTool_Bow(renderer, sprite);
+				DrawTool_Bow(rendering, sprite);
 				break;
 
 		}
 
-		renderer.HandGrabScaleL = oldGrabSclL;
-		renderer.HandGrabScaleR = oldGrabSclR;
+		rendering.HandGrabScaleL = oldGrabSclL;
+		rendering.HandGrabScaleR = oldGrabSclR;
 
 	}
 

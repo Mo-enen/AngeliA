@@ -21,8 +21,11 @@ public class PoseAnimation_Ride : PoseAnimation {
 		Hip.Y -= bodyDeltaY;
 		UpperLegL.Y -= bodyDeltaY / 2;
 		UpperLegR.Y -= bodyDeltaY / 2;
-		Body.X += FacingSign * 2 * A2G;
+		int bodyOffsetX = FacingSign * 2 * A2G;
+		Body.X += bodyOffsetX;
 		Hip.X = Body.X;
+		UpperLegL.X += bodyOffsetX;
+		UpperLegR.X += bodyOffsetX;
 		Body.Height = Body.SizeY * 4 / 5 - velX.Abs().Clamp(0, A2G);
 		Head.X = Body.X + FacingSign * A2G + velX.Clamp(-A2G * 3, A2G * 3);
 		Head.Y = Body.Y + Body.Height - 2 * A2G - velX.Abs().Clamp(0, A2G * 2);
@@ -51,8 +54,10 @@ public class PoseAnimation_Ride : PoseAnimation {
 		FootR.LimbRotate(0);
 
 		// Grab Rot
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL = LowerArmL.Rotation + 90;
+		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
+		Rendering.HandGrabScaleL = 500;
+		Rendering.HandGrabScaleR = 500;
 
 		// Z
 		Body.Z = 1;

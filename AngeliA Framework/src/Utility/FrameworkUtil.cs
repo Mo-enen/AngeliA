@@ -1141,17 +1141,17 @@ public static class FrameworkUtil {
 
 
 	// Buff
-	public static void BroadcastBuff<B> (IRect range, BuffIndex<B> buffIndex, int duration = 1) where B : Buff {
+	public static void BroadcastBuff (IRect range, int buffID, int duration = 1) {
 		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Character character) continue;
-			character.Buff.GiveBuff(buffIndex, duration);
+			character.Buff.GiveBuff(buffID, duration);
 		}
 	}
 
 
-	public static void BroadcastBuff<B> (int x, int y, int radius, BuffIndex<B> buffIndex, int duration = 1) where B : Buff {
+	public static void BroadcastBuff (int x, int y, int radius, int buffID, int duration = 1) {
 		var range = new IRect(x - radius, y - radius, radius * 2, radius * 2);
 		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
 		for (int i = 0; i < count; i++) {
@@ -1159,7 +1159,7 @@ public static class FrameworkUtil {
 			if (hit.Entity is not Character character) continue;
 			var hitRect = hit.Rect;
 			if (!Util.OverlapRectCircle(radius, x, y, hitRect.x, hitRect.y, hitRect.xMax, hitRect.yMax)) continue;
-			character.Buff.GiveBuff(buffIndex, duration);
+			character.Buff.GiveBuff(buffID, duration);
 		}
 	}
 

@@ -89,12 +89,10 @@ public abstract class PoseAnimation {
 			for (int i = 0; i < BodyParts.Length; i++) {
 				var record = BodyParts[i];
 				var pose = Rendering.BodyParts[i];
-				if (pose.Width.Sign() != record.Width.Sign()) {
-					pose.Width = -pose.Width;
-				}
-				if (pose.Height.Sign() != record.Height.Sign()) {
-					pose.Height = -pose.Height;
-				}
+
+				pose.Width = FixSign(pose.Width, record.Width);
+				pose.Height = FixSign(pose.Height, record.Height);
+
 				pose.X = (int)Util.LerpUnclamped(pose.X, record.X, blend01);
 				pose.Y = (int)Util.LerpUnclamped(pose.Y, record.Y, blend01);
 				pose.Z = (int)Util.LerpUnclamped(pose.Z, record.Z, blend01);
@@ -105,6 +103,10 @@ public abstract class PoseAnimation {
 				pose.PivotY = (int)Util.LerpUnclamped(pose.PivotY, record.PivotY, blend01);
 				pose.Tint = Color32.Lerp(pose.Tint, record.Tint, blend01);
 			}
+
+			Rendering.HandGrabScaleL = FixSign(Rendering.HandGrabScaleL, HandGrabScaleL);
+			Rendering.HandGrabScaleR = FixSign(Rendering.HandGrabScaleR, HandGrabScaleR);
+
 			Rendering.PoseRootX = (int)Util.LerpUnclamped(Rendering.PoseRootX, PoseRootX, blend01);
 			Rendering.PoseRootY = (int)Util.LerpUnclamped(Rendering.PoseRootY, PoseRootY, blend01);
 			Rendering.BodyTwist = (int)Util.LerpUnclamped(Rendering.BodyTwist, BodyTwist, blend01);
@@ -115,6 +117,14 @@ public abstract class PoseAnimation {
 			Rendering.HandGrabScaleR = (int)Util.LerpUnclamped(Rendering.HandGrabScaleR, HandGrabScaleR, blend01);
 			Rendering.HandGrabAttackTwistL = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01);
 			Rendering.HandGrabAttackTwistR = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01);
+
+			// Func
+			static int FixSign (int basicValue, int targetValue) {
+				if (basicValue.Sign() != targetValue.Sign()) {
+					basicValue = -basicValue;
+				}
+				return basicValue;
+			}
 		}
 	}
 
