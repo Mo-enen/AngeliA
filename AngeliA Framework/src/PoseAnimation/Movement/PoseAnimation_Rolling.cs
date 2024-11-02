@@ -1,6 +1,9 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Rolling : PoseAnimation {
+
+	public static readonly int TYPE_ID = typeof(PoseAnimation_Rolling).AngeHash();
+
 	private static readonly int[,] ROLLING = { { 1450, +100, -000, 0900, 0500, -020, -025, -015, -040, 70, 80, }, { 1200, +450, -000, 0800, 0250, +025, +030, -025, -030, 75, 85, }, { 0850, +800, -000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0300, +450, -000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0650, -100, +000, -750, -200, -170, -160, -155, -115, 80, 90, }, { 0850, -450, +000, -800, -100, -160, -150, -145, -125, 80, 90, }, { 0950, -800, +000, 0800, 0250, -065, -065, -025, -030, 75, 85, }, { 1200, -450, +000, 0900, 0750, -040, -045, -015, -040, 70, 80, }, };
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
