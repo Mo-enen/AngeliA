@@ -10,6 +10,7 @@ public partial class RayGame {
 
 	// VAR
 	private static Image EMPTY_IMG;
+	private int TargetFPS = -1;
 
 
 	// System
@@ -33,6 +34,14 @@ public partial class RayGame {
 	}
 
 	protected override void _OpenUrl (string url) => Raylib.OpenURL(url);
+
+	protected override void _SetTargetFramerate (int framerate) {
+		framerate = framerate.Clamp(4, 360);
+		if (framerate != TargetFPS) {
+			TargetFPS = framerate;
+			Raylib.SetTargetFPS(framerate);
+		}
+	}
 
 
 	// Window

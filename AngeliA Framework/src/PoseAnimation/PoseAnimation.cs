@@ -111,12 +111,13 @@ public abstract class PoseAnimation {
 			Rendering.PoseRootY = (int)Util.LerpUnclamped(Rendering.PoseRootY, PoseRootY, blend01);
 			Rendering.BodyTwist = (int)Util.LerpUnclamped(Rendering.BodyTwist, BodyTwist, blend01);
 			Rendering.HeadTwist = (int)Util.LerpUnclamped(Rendering.HeadTwist, HeadTwist, blend01);
-			Rendering.HandGrabRotationL = (int)Util.LerpUnclamped(Rendering.HandGrabRotationL, HandGrabRotationL, blend01);
-			Rendering.HandGrabRotationR = (int)Util.LerpUnclamped(Rendering.HandGrabRotationR, HandGrabRotationR, blend01);
+			Rendering.HandGrabRotationL = (int)Util.LerpAngle(Rendering.HandGrabRotationL, HandGrabRotationL, blend01);
+			Rendering.HandGrabRotationR = (int)Util.LerpAngle(Rendering.HandGrabRotationR, HandGrabRotationR, blend01);
 			Rendering.HandGrabScaleL = (int)Util.LerpUnclamped(Rendering.HandGrabScaleL, HandGrabScaleL, blend01);
 			Rendering.HandGrabScaleR = (int)Util.LerpUnclamped(Rendering.HandGrabScaleR, HandGrabScaleR, blend01);
 			Rendering.HandGrabAttackTwistL = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01);
 			Rendering.HandGrabAttackTwistR = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01);
+			
 
 			// Func
 			static int FixSign (int basicValue, int targetValue) {

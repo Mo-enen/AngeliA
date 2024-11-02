@@ -28,4 +28,7 @@ public partial class Game {
 	public static void OpenUrl (string url) => Instance._OpenUrl(url);
 	protected abstract void _OpenUrl (string url);
 
+	public static void SetTargetFramerate (int framerate) => Instance._SetTargetFramerate(framerate);
+	protected abstract void _SetTargetFramerate (int framerate);
+
 }

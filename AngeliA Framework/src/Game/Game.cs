@@ -148,6 +148,7 @@ public abstract partial class Game {
 			_IsFullscreen.Value = false;
 #endif
 			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
+			_SetTargetFramerate(60);
 
 			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeAttribute>();
 

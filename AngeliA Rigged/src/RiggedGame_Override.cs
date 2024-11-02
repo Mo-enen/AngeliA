@@ -29,6 +29,9 @@ public partial class RiggedGame {
 
 	protected override void _OpenUrl (string url) { }
 
+	protected override void _SetTargetFramerate (int framerate) => RespondMessage.TargetFramerate = framerate;
+
+
 	// Window
 	protected override bool _IsWindowFocused () => true;
 

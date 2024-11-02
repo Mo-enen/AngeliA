@@ -289,6 +289,20 @@ public static partial class Util {
 	[MethodImpl(INLINE)] public static float Repeat (float t, float length) => (t - (t / length).FloorToInt() * length).Clamp(0, length);
 	[MethodImpl(INLINE)] public static float Lerp (float a, float b, float t) => a + (b - a) * t.Clamp01();
 	[MethodImpl(INLINE)] public static float LerpUnclamped (float a, float b, float t) => a + (b - a) * t;
+	[MethodImpl(INLINE)]
+	public static float LerpAngle (float a, float b, float t) {
+		float delta = Repeat((b - a), 360);
+		if (delta > 180)
+			delta -= 360;
+		return a + delta * Clamp01(t);
+	}
+	[MethodImpl(INLINE)]
+	public static float LerpAngleUnclamped (float a, float b, float t) {
+		float delta = Repeat((b - a), 360);
+		if (delta > 180)
+			delta -= 360;
+		return a + delta * t;
+	}
 	[MethodImpl(INLINE)] public static float Atan (float x, float y) => (float)Math.Atan2(y, x) * Rad2Deg;
 	[MethodImpl(INLINE)] public static int Min (int a, int b) => (a < b) ? a : b;
 	[MethodImpl(INLINE)] public static int Max (int a, int b) => (a > b) ? a : b;

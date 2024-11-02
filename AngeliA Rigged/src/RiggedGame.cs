@@ -376,7 +376,7 @@ public partial class RiggedGame : Game {
 		RespondMessage.IsTyping = GUI.IsTyping;
 		RespondMessage.SelectingPlayerID = PlayerSystem.Selecting != null ? PlayerSystem.Selecting.TypeID : 0;
 		RespondMessage.RequireShowDoodle = GlobalFrame <= DoodleFrame + 1;
-
+		
 		// Respond to Memory
 		unsafe {
 			RespondMessage.WriteDataToPipe(BufferPointer + 1);

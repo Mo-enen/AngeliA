@@ -87,6 +87,7 @@ public class RigRespondMessage {
 	public int ViewWidth;
 	public int ViewHeight;
 	public int RequireSetCursorIndex;
+	public int TargetFramerate;
 	public Color32 SkyTop;
 	public Color32 SkyBottom;
 	public byte EffectEnable;
@@ -195,6 +196,7 @@ public class RigRespondMessage {
 		Game.SoundVolume = SoundVolume;
 		CachedScreenWidth = callingMessage.ScreenWidth;
 		CachedScreenHeight = callingMessage.ScreenHeight;
+		Game.SetTargetFramerate(TargetFramerate);
 
 		// Cursor
 		if (!ignoreMouseInput) {
@@ -431,6 +433,7 @@ public class RigRespondMessage {
 			ViewWidth = Util.ReadInt(ref pointer, end);
 			ViewHeight = Util.ReadInt(ref pointer, end);
 			RequireSetCursorIndex = Util.ReadInt(ref pointer, end);
+			TargetFramerate = Util.ReadInt(ref pointer, end);
 
 			SkyTop.r = Util.ReadByte(ref pointer, end);
 			SkyTop.g = Util.ReadByte(ref pointer, end);
@@ -651,6 +654,7 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, ViewWidth, end);
 			Util.Write(ref pointer, ViewHeight, end);
 			Util.Write(ref pointer, RequireSetCursorIndex, end);
+			Util.Write(ref pointer, TargetFramerate, end);
 
 			Util.Write(ref pointer, SkyTop.r, end);
 			Util.Write(ref pointer, SkyTop.g, end);
