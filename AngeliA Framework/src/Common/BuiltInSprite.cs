@@ -7,7 +7,6 @@ namespace AngeliA;
 public static class BuiltInSprite {
 
 	public static readonly SpriteCode PIXEL = "Pixel";
-	public static readonly SpriteCode WALLPAPER_CLOUD = "WallpaperCloud";
 	public static readonly SpriteCode PLUS_16 = "Plus16";
 	public static readonly SpriteCode EQUAL_16 = "Equal16";
 	public static readonly SpriteCode ICON_QUESTION_MARK = "Icon.QuestionMark";

@@ -894,6 +894,8 @@ public partial class Engine {
 		GameEditor.Instance.SetCurrentProject(CurrentProject);
 		PackageManager.Instance.SetCurrentProject(CurrentProject);
 		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
+		ConsoleWindow.Instance.Clear();
+		ConsoleWindow.Instance.RemoveAllCompileErrors();
 
 		// Audio
 		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);

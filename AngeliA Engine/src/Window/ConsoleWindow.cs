@@ -4,7 +4,6 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-
 public class ConsoleWindow : WindowUI {
 
 
@@ -35,7 +34,7 @@ public class ConsoleWindow : WindowUI {
 	private static readonly SpriteCode UI_BG = "UI.Console.BG";
 	private static readonly SpriteCode UI_TOOLBAR = "UI.Console.Toolbar";
 	private static readonly SpriteCode ICON_CODE_ANA = "Console.Analysis";
-	private static readonly SpriteCode PANEL_BG = "UI.GeneralPanel";
+	private static readonly SpriteCode PANEL_BG = "UI.Console.ErrorPanel";
 	private static readonly LanguageCode HINT_EMPTY_MSG = ("Hint.EmptyMsg", "No message here...");
 	private static readonly LanguageCode TIP_CLEAR = ("Tip.ConsoleClear", "Clear messages (Ctrl + Shift + C)");
 	private static readonly LanguageCode TIP_HASH_COL = ("Tip.HashCol", "Check hash collision for all scripts and artwork");
@@ -74,38 +73,28 @@ public class ConsoleWindow : WindowUI {
 
 	public override void UpdateWindowUI () {
 
+		bool hasLog = Lines.Length > 0;
 		bool hasError = CompileErrorLines.Length > 0;
+		int barHeight = GUI.ToolbarSize;
+		var windowRect = WindowRect;
 
 		// BG
-		GUI.DrawSlice(UI_BG, WindowRect.ShrinkUp(GUI.ToolbarSize));
+		GUI.DrawSlice(UI_BG, windowRect.ShrinkUp(GUI.ToolbarSize));
 
 		// Toolbar
-		int barHeight = GUI.ToolbarSize;
-		OnGUI_Toolbar(WindowRect.Edge(Direction4.Up, barHeight));
+		OnGUI_Toolbar(windowRect.Edge(Direction4.Up, barHeight));
 
 		// Lines
-		var errorPanelRect = hasError ? WindowRect.ShrinkUp(barHeight).TopHalf().Shrink(Unify(48)) : default;
-		if (!hasError || Lines.Length > 0) {
-			OnGUI_Lines(
-				37823176,
-				WindowRect.ShrinkUp(barHeight),
-				Lines, ref ScrollY,
-				errorPanelRect.MouseInside(),
-				extraSpaces: 6
-			);
+		if (hasLog) {
+			var panelRect = hasError ? windowRect.ShrinkUp(barHeight).BottomHalf() : windowRect.ShrinkUp(barHeight);
+			OnGUI_Lines(37823176, panelRect, Lines, ref ScrollY);
 		}
 
 		// Error Lines
 		if (hasError) {
-			errorPanelRect = WindowRect.Edge(Direction4.Up, Unify(400)).Shrink(Unify(48), Unify(48), 0, barHeight + Unify(32));
-			GUI.DrawSlice(PANEL_BG, errorPanelRect);
-			OnGUI_Lines(
-				23783177,
-				errorPanelRect,
-				CompileErrorLines, ref ScrollErrorY,
-				!errorPanelRect.MouseInside(),
-				extraSpaces: 1
-			);
+			var panelRect = hasLog ? windowRect.ShrinkUp(barHeight).TopHalf() : windowRect.ShrinkUp(barHeight);
+			GUI.DrawSlice(PANEL_BG, panelRect);
+			OnGUI_Lines(23783177, panelRect, CompileErrorLines, ref ScrollErrorY);
 		}
 
 	}
@@ -145,7 +134,7 @@ public class ConsoleWindow : WindowUI {
 	}
 
 
-	private void OnGUI_Lines (int controlID, IRect panelRect, Pipe<Line> lines, ref int scrollY, bool ignoreScrollWheel, int extraSpaces) {
+	private void OnGUI_Lines (int controlID, IRect panelRect, Pipe<Line> lines, ref int scrollY) {
 
 		// Empty Hint
 		if (lines.Length == 0) {
@@ -154,6 +143,7 @@ public class ConsoleWindow : WindowUI {
 		}
 
 		// Lines
+		const int EXTRA_SPACES = 2;
 		var fullPanelRect = panelRect;
 		panelRect = panelRect.Shrink(Unify(12));
 		bool hasCompileError = CompileErrorLines.Length > 0;
@@ -161,7 +151,7 @@ public class ConsoleWindow : WindowUI {
 		int pageHeight = panelRect.height;
 		int pageLineCount = pageHeight / lineHeight;
 		int scrollMin = hasCompileError ? 0 : -pageLineCount / 2 - 1;
-		int scrollMax = (lines.Length - pageLineCount + extraSpaces).GreaterOrEquelThanZero();
+		int scrollMax = (lines.Length - pageLineCount + EXTRA_SPACES).GreaterOrEquelThanZero();
 		int start = scrollY.Clamp(scrollMin, scrollMax);
 		int end = Util.Min(lines.Length, start + pageLineCount);
 		var rect = panelRect.Edge(Direction4.Up, lineHeight);
@@ -171,6 +161,7 @@ public class ConsoleWindow : WindowUI {
 		int smallPadding = Unify(3);
 		int scrollBarWidth = Unify(16);
 		bool showLogTime = EngineSetting.ShowLogTime.Value;
+		bool ignoreScrollWheel = !panelRect.MouseInside();
 
 		for (int i = start; i < end; i++) {
 			// Step Tint
